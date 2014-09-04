@@ -1,0 +1,200 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Stim Tags</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h2 class=top>Stim Tags</h2>
+<p>These tags are part of the CIPA Stereo Still Image specification, and are
+found in the APP3 &quot;Stim&quot; segment of JPEG images.  See
+<a href="http://www.cipa.jp/english/hyoujunka/kikaku/pdf/DC-006_E.pdf">http://www.cipa.jp/english/hyoujunka/kikaku/pdf/DC-006_E.pdf</a> for the
+official specification.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x0000 = 0'>0x0000</td>
+<td>StimVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0001 = 1'>0x0001</td>
+<td>ApplicationData</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0002 = 2'>0x0002</td>
+<td>ImageArrangement</td>
+<td class=c>N</td>
+<td><span class=s>0 = Parallel View Alignment
+  <br>1 = Cross View Alignment</span></td></tr>
+<tr class=b>
+<td title='0x0003 = 3'>0x0003</td>
+<td>ImageRotation</td>
+<td class=c>N</td>
+<td><span class=s>1 = None</span></td></tr>
+<tr>
+<td title='0x0004 = 4'>0x0004</td>
+<td>ScalingFactor</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0005 = 5'>0x0005</td>
+<td>CropXSize</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0006 = 6'>0x0006</td>
+<td>CropYSize</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0007 = 7'>0x0007</td>
+<td>CropX</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Stim.html#CropX'>Stim CropX Tags</a></td></tr>
+<tr>
+<td title='0x0008 = 8'>0x0008</td>
+<td>CropY</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Stim.html#CropY'>Stim CropY Tags</a></td></tr>
+<tr class=b>
+<td title='0x0009 = 9'>0x0009</td>
+<td>ViewType</td>
+<td class=c>N</td>
+<td><span class=s>0 = No Pop-up Effect
+  <br>1 = Pop-up Effect</span></td></tr>
+<tr>
+<td title='0x000a = 10'>0x000a</td>
+<td>RepresentativeImage</td>
+<td class=c>N</td>
+<td><span class=s>0 = Left Viewpoint
+  <br>1 = Right Viewpoint</span></td></tr>
+<tr class=b>
+<td title='0x000b = 11'>0x000b</td>
+<td>ConvergenceBaseImage</td>
+<td class=c>N</td>
+<td><span class=s>0 = Left Viewpoint
+  <br>1 = Right Viewpoint
+  <br>255 = Equivalent for Both Viewpoints</span></td></tr>
+<tr>
+<td title='0x000c = 12'>0x000c</td>
+<td>AssumedDisplaySize</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x000d = 13'>0x000d</td>
+<td>AssumedDistanceView</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x000e = 14'>0x000e</td>
+<td>RepresentativeDisparityNear</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x000f = 15'>0x000f</td>
+<td>RepresentativeDisparityFar</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0010 = 16'>0x0010</td>
+<td>InitialDisplayEffect</td>
+<td class=c>N</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr class=b>
+<td title='0x0011 = 17'>0x0011</td>
+<td>ConvergenceDistance</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0012 = 18'>0x0012</td>
+<td>CameraArrangementInterval</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0013 = 19'>0x0013</td>
+<td>ShootingCount</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='CropX'>Stim CropX Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>CropXCommonOffset</td>
+<td class=c>N</td>
+<td><span class=s>0 = Common Offset Setting
+  <br>1 = Individual Offset Setting</span></td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>CropXViewpointNumber</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='3 = 0x3'>3</td>
+<td>CropXOffset</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='7 = 0x7'>7</td>
+<td>CropXViewpointNumber2</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='8 = 0x8'>8</td>
+<td>CropXOffset2</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='CropY'>Stim CropY Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>CropYCommonOffset</td>
+<td class=c>N</td>
+<td><span class=s>0 = Common Offset Setting
+  <br>1 = Individual Offset Setting</span></td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>CropYViewpointNumber</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='3 = 0x3'>3</td>
+<td>CropYOffset</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='7 = 0x7'>7</td>
+<td>CropYViewpointNumber2</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='8 = 0x8'>8</td>
+<td>CropYOffset2</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<hr>
+(This document generated automatically by Image::ExifTool::BuildTagLookup)
+<br><i>Last revised Jun 13, 2009</i>
+<p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
+</body>
+</html>

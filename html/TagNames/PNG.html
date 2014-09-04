@@ -1,0 +1,532 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>PNG Tags</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h2 class=top>PNG Tags</h2>
+<p>Tags extracted from PNG images.  See
+<a href="http://www.libpng.org/pub/png/spec/1.2/">http://www.libpng.org/pub/png/spec/1.2/</a> for the official PNG 1.2
+specification.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'IHDR'</td>
+<td>ImageHeader</td>
+<td class=c>-</td>
+<td>--&gt; <a href='PNG.html#ImageHeader'>PNG ImageHeader Tags</a></td></tr>
+<tr class=b>
+<td>'PLTE'</td>
+<td>Palette</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'bKGD'</td>
+<td>BackgroundColor</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'cHRM'</td>
+<td>PrimaryChromaticities</td>
+<td class=c>-</td>
+<td>--&gt; <a href='PNG.html#PrimaryChromaticities'>PNG PrimaryChromaticities Tags</a></td></tr>
+<tr>
+<td>'dSIG'</td>
+<td>DigitalSignature</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'fRAc'</td>
+<td>FractalParameters</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'gAMA'</td>
+<td>Gamma</td>
+<td class=c>N</td>
+<td><span class=s><span class=n>(ExifTool reports the gamma for decoding the image, which is consistent with
+the EXIF convention, but is the inverse of the stored encoding gamma)</span></span></td></tr>
+<tr class=b>
+<td>'gIFg'</td>
+<td>GIFGraphicControlExtension</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'gIFt'</td>
+<td>GIFPlainTextExtension</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'gIFx'</td>
+<td>GIFApplicationExtension</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'hIST'</td>
+<td>PaletteHistogram</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'iCCP'</td>
+<td>ICC_Profile</td>
+<td class=c>-</td>
+<td>--&gt; <a href='ICC_Profile.html'>ICC_Profile Tags</a>
+  <br><span class='n s'>(this is where ExifTool will write a new ICC_Profile)</span></td></tr>
+<tr>
+<td>'iCCP-name'</td>
+<td>ProfileName</td>
+<td class=c>N</td>
+<td><span class=s><span class=n>(not a real tag ID, this tag represents the iCCP profile name)</span></span></td></tr>
+<tr class=b>
+<td>'iTXt'</td>
+<td>InternationalText</td>
+<td class=c>-</td>
+<td>--&gt; <a href='PNG.html#TextualData'>PNG TextualData Tags</a></td></tr>
+<tr>
+<td>'oFFs'</td>
+<td>ImageOffset</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'pCAL'</td>
+<td>PixelCalibration</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'pHYs'</td>
+<td>PhysicalPixel</td>
+<td class=c>-</td>
+<td>--&gt; <a href='PNG.html#PhysicalPixel'>PNG PhysicalPixel Tags</a></td></tr>
+<tr class=b>
+<td>'sBIT'</td>
+<td>SignificantBits</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'sCAL'</td>
+<td>SubjectScale</td>
+<td class=c>-</td>
+<td>--&gt; <a href='PNG.html#SubjectScale'>PNG SubjectScale Tags</a></td></tr>
+<tr class=b>
+<td>'sPLT'</td>
+<td>SuggestedPalette</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'sRGB'</td>
+<td>SRGBRendering</td>
+<td class=c>N</td>
+<td><span class=s>0 = Perceptual
+  <br>1 = Relative Colorimetric
+  <br>2 = Saturation
+  <br>3 = Absolute Colorimetric</span></td></tr>
+<tr class=b>
+<td>'sTER'</td>
+<td>StereoImage</td>
+<td class=c>-</td>
+<td>--&gt; <a href='PNG.html#StereoImage'>PNG StereoImage Tags</a></td></tr>
+<tr>
+<td>'tEXt'</td>
+<td>TextualData</td>
+<td class=c>-</td>
+<td>--&gt; <a href='PNG.html#TextualData'>PNG TextualData Tags</a></td></tr>
+<tr class=b>
+<td>'tIME'</td>
+<td>ModifyDate</td>
+<td class=c>Y</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'tRNS'</td>
+<td>Transparency</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'tXMP'</td>
+<td>XMP</td>
+<td class=c>-</td>
+<td>--&gt; <a href='XMP.html'>XMP Tags</a>
+  <br><span class='n s'>(obsolete location specified by a September 2001 XMP draft)</span></td></tr>
+<tr>
+<td>'vpAg'</td>
+<td>VirtualPage</td>
+<td class=c>-</td>
+<td>--&gt; <a href='PNG.html#VirtualPage'>PNG VirtualPage Tags</a></td></tr>
+<tr class=b>
+<td>'zTXt'</td>
+<td>CompressedText</td>
+<td class=c>-</td>
+<td>--&gt; <a href='PNG.html#TextualData'>PNG TextualData Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ImageHeader'>PNG ImageHeader Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>ImageWidth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>ImageHeight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='8 = 0x8'>8</td>
+<td>BitDepth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='9 = 0x9'>9</td>
+<td>ColorType</td>
+<td class=c>N</td>
+<td><span class=s>0 = Grayscale
+  <br>2 = RGB
+  <br>3 = Palette
+  <br>4 = Grayscale with Alpha
+  <br>6 = RGB with Alpha</span></td></tr>
+<tr>
+<td class=r title='10 = 0xa'>10</td>
+<td>Compression</td>
+<td class=c>N</td>
+<td><span class=s>0 = Deflate/Inflate</span></td></tr>
+<tr class=b>
+<td class=r title='11 = 0xb'>11</td>
+<td>Filter</td>
+<td class=c>N</td>
+<td><span class=s>0 = Adaptive</span></td></tr>
+<tr>
+<td class=r title='12 = 0xc'>12</td>
+<td>Interlace</td>
+<td class=c>N</td>
+<td><span class=s>0 = Noninterlaced
+  <br>1 = Adam7 Interlace</span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='PrimaryChromaticities'>PNG PrimaryChromaticities Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index4</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>WhitePointX</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='1 = 0x1'>1</td>
+<td>WhitePointY</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='2 = 0x2'>2</td>
+<td>RedX</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='3 = 0x3'>3</td>
+<td>RedY</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='4 = 0x4'>4</td>
+<td>GreenX</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='5 = 0x5'>5</td>
+<td>GreenY</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='6 = 0x6'>6</td>
+<td>BlueX</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='7 = 0x7'>7</td>
+<td>BlueY</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='TextualData'>PNG TextualData Tags</a></h2>
+<p>The PNG TextualData format allows arbitrary tag names to be used.  The tags
+listed below are the only ones that can be written (unless new user-defined
+tags are added via the configuration file), however ExifTool will extract
+any other TextualData tags that are found.</p>
+
+<p>These tags may be stored as tEXt, zTXt or iTXt chunks in the PNG image.  By
+default ExifTool writes new string-value tags as as uncompressed tEXt, or
+compressed zTXt if the Compress (-z) option is used and Compress::Zlib is
+available.  Alternate language tags and values containing special characters
+(unless the Latin character set is used) are written as iTXt, and compressed
+if the Compress option is used and Compress::Zlib is available.  Raw profile
+information is always created as compressed zTXt if Compress::Zlib is
+available, or tEXt otherwise.  Standard XMP is written as uncompressed iTXt.</p>
+
+<p>Alternate languages are accessed by suffixing the tag name with a &#39;-&#39;,
+followed by an RFC 3066 language code (eg. &quot;PNG:Comment-fr&quot;, or
+&quot;Title-en-US&quot;).  See <a href="http://www.ietf.org/rfc/rfc3066.txt">http://www.ietf.org/rfc/rfc3066.txt</a> for the RFC 3066
+specification.</p>
+
+<p>Some of the tags below are not registered as part of the PNG specification,
+but are included here because they are generated by other software such as
+ImageMagick.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'Artist'</td>
+<td>Artist</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(unregistered)</span></span></td></tr>
+<tr class=b>
+<td>'Author'</td>
+<td>Author</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Comment'</td>
+<td>Comment</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Copyright'</td>
+<td>Copyright</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Creation Time'</td>
+<td>CreationTime</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Description'</td>
+<td>Description</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Disclaimer'</td>
+<td>Disclaimer</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Document'</td>
+<td>Document</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(unregistered)</span></span></td></tr>
+<tr>
+<td>'Label'</td>
+<td>Label</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(unregistered)</span></span></td></tr>
+<tr class=b>
+<td>'Make'</td>
+<td>Make</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(unregistered)</span></span></td></tr>
+<tr>
+<td>'Model'</td>
+<td>Model</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(unregistered)</span></span></td></tr>
+<tr class=b>
+<td>'Raw profile type 8bim'</td>
+<td>Photoshop_Profile</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Photoshop.html'>Photoshop Tags</a>
+  <br><span class='n s'>(unregistered)</span></td></tr>
+<tr>
+<td>'Raw profile type APP1'</td>
+<td>APP1_Profile</td>
+<td class=c>-</td>
+<td>--&gt; <a href='EXIF.html'>EXIF Tags</a>
+  <br>--&gt; <a href='XMP.html'>XMP Tags</a>
+  <br><span class='n s'>(unregistered.  This is where ExifTool will create new EXIF)</span></td></tr>
+<tr class=b>
+<td>'Raw profile type exif'</td>
+<td>EXIF_Profile</td>
+<td class=c>-</td>
+<td>--&gt; <a href='EXIF.html'>EXIF Tags</a>
+  <br><span class='n s'>(unregistered)</span></td></tr>
+<tr>
+<td>'Raw profile type icc'</td>
+<td>ICC_Profile</td>
+<td class=c>-</td>
+<td>--&gt; <a href='ICC_Profile.html'>ICC_Profile Tags</a>
+  <br><span class='n s'>(unregistered)</span></td></tr>
+<tr class=b>
+<td>'Raw profile type icm'</td>
+<td>ICC_Profile</td>
+<td class=c>-</td>
+<td>--&gt; <a href='ICC_Profile.html'>ICC_Profile Tags</a>
+  <br><span class='n s'>(unregistered)</span></td></tr>
+<tr>
+<td>'Raw profile type iptc'</td>
+<td>IPTC_Profile</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Photoshop.html'>Photoshop Tags</a>
+  <br><span class='n s'>(unregistered.  May be either IPTC IIM or Photoshop IRB format.  This is
+where ExifTool will add new IPTC, inside a Photoshop IRB container)</span></td></tr>
+<tr class=b>
+<td>'Raw profile type xmp'</td>
+<td>XMP_Profile</td>
+<td class=c>-</td>
+<td>--&gt; <a href='XMP.html'>XMP Tags</a>
+  <br><span class='n s'>(unregistered)</span></td></tr>
+<tr>
+<td>'Software'</td>
+<td>Software</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Source'</td>
+<td>Source</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TimeStamp'</td>
+<td>TimeStamp</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(unregistered)</span></span></td></tr>
+<tr class=b>
+<td>'Title'</td>
+<td>Title</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'URL'</td>
+<td>URL</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(unregistered)</span></span></td></tr>
+<tr class=b>
+<td>'Warning'</td>
+<td>PNGWarning</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'XML:com.adobe.xmp'</td>
+<td>XMP</td>
+<td class=c>-</td>
+<td>--&gt; <a href='XMP.html'>XMP Tags</a>
+  <br><span class='n s'>(unregistered, but this is the location according to the June 2002 or later
+XMP specification, and is where ExifTool will add a new XMP chunk if the
+image didn't already contain XMP)</span></td></tr>
+<tr class=b>
+<td>'create-date'</td>
+<td>CreateDate</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(unregistered)</span></span></td></tr>
+<tr>
+<td>'modify-date'</td>
+<td>ModDate</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(unregistered)</span></span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='PhysicalPixel'>PNG PhysicalPixel Tags</a></h2>
+<p>These tags are found in the PNG pHYs chunk and belong to the PNG-pHYs family
+1 group.  They are all created together with default values if necessary
+when any of these tags is written, and may only be deleted as a group.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>PixelsPerUnitX</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>PixelsPerUnitY</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='8 = 0x8'>8</td>
+<td>PixelUnits</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Unknown
+  <br>1 = meters</span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='SubjectScale'>PNG SubjectScale Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>SubjectUnits</td>
+<td class=c>N</td>
+<td><span class=s>1 = meters
+  <br>2 = radians</span></td></tr>
+<tr class=b>
+<td class=r title='1 = 0x1'>1</td>
+<td>SubjectPixelWidth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='2 = 0x2'>2</td>
+<td>SubjectPixelHeight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='StereoImage'>PNG StereoImage Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>StereoMode</td>
+<td class=c>N</td>
+<td><span class=s>0 = Cross-fuse Layout
+  <br>1 = Diverging-fuse Layout</span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='VirtualPage'>PNG VirtualPage Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index4</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>VirtualImageWidth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='1 = 0x1'>1</td>
+<td>VirtualImageHeight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='2 = 0x2'>2</td>
+<td>VirtualPageUnits</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<hr>
+(This document generated automatically by Image::ExifTool::BuildTagLookup)
+<br><i>Last revised Jul 23, 2014</i>
+<p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
+</body>
+</html>

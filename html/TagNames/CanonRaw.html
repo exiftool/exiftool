@@ -1,0 +1,561 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>CanonRaw Tags</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h2 class=top>CanonRaw Tags</h2>
+<p>
+These tags apply to CRW-format Canon RAW files and information in the APP0
+&quot;CIFF&quot; segment of JPEG images.  When writing CanonRaw/CIFF information, the
+length of the information is preserved (and the new information is truncated
+or padded as required) unless <b>Writable</b> is <code>resize</code>. Currently, only
+JpgFromRaw and ThumbnailImage are allowed to change size.</p>
+
+<p>CRW images also support the addition of a CanonVRD trailer, which in turn
+supports XMP.  This trailer is created automatically if necessary when
+ExifTool is used to write XMP to a CRW image.
+</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x0000 = 0'>0x0000</td>
+<td>NullRecord</td>
+<td class=c>undef</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0001 = 1'>0x0001</td>
+<td>FreeBytes</td>
+<td class=c>undef</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0032 = 50'>0x0032</td>
+<td>CanonColorInfo1</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0805 = 2053'>0x0805</td>
+<td>CanonFileDescription
+  <br>UserComment</td>
+<td class=c>string[32]<br>string[256]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x080a = 2058'>0x080a</td>
+<td>CanonRawMakeModel</td>
+<td class=c>-</td>
+<td>--&gt; <a href='CanonRaw.html#MakeModel'>CanonRaw MakeModel Tags</a></td></tr>
+<tr class=b>
+<td title='0x080b = 2059'>0x080b</td>
+<td>CanonFirmwareVersion</td>
+<td class=c>string[32]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x080c = 2060'>0x080c</td>
+<td>ComponentVersion</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x080d = 2061'>0x080d</td>
+<td>ROMOperationMode</td>
+<td class=c>string[8]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0810 = 2064'>0x0810</td>
+<td>OwnerName</td>
+<td class=c>string[32]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0815 = 2069'>0x0815</td>
+<td>CanonImageType</td>
+<td class=c>string[32]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0816 = 2070'>0x0816</td>
+<td>OriginalFileName</td>
+<td class=c>string[32]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0817 = 2071'>0x0817</td>
+<td>ThumbnailFileName</td>
+<td class=c>string[32]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x100a = 4106'>0x100a</td>
+<td>TargetImageType</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Real-world Subject
+  <br>1 = Written Document</span></td></tr>
+<tr class=b>
+<td title='0x1010 = 4112'>0x1010</td>
+<td>ShutterReleaseMethod</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Single Shot
+  <br>2 = Continuous Shooting</span></td></tr>
+<tr>
+<td title='0x1011 = 4113'>0x1011</td>
+<td>ShutterReleaseTiming</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Priority on shutter
+  <br>1 = Priority on focus</span></td></tr>
+<tr class=b>
+<td title='0x1016 = 4118'>0x1016</td>
+<td>ReleaseSetting</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x101c = 4124'>0x101c</td>
+<td>BaseISO</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1028 = 4136'>0x1028</td>
+<td>CanonFlashInfo?</td>
+<td class=c>int16u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x1029 = 4137'>0x1029</td>
+<td>CanonFocalLength</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Canon.html#FocalLength'>Canon FocalLength Tags</a></td></tr>
+<tr class=b>
+<td title='0x102a = 4138'>0x102a</td>
+<td>CanonShotInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Canon.html#ShotInfo'>Canon ShotInfo Tags</a></td></tr>
+<tr>
+<td title='0x102c = 4140'>0x102c</td>
+<td>CanonColorInfo2</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x102d = 4141'>0x102d</td>
+<td>CanonCameraSettings</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Canon.html#CameraSettings'>Canon CameraSettings Tags</a></td></tr>
+<tr>
+<td title='0x1030 = 4144'>0x1030</td>
+<td>WhiteSample</td>
+<td class=c>-</td>
+<td>--&gt; <a href='CanonRaw.html#WhiteSample'>CanonRaw WhiteSample Tags</a></td></tr>
+<tr class=b>
+<td title='0x1031 = 4145'>0x1031</td>
+<td>SensorInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Canon.html#SensorInfo'>Canon SensorInfo Tags</a></td></tr>
+<tr>
+<td title='0x1033 = 4147'>0x1033</td>
+<td>CustomFunctions10D
+  <br>CustomFunctionsD30
+  <br>CustomFunctionsD60
+  <br>CustomFunctionsUnknown</td>
+<td class=c>-<br>-<br>-<br>-</td>
+<td>--&gt; <a href='CanonCustom.html#Functions10D'>CanonCustom Functions10D Tags</a>
+  <br>--&gt; <a href='CanonCustom.html#FunctionsD30'>CanonCustom FunctionsD30 Tags</a>
+  <br>--&gt; <a href='CanonCustom.html#FunctionsD30'>CanonCustom FunctionsD30 Tags</a>
+  <br>--&gt; <a href='CanonCustom.html#FuncsUnknown'>CanonCustom FuncsUnknown Tags</a></td></tr>
+<tr class=b>
+<td title='0x1038 = 4152'>0x1038</td>
+<td>CanonAFInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Canon.html#AFInfo'>Canon AFInfo Tags</a></td></tr>
+<tr>
+<td title='0x1093 = 4243'>0x1093</td>
+<td>CanonFileInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Canon.html#FileInfo'>Canon FileInfo Tags</a></td></tr>
+<tr class=b>
+<td title='0x10a9 = 4265'>0x10a9</td>
+<td>ColorBalance</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Canon.html#ColorBalance'>Canon ColorBalance Tags</a></td></tr>
+<tr>
+<td title='0x10ae = 4270'>0x10ae</td>
+<td>ColorTemperature</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x10b4 = 4276'>0x10b4</td>
+<td>ColorSpace</td>
+<td class=c>int16u</td>
+<td><span class=s>1 = sRGB
+  <br>2 = Adobe RGB
+  <br>65535 = Uncalibrated</span></td></tr>
+<tr>
+<td title='0x10b5 = 4277'>0x10b5</td>
+<td>RawJpgInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='CanonRaw.html#RawJpgInfo'>CanonRaw RawJpgInfo Tags</a></td></tr>
+<tr class=b>
+<td title='0x1803 = 6147'>0x1803</td>
+<td>ImageFormat</td>
+<td class=c>-</td>
+<td>--&gt; <a href='CanonRaw.html#ImageFormat'>CanonRaw ImageFormat Tags</a></td></tr>
+<tr>
+<td title='0x1804 = 6148'>0x1804</td>
+<td>RecordID</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1806 = 6150'>0x1806</td>
+<td>SelfTimerTime</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x1807 = 6151'>0x1807</td>
+<td>TargetDistanceSetting</td>
+<td class=c>float</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x180b = 6155'>0x180b</td>
+<td>SerialNumber
+  <br>UnknownNumber?</td>
+<td class=c>int32u<br>Y</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x180e = 6158'>0x180e</td>
+<td>TimeStamp</td>
+<td class=c>-</td>
+<td>--&gt; <a href='CanonRaw.html#TimeStamp'>CanonRaw TimeStamp Tags</a></td></tr>
+<tr class=b>
+<td title='0x1810 = 6160'>0x1810</td>
+<td>ImageInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='CanonRaw.html#ImageInfo'>CanonRaw ImageInfo Tags</a></td></tr>
+<tr>
+<td title='0x1813 = 6163'>0x1813</td>
+<td>FlashInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='CanonRaw.html#FlashInfo'>CanonRaw FlashInfo Tags</a></td></tr>
+<tr class=b>
+<td title='0x1814 = 6164'>0x1814</td>
+<td>MeasuredEV</td>
+<td class=c>float</td>
+<td><span class=s><span class=n>(this is the Canon name for what could better be called MeasuredLV, and
+should be close to the calculated LightValue for a proper exposure with most
+models)</span></span></td></tr>
+<tr>
+<td title='0x1817 = 6167'>0x1817</td>
+<td>FileNumber</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1818 = 6168'>0x1818</td>
+<td>ExposureInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='CanonRaw.html#ExposureInfo'>CanonRaw ExposureInfo Tags</a></td></tr>
+<tr>
+<td title='0x1834 = 6196'>0x1834</td>
+<td>CanonModelID</td>
+<td class=c>int32u</td>
+<td>--&gt; <a href='Canon.html#CanonModelID'>Canon CanonModelID Values</a>
+  <br><span class='n s'>(this is the complete list of model ID numbers, but note that many of these
+models do not produce CRW images)</span></td></tr>
+<tr class=b>
+<td title='0x1835 = 6197'>0x1835</td>
+<td>DecoderTable</td>
+<td class=c>-</td>
+<td>--&gt; <a href='CanonRaw.html#DecoderTable'>CanonRaw DecoderTable Tags</a></td></tr>
+<tr>
+<td title='0x183b = 6203'>0x183b</td>
+<td>SerialNumberFormat</td>
+<td class=c>int32u</td>
+<td><span class=s>0x90000000 = Format 1
+  <br>0xa0000000 = Format 2</span></td></tr>
+<tr class=b>
+<td title='0x2005 = 8197'>0x2005</td>
+<td>RawData</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x2007 = 8199'>0x2007</td>
+<td>JpgFromRaw</td>
+<td class=c>resize</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x2008 = 8200'>0x2008</td>
+<td>ThumbnailImage</td>
+<td class=c>resize</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x2804 = 10244'>0x2804</td>
+<td>ImageDescription</td>
+<td class=c>-</td>
+<td>--&gt; <a href='CanonRaw.html'>CanonRaw Tags</a></td></tr>
+<tr class=b>
+<td title='0x2807 = 10247'>0x2807</td>
+<td>CameraObject</td>
+<td class=c>-</td>
+<td>--&gt; <a href='CanonRaw.html'>CanonRaw Tags</a></td></tr>
+<tr>
+<td title='0x3002 = 12290'>0x3002</td>
+<td>ShootingRecord</td>
+<td class=c>-</td>
+<td>--&gt; <a href='CanonRaw.html'>CanonRaw Tags</a></td></tr>
+<tr class=b>
+<td title='0x3003 = 12291'>0x3003</td>
+<td>MeasuredInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='CanonRaw.html'>CanonRaw Tags</a></td></tr>
+<tr>
+<td title='0x3004 = 12292'>0x3004</td>
+<td>CameraSpecification</td>
+<td class=c>-</td>
+<td>--&gt; <a href='CanonRaw.html'>CanonRaw Tags</a></td></tr>
+<tr class=b>
+<td title='0x300a = 12298'>0x300a</td>
+<td>ImageProps</td>
+<td class=c>-</td>
+<td>--&gt; <a href='CanonRaw.html'>CanonRaw Tags</a></td></tr>
+<tr>
+<td title='0x300b = 12299'>0x300b</td>
+<td>ExifInformation</td>
+<td class=c>-</td>
+<td>--&gt; <a href='CanonRaw.html'>CanonRaw Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='MakeModel'>CanonRaw MakeModel Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>Make</td>
+<td class=c>string[6]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='6 = 0x6'>6</td>
+<td>Model</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='WhiteSample'>CanonRaw WhiteSample Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index2</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='1 = 0x1'>1</td>
+<td>WhiteSampleWidth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>WhiteSampleHeight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='3 = 0x3'>3</td>
+<td>WhiteSampleLeftBorder</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>WhiteSampleTopBorder</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='5 = 0x5'>5</td>
+<td>WhiteSampleBits</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='RawJpgInfo'>CanonRaw RawJpgInfo Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index2</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='1 = 0x1'>1</td>
+<td>RawJpgQuality</td>
+<td class=c>int16u</td>
+<td><span class=s>1 = Economy
+  <br>2 = Normal
+  <br>3 = Fine
+  <br>5 = Superfine</span></td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>RawJpgSize</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Large
+  <br>1 = Medium
+  <br>2 = Small</span></td></tr>
+<tr>
+<td class=r title='3 = 0x3'>3</td>
+<td>RawJpgWidth</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>RawJpgHeight</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ImageFormat'>CanonRaw ImageFormat Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index4</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>FileFormat</td>
+<td class=c>int32u</td>
+<td><span class=s>0x10000 = JPEG (lossy)
+  <br>0x10002 = JPEG (non-quantization)
+  <br>0x10003 = JPEG (lossy/non-quantization toggled)
+  <br>0x20001 = CRW</span></td></tr>
+<tr class=b>
+<td class=r title='1 = 0x1'>1</td>
+<td>TargetCompressionRatio</td>
+<td class=c>float</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='TimeStamp'>CanonRaw TimeStamp Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index4</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>DateTimeOriginal</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='1 = 0x1'>1</td>
+<td>TimeZoneCode</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='2 = 0x2'>2</td>
+<td>TimeZoneInfo</td>
+<td class=c>int32u</td>
+<td><span class=s><span class=n>(set to 0x80000000 if TimeZoneCode is valid)</span></span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ImageInfo'>CanonRaw ImageInfo Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index4</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>ImageWidth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='1 = 0x1'>1</td>
+<td>ImageHeight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='2 = 0x2'>2</td>
+<td>PixelAspectRatio</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='3 = 0x3'>3</td>
+<td>Rotation</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='4 = 0x4'>4</td>
+<td>ComponentBitDepth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='5 = 0x5'>5</td>
+<td>ColorBitDepth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='6 = 0x6'>6</td>
+<td>ColorBW</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='FlashInfo'>CanonRaw FlashInfo Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index4</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>FlashGuideNumber</td>
+<td class=c>float</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='1 = 0x1'>1</td>
+<td>FlashThreshold</td>
+<td class=c>float</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ExposureInfo'>CanonRaw ExposureInfo Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index4</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>ExposureCompensation</td>
+<td class=c>float</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='1 = 0x1'>1</td>
+<td>ShutterSpeedValue</td>
+<td class=c>float</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='2 = 0x2'>2</td>
+<td>ApertureValue</td>
+<td class=c>float</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='DecoderTable'>CanonRaw DecoderTable Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index4</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>DecoderTableNumber</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>CompressedDataOffset</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='3 = 0x3'>3</td>
+<td>CompressedDataLength</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<hr>
+(This document generated automatically by Image::ExifTool::BuildTagLookup)
+<br><i>Last revised Sep 16, 2010</i>
+<p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
+</body>
+</html>

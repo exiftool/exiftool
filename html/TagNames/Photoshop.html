@@ -1,0 +1,570 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Photoshop Tags</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h2 class=top>Photoshop Tags</h2>
+<p>
+Photoshop tags are found in PSD and PSB files, as well as inside embedded
+Photoshop information in many other file types (JPEG, TIFF, PDF, PNG to name
+a few).</p>
+
+<p>Many Photoshop tags are marked as Unknown (indicated by a question mark
+after the tag name) because the information they provide is not very useful
+under normal circumstances.  These unknown tags are not extracted unless the
+Unknown (-u) option is used.  See
+<a href="http://www.adobe.com/devnet-apps/photoshop/fileformatashtml/">http://www.adobe.com/devnet-apps/photoshop/fileformatashtml/</a> for the
+official specification
+</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x03e8 = 1000'>0x03e8</td>
+<td>Photoshop2Info?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x03e9 = 1001'>0x03e9</td>
+<td>MacintoshPrintInfo?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x03ea = 1002'>0x03ea</td>
+<td>XMLData?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x03eb = 1003'>0x03eb</td>
+<td>Photoshop2ColorTable?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x03ed = 1005'>0x03ed</td>
+<td>ResolutionInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Photoshop.html#Resolution'>Photoshop Resolution Tags</a></td></tr>
+<tr class=b>
+<td title='0x03ee = 1006'>0x03ee</td>
+<td>AlphaChannelsNames</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x03ef = 1007'>0x03ef</td>
+<td>DisplayInfo?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x03f0 = 1008'>0x03f0</td>
+<td>PStringCaption?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x03f1 = 1009'>0x03f1</td>
+<td>BorderInformation?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x03f2 = 1010'>0x03f2</td>
+<td>BackgroundColor?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x03f3 = 1011'>0x03f3</td>
+<td>PrintFlags?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x03f4 = 1012'>0x03f4</td>
+<td>BW_HalftoningInfo?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x03f5 = 1013'>0x03f5</td>
+<td>ColorHalftoningInfo?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x03f6 = 1014'>0x03f6</td>
+<td>DuotoneHalftoningInfo?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x03f7 = 1015'>0x03f7</td>
+<td>BW_TransferFunc?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x03f8 = 1016'>0x03f8</td>
+<td>ColorTransferFuncs?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x03f9 = 1017'>0x03f9</td>
+<td>DuotoneTransferFuncs?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x03fa = 1018'>0x03fa</td>
+<td>DuotoneImageInfo?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x03fb = 1019'>0x03fb</td>
+<td>EffectiveBW?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x03fc = 1020'>0x03fc</td>
+<td>ObsoletePhotoshopTag1?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x03fd = 1021'>0x03fd</td>
+<td>EPSOptions?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x03fe = 1022'>0x03fe</td>
+<td>QuickMaskInfo?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x03ff = 1023'>0x03ff</td>
+<td>ObsoletePhotoshopTag2?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0400 = 1024'>0x0400</td>
+<td>TargetLayerID?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0401 = 1025'>0x0401</td>
+<td>WorkingPath?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0402 = 1026'>0x0402</td>
+<td>LayersGroupInfo?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0403 = 1027'>0x0403</td>
+<td>ObsoletePhotoshopTag3?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0404 = 1028'>0x0404</td>
+<td>IPTCData</td>
+<td class=c>-</td>
+<td>--&gt; <a href='IPTC.html'>IPTC Tags</a></td></tr>
+<tr>
+<td title='0x0405 = 1029'>0x0405</td>
+<td>RawImageMode?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0406 = 1030'>0x0406</td>
+<td>JPEG_Quality</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Photoshop.html#JPEG_Quality'>Photoshop JPEG_Quality Tags</a></td></tr>
+<tr>
+<td title='0x0408 = 1032'>0x0408</td>
+<td>GridGuidesInfo?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0409 = 1033'>0x0409</td>
+<td>PhotoshopBGRThumbnail</td>
+<td class=c>N</td>
+<td><span class=s><span class=n>(this is a JPEG image, but in BGR format instead of RGB)</span></span></td></tr>
+<tr>
+<td title='0x040a = 1034'>0x040a</td>
+<td>CopyrightFlag</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = False
+  <br>1 = True</span></td></tr>
+<tr class=b>
+<td title='0x040b = 1035'>0x040b</td>
+<td>URL</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x040c = 1036'>0x040c</td>
+<td>PhotoshopThumbnail</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x040d = 1037'>0x040d</td>
+<td>GlobalAngle</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x040e = 1038'>0x040e</td>
+<td>ColorSamplersResource?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x040f = 1039'>0x040f</td>
+<td>ICC_Profile</td>
+<td class=c>-</td>
+<td>--&gt; <a href='ICC_Profile.html'>ICC_Profile Tags</a></td></tr>
+<tr>
+<td title='0x0410 = 1040'>0x0410</td>
+<td>Watermark?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0411 = 1041'>0x0411</td>
+<td>ICC_Untagged?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0412 = 1042'>0x0412</td>
+<td>EffectsVisible?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0413 = 1043'>0x0413</td>
+<td>SpotHalftone?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0414 = 1044'>0x0414</td>
+<td>IDsBaseValue?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0415 = 1045'>0x0415</td>
+<td>UnicodeAlphaNames?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0416 = 1046'>0x0416</td>
+<td>IndexedColourTableCount?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0417 = 1047'>0x0417</td>
+<td>TransparentIndex?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0419 = 1049'>0x0419</td>
+<td>GlobalAltitude</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x041a = 1050'>0x041a</td>
+<td>Slices?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x041b = 1051'>0x041b</td>
+<td>WorkflowURL?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x041c = 1052'>0x041c</td>
+<td>JumpToXPEP?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x041d = 1053'>0x041d</td>
+<td>AlphaIdentifiers?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x041e = 1054'>0x041e</td>
+<td>URL_List?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0421 = 1057'>0x0421</td>
+<td>VersionInfo?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0422 = 1058'>0x0422</td>
+<td>EXIFInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='EXIF.html'>EXIF Tags</a></td></tr>
+<tr>
+<td title='0x0423 = 1059'>0x0423</td>
+<td>ExifInfo2?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0424 = 1060'>0x0424</td>
+<td>XMP</td>
+<td class=c>-</td>
+<td>--&gt; <a href='XMP.html'>XMP Tags</a></td></tr>
+<tr>
+<td title='0x0425 = 1061'>0x0425</td>
+<td>IPTCDigest</td>
+<td class=c title=' ! = Unsafe'>string!</td>
+<td><span class=s><span class=n>(this tag indicates provides a way for XMP-aware applications to indicate
+that the XMP is synchronized with the IPTC.  When writing, special values of
+&quot;new&quot; and &quot;old&quot; represent the digests of the IPTC from the edited and
+original files respectively, and are undefined if the IPTC does not exist in
+the respective file.  Set this to &quot;new&quot; as an indication that the XMP is
+synchronized with the IPTC)</span></span></td></tr>
+<tr class=b>
+<td title='0x0426 = 1062'>0x0426</td>
+<td>PrintScale?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0428 = 1064'>0x0428</td>
+<td>PixelAspectRatio?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0429 = 1065'>0x0429</td>
+<td>LayerComps?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x042a = 1066'>0x042a</td>
+<td>AlternateDuotoneColors?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x042b = 1067'>0x042b</td>
+<td>AlternateSpotColors?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x042d = 1069'>0x042d</td>
+<td>LayerSelectionIDs?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x042e = 1070'>0x042e</td>
+<td>HDRToningInfo?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x042f = 1071'>0x042f</td>
+<td>PrintInfo?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0430 = 1072'>0x0430</td>
+<td>LayerGroupsEnabledID?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0431 = 1073'>0x0431</td>
+<td>ColorSamplersResource2?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0432 = 1074'>0x0432</td>
+<td>MeasurementScale?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0433 = 1075'>0x0433</td>
+<td>TimelineInfo?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0434 = 1076'>0x0434</td>
+<td>SheetDisclosure?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0435 = 1077'>0x0435</td>
+<td>DisplayInfo?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0436 = 1078'>0x0436</td>
+<td>OnionSkins?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0438 = 1080'>0x0438</td>
+<td>CountInfo?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x043a = 1082'>0x043a</td>
+<td>PrintInfo2?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x043b = 1083'>0x043b</td>
+<td>PrintStyle?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x043c = 1084'>0x043c</td>
+<td>MacintoshNSPrintInfo?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x043d = 1085'>0x043d</td>
+<td>WindowsDEVMODE?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x043e = 1086'>0x043e</td>
+<td>AutoSaveFilePath?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x043f = 1087'>0x043f</td>
+<td>AutoSaveFormat?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0440 = 1088'>0x0440</td>
+<td>PathSelectionState?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0bb7 = 2999'>0x0bb7</td>
+<td>ClippingPathName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0bb8 = 3000'>0x0bb8</td>
+<td>OriginPathInfo?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x1b58 = 7000'>0x1b58</td>
+<td>ImageReadyVariables?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1b59 = 7001'>0x1b59</td>
+<td>ImageReadyDataSets?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x1f40 = 8000'>0x1f40</td>
+<td>LightroomWorkflow?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x2710 = 10000'>0x2710</td>
+<td>PrintFlagsInfo?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Resolution'>Photoshop Resolution Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index2</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>XResolution</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>DisplayedUnitsX</td>
+<td class=c>int16u</td>
+<td><span class=s>1 = inches
+  <br>2 = cm</span></td></tr>
+<tr>
+<td class=r title='4 = 0x4'>4</td>
+<td>YResolution</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='6 = 0x6'>6</td>
+<td>DisplayedUnitsY</td>
+<td class=c>int16u</td>
+<td><span class=s>1 = inches
+  <br>2 = cm</span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='JPEG_Quality'>Photoshop JPEG_Quality Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index2</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>PhotoshopQuality</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='1 = 0x1'>1</td>
+<td>PhotoshopFormat</td>
+<td class=c>N</td>
+<td><span class=s>0 = Standard
+  <br>1 = Optimised
+  <br>257 = Progressive</span></td></tr>
+<tr>
+<td class=r title='2 = 0x2'>2</td>
+<td>ProgressiveScans</td>
+<td class=c>N</td>
+<td><span class=s>1 = 3 Scans
+  <br>2 = 4 Scans
+  <br>3 = 5 Scans</span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Header'>Photoshop Header Tags</a></h2>
+<p>This information is found in the PSD file header.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index2</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='6 = 0x6'>6</td>
+<td>NumChannels</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='7 = 0x7'>7</td>
+<td>ImageHeight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='9 = 0x9'>9</td>
+<td>ImageWidth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='11 = 0xb'>11</td>
+<td>BitDepth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='12 = 0xc'>12</td>
+<td>ColorMode</td>
+<td class=c>N</td>
+<td><table class=cols><tr>
+  <td>0 = Bitmap
+  <br>1 = Grayscale
+  <br>2 = Indexed
+  <br>3 = RGB</td><td>&nbsp;&nbsp;</td>
+  <td>4 = CMYK
+  <br>7 = Multichannel
+  <br>8 = Duotone
+  <br>9 = Lab</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+</table></td></tr></table></blockquote>
+
+<hr>
+(This document generated automatically by Image::ExifTool::BuildTagLookup)
+<br><i>Last revised Mar 4, 2014</i>
+<p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
+</body>
+</html>

@@ -1,0 +1,57 @@
+#------------------------------------------------------------------------------
+# File:         iptc2xmp.args
+#
+# Description:  Tag name translations for converting from IPTC to XMP
+#
+# Usage:        exiftool -tagsFromFile SRCFILE -@ iptc2xmp.args DSTFILE
+#
+# Requires:     ExifTool version 7.45 or later
+#
+# Revisions:    2005/05/14 - P. Harvey Created
+#               2008/03/04 - PH Changed Location translation and added
+#                            IntellectualGenre and SubjectCode
+#               2008/09/30 - PH Added writing of Photoshop:IPTCDigest
+#               2009/01/20 - PH Updated to conform with MWG spec
+#               2009/10/21 - PH Write XMP-xmp:CreateDate as per MWG 1.01 spec
+#
+# References:   http://www.iptc.org/IPTC4XMP/
+#               http://www.iptc.org/IIM/
+#               http://www.adobe.com/products/xmp/pdfs/xmpspec.pdf
+#               http://www.metadataworkinggroup.org/specs/
+#
+# Notes:     1) Also updates Photoshop:IPTCDigest as per MWG recommendation.
+#
+#            2) These arguments will not delete XMP tags which are missing
+#               from the IPTC.  The XMP tags should be deleted beforehand if
+#               required.
+#------------------------------------------------------------------------------
+-XMP-dc:Creator < IPTC:By-line
+-XMP-dc:Description < IPTC:Caption-Abstract
+-XMP-dc:Rights < IPTC:CopyrightNotice
+-XMP-dc:Subject < IPTC:Keywords
+-XMP-dc:Title < IPTC:ObjectName
+-XMP-photoshop:AuthorsPosition < IPTC:By-lineTitle
+-XMP-photoshop:CaptionWriter < IPTC:Writer-Editor
+-XMP-photoshop:Category < IPTC:Category
+-XMP-photoshop:City < IPTC:City
+-XMP-photoshop:Country < IPTC:Country-PrimaryLocationName
+-XMP-photoshop:Credit < IPTC:Credit
+-XMP-photoshop:DateCreated < IPTC:DateCreated
+# overwrite XMP DateCreated to include date and time if available
+-XMP-photoshop:DateCreated < Composite:DateTimeCreated
+-XMP-photoshop:Headline < IPTC:Headline
+-XMP-photoshop:Instructions < IPTC:SpecialInstructions
+-XMP-photoshop:Source < IPTC:Source
+-XMP-photoshop:State < IPTC:Province-State
+-XMP-photoshop:SupplementalCategories < IPTC:SupplementalCategories
+-XMP-photoshop:TransmissionReference < IPTC:OriginalTransmissionReference
+-XMP-photoshop:Urgency < IPTC:Urgency
+-XMP-iptcCore:CountryCode < IPTC:Country-PrimaryLocationCode
+-XMP-iptcCore:Location < IPTC:Sub-location
+-XMP-xmp:CreateDate < IPTC:DigitalCreationDate
+-XMP-xmp:CreateDate < Composite:DigitalCreationDateTime
+# these tags are not free-form text, and may need special handling:
+#-XMP-iptcCore:IntellectualGenre < IPTC:ObjectAttributeReference
+#-XMP-iptcCore:SubjectCode < IPTC:SubjectReference
+-Photoshop:IPTCDigest=new
+# end

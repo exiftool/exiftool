@@ -1,0 +1,870 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Leaf Tags</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h2 class=top>Leaf Tags</h2>
+<p>These tags are found in .MOS images from Leaf digital camera backs as
+written by Creo Leaf Capture.  They exist within the Leaf-specific directory
+structure of EXIF tag 0x8606.  The tables below list observed Leaf tags,
+however ExifTool will extract any tags found in the Leaf directories even if
+they don&#39;t appear in these tables.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'JPEG_preview_data'</td>
+<td>PreviewImage</td>
+<td class=c>undef</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'JPEG_preview_info'</td>
+<td>PreviewInfo</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'PDA_histogram_data'</td>
+<td>PDAHistogram</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'back_serial_number'</td>
+<td>BackSerial</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'camera_profile'</td>
+<td>CameraProfile</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Leaf.html#CameraProfile'>Leaf CameraProfile Tags</a></td></tr>
+<tr class=b>
+<td>'icc_camera_profile'</td>
+<td>ICC_Profile</td>
+<td class=c>-</td>
+<td>--&gt; <a href='ICC_Profile.html'>ICC_Profile Tags</a></td></tr>
+<tr>
+<td>'icc_camera_to_tone_matrix'</td>
+<td>ToneMatrix</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'icc_camera_to_tone_space_flow'</td>
+<td>ToneSpaceFlow</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'icc_rgb_ws_profile'</td>
+<td>RGB_Profile</td>
+<td class=c>-</td>
+<td>--&gt; <a href='ICC_Profile.html'>ICC_Profile Tags</a></td></tr>
+<tr class=b>
+<td>'image_offset'</td>
+<td>ImageOffset</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'pattern_ratation_angle'</td>
+<td>PatternAngle</td>
+<td class=c>N</td>
+<td><span class=s><span class=n>(&quot;ratation&quot; is not a typo)</span></span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='CameraProfile'>Leaf CameraProfile Tags</a></h2>
+<p>All <b>Tag ID</b>&#39;s in the following table have a leading &#39;CamProf_&#39; which
+has been removed.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'back_type'</td>
+<td>CameraBackType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'capture_profile'</td>
+<td>CaptureProfile</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Leaf.html#CaptureProfile'>Leaf CaptureProfile Tags</a></td></tr>
+<tr>
+<td>'image_profile'</td>
+<td>ImageProfile</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Leaf.html#ImageProfile'>Leaf ImageProfile Tags</a></td></tr>
+<tr class=b>
+<td>'name'</td>
+<td>CameraName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'type'</td>
+<td>CameraType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'version'</td>
+<td>CameraProfileVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='CaptureProfile'>Leaf CaptureProfile Tags</a></h2>
+<p>All <b>Tag ID</b>&#39;s in the following table have a leading &#39;CaptProf_&#39; which
+has been removed.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'CCD_rect'</td>
+<td>CCDRect</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'CCD_valid_rect'</td>
+<td>CCDValidRect</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'CCD_video_rect'</td>
+<td>CCDVideoRect</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'back_type'</td>
+<td>CaptProfBackType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'center_dark_rect'</td>
+<td>CenterDarkRect</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'color_averages'</td>
+<td>ColorAverages</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'color_matrix'</td>
+<td>ColorMatrix</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'dark_correction_type'</td>
+<td>DarkCorrectionType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'image_bounds'</td>
+<td>ImageBounds</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'image_fields'</td>
+<td>ImageFields</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'image_offset'</td>
+<td>ImageOffset</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'left_dark_rect'</td>
+<td>LeftDarkRect</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'luminance_consts'</td>
+<td>LuminanceConsts</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'mosaic_pattern'</td>
+<td>MosaicPattern</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'name'</td>
+<td>CaptProfName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'number_of_planes'</td>
+<td>NumberOfPlanes</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'raw_data_rotation'</td>
+<td>RawDataRotation</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'reconstruction_type'</td>
+<td>ReconstructionType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'right_dark_rect'</td>
+<td>RightDarkRect</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'serial_number'</td>
+<td>CaptureSerial</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'type'</td>
+<td>CaptProfType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'version'</td>
+<td>CaptProfVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'xy_offset_info'</td>
+<td>XYOffsetInfo</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ImageProfile'>Leaf ImageProfile Tags</a></h2>
+<p>All <b>Tag ID</b>&#39;s in the following table have a leading &#39;ImgProf_&#39; which
+has been removed.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'back_type'</td>
+<td>ImgProfBackType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'image_status'</td>
+<td>ImageStatus</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'name'</td>
+<td>ImgProfName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'rotation_angle'</td>
+<td>RotationAngle</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'shoot_setup'</td>
+<td>ShootSetup</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Leaf.html#ShootSetup'>Leaf ShootSetup Tags</a></td></tr>
+<tr class=b>
+<td>'type'</td>
+<td>ImgProfType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'version'</td>
+<td>ImgProfVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ShootSetup'>Leaf ShootSetup Tags</a></h2>
+<p>All <b>Tag ID</b>&#39;s in the following table have a leading &#39;ShootObj_&#39; which
+has been removed.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'back_type'</td>
+<td>ShootObjBackType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'camera_setup'</td>
+<td>CameraSetup</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Leaf.html#CameraSetup'>Leaf CameraSetup Tags</a></td></tr>
+<tr>
+<td>'capture_setup'</td>
+<td>CaptureSetup</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Leaf.html#CaptureSetup'>Leaf CaptureSetup Tags</a></td></tr>
+<tr class=b>
+<td>'color_setup'</td>
+<td>ColorSetup</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Leaf.html#ColorSetup'>Leaf ColorSetup Tags</a></td></tr>
+<tr>
+<td>'look_header'</td>
+<td>LookHeader</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Leaf.html#LookHeader'>Leaf LookHeader Tags</a></td></tr>
+<tr class=b>
+<td>'name'</td>
+<td>ShootObjName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'save_setup'</td>
+<td>SaveSetup</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Leaf.html#SaveSetup'>Leaf SaveSetup Tags</a></td></tr>
+<tr class=b>
+<td>'type'</td>
+<td>ShootObjType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'version'</td>
+<td>ShootObjVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='CameraSetup'>Leaf CameraSetup Tags</a></h2>
+<p>All <b>Tag ID</b>&#39;s in the following table have a leading &#39;CameraObj_&#39; which
+has been removed.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'ISO_speed'</td>
+<td>ISOSpeed</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'back_type'</td>
+<td>CameraObjBackType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'camera_type'</td>
+<td>CameraType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'lens_ID'</td>
+<td>LensID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'lens_type'</td>
+<td>LensType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'name'</td>
+<td>CameraObjName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'strobe'</td>
+<td>Strobe</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'type'</td>
+<td>CameraObjType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'version'</td>
+<td>CameraObjVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='CaptureSetup'>Leaf CaptureSetup Tags</a></h2>
+<p>All <b>Tag ID</b>&#39;s in the following table have a leading &#39;CaptureObj_&#39; which
+has been removed.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'Multi_quality'</td>
+<td>MultiQuality</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'back_type'</td>
+<td>CaptureObjBackType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'name'</td>
+<td>CaptureObjName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'neutals'</td>
+<td>Neutals</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Leaf.html#Neutrals'>Leaf Neutrals Tags</a></td></tr>
+<tr>
+<td>'selection'</td>
+<td>Selection</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Leaf.html#Selection'>Leaf Selection Tags</a></td></tr>
+<tr class=b>
+<td>'sharpness'</td>
+<td>Sharpness</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Leaf.html#Sharpness'>Leaf Sharpness Tags</a></td></tr>
+<tr>
+<td>'single_quality'</td>
+<td>SingleQuality</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'tone_curve'</td>
+<td>ToneCurve</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Leaf.html#ToneCurve'>Leaf ToneCurve Tags</a></td></tr>
+<tr>
+<td>'type'</td>
+<td>CaptureObjType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'version'</td>
+<td>CaptureObjVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Neutrals'>Leaf Neutrals Tags</a></h2>
+<p>All <b>Tag ID</b>&#39;s in the following table have a leading &#39;NeutObj_&#39; which
+has been removed.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'back_type'</td>
+<td>NeutObjBackType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'color_casts'</td>
+<td>ColorCasts</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'highlight_end_points'</td>
+<td>HighlightEndPoints</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'name'</td>
+<td>NeutObjName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'neutrals'</td>
+<td>Neutrals</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'shadow_end_points'</td>
+<td>ShadowEndPoints</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'type'</td>
+<td>NeutObjType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'version'</td>
+<td>NeutObjVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Selection'>Leaf Selection Tags</a></h2>
+<p>All <b>Tag ID</b>&#39;s in the following table have a leading &#39;SelObj_&#39; which
+has been removed.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'back_type'</td>
+<td>SelObjBackType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'locks'</td>
+<td>Locks</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'name'</td>
+<td>SelObjName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'orientation'</td>
+<td>Orientation</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'rect'</td>
+<td>Rect</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'resolution'</td>
+<td>Resolution</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'scale'</td>
+<td>Scale</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'type'</td>
+<td>SelObjType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'version'</td>
+<td>SelObjVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Sharpness'>Leaf Sharpness Tags</a></h2>
+<p>All <b>Tag ID</b>&#39;s in the following table have a leading &#39;SharpObj_&#39; which
+has been removed.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'back_type'</td>
+<td>SharpObjBackType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'data_len'</td>
+<td>DataLen</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'name'</td>
+<td>SharpObjName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'sharp_info'</td>
+<td>SharpInfo</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'sharp_method'</td>
+<td>SharpMethod</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'type'</td>
+<td>SharpObjType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'version'</td>
+<td>SharpObjVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ToneCurve'>Leaf ToneCurve Tags</a></h2>
+<p>All <b>Tag ID</b>&#39;s in the following table have a leading &#39;ToneObj_&#39; which
+has been removed.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'back_type'</td>
+<td>ToneObjBackType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'gamma'</td>
+<td>Gamma</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'name'</td>
+<td>ToneObjName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'npts'</td>
+<td>Npts</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'tones'</td>
+<td>Tones</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'type'</td>
+<td>ToneObjType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'version'</td>
+<td>ToneObjVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ColorSetup'>Leaf ColorSetup Tags</a></h2>
+<p>All <b>Tag ID</b>&#39;s in the following table have a leading &#39;ColorObj_&#39; which
+has been removed.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'back_type'</td>
+<td>ColorObjBackType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'color_mode'</td>
+<td>ColorMode</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'color_type'</td>
+<td>ColorType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'has_ICC'</td>
+<td>HasICC</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'input_profile'</td>
+<td>InputProfile</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'name'</td>
+<td>ColorObjName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'output_profile'</td>
+<td>OutputProfile</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'type'</td>
+<td>ColorObjType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'version'</td>
+<td>ColorObjVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='LookHeader'>Leaf LookHeader Tags</a></h2>
+<p>All <b>Tag ID</b>&#39;s in the following table have a leading &#39;LookHead_&#39; which
+has been removed.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'back_type'</td>
+<td>LookHeadBackType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'name'</td>
+<td>LookHeadName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'type'</td>
+<td>LookHeadType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'version'</td>
+<td>LookHeadVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='SaveSetup'>Leaf SaveSetup Tags</a></h2>
+<p>All <b>Tag ID</b>&#39;s in the following table have a leading &#39;SaveObj_&#39; which
+has been removed.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'back_type'</td>
+<td>SaveObjBackType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'leaf_auto_active'</td>
+<td>LeafAutoActive</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'leaf_auto_base_name'</td>
+<td>LeafAutoBaseName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'leaf_hot_folder'</td>
+<td>LeafHotFolder</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'leaf_open_proc_HDR'</td>
+<td>LeafOpenProcHDR</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'leaf_output_file_type'</td>
+<td>LeafOutputFileType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'leaf_save_selection'</td>
+<td>LeafSaveSelection</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'name'</td>
+<td>SaveObjName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'std_auto_active'</td>
+<td>StdAutoActive</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'std_base_name'</td>
+<td>StdBaseName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'std_hot_folder'</td>
+<td>StdHotFolder</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'std_open_in_photoshop'</td>
+<td>StdOpenInPhotoshop</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'std_output_bit_depth'</td>
+<td>StdOutputBitDepth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'std_output_color_mode'</td>
+<td>StdOutputColorMode</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'std_output_file_type'</td>
+<td>StdOutputFileType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'std_oxygen'</td>
+<td>StdOxygen</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'std_save_selection'</td>
+<td>StdSaveSelection</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'std_scaled_output'</td>
+<td>StdScaledOutput</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'std_sharpen_output'</td>
+<td>StdSharpenOutput</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'type'</td>
+<td>SaveObjType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'version'</td>
+<td>SaveObjVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='SubIFD'>Leaf SubIFD Tags</a></h2>
+<p>Leaf writes a TIFF-format sub-IFD inside IFD0 of a MOS image.  No tags in
+this sub-IFD are currently known, except for tag 0x8606 which really
+shouldn&#39;t be here anyway (so it doesn&#39;t appear in the table below) because
+it duplicates a reference to the same data of tag 0x8606 in IFD0.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr><td colspan=4 class=c><i>[no tags known]</i></td></tr>
+</table></td></tr></table></blockquote>
+
+<hr>
+(This document generated automatically by Image::ExifTool::BuildTagLookup)
+<br><i>Last revised Dec 8, 2010</i>
+<p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
+</body>
+</html>

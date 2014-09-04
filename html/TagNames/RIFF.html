@@ -1,0 +1,1314 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>RIFF Tags</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h2 class=top>RIFF Tags</h2>
+<p>The RIFF container format is used various types of fines including WAV, AVI,
+WEBP, LA, OFR, PAC and WV.  According to the EXIF specification, Meta
+information is embedded in two types of RIFF <code>LIST</code> chunks: <code>INFO</code> and
+<code>exif</code>, and information about the audio content is stored in the <code>fmt </code>
+chunk.  As well as this information, some video information and proprietary
+manufacturer-specific information is also extracted.</p>
+
+<p>Large AVI videos may be a concatenation of two or more RIFF chunks.  For
+these files, information is extracted from subsequent RIFF chunks as
+sub-documents, but the Duration is calculated for the full video.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'ALPH'</td>
+<td>ALPH</td>
+<td class=c>-</td>
+<td>--&gt; <a href='RIFF.html#ALPH'>RIFF ALPH Tags</a></td></tr>
+<tr class=b>
+<td>'ANIM'</td>
+<td>ANIM</td>
+<td class=c>-</td>
+<td>--&gt; <a href='RIFF.html#ANIM'>RIFF ANIM Tags</a></td></tr>
+<tr>
+<td>'ANMF'</td>
+<td>ANMF</td>
+<td class=c>-</td>
+<td>--&gt; <a href='RIFF.html#ANMF'>RIFF ANMF Tags</a></td></tr>
+<tr class=b>
+<td>'EXIF'</td>
+<td>EXIF</td>
+<td class=c>-</td>
+<td>--&gt; <a href='EXIF.html'>EXIF Tags</a>
+  <br><span class='n s'>(WebP files)</span></td></tr>
+<tr>
+<td>'ICCP'</td>
+<td>ICC_Profile</td>
+<td class=c>-</td>
+<td>--&gt; <a href='ICC_Profile.html'>ICC_Profile Tags</a>
+  <br><span class='n s'>(WebP files)</span></td></tr>
+<tr class=b>
+<td>'JUNK'</td>
+<td>OlympusJunk
+  <br>CasioJunk
+  <br>RicohJunk
+  <br>PentaxJunk
+  <br>PentaxJunk2
+  <br>TextJunk</td>
+<td class=c>-<br>-<br>-<br>-<br>-<br>N</td>
+<td>--&gt; <a href='Olympus.html#AVI'>Olympus AVI Tags</a>
+  <br>--&gt; <a href='EXIF.html'>EXIF Tags</a>
+  <br>--&gt; <a href='Ricoh.html#AVI'>Ricoh AVI Tags</a>
+  <br>--&gt; <a href='Pentax.html#Junk'>Pentax Junk Tags</a>
+  <br>--&gt; <a href='Pentax.html#Junk2'>Pentax Junk2 Tags</a></td></tr>
+<tr>
+<td>'JUNQ'</td>
+<td>OldXMP</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'LIST_INFO'</td>
+<td>Info</td>
+<td class=c>-</td>
+<td>--&gt; <a href='RIFF.html#Info'>RIFF Info Tags</a></td></tr>
+<tr>
+<td>'LIST_Tdat'</td>
+<td>Tdat</td>
+<td class=c>-</td>
+<td>--&gt; <a href='RIFF.html#Tdat'>RIFF Tdat Tags</a></td></tr>
+<tr class=b>
+<td>'LIST_exif'</td>
+<td>Exif</td>
+<td class=c>-</td>
+<td>--&gt; <a href='RIFF.html#Exif'>RIFF Exif Tags</a></td></tr>
+<tr>
+<td>'LIST_hdrl'</td>
+<td>Hdrl</td>
+<td class=c>-</td>
+<td>--&gt; <a href='RIFF.html#Hdrl'>RIFF Hdrl Tags</a></td></tr>
+<tr class=b>
+<td>'LIST_hydt'</td>
+<td>PentaxData</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Pentax.html#AVI'>Pentax AVI Tags</a></td></tr>
+<tr>
+<td>'LIST_ncdt'</td>
+<td>NikonData</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Nikon.html#AVI'>Nikon AVI Tags</a></td></tr>
+<tr class=b>
+<td>'VP8 '</td>
+<td>VP8Bitstream</td>
+<td class=c>-</td>
+<td>--&gt; <a href='RIFF.html#VP8'>RIFF VP8 Tags</a></td></tr>
+<tr>
+<td>'VP8L'</td>
+<td>VP8L</td>
+<td class=c>-</td>
+<td>--&gt; <a href='RIFF.html#VP8L'>RIFF VP8L Tags</a></td></tr>
+<tr class=b>
+<td>'VP8X'</td>
+<td>VP8X</td>
+<td class=c>-</td>
+<td>--&gt; <a href='RIFF.html#VP8X'>RIFF VP8X Tags</a></td></tr>
+<tr>
+<td>'XMP '</td>
+<td>XMP</td>
+<td class=c>-</td>
+<td>--&gt; <a href='XMP.html'>XMP Tags</a>
+  <br><span class='n s'>(WebP files)</span></td></tr>
+<tr class=b>
+<td>'_PMX'</td>
+<td>XMP</td>
+<td class=c>-</td>
+<td>--&gt; <a href='XMP.html'>XMP Tags</a>
+  <br><span class='n s'>(AVI and WAV files)</span></td></tr>
+<tr>
+<td>'bext'</td>
+<td>BroadcastExtension</td>
+<td class=c>-</td>
+<td>--&gt; <a href='RIFF.html#BroadcastExt'>RIFF BroadcastExt Tags</a></td></tr>
+<tr class=b>
+<td>'fmt '</td>
+<td>AudioFormat</td>
+<td class=c>-</td>
+<td>--&gt; <a href='RIFF.html#AudioFormat'>RIFF AudioFormat Tags</a></td></tr>
+<tr>
+<td>'olym'</td>
+<td>Olym</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Olympus.html#WAV'>Olympus WAV Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ALPH'>RIFF ALPH Tags</a></h2>
+<p>WebP alpha chunk.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>AlphaPreprocessing</td>
+<td class=c>N</td>
+<td><span class=s>[Mask 0x03]
+  <br>0x0 = none
+  <br>0x1 = Level Reduction</span></td></tr>
+<tr class=b>
+<td class=r title='0 = 0x0'>0.1</td>
+<td>AlphaFiltering</td>
+<td class=c>N</td>
+<td><span class=s>[Mask 0x03]
+  <br>0x0 = none
+  <br>0x1 = Horizontal
+  <br>0x2 = Vertical
+  <br>0x3 = Gradient</span></td></tr>
+<tr>
+<td class=r title='0 = 0x0'>0.2</td>
+<td>AlphaCompression</td>
+<td class=c>N</td>
+<td><span class=s>[Mask 0x03]
+  <br>0x0 = none
+  <br>0x1 = Lossless</span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ANIM'>RIFF ANIM Tags</a></h2>
+<p>WebP animation chunk.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>BackgroundColor</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>AnimationLoopCount</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ANMF'>RIFF ANMF Tags</a></h2>
+<p>WebP animation frame chunk.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='12 = 0xc'>12</td>
+<td>Duration</td>
+<td class=c>N</td>
+<td><span class=s><span class=n>(extracted as the sum of durations of all animation frames)</span></span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Info'>RIFF Info Tags</a></h2>
+<p>RIFF INFO tags found in WAV audio and AVI video files.  Tags which are part
+of the EXIF 2.3 specification have an underlined Tag Name in the HTML
+version of this documentation.  Other tags are found in AVI files generated
+by some software.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'AGES'</td>
+<td>Rated</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'CMNT'</td>
+<td>Comment</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'CODE'</td>
+<td>EncodedBy</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'COMM'</td>
+<td>Comments</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'DIRC'</td>
+<td>Directory</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'DISP'</td>
+<td>SoundSchemeTitle</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'DTIM'</td>
+<td>DateTimeOriginal</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'GENR'</td>
+<td>Genre</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'IARL'</td>
+<td><u>ArchivalLocation</u></td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'IART'</td>
+<td><u>Artist</u></td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'IAS1'</td>
+<td>FirstLanguage</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'IAS2'</td>
+<td>SecondLanguage</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'IAS3'</td>
+<td>ThirdLanguage</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'IAS4'</td>
+<td>FourthLanguage</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'IAS5'</td>
+<td>FifthLanguage</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'IAS6'</td>
+<td>SixthLanguage</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'IAS7'</td>
+<td>SeventhLanguage</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'IAS8'</td>
+<td>EighthLanguage</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'IAS9'</td>
+<td>NinthLanguage</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'IBSU'</td>
+<td>BaseURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'ICAS'</td>
+<td>DefaultAudioStream</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'ICDS'</td>
+<td>CostumeDesigner</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'ICMS'</td>
+<td><u>Commissioned</u></td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'ICMT'</td>
+<td><u>Comment</u></td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'ICNM'</td>
+<td>Cinematographer</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'ICNT'</td>
+<td>Country</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'ICOP'</td>
+<td><u>Copyright</u></td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'ICRD'</td>
+<td><u>DateCreated</u></td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'ICRP'</td>
+<td><u>Cropped</u></td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'IDIM'</td>
+<td><u>Dimensions</u></td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'IDPI'</td>
+<td><u>DotsPerInch</u></td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'IDST'</td>
+<td>DistributedBy</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'IEDT'</td>
+<td>EditedBy</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'IENC'</td>
+<td>EncodedBy</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'IENG'</td>
+<td><u>Engineer</u></td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'IGNR'</td>
+<td><u>Genre</u></td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'IKEY'</td>
+<td><u>Keywords</u></td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'ILGT'</td>
+<td><u>Lightness</u></td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'ILGU'</td>
+<td>LogoURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'ILIU'</td>
+<td>LogoIconURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'ILNG'</td>
+<td>Language</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'IMBI'</td>
+<td>MoreInfoBannerImage</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'IMBU'</td>
+<td>MoreInfoBannerURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'IMED'</td>
+<td><u>Medium</u></td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'IMIT'</td>
+<td>MoreInfoText</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'IMIU'</td>
+<td>MoreInfoURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'IMUS'</td>
+<td>MusicBy</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'INAM'</td>
+<td><u>Title</u></td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'IPDS'</td>
+<td>ProductionDesigner</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'IPLT'</td>
+<td><u>NumColors</u></td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'IPRD'</td>
+<td><u>Product</u></td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'IPRO'</td>
+<td>ProducedBy</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'IRIP'</td>
+<td>RippedBy</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'IRTD'</td>
+<td>Rating</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'ISBJ'</td>
+<td><u>Subject</u></td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'ISFT'</td>
+<td><u>Software</u></td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'ISGN'</td>
+<td>SecondaryGenre</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'ISHP'</td>
+<td><u>Sharpness</u></td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'ISRC'</td>
+<td><u>Source</u></td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'ISRF'</td>
+<td><u>SourceForm</u></td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'ISTD'</td>
+<td>ProductionStudio</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'ISTR'</td>
+<td>Starring</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'ITCH'</td>
+<td><u>Technician</u></td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'IWMU'</td>
+<td>WatermarkURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'IWRI'</td>
+<td>WrittenBy</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'LANG'</td>
+<td>Language</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'LOCA'</td>
+<td>Location</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'PRT1'</td>
+<td>Part</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'PRT2'</td>
+<td>NumberOfParts</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'RATE'</td>
+<td>Rate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'STAR'</td>
+<td>Starring</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'STAT'</td>
+<td>Statistics</td>
+<td class=c>N</td>
+<td><span class=s>[Value 3]
+  <br>0 = Bad
+  <br>1 = OK</span></td></tr>
+<tr>
+<td>'TAPE'</td>
+<td>TapeName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TCDO'</td>
+<td>EndTimecode</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TCOD'</td>
+<td>StartTimecode</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TITL'</td>
+<td>Title</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TLEN'</td>
+<td>Length</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TORG'</td>
+<td>Organization</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TRCK'</td>
+<td>TrackNumber</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TURL'</td>
+<td>URL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TVER'</td>
+<td>Version</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'VMAJ'</td>
+<td>VegasVersionMajor</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'VMIN'</td>
+<td>VegasVersionMinor</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'YEAR'</td>
+<td>Year</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Tdat'>RIFF Tdat Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr><td colspan=4 class=c><i>[no tags known]</i></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Exif'>RIFF Exif Tags</a></h2>
+<p>These tags are part of the EXIF 2.3 specification for WAV audio files.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'ecor'</td>
+<td>Make</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'emdl'</td>
+<td>Model</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'emnt'</td>
+<td>MakerNotes</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'erel'</td>
+<td>RelatedImageFile</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'etim'</td>
+<td>TimeCreated</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'eucm'</td>
+<td>UserComment</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'ever'</td>
+<td>ExifVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Hdrl'>RIFF Hdrl Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'IDIT'</td>
+<td>DateTimeOriginal</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'ISMP'</td>
+<td>Timecode</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'LIST_odml'</td>
+<td>OpenDML</td>
+<td class=c>-</td>
+<td>--&gt; <a href='RIFF.html#OpenDML'>RIFF OpenDML Tags</a></td></tr>
+<tr class=b>
+<td>'LIST_strl'</td>
+<td>Stream</td>
+<td class=c>-</td>
+<td>--&gt; <a href='RIFF.html#Stream'>RIFF Stream Tags</a></td></tr>
+<tr>
+<td>'avih'</td>
+<td>AVIHeader</td>
+<td class=c>-</td>
+<td>--&gt; <a href='RIFF.html#AVIHeader'>RIFF AVIHeader Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='OpenDML'>RIFF OpenDML Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'dmlh'</td>
+<td>ExtendedAVIHeader</td>
+<td class=c>-</td>
+<td>--&gt; <a href='RIFF.html#ExtAVIHdr'>RIFF ExtAVIHdr Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ExtAVIHdr'>RIFF ExtAVIHdr Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index4</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>TotalFrameCount</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Stream'>RIFF Stream Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'strd'</td>
+<td>StreamData</td>
+<td class=c>-</td>
+<td>--&gt; <a href='RIFF.html#StreamData'>RIFF StreamData Tags</a></td></tr>
+<tr class=b>
+<td>'strf'</td>
+<td>AudioFormat
+  <br>VideoFormat</td>
+<td class=c>-<br>-</td>
+<td>--&gt; <a href='RIFF.html#AudioFormat'>RIFF AudioFormat Tags</a>
+  <br>--&gt; <a href='BMP.html'>BMP Tags</a></td></tr>
+<tr>
+<td>'strh'</td>
+<td>StreamHeader</td>
+<td class=c>-</td>
+<td>--&gt; <a href='RIFF.html#StreamHeader'>RIFF StreamHeader Tags</a></td></tr>
+<tr class=b>
+<td>'strn'</td>
+<td>StreamName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='StreamData'>RIFF StreamData Tags</a></h2>
+<p>This chunk is used to store proprietary information in AVI videos from some
+cameras.  The first 4 characters of the data are used as the Tag ID below.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'AVIF'</td>
+<td>AVIF</td>
+<td class=c>-</td>
+<td>--&gt; <a href='EXIF.html'>EXIF Tags</a></td></tr>
+<tr class=b>
+<td>'CASI'</td>
+<td>CasioData</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Casio.html#AVI'>Casio AVI Tags</a></td></tr>
+<tr>
+<td>'Zora'</td>
+<td>VendorName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'unknown'</td>
+<td>UnknownData</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='AudioFormat'>RIFF AudioFormat Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index2</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>Encoding</td>
+<td class=c>N</td>
+<td>--&gt; <a href='RIFF.html#AudioEncoding'>RIFF AudioEncoding Values</a></td></tr>
+<tr class=b>
+<td class=r title='1 = 0x1'>1</td>
+<td>NumChannels</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='2 = 0x2'>2</td>
+<td>SampleRate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>AvgBytesPerSec</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='7 = 0x7'>7</td>
+<td>BitsPerSample</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='AudioEncoding'>RIFF AudioEncoding Values</a></h2>
+<p>These &quot;TwoCC&quot; audio encoding codes are used in RIFF and ASF files.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class='inner sep' cellspacing=1>
+<tr class=h><th>Value</th><th>AudioEncoding</th></tr>
+<tr><td class=r>0x1</td><td>= Microsoft PCM</td>
+</tr><tr><td class=r>0x2</td><td>= Microsoft ADPCM</td>
+</tr><tr><td class=r>0x3</td><td>= Microsoft IEEE float</td>
+</tr><tr><td class=r>0x4</td><td>= Compaq VSELP</td>
+</tr><tr><td class=r>0x5</td><td>= IBM CVSD</td>
+</tr><tr><td class=r>0x6</td><td>= Microsoft a-Law</td>
+</tr><tr><td class=r>0x7</td><td>= Microsoft u-Law</td>
+</tr><tr><td class=r>0x8</td><td>= Microsoft DTS</td>
+</tr><tr><td class=r>0x9</td><td>= DRM</td>
+</tr><tr><td class=r>0xa</td><td>= WMA 9 Speech</td>
+</tr><tr><td class=r>0xb</td><td>= Microsoft Windows Media RT Voice</td>
+</tr><tr><td class=r>0x10</td><td>= OKI-ADPCM</td>
+</tr><tr><td class=r>0x11</td><td>= Intel IMA/DVI-ADPCM</td>
+</tr><tr><td class=r>0x12</td><td>= Videologic Mediaspace ADPCM</td>
+</tr><tr><td class=r>0x13</td><td>= Sierra ADPCM</td>
+</tr><tr><td class=r>0x14</td><td>= Antex G.723 ADPCM</td>
+</tr><tr><td class=r>0x15</td><td>= DSP Solutions DIGISTD</td>
+</tr><tr><td class=r>0x16</td><td>= DSP Solutions DIGIFIX</td>
+</tr><tr><td class=r>0x17</td><td>= Dialoic OKI ADPCM</td>
+</tr><tr><td class=r>0x18</td><td>= Media Vision ADPCM</td>
+</tr><tr><td class=r>0x19</td><td>= HP CU</td>
+</tr><tr><td class=r>0x1a</td><td>= HP Dynamic Voice</td>
+</tr><tr><td class=r>0x20</td><td>= Yamaha ADPCM</td>
+</tr><tr><td class=r>0x21</td><td>= SONARC Speech Compression</td>
+</tr><tr><td class=r>0x22</td><td>= DSP Group True Speech</td>
+</tr><tr><td class=r>0x23</td><td>= Echo Speech Corp.</td>
+</tr><tr><td class=r>0x24</td><td>= Virtual Music Audiofile AF36</td>
+</tr><tr><td class=r>0x25</td><td>= Audio Processing Tech.</td>
+</tr><tr><td class=r>0x26</td><td>= Virtual Music Audiofile AF10</td>
+</tr><tr><td class=r>0x27</td><td>= Aculab Prosody 1612</td>
+</tr><tr><td class=r>0x28</td><td>= Merging Tech. LRC</td>
+</tr><tr><td class=r>0x30</td><td>= Dolby AC2</td>
+</tr><tr><td class=r>0x31</td><td>= Microsoft GSM610</td>
+</tr><tr><td class=r>0x32</td><td>= MSN Audio</td>
+</tr><tr><td class=r>0x33</td><td>= Antex ADPCME</td>
+</tr><tr><td class=r>0x34</td><td>= Control Resources VQLPC</td>
+</tr><tr><td class=r>0x35</td><td>= DSP Solutions DIGIREAL</td>
+</tr><tr><td class=r>0x36</td><td>= DSP Solutions DIGIADPCM</td>
+</tr><tr><td class=r>0x37</td><td>= Control Resources CR10</td>
+</tr><tr><td class=r>0x38</td><td>= Natural MicroSystems VBX ADPCM</td>
+</tr><tr><td class=r>0x39</td><td>= Crystal Semiconductor IMA ADPCM</td>
+</tr><tr><td class=r>0x3a</td><td>= Echo Speech ECHOSC3</td>
+</tr><tr><td class=r>0x3b</td><td>= Rockwell ADPCM</td>
+</tr><tr><td class=r>0x3c</td><td>= Rockwell DIGITALK</td>
+</tr><tr><td class=r>0x3d</td><td>= Xebec Multimedia</td>
+</tr><tr><td class=r>0x40</td><td>= Antex G.721 ADPCM</td>
+</tr><tr><td class=r>0x41</td><td>= Antex G.728 CELP</td>
+</tr><tr><td class=r>0x42</td><td>= Microsoft MSG723</td>
+</tr><tr><td class=r>0x43</td><td>= IBM AVC ADPCM</td>
+</tr><tr><td class=r>0x45</td><td>= ITU-T G.726</td>
+</tr><tr><td class=r>0x50</td><td>= Microsoft MPEG</td>
+</tr><tr><td class=r>0x51</td><td>= RT23 or PAC</td>
+</tr><tr><td class=r>0x52</td><td>= InSoft RT24</td>
+</tr><tr><td class=r>0x53</td><td>= InSoft PAC</td>
+</tr><tr><td class=r>0x55</td><td>= MP3</td>
+</tr><tr><td class=r>0x59</td><td>= Cirrus</td>
+</tr><tr><td class=r>0x60</td><td>= Cirrus Logic</td>
+</tr><tr><td class=r>0x61</td><td>= ESS Tech. PCM</td>
+</tr><tr><td class=r>0x62</td><td>= Voxware Inc.</td>
+</tr><tr><td class=r>0x63</td><td>= Canopus ATRAC</td>
+</tr><tr><td class=r>0x64</td><td>= APICOM G.726 ADPCM</td>
+</tr><tr><td class=r>0x65</td><td>= APICOM G.722 ADPCM</td>
+</tr><tr><td class=r>0x66</td><td>= Microsoft DSAT</td>
+</tr><tr><td class=r>0x67</td><td>= Micorsoft DSAT DISPLAY</td>
+</tr><tr><td class=r>0x69</td><td>= Voxware Byte Aligned</td>
+</tr><tr><td class=r>0x70</td><td>= Voxware AC8</td>
+</tr><tr><td class=r>0x71</td><td>= Voxware AC10</td>
+</tr><tr><td class=r>0x72</td><td>= Voxware AC16</td>
+</tr><tr><td class=r>0x73</td><td>= Voxware AC20</td>
+</tr><tr><td class=r>0x74</td><td>= Voxware MetaVoice</td>
+</tr><tr><td class=r>0x75</td><td>= Voxware MetaSound</td>
+</tr><tr><td class=r>0x76</td><td>= Voxware RT29HW</td>
+</tr><tr><td class=r>0x77</td><td>= Voxware VR12</td>
+</tr><tr><td class=r>0x78</td><td>= Voxware VR18</td>
+</tr><tr><td class=r>0x79</td><td>= Voxware TQ40</td>
+</tr><tr><td class=r>0x7a</td><td>= Voxware SC3</td>
+</tr><tr><td class=r>0x7b</td><td>= Voxware SC3</td>
+</tr><tr><td class=r>0x80</td><td>= Soundsoft</td>
+</tr><tr><td class=r>0x81</td><td>= Voxware TQ60</td>
+</tr><tr><td class=r>0x82</td><td>= Microsoft MSRT24</td>
+</tr><tr><td class=r>0x83</td><td>= AT&amp;T G.729A</td>
+</tr><tr><td class=r>0x84</td><td>= Motion Pixels MVI MV12</td>
+</tr><tr><td class=r>0x85</td><td>= DataFusion G.726</td>
+</tr><tr><td class=r>0x86</td><td>= DataFusion GSM610</td>
+</tr><tr><td class=r>0x88</td><td>= Iterated Systems Audio</td>
+</tr><tr><td class=r>0x89</td><td>= Onlive</td>
+</tr><tr><td class=r>0x8a</td><td>= Multitude, Inc. FT SX20</td>
+</tr><tr><td class=r>0x8b</td><td>= Infocom ITS A/S G.721 ADPCM</td>
+</tr><tr><td class=r>0x8c</td><td>= Convedia G729</td>
+</tr><tr><td class=r>0x8d</td><td>= Not specified congruency, Inc.</td>
+</tr><tr><td class=r>0x91</td><td>= Siemens SBC24</td>
+</tr><tr><td class=r>0x92</td><td>= Sonic Foundry Dolby AC3 APDIF</td>
+</tr><tr><td class=r>0x93</td><td>= MediaSonic G.723</td>
+</tr><tr><td class=r>0x94</td><td>= Aculab Prosody 8kbps</td>
+</tr><tr><td class=r>0x97</td><td>= ZyXEL ADPCM</td>
+</tr><tr><td class=r>0x98</td><td>= Philips LPCBB</td>
+</tr><tr><td class=r>0x99</td><td>= Studer Professional Audio Packed</td>
+</tr><tr><td class=r>0xa0</td><td>= Malden PhonyTalk</td>
+</tr><tr><td class=r>0xa1</td><td>= Racal Recorder GSM</td>
+</tr><tr><td class=r>0xa2</td><td>= Racal Recorder G720.a</td>
+</tr><tr><td class=r>0xa3</td><td>= Racal G723.1</td>
+</tr><tr><td class=r>0xa4</td><td>= Racal Tetra ACELP</td>
+</tr><tr><td class=r>0xb0</td><td>= NEC AAC NEC Corporation</td>
+</tr><tr><td class=r>0xff</td><td>= AAC</td>
+</tr><tr><td class=r>0x100</td><td>= Rhetorex ADPCM</td>
+</tr><tr><td class=r>0x101</td><td>= IBM u-Law</td>
+</tr><tr><td class=r>0x102</td><td>= IBM a-Law</td>
+</tr><tr><td class=r>0x103</td><td>= IBM ADPCM</td>
+</tr><tr><td class=r>0x111</td><td>= Vivo G.723</td>
+</tr><tr><td class=r>0x112</td><td>= Vivo Siren</td>
+</tr><tr><td class=r>0x120</td><td>= Philips Speech Processing CELP</td>
+</tr><tr><td class=r>0x121</td><td>= Philips Speech Processing GRUNDIG</td>
+</tr><tr><td class=r>0x123</td><td>= Digital G.723</td>
+</tr><tr><td class=r>0x125</td><td>= Sanyo LD ADPCM</td>
+</tr><tr><td class=r>0x130</td><td>= Sipro Lab ACEPLNET</td>
+</tr><tr><td class=r>0x131</td><td>= Sipro Lab ACELP4800</td>
+</tr><tr><td class=r>0x132</td><td>= Sipro Lab ACELP8V3</td>
+</tr><tr><td class=r>0x133</td><td>= Sipro Lab G.729</td>
+</tr><tr><td class=r>0x134</td><td>= Sipro Lab G.729A</td>
+</tr><tr><td class=r>0x135</td><td>= Sipro Lab Kelvin</td>
+</tr><tr><td class=r>0x136</td><td>= VoiceAge AMR</td>
+</tr><tr><td class=r>0x140</td><td>= Dictaphone G.726 ADPCM</td>
+</tr><tr><td class=r>0x150</td><td>= Qualcomm PureVoice</td>
+</tr><tr><td class=r>0x151</td><td>= Qualcomm HalfRate</td>
+</tr><tr><td class=r>0x155</td><td>= Ring Zero Systems TUBGSM</td>
+</tr><tr><td class=r>0x160</td><td>= Microsoft Audio1</td>
+</tr><tr><td class=r>0x161</td><td>= Windows Media Audio V2 V7 V8 V9 / DivX audio (WMA) / Alex AC3 Audio</td>
+</tr><tr><td class=r>0x162</td><td>= Windows Media Audio Professional V9</td>
+</tr><tr><td class=r>0x163</td><td>= Windows Media Audio Lossless V9</td>
+</tr><tr><td class=r>0x164</td><td>= WMA Pro over S/PDIF</td>
+</tr><tr><td class=r>0x170</td><td>= UNISYS NAP ADPCM</td>
+</tr><tr><td class=r>0x171</td><td>= UNISYS NAP ULAW</td>
+</tr><tr><td class=r>0x172</td><td>= UNISYS NAP ALAW</td>
+</tr><tr><td class=r>0x173</td><td>= UNISYS NAP 16K</td>
+</tr><tr><td class=r>0x174</td><td>= MM SYCOM ACM SYC008 SyCom Technologies</td>
+</tr><tr><td class=r>0x175</td><td>= MM SYCOM ACM SYC701 G726L SyCom Technologies</td>
+</tr><tr><td class=r>0x176</td><td>= MM SYCOM ACM SYC701 CELP54 SyCom Technologies</td>
+</tr><tr><td class=r>0x177</td><td>= MM SYCOM ACM SYC701 CELP68 SyCom Technologies</td>
+</tr><tr><td class=r>0x178</td><td>= Knowledge Adventure ADPCM</td>
+</tr><tr><td class=r>0x180</td><td>= Fraunhofer IIS MPEG2AAC</td>
+</tr><tr><td class=r>0x190</td><td>= Digital Theater Systems DTS DS</td>
+</tr><tr><td class=r>0x200</td><td>= Creative Labs ADPCM</td>
+</tr><tr><td class=r>0x202</td><td>= Creative Labs FASTSPEECH8</td>
+</tr><tr><td class=r>0x203</td><td>= Creative Labs FASTSPEECH10</td>
+</tr><tr><td class=r>0x210</td><td>= UHER ADPCM</td>
+</tr><tr><td class=r>0x215</td><td>= Ulead DV ACM</td>
+</tr><tr><td class=r>0x216</td><td>= Ulead DV ACM</td>
+</tr><tr><td class=r>0x220</td><td>= Quarterdeck Corp.</td>
+</tr><tr><td class=r>0x230</td><td>= I-Link VC</td>
+</tr><tr><td class=r>0x240</td><td>= Aureal Semiconductor Raw Sport</td>
+</tr><tr><td class=r>0x241</td><td>= ESST AC3</td>
+</tr><tr><td class=r>0x250</td><td>= Interactive Products HSX</td>
+</tr><tr><td class=r>0x251</td><td>= Interactive Products RPELP</td>
+</tr><tr><td class=r>0x260</td><td>= Consistent CS2</td>
+</tr><tr><td class=r>0x270</td><td>= Sony SCX</td>
+</tr><tr><td class=r>0x271</td><td>= Sony SCY</td>
+</tr><tr><td class=r>0x272</td><td>= Sony ATRAC3</td>
+</tr><tr><td class=r>0x273</td><td>= Sony SPC</td>
+</tr><tr><td class=r>0x280</td><td>= TELUM Telum Inc.</td>
+</tr><tr><td class=r>0x281</td><td>= TELUMIA Telum Inc.</td>
+</tr><tr><td class=r>0x285</td><td>= Norcom Voice Systems ADPCM</td>
+</tr><tr><td class=r>0x300</td><td>= Fujitsu FM TOWNS SND</td>
+</tr><tr><td class=r>0x301</td><td>= Fujitsu (not specified)</td>
+</tr><tr><td class=r>0x302</td><td>= Fujitsu (not specified)</td>
+</tr><tr><td class=r>0x303</td><td>= Fujitsu (not specified)</td>
+</tr><tr><td class=r>0x304</td><td>= Fujitsu (not specified)</td>
+</tr><tr><td class=r>0x305</td><td>= Fujitsu (not specified)</td>
+</tr><tr><td class=r>0x306</td><td>= Fujitsu (not specified)</td>
+</tr><tr><td class=r>0x307</td><td>= Fujitsu (not specified)</td>
+</tr><tr><td class=r>0x308</td><td>= Fujitsu (not specified)</td>
+</tr><tr><td class=r>0x350</td><td>= Micronas Semiconductors, Inc. Development</td>
+</tr><tr><td class=r>0x351</td><td>= Micronas Semiconductors, Inc. CELP833</td>
+</tr><tr><td class=r>0x400</td><td>= Brooktree Digital</td>
+</tr><tr><td class=r>0x401</td><td>= Intel Music Coder (IMC)</td>
+</tr><tr><td class=r>0x402</td><td>= Ligos Indeo Audio</td>
+</tr><tr><td class=r>0x450</td><td>= QDesign Music</td>
+</tr><tr><td class=r>0x500</td><td>= On2 VP7 On2 Technologies</td>
+</tr><tr><td class=r>0x501</td><td>= On2 VP6 On2 Technologies</td>
+</tr><tr><td class=r>0x680</td><td>= AT&amp;T VME VMPCM</td>
+</tr><tr><td class=r>0x681</td><td>= AT&amp;T TCP</td>
+</tr><tr><td class=r>0x700</td><td>= YMPEG Alpha (dummy for MPEG-2 compressor)</td>
+</tr><tr><td class=r>0x8ae</td><td>= ClearJump LiteWave (lossless)</td>
+</tr><tr><td class=r>0x1000</td><td>= Olivetti GSM</td>
+</tr><tr><td class=r>0x1001</td><td>= Olivetti ADPCM</td>
+</tr><tr><td class=r>0x1002</td><td>= Olivetti CELP</td>
+</tr><tr><td class=r>0x1003</td><td>= Olivetti SBC</td>
+</tr><tr><td class=r>0x1004</td><td>= Olivetti OPR</td>
+</tr><tr><td class=r>0x1100</td><td>= Lernout &amp; Hauspie</td>
+</tr><tr><td class=r>0x1101</td><td>= Lernout &amp; Hauspie CELP codec</td>
+</tr><tr><td class=r>0x1102</td><td>= Lernout &amp; Hauspie SBC codec</td>
+</tr><tr><td class=r>0x1103</td><td>= Lernout &amp; Hauspie SBC codec</td>
+</tr><tr><td class=r>0x1104</td><td>= Lernout &amp; Hauspie SBC codec</td>
+</tr><tr><td class=r>0x1400</td><td>= Norris Comm. Inc.</td>
+</tr><tr><td class=r>0x1401</td><td>= ISIAudio</td>
+</tr><tr><td class=r>0x1500</td><td>= AT&amp;T Soundspace Music Compression</td>
+</tr><tr><td class=r>0x181c</td><td>= VoxWare RT24 speech codec</td>
+</tr><tr><td class=r>0x181e</td><td>= Lucent elemedia AX24000P Music codec</td>
+</tr><tr><td class=r>0x1971</td><td>= Sonic Foundry LOSSLESS</td>
+</tr><tr><td class=r>0x1979</td><td>= Innings Telecom Inc. ADPCM</td>
+</tr><tr><td class=r>0x1c07</td><td>= Lucent SX8300P speech codec</td>
+</tr><tr><td class=r>0x1c0c</td><td>= Lucent SX5363S G.723 compliant codec</td>
+</tr><tr><td class=r>0x1f03</td><td>= CUseeMe DigiTalk (ex-Rocwell)</td>
+</tr><tr><td class=r>0x1fc4</td><td>= NCT Soft ALF2CD ACM</td>
+</tr><tr><td class=r>0x2000</td><td>= FAST Multimedia DVM</td>
+</tr><tr><td class=r>0x2001</td><td>= Dolby DTS (Digital Theater System)</td>
+</tr><tr><td class=r>0x2002</td><td>= RealAudio 1 / 2 14.4</td>
+</tr><tr><td class=r>0x2003</td><td>= RealAudio 1 / 2 28.8</td>
+</tr><tr><td class=r>0x2004</td><td>= RealAudio G2 / 8 Cook (low bitrate)</td>
+</tr><tr><td class=r>0x2005</td><td>= RealAudio 3 / 4 / 5 Music (DNET)</td>
+</tr><tr><td class=r>0x2006</td><td>= RealAudio 10 AAC (RAAC)</td>
+</tr><tr><td class=r>0x2007</td><td>= RealAudio 10 AAC+ (RACP)</td>
+</tr><tr><td class=r>0x2500</td><td>= Reserved range to 0x2600 Microsoft</td>
+</tr><tr><td class=r>0x3313</td><td>= makeAVIS (ffvfw fake AVI sound from AviSynth scripts)</td>
+</tr><tr><td class=r>0x4143</td><td>= Divio MPEG-4 AAC audio</td>
+</tr><tr><td class=r>0x4201</td><td>= Nokia adaptive multirate</td>
+</tr><tr><td class=r>0x4243</td><td>= Divio G726 Divio, Inc.</td>
+</tr><tr><td class=r>0x434c</td><td>= LEAD Speech</td>
+</tr><tr><td class=r>0x564c</td><td>= LEAD Vorbis</td>
+</tr><tr><td class=r>0x5756</td><td>= WavPack Audio</td>
+</tr><tr><td class=r>0x674f</td><td>= Ogg Vorbis (mode 1)</td>
+</tr><tr><td class=r>0x6750</td><td>= Ogg Vorbis (mode 2)</td>
+</tr><tr><td class=r>0x6751</td><td>= Ogg Vorbis (mode 3)</td>
+</tr><tr><td class=r>0x676f</td><td>= Ogg Vorbis (mode 1+)</td>
+</tr><tr><td class=r>0x6770</td><td>= Ogg Vorbis (mode 2+)</td>
+</tr><tr><td class=r>0x6771</td><td>= Ogg Vorbis (mode 3+)</td>
+</tr><tr><td class=r>0x7000</td><td>= 3COM NBX 3Com Corporation</td>
+</tr><tr><td class=r>0x706d</td><td>= FAAD AAC</td>
+</tr><tr><td class=r>0x7a21</td><td>= GSM-AMR (CBR, no SID)</td>
+</tr><tr><td class=r>0x7a22</td><td>= GSM-AMR (VBR, including SID)</td>
+</tr><tr><td class=r>0xa100</td><td>= Comverse Infosys Ltd. G723 1</td>
+</tr><tr><td class=r>0xa101</td><td>= Comverse Infosys Ltd. AVQSBC</td>
+</tr><tr><td class=r>0xa102</td><td>= Comverse Infosys Ltd. OLDSBC</td>
+</tr><tr><td class=r>0xa103</td><td>= Symbol Technologies G729A</td>
+</tr><tr><td class=r>0xa104</td><td>= VoiceAge AMR WB VoiceAge Corporation</td>
+</tr><tr><td class=r>0xa105</td><td>= Ingenient Technologies Inc. G726</td>
+</tr><tr><td class=r>0xa106</td><td>= ISO/MPEG-4 advanced audio Coding</td>
+</tr><tr><td class=r>0xa107</td><td>= Encore Software Ltd G726</td>
+</tr><tr><td class=r>0xa109</td><td>= Speex ACM Codec xiph.org</td>
+</tr><tr><td class=r>0xdfac</td><td>= DebugMode SonicFoundry Vegas FrameServer ACM Codec</td>
+</tr><tr><td class=r>0xe708</td><td>= Unknown -</td>
+</tr><tr><td class=r>0xf1ac</td><td>= Free Lossless Audio Codec FLAC</td>
+</tr><tr><td class=r>0xfffe</td><td>= Extensible</td>
+</tr><tr><td class=r>0xffff</td><td>= Development</td>
+</tr></table></td></tr></table></blockquote>
+
+<h2><a name='StreamHeader'>RIFF StreamHeader Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index4</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>StreamType</td>
+<td class=c>N</td>
+<td><span class=s>&#39;auds&#39; = Audio
+  <br>&#39;iavs&#39; = Interleaved Audio+Video
+  <br>&#39;mids&#39; = MIDI
+  <br>&#39;txts&#39; = Text
+  <br>&#39;vids&#39; = Video</span></td></tr>
+<tr class=b>
+<td class=r title='1 = 0x1'>1</td>
+<td>AudioCodec
+  <br>VideoCodec
+  <br>Codec</td>
+<td class=c>N<br>N<br>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='5 = 0x5'>5</td>
+<td>AudioSampleRate
+  <br>VideoFrameRate
+  <br>StreamSampleRate</td>
+<td class=c>N<br>N<br>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='8 = 0x8'>8</td>
+<td>AudioSampleCount
+  <br>VideoFrameCount
+  <br>StreamSampleCount</td>
+<td class=c>N<br>N<br>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='10 = 0xa'>10</td>
+<td>Quality</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='11 = 0xb'>11</td>
+<td>SampleSize</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='AVIHeader'>RIFF AVIHeader Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index4</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>FrameRate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='1 = 0x1'>1</td>
+<td>MaxDataRate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='4 = 0x4'>4</td>
+<td>FrameCount</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='6 = 0x6'>6</td>
+<td>StreamCount</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='8 = 0x8'>8</td>
+<td>ImageWidth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='9 = 0x9'>9</td>
+<td>ImageHeight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='VP8'>RIFF VP8 Tags</a></h2>
+<p>This chunk is found in simple-format (lossy) WebP files. See
+<a href="https://developers.google.com/speed/webp/docs/riff_container">https://developers.google.com/speed/webp/docs/riff_container</a> for the WebP
+container specification.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>VP8Version</td>
+<td class=c>N</td>
+<td><span class=s>[Mask 0x0e]
+  <br>0x0 = 0 (bicubic reconstruction, normal loop)
+  <br>0x1 = 1 (bilinear reconstruction, simple loop)
+  <br>0x2 = 2 (bilinear reconstruction, no loop)
+  <br>0x3 = 3 (no reconstruction, no loop)</span></td></tr>
+<tr class=b>
+<td class=r title='6 = 0x6'>6</td>
+<td>ImageWidth</td>
+<td class=c>N</td>
+<td><span class=s>[Mask 0x3fff]</span></td></tr>
+<tr>
+<td class=r title='6 = 0x6'>6.1</td>
+<td>HorizontalScale</td>
+<td class=c>N</td>
+<td><span class=s>[Mask 0xc000]</span></td></tr>
+<tr class=b>
+<td class=r title='8 = 0x8'>8</td>
+<td>ImageHeight</td>
+<td class=c>N</td>
+<td><span class=s>[Mask 0x3fff]</span></td></tr>
+<tr>
+<td class=r title='8 = 0x8'>8.1</td>
+<td>VerticalScale</td>
+<td class=c>N</td>
+<td><span class=s>[Mask 0xc000]</span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='VP8L'>RIFF VP8L Tags</a></h2>
+<p>This chunk is found in lossless WebP files.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='1 = 0x1'>1</td>
+<td>ImageWidth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>ImageHeight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='VP8X'>RIFF VP8X Tags</a></h2>
+<p>This chunk is found in extended WebP files.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='4 = 0x4'>4</td>
+<td>ImageWidth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='6 = 0x6'>6</td>
+<td>ImageHeight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='BroadcastExt'>RIFF BroadcastExt Tags</a></h2>
+<p>Information found in the Broadcast Audio Extension chunk (see
+<a href="http://tech.ebu.ch/docs/tech/tech3285.pdf">http://tech.ebu.ch/docs/tech/tech3285.pdf</a>).</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>Description</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='256 = 0x100'>256</td>
+<td>Originator</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='288 = 0x120'>288</td>
+<td>OriginatorReference</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='320 = 0x140'>320</td>
+<td>DateTimeOriginal</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='338 = 0x152'>338</td>
+<td>TimeReference</td>
+<td class=c>N</td>
+<td><span class=s><span class=n>(first sample count since midnight)</span></span></td></tr>
+<tr class=b>
+<td class=r title='346 = 0x15a'>346</td>
+<td>BWFVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='602 = 0x25a'>602</td>
+<td>CodingHistory</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<hr>
+(This document generated automatically by Image::ExifTool::BuildTagLookup)
+<br><i>Last revised May 8, 2014</i>
+<p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
+</body>
+</html>

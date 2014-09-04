@@ -1,0 +1,66 @@
+#------------------------------------------------------------------------------
+# File:         xmp2iptc.args
+#
+# Description:  Tag name translations for converting from XMP to IPTC
+#
+# Usage:        exiftool -tagsFromFile SRCFILE -@ xmp2iptc.args DSTFILE
+#
+# Requires:     ExifTool version 7.45 or later
+#
+# Revisions:    2005/05/14 - P. Harvey Created
+#               2008/03/04 - PH Changed Location translation and added
+#                            IntellectualGenre and SubjectCode
+#               2008/09/30 - PH Added writing of Photoshop:IPTCDigest
+#               2009/01/20 - PH Updated to conform with MWG spec
+#               2009/10/21 - PH Write IPTC:DigitalCreationDate/Time tags
+#
+# References:   http://www.iptc.org/IPTC4XMP/
+#               http://www.iptc.org/IIM/
+#               http://www.adobe.com/products/xmp/pdfs/xmpspec.pdf
+#               http://www.metadataworkinggroup.org/specs/
+#
+# Notes:     1) Also updates Photoshop:IPTCDigest as per MWG recommendation.
+#
+#            2) For special characters in the XMP to be preserved, the IPTC
+#               encoding must be UTF-8:  Either IPTC:CodedCharacterSet must
+#               already be "UTF8", or it must be set to "UTF8" when copying the
+#               XMP.  This is not done automatically by this argfile because it
+#               could invalidate the encoding of existing IPTC if there were
+#               any values containing special characters.  See FAQ number 10
+#               for more information about converting the IPTC encoding:
+#               http://owl.phy.queensu.ca/~phil/exiftool/faq.html#Q10
+#
+#            3) These arguments will not delete IPTC tags which are missing
+#               from the XMP.  The IPTC tags should be deleted beforehand if
+#               required.
+#------------------------------------------------------------------------------
+-IPTC:By-line < XMP-dc:Creator
+-IPTC:Caption-Abstract < XMP-dc:Description
+-IPTC:CopyrightNotice < XMP-dc:Rights
+-IPTC:Keywords < XMP-dc:Subject
+-IPTC:ObjectName < XMP-dc:Title
+-IPTC:By-lineTitle < XMP-photoshop:AuthorsPosition
+-IPTC:Writer-Editor < XMP-photoshop:CaptionWriter
+-IPTC:Category < XMP-photoshop:Category
+-IPTC:City < XMP-photoshop:City
+-IPTC:Country-PrimaryLocationName < XMP-photoshop:Country
+-IPTC:Credit < XMP-photoshop:Credit
+-IPTC:DateCreated < XMP-photoshop:DateCreated
+# magically extracts time from a date/time value
+-IPTC:TimeCreated < XMP-photoshop:DateCreated
+-IPTC:Headline < XMP-photoshop:Headline
+-IPTC:SpecialInstructions < XMP-photoshop:Instructions
+-IPTC:Source < XMP-photoshop:Source
+-IPTC:Province-State < XMP-photoshop:State
+-IPTC:SupplementalCategories < XMP-photoshop:SupplementalCategories
+-IPTC:OriginalTransmissionReference < XMP-photoshop:TransmissionReference
+-IPTC:Urgency < XMP-photoshop:Urgency
+-IPTC:Country-PrimaryLocationCode < XMP-iptcCore:CountryCode
+-IPTC:Sub-location < XMP-iptcCore:Location
+-IPTC:DigitalCreationDate < XMP-xmp:CreateDate
+-IPTC:DigitalCreationTime < XMP-xmp:CreateDate
+# these tags are not free-form text, and may need special handling:
+#-IPTC:ObjectAttributeReference < XMP-iptcCore:IntellectualGenre
+#-IPTC:SubjectReference < XMP-iptcCore:SubjectCode
+-Photoshop:IPTCDigest=new
+# end

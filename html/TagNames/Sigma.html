@@ -1,0 +1,377 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Sigma Tags</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h2 class=top>Sigma Tags</h2>
+<p>These tags are written by Sigma/Foveon cameras.  In the early days Sigma was
+a class leader by releasing their maker note specification to the public,
+but since then they have deviated from this standard and newer camera models
+are less than consistent about their metadata formats.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x0002 = 2'>0x0002</td>
+<td>SerialNumber</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0003 = 3'>0x0003</td>
+<td>DriveMode</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0004 = 4'>0x0004</td>
+<td>ResolutionMode</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0005 = 5'>0x0005</td>
+<td>AFMode</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0006 = 6'>0x0006</td>
+<td>FocusSetting</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0007 = 7'>0x0007</td>
+<td>WhiteBalance</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0008 = 8'>0x0008</td>
+<td>ExposureMode</td>
+<td class=c>string</td>
+<td><span class=s>&#39;A&#39; = Aperture-priority AE
+  <br>&#39;M&#39; = Manual
+  <br>&#39;P&#39; = Program AE
+  <br>&#39;S&#39; = Shutter speed priority AE</span></td></tr>
+<tr class=b>
+<td title='0x0009 = 9'>0x0009</td>
+<td>MeteringMode</td>
+<td class=c>string</td>
+<td><span class=s>8 = Multi-segment
+  <br>&#39;A&#39; = Average
+  <br>&#39;C&#39; = Center-weighted average</span></td></tr>
+<tr>
+<td title='0x000a = 10'>0x000a</td>
+<td>LensFocalRange</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x000b = 11'>0x000b</td>
+<td>ColorSpace</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x000c = 12'>0x000c</td>
+<td>ExposureCompensation
+  <br>ExposureAdjust?</td>
+<td class=c>string<br>rational64s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x000d = 13'>0x000d</td>
+<td>Contrast
+  <br>Contrast</td>
+<td class=c>string<br>rational64s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x000e = 14'>0x000e</td>
+<td>Shadow
+  <br>Shadow</td>
+<td class=c>string<br>rational64s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x000f = 15'>0x000f</td>
+<td>Highlight
+  <br>Highlight</td>
+<td class=c>string<br>rational64s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0010 = 16'>0x0010</td>
+<td>Saturation
+  <br>Saturation</td>
+<td class=c>string<br>rational64s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0011 = 17'>0x0011</td>
+<td>Sharpness
+  <br>Sharpness</td>
+<td class=c>string<br>rational64s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0012 = 18'>0x0012</td>
+<td>X3FillLight
+  <br>X3FillLight</td>
+<td class=c>string<br>rational64s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0014 = 20'>0x0014</td>
+<td>ColorAdjustment
+  <br>ColorAdjustment</td>
+<td class=c>string<br>rational64s[3]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0015 = 21'>0x0015</td>
+<td>AdjustmentMode</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0016 = 22'>0x0016</td>
+<td>Quality</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0017 = 23'>0x0017</td>
+<td>Firmware</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0018 = 24'>0x0018</td>
+<td>Software</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0019 = 25'>0x0019</td>
+<td>AutoBracket</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x001a = 26'>0x001a</td>
+<td>PreviewImageStart
+  <br>ChrominanceNoiseReduction</td>
+<td class=c title=' * = Protected'>int32u*<br>string</td>
+<td><span class=s><span class=n>(Sigma Photo Pro writes ChrominanceNoiseReduction here, but various
+models use this for PreviewImageStart)</span></span></td></tr>
+<tr>
+<td title='0x001b = 27'>0x001b</td>
+<td>PreviewImageLength
+  <br>LuminanceNoiseReduction</td>
+<td class=c title=' * = Protected'>int32u*<br>string</td>
+<td><span class=s><span class=n>(Sigma Photo Pro writes LuminanceNoiseReduction here, but various models use
+this for PreviewImageLength)</span></span></td></tr>
+<tr class=b>
+<td title='0x001c = 28'>0x001c</td>
+<td>PreviewImageSize
+  <br>PreviewImageStart</td>
+<td class=c title=' * = Protected'>int16u[2]<br>int32u*</td>
+<td><span class=s><span class=n>(PreviewImageStart for the SD1 and Merrill/Quattro models, and
+PreviewImageSize for others)</span></span></td></tr>
+<tr>
+<td title='0x001d = 29'>0x001d</td>
+<td>MakerNoteVersion
+  <br>PreviewImageLength</td>
+<td class=c title=' * = Protected'>undef<br>int32u*</td>
+<td><span class=s><span class=n>(PreviewImageLength for the SD1 and Merrill/Quattro models, and
+MakerNoteVersion for others)</span></span></td></tr>
+<tr class=b>
+<td title='0x001e = 30'>0x001e</td>
+<td>PreviewImageSize</td>
+<td class=c>int16u[2]</td>
+<td><span class=s><span class=n>(only valid for some models)</span></span></td></tr>
+<tr>
+<td title='0x001f = 31'>0x001f</td>
+<td>AFPoint
+  <br>MakerNoteVersion</td>
+<td class=c>string<br>undef</td>
+<td><span class=s><span class=n>(MakerNoteVersion for the SD1 and Merrill/Quattro models, and AFPoint for
+others)</span></span></td></tr>
+<tr class=b>
+<td title='0x0022 = 34'>0x0022</td>
+<td>FileFormat</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(models other than the SD1 and Merrill/Quattro models)</span></span></td></tr>
+<tr>
+<td title='0x0024 = 36'>0x0024</td>
+<td>Calibration</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(models other than the SD1 and Merrill/Quattro models)</span></span></td></tr>
+<tr class=b>
+<td title='0x0026 = 38'>0x0026</td>
+<td>FileFormat</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(SD1 and Merrill/Quattro models only)</span></span></td></tr>
+<tr>
+<td title='0x0027 = 39'>0x0027</td>
+<td>LensType</td>
+<td class=c>string</td>
+<td>--&gt; <a href='Sigma.html#LensType'>Sigma LensType Values</a>
+  <br><span class='n s'>(SD1 and Merrill/Quattro models only)</span></td></tr>
+<tr class=b>
+<td title='0x002a = 42'>0x002a</td>
+<td>LensFocalRange</td>
+<td class=c>rational64u[2]</td>
+<td><span class=s><span class=n>(SD1 and Merrill/Quattro models only)</span></span></td></tr>
+<tr>
+<td title='0x002b = 43'>0x002b</td>
+<td>LensMaxApertureRange</td>
+<td class=c>rational64u[2]</td>
+<td><span class=s><span class=n>(SD1 and Merrill/Quattro models only)</span></span></td></tr>
+<tr class=b>
+<td title='0x002c = 44'>0x002c</td>
+<td>ColorMode</td>
+<td class=c>int32u</td>
+<td><span class=s><span class=n>(not valid for some models)</span></span><table class=cols><tr>
+  <td>0 = n/a
+  <br>1 = Sepia
+  <br>2 = B&amp;W
+  <br>3 = Standard
+  <br>4 = Vivid</td><td>&nbsp;&nbsp;</td>
+  <td>5 = Neutral
+  <br>6 = Portrait
+  <br>7 = Landscape
+  <br>8 = FOV Classic Blue</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td title='0x0030 = 48'>0x0030</td>
+<td>LensApertureRange
+  <br>Calibration</td>
+<td class=c>string<br>string</td>
+<td><span class=s><span class=n>(Calibration for the SD1 and Merrill/Quattro models, and LensApertureRange
+for others. Note that LensApertureRange changes with focal length, and some
+models report the maximum aperture here)</span></span></td></tr>
+<tr class=b>
+<td title='0x0031 = 49'>0x0031</td>
+<td>FNumber</td>
+<td class=c>rational64u</td>
+<td><span class=s><span class=n>(models other than the SD1 and Merrill/Quattro models)</span></span></td></tr>
+<tr>
+<td title='0x0032 = 50'>0x0032</td>
+<td>ExposureTime</td>
+<td class=c>rational64u</td>
+<td><span class=s><span class=n>(models other than the SD1 and Merrill/Quattro models)</span></span></td></tr>
+<tr class=b>
+<td title='0x0033 = 51'>0x0033</td>
+<td>ExposureTime2</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(models other than the SD1, SD9, SD15 and Merrill/Quattro models)</span></span></td></tr>
+<tr>
+<td title='0x0034 = 52'>0x0034</td>
+<td>BurstShot</td>
+<td class=c>int32u</td>
+<td><span class=s><span class=n>(models other than the SD1 and Merrill/Quattro models)</span></span></td></tr>
+<tr class=b>
+<td title='0x0035 = 53'>0x0035</td>
+<td>ExposureCompensation</td>
+<td class=c>rational64s</td>
+<td><span class=s><span class=n>(models other than the SD1 and Merrill/Quattro models)</span></span></td></tr>
+<tr>
+<td title='0x0039 = 57'>0x0039</td>
+<td>SensorTemperature</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(models other than the SD1 and Merrill/Quattro models)</span></span></td></tr>
+<tr class=b>
+<td title='0x003a = 58'>0x003a</td>
+<td>FlashExposureComp</td>
+<td class=c>rational64s</td>
+<td><span class=s><span class=n>(models other than the SD1 and Merrill/Quattro models)</span></span></td></tr>
+<tr>
+<td title='0x003b = 59'>0x003b</td>
+<td>Firmware</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(models other than the SD1 and Merrill/Quattro models)</span></span></td></tr>
+<tr class=b>
+<td title='0x003c = 60'>0x003c</td>
+<td>WhiteBalance</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(models other than the SD1 and Merrill/Quattro models)</span></span></td></tr>
+<tr>
+<td title='0x003d = 61'>0x003d</td>
+<td>PictureMode</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(same as ColorMode, but &quot;Standard&quot; when ColorMode is Sepia or B&amp;W)</span></span></td></tr>
+<tr class=b>
+<td title='0x0048 = 72'>0x0048</td>
+<td>LensApertureRange</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(SD1 and Merrill/Quattro models only)</span></span></td></tr>
+<tr>
+<td title='0x0049 = 73'>0x0049</td>
+<td>FNumber</td>
+<td class=c>rational64u</td>
+<td><span class=s><span class=n>(SD1 and Merrill/Quattro models only)</span></span></td></tr>
+<tr class=b>
+<td title='0x004a = 74'>0x004a</td>
+<td>ExposureTime</td>
+<td class=c>rational64u</td>
+<td><span class=s><span class=n>(SD1 and Merrill/Quattro models only)</span></span></td></tr>
+<tr>
+<td title='0x004b = 75'>0x004b</td>
+<td>ExposureTime2</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(SD1 and Merrill/Quattro models only)</span>
+  <br><span class=n>(SD1 and Merrill/Quattro models only)</span></span></td></tr>
+<tr class=b>
+<td title='0x004d = 77'>0x004d</td>
+<td>ExposureCompensation</td>
+<td class=c>rational64s</td>
+<td><span class=s><span class=n>(SD1 and Merrill/Quattro models only)</span></span></td></tr>
+<tr>
+<td title='0x0055 = 85'>0x0055</td>
+<td>SensorTemperature</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(SD1 and Merrill/Quattro models only)</span></span></td></tr>
+<tr class=b>
+<td title='0x0056 = 86'>0x0056</td>
+<td>FlashExposureComp</td>
+<td class=c>rational64s</td>
+<td><span class=s><span class=n>(SD1 and Merrill/Quattro models only)</span></span></td></tr>
+<tr>
+<td title='0x0057 = 87'>0x0057</td>
+<td>Firmware</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(SD1 and Merrill/Quattro models only)</span></span></td></tr>
+<tr class=b>
+<td title='0x0058 = 88'>0x0058</td>
+<td>WhiteBalance</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(SD1 and Merrill/Quattro models only)</span></span></td></tr>
+<tr>
+<td title='0x0059 = 89'>0x0059</td>
+<td>DigitalFilter</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(SD1 and Merrill/Quattro models only)</span></span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='LensType'>Sigma LensType Values</a></h2>
+<p>Decimal values have been added to differentiate lenses which would otherwise
+have the same LensType, and are used by the Composite LensID tag when
+attempting to identify the specific lens model.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class='inner sep' cellspacing=1>
+<tr class=h><th>Value</th><th>LensType</th><th>Value</th><th>LensType</th></tr>
+<tr><td>16</td><td>= Sigma 18-50mm F3.5-5.6 DC</td>
+<td class=b>581</td><td class=b>= Sigma 18-50mm F2.8 EX DC Macro</td>
+</tr><tr><td>129</td><td>= Sigma 14mm F2.8 EX Aspherical</td>
+<td class=b>583</td><td class=b>= Sigma 17-50mm F2.8 EX DC OS</td>
+</tr><tr><td>131</td><td>= Sigma 17-70mm F2.8-4.5 DC Macro</td>
+<td class=b>1003</td><td class=b>= Sigma 19mm F2.8</td>
+</tr><tr><td>145</td><td>= Sigma Lens (145)</td>
+<td class=b>1004</td><td class=b>= Sigma 30mm F2.8</td>
+</tr><tr><td>145.1</td><td>= Sigma 15-30mm F3.5-4.5 EX DG Aspherical</td>
+<td class=b>1005</td><td class=b>= Sigma 50mm F2.8 Macro</td>
+</tr><tr><td>145.2</td><td>= Sigma 18-50mm F2.8 EX DG</td>
+<td class=b>1007</td><td class=b>= Sigma 30mm F2.8</td>
+</tr><tr><td>145.3</td><td>= Sigma 20-40mm F2.8 EX DG</td>
+<td class=b>8900</td><td class=b>= Sigma 70-300mm F4-5.6 DG OS</td>
+</tr><tr><td>165</td><td>= Sigma 70-200mm F2.8 EX</td>
+<td class=b>'A100'</td><td class=b>= Sigma 24-70mm F2.8 DG Macro</td>
+</tr><tr><td>169</td><td>= Sigma 18-50mm F2.8 EX DC</td>
+<td class=b>&nbsp;</td><td class=b>&nbsp;</td>
+</tr></table></td></tr></table></blockquote>
+
+<hr>
+(This document generated automatically by Image::ExifTool::BuildTagLookup)
+<br><i>Last revised Jun 26, 2014</i>
+<p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
+</body>
+</html>

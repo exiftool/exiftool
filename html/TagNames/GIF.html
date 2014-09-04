@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>GIF Tags</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h2 class=top>GIF Tags</h2>
+<p>This table lists information extracted from GIF images. See
+<a href="http://www.w3.org/Graphics/GIF/spec-gif89a.txt">http://www.w3.org/Graphics/GIF/spec-gif89a.txt</a> for the official GIF89a
+specification.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>Comment</td>
+<td class=c>Y</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Duration</td>
+<td class=c>N</td>
+<td><span class=s><span class=n>(duration of a single animation iteration)</span></span></td></tr>
+<tr>
+<td>ExtensionAnimation</td>
+<td class=c>-</td>
+<td>--&gt; <a href='GIF.html#Animate'>GIF Animate Tags</a></td></tr>
+<tr class=b>
+<td>ExtensionICC</td>
+<td class=c>-</td>
+<td>--&gt; <a href='ICC_Profile.html'>ICC_Profile Tags</a></td></tr>
+<tr>
+<td>ExtensionXMP</td>
+<td class=c>-</td>
+<td>--&gt; <a href='XMP.html'>XMP Tags</a></td></tr>
+<tr class=b>
+<td>FrameCount</td>
+<td class=c>N</td>
+<td><span class=s><span class=n>(number of animated images)</span></span></td></tr>
+<tr>
+<td>GIFVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>ScreenDescriptor</td>
+<td class=c>-</td>
+<td>--&gt; <a href='GIF.html#Screen'>GIF Screen Tags</a></td></tr>
+<tr>
+<td>Text</td>
+<td class=c>N</td>
+<td><span class=s><span class=n>(text displayed in image)</span></span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Animate'>GIF Animate Tags</a></h2>
+<p>Information extracted from the &quot;NETSCAPE2.0&quot; animation extension.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='2 = 0x2'>2</td>
+<td>AnimationIterations</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Screen'>GIF Screen Tags</a></h2>
+<p>Information extracted from the GIF logical screen descriptor.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>ImageWidth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>ImageHeight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='4 = 0x4'>4.1</td>
+<td>HasColorMap</td>
+<td class=c>N</td>
+<td><span class=s>[Mask 0x80]
+  <br>0x0 = No
+  <br>0x80 = Yes</span></td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4.2</td>
+<td>ColorResolutionDepth</td>
+<td class=c>N</td>
+<td><span class=s>[Mask 0x70]</span></td></tr>
+<tr>
+<td class=r title='4 = 0x4'>4.3</td>
+<td>BitsPerPixel</td>
+<td class=c>N</td>
+<td><span class=s>[Mask 0x07]</span></td></tr>
+<tr class=b>
+<td class=r title='5 = 0x5'>5</td>
+<td>BackgroundColor</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<hr>
+(This document generated automatically by Image::ExifTool::BuildTagLookup)
+<br><i>Last revised Oct 28, 2011</i>
+<p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
+</body>
+</html>

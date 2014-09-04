@@ -1,0 +1,446 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Samsung Tags</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h2 class=top>Samsung Tags</h2>
+<p>Tags found in the binary &quot;STMN&quot; format maker notes written by a number of
+Samsung models.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index4</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>MakerNoteVersion</td>
+<td class=c>undef[8]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>PreviewImageStart</td>
+<td class=c title=' * = Protected'>int32u*</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='3 = 0x3'>3</td>
+<td>PreviewImageLength</td>
+<td class=c title=' * = Protected'>int32u*</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='11 = 0xb'>11</td>
+<td>SamsungIFD</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Samsung.html#IFD'>Samsung IFD Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='IFD'>Samsung IFD Tags</a></h2>
+<p>This is a standard-format IFD found in the maker notes of some Samsung
+models, except that the entry count is a 4-byte integer and the offsets are
+relative to the end of the IFD.  Currently, no tags in this IFD are known,
+so the Unknown (-u) or Verbose (-v) option must be used to see this
+information.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr><td colspan=4 class=c><i>[no tags known]</i></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Type2'>Samsung Type2 Tags</a></h2>
+<p>Tags found in the EXIF-format maker notes of newer Samsung models.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x0001 = 1'>0x0001</td>
+<td>MakerNoteVersion</td>
+<td class=c>undef[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0021 = 33'>0x0021</td>
+<td>PictureWizard</td>
+<td class=c>int16u</td>
+<td>--&gt; <a href='Samsung.html#PictureWizard'>Samsung PictureWizard Tags</a></td></tr>
+<tr>
+<td title='0x0030 = 48'>0x0030</td>
+<td>LocalLocationName</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0031 = 49'>0x0031</td>
+<td>LocationName</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0035 = 53'>0x0035</td>
+<td>PreviewIFD</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Nikon.html#PreviewIFD'>Nikon PreviewIFD Tags</a></td></tr>
+<tr class=b>
+<td title='0x0043 = 67'>0x0043</td>
+<td>CameraTemperature</td>
+<td class=c>rational64s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xa001 = 40961'>0xa001</td>
+<td>FirmwareName</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xa003 = 40963'>0xa003</td>
+<td>LensType</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>0 = Built-in or Manual Lens
+  <br>1 = Samsung NX 30mm F2 Pancake
+  <br>2 = Samsung NX 18-55mm F3.5-5.6 OIS
+  <br>3 = Samsung NX 50-200mm F4-5.6 ED OIS
+  <br>4 = Samsung NX 20-50mm F3.5-5.6 ED
+  <br>5 = Samsung NX 20mm F2.8 Pancake
+  <br>6 = Samsung NX 18-200mm F3.5-6.3 ED OIS
+  <br>7 = Samsung NX 60mm F2.8 Macro ED OIS SSA
+  <br>8 = Samsung NX 16mm F2.4 Pancake
+  <br>9 = Samsung NX 85mm F1.4 ED SSA
+  <br>10 = Samsung NX 45mm F1.8
+  <br>11 = Samsung NX 45mm F1.8 2D/3D
+  <br>12 = Samsung NX 12-24mm F4-5.6 ED
+  <br>14 = Samsung NX 10mm F3.5 Fisheye</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td title='0xa004 = 40964'>0xa004</td>
+<td>LensFirmware</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xa010 = 40976'>0xa010</td>
+<td>SensorAreas</td>
+<td class=c>int32u[8]</td>
+<td><span class=s><span class=n>(full and valid sensor areas)</span></span></td></tr>
+<tr>
+<td title='0xa011 = 40977'>0xa011</td>
+<td>ColorSpace</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = sRGB
+  <br>1 = Adobe RGB</span></td></tr>
+<tr class=b>
+<td title='0xa012 = 40978'>0xa012</td>
+<td>SmartRange</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr>
+<td title='0xa013 = 40979'>0xa013</td>
+<td>ExposureCompensation</td>
+<td class=c>rational64s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xa014 = 40980'>0xa014</td>
+<td>ISO</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xa018 = 40984'>0xa018</td>
+<td>ExposureTime</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xa019 = 40985'>0xa019</td>
+<td>FNumber</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xa01a = 40986'>0xa01a</td>
+<td>FocalLengthIn35mmFormat</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xa020 = 40992'>0xa020</td>
+<td>EncryptionKey</td>
+<td class=c title=' ! = Unsafe'>int32u[11]!</td>
+<td><span class=s><span class=n>(key used to decrypt the tags below)</span></span></td></tr>
+<tr>
+<td title='0xa021 = 40993'>0xa021</td>
+<td>WB_RGGBLevelsUncorrected</td>
+<td class=c>int32u[4]</td>
+<td><span class=s><span class=n>(these tags not corrected for WB_RGGBLevelsBlack)</span></span></td></tr>
+<tr class=b>
+<td title='0xa022 = 40994'>0xa022</td>
+<td>WB_RGGBLevelsAuto</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xa023 = 40995'>0xa023</td>
+<td>WB_RGGBLevelsIlluminator1</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xa024 = 40996'>0xa024</td>
+<td>WB_RGGBLevelsIlluminator2</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xa028 = 41000'>0xa028</td>
+<td>WB_RGGBLevelsBlack</td>
+<td class=c>int32s[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xa030 = 41008'>0xa030</td>
+<td>ColorMatrix</td>
+<td class=c>int32s[9]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xa031 = 41009'>0xa031</td>
+<td>ColorMatrixSRGB</td>
+<td class=c>int32s[9]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xa032 = 41010'>0xa032</td>
+<td>ColorMatrixAdobeRGB</td>
+<td class=c>int32s[9]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xa040 = 41024'>0xa040</td>
+<td>ToneCurve1</td>
+<td class=c>int32u[23]</td>
+<td><span class=s><span class=n>(first value gives the number of tone curve entries.  This is followed by an
+array of X coordinates then an array of Y coordinates)</span></span></td></tr>
+<tr class=b>
+<td title='0xa041 = 41025'>0xa041</td>
+<td>ToneCurve2</td>
+<td class=c>int32u[23]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xa042 = 41026'>0xa042</td>
+<td>ToneCurve3</td>
+<td class=c>int32u[23]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xa043 = 41027'>0xa043</td>
+<td>ToneCurve4</td>
+<td class=c>int32u[23]</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='PictureWizard'>Samsung PictureWizard Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index2</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>PictureWizardMode</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>0 = Standard
+  <br>1 = Vivid
+  <br>2 = Portrait
+  <br>3 = Landscape
+  <br>4 = Forest</td><td>&nbsp;&nbsp;</td>
+  <td>5 = Retro
+  <br>6 = Cool
+  <br>7 = Calm
+  <br>8 = Classic
+  <br>9 = Custom1</td><td>&nbsp;&nbsp;</td>
+  <td>10 = Custom2
+  <br>11 = Custom3
+  <br>255 = n/a</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='1 = 0x1'>1</td>
+<td>PictureWizardColor</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='2 = 0x2'>2</td>
+<td>PictureWizardSaturation</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='3 = 0x3'>3</td>
+<td>PictureWizardSharpness</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='4 = 0x4'>4</td>
+<td>PictureWizardContrast</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='sec'>Samsung sec Tags</a></h2>
+<p>This information is found in the @sec atom of Samsung MP4 videos from models
+such as the WB30F.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>Make</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='32 = 0x20'>32</td>
+<td>Model</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='512 = 0x200'>512</td>
+<td>ThumbnailWidth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='516 = 0x204'>516</td>
+<td>ThumbnailHeight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='520 = 0x208'>520</td>
+<td>ThumbnailLength</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='524 = 0x20c'>524</td>
+<td>ThumbnailImage</td>
+<td class=c>N</td>
+<td><span class=s><span class=n>(the THM image, embedded metadata is extracted as the first sub-document)</span></span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='INFO'>Samsung INFO Tags</a></h2>
+<p>This information is found in MP4 videos from Samsung models such as the
+SMX-C20N.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'EFCT'</td>
+<td>Effect</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'QLTY'</td>
+<td>Quality</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='MP4'>Samsung MP4 Tags</a></h2>
+<p>This information is found in Samsung MP4 videos from models such as the
+WP10.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>Make</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='24 = 0x18'>24</td>
+<td>Model</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='46 = 0x2e'>46</td>
+<td>ExposureTime</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='50 = 0x32'>50</td>
+<td>FNumber</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='58 = 0x3a'>58</td>
+<td>ExposureCompensation</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='106 = 0x6a'>106</td>
+<td>ISO</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='125 = 0x7d'>125</td>
+<td>Software</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='244 = 0xf4'>244</td>
+<td>Thumbnail</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Samsung.html#Thumbnail'>Samsung Thumbnail Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Thumbnail'>Samsung Thumbnail Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index4</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='1 = 0x1'>1</td>
+<td>ThumbnailWidth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>ThumbnailHeight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='3 = 0x3'>3</td>
+<td>ThumbnailLength</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>ThumbnailOffset</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='smta'>Samsung smta Tags</a></h2>
+<p>This information is found in the smta atom of Samsung MP4 videos from models
+such as the Galaxy S4.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'svss'</td>
+<td>SamsungSvss</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Samsung.html#svss'>Samsung svss Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='svss'>Samsung svss Tags</a></h2>
+<p>This information is found in the svss atom of Samsung MP4 videos from models
+such as the Galaxy S4.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr><td colspan=4 class=c><i>[no tags known]</i></td></tr>
+</table></td></tr></table></blockquote>
+
+<hr>
+(This document generated automatically by Image::ExifTool::BuildTagLookup)
+<br><i>Last revised Feb 3, 2014</i>
+<p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
+</body>
+</html>

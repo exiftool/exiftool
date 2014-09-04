@@ -1,0 +1,230 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>GPS Tags</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h2 class=top>GPS Tags</h2>
+<p>
+These GPS tags are part of the EXIF standard, and are stored in a separate
+IFD within the EXIF information.</p>
+
+<p>ExifTool is very flexible about the input format when writing lat/long
+coordinates, and will accept from 1 to 3 floating point numbers (for decimal
+degrees, degrees and minutes, or degrees, minutes and seconds) separated by
+just about anything, and will format them properly according to the EXIF
+specification.</p>
+
+<p>Some GPS tags have values which are fixed-length strings. For these, the
+indicated string lengths include a null terminator which is added
+automatically by ExifTool.  Remember that the descriptive values are used
+when writing (eg. &#39;Above Sea Level&#39;, not &#39;0&#39;) unless the print conversion is
+disabled (with &#39;-n&#39; on the command line or the PrintConv option in the API,
+or by suffixing the tag name with a <code>#</code> character).</p>
+
+<p>When adding GPS information to an image, it is important to set all of the
+following tags: GPSLatitude, GPSLatitudeRef, GPSLongitude, GPSLongitudeRef,
+and GPSAltitude and GPSAltitudeRef if the altitude is known.  ExifTool will
+write the required GPSVersionID tag automatically if new a GPS IFD is added
+to an image.
+</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x0000 = 0'>0x0000</td>
+<td>GPSVersionID</td>
+<td class=c title=' : = Mandatory'>int8u[4]:</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0001 = 1'>0x0001</td>
+<td>GPSLatitudeRef</td>
+<td class=c>string[2]</td>
+<td><span class=s><span class=n>(tags 0x0001-0x0006 used for camera location according to MWG 2.0. ExifTool
+will also accept a number when writing GPSLatitude -- positive for north
+latitudes, or negative for south)</span>
+  <br>&#39;N&#39; = North
+  <br>&#39;S&#39; = South</span></td></tr>
+<tr>
+<td title='0x0002 = 2'>0x0002</td>
+<td>GPSLatitude</td>
+<td class=c>rational64u[3]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0003 = 3'>0x0003</td>
+<td>GPSLongitudeRef</td>
+<td class=c>string[2]</td>
+<td><span class=s><span class=n>(ExifTool will also accept a number when writing this tag -- positive for
+east longitudes or negative for west)</span>
+  <br>&#39;E&#39; = East
+  <br>&#39;W&#39; = West</span></td></tr>
+<tr>
+<td title='0x0004 = 4'>0x0004</td>
+<td>GPSLongitude</td>
+<td class=c>rational64u[3]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0005 = 5'>0x0005</td>
+<td>GPSAltitudeRef</td>
+<td class=c>int8u</td>
+<td><span class=s><span class=n>(ExifTool will also accept a signed number when writing this tag, beginning
+with &quot;+&quot; for above sea level, or &quot;-&quot; for below)</span>
+  <br>0 = Above Sea Level
+  <br>1 = Below Sea Level</span></td></tr>
+<tr>
+<td title='0x0006 = 6'>0x0006</td>
+<td>GPSAltitude</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0007 = 7'>0x0007</td>
+<td>GPSTimeStamp</td>
+<td class=c>rational64u[3]</td>
+<td><span class=s><span class=n>(when writing, date is stripped off if present, and time is adjusted to UTC
+if it includes a timezone)</span></span></td></tr>
+<tr>
+<td title='0x0008 = 8'>0x0008</td>
+<td>GPSSatellites</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0009 = 9'>0x0009</td>
+<td>GPSStatus</td>
+<td class=c>string[2]</td>
+<td><span class=s>&#39;A&#39; = Measurement Active
+  <br>&#39;V&#39; = Measurement Void</span></td></tr>
+<tr>
+<td title='0x000a = 10'>0x000a</td>
+<td>GPSMeasureMode</td>
+<td class=c>string[2]</td>
+<td><span class=s>2 = 2-Dimensional Measurement
+  <br>3 = 3-Dimensional Measurement</span></td></tr>
+<tr class=b>
+<td title='0x000b = 11'>0x000b</td>
+<td>GPSDOP</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x000c = 12'>0x000c</td>
+<td>GPSSpeedRef</td>
+<td class=c>string[2]</td>
+<td><span class=s>&#39;K&#39; = km/h
+  <br>&#39;M&#39; = mph
+  <br>&#39;N&#39; = knots</span></td></tr>
+<tr class=b>
+<td title='0x000d = 13'>0x000d</td>
+<td>GPSSpeed</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x000e = 14'>0x000e</td>
+<td>GPSTrackRef</td>
+<td class=c>string[2]</td>
+<td><span class=s>&#39;M&#39; = Magnetic North
+  <br>&#39;T&#39; = True North</span></td></tr>
+<tr class=b>
+<td title='0x000f = 15'>0x000f</td>
+<td>GPSTrack</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0010 = 16'>0x0010</td>
+<td>GPSImgDirectionRef</td>
+<td class=c>string[2]</td>
+<td><span class=s>&#39;M&#39; = Magnetic North
+  <br>&#39;T&#39; = True North</span></td></tr>
+<tr class=b>
+<td title='0x0011 = 17'>0x0011</td>
+<td>GPSImgDirection</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0012 = 18'>0x0012</td>
+<td>GPSMapDatum</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0013 = 19'>0x0013</td>
+<td>GPSDestLatitudeRef</td>
+<td class=c>string[2]</td>
+<td><span class=s><span class=n>(tags 0x0013-0x001a used for subject location according to MWG 2.0)</span>
+  <br>&#39;N&#39; = North
+  <br>&#39;S&#39; = South</span></td></tr>
+<tr>
+<td title='0x0014 = 20'>0x0014</td>
+<td>GPSDestLatitude</td>
+<td class=c>rational64u[3]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0015 = 21'>0x0015</td>
+<td>GPSDestLongitudeRef</td>
+<td class=c>string[2]</td>
+<td><span class=s>&#39;E&#39; = East
+  <br>&#39;W&#39; = West</span></td></tr>
+<tr>
+<td title='0x0016 = 22'>0x0016</td>
+<td>GPSDestLongitude</td>
+<td class=c>rational64u[3]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0017 = 23'>0x0017</td>
+<td>GPSDestBearingRef</td>
+<td class=c>string[2]</td>
+<td><span class=s>&#39;M&#39; = Magnetic North
+  <br>&#39;T&#39; = True North</span></td></tr>
+<tr>
+<td title='0x0018 = 24'>0x0018</td>
+<td>GPSDestBearing</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0019 = 25'>0x0019</td>
+<td>GPSDestDistanceRef</td>
+<td class=c>string[2]</td>
+<td><span class=s>&#39;K&#39; = Kilometers
+  <br>&#39;M&#39; = Miles
+  <br>&#39;N&#39; = Nautical Miles</span></td></tr>
+<tr>
+<td title='0x001a = 26'>0x001a</td>
+<td>GPSDestDistance</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x001b = 27'>0x001b</td>
+<td>GPSProcessingMethod</td>
+<td class=c>undef</td>
+<td><span class=s><span class=n>(values of &quot;GPS&quot;, &quot;CELLID&quot;, &quot;WLAN&quot; or &quot;MANUAL&quot; by the EXIF spec.)</span></span></td></tr>
+<tr>
+<td title='0x001c = 28'>0x001c</td>
+<td>GPSAreaInformation</td>
+<td class=c>undef</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x001d = 29'>0x001d</td>
+<td>GPSDateStamp</td>
+<td class=c>string[11]</td>
+<td><span class=s><span class=n>(when writing, time is stripped off if present, after adjusting date/time to
+UTC if time includes a timezone.  Format is YYYY:mm:dd)</span></span></td></tr>
+<tr>
+<td title='0x001e = 30'>0x001e</td>
+<td>GPSDifferential</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = No Correction
+  <br>1 = Differential Corrected</span></td></tr>
+<tr class=b>
+<td title='0x001f = 31'>0x001f</td>
+<td>GPSHPositioningError</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<hr>
+(This document generated automatically by Image::ExifTool::BuildTagLookup)
+<br><i>Last revised May 6, 2014</i>
+<p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
+</body>
+</html>

@@ -1,0 +1,274 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Shortcuts Tags</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h2 class=top>Shortcuts Tags</h2>
+<p>
+Shortcut tags are convenience tags that represent one or more other tag
+names.  They are used like regular tags to read and write the information
+for a specified set of tags.</p>
+
+<p>The shortcut tags below have been pre-defined, but user-defined shortcuts
+may be added via the %Image::ExifTool::UserDefined::Shortcuts lookup in the
+~/.ExifTool_config file.  See the Image::ExifTool::Shortcuts documentation
+for more details.
+</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag Name</th>
+<th>Writable</th><th>Refers To</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>AllDates</td>
+<td class=c>Y</td>
+<td class=n>DateTimeOriginal
+  <br>CreateDate
+  <br>ModifyDate</td>
+<td><span class=s><span class=n>(contrary to the shortcut name, this represents only the common EXIF
+date/time tags.  To access all date/time tags, use Time:All instead)</span></span></td></tr>
+<tr class=b>
+<td>Canon</td>
+<td class=c>Y</td>
+<td class=n>FileName
+  <br>Model
+  <br>DateTimeOriginal
+  <br>ShootingMode
+  <br>ShutterSpeed
+  <br>Aperture
+  <br>MeteringMode
+  <br>ExposureCompensation
+  <br>ISO
+  <br>Lens
+  <br>FocalLength
+  <br>ImageSize
+  <br>Quality
+  <br>Flash
+  <br>FlashType
+  <br>ConditionalFEC
+  <br>RedEyeReduction
+  <br>ShutterCurtainHack
+  <br>WhiteBalance
+  <br>FocusMode
+  <br>Contrast
+  <br>Sharpness
+  <br>Saturation
+  <br>ColorTone
+  <br>ColorSpace
+  <br>LongExposureNoiseReduction
+  <br>FileSize
+  <br>FileNumber
+  <br>DriveMode
+  <br>OwnerName
+  <br>SerialNumber</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ColorSpaceTags</td>
+<td class=c>Y</td>
+<td class=n>ExifIFD:ColorSpace
+  <br>ExifIFD:Gamma
+  <br>InteropIFD:InteropIndex
+  <br>ICC_Profile</td>
+<td><span class=s><span class=n>(standard tags which carry color space information.  Useful for preserving
+color space when deleting all other metadata)</span></span></td></tr>
+<tr class=b>
+<td>Common</td>
+<td class=c>Y</td>
+<td class=n>FileName
+  <br>FileSize
+  <br>Model
+  <br>DateTimeOriginal
+  <br>ImageSize
+  <br>Quality
+  <br>FocalLength
+  <br>ShutterSpeed
+  <br>Aperture
+  <br>ISO
+  <br>WhiteBalance
+  <br>Flash</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>CommonIFD0</td>
+<td class=c>Y</td>
+<td class=n>IFD0:ImageDescription
+  <br>IFD0:Make
+  <br>IFD0:Model
+  <br>IFD0:Software
+  <br>IFD0:ModifyDate
+  <br>IFD0:Artist
+  <br>IFD0:Copyright
+  <br>IFD0:Rating
+  <br>IFD0:RatingPercent
+  <br>IFD0:DNGLensInfo
+  <br>IFD0:PanasonicTitle
+  <br>IFD0:PanasonicTitle2
+  <br>IFD0:XPTitle
+  <br>IFD0:XPComment
+  <br>IFD0:XPAuthor
+  <br>IFD0:XPKeywords
+  <br>IFD0:XPSubject</td>
+<td><span class=s><span class=n>(common metadata tags found in IFD0 of TIFF-format images.  Used to simpify
+deletion of all metadata from these images.  See
+<a href="../faq.html#Q7">FAQ number 7</a> for details)</span></span></td></tr>
+<tr class=b>
+<td>LargeTags</td>
+<td class=c>Y</td>
+<td class=n>CanonVRD
+  <br>DLOData
+  <br>EXIF
+  <br>ICC_Profile
+  <br>IDCPreviewImage
+  <br>ImageData
+  <br>IPTC
+  <br>JpgFromRaw
+  <br>OriginalRawImage
+  <br>OtherImage
+  <br>PreviewImage
+  <br>ThumbnailImage
+  <br>TIFFPreview
+  <br>XML
+  <br>XMP
+  <br>ZoomedPreviewImage</td>
+<td><span class=s><span class=n>(large binary data tags which may be excluded to reduce memory usage if
+memory limitations are a problem)</span></span></td></tr>
+<tr>
+<td>MakerNotes</td>
+<td class=c>Y</td>
+<td class=n>MakerNotes
+  <br>MakerNoteApple
+  <br>MakerNoteCanon
+  <br>MakerNoteCasio
+  <br>MakerNoteCasio2
+  <br>MakerNoteFLIR
+  <br>MakerNoteFujiFilm
+  <br>MakerNoteGE
+  <br>MakerNoteGE2
+  <br>MakerNoteHasselblad
+  <br>MakerNoteHP
+  <br>MakerNoteHP2
+  <br>MakerNoteHP4
+  <br>MakerNoteHP6
+  <br>MakerNoteISL
+  <br>MakerNoteJVC
+  <br>MakerNoteJVCText
+  <br>MakerNoteKodak1a
+  <br>MakerNoteKodak1b
+  <br>MakerNoteKodak2
+  <br>MakerNoteKodak3
+  <br>MakerNoteKodak4
+  <br>MakerNoteKodak5
+  <br>MakerNoteKodak6a
+  <br>MakerNoteKodak6b
+  <br>MakerNoteKodak7
+  <br>MakerNoteKodak8a
+  <br>MakerNoteKodak8b
+  <br>MakerNoteKodak8c
+  <br>MakerNoteKodak9
+  <br>MakerNoteKodak10
+  <br>MakerNoteKodak11
+  <br>MakerNoteKodakUnknown
+  <br>MakerNoteKyocera
+  <br>MakerNoteMinolta
+  <br>MakerNoteMinolta2
+  <br>MakerNoteMinolta3
+  <br>MakerNoteNikon
+  <br>MakerNoteNikon2
+  <br>MakerNoteNikon3
+  <br>MakerNoteNintendo
+  <br>MakerNoteOlympus
+  <br>MakerNoteOlympus2
+  <br>MakerNoteLeica
+  <br>MakerNoteLeica2
+  <br>MakerNoteLeica3
+  <br>MakerNoteLeica4
+  <br>MakerNoteLeica5
+  <br>MakerNoteLeica6
+  <br>MakerNotePanasonic
+  <br>MakerNotePanasonic2
+  <br>MakerNotePentax
+  <br>MakerNotePentax2
+  <br>MakerNotePentax3
+  <br>MakerNotePentax4
+  <br>MakerNotePentax5
+  <br>MakerNotePentax6
+  <br>MakerNotePhaseOne
+  <br>MakerNoteReconyx
+  <br>MakerNoteRicoh
+  <br>MakerNoteRicoh2
+  <br>MakerNoteRicohText
+  <br>MakerNoteSamsung1a
+  <br>MakerNoteSamsung1b
+  <br>MakerNoteSamsung2
+  <br>MakerNoteSanyo
+  <br>MakerNoteSanyoC4
+  <br>MakerNoteSanyoPatch
+  <br>MakerNoteSigma
+  <br>MakerNoteSony
+  <br>MakerNoteSony2
+  <br>MakerNoteSony3
+  <br>MakerNoteSony4
+  <br>MakerNoteSony5
+  <br>MakerNoteSonyEricsson
+  <br>MakerNoteSonySRF
+  <br>MakerNoteUnknownText
+  <br>MakerNoteUnknownBinary
+  <br>MakerNoteUnknown</td>
+<td><span class=s><span class=n>(useful when copying tags between files to either copy the maker notes as a
+block or prevent it from being copied)</span></span></td></tr>
+<tr class=b>
+<td>Nikon</td>
+<td class=c>Y</td>
+<td class=n>Model
+  <br>SubSecDateTimeOriginal
+  <br>ShutterCount
+  <br>LensSpec
+  <br>FocalLength
+  <br>ImageSize
+  <br>ShutterSpeed
+  <br>Aperture
+  <br>ISO
+  <br>NoiseReduction
+  <br>ExposureProgram
+  <br>ExposureCompensation
+  <br>WhiteBalance
+  <br>WhiteBalanceFineTune
+  <br>ShootingMode
+  <br>Quality
+  <br>MeteringMode
+  <br>FocusMode
+  <br>ImageOptimization
+  <br>ToneComp
+  <br>ColorHue
+  <br>ColorSpace
+  <br>HueAdjustment
+  <br>Saturation
+  <br>Sharpness
+  <br>Flash
+  <br>FlashMode
+  <br>FlashExposureComp</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Unsafe</td>
+<td class=c>Y</td>
+<td class=n>IFD0:YCbCrPositioning
+  <br>IFD0:YCbCrCoefficients
+  <br>IFD0:TransferFunction
+  <br>ExifIFD:ComponentsConfiguration
+  <br>ExifIFD:CompressedBitsPerPixel
+  <br>InteropIFD:InteropIndex
+  <br>InteropIFD:InteropVersion
+  <br>InteropIFD:RelatedImageWidth
+  <br>InteropIFD:RelatedImageHeight</td>
+<td><span class=s><span class=n>(&quot;unsafe&quot; tags in JPEG images which are normally not copied.  Defined here
+as a shortcut to use when rebuilding JPEG EXIF from scratch)</span></span></td></tr>
+</table></td></tr></table></blockquote>
+
+<hr>
+(This document generated automatically by Image::ExifTool::BuildTagLookup)
+<br><i>Last revised Jul 18, 2014</i>
+<p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
+</body>
+</html>

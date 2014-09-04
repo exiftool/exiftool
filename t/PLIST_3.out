@@ -1,0 +1,20 @@
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.21
+[File, System, Image] FileName - File Name: PLIST-bin.plist
+[File, System, Image] Directory - Directory: t/images
+[File, System, Image] FileSize - File Size: 351 bytes
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2013:02:22 08:20:16-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2013:02:22 08:21:44-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2013:02:22 08:20:16-05:00
+[File, System, Image] FilePermissions - File Permissions: rw-r--r--
+[File, File, Image] FileType - File Type: PLIST
+[File, File, Image] MIMEType - MIME Type: application/x-plist
+[PLIST, PLIST, Document] TestReal - Test Real: 1.4
+[PLIST, PLIST, Time] TestDict/When - Test Dict When: 2000:01:02 03:04:05-05:00
+[PLIST, PLIST, Document] TestDict/Author - Test Dict Author: Phil
+[PLIST, PLIST, Document] TestString - Test String: ExifTool PLIST test
+[PLIST, PLIST, Document] TestArray - Test Array: one, two, three
+[PLIST, PLIST, Document] TestInteger - Test Integer: 256
+[PLIST, PLIST, Document] TestUnicode - Test Unicode: ExîfTöøl PLIST tést
+[PLIST, PLIST, Time] TestDate - Test Date: 2013:02:22 07:49:10-05:00
+[PLIST, PLIST, Document] TestData - Test Data: (Binary data 12 bytes)
+[PLIST, PLIST, Document] TestBoolean - Test Boolean: False

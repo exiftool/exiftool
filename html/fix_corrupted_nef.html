@@ -1,0 +1,164 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd">
+<html>
+<head>
+  <title>Fix Corrupted Nikon NEF Images</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+<style type="text/css">
+<!--
+pre      { color: #800; margin-left: 2em }
+ol.index { margin: 0; padding: 0 0 0 2em }
+li.spc   { padding: 1em 0 0 0 }
+-->
+</style>
+</head>
+<body>
+<div class='index'>
+<ol class='index'>
+<li><a href="#win">Windows</a></li>
+<li><a href="#mac">Mac / Linux</a></li>
+</ol>
+</div>
+
+<h1 class='up'>Fix Corrupted Nikon NEF Images</h1>
+
+<p>Downloading NEF images from newer Nikon cameras with <b>Nikon Transfer 1</b>
+or older versions of <b>ViewNX 2</b> (and probably Capture NX 2) may result
+in <b>corrupted NEF</b> images that can no longer be opened.</p>
+
+<p>This utility <b>repairs these corrupted NEF images</b> for the D4, Df,
+D600, D610, D800, D800E, D3200, D5200 and D7100.<sup>&dagger;</sup></p>
+
+<p>It <b>does <u>not</u> repair</b> images corrupted by memory card problems
+or disk errors.</p>
+
+<p>Follow the instructions below for running this utility on
+<a href="#win">Windows</a> or <a href="#mac">Mac / Linux</a> systems.</p>
+
+<p><a href="http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,4220.msg20951.html#new">See this thread
+in the ExifTool forum</a> if you have any questions or comments.</p>
+
+<p class=lt>[Note that Nikon doesn't learn from their mistakes, and a similar problem
+happened 2 years ago with an older version of Nikon Transfer and the D5000 --
+<a href="http://geekswithblogs.net/felipe/archive/2010/07/12/140879.aspx">read here</a>.
+The moral is: Don't use Nikon Transfer <b>or any other utility that modifies the file</b>
+to download your precious images!]</p>
+
+<p>It is very sad that this Nikon software bug penalizes only loyal Nikon owners
+(since it affects only people who had an older copy of the Nikon software from a
+previous camera), yet Nikon customer support provides no help other than
+suggesting that you contact your memory card manufacturer to see if the original
+images can be restored.</p>
+
+<p><sup>&dagger;</sup> <span class="sm lt">Currently only FX-format NEF images
+are supported for the D4, but support for DX images may be added if there is a
+demand.  Both FX and DX formats are supported for the Df, D600, D610 and D800.</span></p>
+
+<hr><a name="win"></a><h2>Windows Users</h2>
+
+<ol><li><b>Download and open</b> "<a href="http://owl.phy.queensu.ca/~phil/exiftool/fix_corrupted_nef_win.zip">fix_corrupted_nef_win.zip</a>", then move the
+   "fix_corrupted_nef.exe" application onto your hard disk.</li>
+
+<li class=spc><b>Drag and drop the corrupted NEF files</b> and/or folders onto
+   the "fix_corrupted_nef.exe" application.</li>
+
+<li class=spc>A command window should open and prompt with this message:<br><br>
+
+   "Bit depth of compressed images (12 or 14) [14]?"<br><br>
+   
+   <b>Type either "12" or "14", then press RETURN</b>.  If you don't know the
+   bit depth of your compressed NEF images, or if you have mixed 12
+   and 14-bit compressed images, or if you have only uncompressed NEF
+   images, just type "14" (or simply press RETURN).  If this is wrong
+   for some images, you will  not be able to open the fixed images
+   (but you can delete these and re-generate them with the other bit
+   depth later).  Note that this number is ignored for the D3200 and
+   D5200 since the NEF bit depth can not be changed for these cameras.</li>
+
+<li class=spc>The application should now run and create a <b>"fixed" folder</b> beside
+   each of the original NEF images.  This folder contains the fixed
+   NEF images with the same names as the originals.</li>
+
+<li class=spc><b>Verify that you can open the fixed NEF images</b>.  If you can't open
+   any of the images, delete them and go back to step 2, but this time
+   select the other bit depth in step 3.  (Only the images you deleted
+   will be re-generated, the others won't be touched.)</li>
+</ol>
+
+<p>With any luck, the mess caused by the Nikon software is now fixed, and
+all of your <b>NEF images are now restored!</b></p>
+
+<p>If you are feeling so happy that you absolutely must send me a
+donation, this can be done from <a href="http://owl.phy.queensu.ca/~phil/exiftool/#donate">the ExifTool home page</a>.</p>
+
+<p> &nbsp; &nbsp; - Phil Harvey</p>
+
+<hr><a name="mac"></a><h2>Mac / Linux Users</h2>
+
+<ol>
+<li><b>Download and expand</b> "<a href="http://owl.phy.queensu.ca/~phil/exiftool/fix_corrupted_nef.zip">fix_corrupted_nef.zip</a>" into a directory on
+your hard disk.</li>
+
+<li class=spc><b>Open a Terminal window</b>.
+   (on Mac, launch /Applications/Utilities/Terminal)</li>
+
+<li class=spc><b>Drag and drop "fix_corrupted_nef.pl"</b> onto the Terminal window.
+   (Note: The distributed "lib" folder must exist in the same folder
+   as the "fix_corrupted_nef.pl" application.  If you moved
+   "fix_corrupted_nef.pl" to a different folder you must also move its
+   "lib" folder to the same place before running.)</li>
+
+<li class=spc><b>Drag and drop the corrupted NEF files</b> and/or folders onto
+   the Terminal window.</li>
+
+<li class=spc>Select the Terminal window, then <b>press RETURN</b> on the keyboard.</li>
+
+<li class=spc>You should see this prompt:<br><br>
+
+   "Bit depth of compressed images (12 or 14) [14]?"<br><br>
+   
+   <b>Type either "12" or "14", then press RETURN</b>.  If you don't know the
+   bit depth of your compressed NEF images, or if you have mixed 12
+   and 14-bit compressed images, or if you have only uncompressed NEF
+   images, just type "14" (or simply press RETURN).  If this is wrong
+   for some images, you will  not be able to open the fixed images
+   (but you can delete these and re-generate them with the other bit
+   depth later).  Note that this number is ignored for the D3200 and
+   D5200 since the NEF bit depth can not be changed for these cameras.</li>
+
+<li class=spc>The "fix_corrupted_nef.pl" application should now run and create a
+   <b>"fixed" folder</b> beside each of the original NEF images.  This folder
+   contains the fixed NEF images with the same names as the originals.</li>
+
+<li class=spc><b>Verify that you can open the fixed NEF images</b>.  If you can't open
+   any of the images, delete them and go back to step 3, but this time
+   select the other bit depth in step 6.  (Only the images you deleted
+   will be re-generated, the others won't be touched.)</li>
+</ol>
+
+<p>With any luck, the mess caused by the Nikon software is now fixed, and
+all of your <b>NEF images are now restored!</b></p>
+
+<p>If you are feeling so happy that you absolutely must send me a
+donation, this can be done from <a href="http://owl.phy.queensu.ca/~phil/exiftool/#donate">the ExifTool home page</a>.</p>
+
+<p> &nbsp; &nbsp; - Phil Harvey</p>
+
+<hr><h3>Revisions</h3>
+<p><b>2014-09-02 - Version 2.1</b> - Added support for Df FX and DX images</p>
+<p><b>2014-05-17 - Version 2.0</b> - Added support for D610 images</p>
+<p><b>2013-08-01 - Version 1.9</b> - Added support for D600 movie-cropped images</p>
+<p><b>2013-06-17 - Version 1.8</b> - Added support for D7100 1.3x cropped images</p>
+<p><b>2013-06-12 - Version 1.7</b> - Added support for D5200 images</p>
+<p><b>2013-05-16 - Version 1.6</b> - Added support for D7100 images and D800 5:4 cropped images</p>
+<p><b>2013-03-26 - Version 1.5</b> - Added support for D600 DX images</p>
+<p><b>2013-01-15 - Version 1.4</b> - Added support for D3200 images</p>
+<p><b>2013-01-07 - Version 1.3</b> - Added support for D800 DX images</p>
+<p><b>2012-11-03 - Version 1.2</b> - Added support for D600 FX images</p>
+<p><b>2012-09-26 - Version 1.1</b> - Added support for D4 FX images</p>
+<p><b>2012-09-08 - Version 1.0</b> - Initial release (fixes D800 FX images)</p>
+<hr>
+<i>Created Sept. 8, 2012</i>
+<p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
+</body>
+</html>

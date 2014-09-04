@@ -1,0 +1,485 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Font Tags</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h2 class=top>Font Tags</h2>
+<p>This table contains a collection of tags found in font files of various
+formats.  ExifTool current recognizes OTF, TTF, TTC, DFONT, PFA, PFB, PFM,
+AFM, ACFM and AMFM font files.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'AFM'</td>
+<td>AFM</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Font.html#AFM'>Font AFM Tags</a></td></tr>
+<tr class=b>
+<td>'PFM'</td>
+<td>PFMHeader</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Font.html#PFM'>Font PFM Tags</a></td></tr>
+<tr>
+<td>'PSInfo'</td>
+<td>PSFontInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Font.html#PSInfo'>Font PSInfo Tags</a></td></tr>
+<tr class=b>
+<td>'fontname'</td>
+<td>FontName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'name'</td>
+<td>Name</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Font.html#Name'>Font Name Tags</a></td></tr>
+<tr class=b>
+<td>'numfonts'</td>
+<td>NumFonts</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'postfont'</td>
+<td>PostScriptFontName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='AFM'>Font AFM Tags</a></h2>
+<p>Tags extracted from Adobe Font Metrics files (AFM, ACFM and AMFM).</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'Ascender'</td>
+<td>Ascender</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'CapHeight'</td>
+<td>CapHeight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'CharacterSet'</td>
+<td>CharacterSet</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Characters'</td>
+<td>Characters</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Creation Date'</td>
+<td>CreateDate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Descender'</td>
+<td>Descender</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'EncodingScheme'</td>
+<td>EncodingScheme</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'EscChar'</td>
+<td>EscChar</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'FamilyName'</td>
+<td>FontFamily</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'FontName'</td>
+<td>FontName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'FullName'</td>
+<td>FullName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'IsBaseFont'</td>
+<td>IsBaseFont</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'IsFixedV'</td>
+<td>IsFixedV</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'MappingScheme'</td>
+<td>MappingScheme</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Notice'</td>
+<td>Notice</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Version'</td>
+<td>Version</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Weight'</td>
+<td>Weight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'XHeight'</td>
+<td>XHeight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='PFM'>Font PFM Tags</a></h2>
+<p>Tags extracted from the PFM file header.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>PFMVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='6 = 0x6'>6</td>
+<td>Copyright</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='66 = 0x42'>66</td>
+<td>FontType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='68 = 0x44'>68</td>
+<td>PointSize</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='70 = 0x46'>70</td>
+<td>YResolution</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='72 = 0x48'>72</td>
+<td>XResolution</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='74 = 0x4a'>74</td>
+<td>Ascent</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='76 = 0x4c'>76</td>
+<td>InternalLeading</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='78 = 0x4e'>78</td>
+<td>ExternalLeading</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='80 = 0x50'>80</td>
+<td>Italic</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='81 = 0x51'>81</td>
+<td>Underline</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='82 = 0x52'>82</td>
+<td>Strikeout</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='83 = 0x53'>83</td>
+<td>Weight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='85 = 0x55'>85</td>
+<td>CharacterSet</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='86 = 0x56'>86</td>
+<td>PixWidth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='88 = 0x58'>88</td>
+<td>PixHeight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='90 = 0x5a'>90</td>
+<td>PitchAndFamily</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='91 = 0x5b'>91</td>
+<td>AvgWidth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='93 = 0x5d'>93</td>
+<td>MaxWidth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='95 = 0x5f'>95</td>
+<td>FirstChar</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='96 = 0x60'>96</td>
+<td>LastChar</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='97 = 0x61'>97</td>
+<td>DefaultChar</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='98 = 0x62'>98</td>
+<td>BreakChar</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='99 = 0x63'>99</td>
+<td>WidthBytes</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='PSInfo'>Font PSInfo Tags</a></h2>
+<p>Tags extracted from PostScript font files (PFA and PFB).</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'Copyright'</td>
+<td>Copyright</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'FSType'</td>
+<td>FSType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'FamilyName'</td>
+<td>FontFamily</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'FontName'</td>
+<td>FontName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'FontType'</td>
+<td>FontType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'FullName'</td>
+<td>FullName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'ItalicAngle'</td>
+<td>ItalicAngle</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Notice'</td>
+<td>Notice</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'UnderlinePosition'</td>
+<td>UnderlinePosition</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'UnderlineThickness'</td>
+<td>UnderlineThickness</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Weight'</td>
+<td>Weight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'isFixedPitch'</td>
+<td>IsFixedPitch</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'version'</td>
+<td>Version</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Name'>Font Name Tags</a></h2>
+<p>The following tags are extracted from the TrueType font &quot;name&quot; table found
+in OTF, TTF, TTC and DFONT files.  These tags support localized languages by
+adding a hyphen followed by a language code to the end of the tag name (eg.
+&quot;Copyright-fr&quot; or &quot;License-en-US&quot;).  Tags with no language code use the
+default language of &quot;en&quot;.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x0000 = 0'>0x0000</td>
+<td>Copyright</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0001 = 1'>0x0001</td>
+<td>FontFamily</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0002 = 2'>0x0002</td>
+<td>FontSubfamily</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0003 = 3'>0x0003</td>
+<td>FontSubfamilyID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0004 = 4'>0x0004</td>
+<td>FontName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0005 = 5'>0x0005</td>
+<td>NameTableVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0006 = 6'>0x0006</td>
+<td>PostScriptFontName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0007 = 7'>0x0007</td>
+<td>Trademark</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0008 = 8'>0x0008</td>
+<td>Manufacturer</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0009 = 9'>0x0009</td>
+<td>Designer</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x000a = 10'>0x000a</td>
+<td>Description</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x000b = 11'>0x000b</td>
+<td>VendorURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x000c = 12'>0x000c</td>
+<td>DesignerURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x000d = 13'>0x000d</td>
+<td>License</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x000e = 14'>0x000e</td>
+<td>LicenseInfoURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0010 = 16'>0x0010</td>
+<td>PreferredFamily</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0011 = 17'>0x0011</td>
+<td>PreferredSubfamily</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0012 = 18'>0x0012</td>
+<td>CompatibleFontName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0013 = 19'>0x0013</td>
+<td>SampleText</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0014 = 20'>0x0014</td>
+<td>PostScriptFontName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0015 = 21'>0x0015</td>
+<td>WWSFamilyName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0016 = 22'>0x0016</td>
+<td>WWSSubfamilyName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<hr>
+(This document generated automatically by Image::ExifTool::BuildTagLookup)
+<br><i>Last revised Jan 31, 2012</i>
+<p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
+</body>
+</html>

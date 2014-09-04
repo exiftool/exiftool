@@ -1,0 +1,274 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd">
+<html>
+<head>
+<title>ExifTool Object Data Members</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h2 class='up'>ExifTool Object Data Members</h2>
+
+<p>The following table lists the data members of the ExifTool object.  (If this
+was C++, these would be documented next to the definitions in the header file,
+but this is Perl, so I couldn't do that...)</p>
+
+<p>Aside from the variables defined below, there may be other temporary
+variables added by individual modules. Temporary variables are identified by at
+least one lower case letter in their name, and are deleted automatically before
+reading or writing each new image.  Make, Model and CameraType are temporary
+variables like this, but these three are special because they are initialized to
+an empty string instead of being deleted at the start of processing for each
+image, which allows them to be tested without having to check for an undefined
+value.</p>
+
+<blockquote><table class='norm'><tr><th>Name</th><th>Description</th></tr>
+
+<tr><td>ADD_DIRS</td><td>Hash of parent directories for each directory added during
+    writing (Note: entry may exist but be undefined for top-level
+    directory!)</td></tr>
+
+<tr><td>BASE</td><td>Absolute position of current image in containing file
+    (for example, when processing JPEG image in FujiFilm RAF file)</td></tr>
+
+<tr><td>BOTH</td><td>Reference to HASH of ValueConv/PrintConv arrays, saved for
+    tags when GetValue is called for 'Both' values, and used to avoid having to
+    recalculate both values again (which speeds up building the Composite tags
+    because often the same tag is Require'd by multiple Composite tags).</td></tr>
+
+<tr><td>CameraType</td><td>Camera type used for decoding some Olympus tags</td></tr>
+
+<tr><td>CHANGED</td><td>Number of tags changed during writing</td></tr>
+
+<tr><td>CHARSET</td><td>Lookup table for current Charset setting</td></tr>
+
+<tr><td>CHECK_WARN</td><td>Used to return CHECK_PROC warnings</td></tr>
+
+<tr><td>CUR_LANG</td><td>Hash reference for localized language lookup corresponding
+    to current 'Lang' options setting.</td></tr>
+
+<tr><td>CUR_WRITE_GROUP</td><td>Current family 1 group while writing.  Currently
+    used only when writing QuickTime tracks.</td></tr>
+
+<tr><td>DEL_GROUP</td><td>Hash of groups to delete.  Value is 1 to delete group
+    completely, or 2 if tags were added back after deleting the group.  May
+    have a leading "-" if excluded from a delete.</td></tr>
+
+<tr><td>DEL_PREVIEW</td><td>Flag to delete preview from after JPEG EOI</td></tr>
+
+<tr><td>DemoteErrors</td><td>Errors are demoted to warnings and this count is
+    incremented if non-zero to begin with</td></tr>
+
+<tr><td>DIR_COUNT</td><td>Hash reference for counters of various types of directorys (ICC, IPTC,...)</td></tr>
+
+<tr><td>DIR_NAME</td><td>Name of directory currently being processed</td></tr>
+
+<tr><td>DOC_COUNT</td><td>Number of top-level embedded sub-documents processed while
+    extracting, or 0 if none were processed</td></tr>
+
+<tr><td>DOC_NUM</td><td>Current document number while extracting (0, '' or undef for the
+    main document)</td></tr>
+
+<tr><td>DoneID3</td><td>Set to 1 if audio file was scanned for ID3,
+    or 2 if there was an ID3v1 trailer found</td></tr>
+
+<tr><td>DROP_TAGS</td><td>Flag to exclude "Drop" tags when writing</td></tr>
+
+<tr><td>DUPL_TAG</td><td>Hash of last used tag key index numbers for each duplicate tag.</td></tr>
+
+<tr><td>EDIT_DIRS</td><td>Hash of parent directories for each directory edited during
+    writing (Note: entry may exist but be undefined for top-level
+    directory!)</td></tr>
+
+<tr><td>ESCAPE_PROC</td><td>Routine for XML or HTML escaping if Escape option is set</td></tr>
+
+<tr><td>EXCL_TAG_LOOKUP</td><td>Hash for looking up excluded tags (keys are lower case tag names)</td></tr>
+
+<tr><td>EXIF_DATA</td><td>EXIF data block (valid while reading from file)</td></tr>
+
+<tr><td>EXIF_POS</td><td>Position of EXIF data in file</td></tr>
+
+<tr><td>FILENAME</td><td>Name of input file while extracting (only if we opened it, '' otherwise)</td></tr>
+
+<tr><td>FILE_ORDER</td><td>Hash of numbers to give the sequence the tags were
+    extracted from file, keyed by tag key</td></tr>
+
+<tr><td>FILE_EXT</td><td>File extension (JPG, PEF, AVI, etc...) May be undefined if
+    file has no extension.</td></tr>
+
+<tr><td>FILE_SEQUENCE</td><td>File sequence number when extracting information</td></tr>
+
+<tr><td>FILE_TYPE</td><td>Root file format type (JPEG, TIFF, RIFF, etc...)</td></tr>
+
+<tr><td>FIRST_EXIF_POS</td><td>Position of first EXIF in file</td></tr>
+
+<tr><td>FOUND_TAGS</td><td>Found tags with proper case and order</td></tr>
+
+<tr><td>GLOBAL_TIME_OFFSET</td><td>Time offset hash for first shifted date/time value of GlobalTimeShift option</td></tr>
+
+<tr><td>HTML_DUMP</td><td>Reference to HtmlDump object when using HtmlDump feature</td></tr>
+
+<tr><td>INDENT</td><td>Indent string for verbose output</td></tr>
+
+<tr><td>IN_RESOURCE</td><td>Flag indicates we are processing the resource fork of a Mac OS file</td></tr>
+
+<tr><td>IO_TAG_LIST</td><td>List for output of requested tags in proper case and order</td></tr>
+
+<tr><td>LIST_TAGS</td><td>Hash of tag keys by tagInfo reference for active list-type
+    tags.  This hash is cleared at the start of processing for each directory.
+    Not used during when writing.</td></tr>
+
+<tr><td>LOW_PRIORITY_DIR</td><td>Lookup based on directory name for directories where
+    undefined Priority tags get set to Priority 0 (eg. PreviewIFD in all images,
+    and IFD1 in JPEG images).  This is equivalent to setting PRIORITY to 0 for
+    the tag table only for a specific directory name.</td></tr>
+
+<tr><td>Make</td><td>Camera make set during reading and writing</td></tr>
+
+<tr><td>MAKER_NOTE_BYTE_ORDER</td><td>Byte order of extracted maker notes if extracted
+    as a block.</td></tr>
+
+<tr><td>MAKER_NOTE_INFO</td><td>Used by Image::ExifTool::CanonRaw as temporary storage for
+    maker note information when synthesizing maker notes from CRW file with the
+    MakerNotes option.</td></tr>
+
+<tr><td>MAKER_NOTE_FIXUP</td><td>Fixup information for maker notes extracted with the MakerNotes
+    option (unless MakerNotes option is 2). Used by SetNewValuesFromFile() to adjust offsets
+    in maker note IFD</td></tr>
+
+<tr><td>Model</td><td>Camera model name set during reading and writing</td></tr>
+
+<tr><td>MOVED_KEY</td><td>Tag key of last tag replaced by a higher priority tag
+    in a call to FoundTag().</td></tr>
+
+<tr><td>NEW_VALUE</td><td>Hash of new value information keyed by tag info reference.
+    Elements of new value information hash are:
+    <table class='clear'><tr><td>TagInfo</td><td>-</td><td>tag information reference</td></tr>
+    <tr><td>DelValue</td><td>-</td><td>list of specific values to delete</td></tr>
+    <tr><td>Value</td><td>-</td><td>list of values to add</td></tr>
+    <tr valign='top'><td>IsCreating</td><td>-</td><td>must be set for the tag to be added, otherwise just
+        changed if it already exists.  A value of 2 will create a new tag if its group already
+        exists, but won't add a new group</td></tr>
+    <tr valign='top'><td>Next</td><td>-</td><td>reference to next new value hash in linked list
+        if there is more than one new value hash (for writing to different groups) for this
+        tagInfo</td></tr>
+    <tr valign='top'><td>Save</td><td>-</td><td>flag set by call to SaveNewValues() if this value
+        should be saved</td></tr>
+    </table></td></tr>
+
+<tr><td>NewIPTCDigest</td><td>MD5 digest for most recently written IPTC data (undefined if IPTC doesn't
+    exist or if it was deleted).  Calculated only if a value of 'new' is being written/deleted
+    to/from the Photoshop:IPTCDigest tag</td></tr>
+
+<tr><td>NO_LIST</td><td>Set if List tags shouldn't be accumulated into a list.  Undefined to
+    accumulate lists as usual, or 0 to accumulate lists in TAG_EXTRA "NoList" element (and
+    set a TAG_EXTRA "NoListDel" flag for tags that wouldn't have been created).</td></tr>
+
+<tr><td>NO_STRUCT</td><td>Set if structures shouldn't be restored for this metadata.  Used
+    to avoid restoring structures for non-XMP (eg. XML) information.</td></tr>
+
+<tr><td>NO_UNKNOWN</td><td>Don't generate unknown tags automatically even if Unknown option is set</td></tr>
+
+<tr><td>NUM_FOUND</td><td>Number of tags found</td></tr>
+
+<tr><td>OldIPTCDigest</td><td>MD5 digest for original IPTC data (undefined if IPTC didn't
+    exist).  Calculated only if a value of 'old' is being written/deleted to/from the
+    Photoshop:IPTCDigest tag</td></tr>
+
+<tr><td>OPTIONS</td><td>ExifTool options</td></tr>
+
+<tr><td>PATH</td><td>List reference to SubDirectory path.  eg)
+    [qw(JPEG APP13 Photoshop IPTC)]</td></tr>
+
+<tr><td>PDF_CAPTURE</td><td>Used by PDF module to store information when writing</td></tr>
+
+<tr><td>PreferredGroup</td><td>Preferred family 1 group for writing tags to the current file.
+    Not defined to use the default group priorities.  Set in call to InitWriteDirs().</td></tr>
+
+<tr><td>PREVIEW_INFO</td><td>Information about preview image used while writing JPEG
+    images only.  This is a reference to a hash with the following entries:
+    <table class='clear'>
+    <tr valign='top'><td>Absolute</td><td>-</td><td>flag set if PreviewImage pointer is relative to the
+    start of file</td></tr>
+    <tr><td>BaseShift</td><td>-</td><td>shift for base of pointer offsets</td></tr>
+    <tr valign='top'><td>Data</td><td>-</td><td>data for PreviewImage to be written (may either be data
+    for the old or new image, or 'LOAD_PREVIEW' to indicate that the data must be loaded from outside
+    the EXIF segment)</td></tr>
+    <tr><td>Fixup</td><td>-</td><td>[mandatory] fixup for PreviewImage pointers when writing JPEG images</td></tr>
+    <tr valign='top'><td>IsShort</td><td>-</td><td>flag indicates PreviewImage pointers
+    are 2-byte (instead of 4-byte) integers</td></tr>
+    <tr valign='top'><td>IsTrailer</td><td>-</td><td>flag indicates image should always be written as a JPEG
+    trailer, even if it fits inside the APP1 EXIF segment (as with Samsung STMN maker notes)</td></tr>
+    <tr><td>Relative</td><td>-</td><td>flag to indicate that pointer offsets are relative</td></tr>
+    </table></td></tr>
+
+<tr><td>PRIORITY</td><td>Hash of tag Priority values for current tag, keyed by tag name (not tag key!)</td></tr>
+
+<tr><td>PRIORITY_DIR</td><td>Name of priority directory (ie. the IFD for the full resolution image)</td></tr>
+
+<tr><td>PROCESSED</td><td>Reference to hash of address/directory names which were processed
+    during reading and/or writing</td></tr>
+
+<tr><td>RAF</td><td>Random access file object for reading from input file</td></tr>
+
+<tr><td>RATIONAL</td><td>Hash of rational values as a string fraction keyed by tag key</td></tr>
+
+<tr><td>Recreated</td><td>Directories recreated when writing (used to prevent recreating
+    multiple directories of the same type)</td></tr>
+
+<tr><td>REQUESTED_TAGS</td><td>List of requested tags in original case</td></tr>
+
+<tr><td>REQ_TAG_LOOKUP</td><td>Hash for looking up requested tags (keys are lower case tag names)</td></tr>
+
+<tr><td>SAVE_COUNT</td><td>Counts number of times SaveNewValues() has been called</td></tr>
+
+<tr><td>SAVE_DEL_GROUP</td><td>Hash of saved DEL_GROUP entries</td></tr>
+
+<tr><td>SAVE_NEW_VALUE</td><td>Hash of new value information which was overwritten after
+    a call to SaveNewValues()</td></tr>
+
+<tr><td>SET_GROUP0</td><td>Value to use for family 0 group name when new tags
+    are found</td></tr>
+
+<tr><td>SET_GROUP1</td><td>Value to use for family 1 group name when new tags
+    are found.  May start with a '+' sign to add to existing group name</td></tr>
+
+<tr><td>TAG_EXTRA</td><td>Hash of extra tag information keyed by tag key.  Current extra
+information may include:
+    <table class='clear'>
+    <tr valign='top'><td>G0</td><td>-</td><td>override for family 0 group name</td></tr>
+    <tr valign='top'><td>G1</td><td>-</td><td>dynamic family 1 group name (eg. IFD name or XMP
+        namespace), with a leading '+' to add value to the existing group 1 name</td></tr>
+    <tr valign='top'><td>G3</td><td>-</td><td>number for embedded documents (eg. 1, 2, etc)</td></tr>
+    </table></td></tr>
+
+<tr><td>TAG_INFO</td><td>Hash of tagInfo hash references, keyed by tag key</td></tr>
+
+<tr><td>TAGS_FROM_FILE</td><td>Flag used during extraction when called from SetNewValuesFromFile().
+    Test this flag when extracting tags that are not normally extracted.</td></tr>
+
+<tr><td>TIFF_END</td><td>Location of end of regular TIFF file set by WriteExif()</td></tr>
+
+<tr><td>TIFF_TYPE</td><td>Type of TIFF data, only set if FILE_TYPE is TIFF.  Valid values
+    are APP1, APP3, TIFF, CR2, MRW, JP2, JPX, NEF, PEF, ORF, DNG, etc.</td></tr>
+
+<tr><td>VALUE</td><td>Hash of raw tag values keyed by tag key</td></tr>
+
+<tr><td>WARNED_ONCE</td><td>Hash of warning messages that have been issued once already</td></tr>
+
+<tr><td>WRITE_GROUPS</td><td>List of write groups in order of priority</td></tr>
+
+<tr><td>WRITE_PRIORITY</td><td>Hash of write priority values keyed by group name</td></tr>
+
+<tr><td>XMP_CAPTURE</td><td>Hash of tag information (value, attribute hash) keyed by XMP
+    property path, used by XMP module during writing</td></tr>
+
+<tr><td>XMP_ERROR</td><td>Error string used by XMP module during writing</td></tr>
+
+<tr><td>XMP_NS</td><td>Hash of URI's keyed by namespace prefix, used by XMP module
+    during writing to remember all used namespaces</td></tr>
+
+</table></blockquote>
+<hr>
+<p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
+</body>
+</html>

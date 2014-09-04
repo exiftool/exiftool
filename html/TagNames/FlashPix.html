@@ -1,0 +1,1465 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>FlashPix Tags</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h2 class=top>FlashPix Tags</h2>
+<p>The FlashPix file format, introduced in 1996, was developed by Kodak,
+Hewlett-Packard and Microsoft.  Internally the FPX file structure mimics
+that of an old DOS disk with fixed-sized &quot;sectors&quot; (usually 512 bytes) and a
+&quot;file allocation table&quot; (FAT).  No wonder this image format never became
+popular.  However, some of the structures used in FlashPix streams are part
+of the EXIF specification, and are still being used in the APP2 FPXR segment
+of JPEG images by some digital cameras from manufacturers such as FujiFilm,
+Hewlett-Packard, Kodak and Sanyo.</p>
+
+<p>ExifTool extracts FlashPix information from both FPX images and the APP2
+FPXR segment of JPEG images.  As well, FlashPix information is extracted
+from DOC, PPT, XLS (Microsoft Word, PowerPoint and Excel) documents, VSD
+(Microsoft Visio) drawings, and FLA (Macromedia/Adobe Flash project) files
+since these are based on the same file format as FlashPix (the Windows
+Compound Binary File format).  See
+<a href="http://graphcomp.com/info/specs/livepicture/fpx.pdf">http://graphcomp.com/info/specs/livepicture/fpx.pdf</a> for the FlashPix
+specification.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>"\x01CompObj"</td>
+<td>CompObj</td>
+<td class=c>-</td>
+<td>--&gt; <a href='FlashPix.html#CompObj'>FlashPix CompObj Tags</a></td></tr>
+<tr class=b>
+<td>"\x05Audio Info"</td>
+<td>AudioInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='FlashPix.html#AudioInfo'>FlashPix AudioInfo Tags</a></td></tr>
+<tr>
+<td>"\x05Data Object"</td>
+<td>DataObject</td>
+<td class=c>-</td>
+<td>--&gt; <a href='FlashPix.html#DataObject'>FlashPix DataObject Tags</a></td></tr>
+<tr class=b>
+<td>"\x05DocumentSummaryInformation"</td>
+<td>DocumentInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='FlashPix.html#DocumentInfo'>FlashPix DocumentInfo Tags</a></td></tr>
+<tr>
+<td>"\x05Extension List"</td>
+<td>Extensions</td>
+<td class=c>-</td>
+<td>--&gt; <a href='FlashPix.html#Extensions'>FlashPix Extensions Tags</a></td></tr>
+<tr class=b>
+<td>"\x05Global Info"</td>
+<td>GlobalInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='FlashPix.html#GlobalInfo'>FlashPix GlobalInfo Tags</a></td></tr>
+<tr>
+<td>"\x05Image Contents"</td>
+<td>Image</td>
+<td class=c>-</td>
+<td>--&gt; <a href='FlashPix.html#Image'>FlashPix Image Tags</a></td></tr>
+<tr class=b>
+<td>"\x05Image Info"</td>
+<td>ImageInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='FlashPix.html#ImageInfo'>FlashPix ImageInfo Tags</a></td></tr>
+<tr>
+<td>"\x05Operation"</td>
+<td>Operation</td>
+<td class=c>-</td>
+<td>--&gt; <a href='FlashPix.html#Operation'>FlashPix Operation Tags</a></td></tr>
+<tr class=b>
+<td>"\x05Screen Nail"</td>
+<td>ScreenNail</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>"\x05SummaryInformation"</td>
+<td>SummaryInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='FlashPix.html#SummaryInfo'>FlashPix SummaryInfo Tags</a></td></tr>
+<tr class=b>
+<td>"\x05Transform"</td>
+<td>Transform</td>
+<td class=c>-</td>
+<td>--&gt; <a href='FlashPix.html#Transform'>FlashPix Transform Tags</a></td></tr>
+<tr>
+<td>'Audio Stream'</td>
+<td>AudioStream</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Contents'</td>
+<td>Contents</td>
+<td class=c>-</td>
+<td>--&gt; <a href='XMP.html'>XMP Tags</a>
+  <br><span class='n s'>(found in FLA files; may contain XMP)</span></td></tr>
+<tr>
+<td>'Current User'</td>
+<td>CurrentUser</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'ICC Profile 0001'</td>
+<td>ICC_Profile</td>
+<td class=c>-</td>
+<td>--&gt; <a href='ICC_Profile.html'>ICC_Profile Tags</a></td></tr>
+<tr>
+<td>'Preview'</td>
+<td>PreviewImage</td>
+<td class=c>N</td>
+<td><span class=s><span class=n>(written by some FujiFilm models)</span></span></td></tr>
+<tr class=b>
+<td>'Property'</td>
+<td>PreviewInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='FlashPix.html#PreviewInfo'>FlashPix PreviewInfo Tags</a></td></tr>
+<tr>
+<td>'Subimage 0000 Header'</td>
+<td>SubimageHdr</td>
+<td class=c>-</td>
+<td>--&gt; <a href='FlashPix.html#SubimageHdr'>FlashPix SubimageHdr Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='CompObj'>FlashPix CompObj Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index4</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>CompObjUserTypeLen</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='1 = 0x1'>1</td>
+<td>CompObjUserType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='AudioInfo'>FlashPix AudioInfo Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr><td colspan=4 class=c><i>[no tags known]</i></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='DataObject'>FlashPix DataObject Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x10000 = 65536'>0x10000</td>
+<td>DataObjectID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x10002 = 65538'>0x10002</td>
+<td>LockedPropertyList</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x10003 = 65539'>0x10003</td>
+<td>DataObjectTitle</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x10004 = 65540'>0x10004</td>
+<td>LastModifier</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x10005 = 65541'>0x10005</td>
+<td>RevisionNumber</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x10006 = 65542'>0x10006</td>
+<td>DataCreateDate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x10007 = 65543'>0x10007</td>
+<td>DataModifyDate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x10008 = 65544'>0x10008</td>
+<td>CreatingApplication</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x10100 = 65792'>0x10100</td>
+<td>DataObjectStatus</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x10101 = 65793'>0x10101</td>
+<td>CreatingTransform</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x10102 = 65794'>0x10102</td>
+<td>UsingTransforms</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x10000000 = 268435456'>0x10000000</td>
+<td>CachedImageHeight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x10000001 = 268435457'>0x10000001</td>
+<td>CachedImageWidth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='DocumentInfo'>FlashPix DocumentInfo Tags</a></h2>
+<p>The DocumentSummaryInformation property set includes a UserDefined property
+set for which only the Hyperlinks and HyperlinkBase tags are pre-defined.
+However, ExifTool will also extract any other information found in the
+UserDefined properties.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x0002 = 2'>0x0002</td>
+<td>Category</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0003 = 3'>0x0003</td>
+<td>PresentationTarget</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0004 = 4'>0x0004</td>
+<td>Bytes</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0005 = 5'>0x0005</td>
+<td>Lines</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0006 = 6'>0x0006</td>
+<td>Paragraphs</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0007 = 7'>0x0007</td>
+<td>Slides</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0008 = 8'>0x0008</td>
+<td>Notes</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0009 = 9'>0x0009</td>
+<td>HiddenSlides</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x000a = 10'>0x000a</td>
+<td>MMClips</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x000b = 11'>0x000b</td>
+<td>ScaleCrop</td>
+<td class=c>N</td>
+<td><span class=s>0 = No
+  <br>1 = Yes</span></td></tr>
+<tr>
+<td title='0x000c = 12'>0x000c</td>
+<td>HeadingPairs</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x000d = 13'>0x000d</td>
+<td>TitleOfParts</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x000e = 14'>0x000e</td>
+<td>Manager</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x000f = 15'>0x000f</td>
+<td>Company</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0010 = 16'>0x0010</td>
+<td>LinksUpToDate</td>
+<td class=c>N</td>
+<td><span class=s>0 = No
+  <br>1 = Yes</span></td></tr>
+<tr class=b>
+<td title='0x0011 = 17'>0x0011</td>
+<td>CharCountWithSpaces</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0013 = 19'>0x0013</td>
+<td>SharedDoc</td>
+<td class=c>N</td>
+<td><span class=s>0 = No
+  <br>1 = Yes</span></td></tr>
+<tr class=b>
+<td title='0x0016 = 22'>0x0016</td>
+<td>HyperlinksChanged</td>
+<td class=c>N</td>
+<td><span class=s>0 = No
+  <br>1 = Yes</span></td></tr>
+<tr>
+<td title='0x0017 = 23'>0x0017</td>
+<td>AppVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'_PID_HLINKS'</td>
+<td>Hyperlinks</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'_PID_LINKBASE'</td>
+<td>HyperlinkBase</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Extensions'>FlashPix Extensions Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x0001 = 1'>0x0001</td>
+<td>ExtensionName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0002 = 2'>0x0002</td>
+<td>ExtensionClassID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0003 = 3'>0x0003</td>
+<td>ExtensionPersistence</td>
+<td class=c>N</td>
+<td><span class=s>0 = Always Valid
+  <br>1 = Invalidated By Modification
+  <br>2 = Potentially Invalidated By Modification</span></td></tr>
+<tr class=b>
+<td title='0x0004 = 4'>0x0004</td>
+<td>ExtensionCreateDate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0005 = 5'>0x0005</td>
+<td>ExtensionModifyDate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0006 = 6'>0x0006</td>
+<td>CreatingApplication</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0007 = 7'>0x0007</td>
+<td>ExtensionDescription</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1000 = 4096'>0x1000</td>
+<td>Storage-StreamPathname</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x2000 = 8192'>0x2000</td>
+<td>FlashPixStreamPathname</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x2001 = 8193'>0x2001</td>
+<td>FlashPixStreamFieldOffset</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x3000 = 12288'>0x3000</td>
+<td>PropertySetPathname</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x3001 = 12289'>0x3001</td>
+<td>PropertySetIDCodes</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x3002 = 12290'>0x3002</td>
+<td>PropertyVectorElements</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x4000 = 16384'>0x4000</td>
+<td>SubimageResolutions</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x10000000 = 268435456'>0x10000000</td>
+<td>UsedExtensionNumbers</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='GlobalInfo'>FlashPix GlobalInfo Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x10002 = 65538'>0x10002</td>
+<td>LockedPropertyList</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x10003 = 65539'>0x10003</td>
+<td>TransformedImageTitle</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x10004 = 65540'>0x10004</td>
+<td>LastModifier</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x10100 = 65792'>0x10100</td>
+<td>VisibleOutputs</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x10101 = 65793'>0x10101</td>
+<td>MaximumImageIndex</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x10102 = 65794'>0x10102</td>
+<td>MaximumTransformIndex</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x10103 = 65795'>0x10103</td>
+<td>MaximumOperationIndex</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Image'>FlashPix Image Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x1000000 = 16777216'>0x1000000</td>
+<td>NumberOfResolutions</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1000002 = 16777218'>0x1000002</td>
+<td>ImageWidth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x1000003 = 16777219'>0x1000003</td>
+<td>ImageHeight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1000004 = 16777220'>0x1000004</td>
+<td>DefaultDisplayHeight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x1000005 = 16777221'>0x1000005</td>
+<td>DefaultDisplayWidth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1000006 = 16777222'>0x1000006</td>
+<td>DisplayUnits</td>
+<td class=c>N</td>
+<td><span class=s>0 = inches
+  <br>1 = meters
+  <br>2 = cm
+  <br>3 = mm</span></td></tr>
+<tr>
+<td title='0x2000000 = 33554432'>0x2000000</td>
+<td>SubimageWidth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x2000001 = 33554433'>0x2000001</td>
+<td>SubimageHeight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x2000002 = 33554434'>0x2000002</td>
+<td>SubimageColor</td>
+<td class=c>N</td>
+<td><table class=cols><tr>
+  <td>&#39;01 0000&#39; = Opacity Only
+  <br>&#39;01 0001&#39; = Monochrome
+  <br>&#39;01 8000&#39; = Opacity Only (uncalibrated)
+  <br>&#39;01 8001&#39; = Monochrome (uncalibrated)
+  <br>&#39;03 0002&#39; = YCbCr
+  <br>&#39;03 0003&#39; = RGB
+  <br>&#39;03 8002&#39; = YCbCr (uncalibrated)
+  <br>&#39;03 8003&#39; = RGB (uncalibrated)
+  <br>&#39;04 0002&#39; = YCbCr with Opacity
+  <br>&#39;04 0003&#39; = RGB with Opacity
+  <br>&#39;04 8002&#39; = YCbCr with Opacity (uncalibrated)
+  <br>&#39;04 8003&#39; = RGB with Opacity (uncalibrated)</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td title='0x2000003 = 33554435'>0x2000003</td>
+<td>SubimageNumericalFormat</td>
+<td class=c>N</td>
+<td><span class=s>17 = 8-bit, Unsigned
+  <br>18 = 16-bit, Unsigned
+  <br>19 = 32-bit, Unsigned</span></td></tr>
+<tr>
+<td title='0x2000004 = 33554436'>0x2000004</td>
+<td>DecimationMethod</td>
+<td class=c>N</td>
+<td><span class=s>0 = None (Full-sized Image)
+  <br>8 = 8-point Prefilter</span></td></tr>
+<tr class=b>
+<td title='0x2000005 = 33554437'>0x2000005</td>
+<td>DecimationPrefilterWidth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x2000007 = 33554439'>0x2000007</td>
+<td>SubimageICC_Profile</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x3000001 = 50331649'>0x3000001</td>
+<td>JPEGTables</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x3000002 = 50331650'>0x3000002</td>
+<td>MaxJPEGTableIndex</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ImageInfo'>FlashPix ImageInfo Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x21000000 = 553648128'>0x21000000</td>
+<td>FileSource</td>
+<td class=c>N</td>
+<td><span class=s>1 = Film Scanner
+  <br>2 = Reflection Print Scanner
+  <br>3 = Digital Camera
+  <br>4 = Video Capture
+  <br>5 = Computer Graphics</span></td></tr>
+<tr class=b>
+<td title='0x21000001 = 553648129'>0x21000001</td>
+<td>SceneType</td>
+<td class=c>N</td>
+<td><span class=s>1 = Original Scene
+  <br>2 = Second Generation Scene
+  <br>3 = Digital Scene Generation</span></td></tr>
+<tr>
+<td title='0x21000002 = 553648130'>0x21000002</td>
+<td>CreationPathVector</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x21000003 = 553648131'>0x21000003</td>
+<td>SoftwareRelease</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x21000004 = 553648132'>0x21000004</td>
+<td>UserDefinedID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x21000005 = 553648133'>0x21000005</td>
+<td>SharpnessApproximation</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x22000000 = 570425344'>0x22000000</td>
+<td>Copyright</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x22000001 = 570425345'>0x22000001</td>
+<td>OriginalImageBroker</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x22000002 = 570425346'>0x22000002</td>
+<td>DigitalImageBroker</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x22000003 = 570425347'>0x22000003</td>
+<td>Authorship</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x22000004 = 570425348'>0x22000004</td>
+<td>IntellectualPropertyNotes</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x23000000 = 587202560'>0x23000000</td>
+<td>TestTarget</td>
+<td class=c>N</td>
+<td><table class=cols><tr>
+  <td>1 = Color Chart
+  <br>2 = Gray Card
+  <br>3 = Grayscale
+  <br>4 = Resolution Chart</td><td>&nbsp;&nbsp;</td>
+  <td>5 = Inch Scale
+  <br>6 = Centimeter Scale
+  <br>7 = Millimeter Scale
+  <br>8 = Micrometer Scale</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td title='0x23000002 = 587202562'>0x23000002</td>
+<td>GroupCaption</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x23000003 = 587202563'>0x23000003</td>
+<td>CaptionText</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x23000004 = 587202564'>0x23000004</td>
+<td>People</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x23000007 = 587202567'>0x23000007</td>
+<td>Things</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x2300000a = 587202570'>0x2300000a</td>
+<td>DateTimeOriginal</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x2300000b = 587202571'>0x2300000b</td>
+<td>Events</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x2300000c = 587202572'>0x2300000c</td>
+<td>Places</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x2300000f = 587202575'>0x2300000f</td>
+<td>ContentDescriptionNotes</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x24000000 = 603979776'>0x24000000</td>
+<td>Make</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x24000001 = 603979777'>0x24000001</td>
+<td>Model</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x24000002 = 603979778'>0x24000002</td>
+<td>SerialNumber</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x25000000 = 620756992'>0x25000000</td>
+<td>CreateDate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x25000001 = 620756993'>0x25000001</td>
+<td>ExposureTime</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x25000002 = 620756994'>0x25000002</td>
+<td>FNumber</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x25000003 = 620756995'>0x25000003</td>
+<td>ExposureProgram</td>
+<td class=c>N</td>
+<td><table class=cols><tr>
+  <td>0 = Not Defined
+  <br>1 = Manual
+  <br>2 = Program AE
+  <br>3 = Aperture-priority AE
+  <br>4 = Shutter speed priority AE
+  <br>5 = Creative (Slow speed)
+  <br>6 = Action (High speed)
+  <br>7 = Portrait
+  <br>8 = Landscape
+  <br>9 = Bulb</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td title='0x25000004 = 620756996'>0x25000004</td>
+<td>BrightnessValue</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x25000005 = 620756997'>0x25000005</td>
+<td>ExposureCompensation</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x25000006 = 620756998'>0x25000006</td>
+<td>SubjectDistance</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x25000007 = 620756999'>0x25000007</td>
+<td>MeteringMode</td>
+<td class=c>N</td>
+<td><table class=cols><tr>
+  <td>0 = Unknown
+  <br>1 = Average
+  <br>2 = Center-weighted average
+  <br>3 = Spot
+  <br>4 = Multi-spot
+  <br>5 = Multi-segment
+  <br>6 = Partial
+  <br>255 = Other</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td title='0x25000008 = 620757000'>0x25000008</td>
+<td>LightSource</td>
+<td class=c>N</td>
+<td><table class=cols><tr>
+  <td>0 = Unknown
+  <br>1 = Daylight
+  <br>2 = Fluorescent
+  <br>3 = Tungsten (Incandescent)
+  <br>4 = Flash
+  <br>9 = Fine Weather
+  <br>10 = Cloudy
+  <br>11 = Shade
+  <br>12 = Daylight Fluorescent
+  <br>13 = Day White Fluorescent
+  <br>14 = Cool White Fluorescent
+  <br>15 = White Fluorescent
+  <br>16 = Warm White Fluorescent
+  <br>17 = Standard Light A
+  <br>18 = Standard Light B
+  <br>19 = Standard Light C
+  <br>20 = D55
+  <br>21 = D65
+  <br>22 = D75
+  <br>23 = D50
+  <br>24 = ISO Studio Tungsten
+  <br>255 = Other</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td title='0x25000009 = 620757001'>0x25000009</td>
+<td>FocalLength</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x2500000a = 620757002'>0x2500000a</td>
+<td>MaxApertureValue</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x2500000b = 620757003'>0x2500000b</td>
+<td>Flash</td>
+<td class=c>N</td>
+<td><span class=s>1 = No Flash
+  <br>2 = Flash Fired</span></td></tr>
+<tr class=b>
+<td title='0x2500000c = 620757004'>0x2500000c</td>
+<td>FlashEnergy</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x2500000d = 620757005'>0x2500000d</td>
+<td>FlashReturn</td>
+<td class=c>N</td>
+<td><span class=s>1 = Subject Outside Flash Range
+  <br>2 = Subject Inside Flash Range</span></td></tr>
+<tr class=b>
+<td title='0x2500000e = 620757006'>0x2500000e</td>
+<td>BackLight</td>
+<td class=c>N</td>
+<td><span class=s>1 = Front Lit
+  <br>2 = Back Lit 1
+  <br>3 = Back Lit 2</span></td></tr>
+<tr>
+<td title='0x2500000f = 620757007'>0x2500000f</td>
+<td>SubjectLocation</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x25000010 = 620757008'>0x25000010</td>
+<td>ExposureIndex</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x25000011 = 620757009'>0x25000011</td>
+<td>SpecialEffectsOpticalFilter</td>
+<td class=c>N</td>
+<td><table class=cols><tr>
+  <td>1 = None
+  <br>2 = Colored
+  <br>3 = Diffusion
+  <br>4 = Multi-image</td><td>&nbsp;&nbsp;</td>
+  <td>5 = Polarizing
+  <br>6 = Split-field
+  <br>7 = Star</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td title='0x25000012 = 620757010'>0x25000012</td>
+<td>PerPictureNotes</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x26000000 = 637534208'>0x26000000</td>
+<td>SensingMethod</td>
+<td class=c>N</td>
+<td><table class=cols><tr>
+  <td>1 = Monochrome area
+  <br>2 = One-chip color area
+  <br>3 = Two-chip color area
+  <br>4 = Three-chip color area
+  <br>5 = Color sequential area
+  <br>6 = Monochrome linear
+  <br>7 = Trilinear
+  <br>8 = Color sequential linear</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td title='0x26000001 = 637534209'>0x26000001</td>
+<td>FocalPlaneXResolution</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x26000002 = 637534210'>0x26000002</td>
+<td>FocalPlaneYResolution</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x26000003 = 637534211'>0x26000003</td>
+<td>FocalPlaneResolutionUnit</td>
+<td class=c>N</td>
+<td><span class=s>1 = None
+  <br>2 = inches
+  <br>3 = cm
+  <br>4 = mm
+  <br>5 = um</span></td></tr>
+<tr>
+<td title='0x26000004 = 637534212'>0x26000004</td>
+<td>SpatialFrequencyResponse</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x26000005 = 637534213'>0x26000005</td>
+<td>CFAPattern</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x26000007 = 637534215'>0x26000007</td>
+<td>ISO</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x26000008 = 637534216'>0x26000008</td>
+<td>Opto-ElectricConvFactor</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x27000000 = 654311424'>0x27000000</td>
+<td>FilmBrand</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x27000001 = 654311425'>0x27000001</td>
+<td>FilmCategory</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x27000002 = 654311426'>0x27000002</td>
+<td>FilmSize</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x27000003 = 654311427'>0x27000003</td>
+<td>FilmRollNumber</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x27000004 = 654311428'>0x27000004</td>
+<td>FilmFrameNumber</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x28000000 = 671088640'>0x28000000</td>
+<td>ScannerMake</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x28000001 = 671088641'>0x28000001</td>
+<td>ScannerModel</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x28000002 = 671088642'>0x28000002</td>
+<td>ScannerSerialNumber</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x28000003 = 671088643'>0x28000003</td>
+<td>ScanSoftware</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x28000004 = 671088644'>0x28000004</td>
+<td>ScanSoftwareRevisionDate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x28000005 = 671088645'>0x28000005</td>
+<td>ServiceOrganizationName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x28000006 = 671088646'>0x28000006</td>
+<td>ScanOperatorID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x28000008 = 671088648'>0x28000008</td>
+<td>ScanDate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x28000009 = 671088649'>0x28000009</td>
+<td>ModifyDate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x2800000a = 671088650'>0x2800000a</td>
+<td>ScannerPixelSize</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x29000000 = 687865856'>0x29000000</td>
+<td>OriginalScannedImageSize</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x29000001 = 687865857'>0x29000001</td>
+<td>OriginalDocumentSize</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x29000002 = 687865858'>0x29000002</td>
+<td>OriginalMedium</td>
+<td class=c>N</td>
+<td><span class=s>1 = Continuous Tone Image
+  <br>2 = Halftone Image
+  <br>3 = Line Art</span></td></tr>
+<tr>
+<td title='0x29000003 = 687865859'>0x29000003</td>
+<td>TypeOfOriginal</td>
+<td class=c>N</td>
+<td><span class=s>1 = B&amp;W Print
+  <br>2 = Color Print
+  <br>3 = B&amp;W Document
+  <br>4 = Color Document</span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Operation'>FlashPix Operation Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x10000 = 65536'>0x10000</td>
+<td>OperationID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='SummaryInfo'>FlashPix SummaryInfo Tags</a></h2>
+<p>The Dictionary, CodePage and LocalIndicator tags are common to all FlashPix
+property tables, even though they are only listed in the SummaryInfo table.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x0000 = 0'>0x0000</td>
+<td>Dictionary</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0001 = 1'>0x0001</td>
+<td>CodePage</td>
+<td class=c>N</td>
+<td><span class=s>31 = IBM EBCDIC US-Canada
+  <br>437 = DOS United States
+  <br>500 = IBM EBCDIC International
+  <br>708 = Arabic (ASMO 708)
+  <br>709 = Arabic (ASMO-449+, BCON V4)
+  <br>710 = Arabic - Transparent Arabic
+  <br>720 = DOS Arabic (Transparent ASMO)
+  <br>737 = DOS Greek (formerly 437G)
+  <br>775 = DOS Baltic
+  <br>850 = DOS Latin 1 (Western European)
+  <br>852 = DOS Latin 2 (Central European)
+  <br>855 = DOS Cyrillic (primarily Russian)
+  <br>857 = DOS Turkish
+  <br>858 = DOS Multilingual Latin 1 with Euro
+  <br>860 = DOS Portuguese
+  <br>861 = DOS Icelandic
+  <br>862 = DOS Hebrew
+  <br>863 = DOS French Canadian
+  <br>864 = DOS Arabic
+  <br>865 = DOS Nordic
+  <br>866 = DOS Russian (Cyrillic)
+  <br>869 = DOS Modern Greek
+  <br>870 = IBM EBCDIC Multilingual/ROECE (Latin 2)
+  <br>874 = Windows Thai (same as 28605, ISO 8859-15)
+  <br>875 = IBM EBCDIC Greek Modern
+  <br>932 = Windows Japanese (Shift-JIS)
+  <br>936 = Windows Simplified Chinese (PRC, Singapore)
+  <br>949 = Windows Korean (Unified Hangul Code)
+  <br>950 = Windows Traditional Chinese (Taiwan)
+  <br>1026 = IBM EBCDIC Turkish (Latin 5)
+  <br>1047 = IBM EBCDIC Latin 1/Open System
+  <br>1140 = IBM EBCDIC US-Canada with Euro
+  <br>1141 = IBM EBCDIC Germany with Euro
+  <br>1142 = IBM EBCDIC Denmark-Norway with Euro
+  <br>1143 = IBM EBCDIC Finland-Sweden with Euro
+  <br>1144 = IBM EBCDIC Italy with Euro
+  <br>1145 = IBM EBCDIC Latin America-Spain with Euro
+  <br>1146 = IBM EBCDIC United Kingdom with Euro
+  <br>1147 = IBM EBCDIC France with Euro
+  <br>1148 = IBM EBCDIC International with Euro
+  <br>1149 = IBM EBCDIC Icelandic with Euro
+  <br>1200 = Unicode UTF-16, little endian
+  <br>1201 = Unicode UTF-16, big endian
+  <br>1250 = Windows Latin 2 (Central European)
+  <br>1251 = Windows Cyrillic
+  <br>1252 = Windows Latin 1 (Western European)
+  <br>1253 = Windows Greek
+  <br>1254 = Windows Turkish
+  <br>1255 = Windows Hebrew
+  <br>1256 = Windows Arabic
+  <br>1257 = Windows Baltic
+  <br>1258 = Windows Vietnamese
+  <br>1361 = Korean (Johab)
+  <br>10000 = Mac Roman (Western European)
+  <br>10001 = Mac Japanese
+  <br>10002 = Mac Traditional Chinese
+  <br>10003 = Mac Korean
+  <br>10004 = Mac Arabic
+  <br>10005 = Mac Hebrew
+  <br>10006 = Mac Greek
+  <br>10007 = Mac Cyrillic
+  <br>10008 = Mac Simplified Chinese
+  <br>10010 = Mac Romanian
+  <br>10017 = Mac Ukrainian
+  <br>10021 = Mac Thai
+  <br>10029 = Mac Latin 2 (Central European)
+  <br>10079 = Mac Icelandic
+  <br>10081 = Mac Turkish
+  <br>10082 = Mac Croatian
+  <br>12000 = Unicode UTF-32, little endian
+  <br>12001 = Unicode UTF-32, big endian
+  <br>20000 = CNS Taiwan
+  <br>20001 = TCA Taiwan
+  <br>20002 = Eten Taiwan
+  <br>20003 = IBM5550 Taiwan
+  <br>20004 = TeleText Taiwan
+  <br>20005 = Wang Taiwan
+  <br>20105 = IA5 (IRV International Alphabet No. 5, 7-bit)
+  <br>20106 = IA5 German (7-bit)
+  <br>20107 = IA5 Swedish (7-bit)
+  <br>20108 = IA5 Norwegian (7-bit)
+  <br>20127 = US-ASCII (7-bit)
+  <br>20261 = T.61
+  <br>20269 = ISO 6937 Non-Spacing Accent
+  <br>20273 = IBM EBCDIC Germany
+  <br>20277 = IBM EBCDIC Denmark-Norway
+  <br>20278 = IBM EBCDIC Finland-Sweden
+  <br>20280 = IBM EBCDIC Italy
+  <br>20284 = IBM EBCDIC Latin America-Spain
+  <br>20285 = IBM EBCDIC United Kingdom
+  <br>20290 = IBM EBCDIC Japanese Katakana Extended
+  <br>20297 = IBM EBCDIC France
+  <br>20420 = IBM EBCDIC Arabic
+  <br>20423 = IBM EBCDIC Greek
+  <br>20424 = IBM EBCDIC Hebrew
+  <br>20833 = IBM EBCDIC Korean Extended
+  <br>20838 = IBM EBCDIC Thai
+  <br>20866 = Russian/Cyrillic (KOI8-R)
+  <br>20871 = IBM EBCDIC Icelandic
+  <br>20880 = IBM EBCDIC Cyrillic Russian
+  <br>20905 = IBM EBCDIC Turkish
+  <br>20924 = IBM EBCDIC Latin 1/Open System with Euro
+  <br>20932 = Japanese (JIS 0208-1990 and 0121-1990)
+  <br>20936 = Simplified Chinese (GB2312)
+  <br>20949 = Korean Wansung
+  <br>21025 = IBM EBCDIC Cyrillic Serbian-Bulgarian
+  <br>21027 = Extended Alpha Lowercase (deprecated)
+  <br>21866 = Ukrainian/Cyrillic (KOI8-U)
+  <br>28591 = ISO 8859-1 Latin 1 (Western European)
+  <br>28592 = ISO 8859-2 (Central European)
+  <br>28593 = ISO 8859-3 Latin 3
+  <br>28594 = ISO 8859-4 Baltic
+  <br>28595 = ISO 8859-5 Cyrillic
+  <br>28596 = ISO 8859-6 Arabic
+  <br>28597 = ISO 8859-7 Greek
+  <br>28598 = ISO 8859-8 Hebrew (Visual)
+  <br>28599 = ISO 8859-9 Turkish
+  <br>28603 = ISO 8859-13 Estonian
+  <br>28605 = ISO 8859-15 Latin 9
+  <br>29001 = Europa 3
+  <br>38598 = ISO 8859-8 Hebrew (Logical)
+  <br>50220 = ISO 2022 Japanese with no halfwidth Katakana (JIS)
+  <br>50221 = ISO 2022 Japanese with halfwidth Katakana (JIS-Allow 1 byte Kana)
+  <br>50222 = ISO 2022 Japanese JIS X 0201-1989 (JIS-Allow 1 byte Kana - SO/SI)
+  <br>50225 = ISO 2022 Korean
+  <br>50227 = ISO 2022 Simplified Chinese
+  <br>50229 = ISO 2022 Traditional Chinese
+  <br>50930 = EBCDIC Japanese (Katakana) Extended
+  <br>50931 = EBCDIC US-Canada and Japanese
+  <br>50933 = EBCDIC Korean Extended and Korean
+  <br>50935 = EBCDIC Simplified Chinese Extended and Simplified Chinese
+  <br>50936 = EBCDIC Simplified Chinese
+  <br>50937 = EBCDIC US-Canada and Traditional Chinese
+  <br>50939 = EBCDIC Japanese (Latin) Extended and Japanese
+  <br>51932 = EUC Japanese
+  <br>51936 = EUC Simplified Chinese
+  <br>51949 = EUC Korean
+  <br>51950 = EUC Traditional Chinese
+  <br>52936 = HZ-GB2312 Simplified Chinese
+  <br>54936 = Windows XP and later: GB18030 Simplified Chinese (4 byte)
+  <br>57002 = ISCII Devanagari
+  <br>57003 = ISCII Bengali
+  <br>57004 = ISCII Tamil
+  <br>57005 = ISCII Telugu
+  <br>57006 = ISCII Assamese
+  <br>57007 = ISCII Oriya
+  <br>57008 = ISCII Kannada
+  <br>57009 = ISCII Malayalam
+  <br>57010 = ISCII Gujarati
+  <br>57011 = ISCII Punjabi
+  <br>65000 = Unicode (UTF-7)
+  <br>65001 = Unicode (UTF-8)</span></td></tr>
+<tr>
+<td title='0x0002 = 2'>0x0002</td>
+<td>Title</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0003 = 3'>0x0003</td>
+<td>Subject</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0004 = 4'>0x0004</td>
+<td>Author</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0005 = 5'>0x0005</td>
+<td>Keywords</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0006 = 6'>0x0006</td>
+<td>Comments</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0007 = 7'>0x0007</td>
+<td>Template</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0008 = 8'>0x0008</td>
+<td>LastModifiedBy</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0009 = 9'>0x0009</td>
+<td>RevisionNumber</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x000a = 10'>0x000a</td>
+<td>TotalEditTime</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x000b = 11'>0x000b</td>
+<td>LastPrinted</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x000c = 12'>0x000c</td>
+<td>CreateDate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x000d = 13'>0x000d</td>
+<td>ModifyDate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x000e = 14'>0x000e</td>
+<td>Pages</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x000f = 15'>0x000f</td>
+<td>Words</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0010 = 16'>0x0010</td>
+<td>Characters</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0011 = 17'>0x0011</td>
+<td>ThumbnailClip</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0012 = 18'>0x0012</td>
+<td>Software</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0013 = 19'>0x0013</td>
+<td>Security</td>
+<td class=c>N</td>
+<td><span class=s>0 = None
+  <br>1 = Password protected
+  <br>2 = Read-only recommended
+  <br>4 = Read-only enforced
+  <br>8 = Locked for annotations</span></td></tr>
+<tr>
+<td title='0x80000000 = 2147483648'>0x80000000</td>
+<td>LocaleIndicator</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Transform'>FlashPix Transform Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x10000 = 65536'>0x10000</td>
+<td>TransformNodeID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x10001 = 65537'>0x10001</td>
+<td>OperationClassID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x10002 = 65538'>0x10002</td>
+<td>LockedPropertyList</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x10003 = 65539'>0x10003</td>
+<td>TransformTitle</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x10004 = 65540'>0x10004</td>
+<td>LastModifier</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x10005 = 65541'>0x10005</td>
+<td>RevisionNumber</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x10006 = 65542'>0x10006</td>
+<td>TransformCreateDate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x10007 = 65543'>0x10007</td>
+<td>TransformModifyDate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x10008 = 65544'>0x10008</td>
+<td>CreatingApplication</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x10100 = 65792'>0x10100</td>
+<td>InputDataObjectList</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x10101 = 65793'>0x10101</td>
+<td>OutputDataObjectList</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x10102 = 65794'>0x10102</td>
+<td>OperationNumber</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x10000000 = 268435456'>0x10000000</td>
+<td>ResultAspectRatio</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x10000001 = 268435457'>0x10000001</td>
+<td>RectangleOfInterest</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x10000002 = 268435458'>0x10000002</td>
+<td>Filtering</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x10000003 = 268435459'>0x10000003</td>
+<td>SpatialOrientation</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x10000004 = 268435460'>0x10000004</td>
+<td>ColorTwistMatrix</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x10000005 = 268435461'>0x10000005</td>
+<td>ContrastAdjustment</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='PreviewInfo'>FlashPix PreviewInfo Tags</a></h2>
+<p>Preview information written by some FujiFilm models.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='13 = 0xd'>13</td>
+<td>PreviewImageWidth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='23 = 0x17'>23</td>
+<td>PreviewImageHeight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='SubimageHdr'>FlashPix SubimageHdr Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index4</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='1 = 0x1'>1</td>
+<td>SubimageWidth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>SubimageHeight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='3 = 0x3'>3</td>
+<td>SubimageTileCount</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>SubimageTileWidth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='5 = 0x5'>5</td>
+<td>SubimageTileHeight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='6 = 0x6'>6</td>
+<td>NumChannels</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<hr>
+(This document generated automatically by Image::ExifTool::BuildTagLookup)
+<br><i>Last revised Jul 31, 2014</i>
+<p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
+</body>
+</html>

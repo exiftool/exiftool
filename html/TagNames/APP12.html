@@ -1,0 +1,188 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>APP12 Tags</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h2 class=top><a name='PictureInfo'>APP12 PictureInfo Tags</a></h2>
+<p>The JPEG APP12 &quot;Picture Info&quot; segment was used by some older cameras, and
+contains ASCII-based meta information.  Below are some tags which have been
+observed Agfa and Polaroid images, however ExifTool will extract information
+from any tags found in this segment.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'Aperture'</td>
+<td>Aperture</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'ColorMode'</td>
+<td>ColorMode</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'ConTake'</td>
+<td>ConTake</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'ExpBias'</td>
+<td>ExposureCompensation</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'FNumber'</td>
+<td>FNumber</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'FWare'</td>
+<td>FirmwareVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Flash'</td>
+<td>Flash</td>
+<td class=c>N</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr class=b>
+<td>'FocusMode'</td>
+<td>FocusMode</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'FocusPos'</td>
+<td>FocusPos</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'ID'</td>
+<td>ID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'ImageSize'</td>
+<td>ImageSize</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'LightS'</td>
+<td>LightS</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Macro'</td>
+<td>Macro</td>
+<td class=c>N</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr class=b>
+<td>'Protect'</td>
+<td>Protect</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Quality'</td>
+<td>Quality</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Resolution'</td>
+<td>Resolution</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Serial#'</td>
+<td>SerialNumber</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Shutter'</td>
+<td>ExposureTime</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'StrobeTime'</td>
+<td>StrobeTime</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TimeDate'</td>
+<td>DateTimeOriginal</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Type'</td>
+<td>CameraType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Version'</td>
+<td>Version</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Ytarget'</td>
+<td>YTarget</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Zoom'</td>
+<td>Zoom</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'ZoomPos'</td>
+<td>ZoomPos</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'shtr'</td>
+<td>ExposureTime</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'ylevel'</td>
+<td>YLevel</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Ducky'>APP12 Ducky Tags</a></h2>
+<p>Photoshop uses the JPEG APP12 &quot;Ducky&quot; segment to store some information in
+&quot;Save for Web&quot; images.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x0001 = 1'>0x0001</td>
+<td>Quality</td>
+<td class=c title=' / = Avoided'>int32u/</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0002 = 2'>0x0002</td>
+<td>Comment</td>
+<td class=c title=' / = Avoided'>string/</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0003 = 3'>0x0003</td>
+<td>Copyright</td>
+<td class=c title=' / = Avoided'>string/</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<hr>
+(This document generated automatically by Image::ExifTool::BuildTagLookup)
+<br><i>Last revised Jan 22, 2011</i>
+<p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
+</body>
+</html>

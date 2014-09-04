@@ -1,0 +1,208 @@
+  ExifToolVersion = 9.60
+  FileName = CanonRaw.crw
+  Directory = t/images
+  FileSize = 6816
+  FileModifyDate = 1327257119
+  FileAccessDate = 1399463415
+  FileInodeChangeDate = 1399121625
+  FilePermissions = 33188
+  FileType = CRW
+  MIMEType = image/x-canon-crw
+  + [CIFF directory with 3 entries]
+  | 0)  RawData = <Dummy raw image data>
+  | 1)  JpgFromRaw = <Dummy JpgFromRaw image data>
+  | 2)  ImageProps (SubDirectory) -->
+  | + [CIFF directory with 13 entries]
+  | | 0)  ImageFormat (SubDirectory) -->
+  | | + [BinaryData directory, 8 bytes]
+  | | | FileFormat = 131073
+  | | | TargetCompressionRatio = 10
+  | | 1)  ImageInfo (SubDirectory) -->
+  | | + [BinaryData directory, 28 bytes]
+  | | | ImageWidth = 3072
+  | | | ImageHeight = 2048
+  | | | PixelAspectRatio = 1
+  | | | Rotation = 0
+  | | | ComponentBitDepth = 8
+  | | | ColorBitDepth = 24
+  | | | ColorBW = 257
+  | | 2)  TargetImageType = 0
+  | | 3)  RecordID = 0
+  | | 4)  FileNumber = 1161602
+  | | 5)  TimeStamp (SubDirectory) -->
+  | | + [BinaryData directory, 12 bytes]
+  | | | DateTimeOriginal = 1068485966
+  | | | TimeZoneCode = 0
+  | | | TimeZoneInfo = 0
+  | | 6)  OriginalFileName = CRW_1602.CRW
+  | | 7)  ThumbnailFileName = CRW_1602.THM
+  | | 8)  UserComment = 
+  | | 9)  MeasuredInfo (SubDirectory) -->
+  | | + [CIFF directory with 1 entries]
+  | | | 0)  MeasuredEV = -0.375
+  | | 10) ImageDescription (SubDirectory) -->
+  | | + [CIFF directory with 2 entries]
+  | | | 0)  CanonFileDescription = EOS DIGITAL REBEL CMOS RAW
+  | | | 1)  CanonImageType = CRW:EOS DIGITAL REBEL CMOS RAW
+  | | 11) CameraObject (SubDirectory) -->
+  | | + [CIFF directory with 3 entries]
+  | | | 0)  OwnerName = Phil Harvey
+  | | | 1)  CanonRawMakeModel (SubDirectory) -->
+  | | | + [BinaryData directory, 32 bytes]
+  | | | | Make = Canon
+  | | | | Model = Canon EOS DIGITAL REBEL
+  | | | 2)  CameraSpecification (SubDirectory) -->
+  | | | + [CIFF directory with 4 entries]
+  | | | | 0)  SerialNumber = 560018150
+  | | | | 1)  BaseISO = 100
+  | | | | 2)  ROMOperationMode = USA
+  | | | | 3)  CanonFirmwareVersion = Firmware Version 1.1.1
+  | | 12) ExifInformation (SubDirectory) -->
+  | | + [CIFF directory with 23 entries]
+  | | | 0)  CanonFlashInfo = 0 100 0 0
+  | | | 1)  CanonFocalLength (SubDirectory) -->
+  | | | + [BinaryData directory, 8 bytes]
+  | | | | FocalType = 0
+  | | | | FocalLength = 24
+  | | | | FocalPlaneXSize = 914
+  | | | | FocalPlaneYSize = 610
+  | | | 2)  CanonShotInfo (SubDirectory) -->
+  | | | + [BinaryData directory, 66 bytes]
+  | | | | AutoISO = 0
+  | | | | BaseISO = 160
+  | | | | MeasuredEV = -160
+  | | | | TargetAperture = 116
+  | | | | TargetExposureTime = 189
+  | | | | ExposureCompensation = 0
+  | | | | WhiteBalance = 0
+  | | | | SlowShutter = 3
+  | | | | SequenceNumber = 0
+  | | | | OpticalZoomCode = 8
+  | | | | CameraTemperature = 0
+  | | | | FlashGuideNumber = -1
+  | | | | AFPointsInFocus = 0
+  | | | | FlashExposureComp = 20
+  | | | | AutoExposureBracketing = 0
+  | | | | AEBBracketValue = 0
+  | | | | ControlMode = 1
+  | | | | FocusDistanceUpper = 142
+  | | | | FocusDistanceLower = 119
+  | | | | FNumber = 116
+  | | | | ExposureTime = 192
+  | | | | MeasuredEV2 = 47
+  | | | | BulbDuration = 0
+  | | | | CameraType = 252
+  | | | | AutoRotate = 0
+  | | | | NDFilter = -1
+  | | | | SelfTimer2 = 0
+  | | | 3)  CanonFileInfo (SubDirectory) -->
+  | | | + [BinaryData directory, 18 bytes]
+  | | | | BracketMode = 0
+  | | | | BracketValue = 0
+  | | | | BracketShotNumber = 0
+  | | | | RawJpgQuality = -1
+  | | | | RawJpgSize = -1
+  | | | | LongExposureNoiseReduction2 = -1
+  | | | 4)  CanonCameraSettings (SubDirectory) -->
+  | | | + [BinaryData directory, 92 bytes]
+  | | | | MacroMode = 0
+  | | | | SelfTimer = 0
+  | | | | Quality = 4
+  | | | | CanonFlashMode = 2
+  | | | | ContinuousDrive = 1
+  | | | | FocusMode = 2
+  | | | | RecordMode = 2
+  | | | | CanonImageSize = 0
+  | | | | EasyMode = 1
+  | | | | DigitalZoom = -1
+  | | | | Contrast = 1
+  | | | | Saturation = 1
+  | | | | Sharpness = 1
+  | | | | CameraISO = 0
+  | | | | MeteringMode = 3
+  | | | | FocusRange = 2
+  | | | | AFPoint = 8197
+  | | | | CanonExposureMode = 1
+  | | | | LensType = -1
+  | | | | MaxFocalLength = 55
+  | | | | MinFocalLength = 18
+  | | | | FocalUnits = 1
+  | | | | MaxAperture = 116
+  | | | | MinAperture = 285
+  | | | | FlashActivity = 0
+  | | | | FlashBits = 8200
+  | | | | FocusContinuous = -1
+  | | | | AESetting = -1
+  | | | | ImageStabilization = -1
+  | | | | DisplayAperture = 0
+  | | | | ZoomSourceWidth = 3072
+  | | | | ZoomTargetWidth = 3072
+  | | | | SpotMeteringMode = -1
+  | | | | PhotoEffect = -1
+  | | | | ManualFlashOutput = 0
+  | | | | ColorTone = 0
+  | | | 5)  CanonRaw_0x0036 = ...........................1..:..........1..:.........1..[snip]
+  | | | 6)  CanonModelID = 2147484016
+  | | | 7)  SensorInfo (SubDirectory) -->
+  | | | + [BinaryData directory, 34 bytes]
+  | | | | SensorWidth = 3152
+  | | | | SensorHeight = 2068
+  | | | | SensorLeftBorder = 72
+  | | | | SensorTopBorder = 16
+  | | | | SensorRightBorder = 3143
+  | | | | SensorBottomBorder = 2063
+  | | | | BlackMaskLeftBorder = 24
+  | | | | BlackMaskTopBorder = 224
+  | | | | BlackMaskRightBorder = 40
+  | | | | BlackMaskBottomBorder = 1856
+  | | | 8)  DecoderTable (SubDirectory) -->
+  | | | + [BinaryData directory, 16 bytes]
+  | | | | DecoderTableNumber = 1
+  | | | | CompressedDataOffset = 514
+  | | | | CompressedDataLength = 4120111
+  | | | 9)  CanonAFInfo (SubDirectory) -->
+  | | | + [SerialData directory, 48 bytes]
+  | | | | 0)  NumAFPoints = 7
+  | | | | 1)  ValidAFPoints = 7
+  | | | | 2)  CanonImageWidth = 3072
+  | | | | 3)  CanonImageHeight = 2048
+  | | | | 4)  AFImageWidth = 3072
+  | | | | 5)  AFImageHeight = 2048
+  | | | | 6)  AFAreaWidth = 151
+  | | | | 7)  AFAreaHeight = 151
+  | | | | 8)  AFAreaXPositions = 1014 608 0 0 0 -608 -1014
+  | | | | 9)  AFAreaYPositions = 0 0 -506 0 506 0 0
+  | | | | 10) AFPointsInFocus = 8
+  | | | 10) CanonRaw_0x10c0 = 26 331 372 372 177 240 428 429 277 186 510 511 442
+  | | | 11) CanonRaw_0x10c1 = 26 299 375 375 170 202 394 395 240 153 453 454 375
+  | | | 12) CanonRaw_0x10c2 = t......a.................c...............c.X.............[snip]
+  | | | 13) CanonRaw_0x10aa = 10 554 1022 1026 754
+  | | | 14) CanonRaw_0x10a8 = 20 5528 5190 7000 5987 3214 3897 6457 5190 5200
+  | | | 15) CanonRaw_0x10ad = 62 20127 8480 7000 6000 5600 5200 4724 4200 3266 1446 648[snip]
+  | | | 16) ColorTemperature = 5200
+  | | | 17) CanonRaw_0x10af = 1024
+  | | | 18) ColorBalance (SubDirectory) -->
+  | | | + [BinaryData directory, 82 bytes]
+  | | | | WB_RGGBLevelsAuto = 1740 832 831 931
+  | | | | WB_RGGBLevelsDaylight = 1722 832 831 989
+  | | | | WB_RGGBLevelsShade = 2035 832 831 839
+  | | | | WB_RGGBLevelsCloudy = 1878 832 831 903
+  | | | | WB_RGGBLevelsTungsten = 1228 913 912 1668
+  | | | | WB_RGGBLevelsFluorescent = 1506 842 841 1381
+  | | | | WB_RGGBLevelsFlash = 1964 832 831 877
+  | | | | WB_RGGBLevelsCustom = 1722 832 831 989
+  | | | | WB_RGGBLevelsKelvin = 1722 832 831 988
+  | | | | WB_RGGBBlackLevels = 125 124 125 124
+  | | | 19) ColorSpace = 1
+  | | | 20) RawJpgInfo (SubDirectory) -->
+  | | | + [BinaryData directory, 10 bytes]
+  | | | | RawJpgQuality = 3
+  | | | | RawJpgSize = 1
+  | | | | RawJpgWidth = 2048
+  | | | | RawJpgHeight = 1360
+  | | | 21) CanonRaw_0x1039 = 0 159 7 112
+  | | | 22) SerialNumberFormat = 2415919104
+CanonVRD trailer (560 bytes at offset 0x1870):
+  + [XMP directory, 460 bytes]
+  | XMPToolkit = Image::ExifTool 8.31
+  | Description = CRW with embedded XMP

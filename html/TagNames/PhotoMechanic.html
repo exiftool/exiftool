@@ -1,0 +1,196 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>PhotoMechanic Tags</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h2 class=top>PhotoMechanic Tags</h2>
+<p>The Photo Mechanic trailer contains data in an IPTC-format structure, with
+soft edit information stored under record number 2.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Record</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='2 = 0x2'>2</td>
+<td>SoftEdit</td>
+<td class=c>-</td>
+<td>--&gt; <a href='PhotoMechanic.html#SoftEdit'>PhotoMechanic SoftEdit Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='SoftEdit'>PhotoMechanic SoftEdit Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='209 = 0xd1'>209</td>
+<td>RawCropLeft</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='210 = 0xd2'>210</td>
+<td>RawCropTop</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='211 = 0xd3'>211</td>
+<td>RawCropRight</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='212 = 0xd4'>212</td>
+<td>RawCropBottom</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='213 = 0xd5'>213</td>
+<td>ConstrainedCropWidth</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='214 = 0xd6'>214</td>
+<td>ConstrainedCropHeight</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='215 = 0xd7'>215</td>
+<td>FrameNum</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='216 = 0xd8'>216</td>
+<td>Rotation</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = 0
+  <br>1 = 90
+  <br>2 = 180
+  <br>3 = 270</span></td></tr>
+<tr>
+<td class=r title='217 = 0xd9'>217</td>
+<td>CropLeft</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='218 = 0xda'>218</td>
+<td>CropTop</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='219 = 0xdb'>219</td>
+<td>CropRight</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='220 = 0xdc'>220</td>
+<td>CropBottom</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='221 = 0xdd'>221</td>
+<td>Tagged</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = No
+  <br>1 = Yes</span></td></tr>
+<tr class=b>
+<td class=r title='222 = 0xde'>222</td>
+<td>ColorClass</td>
+<td class=c>int32s</td>
+<td><table class=cols><tr>
+  <td>0 = 0 (None)
+  <br>1 = 1 (Winner)
+  <br>2 = 2 (Winner alt)
+  <br>3 = 3 (Superior)
+  <br>4 = 4 (Superior alt)</td><td>&nbsp;&nbsp;</td>
+  <td>5 = 5 (Typical)
+  <br>6 = 6 (Typical alt)
+  <br>7 = 7 (Extras)
+  <br>8 = 8 (Trash)</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='223 = 0xdf'>223</td>
+<td>Rating</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='236 = 0xec'>236</td>
+<td>PreviewCropLeft</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='237 = 0xed'>237</td>
+<td>PreviewCropTop</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='238 = 0xee'>238</td>
+<td>PreviewCropRight</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='239 = 0xef'>239</td>
+<td>PreviewCropBottom</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='XMP'>PhotoMechanic XMP Tags</a></h2>
+<p>Below is a list of the observed PhotoMechanic XMP tags.  The actual
+namespace prefix is &quot;photomechanic&quot; but ExifTool shortens this in
+the &quot;XMP-photomech&quot; family 1 group name.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>ColorClass</td>
+<td class=c>integer</td>
+<td><table class=cols><tr>
+  <td>0 = 0 (None)
+  <br>1 = 1 (Winner)
+  <br>2 = 2 (Winner alt)
+  <br>3 = 3 (Superior)
+  <br>4 = 4 (Superior alt)</td><td>&nbsp;&nbsp;</td>
+  <td>5 = 5 (Typical)
+  <br>6 = 6 (Typical alt)
+  <br>7 = 7 (Extras)
+  <br>8 = 8 (Trash)</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td>CountryCode</td>
+<td class=c title=' / = Avoided'>string/</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>EditStatus</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>PMVersion</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Prefs</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(format is &quot;Tagged:0, ColorClass:1, Rating:2, FrameNum:3&quot;)</span></span></td></tr>
+<tr class=b>
+<td>Tagged</td>
+<td class=c>boolean</td>
+<td><span class=s>&#39;False&#39; = No
+  <br>&#39;True&#39; = Yes</span></td></tr>
+<tr>
+<td>TimeCreated</td>
+<td class=c title=' / = Avoided'>string/</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<hr>
+(This document generated automatically by Image::ExifTool::BuildTagLookup)
+<br><i>Last revised Dec 29, 2012</i>
+<p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
+</body>
+</html>

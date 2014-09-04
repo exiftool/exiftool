@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>FotoStation Tags</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h2 class=top>FotoStation Tags</h2>
+<p>The following tables define information found in the FotoWare FotoStation
+trailer.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x0001 = 1'>0x0001</td>
+<td>IPTC</td>
+<td class=c>-</td>
+<td>--&gt; <a href='IPTC.html'>IPTC Tags</a></td></tr>
+<tr class=b>
+<td title='0x0002 = 2'>0x0002</td>
+<td>SoftEdit</td>
+<td class=c>-</td>
+<td>--&gt; <a href='FotoStation.html#SoftEdit'>FotoStation SoftEdit Tags</a></td></tr>
+<tr>
+<td title='0x0003 = 3'>0x0003</td>
+<td>ThumbnailImage</td>
+<td class=c>Y</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0004 = 4'>0x0004</td>
+<td>PreviewImage</td>
+<td class=c>Y</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='SoftEdit'>FotoStation SoftEdit Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index4</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>OriginalImageWidth</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='1 = 0x1'>1</td>
+<td>OriginalImageHeight</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='2 = 0x2'>2</td>
+<td>ColorPlanes</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='3 = 0x3'>3</td>
+<td>XYResolution</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='4 = 0x4'>4</td>
+<td>Rotation</td>
+<td class=c>int32s</td>
+<td><span class=s><span class=n>(rotations are stored as degrees CCW * 100, but converted to degrees CW by
+ExifTool)</span></span></td></tr>
+<tr class=b>
+<td class=r title='6 = 0x6'>6</td>
+<td>CropLeft</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='7 = 0x7'>7</td>
+<td>CropTop</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='8 = 0x8'>8</td>
+<td>CropRight</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='9 = 0x9'>9</td>
+<td>CropBottom</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='11 = 0xb'>11</td>
+<td>CropRotation</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<hr>
+(This document generated automatically by Image::ExifTool::BuildTagLookup)
+<br><i>Last revised Oct 20, 2006</i>
+<p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
+</body>
+</html>

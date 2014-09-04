@@ -1,0 +1,764 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>FujiFilm Tags</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h2 class=top>FujiFilm Tags</h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x0000 = 0'>0x0000</td>
+<td>Version</td>
+<td class=c>undef</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0010 = 16'>0x0010</td>
+<td>InternalSerialNumber</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(this number is unique, and contains the date of manufacture, but doesn&#39;t
+necessarily correspond to the camera body number -- this needs to be checked)</span></span></td></tr>
+<tr>
+<td title='0x1000 = 4096'>0x1000</td>
+<td>Quality</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1001 = 4097'>0x1001</td>
+<td>Sharpness</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>0x1 = Soft
+  <br>0x2 = Soft2
+  <br>0x3 = Normal
+  <br>0x4 = Hard
+  <br>0x5 = Hard2
+  <br>0x82 = Medium Soft
+  <br>0x84 = Medium Hard
+  <br>0x8000 = Film Simulation
+  <br>0xffff = n/a</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td title='0x1002 = 4098'>0x1002</td>
+<td>WhiteBalance</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>0x0 = Auto
+  <br>0x100 = Daylight
+  <br>0x200 = Cloudy
+  <br>0x300 = Daylight Fluorescent
+  <br>0x301 = Day White Fluorescent
+  <br>0x302 = White Fluorescent
+  <br>0x303 = Warm White Fluorescent
+  <br>0x304 = Living Room Warm White Fluorescent
+  <br>0x400 = Incandescent
+  <br>0x500 = Flash
+  <br>0xf00 = Custom
+  <br>0xf01 = Custom2
+  <br>0xf02 = Custom3
+  <br>0xf03 = Custom4
+  <br>0xf04 = Custom5
+  <br>0xff0 = Kelvin</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td title='0x1003 = 4099'>0x1003</td>
+<td>Saturation</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>0x0 = Normal
+  <br>0x80 = Medium High
+  <br>0x100 = High
+  <br>0x180 = Medium Low
+  <br>0x200 = Low
+  <br>0x300 = None (B&amp;W)
+  <br>0x301 = B&amp;W Red Filter
+  <br>0x302 = B&amp;W Yellow Filter
+  <br>0x303 = B&amp;W Green Filter
+  <br>0x310 = B&amp;W Sepia
+  <br>0x400 = Low 2
+  <br>0x8000 = Film Simulation</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td title='0x1004 = 4100'>0x1004</td>
+<td>Contrast</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>0x0 = Normal
+  <br>0x80 = Medium High
+  <br>0x100 = High
+  <br>0x180 = Medium Low
+  <br>0x200 = Low
+  <br>0x8000 = Film Simulation</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td title='0x1005 = 4101'>0x1005</td>
+<td>ColorTemperature</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x1006 = 4102'>0x1006</td>
+<td>Contrast</td>
+<td class=c>int16u</td>
+<td><span class=s>0x0 = Normal
+  <br>0x100 = High
+  <br>0x300 = Low</span></td></tr>
+<tr class=b>
+<td title='0x100a = 4106'>0x100a</td>
+<td>WhiteBalanceFineTune</td>
+<td class=c>int32s[2]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x100b = 4107'>0x100b</td>
+<td>NoiseReduction</td>
+<td class=c>int16u</td>
+<td><span class=s>0x40 = Low
+  <br>0x80 = Normal
+  <br>0x100 = n/a</span></td></tr>
+<tr class=b>
+<td title='0x100e = 4110'>0x100e</td>
+<td>HighISONoiseReduction</td>
+<td class=c>int16u</td>
+<td><span class=s>0x0 = Normal
+  <br>0x100 = Strong
+  <br>0x180 = Medium Strong
+  <br>0x200 = Weak
+  <br>0x280 = Medium Weak</span></td></tr>
+<tr>
+<td title='0x1010 = 4112'>0x1010</td>
+<td>FujiFlashMode</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Auto
+  <br>1 = On
+  <br>2 = Off
+  <br>3 = Red-eye reduction
+  <br>4 = External</span></td></tr>
+<tr class=b>
+<td title='0x1011 = 4113'>0x1011</td>
+<td>FlashExposureComp</td>
+<td class=c>rational64s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x1020 = 4128'>0x1020</td>
+<td>Macro</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr class=b>
+<td title='0x1021 = 4129'>0x1021</td>
+<td>FocusMode</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Auto
+  <br>1 = Manual</span></td></tr>
+<tr>
+<td title='0x1022 = 4130'>0x1022</td>
+<td>AFPointSet</td>
+<td class=c>int16u</td>
+<td><span class=s><span class=n>(&quot;No&quot; for manual and AF-multi focus modes)</span>
+  <br>0 = No
+  <br>1 = Yes</span></td></tr>
+<tr class=b>
+<td title='0x1023 = 4131'>0x1023</td>
+<td>FocusPixel</td>
+<td class=c>int16u[2]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x1030 = 4144'>0x1030</td>
+<td>SlowSync</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr class=b>
+<td title='0x1031 = 4145'>0x1031</td>
+<td>PictureMode</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>0x0 = Auto
+  <br>0x1 = Portrait
+  <br>0x2 = Landscape
+  <br>0x3 = Macro
+  <br>0x4 = Sports
+  <br>0x5 = Night Scene
+  <br>0x6 = Program AE
+  <br>0x7 = Natural Light
+  <br>0x8 = Anti-blur
+  <br>0x9 = Beach &amp; Snow
+  <br>0xa = Sunset
+  <br>0xb = Museum
+  <br>0xc = Party
+  <br>0xd = Flower
+  <br>0xe = Text
+  <br>0xf = Natural Light &amp; Flash
+  <br>0x10 = Beach
+  <br>0x11 = Snow
+  <br>0x12 = Fireworks
+  <br>0x13 = Underwater
+  <br>0x14 = Portrait with Skin Correction
+  <br>0x16 = Panorama
+  <br>0x17 = Night (tripod)
+  <br>0x18 = Pro Low-light
+  <br>0x19 = Pro Focus
+  <br>0x1a = Portrait 2
+  <br>0x1b = Dog Face Detection
+  <br>0x1c = Cat Face Detection
+  <br>0x40 = Advanced Filter
+  <br>0x100 = Aperture-priority AE
+  <br>0x200 = Shutter speed priority AE
+  <br>0x300 = Manual</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td title='0x1032 = 4146'>0x1032</td>
+<td>ExposureCount</td>
+<td class=c>int16u</td>
+<td><span class=s><span class=n>(number of exposures used for this image)</span></span></td></tr>
+<tr class=b>
+<td title='0x1033 = 4147'>0x1033</td>
+<td>EXRAuto</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Auto
+  <br>1 = Manual</span></td></tr>
+<tr>
+<td title='0x1034 = 4148'>0x1034</td>
+<td>EXRMode</td>
+<td class=c>int16u</td>
+<td><span class=s>0x100 = HR (High Resolution)
+  <br>0x200 = SN (Signal to Noise priority)
+  <br>0x300 = DR (Dynamic Range priority)</span></td></tr>
+<tr class=b>
+<td title='0x1040 = 4160'>0x1040</td>
+<td>ShadowTone</td>
+<td class=c>int32s</td>
+<td><span class=s>-32 = Hard
+  <br>-16 = Medium-hard
+  <br>0 = Normal
+  <br>16 = Medium-soft
+  <br>32 = Soft</span></td></tr>
+<tr>
+<td title='0x1041 = 4161'>0x1041</td>
+<td>HighlightTone</td>
+<td class=c>int32s</td>
+<td><span class=s>-32 = Hard
+  <br>-16 = Medium-hard
+  <br>0 = Normal
+  <br>16 = Medium-soft
+  <br>32 = Soft</span></td></tr>
+<tr class=b>
+<td title='0x1100 = 4352'>0x1100</td>
+<td>AutoBracketing</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Off
+  <br>1 = On
+  <br>2 = No flash &amp; flash</span></td></tr>
+<tr>
+<td title='0x1101 = 4353'>0x1101</td>
+<td>SequenceNumber</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1210 = 4624'>0x1210</td>
+<td>ColorMode</td>
+<td class=c>int16u</td>
+<td><span class=s>0x0 = Standard
+  <br>0x10 = Chrome
+  <br>0x30 = B &amp; W</span></td></tr>
+<tr>
+<td title='0x1300 = 4864'>0x1300</td>
+<td>BlurWarning</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = None
+  <br>1 = Blur Warning</span></td></tr>
+<tr class=b>
+<td title='0x1301 = 4865'>0x1301</td>
+<td>FocusWarning</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Good
+  <br>1 = Out of focus</span></td></tr>
+<tr>
+<td title='0x1302 = 4866'>0x1302</td>
+<td>ExposureWarning</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Good
+  <br>1 = Bad exposure</span></td></tr>
+<tr class=b>
+<td title='0x1304 = 4868'>0x1304</td>
+<td>GEImageSize</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(GE models only)</span></span></td></tr>
+<tr>
+<td title='0x1400 = 5120'>0x1400</td>
+<td>DynamicRange</td>
+<td class=c>int16u</td>
+<td><span class=s>1 = Standard
+  <br>3 = Wide</span></td></tr>
+<tr class=b>
+<td title='0x1401 = 5121'>0x1401</td>
+<td>FilmMode</td>
+<td class=c>int16u</td>
+<td><span class=s>0x0 = F0/Standard (Provia)
+  <br>0x100 = F1/Studio Portrait
+  <br>0x110 = F1a/Studio Portrait Enhanced Saturation
+  <br>0x120 = F1b/Studio Portrait Smooth Skin Tone (Astia)
+  <br>0x130 = F1c/Studio Portrait Increased Sharpness
+  <br>0x200 = F2/Fujichrome (Velvia)
+  <br>0x300 = F3/Studio Portrait Ex
+  <br>0x400 = F4/Velvia
+  <br>0x500 = Pro Neg. Std
+  <br>0x501 = Pro Neg. Hi</span></td></tr>
+<tr>
+<td title='0x1402 = 5122'>0x1402</td>
+<td>DynamicRangeSetting</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>0x0 = Auto (100-400%)
+  <br>0x1 = Manual
+  <br>0x100 = Standard (100%)
+  <br>0x200 = Wide1 (230%)
+  <br>0x201 = Wide2 (400%)
+  <br>0x8000 = Film Simulation</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td title='0x1403 = 5123'>0x1403</td>
+<td>DevelopmentDynamicRange</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x1404 = 5124'>0x1404</td>
+<td>MinFocalLength</td>
+<td class=c>rational64s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1405 = 5125'>0x1405</td>
+<td>MaxFocalLength</td>
+<td class=c>rational64s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x1406 = 5126'>0x1406</td>
+<td>MaxApertureAtMinFocal</td>
+<td class=c>rational64s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1407 = 5127'>0x1407</td>
+<td>MaxApertureAtMaxFocal</td>
+<td class=c>rational64s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x140b = 5131'>0x140b</td>
+<td>AutoDynamicRange</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1422 = 5154'>0x1422</td>
+<td>ImageStabilization</td>
+<td class=c>int16u[3]</td>
+<td><span class=s>[Value 0]
+  <br>0 = None
+  <br>1 = Optical
+  <br>2 = Sensor-shift
+  <br>512 = Digital
+  <br>[Value 1]
+  <br>0 = Off
+  <br>1 = On (mode 1, continuous)
+  <br>2 = On (mode 2, shooting only)</span></td></tr>
+<tr>
+<td title='0x1436 = 5174'>0x1436</td>
+<td>ImageGeneration</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Original Image
+  <br>1 = Re-developed from RAW</span></td></tr>
+<tr class=b>
+<td title='0x3820 = 14368'>0x3820</td>
+<td>FrameRate</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x3821 = 14369'>0x3821</td>
+<td>FrameWidth</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x3822 = 14370'>0x3822</td>
+<td>FrameHeight</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x4100 = 16640'>0x4100</td>
+<td>FacesDetected</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x4103 = 16643'>0x4103</td>
+<td>FacePositions</td>
+<td class=c>int16u[n]</td>
+<td><span class=s><span class=n>(left, top, right and bottom coordinates in full-sized image for each face
+detected)</span></span></td></tr>
+<tr>
+<td title='0x4282 = 17026'>0x4282</td>
+<td>FaceRecInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='FujiFilm.html#FaceRecInfo'>FujiFilm FaceRecInfo Tags</a></td></tr>
+<tr class=b>
+<td title='0x8000 = 32768'>0x8000</td>
+<td>FileSource</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x8002 = 32770'>0x8002</td>
+<td>OrderNumber</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x8003 = 32771'>0x8003</td>
+<td>FrameNumber</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xb211 = 45585'>0xb211</td>
+<td>Parallax</td>
+<td class=c>rational64s</td>
+<td><span class=s><span class=n>(only found in MPImage2 of .MPO images)</span></span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='FaceRecInfo'>FujiFilm FaceRecInfo Tags</a></h2>
+<p>Face recognition information.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>Face1Birthday</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Face1Category</td>
+<td class=c>N</td>
+<td><span class=s>Bit 1 = Partner
+  <br>Bit 2 = Family
+  <br>Bit 3 = Friend</span></td></tr>
+<tr>
+<td>Face1Name</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Face2Birthday</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Face2Category</td>
+<td class=c>N</td>
+<td><span class=s>Bit 1 = Partner
+  <br>Bit 2 = Family
+  <br>Bit 3 = Friend</span></td></tr>
+<tr class=b>
+<td>Face2Name</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Face3Birthday</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Face3Category</td>
+<td class=c>N</td>
+<td><span class=s>Bit 1 = Partner
+  <br>Bit 2 = Family
+  <br>Bit 3 = Friend</span></td></tr>
+<tr>
+<td>Face3Name</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Face4Birthday</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Face4Category</td>
+<td class=c>N</td>
+<td><span class=s>Bit 1 = Partner
+  <br>Bit 2 = Family
+  <br>Bit 3 = Friend</span></td></tr>
+<tr class=b>
+<td>Face4Name</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Face5Birthday</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Face5Category</td>
+<td class=c>N</td>
+<td><span class=s>Bit 1 = Partner
+  <br>Bit 2 = Family
+  <br>Bit 3 = Friend</span></td></tr>
+<tr>
+<td>Face5Name</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Face6Birthday</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Face6Category</td>
+<td class=c>N</td>
+<td><span class=s>Bit 1 = Partner
+  <br>Bit 2 = Family
+  <br>Bit 3 = Friend</span></td></tr>
+<tr class=b>
+<td>Face6Name</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Face7Birthday</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Face7Category</td>
+<td class=c>N</td>
+<td><span class=s>Bit 1 = Partner
+  <br>Bit 2 = Family
+  <br>Bit 3 = Friend</span></td></tr>
+<tr>
+<td>Face7Name</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Face8Birthday</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Face8Category</td>
+<td class=c>N</td>
+<td><span class=s>Bit 1 = Partner
+  <br>Bit 2 = Family
+  <br>Bit 3 = Friend</span></td></tr>
+<tr class=b>
+<td>Face8Name</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='RAF'>FujiFilm RAF Tags</a></h2>
+<p>FujiFilm RAF images contain meta information stored in a proprietary
+FujiFilm RAF format, as well as EXIF information stored inside an embedded
+JPEG preview image.  The table below lists tags currently decoded from the
+RAF-format information.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x0100 = 256'>0x0100</td>
+<td>RawImageFullSize</td>
+<td class=c>N</td>
+<td><span class=s><span class=n>(including borders)</span></span></td></tr>
+<tr class=b>
+<td title='0x0121 = 289'>0x0121</td>
+<td>RawImageSize</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0130 = 304'>0x0130</td>
+<td>FujiLayout</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x2000 = 8192'>0x2000</td>
+<td>WB_GRGBLevelsAuto</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x2100 = 8448'>0x2100</td>
+<td>WB_GRGBLevelsDaylight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x2200 = 8704'>0x2200</td>
+<td>WB_GRGBLevelsCloudy</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x2300 = 8960'>0x2300</td>
+<td>WB_GRGBLevelsDaylightFluor</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x2301 = 8961'>0x2301</td>
+<td>WB_GRGBLevelsDayWhiteFluor</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x2302 = 8962'>0x2302</td>
+<td>WB_GRGBLevelsWhiteFluorescent</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x2310 = 8976'>0x2310</td>
+<td>WB_GRGBLevelsWarmWhiteFluor</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x2311 = 8977'>0x2311</td>
+<td>WB_GRGBLevelsLivingRoomWarmWhiteFluor</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x2400 = 9216'>0x2400</td>
+<td>WB_GRGBLevelsTungsten</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x2ff0 = 12272'>0x2ff0</td>
+<td>WB_GRGBLevels</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xc000 = 49152'>0xc000</td>
+<td>RAFData</td>
+<td class=c>-</td>
+<td>--&gt; <a href='FujiFilm.html#RAFData'>FujiFilm RAFData Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='RAFData'>FujiFilm RAFData Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>RawImageWidth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>RawImageWidth
+  <br>RawImageHeight</td>
+<td class=c>N<br>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='8 = 0x8'>8</td>
+<td>RawImageHeight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='IFD'>FujiFilm IFD Tags</a></h2>
+<p>Tags found in the FujiIFD information of RAF images from some models.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0xf000 = 61440'>0xf000</td>
+<td>FujiIFD</td>
+<td class=c>-</td>
+<td>--&gt; <a href='FujiFilm.html#IFD'>FujiFilm IFD Tags</a></td></tr>
+<tr class=b>
+<td title='0xf001 = 61441'>0xf001</td>
+<td>RawImageFullWidth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xf002 = 61442'>0xf002</td>
+<td>RawImageFullHeight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xf003 = 61443'>0xf003</td>
+<td>BitsPerSample</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xf007 = 61447'>0xf007</td>
+<td>StripOffsets</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xf008 = 61448'>0xf008</td>
+<td>StripByteCounts</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xf00a = 61450'>0xf00a</td>
+<td>BlackLevel</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xf00c = 61452'>0xf00c</td>
+<td>WB_GRBLevelsStandard</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xf00d = 61453'>0xf00d</td>
+<td>WB_GRBLevelsDaylight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xf00e = 61454'>0xf00e</td>
+<td>WB_GRBLevels</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='FFMV'>FujiFilm FFMV Tags</a></h2>
+<p>Information found in the FFMV atom of MOV videos.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>MovieStreamName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='MOV'>FujiFilm MOV Tags</a></h2>
+<p>This information is found in MOV videos from some FujiFilm cameras.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>Make</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='24 = 0x18'>24</td>
+<td>Model</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='46 = 0x2e'>46</td>
+<td>ExposureTime</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='50 = 0x32'>50</td>
+<td>FNumber</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='58 = 0x3a'>58</td>
+<td>ExposureCompensation</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<hr>
+(This document generated automatically by Image::ExifTool::BuildTagLookup)
+<br><i>Last revised May 15, 2014</i>
+<p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
+</body>
+</html>

@@ -1,0 +1,227 @@
+ExifTool by Phil Harvey (phil at owl.phy.queensu.ca)
+----------------------------------------------------------------------------
+
+ExifTool is a customizable set of Perl modules plus a full-featured
+application for reading and writing meta information in a wide variety of
+files, including the maker note information of many digital cameras by
+various manufacturers such as Canon, Casio, FLIR, FujiFilm, GE, HP,
+JVC/Victor, Kodak, Leaf, Minolta/Konica-Minolta, Nikon, Nintendo,
+Olympus/Epson, Panasonic/Leica, Pentax/Asahi, Phase One, Reconyx, Ricoh,
+Samsung, Sanyo, Sigma/Foveon and Sony.
+
+Below is a list of file types and meta information formats currently
+supported by ExifTool (r = read, w = write, c = create):
+
+  File Types
+  ------------+-------------+-------------+-------------+------------
+  3FR   r     | EIP   r     | LA    r     | ORF   r/w   | RTF   r
+  3G2   r/w   | EPS   r/w   | LFP   r     | OTF   r     | RW2   r/w
+  3GP   r/w   | EPUB  r     | LNK   r     | PAC   r     | RWL   r/w
+  ACR   r     | ERF   r/w   | M2TS  r     | PAGES r     | RWZ   r
+  AFM   r     | EXE   r     | M4A/V r/w   | PBM   r/w   | RM    r
+  AI    r/w   | EXIF  r/w/c | MEF   r/w   | PCD   r     | SEQ   r
+  AIFF  r     | EXR   r     | MIE   r/w/c | PDB   r     | SO    r
+  APE   r     | EXV   r/w/c | MIFF  r     | PDF   r/w   | SR2   r/w
+  ARW   r/w   | F4A/V r/w   | MKA   r     | PEF   r/w   | SRF   r
+  ASF   r     | FFF   r/w   | MKS   r     | PFA   r     | SRW   r/w
+  AVI   r     | FLA   r     | MKV   r     | PFB   r     | SVG   r
+  AZW   r     | FLAC  r     | MNG   r/w   | PFM   r     | SWF   r
+  BMP   r     | FLV   r     | MOBI  r     | PGF   r     | THM   r/w
+  BTF   r     | FPF   r     | MODD  r     | PGM   r/w   | TIFF  r/w
+  CHM   r     | FPX   r     | MOS   r/w   | PLIST r     | TORRENT r
+  COS   r     | GIF   r/w   | MOV   r/w   | PICT  r     | TTC   r
+  CR2   r/w   | GZ    r     | MP3   r     | PMP   r     | TTF   r
+  CRW   r/w   | HDP   r/w   | MP4   r/w   | PNG   r/w   | VRD   r/w/c
+  CS1   r/w   | HDR   r     | MPC   r     | PPM   r/w   | VSD   r
+  DCM   r     | HTML  r     | MPG   r     | PPT   r     | WAV   r
+  DCP   r/w   | ICC   r/w/c | MPO   r/w   | PPTX  r     | WDP   r/w
+  DCR   r     | IDML  r     | MQV   r/w   | PS    r/w   | WEBP  r
+  DFONT r     | IIQ   r/w   | MRW   r/w   | PSB   r/w   | WEBM  r
+  DIVX  r     | IND   r/w   | MXF   r     | PSD   r/w   | WMA   r
+  DJVU  r     | INX   r     | NEF   r/w   | PSP   r     | WMV   r
+  DLL   r     | ITC   r     | NRW   r/w   | QTIF  r/w   | WV    r
+  DNG   r/w   | J2C   r     | NUMBERS r   | RA    r     | X3F   r/w
+  DOC   r     | JNG   r/w   | ODP   r     | RAF   r/w   | XCF   r
+  DOCX  r     | JP2   r/w   | ODS   r     | RAM   r     | XLS   r
+  DPX   r     | JPEG  r/w   | ODT   r     | RAR   r     | XLSX  r
+  DV    r     | K25   r     | OFR   r     | RAW   r/w   | XMP   r/w/c
+  DVB   r/w   | KDC   r     | OGG   r     | RIFF  r     | ZIP   r
+  DYLIB r     | KEY   r     | OGV   r     | RSRC  r     |
+
+  Meta Information
+  ----------------------+----------------------+---------------------
+  EXIF           r/w/c  |  CIFF           r/w  |  Ricoh RMETA    r
+  GPS            r/w/c  |  AFCP           r/w  |  Picture Info   r
+  IPTC           r/w/c  |  Kodak Meta     r/w  |  Adobe APP14    r
+  XMP            r/w/c  |  FotoStation    r/w  |  MPF            r
+  MakerNotes     r/w/c  |  PhotoMechanic  r/w  |  Stim           r
+  Photoshop IRB  r/w/c  |  JPEG 2000      r    |  DPX            r
+  ICC Profile    r/w/c  |  DICOM          r    |  APE            r
+  MIE            r/w/c  |  Flash          r    |  Vorbis         r
+  JFIF           r/w/c  |  FlashPix       r    |  SPIFF          r
+  Ducky APP12    r/w/c  |  QuickTime      r    |  DjVu           r
+  PDF            r/w/c  |  Matroska       r    |  M2TS           r
+  PNG            r/w/c  |  MXF            r    |  PE/COFF        r
+  Canon VRD      r/w/c  |  PrintIM        r    |  AVCHD          r
+  Nikon Capture  r/w/c  |  FLAC           r    |  ZIP            r
+  GeoTIFF        r/w/c  |  ID3            r    |  (and more)
+
+See html/index.html for more details about ExifTool features.
+
+ExifTool can be downloaded from
+
+  http://owl.phy.queensu.ca/~phil/exiftool/
+
+RUNNING
+
+The exiftool script can be run right away without the need to install
+Image::ExifTool.  For example, from within the exiftool directory you can
+extract the information from one of the included test files by typing:
+
+  ./exiftool t/images/ExifTool.jpg
+
+If you move the exiftool script to a different directory, you must also
+either move the contents of the lib directory or install the Image::ExifTool
+package so the script can find the necessary libraries.
+
+Note:  If you are using the Windows cmd shell, you may need to rename
+'exiftool' to 'exiftool.pl' to run it directly from the command line.
+Alternatively, you can run exiftool with the command 'perl exiftool'.
+
+IF YOU ARE STILL CONFUSED
+
+The exiftool script is a command line application.  You run it by typing
+commands in a terminal window.  The first step is to determine the name of
+the directory where you downloaded the ExifTool distribution package.
+Assuming, for example, you downloaded it to a folder called "Desktop" in
+your home directory, then you would type the following commands in a
+terminal window to extract and run ExifTool:
+
+  cd ~/Desktop
+  gzip -dc Image-ExifTool-#.##.tar.gz | tar -xf -
+  cd Image-ExifTool-#.##
+  ./exiftool t/images/ExifTool.jpg
+
+Note: You must replace "#.##" in the above commands with the actual version
+number of ExifTool that you downloaded.  These commands extract meta
+information from one of the test images.  To use one of your images instead,
+enter the full path name of your file in place of "t/images/ExifTool.jpg".
+
+INSTALLATION
+
+You can install the Image::ExifTool package to make it available for use by
+other Perl scripts by typing the following:
+
+  perl Makefile.PL
+  make
+  make test
+  make install
+
+Notes:
+  i) You need root access for the last step above.
+
+  ii) Some Perl installations (like the standard OSX installation) may not
+  contain the necessary files to complete the first step above.  But no
+  worries:  You can install ExifTool manually by moving 'exiftool' and the
+  'lib' directory to any directory in your current PATH (ie. /usr/bin).
+
+  iii) In Windows, "dmake" or "nmake" may be used if "make" is not
+  available.  The "nmake" utility may be downloaded from Microsoft at
+  http://support.microsoft.com/default.aspx?scid=kb;en-us;Q132084 but note
+  that is utility is very old, and may not work with Makefiles generated by
+  newer Perl versions.
+
+(Also see html/install.html for more help with installation.)
+
+DEPENDENCIES
+
+Requires Perl version 5.004 or later.  No other special libraries are
+required, however the following modules are recommended for decoding
+compressed and/or encrypted information from the indicated file types, and
+for calculating digest values for some information types:
+
+  Archive::Zip         (ZIP, DOCX, PPTX, XLSX, ODP, ODS, ODT, EIP, iWork)
+  Compress::Zlib       (DNG, PNG, PDF, DCM, MIE and SWF files)
+  Digest::MD5          (PDF files, IPTC information, and JPG Extended XMP)
+  Digest::SHA          (PDF with AES-256 encryption)
+  IO::Compress::Bzip2  (RWZ files)
+  Win32API::File::Time (enables writing of FileCreateDate in Windows)
+  Time::HiRes          (allows generation of ProcessingTime tag)
+
+COPYRIGHT AND LICENSE
+
+Copyright 2003-2014, Phil Harvey
+
+This is free software; you can redistribute it and/or modify it under the
+same terms as Perl itself.
+
+DISTRIBUTION FILES
+
+Below is a list of the files/directories included in the full ExifTool
+distribution package:
+
+  Changes                   - Revision history
+  MANIFEST                  - Full list of distribution files
+  META.yml                  - Standard CPAN dependency file
+  Makefile.PL               - Makefile for installation
+  README                    - This file
+  arg_files/                - Argument files to convert metadata formats:
+    exif2iptc.args            - Arguments for converting EXIF to IPTC
+    exif2xmp.args             - Arguments for converting EXIF to XMP
+    gps2xmp.args              - Arguments for converting GPS to XMP
+    iptc2exif.args            - Arguments for converting IPTC to EXIF
+    iptc2xmp.args             - Arguments for converting IPTC to XMP
+    iptcCore.args             - Complete list of IPTC Core XMP tags
+    pdf2xmp.args              - Arguments for converting PDF to XMP
+    xmp2exif.args             - Arguments for converting XMP to EXIF
+    xmp2gps.args              - Arguments for converting XMP to GPS
+    xmp2iptc.args             - Arguments for converting XMP to IPTC
+    xmp2pdf.args              - Arguments for converting XMP to PDF
+  config_files/             - Sample ExifTool configuration files:
+    ExifTool_config           - General example showing basic features
+    convert_regions.config    - Config file for converting face regions
+  exiftool                  - The exiftool application (Perl script)
+  fmt_files/                - Output formatting example files:
+    gpx.fmt                   - Format file for creating GPX track
+    gpx_wpt.fmt               - Format file for creating GPX waypoints
+    kml.fmt                   - Format file for creating KML output files
+  html/                     - HTML documentation
+  html/TagNames/            - HTML tag name documentation
+  lib/                      - ExifTool Perl library modules
+  perl-Image-ExifTool.spec  - Red Hat Packaging Manager specification file
+  t/                        - Verification test code
+  t/images/                 - Verification test images
+
+ADDITIONAL INFORMATION
+
+Read the following files included in the full distribution for more
+information:
+
+  html/index.html           - Main ExifTool documentation
+  html/install.html         - Installation instructions
+  html/history.html         - Revision history
+  html/ExifTool.html        - API documentation
+  html/TagNames/index.html  - Tag name documentation
+  html/geotag.html          - Geotag feature
+  html/faq.html             - Frequently asked questions
+  html/filename.html        - Renaming/moving files
+  html/metafiles.html       - Working with metadata sidecar files
+  html/struct.html          - Working with structured XMP information
+  lib/Image/ExifTool/README - ExifTool library modules documentation
+
+and if you have installed Image::ExifTool, you can also consult perldoc or
+the man pages:
+
+  perldoc exiftool
+  perldoc Image::ExifTool
+  perldoc Image::ExifTool::TagNames
+
+  man exiftool
+  man Image::ExifTool
+  man Image::ExifTool::TagNames
+
+Note: If the man pages don't work, it is probably because your man path is
+not set to include the installed documentation.  See "man man" for
+information about how to set the man path.
+
+----------------------------------------------------------------------------

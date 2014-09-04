@@ -1,0 +1,43 @@
+#------------------------------------------------------------------------------
+# File:         xmp2exif.args
+#
+# Description:  Tag name translations for converting XMP to EXIF
+#
+# Usage:        exiftool -tagsFromFile SRCFILE -@ xmp2exif.args DSTFILE
+#
+# Requires:     ExifTool version 8.60 or later
+#
+# Revisions:    2009/01/20 - P. Harvey Created
+#               2011/06/22 - PH Copy flash information via Composite:Flash
+#               2013/06/12 - PH Additions for the Exif 2.3 for XMP spec
+#
+# References:   http://www.metadataworkinggroup.org/specs/
+#
+# Notes:     1) The first argument copies the bulk of the EXIF and GPS
+#               information, and the remaining arguments handle the tags
+#               which have different names and/or formats in XMP and EXIF.
+#
+#            2) These arguments will not delete EXIF tags which are missing
+#               from the XMP.  The EXIF tags should be deleted beforehand if
+#               required.
+#------------------------------------------------------------------------------
+-EXIF:all < XMP:all
+-EXIF:ImageDescription < XMP-dc:Description
+-EXIF:DateTimeOriginal < XMP-photoshop:DateCreated
+# magically extracts sub-seconds from date/time value if available
+-EXIF:SubSecTimeOriginal < XMP-photoshop:DateCreated
+#-EXIF:CreateDate < XMP-xmp:CreateDate (handled by mass copy)
+-EXIF:SubSecTimeDigitized < XMP-xmp:CreateDate
+#-EXIF:ModifyDate < XMP-xmp:ModifyDate (handled by mass copy)
+-EXIF:SubSecTime < XMP-xmp:ModifyDate
+-EXIF:Software < -XMP-xmp:CreatorTool
+-EXIF:Copyright < XMP-dc:Rights
+-EXIF:Artist < XMP-dc:Creator
+# XMP flash information is translated by the Composite Flash tag
+-EXIF:Flash < Composite:Flash
+# generate GPS tags which have been combined into other XMP tags
+-GPS:GPSLatitudeRef < Composite:GPSLatitudeRef
+-GPS:GPSLongitudeRef < Composite:GPSLongitudeRef
+-GPS:GPSDatestamp < XMP-exif:GPSDateTime
+-GPS:GPSTimestamp < XMP-exif:GPSDateTime
+# end

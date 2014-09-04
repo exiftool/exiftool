@@ -1,0 +1,478 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>LNK Tags</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h2 class=top>LNK Tags</h2>
+<p>Information extracted from MS Shell Link (Windows shortcut) files.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x0014 = 20'>0x0014</td>
+<td>Flags</td>
+<td class=c>N</td>
+<td><table class=cols><tr>
+  <td>Bit 0 = IDList
+  <br>Bit 1 = LinkInfo
+  <br>Bit 2 = Description
+  <br>Bit 3 = RelativePath
+  <br>Bit 4 = WorkingDir
+  <br>Bit 5 = CommandArgs
+  <br>Bit 6 = IconFile
+  <br>Bit 7 = Unicode
+  <br>Bit 8 = NoLinkInfo
+  <br>Bit 9 = ExpString
+  <br>Bit 10 = SeparateProc
+  <br>Bit 12 = DarwinID
+  <br>Bit 13 = RunAsUser
+  <br>Bit 14 = ExpIcon
+  <br>Bit 15 = NoPidAlias
+  <br>Bit 17 = RunWithShim
+  <br>Bit 18 = NoLinkTrack
+  <br>Bit 19 = TargetMetadata
+  <br>Bit 20 = NoLinkPathTracking
+  <br>Bit 21 = NoKnownFolderTracking
+  <br>Bit 22 = NoKnownFolderAlias
+  <br>Bit 23 = LinkToLink
+  <br>Bit 24 = UnaliasOnSave
+  <br>Bit 25 = PreferEnvPath
+  <br>Bit 26 = KeepLocalIDList</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td title='0x0018 = 24'>0x0018</td>
+<td>FileAttributes</td>
+<td class=c>N</td>
+<td><table class=cols><tr>
+  <td>Bit 0 = Read-only
+  <br>Bit 1 = Hidden
+  <br>Bit 2 = System
+  <br>Bit 3 = Volume
+  <br>Bit 4 = Directory
+  <br>Bit 5 = Archive
+  <br>Bit 6 = Encrypted?
+  <br>Bit 7 = Normal</td><td>&nbsp;&nbsp;</td>
+  <td>Bit 8 = Temporary
+  <br>Bit 9 = Sparse
+  <br>Bit 10 = Reparse point
+  <br>Bit 11 = Compressed
+  <br>Bit 12 = Offline
+  <br>Bit 13 = Not indexed
+  <br>Bit 14 = Encrypted</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td title='0x001c = 28'>0x001c</td>
+<td>CreateDate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0024 = 36'>0x0024</td>
+<td>AccessDate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x002c = 44'>0x002c</td>
+<td>ModifyDate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0034 = 52'>0x0034</td>
+<td>TargetFileSize</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0038 = 56'>0x0038</td>
+<td>IconIndex</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x003c = 60'>0x003c</td>
+<td>RunWindow</td>
+<td class=c>N</td>
+<td><table class=cols><tr>
+  <td>0 = Hide
+  <br>1 = Normal
+  <br>2 = Show Minimized
+  <br>3 = Show Maximized
+  <br>4 = Show No Activate
+  <br>5 = Show
+  <br>6 = Minimized
+  <br>7 = Show Minimized No Activate
+  <br>8 = Show NA
+  <br>9 = Restore
+  <br>10 = Show Default</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td title='0x0040 = 64'>0x0040</td>
+<td>HotKey</td>
+<td class=c>N</td>
+<td><table class=cols><tr>
+  <td>0x0 = (none)
+  <br>0x90 = Num Lock
+  <br>0x91 = Scroll Lock
+  <br>0x100 = Shift
+  <br>0x200 = Control</td><td>&nbsp;&nbsp;</td>
+  <td>0x400 = Alt
+  <br>&#39;0x30&#39;-&#39;0x39&#39; = 0-9
+  <br>&#39;0x41&#39;-&#39;0x5a&#39; = A-Z
+  <br>&#39;0x70&#39;-&#39;0x87&#39; = F1-F24</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td title='0x10000 = 65536'>0x10000</td>
+<td>ItemID</td>
+<td class=c>-</td>
+<td>--&gt; <a href='LNK.html#ItemID'>LNK ItemID Tags</a></td></tr>
+<tr>
+<td title='0x20000 = 131072'>0x20000</td>
+<td>LinkInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='LNK.html#LinkInfo'>LNK LinkInfo Tags</a></td></tr>
+<tr class=b>
+<td title='0x30004 = 196612'>0x30004</td>
+<td>Description</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x30008 = 196616'>0x30008</td>
+<td>RelativePath</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x30010 = 196624'>0x30010</td>
+<td>WorkingDirectory</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x30020 = 196640'>0x30020</td>
+<td>CommandLineArguments</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x30040 = 196672'>0x30040</td>
+<td>IconFileName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xa0000000 = 2684354560'>0xa0000000</td>
+<td>UnknownData</td>
+<td class=c>-</td>
+<td>--&gt; <a href='LNK.html#UnknownData'>LNK UnknownData Tags</a></td></tr>
+<tr class=b>
+<td title='0xa0000001 = 2684354561'>0xa0000001</td>
+<td>EnvVarData</td>
+<td class=c>-</td>
+<td>--&gt; <a href='LNK.html#UnknownData'>LNK UnknownData Tags</a></td></tr>
+<tr>
+<td title='0xa0000002 = 2684354562'>0xa0000002</td>
+<td>ConsoleData</td>
+<td class=c>-</td>
+<td>--&gt; <a href='LNK.html#ConsoleData'>LNK ConsoleData Tags</a></td></tr>
+<tr class=b>
+<td title='0xa0000003 = 2684354563'>0xa0000003</td>
+<td>TrackerData</td>
+<td class=c>-</td>
+<td>--&gt; <a href='LNK.html#TrackerData'>LNK TrackerData Tags</a></td></tr>
+<tr>
+<td title='0xa0000004 = 2684354564'>0xa0000004</td>
+<td>ConsoleFEData</td>
+<td class=c>-</td>
+<td>--&gt; <a href='LNK.html#ConsoleFEData'>LNK ConsoleFEData Tags</a></td></tr>
+<tr class=b>
+<td title='0xa0000005 = 2684354565'>0xa0000005</td>
+<td>SpecialFolderData</td>
+<td class=c>-</td>
+<td>--&gt; <a href='LNK.html#UnknownData'>LNK UnknownData Tags</a></td></tr>
+<tr>
+<td title='0xa0000006 = 2684354566'>0xa0000006</td>
+<td>DarwinData</td>
+<td class=c>-</td>
+<td>--&gt; <a href='LNK.html#UnknownData'>LNK UnknownData Tags</a></td></tr>
+<tr class=b>
+<td title='0xa0000007 = 2684354567'>0xa0000007</td>
+<td>IconEnvData</td>
+<td class=c>-</td>
+<td>--&gt; <a href='LNK.html#UnknownData'>LNK UnknownData Tags</a></td></tr>
+<tr>
+<td title='0xa0000008 = 2684354568'>0xa0000008</td>
+<td>ShimData</td>
+<td class=c>-</td>
+<td>--&gt; <a href='LNK.html#UnknownData'>LNK UnknownData Tags</a></td></tr>
+<tr class=b>
+<td title='0xa0000009 = 2684354569'>0xa0000009</td>
+<td>PropertyStoreData</td>
+<td class=c>-</td>
+<td>--&gt; <a href='LNK.html#UnknownData'>LNK UnknownData Tags</a></td></tr>
+<tr>
+<td title='0xa000000b = 2684354571'>0xa000000b</td>
+<td>KnownFolderData</td>
+<td class=c>-</td>
+<td>--&gt; <a href='LNK.html#UnknownData'>LNK UnknownData Tags</a></td></tr>
+<tr class=b>
+<td title='0xa000000c = 2684354572'>0xa000000c</td>
+<td>VistaIDListData</td>
+<td class=c>-</td>
+<td>--&gt; <a href='LNK.html#UnknownData'>LNK UnknownData Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ItemID'>LNK ItemID Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x0032 = 50'>0x0032</td>
+<td>Item0032</td>
+<td class=c>-</td>
+<td>--&gt; <a href='LNK.html#Item0032'>LNK Item0032 Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Item0032'>LNK Item0032 Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='14 = 0xe'>14</td>
+<td>TargetFileDOSName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='LinkInfo'>LNK LinkInfo Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>CommonNetworkRelLink</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>CommonPathSuffix</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>DeviceName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>DriveSerialNumber</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>DriveType</td>
+<td class=c>N</td>
+<td><table class=cols><tr>
+  <td>0 = Unknown
+  <br>1 = Invalid Root Path
+  <br>2 = Removable Media
+  <br>3 = Fixed Disk</td><td>&nbsp;&nbsp;</td>
+  <td>4 = Remote Drive
+  <br>5 = CD-ROM
+  <br>6 = Ram Disk</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td>LocalBasePath</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>NetName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>NetProviderType</td>
+<td class=c>N</td>
+<td><table class=cols><tr>
+  <td>0x1a0000 = AVID
+  <br>0x1b0000 = DOCUSPACE
+  <br>0x1c0000 = MANGOSOFT
+  <br>0x1d0000 = SERNET
+  <br>0x1e0000 = RIVERFRONT1
+  <br>0x1f0000 = RIVERFRONT2
+  <br>0x200000 = DECORB
+  <br>0x210000 = PROTSTOR
+  <br>0x220000 = FJ_REDIR
+  <br>0x230000 = DISTINCT
+  <br>0x240000 = TWINS
+  <br>0x250000 = RDR2SAMPLE
+  <br>0x260000 = CSC
+  <br>0x270000 = 3IN1
+  <br>0x290000 = EXTENDNET
+  <br>0x2a0000 = STAC
+  <br>0x2b0000 = FOXBAT</td><td>&nbsp;&nbsp;</td>
+  <td>0x2c0000 = YAHOO
+  <br>0x2d0000 = EXIFS
+  <br>0x2e0000 = DAV
+  <br>0x2f0000 = KNOWARE
+  <br>0x300000 = OBJECT_DIRE
+  <br>0x310000 = MASFAX
+  <br>0x320000 = HOB_NFS
+  <br>0x330000 = SHIVA
+  <br>0x340000 = IBMAL
+  <br>0x350000 = LOCK
+  <br>0x360000 = TERMSRV
+  <br>0x370000 = SRT
+  <br>0x380000 = QUINCY
+  <br>0x390000 = OPENAFS
+  <br>0x3a0000 = AVID1
+  <br>0x3b0000 = DFS</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td>VolumeID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>VolumeLabel</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='UnknownData'>LNK UnknownData Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr><td colspan=4 class=c><i>[no tags known]</i></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ConsoleData'>LNK ConsoleData Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='8 = 0x8'>8</td>
+<td>FillAttributes</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='10 = 0xa'>10</td>
+<td>PopupFillAttributes</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='12 = 0xc'>12</td>
+<td>ScreenBufferSize</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='16 = 0x10'>16</td>
+<td>WindowSize</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='20 = 0x14'>20</td>
+<td>WindowOrigin</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='32 = 0x20'>32</td>
+<td>FontSize</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='36 = 0x24'>36</td>
+<td>FontFamily</td>
+<td class=c>N</td>
+<td><table class=cols><tr>
+  <td>0x0 = Don&#39;t Care
+  <br>0x10 = Roman
+  <br>0x20 = Swiss</td><td>&nbsp;&nbsp;</td>
+  <td>0x30 = Modern
+  <br>0x40 = Script
+  <br>0x50 = Decorative</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='40 = 0x28'>40</td>
+<td>FontWeight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='44 = 0x2c'>44</td>
+<td>FontName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='108 = 0x6c'>108</td>
+<td>CursorSize</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='112 = 0x70'>112</td>
+<td>FullScreen</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='116 = 0x74'>116</td>
+<td>QuickEdit</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='120 = 0x78'>120</td>
+<td>InsertMode</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='124 = 0x7c'>124</td>
+<td>WindowOriginAuto</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='128 = 0x80'>128</td>
+<td>HistoryBufferSize</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='132 = 0x84'>132</td>
+<td>NumHistoryBuffers</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='136 = 0x88'>136</td>
+<td>RemoveHistoryDuplicates</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='TrackerData'>LNK TrackerData Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='16 = 0x10'>16</td>
+<td>MachineID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ConsoleFEData'>LNK ConsoleFEData Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='8 = 0x8'>8</td>
+<td>CodePage</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<hr>
+(This document generated automatically by Image::ExifTool::BuildTagLookup)
+<br><i>Last revised Mar 17, 2012</i>
+<p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
+</body>
+</html>

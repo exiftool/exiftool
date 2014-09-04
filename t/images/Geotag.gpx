@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<gpx
+  xmlns="http://www.topografix.com/GPX/1/0"
+  version="1.0" creator="Wissenbach Map3D 2.21"
+  xmlns:wissenbach="http://www.cableone.net/cdwissenbach"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.topografix.com/GPX/1/0 http://www.topografix.com/GPX/1/0/gpx.xsd
+                       http://www.cableone.net/cdwissenbach http://www.cableone.net/cdwissenbach/wissenbach.xsd">
+<trk><name>TESTTRK</name>
+<cmt>Test Track</cmt>
+<trkseg>
+<trkpt lat="43.641000" lon="-116.062231"><ele>1472.396484</ele><time>2003-05-24T17:10:05Z</time></trkpt>
+<trkpt lat="43.641086" lon="-116.062059"><ele>1474.319092</ele><time>2003-05-24T17:09:55Z</time></trkpt>
+<trkpt lat="43.641450" lon="-116.061802"><ele>1479.606201</ele><time>2003-05-24T17:09:46Z</time></trkpt>
+<trkpt lat="43.641751" lon="-116.062102"><ele>1481.528809</ele><time>2003-05-24T17:09:35Z</time></trkpt>
+<trkpt lat="43.641922" lon="-116.062338"><ele>1488.739014</ele><time>2003-05-24T17:09:28Z</time></trkpt>
+<trkpt lat="43.642030" lon="-116.061995"><ele>1491.622803</ele><time>2003-05-24T17:09:22Z</time></trkpt>
+<trkpt lat="43.642201" lon="-116.061738"><ele>1496.429443</ele><time>2003-05-24T17:09:17Z</time></trkpt>
+<trkpt lat="43.642545" lon="-116.061587"><ele>1502.677979</ele><time>2003-05-24T17:09:10Z</time></trkpt>
+<trkpt lat="43.642824" lon="-116.061502"><ele>1507.003906</ele><time>2003-05-24T17:09:04Z</time></trkpt>
+</trkseg>
+</trk>
+</gpx>

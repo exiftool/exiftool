@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TestArray</key>
+	<array>
+		<string>one</string>
+		<string>two</string>
+		<string>three</string>
+	</array>
+	<key>TestBoolean</key>
+	<true/>
+	<key>TestData</key>
+	<data>
+	PGR1bW15IGRhdGE+
+	</data>
+	<key>TestDate</key>
+	<date>2013-02-22T12:49:10Z</date>
+	<key>TestDict</key>
+	<dict>
+		<key>Author</key>
+		<string>Phil</string>
+		<key>When</key>
+		<date>2000-01-02T08:04:05Z</date>
+	</dict>
+	<key>TestInteger</key>
+	<integer>256</integer>
+	<key>TestReal</key>
+	<real>1.4</real>
+	<key>TestString</key>
+	<string>ExifTool PLIST test</string>
+	<key>TestUnicode</key>
+	<string>ExîfTöøl PLIST tést</string>
+</dict>
+</plist>

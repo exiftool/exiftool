@@ -1,0 +1,218 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+ "http://www.w3.org/TR/1998/REC-html40-19980424/loose.dtd">
+<html>
+<head>
+<title>ExifTool Command-Line Examples</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+<style type="text/css">
+pre      { color: #800 }
+label    { white-space: nowrap }
+<!--
+-->
+</style>
+<script language="JavaScript" type="text/JavaScript">
+<!-- Begin
+var cod = new Array;
+var lbl = new Array;
+var cmd = new Array;
+var txt = new Array;
+var bits = 0;
+var n = -1;
+
+function showHide(obj,mask,bit)
+{
+  var i;
+  if (obj && obj.checked != true) {
+    bits &= ~bit;
+  } else {
+    bits &= ~mask;
+    bits |= bit;
+  }
+  var desc = document.getElementById('desc').checked;
+  var head = document.getElementById('head').checked;
+  var text = '';
+  text += obj + ' ' + mask + ' ' + bit + ' ' + bits + '<br>';
+  for (i in cod) {
+    if ((cod[i] & bits) == bits) {
+      text += '<p>' + i + ') ';
+      if (head) { text += '<b>' + lbl[i] + '</b></p>\n<blockquote><pre>' + cmd[i] + '</pre>' }
+      else      { text += '<code>' + cmd[i] + '</code></p>\n<blockquote>' }
+      if (desc) { text += txt[i] + '</blockquote>\n' }
+      else      { text += '</blockquote>\n' }
+    }
+  }
+  if (text == '') { text = '<p><i>[no matching examples]</i></p>'; }
+  var p = document.getElementById('test');
+  p.innerHTML = text;
+}
+
+++n;
+cod[n] = 0x0f;
+lbl[n] = 'Extract information from a file';
+cmd[n] = 'exiftool a.jpg';
+txt[n] = 'A basic command to extract all metadata from a file named <code>a.jpg</code>.';
+++n;
+cod[n] = 0x17;
+lbl[n] = 'Basic write example';
+cmd[n] = 'exiftool -artist=me a.jpg';
+txt[n] = 'Writes Artist tag to <code>a.jpg</code>. Since no group is specified, EXIF:Artist will be written and all other existing Artist tags will be updated with the new value ("<code>me</code>").';
+++n;
+cod[n] = 0x17;
+lbl[n] = 'Write multiple files';
+cmd[n] = 'exiftool -artist=me a.jpg b.jpg c.jpg';
+txt[n] = 'Writes Artist tag to three image files.';
+++n;
+cod[n] = 0x17;
+lbl[n] = 'Write to all files in a directory';
+cmd[n] = 'exiftool -artist=me c:/images';
+txt[n] = 'Writes Artist tag to all files in directory <code>c:/images</code>.';
+++n;
+cod[n] = 0x17;
+lbl[n] = 'Write multiple tags';
+cmd[n] = 'exiftool -artist="Phil Harvey" -copyright="2011 Phil Harvey" a.jpg';
+txt[n] = 'Writes two tags to <code>a.jpg</code>.';
+++n;
+cod[n] = 0x0f;
+lbl[n] = 'Extracting duplicate tags';
+cmd[n] = 'exiftool -a -u -g1 a.jpg';
+txt[n] = 'Print all meta information in an image, including duplicate and unknown tags, sorted by group (for family 1).';
+++n;
+cod[n] = 0x0f;
+cmd[n] = 'exiftool -common dir';
+txt[n] = 'Print common meta information for all images in dir.';
+++n;
+cod[n] = 0x0f;
+cmd[n] = 'exiftool -T -createdate -aperture -shutterspeed -iso DIR &gt; out.txt';
+txt[n] = 'List meta information in tab-delimited column form for all images in directory <code>DIR</code> to an output text file named "out.txt".';
+++n;
+cod[n] = 0x0f;
+cmd[n] = 'exiftool -s -ImageSize -ExposureTime b.jpg';
+txt[n] = 'Print ImageSize and ExposureTime tag names and values.';
+++n;
+cod[n] = 0x0f;
+cmd[n] = 'exiftool -l -canon c.jpg d.jpg';
+txt[n] = 'Print standard Canon information from two image files.';
+++n;
+cod[n] = 0x0f;
+cmd[n] = 'exiftool -r -w .txt -common pictures';
+txt[n] = 'Recursively extract common meta information from files in C<pictures> directory, writing text output into files with the same names but with a C<.txt> extension.';
+++n;
+cod[n] = 0x0f;
+cmd[n] = 'exiftool -b -ThumbnailImage image.jpg &gt; thumbnail.jpg';
+txt[n] = 'Save thumbnail image from C<image.jpg> to a file called C<thumbnail.jpg>.';
+++n;
+cod[n] = 0x0f;
+cmd[n] = 'exiftool -b -JpgFromRaw -w _JFR.JPG -ext CRW -r .';
+txt[n] = 'Recursively extract JPG image from all Canon CRW files in the current directory, adding C<_JFR.JPG> for the name of the output JPG files.';
+++n;
+cod[n] = 0x0f;
+cmd[n] = 'exiftool -d "%r %a, %B %e, %Y" -DateTimeOriginal -S -s *.jpg';
+txt[n] = 'Print formatted date/time for all JPG files in the current directory.';
+++n;
+cod[n] = 0x0f;
+cmd[n] = 'exiftool -IFD1:XResolution -IFD1:YResolution image.jpg';
+txt[n] = 'Extract image resolution from EXIF IFD1 information (thumbnail image IFD).';
+++n;
+cod[n] = 0x0f;
+cmd[n] = 'exiftool "-*resolution*" image.jpg';
+txt[n] = 'Extract all tags with names containing the word "Resolution" from an image.';
+++n;
+cod[n] = 0x0f;
+cmd[n] = 'exiftool -xmp:author:all -a image.jpg';
+txt[n] = 'Extract all author-related XMP information from an image.';
+++n;
+cod[n] = 0x0f;
+cmd[n] = 'exiftool -xmp -b a.jpg &gt; out.xmp';
+txt[n] = 'Extract complete XMP data record intact from <code>a.jpg</code> and write it to <code>out.xmp</code> using the special <code>XMP</code> tag (see the <a href="TagNames/Extra.html">Extra Tags</a>).';
+++n;
+cod[n] = 0x09;
+cmd[n] = 'exiftool -p "$filename has date $dateTimeOriginal" -q -f dir';
+txt[n] = 'Print one line of output containing the file name and DateTimeOriginal for each image in directory <code>dir</code>.';
+++n;
+cod[n] = 0x0e;
+cmd[n] = 'exiftool -p \'$filename has date $dateTimeOriginal\' -q -f dir';
+txt[n] = 'Print one line of output containing the file name and DateTimeOriginal for each image in directory <code>dir</code>.';
+++n;
+cod[n] = 0x09;
+cmd[n] = 'exiftool -ee -p "$gpslatitude, $gpslongitude, $gpstimestamp" a.m2ts';
+txt[n] = 'Extract all GPS positions from an AVCHD video.';
+++n;
+cod[n] = 0x0e;
+cmd[n] = 'exiftool -ee -p \'$gpslatitude, $gpslongitude, $gpstimestamp\' a.m2ts';
+txt[n] = 'Extract all GPS positions from an AVCHD video.';
+++n;
+cod[n] = 0x0f;
+cmd[n] = 'exiftool -icc_profile -b -w icc image.jpg';
+txt[n] = 'Save complete ICC_Profile from an image to an output file with the same name and an extension of C<.icc>.';
+++n;
+cod[n] = 0x0f;
+cmd[n] = 'exiftool -htmldump -w tmp/%f_%e.html t/images';
+txt[n] = 'Generate HTML pages from a hex dump of EXIF information in all images from the C<t/images> directory.  The output HTML files are written to the C<tmp> directory (which is created if it didn\'t exist), with names of the form "FILENAME_EXT.html".';
+// End --->
+</script></head>
+<body onload="showHide(0,0x07,0x01)"><noscript><b class=V>--&gt;
+Enable JavaScript for active highlighting and information tool tips!
+</b></noscript>
+<h2>ExifTool Command-Line Examples</h2>
+<form id="theForm" action="" onsubmit="return false;">
+<!--
+date formatting (-d)
+for -@ argfile (-args)
+database import
+xml format
+json format
+structures
+binary data
+HTML format
+tab-delimited format (-t, -T)
+html dump
+
+gps coordinates (-c, -gps:all -a, -a "-gps*")
+specific tags
+groups of tags (wildcards, -group:tag)
+Tag ID's (-H -D)
+special characters (-E, -ex, -L, -charset)
+alternate languages (-lang)
+numerical values (-n, -Tag#)
+lists (-sep)
+verbose messages (-v)
+save output to file (-w, redirection)
+embedded images (preview, thumbnail, jpgfromraw)
+tag names/descriptions (-s)
+-->
+<fieldset><!-- <legend>Search Criteria</legend> -->
+<table cellpadding=0 cellspacing=0><tr><td><b>System:</b></td><td>
+<label><input name="os" type="radio" checked onclick="showHide(this,0x07,0x01);"/>Windows</label>
+<label><input name="os" type="radio" onclick="showHide(this,0x07,0x02);"/>Mac OS X</label>
+<label><input name="os" type="radio" onclick="showHide(this,0x07,0x04);"/>Linux</label>
+</td></tr><tr><td><b>Task:</b></td><td>
+<select name='task' size=1 onchange='showHide(0,0x38,this.options[this.selectedIndex].value)'>
+<option value='0x00'>Any</option>
+<option value='0x08'>Read Metadata</option>
+<option value='0x10'>Write Metadata</option>
+<option value='0x18'>Delete Metadata</option>
+<option value='0x20'>Copy Metadata</option>
+<option value='0x28'>Rename Files</option>
+<option value='0x30'>Geotag Files</option>
+</select>
+</td></tr><tr><td><b>Features:</b></td><td>
+<label><input type="checkbox" onclick="showHide(this,0x100,0x100);"/>Special characters</label>
+<label><input type="checkbox" onclick="showHide(this,0x200,0x200);"/>Alternate languages</label>
+<label><input type="checkbox" onclick="showHide(this,0x400,0x400);"/>Group names</label>
+<label><input type="checkbox" onclick="showHide(this,0x800,0x800);"/>Some other</label>
+<label><input type="checkbox" onclick="showHide(this,0x1000,0x1000);"/>Some other</label>
+<label><input type="checkbox" onclick="showHide(this,0x2000,0x2000);"/>Some other</label>
+<label><input type="checkbox" onclick="showHide(this,0x4000,0x4000);"/>Some other</label>
+</td><tr><tr><td><b>Examples:&nbsp;</b></td><td>
+<label><input id='head' type="checkbox" checked onclick="showHide(this,0,0);"/>Show Headings</label>
+&nbsp; <label><input id='desc' type="checkbox" checked onclick="showHide(this,0,0);"/>Show Descriptions</label>
+</td></tr><tr><td><b>Feature:</b></td><td>
+<select name='feature' size=1>
+<option value='0x000'>Any</option>
+<option value='0x100'>Geotag</option>
+<option value='0x200'>XML</option>
+</select>
+</td></tr></table></form>
+
+<span id=test></span>
+</body></html>

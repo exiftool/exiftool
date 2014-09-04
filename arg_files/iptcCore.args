@@ -1,0 +1,172 @@
+#------------------------------------------------------------------------------
+# File:         iptcCore.args
+#
+# Description:  ExifTool arguments for IPTC Core and Extension version 1.1 tags
+#
+# Usage:        exiftool -@ iptcCore.args FILE
+#
+# Requires:     ExifTool version 8.44 or later
+#
+# Revisions:    2011/12/28 - P. Harvey Created
+#
+# References:   http://www.iptc.org/IPTC4XMP/
+#
+# Notes:        Both flattened and structured tags are included
+#------------------------------------------------------------------------------
+
+#
+# dc schema
+#
+
+-XMP-dc:Creator
+-XMP-dc:Description
+-XMP-dc:Rights
+-XMP-dc:Subject
+-XMP-dc:Title
+
+#
+# photoshop schema
+#
+
+-XMP-photoshop:AuthorsPosition
+-XMP-photoshop:CaptionWriter
+-XMP-photoshop:City
+-XMP-photoshop:Country
+-XMP-photoshop:Credit
+-XMP-photoshop:DateCreated
+-XMP-photoshop:Headline
+-XMP-photoshop:Instructions
+-XMP-photoshop:Source
+-XMP-photoshop:State
+-XMP-photoshop:TransmissionReference
+
+#
+# xmpRights schema
+#
+
+-XMP-xmpRights:UsageTerms
+
+#
+# Iptc4xmpCore schema
+#
+
+-XMP-iptcCore:CountryCode
+
+# ContactInfo struct
+-XMP-iptcCore:CreatorContactInfo
+-XMP-iptcCore:CreatorAddress
+-XMP-iptcCore:CreatorCity
+-XMP-iptcCore:CreatorCountry
+-XMP-iptcCore:CreatorPostalCode
+-XMP-iptcCore:CreatorRegion
+-XMP-iptcCore:CreatorWorkEmail
+-XMP-iptcCore:CreatorWorkTelephone
+-XMP-iptcCore:CreatorWorkURL
+
+-XMP-iptcCore:IntellectualGenre
+-XMP-iptcCore:Location
+-XMP-iptcCore:Scene
+-XMP-iptcCore:SubjectCode
+
+#
+# Iptc4xmpExt schema
+#
+
+-XMP-iptcExt:AdditionalModelInformation
+
+# ArtworkOrObjectDetails struct
+-XMP-iptcExt:ArtworkOrObject
+-XMP-iptcExt:ArtworkCopyrightNotice
+-XMP-iptcExt:ArtworkCreator
+-XMP-iptcExt:ArtworkDateCreated
+-XMP-iptcExt:ArtworkSource
+-XMP-iptcExt:ArtworkSourceInventoryNo
+-XMP-iptcExt:ArtworkTitle
+
+-XMP-iptcExt:ControlledVocabularyTerm
+-XMP-iptcExt:DigitalImageGUID
+-XMP-iptcExt:DigitalSourcefileType
+-XMP-iptcExt:DigitalSourceType
+-XMP-iptcExt:Event
+-XMP-iptcExt:IPTCLastEdited
+
+# LocationDetails struct
+-XMP-iptcExt:LocationCreated
+-XMP-iptcExt:LocationCreatedCity
+-XMP-iptcExt:LocationCreatedCountryCode
+-XMP-iptcExt:LocationCreatedCountryName
+-XMP-iptcExt:LocationCreatedProvinceState
+-XMP-iptcExt:LocationCreatedSublocation
+-XMP-iptcExt:LocationCreatedWorldRegion
+
+# LocationDetails struct
+-XMP-iptcExt:LocationShown
+-XMP-iptcExt:LocationShownCity
+-XMP-iptcExt:LocationShownCountryCode
+-XMP-iptcExt:LocationShownCountryName
+-XMP-iptcExt:LocationShownProvinceState
+-XMP-iptcExt:LocationShownSublocation
+-XMP-iptcExt:LocationShownWorldRegion
+
+-XMP-iptcExt:MaxAvailHeight
+-XMP-iptcExt:MaxAvailWidth
+-XMP-iptcExt:ModelAge
+-XMP-iptcExt:OrganisationInImageCode
+-XMP-iptcExt:OrganisationInImageName
+-XMP-iptcExt:PersonInImage
+
+# RegistryEntryDetails struct
+-XMP-iptcExt:RegistryID
+-XMP-iptcExt:RegistryItemID
+-XMP-iptcExt:RegistryOrganisationID
+
+#
+# plus schema
+#
+
+# CopyrightOwnerDetail struct
+-XMP-plus:CopyrightOwner
+-XMP-plus:CopyrightOwnerID
+-XMP-plus:CopyrightOwnerImageID
+-XMP-plus:CopyrightOwnerName
+
+# ImageCreatorDetail struct
+-XMP-plus:ImageCreator
+-XMP-plus:ImageCreatorID
+-XMP-plus:ImageCreatorImageID
+-XMP-plus:ImageCreatorName
+
+# ImageSupplierDetail struct
+-XMP-plus:ImageSupplier
+-XMP-plus:ImageSupplierID
+-XMP-plus:ImageSupplierImageID
+-XMP-plus:ImageSupplierName
+
+# LicensorDetail struct
+-XMP-plus:Licensor
+-XMP-plus:LicensorCity
+-XMP-plus:LicensorCountry
+-XMP-plus:LicensorEmail
+-XMP-plus:LicensorExtendedAddress
+-XMP-plus:LicensorID
+-XMP-plus:LicensorImageID
+-XMP-plus:LicensorName
+-XMP-plus:LicensorNotes
+-XMP-plus:LicensorPostalCode
+-XMP-plus:LicensorRegion
+-XMP-plus:LicensorStreetAddress
+-XMP-plus:LicensorTelephone1
+-XMP-plus:LicensorTelephone2
+-XMP-plus:LicensorTelephoneType1
+-XMP-plus:LicensorTelephoneType2
+-XMP-plus:LicensorTransactionID
+-XMP-plus:LicensorURL
+
+-XMP-plus:MinorModelAgeDisclosure
+-XMP-plus:ModelReleaseID
+-XMP-plus:ModelReleaseStatus
+-XMP-plus:PLUSVersion
+-XMP-plus:PropertyReleaseID
+-XMP-plus:PropertyReleaseStatus
+
+# end

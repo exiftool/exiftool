@@ -1,0 +1,312 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd">
+<html>
+<head>
+  <title>Metadata Sidecar Files</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+<style type="text/css">
+<!--
+blockquote  { margin-top: 1em; margin-bottom: 1em }
+pre         { color: #800; margin-left: 4em }
+pre.code    { color: #000; padding: 0; margin: 0 }
+.lt         { color: #666 }
+.ind        { margin-left: 2.5em }
+p.a         { margin: 1em 2em 0 1em }
+p.b         { margin: 0 2em 1em 2.2em; color: #666 }
+p.c         { margin: 1em 2em 1em 2.2em; color: #666 }
+-->
+</style>
+</head>
+<body>
+<div class='index'>
+<a href="#xmp">XMP Sidecar Files</a>
+<br><a href="#xml">ExifTool XML Files</a>
+<br><a href="#exif">EXIF Files</a>
+<br><a href="#mie">MIE Files</a>
+<br><a href="#exv">EXV Files</a>
+</div>
+
+<h1 class=up>Metadata Sidecar Files</h1>
+
+<p>Metadata for images and other file types may be stored in a separate metadata
+file. These are the only files that exiftool can create from scratch.  A common
+example of this is the XMP "sidecar" file (which is discussed in the next
+section in some detail).  Other supported metadata file types are EXIF, MIE,
+EXV, ICC and VRD.  As well, ExifTool supports XML-format output, which can also
+be used to generate metadata sidecar files.</p>
+
+<hr>
+<a name="xmp"></a>
+<h3>XMP Sidecar Files</h3>
+
+<p>There are a number of different ways to generate an XMP sidecar file with
+exiftool, and the method you choose depends on your circumstances and
+preferences. Below are a number of example commands which write an output XMP
+file from information in a source file of any type.</p>
+
+<p class=a><a name="EX1">1.</a> Copy same-named tags from all information types to preferred locations in XMP:</p>
+<p class=b>(<code><i>SRC</i>.<i>EXT</i></code> is the source file name and
+extension, and <code><i>DST</i></code> is the destination file name)</p>
+<pre>exiftool -tagsfromfile <i>SRC</i>.<i>EXT</i> <i>DST</i>.xmp</pre>
+
+<p class=a><a name="EX2">2.</a> Rewrite source file to destination XMP file:</p>
+<p class=b>(same effect as above, but the command will exit with an error if the output XMP file already exists)</p>
+<pre>exiftool <i>SRC</i>.<i>EXT</i> -o <i>DST</i>.xmp</pre>
+
+<p class=a><a name="EX3">3.</a> Copy XMP, preserving original locations:</p>
+<p class=b>(ie. copies XMP tags only to the same namespaces in the destination file)</p>
+<pre>exiftool -tagsfromfile <i>SRC</i>.<i>EXT</i> -all:all <i>DST</i>.xmp</pre>
+<p class=c>Advanced: Notice that <code>-all:all</code> is used above instead of
+<code>-xmp:all</code> even though only XMP tags will be copied (since the destination
+is an XMP file).  This is because <code>-all:all</code> preserves the family 1 group
+(ie. XMP namespace) while <code>-xmp:all</code> would copy tags to the preferred XMP
+namespace, which may be different for XMP tags that exist in multiple namespaces.
+To get the best of both worlds, <code>"-all:all&lt;xmp:all"</code> may be used to
+avoid the inefficiencies of assigning tags which aren't copied, while still
+preserving the family 1 group.</p>
+
+<p class=a><a name="EX4">4.</a> Rewrite source to XMP file, preserving locations:</p>
+<p class=b>(same effect as above, but the command will fail if the XMP file already exists)</p>
+<pre>exiftool <i>SRC</i>.<i>EXT</i> -o <i>DST</i>.xmp -all:all</pre>
+
+<p class=a><a name="EX5">5.</a> Generate XMP from EXIF and IPTC using standard tag name mappings:</p>
+<p class=b> (the <code>.args</code> files are available in the full ExifTool distribution)</p>
+<pre>exiftool -tagsfromfile <i>SRC</i>.<i>EXT</i> -@ exif2xmp.args -@ iptc2xmp.args <i>DST</i>.xmp</pre>
+
+<p class=a><a name="EX6">6.</a> Copy XMP as a block to an XMP file:</p>
+<p class=b>(writing as a block is the only way to transfer unknown or non-writable XMP tags)</p>
+<pre>exiftool -tagsfromfile <i>SRC</i>.<i>EXT</i> -xmp <i>DST</i>.xmp</pre>
+<p class=c>Note that this will not deal with extended XMP segments in JPEG
+images if they exist.</p>
+
+<p><a name="EX7">7.</a> Extract XMP as a block and write to output XMP file: <span class=lt>(same effect as above)</span></p>
+<pre>exiftool -xmp -b <i>SRC</i>.<i>EXT</i> > <i>DST</i>.xmp</pre>
+<p class=c>As with the previous command, this command will not copy extended XMP
+segments in JPEG images, but in this case the <code>-a</code> option may be
+added to also extract extended XMP blocks.  However, the result would be a
+non-standard XMP file that ExifTool could read but other utilities may not.</p>
+
+<p class=a><a name="EX8">8.</a> Extract XMP as a block to an output text file with .xmp extension:</p>
+<p class=b>(same effect as above, but the destination file name will be the same
+as the source file, and this command will fail if the XMP file exists while the
+previous command will overwrite an existing file)</p>
+<pre>exiftool -xmp -b -w xmp <i>SRC</i>.<i>EXT</i></pre>
+<p class=c>The advantage of this command is that it may be applied to multiple
+source files or entire directories.</p>
+
+<p><a name="EX9">9.</a> Restore all XMP tags from an XMP sidecar file to XMP in a JPG image:</p>
+<pre>exiftool -tagsfromfile <i>SRC</i>.xmp -all:all <i>DST</i>.jpg</pre>
+
+<p class=a><a name="EX10">10.</a> Restore XMP as a block from an XMP sidecar file to a JPG image:</p>
+<p class=b>(same effect as above except that any non-writable XMP tags would be
+copied by this command, and the 2 kB of padding recommended by the XMP
+specification is not added when copying as a block)</p>
+<pre>exiftool -tagsfromfile <i>SRC</i>.xmp -xmp <i>DST</i>.jpg</pre>
+
+<h4>Batch Processing</h4>
+
+<p>Multiple files may be processed in a single command by specifying multiple
+file and/or directory names on the command line.  The examples below demonstrate
+how to process all files with a specific extension in an entire directory tree.</p>
+
+<p class=a><a name="EX11">11.</a> Create XMP sidecar files for all files with extension EXT in a
+directory tree:</p>
+<p class=b>(when batch-generating sidecar files from many images, the <code>-o</code>
+form of the command is easier to use, but can not be used to modify
+existing XMP files)</p>
+<pre>exiftool -ext <i>EXT</i> -o %d%f.xmp -r <i>DIR</i></pre>
+<p class=c>where <code><i>DIR</i></code> is the name of the directory containing
+the images.  The <code>-r</code> option causes sub-directories to be recursively
+processed.  Multiple <code>-ext</code> options may be used to process different
+file types in a single command.  With this command, same-named tags from any type
+of metadata will be written to the preferred XMP namespace in the output XMP
+file.  To copy only XMP tags, <code>-xmp:all</code> may be added to the command.
+(See example 14 for more about this.)</p>
+
+<p class=a><a name="EX12">12.</a> Copy tags to sidecar files that already exist:</p>
+<p class=b>(same as above, but copies only to existing XMP files)</p>
+<pre>exiftool -ext xmp -tagsfromfile %d%f.<i>EXT</i> -r <i>DIR</i></pre>
+<p class=c>This command will add tags from the source files to information that
+already exists in the XMP files, but note that this command searches for the XMP
+files instead of the image files, so it will not generate new XMP sidecar files
+if some images don't have them.  For this, the advanced (ie. tricky and
+confusing to use) <code>-srcfile</code> option comes in handy:</p>
+
+<p class=a><a name="EX13">13.</a> Copy tags to sidecar files, generating new files if necessary:</p>
+<p class=b>(same as above, but also creates new XMP files if they don't exist)</p>
+<pre>exiftool -ext <i>EXT</i> -tagsfromfile @ -srcfile %d%f.xmp -r <i>DIR</i></pre>
+<p class=c>Note that as with the previous two commands, this command will
+commute metadata from other groups to the preferred location in XMP.</p>
+
+<p class=a><a name="EX14">14.</a> Copy only XMP tags to the same namespace in sidecar files:</p>
+<p class=b>(same as above, but copies only XMP and preserves specific tag locations)</p>
+<pre>exiftool -ext <i>EXT</i> -tagsfromfile @ "-all:all&lt;xmp:all" -srcfile %d%f.xmp -r <i>DIR</i></pre>
+<p class=c>In this command, if "<code>-xmp:all</code>" was used instead of
+<code>"-all:all&lt;xmp:all"</code>, then all XMP tags would have been copied to
+their preferred namespaces in the sidecar file.  But by writing to the
+destination group of "<code>all</code>", the specific location (ie. XMP
+namespace) of each tag is preserved.</p>
+
+<p class=a><a name="EX15">15.</a> Copy XMP from sidecar files back to the same locations in the source files:</p>
+<p class=b>(the inverse of the previous command)</p>
+<pre>exiftool -ext <i>EXT</i> -tagsfromfile %d%f.xmp -all:all -r <i>DIR</i></pre>
+<p class=c>Here,
+<code>-all:all</code> copies all metadata (in this case only XMP, since the
+sidecar XMP file contains no other types) to the same specific locations in the
+target files (extension <code><i>EXT</i></code>).</p>
+
+<p class=a><a name="EX16">16.</a> Write a tag to XMP sidecar if it exists, or the original file otherwise:</p>
+<pre>exiftool -ext <i>EXT</i> -artist="Phil" -srcfile %d%f.xmp -srcfile @ <i>DIR</i></pre>
+<p class=c>When multiple <code>-srcfile</code> options are used, the first
+existing file is processed.  If none of the specified source files exists, then
+the first one in the list is created (however, this won't happen with this
+example since one of the specified source files is "<code>@</code>", which
+represents the original file name).</p>
+
+<p class=a><a name="EX17">17.</a> Create XMP sidecar file in another directory:</p>
+<pre>exiftool -ext <i>EXT</i> -o <i>DSTDIR</i>/%f.xmp -r <i>SRCDIR</i></pre>
+<p class=c>By specifying a directory name instead of <code>%d</code>, this
+command writes XMP files to <code><i>DSTDIR</i></code> instead of the original
+source directory. The same technique may be used in any of the above commands to
+write XMP to a sidecar file in a different directory.</p>
+
+<h4>Via the API</h4>
+
+<p>By specifying different tags in the
+<a href="ExifTool.html#SetNewValuesFromFile">SetNewValuesFromFile</a>
+call, the above examples numbered 1-6 are programmed like this:</p>
+
+<blockquote><table class='box'><tr><td><pre class='code'>
+$exifTool-><a href="ExifTool.html#SetNewValuesFromFile">SetNewValuesFromFile</a>('SRC.EXT', @tags_to_copy);
+$exifTool-><a href="ExifTool.html#WriteInfo">WriteInfo</a>(undef, 'DST.xmp');
+</pre></td></tr></table></blockquote>
+
+<p>and examples 7 and 8 use this general technique:</p>
+
+<blockquote><table class='box'><tr><td><pre class='code'>
+my $info = <a href="ExifTool.html#ImageInfo">ImageInfo</a>('SRC.EXT', 'xmp');
+die "No XMP" unless $$info{XMP};
+open FILE, '&gt;DST.xmp';
+print FILE ${$$info{XMP}};
+close FILE;
+</pre></td></tr></table></blockquote>
+
+<hr>
+<a name="xml"></a>
+<h3>ExifTool XML Files</h3>
+
+<p>Closely related to the XMP sidecar file is the XML file written using the
+exiftool <code>-X</code> option.  This file is RDF/XML format like XMP, but uses
+exiftool-specific namespaces to give an exact mapping for all exiftool tag
+names.  This type of file is better suited to general information
+storage/recovery since it facilitates copying of more original metadata than an
+XMP file, but it doesn't have the portability of an XMP file or the ability to
+store native-format data like a MIE file, and ExifTool can not be used to edit
+XML files as it can with other metadata files.  Below are example commands
+demonstrating the use of exiftool XML files.</p>
+
+<p>Create an exiftool XML sidecar file:</p>
+<pre>exiftool a.jpg -X > a.xml</pre>
+
+<p>Restore original meta information from exiftool XML file:</p>
+<pre>exiftool -tagsfromfile a.xml -all:all a.jpg</pre>
+
+<h4>Via the API</h4>
+
+<p>There is no way to automatically produce a sidecar exiftool XML file via the
+API since this function is accomplished with an output formatting option of the
+exiftool application.  However, the the API may be used to read and copy tags
+from an exiftool XML file just like any other file format.  When reading
+ExifTool XML files, all tags except those in the <code>ExifTool</code>,
+<code>File</code> and <code>Composite</code> groups are extracted with their
+original family 1 groups to facilitate copying of these tags back into their
+original locations in an image.</p>
+
+<hr>
+<a name="exif"></a>
+<h3>EXIF Files</h3>
+
+<p>EXIF files store EXIF information in the same format as in the APP1 segment
+of a JPEG image (<i>with the exception that there is no size limit for an
+EXIF file, while EXIF data in a JPEG image is limited to a maximum of 65527
+bytes</i>). The three commands below illustrate techniques for copying the
+entire EXIF block from a source image (<code><i>SRCFILE</i></code>) to an
+output EXIF file (<code>out.exif</code>):</p>
+
+<pre>exiftool -exif -b <i>SRCFILE</i> > out.exif
+
+exiftool -tagsfromfile <i>SRCFILE</i> -exif out.exif
+
+exiftool -o out.exif -exif <i>SRCFILE</i></pre>
+
+<p>It is the specification of the <a href="TagNames/Extra.html">Extra</a> EXIF
+tag in each of the above commands (the "<code>-exif</code>" argument) that
+causes the EXIF information to be extracted as a block.  JPEG, PNG, JP2, MIE and
+MIFF files all support storage of EXIF data blocks in this format, although
+exiftool does not currently write MIFF images.</p>
+
+<p>Tags may also be copied individually to and from an EXIF file, but remember
+that this will not copy "unsafe" tags unless they are specified explicitly.  The
+following command creates an EXIF file from the metadata in a source file:</p>
+
+<pre>exiftool -o out.exif -all -unsafe <i>SRCFILE</i>
+</pre>
+
+<p>This technique works for any type of source file, provided the file contains
+at least one tag with the same name as an EXIF tag.  Below is an example of how
+to apply this to all files in a directory:</p>
+
+<pre>exiftool -o %d%f.exif -all -unsafe <i>DIR</i>
+</pre>
+
+<hr>
+<a name="mie"></a>
+<h3>MIE Files</h3>
+
+<p>The <a href="MIE1.1-20070121.pdf">MIE file format</a> allows storage of
+native binary meta information, and is the best option for saving metadata from
+a file in its original format.  Here are two examples that copy all individual
+tags plus the ICC Profile to a MIE sidecar file:</p>
+
+<pre>exiftool -tagsfromfile a.jpg -all:all -icc_profile a.mie</pre>
+<pre>exiftool -o a.mie -all:all -icc_profile a.jpg</pre>
+
+<p>And the following command performs the inverse operation, restoring metadata
+in a JPG image from a MIE file:</p>
+
+<pre>exiftool -tagsfromfile a.mie -all:all -icc_profile a.jpg</pre>
+
+<p>Information can also be copied in block form to a MIE file.  This allows
+preservation of the original data structure as well as unknown and non-writable
+tags.  The command below copies the full EXIF segment as a block from a JPEG
+image,</p>
+
+<pre>exiftool -tagsfromfile a.jpg -exif a.mie</pre>
+
+<p>which is functionally different from copying all writable EXIF tags
+individually with a command more like this</p>
+
+<pre>exiftool -tagsfromfile a.jpg -exif:all a.mie</pre>
+
+<p>Block-writable tags are listed in the
+<a href="TagNames/Extra.html">Extra Tags documentation</a>.</p>
+
+<p>MIE files also have the ability to store information in compressed format with
+the <code>-z</code> option (provided Compress::Zlib is installed on your system),
+which may be useful if disk space is at a premium.</p>
+
+<hr>
+<a name="exv"></a>
+<h3>EXV Files</h3>
+
+<p>EXV files are used by <a href="http://exiv2.org/">Exiv2</a>, and are
+basically a JPEG file without the image data, so they may be used as a metadata
+file to contain any information supported by the JPEG format.  ExifTool has full
+read, write and create support for this format.</p>
+
+<hr>
+<i>Created Nov 12, 2008</i><br>
+<i>Last revised Feb 22, 2014</i>
+<p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
+</body>
+</html>

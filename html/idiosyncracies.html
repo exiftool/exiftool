@@ -1,0 +1,266 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Maker Note Idio(t)syncracies</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h1 class='up'>Maker Note Idio(t)syncracies</h1>
+
+<p>It really is surprising how stupid some (...many, ...most?) manufacturers
+seem to be when it comes to writing what should be a fairly simple file
+format.</p>
+
+<p>One positive thing is that most manufacturers seem to have standardized on an
+EXIF-like IFD (Image File Directory) structure for their maker notes.  But many
+problems arise because of a fundamental design flaw in the EXIF/TIFF format. 
+Values longer than 4 bytes are stored at a location referenced by an offset from
+an absolute position in the file (where offset 0 is the start of the EXIF/TIFF
+information).</p>
+
+<p>The difficulty is that these offsets must be recalculated when a file is
+rewritten, but in general this is not possible (particularly for the maker
+notes) because the format of not all information is known.  Some manufacturers
+have attempted to avoid this problem using offsets which are relative to the
+start of the maker note IFD instead of the usual start of EXIF.  This is a good
+idea if implemented properly, but this is not done consistently.  (And some
+manufacturers are not even consistent about how the offsets are calculated from
+one camera model to the next!)</p>
+
+<blockquote><font size='-1'><b>Technical aside:</b>
+<br>If EXIF were designed properly, all offsets would
+be relative to 4 bytes after the end of the IFD, which is the normal position
+for values to be stored, and all value data for the IFD would be stored in a
+block at this location.  If this was done, an entire IFD could be relocated
+easily without causing problems.</font></blockquote>
+
+<p>Below is a list of idiosyncracies in files written by the digital cameras or
+software from various manufacturers.  Many of these quirks relate to the offset
+problem mentioned above.</p>
+
+<hr>
+
+<p><a name="Canon"><b>Canon:</b></a> The 350D (firmware 1.0.1) gets the size of the thumbnail image
+wrong and reports it to be 10 bytes too long.  This can cause the reported
+thumbnail image data to run off the end of the APP1 segment.  A bug in version
+1.0.4 of the 40D firmware causes it to write a maker note entry count that is
+one greater than it should be.</p>
+
+<p><a name="Casio"><b>Casio:</b></a> The preview image is referenced by two different offsets (the
+PreviewImage tag plus a PreviewImageStart/PreviewImageLength pair).  Also, the
+offset for the PrintIM information is relative to the start of the IFD entry
+even though other offsets aren't.</p>
+
+<p><a name="Concord"><b>Concord:</b></a> Some models write PrintIM information with an entry-based
+offset like Casio.</p>
+
+<p><a name="GE"><b>General Electric:</b></a> A number of GE cameras store zero offsets for some
+maker note tags (possibly to indicate that the tags do not exist), and other
+offsets are 12 bytes too high for some models (like the A1230, E1035 and G2).
+</p>
+
+<p><a name="HP"><b>Hewlett-Packard:</b></a> The PhotoSmart 720 (one of the few HP models to use
+EXIF-format maker notes) uses a format code of 5 (rational64u) for tag 0x0204,
+but stores a rational32u value.  Other models show about as much standardization
+as the Kodak point-and-shoot lineup.  Also, some models (C945, M22, M23, R507,
+R607, R707, R717, R725, R727, R817, R818, R827, R927 and R960) write the EXIF
+ComponentsConfiguration incorrectly as ASCII characters (like the Leica M8 and
+M9).</p>
+
+<p><a name="Kodak"><b>Kodak:</b></a> Professional DCS Photo Desk software writes a cyclical EXIF
+directory such that the InteropIFD pointer points back to IFD0.
+Point-and-shoot models show little standardization in maker note format.
+Some models with IFD-format maker notes store incorrect count values for
+a number of tags (this is particularly nasty), and may contain blank IFD
+entries which are filled with 0xff's (not zeros like other makes).</p>
+
+<p><a name="Konica"><b>Konica:</b></a> The KD-300Z writes all maker notes offsets relative to the
+start of the individual IFD entry.</p>
+
+<p><a name="Kyocera"><b>Kyocera:</b></a> A number of models write all maker notes offsets relative
+to the start of the individual IFD entry.</p>
+
+<p><a name="Leica"><b>Leica:</b></a> The M8 and M9 write the EXIF ComponentsConfiguration value in
+ASCII instead of binary.  The M8 writes EXIF ExposureCompensation and
+ShutterSpeedValue incorrectly as a unsigned rationals when they should be
+signed.  This leads to crazy values like "+65536" for small negative exposure
+compensations, and "0 s" for long exposure times.  (NOTE: These are all EXIF
+idiosyncracies since the values are in the standard EXIF, not the maker
+notes.)  In DNG images, the M8 uses maker note offsets relative to the
+start of the maker notes in JPEG images (very reasonable), but relative to
+the end of the maker note header in DNG images.  I think this was a mistake
+because this is changed in M9 DNG images to be the same as JPEG images.</p>
+
+<p>The Leica S2 maker note format is the MOST idiotic I have seen, and has the
+following peculiarities:</p>
+
+<ul>
+<li>It is stored as a trailer after the JPEG EOI (but referenced from a pointer
+inside the APP1 EXIF segment).</li>
+<li>Most of the offsets in this MakerNote IFD are relative to the start of the
+file instead of the EXIF TIFF header (which is particularly cruel because they
+are broken if other software simply adds a leading JFIF segment, but there is no
+simple way to detect that this has happened.  Normally this could be detected by
+analyzing the pointers, but this doesn't work here because all of the unused
+data in the Leica maker notes make normal pointer assumptions impossible).</li>
+<li>The PreviewImage offset is relative to the start of the MakerNote data
+(which is MUCH more reasonable, but using two different offset bases in the same
+directory is yet another level of idiocy).</li>
+<li>In DNG images the maker notes use an absolute base offset.  Yet again
+different from the M8 and M9.  Consistency isn't Leica's strong suit.</li>
+</ul>
+
+<p>Strike that.  The most idiotic award now goes to the Leica M (Typ 240), which
+adds these quirks (firmware 1.1.0.2):</p>
+
+<ul>
+<li>Tag 0x0301 has the same offset as the PreviewImage in the maker note IFD,
+although it looks like the data for this tag probably comes after the
+PreviewImage.</li>
+<li>Tag 0x0302 has an invalid offset (0xffffffff).</li>
+</ul>
+
+<p><a name="Minolta"><b>Minolta:</b></a> An obvious bug in the firmware of the Z2 writes an incorrect
+offset for the 'MinoltaCameraSettings2' information -- it writes the offset of
+the offset itself instead of the offset of the value (hahaha!).  Other
+offsets are correct.</p>
+
+<p><a name="Nikon"><b>Nikon:</b></a> D2H NEF files have huge blocks with all zero data (3.7 MB in
+my test file!).</p>
+
+<p><a name="Olympus"><b>Olympus:</b></a> The E-1 and E-300 have subdirectories in the maker notes, but
+not only does the data size of these subdirectories exclude the subdirectory
+value data, but also it is 2 bytes too small for the directory information
+itself (doh! -- they forgot to include the entry count).  Similarly, the stored
+size of the maker note data block is too small for many models, which results
+in a loss of data if the maker notes are copied as a block when an image is
+rewritten.</p>
+
+<p><a name="Pentax"><b>Pentax:</b></a> The Optio 330 uses an offset for the PrintIM information which
+is relative to the start of the IFD entry (hmmm, like some Casio models...). 
+Also, preview image offsets in the maker notes are given relative to the EXIF
+base rather than the maker note base (like all other maker notes offsets).</p>
+
+<p>The Optio 550, 555, 33WR and 43WR all specify a PrintIM directory at a the
+same offset of 0x29a with length 40 bytes, but the only PrintIM information in
+the file is nowhere near that offset and is 128 bytes long.  Also for these
+models, tag 0x002e has a constant value of 0x6a6 even though its position
+changes.  Finally, all of these models plus the Optio WP waste many kilobytes of
+space in each image with large unused data blocks in the EXIF information.</p>
+
+<p>The Optio 330RS and 430RS double reference the preview image information.</p>
+
+<p>Note that the worst problems are with the Optio 230, 330, and 430, which
+carry the Asahi brand name.</p>
+
+<p><a name="Photoshop"><b>Photoshop and Nikon Capture:</b></a> Both of these packages write TIFF IPTC
+information as 'int32u' (or 'LONG').  This is wrong
+(<a href="http://www.awaresystems.be/imaging/tiff/tifftags/iptc.html">see
+reference</a>).  Nikon Capture goes one step further and simply ignores IPTC
+that is written correctly as 'undef' or 'int8u'.  (So for compatibility,
+ExifTool also writes this incorrectly as 'int32u'.)  Photoshop completely
+deletes the maker notes when an image is edited.</p>
+
+<p><a name="Ricoh"><b>Ricoh:</b></a> There is an IFD subdirectory in the Ricoh maker notes of both the
+Caplio RR30 and RR1.  The RR30 uses standard EXIF offsets (relative to the start
+of the EXIF data), but for the RR1 the offsets are relative to the start of the
+subdirectory.  The G700 uses MPF offsets relative to the start of the file,
+instead of the start of the MPF segment as per the MPF spec.  The HX15 uses
+a standard EXIF maker note structure, but there are 2 extra padding bytes
+between the IFD entry count and the 1st IFD entry.  The HZ15 and Pentax XG-1 (by
+Ricoh) both have an extra 2 bytes after the IFD entry counts.  All value offsets
+are erroneously 0 for the HZ15, and there are other problems with the offsets
+stored by the XG-1.</p>
+
+<p><a name="Rollei"><b>Rollei:</b></a> The DK4010 writes all maker notes offsets relative to the
+start of the individual IFD entry.</p>
+
+<p><a name="Sanyo"><b>Sanyo:</b></a> The offsets written in the maker notes of the J1, J2, J3, S1,
+S3 and S4 have very little to do with reality.  Apparently the Sanyo
+programmers have no understanding of the concept of an IFD offset.</p>
+
+<p><a name="Skanhex"><b>Skanhex:</b></a> With some Skanhex models (SX-210Z3, SX-330Z3, SX3300,
+SX410Z3), the 264-byte makernotes block contains no useful information, and
+overlaps values from the ExifIFD.  For these models there is also a large block
+(typically 1195 bytes) of unreferenced information in the EXIF data immediately
+following the IteropIFD.  This block begins with the character sequence
+"SKANH\0", and contains exactly the same information in all 20 of my sample
+images that contain this block (except for a variable amount of padding at the
+end with 0xff bytes).  These quirks also affect some Gateway, Jenoptik, Medion,
+Samsung and Yakumo models built by Skanhex.</p>
+
+<p><a name="Toshiba"><b>Toshiba:</b></a> The PDR-3310 writes all maker notes offsets relative to the
+start of the individual IFD entry.  (very similar to Konica KD-300Z)</p>
+
+<hr><a name="raw"></a>
+<h2>RAW file Idiosyncracies</h2>
+
+<p><a name="MinoltaMRW"><b>Minolta MRW:</b></a> The A200 stores the thumbnail image offset in IFD0
+relative to the start of file, while all other offsets are relative to the start
+of the TIFF header, which is 48 bytes into the file.  Also, the A200 stores the
+StripOffsets and the StripByteCounts values in the wrong byte order.</p>
+
+<p><a name="SonyARW"><b>Sony ARW:</b></a> The maker notes of ARW images are not self-contained, so
+some information is lost when the images are rewritten by other software
+(including the Adobe DNG converter).  The A100 with firmware 1.00 sets the high
+word of the thumbnail image offset to zero, but it should sometimes be 0x0001.
+(This problem is fixed for firmware 1.01.)  Also with the A100, the
+JpgFromRawLength stored in IFD0 may be wrong (although this value is also stored
+in the MakerNotes and is correct here).  As well, much information in these
+images is encrypted, which complicates things somewhat.  Even the Sony IDC
+utility can't properly rewrite ARW files -- it corrupts the embedded MRW record
+when used to edit ARW images.  Even funnier:  IDC v3.0 will crash when loading
+some original A100 firmware 1.00 images, but no longer crashes if the images are
+first edited with ExifTool (probably because ExifTool fixes the above mentioned
+problems when it rewrites the image).</p>
+
+<p><a name="LeicaDNG"><b>Leica DNG:</b></a> The makernote offsets for the M8 are relative to the start
+of the makernote IFD in JPEG images, but relative to the start of the makernote
+header (8 bytes earlier) in DNG images.  <i>[2009-09-09: This is fixed for the
+M9 which has offsets relative to the start of the makernote header for both JPEG
+and DNG.]</i></p>
+
+<p><a name="NikonNEF"><b>Nikon NEF:</b></a> Aside from the encryption that Nikon uses to try to hide
+some information in their maker notes, the NEF files in general seem fairly well
+behaved.  Even so, the Nikon Transfer utility (version 1.3) still manages to
+corrupt some information in the 0th SubIFD when it is used to process NEF
+images.  (Beware that other Nikon utilities may have this same problem if they
+use the same NEF writing routines.)  But luckly  the lost information isn't very
+important.  (Only a few tags from the embedded full-sized preview image are
+lost: XResolution, YResolution and YCbCrPositioning.)  Also, Nikon Transfer and
+Nikon Capture both write an incorrect size for the maker notes, which could
+cause loss of MakerNote information if the file is edited by other software (but
+this isn't a problem with ExifTool, which will fix this type of problem
+automatically when writing).</p>
+
+<p><a name="NikonNRW"><b>Nikon NRW:</b></a> Nikon should have just called this NEF with a different
+version number -- there should be no need to pollute the universe with zillions
+of unnecessary file extensions.  Oh right, they weren't smart enough to include
+a file identifier containing a version number in their NEF images -- Doh! In
+these images, CFAPattern2 is written incorrectly with UNDEFINED instead of BYTE
+format.</p>
+
+<p><a name="PhaseOneIIQ"><b>Phase One IIQ:</b></a> Many values are referenced from more than one location
+in the TIFF structure of these images.  For instance, the IFD0 strip data
+actually exists within the MakerNotes data block.  This is a poor design, and
+leads to duplicated information when the image is rewritten.</p>
+
+<p><a name="RicohDNG"><b>Ricoh DNG:</b></a>  The GR Digital IV (firmware 1.14) stores an incorrect
+length for the JPEG preview in SubIFD1.</p>
+
+<p><a name="SamsungSRW"><b>Samsung SRW:</b></a> Yet another TIFF-based RAW image with no proper file
+identifier.  In these images the thumbnail is stored inside a SubIFD of IFD1
+instead of directly in IFD1 (dumb, dumb...).  Also, the NX200 (firmware
+NX200_011181) uses a base offset for the X/YResolution values that is different
+from the PreviewImageStart pointer, both in the MakerNotes PreviewIFD.  (Note
+that the NX100 uses the same base for both, so this is certainly a firmware bug
+for the NX200. <i>[2012-06-21: This problem now also affects the EX1, NX20 and
+WB2000] [2013-07-25: Add the NX2000 to this list]</i>)</p>
+
+<hr>
+<i>Created Mar. 25, 2005</i>
+<br><i>Last revised Jul. 21, 2014</i>
+<p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
+</body>
+</html>

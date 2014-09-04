@@ -1,0 +1,1026 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>MIE Tags</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h2 class=top>MIE Tags</h2>
+<p>MIE is a flexible format which may be used as a stand-alone meta information
+format, for encapsulation of other files and information, or as a trailer
+appended to other file formats.  The tables below represent currently
+defined MIE tags, however ExifTool will also extract any other information
+present in a MIE file.</p>
+
+<p>When writing MIE information, some special features are supported:</p>
+
+<p>1) String values may be written as ASCII (ISO 8859-1) or UTF-8.  ExifTool
+automatically detects the presence of wide characters and treats the string
+appropriately. Internally, UTF-8 text may be converted to UTF-16 or UTF-32
+and stored in this format in the file if it is more compact.</p>
+
+<p>2) All MIE string-value tags support localized text.  Localized values are
+written by adding a language/country code to the tag name in the form
+<code>TAG-xx_YY</code>, where <code>TAG</code> is the tag name, <code>xx</code> is a 2-character lower
+case ISO 639-1 language code, and <code>YY</code> is a 2-character upper case ISO
+3166-1 alpha 2 country code (eg. <code>Title-en_US</code>).  But as usual, the user
+interface is case-insensitive, and ExifTool will write the correct case to
+the file.</p>
+
+<p>3) Some numerical MIE tags allow units of measurement to be specified.  For
+these tags, units may be added in brackets immediately following the value
+(eg. <code>55(mi/h)</code>).  If no units are specified, the default units are
+written.</p>
+
+<p>See <a href="../MIE1.1-20070121.pdf">MIE1.1-20070121.pdf</a> for the
+official MIE specification.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'0Type'</td>
+<td>SubfileType</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(the capitalized common extension for this type of file.  If the extension
+has a dot-3 abbreviation, then the longer version is used here. For
+instance, JPEG and TIFF are used, not JPG and TIF)</span></span></td></tr>
+<tr class=b>
+<td>'0Vers'</td>
+<td>MIEVersion</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(version 1.1 is assumed if not specified)</span></span></td></tr>
+<tr>
+<td>'1Directory'</td>
+<td>SubfileDirectory</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(original directory for the file)</span></span></td></tr>
+<tr class=b>
+<td>'1Name'</td>
+<td>SubfileName</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(the file name, including extension if it exists)</span></span></td></tr>
+<tr>
+<td>'2MIME'</td>
+<td>SubfileMIMEType</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Meta'</td>
+<td>Meta</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MIE.html#Meta'>MIE Meta Tags</a></td></tr>
+<tr>
+<td>'data'</td>
+<td>SubfileData</td>
+<td class=c>undef</td>
+<td><span class=s><span class=n>(the subfile data)</span></span></td></tr>
+<tr class=b>
+<td>'rsrc'</td>
+<td>SubfileResource</td>
+<td class=c>undef</td>
+<td><span class=s><span class=n>(subfile resource fork if it exists)</span></span></td></tr>
+<tr>
+<td>'zmd5'</td>
+<td>MD5Digest</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(16-byte MD5 digest written in binary form or as a 32-character hex-encoded
+ASCII string. Value is an MD5 digest of the entire 0MIE group as it would be
+with the digest value itself set to all null bytes)</span></span></td></tr>
+<tr class=b>
+<td>'zmie'</td>
+<td>TrailerSignature</td>
+<td class=c>undef</td>
+<td><span class=s><span class=n>(used as the last element in the main &quot;0MIE&quot; group to identify a MIE trailer
+when appended to another type of file.  ExifTool will create this tag if set
+to any value, but always with an empty data block)</span></span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Meta'>MIE Meta Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'Audio'</td>
+<td>Audio</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MIE.html#Audio'>MIE Audio Tags</a></td></tr>
+<tr class=b>
+<td>'Camera'</td>
+<td>Camera</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MIE.html#Camera'>MIE Camera Tags</a></td></tr>
+<tr>
+<td>'Document'</td>
+<td>Document</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MIE.html#Doc'>MIE Doc Tags</a></td></tr>
+<tr class=b>
+<td>'EXIF'</td>
+<td>EXIF</td>
+<td class=c>-</td>
+<td>--&gt; <a href='EXIF.html'>EXIF Tags</a></td></tr>
+<tr>
+<td>'Geo'</td>
+<td>Geo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MIE.html#Geo'>MIE Geo Tags</a></td></tr>
+<tr class=b>
+<td>'ICCProfile'</td>
+<td>ICC_Profile</td>
+<td class=c>-</td>
+<td>--&gt; <a href='ICC_Profile.html'>ICC_Profile Tags</a></td></tr>
+<tr>
+<td>'ID3'</td>
+<td>ID3</td>
+<td class=c>-</td>
+<td>--&gt; <a href='ID3.html'>ID3 Tags</a></td></tr>
+<tr class=b>
+<td>'IPTC'</td>
+<td>IPTC</td>
+<td class=c>-</td>
+<td>--&gt; <a href='IPTC.html'>IPTC Tags</a></td></tr>
+<tr>
+<td>'Image'</td>
+<td>Image</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MIE.html#Image'>MIE Image Tags</a></td></tr>
+<tr class=b>
+<td>'MakerNotes'</td>
+<td>MakerNotes</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MIE.html#MakerNotes'>MIE MakerNotes Tags</a></td></tr>
+<tr>
+<td>'Preview'</td>
+<td>Preview</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MIE.html#Preview'>MIE Preview Tags</a></td></tr>
+<tr class=b>
+<td>'Thumbnail'</td>
+<td>Thumbnail</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MIE.html#Thumbnail'>MIE Thumbnail Tags</a></td></tr>
+<tr>
+<td>'Video'</td>
+<td>Video</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MIE.html#Video'>MIE Video Tags</a></td></tr>
+<tr class=b>
+<td>'XMP'</td>
+<td>XMP</td>
+<td class=c>-</td>
+<td>--&gt; <a href='XMP.html'>XMP Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Audio'>MIE Audio Tags</a></h2>
+<p>For the Audio group (and any other group containing a &#39;data&#39; element), tags
+refer to the contained data if present, otherwise they refer to the main
+SubfileData.  The <code>0Type</code> and <code>1Name</code> elements should exist only if <code>data</code>
+is present.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'0Type'</td>
+<td>RelatedAudioFileType</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(MP3 if not specified)</span></span></td></tr>
+<tr class=b>
+<td>'1Name'</td>
+<td>RelatedAudioFileName</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Channels'</td>
+<td>Channels</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Compression'</td>
+<td>AudioCompression</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Duration'</td>
+<td>Duration</td>
+<td class=c title=' ~ = Writable only with -n'>rational64u~</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'SampleBits'</td>
+<td>SampleBits</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'SampleRate'</td>
+<td>SampleRate</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'data'</td>
+<td>RelatedAudioFile</td>
+<td class=c>undef</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Camera'>MIE Camera Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'Brightness'</td>
+<td>Brightness</td>
+<td class=c>int8s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'ColorBalance'</td>
+<td>ColorBalance</td>
+<td class=c>rational64u[3]</td>
+<td><span class=s><span class=n>(RGB scaling factors)</span></span></td></tr>
+<tr>
+<td>'ColorTemperature'</td>
+<td>ColorTemperature</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Contrast'</td>
+<td>Contrast</td>
+<td class=c>int8s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'DigitalZoom'</td>
+<td>DigitalZoom</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'ExposureComp'</td>
+<td>ExposureCompensation</td>
+<td class=c>rational64s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'ExposureMode'</td>
+<td>ExposureMode</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'ExposureTime'</td>
+<td>ExposureTime</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'FirmwareVersion'</td>
+<td>FirmwareVersion</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Flash'</td>
+<td>Flash</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MIE.html#Flash'>MIE Flash Tags</a></td></tr>
+<tr>
+<td>'FocusMode'</td>
+<td>FocusMode</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'ISO'</td>
+<td>ISO</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'ISOSetting'</td>
+<td>ISOSetting</td>
+<td class=c>int16u</td>
+<td><span class=s><span class=n>(0 = Auto, otherwise manual ISO speed setting)</span></span></td></tr>
+<tr class=b>
+<td>'ImageNumber'</td>
+<td>ImageNumber</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'ImageQuality'</td>
+<td>ImageQuality</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(Economy, Normal, Fine, Super Fine or Raw)</span></span></td></tr>
+<tr class=b>
+<td>'ImageStabilization'</td>
+<td>ImageStabilization</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Lens'</td>
+<td>Lens</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MIE.html#Lens'>MIE Lens Tags</a></td></tr>
+<tr class=b>
+<td>'Make'</td>
+<td>Make</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'MeasuredEV'</td>
+<td>MeasuredEV</td>
+<td class=c>rational64s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Model'</td>
+<td>Model</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Orientation'</td>
+<td>Orientation</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MIE.html#Orient'>MIE Orient Tags</a></td></tr>
+<tr class=b>
+<td>'OwnerName'</td>
+<td>OwnerName</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Saturation'</td>
+<td>Saturation</td>
+<td class=c>int8s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'SensorSize'</td>
+<td>SensorSize</td>
+<td class=c>rational64u[2]</td>
+<td><span class=s><span class=n>(width and height of active sensor area in mm)</span></span></td></tr>
+<tr>
+<td>'SerialNumber'</td>
+<td>SerialNumber</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Sharpness'</td>
+<td>Sharpness</td>
+<td class=c>int8s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'ShootingMode'</td>
+<td>ShootingMode</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Flash'>MIE Flash Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'ExposureComp'</td>
+<td>FlashExposureComp</td>
+<td class=c>rational64s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Fired'</td>
+<td>FlashFired</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = No
+  <br>1 = Yes</span></td></tr>
+<tr>
+<td>'GuideNumber'</td>
+<td>FlashGuideNumber</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Make'</td>
+<td>FlashMake</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Mode'</td>
+<td>FlashMode</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Model'</td>
+<td>FlashModel</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'SerialNumber'</td>
+<td>FlashSerialNumber</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Type'</td>
+<td>FlashType</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(&quot;Internal&quot; or &quot;External&quot;)</span></span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Lens'>MIE Lens Tags</a></h2>
+<p>All recorded lens parameters (focal length, aperture, etc) include the
+effects of the extender if present.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'Extender'</td>
+<td>Extender</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MIE.html#Extender'>MIE Extender Tags</a></td></tr>
+<tr class=b>
+<td>'FNumber'</td>
+<td>FNumber</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'FocalLength'</td>
+<td>FocalLength</td>
+<td class=c>rational64u</td>
+<td><span class=s><span class=n>(all focal lengths in mm)</span></span></td></tr>
+<tr class=b>
+<td>'FocusDistance'</td>
+<td>FocusDistance</td>
+<td class=c>rational64u</td>
+<td><span class=s><span class=n>(&#39;m&#39; unless &#39;ft&#39; specified)</span></span></td></tr>
+<tr>
+<td>'Make'</td>
+<td>LensMake</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'MaxAperture'</td>
+<td>MaxAperture</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'MaxApertureAtMaxFocal'</td>
+<td>MaxApertureAtMaxFocal</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'MaxFocalLength'</td>
+<td>MaxFocalLength</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'MinAperture'</td>
+<td>MinAperture</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'MinFocalLength'</td>
+<td>MinFocalLength</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Model'</td>
+<td>LensModel</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'OpticalZoom'</td>
+<td>OpticalZoom</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'SerialNumber'</td>
+<td>LensSerialNumber</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Extender'>MIE Extender Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'Magnification'</td>
+<td>ExtenderMagnification</td>
+<td class=c>rational64s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Make'</td>
+<td>ExtenderMake</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Model'</td>
+<td>ExtenderModel</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'SerialNumber'</td>
+<td>ExtenderSerialNumber</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Orient'>MIE Orient Tags</a></h2>
+<p>These tags describe the camera orientation.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'Azimuth'</td>
+<td>Azimuth</td>
+<td class=c>rational64s</td>
+<td><span class=s><span class=n>(&#39;deg&#39; CW from true north unless &#39;deg{mag}&#39; specified)</span></span></td></tr>
+<tr class=b>
+<td>'Declination'</td>
+<td>Declination</td>
+<td class=c>rational64s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Elevation'</td>
+<td>Elevation</td>
+<td class=c>rational64s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'RightAscension'</td>
+<td>RightAscension</td>
+<td class=c>rational64s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Rotation'</td>
+<td>Rotation</td>
+<td class=c>rational64s</td>
+<td><span class=s><span class=n>(CW rotation angle of camera about lens axis)</span></span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Doc'>MIE Doc Tags</a></h2>
+<p>Information describing the main document, image or file.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'Author'</td>
+<td>Author</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Comment'</td>
+<td>Comment</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Contributors'</td>
+<td>Contributors</td>
+<td class=c title=' + = List'>string+</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Copyright'</td>
+<td>Copyright</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'CreateDate'</td>
+<td>CreateDate</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'EMail'</td>
+<td>EMail</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Keywords'</td>
+<td>Keywords</td>
+<td class=c title=' + = List'>string+</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'ModifyDate'</td>
+<td>ModifyDate</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'OriginalDate'</td>
+<td>DateTimeOriginal</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Phone'</td>
+<td>PhoneNumber</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'References'</td>
+<td>References</td>
+<td class=c title=' + = List'>string+</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Software'</td>
+<td>Software</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Title'</td>
+<td>Title</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'URL'</td>
+<td>URL</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Geo'>MIE Geo Tags</a></h2>
+<p>Information related to geographic location.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'Address'</td>
+<td>Address</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'City'</td>
+<td>City</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Country'</td>
+<td>Country</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'GPS'</td>
+<td>GPS</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MIE.html#GPS'>MIE GPS Tags</a></td></tr>
+<tr>
+<td>'PostalCode'</td>
+<td>PostalCode</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'State'</td>
+<td>State</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(state or province)</span></span></td></tr>
+<tr>
+<td>'UTM'</td>
+<td>UTM</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MIE.html#UTM'>MIE UTM Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='GPS'>MIE GPS Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'Altitude'</td>
+<td>GPSAltitude</td>
+<td class=c>rational64s</td>
+<td><span class=s><span class=n>(&#39;m&#39; above sea level unless &#39;ft&#39; specified)</span></span></td></tr>
+<tr class=b>
+<td>'Bearing'</td>
+<td>GPSDestBearing</td>
+<td class=c>rational64s</td>
+<td><span class=s><span class=n>(&#39;deg&#39; CW from true north unless &#39;deg{mag}&#39; specified)</span></span></td></tr>
+<tr>
+<td>'DateTime'</td>
+<td>GPSDateTime</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Datum'</td>
+<td>GPSMapDatum</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(WGS-84 assumed if not specified)</span></span></td></tr>
+<tr>
+<td>'Differential'</td>
+<td>GPSDifferential</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = No Correction
+  <br>1 = Differential Corrected</span></td></tr>
+<tr class=b>
+<td>'Distance'</td>
+<td>GPSDestDistance</td>
+<td class=c>rational64s</td>
+<td><span class=s><span class=n>(&#39;km&#39; unless &#39;mi&#39; or &#39;nmi&#39; specified)</span></span></td></tr>
+<tr>
+<td>'Heading'</td>
+<td>GPSTrack</td>
+<td class=c>rational64s</td>
+<td><span class=s><span class=n>(&#39;deg&#39; CW from true north unless &#39;deg{mag}&#39; specified)</span></span></td></tr>
+<tr class=b>
+<td>'Latitude'</td>
+<td>GPSLatitude</td>
+<td class=c>rational64s[n]</td>
+<td><span class=s><span class=n>(1 to 3 numbers: degrees, minutes then seconds.  South latitudes are stored
+as all negative numbers, but may be entered as positive numbers with a
+trailing &#39;S&#39; for convenience.  For example, these are all equivalent: &quot;-40
+-30&quot;, &quot;-40.5&quot;, &quot;40 30 0.00 S&quot;)</span></span></td></tr>
+<tr>
+<td>'Longitude'</td>
+<td>GPSLongitude</td>
+<td class=c>rational64s[n]</td>
+<td><span class=s><span class=n>(1 to 3 numbers: degrees, minutes then seconds.  West longitudes are
+negative, but may be entered as positive numbers with a trailing &#39;W&#39;)</span></span></td></tr>
+<tr class=b>
+<td>'MeasureMode'</td>
+<td>GPSMeasureMode</td>
+<td class=c>int8u</td>
+<td><span class=s>2 = 2-D
+  <br>3 = 3-D</span></td></tr>
+<tr>
+<td>'Satellites'</td>
+<td>GPSSatellites</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Speed'</td>
+<td>GPSSpeed</td>
+<td class=c>rational64s</td>
+<td><span class=s><span class=n>(&#39;km/h&#39; unless &#39;mi/h&#39;, &#39;m/s&#39; or &#39;kn&#39; specified)</span></span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='UTM'>MIE UTM Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'Datum'</td>
+<td>UTMMapDatum</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(WGS-84 assumed if not specified)</span></span></td></tr>
+<tr class=b>
+<td>'Easting'</td>
+<td>UTMEasting</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Northing'</td>
+<td>UTMNorthing</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Zone'</td>
+<td>UTMZone</td>
+<td class=c>int8s</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Image'>MIE Image Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'0Type'</td>
+<td>FullSizeImageType</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(JPEG if not specified)</span></span></td></tr>
+<tr class=b>
+<td>'1Name'</td>
+<td>FullSizeImageName</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'BitDepth'</td>
+<td>BitDepth</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'ColorSpace'</td>
+<td>ColorSpace</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(standard ColorSpace values are &quot;sRGB&quot; and &quot;Adobe RGB&quot;)</span></span></td></tr>
+<tr>
+<td>'Components'</td>
+<td>ComponentsConfiguration</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(string composed of R, G, B, Y, Cb and Cr)</span></span></td></tr>
+<tr class=b>
+<td>'Compression'</td>
+<td>CompressionRatio</td>
+<td class=c>rational32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'ImageSize'</td>
+<td>ImageSize</td>
+<td class=c>int16u[n]</td>
+<td><span class=s><span class=n>(2 or 3 values, for number of XY or XYZ pixels)</span></span></td></tr>
+<tr class=b>
+<td>'Resolution'</td>
+<td>Resolution</td>
+<td class=c>rational64u[n]</td>
+<td><span class=s><span class=n>(1 to 3 values.  A single value for equal resolution in all directions, or
+separate X, Y and Z values if necessary.  Units are &#39;/in&#39; unless &#39;/cm&#39;,
+&#39;/deg&#39;, &#39;/arcmin&#39;, &#39;/arcsec&#39; or &#39;&#39; specified)</span></span></td></tr>
+<tr>
+<td>'data'</td>
+<td>FullSizeImage</td>
+<td class=c>undef</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='MakerNotes'>MIE MakerNotes Tags</a></h2>
+<p>MIE maker notes are contained within separate groups for each manufacturer
+to avoid name conflicts.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'Canon'</td>
+<td>Canon</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MIE.html#Canon'>MIE Canon Tags</a></td></tr>
+<tr class=b>
+<td>'Casio'</td>
+<td>Casio</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MIE.html#Unknown'>MIE Unknown Tags</a></td></tr>
+<tr>
+<td>'FujiFilm'</td>
+<td>FujiFilm</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MIE.html#Unknown'>MIE Unknown Tags</a></td></tr>
+<tr class=b>
+<td>'Kodak'</td>
+<td>Kodak</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MIE.html#Unknown'>MIE Unknown Tags</a></td></tr>
+<tr>
+<td>'KonicaMinolta'</td>
+<td>KonicaMinolta</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MIE.html#Unknown'>MIE Unknown Tags</a></td></tr>
+<tr class=b>
+<td>'Nikon'</td>
+<td>Nikon</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MIE.html#Unknown'>MIE Unknown Tags</a></td></tr>
+<tr>
+<td>'Olympus'</td>
+<td>Olympus</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MIE.html#Unknown'>MIE Unknown Tags</a></td></tr>
+<tr class=b>
+<td>'Panasonic'</td>
+<td>Panasonic</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MIE.html#Unknown'>MIE Unknown Tags</a></td></tr>
+<tr>
+<td>'Pentax'</td>
+<td>Pentax</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MIE.html#Unknown'>MIE Unknown Tags</a></td></tr>
+<tr class=b>
+<td>'Ricoh'</td>
+<td>Ricoh</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MIE.html#Unknown'>MIE Unknown Tags</a></td></tr>
+<tr>
+<td>'Sigma'</td>
+<td>Sigma</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MIE.html#Unknown'>MIE Unknown Tags</a></td></tr>
+<tr class=b>
+<td>'Sony'</td>
+<td>Sony</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MIE.html#Unknown'>MIE Unknown Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Canon'>MIE Canon Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'VRD'</td>
+<td>CanonVRD</td>
+<td class=c>-</td>
+<td>--&gt; <a href='CanonVRD.html'>CanonVRD Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Unknown'>MIE Unknown Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr><td colspan=4 class=c><i>[no tags known]</i></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Preview'>MIE Preview Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'0Type'</td>
+<td>PreviewImageType</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(JPEG if not specified)</span></span></td></tr>
+<tr class=b>
+<td>'1Name'</td>
+<td>PreviewImageName</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'ImageSize'</td>
+<td>PreviewImageSize</td>
+<td class=c>int16u[n]</td>
+<td><span class=s><span class=n>(2 or 3 values, for number of XY or XYZ pixels)</span></span></td></tr>
+<tr class=b>
+<td>'data'</td>
+<td>PreviewImage</td>
+<td class=c>undef</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Thumbnail'>MIE Thumbnail Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'0Type'</td>
+<td>ThumbnailImageType</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(JPEG if not specified)</span></span></td></tr>
+<tr class=b>
+<td>'1Name'</td>
+<td>ThumbnailImageName</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'ImageSize'</td>
+<td>ThumbnailImageSize</td>
+<td class=c>int16u[n]</td>
+<td><span class=s><span class=n>(2 or 3 values, for number of XY or XYZ pixels)</span></span></td></tr>
+<tr class=b>
+<td>'data'</td>
+<td>ThumbnailImage</td>
+<td class=c>undef</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Video'>MIE Video Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'0Type'</td>
+<td>RelatedVideoFileType</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(MOV if not specified)</span></span></td></tr>
+<tr class=b>
+<td>'1Name'</td>
+<td>RelatedVideoFileName</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Codec'</td>
+<td>Codec</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Duration'</td>
+<td>Duration</td>
+<td class=c title=' ~ = Writable only with -n'>rational64u~</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'data'</td>
+<td>RelatedVideoFile</td>
+<td class=c>undef</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<hr>
+(This document generated automatically by Image::ExifTool::BuildTagLookup)
+<br><i>Last revised Jan 13, 2012</i>
+<p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
+</body>
+</html>

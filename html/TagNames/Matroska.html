@@ -1,0 +1,1069 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Matroska Tags</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h2 class=top>Matroska Tags</h2>
+<p>The following tags are extracted from Matroska multimedia container files.
+This container format is used by file types such as MKA, MKV, MKS and WEBM.
+For speed, ExifTool extracts tags only up to the first Cluster unless the
+Verbose (-v) or Unknown = 2 (-U) option is used.  See
+<a href="http://www.matroska.org/technical/specs/index.html">http://www.matroska.org/technical/specs/index.html</a> for the official
+Matroska specification.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x0000 = 0'>0x0000</td>
+<td>ChapterDisplay</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Matroska.html'>Matroska Tags</a></td></tr>
+<tr class=b>
+<td title='0x0003 = 3'>0x0003</td>
+<td>TrackType</td>
+<td class=c>N</td>
+<td><table class=cols><tr>
+  <td>0x1 = Video
+  <br>0x2 = Audio
+  <br>0x3 = Complex
+  <br>0x10 = Logo</td><td>&nbsp;&nbsp;</td>
+  <td>0x11 = Subtitle
+  <br>0x12 = Buttons
+  <br>0x20 = Control</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td title='0x0005 = 5'>0x0005</td>
+<td>ChapterString</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0006 = 6'>0x0006</td>
+<td>VideoCodecID
+  <br>AudioCodecID
+  <br>CodecID</td>
+<td class=c>N<br>N<br>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0008 = 8'>0x0008</td>
+<td>TrackDefault</td>
+<td class=c>N</td>
+<td><span class=s>0 = No
+  <br>1 = Yes</span></td></tr>
+<tr class=b>
+<td title='0x0009 = 9'>0x0009</td>
+<td>ChapterTrackNumber?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x000e = 14'>0x000e</td>
+<td>Slices</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Matroska.html'>Matroska Tags</a></td></tr>
+<tr class=b>
+<td title='0x000f = 15'>0x000f</td>
+<td>ChapterTrack</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Matroska.html'>Matroska Tags</a></td></tr>
+<tr>
+<td title='0x0011 = 17'>0x0011</td>
+<td>ChapterTimeStart</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0012 = 18'>0x0012</td>
+<td>ChapterTimeEnd</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0016 = 22'>0x0016</td>
+<td>CueRefTime?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0017 = 23'>0x0017</td>
+<td>CueRefCluster?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0018 = 24'>0x0018</td>
+<td>ChapterFlagHidden?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x001a = 26'>0x001a</td>
+<td>VideoScanType</td>
+<td class=c>N</td>
+<td><span class=s>0 = Progressive
+  <br>1 = Interlaced</span></td></tr>
+<tr>
+<td title='0x001b = 27'>0x001b</td>
+<td>BlockDuration?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x001c = 28'>0x001c</td>
+<td>TrackLacing?</td>
+<td class=c>N</td>
+<td><span class=s>0 = No
+  <br>1 = Yes</span></td></tr>
+<tr>
+<td title='0x001f = 31'>0x001f</td>
+<td>AudioChannels</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0020 = 32'>0x0020</td>
+<td>BlockGroup</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Matroska.html'>Matroska Tags</a></td></tr>
+<tr>
+<td title='0x0021 = 33'>0x0021</td>
+<td>Block?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0022 = 34'>0x0022</td>
+<td>BlockVirtual?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0023 = 35'>0x0023</td>
+<td>SimpleBlock?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0024 = 36'>0x0024</td>
+<td>CodecState?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0025 = 37'>0x0025</td>
+<td>BlockAdditional?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0026 = 38'>0x0026</td>
+<td>BlockMore</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Matroska.html'>Matroska Tags</a></td></tr>
+<tr>
+<td title='0x0027 = 39'>0x0027</td>
+<td>Position</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x002a = 42'>0x002a</td>
+<td>CodecDecodeAll</td>
+<td class=c>N</td>
+<td><span class=s>0 = No
+  <br>1 = Yes</span></td></tr>
+<tr>
+<td title='0x002b = 43'>0x002b</td>
+<td>PrevSize</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x002e = 46'>0x002e</td>
+<td>TrackEntry</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Matroska.html'>Matroska Tags</a></td></tr>
+<tr>
+<td title='0x002f = 47'>0x002f</td>
+<td>EncryptedBlock?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0030 = 48'>0x0030</td>
+<td>ImageWidth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0033 = 51'>0x0033</td>
+<td>CueTime?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0035 = 53'>0x0035</td>
+<td>AudioSampleRate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0036 = 54'>0x0036</td>
+<td>ChapterAtom</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Matroska.html'>Matroska Tags</a></td></tr>
+<tr class=b>
+<td title='0x0037 = 55'>0x0037</td>
+<td>CueTrackPositions</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Matroska.html'>Matroska Tags</a></td></tr>
+<tr>
+<td title='0x0039 = 57'>0x0039</td>
+<td>TrackUsed</td>
+<td class=c>N</td>
+<td><span class=s>0 = No
+  <br>1 = Yes</span></td></tr>
+<tr class=b>
+<td title='0x003a = 58'>0x003a</td>
+<td>ImageHeight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x003b = 59'>0x003b</td>
+<td>CuePoint</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Matroska.html'>Matroska Tags</a></td></tr>
+<tr class=b>
+<td title='0x003f = 63'>0x003f</td>
+<td>CRC-32?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x004b = 75'>0x004b</td>
+<td>BlockAdditionalID?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x004c = 76'>0x004c</td>
+<td>LaceNumber?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x004d = 77'>0x004d</td>
+<td>FrameNumber?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x004e = 78'>0x004e</td>
+<td>Delay?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x004f = 79'>0x004f</td>
+<td>ClusterDuration?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0057 = 87'>0x0057</td>
+<td>TrackNumber</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x005b = 91'>0x005b</td>
+<td>CueReference</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Matroska.html'>Matroska Tags</a></td></tr>
+<tr class=b>
+<td title='0x0060 = 96'>0x0060</td>
+<td>Video</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Matroska.html'>Matroska Tags</a></td></tr>
+<tr>
+<td title='0x0061 = 97'>0x0061</td>
+<td>Audio</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Matroska.html'>Matroska Tags</a></td></tr>
+<tr class=b>
+<td title='0x0067 = 103'>0x0067</td>
+<td>Timecode?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0068 = 104'>0x0068</td>
+<td>TimeSlice</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Matroska.html'>Matroska Tags</a></td></tr>
+<tr class=b>
+<td title='0x006a = 106'>0x006a</td>
+<td>CueCodecState?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x006b = 107'>0x006b</td>
+<td>CueRefCodecState?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x006c = 108'>0x006c</td>
+<td>Void?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x006e = 110'>0x006e</td>
+<td>BlockAddID?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0071 = 113'>0x0071</td>
+<td>CueClusterPosition?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0077 = 119'>0x0077</td>
+<td>CueTrack?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x007a = 122'>0x007a</td>
+<td>ReferencePriority?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x007b = 123'>0x007b</td>
+<td>ReferenceBlock?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x007d = 125'>0x007d</td>
+<td>ReferenceVirtual?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0254 = 596'>0x0254</td>
+<td>ContentCompressionAlgorithm</td>
+<td class=c>N</td>
+<td><span class=s>0 = zlib
+  <br>1 = bzlib
+  <br>2 = lzo1x
+  <br>3 = Header Stripping</span></td></tr>
+<tr class=b>
+<td title='0x0255 = 597'>0x0255</td>
+<td>ContentCompressionSettings?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0282 = 642'>0x0282</td>
+<td>DocType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0285 = 645'>0x0285</td>
+<td>DocTypeReadVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0286 = 646'>0x0286</td>
+<td>EBMLVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0287 = 647'>0x0287</td>
+<td>DocTypeVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x02f2 = 754'>0x02f2</td>
+<td>EBMLMaxIDLength?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x02f3 = 755'>0x02f3</td>
+<td>EBMLMaxSizeLength?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x02f7 = 759'>0x02f7</td>
+<td>EBMLReadVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x037c = 892'>0x037c</td>
+<td>ChapterLanguage</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x037e = 894'>0x037e</td>
+<td>ChapterCountry</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0444 = 1092'>0x0444</td>
+<td>SegmentFamily?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0461 = 1121'>0x0461</td>
+<td>DateTimeOriginal</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x047a = 1146'>0x047a</td>
+<td>TagLanguage</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0484 = 1156'>0x0484</td>
+<td>TagDefault</td>
+<td class=c>N</td>
+<td><span class=s>0 = No
+  <br>1 = Yes</span></td></tr>
+<tr class=b>
+<td title='0x0485 = 1157'>0x0485</td>
+<td>TagBinary</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0487 = 1159'>0x0487</td>
+<td>TagString</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0489 = 1161'>0x0489</td>
+<td>Duration</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x050d = 1293'>0x050d</td>
+<td>ChapterProcessPrivate?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0598 = 1432'>0x0598</td>
+<td>ChapterFlagEnabled?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x05a3 = 1443'>0x05a3</td>
+<td>TagName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x05b9 = 1465'>0x05b9</td>
+<td>EditionEntry</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Matroska.html'>Matroska Tags</a></td></tr>
+<tr>
+<td title='0x05bc = 1468'>0x05bc</td>
+<td>EditionUID?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x05bd = 1469'>0x05bd</td>
+<td>EditionFlagHidden?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x05db = 1499'>0x05db</td>
+<td>EditionFlagDefault?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x05dd = 1501'>0x05dd</td>
+<td>EditionFlagOrdered?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x065c = 1628'>0x065c</td>
+<td>AttachedFileData</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0660 = 1632'>0x0660</td>
+<td>AttachedFileMIMEType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x066e = 1646'>0x066e</td>
+<td>AttachedFileName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0675 = 1653'>0x0675</td>
+<td>AttachedFileReferral?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x067e = 1662'>0x067e</td>
+<td>AttachedFileDescription</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x06ae = 1710'>0x06ae</td>
+<td>AttachedFileUID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x07e1 = 2017'>0x07e1</td>
+<td>ContentEncryptionAlgorithm</td>
+<td class=c>N</td>
+<td><table class=cols><tr>
+  <td>0 = Not Encrypted
+  <br>1 = DES
+  <br>2 = 3DES</td><td>&nbsp;&nbsp;</td>
+  <td>3 = Twofish
+  <br>4 = Blowfish
+  <br>5 = AES</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td title='0x07e2 = 2018'>0x07e2</td>
+<td>ContentEncryptionKeyID?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x07e3 = 2019'>0x07e3</td>
+<td>ContentSignature?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x07e4 = 2020'>0x07e4</td>
+<td>ContentSignatureKeyID?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x07e5 = 2021'>0x07e5</td>
+<td>ContentSignatureAlgorithm</td>
+<td class=c>N</td>
+<td><span class=s>0 = Not Signed
+  <br>1 = RSA</span></td></tr>
+<tr class=b>
+<td title='0x07e6 = 2022'>0x07e6</td>
+<td>ContentSignatureHashAlgorithm</td>
+<td class=c>N</td>
+<td><span class=s>0 = Not Signed
+  <br>1 = SHA1-160
+  <br>2 = MD5</span></td></tr>
+<tr>
+<td title='0x0d80 = 3456'>0x0d80</td>
+<td>MuxingApp</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0dbb = 3515'>0x0dbb</td>
+<td>Seek</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Matroska.html'>Matroska Tags</a></td></tr>
+<tr>
+<td title='0x1031 = 4145'>0x1031</td>
+<td>ContentEncodingOrder?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1032 = 4146'>0x1032</td>
+<td>ContentEncodingScope?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x1033 = 4147'>0x1033</td>
+<td>ContentEncodingType</td>
+<td class=c>N</td>
+<td><span class=s>0 = Compression
+  <br>1 = Encryption</span></td></tr>
+<tr class=b>
+<td title='0x1034 = 4148'>0x1034</td>
+<td>ContentCompression</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Matroska.html'>Matroska Tags</a></td></tr>
+<tr>
+<td title='0x1035 = 4149'>0x1035</td>
+<td>ContentEncryption</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Matroska.html'>Matroska Tags</a></td></tr>
+<tr class=b>
+<td title='0x135f = 4959'>0x135f</td>
+<td>CueRefNumber?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x136e = 4974'>0x136e</td>
+<td>TrackName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1378 = 4984'>0x1378</td>
+<td>CueBlockNumber?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x137f = 4991'>0x137f</td>
+<td>TrackOffset?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x13ab = 5035'>0x13ab</td>
+<td>SeekID?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x13ac = 5036'>0x13ac</td>
+<td>SeekPosition?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x13b8 = 5048'>0x13b8</td>
+<td>Stereo3DMode</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x14aa = 5290'>0x14aa</td>
+<td>CropBottom</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x14b0 = 5296'>0x14b0</td>
+<td>DisplayWidth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x14b2 = 5298'>0x14b2</td>
+<td>DisplayUnit</td>
+<td class=c>N</td>
+<td><span class=s>0 = Pixels
+  <br>1 = cm
+  <br>2 = inches</span></td></tr>
+<tr class=b>
+<td title='0x14b3 = 5299'>0x14b3</td>
+<td>AspectRatioType</td>
+<td class=c>N</td>
+<td><span class=s>0 = Free Resizing
+  <br>1 = Keep Aspect Ratio
+  <br>2 = Fixed</span></td></tr>
+<tr>
+<td title='0x14ba = 5306'>0x14ba</td>
+<td>DisplayHeight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x14bb = 5307'>0x14bb</td>
+<td>CropTop</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x14cc = 5324'>0x14cc</td>
+<td>CropLeft</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x14dd = 5341'>0x14dd</td>
+<td>CropRight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x15aa = 5546'>0x15aa</td>
+<td>TrackForced</td>
+<td class=c>N</td>
+<td><span class=s>0 = No
+  <br>1 = Yes</span></td></tr>
+<tr class=b>
+<td title='0x15ee = 5614'>0x15ee</td>
+<td>MaxBlockAdditionID?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x1741 = 5953'>0x1741</td>
+<td>WritingApp</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1854 = 6228'>0x1854</td>
+<td>SilentTracks</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Matroska.html'>Matroska Tags</a></td></tr>
+<tr>
+<td title='0x18d7 = 6359'>0x18d7</td>
+<td>SilentTrackNumber</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x21a7 = 8615'>0x21a7</td>
+<td>AttachedFile</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Matroska.html'>Matroska Tags</a></td></tr>
+<tr>
+<td title='0x2240 = 8768'>0x2240</td>
+<td>ContentEncoding</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Matroska.html'>Matroska Tags</a></td></tr>
+<tr class=b>
+<td title='0x2264 = 8804'>0x2264</td>
+<td>AudioBitsPerSample</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x23a2 = 9122'>0x23a2</td>
+<td>CodecPrivate?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x23c0 = 9152'>0x23c0</td>
+<td>Targets</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Matroska.html'>Matroska Tags</a></td></tr>
+<tr>
+<td title='0x23c3 = 9155'>0x23c3</td>
+<td>ChapterPhysicalEquivalent</td>
+<td class=c>N</td>
+<td><table class=cols><tr>
+  <td>10 = Index
+  <br>20 = Track
+  <br>30 = Session
+  <br>40 = Layer</td><td>&nbsp;&nbsp;</td>
+  <td>50 = Side
+  <br>60 = CD / DVD
+  <br>70 = Set / Package</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td title='0x23c4 = 9156'>0x23c4</td>
+<td>TagChapterUID?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x23c5 = 9157'>0x23c5</td>
+<td>TagTrackUID?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x23c6 = 9158'>0x23c6</td>
+<td>TagAttachmentUID?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x23c9 = 9161'>0x23c9</td>
+<td>TagEditionUID?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x23ca = 9162'>0x23ca</td>
+<td>TargetType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x2532 = 9522'>0x2532</td>
+<td>SignedElement?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x2624 = 9764'>0x2624</td>
+<td>TrackTranslate</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Matroska.html'>Matroska Tags</a></td></tr>
+<tr>
+<td title='0x26a5 = 9893'>0x26a5</td>
+<td>TrackTranslateTrackID?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x26bf = 9919'>0x26bf</td>
+<td>TrackTranslateCodec</td>
+<td class=c>N</td>
+<td><span class=s>0 = Matroska Script
+  <br>1 = DVD Menu</span></td></tr>
+<tr>
+<td title='0x26fc = 9980'>0x26fc</td>
+<td>TrackTranslateEditionUID?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x27c8 = 10184'>0x27c8</td>
+<td>SimpleTag</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Matroska.html'>Matroska Tags</a></td></tr>
+<tr>
+<td title='0x28ca = 10442'>0x28ca</td>
+<td>TargetTypeValue</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x2911 = 10513'>0x2911</td>
+<td>ChapterProcessCommand</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Matroska.html'>Matroska Tags</a></td></tr>
+<tr>
+<td title='0x2922 = 10530'>0x2922</td>
+<td>ChapterProcessTime?</td>
+<td class=c>N</td>
+<td><span class=s>0 = For Duration of Chapter
+  <br>1 = Before Chapter
+  <br>2 = After Chapter</span></td></tr>
+<tr class=b>
+<td title='0x2924 = 10532'>0x2924</td>
+<td>ChapterTranslate</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Matroska.html'>Matroska Tags</a></td></tr>
+<tr>
+<td title='0x2933 = 10547'>0x2933</td>
+<td>ChapterProcessData?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x2944 = 10564'>0x2944</td>
+<td>ChapterProcess</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Matroska.html'>Matroska Tags</a></td></tr>
+<tr>
+<td title='0x2955 = 10581'>0x2955</td>
+<td>ChapterProcessCodecID?</td>
+<td class=c>N</td>
+<td><span class=s>0 = Matroska
+  <br>1 = DVD</span></td></tr>
+<tr class=b>
+<td title='0x29a5 = 10661'>0x29a5</td>
+<td>ChapterTranslateID?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x29bf = 10687'>0x29bf</td>
+<td>ChapterTranslateCodec</td>
+<td class=c>N</td>
+<td><span class=s>0 = Matroska Script
+  <br>1 = DVD Menu</span></td></tr>
+<tr class=b>
+<td title='0x29fc = 10748'>0x29fc</td>
+<td>ChapterTranslateEditionUID?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x2d80 = 11648'>0x2d80</td>
+<td>ContentEncodings</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Matroska.html'>Matroska Tags</a></td></tr>
+<tr class=b>
+<td title='0x2de7 = 11751'>0x2de7</td>
+<td>MinCache?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x2df8 = 11768'>0x2df8</td>
+<td>MaxCache?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x2e67 = 11879'>0x2e67</td>
+<td>ChapterSegmentUID?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x2ebc = 11964'>0x2ebc</td>
+<td>ChapterSegmentEditionUID?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x2fab = 12203'>0x2fab</td>
+<td>TrackOverlay?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x3373 = 13171'>0x3373</td>
+<td>Tag</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Matroska.html'>Matroska Tags</a></td></tr>
+<tr class=b>
+<td title='0x3384 = 13188'>0x3384</td>
+<td>SegmentFileName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x33a4 = 13220'>0x33a4</td>
+<td>SegmentUID?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x33c4 = 13252'>0x33c4</td>
+<td>ChapterUID?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x33c5 = 13253'>0x33c5</td>
+<td>TrackUID?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x3446 = 13382'>0x3446</td>
+<td>TrackAttachmentUID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x35a1 = 13729'>0x35a1</td>
+<td>BlockAdditions</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Matroska.html'>Matroska Tags</a></td></tr>
+<tr class=b>
+<td title='0x38b5 = 14517'>0x38b5</td>
+<td>OutputAudioSampleRate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x3ba9 = 15273'>0x3ba9</td>
+<td>Title</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x3d7b = 15739'>0x3d7b</td>
+<td>ChannelPositions?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x3e5b = 15963'>0x3e5b</td>
+<td>SignatureElements</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Matroska.html'>Matroska Tags</a></td></tr>
+<tr class=b>
+<td title='0x3e7b = 15995'>0x3e7b</td>
+<td>SignatureElementList</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Matroska.html'>Matroska Tags</a></td></tr>
+<tr>
+<td title='0x3e8a = 16010'>0x3e8a</td>
+<td>SignatureAlgo</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x3e9a = 16026'>0x3e9a</td>
+<td>SignatureHash</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x3ea5 = 16037'>0x3ea5</td>
+<td>SignaturePublicKey?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x3eb5 = 16053'>0x3eb5</td>
+<td>Signature?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x2b59c = 177564'>0x2b59c</td>
+<td>TrackLanguage</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x3314f = 209231'>0x3314f</td>
+<td>TrackTimecodeScale</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x383e3 = 230371'>0x383e3</td>
+<td>FrameRate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x3e383 = 254851'>0x3e383</td>
+<td>VideoFrameRate
+  <br>DefaultDuration</td>
+<td class=c>N<br>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x58688 = 362120'>0x58688</td>
+<td>VideoCodecName
+  <br>AudioCodecName
+  <br>CodecName</td>
+<td class=c>N<br>N<br>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x6b240 = 438848'>0x6b240</td>
+<td>CodecDownloadURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xad7b1 = 710577'>0xad7b1</td>
+<td>TimecodeScale</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xeb524 = 963876'>0xeb524</td>
+<td>ColorSpace?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xfb523 = 1029411'>0xfb523</td>
+<td>Gamma</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1a9697 = 1742487'>0x1a9697</td>
+<td>CodecSettings</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x1b4040 = 1785920'>0x1b4040</td>
+<td>CodecInfoURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1c83ab = 1868715'>0x1c83ab</td>
+<td>PrevFileName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x1cb923 = 1882403'>0x1cb923</td>
+<td>PrevUID?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1e83bb = 1999803'>0x1e83bb</td>
+<td>NextFileName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x1eb923 = 2013475'>0x1eb923</td>
+<td>NextUID?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x43a770 = 4433776'>0x43a770</td>
+<td>Chapters</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Matroska.html'>Matroska Tags</a></td></tr>
+<tr>
+<td title='0x14d9b74 = 21863284'>0x14d9b74</td>
+<td>SeekHead</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Matroska.html'>Matroska Tags</a></td></tr>
+<tr class=b>
+<td title='0x254c367 = 39109479'>0x254c367</td>
+<td>Tags</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Matroska.html'>Matroska Tags</a></td></tr>
+<tr>
+<td title='0x549a966 = 88713574'>0x549a966</td>
+<td>Info</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Matroska.html'>Matroska Tags</a></td></tr>
+<tr class=b>
+<td title='0x654ae6b = 106212971'>0x654ae6b</td>
+<td>Tracks</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Matroska.html'>Matroska Tags</a></td></tr>
+<tr>
+<td title='0x8538067 = 139690087'>0x8538067</td>
+<td>SegmentHeader</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Matroska.html'>Matroska Tags</a></td></tr>
+<tr class=b>
+<td title='0x941a469 = 155296873'>0x941a469</td>
+<td>Attachments</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Matroska.html'>Matroska Tags</a></td></tr>
+<tr>
+<td title='0xa45dfa3 = 172351395'>0xa45dfa3</td>
+<td>EBMLHeader</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Matroska.html'>Matroska Tags</a></td></tr>
+<tr class=b>
+<td title='0xb538667 = 190023271'>0xb538667</td>
+<td>SignatureSlot</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Matroska.html'>Matroska Tags</a></td></tr>
+<tr>
+<td title='0xc53bb6b = 206814059'>0xc53bb6b</td>
+<td>Cues</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Matroska.html'>Matroska Tags</a></td></tr>
+<tr class=b>
+<td title='0xf43b675 = 256095861'>0xf43b675</td>
+<td>Cluster</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Matroska.html'>Matroska Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<hr>
+(This document generated automatically by Image::ExifTool::BuildTagLookup)
+<br><i>Last revised Jan 3, 2011</i>
+<p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
+</body>
+</html>

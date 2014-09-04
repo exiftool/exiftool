@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd">
+<html>
+<head>
+  <title>Common ExifTool Mistakes</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+<style type="text/css">
+<!--
+pre         { color: #800; margin-left: 2em }
+ol.index    { margin: 0; padding: 0 0 0 2em }
+-->
+</style>
+</head>
+<body>
+<div class='index'>
+<ol class='index'>
+<li><a href="#M1">Missing Duplicate Tags</a></li>
+<li><a href="#M2">Over-use of *.*</a></li>
+<li><a href="#M3">Over-scripting</a></li>
+<li><a href="#M4">Writing Multiple Tags</a></li>
+<li><a href="#M5">Redirecting Tags</a></li>
+</ol>
+</div>
+<h1 class='up'>Common Mistakes when using ExifTool</h1>
+
+<a name="M1"></a>
+<h3>1. Missing Duplicate tags</h3>
+<blockquote>By default, ExifTool will suppress duplicate tags in the output.
+Often this is desireable but sometimes one can be fooled into thinking
+that information doesn't exist when it is just hidden by another tag
+with the same name.  For instance, the following command won't necessarily
+return all of the EXIF tags:
+<pre>exiftool -exif:all image.jpg
+</pre>
+To avoid this problem, use the <code>-a</code> option.
+</blockquote>
+
+<a name="M2"></a>
+<h3>2. Over-use of Wildcards in File Names (eg. "<code>*.*</code>")</h3>
+<blockquote>It is often preferable to specify a directory name (eg. "<code>.</code>") instead
+of using wildcards (eg. "<code>*.*</code>") for a number of reasons:
+<ol>
+<li>"<code>*.*</code>" will process any file with a "." in the name.  This includes files
+that ExifTool should not normally process (like the "_original" backup files for
+example).  By specifying a directory name instead, ExifTool will process only
+supported file types.  Or the <code>-ext</code> option may be used to process
+specific file types.</li>
+<li>"<code>*.*</code>" will process any <b>sub-directories</b> which contain "."
+in the name. This may be unexpected.</li>
+<li>The <code>-r</code> option (to recursively process sub-directories) is only
+effective when a directory name is specified, so it doesn't work when
+"<code>*.*</code>" is specified (unless the first-level directories have a "."
+in the name, as mentioned in point 2 above).</li>
+<li>Arguments like "<code>*.jpg</code>" are a problem on systems with
+case-sensitive file names (like OS X and Linux) because JPG images with
+uppercase extensions will be missed.  It is better to avoid this problem and use
+"<code>-ext jpg .</code>" to process all JPG images in the current directory
+because this technique is case-insensitive.</li>
+<li>This can be a security problem on systems where the shell automatically
+expands wildcards (eg. Mac and Linux) because a malicious arrangement of file
+names could potentially have unwanted effects since they may be interpreted as
+ExifTool options (see <a href="index.html#security">Security Issues</a>).</li>
+</ol>
+</blockquote>
+
+<a name="M3"></a>
+<h3>3. Over-scripting</h3>
+
+<blockquote>Often users write scripts to do some specific batch processing when
+exiftool already has the ability to do this without a script or with a greatly
+simplified script.  This includes the ability to recursively scan
+sub-directories for a specific file extension (case insensitive), rename files
+from metadata values, and move files to different directories.
+</blockquote>
+
+<blockquote>For example, this Unix script (from
+<a href="http://www.tuxradar.com/answers/433">here</a>):
+
+<pre>find -name '*.jpg' | while read PIC; do
+DATE=$(exiftool -p '$DateTimeOriginal' $PIC |
+sed 's/[: ]//g')
+touch -t $(echo $DATE | sed 's/\(..$\)/\.\1/') $PIC
+mv -i $PIC $(dirname $PIC)/$DATE.jpg
+done
+</pre>
+
+can be replaced with this single command (ExifTool 7.97 or later):
+<pre>exiftool -d %Y%m%d "-filename&lt;datetimeoriginal" "-filemodifydate&lt;datetimeoriginal#" -ext jpg .</pre>
+</blockquote>
+
+<a name="M4"></a>
+<h3>4. Writing/Copying Multiple tags</h3>
+<blockquote>Any number of tags may be specified on a single command line, but
+often people execute a separate command to write or copy each tag, which is very
+inefficient.  Combining all of the tag assignments into a single command avoids
+the significant overhead of launching exiftool for the subsequent commands.  For
+example:
+<pre>exiftool -artist=phil -modifydate=now -tagsfromfile %d%f.xmp -xmp:title -xmp:description -ext jpg c:\images
+</pre>
+The <code>-@</code> option may be used to read command-line arguments from a
+file, and may be useful in situations where there are a large number of
+arguments.</blockquote>
+
+<a name="M5"></a>
+<h3>5. Errors and Inefficiencies when Redirecting Tags</h3>
+
+<blockquote>The syntax to redirect tags when copying is <code>"-DSTTAG&lt;SRCTAG"</code>,
+but the syntax also allows a string containing tag names (prefixed by <code>$</code>)
+to be used in place of <code>SRCTAG</code>.  Two common mistakes when using this
+syntax are:
+<ol>
+<li>Adding a leading "<code>-</code>" before the <code>SRCTAG</code>. (eg.
+<code>-EXIF:Artist&lt;-XMP:Creator</code>) This is <b>wrong</b>, and the tag will
+not be copied.  (It should have been <code>-EXIF:Artist&lt;XMP:Creator</code>.)</li>
+<li>Adding a leading "<code>$</code>" when copying a simple tag. (eg.
+<code>"-comment&lt;$filename"</code>). This is not necessary and it is less
+efficient for ExifTool to process the source string than it is to copy the tag
+directly.</li>
+</ol>
+</blockquote>
+
+<hr>
+<i>Last revised May 24, 2014</i>
+<p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
+</body>
+</html>

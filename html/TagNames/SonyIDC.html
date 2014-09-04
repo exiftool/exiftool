@@ -1,0 +1,267 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>SonyIDC Tags</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h2 class=top>SonyIDC Tags</h2>
+<p>Tags written by the Sony Image Data Converter utility in ARW images.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x0201 = 513'>0x0201</td>
+<td>IDCPreviewStart</td>
+<td class=c title=' * = Protected'>int32u*</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0202 = 514'>0x0202</td>
+<td>IDCPreviewLength</td>
+<td class=c title=' * = Protected'>int32u*</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x8000 = 32768'>0x8000</td>
+<td>IDCCreativeStyle</td>
+<td class=c>int32u</td>
+<td><table class=cols><tr>
+  <td>1 = Camera Setting
+  <br>2 = Standard
+  <br>3 = Real
+  <br>4 = Vivid
+  <br>5 = Adobe RGB
+  <br>6 = A100 Standard
+  <br>7 = Neutral
+  <br>8 = Portrait
+  <br>9 = Landscape</td><td>&nbsp;&nbsp;</td>
+  <td>10 = Clear
+  <br>11 = Deep
+  <br>12 = Light
+  <br>13 = Sunset
+  <br>14 = Night View
+  <br>15 = Autumn Leaves
+  <br>16 = B&amp;W
+  <br>17 = Sepia</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td title='0x8001 = 32769'>0x8001</td>
+<td>CreativeStyleWasChanged</td>
+<td class=c>int32u</td>
+<td><span class=s><span class=n>(set if the creative style was ever changed)</span>
+  <br>0 = No
+  <br>1 = Yes</span></td></tr>
+<tr>
+<td title='0x8002 = 32770'>0x8002</td>
+<td>PresetWhiteBalance</td>
+<td class=c>int32u</td>
+<td><table class=cols><tr>
+  <td>1 = Camera Setting
+  <br>2 = Color Temperature
+  <br>3 = Specify Gray Point
+  <br>4 = Daylight
+  <br>5 = Cloudy
+  <br>6 = Shade
+  <br>7 = Cool White Fluorescent
+  <br>8 = Day Light Fluorescent
+  <br>9 = Day White Fluorescent
+  <br>10 = Warm White Fluorescent
+  <br>11 = Tungsten
+  <br>12 = Flash
+  <br>13 = Auto</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td title='0x8013 = 32787'>0x8013</td>
+<td>ColorTemperatureAdj</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x8014 = 32788'>0x8014</td>
+<td>PresetWhiteBalanceAdj</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x8015 = 32789'>0x8015</td>
+<td>ColorCorrection</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x8016 = 32790'>0x8016</td>
+<td>SaturationAdj</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x8017 = 32791'>0x8017</td>
+<td>ContrastAdj</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x8018 = 32792'>0x8018</td>
+<td>BrightnessAdj</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x8019 = 32793'>0x8019</td>
+<td>HueAdj</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x801a = 32794'>0x801a</td>
+<td>SharpnessAdj</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x801b = 32795'>0x801b</td>
+<td>SharpnessOvershoot</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x801c = 32796'>0x801c</td>
+<td>SharpnessUndershoot</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x801d = 32797'>0x801d</td>
+<td>SharpnessThreshold</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x801e = 32798'>0x801e</td>
+<td>NoiseReductionMode</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr class=b>
+<td title='0x8021 = 32801'>0x8021</td>
+<td>GrayPoint</td>
+<td class=c>int16u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x8022 = 32802'>0x8022</td>
+<td>D-RangeOptimizerMode</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Off
+  <br>1 = Auto
+  <br>2 = Manual</span></td></tr>
+<tr class=b>
+<td title='0x8023 = 32803'>0x8023</td>
+<td>D-RangeOptimizerValue</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x8024 = 32804'>0x8024</td>
+<td>D-RangeOptimizerHighlight</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x8026 = 32806'>0x8026</td>
+<td>HighlightColorDistortReduct</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Standard
+  <br>1 = Advanced</span></td></tr>
+<tr>
+<td title='0x8027 = 32807'>0x8027</td>
+<td>NoiseReductionValue</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x8028 = 32808'>0x8028</td>
+<td>EdgeNoiseReduction</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x8029 = 32809'>0x8029</td>
+<td>ColorNoiseReduction</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x802d = 32813'>0x802d</td>
+<td>D-RangeOptimizerShadow</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x8030 = 32816'>0x8030</td>
+<td>PeripheralIllumCentralRadius</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x8031 = 32817'>0x8031</td>
+<td>PeripheralIllumCentralValue</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x8032 = 32818'>0x8032</td>
+<td>PeripheralIllumPeriphValue</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x9000 = 36864'>0x9000</td>
+<td>ToneCurveBrightnessX</td>
+<td class=c>int16u[n]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x9001 = 36865'>0x9001</td>
+<td>ToneCurveRedX</td>
+<td class=c>int16u[n]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x9002 = 36866'>0x9002</td>
+<td>ToneCurveGreenX</td>
+<td class=c>int16u[n]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x9003 = 36867'>0x9003</td>
+<td>ToneCurveBlueX</td>
+<td class=c>int16u[n]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x9004 = 36868'>0x9004</td>
+<td>ToneCurveBrightnessY</td>
+<td class=c>int16u[n]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x9005 = 36869'>0x9005</td>
+<td>ToneCurveRedY</td>
+<td class=c>int16u[n]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x9006 = 36870'>0x9006</td>
+<td>ToneCurveGreenY</td>
+<td class=c>int16u[n]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x9007 = 36871'>0x9007</td>
+<td>ToneCurveBlueY</td>
+<td class=c>int16u[n]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xd000 = 53248'>0xd000</td>
+<td>CurrentVersion</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xd001 = 53249'>0xd001</td>
+<td>VersionIFD</td>
+<td class=c>-</td>
+<td>--&gt; <a href='SonyIDC.html'>SonyIDC Tags</a>
+  <br><span class='n s'>(there is one VersionIFD for each entry in the "Version Stack")</span></td></tr>
+<tr class=b>
+<td title='0xd100 = 53504'>0xd100</td>
+<td>VersionCreateDate</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(date/time when this entry was created in the &quot;Version Stack&quot;)</span></span></td></tr>
+<tr>
+<td title='0xd101 = 53505'>0xd101</td>
+<td>VersionModifyDate</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<hr>
+(This document generated automatically by Image::ExifTool::BuildTagLookup)
+<br><i>Last revised Jan 8, 2010</i>
+<p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
+</body>
+</html>

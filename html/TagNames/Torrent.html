@@ -1,0 +1,187 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Torrent Tags</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h2 class=top>Torrent Tags</h2>
+<p>Below are tags commonly found in BitTorrent files.  As well as these tags,
+any other existing tags will be extracted.  For convenience, list items are
+expanded into individual tags with an index in the tag name, but only the
+tags with index &quot;1&quot; are listed in the tables below.  See
+<a href="https://wiki.theory.org/BitTorrentSpecification">https://wiki.theory.org/BitTorrentSpecification</a> for the BitTorrent
+specification.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'announce'</td>
+<td>Announce</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'announce-list'</td>
+<td>AnnounceList1</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'comment'</td>
+<td>Comment</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'created by'</td>
+<td>Creator</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'creation date'</td>
+<td>CreateDate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'encoding'</td>
+<td>Encoding</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'info'</td>
+<td>Info</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Torrent.html#Info'>Torrent Info Tags</a></td></tr>
+<tr class=b>
+<td>'url-list'</td>
+<td>URLList1</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Info'>Torrent Info Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'file-duration'</td>
+<td>File1Duration</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'file-media'</td>
+<td>File1Media</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'files'</td>
+<td>Files</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Torrent.html#Files'>Torrent Files Tags</a></td></tr>
+<tr class=b>
+<td>'length'</td>
+<td>Length</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'md5sum'</td>
+<td>MD5Sum</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'name'</td>
+<td>Name</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'name.utf-8'</td>
+<td>NameUTF-8</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'piece length'</td>
+<td>PieceLength</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'pieces'</td>
+<td>Pieces</td>
+<td class=c>N</td>
+<td><span class=s><span class=n>(concatenation of 20-byte SHA-1 digests for each piece)</span></span></td></tr>
+<tr class=b>
+<td>'private'</td>
+<td>Private</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'profiles'</td>
+<td>Profiles</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Torrent.html#Profiles'>Torrent Profiles Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Files'>Torrent Files Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'length'</td>
+<td>File1Length</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'md5sum'</td>
+<td>File1MD5Sum</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'path'</td>
+<td>File1Path</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'path.utf-8'</td>
+<td>File1PathUTF-8</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Profiles'>Torrent Profiles Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'acodec'</td>
+<td>Profile1AudioCodec</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'height'</td>
+<td>Profile1Height</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'vcodec'</td>
+<td>Profile1VideoCodec</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'width'</td>
+<td>Profile1Width</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<hr>
+(This document generated automatically by Image::ExifTool::BuildTagLookup)
+<br><i>Last revised Sep 10, 2013</i>
+<p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
+</body>
+</html>

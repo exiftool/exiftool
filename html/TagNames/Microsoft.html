@@ -1,0 +1,2069 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Microsoft Tags</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h2 class=top><a name='XMP'>Microsoft XMP Tags</a></h2>
+<p>Microsoft Photo 1.0 schema XMP tags.  This is likely not a complete list,
+but represents tags which have been observed in sample images.  The actual
+namespace prefix is &quot;MicrosoftPhoto&quot;, but ExifTool shortens this to
+&quot;XMP-microsoft&quot; in the family 1 group name.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>CameraSerialNumber</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>DateAcquired</td>
+<td class=c>date</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>FlashManufacturer</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>FlashModel</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>LastKeywordIPTC</td>
+<td class=c title=' + = List'>string+</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>LastKeywordXMP</td>
+<td class=c title=' + = List'>string+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>LensManufacturer</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>LensModel</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>RatingPercent</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(called Rating by the spec.  XMP-xmp:Rating values of 1,2,3,4 and 5 stars
+correspond to RatingPercent values of 1,25,50,75 and 99 respectively)</span></span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='MP1'>Microsoft MP1 Tags</a></h2>
+<p>Microsoft Photo 1.1 schema XMP tags which have been observed.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>PanoramicStitchCameraMotion</td>
+<td class=c>string</td>
+<td><span class=s>&#39;3DRotation&#39; = 3D Rotation
+  <br>&#39;Affine&#39; = Affine
+  <br>&#39;Homography&#39; = Homography
+  <br>&#39;RigidScale&#39; = Rigid Scale</span></td></tr>
+<tr class=b>
+<td>PanoramicStitchMapType</td>
+<td class=c>string</td>
+<td><span class=s>&#39;Horizontal-Cylindrical&#39; = Horizontal Cylindrical
+  <br>&#39;Horizontal-Spherical&#39; = Horizontal Spherical
+  <br>&#39;Perspective&#39; = Perspective
+  <br>&#39;Vertical-Cylindrical&#39; = Vertical Cylindrical
+  <br>&#39;Vertical-Spherical&#39; = Vertical Spherical</span></td></tr>
+<tr>
+<td>PanoramicStitchPhi0</td>
+<td class=c>real</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>PanoramicStitchPhi1</td>
+<td class=c>real</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>PanoramicStitchTheta0</td>
+<td class=c>real</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>PanoramicStitchTheta1</td>
+<td class=c>real</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='MP'>Microsoft MP Tags</a></h2>
+<p>Microsoft Photo 1.2 schema XMP tags which have been observed.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>RegionInfoMP</td>
+<td class=c>struct</td>
+<td>--&gt; <a href='Microsoft.html#RegionInfo'>Microsoft RegionInfo Struct</a>
+  <br><span class='n s'>(called RegionInfo by the spec)</span></td></tr>
+<tr class=b>
+<td>RegionInfoDateRegionsValid</td>
+<td class=c title=' _ = Flattened'>date_</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>RegionInfoRegions</td>
+<td class=c title=' _ = Flattened
+ + = List'>struct_+</td>
+<td>--&gt; <a href='Microsoft.html#Regions'>Microsoft Regions Struct</a></td></tr>
+<tr class=b>
+<td>RegionPersonDisplayName</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(RegionInfoRegionsPersonDisplayName)</span></span></td></tr>
+<tr>
+<td>RegionPersonEmailDigest</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(RegionInfoRegionsPersonEmailDigest)</span></span></td></tr>
+<tr class=b>
+<td>RegionPersonLiveIdCID</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(RegionInfoRegionsPersonLiveIdCID)</span></span></td></tr>
+<tr>
+<td>RegionPersonSourceID</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(RegionInfoRegionsPersonSourceID)</span></span></td></tr>
+<tr class=b>
+<td>RegionRectangle</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(RegionInfoRegionsRectangle)</span></span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='RegionInfo'>Microsoft RegionInfo Struct</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Field Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>DateRegionsValid</td>
+<td class=c>date</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Regions</td>
+<td class=c title=' + = List'>Microsoft Regions+</td>
+<td>--&gt; <a href='Microsoft.html#Regions'>Microsoft Regions Struct</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Regions'>Microsoft Regions Struct</a></h2>
+<p>Note that PersonLiveIdCID element is called PersonLiveCID according to the
+Microsoft specification, but in practice their software actually writes
+PersonLiveIdCID, so ExifTool uses this too.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Field Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>PersonDisplayName</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>PersonEmailDigest</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>PersonLiveIdCID</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>PersonSourceID</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Rectangle</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Stitch'>Microsoft Stitch Tags</a></h2>
+<p>Information found in the Microsoft custom EXIF tag 0x4748, as written by
+Windows Live Photo Gallery.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index4</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>PanoramicStitchVersion</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='1 = 0x1'>1</td>
+<td>PanoramicStitchCameraMotion</td>
+<td class=c>int32u</td>
+<td><span class=s>2 = Rigid Scale
+  <br>3 = Affine
+  <br>4 = 3D Rotation
+  <br>5 = Homography</span></td></tr>
+<tr>
+<td class=r title='2 = 0x2'>2</td>
+<td>PanoramicStitchMapType</td>
+<td class=c>int32u</td>
+<td><span class=s>0 = Perspective
+  <br>1 = Horizontal Cylindrical
+  <br>2 = Horizontal Spherical
+  <br>257 = Vertical Cylindrical
+  <br>258 = Vertical Spherical</span></td></tr>
+<tr class=b>
+<td class=r title='3 = 0x3'>3</td>
+<td>PanoramicStitchTheta0</td>
+<td class=c>float</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='4 = 0x4'>4</td>
+<td>PanoramicStitchTheta1</td>
+<td class=c>float</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='5 = 0x5'>5</td>
+<td>PanoramicStitchPhi0</td>
+<td class=c>float</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='6 = 0x6'>6</td>
+<td>PanoramicStitchPhi1</td>
+<td class=c>float</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Xtra'>Microsoft Xtra Tags</a></h2>
+<p>Tags extracted from the Microsoft &quot;Xtra&quot; atom of QuickTime videos.  Tag ID&#39;s
+are not shown because some are unruly GUID&#39;s.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>Abstract</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>AcquisitionTime</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>AcquisitionTimeDay</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>AcquisitionTimeMonth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>AcquisitionTimeYear</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>AcquisitionTimeYearMonth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>AcquisitionTimeYearMonthDay</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>AlbumArtistSortOrder</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>AlbumID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>AlbumIDAlbumArtist</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>AlbumTitleSortOrder</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>AlternateSourceURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>AudioBitrate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>AudioFormat</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Author</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>AuthorSortOrder</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>AverageLevel</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Bitrate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>BuyNow</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>BuyTickets</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>CDTrackEnabled</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>CallLetters</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>CameraManufacturer</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>CameraModel</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Channels</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Comment</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ContentDistributorDuration</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Copyright</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Count</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>CurrentBitrate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>DLNAServerUDN</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>DLNASourceURI</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>DRMIndividualizedVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>DRMKeyID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>DTCPIPHost</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>DTCPIPPort</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>DVDID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Description</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>DisplayArtist</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Duration</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Event</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>FileSize</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>FileType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>FormatTag</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>FourCC</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>FrameRate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Frequency</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>IsNetworkFeed</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>IsVBR</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>IsProtected</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>LeadPerformer</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>LibraryID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>LibraryName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Location</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>MediaContentTypes</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>MediaType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ModifiedBy</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>MoreInfo</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>PartOfSet</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>PeakValue</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>PixelAspectRatioX</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>PixelAspectRatioY</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>PlaylistIndex</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Provider</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ProviderLogoURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>ProviderURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>RadioBand</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>RadioFormat</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>RatingOrg</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>RecordingTime</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>RecordingTimeDay</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>RecordingTimeMonth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>RecordingTimeYear</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>RecordingTimeYearMonth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>RecordingTimeYearMonthDay</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>ReleaseDate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ReleaseDateDay</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>ReleaseDateMonth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ReleaseDateYear</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>ReleaseDateYearMonth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ReleaseDateYearMonthDay</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>RequestState</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ShadowFilePath</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>SourceURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Subject</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Sync01</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Sync02</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Sync03</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Sync04</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Sync05</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Sync06</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Sync07</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Sync08</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Sync09</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Sync10</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Sync11</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Sync12</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Sync13</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Sync14</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Sync15</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Sync16</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>SyncOnly</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>SyncState</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Temporary</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Title</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>TitleSortOrder</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>TotalDuration</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>TrackingID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>UserCustom1</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>UserCustom2</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>UserEffectiveRating</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>UserLastPlayedTime</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>UserPlayCount</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>UserPlaycountAfternoon</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>UserPlaycountEvening</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>UserPlaycountMorning</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>UserPlaycountNight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>UserPlaycountWeekday</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>UserPlaycountWeekend</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>UserRating</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>UserServiceRating</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>VideoBitrate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>VideoFormat</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>AlbumArtist</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>AlbumCoverURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>AlbumTitle</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>BeatsPerMinute</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Category</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Composer</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Conductor</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ContentDistributor</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>ContentDistributorType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ContentGroupDescription</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Director</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>EncodingTime</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Genre</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>GenreID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>InitialKey</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Language</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Lyrics</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>MCDI</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>MediaClassPrimaryID</td>
+<td class=c>N</td>
+<td><span class=s>&#39;01CD0F29-DA4E-4157-897B-6275D50C4F11&#39; = Audio (not music)
+  <br>&#39;D1607DBC-E323-4BE2-86A1-48A42A28441E&#39; = Music
+  <br>&#39;DB9830BD-3AB3-4FAB-8A37-1A995F7FF74B&#39; = Video
+  <br>&#39;FCF24A76-9A57-4036-990D-E35DD8B244E1&#39; = Other (not audio or video)</span></td></tr>
+<tr>
+<td>MediaClassSecondaryID</td>
+<td class=c>N</td>
+<td><span class=s>&#39;00000000-0000-0000-0000-000000000000&#39; = Unknown Content
+  <br>&#39;00033368-5009-4AC3-A820-5D2D09A4E7C1&#39; = Sound Clip from Game
+  <br>&#39;0B710218-8C0C-475E-AF73-4C41C0C8F8CE&#39; = Home Video from Pictures
+  <br>&#39;1B824A67-3F80-4E3E-9CDE-F7361B0F5F1B&#39; = Talk Show
+  <br>&#39;1FE2E091-4E1E-40CE-B22D-348C732E0B10&#39; = Video News
+  <br>&#39;3A172A13-2BD9-4831-835B-114F6A95943F&#39; = Spoken Word
+  <br>&#39;44051B5B-B103-4B5C-92AB-93060A9463F0&#39; = Corporate Video
+  <br>&#39;6677DB9B-E5A0-4063-A1AD-ACEB52840CF1&#39; = Audio News
+  <br>&#39;A9B87FC9-BD47-4BF0-AC4F-655B89F7D868&#39; = Feature Film
+  <br>&#39;B76628F4-300D-443D-9CB5-01C285109DAF&#39; = Home Movie
+  <br>&#39;BA7F258A-62F7-47A9-B21F-4651C42A000E&#39; = TV Show
+  <br>&#39;D6DE1D88-C77C-4593-BFBC-9C61E8C373E3&#39; = Web-based Video
+  <br>&#39;E0236BEB-C281-4EDE-A36D-7AF76A3D45B5&#39; = Audio Book
+  <br>&#39;E3E689E2-BA8C-4330-96DF-A0EEEFFA6876&#39; = Music Video
+  <br>&#39;F24FF731-96FC-4D0F-A2F5-5A3483682B1A&#39; = Song from Game</span></td></tr>
+<tr class=b>
+<td>MediaOriginalBroadcastDateTime</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>MediaOriginalChannel</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>MediaStationName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Mood</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>OriginalAlbumTitle</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>OriginalArtist</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>OriginalLyricist</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ParentalRating</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>PartOfSet</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Period</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Producer</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ProtectionType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Provider</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ProviderRating</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>ProviderStyle</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Publisher</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>SubTitle</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>SubTitleDescription</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>SubscriptionContentID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>TrackNumber</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>UniqueFileIdentifier</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>VideoFrameRate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>VideoHeight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>VideoWidth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>WMCollectionGroupID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>WMCollectionID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>WMContentID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>WMShadowFileSourceDRMType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>WMShadowFileSourceFileType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Writer</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Year</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ChapterNum</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>TitleNum</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Resources</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Complete</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>HomeCountry-Region</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>TaskOwner</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>MaxAperture</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>OptionalAttendees</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>HomeStreet</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>RequiredAttendeeAddresses</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>SenderAddress</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Description</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>FileVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>ProductName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ProductVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>LegalTrademarks</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>SenderName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>ParentalRatingReason</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>FirstName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Event</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>DateImported</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>CameraMaker</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>CameraModel</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Orientation</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ExposureTime</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>F-stop</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ExposureProgram</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>ISOSpeed</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>DatePictureTaken</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>ExposureBias</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>SubjectDistance</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>MeteringMode</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>LightSource</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>FlashMode</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>FocalLength</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>HomePhone</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>PrimaryPhone</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>CellPhone</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Birthday</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>PrimaryE-mail</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>JobTitle</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>HomeCity</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>PersonalTitle</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>OfficeLocation</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>GivenName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>MiddleName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Suffix</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Nickname</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>PostalCode</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>StationName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Division</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Kinds</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ClientID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Type</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>FileCount</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>TotalFileSize</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Computer</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>PerceivedType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Duration</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>DateAcquired</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>MediaCreated</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>IsRecurring</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Incomplete</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>E-mail2</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Project</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Gender</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>DueDate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>BusinessCity</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>WindowsFileName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>DateArchived</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>BusinessStateOrProvince</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>BroadcastDate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Color</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>StartDate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Saturation</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>SearchRanking</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>OtherAddress</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>AutoSummary</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Summary</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>BusinessHomePage</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Genre</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>AlbumArtist</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Artist</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>InitialKey</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Beats-per-minute</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Conductors</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>PartOfSet</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>SubTitle</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Mood</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>AlbumTitle</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Year</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>TrackNumber</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Free-busyStatus</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>URL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Description</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>DateVisited</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>IsDeleted</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>HasFlag</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Hobbies</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>FullName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Street</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Dimensions</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Untitled0</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Untitled1</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>HorizontalResolution</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>VerticalResolution</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>BitDepth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Duration</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Bitrate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>AudioSampleRate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>AudioSampleSize</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Channels</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>VideoCompression</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>FrameWidth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>FrameHeight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>TotalBitrate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>FrameRate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>DataRate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Copyright</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Composers</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Directors</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>ParentalRating</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Producers</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Writers</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Publisher</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Period</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>UserWebURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>EncodedBy</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Rating</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>E-mail3</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>HomeFax</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Source</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>FlagColor</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>BusinessPhone</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ProgramMode</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>OfflineStatus</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ClosedCaptioning</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Rerun</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>SAP</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>EpisodeName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ProgramDescription</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>StationCallSign</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ChannelNumber</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>OtherCity</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>OtherStateOrProvince</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Profession</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>DateCompleted</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>ReminderTime</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>BusinessAddress</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>OrganizerAddress</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>HomePOBox</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>E-mailList</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>CompanyMainPhone</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>HomePostalCode</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>OtherPOBox</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>OtherCountry-Region</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>LastName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>CarPhone</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>BusinessFax</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>EntryType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>OtherPostalCode</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Label</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>HomeAddress</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>AssistantsPhone</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Anniversary</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Owner</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>SpaceFree</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>TotalSize</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>SpaceUsed</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Priority</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>HasAttachments</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Spouse</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>FocalLength35mm</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>RecordingTime</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>IsCompleted</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>OfflineAvailability</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>OrganizerName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>TTY-TTDPhone</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Protected</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>BusinessCountry-Region</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>RequiredAttendees</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Name</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Size</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Attributes</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>DateModified</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>DateCreated</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>DateAccessed</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>FolderName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Type</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>LinkTarget</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>LinkStatus</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>BusinessPOBox</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ToDoTitle</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>CallbackNumber</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>IsOnline</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>MailingAddress</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Telex</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>EndDate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>HomeStateOrProvince</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>City</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>E-mailDisplayName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>AssistantsName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Creator</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>EXIFVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>BillingInformation</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Children</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Participants</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>OptionalAttendeeAddresses</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Company</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Category</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ContentType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Status</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Language</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Slides</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Pager</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>IMAddresses</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Status</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Folder</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ConversationID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>BusinessStreet</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>DateReleased</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>POBox</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ContactNames</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>DocumentID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>LensModel</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>BusinessPostalCode</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ReadStatus</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Importance</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>FlagStatus</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>FromAddresses</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>FromNames</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Store</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ToAddresses</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>ToNames</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Webpage</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>DateSent</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>BccAddresses</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>DateReceived</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Attachments</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>BccNames</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>CcAddresses</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>CcNames</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>FolderPath</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Path</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>AccountName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Country-Region</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>LensMaker</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>WhiteBalance</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Shared</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>SharedWith</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>StateOrProvince</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>FileAs</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>IsAttachment</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>TotalEditingTime</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>LastPrinted</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Untitled2</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>DateLastSaved</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Pages</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>WordCount</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>ProgramName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Title</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Subject</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Author</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Keywords</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Comments</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Contributors</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Initials</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Location</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Date</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Sensitivity</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>E-mailAddress</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Department</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Mileage</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>OtherStreet</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<hr>
+(This document generated automatically by Image::ExifTool::BuildTagLookup)
+<br><i>Last revised Jun 23, 2014</i>
+<p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
+</body>
+</html>

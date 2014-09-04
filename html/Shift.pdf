@@ -1,0 +1,505 @@
+%PDF-1.3
+%ту╧╙
+2 0 obj
+<<
+/Length 3771
+>>
+stream
+BT
+/TT2 1 Tf
+10 0 0 10 43 755 Tm
+0 g
+/GS1 gs
+0 Tc
+0 Tw
+(SHIFT\(1\)              User Contributed Perl Documentation             SHIFT\(1\))Tj
+0 -4.4 TD
+(N)Tj
+0 0 TD
+(NA)Tj
+0.6 0 TD
+(AM)Tj
+0.6 0 TD
+(ME)Tj
+0.6 0 TD
+(E)Tj
+-1.8 -1.1 TD
+(       Image::ExifTool::Shift.pl - ExifTool time shifting routines)Tj
+0 -2.2 TD
+(D)Tj
+0 0 TD
+(DE)Tj
+0.6 0 TD
+(ES)Tj
+0.6 0 TD
+(SC)Tj
+0.6 0 TD
+(CR)Tj
+0.6 0 TD
+(RI)Tj
+0.6 0 TD
+(IP)Tj
+0.6 0 TD
+(PT)Tj
+0.6 0 TD
+(TI)Tj
+0.6 0 TD
+(IO)Tj
+0.6 0 TD
+(ON)Tj
+0.6 0 TD
+(N)Tj
+-6 -1.1 TD
+(       This module contains routines used by ExifTool to shift date and time)Tj
+T*
+(       values.)Tj
+0 -2.2 TD
+(D)Tj
+0 0 TD
+(DE)Tj
+0.6 0 TD
+(ET)Tj
+0.6 0 TD
+(TA)Tj
+0.6 0 TD
+(AI)Tj
+0.6 0 TD
+(IL)Tj
+0.6 0 TD
+(LS)Tj
+0.6 0 TD
+(S)Tj
+-3.6 -1.1 TD
+(       Time shifts are applied to standard EXIF-formatted date/time values)Tj
+T*
+(       \(eg.  "2005:03:14 18:55:00"\).  Date-only and time-only values may also)Tj
+T*
+(       be shifted, and an optional timezone \(eg. "-05:00"\) is also supported.)Tj
+T*
+(       Here are some general rules and examples to explain how shift strings)Tj
+T*
+(       are interpreted:)Tj
+0 -2.2 TD
+(       Date-only values are shifted using the following formats:)Tj
+T*
+(           ТY:M:DТ     - shift date by ТYТ years, ТMТ months and ТDТ days)Tj
+0 -1.1 TD
+(           ТM:DТ       - shift months and days only)Tj
+T*
+(           ТDТ         - shift specified number of days)Tj
+0 -2.2 TD
+(       Time-only values are shifted using the following formats:)Tj
+T*
+(           Тh:m:sТ     - shift time by ТhТ hours, ТmТ minutes and ТsТ seconds)Tj
+0 -1.1 TD
+(           Тh:mТ       - shift hours and minutes only)Tj
+T*
+(           ТhТ         - shift specified number of hours)Tj
+0 -2.2 TD
+(       Timezone shifts are specified in the following formats:)Tj
+T*
+(           Т+h:mТ      - shift timezone by ТhТ hours and ТmТ minutes)Tj
+0 -1.1 TD
+(           Т-h:mТ      - negative shift of timezone hours and minutes)Tj
+T*
+(           Т+hТ        - shift timezone hours only)Tj
+T*
+(           Т-hТ        - negative shift of timezone hours only)Tj
+0 -2.2 TD
+(       A valid shift value consists of one or two arguments, separated by a)Tj
+0 -1.1 TD
+(       space.  If only one is provided, it is assumed to be a time shift when)Tj
+T*
+(       applied to a time-only or a date/time value, or a date shift when)Tj
+T*
+(       applied to a date-only value.  For example:)Tj
+0 -2.2 TD
+(           Т1Т         - shift by 1 hour if applied to a time or date/time)Tj
+0 -1.1 TD
+(                         value, or by one day if applied to a date value)Tj
+T*
+(           Т2:0Т       - shift 2 hours \(time, date/time\), or 2 months \(date\))Tj
+T*
+(           Т5:0:0Т     - shift 5 hours \(time, date/time\), or 5 years \(date\))Tj
+T*
+(           Т0:0:1Т     - shift 1 s \(time, date/time\), or 1 day \(date\))Tj
+0 -2.2 TD
+(       If two arguments are given, the date shift is first, followed by the)Tj
+0 -1.1 TD
+(       time shift:)Tj
+0 -2.2 TD
+(           Т3:0:0 0Т         - shift date by 3 years)Tj
+0 -1.1 TD
+(           Т0 15:30Т         - shift time by 15 hours and 30 minutes)Tj
+T*
+(           Т1:0:0 0:0:0+5:0Т - shift date by 1 year and timezone by 5 hours)Tj
+0 -2.2 TD
+(       A date shift is simply ignored if applied to a time value or visa)Tj
+0 -1.1 TD
+(       versa.)Tj
+0 -2.2 TD
+(       Numbers specified in shift fields may contain a decimal point:)Tj
+T*
+(           Т1.5Т       - 1 hour 30 minutes \(time, date/time\), or 1 day \(date\))Tj
+0 -1.1 TD
+(           Т2.5 0Т     - 2 days 12 hours \(date/time\), 12 hours \(time\) or)Tj
+T*
+(                         2 days \(date\))Tj
+0 -2.2 TD
+(       And to save typing, a zero is assumed for any missing numbers:)Tj
+T*
+(           Т1::Т       - shift by 1 hour \(time, date/time\) or 1 year \(date\))Tj
+ET
+endstream
+endobj
+3 0 obj
+<<
+/ProcSet [/PDF /Text ]
+/Font <<
+/TT2 4 0 R
+>>
+/ExtGState <<
+/GS1 5 0 R
+>>
+>>
+endobj
+8 0 obj
+<<
+/Length 4407
+>>
+stream
+BT
+/TT2 1 Tf
+10 0 0 10 43 755 Tm
+0 g
+/GS1 gs
+0 Tc
+0 Tw
+(           Т26:: 0Т    - shift date by 26 years)Tj
+0 -1.1 TD
+(           Т+:30       - shift timezone by 30 minutes)Tj
+0 -2.2 TD
+(       Below are some specific examples applied to real date and/or time)Tj
+0 -1.1 TD
+(       values \(ТDirТ is the applied shift direction: Т+Т is positive, Т-Т is)Tj
+T*
+(       negative\):)Tj
+0 -2.2 TD
+(            Original Value         Shift   Dir    Shifted Value)Tj
+0 -1.1 TD
+(           ---------------------  -------  ---  ---------------------)Tj
+T*
+(           Т20:30:00Т             Т5Т       +   Т01:30:00Т)Tj
+T*
+(           Т2005:01:27Т           Т5Т       +   Т2005:02:01Т)Tj
+T*
+(           Т2005:01:27 20:30:00Т  Т5Т       +   Т2005:01:28 01:30:00Т)Tj
+T*
+(           Т11:54:00Т             Т2.5 0Т   -   Т23:54:00Т)Tj
+T*
+(           Т2005:11:02Т           Т2.5 0Т   -   Т2005:10:31Т)Tj
+T*
+(           Т2005:11:02 11:54:00Т  Т2.5 0Т   -   Т2005:10:30 23:54:00Т)Tj
+T*
+(           Т2004:02:28 08:00:00Т  Т1 1.3Т   +   Т2004:02:29 09:18:00Т)Tj
+T*
+(           Т07:00:00Т             Т-5Т      +   Т07:00:00Т)Tj
+T*
+(           Т07:00:00+01:00Т       Т-5Т      +   Т07:00:00-04:00Т)Tj
+T*
+(           Т07:00:00ZТ            Т+2:30Т   -   Т07:00:00-02:30Т)Tj
+T*
+(           Т1970:01:01Т           Т35::Т    +   Т2005:01:01Т)Tj
+T*
+(           Т2005:01:01Т           Т400Т     +   Т2006:02:05Т)Tj
+T*
+(           Т10:00:00.00Т          Т::1.33Т  +   Т09:59:58.67Т)Tj
+0 -2.2 TD
+(N)Tj
+0 0 TD
+(NO)Tj
+0.6 0 TD
+(OT)Tj
+0.6 0 TD
+(TE)Tj
+0.6 0 TD
+(ES)Tj
+0.6 0 TD
+(S)Tj
+-2.4 -1.1 TD
+(       The format of the original date/time value is not changed when the time)Tj
+T*
+(       shift is applied.  This means that the length of the date/time string)Tj
+T*
+(       will not change, and only the numbers in the string will be modified.)Tj
+T*
+(       The only exception to this rule is that a ТZТ timezone is changed to)Tj
+T*
+(       Т+00:00Т notation if a timezone shift is applied.  A timezone will not)Tj
+T*
+(       be added to the date/time string.)Tj
+0 -2.2 TD
+(T)Tj
+0 0 TD
+(TR)Tj
+0.6 0 TD
+(RI)Tj
+0.6 0 TD
+(IC)Tj
+0.6 0 TD
+(CK)Tj
+0.6 0 TD
+(KY)Tj
+0.6 0 TD
+(Y)Tj
+-3 -1.1 TD
+(       This module is perhaps more complicated than it needs to be because it)Tj
+T*
+(       is designed to be very flexible in the way time shifts are specified)Tj
+T*
+(       and applied...)Tj
+0 -2.2 TD
+(       The ability to shift dates by Y years, M months, etc, conflicts with)Tj
+0 -1.1 TD
+(       the design goal of maintaining a constant shift for all time values)Tj
+T*
+(       when applying a batch shift.  This is because shifting by 1 month can)Tj
+T*
+(       be equivalent to anything from 28 to 31 days, and 1 year can be 365 or)Tj
+T*
+(       366 days, depending on the starting date.)Tj
+0 -2.2 TD
+(       The inconsistency is handled by shifting the first tag found with the)Tj
+0 -1.1 TD
+(       actual specified shift, then calculating the equivalent time difference)Tj
+T*
+(       in seconds for this shift and applying this difference to subsequent)Tj
+T*
+(       tags in a batch conversion.  So if it works as designed, the behaviour)Tj
+T*
+(       should be both intuitive and mathematically correct, and the user)Tj
+T*
+(       shouldnТt have to worry about details such as this \(in keeping with)Tj
+T*
+(       PerlТs "do the right thing" philosophy\).)Tj
+0 -2.2 TD
+(B)Tj
+0 0 TD
+(BU)Tj
+0.6 0 TD
+(UG)Tj
+0.6 0 TD
+(GS)Tj
+0.6 0 TD
+(S)Tj
+-1.8 -1.1 TD
+(       Due to the use of the standard time library functions, dates are)Tj
+T*
+(       typically limited to the range 1970 to 2038 on 32-bit systems.)Tj
+0 -2.2 TD
+(A)Tj
+0 0 TD
+(AU)Tj
+0.6 0 TD
+(UT)Tj
+0.6 0 TD
+(TH)Tj
+0.6 0 TD
+(HO)Tj
+0.6 0 TD
+(OR)Tj
+0.6 0 TD
+(R)Tj
+-3 -1.1 TD
+(       Copyright 2003-2014, Phil Harvey \(phil at owl.phy.queensu.ca\))Tj
+0 -2.2 TD
+(       This library is free software; you can redistribute it and/or modify it)Tj
+0 -1.1 TD
+(       under the same terms as Perl itself.)Tj
+0 -2.2 TD
+(S)Tj
+0 0 TD
+(SE)Tj
+0.6 0 TD
+(EE)Tj
+0.6 0 TD
+(E A)Tj
+1.2 0 TD
+(AL)Tj
+0.6 0 TD
+(LS)Tj
+0.6 0 TD
+(SO)Tj
+0.6 0 TD
+(O)Tj
+-4.2 -1.1 TD
+(       _)Tj
+4.2 0 TD
+(I_)Tj
+0.6 0 TD
+(m_)Tj
+0.6 0 TD
+(a_)Tj
+0.6 0 TD
+(g_)Tj
+0.6 0 TD
+(e_)Tj
+0.6 0 TD
+(:_)Tj
+0.6 0 TD
+(:_)Tj
+0.6 0 TD
+(E_)Tj
+0.6 0 TD
+(x_)Tj
+0.6 0 TD
+(i_)Tj
+0.6 0 TD
+(f_)Tj
+0.6 0 TD
+(T_)Tj
+0.6 0 TD
+(o_)Tj
+0.6 0 TD
+(o_)Tj
+0.6 0 TD
+(l\(3pm\))Tj
+-12.6 -4.4 TD
+(perl v5.12.4                      2014-07-27                          SHIFT\(1\))Tj
+ET
+endstream
+endobj
+9 0 obj
+<<
+/ProcSet [/PDF /Text ]
+/Font <<
+/TT2 4 0 R
+>>
+/ExtGState <<
+/GS1 5 0 R
+>>
+>>
+endobj
+5 0 obj
+<<
+/Type /ExtGState
+/SA false
+/SM 0.02
+/OP false
+/op false
+/OPM 1
+/BG2 /Default
+/UCR2 /Default
+/HT /Default
+/TR2 /Default
+>>
+endobj
+10 0 obj
+<<
+/Type /FontDescriptor
+/Ascent 753
+/CapHeight 562
+/Descent -246
+/Flags 35
+/FontBBox [-28 -250 628 805]
+/FontName /Courier
+/ItalicAngle 0
+/StemV 51
+/XHeight 426
+/StemH 51
+>>
+endobj
+4 0 obj
+<<
+/Type /Font
+/Subtype /TrueType
+/FirstChar 32
+/LastChar 146
+/Widths [600 0 600 0 0 0 0 0 600 600 0 600 600 600 600 600 
+600 600 600 600 600 600 600 600 600 600 600 600 0 0 0 0 
+0 600 600 600 600 600 600 600 600 600 0 600 600 600 600 600 
+600 0 600 600 600 600 600 0 600 600 600 0 0 0 0 600 
+0 600 600 600 600 600 600 600 600 600 0 600 600 600 600 600 
+600 600 600 600 600 600 600 600 600 600 600 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 600 ]
+/Encoding /WinAnsiEncoding
+/BaseFont /Courier
+/FontDescriptor 10 0 R
+>>
+endobj
+1 0 obj
+<<
+/Type /Page
+/Parent 6 0 R
+/Resources 3 0 R
+/Contents 2 0 R
+>>
+endobj
+7 0 obj
+<<
+/Type /Page
+/Parent 6 0 R
+/Resources 9 0 R
+/Contents 8 0 R
+>>
+endobj
+11 0 obj
+<<
+/S /D
+>>
+endobj
+12 0 obj
+<<
+/Nums [0 11 0 R ]
+>>
+endobj
+6 0 obj
+<<
+/Type /Pages
+/Kids [1 0 R 7 0 R]
+/Count 2
+/MediaBox [0 0 612 792]
+>>
+endobj
+13 0 obj
+<<
+/CreationDate (D:20140903081511-04'00')
+/ModDate (D:20140903081511-04'00')
+/Producer (Apple pstopdf)
+>>
+endobj
+14 0 obj
+<<
+/Type /Catalog
+/Pages 6 0 R
+/PageLabels 12 0 R
+>>
+endobj
+xref
+0 15
+0000000000 65535 f 
+0000009358 00000 n 
+0000000016 00000 n 
+0000003839 00000 n 
+0000008819 00000 n 
+0000008488 00000 n 
+0000009586 00000 n 
+0000009438 00000 n 
+0000003934 00000 n 
+0000008393 00000 n 
+0000008628 00000 n 
+0000009518 00000 n 
+0000009546 00000 n 
+0000009673 00000 n 
+0000009796 00000 n 
+trailer
+<<
+/Size 15
+/Root 14 0 R
+/Info 13 0 R
+/ID [<a4f3cbd9afd7c79825e5bd4d46d073f8><a4f3cbd9afd7c79825e5bd4d46d073f8>]
+>>
+startxref
+9865
+%%EOF

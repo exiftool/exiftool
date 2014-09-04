@@ -1,0 +1,239 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>Writing Meta Information</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+<style type="text/css">
+<!--
+pre  { color: #800; margin-left: 4em }
+-->
+</style>
+</head>
+<body>
+<div class='index'>
+<a href="#Abstract">Abstract</a>
+<br><a href="#Background">Background</a>
+<br><a href="#Implementation">Current Implementation</a>
+<br><a href="#Mandatory">Mandatory Tags</a>
+<br><a href="#JPEG">The JPEG Segment Size Limitation</a>
+<br><a href="#Preview">The Preview Image Problem</a> (<i>updated 2009-06-12</i>)
+<br><a href="#IFD0">IFD0/ExifIFD Ambiguity</a>
+</div>
+<h1 class='up'>Writing Meta Information</h1>
+<a name='Abstract'></a>
+<h3>Abstract</h3>
+<p>Writing meta information is more complicated than it may appear at first
+glance, which may be one reason why there are very few utilities around that do
+it. ExifTool uses tag names to identify the different pieces of meta information
+that can be extracted from a file.  There are thousands of different tags that
+ExifTool recognizes, and many of these tag names are common between different
+metadata formats (the WhiteBalance tag is the worst offender, and can be found
+in 44 different places [ExifTool 8.33]), and sometimes the information can even
+be stored in different places within a single format.  Couple this with the fact
+that many manufacturers store meta information in undocumented formats which
+must be reverse engineered (and each of which have their particular quirks), and
+you have a very complex situation.</p>
+
+<p>ExifTool attempts to simplify this situation as much as possible by making
+reasonable decisions about where to write the information you specify, yet it
+maintains flexibility by allowing you to configure its priorities if necessary,
+or even override the decision making process entirely.</p>
+
+<a name='Background'></a>
+<h3>Background</h3>
+<p>For a long time, I resisted adding write abilities to ExifTool even though it
+was an oft-requested feature.  My concerns in adding this feature were:</p>
+<ol>
+<li>It would complicate the ExifTool interface and make it too confusing for
+typical users.</li>
+<li>It would complicate the code enough to slow down processing for normal use.</li>
+<li>It would take a LOT of work to implement.</li>
+</ol>
+<p>After thinking about this for a while, I was finally able to come up with some
+solutions:</p>
+
+<p>1. I designed an interface that I think is easy to use for people who
+don't want to know the details of the file structure, yet powerful enough for
+people who want to do very specific things to the information.</p>
+
+<p>2. I isolated all of the writing code as much as possible into separate files
+which autoload as required.  This keeps the compilation fast for people who
+don't require the write feature.  Also, I have left the reading routines
+unchanged, so they aren't slowed down by the extra code needed when writing
+information.  Unfortunately, this meant I couldn't borrow a lot of code from the
+read routines (even more work for me!), but it had the advantage that I could
+perform additional optimizations in the write routines that I couldn't do
+otherwise.  Although the startup costs of this implementation are fairly high
+(for writing only), it should be quite fast for batch writing of multiple files.</p>
+
+<p>3. I decided to bite the bullet and invest the time required (...guess what I
+did for my Christmas vacation!).  Although I thought that a big project like
+this would be better suited to C++ (faster execution and a broader potential
+user base), after programming this so far in Perl I have grown to really
+appreciate the automatic memory handling and other great features of Perl such
+as hash lookups and incredible flexibility in text manipulations afforded by
+regular expressions.</p>
+
+<a name='Implementation'></a>
+<h3>Current Implementation</h3>
+<p>Currently, ExifTool can write most of the EXIF tags that anyone could reasonably
+want to change (but some tags are protected because they describe physical
+characteristics of the image that you can not change with ExifTool, eg.
+Compression).  Also, all of the GPS, IPTC and XMP information and most of the
+MakerNotes information can be edited.  This gives you great power, but with
+great power, comes great responsibility...</p>
+
+<p>It is possible for you to write nonsense into a file, which could cause other
+image readers to throw up their hands in despair and refuse to read the image.
+For this reason, it is best to always preserve the original copy of your image
+file.  The "exiftool" script does this for you automatically by renaming the
+original file and always working on a copy.</p>
+
+<p>The writing logic for ExifTool is the reverse of the reading logic.  You
+provide human-readable values and ExifTool will perform the conversions for you.
+For instance, you can set "WhiteBalance" to "Daylight" and ExifTool will change
+the value of WhiteBalance in the image wherever the tag is found provided that
+"Daylight" is a valid value for that location.  ExifTool will even do some simple
+matching so that you could even just set it to "day", and ExifTool will search
+through the valid values and will choose the one that contains the string "day".
+If the value is ambiguous, the tag will not be set.  If no tags can be set with
+the specified value, ExifTool returns an error message.</p>
+
+<p>The tag values can also be specified at a numerical level by disabling the
+print conversions that are normally applied.  This can be done on a tag-by-tag
+basis or on a global basis through either the application or the API.</p>
+
+<p>As well as changing tag values wherever they are found in the image, exiftool
+will also create the tag in the preferred group if it didn't exist there before.
+By default, the preferred group is the first of the following where the tag is
+found: 1) EXIF, 2) IPTC, 3) XMP.  Alternatively, the desired group (in family 0
+or 1) can be specified so ExifTool only writes the tag to a single location. For
+example, with the command line interface, this is done using an argument like
+"<code>-EXIF:WhiteBalance=Manual</code>".</p>
+
+<p>If a tag is added to a group that doesn't exist, the new group is created in
+the file, and required mandatory tags may be created.  Conversely, if the last
+non-mandatory tag is deleted from a group, the group is removed from the file.</p>
+
+<a name='Mandatory'></a>
+<h3>Mandatory Tags</h3>
+
+<p>The EXIF and IPTC standards both specify some mandatory tags.  ExifTool will
+automatically create many of these mandatory tags as required when writing new
+information (and remove them again when deleting information if only mandatory
+tags remain).  However, some mandatory tags (particularly in the IPTC
+information) can not be easily added automatically, so it is left up to the user
+to add these tags if required.</p>
+
+<blockquote class='aside'>
+<b>Rant:</b> Let me say that the whole concept of mandatory tags is flawed.
+Instead of mandatory tags, the standard should specify default values to be
+assumed if the tags don't exist.  A robust reader has to do this anyway, so it
+is redundant to require that this information must be written.  In the case
+where there is no simple default value, the reader must be able to deal with the
+missing tag, otherwise it places the burden on the writer to magically pull a
+reasonable value out of thin air.  Of course, you may say that the writer could
+get this information from the user, but conditions like this add an unnecessary
+level complexity to the user interface.
+</blockquote>
+
+<a name='JPEG'></a>
+<h3>The JPEG Segment Size Limitation</h3>
+
+<p>An unfortunate aspect of the JPEG format is that the size of a single segment
+is limited to less than 64 kB.  With the 2-byte size word at the start of each
+segment, this leaves 65533 bytes for data.  The EXIF specification states that
+the data must fit within a single <b>APP1</b> segment (which results in the
+preview image problem discussed below), however <b>APP13</b> Photoshop and
+<b>APP2</b> ICC Profile and FPXR information may span multiple segments.  This
+multi-segment information is handled properly by ExifTool.</p>
+
+<p>JPEG comments may also exceed the size of a single <b>COM</b> segment. If
+necessary, comments are automatically split into separate segments when writing.
+However, when reading they are not joined together because some utilities store
+distinctly different comments in separate segments.  To extract all JPEG
+comments into a single file, and combine any comments that may have been split
+into multiple segments, use "<code>exiftool -a -b -comment src.jpg &gt;
+comment.out</code>".</p>
+
+<a name='Preview'></a>
+<h3>The Preview Image Problem</h3>
+
+<p>Writing the preview image in JPEG files poses many problems of its own.  These
+problems stem from the fact that the JPEG standard is inadequate for storing
+large preview images due to the 64kB limit on segment size as mentioned above.
+(Note that TIFF images don't have this problem since they have a 4GB limit.)
+Some manufacturers get around this by appending the preview after the normal end
+of the JPEG file (JPEG EOI), but this causes complications because it means that
+the preview image pointers in the EXIF information now point outside the EXIF
+segment.  This is truly unfortunate because it greatly complicates things for
+image writing software.  Most other software can't deal with a preview image and
+will simply remove a preview like this when rewriting the file.</p>
+
+<p>However, as of ExifTool version 5, the preview images are handled properly
+when writing EXIF information in JPEG files.  But for reasons of efficiency, the
+EXIF segment is not edited when writing information if no EXIF tags are being
+changed (eg. if only XMP or IPTC information is being edited).  In this case,
+the preview image pointers could be invalidated because the length of the data
+between the EXIF segment (which comes near the start of the file) and the
+preview image (at the end of the file) is likely to change.  ExifTool gets
+around this when reading JPEG images by looking for the preview at the end of
+the file and updating pointers if necessary, but the preview image may not be
+readable by other software (it should be noted though that very few image
+readers even know the preview image exists).  However, the preview pointers in
+such a file can be fixed if necessary by simply using ExifTool to edit any EXIF
+information.</p>
+
+<p><b>2009-05-26</b>: New Samsung cameras recently started embedding preview
+images larger than 64 kB, and of course they created a new technique to do so.
+If they were smart, they would have developed a simple technique that could be
+used by others in the future, but of course they were stupid, and didn't think
+that far ahead. (Such is the normal path of dumb camera manufacturers when it
+comes to metadata.)</p>
+
+<p>The new Samsung models simply split the preview and write it to separate APP2
+segments with no header. If they had written a header (like "PREVIEW\0" for
+example), then the technique could be portable and useful. But they didn't.
+Without a header, the data can not easily be distinguised from other random APP2
+data, so this technique is not generally useful.  Of course, there are
+disadvantages with splitting up a preview into separate JPEG segments, so this
+technique in general is not ideal.</p>
+
+<p><b>2009-06-12</b>:
+<a href="http://www.cipa.jp/english/hyoujunka/kikaku/cipa_e_kikaku_list.html">CIPA</a>
+has recently released a "<b>Multi-Picture Format</b>" standard for storing large
+images in JPEG files.  Again, there is a big problem with this standard:  It
+uses offsets that are relative to the start of the MPF header (in the new MPF
+APP2 segment) to reference images after the JPEG EOI.  These offsets will
+quickly be broken if any data after the MPF segment changes length.  This
+problem could have been avoided if offsets had been specified relative to the
+end of file, but it is too late for this now that the specification is
+public.</p>
+
+<p>The only workable alternative I can see is to enforce the rule that the MPF
+APP2 segment must come after all other APP segments.  (It would have been smart
+if this was specified in the CIPA standard, but sadly this isn't the case.)  If
+this is done, then metadata in the remaining APP segments (EXIF, IPTC, XMP, etc)
+can safely be edited without breaking the MPF offsets.  I suggest that all
+metadata editors employ this strategy, regardless of the segment order specified
+in the standard (which says that the MPF APP2 segment must come immediately
+after the EXIF APP1 segment).</p>
+
+<a name='IFD0'></a>
+<h3>IFD0/ExifIFD Ambiguity</h3>
+
+<p>ExifTool has a preferred location (IFD) where it writes all EXIF tags. 
+However, a number of tags are written to different locations by various digital
+cameras or image editors.  Specifically, the following tags have been observed
+in both IFD0 and ExifIFD: Make, Model, Software, Artist, DateTimeOriginal,
+SensingMethod, CustomRendered, ExposureMode, WhiteBalance, DigitalZoomRatio and
+SceneCaptureType.  To handle this ambiguity, ExifTool will delete the tag if it
+exists in IFD0 when it is written to ExifIFD, and vice versa.</p>
+
+<hr>
+<i>Created Dec. 30, 2004</i><br>
+<i>Last revised Oct. 4, 2010</i>
+<p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
+</body>
+</html>

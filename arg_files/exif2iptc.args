@@ -1,0 +1,28 @@
+#------------------------------------------------------------------------------
+# File:         exif2iptc.args
+#
+# Description:  Tag name translations for converting EXIF to IPTC
+#
+# Usage:        exiftool -tagsFromFile SRCFILE -@ exif2iptc.args DSTFILE
+#
+# Requires:     ExifTool version 6.51 or later
+#
+# Revisions:    2011/09/13 - P. Harvey Created
+#
+# Notes:     1) IPTC requires a timezone but EXIF does not support one, so
+#               the local timezone is assumed when writing the IPTC times
+#
+#            2) These arguments will not delete IPTC tags which are missing
+#               from the EXIF.  The IPTC tags should be deleted beforehand if
+#               required.
+#------------------------------------------------------------------------------
+-IPTC:By-line < EXIF:Artist
+-IPTC:CopyrightNotice < EXIF:Copyright
+-IPTC:Caption-Abstract < EXIF:ImageDescription
+# the inverse IPTC date and time conversions automagically pull the
+# appropriate date or time part out of the EXIF date/time value
+-IPTC:DateCreated < EXIF:DateTimeOriginal
+-IPTC:TimeCreated < EXIF:DateTimeOriginal
+-IPTC:DigitalCreationDate < EXIF:CreateDate
+-IPTC:DigitalCreationTime < EXIF:CreateDate
+# end

@@ -1,0 +1,1606 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Casio Tags</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h2 class=top>Casio Tags</h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x0001 = 1'>0x0001</td>
+<td>RecordingMode</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>1 = Single Shutter
+  <br>2 = Panorama
+  <br>3 = Night Scene
+  <br>4 = Portrait
+  <br>5 = Landscape</td><td>&nbsp;&nbsp;</td>
+  <td>7 = Panorama
+  <br>10 = Night Scene
+  <br>15 = Portrait
+  <br>16 = Landscape</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td title='0x0002 = 2'>0x0002</td>
+<td>Quality</td>
+<td class=c>int16u</td>
+<td><span class=s>1 = Economy
+  <br>2 = Normal
+  <br>3 = Fine</span></td></tr>
+<tr>
+<td title='0x0003 = 3'>0x0003</td>
+<td>FocusMode</td>
+<td class=c>int16u</td>
+<td><span class=s>2 = Macro
+  <br>3 = Auto
+  <br>4 = Manual
+  <br>5 = Infinity
+  <br>7 = Spot AF</span></td></tr>
+<tr class=b>
+<td title='0x0004 = 4'>0x0004</td>
+<td>FlashMode</td>
+<td class=c>int16u</td>
+<td><span class=s>1 = Auto
+  <br>2 = On
+  <br>3 = Off
+  <br>4 = Off
+  <br>5 = Red-eye Reduction
+  <br>1 = Auto
+  <br>2 = On
+  <br>3 = Off
+  <br>4 = Red-eye Reduction</span></td></tr>
+<tr>
+<td title='0x0005 = 5'>0x0005</td>
+<td>FlashIntensity</td>
+<td class=c>int16u</td>
+<td><span class=s>11 = Weak
+  <br>12 = Low
+  <br>13 = Normal
+  <br>14 = High
+  <br>15 = Strong</span></td></tr>
+<tr class=b>
+<td title='0x0006 = 6'>0x0006</td>
+<td>ObjectDistance</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0007 = 7'>0x0007</td>
+<td>WhiteBalance</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>1 = Auto
+  <br>2 = Tungsten
+  <br>3 = Daylight</td><td>&nbsp;&nbsp;</td>
+  <td>4 = Fluorescent
+  <br>5 = Shade
+  <br>129 = Manual</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td title='0x000a = 10'>0x000a</td>
+<td>DigitalZoom</td>
+<td class=c>int32u</td>
+<td><table class=cols><tr>
+  <td>0x10000 = Off
+  <br>0x10001 = 2x
+  <br>0x19999 = 1.6x</td><td>&nbsp;&nbsp;</td>
+  <td>0x20000 = 2x
+  <br>0x33333 = 3.2x
+  <br>0x40000 = 4x</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td title='0x000b = 11'>0x000b</td>
+<td>Sharpness</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>0 = Normal
+  <br>1 = Soft
+  <br>2 = Hard</td><td>&nbsp;&nbsp;</td>
+  <td>16 = Normal
+  <br>17 = +1
+  <br>18 = -1</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td title='0x000c = 12'>0x000c</td>
+<td>Contrast</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>0 = Normal
+  <br>1 = Low
+  <br>2 = High</td><td>&nbsp;&nbsp;</td>
+  <td>16 = Normal
+  <br>17 = +1
+  <br>18 = -1</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td title='0x000d = 13'>0x000d</td>
+<td>Saturation</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>0 = Normal
+  <br>1 = Low
+  <br>2 = High</td><td>&nbsp;&nbsp;</td>
+  <td>16 = Normal
+  <br>17 = +1
+  <br>18 = -1</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td title='0x0014 = 20'>0x0014</td>
+<td>ISO</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0015 = 21'>0x0015</td>
+<td>FirmwareDate</td>
+<td class=c>string[18]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0016 = 22'>0x0016</td>
+<td>Enhancement</td>
+<td class=c>int16u</td>
+<td><span class=s>1 = Off
+  <br>2 = Red
+  <br>3 = Green
+  <br>4 = Blue
+  <br>5 = Flesh Tones</span></td></tr>
+<tr>
+<td title='0x0017 = 23'>0x0017</td>
+<td>ColorFilter</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>1 = Off
+  <br>2 = Black &amp; White
+  <br>3 = Sepia
+  <br>4 = Red
+  <br>5 = Green</td><td>&nbsp;&nbsp;</td>
+  <td>6 = Blue
+  <br>7 = Yellow
+  <br>8 = Pink
+  <br>9 = Purple</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td title='0x0018 = 24'>0x0018</td>
+<td>AFPoint</td>
+<td class=c>int16u</td>
+<td><span class=s><span class=n>(may not be valid for all models)</span></span><table class=cols><tr>
+  <td>1 = Center
+  <br>2 = Upper Left
+  <br>3 = Upper Right
+  <br>4 = Near Left/Right of Center
+  <br>5 = Far Left/Right of Center
+  <br>6 = Far Left/Right of Center/Bottom
+  <br>7 = Top Near-left
+  <br>8 = Near Upper/Left
+  <br>9 = Top Near-right
+  <br>10 = Top Left
+  <br>11 = Top Center
+  <br>12 = Top Right
+  <br>13 = Center Left
+  <br>14 = Center Right
+  <br>15 = Bottom Left
+  <br>16 = Bottom Center
+  <br>17 = Bottom Right</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td title='0x0019 = 25'>0x0019</td>
+<td>FlashIntensity</td>
+<td class=c>int16u</td>
+<td><span class=s>1 = Normal
+  <br>2 = Weak
+  <br>3 = Strong</span></td></tr>
+<tr class=b>
+<td title='0x0e00 = 3584'>0x0e00</td>
+<td>PrintIM</td>
+<td class=c>-</td>
+<td>--&gt; <a href='PrintIM.html'>PrintIM Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Type2'>Casio Type2 Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x0002 = 2'>0x0002</td>
+<td>PreviewImageSize</td>
+<td class=c>int16u[2]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0003 = 3'>0x0003</td>
+<td>PreviewImageLength</td>
+<td class=c title=' * = Protected'>int32u*</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0004 = 4'>0x0004</td>
+<td>PreviewImageStart</td>
+<td class=c title=' * = Protected'>int32u*</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0008 = 8'>0x0008</td>
+<td>QualityMode</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Economy
+  <br>1 = Normal
+  <br>2 = Fine</span></td></tr>
+<tr>
+<td title='0x0009 = 9'>0x0009</td>
+<td>CasioImageSize</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>0 = 640x480
+  <br>4 = 1600x1200
+  <br>5 = 2048x1536
+  <br>20 = 2288x1712</td><td>&nbsp;&nbsp;</td>
+  <td>21 = 2592x1944
+  <br>22 = 2304x1728
+  <br>36 = 3008x2008</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td title='0x000d = 13'>0x000d</td>
+<td>FocusMode</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Normal
+  <br>1 = Macro</span></td></tr>
+<tr>
+<td title='0x0014 = 20'>0x0014</td>
+<td>ISO</td>
+<td class=c>int16u</td>
+<td><span class=s>3 = 50
+  <br>4 = 64
+  <br>6 = 100
+  <br>9 = 200</span></td></tr>
+<tr class=b>
+<td title='0x0019 = 25'>0x0019</td>
+<td>WhiteBalance</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>0 = Auto
+  <br>1 = Daylight
+  <br>2 = Shade</td><td>&nbsp;&nbsp;</td>
+  <td>3 = Tungsten
+  <br>4 = Fluorescent
+  <br>5 = Manual</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td title='0x001d = 29'>0x001d</td>
+<td>FocalLength</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x001f = 31'>0x001f</td>
+<td>Saturation</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Low
+  <br>1 = Normal
+  <br>2 = High</span></td></tr>
+<tr>
+<td title='0x0020 = 32'>0x0020</td>
+<td>Contrast</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Low
+  <br>1 = Normal
+  <br>2 = High</span></td></tr>
+<tr class=b>
+<td title='0x0021 = 33'>0x0021</td>
+<td>Sharpness</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Soft
+  <br>1 = Normal
+  <br>2 = Hard</span></td></tr>
+<tr>
+<td title='0x0e00 = 3584'>0x0e00</td>
+<td>PrintIM</td>
+<td class=c>-</td>
+<td>--&gt; <a href='PrintIM.html'>PrintIM Tags</a></td></tr>
+<tr class=b>
+<td title='0x2000 = 8192'>0x2000</td>
+<td>PreviewImage</td>
+<td class=c>undef</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x2001 = 8193'>0x2001</td>
+<td>FirmwareDate</td>
+<td class=c>string[18]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x2011 = 8209'>0x2011</td>
+<td>WhiteBalanceBias</td>
+<td class=c>int16u[2]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x2012 = 8210'>0x2012</td>
+<td>WhiteBalance</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>0 = Manual
+  <br>1 = Daylight
+  <br>2 = Cloudy
+  <br>3 = Shade
+  <br>4 = Flash?</td><td>&nbsp;&nbsp;</td>
+  <td>6 = Fluorescent
+  <br>9 = Tungsten?
+  <br>10 = Tungsten
+  <br>12 = Flash</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td title='0x2021 = 8225'>0x2021</td>
+<td>AFPointPosition</td>
+<td class=c title=' ~ = Writable only with -n'>int16u[4]~</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x2022 = 8226'>0x2022</td>
+<td>ObjectDistance</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x2034 = 8244'>0x2034</td>
+<td>FlashDistance</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x2076 = 8310'>0x2076</td>
+<td>SpecialEffectMode</td>
+<td class=c>int8u[3]</td>
+<td><span class=s>&#39;0 0 0&#39; = Off
+  <br>&#39;1 0 0&#39; = Makeup
+  <br>&#39;2 0 0&#39; = Mist Removal
+  <br>&#39;3 0 0&#39; = Vivid Landscape</span></td></tr>
+<tr class=b>
+<td title='0x2089 = 8329'>0x2089</td>
+<td>FaceInfo1
+  <br>FaceInfo2
+  <br>FaceInfoUnknown?</td>
+<td class=c>-<br>-<br>Y</td>
+<td>--&gt; <a href='Casio.html#FaceInfo1'>Casio FaceInfo1 Tags</a>
+  <br>--&gt; <a href='Casio.html#FaceInfo2'>Casio FaceInfo2 Tags</a></td></tr>
+<tr>
+<td title='0x211c = 8476'>0x211c</td>
+<td>FacesDetected</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x3000 = 12288'>0x3000</td>
+<td>RecordMode</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>2 = Program AE
+  <br>3 = Shutter Priority
+  <br>4 = Aperture Priority
+  <br>5 = Manual
+  <br>6 = Best Shot
+  <br>17 = Movie
+  <br>19 = Movie (19)
+  <br>20 = YouTube Movie
+  <br>&#39;2 0&#39; = Program AE
+  <br>&#39;3 0&#39; = Shutter Priority
+  <br>&#39;4 0&#39; = Aperture Priority
+  <br>&#39;5 0&#39; = Manual
+  <br>&#39;6 0&#39; = Best Shot</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td title='0x3001 = 12289'>0x3001</td>
+<td>ReleaseMode</td>
+<td class=c>int16u</td>
+<td><span class=s>1 = Normal
+  <br>3 = AE Bracketing
+  <br>11 = WB Bracketing
+  <br>13 = Contrast Bracketing
+  <br>19 = High Speed Burst</span></td></tr>
+<tr class=b>
+<td title='0x3002 = 12290'>0x3002</td>
+<td>Quality</td>
+<td class=c>int16u</td>
+<td><span class=s>1 = Economy
+  <br>2 = Normal
+  <br>3 = Fine</span></td></tr>
+<tr>
+<td title='0x3003 = 12291'>0x3003</td>
+<td>FocusMode</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>0 = Manual
+  <br>1 = Focus Lock
+  <br>2 = Macro
+  <br>3 = Single-Area Auto Focus
+  <br>5 = Infinity
+  <br>6 = Multi-Area Auto Focus
+  <br>8 = Super Macro</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td title='0x3006 = 12294'>0x3006</td>
+<td>HometownCity</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x3007 = 12295'>0x3007</td>
+<td>BestShotMode</td>
+<td class=c>int16u</td>
+<td><span class=s><span class=n>(EX-FC100)</span></span><table class=cols><tr>
+  <td>0 = Off
+  <br>1 = Auto
+  <br>2 = Portrait
+  <br>3 = Scenery
+  <br>4 = Portrait with Scenery
+  <br>5 = Children
+  <br>6 = Sports
+  <br>7 = Pet
+  <br>8 = Flower
+  <br>9 = Natural Green
+  <br>10 = Autumn Leaves</td><td>&nbsp;&nbsp;</td>
+  <td>11 = Sundown
+  <br>12 = High Speed Night Scene
+  <br>13 = Night Scene Portrait
+  <br>14 = Fireworks
+  <br>15 = High Speed Anti Shake
+  <br>16 = Multi-motion Image
+  <br>17 = High Speed Best Selection
+  <br>18 = Move Out CS
+  <br>19 = Move In CS
+  <br>20 = Pre-record Movie
+  <br>21 = For YouTube</td><td>&nbsp;&nbsp;</td></tr></table>
+<span class=s><span class=n>(EX-FC150)</span></span><table class=cols><tr>
+  <td>0 = Off
+  <br>1 = Auto
+  <br>2 = Expression CS
+  <br>3 = Baby CS
+  <br>4 = Child CS
+  <br>5 = Pet CS
+  <br>6 = Sports CS
+  <br>7 = Child High Speed Movie
+  <br>8 = Pet High Speed Movie
+  <br>9 = Sports High Speed Movie
+  <br>10 = Lag Correction
+  <br>11 = High Speed Lighting
+  <br>12 = High Speed Night Scene
+  <br>13 = High Speed Night Scene and Portrait
+  <br>14 = High Speed Anti Shake</td><td>&nbsp;&nbsp;</td>
+  <td>15 = High Speed Best Selection
+  <br>16 = Portrait
+  <br>17 = Scenery
+  <br>18 = Portrait With Scenery
+  <br>19 = Flower
+  <br>20 = Natural Green
+  <br>21 = Autumn Leaves
+  <br>22 = Sundown
+  <br>23 = Fireworks
+  <br>24 = Multi-motion Image
+  <br>25 = Move Out CS
+  <br>26 = Move In CS
+  <br>27 = Pre-record Movie
+  <br>28 = For YouTube</td><td>&nbsp;&nbsp;</td></tr></table>
+<span class=s><span class=n>(EX-FC200S)</span></span><table class=cols><tr>
+  <td>0 = Off
+  <br>1 = Slow Motion Swing (behind)
+  <br>2 = Slow Motion Swing (front)
+  <br>3 = Self Slow Motion (behind)
+  <br>4 = Self Slow Motion (front)
+  <br>5 = Swing Burst
+  <br>6 = HDR
+  <br>7 = HDR Art
+  <br>8 = High Speed Night Scene
+  <br>9 = High Speed Night Scene and Portrait
+  <br>10 = High Speed Anti Shake
+  <br>11 = Multi SR Zoom
+  <br>12 = Blurred Background
+  <br>13 = Wide Shot
+  <br>14 = Slide Panorama
+  <br>15 = High Speed Best Selection
+  <br>16 = Lag Correction
+  <br>17 = High Speed CS
+  <br>18 = Child CS
+  <br>19 = Pet CS
+  <br>20 = Sports CS
+  <br>21 = Child High Speed Movie
+  <br>22 = Pet High Speed Movie</td><td>&nbsp;&nbsp;</td>
+  <td>23 = Sports High Speed Movie
+  <br>24 = Portrait
+  <br>25 = Scenery
+  <br>26 = Portrait with Scenery
+  <br>27 = Children
+  <br>28 = Sports
+  <br>29 = Candlelight Portrait
+  <br>30 = Party
+  <br>31 = Pet
+  <br>32 = Flower
+  <br>33 = Natural Green
+  <br>34 = Autumn Leaves
+  <br>35 = Soft Flowing Water
+  <br>36 = Splashing Water
+  <br>37 = Sundown
+  <br>38 = Fireworks
+  <br>39 = Food
+  <br>40 = Text
+  <br>41 = Collection
+  <br>42 = Auction
+  <br>43 = Pre-record Movie
+  <br>44 = For YouTube</td><td>&nbsp;&nbsp;</td></tr></table>
+<span class=s><span class=n>(EX-FH100)</span></span><table class=cols><tr>
+  <td>0 = Off
+  <br>1 = Expression CS
+  <br>2 = Baby CS
+  <br>3 = Child CS
+  <br>4 = Pet CS
+  <br>5 = Sports CS
+  <br>6 = Child High Speed Movie
+  <br>7 = Pet High Speed Movie
+  <br>8 = Sports High Speed Movie
+  <br>9 = Lag Correction
+  <br>10 = High Speed Lighting
+  <br>11 = High Speed Night Scene
+  <br>12 = High Speed Night Scene and Portrait
+  <br>13 = High Speed Anti Shake</td><td>&nbsp;&nbsp;</td>
+  <td>14 = High Speed Best Selection
+  <br>15 = Portrait
+  <br>16 = Scenery
+  <br>17 = Portrait With Scenery
+  <br>18 = Flower
+  <br>19 = Natural Green
+  <br>20 = Autumn Leaves
+  <br>21 = Sundown
+  <br>22 = Fireworks
+  <br>23 = Multi-motion Image
+  <br>24 = Move Out CS
+  <br>25 = Move In CS
+  <br>26 = Pre-record Movie
+  <br>27 = For YouTube</td><td>&nbsp;&nbsp;</td></tr></table>
+<span class=s><span class=n>(EX-G1)</span></span><table class=cols><tr>
+  <td>0 = Off
+  <br>1 = Auto
+  <br>2 = Auto Best Shot
+  <br>3 = Dynamic Photo
+  <br>4 = Interval Snapshot
+  <br>5 = Interval Movie
+  <br>6 = Portrait
+  <br>7 = Scenery
+  <br>8 = Portrait with Scenery</td><td>&nbsp;&nbsp;</td>
+  <td>9 = Underwater
+  <br>10 = Beach
+  <br>11 = Snow
+  <br>12 = Children
+  <br>13 = Sports
+  <br>14 = Pet
+  <br>15 = Flower
+  <br>16 = Sundown
+  <br>17 = Night Scene</td><td>&nbsp;&nbsp;</td>
+  <td>18 = Night Scene Portrait
+  <br>19 = Fireworks
+  <br>20 = Food
+  <br>21 = For eBay
+  <br>22 = Multi-motion Image
+  <br>23 = Pre-record Movie
+  <br>24 = For YouTube
+  <br>25 = Voice Recording</td><td>&nbsp;&nbsp;</td></tr></table>
+<span class=s><span class=n>(EX-S10)</span></span><table class=cols><tr>
+  <td>0 = Off
+  <br>1 = Auto
+  <br>2 = Portrait
+  <br>3 = Scenery
+  <br>4 = Portrait with Scenery
+  <br>5 = Self-portrait (1 person)
+  <br>6 = Self-portrait (2 people)
+  <br>7 = Children
+  <br>8 = Sports
+  <br>9 = Candlelight Portrait
+  <br>10 = Party
+  <br>11 = Pet
+  <br>12 = Flower</td><td>&nbsp;&nbsp;</td>
+  <td>13 = Natural Green
+  <br>14 = Autumn Leaves
+  <br>15 = Soft Flowing Water
+  <br>16 = Splashing Water
+  <br>17 = Sundown
+  <br>18 = Night Scene
+  <br>19 = Night Scene Portrait
+  <br>20 = Fireworks
+  <br>21 = Food
+  <br>22 = Text
+  <br>23 = Collection
+  <br>24 = Auction
+  <br>25 = Backlight</td><td>&nbsp;&nbsp;</td>
+  <td>26 = Anti Shake
+  <br>27 = High Sensitivity
+  <br>28 = Underwater
+  <br>29 = Monochrome
+  <br>30 = Retro
+  <br>31 = Business Cards
+  <br>32 = White Board
+  <br>33 = Silent
+  <br>34 = Pre-record Movie
+  <br>35 = For YouTube
+  <br>36 = Voice Recording</td><td>&nbsp;&nbsp;</td></tr></table>
+<span class=s><span class=n>(EX-S880)</span></span><table class=cols><tr>
+  <td>0 = Off
+  <br>1 = Auto
+  <br>2 = Portrait
+  <br>3 = Scenery
+  <br>4 = Portrait with Scenery
+  <br>5 = Children
+  <br>6 = Sports
+  <br>7 = Candlelight Portrait
+  <br>8 = Party
+  <br>9 = Pet
+  <br>10 = Flower
+  <br>11 = Natural Green
+  <br>12 = Autumn Leaves
+  <br>13 = Soft Flowing Water</td><td>&nbsp;&nbsp;</td>
+  <td>14 = Splashing Water
+  <br>15 = Sundown
+  <br>16 = Night Scene
+  <br>17 = Night Scene Portrait
+  <br>18 = Fireworks
+  <br>19 = Food
+  <br>20 = Text
+  <br>21 = Collection
+  <br>22 = Auction
+  <br>23 = Backlight
+  <br>24 = Anti Shake
+  <br>25 = High Sensitivity
+  <br>26 = Monochrome
+  <br>27 = Retro</td><td>&nbsp;&nbsp;</td>
+  <td>28 = Twilight
+  <br>29 = Layout (2 images)
+  <br>30 = Layout (3 images)
+  <br>31 = Auto Framing
+  <br>32 = Old Photo
+  <br>33 = Business Cards
+  <br>34 = White Board
+  <br>35 = Silent
+  <br>36 = Short Movie
+  <br>37 = Past Movie
+  <br>38 = For YouTube
+  <br>39 = Voice Recording</td><td>&nbsp;&nbsp;</td></tr></table>
+<span class=s><span class=n>(EX-Z16)</span></span><table class=cols><tr>
+  <td>0 = Off
+  <br>1 = Auto
+  <br>2 = Portrait
+  <br>3 = Scenery
+  <br>4 = Portrait with Scenery
+  <br>5 = Children
+  <br>6 = Sports
+  <br>7 = Candlelight Portrait</td><td>&nbsp;&nbsp;</td>
+  <td>8 = Party
+  <br>9 = Pet
+  <br>10 = Flower
+  <br>11 = Soft Flowing Water
+  <br>12 = Sundown
+  <br>13 = Night Scene
+  <br>14 = Night Scene Portrait
+  <br>15 = Fireworks</td><td>&nbsp;&nbsp;</td>
+  <td>16 = Food
+  <br>17 = Text
+  <br>18 = For eBay
+  <br>19 = Backlight
+  <br>20 = Anti Shake
+  <br>21 = High Sensitivity
+  <br>22 = For YouTube
+  <br>23 = Voice Recording</td><td>&nbsp;&nbsp;</td></tr></table>
+<span class=s><span class=n>(EX-Z9)</span></span><table class=cols><tr>
+  <td>0 = Off
+  <br>1 = Auto
+  <br>2 = Movie
+  <br>3 = Portrait
+  <br>4 = Scenery
+  <br>5 = Children
+  <br>6 = Sports
+  <br>7 = Candlelight Portrait</td><td>&nbsp;&nbsp;</td>
+  <td>8 = Party
+  <br>9 = Pet
+  <br>10 = Flower
+  <br>11 = Soft Flowing Water
+  <br>12 = Sundown
+  <br>13 = Night Scene
+  <br>14 = Night Scene Portrait
+  <br>15 = Fireworks</td><td>&nbsp;&nbsp;</td>
+  <td>16 = Food
+  <br>17 = Text
+  <br>18 = Auction
+  <br>19 = Backlight
+  <br>20 = Anti Shake
+  <br>21 = High Sensitivity
+  <br>22 = For YouTube
+  <br>23 = Voice Recording</td><td>&nbsp;&nbsp;</td></tr></table>
+<span class=s><span class=n>(EX-Z80)</span></span><table class=cols><tr>
+  <td>0 = Off
+  <br>1 = Auto
+  <br>2 = Portrait
+  <br>3 = Scenery
+  <br>4 = Portrait with Scenery
+  <br>5 = Pet
+  <br>6 = Self-portrait (1 person)
+  <br>7 = Self-portrait (2 people)
+  <br>8 = Flower
+  <br>9 = Food
+  <br>10 = Fashion Accessories</td><td>&nbsp;&nbsp;</td>
+  <td>11 = Magazine
+  <br>12 = Monochrome
+  <br>13 = Retro
+  <br>14 = Cross Filter
+  <br>15 = Pastel
+  <br>16 = Night Scene
+  <br>17 = Night Scene Portrait
+  <br>18 = Party
+  <br>19 = Sports
+  <br>20 = Children
+  <br>21 = Sundown</td><td>&nbsp;&nbsp;</td>
+  <td>22 = Fireworks
+  <br>23 = Underwater
+  <br>24 = Backlight
+  <br>25 = High Sensitivity
+  <br>26 = Auction
+  <br>27 = White Board
+  <br>28 = Pre-record Movie
+  <br>29 = For YouTube
+  <br>30 = Voice Recording</td><td>&nbsp;&nbsp;</td></tr></table>
+<span class=s><span class=n>(EX-Z100 and EX-Z200)</span></span><table class=cols><tr>
+  <td>0 = Off
+  <br>1 = Auto
+  <br>2 = Auto Best Shot
+  <br>3 = Portrait
+  <br>4 = Scenery
+  <br>5 = Portrait with Scenery
+  <br>6 = Self-portrait (1 person)
+  <br>7 = Self-portrait (2 people)
+  <br>8 = Children
+  <br>9 = Sports
+  <br>10 = Candlelight Portrait
+  <br>11 = Party
+  <br>12 = Pet
+  <br>13 = Flower</td><td>&nbsp;&nbsp;</td>
+  <td>14 = Natural Green
+  <br>15 = Autumn Leaves
+  <br>16 = Soft Flowing Water
+  <br>17 = Splashing Water
+  <br>18 = Sundown
+  <br>19 = Night Scene
+  <br>20 = Night Scene Portrait
+  <br>21 = Fireworks
+  <br>22 = Food
+  <br>23 = Text
+  <br>24 = Collection
+  <br>25 = Auction
+  <br>26 = Backlight
+  <br>27 = Anti Shake</td><td>&nbsp;&nbsp;</td>
+  <td>28 = High Sensitivity
+  <br>29 = Underwater
+  <br>30 = Monochrome
+  <br>31 = Retro
+  <br>32 = Twilight
+  <br>33 = ID Photo
+  <br>34 = Business Cards
+  <br>35 = White Board
+  <br>36 = Silent
+  <br>37 = Pre-record Movie
+  <br>38 = For YouTube
+  <br>39 = Voice Recording</td><td>&nbsp;&nbsp;</td></tr></table>
+<span class=s><span class=n>(EX-Z750 JPEG images)</span></span><table class=cols><tr>
+  <td>0 = Off
+  <br>1 = Portrait
+  <br>2 = Scenery
+  <br>3 = Portrait with Scenery
+  <br>4 = Children
+  <br>5 = Sports
+  <br>6 = Candlelight Portrait
+  <br>7 = Party
+  <br>8 = Pet
+  <br>9 = Flower
+  <br>10 = Natural Green</td><td>&nbsp;&nbsp;</td>
+  <td>11 = Soft Flowing Water
+  <br>12 = Splashing Water
+  <br>13 = Sundown
+  <br>14 = Night Scene
+  <br>15 = Night Scene Portrait
+  <br>16 = Fireworks
+  <br>17 = Food
+  <br>18 = Text
+  <br>19 = Collection
+  <br>20 = Backlight
+  <br>21 = Anti Shake</td><td>&nbsp;&nbsp;</td>
+  <td>22 = Pastel
+  <br>23 = Illustration
+  <br>24 = Cross Filter
+  <br>25 = Monochrome
+  <br>26 = Retro
+  <br>27 = Twilight
+  <br>28 = Old Photo
+  <br>29 = ID Photo
+  <br>30 = Business Cards
+  <br>31 = White Board</td><td>&nbsp;&nbsp;</td></tr></table>
+<span class=s><span class=n>(EX-Z750 movies)</span></span><table class=cols><tr>
+  <td>0 = Off
+  <br>1 = Portrait
+  <br>2 = Scenery</td><td>&nbsp;&nbsp;</td>
+  <td>3 = Night Scene
+  <br>4 = Fireworks
+  <br>5 = Backlight</td><td>&nbsp;&nbsp;</td>
+  <td>6 = Silent</td><td>&nbsp;&nbsp;</td></tr></table>
+<span class=s><span class=n>(EX-Z850 JPEG images)</span></span><table class=cols><tr>
+  <td>0 = Off
+  <br>1 = Portrait
+  <br>2 = Scenery
+  <br>3 = Portrait with Scenery
+  <br>4 = Children
+  <br>5 = Sports
+  <br>6 = Candlelight Portrait
+  <br>7 = Party
+  <br>8 = Pet
+  <br>9 = Flower
+  <br>10 = Natural Green
+  <br>11 = Autumn Leaves</td><td>&nbsp;&nbsp;</td>
+  <td>12 = Soft Flowing Water
+  <br>13 = Splashing Water
+  <br>14 = Sundown
+  <br>15 = Night Scene
+  <br>16 = Night Scene Portrait
+  <br>17 = Fireworks
+  <br>18 = Food
+  <br>19 = Text
+  <br>20 = Collection
+  <br>21 = For eBay
+  <br>22 = Backlight
+  <br>23 = Anti Shake</td><td>&nbsp;&nbsp;</td>
+  <td>24 = High Sensitivity
+  <br>25 = Pastel
+  <br>26 = Illustration
+  <br>27 = Cross Filter
+  <br>28 = Monochrome
+  <br>29 = Retro
+  <br>30 = Twilight
+  <br>31 = ID Photo
+  <br>32 = Old Photo
+  <br>33 = Business Cards
+  <br>34 = White Board</td><td>&nbsp;&nbsp;</td></tr></table>
+<span class=s><span class=n>(EX-Z850 movies)</span></span><table class=cols><tr>
+  <td>0 = Off
+  <br>1 = Portrait
+  <br>2 = Scenery
+  <br>3 = Night Scene</td><td>&nbsp;&nbsp;</td>
+  <td>4 = Fireworks
+  <br>5 = Backlight
+  <br>6 = High Sensitivity
+  <br>7 = Silent</td><td>&nbsp;&nbsp;</td>
+  <td>8 = Short Movie
+  <br>9 = Past Movie</td><td>&nbsp;&nbsp;</td></tr></table>
+<span class=s><span class=n>(EX-Z1050)</span></span><table class=cols><tr>
+  <td>0 = Off
+  <br>1 = Auto
+  <br>2 = Movie
+  <br>3 = Portrait
+  <br>4 = Scenery
+  <br>5 = Portrait with Scenery
+  <br>6 = Children
+  <br>7 = Sports
+  <br>8 = Candlelight Portrait
+  <br>9 = Party
+  <br>10 = Pet
+  <br>11 = Flower
+  <br>12 = Natural Green</td><td>&nbsp;&nbsp;</td>
+  <td>13 = Autumn Leaves
+  <br>14 = Soft Flowing Water
+  <br>15 = Splashing Water
+  <br>16 = Sundown
+  <br>17 = Night Scene
+  <br>18 = Night Scene Portrait
+  <br>19 = Fireworks
+  <br>20 = Food
+  <br>21 = Text
+  <br>22 = Collection
+  <br>23 = For eBay
+  <br>24 = Backlight
+  <br>25 = Anti Shake</td><td>&nbsp;&nbsp;</td>
+  <td>26 = High Sensitivity
+  <br>27 = Underwater
+  <br>28 = Monochrome
+  <br>29 = Retro
+  <br>30 = Twilight
+  <br>31 = Layout (2 images)
+  <br>32 = Layout (3 images)
+  <br>33 = Auto Framing
+  <br>34 = ID Photo
+  <br>35 = Old Photo
+  <br>36 = Business Cards
+  <br>37 = White Board
+  <br>38 = Voice Recording</td><td>&nbsp;&nbsp;</td></tr></table>
+<span class=s><span class=n>(EX-Z1080)</span></span><table class=cols><tr>
+  <td>0 = Off
+  <br>1 = Auto
+  <br>2 = Movie
+  <br>3 = Portrait
+  <br>4 = Scenery
+  <br>5 = Portrait with Scenery
+  <br>6 = Children
+  <br>7 = Sports
+  <br>8 = Candlelight Portrait
+  <br>9 = Party
+  <br>10 = Pet
+  <br>11 = Flower
+  <br>12 = Natural Green
+  <br>13 = Autumn Leaves</td><td>&nbsp;&nbsp;</td>
+  <td>14 = Soft Flowing Water
+  <br>15 = Splashing Water
+  <br>16 = Sundown
+  <br>17 = Night Scene
+  <br>18 = Night Scene Portrait
+  <br>19 = Fireworks
+  <br>20 = Food
+  <br>21 = Text
+  <br>22 = Collection
+  <br>23 = For eBay
+  <br>24 = Backlight
+  <br>25 = Anti Shake
+  <br>26 = High Sensitivity
+  <br>27 = Underwater</td><td>&nbsp;&nbsp;</td>
+  <td>28 = Monochrome
+  <br>29 = Retro
+  <br>30 = Twilight
+  <br>31 = Layout (2 images)
+  <br>32 = Layout (3 images)
+  <br>33 = Auto Framing
+  <br>34 = ID Photo
+  <br>35 = Old Photo
+  <br>36 = Business Cards
+  <br>37 = White Board
+  <br>38 = Short Movie
+  <br>39 = Past Movie
+  <br>40 = For YouTube
+  <br>41 = Voice Recording</td><td>&nbsp;&nbsp;</td></tr></table>
+<span class=s><span class=n>(EX-Z1200 JPEG images)</span></span><table class=cols><tr>
+  <td>0 = Off
+  <br>1 = Portrait
+  <br>2 = Scenery
+  <br>3 = Portrait with Scenery
+  <br>4 = Children
+  <br>5 = Sports
+  <br>6 = Candlelight Portrait
+  <br>7 = Party
+  <br>8 = Pet
+  <br>9 = Flower
+  <br>10 = Natural Green
+  <br>11 = Autumn Leaves</td><td>&nbsp;&nbsp;</td>
+  <td>12 = Soft Flowing Water
+  <br>13 = Splashing Water
+  <br>14 = Sundown
+  <br>15 = Night Scene
+  <br>16 = Night Scene Portrait
+  <br>17 = Fireworks
+  <br>18 = Food
+  <br>19 = Text
+  <br>20 = Collection
+  <br>21 = Auction
+  <br>22 = Backlight
+  <br>23 = High Sensitivity</td><td>&nbsp;&nbsp;</td>
+  <td>24 = Underwater
+  <br>25 = Monochrome
+  <br>26 = Retro
+  <br>27 = Twilight
+  <br>28 = Layout (2 images)
+  <br>29 = Layout (3 images)
+  <br>30 = Auto Framing
+  <br>31 = ID Photo
+  <br>32 = Old Photo
+  <br>33 = Business Cards
+  <br>34 = White Board</td><td>&nbsp;&nbsp;</td></tr></table>
+<span class=s><span class=n>(EX-Z1200 movies)</span></span><table class=cols><tr>
+  <td>0 = Off
+  <br>1 = Portrait
+  <br>2 = Scenery
+  <br>3 = Night Scene</td><td>&nbsp;&nbsp;</td>
+  <td>4 = Fireworks
+  <br>5 = Backlight
+  <br>6 = High Sensitivity
+  <br>7 = Silent</td><td>&nbsp;&nbsp;</td>
+  <td>8 = Short Movie
+  <br>9 = Past Movie</td><td>&nbsp;&nbsp;</td></tr></table>
+<span class=s><span class=n>(EX-Z2000)</span></span><table class=cols><tr>
+  <td>0 = Off
+  <br>1 = Auto
+  <br>2 = Premium Auto
+  <br>3 = Dynamic Photo
+  <br>4 = Portrait
+  <br>5 = Scenery
+  <br>6 = Portrait with Scenery
+  <br>7 = Children
+  <br>8 = Sports
+  <br>9 = Candlelight Portrait
+  <br>10 = Party
+  <br>11 = Pet
+  <br>12 = Flower
+  <br>13 = Natural Green</td><td>&nbsp;&nbsp;</td>
+  <td>14 = Autumn Leaves
+  <br>15 = Soft Flowing Water
+  <br>16 = Splashing Water
+  <br>17 = Sundown
+  <br>18 = Night Scene
+  <br>19 = Night Scene Portrait
+  <br>20 = Fireworks
+  <br>21 = Food
+  <br>22 = Text
+  <br>23 = Collection
+  <br>24 = For eBay
+  <br>25 = Backlight
+  <br>26 = High Sensitivity
+  <br>27 = Oil Painting</td><td>&nbsp;&nbsp;</td>
+  <td>28 = Crayon
+  <br>29 = Water Color
+  <br>30 = Monochrome
+  <br>31 = Retro
+  <br>32 = Twilight
+  <br>33 = Multi-motion Image
+  <br>34 = ID Photo
+  <br>35 = Business Cards
+  <br>36 = White Board
+  <br>37 = Silent
+  <br>38 = Pre-record Movie
+  <br>39 = For YouTube
+  <br>40 = Voice Recording</td><td>&nbsp;&nbsp;</td></tr></table>
+<span class=s><span class=n>(EX-Z2300)</span></span><table class=cols><tr>
+  <td>0 = Off
+  <br>1 = Auto
+  <br>2 = Premium Auto
+  <br>3 = Dynamic Photo
+  <br>4 = Portrait
+  <br>5 = Scenery
+  <br>6 = Portrait with Scenery
+  <br>7 = Children
+  <br>8 = Sports
+  <br>9 = Candlelight Portrait
+  <br>10 = Party
+  <br>11 = Pet
+  <br>12 = Flower
+  <br>13 = Natural Green</td><td>&nbsp;&nbsp;</td>
+  <td>14 = Autumn Leaves
+  <br>15 = Soft Flowing Water
+  <br>16 = Splashing Water
+  <br>17 = Sundown
+  <br>18 = Night Scene
+  <br>19 = Night Scene Portrait
+  <br>20 = Fireworks
+  <br>21 = Food
+  <br>22 = Text
+  <br>23 = Collection
+  <br>24 = Auction
+  <br>25 = Backlight
+  <br>26 = High Sensitivity
+  <br>27 = Oil Painting</td><td>&nbsp;&nbsp;</td>
+  <td>28 = Crayon
+  <br>29 = Water Color
+  <br>30 = Monochrome
+  <br>31 = Retro
+  <br>32 = Twilight
+  <br>33 = Multi-motion Image
+  <br>34 = ID Photo
+  <br>35 = Business Cards
+  <br>36 = White Board
+  <br>37 = Silent
+  <br>38 = Pre-record Movie
+  <br>39 = For YouTube
+  <br>40 = Voice Recording</td><td>&nbsp;&nbsp;</td></tr></table>
+<span class=s><span class=n>(EX-Z3000)</span></span><table class=cols><tr>
+  <td>0 = Off
+  <br>1 = Portrait
+  <br>2 = Scenery</td><td>&nbsp;&nbsp;</td>
+  <td>3 = Portrait With Scenery
+  <br>4 = Children
+  <br>5 = Sports</td><td>&nbsp;&nbsp;</td>
+  <td>6 = Night Scene</td><td>&nbsp;&nbsp;</td></tr></table>
+<span class=s><span class=n>(EX-ZR100)</span></span><table class=cols><tr>
+  <td>0 = Off
+  <br>1 = Child CS
+  <br>2 = Pet CS
+  <br>3 = Sports CS
+  <br>4 = Child High Speed Movie
+  <br>5 = Pet High Speed Movie
+  <br>6 = Sports High Speed Movie
+  <br>7 = Multi SR Zoom
+  <br>8 = Lag Correction
+  <br>9 = High Speed Night Scene
+  <br>10 = High Speed Night Scene and Portrait
+  <br>11 = High Speed Anti Shake
+  <br>12 = Portrait
+  <br>13 = Scenery
+  <br>14 = Portrait with Scenery
+  <br>15 = Children
+  <br>16 = Sports</td><td>&nbsp;&nbsp;</td>
+  <td>17 = Candlelight Portrait
+  <br>18 = Party
+  <br>19 = Pet
+  <br>20 = Flower
+  <br>21 = Natural Green
+  <br>22 = Autumn Leaves
+  <br>23 = Soft Flowing Water
+  <br>24 = Splashing Water
+  <br>25 = Sundown
+  <br>26 = Fireworks
+  <br>27 = Food
+  <br>28 = Text
+  <br>29 = Collection
+  <br>30 = For eBay
+  <br>31 = Pre-record Movie
+  <br>32 = For YouTube</td><td>&nbsp;&nbsp;</td></tr></table>
+<span class=s><span class=n>(EX-ZR200)</span></span><table class=cols><tr>
+  <td>0 = Off
+  <br>1 = High Speed Night Scene
+  <br>2 = High Speed Night Scene and Portrait
+  <br>3 = High Speed Anti Shake
+  <br>4 = Blurred Background
+  <br>5 = Wide Shot
+  <br>6 = High Speed Best Selection
+  <br>7 = Lag Correction
+  <br>8 = Child CS
+  <br>9 = Pet CS
+  <br>10 = Sports CS
+  <br>11 = Child High Speed Movie
+  <br>12 = Pet High Speed Movie
+  <br>13 = Sports High Speed Movie
+  <br>14 = Portrait
+  <br>15 = Scenery
+  <br>16 = Portrait with Scenery
+  <br>17 = Children</td><td>&nbsp;&nbsp;</td>
+  <td>18 = Sports
+  <br>19 = Candlelight Portrait
+  <br>20 = Party
+  <br>21 = Pet
+  <br>22 = Flower
+  <br>23 = Natural Green
+  <br>24 = Autumn Leaves
+  <br>25 = Soft Flowing Water
+  <br>26 = Splashing Water
+  <br>27 = Sundown
+  <br>28 = Fireworks
+  <br>29 = Food
+  <br>30 = Text
+  <br>31 = Collection
+  <br>32 = Auction
+  <br>33 = Pre-record Movie
+  <br>34 = For YouTube</td><td>&nbsp;&nbsp;</td></tr></table>
+<span class=s><span class=n>(QV-4000)</span></span><table class=cols><tr>
+  <td>0 = Off
+  <br>1 = People</td><td>&nbsp;&nbsp;</td>
+  <td>2 = Scenery
+  <br>3 = Flower</td><td>&nbsp;&nbsp;</td>
+  <td>4 = Night Scene
+  <br>5 = Soft Focus</td><td>&nbsp;&nbsp;</td></tr></table>
+<span class=s><span class=n>(EX-ZR300)</span></span><table class=cols><tr>
+  <td>1 = High Speed Night Shot
+  <br>2 = Blurred Background
+  <br>3 = Toy Camera
+  <br>4 = Soft Focus
+  <br>5 = Light Tone
+  <br>6 = Pop
+  <br>7 = Sepia
+  <br>8 = Monochrome
+  <br>9 = Miniature
+  <br>10 = Wide Shot
+  <br>11 = High Speed Best Selection
+  <br>12 = Lag Correction
+  <br>13 = High Speed Night Scene
+  <br>14 = High Speed Night Scene and Portrait
+  <br>15 = High Speed Anti Shake
+  <br>16 = Portrait
+  <br>17 = Scenery
+  <br>18 = Portrait with Scenery</td><td>&nbsp;&nbsp;</td>
+  <td>19 = Children
+  <br>20 = Sports
+  <br>21 = Candlelight Portrait
+  <br>22 = Party
+  <br>23 = Pet
+  <br>24 = Flower
+  <br>25 = Natural Green
+  <br>26 = Autumn Leaves
+  <br>27 = Soft Flowing Water
+  <br>28 = Splashing Water
+  <br>29 = Sundown
+  <br>30 = Fireworks
+  <br>31 = Food
+  <br>32 = Text
+  <br>33 = Collection
+  <br>34 = Auction
+  <br>35 = Prerecord (Movie)
+  <br>36 = For YouTube</td><td>&nbsp;&nbsp;</td></tr></table>
+<span class=s><span class=n>(other models not yet decoded)</span></span></td></tr>
+<tr class=b>
+<td title='0x3008 = 12296'>0x3008</td>
+<td>AutoISO</td>
+<td class=c>int16u</td>
+<td><span class=s>1 = On
+  <br>2 = Off
+  <br>7 = On (high sensitivity)
+  <br>8 = On (anti-shake)
+  <br>10 = High Speed</span></td></tr>
+<tr>
+<td title='0x3009 = 12297'>0x3009</td>
+<td>AFMode</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>0 = Off
+  <br>1 = Spot
+  <br>2 = Multi</td><td>&nbsp;&nbsp;</td>
+  <td>3 = Face Detection
+  <br>4 = Tracking
+  <br>5 = Intelligent</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td title='0x3011 = 12305'>0x3011</td>
+<td>Sharpness</td>
+<td class=c>undef[2]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x3012 = 12306'>0x3012</td>
+<td>Contrast</td>
+<td class=c>undef[2]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x3013 = 12307'>0x3013</td>
+<td>Saturation</td>
+<td class=c>undef[2]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x3014 = 12308'>0x3014</td>
+<td>ISO</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x3015 = 12309'>0x3015</td>
+<td>ColorMode</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Off
+  <br>2 = Black &amp; White
+  <br>3 = Sepia</span></td></tr>
+<tr>
+<td title='0x3016 = 12310'>0x3016</td>
+<td>Enhancement</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Off
+  <br>1 = Scenery
+  <br>3 = Green
+  <br>5 = Underwater
+  <br>9 = Flesh Tones</span></td></tr>
+<tr class=b>
+<td title='0x3017 = 12311'>0x3017</td>
+<td>ColorFilter</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>0 = Off
+  <br>1 = Blue
+  <br>3 = Green
+  <br>4 = Yellow</td><td>&nbsp;&nbsp;</td>
+  <td>5 = Red
+  <br>6 = Purple
+  <br>7 = Pink</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td title='0x301b = 12315'>0x301b</td>
+<td>ArtMode</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>0 = Normal
+  <br>8 = Silent Movie
+  <br>39 = HDR
+  <br>45 = Premium Auto
+  <br>47 = Painting
+  <br>49 = Crayon Drawing
+  <br>51 = Panorama
+  <br>52 = Art HDR
+  <br>62 = High Speed Night Shot
+  <br>64 = Monochrome
+  <br>67 = Toy Camera
+  <br>68 = Pop Art
+  <br>69 = Light Tone</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td title='0x301c = 12316'>0x301c</td>
+<td>SequenceNumber</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x301d = 12317'>0x301d</td>
+<td>BracketSequence</td>
+<td class=c>int16u[2]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x3020 = 12320'>0x3020</td>
+<td>ImageStabilization</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>0 = Off
+  <br>1 = On
+  <br>2 = Best Shot
+  <br>3 = Movie Anti-Shake
+  <br>&#39;0 0&#39; = Off
+  <br>&#39;0 1&#39; = Off (1)
+  <br>&#39;0 3&#39; = CCD Shift
+  <br>&#39;2 1&#39; = High Sensitivity
+  <br>&#39;2 3&#39; = CCD Shift + High Sensitivity
+  <br>&#39;16 0&#39; = Slow Shutter
+  <br>&#39;18 0&#39; = Anti-Shake
+  <br>&#39;20 0&#39; = High Sensitivity</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td title='0x302a = 12330'>0x302a</td>
+<td>LightingMode</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Off
+  <br>1 = High Dynamic Range
+  <br>5 = Shadow Enhance Low
+  <br>6 = Shadow Enhance High</span></td></tr>
+<tr class=b>
+<td title='0x302b = 12331'>0x302b</td>
+<td>PortraitRefiner</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Off
+  <br>1 = +1
+  <br>2 = +2</span></td></tr>
+<tr>
+<td title='0x3030 = 12336'>0x3030</td>
+<td>SpecialEffectLevel</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x3031 = 12337'>0x3031</td>
+<td>SpecialEffectSetting</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Off
+  <br>1 = Makeup
+  <br>2 = Mist Removal
+  <br>3 = Vivid Landscape
+  <br>16 = Art Shot</span></td></tr>
+<tr>
+<td title='0x3103 = 12547'>0x3103</td>
+<td>DriveMode</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>0 = Single Shot
+  <br>1 = Continuous Shooting
+  <br>2 = Continuous (2 fps)
+  <br>3 = Continuous (3 fps)
+  <br>4 = Continuous (4 fps)
+  <br>5 = Continuous (5 fps)
+  <br>6 = Continuous (6 fps)
+  <br>7 = Continuous (7 fps)</td><td>&nbsp;&nbsp;</td>
+  <td>10 = Continuous (10 fps)
+  <br>12 = Continuous (12 fps)
+  <br>15 = Continuous (15 fps)
+  <br>20 = Continuous (20 fps)
+  <br>30 = Continuous (30 fps)
+  <br>40 = Continuous (40 fps)
+  <br>60 = Continuous (60 fps)
+  <br>240 = Auto-N</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td title='0x310b = 12555'>0x310b</td>
+<td>ArtModeParameters</td>
+<td class=c>int8u[3]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x4001 = 16385'>0x4001</td>
+<td>CaptureFrameRate</td>
+<td class=c>int16u[n]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x4003 = 16387'>0x4003</td>
+<td>VideoQuality</td>
+<td class=c>int16u</td>
+<td><span class=s>1 = Standard
+  <br>3 = HD (720p)
+  <br>4 = Full HD (1080p)
+  <br>5 = Low</span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='FaceInfo1'>Casio FaceInfo1 Tags</a></h2>
+<p>Face-detect tags extracted from models such as the EX-H5.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>FacesDetected</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='1 = 0x1'>1</td>
+<td>FaceDetectFrameSize</td>
+<td class=c>int16u[2]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='13 = 0xd'>13</td>
+<td>Face1Position</td>
+<td class=c>int16u[4]</td>
+<td><span class=s><span class=n>(left, top, right and bottom of detected face in coordinates of
+FaceDetectFrameSize, with increasing Y downwards)</span></span></td></tr>
+<tr class=b>
+<td class=r title='124 = 0x7c'>124</td>
+<td>Face2Position</td>
+<td class=c>int16u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='235 = 0xeb'>235</td>
+<td>Face3Position</td>
+<td class=c>int16u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='346 = 0x15a'>346</td>
+<td>Face4Position</td>
+<td class=c>int16u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='457 = 0x1c9'>457</td>
+<td>Face5Position</td>
+<td class=c>int16u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='568 = 0x238'>568</td>
+<td>Face6Position</td>
+<td class=c>int16u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='679 = 0x2a7'>679</td>
+<td>Face7Position</td>
+<td class=c>int16u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='790 = 0x316'>790</td>
+<td>Face8Position</td>
+<td class=c>int16u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='901 = 0x385'>901</td>
+<td>Face9Position</td>
+<td class=c>int16u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='1012 = 0x3f4'>1012</td>
+<td>Face10Position</td>
+<td class=c>int16u[4]</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='FaceInfo2'>Casio FaceInfo2 Tags</a></h2>
+<p>Face-detect tags extracted from models such as the EX-H20G and EX-ZR100.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='2 = 0x2'>2</td>
+<td>FacesDetected</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>FaceDetectFrameSize</td>
+<td class=c>int16u[2]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='8 = 0x8'>8</td>
+<td>FaceOrientation</td>
+<td class=c>int8u</td>
+<td><span class=s><span class=n>(orientation of face relative to unrotated image)</span>
+  <br>0 = Horizontal (normal)
+  <br>1 = Rotate 90 CW
+  <br>2 = Rotate 270 CW
+  <br>3 = Rotate 180</span></td></tr>
+<tr class=b>
+<td class=r title='24 = 0x18'>24</td>
+<td>Face1Position</td>
+<td class=c>int16u[4]</td>
+<td><span class=s><span class=n>(left, top, right and bottom of detected face in coordinates of
+FaceDetectFrameSize, with increasing Y downwards)</span></span></td></tr>
+<tr>
+<td class=r title='76 = 0x4c'>76</td>
+<td>Face2Position</td>
+<td class=c>int16u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='128 = 0x80'>128</td>
+<td>Face3Position</td>
+<td class=c>int16u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='180 = 0xb4'>180</td>
+<td>Face4Position</td>
+<td class=c>int16u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='232 = 0xe8'>232</td>
+<td>Face5Position</td>
+<td class=c>int16u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='284 = 0x11c'>284</td>
+<td>Face6Position</td>
+<td class=c>int16u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='336 = 0x150'>336</td>
+<td>Face7Position</td>
+<td class=c>int16u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='388 = 0x184'>388</td>
+<td>Face8Position</td>
+<td class=c>int16u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='440 = 0x1b8'>440</td>
+<td>Face9Position</td>
+<td class=c>int16u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='492 = 0x1ec'>492</td>
+<td>Face10Position</td>
+<td class=c>int16u[4]</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='QVCI'>Casio QVCI Tags</a></h2>
+<p>This information is found in the APP1 QVCI segment of JPEG images from the
+Casio QV-7000SX.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='44 = 0x2c'>44</td>
+<td>CasioQuality</td>
+<td class=c>N</td>
+<td><span class=s>1 = Economy
+  <br>2 = Normal
+  <br>3 = Fine
+  <br>4 = Super Fine</span></td></tr>
+<tr class=b>
+<td class=r title='55 = 0x37'>55</td>
+<td>FocalRange?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='77 = 0x4d'>77</td>
+<td>DateTimeOriginal</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='98 = 0x62'>98</td>
+<td>ModelType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='114 = 0x72'>114</td>
+<td>ManufactureIndex</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='124 = 0x7c'>124</td>
+<td>ManufactureCode</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='AVI'>Casio AVI Tags</a></h2>
+<p>This information is found in Casio GV-10 AVI videos.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>Software</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<hr>
+(This document generated automatically by Image::ExifTool::BuildTagLookup)
+<br><i>Last revised Jul 4, 2014</i>
+<p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
+</body>
+</html>

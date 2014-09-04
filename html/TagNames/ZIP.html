@@ -1,0 +1,205 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>ZIP Tags</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h2 class=top>ZIP Tags</h2>
+<p>The following tags are extracted from ZIP archives.  ExifTool also extracts
+additional meta information from compressed documents inside some ZIP-based
+files such Office Open XML (DOCX, PPTX and XLSX), Open Document (ODB, ODC,
+ODF, ODG, ODI, ODP, ODS and ODT), iWork (KEY, PAGES, NUMBERS), Capture One
+Enhanced Image Package (EIP), Adobe InDesign Markup Language (IDML), and
+Electronic Publication (EPUB).  The ExifTool family 3 groups may be used to
+organize ZIP tags by embedded document number (ie. the exiftool <code>-g3</code>
+option).</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index2</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='2 = 0x2'>2</td>
+<td>ZipRequiredVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='3 = 0x3'>3</td>
+<td>ZipBitFlag</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='4 = 0x4'>4</td>
+<td>ZipCompression</td>
+<td class=c>N</td>
+<td><table class=cols><tr>
+  <td>0 = None
+  <br>1 = Shrunk
+  <br>2 = Reduced with compression factor 1
+  <br>3 = Reduced with compression factor 2
+  <br>4 = Reduced with compression factor 3
+  <br>5 = Reduced with compression factor 4
+  <br>6 = Imploded
+  <br>7 = Tokenized
+  <br>8 = Deflated
+  <br>9 = Enhanced Deflate using Deflate64(tm)
+  <br>10 = Imploded (old IBM TERSE)
+  <br>12 = BZIP2
+  <br>14 = LZMA (EFS)
+  <br>18 = IBM TERSE (new)
+  <br>19 = IBM LZ77 z Architecture (PFS)
+  <br>96 = JPEG recompressed
+  <br>97 = WavPack compressed
+  <br>98 = PPMd version I, Rev 1</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='5 = 0x5'>5</td>
+<td>ZipModifyDate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='7 = 0x7'>7</td>
+<td>ZipCRC</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='9 = 0x9'>9</td>
+<td>ZipCompressedSize</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='11 = 0xb'>11</td>
+<td>ZipUncompressedSize</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='15 = 0xf'>15</td>
+<td>ZipFileName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='GZIP'>ZIP GZIP Tags</a></h2>
+<p>These tags are extracted from GZIP (GNU ZIP) archives, but currently only
+for the first file in the archive.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='2 = 0x2'>2</td>
+<td>Compression</td>
+<td class=c>N</td>
+<td><span class=s>8 = Deflated</span></td></tr>
+<tr class=b>
+<td class=r title='3 = 0x3'>3</td>
+<td>Flags</td>
+<td class=c>N</td>
+<td><span class=s>Bit 0 = Text
+  <br>Bit 1 = CRC16
+  <br>Bit 2 = ExtraFields
+  <br>Bit 3 = FileName
+  <br>Bit 4 = Comment</span></td></tr>
+<tr>
+<td class=r title='4 = 0x4'>4</td>
+<td>ModifyDate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='8 = 0x8'>8</td>
+<td>ExtraFlags</td>
+<td class=c>N</td>
+<td><span class=s>0 = (none)
+  <br>2 = Maximum Compression
+  <br>4 = Fastest Algorithm</span></td></tr>
+<tr>
+<td class=r title='9 = 0x9'>9</td>
+<td>OperatingSystem</td>
+<td class=c>N</td>
+<td><table class=cols><tr>
+  <td>0 = FAT filesystem (MS-DOS, OS/2, NT/Win32)
+  <br>1 = Amiga
+  <br>2 = VMS (or OpenVMS)
+  <br>3 = Unix
+  <br>4 = VM/CMS
+  <br>5 = Atari TOS
+  <br>6 = HPFS filesystem (OS/2, NT)
+  <br>7 = Macintosh
+  <br>8 = Z-System
+  <br>9 = CP/M
+  <br>10 = TOPS-20
+  <br>11 = NTFS filesystem (NT)
+  <br>12 = QDOS
+  <br>13 = Acorn RISCOS
+  <br>255 = unknown</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='10 = 0xa'>10</td>
+<td>ArchivedFileName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='11 = 0xb'>11</td>
+<td>Comment</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='RAR'>ZIP RAR Tags</a></h2>
+<p>These tags are extracted from RAR archive files.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>CompressedSize</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>UncompressedSize</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='8 = 0x8'>8</td>
+<td>OperatingSystem</td>
+<td class=c>N</td>
+<td><span class=s>0 = MS-DOS
+  <br>1 = OS/2
+  <br>2 = Win32
+  <br>3 = Unix</span></td></tr>
+<tr class=b>
+<td class=r title='13 = 0xd'>13</td>
+<td>ModifyDate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='18 = 0x12'>18</td>
+<td>PackingMethod</td>
+<td class=c>N</td>
+<td><table class=cols><tr>
+  <td>0x30 = Stored
+  <br>0x31 = Fastest
+  <br>0x32 = Fast</td><td>&nbsp;&nbsp;</td>
+  <td>0x33 = Normal
+  <br>0x34 = Good Compression
+  <br>0x35 = Best Compression</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='25 = 0x19'>25</td>
+<td>ArchivedFileName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<hr>
+(This document generated automatically by Image::ExifTool::BuildTagLookup)
+<br><i>Last revised May 26, 2014</i>
+<p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
+</body>
+</html>

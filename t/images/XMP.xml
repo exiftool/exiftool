@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<rdf:RDF xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'>
+
+<rdf:Description rdf:about='t/images/Nikon.jpg'
+  xmlns:et='http://ns.exiftool.ca/1.0/' et:toolkit='Image::ExifTool 7.62'
+  xmlns:ExifTool='http://ns.exiftool.ca/ExifTool/1.0/'
+  xmlns:File='http://ns.exiftool.ca/File/1.0/'
+  xmlns:IFD0='http://ns.exiftool.ca/EXIF/IFD0/1.0/'
+  xmlns:ExifIFD='http://ns.exiftool.ca/EXIF/ExifIFD/1.0/'
+  xmlns:Nikon='http://ns.exiftool.ca/MakerNotes/Nikon/1.0/'
+  xmlns:InteropIFD='http://ns.exiftool.ca/EXIF/InteropIFD/1.0/'
+  xmlns:IFD1='http://ns.exiftool.ca/EXIF/IFD1/1.0/'
+  xmlns:EXIF='http://ns.exiftool.ca/EXIF/EXIF/1.0/'
+  xmlns:Composite='http://ns.exiftool.ca/Composite/1.0/'>
+ <ExifTool:ExifToolVersion et:tagid=''>7.62</ExifTool:ExifToolVersion>
+ <File:FileName et:tagid=''>Nikon.jpg</File:FileName>
+ <File:Directory et:tagid=''>t/images</File:Directory>
+ <File:FileSize et:tagid=''>1703 bytes</File:FileSize>
+ <File:FileModifyDate et:tagid=''>2006:01:04 14:02:27-05:00</File:FileModifyDate>
+ <File:FileType et:tagid=''>JPEG</File:FileType>
+ <File:MIMEType et:tagid=''>image/jpeg</File:MIMEType>
+ <File:ExifByteOrder et:tagid=''>Little-endian (Intel, II)</File:ExifByteOrder>
+ <File:ImageWidth et:tagid=''>8</File:ImageWidth>
+ <File:ImageHeight et:tagid=''>8</File:ImageHeight>
+ <File:EncodingProcess et:tagid=''>Baseline DCT, Huffman coding</File:EncodingProcess>
+ <File:BitsPerSample et:tagid=''>8</File:BitsPerSample>
+ <File:ColorComponents et:tagid=''>3</File:ColorComponents>
+ <File:YCbCrSubSampling et:tagid=''>YCbCr4:2:0 (2 2)</File:YCbCrSubSampling>
+ <IFD0:ImageDescription et:tagid='270'>          </IFD0:ImageDescription>
+ <IFD0:Make et:tagid='271'>NIKON</IFD0:Make>
+ <IFD0:Model et:tagid='272'>E775</IFD0:Model>
+ <IFD0:Orientation et:tagid='274'>Horizontal (normal)</IFD0:Orientation>
+ <IFD0:XResolution et:tagid='282'>300</IFD0:XResolution>
+ <IFD0:YResolution et:tagid='283'>300</IFD0:YResolution>
+ <IFD0:ResolutionUnit et:tagid='296'>inches</IFD0:ResolutionUnit>
+ <IFD0:Software et:tagid='305'>E775v1.3u</IFD0:Software>
+ <IFD0:ModifyDate et:tagid='306'>2001:08:01 12:57:23</IFD0:ModifyDate>
+ <IFD0:YCbCrPositioning et:tagid='531'>Co-sited</IFD0:YCbCrPositioning>
+ <ExifIFD:ExposureTime et:tagid='33434'>1/213</ExifIFD:ExposureTime>
+ <ExifIFD:FNumber et:tagid='33437'>9.4</ExifIFD:FNumber>
+ <ExifIFD:ExposureProgram et:tagid='34850'>Program AE</ExifIFD:ExposureProgram>
+ <ExifIFD:ISO et:tagid='34855'>100</ExifIFD:ISO>
+ <ExifIFD:ExifVersion et:tagid='36864'>0210</ExifIFD:ExifVersion>
+ <ExifIFD:DateTimeOriginal et:tagid='36867'>2001:08:01 12:57:23</ExifIFD:DateTimeOriginal>
+ <ExifIFD:CreateDate et:tagid='36868'>2001:08:01 12:57:23</ExifIFD:CreateDate>
+ <ExifIFD:ComponentsConfiguration et:tagid='37121'>YCbCr</ExifIFD:ComponentsConfiguration>
+ <ExifIFD:CompressedBitsPerPixel et:tagid='37122'>3</ExifIFD:CompressedBitsPerPixel>
+ <ExifIFD:ExposureCompensation et:tagid='37380'>0</ExifIFD:ExposureCompensation>
+ <ExifIFD:MaxApertureValue et:tagid='37381'>3.4</ExifIFD:MaxApertureValue>
+ <ExifIFD:MeteringMode et:tagid='37383'>Multi-segment</ExifIFD:MeteringMode>
+ <ExifIFD:LightSource et:tagid='37384'>Unknown</ExifIFD:LightSource>
+ <ExifIFD:Flash et:tagid='37385'>No Flash</ExifIFD:Flash>
+ <ExifIFD:FocalLength et:tagid='37386'>8.6 mm</ExifIFD:FocalLength>
+ <ExifIFD:UserComment et:tagid='37510'></ExifIFD:UserComment>
+ <ExifIFD:FlashpixVersion et:tagid='40960'>0100</ExifIFD:FlashpixVersion>
+ <ExifIFD:ColorSpace et:tagid='40961'>sRGB</ExifIFD:ColorSpace>
+ <ExifIFD:ExifImageWidth et:tagid='40962'>1600</ExifIFD:ExifImageWidth>
+ <ExifIFD:ExifImageHeight et:tagid='40963'>1200</ExifIFD:ExifImageHeight>
+ <ExifIFD:FileSource et:tagid='41728'>Digital Camera</ExifIFD:FileSource>
+ <ExifIFD:SceneType et:tagid='41729'>Directly photographed</ExifIFD:SceneType>
+ <Nikon:MakerNoteVersion et:tagid='1'>1.00</Nikon:MakerNoteVersion>
+ <Nikon:ISO et:tagid='2'>0</Nikon:ISO>
+ <Nikon:ColorMode et:tagid='3'>Color</Nikon:ColorMode>
+ <Nikon:Quality et:tagid='4'>Fine</Nikon:Quality>
+ <Nikon:WhiteBalance et:tagid='5'>Auto</Nikon:WhiteBalance>
+ <Nikon:Sharpness et:tagid='6'>Auto</Nikon:Sharpness>
+ <Nikon:FocusMode et:tagid='7'>AF-C</Nikon:FocusMode>
+ <Nikon:FlashSetting et:tagid='8'></Nikon:FlashSetting>
+ <Nikon:ISOSelection et:tagid='15'>Auto</Nikon:ISOSelection>
+ <Nikon:ImageAdjustment et:tagid='128'>Normal</Nikon:ImageAdjustment>
+ <Nikon:AuxiliaryLens et:tagid='130'>Off</Nikon:AuxiliaryLens>
+ <Nikon:ManualFocusDistance et:tagid='133'>inf</Nikon:ManualFocusDistance>
+ <Nikon:DigitalZoom et:tagid='134'>1</Nikon:DigitalZoom>
+ <Nikon:AFAreaMode et:tagid='0'>Single Area</Nikon:AFAreaMode>
+ <Nikon:AFPoint et:tagid='1'>Center</Nikon:AFPoint>
+ <Nikon:AFPointsInFocus et:tagid='2'>(none)</Nikon:AFPointsInFocus>
+ <Nikon:SceneMode et:tagid='143'></Nikon:SceneMode>
+ <Nikon:DataDump et:tagid='16' rdf:datatype='http://www.w3.org/2001/XMLSchema#base64Binary'>
+ATkAgAFEAAAAAP8BAAAAAAJqGAAAAAAAAjEAAA8wAAAR4wAADwsAAA8LAQAf
+AArcAE4AAAAABpkFwwSSA3YT/QPrAAAAAA4YHAoAAAAAAAAAAAAAAAALDwAA
+KAANJAABYjEANhAAFxwYIRwk/1MRURBYMgABHQAE/wA=
+</Nikon:DataDump>
+ <InteropIFD:InteropIndex et:tagid='1'>R98 - DCF basic file (sRGB)</InteropIFD:InteropIndex>
+ <InteropIFD:InteropVersion et:tagid='2'>0100</InteropIFD:InteropVersion>
+ <IFD1:Compression et:tagid='259'>JPEG (old-style)</IFD1:Compression>
+ <IFD1:XResolution et:tagid='282'>300</IFD1:XResolution>
+ <IFD1:YResolution et:tagid='283'>300</IFD1:YResolution>
+ <IFD1:ResolutionUnit et:tagid='296'>inches</IFD1:ResolutionUnit>
+ <IFD1:ThumbnailOffset et:tagid='513'>1426</IFD1:ThumbnailOffset>
+ <IFD1:ThumbnailLength et:tagid='514'>28</IFD1:ThumbnailLength>
+ <Composite:Aperture et:tagid=''>9.4</Composite:Aperture>
+ <Composite:ImageSize et:tagid=''>8x8</Composite:ImageSize>
+ <Composite:ShutterSpeed et:tagid=''>1/213</Composite:ShutterSpeed>
+ <Composite:ThumbnailImage et:tagid=''>&lt;Dummy thumbnail image data&gt;</Composite:ThumbnailImage>
+ <Composite:FocalLength35efl et:tagid=''>8.6 mm</Composite:FocalLength35efl>
+ <Composite:LightValue et:tagid=''>14.2</Composite:LightValue>
+</rdf:Description>
+</rdf:RDF>

@@ -1,0 +1,24 @@
+#------------------------------------------------------------------------------
+# File:         gps2xmp.args
+#
+# Description:  Argument file for copying GPS information from EXIF to XMP
+#
+# Usage:        exiftool -tagsFromFile SRCFILE -@ gps2xmp.args DSTFILE
+#
+# Requires:     ExifTool version 6.75 or later
+#
+# Revisions:    2009/01/09 - P. Harvey Created
+#
+# Notes:     1) Most of the GPS tags are copied by the first argument, but
+#               the XMP GPS coordinate and date/time tags are composites of
+#               more than one EXIF GPS tag, so they are handled separately.
+#
+#            2) These arguments will not delete XMP tags which are missing
+#               from the GPS.  The XMP tags should be deleted beforehand if
+#               required.
+#------------------------------------------------------------------------------
+-XMP:all < GPS:all
+-XMP:GPSLatitude < Composite:GPSLatitude
+-XMP:GPSLongitude < Composite:GPSLongitude
+-XMP:GPSDateTime < Composite:GPSDateTime
+# end

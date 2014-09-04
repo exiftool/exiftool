@@ -1,0 +1,286 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd">
+<html>
+<head>
+  <title>Problems with current Metadata Standards</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+<style type="text/css">
+<!--
+a.ref   { text-decoration: none; font-size: x-small;
+          font-weight: normal; vertical-align: super; }
+-->
+</style>
+</head>
+<body>
+<div class='index'>
+<a href="#TIFF">TIFF 6.0</a>
+<br><a href="#DNG">DNG 1.3</a>
+<br><a href="#EXIF">EXIF 2.3</a>
+<br><a href="#PhotoInfo">OffsetSchema</a>
+<br><a href="#JPEG">JPEG</a>
+<br><a href="#MPF">MPF</a>
+<br><a href="#refs">References</a>
+</div>
+
+<h1 class=up>Problems with current Metadata Standards</h1>
+
+<p>It seems that all metadata standards have their own unique problems. This
+page documents some significant structural problems found in some current
+metadata and file format specifications, and gives possible solutions to these
+problems.  <i>[Also see my <a href="commentary.html">Commentary on Meta
+Information Formats</a>.]</i></p>
+
+<a name="TIFF"></a>
+<h3>TIFF 6.0 <a class=ref href="#ref1">[1]</a></h3>
+
+<p>A significant problem of the 1992 TIFF 6.0 specification is that there is no
+way to distinguish an IFD (image file directory) offset from a simple integer
+value.  As a result, new IFD's may not be created without risking corruption of
+the files by unaware software.  This is not only a problem for proprietary maker
+notes which commonly use a TIFF IFD structure, but is also a problem for
+extensibility of TIFF-based RAW image formats (as demonstrated by the DNG 1.3
+specification -- see below).</p>
+
+<p><b>A simple solution:</b></p>
+
+<p>Use a TIFF field type of 13 (IFD) instead of 4 (LONG) for IFD offsets.
+This was first proposed in 1995 by Adobe in their PageMaker
+6.0 TIFF Technical Notes<a class=ref href="#ref2">[2]</a>,
+but unfortunately it never found its way into the TIFF specification.  Even so,
+Olympus Optical Co. has shown some intelligence and is using this field type in
+the maker notes of their recent digital cameras.
+</p>
+
+<p><b>Another useful addition:</b> <i>(added 2009-09-27)</i></p>
+
+<p>A number of camera and cell phone manufacturers (Concord, Kodak, Motorola,
+Nokia, Olympus, Pentax, Ricoh, Samsung and Sony) leave blank IFD entries in the
+maker notes of images from some models. Presumably this simplifies the embedded
+software by allowing the output file structure to be kept constant even when the
+number of maker note IFD entries changes.  It could be useful if this feature
+was added explicitly to the offical TIFF specification by defining a field type
+of 0 as a "free IFD entry" to be ignored.  (Note that this ability already
+exists implicitly at a certain level in the specification, which states:
+<i>"Readers should skip over fields containing an unexpected field
+type"</i>.)</p>
+
+<a name="DNG"></a>
+<h3>DNG 1.3 <a class=ref href="#ref3">[3]</a></h3>
+
+<p>With the DNG 1.3 specification of June 2009, Adobe added a new Camera Profile
+IFD referenced by an offset using the standard (and unfortunate) TIFF LONG field
+type.  This means that the new Profile IFD will be lost if the file is rewritten
+by any software which does not have explicit knowledge of the 1.3 specification.
+But to make things worse, Adobe didn't even use a standard IFD format for the
+data. Instead, the IFD begins with a TIFF-style header and uses relative instead
+of absolute offsets.  This would have been a good idea if the IFD was stored as
+the value of an UNDEFINED tag rather than referenced from a LONG offset. (If
+done this way, the new information would have been preserved if the file was
+rewritten by unaware software.) But as implemented it just adds to the pain of
+parsing the file by requiring even more specialized code to be written in
+support of the DNG 1.3 format.</p>
+
+<p><b>A simple solution:</b></p>
+
+<p>Sack the Adobe developers who were responsible for this, and use field type
+13 (as recommended above for TIFF 6.0) and a standard TIFF IFD structure when
+adding new IFD's in the future.</p>
+
+<a name="EXIF"></a>
+<h3>EXIF 2.3 <a class=ref href="#ref4">[4]</a></h3>
+
+<p>The EXIF specification has been the standard for digital camera metadata for
+many years, and while the digital camera technology has advanced significantly
+in these years, the EXIF specification has not.  There are a number of
+significant problems with the EXIF specification which have never been
+addressed.</p>
+
+<p>Some current problems with the EXIF specification are:</p>
+
+<ol>
+<li>Maker note data structure has no restrictions and is easily invalidated when
+editing EXIF.</li>
+<li>No facility for storing the time zone for date/time values.</li>
+<li>Very limited support for alternate character sets (essentially only the
+UserComment tag has this feature).</li>
+<li>No alternate language support.</li>
+<li>Byte ordering for "Unicode" text strings, and the meaning of "Unicode"
+itself is not clearly specified.</li>
+<li>Mandatory tags are unnecessary and painful to implement.</li>
+<li>ApertureValue and MaxApertureValue are stored as unsigned RATIONAL, which
+means that lenses with F numbers faster than 1.0 (with equivalent APEX values of
+less than zero) can not be represented.</li>
+<li>MaxApertureValue is defined as "The smallest F number of the lens".  This
+definition is unclear in the case of zoom lenses where the maximum aperture
+varies across the zoom range.  Some manufacturers (Canon, Nikon, Sony) store the
+maximum aperture at the specific focal length, but others (Olympus, Pentax)
+store the absolute maximum aperture of the lens.</li>
+<li>EXIF is not extensible, and is missing definitions for storing some
+information that could be very useful to camera owners (eg. camera orientation,
+sensor temperature, face detection, auto-focus points, image stabilization,
+flash exposure compensation, etc).</li>
+</ol>
+
+<p><b>Simple solutions:</b></p>
+
+<ol>
+<li>Specify that maker note data must be self-contained (ie. must not exceed the
+bounds of the maker note value data), and must be relocatable (ie. must not use
+absolute offsets).  <i>[I would have suggested defining a new maker note tag
+with field type 13 (IFD) which references a standard format IFD, but I am afraid
+that no camera maker would ever jump on board with this suggestion now that they
+have already been seduced by the dark side.]</i></li>
+<li>Change the specification to allow an optional time zone of the format
+"-05:00" to be appended to the date/time string values.</li>
+<li>Change the specification to allow UTF-8 in ASCII-type values as recommended
+by the MWG<a class=ref href="#ref5">[5]</a>.</li>
+<li>No simple solution for this.  XMP<a class=ref href="#ref6">[6]</a>
+is the only reasonable alternative if alternate language support is
+required.</li>
+<li>Specify that the Unicode byte order must be the same as the EXIF byte
+ordering. (This is the only reasonable choice, but for some reason both
+Microsoft and Apple seem to write Unicode using the native processor byte
+ordering. regardless of the EXIF byte order.)  Also, it should be made clear
+that by "Unicode" the EXIF specification actually means UCS-2, although updating
+this to allow UTF-16 surrogate pairs may be a good idea.</li>
+<li>Define reasonable fallback values for required tags which are missing.</li>
+<li>Allow ApertureValue and MaxApertureValue to be stored as signed SRATIONAL.</li>
+<li>Define whether MaxApertureValue is taken at the current focal length of
+a zoom lens, or over the entire zoom range.</li>
+<li>Expand the standard to include additional useful information available from
+modern digital cameras.</li>
+</ol>
+
+<a name="PhotoInfo"></a>
+<h3>Microsoft "OffsetSchema" Tag <a class=ref href="#ref7">[7]</a></h3>
+
+<p>In February 2007 Microsoft proposed a new PhotoInfo tag called "OffsetSchema"
+(hex. 0xEA1D, dec. 59933) in an attempt to patch a deficiency in the EXIF maker
+note specification (see point 1 in EXIF 2.2 section above).  This tag represents
+the offset difference between the original maker note location in the EXIF and
+the new location after editing, and is designed to allow the maker note tag
+values to be accessed after the location of the maker notes is changed by
+editing the EXIF. <i>[Bless their little hearts for trying to improve this
+situation, but while the idea is good the implementation is flawed and
+ultimately unworkable.]</i></p>
+
+<p>There are two main problems with the implementation, and the second is a show
+stopper:</p>
+
+<blockquote>1. For this new tag to be available to a single-pass metadata reader, it
+must come <i>before</i> the maker note data (hex. 0x927C, dec. 37500).  But
+since the EXIF/TIFF format specifies that tags must be stored in numerical
+order, the maker note tag (hex. 0x927C) comes before the OffsetSchema tag
+(hex. 0xEA1D).</blockquote>
+
+<blockquote>2. The OffsetSchema tag will be invalidated by any software that
+rewrites the EXIF and moves the maker notes without properly updating the tag.
+In an ideal world all application developers would release an updated version
+of their software which treats the OffsetSchema properly, and all users would
+update to this new version.  But since this is the real world it just won't
+happen, which makes the value of OffsetSchema unreliable.  Too bad, because this
+wouldn't have been a problem if Microsoft had specified that the new tag
+represented the original offset of the maker notes instead of the difference
+from the original position. With this change, the tag wouldn't need updating
+when the EXIF is edited, and the information would be much more reliable.  The
+only problem here would be editing software that explicitly changes the maker
+note offsets.  However, software with this ability is rare, and it is more
+reasonable to ask that the OffsetSchema tag simply be deleted by any software
+that updates the maker note offsets.  (Software must be fairly advanced in the
+first place if it parses the proprietary maker note data structures and changes
+these offsets.)</blockquote>
+
+<p><b>A simple solution:</b></p>
+
+<p>Create a new tag which comes before the maker notes (hex. 0x927B, dec. 37499
+would be good) and represents the original offset of the maker notes.</p>
+
+<a name="JPEG"></a>
+<h3>JPEG File Interchange Format <a class=ref href="#ref8">[8]</a></h3>
+
+<p>The JPEG File Interchange Format version 1.02 was released in 1992.  The
+biggest structural problem with this standard is that metadata in these files in
+is stored in segments which have a maximum size of 65533 bytes.  This limit has
+necessitated a number of creative solutions, each creating complications and
+problems of their own.  <i>[See my comments on the <a
+href="writing.html#Preview">PreviewImage problem</a> for example.]</i></p>
+
+<p><b>A simple solution:</b></p>
+
+<p>Since the value of the segment size word includes the 2 bytes of the segment
+size word itself, a value of 0 or 1 is not allowed by the current JPEG standard.
+The standard could be enhanced so a value of 1 indicates an extended JPEG
+segment where the 2-byte size word (with value 0x0001) is followed immediately
+by a 4-byte integer giving the size of the extended JPEG segment.  This would
+allow segment sizes of up to 4294967291 bytes (assuming the size includes these
+4 bytes). Further, a value of 0 could be defined for an 8-byte integer if one
+really wanted to support huge metadata segments.  Either change to an existing
+JPEG would break all current JPEG reader/writers, but the change is trivial and
+could easily be implemented.</p>
+
+<p><b>An alternative solution:</b></p>
+
+<p>Define a new application marker segment which uses a 4-byte size word.  This
+technique is already used for the extended JPEG2000 codestream MCT, MCC and MIC
+marker segments.</p>
+
+<a name="MPF"></a>
+<h3>Multi-Picture Format (MPF) <a class=ref href="#ref9">[9]</a></h3>
+
+<p>In February 2009 CIPA<a class=ref href="#ref10">[10]</a> released a
+"Multi-Picture Format" standard for storing large images in JPEG files.  This
+format is yet another attempt to bypass the JPEG segment-size limit (see above)
+to store large preview images.  But again, there is a significant problem with
+this standard:  Pointers in the new APP2 MPF segment use offsets relative to the
+start of the MPF header in this segment to reference image data after the JPEG
+EOI.  Unfortunately, these offsets are quickly broken if any data after the MPF
+segment changes length.  This problem could have been avoided if offsets had
+been specified relative to the end of file, but it is too late for this now that
+the specification is public.  However, another problem is that information after
+the JPEG EOI is often discarded by software when the file is edited.</p>
+
+<p><b>A possible work-around:</b></p>
+
+<p>Enforce the rule that the MPF APP2 segment must come after all other APP
+segments.  (It would have been smart if this was specified in the CIPA standard,
+but sadly this wasn't the case.)  If this is done, then metadata in the remaining
+APP segments (EXIF, IPTC, XMP, etc) can safely be edited without breaking the
+MPF offsets.  I suggest that all metadata editors employ this strategy,
+regardless of the segment order specified in the standard (which says that the
+MPF APP2 segment must come immediately after the EXIF APP1 segment).</p>
+
+<p>Unfortunately this work-around has the same problems as the Microsoft
+OffsetSchema tag because the MPF information may easily be invalidated by an
+unaware editor, and it doesn't address the problem of losing data stored after
+the JPEG EOI.</p>
+
+<p><b>A simple solution:</b></p>
+
+<p>Change the JPEG specification to allow larger segments (as mentioned above in
+the JPEG section), and change the MPF specification to store all information
+inside a JPEG segment.</p>
+
+<p><i>[2014-04-29: CIPA has changed the location of these standards documents,
+so the URL's referenced here are now broken.]</i></p>
+
+<a name="refs"></a>
+<h3>References</h3>
+
+<ol>
+<li><a name="ref1" href="http://partners.adobe.com/public/developer/en/tiff/TIFF6.pdf">http://partners.adobe.com/public/developer/en/tiff/TIFF6.pdf</a></li>
+<li><a name="ref2" href="http://partners.adobe.com/public/developer/en/tiff/TIFFPM6.pdf">http://partners.adobe.com/public/developer/en/tiff/TIFFPM6.pdf</a></li>
+<li><a name="ref3" href="http://www.adobe.com/products/dng/pdfs/dng_spec_1_3_0_0.pdf">http://www.adobe.com/products/dng/pdfs/dng_spec_1_3_0_0.pdf</a></li>
+<li><a name="ref4" href="http://www.cipa.jp/english/hyoujunka/kikaku/pdf/DC-008-2010_E.pdf">http://www.cipa.jp/english/hyoujunka/kikaku/pdf/DC-008-2010_E.pdf</a></li>
+<li><a name="ref5" href="http://www.metadataworkinggroup.org/pdf/mwg_guidance.pdf">http://www.metadataworkinggroup.org/pdf/mwg_guidance.pdf</a></li>
+<li><a name="ref6" href="http://www.adobe.com/devnet/xmp/">http://www.adobe.com/devnet/xmp/</a></li>
+<li><a name="ref7" href="http://support.microsoft.com/kb/927527">http://support.microsoft.com/kb/927527</a></li>
+<li><a name="ref8" href="http://www.jpeg.org/public/jfif.pdf">http://www.jpeg.org/public/jfif.pdf</a></li>
+<li><a name="ref9" href="http://www.cipa.jp/english/hyoujunka/kikaku/pdf/DC-X007-KEY_E.pdf">http://www.cipa.jp/english/hyoujunka/kikaku/pdf/DC-X007-KEY_E.pdf</a></li>
+<li><a name="ref10" href="http://www.cipa.jp/english/hyoujunka/kikaku/cipa_e_kikaku_list.html">http://www.cipa.jp/english/hyoujunka/kikaku/cipa_e_kikaku_list.html</a></li>
+</ol>
+<hr>
+<i>Created Sep 17, 2009</i><br>
+<i>Last revised Apr 29, 2014</i>
+<p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
+</body>
+</html>

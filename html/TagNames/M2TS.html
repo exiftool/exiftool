@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>M2TS Tags</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h2 class=top>M2TS Tags</h2>
+<p>The MPEG-2 transport stream is used as a container for many different
+audio/video formats (including AVCHD).  This table lists information
+extracted from M2TS files.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>AudioStreamType</td>
+<td class=c>N</td>
+<td>--&gt; <a href='M2TS.html#StreamType'>M2TS StreamType Values</a></td></tr>
+<tr class=b>
+<td>Duration</td>
+<td class=c>N</td>
+<td><span class=s><span class=n>(the -fast option may be used to avoid scanning to the end of file to
+calculate the Duration)</span></span></td></tr>
+<tr>
+<td>VideoStreamType</td>
+<td class=c>N</td>
+<td>--&gt; <a href='M2TS.html#StreamType'>M2TS StreamType Values</a></td></tr>
+<tr class=b>
+<td>_AC3</td>
+<td class=c>-</td>
+<td>--&gt; <a href='M2TS.html#AC3'>M2TS AC3 Tags</a></td></tr>
+<tr>
+<td>_H264</td>
+<td class=c>-</td>
+<td>--&gt; <a href='H264.html'>H264 Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='StreamType'>M2TS StreamType Values</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class='inner sep' cellspacing=1>
+<tr class=h><th>Value</th><th>StreamType</th><th>Value</th><th>StreamType</th></tr>
+<tr><td class=r>0x0</td><td>= Reserved</td>
+<td class='r b'>0x12</td><td class=b>= MPEG-4 generic</td>
+</tr><tr><td class=r>0x1</td><td>= MPEG-1 Video</td>
+<td class='r b'>0x13</td><td class=b>= ISO 14496-1 SL-packetized</td>
+</tr><tr><td class=r>0x2</td><td>= MPEG-2 Video</td>
+<td class='r b'>0x14</td><td class=b>= ISO 13818-6 Synchronized Download Protocol</td>
+</tr><tr><td class=r>0x3</td><td>= MPEG-1 Audio</td>
+<td class='r b'>0x1b</td><td class=b>= H.264 Video</td>
+</tr><tr><td class=r>0x4</td><td>= MPEG-2 Audio</td>
+<td class='r b'>0x80</td><td class=b>= DigiCipher II Video</td>
+</tr><tr><td class=r>0x5</td><td>= ISO 13818-1 private sections</td>
+<td class='r b'>0x81</td><td class=b>= A52/AC-3 Audio</td>
+</tr><tr><td class=r>0x6</td><td>= ISO 13818-1 PES private data</td>
+<td class='r b'>0x82</td><td class=b>= HDMV DTS Audio</td>
+</tr><tr><td class=r>0x7</td><td>= ISO 13522 MHEG</td>
+<td class='r b'>0x83</td><td class=b>= LPCM Audio</td>
+</tr><tr><td class=r>0x8</td><td>= ISO 13818-1 DSM-CC</td>
+<td class='r b'>0x84</td><td class=b>= SDDS Audio</td>
+</tr><tr><td class=r>0x9</td><td>= ISO 13818-1 auxiliary</td>
+<td class='r b'>0x85</td><td class=b>= ATSC Program ID</td>
+</tr><tr><td class=r>0xa</td><td>= ISO 13818-6 multi-protocol encap</td>
+<td class='r b'>0x86</td><td class=b>= DTS-HD Audio</td>
+</tr><tr><td class=r>0xb</td><td>= ISO 13818-6 DSM-CC U-N msgs</td>
+<td class='r b'>0x87</td><td class=b>= E-AC-3 Audio</td>
+</tr><tr><td class=r>0xc</td><td>= ISO 13818-6 stream descriptors</td>
+<td class='r b'>0x8a</td><td class=b>= DTS Audio</td>
+</tr><tr><td class=r>0xd</td><td>= ISO 13818-6 sections</td>
+<td class='r b'>0x91</td><td class=b>= A52b/AC-3 Audio</td>
+</tr><tr><td class=r>0xe</td><td>= ISO 13818-1 auxiliary</td>
+<td class='r b'>0x92</td><td class=b>= DVD_SPU vls Subtitle</td>
+</tr><tr><td class=r>0xf</td><td>= MPEG-2 AAC Audio</td>
+<td class='r b'>0x94</td><td class=b>= SDDS Audio</td>
+</tr><tr><td class=r>0x10</td><td>= MPEG-4 Video</td>
+<td class='r b'>0xa0</td><td class=b>= MSCODEC Video</td>
+</tr><tr><td class=r>0x11</td><td>= MPEG-4 LATM AAC Audio</td>
+<td class='r b'>0xea</td><td class=b>= Private ES (VC-1)</td>
+</tr></table></td></tr></table></blockquote>
+
+<h2><a name='AC3'>M2TS AC3 Tags</a></h2>
+<p>Tags extracted from AC-3 audio streams.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>AudioBitrate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>AudioChannels</td>
+<td class=c>N</td>
+<td><table class=cols><tr>
+  <td>0 = 1 + 1
+  <br>1 = 1
+  <br>2 = 2
+  <br>3 = 3
+  <br>4 = 2/1
+  <br>5 = 3/1
+  <br>6 = 2/2</td><td>&nbsp;&nbsp;</td>
+  <td>7 = 3/2
+  <br>8 = 1
+  <br>9 = 2 max
+  <br>10 = 3 max
+  <br>11 = 4 max
+  <br>12 = 5 max
+  <br>13 = 6 max</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td>AudioSampleRate</td>
+<td class=c>N</td>
+<td><span class=s>0 = 48000
+  <br>1 = 44100
+  <br>2 = 32000</span></td></tr>
+<tr class=b>
+<td>SurroundMode</td>
+<td class=c>N</td>
+<td><span class=s>0 = Not indicated
+  <br>1 = Not Dolby surround
+  <br>2 = Dolby surround</span></td></tr>
+</table></td></tr></table></blockquote>
+
+<hr>
+(This document generated automatically by Image::ExifTool::BuildTagLookup)
+<br><i>Last revised Mar 18, 2011</i>
+<p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
+</body>
+</html>

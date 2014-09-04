@@ -1,0 +1,344 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd">
+<html>
+<head>
+  <title>Structured Information</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+<style type="text/css">
+<!--
+pre  { padding: 0; margin: 0px 2px }
+spc  { margin-top: 5em }
+li   { margin-top: .5em }
+li.c { margin-top: 0 }
+-->
+</style>
+</head>
+<body>
+<div class='index'>
+<a href="#Reading">Reading</a>
+<br><a href="#Writing">Writing</a>
+<br><a href="#Copying">Copying</a>
+<br><a href="#Deleting">Deleting</a>
+<br><a href="#Fields">Field Names</a>
+<br><a href="#Serialize">Serialization</a>
+<br><a href="#User">User-Defined</a>
+</div>
+<h1 class='up'>Structured Information</h1>
+
+<p>ExifTool has the ability to read and write XMP structures through the use of
+either <b>structured or flattened tags</b>.  The ability to write via structured
+input was added in ExifTool version 8.44; older versions wrote using flattened
+tags only.</p>
+
+<p>To illustrate the concept of a flattened tag, the <code>XMP-exif:Flash</code>
+structure contains <code>Fired</code> and <code>Mode</code> fields (among
+others).  The flattened tags corresponding to these structure fields are
+<code>XMP-exif:FlashFired</code> and <code>XMP-exif:FlashMode</code>.  In the
+<a href="TagNames/XMP.html">XMP Tags documentation</a>, flattened tags are
+indicated by an underline (<code>_</code>) after the Writable type.</p>
+
+<p>This page describes various techniques used to read and write XMP structures
+using both structured and flattened tags.</p>
+
+<a name='Reading'></a>
+<h2>Reading</h2>
+
+<p>When reading, structures are <b>flattened by default</b>, and ExifTool
+returns one "flattened" tag for each field in the structure:</p>
+
+<blockquote><table class='box'><tr><td>
+<pre>&gt; <span class=code>exiftool -xmp:all a.xmp</span>
+XMP Toolkit                     : Image::ExifTool 8.44
+Flash Fired                     : True
+Flash Mode                      : On
+Flash Return                    : Return not detected</pre>
+</td></tr></table></blockquote>
+
+<p>But the <code>-struct</code> option may be used to give <b>structured
+output</b>.  In this mode structures are returned instead of separate
+"flattened" tags:</p>
+
+<blockquote><table class='box'><tr><td>
+<pre>&gt; <span class=code>exiftool -struct -xmp:all a.xmp</span>
+XMP Toolkit                     : Image::ExifTool 8.44
+Flash                           : {Fired=True,Mode=On,Return=Return not detected}</pre>
+</td></tr></table></blockquote>
+
+<p class=lt>(Note: As illustrated in the example above, structures are
+<a href='#Serialize'>serialized</a> for console output by the ExifTool
+application. However, via the API with the <code>Struct</code> option,
+they are returned as Perl HASH references.)</p>
+
+<p>The <code>-struct</code> option may also be combined with the JSON
+(<code>-j</code>), PHP (<code>-php</code>) or XML (<code>-X</code>) output
+formats to provide a structured format which may be more compatible with other
+applications.</p>
+
+<a name='Writing'></a>
+<h2>Writing</h2>
+
+<p>When writing, <b>flattened tags and structures may be used interchangeably</b>.
+For example, the following commands all have the same effect.</p>
+
+<blockquote><table class='box'><tr><td>
+<pre class=code>exiftool -flashmode=on -flashreturn=not -flashfired=true a.xmp
+exiftool -xmp:flash="{mode=on,fired=true}" -flashreturn=not a.xmp
+exiftool -xmp:flash="{mode=on,fired=true,return=not}" a.xmp</pre>
+</td></tr></table></blockquote>
+
+<p class=lt>(Note:  Structures must be <a href='#Serialize'>serialized</a> when
+writing via the command-line application, in the same format as when reading with
+the <code>-struct</code> option.)</p>
+
+<p>An advantage of writing in structured form is that it can be easier to
+achieve the desired hierarchy with complex structures or when there are multiple
+structures in a list.  For example, this command adds a new hierarchical keyword
+to the XMP-mwg-kw:HierarchicalKeywords list:</p>
+
+<blockquote><table class='box'><tr><td>
+<pre class=code>exiftool -hierarchicalkeywords+="{keyword=cat,children={keyword=Siamese}}" a.jpg</pre>
+</td></tr></table></blockquote>
+
+<p>But the flattened tags may be more convenient for <b>adding or replacing a
+single field</b> in an existing structure because writing as a structure would
+requires that entire structure be replaced.  For example, the following command
+adds a new second-level keyword to an existing HierarchicalKeywords structure:</p>
+
+<blockquote><table class='box'><tr><td>
+<pre class=code>exiftool -hierarchicalkeywords2+="Persian" a.jpg</pre>
+</td></tr></table></blockquote>
+
+<p><b>Tricky:</b> There is one drawback when using this technique to add new
+fields to existing structures in lists:  New fields are added to the first
+structure which doesn't already contain the corresponding field.  So before
+adding a new field to a arbitrary structure, dummy fields must first be added to
+all earlier structures in the list which are missing this field.  However, the
+alternative of adding a new field by writing structured information also has its
+drawbacks. Here, although a specific structure in a list can easily be targeted
+through any unique combination of field values, the drawback is that the entire
+structure must be replaced (see <a href="#Deleting">Deleting / Replacing</a>
+below).</p>
+
+<p>The flattened tag names may also be used to <b>write structures at any level
+in a complex hierarchy</b>.  The following example writes a third-level
+structure inside a HierarchicalKeywords structure:</p>
+
+<blockquote><table class='box'><tr><td>
+<pre class=code>exiftool -hierarchicalkeywords2Children='{Keyword=Tabby,Applied=true}' a.jpg</pre>
+</td></tr></table></blockquote>
+
+<p class=lt>(Note: Containing structures are created as necessary.  In this
+case, the HierarchicalKeywords and top-level KeywordInfo structures would be
+created if they didn't already exist.)</p>
+
+<p>The <b>order of structure fields is not significant</b>, so they may be read
+in a different order then written, unlike arrays which maintain the same order. 
+To give a predictable output, fields in structured information are <b>sorted in
+alphabetical order</b> of field name by ExifTool when reading and writing.</p>
+
+<p>If there are <b>errors converting some fields</b> of the input structure,
+other fields are still written and a warning is issued (but only one warning per
+structure is reported).  This also applies when copying structured information
+except that the <code>-v3</code> option must be used to see the warnings when
+copying.</p>
+
+<p><b>Programmers:</b> Structured information is written and read as Perl HASH
+references via the ExifTool API, but it may also be written as a serialized
+string.  The following two techniques are equivalent:</p>
+
+<blockquote><table class='box'><tr><td>
+<pre># as a HASH reference
+<span class=code>$exifTool-&gt;SetNewValue('XMP:Flash' =&gt; { mode=>'on', fired=>'true', return=>'not' });
+</span>
+# as a serialized string
+<span class=code>$exifTool-&gt;SetNewValue('XMP:Flash' =&gt; '{mode=on,fired=true,return=not}');</span></pre>
+</td></tr></table></blockquote>
+
+<a name='Copying'></a>
+<h2>Copying</h2>
+
+<p>By default, tags are <b>copied as structures</b>, but flattened tag names
+may still be copied by specifying them explicitly. <span class=lt>(Flattened
+tags are treated as "unsafe" for copying so they are not copied by default
+unless the Struct feature is disabled.)</span> Copying as structures allows the
+hierarchy of complex structures to be preserved.</p>
+
+<blockquote><table class='box'><tr><td>
+<pre># this copies all XMP information as structures
+# (flattened tags are not copied by default...)
+<span class=code>exiftool -tagsfromfile src.jpg -xmp:all dst.jpg
+</span>
+# ... but flattened tags may be copied individually.  Here the
+# first level hierarchical keywords are copied to the Subject tag
+# (this may be done in the same command as one that copies structures)
+<span class=code>exiftool -tagsfromfile src.jpg "-subject&lt;hierarchicalkeywords1" dst.jpg</span></pre>
+</td></tr></table></blockquote>
+
+<p>Note that when copying a specific structure, only the top-level structures
+may be specified:</p>
+
+<blockquote><table class='box'><tr><td>
+<pre># this copies the complete keyword hierarchy
+<span class=code>exiftool -tagsfromfile src.jpg -keywordinfo dst.jpg
+</span>
+# WRONG because HierarchicalKeywords is NOT a top-level structure!
+<span class=code>exiftool -tagsfromfile src.jpg -hierarchicalkeywords dst.jpg</span></pre>
+</td></tr></table></blockquote>
+
+<p>The copy-as-structure feature may be disabled with <code>--struct</code> on
+the command line, or by setting the <a href="ExifTool.html#Struct">Struct option</a>
+to 0 via the API.  When this is done, only flattened tags are copied, and
+structures may not be specified. Conversely, if the structure option is enabled
+(by setting the <a href="ExifTool.html#Struct">Struct option</a> to 1 via the API,
+or with <code>-struct</code> on the command line), only structures are copied,
+and flattened tags may not be specified.</p>
+
+<p class=lt>(Note: ExifTool 8.43 and earlier copied as flattened tags only, but
+copying as structures has been the default since the ability to write structured
+information was introduced in version 8.44.  An enhancement in version 8.82
+allowed flattened tags to be copied explicitly without the need to disable the
+Struct option.)</p>
+
+<a name='Deleting'></a>
+<h2>Deleting / Replacing</h2>
+
+<p>A <b>complete structure is deleted</b> by specifying one or more matching
+fields. For example, the following command deletes all HierarchicalKeywords
+structures which have the Keyword "<code>Terrier</code>" at the second level:</p>
+
+<blockquote><table class='box'><tr><td>
+<pre class=code>exiftool -hierarchicalkeywords-="{Children={Keyword=Terrier}}" a.jpg</pre>
+</td></tr></table></blockquote>
+
+<p>Structure <b>fields may also be deleted individually</b> using the flattened
+tag names. The following command deletes only the matching fields from the
+second-level of all HierarchicalKeywords structures:</p>
+
+<blockquote><table class='box'><tr><td>
+<pre class=code>exiftool -hierarchicalkeywords2-="Terrier" a.jpg</pre>
+</td></tr></table></blockquote>
+
+<p>When deleting and adding back items in lists in the same command, new items
+are inserted at the point in the list where the first item was removed, or at
+the end of the list if no items were deleted.  This applies to lists of
+structures as well as simple lists of string values, and provides a mechanism to
+replace a specific structure or field.</p>
+
+<a name='Fields'></a>
+<h2>Field Names</h2>
+
+<p>Structure field names use a format <b>very similar to tag names</b> in
+ExifTool.  The following table lists some similarities and differences
+between tag names and structure field names:</p>
+
+<blockquote><table border=1 cellspacing=0 cellpadding=4 width='100%'>
+<tr><th>Feature</th><th>Example</th><th>Tag Names</th><th>Field Names</th></tr>
+<tr align=center><td align=left>Case Insensitivity</td><td>Title, title, TITLE</td>
+<td class=grn>Yes</td><td class=grn>Yes</td></tr>
+<tr align=center><td align=left>Alternate Language Suffix</td><td>Title-de</td>
+<td class=grn>Yes</td><td class=grn>Yes</td></tr>
+<tr align=center><td align=left>Numerical Value Suffix</td><td>Mode#</td>
+<td class=grn>Yes</td><td class=grn>Yes</td></tr>
+<tr align=center><td align=left>Group Name Prefix</td><td>XMP-dc:Title</td>
+<td class=grn>Yes</td><td class=red>No<sup>&dagger;</sup></td></tr>
+</table>
+<sup class=red>&dagger;</sup> Except that group name prefixes are
+allowed in structures which support arbitrary XMP fields (eg.
+<a href='TagNames/MWG.html#Extensions'>Region Extensions</a>)
+</blockquote>
+
+<a name='Serialize'></a>
+<h2>Serialization</h2>
+
+Structures are <b>serialized when reading or writing from the command line</b>.
+However, serialization is not done when reading via the API, and is optional when
+writing via the API.  The serialization algorithm is as follows:
+
+<ol>
+<li>Escape the following characters in string values (structure field values and
+list items) by adding a leading pipe symbol (<code>|</code>):
+<ul>
+<li class=c>pipe symbols (<code>|</code>) and commas (<code>,</code>) anywhere in the string</li>
+<li class=c>closing curly brackets (<code>}</code>) anywhere in structure field values</li>
+<li class=c>closing square brackets (<code>]</code>) anywhere in list items</li>
+<li class=c>an opening curly (<code>{</code>) or square (<code>[</code>)
+bracket, or whitespace character (SPACE, TAB, CR or LF) if it appears at the
+beginning of the string</li>
+</ul>
+<span class=lt>(Note: Any other character may be escaped by adding
+a leading pipe symbol without effect.)</span></li>
+<li>Enclose structures in curly brackets.  Use an equal sign (<code>=</code>)
+to separate field names from their corresponding values, and a comma between
+structure fields.</li>
+<li>Enclose lists in square brackets, with a comma between list items.</li>
+<li>Optional whitespace padding may be added anywhere except inside a structure
+field name, or inside or after a string value, and an optional comma may be
+added after the last field in a structure.</li>
+</ol>
+
+<p>For example, with a command like this:</p>
+
+<blockquote><table class='box'><tr><td>
+<pre class=code>exiftool "-RegionInfo&lt;=INFILE" a.xmp</pre>
+</td></tr></table></blockquote>
+
+<p>the INFILE below may be used to write structured information to
+XMP:RegionInfo.</p>
+
+<blockquote><table class='box'><tr><td>
+<pre>{
+  AppliedToDimensions =
+  {
+     W = 4288,
+     H = 2848,
+     Unit = pixel,
+  },
+  RegionList =
+  [
+    {
+      Area =
+      {
+        W = 0.15, H = 0.17, X = 0.3, Y = 0.4,
+        Unit = normalized,
+      },
+      Description = A Physics Icon {relatively speaking|},
+      Name = Albert Einstein,
+      Type = Face,
+      Extensions = {
+        XMP-xmpRights:UsageTerms = copyright Phil Harvey,
+        XMP-xmpRights:UsageTerms-fr = droit d'auteur Phil Harvey,
+      },
+      SeeAlso = dc:subject,
+    },
+    {
+      Area =
+      {
+        W = 0.06, H = 0.09, X = 0.5, Y = 0.6,
+        Unit = normalized,
+      },
+      Description = this is a test|, what did you expect?,
+      Type = Focus,
+      FocusUsage = EvaluatedUsed,
+    }
+  ],
+}</pre>
+</td></tr></table></blockquote>
+
+<p>In this example, white space has been added in all allowed locations for
+demonstration purposes and to improve readability.  Also, optional commas have
+been added after the last field of each structure.  (Note that a comma may NOT
+be added after the last item in a list because this would be interpreted as an
+additional list item of a zero-length string.)</p>
+
+<a name='User'></a>
+<h2>User-Defined Structures</h2>
+
+<p>User-defined XMP structure tags may be created via the ExifTool config file.
+See the NewXMPxxxStruct tag definition in the <a href="config.html#xmp-xxx">XMP-xxx
+examples of the sample config file</a> for more details.</p>
+
+<hr>
+<i>Last revised Apr. 8, 2014</i>
+<p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
+</body>
+</html>

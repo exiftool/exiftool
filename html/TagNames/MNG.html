@@ -1,0 +1,847 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>MNG Tags</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h2 class=top>MNG Tags</h2>
+<p>This table contains definitions for tags found in MNG and JNG images.  MNG
+is a superset of PNG and JNG, so a MNG image may contain any of these tags
+as well as any PNG tags.  Conversely, only some of these tags are valid for
+JNG images.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'BACK'</td>
+<td>Background</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MNG.html#Background'>MNG Background Tags</a></td></tr>
+<tr class=b>
+<td>'BASI'</td>
+<td>BasisObject</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MNG.html#BasisObject'>MNG BasisObject Tags</a></td></tr>
+<tr>
+<td>'CLIP'</td>
+<td>ClipObjects</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MNG.html#ClipObjects'>MNG ClipObjects Tags</a></td></tr>
+<tr class=b>
+<td>'CLON'</td>
+<td>CloneObject</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MNG.html#CloneObject'>MNG CloneObject Tags</a></td></tr>
+<tr>
+<td>'DBYK'</td>
+<td>DropByKeyword</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'DEFI'</td>
+<td>DefineObject</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MNG.html#DefineObject'>MNG DefineObject Tags</a></td></tr>
+<tr>
+<td>'DHDR'</td>
+<td>DeltaPNGHeader</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MNG.html#DeltaPNGHeader'>MNG DeltaPNGHeader Tags</a></td></tr>
+<tr class=b>
+<td>'DISC'</td>
+<td>DiscardObjects</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'DROP'</td>
+<td>DropChunks</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'FRAM'</td>
+<td>Frame</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'JHDR'</td>
+<td>JNGHeader</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MNG.html#JNGHeader'>MNG JNGHeader Tags</a></td></tr>
+<tr class=b>
+<td>'LOOP'</td>
+<td>Loop</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MNG.html#Loop'>MNG Loop Tags</a></td></tr>
+<tr>
+<td>'MAGN'</td>
+<td>MagnifyObject</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MNG.html#MagnifyObject'>MNG MagnifyObject Tags</a></td></tr>
+<tr class=b>
+<td>'MHDR'</td>
+<td>MNGHeader</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MNG.html#MNGHeader'>MNG MNGHeader Tags</a></td></tr>
+<tr>
+<td>'MOVE'</td>
+<td>MoveObjects</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MNG.html#MoveObjects'>MNG MoveObjects Tags</a></td></tr>
+<tr class=b>
+<td>'ORDR'</td>
+<td>OrderingRestrictions</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'PAST'</td>
+<td>PasteImage</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MNG.html#PasteImage'>MNG PasteImage Tags</a></td></tr>
+<tr class=b>
+<td>'PPLT'</td>
+<td>PartialPalette</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'PROM'</td>
+<td>PromoteParent</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MNG.html#PromoteParent'>MNG PromoteParent Tags</a></td></tr>
+<tr class=b>
+<td>'SAVE'</td>
+<td>SaveObjects</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'SEEK'</td>
+<td>SeekPoint</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'SHOW'</td>
+<td>ShowObjects</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MNG.html#ShowObjects'>MNG ShowObjects Tags</a></td></tr>
+<tr>
+<td>'TERM'</td>
+<td>TerminationAction</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MNG.html#TerminationAction'>MNG TerminationAction Tags</a></td></tr>
+<tr class=b>
+<td>'eXPi'</td>
+<td>ExportImage</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MNG.html#ExportImage'>MNG ExportImage Tags</a></td></tr>
+<tr>
+<td>'fPRI'</td>
+<td>FramePriority</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MNG.html#FramePriority'>MNG FramePriority Tags</a></td></tr>
+<tr class=b>
+<td>'nEED'</td>
+<td>ResourcesNeeded</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'pHYg'</td>
+<td>GlobalPixelSize</td>
+<td class=c>-</td>
+<td>--&gt; <a href='PNG.html#PhysicalPixel'>PNG PhysicalPixel Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Background'>MNG Background Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>BackgroundColor</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='6 = 0x6'>6</td>
+<td>MandatoryBackground</td>
+<td class=c>N</td>
+<td><span class=s>0 = Color and Image Advisory
+  <br>1 = Color Mandatory, Image Advisory
+  <br>2 = Color Advisory, Image Mandatory
+  <br>3 = Color and Image Mandatory</span></td></tr>
+<tr>
+<td class=r title='7 = 0x7'>7</td>
+<td>BackgroundImageID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='9 = 0x9'>9</td>
+<td>BackgroundTiling</td>
+<td class=c>N</td>
+<td><span class=s>0 = No
+  <br>1 = Yes</span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='BasisObject'>MNG BasisObject Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>ImageWidth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>ImageHeight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='8 = 0x8'>8</td>
+<td>BitDepth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='9 = 0x9'>9</td>
+<td>ColorType</td>
+<td class=c>N</td>
+<td><span class=s>0 = Grayscale
+  <br>2 = RGB
+  <br>3 = Palette
+  <br>4 = Grayscale with Alpha
+  <br>6 = RGB with Alpha</span></td></tr>
+<tr>
+<td class=r title='10 = 0xa'>10</td>
+<td>Compression</td>
+<td class=c>N</td>
+<td><span class=s>0 = Deflate/Inflate</span></td></tr>
+<tr class=b>
+<td class=r title='11 = 0xb'>11</td>
+<td>Filter</td>
+<td class=c>N</td>
+<td><span class=s>0 = Adaptive</span></td></tr>
+<tr>
+<td class=r title='12 = 0xc'>12</td>
+<td>Interlace</td>
+<td class=c>N</td>
+<td><span class=s>0 = Noninterlaced
+  <br>1 = Adam7 Interlace</span></td></tr>
+<tr class=b>
+<td class=r title='13 = 0xd'>13</td>
+<td>RedSample</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='17 = 0x11'>17</td>
+<td>GreenSample</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='21 = 0x15'>21</td>
+<td>BlueSample</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='25 = 0x19'>25</td>
+<td>AlphaSample</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='26 = 0x1a'>26</td>
+<td>Viewable</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ClipObjects'>MNG ClipObjects Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>FirstObject</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>LastObject</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='4 = 0x4'>4</td>
+<td>DeltaType</td>
+<td class=c>N</td>
+<td><span class=s>0 = Absolute
+  <br>1 = Relative</span></td></tr>
+<tr class=b>
+<td class=r title='5 = 0x5'>5</td>
+<td>ClipBoundary</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='CloneObject'>MNG CloneObject Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>SourceID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>CloneID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='4 = 0x4'>4</td>
+<td>CloneType</td>
+<td class=c>N</td>
+<td><span class=s>0 = Full
+  <br>1 = Parital
+  <br>2 = Renumber object</span></td></tr>
+<tr class=b>
+<td class=r title='5 = 0x5'>5</td>
+<td>DoNotShow</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='6 = 0x6'>6</td>
+<td>ConcreteFlag</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='7 = 0x7'>7</td>
+<td>LocalDeltaType</td>
+<td class=c>N</td>
+<td><span class=s>0 = Absolute
+  <br>1 = Relative</span></td></tr>
+<tr>
+<td class=r title='8 = 0x8'>8</td>
+<td>DeltaXY</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='DefineObject'>MNG DefineObject Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>ObjectID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>DoNotShow</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='3 = 0x3'>3</td>
+<td>ConcreteFlag</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>XYLocation</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='12 = 0xc'>12</td>
+<td>ClippingBoundary</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='DeltaPNGHeader'>MNG DeltaPNGHeader Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>ObjectID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>ImageType</td>
+<td class=c>N</td>
+<td><span class=s>0 = Unspecified
+  <br>1 = PNG
+  <br>2 = JNG</span></td></tr>
+<tr>
+<td class=r title='3 = 0x3'>3</td>
+<td>DeltaType</td>
+<td class=c>N</td>
+<td><table class=cols><tr>
+  <td>0 = Full Replacement
+  <br>1 = Pixel Addition
+  <br>2 = Alpha Addition
+  <br>3 = Color Addition</td><td>&nbsp;&nbsp;</td>
+  <td>4 = Pixel Replacement
+  <br>5 = Alpha Replacement
+  <br>6 = Color Replacement
+  <br>7 = No Change</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>BlockSize</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='12 = 0xc'>12</td>
+<td>BlockLocation</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='JNGHeader'>MNG JNGHeader Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>ImageWidth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>ImageHeight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='8 = 0x8'>8</td>
+<td>ColorType</td>
+<td class=c>N</td>
+<td><span class=s>8 = Gray
+  <br>10 = Color
+  <br>12 = Gray Alpha
+  <br>14 = Color Alpha</span></td></tr>
+<tr class=b>
+<td class=r title='9 = 0x9'>9</td>
+<td>BitDepth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='10 = 0xa'>10</td>
+<td>Compression</td>
+<td class=c>N</td>
+<td><span class=s>8 = Huffman-coded baseline JPEG</span></td></tr>
+<tr class=b>
+<td class=r title='11 = 0xb'>11</td>
+<td>Interlace</td>
+<td class=c>N</td>
+<td><span class=s>0 = Sequential
+  <br>8 = Progressive</span></td></tr>
+<tr>
+<td class=r title='12 = 0xc'>12</td>
+<td>AlphaBitDepth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='13 = 0xd'>13</td>
+<td>AlphaCompression</td>
+<td class=c>N</td>
+<td><span class=s>0 = MNG Grayscale IDAT
+  <br>8 = JNG 8-bit Grayscale JDAA</span></td></tr>
+<tr>
+<td class=r title='14 = 0xe'>14</td>
+<td>AlphaFilter</td>
+<td class=c>N</td>
+<td><span class=s>0 = Adaptive MNG (N/A for JPEG)</span></td></tr>
+<tr class=b>
+<td class=r title='15 = 0xf'>15</td>
+<td>AlphaInterlace</td>
+<td class=c>N</td>
+<td><span class=s>0 = Noninterlaced</span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Loop'>MNG Loop Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>NestLevel</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='1 = 0x1'>1</td>
+<td>IterationCount</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='5 = 0x5'>5</td>
+<td>TerminationCondition</td>
+<td class=c>N</td>
+<td><table class=cols><tr>
+  <td>0 = Deterministic, not cacheable
+  <br>1 = Decoder discretion, not cacheable
+  <br>2 = User discretion, not cacheable
+  <br>3 = External signal, not cacheable
+  <br>4 = Deterministic, cacheable
+  <br>5 = Decoder discretion, cacheable
+  <br>6 = User discretion, cacheable
+  <br>7 = External signal, cacheable</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='6 = 0x6'>6</td>
+<td>IterationMinMax</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='14 = 0xe'>14</td>
+<td>SignalNumber</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='MagnifyObject'>MNG MagnifyObject Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>FirstObjectID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>LastObjectID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='4 = 0x4'>4</td>
+<td>XMethod</td>
+<td class=c>N</td>
+<td><span class=s>0 = No Magnification
+  <br>1 = Pixel Replication
+  <br>2 = Linear Interpolation
+  <br>3 = Closest Pixel
+  <br>4 = Color Linear Interpolation and Alpha Closest Pixel
+  <br>5 = Color Closest Pixel and Alpha Linear Interpolation</span></td></tr>
+<tr class=b>
+<td class=r title='5 = 0x5'>5</td>
+<td>XMag</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='7 = 0x7'>7</td>
+<td>YMag</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='9 = 0x9'>9</td>
+<td>LeftMag</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='11 = 0xb'>11</td>
+<td>RightMag</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='13 = 0xd'>13</td>
+<td>TopMag</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='15 = 0xf'>15</td>
+<td>BottomMag</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='17 = 0x11'>17</td>
+<td>YMethod</td>
+<td class=c>N</td>
+<td><span class=s>0 = No Magnification
+  <br>1 = Pixel Replication
+  <br>2 = Linear Interpolation
+  <br>3 = Closest Pixel
+  <br>4 = Color Linear Interpolation and Alpha Closest Pixel
+  <br>5 = Color Closest Pixel and Alpha Linear Interpolation</span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='MNGHeader'>MNG MNGHeader Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index4</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>ImageWidth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='1 = 0x1'>1</td>
+<td>ImageHeight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='2 = 0x2'>2</td>
+<td>TicksPerSecond</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='3 = 0x3'>3</td>
+<td>NominalLayerCount</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='4 = 0x4'>4</td>
+<td>NominalFrameCount</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='5 = 0x5'>5</td>
+<td>NominalPlayTime</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='6 = 0x6'>6</td>
+<td>SimplicityProfile</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='MoveObjects'>MNG MoveObjects Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>FirstObject</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>LastObject</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='4 = 0x4'>4</td>
+<td>DeltaType</td>
+<td class=c>N</td>
+<td><span class=s>0 = Absolute
+  <br>1 = Relative</span></td></tr>
+<tr class=b>
+<td class=r title='5 = 0x5'>5</td>
+<td>DeltaXY</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='PasteImage'>MNG PasteImage Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>DestinationID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>TargetDeltaType</td>
+<td class=c>N</td>
+<td><span class=s>0 = Absolute
+  <br>1 = Relative</span></td></tr>
+<tr>
+<td class=r title='3 = 0x3'>3</td>
+<td>TargetXY</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='11 = 0xb'>11</td>
+<td>SourceID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='13 = 0xd'>13</td>
+<td>CompositionMode</td>
+<td class=c>N</td>
+<td><span class=s>0 = Over
+  <br>1 = Replace
+  <br>2 = Under</span></td></tr>
+<tr class=b>
+<td class=r title='14 = 0xe'>14</td>
+<td>Orientation</td>
+<td class=c>N</td>
+<td><span class=s>0 = Same as source
+  <br>2 = Flipped left-right, then up-down
+  <br>4 = Flipped left-right
+  <br>6 = Flipped up-down
+  <br>8 = Tiled</span></td></tr>
+<tr>
+<td class=r title='15 = 0xf'>15</td>
+<td>OffsetOrigin</td>
+<td class=c>N</td>
+<td><span class=s>0 = Desination Origin
+  <br>1 = Target Origin</span></td></tr>
+<tr class=b>
+<td class=r title='16 = 0x10'>16</td>
+<td>OffsetXY</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='24 = 0x18'>24</td>
+<td>BoundaryOrigin</td>
+<td class=c>N</td>
+<td><span class=s>0 = Desination Origin
+  <br>1 = Target Origin</span></td></tr>
+<tr class=b>
+<td class=r title='25 = 0x19'>25</td>
+<td>PastClippingBoundary</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='PromoteParent'>MNG PromoteParent Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>NewColorType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='1 = 0x1'>1</td>
+<td>NewBitDepth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='2 = 0x2'>2</td>
+<td>FillMethod</td>
+<td class=c>N</td>
+<td><span class=s>0 = Bit Replication
+  <br>1 = Zero Fill</span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ShowObjects'>MNG ShowObjects Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>FirstObject</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>LastObject</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='4 = 0x4'>4</td>
+<td>ShowMode</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='TerminationAction'>MNG TerminationAction Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>TerminationAction</td>
+<td class=c>N</td>
+<td><span class=s>0 = Show Last Frame
+  <br>1 = Display Nothing
+  <br>2 = Show First Frame
+  <br>3 = Repeat Sequence</span></td></tr>
+<tr class=b>
+<td class=r title='1 = 0x1'>1</td>
+<td>IterationEndAction</td>
+<td class=c>N</td>
+<td><span class=s>0 = Show Last Frame
+  <br>1 = Display Nothing
+  <br>2 = Show First Frame</span></td></tr>
+<tr>
+<td class=r title='2 = 0x2'>2</td>
+<td>Delay</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='6 = 0x6'>6</td>
+<td>IterationMax</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ExportImage'>MNG ExportImage Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>SnapshotID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>SnapshotName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='FramePriority'>MNG FramePriority Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>DeltaType</td>
+<td class=c>N</td>
+<td><span class=s>0 = Absolute
+  <br>1 = Relative</span></td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>Priority</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<hr>
+(This document generated automatically by Image::ExifTool::BuildTagLookup)
+<br><i>Last revised Oct 25, 2006</i>
+<p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
+</body>
+</html>

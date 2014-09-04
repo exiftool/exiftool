@@ -1,0 +1,146 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>AIFF Tags</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h2 class=top>AIFF Tags</h2>
+<p>Tags extracted from Audio Interchange File Format (AIFF) files.  See
+<a href="http://www-mmsp.ece.mcgill.ca/Documents/AudioFormats/AIFF/AIFF.html">http://www-mmsp.ece.mcgill.ca/Documents/AudioFormats/AIFF/AIFF.html</a> for
+the AIFF specification.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'(c) '</td>
+<td>Copyright</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'ANNO'</td>
+<td>Annotation</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'AUTH'</td>
+<td>Author</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'COMM'</td>
+<td>Common</td>
+<td class=c>-</td>
+<td>--&gt; <a href='AIFF.html#Common'>AIFF Common Tags</a></td></tr>
+<tr>
+<td>'COMT'</td>
+<td>Comment</td>
+<td class=c>-</td>
+<td>--&gt; <a href='AIFF.html#Comment'>AIFF Comment Tags</a></td></tr>
+<tr class=b>
+<td>'FVER'</td>
+<td>FormatVersion</td>
+<td class=c>-</td>
+<td>--&gt; <a href='AIFF.html#FormatVers'>AIFF FormatVers Tags</a></td></tr>
+<tr>
+<td>'ID3 '</td>
+<td>ID3</td>
+<td class=c>-</td>
+<td>--&gt; <a href='ID3.html'>ID3 Tags</a></td></tr>
+<tr class=b>
+<td>'NAME'</td>
+<td>Name</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Common'>AIFF Common Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index2</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>NumChannels</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='1 = 0x1'>1</td>
+<td>NumSampleFrames</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='3 = 0x3'>3</td>
+<td>SampleSize</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>SampleRate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='9 = 0x9'>9</td>
+<td>CompressionType</td>
+<td class=c>N</td>
+<td><table class=cols><tr>
+  <td>&#39;ACE2&#39; = ACE 2-to-1
+  <br>&#39;ACE8&#39; = ACE 8-to-3
+  <br>&#39;MAC3&#39; = MAC 3-to-1
+  <br>&#39;MAC6&#39; = MAC 6-to-1
+  <br>&#39;NONE&#39; = None
+  <br>&#39;sowt&#39; = Little-endian, no compression</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='11 = 0xb'>11</td>
+<td>CompressorName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Comment'>AIFF Comment Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x0000 = 0'>0x0000</td>
+<td>CommentTime</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0001 = 1'>0x0001</td>
+<td>MarkerID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0002 = 2'>0x0002</td>
+<td>Comment</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='FormatVers'>AIFF FormatVers Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index4</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>FormatVersionTime</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<hr>
+(This document generated automatically by Image::ExifTool::BuildTagLookup)
+<br><i>Last revised Jan 3, 2012</i>
+<p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
+</body>
+</html>

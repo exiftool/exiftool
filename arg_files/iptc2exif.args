@@ -1,0 +1,21 @@
+#------------------------------------------------------------------------------
+# File:         iptc2exif.args
+#
+# Description:  Tag name translations for converting IPTC to EXIF
+#
+# Usage:        exiftool -tagsFromFile SRCFILE -@ iptc2exif.args DSTFILE
+#
+# Requires:     ExifTool version 7.98 or later
+#
+# Revisions:    2011/09/13 - P. Harvey Created
+#
+# Notes:        These arguments will not delete EXIF tags which are missing
+#               from the IPTC.  The EXIF tags should be deleted beforehand if
+#               required.
+#------------------------------------------------------------------------------
+-EXIF:Artist < IPTC:By-line
+-EXIF:Copyright < IPTC:CopyrightNotice
+-EXIF:ImageDescription < IPTC:Caption-Abstract
+-EXIF:DateTimeOriginal < Composite:DateTimeCreated
+-EXIF:CreateDate < Composite:DigitalCreationDateTime
+# end

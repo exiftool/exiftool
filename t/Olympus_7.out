@@ -1,0 +1,482 @@
+  ExifToolVersion = 9.18
+  FileName = Olympus_7_failed.jpg
+  Directory = t
+  FileSize = 7335
+  FileModifyDate = 1360933208
+  FileAccessDate = 1360933208
+  FileInodeChangeDate = 1360933208
+  FilePermissions = 33188
+  FileType = JPEG
+  MIMEType = image/jpeg
+JPEG APP1 (7080 bytes):
+  ExifByteOrder = II
+  + [IFD0 directory with 12 entries]
+  | 0)  ImageDescription = OLYMPUS DIGITAL CAMERA         
+  |     - Tag 0x010e (32 bytes, string[32])
+  | 1)  Make = OLYMPUS IMAGING CORP.  
+  |     - Tag 0x010f (24 bytes, string[24])
+  | 2)  Model = u760,S760       
+  |     - Tag 0x0110 (17 bytes, string[17])
+  | 3)  Orientation = 1
+  |     - Tag 0x0112 (2 bytes, int16u[1])
+  | 4)  XResolution = 314 (314/1)
+  |     - Tag 0x011a (8 bytes, rational64u[1])
+  | 5)  YResolution = 314 (314/1)
+  |     - Tag 0x011b (8 bytes, rational64u[1])
+  | 6)  ResolutionUnit = 2
+  |     - Tag 0x0128 (2 bytes, int16u[1])
+  | 7)  Software = Version 1.0                    
+  |     - Tag 0x0131 (32 bytes, string[32])
+  | 8)  ModifyDate = 2007:02:16 15:09:13
+  |     - Tag 0x0132 (20 bytes, string[20])
+  | 9)  YCbCrPositioning = 2
+  |     - Tag 0x0213 (2 bytes, int16u[1])
+  | 10) ExifOffset (SubDirectory) -->
+  |     - Tag 0x8769 (4 bytes, int32u[1])
+  | + [ExifIFD directory with 31 entries]
+  | | 0)  ExposureTime = 0.004 (1/250)
+  | |     - Tag 0x829a (8 bytes, rational64u[1])
+  | | 1)  FNumber = 16 (160/10)
+  | |     - Tag 0x829d (8 bytes, rational64u[1])
+  | | 2)  ExposureProgram = 2
+  | |     - Tag 0x8822 (2 bytes, int16u[1])
+  | | 3)  ISO = 80
+  | |     - Tag 0x8827 (2 bytes, int16u[1])
+  | | 4)  ExifVersion = 0221
+  | |     - Tag 0x9000 (4 bytes, undef[4])
+  | | 5)  DateTimeOriginal = 2007:02:16 15:09:13
+  | |     - Tag 0x9003 (20 bytes, string[20])
+  | | 6)  CreateDate = 2007:02:16 15:09:13
+  | |     - Tag 0x9004 (20 bytes, string[20])
+  | | 7)  ComponentsConfiguration = 1 2 3 0
+  | |     - Tag 0x9101 (4 bytes, undef[4] read as int8u[4])
+  | | 8)  ExposureCompensation = -0.7 (-7/10)
+  | |     - Tag 0x9204 (8 bytes, rational64s[1])
+  | | 9)  MaxApertureValue = 3.53 (353/100)
+  | |     - Tag 0x9205 (8 bytes, rational64u[1])
+  | | 10) MeteringMode = 5
+  | |     - Tag 0x9207 (2 bytes, int16u[1])
+  | | 11) LightSource = 0
+  | |     - Tag 0x9208 (2 bytes, int16u[1])
+  | | 12) Flash = 16
+  | |     - Tag 0x9209 (2 bytes, int16u[1])
+  | | 13) FocalLength = 19.5 (1950/100)
+  | |     - Tag 0x920a (8 bytes, rational64u[1])
+  | | 14) MakerNoteOlympus2 (SubDirectory) -->
+  | |     - Tag 0x927c (5502 bytes, undef[5502])
+  | | + [MakerNoteOlympus2 directory with 14 entries]
+  | | | 0)  SpecialMode = 0 0 0
+  | | |     - Tag 0x0200 (12 bytes, int32u[3])
+  | | | 1)  Quality = 3
+  | | |     - Tag 0x0201 (2 bytes, int16u[1])
+  | | | 2)  Macro = 1
+  | | |     - Tag 0x0202 (2 bytes, int16u[1])
+  | | | 3)  BWMode = 0
+  | | |     - Tag 0x0203 (2 bytes, int16u[1])
+  | | | 4)  DigitalZoom = 1 (100/100)
+  | | |     - Tag 0x0204 (8 bytes, rational64u[1])
+  | | | 5)  FocalPlaneDiagonal = 7.58 (758/100)
+  | | |     - Tag 0x0205 (8 bytes, rational64u[1])
+  | | | 6)  LensDistortionParams = 0 0 0 0 0 0
+  | | |     - Tag 0x0206 (12 bytes, int16s[6])
+  | | | 7)  CameraType = D4328
+  | | |     - Tag 0x0207 (6 bytes, string[6])
+  | | | 8)  CameraID = OLYMPUS DIGITAL CAMERA         
+  | | |     - Tag 0x0209 (32 bytes, undef[32] read as string[32])
+  | | | 9)  EquipmentIFD (SubDirectory) -->
+  | | |     - Tag 0x2010 (4 bytes, ifd[1])
+  | | | + [MakerNotes directory with 6 entries]
+  | | | | 0)  EquipmentVersion = 0100
+  | | | |     - Tag 0x0000 (4 bytes, undef[4])
+  | | | | 1)  CameraType2 = D4328
+  | | | |     - Tag 0x0100 (6 bytes, string[6])
+  | | | | 2)  SerialNumber = C90500055                      
+  | | | |     - Tag 0x0101 (32 bytes, string[32])
+  | | | | 3)  InternalSerialNumber = 0171612001128001               
+  | | | |     - Tag 0x0102 (32 bytes, string[32])
+  | | | | 4)  FocalPlaneDiagonal = 7.58 (758/100)
+  | | | |     - Tag 0x0103 (8 bytes, rational64u[1])
+  | | | | 5)  BodyFirmwareVersion = 4097
+  | | | |     - Tag 0x0104 (4 bytes, int32u[1])
+  | | | 10) CameraSettingsIFD (SubDirectory) -->
+  | | |     - Tag 0x2020 (4 bytes, ifd[1])
+  | | | + [MakerNotes directory with 36 entries]
+  | | | | 0)  CameraSettingsVersion = 0100
+  | | | |     - Tag 0x0000 (4 bytes, undef[4])
+  | | | | 1)  PreviewImageValid = 0
+  | | | |     - Tag 0x0100 (4 bytes, int32u[1])
+  | | | | 2)  PreviewImageStart = 6037
+  | | | |     - Tag 0x0101 (4 bytes, int32u[1])
+  | | | | 3)  PreviewImageLength = 0
+  | | | |     - Tag 0x0102 (4 bytes, int32u[1])
+  | | | | 4)  ExposureMode = 2
+  | | | |     - Tag 0x0200 (2 bytes, int16u[1])
+  | | | | 5)  AELock = 0
+  | | | |     - Tag 0x0201 (2 bytes, int16u[1])
+  | | | | 6)  MeteringMode = 5
+  | | | |     - Tag 0x0202 (2 bytes, int16u[1])
+  | | | | 7)  MacroMode = 0
+  | | | |     - Tag 0x0300 (2 bytes, int16u[1])
+  | | | | 8)  FocusMode = 0
+  | | | |     - Tag 0x0301 (2 bytes, int16u[1])
+  | | | | 9)  FocusProcess = 0
+  | | | |     - Tag 0x0302 (2 bytes, int16u[1])
+  | | | | 10) AFSearch = 0
+  | | | |     - Tag 0x0303 (2 bytes, int16u[1])
+  | | | | 11) AFAreas = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0[snip]
+  | | | |     - Tag 0x0304 (256 bytes, int32u[64])
+  | | | | 12) FlashMode = 0
+  | | | |     - Tag 0x0400 (2 bytes, int16u[1])
+  | | | | 13) FlashExposureComp = 0 (0/1)
+  | | | |     - Tag 0x0401 (8 bytes, rational64s[1])
+  | | | | 14) Olympus_CameraSettings_0x0402 = 0
+  | | | |     - Tag 0x0402 (2 bytes, int16u[1])
+  | | | | 15) WhiteBalance2 = 0
+  | | | |     - Tag 0x0500 (2 bytes, int16u[1])
+  | | | | 16) WhiteBalanceTemperature = 0
+  | | | |     - Tag 0x0501 (2 bytes, int16u[1])
+  | | | | 17) WhiteBalanceBracket = 0 0
+  | | | |     - Tag 0x0502 (4 bytes, int16s[2])
+  | | | | 18) CustomSaturation = 0 -2 2
+  | | | |     - Tag 0x0503 (6 bytes, int16s[3])
+  | | | | 19) ModifiedSaturation = 0
+  | | | |     - Tag 0x0504 (2 bytes, int16u[1])
+  | | | | 20) ContrastSetting = 0 -2 2
+  | | | |     - Tag 0x0505 (6 bytes, int16s[3])
+  | | | | 21) SharpnessSetting = 0 -2 2
+  | | | |     - Tag 0x0506 (6 bytes, int16s[3])
+  | | | | 22) ColorSpace = 0
+  | | | |     - Tag 0x0507 (2 bytes, int16u[1])
+  | | | | 23) SceneMode = 0
+  | | | |     - Tag 0x0509 (2 bytes, int16u[1])
+  | | | | 24) NoiseReduction = 0
+  | | | |     - Tag 0x050a (2 bytes, int16u[1])
+  | | | | 25) DistortionCorrection = 0
+  | | | |     - Tag 0x050b (2 bytes, int16u[1])
+  | | | | 26) ShadingCompensation = 0
+  | | | |     - Tag 0x050c (2 bytes, int16u[1])
+  | | | | 27) CompressionFactor = 4 (4/1)
+  | | | |     - Tag 0x050d (8 bytes, rational64u[1])
+  | | | | 28) Olympus_CameraSettings_0x050e = 0
+  | | | |     - Tag 0x050e (2 bytes, int16u[1])
+  | | | | 29) Gradation = 0 -1 1
+  | | | |     - Tag 0x050f (6 bytes, int16s[3])
+  | | | | 30) DriveMode = 0 0 0
+  | | | |     - Tag 0x0600 (6 bytes, int16u[3])
+  | | | | 31) PanoramaMode = 0 0
+  | | | |     - Tag 0x0601 (4 bytes, int16u[2])
+  | | | | 32) ImageQuality2 = 3
+  | | | |     - Tag 0x0603 (2 bytes, int16u[1])
+  | | | | 33) Olympus_CameraSettings_0x0800 = 1
+  | | | |     - Tag 0x0800 (2 bytes, int16u[1])
+  | | | | 34) ManometerPressure = 0
+  | | | |     - Tag 0x0900 (2 bytes, int16u[1])
+  | | | | 35) ManometerReading = 0 0
+  | | | |     - Tag 0x0901 (8 bytes, int32s[2])
+  | | | 11) RawDevelopmentIFD (SubDirectory) -->
+  | | |     - Tag 0x2030 (4 bytes, ifd[1])
+  | | | + [MakerNotes directory with 2 entries]
+  | | | | 0)  RawDevVersion = 0100
+  | | | |     - Tag 0x0000 (4 bytes, undef[4])
+  | | | | 1)  RawDevEditStatus = 0
+  | | | |     - Tag 0x010b (2 bytes, int16u[1])
+  | | | 12) ImageProcessingIFD (SubDirectory) -->
+  | | |     - Tag 0x2040 (4 bytes, ifd[1])
+  | | | + [MakerNotes directory with 24 entries]
+  | | | | 0)  ImageProcessingVersion = 0111
+  | | | |     - Tag 0x0000 (4 bytes, undef[4])
+  | | | | 1)  WB_RBLevels = 536 390
+  | | | |     - Tag 0x0100 (4 bytes, int16u[2])
+  | | | | 2)  WB_GLevel = 0
+  | | | |     - Tag 0x011f (2 bytes, int16u[1])
+  | | | | 3)  ColorMatrix = 348 -54 -42 -56 422 -114 -2 -132 388
+  | | | |     - Tag 0x0200 (18 bytes, int16u[9] read as int16s[9])
+  | | | | 4)  Enhancer = 38
+  | | | |     - Tag 0x0300 (2 bytes, int16u[1])
+  | | | | 5)  CoringFilter = 15
+  | | | |     - Tag 0x0310 (2 bytes, int16u[1])
+  | | | | 6)  BlackLevel2 = 63 63 63 63
+  | | | |     - Tag 0x0600 (8 bytes, int16u[4])
+  | | | | 7)  Olympus_ImageProcessing_0x0800 = -0.00417476473376155 -0.0002546840696595[snip]
+  | | | |     - Tag 0x0800 (36 bytes, float[9])
+  | | | | 8)  Olympus_ImageProcessing_0x0801 = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+  | | | |     - Tag 0x0801 (32 bytes, int16u[16])
+  | | | | 9)  Olympus_ImageProcessing_0x0802 = undef (0/0)
+  | | | |     - Tag 0x0802 (8 bytes, rational64u[1])
+  | | | | 10) Olympus_ImageProcessing_0x1000 = 0 0
+  | | | |     - Tag 0x1000 (4 bytes, int16u[2])
+  | | | | 11) Olympus_ImageProcessing_0x1001 = 0 0
+  | | | |     - Tag 0x1001 (4 bytes, int16u[2])
+  | | | | 12) Olympus_ImageProcessing_0x1002 = 0 0
+  | | | |     - Tag 0x1002 (4 bytes, int16u[2])
+  | | | | 13) Olympus_ImageProcessing_0x1003 = 8
+  | | | |     - Tag 0x1003 (2 bytes, int16u[1])
+  | | | | 14) Olympus_ImageProcessing_0x1004 = 1809
+  | | | |     - Tag 0x1004 (2 bytes, int16u[1])
+  | | | | 15) Olympus_ImageProcessing_0x1005 = 7 7
+  | | | |     - Tag 0x1005 (4 bytes, int16u[2])
+  | | | | 16) Olympus_ImageProcessing_0x1006 = 101 197 101 197 101 196 102 196
+  | | | |     - Tag 0x1006 (16 bytes, int16u[8])
+  | | | | 17) Olympus_ImageProcessing_0x1007 = 909 3 0 0 0
+  | | | |     - Tag 0x1007 (10 bytes, int16u[5])
+  | | | | 18) Olympus_ImageProcessing_0x1008 = 1
+  | | | |     - Tag 0x1008 (2 bytes, int16u[1])
+  | | | | 19) Olympus_ImageProcessing_0x1009 = 0 0 0
+  | | | |     - Tag 0x1009 (6 bytes, int16u[3])
+  | | | | 20) Olympus_ImageProcessing_0x100a = 0 0 439
+  | | | |     - Tag 0x100a (6 bytes, int16u[3])
+  | | | | 21) NoiseReduction2 = 0
+  | | | |     - Tag 0x1010 (2 bytes, int16u[1])
+  | | | | 22) DistortionCorrection2 = 0
+  | | | |     - Tag 0x1011 (2 bytes, int16u[1])
+  | | | | 23) ShadingCompensation2 = 1
+  | | | |     - Tag 0x1012 (2 bytes, int16u[1])
+  | | | 13) FocusInfoIFD (SubDirectory) -->
+  | | |     - Tag 0x2050 (4 bytes, ifd[1])
+  | | | + [MakerNotes directory with 54 entries]
+  | | | | 0)  FocusInfoVersion = 0100
+  | | | |     - Tag 0x0000 (4 bytes, undef[4])
+  | | | | 1)  Olympus_FocusInfo_0x0200 = 2041 0
+  | | | |     - Tag 0x0200 (4 bytes, int16s[2])
+  | | | | 2)  Olympus_FocusInfo_0x0201 = 1109 0
+  | | | |     - Tag 0x0201 (4 bytes, int16s[2])
+  | | | | 3)  Olympus_FocusInfo_0x0202 = 2065 0
+  | | | |     - Tag 0x0202 (4 bytes, int16s[2])
+  | | | | 4)  Olympus_FocusInfo_0x0203 = 2826
+  | | | |     - Tag 0x0203 (2 bytes, int16s[1])
+  | | | | 5)  Olympus_FocusInfo_0x0204 = 3086 3072 2897 2928 2957 2987 3011 3034 3051 3[snip]
+  | | | |     - Tag 0x0204 (166 bytes, int16s[83])
+  | | | | 6)  AutoFocus = 255
+  | | | |     - Tag 0x0209 (2 bytes, int16u[1])
+  | | | | 7)  Olympus_FocusInfo_0x020a = 0
+  | | | |     - Tag 0x020a (2 bytes, int16u[1])
+  | | | | 8)  Olympus_FocusInfo_0x020b = 0
+  | | | |     - Tag 0x020b (2 bytes, int16u[1])
+  | | | | 9)  Olympus_FocusInfo_0x020d = 0
+  | | | |     - Tag 0x020d (4 bytes, int32u[1])
+  | | | | 10) Olympus_FocusInfo_0x020e = 0 0 0 0 0
+  | | | |     - Tag 0x020e (20 bytes, int32u[5])
+  | | | | 11) Olympus_FocusInfo_0x020f = 0 0 0 0 0
+  | | | |     - Tag 0x020f (20 bytes, int32u[5])
+  | | | | 12) SceneDetect = 0
+  | | | |     - Tag 0x0210 (2 bytes, int16u[1])
+  | | | | 13) SceneArea = 0 0 0 0 0 0 0 0
+  | | | |     - Tag 0x0211 (32 bytes, int32u[8])
+  | | | | 14) SceneDetectData = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0[snip]
+  | | | |     - Tag 0x0212 (2880 bytes, int32u[720])
+  | | | | 15) Olympus_FocusInfo_0x0213 = 0
+  | | | |     - Tag 0x0213 (2 bytes, int16u[1])
+  | | | | 16) Olympus_FocusInfo_0x0214 = 0
+  | | | |     - Tag 0x0214 (2 bytes, int16u[1])
+  | | | | 17) Olympus_FocusInfo_0x0216 = 3951
+  | | | |     - Tag 0x0216 (4 bytes, int32u[1])
+  | | | | 18) Olympus_FocusInfo_0x0217 = 288
+  | | | |     - Tag 0x0217 (2 bytes, int16u[1])
+  | | | | 19) Olympus_FocusInfo_0x0218 = 167
+  | | | |     - Tag 0x0218 (2 bytes, int16u[1])
+  | | | | 20) ZoomStepCount = 13
+  | | | |     - Tag 0x0300 (2 bytes, int16u[1])
+  | | | | 21) FocusStepCount = 321
+  | | | |     - Tag 0x0301 (2 bytes, int16u[1])
+  | | | | 22) Olympus_FocusInfo_0x0302 = 0
+  | | | |     - Tag 0x0302 (2 bytes, int16u[1])
+  | | | | 23) FocusStepInfinity = 320
+  | | | |     - Tag 0x0303 (2 bytes, int16u[1])
+  | | | | 24) FocusStepNear = 375
+  | | | |     - Tag 0x0304 (2 bytes, int16u[1])
+  | | | | 25) FocusDistance = 100000 1
+  | | | |     - Tag 0x0305 (8 bytes, rational64u[1] read as int32u[2])
+  | | | | 26) Olympus_FocusInfo_0x0307 = 0
+  | | | |     - Tag 0x0307 (2 bytes, int16u[1])
+  | | | | 27) AFPoint = 0
+  | | | |     - Tag 0x0308 (2 bytes, int16u[1])
+  | | | | 28) Olympus_FocusInfo_0x030c = 0 0
+  | | | |     - Tag 0x030c (4 bytes, int16u[2])
+  | | | | 29) Olympus_FocusInfo_0x030f = 400
+  | | | |     - Tag 0x030f (2 bytes, int16s[1])
+  | | | | 30) Olympus_FocusInfo_0x0310 = 0
+  | | | |     - Tag 0x0310 (2 bytes, int16u[1])
+  | | | | 31) Olympus_FocusInfo_0x0311 = 0
+  | | | |     - Tag 0x0311 (2 bytes, int16u[1])
+  | | | | 32) Olympus_FocusInfo_0x0312 = 76 906
+  | | | |     - Tag 0x0312 (4 bytes, int16u[2])
+  | | | | 33) Olympus_FocusInfo_0x0313 = 302
+  | | | |     - Tag 0x0313 (2 bytes, int16s[1])
+  | | | | 34) Olympus_FocusInfo_0x0314 = 10
+  | | | |     - Tag 0x0314 (2 bytes, int16u[1])
+  | | | | 35) Olympus_FocusInfo_0x0315 = 0
+  | | | |     - Tag 0x0315 (2 bytes, int16s[1])
+  | | | | 36) Olympus_FocusInfo_0x0316 = 3086 0 0 0 0 0 0 0 0 0
+  | | | |     - Tag 0x0316 (20 bytes, int16s[10])
+  | | | | 37) Olympus_FocusInfo_0x031c = 0
+  | | | |     - Tag 0x031c (2 bytes, int16s[1])
+  | | | | 38) Olympus_FocusInfo_0x031d = 319
+  | | | |     - Tag 0x031d (2 bytes, int16s[1])
+  | | | | 39) Olympus_FocusInfo_0x031e = 321
+  | | | |     - Tag 0x031e (2 bytes, int16s[1])
+  | | | | 40) Olympus_FocusInfo_0x0321 = 321
+  | | | |     - Tag 0x0321 (2 bytes, int16s[1])
+  | | | | 41) Olympus_FocusInfo_0x0322 = 0
+  | | | |     - Tag 0x0322 (2 bytes, int16s[1])
+  | | | | 42) Olympus_FocusInfo_0x0323 = 0
+  | | | |     - Tag 0x0323 (2 bytes, int16s[1])
+  | | | | 43) Olympus_FocusInfo_0x0324 = 366
+  | | | |     - Tag 0x0324 (2 bytes, int16s[1])
+  | | | | 44) Olympus_FocusInfo_0x1200 = 0
+  | | | |     - Tag 0x1200 (2 bytes, int16u[1])
+  | | | | 45) ExternalFlash = 0 0
+  | | | |     - Tag 0x1201 (4 bytes, int16u[2])
+  | | | | 46) Olympus_FocusInfo_0x1202 = 0
+  | | | |     - Tag 0x1202 (2 bytes, int16u[1])
+  | | | | 47) ExternalFlashGuideNumber = 0 (0/1)
+  | | | |     - Tag 0x1203 (8 bytes, rational64s[1])
+  | | | | 48) ExternalFlashBounce = 0
+  | | | |     - Tag 0x1204 (2 bytes, int16u[1])
+  | | | | 49) ExternalFlashZoom = 0 (0/1)
+  | | | |     - Tag 0x1205 (8 bytes, rational64u[1])
+  | | | | 50) Olympus_FocusInfo_0x1206 = 0
+  | | | |     - Tag 0x1206 (2 bytes, int16u[1])
+  | | | | 51) Olympus_FocusInfo_0x1207 = 0
+  | | | |     - Tag 0x1207 (2 bytes, int16u[1])
+  | | | | 52) InternalFlash = 0
+  | | | |     - Tag 0x1208 (2 bytes, int16u[1])
+  | | | | 53) ImageStabilization = .00d.x.K.......T......T...O......
+  | | | |     - Tag 0x1600 (53 bytes, undef[53])
+  | | 15) UserComment =                                                                [snip]
+  | |     - Tag 0x9286 (125 bytes, undef[125])
+  | | 16) FlashpixVersion = 0100
+  | |     - Tag 0xa000 (4 bytes, undef[4])
+  | | 17) ColorSpace = 1
+  | |     - Tag 0xa001 (2 bytes, int16u[1])
+  | | 18) ExifImageWidth = 3072
+  | |     - Tag 0xa002 (4 bytes, int32u[1])
+  | | 19) ExifImageHeight = 2304
+  | |     - Tag 0xa003 (4 bytes, int32u[1])
+  | | 20) InteropOffset (SubDirectory) -->
+  | |     - Tag 0xa005 (4 bytes, int32u[1])
+  | | + [InteropIFD directory with 2 entries]
+  | | | 0)  InteropIndex = R98
+  | | |     - Tag 0x0001 (4 bytes, string[4])
+  | | | 1)  InteropVersion = 0100
+  | | |     - Tag 0x0002 (4 bytes, undef[4])
+  | | 21) FileSource = 3
+  | |     - Tag 0xa300 (1 bytes, undef[1])
+  | | 22) CustomRendered = 0
+  | |     - Tag 0xa401 (2 bytes, int16u[1])
+  | | 23) ExposureMode = 1
+  | |     - Tag 0xa402 (2 bytes, int16u[1])
+  | | 24) WhiteBalance = 0
+  | |     - Tag 0xa403 (2 bytes, int16u[1])
+  | | 25) DigitalZoomRatio = 1 (100/100)
+  | |     - Tag 0xa404 (8 bytes, rational64u[1])
+  | | 26) SceneCaptureType = 0
+  | |     - Tag 0xa406 (2 bytes, int16u[1])
+  | | 27) GainControl = 0
+  | |     - Tag 0xa407 (2 bytes, int16u[1])
+  | | 28) Contrast = 0
+  | |     - Tag 0xa408 (2 bytes, int16u[1])
+  | | 29) Saturation = 0
+  | |     - Tag 0xa409 (2 bytes, int16u[1])
+  | | 30) Sharpness = 0
+  | |     - Tag 0xa40a (2 bytes, int16u[1])
+  | 11) PrintIM (SubDirectory) -->
+  |     - Tag 0xc4a5 (528 bytes, undef[528])
+  | + [PrintIM directory with 37 entries]
+  | | PrintIMVersion = 0300
+  | | - Tag 'PrintIMVersion' (4 bytes)
+  | | 0)  PrintIM_0x0001 = 1310740
+  | |     - Tag 0x0001 (4 bytes)
+  | | 1)  PrintIM_0x0002 = 1
+  | |     - Tag 0x0002 (4 bytes)
+  | | 2)  PrintIM_0x0003 = 240
+  | |     - Tag 0x0003 (4 bytes)
+  | | 3)  PrintIM_0x0007 = 0
+  | |     - Tag 0x0007 (4 bytes)
+  | | 4)  PrintIM_0x0008 = 0
+  | |     - Tag 0x0008 (4 bytes)
+  | | 5)  PrintIM_0x0009 = 0
+  | |     - Tag 0x0009 (4 bytes)
+  | | 6)  PrintIM_0x000a = 0
+  | |     - Tag 0x000a (4 bytes)
+  | | 7)  PrintIM_0x000b = 312
+  | |     - Tag 0x000b (4 bytes)
+  | | 8)  PrintIM_0x000c = 0
+  | |     - Tag 0x000c (4 bytes)
+  | | 9)  PrintIM_0x000d = 0
+  | |     - Tag 0x000d (4 bytes)
+  | | 10) PrintIM_0x000e = 336
+  | |     - Tag 0x000e (4 bytes)
+  | | 11) PrintIM_0x0010 = 352
+  | |     - Tag 0x0010 (4 bytes)
+  | | 12) PrintIM_0x0020 = 436
+  | |     - Tag 0x0020 (4 bytes)
+  | | 13) PrintIM_0x0100 = 3
+  | |     - Tag 0x0100 (4 bytes)
+  | | 14) PrintIM_0x0101 = 255
+  | |     - Tag 0x0101 (4 bytes)
+  | | 15) PrintIM_0x0102 = 131
+  | |     - Tag 0x0102 (4 bytes)
+  | | 16) PrintIM_0x0103 = 128
+  | |     - Tag 0x0103 (4 bytes)
+  | | 17) PrintIM_0x0104 = 131
+  | |     - Tag 0x0104 (4 bytes)
+  | | 18) PrintIM_0x0105 = 131
+  | |     - Tag 0x0105 (4 bytes)
+  | | 19) PrintIM_0x0106 = 131
+  | |     - Tag 0x0106 (4 bytes)
+  | | 20) PrintIM_0x0107 = 8421504
+  | |     - Tag 0x0107 (4 bytes)
+  | | 21) PrintIM_0x0110 = 128
+  | |     - Tag 0x0110 (4 bytes)
+  | | 22) PrintIM_0x0200 = 0
+  | |     - Tag 0x0200 (4 bytes)
+  | | 23) PrintIM_0x0207 = 0
+  | |     - Tag 0x0207 (4 bytes)
+  | | 24) PrintIM_0x0208 = 0
+  | |     - Tag 0x0208 (4 bytes)
+  | | 25) PrintIM_0x0209 = 0
+  | |     - Tag 0x0209 (4 bytes)
+  | | 26) PrintIM_0x020a = 0
+  | |     - Tag 0x020a (4 bytes)
+  | | 27) PrintIM_0x020b = 504
+  | |     - Tag 0x020b (4 bytes)
+  | | 28) PrintIM_0x020d = 0
+  | |     - Tag 0x020d (4 bytes)
+  | | 29) PrintIM_0x0220 = 470
+  | |     - Tag 0x0220 (4 bytes)
+  | | 30) PrintIM_0x0300 = 3
+  | |     - Tag 0x0300 (4 bytes)
+  | | 31) PrintIM_0x0301 = 255
+  | |     - Tag 0x0301 (4 bytes)
+  | | 32) PrintIM_0x0302 = 131
+  | |     - Tag 0x0302 (4 bytes)
+  | | 33) PrintIM_0x0303 = 131
+  | |     - Tag 0x0303 (4 bytes)
+  | | 34) PrintIM_0x0306 = 131
+  | |     - Tag 0x0306 (4 bytes)
+  | | 35) PrintIM_0x0310 = 128
+  | |     - Tag 0x0310 (4 bytes)
+  | | 36) PrintIM_0x0400 = 0
+  | |     - Tag 0x0400 (4 bytes)
+  + [IFD1 directory with 6 entries]
+  | 0)  Compression = 6
+  |     - Tag 0x0103 (2 bytes, int16u[1])
+  | 1)  XResolution = 72 (72/1)
+  |     - Tag 0x011a (8 bytes, rational64u[1])
+  | 2)  YResolution = 72 (72/1)
+  |     - Tag 0x011b (8 bytes, rational64u[1])
+  | 3)  ResolutionUnit = 2
+  |     - Tag 0x0128 (2 bytes, int16u[1])
+  | 4)  ThumbnailOffset = 7046
+  |     - Tag 0x0201 (4 bytes, int32u[1])
+  | 5)  ThumbnailLength = 28
+  |     - Tag 0x0202 (4 bytes, int32u[1])
+JPEG DQT (130 bytes):
+JPEG SOF0 (15 bytes):
+  ImageWidth = 8
+  ImageHeight = 8
+  EncodingProcess = 0
+  BitsPerSample = 8
+  ColorComponents = 3
+JPEG DHT (73 bytes):
+JPEG SOS

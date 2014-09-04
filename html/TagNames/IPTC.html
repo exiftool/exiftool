@@ -1,0 +1,902 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>IPTC Tags</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h2 class=top>IPTC Tags</h2>
+<p>
+The tags listed below are part of the International Press Telecommunications
+Council (IPTC) and the Newspaper Association of America (NAA) Information
+Interchange Model (IIM).  This is an older meta information format, slowly
+being phased out in favor of XMP -- the newer IPTCCore specification uses
+XMP format.  IPTC information may be found in JPG, TIFF, PNG, MIFF, PS, PDF,
+PSD, XCF and DNG images.</p>
+
+<p>IPTC information is separated into different records, each of which has its
+own set of tags.  See
+<a href="http://www.iptc.org/std/IIM/4.1/specification/IIMV4.1.pdf">http://www.iptc.org/std/IIM/4.1/specification/IIMV4.1.pdf</a> for the
+official IPTC IIM specification.</p>
+
+<p>This specification dictates a length for ASCII (<code>string</code> or <code>digits</code>) and
+binary (<code>undef</code>) values.  These lengths are given in square brackets after
+the <b>Writable</b> format name.  For tags where a range of lengths is allowed,
+the minimum and maximum lengths are separated by a comma within the
+brackets.  IPTC strings are not null terminated.  When writing, ExifTool
+issues a minor warning and truncates the value if it is longer than allowed
+by the IPTC specification. Minor errors may be ignored with the
+IgnoreMinorErrors (-m) option, allowing longer values to be written, but
+beware that values like this may cause problems for some other IPTC readers.</p>
+
+<p>Separate IPTC date and time tags may be written with a combined date/time
+value and ExifTool automagically takes the appropriate part of the date/time
+string depending on whether a date or time tag is being written.  This is
+very useful when copying date/time values to IPTC from other metadata
+formats.</p>
+
+<p>IPTC time values include a timezone offset.  If written with a value which
+doesn&#39;t include a timezone then the current local timezone offset is used
+(unless written with a combined date/time, in which case the local timezone
+offset at the specified date/time is used, which may be different due to
+changes in daylight savings time).</p>
+
+<p>Note that it is not uncommon for IPTC to be found in non-standard locations
+in JPEG and TIFF-based images.  When reading, the family 1 group name has a
+number added for non-standard IPTC (&quot;IPTC2&quot;, &quot;IPTC3&quot;, etc), but when writing
+only &quot;IPTC&quot; may be specified as the group.  To keep the IPTC consistent,
+ExifTool updates tags in all existing IPTC locations, but will create a new
+IPTC group only in the standard location.
+</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Record</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='1 = 0x1'>1</td>
+<td>IPTCEnvelope</td>
+<td class=c>-</td>
+<td>--&gt; <a href='IPTC.html#EnvelopeRecord'>IPTC EnvelopeRecord Tags</a></td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>IPTCApplication</td>
+<td class=c>-</td>
+<td>--&gt; <a href='IPTC.html#ApplicationRecord'>IPTC ApplicationRecord Tags</a></td></tr>
+<tr>
+<td class=r title='3 = 0x3'>3</td>
+<td>IPTCNewsPhoto</td>
+<td class=c>-</td>
+<td>--&gt; <a href='IPTC.html#NewsPhoto'>IPTC NewsPhoto Tags</a></td></tr>
+<tr class=b>
+<td class=r title='7 = 0x7'>7</td>
+<td>IPTCPreObjectData</td>
+<td class=c>-</td>
+<td>--&gt; <a href='IPTC.html#PreObjectData'>IPTC PreObjectData Tags</a></td></tr>
+<tr>
+<td class=r title='8 = 0x8'>8</td>
+<td>IPTCObjectData</td>
+<td class=c>-</td>
+<td>--&gt; <a href='IPTC.html#ObjectData'>IPTC ObjectData Tags</a></td></tr>
+<tr class=b>
+<td class=r title='9 = 0x9'>9</td>
+<td>IPTCPostObjectData</td>
+<td class=c>-</td>
+<td>--&gt; <a href='IPTC.html#PostObjectData'>IPTC PostObjectData Tags</a></td></tr>
+<tr>
+<td class=r title='240 = 0xf0'>240</td>
+<td>IPTCFotoStation</td>
+<td class=c>-</td>
+<td>--&gt; <a href='IPTC.html#FotoStation'>IPTC FotoStation Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='EnvelopeRecord'>IPTC EnvelopeRecord Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>EnvelopeRecordVersion</td>
+<td class=c title=' : = Mandatory'>int16u:</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='5 = 0x5'>5</td>
+<td>Destination</td>
+<td class=c title=' + = List'>string[0,1024]+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='20 = 0x14'>20</td>
+<td>FileFormat</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = No ObjectData
+  <br>1 = IPTC-NAA Digital Newsphoto Parameter Record
+  <br>2 = IPTC7901 Recommended Message Format
+  <br>3 = Tagged Image File Format (Adobe/Aldus Image data)
+  <br>4 = Illustrator (Adobe Graphics data)
+  <br>5 = AppleSingle (Apple Computer Inc)
+  <br>6 = NAA 89-3 (ANPA 1312)
+  <br>7 = MacBinary II
+  <br>8 = IPTC Unstructured Character Oriented File Format (UCOFF)
+  <br>9 = United Press International ANPA 1312 variant
+  <br>10 = United Press International Down-Load Message
+  <br>11 = JPEG File Interchange (JFIF)
+  <br>12 = Photo-CD Image-Pac (Eastman Kodak)
+  <br>13 = Bit Mapped Graphics File [.BMP] (Microsoft)
+  <br>14 = Digital Audio File [.WAV] (Microsoft &amp; Creative Labs)
+  <br>15 = Audio plus Moving Video [.AVI] (Microsoft)
+  <br>16 = PC DOS/Windows Executable Files [.COM][.EXE]
+  <br>17 = Compressed Binary File [.ZIP] (PKWare Inc)
+  <br>18 = Audio Interchange File Format AIFF (Apple Computer Inc)
+  <br>19 = RIFF Wave (Microsoft Corporation)
+  <br>20 = Freehand (Macromedia/Aldus)
+  <br>21 = Hypertext Markup Language [.HTML] (The Internet Society)
+  <br>22 = MPEG 2 Audio Layer 2 (Musicom), ISO/IEC
+  <br>23 = MPEG 2 Audio Layer 3, ISO/IEC
+  <br>24 = Portable Document File [.PDF] Adobe
+  <br>25 = News Industry Text Format (NITF)
+  <br>26 = Tape Archive [.TAR]
+  <br>27 = Tidningarnas Telegrambyra NITF version (TTNITF DTD)
+  <br>28 = Ritzaus Bureau NITF version (RBNITF DTD)
+  <br>29 = Corel Draw [.CDR]</span></td></tr>
+<tr class=b>
+<td class=r title='22 = 0x16'>22</td>
+<td>FileVersion</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='30 = 0x1e'>30</td>
+<td>ServiceIdentifier</td>
+<td class=c>string[0,10]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='40 = 0x28'>40</td>
+<td>EnvelopeNumber</td>
+<td class=c>digits[8]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='50 = 0x32'>50</td>
+<td>ProductID</td>
+<td class=c title=' + = List'>string[0,32]+</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='60 = 0x3c'>60</td>
+<td>EnvelopePriority</td>
+<td class=c>digits[1]</td>
+<td><table class=cols><tr>
+  <td>0 = 0 (reserved)
+  <br>1 = 1 (most urgent)
+  <br>2 = 2
+  <br>3 = 3
+  <br>4 = 4
+  <br>5 = 5 (normal urgency)
+  <br>6 = 6
+  <br>7 = 7
+  <br>8 = 8 (least urgent)
+  <br>9 = 9 (user-defined priority)</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='70 = 0x46'>70</td>
+<td>DateSent</td>
+<td class=c>digits[8]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='80 = 0x50'>80</td>
+<td>TimeSent</td>
+<td class=c>string[11]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='90 = 0x5a'>90</td>
+<td>CodedCharacterSet</td>
+<td class=c title=' ! = Unsafe'>string[0,32]!</td>
+<td><span class=s><span class=n>(values are entered in the form &quot;ESC X Y[, ...]&quot;.  The escape sequence for
+UTF-8 character coding is &quot;ESC % G&quot;, but this is displayed as &quot;UTF8&quot; for
+convenience.  Either string may be used when writing.  The value of this tag
+affects the decoding of string values in the Application and NewsPhoto
+records.  This tag is marked as &quot;unsafe&quot; to prevent it from being copied by
+default in a group operation because existing tags in the destination image
+may use a different encoding.  When creating a new IPTC record from scratch,
+it is suggested that this be set to &quot;UTF8&quot; if special characters are a
+possibility)</span></span></td></tr>
+<tr class=b>
+<td class=r title='100 = 0x64'>100</td>
+<td>UniqueObjectName</td>
+<td class=c>string[14,80]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='120 = 0x78'>120</td>
+<td>ARMIdentifier</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='122 = 0x7a'>122</td>
+<td>ARMVersion</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ApplicationRecord'>IPTC ApplicationRecord Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>ApplicationRecordVersion</td>
+<td class=c title=' : = Mandatory'>int16u:</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='3 = 0x3'>3</td>
+<td>ObjectTypeReference</td>
+<td class=c>string[3,67]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='4 = 0x4'>4</td>
+<td>ObjectAttributeReference</td>
+<td class=c title=' + = List'>string[4,68]+</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='5 = 0x5'>5</td>
+<td>ObjectName</td>
+<td class=c>string[0,64]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='7 = 0x7'>7</td>
+<td>EditStatus</td>
+<td class=c>string[0,64]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='8 = 0x8'>8</td>
+<td>EditorialUpdate</td>
+<td class=c>digits[2]</td>
+<td><span class=s>01 = Additional language</span></td></tr>
+<tr>
+<td class=r title='10 = 0xa'>10</td>
+<td>Urgency</td>
+<td class=c>digits[1]</td>
+<td><table class=cols><tr>
+  <td>0 = 0 (reserved)
+  <br>1 = 1 (most urgent)
+  <br>2 = 2
+  <br>3 = 3
+  <br>4 = 4
+  <br>5 = 5 (normal urgency)
+  <br>6 = 6
+  <br>7 = 7
+  <br>8 = 8 (least urgent)
+  <br>9 = 9 (user-defined priority)</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='12 = 0xc'>12</td>
+<td>SubjectReference</td>
+<td class=c title=' + = List'>string[13,236]+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='15 = 0xf'>15</td>
+<td>Category</td>
+<td class=c>string[0,3]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='20 = 0x14'>20</td>
+<td>SupplementalCategories</td>
+<td class=c title=' + = List'>string[0,32]+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='22 = 0x16'>22</td>
+<td>FixtureIdentifier</td>
+<td class=c>string[0,32]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='25 = 0x19'>25</td>
+<td>Keywords</td>
+<td class=c title=' + = List'>string[0,64]+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='26 = 0x1a'>26</td>
+<td>ContentLocationCode</td>
+<td class=c title=' + = List'>string[3]+</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='27 = 0x1b'>27</td>
+<td>ContentLocationName</td>
+<td class=c title=' + = List'>string[0,64]+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='30 = 0x1e'>30</td>
+<td>ReleaseDate</td>
+<td class=c>digits[8]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='35 = 0x23'>35</td>
+<td>ReleaseTime</td>
+<td class=c>string[11]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='37 = 0x25'>37</td>
+<td>ExpirationDate</td>
+<td class=c>digits[8]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='38 = 0x26'>38</td>
+<td>ExpirationTime</td>
+<td class=c>string[11]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='40 = 0x28'>40</td>
+<td>SpecialInstructions</td>
+<td class=c>string[0,256]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='42 = 0x2a'>42</td>
+<td>ActionAdvised</td>
+<td class=c>digits[2]</td>
+<td><span class=s>01 = Object Kill
+  <br>02 = Object Replace
+  <br>03 = Object Append
+  <br>04 = Object Reference</span></td></tr>
+<tr>
+<td class=r title='45 = 0x2d'>45</td>
+<td>ReferenceService</td>
+<td class=c title=' + = List'>string[0,10]+</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='47 = 0x2f'>47</td>
+<td>ReferenceDate</td>
+<td class=c title=' + = List'>digits[8]+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='50 = 0x32'>50</td>
+<td>ReferenceNumber</td>
+<td class=c title=' + = List'>digits[8]+</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='55 = 0x37'>55</td>
+<td>DateCreated</td>
+<td class=c>digits[8]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='60 = 0x3c'>60</td>
+<td>TimeCreated</td>
+<td class=c>string[11]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='62 = 0x3e'>62</td>
+<td>DigitalCreationDate</td>
+<td class=c>digits[8]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='63 = 0x3f'>63</td>
+<td>DigitalCreationTime</td>
+<td class=c>string[11]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='65 = 0x41'>65</td>
+<td>OriginatingProgram</td>
+<td class=c>string[0,32]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='70 = 0x46'>70</td>
+<td>ProgramVersion</td>
+<td class=c>string[0,10]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='75 = 0x4b'>75</td>
+<td>ObjectCycle</td>
+<td class=c>string[1]</td>
+<td><span class=s>&#39;a&#39; = Morning
+  <br>&#39;b&#39; = Both Morning and Evening
+  <br>&#39;p&#39; = Evening</span></td></tr>
+<tr>
+<td class=r title='80 = 0x50'>80</td>
+<td>By-line</td>
+<td class=c title=' + = List'>string[0,32]+</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='85 = 0x55'>85</td>
+<td>By-lineTitle</td>
+<td class=c title=' + = List'>string[0,32]+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='90 = 0x5a'>90</td>
+<td>City</td>
+<td class=c>string[0,32]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='92 = 0x5c'>92</td>
+<td>Sub-location</td>
+<td class=c>string[0,32]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='95 = 0x5f'>95</td>
+<td>Province-State</td>
+<td class=c>string[0,32]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='100 = 0x64'>100</td>
+<td>Country-PrimaryLocationCode</td>
+<td class=c>string[3]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='101 = 0x65'>101</td>
+<td>Country-PrimaryLocationName</td>
+<td class=c>string[0,64]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='103 = 0x67'>103</td>
+<td>OriginalTransmissionReference</td>
+<td class=c>string[0,32]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='105 = 0x69'>105</td>
+<td>Headline</td>
+<td class=c>string[0,256]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='110 = 0x6e'>110</td>
+<td>Credit</td>
+<td class=c>string[0,32]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='115 = 0x73'>115</td>
+<td>Source</td>
+<td class=c>string[0,32]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='116 = 0x74'>116</td>
+<td>CopyrightNotice</td>
+<td class=c>string[0,128]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='118 = 0x76'>118</td>
+<td>Contact</td>
+<td class=c title=' + = List'>string[0,128]+</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='120 = 0x78'>120</td>
+<td>Caption-Abstract</td>
+<td class=c>string[0,2000]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='121 = 0x79'>121</td>
+<td>LocalCaption</td>
+<td class=c>string[0,256]</td>
+<td><span class=s><span class=n>(I haven&#39;t found a reference for the format of tags 121, 184-188 and
+225-232, so I have just make them writable as strings with
+reasonable length.  Beware that if this is wrong, other utilities
+won&#39;t be able to read these tags as written by ExifTool)</span></span></td></tr>
+<tr class=b>
+<td class=r title='122 = 0x7a'>122</td>
+<td>Writer-Editor</td>
+<td class=c title=' + = List'>string[0,32]+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='125 = 0x7d'>125</td>
+<td>RasterizedCaption</td>
+<td class=c>undef[7360]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='130 = 0x82'>130</td>
+<td>ImageType</td>
+<td class=c>string[2]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='131 = 0x83'>131</td>
+<td>ImageOrientation</td>
+<td class=c>string[1]</td>
+<td><span class=s>&#39;L&#39; = Landscape
+  <br>&#39;P&#39; = Portrait
+  <br>&#39;S&#39; = Square</span></td></tr>
+<tr class=b>
+<td class=r title='135 = 0x87'>135</td>
+<td>LanguageIdentifier</td>
+<td class=c>string[2,3]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='150 = 0x96'>150</td>
+<td>AudioType</td>
+<td class=c>string[2]</td>
+<td><table class=cols><tr>
+  <td>&#39;0T&#39; = Text Only
+  <br>&#39;1A&#39; = Mono Actuality
+  <br>&#39;1C&#39; = Mono Question and Answer Session
+  <br>&#39;1M&#39; = Mono Music
+  <br>&#39;1Q&#39; = Mono Response to a Question
+  <br>&#39;1R&#39; = Mono Raw Sound
+  <br>&#39;1S&#39; = Mono Scener
+  <br>&#39;1V&#39; = Mono Voicer
+  <br>&#39;1W&#39; = Mono Wrap
+  <br>&#39;2A&#39; = Stereo Actuality
+  <br>&#39;2C&#39; = Stereo Question and Answer Session
+  <br>&#39;2M&#39; = Stereo Music
+  <br>&#39;2Q&#39; = Stereo Response to a Question
+  <br>&#39;2R&#39; = Stereo Raw Sound
+  <br>&#39;2S&#39; = Stereo Scener
+  <br>&#39;2V&#39; = Stereo Voicer
+  <br>&#39;2W&#39; = Stereo Wrap</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='151 = 0x97'>151</td>
+<td>AudioSamplingRate</td>
+<td class=c>digits[6]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='152 = 0x98'>152</td>
+<td>AudioSamplingResolution</td>
+<td class=c>digits[2]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='153 = 0x99'>153</td>
+<td>AudioDuration</td>
+<td class=c>digits[6]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='154 = 0x9a'>154</td>
+<td>AudioOutcue</td>
+<td class=c>string[0,64]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='184 = 0xb8'>184</td>
+<td>JobID</td>
+<td class=c>string[0,64]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='185 = 0xb9'>185</td>
+<td>MasterDocumentID</td>
+<td class=c>string[0,256]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='186 = 0xba'>186</td>
+<td>ShortDocumentID</td>
+<td class=c>string[0,64]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='187 = 0xbb'>187</td>
+<td>UniqueDocumentID</td>
+<td class=c>string[0,128]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='188 = 0xbc'>188</td>
+<td>OwnerID</td>
+<td class=c>string[0,128]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='200 = 0xc8'>200</td>
+<td>ObjectPreviewFileFormat</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = No ObjectData
+  <br>1 = IPTC-NAA Digital Newsphoto Parameter Record
+  <br>2 = IPTC7901 Recommended Message Format
+  <br>3 = Tagged Image File Format (Adobe/Aldus Image data)
+  <br>4 = Illustrator (Adobe Graphics data)
+  <br>5 = AppleSingle (Apple Computer Inc)
+  <br>6 = NAA 89-3 (ANPA 1312)
+  <br>7 = MacBinary II
+  <br>8 = IPTC Unstructured Character Oriented File Format (UCOFF)
+  <br>9 = United Press International ANPA 1312 variant
+  <br>10 = United Press International Down-Load Message
+  <br>11 = JPEG File Interchange (JFIF)
+  <br>12 = Photo-CD Image-Pac (Eastman Kodak)
+  <br>13 = Bit Mapped Graphics File [.BMP] (Microsoft)
+  <br>14 = Digital Audio File [.WAV] (Microsoft &amp; Creative Labs)
+  <br>15 = Audio plus Moving Video [.AVI] (Microsoft)
+  <br>16 = PC DOS/Windows Executable Files [.COM][.EXE]
+  <br>17 = Compressed Binary File [.ZIP] (PKWare Inc)
+  <br>18 = Audio Interchange File Format AIFF (Apple Computer Inc)
+  <br>19 = RIFF Wave (Microsoft Corporation)
+  <br>20 = Freehand (Macromedia/Aldus)
+  <br>21 = Hypertext Markup Language [.HTML] (The Internet Society)
+  <br>22 = MPEG 2 Audio Layer 2 (Musicom), ISO/IEC
+  <br>23 = MPEG 2 Audio Layer 3, ISO/IEC
+  <br>24 = Portable Document File [.PDF] Adobe
+  <br>25 = News Industry Text Format (NITF)
+  <br>26 = Tape Archive [.TAR]
+  <br>27 = Tidningarnas Telegrambyra NITF version (TTNITF DTD)
+  <br>28 = Ritzaus Bureau NITF version (RBNITF DTD)
+  <br>29 = Corel Draw [.CDR]</span></td></tr>
+<tr class=b>
+<td class=r title='201 = 0xc9'>201</td>
+<td>ObjectPreviewFileVersion</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='202 = 0xca'>202</td>
+<td>ObjectPreviewData</td>
+<td class=c>undef[0,256000]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='221 = 0xdd'>221</td>
+<td>Prefs</td>
+<td class=c>string[0,64]</td>
+<td><span class=s><span class=n>(PhotoMechanic preferences)</span></span></td></tr>
+<tr>
+<td class=r title='225 = 0xe1'>225</td>
+<td>ClassifyState</td>
+<td class=c>string[0,64]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='228 = 0xe4'>228</td>
+<td>SimilarityIndex</td>
+<td class=c>string[0,32]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='230 = 0xe6'>230</td>
+<td>DocumentNotes</td>
+<td class=c>string[0,1024]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='231 = 0xe7'>231</td>
+<td>DocumentHistory</td>
+<td class=c>string[0,256]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='232 = 0xe8'>232</td>
+<td>ExifCameraInfo</td>
+<td class=c>string[0,4096]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='255 = 0xff'>255</td>
+<td>CatalogSets</td>
+<td class=c title=' + = List'>string[0,256]+</td>
+<td><span class=s><span class=n>(written by iView MediaPro)</span></span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='NewsPhoto'>IPTC NewsPhoto Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>NewsPhotoVersion</td>
+<td class=c title=' : = Mandatory'>int16u:</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='10 = 0xa'>10</td>
+<td>IPTCPictureNumber</td>
+<td class=c>string[16]</td>
+<td><span class=s><span class=n>(4 numbers: 1-Manufacturer ID, 2-Equipment ID, 3-Date, 4-Sequence)</span></span></td></tr>
+<tr>
+<td class=r title='20 = 0x14'>20</td>
+<td>IPTCImageWidth</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='30 = 0x1e'>30</td>
+<td>IPTCImageHeight</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='40 = 0x28'>40</td>
+<td>IPTCPixelWidth</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='50 = 0x32'>50</td>
+<td>IPTCPixelHeight</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='55 = 0x37'>55</td>
+<td>SupplementalType</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Main Image
+  <br>1 = Reduced Resolution Image
+  <br>2 = Logo
+  <br>3 = Rasterized Caption</span></td></tr>
+<tr class=b>
+<td class=r title='60 = 0x3c'>60</td>
+<td>ColorRepresentation</td>
+<td class=c>int16u</td>
+<td><span class=s>0x0 = No Image, Single Frame
+  <br>0x100 = Monochrome, Single Frame
+  <br>0x300 = 3 Components, Single Frame
+  <br>0x301 = 3 Components, Frame Sequential in Multiple Objects
+  <br>0x302 = 3 Components, Frame Sequential in One Object
+  <br>0x303 = 3 Components, Line Sequential
+  <br>0x304 = 3 Components, Pixel Sequential
+  <br>0x305 = 3 Components, Special Interleaving
+  <br>0x400 = 4 Components, Single Frame
+  <br>0x401 = 4 Components, Frame Sequential in Multiple Objects
+  <br>0x402 = 4 Components, Frame Sequential in One Object
+  <br>0x403 = 4 Components, Line Sequential
+  <br>0x404 = 4 Components, Pixel Sequential
+  <br>0x405 = 4 Components, Special Interleaving</span></td></tr>
+<tr>
+<td class=r title='64 = 0x40'>64</td>
+<td>InterchangeColorSpace</td>
+<td class=c>int8u</td>
+<td><table class=cols><tr>
+  <td>1 = X,Y,Z CIE
+  <br>2 = RGB SMPTE
+  <br>3 = Y,U,V (K) (D65)
+  <br>4 = RGB Device Dependent
+  <br>5 = CMY (K) Device Dependent
+  <br>6 = Lab (K) CIE
+  <br>7 = YCbCr
+  <br>8 = sRGB</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='65 = 0x41'>65</td>
+<td>ColorSequence</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='66 = 0x42'>66</td>
+<td>ICC_Profile</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='70 = 0x46'>70</td>
+<td>ColorCalibrationMatrix</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='80 = 0x50'>80</td>
+<td>LookupTable</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='84 = 0x54'>84</td>
+<td>NumIndexEntries</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='85 = 0x55'>85</td>
+<td>ColorPalette</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='86 = 0x56'>86</td>
+<td>IPTCBitsPerSample</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='90 = 0x5a'>90</td>
+<td>SampleStructure</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = OrthogonalConstangSampling
+  <br>1 = Orthogonal4-2-2Sampling
+  <br>2 = CompressionDependent</span></td></tr>
+<tr class=b>
+<td class=r title='100 = 0x64'>100</td>
+<td>ScanningDirection</td>
+<td class=c>int8u</td>
+<td><table class=cols><tr>
+  <td>0 = L-R, Top-Bottom
+  <br>1 = R-L, Top-Bottom
+  <br>2 = L-R, Bottom-Top
+  <br>3 = R-L, Bottom-Top</td><td>&nbsp;&nbsp;</td>
+  <td>4 = Top-Bottom, L-R
+  <br>5 = Bottom-Top, L-R
+  <br>6 = Top-Bottom, R-L
+  <br>7 = Bottom-Top, R-L</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='102 = 0x66'>102</td>
+<td>IPTCImageRotation</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = 0
+  <br>1 = 90
+  <br>2 = 180
+  <br>3 = 270</span></td></tr>
+<tr class=b>
+<td class=r title='110 = 0x6e'>110</td>
+<td>DataCompressionMethod</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='120 = 0x78'>120</td>
+<td>QuantizationMethod</td>
+<td class=c>int8u</td>
+<td><table class=cols><tr>
+  <td>0 = Linear Reflectance/Transmittance
+  <br>1 = Linear Density
+  <br>2 = IPTC Ref B
+  <br>3 = Linear Dot Percent
+  <br>4 = AP Domestic Analogue
+  <br>5 = Compression Method Specific
+  <br>6 = Color Space Specific
+  <br>7 = Gamma Compensated</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='125 = 0x7d'>125</td>
+<td>EndPoints</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='130 = 0x82'>130</td>
+<td>ExcursionTolerance</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Not Allowed
+  <br>1 = Allowed</span></td></tr>
+<tr class=b>
+<td class=r title='135 = 0x87'>135</td>
+<td>BitsPerComponent</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='140 = 0x8c'>140</td>
+<td>MaximumDensityRange</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='145 = 0x91'>145</td>
+<td>GammaCompensatedValue</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='PreObjectData'>IPTC PreObjectData Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='10 = 0xa'>10</td>
+<td>SizeMode</td>
+<td class=c>N</td>
+<td><span class=s>0 = Size Not Known
+  <br>1 = Size Known</span></td></tr>
+<tr class=b>
+<td class=r title='20 = 0x14'>20</td>
+<td>MaxSubfileSize</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='90 = 0x5a'>90</td>
+<td>ObjectSizeAnnounced</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='95 = 0x5f'>95</td>
+<td>MaximumObjectSize</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ObjectData'>IPTC ObjectData Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='10 = 0xa'>10</td>
+<td>SubFile</td>
+<td class=c title=' + = List'>N+</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='PostObjectData'>IPTC PostObjectData Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='10 = 0xa'>10</td>
+<td>ConfirmedObjectSize</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='FotoStation'>IPTC FotoStation Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr><td colspan=4 class=c><i>[no tags known]</i></td></tr>
+</table></td></tr></table></blockquote>
+
+<hr>
+(This document generated automatically by Image::ExifTool::BuildTagLookup)
+<br><i>Last revised Jun 23, 2014</i>
+<p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
+</body>
+</html>

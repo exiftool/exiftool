@@ -1,0 +1,108 @@
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.07
+[File, System, Image] FileName - File Name: DICOM.dcm
+[File, System, Image] Directory - Directory: t/images
+[File, System, Image] FileSize - File Size: 1860 bytes
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2005:11:14 14:47:21-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2012:11:19 15:31:05-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2012:11:17 09:18:25-05:00
+[File, System, Image] FilePermissions - File Permissions: rw-r--r--
+[File, File, Image] FileType - File Type: DICOM
+[File, File, Image] MIMEType - MIME Type: application/dicom
+[DICOM, DICOM, Image] 0002,0000 - File Meta Info Group Length: 180
+[DICOM, DICOM, Image] 0002,0001 - File Meta Info Version: 0 1
+[DICOM, DICOM, Image] 0002,0002 - Media Storage SOP Class UID: MR Image Storage
+[DICOM, DICOM, Image] 0002,0003 - Media Storage SOP Instance UID: 0.0.0.0.1.8811.2.20.20010413115754.12432
+[DICOM, DICOM, Image] 0002,0010 - Transfer Syntax UID: Explicit VR Little Endian
+[DICOM, DICOM, Image] 0002,0012 - Implementation Class UID: 0.0.0.0
+[DICOM, DICOM, Image] 0002,0013 - Implementation Version Name: NOTSPECIFIED
+[DICOM, DICOM, Image] 0002,0016 - Source Application Entity Title: NOTSPECIFIED
+[DICOM, DICOM, Image] 0008,0008 - Image Type: ORIGINAL\PRIMARY\MPR
+[DICOM, DICOM, Image] 0008,0016 - SOP Class UID: MR Image Storage
+[DICOM, DICOM, Image] 0008,0018 - SOP Instance UID: 0.0.0.0.1.8811.2.20.20010413115754.12432
+[DICOM, DICOM, Image] 0008,0020 - Study Date: 2001:03:16
+[DICOM, DICOM, Image] 0008,0021 - Series Date: 2001:03:16
+[DICOM, DICOM, Image] 0008,0022 - Acquisition Date: 2001:03:16
+[DICOM, DICOM, Image] 0008,0023 - Content Date: 2001:03:23
+[DICOM, DICOM, Image] 0008,0030 - Study Time: 14:30:08
+[DICOM, DICOM, Image] 0008,0031 - Series Time: 14:34:14
+[DICOM, DICOM, Image] 0008,0032 - Acquisition Time: 14:34:15
+[DICOM, DICOM, Image] 0008,0033 - Content Time: 14:30:22
+[DICOM, DICOM, Image] 0008,0050 - Accession Number: 
+[DICOM, DICOM, Image] 0008,0060 - Modality: MR
+[DICOM, DICOM, Image] 0008,0070 - Manufacturer: GE Medical Systems
+[DICOM, DICOM, Image] 0008,0080 - Institution Name:                             
+[DICOM, DICOM, Image] 0008,0090 - Referring Physician Name:     
+[DICOM, DICOM, Image] 0008,1010 - Station Name: MRS1
+[DICOM, DICOM, Image] 0008,1030 - Study Description: BRAIN 
+[DICOM, DICOM, Image] 0008,103E - Series Description: FSE PD AXIAL OBL
+[DICOM, DICOM, Image] 0008,1050 - Performing Physician Name:       
+[DICOM, DICOM, Image] 0008,1070 - Operators Name: EC
+[DICOM, DICOM, Image] 0008,1090 - Manufacturers Model Name: SIGNA 
+[DICOM, DICOM, Image] 0010,0010 - Patient Name:               
+[DICOM, DICOM, Image] 0010,0020 - Patient ID: 123456
+[DICOM, DICOM, Image] 0010,0030 - Patient Birth Date: 
+[DICOM, DICOM, Image] 0010,0040 - Patient Sex: F 
+[DICOM, DICOM, Image] 0010,1010 - Patient Age: 028Y
+[DICOM, DICOM, Image] 0010,1030 - Patient Weight: 61.2350 
+[DICOM, DICOM, Image] 0010,21B0 - Additional Patient History: 
+[DICOM, DICOM, Image] 0018,0020 - Scanning Sequence: SE
+[DICOM, DICOM, Image] 0018,0021 - Sequence Variant: SK
+[DICOM, DICOM, Image] 0018,0022 - Scan Options: SP
+[DICOM, DICOM, Image] 0018,0023 - MR Acquisition Type: 2D
+[DICOM, DICOM, Image] 0018,0024 - Sequence Name: fse 
+[DICOM, DICOM, Image] 0018,0050 - Slice Thickness: 5.00000 
+[DICOM, DICOM, Image] 0018,0080 - Repetition Time: 2300.00 
+[DICOM, DICOM, Image] 0018,0081 - Echo Time: 22.0000 
+[DICOM, DICOM, Image] 0018,0083 - Number Of Averages: 1.00000 
+[DICOM, DICOM, Image] 0018,0084 - Imaging Frequency: 63.8615 
+[DICOM, DICOM, Image] 0018,0086 - Echo Number: 1 
+[DICOM, DICOM, Image] 0018,0087 - Magnetic Field Strength: 1.50000 
+[DICOM, DICOM, Image] 0018,0088 - Spacing Between Slices: 2.00000 
+[DICOM, DICOM, Image] 0018,0089 - Number Of Phase Encoding Steps: 256 
+[DICOM, DICOM, Image] 0018,0091 - Echo Train Length: 8 
+[DICOM, DICOM, Image] 0018,0095 - Pixel Bandwidth: 31.2500 
+[DICOM, DICOM, Image] 0018,1020 - Software Version: 3 
+[DICOM, DICOM, Image] 0018,1030 - Protocol Name: CLINICAL BRAIN
+[DICOM, DICOM, Image] 0018,1088 - Heart Rate: 0 
+[DICOM, DICOM, Image] 0018,1090 - Cardiac Number Of Images: 0 
+[DICOM, DICOM, Image] 0018,1094 - Trigger Window: 0 
+[DICOM, DICOM, Image] 0018,1100 - Reconstruction Diameter: 220.000 
+[DICOM, DICOM, Image] 0018,1250 - Receive Coil Name: HEAD
+[DICOM, DICOM, Image] 0018,1310 - Acquisition Matrix: 0 256 256 0
+[DICOM, DICOM, Image] 0018,1312 - In Plane Phase Encoding Direction: ROW 
+[DICOM, DICOM, Image] 0018,1314 - Flip Angle: 90
+[DICOM, DICOM, Image] 0018,1316 - SAR: 0.0313309 
+[DICOM, DICOM, Image] 0018,5100 - Patient Position: HFS 
+[DICOM, DICOM, Image] 0020,000D - Study Instance UID: 0.0.0.0.2.8811.20010413115754.12432
+[DICOM, DICOM, Image] 0020,000E - Series Instance UID: 0.0.0.0.3.8811.2.20010413115754.12432
+[DICOM, DICOM, Image] 0020,0010 - Study ID: 8811
+[DICOM, DICOM, Image] 0020,0011 - Series Number: 2 
+[DICOM, DICOM, Image] 0020,0012 - Acquisition Number: 31763 
+[DICOM, DICOM, Image] 0020,0013 - Instance Number: 20
+[DICOM, DICOM, Image] 0020,0020 - Patient Orientation: L\PH
+[DICOM, DICOM, Image] 0020,0030 - Image Position: -110.500\-96.2063\59.0425 
+[DICOM, DICOM, Image] 0020,0032 - Image Position Patient: -110.500\-96.2063\59.0425 
+[DICOM, DICOM, Image] 0020,0035 - Image Orientation: 1.00000\0.00000\0.00000\0.00000\0.990960\0.134158 
+[DICOM, DICOM, Image] 0020,0037 - Image Orientation Patient: 1.00000\0.00000\0.00000\0.00000\0.990960\0.134158 
+[DICOM, DICOM, Image] 0020,0052 - Frame Of Reference UID: 0.0.0.0.4.8811.2.20010413115754.12432
+[DICOM, DICOM, Image] 0020,1002 - Images In Acquisition: 1 
+[DICOM, DICOM, Image] 0020,1040 - Position Reference Indicator: NA
+[DICOM, DICOM, Image] 0020,1041 - Slice Location: 73.8000 
+[DICOM, DICOM, Image] 0028,0002 - Samples Per Pixel: 1
+[DICOM, DICOM, Image] 0028,0004 - Photometric Interpretation: MONOCHROME2 
+[DICOM, DICOM, Image] 0028,0010 - Rows: 256
+[DICOM, DICOM, Image] 0028,0011 - Columns: 256
+[DICOM, DICOM, Image] 0028,0030 - Pixel Spacing: 0.859375\0.859375 
+[DICOM, DICOM, Image] 0028,0100 - Bits Allocated: 16
+[DICOM, DICOM, Image] 0028,0101 - Bits Stored: 16
+[DICOM, DICOM, Image] 0028,0102 - High Bit: 15
+[DICOM, DICOM, Image] 0028,0103 - Pixel Representation: Signed
+[DICOM, DICOM, Image] 0028,0106 - Smallest Image Pixel Value: 0
+[DICOM, DICOM, Image] 0028,0107 - Largest Image Pixel Value: 784
+[DICOM, DICOM, Image] 0028,0120 - Pixel Padding Value: 0
+[DICOM, DICOM, Image] 0028,1050 - Window Center: 0 
+[DICOM, DICOM, Image] 0028,1051 - Window Width: 0 
+[DICOM, DICOM, Image] 0028,1052 - Rescale Intercept: 0 
+[DICOM, DICOM, Image] 0028,1053 - Rescale Slope: 1 
+[DICOM, DICOM, Image] 0028,1054 - Rescale Type: SIGNAL INTENSITY (UNITLESS) 
+[DICOM, DICOM, Image] 7Fxx,0010 - Pixel Data: (Binary data 53 bytes)

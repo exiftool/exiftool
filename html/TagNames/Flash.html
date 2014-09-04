@@ -1,0 +1,419 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Flash Tags</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h2 class=top>Flash Tags</h2>
+<p>The information below is extracted from SWF (Shockwave Flash) files.  Tags
+with string ID&#39;s represent information extracted from the file header.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'Compressed'</td>
+<td>Compressed</td>
+<td class=c>N</td>
+<td><span class=s>0 = False
+  <br>1 = True</span></td></tr>
+<tr class=b>
+<td>'Duration'</td>
+<td>Duration</td>
+<td class=c>N</td>
+<td><span class=s><span class=n>(calculated from FrameRate and FrameCount)</span></span></td></tr>
+<tr>
+<td>'FlashVersion'</td>
+<td>FlashVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'FrameCount'</td>
+<td>FrameCount</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'FrameRate'</td>
+<td>FrameRate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'ImageHeight'</td>
+<td>ImageHeight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'ImageWidth'</td>
+<td>ImageWidth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0045 = 69'>0x0045</td>
+<td>FileAttributes</td>
+<td class=c>N</td>
+<td><span class=s>Bit 0 = UseNetwork
+  <br>Bit 3 = ActionScript3
+  <br>Bit 4 = HasMetadata</span></td></tr>
+<tr>
+<td title='0x004d = 77'>0x004d</td>
+<td>XMP</td>
+<td class=c>-</td>
+<td>--&gt; <a href='XMP.html'>XMP Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='FLV'>Flash FLV Tags</a></h2>
+<p>Information is extracted from the following packets in FLV (Flash Video)
+files.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x0008 = 8'>0x0008</td>
+<td>Audio</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Flash.html#Audio'>Flash Audio Tags</a></td></tr>
+<tr class=b>
+<td title='0x0009 = 9'>0x0009</td>
+<td>Video</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Flash.html#Video'>Flash Video Tags</a></td></tr>
+<tr>
+<td title='0x0012 = 18'>0x0012</td>
+<td>Meta</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Flash.html#Meta'>Flash Meta Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Audio'>Flash Audio Tags</a></h2>
+<p>Information extracted from the Flash Audio header.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'Bit0-3'</td>
+<td>AudioEncoding</td>
+<td class=c>N</td>
+<td><table class=cols><tr>
+  <td>0 = PCM-BE (uncompressed)
+  <br>1 = ADPCM
+  <br>2 = MP3
+  <br>3 = PCM-LE (uncompressed)
+  <br>4 = Nellymoser 16kHz Mono
+  <br>5 = Nellymoser 8kHz Mono
+  <br>6 = Nellymoser
+  <br>7 = G.711 A-law logarithmic PCM
+  <br>8 = G.711 mu-law logarithmic PCM
+  <br>10 = AAC
+  <br>11 = Speex
+  <br>13 = MP3 8-Khz
+  <br>15 = Device-specific sound</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td>'Bit4-5'</td>
+<td>AudioSampleRate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Bit6'</td>
+<td>AudioBitsPerSample</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Bit7'</td>
+<td>AudioChannels</td>
+<td class=c>N</td>
+<td><span class=s>1 = 1 (mono)
+  <br>2 = 2 (stereo)</span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Video'>Flash Video Tags</a></h2>
+<p>Information extracted from the Flash Video header.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'Bit4-7'</td>
+<td>VideoEncoding</td>
+<td class=c>N</td>
+<td><table class=cols><tr>
+  <td>1 = JPEG
+  <br>2 = Sorensen H.263
+  <br>3 = Screen Video
+  <br>4 = On2 VP6</td><td>&nbsp;&nbsp;</td>
+  <td>5 = On2 VP6 Alpha
+  <br>6 = Screen Video 2
+  <br>7 = H.264</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Meta'>Flash Meta Tags</a></h2>
+<p>Below are a few observed FLV Meta tags, but ExifTool will attempt to extract
+information from any tag found.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'audiocodecid'</td>
+<td>AudioCodecID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'audiodatarate'</td>
+<td>AudioBitrate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'audiodelay'</td>
+<td>AudioDelay</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'audiosamplerate'</td>
+<td>AudioSampleRate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'audiosamplesize'</td>
+<td>AudioSampleSize</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'audiosize'</td>
+<td>AudioSize</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'bytelength'</td>
+<td>ByteLength</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'canSeekToEnd'</td>
+<td>CanSeekToEnd</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'canseekontime'</td>
+<td>CanSeekOnTime</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'createdby'</td>
+<td>CreatedBy</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'creationdate'</td>
+<td>CreateDate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'cuePoints'</td>
+<td>CuePoint</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Flash.html#CuePoint'>Flash CuePoint Tags</a></td></tr>
+<tr>
+<td>'datasize'</td>
+<td>DataSize</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'duration'</td>
+<td>Duration</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'filesize'</td>
+<td>FileSizeBytes</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'framerate'</td>
+<td>FrameRate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'hasAudio'</td>
+<td>HasAudio</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'hasCuePoints'</td>
+<td>HasCuePoints</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'hasKeyframes'</td>
+<td>HasKeyFrames</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'hasMetadata'</td>
+<td>HasMetadata</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'hasVideo'</td>
+<td>HasVideo</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'height'</td>
+<td>ImageHeight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'httphostheader'</td>
+<td>HTTPHostHeader</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'keyframesFilepositions'</td>
+<td>KeyFramePositions</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'keyframesTimes'</td>
+<td>KeyFramesTimes</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'lastkeyframetimestamp'</td>
+<td>LastKeyFrameTime</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'lasttimestamp'</td>
+<td>LastTimeStamp</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'liveXML'</td>
+<td>XMP</td>
+<td class=c>-</td>
+<td>--&gt; <a href='XMP.html'>XMP Tags</a></td></tr>
+<tr>
+<td>'metadatacreator'</td>
+<td>MetadataCreator</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'metadatadate'</td>
+<td>MetadataDate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'pmsg'</td>
+<td>Message</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'purl'</td>
+<td>URL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'sourcedata'</td>
+<td>SourceData</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'starttime'</td>
+<td>StartTime</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'stereo'</td>
+<td>Stereo</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'totaldatarate'</td>
+<td>TotalDataRate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'totalduration'</td>
+<td>TotalDuration</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'videocodecid'</td>
+<td>VideoCodecID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'videodatarate'</td>
+<td>VideoBitrate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'videosize'</td>
+<td>VideoSize</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'width'</td>
+<td>ImageWidth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='CuePoint'>Flash CuePoint Tags</a></h2>
+<p>These tag names are added to the CuePoint name to generate complete tag
+names like &quot;CuePoint0Name&quot;.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'name'</td>
+<td>Name</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'parameters'</td>
+<td>Parameter</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Flash.html#Parameter'>Flash Parameter Tags</a></td></tr>
+<tr>
+<td>'time'</td>
+<td>Time</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'type'</td>
+<td>Type</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Parameter'>Flash Parameter Tags</a></h2>
+<p>There are no pre-defined parameter tags, but ExifTool will extract any
+existing parameters, with tag names like &quot;CuePoint0ParameterXxx&quot;.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr><td colspan=4 class=c><i>[no tags known]</i></td></tr>
+</table></td></tr></table></blockquote>
+
+<hr>
+(This document generated automatically by Image::ExifTool::BuildTagLookup)
+<br><i>Last revised Jan 3, 2011</i>
+<p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
+</body>
+</html>

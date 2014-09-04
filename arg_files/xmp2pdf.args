@@ -1,0 +1,27 @@
+#------------------------------------------------------------------------------
+# File:         xmp2pdf.args
+#
+# Description:  Tag name translations for converting from XMP to PDF DocInfo
+#
+# Usage:        exiftool -tagsFromFile SRCFILE -@ xmp2pdf.args DSTFILE
+#
+# Requires:     ExifTool version 7.07 or later
+#
+# Revisions:    2011/01/23 - P. Harvey Created
+#
+# References:   http://www.adobe.com/devnet/xmp/
+#
+# Notes:        These arguments will not delete PDF tags which are missing
+#               from the XMP.  The PDF tags should be deleted beforehand if
+#               required.
+#------------------------------------------------------------------------------
+-PDF:Title < XMP-dc:Title
+-PDF:Author < XMP-dc:Creator
+-PDF:Subject < XMP-dc:Description
+-PDF:Keywords < XMP-pdf:Keywords
+-PDF:Creator < XMP-xmp:CreatorTool
+-PDF:Producer < XMP-pdf:Producer
+-PDF:CreateDate < XMP-xmp:CreateDate
+-PDF:ModifyDate < XMP-xmp:ModifyDate
+-PDF:Trapped < XMP-pdf:Trapped
+# end

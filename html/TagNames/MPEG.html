@@ -1,0 +1,249 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>MPEG Tags</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h2 class=top>MPEG Tags</h2>
+<p>
+The MPEG format doesn&#39;t specify any file-level meta information.  In lieu of
+this, information is extracted from the first audio and video frame headers
+in the file.
+</p>
+<h2><a name='Audio'>MPEG Audio Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'Bit11-12'</td>
+<td>MPEGAudioVersion</td>
+<td class=c>N</td>
+<td><span class=s>0 = 2.5
+  <br>2 = 2
+  <br>3 = 1</span></td></tr>
+<tr class=b>
+<td>'Bit13-14'</td>
+<td>AudioLayer</td>
+<td class=c>N</td>
+<td><span class=s>1 = 3
+  <br>2 = 2
+  <br>3 = 1</span></td></tr>
+<tr>
+<td>'Bit16-19'</td>
+<td>AudioBitrate</td>
+<td class=c>N</td>
+<td><span class=s><span class=n>(version 1, layer 1)</span>
+  <br><span class=n>(version 1, layer 2)</span>
+  <br><span class=n>(version 1, layer 3)</span>
+  <br><span class=n>(version 2 or 2.5, layer 1)</span>
+  <br><span class=n>(version 2 or 2.5, layer 2 or 3)</span></span></td></tr>
+<tr class=b>
+<td>'Bit20-21'</td>
+<td>SampleRate</td>
+<td class=c>N</td>
+<td><span class=s><span class=n>(version 1)</span>
+  <br>0 = 44100
+  <br>1 = 48000
+  <br>2 = 32000
+  <br><span class=n>(version 2)</span>
+  <br>0 = 22050
+  <br>1 = 24000
+  <br>2 = 16000
+  <br><span class=n>(version 2.5)</span>
+  <br>0 = 11025
+  <br>1 = 12000
+  <br>2 = 8000</span></td></tr>
+<tr>
+<td>'Bit24-25'</td>
+<td>ChannelMode</td>
+<td class=c>N</td>
+<td><span class=s>0 = Stereo
+  <br>1 = Joint Stereo
+  <br>2 = Dual Channel
+  <br>3 = Single Channel</span></td></tr>
+<tr class=b>
+<td>'Bit26'</td>
+<td>MSStereo</td>
+<td class=c>N</td>
+<td><span class=s><span class=n>(layer 3)</span>
+  <br>0 = Off
+  <br>1 = On</span></td></tr>
+<tr>
+<td>'Bit26-27'</td>
+<td>ModeExtension</td>
+<td class=c>N</td>
+<td><span class=s><span class=n>(layer 1 or 2)</span>
+  <br>0 = Bands 4-31
+  <br>1 = Bands 8-31
+  <br>2 = Bands 12-31
+  <br>3 = Bands 16-31</span></td></tr>
+<tr class=b>
+<td>'Bit27'</td>
+<td>IntensityStereo</td>
+<td class=c>N</td>
+<td><span class=s><span class=n>(layer 3)</span>
+  <br>0 = Off
+  <br>1 = On</span></td></tr>
+<tr>
+<td>'Bit28'</td>
+<td>CopyrightFlag</td>
+<td class=c>N</td>
+<td><span class=s>0 = False
+  <br>1 = True</span></td></tr>
+<tr class=b>
+<td>'Bit29'</td>
+<td>OriginalMedia</td>
+<td class=c>N</td>
+<td><span class=s>0 = False
+  <br>1 = True</span></td></tr>
+<tr>
+<td>'Bit30-31'</td>
+<td>Emphasis</td>
+<td class=c>N</td>
+<td><span class=s>0 = None
+  <br>1 = 50/15 ms
+  <br>2 = reserved
+  <br>3 = CCIT J.17</span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Video'>MPEG Video Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'Bit00-11'</td>
+<td>ImageWidth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Bit12-23'</td>
+<td>ImageHeight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Bit24-27'</td>
+<td>AspectRatio</td>
+<td class=c>N</td>
+<td><table class=cols><tr>
+  <td>0.6735 = 0.6735
+  <br>0.7031 = 16:9, 625 line, PAL
+  <br>0.7615 = 0.7615
+  <br>0.8055 = 0.8055
+  <br>0.8437 = 16:9, 525 line, NTSC
+  <br>0.8935 = 0.8935
+  <br>0.9157 = 4:3, 625 line, PAL, CCIR601
+  <br>0.9815 = 0.9815
+  <br>1 = 1:1
+  <br>1.095 = 4:3, 525 line, NTSC, CCIR601
+  <br>1.0255 = 1.0255
+  <br>1.0695 = 1.0695
+  <br>1.1575 = 1.1575
+  <br>1.2015 = 1.2015</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td>'Bit28-31'</td>
+<td>FrameRate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Bit32-49'</td>
+<td>VideoBitrate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Xing'>MPEG Xing Tags</a></h2>
+<p>These tags are extracted from the Xing/Info frame.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>VBRFrames</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>VBRBytes</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>VBRScale</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Encoder</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>LameVBRQuality</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>LameQuality</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>LameHeader</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MPEG.html#Lame'>MPEG Lame Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Lame'>MPEG Lame Tags</a></h2>
+<p>Tags extracted from Lame 3.90 or later header.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='9 = 0x9'>9</td>
+<td>LameMethod</td>
+<td class=c>N</td>
+<td><span class=s>[Mask 0x0f]</span><table class=cols><tr>
+  <td>0x1 = CBR
+  <br>0x2 = ABR
+  <br>0x3 = VBR (old/rh)
+  <br>0x4 = VBR (new/mtrh)</td><td>&nbsp;&nbsp;</td>
+  <td>0x5 = VBR (old/rh)
+  <br>0x6 = VBR
+  <br>0x8 = CBR (2-pass)
+  <br>0x9 = ABR (2-pass)</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='10 = 0xa'>10</td>
+<td>LameLowPassFilter</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='20 = 0x14'>20</td>
+<td>LameBitrate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='24 = 0x18'>24</td>
+<td>LameStereoMode</td>
+<td class=c>N</td>
+<td><span class=s>[Mask 0x1c]</span><table class=cols><tr>
+  <td>0x0 = Mono
+  <br>0x1 = Stereo
+  <br>0x2 = Dual Channels
+  <br>0x3 = Joint Stereo
+  <br>0x4 = Forced Joint Stereo
+  <br>0x6 = Auto
+  <br>0x7 = Intensity Stereo</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+</table></td></tr></table></blockquote>
+
+<hr>
+(This document generated automatically by Image::ExifTool::BuildTagLookup)
+<br><i>Last revised Aug 21, 2011</i>
+<p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
+</body>
+</html>

@@ -1,0 +1,22 @@
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.07
+[File, System, Image] FileName - File Name: Radiance.hdr
+[File, System, Image] Directory - Directory: t/images
+[File, System, Image] FileSize - File Size: 587 bytes
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2011:12:10 14:16:13-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2012:11:19 15:31:35-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2012:11:17 09:18:25-05:00
+[File, System, Image] FilePermissions - File Permissions: rw-r--r--
+[File, File, Image] FileType - File Type: HDR
+[File, File, Image] MIMEType - MIME Type: image/vnd.radiance
+[File, File, Image] ImageHeight - Image Height: 1
+[File, File, Image] ImageWidth - Image Width: 1
+[Radiance, Radiance, Image] _command - Command: oconv mat.rad sky.rad surfaces.rad
+[Radiance, Radiance, Image] _command - Command: oconv -f -i test4.oct ila01728
+[Radiance, Radiance, Image] _command - Command: rpict -t 30 -vf test4.vf -x 1536 -y 1536 -ps 3 -pt .04 -dp 4096 -ar 68 -ms 0.029 -ds .2 -dt .05 -dc .75 -dr 3 -sj 1 -st .01 -ab 3 -af test4.amb -aa .08 -ad 1024 -as 512 -av 0.5 0.5 0.5 -lr 12 -lw .0005 -st .001 -dj .02
+[Radiance, Radiance, Image] software - Software: RADIANCE 3.1.8 lastmod Thu Sep 17 20:49:56 PDT 1998 by droberts on escher
+[Radiance, Radiance, Image] view - View: -vtv -vp 0.832108 2.26053 1.8 -vd 0.984193 0.177099 0 -vu 0 0 1 -vh 100 -vv 100 -vo 0 -va 0 -vs 0 -vl 0
+[Radiance, Radiance, Image] format - Format: 32-bit_rle_rgbe
+[Radiance, Radiance, Image] _command - Command: pfilt -1 -e 1 -m .25 -2 -x /3 -y /3
+[Radiance, Radiance, Image] exposure - Exposure: 3.512179e-001
+[Radiance, Radiance, Image] _orient - Orientation: Horizontal (normal)
+[Composite, Composite, Image] ImageSize - Image Size: 1x1

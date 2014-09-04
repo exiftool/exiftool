@@ -1,0 +1,794 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Ricoh Tags</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h2 class=top>Ricoh Tags</h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x0001 = 1'>0x0001</td>
+<td>MakerNoteType</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0002 = 2'>0x0002</td>
+<td>FirmwareVersion</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0005 = 5'>0x0005</td>
+<td>SerialNumber
+  <br>InternalSerialNumber</td>
+<td class=c>undef[16]<br>undef[16]</td>
+<td><span class=s><span class=n>(the serial number stamped on the camera begins with 2 model-specific letters
+followed by the last 8 digits of this value.  For the GXR, this is the
+serial number of the lens unit)</span></span></td></tr>
+<tr class=b>
+<td title='0x0e00 = 3584'>0x0e00</td>
+<td>PrintIM</td>
+<td class=c>-</td>
+<td>--&gt; <a href='PrintIM.html'>PrintIM Tags</a></td></tr>
+<tr>
+<td title='0x1000 = 4096'>0x1000</td>
+<td>RecordingFormat</td>
+<td class=c>int16u</td>
+<td><span class=s>2 = JPEG
+  <br>3 = DNG</span></td></tr>
+<tr class=b>
+<td title='0x1001 = 4097'>0x1001</td>
+<td>ImageInfo
+  <br>ExposureProgram</td>
+<td class=c>-<br>int16u</td>
+<td>--&gt; <a href='Ricoh.html#ImageInfo'>Ricoh ImageInfo Tags</a>
+  <br><span class=n>(GR)</span>
+  <br><table class=cols><tr>
+  <td>1 = Auto
+  <br>2 = Program AE
+  <br>3 = Aperture-priority AE
+  <br>4 = Shutter speed priority AE
+  <br>5 = Shutter/aperture priority AE
+  <br>6 = Manual
+  <br>7 = Movie</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td title='0x1002 = 4098'>0x1002</td>
+<td>DriveMode</td>
+<td class=c>int16u</td>
+<td><span class=s><span class=n>(valid only for some models)</span>
+  <br>0 = Single-frame
+  <br>1 = Continuous
+  <br>8 = AF-priority Continuous</span></td></tr>
+<tr class=b>
+<td title='0x1003 = 4099'>0x1003</td>
+<td>Sharpness
+  <br>WhiteBalance</td>
+<td class=c>int32u<br>int16u</td>
+<td><span class=s>0 = Sharp
+  <br>1 = Normal
+  <br>2 = Soft
+  <br><span class=n>(GR)</span></span><table class=cols><tr>
+  <td>0 = Auto
+  <br>1 = Multi-P Auto
+  <br>2 = Daylight
+  <br>3 = Cloudy
+  <br>4 = Incandescent 1
+  <br>5 = Incandescent 2
+  <br>6 = Daylight Fluorescent
+  <br>7 = Neutral White Fluorescent
+  <br>8 = Cool White Fluorescent
+  <br>9 = Warm White Fluorescent
+  <br>10 = Manual
+  <br>11 = Kelvin</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td title='0x1004 = 4100'>0x1004</td>
+<td>WhiteBalanceFineTune</td>
+<td class=c>int16u</td>
+<td><span class=s><span class=n>(2 numbers: amount of adjustment towards Amber and Green.  Not valid for all
+models)</span></span></td></tr>
+<tr class=b>
+<td title='0x1006 = 4102'>0x1006</td>
+<td>FocusMode</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>1 = Manual
+  <br>2 = Multi AF
+  <br>3 = Spot AF
+  <br>4 = Snap
+  <br>5 = Infinity</td><td>&nbsp;&nbsp;</td>
+  <td>7 = Face Detect
+  <br>8 = Subject Tracking
+  <br>9 = Pinpoint AF
+  <br>10 = Movie</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td title='0x1007 = 4103'>0x1007</td>
+<td>AutoBracketing</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>0 = Off
+  <br>9 = AE
+  <br>11 = WB
+  <br>16 = DR</td><td>&nbsp;&nbsp;</td>
+  <td>17 = Contrast
+  <br>18 = WB2
+  <br>19 = Effect</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td title='0x1009 = 4105'>0x1009</td>
+<td>MacroMode</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr>
+<td title='0x100a = 4106'>0x100a</td>
+<td>FlashMode</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>0 = Off
+  <br>1 = Auto, Fired
+  <br>2 = On
+  <br>3 = Auto, Fired, Red-eye reduction
+  <br>4 = Slow Sync
+  <br>5 = Manual
+  <br>6 = On, Red-eye reduction
+  <br>7 = Synchro, Red-eye reduction
+  <br>8 = Auto, Did not fire</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td title='0x100b = 4107'>0x100b</td>
+<td>FlashExposureComp</td>
+<td class=c>rational64s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x100c = 4108'>0x100c</td>
+<td>ManualFlashOutput</td>
+<td class=c>rational64s</td>
+<td><table class=cols><tr>
+  <td>-288 = 1/64
+  <br>-240 = 1/32
+  <br>-216 = 1/22
+  <br>-192 = 1/16</td><td>&nbsp;&nbsp;</td>
+  <td>-168 = 1/11
+  <br>-144 = 1/8
+  <br>-120 = 1/5.6
+  <br>-96 = 1/4</td><td>&nbsp;&nbsp;</td>
+  <td>-72 = 1/2.8
+  <br>-48 = 1/2
+  <br>-24 = 1/1.4
+  <br>0 = Full</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td title='0x100d = 4109'>0x100d</td>
+<td>FullPressSnap</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr>
+<td title='0x100e = 4110'>0x100e</td>
+<td>DynamicRangeExpansion</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Off
+  <br>3 = Weak
+  <br>4 = Medium
+  <br>5 = Strong</span></td></tr>
+<tr class=b>
+<td title='0x100f = 4111'>0x100f</td>
+<td>NoiseReduction</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Off
+  <br>1 = Weak
+  <br>2 = Medium
+  <br>3 = Strong</span></td></tr>
+<tr>
+<td title='0x1010 = 4112'>0x1010</td>
+<td>ImageEffects</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>0 = Standard
+  <br>1 = Vivid
+  <br>3 = Black &amp; White
+  <br>5 = B&amp;W Toning Effect
+  <br>6 = Setting 1
+  <br>7 = Setting 2
+  <br>9 = High-contrast B&amp;W</td><td>&nbsp;&nbsp;</td>
+  <td>10 = Cross Process
+  <br>11 = Positive Film
+  <br>12 = Bleach Bypass
+  <br>13 = Retro
+  <br>15 = Miniature
+  <br>17 = High Key</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td title='0x1011 = 4113'>0x1011</td>
+<td>Vignetting</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Off
+  <br>1 = Low
+  <br>2 = Medium
+  <br>3 = High</span></td></tr>
+<tr>
+<td title='0x1012 = 4114'>0x1012</td>
+<td>Contrast</td>
+<td class=c>int32u</td>
+<td><span class=s>2147483647 = MAX</span></td></tr>
+<tr class=b>
+<td title='0x1013 = 4115'>0x1013</td>
+<td>Saturation</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x1014 = 4116'>0x1014</td>
+<td>Sharpness</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1015 = 4117'>0x1015</td>
+<td>ToningEffect</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>0 = Off
+  <br>1 = Sepia
+  <br>2 = Red
+  <br>3 = Green</td><td>&nbsp;&nbsp;</td>
+  <td>4 = Blue
+  <br>5 = Purple
+  <br>6 = B&amp;W
+  <br>7 = Color</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td title='0x1016 = 4118'>0x1016</td>
+<td>HueAdjust</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>0 = Off
+  <br>1 = Basic
+  <br>2 = Magenta
+  <br>3 = Yellow</td><td>&nbsp;&nbsp;</td>
+  <td>4 = Normal
+  <br>5 = Warm
+  <br>6 = Cool</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td title='0x1017 = 4119'>0x1017</td>
+<td>WideAdapter</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Not Attached
+  <br>2 = Attached</span></td></tr>
+<tr>
+<td title='0x1018 = 4120'>0x1018</td>
+<td>CropMode35mm</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr class=b>
+<td title='0x1019 = 4121'>0x1019</td>
+<td>NDFilter</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr>
+<td title='0x101a = 4122'>0x101a</td>
+<td>WBBracketShotNumber</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1200 = 4608'>0x1200</td>
+<td>AFStatus</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Out of Focus
+  <br>1 = In Focus</span></td></tr>
+<tr>
+<td title='0x1201 = 4609'>0x1201</td>
+<td>AFAreaXPosition1</td>
+<td class=c>int32u</td>
+<td><span class=s><span class=n>(manual AF area position in a 1280x864 image)</span></span></td></tr>
+<tr class=b>
+<td title='0x1202 = 4610'>0x1202</td>
+<td>AFAreaYPosition1</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x1203 = 4611'>0x1203</td>
+<td>AFAreaXPosition</td>
+<td class=c>int32u</td>
+<td><span class=s><span class=n>(manual AF area position in the full image)</span></span></td></tr>
+<tr class=b>
+<td title='0x1204 = 4612'>0x1204</td>
+<td>AFAreaYPosition</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x1205 = 4613'>0x1205</td>
+<td>AFAreaMode</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Auto
+  <br>2 = Manual</span></td></tr>
+<tr class=b>
+<td title='0x1307 = 4871'>0x1307</td>
+<td>ColorTempKelvin</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x1308 = 4872'>0x1308</td>
+<td>ColorTemperature</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1500 = 5376'>0x1500</td>
+<td>FocalLength</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x1601 = 5633'>0x1601</td>
+<td>SensorWidth</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1602 = 5634'>0x1602</td>
+<td>SensorHeight</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x1603 = 5635'>0x1603</td>
+<td>CroppedImageWidth</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1604 = 5636'>0x1604</td>
+<td>CroppedImageHeight</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x2001 = 8193'>0x2001</td>
+<td>RicohSubdir
+  <br>RicohSubdirIFD
+  <br>RicohRR1Subdir</td>
+<td class=c>-<br>-<br>-</td>
+<td>--&gt; <a href='Ricoh.html#Subdir'>Ricoh Subdir Tags</a>
+  <br>--&gt; <a href='Ricoh.html#Subdir'>Ricoh Subdir Tags</a>
+  <br>--&gt; <a href='Ricoh.html#Subdir'>Ricoh Subdir Tags</a></td></tr>
+<tr class=b>
+<td title='0x4001 = 16385'>0x4001</td>
+<td>ThetaSubdir</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Ricoh.html#ThetaSubdir'>Ricoh ThetaSubdir Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ImageInfo'>Ricoh ImageInfo Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>RicohImageWidth</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>RicohImageHeight</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='6 = 0x6'>6</td>
+<td>RicohDate</td>
+<td class=c>int8u[7]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='28 = 0x1c'>28</td>
+<td>PreviewImageStart</td>
+<td class=c title=' * = Protected'>int16u*</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='30 = 0x1e'>30</td>
+<td>PreviewImageLength</td>
+<td class=c title=' * = Protected'>int16u*</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='32 = 0x20'>32</td>
+<td>FlashMode</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = Auto
+  <br>2 = On</span></td></tr>
+<tr>
+<td class=r title='33 = 0x21'>33</td>
+<td>Macro</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr class=b>
+<td class=r title='34 = 0x22'>34</td>
+<td>Sharpness</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Sharp
+  <br>1 = Normal
+  <br>2 = Soft</span></td></tr>
+<tr>
+<td class=r title='38 = 0x26'>38</td>
+<td>WhiteBalance</td>
+<td class=c>int8u</td>
+<td><table class=cols><tr>
+  <td>0 = Auto
+  <br>1 = Daylight
+  <br>2 = Cloudy
+  <br>3 = Tungsten</td><td>&nbsp;&nbsp;</td>
+  <td>4 = Fluorescent
+  <br>5 = Manual
+  <br>7 = Detail
+  <br>9 = Multi-pattern Auto</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='39 = 0x27'>39</td>
+<td>ISOSetting</td>
+<td class=c>int8u</td>
+<td><table class=cols><tr>
+  <td>0 = Auto
+  <br>1 = 64
+  <br>2 = 100
+  <br>4 = 200</td><td>&nbsp;&nbsp;</td>
+  <td>6 = 400
+  <br>7 = 800
+  <br>8 = 1600
+  <br>9 = Auto</td><td>&nbsp;&nbsp;</td>
+  <td>10 = 3200
+  <br>11 = 100 (Low)</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='40 = 0x28'>40</td>
+<td>Saturation</td>
+<td class=c>int8u</td>
+<td><table class=cols><tr>
+  <td>0 = High
+  <br>1 = Normal
+  <br>2 = Low
+  <br>3 = B&amp;W</td><td>&nbsp;&nbsp;</td>
+  <td>6 = Toning Effect
+  <br>9 = Vivid
+  <br>10 = Natural</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Subdir'>Ricoh Subdir Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x0004 = 4'>0x0004</td>
+<td>ManufactureDate1</td>
+<td class=c>string[20]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0005 = 5'>0x0005</td>
+<td>ManufactureDate2</td>
+<td class=c>string[20]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x001a = 26'>0x001a</td>
+<td>FaceInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Ricoh.html#FaceInfo'>Ricoh FaceInfo Tags</a></td></tr>
+<tr class=b>
+<td title='0x0029 = 41'>0x0029</td>
+<td>FirmwareInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Ricoh.html#FirmwareInfo'>Ricoh FirmwareInfo Tags</a></td></tr>
+<tr>
+<td title='0x002a = 42'>0x002a</td>
+<td>NoiseReduction</td>
+<td class=c>int32u</td>
+<td><span class=s>0 = Off
+  <br>1 = Weak
+  <br>2 = Strong
+  <br>3 = Max</span></td></tr>
+<tr class=b>
+<td title='0x002c = 44'>0x002c</td>
+<td>SerialInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Ricoh.html#SerialInfo'>Ricoh SerialInfo Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='FaceInfo'>Ricoh FaceInfo Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='181 = 0xb5'>181</td>
+<td>FacesDetected</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='182 = 0xb6'>182</td>
+<td>FaceDetectFrameSize</td>
+<td class=c>int16u[2]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='188 = 0xbc'>188</td>
+<td>Face1Position</td>
+<td class=c>int16u[4]</td>
+<td><span class=s><span class=n>(left, top, width and height of detected face in coordinates of
+FaceDetectFrameSize with increasing Y downwards)</span></span></td></tr>
+<tr class=b>
+<td class=r title='200 = 0xc8'>200</td>
+<td>Face2Position</td>
+<td class=c>int16u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='212 = 0xd4'>212</td>
+<td>Face3Position</td>
+<td class=c>int16u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='224 = 0xe0'>224</td>
+<td>Face4Position</td>
+<td class=c>int16u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='236 = 0xec'>236</td>
+<td>Face5Position</td>
+<td class=c>int16u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='248 = 0xf8'>248</td>
+<td>Face6Position</td>
+<td class=c>int16u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='260 = 0x104'>260</td>
+<td>Face7Position</td>
+<td class=c>int16u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='272 = 0x110'>272</td>
+<td>Face8Position</td>
+<td class=c>int16u[4]</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='FirmwareInfo'>Ricoh FirmwareInfo Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>FirmwareRevision</td>
+<td class=c>string[12]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='12 = 0xc'>12</td>
+<td>FirmwareRevision2</td>
+<td class=c>string[12]</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='SerialInfo'>Ricoh SerialInfo Tags</a></h2>
+<p>This information is found in images from the GXR.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>BodyFirmware</td>
+<td class=c>string[16]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='16 = 0x10'>16</td>
+<td>BodySerialNumber</td>
+<td class=c>string[16]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='32 = 0x20'>32</td>
+<td>LensFirmware</td>
+<td class=c>string[16]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='48 = 0x30'>48</td>
+<td>LensSerialNumber</td>
+<td class=c>string[16]</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ThetaSubdir'>Ricoh ThetaSubdir Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x0003 = 3'>0x0003</td>
+<td>Accelerometer</td>
+<td class=c>rational64s[2]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0004 = 4'>0x0004</td>
+<td>Compass</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Type2'>Ricoh Type2 Tags</a></h2>
+<p>Tags written by models such as the Ricoh HZ15 and the Pentax XG-1.  These
+are not writable due to numerous formatting errors as written by these
+cameras.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x0300 = 768'>0x0300</td>
+<td>RicohMake</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Text'>Ricoh Text Tags</a></h2>
+<p>Some Ricoh DC and RDC models use a text-based format for their maker notes
+instead of the IFD format used by the Caplio models.  Below is a list of known
+tags in this information.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'Bg'</td>
+<td>BlueGain</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Gg'</td>
+<td>GreenGain</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Rev'</td>
+<td>FirmwareVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Rg'</td>
+<td>RedGain</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Rv'</td>
+<td>FirmwareVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='RMETA'>Ricoh RMETA Tags</a></h2>
+<p>The Ricoh Caplio Pro G3 has the ability to add custom fields to the APP5
+&quot;RMETA&quot; segment of JPEG images.  While only a few observed tags have been
+defined below, ExifTool will extract any information found here.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'Azimuth'</td>
+<td>Azimuth</td>
+<td class=c>N</td>
+<td><table class=cols><tr>
+  <td>1 = N
+  <br>2 = NNE
+  <br>3 = NE
+  <br>4 = ENE</td><td>&nbsp;&nbsp;</td>
+  <td>5 = E
+  <br>6 = ESE
+  <br>7 = SE
+  <br>8 = SSE</td><td>&nbsp;&nbsp;</td>
+  <td>9 = S
+  <br>10 = SSW
+  <br>11 = SW
+  <br>12 = WSW</td><td>&nbsp;&nbsp;</td>
+  <td>13 = W
+  <br>14 = WNW
+  <br>15 = NW
+  <br>16 = NNW</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td>'Condition'</td>
+<td>Condition</td>
+<td class=c>N</td>
+<td><span class=s>1 = Good
+  <br>2 = Fair
+  <br>3 = Poor
+  <br>4 = Damaged</span></td></tr>
+<tr>
+<td>'Lit'</td>
+<td>Lit</td>
+<td class=c>N</td>
+<td><span class=s>1 = Yes
+  <br>2 = No</span></td></tr>
+<tr class=b>
+<td>'Location'</td>
+<td>Location</td>
+<td class=c>N</td>
+<td><span class=s>1 = Verge
+  <br>2 = Gantry
+  <br>3 = Central reservation
+  <br>4 = Roundabout</span></td></tr>
+<tr>
+<td>'Sign type'</td>
+<td>SignType</td>
+<td class=c>N</td>
+<td><span class=s>1 = Directional
+  <br>2 = Warning
+  <br>3 = Information</span></td></tr>
+<tr class=b>
+<td>'_audio'</td>
+<td>SoundFile</td>
+<td class=c>N</td>
+<td><span class=s><span class=n>(audio data recorded in JPEG images by the G700SE)</span></span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='AVI'>Ricoh AVI Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'mnrt'</td>
+<td>MakerNoteRicoh</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Ricoh.html'>Ricoh Tags</a></td></tr>
+<tr class=b>
+<td>'rdc2'</td>
+<td>RicohRDC2?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'thum'</td>
+<td>ThumbnailImage</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'ucmt'</td>
+<td>Comment</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='LensID'>Ricoh LensID Values</a></h2>
+<p>Lens units available for the GXR, used by the Ricoh Composite LensID tag.  Note
+that unlike lenses for all other makes of cameras, the focal lengths in these
+model names have already been scaled to include the 35mm crop factor.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class='inner sep' cellspacing=1>
+<tr class=h><th>Value</th><th>LensID</th><th>Value</th><th>LensID</th></tr>
+<tr><td>'RL1'</td><td>= GR Lens A12 50mm F2.5 Macro</td>
+<td class=b>'RL5'</td><td class=b>= GR Lens A12 28mm F2.5</td>
+</tr><tr><td>'RL2'</td><td>= Ricoh Lens S10 24-70mm F2.5-4.4 VC</td>
+<td class=b>'RL6'</td><td class=b>= Ricoh Lens A16 24-85mm F3.5-5.5</td>
+</tr><tr><td>'RL3'</td><td>= Ricoh Lens P10 28-300mm F3.5-5.6 VC</td>
+<td class=b>'RL8'</td><td class=b>= Mount A12</td>
+</tr></table></td></tr></table></blockquote>
+
+<hr>
+(This document generated automatically by Image::ExifTool::BuildTagLookup)
+<br><i>Last revised Jul 18, 2014</i>
+<p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
+</body>
+</html>

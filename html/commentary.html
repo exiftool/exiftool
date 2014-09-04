@@ -1,0 +1,319 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd">
+<html>
+<head>
+<title>Commentary on Meta Information Formats</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+<style type="text/css">
+<!--
+a.ref   { text-decoration: none; font-size: x-small;
+          font-weight: normal; vertical-align: super; }
+.norm   { font-weight: normal }
+-->
+</style>
+</head>
+<body>
+<div class='index'>
+<b>What sucks:</b>
+<br><a href="#EXIF">EXIF / TIFF</a>
+<br><a href="#Maker">EXIF Maker notes</a>
+<br><a href="#JPEG">JPEG</a>
+<br><a href="#IPTC">IPTC IIM</a>
+<br><a href="#XMP">XMP</a>
+<br><a href="#PDF">PDF</a>
+<br><a href="#PNG">PNG</a>
+<br><a href="#PICT">PICT</a>
+<br><a href="#FlashPix">FlashPix</a>
+<br><a href="#DICOM">DICOM</a>
+<br><a href="#AVCHD">AVCHD</a>
+<br><a href="#ISO">ISO</a>
+<br><b>What doesn't:</b>
+<br><a href="#CRW">CRW (CIFF)</a>
+<br><a href="#QuickTime">QuickTime</a>
+<br><a href="#MIE">MIE</a>
+</div>
+
+<h2 class='up'>Commentary on Meta Information Formats<br>
+<span class='sm'>(or <i>"Why this or that Format Sucks"</i>)</span></h2>
+
+<a name='EXIF'></a>
+<h3>EXIF / TIFF</h3>
+<p>EXIF uses the TIFF format to store information.  The biggest problem with
+this format is that all pointers are absolute (ie. relative to the start of
+the file).  This means that the pointers need fixing up if the position of
+any information changes.  This is significant because pointers are often
+hidden inside proprietary structures which should remain opaque (such as
+maker notes).  The result is that some EXIF information is easily corrupted
+when editing a file.  This problem is ignored by many software packages.
+Much effort was required in the development of ExifTool to avoid the loss of
+information such as this.</p>
+
+<p>A significant problem is that an IFD (image file directory) pointer has
+the same format code as a long integer, so information in any non-recognized
+IFD is lost when the image is rewritten.  There is a seldom-used format
+code of 13 that has been proposed to indicate an IFD, but this is not part
+of the EXIF/TIFF specification and is not in common usage.  <i class=lt>[Hey!
+Olympus has just started using this code for the IFD's in the maker notes of
+their new Camera models! - 2007/03/08]</i></p>
+
+<p>Also, it was wrong to specify a count instead of a size for each
+directory entry because this makes it impossible to add new format types
+without requiring that older readers simply discard data of unknown type
+(since the data size isn't known, the old readers don't know how to copy the
+data).</p>
+
+<p>All these shortcomings make TIFF a very non-extensible format which by
+design will result in the loss of non-standard information.</p>
+
+<p>And we don't learn from our mistakes (OK, maybe some of us can, but
+apparently not big corporations like Adobe or Microsoft), because the new
+DNG and WDP formats are TIFF-based too.</p>
+
+<p>The EXIF specification also has some significant shortcomings to add to the
+TIFF problems, like minimal special character abilities, no language support,
+and no way to specify time zone.</p>
+
+<a name='Maker'></a>
+<h3>EXIF Maker Notes</h3>
+<p>Maker notes are a can of worms.  The EXIF specification unfortunately
+made no mention about the information format of the maker notes.  If
+properly designed, the specification would have provided a maker note IFD
+tag to allow IFD-style maker notes to be used.  Many manufacturers
+implemented it this way, but each with a different technique and many with
+<a href="idiosyncracies.html">odd quirks</a>. This deficiency combined with
+problems in the TIFF (EXIF) format mean that most software will quite
+unknowingly scramble your maker notes when an image is rewritten.  To
+prevent this, specific knowledge about files written by individual
+manufacturers is necessary, and of course the manufacturers are not prone to
+divulging this information to the public so it must all be reverse
+engineered.</p>
+
+<p>The official TIFF recommendation is to delete unknown information when
+rewriting an image<a class=ref href="#ref1">[1]</a>, and this irresponsible
+strategy has been adopted by some applications such as Adobe Photoshop,
+resulting in a total loss of maker note information. This is very
+unfortunate because even corrupted maker notes contain useful information,
+and smart utilities (like ExifTool) are often able to recover the
+information from damaged maker notes.</p>
+
+<a name='JPEG'></a>
+<h3>JPEG</h3>
+<p>The JPEG format acts only as a container for meta information, and
+defines no meta information format itself.  But it sucks just a as a
+container format because it limits the maximum contiguous block size to
+64kB.  This causes problems because many cameras store more than 64kB of
+additional information in their JPEG images.  Usually, this is due to the
+medium-sized JPEG image that many cameras embed for preview purposes. It
+would have been nice if there was a standard way to embed this preview in
+JPEG images (without the 64kB limitation).  <i class=lt>[Update: In February
+2009 CIPA released the MPF format specification which allows storage of
+preview images larger than 64kB, but unfortunately this specification
+<a href="standards.html#MPF">has problems of its own</a>.]</i></p>
+
+<p>Aside:  The EXIF specification could have easily allowed the information
+to span multiple JPEG segments, which would have been smart, but still
+wouldn't have solved the problem entirely since it could result in a
+non-contiguous preview image (this would be a problem for cameras since they
+typically want to use this image for quick review of pictures, and
+re-mapping the image into a contiguous memory space would be costly).</p>
+
+<a name='IPTC'></a>
+<h3>IPTC IIM</h3>
+<p>IPTC IIM earns a few points because it is the easiest to process of the
+common meta information formats.  However, the format is overly restrictive
+and not very extensible.  Format information and human-readable tag names
+are not part of the specification, so it is not possible to meaningfully
+interpret unknown values.  Also, there are many interdependencies between
+tags that make it very annoying for writing, and the special character
+support is ill-conceived.</p>
+
+<a name='XMP'></a>
+<h3>XMP</h3>
+<p>The XMP format is a good example of a designed-by-committee
+specification. It is based on XML, which is much more complicated than
+necessary and tries to make everyone happy by providing a multitude of
+format styles and features (shorthand format, etc, etc).  This makes it very
+difficult to properly implement the complete specification.  Not even the
+Adobe software supports all of the format options of their own XMP
+specification.  And the format is exceedingly verbose, wasting disk space,
+bandwidth and time.</p>
+
+<p>Also, XMP only supports textual information.  Binary information must be
+text-encoded if stored in XMP.  This makes it very bulky, slow and
+completely unsuitable for storage of binary information.</p>
+
+<p>Mainly because of the complexity of the specification, and despite
+Adobe's best efforts, XMP still isn't very well supported by meta
+information editing tools.  The best hope for small application developers
+is to link against an off-the-shelf XMP or XML library.  Apparently Adobe
+realizes this and is now providing an XMP development kit, but this solution
+is only useful for those platforms and computer languages that they choose
+to support.</p>
+
+<a name='PDF'></a>
+<h3>PDF</h3>
+<p>...and I thought XMP was too complicated.  PDF is just insane.  Because
+of this, it is unlikely that ExifTool will ever support this format for
+writing. <i class=lt>[Dec. 18, 2007 Update: I have just added PDF write support
+using the incremental update feature of PDF.  It was still a bit of work, but
+somewhat simpler (and MUCH faster!) than rewriting the entire PDF.  But there
+are disadvantages: The resulting PDF is not "linearized", and there are privacy
+and security issues with leaving old metadata in the file.]</i></p>
+
+<a name='PNG'></a>
+<h3>PNG</h3>
+<p>PNG sucks because meta information can be stored only in text format.
+This was a huge mistake, and as a work-around software (eg. ImageMagick)
+must encode binary information in ASCII-hex, then compress it to offset the
+increase in size, and store it as a compressed text block.  This adds
+unnecessary complexity, greatly slows down processing, and makes it much
+harder to develop software which supports PNG meta information.</p>
+
+<a name='PICT'></a>
+<h3>PICT</h3>
+<p>The PICT format just plain sucks.  It is one of the worst-designed image
+formats in existence, second only to FlashPix.  I don't believe that it was
+originally designed as a file format.  Instead it appears to have emerged
+from the internal Apple QuickDraw structures.  The files are not designed to
+be processed by any software other than the Mac OS.  Intimate knowledge of
+the QuickDraw structures is required just to parse the PICT image, even if
+the reader doesn't care about the contained information.  Because of this,
+PICT images are very fragile and a simple data error or programming bug will
+invalidate an entire image.  Possibly for these reasons the PICT format
+never gained popularity outside the Apple world.  Also, the concept of meta
+information is all but ignored in the PICT design.</p>
+
+<a name='FlashPix'></a>
+<h3>FlashPix</h3>
+<p>Oh. My. God.  Don't get me started on this one.  Let's just say that basing
+an image file format on the File Allocation Table (FAT) structure of a floppy
+disk with fixed 512-byte sectors is monumentally idiotic.  Microsoft Word,
+Excel and PowerPoint documents also use this insane format.</p>
+
+<a name='DICOM'></a>
+<h3>DICOM Medical Images</h3>
+<p>The DICOM format is reasonably well designed.  The UID's are cumbersome,
+but achieve their purpose.  The biggest bungle in the design is the implicit
+VR syntax, which presumably exists for historical reasons to provide
+backward compatibility with pre-existing ACR-NEMA images.  The DICOM
+specification document is horrible and obviously written by committee, and
+was possibly the single largest impediment to implementing support for this
+format.</p>
+
+<p>Technical: The files would be easier to parse if the transfer syntax
+became effective immediately after the transfer syntax data element instead
+of at the end of the meta information group.  Also, the deflated data should
+have contained the zlib header, as in PNG and PDF images.  This would make
+it easier to read and allow CRC validation of the datastream. -- Can you
+tell I wrote this just after adding DICOM support to ExifTool?</p>
+
+<a name='AVCHD'></a>
+<h3>AVCHD (.M2TS) <span class='sm norm'><i class=lt>(added 2009-10-29)</i></span></h3>
+<p>This format is used in .M2TS video files (and Blu-Ray HD DVD's).  It is
+painfully obvious that this was never designed as a storage format.  It uses
+MPEG-2 transport stream (M2TS) container, which is a communications protocol
+and never should have been used for storage.  The M2TS format is based on a
+188-byte packet size which makes no sense for modern filesystems.  And to
+make things worse, metadata in AVCHD files is stored in the H.264 video
+stream (!!) which uses insane and convoluted data structures such as the
+variable-bit-length exponential-Golomb which are painful and inefficient to
+parse in software, and as far as I can tell the format for the metadata
+stored in these streams is proprietary and undocumented.</p>
+
+<a name='ISO'></a>
+<h3>ISO Considered Harmless</h3>
+<p>This is not a meta information format, but since many format
+specifications are imprisoned by the ISO it deserves mentioning...</p>
+
+<p>In my experience, the International Standards Organization is extremely
+counter-productive.  Their goal is to promote standardization, but by
+charging too much money for copies of the standards documents they defeat
+their own purpose.  The effect is that small companies and individuals
+developing software (including open source software such as ExifTool) do not
+have access to the official standard.  Instead, software is often based on
+old, obsolete documents or drafts which are sometimes publicly available, or
+on 3rd party descriptions which are often incomplete.  To sum things up: ISO
+sucks.</p>
+
+<hr>
+<h2>OK.  So all those formats suck.  What doesn't?</h2>
+
+<a name='CRW'></a>
+<h3>Canon CRW Images (CIFF format)</h3>
+<p>This format uses a directory structure similar to TIFF, but all offsets
+are relative and unknown information can handled properly when rewriting.
+Because of this, it is much more extensible than TIFF, but the format is
+still limited by 16-bit integer tag ID's among other TIFF weaknesses. It
+isn't great, but at least it doesn't suck.</p>
+
+<a name='QuickTime'></a>
+<h3>QuickTime Videos</h3>
+<p>The Apple QuickTime MOV format is very nice format.  (Which is a breath
+of fresh air after the Apple PICT travesty.)  It was a smart move to use
+this format for the MP4 specification.  I would only change 2 things about
+this format: 1) Use longer tag names instead of the current 4 characters (I
+know that 4 characters is convenient because it can be used as an integer in
+lookup tables, but it would be nice if the tag names were a bit more
+meaningful). 2) Add a format code to the Atom definition so simple unknown
+information could be decoded properly.  These changes would allow some
+unknown information to be interpreted, which would make it possible for
+information added by 3rd parties to be useful.</p>
+
+<p>I only have 2 problems with the QuickTime specification:</p>
+
+<p>1) The metadata organization is a mess because tags may be stored in more
+than one location (eg. UserData vs. InfoList), and conflicting metadata
+directories may exist, even in the same location (as written by iTunes).</p>
+
+<p>2) The length of 'udta' text strings with language codes is written
+incorrectly by many (most?) utilties, including Apple iTunes.  The language
+strings are supposed to use a "small integer atom format" where the first
+two bytes give the size of the string including the length word and language
+codes.  But often the size doesn't include these 4 bytes, which sort of
+defeats the purpose of the multiple languages because it is difficult to
+parse past the first entry if you don't know the size.</p>
+
+<a name='MIE'></a>
+<h3>My Format (Meta Information Encapsulation, or "MIE")</h3>
+<p>Now it is time to put my money where my mouth is:  I have designed a
+format which doesn't suck.  It is called "MIE", which stands for Meta
+Information Encapsulation.</p>
+
+<p>The MIE format is hierarchical like QuickTime, but it uses meaningful tag
+names and specifies a data format for all values.  As well, this format
+offers a number of other features:</p>
+
+<ul>
+<li>Can be used as a wrapper around any type of file, as a trailer appended
+    to other formats, or as a stand-alone meta information format
+<li>Extensible
+<li>Compact
+<li>Meaningful tag ID's
+<li>Streamable (and single-pass writing possible)
+<li>Relocatable data elements (ie. no fixed offsets)
+<li>Relatively simple to implement reader/writer
+<li>Supports large data lengths (up to 4GB*4GB)
+<li>Localized text feature
+<li>Built-in support for numerical units of measure
+<li>Multiple documents in a single file
+</ul>
+
+<p>The specification for this format can be found
+<a href="MIE1.1-20070121.pdf">here</a>, and is implemented in
+<a href="http://search.cpan.org/dist/Image-ExifTool/lib/Image/ExifTool/MIE.pm">Image::ExifTool::MIE.pm</a></p>
+
+<p>OK.  Flame away.  I can take it.</p>
+
+<a name="refs"></a>
+<h3>References</h3>
+
+<ol>
+<li><a name="ref1" href="http://partners.adobe.com/public/developer/en/tiff/TIFF6.pdf">http://partners.adobe.com/public/developer/en/tiff/TIFF6.pdf</a>, page 26</li>
+</ol>
+
+<hr>
+<i>Created Nov. 15, 2005</i><br>
+<i>Last revised July 29, 2010</i>
+<p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
+</body>
+</html>

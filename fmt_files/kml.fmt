@@ -1,0 +1,55 @@
+#------------------------------------------------------------------------------
+# File:         kml.fmt
+#
+# Description:  Example ExifTool print format file for generating a
+#               Google Earth KML file from a collection of geotagged images
+#
+# Usage:        exiftool -p kml.fmt FILE [...] > out.kml
+#
+# Requires:     ExifTool version 8.10 or later
+#
+# Revisions:    2010/02/05 - P. Harvey created
+#               2013/02/05 - PH Fixed camera icon to work with new Google Earth
+#
+# Notes:     1) All input files must contain GPSLatitude and GPSLongitude.
+#            2) For Google Earth to be able to find the images, the input
+#               images must be specified using relative paths, and "out.kml"
+#               must stay in the same directory as where the command was run.
+#            3) Google Earth is picky about the case of the image file extension,
+#               and may not be able to display the image if an upper-case
+#               extension is used.
+#            4) The -fileOrder option may be used to control the order of the
+#               generated placemarks.
+#------------------------------------------------------------------------------
+#[HEAD]<?xml version="1.0" encoding="UTF-8"?>
+#[HEAD]<kml xmlns="http://earth.google.com/kml/2.0">
+#[HEAD]  <Document>
+#[HEAD]    <name>My Photos</name>
+#[HEAD]    <open>1</open>
+#[HEAD]    <Style id="Photo">
+#[HEAD]      <IconStyle>
+#[HEAD]        <Icon>
+#[HEAD]          <href>http://maps.google.com/mapfiles/kml/pal4/icon38.png</href>
+#[HEAD]          <scale>1.0</scale>
+#[HEAD]        </Icon>
+#[HEAD]      </IconStyle>
+#[HEAD]    </Style>
+#[HEAD]    <Folder>
+#[HEAD]      <name>Waypoints</name>
+#[HEAD]      <open>0</open>
+#[BODY]      <Placemark>
+#[BODY]        <description><![CDATA[<br/><table><tr><td>
+#[BODY]        <img src='$directory/$filename'
+#[BODY]          width='$imagewidth' height='$imageheight'>
+#[BODY]        </td></tr></table>]]></description>
+#[BODY]        <Snippet/>
+#[BODY]        <name>$filename</name>
+#[BODY]        <styleUrl>#Photo</styleUrl>
+#[BODY]        <Point>
+#[BODY]          <altitudeMode>clampedToGround</altitudeMode>
+#[BODY]          <coordinates>$gpslongitude#,$gpslatitude#,0</coordinates>
+#[BODY]        </Point>
+#[BODY]      </Placemark>
+#[TAIL]    </Folder>
+#[TAIL]  </Document>
+#[TAIL]</kml>

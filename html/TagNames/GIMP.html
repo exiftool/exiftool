@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>GIMP Tags</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h2 class=top>GIMP Tags</h2>
+<p>The GNU Image Manipulation Program (GIMP) writes these tags in its native
+XCF (eXperimental Computing Facilty) images.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'header'</td>
+<td>Header</td>
+<td class=c>-</td>
+<td>--&gt; <a href='GIMP.html#Header'>GIMP Header Tags</a></td></tr>
+<tr class=b>
+<td title='0x0011 = 17'>0x0011</td>
+<td>Compression</td>
+<td class=c>N</td>
+<td><span class=s>0 = None
+  <br>1 = RLE Encoding
+  <br>2 = Zlib
+  <br>3 = Fractal</span></td></tr>
+<tr>
+<td title='0x0013 = 19'>0x0013</td>
+<td>Resolution</td>
+<td class=c>-</td>
+<td>--&gt; <a href='GIMP.html#Resolution'>GIMP Resolution Tags</a></td></tr>
+<tr class=b>
+<td title='0x0015 = 21'>0x0015</td>
+<td>Parasites</td>
+<td class=c>-</td>
+<td>--&gt; <a href='GIMP.html#Parasite'>GIMP Parasite Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Header'>GIMP Header Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='9 = 0x9'>9</td>
+<td>XCFVersion</td>
+<td class=c>N</td>
+<td><span class=s>&#39;file&#39; = 0
+  <br>&#39;v001&#39; = 1
+  <br>&#39;v002&#39; = 2</span></td></tr>
+<tr class=b>
+<td class=r title='14 = 0xe'>14</td>
+<td>ImageWidth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='18 = 0x12'>18</td>
+<td>ImageHeight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='22 = 0x16'>22</td>
+<td>ColorMode</td>
+<td class=c>N</td>
+<td><span class=s>0 = RGB Color
+  <br>1 = Grayscale
+  <br>2 = Indexed Color</span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Resolution'>GIMP Resolution Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index4</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>XResolution</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='1 = 0x1'>1</td>
+<td>YResolution</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Parasite'>GIMP Parasite Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'exif-data'</td>
+<td>ExifData</td>
+<td class=c>-</td>
+<td>--&gt; <a href='EXIF.html'>EXIF Tags</a></td></tr>
+<tr class=b>
+<td>'gimp-comment'</td>
+<td>Comment</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'gimp-metadata'</td>
+<td>XMP</td>
+<td class=c>-</td>
+<td>--&gt; <a href='XMP.html'>XMP Tags</a></td></tr>
+<tr class=b>
+<td>'icc-profile'</td>
+<td>ICC_Profile</td>
+<td class=c>-</td>
+<td>--&gt; <a href='ICC_Profile.html'>ICC_Profile Tags</a></td></tr>
+<tr>
+<td>'icc-profile-name'</td>
+<td>ICCProfileName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'iptc-data'</td>
+<td>IPTCData</td>
+<td class=c>-</td>
+<td>--&gt; <a href='IPTC.html'>IPTC Tags</a></td></tr>
+<tr>
+<td>'jpeg-exif-data'</td>
+<td>JPEGExifData</td>
+<td class=c>-</td>
+<td>--&gt; <a href='EXIF.html'>EXIF Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<hr>
+(This document generated automatically by Image::ExifTool::BuildTagLookup)
+<br><i>Last revised Oct 12, 2010</i>
+<p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
+</body>
+</html>

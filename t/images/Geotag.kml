@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document>
+<name>Location history from 11/13/2013 to 11/13/2013</name>
+<open>1</open>
+<description/>
+<StyleMap id="multiTrack">
+<Pair>
+<key>normal</key>
+<styleUrl>#multiTrack_n</styleUrl>
+</Pair>
+<Pair>
+<key>highlight</key>
+<styleUrl>#multiTrack_h</styleUrl>
+</Pair>
+</StyleMap>
+<Style id="multiTrack_n">
+<IconStyle>
+<Icon>
+<href>http://earth.google.com/images/kml-icons/track-directional/track-0.png</href>
+</Icon>
+</IconStyle>
+<LineStyle>
+<color>99ffac59</color>
+<width>6</width>
+</LineStyle>
+</Style>
+<Style id="multiTrack_h">
+<IconStyle>
+<scale>1.2</scale>
+<Icon>
+<href>http://earth.google.com/images/kml-icons/track-directional/track-0.png</href>
+</Icon>
+</IconStyle>
+<LineStyle>
+<color>99ffac59</color>
+<width>8</width>
+</LineStyle>
+</Style>
+<Placemark>
+<name>Latitude User</name>
+<description>Location history for Latitude User from 11/13/2013 to 11/13/2013</description>
+<styleUrl>#multiTrack</styleUrl>
+<gx:Track>
+<altitudeMode>clampToGround</altitudeMode>
+<when>2013-11-13T01:03:34.245-08:00</when>
+<gx:coord>-106.026069 34.166232 0</gx:coord>
+<when>2013-11-13T01:04:35.259-08:00</when>
+<gx:coord>-106.027012 34.165476 0</gx:coord>
+<when>2013-11-13T01:05:35.277-08:00</when>
+<gx:coord>-106.027854 34.164765 0</gx:coord>
+</gx:Track>
+</Placemark>
+</Document>
+</kml>

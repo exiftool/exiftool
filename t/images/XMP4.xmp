@@ -1,0 +1,93 @@
+<?xpacket begin='﻿' id='W5M0MpCehiHzreSzNTczkc9d'?>
+<x:xmpmeta xmlns:x='adobe:ns:meta/' x:xmptk='Image::ExifTool 7.77'>
+<rdf:RDF xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'>
+
+ <rdf:Description rdf:about=''
+  xmlns:Iptc4xmpExt='http://iptc.org/std/Iptc4xmpExt/2008-02-29/'>
+  <Iptc4xmpExt:LocationCreated>
+   <rdf:Bag>
+    <rdf:li rdf:parseType='Resource'>
+     <Iptc4xmpExt:City>one</Iptc4xmpExt:City>
+     <Iptc4xmpExt:CountryCode>1</Iptc4xmpExt:CountryCode>
+    </rdf:li>
+    <rdf:li rdf:parseType='Resource'>
+     <Iptc4xmpExt:City>two</Iptc4xmpExt:City>
+     <Iptc4xmpExt:CountryCode>2</Iptc4xmpExt:CountryCode>
+    </rdf:li>
+    <rdf:li rdf:parseType='Resource'>
+     <Iptc4xmpExt:City>three</Iptc4xmpExt:City>
+    </rdf:li>
+    <rdf:li rdf:parseType='Resource'>
+     <Iptc4xmpExt:CountryCode>4</Iptc4xmpExt:CountryCode>
+    </rdf:li>
+   </rdf:Bag>
+  </Iptc4xmpExt:LocationCreated>
+ </rdf:Description>
+
+ <rdf:Description rdf:about=''
+  xmlns:dc='http://purl.org/dc/elements/1.1/'>
+  <dc:contributor>
+   <rdf:Bag>
+    <rdf:li>me</rdf:li>
+   </rdf:Bag>
+  </dc:contributor>
+  <dc:subject>
+   <rdf:Bag>
+    <rdf:li>one</rdf:li>
+    <rdf:li>two</rdf:li>
+   </rdf:Bag>
+  </dc:subject>
+ </rdf:Description>
+
+ <rdf:Description rdf:about=''
+  xmlns:test='http://ns.test.com/'>
+  <test:StructList2>
+   <rdf:Bag>
+    <rdf:li rdf:parseType='Resource'>
+     <test:Item1>c1-1</test:Item1>
+     <test:Item2>c2-1</test:Item2>
+    </rdf:li>
+    <rdf:li rdf:parseType='Resource'>
+     <test:Item1>c1-2</test:Item1>
+     <test:Item2>c2-2</test:Item2>
+     <test:TestList1>
+      <rdf:Bag>
+       <rdf:li>x1</rdf:li>
+      </rdf:Bag>
+     </test:TestList1>
+     <test:TestList2>
+      <rdf:Bag>
+       <rdf:li>y1</rdf:li>
+       <rdf:li>y2</rdf:li>
+      </rdf:Bag>
+     </test:TestList2>
+    </rdf:li>
+   </rdf:Bag>
+  </test:StructList2>
+  <test:StructList1>
+   <rdf:Bag>
+    <rdf:li rdf:parseType='Resource'>
+     <test:Item1>b1</test:Item1>
+     <test:Item2>b2</test:Item2>
+    </rdf:li>
+   </rdf:Bag>
+  </test:StructList1>
+  <test:BareStruct rdf:parseType='Resource'>
+   <test:Item1>a1</test:Item1>
+   <test:Item2>a2</test:Item2>
+  </test:BareStruct>
+  <test:BareList2>
+   <rdf:Bag>
+    <rdf:li>b1</rdf:li>
+    <rdf:li>b2</rdf:li>
+   </rdf:Bag>
+  </test:BareList2>
+  <test:BareList1>
+   <rdf:Bag>
+    <rdf:li>a1</rdf:li>
+   </rdf:Bag>
+  </test:BareList1>
+ </rdf:Description>
+</rdf:RDF>
+</x:xmpmeta>
+<?xpacket end='w'?>

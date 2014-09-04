@@ -1,0 +1,366 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Sanyo Tags</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h2 class=top>Sanyo Tags</h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x00ff = 255'>0x00ff</td>
+<td>MakerNoteOffset</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0100 = 256'>0x0100</td>
+<td>SanyoThumbnail</td>
+<td class=c>undef</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0200 = 512'>0x0200</td>
+<td>SpecialMode</td>
+<td class=c>int32u[3]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0201 = 513'>0x0201</td>
+<td>SanyoQuality</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>0x0 = Normal/Very Low
+  <br>0x1 = Normal/Low
+  <br>0x2 = Normal/Medium Low
+  <br>0x3 = Normal/Medium
+  <br>0x4 = Normal/Medium High
+  <br>0x5 = Normal/High
+  <br>0x6 = Normal/Very High
+  <br>0x7 = Normal/Super High
+  <br>0x100 = Fine/Very Low
+  <br>0x101 = Fine/Low
+  <br>0x102 = Fine/Medium Low
+  <br>0x103 = Fine/Medium
+  <br>0x104 = Fine/Medium High
+  <br>0x105 = Fine/High
+  <br>0x106 = Fine/Very High
+  <br>0x107 = Fine/Super High
+  <br>0x200 = Super Fine/Very Low
+  <br>0x201 = Super Fine/Low
+  <br>0x202 = Super Fine/Medium Low
+  <br>0x203 = Super Fine/Medium
+  <br>0x204 = Super Fine/Medium High
+  <br>0x205 = Super Fine/High
+  <br>0x206 = Super Fine/Very High
+  <br>0x207 = Super Fine/Super High</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td title='0x0202 = 514'>0x0202</td>
+<td>Macro</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Normal
+  <br>1 = Macro
+  <br>2 = View
+  <br>3 = Manual</span></td></tr>
+<tr class=b>
+<td title='0x0204 = 516'>0x0204</td>
+<td>DigitalZoom</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0207 = 519'>0x0207</td>
+<td>SoftwareVersion</td>
+<td class=c>Y</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0208 = 520'>0x0208</td>
+<td>PictInfo</td>
+<td class=c>Y</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0209 = 521'>0x0209</td>
+<td>CameraID</td>
+<td class=c>Y</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x020e = 526'>0x020e</td>
+<td>SequentialShot</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = None
+  <br>1 = Standard
+  <br>2 = Best
+  <br>3 = Adjust Exposure</span></td></tr>
+<tr>
+<td title='0x020f = 527'>0x020f</td>
+<td>WideRange</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr class=b>
+<td title='0x0210 = 528'>0x0210</td>
+<td>ColorAdjustmentMode</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr>
+<td title='0x0213 = 531'>0x0213</td>
+<td>QuickShot</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr class=b>
+<td title='0x0214 = 532'>0x0214</td>
+<td>SelfTimer</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr>
+<td title='0x0216 = 534'>0x0216</td>
+<td>VoiceMemo</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr class=b>
+<td title='0x0217 = 535'>0x0217</td>
+<td>RecordShutterRelease</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Record while down
+  <br>1 = Press start, press stop</span></td></tr>
+<tr>
+<td title='0x0218 = 536'>0x0218</td>
+<td>FlickerReduce</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr class=b>
+<td title='0x0219 = 537'>0x0219</td>
+<td>OpticalZoomOn</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr>
+<td title='0x021b = 539'>0x021b</td>
+<td>DigitalZoomOn</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr class=b>
+<td title='0x021d = 541'>0x021d</td>
+<td>LightSourceSpecial</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr>
+<td title='0x021e = 542'>0x021e</td>
+<td>Resaved</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = No
+  <br>1 = Yes</span></td></tr>
+<tr class=b>
+<td title='0x021f = 543'>0x021f</td>
+<td>SceneSelect</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>0 = Off
+  <br>1 = Sport
+  <br>2 = TV
+  <br>3 = Night</td><td>&nbsp;&nbsp;</td>
+  <td>4 = User 1
+  <br>5 = User 2
+  <br>6 = Lamp</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td title='0x0223 = 547'>0x0223</td>
+<td>ManualFocusDistance
+  <br>FaceInfo</td>
+<td class=c>rational64u<br>-</td>
+<td><span class=s>Sanyo FaceInfo</span></td></tr>
+<tr class=b>
+<td title='0x0224 = 548'>0x0224</td>
+<td>SequenceShotInterval</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = 5 frames/s
+  <br>1 = 10 frames/s
+  <br>2 = 15 frames/s
+  <br>3 = 20 frames/s</span></td></tr>
+<tr>
+<td title='0x0225 = 549'>0x0225</td>
+<td>FlashMode</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Auto
+  <br>1 = Force
+  <br>2 = Disabled
+  <br>3 = Red eye</span></td></tr>
+<tr class=b>
+<td title='0x0e00 = 3584'>0x0e00</td>
+<td>PrintIM</td>
+<td class=c>-</td>
+<td>--&gt; <a href='PrintIM.html'>PrintIM Tags</a></td></tr>
+<tr>
+<td title='0x0f00 = 3840'>0x0f00</td>
+<td>DataDump</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='FaceInfo'>Sanyo FaceInfo Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index4</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>FacesDetected</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>FacePosition</td>
+<td class=c>int32u[4]</td>
+<td><span class=s><span class=n>(left, top, right and bottom coordinates of detected face in an unrotated
+640-pixel-wide image, with increasing Y downwards)</span></span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='MOV'>Sanyo MOV Tags</a></h2>
+<p>This information is found in Sanyo MOV videos.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>Make</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='24 = 0x18'>24</td>
+<td>Model</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='38 = 0x26'>38</td>
+<td>ExposureTime</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='42 = 0x2a'>42</td>
+<td>FNumber</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='50 = 0x32'>50</td>
+<td>ExposureCompensation</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='68 = 0x44'>68</td>
+<td>WhiteBalance</td>
+<td class=c>N</td>
+<td><table class=cols><tr>
+  <td>0 = Auto
+  <br>1 = Daylight
+  <br>2 = Shade</td><td>&nbsp;&nbsp;</td>
+  <td>3 = Fluorescent
+  <br>4 = Tungsten
+  <br>5 = Manual</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='72 = 0x48'>72</td>
+<td>FocalLength</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='MP4'>Sanyo MP4 Tags</a></h2>
+<p>This information is found in Sanyo MP4 videos.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>Make</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='24 = 0x18'>24</td>
+<td>Model</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='50 = 0x32'>50</td>
+<td>FNumber</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='58 = 0x3a'>58</td>
+<td>ExposureCompensation</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='106 = 0x6a'>106</td>
+<td>ISO</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='209 = 0xd1'>209</td>
+<td>Software</td>
+<td class=c>N</td>
+<td><span class=s><span class=n>(these tags are shifted up by 1 byte for some models like the HD1A)</span></span></td></tr>
+<tr>
+<td class=r title='210 = 0xd2'>210</td>
+<td>Software</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='241 = 0xf1'>241</td>
+<td>Thumbnail</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Sanyo.html#Thumbnail'>Sanyo Thumbnail Tags</a></td></tr>
+<tr>
+<td class=r title='242 = 0xf2'>242</td>
+<td>Thumbnail</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Sanyo.html#Thumbnail'>Sanyo Thumbnail Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Thumbnail'>Sanyo Thumbnail Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index4</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='1 = 0x1'>1</td>
+<td>ThumbnailWidth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>ThumbnailHeight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='3 = 0x3'>3</td>
+<td>ThumbnailLength</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>ThumbnailOffset</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<hr>
+(This document generated automatically by Image::ExifTool::BuildTagLookup)
+<br><i>Last revised Nov 22, 2011</i>
+<p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
+</body>
+</html>

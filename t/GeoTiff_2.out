@@ -1,0 +1,36 @@
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.07
+[File, System, Image] FileName - File Name: GeoTiff.tif
+[File, System, Image] Directory - Directory: t/images
+[File, System, Image] FileSize - File Size: 2.6 kB
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2005:11:14 14:47:21-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2012:11:19 15:30:57-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2012:11:17 09:18:25-05:00
+[File, System, Image] FilePermissions - File Permissions: rw-r--r--
+[File, File, Image] FileType - File Type: TIFF
+[File, File, Image] MIMEType - MIME Type: image/tiff
+[File, File, Image] ExifByteOrder - Exif Byte Order: Big-endian (Motorola, MM)
+[EXIF, IFD0, Image] 256 - Image Width: 25
+[EXIF, IFD0, Image] 257 - Image Height: 24
+[EXIF, IFD0, Image] 258 - Bits Per Sample: 8
+[EXIF, IFD0, Image] 259 - Compression: Uncompressed
+[EXIF, IFD0, Image] 262 - Photometric Interpretation: RGB Palette
+[EXIF, IFD0, Image] 273 - Strip Offsets: 2060
+[EXIF, IFD0, Image] 278 - Rows Per Strip: 24
+[EXIF, IFD0, Image] 279 - Strip Byte Counts: 600
+[EXIF, IFD0, Image] 282 - X Resolution: 72
+[EXIF, IFD0, Image] 283 - Y Resolution: 72
+[EXIF, IFD0, Image] 296 - Resolution Unit: inches
+[EXIF, IFD0, Image] 320 - Color Map: (Binary data 1536 bytes)
+[EXIF, IFD0, Location] 34264 - Model Transform: 33.4179196429669 35.8363313794284 0 691955.165684031 35.8363313794284 -33.4179196429669 0 2791710.99012603 0 0 0 0 0 0 0 1
+[GeoTiff, GeoTiff, Location] 1 - Geo Tiff Version: 1.1.0
+[GeoTiff, GeoTiff, Location] 1024 - GT Model Type: Projected
+[GeoTiff, GeoTiff, Location] 1025 - GT Raster Type: Pixel Is Area
+[GeoTiff, GeoTiff, Location] 2048 - Geographic Type: User Defined
+[GeoTiff, GeoTiff, Location] 2049 - Geog Citation: Hough UTM zone 17N
+[GeoTiff, GeoTiff, Location] 2050 - Geog Geodetic Datum: User Defined
+[GeoTiff, GeoTiff, Location] 2057 - Geog Semi Major Axis: 6378270
+[GeoTiff, GeoTiff, Location] 2058 - Geog Semi Minor Axis: 6356794.343479
+[GeoTiff, GeoTiff, Location] 3072 - Projected CS Type: User Defined
+[GeoTiff, GeoTiff, Location] 3073 - PCS Citation: Hough UTM zone 17N
+[GeoTiff, GeoTiff, Location] 3074 - Projection: UTM zone 17N
+[Composite, Composite, Image] ImageSize - Image Size: 25x24

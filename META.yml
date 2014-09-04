@@ -1,0 +1,26 @@
+--- #YAML:1.0
+name:               Image-ExifTool
+version:            8.67
+abstract:           Read and write meta information
+author:
+    - Phil Harvey (phil@owl.phy.queensu.ca)
+license:            perl
+distribution_type:  module
+configure_requires:
+    ExtUtils::MakeMaker:  0
+build_requires:
+    ExtUtils::MakeMaker:  0
+requires:  {}
+no_index:
+    directory:
+        - t
+        - inc
+generated_by:       ExtUtils::MakeMaker version 6.56
+meta-spec:
+    url:      http://module-build.sourceforge.net/META-spec-v1.4.html
+    version:  1.4
+recommends:
+    Archive::Zip:    0
+    Compress::Zlib:  0
+    Digest::MD5:     0
+    Digest::SHA:     0

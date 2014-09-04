@@ -1,0 +1,567 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>MWG Tags</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h2 class=top>MWG Tags</h2>
+<p>
+The Metadata Working Group (MWG) recommends techniques to allow certain
+overlapping EXIF, IPTC and XMP tags to be reconciled when reading, and
+synchronized when writing.  The MWG Composite tags below are designed to aid
+in the implementation of these recommendations.  As well, the MWG defines
+new XMP tags which are listed in the subsequent tables below.  See
+<a href="http://www.metadataworkinggroup.org/">http://www.metadataworkinggroup.org/</a> for the official MWG specification.
+</p>
+<h2><a name='Composite'>MWG Composite Tags</a></h2>
+<p>The table below lists special Composite tags which are used to access other
+tags based on the MWG 2.0 recommendations.  These tags are only accessible
+when explicitly loaded, but this is done automatically by the exiftool
+application if MWG is specified as a group for any tag on the command line,
+or manually with the <code>-use MWG</code> option.  Via the API, the MWG Composite
+tags are loaded by calling &quot;<code>Image::ExifTool::MWG::Load()</code>&quot;.</p>
+
+<p>When reading, the value of each MWG tag is <b>Derived From</b> the specified
+tags based on the MWG guidelines.  When writing, the appropriate associated
+tags are written.  The value of the IPTCDigest tag is updated automatically
+when the IPTC is changed if either the IPTCDigest tag didn&#39;t exist
+beforehand or its value agreed with the original IPTC digest (indicating
+that the XMP is synchronized with the IPTC).  IPTC information is written
+only if the original file contained IPTC.</p>
+
+<p>Loading the MWG module activates &quot;strict MWG conformance mode&quot;, which has
+the effect of causing EXIF, IPTC and XMP in non-standard locations to be
+ignored when reading, as per the MWG recommendations.  Instead, a &quot;Warning&quot;
+tag is generated when non-standard metadata is encountered.  This feature
+may be disabled by setting <code>$Image::ExifTool::MWG::strict = 0</code> in the
+<a href="../config.html">ExifTool config file</a> (or from your Perl script when using the API).  Note
+that the behaviour when writing is not changed:  ExifTool always creates new
+records only in the standard location, but writes new tags to any
+EXIF/IPTC/XMP records that exist.</p>
+
+<p>Contrary to the EXIF specification, the MWG recommends that EXIF &quot;ASCII&quot;
+string values be stored as UTF-8.  To honour this, the exiftool application
+sets the default internal EXIF string encoding to &quot;UTF8&quot; when the MWG module
+is loaded (but this setting does not change automatically via the API).</p>
+
+<p>A complication of the MWG specification is that although the MWG:Creator
+property may consist of multiple values, the associated EXIF tag
+(EXIF:Artist) is only a simple string.  To resolve this discrepancy the MWG
+recommends a technique which allows a list of values to be stored in a
+string by using a semicolon-space separator (with quotes around values if
+necessary).  When the MWG module is loaded, ExifTool automatically
+implements this policy and changes EXIF:Artist to a list-type tag.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag Name</th>
+<th>Writable</th><th>Derived From</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>City</td>
+<td class=c>Y</td>
+<td class=n>IPTC:City
+  <br>XMP-photoshop:City
+  <br>XMP-iptcExt:LocationShownCity
+  <br>CurrentIPTCDigest
+  <br>IPTCDigest</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Copyright</td>
+<td class=c>Y</td>
+<td class=n>EXIF:Copyright
+  <br>IPTC:CopyrightNotice
+  <br>XMP-dc:Rights
+  <br>CurrentIPTCDigest
+  <br>IPTCDigest</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Country</td>
+<td class=c>Y</td>
+<td class=n>IPTC:Country-PrimaryLocationName
+  <br>XMP-photoshop:Country
+  <br>XMP-iptcExt:LocationShownCountryName
+  <br>CurrentIPTCDigest
+  <br>IPTCDigest</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>CreateDate</td>
+<td class=c>Y</td>
+<td class=n>EXIF:CreateDate
+  <br>EXIF:SubSecTimeDigitized
+  <br>IPTC:DigitalCreationDate
+  <br>IPTC:DigitalCreationTime
+  <br>XMP-xmp:CreateDate
+  <br>CurrentIPTCDigest
+  <br>IPTCDigest</td>
+<td><span class=s><span class=n>(&quot;creation date of the digital representation&quot; - MWG)</span></span></td></tr>
+<tr>
+<td>Creator</td>
+<td class=c title=' + = List'>Y+</td>
+<td class=n>EXIF:Artist
+  <br>IPTC:By-line
+  <br>XMP-dc:Creator
+  <br>CurrentIPTCDigest
+  <br>IPTCDigest</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>DateTimeOriginal</td>
+<td class=c>Y</td>
+<td class=n>EXIF:DateTimeOriginal
+  <br>EXIF:SubSecTimeOriginal
+  <br>IPTC:DateCreated
+  <br>IPTC:TimeCreated
+  <br>XMP-photoshop:DateCreated
+  <br>CurrentIPTCDigest
+  <br>IPTCDigest</td>
+<td><span class=s><span class=n>(&quot;creation date of the intellectual content being shown&quot; - MWG)</span></span></td></tr>
+<tr>
+<td>Description</td>
+<td class=c>Y</td>
+<td class=n>EXIF:ImageDescription
+  <br>IPTC:Caption-Abstract
+  <br>XMP-dc:Description
+  <br>CurrentIPTCDigest
+  <br>IPTCDigest</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Keywords</td>
+<td class=c title=' + = List'>Y+</td>
+<td class=n>IPTC:Keywords
+  <br>XMP-dc:Subject
+  <br>CurrentIPTCDigest
+  <br>IPTCDigest</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Location</td>
+<td class=c>Y</td>
+<td class=n>IPTC:Sub-location
+  <br>XMP-iptcCore:Location
+  <br>XMP-iptcExt:LocationShownSublocation
+  <br>CurrentIPTCDigest
+  <br>IPTCDigest</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>ModifyDate</td>
+<td class=c>Y</td>
+<td class=n>EXIF:ModifyDate
+  <br>EXIF:SubSecTime
+  <br>XMP-xmp:ModifyDate
+  <br>CurrentIPTCDigest
+  <br>IPTCDigest</td>
+<td><span class=s><span class=n>(&quot;modification date of the digital image file&quot; - MWG)</span></span></td></tr>
+<tr>
+<td>Orientation</td>
+<td class=c>Y</td>
+<td class=n>EXIF:Orientation</td>
+<td><table class=cols><tr>
+  <td>1 = Horizontal (normal)
+  <br>2 = Mirror horizontal
+  <br>3 = Rotate 180
+  <br>4 = Mirror vertical
+  <br>5 = Mirror horizontal and rotate 270 CW
+  <br>6 = Rotate 90 CW
+  <br>7 = Mirror horizontal and rotate 90 CW
+  <br>8 = Rotate 270 CW</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td>Rating</td>
+<td class=c>Y</td>
+<td class=n>XMP-xmp:Rating</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>State</td>
+<td class=c>Y</td>
+<td class=n>IPTC:Province-State
+  <br>XMP-photoshop:State
+  <br>XMP-iptcExt:LocationShownProvinceState
+  <br>CurrentIPTCDigest
+  <br>IPTCDigest</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Regions'>MWG Regions Tags</a></h2>
+<p>Image region metadata defined by the MWG 2.0 specification.  These tags
+belong to the ExifTool XMP-mwg-rs group, and as such they may be accessed
+without the need to load the MWG Composite tags above.  See
+<a href="http://www.metadataworkinggroup.org/">http://www.metadataworkinggroup.org/</a> for the official specification.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>RegionInfo</td>
+<td class=c>struct</td>
+<td>--&gt; <a href='MWG.html#RegionInfo'>MWG RegionInfo Struct</a>
+  <br><span class='n s'>(called Regions by the spec)</span></td></tr>
+<tr class=b>
+<td>RegionAppliedToDimensions</td>
+<td class=c title=' _ = Flattened'>struct_</td>
+<td>--&gt; <a href='XMP.html#Dimensions'>Dimensions Struct</a>
+  <br><span class='n s'>(RegionsAppliedToDimensions)</span></td></tr>
+<tr>
+<td>RegionAppliedToDimensionsH</td>
+<td class=c title=' _ = Flattened'>real_</td>
+<td><span class=s><span class=n>(RegionsAppliedToDimensionsH)</span></span></td></tr>
+<tr class=b>
+<td>RegionAppliedToDimensionsUnit</td>
+<td class=c title=' _ = Flattened'>string_</td>
+<td><span class=s><span class=n>(RegionsAppliedToDimensionsUnit)</span></span></td></tr>
+<tr>
+<td>RegionAppliedToDimensionsW</td>
+<td class=c title=' _ = Flattened'>real_</td>
+<td><span class=s><span class=n>(RegionsAppliedToDimensionsW)</span></span></td></tr>
+<tr class=b>
+<td>RegionList</td>
+<td class=c title=' _ = Flattened
+ + = List'>struct_+</td>
+<td>--&gt; <a href='MWG.html#RegionStruct'>MWG RegionStruct Struct</a>
+  <br><span class='n s'>(RegionsRegionList)</span></td></tr>
+<tr>
+<td>RegionArea</td>
+<td class=c title=' _ = Flattened
+ + = List'>struct_+</td>
+<td>--&gt; <a href='XMP.html#Area'>Area Struct</a>
+  <br><span class='n s'>(RegionsRegionListArea)</span></td></tr>
+<tr class=b>
+<td>RegionAreaD</td>
+<td class=c title=' _ = Flattened
+ + = List'>real_+</td>
+<td><span class=s><span class=n>(RegionsRegionListAreaD)</span></span></td></tr>
+<tr>
+<td>RegionAreaH</td>
+<td class=c title=' _ = Flattened
+ + = List'>real_+</td>
+<td><span class=s><span class=n>(RegionsRegionListAreaH)</span></span></td></tr>
+<tr class=b>
+<td>RegionAreaUnit</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(RegionsRegionListAreaUnit)</span></span></td></tr>
+<tr>
+<td>RegionAreaW</td>
+<td class=c title=' _ = Flattened
+ + = List'>real_+</td>
+<td><span class=s><span class=n>(RegionsRegionListAreaW)</span></span></td></tr>
+<tr class=b>
+<td>RegionAreaX</td>
+<td class=c title=' _ = Flattened
+ + = List'>real_+</td>
+<td><span class=s><span class=n>(RegionsRegionListAreaX)</span></span></td></tr>
+<tr>
+<td>RegionAreaY</td>
+<td class=c title=' _ = Flattened
+ + = List'>real_+</td>
+<td><span class=s><span class=n>(RegionsRegionListAreaY)</span></span></td></tr>
+<tr class=b>
+<td>RegionBarCodeValue</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(RegionsRegionListBarCodeValue)</span></span></td></tr>
+<tr>
+<td>RegionDescription</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(RegionsRegionListDescription)</span></span></td></tr>
+<tr class=b>
+<td>RegionExtensions</td>
+<td class=c title=' _ = Flattened
+ + = List'>struct_+</td>
+<td>--&gt; <a href='MWG.html#Extensions'>MWG Extensions Struct</a>
+  <br><span class='n s'>(RegionsRegionListExtensions)</span></td></tr>
+<tr>
+<td>RegionFocusUsage</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(RegionsRegionListFocusUsage)</span>
+  <br>&#39;EvaluatedNotUsed&#39; = Evaluated, Not Used
+  <br>&#39;EvaluatedUsed&#39; = Evaluated, Used
+  <br>&#39;NotEvaluatedNotUsed&#39; = Not Evaluated, Not Used</span></td></tr>
+<tr class=b>
+<td>RegionName</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(RegionsRegionListName)</span></span></td></tr>
+<tr>
+<td>RegionSeeAlso</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(RegionsRegionListSeeAlso)</span></span></td></tr>
+<tr class=b>
+<td>RegionType</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(RegionsRegionListType)</span>
+  <br>&#39;BarCode&#39; = BarCode
+  <br>&#39;Face&#39; = Face
+  <br>&#39;Focus&#39; = Focus
+  <br>&#39;Pet&#39; = Pet</span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='RegionInfo'>MWG RegionInfo Struct</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Field Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>AppliedToDimensions</td>
+<td class=c>Dimensions</td>
+<td>--&gt; <a href='XMP.html#Dimensions'>Dimensions Struct</a></td></tr>
+<tr class=b>
+<td>RegionList</td>
+<td class=c title=' + = List'>MWG RegionStruct+</td>
+<td>--&gt; <a href='MWG.html#RegionStruct'>MWG RegionStruct Struct</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='RegionStruct'>MWG RegionStruct Struct</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Field Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>Area</td>
+<td class=c>Area</td>
+<td>--&gt; <a href='XMP.html#Area'>Area Struct</a></td></tr>
+<tr class=b>
+<td>BarCodeValue</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Description</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Extensions</td>
+<td class=c>MWG Extensions</td>
+<td>--&gt; <a href='MWG.html#Extensions'>MWG Extensions Struct</a></td></tr>
+<tr>
+<td>FocusUsage</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Name</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Type</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>SeeAlso</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Extensions'>MWG Extensions Struct</a></h2>
+<p>This structure may contain any top-level XMP tags, but none have been
+pre-defined in ExifTool.  Since no flattened tags have been pre-defined,
+RegionExtensions is writable only as a structure (eg.
+<code>{xmp-dc:creator=me,rating=5}</code>).  Fields for this structure are identified
+using the standard ExifTool tag name (with optional leading group name,
+and/or trailing language code, and/or trailing <code>#</code> symbol to disable print
+conversion).</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Field Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr><td colspan=3 class=c><i>[no tags known]</i></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Keywords'>MWG Keywords Tags</a></h2>
+<p>Hierarchical keywords metadata defined by the MWG 2.0 specification.  These
+tags belong to the ExifTool XMP-mwg-kw group. ExifTool unrolls keyword
+structures to an arbitrary depth of 6 to allow individual levels to be
+accessed with different tag names, and to avoid infinite recursion.  See
+<a href="http://www.metadataworkinggroup.org/">http://www.metadataworkinggroup.org/</a> for the official specification.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>KeywordInfo</td>
+<td class=c>struct</td>
+<td>--&gt; <a href='MWG.html#KeywordInfo'>MWG KeywordInfo Struct</a>
+  <br><span class='n s'>(called Keywords by the spec)</span></td></tr>
+<tr class=b>
+<td>HierarchicalKeywords</td>
+<td class=c title=' _ = Flattened
+ + = List'>struct_+</td>
+<td>--&gt; <a href='MWG.html#KeywordStruct'>MWG KeywordStruct Struct</a>
+  <br><span class='n s'>(KeywordsHierarchy)</span></td></tr>
+<tr>
+<td>HierarchicalKeywords1Applied</td>
+<td class=c title=' _ = Flattened
+ + = List'>boolean_+</td>
+<td><span class=s><span class=n>(KeywordsHierarchyApplied)</span></span></td></tr>
+<tr class=b>
+<td>HierarchicalKeywords1Children</td>
+<td class=c title=' _ = Flattened
+ + = List'>struct_+</td>
+<td>--&gt; <a href='MWG.html#KeywordStruct'>MWG KeywordStruct Struct</a>
+  <br><span class='n s'>(KeywordsHierarchyChildren)</span></td></tr>
+<tr>
+<td>HierarchicalKeywords2Applied</td>
+<td class=c title=' _ = Flattened
+ + = List'>boolean_+</td>
+<td><span class=s><span class=n>(KeywordsHierarchyChildrenApplied)</span></span></td></tr>
+<tr class=b>
+<td>HierarchicalKeywords2Children</td>
+<td class=c title=' _ = Flattened
+ + = List'>struct_+</td>
+<td>--&gt; <a href='MWG.html#KeywordStruct'>MWG KeywordStruct Struct</a>
+  <br><span class='n s'>(KeywordsHierarchyChildrenChildren)</span></td></tr>
+<tr>
+<td>HierarchicalKeywords3Applied</td>
+<td class=c title=' _ = Flattened
+ + = List'>boolean_+</td>
+<td><span class=s><span class=n>(KeywordsHierarchyChildrenChildrenApplied)</span></span></td></tr>
+<tr class=b>
+<td>HierarchicalKeywords3Children</td>
+<td class=c title=' _ = Flattened
+ + = List'>struct_+</td>
+<td>--&gt; <a href='MWG.html#KeywordStruct'>MWG KeywordStruct Struct</a>
+  <br><span class='n s'>(KeywordsHierarchyChildrenChildrenChildren)</span></td></tr>
+<tr>
+<td>HierarchicalKeywords4Applied</td>
+<td class=c title=' _ = Flattened
+ + = List'>boolean_+</td>
+<td><span class=s><span class=n>(KeywordsHierarchyChildrenChildrenChildrenApplied)</span></span></td></tr>
+<tr class=b>
+<td>HierarchicalKeywords4Children</td>
+<td class=c title=' _ = Flattened
+ + = List'>struct_+</td>
+<td>--&gt; <a href='MWG.html#KeywordStruct'>MWG KeywordStruct Struct</a>
+  <br><span class='n s'>(KeywordsHierarchyChildrenChildrenChildrenChildren)</span></td></tr>
+<tr>
+<td>HierarchicalKeywords5Applied</td>
+<td class=c title=' _ = Flattened
+ + = List'>boolean_+</td>
+<td><span class=s><span class=n>(KeywordsHierarchyChildrenChildrenChildrenChildrenApplied)</span></span></td></tr>
+<tr class=b>
+<td>HierarchicalKeywords5Children</td>
+<td class=c title=' _ = Flattened
+ + = List'>struct_+</td>
+<td>--&gt; <a href='MWG.html#KeywordStruct'>MWG KeywordStruct Struct</a>
+  <br><span class='n s'>(KeywordsHierarchyChildrenChildrenChildrenChildrenChildren)</span></td></tr>
+<tr>
+<td>HierarchicalKeywords6Applied</td>
+<td class=c title=' _ = Flattened
+ + = List'>boolean_+</td>
+<td><span class=s><span class=n>(KeywordsHierarchyChildrenChildrenChildrenChildrenChildrenApplied)</span></span></td></tr>
+<tr class=b>
+<td>HierarchicalKeywords6</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(KeywordsHierarchyChildrenChildrenChildrenChildrenChildrenKeyword)</span></span></td></tr>
+<tr>
+<td>HierarchicalKeywords5</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(KeywordsHierarchyChildrenChildrenChildrenChildrenKeyword)</span></span></td></tr>
+<tr class=b>
+<td>HierarchicalKeywords4</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(KeywordsHierarchyChildrenChildrenChildrenKeyword)</span></span></td></tr>
+<tr>
+<td>HierarchicalKeywords3</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(KeywordsHierarchyChildrenChildrenKeyword)</span></span></td></tr>
+<tr class=b>
+<td>HierarchicalKeywords2</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(KeywordsHierarchyChildrenKeyword)</span></span></td></tr>
+<tr>
+<td>HierarchicalKeywords1</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(KeywordsHierarchyKeyword)</span></span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='KeywordInfo'>MWG KeywordInfo Struct</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Field Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>Hierarchy</td>
+<td class=c title=' + = List'>MWG KeywordStruct+</td>
+<td>--&gt; <a href='MWG.html#KeywordStruct'>MWG KeywordStruct Struct</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='KeywordStruct'>MWG KeywordStruct Struct</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Field Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>Applied</td>
+<td class=c>boolean</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Children</td>
+<td class=c title=' + = List'>MWG KeywordStruct+</td>
+<td>--&gt; <a href='MWG.html#KeywordStruct'>MWG KeywordStruct Struct</a></td></tr>
+<tr>
+<td>Keyword</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Collections'>MWG Collections Tags</a></h2>
+<p>Collections metadata defined by the MWG 2.0 specification.  These tags
+belong to the ExifTool XMP-mwg-coll group.  See
+<a href="http://www.metadataworkinggroup.org/">http://www.metadataworkinggroup.org/</a> for the official specification.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>Collections</td>
+<td class=c title=' + = List'>struct+</td>
+<td>--&gt; <a href='MWG.html#CollectionInfo'>MWG CollectionInfo Struct</a></td></tr>
+<tr class=b>
+<td>CollectionName</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(CollectionsCollectionName)</span></span></td></tr>
+<tr>
+<td>CollectionURI</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(CollectionsCollectionURI)</span></span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='CollectionInfo'>MWG CollectionInfo Struct</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Field Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>CollectionName</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>CollectionURI</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<hr>
+(This document generated automatically by Image::ExifTool::BuildTagLookup)
+<br><i>Last revised Jul 22, 2013</i>
+<p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
+</body>
+</html>

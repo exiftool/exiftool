@@ -1,0 +1,326 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>MinoltaRaw Tags</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h2 class=top>MinoltaRaw Tags</h2>
+<p>These tags are used in Minolta RAW format (MRW) images.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>"\0PRD"</td>
+<td>MinoltaPRD</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MinoltaRaw.html#PRD'>MinoltaRaw PRD Tags</a></td></tr>
+<tr class=b>
+<td>"\0RIF"</td>
+<td>MinoltaRIF</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MinoltaRaw.html#RIF'>MinoltaRaw RIF Tags</a></td></tr>
+<tr>
+<td>"\0TTW"</td>
+<td>MinoltaTTW</td>
+<td class=c>-</td>
+<td>--&gt; <a href='EXIF.html'>EXIF Tags</a></td></tr>
+<tr class=b>
+<td>"\0WBG"</td>
+<td>MinoltaWBG</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MinoltaRaw.html#WBG'>MinoltaRaw WBG Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='PRD'>MinoltaRaw PRD Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>FirmwareID</td>
+<td class=c>string[8]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='8 = 0x8'>8</td>
+<td>SensorHeight</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='10 = 0xa'>10</td>
+<td>SensorWidth</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='12 = 0xc'>12</td>
+<td>ImageHeight</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='14 = 0xe'>14</td>
+<td>ImageWidth</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='16 = 0x10'>16</td>
+<td>RawDepth</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='17 = 0x11'>17</td>
+<td>BitDepth</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='18 = 0x12'>18</td>
+<td>StorageMethod</td>
+<td class=c>int8u</td>
+<td><span class=s>82 = Padded
+  <br>89 = Linear</span></td></tr>
+<tr>
+<td class=r title='23 = 0x17'>23</td>
+<td>BayerPattern</td>
+<td class=c>int8u</td>
+<td><span class=s>1 = RGGB
+  <br>4 = GBRG</span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='RIF'>MinoltaRaw RIF Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='1 = 0x1'>1</td>
+<td>Saturation</td>
+<td class=c>int8s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>Contrast</td>
+<td class=c>int8s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='3 = 0x3'>3</td>
+<td>Sharpness</td>
+<td class=c>int8s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>WBMode</td>
+<td class=c title=' ~ = Writable only with -n'>int8u~</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='5 = 0x5'>5</td>
+<td>ProgramMode</td>
+<td class=c>int8u</td>
+<td><table class=cols><tr>
+  <td>0 = None
+  <br>1 = Portrait
+  <br>2 = Text</td><td>&nbsp;&nbsp;</td>
+  <td>3 = Night Portrait
+  <br>4 = Sunset
+  <br>5 = Sports</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='6 = 0x6'>6</td>
+<td>ISOSetting</td>
+<td class=c>int8u</td>
+<td><table class=cols><tr>
+  <td>0 = Auto
+  <br>48 = 100
+  <br>56 = 200
+  <br>64 = 400
+  <br>72 = 800
+  <br>80 = 1600
+  <br>174 = 80 (Zone Matching Low)
+  <br>184 = 200 (Zone Matching High)</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='7 = 0x7'>7</td>
+<td>ColorMode</td>
+<td class=c>int32u[0.25]</td>
+<td><table class=cols><tr>
+  <td>0 = Natural color
+  <br>1 = Black &amp; White
+  <br>2 = Vivid color
+  <br>3 = Solarization
+  <br>4 = Adobe RGB
+  <br>5 = Sepia
+  <br>9 = Natural
+  <br>12 = Portrait</td><td>&nbsp;&nbsp;</td>
+  <td>13 = Natural sRGB
+  <br>14 = Natural+ sRGB
+  <br>15 = Landscape
+  <br>16 = Evening
+  <br>17 = Night Scene
+  <br>18 = Night Portrait
+  <br>132 = Embed Adobe RGB</td><td>&nbsp;&nbsp;</td></tr></table>
+<span class=s><span class=n>(Sony A100)</span></span><table class=cols><tr>
+  <td>0x0 = Standard
+  <br>0x1 = Vivid
+  <br>0x2 = Portrait
+  <br>0x3 = Landscape
+  <br>0x4 = Sunset
+  <br>0x5 = Night View/Portrait
+  <br>0x6 = B&amp;W
+  <br>0x7 = Adobe RGB
+  <br>0xc = Neutral
+  <br>0xd = Clear
+  <br>0xe = Deep
+  <br>0xf = Light
+  <br>0x10 = Autumn Leaves
+  <br>0x11 = Sepia
+  <br>0x64 = Neutral
+  <br>0x65 = Clear
+  <br>0x66 = Deep
+  <br>0x67 = Light
+  <br>0x68 = Night View
+  <br>0x69 = Autumn Leaves
+  <br>0xffffffff = n/a</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='8 = 0x8'>8</td>
+<td>WB_RBLevelsTungsten</td>
+<td class=c>int16u[2]</td>
+<td><span class=s><span class=n>(these WB_RBLevels currently decoded only for the Sony A100)</span></span></td></tr>
+<tr>
+<td class=r title='12 = 0xc'>12</td>
+<td>WB_RBLevelsDaylight</td>
+<td class=c>int16u[2]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='16 = 0x10'>16</td>
+<td>WB_RBLevelsCloudy</td>
+<td class=c>int16u[2]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='20 = 0x14'>20</td>
+<td>WB_RBLevelsCoolWhiteF</td>
+<td class=c>int16u[2]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='24 = 0x18'>24</td>
+<td>WB_RBLevelsFlash</td>
+<td class=c>int16u[2]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='28 = 0x1c'>28</td>
+<td>WB_RBLevelsUnknown?</td>
+<td class=c>int16u[2]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='32 = 0x20'>32</td>
+<td>WB_RBLevelsShade</td>
+<td class=c>int16u[2]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='36 = 0x24'>36</td>
+<td>WB_RBLevelsDaylightF</td>
+<td class=c>int16u[2]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='40 = 0x28'>40</td>
+<td>WB_RBLevelsDayWhiteF</td>
+<td class=c>int16u[2]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='44 = 0x2c'>44</td>
+<td>WB_RBLevelsWhiteF</td>
+<td class=c>int16u[2]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='56 = 0x38'>56</td>
+<td>ColorFilter</td>
+<td class=c>int8s</td>
+<td><span class=s><span class=n>(Minolta models)</span></span></td></tr>
+<tr>
+<td class=r title='57 = 0x39'>57</td>
+<td>BWFilter</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='58 = 0x3a'>58</td>
+<td>ZoneMatching</td>
+<td class=c>int8u</td>
+<td><span class=s><span class=n>(Minolta models)</span>
+  <br>0 = ISO Setting Used
+  <br>1 = High Key
+  <br>2 = Low Key</span></td></tr>
+<tr>
+<td class=r title='59 = 0x3b'>59</td>
+<td>Hue</td>
+<td class=c>int8s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='60 = 0x3c'>60</td>
+<td>ColorTemperature</td>
+<td class=c>int8u</td>
+<td><span class=s><span class=n>(Minolta models)</span></span></td></tr>
+<tr>
+<td class=r title='74 = 0x4a'>74</td>
+<td>ZoneMatching</td>
+<td class=c>int8u</td>
+<td><span class=s><span class=n>(Sony models)</span>
+  <br>0 = ISO Setting Used
+  <br>1 = High Key
+  <br>2 = Low Key</span></td></tr>
+<tr class=b>
+<td class=r title='76 = 0x4c'>76</td>
+<td>ColorTemperature</td>
+<td class=c>int8u</td>
+<td><span class=s><span class=n>(A100)</span></span></td></tr>
+<tr>
+<td class=r title='77 = 0x4d'>77</td>
+<td>ColorFilter</td>
+<td class=c>int8u</td>
+<td><span class=s><span class=n>(A100)</span></span></td></tr>
+<tr class=b>
+<td class=r title='78 = 0x4e'>78</td>
+<td>ColorTemperature</td>
+<td class=c>int8u</td>
+<td><span class=s><span class=n>(A200 and A700)</span></span></td></tr>
+<tr>
+<td class=r title='79 = 0x4f'>79</td>
+<td>ColorFilter</td>
+<td class=c>int8u</td>
+<td><span class=s><span class=n>(A200 and A700)</span></span></td></tr>
+<tr class=b>
+<td class=r title='80 = 0x50'>80</td>
+<td>RawDataLength</td>
+<td class=c>N</td>
+<td><span class=s><span class=n>(A100)</span></span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='WBG'>MinoltaRaw WBG Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>WBScale</td>
+<td class=c>int8u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>WB_GBRGLevels
+  <br>WB_RGGBLevels</td>
+<td class=c>int16u[4]<br>int16u[4]</td>
+<td><span class=s><span class=n>(DiMAGE A200)</span>
+  <br><span class=n>(other models)</span></span></td></tr>
+</table></td></tr></table></blockquote>
+
+<hr>
+(This document generated automatically by Image::ExifTool::BuildTagLookup)
+<br><i>Last revised Mar 20, 2013</i>
+<p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
+</body>
+</html>

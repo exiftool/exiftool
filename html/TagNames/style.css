@@ -1,0 +1,31 @@
+body { color: black; background: white; margin-top: 0;
+       font-family: helvetica; font-size: .9em }
+code { color: #840; font-family: monospace; white-space: nowrap }
+
+table.frame { background: #fb7 }    /* frame color */
+table.frame td { padding: 0 }       /* frame padding */
+table.frame tr { background: white }/* main cell color */
+table.inner { background: white }   /* table cell borders */
+table.inner th { padding: 2px }     /* header padding */
+table.inner td { padding: 2px }     /* cell padding */
+table.sep   td { padding: 0 2px;    /* separate table values */
+                 font-size: smaller }
+table.cols  tr { background: transparent }
+table.cols  td { padding: 0;        /* PrintConvColumns table */
+                 font-size: smaller }
+table tr   { vertical-align: top }  /* universal text alignment */
+table tr.b { background: #feb }     /* alternate cell color */
+table td.b { background: #feb }     /* alternate cell color */
+table tr.h { background: #fb7 }     /* table header */
+table td.c { text-align: center }   /* centered text cells */
+table td.r { text-align: right }    /* numerical tag ID's */
+table td.n { white-space: nowrap }  /* to avoid wrapping some tag names */
+
+h2         { margin: .6em 0 .6em 0 }/* table headings */
+h2.top     { margin: .3em 0 .6em 0 }/* top heading */
+p          { margin: 1em 1em }      /* paragraph text */
+p.lf       { margin: 1em 0 }        /* text footer */
+
+span.n     { color: #666 }          /* notes text color */
+span.s     { font-size: smaller }   /* small values/notes text */
+span.l     { font-size: larger }    /* index table heading */

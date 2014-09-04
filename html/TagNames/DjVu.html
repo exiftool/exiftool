@@ -1,0 +1,313 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>DjVu Tags</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h2 class=top>DjVu Tags</h2>
+<p>Information is extracted from the following chunks in DjVu images. See
+<a href="http://www.djvu.org/">http://www.djvu.org/</a> for the DjVu specification.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'ANTa'</td>
+<td>ANTa</td>
+<td class=c>-</td>
+<td>--&gt; <a href='DjVu.html#Ant'>DjVu Ant Tags</a></td></tr>
+<tr class=b>
+<td>'ANTz'</td>
+<td>CompressedAnnotation</td>
+<td class=c>-</td>
+<td>--&gt; <a href='DjVu.html#Ant'>DjVu Ant Tags</a></td></tr>
+<tr>
+<td>'FORM'</td>
+<td>FORM</td>
+<td class=c>-</td>
+<td>--&gt; <a href='DjVu.html#Form'>DjVu Form Tags</a></td></tr>
+<tr class=b>
+<td>'INCL'</td>
+<td>IncludedFileID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'INFO'</td>
+<td>INFO</td>
+<td class=c>-</td>
+<td>--&gt; <a href='DjVu.html#Info'>DjVu Info Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Ant'>DjVu Ant Tags</a></h2>
+<p>Information extracted from annotation chunks.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'metadata'</td>
+<td>Metadata</td>
+<td class=c>-</td>
+<td>--&gt; <a href='DjVu.html#Meta'>DjVu Meta Tags</a></td></tr>
+<tr class=b>
+<td>'xmp'</td>
+<td>XMP</td>
+<td class=c>-</td>
+<td>--&gt; <a href='XMP.html'>XMP Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Meta'>DjVu Meta Tags</a></h2>
+<p>This table lists the standard DjVu metadata tags, but ExifTool will extract
+any tags that exist even if they don&#39;t appear here.  The DjVu v3
+documentation endorses tags borrowed from two standards: 1) BibTeX
+bibliography system tags (all lowercase Tag ID&#39;s in the table below), and 2)
+PDF DocInfo tags (capitalized Tag ID&#39;s).</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'Author'</td>
+<td>Author</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'CreationDate'</td>
+<td>CreateDate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Creator'</td>
+<td>Creator</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Keywords'</td>
+<td>Keywords</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'ModDate'</td>
+<td>ModifyDate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Producer'</td>
+<td>Producer</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Subject'</td>
+<td>Subject</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Title'</td>
+<td>Title</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Trapped'</td>
+<td>Trapped</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'address'</td>
+<td>Address</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'annote'</td>
+<td>Annotation</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'author'</td>
+<td>Author</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'booktitle'</td>
+<td>BookTitle</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'chapter'</td>
+<td>Chapter</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'crossref'</td>
+<td>CrossRef</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'edition'</td>
+<td>Edition</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'eprint'</td>
+<td>EPrint</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'howpublished'</td>
+<td>HowPublished</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'institution'</td>
+<td>Institution</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'journal'</td>
+<td>Journal</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'key'</td>
+<td>Key</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'month'</td>
+<td>Month</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'note'</td>
+<td>Note</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'number'</td>
+<td>Number</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'organization'</td>
+<td>Organization</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'pages'</td>
+<td>Pages</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'publisher'</td>
+<td>Publisher</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'school'</td>
+<td>School</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'series'</td>
+<td>Series</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'title'</td>
+<td>Title</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'type'</td>
+<td>Type</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'url'</td>
+<td>URL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'volume'</td>
+<td>Volume</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'year'</td>
+<td>Year</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Form'>DjVu Form Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>SubfileType</td>
+<td class=c>N</td>
+<td><table class=cols><tr>
+  <td>&#39;BM44&#39; = Grayscale IW44
+  <br>&#39;DJVI&#39; = Shared component
+  <br>&#39;DJVM&#39; = Multi-page document
+  <br>&#39;DJVU&#39; = Single-page image
+  <br>&#39;PM44&#39; = Color IW44
+  <br>&#39;THUM&#39; = Thumbnail image</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Info'>DjVu Info Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>ImageWidth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>ImageHeight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='4 = 0x4'>4</td>
+<td>DjVuVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='6 = 0x6'>6</td>
+<td>SpatialResolution</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='8 = 0x8'>8</td>
+<td>Gamma</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='9 = 0x9'>9</td>
+<td>Orientation</td>
+<td class=c>N</td>
+<td><span class=s>[Mask 0x07]
+  <br>0x1 = Horizontal (normal)
+  <br>0x2 = Rotate 180
+  <br>0x5 = Rotate 90 CW
+  <br>0x6 = Rotate 270 CW</span></td></tr>
+</table></td></tr></table></blockquote>
+
+<hr>
+(This document generated automatically by Image::ExifTool::BuildTagLookup)
+<br><i>Last revised Jun 22, 2013</i>
+<p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
+</body>
+</html>

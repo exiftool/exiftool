@@ -1,0 +1,275 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>PanasonicRaw Tags</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h2 class=top>PanasonicRaw Tags</h2>
+<p>These tags are found in IFD0 of Panasonic/Leica RAW, RW2 and RWL images.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x0001 = 1'>0x0001</td>
+<td>PanasonicRawVersion</td>
+<td class=c>undef</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0002 = 2'>0x0002</td>
+<td>SensorWidth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0003 = 3'>0x0003</td>
+<td>SensorHeight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0004 = 4'>0x0004</td>
+<td>SensorTopBorder</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0005 = 5'>0x0005</td>
+<td>SensorLeftBorder</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0006 = 6'>0x0006</td>
+<td>SensorBottomBorder</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0007 = 7'>0x0007</td>
+<td>SensorRightBorder</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0008 = 8'>0x0008</td>
+<td>BlackLevel1</td>
+<td class=c>int16u</td>
+<td><span class=s><span class=n>(summing BlackLevel1+2+3 values gives the common bias that must be added to
+the BlackLevelRed/Green/Blue tags below)</span></span></td></tr>
+<tr>
+<td title='0x0009 = 9'>0x0009</td>
+<td>BlackLevel2</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x000a = 10'>0x000a</td>
+<td>BlackLevel3</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x000e = 14'>0x000e</td>
+<td>LinearityLimitRed</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x000f = 15'>0x000f</td>
+<td>LinearityLimitGreen</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0010 = 16'>0x0010</td>
+<td>LinearityLimitBlue</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0011 = 17'>0x0011</td>
+<td>RedBalance</td>
+<td class=c>int16u</td>
+<td><span class=s><span class=n>(found in Digilux 2 RAW images)</span></span></td></tr>
+<tr>
+<td title='0x0012 = 18'>0x0012</td>
+<td>BlueBalance</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0017 = 23'>0x0017</td>
+<td>ISO</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0018 = 24'>0x0018</td>
+<td>HighISOMultiplierRed</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0019 = 25'>0x0019</td>
+<td>HighISOMultiplierGreen</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x001a = 26'>0x001a</td>
+<td>HighISOMultiplierBlue</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x001c = 28'>0x001c</td>
+<td>BlackLevelRed</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x001d = 29'>0x001d</td>
+<td>BlackLevelGreen</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x001e = 30'>0x001e</td>
+<td>BlackLevelBlue</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0024 = 36'>0x0024</td>
+<td>WBRedLevel</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0025 = 37'>0x0025</td>
+<td>WBGreenLevel</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0026 = 38'>0x0026</td>
+<td>WBBlueLevel</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x002e = 46'>0x002e</td>
+<td>JpgFromRaw</td>
+<td class=c title=' ! = Unsafe'>undef!</td>
+<td>--&gt; <a href='JPEG.html'>JPEG Tags</a>
+  <br><span class='n s'>(processed as an embedded document because it contains full EXIF)</span></td></tr>
+<tr>
+<td title='0x010f = 271'>0x010f</td>
+<td>Make</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0110 = 272'>0x0110</td>
+<td>Model</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0111 = 273'>0x0111</td>
+<td>StripOffsets</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0112 = 274'>0x0112</td>
+<td>Orientation</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>1 = Horizontal (normal)
+  <br>2 = Mirror horizontal
+  <br>3 = Rotate 180
+  <br>4 = Mirror vertical
+  <br>5 = Mirror horizontal and rotate 270 CW
+  <br>6 = Rotate 90 CW
+  <br>7 = Mirror horizontal and rotate 90 CW
+  <br>8 = Rotate 270 CW</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td title='0x0116 = 278'>0x0116</td>
+<td>RowsPerStrip</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0117 = 279'>0x0117</td>
+<td>StripByteCounts</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0118 = 280'>0x0118</td>
+<td>RawDataOffset</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0119 = 281'>0x0119</td>
+<td>DistortionInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='PanasonicRaw.html#DistortionInfo'>PanasonicRaw DistortionInfo Tags</a></td></tr>
+<tr>
+<td title='0x02bc = 700'>0x02bc</td>
+<td>ApplicationNotes</td>
+<td class=c title=' ! = Unsafe'>int8u!</td>
+<td>--&gt; <a href='XMP.html'>XMP Tags</a></td></tr>
+<tr class=b>
+<td title='0x83bb = 33723'>0x83bb</td>
+<td>IPTC-NAA</td>
+<td class=c title=' ! = Unsafe'>int32u!</td>
+<td>--&gt; <a href='IPTC.html'>IPTC Tags</a></td></tr>
+<tr>
+<td title='0x8769 = 34665'>0x8769</td>
+<td>ExifOffset</td>
+<td class=c>-</td>
+<td>--&gt; <a href='EXIF.html'>EXIF Tags</a></td></tr>
+<tr class=b>
+<td title='0x8825 = 34853'>0x8825</td>
+<td>GPSInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='GPS.html'>GPS Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='DistortionInfo'>PanasonicRaw DistortionInfo Tags</a></h2>
+<p>Lens distortion correction information.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x0002 = 2'>0x0002</td>
+<td>DistortionParam02</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0004 = 4'>0x0004</td>
+<td>DistortionParam04</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0005 = 5'>0x0005</td>
+<td>DistortionScale</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='7 = 0x7'>7.1</td>
+<td>DistortionCorrection</td>
+<td class=c>int16s</td>
+<td><span class=s>[Mask 0x0f]
+  <br>0x0 = Off
+  <br>0x1 = On</span></td></tr>
+<tr>
+<td title='0x0008 = 8'>0x0008</td>
+<td>DistortionParam08</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0009 = 9'>0x0009</td>
+<td>DistortionParam09</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x000b = 11'>0x000b</td>
+<td>DistortionParam11</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x000c = 12'>0x000c</td>
+<td>DistortionN?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<hr>
+(This document generated automatically by Image::ExifTool::BuildTagLookup)
+<br><i>Last revised Feb 12, 2014</i>
+<p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
+</body>
+</html>

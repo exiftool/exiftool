@@ -1,0 +1,1471 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>ID3 Tags</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h2 class=top>ID3 Tags</h2>
+<p>ExifTool extracts ID3 information from MP3, MPEG, AIFF, OGG, FLAC, APE, MPC
+and RealAudio files.  ID3v2 tags which support multiple languages (eg.
+Comment and Lyrics) are extracted by specifying the tag name, followed by a
+dash (&#39;-&#39;), then a 3-character ISO 639-2 language code (eg. &quot;Comment-spa&quot;).
+See <a href="http://www.id3.org/">http://www.id3.org/</a> for the official ID3 specification and
+<a href="http://www.loc.gov/standards/iso639-2/php/code_list.php">http://www.loc.gov/standards/iso639-2/php/code_list.php</a> for a list of ISO
+639-2 language codes.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>ID3v1</td>
+<td class=c>-</td>
+<td>--&gt; <a href='ID3.html#v1'>ID3 v1 Tags</a></td></tr>
+<tr class=b>
+<td>ID3v1_Enh</td>
+<td class=c>-</td>
+<td>--&gt; <a href='ID3.html#v1_Enh'>ID3 v1_Enh Tags</a></td></tr>
+<tr>
+<td>ID3v2_2</td>
+<td class=c>-</td>
+<td>--&gt; <a href='ID3.html#v2_2'>ID3 v2_2 Tags</a></td></tr>
+<tr class=b>
+<td>ID3v2_3</td>
+<td class=c>-</td>
+<td>--&gt; <a href='ID3.html#v2_3'>ID3 v2_3 Tags</a></td></tr>
+<tr>
+<td>ID3v2_4</td>
+<td class=c>-</td>
+<td>--&gt; <a href='ID3.html#v2_4'>ID3 v2_4 Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='v1'>ID3 v1 Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='3 = 0x3'>3</td>
+<td>Title</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='33 = 0x21'>33</td>
+<td>Artist</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='63 = 0x3f'>63</td>
+<td>Album</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='93 = 0x5d'>93</td>
+<td>Year</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='97 = 0x61'>97</td>
+<td>Comment</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='125 = 0x7d'>125</td>
+<td>Track</td>
+<td class=c>N</td>
+<td><span class=s><span class=n>(v1.1 addition -- last 2 bytes of v1.0 Comment field)</span></span></td></tr>
+<tr>
+<td class=r title='127 = 0x7f'>127</td>
+<td>Genre</td>
+<td class=c>N</td>
+<td><span class=s><span class=n>(CR and RX are ID3v2 only)</span></span><table class=cols><tr>
+  <td>0 = Blues
+  <br>1 = Classic Rock
+  <br>2 = Country
+  <br>3 = Dance
+  <br>4 = Disco
+  <br>5 = Funk
+  <br>6 = Grunge
+  <br>7 = Hip-Hop
+  <br>8 = Jazz
+  <br>9 = Metal
+  <br>10 = New Age
+  <br>11 = Oldies
+  <br>12 = Other
+  <br>13 = Pop
+  <br>14 = R&amp;B
+  <br>15 = Rap
+  <br>16 = Reggae
+  <br>17 = Rock
+  <br>18 = Techno
+  <br>19 = Industrial
+  <br>20 = Alternative
+  <br>21 = Ska
+  <br>22 = Death Metal
+  <br>23 = Pranks
+  <br>24 = Soundtrack
+  <br>25 = Euro-Techno
+  <br>26 = Ambient
+  <br>27 = Trip-Hop
+  <br>28 = Vocal
+  <br>29 = Jazz+Funk
+  <br>30 = Fusion
+  <br>31 = Trance
+  <br>32 = Classical
+  <br>33 = Instrumental
+  <br>34 = Acid
+  <br>35 = House
+  <br>36 = Game
+  <br>37 = Sound Clip
+  <br>38 = Gospel
+  <br>39 = Noise
+  <br>40 = Alt. Rock
+  <br>41 = Bass
+  <br>42 = Soul
+  <br>43 = Punk
+  <br>44 = Space
+  <br>45 = Meditative
+  <br>46 = Instrumental Pop
+  <br>47 = Instrumental Rock
+  <br>48 = Ethnic
+  <br>49 = Gothic
+  <br>50 = Darkwave
+  <br>51 = Techno-Industrial
+  <br>52 = Electronic
+  <br>53 = Pop-Folk
+  <br>54 = Eurodance
+  <br>55 = Dream
+  <br>56 = Southern Rock
+  <br>57 = Comedy
+  <br>58 = Cult
+  <br>59 = Gangsta Rap
+  <br>60 = Top 40
+  <br>61 = Christian Rap
+  <br>62 = Pop/Funk
+  <br>63 = Jungle
+  <br>64 = Native American</td><td>&nbsp;&nbsp;</td>
+  <td>65 = Cabaret
+  <br>66 = New Wave
+  <br>67 = Psychedelic
+  <br>68 = Rave
+  <br>69 = Showtunes
+  <br>70 = Trailer
+  <br>71 = Lo-Fi
+  <br>72 = Tribal
+  <br>73 = Acid Punk
+  <br>74 = Acid Jazz
+  <br>75 = Polka
+  <br>76 = Retro
+  <br>77 = Musical
+  <br>78 = Rock &amp; Roll
+  <br>79 = Hard Rock
+  <br>80 = Folk
+  <br>81 = Folk-Rock
+  <br>82 = National Folk
+  <br>83 = Swing
+  <br>84 = Fast-Fusion
+  <br>85 = Bebop
+  <br>86 = Latin
+  <br>87 = Revival
+  <br>88 = Celtic
+  <br>89 = Bluegrass
+  <br>90 = Avantgarde
+  <br>91 = Gothic Rock
+  <br>92 = Progressive Rock
+  <br>93 = Psychedelic Rock
+  <br>94 = Symphonic Rock
+  <br>95 = Slow Rock
+  <br>96 = Big Band
+  <br>97 = Chorus
+  <br>98 = Easy Listening
+  <br>99 = Acoustic
+  <br>100 = Humour
+  <br>101 = Speech
+  <br>102 = Chanson
+  <br>103 = Opera
+  <br>104 = Chamber Music
+  <br>105 = Sonata
+  <br>106 = Symphony
+  <br>107 = Booty Bass
+  <br>108 = Primus
+  <br>109 = Porn Groove
+  <br>110 = Satire
+  <br>111 = Slow Jam
+  <br>112 = Club
+  <br>113 = Tango
+  <br>114 = Samba
+  <br>115 = Folklore
+  <br>116 = Ballad
+  <br>117 = Power Ballad
+  <br>118 = Rhythmic Soul
+  <br>119 = Freestyle
+  <br>120 = Duet
+  <br>121 = Punk Rock
+  <br>122 = Drum Solo
+  <br>123 = A Cappella
+  <br>124 = Euro-House
+  <br>125 = Dance Hall
+  <br>126 = Goa
+  <br>127 = Drum &amp; Bass
+  <br>128 = Club-House
+  <br>129 = Hardcore</td><td>&nbsp;&nbsp;</td>
+  <td>130 = Terror
+  <br>131 = Indie
+  <br>132 = BritPop
+  <br>133 = Afro-Punk
+  <br>134 = Polsk Punk
+  <br>135 = Beat
+  <br>136 = Christian Gangsta Rap
+  <br>137 = Heavy Metal
+  <br>138 = Black Metal
+  <br>139 = Crossover
+  <br>140 = Contemporary Christian
+  <br>141 = Christian Rock
+  <br>142 = Merengue
+  <br>143 = Salsa
+  <br>144 = Thrash Metal
+  <br>145 = Anime
+  <br>146 = JPop
+  <br>147 = Synthpop
+  <br>148 = Abstract
+  <br>149 = Art Rock
+  <br>150 = Baroque
+  <br>151 = Bhangra
+  <br>152 = Big Beat
+  <br>153 = Breakbeat
+  <br>154 = Chillout
+  <br>155 = Downtempo
+  <br>156 = Dub
+  <br>157 = EBM
+  <br>158 = Eclectic
+  <br>159 = Electro
+  <br>160 = Electroclash
+  <br>161 = Emo
+  <br>162 = Experimental
+  <br>163 = Garage
+  <br>164 = Global
+  <br>165 = IDM
+  <br>166 = Illbient
+  <br>167 = Industro-Goth
+  <br>168 = Jam Band
+  <br>169 = Krautrock
+  <br>170 = Leftfield
+  <br>171 = Lounge
+  <br>172 = Math Rock
+  <br>173 = New Romantic
+  <br>174 = Nu-Breakz
+  <br>175 = Post-Punk
+  <br>176 = Post-Rock
+  <br>177 = Psytrance
+  <br>178 = Shoegaze
+  <br>179 = Space Rock
+  <br>180 = Trop Rock
+  <br>181 = World Music
+  <br>182 = Neoclassical
+  <br>183 = Audiobook
+  <br>184 = Audio Theatre
+  <br>185 = Neue Deutsche Welle
+  <br>186 = Podcast
+  <br>187 = Indie Rock
+  <br>188 = G-Funk
+  <br>189 = Dubstep
+  <br>190 = Garage Rock
+  <br>191 = Psybient
+  <br>255 = None
+  <br>&#39;CR&#39; = Cover
+  <br>&#39;RX&#39; = Remix</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='v1_Enh'>ID3 v1_Enh Tags</a></h2>
+<p>ID3 version 1 &quot;Enhanced TAG&quot; information (not part of the official spec).</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='4 = 0x4'>4</td>
+<td>Title2</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='64 = 0x40'>64</td>
+<td>Artist2</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='124 = 0x7c'>124</td>
+<td>Album2</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='184 = 0xb8'>184</td>
+<td>Speed</td>
+<td class=c>N</td>
+<td><span class=s>1 = Slow
+  <br>2 = Medium
+  <br>3 = Fast
+  <br>4 = Hardcore</span></td></tr>
+<tr>
+<td class=r title='185 = 0xb9'>185</td>
+<td>Genre</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='215 = 0xd7'>215</td>
+<td>StartTime</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='221 = 0xdd'>221</td>
+<td>EndTime</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='v2_2'>ID3 v2_2 Tags</a></h2>
+<p>ExifTool extracts mainly text-based tags from ID3v2 information.  The tags
+in the tables below are those extracted by ExifTool, and don&#39;t represent a
+complete list of available ID3v2 tags.</p>
+
+<p>ID3 version 2.2 tags.  (These are the tags written by iTunes 5.0.)</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'CNT'</td>
+<td>PlayCounter</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'COM'</td>
+<td>Comment</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'IPL'</td>
+<td>InvolvedPeople</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'ITU'</td>
+<td>iTunesU?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'PCS'</td>
+<td>Podcast?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'PIC'</td>
+<td>Picture</td>
+<td class=c>N</td>
+<td><span class=s><span class=n>(the 3 tags below are also extracted from this PIC frame)</span></span></td></tr>
+<tr>
+<td>'PIC-1'</td>
+<td>PictureFormat</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'PIC-2'</td>
+<td>PictureType</td>
+<td class=c>N</td>
+<td>--&gt; <a href='ID3.html#PictureType'>ID3 PictureType Values</a></td></tr>
+<tr>
+<td>'PIC-3'</td>
+<td>PictureDescription</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'POP'</td>
+<td>Popularimeter</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'RVA'</td>
+<td>RelativeVolumeAdjustment</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'SLT'</td>
+<td>SynLyrics</td>
+<td class=c>-</td>
+<td>--&gt; <a href='ID3.html#SynLyrics'>ID3 SynLyrics Tags</a></td></tr>
+<tr>
+<td>'TAL'</td>
+<td>Album</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TBP'</td>
+<td>BeatsPerMinute</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TCM'</td>
+<td>Composer</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TCO'</td>
+<td>Genre</td>
+<td class=c>N</td>
+<td><span class=s><span class=n>(uses same lookup table as ID3v1 Genre)</span></span></td></tr>
+<tr>
+<td>'TCP'</td>
+<td>Compilation</td>
+<td class=c>N</td>
+<td><span class=s>0 = No
+  <br>1 = Yes</span></td></tr>
+<tr class=b>
+<td>'TCR'</td>
+<td>Copyright</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TDA'</td>
+<td>Date</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TDY'</td>
+<td>PlaylistDelay</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TEN'</td>
+<td>EncodedBy</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TFT'</td>
+<td>FileType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TIM'</td>
+<td>Time</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TKE'</td>
+<td>InitialKey</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TLA'</td>
+<td>Language</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TLE'</td>
+<td>Length</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TMT'</td>
+<td>Media</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TOA'</td>
+<td>OriginalArtist</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TOF'</td>
+<td>OriginalFilename</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TOL'</td>
+<td>OriginalLyricist</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TOR'</td>
+<td>OriginalReleaseYear</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TOT'</td>
+<td>OriginalAlbum</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TP1'</td>
+<td>Artist</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TP2'</td>
+<td>Band</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TP3'</td>
+<td>Conductor</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TP4'</td>
+<td>InterpretedBy</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TPA'</td>
+<td>PartOfSet</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TPB'</td>
+<td>Publisher</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TRC'</td>
+<td>ISRC</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TRD'</td>
+<td>RecordingDates</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TRK'</td>
+<td>Track</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TS2'</td>
+<td>AlbumArtistSortOrder</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TSA'</td>
+<td>AlbumSortOrder</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TSC'</td>
+<td>ComposerSortOrder</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TSI'</td>
+<td>Size</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TSP'</td>
+<td>PerformerSortOrder</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TSS'</td>
+<td>EncoderSettings</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TST'</td>
+<td>TitleSortOrder</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TT1'</td>
+<td>Grouping</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TT2'</td>
+<td>Title</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TT3'</td>
+<td>Subtitle</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TXT'</td>
+<td>Lyricist</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TXX'</td>
+<td>UserDefinedText</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TYE'</td>
+<td>Year</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'ULT'</td>
+<td>Lyrics</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'WAF'</td>
+<td>FileURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'WAR'</td>
+<td>ArtistURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'WAS'</td>
+<td>SourceURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'WCM'</td>
+<td>CommercialURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'WCP'</td>
+<td>CopyrightURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'WPB'</td>
+<td>PublisherURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'WXX'</td>
+<td>UserDefinedURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='PictureType'>ID3 PictureType Values</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class='inner sep' cellspacing=1>
+<tr class=h><th>Value</th><th>PictureType</th><th>Value</th><th>PictureType</th><th>Value</th><th>PictureType</th></tr>
+<tr><td class=r>0</td><td>= Other</td>
+<td class='r b'>7</td><td class=b>= Lead Artist</td>
+<td class=r>14</td><td>= Recording Session</td>
+</tr><tr><td class=r>1</td><td>= 32x32 PNG Icon</td>
+<td class='r b'>8</td><td class=b>= Artist</td>
+<td class=r>15</td><td>= Performance</td>
+</tr><tr><td class=r>2</td><td>= Other Icon</td>
+<td class='r b'>9</td><td class=b>= Conductor</td>
+<td class=r>16</td><td>= Capture from Movie or Video</td>
+</tr><tr><td class=r>3</td><td>= Front Cover</td>
+<td class='r b'>10</td><td class=b>= Band</td>
+<td class=r>17</td><td>= Bright(ly) Colored Fish</td>
+</tr><tr><td class=r>4</td><td>= Back Cover</td>
+<td class='r b'>11</td><td class=b>= Composer</td>
+<td class=r>18</td><td>= Illustration</td>
+</tr><tr><td class=r>5</td><td>= Leaflet</td>
+<td class='r b'>12</td><td class=b>= Lyricist</td>
+<td class=r>19</td><td>= Band Logo</td>
+</tr><tr><td class=r>6</td><td>= Media</td>
+<td class='r b'>13</td><td class=b>= Recording Studio or Location</td>
+<td class=r>20</td><td>= Publisher Logo</td>
+</tr></table></td></tr></table></blockquote>
+
+<h2><a name='SynLyrics'>ID3 SynLyrics Tags</a></h2>
+<p>The following tags are extracted from synchronized lyrics/text frames.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>SynchronizedLyricsDescription</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>SynchronizedLyricsText</td>
+<td class=c title=' + = List'>N+</td>
+<td><span class=s><span class=n>(each list item has a leading time stamp in square brackets.  Time stamps may
+be in seconds with format [MM:SS.ss], or MPEG frames with format [FFFF],
+depending on how this information was stored)</span></span></td></tr>
+<tr>
+<td>SynchronizedLyricsType</td>
+<td class=c>N</td>
+<td><table class=cols><tr>
+  <td>0 = Other
+  <br>1 = Lyrics
+  <br>2 = Text Transcription
+  <br>3 = Movement/part Name
+  <br>4 = Events
+  <br>5 = Chord
+  <br>6 = Trivia/&quot;pop-up&quot; Information
+  <br>7 = Web Page URL
+  <br>8 = Image URL</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='v2_3'>ID3 v2_3 Tags</a></h2>
+<p>ID3 version 2.3 tags</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'APIC'</td>
+<td>Picture</td>
+<td class=c>N</td>
+<td><span class=s><span class=n>(the 3 tags below are also extracted from this APIC frame)</span></span></td></tr>
+<tr class=b>
+<td>'APIC-1'</td>
+<td>PictureMimeType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'APIC-2'</td>
+<td>PictureType</td>
+<td class=c>N</td>
+<td>--&gt; <a href='ID3.html#PictureType'>ID3 PictureType Values</a></td></tr>
+<tr class=b>
+<td>'APIC-3'</td>
+<td>PictureDescription</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'COMM'</td>
+<td>Comment</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'IPLS'</td>
+<td>InvolvedPeople</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'MCDI'</td>
+<td>MusicCDIdentifier</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'OWNE'</td>
+<td>Ownership</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'PCNT'</td>
+<td>PlayCounter</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'POPM'</td>
+<td>Popularimeter</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'PRIV'</td>
+<td>Private</td>
+<td class=c>-</td>
+<td>--&gt; <a href='ID3.html#Private'>ID3 Private Tags</a></td></tr>
+<tr class=b>
+<td>'SYLT'</td>
+<td>SynLyrics</td>
+<td class=c>-</td>
+<td>--&gt; <a href='ID3.html#SynLyrics'>ID3 SynLyrics Tags</a></td></tr>
+<tr>
+<td>'TALB'</td>
+<td>Album</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TBPM'</td>
+<td>BeatsPerMinute</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TCMP'</td>
+<td>Compilation</td>
+<td class=c>N</td>
+<td><span class=s>0 = No
+  <br>1 = Yes</span></td></tr>
+<tr class=b>
+<td>'TCOM'</td>
+<td>Composer</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TCON'</td>
+<td>Genre</td>
+<td class=c>N</td>
+<td><span class=s><span class=n>(uses same lookup table as ID3v1 Genre)</span></span></td></tr>
+<tr class=b>
+<td>'TCOP'</td>
+<td>Copyright</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TDAT'</td>
+<td>Date</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TDLY'</td>
+<td>PlaylistDelay</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TENC'</td>
+<td>EncodedBy</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TEXT'</td>
+<td>Lyricist</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TFLT'</td>
+<td>FileType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TIME'</td>
+<td>Time</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TIT1'</td>
+<td>Grouping</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TIT2'</td>
+<td>Title</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TIT3'</td>
+<td>Subtitle</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TKEY'</td>
+<td>InitialKey</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TLAN'</td>
+<td>Language</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TLEN'</td>
+<td>Length</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TMED'</td>
+<td>Media</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TOAL'</td>
+<td>OriginalAlbum</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TOFN'</td>
+<td>OriginalFilename</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TOLY'</td>
+<td>OriginalLyricist</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TOPE'</td>
+<td>OriginalArtist</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TORY'</td>
+<td>OriginalReleaseYear</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TOWN'</td>
+<td>FileOwner</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TPE1'</td>
+<td>Artist</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TPE2'</td>
+<td>Band</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TPE3'</td>
+<td>Conductor</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TPE4'</td>
+<td>InterpretedBy</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TPOS'</td>
+<td>PartOfSet</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TPUB'</td>
+<td>Publisher</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TRCK'</td>
+<td>Track</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TRDA'</td>
+<td>RecordingDates</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TRSN'</td>
+<td>InternetRadioStationName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TRSO'</td>
+<td>InternetRadioStationOwner</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TSIZ'</td>
+<td>Size</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TSRC'</td>
+<td>ISRC</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TSSE'</td>
+<td>EncoderSettings</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TXXX'</td>
+<td>UserDefinedText</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TYER'</td>
+<td>Year</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'USER'</td>
+<td>TermsOfUse</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'USLT'</td>
+<td>Lyrics</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'WCOM'</td>
+<td>CommercialURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'WCOP'</td>
+<td>CopyrightURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'WOAF'</td>
+<td>FileURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'WOAR'</td>
+<td>ArtistURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'WOAS'</td>
+<td>SourceURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'WORS'</td>
+<td>InternetRadioStationURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'WPAY'</td>
+<td>PaymentURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'WPUB'</td>
+<td>PublisherURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'WXXX'</td>
+<td>UserDefinedURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Private'>ID3 Private Tags</a></h2>
+<p>ID3 private (PRIV) tags.  ExifTool will decode any private tags found, even
+if they do not appear in this table.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>AverageLevel</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>PeakValue</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>WM_MediaClassPrimaryID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>WM_MediaClassSecondaryID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>WM_Provider</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>WM_CollectionGroupID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>WM_CollectionID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>WM_ContentID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>XMP</td>
+<td class=c>-</td>
+<td>--&gt; <a href='XMP.html'>XMP Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='v2_4'>ID3 v2_4 Tags</a></h2>
+<p>ID3 version 2.4 tags</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'APIC'</td>
+<td>Picture</td>
+<td class=c>N</td>
+<td><span class=s><span class=n>(the 3 tags below are also extracted from this APIC frame)</span></span></td></tr>
+<tr class=b>
+<td>'APIC-1'</td>
+<td>PictureMimeType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'APIC-2'</td>
+<td>PictureType</td>
+<td class=c>N</td>
+<td>--&gt; <a href='ID3.html#PictureType'>ID3 PictureType Values</a></td></tr>
+<tr class=b>
+<td>'APIC-3'</td>
+<td>PictureDescription</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'COMM'</td>
+<td>Comment</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'ITNU'</td>
+<td>iTunesU?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'MCDI'</td>
+<td>MusicCDIdentifier</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'OWNE'</td>
+<td>Ownership</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'PCNT'</td>
+<td>PlayCounter</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'PCST'</td>
+<td>Podcast?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'POPM'</td>
+<td>Popularimeter</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'PRIV'</td>
+<td>Private</td>
+<td class=c>-</td>
+<td>--&gt; <a href='ID3.html#Private'>ID3 Private Tags</a></td></tr>
+<tr>
+<td>'RVA2'</td>
+<td>RelativeVolumeAdjustment</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'SYLT'</td>
+<td>SynLyrics</td>
+<td class=c>-</td>
+<td>--&gt; <a href='ID3.html#SynLyrics'>ID3 SynLyrics Tags</a></td></tr>
+<tr>
+<td>'TALB'</td>
+<td>Album</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TBPM'</td>
+<td>BeatsPerMinute</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TCMP'</td>
+<td>Compilation</td>
+<td class=c>N</td>
+<td><span class=s>0 = No
+  <br>1 = Yes</span></td></tr>
+<tr class=b>
+<td>'TCOM'</td>
+<td>Composer</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TCON'</td>
+<td>Genre</td>
+<td class=c>N</td>
+<td><span class=s><span class=n>(uses same lookup table as ID3v1 Genre)</span></span></td></tr>
+<tr class=b>
+<td>'TCOP'</td>
+<td>Copyright</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TDEN'</td>
+<td>EncodingTime</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TDLY'</td>
+<td>PlaylistDelay</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TDOR'</td>
+<td>OriginalReleaseTime</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TDRC'</td>
+<td>RecordingTime</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TDRL'</td>
+<td>ReleaseTime</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TDTG'</td>
+<td>TaggingTime</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TENC'</td>
+<td>EncodedBy</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TEXT'</td>
+<td>Lyricist</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TFLT'</td>
+<td>FileType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TIPL'</td>
+<td>InvolvedPeople</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TIT1'</td>
+<td>Grouping</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TIT2'</td>
+<td>Title</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TIT3'</td>
+<td>Subtitle</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TKEY'</td>
+<td>InitialKey</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TLAN'</td>
+<td>Language</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TLEN'</td>
+<td>Length</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TMCL'</td>
+<td>MusicianCredits</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TMED'</td>
+<td>Media</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TMOO'</td>
+<td>Mood</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TOAL'</td>
+<td>OriginalAlbum</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TOFN'</td>
+<td>OriginalFilename</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TOLY'</td>
+<td>OriginalLyricist</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TOPE'</td>
+<td>OriginalArtist</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TOWN'</td>
+<td>FileOwner</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TPE1'</td>
+<td>Artist</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TPE2'</td>
+<td>Band</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TPE3'</td>
+<td>Conductor</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TPE4'</td>
+<td>InterpretedBy</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TPOS'</td>
+<td>PartOfSet</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TPRO'</td>
+<td>ProducedNotice</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TPUB'</td>
+<td>Publisher</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TRCK'</td>
+<td>Track</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TRSN'</td>
+<td>InternetRadioStationName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TRSO'</td>
+<td>InternetRadioStationOwner</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TSO2'</td>
+<td>AlbumArtistSortOrder</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TSOA'</td>
+<td>AlbumSortOrder</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TSOC'</td>
+<td>ComposerSortOrder</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TSOP'</td>
+<td>PerformerSortOrder</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TSOT'</td>
+<td>TitleSortOrder</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TSRC'</td>
+<td>ISRC</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TSSE'</td>
+<td>EncoderSettings</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TSST'</td>
+<td>SetSubtitle</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TXXX'</td>
+<td>UserDefinedText</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'USER'</td>
+<td>TermsOfUse</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'USLT'</td>
+<td>Lyrics</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'WCOM'</td>
+<td>CommercialURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'WCOP'</td>
+<td>CopyrightURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'WOAF'</td>
+<td>FileURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'WOAR'</td>
+<td>ArtistURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'WOAS'</td>
+<td>SourceURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'WORS'</td>
+<td>InternetRadioStationURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'WPAY'</td>
+<td>PaymentURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'WPUB'</td>
+<td>PublisherURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'WXXX'</td>
+<td>UserDefinedURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<hr>
+(This document generated automatically by Image::ExifTool::BuildTagLookup)
+<br><i>Last revised Mar 5, 2014</i>
+<p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
+</body>
+</html>

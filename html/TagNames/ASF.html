@@ -1,0 +1,1066 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>ASF Tags</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h2 class=top>ASF Tags</h2>
+<p>The ASF format is used by Windows WMA and WMV files, and DIVX videos.  Tag
+ID&#39;s aren&#39;t listed because they are huge 128-bit GUID&#39;s that would ruin the
+formatting of this table.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>SimpleIndex</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>TimecodeIndex</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Header</td>
+<td class=c>-</td>
+<td>--&gt; <a href='ASF.html#Header'>ASF Header Tags</a></td></tr>
+<tr class=b>
+<td>Data</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>XMP</td>
+<td class=c>-</td>
+<td>--&gt; <a href='XMP.html'>XMP Tags</a></td></tr>
+<tr class=b>
+<td>Index</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>MediaIndex</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Header'>ASF Header Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>Padding</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>ScriptCommand</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ContentBranding</td>
+<td class=c>-</td>
+<td>--&gt; <a href='ASF.html#ContentBranding'>ASF ContentBranding Tags</a></td></tr>
+<tr class=b>
+<td>ContentEncryption</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>DigitalSignature</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>ExtendedContentEncryption</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>HeaderExtension</td>
+<td class=c>-</td>
+<td>--&gt; <a href='ASF.html#HeaderExtension'>ASF HeaderExtension Tags</a></td></tr>
+<tr class=b>
+<td>ContentDescription</td>
+<td class=c>-</td>
+<td>--&gt; <a href='ASF.html#ContentDescr'>ASF ContentDescr Tags</a></td></tr>
+<tr>
+<td>ErrorCorrection</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>StreamBitrateProps</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>CodecList</td>
+<td class=c>-</td>
+<td>--&gt; <a href='ASF.html#CodecList'>ASF CodecList Tags</a></td></tr>
+<tr class=b>
+<td>FileProperties</td>
+<td class=c>-</td>
+<td>--&gt; <a href='ASF.html#FileProperties'>ASF FileProperties Tags</a></td></tr>
+<tr>
+<td>StreamProperties</td>
+<td class=c>-</td>
+<td>--&gt; <a href='ASF.html#StreamProperties'>ASF StreamProperties Tags</a></td></tr>
+<tr class=b>
+<td>ExtendedContentDescr</td>
+<td class=c>-</td>
+<td>--&gt; <a href='ASF.html#ExtendedDescr'>ASF ExtendedDescr Tags</a></td></tr>
+<tr>
+<td>BitrateMutualExclusion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Marker</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ContentBranding'>ASF ContentBranding Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>BannerImageType</td>
+<td class=c>N</td>
+<td><span class=s>0 = None
+  <br>1 = Bitmap
+  <br>2 = JPEG
+  <br>3 = GIF</span></td></tr>
+<tr class=b>
+<td>BannerImage</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>BannerImageURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>CopyrightURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='HeaderExtension'>ASF HeaderExtension Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>ExtendedStreamProps</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>AdvancedContentEncryption</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>MetadataLibrary</td>
+<td class=c>-</td>
+<td>--&gt; <a href='ASF.html#ExtendedDescr'>ASF ExtendedDescr Tags</a></td></tr>
+<tr class=b>
+<td>TimecodeIndexParms</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Compatibility</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>LanguageList</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>AdvancedMutualExcl</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>BandwidthSharing</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Reserved1</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Metadata</td>
+<td class=c>-</td>
+<td>--&gt; <a href='ASF.html#ExtendedDescr'>ASF ExtendedDescr Tags</a></td></tr>
+<tr>
+<td>GroupMutualExclusion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>StreamPrioritization</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>IndexParameters</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ExtendedDescr'>ASF ExtendedDescr Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>ASFLeakyBucketPairs</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>ASFPacketCount</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ASFSecurityObjectsSize</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>AlbumArtist</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>AlbumCoverURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>AlbumTitle</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>AspectRatioX</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>AspectRatioY</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>AudioFileURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>AudioSourceURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Author</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>AuthorURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>AverageLevel</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>BannerImageData</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>BannerImageType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>BannerImageURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>BeatsPerMinute</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Bitrate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Broadcast</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>BufferAverage</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Can_Skip_Backward</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Can_Skip_Forward</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Category</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Codec</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Composer</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Conductor</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ContainerFormat</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>ContentDistributor</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ContentGroupDescription</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Copyright</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>CopyrightURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>CurrentBitrate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>DRM</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>DRM_ContentID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>DRM_DRMHeader</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>DRM_DRMHeader_ContentDistributor</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>DRM_DRMHeader_ContentID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>DRM_DRMHeader_IndividualizedVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>DRM_DRMHeader_KeyID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>DRM_DRMHeader_LicenseAcqURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>DRM_DRMHeader_SubscriptionContentID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>DRM_IndividualizedVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>DRM_KeyID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>DRM_LASignatureCert</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>DRM_LASignatureLicSrvCert</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>DRM_LASignaturePrivKey</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>DRM_LASignatureRootCert</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>DRM_LicenseAcqURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>DRM_V1LicenseAcqURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>DVDID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Description</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Director</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Duration</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>EncodedBy</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>EncodingSettings</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>EncodingTime</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>FileSize</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Genre</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>GenreID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>HasArbitraryDataStream</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>HasAttachedImages</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>HasAudio</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>HasFileTransferStream</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>HasImage</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>HasScript</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>HasVideo</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ISRC</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>InitialKey</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>IsVBR</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Is_Protected</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Is_Trusted</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Language</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Lyrics</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Lyrics_Synchronised</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>MCDI</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>MediaClassPrimaryID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>MediaClassSecondaryID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>MediaCredits</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>MediaIsDelay</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>MediaIsFinale</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>MediaIsLive</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>MediaIsPremiere</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>MediaIsRepeat</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>MediaIsSAP</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>MediaIsStereo</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>MediaIsSubtitled</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>MediaIsTape</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>MediaNetworkAffiliation</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>MediaOriginalBroadcastDateTime</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>MediaOriginalChannel</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>MediaStationCallSign</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>MediaStationName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ModifiedBy</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Mood</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>NSC_Address</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>NSC_Description</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>NSC_Email</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>NSC_Name</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>NSC_Phone</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>NumberOfFrames</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>OptimalBitrate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>OriginalAlbumTitle</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>OriginalArtist</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>OriginalFilename</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>OriginalLyricist</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>OriginalReleaseTime</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>OriginalReleaseYear</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>ParentalRating</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ParentalRatingReason</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>PartOfSet</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>PeakBitrate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>PeakValue</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Period</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Picture</td>
+<td class=c>-</td>
+<td>--&gt; <a href='ASF.html#Picture'>ASF Picture Tags</a></td></tr>
+<tr>
+<td>PlaylistDelay</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Producer</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>PromotionURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>ProtectionType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Provider</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>ProviderCopyright</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ProviderRating</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>ProviderStyle</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Publisher</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>RadioStationName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>RadioStationOwner</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Rating</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Seekable</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>SharedUserRating</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Signature_Name</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>StreamTypeInfo</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Stridable</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>SubTitle</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>SubTitleDescription</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>SubscriptionContentID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Text</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Title</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ToolName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>ToolVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Track</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>TrackNumber</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>UniqueFileIdentifier</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>UserWebURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>VBRPeak</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>VideoClosedCaptioning</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>VideoFrameRate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>VideoHeight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>VideoWidth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>WMADRCAverageReference</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>WMADRCAverageTarget</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>WMADRCPeakReference</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>WMADRCPeakTarget</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>WMCollectionGroupID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>WMCollectionID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>WMContentID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Writer</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Year</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Picture'>ASF Picture Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>PictureType</td>
+<td class=c>N</td>
+<td><table class=cols><tr>
+  <td>0 = Other
+  <br>1 = 32x32 PNG Icon
+  <br>2 = Other Icon
+  <br>3 = Front Cover
+  <br>4 = Back Cover
+  <br>5 = Leaflet
+  <br>6 = Media
+  <br>7 = Lead Artist
+  <br>8 = Artist
+  <br>9 = Conductor
+  <br>10 = Band
+  <br>11 = Composer
+  <br>12 = Lyricist
+  <br>13 = Recording Studio or Location
+  <br>14 = Recording Session
+  <br>15 = Performance
+  <br>16 = Capture from Movie or Video
+  <br>17 = Bright(ly) Colored Fish
+  <br>18 = Illustration
+  <br>19 = Band Logo
+  <br>20 = Publisher Logo</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td>PictureMimeType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>PictureDescription</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Picture</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ContentDescr'>ASF ContentDescr Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>Title</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Author</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Copyright</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Description</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Rating</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='CodecList'>ASF CodecList Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>AudioCodecDescription</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>AudioCodecName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>OtherCodecDescription</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>OtherCodecName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>VideoCodecDescription</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>VideoCodecName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='FileProperties'>ASF FileProperties Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>FileID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='16 = 0x10'>16</td>
+<td>FileLength</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='24 = 0x18'>24</td>
+<td>CreationDate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='32 = 0x20'>32</td>
+<td>DataPackets</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='40 = 0x28'>40</td>
+<td>PlayDuration</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='48 = 0x30'>48</td>
+<td>SendDuration</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='56 = 0x38'>56</td>
+<td>Preroll</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='64 = 0x40'>64</td>
+<td>Flags</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='68 = 0x44'>68</td>
+<td>MinPacketSize</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='72 = 0x48'>72</td>
+<td>MaxPacketSize</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='76 = 0x4c'>76</td>
+<td>MaxBitrate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='StreamProperties'>ASF StreamProperties Tags</a></h2>
+<p>Tags with index 54 and greater are conditional based on the StreamType.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>StreamType</td>
+<td class=c>N</td>
+<td><span class=s>&#39;35907DE0-E415-11CF-A917-00805F5C442B&#39; = Degradable JPEG
+  <br>&#39;3AFB65E2-47EF-40F2-AC2C-70A90D71D343&#39; = Binary
+  <br>&#39;59DACFC0-59E6-11D0-A3AC-00A0C90348F6&#39; = Command
+  <br>&#39;91BD222C-F21C-497A-8B6D-5AA86BFC0185&#39; = File Transfer
+  <br>&#39;B61BE100-5B4E-11CF-A8FD-00805F5C442B&#39; = JFIF
+  <br>&#39;BC19EFC0-5B4D-11CF-A8FD-00805F5C442B&#39; = Video
+  <br>&#39;F8699E40-5B4D-11CF-A8FD-00805F5C442B&#39; = Audio</span></td></tr>
+<tr class=b>
+<td class=r title='16 = 0x10'>16</td>
+<td>ErrorCorrectionType</td>
+<td class=c>N</td>
+<td><span class=s>&#39;20FB5700-5B55-11CF-A8FD-00805F5C442B&#39; = No Error Correction
+  <br>&#39;BFC3CD50-618F-11CF-8BB2-00AA00B4E220&#39; = Audio Spread</span></td></tr>
+<tr>
+<td class=r title='32 = 0x20'>32</td>
+<td>TimeOffset</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='48 = 0x30'>48</td>
+<td>StreamNumber</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='54 = 0x36'>54</td>
+<td>AudioCodecID
+  <br>ImageWidth</td>
+<td class=c>N<br>N</td>
+<td>--&gt; <a href='RIFF.html#AudioEncoding'>RIFF AudioEncoding Values</a></td></tr>
+<tr class=b>
+<td class=r title='56 = 0x38'>56</td>
+<td>AudioChannels</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='58 = 0x3a'>58</td>
+<td>AudioSampleRate
+  <br>ImageHeight</td>
+<td class=c>N<br>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<hr>
+(This document generated automatically by Image::ExifTool::BuildTagLookup)
+<br><i>Last revised May 13, 2013</i>
+<p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
+</body>
+</html>

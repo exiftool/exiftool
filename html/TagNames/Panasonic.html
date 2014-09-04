@@ -1,0 +1,1684 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Panasonic Tags</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h2 class=top>Panasonic Tags</h2>
+<p>
+These tags are used in Panasonic/Leica cameras.
+</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x0001 = 1'>0x0001</td>
+<td>ImageQuality</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>1 = TIFF
+  <br>2 = High
+  <br>3 = Normal</td><td>&nbsp;&nbsp;</td>
+  <td>6 = Very High
+  <br>7 = Raw
+  <br>9 = Motion Picture</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td title='0x0002 = 2'>0x0002</td>
+<td>FirmwareVersion</td>
+<td class=c>undef</td>
+<td><span class=s><span class=n>(for some camera models such as the FZ30 this may be an internal production
+reference number and not the actual firmware version)</span></span></td></tr>
+<tr>
+<td title='0x0003 = 3'>0x0003</td>
+<td>WhiteBalance</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>1 = Auto
+  <br>2 = Daylight
+  <br>3 = Cloudy
+  <br>4 = Incandescent
+  <br>5 = Manual</td><td>&nbsp;&nbsp;</td>
+  <td>8 = Flash
+  <br>10 = Black &amp; White
+  <br>11 = Manual
+  <br>12 = Shade
+  <br>13 = Kelvin</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td title='0x0007 = 7'>0x0007</td>
+<td>FocusMode</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>1 = Auto
+  <br>2 = Manual
+  <br>4 = Auto, Focus button
+  <br>5 = Auto, Continuous</td><td>&nbsp;&nbsp;</td>
+  <td>6 = AF-S
+  <br>7 = AF-C
+  <br>8 = AF-F</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td title='0x000f = 15'>0x000f</td>
+<td>AFAreaMode</td>
+<td class=c>int8u[2]</td>
+<td><span class=s><span class=n>(DMC-FZ10)</span>
+  <br>&#39;0 1&#39; = Spot Mode On
+  <br>&#39;0 16&#39; = Spot Mode Off
+  <br><span class=n>(other models)</span></span><table class=cols><tr>
+  <td>16 = Normal?
+  <br>&#39;0 1&#39; = 9-area
+  <br>&#39;0 16&#39; = 3-area (high speed)
+  <br>&#39;0 23&#39; = 23-area
+  <br>&#39;1 0&#39; = Spot Focusing
+  <br>&#39;1 1&#39; = 5-area
+  <br>&#39;16 0&#39; = 1-area
+  <br>&#39;16 16&#39; = 1-area (high speed)
+  <br>&#39;32 0&#39; = Tracking
+  <br>&#39;32 1&#39; = 3-area (left)?
+  <br>&#39;32 2&#39; = 3-area (center)?
+  <br>&#39;32 3&#39; = 3-area (right)?
+  <br>&#39;64 0&#39; = Face Detect
+  <br>&#39;128 0&#39; = Spot Focusing 2</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td title='0x001a = 26'>0x001a</td>
+<td>ImageStabilization</td>
+<td class=c>int16u</td>
+<td><span class=s>2 = On, Mode 1
+  <br>3 = Off
+  <br>4 = On, Mode 2
+  <br>5 = Panning
+  <br>6 = On, Mode 3</span></td></tr>
+<tr>
+<td title='0x001c = 28'>0x001c</td>
+<td>MacroMode</td>
+<td class=c>int16u</td>
+<td><span class=s>1 = On
+  <br>2 = Off
+  <br>257 = Tele-Macro
+  <br>513 = Macro Zoom</span></td></tr>
+<tr class=b>
+<td title='0x001f = 31'>0x001f</td>
+<td>ShootingMode</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>1 = Normal
+  <br>2 = Portrait
+  <br>3 = Scenery
+  <br>4 = Sports
+  <br>5 = Night Portrait
+  <br>6 = Program
+  <br>7 = Aperture Priority
+  <br>8 = Shutter Priority
+  <br>9 = Macro
+  <br>10 = Spot
+  <br>11 = Manual
+  <br>12 = Movie Preview
+  <br>13 = Panning
+  <br>14 = Simple
+  <br>15 = Color Effects
+  <br>16 = Self Portrait
+  <br>17 = Economy
+  <br>18 = Fireworks
+  <br>19 = Party
+  <br>20 = Snow
+  <br>21 = Night Scenery
+  <br>22 = Food
+  <br>23 = Baby
+  <br>24 = Soft Skin
+  <br>25 = Candlelight
+  <br>26 = Starry Night
+  <br>27 = High Sensitivity
+  <br>28 = Panorama Assist
+  <br>29 = Underwater
+  <br>30 = Beach
+  <br>31 = Aerial Photo
+  <br>32 = Sunset
+  <br>33 = Pet
+  <br>34 = Intelligent ISO
+  <br>35 = Clipboard
+  <br>36 = High Speed Continuous Shooting
+  <br>37 = Intelligent Auto
+  <br>39 = Multi-aspect
+  <br>41 = Transform</td><td>&nbsp;&nbsp;</td>
+  <td>42 = Flash Burst
+  <br>43 = Pin Hole
+  <br>44 = Film Grain
+  <br>45 = My Color
+  <br>46 = Photo Frame
+  <br>48 = Movie
+  <br>51 = HDR
+  <br>55 = Handheld Night Shot
+  <br>57 = 3D
+  <br>59 = Creative Control
+  <br>62 = Panorama
+  <br>63 = Glass Through
+  <br>64 = HDR
+  <br>66 = Digital Filter
+  <br>67 = Clear Portrait
+  <br>68 = Silky Skin
+  <br>69 = Backlit Softness
+  <br>70 = Clear in Backlight
+  <br>71 = Relaxing Tone
+  <br>72 = Sweet Child&#39;s Face
+  <br>73 = Distinct Scenery
+  <br>74 = Bright Blue Sky
+  <br>75 = Romantic Sunset Glow
+  <br>76 = Vivid Sunset Glow
+  <br>77 = Glistening Water
+  <br>78 = Clear Nightscape
+  <br>79 = Cool Night Sky
+  <br>80 = Warm Glowing Nightscape
+  <br>81 = Artistic Nightscape
+  <br>82 = Glittering Illuminations
+  <br>83 = Clear Night Portrait
+  <br>84 = Soft Image of a Flower
+  <br>85 = Appetizing Food
+  <br>86 = Cute Desert
+  <br>87 = Freeze Animal Motion
+  <br>88 = Clear Sports Shot
+  <br>89 = Monochrome
+  <br>90 = Creative Control</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td title='0x0020 = 32'>0x0020</td>
+<td>Audio</td>
+<td class=c>int16u</td>
+<td><span class=s>1 = Yes
+  <br>2 = No
+  <br>3 = Stereo</span></td></tr>
+<tr class=b>
+<td title='0x0021 = 33'>0x0021</td>
+<td>DataDump</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0023 = 35'>0x0023</td>
+<td>WhiteBalanceBias</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0024 = 36'>0x0024</td>
+<td>FlashBias</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0025 = 37'>0x0025</td>
+<td>InternalSerialNumber</td>
+<td class=c>undef[16]</td>
+<td><span class=s><span class=n>(this number is unique, and contains the date of manufacture, but is not the
+same as the number printed on the camera body)</span></span></td></tr>
+<tr class=b>
+<td title='0x0026 = 38'>0x0026</td>
+<td>PanasonicExifVersion</td>
+<td class=c>undef</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0028 = 40'>0x0028</td>
+<td>ColorEffect</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>1 = Off
+  <br>2 = Warm
+  <br>3 = Cool
+  <br>4 = Black &amp; White</td><td>&nbsp;&nbsp;</td>
+  <td>5 = Sepia
+  <br>6 = Happy
+  <br>8 = Vivid</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td title='0x0029 = 41'>0x0029</td>
+<td>TimeSincePowerOn</td>
+<td class=c>int32u</td>
+<td><span class=s><span class=n>(time in 1/100 s from when the camera was powered on to when the image is
+written to memory card)</span></span></td></tr>
+<tr>
+<td title='0x002a = 42'>0x002a</td>
+<td>BurstMode</td>
+<td class=c>int16u</td>
+<td><span class=s><span class=n>(decoding may be different for some models)</span></span><table class=cols><tr>
+  <td>0 = Off
+  <br>1 = On
+  <br>2 = Auto Exposure Bracketing (AEB)
+  <br>4 = Unlimited
+  <br>8 = White Balance Bracketing
+  <br>17 = On (with flash)</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td title='0x002b = 43'>0x002b</td>
+<td>SequenceNumber</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x002c = 44'>0x002c</td>
+<td>ContrastMode</td>
+<td class=c>int16u</td>
+<td><span class=s><span class=n>(this decoding seems to work for some models such as the LC1, LX2, FZ7, FZ8,
+FZ18 and FZ50, but may not be correct for other models such as the FX10, G1, L1,
+L10 and LC80)</span></span><table class=cols><tr>
+  <td>0x0 = Normal
+  <br>0x1 = Low
+  <br>0x2 = High
+  <br>0x6 = Medium Low
+  <br>0x7 = Medium High</td><td>&nbsp;&nbsp;</td>
+  <td>0xd = High Dynamic
+  <br>0x100 = Low
+  <br>0x110 = Normal
+  <br>0x120 = High</td><td>&nbsp;&nbsp;</td></tr></table>
+<span class=s><span class=n>(these values are used by the G2, GF1, GF2, GF3, GF5 and GF6)</span>
+  <br>0 = -2
+  <br>1 = -1
+  <br>2 = Normal
+  <br>3 = +1
+  <br>4 = +2
+  <br>5 = Normal 2
+  <br>7 = Nature (Color Film)
+  <br>9 = Expressive
+  <br>12 = Smooth (Color Film) or Pure (My Color)
+  <br>17 = Dynamic (B&amp;W Film)
+  <br>22 = Smooth (B&amp;W Film)
+  <br>25 = High Dynamic
+  <br>26 = Retro
+  <br>27 = Dynamic (Color Film)
+  <br>28 = Low Key
+  <br>29 = Toy Effect
+  <br>32 = Vibrant (Color Film) or Expressive (My Color)
+  <br>33 = Elegant (My Color)
+  <br>37 = Nostalgic (Color Film)
+  <br>41 = Dynamic Art (My Color)
+  <br>42 = Retro (My Color)
+  <br>45 = Cinema
+  <br>47 = Dynamic Mono
+  <br>50 = Impressive Art
+  <br>51 = Cross Process
+  <br>100 = High Dynamic 2
+  <br>101 = Retro 2
+  <br>102 = High Key 2
+  <br>103 = Low Key 2
+  <br>104 = Toy Effect 2
+  <br>107 = Expressive 2
+  <br>112 = Sepia
+  <br>117 = Miniature
+  <br>122 = Dynamic Monochrome
+  <br>127 = Old Days
+  <br>132 = Dynamic Monochrome 2
+  <br>135 = Impressive Art 2
+  <br>136 = Cross Process 2
+  <br>137 = Toy Pop
+  <br>138 = Fantasy
+  <br>256 = Normal 3
+  <br>272 = Standard
+  <br>288 = High
+  <br><span class=n>(these values are used by the TZ10 and ZS7)</span>
+  <br>0 = Normal
+  <br>1 = -2
+  <br>2 = +2
+  <br>5 = -1
+  <br>6 = +1</span></td></tr>
+<tr class=b>
+<td title='0x002d = 45'>0x002d</td>
+<td>NoiseReduction</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Standard
+  <br>1 = Low (-1)
+  <br>2 = High (+1)
+  <br>3 = Lowest (-2)
+  <br>4 = Highest (+2)</span></td></tr>
+<tr>
+<td title='0x002e = 46'>0x002e</td>
+<td>SelfTimer</td>
+<td class=c>int16u</td>
+<td><span class=s>1 = Off
+  <br>2 = 10 s
+  <br>3 = 2 s
+  <br>4 = 10 s / 3 pictures</span></td></tr>
+<tr class=b>
+<td title='0x0030 = 48'>0x0030</td>
+<td>Rotation</td>
+<td class=c>int16u</td>
+<td><span class=s>1 = Horizontal (normal)
+  <br>3 = Rotate 180
+  <br>6 = Rotate 90 CW
+  <br>8 = Rotate 270 CW</span></td></tr>
+<tr>
+<td title='0x0031 = 49'>0x0031</td>
+<td>AFAssistLamp</td>
+<td class=c>int16u</td>
+<td><span class=s>1 = Fired
+  <br>2 = Enabled but Not Used
+  <br>3 = Disabled but Required
+  <br>4 = Disabled and Not Required</span></td></tr>
+<tr class=b>
+<td title='0x0032 = 50'>0x0032</td>
+<td>ColorMode</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Normal
+  <br>1 = Natural
+  <br>2 = Vivid</span></td></tr>
+<tr>
+<td title='0x0033 = 51'>0x0033</td>
+<td>BabyAge</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(or pet age)</span></span></td></tr>
+<tr class=b>
+<td title='0x0034 = 52'>0x0034</td>
+<td>OpticalZoomMode</td>
+<td class=c>int16u</td>
+<td><span class=s>1 = Standard
+  <br>2 = Extended</span></td></tr>
+<tr>
+<td title='0x0035 = 53'>0x0035</td>
+<td>ConversionLens</td>
+<td class=c>int16u</td>
+<td><span class=s>1 = Off
+  <br>2 = Wide
+  <br>3 = Telephoto
+  <br>4 = Macro</span></td></tr>
+<tr class=b>
+<td title='0x0036 = 54'>0x0036</td>
+<td>TravelDay</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0039 = 57'>0x0039</td>
+<td>Contrast</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Normal</span></td></tr>
+<tr class=b>
+<td title='0x003a = 58'>0x003a</td>
+<td>WorldTimeLocation</td>
+<td class=c>int16u</td>
+<td><span class=s>1 = Home
+  <br>2 = Destination</span></td></tr>
+<tr>
+<td title='0x003b = 59'>0x003b</td>
+<td>TextStamp</td>
+<td class=c>int16u</td>
+<td><span class=s>1 = Off
+  <br>2 = On</span></td></tr>
+<tr class=b>
+<td title='0x003c = 60'>0x003c</td>
+<td>ProgramISO</td>
+<td class=c>int16u</td>
+<td><span class=s>65534 = Intelligent ISO
+  <br>65535 = n/a</span></td></tr>
+<tr>
+<td title='0x003d = 61'>0x003d</td>
+<td>AdvancedSceneType</td>
+<td class=c>int16u</td>
+<td><span class=s><span class=n>(used together with SceneMode to derive Composite AdvancedSceneMode)</span></span></td></tr>
+<tr class=b>
+<td title='0x003e = 62'>0x003e</td>
+<td>TextStamp</td>
+<td class=c>int16u</td>
+<td><span class=s>1 = Off
+  <br>2 = On</span></td></tr>
+<tr>
+<td title='0x003f = 63'>0x003f</td>
+<td>FacesDetected</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0040 = 64'>0x0040</td>
+<td>Saturation</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Normal</span></td></tr>
+<tr>
+<td title='0x0041 = 65'>0x0041</td>
+<td>Sharpness</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Normal</span></td></tr>
+<tr class=b>
+<td title='0x0042 = 66'>0x0042</td>
+<td>FilmMode</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>0 = n/a
+  <br>1 = Standard (color)
+  <br>2 = Dynamic (color)
+  <br>3 = Nature (color)
+  <br>4 = Smooth (color)</td><td>&nbsp;&nbsp;</td>
+  <td>5 = Standard (B&amp;W)
+  <br>6 = Dynamic (B&amp;W)
+  <br>7 = Smooth (B&amp;W)
+  <br>10 = Nostalgic
+  <br>11 = Vibrant</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td title='0x0044 = 68'>0x0044</td>
+<td>ColorTempKelvin</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0045 = 69'>0x0045</td>
+<td>BracketSettings</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>0 = No Bracket
+  <br>1 = 3 Images, Sequence 0/-/+
+  <br>2 = 3 Images, Sequence -/0/+
+  <br>3 = 5 Images, Sequence 0/-/+
+  <br>4 = 5 Images, Sequence -/0/+
+  <br>5 = 7 Images, Sequence 0/-/+
+  <br>6 = 7 Images, Sequence -/0/+</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td title='0x0046 = 70'>0x0046</td>
+<td>WBShiftAB</td>
+<td class=c>int16u</td>
+<td><span class=s><span class=n>(positive is a shift toward blue)</span></span></td></tr>
+<tr class=b>
+<td title='0x0047 = 71'>0x0047</td>
+<td>WBShiftGM</td>
+<td class=c>int16u</td>
+<td><span class=s><span class=n>(positive is a shift toward green)</span></span></td></tr>
+<tr>
+<td title='0x0048 = 72'>0x0048</td>
+<td>FlashCurtain</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = n/a
+  <br>1 = 1st
+  <br>2 = 2nd</span></td></tr>
+<tr class=b>
+<td title='0x0049 = 73'>0x0049</td>
+<td>LongExposureNoiseReduction</td>
+<td class=c>int16u</td>
+<td><span class=s>1 = Off
+  <br>2 = On</span></td></tr>
+<tr>
+<td title='0x004b = 75'>0x004b</td>
+<td>PanasonicImageWidth</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x004c = 76'>0x004c</td>
+<td>PanasonicImageHeight</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x004d = 77'>0x004d</td>
+<td>AFPointPosition</td>
+<td class=c>rational64u[2]</td>
+<td><span class=s><span class=n>(X Y coordinates of primary AF area center, in the range 0.0 to 1.0)</span></span></td></tr>
+<tr class=b>
+<td title='0x004e = 78'>0x004e</td>
+<td>FaceDetInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Panasonic.html#FaceDetInfo'>Panasonic FaceDetInfo Tags</a></td></tr>
+<tr>
+<td title='0x0051 = 81'>0x0051</td>
+<td>LensType</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0052 = 82'>0x0052</td>
+<td>LensSerialNumber</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0053 = 83'>0x0053</td>
+<td>AccessoryType</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0054 = 84'>0x0054</td>
+<td>AccessorySerialNumber</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0059 = 89'>0x0059</td>
+<td>Transform</td>
+<td class=c>undef[4]</td>
+<td><span class=s><span class=n>(decoded as two 16-bit signed integers)</span>
+  <br>&#39;-1 1&#39; = Slim Low
+  <br>&#39;-3 2&#39; = Slim High
+  <br>&#39;0 0&#39; = Off
+  <br>&#39;1 1&#39; = Stretch Low
+  <br>&#39;3 2&#39; = Stretch High</span></td></tr>
+<tr class=b>
+<td title='0x005d = 93'>0x005d</td>
+<td>IntelligentExposure</td>
+<td class=c>int16u</td>
+<td><span class=s><span class=n>(not valid for some models)</span>
+  <br>0 = Off
+  <br>1 = Low
+  <br>2 = Standard
+  <br>3 = High</span></td></tr>
+<tr>
+<td title='0x0060 = 96'>0x0060</td>
+<td>LensFirmwareVersion</td>
+<td class=c>undef[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0061 = 97'>0x0061</td>
+<td>FaceRecInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Panasonic.html#FaceRecInfo'>Panasonic FaceRecInfo Tags</a></td></tr>
+<tr>
+<td title='0x0062 = 98'>0x0062</td>
+<td>FlashWarning</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = No
+  <br>1 = Yes (flash required but disabled)</span></td></tr>
+<tr class=b>
+<td title='0x0063 = 99'>0x0063</td>
+<td>RecognizedFaceFlags?</td>
+<td class=c>undef[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0065 = 101'>0x0065</td>
+<td>Title</td>
+<td class=c>undef</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0066 = 102'>0x0066</td>
+<td>BabyName</td>
+<td class=c>undef</td>
+<td><span class=s><span class=n>(or pet name)</span></span></td></tr>
+<tr>
+<td title='0x0067 = 103'>0x0067</td>
+<td>Location</td>
+<td class=c>undef</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0069 = 105'>0x0069</td>
+<td>Country</td>
+<td class=c>undef</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x006b = 107'>0x006b</td>
+<td>State</td>
+<td class=c>undef</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x006d = 109'>0x006d</td>
+<td>City</td>
+<td class=c>undef</td>
+<td><span class=s><span class=n>(City/Town as stored by some models, or County/Township for others)</span></span></td></tr>
+<tr>
+<td title='0x006f = 111'>0x006f</td>
+<td>Landmark</td>
+<td class=c>undef</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0070 = 112'>0x0070</td>
+<td>IntelligentResolution</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = Low
+  <br>2 = Standard
+  <br>3 = High
+  <br>4 = Extended</span></td></tr>
+<tr>
+<td title='0x0077 = 119'>0x0077</td>
+<td>BurstSpeed</td>
+<td class=c>int16u</td>
+<td><span class=s><span class=n>(images per second)</span></span></td></tr>
+<tr class=b>
+<td title='0x0079 = 121'>0x0079</td>
+<td>IntelligentD-Range</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Off
+  <br>1 = Low
+  <br>2 = Standard
+  <br>3 = High</span></td></tr>
+<tr>
+<td title='0x007c = 124'>0x007c</td>
+<td>ClearRetouch</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr class=b>
+<td title='0x0080 = 128'>0x0080</td>
+<td>City2</td>
+<td class=c>undef</td>
+<td><span class=s><span class=n>(City/Town/Village as stored by some models)</span></span></td></tr>
+<tr>
+<td title='0x0086 = 134'>0x0086</td>
+<td>ManometerPressure</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0089 = 137'>0x0089</td>
+<td>PhotoStyle</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>0 = Auto
+  <br>1 = Standard or Custom
+  <br>2 = Vivid
+  <br>3 = Natural</td><td>&nbsp;&nbsp;</td>
+  <td>4 = Monochrome
+  <br>5 = Scenery
+  <br>6 = Portrait</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td title='0x008a = 138'>0x008a</td>
+<td>ShadingCompensation</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr class=b>
+<td title='0x008c = 140'>0x008c</td>
+<td>AccelerometerZ</td>
+<td class=c>int16u</td>
+<td><span class=s><span class=n>(positive is acceleration upwards)</span></span></td></tr>
+<tr>
+<td title='0x008d = 141'>0x008d</td>
+<td>AccelerometerX</td>
+<td class=c>int16u</td>
+<td><span class=s><span class=n>(positive is acceleration to the left)</span></span></td></tr>
+<tr class=b>
+<td title='0x008e = 142'>0x008e</td>
+<td>AccelerometerY</td>
+<td class=c>int16u</td>
+<td><span class=s><span class=n>(positive is acceleration backwards)</span></span></td></tr>
+<tr>
+<td title='0x008f = 143'>0x008f</td>
+<td>CameraOrientation</td>
+<td class=c>int8u</td>
+<td><table class=cols><tr>
+  <td>0 = Normal
+  <br>1 = Rotate CW
+  <br>2 = Rotate 180</td><td>&nbsp;&nbsp;</td>
+  <td>3 = Rotate CCW
+  <br>4 = Tilt Upwards
+  <br>5 = Tilt Downwards</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td title='0x0090 = 144'>0x0090</td>
+<td>RollAngle</td>
+<td class=c>int16u</td>
+<td><span class=s><span class=n>(degrees of clockwise camera rotation)</span></span></td></tr>
+<tr>
+<td title='0x0091 = 145'>0x0091</td>
+<td>PitchAngle</td>
+<td class=c>int16u</td>
+<td><span class=s><span class=n>(degrees of upward camera tilt)</span></span></td></tr>
+<tr class=b>
+<td title='0x0093 = 147'>0x0093</td>
+<td>SweepPanoramaDirection</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = Left to Right
+  <br>2 = Right to Left
+  <br>3 = Top to Bottom
+  <br>4 = Bottom to Top</span></td></tr>
+<tr>
+<td title='0x0094 = 148'>0x0094</td>
+<td>SweepPanoramaFieldOfView</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0096 = 150'>0x0096</td>
+<td>TimerRecording</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = Time Lapse
+  <br>2 = Stop-motion Animation</span></td></tr>
+<tr>
+<td title='0x009d = 157'>0x009d</td>
+<td>InternalNDFilter</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x009e = 158'>0x009e</td>
+<td>HDR</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>0 = Off
+  <br>100 = 1 EV
+  <br>200 = 2 EV
+  <br>300 = 3 EV</td><td>&nbsp;&nbsp;</td>
+  <td>32868 = 1 EV (Auto)
+  <br>32968 = 2 EV (Auto)
+  <br>33068 = 3 EV (Auto)</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td title='0x009f = 159'>0x009f</td>
+<td>ShutterType</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Mechanical
+  <br>1 = Electronic
+  <br>2 = Hybrid</span></td></tr>
+<tr class=b>
+<td title='0x00a3 = 163'>0x00a3</td>
+<td>ClearRetouchValue</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x00ab = 171'>0x00ab</td>
+<td>TouchAE</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr class=b>
+<td title='0x0e00 = 3584'>0x0e00</td>
+<td>PrintIM</td>
+<td class=c>-</td>
+<td>--&gt; <a href='PrintIM.html'>PrintIM Tags</a></td></tr>
+<tr>
+<td title='0x8000 = 32768'>0x8000</td>
+<td>MakerNoteVersion</td>
+<td class=c>undef</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x8001 = 32769'>0x8001</td>
+<td>SceneMode</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>0 = Off
+  <br>1 = Normal
+  <br>2 = Portrait
+  <br>3 = Scenery
+  <br>4 = Sports
+  <br>5 = Night Portrait
+  <br>6 = Program
+  <br>7 = Aperture Priority
+  <br>8 = Shutter Priority
+  <br>9 = Macro
+  <br>10 = Spot
+  <br>11 = Manual
+  <br>12 = Movie Preview
+  <br>13 = Panning
+  <br>14 = Simple
+  <br>15 = Color Effects
+  <br>16 = Self Portrait
+  <br>17 = Economy
+  <br>18 = Fireworks
+  <br>19 = Party
+  <br>20 = Snow
+  <br>21 = Night Scenery
+  <br>22 = Food
+  <br>23 = Baby
+  <br>24 = Soft Skin
+  <br>25 = Candlelight
+  <br>26 = Starry Night
+  <br>27 = High Sensitivity
+  <br>28 = Panorama Assist
+  <br>29 = Underwater
+  <br>30 = Beach
+  <br>31 = Aerial Photo
+  <br>32 = Sunset
+  <br>33 = Pet
+  <br>34 = Intelligent ISO
+  <br>35 = Clipboard
+  <br>36 = High Speed Continuous Shooting
+  <br>37 = Intelligent Auto
+  <br>39 = Multi-aspect</td><td>&nbsp;&nbsp;</td>
+  <td>41 = Transform
+  <br>42 = Flash Burst
+  <br>43 = Pin Hole
+  <br>44 = Film Grain
+  <br>45 = My Color
+  <br>46 = Photo Frame
+  <br>48 = Movie
+  <br>51 = HDR
+  <br>55 = Handheld Night Shot
+  <br>57 = 3D
+  <br>59 = Creative Control
+  <br>62 = Panorama
+  <br>63 = Glass Through
+  <br>64 = HDR
+  <br>66 = Digital Filter
+  <br>67 = Clear Portrait
+  <br>68 = Silky Skin
+  <br>69 = Backlit Softness
+  <br>70 = Clear in Backlight
+  <br>71 = Relaxing Tone
+  <br>72 = Sweet Child&#39;s Face
+  <br>73 = Distinct Scenery
+  <br>74 = Bright Blue Sky
+  <br>75 = Romantic Sunset Glow
+  <br>76 = Vivid Sunset Glow
+  <br>77 = Glistening Water
+  <br>78 = Clear Nightscape
+  <br>79 = Cool Night Sky
+  <br>80 = Warm Glowing Nightscape
+  <br>81 = Artistic Nightscape
+  <br>82 = Glittering Illuminations
+  <br>83 = Clear Night Portrait
+  <br>84 = Soft Image of a Flower
+  <br>85 = Appetizing Food
+  <br>86 = Cute Desert
+  <br>87 = Freeze Animal Motion
+  <br>88 = Clear Sports Shot
+  <br>89 = Monochrome
+  <br>90 = Creative Control</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td title='0x8004 = 32772'>0x8004</td>
+<td>WBRedLevel</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x8005 = 32773'>0x8005</td>
+<td>WBGreenLevel</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x8006 = 32774'>0x8006</td>
+<td>WBBlueLevel</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x8007 = 32775'>0x8007</td>
+<td>FlashFired</td>
+<td class=c>int16u</td>
+<td><span class=s>1 = No
+  <br>2 = Yes</span></td></tr>
+<tr>
+<td title='0x8008 = 32776'>0x8008</td>
+<td>TextStamp</td>
+<td class=c>int16u</td>
+<td><span class=s>1 = Off
+  <br>2 = On</span></td></tr>
+<tr class=b>
+<td title='0x8009 = 32777'>0x8009</td>
+<td>TextStamp</td>
+<td class=c>int16u</td>
+<td><span class=s>1 = Off
+  <br>2 = On</span></td></tr>
+<tr>
+<td title='0x8010 = 32784'>0x8010</td>
+<td>BabyAge</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(or pet age)</span></span></td></tr>
+<tr class=b>
+<td title='0x8012 = 32786'>0x8012</td>
+<td>Transform</td>
+<td class=c>undef[4]</td>
+<td><span class=s><span class=n>(decoded as two 16-bit signed integers)</span>
+  <br>&#39;-1 1&#39; = Slim Low
+  <br>&#39;-3 2&#39; = Slim High
+  <br>&#39;0 0&#39; = Off
+  <br>&#39;1 1&#39; = Stretch Low
+  <br>&#39;3 2&#39; = Stretch High</span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='FaceDetInfo'>Panasonic FaceDetInfo Tags</a></h2>
+<p>Face detection position information.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index2</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>NumFacePositions</td>
+<td class=c>int16u</td>
+<td><span class=s><span class=n>(number of detected face positions stored in this record.  May be less than
+FacesDetected)</span></span></td></tr>
+<tr class=b>
+<td class=r title='1 = 0x1'>1</td>
+<td>Face1Position</td>
+<td class=c>int16u[4]</td>
+<td><span class=s><span class=n>(4 numbers: X/Y coordinates of the face center and width/height of face.
+Coordinates are relative to an image twice the size of the thumbnail, or 320
+pixels wide)</span></span></td></tr>
+<tr>
+<td class=r title='5 = 0x5'>5</td>
+<td>Face2Position</td>
+<td class=c>int16u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='9 = 0x9'>9</td>
+<td>Face3Position</td>
+<td class=c>int16u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='13 = 0xd'>13</td>
+<td>Face4Position</td>
+<td class=c>int16u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='17 = 0x11'>17</td>
+<td>Face5Position</td>
+<td class=c>int16u[4]</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='FaceRecInfo'>Panasonic FaceRecInfo Tags</a></h2>
+<p>Tags written by cameras with facial recognition.  These cameras not only
+detect faces in an image, but also recognize specific people based a
+user-supplied set of known faces.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>FacesRecognized</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>RecognizedFace1Name</td>
+<td class=c>string[20]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='24 = 0x18'>24</td>
+<td>RecognizedFace1Position</td>
+<td class=c>int16u[4]</td>
+<td><span class=s><span class=n>(coordinates in same format as face detection tags above)</span></span></td></tr>
+<tr class=b>
+<td class=r title='32 = 0x20'>32</td>
+<td>RecognizedFace1Age</td>
+<td class=c>string[20]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='52 = 0x34'>52</td>
+<td>RecognizedFace2Name</td>
+<td class=c>string[20]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='72 = 0x48'>72</td>
+<td>RecognizedFace2Position</td>
+<td class=c>int16u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='80 = 0x50'>80</td>
+<td>RecognizedFace2Age</td>
+<td class=c>string[20]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='100 = 0x64'>100</td>
+<td>RecognizedFace3Name</td>
+<td class=c>string[20]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='120 = 0x78'>120</td>
+<td>RecognizedFace3Position</td>
+<td class=c>int16u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='128 = 0x80'>128</td>
+<td>RecognizedFace3Age</td>
+<td class=c>string[20]</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Leica2'>Panasonic Leica2 Tags</a></h2>
+<p>These tags are used by the Leica M8.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x0300 = 768'>0x0300</td>
+<td>Quality</td>
+<td class=c>int16u</td>
+<td><span class=s>1 = Fine
+  <br>2 = Basic</span></td></tr>
+<tr class=b>
+<td title='0x0302 = 770'>0x0302</td>
+<td>UserProfile</td>
+<td class=c>int32u</td>
+<td><span class=s>1 = User Profile 1
+  <br>2 = User Profile 2
+  <br>3 = User Profile 3
+  <br>4 = User Profile 0 (Dynamic)</span></td></tr>
+<tr>
+<td title='0x0303 = 771'>0x0303</td>
+<td>SerialNumber</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0304 = 772'>0x0304</td>
+<td>WhiteBalance</td>
+<td class=c>int16u</td>
+<td><span class=s><span class=n>(values above 0x8000 are converted to Kelvin color temperatures)</span></span><table class=cols><tr>
+  <td>0 = Auto or Manual
+  <br>1 = Daylight
+  <br>2 = Fluorescent
+  <br>3 = Tungsten</td><td>&nbsp;&nbsp;</td>
+  <td>4 = Flash
+  <br>10 = Cloudy
+  <br>11 = Shade</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td title='0x0310 = 784'>0x0310</td>
+<td>LensType</td>
+<td class=c>int32u</td>
+<td>--&gt; <a href='Panasonic.html#LensType'>Panasonic LensType Values</a></td></tr>
+<tr class=b>
+<td title='0x0311 = 785'>0x0311</td>
+<td>ExternalSensorBrightnessValue</td>
+<td class=c>rational64s</td>
+<td><span class=s><span class=n>(&quot;blue dot&quot; measurement)</span></span></td></tr>
+<tr>
+<td title='0x0312 = 786'>0x0312</td>
+<td>MeasuredLV</td>
+<td class=c>rational64s</td>
+<td><span class=s><span class=n>(imaging sensor or TTL exposure meter measurement)</span></span></td></tr>
+<tr class=b>
+<td title='0x0313 = 787'>0x0313</td>
+<td>ApproximateFNumber</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0320 = 800'>0x0320</td>
+<td>CameraTemperature</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0321 = 801'>0x0321</td>
+<td>ColorTemperature</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0322 = 802'>0x0322</td>
+<td>WBRedLevel</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0323 = 803'>0x0323</td>
+<td>WBGreenLevel</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0324 = 804'>0x0324</td>
+<td>WBBlueLevel</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0325 = 805'>0x0325</td>
+<td>UV-IRFilterCorrection</td>
+<td class=c>int32u</td>
+<td><span class=s>0 = Not Active
+  <br>1 = Active</span></td></tr>
+<tr>
+<td title='0x0330 = 816'>0x0330</td>
+<td>CCDVersion</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0331 = 817'>0x0331</td>
+<td>CCDBoardVersion</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0332 = 818'>0x0332</td>
+<td>ControllerBoardVersion</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0333 = 819'>0x0333</td>
+<td>M16CVersion</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0340 = 832'>0x0340</td>
+<td>ImageIDNumber</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='LensType'>Panasonic LensType Values</a></h2>
+<p>the LensType value is obtained by splitting the stored value into 2
+integers:  The stored value divided by 4, and its lower 2 bits.  The second
+number is used only if necessary to identify certain manually coded lenses
+on the M9, or the focal length of some multi-focal lenses.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class='inner sep' cellspacing=1>
+<tr class=h><th>Value</th><th>LensType</th><th>Value</th><th>LensType</th></tr>
+<tr><td>1</td><td>= Elmarit-M 21mm f/2.8</td>
+<td class=b>42</td><td class=b>= Tri-Elmar-M 28-35-50mm f/4 ASPH.</td>
+</tr><tr><td>3</td><td>= Elmarit-M 28mm f/2.8 (III)</td>
+<td class=b>43</td><td class=b>= Summarit-M 35mm f/2.5</td>
+</tr><tr><td>4</td><td>= Tele-Elmarit-M 90mm f/2.8 (II)</td>
+<td class=b>44</td><td class=b>= Summarit-M 50mm f/2.5</td>
+</tr><tr><td>5</td><td>= Summilux-M 50mm f/1.4 (II)</td>
+<td class=b>45</td><td class=b>= Summarit-M 75mm f/2.5</td>
+</tr><tr><td>6</td><td>= Summicron-M 35mm f/2 (IV)</td>
+<td class=b>46</td><td class=b>= Summarit-M 90mm f/2.5</td>
+</tr><tr><td>7</td><td>= Summicron-M 90mm f/2 (II)</td>
+<td class=b>47</td><td class=b>= Summilux-M 21mm f/1.4 ASPH.</td>
+</tr><tr><td>9</td><td>= Elmarit-M 135mm f/2.8 (I/II)</td>
+<td class=b>48</td><td class=b>= Summilux-M 24mm f/1.4 ASPH.</td>
+</tr><tr><td>16</td><td>= Tri-Elmar-M 16-18-21mm f/4 ASPH.</td>
+<td class=b>49</td><td class=b>= Noctilux-M 50mm f/0.95 ASPH.</td>
+</tr><tr><td>23</td><td>= Summicron-M 50mm f/2 (III)</td>
+<td class=b>50</td><td class=b>= Elmar-M 24mm f/3.8 ASPH.</td>
+</tr><tr><td>24</td><td>= Elmarit-M 21mm f/2.8 ASPH.</td>
+<td class=b>51</td><td class=b>= Super-Elmar-M 21mm f/3.4 Asph</td>
+</tr><tr><td>25</td><td>= Elmarit-M 24mm f/2.8 ASPH.</td>
+<td class=b>52</td><td class=b>= Super-Elmar-M 18mm f/3.8 ASPH.</td>
+</tr><tr><td>26</td><td>= Summicron-M 28mm f/2 ASPH.</td>
+<td class=b>'0 0'</td><td class=b>= Uncoded lens</td>
+</tr><tr><td>27</td><td>= Elmarit-M 28mm f/2.8 (IV)</td>
+<td class=b>'6 0'</td><td class=b>= Summilux-M 35mm f/1.4</td>
+</tr><tr><td>28</td><td>= Elmarit-M 28mm f/2.8 ASPH.</td>
+<td class=b>'9 0'</td><td class=b>= Apo-Telyt-M 135mm f/3.4</td>
+</tr><tr><td>29</td><td>= Summilux-M 35mm f/1.4 ASPH.</td>
+<td class=b>'16 1'</td><td class=b>= Tri-Elmar-M 16-18-21mm f/4 ASPH. (at 16mm)</td>
+</tr><tr><td>30</td><td>= Summicron-M 35mm f/2 ASPH.</td>
+<td class=b>'16 2'</td><td class=b>= Tri-Elmar-M 16-18-21mm f/4 ASPH. (at 18mm)</td>
+</tr><tr><td>31</td><td>= Noctilux-M 50mm f/1</td>
+<td class=b>'16 3'</td><td class=b>= Tri-Elmar-M 16-18-21mm f/4 ASPH. (at 21mm)</td>
+</tr><tr><td>32</td><td>= Summilux-M 50mm f/1.4 ASPH.</td>
+<td class=b>'29 0'</td><td class=b>= Summilux-M 35mm f/1.4 ASPHERICAL</td>
+</tr><tr><td>33</td><td>= Summicron-M 50mm f/2 (IV, V)</td>
+<td class=b>'31 0'</td><td class=b>= Noctilux-M 50mm f/1.2</td>
+</tr><tr><td>34</td><td>= Elmar-M 50mm f/2.8</td>
+<td class=b>'39 0'</td><td class=b>= Tele-Elmar-M 135mm f/4 (II)</td>
+</tr><tr><td>35</td><td>= Summilux-M 75mm f/1.4</td>
+<td class=b>'41 3'</td><td class=b>= Apo-Summicron-M 50mm f/2 Asph</td>
+</tr><tr><td>36</td><td>= Apo-Summicron-M 75mm f/2 ASPH.</td>
+<td class=b>'42 1'</td><td class=b>= Tri-Elmar-M 28-35-50mm f/4 ASPH. (at 28mm)</td>
+</tr><tr><td>37</td><td>= Apo-Summicron-M 90mm f/2 ASPH.</td>
+<td class=b>'42 2'</td><td class=b>= Tri-Elmar-M 28-35-50mm f/4 ASPH. (at 35mm)</td>
+</tr><tr><td>38</td><td>= Elmarit-M 90mm f/2.8</td>
+<td class=b>'42 3'</td><td class=b>= Tri-Elmar-M 28-35-50mm f/4 ASPH. (at 50mm)</td>
+</tr><tr><td>39</td><td>= Macro-Elmar-M 90mm f/4</td>
+<td class=b>'51 2'</td><td class=b>= Super-Elmar-M 14mm f/3.8 Asph</td>
+</tr><tr><td>40</td><td>= Macro-Adapter M</td>
+<td class=b>'53 2'</td><td class=b>= Apo-Telyt-M 135mm f/3.4</td>
+</tr></table></td></tr></table></blockquote>
+
+<h2><a name='Leica3'>Panasonic Leica3 Tags</a></h2>
+<p>These tags are used by the Leica R8 and R9 digital backs.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x000d = 13'>0x000d</td>
+<td>WB_RGBLevels</td>
+<td class=c>int16u[3]</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Leica4'>Panasonic Leica4 Tags</a></h2>
+<p>This information is written by the M9.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x3000 = 12288'>0x3000</td>
+<td>Subdir3000</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Panasonic.html#Subdir'>Panasonic Subdir Tags</a></td></tr>
+<tr class=b>
+<td title='0x3100 = 12544'>0x3100</td>
+<td>Subdir3100</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Panasonic.html#Subdir'>Panasonic Subdir Tags</a></td></tr>
+<tr>
+<td title='0x3400 = 13312'>0x3400</td>
+<td>Subdir3400</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Panasonic.html#Subdir'>Panasonic Subdir Tags</a></td></tr>
+<tr class=b>
+<td title='0x3900 = 14592'>0x3900</td>
+<td>Subdir3900</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Panasonic.html#Subdir'>Panasonic Subdir Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Subdir'>Panasonic Subdir Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x300a = 12298'>0x300a</td>
+<td>Contrast</td>
+<td class=c>int32u</td>
+<td><span class=s>0 = Low
+  <br>1 = Medium Low
+  <br>2 = Normal
+  <br>3 = Medium High
+  <br>4 = High</span></td></tr>
+<tr class=b>
+<td title='0x300b = 12299'>0x300b</td>
+<td>Sharpening</td>
+<td class=c>int32u</td>
+<td><span class=s>0 = Off
+  <br>1 = Low
+  <br>2 = Normal
+  <br>3 = Medium High
+  <br>4 = High</span></td></tr>
+<tr>
+<td title='0x300d = 12301'>0x300d</td>
+<td>Saturation</td>
+<td class=c>int32u</td>
+<td><table class=cols><tr>
+  <td>0 = Low
+  <br>1 = Medium Low
+  <br>2 = Normal
+  <br>3 = Medium High</td><td>&nbsp;&nbsp;</td>
+  <td>4 = High
+  <br>5 = Black &amp; White
+  <br>6 = Vintage B&amp;W</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td title='0x3033 = 12339'>0x3033</td>
+<td>WhiteBalance</td>
+<td class=c>int32u</td>
+<td><table class=cols><tr>
+  <td>0 = Auto
+  <br>1 = Tungsten
+  <br>2 = Fluorescent
+  <br>3 = Daylight Fluorescent
+  <br>4 = Daylight
+  <br>5 = Flash
+  <br>6 = Cloudy
+  <br>7 = Shade
+  <br>8 = Manual
+  <br>9 = Kelvin</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td title='0x3034 = 12340'>0x3034</td>
+<td>JPEGQuality</td>
+<td class=c>int32u</td>
+<td><span class=s>94 = Basic
+  <br>97 = Fine</span></td></tr>
+<tr class=b>
+<td title='0x3036 = 12342'>0x3036</td>
+<td>WB_RGBLevels</td>
+<td class=c>rational64u[3]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x3038 = 12344'>0x3038</td>
+<td>UserProfile</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x303a = 12346'>0x303a</td>
+<td>JPEGSize</td>
+<td class=c>int32u</td>
+<td><span class=s>0 = 5216x3472
+  <br>1 = 3840x2592
+  <br>2 = 2592x1728
+  <br>3 = 1728x1152
+  <br>4 = 1280x864</span></td></tr>
+<tr>
+<td title='0x3103 = 12547'>0x3103</td>
+<td>SerialNumber</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x3109 = 12553'>0x3109</td>
+<td>FirmwareVersion</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x312a = 12586'>0x312a</td>
+<td>BaseISO</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x312b = 12587'>0x312b</td>
+<td>SensorWidth</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x312c = 12588'>0x312c</td>
+<td>SensorHeight</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x312d = 12589'>0x312d</td>
+<td>SensorBitDepth</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x3402 = 13314'>0x3402</td>
+<td>CameraTemperature</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x3405 = 13317'>0x3405</td>
+<td>LensType</td>
+<td class=c>int32u</td>
+<td>--&gt; <a href='Panasonic.html#LensType'>Panasonic LensType Values</a></td></tr>
+<tr>
+<td title='0x3406 = 13318'>0x3406</td>
+<td>ApproximateFNumber</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x3407 = 13319'>0x3407</td>
+<td>MeasuredLV</td>
+<td class=c>int32s</td>
+<td><span class=s><span class=n>(imaging sensor or TTL exposure meter measurement)</span></span></td></tr>
+<tr>
+<td title='0x3408 = 13320'>0x3408</td>
+<td>ExternalSensorBrightnessValue</td>
+<td class=c>int32s</td>
+<td><span class=s><span class=n>(&quot;blue dot&quot; measurement)</span></span></td></tr>
+<tr class=b>
+<td title='0x3901 = 14593'>0x3901</td>
+<td>Data1</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Panasonic.html#Data1'>Panasonic Data1 Tags</a></td></tr>
+<tr>
+<td title='0x3902 = 14594'>0x3902</td>
+<td>Data2</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Panasonic.html#Data2'>Panasonic Data2 Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Data1'>Panasonic Data1 Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='22 = 0x16'>22</td>
+<td>LensType</td>
+<td class=c>int32u[0.25]</td>
+<td>--&gt; <a href='Panasonic.html#LensType'>Panasonic LensType Values</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Data2'>Panasonic Data2 Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr><td colspan=4 class=c><i>[no tags known]</i></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Leica5'>Panasonic Leica5 Tags</a></h2>
+<p>This information is written by the X1, X2, X VARIO and T.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x0303 = 771'>0x0303</td>
+<td>LensModel</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(Leica T only)</span></span></td></tr>
+<tr class=b>
+<td title='0x0407 = 1031'>0x0407</td>
+<td>OriginalFileName</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0408 = 1032'>0x0408</td>
+<td>OriginalDirectory</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x040d = 1037'>0x040d</td>
+<td>ExposureMode</td>
+<td class=c>int8u[4]</td>
+<td><span class=s>&#39;0 0 0 0&#39; = Program AE
+  <br>&#39;1 0 0 0&#39; = Aperture-priority AE
+  <br>&#39;1 1 0 0&#39; = Aperture-priority AE (1)
+  <br>&#39;2 0 0 0&#39; = Shutter speed priority AE
+  <br>&#39;3 0 0 0&#39; = Manual</span></td></tr>
+<tr>
+<td title='0x0410 = 1040'>0x0410</td>
+<td>ShotInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Panasonic.html#ShotInfo'>Panasonic ShotInfo Tags</a></td></tr>
+<tr class=b>
+<td title='0x0412 = 1042'>0x0412</td>
+<td>FilmMode</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0413 = 1043'>0x0413</td>
+<td>WB_RGBLevels</td>
+<td class=c>rational64u[3]</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ShotInfo'>Panasonic ShotInfo Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>FileIndex</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Leica6'>Panasonic Leica6 Tags</a></h2>
+<p>This information is written by the S2 and M (Typ 240), as a trailer in JPEG
+images.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x0300 = 768'>0x0300</td>
+<td>PreviewImage</td>
+<td class=c>undef</td>
+<td><span class=s><span class=n>(S2 and M (Typ 240))</span></span></td></tr>
+<tr class=b>
+<td title='0x0301 = 769'>0x0301</td>
+<td>UnknownBlock?</td>
+<td class=c>N</td>
+<td><span class=s><span class=n>(unknown 320kB block, not copied to JPEG images)</span></span></td></tr>
+<tr>
+<td title='0x0303 = 771'>0x0303</td>
+<td>LensType</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Type2'>Panasonic Type2 Tags</a></h2>
+<p>This type of maker notes is used by models such as the NV-DS65, PV-D2002,
+PV-DC3000, PV-DV203, PV-DV401, PV-DV702, PV-L2001, PV-SD4090, PV-SD5000 and
+iPalm.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index2</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>MakerNoteType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='3 = 0x3'>3</td>
+<td>Gain</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='PANA'>Panasonic PANA Tags</a></h2>
+<p>Tags extracted from the PANA and LEIC user data found in MP4 videos from
+various Panasonic and Leica models.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>Make</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>Model</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='12 = 0xc'>12</td>
+<td>Model</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='22 = 0x16'>22</td>
+<td>Model</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='52 = 0x34'>52</td>
+<td>Version1</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='62 = 0x3e'>62</td>
+<td>Version2</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='80 = 0x50'>80</td>
+<td>MakerNoteLeica5</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Panasonic.html#Leica5'>Panasonic Leica5 Tags</a></td></tr>
+<tr class=b>
+<td class=r title='88 = 0x58'>88</td>
+<td>ThumbnailWidth</td>
+<td class=c>N</td>
+<td><span class=s><span class=n>(Panasonic models)</span></span></td></tr>
+<tr>
+<td class=r title='90 = 0x5a'>90</td>
+<td>ThumbnailHeight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='92 = 0x5c'>92</td>
+<td>ThumbnailImage</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='1334 = 0x536'>1334</td>
+<td>ThumbnailWidth</td>
+<td class=c>N</td>
+<td><span class=s><span class=n>(Leica X Vario)</span></span></td></tr>
+<tr class=b>
+<td class=r title='1338 = 0x53a'>1338</td>
+<td>ThumbnailHeight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='1342 = 0x53e'>1342</td>
+<td>ThumbnailLength</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='1350 = 0x546'>1350</td>
+<td>ThumbnailImage</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='1358 = 0x54e'>1358</td>
+<td>ThumbnailWidth</td>
+<td class=c>N</td>
+<td><span class=s><span class=n>(Leica X Vario)</span></span></td></tr>
+<tr class=b>
+<td class=r title='1362 = 0x552'>1362</td>
+<td>ThumbnailHeight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='1366 = 0x556'>1366</td>
+<td>ThumbnailLength</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='1374 = 0x55e'>1374</td>
+<td>ThumbnailImage</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='16488 = 0x4068'>16488</td>
+<td>ExifData</td>
+<td class=c>-</td>
+<td>--&gt; <a href='EXIF.html'>EXIF Tags</a></td></tr>
+<tr class=b>
+<td class=r title='16512 = 0x4080'>16512</td>
+<td>ExifData</td>
+<td class=c>-</td>
+<td>--&gt; <a href='EXIF.html'>EXIF Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='AdvancedSceneMode'>Panasonic AdvancedSceneMode Values</a></h2>
+<p>A Composite tag derived from Model, SceneMode and AdvancedSceneType.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class='inner sep' cellspacing=1>
+<tr class=h><th>Value</th><th>AdvancedSceneMode</th><th>Value</th><th>AdvancedSceneMode</th></tr>
+<tr><td>'0 1'</td><td>= Off</td>
+<td class=b>'59 5'</td><td class=b>= High Dynamic</td>
+</tr><tr><td>'2 2'</td><td>= Outdoor Portrait</td>
+<td class=b>'59 6'</td><td class=b>= Miniature</td>
+</tr><tr><td>'2 3'</td><td>= Indoor Portrait</td>
+<td class=b>'59 9'</td><td class=b>= Low Key</td>
+</tr><tr><td>'2 4'</td><td>= Creative Portrait</td>
+<td class=b>'59 10'</td><td class=b>= Toy Effect</td>
+</tr><tr><td>'3 2'</td><td>= Nature</td>
+<td class=b>'59 11'</td><td class=b>= Dynamic Monochrome</td>
+</tr><tr><td>'3 3'</td><td>= Architecture</td>
+<td class=b>'59 12'</td><td class=b>= Soft</td>
+</tr><tr><td>'3 4'</td><td>= Creative Scenery</td>
+<td class=b>'66 1'</td><td class=b>= Impressive Art</td>
+</tr><tr><td>'4 2'</td><td>= Outdoor Sports</td>
+<td class=b>'66 2'</td><td class=b>= Cross Process</td>
+</tr><tr><td>'4 3'</td><td>= Indoor Sports</td>
+<td class=b>'66 3'</td><td class=b>= Color Select</td>
+</tr><tr><td>'4 4'</td><td>= Creative Sports</td>
+<td class=b>'66 4'</td><td class=b>= Star</td>
+</tr><tr><td>'9 2'</td><td>= Flower</td>
+<td class=b>'90 3'</td><td class=b>= Old Days</td>
+</tr><tr><td>'9 3'</td><td>= Objects</td>
+<td class=b>'90 4'</td><td class=b>= Sunshine</td>
+</tr><tr><td>'9 4'</td><td>= Creative Macro</td>
+<td class=b>'90 5'</td><td class=b>= Bleach Bypass</td>
+</tr><tr><td>'21 2'</td><td>= Illuminations</td>
+<td class=b>'90 6'</td><td class=b>= Toy Pop</td>
+</tr><tr><td>'21 4'</td><td>= Creative Night Scenery</td>
+<td class=b>'90 7'</td><td class=b>= Fantasy</td>
+</tr><tr><td>'45 2'</td><td>= Cinema</td>
+<td class=b>'90 8'</td><td class=b>= Monochrome</td>
+</tr><tr><td>'45 7'</td><td>= Expressive</td>
+<td class=b>'90 9'</td><td class=b>= Rough Monochrome</td>
+</tr><tr><td>'45 8'</td><td>= Retro</td>
+<td class=b>'90 10'</td><td class=b>= Silky Monochrome</td>
+</tr><tr><td>'45 9'</td><td>= Pure</td>
+<td class=b>'DMC-TZ40 90 1'</td><td class=b>= Expressive</td>
+</tr><tr><td>'45 10'</td><td>= Elegant</td>
+<td class=b>'DMC-TZ40 90 2'</td><td class=b>= Retro</td>
+</tr><tr><td>'45 12'</td><td>= Monochrome</td>
+<td class=b>'DMC-TZ40 90 3'</td><td class=b>= High Key</td>
+</tr><tr><td>'45 13'</td><td>= Dynamic Art</td>
+<td class=b>'DMC-TZ40 90 4'</td><td class=b>= Sepia</td>
+</tr><tr><td>'45 14'</td><td>= Silhouette</td>
+<td class=b>'DMC-TZ40 90 5'</td><td class=b>= High Dynamic</td>
+</tr><tr><td>'51 2'</td><td>= HDR Art</td>
+<td class=b>'DMC-TZ40 90 6'</td><td class=b>= Miniature</td>
+</tr><tr><td>'51 3'</td><td>= HDR B&amp;W</td>
+<td class=b>'DMC-TZ40 90 9'</td><td class=b>= Low Key</td>
+</tr><tr><td>'59 1'</td><td>= Expressive</td>
+<td class=b>'DMC-TZ40 90 10'</td><td class=b>= Toy Effect</td>
+</tr><tr><td>'59 2'</td><td>= Retro</td>
+<td class=b>'DMC-TZ40 90 11'</td><td class=b>= Dynamic Monochrome</td>
+</tr><tr><td>'59 3'</td><td>= High Key</td>
+<td class=b>'DMC-TZ40 90 12'</td><td class=b>= Soft</td>
+</tr><tr><td>'59 4'</td><td>= Sepia</td>
+<td class=b>&nbsp;</td><td class=b>&nbsp;</td>
+</tr></table></td></tr></table></blockquote>
+
+<hr>
+(This document generated automatically by Image::ExifTool::BuildTagLookup)
+<br><i>Last revised Aug 22, 2014</i>
+<p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
+</body>
+</html>

@@ -1,0 +1,1827 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Kodak Tags</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h2 class=top>Kodak Tags</h2>
+<p>
+Many Kodak models don&#39;t store the maker notes in standard IFD format, and
+these formats vary with different models.  Some information has been
+decoded, but much of the Kodak information remains unknown.
+</p>
+<p>The table below contains the most common set of Kodak tags.  The following
+Kodak camera models have been tested and found to use these tags: C360,
+C663, C875, CX6330, CX6445, CX7330, CX7430, CX7525, CX7530, DC4800, DC4900,
+DX3500, DX3600, DX3900, DX4330, DX4530, DX4900, DX6340, DX6440, DX6490,
+DX7440, DX7590, DX7630, EasyShare-One, LS420, LS443, LS633, LS743, LS753,
+V530, V550, V570, V603, V610, V705, Z650, Z700, Z710, Z730, Z740, Z760 and
+Z7590.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>KodakModel</td>
+<td class=c>string[8]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='9 = 0x9'>9</td>
+<td>Quality</td>
+<td class=c>int8u</td>
+<td><span class=s>1 = Fine
+  <br>2 = Normal</span></td></tr>
+<tr>
+<td class=r title='10 = 0xa'>10</td>
+<td>BurstMode</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr class=b>
+<td class=r title='12 = 0xc'>12</td>
+<td>KodakImageWidth</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='14 = 0xe'>14</td>
+<td>KodakImageHeight</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='16 = 0x10'>16</td>
+<td>YearCreated</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='18 = 0x12'>18</td>
+<td>MonthDayCreated</td>
+<td class=c>int8u[2]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='20 = 0x14'>20</td>
+<td>TimeCreated</td>
+<td class=c>int8u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='24 = 0x18'>24</td>
+<td>BurstMode2?</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='27 = 0x1b'>27</td>
+<td>ShutterMode</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Auto
+  <br>8 = Aperture Priority
+  <br>32 = Manual?</span></td></tr>
+<tr>
+<td class=r title='28 = 0x1c'>28</td>
+<td>MeteringMode</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Multi-segment
+  <br>1 = Center-weighted average
+  <br>2 = Spot</span></td></tr>
+<tr class=b>
+<td class=r title='29 = 0x1d'>29</td>
+<td>SequenceNumber</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='30 = 0x1e'>30</td>
+<td>FNumber</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='32 = 0x20'>32</td>
+<td>ExposureTime</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='36 = 0x24'>36</td>
+<td>ExposureCompensation</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='38 = 0x26'>38</td>
+<td>VariousModes?</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='40 = 0x28'>40</td>
+<td>Distance1?</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='44 = 0x2c'>44</td>
+<td>Distance2?</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='48 = 0x30'>48</td>
+<td>Distance3?</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='52 = 0x34'>52</td>
+<td>Distance4?</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='56 = 0x38'>56</td>
+<td>FocusMode</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Normal
+  <br>2 = Macro</span></td></tr>
+<tr class=b>
+<td class=r title='58 = 0x3a'>58</td>
+<td>VariousModes2?</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='60 = 0x3c'>60</td>
+<td>PanoramaMode?</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='62 = 0x3e'>62</td>
+<td>SubjectDistance?</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='64 = 0x40'>64</td>
+<td>WhiteBalance</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Auto
+  <br>1 = Flash?
+  <br>2 = Tungsten
+  <br>3 = Daylight</span></td></tr>
+<tr class=b>
+<td class=r title='92 = 0x5c'>92</td>
+<td>FlashMode</td>
+<td class=c>int8u</td>
+<td><table class=cols><tr>
+  <td>0x0 = Auto
+  <br>0x1 = Fill Flash
+  <br>0x2 = Off
+  <br>0x3 = Red-Eye</td><td>&nbsp;&nbsp;</td>
+  <td>0x10 = Fill Flash
+  <br>0x20 = Off
+  <br>0x40 = Red-Eye?</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='93 = 0x5d'>93</td>
+<td>FlashFired</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = No
+  <br>1 = Yes</span></td></tr>
+<tr class=b>
+<td class=r title='94 = 0x5e'>94</td>
+<td>ISOSetting</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='96 = 0x60'>96</td>
+<td>ISO</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='98 = 0x62'>98</td>
+<td>TotalZoom</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='100 = 0x64'>100</td>
+<td>DateTimeStamp</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='102 = 0x66'>102</td>
+<td>ColorMode</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>0x1 = B&amp;W
+  <br>0x2 = Sepia
+  <br>0x3 = B&amp;W Yellow Filter
+  <br>0x4 = B&amp;W Red Filter
+  <br>0x20 = Saturated Color</td><td>&nbsp;&nbsp;</td>
+  <td>0x40 = Neutral Color
+  <br>0x100 = Saturated Color
+  <br>0x200 = Neutral Color
+  <br>0x2000 = B&amp;W
+  <br>0x4000 = Sepia</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='104 = 0x68'>104</td>
+<td>DigitalZoom</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='107 = 0x6b'>107</td>
+<td>Sharpness</td>
+<td class=c>int8s</td>
+<td><span class=s>0 = Normal</span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Type2'>Kodak Type2 Tags</a></h2>
+<p>These tags are used by the Kodak DC220, DC260, DC265 and DC290,
+Hewlett-Packard PhotoSmart 618, C500 and C912, Pentax EI-200 and EI-2000,
+and Minolta EX1500Z.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='8 = 0x8'>8</td>
+<td>KodakMaker</td>
+<td class=c>string[32]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='40 = 0x28'>40</td>
+<td>KodakModel</td>
+<td class=c>string[32]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='108 = 0x6c'>108</td>
+<td>KodakImageWidth</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='112 = 0x70'>112</td>
+<td>KodakImageHeight</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Type3'>Kodak Type3 Tags</a></h2>
+<p>These tags are used by the DC240, DC280, DC3400 and DC5000.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='12 = 0xc'>12</td>
+<td>YearCreated</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='14 = 0xe'>14</td>
+<td>MonthDayCreated</td>
+<td class=c>int8u[2]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='16 = 0x10'>16</td>
+<td>TimeCreated</td>
+<td class=c>int8u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='30 = 0x1e'>30</td>
+<td>OpticalZoom</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='55 = 0x37'>55</td>
+<td>Sharpness</td>
+<td class=c>int8s</td>
+<td><span class=s>0 = Normal</span></td></tr>
+<tr class=b>
+<td class=r title='56 = 0x38'>56</td>
+<td>ExposureTime</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='60 = 0x3c'>60</td>
+<td>FNumber</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='78 = 0x4e'>78</td>
+<td>ISO</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Type4'>Kodak Type4 Tags</a></h2>
+<p>These tags are used by the DC200 and DC215.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='32 = 0x20'>32</td>
+<td>OriginalFileName</td>
+<td class=c>string[12]</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Type5'>Kodak Type5 Tags</a></h2>
+<p>These tags are used by the CX4200, CX4210, CX4230, CX4300, CX4310, CX6200
+and CX6230.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='20 = 0x14'>20</td>
+<td>ExposureTime</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='26 = 0x1a'>26</td>
+<td>WhiteBalance</td>
+<td class=c>int8u</td>
+<td><span class=s>1 = Daylight
+  <br>2 = Flash
+  <br>3 = Tungsten</span></td></tr>
+<tr>
+<td class=r title='28 = 0x1c'>28</td>
+<td>FNumber</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='30 = 0x1e'>30</td>
+<td>ISO</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='32 = 0x20'>32</td>
+<td>OpticalZoom</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='34 = 0x22'>34</td>
+<td>DigitalZoom</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='39 = 0x27'>39</td>
+<td>FlashMode</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Auto
+  <br>1 = On
+  <br>2 = Off
+  <br>3 = Red-Eye</span></td></tr>
+<tr class=b>
+<td class=r title='42 = 0x2a'>42</td>
+<td>ImageRotated</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = No
+  <br>1 = Yes</span></td></tr>
+<tr>
+<td class=r title='43 = 0x2b'>43</td>
+<td>Macro</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = On
+  <br>1 = Off</span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Type6'>Kodak Type6 Tags</a></h2>
+<p>These tags are used by the DX3215 and DX3700.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='16 = 0x10'>16</td>
+<td>ExposureTime</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='20 = 0x14'>20</td>
+<td>ISOSetting?</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='24 = 0x18'>24</td>
+<td>FNumber</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='26 = 0x1a'>26</td>
+<td>ISO</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='28 = 0x1c'>28</td>
+<td>OpticalZoom</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='30 = 0x1e'>30</td>
+<td>DigitalZoom</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='34 = 0x22'>34</td>
+<td>Flash</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = No Flash
+  <br>1 = Fired</span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Type7'>Kodak Type7 Tags</a></h2>
+<p>The maker notes of models such as the C340, C433, CC533, LS755, V803 and
+V1003 seem to start with the camera serial number.  The C310, C315, C330,
+C643, C743, CD33, CD43, CX7220 and CX7300 maker notes are also decoded using
+this table, although the strings for these cameras don&#39;t conform to the
+usual Kodak serial number format, and instead have the model name followed
+by 8 digits.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>SerialNumber</td>
+<td class=c>string[16]</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Type8'>Kodak Type8 Tags</a></h2>
+<p>Kodak models such as the ZD710, P712, P850, P880, V1233, V1253, V1275,
+V1285, Z612, Z712, Z812, Z885 use standard TIFF IFD format for the maker
+notes.  In keeping with Kodak&#39;s strategy of inconsistent makernotes, models
+such as the M380, M1033, M1093, V1073, V1273, Z1012, Z1085 and Z8612
+also use these tags, but these makernotes begin with a TIFF header instead
+of an IFD entry count and use relative instead of absolute offsets.  There
+is a large amount of information stored in these maker notes (apparently
+with much duplication), but relatively few tags have so far been decoded.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0xfc00 = 64512'>0xfc00</td>
+<td>SubIFD0</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Kodak.html#SubIFD0'>Kodak SubIFD0 Tags</a>
+  <br>--&gt; <a href='Kodak.html#SubIFD0'>Kodak SubIFD0 Tags</a></td></tr>
+<tr class=b>
+<td title='0xfc01 = 64513'>0xfc01</td>
+<td>SubIFD1</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Kodak.html#SubIFD1'>Kodak SubIFD1 Tags</a>
+  <br>--&gt; <a href='Kodak.html#SubIFD1'>Kodak SubIFD1 Tags</a></td></tr>
+<tr>
+<td title='0xfc02 = 64514'>0xfc02</td>
+<td>SubIFD2</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Kodak.html#SubIFD2'>Kodak SubIFD2 Tags</a>
+  <br>--&gt; <a href='Kodak.html#SubIFD2'>Kodak SubIFD2 Tags</a></td></tr>
+<tr class=b>
+<td title='0xfc03 = 64515'>0xfc03</td>
+<td>SubIFD3</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Kodak.html#SubIFD3'>Kodak SubIFD3 Tags</a>
+  <br>--&gt; <a href='Kodak.html#SubIFD3'>Kodak SubIFD3 Tags</a></td></tr>
+<tr>
+<td title='0xfc04 = 64516'>0xfc04</td>
+<td>SubIFD4</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Kodak.html#SubIFD4'>Kodak SubIFD4 Tags</a>
+  <br>--&gt; <a href='Kodak.html#SubIFD4'>Kodak SubIFD4 Tags</a></td></tr>
+<tr class=b>
+<td title='0xfc05 = 64517'>0xfc05</td>
+<td>SubIFD5</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Kodak.html#SubIFD5'>Kodak SubIFD5 Tags</a>
+  <br>--&gt; <a href='Kodak.html#SubIFD5'>Kodak SubIFD5 Tags</a></td></tr>
+<tr>
+<td title='0xfc06 = 64518'>0xfc06</td>
+<td>SubIFD6</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Kodak.html#SubIFD6'>Kodak SubIFD6 Tags</a>
+  <br>--&gt; <a href='Kodak.html#SubIFD6'>Kodak SubIFD6 Tags</a></td></tr>
+<tr class=b>
+<td title='0xfcff = 64767'>0xfcff</td>
+<td>SubIFD255</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Kodak.html#SubIFD0'>Kodak SubIFD0 Tags</a></td></tr>
+<tr>
+<td title='0xff00 = 65280'>0xff00</td>
+<td>CameraInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Kodak.html#CameraInfo'>Kodak CameraInfo Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='SubIFD0'>Kodak SubIFD0 Tags</a></h2>
+<p>SubIFD0 through SubIFD5 tags are written a number of newer Kodak models.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0xfa02 = 64002'>0xfa02</td>
+<td>SceneMode</td>
+<td class=c>int16u</td>
+<td><span class=s><span class=n>(may not be valid for some models)</span></span><table class=cols><tr>
+  <td>1 = Sport
+  <br>3 = Portrait
+  <br>4 = Landscape
+  <br>6 = Beach
+  <br>7 = Night Portrait
+  <br>8 = Night Landscape
+  <br>9 = Snow
+  <br>10 = Text
+  <br>11 = Fireworks
+  <br>12 = Macro
+  <br>13 = Museum
+  <br>16 = Children</td><td>&nbsp;&nbsp;</td>
+  <td>17 = Program
+  <br>18 = Aperture Priority
+  <br>19 = Shutter Priority
+  <br>20 = Manual
+  <br>25 = Back Light
+  <br>28 = Candlelight
+  <br>29 = Sunset
+  <br>31 = Panorama Left-right
+  <br>32 = Panorama Right-left
+  <br>33 = Smart Scene
+  <br>34 = High ISO</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td title='0xfa19 = 64025'>0xfa19</td>
+<td>SerialNumber</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xfa1d = 64029'>0xfa1d</td>
+<td>KodakImageWidth</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xfa1e = 64030'>0xfa1e</td>
+<td>KodakImageHeight</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xfa20 = 64032'>0xfa20</td>
+<td>SensorWidth</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xfa21 = 64033'>0xfa21</td>
+<td>SensorHeight</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xfa23 = 64035'>0xfa23</td>
+<td>FNumber</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xfa24 = 64036'>0xfa24</td>
+<td>ExposureTime</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xfa2e = 64046'>0xfa2e</td>
+<td>ISO</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xfa3d = 64061'>0xfa3d</td>
+<td>OpticalZoom</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xfa46 = 64070'>0xfa46</td>
+<td>ISO</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xfa51 = 64081'>0xfa51</td>
+<td>KodakImageWidth</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xfa52 = 64082'>0xfa52</td>
+<td>KodakImageHeight</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xfa54 = 64084'>0xfa54</td>
+<td>ThumbnailWidth</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xfa55 = 64085'>0xfa55</td>
+<td>ThumbnailHeight</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xfa57 = 64087'>0xfa57</td>
+<td>PreviewImageWidth</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xfa58 = 64088'>0xfa58</td>
+<td>PreviewImageHeight</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='SubIFD1'>Kodak SubIFD1 Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x0027 = 39'>0x0027</td>
+<td>ISO</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0028 = 40'>0x0028</td>
+<td>ISO</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='SubIFD2'>Kodak SubIFD2 Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x6002 = 24578'>0x6002</td>
+<td>SceneModeUsed</td>
+<td class=c>int32u</td>
+<td><table class=cols><tr>
+  <td>0 = Program
+  <br>2 = Aperture Priority
+  <br>3 = Shutter Priority
+  <br>4 = Manual
+  <br>5 = Portrait
+  <br>6 = Sport
+  <br>7 = Children
+  <br>8 = Museum
+  <br>10 = High ISO
+  <br>11 = Text
+  <br>12 = Macro</td><td>&nbsp;&nbsp;</td>
+  <td>13 = Back Light
+  <br>16 = Landscape
+  <br>17 = Night Landscape
+  <br>18 = Night Portrait
+  <br>19 = Snow
+  <br>20 = Beach
+  <br>21 = Fireworks
+  <br>22 = Sunset
+  <br>23 = Candlelight
+  <br>28 = Panorama</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td title='0x6006 = 24582'>0x6006</td>
+<td>OpticalZoom</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x6103 = 24835'>0x6103</td>
+<td>MaxAperture</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xf002 = 61442'>0xf002</td>
+<td>SceneModeUsed</td>
+<td class=c>int32u</td>
+<td><table class=cols><tr>
+  <td>0 = Program
+  <br>2 = Aperture Priority
+  <br>3 = Shutter Priority
+  <br>4 = Manual
+  <br>5 = Portrait
+  <br>6 = Sport
+  <br>7 = Children
+  <br>8 = Museum
+  <br>10 = High ISO
+  <br>11 = Text
+  <br>12 = Macro</td><td>&nbsp;&nbsp;</td>
+  <td>13 = Back Light
+  <br>16 = Landscape
+  <br>17 = Night Landscape
+  <br>18 = Night Portrait
+  <br>19 = Snow
+  <br>20 = Beach
+  <br>21 = Fireworks
+  <br>22 = Sunset
+  <br>23 = Candlelight
+  <br>28 = Panorama</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td title='0xf006 = 61446'>0xf006</td>
+<td>OpticalZoom</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xf103 = 61699'>0xf103</td>
+<td>FNumber</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xf104 = 61700'>0xf104</td>
+<td>ExposureTime</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xf105 = 61701'>0xf105</td>
+<td>ISO</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='SubIFD3'>Kodak SubIFD3 Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x1000 = 4096'>0x1000</td>
+<td>OpticalZoom</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='SubIFD4'>Kodak SubIFD4 Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr><td colspan=4 class=c><i>[no tags known]</i></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='SubIFD5'>Kodak SubIFD5 Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x000f = 15'>0x000f</td>
+<td>OpticalZoom</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='SubIFD6'>Kodak SubIFD6 Tags</a></h2>
+<p>SubIFD6 is written by the M580.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr><td colspan=4 class=c><i>[no tags known]</i></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='CameraInfo'>Kodak CameraInfo Tags</a></h2>
+<p>These tags are used by the  P712, P850 and P880.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0xf900 = 63744'>0xf900</td>
+<td>SensorWidth</td>
+<td class=c>int16u</td>
+<td><span class=s><span class=n>(effective sensor size)</span></span></td></tr>
+<tr class=b>
+<td title='0xf901 = 63745'>0xf901</td>
+<td>SensorHeight</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xf902 = 63746'>0xf902</td>
+<td>BayerPattern</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xf903 = 63747'>0xf903</td>
+<td>SensorFullWidth</td>
+<td class=c>int16u</td>
+<td><span class=s><span class=n>(includes black border?)</span></span></td></tr>
+<tr>
+<td title='0xf904 = 63748'>0xf904</td>
+<td>SensorFullHeight</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xf907 = 63751'>0xf907</td>
+<td>KodakImageWidth</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xf908 = 63752'>0xf908</td>
+<td>KodakImageHeight</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xfa00 = 64000'>0xfa00</td>
+<td>KodakInfoType</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xfa04 = 64004'>0xfa04</td>
+<td>SerialNumber</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xfd04 = 64772'>0xfd04</td>
+<td>FNumber</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xfd05 = 64773'>0xfd05</td>
+<td>ExposureTime</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xfd06 = 64774'>0xfd06</td>
+<td>ISO</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Type9'>Kodak Type9 Tags</a></h2>
+<p>These tags are used by the Kodak C140, C180, C913, C1013, M320, M340 and
+M550, as well as various cameras marketed by other manufacturers.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='12 = 0xc'>12</td>
+<td>FNumber</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='16 = 0x10'>16</td>
+<td>ExposureTime</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='20 = 0x14'>20</td>
+<td>DateTimeOriginal</td>
+<td class=c>string[20]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='52 = 0x34'>52</td>
+<td>ISO</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='87 = 0x57'>87</td>
+<td>FirmwareVersion</td>
+<td class=c>string[16]</td>
+<td><span class=s><span class=n>(Kodak only)</span></span></td></tr>
+<tr class=b>
+<td class=r title='168 = 0xa8'>168</td>
+<td>UnknownNumber</td>
+<td class=c>N</td>
+<td><span class=s><span class=n>(Kodak only)</span></span></td></tr>
+<tr>
+<td class=r title='196 = 0xc4'>196</td>
+<td>UnknownNumber</td>
+<td class=c>N</td>
+<td><span class=s><span class=n>(Kodak only)</span></span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Type10'>Kodak Type10 Tags</a></h2>
+<p>Another variation of the IFD-format type, this time with just a byte order
+indicator instead of a full TIFF header.  These tags are used by the Z980.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x0002 = 2'>0x0002</td>
+<td>PreviewImageSize</td>
+<td class=c>int16u[2]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0012 = 18'>0x0012</td>
+<td>ExposureTime</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0013 = 19'>0x0013</td>
+<td>FNumber</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0014 = 20'>0x0014</td>
+<td>ISO</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x001d = 29'>0x001d</td>
+<td>FocalLength</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Type11'>Kodak Type11 Tags</a></h2>
+<p>These tags are found in models such as the PixPro S-1.  They are not
+writable because the inconsistency of Kodak maker notes is beginning to get
+on my nerves.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x0203 = 515'>0x0203</td>
+<td>PictureEffect</td>
+<td class=c>N</td>
+<td><span class=s>0 = None
+  <br>3 = Monochrome
+  <br>9 = Kodachrome</span></td></tr>
+<tr class=b>
+<td title='0x0207 = 519'>0x0207</td>
+<td>KodakModel</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0300 = 768'>0x0300</td>
+<td>KodakMake</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0308 = 776'>0x0308</td>
+<td>LensSerialNumber</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0309 = 777'>0x0309</td>
+<td>LensModel</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Unknown'>Kodak Unknown Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr><td colspan=4 class=c><i>[no tags known]</i></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='IFD'>Kodak IFD Tags</a></h2>
+<p>These tags are found in a separate IFD of JPEG, TIFF, DCR and KDC images
+from some older Kodak models such as the DC50, DC120, DCS760C, DCS Pro 14N,
+14nx, SLR/n, Pro Back and Canon EOS D2000.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x0001 = 1'>0x0001</td>
+<td>UnknownEV?</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0003 = 3'>0x0003</td>
+<td>ExposureValue</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x03e9 = 1001'>0x03e9</td>
+<td>OriginalFileName</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x03eb = 1003'>0x03eb</td>
+<td>SensorLeftBorder</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x03ec = 1004'>0x03ec</td>
+<td>SensorTopBorder</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x03ed = 1005'>0x03ed</td>
+<td>SensorImageWidth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x03ee = 1006'>0x03ee</td>
+<td>SensorImageHeight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x03f1 = 1009'>0x03f1</td>
+<td>TextualInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Kodak.html#TextualInfo'>Kodak TextualInfo Tags</a></td></tr>
+<tr>
+<td title='0x03fc = 1020'>0x03fc</td>
+<td>WhiteBalance</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x03fd = 1021'>0x03fd</td>
+<td>Processing</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Kodak.html#Processing'>Kodak Processing Tags</a></td></tr>
+<tr>
+<td title='0x0401 = 1025'>0x0401</td>
+<td>Time</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0414 = 1044'>0x0414</td>
+<td>NCDFileInfo</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0846 = 2118'>0x0846</td>
+<td>ColorTemperature</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0848 = 2120'>0x0848</td>
+<td>WB_RGBLevelsDaylight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0849 = 2121'>0x0849</td>
+<td>WB_RGBLevelsTungsten</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x084a = 2122'>0x084a</td>
+<td>WB_RGBLevelsFluorescent</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x084b = 2123'>0x084b</td>
+<td>WB_RGBLevelsFlash</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x084c = 2124'>0x084c</td>
+<td>WB_RGBLevelsCustom</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x084d = 2125'>0x084d</td>
+<td>WB_RGBLevelsAuto</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0852 = 2130'>0x0852</td>
+<td>WB_RGBMul0</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0853 = 2131'>0x0853</td>
+<td>WB_RGBMul1</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0854 = 2132'>0x0854</td>
+<td>WB_RGBMul2</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0855 = 2133'>0x0855</td>
+<td>WB_RGBMul3</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x085c = 2140'>0x085c</td>
+<td>WB_RGBCoeffs0</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x085d = 2141'>0x085d</td>
+<td>WB_RGBCoeffs1</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x085e = 2142'>0x085e</td>
+<td>WB_RGBCoeffs2</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x085f = 2143'>0x085f</td>
+<td>WB_RGBCoeffs3</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0ce5 = 3301'>0x0ce5</td>
+<td>FirmwareVersion</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x1391 = 5009'>0x1391</td>
+<td>ToneCurveFileName</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1784 = 6020'>0x1784</td>
+<td>ISO</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='TextualInfo'>Kodak TextualInfo Tags</a></h2>
+<p>Below is a list of tags which have been observed in the Kodak TextualInfo
+data, however ExifTool will extract information from any tags found here.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'AF Function'</td>
+<td>AFMode</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Actual Compensation'</td>
+<td>ActualCompensation</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Aperture'</td>
+<td>Aperture</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Auto Bracket'</td>
+<td>AutoBracket</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Brightness Value'</td>
+<td>BrightnessValue</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Camera'</td>
+<td>CameraModel</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Camera body'</td>
+<td>CameraBody</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Compensation'</td>
+<td>ExposureCompensation</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Date'</td>
+<td>Date</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Exposure Bias'</td>
+<td>ExposureBias</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Exposure Mode'</td>
+<td>ExposureMode</td>
+<td class=c>N</td>
+<td><span class=s>&#39;A&#39; = Aperture Priority
+  <br>&#39;B&#39; = Bulb
+  <br>&#39;M&#39; = Manual
+  <br>&#39;P&#39; = Program
+  <br>&#39;S&#39; = Shutter Priority</span></td></tr>
+<tr class=b>
+<td>'Firmware Version'</td>
+<td>FirmwareVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Flash Compensation'</td>
+<td>FlashExposureComp</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Flash Fired'</td>
+<td>FlashFired</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Flash Sync Mode'</td>
+<td>FlashSyncMode</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Focal Length'</td>
+<td>FocalLength</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Height'</td>
+<td>KodakImageHeight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'ISO'</td>
+<td>ISO</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'ISO Speed'</td>
+<td>ISO</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Image Number'</td>
+<td>ImageNumber</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Max Aperture'</td>
+<td>MaxAperture</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Meter Mode'</td>
+<td>MeterMode</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Min Aperture'</td>
+<td>MinAperture</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Popup Flash'</td>
+<td>PopupFlash</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Serial Number'</td>
+<td>SerialNumber</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Shooting Mode'</td>
+<td>ShootingMode</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Shutter'</td>
+<td>ShutterSpeed</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Temperature'</td>
+<td>Temperature</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Time'</td>
+<td>Time</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'White balance'</td>
+<td>WhiteBalance</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Width'</td>
+<td>KodakImageWidth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'_other_info'</td>
+<td>OtherInfo</td>
+<td class=c>N</td>
+<td><span class=s><span class=n>(any other information without a tag name)</span></span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Processing'>Kodak Processing Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index2</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='20 = 0x14'>20</td>
+<td>WB_RGBLevels</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Meta'>Kodak Meta Tags</a></h2>
+<p>These tags are found in the APP3 &quot;Meta&quot; segment of JPEG images from Kodak
+cameras such as the DC280, DC3400, DC5000, MC3, M580, Z950 and Z981.  The
+structure of this segment is similar to the APP1 &quot;Exif&quot; segment, but a
+different set of tags is used.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0xc350 = 50000'>0xc350</td>
+<td>FilmProductCode</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xc351 = 50001'>0xc351</td>
+<td>ImageSourceEK</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xc352 = 50002'>0xc352</td>
+<td>CaptureConditionsPAR</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xc353 = 50003'>0xc353</td>
+<td>CameraOwner</td>
+<td class=c>undef</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xc354 = 50004'>0xc354</td>
+<td>SerialNumber</td>
+<td class=c>undef</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xc355 = 50005'>0xc355</td>
+<td>UserSelectGroupTitle</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xc356 = 50006'>0xc356</td>
+<td>DealerIDNumber</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xc357 = 50007'>0xc357</td>
+<td>CaptureDeviceFID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xc358 = 50008'>0xc358</td>
+<td>EnvelopeNumber</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xc359 = 50009'>0xc359</td>
+<td>FrameNumber</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xc35a = 50010'>0xc35a</td>
+<td>FilmCategory</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xc35b = 50011'>0xc35b</td>
+<td>FilmGencode</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xc35c = 50012'>0xc35c</td>
+<td>ModelAndVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xc35d = 50013'>0xc35d</td>
+<td>FilmSize</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xc35e = 50014'>0xc35e</td>
+<td>SBA_RGBShifts</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xc35f = 50015'>0xc35f</td>
+<td>SBAInputImageColorspace</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xc360 = 50016'>0xc360</td>
+<td>SBAInputImageBitDepth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xc361 = 50017'>0xc361</td>
+<td>SBAExposureRecord</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xc362 = 50018'>0xc362</td>
+<td>UserAdjSBA_RGBShifts</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xc363 = 50019'>0xc363</td>
+<td>ImageRotationStatus</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xc364 = 50020'>0xc364</td>
+<td>RollGuidElements</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xc365 = 50021'>0xc365</td>
+<td>MetadataNumber</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xc366 = 50022'>0xc366</td>
+<td>EditTagArray</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xc367 = 50023'>0xc367</td>
+<td>Magnification</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xc36c = 50028'>0xc36c</td>
+<td>NativeXResolution</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xc36d = 50029'>0xc36d</td>
+<td>NativeYResolution</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xc36e = 50030'>0xc36e</td>
+<td>KodakEffectsIFD</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Kodak.html#SpecialEffects'>Kodak SpecialEffects Tags</a></td></tr>
+<tr class=b>
+<td title='0xc36f = 50031'>0xc36f</td>
+<td>KodakBordersIFD</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Kodak.html#Borders'>Kodak Borders Tags</a></td></tr>
+<tr>
+<td title='0xc37a = 50042'>0xc37a</td>
+<td>NativeResolutionUnit</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xc418 = 50200'>0xc418</td>
+<td>SourceImageDirectory</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xc419 = 50201'>0xc419</td>
+<td>SourceImageFileName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xc41a = 50202'>0xc41a</td>
+<td>SourceImageVolumeName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xc46c = 50284'>0xc46c</td>
+<td>PrintQuality</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xc46e = 50286'>0xc46e</td>
+<td>ImagePrintStatus</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='SpecialEffects'>Kodak SpecialEffects Tags</a></h2>
+<p>
+The Kodak SpecialEffects and Borders tags are found in sub-IFD&#39;s within the
+Kodak JPEG APP3 &quot;Meta&quot; segment.
+</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x0000 = 0'>0x0000</td>
+<td>DigitalEffectsVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0001 = 1'>0x0001</td>
+<td>DigitalEffectsName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0002 = 2'>0x0002</td>
+<td>DigitalEffectsType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Borders'>Kodak Borders Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x0000 = 0'>0x0000</td>
+<td>BordersVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0001 = 1'>0x0001</td>
+<td>BorderName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0002 = 2'>0x0002</td>
+<td>BorderID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0003 = 3'>0x0003</td>
+<td>BorderLocation</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0004 = 4'>0x0004</td>
+<td>BorderType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0008 = 8'>0x0008</td>
+<td>WatermarkType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='KDC_IFD'>Kodak KDC_IFD Tags</a></h2>
+<p>These tags are found in a separate IFD of KDC images from some newer Kodak
+models such as the P880 and Z1015IS.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0xfa00 = 64000'>0xfa00</td>
+<td>SerialNumber</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xfa0d = 64013'>0xfa0d</td>
+<td>WhiteBalance</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Auto
+  <br>1 = Fluorescent
+  <br>2 = Tungsten
+  <br>3 = Daylight
+  <br>6 = Shade</span></td></tr>
+<tr>
+<td title='0xfa25 = 64037'>0xfa25</td>
+<td>WB_RGBLevelsAuto</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xfa27 = 64039'>0xfa27</td>
+<td>WB_RGBLevelsTungsten</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xfa28 = 64040'>0xfa28</td>
+<td>WB_RGBLevelsFluorescent</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xfa29 = 64041'>0xfa29</td>
+<td>WB_RGBLevelsDaylight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xfa2a = 64042'>0xfa2a</td>
+<td>WB_RGBLevelsShade</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Free'>Kodak Free Tags</a></h2>
+<p>Information stored in the &quot;free&quot; atom of Kodak MP4 videos. (VERY bad form
+for Kodak to store useful information in an atom intended for unused space!)</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'AprV'</td>
+<td>ApertureValue</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'BrtV'</td>
+<td>BrightnessValue</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Expc'</td>
+<td>ExposureCompensation</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Expo'</td>
+<td>ExposureTime</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'FL35'</td>
+<td>FocalLengthIn35mmFormat</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'FNum'</td>
+<td>FNumber</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'FoLn'</td>
+<td>FocalLength</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'ISOS'</td>
+<td>ISO</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'SVer'</td>
+<td>FirmwareVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Scrn'</td>
+<td>PreviewInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Kodak.html#Scrn'>Kodak Scrn Tags</a></td></tr>
+<tr>
+<td>'Seri'</td>
+<td>SerialNumber</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'StSV'</td>
+<td>ShutterSpeedValue</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Scrn'>Kodak Scrn Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index2</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>PreviewImageWidth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='1 = 0x1'>1</td>
+<td>PreviewImageHeight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='2 = 0x2'>2</td>
+<td>PreviewImageLength</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>PreviewImage</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='DcMD'>Kodak DcMD Tags</a></h2>
+<p>Metadata directory found in MOV and MP4 videos from some Kodak cameras.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'CMbo'</td>
+<td>CameraByteOrder</td>
+<td class=c>N</td>
+<td><span class=s>&#39;II&#39; = Little-endian (Intel, II)
+  <br>&#39;MM&#39; = Big-endian (Motorola, MM)</span></td></tr>
+<tr class=b>
+<td>'Cmbo'</td>
+<td>CameraByteOrder</td>
+<td class=c>N</td>
+<td><span class=s>&#39;II&#39; = Little-endian (Intel, II)
+  <br>&#39;MM&#39; = Big-endian (Motorola, MM)</span></td></tr>
+<tr>
+<td>'DcEM'</td>
+<td>DcEM</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Kodak.html#DcEM'>Kodak DcEM Tags</a></td></tr>
+<tr class=b>
+<td>'DcME'</td>
+<td>DcME</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Kodak.html#DcME'>Kodak DcME Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='DcEM'>Kodak DcEM Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr><td colspan=4 class=c><i>[no tags known]</i></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='DcME'>Kodak DcME Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr><td colspan=4 class=c><i>[no tags known]</i></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='MOV'>Kodak MOV Tags</a></h2>
+<p>This information is found in the TAGS atom of MOV videos from Kodak models
+such as the P880.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>Make</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='22 = 0x16'>22</td>
+<td>Model</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='64 = 0x40'>64</td>
+<td>ModelType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='78 = 0x4e'>78</td>
+<td>ExposureTime</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='82 = 0x52'>82</td>
+<td>FNumber</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='90 = 0x5a'>90</td>
+<td>ExposureCompensation</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='112 = 0x70'>112</td>
+<td>FocalLength</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<hr>
+(This document generated automatically by Image::ExifTool::BuildTagLookup)
+<br><i>Last revised Sep 4, 2014</i>
+<p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
+</body>
+</html>

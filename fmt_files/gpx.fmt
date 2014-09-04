@@ -1,0 +1,31 @@
+#------------------------------------------------------------------------------
+# File:         gpx.fmt
+#
+# Description:  Example ExifTool print format file to generate a GPX track log
+#
+# Usage:        exiftool -p gpx.fmt -d %Y-%m-%dT%H:%M:%SZ FILE [...] > out.gpx
+#
+# Requires:     ExifTool version 8.10 or later
+#
+# Revisions:    2010/02/05 - P. Harvey created
+#
+# Notes:     1) All input files must contain GPSLatitude and GPSLongitude.
+#            2) The -fileOrder option may be used to control the order of the
+#               generated track points.
+#------------------------------------------------------------------------------
+#[HEAD]<?xml version="1.0" encoding="utf-8"?>
+#[HEAD]<gpx version="1.0"
+#[HEAD] creator="ExifTool $ExifToolVersion"
+#[HEAD] xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+#[HEAD] xmlns="http://www.topografix.com/GPX/1/0"
+#[HEAD] xsi:schemaLocation="http://www.topografix.com/GPX/1/0 http://www.topografix.com/GPX/1/0/gpx.xsd">
+#[HEAD]<trk>
+#[HEAD]<number>1</number>
+#[HEAD]<trkseg>
+#[BODY]<trkpt lat="$gpslatitude#" lon="$gpslongitude#">
+#[BODY]  <ele>$gpsaltitude#</ele>
+#[BODY]  <time>$gpsdatetime</time>
+#[BODY]</trkpt>
+#[TAIL]</trkseg>
+#[TAIL]</trk>
+#[TAIL]</gpx>

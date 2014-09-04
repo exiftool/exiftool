@@ -1,0 +1,697 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>EXE Tags</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h2 class=top>EXE Tags</h2>
+<p>This module extracts information from various types of Windows, MacOS and
+Unix executable and library files.  The first table below lists information
+extracted from the header of Windows PE (Portable Executable) EXE files and
+DLL libraries.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index2</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>MachineType</td>
+<td class=c>N</td>
+<td><table class=cols><tr>
+  <td>0x14c = Intel 386 or later, and compatibles
+  <br>0x14d = Intel i860
+  <br>0x162 = MIPS R3000
+  <br>0x166 = MIPS little endian (R4000)
+  <br>0x168 = MIPS R10000
+  <br>0x169 = MIPS little endian WCI v2
+  <br>0x183 = Alpha AXP (old)
+  <br>0x184 = Alpha AXP
+  <br>0x1a2 = Hitachi SH3
+  <br>0x1a3 = Hitachi SH3 DSP
+  <br>0x1a6 = Hitachi SH4
+  <br>0x1a8 = Hitachi SH5
+  <br>0x1c0 = ARM little endian
+  <br>0x1c2 = Thumb
+  <br>0x1d3 = Matsushita AM33
+  <br>0x1f0 = PowerPC little endian
+  <br>0x1f1 = PowerPC with floating point support
+  <br>0x200 = Intel IA64
+  <br>0x266 = MIPS16
+  <br>0x268 = Motorola 68000 series
+  <br>0x284 = Alpha AXP 64-bit
+  <br>0x366 = MIPS with FPU
+  <br>0x466 = MIPS16 with FPU
+  <br>0xebc = EFI Byte Code
+  <br>0x8664 = AMD AMD64
+  <br>0x9041 = Mitsubishi M32R little endian
+  <br>0xc0ee = clr pure MSIL</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>TimeStamp</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='10 = 0xa'>10</td>
+<td>PEType</td>
+<td class=c>N</td>
+<td><span class=s>0x10b = PE32
+  <br>0x20b = PE32+</span></td></tr>
+<tr class=b>
+<td class=r title='11 = 0xb'>11</td>
+<td>LinkerVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='12 = 0xc'>12</td>
+<td>CodeSize</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='14 = 0xe'>14</td>
+<td>InitializedDataSize</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='16 = 0x10'>16</td>
+<td>UninitializedDataSize</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='18 = 0x12'>18</td>
+<td>EntryPoint</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='30 = 0x1e'>30</td>
+<td>OSVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='32 = 0x20'>32</td>
+<td>ImageVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='34 = 0x22'>34</td>
+<td>SubsystemVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='44 = 0x2c'>44</td>
+<td>Subsystem</td>
+<td class=c>N</td>
+<td><table class=cols><tr>
+  <td>0 = Unknown
+  <br>1 = Native
+  <br>2 = Windows GUI
+  <br>3 = Windows command line
+  <br>5 = OS/2 command line
+  <br>7 = POSIX command line
+  <br>9 = Windows CE GUI
+  <br>10 = EFI application
+  <br>11 = EFI boot service
+  <br>12 = EFI runtime driver
+  <br>13 = EFI ROM
+  <br>14 = XBOX</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='PEVersion'>EXE PEVersion Tags</a></h2>
+<p>Information extracted from the VS_VERSION_INFO structure of Windows PE
+files.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index4</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='2 = 0x2'>2</td>
+<td>FileVersionNumber</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>ProductVersionNumber</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='6 = 0x6'>6</td>
+<td>FileFlagsMask</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='7 = 0x7'>7</td>
+<td>FileFlags</td>
+<td class=c>N</td>
+<td><table class=cols><tr>
+  <td>Bit 0 = Debug
+  <br>Bit 1 = Pre-release
+  <br>Bit 2 = Patched</td><td>&nbsp;&nbsp;</td>
+  <td>Bit 3 = Private build
+  <br>Bit 4 = Info inferred
+  <br>Bit 5 = Special build</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='8 = 0x8'>8</td>
+<td>FileOS</td>
+<td class=c>N</td>
+<td><table class=cols><tr>
+  <td>0x1 = Win16
+  <br>0x2 = PM-16
+  <br>0x3 = PM-32
+  <br>0x4 = Win32
+  <br>0x10000 = DOS
+  <br>0x10001 = Windows 16-bit
+  <br>0x10004 = Windows 32-bit
+  <br>0x20000 = OS/2 16-bit
+  <br>0x20002 = OS/2 16-bit PM-16
+  <br>0x30000 = OS/2 32-bit
+  <br>0x30003 = OS/2 32-bit PM-32
+  <br>0x40000 = Windows NT
+  <br>0x40004 = Windows NT 32-bit</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='9 = 0x9'>9</td>
+<td>ObjectFileType</td>
+<td class=c>N</td>
+<td><table class=cols><tr>
+  <td>0 = Unknown
+  <br>1 = Executable application
+  <br>2 = Dynamic link library
+  <br>3 = Driver
+  <br>4 = Font
+  <br>5 = VxD
+  <br>7 = Static library</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='10 = 0xa'>10</td>
+<td>FileSubtype</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='PEString'>EXE PEString Tags</a></h2>
+<p>Resource strings found in Windows PE files.  The <b>TagID</b>&#39;s are not shown
+because they are the same as the <b>Tag Name</b>.  ExifTool will extract any
+existing StringFileInfo tags even if not listed in this table.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>BuildDate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>BuildVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>CharacterSet</td>
+<td class=c>N</td>
+<td><span class=s><span class=n>(extracted from the StringFileInfo value)</span></span><table class=cols><tr>
+  <td>&#39;0000&#39; = ASCII
+  <br>&#39;03A4&#39; = Windows, Japan (Shift - JIS X-0208)
+  <br>&#39;03A8&#39; = Windows, Chinese (Simplified)
+  <br>&#39;03B5&#39; = Windows, Korea (Shift - KSC 5601)
+  <br>&#39;03B6&#39; = Windows, Taiwan (Big5)
+  <br>&#39;04B0&#39; = Unicode
+  <br>&#39;04E2&#39; = Windows, Latin2 (Eastern European)
+  <br>&#39;04E3&#39; = Windows, Cyrillic
+  <br>&#39;04E4&#39; = Windows, Latin1
+  <br>&#39;04E5&#39; = Windows, Greek
+  <br>&#39;04E6&#39; = Windows, Turkish
+  <br>&#39;04E7&#39; = Windows, Hebrew
+  <br>&#39;04E8&#39; = Windows, Arabic</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td>Comments</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>CompanyName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Copyright</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>FileDescription</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>FileVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>InternalName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>LanguageCode</td>
+<td class=c>N</td>
+<td>--&gt; <a href='EXE.html#LanguageCode'>EXE LanguageCode Values</a>
+  <br><span class='n s'>(extracted from the StringFileInfo value)</span></td></tr>
+<tr>
+<td>LegalCopyright</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>LegalTrademarks</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>OriginalFilename</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>PrivateBuild</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ProductName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>ProductVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>SpecialBuild</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='LanguageCode'>EXE LanguageCode Values</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class='inner sep' cellspacing=1>
+<tr class=h><th>Value</th><th>LanguageCode</th><th>Value</th><th>LanguageCode</th><th>Value</th><th>LanguageCode</th></tr>
+<tr><td>'0000'</td><td>= Neutral</td>
+<td class=b>'0437'</td><td class=b>= Georgian</td>
+<td>'040E'</td><td>= Hungarian</td>
+</tr><tr><td>'0400'</td><td>= Process default</td>
+<td class=b>'0438'</td><td class=b>= Faeroese</td>
+<td>'040F'</td><td>= Icelandic</td>
+</tr><tr><td>'0401'</td><td>= Arabic</td>
+<td class=b>'0439'</td><td class=b>= Hindi</td>
+<td>'041A'</td><td>= Croato-Serbian (Latin)</td>
+</tr><tr><td>'0402'</td><td>= Bulgarian</td>
+<td class=b>'0440'</td><td class=b>= Kyrgyz</td>
+<td>'041B'</td><td>= Slovak</td>
+</tr><tr><td>'0403'</td><td>= Catalan</td>
+<td class=b>'0441'</td><td class=b>= Swahili</td>
+<td>'041C'</td><td>= Albanian</td>
+</tr><tr><td>'0404'</td><td>= Chinese (Traditional)</td>
+<td class=b>'0443'</td><td class=b>= Uzbek</td>
+<td>'041D'</td><td>= Swedish</td>
+</tr><tr><td>'0405'</td><td>= Czech</td>
+<td class=b>'0444'</td><td class=b>= Tatar</td>
+<td>'041E'</td><td>= Thai</td>
+</tr><tr><td>'0406'</td><td>= Danish</td>
+<td class=b>'0445'</td><td class=b>= Bengali</td>
+<td>'041F'</td><td>= Turkish</td>
+</tr><tr><td>'0407'</td><td>= German</td>
+<td class=b>'0446'</td><td class=b>= Punjabi</td>
+<td>'042a'</td><td>= Vietnamese</td>
+</tr><tr><td>'0408'</td><td>= Greek</td>
+<td class=b>'0447'</td><td class=b>= Gujarati</td>
+<td>'042b'</td><td>= Armenian</td>
+</tr><tr><td>'0409'</td><td>= English (U.S.)</td>
+<td class=b>'0448'</td><td class=b>= Oriya</td>
+<td>'042c'</td><td>= Azeri</td>
+</tr><tr><td>'0410'</td><td>= Italian</td>
+<td class=b>'0449'</td><td class=b>= Tamil</td>
+<td>'042d'</td><td>= Basque</td>
+</tr><tr><td>'0411'</td><td>= Japanese</td>
+<td class=b>'0450'</td><td class=b>= Mongolian</td>
+<td>'042e'</td><td>= Sorbian</td>
+</tr><tr><td>'0412'</td><td>= Korean</td>
+<td class=b>'0456'</td><td class=b>= Galician</td>
+<td>'042f'</td><td>= Macedonian</td>
+</tr><tr><td>'0413'</td><td>= Dutch</td>
+<td class=b>'0457'</td><td class=b>= Konkani</td>
+<td>'043a'</td><td>= Maltese</td>
+</tr><tr><td>'0414'</td><td>= Norwegian (Bokml)</td>
+<td class=b>'0458'</td><td class=b>= Manipuri</td>
+<td>'043b'</td><td>= Saami</td>
+</tr><tr><td>'0415'</td><td>= Polish</td>
+<td class=b>'0459'</td><td class=b>= Sindhi</td>
+<td>'043c'</td><td>= Gaelic</td>
+</tr><tr><td>'0416'</td><td>= Portuguese (Brazilian)</td>
+<td class=b>'0460'</td><td class=b>= Kashmiri</td>
+<td>'043e'</td><td>= Malay</td>
+</tr><tr><td>'0417'</td><td>= Rhaeto-Romanic</td>
+<td class=b>'0461'</td><td class=b>= Nepali</td>
+<td>'043f'</td><td>= Kazak</td>
+</tr><tr><td>'0418'</td><td>= Romanian</td>
+<td class=b>'0465'</td><td class=b>= Divehi</td>
+<td>'044a'</td><td>= Telugu</td>
+</tr><tr><td>'0419'</td><td>= Russian</td>
+<td class=b>'0490'</td><td class=b>= Walon</td>
+<td>'044b'</td><td>= Kannada</td>
+</tr><tr><td>'0420'</td><td>= Urdu</td>
+<td class=b>'0491'</td><td class=b>= Cornish</td>
+<td>'044c'</td><td>= Malayalam</td>
+</tr><tr><td>'0421'</td><td>= Indonesian</td>
+<td class=b>'0492'</td><td class=b>= Welsh</td>
+<td>'044d'</td><td>= Assamese</td>
+</tr><tr><td>'0422'</td><td>= Ukrainian</td>
+<td class=b>'0493'</td><td class=b>= Breton</td>
+<td>'044e'</td><td>= Marathi</td>
+</tr><tr><td>'0423'</td><td>= Belarusian</td>
+<td class=b>'0800'</td><td class=b>= Neutral 2</td>
+<td>'044f'</td><td>= Sanskrit</td>
+</tr><tr><td>'0424'</td><td>= Slovenian</td>
+<td class=b>'0804'</td><td class=b>= Chinese (Simplified)</td>
+<td>'045a'</td><td>= Syriac</td>
+</tr><tr><td>'0425'</td><td>= Estonian</td>
+<td class=b>'0807'</td><td class=b>= German (Swiss)</td>
+<td>'047f'</td><td>= Invariant</td>
+</tr><tr><td>'0426'</td><td>= Latvian</td>
+<td class=b>'0809'</td><td class=b>= English (British)</td>
+<td>'048f'</td><td>= Esperanto</td>
+</tr><tr><td>'0427'</td><td>= Lithuanian</td>
+<td class=b>'0810'</td><td class=b>= Italian (Swiss)</td>
+<td>'080A'</td><td>= Spanish (Mexican)</td>
+</tr><tr><td>'0428'</td><td>= Maori</td>
+<td class=b>'0813'</td><td class=b>= Dutch (Belgian)</td>
+<td>'080C'</td><td>= French (Belgian)</td>
+</tr><tr><td>'0429'</td><td>= Farsi</td>
+<td class=b>'0814'</td><td class=b>= Norwegian (Nynorsk)</td>
+<td>'081A'</td><td>= Serbo-Croatian (Cyrillic)</td>
+</tr><tr><td>'0430'</td><td>= Sutu</td>
+<td class=b>'0816'</td><td class=b>= Portuguese</td>
+<td>'0C07'</td><td>= German (Austrian)</td>
+</tr><tr><td>'0431'</td><td>= Tsonga</td>
+<td class=b>'1009'</td><td class=b>= English (Canadian)</td>
+<td>'0C09'</td><td>= English (Australian)</td>
+</tr><tr><td>'0432'</td><td>= Tswana</td>
+<td class=b>'007F'</td><td class=b>= Invariant</td>
+<td>'0C0A'</td><td>= Spanish (Modern)</td>
+</tr><tr><td>'0433'</td><td>= Venda</td>
+<td class=b>'040A'</td><td class=b>= Spanish (Castilian)</td>
+<td>'0C0C'</td><td>= French (Canadian)</td>
+</tr><tr><td>'0434'</td><td>= Xhosa</td>
+<td class=b>'040B'</td><td class=b>= Finnish</td>
+<td>'100C'</td><td>= French (Swiss)</td>
+</tr><tr><td>'0435'</td><td>= Zulu</td>
+<td class=b>'040C'</td><td class=b>= French</td>
+<td>&nbsp;</td><td>&nbsp;</td>
+</tr><tr><td>'0436'</td><td>= Afrikaans</td>
+<td class=b>'040D'</td><td class=b>= Hebrew</td>
+<td>&nbsp;</td><td>&nbsp;</td>
+</tr></table></td></tr></table></blockquote>
+
+<h2><a name='MachO'>EXE MachO Tags</a></h2>
+<p>Information extracted from Mach-O (Mac OS X) executable files and DYLIB
+libraries.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>CPUArchitecture</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='1 = 0x1'>1</td>
+<td>CPUByteOrder</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='2 = 0x2'>2</td>
+<td>CPUCount</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='3 = 0x3'>3</td>
+<td>CPUType</td>
+<td class=c title=' + = List'>N+</td>
+<td><table class=cols><tr>
+  <td>-1 = Any
+  <br>1 = VAX
+  <br>2 = ROMP
+  <br>4 = NS32032
+  <br>5 = NS32332
+  <br>6 = MC680x0
+  <br>7 = x86
+  <br>8 = MIPS
+  <br>9 = NS32532
+  <br>10 = MC98000</td><td>&nbsp;&nbsp;</td>
+  <td>11 = HPPA
+  <br>12 = ARM
+  <br>13 = MC88000
+  <br>14 = SPARC
+  <br>15 = i860 big endian
+  <br>16 = i860 little endian
+  <br>17 = RS6000
+  <br>18 = PowerPC
+  <br>255 = VEO</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='4 = 0x4'>4</td>
+<td>CPUSubtype</td>
+<td class=c title=' + = List'>N+</td>
+<td><table class=cols><tr>
+  <td>&#39;1 0&#39; = VAX (all)
+  <br>&#39;1 1&#39; = VAX780
+  <br>&#39;1 2&#39; = VAX785
+  <br>&#39;1 3&#39; = VAX750
+  <br>&#39;1 4&#39; = VAX730
+  <br>&#39;1 5&#39; = UVAXI
+  <br>&#39;1 6&#39; = UVAXII
+  <br>&#39;1 7&#39; = VAX8200
+  <br>&#39;1 8&#39; = VAX8500
+  <br>&#39;1 9&#39; = VAX8600
+  <br>&#39;1 10&#39; = VAX8650
+  <br>&#39;1 11&#39; = VAX8800
+  <br>&#39;1 12&#39; = UVAXIII
+  <br>&#39;2 0&#39; = RT (all)
+  <br>&#39;2 1&#39; = RT PC
+  <br>&#39;2 2&#39; = RT APC
+  <br>&#39;2 3&#39; = RT 135
+  <br>&#39;4 0&#39; = NS32032 (all)
+  <br>&#39;4 1&#39; = NS32032 DPC (032 CPU)
+  <br>&#39;4 2&#39; = NS32032 SQT
+  <br>&#39;4 3&#39; = NS32032 APC FPU (32081)
+  <br>&#39;4 4&#39; = NS32032 APC FPA (Weitek)
+  <br>&#39;4 5&#39; = NS32032 XPC (532)
+  <br>&#39;5 0&#39; = NS32332 (all)
+  <br>&#39;5 1&#39; = NS32332 DPC (032 CPU)
+  <br>&#39;5 2&#39; = NS32332 SQT
+  <br>&#39;5 3&#39; = NS32332 APC FPU (32081)
+  <br>&#39;5 4&#39; = NS32332 APC FPA (Weitek)
+  <br>&#39;5 5&#39; = NS32332 XPC (532)
+  <br>&#39;6 1&#39; = MC680x0 (all)
+  <br>&#39;6 2&#39; = MC68040
+  <br>&#39;6 3&#39; = MC68030
+  <br>&#39;7 3&#39; = i386 (all)
+  <br>&#39;7 4&#39; = i486
+  <br>&#39;7 5&#39; = i586
+  <br>&#39;7 8&#39; = Pentium III
+  <br>&#39;7 9&#39; = Pentium M
+  <br>&#39;7 10&#39; = Pentium 4
+  <br>&#39;7 11&#39; = Itanium
+  <br>&#39;7 12&#39; = Xeon
+  <br>&#39;7 22&#39; = Pentium Pro
+  <br>&#39;7 24&#39; = Pentium III M
+  <br>&#39;7 26&#39; = Pentium 4 M
+  <br>&#39;7 27&#39; = Itanium 2
+  <br>&#39;7 28&#39; = Xeon MP
+  <br>&#39;7 40&#39; = Pentium III Xeon
+  <br>&#39;7 54&#39; = Pentium II M3
+  <br>&#39;7 86&#39; = Pentium II M5
+  <br>&#39;7 103&#39; = Celeron
+  <br>&#39;7 119&#39; = Celeron Mobile
+  <br>&#39;7 132&#39; = i486SX
+  <br>&#39;8 0&#39; = MIPS (all)
+  <br>&#39;8 1&#39; = MIPS R2300
+  <br>&#39;8 2&#39; = MIPS R2600
+  <br>&#39;8 3&#39; = MIPS R2800
+  <br>&#39;8 4&#39; = MIPS R2000a
+  <br>&#39;8 5&#39; = MIPS R2000
+  <br>&#39;8 6&#39; = MIPS R3000a
+  <br>&#39;8 7&#39; = MIPS R3000
+  <br>&#39;10 0&#39; = MC98000 (all)
+  <br>&#39;10 1&#39; = MC98601
+  <br>&#39;11 0&#39; = HPPA (all)
+  <br>&#39;11 1&#39; = HPPA 7100LC
+  <br>&#39;12 0&#39; = ARM (all)
+  <br>&#39;12 1&#39; = ARM A500 ARCH
+  <br>&#39;12 2&#39; = ARM A500
+  <br>&#39;12 3&#39; = ARM A440
+  <br>&#39;12 4&#39; = ARM M4
+  <br>&#39;12 5&#39; = ARM A680/V4T
+  <br>&#39;12 6&#39; = ARM V6
+  <br>&#39;12 7&#39; = ARM V5TEJ
+  <br>&#39;12 8&#39; = ARM XSCALE
+  <br>&#39;12 9&#39; = ARM V7
+  <br>&#39;13 0&#39; = MC88000 (all)
+  <br>&#39;13 1&#39; = MC88100
+  <br>&#39;13 2&#39; = MC88110
+  <br>&#39;14 0&#39; = SPARC (all)
+  <br>&#39;14 1&#39; = SUN 4/260
+  <br>&#39;14 2&#39; = SUN 4/110
+  <br>&#39;15 0&#39; = i860 (all)
+  <br>&#39;15 1&#39; = i860 860
+  <br>&#39;16 0&#39; = i860 little (all)
+  <br>&#39;16 1&#39; = i860 little
+  <br>&#39;17 0&#39; = RS6000 (all)
+  <br>&#39;17 1&#39; = RS6000
+  <br>&#39;18 0&#39; = PowerPC (all)
+  <br>&#39;18 1&#39; = PowerPC 601
+  <br>&#39;18 2&#39; = PowerPC 602
+  <br>&#39;18 3&#39; = PowerPC 603
+  <br>&#39;18 4&#39; = PowerPC 603e
+  <br>&#39;18 5&#39; = PowerPC 603ev
+  <br>&#39;18 6&#39; = PowerPC 604
+  <br>&#39;18 7&#39; = PowerPC 604e
+  <br>&#39;18 8&#39; = PowerPC 620
+  <br>&#39;18 9&#39; = PowerPC 750
+  <br>&#39;18 10&#39; = PowerPC 7400
+  <br>&#39;18 11&#39; = PowerPC 7450
+  <br>&#39;18 100&#39; = PowerPC 970
+  <br>&#39;255 1&#39; = VEO 1
+  <br>&#39;255 2&#39; = VEO 2</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='5 = 0x5'>5</td>
+<td>ObjectFileType</td>
+<td class=c>N</td>
+<td><table class=cols><tr>
+  <td>-1 = Static library
+  <br>0x1 = Relocatable object
+  <br>0x2 = Demand paged executable
+  <br>0x3 = Fixed VM shared library
+  <br>0x4 = Core
+  <br>0x5 = Preloaded executable
+  <br>0x6 = Dynamically bound shared library
+  <br>0x7 = Dynamic link editor
+  <br>0x8 = Dynamically bound bundle
+  <br>0x9 = Shared library stub for static linking</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='PEF'>EXE PEF Tags</a></h2>
+<p>Information extracted from PEF (Classic MacOS) executable files and
+libraries.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index4</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='2 = 0x2'>2</td>
+<td>CPUArchitecture</td>
+<td class=c>N</td>
+<td><span class=s>&#39;m68k&#39; = 68000
+  <br>&#39;pwpc&#39; = PowerPC</span></td></tr>
+<tr class=b>
+<td class=r title='3 = 0x3'>3</td>
+<td>PEFVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='4 = 0x4'>4</td>
+<td>TimeStamp</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ELF'>EXE ELF Tags</a></h2>
+<p>Information extracted from ELF (Unix) executable files and SO libraries.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='4 = 0x4'>4</td>
+<td>CPUArchitecture</td>
+<td class=c>N</td>
+<td><span class=s>1 = 32 bit
+  <br>2 = 64 bit</span></td></tr>
+<tr class=b>
+<td class=r title='5 = 0x5'>5</td>
+<td>CPUByteOrder</td>
+<td class=c>N</td>
+<td><span class=s>1 = Little endian
+  <br>2 = Big endian</span></td></tr>
+<tr>
+<td class=r title='16 = 0x10'>16</td>
+<td>ObjectFileType</td>
+<td class=c>N</td>
+<td><span class=s>0 = None
+  <br>1 = Relocatable file
+  <br>2 = Executable file
+  <br>3 = Shared object file
+  <br>4 = Core file</span></td></tr>
+<tr class=b>
+<td class=r title='18 = 0x12'>18</td>
+<td>CPUType</td>
+<td class=c>N</td>
+<td><span class=s>0 = None
+  <br>1 = AT&amp;T WE 32100
+  <br>2 = SPARC
+  <br>3 = i386
+  <br>4 = Motorola 68000
+  <br>5 = Motorola 88000
+  <br>6 = i486
+  <br>7 = i860
+  <br>8 = MIPS R3000
+  <br>10 = MIPS R4000
+  <br>15 = HPPA
+  <br>18 = Sun v8plus
+  <br>20 = PowerPC
+  <br>21 = PowerPC 64-bit
+  <br>22 = IBM S/390
+  <br>23 = Cell BE SPU
+  <br>42 = SuperH
+  <br>43 = SPARC v9 64-bit
+  <br>46 = Renesas H8/300,300H,H8S
+  <br>50 = HP/Intel IA-64
+  <br>62 = AMD x86-64
+  <br>76 = Axis Communications 32-bit embedded processor
+  <br>87 = NEC v850
+  <br>88 = Renesas M32R
+  <br>21569 = Fujitsu FR-V
+  <br>36902 = Alpha
+  <br>36929 = m32r (old)
+  <br>36992 = v850 (old)
+  <br>41872 = S/390 (old)</span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='CHM'>EXE CHM Tags</a></h2>
+<p>Tags extracted from Microsoft Compiled HTML files.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index4</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='1 = 0x1'>1</td>
+<td>CHMVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='5 = 0x5'>5</td>
+<td>LanguageCode</td>
+<td class=c>N</td>
+<td>--&gt; <a href='EXE.html#LanguageCode'>EXE LanguageCode Values</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<hr>
+(This document generated automatically by Image::ExifTool::BuildTagLookup)
+<br><i>Last revised Jul 12, 2011</i>
+<p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
+</body>
+</html>

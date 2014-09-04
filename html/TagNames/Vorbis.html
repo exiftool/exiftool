@@ -1,0 +1,228 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Vorbis Tags</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h2 class=top>Vorbis Tags</h2>
+<p>Information extracted from Ogg Vorbis files.  See
+<a href="http://www.xiph.org/vorbis/doc/">http://www.xiph.org/vorbis/doc/</a> for the Vorbis specification.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x0001 = 1'>0x0001</td>
+<td>Identification</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Vorbis.html#Identification'>Vorbis Identification Tags</a></td></tr>
+<tr class=b>
+<td title='0x0003 = 3'>0x0003</td>
+<td>Comments</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Vorbis.html#Comments'>Vorbis Comments Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Identification'>Vorbis Identification Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>VorbisVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>AudioChannels</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='5 = 0x5'>5</td>
+<td>SampleRate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='9 = 0x9'>9</td>
+<td>MaximumBitrate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='13 = 0xd'>13</td>
+<td>NominalBitrate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='17 = 0x11'>17</td>
+<td>MinimumBitrate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Comments'>Vorbis Comments Tags</a></h2>
+<p>The tags below are only some common tags found in the Vorbis comments of Ogg
+Vorbis and Ogg FLAC audio files, however ExifTool will extract values from
+any tag found, even if not listed here.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'ACTOR'</td>
+<td>Actor</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'ALBUM'</td>
+<td>Album</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'ARTIST'</td>
+<td>Artist</td>
+<td class=c title=' + = List'>N+</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'COMMENT'</td>
+<td>Comment</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'COMPOSER'</td>
+<td>Composer</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'CONTACT'</td>
+<td>Contact</td>
+<td class=c title=' + = List'>N+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'COPYRIGHT'</td>
+<td>Copyright</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'COVERART'</td>
+<td>CoverArt</td>
+<td class=c>N</td>
+<td><span class=s><span class=n>(base64-encoded image)</span></span></td></tr>
+<tr>
+<td>'COVERARTMIME'</td>
+<td>CoverArtMIMEType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'DATE'</td>
+<td>Date</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'DESCRIPTION'</td>
+<td>Description</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'DIRECTOR'</td>
+<td>Director</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'ENCODED_BY'</td>
+<td>EncodedBy</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'ENCODED_USING'</td>
+<td>EncodedUsing</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'GENRE'</td>
+<td>Genre</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'ISRC'</td>
+<td>ISRCNumber</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'LICENSE'</td>
+<td>License</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'LOCATION'</td>
+<td>Location</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'ORGANIZATION'</td>
+<td>Organization</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'PERFORMER'</td>
+<td>Performer</td>
+<td class=c title=' + = List'>N+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'PRODUCER'</td>
+<td>Producer</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'REPLAYGAIN_ALBUM_GAIN'</td>
+<td>ReplayGainAlbumGain</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'REPLAYGAIN_ALBUM_PEAK'</td>
+<td>ReplayGainAlbumPeak</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'REPLAYGAIN_TRACK_GAIN'</td>
+<td>ReplayGainTrackGain</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'REPLAYGAIN_TRACK_PEAK'</td>
+<td>ReplayGainTrackPeak</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TITLE'</td>
+<td>Title</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TRACKNUMBER'</td>
+<td>TrackNumber</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'VERSION'</td>
+<td>Version</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'vendor'</td>
+<td>Vendor</td>
+<td class=c>N</td>
+<td><span class=s><span class=n>(from comment header)</span></span></td></tr>
+</table></td></tr></table></blockquote>
+
+<hr>
+(This document generated automatically by Image::ExifTool::BuildTagLookup)
+<br><i>Last revised Jul 13, 2011</i>
+<p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
+</body>
+</html>

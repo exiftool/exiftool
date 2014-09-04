@@ -1,0 +1,183 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>FLAC Tags</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h2 class=top>FLAC Tags</h2>
+<p>Free Lossless Audio Codec (FLAC) meta information.  ExifTool also extracts
+ID3 information from these files.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x0000 = 0'>0x0000</td>
+<td>StreamInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='FLAC.html#StreamInfo'>FLAC StreamInfo Tags</a></td></tr>
+<tr class=b>
+<td title='0x0001 = 1'>0x0001</td>
+<td>Padding?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0002 = 2'>0x0002</td>
+<td>Application?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0003 = 3'>0x0003</td>
+<td>SeekTable?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0004 = 4'>0x0004</td>
+<td>VorbisComment</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Vorbis.html#Comments'>Vorbis Comments Tags</a></td></tr>
+<tr class=b>
+<td title='0x0005 = 5'>0x0005</td>
+<td>CueSheet?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0006 = 6'>0x0006</td>
+<td>Picture</td>
+<td class=c>-</td>
+<td>--&gt; <a href='FLAC.html#Picture'>FLAC Picture Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='StreamInfo'>FLAC StreamInfo Tags</a></h2>
+<p>FLAC is big-endian, so bit 0 is the high-order bit in this table.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'Bit000-015'</td>
+<td>BlockSizeMin</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Bit016-031'</td>
+<td>BlockSizeMax</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Bit032-055'</td>
+<td>FrameSizeMin</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Bit056-079'</td>
+<td>FrameSizeMax</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Bit080-099'</td>
+<td>SampleRate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Bit100-102'</td>
+<td>Channels</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Bit103-107'</td>
+<td>BitsPerSample</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Bit108-143'</td>
+<td>TotalSamples</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Picture'>FLAC Picture Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index4</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>PictureType</td>
+<td class=c>N</td>
+<td><table class=cols><tr>
+  <td>0 = Other
+  <br>1 = 32x32 PNG Icon
+  <br>2 = Other Icon
+  <br>3 = Front Cover
+  <br>4 = Back Cover
+  <br>5 = Leaflet
+  <br>6 = Media
+  <br>7 = Lead Artist
+  <br>8 = Artist
+  <br>9 = Conductor
+  <br>10 = Band
+  <br>11 = Composer
+  <br>12 = Lyricist
+  <br>13 = Recording Studio or Location
+  <br>14 = Recording Session
+  <br>15 = Performance
+  <br>16 = Capture from Movie or Video
+  <br>17 = Bright(ly) Colored Fish
+  <br>18 = Illustration
+  <br>19 = Band Logo
+  <br>20 = Publisher Logo</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='1 = 0x1'>1</td>
+<td>PictureMIMEType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='2 = 0x2'>2</td>
+<td>PictureDescription</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='3 = 0x3'>3</td>
+<td>PictureWidth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='4 = 0x4'>4</td>
+<td>PictureHeight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='5 = 0x5'>5</td>
+<td>PictureBitsPerPixel</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='6 = 0x6'>6</td>
+<td>PictureIndexedColors</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='7 = 0x7'>7</td>
+<td>PictureLength</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='8 = 0x8'>8</td>
+<td>Picture</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<hr>
+(This document generated automatically by Image::ExifTool::BuildTagLookup)
+<br><i>Last revised Nov 11, 2011</i>
+<p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
+</body>
+</html>

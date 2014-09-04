@@ -1,0 +1,81 @@
+<?xpacket begin='﻿' id='W5M0MpCehiHzreSzNTczkc9d'?>
+<x:xmpmeta xmlns:x='adobe:ns:meta/' x:xmptk='Image::ExifTool 9.70'>
+<rdf:RDF xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'>
+
+ <rdf:Description rdf:about='http://www.w3.org/TR/rdf-syntax-grammar'
+  xmlns:cc='http://creativecommons.org/ns#'>
+  <cc:attributionName>something else</cc:attributionName>
+ </rdf:Description>
+
+ <rdf:Description rdf:about='http://www.w3.org/TR/rdf-syntax-grammar'
+  xmlns:dd='http://purl.org/dc/elements/1.1/'>
+  <dd:creator>
+   <rdf:Seq>
+    <rdf:li>bad_list_type_A</rdf:li>
+    <rdf:li>bad_list_type_B</rdf:li>
+    <rdf:li>Phil</rdf:li>
+   </rdf:Seq>
+  </dd:creator>
+  <dd:title>ExifTool common node, nonstandard namespace prefix, and bad list type tests</dd:title>
+ </rdf:Description>
+
+ <rdf:Description rdf:about='http://www.w3.org/TR/rdf-syntax-grammar'
+  xmlns:pdfx='http://ns.adobe.com/pdfx/1.3/'>
+  <pdfx:Customↂ0020Propertyↂ00201>a custom property value</pdfx:Customↂ0020Propertyↂ00201>
+  <pdfx:Customↂ0020Propertyↂ00202>some other value</pdfx:Customↂ0020Propertyↂ00202>
+ </rdf:Description>
+
+ <rdf:Description rdf:about='http://www.w3.org/TR/rdf-syntax-grammar'
+  xmlns:ph='http://owl.phy.queensu.ca/ph/1.0/'>
+  <ph:programmer rdf:parseType='Resource'>
+   <ph:exclamation>doh!</ph:exclamation>
+   <ph:food>cookies</ph:food>
+   <ph:fullName>Phil Harvey</ph:fullName>
+   <ph:homePage rdf:resource='http://owl.phy.queensu.ca/~phil/'/>
+   <ph:state>confusion</ph:state>
+  </ph:programmer>
+  <ph:supervisor rdf:parseType='Resource'>
+   <ph:exclamation>doh!</ph:exclamation>
+   <ph:food>cookies</ph:food>
+   <ph:fullName>Phil Harvey</ph:fullName>
+   <ph:homePage rdf:resource='http://owl.phy.queensu.ca/~phil/'/>
+   <ph:state>confusion</ph:state>
+  </ph:supervisor>
+  <ph:tester rdf:parseType='Resource'>
+   <ph:exclamation>doh!</ph:exclamation>
+   <ph:food>cookies</ph:food>
+   <ph:fullName>Phil Harvey</ph:fullName>
+   <ph:homePage rdf:resource='http://owl.phy.queensu.ca/~phil/'/>
+   <ph:state>confusion</ph:state>
+  </ph:tester>
+ </rdf:Description>
+
+ <rdf:Description rdf:about='http://www.w3.org/TR/rdf-syntax-grammar'
+  xmlns:stMfs='http://ns.adobe.com/xap/1.0/sType/ManifestItem#'
+  xmlns:stRef='http://ns.adobe.com/xap/1.0/sType/ResourceRef#'
+  xmlns:xmpMM='http://ns.adobe.com/xap/1.0/mm/'>
+  <xmpMM:Manifest>
+   <rdf:Bag>
+    <rdf:li rdf:parseType='Resource'>
+     <stMfs:linkForm>EmbedByReference</stMfs:linkForm>
+     <stMfs:reference rdf:parseType='Resource'>
+      <stRef:filePath>C:\some path\file.ext</stRef:filePath>
+     </stMfs:reference>
+     <xmpMM:placedXResolution>1</xmpMM:placedXResolution>
+    </rdf:li>
+   </rdf:Bag>
+  </xmpMM:Manifest>
+ </rdf:Description>
+
+ <rdf:Description rdf:about='http://www.w3.org/TR/rdf-syntax-grammar'
+  xmlns:xxx='http://iptc.org/std/Iptc4xmpCore/1.0/xmlns/'>
+  <xxx:CountryCode>CA</xxx:CountryCode>
+  <xxx:Scene>
+   <rdf:Bag>
+    <rdf:li>scene1</rdf:li>
+   </rdf:Bag>
+  </xxx:Scene>
+ </rdf:Description>
+</rdf:RDF>
+</x:xmpmeta>
+<?xpacket end='w'?>

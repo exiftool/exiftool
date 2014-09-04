@@ -1,0 +1,285 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>DNG Tags</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h2 class=top>DNG Tags</h2>
+<p>
+The main DNG tags are found in the EXIF table.  The tables below define only
+information found within structures of these main DNG tag values.  See
+<a href="http://www.adobe.com/products/dng/">http://www.adobe.com/products/dng/</a> for the official DNG specification.
+</p>
+<h2><a name='AdobeData'>DNG AdobeData Tags</a></h2>
+<p>This information is found in the &quot;Adobe&quot; DNGPrivateData.</p>
+
+<p>The maker notes (&#39;MakN&#39;) are processed by ExifTool, but some information may
+have been lost by the Adobe DNG Converter.  This is because the Adobe DNG
+Converter (as of version 6.3) doesn&#39;t properly handle information referenced
+from inside the maker notes that lies outside the original maker notes
+block.  This information is lost when only the maker note block is copied to
+the DNG image.   While this doesn&#39;t effect all makes of cameras, it is a
+problem for some major brands such as Olympus and Sony.</p>
+
+<p>Other entries in this table represent proprietary information that is
+extracted from the original RAW image and restructured to a different (but
+still proprietary) Adobe format.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'CRW '</td>
+<td>AdobeCRW</td>
+<td class=c>-</td>
+<td>--&gt; <a href='CanonRaw.html'>CanonRaw Tags</a></td></tr>
+<tr class=b>
+<td>'Koda'</td>
+<td>AdobeKoda</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Kodak.html#IFD'>Kodak IFD Tags</a></td></tr>
+<tr>
+<td>'Leaf'</td>
+<td>AdobeLeaf</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Leaf.html#SubIFD'>Leaf SubIFD Tags</a></td></tr>
+<tr class=b>
+<td>'MRW '</td>
+<td>AdobeMRW</td>
+<td class=c>-</td>
+<td>--&gt; <a href='MinoltaRaw.html'>MinoltaRaw Tags</a></td></tr>
+<tr>
+<td>'MakN'</td>
+<td>MakerNoteApple
+  <br>MakerNoteNikon
+  <br>MakerNoteCanon
+  <br>MakerNoteCasio
+  <br>MakerNoteCasio2
+  <br>MakerNoteFLIR
+  <br>MakerNoteFujiFilm
+  <br>MakerNoteGE
+  <br>MakerNoteGE2
+  <br>MakerNoteHasselblad
+  <br>MakerNoteHP
+  <br>MakerNoteHP2
+  <br>MakerNoteHP4
+  <br>MakerNoteHP6
+  <br>MakerNoteISL
+  <br>MakerNoteJVC
+  <br>MakerNoteJVCText
+  <br>MakerNoteKodak1a
+  <br>MakerNoteKodak1b
+  <br>MakerNoteKodak2
+  <br>MakerNoteKodak3
+  <br>MakerNoteKodak4
+  <br>MakerNoteKodak5
+  <br>MakerNoteKodak6a
+  <br>MakerNoteKodak6b
+  <br>MakerNoteKodak7
+  <br>MakerNoteKodak8a
+  <br>MakerNoteKodak8b
+  <br>MakerNoteKodak8c
+  <br>MakerNoteKodak9
+  <br>MakerNoteKodak10
+  <br>MakerNoteKodak11
+  <br>MakerNoteKodakUnknown
+  <br>MakerNoteKyocera
+  <br>MakerNoteMinolta
+  <br>MakerNoteMinolta2
+  <br>MakerNoteMinolta3
+  <br>MakerNoteNikon2
+  <br>MakerNoteNikon3
+  <br>MakerNoteNintendo
+  <br>MakerNoteOlympus
+  <br>MakerNoteOlympus2
+  <br>MakerNoteLeica
+  <br>MakerNoteLeica2
+  <br>MakerNoteLeica3
+  <br>MakerNoteLeica4
+  <br>MakerNoteLeica5
+  <br>MakerNoteLeica6
+  <br>MakerNotePanasonic
+  <br>MakerNotePanasonic2
+  <br>MakerNotePentax
+  <br>MakerNotePentax2
+  <br>MakerNotePentax3
+  <br>MakerNotePentax4
+  <br>MakerNotePentax5
+  <br>MakerNotePentax6
+  <br>MakerNotePhaseOne
+  <br>MakerNoteReconyx
+  <br>MakerNoteRicoh
+  <br>MakerNoteRicoh2
+  <br>MakerNoteRicohText
+  <br>MakerNoteSamsung1a
+  <br>MakerNoteSamsung1b
+  <br>MakerNoteSamsung2
+  <br>MakerNoteSanyo
+  <br>MakerNoteSanyoC4
+  <br>MakerNoteSanyoPatch
+  <br>MakerNoteSigma
+  <br>MakerNoteSony
+  <br>MakerNoteSony2
+  <br>MakerNoteSony3
+  <br>MakerNoteSony4
+  <br>MakerNoteSony5
+  <br>MakerNoteSonyEricsson
+  <br>MakerNoteSonySRF
+  <br>MakerNoteUnknownText
+  <br>MakerNoteUnknownBinary
+  <br>MakerNoteUnknown</td>
+<td class=c>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef<br>undef</td>
+<td>--&gt; <a href='Apple.html'>Apple Tags</a>
+  <br>--&gt; <a href='Nikon.html'>Nikon Tags</a>
+  <br>--&gt; <a href='Canon.html'>Canon Tags</a>
+  <br>--&gt; <a href='Casio.html'>Casio Tags</a>
+  <br>--&gt; <a href='Casio.html#Type2'>Casio Type2 Tags</a>
+  <br>--&gt; <a href='FLIR.html'>FLIR Tags</a>
+  <br>--&gt; <a href='FujiFilm.html'>FujiFilm Tags</a>
+  <br>--&gt; <a href='GE.html'>GE Tags</a>
+  <br>--&gt; <a href='FujiFilm.html'>FujiFilm Tags</a>
+  <br>--&gt; <a href='Unknown.html'>Unknown Tags</a>
+  <br>--&gt; <a href='HP.html'>HP Tags</a>
+  <br>--&gt; <a href='HP.html#Type2'>HP Type2 Tags</a>
+  <br>--&gt; <a href='HP.html#Type4'>HP Type4 Tags</a>
+  <br>--&gt; <a href='HP.html#Type6'>HP Type6 Tags</a>
+  <br>--&gt; <a href='Unknown.html'>Unknown Tags</a>
+  <br>--&gt; <a href='JVC.html'>JVC Tags</a>
+  <br>--&gt; <a href='JVC.html#Text'>JVC Text Tags</a>
+  <br>--&gt; <a href='Kodak.html'>Kodak Tags</a>
+  <br>--&gt; <a href='Kodak.html'>Kodak Tags</a>
+  <br>--&gt; <a href='Kodak.html#Type2'>Kodak Type2 Tags</a>
+  <br>--&gt; <a href='Kodak.html#Type3'>Kodak Type3 Tags</a>
+  <br>--&gt; <a href='Kodak.html#Type4'>Kodak Type4 Tags</a>
+  <br>--&gt; <a href='Kodak.html#Type5'>Kodak Type5 Tags</a>
+  <br>--&gt; <a href='Kodak.html#Type6'>Kodak Type6 Tags</a>
+  <br>--&gt; <a href='Kodak.html#Type6'>Kodak Type6 Tags</a>
+  <br>--&gt; <a href='Kodak.html#Type7'>Kodak Type7 Tags</a>
+  <br>--&gt; <a href='Kodak.html#Type8'>Kodak Type8 Tags</a>
+  <br>--&gt; <a href='Kodak.html#Type8'>Kodak Type8 Tags</a>
+  <br>--&gt; <a href='Kodak.html#Type8'>Kodak Type8 Tags</a>
+  <br>--&gt; <a href='Kodak.html#Type9'>Kodak Type9 Tags</a>
+  <br>--&gt; <a href='Kodak.html#Type10'>Kodak Type10 Tags</a>
+  <br>--&gt; <a href='Kodak.html#Type11'>Kodak Type11 Tags</a>
+  <br>--&gt; <a href='Kodak.html#Unknown'>Kodak Unknown Tags</a>
+  <br>--&gt; <a href='Unknown.html'>Unknown Tags</a>
+  <br>--&gt; <a href='Minolta.html'>Minolta Tags</a>
+  <br>--&gt; <a href='Olympus.html'>Olympus Tags</a>
+  <br><span class=n>(not EXIF-based)</span>
+  <br>--&gt; <a href='Nikon.html#Type2'>Nikon Type2 Tags</a>
+  <br>--&gt; <a href='Nikon.html'>Nikon Tags</a>
+  <br>--&gt; <a href='Nintendo.html'>Nintendo Tags</a>
+  <br>--&gt; <a href='Olympus.html'>Olympus Tags</a>
+  <br>--&gt; <a href='Olympus.html'>Olympus Tags</a>
+  <br>--&gt; <a href='Panasonic.html'>Panasonic Tags</a>
+  <br>--&gt; <a href='Panasonic.html#Leica2'>Panasonic Leica2 Tags</a>
+  <br>--&gt; <a href='Panasonic.html#Leica3'>Panasonic Leica3 Tags</a>
+  <br>--&gt; <a href='Panasonic.html#Leica4'>Panasonic Leica4 Tags</a>
+  <br>--&gt; <a href='Panasonic.html#Leica5'>Panasonic Leica5 Tags</a>
+  <br>--&gt; <a href='Panasonic.html#Leica6'>Panasonic Leica6 Tags</a>
+  <br>--&gt; <a href='Panasonic.html'>Panasonic Tags</a>
+  <br>--&gt; <a href='Panasonic.html#Type2'>Panasonic Type2 Tags</a>
+  <br>--&gt; <a href='Pentax.html'>Pentax Tags</a>
+  <br>--&gt; <a href='Pentax.html#Type2'>Pentax Type2 Tags</a>
+  <br>--&gt; <a href='Casio.html#Type2'>Casio Type2 Tags</a>
+  <br>--&gt; <a href='Pentax.html#Type4'>Pentax Type4 Tags</a>
+  <br>--&gt; <a href='Pentax.html'>Pentax Tags</a>
+  <br>--&gt; <a href='Pentax.html#S1'>Pentax S1 Tags</a>
+  <br>--&gt; <a href='PhaseOne.html'>PhaseOne Tags</a>
+  <br>--&gt; <a href='Reconyx.html'>Reconyx Tags</a>
+  <br>--&gt; <a href='Ricoh.html'>Ricoh Tags</a>
+  <br>--&gt; <a href='Ricoh.html#Type2'>Ricoh Type2 Tags</a>
+  <br>--&gt; <a href='Ricoh.html#Text'>Ricoh Text Tags</a>
+  <br><span class=n>(Samsung "STMN" maker notes without PreviewImage)</span>
+  <br>--&gt; <a href='Samsung.html'>Samsung Tags</a>
+  <br>--&gt; <a href='Samsung.html#Type2'>Samsung Type2 Tags</a>
+  <br>--&gt; <a href='Sanyo.html'>Sanyo Tags</a>
+  <br>--&gt; <a href='Sanyo.html'>Sanyo Tags</a>
+  <br>--&gt; <a href='Sanyo.html'>Sanyo Tags</a>
+  <br>--&gt; <a href='Sigma.html'>Sigma Tags</a>
+  <br>--&gt; <a href='Sony.html'>Sony Tags</a>
+  <br>--&gt; <a href='Olympus.html'>Olympus Tags</a>
+  <br>--&gt; <a href='Olympus.html'>Olympus Tags</a>
+  <br>--&gt; <a href='Sony.html#PIC'>Sony PIC Tags</a>
+  <br>--&gt; <a href='Sony.html'>Sony Tags</a>
+  <br>--&gt; <a href='Sony.html#Ericsson'>Sony Ericsson Tags</a>
+  <br>--&gt; <a href='Sony.html#SRF'>Sony SRF Tags</a>
+  <br><span class=n>(unknown text-based maker notes)</span>
+  <br><span class=n>(unknown binary maker notes)</span>
+  <br>--&gt; <a href='Unknown.html'>Unknown Tags</a></td></tr>
+<tr class=b>
+<td>'Pano'</td>
+<td>AdobePano</td>
+<td class=c>-</td>
+<td>--&gt; <a href='PanasonicRaw.html'>PanasonicRaw Tags</a></td></tr>
+<tr>
+<td>'RAF '</td>
+<td>AdobeRAF</td>
+<td class=c>-</td>
+<td>--&gt; <a href='FujiFilm.html#RAF'>FujiFilm RAF Tags</a></td></tr>
+<tr class=b>
+<td>'SR2 '</td>
+<td>AdobeSR2</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Sony.html#SR2Private'>Sony SR2Private Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='OriginalRaw'>DNG OriginalRaw Tags</a></h2>
+<p>This table defines tags extracted from the DNG OriginalRawFileData
+information.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x0000 = 0'>0x0000</td>
+<td>OriginalRawImage</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0001 = 1'>0x0001</td>
+<td>OriginalRawResource</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0002 = 2'>0x0002</td>
+<td>OriginalRawFileType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0003 = 3'>0x0003</td>
+<td>OriginalRawCreator</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0004 = 4'>0x0004</td>
+<td>OriginalTHMImage</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0005 = 5'>0x0005</td>
+<td>OriginalTHMResource</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0006 = 6'>0x0006</td>
+<td>OriginalTHMFileType</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0007 = 7'>0x0007</td>
+<td>OriginalTHMCreator</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<hr>
+(This document generated automatically by Image::ExifTool::BuildTagLookup)
+<br><i>Last revised Jul 18, 2014</i>
+<p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
+</body>
+</html>

@@ -1,0 +1,222 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>OpenEXR Tags</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h2 class=top>OpenEXR Tags</h2>
+<p>Information extracted from EXR images.  See <a href="http://www.openexr.com/">http://www.openexr.com/</a> for
+the official specification.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'_lay'</td>
+<td>Layout</td>
+<td class=c>N</td>
+<td><span class=s>0x0 = Scan Lines
+  <br>0x200 = Tiles</span></td></tr>
+<tr class=b>
+<td>'_ver'</td>
+<td>EXRVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'adoptedNeutral'</td>
+<td>AdoptedNeutral</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'altitude'</td>
+<td>GPSAltitude</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'aperture'</td>
+<td>Aperture</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'capDate'</td>
+<td>DateTimeOriginal</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'channels'</td>
+<td>Channels</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'chromaticities'</td>
+<td>Chromaticities</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'comments'</td>
+<td>Comments</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'compression'</td>
+<td>Compression</td>
+<td class=c>N</td>
+<td><table class=cols><tr>
+  <td>0 = None
+  <br>1 = RLE
+  <br>2 = ZIPS
+  <br>3 = ZIP</td><td>&nbsp;&nbsp;</td>
+  <td>4 = PIZ
+  <br>5 = PXR24
+  <br>6 = B44
+  <br>7 = B44A</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td>'dataWindow'</td>
+<td>DataWindow</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'displayWindow'</td>
+<td>DisplayWindow</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'envmap'</td>
+<td>EnvironmentMap</td>
+<td class=c>N</td>
+<td><span class=s>0 = Latitude/Longitude
+  <br>1 = Cube</span></td></tr>
+<tr class=b>
+<td>'expTime'</td>
+<td>ExposureTime</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'focus'</td>
+<td>FocusDistance</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'framesPerSecond'</td>
+<td>FramesPerSecond</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'isoSpeed'</td>
+<td>ISO</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'keyCode'</td>
+<td>KeyCode</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'latitude'</td>
+<td>GPSLatitude</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'lineOrder'</td>
+<td>LineOrder</td>
+<td class=c>N</td>
+<td><span class=s>0 = Increasing Y
+  <br>1 = Decreasing Y
+  <br>2 = Random Y</span></td></tr>
+<tr>
+<td>'longitude'</td>
+<td>GPSLongitude</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'lookModTransform'</td>
+<td>LookModTransform</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'multiView'</td>
+<td>MultiView</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'owner'</td>
+<td>Owner</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'pixelAspectRatio'</td>
+<td>PixelAspectRatio</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'preview'</td>
+<td>Preview</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'renderingTransform'</td>
+<td>RenderingTransform</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'screenWindowCenter'</td>
+<td>ScreenWindowCenter</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'screenWindowWidth'</td>
+<td>ScreenWindowWidth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'tiles'</td>
+<td>Tiles</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'timeCode'</td>
+<td>TimeCode</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'utcOffset'</td>
+<td>TimeZone</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'whiteLuminance'</td>
+<td>WhiteLuminance</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'worldToCamera'</td>
+<td>WorldToCamera</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'worldToNDC'</td>
+<td>WorldToNDC</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'wrapmodes'</td>
+<td>WrapModes</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'xDensity'</td>
+<td>XResolution</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<hr>
+(This document generated automatically by Image::ExifTool::BuildTagLookup)
+<br><i>Last revised Dec 14, 2011</i>
+<p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
+</body>
+</html>

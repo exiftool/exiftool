@@ -1,0 +1,652 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd">
+<html>
+<head>
+  <title>Geotagging with ExifTool</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+<style type="text/css">
+<!--
+pre  { color: #800; margin-left: 4em }
+.nr  { white-space: nowrap }
+-->
+</style>
+</head>
+<body>
+<div class='index'>
+<a href="#Implementation">Implementation</a>
+<br>&nbsp; - <a href="#geotag">Geotag</a>
+<br>&nbsp; - <a href="#geosync">Geosync</a>
+<br>&nbsp; - <a href="#geotime">Geotime</a>
+<br><a href="#Examples">Examples</a>
+<br><a href="#Options">Options</a>
+<br><a href="#Orient">Orientation</a>
+<br><a href="#Troubleshooting">Troubleshooting</a>
+<br><a href="#Tips">Tips</a>
+<hr>
+<a href="#Inverse">Inverse Geotagging</a>
+<br>&nbsp; - <a href="#GPX">Creating GPX log</a>
+<br>&nbsp; - <a href="#KML">Creating KML file</a>
+</div>
+<h1 class='up'>Geotagging with ExifTool</h1>
+<p>The ExifTool geotagging feature adds GPS tags to images based on data from a
+GPS track log file.  The GPS track log file is loaded, and linear interpolation
+is used to determine the GPS position at the time of the image, then the
+following tags are written to the image (if the corresponding information
+is available):</p>
+
+<pre>GPSLatitude      GPSLongitude      GPSAltitude          GPSDateStamp
+GPSLatitudeRef   GPSLongitudeRef   GPSAltitudeRef       GPSTimeStamp
+GPSTrack         GPSSpeed          GPSImgDirection      GPSPitch        
+GPSTrackRef      GPSSpeedRef       GPSImgDirectionRef   GPSRoll
+</pre>
+
+<blockquote class=lt><i>Note: GPSPitch and GPSRoll are not standard tags, and
+must be <a href="#Orient">user-defined</a>.</i></blockquote>
+
+<p>Currently supported GPS track log file formats:</p>
+
+<ul>
+<li>GPX</li>
+<li>NMEA (RMC, GGA, GLL and GSA sentences)</li>
+<li>KML</li>
+<li>IGC (glider format)</li>
+<li>Garmin XML and TCX</li>
+<li>Magellan eXplorist PMGNTRK</li>
+<li>Honeywell PTNTHPR (see <a href="#Orient">Orientation</a>)</li>
+<li>Winplus Beacon .TXT</li>
+</ul>
+
+<a name="Implementation"></a>
+<h3>Implementation</h3>
+
+<p>Geotagging is accomplished in ExifTool through the use of three special
+<a href="TagNames/Extra.html">Extra tags</a>:
+<code>Geotag</code>, <code>Geosync</code> and <code>Geotime</code>.</p>
+
+<blockquote class=lt><i>Note: When writing these tags, order is important. If
+<code>Geotime</code> is written, it must be done after both <code>Geotag</code>
+and <code>Geosync</code>.</i></blockquote>
+
+<a name="geotag"></a>
+<h4>Geotag</h4>
+
+<p>The <code>Geotag</code> tag is used to define the GPS track log data. The
+geotagging feature is activated by assigning the name of a track log file to
+this tag.  As an example, the following command line adds GPS tags to all images
+in the "/Users/Phil/Pictures" directory based on GPS positions stored in the
+track log file "track.log" in the current directory:</p>
+
+<pre>exiftool -geotag=track.log /Users/Phil/Pictures
+</pre>
+
+<p>As a convienience the exiftool application also provides a
+<code>-geotag</code> option, so the following command is equivalent to the one
+above:</p>
+
+<pre>exiftool -geotag track.log /Users/Phil/Pictures
+</pre>
+
+<p>Multiple GPS log files may be loaded simultaneously by using more than one
+<code>-geotag</code> option or <code>-geotag=</code> assignment in the same
+command.  This allows batch processing of images spanning different tracks with
+a single command.  Wildcards may be used in the argument of the
+<code>-geotag</code> option, but note that the argument may then need to be
+quoted on some systems to prevent shell globbing, and that wildcards are not
+supported with the <code>-geotag=</code> syntax.  See the
+<a href="#Examples">examples</a> below.</p>
+
+<p>Deleting the <code>Geotag</code> tag (with <code>-geotag=</code>) causes the
+GPS tags written by the <code>-geotag</code> feature to be deleted.</p>
+
+<blockquote class=lt><i>Programmers:  You may write either a GPS log file name
+or the GPS log data as the value for <code>Geotag</code>.  If the value contains
+a newline or a null byte it is assumed to be data, otherwise it is taken as a
+file name.</i></blockquote>
+
+<a name="geosync"></a>
+<h4>Geosync</h4>
+
+<p>The <code>Geosync</code> tag is needed only when the image timestamps are not
+properly synchronized with GPS time, and must be set before <code>Geotime</code>
+to be effective.  The value written to the <code>Geosync</code> tag may take a
+number of different forms, but the basic format is that of a simple time
+difference which is added to <code>Geotime</code> before interpolating the GPS
+position in the track log.  This time difference may be of the form "SS",
+"MM:SS", "HH:MM:SS" or "DD HH:MM:SS" (where SS=seconds, MM=minutes, HH=hours and
+DD=days), and a leading "+" or "-" may be added for positive or negative
+differences (negative if the camera clock was ahead of GPS time).  Fractional
+seconds are allowed (eg. "SS.ss").</p>
+
+<p>For example, "<code>-geosync=-1:20</code>" specifies that synchronization
+with GPS time is achieved by subtracting 1 minute and 20 seconds from the
+<code>Geotime</code> value.  See the <a href="#TP1">Time Synchronization Tip</a>
+below for more details.</p>
+
+<blockquote class=lt><i>Note that a single decimal value is interpreted as
+seconds when written to <code>Geosync</code>.  This is different from of other
+date/time shift values where a single value is normally taken as hours.</i>
+</blockquote>
+
+<p>The <code>Geosync</code> value may also be specified using 3 different
+formats which provide a GPS time and a corresponding camera clock time.  While
+these formats may be used for a simple (constant) time synchronization offset,
+they are necessary when performing a clock drift correction (with multiple
+synchronization points), and are described below.</p>
+
+<p><b>Camera clock drift correction:</b></p>
+
+<p>A more advanced <code>Geosync</code> feature allows the GPS time and the
+image time to be specified together, facilitating a time drift correction if
+more than one synchronization point is provided.  For this, the value written to
+<code>Geosync</code> takes one of the following forms:</p>
+
+<blockquote>
+<table class='norm'>
+<tr><th>Format</th><th>Notes</th></tr>
+<tr><td><i>FILE</i></td>
+<td>Both GPS and image timestamps are extracted from the
+specified file. eg) <code>-geosync=image.jpg</code></td></tr>
+<tr><td><i>GPSTIME</i>@<i>FILE</i></td><td>GPS time is taken from the
+<code>Geosync</code> value and the image timestamp is extracted from the
+specified file. eg) <code>-geosync="12:58:05@image.jpg"</code></td></tr>
+<tr><td><i>GPSTIME</i>@<i>IMGTIME</i></td><td>Both GPS and image timestamps are
+taken from the <code>Geosync</code> value.  eg)
+<code>-geosync="12:58:05@2010:01:02 12:25:26"</code></td></tr>
+</table></blockquote>
+
+<p>The values of <i>GPSTIME</i> and <i>IMGTIME</i> specified on the command line
+may contain a date, but it is not necessary.</p>
+
+<p>Notes:</p>
+<ol>
+<li>If either the GPS or the image timestamp does not contain a date, the two
+timestamps are assumed to be on days which place them within 12 hours of each
+other.</li>
+<li>If neither the GPS nor the image timestamps contain a date, this
+synchronization point may only be used for constant time offset (ie. no time
+drift correction will be applied).</li>
+<li>Both the GPS and the image times are assumed to be local unless another
+timezone is specified.</li>
+<li>Both the GPS and the image time values may contain decimal seconds.</li>
+<li>The applied value of the time drift correction is calculated from a
+piecewise linear interpolation/extrapolation between the synchronization points
+if more than one <code>Geosync</code> value is defined.</li>
+<li>When extracting from file, timestamps are taken from the first available of
+the following tags:
+<ul>
+<li>Image timestamp: SubSecDateTimeOriginal, SubSecCreateDate, SubSecModifyDate,
+DateTimeOriginal, CreateDate, ModifyDate, FileModifyDate</li>
+<li>GPS timestamp: GPSDateTime, GPSTimeStamp</li>
+</ul></li>
+</ol>
+
+<a name="geotime"></a>
+<h4>Geotime</h4>
+
+<p>The <code>Geotime</code> tag specifies the point in time for which the GPS
+position is calculated (by interpolating between fixes in the GPS track log). 
+Unless a group is specified, exiftool writes the generated tags to the default
+groups.  If a value for <code>Geotime</code> is not given, it is taken from
+<code>DateTimeOriginal</code> for each image (as if
+<code>"-Geotime&lt;DateTimeOriginal"</code> had been specified), but the value
+may be copied from any other date/time tag or set directly from a date/time
+string.</p>
+
+<p>If the date/time tag does not include a timezone then one may be added (eg.
+<code>"-Geotime&lt;${CreateDate}-05:00"</code>), otherwise the local system time
+is assumed.  Decimal seconds are supported in the time value.</p>
+
+<p>By default, GPS tags are created in EXIF and the corresponding
+XMP tags are updated only if they already exist.  However, an EXIF or XMP group
+name may be specified to force writing only to the specified location.  For
+example, writing <code>XMP:Geotime</code> or <code>EXIF:Geotime</code> will
+write the generated GPS tags only to XMP or EXIF respectively.  Note that when
+written to XMP, the <code>GPSLatitudeRef</code> and <code>GPSLongitudeRef</code>
+tags are not used, and the XMP <code>GPSDateTime</code> tag is written instead
+of the separate EXIF <code>GPSDateStamp</code> and <code>GPSTimeStamp</code>
+tags.</p>
+
+<p>See the <a href="#Examples">Examples</a> section below for sample command
+lines illustrating various aspects of the geotagging feature.</p>
+
+<blockquote class=lt><i>Programmers:  Note that <code>Geotime</code> must always
+be specified when geotagging via the API -- the default value of
+<code>DateTimeOriginal</code> is implemented by the application.</i>
+</blockquote>
+
+<a name="Examples"></a>
+<h3>Examples</h3>
+
+<p>Geotag all images in the "c:\images" directory from position information in a
+GPS track log ("c:\gps logs\track.log").  Since the <code>Geotime</code> time is
+not specified, the value of <code>DateTimeOriginal</code> is used.  Local system
+time is assumed unless <code>DateTimeOriginal</code> contains a timezone:</p>
+
+<pre>exiftool -geotag "c:\gps logs\track.log" c:\images</pre>
+
+<p>Geotag all images in directory "dir" from the GPS positions in "track.log"
+(in the current directory), for a camera clock that was running 25 seconds
+slower than the GPS clock:</p>
+
+<pre>exiftool -geotag track.log -geosync=+25 dir</pre>
+
+<p>Geotag an image with the GPS position for a specific time.  (Note that the
+<code>Geotag</code> tag must be assigned before <code>Geotime</code> for the GPS
+data to be available when <code>Geotime</code> is set):</p>
+
+<pre>exiftool -geotag t.log -geotime="2009:04:02 13:41:12-05:00" a.jpg</pre>
+
+<p>Geotag all images in directory "dir" with XMP tags instead of EXIF tags,
+based on the image <code>CreateDate</code>.  (In this case, the order of the
+arguments doesn't matter because tags with values copied from other tags are
+always set after constant values):</p>
+
+<pre>exiftool -geotag log.gpx "-xmp:geotime&lt;createdate" dir</pre>
+
+<p>Geotag images in "dir" using <code>CreateDate</code> with the specified
+timezone.  If <code>CreateDate</code> already contained a timezone, then the
+timezone specified on the command line is ignored.  (Note that in Windows,
+double quotes (<code>"</code>) must be used instead of single quotes
+(<code>'</code>) around the <code>-geotime</code> argument in the next 2
+commands):</p>
+
+<pre>exiftool -geotag a.log '-geotime&lt;${createdate}+01:00' dir</pre>
+
+<p>Geotag images for which the camera clock was set to UTC (+00:00), using
+the time from <code>DateTimeOriginal</code>:</p>
+
+<pre>exiftool -geotag trk.gpx '-geotime&lt;${DateTimeOriginal}+00:00' dir</pre>
+
+<p>Delete GPS tags which were added by the geotag feature. (Note that this does
+not remove all GPS tags -- to do this instead use <code>-gps:all=</code>):</p>
+
+<pre>exiftool -geotag= a.jpg</pre>
+
+<p>Delete XMP GPS tags which were added by the geotag feature:</p>
+
+<pre>exiftool -xmp:geotag= a.jpg</pre>
+
+<p>Geotag an image with XMP tags, using the time from
+<code>DateTimeOriginal</code>:</p>
+
+<pre>exiftool -xmp:geotag=track.log a.jpg</pre>
+
+<p>Combine multiple track logs and geotag an entire directory tree of
+images:</p>
+
+<pre>exiftool -geotag a.log -geotag b.log -r dir</pre>
+
+<p>Use wildcards to load multiple track files (the quotes are necessary for most
+operating systems to prevent filename expansion):</p>
+
+<pre>exiftool -geotag "logs/*.log" dir</pre>
+
+<p>Geotag from a sub-second date/time value with a sub-second time synchronization
+(only possible if the EXIF sub-second time stamps are available):</p>
+
+<pre>exiftool -Geotag a.log -Geosync=+13.42 "-Geotime&lt;SubSecDateTimeOriginal" dir
+</pre>
+
+<p>Geotag images with a piecewise linear time drift correction using the GPS
+time synchronization from three already-geotagged images:</p>
+
+<pre>exiftool -geotag a.log -geosync=1.jpg -geosync=2.jpg -geosync=3.jpg dir
+</pre>
+
+<a name="Options"></a>
+<h3>Options</h3>
+
+<p>Geotagging may be configured via the following ExifTool options.  These
+options have no command-line equivalents, but may be set using either the
+Options() function of the API or the %Image::ExifTool::UserDefined::Options hash
+of the config file.  (See the <a href="config.html">sample config file</a>
+for details about how to use the config file.)</p>
+
+<blockquote>
+<table class='norm'>
+<tr><th>Option</th><th>Description</th><th>Values</th><th>Default</th></tr>
+<tr><td>GeoMaxIntSecs</td>
+    <td>Maximum interpolation time in seconds for geotagging.  Geotagging is
+    treated as an extrapolation if the Geotime value lies between two fixes in
+    the same track which are separated by a number of seconds greater than this.
+     Otherwise, the coordinates are calculated as a linear interpolation between
+    the nearest fixes on either side of the Geotime value.  Set to 0 to disable
+    interpolation and use the coordinates of the nearest fix instead (provided
+    it is within GeoMaxExtSecs, otherwise geotagging fails).</td>
+    <td align='center'>A&nbsp;floating&nbsp;point&nbsp;number</td>
+    <td align='center'>1800</td></tr>
+<tr><td>GeoMaxExtSecs</td>
+    <td>Maximum extrapolation time in seconds for geotagging.  Geotagging fails
+    if the Geotime value lies outside a GPS track by a number of seconds greater
+    than this.  Otherwise, the coordinates of the nearest fix are taken.</td>
+    <td align='center'>A&nbsp;floating&nbsp;point&nbsp;number</td>
+    <td align='center'>1800</td></tr>
+<tr><td>GeoMaxHDOP</td>
+    <td>Maximum Horizontal (2D) Dilution Of Precision for geotagging.  GPS fixes are
+    ignored if the HDOP is greater than this.</td>
+    <td align='center'>A&nbsp;floating&nbsp;point&nbsp;number, or undef to disable</td>
+    <td align='center'>undef</td></tr>
+<tr><td>GeoMaxPDOP</td>
+    <td>Maximum Position (3D) Dilution Of Precision for geotagging.  GPS fixes are
+    ignored if the PDOP is greater than this.</td>
+    <td align='center'>A&nbsp;floating&nbsp;point&nbsp;number, or undef to disable</td>
+    <td align='center'>undef</td></tr>
+<tr><td>GeoMinSats</td>
+    <td>Minimum number of satellites for geotagging.  GPS fixes are ignored if the
+    number of acquired satellites is less than this.</td>
+    <td align='center'>A positive integer, or undef to disable</td>
+    <td align='center'>undef</td></tr>
+</table></blockquote>
+
+<a name="Orient"></a>
+<h3>Orientation</h3>
+
+<p>ExifTool reads orientation information from the PTNTHPR sentence generated by
+some Honeywell digital compasses. This is a proprietary NMEA sentence which
+contains information about heading, pitch and roll angles.  When this
+information is available, the heading is written to GPSImgDirection (and
+GPSImgDirectionRef is set to "T"), but no standard GPS tags exist for pitch and
+roll.  Regardless, ExifTool attempts to write GPSPitch and GPSRoll tags. For
+this information to be stored, appropriate user-defined tags must be created. 
+Below is a simple config file which defines the necessary EXIF GPS tags.
+Corresponding XMP-exif tags may also be created. See the
+<a href="config.html">config file documentation</a> for more information.</p>
+
+<pre>%Image::ExifTool::UserDefined = (
+    'Image::ExifTool::GPS::Main' => {
+        0xd000 => {
+            Name => 'GPSPitch',
+            Writable => 'rational64s',
+        },
+        0xd001 => {
+            Name => 'GPSRoll',
+            Writable => 'rational64s',
+        },
+    },
+);
+1; #end
+</pre>
+
+<a name="Troubleshooting"></a>
+<h3>Troubleshooting</h3>
+
+<a name="TR1"></a>
+<p>1. <b>"No track points found in GPS file"</b></p>
+
+<blockquote>If you see the above message, either exiftool does not yet support
+your track log file format, or your track log does not contain the necessary
+position/timestamp information.  For instance, in KML files each Placemark must
+contain a TimeStamp.  If you believe your track log contains the necessary
+information, please send me a sample file and I will add support for this
+format.</blockquote>
+
+<a name="TR2"></a>
+<p>2. <b>"0 image files updated"</b></p>
+
+<blockquote>If you see this message without any other warning messages, it is
+likely that <code>Geotime</code> didn't get set properly.</blockquote>
+
+<blockquote>Be sure that the necessary date/time tag exists in your image for
+copying to <code>Geotime</code>.  Unless otherwise specified, the required tag
+is <code>DateTimeOriginal</code>.  The following command may be used to list the
+names and values of all available date/time tags in an image:
+
+<pre>exiftool -s -time:all image.jpg
+</pre>
+
+Even if there is no metadata in the image you may be able to set
+<code>Geotime</code> from the filesystem modification date for the image (which
+will appear as <code>FileModifyDate</code> in the output of the above command).
+In this case you may also want to include the <code>-P</code> option to preserve
+the original value of <code>FileModifyDate</code>:
+
+<pre>exiftool -geotag track.gpx "-geotime&lt;filemodifydate" -P image.jpg
+</pre>
+
+Without the <code>-P</code> option, <code>FileModifyDate</code> is set to the
+current date/time when the file is rewritten.</blockquote>
+
+<a name="TR3"></a>
+<p>3. <b>"Warning: Time is too far before track in File:Geotime (ValueConvInv)"</b></p>
+
+<blockquote>If you see a warning like this, you may have a time zone problem,
+or a time synchronization issue.  Keep in mind that GPS times are in UTC, but
+the camera times are typically in your local time zone.</blockquote>
+
+<blockquote>To see more details about what ExifTool is doing, try adding the
+<code>-v2</code> option to your command.  You should then see messages like
+this if the GPS track log was loaded successfully:
+
+<pre>Loaded 372 points from GPS track log file 'my_track.log'
+  GPS track start: 2009:03:30 19:45:25 UTC
+  GPS track end:   2009:04:03 11:16:04 UTC
+</pre>
+
+If the number of points loaded and start/end times seem reasonable, then
+the problem is likely in the time synchronization.  Also printed will be the
+UTC time for the image:
+
+<pre>  Geotime value:   2009:04:03 10:57:01 UTC (local timezone is -05:00)
+</pre>
+
+The "Geotime value" must lie within 1/2 hour of a valid GPS fix in the track log
+for a position to be calculated. (1/2 hour is the default, but this can be
+configured via the geotagging <a href="#Options">Options</a>.)  The time
+calibration relies on proper synchronization between the GPS time and your
+camera's clock.  If a timezone is not specified, the local system time zone (as
+set by the shell's TZ environment variable) is printed in the above message and
+used to convert the <code>Geotime</code> value to UTC.  You should specify the
+timezone for <code>Geotime</code> if your images were taken in a different
+timezone (see <a href="#Examples">Examples</a> above).  If the camera clock was
+wrong, the <code>Geosync</code> tag may be used to apply a time correction, or
+the ExifTool time shift feature may be used to adjust the image times before
+geotagging -- see the <a href="#TP1">Time Synchronization</a> tip below for
+examples.</blockquote>
+
+<a name="Tips"></a>
+<h3>Tips</h3>
+
+<a name="TP1"></a>
+<p>1. <b>Time Synchronization</b></p>
+
+<blockquote>One way to accurately synchronize your images with GPS time is to
+take a picture of the time displayed on your GPS unit while you are out
+shooting.  Then after you download your images you can use this image to
+synchronize the image timestamps for geotagging.  This is done by using an image
+viewer to read the time from the GPS display in the image, and exiftool to
+extract <code>DateTimeOriginal</code> from the file. For example, if the time in
+the GPS display reads 19:32:21 UTC and <code>DateTimeOriginal</code> is
+14:31:49, then for this image the camera clock was 32 seconds slow (assuming
+that the timezone of the camera clock was <span class=nr>-05:00</span>). There
+are two different ways to use this time synchronization to improve your
+geotagging accuracy:
+</blockquote>
+
+<blockquote>A) Use the <code>Geosync</code> tag to specify the time difference
+while geotagging.  Using this technique the existing image timestamps will not
+be corrected, but the <code>GPSTimeStamp</code> tag created by the geotagging
+process will contain the correct GPS time:
+
+<pre>exiftool -geosync=+00:00:32 -geotag my_gps.log C:\Images
+</pre>
+or equivalently,
+<pre>exiftool -geosync=19:32:21Z@14:31:49-05:00 -geotag my_gps.log C:\Images
+</pre>
+
+<i class=lt>(Note that this technique may also be used for a more advanced time
+drift correction.  See the <a href='#geosync'>Geosync section above</a> for
+details)</i></blockquote>
+
+<blockquote>B) First fix the image timestamps by shifting them to synchronize
+with GPS time, then geotag using the corrected timestamps:
+
+<pre>exiftool -alldates+=00:00:32 C:\Images
+exiftool -geotag my_gps.log C:\Images
+</pre>
+
+Both examples above assume that your track log file (<code>my_gps.log</code>)
+is in the current directory, that the images were downloaded to the
+<code>C:\Images</code> directory, and that the computer and camera clocks are
+in the same timezone.</blockquote>
+
+<hr>
+<a name="Inverse"></a>
+<h2>Inverse Geotagging</h2>
+
+<p>The <code>-p</code> option may be used to output files in any number of formats.
+This section gives examples for creating GPX and KML output files from a set of
+geotagged images, or from a geotagged video file.  (But note that the
+<code>-ee</code> option must be added to the commands below to extract the full
+track from a video file, and currently only M2TS videos are supported for this
+feature.)</p>
+
+<a name="GPX"></a>
+<h4>Creating a GPX track log</h4>
+
+<p>The following print format file may be used to generate a GPX track log from
+one or more geotagged images:</p>
+
+<pre>#------------------------------------------------------------------------------
+# File:         gpx.fmt
+#
+# Description:  Example ExifTool print format file for generating GPX track log
+#
+# Usage:        exiftool -p gpx.fmt -d %Y-%m-%dT%H:%M:%SZ FILE [...] > out.gpx
+#
+# Requires:     ExifTool version 8.10 or later
+#
+# Revisions:    2010/02/05 - P. Harvey created
+#
+# Notes:     1) All input files must contain GPSLatitude and GPSLongitude.
+#            2) The -fileOrder option may be used to control the order of the
+#               generated track points.
+#------------------------------------------------------------------------------
+#[HEAD]&lt;?xml version="1.0" encoding="utf-8"?&gt;
+#[HEAD]&lt;gpx version="1.0"
+#[HEAD] creator="ExifTool $ExifToolVersion"
+#[HEAD] xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+#[HEAD] xmlns="http://www.topografix.com/GPX/1/0"
+#[HEAD] xsi:schemaLocation="http://www.topografix.com/GPX/1/0 http://www.topografix.com/GPX/1/0/gpx.xsd"&gt;
+#[HEAD]&lt;trk&gt;
+#[HEAD]&lt;number&gt;1&lt;/number&gt;
+#[HEAD]&lt;trkseg&gt;
+#[BODY]&lt;trkpt lat="$gpslatitude#" lon="$gpslongitude#"&gt;
+#[BODY]  &lt;ele&gt;$gpsaltitude#&lt;/ele&gt;
+#[BODY]  &lt;time&gt;$gpsdatetime&lt;/time&gt;
+#[BODY]&lt;/trkpt&gt;
+#[TAIL]&lt;/trkseg&gt;
+#[TAIL]&lt;/trk&gt;
+#[TAIL]&lt;/gpx&gt;
+</pre>
+
+<p>This example assumes that the <code>GPSLatitude</code>,
+<code>GPSLongitude</code>, <code>GPSAltitude</code> and <code>GPSDateTime</code>
+tags are all available in each processed <i>FILE</i>.  Warnings will be
+generated for missing tags.  The output GPX format will invalid if any
+<code>GPSLatitude</code> or <code>GPSLongitude</code> tags are missing, but will
+be OK for missing <code>GPSAltitude</code> or <code>GPSDateTime</code> tags.</p>
+
+<p>Note that the order of track points in the output GPX file will be the same
+as the order of processing the input files, which may not be chronological
+depending on how the files are named.  The <code>-fileOrder</code> option may be
+used to force processing of files in a particular order.  For example, the
+following command processes files in order of increasing <code>GPSDateTime</code>:
+</p>
+
+<pre>exiftool -fileOrder gpsdatetime -p gpx.fmt -d %Y-%m-%dT%H:%M:%SZ /Users/Phil/Pictures > out.gpx
+</pre>
+
+<p>Since no directory was specified for <code>gpx.fmt</code>, this file must
+exist in the current directory when the above command is executed. (If the
+<code>gpx.fmt</code> file can't be found then the <code>-p</code> argument is
+interpreted as a string instead of a file name, and the text
+"<code>gpx.fmt</code>" is sent to the output, which isn't what we want.)</p>
+
+<p>The <code>-if</code> option may be added to ensure that only files containing
+GPS information are processed.  For example, the following command creates
+"<code>out.gpx</code>" in the current directory from all pictures containing
+<code>GPSDateTime</code> information in directory "<code>pics</code>" and its
+sub-directories:</p>
+
+<pre>exiftool -r -if '$gpsdatetime' -fileOrder gpsdatetime -p gpx.fmt -d %Y-%m-%dT%H:%M:%SZ pics > out.gpx
+</pre>
+
+<p>Note:  In Windows, double quotes (<code>"</code>) must be used instead of
+single quotes (<code>'</code>) around the <code>-if</code> argument above.</p>
+
+<p>The "fmt_files" directory of the full exiftool distribution contains this
+sample format file ("gpx.fmt") as well as a sample which creates GPX waypoints
+with pictures ("gpx_wpt.fmt").</p>
+
+<a name="KML"></a>
+<h4>Creating a Google Earth KML file</h4>
+
+<p>Below is an example of a print format file which generates a Google Earth KML
+file from a collection of geotagged images:</p>
+
+<pre>#------------------------------------------------------------------------------
+# File:         kml.fmt
+#
+# Description:  Example ExifTool print format file for generating a
+#               Google Earth KML file from a collection of geotagged images
+#
+# Usage:        exiftool -p kml.fmt FILE [...] > out.kml
+#
+# Requires:     ExifTool version 8.10 or later
+#
+# Revisions:    2010/02/05 - P. Harvey created
+#               2013/02/05 - PH Fixed camera icon to work with new Google Earth
+#
+# Notes:     1) All input files must contain GPSLatitude and GPSLongitude.
+#            2) For Google Earth to be able to find the images, the input
+#               images must be specified using relative paths, and "out.kml"
+#               must stay in the same directory as where the command was run.
+#            3) Google Earth is picky about the case of the image file extension,
+#               and may not be able to display the image if an upper-case
+#               extension is used.
+#            4) The -fileOrder option may be used to control the order of the
+#               generated placemarks.
+#------------------------------------------------------------------------------
+#[HEAD]&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+#[HEAD]&lt;kml xmlns="http://earth.google.com/kml/2.0"&gt;
+#[HEAD]  &lt;Document&gt;
+#[HEAD]    &lt;name&gt;My Photos&lt;/name&gt;
+#[HEAD]    &lt;open&gt;1&lt;/open&gt;
+#[HEAD]    &lt;Style id="Photo"&gt;
+#[HEAD]      &lt;IconStyle&gt;
+#[HEAD]        &lt;Icon&gt;
+#[HEAD]          &lt;href&gt;http://maps.google.com/mapfiles/kml/pal4/icon38.png&lt;/href&gt;
+#[HEAD]          &lt;scale&gt;1.0&lt;/scale&gt;
+#[HEAD]        &lt;/Icon&gt;
+#[HEAD]      &lt;/IconStyle&gt;
+#[HEAD]    &lt;/Style&gt;
+#[HEAD]    &lt;Folder&gt;
+#[HEAD]      &lt;name&gt;Waypoints&lt;/name&gt;
+#[HEAD]      &lt;open&gt;0&lt;/open&gt;
+#[BODY]      &lt;Placemark&gt;
+#[BODY]        &lt;description&gt;&lt;![CDATA[&lt;br/&gt;&lt;table&gt;&lt;tr&gt;&lt;td&gt;
+#[BODY]        &lt;img src='$directory/$filename'
+#[BODY]          width='$imagewidth' height='$imageheight'&gt;
+#[BODY]        &lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;]]&gt;&lt;/description&gt;
+#[BODY]        &lt;Snippet/&gt;
+#[BODY]        &lt;name&gt;$filename&lt;/name&gt;
+#[BODY]        &lt;styleUrl&gt;#Photo&lt;/styleUrl&gt;
+#[BODY]        &lt;Point&gt;
+#[BODY]          &lt;altitudeMode&gt;clampedToGround&lt;/altitudeMode&gt;
+#[BODY]          &lt;coordinates&gt;$gpslongitude#,$gpslatitude#,0&lt;/coordinates&gt;
+#[BODY]        &lt;/Point&gt;
+#[BODY]      &lt;/Placemark&gt;
+#[TAIL]    &lt;/Folder&gt;
+#[TAIL]  &lt;/Document&gt;
+#[TAIL]&lt;/kml&gt;
+</pre>
+
+<p>This example print format file is included in the "fmt_files" directory of
+the full ExifTool distribution.</p>
+
+<hr>
+<i>Created Apr. 2, 2009</i><br>
+<i>Last revised May 14, 2014</i>
+<p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
+</body>
+</html>

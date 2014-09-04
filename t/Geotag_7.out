@@ -1,0 +1,53 @@
+Added Geosync point:
+  GPS time stamp:  2010:01:05 07:00:00.000 UTC
+  Image date/time: 2001:08:01 14:00:00.000 UTC
+Writing File:Geosync
+Added Geosync point:
+  GPS time stamp:  2010:01:05 09:01:00.000 UTC
+  Image date/time: 2001:08:01 16:00:00.000 UTC
+Writing File:Geosync
+Loaded 10 points from IGC-format GPS track log file 't/images/Geotag.igc'
+  GPS track start: 2010:01:05 07:23:15.000 UTC
+  GPS track end:   2010:01:05 08:52:56.000 UTC
+Writing File:Geotag
+  Geotime value:   2010:01:05 07:57:51.692 UTC (incl. Geosync offset of +266000428.692 sec)
+Writing MIE-GPS:GPSLatitude
+Writing XMP-exif:GPSLatitude if tag exists
+Writing GPS:GPSLatitude
+Writing MIE-GPS:GPSLongitude
+Writing XMP-exif:GPSLongitude if tag exists
+Writing GPS:GPSLongitude
+Writing MIE-GPS:GPSAltitude
+Writing XMP-exif:GPSAltitude if tag exists
+Writing GPS:GPSAltitude
+Writing XMP-exif:GPSAltitudeRef if tag exists
+Writing GPS:GPSAltitudeRef
+Writing GPS:GPSLatitudeRef
+Writing GPS:GPSLongitudeRef
+Writing GPS:GPSDateStamp
+Writing GPS:GPSTimeStamp
+Writing XMP-exif:GPSDateTime if tag exists
+Rewriting t/images/Writer.jpg...
+  Editing tags in: APP0 APP1 File GPS IFD0 JFIF MIE-GPS XMP 
+  Creating tags in: APP1 File GPS IFD0 MIE-GPS 
+Creating APP1:
+  Creating IFD0
+  ExifByteOrder = MM
+    + IFD0:XResolution = '72' (mandatory)
+    + IFD0:YResolution = '72' (mandatory)
+    + IFD0:ResolutionUnit = '2' (mandatory)
+    + IFD0:YCbCrPositioning = '1' (mandatory)
+  Creating GPS
+    + GPS:GPSVersionID = '2 3 0 0' (mandatory)
+    + GPS:GPSLatitudeRef = 'N'
+    + GPS:GPSLatitude = '49 10 45.9657779460145'
+    + GPS:GPSLongitudeRef = 'E'
+    + GPS:GPSLongitude = '6 51 35.6260862642929'
+    + GPS:GPSAltitudeRef = '0'
+    + GPS:GPSAltitude = '848.896982535614'
+    + GPS:GPSTimeStamp = '07 57 51.69167'
+    + GPS:GPSDateStamp = '2010:01:05'
+JPEG DQT (130 bytes):
+JPEG SOF0:
+JPEG DHT (73 bytes):
+JPEG SOS

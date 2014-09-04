@@ -1,0 +1,232 @@
+#------------------------------------------------------------------------------
+# File:         pp_build_exe.args
+#
+# Description:  Arguments for building stand-alone Windows executable
+#
+# Revisions:    2006-11-22 - P. Harvey Created
+#
+# Requires:     The PAR (Perl Archive) module must be installed
+#
+# Checklist:    [now automated by "publish_windows" script]
+#
+#            1) Build tag lookup: "./build_tag_lookup".
+#            2) Set exiftool version number in "-T" and --info lines below.
+#            3) Add any new modules to the list below.
+#            4) Make sure "windows_exiftool" is up to date.
+#            5) Back up "exiftool" and "cp windows_exiftool exiftool".
+#            6) In a "cmd.exe" window, type "pp @pp_build_exe.args".
+#            7) Change back to Unix shell and restore original "exiftool".
+#            8) Rename "exiftool.exe" to "exiftool(-k).exe".
+#            9) Create a .zip archive: "zip exiftool-#.##.zip exiftool\(-k\).exe".
+#           10) Copy zip archive to web servers.
+#           11) Update zip file version in link and text of html/index.html.
+#------------------------------------------------------------------------------
+-T exiftool-9.70
+--info=FileVersion=9.7.0.0
+--info=ProductVersion=9.7.0.0
+"--info=Build Date=2014:09:03 07:37:55"
+"--info=Bundled Perl Version=ActivePerl 5.8.7"
+"--info=LegalCopyright=Copyright (c) 2003-2014, Phil Harvey"
+"--info=ProductName=ExifTool"
+"--info=Comments=ExifTool EXE for Windows"
+"--info=Home Page=http://owl.phy.queensu.ca/~phil/exiftool/"
+"--info=CompanyName=Phil Harvey"
+"--info=OriginalFilename=exiftool(-k).exe"
+"--info=InternalName=ExifTool"
+"--info=FileDescription=Read and Write meta information"
+-o exiftool.exe -I lib
+-M Compress::Zlib
+-M Digest::MD5
+-M Digest::SHA
+-M Archive::Zip
+-M Win32::API
+-M Win32API::File::Time
+-M Image::ExifTool::AES
+-M Image::ExifTool::AFCP
+-M Image::ExifTool::AIFF
+-M Image::ExifTool::APE
+-M Image::ExifTool::APP12
+-M Image::ExifTool::ASF
+-M Image::ExifTool::Apple
+-M Image::ExifTool::BMP
+-M Image::ExifTool::BZZ
+-M Image::ExifTool::BigTIFF
+-M Image::ExifTool::BuildTagLookup
+-M Image::ExifTool::Canon
+-M Image::ExifTool::CanonCustom
+-M Image::ExifTool::CanonRaw
+-M Image::ExifTool::CanonVRD
+-M Image::ExifTool::CaptureOne
+-M Image::ExifTool::Casio
+-M Image::ExifTool::Charset
+-M Image::ExifTool::Charset::Arabic
+-M Image::ExifTool::Charset::Baltic
+-M Image::ExifTool::Charset::Cyrillic
+-M Image::ExifTool::Charset::Greek
+-M Image::ExifTool::Charset::Hebrew
+-M Image::ExifTool::Charset::JIS
+-M Image::ExifTool::Charset::Latin
+-M Image::ExifTool::Charset::Latin2
+-M Image::ExifTool::Charset::MacArabic
+-M Image::ExifTool::Charset::MacChineseCN
+-M Image::ExifTool::Charset::MacChineseTW
+-M Image::ExifTool::Charset::MacCroatian
+-M Image::ExifTool::Charset::MacCyrillic
+-M Image::ExifTool::Charset::MacGreek
+-M Image::ExifTool::Charset::MacHebrew
+-M Image::ExifTool::Charset::MacIceland
+-M Image::ExifTool::Charset::MacJapanese
+-M Image::ExifTool::Charset::MacKorean
+-M Image::ExifTool::Charset::MacLatin2
+-M Image::ExifTool::Charset::MacRSymbol
+-M Image::ExifTool::Charset::MacRoman
+-M Image::ExifTool::Charset::MacRomanian
+-M Image::ExifTool::Charset::MacThai
+-M Image::ExifTool::Charset::MacTurkish
+-M Image::ExifTool::Charset::PDFDoc
+-M Image::ExifTool::Charset::ShiftJIS
+-M Image::ExifTool::Charset::Symbol
+-M Image::ExifTool::Charset::Thai
+-M Image::ExifTool::Charset::Turkish
+-M Image::ExifTool::Charset::Vietnam
+-M Image::ExifTool::DICOM
+-M Image::ExifTool::DNG
+-M Image::ExifTool::DPX
+-M Image::ExifTool::DV
+-M Image::ExifTool::DarwinCore
+-M Image::ExifTool::DjVu
+-M Image::ExifTool::EXE
+-M Image::ExifTool::Exif
+-M Image::ExifTool::Fixup
+-M Image::ExifTool::FLAC
+-M Image::ExifTool::Flash
+-M Image::ExifTool::FlashPix
+-M Image::ExifTool::FLIR
+-M Image::ExifTool::Font
+-M Image::ExifTool::FotoStation
+-M Image::ExifTool::FujiFilm
+-M Image::ExifTool::GE
+-M Image::ExifTool::Geotag
+-M Image::ExifTool::GeoTiff
+-M Image::ExifTool::GIF
+-M Image::ExifTool::GIMP
+-M Image::ExifTool::GPS
+-M Image::ExifTool::H264
+-M Image::ExifTool::HP
+-M Image::ExifTool::HTML
+-M Image::ExifTool::HtmlDump
+-M Image::ExifTool::Import
+-M Image::ExifTool::InDesign
+-M Image::ExifTool::ICC_Profile
+-M Image::ExifTool::ID3
+-M Image::ExifTool::IPTC
+-M Image::ExifTool::ITC
+-M Image::ExifTool::JPEG
+-M Image::ExifTool::JPEGDigest
+-M Image::ExifTool::Jpeg2000
+-M Image::ExifTool::JVC
+-M Image::ExifTool::LNK
+-M Image::ExifTool::Kodak
+-M Image::ExifTool::KyoceraRaw
+-M Image::ExifTool::Lang::cs
+-M Image::ExifTool::Lang::de
+-M Image::ExifTool::Lang::en_ca
+-M Image::ExifTool::Lang::en_gb
+-M Image::ExifTool::Lang::es
+-M Image::ExifTool::Lang::fi
+-M Image::ExifTool::Lang::fr
+-M Image::ExifTool::Lang::it
+-M Image::ExifTool::Lang::ja
+-M Image::ExifTool::Lang::ko
+-M Image::ExifTool::Lang::nl
+-M Image::ExifTool::Lang::pl
+-M Image::ExifTool::Lang::ru
+-M Image::ExifTool::Lang::sv
+-M Image::ExifTool::Lang::tr
+-M Image::ExifTool::Lang::zh_cn
+-M Image::ExifTool::Lang::zh_tw
+-M Image::ExifTool::Leaf
+-M Image::ExifTool::Lytro
+-M Image::ExifTool::M2TS
+-M Image::ExifTool::MakerNotes
+-M Image::ExifTool::Matroska
+-M Image::ExifTool::Microsoft
+-M Image::ExifTool::MIE
+-M Image::ExifTool::MIFF
+-M Image::ExifTool::Minolta
+-M Image::ExifTool::MinoltaRaw
+-M Image::ExifTool::MNG
+-M Image::ExifTool::MPC
+-M Image::ExifTool::MPEG
+-M Image::ExifTool::MPF
+-M Image::ExifTool::MWG
+-M Image::ExifTool::MXF
+-M Image::ExifTool::Nikon
+-M Image::ExifTool::NikonCapture
+-M Image::ExifTool::NikonCustom
+-M Image::ExifTool::Nintendo
+-M Image::ExifTool::Ogg
+-M Image::ExifTool::Olympus
+-M Image::ExifTool::OOXML
+-M Image::ExifTool::OpenEXR
+-M Image::ExifTool::Palm
+-M Image::ExifTool::Panasonic
+-M Image::ExifTool::PanasonicRaw
+-M Image::ExifTool::PDF
+-M Image::ExifTool::Pentax
+-M Image::ExifTool::PhaseOne
+-M Image::ExifTool::PhotoCD
+-M Image::ExifTool::PhotoMechanic
+-M Image::ExifTool::Photoshop
+-M Image::ExifTool::PGF
+-M Image::ExifTool::PICT
+-M Image::ExifTool::PLIST
+-M Image::ExifTool::PNG
+-M Image::ExifTool::PostScript
+-M Image::ExifTool::PPM
+-M Image::ExifTool::PrintIM
+-M Image::ExifTool::PSP
+-M Image::ExifTool::Qualcomm
+-M Image::ExifTool::QuickTime
+-M Image::ExifTool::Radiance
+-M Image::ExifTool::Rawzor
+-M Image::ExifTool::Real
+-M Image::ExifTool::Reconyx
+-M Image::ExifTool::Ricoh
+-M Image::ExifTool::RIFF
+-M Image::ExifTool::RSRC
+-M Image::ExifTool::RTF
+-M Image::ExifTool::Samsung
+-M Image::ExifTool::Sanyo
+-M Image::ExifTool::Scalado
+-M Image::ExifTool::Shortcuts
+-M Image::ExifTool::Sigma
+-M Image::ExifTool::SigmaRaw
+-M Image::ExifTool::Sony
+-M Image::ExifTool::SonyIDC
+-M Image::ExifTool::Stim
+-M Image::ExifTool::TagInfoXML
+-M Image::ExifTool::TagLookup
+-M Image::ExifTool::Theora
+-M Image::ExifTool::Torrent
+-M Image::ExifTool::Unknown
+-M Image::ExifTool::Vorbis
+-M Image::ExifTool::XMP
+-M Image::ExifTool::ZIP
+-M Image::ExifTool::iWork
+-M File::RandomAccess
+-M Image/ExifTool/Shift.pl
+-M Image/ExifTool/WriteCanonRaw.pl
+-M Image/ExifTool/WriteExif.pl
+-M Image/ExifTool/WriteIPTC.pl
+-M Image/ExifTool/WritePDF.pl
+-M Image/ExifTool/WritePhotoshop.pl
+-M Image/ExifTool/WritePNG.pl
+-M Image/ExifTool/WritePostScript.pl
+-M Image/ExifTool/WriteQuickTime.pl
+-M Image/ExifTool/Writer.pl
+-M Image/ExifTool/WriteXMP.pl
+-M Image/ExifTool/XMP2.pl
+-M Image/ExifTool/XMPStruct.pl
+exiftool
+# end

@@ -1,0 +1,143 @@
+#!/usr/bin/perl -w
+#
+# File:         scripts/validate
+#
+# Description:  Run various code validation tests before exiftool release
+#
+# Created:      2010/01/23 - P. Harvey
+#
+use strict;
+
+BEGIN { push @INC, 'lib' }
+
+use Image::ExifTool;
+use Image::ExifTool::Charset;
+
+my $err = 0;
+
+sub Warn(@)
+{
+    warn @_;
+    $err = 1;
+}
+
+# check for test code
+my $tmp = `grep -rw TEST lib exiftool windows_exiftool`;
+if ($tmp) {
+    Warn("Test code found!:\n$tmp");
+}
+
+# check for other exiftool distributions in this directory
+$tmp = `ls -d Image-ExifTool-?.?? 2> /dev/null`;
+if ($tmp) {
+    Warn("Another exiftool release exists!:\n$tmp");
+}
+
+# check for "use x" in text comments (breaks perl2exe)
+$tmp = `grep -rE '^[ ]+use ' exiftool lib | grep -v ';'`;
+if ($tmp) {
+    Warn("Possible use of 'use' in comment (breaks perl2exe)!:\n$tmp");
+}
+
+# check for EncodeExifText used in PrintConvInv (must be RawConvInv)
+$tmp = `grep -r EncodeExifText lib | grep -E '(PrintConvInv|ValueConvInv)'`;
+if ($tmp) {
+    Warn("EncodeExifText should only be used in RawConvInv!:\n$tmp");
+}
+
+# check for use of \G without /g (problem with Perl 5.00505)
+$tmp = `grep -r '\\\\G' exiftool lib | grep ~ | grep -vE '(/s?g|\\}s?g)'`;
+if ($tmp) {
+    Warn("USING \\G WITHOUT /g IN REGULAR EXPRESSION!:\n$tmp");
+}
+
+# check for "defined HASH"
+$tmp = `grep -r "defined %" lib exiftool windows_exiftool`;
+if ($tmp) {
+    Warn("$tmp^^^ Defined HASH is deprecated in Perl 5.11! ^^^");
+}
+
+#
+# validate character sets
+#
+my %test;
+foreach (keys %Image::ExifTool::Charset::csType) {
+    my $csType = $Image::ExifTool::Charset::csType{$_};
+    # only type 0x100 and 0x101 should be made available for public consumption,
+    # other types are used only internally.  (0x080 types are not made public
+    # because the conversion routines are usually not called unless the string
+    # contains a codepoint greater than 0x7f)
+    $test{$_} = 1 if $csType <= 0x101 and $_ ne 'ASCII';
+    my $module = "Image::ExifTool::Charset::$_";
+    unless (eval "require $module") {
+        $csType & 0x001 and Warn("Error loading Charset $_\n");
+        next;
+    }
+    no strict 'refs';
+    my $conv = \%$module;
+    use strict 'refs';
+    my $type = 0x001;                               # has a lookup table
+    my $char;
+    foreach $char (keys %$conv) {
+        $char < 0x80 and $type |= 0x080;            # remaps chars < 0x80
+        $type |= ($char < 0x100 ? 0x100 : 0x200);   # byte width
+        my $to = $$conv{$char};
+        ref $to and $type |= 0x800, next;           # variable width or multi-char
+    }
+    # variable-width types are 0x800
+    if (($type & 0x300) == 0x300 or ($type & 0x300 and $type & 0x800)) {
+        $type &= ~0x300;
+        $type |= 0x800;
+    }
+    # known 2-byte fixed-width types which map chars < 0x100
+    if (/^(Symbol)$/) {
+        $type &= ~0xf00;
+        $type |= 0x200;
+    }
+    $type |= 0x002 if $_ eq 'MacArabic' or $type > 0x401;   # inverse not supported
+    if ($type != $csType) {
+        my $str = sprintf("0x%.3x should be 0x%.3x", $csType , $type);
+        Warn("Incorrect csType for Charset $_ ($str)\n");
+    }
+}
+foreach (values %Image::ExifTool::charsetName) {
+    $test{$_} or Warn("Charset $_ is not defined in Charset.pm or not valid for API\n");
+    $test{$_} = 2;
+}
+foreach (keys %test) {
+    $test{$_} == 2 or Warn("Charset $_ not defined in %Image::ExifTool::charsetName\n");
+}
+
+#
+# check to be sure Minolta.pm and Sony.pm lens lists are synchronized
+#
+
+my %lens;
+foreach (split /\n/, `grep "'Sony E " lib/Image/ExifTool/Minolta.pm`) {
+    next if /^\s*#/;
+    next unless /'([^']+)',/;
+    if ($lens{$1}) {
+        Warn("Duplicate lens in Minolta.pm: $1\n");
+    } else {
+        $lens{$1} = 1;
+    }
+}
+foreach (split /\n/, `grep "'Sony E " lib/Image/ExifTool/Sony.pm`) {
+    # (commented out lenses in Sony.pm are OK)
+    # next if /^\s*#/;
+    next unless /'([^']+)',/;
+    if (not $lens{$1}) {
+        Warn("Missing lens in Sony.pm: $1\n");
+    } elsif ($lens{$1} == 2) {
+        Warn("Duplicate lens in Sony.pm: $1\n");
+    } else {
+        $lens{$1} = 2;
+    }
+}
+foreach (sort keys %lens) {
+    $lens{$_} != 2 and Warn("Missing lens in Minolta.pm: $_\n");
+}
+
+exit $err;
+
+# end

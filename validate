@@ -54,7 +54,7 @@ if ($tmp) {
 # check for "defined HASH"
 $tmp = `grep -r "defined %" lib exiftool windows_exiftool`;
 if ($tmp) {
-    Warn("$tmp^^^ Defined HASH is deprecated in Perl 5.11! ^^^");
+    Warn("$tmp^^^ Defined HASH is deprecated in Perl 5.11! ^^^\n");
 }
 
 #

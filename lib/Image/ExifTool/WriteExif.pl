@@ -440,6 +440,7 @@ my %writeTable = (
         Shift => 'Time',
         PrintConvInv => '$self->InverseDateTime($val,0)',
     },
+    0x9009 => 'undef',      # GooglePlusUploadCode
     0x9101 => {             # ComponentsConfiguration
         Protected => 1,
         Writable => 'undef',

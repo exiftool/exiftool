@@ -13,6 +13,96 @@
 <p><b>Note:</b> This page gives the history of older exiftool versions.  See
 <a href="history.html">history.html</a> for the recent history.</p>
 
+<a name='v9.52'><b>Feb. 17, 2014 - Version 9.52</b></a>
+<ul>
+<li>Fixed bug introduced in 9.44 which resulted in incorrect maker note offsets
+    when copying maker notes from DNG images of some Pentax models
+</ul>
+
+<a name='v9.51'><b>Feb. 15, 2014 - Version 9.51</b></a>
+<ul>
+<li>Added a number of new CanonModelID values
+<li>Added a new Sony/Minolta LensType (thanks Jos Roost)
+<li>Added a new Panasonic BurstMode
+<li>Added a new Pentax LensType
+<li>Added new ColorSpaceTags shortcut
+<li>Decode a number of new PanasonicRaw tags (thanks LibRaw)
+<li>Decode ColorData tags for the new Canon EOS 1200D
+<li>Improved Sony maker note decoding for some newer models (thanks Jos Roost)
+<li>Fixed conversion of XMP:LensID for Pentax lenses on Ricoh-branded cameras
+</ul>
+
+<a name='v9.50'><b>Feb. 8, 2014 - Version 9.50</b></a>
+<ul>
+<li>Added support for Exiv2 EXV metadata files
+<li>Added ability to read/write/copy GeoTiff tags as a block
+<li>Added ability to combine -b with -j to write base64-encoded binary data in
+    JSON output format
+<li>Added a new Nikon LensID
+<li>Added a new Sony/Minolta LensType (thanks Jos Roost)
+<li>Added new Extra ProcessingTime tag
+<li>Added a new Olympus CameraType
+<li>Added header signature to .EXIF files
+<li>Decode a new Olympus tag (thanks LibRaw)
+<li>Improved conversion of some Canon RecordMode values
+<li>Improved decoding of tags for Hasselblad Stellar (thanks Jos Roost)
+<li>Fixed -htmlDump offsets for information extracted from some embedded images
+<li>Fixed hemisphere problem in Composite GPS tags derived from
+    QuickTime:LocationInformation
+<li>API Changes:
+    <ul>
+    <li>Option names are now case insensitive
+    </ul>
+</ul>
+
+<a name='v9.49'><b>Feb. 1, 2014 - Version 9.49</b></a>
+<ul>
+<li>Added new Olympus and Samsung LensType values, and fixed an Olympus lens
+    name (thanks Niels Kristian Bech Jensen)
+<li>Added another Polish tag translation (thanks Kacper Perschke)
+<li>Added a new Panasonic ColorEffect value
+<li>Decode a new FujiFilm tag (thanks LibRaw)
+<li>Adjusted scaling factor for H264 ExposureTime values (thanks Francois)
+</ul>
+
+<a name='v9.48'><b>Jan. 25, 2014 - Version 9.48</b></a>
+<ul>
+<li>Added a new GeoTiff tag
+<li>Added a couple of new Canon LensType values
+<li>Added a few new XMP DarwinCore tags
+<li>Updated Sony MakerNotes for the ILCE-5000 (thanks Jos Roost)
+<li>Improved Polish translations (thanks Kacper Perschke)
+<li>Fixed problem writing RicohSubdirIFD in GR images
+<li>Fixed runtime error when writing PNG image with a TIFF-format EXIF profile
+</ul>
+
+<a name='v9.47'><b>Jan. 18, 2014 - Version 9.47</b></a>
+<ul>
+<li>Added read support for JPEG-HDR APP11 information
+<li>Added read support for Media Jukebox APP9 information
+<li>Added a new Olympus LensType (thanks Niels Kristian Bech Jensen)
+<li>Added a few new Nikon LensID's (thanks Robert Rottmerhusen)
+<li>Added a new Minolta/Sony LensType and fixed some Tamron lens names (thanks
+    Jos Roost)
+<li>Decode more FLIR tags (thanks Tomas)
+<li>Patched for quirk in Kodak PixPro AZ362 maker notes
+</ul>
+
+<a name='v9.46'><b>Jan. 11, 2014 - Version 9.46</b></a> <span class=grn>(production release)</span>
+<ul>
+<li>Added a few Nikon lenses (thanks Niels for two)
+<li>Added a few new XMP-xmpDM tags (thanks Mats Peterson)
+<li>Added a new Pentax DriveMode (thanks Doug O'Brien)
+<li>Added a new Olympus lens (thanks Niels Kristian Bech Jensen)
+<li>Decode a number of new QuickTime tags
+<li>Decode a few new Canon filter tags
+<li>Improved -d option to properly handle time zones with %s and %z
+<li>Improved conversions for Panasonic Composite AdvancedSceneMode
+<li>Changed a few Tamron lens strings (thanks Niels Kristian Bech Jensen)
+<li>Patched to avoid round-off errors in seconds of filesystem time tags
+<li>Fixed extraction of CompressorID for some MOV videos
+</ul>
+
 <a name='v9.45'><b>Dec. 21, 2013 - Version 9.45</b></a>
 <ul>
 <li>Added details about movie data offset in MOV verbose dump

@@ -713,6 +713,9 @@ sub WritePDF($$)
             Write($outfile, $buff) or $rtn = -1;
         }
     }
+    if ($rtn > 0 and $$et{CHANGED} and ($$et{DEL_GROUP}{PDF} or $$et{DEL_GROUP}{XMP})) {
+        $et->Warn('ExifTool PDF edits are reversible. Deleted tags may be recovered!', 1);
+    }
     undef $newTool;
     undef %capture;
     return $rtn;

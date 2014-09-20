@@ -19,7 +19,7 @@ use Image::ExifTool qw(:DataAccess);
 use Image::ExifTool::Canon;
 use Image::ExifTool::Exif;
 
-$VERSION = '1.49';
+$VERSION = '1.50';
 
 sub ProcessCanonCustom($$$);
 sub ProcessCanonCustom2($$$);
@@ -1472,12 +1472,12 @@ my %convPFn = ( PrintConv => \&ConvertPfn, PrintConvInv => \&ConvertPfnInv );
         },
     ],
     0x0110 => { # new for 1DmkIV
-        Name => 'FEMicroadjustment',
+        Name => 'AEMicroadjustment',
         Count => 3,
         PrintConv => [ \%disableEnable ],
     },
     0x0111 => { # new for 1DmkIV
-        Name => 'AEMicroadjustment',
+        Name => 'FEMicroadjustment',
         Count => 3,
         PrintConv => [ \%disableEnable ],
     },
@@ -1842,7 +1842,11 @@ my %convPFn = ( PrintConv => \&ConvertPfn, PrintConvInv => \&ConvertPfnInv );
                 2 => 'Register',
                 3 => 'Select AF-modes',
             },
-            # must decode 2nd value
+            'sprintf("Flags 0x%x",$val)', # (70D=Manual 1pt,Manual zone,Auto 19pt)
+        ],
+        PrintConvInv => [
+            undef,
+            '$val=~/0x([\dA-F]+)/i ? hex($1) : undef',
         ],
     },
     0x0513 => { # new for 7D
@@ -1893,6 +1897,13 @@ my %convPFn = ( PrintConv => \&ConvertPfn, PrintConvInv => \&ConvertPfnInv );
             1 => 'Focus priority',
         },
     },
+    0x051b => { # (70D)
+        Name => 'AFAreaSelectMethod',
+        PrintConv => {
+            0 => 'AF area selection button',
+            1 => 'Main dial',
+        },
+    },
     #### 3b) Drive
     0x060f => {
         Name => 'MirrorLockup',
@@ -1927,6 +1938,18 @@ my %convPFn = ( PrintConv => \&ConvertPfn, PrintConvInv => \&ConvertPfnInv );
         PrintConvInv => [
             undef,
             '$val=~/(\d+)/ ? $1 : 0',
+        ],
+    },
+    0x0612 => { # (1DX)
+        Name => 'RestrictDriveModes',
+        Count => 2,
+        PrintConv => [
+            \%disableEnable,
+            'sprintf("Flags 0x%x",$val)', # (Single,Cont Hi,Cont Lo,Timer 10,Timer 2,Silent,Super Hi)
+        ],
+        PrintConvInv => [
+            undef,
+            '$val=~/0x([\dA-F]+)/i ? hex($1) : undef',
         ],
     },
     #### 4a) Operation
@@ -2101,6 +2124,7 @@ my %convPFn = ( PrintConv => \&ConvertPfn, PrintConvInv => \&ConvertPfnInv );
         PrintConv => {
             0 => 'Rear LCD panel',
             1 => 'LCD monitor',
+            2 => 'Off (disable button)', # (1DX)
         },
     },
     0x0709 => {
@@ -2161,6 +2185,17 @@ my %convPFn = ( PrintConv => \&ConvertPfn, PrintConvInv => \&ConvertPfnInv );
                 2 => 'Multi-controller',
             }},
         ],
+    },
+    0x710 => { # (M)
+        Name => 'TrashButtonFunction',
+        PrintConv => {
+            0 => 'Normal (set center AF point)',
+            1 => 'Depth-of-field preview',
+        },
+    },
+    0x711 => { # (M)
+        Name => 'ShutterReleaseWithoutLens',
+        PrintConv => \%disableEnable,
     },
     #### 4b) Others
     0x080b => [
@@ -2262,6 +2297,13 @@ my %convPFn = ( PrintConv => \&ConvertPfn, PrintConvInv => \&ConvertPfnInv );
         PrintConv => {
             0 => 'Display',
             1 => 'Retain power off status',
+        },
+    },
+    0x0812 => { # (1DX)
+        Name => 'MemoAudioQuality',
+        PrintConv => {
+            0 => 'High (48 kHz)',
+            1 => 'Low (8 kHz)',
         },
     },
     0x0813 => { # new for 5DmkIII

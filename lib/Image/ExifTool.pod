@@ -682,6 +682,14 @@ Flag to extract lists of PrintConv values into arrays instead of joining
 them into a string of values.  The L</ListSep> option specifies the
 separator used when combining values.  Default is 0.
 
+=item ListItem
+
+Return only a specific item from List-type values.  A value of 0 returns the
+first item in the list, 1 return the second item, etc.  Negative indices may
+also be used, with -1 representing the last item in the list.  Applies only
+to the top-level list of nested lists.  Default is undef to return all items
+in the list.
+
 =item ListSep
 
 Separator string used to join lists of PrintConv values when L</List> option
@@ -757,7 +765,7 @@ available for copying.  Default is 0.
 
 =item ScanForXMP
 
-Flag for scan all files (even unrecognized formats) for XMP information
+Flag to scan all files (even unrecognized formats) for XMP information
 unless XMP was already found in the file.  When combined with the FastScan
 option, only unrecognized file types are scanned for XMP.  Default is 0.
 

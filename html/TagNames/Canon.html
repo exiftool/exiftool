@@ -684,6 +684,7 @@
 </tr><tr><td class=r>0x3690000</td><td>= PowerShot ELPH 135 / IXUS 145 / IXY 120</td>
 </tr><tr><td class=r>0x3700000</td><td>= PowerShot ELPH 340 HS / IXUS 265 HS / IXY 630</td>
 </tr><tr><td class=r>0x3710000</td><td>= PowerShot ELPH 150 IS / IXUS 155 / IXY 140</td>
+</tr><tr><td class=r>0x3780000</td><td>= PowerShot G7 X</td>
 </tr><tr><td class=r>0x4040000</td><td>= PowerShot G1</td>
 </tr><tr><td class=r>0x6040000</td><td>= PowerShot S100 / Digital IXUS / IXY Digital</td>
 </tr><tr><td class=r>0x4007d673</td><td>= DC19/DC21/DC22</td>
@@ -748,6 +749,7 @@
 </tr><tr><td class=r>0x80000286</td><td>= EOS Rebel T3i / 600D / Kiss X5</td>
 </tr><tr><td class=r>0x80000287</td><td>= EOS 60D</td>
 </tr><tr><td class=r>0x80000288</td><td>= EOS Rebel T3 / 1100D / Kiss X50</td>
+</tr><tr><td class=r>0x80000289</td><td>= EOS 7D Mark II</td>
 </tr><tr><td class=r>0x80000297</td><td>= WFT-E2 II</td>
 </tr><tr><td class=r>0x80000298</td><td>= WFT-E4 II</td>
 </tr><tr><td class=r>0x80000301</td><td>= EOS Rebel T4i / 650D / Kiss X6i</td>
@@ -7397,6 +7399,11 @@ option is used.</p>
 <td>CameraColorCalibration15?</td>
 <td class=c>int16s[5]</td>
 <td>&nbsp;</td></tr>
+<tr>
+<td class=r title='264 = 0x108'>264</td>
+<td>PerChannelBlackLevel</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='ColorData6'>Canon ColorData6 Tags</a></h2>
@@ -7700,7 +7707,7 @@ option is used.</p>
 </table></td></tr></table></blockquote>
 
 <h2><a name='ColorData7'>Canon ColorData7 Tags</a></h2>
-<p>These tags are used by the EOS 1DX, 5DmkIII, 6D, 100D, 650D, 700D and M.</p>
+<p>These tags are used by the EOS 1DX, 5DmkIII, 6D, 100D, 650D, 700D, M and 7DmkII.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -7710,7 +7717,8 @@ option is used.</p>
 <td class=r title='0 = 0x0'>0</td>
 <td>ColorDataVersion</td>
 <td class=c>int16s</td>
-<td><span class=s>10 = 10 (1DX/5DmkIII/6D/70D/100D/650D/700D/M)</span></td></tr>
+<td><span class=s>10 = 10 (1DX/5DmkIII/6D/70D/100D/650D/700D/M)
+  <br>11 = 11 (7DmkII)</span></td></tr>
 <tr class=b>
 <td class=r title='63 = 0x3f'>63</td>
 <td>WB_RGGBLevelsAsShot</td>
@@ -8047,6 +8055,31 @@ option is used.</p>
 <td>LinearityUpperMargin</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
+<tr>
+<td class=r title='619 = 0x26b'>619</td>
+<td>RawMeasuredRGGB</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='728 = 0x2d8'>728</td>
+<td>PerChannelBlackLevel</td>
+<td class=c>int16u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='732 = 0x2dc'>732</td>
+<td>NormalWhiteLevel</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='733 = 0x2dd'>733</td>
+<td>SpecularWhiteLevel</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='734 = 0x2de'>734</td>
+<td>LinearityUpperMargin</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='ColorDataUnknown'>Canon ColorDataUnknown Tags</a></h2>
@@ -8352,7 +8385,7 @@ SX280.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jul 30, 2014</i>
+<br><i>Last revised Sep 18, 2014</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

@@ -889,8 +889,10 @@ for (;;) {
         next;
     }
     if ($a eq 'listitem') {
-        $listItem = shift;
-        defined $listItem or Warn("Expecting index for -listItem option\n");
+        my $li = shift;
+        defined $li and Image::ExifTool::IsInt($li) or Warn("Expecting integer for -listItem option\n"), next;
+        $mt->Options(ListItem => $li);
+        $listItem = $li;
         next;
     }
     /^(m|ignoreminorerrors)$/i and $mt->Options(IgnoreMinorErrors => 1), next;
@@ -4375,8 +4377,9 @@ OPTIONS
     -listItem *INDEX*
          For list-type tags, this causes only the item with the specified
          index to be extracted. *INDEX* is 0 for the first item in the list.
-         Has no effect when writing or copying tags, in a -if condition, or
-         in combination with structured output options.
+         Negative indices may also be used to reference items from the end
+         of the list. Has no effect on single-valued tags, when writing or
+         copying, or in a -if condition.
 
     -n (--printConv)
          Read and write values as numbers instead of words. By default,

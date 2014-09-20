@@ -1400,6 +1400,10 @@ my %sceneModeUsed = (
     # 0x090d: linear table (ref 3)
     # 0x0c81: some sort of date (manufacture date?) - PH
     # 0x089d => "real" (analogue) ISO values (ref 4)
+    # 0x089e => true analogue ISO used at capture (ref 4)
+    # 0x089f => ISO calibration gain (ref 4)
+    # 0x08a0 => ISO calibration gain table (ref 4)
+    # 0x08a1 => exposure headroom coefficient (ref 4)
     0x0ce5 => { Name => 'FirmwareVersion',  Writable => 'string' },
     # 0x1390: value: "DCSProSLRn" (tone curve name?) - PH
     0x1391 => { Name => 'ToneCurveFileName',Writable => 'string' },

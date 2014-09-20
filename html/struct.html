@@ -21,6 +21,7 @@ li.c { margin-top: 0 }
 <br><a href="#Deleting">Deleting</a>
 <br><a href="#Fields">Field Names</a>
 <br><a href="#Serialize">Serialization</a>
+<br><a href="#Examples">Examples</a>
 <br><a href="#User">User-Defined</a>
 </div>
 <h1 class='up'>Structured Information</h1>
@@ -330,6 +331,84 @@ been added after the last field of each structure.  (Note that a comma may NOT
 be added after the last item in a list because this would be interpreted as an
 additional list item of a zero-length string.)</p>
 
+<a name='Examples'></a>
+<h2>Examples</h2>
+
+<p>Here is an example of an advanced console session showing some commands which
+manipulate a complex list of structures (see the
+<a href="TagNames/XMP.html#iptcExt">XMP-iptcExt tag documentation</a> for details
+about the ArtworkOrObject structure tags used):</p>
+
+<blockquote><table class='box'><tr><td>
+<pre><span class=lt># 1. Create a XMP-iptcExt:ArtworkOrObject structure using flattened tags</span>
+&gt; <span class=code>exiftool -artworktitle="a title" a.xmp</span>
+    1 image files created
+
+<span class=lt># -- Read back as flattened tags (-S is used just to shorten the output)</span>
+&gt; <span class=code>exiftool -xmp-iptcext:all -S a.xmp</span>
+ArtworkTitle: a title
+
+<span class=lt># -- Read back as a structure</span>
+&gt; <span class=code>exiftool -xmp-iptcext:all -S -struct a.xmp</span>
+ArtworkOrObject: [{AOTitle=a title}]
+
+<span class=lt># 2. Write another element to the structure as a flattened tag</span>
+&gt; <span class=code>exiftool -artworkcreator=phil a.xmp</span>
+    1 image files updated
+
+<span class=lt># -- Note that the structure now has a new element</span>
+&gt; <span class=code>exiftool -xmp-iptcext:all -S -struct a.xmp</span>
+ArtworkOrObject: [{AOCreator=[phil],AOTitle=a title}]
+
+<span class=lt># 3. Add another creator using the "+=" operator</span>
+&gt; <span class=code>exiftool -artworkcreator+=joe a.xmp</span>
+    1 image files updated
+
+<span class=lt># -- It was added to the first AOCreator list</span>
+&gt; <span class=code>exiftool -xmp-iptcext:all -S -struct a.xmp</span>
+ArtworkOrObject: [{AOCreator=[phil,joe],AOTitle=a title}]
+
+<span class=lt># 4. Add another artwork title</span>
+&gt; <span class=code>exiftool -artworktitle+="another one" a.xmp</span>
+    1 image files updated
+
+<span class=lt># -- This created a new ArtworkOrObject structure in the list of structures
+# (AOTitle itself is not a list, so a new structure must be created)</span>
+&gt; <span class=code>exiftool -xmp-iptcext:all -S -struct a.xmp</span>
+ArtworkOrObject: [{AOCreator=[phil,joe],AOTitle=a title},{AOTitle=another one}]
+
+<span class=lt># 5. Simply write a different title (do not add with "+=")</span>
+&gt; <span class=code>exiftool -artworktitle="different" a.xmp</span>
+    1 image files updated
+
+<span class=lt># -- This deleted all existing AOTitle elements and wrote back only one
+# (if the second ArtworkOrObject structure had contained more fields, they would have been
+# preserved, and the second structure would still exist, but without an AOTitle element)</span>
+&gt; <span class=code>exiftool -xmp-iptcext:all -S -struct a.xmp</span>
+ArtworkOrObject: [{AOCreator=[phil,joe],AOTitle=different}]
+
+<span class=lt># 6. Add a completely new structure to the list
+(this is very difficult to do properly using flattened tags)</span>
+&gt; <span class=code>exiftool -artworkorobject+="{aotitle=help,aocreator=[paul,ringo]}" a.xmp</span>
+    1 image files updated
+
+<span class=lt># -- The new structure was added with the specified elements</span>
+&gt; <span class=code>exiftool -xmp-iptcext:all -S -struct a.xmp</span>
+ArtworkOrObject: [{AOCreator=[phil,joe],AOTitle=different},{AOCreator=[paul,ringo],AOTitle=help}]
+
+<span class=lt># -- See how the relationships are lost when reading as flattened tags</span>
+&gt; <span class=code>exiftool -xmp-iptcext:all -S a.xmp</span>
+ArtworkCreator: phil, joe, paul, ringo
+ArtworkTitle: different, help
+
+<span class=lt># 7. Delete all structures containing a specific element</span>
+&gt; <span class=code>exiftool -artworkorobject-="{AOCreator=phil}" a.xmp</span>
+    1 image files updated
+
+<span class=lt># -- The ArtworkOrObject list now contains only one structure</span>
+&gt; <span class=code>exiftool -xmp-iptcext:all -S -struct a.xmp</span>
+ArtworkOrObject: [{AOCreator=[paul,ringo],AOTitle=help}]</pre></td></tr></table></blockquote>
+
 <a name='User'></a>
 <h2>User-Defined Structures</h2>
 
@@ -338,7 +417,7 @@ See the NewXMPxxxStruct tag definition in the <a href="config.html#xmp-xxx">XMP-
 examples of the sample config file</a> for more details.</p>
 
 <hr>
-<i>Last revised Apr. 8, 2014</i>
+<i>Last revised Sept. 6, 2014</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

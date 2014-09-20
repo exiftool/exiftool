@@ -173,11 +173,19 @@ sub CryptTest($$;$)
 # test 22: Delete all tags
 {
     ++$testnum;
-    my @writeInfo = (
-        [ 'all' => undef ],
-    );
-    print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum,
-                                   't/images/PDF.pdf', ['pdf:all','xmp:all']);
+    my $exifTool = new Image::ExifTool;
+    my $testfile = "t/${testname}_${testnum}_failed.pdf";
+    unlink $testfile;
+    $exifTool->Options(IgnoreMinorErrors => 1);
+    $exifTool->SetNewValue(all => undef);
+    my $ok = writeInfo($exifTool, 't/images/PDF.pdf', $testfile);
+    $exifTool->Options(IgnoreMinorErrors => 0);
+    my $info = $exifTool->ImageInfo($testfile,'pdf:all','xmp:all',{Duplicates=>1,Unknown=>1});
+    if ($ok and check($exifTool, $info, $testname, $testnum)) {
+        unlink $testfile;
+    } else {
+        print 'not ';
+    }
     print "ok $testnum\n";
 }
 

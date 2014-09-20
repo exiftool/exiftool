@@ -9,6 +9,7 @@
 pre      { color: #800; margin-left: 2em }
 ol.index { margin: 0; padding: 0 0 0 2em }
 li.spc   { padding: 1em 0 0 0 }
+.warn    { padding: 0.5em; border: 1px solid gray; background: #fee }
 -->
 </style>
 </head>
@@ -31,6 +32,11 @@ D600, D610, D800, D800E, D3200, D5200 and D7100.<sup>&dagger;</sup></p>
 
 <p>It <b>does <u>not</u> repair</b> images corrupted by memory card problems
 or disk errors.</p>
+
+<blockquote class=warn><b class=red>Warning!</b> If you modify the corrupted
+images with any other software before fixing them with this utility, then the
+raw image data may be permanently lost!  (This may happen for instance if you
+use View NX2 to geotag the images after downloading.)</blockquote>
 
 <p>Follow the instructions below for running this utility on
 <a href="#win">Windows</a> or <a href="#mac">Mac / Linux</a> systems.</p>
@@ -56,7 +62,7 @@ demand.  Both FX and DX formats are supported for the Df, D600, D610 and D800.</
 
 <hr><a name="win"></a><h2>Windows Users</h2>
 
-<ol><li><b>Download and open</b> "<a href="http://sourceforge.net/projects/exiftool/files/fix_corrupted_nef_win-2.1.zip/download">fix_corrupted_nef_win-2.1.zip</a>", then move the
+<ol><li><b>Download and open</b> "<a href="http://owl.phy.queensu.ca/~phil/exiftool/fix_corrupted_nef_win.zip">fix_corrupted_nef_win.zip</a>", then move the
    "fix_corrupted_nef.exe" application onto your hard disk.</li>
 
 <li class=spc><b>Drag and drop the corrupted NEF files</b> and/or folders onto
@@ -70,7 +76,7 @@ demand.  Both FX and DX formats are supported for the Df, D600, D610 and D800.</
    bit depth of your compressed NEF images, or if you have mixed 12
    and 14-bit compressed images, or if you have only uncompressed NEF
    images, just type "14" (or simply press RETURN).  If this is wrong
-   for some images, you will  not be able to open the fixed images
+   for some images, you will not be able to open the fixed images
    (but you can delete these and re-generate them with the other bit
    depth later).  Note that this number is ignored for the D3200 and
    D5200 since the NEF bit depth can not be changed for these cameras.</li>
@@ -96,7 +102,7 @@ donation, this can be done from <a href="http://owl.phy.queensu.ca/~phil/exiftoo
 <hr><a name="mac"></a><h2>Mac / Linux Users</h2>
 
 <ol>
-<li><b>Download and expand</b> "<a href="http://sourceforge.net/projects/exiftool/files/fix_corrupted_nef-2.1.zip/download">fix_corrupted_nef-2.1.zip</a>" into a directory on
+<li><b>Download and expand</b> "<a href="http://owl.phy.queensu.ca/~phil/exiftool/fix_corrupted_nef.zip">fix_corrupted_nef.zip</a>" into a directory on
 your hard disk.</li>
 
 <li class=spc><b>Open a Terminal window</b>.
@@ -121,7 +127,7 @@ your hard disk.</li>
    bit depth of your compressed NEF images, or if you have mixed 12
    and 14-bit compressed images, or if you have only uncompressed NEF
    images, just type "14" (or simply press RETURN).  If this is wrong
-   for some images, you will  not be able to open the fixed images
+   for some images, you will not be able to open the fixed images
    (but you can delete these and re-generate them with the other bit
    depth later).  Note that this number is ignored for the D3200 and
    D5200 since the NEF bit depth can not be changed for these cameras.</li>

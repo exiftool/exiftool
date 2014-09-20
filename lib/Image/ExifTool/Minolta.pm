@@ -52,7 +52,7 @@ use vars qw($VERSION %minoltaLensTypes %minoltaTeleconverters %minoltaColorMode
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.15';
+$VERSION = '2.16';
 
 # Full list of product codes for Sony-compatible Minolta lenses
 # (ref http://www.kb.sony.com/selfservice/documentLink.do?externalId=C1000570)
@@ -321,6 +321,7 @@ my %metabonesID = (
    '128.13' => 'Sigma 18-250mm F3.5-6.3 DC OS HSM', #27
    '128.14' => 'Sigma 17-50mm F2.8 EX DC HSM', #Exiv2
    '128.15' => 'Sigma 17-70mm F2.8-4 DC Macro HSM', #25
+   '128.16' => 'Sigma 150mm F2.8 EX DG OS HSM APO Macro', #Marcus Holland-Moritz
     129 => 'Tamron Lens (129)',
     129.1 => 'Tamron 200-400mm F5.6 LD', #12 (LD ref 23)
     129.2 => 'Tamron 70-300mm F4-5.6 LD', #12

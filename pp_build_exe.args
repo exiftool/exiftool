@@ -21,12 +21,12 @@
 #           10) Copy zip archive to web servers.
 #           11) Update zip file version in link and text of html/index.html.
 #------------------------------------------------------------------------------
--T exiftool-9.70
---info=FileVersion=9.7.0.0
---info=ProductVersion=9.7.0.0
-"--info=Build Date=2014:09:03 07:37:55"
+-T exiftool-9.40
+--info=FileVersion=9.4.0.0
+--info=ProductVersion=9.4.0.0
+"--info=Build Date=2013:11:08 08:45:06"
 "--info=Bundled Perl Version=ActivePerl 5.8.7"
-"--info=LegalCopyright=Copyright (c) 2003-2014, Phil Harvey"
+"--info=LegalCopyright=Copyright (c) 2003-2013, Phil Harvey"
 "--info=ProductName=ExifTool"
 "--info=Comments=ExifTool EXE for Windows"
 "--info=Home Page=http://owl.phy.queensu.ca/~phil/exiftool/"

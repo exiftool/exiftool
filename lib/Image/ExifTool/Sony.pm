@@ -7131,6 +7131,15 @@ my %exposureProgram2010 = (
 # add our composite tags
 Image::ExifTool::AddCompositeTags('Image::ExifTool::Sony');
 
+sub SortLensTypes
+{
+    return $a <=> $b unless $a =~ /\./ and $b =~ /\./;
+    my @a = split /\./, $a;
+    my @b = split /\./, $b;
+    # must compare the decimal part separately to sort in proper order
+    return $a[0] <=> $b[0] || $a[1] <=> $b[1];
+}
+
 # fill in Sony LensType lookup based on Minolta values
 {
     my $minoltaTypes = \%Image::ExifTool::Minolta::minoltaLensTypes;
@@ -7141,7 +7150,7 @@ Image::ExifTool::AddCompositeTags('Image::ExifTool::Sony');
     my $id;
     # 5-digit lens ID's are missing the last digit (usually "1") in the metadata for
     # some Sony models, so generate corresponding 4-digit entries for these cameras
-    foreach $id (sort { $a <=> $b } keys %$minoltaTypes) {
+    foreach $id (sort SortLensTypes keys %$minoltaTypes) {
         next if $id < 10000;
         my $sid = int($id/10);
         my $i;

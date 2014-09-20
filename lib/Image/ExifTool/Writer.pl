@@ -2416,7 +2416,7 @@ sub Sanitize($$)
 # Apply inverse conversions
 # Inputs: 0) ExifTool ref, 1) value, 2) tagInfo (or Struct item) ref,
 #         3) tag name, 4) group 1 name, 5) conversion type (or undef),
-#         6) [optional] want group
+#         6) [optional] want group ("" for structure field)
 # Returns: 0) converted value, 1) error string (or undef on success)
 # Notes:
 # - uses ExifTool "ConvType" member when conversion type is undef
@@ -2431,7 +2431,9 @@ Conv: for (;;) {
             # split value into list if necessary
             if ($$tagInfo{List}) {
                 my $listSplit = $$tagInfo{AutoSplit} || $$self{OPTIONS}{ListSplit};
-                if (defined $listSplit) {
+                if (defined $listSplit and not $$tagInfo{Struct} and
+                    ($wantGroup or not defined $wantGroup))
+                {
                     $listSplit = ',?\s+' if $listSplit eq '1' and $$tagInfo{AutoSplit};
                     my @splitVal = split /$listSplit/, $val;
                     $val = \@splitVal if @splitVal > 1;

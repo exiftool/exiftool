@@ -133,6 +133,7 @@ This table lists information extracted by ExifTool from JPEG images.
                FotoStation                      FotoStation
                PhotoMechanic                    PhotoMechanic
                MIE                              MIE
+               Samsung                          Samsung Trailer
                PreviewImage                     Y
 
 =head3 JPEG AVI1 Tags
@@ -526,6 +527,7 @@ EXIF 2.3 specification.
   0x9000   ExifVersion               ExifIFD    undef:
   0x9003   DateTimeOriginal          ExifIFD    string
   0x9004   CreateDate                ExifIFD    string
+  0x9009   GooglePlusUploadCode      ExifIFD    undef[n]
   0x9101   ComponentsConfiguration   ExifIFD    undef[4]!:
   0x9102   CompressedBitsPerPixel    ExifIFD    rational64u!
   0x9201   ShutterSpeedValue         ExifIFD    rational64s
@@ -1819,7 +1821,7 @@ DigiKam namespace tags.
 =head3 XMP exif Tags
 
 EXIF namespace for EXIF tags.  See
-L<http://www.cipa.jp/english/hyoujunka/kikaku/pdf/DC-010-2012_E.pdf> for the
+L<http://www.cipa.jp/std/documents/e/DC-010-2012_E.pdf> for the
 specification.
 
   Tag Name                                      Writable
@@ -1963,7 +1965,7 @@ specification.
 =head3 XMP exifEX Tags
 
 EXIF tags added by the EXIF 2.3 for XMP specification (see
-L<http://www.cipa.jp/english/hyoujunka/kikaku/pdf/DC-010-2012_E.pdf>).
+L<http://www.cipa.jp/std/documents/e/DC-010-2012_E.pdf>).
 
   Tag Name                                      Writable
   --------                                      --------
@@ -2614,7 +2616,7 @@ Adobe SWF namespace tags.
 =head3 XMP tiff Tags
 
 EXIF namespace for TIFF tags.  See
-L<http://www.cipa.jp/english/hyoujunka/kikaku/pdf/DC-010-2012_E.pdf> for the
+L<http://www.cipa.jp/std/documents/e/DC-010-2012_E.pdf> for the
 specification.
 
   Tag Name                                      Writable
@@ -5275,6 +5277,7 @@ These tags are used by the PowerShot G10.
     246    CameraColorCalibration13?            int16s[5]
     251    CameraColorCalibration14?            int16s[5]
     256    CameraColorCalibration15?            int16s[5]
+    264    PerChannelBlackLevel                 int16s[4]
 
 =head3 Canon ColorData6 Tags
 
@@ -5343,7 +5346,7 @@ These tags are used by the EOS 600D and 1200D.
 
 =head3 Canon ColorData7 Tags
 
-These tags are used by the EOS 1DX, 5DmkIII, 6D, 100D, 650D, 700D and M.
+These tags are used by the EOS 1DX, 5DmkIII, 6D, 100D, 650D, 700D, M and 7DmkII.
 
   Index2   Tag Name                             Writable
   ------   --------                             --------
@@ -5415,6 +5418,11 @@ These tags are used by the EOS 1DX, 5DmkIII, 6D, 100D, 650D, 700D and M.
     508    NormalWhiteLevel                     int16u
     509    SpecularWhiteLevel                   int16u
     510    LinearityUpperMargin                 int16u
+    619    RawMeasuredRGGB                      int32u[4]
+    728    PerChannelBlackLevel                 int16u[4]
+    732    NormalWhiteLevel                     int16u
+    733    SpecularWhiteLevel                   int16u
+    734    LinearityUpperMargin                 int16u
 
 =head3 Canon ColorDataUnknown Tags
 
@@ -5810,8 +5818,8 @@ well as newer tags and values added by later models.
   0x010d   ApertureRange                        int32s[3]
   0x010e   ApplyShootingMeteringMode            int32s[8]
   0x010f   FlashSyncSpeedAv                     int32s
-  0x0110   FEMicroadjustment                    int32s[3]
-  0x0111   AEMicroadjustment                    int32s[3]
+  0x0110   AEMicroadjustment                    int32s[3]
+  0x0111   FEMicroadjustment                    int32s[3]
   0x0201   LongExposureNoiseReduction           int32s
   0x0202   HighISONoiseReduction                int32s
   0x0203   HighlightTonePriority                int32s
@@ -5851,9 +5859,11 @@ well as newer tags and values added by later models.
   0x0518   AccelerationTracking                 int32s
   0x0519   AIServoFirstImagePriority            int32s
   0x051a   AIServoSecondImagePriority           int32s
+  0x051b   AFAreaSelectMethod                   int32s
   0x060f   MirrorLockup                         int32s
   0x0610   ContinuousShootingSpeed              int32s[3]
   0x0611   ContinuousShotLimit                  int32s[2]
+  0x0612   RestrictDriveModes                   int32s[2]
   0x0701   Shutter-AELock                       int32s
            AFAndMeteringButtons                 int32s
            ShutterButtonAFOnButton              int32s
@@ -5871,6 +5881,8 @@ well as newer tags and values added by later models.
   0x070d   StartMovieShooting                   int32s
   0x070e   FlashButtonFunction                  int32s
   0x070f   MultiFunctionLock                    int32s
+  0x0710   TrashButtonFunction                  int32s
+  0x0711   ShutterReleaseWithoutLens            int32s
   0x080b   FocusingScreen                       int32s
   0x080c   TimerLength                          int32s[4]
   0x080d   ShortReleaseTimeLag                  int32s
@@ -5878,6 +5890,7 @@ well as newer tags and values added by later models.
   0x080f   AddOriginalDecisionData              int32s
   0x0810   LiveViewExposureSimulation           int32s
   0x0811   LCDDisplayAtPowerOn                  int32s
+  0x0812   MemoAudioQuality                     int32s
   0x0813   DefaultEraseOption                   int32s
 
 =head2 CanonVRD Tags
@@ -11731,6 +11744,19 @@ Tags found in the EXIF-format maker notes of newer Samsung models.
       3    PictureWizardSharpness               int16u
       4    PictureWizardContrast                int16u
 
+=head3 Samsung Trailer Tags
+
+Tags extracted from the trailer of JPEG images written when using certain
+features (such as "Sound & Shot" or "Shot & More") from Samsung models such
+as the Galaxy S4 and Tab S.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  EmbeddedImage                                 N
+  EmbeddedImageName                             N
+  EmbeddedAudioFile                             N
+  EmbeddedAudioFileName                         N
+
 =head3 Samsung sec Tags
 
 This information is found in the @sec atom of Samsung MP4 videos from models
@@ -14265,7 +14291,7 @@ embedded images.
 
 These tags are part of the CIPA Stereo Still Image specification, and are
 found in the APP3 "Stim" segment of JPEG images.  See
-L<http://www.cipa.jp/english/hyoujunka/kikaku/pdf/DC-006_E.pdf> for the
+L<http://www.cipa.jp/std/documents/e/DC-006_E.pdf> for the
 official specification.
 
   Tag ID   Tag Name                             Writable

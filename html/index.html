@@ -39,7 +39,7 @@ span.sup        { font-size: 0.8em; font-weight: normal; position: relative; top
 <body>
 <h1><a name="top">ExifTool by Phil Harvey</a></h1>
 <h2 class='tight red'><b>Read</b>, <b>Write</b> and <b>Edit</b> Meta Information!</h2>
-<p><b>Also available</b> --> <a href="fix_corrupted_nef.html">Utility to fix Nikon NEF images corrupted by Nikon software</a></p>
+<p><b>Also available</b> --> <a href="fix_corrupted_nef.html">>Utility to fix Nikon NEF images corrupted by Nikon software</a></p>
 <div class=wide><table class=links><tr>
 <th><a href="install.html" class=wt>&nbsp;Installing&nbsp;</a></th>
 <th><a href="TagNames/index.html" class=wt>&nbsp;Tag&nbsp;Names&nbsp;</a></th>
@@ -74,9 +74,9 @@ span.sup        { font-size: 0.8em; font-weight: normal; position: relative; top
 </div>
 
 <blockquote><table class='dl lg'><tr><td><b>
-<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-9.70.tar.gz/download">
-Download                                                       Version 9.70</a> (3.7 MB) -
-<a href="history.html">Sept 3, 2014</a></b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-9.71.tar.gz/download">
+Download        Version 9.71</a> (3.7 MB) -
+<a href="history.html">Sept 20, 2014</a></b></td></tr></table></blockquote>
 
 <p><b>ExifTool is a platform-independent <a href="ExifTool.html">Perl
 library</a> plus a <a href="exiftool_pod.html">command-line application</a> for
@@ -125,8 +125,8 @@ distribution above.)</i></p>
 
 <blockquote><table class='dl lg'><tr><td><b>
 <a name="alone">Windows Executable:</a>
-<a href="http://sourceforge.net/projects/exiftool/files/exiftool-9.70.zip/download">
-                                                        exiftool-9.70.zip</a> (3.7 MB)</b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/exiftool-9.71.zip/download">
+         exiftool-9.71.zip</a> (3.7 MB)</b></td></tr></table></blockquote>
 
 <p><b>The stand-alone Windows executable</b> does not require Perl. Just
 download and un-zip the archive then double-click on
@@ -138,7 +138,7 @@ of Windows (including Windows 7).</p>
 <blockquote><table class='dl lg'><tr><td><b>
 Mac OS X Package:
 <a href="http://sourceforge.net/projects/exiftool/files/ExifTool-9.70.dmg/download">
-                                                        ExifTool-9.70.dmg</a> (2.4 MB)</b></td></tr></table></blockquote>
+         ExifTool-9.71.dmg</a> (2.4 MB)</b></td></tr></table></blockquote>
 
 <p><b>The OS X package</b> installs the ExifTool command-line application and
 libraries in /usr/bin. After installing, type "<code>exiftool</code>" in a
@@ -199,7 +199,7 @@ installing ExifTool on Windows, Mac OS X and Unix systems.</p>
 <li>Ability to <a href="config.html">add custom user-defined tags</a></li>
 <li><a href="TagNames/MWG.html">Support for MWG</a> (Metadata Working Group) recommendations</li>
 <li>Recognizes <a href="TagNames/index.html">thousands of different tags</a></li>
-<li>Tested with images from <a href="http://owl.phy.queensu.ca/~phil/exiftool/models.html">thousands of different camera models</a></li>
+<li>Tested with images from <a href="models.html">thousands of different camera models</a></li>
 <li>Advanced <a href="verbose.html">verbose</a> and <a href="htmldump.html">HTML-based
     hex dump</a> outputs</li>
 </ul>
@@ -310,7 +310,7 @@ for each file format.</p>
 <tr><td><a href="TagNames/ITC.html">ITC</a></td><td>R</td><td>iTunes Cover Flow artwork</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/ITC.html">ITC</a></td></tr>
 <tr><td>J2C, JPC</td><td>R</td><td>JPEG 2000 codestream</td><td>R<span class=sup>2</span></td><td>R<span class=sup>2</span></td><td>R</td><td>R</td><td>R <a href="TagNames/Jpeg2000.html">Jpeg2000</a> <a href="TagNames/Photoshop.html">Photoshop</a><span class=sup>2</span></td></tr>
 <tr><td><a href="TagNames/Jpeg2000.html">JP2, JPF, J2K, JPM, JPX</a></td><td>R/W</td><td>JPEG 2000 image [Compound/Extended]</td><td>R/W/C<span class=sup>2</span></td><td>R/W/C<span class=sup>2</span></td><td>R/W/C</td><td>R</td><td>R/W/C <a href="TagNames/Jpeg2000.html">Jpeg2000</a>, R <a href="TagNames/Photoshop.html">Photoshop</a><span class=sup>2</span></td></tr>
-<tr><td><a href="TagNames/JPEG.html">JPEG, JPG</a></td><td>R/W</td><td>Joint Photographic Experts Group image</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td><a href="#JPEG">Supported JPEG Meta Information</a></td></tr>
+<tr><td><a href="TagNames/JPEG.html">JPEG, JPG, JPE</a></td><td>R/W</td><td>Joint Photographic Experts Group image</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td><a href="#JPEG">Supported JPEG Meta Information</a></td></tr>
 <tr><td>K25</td><td>R</td><td>Kodak DC25 RAW (<a href="TagNames/EXIF.html">TIFF</a>-based)</td><td>R</td><td>R</td><td>R</td><td>R</td><td>-</td></tr>
 <tr><td>KDC</td><td>R</td><td>Kodak Digital Camera RAW (<a href="TagNames/EXIF.html">TIFF</a>-based)</td><td>R</td><td>R</td><td>R</td><td>R</td><td>R <a href="TagNames/Kodak.html">Kodak</a></td></tr>
 <tr><td><a href="TagNames/iWork.html">KEY, KTH</a></td><td>R</td><td>Apple iWork '09 Keynote presentation/Theme</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/iWork.html">XML</a> <a href="TagNames/ZIP.html">ZIP</a></td></tr>
@@ -459,8 +459,9 @@ of meta information in JPEG images:</p>
 <tr><td><a href="TagNames/FotoStation.html">FotoStation trailer</a></td><td>R/W</td><td>FotoWare FotoStation (includes <a href="TagNames/IPTC.html">IPTC</a>)</td></tr>
 <tr><td><a href="TagNames/PhotoMechanic.html">PhotoMechanic trailer</a></td><td>R/W</td><td>Camera Bits Photo Mechanic</td></tr>
 <tr><td><a href="TagNames/MIE.html">MIE trailer</a></td><td>R/W</td><td><a href="MIE1.1-20070121.pdf">Meta Information Encapsulation</a></td></tr>
+<tr><td><a href="TagNames/Samsung.html#Trailer">Samsung trailer</a></td><td>R</td><td>Samsung Galaxy trailer</td></tr>
 <tr><td>PreviewImage trailer</td><td>R/W/C</td><td>(preview image written after JPEG EOI)</td></tr>
-</table><span class=sm><span class=sup>1</span> All trailers except PreviewImage also have R/W support in TIFF images.</span></blockquote>
+</table><span class=sm><span class=sup>1</span> All trailers except Samsung and PreviewImage also have R/W support in TIFF images.</span></blockquote>
 
 <h2><a name="system">System Requirements</a></h2>
 
@@ -1134,7 +1135,7 @@ three droplets to extract information [exiftool must be installed] (thanks to Ro
 <li><a href="http://www.xnview.com/en/xnview.html">XnView</a>: View and convert graphic files</li>
 <li><a href="http://sourceforge.net/projects/mapivi/">Mapivi</a>: Open-source and cross-platform picture manager</li>
 <li><a href="http://www.resourcespace.org/">ResourceSpace</a>: Open source digital asset management system</li>
-<li><a href="http://owl.phy.queensu.ca/~phil/exiftool/fix_corrupted_nef.html">fix_corrupted_nef</a>: Utility to fix Nikon D4/D600/D800/D800E NEF images corrupted by Nikon Transfer 1</li>
+<li><a href="fix_corrupted_nef.html">>fix_corrupted_nef</a>: Utility to fix Nikon D4/D600/D800/D800E NEF images corrupted by Nikon Transfer 1</li>
 <li><a href="http://panorama.dyndns.org/index.php?lang=en&subject=pyExifToolGUI&texttag=pyExifToolGUI">pyExifToolGUI</a>: Python-based graphical frontend for ExifTool</li>
 <li><a href="https://github.com/avpreserve/mdqc">MDQC</a>: <a href="http://www.avpreserve.com/avpsresources/tools/">AVPreserve tool</a> for metadata quality control across large numbers of digital assets</li>
 </ul>

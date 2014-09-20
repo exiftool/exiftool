@@ -11,7 +11,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.23';
+$VERSION = '1.24';
 
 sub ProcessOcad($$$);
 sub ProcessJPEG_HDR($$$);
@@ -220,6 +220,10 @@ sub ProcessJPEG_HDR($$$);
             $$valPt =~ /~\0\x04\0zmie~\0\0\x0a.{8}[\x10\x18]\x08$/s
         },
         SubDirectory => { TagTable => 'Image::ExifTool::MIE::Main' },
+      }, {
+        Name => 'Samsung',
+        Condition => '$$valPt =~ /QDIOBS$/',
+        SubDirectory => { TagTable => 'Image::ExifTool::Samsung::Trailer' },
       }, {
         Name => 'PreviewImage',
         Condition => '$$valPt =~ /^\xff\xd8\xff/',

@@ -19,7 +19,7 @@ use vars qw($VERSION %samsungLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.24';
+$VERSION = '1.25';
 
 sub WriteSTMN($$$);
 sub ProcessINFO($$$);
@@ -44,6 +44,7 @@ sub ProcessSamsungIFD($$$);
     11 => 'Samsung NX 45mm F1.8 2D/3D', #3
     12 => 'Samsung NX 12-24mm F4-5.6 ED', #4
     14 => 'Samsung NX 10mm F3.5 Fisheye', #5
+    20 => 'Samsung NX 50-150mm F2.8 S ED OIS', #PH
 );
 
 # range of values for Formats used in encrypted information
@@ -673,6 +674,26 @@ my %formatMinMax = (
     4 => { Name => 'ThumbnailOffset', IsOffset => 1 },
 );
 
+# information extracted from Samsung trailer (ie. Samsung SM-T805 "Sound & Shot" JPEG)
+%Image::ExifTool::Samsung::Trailer = (
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Other' },
+    VARS => { NO_ID => 1 },
+    NOTES => q{
+        Tags extracted from the trailer of JPEG images written when using certain
+        features (such as "Sound & Shot" or "Shot & More") from Samsung models such
+        as the Galaxy S4 and Tab S.
+    },
+    # stuff written with "Shot & More" feature
+    '0x0001' => { Name => 'EmbeddedImage', Binary => 1 },
+    '0x0001-name' => 'EmbeddedImageName',
+    # 0x0830 - unknown (164004 bytes, name like "1165724808.pre")
+
+    # stuff written with "Sound & Shot" feature
+    '0x0100' => { Name => 'EmbeddedAudioFile', Binary => 1 },
+    '0x0100-name' => 'EmbeddedAudioFileName',
+    # 0x0800 - SoundShot_Meta_Info (contains only already-extracted sound shot name)
+);
+
 # Samsung composite tags
 %Image::ExifTool::Samsung::Composite = (
     GROUPS => { 2 => 'Image' },
@@ -788,6 +809,109 @@ sub ProcessSamsungIFD($$$)
     my $rtn = Image::ExifTool::Exif::ProcessExif($et, $dirInfo, $tagTablePtr);
     substr($$dataPt, $pos + 2, 1) = "\0";   # remove bogus count
     return $rtn;
+}
+
+#------------------------------------------------------------------------------
+# Read/write Samsung trailer (ie. "Sound & Shot" written by Galaxy Tab S (SM-T805))
+# Inputs: 0) ExifTool object reference, 1) dirInfo reference
+# Returns: 1 on success, 0 not valid Samsung trailer, or -1 error writing
+# - updates DataPos to point to start of Samsung trailer
+# - updates DirLen to existing trailer length
+sub ProcessSamsung($$$)
+{
+    my ($et, $dirInfo) = @_;
+    my $raf = $$dirInfo{RAF};
+    my $offset = $$dirInfo{Offset} || 0;
+    my $outfile = $$dirInfo{OutFile};
+    my $verbose = $et->Options('Verbose');
+    my $unknown = $et->Options('Unknown');
+    my ($buff, $buf2, $index, $t);
+
+    return 0 unless $raf->Seek(-6-$offset, 2) and $raf->Read($buff, 6) == 6 and
+                    ($buff eq 'QDIOBS' or $buff eq "\0\0SEFT");
+    my $endPos = $raf->Tell();
+    $raf->Seek(-2, 1) or return 0 if $buff eq 'QDIOBS'; # rewind to before 'BS'
+    my $blockEnd = $raf->Tell();
+    SetByteOrder('II');
+
+    # read blocks backward until we find the SEFH/SEFT block (only seen QDIO/QDIO)
+SamBlock:
+    for (;;) {
+        last unless $raf->Seek($blockEnd-8, 0) and $raf->Read($buff, 8) == 8;
+        my $type = substr($buff, 4);
+        last unless $type =~ /^\w+$/;
+        my $len = Get32u(\$buff, 0);
+        last unless $len < 0x10000 and $len >= 4 and $len + 8 < $blockEnd;
+        last unless $raf->Seek(-8-$len, 1) and $raf->Read($buff, $len) == $len;
+        $blockEnd -= $len + 8;
+        next unless $type eq 'SEFT';    # look for directory block (ends with "SEFT")
+        last unless $buff =~ /^SEFH/ and $len >= 12;   # validate SEFH header
+        my $dirPos = $raf->Tell() - $len;
+        # my $ver = Get32u(\$buff, 0x04);  # version (=101)
+        my $count = Get32u(\$buff, 0x08);
+        last if 12 + 12 * $count > $len;
+        $et->VPrint(1, "Samsung Trailer:\n") if $verbose > 1 and not $outfile;
+        my $tagTablePtr = GetTagTable('Image::ExifTool::Samsung::Trailer');
+
+        # parse the SEFH/SEFT directory block
+        my $firstBlock = 0;
+        for ($index=0; $index<$count; ++$index) {
+            my $entry = 12 + 12 * $index;
+            my $type = Get16u(\$buff, $entry + 2);  # block type
+            my $noff = Get32u(\$buff, $entry + 4);  # negative offset
+            my $size = Get32u(\$buff, $entry + 8);  # block size
+            last SamBlock if $noff > $dirPos or $size > $noff or $size < 8;
+            $firstBlock = $noff if $firstBlock < $noff;
+            next if $outfile;
+            # add unknown tags if necessary
+            my $tag = sprintf("0x%.4x", $type);
+            unless ($$tagTablePtr{$tag}) {
+                next unless $unknown or $verbose;
+                my %tagInfo = (
+                    Name        => "SamsungTrailer_$tag",
+                    Description => "Samsung Trailer $tag",
+                    Unknown     => 1,
+                    Binary      => 1,
+                );
+                AddTagToTable($tagTablePtr, $tag, \%tagInfo);
+                my %tagInfo2 = (
+                    Name        => "SamsungTrailer_${tag}Name",
+                    Description => "Samsung Trailer $tag Name",
+                    Unknown     => 1,
+                );
+                AddTagToTable($tagTablePtr, "$tag-name", \%tagInfo2);
+            }
+            last unless $raf->Seek($dirPos-$noff, 0) and $raf->Read($buf2, $size) == $size;
+            $len = Get32u(\$buf2, 4);
+            last if $len + 8 > $size;
+            # extract tag name and value
+            $et->HandleTag($tagTablePtr, "$tag-name", undef,
+                DataPt  => \$buf2,
+                DataPos => $dirPos - $noff,
+                Start   => 8,
+                Size    => $len,
+            );
+            $et->HandleTag($tagTablePtr, $tag, undef,
+                DataPt  => \$buf2,
+                DataPos => $dirPos - $noff,
+                Start   => 8 + $len,
+                Size    => $size - (8 + $len),
+            );
+        }
+        # save trailer position and length
+        my $dataPos = $$dirInfo{DataPos} = $dirPos - $firstBlock;
+        my $dirLen = $$dirInfo{DirLen} = $endPos - $dataPos;
+        if ($outfile) {
+            last unless $raf->Seek($dataPos, 0) and $raf->Read($buff, $dirLen) == $dirLen;
+            $et->VPrint(0, "Writing Samsung trailer ($dirLen bytes)\n") if $verbose;
+            Write($$dirInfo{OutFile}, $buff) or return -1;
+        } elsif ($$et{HTML_DUMP}) {
+            $et->DumpTrailer($dirInfo) if $$dirInfo{RAF};
+        }
+        return 1;
+    }
+    $et->Warn('Error processing Samsung trailer',1);
+    return 0;
 }
 
 #------------------------------------------------------------------------------

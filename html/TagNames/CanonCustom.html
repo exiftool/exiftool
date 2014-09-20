@@ -1446,14 +1446,14 @@ well as newer tags and values added by later models.</p>
   <br>2 = 1/200 Fixed</span></td></tr>
 <tr class=b>
 <td title='0x0110 = 272'>0x0110</td>
-<td>FEMicroadjustment</td>
+<td>AEMicroadjustment</td>
 <td class=c>int32s[3]</td>
 <td><span class=s>[Value 0]
   <br>0 = Disable
   <br>1 = Enable</span></td></tr>
 <tr>
 <td title='0x0111 = 273'>0x0111</td>
-<td>AEMicroadjustment</td>
+<td>FEMicroadjustment</td>
 <td class=c>int32s[3]</td>
 <td><span class=s>[Value 0]
   <br>0 = Disable
@@ -1774,6 +1774,12 @@ well as newer tags and values added by later models.</p>
   <br>0 = Equal priority
   <br>1 = Focus priority</span></td></tr>
 <tr class=b>
+<td title='0x051b = 1307'>0x051b</td>
+<td>AFAreaSelectMethod</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = AF area selection button
+  <br>1 = Main dial</span></td></tr>
+<tr>
 <td title='0x060f = 1551'>0x060f</td>
 <td>MirrorLockup</td>
 <td class=c>int32s</td>
@@ -1781,16 +1787,23 @@ well as newer tags and values added by later models.</p>
   <br>0 = Disable
   <br>1 = Enable
   <br>2 = Enable: Down with Set</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0610 = 1552'>0x0610</td>
 <td>ContinuousShootingSpeed</td>
 <td class=c>int32s[3]</td>
 <td><span class=s>[Value 0]
   <br>0 = Disable
   <br>1 = Enable</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0611 = 1553'>0x0611</td>
 <td>ContinuousShotLimit</td>
+<td class=c>int32s[2]</td>
+<td><span class=s>[Value 0]
+  <br>0 = Disable
+  <br>1 = Enable</span></td></tr>
+<tr class=b>
+<td title='0x0612 = 1554'>0x0612</td>
+<td>RestrictDriveModes</td>
 <td class=c>int32s[2]</td>
 <td><span class=s>[Value 0]
   <br>0 = Disable
@@ -1912,7 +1925,8 @@ well as newer tags and values added by later models.</p>
 <td>WBMediaImageSizeSetting</td>
 <td class=c>int32s</td>
 <td><span class=s>0 = Rear LCD panel
-  <br>1 = LCD monitor</span></td></tr>
+  <br>1 = LCD monitor
+  <br>2 = Off (disable button)</span></td></tr>
 <tr>
 <td title='0x0709 = 1801'>0x0709</td>
 <td>LockMicrophoneButton</td>
@@ -1965,6 +1979,18 @@ well as newer tags and values added by later models.</p>
   <br>Bit 0 = Main dial
   <br>Bit 1 = Quick control dial
   <br>Bit 2 = Multi-controller</span></td></tr>
+<tr class=b>
+<td title='0x0710 = 1808'>0x0710</td>
+<td>TrashButtonFunction</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = Normal (set center AF point)
+  <br>1 = Depth-of-field preview</span></td></tr>
+<tr>
+<td title='0x0711 = 1809'>0x0711</td>
+<td>ShutterReleaseWithoutLens</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = Disable
+  <br>1 = Enable</span></td></tr>
 <tr class=b>
 <td title='0x080b = 2059'>0x080b</td>
 <td>FocusingScreen</td>
@@ -2034,6 +2060,12 @@ well as newer tags and values added by later models.</p>
 <td><span class=s>0 = Display
   <br>1 = Retain power off status</span></td></tr>
 <tr>
+<td title='0x0812 = 2066'>0x0812</td>
+<td>MemoAudioQuality</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = High (48 kHz)
+  <br>1 = Low (8 kHz)</span></td></tr>
+<tr class=b>
 <td title='0x0813 = 2067'>0x0813</td>
 <td>DefaultEraseOption</td>
 <td class=c>int32s</td>
@@ -2043,7 +2075,7 @@ well as newer tags and values added by later models.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jun 26, 2014</i>
+<br><i>Last revised Sep 18, 2014</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

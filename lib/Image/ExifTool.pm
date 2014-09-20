@@ -125,13 +125,13 @@ sub ReadValue($$$$$;$);
     PhotoMechanic Exif GeoTiff CanonRaw KyoceraRaw Lytro MinoltaRaw PanasonicRaw
     SigmaRaw JPEG GIMP Jpeg2000 GIF BMP BMP::OS2 PICT PNG MNG DjVu DPX OpenEXR
     MIFF PGF PSP PhotoCD Radiance PDF PostScript Photoshop::Header FujiFilm::RAF
-    FujiFilm::IFD Sony::SRF2 Sony::SR2SubIFD Sony::PMP ITC ID3 Vorbis Ogg APE
-    APE::NewHeader APE::OldHeader MPC MPEG::Audio MPEG::Video MPEG::Xing M2TS
-    QuickTime QuickTime::ImageFile Matroska MXF DV Flash Flash::FLV Real::Media
-    Real::Audio Real::Metafile RIFF AIFF ASF DICOM MIE HTML XMP::SVG Palm
-    Palm::MOBI Palm::EXTH Torrent EXE EXE::PEVersion EXE::PEString EXE::MachO
-    EXE::PEF EXE::ELF EXE::CHM LNK Font RSRC Rawzor ZIP ZIP::GZIP ZIP::RAR RTF
-    OOXML iWork FLIR::AFF FLIR::FPF
+    FujiFilm::IFD Samsung::Trailer Sony::SRF2 Sony::SR2SubIFD Sony::PMP ITC ID3
+    Vorbis Ogg APE APE::NewHeader APE::OldHeader MPC MPEG::Audio MPEG::Video
+    MPEG::Xing M2TS QuickTime QuickTime::ImageFile Matroska MXF DV Flash
+    Flash::FLV Real::Media Real::Audio Real::Metafile RIFF AIFF ASF DICOM MIE
+    HTML XMP::SVG Palm Palm::MOBI Palm::EXTH Torrent EXE EXE::PEVersion
+    EXE::PEString EXE::MachO EXE::PEF EXE::ELF EXE::CHM LNK Font RSRC Rawzor ZIP
+    ZIP::GZIP ZIP::RAR RTF OOXML iWork FLIR::AFF FLIR::FPF
 );
 
 # alphabetical list of current Lang modules
@@ -289,10 +289,11 @@ my %fileTypeLookup = (
     J2K  =>  'JP2',
     JNG  => ['PNG',  'JPG Network Graphics'],
     JP2  => ['JP2',  'JPEG 2000 file'],
-    JPC  =>  'J2C',
-    JPF  =>  'JP2',
     # JP4? - looks like a JPEG but the image data is different
+    JPC  =>  'J2C',
+    JPE  =>  'JPEG',
     JPEG => ['JPEG', 'Joint Photographic Experts Group'],
+    JPF  =>  'JP2',
     JPG =>   'JPEG',
     JPM  => ['JP2',  'JPEG 2000 compound image'],
     JPX  => ['JP2',  'JPEG 2000 with extensions'],
@@ -1631,6 +1632,7 @@ sub ClearOptions($)
         Lang        => $defaultLang,# localized language for descriptions etc
         LargeFileSupport => undef,  # flag indicating support of 64-bit file offsets
         List        => undef,   # extract lists of PrintConv values into arrays
+        ListItem    => undef,   # used to return a specific item from lists
         ListSep     => ', ',    # list item separator
         ListSplit   => undef,   # regex for splitting list-type tag values when writing
         MakerNotes  => undef,   # extract maker notes as a block
@@ -2435,12 +2437,16 @@ sub GetValue($$;$)
     DoEscape($value, $$self{ESCAPE_PROC}) if $$self{ESCAPE_PROC};
 
     if (ref $value eq 'ARRAY') {
-        # return array if requested
-        return @$value if wantarray;
-        # return list reference for Raw, ValueConv or if List or not a list of scalars
-        return $value if $type ne 'PrintConv' or $$self{OPTIONS}{List} or ref $$value[0];
-        # otherwise join in comma-separated string
-        $value = join $$self{OPTIONS}{ListSep}, @$value;
+        if (defined $$self{OPTIONS}{ListItem}) {
+            $value = $$value[$$self{OPTIONS}{ListItem}];
+        } elsif (wantarray) {
+            # return array if requested
+            return @$value;
+        } elsif ($type eq 'PrintConv' and not $$self{OPTIONS}{List} and not ref $$value[0]) {
+            # join PrintConv values in comma-separated string if List option not used
+            # and list contains simple scalars (otherwise return ARRAY ref)
+            $value = join $$self{OPTIONS}{ListSep}, @$value;
+        }
     }
     return $value;
 }
@@ -4548,6 +4554,8 @@ sub IdentifyTrailer($;$)
                  $buff =~ /~\0\x04\0zmie~\0\0\x0a.{8}[\x10\x18]\x08$/s)
         {
             $type = 'MIE';
+        } elsif ($buff =~ /\0\0(QDIOBS|SEFT)$/) {
+            $type = 'Samsung';
         }
         last;
     }

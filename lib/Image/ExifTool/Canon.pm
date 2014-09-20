@@ -82,7 +82,7 @@ sub ProcessSerialData($$$);
 sub ProcessFilters($$$);
 sub SwapWords($);
 
-$VERSION = '3.35';
+$VERSION = '3.36';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -595,6 +595,7 @@ $VERSION = '3.35';
     0x3690000 => 'PowerShot ELPH 135 / IXUS 145 / IXY 120',
     0x3700000 => 'PowerShot ELPH 340 HS / IXUS 265 HS / IXY 630',
     0x3710000 => 'PowerShot ELPH 150 IS / IXUS 155 / IXY 140',
+    0x3780000 => 'PowerShot G7 X', #52
     0x4040000 => 'PowerShot G1',
     0x6040000 => 'PowerShot S100 / Digital IXUS / IXY Digital',
 
@@ -666,6 +667,7 @@ $VERSION = '3.35';
     0x80000286 => 'EOS Rebel T3i / 600D / Kiss X5',
     0x80000287 => 'EOS 60D',
     0x80000288 => 'EOS Rebel T3 / 1100D / Kiss X50',
+    0x80000289 => 'EOS 7D Mark II', #52
     0x80000297 => 'WFT-E2 II',
     0x80000298 => 'WFT-E4 II',
     0x80000301 => 'EOS Rebel T4i / 650D / Kiss X6i',
@@ -1546,7 +1548,7 @@ my %binaryDataAttrs = (
             Name => 'ColorData4',
             SubDirectory => { TagTable => 'Image::ExifTool::Canon::ColorData4' },
         },
-        {   # (int16u[5120]) - G10
+        {   # (int16u[5120]) - G10, G7X
             Condition => '$count == 5120',
             Name => 'ColorData5',
             SubDirectory => { TagTable => 'Image::ExifTool::Canon::ColorData5' },
@@ -1558,8 +1560,9 @@ my %binaryDataAttrs = (
         },
         {   # (int16u[1312|1313|1316])
             # 1DX/5DmkIII/650D/700D/M (1312), 6D/70D/100D (1313),
-            # 1DX firmware 1.x (1316)
-            Condition => '$count == 1312 or $count == 1313 or $count == 1316',
+            # 1DX firmware 1.x (1316), 7DmkII (1506)
+            Condition => '$count == 1312 or $count == 1313 or $count == 1316 or
+                          $count == 1506',
             Name => 'ColorData7',
             SubDirectory => { TagTable => 'Image::ExifTool::Canon::ColorData7' },
         },
@@ -6824,6 +6827,7 @@ my %ciMaxFocal = (
     0xf6 => { Name => 'CameraColorCalibration13', %cameraColorCalibration2 },
     0xfb => { Name => 'CameraColorCalibration14', %cameraColorCalibration2 },
     0x100=> { Name => 'CameraColorCalibration15', %cameraColorCalibration2 },
+    0x108=> { Name => 'PerChannelBlackLevel', Format => 'int16s[4]' }, #52
 );
 
 # Color data (MakerNotes tag 0x4001, count=1273|1275) (ref PH)
@@ -6915,15 +6919,19 @@ my %ciMaxFocal = (
 # Color data (MakerNotes tag 0x4001, count=1312,1313,1316) (ref PH)
 %Image::ExifTool::Canon::ColorData7 = (
     %binaryDataAttrs,
-    NOTES => 'These tags are used by the EOS 1DX, 5DmkIII, 6D, 100D, 650D, 700D and M.',
+    NOTES => 'These tags are used by the EOS 1DX, 5DmkIII, 6D, 100D, 650D, 700D, M and 7DmkII.',
     FORMAT => 'int16s',
     FIRST_ENTRY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    DATAMEMBER => [ 0x00 ],
     IS_SUBDIR => [ 0xd5 ],
     0x00 => {
         Name => 'ColorDataVersion',
+        DataMember => 'ColorDataVersion',
+        RawConv => '$$self{ColorDataVersion} = $val',
         PrintConv => {
             10 => '10 (1DX/5DmkIII/6D/70D/100D/650D/700D/M)',
+            11 => '11 (7DmkII)',
         },
     },
     # not really sure about the AsShot, Auto and Measured values any more - PH
@@ -6997,16 +7005,62 @@ my %ciMaxFocal = (
     0x114 => { Name => 'AverageBlackLevel',     Format => 'int16u[4]' }, #52
     0x1ad => {
         Name => 'RawMeasuredRGGB',
+        Condition => '$$self{ColorDataVersion} == 10',
         Format => 'int32u[4]',
         Notes => 'raw MeasuredRGGB values, before normalization',
         # swap words because the word ordering is big-endian, opposite to the byte ordering
         ValueConv => \&SwapWords,
         ValueConvInv => \&SwapWords,
     },
-    0x1f8 => { Name => 'PerChannelBlackLevel',  Format => 'int16u[4]' }, #52
-    0x1fc => { Name => 'NormalWhiteLevel',      Format => 'int16u',  RawConv => '$val || undef' }, #52
-    0x1fd => { Name => 'SpecularWhiteLevel',    Format => 'int16u' }, #52
-    0x1fe => { Name => 'LinearityUpperMargin',  Format => 'int16u' }, #52
+    0x1f8 => { #52
+        Name => 'PerChannelBlackLevel',
+        Condition => '$$self{ColorDataVersion} == 10',
+        Format => 'int16u[4]',
+    },
+    0x1fc => { #52
+        Name => 'NormalWhiteLevel',
+        Condition => '$$self{ColorDataVersion} == 10',
+        Format => 'int16u',
+        RawConv => '$val || undef',
+    },
+    0x1fd => { #52
+        Name => 'SpecularWhiteLevel',
+        Condition => '$$self{ColorDataVersion} == 10',
+        Format => 'int16u',
+    },
+    0x1fe => { #52
+        Name => 'LinearityUpperMargin',
+        Condition => '$$self{ColorDataVersion} == 10',
+        Format => 'int16u',
+    },
+    0x26b => {
+        Name => 'RawMeasuredRGGB',
+        Condition => '$$self{ColorDataVersion} == 11',
+        Format => 'int32u[4]',
+        ValueConv => \&SwapWords,
+        ValueConvInv => \&SwapWords,
+    },
+    0x2d8 => {
+        Name => 'PerChannelBlackLevel',
+        Condition => '$$self{ColorDataVersion} == 11',
+        Format => 'int16u[4]',
+    },
+    0x2dc => { 
+        Name => 'NormalWhiteLevel',
+        Condition => '$$self{ColorDataVersion} == 11',
+        Format => 'int16u',
+        RawConv => '$val || undef',
+    },
+    0x2dd => { 
+        Name => 'SpecularWhiteLevel',
+        Condition => '$$self{ColorDataVersion} == 11',
+        Format => 'int16u',
+    },
+    0x2de => { 
+        Name => 'LinearityUpperMargin',
+        Condition => '$$self{ColorDataVersion} == 11',
+        Format => 'int16u',
+    },
 );
 
 # Unknown color data (MakerNotes tag 0x4001)

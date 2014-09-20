@@ -1120,6 +1120,16 @@ switch to cp1252, then run exiftool with "<code>-charset cp1252</code>" (or
 <code>-L</code>).  This same technique can be used for other supported Windows
 code pages.</blockquote>
 
+<blockquote>A final alternative is to bypass the command-line encoding problems
+totally by extracting/writing to/from a separate text file, and using a UTF-8
+aware text editor to view/edit the text.  For example:
+
+<pre><span class=blk># extracting...</span>
+exiftool image.jpg &gt; out.txt
+
+<span class=blk># writing...</span>
+exiftool "-subject&lt;=subject.txt" image.jpg</pre></blockquote>
+
 <a name="Q19"></a>
 <p>19. <b>"How do I change the format of an extracted tag value?"</b></p>
 
@@ -1481,7 +1491,7 @@ importing.</blockquote>
 for more details.</blockquote>
 
 <hr>
-<i>Last revised Jul 20, 2014</i>
+<i>Last revised Sep 6, 2014</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

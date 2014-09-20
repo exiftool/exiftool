@@ -51,7 +51,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '3.65';
+$VERSION = '3.66';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -1520,7 +1520,11 @@ my %sampleFormat = (
         Notes => 'called DateTimeDigitized by the EXIF spec.',
         PrintConv => '$self->ConvertDateTime($val)',
     },
-    # 0x9009 - undef[44] written by Google Plus uploader - PH
+    0x9009 => { # undef[44] (or undef[11]) written by Google Plus uploader - PH
+        Name => 'GooglePlusUploadCode',
+        Format => 'int8u',
+        Count => -1,
+    },
     0x9101 => {
         Name => 'ComponentsConfiguration',
         Format => 'int8u',

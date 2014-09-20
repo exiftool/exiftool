@@ -5,7 +5,7 @@
 #
 # Revisions:    06/12/2009 - P. Harvey Created
 #
-# References:   1) http://www.cipa.jp/english/hyoujunka/kikaku/pdf/DC-006_E.pdf
+# References:   1) http://www.cipa.jp/std/documents/e/DC-006_E.pdf
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::Stim;
@@ -13,7 +13,7 @@ package Image::ExifTool::Stim;
 use strict;
 use vars qw($VERSION);
 
-$VERSION = '1.00';
+$VERSION = '1.01';
 
 # Tags found in Stim APP3 segment in JPEG images
 %Image::ExifTool::Stim::Main = (
@@ -21,7 +21,7 @@ $VERSION = '1.00';
     NOTES => q{
         These tags are part of the CIPA Stereo Still Image specification, and are
         found in the APP3 "Stim" segment of JPEG images.  See
-        L<http://www.cipa.jp/english/hyoujunka/kikaku/pdf/DC-006_E.pdf> for the
+        L<http://www.cipa.jp/std/documents/e/DC-006_E.pdf> for the
         official specification.
     },
     0 => 'StimVersion',
@@ -183,7 +183,7 @@ under the same terms as Perl itself.
 
 =over 4
 
-=item L<http://www.cipa.jp/english/hyoujunka/kikaku/pdf/DC-006_E.pdf>
+=item L<http://www.cipa.jp/std/documents/e/DC-006_E.pdf>
 
 =back
 

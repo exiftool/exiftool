@@ -7,6 +7,16 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 9.70. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Sept. 26, 2014 - Version 9.72
+
+  - Added a few new Pentax ISO values
+  - Added a new CanonModelID and SonyModelID (thanks LibRaw)
+  - Added a new Canon LensType
+  - Decode AF points for some newer Nikon 1 cameras (thanks Chris Reimold for
+    his help, and Graham Woolf for the samples)
+  - Improved verbose output for recently decoded Samsung trailer
+  - Fixed Samsung trailer writer to properly update offsets in the QDIO block
+
 Sept. 20, 2014 - Version 9.71
 
   - Added a couple of mew CanonModelID's (thanks LibRaw)

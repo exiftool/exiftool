@@ -212,11 +212,19 @@ structures which have the Keyword "<code>Terrier</code>" at the second level:</p
 </td></tr></table></blockquote>
 
 <p>Structure <b>fields may also be deleted individually</b> using the flattened
-tag names. The following command deletes only the matching fields from the
+tag names.  The following command deletes only the matching fields from the
 second-level of all HierarchicalKeywords structures:</p>
 
 <blockquote><table class='box'><tr><td>
 <pre class=code>exiftool -hierarchicalkeywords2-="Terrier" a.jpg</pre>
+</td></tr></table></blockquote>
+
+<p>Individual structure <b>fields may NOT be deleted by writing a structure</b>
+with an empty field.  Instead, a command like this overwrites the entire
+structure with a new structure containing an empty field:</p>
+
+<blockquote><table class='box'><tr><td>
+<pre><span class=code>exiftool -CreatorContactInfo="{CiAdrCity=}" a.jpg</span>  # WRONG!</pre>
 </td></tr></table></blockquote>
 
 <p>When deleting and adding back items in lists in the same command, new items
@@ -352,11 +360,11 @@ ArtworkTitle: a title
 &gt; <span class=code>exiftool -xmp-iptcext:all -S -struct a.xmp</span>
 ArtworkOrObject: [{AOTitle=a title}]
 
-<span class=lt># 2. Write another element to the structure as a flattened tag</span>
+<span class=lt># 2. Write another field to the structure as a flattened tag</span>
 &gt; <span class=code>exiftool -artworkcreator=phil a.xmp</span>
     1 image files updated
 
-<span class=lt># -- Note that the structure now has a new element</span>
+<span class=lt># -- Note that the structure now has a new field</span>
 &gt; <span class=code>exiftool -xmp-iptcext:all -S -struct a.xmp</span>
 ArtworkOrObject: [{AOCreator=[phil],AOTitle=a title}]
 
@@ -381,18 +389,18 @@ ArtworkOrObject: [{AOCreator=[phil,joe],AOTitle=a title},{AOTitle=another one}]
 &gt; <span class=code>exiftool -artworktitle="different" a.xmp</span>
     1 image files updated
 
-<span class=lt># -- This deleted all existing AOTitle elements and wrote back only one
+<span class=lt># -- This deleted all existing AOTitle fields and wrote back only one
 # (if the second ArtworkOrObject structure had contained more fields, they would have been
-# preserved, and the second structure would still exist, but without an AOTitle element)</span>
+# preserved, and the second structure would still exist, but without an AOTitle field)</span>
 &gt; <span class=code>exiftool -xmp-iptcext:all -S -struct a.xmp</span>
 ArtworkOrObject: [{AOCreator=[phil,joe],AOTitle=different}]
 
 <span class=lt># 6. Add a completely new structure to the list
-(this is very difficult to do properly using flattened tags)</span>
+# (this is very difficult to do properly using flattened tags)</span>
 &gt; <span class=code>exiftool -artworkorobject+="{aotitle=help,aocreator=[paul,ringo]}" a.xmp</span>
     1 image files updated
 
-<span class=lt># -- The new structure was added with the specified elements</span>
+<span class=lt># -- The new structure was added with the specified fields</span>
 &gt; <span class=code>exiftool -xmp-iptcext:all -S -struct a.xmp</span>
 ArtworkOrObject: [{AOCreator=[phil,joe],AOTitle=different},{AOCreator=[paul,ringo],AOTitle=help}]
 
@@ -401,7 +409,7 @@ ArtworkOrObject: [{AOCreator=[phil,joe],AOTitle=different},{AOCreator=[paul,ring
 ArtworkCreator: phil, joe, paul, ringo
 ArtworkTitle: different, help
 
-<span class=lt># 7. Delete all structures containing a specific element</span>
+<span class=lt># 7. Delete all structures containing a specific field value</span>
 &gt; <span class=code>exiftool -artworkorobject-="{AOCreator=phil}" a.xmp</span>
     1 image files updated
 
@@ -417,7 +425,7 @@ See the NewXMPxxxStruct tag definition in the <a href="config.html#xmp-xxx">XMP-
 examples of the sample config file</a> for more details.</p>
 
 <hr>
-<i>Last revised Sept. 6, 2014</i>
+<i>Last revised Sept. 20, 2014</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

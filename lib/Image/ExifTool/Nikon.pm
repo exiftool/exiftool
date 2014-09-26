@@ -56,15 +56,18 @@ use vars qw($VERSION %nikonLensIDs %nikonTextEncoding);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.93';
+$VERSION = '2.94';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
 sub ProcessNikonMOV($$$);
 sub FormatString($);
 sub ProcessNikonCaptureEditVersions($$$);
-sub PrintAFPoints($$;$);
-sub PrintAFPointsInv($$;$);
+sub PrintAFPoints($$);
+sub PrintAFPointsInv($$$);
+sub PrintAFPointsGrid($$);
+sub PrintAFPointsGridInv($$$);
+sub GetAFPointGrid($$;$);
 
 # nikon lens ID numbers (ref 8/11)
 %nikonLensIDs = (
@@ -2518,6 +2521,7 @@ my %binaryDataAttrs = (
                 2 => 'Contrast-detect (wide area)', # (D90/D5000)
                 3 => 'Contrast-detect (face priority)', # (ViewNX)
                 4 => 'Contrast-detect (subject tracking)', # (ViewNX)
+                128 => 'Single (171 points)', #PH (1V3)
             },
         },
     ],
@@ -2530,8 +2534,9 @@ my %binaryDataAttrs = (
             1 => 'On (51-point)', #PH
             2 => 'On (11-point)', #PH
             3 => 'On (39-point)', #29 (D7000)
-            4 => 'On (hybrid)', #PH (1J1)
-            5 => 'On (105-point)', #PH (1J4)
+            4 => 'On (73-point)', #PH (1J1,1J2,1J3,1S1,1V1,1V2)
+            5 => 'On (73-point, new)', #PH (1S2)
+            6 => 'On (105-point)', #PH (1J4,1V3)
         },
     },
     7 => [
@@ -2580,12 +2585,50 @@ my %binaryDataAttrs = (
         { #PH
             Name => 'PrimaryAFPoint',
             Condition => '$$self{PhaseDetectAF} == 4',
-            Notes => 'models with 135-point AF: Nikon 1 models',
+            Notes => 'Nikon 1 models with older 135-point AF and 73-point phase-detect AF',
             PrintConvColumns => 5,
             PrintConv => {
                 0 => '(none)',
                 %afPoints135,
                 1 => 'E8 (Center)', # (add " (Center)" to central point)
+            },
+        },
+        { #PH (NC)
+            Name => 'PrimaryAFPoint',
+            Condition => '$$self{PhaseDetectAF} == 5',
+            Notes => q{
+                Nikon 1 models with newer 135-point AF and 73-point phase-detect AF -- 9
+                rows (B-J) and 15 columns (1-15), inside a grid of 11 rows by 15 columns. 
+                The points are numbered sequentially, with F8 at the center
+            },
+            PrintConv => {
+                0 => '(none)',
+                82 => 'F8 (Center)',
+                OTHER => sub {
+                    my ($val, $inv) = @_;
+                    return GetAFPointGrid($val, 15, $inv);
+                },
+            },
+        },
+        { #PH
+            Name => 'PrimaryAFPoint',
+            Condition => '$$self{PhaseDetectAF} == 6',
+            Notes => q{
+                Nikon 1 models with 171-point AF and 105-point phase-detect AF -- 9 rows
+                (B-J) and 19 columns (2-20), inside a grid of 11 rows by 21 columns.  The
+                points are numbered sequentially, with F11 at the center
+            },
+            PrintConv => {
+                0 => '(none)',
+                #22 => 'B2 (Top-left)',
+                #40 => 'B20 (Top-right)',
+                115 => 'F11 (Center)',
+                #190 => 'J2 (Bottom-left)',
+                #208 => 'J20 (Bottom-right)',
+                OTHER => sub {
+                    my ($val, $inv) = @_;
+                    return GetAFPointGrid($val, 21, $inv);
+                },
             },
         },
         {
@@ -2606,8 +2649,10 @@ my %binaryDataAttrs = (
                 point is C6
             },
             Format => 'undef[7]',
+            ValueConv => 'join(" ", unpack("H2"x7, $val))',
+            ValueConvInv => '$val=~tr/ //d; pack("H*",$val)',
             PrintConv => sub { PrintAFPoints(shift, \%afPoints51); },
-            PrintConvInv => sub { PrintAFPointsInv(shift, \%afPoints51); },
+            PrintConvInv => sub { PrintAFPointsInv(shift, \%afPoints51, 7); },
         },
         { #10
             Name => 'AFPointsUsed',
@@ -2644,26 +2689,58 @@ my %binaryDataAttrs = (
                 point is C6
             },
             Format => 'undef[7]',
+            ValueConv => 'join(" ", unpack("H2"x7, $val))',
+            ValueConvInv => '$val=~tr/ //d; pack("H*",$val)',
             PrintConv => sub { PrintAFPoints(shift, \%afPoints39); },
-            PrintConvInv => sub { PrintAFPointsInv(shift, \%afPoints39); },
+            PrintConvInv => sub { PrintAFPointsInv(shift, \%afPoints39, 7); },
         },
-        { #PH (1J1, AFInfo2Version = "0200")
+        { #PH (1AW1,1J1,1J2,1J3,1S1,1V1,1V2)
             Name => 'AFPointsUsed',
             Condition => '$$self{PhaseDetectAF} == 4',
             Notes => q{
-                models with 135-point AF -- 9 rows (A-I) and 15 columns (1-15).  Center
-                point is E8.  The odd-numbered columns, columns 2 and 14, and the remaining
-                corner points are not used for 41-point AF mode
+                older models with 135-point AF -- 9 rows (A-I) and 15 columns (1-15). 
+                Center point is E8.  The odd-numbered columns, columns 2 and 14, and the
+                remaining corner points are not used for 41-point AF mode
             },
             Format => 'undef[17]',
-            PrintConv => sub { PrintAFPoints(shift, \%afPoints135, 17); },
+            ValueConv => 'join(" ", unpack("H2"x17, $val))',
+            ValueConvInv => '$val=~tr/ //d; pack("H*",$val)',
+            PrintConv => sub { PrintAFPoints(shift, \%afPoints135); },
             PrintConvInv => sub { PrintAFPointsInv(shift, \%afPoints135, 17); },
+        },
+        { #PH (1S2)
+            Name => 'AFPointsUsed',
+            Condition => '$$self{PhaseDetectAF} == 5',
+            Notes => q{
+                newer models with 135-point AF -- 9 rows (B-J) and 15 colums (1-15).  Center
+                point is F8
+            },
+            Format => 'undef[21]',
+            ValueConv => 'join(" ", unpack("H2"x21, $val))',
+            ValueConvInv => '$val=~tr/ //d; pack("H*",$val)',
+            PrintConv => sub { PrintAFPointsGrid(shift, 15); },
+            PrintConvInv => sub { PrintAFPointsGridInv(shift, 15, 21); },
+        },
+        { #PH (1J4,1V3)
+            Name => 'AFPointsUsed',
+            Condition => '$$self{PhaseDetectAF} == 6',
+            Notes => q{
+                models with 171-point AF -- 9 rows (B-J) and 19 columns (2-20).  Center
+                point is F10
+            },
+            Format => 'undef[29]',
+            ValueConv => 'join(" ", unpack("H2"x29, $val))',
+            ValueConvInv => '$val=~tr/ //d; pack("H*",$val)',
+            PrintConv => sub { PrintAFPointsGrid(shift, 21); },
+            PrintConvInv => sub { PrintAFPointsGridInv(shift, 21, 29); },
         },
         {
             Name => 'AFPointsUsed',
             Format => 'undef[7]',
-            PrintConv => '$_=unpack("H*",$val); "Unknown (".join(" ", /(..)/g).")"',
-            PrintConvInv => '$val=~s/Unknown \\((.*)\\)/$1/;$val=~tr/ //d;pack("H*",$val)',
+            ValueConv => 'join(" ", unpack("H2"x7, $val))',
+            ValueConvInv => '$val=~tr/ //d; pack("H*",$val)',
+            PrintConv => '"Unknown ($val)"',
+            PrintConvInv => '$val=~s/Unknown \\((.*)\\)/$1/; $val',
         },
     ],
     0x10 => { #PH (D90 and D5000)
@@ -5654,22 +5731,22 @@ sub ProcessNikonAVI($$$)
 
 #------------------------------------------------------------------------------
 # Print conversion for Nikon AF points
-# Inputs: 0) value to convert (undef[7]),
+# Inputs: 0) value to convert (as a string of hex bytes),
 #         1) lookup for AF point bit number (starting at 1)
-#         2) size of data
-sub PrintAFPoints($$;$)
+sub PrintAFPoints($$)
 {
-    my ($val, $afPoints, $size) = @_;
-    $size or $size = 7;
-    return 'Unknown' unless length $val == $size;
-    my ($i, @points);
-    my @dat = unpack('C*', $val);
-    my $num = scalar(keys %$afPoints);
-    my ($byte, $mask) = (0, 0x01);
-    # loop through all AF points to find active ones
-    for ($i=1; $i<=$num; ++$i) {
-        push @points, $$afPoints{$i} if $dat[$byte] & $mask;
-        ($mask <<= 1) > 0x80 and $mask = 0x01, ++$byte;
+    my ($val, $afPoints) = @_;
+    my ($i, $j, @points);
+    $val =~ tr/ //d;    # remove spaces from hex string
+    my @dat = unpack 'C*', pack 'H*', $val; # convert to array of bytes
+    # loop through all bytes to find active AF points
+    for ($i=0; $i<=@dat; ++$i) {
+        next unless $dat[$i];
+        for ($j=0; $j<8; ++$j) {
+            next unless $dat[$i] & (1 << $j);
+            my $point = $$afPoints{$i*8 + $j + 1};
+            push @points, $point if defined $point;
+        }
     }
     return '(none)' unless @points;
     # sort the points and return as comma-separated string
@@ -5683,11 +5760,10 @@ sub PrintAFPoints($$;$)
 #------------------------------------------------------------------------------
 # Inverse print conversion for AF points
 # Inputs: 0) AF point string, 1) AF point lookup, 2) size of data
-# Returns: undef[7] AF point data
-sub PrintAFPointsInv($$;$)
+# Returns: AF point data as a string of hex bytes
+sub PrintAFPointsInv($$$)
 {
     my ($val, $afPoints, $size) = @_;
-    $size or $size = 7;
     my @points = ($val =~ /[A-Za-z]\d+/g);
     my @dat = (0) x $size;
     if (@points) {
@@ -5699,7 +5775,66 @@ sub PrintAFPointsInv($$;$)
             $dat[$byte] |= (1 << (($bitNum - 1) % 8));
         }
     }
-    return pack('C*', @dat);
+    return join(" ", unpack("H2"x$size, pack('C*', @dat)));
+}
+
+#------------------------------------------------------------------------------
+# Get AF point name for grid-type AF
+# Inputs: 0) AF point number, 1) number of columns, 2) true for inverse conversion
+# Returns: AF point name, or undef
+sub GetAFPointGrid($$;$)
+{
+    my ($val, $ncol, $inv) = @_;
+    if ($inv) {
+        return undef unless $val =~ /^([A-J])(\d+)$/i;
+        return (ord(uc($1))-65) * $ncol + $2 - 1;
+    } else {
+        my $row = int(($val - 0.5) / $ncol);
+        my $col = $val - $ncol * $row + 1;
+        return chr(65+$row) . $col;
+    }
+}
+
+#------------------------------------------------------------------------------
+# Print conversion for grid-type AF points
+# Inputs: 0) value to convert (as a string of hex bytes),
+#         1) number of columns in grid
+sub PrintAFPointsGrid($$)
+{
+    my ($val, $ncol) = @_;
+    my ($i, $j, @points);
+    $val =~ tr/ //d;    # remove spaces from hex string
+    my @dat = unpack 'C*', pack 'H*', $val; # convert to array of bytes
+    # loop through all bytes to find active AF points
+    for ($i=0; $i<@dat; ++$i) {
+        next unless $dat[$i];
+        for ($j=0; $j<8; ++$j) {
+            next unless $dat[$i] & (1 << $j);
+            my $point = GetAFPointGrid($i*8 + $j, $ncol);
+            push @points, $point if defined $point;
+        }
+    }
+    return '(none)' unless @points;
+    return join ',', @points;   # return as comma-separated string
+}
+
+#------------------------------------------------------------------------------
+# Inverse print conversion for AF points
+# Inputs: 0) AF point string, 1) number of columns, 2) size of data
+# Returns: AF point data as a string of hex bytes
+sub PrintAFPointsGridInv($$$)
+{
+    my ($val, $ncol, $size) = @_;
+    my @points = ($val =~ /[A-Za-z]\d+/g);
+    my @dat = (0) x $size;
+    foreach (@points) {
+        my $n = GetAFPointGrid($_, $ncol, 1);
+        next unless defined $n;
+        my $byte = int($n / 8);
+        next if $byte > $size;
+        $dat[$byte] |= (1 << ($n - $byte * 8));
+    }
+    return join(" ", unpack("H2"x$size, pack('C*', @dat)));
 }
 
 #------------------------------------------------------------------------------

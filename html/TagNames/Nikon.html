@@ -2940,12 +2940,14 @@ D5200, D7000.</p>
   <br>129 = Auto (41 points)
   <br>130 = Subject Tracking (41 points)
   <br>131 = Face Priority (41 points)</td><td>&nbsp;&nbsp;</td></tr></table>
-<span class=s><span class=n>(ContrastDetectAF On)</span>
-  <br>0 = Contrast-detect
+<span class=s><span class=n>(ContrastDetectAF On)</span></span><table class=cols><tr>
+  <td>0 = Contrast-detect
   <br>1 = Contrast-detect (normal area)
   <br>2 = Contrast-detect (wide area)
   <br>3 = Contrast-detect (face priority)
-  <br>4 = Contrast-detect (subject tracking)</span></td></tr>
+  <br>4 = Contrast-detect (subject tracking)
+  <br>128 = Single (171 points)</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
 <tr class=b>
 <td class=r title='6 = 0x6'>6</td>
 <td>PhaseDetectAF</td>
@@ -2953,10 +2955,11 @@ D5200, D7000.</p>
 <td><span class=s><span class=n>(PrimaryAFPoint and AFPointsUsed below are only valid when this is On)</span></span><table class=cols><tr>
   <td>0 = Off
   <br>1 = On (51-point)
-  <br>2 = On (11-point)</td><td>&nbsp;&nbsp;</td>
-  <td>3 = On (39-point)
-  <br>4 = On (hybrid)
-  <br>5 = On (105-point)</td><td>&nbsp;&nbsp;</td></tr></table>
+  <br>2 = On (11-point)
+  <br>3 = On (39-point)</td><td>&nbsp;&nbsp;</td>
+  <td>4 = On (73-point)
+  <br>5 = On (73-point, new)
+  <br>6 = On (105-point)</td><td>&nbsp;&nbsp;</td></tr></table>
 </td></tr>
 <tr>
 <td class=r title='7 = 0x7'>7</td>
@@ -3069,7 +3072,7 @@ D5200, D7000.</p>
   <br>37 = C1
   <br>38 = B1
   <br>39 = D1</td><td>&nbsp;&nbsp;</td></tr></table>
-<span class=s><span class=n>(models with 135-point AF: Nikon 1 models)</span></span><table class=cols><tr>
+<span class=s><span class=n>(Nikon 1 models with older 135-point AF and 73-point phase-detect AF)</span></span><table class=cols><tr>
   <td>0 = (none)
   <br>1 = E8 (Center)
   <br>2 = D8
@@ -3206,7 +3209,17 @@ D5200, D7000.</p>
   <br>133 = G1
   <br>134 = H1
   <br>135 = I1</td><td>&nbsp;&nbsp;</td></tr></table>
-<span class=s><span class=n>(future models?...)</span>
+<span class=s><span class=n>(Nikon 1 models with newer 135-point AF and 73-point phase-detect AF -- 9
+rows (B-J) and 15 columns (1-15), inside a grid of 11 rows by 15 columns.
+The points are numbered sequentially, with F8 at the center)</span>
+  <br>0 = (none)
+  <br>82 = F8 (Center)
+  <br><span class=n>(Nikon 1 models with 171-point AF and 105-point phase-detect AF -- 9 rows
+(B-J) and 19 columns (2-20), inside a grid of 11 rows by 21 columns.  The
+points are numbered sequentially, with F11 at the center)</span>
+  <br>0 = (none)
+  <br>115 = F11 (Center)
+  <br><span class=n>(future models?...)</span>
   <br>0 = (none)
   <br>1 = Center</span></td></tr>
 <tr class=b>
@@ -3215,8 +3228,10 @@ D5200, D7000.</p>
   <br>AFPointsUsed
   <br>AFPointsUsed
   <br>AFPointsUsed
+  <br>AFPointsUsed
+  <br>AFPointsUsed
   <br>AFPointsUsed</td>
-<td class=c>undef[7]<br>undef[2]<br>undef[7]<br>undef[17]<br>undef[7]</td>
+<td class=c>undef[7]<br>undef[2]<br>undef[7]<br>undef[17]<br>undef[21]<br>undef[29]<br>undef[7]</td>
 <td><span class=s><span class=n>(models with 51-point AF -- 5 rows: A1-9, B1-11, C1-11, D1-11, E1-9.  Center
 point is C6)</span>
   <br><span class=n>(models with 11-point AF)</span></span><table class=cols><tr>
@@ -3235,9 +3250,13 @@ point is C6)</span>
   <br>Bit 10 = Far Right</td><td>&nbsp;&nbsp;</td></tr></table>
 <span class=s><span class=n>(models with 39-point AF -- 5 rows: A1-3, B1-11, C1-11, D1-11, E1-3.  Center
 point is C6)</span>
-  <br><span class=n>(models with 135-point AF -- 9 rows (A-I) and 15 columns (1-15).  Center
-point is E8.  The odd-numbered columns, columns 2 and 14, and the remaining
-corner points are not used for 41-point AF mode)</span></span></td></tr>
+  <br><span class=n>(older models with 135-point AF -- 9 rows (A-I) and 15 columns (1-15).
+Center point is E8.  The odd-numbered columns, columns 2 and 14, and the
+remaining corner points are not used for 41-point AF mode)</span>
+  <br><span class=n>(newer models with 135-point AF -- 9 rows (B-J) and 15 colums (1-15).  Center
+point is F8)</span>
+  <br><span class=n>(models with 171-point AF -- 9 rows (B-J) and 19 columns (2-20).  Center
+point is F10)</span></span></td></tr>
 <tr>
 <td class=r title='16 = 0x10'>16</td>
 <td>AFImageWidth</td>
@@ -4554,7 +4573,7 @@ ExifTool to choose in these cases (see the
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Sep 17, 2014</i>
+<br><i>Last revised Sep 25, 2014</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

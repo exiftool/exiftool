@@ -82,7 +82,7 @@ sub ProcessSerialData($$$);
 sub ProcessFilters($$$);
 sub SwapWords($);
 
-$VERSION = '3.36';
+$VERSION = '3.37';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -284,7 +284,8 @@ $VERSION = '3.36';
     169.7 => 'Sigma 35mm f/1.4 DG HSM', #PH (also "| A" version, ref forum3833)
     170 => 'Canon EF 200mm f/2.8L II', #9
     171 => 'Canon EF 300mm f/4L', #15
-    172 => 'Canon EF 400mm f/5.6L', #32
+    172 => 'Canon EF 400mm f/5.6L or Sigma Lens', #32
+    172.1 =>'Sigma 150-600mm f/5-6.3 DG OS HSM | S', #forum3833
     173 => 'Canon EF 180mm Macro f/3.5L or Sigma Lens', #9
     173.1 => 'Sigma 180mm EX HSM Macro f/3.5', #14
     173.2 => 'Sigma APO Macro 150mm f/2.8 EX DG HSM', #14
@@ -595,6 +596,7 @@ $VERSION = '3.36';
     0x3690000 => 'PowerShot ELPH 135 / IXUS 145 / IXY 120',
     0x3700000 => 'PowerShot ELPH 340 HS / IXUS 265 HS / IXY 630',
     0x3710000 => 'PowerShot ELPH 150 IS / IXUS 155 / IXY 140',
+    0x3760000 => 'PowerShot SX520 HS', #52
     0x3780000 => 'PowerShot G7 X', #52
     0x4040000 => 'PowerShot G1',
     0x6040000 => 'PowerShot S100 / Digital IXUS / IXY Digital',

@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '9.71';
+$VERSION = '9.72';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -4623,10 +4623,14 @@ sub ProcessTrailers($$)
                     $$fixup{Start} += length($outBuff) if $fixup;
                     $outBuff = '';      # free memory
                 }
-                if ($fixup) {
-                    # add new fixup information if any
-                    $fixup->AddFixup($$dirInfo{Fixup}) if $$dirInfo{Fixup};
-                } else {
+                if ($$dirInfo{Fixup}) {
+                    if ($fixup) {
+                        # add fixup for subsequent trailers to the fixup for this trailer
+                        # (but first we must adjust for the new start position)
+                        $$fixup{Shift} += $$dirInfo{Fixup}{Start};
+                        $$fixup{Start} -= $$dirInfo{Fixup}{Start};
+                        $$dirInfo{Fixup}->AddFixup($fixup);
+                    }
                     $fixup = $$dirInfo{Fixup};  # save fixup
                 }
             } else {

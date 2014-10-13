@@ -21,7 +21,7 @@ sub ProcessKodakPatch($$$);
 sub WriteUnknownOrPreview($$$);
 sub FixLeicaBase($$;$);
 
-$VERSION = '1.93';
+$VERSION = '1.94';
 
 my $debug;          # set to 1 to enable debugging code
 
@@ -863,7 +863,7 @@ my $debug;          # set to 1 to enable debugging code
         # (starts with "SONY DSC \0" or "SONY CAM \0")
         # (TF1 starts with "\0\0SONY PIC\0")
         # (Hasselblad models start with "VHAB     \0")
-        Condition => '$$valPt=~/^(SONY (DSC|CAM)|\0\0SONY PIC\0|VHAB     \0)/',
+        Condition => '$$valPt=~/^(SONY (DSC|CAM|MOBILE)|\0\0SONY PIC\0|VHAB     \0)/',
         SubDirectory => {
             TagTable => 'Image::ExifTool::Sony::Main',
             Start => '$valuePtr + 12',

@@ -325,7 +325,7 @@ different from other models)</span>
 <td>AFPointsInFocus
   <br>AFPointsInFocus</td>
 <td class=c>int16u<br>int32u</td>
-<td><table class=cols><tr>
+<td><span class=s><span class=n>(models other than the K-3)</span></span><table class=cols><tr>
   <td>0x0 = Fixed Center or Multiple
   <br>0x1 = Top-left
   <br>0x2 = Top-center
@@ -337,7 +337,7 @@ different from other models)</span>
   <br>0x8 = Bottom-center
   <br>0x9 = Bottom-right
   <br>0xffff = None</td><td>&nbsp;&nbsp;</td></tr></table>
-<table class=cols><tr>
+<span class=s><span class=n>(K-3 only)</span></span><table class=cols><tr>
   <td>0x0 = (none)
   <br>Bit 0 = Top-left
   <br>Bit 1 = Top Near-left
@@ -795,49 +795,54 @@ available.  Extended bracket values are printed as &#39;WB-BA&#39;, &#39;WB-GM&#
   <br>Bit 10 = Lower-right</td><td>&nbsp;&nbsp;</td></tr></table>
 </td></tr>
 <tr class=b>
+<td title='0x003d = 61'>0x003d</td>
+<td>DataScaling</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td title='0x003e = 62'>0x003e</td>
 <td>PreviewImageBorders</td>
 <td class=c>int8u[4]</td>
 <td><span class=s><span class=n>(top, bottom, left, right)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x003f = 63'>0x003f</td>
 <td>LensRec</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Pentax.html#LensRec'>Pentax LensRec Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0040 = 64'>0x0040</td>
 <td>SensitivityAdjust</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x0041 = 65'>0x0041</td>
 <td>ImageEditCount</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x0047 = 71'>0x0047</td>
 <td>CameraTemperature</td>
 <td class=c>int8s</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x0048 = 72'>0x0048</td>
 <td>AELock</td>
 <td class=c>int16u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0049 = 73'>0x0049</td>
 <td>NoiseReduction</td>
 <td class=c>int16u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x004d = 77'>0x004d</td>
 <td>FlashExposureComp
   <br>FlashExposureComp</td>
 <td class=c>int32s<br>int8s[2]</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x004f = 79'>0x004f</td>
 <td>ImageTone</td>
 <td class=c>int16u</td>
@@ -853,69 +858,69 @@ available.  Extended bracket values are printed as &#39;WB-BA&#39;, &#39;WB-GM&#
   <br>8 = Bleach Bypass
   <br>9 = Radiant</td><td>&nbsp;&nbsp;</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td title='0x0050 = 80'>0x0050</td>
 <td>ColorTemperature</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x0053 = 83'>0x0053</td>
 <td>ColorTempDaylight</td>
 <td class=c>undef[4]</td>
 <td><span class=s><span class=n>(0x0053-0x005a are 3 numbers: Kelvin, shift AB, shift GM)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0054 = 84'>0x0054</td>
 <td>ColorTempShade</td>
 <td class=c>undef[4]</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x0055 = 85'>0x0055</td>
 <td>ColorTempCloudy</td>
 <td class=c>undef[4]</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x0056 = 86'>0x0056</td>
 <td>ColorTempTungsten</td>
 <td class=c>undef[4]</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x0057 = 87'>0x0057</td>
 <td>ColorTempFluorescentD</td>
 <td class=c>undef[4]</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x0058 = 88'>0x0058</td>
 <td>ColorTempFluorescentN</td>
 <td class=c>undef[4]</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x0059 = 89'>0x0059</td>
 <td>ColorTempFluorescentW</td>
 <td class=c>undef[4]</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x005a = 90'>0x005a</td>
 <td>ColorTempFlash</td>
 <td class=c>undef[4]</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x005c = 92'>0x005c</td>
 <td>ShakeReductionInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Pentax.html#SRInfo'>Pentax SRInfo Tags</a>
   <br>--&gt; <a href='Pentax.html#SRInfo2'>Pentax SRInfo2 Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0x005d = 93'>0x005d</td>
 <td>ShutterCount</td>
 <td class=c>undef[4]</td>
 <td><span class=s><span class=n>(Note: May be reset by servicing!  Also, does not include shutter actuations
 for live view or video recording)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0060 = 96'>0x0060</td>
 <td>FaceInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Pentax.html#FaceInfo'>Pentax FaceInfo Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0062 = 98'>0x0062</td>
 <td>RawDevelopmentProcess</td>
 <td class=c>int16u</td>
@@ -934,7 +939,7 @@ for live view or video recording)</span></span></td></tr>
   <br>13 = 13 (K-3)
   <br>14 = 14 (645Z)</td><td>&nbsp;&nbsp;</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td title='0x0067 = 103'>0x0067</td>
 <td>Hue</td>
 <td class=c>int16u</td>
@@ -950,12 +955,12 @@ for live view or video recording)</span></span></td></tr>
   <br>8 = 4
   <br>65535 = None</td><td>&nbsp;&nbsp;</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td title='0x0068 = 104'>0x0068</td>
 <td>AWBInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Pentax.html#AWBInfo'>Pentax AWBInfo Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0069 = 105'>0x0069</td>
 <td>DynamicRangeExpansion</td>
 <td class=c>undef[4]</td>
@@ -968,12 +973,12 @@ other models)</span>
   <br>0 = 0
   <br>1 = Enabled
   <br>2 = Auto</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x006b = 107'>0x006b</td>
 <td>TimeInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Pentax.html#TimeInfo'>Pentax TimeInfo Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x006c = 108'>0x006c</td>
 <td>HighLowKeyAdj</td>
 <td class=c>int16s[2]</td>
@@ -988,7 +993,7 @@ other models)</span>
   <br>&#39;3 0&#39; = 3
   <br>&#39;4 0&#39; = 4</td><td>&nbsp;&nbsp;</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td title='0x006d = 109'>0x006d</td>
 <td>ContrastHighlight</td>
 <td class=c>int16s[2]</td>
@@ -1003,7 +1008,7 @@ other models)</span>
   <br>&#39;3 0&#39; = 3
   <br>&#39;4 0&#39; = 4</td><td>&nbsp;&nbsp;</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td title='0x006e = 110'>0x006e</td>
 <td>ContrastShadow</td>
 <td class=c>int16s[2]</td>
@@ -1018,13 +1023,13 @@ other models)</span>
   <br>&#39;3 0&#39; = 3
   <br>&#39;4 0&#39; = 4</td><td>&nbsp;&nbsp;</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td title='0x006f = 111'>0x006f</td>
 <td>ContrastHighlightShadowAdj</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0070 = 112'>0x0070</td>
 <td>FineSharpness</td>
 <td class=c>int8u[n]</td>
@@ -1034,7 +1039,7 @@ other models)</span>
   <br>[Value 1]
   <br>0 = Normal
   <br>2 = Extra fine</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0071 = 113'>0x0071</td>
 <td>HighISONoiseReduction</td>
 <td class=c>int8u</td>
@@ -1056,12 +1061,12 @@ other models)</span>
   <br>56 = ISO&gt;800
   <br>64 = ISO&gt;1600
   <br>72 = ISO&gt;3200</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0072 = 114'>0x0072</td>
 <td>AFAdjustment</td>
 <td class=c>int16s</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x0073 = 115'>0x0073</td>
 <td>MonochromeFilterEffect</td>
 <td class=c>int16u</td>
@@ -1076,7 +1081,7 @@ other models)</span>
   <br>8 = Infrared
   <br>65535 = None</td><td>&nbsp;&nbsp;</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td title='0x0074 = 116'>0x0074</td>
 <td>MonochromeToning</td>
 <td class=c>int16u</td>
@@ -1092,17 +1097,17 @@ other models)</span>
   <br>8 = 4
   <br>65535 = None</td><td>&nbsp;&nbsp;</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td title='0x0076 = 118'>0x0076</td>
 <td>FaceDetect</td>
 <td class=c>int8u[2]</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x0077 = 119'>0x0077</td>
 <td>FaceDetectFrameSize</td>
 <td class=c>int16u[2]</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x0079 = 121'>0x0079</td>
 <td>ShadowCorrection</td>
 <td class=c>int8u[n]</td>
@@ -1116,14 +1121,14 @@ other models)</span>
   <br>&#39;1 3&#39; = Strong
   <br>&#39;2 4&#39; = Auto</td><td>&nbsp;&nbsp;</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td title='0x007a = 122'>0x007a</td>
 <td>ISOAutoParameters</td>
 <td class=c>int8u[2]</td>
 <td><span class=s>&#39;1 0&#39; = Slow
   <br>&#39;2 0&#39; = Standard
   <br>&#39;3 0&#39; = Fast</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x007b = 123'>0x007b</td>
 <td>CrossProcess</td>
 <td class=c>int8u</td>
@@ -1137,11 +1142,16 @@ other models)</span>
   <br>34 = Favorite 2
   <br>35 = Favorite 3</td><td>&nbsp;&nbsp;</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td title='0x007d = 125'>0x007d</td>
 <td>LensCorr</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Pentax.html#LensCorr'>Pentax LensCorr Tags</a></td></tr>
+<tr class=b>
+<td title='0x007e = 126'>0x007e</td>
+<td>WhiteLevel</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
 <tr>
 <td title='0x007f = 127'>0x007f</td>
 <td>BleachBypassToning</td>
@@ -3301,8 +3311,9 @@ serviced)</span></span></td></tr>
 <td class=r title='11 = 0xb'>11</td>
 <td>AFPointsInFocus</td>
 <td class=c>int8u</td>
-<td><span class=s><span class=n>(may report two points in focus even though a single AFPoint has been
-selected, in which case the selected AFPoint is the first reported)</span></span><table class=cols><tr>
+<td><span class=s><span class=n>(models other than the K-3 only.  May report two points in focus even though
+a single AFPoint has been selected, in which case the selected AFPoint is
+the first reported)</span></span><table class=cols><tr>
   <td>0 = None
   <br>1 = Lower-left, Bottom
   <br>2 = Bottom
@@ -4582,7 +4593,7 @@ stored as ASCII text in a format very similar to some HP models.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Sep 22, 2014</i>
+<br><i>Last revised Sep 29, 2014</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

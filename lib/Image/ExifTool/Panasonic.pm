@@ -332,6 +332,7 @@ my %shootingMode = (
                 '0 1'   => '9-area', # (FS7)
                 '0 16'  => '3-area (high speed)', # (FZ8)
                 '0 23'  => '23-area', #PH (FZ47,NC)
+                # '0 49' - seen for LX100 (PH)
                 '1 0'   => 'Spot Focusing', # (FZ8)
                 '1 1'   => '5-area', # (FZ8)
                 '16'    => 'Normal?', # (only mode for DMC-LC20)
@@ -508,17 +509,18 @@ my %shootingMode = (
                 L10 and LC80
             },
             PrintConv => {
-                0 => 'Normal',
-                1 => 'Low',
-                2 => 'High',
-                # 3 - observed with LZ6 and TZ5 in Fireworks mode
-                #     and GX7 in Fantasy/Retro/OldDays/HighKey - PH
-                # 4 - observed in MP4 movie with GM1 (EXIF and 0x39 Contrast "Normal") - PH
-                # 5 - observed with FX01, FX40 and FP8 (EXIF contrast "Normal") - PH
-                6 => 'Medium Low', #PH (FZ18)
-                7 => 'Medium High', #PH (FZ18)
-                # 8 - GX7 in DynamicMonochrome mode
-                13 => 'High Dynamic', #PH (FZ47 in ?)
+                0x00 => 'Normal',
+                0x01 => 'Low',
+                0x02 => 'High',
+                # 0x03 - observed with LZ6 and TZ5 in Fireworks mode
+                #        and GX7 in Fantasy/Retro/OldDays/HighKey - PH
+                # 0x04 - observed in MP4 movie with GM1 (EXIF and 0x39 Contrast "Normal") - PH
+                # 0x05 - observed with FX01, FX40 and FP8 (EXIF contrast "Normal") - PH
+                0x06 => 'Medium Low', #PH (FZ18)
+                0x07 => 'Medium High', #PH (FZ18)
+                # 0x08 - GX7 in DynamicMonochrome mode
+                0x0d => 'High Dynamic', #PH (FZ47 in ?)
+                # 0x13 - seen for LX100 (PH)
                 # DMC-LC1 values:
                 0x100 => 'Low',
                 0x110 => 'Normal',
@@ -609,6 +611,7 @@ my %shootingMode = (
             2 => 'High (+1)',
             3 => 'Lowest (-2)', #JD
             4 => 'Highest (+2)', #JD
+            # 65531 - seen for LX100 "NR1" test shots at imaging-resource (PH)
         },
     },
     0x2e => { #4

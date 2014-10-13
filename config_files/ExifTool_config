@@ -244,17 +244,17 @@
     GROUPS        => { 0 => 'XMP', 1 => 'XMP-xxx', 2 => 'Image' },
     NAMESPACE     => { 'xxx' => 'http://ns.myname.com/xxx/1.0/' },
     WRITABLE      => 'string',
-    # replace "NewXMPxxxTag1" with your own tag name (eg. "MyTag")
     # Example 8.  XMP-xxx:NewXMPxxxTag1
+    # - replace "NewXMPxxxTag1" with your own tag name (eg. "MyTag")
     NewXMPxxxTag1 => { Writable => 'lang-alt' },
     # Example 9.  XMP-xxx:NewXMPxxxTag2
     NewXMPxxxTag2 => { Groups => { 2 => 'Author' } },
     # Example 10.  XMP-xxx:NewXMPxxxTag3
     NewXMPxxxTag3 => { List => 'Bag' },
-    # example structured XMP tag
+    # Example 11.  XMP-xxx:NewXMPxxxStruct
+    # - example structured XMP tag
     NewXMPxxxStruct => {
         # the "Struct" entry defines the structure fields
-        # Example 11.  XMP-xxx:NewXMPxxxStruct
         Struct => {
             # optional namespace prefix and URI for structure fields
             # (required only if different than NAMESPACE above)

@@ -67,6 +67,7 @@
 #              51) http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,4110.0.html
 #              52) Iliah Borg private communication (LibRaw)
 #              53) Niels Kristian Bech Jensen private communication
+#              54) Jos Roost private communication
 #              JD) Jens Duttke private communication
 #------------------------------------------------------------------------------
 
@@ -82,7 +83,7 @@ sub ProcessSerialData($$$);
 sub ProcessFilters($$$);
 sub SwapWords($);
 
-$VERSION = '3.37';
+$VERSION = '3.38';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -162,6 +163,7 @@ $VERSION = '3.37';
     33.6 => 'Carl Zeiss Distagon T* 21mm f/2.8 ZE', #PH
     33.7 => 'Carl Zeiss Distagon T* 28mm f/2 ZE', #PH
     33.8 => 'Carl Zeiss Distagon T* 35mm f/2 ZE', #PH
+    33.9 => 'Carl Zeiss Apo-Sonnar T* 135mm f/2 ZE', #54
     35 => 'Canon EF 35-80mm f/4-5.6', #32
     36 => 'Canon EF 38-76mm f/4.5-5.6', #32
     37 => 'Canon EF 35-80mm f/4-5.6 or Tamron Lens', #32
@@ -319,7 +321,8 @@ $VERSION = '3.37';
     196 => 'Canon EF 75-300mm f/4-5.6 USM', #15/32
     197 => 'Canon EF 75-300mm f/4-5.6 IS USM',
     198 => 'Canon EF 50mm f/1.4 USM or Zeiss Lens',
-    198.1 => 'Zeiss Otus 55mm f/1.4 ZE', #Jos Roost (seen only on Sony camera)
+    198.1 => 'Zeiss Otus 55mm f/1.4 ZE', #54 (seen only on Sony camera)
+    198.2 => 'Zeiss Otus 85mm f/1.4 ZE', #54 (NC)
     199 => 'Canon EF 28-80mm f/3.5-5.6 USM', #32
     200 => 'Canon EF 75-300mm f/4-5.6 USM', #32
     201 => 'Canon EF 28-80mm f/3.5-5.6 USM', #32
@@ -596,6 +599,7 @@ $VERSION = '3.37';
     0x3690000 => 'PowerShot ELPH 135 / IXUS 145 / IXY 120',
     0x3700000 => 'PowerShot ELPH 340 HS / IXUS 265 HS / IXY 630',
     0x3710000 => 'PowerShot ELPH 150 IS / IXUS 155 / IXY 140',
+    0x3750000 => 'PowerShot SX60 HS', #52/53
     0x3760000 => 'PowerShot SX520 HS', #52
     0x3780000 => 'PowerShot G7 X', #52
     0x4040000 => 'PowerShot G1',
@@ -1331,6 +1335,14 @@ my %binaryDataAttrs = (
             TagTable => 'Image::ExifTool::Canon::TimeInfo',
         },
     },
+    0x3c => { #PH (G1XmkII)
+        Name => 'AFInfo3',
+        Condition => '$$self{AFInfo3} = 1',
+        SubDirectory => {
+            Validate => 'Image::ExifTool::Canon::Validate($dirData,$subdirStart,$size)',
+            TagTable => 'Image::ExifTool::Canon::AFInfo2',
+        },
+    },
     # 0x44 (ShootInfo)
     # 0x62 (UserSetting)
     0x81 => { #13
@@ -1401,34 +1413,37 @@ my %binaryDataAttrs = (
             ValueConvInv => '$val',
         },
     ],
-    0x97 => { #PH
+    0x97 => { #PH (also see http://www.freepatentsonline.com/7657116.html)
         Name => 'DustRemovalData', # (DustDeleteData)
         Writable => 'undef',
         Flags => [ 'Binary', 'Protected' ],
-        # some interesting stuff is stored in here (maybe also InternalSerialNumber)...
-        # 0x00: Version
-        # 0x01: LensInfo
-        # 0x02: AVValue
-        # 0x03: POValue
-        # 0x04: DustCount
-        # 0x06: FocalLength
-        # 0x08: LensID
-        # 0x0a: Width
-        # 0x0c: Height
-        # 0x0e: RAW_Width
-        # 0x10: RAW_Height
-        # 0x12: PixelPitch [um]
-        # 0x14: LpfDistance [mm]
-        # 0x16: TopOffset
-        # 0x17: BottomOffset
-        # 0x18: LeftOffset
-        # 0x19: RightOffset
-        # 0x1a: Year
-        # 0x1b: Month
-        # 0x1c: Day
-        # 0x1d: Hour
-        # 0x1e: Minutes
-        # 0x1f: BrightDiff
+        # 0x00: int8u  - Version (0 or 1)
+        # 0x01: int8u  - LensInfo ? (1) 
+        # 0x02: int8u  - AVValue ? (int8u for version 0, int16u for version 1)
+        # 0x03: int8u  - POValue ? (int8u for version 0, int16u for version 1)
+        # 0x04: int16u - DustCount
+        # 0x06: int16u - FocalLength ?
+        # 0x08: int16u - LensID ?
+        # 0x0a: int16u - Width
+        # 0x0c: int16u - Height
+        # 0x0e: int16u - RAW_Width
+        # 0x10: int16u - RAW_Height
+        # 0x12: int16u - PixelPitch [um * 1000]
+        # 0x14: int16u - LpfDistance [mm * 1000]
+        # 0x16: int8u  - TopOffset
+        # 0x17: int8u  - BottomOffset
+        # 0x18: int8u  - LeftOffset
+        # 0x19: int8u  - RightOffset
+        # 0x1a: int8u  - Year [-1900]
+        # 0x1b: int8u  - Month
+        # 0x1c: int8u  - Day
+        # 0x1d: int8u  - Hour
+        # 0x1e: int8u  - Minutes
+        # 0x1f: int8u  - BrightDiff
+        # Table with DustCount entries:
+        # 0x22: int16u - DustX
+        # 0x24: int16u - DustY
+        # 0x26: int16u - DustSize
     },
     0x98 => { #PH
         Name => 'CropInfo', # (ImageSizeOffset)
@@ -5598,7 +5613,7 @@ my %ciMaxFocal = (
     12 => 'PrimaryAFPoint',
 );
 
-# newer AF information (MakerNotes tag 0x26) - PH (A570IS,1DmkIII,40D)
+# newer AF information (MakerNotes tag 0x26 and 0x32) - PH (A570IS,1DmkIII,40D and G1XmkII)
 # (Note: this tag is out of sequence in A570IS maker notes)
 %Image::ExifTool::Canon::AFInfo2 = (
     PROCESS_PROC => \&ProcessSerialData,
@@ -5687,7 +5702,7 @@ my %ciMaxFocal = (
     14 => {
         # usually, but not always, the lowest number AF point in focus
         Name => 'PrimaryAFPoint',
-        Condition => '$$self{Model} !~ /EOS/',
+        Condition => '$$self{Model} !~ /EOS/ and not $$self{AFInfo3}', # (not valid for G1XmkII)
     },
 );
 

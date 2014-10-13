@@ -252,17 +252,17 @@
     GROUPS =&gt; { 0 =&gt; 'XMP', 1 =&gt; 'XMP-xxx', 2 =&gt; 'Image' },
     NAMESPACE =&gt; { 'xxx' =&gt; 'http://ns.myname.com/xxx/1.0/' },
     WRITABLE =&gt; 'string',
-    <span class=com># replace "NewXMPxxxTag1" with your own tag name (eg. "MyTag")</span>
     <span class=com># Example 8.  XMP-xxx:NewXMPxxxTag1</span>
+    <span class=com># - replace "NewXMPxxxTag1" with your own tag name (eg. "MyTag")</span>
     NewXMPxxxTag1 =&gt; { Writable => 'lang-alt' },
     <span class=com># Example 9.  XMP-xxx:NewXMPxxxTag2</span>
     NewXMPxxxTag2 =&gt; { Groups =&gt; { 2 =&gt; 'Author' } },
     <span class=com># Example 10.  XMP-xxx:NewXMPxxxTag3</span>
     NewXMPxxxTag3 =&gt; { List =&gt; 'Bag' },
-    <span class=com># example structured XMP tag</span>
+    <span class=com># Example 11.  XMP-xxx:NewXMPxxxStruct</span>
+    <span class=com># - example structured XMP tag</span>
     NewXMPxxxStruct => {
         <span class=com># the "Struct" entry defines the structure fields</span>
-        <span class=com># Example 11.  XMP-xxx:NewXMPxxxStruct</span>
         Struct =&gt; {
             <span class=com># optional namespace prefix and URI for structure fields
             # (required only if different than NAMESPACE above)</span>

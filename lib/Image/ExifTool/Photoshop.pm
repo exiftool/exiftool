@@ -28,7 +28,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD $iptcDigestInfo);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.45';
+$VERSION = '1.46';
 
 sub ProcessPhotoshop($$$);
 sub WritePhotoshop($$$);
@@ -48,6 +48,22 @@ my %psdMap = (
     PrintIM      => 'IFD0',
     InteropIFD   => 'ExifIFD',
     MakerNotes   => 'ExifIFD',
+);
+
+# tag information for PhotoshopThumbnail and PhotoshopBGRThumbnail
+my %thumbnailInfo = (
+    Writable => 'undef',
+    Protected => 1,
+    RawConv => 'my $img=substr($val,0x1c); $self->ValidateImage(\$img,$tag)',
+    ValueConvInv => q{
+        my $et = new Image::ExifTool;
+        my @tags = qw{ImageWidth ImageHeight FileType};
+        my $info = $et->ImageInfo(\$val, @tags);
+        my ($w, $h, $type) = @$info{@tags};
+        $w and $h and $type eq 'JPEG' or warn("Not a valid JPEG image\n"), return undef;
+        my $wbytes = int(($w * 24 + 31) / 32) * 4;
+        return pack('N6n2', 1, $w, $h, $wbytes, $wbytes * $h, length($val), 24, 1) . $val;
+    },
 );
 
 # Photoshop APP13 tag table
@@ -109,7 +125,7 @@ my %psdMap = (
     0x0409 => {
         Name => 'PhotoshopBGRThumbnail',
         Notes => 'this is a JPEG image, but in BGR format instead of RGB',
-        RawConv => 'my $img=substr($val,0x1c);$self->ValidateImage(\$img,$tag)',
+        %thumbnailInfo,
     },
     0x040a => {
         Name => 'CopyrightFlag',
@@ -129,7 +145,7 @@ my %psdMap = (
     },
     0x040c => {
         Name => 'PhotoshopThumbnail',
-        RawConv => 'my $img=substr($val,0x1c);$self->ValidateImage(\$img,$tag)',
+        %thumbnailInfo,
     },
     0x040d => {
         Name => 'GlobalAngle',

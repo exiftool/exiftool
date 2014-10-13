@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.51
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.73
 [File, System, Image] FileName - File Name: Panasonic_5_failed.rw2
 [File, System, Image] Directory - Directory: t
 [File, System, Image] FileSize - File Size: 14 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2014:02:12 11:27:00-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2014:02:12 11:27:00-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2014:02:12 11:27:00-05:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2014:10:09 10:39:20-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2014:10:09 10:39:20-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2014:10:09 10:39:20-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: RW2
 [File, File, Image] MIMEType - MIME Type: image/x-panasonic-rw2
@@ -43,7 +43,6 @@
 [EXIF, IFD0, Image] 36 - WB Red Level: 570
 [EXIF, IFD0, Image] 37 - WB Green Level: 263
 [EXIF, IFD0, Image] 38 - WB Blue Level: 438
-[EXIF, IFD0, Image] 39 - Panasonic Raw 0x0027: ..=.. .;v..ƒ..¾..c..z..P..‹..y..N..¥..z..P.
 [EXIF, IFD0, Image] 45 - Panasonic Raw 0x002d: 4
 [EXIF, IFD0, Camera] 271 - Make: Panasonic
 [EXIF, IFD0, Camera] 272 - Camera Model Name: DMC-LX3
@@ -117,6 +116,29 @@
 [EXIF, ExifIFD, Camera] 37385 - Flash: Off, Did not fire
 [EXIF, ExifIFD, Camera] 37386 - Focal Length: 5.1 mm
 [EXIF, ExifIFD, Image] 41728 - File Source: Digital Camera
+[PanasonicRaw, PanasonicRaw, Other] 0 - Num WB Entries: 7
+[PanasonicRaw, PanasonicRaw, Other] 1 - WB Type 1: Fine Weather
+[PanasonicRaw, PanasonicRaw, Other] 2 - WB RGB Levels 1: 573 256 416
+[PanasonicRaw, PanasonicRaw, Other] 5 - WB Type 2: Cloudy
+[PanasonicRaw, PanasonicRaw, Other] 6 - WB RGB Levels 2: 630 256 387
+[PanasonicRaw, PanasonicRaw, Other] 9 - WB Type 3: Shade
+[PanasonicRaw, PanasonicRaw, Other] 10 - WB RGB Levels 3: 702 256 355
+[PanasonicRaw, PanasonicRaw, Other] 13 - WB Type 4: Tungsten (Incandescent)
+[PanasonicRaw, PanasonicRaw, Other] 14 - WB RGB Levels 4: 378 256 592
+[PanasonicRaw, PanasonicRaw, Other] 17 - WB Type 5: Flash
+[PanasonicRaw, PanasonicRaw, Other] 18 - WB RGB Levels 5: 651 256 377
+[PanasonicRaw, PanasonicRaw, Other] 21 - WB Type 6: D55
+[PanasonicRaw, PanasonicRaw, Other] 22 - WB RGB Levels 6: 590 256 421
+[PanasonicRaw, PanasonicRaw, Other] 25 - WB Type 7: ISO Studio Tungsten
+[PanasonicRaw, PanasonicRaw, Other] 26 - WB RGB Levels 7: 378 256 592
+[PanasonicRaw, PanasonicRaw, Image] 2 - Distortion Param 02: 0.010772705078125
+[PanasonicRaw, PanasonicRaw, Image] 4 - Distortion Param 04: 0.02056884765625
+[PanasonicRaw, PanasonicRaw, Image] 5 - Distortion Scale: 1
+[PanasonicRaw, PanasonicRaw, Image] 7.1 - Distortion Correction: On
+[PanasonicRaw, PanasonicRaw, Image] 8 - Distortion Param 08: 0.12359619140625
+[PanasonicRaw, PanasonicRaw, Image] 9 - Distortion Param 09: 0.00579833984375
+[PanasonicRaw, PanasonicRaw, Image] 11 - Distortion Param 11: -0.02374267578125
+[PanasonicRaw, PanasonicRaw, Image] 12 - Distortion N: 2280
 [MakerNotes, Panasonic, Camera] 1 - Image Quality: Raw
 [MakerNotes, Panasonic, Camera] 2 - Firmware Version: 0.1.0.0
 [MakerNotes, Panasonic, Camera] 3 - White Balance: Auto
@@ -199,15 +221,7 @@
 [PrintIM, PrintIM, Printing] 256 - Print IM 0x0100: 0x00000005
 [PrintIM, PrintIM, Printing] 257 - Print IM 0x0101: 0x00000001
 [PrintIM, PrintIM, Printing] 272 - Print IM 0x0110: 0x00000080
-[PanasonicRaw, PanasonicRaw, Image] 2 - Distortion Param 02: 0.010772705078125
-[PanasonicRaw, PanasonicRaw, Image] 4 - Distortion Param 04: 0.02056884765625
-[PanasonicRaw, PanasonicRaw, Image] 5 - Distortion Scale: 1
-[PanasonicRaw, PanasonicRaw, Image] 7.1 - Distortion Correction: On
-[PanasonicRaw, PanasonicRaw, Image] 8 - Distortion Param 08: 0.12359619140625
-[PanasonicRaw, PanasonicRaw, Image] 9 - Distortion Param 09: 0.00579833984375
-[PanasonicRaw, PanasonicRaw, Image] 11 - Distortion Param 11: -0.02374267578125
-[PanasonicRaw, PanasonicRaw, Image] 12 - Distortion N: 2280
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 9.51
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 9.73
 [XMP, XMP-dc, Image] title - Title: new title
 [IPTC, IPTC, Other] 25 - Keywords: a keyword
 [IPTC, IPTC, Other] 0 - Application Record Version: 4

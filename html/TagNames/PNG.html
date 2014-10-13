@@ -263,7 +263,8 @@ the EXIF convention, but is the inverse of the stored encoding gamma)</span></sp
 <p>The PNG TextualData format allows arbitrary tag names to be used.  The tags
 listed below are the only ones that can be written (unless new user-defined
 tags are added via the configuration file), however ExifTool will extract
-any other TextualData tags that are found.</p>
+any other TextualData tags that are found.  All TextualData tags (including
+tags not listed below) are removed when deleting all PNG tags.</p>
 
 <p>These tags may be stored as tEXt, zTXt or iTXt chunks in the PNG image.  By
 default ExifTool writes new string-value tags as as uncompressed tEXt, or
@@ -526,7 +527,7 @@ when any of these tags is written, and may only be deleted as a group.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jul 23, 2014</i>
+<br><i>Last revised Oct 13, 2014</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

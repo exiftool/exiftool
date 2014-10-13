@@ -52,7 +52,7 @@ use vars qw($VERSION %minoltaLensTypes %minoltaTeleconverters %minoltaColorMode
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.16';
+$VERSION = '2.17';
 
 # Full list of product codes for Sony-compatible Minolta lenses
 # (ref http://www.kb.sony.com/selfservice/documentLink.do?externalId=C1000570)
@@ -335,7 +335,7 @@ my %metabonesID = (
     194 => 'Tamron SP AF 17-50mm F2.8 XR Di II LD Aspherical [IF]', #23 (Model A16)
     203 => 'Tamron SP 70-200mm F2.8 Di USD', #25 (Model A009)
     # ? => 'Tamron SP 24-70mm F2.8 Di USD', #25 (Model A007)
-    # ? => 'Tamron SP 150-600mm F5-6.3 Di USD', #25 (Model A011)
+    214 => 'Tamron SP 150-600mm F5-6.3 Di USD', #25 (Model A011)
     # ? => 'Tamron SP 90mm F2.8 Di Macro 1:1 USD', #25 (Model F004)
     255 => 'Tamron Lens (255)',
     255.1 => 'Tamron SP AF 17-50mm F2.8 XR Di II LD Aspherical', # (Model A16)
@@ -505,27 +505,31 @@ my %metabonesID = (
    '65535.18' => 'Sony E PZ 18-200mm F3.5-6.3 OSS', #25 (SELP18200  - 32807)
    '65535.19' => 'Sony FE 55mm F1.8 ZA',            #25 (SEL55F18Z  - 32808)
    '65535.20' => 'Sony FE 70-200mm F4 G OSS',       #25 (SEL70200G  - 32810)
-   '65535.21' => 'Sony FE 28-70mm F3.5-5.6 OSS',    #25 (SEL2870    - 32813)
+   '65535.21' => 'Sony FE 16-35mm F4 ZA OSS',       #25 (SEL1635Z   - 32811)
+   '65535.22' => 'Sony FE 28-70mm F3.5-5.6 OSS',    #25 (SEL2870    - 32813)
+   '65535.23' => 'Sony FE PZ 28-135mm F4 G OSS',    #25 (SELP28135G - 32817)
 #
 # 3rd party E lenses
 #
-   '65535.22' => 'Sigma 19mm F2.8 [EX] DN', #25
-   '65535.23' => 'Sigma 30mm F2.8 [EX] DN', #25
-   '65535.24' => 'Sigma 60mm F2.8 DN', #25
-   '65535.25' => 'Tamron 18-200mm F3.5-6.3 Di III VC', #25 (Model B011)
-   '65535.26' => 'Zeiss Touit 12mm F2.8', #25
-   '65535.27' => 'Zeiss Touit 32mm F1.8', #25
-   '65535.28' => 'Zeiss Touit 50mm F2.8 Macro', #25
+   '65535.24' => 'Sigma 19mm F2.8 [EX] DN', #25
+   '65535.25' => 'Sigma 30mm F2.8 [EX] DN', #25
+   '65535.26' => 'Sigma 60mm F2.8 DN', #25
+   '65535.27' => 'Tamron 18-200mm F3.5-6.3 Di III VC', #25 (Model B011)
+   '65535.28' => 'Zeiss Loxia 35mm F2', #25
+   '65535.29' => 'Zeiss Loxia 50mm F2', #25
+   '65535.30' => 'Zeiss Touit 12mm F2.8', #25
+   '65535.31' => 'Zeiss Touit 32mm F1.8', #25
+   '65535.32' => 'Zeiss Touit 50mm F2.8 Macro', #25
 #
 # other lenses
 #
-   '65535.29' => 'Arax MC 35mm F2.8 Tilt+Shift', #JD
-   '65535.30' => 'Arax MC 80mm F2.8 Tilt+Shift', #JD
-   '65535.31' => 'Zenitar MF 16mm F2.8 Fisheye M42', #JD
-   '65535.32' => 'Samyang 500mm Mirror F8.0', #19
-   '65535.33' => 'Pentacon Auto 135mm F2.8', #19
-   '65535.34' => 'Pentacon Auto 29mm F2.8', #19
-   '65535.35' => 'Helios 44-2 58mm F2.0', #19
+   '65535.33' => 'Arax MC 35mm F2.8 Tilt+Shift', #JD
+   '65535.34' => 'Arax MC 80mm F2.8 Tilt+Shift', #JD
+   '65535.35' => 'Zenitar MF 16mm F2.8 Fisheye M42', #JD
+   '65535.36' => 'Samyang 500mm Mirror F8.0', #19
+   '65535.37' => 'Pentacon Auto 135mm F2.8', #19
+   '65535.38' => 'Pentacon Auto 29mm F2.8', #19
+   '65535.39' => 'Helios 44-2 58mm F2.0', #19
 );
 
 %minoltaTeleconverters = (

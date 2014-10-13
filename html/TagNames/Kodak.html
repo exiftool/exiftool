@@ -1048,96 +1048,131 @@ from some older Kodak models such as the DC50, DC120, DCS760C, DCS Pro 14N,
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td title='0x0406 = 1030'>0x0406</td>
+<td>CameraTemperature</td>
+<td class=c>rational64s</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td title='0x0414 = 1044'>0x0414</td>
 <td>NCDFileInfo</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x0846 = 2118'>0x0846</td>
 <td>ColorTemperature</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x0848 = 2120'>0x0848</td>
 <td>WB_RGBLevelsDaylight</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x0849 = 2121'>0x0849</td>
 <td>WB_RGBLevelsTungsten</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x084a = 2122'>0x084a</td>
 <td>WB_RGBLevelsFluorescent</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x084b = 2123'>0x084b</td>
 <td>WB_RGBLevelsFlash</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x084c = 2124'>0x084c</td>
 <td>WB_RGBLevelsCustom</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x084d = 2125'>0x084d</td>
 <td>WB_RGBLevelsAuto</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x0852 = 2130'>0x0852</td>
 <td>WB_RGBMul0</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x0853 = 2131'>0x0853</td>
 <td>WB_RGBMul1</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x0854 = 2132'>0x0854</td>
 <td>WB_RGBMul2</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x0855 = 2133'>0x0855</td>
 <td>WB_RGBMul3</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x085c = 2140'>0x085c</td>
 <td>WB_RGBCoeffs0</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x085d = 2141'>0x085d</td>
 <td>WB_RGBCoeffs1</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x085e = 2142'>0x085e</td>
 <td>WB_RGBCoeffs2</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x085f = 2143'>0x085f</td>
 <td>WB_RGBCoeffs3</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
+<tr>
+<td title='0x0903 = 2307'>0x0903</td>
+<td>BaseISO</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
 <tr class=b>
+<td title='0x09ce = 2510'>0x09ce</td>
+<td>SensorSerialNumber</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td title='0x0ce5 = 3301'>0x0ce5</td>
 <td>FirmwareVersion</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e4c = 3660'>0x0e4c</td>
+<td>KodakLook</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
 <tr>
+<td title='0x1389 = 5001'>0x1389</td>
+<td>InputProfile</td>
+<td class=c>undef</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x138a = 5002'>0x138a</td>
+<td>KodakLookProfile</td>
+<td class=c>undef</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x138b = 5003'>0x138b</td>
+<td>OutputProfile</td>
+<td class=c>undef</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td title='0x1391 = 5009'>0x1391</td>
 <td>ToneCurveFileName</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x1784 = 6020'>0x1784</td>
 <td>ISO</td>
 <td class=c>int32u</td>
@@ -1821,7 +1856,7 @@ such as the P880.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Sep 4, 2014</i>
+<br><i>Last revised Oct 9, 2014</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

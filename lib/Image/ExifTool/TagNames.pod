@@ -3643,10 +3643,10 @@ official specification
   0x0405   RawImageMode?                        N
   0x0406   JPEG_Quality                         Photoshop JPEG_Quality
   0x0408   GridGuidesInfo?                      N
-  0x0409   PhotoshopBGRThumbnail                N
+  0x0409   PhotoshopBGRThumbnail                undef!
   0x040a   CopyrightFlag                        int8u
   0x040b   URL                                  string
-  0x040c   PhotoshopThumbnail                   N
+  0x040c   PhotoshopThumbnail                   undef!
   0x040d   GlobalAngle                          int32u
   0x040e   ColorSamplersResource?               N
   0x040f   ICC_Profile                          ICC_Profile
@@ -3820,6 +3820,7 @@ boot, not including standby time.
   0x0028   ImageUniqueID                        int8u
   0x002f   FaceDetect3                          Canon FaceDetect3
   0x0035   TimeInfo                             Canon TimeInfo
+  0x003c   AFInfo3                              Canon AFInfo2
   0x0081   RawDataOffset                        N
   0x0083   OriginalDecisionDataOffset           int32u*
   0x0090   CustomFunctions1D                    CanonCustom Functions1D
@@ -7255,6 +7256,7 @@ from some older Kodak models such as the DC50, DC120, DCS760C, DCS Pro 14N,
   0x03fc   WhiteBalance                         int16u
   0x03fd   Processing                           Kodak Processing
   0x0401   Time                                 string
+  0x0406   CameraTemperature                    rational64s
   0x0414   NCDFileInfo                          string
   0x0846   ColorTemperature                     int16u
   0x0848   WB_RGBLevelsDaylight                 N
@@ -7271,7 +7273,13 @@ from some older Kodak models such as the DC50, DC120, DCS760C, DCS Pro 14N,
   0x085d   WB_RGBCoeffs1                        N
   0x085e   WB_RGBCoeffs2                        N
   0x085f   WB_RGBCoeffs3                        N
+  0x0903   BaseISO                              rational64u
+  0x09ce   SensorSerialNumber                   string
   0x0ce5   FirmwareVersion                      string
+  0x0e4c   KodakLook                            string
+  0x1389   InputProfile                         undef
+  0x138a   KodakLookProfile                     undef
+  0x138b   OutputProfile                        undef
   0x1391   ToneCurveFileName                    string
   0x1784   ISO                                  int32u
 
@@ -8206,6 +8214,8 @@ DiMAGE X and Xt.
            ShotInfoD5100                        Nikon ShotInfoD5100
            ShotInfoD5200                        Nikon ShotInfoD5200
            ShotInfoD7000                        Nikon ShotInfoD7000
+           ShotInfoD4                           Nikon ShotInfoD4
+           ShotInfoD4S                          Nikon ShotInfoD4S
            ShotInfo02xx                         Nikon ShotInfo
            ShotInfoUnknown                      Nikon ShotInfo
   0x0092   HueAdjustment                        int16s
@@ -8613,6 +8623,28 @@ firmware 1.01b.
     800    ShutterCount                         int32u
    1028    CustomSettingsD7000                  NikonCustom SettingsD7000
 
+=head3 Nikon ShotInfoD4 Tags
+
+These tags are extracted from encrypted data in images from the D4.
+
+   Index   Tag Name                             Writable
+   -----   --------                             --------
+      0    ShotInfoVersion                      N
+      4    FirmwareVersion                      N
+   1873    CustomSettingsD4                     NikonCustom SettingsD4
+
+=head3 Nikon ShotInfoD4S Tags
+
+These tags are extracted from encrypted data in images from the D4S.
+
+   Index   Tag Name                             Writable
+   -----   --------                             --------
+      0    ShotInfoVersion                      N
+      4    FirmwareVersion                      N
+   6301    CustomSettingsD4S                    NikonCustom SettingsD4
+   6338    MultiSelectorLiveViewMode            int8u & 0xc0
+   6461    CustomSettingsD4S                    NikonCustom SettingsD4
+
 =head3 Nikon ShotInfo Tags
 
 This information is encrypted for ShotInfoVersion 02xx, and some tags are
@@ -8991,9 +9023,12 @@ videos from some Nikon cameras.
   0x0032       AudioChannels                    N
   0x0033       AudioBitsPerSample               N
   0x0034       AudioSampleRate                  N
+  0x110829a    ExposureTime                     N
+  0x110829d    FNumber                          N
   0x1108822    ExposureProgram                  N
   0x1109204    ExposureCompensation             N
   0x1109207    MeteringMode                     N
+  0x110920a    FocalLength                      N
   0x110a434    LensModel                        N
   0x1200000    GPSVersionID                     N
   0x1200001    GPSLatitudeRef                   N
@@ -9010,16 +9045,23 @@ videos from some Nikon cameras.
   0x120001d    GPSDateStamp                     N
   0x2000001    MakerNoteVersion                 N
   0x2000005    WhiteBalance                     N
+  0x2000007    FocusMode                        string
   0x200000b    WhiteBalanceFineTune             N
+  0x200001b    CropHiSpeed                      int16u[7]~
   0x200001e    ColorSpace                       N
+  0x200001f    VRInfo                           Nikon VRInfo
   0x2000023    PictureControlData               Nikon PictureControl
   0x2000024    WorldTime                        Nikon WorldTime
+  0x2000025    ISOInfo                          Nikon ISOInfo
   0x200002c    UnknownInfo                      Nikon UnknownInfo
   0x2000032    UnknownInfo2                     Nikon UnknownInfo
   0x2000039    LocationInfo                     Nikon LocationInfo
   0x2000083    LensType                         N
   0x2000084    Lens                             N
+  0x2000087    FlashMode                        int8u
   0x20000ab    VariProgram                      string
+  0x20000b1    HighISONoiseReduction            int16u
+  0x20000b7    AFInfo2                          Nikon AFInfo2
 
 =head3 Nikon MOV Tags
 
@@ -9312,12 +9354,17 @@ Custom settings for the D3, D3S, D3X, D300 and D300S.
            FlashSyncSpeed                       int8u & 0xf0
    20.2    FlashShutterSpeed                    int8u & 0x0f
    21.1    AutoBracketSet                       int8u & 0xc0
+           AutoBracketSet                       int8u & 0xe0
    21.2    AutoBracketModeM                     int8u & 0x30
    21.3    AutoBracketOrder                     int8u & 0x08
    21.4    ModelingFlash                        int8u & 0x01
    22.1    NoMemoryCard                         int8u & 0x80
    22.2    MeteringTime                         int8u & 0x0f
    23.1    InternalFlash                        int8u & 0xc0
+   25.1    ImageReviewTime                      int8u & 0xe0
+   25.2    PlaybackMonitorOffTime               int8u & 0x1c
+   26.1    MenuMonitorOffTime                   int8u & 0xe0
+   26.2    ShootingInfoMonitorOffTime           int8u & 0x1c
 
 =head3 NikonCustom SettingsD700 Tags
 
@@ -9591,6 +9638,78 @@ Custom settings for the D7000.
    34.2    LiveViewAFMode                       int8u & 0x02
    35.1    PlaybackMonitorOffTime               int8u & 0xe0
 
+=head3 NikonCustom SettingsD4 Tags
+
+Custom settings for the D4 and D4S.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+    0.1    CustomSettingsBank                   int8u & 0x03
+    1.1    AF-CPrioritySelection                int8u & 0xc0
+    1.2    AF-SPrioritySelection                int8u & 0x20
+    1.3    AFPointSelection                     int8u & 0x10
+    1.4    FocusTrackingLockOn                  int8u & 0x07
+    2.1    AFActivation                         int8u & 0x80
+    2.2    FocusPointWrap                       int8u & 0x08
+    4.1    Pitch                                int8u & 0x40
+    4.2    GridDisplay                          int8u & 0x02
+    5.1    ShootingInfoDisplay                  int8u & 0xc0
+    5.2    LCDIllumination                      int8u & 0x20
+    5.3    ScreenTips                           int8u & 0x04
+    5.4    Beep                                 int8u & 0x03
+    6.1    RearDisplay                          int8u & 0x40
+    6.2    ViewfinderDisplay                    int8u & 0x20
+    6.3    EasyExposureCompensation             int8u & 0x03
+    7.1    ExposureControlStepSize              int8u & 0xc0
+    7.2    ISOStepSize                          int8u & 0x30
+    7.3    ExposureCompStepSize                 int8u & 0x0c
+    8.1    CenterWeightedAreaSize               int8u & 0xe0
+    8.2    FineTuneOptMatrixMetering            int8u & 0x0f
+    9.1    FineTuneOptCenterWeighted            int8u & 0xf0
+    9.2    FineTuneOptSpotMetering              int8u & 0x0f
+   10.1    MultiSelectorShootMode               int8u & 0xc0
+   10.2    MultiSelectorPlaybackMode            int8u & 0x30
+   10.3    MultiSelector                        int8u & 0x01
+   11.1    ExposureDelayMode                    int8u & 0xc0
+   11.2    CHModeShootingSpeed                  int8u & 0x10
+   11.3    CLModeShootingSpeed                  int8u & 0x0f
+     12    MaxContinuousRelease                 int8u
+   13.1    AutoBracketSet                       int8u & 0xe0
+   13.2    AutoBracketOrder                     int8u & 0x10
+   13.3    AutoBracketModeM                     int8u & 0x0c
+   14.1    FuncButton                           int8u & 0xf8
+   14.2    FuncButtonPlusDials                  int8u & 0x07
+   15.1    PreviewButton                        int8u & 0xf8
+   15.2    PreviewButtonPlusDials               int8u & 0x07
+   18.1    ShutterReleaseButtonAE-L             int8u & 0x02
+   19.1    StandbyTimer                         int8u & 0xf0
+   20.1    SelfTimerTime                        int8u & 0xc0
+   20.2    SelfTimerShotCount                   int8u & 0x0f
+   20.3    SelfTimerShotInterval                int8u & 0x30
+   21.1    ImageReviewMonitorOffTime            int8u & 0xe0
+   21.2    LiveViewMonitorOffTime               int8u & 0x1c
+   22.1    MenuMonitorOffTime                   int8u & 0xe0
+   22.2    ShootingInfoMonitorOffTime           int8u & 0x1c
+   23.1    FlashSyncSpeed                       int8u & 0xf0
+   23.2    FlashShutterSpeed                    int8u & 0x0f
+   31.1    ModelingFlash                        int8u & 0x20
+   36.1    PlaybackMonitorOffTime               int8u & 0xe0
+   38.1    FlashExposureCompArea                int8u & 0x04
+   42.1    VerticalFuncButton                   int8u & 0x1f
+   46.1    DynamicAreaAFDisplay                 int8u & 0x80
+   46.2    AFPointIllumination                  int8u & 0x60
+   46.3    StoreByOrientation                   int8u & 0x18
+   46.4    GroupAreaAFIllumination              int8u & 0x04
+   46.5    AFPointBrightness                    int8u & 0x03
+   47.1    AFOnButton                           int8u & 0x70
+   47.2    VerticalAFOnButton                   int8u & 0x07
+   48.1    SubSelectorAssignment                int8u & 0x80
+   49.1    SubSelector                          int8u & 0xf8
+   49.2    SubSelectorPlusDials                 int8u & 0x07
+   50.1    MatrixMetering                       int8u & 0x80
+   50.2    AFModeRestrictions                   int8u & 0x03
+   51.1    LimitAFAreaModeSelection             int8u & 0x7e
+
 =head2 NikonCapture Tags
 
 This information is written by the Nikon Capture software in tag 0x0e01 of
@@ -9830,6 +9949,7 @@ Pentax, Ricoh, Samsung, Sanyo, SeaLife, Sony, Supra and Vivitar.
   0x0302   OneTouchWB                           int16u
   0x0303   WhiteBalanceBracket                  int16u
   0x0304   WhiteBalanceBias                     int16u
+  0x0401   BlackLevel                           int32u[4]
   0x0403   SceneMode                            int16u
   0x0404   SerialNumber                         string
   0x0405   Firmware                             string
@@ -10767,6 +10887,7 @@ These tags are used in Pentax/Asahi cameras.
   0x0038   ImageAreaOffset                      int16u[2]
   0x0039   RawImageSize                         int16u[2]~
   0x003c   AFPointsInFocus                      N
+  0x003d   DataScaling                          int16u
   0x003e   PreviewImageBorders                  int8u[4]
   0x003f   LensRec                              Pentax LensRec
   0x0040   SensitivityAdjust                    int16u
@@ -10810,6 +10931,7 @@ These tags are used in Pentax/Asahi cameras.
   0x007a   ISOAutoParameters                    int8u[2]
   0x007b   CrossProcess                         int8u
   0x007d   LensCorr                             Pentax LensCorr
+  0x007e   WhiteLevel                           int32u
   0x007f   BleachBypassToning                   int16u
   0x0080   AspectRatio                          Y
   0x0082   BlurControl                          int8u[4]
@@ -13221,6 +13343,25 @@ These tags are found in the SRF2 through SRF5 IFD's.
   0x0003   SRFDataOffset?                       N
   0x0004   RawDataOffset                        N
   0x0005   RawDataLength                        N
+  0x0043   MaxApertureAtMaxFocal                N
+  0x0044   MaxApertureAtMinFocal                N
+  0x0045   MinFocalLength                       N
+  0x0046   MaxFocalLength                       N
+  0x00c0   WBRedDaylight                        N
+  0x00c1   WBGreenDaylight                      N
+  0x00c2   WBBlueDaylight                       N
+  0x00c3   WBRedCloudy                          N
+  0x00c4   WBGreenCloudy                        N
+  0x00c5   WBBlueCloudy                         N
+  0x00c9   WBRedTungsten                        N
+  0x00ca   WBGreenTungsten                      N
+  0x00cb   WBBlueTungsten                       N
+  0x00cc   WBRedFlash                           N
+  0x00cd   WBGreenFlash                         N
+  0x00ce   WBBlueFlash                          N
+  0x00d0   WBRedAsShot                          N
+  0x00d1   WBGreenAsShot                        N
+  0x00d2   WBBlueAsShot                         N
 
 =head3 Sony SR2Private Tags
 
@@ -13243,11 +13384,21 @@ Tags in the encrypted SR2SubIFD
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
+  0x7300   BlackLevel                           N
+  0x7302   WB_GRBGLevelsAuto                    N
   0x7303   WB_GRBGLevels                        N
   0x7310   BlackLevel                           N
   0x7313   WB_RGGBLevels                        N
+  0x7480   WB_RGBLevelsDaylight                 N
+  0x7481   WB_RGBLevelsCloudy                   N
+  0x7482   WB_RGBLevelsTungsten                 N
+  0x7483   WB_RGBLevelsFlash                    N
+  0x7484   WB_RGBLevels4500K                    N
+  0x7486   WB_RGBLevelsFluorescent              N
   0x74a0   MaxApertureAtMaxFocal                N
   0x74a1   MaxApertureAtMinFocal                N
+  0x74a2   MaxFocalLength                       N
+  0x74a3   MinFocalLength                       N
   0x74c0   SR2DataIFD                           Sony SR2DataIFD
   0x7800   ColorMatrix                          N
   0x7820   WB_RGBLevelsDaylight                 N
@@ -13733,6 +13884,7 @@ These tags are found in IFD0 of Panasonic/Leica RAW, RW2 and RWL images.
   0x0010   LinearityLimitBlue                   int16u
   0x0011   RedBalance                           int16u
   0x0012   BlueBalance                          int16u
+  0x0013   WBInfo                               PanasonicRaw WBInfo
   0x0017   ISO                                  int16u
   0x0018   HighISOMultiplierRed                 int16u
   0x0019   HighISOMultiplierGreen               int16u
@@ -13743,6 +13895,7 @@ These tags are found in IFD0 of Panasonic/Leica RAW, RW2 and RWL images.
   0x0024   WBRedLevel                           int16u
   0x0025   WBGreenLevel                         int16u
   0x0026   WBBlueLevel                          int16u
+  0x0027   WBInfo2                              PanasonicRaw WBInfo2
   0x002e   JpgFromRaw                           JPEG
   0x010f   Make                                 string
   0x0110   Model                                string
@@ -13756,6 +13909,46 @@ These tags are found in IFD0 of Panasonic/Leica RAW, RW2 and RWL images.
   0x83bb   IPTC-NAA                             IPTC
   0x8769   ExifOffset                           EXIF
   0x8825   GPSInfo                              GPS
+
+=head3 PanasonicRaw WBInfo Tags
+
+  Index2   Tag Name                             Writable
+  ------   --------                             --------
+      0    NumWBEntries                         int16u
+      1    WBType1                              int16u
+      2    WB_RBLevels1                         int16u[2]
+      4    WBType2                              int16u
+      5    WB_RBLevels2                         int16u[2]
+      7    WBType3                              int16u
+      8    WB_RBLevels3                         int16u[2]
+     10    WBType4                              int16u
+     11    WB_RBLevels4                         int16u[2]
+     13    WBType5                              int16u
+     14    WB_RBLevels5                         int16u[2]
+     16    WBType6                              int16u
+     17    WB_RBLevels6                         int16u[2]
+     19    WBType7                              int16u
+     20    WB_RBLevels7                         int16u[2]
+
+=head3 PanasonicRaw WBInfo2 Tags
+
+  Index2   Tag Name                             Writable
+  ------   --------                             --------
+      0    NumWBEntries                         int16u
+      1    WBType1                              int16u
+      2    WB_RGBLevels1                        int16u[3]
+      5    WBType2                              int16u
+      6    WB_RGBLevels2                        int16u[3]
+      9    WBType3                              int16u
+     10    WB_RGBLevels3                        int16u[3]
+     13    WBType4                              int16u
+     14    WB_RGBLevels4                        int16u[3]
+     17    WBType5                              int16u
+     18    WB_RGBLevels5                        int16u[3]
+     21    WBType6                              int16u
+     22    WB_RGBLevels6                        int16u[3]
+     25    WBType7                              int16u
+     26    WB_RGBLevels7                        int16u[3]
 
 =head3 PanasonicRaw DistortionInfo Tags
 
@@ -17379,7 +17572,8 @@ specification.
 The PNG TextualData format allows arbitrary tag names to be used.  The tags
 listed below are the only ones that can be written (unless new user-defined
 tags are added via the configuration file), however ExifTool will extract
-any other TextualData tags that are found.
+any other TextualData tags that are found.  All TextualData tags (including
+tags not listed below) are removed when deleting all PNG tags.
 
 These tags may be stored as tEXt, zTXt or iTXt chunks in the PNG image.  By
 default ExifTool writes new string-value tags as as uncompressed tEXt, or

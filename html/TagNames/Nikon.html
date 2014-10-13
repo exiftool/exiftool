@@ -353,9 +353,11 @@ causes the other information to be re-encrypted with the new key)</span></span><
   <br>ShotInfoD5100
   <br>ShotInfoD5200
   <br>ShotInfoD7000
+  <br>ShotInfoD4
+  <br>ShotInfoD4S
   <br>ShotInfo02xx
   <br>ShotInfoUnknown</td>
-<td class=c>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-</td>
+<td class=c>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-</td>
 <td>--&gt; <a href='Nikon.html#ShotInfoD40'>Nikon ShotInfoD40 Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfoD80'>Nikon ShotInfoD80 Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfoD90'>Nikon ShotInfoD90 Tags</a>
@@ -372,6 +374,8 @@ causes the other information to be re-encrypted with the new key)</span></span><
   <br>--&gt; <a href='Nikon.html#ShotInfoD5100'>Nikon ShotInfoD5100 Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfoD5200'>Nikon ShotInfoD5200 Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfoD7000'>Nikon ShotInfoD7000 Tags</a>
+  <br>--&gt; <a href='Nikon.html#ShotInfoD4'>Nikon ShotInfoD4 Tags</a>
+  <br>--&gt; <a href='Nikon.html#ShotInfoD4S'>Nikon ShotInfoD4S Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfo'>Nikon ShotInfo Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfo'>Nikon ShotInfo Tags</a></td></tr>
 <tr>
@@ -2027,6 +2031,69 @@ firmware 1.01b.</p>
 <td>--&gt; <a href='NikonCustom.html#SettingsD7000'>NikonCustom SettingsD7000 Tags</a></td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='ShotInfoD4'>Nikon ShotInfoD4 Tags</a></h2>
+<p>These tags are extracted from encrypted data in images from the D4.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>ShotInfoVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>FirmwareVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='1873 = 0x751'>1873</td>
+<td>CustomSettingsD4</td>
+<td class=c>-</td>
+<td>--&gt; <a href='NikonCustom.html#SettingsD4'>NikonCustom SettingsD4 Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ShotInfoD4S'>Nikon ShotInfoD4S Tags</a></h2>
+<p>These tags are extracted from encrypted data in images from the D4S.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>ShotInfoVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>FirmwareVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='6301 = 0x189d'>6301</td>
+<td>CustomSettingsD4S</td>
+<td class=c>-</td>
+<td>--&gt; <a href='NikonCustom.html#SettingsD4'>NikonCustom SettingsD4 Tags</a>
+  <br><span class='n s'>(firmware version 1.00)</span></td></tr>
+<tr class=b>
+<td class=r title='6338 = 0x18c2'>6338</td>
+<td>MultiSelectorLiveViewMode</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0xc0]
+  <br>0x0 = Reset
+  <br>0x40 = Zoom
+  <br>0xc0 = None</span></td></tr>
+<tr>
+<td class=r title='6461 = 0x193d'>6461</td>
+<td>CustomSettingsD4S</td>
+<td class=c>-</td>
+<td>--&gt; <a href='NikonCustom.html#SettingsD4'>NikonCustom SettingsD4 Tags</a>
+  <br><span class='n s'>(firmware version 1.01)</span></td></tr>
+</table></td></tr></table></blockquote>
+
 <h2><a name='ShotInfo'>Nikon ShotInfo Tags</a></h2>
 <p>This information is encrypted for ShotInfoVersion 02xx, and some tags are
 only valid for specific models.</p>
@@ -3664,6 +3731,16 @@ videos from some Nikon cameras.</p>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td title='0x110829a = 17859226'>0x110829a</td>
+<td>ExposureTime</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x110829d = 17859229'>0x110829d</td>
+<td>FNumber</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td title='0x1108822 = 17860642'>0x1108822</td>
 <td>ExposureProgram</td>
 <td class=c>N</td>
@@ -3698,88 +3775,98 @@ videos from some Nikon cameras.</p>
   <br>255 = Other</td><td>&nbsp;&nbsp;</td></tr></table>
 </td></tr>
 <tr class=b>
+<td title='0x110920a = 17863178'>0x110920a</td>
+<td>FocalLength</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td title='0x110a434 = 17867828'>0x110a434</td>
 <td>LensModel</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x1200000 = 18874368'>0x1200000</td>
 <td>GPSVersionID</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x1200001 = 18874369'>0x1200001</td>
 <td>GPSLatitudeRef</td>
 <td class=c>N</td>
 <td><span class=s>&#39;N&#39; = North
   <br>&#39;S&#39; = South</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x1200002 = 18874370'>0x1200002</td>
 <td>GPSLatitude</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x1200003 = 18874371'>0x1200003</td>
 <td>GPSLongitudeRef</td>
 <td class=c>N</td>
 <td><span class=s>&#39;E&#39; = East
   <br>&#39;W&#39; = West</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x1200004 = 18874372'>0x1200004</td>
 <td>GPSLongitude</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x1200005 = 18874373'>0x1200005</td>
 <td>GPSAltitudeRef</td>
 <td class=c>N</td>
 <td><span class=s>0 = Above Sea Level
   <br>1 = Below Sea Level</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x1200006 = 18874374'>0x1200006</td>
 <td>GPSAltitude</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x1200007 = 18874375'>0x1200007</td>
 <td>GPSTimeStamp</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x1200008 = 18874376'>0x1200008</td>
 <td>GPSSatellites</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x1200010 = 18874384'>0x1200010</td>
 <td>GPSImgDirectionRef</td>
 <td class=c>N</td>
 <td><span class=s>&#39;M&#39; = Magnetic North
   <br>&#39;T&#39; = True North</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x1200011 = 18874385'>0x1200011</td>
 <td>GPSImgDirection</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x1200012 = 18874386'>0x1200012</td>
 <td>GPSMapDatum</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x120001d = 18874397'>0x120001d</td>
 <td>GPSDateStamp</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x2000001 = 33554433'>0x2000001</td>
 <td>MakerNoteVersion</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x2000005 = 33554437'>0x2000005</td>
 <td>WhiteBalance</td>
 <td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x2000007 = 33554439'>0x2000007</td>
+<td>FocusMode</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x200000b = 33554443'>0x200000b</td>
@@ -3787,11 +3874,21 @@ videos from some Nikon cameras.</p>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td title='0x200001b = 33554459'>0x200001b</td>
+<td>CropHiSpeed</td>
+<td class=c title=' ~ = Writable only with -n'>int16u[7]~</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td title='0x200001e = 33554462'>0x200001e</td>
 <td>ColorSpace</td>
 <td class=c>N</td>
 <td><span class=s>1 = sRGB
   <br>2 = Adobe RGB</span></td></tr>
+<tr>
+<td title='0x200001f = 33554463'>0x200001f</td>
+<td>VRInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Nikon.html#VRInfo'>Nikon VRInfo Tags</a></td></tr>
 <tr class=b>
 <td title='0x2000023 = 33554467'>0x2000023</td>
 <td>PictureControlData</td>
@@ -3803,21 +3900,26 @@ videos from some Nikon cameras.</p>
 <td class=c>-</td>
 <td>--&gt; <a href='Nikon.html#WorldTime'>Nikon WorldTime Tags</a></td></tr>
 <tr class=b>
+<td title='0x2000025 = 33554469'>0x2000025</td>
+<td>ISOInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Nikon.html#ISOInfo'>Nikon ISOInfo Tags</a></td></tr>
+<tr>
 <td title='0x200002c = 33554476'>0x200002c</td>
 <td>UnknownInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Nikon.html#UnknownInfo'>Nikon UnknownInfo Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0x2000032 = 33554482'>0x2000032</td>
 <td>UnknownInfo2</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Nikon.html#UnknownInfo'>Nikon UnknownInfo Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x2000039 = 33554489'>0x2000039</td>
 <td>LocationInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Nikon.html#LocationInfo'>Nikon LocationInfo Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0x2000083 = 33554563'>0x2000083</td>
 <td>LensType</td>
 <td class=c>N</td>
@@ -3825,16 +3927,46 @@ videos from some Nikon cameras.</p>
   <br>Bit 1 = D
   <br>Bit 2 = G
   <br>Bit 3 = VR</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x2000084 = 33554564'>0x2000084</td>
 <td>Lens</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x2000087 = 33554567'>0x2000087</td>
+<td>FlashMode</td>
+<td class=c>int8u</td>
+<td><table class=cols><tr>
+  <td>0 = Did Not Fire
+  <br>1 = Fired, Manual
+  <br>3 = Not Ready
+  <br>7 = Fired, External
+  <br>8 = Fired, Commander Mode
+  <br>9 = Fired, TTL Mode</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
 <tr>
 <td title='0x20000ab = 33554603'>0x20000ab</td>
 <td>VariProgram</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x20000b1 = 33554609'>0x20000b1</td>
+<td>HighISONoiseReduction</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>0 = Off
+  <br>1 = Minimal
+  <br>2 = Low
+  <br>3 = Medium Low</td><td>&nbsp;&nbsp;</td>
+  <td>4 = Normal
+  <br>5 = Medium High
+  <br>6 = High</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td title='0x20000b7 = 33554615'>0x20000b7</td>
+<td>AFInfo2</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Nikon.html#AFInfo2'>Nikon AFInfo2 Tags</a></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='MOV'>Nikon MOV Tags</a></h2>
@@ -4573,7 +4705,7 @@ ExifTool to choose in these cases (see the
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Sep 25, 2014</i>
+<br><i>Last revised Oct 13, 2014</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

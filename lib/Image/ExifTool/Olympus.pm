@@ -37,7 +37,7 @@ use vars qw($VERSION);
 use Image::ExifTool::Exif;
 use Image::ExifTool::APP12;
 
-$VERSION = '2.24';
+$VERSION = '2.25';
 
 sub PrintLensInfo($$$);
 
@@ -703,7 +703,14 @@ my %indexInfo = (
     },
     0x0303 => { Name => 'WhiteBalanceBracket',  Writable => 'int16u' }, #11
     0x0304 => { Name => 'WhiteBalanceBias',     Writable => 'int16u' }, #11
-   # 0x0305 => 'PrintMaching', ? #11
+   # 0x0305 => 'PrintMatching', ? #11
+    0x0401 => { #21
+        Name => 'BlackLevel',
+        Condition => '$format eq "int32u" and $count == 4',
+        Writable => 'int32u',
+        Count => 4,
+        Notes => 'found in Epson ERF images',
+    },
     0x0403 => { #11
         Name => 'SceneMode',
         Writable => 'int16u',

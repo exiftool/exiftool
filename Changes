@@ -7,6 +7,21 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 9.70. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Oct. 13, 2014 - Version 9.73
+
+  - Added a new CanonModelID (thanks LibRaw and Niels Kristian Bech Jensen)
+  - Added a few new Canon and Sony lenses (thanks Jos Roost)
+  - Delete unknown PNG TextualData tags when deleting all PNG tags
+  - Decode AF points for Canon PowerShot G1X Mark II
+  - Decode a number of Pentax, Olympus, Panasonic and Sony tags (thanks LibRaw)
+  - Decode a few more Nikon NCTG tags in MOV videos (thanks Stuart Bennett)
+  - Decode Nikon D4S custom settings (thanks Warren Hatch)
+  - Decode some makernote tags in Sony Xperia Z3 images
+  - Make PhotoshopThumbnail and PhotoshopBGRThumbnail writable (but "unsafe")
+  - Changed order of operations so flattened tags always take precedence over
+    structured tags when writing a mix of both types of tags
+  - Fixed potential bug decoding some Nikon 1 AF points
+
 Sept. 26, 2014 - Version 9.72
 
   - Added a few new Pentax ISO values

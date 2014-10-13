@@ -43,6 +43,7 @@
 #              28) Klaus Homeister http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,4803.0.html
 #              29) Louis Granboulan private communication (K-5II)
 #              30) http://u88.n24.queensu.ca/exiftool/forum/index.php?topic=5433
+#              31) Iliah Borg private communication (LibRaw)
 #              JD) Jens Duttke private communication
 #
 # Notes:        See POD documentation at the bottom of this file
@@ -55,7 +56,7 @@ use vars qw($VERSION %pentaxLensTypes);
 use Image::ExifTool::Exif;
 use Image::ExifTool::HP;
 
-$VERSION = '2.81';
+$VERSION = '2.82';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -1187,6 +1188,7 @@ my %binaryDataAttrs = (
     0x000f => [{ #PH
         Name => 'AFPointsInFocus',
         Condition => '$$self{Model} !~ /K-3\b/',
+        Notes => 'models other than the K-3',
         Writable => 'int16u',
         PrintHex => 1,
         PrintConv => {
@@ -1205,6 +1207,7 @@ my %binaryDataAttrs = (
     },{ #PH
         Name => 'AFPointsInFocus',
         Writable => 'int32u',
+        Notes => 'K-3 only',
         PrintHex => 1,
         PrintConv => {
             0 => '(none)',
@@ -1827,8 +1830,21 @@ my %binaryDataAttrs = (
             },
         },
     },
-    # 0x003d - int16u: 8192 for most images, but occasionally 11571 for K100D/K110D,
-    #              and 8289 or 8456 for the K-x - PH
+    0x003d => { #31
+        Name => 'DataScaling',
+        Writable => 'int16u',
+        # divide by the second value of Pentax_0x0201 (WhitePoint), usually
+        # 8192, to get the floating point normalization factor.
+        # One of the examples of how this tag can be used is calculation of
+        # baseline exposure compensation (Adobe-style) for a PEF:
+        # log2(Pentax_0x007e)-14-0.5+log2(Pentax_0x003d)-13
+        # or
+        # log2(Pentax_0x007e*(Pentax_0x003d/(2^13))/(2^14))-0.5
+        # where
+        # makernotes:Pentax_0x003d/(2^13) is the normalization factor. (ref 31)
+        # - 8192 for most images, but occasionally 11571 for K100D/K110D,
+        #   and 8289 or 8456 for the K-x (ref PH)
+    },
     0x003e => { #PH
         Name => 'PreviewImageBorders',
         Writable => 'int8u',
@@ -2234,8 +2250,12 @@ my %binaryDataAttrs = (
         Format => 'undef', # (written as int8u)
         SubDirectory => { TagTable => 'Image::ExifTool::Pentax::LensCorr' },
     },
-    # 0x007e - int32u: 15859,15860,15864,15865,16315 (K-5 PEF/DNG only) - PH
-    #                  3934, 3935 (Q DNG) - PH
+    0x007e => { #31
+        Name => 'WhiteLevel', # (with black level already subtracted)
+        Writable => 'int32u',
+        # 15859,15860,15864,15865,16315 (K-5 PEF/DNG only) - PH
+        # 3934, 3935 (Q DNG) - PH
+    },
     0x007f => { #PH (K-5)
         Name => 'BleachBypassToning',
         Writable => 'int16u',
@@ -4483,8 +4503,9 @@ my %binaryDataAttrs = (
         Name => 'AFPointsInFocus',
         Condition => '$$self{Model} !~ /K-3\b/',
         Notes => q{
-            may report two points in focus even though a single AFPoint has been
-            selected, in which case the selected AFPoint is the first reported
+            models other than the K-3 only.  May report two points in focus even though
+            a single AFPoint has been selected, in which case the selected AFPoint is
+            the first reported
         },
         PrintConvColumns => 2,
         PrintConv => {

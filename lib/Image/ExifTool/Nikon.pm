@@ -46,6 +46,7 @@
 #              31) Michael Relt private communication
 #              32) Stefan http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,4494.0.html
 #              33) Iliah Borg private communication (LibRaw)
+#              34) Stewart Bennett private communication (D4S, D810)
 #              JD) Jens Duttke private communication
 #------------------------------------------------------------------------------
 
@@ -56,7 +57,7 @@ use vars qw($VERSION %nikonLensIDs %nikonTextEncoding);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.94';
+$VERSION = '2.93';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -1296,11 +1297,10 @@ my %binaryDataAttrs = (
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ShotInfoD3S',
                 DecryptStart => 4,
-                DecryptLen => 0x2e6,
+                DecryptLen => 0x2e9,
                 ByteOrder => 'BigEndian',
             },
         },
-        # 0223 - D4
         { #JD (D300, firmware 0.25 and 1.00)
             # D3 and D300 use the same version number, but the length is different
             Condition => '$$valPt =~ /^0210/ and $count == 5291',
@@ -1340,8 +1340,6 @@ my %binaryDataAttrs = (
             Name => 'ShotInfoD700',
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ShotInfoD700',
-                ProcessProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
-                WriteProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
                 DecryptStart => 4,
                 DecryptLen => 0x358,
                 ByteOrder => 'BigEndian',
@@ -1352,8 +1350,6 @@ my %binaryDataAttrs = (
             Name => 'ShotInfoD800',
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ShotInfoD800',
-                ProcessProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
-                WriteProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
                 DecryptStart => 4,
                 DecryptLen => 0x720,
                 ByteOrder => 'BigEndian',
@@ -1397,10 +1393,28 @@ my %binaryDataAttrs = (
             Name => 'ShotInfoD7000',
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ShotInfoD7000',
-                ProcessProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
-                WriteProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
                 DecryptStart => 4,
                 DecryptLen => 0x448,
+                ByteOrder => 'BigEndian',
+            },
+        },
+        { # (D4 firmware version 1.00g)
+            Condition => '$$valPt =~ /^0223/',
+            Name => 'ShotInfoD4',
+            SubDirectory => {
+                TagTable => 'Image::ExifTool::Nikon::ShotInfoD4',
+                DecryptStart => 4,
+                DecryptLen => 0x786,
+                ByteOrder => 'BigEndian',
+            },
+        },
+        { # (D4S firmware version 1.00d and 1.01a)
+            Condition => '$$valPt =~ /^0231/',
+            Name => 'ShotInfoD4S',
+            SubDirectory => {
+                TagTable => 'Image::ExifTool::Nikon::ShotInfoD4S',
+                DecryptStart => 4,
+                DecryptLen => 0x1972,
                 ByteOrder => 'BigEndian',
             },
         },
@@ -3811,12 +3825,12 @@ my %nikonFocalConversions = (
     },
     0x2ce => { #(NC)
         Name => 'CustomSettingsD3S',
-        Format => 'undef[24]',
+        Format => 'undef[27]',
         SubDirectory => {
             TagTable => 'Image::ExifTool::NikonCustom::SettingsD3',
         },
     },
-    # note: DecryptLen currently set to 0x2e6
+    # note: DecryptLen currently set to 0x2e9
 );
 
 # shot information for the D300 firmware 1.00 (encrypted) - ref JD
@@ -4438,6 +4452,95 @@ my %nikonFocalConversions = (
         },
     },
     # note: DecryptLen currently set to 0x720
+);
+
+# shot information for the D4 firmware 1.00g (ref PH)
+%Image::ExifTool::Nikon::ShotInfoD4 = (
+    PROCESS_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+    WRITE_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+    CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
+    VARS => { ID_LABEL => 'Index' },
+    DATAMEMBER => [ 4 ],
+    IS_SUBDIR => [ 0x0751 ],
+    WRITABLE => 1,
+    FIRST_ENTRY => 0,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    NOTES => q{
+        These tags are extracted from encrypted data in images from the D4.
+    },
+    0x00 => {
+        Name => 'ShotInfoVersion',
+        Format => 'string[4]',
+        Writable => 0,
+    },
+    0x04 => {
+        Name => 'FirmwareVersion',
+        DataMember => 'FirmwareVersion',
+        Format => 'string[5]',
+        Writable => 0,
+        RawConv => '$$self{FirmwareVersion} = $val',
+    },
+    0x0751 => { #PH (NC)
+        Name => 'CustomSettingsD4',
+        # (seems to work for 1.00g and 1.02b)
+        Format => 'undef[53]',
+        SubDirectory => { TagTable => 'Image::ExifTool::NikonCustom::SettingsD4' },
+    },
+    # note: DecryptLen currently set to 0x786
+);
+
+# shot information for the D4S firmware 1.01a (ref 28, encrypted)
+%Image::ExifTool::Nikon::ShotInfoD4S = (
+    PROCESS_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+    WRITE_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+    CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
+    VARS => { ID_LABEL => 'Index' },
+    DATAMEMBER => [ 4 ],
+    IS_SUBDIR => [ 0x189d, 0x193d ],
+    WRITABLE => 1,
+    FIRST_ENTRY => 0,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    NOTES => q{
+        These tags are extracted from encrypted data in images from the D4S.
+    },
+    0x00 => {
+        Name => 'ShotInfoVersion',
+        Format => 'string[4]',
+        Writable => 0,
+    },
+    0x04 => {
+        Name => 'FirmwareVersion',
+        DataMember => 'FirmwareVersion',
+        Format => 'string[5]',
+        Writable => 0,
+        RawConv => '$$self{FirmwareVersion} = $val',
+    },
+    0x189d => { #PH (NC)
+        Name => 'CustomSettingsD4S',
+        Condition => '$$self{FirmwareVersion} =~ /^1.00/',
+        Notes => 'firmware version 1.00',
+        Format => 'undef[53]',
+        SubDirectory => { TagTable => 'Image::ExifTool::NikonCustom::SettingsD4' },
+    },
+    0x18c2 => { # CSf1-c (no idea why it is so far away from the rest of the settings)
+        Name => 'MultiSelectorLiveViewMode',
+        Groups => { 1 => 'NikonCustom' },
+        Condition => '$$self{FirmwareVersion} =~ /^1.01/',
+        Mask => 0xc0,
+        PrintConv => {
+            0x00 => 'Reset',
+            0x40 => 'Zoom',
+            0xc0 => 'None',
+        },
+    },
+    0x193d => {
+        Name => 'CustomSettingsD4S',
+        Condition => '$$self{FirmwareVersion} =~ /^1.01/',
+        Notes => 'firmware version 1.01',
+        Format => 'undef[53]',
+        SubDirectory => { TagTable => 'Image::ExifTool::NikonCustom::SettingsD4' },
+    },
+    # note: DecryptLen currently set to 0x1972
 );
 
 # Flash information (ref JD)
@@ -5460,7 +5563,7 @@ my %nikonFocalConversions = (
         Groups => { 2 => 'Video' },
     },
     # 0x24 - int16u: 1, 2
-    # 0x31 - int16u: 1, 2
+    # 0x31 - int16u: 0, 1, 2
     0x32 => { #(guess)
         Name => 'AudioChannels',
         Groups => { 2 => 'Audio' },
@@ -5476,9 +5579,18 @@ my %nikonFocalConversions = (
     # 0x1001 - int16s: 0
     # 0x1011 - int32u: 0
     # 0x1012 - int32u: 0
+    # 0x1021 - int32u[32]: all zeros
 #
 # 0x110**** tags correspond to 0x**** tags in Exif::Main
 #
+    0x110829a => { #34
+        Name => 'ExposureTime',
+        PrintConv => 'Image::ExifTool::Exif::PrintExposureTime($val)',
+    },
+    0x110829d => { #34
+        Name => 'FNumber',
+        PrintConv => 'Image::ExifTool::Exif::PrintFNumber($val)',
+    },
     0x1108822 => {
         Name => 'ExposureProgram',
         PrintConv => {
@@ -5510,6 +5622,10 @@ my %nikonFocalConversions = (
             6 => 'Partial',
             255 => 'Other',
         },
+    },
+    0x110920a => { #34
+        Name => 'FocalLength',
+        PrintConv => 'sprintf("%.1f mm",$val)',
     },
     0x110a434 => 'LensModel',
 #
@@ -5609,13 +5725,29 @@ my %nikonFocalConversions = (
         PrintConv => '$_=$val;s/^(\d{2})/$1\./;s/^0//;$_',
     },
     0x2000005 => 'WhiteBalance',
+    0x2000007 => { Name => 'FocusMode',    Writable => 'string' }, #34
     0x200000b => 'WhiteBalanceFineTune',
+    0x200001b => {
+        Name => 'CropHiSpeed',
+        Writable => 'int16u',
+        Count => 7,
+        PrintConv => q{
+            my @a = split ' ', $val;
+            return "Unknown ($val)" unless @a == 7;
+            $a[0] = $a[0] ? "On" : "Off";
+            return "$a[0] ($a[1]x$a[2] cropped to $a[3]x$a[4] at pixel $a[5],$a[6])";
+        }
+    },
     0x200001e => {
         Name => 'ColorSpace',
         PrintConv => {
             1 => 'sRGB',
             2 => 'Adobe RGB',
         },
+    },
+    0x200001f => {
+        Name => 'VRInfo',
+        SubDirectory => { TagTable => 'Image::ExifTool::Nikon::VRInfo' },
     },
     0x2000023 => {
         Name => 'PictureControlData',
@@ -5625,6 +5757,13 @@ my %nikonFocalConversions = (
     0x2000024 => {
         Name => 'WorldTime',
         SubDirectory => { TagTable => 'Image::ExifTool::Nikon::WorldTime' },
+    },
+    0x2000025 => { #34
+        Name => 'ISOInfo',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Nikon::ISOInfo',
+            ByteOrder => 'BigEndian',
+        },
     },
     0x200002c => {
         Name => 'UnknownInfo',
@@ -5658,7 +5797,37 @@ my %nikonFocalConversions = (
         # short focal, long focal, aperture at short focal, aperture at long focal
         PrintConv => \&Image::ExifTool::Exif::PrintLensInfo,
     },
+    0x2000087 => {
+        Name => 'FlashMode',
+        Writable => 'int8u',
+        PrintConv => {
+            0 => 'Did Not Fire',
+            1 => 'Fired, Manual', #14
+            3 => 'Not Ready', #28
+            7 => 'Fired, External', #14
+            8 => 'Fired, Commander Mode',
+            9 => 'Fired, TTL Mode',
+        },
+    },
+    # 0x20000a8 - Flash Info (seen 0107 - not yet decoded, PH)
     0x20000ab => { Name => 'VariProgram', Writable => 'string' }, #2 (scene mode for DSLR's - PH)
+    0x20000b1 => { #34
+        Name => 'HighISONoiseReduction',
+        Writable => 'int16u',
+        PrintConv => {
+            0 => 'Off',
+            1 => 'Minimal', # for high ISO (>800) when setting is "Off"
+            2 => 'Low',     # Low,Normal,High take effect for ISO > 400
+            3 => 'Medium Low',
+            4 => 'Normal',
+            5 => 'Medium High',
+            6 => 'High',
+        },
+    },
+    0x20000b7 => {
+        Name => 'AFInfo2',
+        SubDirectory => { TagTable => 'Image::ExifTool::Nikon::AFInfo2' },
+    },
 );
 
 # Nikon composite tags
@@ -5789,7 +5958,7 @@ sub GetAFPointGrid($$;$)
         return undef unless $val =~ /^([A-J])(\d+)$/i;
         return (ord(uc($1))-65) * $ncol + $2 - 1;
     } else {
-        my $row = int(($val - 0.5) / $ncol);
+        my $row = int(($val + 0.5) / $ncol);
         my $col = $val - $ncol * $row + 1;
         return chr(65+$row) . $col;
     }

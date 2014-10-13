@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.12';
+$VERSION = '2.13';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -59,7 +59,8 @@ my %sonyLensTypes2 = (
     3 => 'Sony LA-EA3 Adapter', #(NC) ILCE-7 image with A-mount lens, but also has 0x940e 2nd byte=2
     6 => 'Sony LA-EA4 Adapter', #(NC) ILCE-7R image with A-mount lens and having phase-detect info blocks in 0x940e AFInfo
     44 => 'Metabones Canon EF Smart Adapter', #12
-    78 => 'Metabones Canon EF Smart Adapter Mark III', #PH
+    78 => 'Metabones Canon EF Smart Adapter Mark III or IV', #PH/12
+    234 => 'E-A adapter only - no lens attached', #12 (seen with LA-EA4 and Metabones Smart IV)
     239 => 'Metabones Canon EF Speed Booster', #12
                                                 # Sony VX product code: (http://www.mi-fo.de/forum/index.php?s=7df1c8d3b1cd675f2abf4f4442e19cf2&showtopic=35035&view=findpost&p=303746)
     32784 => 'Sony E 16mm F2.8',                # VX9100
@@ -86,8 +87,11 @@ my %sonyLensTypes2 = (
     32808 => 'Sony FE 55mm F1.8 ZA',            # VX9124
 
     32810 => 'Sony FE 70-200mm F4 G OSS', #12   # VX9126
+    32811 => 'Sony FE 16-35mm F4 ZA OSS', #12   # VX9127
 
     32813 => 'Sony FE 28-70mm F3.5-5.6 OSS',    # VX9129
+
+    32817 => 'Sony FE PZ 28-135mm F4 G OSS',#12 # VX91..
 );
 
 # ExposureProgram values (ref PH, mainly decoded from A200)
@@ -6385,7 +6389,7 @@ my %exposureProgram2010 = (
     # 0x0008 - LensMount, but different values from Tag9405-0x0105 and Tag9050-0x0604.
     # don't know what difference is between values '1' and '5' ...
     0x0008 => {
-        Name => 'LensMount',
+        Name => 'LensMount', # ? maybe some other meaning ? (A-mount adapter-only images give 0)
         RawConv => '$$self{LensMount} = $val',
         PrintConv => {
             0 => 'Unknown',
@@ -6841,6 +6845,31 @@ my %exposureProgram2010 = (
     3 => { Name => 'SRFDataOffset', Unknown => 1 }, #PH
     4 => { Name => 'RawDataOffset' }, #PH
     5 => { Name => 'RawDataLength' }, #PH
+    0x0043 => 'MaxApertureAtMaxFocal', #14
+    0x0044 => 'MaxApertureAtMinFocal', #14
+    0x0045 => { #14
+        Name => 'MinFocalLength',
+        PrintConv => '"$val mm"',
+    },
+    0x0046 => { #14
+        Name => 'MaxFocalLength',
+        PrintConv => '"$val mm"',
+    },
+    0x00c0 => 'WBRedDaylight', #14
+    0x00c1 => 'WBGreenDaylight', #14
+    0x00c2 => 'WBBlueDaylight', #14
+    0x00c3 => 'WBRedCloudy', #14
+    0x00c4 => 'WBGreenCloudy', #14
+    0x00c5 => 'WBBlueCloudy', #14
+    0x00c9 => 'WBRedTungsten', #14
+    0x00ca => 'WBGreenTungsten', #14
+    0x00cb => 'WBBlueTungsten', #14
+    0x00cc => 'WBRedFlash', #14
+    0x00cd => 'WBGreenFlash', #14
+    0x00ce => 'WBBlueFlash', #14
+    0x00d0 => 'WBRedAsShot', #14
+    0x00d1 => 'WBGreenAsShot', #14
+    0x00d2 => 'WBBlueAsShot', #14
 );
 
 # tag table for Sony RAW 2 Format Private IFD (ref 1)
@@ -6917,11 +6946,27 @@ my %exposureProgram2010 = (
     GROUPS => { 0 => 'MakerNotes', 1 => 'SR2SubIFD', 2 => 'Camera' },
     SET_GROUP1 => 1, # set group1 name to directory name for all tags in table
     NOTES => 'Tags in the encrypted SR2SubIFD',
-    0x7303 => 'WB_GRBGLevels', #1
+    0x7300 => 'BlackLevel', #14 (R1)
+    0x7302 => 'WB_GRBGLevelsAuto', #14 (R1)
+    0x7303 => 'WB_GRBGLevels', #1 (R1 "as shot", ref 14)
     0x7310 => 'BlackLevel', #14 (divide by 4)
     0x7313 => 'WB_RGGBLevels', #6
+    0x7480 => 'WB_RGBLevelsDaylight', #14 (R1)
+    0x7481 => 'WB_RGBLevelsCloudy', #14 (R1)
+    0x7482 => 'WB_RGBLevelsTungsten', #14 (R1)
+    0x7483 => 'WB_RGBLevelsFlash', #14 (R1)
+    0x7484 => 'WB_RGBLevels4500K', #14 (R1)
+    0x7486 => 'WB_RGBLevelsFluorescent', #14 (R1)
     0x74a0 => 'MaxApertureAtMaxFocal', #PH
     0x74a1 => 'MaxApertureAtMinFocal', #PH
+    0x74a2 => { #14 (R1)
+        Name => 'MaxFocalLength',
+        PrintConv => '"$val mm"',
+    },
+    0x74a3 => { #14 (R1)
+        Name => 'MinFocalLength',
+        PrintConv => '"$val mm"',
+    },
     0x74c0 => { #PH
         Name => 'SR2DataIFD',
         Groups => { 1 => 'SR2DataIFD' }, # (needed to set SubIFD DirName)

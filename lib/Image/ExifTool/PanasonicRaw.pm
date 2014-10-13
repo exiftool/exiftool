@@ -20,7 +20,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.07';
+$VERSION = '1.08';
 
 sub ProcessJpgFromRaw($$$);
 sub WriteJpgFromRaw($$$);
@@ -40,6 +40,11 @@ my %jpgFromRawMap = (
     IFD0         => 'APP1',
     MakerNotes   => 'ExifIFD',
     Comment      => 'COM',
+);
+
+my %wbTypeInfo = (
+    PrintConv => \%Image::ExifTool::Exif::lightSource,
+    SeparateTable => 'EXIF LightSource',
 );
 
 # Tags found in Panasonic RAW/RW2/RWL images (ref PH)
@@ -93,6 +98,10 @@ my %jpgFromRawMap = (
         ValueConv => '$val / 256',
         ValueConvInv => 'int($val * 256 + 0.5)',
     },
+    0x13 => { #4
+        Name => 'WBInfo',
+        SubDirectory => { TagTable => 'Image::ExifTool::PanasonicRaw::WBInfo' },
+    },
     0x17 => { #1
         Name => 'ISO',
         Writable => 'int16u',
@@ -131,6 +140,10 @@ my %jpgFromRawMap = (
     0x26 => { #2
         Name => 'WBBlueLevel',
         Writable => 'int16u',
+    },
+    0x27 => { #4
+        Name => 'WBInfo2',
+        SubDirectory => { TagTable => 'Image::ExifTool::PanasonicRaw::WBInfo2' },
     },
     # 0x27,0x29,0x2a,0x2b,0x2c: [binary data]
     # 0x2d: 2,3
@@ -245,6 +258,58 @@ my %jpgFromRawMap = (
             Start => '$val',
         },
     },
+);
+
+# white balance information (ref 4)
+# (PanasonicRawVersion<200: Digilux 2)
+%Image::ExifTool::PanasonicRaw::WBInfo = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    WRITE_PROC => \&Image::ExifTool::WriteBinaryData,
+    CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
+    WRITABLE => 1,
+    FORMAT => 'int16u',
+    FIRST_ENTRY => 0,
+    0 => 'NumWBEntries',
+    1 => { Name => 'WBType1', %wbTypeInfo },
+    2 => { Name => 'WB_RBLevels1', Format => 'int16u[2]' },
+    4 => { Name => 'WBType2', %wbTypeInfo },
+    5 => { Name => 'WB_RBLevels2', Format => 'int16u[2]' },
+    7 => { Name => 'WBType3', %wbTypeInfo },
+    8 => { Name => 'WB_RBLevels3', Format => 'int16u[2]' },
+    10 => { Name => 'WBType4', %wbTypeInfo },
+    11 => { Name => 'WB_RBLevels4', Format => 'int16u[2]' },
+    13 => { Name => 'WBType5', %wbTypeInfo },
+    14 => { Name => 'WB_RBLevels5', Format => 'int16u[2]' },
+    16 => { Name => 'WBType6', %wbTypeInfo },
+    17 => { Name => 'WB_RBLevels6', Format => 'int16u[2]' },
+    19 => { Name => 'WBType7', %wbTypeInfo },
+    20 => { Name => 'WB_RBLevels7', Format => 'int16u[2]' },
+);
+
+# white balance information (ref 4)
+# (PanasonicRawVersion>=200: D-Lux2, D-Lux3, DMC-FZ18/FZ30/LX1/L10)
+%Image::ExifTool::PanasonicRaw::WBInfo2 = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    WRITE_PROC => \&Image::ExifTool::WriteBinaryData,
+    CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
+    WRITABLE => 1,
+    FORMAT => 'int16u',
+    FIRST_ENTRY => 0,
+    0 => 'NumWBEntries',
+    1 => { Name => 'WBType1', %wbTypeInfo },
+    2 => { Name => 'WB_RGBLevels1', Format => 'int16u[3]' },
+    5 => { Name => 'WBType2', %wbTypeInfo },
+    6 => { Name => 'WB_RGBLevels2', Format => 'int16u[3]' },
+    9 => { Name => 'WBType3', %wbTypeInfo },
+    10 => { Name => 'WB_RGBLevels3', Format => 'int16u[3]' },
+    13 => { Name => 'WBType4', %wbTypeInfo },
+    14 => { Name => 'WB_RGBLevels4', Format => 'int16u[3]' },
+    17 => { Name => 'WBType5', %wbTypeInfo },
+    18 => { Name => 'WB_RGBLevels5', Format => 'int16u[3]' },
+    21 => { Name => 'WBType6', %wbTypeInfo },
+    22 => { Name => 'WB_RGBLevels6', Format => 'int16u[3]' },
+    25 => { Name => 'WBType7', %wbTypeInfo },
+    26 => { Name => 'WB_RGBLevels7', Format => 'int16u[3]' },
 );
 
 # lens distortion information (ref 3)

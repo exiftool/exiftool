@@ -90,55 +90,65 @@ the BlackLevelRed/Green/Blue tags below)</span></span></td></tr>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td title='0x0013 = 19'>0x0013</td>
+<td>WBInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='PanasonicRaw.html#WBInfo'>PanasonicRaw WBInfo Tags</a></td></tr>
+<tr>
 <td title='0x0017 = 23'>0x0017</td>
 <td>ISO</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x0018 = 24'>0x0018</td>
 <td>HighISOMultiplierRed</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x0019 = 25'>0x0019</td>
 <td>HighISOMultiplierGreen</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x001a = 26'>0x001a</td>
 <td>HighISOMultiplierBlue</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x001c = 28'>0x001c</td>
 <td>BlackLevelRed</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x001d = 29'>0x001d</td>
 <td>BlackLevelGreen</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x001e = 30'>0x001e</td>
 <td>BlackLevelBlue</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x0024 = 36'>0x0024</td>
 <td>WBRedLevel</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x0025 = 37'>0x0025</td>
 <td>WBGreenLevel</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x0026 = 38'>0x0026</td>
 <td>WBBlueLevel</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
+<tr>
+<td title='0x0027 = 39'>0x0027</td>
+<td>WBInfo2</td>
+<td class=c>-</td>
+<td>--&gt; <a href='PanasonicRaw.html#WBInfo2'>PanasonicRaw WBInfo2 Tags</a></td></tr>
 <tr class=b>
 <td title='0x002e = 46'>0x002e</td>
 <td>JpgFromRaw</td>
@@ -216,6 +226,172 @@ the BlackLevelRed/Green/Blue tags below)</span></span></td></tr>
 <td>--&gt; <a href='GPS.html'>GPS Tags</a></td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='WBInfo'>PanasonicRaw WBInfo Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index2</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>NumWBEntries</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='1 = 0x1'>1</td>
+<td>WBType1</td>
+<td class=c>int16u</td>
+<td>--&gt; <a href='EXIF.html#LightSource'>EXIF LightSource Values</a></td></tr>
+<tr>
+<td class=r title='2 = 0x2'>2</td>
+<td>WB_RBLevels1</td>
+<td class=c>int16u[2]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>WBType2</td>
+<td class=c>int16u</td>
+<td>--&gt; <a href='EXIF.html#LightSource'>EXIF LightSource Values</a></td></tr>
+<tr>
+<td class=r title='5 = 0x5'>5</td>
+<td>WB_RBLevels2</td>
+<td class=c>int16u[2]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='7 = 0x7'>7</td>
+<td>WBType3</td>
+<td class=c>int16u</td>
+<td>--&gt; <a href='EXIF.html#LightSource'>EXIF LightSource Values</a></td></tr>
+<tr>
+<td class=r title='8 = 0x8'>8</td>
+<td>WB_RBLevels3</td>
+<td class=c>int16u[2]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='10 = 0xa'>10</td>
+<td>WBType4</td>
+<td class=c>int16u</td>
+<td>--&gt; <a href='EXIF.html#LightSource'>EXIF LightSource Values</a></td></tr>
+<tr>
+<td class=r title='11 = 0xb'>11</td>
+<td>WB_RBLevels4</td>
+<td class=c>int16u[2]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='13 = 0xd'>13</td>
+<td>WBType5</td>
+<td class=c>int16u</td>
+<td>--&gt; <a href='EXIF.html#LightSource'>EXIF LightSource Values</a></td></tr>
+<tr>
+<td class=r title='14 = 0xe'>14</td>
+<td>WB_RBLevels5</td>
+<td class=c>int16u[2]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='16 = 0x10'>16</td>
+<td>WBType6</td>
+<td class=c>int16u</td>
+<td>--&gt; <a href='EXIF.html#LightSource'>EXIF LightSource Values</a></td></tr>
+<tr>
+<td class=r title='17 = 0x11'>17</td>
+<td>WB_RBLevels6</td>
+<td class=c>int16u[2]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='19 = 0x13'>19</td>
+<td>WBType7</td>
+<td class=c>int16u</td>
+<td>--&gt; <a href='EXIF.html#LightSource'>EXIF LightSource Values</a></td></tr>
+<tr>
+<td class=r title='20 = 0x14'>20</td>
+<td>WB_RBLevels7</td>
+<td class=c>int16u[2]</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='WBInfo2'>PanasonicRaw WBInfo2 Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index2</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>NumWBEntries</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='1 = 0x1'>1</td>
+<td>WBType1</td>
+<td class=c>int16u</td>
+<td>--&gt; <a href='EXIF.html#LightSource'>EXIF LightSource Values</a></td></tr>
+<tr>
+<td class=r title='2 = 0x2'>2</td>
+<td>WB_RGBLevels1</td>
+<td class=c>int16u[3]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='5 = 0x5'>5</td>
+<td>WBType2</td>
+<td class=c>int16u</td>
+<td>--&gt; <a href='EXIF.html#LightSource'>EXIF LightSource Values</a></td></tr>
+<tr>
+<td class=r title='6 = 0x6'>6</td>
+<td>WB_RGBLevels2</td>
+<td class=c>int16u[3]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='9 = 0x9'>9</td>
+<td>WBType3</td>
+<td class=c>int16u</td>
+<td>--&gt; <a href='EXIF.html#LightSource'>EXIF LightSource Values</a></td></tr>
+<tr>
+<td class=r title='10 = 0xa'>10</td>
+<td>WB_RGBLevels3</td>
+<td class=c>int16u[3]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='13 = 0xd'>13</td>
+<td>WBType4</td>
+<td class=c>int16u</td>
+<td>--&gt; <a href='EXIF.html#LightSource'>EXIF LightSource Values</a></td></tr>
+<tr>
+<td class=r title='14 = 0xe'>14</td>
+<td>WB_RGBLevels4</td>
+<td class=c>int16u[3]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='17 = 0x11'>17</td>
+<td>WBType5</td>
+<td class=c>int16u</td>
+<td>--&gt; <a href='EXIF.html#LightSource'>EXIF LightSource Values</a></td></tr>
+<tr>
+<td class=r title='18 = 0x12'>18</td>
+<td>WB_RGBLevels5</td>
+<td class=c>int16u[3]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='21 = 0x15'>21</td>
+<td>WBType6</td>
+<td class=c>int16u</td>
+<td>--&gt; <a href='EXIF.html#LightSource'>EXIF LightSource Values</a></td></tr>
+<tr>
+<td class=r title='22 = 0x16'>22</td>
+<td>WB_RGBLevels6</td>
+<td class=c>int16u[3]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='25 = 0x19'>25</td>
+<td>WBType7</td>
+<td class=c>int16u</td>
+<td>--&gt; <a href='EXIF.html#LightSource'>EXIF LightSource Values</a></td></tr>
+<tr>
+<td class=r title='26 = 0x1a'>26</td>
+<td>WB_RGBLevels7</td>
+<td class=c>int16u[3]</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
 <h2><a name='DistortionInfo'>PanasonicRaw DistortionInfo Tags</a></h2>
 <p>Lens distortion correction information.</p>
 <blockquote>
@@ -269,7 +445,7 @@ the BlackLevelRed/Green/Blue tags below)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Feb 12, 2014</i>
+<br><i>Last revised Oct 5, 2014</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

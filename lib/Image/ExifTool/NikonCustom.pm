@@ -15,7 +15,7 @@ package Image::ExifTool::NikonCustom;
 use strict;
 use vars qw($VERSION);
 
-$VERSION = '1.09';
+$VERSION = '1.10';
 
 # custom settings for the D80 (encrypted) - ref JD
 %Image::ExifTool::NikonCustom::SettingsD80 = (
@@ -1291,7 +1291,7 @@ $VERSION = '1.09';
             Condition => '$$self{Model} =~ /D3[SX]?\b/',
             Notes => 'D3',
             Mask => 0x60,
-            PrintConv => { 
+            PrintConv => {
                 0x00 => 'On in Continuous Shooting and Manual Focusing',
                 0x20 => 'On During Manual Focusing',
                 0x40 => 'On in Continuous Shooting Modes',
@@ -2004,8 +2004,7 @@ $VERSION = '1.09';
     18.2 => { # CSc4
         Name => 'MonitorOffTime',
         # NOTE: The D3S and D300S have separate settings for Playback,
-        # Image Review, Menus, and Information Display times, but these
-        # have not yet been decoded - PH
+        # Image Review, Menus, and Information Display times
         Mask => 0x07,
         PrintConv => {
             0x00 => '10 s',
@@ -2068,19 +2067,33 @@ $VERSION = '1.09';
             0x0b => '30 s',
         },
     },
-    21.1 => { # CSe5 (D300), CSe4 (D3)
+    21.1 => [{ # CSe5 (D300), CSe4 (D3)
         Name => 'AutoBracketSet',
+        Condition => '$$self{Model} != /(D3S|D300S)\b/',
+        Notes => 'D3 and D300',
         Mask => 0xc0,
         PrintConv => {
             0x00 => 'AE & Flash',
             0x40 => 'AE Only',
             0x80 => 'Flash Only',
             0xc0 => 'WB Bracketing',
-            # NOTE: D3S/D300S have an "ADL Bracketing" setting not decoded - PH
         },
-    },
+    },{ # CSe4 (D3S) (NC for D300S)
+        Name => 'AutoBracketSet',
+        Notes => 'D3S and D300S',
+        Mask => 0xe0,
+        PrintConv => {
+            0x00 => 'AE & Flash',
+            0x20 => 'AE Only',
+            0x40 => 'Flash Only',
+            0x60 => 'WB Bracketing',
+            # D3S/D300S have an "ADL Bracketing" setting - PH
+            0x80 => 'ADL Bracketing',
+        },
+    }],
     21.2 => { # CSe6 (D300), CSe5 (D3)
         Name => 'AutoBracketModeM',
+        Condition => '$$self{Model} != /(D3S|D300S)\b/', # (needs checking on D3S/D300S)
         Mask => 0x30,
         PrintConv => {
             0x00 => 'Flash/Speed',
@@ -2135,6 +2148,54 @@ $VERSION = '1.09';
             0x40 => 'Manual',
             0x80 => 'Repeating Flash',
             0xc0 => 'Commander Mode',
+        },
+    },
+    25.1 => { #1 CSc4-d (D3S)
+        Name => 'ImageReviewTime',
+        Mask => 0xe0,
+        PrintConv => {
+            0x00 => '4 s',
+            0x20 => '10 s',
+            0x40 => '20 s',
+            0x60 => '1 min',
+            0x80 => '5 min',
+            0xa0 => '10 min',
+        },
+    },
+    25.2 => { #1 CSc4-a (D3S)
+        Name => 'PlaybackMonitorOffTime',
+        Mask => 0x1c,
+        PrintConv => {
+            0x00 => '4 s',
+            0x04 => '10 s',
+            0x08 => '20 s',
+            0x0c => '1 min',
+            0x10 => '5 min',
+            0x14 => '10 min',
+        },
+    },
+    26.1 => { #1 CSc4-b (D3S)
+        Name => 'MenuMonitorOffTime',
+        Mask => 0xe0,
+        PrintConv => {
+            0x00 => '4 s',
+            0x20 => '10 s',
+            0x40 => '20 s',
+            0x60 => '1 min',
+            0x80 => '5 min',
+            0xa0 => '10 min',
+        },
+    },
+    26.2 => { #1 CSc4-c (D3S)
+        Name => 'ShootingInfoMonitorOffTime',
+        Mask => 0x1c,
+        PrintConv => {
+            0x00 => '4 s',
+            0x04 => '10 s',
+            0x08 => '20 s',
+            0x0c => '1 min',
+            0x10 => '5 min',
+            0x14 => '10 min',
         },
     },
 );
@@ -4362,6 +4423,716 @@ $VERSION = '1.09';
     },
 );
 
+# D4/D4S custom settings (ref 1, decoded from D4S)
+%Image::ExifTool::NikonCustom::SettingsD4 = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    WRITE_PROC => \&Image::ExifTool::WriteBinaryData,
+    CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
+    WRITABLE => 1,
+    FIRST_ENTRY => 0,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    NOTES => 'Custom settings for the D4 and D4S.',
+    0.1 => {
+        Name => 'CustomSettingsBank',
+        Mask => 0x03,
+        PrintConv => {
+            0 => 'A',
+            1 => 'B',
+            2 => 'C',
+            3 => 'D',
+        },
+    },
+    1.1 => { #CSa1
+        Name => 'AF-CPrioritySelection',
+        Mask => 0xc0,
+        PrintConv => {
+            0x00 => 'Release',
+            0x40 => 'Release + Focus',
+            0x80 => 'Focus',
+            0xc0 => 'Focus + Release',
+        },
+    },
+    1.2 => { # CSa2
+        Name => 'AF-SPrioritySelection',
+        Mask => 0x20,
+        PrintConv => {
+            0x00 => 'Focus',
+            0x20 => 'Release',
+        },
+    },
+    1.3 => { # CSa7
+        Name => 'AFPointSelection',
+        Mask => 0x10,
+        PrintConv => {
+            0x00 => '51 Points',
+            0x10 => '11 Points',
+        },
+    },
+    1.4 => { # CSa3
+        Name => 'FocusTrackingLockOn',
+        Mask => 0x07,
+        PrintConv => {
+            0x00 => 'Off',
+            0x01 => '1 (Short)',
+            0x02 => '2',
+            0x03 => '3 (Normal)',
+            0x04 => '4',
+            0x05 => '5 (Long)',
+        },
+    },
+    2.1 => { # CSa4
+        Name => 'AFActivation',
+        Mask => 0x80,
+        PrintConv => {
+            0x00 => 'Shutter/AF-On',
+            0x80 => 'AF-On Only',
+        },
+    },
+    2.2 => { # CSa6
+        Name => 'FocusPointWrap',
+        Mask => 0x08,
+        PrintConv => {
+            0x00 => 'No Wrap',
+            0x08 => 'Wrap',
+        },
+    },
+    4.1 => { # CSd1-b
+        Name => 'Pitch',
+        Mask => 0x40,
+        PrintConv => { 0x00 => 'High', 0x40 => 'Low' },
+    },
+    4.2 => { # CSd6
+        Name => 'GridDisplay',
+        Mask => 0x02,
+        PrintConv => { 0x00 => 'On', 0x02 => 'Off' },
+    },
+    5.1 => { # CSd9
+        Name => 'ShootingInfoDisplay',
+        Mask => 0xc0,
+        PrintConv => {
+            # 0x00 - seen for D4 (PH)
+            0x40 => 'Auto',
+            0x80 => 'Manual (dark on light)',
+            0xc0 => 'Manual (light on dark)',
+        },
+    },
+    5.2 => { # CSd10
+        Name => 'LCDIllumination',
+        Mask => 0x20,
+        PrintConv => { 0x00 => 'Off', 0x20 => 'On' },
+    },
+    5.3 => { # CSd8
+        Name => 'ScreenTips',
+        Mask => 0x04,
+        PrintConv => { 0x00 => 'Off', 0x04 => 'On' },
+    },
+    5.4 => { # CSd1-a
+        Name => 'Beep',
+        Mask => 0x03,
+        PrintConv => {
+            0x00 => 'Off',
+            0x01 => 'Low',
+            0x02 => 'Medium',
+            0x03 => 'High',
+        },
+    },
+    6.1 => { # CSd7-a
+        Name => 'RearDisplay',
+        Mask => 0x40,
+        PrintConv => {
+            0x00 => 'ISO',
+            0x40 => 'Exposures Remaining',
+        },
+    },
+    6.2 => { # CSd7-b
+        Name => 'ViewfinderDisplay',
+        Mask => 0x20,
+        PrintConv => {
+            0x00 => 'Frame Count',
+            0x20 => 'Exposures Remaining',
+        },
+    },
+    6.3 => { # CSb4
+        Name => 'EasyExposureCompensation',
+        Mask => 0x03,
+        PrintConv => {
+            0x00 => 'Off',
+            0x01 => 'On',
+            0x02 => 'On (auto reset)',
+        },
+    },
+    7.1 => { # CSb2
+        Name => 'ExposureControlStepSize',
+        Mask => 0xc0,
+        PrintConv => {
+            0x00 => '1/3 EV',
+            0x40 => '1/2 EV',
+            0x80 => '1 EV',
+        },
+    },
+    7.2 => { # CSb1
+        Name => 'ISOStepSize',
+        Mask => 0x30,
+        PrintConv => {
+            0x00 => '1/3 EV',
+            0x10 => '1/2 EV',
+            0x20 => '1 EV',
+        },
+    },
+    7.3 => { # CSb3
+        Name => 'ExposureCompStepSize',
+        Mask => 0x0c,
+        PrintConv => {
+            0x00 => '1/3 EV',
+            0x04 => '1/2 EV',
+            0x08 => '1 EV',
+        },
+    },
+    8.1 => { # CSb6 (CSb5 for D4)
+        Name => 'CenterWeightedAreaSize',
+        Mask => 0xe0,
+        PrintConv => {
+            0x00 => '8 mm',
+            0x20 => '12 mm',
+            0x40 => '15 mm',
+            0x60 => '20 mm',
+            0x80 => 'Average',
+        },
+    },
+    8.2 => { # CSb7-a
+        Name => 'FineTuneOptMatrixMetering',
+        Mask => 0x0f,
+        ValueConv => '($val > 0x7 ? $val - 0x10 : $val) / 6',
+        ValueConvInv => 'int($val*6+($val>0?0.5:-0.5)) & 0x0f',
+        PrintConv => '$val ? sprintf("%+.2f", $val) : 0',
+        PrintConvInv => 'Image::ExifTool::Exif::ConvertFraction($val)',
+    },
+    9.1 => { # CSb7-b
+        Name => 'FineTuneOptCenterWeighted',
+        Mask => 0xf0,
+        ValueConv => '($val > 0x70 ? $val - 0x100 : $val) / 0x60',
+        ValueConvInv => '(int($val*6+($val>0?0.5:-0.5))<<4) & 0xf0',
+        PrintConv => '$val ? sprintf("%+.2f", $val) : 0',
+        PrintConvInv => 'Image::ExifTool::Exif::ConvertFraction($val)',
+    },
+    9.2 => { # CSb7-c
+        Name => 'FineTuneOptSpotMetering',
+        Mask => 0x0f,
+        ValueConv => '($val > 0x7 ? $val - 0x10 : $val) / 6',
+        ValueConvInv => 'int($val*6+($val>0?0.5:-0.5)) & 0x0f',
+        PrintConv => '$val ? sprintf("%+.2f", $val) : 0',
+        PrintConvInv => 'Image::ExifTool::Exif::ConvertFraction($val)',
+    },
+    10.1 => { # CSf1-a
+        Name => 'MultiSelectorShootMode',
+        Mask => 0xc0,
+        PrintConv => {
+            0x00 => 'Select Center Focus Point (Reset)',
+            0x80 => 'Preset Focus Point (Pre)',
+            0xc0 => 'Not Used (None)',
+        },
+    },
+    10.2 => { # CSf1-b
+        Name => 'MultiSelectorPlaybackMode',
+        Mask => 0x30,
+        PrintConv => {
+            0x00 => 'Thumbnail On/Off',
+            0x10 => 'View Histograms',
+            0x20 => 'Zoom On/Off',
+            0x30 => 'Choose Folder',
+        },
+    },
+    10.3 => { # CSf2
+        Name => 'MultiSelector',
+        Mask => 0x01,
+        PrintConv => {
+            0x00 => 'Do Nothing',
+            0x01 => 'Reset Meter-off Delay',
+        },
+    },
+    11.1 => { # CSd4
+        Name => 'ExposureDelayMode',
+        Mask => 0xc0,
+        PrintConv => {
+            0x00 => 'Off',
+            0x40 => '1 s',
+            0x80 => '2 s',
+            0xc0 => '3 s',
+        },
+    },
+    11.2 => { # CSd2-a
+        Name => 'CHModeShootingSpeed',
+        Mask => 0x10,
+        PrintConv => {
+            0x00 => '10 fps',
+            0x10 => '11 fps',
+        },
+    },
+    11.3 => { # CSd2-b
+        Name => 'CLModeShootingSpeed',
+        Mask => 0x0f,
+        PrintConv => '"$val fps"',
+        PrintConvInv => '$val=~s/\s*fps//i; $val',
+    },
+    12 => { # CSd3
+        Name => 'MaxContinuousRelease',
+        # values: 1-200
+    },
+    13.1 => { # CSe6
+        Name => 'AutoBracketSet',
+        Mask => 0xe0,
+        PrintConv => {
+            0x00 => 'AE & Flash',
+            0x20 => 'AE Only',
+            0x40 => 'Flash Only',
+            0x60 => 'WB Bracketing',
+            0x80 => 'Active D-Lighting',
+        },
+    },
+    13.2 => { # CSe8
+        Name => 'AutoBracketOrder',
+        Mask => 0x10,
+        PrintConv => {
+            0x00 => '0,-,+',
+            0x10 => '-,0,+',
+        },
+    },
+    13.3 => { # CSe7
+        Name => 'AutoBracketModeM',
+        Mask => 0x0c,
+        PrintConv => {
+            0x00 => 'Flash/Speed',
+            0x04 => 'Flash/Speed/Aperture',
+            0x08 => 'Flash/Aperture',
+            0x0c => 'Flash Only',
+        },
+    },
+    14.1 => { # CSf3-a
+        Name => 'FuncButton',
+        Mask => 0xf8,
+        PrintConv => {
+            0x00 => 'None',
+            0x08 => 'Preview',
+            0x10 => 'FV Lock',
+            0x18 => 'AE/AF Lock',
+            0x20 => 'AE Lock Only',
+            0x28 => 'AE Lock (reset on release)',
+            0x30 => 'AE Lock (hold)',
+            0x38 => 'AF Lock Only',
+            0x40 => 'AF-On',
+            0x50 => 'Bracketing Burst',
+            0x58 => 'Matrix Metering',
+            0x60 => 'Center-weighted Metering',
+            0x68 => 'Spot Metering',
+            0x70 => 'Playback',
+            0x78 => 'My Menu Top Item',
+            0x80 => '+NEF(RAW)',
+            0x88 => 'Virtual Horizon',
+            0x90 => 'My Menu',
+            0xa0 => 'Grid Display',
+            0xa8 => 'Disable Synchronized Release',
+            0xb0 => 'Remote Release Only',
+            0xd0 => 'Flash Disable/Enable',
+        },
+    },
+    14.2 => { # CSf3-b
+        Name => 'FuncButtonPlusDials',
+        Mask => 0x07,
+        PrintConv => {
+            0 => 'None',
+            1 => 'Choose Image Area (FX/DX/5:4)',
+            2 => 'Shutter Speed & Aperture Lock',
+            3 => 'One Step Speed / Aperture',
+            4 => 'Choose Non-CPU Lens Number',
+            5 => 'Active D-Lighting',
+            6 => 'Shooting Bank Menu',
+        },
+    },
+    15.1 => { # CSf4-a
+        Name => 'PreviewButton',
+        Mask => 0xf8,
+        PrintConv => {
+            0x00 => 'None',
+            0x08 => 'Preview',
+            0x10 => 'FV Lock',
+            0x18 => 'AE/AF Lock',
+            0x20 => 'AE Lock Only',
+            0x28 => 'AE Lock (reset on release)',
+            0x30 => 'AE Lock (hold)',
+            0x38 => 'AF Lock Only',
+            0x40 => 'AF-On',
+            0x50 => 'Bracketing Burst',
+            0x58 => 'Matrix Metering',
+            0x60 => 'Center-weighted Metering',
+            0x68 => 'Spot Metering',
+            0x70 => 'Playback',
+            0x78 => 'My Menu Top Item',
+            0x80 => '+NEF(RAW)',
+            0x88 => 'Virtual Horizon',
+            0x90 => 'My Menu',
+            0xa0 => 'Grid Display',
+            0xa8 => 'Disable Synchronized Release',
+            0xb0 => 'Remote Release Only',
+            0xd0 => 'Flash Disable/Enable',
+        },
+    },
+    15.2 => { # CSf4-b
+        Name => 'PreviewButtonPlusDials',
+        Mask => 0x07,
+        PrintConv => {
+            0 => 'None',
+            1 => 'Choose Image Area (FX/DX/5:4)',
+            2 => 'Shutter Speed & Aperture Lock',
+            3 => 'One Step Speed / Aperture',
+            4 => 'Choose Non-CPU Lens Number',
+            5 => 'Active D-Lighting',
+            6 => 'Shooting Bank Menu',
+        },
+    },
+    18.1 => { # CSc1
+        Name => 'ShutterReleaseButtonAE-L',
+        Mask => 0x02,
+        PrintConv => { 0x00 => 'Off', 0x02 => 'On' },
+    },
+    19.1 => { # CSc2
+        Name => 'StandbyTimer',
+        Mask => 0xf0,
+        PrintConv => {
+            0x00 => '4 s',
+            0x10 => '6 s',
+            0x30 => '10 s',
+            0x50 => '30 s',
+            0x60 => '1 min',
+            0x70 => '5 min',
+            0x80 => '10 min',
+            0x90 => '30 min',
+        },
+    },
+    20.1 => { # CSc3-a
+        Name => 'SelfTimerTime',
+        Mask => 0xc0,
+        PrintConv => {
+            0x00 => '2 s',
+            0x40 => '5 s',
+            0x80 => '10 s',
+            0xc0 => '20 s',
+        },
+    },
+    20.2 => { # CSc3-b
+        Name => 'SelfTimerShotCount',
+        Mask => 0x0f,
+    },
+    20.3 => { # CSc3-c
+        Name => 'SelfTimerShotInterval',
+        Mask => 0x30,
+        PrintConv => {
+            0x00 => '0.5 s',
+            0x10 => '1 s',
+            0x20 => '2 s',
+            0x30 => '3 s',
+        },
+    },
+    21.1 => { # CSc4-d
+        Name => 'ImageReviewMonitorOffTime',
+        Mask => 0xe0,
+        PrintConv => {
+            0x00 => '2 s',
+            0x20 => '4 s',
+            0x40 => '10 s',
+            0x60 => '20 s',
+            0x80 => '1 min',
+            0xa0 => '5 min',
+            0xc0 => '10 min',
+
+        },
+    },
+    21.2 => { # CSc4-e
+        Name => 'LiveViewMonitorOffTime',
+        Mask => 0x1c,
+        PrintConv => {
+            0x00 => '5 min',
+            0x04 => '10 min',
+            0x08 => '15 min',
+            0x0c => '20 min',
+            0x10 => '30 min',
+            0x14 => 'No Limit',
+        },
+    },
+    22.1 => { # CSc4-b
+        Name => 'MenuMonitorOffTime',
+        Mask => 0xe0,
+        PrintConv => {
+            0x00 => '4 s',
+            0x20 => '10 s',
+            0x40 => '20 s',
+            0x60 => '1 min',
+            0x80 => '5 min',
+            0xa0 => '10 min',
+        },
+    },
+    22.2 => { # CSc4-c
+        Name => 'ShootingInfoMonitorOffTime',
+        Mask => 0x1c,
+        PrintConv => {
+            0x00 => '4 s',
+            0x04 => '10 s',
+            0x08 => '20 s',
+            0x0c => '1 min',
+            0x10 => '5 min',
+            0x14 => '10 min',
+        },
+    },
+    23.1 => { # CSe1
+        Name => 'FlashSyncSpeed',
+        Mask => 0xf0,
+        PrintConv => {
+            # 0x00 - seen for D4 (PH)
+            0x10 => '1/250 s (auto FP)',
+            0x20 => '1/250 s',
+            0x30 => '1/200 s',
+            0x40 => '1/160 s',
+            0x50 => '1/125 s',
+            0x60 => '1/100 s',
+            0x70 => '1/80 s',
+            0x80 => '1/60 s',
+        },
+    },
+    23.2 => { # CSe2
+        Name => 'FlashShutterSpeed',
+        Mask => 0x0f,
+        PrintConvColumns => 2,
+        PrintConv => {
+            0x00 => '1/60 s',
+            0x01 => '1/30 s',
+            0x02 => '1/15 s',
+            0x03 => '1/8 s',
+            0x04 => '1/4 s',
+            0x05 => '1/2 s',
+            0x06 => '1 s',
+            0x07 => '2 s',
+            0x08 => '4 s',
+            0x09 => '8 s',
+            0x0a => '15 s',
+            0x0b => '30 s',
+        },
+    },
+    31.1 => { # CSe5
+        Name => 'ModelingFlash',
+        Mask => 0x20,
+        PrintConv => {
+            0x00 => 'On',
+            0x20 => 'Off',
+        },
+    },
+    36.1 => { # CSc4-a
+        Name => 'PlaybackMonitorOffTime',
+        Mask => 0xe0,
+        PrintConv => {
+            0x00 => '4 s',
+            0x20 => '10 s',
+            0x40 => '20 s',
+            0x60 => '1 min',
+            0x80 => '5 min',
+            0xa0 => '10 min',
+        },
+    },
+    38.1 => { # CSe4
+        Name => 'FlashExposureCompArea',
+        Mask => 0x04,
+        PrintConv => {
+            0x00 => 'Entire Frame',
+            0x04 => 'Background Only',
+        },
+    },
+    42.1 => { # CSf7-a
+        Name => 'VerticalFuncButton',
+        Mask => 0x1f,
+        PrintConv => {
+            0 => 'None',
+            1 => 'Preview',
+            2 => 'FV Lock',
+            3 => 'AE/AF Lock',
+            4 => 'AE Lock Only',
+            5 => 'AE Lock (reset on release)',
+            6 => 'AE Lock (hold)',
+            7 => 'AF Lock Only',
+            10 => 'Bracketing Burst',
+            11 => 'Matrix Metering',
+            12 => 'Center-weighted Metering',
+            13 => 'Spot Metering',
+            14 => 'Playback',
+            15 => 'My Menu Top Item',
+            16 => '+NEF(RAW)',
+            17 => 'Virtual Horizon',
+            18 => 'My Menu',
+            20 => 'Grid Display',
+            26 => 'Flash Disable/Enable',
+        },
+    },
+    46.1 => { # CSa5-c
+        Name => 'DynamicAreaAFDisplay',
+        Mask => 0x80,
+        PrintConv => {
+            0x00 => 'Off',
+            0x80 => 'On',
+        },
+    },
+    46.2 => { # CSa5-a
+        Name => 'AFPointIllumination',
+        Mask => 0x60,
+        PrintConv => {
+            0x00 => 'Off',
+            0x20 => 'On in Continuous Shooting Modes',
+            0x40 => 'On During Manual Focusing',
+            0x60 => 'On in Continuous Shooting and Manual Focusing ',
+        },
+    },
+    46.3 => { # CSa10 (D4 is slightly different -- needs checking)
+        Name => 'StoreByOrientation',
+        Mask => 0x18,
+        PrintConv => {
+            0x00 => 'Off',
+            0x08 => 'Focus Point',
+            0x10 => 'Focus Point and AF-area mode',
+        },
+    },
+    46.4 => { # CSa5-d
+        Name => 'GroupAreaAFIllumination',
+        Mask => 0x04,
+        PrintConv => {
+            0x00 => 'Squares',
+            0x04 => 'Dots',
+        },
+    },
+    46.5 => { # CSa5-b
+        Name => 'AFPointBrightness',
+        Mask => 0x03,
+        PrintConv => {
+            0x00 => 'Low',
+            0x01 => 'Normal',
+            0x02 => 'High',
+            0x03 => 'Extra High',
+        },
+    },
+    47.1 => { # CSa8
+        Name => 'AFOnButton',
+        Mask => 0x70,
+        PrintConv => {
+            0x00 => 'AF On',
+            0x10 => 'AE/AF Lock',
+            0x20 => 'AE Lock Only',
+            0x30 => 'AE Lock (reset on release)',
+            0x40 => 'AE Lock (hold)',
+            0x50 => 'AF Lock Only',
+            0x60 => 'None',
+        },
+    },
+    47.2 => { # CSa9
+        Name => 'VerticalAFOnButton',
+        Mask => 0x07,
+        PrintConv => {
+            0 => 'Same as AF On',
+            1 => 'AF On',
+            2 => 'AE/AF Lock',
+            3 => 'AE Lock Only',
+            4 => 'AE Lock (reset on release)',
+            5 => 'AE Lock (hold)',
+            6 => 'AF Lock Only',
+            7 => 'None',
+        },
+    },
+    48.1 => { # CSf5
+        Name => 'SubSelectorAssignment',
+        Mask => 0x80,
+        PrintConv => {
+            0x00 => 'Focus Point Selection',
+            0x80 => 'Same As Multi-selector',
+        },
+    },
+    49.1 => { # CSf6-a
+        Name => 'SubSelector',
+        Mask => 0xf8,
+        PrintConv => {
+            0x00 => 'None',
+            0x08 => 'Preview',
+            0x10 => 'FV Lock',
+            0x18 => 'AE/AF Lock',
+            0x20 => 'AE Lock Only',
+            0x28 => 'AE Lock (reset on release)',
+            0x30 => 'AE Lock (hold)',
+            0x38 => 'AF Lock Only',
+            0x40 => 'AF-On',
+            # 0x48 - seen for D4 (PH)
+            0x50 => 'Bracketing Burst',
+            0x58 => 'Matrix Metering',
+            0x60 => 'Center-weighted Metering',
+            0x68 => 'Spot Metering',
+            0x70 => 'Playback',
+            0x78 => 'My Menu Top Item',
+            0x80 => '+NEF(RAW)',
+            0x88 => 'Virtual Horizon',
+            0x90 => 'My Menu',
+            0x98 => 'Reset',    # value appears to be specific to this control at this time
+            0xa0 => 'Grid Display',
+            0xa8 => 'Disable Synchronized Release',
+            0xb0 => 'Remote Release Only',
+            0xb8 => 'Preview',  # value appears to be specific to this control at this time
+            0xd0 => 'Flash Disable/Enable',
+        },
+    },
+    49.2 => { # CSf6-b
+        Name => 'SubSelectorPlusDials',
+        Mask => 0x07,
+        PrintConv => {
+            # (not all values from CSf3-b/CSf4-b are available for CSf6-b)
+            0 => 'None',
+            1 => 'Choose Image Area (FX/DX/5:4)',
+            2 => 'Shutter Speed & Aperture Lock',
+            # 3 => 'One Step Speed / Aperture', # (not available)
+            4 => 'Choose Non-CPU Lens Number',
+            # 5 => 'Active D-Lighting',         # (not available)
+            6 => 'Shooting Bank Menu',
+        },
+    },
+    50.1 => { # CSb5
+        Name => 'MatrixMetering',
+        Condition => '$$self{Model} =~ /\bD4S/',
+        Notes => 'D4S only',
+        Mask => 0x80,
+        PrintConv => {
+            0x00 => 'Face Detection On',
+            0x80 => 'Face Detection Off',
+        },
+    },
+    50.2 => { # CSa12
+        Name => 'AFModeRestrictions',
+        Condition => '$$self{Model} =~ /\bD4S/',
+        Notes => 'D4S only',
+        Mask => 0x03,
+        PrintConv => {
+            0x00 => 'Off',
+            0x01 => 'AF-C',
+            0x02 => 'AF-S',
+        },
+    },
+    51.1 => { # CSa11
+        Name => 'LimitAFAreaModeSelection',
+        Condition => '$$self{Model} =~ /\bD4S/',
+        Notes => 'D4S only',
+        Mask => 0x7e,
+        PrintConv => {
+            0 => 'No Restrictions',
+            BITMASK => {
+                1 => 'Auto-area',
+                2 => 'Group-area',
+                3 => '3D-tracking',
+                4 => 'Dynamic area (51 points)',
+                5 => 'Dynamic area (21 points)',
+                6 => 'Dynamic area (9 points)',
+            },
+        },
+    },
+);
 
 1;  # end
 

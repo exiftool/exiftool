@@ -24,7 +24,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.36';
+$VERSION = '1.37';
 
 sub ProcessKodakIFD($$$);
 sub ProcessKodakText($$$);
@@ -1378,6 +1378,14 @@ my %sceneModeUsed = (
         Groups => { 2 => 'Time' },
         Writable => 'string',
     },
+    0x0406 => { #4
+        Name => 'CameraTemperature',
+        # (when count is 2, values seem related to temperature, but are not Celius)
+        Condition => '$count == 1',
+        Writable => 'rational64s',
+        PrintConv => '"$val C"',
+        PrintConvInv => '$val=~s/ ?C//; $val',
+    },
     0x0414 => { Name => 'NCDFileInfo',      Writable => 'string' },
     0x0846 => { #3
         Name => 'ColorTemperature',
@@ -1397,14 +1405,26 @@ my %sceneModeUsed = (
     0x085d => { Name => 'WB_RGBCoeffs1', Binary => 1 }, #3
     0x085e => { Name => 'WB_RGBCoeffs2', Binary => 1 }, #3
     0x085f => { Name => 'WB_RGBCoeffs3', Binary => 1 }, #3
+    0x0903 => { Name => 'BaseISO', Writable => 'rational64u' }, #4 (ISO before digital gain)
     # 0x090d: linear table (ref 3)
+    0x09ce => { Name => 'SensorSerialNumber', Writable => 'string', Groups => { 2 => 'Camera' } }, #4
     # 0x0c81: some sort of date (manufacture date?) - PH
-    # 0x089d => "real" (analogue) ISO values (ref 4)
+    # 0x089d => true analogue ISO values possible (ref 4)
     # 0x089e => true analogue ISO used at capture (ref 4)
     # 0x089f => ISO calibration gain (ref 4)
     # 0x08a0 => ISO calibration gain table (ref 4)
     # 0x08a1 => exposure headroom coefficient (ref 4)
     0x0ce5 => { Name => 'FirmwareVersion',  Writable => 'string' },
+    0x0e4c => { #4
+        Name => 'KodakLook',
+        Format => 'undef',
+        Writable => 'string',
+        ValueConv => '$val=~tr/\0/\n/; $val',
+        ValueConvInv => '$val=~tr/\n/\0/; $val',
+    },
+    0x1389 => { Name => 'InputProfile',     Writable => 'undef', Binary => 1 }, #4
+    0x138a => { Name => 'KodakLookProfile', Writable => 'undef', Binary => 1 }, #4
+    0x138b => { Name => 'OutputProfile',    Writable => 'undef', Binary => 1 }, #4
     # 0x1390: value: "DCSProSLRn" (tone curve name?) - PH
     0x1391 => { Name => 'ToneCurveFileName',Writable => 'string' },
     0x1784 => { Name => 'ISO',              Writable => 'int32u' }, #3

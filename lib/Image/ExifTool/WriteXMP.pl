@@ -743,11 +743,19 @@ sub WriteXMP($$;$)
 # add, delete or change information as specified
 #
     # get hash of all information we want to change
-    # (sorted by tag name so alternate languages come last)
-    my @tagInfoList = sort ByTagName $et->GetNewTagInfoList();
-    foreach $tagInfo (@tagInfoList) {
+    # (sorted by tag name so alternate languages come last, but with structures
+    # first so flattened tags may be used to override individual structure elements)
+    my @tagInfoList;
+    foreach $tagInfo (sort ByTagName $et->GetNewTagInfoList()) {
         next unless $et->GetGroup($tagInfo, 0) eq 'XMP';
         next if $$tagInfo{Name} eq 'XMP'; # (ignore full XMP block if we didn't write it already)
+        if ($$tagInfo{Struct}) {
+            unshift @tagInfoList, $tagInfo;
+        } else {
+            push @tagInfoList, $tagInfo;
+        }
+    }
+    foreach $tagInfo (@tagInfoList) {
         my $tag = $$tagInfo{TagID};
         my $path = GetPropertyPath($tagInfo);
         unless ($path) {

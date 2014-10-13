@@ -26,7 +26,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.33';
+$VERSION = '1.34';
 
 sub ProcessPNG_tEXt($$$);
 sub ProcessPNG_iTXt($$$);
@@ -160,7 +160,7 @@ $Image::ExifTool::PNG::colorType = -1;
     },
     pHYs => {
         Name => 'PhysicalPixel',
-        SubDirectory => { 
+        SubDirectory => {
             TagTable => 'Image::ExifTool::PNG::PhysicalPixel',
             DirName => 'PNG-pHYs', # (needed for writing)
         },
@@ -379,8 +379,9 @@ my %unreg = ( Notes => 'unregistered' );
         The PNG TextualData format allows arbitrary tag names to be used.  The tags
         listed below are the only ones that can be written (unless new user-defined
         tags are added via the configuration file), however ExifTool will extract
-        any other TextualData tags that are found.
-        
+        any other TextualData tags that are found.  All TextualData tags (including
+        tags not listed below) are removed when deleting all PNG tags.
+
         These tags may be stored as tEXt, zTXt or iTXt chunks in the PNG image.  By
         default ExifTool writes new string-value tags as as uncompressed tEXt, or
         compressed zTXt if the Compress (-z) option is used and Compress::Zlib is
@@ -760,6 +761,14 @@ sub FoundPNG($$$$;$$$$)
             return 1;
         }
         return 1 if $processed;
+    } elsif ($outBuff) {
+        if ($$et{DEL_GROUP}{PNG} and $tagTablePtr eq \%Image::ExifTool::PNG::TextualData) {
+            # delete all TextualData tags if deleting the PNG group
+            $$outBuff = '';
+            ++$$et{CHANGED};
+            $et->VerboseValue("- PNG:$tag", $val);
+        }
+        return 1;
     } else {
         my $name;
         ($name = $tag) =~ s/\s+(.)/\u$1/g;   # remove white space from tag name

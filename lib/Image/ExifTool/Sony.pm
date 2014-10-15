@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.13';
+$VERSION = '2.14';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -747,7 +747,7 @@ my %meterInfo2 = (
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag2010f' },
     },{
         Name => 'Tag2010g', # ?
-        Condition => '$$self{Model} =~ /^(DSC-(RX10|RX100M3|HX60V|HX400V|WX220)|ILCE-(7[RS]?|[56]000|5100)|ILCA-77M2)\b/',
+        Condition => '$$self{Model} =~ /^(DSC-(QX30|RX10|RX100M3|HX60V|HX400V|WX220|WX350)|ILCE-(7[RS]?|[56]000|5100|QX1)|ILCA-77M2)\b/',
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag2010g' },
     },{
         Name => 'Tag_0x2010',
@@ -6404,9 +6404,12 @@ my %exposureProgram2010 = (
     # Tag9405-0x0605 and Tag9050-0x0107 always give value '0' for A-mount lenses.
     # When LA-EA2 is used, Tag940e AFInfo gives sequential info blocks NEX (Phase-detect AF).
     # Also seen values '3' and '6' for A-lens on ILCE-7/7R, probably relating to LA-EA3 and LA-EA4 (NC).
+    # - this is the only tag that appears to indicate adapter info
+    # - when normal E-mount lenses are used, there are at least 2 other LensType2's with the correct lens
+    # - so limit outputting this tag ONLY for adapter info (with the RawConv below)
     0x0009 => { #12
         Name => 'LensType2',
-        Condition => '$$self{LensMount} != 0',
+        RawConv => '($val > 0 and $val < 32784) ? $val : undef',
         Format => 'int16u',
         SeparateTable => 1,
         PrintConv => \%sonyLensTypes2,

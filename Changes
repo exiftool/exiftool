@@ -7,6 +7,16 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 9.70. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Oct. 15, 2014 - Version 9.74
+
+  - Added a number of new QuickTime GenreID values (thanks Francois Bonzon)
+  - Added support for some newer Sony cameras (thanks Jos Roost)
+  - Decode more Nikon D4S custom settings
+  - Improved lens identification logic for XMP metadata (thanks Jos Roost)
+  - Fixed typo in Condition for a few D3 NikonCustom tags
+  - Fixed bug which could cause a "Use of uninitialized value $val" runtime
+    error when reading XML
+
 Oct. 13, 2014 - Version 9.73
 
   - Added a new CanonModelID (thanks LibRaw and Niels Kristian Bech Jensen)

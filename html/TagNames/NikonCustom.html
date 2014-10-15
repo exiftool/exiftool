@@ -1774,18 +1774,30 @@
 <td class=r title='21 = 0x15'>21.2</td>
 <td>AutoBracketModeM</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x30]
+<td><span class=s><span class=n>(D3 and D300)</span>
+  <br>[Mask 0x30]
   <br>0x0 = Flash/Speed
   <br>0x10 = Flash/Speed/Aperture
   <br>0x20 = Flash/Aperture
-  <br>0x30 = Flash Only</span></td></tr>
+  <br>0x30 = Flash Only
+  <br><span class=n>(D3S and D300S)</span>
+  <br>[Mask 0x18]
+  <br>0x0 = Flash/Speed
+  <br>0x8 = Flash/Speed/Aperture
+  <br>0x10 = Flash/Aperture
+  <br>0x18 = Flash Only</span></td></tr>
 <tr class=b>
 <td class=r title='21 = 0x15'>21.3</td>
 <td>AutoBracketOrder</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x08]
+<td><span class=s><span class=n>(D3 and D300)</span>
+  <br>[Mask 0x08]
   <br>0x0 = 0,-,+
-  <br>0x8 = -,0,+</span></td></tr>
+  <br>0x8 = -,0,+
+  <br><span class=n>(D3S and D300S)</span>
+  <br>[Mask 0x04]
+  <br>0x0 = 0,-,+
+  <br>0x4 = -,0,+</span></td></tr>
 <tr>
 <td class=r title='21 = 0x15'>21.4</td>
 <td>ModelingFlash</td>
@@ -3957,12 +3969,19 @@
   <br>0x40 = Low</span></td></tr>
 <tr>
 <td class=r title='4 = 0x4'>4.2</td>
+<td>NoMemoryCard</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x20]
+  <br>0x0 = Release Locked
+  <br>0x20 = Enable Release</span></td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4.3</td>
 <td>GridDisplay</td>
 <td class=c>int8u</td>
 <td><span class=s>[Mask 0x02]
   <br>0x0 = On
   <br>0x2 = Off</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='5 = 0x5'>5.1</td>
 <td>ShootingInfoDisplay</td>
 <td class=c>int8u</td>
@@ -3970,21 +3989,21 @@
   <br>0x40 = Auto
   <br>0x80 = Manual (dark on light)
   <br>0xc0 = Manual (light on dark)</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='5 = 0x5'>5.2</td>
 <td>LCDIllumination</td>
 <td class=c>int8u</td>
 <td><span class=s>[Mask 0x20]
   <br>0x0 = Off
   <br>0x20 = On</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='5 = 0x5'>5.3</td>
 <td>ScreenTips</td>
 <td class=c>int8u</td>
 <td><span class=s>[Mask 0x04]
   <br>0x0 = Off
   <br>0x4 = On</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='5 = 0x5'>5.4</td>
 <td>Beep</td>
 <td class=c>int8u</td>
@@ -3993,29 +4012,45 @@
   <br>0x1 = Low
   <br>0x2 = Medium
   <br>0x3 = High</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='6 = 0x6'>6.1</td>
+<td>ReverseIndicators</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x80]
+  <br>0x0 = + 0 -
+  <br>0x80 = - 0 +</span></td></tr>
+<tr class=b>
+<td class=r title='6 = 0x6'>6.2</td>
 <td>RearDisplay</td>
 <td class=c>int8u</td>
 <td><span class=s>[Mask 0x40]
   <br>0x0 = ISO
   <br>0x40 = Exposures Remaining</span></td></tr>
 <tr>
-<td class=r title='6 = 0x6'>6.2</td>
+<td class=r title='6 = 0x6'>6.3</td>
 <td>ViewfinderDisplay</td>
 <td class=c>int8u</td>
 <td><span class=s>[Mask 0x20]
   <br>0x0 = Frame Count
   <br>0x20 = Exposures Remaining</span></td></tr>
 <tr class=b>
-<td class=r title='6 = 0x6'>6.3</td>
+<td class=r title='6 = 0x6'>6.4</td>
+<td>CommandDialsReverseRotation</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x18]
+  <br>0x0 = No
+  <br>0x8 = Shutter Speed &amp; Aperture
+  <br>0x10 = Exposure Compensation
+  <br>0x18 = Exposure Compensation, Shutter Speed &amp; Aperture</span></td></tr>
+<tr>
+<td class=r title='6 = 0x6'>6.5</td>
 <td>EasyExposureCompensation</td>
 <td class=c>int8u</td>
 <td><span class=s>[Mask 0x03]
   <br>0x0 = Off
   <br>0x1 = On
   <br>0x2 = On (auto reset)</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='7 = 0x7'>7.1</td>
 <td>ExposureControlStepSize</td>
 <td class=c>int8u</td>
@@ -4023,7 +4058,7 @@
   <br>0x0 = 1/3 EV
   <br>0x40 = 1/2 EV
   <br>0x80 = 1 EV</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='7 = 0x7'>7.2</td>
 <td>ISOStepSize</td>
 <td class=c>int8u</td>
@@ -4031,7 +4066,7 @@
   <br>0x0 = 1/3 EV
   <br>0x10 = 1/2 EV
   <br>0x20 = 1 EV</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='7 = 0x7'>7.3</td>
 <td>ExposureCompStepSize</td>
 <td class=c>int8u</td>
@@ -4039,7 +4074,7 @@
   <br>0x0 = 1/3 EV
   <br>0x4 = 1/2 EV
   <br>0x8 = 1 EV</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='8 = 0x8'>8.1</td>
 <td>CenterWeightedAreaSize</td>
 <td class=c>int8u</td>
@@ -4049,22 +4084,22 @@
   <br>0x40 = 15 mm
   <br>0x60 = 20 mm
   <br>0x80 = Average</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='8 = 0x8'>8.2</td>
 <td>FineTuneOptMatrixMetering</td>
 <td class=c>int8u</td>
 <td><span class=s>[Mask 0x0f]</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='9 = 0x9'>9.1</td>
 <td>FineTuneOptCenterWeighted</td>
 <td class=c>int8u</td>
 <td><span class=s>[Mask 0xf0]</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='9 = 0x9'>9.2</td>
 <td>FineTuneOptSpotMetering</td>
 <td class=c>int8u</td>
 <td><span class=s>[Mask 0x0f]</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='10 = 0xa'>10.1</td>
 <td>MultiSelectorShootMode</td>
 <td class=c>int8u</td>
@@ -4072,7 +4107,7 @@
   <br>0x0 = Select Center Focus Point (Reset)
   <br>0x80 = Preset Focus Point (Pre)
   <br>0xc0 = Not Used (None)</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='10 = 0xa'>10.2</td>
 <td>MultiSelectorPlaybackMode</td>
 <td class=c>int8u</td>
@@ -4081,14 +4116,14 @@
   <br>0x10 = View Histograms
   <br>0x20 = Zoom On/Off
   <br>0x30 = Choose Folder</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='10 = 0xa'>10.3</td>
 <td>MultiSelector</td>
 <td class=c>int8u</td>
 <td><span class=s>[Mask 0x01]
   <br>0x0 = Do Nothing
   <br>0x1 = Reset Meter-off Delay</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='11 = 0xb'>11.1</td>
 <td>ExposureDelayMode</td>
 <td class=c>int8u</td>
@@ -4097,24 +4132,24 @@
   <br>0x40 = 1 s
   <br>0x80 = 2 s
   <br>0xc0 = 3 s</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='11 = 0xb'>11.2</td>
 <td>CHModeShootingSpeed</td>
 <td class=c>int8u</td>
 <td><span class=s>[Mask 0x10]
   <br>0x0 = 10 fps
   <br>0x10 = 11 fps</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='11 = 0xb'>11.3</td>
 <td>CLModeShootingSpeed</td>
 <td class=c>int8u</td>
 <td><span class=s>[Mask 0x0f]</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='12 = 0xc'>12</td>
 <td>MaxContinuousRelease</td>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='13 = 0xd'>13.1</td>
 <td>AutoBracketSet</td>
 <td class=c>int8u</td>
@@ -4124,14 +4159,14 @@
   <br>0x40 = Flash Only
   <br>0x60 = WB Bracketing
   <br>0x80 = Active D-Lighting</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='13 = 0xd'>13.2</td>
 <td>AutoBracketOrder</td>
 <td class=c>int8u</td>
 <td><span class=s>[Mask 0x10]
   <br>0x0 = 0,-,+
   <br>0x10 = -,0,+</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='13 = 0xd'>13.3</td>
 <td>AutoBracketModeM</td>
 <td class=c>int8u</td>
@@ -4140,7 +4175,7 @@
   <br>0x4 = Flash/Speed/Aperture
   <br>0x8 = Flash/Aperture
   <br>0xc = Flash Only</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='14 = 0xe'>14.1</td>
 <td>FuncButton</td>
 <td class=c>int8u</td>
@@ -4168,7 +4203,7 @@
   <br>0xb0 = Remote Release Only
   <br>0xd0 = Flash Disable/Enable</td><td>&nbsp;&nbsp;</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td class=r title='14 = 0xe'>14.2</td>
 <td>FuncButtonPlusDials</td>
 <td class=c>int8u</td>
@@ -4181,7 +4216,7 @@
   <br>0x5 = Active D-Lighting
   <br>0x6 = Shooting Bank Menu</td><td>&nbsp;&nbsp;</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td class=r title='15 = 0xf'>15.1</td>
 <td>PreviewButton</td>
 <td class=c>int8u</td>
@@ -4209,7 +4244,7 @@
   <br>0xb0 = Remote Release Only
   <br>0xd0 = Flash Disable/Enable</td><td>&nbsp;&nbsp;</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td class=r title='15 = 0xf'>15.2</td>
 <td>PreviewButtonPlusDials</td>
 <td class=c>int8u</td>
@@ -4222,13 +4257,56 @@
   <br>0x5 = Active D-Lighting
   <br>0x6 = Shooting Bank Menu</td><td>&nbsp;&nbsp;</td></tr></table>
 </td></tr>
+<tr>
+<td class=r title='16 = 0x10'>16.1</td>
+<td>AssignBktButton</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x07]
+  <br>0x0 = Auto Bracketing
+  <br>0x1 = Multiple Exposure
+  <br>0x2 = HDR (high dynamic range)
+  <br>0x3 = None</span></td></tr>
 <tr class=b>
 <td class=r title='18 = 0x12'>18.1</td>
+<td>CommandDialsChangeMainSub</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0xe0]</span><table class=cols><tr>
+  <td>0x0 = Autofocus Off, Exposure Off
+  <br>0x20 = Autofocus Off, Exposure On
+  <br>0x40 = Autofocus Off, Exposure On (Mode A)
+  <br>0x80 = Autofocus On, Exposure Off
+  <br>0xa0 = Autofocus On, Exposure On
+  <br>0xc0 = Autofocus On, Exposure On (Mode A)</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='18 = 0x12'>18.2</td>
+<td>CommandDialsMenuAndPlayback</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x18]
+  <br>0x0 = On
+  <br>0x8 = Off
+  <br>0x10 = On (Image Review Excluded)</span></td></tr>
+<tr class=b>
+<td class=r title='18 = 0x12'>18.3</td>
+<td>CommandDialsApertureSetting</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x04]
+  <br>0x0 = Sub-command Dial
+  <br>0x4 = Aperture Ring</span></td></tr>
+<tr>
+<td class=r title='18 = 0x12'>18.4</td>
 <td>ShutterReleaseButtonAE-L</td>
 <td class=c>int8u</td>
 <td><span class=s>[Mask 0x02]
   <br>0x0 = Off
   <br>0x2 = On</span></td></tr>
+<tr class=b>
+<td class=r title='18 = 0x12'>18.5</td>
+<td>ReleaseButtonToUseDial</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x01]
+  <br>0x0 = No
+  <br>0x1 = Yes</span></td></tr>
 <tr>
 <td class=r title='19 = 0x13'>19.1</td>
 <td>StandbyTimer</td>
@@ -4367,14 +4445,69 @@
   <br>0xa0 = 10 min</td><td>&nbsp;&nbsp;</td></tr></table>
 </td></tr>
 <tr>
+<td class=r title='37 = 0x25'>37.1</td>
+<td>PlaybackZoom</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x01]
+  <br>0x0 = Use Separate Zoom Buttons
+  <br>0x1 = Use Either Zoom Button with Command Dial</span></td></tr>
+<tr class=b>
 <td class=r title='38 = 0x26'>38.1</td>
+<td>ShutterSpeedLock</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x80]
+  <br>0x0 = Off
+  <br>0x80 = On</span></td></tr>
+<tr>
+<td class=r title='38 = 0x26'>38.2</td>
+<td>ApertureLock</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x40]
+  <br>0x0 = Off
+  <br>0x40 = On</span></td></tr>
+<tr class=b>
+<td class=r title='38 = 0x26'>38.3</td>
+<td>MovieShutterButton</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x30]
+  <br>0x0 = Take Photo
+  <br>0x10 = Record Movies
+  <br>0x20 = Live Frame Grab</span></td></tr>
+<tr>
+<td class=r title='38 = 0x26'>38.4</td>
 <td>FlashExposureCompArea</td>
 <td class=c>int8u</td>
 <td><span class=s>[Mask 0x04]
-  <br>0x0 = Entire Frame
-  <br>0x4 = Background Only</span></td></tr>
+  <br>0x0 = Entire frame
+  <br>0x4 = Background only</span></td></tr>
+<tr class=b>
+<td class=r title='41 = 0x29'>41.1</td>
+<td>MovieFunctionButton</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x70]
+  <br>0x0 = None
+  <br>0x10 = Power Aperture (open)
+  <br>0x30 = Index Marking
+  <br>0x40 = View Photo Shooting Info</span></td></tr>
+<tr>
+<td class=r title='41 = 0x29'>41.2</td>
+<td>MoviePreviewButton</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x07]
+  <br>0x0 = None
+  <br>0x2 = Power Aperture (open)
+  <br>0x3 = Index Marking
+  <br>0x4 = View Photo Shooting Info</span></td></tr>
 <tr class=b>
 <td class=r title='42 = 0x2a'>42.1</td>
+<td>VerticalMultiSelector</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x60]
+  <br>0x0 = Same as Multi-Selector with Info(U/D) &amp; Playback(R/L)
+  <br>0x20 = Same as Multi-Selector with Info(R/L) &amp; Playback(U/D)
+  <br>0x40 = Focus Point Selection</span></td></tr>
+<tr>
+<td class=r title='42 = 0x2a'>42.2</td>
 <td>VerticalFuncButton</td>
 <td class=c>int8u</td>
 <td><span class=s>[Mask 0x1f]</span><table class=cols><tr>
@@ -4398,14 +4531,41 @@
   <br>0x14 = Grid Display
   <br>0x1a = Flash Disable/Enable</td><td>&nbsp;&nbsp;</td></tr></table>
 </td></tr>
+<tr class=b>
+<td class=r title='43 = 0x2b'>43.1</td>
+<td>VerticalFuncButtonPlusDials</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0xf0]</span><table class=cols><tr>
+  <td>0x0 = None
+  <br>0x10 = Choose Image Area (FX/DX/5:4)
+  <br>0x20 = Shutter Speed &amp; Aperture Lock
+  <br>0x30 = One Step Speed / Aperture
+  <br>0x40 = Choose Non-CPU Lens Number
+  <br>0x50 = Active D-Lighting
+  <br>0x60 = Shooting Bank Menu
+  <br>0x70 = ISO Sensitivity
+  <br>0x80 = Exposure Mode
+  <br>0x90 = Exposure Compensation
+  <br>0xa0 = Metering</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
 <tr>
+<td class=r title='43 = 0x2b'>43.2</td>
+<td>AssignMovieRecordButton</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x07]
+  <br>0x0 = None
+  <br>0x1 = Choose Image Area (FX/DX/5:4)
+  <br>0x2 = Shutter Speed &amp; Aperture Lock
+  <br>0x3 = ISO Sensitivity
+  <br>0x4 = Shooting Bank Menu</span></td></tr>
+<tr class=b>
 <td class=r title='46 = 0x2e'>46.1</td>
 <td>DynamicAreaAFDisplay</td>
 <td class=c>int8u</td>
 <td><span class=s>[Mask 0x80]
   <br>0x0 = Off
   <br>0x80 = On</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='46 = 0x2e'>46.2</td>
 <td>AFPointIllumination</td>
 <td class=c>int8u</td>
@@ -4413,8 +4573,8 @@
   <br>0x0 = Off
   <br>0x20 = On in Continuous Shooting Modes
   <br>0x40 = On During Manual Focusing
-  <br>0x60 = On in Continuous Shooting and Manual Focusing </span></td></tr>
-<tr>
+  <br>0x60 = On in Continuous Shooting and Manual Focusing</span></td></tr>
+<tr class=b>
 <td class=r title='46 = 0x2e'>46.3</td>
 <td>StoreByOrientation</td>
 <td class=c>int8u</td>
@@ -4422,14 +4582,14 @@
   <br>0x0 = Off
   <br>0x8 = Focus Point
   <br>0x10 = Focus Point and AF-area mode</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='46 = 0x2e'>46.4</td>
 <td>GroupAreaAFIllumination</td>
 <td class=c>int8u</td>
 <td><span class=s>[Mask 0x04]
   <br>0x0 = Squares
   <br>0x4 = Dots</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='46 = 0x2e'>46.5</td>
 <td>AFPointBrightness</td>
 <td class=c>int8u</td>
@@ -4438,7 +4598,7 @@
   <br>0x1 = Normal
   <br>0x2 = High
   <br>0x3 = Extra High</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='47 = 0x2f'>47.1</td>
 <td>AFOnButton</td>
 <td class=c>int8u</td>
@@ -4451,7 +4611,7 @@
   <br>0x50 = AF Lock Only
   <br>0x60 = None</td><td>&nbsp;&nbsp;</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td class=r title='47 = 0x2f'>47.2</td>
 <td>VerticalAFOnButton</td>
 <td class=c>int8u</td>
@@ -4465,13 +4625,26 @@
   <br>0x6 = AF Lock Only
   <br>0x7 = None</td><td>&nbsp;&nbsp;</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td class=r title='48 = 0x30'>48.1</td>
 <td>SubSelectorAssignment</td>
 <td class=c>int8u</td>
 <td><span class=s>[Mask 0x80]
   <br>0x0 = Focus Point Selection
   <br>0x80 = Same As Multi-selector</span></td></tr>
+<tr class=b>
+<td class=r title='48 = 0x30'>48.2</td>
+<td>MovieSubSelectorAssignment</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x07]</span><table class=cols><tr>
+  <td>0x0 = None
+  <br>0x1 = Index Marking
+  <br>0x2 = AE/AF Lock
+  <br>0x3 = AE Lock Only
+  <br>0x4 = AE Lock (hold)
+  <br>0x5 = AF Lock Only
+  <br>0x6 = View Photo Shooting Info</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
 <tr>
 <td class=r title='49 = 0x31'>49.1</td>
 <td>SubSelector</td>
@@ -4522,6 +4695,14 @@
   <br>0x80 = Face Detection Off</span></td></tr>
 <tr class=b>
 <td class=r title='50 = 0x32'>50.2</td>
+<td>LiveViewButtonOptions</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x30]
+  <br>0x0 = Enable
+  <br>0x10 = Enable (standby time active)
+  <br>0x20 = Disable</span></td></tr>
+<tr>
+<td class=r title='50 = 0x32'>50.3</td>
 <td>AFModeRestrictions</td>
 <td class=c>int8u</td>
 <td><span class=s><span class=n>(D4S only)</span>
@@ -4529,7 +4710,7 @@
   <br>0x0 = Off
   <br>0x1 = AF-C
   <br>0x2 = AF-S</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='51 = 0x33'>51.1</td>
 <td>LimitAFAreaModeSelection</td>
 <td class=c>int8u</td>
@@ -4543,11 +4724,68 @@
   <br>Bit 5 = Dynamic area (21 points)
   <br>Bit 6 = Dynamic area (9 points)</td><td>&nbsp;&nbsp;</td></tr></table>
 </td></tr>
+<tr>
+<td class=r title='52 = 0x34'>52.1</td>
+<td>MovieFunctionButtonPlusDials</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x10]
+  <br>0x0 = None
+  <br>0x10 = Choose Image Area</span></td></tr>
+<tr class=b>
+<td class=r title='52 = 0x34'>52.2</td>
+<td>MoviePreviewButtonPlusDials</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x01]
+  <br>0x0 = None
+  <br>0x1 = Choose Image Area</span></td></tr>
+<tr>
+<td class=r title='53 = 0x35'>53.1</td>
+<td>MovieSubSelectorAssignmentPlusDials</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x10]
+  <br>0x0 = None
+  <br>0x10 = Choose Image Area</span></td></tr>
+<tr class=b>
+<td class=r title='54 = 0x36'>54.1</td>
+<td>AssignRemoteFnButton</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x1f]</span><table class=cols><tr>
+  <td>0x0 = None
+  <br>0x1 = Preview
+  <br>0x2 = FV Lock
+  <br>0x3 = AE/AF Lock
+  <br>0x4 = AE Lock Only
+  <br>0x5 = AE Lock (reset on release)
+  <br>0x7 = AF Lock Only
+  <br>0x8 = AF-On
+  <br>0x10 = +NEF(RAW)
+  <br>0x19 = Live View
+  <br>0x1a = Flash Disable/Enable</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='55 = 0x37'>55.1</td>
+<td>LensFocusFunctionButtons</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x3f]</span><table class=cols><tr>
+  <td>0x3 = AE/AF Lock
+  <br>0x4 = AE Lock Only
+  <br>0x7 = AF Lock Only
+  <br>0x15 = Disable Synchronized Release
+  <br>0x16 = Remote Release Only
+  <br>0x18 = Preset focus Point
+  <br>0x1a = Flash Disable/Enable
+  <br>0x20 = AF-Area Mode:  Single-point AF
+  <br>0x21 = AF-Area Mode: Dynamic-area AF (9 points)
+  <br>0x22 = AF-Area Mode: Dynamic-area AF (21 points)
+  <br>0x23 = AF-Area Mode: Dynamic-area AF (51 points)
+  <br>0x24 = AF-Area Mode: Group-area AF
+  <br>0x25 = AF-Area Mode: Auto area AF</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
 </table></td></tr></table></blockquote>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Oct 13, 2014</i>
+<br><i>Last revised Oct 15, 2014</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

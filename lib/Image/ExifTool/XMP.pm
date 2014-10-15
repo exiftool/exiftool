@@ -47,7 +47,7 @@ use Image::ExifTool qw(:Utils);
 use Image::ExifTool::Exif;
 require Exporter;
 
-$VERSION = '2.79';
+$VERSION = '2.80';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -2218,9 +2218,10 @@ my %sPantryItem = (
             2 => 'LensInfo',
             3 => 'FocalLength',
             4 => 'LensModel',
+            5 => 'MaxApertureValue',
         },
         Inhibit => {
-            5 => 'Composite:LensID',    # don't override existing Composite:LensID
+            6 => 'Composite:LensID',    # don't override existing Composite:LensID
         },
         ValueConv => '$val',
         PrintConv => 'Image::ExifTool::XMP::PrintLensID($self, @val)',
@@ -2730,12 +2731,13 @@ sub ScanForXMP($$)
 
 #------------------------------------------------------------------------------
 # Print conversion for XMP-aux:LensID
-# Inputs: 0) ExifTool ref, 1) LensID, 2) Make, 3) LensInfo, 4) FocalLength, 5) LensModel
+# Inputs: 0) ExifTool ref, 1) LensID, 2) Make, 3) LensInfo, 4) FocalLength,
+#         5) LensModel, 6) MaxApertureValue
 # (yes, this is ugly -- blame Adobe)
 sub PrintLensID(@)
 {
     local $_;
-    my ($et, $id, $make, $info, $focalLength, $lensModel) = @_;
+    my ($et, $id, $make, $info, $focalLength, $lensModel, $maxAv) = @_;
     my ($mk, $printConv);
     my %alt = ( Pentax => 'Ricoh' );    # Pentax changed its name to Ricoh
     # missing: Olympus (no XMP:LensID written by Adobe)
@@ -2778,7 +2780,7 @@ sub PrintLensID(@)
             $printConv = \%newConv;
         }
         return Image::ExifTool::Exif::PrintLensID($et, $str, $printConv,
-                    undef, $id, $focalLength, $maxa, undef, $minf, $maxf, $lensModel);
+                    undef, $id, $focalLength, $maxa, $maxAv, $minf, $maxf, $lensModel);
     }
     return "Unknown ($id)";
 }
@@ -3245,6 +3247,7 @@ sub ParseXMPElement($$$;$$$$)
         # (attributes take the form a:b='c' or a:b="c")
         my ($shortName, $shorthand, $ignored);
         foreach $shortName (@attrs) {
+            next unless defined $attrs{$shortName};
             my $propName = $shortName;
             my ($ns, $name);
             if ($propName =~ /(.*?):(.*)/) {

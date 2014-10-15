@@ -15,7 +15,7 @@ package Image::ExifTool::NikonCustom;
 use strict;
 use vars qw($VERSION);
 
-$VERSION = '1.10';
+$VERSION = '1.11';
 
 # custom settings for the D80 (encrypted) - ref JD
 %Image::ExifTool::NikonCustom::SettingsD80 = (
@@ -2069,7 +2069,7 @@ $VERSION = '1.10';
     },
     21.1 => [{ # CSe5 (D300), CSe4 (D3)
         Name => 'AutoBracketSet',
-        Condition => '$$self{Model} != /(D3S|D300S)\b/',
+        Condition => '$$self{Model} !~ /(D3S|D300S)\b/',
         Notes => 'D3 and D300',
         Mask => 0xc0,
         PrintConv => {
@@ -2091,9 +2091,10 @@ $VERSION = '1.10';
             0x80 => 'ADL Bracketing',
         },
     }],
-    21.2 => { # CSe6 (D300), CSe5 (D3)
+    21.2 => [{ # CSe6 (D300), CSe5 (D3)
         Name => 'AutoBracketModeM',
-        Condition => '$$self{Model} != /(D3S|D300S)\b/', # (needs checking on D3S/D300S)
+        Condition => '$$self{Model} !~ /(D3S|D300S)\b/',
+        Notes => 'D3 and D300',
         Mask => 0x30,
         PrintConv => {
             0x00 => 'Flash/Speed',
@@ -2101,15 +2102,35 @@ $VERSION = '1.10';
             0x20 => 'Flash/Aperture',
             0x30 => 'Flash Only',
         },
-    },
-    21.3 => { # CSe7 (D300), CSe6 (D3)
+    },{ # CSe5 (D3S)
+        Name => 'AutoBracketModeM',
+        Notes => 'D3S and D300S',
+        Mask => 0x18,
+        PrintConv => {
+            0x00 => 'Flash/Speed',
+            0x08 => 'Flash/Speed/Aperture',
+            0x10 => 'Flash/Aperture',
+            0x18 => 'Flash Only',
+        },
+    }],
+    21.3 => [{ # CSe7 (D300), CSe6 (D3)
         Name => 'AutoBracketOrder',
+        Condition => '$$self{Model} !~ /(D3S|D300S)\b/',
+        Notes => 'D3 and D300',
         Mask => 0x08,
         PrintConv => {
             0x00 => '0,-,+',
             0x08 => '-,0,+',
         },
-    },
+    },{ # CSe6 (D3S)
+        Name => 'AutoBracketOrder',
+        Notes => 'D3S and D300S',
+        Mask => 0x04,
+        PrintConv => {
+            0x00 => '0,-,+',
+            0x04 => '-,0,+',
+        },
+    }],
     21.4 => { # CSe4 (D300), CSe3 (D3)
         Name => 'ModelingFlash',
         Mask => 0x01,
@@ -4501,7 +4522,15 @@ $VERSION = '1.10';
         Mask => 0x40,
         PrintConv => { 0x00 => 'High', 0x40 => 'Low' },
     },
-    4.2 => { # CSd6
+    4.2 => { # CSf12
+        Name => 'NoMemoryCard',
+        Mask => 0x20,
+        PrintConv => {
+            0x00 => 'Release Locked',
+            0x20 => 'Enable Release',
+        },
+    },
+    4.3 => { # CSd6
         Name => 'GridDisplay',
         Mask => 0x02,
         PrintConv => { 0x00 => 'On', 0x02 => 'Off' },
@@ -4536,7 +4565,15 @@ $VERSION = '1.10';
             0x03 => 'High',
         },
     },
-    6.1 => { # CSd7-a
+    6.1 => { # CSf13
+        Name => 'ReverseIndicators',
+        Mask => 0x80,
+        PrintConv => {
+            0x00 => '+ 0 -',
+            0x80 => '- 0 +',
+        },
+    },
+    6.2 => { # CSd7-a
         Name => 'RearDisplay',
         Mask => 0x40,
         PrintConv => {
@@ -4544,7 +4581,7 @@ $VERSION = '1.10';
             0x40 => 'Exposures Remaining',
         },
     },
-    6.2 => { # CSd7-b
+    6.3 => { # CSd7-b
         Name => 'ViewfinderDisplay',
         Mask => 0x20,
         PrintConv => {
@@ -4552,7 +4589,17 @@ $VERSION = '1.10';
             0x20 => 'Exposures Remaining',
         },
     },
-    6.3 => { # CSb4
+    6.4 => { # CSd10-a
+        Name => 'CommandDialsReverseRotation',
+        Mask => 0x18,
+        PrintConv => {
+            0x00 => 'No',
+            0x08 => 'Shutter Speed & Aperture',
+            0x10 => 'Exposure Compensation',
+            0x18 => 'Exposure Compensation, Shutter Speed & Aperture',
+        },
+    },
+    6.5 => { # CSb4
         Name => 'EasyExposureCompensation',
         Mask => 0x03,
         PrintConv => {
@@ -4789,10 +4836,54 @@ $VERSION = '1.10';
             6 => 'Shooting Bank Menu',
         },
     },
-    18.1 => { # CSc1
+    16.1 => { # CSf9
+        Name => 'AssignBktButton',
+        Mask => 0x07,
+        PrintConv => {
+            0 => 'Auto Bracketing',
+            1 => 'Multiple Exposure',
+            2 => 'HDR (high dynamic range)',
+            3 => 'None',
+        },
+    },
+    18.1 => { # CSf10-b
+        Name => 'CommandDialsChangeMainSub',
+        Mask => 0xe0,
+        PrintConv => {
+            0x00 => 'Autofocus Off, Exposure Off',
+            0x20 => 'Autofocus Off, Exposure On',
+            0x40 => 'Autofocus Off, Exposure On (Mode A)',
+            0x80 => 'Autofocus On, Exposure Off',
+            0xa0 => 'Autofocus On, Exposure On',
+            0xc0 => 'Autofocus On, Exposure On (Mode A)',
+        },
+    },
+    18.2 => { # CSf10-d
+        Name => 'CommandDialsMenuAndPlayback',
+        Mask => 0x18,
+        PrintConv => {
+            0x00 => 'On',
+            0x08 => 'Off',
+            0x10 => 'On (Image Review Excluded)',
+        },
+    },
+    18.3 => { # CSf10-c
+        Name => 'CommandDialsApertureSetting',
+        Mask => 0x04,
+        PrintConv => {
+            0x00 => 'Sub-command Dial',
+            0x04 => 'Aperture Ring',
+        },
+    },
+    18.4 => { # CSc1
         Name => 'ShutterReleaseButtonAE-L',
         Mask => 0x02,
         PrintConv => { 0x00 => 'Off', 0x02 => 'On' },
+    },
+    18.5 => { # CSf11
+        Name => 'ReleaseButtonToUseDial',
+        Mask => 0x01,
+        PrintConv => { 0x00 => 'No', 0x01 => 'Yes' },
     },
     19.1 => { # CSc2
         Name => 'StandbyTimer',
@@ -4936,15 +5027,77 @@ $VERSION = '1.10';
             0xa0 => '10 min',
         },
     },
-    38.1 => { # CSe4
+    37.1 => { # CSf15
+        Name => 'PlaybackZoom',
+        Mask => 0x01,
+        PrintConv => {
+            0x00 => 'Use Separate Zoom Buttons',
+            0x01 => 'Use Either Zoom Button with Command Dial',
+        },
+    },
+    38.1 => { # CSf8-a
+        Name => 'ShutterSpeedLock',
+        Mask => 0x80,
+        PrintConv => {
+            0x00 => 'Off',
+            0x80 => 'On',
+        },
+    },
+    38.2 => { # CSf8-b
+        Name => 'ApertureLock',
+        Mask => 0x40,
+        PrintConv => {
+            0x00 => 'Off',
+            0x40 => 'On',
+        },
+    },
+    38.3 => { # CSg4
+        Name => 'MovieShutterButton',
+        Mask => 0x30,
+        PrintConv => {
+            0x00 => 'Take Photo',
+            0x10 => 'Record Movies',
+            0x20 => 'Live Frame Grab',
+        },
+    },
+    38.4 => { # CSe4
         Name => 'FlashExposureCompArea',
         Mask => 0x04,
         PrintConv => {
-            0x00 => 'Entire Frame',
-            0x04 => 'Background Only',
+            0x00 => 'Entire frame',
+            0x04 => 'Background only',
         },
     },
-    42.1 => { # CSf7-a
+    41.1 => { # CSg1-a
+        Name => 'MovieFunctionButton',
+        Mask => 0x70,
+        PrintConv => {
+            0x00 => 'None',
+            0x10 => 'Power Aperture (open)', # bit '02' is also toggled on for this setting
+            0x30 => 'Index Marking',
+            0x40 => 'View Photo Shooting Info',
+        },
+    },
+    41.2 => { # CSg2-a
+        Name => 'MoviePreviewButton',
+        Mask => 0x07,
+        PrintConv => {
+            0x00 => 'None',
+            0x02 => 'Power Aperture (open)', # bit '10' is also toggled on for this setting
+            0x03 => 'Index Marking',
+            0x04 => 'View Photo Shooting Info',
+        },
+    },
+    42.1 => { # CSf14
+        Name => 'VerticalMultiSelector',
+        Mask => 0x60,
+        PrintConv => {
+            0x00 => 'Same as Multi-Selector with Info(U/D) & Playback(R/L)',
+            0x20 => 'Same as Multi-Selector with Info(R/L) & Playback(U/D)',
+            0x40 => 'Focus Point Selection',
+        },
+    },
+    42.2 => { # CSf7-a
         Name => 'VerticalFuncButton',
         Mask => 0x1f,
         PrintConv => {
@@ -4969,6 +5122,34 @@ $VERSION = '1.10';
             26 => 'Flash Disable/Enable',
         },
     },
+    43.1 => { # CSf7-b
+        Name => 'VerticalFuncButtonPlusDials',
+        Mask => 0xf0,
+        PrintConv => {
+            0x00 => 'None',
+            0x10 => 'Choose Image Area (FX/DX/5:4)',
+            0x20 => 'Shutter Speed & Aperture Lock',
+            0x30 => 'One Step Speed / Aperture',
+            0x40 => 'Choose Non-CPU Lens Number',
+            0x50 => 'Active D-Lighting',
+            0x60 => 'Shooting Bank Menu',
+            0x70 => 'ISO Sensitivity',
+            0x80 => 'Exposure Mode',
+            0x90 => 'Exposure Compensation',
+            0xa0 => 'Metering',
+            },
+    },
+    43.2 => { # CSf16
+        Name => 'AssignMovieRecordButton',
+        Mask => 0x07,
+        PrintConv => {
+            0x00 => 'None',
+            0x01 => 'Choose Image Area (FX/DX/5:4)',
+            0x02 => 'Shutter Speed & Aperture Lock',
+            0x03 => 'ISO Sensitivity',
+            0x04 => 'Shooting Bank Menu',
+        },
+    },
     46.1 => { # CSa5-c
         Name => 'DynamicAreaAFDisplay',
         Mask => 0x80,
@@ -4984,7 +5165,7 @@ $VERSION = '1.10';
             0x00 => 'Off',
             0x20 => 'On in Continuous Shooting Modes',
             0x40 => 'On During Manual Focusing',
-            0x60 => 'On in Continuous Shooting and Manual Focusing ',
+            0x60 => 'On in Continuous Shooting and Manual Focusing',
         },
     },
     46.3 => { # CSa10 (D4 is slightly different -- needs checking)
@@ -5049,6 +5230,19 @@ $VERSION = '1.10';
             0x80 => 'Same As Multi-selector',
         },
     },
+    48.2 => { # CSg3-a
+        Name => 'MovieSubSelectorAssignment',
+        Mask => 0x07,
+        PrintConv => {
+            0 => 'None',
+            1 => 'Index Marking',
+            2 => 'AE/AF Lock',
+            3 => 'AE Lock Only',
+            4 => 'AE Lock (hold)',
+            5 => 'AF Lock Only',
+            6 => 'View Photo Shooting Info',
+        },
+    },
     49.1 => { # CSf6-a
         Name => 'SubSelector',
         Mask => 0xf8,
@@ -5104,7 +5298,16 @@ $VERSION = '1.10';
             0x80 => 'Face Detection Off',
         },
     },
-    50.2 => { # CSa12
+    50.2 => { # CSf17
+        Name => 'LiveViewButtonOptions',
+        Mask => 0x30,
+        PrintConv => {
+            0x00 => 'Enable',
+            0x10 => 'Enable (standby time active)',
+            0x20 => 'Disable',
+        },
+    },
+    50.3 => { # CSa12
         Name => 'AFModeRestrictions',
         Condition => '$$self{Model} =~ /\bD4S/',
         Notes => 'D4S only',
@@ -5130,6 +5333,66 @@ $VERSION = '1.10';
                 5 => 'Dynamic area (21 points)',
                 6 => 'Dynamic area (9 points)',
             },
+        },
+    },
+    52.1 => { # CSg1-b
+        Name => 'MovieFunctionButtonPlusDials',
+        Mask => 0x10,
+        PrintConv => {
+            0x00 => 'None',
+            0x10 => 'Choose Image Area',
+        },
+    },
+    52.2 => { # CSg2-b
+        Name => 'MoviePreviewButtonPlusDials',
+        Mask => 0x01,
+        PrintConv => {
+            0x00 => 'None',
+            0x01 => 'Choose Image Area',
+        },
+    },
+    53.1 => { # CSg3-b
+        Name => 'MovieSubSelectorAssignmentPlusDials',
+        Mask => 0x10,
+        PrintConv => {
+            0x00 => 'None',
+            0x10 => 'Choose Image Area',
+        },
+    },
+    54.1 => { # CSf18
+        Name => 'AssignRemoteFnButton',
+        Mask => 0x1f,
+        PrintConv => {
+            0 => 'None',
+            1 => 'Preview',
+            2 => 'FV Lock',
+            3 => 'AE/AF Lock',
+            4 => 'AE Lock Only',
+            5 => 'AE Lock (reset on release)',
+            7 => 'AF Lock Only',
+            8 => 'AF-On',
+            16 => '+NEF(RAW)',
+            25 => 'Live View',
+            26 => 'Flash Disable/Enable',
+        },
+    },
+    55.1 => { # CSf19
+        Name => 'LensFocusFunctionButtons',
+        Mask => 0x3f,
+        PrintConv => {
+            3 => 'AE/AF Lock',
+            4 => 'AE Lock Only',
+            7 => 'AF Lock Only',
+            21 => 'Disable Synchronized Release',
+            22 => 'Remote Release Only',
+            24 => 'Preset focus Point',
+            26 => 'Flash Disable/Enable',
+            32 => 'AF-Area Mode:  Single-point AF',
+            33 => 'AF-Area Mode: Dynamic-area AF (9 points)',
+            34 => 'AF-Area Mode: Dynamic-area AF (21 points)',
+            35 => 'AF-Area Mode: Dynamic-area AF (51 points)',
+            36 => 'AF-Area Mode: Group-area AF',
+            37 => 'AF-Area Mode: Auto area AF',
         },
     },
 );

@@ -9356,7 +9356,9 @@ Custom settings for the D3, D3S, D3X, D300 and D300S.
    21.1    AutoBracketSet                       int8u & 0xc0
            AutoBracketSet                       int8u & 0xe0
    21.2    AutoBracketModeM                     int8u & 0x30
+           AutoBracketModeM                     int8u & 0x18
    21.3    AutoBracketOrder                     int8u & 0x08
+           AutoBracketOrder                     int8u & 0x04
    21.4    ModelingFlash                        int8u & 0x01
    22.1    NoMemoryCard                         int8u & 0x80
    22.2    MeteringTime                         int8u & 0x0f
@@ -9652,14 +9654,17 @@ Custom settings for the D4 and D4S.
     2.1    AFActivation                         int8u & 0x80
     2.2    FocusPointWrap                       int8u & 0x08
     4.1    Pitch                                int8u & 0x40
-    4.2    GridDisplay                          int8u & 0x02
+    4.2    NoMemoryCard                         int8u & 0x20
+    4.3    GridDisplay                          int8u & 0x02
     5.1    ShootingInfoDisplay                  int8u & 0xc0
     5.2    LCDIllumination                      int8u & 0x20
     5.3    ScreenTips                           int8u & 0x04
     5.4    Beep                                 int8u & 0x03
-    6.1    RearDisplay                          int8u & 0x40
-    6.2    ViewfinderDisplay                    int8u & 0x20
-    6.3    EasyExposureCompensation             int8u & 0x03
+    6.1    ReverseIndicators                    int8u & 0x80
+    6.2    RearDisplay                          int8u & 0x40
+    6.3    ViewfinderDisplay                    int8u & 0x20
+    6.4    CommandDialsReverseRotation          int8u & 0x18
+    6.5    EasyExposureCompensation             int8u & 0x03
     7.1    ExposureControlStepSize              int8u & 0xc0
     7.2    ISOStepSize                          int8u & 0x30
     7.3    ExposureCompStepSize                 int8u & 0x0c
@@ -9681,7 +9686,12 @@ Custom settings for the D4 and D4S.
    14.2    FuncButtonPlusDials                  int8u & 0x07
    15.1    PreviewButton                        int8u & 0xf8
    15.2    PreviewButtonPlusDials               int8u & 0x07
-   18.1    ShutterReleaseButtonAE-L             int8u & 0x02
+   16.1    AssignBktButton                      int8u & 0x07
+   18.1    CommandDialsChangeMainSub            int8u & 0xe0
+   18.2    CommandDialsMenuAndPlayback          int8u & 0x18
+   18.3    CommandDialsApertureSetting          int8u & 0x04
+   18.4    ShutterReleaseButtonAE-L             int8u & 0x02
+   18.5    ReleaseButtonToUseDial               int8u & 0x01
    19.1    StandbyTimer                         int8u & 0xf0
    20.1    SelfTimerTime                        int8u & 0xc0
    20.2    SelfTimerShotCount                   int8u & 0x0f
@@ -9694,8 +9704,17 @@ Custom settings for the D4 and D4S.
    23.2    FlashShutterSpeed                    int8u & 0x0f
    31.1    ModelingFlash                        int8u & 0x20
    36.1    PlaybackMonitorOffTime               int8u & 0xe0
-   38.1    FlashExposureCompArea                int8u & 0x04
-   42.1    VerticalFuncButton                   int8u & 0x1f
+   37.1    PlaybackZoom                         int8u & 0x01
+   38.1    ShutterSpeedLock                     int8u & 0x80
+   38.2    ApertureLock                         int8u & 0x40
+   38.3    MovieShutterButton                   int8u & 0x30
+   38.4    FlashExposureCompArea                int8u & 0x04
+   41.1    MovieFunctionButton                  int8u & 0x70
+   41.2    MoviePreviewButton                   int8u & 0x07
+   42.1    VerticalMultiSelector                int8u & 0x60
+   42.2    VerticalFuncButton                   int8u & 0x1f
+   43.1    VerticalFuncButtonPlusDials          int8u & 0xf0
+   43.2    AssignMovieRecordButton              int8u & 0x07
    46.1    DynamicAreaAFDisplay                 int8u & 0x80
    46.2    AFPointIllumination                  int8u & 0x60
    46.3    StoreByOrientation                   int8u & 0x18
@@ -9704,11 +9723,18 @@ Custom settings for the D4 and D4S.
    47.1    AFOnButton                           int8u & 0x70
    47.2    VerticalAFOnButton                   int8u & 0x07
    48.1    SubSelectorAssignment                int8u & 0x80
+   48.2    MovieSubSelectorAssignment           int8u & 0x07
    49.1    SubSelector                          int8u & 0xf8
    49.2    SubSelectorPlusDials                 int8u & 0x07
    50.1    MatrixMetering                       int8u & 0x80
-   50.2    AFModeRestrictions                   int8u & 0x03
+   50.2    LiveViewButtonOptions                int8u & 0x30
+   50.3    AFModeRestrictions                   int8u & 0x03
    51.1    LimitAFAreaModeSelection             int8u & 0x7e
+   52.1    MovieFunctionButtonPlusDials         int8u & 0x10
+   52.2    MoviePreviewButtonPlusDials          int8u & 0x01
+   53.1    MovieSubSelectorAssignmentPlusDials  int8u & 0x10
+   54.1    AssignRemoteFnButton                 int8u & 0x1f
+   55.1    LensFocusFunctionButtons             int8u & 0x3f
 
 =head2 NikonCapture Tags
 
@@ -27276,6 +27302,7 @@ values, may created via the ExifTool configuration file.
                        LensInfo
                        FocalLength
                        LensModel
+                       MaxApertureValue
   LensID               Nikon:LensIDNumber       N
                        LensFStops
                        MinFocalLength

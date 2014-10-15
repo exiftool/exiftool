@@ -1404,7 +1404,7 @@ my %binaryDataAttrs = (
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ShotInfoD4',
                 DecryptStart => 4,
-                DecryptLen => 0x786,
+                DecryptLen => 0x789,
                 ByteOrder => 'BigEndian',
             },
         },
@@ -1414,7 +1414,7 @@ my %binaryDataAttrs = (
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ShotInfoD4S',
                 DecryptStart => 4,
-                DecryptLen => 0x1972,
+                DecryptLen => 0x1975,
                 ByteOrder => 'BigEndian',
             },
         },
@@ -4483,10 +4483,10 @@ my %nikonFocalConversions = (
     0x0751 => { #PH (NC)
         Name => 'CustomSettingsD4',
         # (seems to work for 1.00g and 1.02b)
-        Format => 'undef[53]',
+        Format => 'undef[56]',
         SubDirectory => { TagTable => 'Image::ExifTool::NikonCustom::SettingsD4' },
     },
-    # note: DecryptLen currently set to 0x786
+    # note: DecryptLen currently set to 0x789
 );
 
 # shot information for the D4S firmware 1.01a (ref 28, encrypted)
@@ -4519,7 +4519,7 @@ my %nikonFocalConversions = (
         Name => 'CustomSettingsD4S',
         Condition => '$$self{FirmwareVersion} =~ /^1.00/',
         Notes => 'firmware version 1.00',
-        Format => 'undef[53]',
+        Format => 'undef[56]',
         SubDirectory => { TagTable => 'Image::ExifTool::NikonCustom::SettingsD4' },
     },
     0x18c2 => { # CSf1-c (no idea why it is so far away from the rest of the settings)
@@ -4537,10 +4537,10 @@ my %nikonFocalConversions = (
         Name => 'CustomSettingsD4S',
         Condition => '$$self{FirmwareVersion} =~ /^1.01/',
         Notes => 'firmware version 1.01',
-        Format => 'undef[53]',
+        Format => 'undef[56]',
         SubDirectory => { TagTable => 'Image::ExifTool::NikonCustom::SettingsD4' },
     },
-    # note: DecryptLen currently set to 0x1972
+    # note: DecryptLen currently set to 0x1975
 );
 
 # Flash information (ref JD)

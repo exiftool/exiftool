@@ -6738,6 +6738,7 @@ Tags extracted from FLIR Public image Format (FPF) files.
   0x1407   MaxApertureAtMaxFocal                rational64s
   0x140b   AutoDynamicRange                     int16u
   0x1422   ImageStabilization                   int16u[3]
+  0x1431   Rating                               int32u
   0x1436   ImageGeneration                      int16u
   0x3820   FrameRate                            int16u
   0x3821   FrameWidth                           int16u
@@ -8644,6 +8645,9 @@ These tags are extracted from encrypted data in images from the D4S.
    6301    CustomSettingsD4S                    NikonCustom SettingsD4
    6338    MultiSelectorLiveViewMode            int8u & 0xc0
    6461    CustomSettingsD4S                    NikonCustom SettingsD4
+  13579    RollAngle                            fixed32u
+  13583    PitchAngle                           fixed32u
+  13587    YawAngle                             fixed32u
 
 =head3 Nikon ShotInfo Tags
 
@@ -8904,11 +8908,11 @@ These tags are written by Nikon DSLR's which have the live view feature.
 
 =head3 Nikon FileInfo Tags
 
-  Index1   Tag Name                             Writable
+  Index2   Tag Name                             Writable
   ------   --------                             --------
       0    FileInfoVersion                      N
-      6    DirectoryNumber                      int16u
-      8    FileNumber                           int16u
+      3    DirectoryNumber                      int16u
+      4    FileNumber                           int16u
 
 =head3 Nikon AFTune Tags
 
@@ -9447,7 +9451,7 @@ Custom settings for the D700.
 
 =head3 NikonCustom SettingsD800 Tags
 
-Custom settings for the D800.
+Custom settings for the D800 and D800E.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
@@ -13006,8 +13010,8 @@ Valid for DSC-RX100M2, DSC-QX10/QX100.
 
 =head3 Sony Tag2010g Tags
 
-Valid for DSC-RX10/RX100M3/HX60V/HX400V/WX220, ILCE-7/7R/7S/5000/5100/6000,
-ILCA-77M2.
+Valid for DSC-HX400V/HX60V/QX30/RX10/RX100M3/WX220/WX350,
+ILCE-7/7R/7S/5000/5100/6000/QX1, ILCA-77M2.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
@@ -13105,11 +13109,17 @@ substitution cipher, but the deciphered values are listed below.
   0x003c   SonyFNumber                          int16u
   0x004c   ImageCount2                          int32u
   0x0051   SonyDateTime2                        undef[6]
+  0x007c   InternalSerialNumber                 int8u[4]~
   0x00f0   InternalSerialNumber                 int8u[5]
   0x0105   LensMount                            int8u
   0x0106   LensFormat                           int8u
   0x0107   LensType2                            int16u
   0x0109   LensType                             int16u
+  0x0115   LensSpecFeatures                     undef[2]
+  0x0116   LensSpecFeatures                     undef[2]
+  0x01a0   ImageCount3                          int32u
+  0x01aa   ImageCount3                          int32u
+  0x01bd   ImageCount3                          int32u
 
 =head3 Sony Tag9400a Tags
 
@@ -13148,7 +13158,8 @@ DSC-HX50V, DSC-QX10/QX100.
 
 =head3 Sony Tag9400c Tags
 
-Valid for DSC-RX10/RX100M3/HX60V/HX400V, ILCE-7/7R/7S/5000/5100/6000, ILCA-77M2.
+Valid for DSC-HX400V/HX60V/QX30/RX10/RX100M3/WX220/WX350,
+ILCE-7/7R/7S/5000/5100/6000/QX1, ILCA-77M2.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
@@ -13205,7 +13216,8 @@ Valid for SLT, NEX, ILCE-3000/3500 and several DSC models.
 
 =head3 Sony Tag9405b Tags
 
-Valid for the DSC-RX10/RX100M3/HX60V/HX400V/WX220, ILCE-7/7R/7S/5000/5100/6000, ILCA-77M2.
+Valid for DSC-HX400V/HX60V/QX30/RX10/RX100M3/WX220/WX350,
+ILCE-7/7R/7S/5000/5100/6000/QX1, ILCA-77M2.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
@@ -27236,7 +27248,7 @@ values, may created via the ExifTool configuration file.
   FocusDistance        Sony:FocusPosition       N
                        FocalLength
   FocusDistance2       Sony:FocusPosition2      N
-                       FocalLength
+                       FocalLengthIn35mmFormat
   GPSAltitude          QuickTime:GPSCoordinates N
   GPSAltitude          QuickTime:LocationInformation N
   GPSAltitude          GPS:GPSAltitude          N

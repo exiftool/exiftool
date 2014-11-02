@@ -1015,7 +1015,9 @@ adapter is used.</p>
 </tr><tr><td>146</td><td>= Voigtlander Macro APO-Lanthar 125mm F2.5 SL</td>
 </tr><tr><td>194</td><td>= Tamron SP AF 17-50mm F2.8 XR Di II LD Aspherical [IF]</td>
 </tr><tr><td>203</td><td>= Tamron SP 70-200mm F2.8 Di USD</td>
+</tr><tr><td>204</td><td>= Tamron SP 24-70mm F2.8 Di USD</td>
 </tr><tr><td>214</td><td>= Tamron SP 150-600mm F5-6.3 Di USD</td>
+</tr><tr><td>224</td><td>= Tamron SP 90mm F2.8 Di Macro 1:1 USD</td>
 </tr><tr><td>255</td><td>= Tamron Lens (255)</td>
 </tr><tr><td>255.1</td><td>= Tamron SP AF 17-50mm F2.8 XR Di II LD Aspherical</td>
 </tr><tr><td>255.2</td><td>= Tamron AF 18-250mm F3.5-6.3 XR Di II LD</td>
@@ -3950,7 +3952,7 @@ multi-frame noise reduction)</span></span></td></tr>
 <td class='r b'>32797</td><td class=b>= Sony E 18-200mm F3.5-6.3 OSS LE</td>
 </tr><tr><td class=r>78</td><td>= Metabones Canon EF Smart Adapter Mark III or IV</td>
 <td class='r b'>32798</td><td class=b>= Sony E 20mm F2.8</td>
-</tr><tr><td class=r>234</td><td>= E-A adapter only - no lens attached</td>
+</tr><tr><td class=r>234</td><td>= Adapter only - no lens attached</td>
 <td class='r b'>32799</td><td class=b>= Sony E 35mm F1.8 OSS</td>
 </tr><tr><td class=r>239</td><td>= Metabones Canon EF Speed Booster</td>
 <td class='r b'>32800</td><td class=b>= Sony E PZ 18-105mm F4 G OSS</td>
@@ -5236,8 +5238,8 @@ for panorama images.</p>
 </table></td></tr></table></blockquote>
 
 <h2><a name='Tag2010g'>Sony Tag2010g Tags</a></h2>
-<p>Valid for DSC-RX10/RX100M3/HX60V/HX400V/WX220, ILCE-7/7R/7S/5000/5100/6000,
-ILCA-77M2.</p>
+<p>Valid for DSC-HX400V/HX60V/QX30/RX10/RX100M3/WX220/WX350,
+ILCE-7/7R/7S/5000/5100/6000/QX1, ILCA-77M2.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -5677,35 +5679,65 @@ substitution cipher, but the deciphered values are listed below.</p>
 <td class=c>undef[6]</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td title='0x007c = 124'>0x007c</td>
+<td>InternalSerialNumber</td>
+<td class=c title=' ~ = Writable only with -n'>int8u[4]~</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td title='0x00f0 = 240'>0x00f0</td>
 <td>InternalSerialNumber</td>
 <td class=c>int8u[5]</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x0105 = 261'>0x0105</td>
 <td>LensMount</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Unknown
   <br>1 = A-mount
   <br>2 = E-mount</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0106 = 262'>0x0106</td>
 <td>LensFormat</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Unknown
   <br>1 = APS-C
   <br>2 = Full-frame</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0107 = 263'>0x0107</td>
 <td>LensType2</td>
 <td class=c>int16u</td>
 <td>--&gt; <a href='Sony.html#LensType2'>Sony LensType2 Values</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0109 = 265'>0x0109</td>
 <td>LensType</td>
 <td class=c>int16u</td>
 <td>--&gt; <a href='Sony.html#LensType'>Sony LensType Values</a>
   <br><span class='n s'>(SLT models, and NEX with A-mount lenses)</span></td></tr>
+<tr>
+<td title='0x0115 = 277'>0x0115</td>
+<td>LensSpecFeatures</td>
+<td class=c>undef[2]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0116 = 278'>0x0116</td>
+<td>LensSpecFeatures</td>
+<td class=c>undef[2]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x01a0 = 416'>0x01a0</td>
+<td>ImageCount3</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x01aa = 426'>0x01aa</td>
+<td>ImageCount3</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x01bd = 445'>0x01bd</td>
+<td>ImageCount3</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='Tag9400a'>Sony Tag9400a Tags</a></h2>
@@ -5864,7 +5896,8 @@ DSC-HX50V, DSC-QX10/QX100.</p>
 </table></td></tr></table></blockquote>
 
 <h2><a name='Tag9400c'>Sony Tag9400c Tags</a></h2>
-<p>Valid for DSC-RX10/RX100M3/HX60V/HX400V, ILCE-7/7R/7S/5000/5100/6000, ILCA-77M2.</p>
+<p>Valid for DSC-HX400V/HX60V/QX30/RX10/RX100M3/WX220/WX350,
+ILCE-7/7R/7S/5000/5100/6000/QX1, ILCA-77M2.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -6072,7 +6105,8 @@ DSC-HX50V, DSC-QX10/QX100.</p>
 </table></td></tr></table></blockquote>
 
 <h2><a name='Tag9405b'>Sony Tag9405b Tags</a></h2>
-<p>Valid for the DSC-RX10/RX100M3/HX60V/HX400V/WX220, ILCE-7/7R/7S/5000/5100/6000, ILCA-77M2.</p>
+<p>Valid for DSC-HX400V/HX60V/QX30/RX10/RX100M3/WX220/WX350,
+ILCE-7/7R/7S/5000/5100/6000/QX1, ILCA-77M2.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -7355,7 +7389,7 @@ the JPEG image from a PMP file)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Oct 9, 2014</i>
+<br><i>Last revised Nov 2, 2014</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

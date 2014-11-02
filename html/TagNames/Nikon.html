@@ -2092,6 +2092,21 @@ firmware 1.01b.</p>
 <td class=c>-</td>
 <td>--&gt; <a href='NikonCustom.html#SettingsD4'>NikonCustom SettingsD4 Tags</a>
   <br><span class='n s'>(firmware version 1.01)</span></td></tr>
+<tr class=b>
+<td class=r title='13579 = 0x350b'>13579</td>
+<td>RollAngle</td>
+<td class=c>fixed32u</td>
+<td><span class=s><span class=n>(degrees of clockwise camera rotation)</span></span></td></tr>
+<tr>
+<td class=r title='13583 = 0x350f'>13583</td>
+<td>PitchAngle</td>
+<td class=c>fixed32u</td>
+<td><span class=s><span class=n>(degrees of upward camera tilt)</span></span></td></tr>
+<tr class=b>
+<td class=r title='13587 = 0x3513'>13587</td>
+<td>YawAngle</td>
+<td class=c>fixed32u</td>
+<td><span class=s><span class=n>(the camera pitch angle when shooting in portrait orientation)</span></span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='ShotInfo'>Nikon ShotInfo Tags</a></h2>
@@ -3366,7 +3381,7 @@ point is F10)</span></span></td></tr>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
-<tr class=h><th>Index1</th><th>Tag Name</th>
+<tr class=h><th>Index2</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
 <td class=r title='0 = 0x0'>0</td>
@@ -3374,12 +3389,12 @@ point is F10)</span></span></td></tr>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
-<td class=r title='6 = 0x6'>6</td>
+<td class=r title='3 = 0x3'>3</td>
 <td>DirectoryNumber</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td class=r title='8 = 0x8'>8</td>
+<td class=r title='4 = 0x4'>4</td>
 <td>FileNumber</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
@@ -4640,6 +4655,7 @@ ExifTool to choose in these cases (see the
 </tr><tr><td>'A7 49 80 A0 24 24 4B 06'</td><td>= Sigma APO 200-500mm F2.8 EX DG</td>
 </tr><tr><td>'A7 4B 62 62 2C 2C A9 0E'</td><td>= AF-S DX Micro Nikkor 85mm f/3.5G ED VR</td>
 </tr><tr><td>'A8 48 80 98 30 30 AA 0E'</td><td>= AF-S VR Zoom-Nikkor 200-400mm f/4G IF-ED II</td>
+</tr><tr><td>'A9 4C 31 31 14 14 C4 06'</td><td>= AF-S Nikkor 20mm f/1.8G ED</td>
 </tr><tr><td>'A9 54 80 80 18 18 AB 0E'</td><td>= AF-S Nikkor 200mm f/2G ED VR II</td>
 </tr><tr><td>'AA 3C 37 6E 30 30 AC 0E'</td><td>= AF-S Nikkor 24-120mm f/4G ED VR</td>
 </tr><tr><td>'AC 38 53 8E 34 3C AE 0E'</td><td>= AF-S DX VR Nikkor 55-300mm 4.5-5.6G ED</td>
@@ -4705,7 +4721,7 @@ ExifTool to choose in these cases (see the
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Oct 13, 2014</i>
+<br><i>Last revised Oct 20, 2014</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

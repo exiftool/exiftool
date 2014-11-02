@@ -57,7 +57,7 @@ use vars qw($VERSION %nikonLensIDs %nikonTextEncoding);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.93';
+$VERSION = '2.94';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -275,6 +275,7 @@ sub GetAFPointGrid($$;$);
     'A7 4B 62 62 2C 2C A9 0E' => 'AF-S DX Micro Nikkor 85mm f/3.5G ED VR',
     'A8 48 80 98 30 30 AA 0E' => 'AF-S VR Zoom-Nikkor 200-400mm f/4G IF-ED II', #http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,3218.msg15495.html#msg15495
     'A9 54 80 80 18 18 AB 0E' => 'AF-S Nikkor 200mm f/2G ED VR II',
+    'A9 4C 31 31 14 14 C4 06' => 'AF-S Nikkor 20mm f/1.8G ED', #30
     'AA 3C 37 6E 30 30 AC 0E' => 'AF-S Nikkor 24-120mm f/4G ED VR',
     'AC 38 53 8E 34 3C AE 0E' => 'AF-S DX VR Nikkor 55-300mm 4.5-5.6G ED',
     'AD 3C 2D 8E 2C 3C AF 0E' => 'AF-S DX Nikkor 18-300mm 3.5-5.6G ED VR',
@@ -1414,8 +1415,8 @@ my %binaryDataAttrs = (
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ShotInfoD4S',
                 DecryptStart => 4,
-                DecryptLen => 0x1975,
-                ByteOrder => 'BigEndian',
+                DecryptLen => 0x3517,
+                ByteOrder => 'LittleEndian',
             },
         },
         # 0227 - D7100
@@ -1798,7 +1799,8 @@ my %binaryDataAttrs = (
         # unfortunately, some newer models write this as little-endian
         # (and CaptureNX can change the byte order of the maker notes,
         #  but leaves this structure unchanged)
-        Condition => '$$self{Model} =~ /^NIKON (D5200|D7100)$/',
+        # - it will be an ongoing pain to keep this list of models up-to-date
+        Condition => '$$self{Model} =~ /^NIKON (D4S|D750|D810|D3300|D5200|D5300|D7100)$/',
         SubDirectory => {
             TagTable => 'Image::ExifTool::Nikon::FileInfo',
             ByteOrder => 'LittleEndian',
@@ -2840,20 +2842,19 @@ my %binaryDataAttrs = (
 %Image::ExifTool::Nikon::FileInfo = (
     %binaryDataAttrs,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
+    FORMAT => 'int16u',
     0 => {
         Name => 'FileInfoVersion',
         Format => 'undef[4]',
         Writable => 0,
     },
-    6 => {
+    3 => {
         Name => 'DirectoryNumber',
-        Format => 'int16u',
         PrintConv => 'sprintf("%.3d", $val)',
         PrintConvInv => '$val',
     },
-    8 => {
+    4 => {
         Name => 'FileNumber',
-        Format => 'int16u',
         PrintConv => 'sprintf("%.4d", $val)',
         PrintConvInv => '$val',
     },
@@ -2862,7 +2863,7 @@ my %binaryDataAttrs = (
 # ref PH
 %Image::ExifTool::Nikon::BarometerInfo = (
     %binaryDataAttrs,
-    GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Location' },
     0 => {
         Name => 'BarometerInfoVersion',
         Format => 'undef[4]',
@@ -4540,7 +4541,34 @@ my %nikonFocalConversions = (
         Format => 'undef[56]',
         SubDirectory => { TagTable => 'Image::ExifTool::NikonCustom::SettingsD4' },
     },
-    # note: DecryptLen currently set to 0x1975
+    0x350b => {
+        Name => 'RollAngle',
+        Format => 'fixed32u',
+        Notes => 'degrees of clockwise camera rotation',
+        ValueConv => '$val < 180 ? -$val : 360 - $val',
+        ValueConvInv => '$val <= 0 ? -$val : 360 - $val',
+        PrintConv => 'sprintf("%.1f", $val)',
+        PrintConvInv => '$val',
+    },
+    0x350f => {
+        Name => 'PitchAngle',
+        Format => 'fixed32u',
+        Notes => 'degrees of upward camera tilt',
+        ValueConv => '$val <= 180 ? $val : $val - 360',
+        ValueConvInv => '$val >= 0 ? $val : $val + 360',
+        PrintConv => 'sprintf("%.1f", $val)',
+        PrintConvInv => '$val',
+    },
+    0x3513 => {
+        Name => 'YawAngle',
+        Format => 'fixed32u',
+        Notes => 'the camera pitch angle when shooting in portrait orientation',
+        ValueConv => '$val <= 180 ? $val : $val - 360',
+        ValueConvInv => '$val >= 0 ? $val : $val + 360',
+        PrintConv => 'sprintf("%.1f", $val)',
+        PrintConvInv => '$val',
+    },
+    # note: DecryptLen currently set to 0x3517
 );
 
 # Flash information (ref JD)

@@ -56,7 +56,7 @@ use vars qw($VERSION %pentaxLensTypes);
 use Image::ExifTool::Exif;
 use Image::ExifTool::HP;
 
-$VERSION = '2.82';
+$VERSION = '2.83';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -315,6 +315,7 @@ sub PrintFilter($$$);
     '8 30' => 'Sigma 17-70mm F2.8-4 DC Macro HSM Contemporary', #27
     '8 31' => 'Sigma 18-35mm F1.8 DC HSM', #27
     '8 32' => 'Sigma 30mm F1.4 DC HSM | A', #27
+    '8 200' => 'HD PENTAX-DA 16-85mm F3.5-5.6 ED DC WR', #29
     '8 209' => 'HD PENTAX-DA 20-40mm F2.8-4 ED Limited DC WR', #29
     '8 210' => 'smc PENTAX-DA 18-270mm F3.5-6.3 ED SDM', #Helmut Schutz
     '8 211' => 'HD PENTAX-DA 560mm F5.6 ED AW', #PH

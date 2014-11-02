@@ -482,6 +482,12 @@ my %faceCategories = (
             2 => 'On (mode 2, shooting only)',
         }],
     },
+    0x1431 => { #forum6109
+        Name => 'Rating',
+        Groups => { 2 => 'Image' },
+        Writable => 'int32u',
+        Priority => 0,
+    },
     0x1436 => { #8
         Name => 'ImageGeneration',
         Writable => 'int16u',

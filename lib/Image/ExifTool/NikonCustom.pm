@@ -2918,7 +2918,7 @@ $VERSION = '1.11';
     FIRST_ENTRY => 0,
     DATAMEMBER => [ 23.1 ],
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
-    NOTES => 'Custom settings for the D800.',
+    NOTES => 'Custom settings for the D800 and D800E.',
     12.1 => { # CSe5
         Name => 'AutoBracketingSet',
         Mask => 0xe0, #(NC)
@@ -5300,6 +5300,8 @@ $VERSION = '1.11';
     },
     50.2 => { # CSf17
         Name => 'LiveViewButtonOptions',
+        Condition => '$$self{Model} =~ /\bD4S/',
+        Notes => 'D4S only',
         Mask => 0x30,
         PrintConv => {
             0x00 => 'Enable',
@@ -5361,6 +5363,8 @@ $VERSION = '1.11';
     },
     54.1 => { # CSf18
         Name => 'AssignRemoteFnButton',
+        Condition => '$$self{Model} =~ /\bD4S/',
+        Notes => 'D4S only',
         Mask => 0x1f,
         PrintConv => {
             0 => 'None',
@@ -5378,6 +5382,8 @@ $VERSION = '1.11';
     },
     55.1 => { # CSf19
         Name => 'LensFocusFunctionButtons',
+        Condition => '$$self{Model} =~ /\bD4S/',
+        Notes => 'D4S only',
         Mask => 0x3f,
         PrintConv => {
             3 => 'AE/AF Lock',

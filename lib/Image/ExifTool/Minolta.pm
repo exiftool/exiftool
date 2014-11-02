@@ -52,7 +52,7 @@ use vars qw($VERSION %minoltaLensTypes %minoltaTeleconverters %minoltaColorMode
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.17';
+$VERSION = '2.18';
 
 # Full list of product codes for Sony-compatible Minolta lenses
 # (ref http://www.kb.sony.com/selfservice/documentLink.do?externalId=C1000570)
@@ -334,9 +334,9 @@ my %metabonesID = (
     146 => 'Voigtlander Macro APO-Lanthar 125mm F2.5 SL', #JD
     194 => 'Tamron SP AF 17-50mm F2.8 XR Di II LD Aspherical [IF]', #23 (Model A16)
     203 => 'Tamron SP 70-200mm F2.8 Di USD', #25 (Model A009)
-    # ? => 'Tamron SP 24-70mm F2.8 Di USD', #25 (Model A007)
+    204 => 'Tamron SP 24-70mm F2.8 Di USD', #25 (Model A007)
     214 => 'Tamron SP 150-600mm F5-6.3 Di USD', #25 (Model A011)
-    # ? => 'Tamron SP 90mm F2.8 Di Macro 1:1 USD', #25 (Model F004)
+    224 => 'Tamron SP 90mm F2.8 Di Macro 1:1 USD', #25 (Model F004)
     255 => 'Tamron Lens (255)',
     255.1 => 'Tamron SP AF 17-50mm F2.8 XR Di II LD Aspherical', # (Model A16)
     255.2 => 'Tamron AF 18-250mm F3.5-6.3 XR Di II LD', #JD (Model A18?)

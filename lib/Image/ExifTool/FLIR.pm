@@ -23,7 +23,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.10';
+$VERSION = '1.11';
 
 sub ProcessFLIR($$;$);
 sub ProcessFLIRText($$$);
@@ -1382,10 +1382,11 @@ sub ProcessFLIR($$;$)
 
     # determine byte ordering by validating version number
     # (in my samples FLIR APP1 is big-endian, FFF files are little-endian)
-    my $ver = Get32u(\$hdr, 0x14);
-    if ($ver != 100) {
-        $ver == 0x64000000 or $et->Warn("Unsupported FLIR $type version"), return 1;
+    for ($i=0; ; ++$i) {
+        my $ver = Get32u(\$hdr, 0x14);
+        last if $ver >= 100 and $ver < 200; # (have seen 100 and 101 - PH)
         ToggleByteOrder();
+        $i and $et->Warn("Unsupported FLIR $type version"), return 1;
     }
 
     # read the FLIR record directory

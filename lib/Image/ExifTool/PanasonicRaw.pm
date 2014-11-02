@@ -125,7 +125,8 @@ my %wbTypeInfo = (
         ValueConv => '$val / 256',
         ValueConvInv => 'int($val * 256 + 0.5)',
     },
-    # 0x1b: [binary data]
+    # 0x1b: [binary data] (something to do with the camera ISO cababilities: int16u count N,
+    #                      followed by table of  N entries: int16u ISO, int16u[3] RGB gains - ref 4)
     0x1c => { Name => 'BlackLevelRed',   Writable => 'int16u' }, #4
     0x1d => { Name => 'BlackLevelGreen', Writable => 'int16u' }, #4
     0x1e => { Name => 'BlackLevelBlue',  Writable => 'int16u' }, #4

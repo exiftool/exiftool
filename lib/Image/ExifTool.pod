@@ -577,7 +577,9 @@ and at the audio/video data with RIFF-format files (AVI, WAV, etc), so any
 trailing metadata (eg. XMP written by some utilities) may be missed.  When
 combined with the ScanForXMP option, prevents scanning for XMP in recognized
 file types.  With a value of 2, ExifTool will also avoid extracting any EXIF
-MakerNote information.  Default is 0.
+MakerNote information.  When set to 3, the file is not actually parsed, and
+only an initial guess at FileType and some pseudo tags are returned. 
+Default is 0.
 
 =item FixBase
 

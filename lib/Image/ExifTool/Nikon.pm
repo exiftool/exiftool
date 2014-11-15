@@ -47,6 +47,7 @@
 #              32) Stefan http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,4494.0.html
 #              33) Iliah Borg private communication (LibRaw)
 #              34) Stewart Bennett private communication (D4S, D810)
+#              35) David Puschel private communication
 #              JD) Jens Duttke private communication
 #------------------------------------------------------------------------------
 
@@ -57,7 +58,7 @@ use vars qw($VERSION %nikonLensIDs %nikonTextEncoding);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.94';
+$VERSION = '2.95';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -271,6 +272,7 @@ sub GetAFPointGrid($$;$);
     'A3 3C 29 44 30 30 A5 0E' => 'AF-S Nikkor 16-35mm f/4G ED VR',
     'A4 54 37 37 0C 0C A6 06' => 'AF-S Nikkor 24mm f/1.4G ED',
     'A5 40 3C 8E 2C 3C A7 0E' => 'AF-S Nikkor 28-300mm f/3.5-5.6G ED VR',
+    'A5 4C 44 44 14 14 C0 06' => 'AF-S Nikkor 35mm f/1.8G', #35
     'A6 48 8E 8E 24 24 A8 0E' => 'AF-S VR Nikkor 300mm f/2.8G IF-ED II',
     'A7 4B 62 62 2C 2C A9 0E' => 'AF-S DX Micro Nikkor 85mm f/3.5G ED VR',
     'A8 48 80 98 30 30 AA 0E' => 'AF-S VR Zoom-Nikkor 200-400mm f/4G IF-ED II', #http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,3218.msg15495.html#msg15495
@@ -283,7 +285,7 @@ sub GetAFPointGrid($$;$);
     'AF 54 44 44 0C 0C B1 06' => 'AF-S Nikkor 35mm f/1.4G',
     'B0 4C 50 50 14 14 B2 06' => 'AF-S Nikkor 50mm f/1.8G',
     'B1 48 48 48 24 24 B3 06' => 'AF-S DX Micro Nikkor 40mm f/2.8G', #27
-    'B2 48 5C 80 30 30 B4 0E' => 'AF-S Nikkor 70-200mm f/4G ED VR', #David Puschel
+    'B2 48 5C 80 30 30 B4 0E' => 'AF-S Nikkor 70-200mm f/4G ED VR', #35
     'B3 4C 62 62 14 14 B5 06' => 'AF-S Nikkor 85mm f/1.8G',
     'B4 40 37 62 2C 34 B6 0E' => 'AF-S VR Zoom-Nikkor 24-85mm f/3.5-4.5G IF-ED', #30
     'B5 4C 3C 3C 14 14 B7 06' => 'AF-S Nikkor 28mm f/1.8G', #30
@@ -583,7 +585,9 @@ sub GetAFPointGrid($$;$);
 #
     '00 00 48 48 53 53 00 01' => 'Loreo 40mm F11-22 3D Lens in a Cap 9005', #PH
     '00 47 10 10 24 24 00 00' => 'Fisheye Nikkor 8mm f/2.8 AiS',
+    '00 47 3C 3C 24 24 00 00' => 'Nikkor 28mm f/2.8 AiS', #35
     '00 54 44 44 0C 0C 00 00' => 'Nikkor 35mm f/1.4 AiS',
+    '00 57 50 50 14 14 00 00' => 'Nikkor 50mm f/1.8 AI', #35
     '00 48 50 50 18 18 00 00' => 'Nikkor H 50mm f/2',
     '00 48 68 68 24 24 00 00' => 'Series E 100mm f/2.8',
     '00 4C 6A 6A 20 20 00 00' => 'Nikkor 105mm f/2.5 AiS',
@@ -2519,10 +2523,12 @@ my %binaryDataAttrs = (
                 10 => 'Single Area (wide)', #PH
                 11 => 'Dynamic Area (wide)', #PH
                 12 => 'Dynamic Area (wide, 3D-tracking)', #PH
-                128 => 'Single (135 points)', #PH (1J1)
-                129 => 'Auto (41 points)', #PH (1J1)
-                130 => 'Subject Tracking (41 points)', #PH (1J1)
-                131 => 'Face Priority (41 points)', #PH (1J1)
+                128 => 'Single', #PH (1J1,1J2,1J3,1J4,1S1,1S2,1V2,1V3)
+                129 => 'Auto (41 points)', #PH (1J1,1J2,1J3,1J4,1S1,1S2,1V1,1V2,1V3,AW1)
+                130 => 'Subject Tracking (41 points)', #PH (1J1,1J4,1J3)
+                131 => 'Face Priority (41 points)', #PH (1J1,1J3,1S1,1V2,AW1)
+                # 134 - seen for 1V1[PhaseDetectAF=0] (PH)
+                # 135 - seen for 1J2[PhaseDetectAF=4] (PH)
             },
         },
         { #PH (D3/D90/D5000)
@@ -2537,7 +2543,10 @@ my %binaryDataAttrs = (
                 2 => 'Contrast-detect (wide area)', # (D90/D5000)
                 3 => 'Contrast-detect (face priority)', # (ViewNX)
                 4 => 'Contrast-detect (subject tracking)', # (ViewNX)
-                128 => 'Single (171 points)', #PH (1V3)
+                128 => 'Single', #PH (1V3)
+                129 => 'Auto (41 points)', #PH (NC)
+                130 => 'Subject Tracking (41 points)', #PH (NC)
+                131 => 'Face Priority (41 points)', #PH (NC)
             },
         },
     ],
@@ -2546,13 +2555,14 @@ my %binaryDataAttrs = (
         Notes => 'PrimaryAFPoint and AFPointsUsed below are only valid when this is On',
         RawConv => '$$self{PhaseDetectAF} = $val',
         PrintConv => {
+            # [observed AFAreaMode values in square brackets for each PhaseDetectAF value]
             0 => 'Off',
             1 => 'On (51-point)', #PH
             2 => 'On (11-point)', #PH
             3 => 'On (39-point)', #29 (D7000)
-            4 => 'On (73-point)', #PH (1J1,1J2,1J3,1S1,1V1,1V2)
-            5 => 'On (73-point, new)', #PH (1S2)
-            6 => 'On (105-point)', #PH (1J4,1V3)
+            4 => 'On (73-point)', #PH (1J1[128/129],1J2[128/129/135],1J3/1S1/1V2[128/129/131],1V1[129],AW1[129/131])
+            5 => 'On (5)', #PH (1S2[128/129], 1J4/1V3[129])
+            6 => 'On (105-point)', #PH (1J4/1V3[128/130])
         },
     },
     7 => [

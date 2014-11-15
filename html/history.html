@@ -11,11 +11,35 @@
 
 <p>RSS feed: <a href="http://owl.phy.queensu.ca/~phil/exiftool/rss.xml">http://owl.phy.queensu.ca/~phil/exiftool/rss.xml</a></p>
 
-<p><b>Note:</b> The most recent production release is <a href="Image-ExifTool-9.70.tar.gz">Version 9.70</a>. (Other versions are
+<p><b>Note:</b> The most recent production release is <a href="Image-ExifTool-9.76.tar.gz">Version 9.76</a>. (Other versions are
 considered development releases, and are not uploaded to <a href="http://search.cpan.org/dist/Image-ExifTool/">CPAN</a>.)</p>
 
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
+
+<a name='v9.76'><b>Nov. 15, 2014 - Version 9.76</b></a> <span class=grn>(production release)</span>
+<ul>
+<li>Added support for the LFR format (same as LFP)
+<li>Added support for Samsung models which write 2 values for LensType
+<li>Added a new Samsung LensType (thanks Nick Livchits)
+<li>Added a few new Nikon LensID's (thanks David P&uuml;schel)</li>
+<li>Added a new PentaxModelID
+<li>Added some new Olympus WhiteBalance2 values (thanks LibRaw)
+<li>Added a new EXIF:Compression value
+<li>Decode a new FujiFilm tag
+<li>Decode a few more private TIFF tags
+<li>Improved warning message if "DIR" or "FILE" is used literally on the command
+    line
+<li>Improved "-j -b" output to encode any non-UTF8 values as Base64
+<li>Enhanced -fast option (FastScan API option) to allow file processing to be
+    bypassed entirely
+<li>Changed conversions for a couple of Nikon 1 AF tags for consistency
+<li>Changed reported FileType for LNK, KEY, KTH, NUMBERS, NMBTEMPLATE and PAGES
+    files to match extension
+<li>Fixed problems adding new XMP and deleting old XMP from MP4 videos
+<li>Fixed problem writing FileModifyDate/FileCreateDate when
+    -overwrite_original_in_place is used
+</ul>
 
 <a name='v9.75'><b>Nov. 2, 2014 - Version 9.75</b></a>
 <ul>

@@ -47,7 +47,7 @@ use Image::ExifTool qw(:Utils);
 use Image::ExifTool::Exif;
 require Exporter;
 
-$VERSION = '2.80';
+$VERSION = '2.81';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -3587,6 +3587,9 @@ sub ProcessXMP($$;$)
             }
         }
         $et->SetFileType($type);
+
+        my $fast = $et->Options('FastScan');
+        return 1 if $fast and $fast == 3;
 
         if ($type and $type eq 'INX') {
             # brute force search for first XMP packet in INX file

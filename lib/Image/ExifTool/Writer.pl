@@ -1591,13 +1591,14 @@ sub RestoreNewValues($)
 #------------------------------------------------------------------------------
 # Set filesystem time from from FileModifyDate or FileCreateDate tag
 # Inputs: 0) ExifTool object reference, 1) file name or file ref
-#         2) modify time (-M) of original file (needed for time shift)
+#         2) time (-M or -C) of original file (used for shift; obtained from file if not given)
 #         3) tag name to write (undef for 'FileModifyDate')
+#         4) flag set if argument 2 has already been converted to Unix seconds
 # Returns: 1=time changed OK, 0=nothing done, -1=error setting time
 #          (and increments CHANGED flag if time was changed)
-sub SetFileModifyDate($$;$$)
+sub SetFileModifyDate($$;$$$)
 {
-    my ($self, $file, $originalTime, $tag) = @_;
+    my ($self, $file, $originalTime, $tag, $isUnixTime) = @_;
     my ($nvHash, $err);
     $tag = 'FileModifyDate' unless defined $tag;
     my $val = $self->GetNewValues($tag, \$nvHash);
@@ -1610,9 +1611,11 @@ sub SetFileModifyDate($$;$$)
         # use original time of this file if not specified
         unless (defined $originalTime) {
             $originalTime = ($tag eq 'FileCreateDate') ? -C $file : -M $file;
+            return 0 unless defined $originalTime;
+            undef $isUnixTime;
         }
-        return 0 unless defined $originalTime;
-        return 0 unless $self->IsOverwriting($nvHash, int($^T - $originalTime*(24*3600) + 0.5));
+        $originalTime = int($^T - $originalTime*(24*3600) + 0.5) unless $isUnixTime;
+        return 0 unless $self->IsOverwriting($nvHash, $originalTime);
         $val = $$nvHash{Value}[0]; # get shifted value
     }
     if ($tag eq 'FileCreateDate') {

@@ -39,6 +39,7 @@
 #              26) Jeremy Brown private communication
 #              27) Gregg Lee private communication
 #              28) http://wwwimages.adobe.com/www.adobe.com/content/dam/Adobe/en/devnet/cinemadng/pdfs/CinemaDNG_Format_Specification_v1_1.pdf
+#              29) http://www.libtiff.org
 #              JD) Jens Duttke private communication
 #------------------------------------------------------------------------------
 
@@ -51,7 +52,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '3.66';
+$VERSION = '3.67';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -205,6 +206,7 @@ sub BINARY_DATA_LIMIT { return 10 * 1024 * 1024; }
     32769 => 'Packed RAW', #PH (used by Epson, Nikon, Samsung)
     32770 => 'Samsung SRW Compressed', #PH
     32771 => 'CCIRLEW', #3
+    32772 => 'Samsung SRW Compressed 2', #PH (NX3000,NXmini)
     32773 => 'PackBits',
     32809 => 'Thunderscan', #3
     32867 => 'Kodak KDC Compressed', #PH
@@ -1158,11 +1160,24 @@ my %sampleFormat = (
         Name => 'WangTag4',
         PrintConv => 'length($val) <= 64 ? $val : \$val',
     },
+    # tags 0x80b8-0x80bb are registered to Island Graphics
+    0x80b8 => 'ImageReferencePoints', #29
+    0x80b9 => 'RegionXformTackPoint', #29
+    0x80ba => 'WarpQuadrilateral', #29
+    0x80bb => 'AffineTransformMat', #29
     0x80e3 => 'Matteing', #9
     0x80e4 => 'DataType', #9
     0x80e5 => 'ImageDepth', #9
     0x80e6 => 'TileDepth', #9
-    0x827d => 'Model2',
+    # tags 0x8214-0x8219 are registered to Pixar
+    0x8214 => 'ImageFullWidth', #29
+    0x8215 => 'ImageFullHeight', #29
+    0x8216 => 'TextureFormat', #29
+    0x8217 => 'WrapModes', #29
+    0x8218 => 'FovCot', #29
+    0x8219 => 'MatrixWorldToScreen', #29
+    0x821a => 'MatrixWorldToCamera', #29
+    0x827d => 'Model2', #29 (Eastman Kodak)
     0x828d => 'CFARepeatPatternDim', #12
     0x828e => {
         Name => 'CFAPattern2', #12
@@ -1320,6 +1335,7 @@ my %sampleFormat = (
         },
     },
     0x85b8 => 'PixelMagicJBIGOptions', #20
+    0x85d7 => 'JPLCartoIFD', #exifprobe (NC)
     0x85d8 => {
         Name => 'ModelTransform',
         Groups => { 2 => 'Location' },
@@ -1417,6 +1433,7 @@ my %sampleFormat = (
         Name => 'GeoTiffAsciiParams',
         Binary => 1,
     },
+    0x87be => 'JBIGOptions', #29
     0x8822 => {
         Name => 'ExposureProgram',
         Groups => { 2 => 'Camera' },
@@ -1493,6 +1510,7 @@ my %sampleFormat = (
     0x885c => 'FaxRecvParams', #9
     0x885d => 'FaxSubAddress', #9
     0x885e => 'FaxRecvTime', #9
+    0x8871 => 'FedexEDR', #exifprobe (NC)
     0x888a => { #PH
         Name => 'LeafSubIFD',
         Format => 'int32u',     # Leaf incorrectly uses 'undef' format!
@@ -2173,6 +2191,11 @@ my %sampleFormat = (
             2 => 'Color',
         },
     },
+    # 0xc5d8 - found in CR2 images
+    # 0xc5d9 - found in CR2 images
+    # 0xc5e0 - found in CR2 images
+    0xc640 => 'CR2Slice', #exifprobe
+    0xc6c5 => { Name => 'SRawType', Description => 'SRaw Type' }, #exifprobe
 #
 # DNG tags 0xc6XX and 0xc7XX (ref 2 unless otherwise stated)
 #
@@ -3080,8 +3103,9 @@ my %sampleFormat = (
         },
         # this LensID is only valid if the LensType has a PrintConv or is a model name
         RawConv => q{
-            return $val if ref $$self{TAG_INFO}{LensType}{PrintConv} eq "HASH" or
-                              $val[0] =~ /(mm|\d\/F)/;
+            my $printConv = $$self{TAG_INFO}{LensType}{PrintConv};
+            return $val if ref $printConv eq 'HASH' or (ref $printConv eq 'ARRAY' and
+                ref $$printConv[0] eq 'HASH') or $val[0] =~ /(mm|\d\/F)/;
             return undef;
         },
         ValueConv => '$val',
@@ -3538,9 +3562,15 @@ sub PrintLensID($$@)
     # just copy LensType PrintConv value if it was a lens name
     # (Olympus or Panasonic -- just exclude things like Nikon and Leaf LensType)
     unless (ref $printConv eq 'HASH') {
-        return $lensTypePrt if $lensTypePrt =~ /mm/;
-        return $lensTypePrt if $lensTypePrt =~ s/(\d)\/F/$1mm F/;
-        return undef;
+        if (ref $printConv eq 'ARRAY' and ref $$printConv[0] eq 'HASH') {
+            $printConv = $$printConv[0];
+            $lensTypePrt =~ s/;.*//;
+            $lensType =~ s/ .*//;
+        } else {
+            return $lensTypePrt if $lensTypePrt =~ /mm/;
+            return $lensTypePrt if $lensTypePrt =~ s/(\d)\/F/$1mm F/;
+            return undef;
+        }
     }
     # get LensSpec information if available (Sony)
     my ($sf0, $lf0, $sa0, $la0);

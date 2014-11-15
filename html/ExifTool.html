@@ -530,8 +530,10 @@ distribution for examples.</p>
     RIFF-format files (AVI, WAV, etc), so any trailing metadata (ie.eg. XMP written
     by some utilities) may be missed.  When combined with the ScanForXMP option,
     prevents scanning for XMP in recognized file types.  With a value of 2,
-    ExifTool will also avoid extracting any EXIF MakerNote information.</td>
-    <td align=center>0, 1 or 2</td><td align=center>0</td></tr>
+    ExifTool will also avoid extracting any EXIF MakerNote information. When set
+    to 3, the file is not actually parsed, and only an initial guess at FileType
+    and some pseudo tags are returned. </td>
+    <td align=center>0, 1, 2 or 3</td><td align=center>0</td></tr>
 <tr><td>FixBase</td>
     <td>Fix maker notes base offset.  Allows values to be extracted from maker notes
     which have been corrupted by editing with 3rd party software.</td>

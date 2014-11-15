@@ -259,6 +259,7 @@ my %wbTypeInfo = (
             Start => '$val',
         },
     },
+    # 0xffff => 'DCSHueShiftValues', #exifprobe (NC)
 );
 
 # white balance information (ref 4)

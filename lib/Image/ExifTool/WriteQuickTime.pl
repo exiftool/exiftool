@@ -18,8 +18,7 @@ my %movMap = (
 );
 my %mp4Map = (
     # MP4 ('ftyp' compatible brand 'mp41', 'mp42' or 'f4v ') -> top level 'uuid'
-   'UUID-XMP' => 'MOV',
-    XMP       => 'UUID-XMP',
+    XMP => 'MOV',
 );
 my %dirMap = (
     MOV => \%movMap,
@@ -41,7 +40,7 @@ sub IsCurPath($$)
 #------------------------------------------------------------------------------
 # Write a series of QuickTime atoms from file or in memory
 # Inputs: 0) ExifTool ref, 1) dirInfo ref, 2) tag table ref
-# Returns: A) if dirInfo contains DataPt: new director data
+# Returns: A) if dirInfo contains DataPt: new directory data
 #          B) otherwise: true on success, 0 if a write error occurred
 #             (true but sets an Error on a file format error)
 sub WriteQuickTime($$$)
@@ -191,7 +190,7 @@ sub WriteQuickTime($$$)
                 # (this is such a can of worms, so don't implement this for now)
             }
             if (defined $newData) {
-                my $len = length $newData or next;
+                my $len = length $newData;
                 $len > 0x7ffffff7 and $et->Error("$tag to large to write"), last;
                 if ($len == $size or $dataPt or $foundMDAT) {
                     # write the updated directory now
@@ -201,12 +200,15 @@ sub WriteQuickTime($$$)
                     # bad things happen if 'mdat' atom is moved (eg. Adobe Bridge crashes --
                     # there must be some absolute offsets somewhere that point into mdat),
                     # so hold this atom and write it out later
-                    push @hold, Set32u($len+8), $tag, $newData;
-                    $et->VPrint(0,"  Moving '$tag' atom to after 'mdat'");
+                    if ($len) {
+                        push @hold, Set32u($len+8), $tag, $newData;
+                        $et->VPrint(0,"  Moving '$tag' atom to after 'mdat'");
+                    } else {
+                        $et->VPrint(0,"  Freeing '$tag' atom (and zeroing data)");
+                    }
                     # write a 'free' atom here to keep 'mdat' at the same offset
                     substr($hdr, 4, 4) = 'free';
-                    # could zero out old data if we wanted...
-                    # $buff = "\0" x length($buff);
+                    $buff = "\0" x length($buff);   # zero out old data
                 }
             }
             # write out the existing atom (or 'free' padding)

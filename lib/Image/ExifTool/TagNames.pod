@@ -439,10 +439,21 @@ EXIF 2.3 specification.
   0x80a4   WangAnnotation            -          N
   0x80a5   WangTag3                  -          N
   0x80a6   WangTag4                  -          N
+  0x80b8   ImageReferencePoints      -          N
+  0x80b9   RegionXformTackPoint      -          N
+  0x80ba   WarpQuadrilateral         -          N
+  0x80bb   AffineTransformMat        -          N
   0x80e3   Matteing                  -          N
   0x80e4   DataType                  -          N
   0x80e5   ImageDepth                -          N
   0x80e6   TileDepth                 -          N
+  0x8214   ImageFullWidth            -          N
+  0x8215   ImageFullHeight           -          N
+  0x8216   TextureFormat             -          N
+  0x8217   WrapModes                 -          N
+  0x8218   FovCot                    -          N
+  0x8219   MatrixWorldToScreen       -          N
+  0x821a   MatrixWorldToCamera       -          N
   0x827d   Model2                    -          N
   0x828d   CFARepeatPatternDim       SubIFD     int16u[2]!
   0x828e   CFAPattern2               SubIFD     int8u[n]!
@@ -492,6 +503,7 @@ EXIF 2.3 specification.
   0x8546   SEMInfo                   IFD0       string
   0x8568   AFCP_IPTC                 -          IPTC
   0x85b8   PixelMagicJBIGOptions     -          N
+  0x85d7   JPLCartoIFD               -          N
   0x85d8   ModelTransform            -          N
   0x8602   WB_GRGBLevels             -          N
   0x8606   LeafData                  -          Leaf
@@ -506,6 +518,7 @@ EXIF 2.3 specification.
   0x87af   GeoTiffDirectory          IFD0       undef
   0x87b0   GeoTiffDoubleParams       IFD0       undef
   0x87b1   GeoTiffAsciiParams        IFD0       string
+  0x87be   JBIGOptions               -          N
   0x8822   ExposureProgram           ExifIFD    int16u
   0x8824   SpectralSensitivity       ExifIFD    string
   0x8825   GPSInfo                   -          GPS
@@ -523,6 +536,7 @@ EXIF 2.3 specification.
   0x885c   FaxRecvParams             -          N
   0x885d   FaxSubAddress             -          N
   0x885e   FaxRecvTime               -          N
+  0x8871   FedexEDR                  -          N
   0x888a   LeafSubIFD                -          Leaf SubIFD
   0x9000   ExifVersion               ExifIFD    undef:
   0x9003   DateTimeOriginal          ExifIFD    string
@@ -775,6 +789,7 @@ EXIF 2.3 specification.
   0xc691   CurrentICCProfile         IFD0       ICC_Profile
   0xc692   CurrentPreProfileMatrix   IFD0       rational64s[n]!
   0xc6bf   ColorimetricReference     IFD0       int16u!
+  0xc6c5   SRawType                  -          N
   0xc6d2   PanasonicTitle            IFD0       undef
   0xc6d3   PanasonicTitle2           IFD0       undef
   0xc6f3   CameraCalibrationSig      IFD0       string!
@@ -6723,6 +6738,7 @@ Tags extracted from FLIR Public image Format (FPF) files.
   0x1041   HighlightTone                        int32s
   0x1100   AutoBracketing                       int16u
   0x1101   SequenceNumber                       int16u
+  0x1201   AdvancedFilter                       int32u
   0x1210   ColorMode                            int16u
   0x1300   BlurWarning                          int16u
   0x1301   FocusWarning                         int16u
@@ -11864,7 +11880,7 @@ Tags found in the EXIF-format maker notes of newer Samsung models.
   0x0035   PreviewIFD                           Nikon PreviewIFD
   0x0043   CameraTemperature                    rational64s
   0xa001   FirmwareName                         string
-  0xa003   LensType                             int16u
+  0xa003   LensType                             int16u[n]
   0xa004   LensFirmware                         string
   0xa010   SensorAreas                          int32u[8]
   0xa011   ColorSpace                           int16u
@@ -19305,7 +19321,7 @@ for the official specification.
                        Skip?                    N
   'thum'               ThumbnailImage           N
   'udta'               UserData                 FLIR UserData
-  'uuid'               UUID-XMP                 XMP
+  'uuid'               XMP                      XMP
                        UUID-PROF                QuickTime Profile
                        UUID-Flip                QuickTime Flip
                        UUID-Unknown?            N

@@ -26,7 +26,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.45';
+$VERSION = '1.46';
 
 sub ProcessFujiDir($$$);
 sub ProcessFaceRec($$$);
@@ -359,6 +359,26 @@ my %faceCategories = (
     # 0x1150 - Pro Low-light - val=1; Pro Focus - val=2 (ref 7)
     # 0x1151 - Pro Low-light - val=4 (number of pictures taken?); Pro Focus - val=2,3 (ref 7)
     # 0x1152 - Pro Low-light - val=1,3,4 (stacked pictures used?); Pro Focus - val=1,2 (ref 7)
+    0x1201 => { #forum6109
+        Name => 'AdvancedFilter',
+        Writable => 'int32u',
+        PrintHex => 1,
+        PrintConv => {
+            0x10000 => 'Pop Color',
+            0x20000 => 'Hi Key',
+            0x30000 => 'Toy Camera',
+            0x40000 => 'Miniature',
+            0x50000 => 'Dynamic Tone',
+            0x60001 => 'Partial Color Red',
+            0x60002 => 'Partial Color Yellow',
+            0x60003 => 'Partial Color Green',
+            0x60004 => 'Partial Color Blue',
+            0x60005 => 'Partial Color Orange',
+            0x60006 => 'Partial Color Purple',
+            0x70000 => 'Soft Focus',
+            0x90000 => 'Low Key',
+        },
+    },
     0x1210 => { #2
         Name => 'ColorMode',
         Writable => 'int16u',

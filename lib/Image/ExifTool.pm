@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '9.75';
+$VERSION = '9.76';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -66,7 +66,7 @@ sub CountNewValues($);
 sub SaveNewValues($);
 sub RestoreNewValues($);
 sub WriteInfo($$;$$);
-sub SetFileModifyDate($$;$$);
+sub SetFileModifyDate($$;$$$);
 sub SetFileName($$;$$);
 sub GetAllTags(;$);
 sub GetWritableTags(;$);
@@ -168,7 +168,7 @@ $defaultLang = 'en';    # default language
                 BMP PPM RIFF AIFF ASF MOV MPEG Real SWF PSP FLV OGG FLAC APE MPC
                 MKV MXF DV PMP IND PGF ICC ITC FLIR FPF LFP HTML VRD RTF XCF
                 QTIF FPX PICT ZIP GZIP PLIST RAR BZ2 TAR RWZ EXE EXR HDR CHM LNK
-                WMF AVC DEX DPX RAW Font RSRC M2TS PHP Torrent PDB MP3 DICM PCD);
+                WMF AVC DEX DPX RAW Font RSRC M2TS PHP Torrent PDB MP3 DICOM PCD);
 
 # file types that we can write (edit)
 my @writeTypes = qw(JPEG TIFF GIF CRW MRW ORF RAF RAW PNG MIE PSD XMP PPM
@@ -195,7 +195,7 @@ my %fileTypeLookup = (
    '3GP' => ['MOV',  '3rd Gen. Partnership Project audio/video'],
    '3GP2'=>  '3G2',
    '3GPP'=>  '3GP',
-    ACR  => ['DICM', 'American College of Radiology ACR-NEMA'],
+    ACR  => ['DICOM','American College of Radiology ACR-NEMA'],
     ACFM => ['Font', 'Adobe Composite Font Metrics'],
     AFM  => ['Font', 'Adobe Font Metrics'],
     AMFM => ['Font', 'Adobe Multiple Master Font Metrics'],
@@ -228,7 +228,7 @@ my %fileTypeLookup = (
     DFONT=> ['Font', 'Macintosh Data fork Font'],
     DIB  => ['BMP',  'Device Independent Bitmap'],
     DIC  =>  'DICM',
-    DICM => ['DICM', 'Digital Imaging and Communications in Medicine'],
+    DICM => ['DICOM','Digital Imaging and Communications in Medicine'],
     DIVX => ['ASF',  'DivX media format'],
     DJV  =>  'DJVU',
     DJVU => ['AIFF', 'DjVu image'],
@@ -304,6 +304,7 @@ my %fileTypeLookup = (
     KTH  => ['ZIP',  'Apple Keynote Theme'],
     LA   => ['RIFF', 'Lossless Audio'],
     LFP  => ['LFP',  'Lytro Light Field Picture'],
+    LFR  =>  'LFP', # (Light Field RAW)
     LNK  => ['LNK',  'Windows shortcut'],
     M2T  =>  'M2TS',
     M2TS => ['M2TS', 'MPEG-2 Transport Stream'],
@@ -492,7 +493,7 @@ my %fileDescription = (
     DCR  => 'image/x-kodak-dcr',
     DEX  => 'application/octet-stream',
     DFONT=> 'application/x-dfont',
-    DICM => 'application/dicom',
+    DICOM=> 'application/dicom',
     DIVX => 'video/divx',
     DJVU => 'image/vnd.djvu',
     DNG  => 'image/x-adobe-dng',
@@ -616,7 +617,7 @@ my %fileDescription = (
     TAR  => 'application/x-tar',
     THMX => 'application/vnd.ms-officetheme',
     TIFF => 'image/tiff',
-    TORRENT => 'application/x-bittorrent',
+    Torrent => 'application/x-bittorrent',
     TTC  => 'application/x-font-ttf',
     TTF  => 'application/x-font-ttf',
     VSD  => 'application/x-visio',
@@ -650,7 +651,6 @@ my %moduleName = (
     BTF  => 'BigTIFF',
     BZ2  => 0,
     CRW  => 'CanonRaw',
-    DICM => 'DICOM',
     CHM  => 'EXE',
     COS  => 'CaptureOne',
     DEX  => 0,
@@ -711,7 +711,7 @@ my %moduleName = (
     CHM  => 'ITSF.{20}\x10\xfd\x01\x7c\xaa\x7b\xd0\x11\x9e\x0c\0\xa0\xc9\x22\xe6\xec',
     CRW  => '(II|MM).{4}HEAP(CCDR|JPGM)',
     DEX  => "dex\n035\0",
-    DICM => '(.{128}DICM|\0[\x02\x04\x06\x08]\0[\0-\x20]|[\x02\x04\x06\x08]\0[\0-\x20]\0)',
+    DICOM=> '(.{128}DICM|\0[\x02\x04\x06\x08]\0[\0-\x20]|[\x02\x04\x06\x08]\0[\0-\x20]\0)',
     DOCX => 'PK\x03\x04',
     DPX  => '(SDPX|XPDS)',
     DV   => '\x1f\x07\0[\x3f\xbf]', # (not tested if extension recognized)
@@ -788,6 +788,9 @@ my %moduleName = (
 
 # file types with weak magic number recognition
 my %weakMagic = ( MP3 => 1 );
+
+# file types that are determined by the process proc when FastScan == 3
+my %processType = ( JPEG => 1, TIFF => 1, XMP => 1 );
 
 # lookup for valid character set names (keys are all lower case)
 %charsetName = (
@@ -1678,6 +1681,7 @@ sub ExtractInfo($;@)
     local $_;
     my $self = shift;
     my $options = $$self{OPTIONS};      # pointer to current options
+    my $fast = $$options{FastScan};
     my (%saveOptions, $reEntry, $rsize, $type, @startTime);
 
     # check for internal ReEntry option to allow recursive calls to ExtractInfo
@@ -1810,8 +1814,10 @@ sub ExtractInfo($;@)
             my $pat = join '|', @fileTypeList;
             push @fileTypeList, grep(!/^($pat)$/, @fileTypes);
             $tiffType = $$self{FILE_EXT};
-            $noMagic{MXF} = 1;  # don't do magic number test on MXF or DV files
-            $noMagic{DV} = 1;
+            unless ($fast and $fast == 3) {
+                $noMagic{MXF} = 1;  # don't do magic number test on MXF or DV files
+                $noMagic{DV} = 1;
+            }
         } else {
             # scan through all recognized file types
             @fileTypeList = @fileTypes;
@@ -1850,6 +1856,11 @@ sub ExtractInfo($;@)
             # save file type in member variable
             $$self{FILE_TYPE} = $type;
             $dirInfo{Parent} = ($type eq 'TIFF') ? $tiffType : $type;
+            # don't process the file when FastScan == 3
+            if ($fast and $fast == 3 and not $processType{$type}) {
+                $self->SetFileType($dirInfo{Parent}); # (uc for Torrent)
+                last;
+            }
             my $module = $moduleName{$type};
             $module = $type unless defined $module;
             my $func = "Process$type";
@@ -1880,7 +1891,7 @@ sub ExtractInfo($;@)
         if ($seekErr) {
             $self->Error('Error seeking in file');
         } elsif ($self->Options('ScanForXMP') and (not defined $type or
-            (not $self->Options('FastScan') and not $$self{FoundXMP})))
+            (not $fast and not $$self{FoundXMP})))
         {
             # scan for XMP
             $raf->Seek($pos, 0);
@@ -4758,6 +4769,7 @@ sub ProcessJPEG($$)
     }
     if (not $$self{VALUE}{FileType} or ($$self{DOC_NUM} and $$self{OPTIONS}{ExtractEmbedded})) {
         $self->SetFileType($type);          # set FileType tag
+        return 1 if $fast and $fast == 3;   # don't process file when FastScan == 3
         $$self{LOW_PRIORITY_DIR}{IFD1} = 1; # lower priority of IFD1 tags
     }
     $dumpParms{MaxLen} = 128 if $verbose < 4;
@@ -5724,6 +5736,8 @@ sub DoProcessTIFF($$;$)
             my $t = ($baseType eq 'TIFF' or $fileType =~ /RAW/) ? $fileType : undef;
             $self->SetFileType($t);
         }
+        # don't process file if FastScan == 3
+        return 1 if not $outfile and $$self{OPTIONS}{FastScan} and $$self{OPTIONS}{FastScan} == 3;
     }
     my $ifdName = 'IFD0';
     if (not $tagTablePtr or $$tagTablePtr{GROUPS}{0} eq 'EXIF') {

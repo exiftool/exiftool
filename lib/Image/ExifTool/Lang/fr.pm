@@ -11,7 +11,7 @@ package Image::ExifTool::Lang::fr;
 use strict;
 use vars qw($VERSION);
 
-$VERSION = '1.28';
+$VERSION = '1.29';
 
 %Image::ExifTool::Lang::fr::Translate = (
    'AEAperture' => 'Ouverture AE',
@@ -2870,7 +2870,6 @@ $VERSION = '1.28';
         'Multi-spot' => 'MultiSpot',
         'Other' => 'Autre',
         'Partial' => 'Partielle',
-        'Spot' => 'Grain',
         'Unknown' => 'Inconnu',
       },
     },

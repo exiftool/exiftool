@@ -56,7 +56,7 @@ use vars qw($VERSION %pentaxLensTypes);
 use Image::ExifTool::Exif;
 use Image::ExifTool::HP;
 
-$VERSION = '2.83';
+$VERSION = '2.84';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -502,6 +502,7 @@ my %pentaxModelID = (
     0x13006 => 'WG-20', # (Ricoh)
     0x13010 => '645Z',
     0x1301a => 'K-S1',
+    0x1302e => 'Q-S1',
 );
 
 # Pentax city codes - (PH, Optio WP)

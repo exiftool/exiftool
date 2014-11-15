@@ -10,6 +10,7 @@
 #               3) Pascal de Bruijn private communication (NX100)
 #               4) Jaroslav Stepanek via rt.cpan.org
 #               5) Niels Kristian Bech Jensen private communication
+#               6) Nick Livchits private communication
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::Samsung;
@@ -19,7 +20,7 @@ use vars qw($VERSION %samsungLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.26';
+$VERSION = '1.27';
 
 sub WriteSTMN($$$);
 sub ProcessINFO($$$);
@@ -45,6 +46,7 @@ sub ProcessSamsungIFD($$$);
     12 => 'Samsung NX 12-24mm F4-5.6 ED', #4
     13 => 'Saumsun NX 16-50mm F2-2.8 S ED OIS', #forum3833
     14 => 'Samsung NX 10mm F3.5 Fisheye', #5
+    15 => 'Samsung NX 16-50mm F3.5-5.6 Power Zoom ED OIS', #6
     20 => 'Samsung NX 50-150mm F2.8 S ED OIS', #PH
 );
 
@@ -182,7 +184,8 @@ my %formatMinMax = (
         Name => 'LensType',
         Groups => { 2 => 'Camera' },
         Writable => 'int16u',
-        PrintConv => \%samsungLensTypes,
+        Count => -1,
+        PrintConv => [ \%samsungLensTypes ],
     },
     0xa004 => { #1
         Name => 'LensFirmware',

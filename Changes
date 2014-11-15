@@ -4,8 +4,31 @@ ExifTool Version History
 
 RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 
-Note: The most recent production release is Version 9.70. (Other versions are
+Note: The most recent production release is Version 9.76. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
+
+Nov. 15, 2014 - Version 9.76 (production release)
+
+  - Added support for the LFR format (same as LFP)
+  - Added support for Samsung models which write 2 values for LensType
+  - Added a new Samsung LensType (thanks Nick Livchits)
+  - Added a few new Nikon LensID's (thanks David Puschel)
+  - Added a new PentaxModelID
+  - Added some new Olympus WhiteBalance2 values (thanks LibRaw)
+  - Added a new EXIF:Compression value
+  - Decode a new FujiFilm tag
+  - Decode a few more private TIFF tags
+  - Improved warning message if "DIR" or "FILE" is used literally on the command
+    line
+  - Improved "-j -b" output to encode any non-UTF8 values as Base64
+  - Enhanced -fast option (FastScan API option) to allow file processing to be
+    bypassed entirely
+  - Changed conversions for a couple of Nikon 1 AF tags for consistency
+  - Changed reported FileType for LNK, KEY, KTH, NUMBERS, NMBTEMPLATE and PAGES
+    files to match extension
+  - Fixed problems adding new XMP and deleting old XMP from MP4 videos
+  - Fixed problem writing FileModifyDate/FileCreateDate when
+    -overwrite_original_in_place is used
 
 Nov. 2, 2014 - Version 9.75
 

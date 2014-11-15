@@ -14,34 +14,34 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::XMP;
 use Image::ExifTool::ZIP;
 
-$VERSION = '1.03';
+$VERSION = '1.04';
 
 # test for recognized iWork document extensions and outer XML elements
 my %iWorkType = (
     # file extensions
-    NUMBERS => 'Apple Numbers',
-    PAGES   => 'Apple Pages',
-    KEY     => 'Apple Keynote',
-    KTH     => 'Apple Keynote Theme',
-    NMBTEMPLATE => 'Apple Numbers Template',
+    NUMBERS => 'NUMBERS',
+    PAGES   => 'PAGES',
+    KEY     => 'KEY',
+    KTH     => 'KTH',
+    NMBTEMPLATE => 'NMBTEMPLATE',
     # we don't support double extensions --
     # "PAGES.TEMPLATE" => 'Apple Pages Template',
     # outer XML elements
-    'ls:document' => 'Apple Numbers',
-    'sl:document' => 'Apple Pages',
-    'key:presentation' => 'Apple Keynote',
+    'ls:document' => 'NUMBERS',
+    'sl:document' => 'PAGES',
+    'key:presentation' => 'KEY',
 );
 
 # MIME types for iWork files (Apple has not registered these yet, but these
 # are my best guess after doing some googling.  I'm not 100% sure what "sff"
 # indicates, but I think it refers to the new "flattened" package format)
 my %mimeType = (
-    'Apple Numbers' => 'application/x-iwork-numbers-sffnumbers',
-    'Apple Pages'   => 'application/x-iwork-pages-sffpages',
-    'Apple Keynote' => 'application/x-iWork-keynote-sffkey',
-    'Apple Numbers Template' => 'application/x-iwork-numbers-sfftemplate',
-    'Apple Pages Template'   => 'application/x-iwork-pages-sfftemplate',
-    'Apple Keynote Theme'    => 'application/x-iWork-keynote-sffkth',
+    'NUMBERS'       => 'application/x-iwork-numbers-sffnumbers',
+    'PAGES'         => 'application/x-iwork-pages-sffpages',
+    'KEY'           => 'application/x-iWork-keynote-sffkey',
+    'NMBTEMPLATE'   => 'application/x-iwork-numbers-sfftemplate',
+    'PAGES.TEMPLATE'=> 'application/x-iwork-pages-sfftemplate',
+    'KTH'           => 'application/x-iWork-keynote-sffkth',
 );
 
 # iWork tags

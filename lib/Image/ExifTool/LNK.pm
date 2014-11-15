@@ -15,7 +15,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.06';
+$VERSION = '1.07';
 
 sub ProcessItemID($$$);
 sub ProcessLinkInfo($$$);
@@ -599,7 +599,7 @@ sub ProcessLNK($$)
         $raf->Read($buf2, $len - 0x4c) == $len - 0x4c or return 0;
         $buff .= $buf2;
     }
-    $et->SetFileType('Windows Shortcut');
+    $et->SetFileType();
     SetByteOrder('II');
 
     my $tagTablePtr = GetTagTable('Image::ExifTool::LNK::Main');

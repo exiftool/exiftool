@@ -32,7 +32,7 @@ use vars qw($VERSION %leicaLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.87';
+$VERSION = '1.88';
 
 sub ProcessLeicaLEIC($$$);
 sub WhiteBalanceConv($;$$);
@@ -215,6 +215,7 @@ my %shootingMode = (
     48 => 'Movie', #PH (GM1)
     # 49 - seen for FS4 (snow?)
     51 => 'HDR', #12
+    52 => 'Peripheral Defocus', #Horst Wandres
     55 => 'Handheld Night Shot', #PH (FZ47)
     57 => '3D', #PH (3D1)
     59 => 'Creative Control', #PH (FZ47)

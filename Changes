@@ -7,6 +7,20 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 9.76. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Nov. 28, 2014 - Version 9.77
+
+  - Added FilePath tag (generated only if specified and Cwd is available)
+  - Added a new Panasonic ShootingMode (thanks Horst Wandres)
+  - Added a new FujiFilm WhiteBalance value
+  - Added a new QuickTime vendor ID
+  - Added a new Pentax RawDevelopmentProcess value
+  - Decode a few new QuickTime tags
+  - Decode some new tags in Kodak SP360 MP4 videos
+  - Fixed bug that could cause a runtime error when parsing a Canon EOS 40D
+    image which had been edited by Nikon Capture software
+  - Fixed bug which could produce invalid XML in the -X output when -struct was
+    also used
+
 Nov. 15, 2014 - Version 9.76 (production release)
 
   - Added support for the LFR format (same as LFP)

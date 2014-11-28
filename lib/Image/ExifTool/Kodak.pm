@@ -24,7 +24,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.37';
+$VERSION = '1.38';
 
 sub ProcessKodakIFD($$$);
 sub ProcessKodakText($$$);
@@ -1837,6 +1837,15 @@ my %sceneModeUsed = (
         Name => 'PreviewInfo',
         SubDirectory => { TagTable => 'Image::ExifTool::Kodak::Scrn' },
     },
+);
+
+# tags in "frea" atom of Kodak PixPro SP360 MP4 videos (ref PH)
+%Image::ExifTool::Kodak::frea = (
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
+    NOTES => 'Information stored in the "frea" atom of Kodak PixPro SP360 MP4 videos.',
+    # tima - 4 bytes: 0 0 0 0x20
+    thma => { Name => 'ThumbnailImage', Binary => 1 },
+    scra => { Name => 'PreviewImage',   Binary => 1 },
 );
 
 # preview information in free/Scrn atom of MP4 videos (ref PH)

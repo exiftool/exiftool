@@ -48,80 +48,85 @@ for the official specification.</p>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>'frea'</td>
+<td>Kodak_frea</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Kodak.html#frea'>Kodak frea Tags</a></td></tr>
+<tr>
 <td>'free'</td>
 <td>KodakFree
   <br>Free?</td>
 <td class=c>-<br>N</td>
 <td>--&gt; <a href='Kodak.html#Free'>Kodak Free Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'ftyp'</td>
 <td>FileType</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#FileType'>QuickTime FileType Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'junk'</td>
 <td>Junk?</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'mdat'</td>
 <td>MovieData?</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'mdat-offset'</td>
 <td>MovieDataOffset</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'mdat-size'</td>
 <td>MovieDataSize</td>
 <td class=c>N</td>
 <td><span class=s><span class=n>(not a real tag ID, this tag represents the size of the &#39;mdat&#39; data in bytes
 and is used in the AvgBitrate calculation)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>'meta'</td>
 <td>Meta</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#Meta'>QuickTime Meta Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'moov'</td>
 <td>Movie</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#Movie'>QuickTime Movie Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'pict'</td>
 <td>PreviewPICT</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'pnot'</td>
 <td>Preview</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#Preview'>QuickTime Preview Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'prrt'</td>
 <td>ARDroneTelemetry</td>
 <td class=c>N</td>
 <td><span class=s><span class=n>(telemetry information for each video frame: status1, status2, time, pitch,
 roll, yaw, speed, altitude)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>'skip'</td>
 <td>CanonSkip
   <br>Skip?</td>
 <td class=c>-<br>N</td>
 <td>--&gt; <a href='Canon.html#Skip'>Canon Skip Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'thum'</td>
 <td>ThumbnailImage</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'udta'</td>
 <td>UserData</td>
 <td class=c>-</td>
 <td>--&gt; <a href='FLIR.html#UserData'>FLIR UserData Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'uuid'</td>
 <td>XMP
   <br>UUID-PROF
@@ -131,7 +136,7 @@ roll, yaw, speed, altitude)</span></span></td></tr>
 <td>--&gt; <a href='XMP.html'>XMP Tags</a>
   <br>--&gt; <a href='QuickTime.html#Profile'>QuickTime Profile Tags</a>
   <br>--&gt; <a href='QuickTime.html#Flip'>QuickTime Flip Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'wide'</td>
 <td>Wide?</td>
 <td class=c>N</td>
@@ -382,24 +387,27 @@ roll, yaw, speed, altitude)</span></span></td></tr>
 <table class=frame><tr><td>
 <table class='inner sep' cellspacing=1>
 <tr class=h><th>Value</th><th>VendorID</th><th>Value</th><th>VendorID</th><th>Value</th><th>VendorID</th></tr>
-<tr><td>'AR.D'</td><td>= Parrot AR.Drone</td>
+<tr><td>' KD '</td><td>= Kodak</td>
 <td class=b>'ZORA'</td><td class=b>= Zoran Corporation</td>
-<td>'niko'</td><td>= Nikon</td>
-</tr><tr><td>'FFMP'</td><td>= FFmpeg</td>
-<td class=b>'appl'</td><td class=b>= Apple</td>
 <td>'olym'</td><td>= Olympus</td>
-</tr><tr><td>'GIC '</td><td>= General Imaging Co.</td>
-<td class=b>'fe20'</td><td class=b>= Olympus (fe20)</td>
+</tr><tr><td>'AR.D'</td><td>= Parrot AR.Drone</td>
+<td class=b>'appl'</td><td class=b>= Apple</td>
 <td>'pana'</td><td>= Panasonic</td>
-</tr><tr><td>'KMPI'</td><td>= Konica-Minolta</td>
-<td class=b>'kdak'</td><td class=b>= Kodak</td>
+</tr><tr><td>'FFMP'</td><td>= FFmpeg</td>
+<td class=b>'fe20'</td><td class=b>= Olympus (fe20)</td>
 <td>'pent'</td><td>= Pentax</td>
-</tr><tr><td>'NIKO'</td><td>= Nikon</td>
-<td class=b>'leic'</td><td class=b>= Leica</td>
+</tr><tr><td>'GIC '</td><td>= General Imaging Co.</td>
+<td class=b>'kdak'</td><td class=b>= Kodak</td>
 <td>'pr01'</td><td>= Olympus (pr01)</td>
-</tr><tr><td>'SMI '</td><td>= Sorenson Media Inc.</td>
-<td class=b>'mino'</td><td class=b>= Minolta</td>
+</tr><tr><td>'KMPI'</td><td>= Konica-Minolta</td>
+<td class=b>'leic'</td><td class=b>= Leica</td>
 <td>'sany'</td><td>= Sanyo</td>
+</tr><tr><td>'NIKO'</td><td>= Nikon</td>
+<td class=b>'mino'</td><td class=b>= Minolta</td>
+<td>&nbsp;</td><td>&nbsp;</td>
+</tr><tr><td>'SMI '</td><td>= Sorenson Media Inc.</td>
+<td class=b>'niko'</td><td class=b>= Nikon</td>
+<td>&nbsp;</td><td>&nbsp;</td>
 </tr></table></td></tr></table></blockquote>
 
 <h2><a name='ItemList'>QuickTime ItemList Tags</a></h2>
@@ -592,6 +600,11 @@ added dynamically to this table after processing the Meta Keys information.</p>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>'rate'</td>
+<td>Rating</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>'rtng'</td>
 <td>Rating</td>
 <td class=c>N</td>
@@ -599,42 +612,42 @@ added dynamically to this table after processing the Meta Keys information.</p>
   <br>1 = Explicit
   <br>2 = Clean
   <br>4 = Explicit (old)</span></td></tr>
-<tr>
+<tr class=b>
 <td>'sfID'</td>
 <td>AppleStoreCountry</td>
 <td class=c>N</td>
 <td>--&gt; <a href='QuickTime.html#AppleStoreCountry'>QuickTime AppleStoreCountry Values</a></td></tr>
-<tr class=b>
+<tr>
 <td>'soaa'</td>
 <td>SortAlbumArtist</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'soal'</td>
 <td>SortAlbum</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'soar'</td>
 <td>SortArtist</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'soco'</td>
 <td>SortComposer</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'sonm'</td>
 <td>SortName</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'sosn'</td>
 <td>SortShow</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'stik'</td>
 <td>MediaType</td>
 <td class=c>N</td>
@@ -650,117 +663,117 @@ added dynamically to this table after processing the Meta Keys information.</p>
   <br>14 = Ringtone
   <br>21 = Podcast</td><td>&nbsp;&nbsp;</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td>'titl'</td>
 <td>Title</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'tmpo'</td>
 <td>BeatsPerMinute</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'trkn'</td>
 <td>TrackNumber</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'tven'</td>
 <td>TVEpisodeID</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'tves'</td>
 <td>TVEpisode</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'tvnn'</td>
 <td>TVNetworkName</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'tvsh'</td>
 <td>TVShow</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'tvsn'</td>
 <td>TVSeason</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'yrrc'</td>
 <td>Year</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;ART"</td>
 <td>Artist</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;alb"</td>
 <td>Album</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;cmt"</td>
 <td>Comment</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;com"</td>
 <td>Composer</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;day"</td>
 <td>ContentCreateDate</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;des"</td>
 <td>Description</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;enc"</td>
 <td>EncodedBy</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;gen"</td>
 <td>Genre</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;grp"</td>
 <td>Grouping</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;lyr"</td>
 <td>Lyrics</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;nam"</td>
 <td>Title</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;too"</td>
 <td>Encoder</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;trk"</td>
 <td>Track</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;wrt"</td>
 <td>Composer</td>
 <td class=c>N</td>
@@ -3000,10 +3013,20 @@ defined in this table.</p>
 <tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
+<td>'DISCNUMBER'</td>
+<td>DiscNumber</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>'Encoding Params'</td>
 <td>EncodingParams</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#EncodingParams'>QuickTime EncodingParams Tags</a></td></tr>
+<tr>
+<td>'TRACKNUMBER'</td>
+<td>TrackNumber</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
 <tr class=b>
 <td>'iTunEXTC'</td>
 <td>ContentRating</td>
@@ -3035,6 +3058,11 @@ defined in this table.</p>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>'popularimeter'</td>
+<td>Popularimeter</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>'tool'</td>
 <td>iTunTool</td>
 <td class=c>N</td>
@@ -5690,7 +5718,7 @@ multi-language user data tags found, even if they don&#39;t exist in this table.
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Nov 12, 2014</i>
+<br><i>Last revised Nov 28, 2014</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

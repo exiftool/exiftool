@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '9.76';
+$VERSION = '9.77';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -924,6 +924,10 @@ sub DummyWriteProc { return 1; }
         },
         ValueConvInv => '$val=~tr/\\\\/\//; $val',
     },
+    FilePath => {
+        Groups => { 1 => 'System' },
+        Notes => 'absolute path of source file. Not generated unless specifically requested',
+    },
     TestName => {
         Writable => 1,
         WriteOnly => 1,
@@ -1761,6 +1765,17 @@ sub ExtractInfo($;@)
                 }
                 $self->FoundTag('FileName', $name);
                 $self->FoundTag('Directory', $dir) if defined $dir and length $dir;
+                if ($$self{REQ_TAG_LOOKUP}{filepath} or
+                   ($$self{TAGS_FROM_FILE} and not $$self{EXCL_TAG_LOOKUP}{filepath}))
+                {
+                    local $SIG{'__WARN__'} = \&SetWarning;
+                    if (eval {require Cwd}) {
+                        my $path = eval { Cwd::abs_path($filename) };
+                        $self->FoundTag('FilePath', $path) if defined $path;
+                    } elsif ($$self{REQ_TAG_LOOKUP}{filepath}) {
+                        $self->WarnOnce('The Perl Cwd module must be installed to use FilePath');
+                    }
+                }
                 # get size of resource fork on Mac OS
                 $rsize = -s "$filename/..namedfork/rsrc" if $^O eq 'darwin' and not $$self{IN_RESOURCE};
             }

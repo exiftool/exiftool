@@ -40,7 +40,7 @@ use vars qw($VERSION $AUTOLOAD);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.85';
+$VERSION = '1.86';
 
 sub FixWrongFormat($);
 sub ProcessMOV($$;$);
@@ -229,6 +229,7 @@ my %vendorID = (
    'SMI '=> 'Sorenson Media Inc.',
     ZORA => 'Zoran Corporation',
    'AR.D'=> 'Parrot AR.Drone',
+   ' KD '=> 'Kodak', # (FZ201)
 );
 
 # QuickTime data atom encodings for string types (ref 12)
@@ -322,6 +323,11 @@ my %graphicsMode = (
         },
         # (also Samsung WB750 uncompressed thumbnail data starting with "SDIC\0")
     ],
+    # fre1 - 4 bytes: "june" (Kodak PixPro SP360)
+    frea => {
+        Name => 'Kodak_frea',
+        SubDirectory => { TagTable => 'Image::ExifTool::Kodak::frea' },
+    },
     skip => [
         {
             Name => 'CanonSkip',
@@ -714,6 +720,7 @@ my %graphicsMode = (
     # prfl - Profile (ref 12)
     # clip - clipping --> contains crgn (clip region) (ref 12)
     # mvex - movie extends --> contains mehd (movie extends header), trex (track extends) (ref 14)
+    # ICAT - 4 bytes: "6350" (Nikon CoolPix S6900)
 );
 
 # movie header data block
@@ -1377,6 +1384,18 @@ my %graphicsMode = (
         SubDirectory => { TagTable => 'Image::ExifTool::Kodak::DcMD' },
     },
     # AMBA => Ambarella AVC atom (unknown data written by Kodak Playsport video cam)
+    # tmlp - 1 byte: 0 (PixPro SP360)
+    # pivi - 72 bytes (PixPro SP360)
+    # pive - 12 bytes (PixPro SP360)
+    # m ev - 2 bytes: 0 0 (PixPro SP360)
+    # m wb - 4 bytes: 0 0 0 0 (PixPro SP360)
+    # mclr - 4 bytes: 0 0 0 0 (PixPro SP360)
+    # mmtr - 4 bytes: 6 0 0 0 (PixPro SP360)
+    # mflr - 4 bytes: 0 0 0 0 (PixPro SP360)
+    # lvlm - 24 bytes (PixPro SP360)
+    # ufdm - 4 bytes: 0 0 0 1 (PixPro SP360)
+    # mtdt - 1 byte: 0 (PixPro SP360)
+    # gdta - 75240 bytes (PixPro SP360)
     # ---- LG ----
     adzc => { Name => 'Unknown_adzc', Unknown => 1, Hidden => 1, %langText }, # "false\0/","true\0/"
     adze => { Name => 'Unknown_adze', Unknown => 1, Hidden => 1, %langText }, # "false\0/"
@@ -4217,6 +4236,7 @@ my %graphicsMode = (
             21 => 'Podcast', #15
         },
     },
+    rate => 'Rating', #PH
     titl => 'Title',
     tven => 'TVEpisodeID', #7
     tves => { #7/10
@@ -4403,8 +4423,11 @@ my %graphicsMode = (
     'Encoding Params' => {
         Name => 'EncodingParams',
         SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::EncodingParams' },
-    }
+    },
     # also heard about 'iTunPGAP', but I haven't seen a sample
+    DISCNUMBER => 'DiscNumber', #PH
+    TRACKNUMBER => 'TrackNumber', #PH
+    popularimeter => 'Popularimeter', #PH
 );
 
 # iTunes audio encoding parameters

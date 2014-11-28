@@ -56,7 +56,7 @@ use vars qw($VERSION %pentaxLensTypes);
 use Image::ExifTool::Exif;
 use Image::ExifTool::HP;
 
-$VERSION = '2.84';
+$VERSION = '2.85';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -1999,6 +1999,7 @@ my %binaryDataAttrs = (
             12 => '12 (MX-1)',
             13 => '13 (K-3)',
             14 => '14 (645Z)',
+            15 => '15 (K-S1)', #PH
         },
     },
     0x0067 => { #PH (K-5)

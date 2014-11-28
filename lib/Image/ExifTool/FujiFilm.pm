@@ -26,7 +26,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.46';
+$VERSION = '1.47';
 
 sub ProcessFujiDir($$$);
 sub ProcessFaceRec($$$);
@@ -124,6 +124,7 @@ my %faceCategories = (
             0x304 => 'Living Room Warm White Fluorescent', #2/PH (S5)
             0x400 => 'Incandescent',
             0x500 => 'Flash', #4
+            0x600 => 'Underwater', #forum6109
             0xf00 => 'Custom',
             0xf01 => 'Custom2', #2
             0xf02 => 'Custom3', #2

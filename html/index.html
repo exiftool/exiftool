@@ -74,9 +74,9 @@ span.sup        { font-size: 0.8em; font-weight: normal; position: relative; top
 </div>
 
 <blockquote><table class='dl lg'><tr><td><b>
-<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-9.76.tar.gz/download">
-Download        Version 9.76</a> (3.7 MB) -
-<a href="history.html">Nov. 15, 2014</a></b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-9.77.tar.gz/download">
+Download        Version 9.77</a> (3.7 MB) -
+<a href="history.html">Nov. 28, 2014</a></b></td></tr></table></blockquote>
 
 <p><b>ExifTool is a platform-independent <a href="ExifTool.html">Perl
 library</a> plus a <a href="exiftool_pod.html">command-line application</a> for
@@ -125,8 +125,8 @@ distribution above.)</i></p>
 
 <blockquote><table class='dl lg'><tr><td><b>
 <a name="alone">Windows Executable:</a>
-<a href="http://sourceforge.net/projects/exiftool/files/exiftool-9.76.zip/download">
-         exiftool-9.76.zip</a> (3.7 MB)</b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/exiftool-9.77.zip/download">
+         exiftool-9.77.zip</a> (3.7 MB)</b></td></tr></table></blockquote>
 
 <p><b>The stand-alone Windows executable</b> does not require Perl. Just
 download and un-zip the archive then double-click on
@@ -138,7 +138,7 @@ of Windows (including Windows 7).</p>
 <blockquote><table class='dl lg'><tr><td><b>
 Mac OS X Package:
 <a href="http://sourceforge.net/projects/exiftool/files/ExifTool-9.70.dmg/download">
-         ExifTool-9.76.dmg</a> (2.4 MB)</b></td></tr></table></blockquote>
+         ExifTool-9.77.dmg</a> (2.4 MB)</b></td></tr></table></blockquote>
 
 <p><b>The OS X package</b> installs the ExifTool command-line application and
 libraries in /usr/bin. After installing, type "<code>exiftool</code>" in a
@@ -787,14 +787,14 @@ write syntaxes:</p>
 <blockquote><table class=norm>
 <tr><th>Syntax</th><th>Result</th></tr>
 <tr><td>-TAG=</td><td>Deletes all occurrences of TAG</td></tr>
-<tr><td>-all=</td><td>Deletes all meta information!</td></tr>
+<tr><td>-all=</td><td>Deletes all meta information! <sup>&dagger;</sup></td></tr>
 <tr><td>-GROUP:TAG=</td><td>Deletes TAG only in specified group</td></tr>
 <tr><td>-GROUP:all=</td><td>Deletes all information in specified group</td></tr>
 <tr><td>-[GROUP:]TAG=VALUE</td><td>Sets value of TAG (only in GROUP if specified)</td></tr>
 <tr><td>-[GROUP:]TAG+=VALUE</td><td>Adds item to a list, shifts a date/time, or increments a number</td></tr>
 <tr><td>-[GROUP:]TAG-=VALUE</td><td>Removes item from a list, shifts a date/time, or deletes TAG if it has the specified value</td></tr>
 <tr><td>-[GROUP:]TAG&lt;=FILE</td><td>Sets tag value from contents of specified file</td></tr>
-</table></blockquote>
+</table><sup>&dagger;</sup> See the <a href="#limitations">Writer Limitations</a> for some limitations of this feature.</blockquote>
 
 <p>Quotes are required around VALUE if it contains spaces or other
 special characters, and around the whole argument if the '<code>&lt;=</code>'
@@ -851,15 +851,30 @@ option</a> in the application documentation for more details.</p>
 
 <h2><font color='#cc0000'><a name="limitations">Writer Limitations</a></font></h2>
 <ul>
-<li>ExifTool will not rewrite a file if it detects a significant problem with
-the file format.</li>
+<li>ExifTool will <b>not rewrite a file if it detects a significant problem</b>
+with the file format.</li>
 <li>ExifTool has been tested with a wide range of different images, but since it
-is not possible to test it with every known image type, there is the possibility
-that it will corrupt some files.  Be sure to keep backups of your files.</li>
+is not possible to test it with every known image type, <b>there is the possibility
+that it will corrupt some files</b>.  Be sure to keep backups of your files.</li>
 <li>Even though ExifTool does some validation of the information written, it is
-still possible to write illegal values which may cause problems when reading the
-images with other software.  So take care to validate the information you are
-writing.</li>
+still <b>possible to write illegal values</b> which may cause problems when
+reading the images with other software.  So take care to validate the
+information you are writing.</li>
+<li>ExifTool is <b>not guaranteed to remove metadata completely</b> from a file when
+attempting to delete all metadata. For JPEG images, all APP segments and trailers are removed
+which effectively removes all metadata, but for other formats the results are less
+complete:
+<ul>
+<li>JPEG - APP segments and trailers are removed.</li>
+<li>TIFF - XMP, IPTC and the ExifIFD are removed, but some EXIF may remain in IFD0.</li>
+<li>PNG - Only iTXt, tEXt and zTXt chunks (including XMP) are removed.</li>
+<li>PDF - The original metadata is never actually removed.</li>
+<li>PS - Only some PostScript and XMP may be deleted.</li>
+<li>MOV/MP4 - Only XMP is deleted.</li>
+<li>RAW formats - It is not recommended to remove all metadata from RAW images
+because this may remove some proprietary information that is necessary for the
+image to be properly rendered.</li>
+</ul></li>
 </ul>
 
 <h2><font color='#cc6600'><a name="problems">Known Problems</a></font></h2>

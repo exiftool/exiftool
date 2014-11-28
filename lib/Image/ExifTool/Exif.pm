@@ -52,7 +52,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '3.67';
+$VERSION = '3.68';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -3897,7 +3897,7 @@ sub ProcessExif($$$)
 
     # patch for Canon EOS 40D firmware 1.0.4 bug (incorrect directory counts)
     # (must do this before parsing directory or CameraSettings offset will be suspicious)
-    if ($inMakerNotes and $$et{Model} eq 'Canon EOS 40D') {
+    if ($inMakerNotes and $$et{Model} eq 'Canon EOS 40D' and $numEntries) {
         my $entry = $dirStart + 2 + 12 * ($numEntries - 1);
         my $fmt = Get16u($dataPt, $entry + 2);
         if ($fmt < 1 or $fmt > 13) {

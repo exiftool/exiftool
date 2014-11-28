@@ -7427,6 +7427,15 @@ models such as the P880 and Z1015IS.
   0xfa29   WB_RGBLevelsDaylight                 N
   0xfa2a   WB_RGBLevelsShade                    N
 
+=head3 Kodak frea Tags
+
+Information stored in the "frea" atom of Kodak PixPro SP360 MP4 videos.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  'scra'   PreviewImage                         N
+  'thma'   ThumbnailImage                       N
+
 =head3 Kodak Free Tags
 
 Information stored in the "free" atom of Kodak MP4 videos. (VERY bad form
@@ -19305,6 +19314,7 @@ for the official specification.
   'PICT'               PreviewPICT              N
   '_htc'               HTCInfo                  QuickTime HTCInfo
   'ardt'               ARDroneFile              N
+  'frea'               Kodak_frea               Kodak frea
   'free'               KodakFree                Kodak Free
                        Free?                    N
   'ftyp'               FileType                 QuickTime FileType
@@ -19411,6 +19421,7 @@ added dynamically to this table after processing the Meta Keys information.
   'plID'       PlayListID                       N
   'purd'       PurchaseDate                     N
   'purl'       PodcastURL                       N
+  'rate'       Rating                           N
   'rtng'       Rating                           N
   'sfID'       AppleStoreCountry                N
   'soaa'       SortAlbumArtist                  N
@@ -19451,13 +19462,16 @@ defined in this table.
 
   Tag ID                    Tag Name            Writable
   ------                    --------            --------
+  'DISCNUMBER'              DiscNumber          N
   'Encoding Params'         EncodingParams      QuickTime EncodingParams
+  'TRACKNUMBER'             TrackNumber         N
   'iTunEXTC'                ContentRating       N
   'iTunMOVI'                iTunMOVI            PLIST
   'iTunNORM'                VolumeNormalization N
   'iTunSMPB'                iTunSMPB            N
   'iTunes_CDDB_1'           CDDB1Info           N
   'iTunes_CDDB_TrackNumber' CDDBTrackNumber     N
+  'popularimeter'           Popularimeter       N
   'tool'                    iTunTool            N
 
 =head3 QuickTime EncodingParams Tags
@@ -27127,6 +27141,7 @@ tag is used for dry run testing of writes to FileName.
   FileInodeChangeDate        System             N
   FileModifyDate             System             Y!
   FileName                   System             Y!
+  FilePath                   System             N
   FilePermissions            System             N
   FileSequence               ExifTool           N
   FileSize                   System             N

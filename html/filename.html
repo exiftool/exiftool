@@ -29,9 +29,11 @@ the file is also moved to the specified directory (see
 <a href="#ex6">example 6</a> below).  Existing files will not be overwritten
 (but see "Warning" below).</p>
 
-<p>The <b>TestName</b> tag provides a mechanism for dry-run testing of the
-rename feature.  Writing <b>TestName</b> displays the old and new names without
-making any changes to the files.</p>
+<p>The write-only <b>TestName</b> tag provides a mechanism for dry-run testing
+of the rename feature.  Writing <b>TestName</b> displays the old and new names
+without making any changes to the files.  (Note that there is no corresponding
+test tag for <b>Directory</b>, but <b>TestName</b> supports a full path name
+just like <b>FileName</b>, so the directory may be tested as well.)</p>
 
 <p>The <code>%d</code>, <code>%f</code>, <code>%e</code> file name format codes
 may be used to represent the directory, name and extension of the original file

@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.15';
+$VERSION = '2.16';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -714,7 +714,7 @@ my %meterInfo2 = (
         #   a3 c3 - NEX-6, DSC-HX300, HX50V
         #   a4 c3 - NEX-3N/5R/5T, ILCE-3000/3500
         # unknown offsets or values for DSC-TX20/TX55/RX100M2/RX100M3/QX10/QX30/QX100/RX10/HX60V/HX400V/WX220/WX350,
-        #                               ILCE-7/7R/7S/5000/5100/6000/QX1, ILCA-77M2
+        #                               ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-77M2
     {
         Name => 'Tag2010a', # ad
         Condition => '$$self{Model} =~ /^NEX-5N$/',
@@ -747,7 +747,7 @@ my %meterInfo2 = (
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag2010f' },
     },{
         Name => 'Tag2010g', # ?
-        Condition => '$$self{Model} =~ /^(DSC-(QX30|RX10|RX100M3|HX60V|HX400V|WX220|WX350)|ILCE-(7[RS]?|[56]000|5100|QX1)|ILCA-77M2)\b/',
+        Condition => '$$self{Model} =~ /^(DSC-(QX30|RX10|RX100M3|HX60V|HX400V|WX220|WX350)|ILCE-(7(R|S|M2)?|[56]000|5100|QX1)|ILCA-77M2)\b/',
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag2010g' },
     },{
         Name => 'Tag_0x2010',
@@ -946,8 +946,8 @@ my %meterInfo2 = (
     # 0x0a (e) for SLT-A37/A57/A65V/A77V/A99V, NEX-F3/5N/5R/5T/6/7/VG20E, DSC-RX100/RX1/RX1R/HX10V/HX20V/HX30V/HX200V/TX200V/TX300V/TX66/WX50/WX100/WX150, Lunar/Stellar/HV
     # 0x0c (e) for ILCE-3000/3500, NEX-3N, SLT-A58, DSC-HX50V/HX300/RX100M2/TX30/WX60/WX80/WX200/WX300, DSC-QX10/QX100
     # 0xd0 (e) H90, W650, W690: tag9400 decoding appears not valid/different
-    # 0x23 (e) for DSC-QX30/RX10/HX60V/HX400V/WX220/WX350, ILCE-7/7R/5000/6000, ILCA-77M2
-    # 0x24 (e) for ILCE-7S/5100/QX1, DSC-RX100M3
+    # 0x23 (e) for DSC-RX10/HX60V/HX400V/WX220/WX350, ILCE-7/7R/5000/6000, ILCA-77M2
+    # 0x24 (e) for ILCE-7S/7M2/5100/QX1, DSC-QX30/RX100M3
     # first byte decoded: 40, 204, 202, 27, 58, 62, 48 respectively
     {
         Name => 'Tag9400a',
@@ -996,9 +996,10 @@ my %meterInfo2 = (
         #   3a 20 47 0e    0x0a01    (m)  DSC-RX100M2
         #   43 00 66 0e    0x0a1b    (n)  ILCE-7/7R/5000, DSC-RX10
         #   43 10 66 0e    0x0a1b    (n)  ILCE-7/7R
-        #   44 00 9c 0e    0x0a39    (o)  ILCE-6000, DSC-HX60V/HX400V/QX30/WX220/WX350
-        #   49 00 b0 0e    0x0a3b    (p)  ILCA-77M2, DSC-RX100M3 samples from sony.net
-        #   4a 00 b3 0e    0x0a3d    (q)  ILCE-7S/5100/QX1, DSC-RX100M3
+        #   44 00 9c 0e    0x0a39    (o)  ILCE-6000, DSC-HX60V/HX400V/WX220/WX350 (also DSC-QX30 samples from sony.net)
+        #   49 00 b0 0e    0x0a3b    (p)  ILCA-77M2 (also DSC-RX100M3 samples from sony.net)
+        #   4a 00 b3 0e    0x0a3d    (q)  ILCE-7S/5100/QX1, DSC-QX30/RX100M3
+        #   4e 01 d0 0e    0x0a5a    (r)  ILCE-7M2
         #
         # 0x0004 - (RX100: 0 or 1. subsequent data valid only if 1 - PH)
         # 0x0007 => {
@@ -1029,8 +1030,8 @@ my %meterInfo2 = (
         #   0x13      0x01     ILCE-5000/7/7R, DSC-RX10, but also seen:
         #     0x12      0x01     for ILCE-7/7R and DSC-RX10 samples from Sony.net ...
         #     0x15      0x01     for a few ILCE-7/7R ...
-        #   0x14      0x01     ILCE-6000, DSC-HX60V/HX400V/QX30/WX220/WX350
-        #   0x17      0x01     ILCE-7S/5100/QX1, DSC-RX100M3
+        #   0x14      0x01     ILCE-6000, DSC-HX60V/HX400V/WX220/WX350
+        #   0x17      0x01     ILCE-7S/7M2/5100/QX1, DSC-QX30/RX100M3
         #   var       var      SLT-A58/A99V, HV, ILCA-77M2
         # only valid when first byte 0x0f, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x17 (enciphered 0x8a, 0x70, 0xb6, 0x69, 0x88, 0x20, 0x30, 0xd7)
         Condition => '$$self{DoubleCipher} ? $$valPt =~ /^[\x7e\x46\x1d\x18\x3a\x95\x24\x26]\x01/ : $$valPt =~ /^[\x8a\x70\xb6\x69\x88\x20\x30\xd7]\x01/',
@@ -1054,7 +1055,7 @@ my %meterInfo2 = (
     #  9  0   38  2  2     SLT-A37/A57/A99V, NEX-5R/5T/6/F3/VG30E/VG900, DSC-RX1/RX1R/RX100, Stellar
     # 12  0    8  2  2     SLT-A58, NEX-3N, ILCE-3000/3500, DSC-HX300/HX50V/WX60/WX80/WX300/TX30...
     # 13  0    9  2  2     DSC-QX10/QX100/RX100M2
-    # 15  0   35  2  2     ILCA-77M2, ILCE-5000/5100/6000/7/7R/7S/QX1, DSC-HX400V/HX60V/QX30/RX10/RX100M3/WX220/WX350
+    # 15  0   35  2  2     ILCA-77M2, ILCE-5000/5100/6000/7/7R/7S/7M2/QX1, DSC-HX400V/HX60V/QX30/RX10/RX100M3/WX220/WX350
     # other values for Panorama images and several other models
     0x9404 => [{
         Name => 'Tag9404a',
@@ -1076,9 +1077,10 @@ my %meterInfo2 = (
     #   3   0  (0x1b =  27   0 enc.) SLT, NEX, ILCE-3000/3500, DSC-RX100/RX1 + other DSC of same generation, also QX10 and QX100
     #   4   0  (0x40 =  64   0 enc.) DSC-RX1R
     #   5   0  (0x7d = 125   0 enc.) DSC-RX100M2
-    # 136 var  (0x3a =  58 var enc.) ILCE-7/7R/5000/6000, DSC-HX400V/HX60V/QX30/RX10/WX220/WX350
-    # 137 255  (0xb3 = 179 255 enc.) ILCA-77M2, DSC-RX100M3 - appears to go with 136
-    # 138 255  (0x7e = 126 255 enc.) ILCE-7S/5100/QX1   - appears to go with 136
+    # 136 var  (0x3a =  58 var enc.) ILCE-7/7R/5000/6000, DSC-HX400V/HX60V/RX10/WX220/WX350
+    # 137 var  (0xb3 = 179 var enc.) ILCA-77M2, DSC-RX100M3 - appears to go with 136
+    # 138 var  (0x7e = 126 var enc.) ILCE-7S/5100/QX1, DSC-QX30   - appears to go with 136
+    # 139 var  (0x9a = 154 var enc.) ILCE-7M2
     0x9405 => [{
         Name => 'Tag9405a',
         # first byte must be 0x1b or 0x40 or 0x7d
@@ -1086,8 +1088,8 @@ my %meterInfo2 = (
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag9405a' },
     },{
         Name => 'Tag9405b',
-        # first byte must be 0x3a or 0xb3 or 0x7e
-        Condition => '$$valPt =~ /^[\x3a\xb3\x7e]/',
+        # first byte must be 0x3a, 0xb3, 0x7e or 0x9a
+        Condition => '$$valPt =~ /^[\x3a\xb3\x7e\x9a]/',
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag9405b' },
     },{
         Name => 'Sony_0x9405',
@@ -1243,6 +1245,7 @@ my %meterInfo2 = (
             318 => 'ILCE-7S', #12
             319 => 'ILCA-77M2', #14
             339 => 'ILCE-5100', #12
+            340 => 'ILCE-7M2', #12
             346 => 'ILCE-QX1', #14
         },
     },
@@ -2650,33 +2653,53 @@ my %meterInfo2 = (
         # matches "0x7313 WB_RGGBLevels" when WB set to "Custom", except factor of 4
         Format => 'int16uRev[2]',
     },
-    0x1e => {
-        Name => 'ExposureCompensationSet',
-        Condition => '$$self{Model} !~ /^DSLR-(A450|A500|A550)$/',
-        ValueConv => '($val - 128) / 24', #PH
-        ValueConvInv => 'int($val * 24 + 128.5)',
-        PrintConv => '$val ? sprintf("%+.1f",$val) : $val',
-        PrintConvInv => 'Image::ExifTool::Exif::ConvertFraction($val)',
-    },
-    0x1f => [{
-        Name => 'FlashExposureCompSet',
-        Description => 'Flash Exposure Comp. Setting',
-        Condition => '$$self{Model} !~ /^DSLR-(A450|A500|A550)$/',
-        ValueConv => '($val - 128) / 24', #PH
-        ValueConvInv => 'int($val * 24 + 128.5)',
-        PrintConv => '$val ? sprintf("%+.1f",$val) : $val',
-        PrintConvInv => 'Image::ExifTool::Exif::ConvertFraction($val)',
+    # From here different and overlapping offsets for 3 groups of cameras:
+    # 1) DSLR-A450/A500/A550
+    # 2) NEX-3/5/5C
+    # 3) DSLR-A560/A580, NEX-C3/VG10/VG10E, SLT-A33/A35/A55V
+    0x1e => [{
+        Name => 'BrightnessValue',
+        Condition => '$$self{Model} =~ /^DSLR-(A450|A500|A550)/',
+        Notes => 'A450, A500 and A550',
+        ValueConv => '($val-106)/8',
+        ValueConvInv => '$val * 8 + 106',
     },{
+        Name => 'ExposureCompensationSet',
+        Notes => 'other models',
+        ValueConv => '($val - 128) / 24', #PH
+        ValueConvInv => 'int($val * 24 + 128.5)',
+        PrintConv => '$val ? sprintf("%+.1f",$val) : $val',
+        PrintConvInv => 'Image::ExifTool::Exif::ConvertFraction($val)',
+    }],
+    0x1f => [{
         Name => 'ISO',
-        Condition => '$$self{Model} =~ /^DSLR-(A450|A500|A550)$/',
+        Condition => '$$self{Model} =~ /^DSLR-(A450|A500|A550)/',
+        Notes => 'A450, A500 and A550',
         ValueConv => '$val ? exp(($val/8-6)*log(2))*100 : $val',
         ValueConvInv => '$val ? 8*(log($val/100)/log(2)+6) : $val',
         PrintConv => '$val ? sprintf("%.0f",$val) : "Auto"',
         PrintConvInv => '$val =~ /auto/i ? 0 : $val',
+    },{
+        Name => 'FlashExposureCompSet',
+        Notes => 'other models',
+        Description => 'Flash Exposure Comp. Setting',
+        ValueConv => '($val - 128) / 24', #PH
+        ValueConvInv => 'int($val * 24 + 128.5)',
+        PrintConv => '$val ? sprintf("%+.1f",$val) : $val',
+        PrintConvInv => 'Image::ExifTool::Exif::ConvertFraction($val)',
     }],
-    0x20 => {
+    0x20 => [{
+        Name => 'FNumber',
+        Condition => '$$self{Model} =~ /^DSLR-(A450|A500|A550)/',
+        Notes => 'A450, A500 and A550',
+        ValueConv => '2 ** (($val/8 - 1) / 2)',
+        ValueConvInv => 'int((log($val) * 2 / log(2) + 1) * 8 + 0.5)',
+        PrintConv => 'Image::ExifTool::Exif::PrintFNumber($val)',
+        PrintConvInv => '$val',
+    },{
         Name => 'LiveViewAFMethod',
-        Condition => '$$self{Model} !~ /^(NEX-|DSLR-(A450|A500|A550)$)/',
+        Condition => '$$self{Model} !~ /^NEX-(3|5|5C)/',
+        Notes => 'other models except the NEX-3/5/5C',
         PrintConv => {
             0 => 'n/a',
             1 => 'Phase-detect AF',
@@ -2685,80 +2708,117 @@ my %meterInfo2 = (
             # NOT in Quick AF LV, and is automatically set when mounting SSM/SAM lens
             # - changes into Phase-AF when switching to Quick AF LV.
         },
-    },
-    0x21 => {
+    }],
+    0x21 => [{
+        Name => 'ExposureTime',
+        Condition => '$$self{Model} =~ /^DSLR-(A450|A500|A550)/',
+        Notes => 'A450, A500 and A550',
+        ValueConv => '$val ? 2 ** (6 - $val/8) : 0',
+        ValueConvInv => '$val ? int((6 - log($val) / log(2)) * 8 + 0.5) : 0',
+        PrintConv => '$val ? Image::ExifTool::Exif::PrintExposureTime($val) : "Bulb"',
+        PrintConvInv => 'lc($val) eq "bulb" ? 0 : Image::ExifTool::Exif::ConvertFraction($val)',
+    },{
         Name => 'ISO',
-        Condition => '$$self{Model} =~ /^NEX-(3|5|5C)$/',
+        Condition => '$$self{Model} =~ /^NEX-(3|5|5C)/',
+        Notes => 'NEX-3/5/5C',
         ValueConv => '$val ? exp(($val/8-6)*log(2))*100 : $val',
         ValueConvInv => '$val ? 8*(log($val/100)/log(2)+6) : $val',
         PrintConv => '$val ? sprintf("%.0f",$val) : "Auto"',
         PrintConvInv => '$val =~ /auto/i ? 0 : $val',
-    },
-    0x25 => {
-        Name => 'ISO',
-        Condition => '$$self{Model} !~ /^(NEX-(3|5)|DSLR-(A450|A500|A550)$)/',
-        ValueConv => '$val ? exp(($val/8-6)*log(2))*100 : $val',
-        ValueConvInv => '$val ? 8*(log($val/100)/log(2)+6) : $val',
-        PrintConv => '$val ? sprintf("%.0f",$val) : "Auto"',
-        PrintConvInv => '$val =~ /auto/i ? 0 : $val',
-    },
-    0x26 => { # (this is not in CameraSettings3)
+    }],
+    0x22 => {
         Name => 'FNumber',
-        Condition => '$$self{Model} !~ /^(NEX-(3|5)|DSLR-(A450|A500|A550)$)/',
+        Condition => '$$self{Model} =~ /^NEX-(3|5|5C)/',
+        Notes => 'NEX-3/5/5C only',
         ValueConv => '2 ** (($val/8 - 1) / 2)',
         ValueConvInv => 'int((log($val) * 2 / log(2) + 1) * 8 + 0.5)',
         PrintConv => 'Image::ExifTool::Exif::PrintFNumber($val)',
         PrintConvInv => '$val',
     },
-    0x27 => { # (this is not in CameraSettings3)
-        Name => 'ExposureTime',
-        Condition => '$$self{Model} !~ /^(NEX-(3|5)|DSLR-(A450|A500|A550)$)/',
-        ValueConv => '$val ? 2 ** (6 - $val/8) : 0',
-        ValueConvInv => '$val ? int((6 - log($val) / log(2)) * 8 + 0.5) : 0',
-        PrintConv => '$val ? Image::ExifTool::Exif::PrintExposureTime($val) : "Bulb"',
-        PrintConvInv => 'lc($val) eq "bulb" ? 0 : Image::ExifTool::Exif::ConvertFraction($val)',
-    },
-    0x29 => [{ # value increase of 16 corresponds to doubling of FocalLength
+    0x23 => [{
         Name => 'FocalLength2',
-        Condition => '$$self{Model} !~ /^(NEX-(3|5)|DSLR-(A450|A500|A550)$)/',
+        Condition => '$$self{Model} =~ /^DSLR-(A450|A500|A550)/',
+        Notes => 'A450, A500 and A550',
         ValueConv => '10 * 2 ** (($val-28)/16)',
         ValueConvInv => '$val>0 ? log($val/10)/log(2) * 16 + 28 : 0',
         PrintConv => 'sprintf("%.1f mm",$val)',
         PrintConvInv => '$val=~s/\s*mm$//; $val',
     },{
-        # FocusPosition for A450/A500/A550
-        # seen values from 80 - 255 (= infinity) -- see Composite:FocusDistance2 below
-        Name => 'FocusPosition2',
-        Condition => '$$self{Model} =~ /^DSLR-(A450|A500|A550)$/',
+        Name => 'ExposureTime',
+        Condition => '$$self{Model} =~ /^NEX-(3|5|5C)/',
+        Notes => 'NEX-3/5/5C',
+        ValueConv => '$val ? 2 ** (6 - $val/8) : 0',
+        ValueConvInv => '$val ? int((6 - log($val) / log(2)) * 8 + 0.5) : 0',
+        PrintConv => '$val ? Image::ExifTool::Exif::PrintExposureTime($val) : "Bulb"',
+        PrintConvInv => 'lc($val) eq "bulb" ? 0 : Image::ExifTool::Exif::ConvertFraction($val)',
     }],
-    0x2a => {
+    0x24 => {
         Name => 'ExposureCompensation2',
-        Condition => '$$self{Model} !~ /^(NEX-(3|5)|DSLR-(A450|A500|A550)$)/',
+        Condition => '$$self{Model} =~ /^DSLR-(A450|A500|A550)/',
+        Notes => 'A450, A500 and A550',
         Format => 'int16s',
         ValueConv => '$val / 8',
         ValueConvInv => '$val * 8',
         PrintConv => '$val ? sprintf("%+.1f",$val) : $val',
         PrintConvInv => '$val',
     },
-    0x2b => {
-        # FocusPosition for NEX-3/5/5C
-        # seen values from 80 - 255 (= infinity) -- see Composite:FocusDistance2 below
-        Name => 'FocusPosition2',
-        Condition => '$$self{Model} =~ /^NEX-(3|5|5C)$/',
-    },
-    0x2c => {
+    0x25 => [{
+        Name => 'FocalLength2',
+        Condition => '$$self{Model} =~ /^NEX-(3|5|5C)/',
+        Notes => 'NEX-3/5/5C',
+        ValueConv => '10 * 2 ** (($val-28)/16)',
+        ValueConvInv => '$val>0 ? log($val/10)/log(2) * 16 + 28 : 0',
+        PrintConv => 'sprintf("%.1f mm",$val)',
+        PrintConvInv => '$val=~s/\s*mm$//; $val',
+    },{
+        Name => 'ISO',
+        Condition => '$$self{Model} !~ /^DSLR-(A450|A500|A550)/',
+        Notes => 'other models except the A450, A500 and A550',
+        ValueConv => '$val ? exp(($val/8-6)*log(2))*100 : $val',
+        ValueConvInv => '$val ? 8*(log($val/100)/log(2)+6) : $val',
+        PrintConv => '$val ? sprintf("%.0f",$val) : "Auto"',
+        PrintConvInv => '$val =~ /auto/i ? 0 : $val',
+    }],
+    0x26 => [{
         Name => 'FlashExposureCompSet2',
         Description => 'Flash Exposure Comp. Setting 2',
-        Condition => '$$self{Model} !~ /^(NEX-(3|5)|DSLR-(A450|A500|A550)$)/',
+        Condition => '$$self{Model} =~ /^DSLR-(A450|A500|A550)/',
+        Notes => 'A450, A500 and A550',
         Format => 'int16s',
         ValueConv => '$val / 8',
         ValueConvInv => '$val * 8',
         PrintConv => '$val ? sprintf("%+.1f",$val) : $val',
         PrintConvInv => '$val',
+    },{
+        Name => 'ExposureCompensation2',
+        Condition => '$$self{Model} =~ /^NEX-(3|5|5C)/',
+        Notes => 'NEX-3/5/5C',
+        Format => 'int16s',
+        ValueConv => '$val / 8',
+        ValueConvInv => '$val * 8',
+        PrintConv => '$val ? sprintf("%+.1f",$val) : $val',
+        PrintConvInv => '$val',
+    },{
+        Name => 'FNumber',
+        Notes => 'other models',
+        ValueConv => '2 ** (($val/8 - 1) / 2)',
+        ValueConvInv => 'int((log($val) * 2 / log(2) + 1) * 8 + 0.5)',
+        PrintConv => 'Image::ExifTool::Exif::PrintFNumber($val)',
+        PrintConvInv => '$val',
+    }],
+    0x27 => {
+        Name => 'ExposureTime',
+        Condition => '$$self{Model} !~ /^NEX-(3|5|5C)|DSLR-(A450|A500|A550)/',
+        Notes => 'models other than the A450, A500, A550 and NEX-3/5/5C',
+        ValueConv => '$val ? 2 ** (6 - $val/8) : 0',
+        ValueConvInv => '$val ? int((6 - log($val) / log(2)) * 8 + 0.5) : 0',
+        PrintConv => '$val ? Image::ExifTool::Exif::PrintExposureTime($val) : "Bulb"',
+        PrintConvInv => 'lc($val) eq "bulb" ? 0 : Image::ExifTool::Exif::ConvertFraction($val)',
     },
-    0x2e => { # seen some A55 images where this does not match the other Orientation tags
+    0x28 => {
         Name => 'Orientation2',
-        Condition => '$$self{Model} !~ /^(NEX-(3|5)|DSLR-(A450|A500|A550)$)/',
+        Condition => '$$self{Model} =~ /^DSLR-(A450|A500|A550)/',
+        Notes => 'A450, A500 and A550',
         PrintConv => {
             1 => 'Horizontal (normal)',
             2 => 'Rotate 180',
@@ -2766,15 +2826,103 @@ my %meterInfo2 = (
             8 => 'Rotate 270 CW',
         },
     },
-    0x2f => {
-        # FocusPosition for A560/A580/A33/A35/A55V and NEX-C3/VG10E
+    0x29 => [{
+        # FocusPosition for A450/A500/A550
         # seen values from 80 - 255 (= infinity) -- see Composite:FocusDistance2 below
         Name => 'FocusPosition2',
-        Condition => '$$self{Model} !~ /^(NEX-(3|5|5C)|DSLR-(A450|A500|A550)$)/',
+        Condition => '$$self{Model} =~ /^DSLR-(A450|A500|A550)/',
+        Notes => 'A450, A500 and A550',
+    },{
+        # value increase of 16 corresponds to doubling of FocalLength
+        Name => 'FocalLength2',
+        Condition => '$$self{Model} !~ /^NEX-(3|5|5C)/',
+        Notes => 'other models except the NEX-3/5/5C',
+        ValueConv => '10 * 2 ** (($val-28)/16)',
+        ValueConvInv => '$val>0 ? log($val/10)/log(2) * 16 + 28 : 0',
+        PrintConv => 'sprintf("%.1f mm",$val)',
+        PrintConvInv => '$val=~s/\s*mm$//; $val',
+    }],
+    0x2a => [{
+        Name => 'FlashAction2',
+        Condition => '$$self{Model} =~ /^DSLR-(A450|A500|A550)/',
+        Notes => 'A450, A500 and A550',
+        PrintConv => {
+            0 => 'Did not fire',
+            1 => 'Fired',
+        },
+    },{
+        Name => 'ExposureCompensation2',
+        Condition => '$$self{Model} !~ /^NEX-(3|5|5C)/',
+        Notes => 'other models except the NEX-3/5/5C',
+        Format => 'int16s',
+        ValueConv => '$val / 8',
+        ValueConvInv => '$val * 8',
+        PrintConv => '$val ? sprintf("%+.1f",$val) : $val',
+        PrintConvInv => '$val',
+    }],
+    0x2b => {
+        # FocusPosition for NEX-3/5/5C
+        # seen values from 80 - 255 (= infinity) -- see Composite:FocusDistance2 below
+        Name => 'FocusPosition2',
+        Condition => '$$self{Model} =~ /^NEX-(3|5|5C)/',
+        Notes => 'NEX-3/5/5C only',
+    },
+    0x2c => [{
+        Name => 'FocusMode2',
+        Condition => '$$self{Model} =~ /^DSLR-(A450|A500|A550)/',
+        Notes => 'A450, A500 and A550',
+        PrintConv => {
+            0 => 'AF',
+            1 => 'MF',
+        },
+    },{
+        Name => 'FlashAction2',
+        Condition => '$$self{Model} =~ /^NEX-(3|5|5C)/',
+        Notes => 'NEX-3/5/5C FlashAction2',
+        PrintConv => {
+            0 => 'Did not fire',
+            1 => 'Fired',
+        },
+    },{
+        Name => 'FlashExposureCompSet2',
+        Description => 'Flash Exposure Comp. Setting 2',
+        Notes => 'other models FlashExposureCompSet2',
+        Format => 'int16s',
+        ValueConv => '$val / 8',
+        ValueConvInv => '$val * 8',
+        PrintConv => '$val ? sprintf("%+.1f",$val) : $val',
+        PrintConvInv => '$val',
+    }],
+    0x2e => [{
+        Name => 'FocusMode2',
+        Condition => '$$self{Model} =~ /^NEX-(3|5|5C)/',
+        Notes => 'NEX-3/5/5C',
+        PrintConv => {
+            0 => 'AF',
+            1 => 'MF',
+        },
+    },{
+        Name => 'Orientation2', # seen some A55 images where this does not match the other Orientation tags
+        Condition => '$$self{Model} !~ /^DSLR-(A450|A500|A550)/',
+        Notes => 'other models except the A450, A500 and A550',
+        PrintConv => {
+            1 => 'Horizontal (normal)',
+            2 => 'Rotate 180',
+            6 => 'Rotate 90 CW',
+            8 => 'Rotate 270 CW',
+        },
+    }],
+    0x2f => {
+        # FocusPosition for A560/A580/A33/A35/A55V and NEX-C3/VG10/VG10E
+        # seen values from 80 - 255 (= infinity) -- see Composite:FocusDistance2 below
+        Name => 'FocusPosition2',
+        Condition => '$$self{Model} !~ /^NEX-(3|5|5C)|DSLR-(A450|A500|A550)/',
+        Notes => 'models other than the A450, A500, A550 and NEX-3/5/5C',
     },
     0x30 => {
         Name => 'FlashAction2',
-        Condition => '$$self{Model} !~ /^(NEX-(3|5)|DSLR-(A450|A500|A550)$)/',
+        Condition => '$$self{Model} !~ /^NEX-(3|5|5C)|DSLR-(A450|A500|A550)/',
+        Notes => 'models other than the A450, A500, A550 and NEX-3/5/5C',
         PrintConv => {
             0 => 'Did not fire',
             1 => 'Fired',
@@ -2782,7 +2930,8 @@ my %meterInfo2 = (
     },
     0x32 => {
         Name => 'FocusMode2',
-        Condition => '$$self{Model} !~ /^(NEX-(3|5)|DSLR-(A450|A500|A550)$)/',
+        Condition => '$$self{Model} !~ /^NEX-(3|5|5C)|DSLR-(A450|A500|A550)/',
+        Notes => 'models other than the A450, A500, A550 and NEX-3/5/5C',
         PrintConv => {
             0 => 'AF',
             1 => 'MF',
@@ -4239,6 +4388,21 @@ my %faceInfo = (
         PrintConv => 'sprintf("%.3d",$val)',
         PrintConvInv => '$val',
     },
+    0x03f0 => {
+        Name => 'E-mountVersionLens',
+        Format => 'int16u',
+        Condition => '($$self{Model} =~ /^NEX-/)',
+        PrintConv => 'sprintf("%x.%.2x",$val>>8,$val&0xff)',
+        PrintConvInv => 'my @a=split(/\./,$val);(hex($a[0])<<8)|hex($a[1])',
+    },
+    0x03f3 => {
+        Name => 'E-mountVersionCamera',
+        Format => 'int16u',
+        Condition => '($$self{Model} =~ /^NEX-/)',
+        PrintConv => 'sprintf("%x.%.2x",$val>>8,$val&0xff)',
+        PrintConvInv => 'my @a=split(/\./,$val);(hex($a[0])<<8)|hex($a[1])',
+        # seen values 1.00, 1.01, 1.02, 1.03 and 1.04 for NEX-3/5/5C/C3/VG10/VG10E with various Firmware versions.
+    },
     0x3f7 => { #12
         Name => 'LensType2',
         Condition => '($$self{Model} =~ /^NEX-/) and ($$self{LensMount} != 1)',
@@ -5279,7 +5443,7 @@ my %exposureProgram2010 = (
     FORMAT => 'int8u',
     NOTES => q{
         Valid for DSC-HX400V/HX60V/QX30/RX10/RX100M3/WX220/WX350,
-        ILCE-7/7R/7S/5000/5100/6000/QX1, ILCA-77M2.
+        ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-77M2.
     },
     WRITABLE => 1,
     FIRST_ENTRY => 0,
@@ -5555,16 +5719,21 @@ my %exposureProgram2010 = (
         PrintConv => 'sprintf("%.1f",$val)',
         PrintConvInv => '$val',
     },
-    0x004c => { # only ILCE-7/7R/7S/5000/5100/6000/QX1 - but appears not valid when flash is used ...
+    0x003f => {
+        Name => 'ReleaseMode2',
+        Condition => '$$self{Model} !~ /^(DSC-|Stellar)/',
+        %releaseMode2,
+    },
+    0x004c => { # only ILCE-7/7R/7S/7M2/5000/5100/6000/QX1 - but appears not valid when flash is used ...
         Name => 'ImageCount2',
-        Condition => '($$self{Model} =~ /^(ILCE-(7[RS]?|[56]000|5100|QX1))\b/) and (($$self{FlashFired} & 0x01) != 1)',
+        Condition => '($$self{Model} =~ /^(ILCE-(7(R|S|M2)?|[56]000|5100|QX1))\b/) and (($$self{FlashFired} & 0x01) != 1)',
         Format => 'int32u',
         RawConv => '$val & 0x00ffffff',
     },
-    0x0051 => { # only ILCE-7/7R/7S/5000/5100/6000/QX1, but hours usually different from SonyDateTime - UTC?
+    0x0051 => { # only ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, but hours usually different from SonyDateTime - UTC?
                 # appears not valid (all '0') when flash is used, panorama, hdr modes ...
         Name => 'SonyDateTime2',
-        Condition => '$$self{Model} =~ /^(ILCE-(7[RS]?|[56]000|5100|QX1))\b/',
+        Condition => '$$self{Model} =~ /^(ILCE-(7(R|S|M2)?|[56]000|5100|QX1))\b/',
         Groups => { 2 => 'Time' },
         Shift => 'Time',
         Format => 'undef[6]',
@@ -5674,7 +5843,7 @@ my %exposureProgram2010 = (
         Name => 'ImageCount3',
         Format => 'int32u',
         RawConv => '$val == 0 ? undef : $val',
-        Condition => '$$self{Model} =~ /^(ILCE-(7S|5100|QX1)|ILCA-77M2)/',
+        Condition => '$$self{Model} =~ /^(ILCE-(7S|7M2|5100|QX1)|ILCA-77M2)/',
     },
     0x01aa => {
         Name => 'ImageCount3',
@@ -5873,7 +6042,7 @@ my %exposureProgram2010 = (
     WRITABLE => 1,
     NOTES => q{
         Valid for DSC-HX400V/HX60V/QX30/RX10/RX100M3/WX220/WX350,
-        ILCE-7/7R/7S/5000/5100/6000/QX1, ILCA-77M2.
+        ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-77M2.
     },
     FIRST_ENTRY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
@@ -6183,7 +6352,7 @@ my %exposureProgram2010 = (
     GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
     NOTES => q{
         Valid for DSC-HX400V/HX60V/QX30/RX10/RX100M3/WX220/WX350,
-        ILCE-7/7R/7S/5000/5100/6000/QX1, ILCA-77M2.
+        ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-77M2.
     },
     0x0004 => {
         Name => 'SonyISO',
@@ -6445,6 +6614,7 @@ my %exposureProgram2010 = (
     DATAMEMBER => [ 0x0008 ],
     NOTES => 'NEX and ILCE models only.',
 
+    # 0x0001 - 0 for all NEX and ILCE-3000/3500, 20 for all other ILCE (17 for ILCE samples from Sony.net)
     # 0x0008 - LensMount, but different values from Tag9405-0x0105 and Tag9050-0x0604.
     # don't know what difference is between values '1' and '5' ...
     0x0008 => {
@@ -6458,21 +6628,48 @@ my %exposureProgram2010 = (
         },
     },
     # 0x0009 - LensType2:
-    # This LensType2 tag gives values '1' and '2' for LA-EA1 and LA-EA2 respectively.
-    # Presumably similar to CameraSettings3-0x03f7, where value '1' for A-mount lenses was observed.
-    # Tag9405-0x0605 and Tag9050-0x0107 always give value '0' for A-mount lenses.
-    # When LA-EA2 is used, Tag940e AFInfo gives sequential info blocks NEX (Phase-detect AF).
-    # Also seen values '3' and '6' for A-lens on ILCE-7/7R, probably relating to LA-EA3 and LA-EA4 (NC).
-    # - this is the only tag that appears to indicate adapter info
-    # - when normal E-mount lenses are used, there are at least 2 other LensType2's with the correct lens
-    # - so limit outputting this tag ONLY for adapter info (with the RawConv below)
-    0x0009 => { #12
+    # This tag appears to also indicate adapter info, similar to CameraSettings3-0x03f7 for the original NEX-3/5.
+    # (Tag9405-0x0605 and Tag9050-0x0107 LensType2 always give '0' for adapters/A-mount lenses.)
+    # - seen a few instances of 0x0009 indicating an E-mount lens, but 0xb027 LensType indicating an A-mount lens:
+    #   possibly due to adapter info not being read/reset correctly ?
+    0x0009 => {
         Name => 'LensType2',
-        RawConv => '($val > 0 and $val < 32784) ? $val : undef',
+        RawConv => '(($$self{LensMount} != 0) or ($val > 0 and $val < 32784)) ? $val : undef',
         Format => 'int16u',
         SeparateTable => 1,
         PrintConv => \%sonyLensTypes2,
     },
+    0x000b => {
+        Name => 'E-mountVersionCamera',
+        Format => 'int16u',
+        PrintConv => 'sprintf("%x.%.2x",$val>>8,$val&0xff)',
+        PrintConvInv => 'my @a=split(/\./,$val);(hex($a[0])<<8)|hex($a[1])',
+        # camera Firmware versions:
+        # 1.14: NEX-5N/5R/6/7/F3 v1.00
+        # 1.20: NEX-3N v1.00, NEX-6 v1.01, NEX-7 v1.02, ILCE-3000 v1.00, ILCE-3500 v1.01
+        # 1.30: NEX-5T v1.00, NEX-6 v1.02, NEX-7 v1.03
+        # 1.31: ILCE-5000 v1.00, ILCE-7/7R v1.00 and v1.01
+        # 1.40: ILCE-5100/6000/7S/QX1 v1.00, ILCE-7/7R v1.02
+        # 1.50: ILCE-7M2 v1.00
+    },
+    0x000d => {
+        Name => 'E-mountVersionLens',
+        Format => 'int16u',
+        PrintConv => 'sprintf("%x.%.2x",$val>>8,$val&0xff)',
+        PrintConvInv => 'my @a=split(/\./,$val);(hex($a[0])<<8)|hex($a[1])',
+        # lens models:
+        # 0.00: Unknown lenses/adapters
+        # 1.00: Sigma DN, Tamron DiIII, Zeiss Touit, SEL18200LE
+        # 1.07 (Ver.01): Original E-lenses
+        # 1.08: LA-EA1, Metabones Smart
+        # 1.14: LA-EA2
+        # 1.20 (Ver.02): Newer or firmware-updated E-lenses, LA-EA3
+        # 1.30: LA-EA4
+        # 1.31: Original FE-lenses, SEL1850
+        # 1.35: SEL70200G
+        # 1.40: SEL1635Z, SELP28135G, Zeiss Loxia
+    },
+    # 0x0016 - 0x003f: non-0 data present when: 0x0001>0 AND 0x0008=4(E-mount) AND 0x000f<255
 );
 
 

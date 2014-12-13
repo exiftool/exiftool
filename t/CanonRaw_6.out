@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.60
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.78
 [File, System, Image] FileName - File Name: CanonRaw_6_failed.cr2
 [File, System, Image] Directory - Directory: t
 [File, System, Image] FileSize - File Size: 8.6 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2014:05:08 10:53:04-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2014:05:08 10:53:04-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2014:05:08 10:53:04-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2014:12:11 11:32:19-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2014:12:11 11:32:19-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2014:12:11 11:32:19-05:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: CR2
 [File, File, Image] MIMEType - MIME Type: image/x-canon-cr2
@@ -16,7 +16,7 @@
 [EXIF, IFD0, Image] 259 - Compression: JPEG (old-style)
 [EXIF, IFD0, Camera] 271 - Make: Canon
 [EXIF, IFD0, Camera] 272 - Camera Model Name: Canon EOS 350D DIGITAL
-[EXIF, IFD0, Image] 273 - Preview Image Start: 8736
+[EXIF, IFD0, Image] 273 - Preview Image Start: 8738
 [EXIF, IFD0, Image] 274 - Orientation: Horizontal (normal)
 [EXIF, IFD0, Image] 279 - Preview Image Length: 26
 [EXIF, IFD0, Image] 282 - X Resolution: 72
@@ -52,20 +52,20 @@
 [EXIF, ExifIFD, Camera] 41987 - White Balance: Auto
 [EXIF, ExifIFD, Camera] 41990 - Scene Capture Type: Standard
 [EXIF, ExifIFD, Image] 42032 - Owner Name: Phil Harvey
-[EXIF, IFD1, Image] 513 - Thumbnail Offset: 8676
+[EXIF, IFD1, Image] 513 - Thumbnail Offset: 8678
 [EXIF, IFD1, Image] 514 - Thumbnail Length: 28
 [EXIF, IFD2, Image] 256 - Image Width: 384
 [EXIF, IFD2, Image] 257 - Image Height: 256
 [EXIF, IFD2, Image] 258 - Bits Per Sample: 8 8 8
 [EXIF, IFD2, Image] 259 - Compression: JPEG (old-style)
 [EXIF, IFD2, Image] 262 - Photometric Interpretation: RGB
-[EXIF, IFD2, Image] 273 - Strip Offsets: 8720
+[EXIF, IFD2, Image] 273 - Strip Offsets: 8722
 [EXIF, IFD2, Image] 277 - Samples Per Pixel: 3
 [EXIF, IFD2, Image] 278 - Rows Per Strip: 256
 [EXIF, IFD2, Image] 279 - Strip Byte Counts: 16
 [EXIF, IFD2, Image] 284 - Planar Configuration: Chunky
 [EXIF, IFD3, Image] 259 - Compression: JPEG (old-style)
-[EXIF, IFD3, Image] 273 - Strip Offsets: 8704
+[EXIF, IFD3, Image] 273 - Strip Offsets: 8706
 [EXIF, IFD3, Image] 279 - Strip Byte Counts: 16
 [EXIF, IFD3, Image] 50752 - Raw Image Segmentation: 1 1758 1758
 [IPTC, IPTC, Other] 25 - Keywords: CR2 test

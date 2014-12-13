@@ -509,9 +509,9 @@ Spot)</span></span></td></tr>
   <br>285 = SLT-A35
   <br>286 = SLT-A65 / SLT-A65V
   <br>287 = SLT-A77 / SLT-A77V
-  <br>288 = NEX-5N</td><td>&nbsp;&nbsp;</td>
-  <td>289 = NEX-7
-  <br>290 = NEX-VG20E
+  <br>288 = NEX-5N
+  <br>289 = NEX-7</td><td>&nbsp;&nbsp;</td>
+  <td>290 = NEX-VG20E
   <br>291 = SLT-A37
   <br>292 = SLT-A57
   <br>293 = NEX-F3
@@ -537,6 +537,7 @@ Spot)</span></span></td></tr>
   <br>318 = ILCE-7S
   <br>319 = ILCA-77M2
   <br>339 = ILCE-5100
+  <br>340 = ILCE-7M2
   <br>346 = ILCE-QX1</td><td>&nbsp;&nbsp;</td></tr></table>
 </td></tr>
 <tr class=b>
@@ -2550,68 +2551,126 @@ TIFF image)</span></span></td></tr>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='30 = 0x1e'>30</td>
-<td>ExposureCompensationSet</td>
-<td class=c>int8u</td>
-<td>&nbsp;</td></tr>
+<td>BrightnessValue
+  <br>ExposureCompensationSet</td>
+<td class=c>int8u<br>int8u</td>
+<td><span class=s><span class=n>(A450, A500 and A550)</span>
+  <br><span class=n>(other models)</span></span></td></tr>
 <tr>
 <td class=r title='31 = 0x1f'>31</td>
-<td>FlashExposureCompSet
-  <br>ISO</td>
+<td>ISO
+  <br>FlashExposureCompSet</td>
 <td class=c>int8u<br>int8u</td>
-<td>&nbsp;</td></tr>
+<td><span class=s><span class=n>(A450, A500 and A550)</span>
+  <br><span class=n>(other models)</span></span></td></tr>
 <tr class=b>
 <td class=r title='32 = 0x20'>32</td>
-<td>LiveViewAFMethod</td>
-<td class=c>int8u</td>
-<td><span class=s>0 = n/a
+<td>FNumber
+  <br>LiveViewAFMethod</td>
+<td class=c>int8u<br>int8u</td>
+<td><span class=s><span class=n>(A450, A500 and A550)</span>
+  <br><span class=n>(other models except the NEX-3/5/5C)</span>
+  <br>0 = n/a
   <br>1 = Phase-detect AF
   <br>2 = Contrast AF</span></td></tr>
 <tr>
 <td class=r title='33 = 0x21'>33</td>
-<td>ISO</td>
-<td class=c>int8u</td>
-<td>&nbsp;</td></tr>
+<td>ExposureTime
+  <br>ISO</td>
+<td class=c>int8u<br>int8u</td>
+<td><span class=s><span class=n>(A450, A500 and A550)</span>
+  <br><span class=n>(NEX-3/5/5C)</span></span></td></tr>
 <tr class=b>
-<td class=r title='37 = 0x25'>37</td>
-<td>ISO</td>
-<td class=c>int8u</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td class=r title='38 = 0x26'>38</td>
+<td class=r title='34 = 0x22'>34</td>
 <td>FNumber</td>
 <td class=c>int8u</td>
-<td>&nbsp;</td></tr>
+<td><span class=s><span class=n>(NEX-3/5/5C only)</span></span></td></tr>
+<tr>
+<td class=r title='35 = 0x23'>35</td>
+<td>FocalLength2
+  <br>ExposureTime</td>
+<td class=c>int8u<br>int8u</td>
+<td><span class=s><span class=n>(A450, A500 and A550)</span>
+  <br><span class=n>(NEX-3/5/5C)</span></span></td></tr>
 <tr class=b>
+<td class=r title='36 = 0x24'>36</td>
+<td>ExposureCompensation2</td>
+<td class=c>int16s</td>
+<td><span class=s><span class=n>(A450, A500 and A550)</span></span></td></tr>
+<tr>
+<td class=r title='37 = 0x25'>37</td>
+<td>FocalLength2
+  <br>ISO</td>
+<td class=c>int8u<br>int8u</td>
+<td><span class=s><span class=n>(NEX-3/5/5C)</span>
+  <br><span class=n>(other models except the A450, A500 and A550)</span></span></td></tr>
+<tr class=b>
+<td class=r title='38 = 0x26'>38</td>
+<td>FlashExposureCompSet2
+  <br>ExposureCompensation2
+  <br>FNumber</td>
+<td class=c>int16s<br>int16s<br>int8u</td>
+<td><span class=s><span class=n>(A450, A500 and A550)</span>
+  <br><span class=n>(NEX-3/5/5C)</span>
+  <br><span class=n>(other models)</span></span></td></tr>
+<tr>
 <td class=r title='39 = 0x27'>39</td>
 <td>ExposureTime</td>
 <td class=c>int8u</td>
-<td>&nbsp;</td></tr>
+<td><span class=s><span class=n>(models other than the A450, A500, A550 and NEX-3/5/5C)</span></span></td></tr>
+<tr class=b>
+<td class=r title='40 = 0x28'>40</td>
+<td>Orientation2</td>
+<td class=c>int8u</td>
+<td><span class=s><span class=n>(A450, A500 and A550)</span>
+  <br>1 = Horizontal (normal)
+  <br>2 = Rotate 180
+  <br>6 = Rotate 90 CW
+  <br>8 = Rotate 270 CW</span></td></tr>
 <tr>
 <td class=r title='41 = 0x29'>41</td>
-<td>FocalLength2
-  <br>FocusPosition2</td>
+<td>FocusPosition2
+  <br>FocalLength2</td>
 <td class=c>int8u<br>int8u</td>
-<td>&nbsp;</td></tr>
+<td><span class=s><span class=n>(A450, A500 and A550)</span>
+  <br><span class=n>(other models except the NEX-3/5/5C)</span></span></td></tr>
 <tr class=b>
 <td class=r title='42 = 0x2a'>42</td>
-<td>ExposureCompensation2</td>
-<td class=c>int16s</td>
-<td>&nbsp;</td></tr>
+<td>FlashAction2
+  <br>ExposureCompensation2</td>
+<td class=c>int8u<br>int16s</td>
+<td><span class=s><span class=n>(A450, A500 and A550)</span>
+  <br>0 = Did not fire
+  <br>1 = Fired
+  <br><span class=n>(other models except the NEX-3/5/5C)</span></span></td></tr>
 <tr>
 <td class=r title='43 = 0x2b'>43</td>
 <td>FocusPosition2</td>
 <td class=c>int8u</td>
-<td>&nbsp;</td></tr>
+<td><span class=s><span class=n>(NEX-3/5/5C only)</span></span></td></tr>
 <tr class=b>
 <td class=r title='44 = 0x2c'>44</td>
-<td>FlashExposureCompSet2</td>
-<td class=c>int16s</td>
-<td>&nbsp;</td></tr>
+<td>FocusMode2
+  <br>FlashAction2
+  <br>FlashExposureCompSet2</td>
+<td class=c>int8u<br>int8u<br>int16s</td>
+<td><span class=s><span class=n>(A450, A500 and A550)</span>
+  <br>0 = AF
+  <br>1 = MF
+  <br><span class=n>(NEX-3/5/5C FlashAction2)</span>
+  <br>0 = Did not fire
+  <br>1 = Fired
+  <br><span class=n>(other models FlashExposureCompSet2)</span></span></td></tr>
 <tr>
 <td class=r title='46 = 0x2e'>46</td>
-<td>Orientation2</td>
-<td class=c>int8u</td>
-<td><span class=s>1 = Horizontal (normal)
+<td>FocusMode2
+  <br>Orientation2</td>
+<td class=c>int8u<br>int8u</td>
+<td><span class=s><span class=n>(NEX-3/5/5C)</span>
+  <br>0 = AF
+  <br>1 = MF
+  <br><span class=n>(other models except the A450, A500 and A550)</span>
+  <br>1 = Horizontal (normal)
   <br>2 = Rotate 180
   <br>6 = Rotate 90 CW
   <br>8 = Rotate 270 CW</span></td></tr>
@@ -2619,18 +2678,20 @@ TIFF image)</span></span></td></tr>
 <td class=r title='47 = 0x2f'>47</td>
 <td>FocusPosition2</td>
 <td class=c>int8u</td>
-<td>&nbsp;</td></tr>
+<td><span class=s><span class=n>(models other than the A450, A500, A550 and NEX-3/5/5C)</span></span></td></tr>
 <tr>
 <td class=r title='48 = 0x30'>48</td>
 <td>FlashAction2</td>
 <td class=c>int8u</td>
-<td><span class=s>0 = Did not fire
+<td><span class=s><span class=n>(models other than the A450, A500, A550 and NEX-3/5/5C)</span>
+  <br>0 = Did not fire
   <br>1 = Fired</span></td></tr>
 <tr class=b>
 <td class=r title='50 = 0x32'>50</td>
 <td>FocusMode2</td>
 <td class=c>int8u</td>
-<td><span class=s>0 = AF
+<td><span class=s><span class=n>(models other than the A450, A500, A550 and NEX-3/5/5C)</span>
+  <br>0 = AF
   <br>1 = MF</span></td></tr>
 </table></td></tr></table></blockquote>
 
@@ -3913,6 +3974,16 @@ multi-frame noise reduction)</span></span></td></tr>
 <td class=c>int16u</td>
 <td><span class=s><span class=n>(A450, A500 and A550)</span>
   <br>[Mask 0x3ff]</span></td></tr>
+<tr class=b>
+<td class=r title='1008 = 0x3f0'>1008</td>
+<td>E-mountVersionLens</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='1011 = 0x3f3'>1011</td>
+<td>E-mountVersionCamera</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='1015 = 0x3f7'>1015</td>
 <td>LensType2</td>
@@ -5239,7 +5310,7 @@ for panorama images.</p>
 
 <h2><a name='Tag2010g'>Sony Tag2010g Tags</a></h2>
 <p>Valid for DSC-HX400V/HX60V/QX30/RX10/RX100M3/WX220/WX350,
-ILCE-7/7R/7S/5000/5100/6000/QX1, ILCA-77M2.</p>
+ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-77M2.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -5669,71 +5740,76 @@ substitution cipher, but the deciphered values are listed below.</p>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td title='0x003f = 63'>0x003f</td>
+<td>ReleaseMode2</td>
+<td class=c>int8u</td>
+<td>--&gt; <a href='Sony.html#ReleaseMode2'>Sony ReleaseMode2 Values</a></td></tr>
+<tr class=b>
 <td title='0x004c = 76'>0x004c</td>
 <td>ImageCount2</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x0051 = 81'>0x0051</td>
 <td>SonyDateTime2</td>
 <td class=c>undef[6]</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x007c = 124'>0x007c</td>
 <td>InternalSerialNumber</td>
 <td class=c title=' ~ = Writable only with -n'>int8u[4]~</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x00f0 = 240'>0x00f0</td>
 <td>InternalSerialNumber</td>
 <td class=c>int8u[5]</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x0105 = 261'>0x0105</td>
 <td>LensMount</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Unknown
   <br>1 = A-mount
   <br>2 = E-mount</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0106 = 262'>0x0106</td>
 <td>LensFormat</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Unknown
   <br>1 = APS-C
   <br>2 = Full-frame</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0107 = 263'>0x0107</td>
 <td>LensType2</td>
 <td class=c>int16u</td>
 <td>--&gt; <a href='Sony.html#LensType2'>Sony LensType2 Values</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0109 = 265'>0x0109</td>
 <td>LensType</td>
 <td class=c>int16u</td>
 <td>--&gt; <a href='Sony.html#LensType'>Sony LensType Values</a>
   <br><span class='n s'>(SLT models, and NEX with A-mount lenses)</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0115 = 277'>0x0115</td>
 <td>LensSpecFeatures</td>
 <td class=c>undef[2]</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x0116 = 278'>0x0116</td>
 <td>LensSpecFeatures</td>
 <td class=c>undef[2]</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x01a0 = 416'>0x01a0</td>
 <td>ImageCount3</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x01aa = 426'>0x01aa</td>
 <td>ImageCount3</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x01bd = 445'>0x01bd</td>
 <td>ImageCount3</td>
 <td class=c>int32u</td>
@@ -5897,7 +5973,7 @@ DSC-HX50V, DSC-QX10/QX100.</p>
 
 <h2><a name='Tag9400c'>Sony Tag9400c Tags</a></h2>
 <p>Valid for DSC-HX400V/HX60V/QX30/RX10/RX100M3/WX220/WX350,
-ILCE-7/7R/7S/5000/5100/6000/QX1, ILCA-77M2.</p>
+ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-77M2.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -6106,7 +6182,7 @@ ILCE-7/7R/7S/5000/5100/6000/QX1, ILCA-77M2.</p>
 
 <h2><a name='Tag9405b'>Sony Tag9405b Tags</a></h2>
 <p>Valid for DSC-HX400V/HX60V/QX30/RX10/RX100M3/WX220/WX350,
-ILCE-7/7R/7S/5000/5100/6000/QX1, ILCA-77M2.</p>
+ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-77M2.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -6335,6 +6411,16 @@ ILCE-7/7R/7S/5000/5100/6000/QX1, ILCA-77M2.</p>
 <td>LensType2</td>
 <td class=c>int16u</td>
 <td>--&gt; <a href='Sony.html#LensType2'>Sony LensType2 Values</a></td></tr>
+<tr>
+<td title='0x000b = 11'>0x000b</td>
+<td>E-mountVersionCamera</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x000d = 13'>0x000d</td>
+<td>E-mountVersionLens</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='AFInfo'>Sony AFInfo Tags</a></h2>
@@ -7389,7 +7475,7 @@ the JPEG image from a PMP file)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Nov 2, 2014</i>
+<br><i>Last revised Dec 10, 2014</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

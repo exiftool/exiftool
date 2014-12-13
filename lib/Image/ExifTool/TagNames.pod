@@ -832,7 +832,7 @@ EXIF 2.3 specification.
   0xc7a1   CameraLabel               IFD0       string
   0xc7a3   ProfileHueSatMapEncoding  IFD0       int32u!
   0xc7a4   ProfileLookTableEncoding  IFD0       int32u!
-  0xc7a5   BaselineExposureOffset    IFD0       rational64u!
+  0xc7a5   BaselineExposureOffset    IFD0       rational64s!
   0xc7a6   DefaultBlackRender        IFD0       int32u!
   0xc7a7   NewRawImageDigest         IFD0       int8u[16]!
   0xc7a8   RawToPreviewGain          IFD0       double!
@@ -5526,6 +5526,12 @@ Information about creative filter settings.
   0x0501   FisheyeFilter                        N
   0x0601   PaintingFilter                       N
   0x0701   WatercolorFilter                     N
+
+=head3 Canon CNOP Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  [no tags known]
 
 =head3 Canon CNTH Tags
 
@@ -11883,14 +11889,21 @@ Tags found in the EXIF-format maker notes of newer Samsung models.
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
   0x0001   MakerNoteVersion                     undef[4]
+  0x0002   DeviceType                           int32u
+  0x0003   SamsungModelID                       int32u
   0x0021   PictureWizard                        Samsung PictureWizard
   0x0030   LocalLocationName                    string
   0x0031   LocationName                         string
   0x0035   PreviewIFD                           Nikon PreviewIFD
   0x0043   CameraTemperature                    rational64s
+  0x0045   RawCompressionMode                   int32u
+  0x0100   FaceDetect                           int16u
+  0x0120   FaceRecognition                      int32u
+  0x0123   FaceName                             string
   0xa001   FirmwareName                         string
   0xa003   LensType                             int16u[n]
   0xa004   LensFirmware                         string
+  0xa005   InternalLensSerialNumber             string
   0xa010   SensorAreas                          int32u[8]
   0xa011   ColorSpace                           int16u
   0xa012   SmartRange                           int16u
@@ -11908,10 +11921,20 @@ Tags found in the EXIF-format maker notes of newer Samsung models.
   0xa030   ColorMatrix                          int32s[9]
   0xa031   ColorMatrixSRGB                      int32s[9]
   0xa032   ColorMatrixAdobeRGB                  int32s[9]
-  0xa040   ToneCurve1                           int32u[23]
-  0xa041   ToneCurve2                           int32u[23]
-  0xa042   ToneCurve3                           int32u[23]
-  0xa043   ToneCurve4                           int32u[23]
+  0xa033   CbCrMatrixDefault                    int32s[4]
+  0xa034   CbCrMatrix                           int32s[4]
+  0xa035   CbCrGainDefault                      int32u[2]
+  0xa036   CbCrGain                             int32u[2]
+  0xa040   ToneCurveSRGBDefault                 int32u[23]
+  0xa041   ToneCurveAdobeRGBDefault             int32u[23]
+  0xa042   ToneCurveSRGB                        int32u[23]
+  0xa043   ToneCurveAdobeRGB                    int32u[23]
+  0xa048   RawData?                             int32s[12]
+  0xa050   Distortion?                          int32s[8]
+  0xa051   Chromatic Aberration?                int16u[22]
+  0xa052   Vignetting?                          int16u[15]
+  0xa053   VignettingCorrection?                int16u[15]
+  0xa054   VignettingSetting?                   int16u[15]
 
 =head3 Samsung PictureWizard Tags
 
@@ -12552,20 +12575,35 @@ A580, A33, A35, A55, NEX-3/5/C3 and VG10E.
      24    ViewingMode                          int8u
      25    FaceDetection                        int8u
      26    CustomWB_RBLevels                    int16uRev[2]
-     30    ExposureCompensationSet              int8u
-     31    FlashExposureCompSet                 int8u
+     30    BrightnessValue                      int8u
+           ExposureCompensationSet              int8u
+     31    ISO                                  int8u
+           FlashExposureCompSet                 int8u
+     32    FNumber                              int8u
+           LiveViewAFMethod                     int8u
+     33    ExposureTime                         int8u
            ISO                                  int8u
-     32    LiveViewAFMethod                     int8u
-     33    ISO                                  int8u
-     37    ISO                                  int8u
-     38    FNumber                              int8u
+     34    FNumber                              int8u
+     35    FocalLength2                         int8u
+           ExposureTime                         int8u
+     36    ExposureCompensation2                int16s
+     37    FocalLength2                         int8u
+           ISO                                  int8u
+     38    FlashExposureCompSet2                int16s
+           ExposureCompensation2                int16s
+           FNumber                              int8u
      39    ExposureTime                         int8u
-     41    FocalLength2                         int8u
-           FocusPosition2                       int8u
-     42    ExposureCompensation2                int16s
+     40    Orientation2                         int8u
+     41    FocusPosition2                       int8u
+           FocalLength2                         int8u
+     42    FlashAction2                         int8u
+           ExposureCompensation2                int16s
      43    FocusPosition2                       int8u
-     44    FlashExposureCompSet2                int16s
-     46    Orientation2                         int8u
+     44    FocusMode2                           int8u
+           FlashAction2                         int8u
+           FlashExposureCompSet2                int16s
+     46    FocusMode2                           int8u
+           Orientation2                         int8u
      47    FocusPosition2                       int8u
      48    FlashAction2                         int8u
      50    FocusMode2                           int8u
@@ -12773,6 +12811,8 @@ A560, A580, NEX-3, NEX-5, NEX-C3 and NEX-VG10E.
     780    SequenceNumber                       int8u
     788    ImageNumber                          int16u & 0x3fff
     790    FolderNumber                         int16u & 0x3ff
+   1008    E-mountVersionLens                   int16u
+   1011    E-mountVersionCamera                 int16u
    1015    LensType2                            int16u
    1024    ImageNumber                          int16u & 0x3fff
    1026    FolderNumber                         int16u & 0x3ff
@@ -13036,7 +13076,7 @@ Valid for DSC-RX100M2, DSC-QX10/QX100.
 =head3 Sony Tag2010g Tags
 
 Valid for DSC-HX400V/HX60V/QX30/RX10/RX100M3/WX220/WX350,
-ILCE-7/7R/7S/5000/5100/6000/QX1, ILCA-77M2.
+ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-77M2.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
@@ -13132,6 +13172,7 @@ substitution cipher, but the deciphered values are listed below.
   0x0032   ImageCount                           int32u
   0x003a   SonyExposureTime                     int16u
   0x003c   SonyFNumber                          int16u
+  0x003f   ReleaseMode2                         int8u
   0x004c   ImageCount2                          int32u
   0x0051   SonyDateTime2                        undef[6]
   0x007c   InternalSerialNumber                 int8u[4]~
@@ -13184,7 +13225,7 @@ DSC-HX50V, DSC-QX10/QX100.
 =head3 Sony Tag9400c Tags
 
 Valid for DSC-HX400V/HX60V/QX30/RX10/RX100M3/WX220/WX350,
-ILCE-7/7R/7S/5000/5100/6000/QX1, ILCA-77M2.
+ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-77M2.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
@@ -13242,7 +13283,7 @@ Valid for SLT, NEX, ILCE-3000/3500 and several DSC models.
 =head3 Sony Tag9405b Tags
 
 Valid for DSC-HX400V/HX60V/QX30/RX10/RX100M3/WX220/WX350,
-ILCE-7/7R/7S/5000/5100/6000/QX1, ILCA-77M2.
+ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-77M2.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
@@ -13294,6 +13335,8 @@ NEX and ILCE models only.
   ------   --------                             --------
   0x0008   LensMount                            int8u
   0x0009   LensType2                            int16u
+  0x000b   E-mountVersionCamera                 int16u
+  0x000d   E-mountVersionLens                   int16u
 
 =head3 Sony AFInfo Tags
 
@@ -19421,7 +19464,7 @@ added dynamically to this table after processing the Meta Keys information.
   'plID'       PlayListID                       N
   'purd'       PurchaseDate                     N
   'purl'       PodcastURL                       N
-  'rate'       Rating                           N
+  'rate'       RatingPercent                    N
   'rtng'       Rating                           N
   'sfID'       AppleStoreCountry                N
   'soaa'       SortAlbumArtist                  N
@@ -19906,6 +19949,7 @@ multi-language user data tags found, even if they don't exist in this table.
   'CNCV'       CompressorVersion                N
   'CNFV'       FirmwareVersion                  N
   'CNMN'       Model                            N
+  'CNOP'       CanonCNOP                        Canon CNOP
   'CNTH'       CanonCNTH                        Canon CNTH
   'DcMD'       KodakDcMD                        Kodak DcMD
   'FFMV'       FujiFilmFFMV                     FujiFilm FFMV

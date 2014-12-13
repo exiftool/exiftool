@@ -19,7 +19,7 @@ use strict;
 use vars qw($VERSION $warnString);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.17';
+$VERSION = '1.18';
 
 sub WarnProc($) { $warnString = $_[0]; }
 
@@ -488,9 +488,12 @@ sub ProcessZIP($$)
                             DataPt => \$buff,
                             DirLen => length $buff,
                             DataLen => length $buff,
-                            NoStruct => 1,  # (avoid structure warnings when copying)
                         );
+                        # (avoid structure warnings when copying from XML)
+                        my $oldWarn = $$et{NO_STRUCT_WARN};
+                        $$et{NO_STRUCT_WARN} = 1;
                         $et->ProcessDirectory(\%dirInfo, GetTagTable('Image::ExifTool::XMP::Main'));
+                        $$et{NO_STRUCT_WARN} = $oldWarn;
                     }
                 }
                 # process rootfile of EPUB container if applicable
@@ -520,10 +523,13 @@ sub ProcessZIP($$)
                         DataPt => \$buff,
                         DirLen => length $buff,
                         DataLen => length $buff,
-                        NoStruct => 1,
                         IgnoreProp => { 'package' => 1, metadata => 1 },
                     );
+                    # (avoid structure warnings when copying from XML)
+                    my $oldWarn = $$et{NO_STRUCT_WARN};
+                    $$et{NO_STRUCT_WARN} = 1;
                     $et->ProcessDirectory(\%dirInfo, GetTagTable('Image::ExifTool::XMP::XML'));
+                    $$et{NO_STRUCT_WARN} = $oldWarn;
                     last;
                 }
                 if ($openDocType{$mime} or $meta) {

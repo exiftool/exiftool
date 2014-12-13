@@ -623,7 +623,7 @@ sub RestoreStruct($;$)
                 # this could happen for invalid XMP containing mixed lists
                 # (or for something like this -- what should we do here?:
                 # <meta:user-defined meta:name="License">test</meta:user-defined>)
-                $et->Warn("$$strInfo{Name} is not a structure!");
+                $et->Warn("$$strInfo{Name} is not a structure!") unless $$et{NO_STRUCT_WARN};
                 next;
             }
         } else {
@@ -734,8 +734,10 @@ sub RestoreStruct($;$)
         if ($err) {
             # this may happen if we have a structural error in the XMP
             # (like an improperly contained list for example)
-            my $ns = $$tagInfo{Namespace} || $$tagInfo{Table}{NAMESPACE} || '';
-            $et->Warn("Error $err placing $ns:$$tagInfo{TagID} in structure or list", 1);
+            unless ($$et{NO_STRUCT_WARN}) {
+                my $ns = $$tagInfo{Namespace} || $$tagInfo{Table}{NAMESPACE} || '';
+                $et->Warn("Error $err placing $ns:$$tagInfo{TagID} in structure or list", 1);
+            }
             delete $structs{$strInfo} unless $oldStruct;
         } elsif ($tagInfo eq $strInfo) {
             # just a regular list tag

@@ -40,7 +40,7 @@ use vars qw($VERSION $AUTOLOAD);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.86';
+$VERSION = '1.87';
 
 sub FixWrongFormat($);
 sub ProcessMOV($$;$);
@@ -1338,6 +1338,10 @@ my %graphicsMode = (
     CNTH => { #PH (PowerShot S95)
         Name => 'CanonCNTH',
         SubDirectory => { TagTable => 'Image::ExifTool::Canon::CNTH' },
+    },
+    CNOP => { #PH (7DmkII)
+        Name => 'CanonCNOP',
+        SubDirectory => { TagTable => 'Image::ExifTool::Canon::CNOP' },
     },
     # CNDB - 2112 bytes (550D)
     # CNDM - 4 bytes - 0xff,0xd8,0xff,0xd9 (S95)
@@ -4236,7 +4240,7 @@ my %graphicsMode = (
             21 => 'Podcast', #15
         },
     },
-    rate => 'Rating', #PH
+    rate => 'RatingPercent', #PH
     titl => 'Title',
     tven => 'TVEpisodeID', #7
     tves => { #7/10

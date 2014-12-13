@@ -63,6 +63,57 @@ information.</p>
 <td class=c>undef[4]</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td title='0x0002 = 2'>0x0002</td>
+<td>DeviceType</td>
+<td class=c>int32u</td>
+<td><span class=s>0x1000 = Compact Digital Camera
+  <br>0x2000 = High-end NX Camera
+  <br>0x3000 = HXM Video Camera
+  <br>0x12000 = Cell Phone
+  <br>0x300000 = SMX Video Camera</span></td></tr>
+<tr>
+<td title='0x0003 = 3'>0x0003</td>
+<td>SamsungModelID</td>
+<td class=c>int32u</td>
+<td><span class=s>0x100101c = NX10
+  <br>0x1001226 = HMX-S15BP
+  <br>0x1001233 = HMX-Q10
+  <br>0x1001234 = HMX-H304
+  <br>0x100130c = NX100
+  <br>0x1001327 = NX11
+  <br>0x170104e = ES70, ES71 / VLUU ES70, ES71 / SL600
+  <br>0x1701052 = ES73 / VLUU ES73 / SL605
+  <br>0x1701300 = ES28 / VLUU ES28
+  <br>0x1701303 = ES74,ES75,ES78 / VLUU ES75,ES78
+  <br>0x2001046 = PL150 / VLUU PL150 / TL210 / PL151
+  <br>0x2001311 = PL120,PL121 / VLUU PL120,PL121
+  <br>0x2001315 = PL170,PL171 / VLUUPL170,PL171
+  <br>0x200131e = PL210, PL211 / VLUU PL210, PL211
+  <br>0x2701317 = PL20,PL21 / VLUU PL20,PL21
+  <br>0x2a0001b = WP10 / VLUU WP10 / AQ100
+  <br>0x3000000 = WB800F
+  <br>0x3a00018 = WB2200F
+  <br>0x400101f = ST1000 / ST1100 / VLUU ST1000 / CL65
+  <br>0x4001022 = ST550 / VLUU ST550 / TL225
+  <br>0x4001025 = ST200 / ST200F / ST201 / ST201F / ST205F
+  <br>0x400103e = VLUU ST5500, ST5500, CL80
+  <br>0x4001041 = VLUU ST5000, ST5000, TL240
+  <br>0x4001043 = ST70 / VLUU ST70 / ST71
+  <br>0x400130a = VLUU ST80, ST80
+  <br>0x400130e = ST90,ST91 / VLUU ST90,ST91
+  <br>0x4001313 = VLUU ST95, ST95
+  <br>0x4a00015 = VLUU ST60
+  <br>0x4a0135b = ST65 / VLUU ST65 / ST67
+  <br>0x5000000 = ST700
+  <br>0x5001038 = WB2000
+  <br>0x500103a = WB650 / VLUU WB650 / WB660
+  <br>0x500103c = WB600 / VLUU WB600 / WB610
+  <br>0x500133e = WB150 / WB150F / WB152 / WB152F / WB151
+  <br>0x5a0000f = WB5000 / HZ25W
+  <br>0x6001036 = EX1
+  <br>0x700131c = VLUU SH100, SH100
+  <br>0x27127002 = SMX-C20N</span></td></tr>
+<tr class=b>
 <td title='0x0021 = 33'>0x0021</td>
 <td>PictureWizard</td>
 <td class=c>int16u</td>
@@ -86,6 +137,28 @@ information.</p>
 <td title='0x0043 = 67'>0x0043</td>
 <td>CameraTemperature</td>
 <td class=c>rational64s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0045 = 69'>0x0045</td>
+<td>RawCompressionMode</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0100 = 256'>0x0100</td>
+<td>FaceDetect</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr>
+<td title='0x0120 = 288'>0x0120</td>
+<td>FaceRecognition</td>
+<td class=c>int32u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr class=b>
+<td title='0x0123 = 291'>0x0123</td>
+<td>FaceName</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0xa001 = 40961'>0xa001</td>
@@ -120,112 +193,167 @@ information.</p>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td title='0xa005 = 40965'>0xa005</td>
+<td>InternalLensSerialNumber</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td title='0xa010 = 40976'>0xa010</td>
 <td>SensorAreas</td>
 <td class=c>int32u[8]</td>
 <td><span class=s><span class=n>(full and valid sensor areas)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td title='0xa011 = 40977'>0xa011</td>
 <td>ColorSpace</td>
 <td class=c>int16u</td>
 <td><span class=s>0 = sRGB
   <br>1 = Adobe RGB</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0xa012 = 40978'>0xa012</td>
 <td>SmartRange</td>
 <td class=c>int16u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0xa013 = 40979'>0xa013</td>
 <td>ExposureCompensation</td>
 <td class=c>rational64s</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xa014 = 40980'>0xa014</td>
 <td>ISO</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xa018 = 40984'>0xa018</td>
 <td>ExposureTime</td>
 <td class=c>rational64u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xa019 = 40985'>0xa019</td>
 <td>FNumber</td>
 <td class=c>rational64u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xa01a = 40986'>0xa01a</td>
 <td>FocalLengthIn35mmFormat</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xa020 = 40992'>0xa020</td>
 <td>EncryptionKey</td>
 <td class=c title=' ! = Unsafe'>int32u[11]!</td>
 <td><span class=s><span class=n>(key used to decrypt the tags below)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td title='0xa021 = 40993'>0xa021</td>
 <td>WB_RGGBLevelsUncorrected</td>
 <td class=c>int32u[4]</td>
 <td><span class=s><span class=n>(these tags not corrected for WB_RGGBLevelsBlack)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td title='0xa022 = 40994'>0xa022</td>
 <td>WB_RGGBLevelsAuto</td>
 <td class=c>int32u[4]</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xa023 = 40995'>0xa023</td>
 <td>WB_RGGBLevelsIlluminator1</td>
 <td class=c>int32u[4]</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xa024 = 40996'>0xa024</td>
 <td>WB_RGGBLevelsIlluminator2</td>
 <td class=c>int32u[4]</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xa028 = 41000'>0xa028</td>
 <td>WB_RGGBLevelsBlack</td>
 <td class=c>int32s[4]</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xa030 = 41008'>0xa030</td>
 <td>ColorMatrix</td>
 <td class=c>int32s[9]</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xa031 = 41009'>0xa031</td>
 <td>ColorMatrixSRGB</td>
 <td class=c>int32s[9]</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xa032 = 41010'>0xa032</td>
 <td>ColorMatrixAdobeRGB</td>
 <td class=c>int32s[9]</td>
 <td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xa033 = 41011'>0xa033</td>
+<td>CbCrMatrixDefault</td>
+<td class=c>int32s[4]</td>
+<td>&nbsp;</td></tr>
 <tr>
+<td title='0xa034 = 41012'>0xa034</td>
+<td>CbCrMatrix</td>
+<td class=c>int32s[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xa035 = 41013'>0xa035</td>
+<td>CbCrGainDefault</td>
+<td class=c>int32u[2]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xa036 = 41014'>0xa036</td>
+<td>CbCrGain</td>
+<td class=c>int32u[2]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td title='0xa040 = 41024'>0xa040</td>
-<td>ToneCurve1</td>
+<td>ToneCurveSRGBDefault</td>
 <td class=c>int32u[23]</td>
 <td><span class=s><span class=n>(first value gives the number of tone curve entries.  This is followed by an
 array of X coordinates then an array of Y coordinates)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td title='0xa041 = 41025'>0xa041</td>
-<td>ToneCurve2</td>
+<td>ToneCurveAdobeRGBDefault</td>
+<td class=c>int32u[23]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xa042 = 41026'>0xa042</td>
+<td>ToneCurveSRGB</td>
 <td class=c>int32u[23]</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td title='0xa042 = 41026'>0xa042</td>
-<td>ToneCurve3</td>
+<td title='0xa043 = 41027'>0xa043</td>
+<td>ToneCurveAdobeRGB</td>
 <td class=c>int32u[23]</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
-<td title='0xa043 = 41027'>0xa043</td>
-<td>ToneCurve4</td>
-<td class=c>int32u[23]</td>
+<td title='0xa048 = 41032'>0xa048</td>
+<td>RawData?</td>
+<td class=c>int32s[12]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xa050 = 41040'>0xa050</td>
+<td>Distortion?</td>
+<td class=c>int32s[8]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xa051 = 41041'>0xa051</td>
+<td>Chromatic Aberration?</td>
+<td class=c>int16u[22]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xa052 = 41042'>0xa052</td>
+<td>Vignetting?</td>
+<td class=c>int16u[15]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xa053 = 41043'>0xa053</td>
+<td>VignettingCorrection?</td>
+<td class=c>int16u[15]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xa054 = 41044'>0xa054</td>
+<td>VignettingSetting?</td>
+<td class=c>int16u[15]</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -469,7 +597,7 @@ such as the Galaxy S4.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Nov 10, 2014</i>
+<br><i>Last revised Dec 10, 2014</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

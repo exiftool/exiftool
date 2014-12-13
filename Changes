@@ -7,6 +7,25 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 9.76. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Dec. 13, 2014 - Version 9.78
+
+  - Added a new Nikon LensID and a new Canon LensType (thanks LibRaw)
+  - Decode a new unknown atom in Canon MOV videos
+  - Decode a number of new Sony tags (thanks Jos Roost)
+  - Decode a number of new Samsung tags
+  - Improved MakerNote compatibility when writing by adding the same amount of
+    padding after the MakerNote IFD as that written by the specific camera model
+  - Changed the DNG BaselineExposureOffset to a signed rational (contrary to the
+    DNG 1.4 specification, which specifies an unsigned RATIONAL, but obviously
+    Adobe meant for it to store negative values)
+  - Changed name of new QuickTime Rating tag to RatingPercent
+  - Fixed problem introduced in 9.64 where multiple list values from some tags
+    in ZIP-based files were extracted as separate tags instead of as a list when
+    the -struct option was used, and implemented a different patch to just
+    suppress the structure warnings without changing the 9.63 behaviour
+  - Fixed problem where some EXIF information in MOV videos could be corrupted
+    when writing
+
 Nov. 28, 2014 - Version 9.77
 
   - Added FilePath tag (generated only if specified and Cwd is available)

@@ -20,7 +20,7 @@ use vars qw($VERSION %samsungLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.27';
+$VERSION = '1.28';
 
 sub WriteSTMN($$$);
 sub ProcessINFO($$$);
@@ -129,12 +129,111 @@ my %formatMinMax = (
         Writable => 'undef',
         Count => 4,
     },
+    0x0002 => {
+        Name => 'DeviceType',
+        Writable => 'int32u',
+        PrintHex => 1,
+        PrintConv => {
+            0x1000 => 'Compact Digital Camera',
+            0x2000 => 'High-end NX Camera',
+            0x3000 => 'HXM Video Camera',
+            0x12000 => 'Cell Phone',
+            0x300000 => 'SMX Video Camera',
+        },
+    },
+    0x0003 => {
+        Name => 'SamsungModelID',
+        Writable => 'int32u',
+        PrintHex => 1,
+        PrintConv => {
+            0x100101c => 'NX10',
+            0x1001226 => 'HMX-S10BP',
+            0x1001226 => 'HMX-S15BP',
+            0x1001233 => 'HMX-Q10',
+            0x1001234 => 'HMX-H300',
+            0x1001234 => 'HMX-H304',
+            0x100130c => 'NX100',
+            0x1001327 => 'NX11',
+            0x170104e => 'ES70, ES71 / VLUU ES70, ES71 / SL600',
+            0x1701052 => 'ES73 / VLUU ES73 / SL605',
+            0x1701300 => 'ES28 / VLUU ES28',
+            0x1701303 => 'ES74,ES75,ES78 / VLUU ES75,ES78',
+            0x2001046 => 'PL150 / VLUU PL150 / TL210 / PL151',
+            0x2001311 => 'PL120,PL121 / VLUU PL120,PL121',
+            0x2001315 => 'PL170,PL171 / VLUUPL170,PL171',
+            0x200131e => 'PL210, PL211 / VLUU PL210, PL211',
+            0x2701317 => 'PL20,PL21 / VLUU PL20,PL21',
+            0x2a0001b => 'WP10 / VLUU WP10 / AQ100',
+            0x3000000 => 'DV150F / DV151F / DV155F',
+            0x3000000 => 'NX mini',
+            0x3000000 => 'NX3000',
+            0x3000000 => 'ST150F / ST151F / ST152F',
+            0x3000000 => 'WB250F / WB251F / WB252F',
+            0x3000000 => 'WB30F / WB31F / WB32F',
+            0x3000000 => 'WB350F / WB351F / WB352F',
+            0x3000000 => 'WB800F',
+            0x3a00018 => 'ES30 / VLUU ES30',
+            0x3a00018 => 'ES80 / ES81',
+            0x3a00018 => 'PL200 / VLUU PL200',
+            0x3a00018 => 'PL80 / VLUU PL80 / SL630 / PL81',
+            0x3a00018 => 'PL90 / VLUU PL90',
+            0x3a00018 => 'WB1100F / WB1101F / WB1102F',
+            0x3a00018 => 'WB2200F',
+            0x400101f => 'ST1000 / ST1100 / VLUU ST1000 / CL65',
+            0x4001022 => 'ST550 / VLUU ST550 / TL225',
+            0x4001025 => 'DV300 / DV300F / DV305F',
+            0x4001025 => 'ST500 / VLUU ST500 / TL220',
+            0x4001025 => 'ST200 / ST200F / ST201 / ST201F / ST205F',
+            0x400103e => 'VLUU ST5500, ST5500, CL80',
+            0x4001041 => 'VLUU ST5000, ST5000, TL240',
+            0x4001043 => 'ST70 / VLUU ST70 / ST71',
+            0x400130a => 'VLUU ST100, ST100',
+            0x400130a => 'VLUU ST600, ST600',
+            0x400130a => 'VLUU ST80, ST80',
+            0x400130e => 'ST90,ST91 / VLUU ST90,ST91',
+            0x4001313 => 'VLUU ST95, ST95',
+            0x4a00015 => 'VLUU ST60',
+            0x4a0135b => 'ST30',
+            0x4a0135b => 'ST65 / VLUU ST65 / ST67',
+            0x5000000 => 'EX2F',
+            0x5000000 => 'NX1000',
+            0x5000000 => 'NX20',
+            0x5000000 => 'NX200',
+            0x5000000 => 'NX210',
+            0x5000000 => 'ST96',
+            0x5000000 => 'WB750',
+            0x5000000 => 'ST700',
+            0x5001038 => 'EK-GN120',
+            0x5001038 => 'HMX-E10',
+            0x5001038 => 'NX1',
+            0x5001038 => 'NX2000',
+            0x5001038 => 'NX30',
+            0x5001038 => 'NX300',
+            0x5001038 => 'WB2000',
+            0x500103a => 'WB650 / VLUU WB650 / WB660',
+            0x500103c => 'WB600 / VLUU WB600 / WB610',
+            0x500133e => 'WB150 / WB150F / WB152 / WB152F / WB151',
+            0x5a0000f => 'WB5000 / HZ25W',
+            0x6001036 => 'EX1',
+            0x700131c => 'VLUU SH100, SH100',
+            0x27127002 => 'SMX-C20N',
+        },
+    },
+    # 0x0004 - undef[x] (SamsungContentsID?)
+    # 0x000a - int32u (ContinuousShotMode?)
+    # 0x000b - int16u (BestPhotoMode?)
+    # 0x000e - int32u[2] (SoundMultiPicture?)
+    # 0x0020 - int16u[2] (ColorInfoDCM?)
     0x0021 => { #1
         Name => 'PictureWizard',
         Writable => 'int16u',
         SubDirectory => { TagTable => 'Image::ExifTool::Samsung::PictureWizard' },
     },
-    # 0x0023 - string: "0123456789" (PH)
+    # 0x0022 - int32u (CaptureMode?)
+    # 0x0023 - string: "0123456789" (PH) (placeholder for SerialNumber?)
+    # 0x0025 - int32u (ImageCount?)
+    # 0x002a - undef[4] (SNSDirectShare?)
+    # 0x002f - string (GPSInfo01?)
     0x0030 => { #1 (NX100 with GPS)
         Name => 'LocalLocationName',
         Writable => 'string',
@@ -148,6 +247,9 @@ my %formatMinMax = (
         Name => 'LocationName',
         Writable => 'string',
     },
+    # 0x0032 - string (GPSInfo03)
+    # 0x0033 - string (GPSInfo04)
+    # 0x0034 - string (GPSInfo05)
     0x0035 => {
         Name => 'PreviewIFD',
         Condition => '$$self{TIFF_TYPE} eq "SRW"', # (not an IFD in JPEG images)
@@ -159,6 +261,13 @@ my %formatMinMax = (
             Start => '$val',
         },
     },
+    # 0x003a - int16u[2] (SmartLensInfo?)
+    # 0x003b - int16u[2] (PhotoStyleSelectInfo?)
+    # 0x003c - int16u (SmartRange?)
+    # 0x003d - int16u[5] (SmartCropInfo?)
+    # 0x003e - int32u (DualCapture?)
+    # 0x003f - int16u[2] (SGIFInfo?)
+    # 0x0040 - int32u (FavoriteTagging?)
     0x0043 => { #1 (NC)
         Name => 'CameraTemperature',
         Groups => { 2 => 'Camera' },
@@ -167,19 +276,46 @@ my %formatMinMax = (
         PrintConv => '"$val C"',
         PrintConvInv => '$val=~s/ ?C//; $val',
     },
-    # 0x00a0 - undef[8192]: white balance information (ref 1):
+    0x0045 => { Name => 'RawCompressionMode', Writable => 'int32u' },
+    # 0x004a - int32u[7] (ImageVerification?)
+    # 0x004b - int32u[2] (RewindInfo?)
+    # 0x0050 - int32u (ColorSpace? - inconsistent)
+    # 0x0054 - int16u[2] (WeatherInfo?)
+    # 0x0060 - undef (AEInfo?)
+    # 0x0080 - undef (AFInfo?)
+    # 0x00a0 - undef[8192] (AWBInfo1): white balance information (ref 1):
     #   At byte 5788, the WBAdjust: "Adjust\0\X\0\Y\0\Z\xee\xea\xce\xab", where
     #   Y = BA adjust (0=Blue7, 7=0, 14=Amber7), Z = MG (0=Magenta7, 7=0, 14=Green7)
+    # 0x00a1 - undef (AWBInfo2?)
+    # 0x00c0 - undef (IPCInfo?)
+    # 0x00c7 - undef (SmartFunctionInfo?)
+    # 0x00e0 - int16u (SceneResult?)
+    # 0x00e1 - int16u[8] (SADebugInfo01?)
+    # 0x00e1 - int16u[x] (SADebugInfo02?)
+    0x0100 => {
+        Name => 'FaceDetect',
+        Writable => 'int16u',
+        PrintConv => { 0 => 'Off', 1 => 'On' }, # (NC)
+    },
+    # 0x0101 - int16u[6] (FaceDetectInfo?)
+    # 0x0102 - int16u[x] (FaceDetectInfo?)
+    0x0120 => {
+        Name => 'FaceRecognition',
+        Writable => 'int32u',
+        PrintConv => { 0 => 'Off', 1 => 'On' }, # (NC)
+    },
+    0x0123 => { Name => 'FaceName', Writable => 'string' },
+    # 0x140 - undef (LensInfo?)
 #
 # the following tags found only in SRW images
 #
-    # 0xa000 - rational64u: 1 or 1.1 (ref PH)
+    # 0xa000 - rational64u: 1 or 1.1 (ref PH) (MakerNoteVersion?)
     0xa001 => { #1
         Name => 'FirmwareName',
         Groups => { 2 => 'Camera' },
         Writable => 'string',
     },
-    # 0xa002 - string[30]: '0' or 'DY049P000000' (ref PH)
+    # 0xa002 - string[30]: '0' or 'DY049P000000' (ref PH) (BodySerialNumber?)
     0xa003 => { #1 (SRW images only)
         Name => 'LensType',
         Groups => { 2 => 'Camera' },
@@ -192,7 +328,10 @@ my %formatMinMax = (
         Groups => { 2 => 'Camera' },
         Writable => 'string',
     },
-    # 0xa005 - string[30]: constant for a given lens? Not the printed serial number (ref 1)
+    0xa005 => {
+        Name => 'InternalLensSerialNumber', # Not the printed serial number (ref 1)
+        Writable => 'string',
+    },
     0xa010 => { #1
         Name => 'SensorAreas',
         Groups => { 2 => 'Camera' },
@@ -244,6 +383,8 @@ my %formatMinMax = (
         PrintConv => '"$val mm"',
         PrintConvInv => '$val=~s/\s*mm$//;$val',
     },
+    # 0xa01b - int32u (ImageCount?)
+    # 0xa01b - int16u (LDCLens?)
     0xa020 => { #1
         Name => 'EncryptionKey',
         Writable => 'int32u',
@@ -284,7 +425,7 @@ my %formatMinMax = (
         RawConvInv => 'Image::ExifTool::Samsung::Crypt($self,$val,$tagInfo,1)',
     },
     #this doesn't seem correct
-    #0xa025 => { #PH/1
+    #0xa025 => { #PH/1 (PostAEGain?)
     #    Name => 'ColorTemperatureAuto',
     #    Writable => 'int32u',
     #    RawConv    => 'Image::ExifTool::Samsung::Crypt($self,$val,$tagInfo,6)',
@@ -319,43 +460,35 @@ my %formatMinMax = (
         RawConvInv => 'Image::ExifTool::Samsung::Crypt($self,$val,$tagInfo,"-0")',
     },
     0xa033 => { #1
-        Name => 'Samsung_Type2_0xa033',
-        Unknown => 1,
-        Hidden => 1,
+        Name => 'CbCrMatrixDefault',
         Writable => 'int32s',
         Count => 4,
         RawConv    => 'Image::ExifTool::Samsung::Crypt($self,$val,$tagInfo,0)',
         RawConvInv => 'Image::ExifTool::Samsung::Crypt($self,$val,$tagInfo,"-0")',
     },
     0xa034 => { #1
-        Name => 'Samsung_Type2_0xa034',
-        Unknown => 1,
-        Hidden => 1,
+        Name => 'CbCrMatrix',
         Writable => 'int32s',
         Count => 4,
         RawConv    => 'Image::ExifTool::Samsung::Crypt($self,$val,$tagInfo,4)',
         RawConvInv => 'Image::ExifTool::Samsung::Crypt($self,$val,$tagInfo,-4)',
     },
     0xa035 => { #1
-        Name => 'Samsung_Type2_0xa035',
-        Unknown => 1,
-        Hidden => 1,
+        Name => 'CbCrGainDefault',
         Writable => 'int32u',
         Count => 2,
         RawConv    => 'Image::ExifTool::Samsung::Crypt($self,$val,$tagInfo,"-0")',
         RawConvInv => 'Image::ExifTool::Samsung::Crypt($self,$val,$tagInfo,0)',
     },
     0xa036 => { #1
-        Name => 'Samsung_Type2_0xa036',
-        Unknown => 1,
-        Hidden => 1,
+        Name => 'CbCrGain',
         Writable => 'int32u',
         Count => 2,
         RawConv    => 'Image::ExifTool::Samsung::Crypt($self,$val,$tagInfo,-2)',
         RawConvInv => 'Image::ExifTool::Samsung::Crypt($self,$val,$tagInfo,2)',
     },
     0xa040 => { #1
-        Name => 'ToneCurve1',
+        Name => 'ToneCurveSRGBDefault',
         Writable =>  'int32u',
         Count => 23,
         Notes => q{
@@ -366,82 +499,76 @@ my %formatMinMax = (
         RawConvInv => 'Image::ExifTool::Samsung::Crypt($self,$val,$tagInfo,"-0",0)',
     },
     0xa041 => { #1
-        Name => 'ToneCurve2',
+        Name => 'ToneCurveAdobeRGBDefault',
         Writable =>  'int32u',
         Count => 23,
         RawConv    => 'Image::ExifTool::Samsung::Crypt($self,$val,$tagInfo,0,"-0")',
         RawConvInv => 'Image::ExifTool::Samsung::Crypt($self,$val,$tagInfo,"-0",0)',
     },
     0xa042 => { #1
-        Name => 'ToneCurve3',
+        Name => 'ToneCurveSRGB',
         Writable =>  'int32u',
         Count => 23,
         RawConv    => 'Image::ExifTool::Samsung::Crypt($self,$val,$tagInfo,0,"-0")',
         RawConvInv => 'Image::ExifTool::Samsung::Crypt($self,$val,$tagInfo,"-0",0)',
     },
     0xa043 => { #1
-        Name => 'ToneCurve4',
+        Name => 'ToneCurveAdobeRGB',
         Writable =>  'int32u',
         Count => 23,
         RawConv    => 'Image::ExifTool::Samsung::Crypt($self,$val,$tagInfo,0,"-0")',
         RawConvInv => 'Image::ExifTool::Samsung::Crypt($self,$val,$tagInfo,"-0",0)',
     },
     0xa048 => { #1
-        Name => 'Samsung_Type2_0xa048',
+        Name => 'RawData',
         Unknown => 1,
-        Hidden => 1,
         Writable => 'int32s',
         Count => 12,
         RawConv    => 'Image::ExifTool::Samsung::Crypt($self,$val,$tagInfo,0)',
         RawConvInv => 'Image::ExifTool::Samsung::Crypt($self,$val,$tagInfo,"-0")',
     },
-    0xa050 => { #1 (vignette curve?)
-        Name => 'Samsung_Type2_0xa050',
+    0xa050 => { #1
+        Name => 'Distortion',
         Unknown => 1,
-        Hidden => 1,
         Writable => 'int32s',
         Count => 8,
         RawConv    => 'Image::ExifTool::Samsung::Crypt($self,$val,$tagInfo,0)',
         RawConvInv => 'Image::ExifTool::Samsung::Crypt($self,$val,$tagInfo,"-0")',
     },
     0xa051 => { #1
-        Name => 'Samsung_Type2_0xa051',
+        Name => 'Chromatic Aberration',
         Unknown => 1,
-        Hidden => 1,
         Writable => 'int16u',
         Count => 22,
         RawConv    => 'Image::ExifTool::Samsung::Crypt($self,$val,$tagInfo,"-0",-7,-3)',
         RawConvInv => 'Image::ExifTool::Samsung::Crypt($self,$val,$tagInfo,0,7,3)',
     },
-    0xa052 => { #1 (vignette curve?)
-        Name => 'Samsung_Type2_0xa052',
+    0xa052 => { #1
+        Name => 'Vignetting',
         Unknown => 1,
-        Hidden => 1,
         Writable => 'int16u',
         Count => 15,
         RawConv    => 'Image::ExifTool::Samsung::Crypt($self,$val,$tagInfo,0,"-0")',
         RawConvInv => 'Image::ExifTool::Samsung::Crypt($self,$val,$tagInfo,"-0",0)',
     },
     0xa053 => { #1
-        Name => 'Samsung_Type2_0xa053',
+        Name => 'VignettingCorrection',
         Unknown => 1,
-        Hidden => 1,
         Writable => 'int16u',
         Count => 15,
         RawConv    => 'Image::ExifTool::Samsung::Crypt($self,$val,$tagInfo,0,"-0")',
         RawConvInv => 'Image::ExifTool::Samsung::Crypt($self,$val,$tagInfo,"-0",0)',
     },
     0xa054 => { #1
-        Name => 'Samsung_Type2_0xa054',
+        Name => 'VignettingSetting',
         Unknown => 1,
-        Hidden => 1,
         Writable => 'int16u',
         Count => 15,
         RawConv    => 'Image::ExifTool::Samsung::Crypt($self,$val,$tagInfo,0,"-0")',
         RawConvInv => 'Image::ExifTool::Samsung::Crypt($self,$val,$tagInfo,"-0",0)',
     },
     0xa055 => { #1
-        Name => 'Samsung_Type2_0xa055',
+        Name => 'Samsung_Type2_0xa055', # (DistortionCamera1st?)
         Unknown => 1,
         Hidden => 1,
         Writable => 'int32s',
@@ -450,7 +577,7 @@ my %formatMinMax = (
         RawConvInv => 'Image::ExifTool::Samsung::Crypt($self,$val,$tagInfo,-8)',
     },
     0xa056 => { #1
-        Name => 'Samsung_Type2_0xa056',
+        Name => 'Samsung_Type2_0xa056', # (DistortionCamera2nd?)
         Unknown => 1,
         Hidden => 1,
         Writable => 'int32s',
@@ -459,7 +586,7 @@ my %formatMinMax = (
         RawConvInv => 'Image::ExifTool::Samsung::Crypt($self,$val,$tagInfo,-5)',
     },
     0xa057 => { #1
-        Name => 'Samsung_Type2_0xa057',
+        Name => 'Samsung_Type2_0xa057', # (DistortionCameraSetting?)
         Unknown => 1,
         Hidden => 1,
         Writable => 'int32s',
@@ -467,6 +594,8 @@ my %formatMinMax = (
         RawConv    => 'Image::ExifTool::Samsung::Crypt($self,$val,$tagInfo,2)',
         RawConvInv => 'Image::ExifTool::Samsung::Crypt($self,$val,$tagInfo,-2)',
     },
+    # 0xa060 - rational64u (CISTemperature?)
+    # 0xa061 - int16u (Compression?)
 );
 
 # Picture Wizard information (ref 1)

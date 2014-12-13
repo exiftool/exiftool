@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '9.77';
+$VERSION = '9.78';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -1769,7 +1769,7 @@ sub ExtractInfo($;@)
                    ($$self{TAGS_FROM_FILE} and not $$self{EXCL_TAG_LOOKUP}{filepath}))
                 {
                     local $SIG{'__WARN__'} = \&SetWarning;
-                    if (eval {require Cwd}) {
+                    if (eval { require Cwd }) {
                         my $path = eval { Cwd::abs_path($filename) };
                         $self->FoundTag('FilePath', $path) if defined $path;
                     } elsif ($$self{REQ_TAG_LOOKUP}{filepath}) {

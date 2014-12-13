@@ -83,7 +83,7 @@ sub ProcessSerialData($$$);
 sub ProcessFilters($$$);
 sub SwapWords($);
 
-$VERSION = '3.38';
+$VERSION = '3.39';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -307,6 +307,7 @@ $VERSION = '3.38';
     183 => 'Canon EF 100-400mm f/4.5-5.6L IS or Sigma Lens',
     183.1 => 'Sigma 150mm f/2.8 EX DG OS HSM APO Macro', #50
     183.2 => 'Sigma 105mm f/2.8 EX DG OS HSM Macro', #50
+    183.3 => 'Sigma 180mm f/2.8 EX DG OS HSM APO Macro', #52
     184 => 'Canon EF 400mm f/2.8L + 2x', #15
     185 => 'Canon EF 600mm f/4L IS', #32
     186 => 'Canon EF 70-200mm f/4L', #9
@@ -695,6 +696,7 @@ my %canonQuality = (
     4 => 'RAW',
     5 => 'Superfine',
     130 => 'Normal Movie', #22
+    131 => 'Movie (2)', #PH (7DmkII 1920x1080)
 );
 my %canonImageSize = (
    -1 => 'n/a',
@@ -7325,6 +7327,12 @@ my %filterConv = (
             return \$val;
         },
     },
+);
+
+# Canon CNOP atoms (ref PH)
+%Image::ExifTool::Canon::CNOP = (
+    GROUPS => { 0 => 'MakerNotes', 1 => 'Canon', 2 => 'Video' },
+    # CNFB - 52 bytes (7DmkII)
 );
 
 # 'skip' atom of Canon MOV videos (ref PH)

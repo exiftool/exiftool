@@ -1148,7 +1148,7 @@ my %writeTable = (
         Protected => 1,
     },
     0xc7a5 => {             # BaselineExposureOffset
-        Writable => 'rational64u',
+        Writable => 'rational64s', # (incorrectly "RATIONAL" in DNG 1.4 spec)
         WriteGroup => 'IFD0',
         Protected => 1,
     },
@@ -3180,9 +3180,15 @@ NoOverwrite:            next if $isNew > 0;
             $entryBasedFixup->ApplyFixup(\$dirBuff);
             undef $entryBasedFixup;
         }
+        # initialize next IFD pointer to zero
+        my $nextIFD = Set32u(0);
+        # some cameras use a different amount of padding after the makernote IFD
+        if ($dirName eq 'MakerNotes' and $$dirInfo{Parent} =~ /^(ExifIFD|IFD0)$/) {
+            my ($rel, $pad) = Image::ExifTool::MakerNotes::GetMakerNoteOffset($et);
+            $nextIFD = "\0" x $pad if defined $pad and ($pad==0 or ($pad>4 and $pad<=32));
+        }
         # add directory entry count to start of IFD and next IFD pointer to end
-        # (temporarily set next IFD pointer to zero)
-        $newData .= Set16u($newEntries) . $dirBuff . Set32u(0);
+        $newData .= Set16u($newEntries) . $dirBuff . $nextIFD;
         # get position of value data in newData
         my $valPos = length($newData);
         # go back now and set next IFD pointer if this isn't the first IFD
@@ -3192,7 +3198,7 @@ NoOverwrite:            next if $isNew > 0;
             $fixup->AddFixup($nextIfdPos,'NextIFD');    # add fixup for this offset in newData
         }
         # remember position of 'next IFD' pointer so we can set it next time around
-        $nextIfdPos = $valPos - 4;
+        $nextIfdPos = length($nextIFD) ? $valPos - length($nextIFD) : undef;
         # add value data after IFD
         $newData .= $valBuff;
 #

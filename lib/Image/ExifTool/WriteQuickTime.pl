@@ -145,9 +145,13 @@ sub WriteQuickTime($$$)
                 my $start = $$subdir{Start} || 0;
                 my $base = ($$dirInfo{Base} || 0) + $raf->Tell() - $size;
                 my $dPos = 0;
+                my $hdrLen = $start;
                 if ($$subdir{Base}) {
-                    $dPos -= eval $$subdir{Base};
+                    my $localBase = eval $$subdir{Base};
+                    $dPos -= $localBase;
                     $base -= $dPos;
+                    # get length of header before base offset
+                    $hdrLen -= $localBase if $localBase <= $hdrLen;
                 }
                 my %subdirInfo = (
                     Parent   => $dirName,
@@ -162,6 +166,12 @@ sub WriteQuickTime($$$)
                     Multi    => $$subdir{Multi},    # necessary?
                     OutFile  => $outfile,
                 );
+                # pass the header pointer if necessary (for EXIF IFD's
+                # where the Base offset is at the end of the header)
+                if ($hdrLen and $hdrLen < $size) {
+                    my $header = substr($buff,0,$hdrLen);
+                    $subdirInfo{HeaderPtr} = \$header;
+                }
                 SetByteOrder('II') if $$subdir{ByteOrder} and $$subdir{ByteOrder} =~ /^Little/;
                 my $oldWriteGroup = $$et{CUR_WRITE_GROUP};
                 if ($subName eq 'Track') {
@@ -171,17 +181,19 @@ sub WriteQuickTime($$$)
                 my $subTable = GetTagTable($$subdir{TagTable});
                 # demote non-QuickTime errors to warnings
                 $$et{DemoteErrors} = 1 unless $$subTable{GROUPS}{0} eq 'QuickTime';
+                my $oldChanged = $$et{CHANGED};
                 $newData = $et->WriteDirectory(\%subdirInfo, $subTable);
                 if ($$et{DemoteErrors}) {
                     # just copy existing subdirectory a non-quicktime error occurred
-                    undef $newData if $$et{DemoteErrors} > 1;
+                    $$et{CHANGED} = $oldChanged if $$et{DemoteErrors} > 1;
                     delete $$et{DemoteErrors};
                 }
+                undef $newData if $$et{CHANGED} == $oldChanged; # don't change unless necessary
                 $$et{CUR_WRITE_GROUP} = $oldWriteGroup;
                 SetByteOrder('MM');
                 # add back header if necessary
-                if ($$subdir{Start} and defined $newData and length $newData) {
-                    $newData = substr($buff,0,$$subdir{Start}) . $newData;
+                if ($start and defined $newData and length $newData) {
+                    $newData = substr($buff,0,$start) . $newData;
                 }
                 # the directory exists, so we don't need to add it
                 delete $$addDirs{$subName} if IsCurPath($et, $subName);

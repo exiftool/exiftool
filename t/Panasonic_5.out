@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.73
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.78
 [File, System, Image] FileName - File Name: Panasonic_5_failed.rw2
 [File, System, Image] Directory - Directory: t
 [File, System, Image] FileSize - File Size: 14 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2014:10:09 10:39:20-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2014:10:09 10:39:20-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2014:10:09 10:39:20-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2014:12:11 11:32:37-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2014:12:11 11:32:37-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2014:12:11 11:32:37-05:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: RW2
 [File, File, Image] MIMEType - MIME Type: image/x-panasonic-rw2
@@ -92,17 +92,17 @@
 [EXIF, IFD1, Image] 282 - X Resolution: 180
 [EXIF, IFD1, Image] 283 - Y Resolution: 180
 [EXIF, IFD1, Image] 296 - Resolution Unit: inches
-[EXIF, IFD1, Image] 513 - Thumbnail Offset: 11046
+[EXIF, IFD1, Image] 513 - Thumbnail Offset: 11042
 [EXIF, IFD1, Image] 514 - Thumbnail Length: 28
 [EXIF, IFD1, Image] 531 - Y Cb Cr Positioning: Co-sited
-[EXIF, IFD0, Image] 46 - Jpg From Raw: (Binary data 10785 bytes)
+[EXIF, IFD0, Image] 46 - Jpg From Raw: (Binary data 10781 bytes)
 [EXIF, IFD0, Camera] 271 - Make: Panasonic
 [EXIF, IFD0, Camera] 272 - Camera Model Name: DMC-LX3
 [EXIF, IFD0, Image] 273 - Strip Offsets: 4294967295
 [EXIF, IFD0, Image] 274 - Orientation: Horizontal (normal)
 [EXIF, IFD0, Image] 278 - Rows Per Strip: 2754
 [EXIF, IFD0, Image] 279 - Strip Byte Counts: 20511792
-[EXIF, IFD0, Image] 280 - Raw Data Offset: 14556
+[EXIF, IFD0, Image] 280 - Raw Data Offset: 14552
 [EXIF, IFD0, Image] 282 - Panasonic Raw 0x011a: 1
 [EXIF, ExifIFD, Image] 33434 - Exposure Time: 1/250
 [EXIF, ExifIFD, Image] 33437 - F Number: 4.0
@@ -221,7 +221,7 @@
 [PrintIM, PrintIM, Printing] 256 - Print IM 0x0100: 0x00000005
 [PrintIM, PrintIM, Printing] 257 - Print IM 0x0101: 0x00000001
 [PrintIM, PrintIM, Printing] 272 - Print IM 0x0110: 0x00000080
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 9.73
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 9.78
 [XMP, XMP-dc, Image] title - Title: new title
 [IPTC, IPTC, Other] 25 - Keywords: a keyword
 [IPTC, IPTC, Other] 0 - Application Record Version: 4

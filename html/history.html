@@ -17,6 +17,26 @@ considered development releases, and are not uploaded to <a href="http://search.
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v9.78'><b>Dec. 13, 2014 - Version 9.78</b></a>
+<ul>
+<li>Added a new Nikon LensID and a new Canon LensType (thanks LibRaw)
+<li>Decode a new unknown atom in Canon MOV videos
+<li>Decode a number of new Sony tags (thanks Jos Roost)
+<li>Decode a number of new Samsung tags
+<li>Improved MakerNote compatibility when writing by adding the same amount of
+    padding after the MakerNote IFD as that written by the specific camera model
+<li>Changed the DNG BaselineExposureOffset to a signed rational (contrary to the
+    DNG 1.4 specification, which specifies an unsigned RATIONAL, but obviously
+    Adobe meant for it to store negative values)
+<li>Changed name of new QuickTime Rating tag to RatingPercent
+<li>Fixed problem introduced in 9.64 where multiple list values from some tags
+    in ZIP-based files were extracted as separate tags instead of as a list when
+    the -struct option was used, and implemented a different patch to just
+    suppress the structure warnings without changing the 9.63 behaviour
+<li>Fixed problem where some EXIF information in MOV videos could be corrupted
+    when writing
+</ul>
+
 <a name='v9.77'><b>Nov. 28, 2014 - Version 9.77</b></a>
 <ul>
 <li>Added FilePath tag (generated only if specified and Cwd is available)

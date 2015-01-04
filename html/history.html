@@ -17,6 +17,27 @@ considered development releases, and are not uploaded to <a href="http://search.
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v9.79'><b>Jan. 4, 2014 - Version 9.79</b> - Windows Unicode file names</a>
+<ul>
+<li>Added support for Windows Unicode file names (but note that support still
+    isn't complete -- some things like setting FileModifyDate or creating a
+    directory with a Unicode name still need work)
+<li>Added read support for MOI files
+<li>Added a few more Canon LensType's (thanks LibRaw and Martin)
+<li>Added a new Nikon LensID
+<li>Added a couple of new Panasonic ImageQuality values
+<li>Decode a new FujiFilm tag and added a new FilmMode value
+<li>Allow zero-length group names to be specified (which provides a method to
+    directly access the 0th copy of a duplicate tag using the empty family 4
+    group name by specifying "4:TAG")
+<li>Fixed invalid Samsung tag name
+<li>Fixed writing of XMP:ExposureCompensation with fractional values
+<li>API Changes:
+    <ul>
+    <li>Added CharsetFileName option
+    </ul>
+</ul>
+
 <a name='v9.78'><b>Dec. 13, 2014 - Version 9.78</b></a>
 <ul>
 <li>Added a new Nikon LensID and a new Canon LensType (thanks LibRaw)

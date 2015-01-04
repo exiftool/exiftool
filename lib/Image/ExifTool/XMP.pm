@@ -47,7 +47,7 @@ use Image::ExifTool qw(:Utils);
 use Image::ExifTool::Exif;
 require Exporter;
 
-$VERSION = '2.81';
+$VERSION = '2.82';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -1563,7 +1563,7 @@ my %sPantryItem = (
         Name => 'ExposureCompensation',
         Writable => 'rational',
         PrintConv => 'Image::ExifTool::Exif::PrintFraction($val)',
-        PrintConvInv => '$val',
+        PrintConvInv => 'Image::ExifTool::Exif::ConvertFraction($val)',
     },
     MaxApertureValue => {
         Groups => { 2 => 'Camera' },

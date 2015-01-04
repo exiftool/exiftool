@@ -2712,6 +2712,7 @@ my %indexInfo = (
         ValueConv => '$val ? $val : undef', # zero for some models (how to differentiate from 0 C?)
         Notes => 'this seems to be in degrees C only for some models',
     },
+    # 0x1905 - focal length (PH, E-M1)
 );
 
 # Olympus Focus Info IFD

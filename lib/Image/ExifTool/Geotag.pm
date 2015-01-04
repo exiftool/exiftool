@@ -22,7 +22,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:Public);
 
-$VERSION = '1.44';
+$VERSION = '1.45';
 
 sub JITTER() { return 2 }       # maximum time jitter
 
@@ -132,7 +132,7 @@ sub LoadTrackLog($$;$)
         $/ = $1;
     } else {
         # $val is track file name
-        open EXIFTOOL_TRKFILE, $val or return "Error opening GPS file '$val'";
+        $et->Open(\*EXIFTOOL_TRKFILE, $val) or return "Error opening GPS file '$val'";
         $raf = new File::RandomAccess(\*EXIFTOOL_TRKFILE);
         unless ($raf->Read($_, 256)) {
             close EXIFTOOL_TRKFILE;

@@ -298,7 +298,7 @@ sub SetNewValue($;$$%)
     my $wantGroup = $options{Group};
     if ($wantGroup) {
         foreach (split /:/, $wantGroup) {
-            /^(\d+)?(.+)/ or next;  # separate family number and group name
+            next unless length($_) and /^(\d+)?(.*)/; # separate family number and group name
             my ($f, $g) = ($1, lc $2);
             # save group/family unless '*' or 'all'
             push @wantGroup, [ $f, $g ] unless $g eq '*' or $g eq 'all';
@@ -1203,7 +1203,7 @@ sub SetNewValuesFromFile($$;@)
                 ($grp, $tag) = ($1, $2);
                 foreach (split /:/, $grp) {
                     # save family/groups in list (ignoring 'all' and '*')
-                    /^(\d+)?(.+)/ or next;
+                    next unless length($_) and /^(\d+)?(.*)/;
                     push @fg, [ $1, $2 ] unless $2 eq '*' or $2 eq 'all';
                 }
             }
@@ -1271,7 +1271,7 @@ SET:    foreach $set (@setList) {
                 foreach (@{$$set[0]}) {
                     my ($f, $g) = @$_;
                     if (defined $f) {
-                        next SET unless $grp[$f] and $g eq $grp[$f];
+                        next SET unless defined $grp[$f] and $g eq $grp[$f];
                     } else {
                         next SET unless $grp{$g};
                     }
@@ -1678,7 +1678,7 @@ sub SetFileName($$;$$)
     # protect against empty file name
     length $newName or $self->Warn('New file name is empty'), return -1;
     # don't replace existing file
-    if (-e $newName) {
+    if ($self->Exists($newName)) {
         if ($file ne $newName or $opt eq 'Link') {
             $self->Warn("File '$newName' already exists");
             return -1;
@@ -1711,14 +1711,14 @@ sub SetFileName($$;$$)
         return 1;
     }
     # attempt to rename the file
-    unless (rename $file, $newName) {
+    unless ($self->Rename($file, $newName)) {
         local (*EXIFTOOL_SFN_IN, *EXIFTOOL_SFN_OUT);
         # renaming didn't work, so copy the file instead
-        unless (Open(\*EXIFTOOL_SFN_IN, $file)) {
+        unless ($self->Open(\*EXIFTOOL_SFN_IN, $file)) {
             $self->Warn("Error opening '$file'");
             return -1;
         }
-        unless (Open(\*EXIFTOOL_SFN_OUT, $newName, '>')) {
+        unless ($self->Open(\*EXIFTOOL_SFN_OUT, $newName, '>')) {
             close EXIFTOOL_SFN_IN;
             $self->Warn("Error creating '$newName'");
             return -1;
@@ -1732,7 +1732,7 @@ sub SetFileName($$;$$)
         close EXIFTOOL_SFN_OUT or $err = 1;
         close EXIFTOOL_SFN_IN;
         if ($err) {
-            unlink $newName;    # erase bad output file
+            $self->Unlink($newName);    # erase bad output file
             $self->Warn("Error writing '$newName'");
             return -1;
         }
@@ -1741,7 +1741,7 @@ sub SetFileName($$;$$)
         my $accTime = int($^T - (-A $file) * (24 * 3600) + 0.5);
         utime($accTime, $modTime, $newName);
         # remove the original file
-        unlink $file or $self->Warn('Error removing old file');
+        $self->Unlink($file) or $self->Warn('Error removing old file');
     }
     $$self{NewName} = $newName; # remember new file name
     ++$$self{CHANGED};
@@ -1860,7 +1860,7 @@ sub WriteInfo($$;$$)
     } elsif (defined $infile and $infile ne '') {
         # write to a temporary file if no output file given
         $outfile = $tmpfile = "${infile}_exiftool_tmp" unless defined $outfile;
-        if (Open(\*EXIFTOOL_FILE2, $infile)) {
+        if ($self->Open(\*EXIFTOOL_FILE2, $infile)) {
             $fileType = GetFileType($infile);
             @fileTypeList = GetFileType($infile);
             $tiffType = $$self{FILE_EXT} = GetFileExtension($infile);
@@ -1921,9 +1921,9 @@ sub WriteInfo($$;$$)
         $outBuff = '';
         $outRef = \$outBuff;
         $outPos = 0;
-    } elsif (-e $outfile) {
+    } elsif ($self->Exists($outfile)) {
         $self->Error("File already exists: $outfile");
-    } elsif (Open(\*EXIFTOOL_OUTFILE, $outfile, '>')) {
+    } elsif ($self->Open(\*EXIFTOOL_OUTFILE, $outfile, '>')) {
         $outRef = \*EXIFTOOL_OUTFILE;
         $closeOut = 1;  # we must close $outRef
         binmode($outRef);
@@ -2145,8 +2145,8 @@ sub WriteInfo($$;$$)
                     $self->VPrint(0,"Copying Mac OS resource fork\n");
                     my ($buf, $err);
                     local (*SRC, *DST);
-                    if (Open(\*SRC, "$infile/..namedfork/rsrc")) {
-                        if (Open(\*DST, "$outfile/..namedfork/rsrc", '>')) {
+                    if ($self->Open(\*SRC, "$infile/..namedfork/rsrc")) {
+                        if ($self->Open(\*DST, "$outfile/..namedfork/rsrc", '>')) {
                             binmode SRC; # (not necessary for Darwin, but let's be thorough)
                             binmode DST;
                             while (read SRC, $buf, 65536) {
@@ -2165,7 +2165,7 @@ sub WriteInfo($$;$$)
                 }
             }
             # erase input file if renaming while editing information in place
-            unlink $infile or $self->Warn('Error erasing original file') if $eraseIn;
+            $self->Unlink($infile) or $self->Warn('Error erasing original file') if $eraseIn;
         }
     }
     # close output file if we created it
@@ -2174,17 +2174,17 @@ sub WriteInfo($$;$$)
         $rtnVal and $rtnVal = -1 unless close($outRef);
         # erase the output file if we weren't successful
         if ($rtnVal <= 0) {
-            unlink $outfile;
+            $self->Unlink($outfile);
         # else rename temporary file if necessary
         } elsif ($tmpfile) {
             CopyFileAttrs($infile, $tmpfile);   # copy attributes to new file
-            unless (rename($tmpfile, $infile)) {
+            unless ($self->Rename($tmpfile, $infile)) {
                 # some filesystems won't overwrite with 'rename', so try erasing original
-                if (not unlink($infile)) {
-                    unlink $tmpfile;
+                if (not $self->Unlink($infile)) {
+                    $self->Unlink($tmpfile);
                     $self->Error('Error renaming temporary file');
                     $rtnVal = 0;
-                } elsif (not rename($tmpfile, $infile)) {
+                } elsif (not $self->Rename($tmpfile, $infile)) {
                     $self->Error('Error renaming temporary file after deleting original');
                     $rtnVal = 0;
                 }
@@ -5707,6 +5707,58 @@ sub CheckBinaryData($$$)
         undef $count if $count =~ /\$size/;
     }
     return CheckValue($valPtr, $format, $count);
+}
+
+#------------------------------------------------------------------------------
+# Rename a file (with patch for Windows Unicode file names, and other problem)
+# Inputs: 0) ExifTool ref, 1) old name, 2) new name
+# Returns: true on success
+sub Rename($$$)
+{
+    my ($self, $old, $new) = @_;
+    my ($result, $try, $winUni);
+
+    if ($self->EncodeFileName($old)) {
+        $self->EncodeFileName($new, 1);
+        $winUni = 1;
+    } elsif ($self->EncodeFileName($new)) {
+        $old = $_[1];
+        $self->EncodeFileName($old, 1);
+        $winUni = 1;
+    }
+    for (;;) {
+        if ($winUni) {
+            $result = Win32API::File::MoveFileExW($old, $new, Win32API::File::MOVEFILE_REPLACE_EXISTING());
+        } else {
+            $result = rename($old, $new);
+        }
+        last if $result or $^O ne 'MSWin32';
+        # keep trying for up to 0.5 seconds
+        # (patch for Windows denial-of-service susceptibility)
+        $try = ($try || 1) + 1;
+        last if $try > 50;
+        select(undef,undef,undef,0.01); # sleep for 0.01 sec
+    }
+    return $result;
+}
+
+#------------------------------------------------------------------------------
+# Delete a file (with patch for Windows Unicode file names)
+# Inputs: 0) ExifTool ref, 1-N) names of files to delete
+# Returns: number of files deleted
+sub Unlink($@)
+{
+    my $self = shift;
+    my $result = 0;
+    while (@_) {
+        my $file = shift;
+        if ($self->EncodeFileName($file)) {
+    		++$result if Win32API::File::DeleteFileW($file);
+        } else {
+            ++$result if unlink $file;
+        }
+	}
+    return $result;
 }
 
 #------------------------------------------------------------------------------

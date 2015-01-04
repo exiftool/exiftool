@@ -20,7 +20,7 @@ use vars qw($VERSION %samsungLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.28';
+$VERSION = '1.29';
 
 sub WriteSTMN($$$);
 sub ProcessINFO($$$);
@@ -536,7 +536,7 @@ my %formatMinMax = (
         RawConvInv => 'Image::ExifTool::Samsung::Crypt($self,$val,$tagInfo,"-0")',
     },
     0xa051 => { #1
-        Name => 'Chromatic Aberration',
+        Name => 'ChromaticAberration',
         Unknown => 1,
         Writable => 'int16u',
         Count => 22,

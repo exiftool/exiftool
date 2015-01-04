@@ -7,6 +7,24 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 9.76. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Jan. 4, 2014 - Version 9.79 - Windows Unicode file names
+
+  - Added support for Windows Unicode file names (but note that support still
+    isn't complete -- some things like setting FileModifyDate or creating a
+    directory with a Unicode name still need work)
+  - Added read support for MOI files
+  - Added a few more Canon LensType's (thanks LibRaw and Martin)
+  - Added a new Nikon LensID
+  - Added a couple of new Panasonic ImageQuality values
+  - Decode a new FujiFilm tag and added a new FilmMode value
+  - Allow zero-length group names to be specified (which provides a method to
+    directly access the 0th copy of a duplicate tag using the empty family 4
+    group name by specifying "4:TAG")
+  - Fixed invalid Samsung tag name
+  - Fixed writing of XMP:ExposureCompensation with fractional values
+  - API Changes:
+      - Added CharsetFileName option
+
 Dec. 13, 2014 - Version 9.78
 
   - Added a new Nikon LensID and a new Canon LensType (thanks LibRaw)

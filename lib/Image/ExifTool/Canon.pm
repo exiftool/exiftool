@@ -83,7 +83,7 @@ sub ProcessSerialData($$$);
 sub ProcessFilters($$$);
 sub SwapWords($);
 
-$VERSION = '3.39';
+$VERSION = '3.40';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -164,6 +164,8 @@ $VERSION = '3.39';
     33.7 => 'Carl Zeiss Distagon T* 28mm f/2 ZE', #PH
     33.8 => 'Carl Zeiss Distagon T* 35mm f/2 ZE', #PH
     33.9 => 'Carl Zeiss Apo-Sonnar T* 135mm f/2 ZE', #54
+   '33.10' => 'Carl Zeiss Planar T* 50mm f/1.4 ZE', #52
+   '33.11' => 'Carl Zeiss Makro-Planar T* 100mm f/2 ZE', #52
     35 => 'Canon EF 35-80mm f/4-5.6', #32
     36 => 'Canon EF 38-76mm f/4.5-5.6', #32
     37 => 'Canon EF 35-80mm f/4-5.6 or Tamron Lens', #32
@@ -226,6 +228,7 @@ $VERSION = '3.39';
    '137.13' => 'Sigma 10-20mm f/3.5 EX DC HSM', #Gerald Erdmann
    '137.14' => 'Tamron SP 24-70mm f/2.8 Di VC USD', #PH
    '137.15' => 'Sigma 18-35mm f/1.8 DC HSM', #David Monro
+   '137.16' => 'Sigma 12-24mm f/4.5-5.6 DG HSM II', #52
     138 => 'Canon EF 28-80mm f/2.8-4L', #32
     139 => 'Canon EF 400mm f/2.8L',
     140 => 'Canon EF 500mm f/4.5L', #32
@@ -242,6 +245,7 @@ $VERSION = '3.39';
     150.1 => 'Sigma 20mm EX f/1.8', #4
     150.2 => 'Sigma 30mm f/1.4 DC HSM', #15
     150.3 => 'Sigma 24mm f/1.8 DG Macro EX', #15
+    150.4 => 'Sigma 28mm f/1.8 DG Macro EX', #52
     151 => 'Canon EF 200mm f/2.8L',
     152 => 'Canon EF 300mm f/4L IS or Sigma Lens', #15
     152.1 => 'Sigma 12-24mm f/4.5-5.6 EX DG ASPHERICAL HSM', #15
@@ -349,7 +353,8 @@ $VERSION = '3.39';
     231 => 'Canon EF 17-40mm f/4L',
     232 => 'Canon EF 70-300mm f/4.5-5.6 DO IS USM', #15
     233 => 'Canon EF 28-300mm f/3.5-5.6L IS', #PH
-    234 => 'Canon EF-S 17-85mm f4-5.6 IS USM', #19
+    234 => 'Canon EF-S 17-85mm f/4-5.6 IS USM or Tokina Lens', #19
+    234.1 => 'Tokina AT-X 12-28mm f/4 PRO DX', #50
     235 => 'Canon EF-S 10-22mm f/3.5-4.5 USM', #15
     236 => 'Canon EF-S 60mm f/2.8 Macro USM', #15
     237 => 'Canon EF 24-105mm f/4L IS', #15
@@ -397,6 +402,7 @@ $VERSION = '3.39';
     4148 => 'Canon EF-S 55-250mm f/4-5.6 IS STM', #42
     4149 => 'Canon EF-M 55-200mm f/4.5-6.3 IS STM', #42
     4150 => 'Canon EF-S 10-18mm f/4.5-5.6 IS STM', #42
+    4154 => 'Canon EF-S 24mm f/2.8 STM', #52
 );
 
 # Canon model ID numbers (PH)

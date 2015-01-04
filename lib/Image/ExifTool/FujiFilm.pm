@@ -26,7 +26,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.47';
+$VERSION = '1.48';
 
 sub ProcessFujiDir($$$);
 sub ProcessFaceRec($$$);
@@ -343,6 +343,14 @@ my %faceCategories = (
             32 => 'Soft',
         },
     },
+    0x1050 => { #forum6109
+        Name => 'ShutterType',
+        Writable => 'int16u',
+        PrintConv => {
+            0 => 'Mechanical',
+            1 => 'Electronic',
+        },
+    },
     0x1100 => {
         Name => 'AutoBracketing',
         Writable => 'int16u',
@@ -444,6 +452,7 @@ my %faceCategories = (
             0x400 => 'F4/Velvia',
             0x500 => 'Pro Neg. Std', #PH (X-Pro1)
             0x501 => 'Pro Neg. Hi', #PH (X-Pro1)
+            0x600 => 'Classic Chrome', #forum6109
         },
     },
     0x1402 => { #2

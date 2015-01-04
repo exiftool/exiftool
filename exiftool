@@ -12,7 +12,7 @@
 use strict;
 require 5.004;
 
-my $version = '9.78';
+my $version = '9.79';
 
 # add our 'lib' directory to the include list BEFORE 'use Image::ExifTool'
 my $exeDir;
@@ -27,7 +27,7 @@ BEGIN {
         $Image::ExifTool::configFile = shift;
     }
 }
-use Image::ExifTool qw{:Public Open};
+use Image::ExifTool qw{:Public};
 
 # function prototypes
 sub SigInt();
@@ -63,7 +63,6 @@ sub CreateDirectory($);
 sub OpenOutputFile($;@);
 sub AcceptFile($);
 sub SlurpFile($$);
-sub Rename($$);
 sub ReadStayOpen($);
 sub PrintTagList($@);
 sub PrintErrors($$$);
@@ -272,8 +271,8 @@ sub SigInt()  {
 }
 sub SigCont() { }
 sub Cleanup() {
-    unlink $tmpFile if defined $tmpFile;
-    unlink $tmpText if defined $tmpText;
+    $mt->Unlink($tmpFile) if defined $tmpFile;
+    $mt->Unlink($tmpText) if defined $tmpText;
     undef $tmpFile;
     undef $tmpText;
     PreserveTime() if %preserveTime;
@@ -614,8 +613,8 @@ for (;;) {
             $stayOpen = 1;  # switch to this -stay_open file
         }
         my $fp = ($stayOpen == 1 ? \*STAYOPEN : \*ARGFILE);
-        unless (Open($fp, $argFile)) {
-            unless ($argFile !~ /^\// and Open($fp, "$exeDir/$argFile")) {
+        unless ($mt->Open($fp, $argFile)) {
+            unless ($argFile !~ /^\// and $mt->Open($fp, "$exeDir/$argFile")) {
                 Error "Error opening arg file $argFile\n";
                 $badCmd = 1;
                 next
@@ -676,7 +675,7 @@ for (;;) {
             $utf8 = ($mt->Options('Charset') eq 'UTF8');
         } else {
             # set internal encoding of specified metadata type
-            my $type = { id3 => 'ID3', iptc => 'IPTC', exif => 'EXIF',
+            my $type = { id3 => 'ID3', iptc => 'IPTC', exif => 'EXIF', filename => 'FileName',
                          photoshop => 'Photoshop', quicktime => 'QuickTime' }->{lc $1};
             $type or Warn("Unknown type for -charset option: $1\n"), next;
             $mt->Options("Charset$type" => $charset);
@@ -1333,7 +1332,7 @@ if (@newValues) {
                 push @dynamicFiles, $newVal;
                 next;   # set tags from dynamic file later
             }
-            unless (-e $newVal or $newVal eq '-') {
+            unless ($mt->Exists($newVal) or $newVal eq '-') {
                 Warn "File '$newVal' does not exist for -tagsFromFile option\n";
                 $rtnVal = 1;
                 next Command;
@@ -1556,7 +1555,7 @@ if (defined $deleteOrig) {
                 next;
             }
         }
-        $countGoodWr = unlink @delFiles;
+        $countGoodWr = $mt->Unlink(@delFiles);
         $countBad = scalar(@delFiles) - $countGoodWr;
     }
     if ($quiet) {
@@ -1624,7 +1623,7 @@ sub GetImageInfo($$)
         foreach $fmt (@srcFmt) {
             $file = $fmt eq '@' ? $orig : FilenameSPrintf($fmt, $orig);
             # use this file if it exists
-            -e $file and undef($first), last;
+            $et->Exists($file) and undef($first), last;
             $verbose and print $vout "Source file $file does not exist\n";
             $first = $file unless defined $first;
         }
@@ -1644,7 +1643,7 @@ sub GetImageInfo($$)
     }
     # evaluate -if expression for conditional processing
     if (defined $condition) {
-        unless ($file eq '-' or -e $file) {
+        unless ($file eq '-' or $et->Exists($file)) {
             Warn "File not found: $file\n";
             FileNotFound($file);
             ++$countBad;
@@ -1689,11 +1688,11 @@ sub GetImageInfo($$)
         print $vout "======== $file$progStr\n" if defined $verbose;
         ++$count;
         my $original = "${file}_original";
-        -e $original or return;
+        $et->Exists($original) or return;
         if ($deleteOrig) {
             $verbose and print $vout "Scheduled for deletion: $original\n";
             push @delFiles, $original;
-        } elsif (rename $original, $file) {
+        } elsif ($et->Rename($original, $file)) {
             $verbose and print $vout "Restored from $original\n";
             ++$countGoodWr;
         } else {
@@ -1723,7 +1722,7 @@ sub GetImageInfo($$)
             close($fp);
             $et->Options(TextOut => $vout);
             if ($info->{Error}) {
-                unlink $outfile;    # erase bad file
+                $et->Unlink($outfile);  # erase bad file
             } elsif ($append) {
                 $appended{$outfile} = 1 unless $created{$outfile};
             } else {
@@ -1734,10 +1733,10 @@ sub GetImageInfo($$)
     }
 
     # extract information from this file
-    unless ($file eq '-' or -e $file) {
+    unless ($file eq '-' or $et->Exists($file)) {
         Warn "File not found: $file\n";
         FileNotFound($file);
-        $outfile and close($fp), undef($tmpText), unlink($outfile);
+        $outfile and close($fp), undef($tmpText), $et->Unlink($outfile);
         ++$countBad;
         return;
     }
@@ -1780,7 +1779,7 @@ sub GetImageInfo($$)
             undef $tmpText;
             if ($info->{Error}) {
                 close($fp);
-                unlink $outfile;    # erase bad file
+                $et->Unlink($outfile);  # erase bad file
             } else {
                 ++$lineCount;       # output text file (likely) is not empty
             }
@@ -2263,7 +2262,7 @@ TAG:    foreach $tag (@foundTags) {
                 $created{$outfile} = 1;
             }
         } else {
-            unlink $outfile unless $append; # don't keep empty output files
+            $et->Unlink($outfile) unless $append; # don't keep empty output files
         }
         undef $comma;
     }
@@ -2304,7 +2303,7 @@ sub SetImageInfo($$$)
                 return 0;
             }
         }
-        if (not $isStdout and (-d $outfile or $outfile =~ /\/$/)) {
+        if (not $isStdout and ($et->IsDirectory($outfile) or $outfile =~ /\/$/)) {
             $outfile .= '/' unless $outfile =~ /\/$/;
             my $name = $file;
             $name =~ s/^.*\///s;    # remove directory name
@@ -2350,7 +2349,7 @@ sub SetImageInfo($$$)
         }
         unless ($isStdout) {
             $outfile = NextUnusedFilename($outfile);
-            if (-e $outfile and not $doSetFileName) {
+            if ($et->Exists($outfile) and not $doSetFileName) {
                 Warn "Error: '$outfile' already exists - $infile\n";
                 ++$countBadWr;
                 return 0;
@@ -2465,7 +2464,7 @@ sub SetImageInfo($$$)
                 $outfile = Image::ExifTool::GetNewFileName(defined $outfile ? $outfile : $file, $newDir);
             }
             $outfile = NextUnusedFilename($outfile, $infile);
-            if (-e $outfile) {
+            if ($et->Exists($outfile)) {
                 if ($infile ne $outfile) {
                     Warn "Error: '$outfile' already exists - $infile\n";
                     ++$countBadWr;
@@ -2484,7 +2483,7 @@ sub SetImageInfo($$$)
         unless (defined $tmpFile) {
             # count the number of tags and pseudo-tags we are writing
             my ($numSet, $numPseudo) = $et->CountNewValues();
-            if (-e $file) {
+            if ($et->Exists($file)) {
                 unless ($numSet) {
                     # no need to write if no tags set
                     print $vout "Nothing changed in $file\n" if defined $verbose;
@@ -2533,7 +2532,7 @@ sub SetImageInfo($$$)
             unless (defined $outfile) {
                 # write to a truly temporary file
                 $outfile = "${file}_exiftool_tmp";
-                if (-e $outfile) {
+                if ($et->Exists($outfile)) {
                     Warn("Error: Temporary file already exists: $outfile\n");
                     ++$countBadWr;
                     return 0;
@@ -2555,7 +2554,7 @@ sub SetImageInfo($$$)
 
     # get file time if preserving it
     my ($aTime, $mTime, $cTime);
-    if ($preserveTime and $success and -e $file) {
+    if ($preserveTime and $success and $et->Exists($file)) {
         $aTime = int($^T - (-A _) * (24 * 3600) + 0.5);
         $mTime = int($^T - (-M _) * (24 * 3600) + 0.5);
         $cTime = int($^T - (-C _) * (24 * 3600) + 0.5);
@@ -2563,17 +2562,17 @@ sub SetImageInfo($$$)
     if ($success == 1) {
         # preserve the original file times
         if (defined $tmpFile) {
-            if (-e $file) {
+            if ($et->Exists($file)) {
                 SetFileTime($tmpFile, $aTime, $mTime, $cTime) if $preserveTime;
                 if ($isTemporary) {
                     # preserve original file attributes if possible
                     Image::ExifTool::CopyFileAttrs($file, $outfile);
                     # move original out of the way
                     my $original = "${file}_original";
-                    if (not $overwriteOrig and not -e $original) {
+                    if (not $overwriteOrig and not $et->Exists($original)) {
                         # rename the file and check again to be sure the file doesn't exist
                         # (in case, say, the filesystem truncated the file extension)
-                        if (not Rename($file, $original) or -e $file) {
+                        if (not $et->Rename($file, $original) or $et->Exists($file)) {
                             Error "Error renaming $file\n";
                             return 0;
                         }
@@ -2582,14 +2581,14 @@ sub SetImageInfo($$$)
                         # copy temporary file over top of original to preserve attributes
                         my ($err, $buff);
                         my $newFile = $tmpFile;
-                        Open(\*NEW_FILE, $newFile) or Error("Error opening $newFile\n"), return 0;
+                        $et->Open(\*NEW_FILE, $newFile) or Error("Error opening $newFile\n"), return 0;
                         binmode(NEW_FILE);
 
                         #..........................................................
                         # temporarily disable CTRL-C during this critical operation
                         $critical = 1;
                         undef $tmpFile;     # handle deletion of temporary file ourself
-                        if (Open(\*ORIG_FILE, $file, '>')) {
+                        if ($et->Open(\*ORIG_FILE, $file, '>')) {
                             binmode(ORIG_FILE);
                             while (read(NEW_FILE, $buff, 65536)) {
                                 print ORIG_FILE $buff or $err = 1;
@@ -2598,15 +2597,15 @@ sub SetImageInfo($$$)
                             close(ORIG_FILE) or $err = 1;
                             if ($err) {
                                 Warn "Couldn't overwrite in place - $file\n";
-                                unless (rename($newFile, $file) or
-                                    (unlink $file and Rename($newFile, $file)))
+                                unless ($et->Rename($newFile, $file) or
+                                    ($et->Unlink($file) and $et->Rename($newFile, $file)))
                                 {
                                     Error("Error renaming $newFile to $file\n"), return 0;
                                 }
                             } else {
                                 $et->SetFileModifyDate($file, $cTime, 'FileCreateDate', 1);
                                 $et->SetFileModifyDate($file, $mTime, 'FileModifyDate', 1);
-                                unlink $newFile;
+                                $et->Unlink($newFile);
                                 if ($preserveTime) {
                                     SetFileTime($file, $aTime, $mTime, $cTime);
                                     # save time to set it later again to patch OS X 10.6 bug
@@ -2617,7 +2616,7 @@ sub SetImageInfo($$$)
                         } else {
                             close(NEW_FILE);
                             Warn "Error opening $file for writing\n";
-                            unlink $newFile;
+                            $et->Unlink($newFile);
                             ++$countBadWr;
                         }
                         undef $critical;            # end critical section
@@ -2626,18 +2625,18 @@ sub SetImageInfo($$$)
 
                     # simply rename temporary file to replace original
                     # (if we didn't already rename it to add "_original")
-                    } elsif (Rename($tmpFile, $file)) {
+                    } elsif ($et->Rename($tmpFile, $file)) {
                         ++$countGoodWr;
                     } else {
                         my $newFile = $tmpFile;
                         undef $tmpFile; # (avoid deleting file if we get interrupted)
                         # unlink may fail if already renamed or no permission
-                        if (not unlink($file)) {
+                        if (not $et->Unlink($file)) {
                             Warn "Error renaming temporary file to $file\n";
-                            unlink $newFile;
+                            $et->Unlink($newFile);
                             ++$countBadWr;
                         # try renaming again now that the target has been deleted
-                        } elsif (not Rename($newFile, $file)) {
+                        } elsif (not $et->Rename($newFile, $file)) {
                             Warn "Error renaming temporary file to $file\n";
                             # (don't delete tmp file now because it is all we have left)
                             ++$countBadWr;
@@ -2647,7 +2646,7 @@ sub SetImageInfo($$$)
                     }
                 } elsif ($overwriteOrig) {
                     # erase original file
-                    unlink $file or Warn "Error erasing original $file\n";
+                    $et->Unlink($file) or Warn "Error erasing original $file\n";
                     ++$countGoodWr;
                 } else {
                     ++$countGoodCr;
@@ -2662,18 +2661,18 @@ sub SetImageInfo($$$)
     } elsif ($success) {
         if ($isTemporary) {
             # just erase the temporary file since no changes were made
-            unlink $tmpFile;
+            $et->Unlink($tmpFile);
             ++$countSameWr;
         } else {
             SetFileTime($outfile, $aTime, $mTime, $cTime) if defined $aTime;
             if ($overwriteOrig) {
-                unlink $file or Warn "Error erasing original $file\n";
+                $et->Unlink($file) or Warn "Error erasing original $file\n";
             }
             ++$countCopyWr;
         }
         print $vout "Nothing changed in $file\n" if defined $verbose;
     } else {
-        unlink $tmpFile if defined $tmpFile;
+        $et->Unlink($tmpFile) if defined $tmpFile;
         ++$countBadWr;
     }
     undef $tmpFile;
@@ -3055,7 +3054,7 @@ sub CleanFilename($)
 }
 
 #------------------------------------------------------------------------------
-# process files in our @files list
+# Process files in our @files list
 # Inputs: 0) ExifTool ref, 1) list ref to just return full file names
 # Notes: arg 0 is not used if arg 1 is defined
 sub ProcessFiles($;$)
@@ -3067,11 +3066,11 @@ sub ProcessFiles($;$)
             ++$progress;
             $progStr = " [$progress/$progressMax]";
         }
-        if (-d $file) {
+        if ($et->IsDirectory($file)) {
             $multiFile = $validFile = 1;
             ScanDir($mt, $file, $list);
         } elsif ($filterFlag and not AcceptFile($file)) {
-            if (-e $file) {
+            if ($et->Exists($file)) {
                 $filtered = 1;
                 $verbose and print $vout "-------- $file (wrong extension)$progStr\n";
             } else {
@@ -3093,15 +3092,43 @@ sub ProcessFiles($;$)
 sub ScanDir($$;$)
 {
     my ($et, $dir, $list) = @_;
-    opendir(DIR_HANDLE, $dir) or Warn("Error opening directory $dir\n"), return;
-    my @fileList = readdir(DIR_HANDLE);
-    closedir(DIR_HANDLE);
-
-    my $file;
-    $dir =~ /\/$/ or $dir .= '/';
+    my (@fileList, $done, $file);
+    my $enc = $$et{OPTIONS}{CharsetFileName};
+    # recode as UTF-8 if necessary
+    if ($enc and $enc ne 'UTF8') {
+        $dir = $et->Decode($dir, $enc, undef, 'UTF8');
+        $$et{OPTIONS}{CharsetFileName} = 'UTF8';        # now using UTF8
+    }
+    # use Win32::FindFile on Windows if available
+    # (ReadDir will croak if there is a wildcard, so check for this)
+    if ($^O eq 'MSWin32' and $dir !~ /[\*\?]/) {
+        local $SIG{'__WARN__'} = \&SetWarning;
+        if (eval { require Win32::FindFile }) {
+            @fileList = Win32::FindFile::ReadDir($dir);
+            $$et{OPTIONS}{CharsetFileName} = 'UTF8';    # now using UTF8
+            $done = 1;
+        } else {
+            $done = 0;
+        }
+    }
+    unless ($done) {
+        # use standard perl library routines to read directory
+        opendir(DIR_HANDLE, $dir) or Warn("Error opening directory $dir\n"), return;
+        @fileList = readdir(DIR_HANDLE);
+        closedir(DIR_HANDLE);
+        if (defined $done) {
+            # issue warning if some names would have required Win32::FindFile
+            foreach $file ($dir, @fileList) {
+                next unless $file =~ /[\?\x80-\xff]/;
+                $et->WarnOnce('Install Win32::FindFile to support Windows Unicode file names in directory operations');
+                last;
+            }
+        }
+    }
+    $dir =~ /\/$/ or $dir .= '/';   # make sure directory name ends with '/'
     foreach $file (@fileList) {
         my $path = "$dir$file";
-        if (-d $path) {
+        if ($et->IsDirectory($path)) {
             next unless $recurse and $file !~ /^\./; # ignore dirs starting with "."
             next if $ignore{$file} or ($ignore{SYMLINKS} and -l $path);
             ScanDir($et, $path, $list);
@@ -3132,6 +3159,7 @@ sub ScanDir($$;$)
         GetImageInfo($et, $path);
     }
     ++$countDir;
+    $$et{OPTIONS}{CharsetFileName} = $enc;  # restore original setting
 }
 
 #------------------------------------------------------------------------------
@@ -3267,7 +3295,7 @@ sub LoadPrintFormat($)
     my $arg = shift;
     if (not defined $arg) {
         Error "Must specify file or expression for -p option\n";
-    } elsif ($arg !~ /\n/ and -f $arg and Open(\*FMT_FILE, $arg)) {
+    } elsif ($arg !~ /\n/ and -f $arg and $mt->Open(\*FMT_FILE, $arg)) {
         foreach (<FMT_FILE>) {
             AddPrintFormat($_);
         }
@@ -3389,7 +3417,7 @@ sub NextUnusedFilename($;$$)
         }
         $filename .= substr($fmt, $pos); # add rest of file name
         # return now with filename unless file exists
-        return $filename unless -e $filename or $usedFileName{$filename};
+        return $filename unless $mt->Exists($filename) or $usedFileName{$filename};
         return $filename if defined $okfile and $filename eq $okfile;
         ++$copy;
         ++$alpha;
@@ -3449,7 +3477,7 @@ sub OpenOutputFile($;@)
             $outfile .= $textOut;
         }
         my $mode = '>';
-        if (-e $outfile) {
+        if ($mt->Exists($outfile)) {
             unless ($textOverwrite) {
                 Warn "Output file $outfile already exists for $file\n";
                 return ();
@@ -3459,7 +3487,7 @@ sub OpenOutputFile($;@)
                 $append = 1;
             }
         }
-        unless (Open(\*OUTFILE, $outfile, $mode)) {
+        unless ($mt->Open(\*OUTFILE, $outfile, $mode)) {
             my $what = $mode eq '>' ? 'creating' : 'appending to';
             Error("Error $what $outfile\n");
             return ();
@@ -3488,34 +3516,13 @@ sub AcceptFile($)
 }
 
 #------------------------------------------------------------------------------
-# Rename a file (patch for Windows denial-of-service susceptibility)
-# Inputs: 0) old name, 1) new name
-# Returns: true on success
-sub Rename($$)
-{
-    my ($old, $new) = @_;
-    my $result = rename($old, $new);
-
-    if (not $result and $^O eq 'MSWin32') {
-        my $try = 2;
-        for (;;) {
-            select(undef,undef,undef,0.01); # sleep for 0.01 sec
-            $result = rename($old, $new);
-            last if $result or ++$try > 50; # retry for 0.5 seconds
-        }
-        Warn("It took $try tries to rename $new\n") if $result;
-    }
-    return $result;
-}
-
-#------------------------------------------------------------------------------
 # Slurp file into buffer
 # Inputs: 0) file name, 1) buffer reference
 # Returns: 1 on success
 sub SlurpFile($$)
 {
     my ($file, $buffPt) = @_;
-    Open(\*INFILE, $file) or Warn("Error opening file $file\n"), return 0;
+    $mt->Open(\*INFILE, $file) or Warn("Error opening file $file\n"), return 0;
     binmode(INFILE);
     my $bsize = 1024 * 1024;
     my $num = read(INFILE, $$buffPt, $bsize);
@@ -3704,39 +3711,39 @@ supported by ExifTool (r = read, w = write, c = create):
 
   File Types
   ------------+-------------+-------------+-------------+------------
-  3FR   r     | EIP   r     | LA    r     | ORF   r/w   | RTF   r
-  3G2   r/w   | EPS   r/w   | LFP   r     | OTF   r     | RW2   r/w
-  3GP   r/w   | EPUB  r     | LNK   r     | PAC   r     | RWL   r/w
-  ACR   r     | ERF   r/w   | M2TS  r     | PAGES r     | RWZ   r
-  AFM   r     | EXE   r     | M4A/V r/w   | PBM   r/w   | RM    r
-  AI    r/w   | EXIF  r/w/c | MEF   r/w   | PCD   r     | SEQ   r
-  AIFF  r     | EXR   r     | MIE   r/w/c | PDB   r     | SO    r
-  APE   r     | EXV   r/w/c | MIFF  r     | PDF   r/w   | SR2   r/w
-  ARW   r/w   | F4A/V r/w   | MKA   r     | PEF   r/w   | SRF   r
-  ASF   r     | FFF   r/w   | MKS   r     | PFA   r     | SRW   r/w
-  AVI   r     | FLA   r     | MKV   r     | PFB   r     | SVG   r
-  AZW   r     | FLAC  r     | MNG   r/w   | PFM   r     | SWF   r
-  BMP   r     | FLV   r     | MOBI  r     | PGF   r     | THM   r/w
-  BTF   r     | FPF   r     | MODD  r     | PGM   r/w   | TIFF  r/w
-  CHM   r     | FPX   r     | MOS   r/w   | PLIST r     | TORRENT r
-  COS   r     | GIF   r/w   | MOV   r/w   | PICT  r     | TTC   r
-  CR2   r/w   | GZ    r     | MP3   r     | PMP   r     | TTF   r
-  CRW   r/w   | HDP   r/w   | MP4   r/w   | PNG   r/w   | VRD   r/w/c
-  CS1   r/w   | HDR   r     | MPC   r     | PPM   r/w   | VSD   r
-  DCM   r     | HTML  r     | MPG   r     | PPT   r     | WAV   r
-  DCP   r/w   | ICC   r/w/c | MPO   r/w   | PPTX  r     | WDP   r/w
-  DCR   r     | IDML  r     | MQV   r/w   | PS    r/w   | WEBP  r
-  DFONT r     | IIQ   r/w   | MRW   r/w   | PSB   r/w   | WEBM  r
-  DIVX  r     | IND   r/w   | MXF   r     | PSD   r/w   | WMA   r
-  DJVU  r     | INX   r     | NEF   r/w   | PSP   r     | WMV   r
-  DLL   r     | ITC   r     | NRW   r/w   | QTIF  r/w   | WV    r
-  DNG   r/w   | J2C   r     | NUMBERS r   | RA    r     | X3F   r/w
-  DOC   r     | JNG   r/w   | ODP   r     | RAF   r/w   | XCF   r
-  DOCX  r     | JP2   r/w   | ODS   r     | RAM   r     | XLS   r
-  DPX   r     | JPEG  r/w   | ODT   r     | RAR   r     | XLSX  r
-  DV    r     | K25   r     | OFR   r     | RAW   r/w   | XMP   r/w/c
-  DVB   r/w   | KDC   r     | OGG   r     | RIFF  r     | ZIP   r
-  DYLIB r     | KEY   r     | OGV   r     | RSRC  r     |
+  3FR   r     | EIP   r     | LA    r     | OGV   r     | RSRC  r
+  3G2   r/w   | EPS   r/w   | LFP   r     | ORF   r/w   | RTF   r
+  3GP   r/w   | EPUB  r     | LNK   r     | OTF   r     | RW2   r/w
+  ACR   r     | ERF   r/w   | M2TS  r     | PAC   r     | RWL   r/w
+  AFM   r     | EXE   r     | M4A/V r/w   | PAGES r     | RWZ   r
+  AI    r/w   | EXIF  r/w/c | MEF   r/w   | PBM   r/w   | RM    r
+  AIFF  r     | EXR   r     | MIE   r/w/c | PCD   r     | SEQ   r
+  APE   r     | EXV   r/w/c | MIFF  r     | PDB   r     | SO    r
+  ARW   r/w   | F4A/V r/w   | MKA   r     | PDF   r/w   | SR2   r/w
+  ASF   r     | FFF   r/w   | MKS   r     | PEF   r/w   | SRF   r
+  AVI   r     | FLA   r     | MKV   r     | PFA   r     | SRW   r/w
+  AZW   r     | FLAC  r     | MNG   r/w   | PFB   r     | SVG   r
+  BMP   r     | FLV   r     | MOBI  r     | PFM   r     | SWF   r
+  BTF   r     | FPF   r     | MODD  r     | PGF   r     | THM   r/w
+  CHM   r     | FPX   r     | MOI   r     | PGM   r/w   | TIFF  r/w
+  COS   r     | GIF   r/w   | MOS   r/w   | PLIST r     | TORRENT r
+  CR2   r/w   | GZ    r     | MOV   r/w   | PICT  r     | TTC   r
+  CRW   r/w   | HDP   r/w   | MP3   r     | PMP   r     | TTF   r
+  CS1   r/w   | HDR   r     | MP4   r/w   | PNG   r/w   | VRD   r/w/c
+  DCM   r     | HTML  r     | MPC   r     | PPM   r/w   | VSD   r
+  DCP   r/w   | ICC   r/w/c | MPG   r     | PPT   r     | WAV   r
+  DCR   r     | IDML  r     | MPO   r/w   | PPTX  r     | WDP   r/w
+  DFONT r     | IIQ   r/w   | MQV   r/w   | PS    r/w   | WEBP  r
+  DIVX  r     | IND   r/w   | MRW   r/w   | PSB   r/w   | WEBM  r
+  DJVU  r     | INX   r     | MXF   r     | PSD   r/w   | WMA   r
+  DLL   r     | ITC   r     | NEF   r/w   | PSP   r     | WMV   r
+  DNG   r/w   | J2C   r     | NRW   r/w   | QTIF  r/w   | WV    r
+  DOC   r     | JNG   r/w   | NUMBERS r   | RA    r     | X3F   r/w
+  DOCX  r     | JP2   r/w   | ODP   r     | RAF   r/w   | XCF   r
+  DPX   r     | JPEG  r/w   | ODS   r     | RAM   r     | XLS   r
+  DV    r     | K25   r     | ODT   r     | RAR   r     | XLSX  r
+  DVB   r/w   | KDC   r     | OFR   r     | RAW   r/w   | XMP   r/w/c
+  DYLIB r     | KEY   r     | OGG   r     | RIFF  r     | ZIP   r
 
   Meta Information
   ----------------------+----------------------+---------------------
@@ -4234,11 +4241,17 @@ encoding of various meta information formats.
     TYPE       Description                                  Default
     ---------  -------------------------------------------  -------
     EXIF       Internal encoding of EXIF "ASCII" strings    (none)
+    FileName   Encoding for file names on command line      (none)
     ID3        Internal encoding of ID3v1 information       Latin
     IPTC       Internal IPTC encoding to assume when        Latin
                 IPTC:CodedCharacterSet is not defined
     Photoshop  Internal encoding of Photoshop IRB strings   Latin
     QuickTime  Internal encoding of QuickTime strings       MacRoman
+
+Setting the FileName character set in Windows triggers usage of the Windows
+Unicode file library functions.  This is set to C<UTF8> automatically when
+scanning a directory in Windows to provide support for any contained files
+which may have Unicode names.
 
 See L<http://owl.phy.queensu.ca/~phil/exiftool/faq.html#Q10> for more
 information about coded character sets.
@@ -4487,7 +4500,7 @@ with this command:
 
 produces output like this:
 
-    -- Generated by ExifTool 9.78 --
+    -- Generated by ExifTool 9.79 --
     File: a.jpg - 2003:10:31 15:44:19
     (f/5.6, 1/60s, ISO 100)
     File: b.jpg - 2006:05:23 11:57:38
@@ -4970,7 +4983,7 @@ A special feature of this option allows the creation of certain types of
 files from scratch, or with the metadata from another type of file.  The
 following file types may be created using this technique:
 
-    XMP, ICC/ICM, MIE, VRD, EXIF
+    XMP, ICC/ICM, MIE, VRD, EXIF, EXV
 
 The output file type is determined by the extension of I<OUTFILE> (specified
 as C<-.EXT> when writing to stdout).  The output file is then created from a

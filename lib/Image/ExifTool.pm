@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '9.78';
+$VERSION = '9.79';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -46,15 +46,12 @@ $RELEASE = '';
     Utils => [qw(GetTagTable TagTableKeys GetTagInfoList AddTagToTable HexDump)],
     Vars  => [qw(%allTables @tableOrder @fileTypes)],
 );
-@EXPORT_OK = qw(Open);
 
 # set all of our EXPORT_TAGS in EXPORT_OK
 Exporter::export_ok_tags(keys %EXPORT_TAGS);
 
 # test for problems that can arise if encoding.pm is used
 { my $t = "\xff"; die "Incompatible encoding!\n" if ord($t) != 0xff; }
-
-sub Open(*$;$);
 
 # The following functions defined in Image::ExifTool::Writer are declared
 # here so their prototypes will be available.  These Writer routines will be
@@ -113,6 +110,12 @@ sub TimeNow(;$);
 sub NewGUID();
 
 # other subroutine definitions
+sub EncodeFileName($$;$);
+sub Open($*$;$);
+sub Exists($$);
+sub IsDirectory($$);
+sub Rename($$$);
+sub Unlink($@);
 sub DoEscape($$);
 sub ConvertFileSize($);
 sub ParseArguments($;@); #(defined in attempt to avoid mod_perl problem)
@@ -127,7 +130,7 @@ sub ReadValue($$$$$;$);
     MIFF PGF PSP PhotoCD Radiance PDF PostScript Photoshop::Header FujiFilm::RAF
     FujiFilm::IFD Samsung::Trailer Sony::SRF2 Sony::SR2SubIFD Sony::PMP ITC ID3
     Vorbis Ogg APE APE::NewHeader APE::OldHeader MPC MPEG::Audio MPEG::Video
-    MPEG::Xing M2TS QuickTime QuickTime::ImageFile Matroska MXF DV Flash
+    MPEG::Xing M2TS QuickTime QuickTime::ImageFile Matroska MOI MXF DV Flash
     Flash::FLV Real::Media Real::Audio Real::Metafile RIFF AIFF ASF DICOM MIE
     HTML XMP::SVG Palm Palm::MOBI Palm::EXTH Torrent EXE EXE::PEVersion
     EXE::PEString EXE::MachO EXE::PEF EXE::ELF EXE::CHM LNK Font RSRC Rawzor ZIP
@@ -168,7 +171,8 @@ $defaultLang = 'en';    # default language
                 BMP PPM RIFF AIFF ASF MOV MPEG Real SWF PSP FLV OGG FLAC APE MPC
                 MKV MXF DV PMP IND PGF ICC ITC FLIR FPF LFP HTML VRD RTF XCF
                 QTIF FPX PICT ZIP GZIP PLIST RAR BZ2 TAR RWZ EXE EXR HDR CHM LNK
-                WMF AVC DEX DPX RAW Font RSRC M2TS PHP Torrent PDB MP3 DICOM PCD);
+                WMF AVC DEX DPX RAW Font RSRC M2TS PHP Torrent PDB MOI MP3 DICOM
+                PCD);
 
 # file types that we can write (edit)
 my @writeTypes = qw(JPEG TIFF GIF CRW MRW ORF RAF RAW PNG MIE PSD XMP PPM
@@ -323,6 +327,7 @@ my %fileTypeLookup = (
     MNG  => ['PNG',  'Multiple-image Network Graphics'],
     MOBI => ['PDB',  'Mobipocket electronic book'],
     MODD => ['PLIST','Sony Picture Motion metadata'],
+    MOI  => ['MOI',  'MOD Information file'],
     MOS  => ['TIFF', 'Creo Leaf Mosaic'],
     MOV  => ['MOV',  'Apple QuickTime movie'],
     MP3  => ['MP3',  'MPEG-1 Layer 3 audio'],
@@ -745,6 +750,7 @@ my %moduleName = (
     MOV  => '.{4}(free|skip|wide|ftyp|pnot|PICT|pict|moov|mdat|junk|uuid)', # (duplicated in WriteQuickTime.pl !!)
   # MP3  =>  difficult to rule out
     MPC  => '(MP\+|ID3)',
+    MOI  => 'V6',
     MPEG => '\0\0\x01[\xb0-\xbf]',
     MRW  => '\0MR[MI]',
     MXF  => '\x06\x0e\x2b\x34\x02\x05\x01\x01\x0d\x01\x02', # (not tested if extension recognized)
@@ -908,8 +914,9 @@ sub DummyWriteProc { return 1; }
         },
         Writable => 1,
         Protected => 1,
+        RawConv => '$self->ConvertFileName($val)',
         # translate backslashes in directory names and add trailing '/'
-        ValueConvInv => '$_=$val; tr/\\\\/\//; m{[^/]$} and $_ .= "/"; $_',
+        ValueConvInv => '$_ = $self->InverseFileName($val); m{[^/]$} and $_ .= "/"; $_',
     },
     FileName => {
         Groups => { 1 => 'System' },
@@ -922,7 +929,8 @@ sub DummyWriteProc { return 1; }
             L<filename.html|../filename.html> for more information on writing the
             FileName, Directory and TestName tags
         },
-        ValueConvInv => '$val=~tr/\\\\/\//; $val',
+        RawConv => '$self->ConvertFileName($val)',
+        ValueConvInv => '$self->InverseFileName($val)',
     },
     FilePath => {
         Groups => { 1 => 'System' },
@@ -936,7 +944,7 @@ sub DummyWriteProc { return 1; }
             file renaming feature.  Writing this tag prints the old and new file names
             to the console, but does not affect the file itself
         },
-        ValueConvInv => '$val=~tr/\\\\/\//; $val',
+        ValueConvInv => '$self->InverseFileName($val)',
     },
     FileSequence => {
         Groups => { 0 => 'ExifTool', 1 => 'ExifTool', 2 => 'Other' },
@@ -1564,8 +1572,8 @@ sub Options($$;@)
                 } else {
                     warn "Invalid Charset $newVal\n";
                 }
-            } elsif ($param eq 'CharsetEXIF') {
-                $$options{$param} = $newVal;    # only CharsetEXIF may be set to a false value
+            } elsif ($param eq 'CharsetEXIF' or $param eq 'CharsetFileName') {
+                $$options{$param} = $newVal;    # only CharsetEXIF and CharsetFileName may be set to a false value
             } elsif ($param eq 'CharsetQuickTime') {
                 $$options{$param} = 'MacRoman'; # QuickTime defaults to MacRoman
             } else {
@@ -1612,6 +1620,7 @@ sub ClearOptions($)
         ByteOrder   => undef,   # default byte order when creating EXIF information
         Charset     => 'UTF8',  # character set for converting Unicode characters
         CharsetEXIF => undef,   # internal EXIF "ASCII" string encoding
+        CharsetFileName => undef,   # external encoding for file names
         CharsetID3  => 'Latin', # internal ID3v1 character set
         CharsetIPTC => 'Latin', # fallback IPTC character set if no CodedCharacterSet
         CharsetQuickTime => 'MacRoman', # internal QuickTime string encoding
@@ -1780,7 +1789,7 @@ sub ExtractInfo($;@)
                 $rsize = -s "$filename/..namedfork/rsrc" if $^O eq 'darwin' and not $$self{IN_RESOURCE};
             }
             # open the file
-            if (Open(\*EXIFTOOL_FILE, $filename)) {
+            if ($self->Open(\*EXIFTOOL_FILE, $filename)) {
                 # create random access file object
                 $raf = new File::RandomAccess(\*EXIFTOOL_FILE);
                 # patch to force pipe to be buffered because seek returns success
@@ -1959,7 +1968,7 @@ sub ExtractInfo($;@)
             # process the resource fork as an embedded file on Mac filesystems
             if ($rsize and $$options{ExtractEmbedded}) {
                 local *RESOURCE_FILE;
-                if (Open(\*RESOURCE_FILE, "$filename/..namedfork/rsrc")) {
+                if ($self->Open(\*RESOURCE_FILE, "$filename/..namedfork/rsrc")) {
                     $$self{DOC_NUM} = $$self{DOC_COUNT} + 1;
                     $$self{IN_RESOURCE} = 1;
                     $self->ExtractInfo(\*RESOURCE_FILE, { ReEntry => 1 });
@@ -3011,26 +3020,108 @@ sub NextTagKey($$)
 }
 
 #------------------------------------------------------------------------------
-# Modified perl open() routine
-# Inputs: 0) filehandle, 1) filename, 2) mode ('<'/'>' for read/write -- read default)
-# Returns: true on success
-# Note: Must call like "Open(\*FH,$file)", not "Open(FH,$file)" to avoid
-#       "unopened filehandle" errors due to a change in scope of the filehandle
-sub Open(*$;$)
+# Encode file name for calls to system i/o routines
+# Inputs: 0) ExifTool ref, 1) file name, 2) flag to force conversion
+# Returns: true if Windows Unicode routines should be used (in which case
+#          the file name will be encoded as a null-terminated UTF-16LE string)
+sub EncodeFileName($$;$)
 {
-    my ($glob, $file, $mode) = @_;
-    $file =~ s/^([\s&])/.\/$1/;     # protect leading whitespace or ampersand
-    if ($mode) {
-        # add leading space to protect against leading characters like '>'
-        # in file name, and trailing "\0" to protect trailing spaces
-        $file = " $file\0";
-    } elsif ($file =~ /\|$/) {
-        $mode = '';     # input is piped from some command
-    } else {
-        $mode = '<';    # read a normal file
-        $file = " $file\0";
+    my ($self, $file, $force) = @_;
+    my $enc = $$self{OPTIONS}{CharsetFileName};
+    if ($enc and ($file =~ /[\x80-\xff]/ or $force)) {
+        # encode for use in Windows Unicode functions if necessary
+        if ($^O eq 'MSWin32') {
+            local $SIG{'__WARN__'} = \&SetWarning;
+            if (eval { require Win32API::File }) {
+                # recode as UTF-16LE and add null terminator
+                $_[1] = $self->Decode($file, $enc, undef, 'UTF16', 'II') . "\0\0";
+                return 1;
+            }
+            $self->WarnOnce('Install Win32API::File for Windows Unicode file support');
+        } else {
+            # recode as UTF-8 for other platforms if necessary
+            $_[1] = $self->Decode($file, $enc, undef, 'UTF8') unless $enc eq 'UTF8';
+        }
     }
-    return open $_[0], "$mode$file";
+    return 0;
+}
+
+#------------------------------------------------------------------------------
+# Modified perl open() routine
+# Inputs: 0) ExifTool ref, 1) filehandle, 2) filename,
+#         3) mode ('<'/'>' for read/write -- read default)
+# Returns: true on success
+# Note: Must call like "$et->Open(\*FH,$file)", not "$et->Open(FH,$file)" to avoid
+#       "unopened filehandle" errors due to a change in scope of the filehandle
+sub Open($*$;$)
+{
+    my ($self, $fh, $file, $mode) = @_;
+
+    $file =~ s/^([\s&])/.\/$1/; # protect leading whitespace or ampersand
+    # default to read mode ('<') unless input is a pipe
+    $mode = ($file =~ /\|$/ ? '' : '<') unless $mode;
+    if ($mode) {
+        if ($self->EncodeFileName($file)) {
+            local $SIG{'__WARN__'} = \&SetWarning;
+            my ($access, $create);
+            if ($mode eq '>') {
+                $access = Win32API::File::GENERIC_WRITE();
+                $create = Win32API::File::CREATE_NEW();
+            } else {
+                $access = Win32API::File::GENERIC_READ();
+                $create = Win32API::File::OPEN_EXISTING();
+            }
+            my $wh = Win32API::File::CreateFileW($file, $access, 0, [], $create, 0, []);
+            return undef unless $wh;
+            my $fd = Win32API::File::OsFHandleOpenFd($wh, 0);
+            if ($fd < 0) {
+                Win32API::File::CloseHandle($wh);
+                return undef;
+            }
+            $file = "&=$fd";    # specify file by descriptor
+        } else {
+            # add leading space to protect against leading characters like '>'
+            # in file name, and trailing "\0" to protect trailing spaces
+            $file = " $file\0";
+        }
+    }
+    return open $fh, "$mode$file";
+}
+
+#------------------------------------------------------------------------------
+# Check to see if a file exists (with Windows Unicode support)
+# Inputs: 0) ExifTool ref, 1) file name
+# Returns: true if file exists
+sub Exists($$)
+{
+    my ($self, $file) = @_;
+
+    if ($self->EncodeFileName($file)) {
+        my $wh = Win32API::File::CreateFileW($file, Win32API::File::GENERIC_READ(), 0, [],
+                 Win32API::File::OPEN_EXISTING(), 0, []);
+        return 0 unless $wh;
+        Win32API::File::CloseHandle($wh);
+    } else {
+        return -e $file;
+    }
+    return 1;
+}
+
+#------------------------------------------------------------------------------
+# Return true if file is a directory (with Windows Unicode support)
+# Inputs: 0) ExifTool ref, 1) file name
+# Returns: true if file is a directory
+sub IsDirectory($$)
+{
+    my ($et, $file) = @_;
+    if ($et->EncodeFileName($file)) {
+        local $SIG{'__WARN__'} = \&SetWarning;
+        my $attrs = eval { Win32API::File::GetFileAttributesW($file) };
+        return 1 if $attrs and $attrs & Win32API::File::FILE_ATTRIBUTE_DIRECTORY();
+    } else {
+        return -d $file;
+    }
+    return 0;
 }
 
 #------------------------------------------------------------------------------
@@ -4536,6 +4627,31 @@ sub ConvertBitrate($)
         my $fmt = $bitrate < 100 ? '%.3g' : '%.0f';
         return sprintf("$fmt $units", $bitrate);
     }
+}
+
+#------------------------------------------------------------------------------
+# Convert file name for printing
+# Inputs: 0) ExifTool ref, 1) file name
+# Returns: converted file name
+sub ConvertFileName($$)
+{
+    my ($self, $val) = @_;
+    my $enc = $$self{OPTIONS}{CharsetFileName};
+    $val = $self->Decode($val, $enc) if $enc;
+    return $val;
+}
+
+#------------------------------------------------------------------------------
+# Inverse conversion for file name
+# Inputs: 0) ExifTool ref, 1) file name
+# Returns: unconverted file name
+sub InverseFileName($$)
+{
+    my ($self, $val) = @_;
+    my $enc = $$self{OPTIONS}{CharsetFileName};
+    $val = $self->Encode($val, $enc) if $enc;
+    $val =~ tr/\\/\//;  # make sure we are using forward slashes
+    return $val;
 }
 
 #------------------------------------------------------------------------------

@@ -460,6 +460,10 @@ distribution for examples.</p>
     EXIF "ASCII" string values.  Unlike other Charset options, CharsetEXIF may also be set
     to undef to pass through all string values without recoding.</td>
     <td align=center><i>(see <a href="#Charset">Charset</a> option)</i><br>or undef</td><td align=center>undef</td></tr>
+<tr><td>CharsetFileName</td><td><a name="CharsetFileName"></a>External character set
+    used when specifying file names.  When set in Windows, this triggers use of
+    Windows Unicode file library routines.</td>
+    <td align=center><i>(see <a href="#Charset">Charset</a> option)</i><br>or undef</td><td align=center>undef</td></tr>
 <tr><td>CharsetID3</td><td><a name="CharsetID3"></a>Internal encoding to assume for ID3v1 strings.  By
     the specification ID3v1 strings should be encoded in ISO 8859-1 (essentially
     'Latin'), but some applications may use local encoding instead.  This option
@@ -811,10 +815,10 @@ $success = $exifTool-&gt;<b>ExtractInfo</b>('image.jpg', \%options);
 </pre></td></tr></table></blockquote>
 <p>The following options are effective in the call to <a href="#ExtractInfo">ExtractInfo</a>:</p>
 <blockquote>
-Binary, Charset, CharsetEXIF, CharsetID3, CharsetIPTC, CharsetQuickTime,
-Composite, ExtractEmbedded, FastScan, FixBase, HtmlDump, HtmlDumpBase,
-IgnoreMinorErrors, Lang, LargeFileSupport, MakerNotes, PNGEarlyXMP,
-ScanForXMP, Struct, TextOut, Unknown and Verbose.
+Binary, Charset, CharsetEXIF, CharsetFileName, CharsetID3, CharsetIPTC,
+CharsetQuickTime, Composite, ExtractEmbedded, FastScan, FixBase, HtmlDump,
+HtmlDumpBase, IgnoreMinorErrors, Lang, LargeFileSupport, MakerNotes,
+PNGEarlyXMP, ScanForXMP, Struct, TextOut, Unknown and Verbose.
 </blockquote>
 
 <hr><h2><a name="GetInfo">GetInfo</a></h2>
@@ -929,8 +933,8 @@ and Warning tags.</p>
 <p>The following ExifTool options are effective in the call to
 <a href="#WriteInfo">WriteInfo</a>:</p>
 <blockquote>
-ByteOrder, Charset, CharsetEXIF, CharsetIPTC, Compact, Compress, FixBase,
-IgnoreMinorErrors, PNGEarlyXMP and Verbose.
+ByteOrder, Charset, CharsetEXIF, CharsetFileName, CharsetIPTC, Compact,
+Compress, FixBase, IgnoreMinorErrors, PNGEarlyXMP and Verbose.
 </blockquote>
 
 <hr><h2><a name="GetTagList">GetTagList</a></h2>
@@ -1838,7 +1842,7 @@ the specific IFD).
 APP6, APP8, ASF, CanonVRD, Composite, DICOM, DNG, DV, DjVu, Ducky, EXE,
 EXIF, ExifTool, FLAC, FLIR, File, Flash, FlashPix, Font, FotoStation, GIF,
 GIMP, GeoTiff, H264, HTML, ICC_Profile, ID3, IPTC, ITC, JFIF, JPEG,
-Jpeg2000, LNK, Leaf, Lytro, M2TS, MIE, MIFF, MNG, MPC, MPEG, MPF, MXF,
+Jpeg2000, LNK, Leaf, Lytro, M2TS, MIE, MIFF, MNG, MOI, MPC, MPEG, MPF, MXF,
 MakerNotes, Matroska, Meta, Ogg, OpenEXR, PDF, PICT, PLIST, PNG, PSP, Palm,
 PanasonicRaw, PhotoCD, PhotoMechanic, Photoshop, PostScript, PrintIM,
 QuickTime, RAF, RIFF, RSRC, RTF, Radiance, Rawzor, Real, SVG, SigmaRaw,
@@ -1858,20 +1862,20 @@ KodakBordersIFD, KodakEffectsIFD, KodakIFD, KyoceraRaw, LNK, Leaf,
 LeafSubIFD, Leica, Lytro, M2TS, MAC, MIE-Audio, MIE-Camera, MIE-Canon,
 MIE-Doc, MIE-Extender, MIE-Flash, MIE-GPS, MIE-Geo, MIE-Image, MIE-Lens,
 MIE-Main, MIE-MakerNotes, MIE-Meta, MIE-Orient, MIE-Preview, MIE-Thumbnail,
-MIE-UTM, MIE-Unknown, MIE-Video, MIFF, MNG, MOBI, MPC, MPEG, MPF0, MPImage,
-MXF, MakerNotes, MakerUnknown, Matroska, MediaJukebox, MetaIFD, Microsoft,
-Minolta, MinoltaRaw, NITF, Nikon, NikonCapture, NikonCustom, NikonScan,
-Nintendo, Ocad, Ogg, Olympus, OpenEXR, PDF, PICT, PNG, PNG-pHYs, PSP, Palm,
-Panasonic, PanasonicRaw, Pentax, PhaseOne, PhotoCD, PhotoMechanic,
-Photoshop, PictureInfo, PostScript, PreviewIFD, PrintIM, ProfileIFD,
-Qualcomm, QuickTime, RAF, RAF2, RIFF, RMETA, RSRC, RTF, Radiance, Rawzor,
-Real, Real-CONT, Real-MDPR, Real-PROP, Real-RA3, Real-RA4, Real-RA5,
-Real-RJMD, Reconyx, Ricoh, SPIFF, SR2, SR2DataIFD, SR2SubIFD, SRF#, SVG,
-Samsung, Sanyo, Scalado, Sigma, SigmaRaw, Sony, SonyIDC, Stim, SubIFD,
-System, Theora, Torrent, Track#, Version0, Vorbis, XML, XMP, XMP-DICOM,
-XMP-GPano, XMP-MP, XMP-MP1, XMP-PixelLive, XMP-aas, XMP-acdsee, XMP-album,
-XMP-apple-fi, XMP-aux, XMP-cc, XMP-cell, XMP-crs, XMP-dc, XMP-dex,
-XMP-digiKam, XMP-dwc, XMP-exif, XMP-exifEX, XMP-expressionmedia,
+MIE-UTM, MIE-Unknown, MIE-Video, MIFF, MNG, MOBI, MOI, MPC, MPEG, MPF0,
+MPImage, MXF, MakerNotes, MakerUnknown, Matroska, MediaJukebox, MetaIFD,
+Microsoft, Minolta, MinoltaRaw, NITF, Nikon, NikonCapture, NikonCustom,
+NikonScan, Nintendo, Ocad, Ogg, Olympus, OpenEXR, PDF, PICT, PNG, PNG-pHYs,
+PSP, Palm, Panasonic, PanasonicRaw, Pentax, PhaseOne, PhotoCD,
+PhotoMechanic, Photoshop, PictureInfo, PostScript, PreviewIFD, PrintIM,
+ProfileIFD, Qualcomm, QuickTime, RAF, RAF2, RIFF, RMETA, RSRC, RTF,
+Radiance, Rawzor, Real, Real-CONT, Real-MDPR, Real-PROP, Real-RA3, Real-RA4,
+Real-RA5, Real-RJMD, Reconyx, Ricoh, SPIFF, SR2, SR2DataIFD, SR2SubIFD,
+SRF#, SVG, Samsung, Sanyo, Scalado, Sigma, SigmaRaw, Sony, SonyIDC, Stim,
+SubIFD, System, Theora, Torrent, Track#, Version0, Vorbis, XML, XMP,
+XMP-DICOM, XMP-GPano, XMP-MP, XMP-MP1, XMP-PixelLive, XMP-aas, XMP-acdsee,
+XMP-album, XMP-apple-fi, XMP-aux, XMP-cc, XMP-cell, XMP-crs, XMP-dc,
+XMP-dex, XMP-digiKam, XMP-dwc, XMP-exif, XMP-exifEX, XMP-expressionmedia,
 XMP-extensis, XMP-fpv, XMP-getty, XMP-ics, XMP-iptcCore, XMP-iptcExt,
 XMP-lr, XMP-mediapro, XMP-microsoft, XMP-mwg-coll, XMP-mwg-kw, XMP-mwg-rs,
 XMP-pdf, XMP-pdfx, XMP-photomech, XMP-photoshop, XMP-plus, XMP-prism,

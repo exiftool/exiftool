@@ -32,7 +32,7 @@ use vars qw($VERSION %leicaLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.88';
+$VERSION = '1.89';
 
 sub ProcessLeicaLEIC($$$);
 sub WhiteBalanceConv($;$$);
@@ -265,6 +265,8 @@ my %shootingMode = (
             6 => 'Very High', #3 (Leica)
             7 => 'Raw', #3 (Leica)
             9 => 'Motion Picture', #PH (LZ6)
+            11 => 'Full HD Movie', #PH (V-LUX)
+            12 => '4k Movie', #PH (V-LUX)
         },
     },
     0x02 => {
@@ -333,7 +335,7 @@ my %shootingMode = (
                 '0 1'   => '9-area', # (FS7)
                 '0 16'  => '3-area (high speed)', # (FZ8)
                 '0 23'  => '23-area', #PH (FZ47,NC)
-                # '0 49' - seen for LX100 (PH)
+                # '0 49' - seen for LX100, V-LUX (PH)
                 '1 0'   => 'Spot Focusing', # (FZ8)
                 '1 1'   => '5-area', # (FZ8)
                 '16'    => 'Normal?', # (only mode for DMC-LC20)
@@ -1998,6 +2000,7 @@ my %shootingMode = (
             },
             Notes => 'A Composite tag derived from Model, SceneMode and AdvancedSceneType.',
             '0 1' => 'Off',
+            # '0 7' - seen this for V-LUX movies (PH)
             '2 2' => 'Outdoor Portrait', #(FZ28)
             '2 3' => 'Indoor Portrait', #(FZ28)
             '2 4' => 'Creative Portrait', #(FZ28)

@@ -6742,6 +6742,7 @@ Tags extracted from FLIR Public image Format (FPF) files.
   0x1034   EXRMode                              int16u
   0x1040   ShadowTone                           int32s
   0x1041   HighlightTone                        int32s
+  0x1050   ShutterType                          int16u
   0x1100   AutoBracketing                       int16u
   0x1101   SequenceNumber                       int16u
   0x1201   AdvancedFilter                       int32u
@@ -7280,6 +7281,8 @@ from some older Kodak models such as the DC50, DC120, DCS760C, DCS Pro 14N,
   0x03fd   Processing                           Kodak Processing
   0x0401   Time                                 string
   0x0406   CameraTemperature                    rational64s
+  0x0407   AdapterVoltage                       rational64u
+  0x0408   BatteryVoltage                       rational64u
   0x0414   NCDFileInfo                          string
   0x0846   ColorTemperature                     int16u
   0x0848   WB_RGBLevelsDaylight                 N
@@ -11931,7 +11934,7 @@ Tags found in the EXIF-format maker notes of newer Samsung models.
   0xa043   ToneCurveAdobeRGB                    int32u[23]
   0xa048   RawData?                             int32s[12]
   0xa050   Distortion?                          int32s[8]
-  0xa051   Chromatic Aberration?                int16u[22]
+  0xa051   ChromaticAberration?                 int16u[22]
   0xa052   Vignetting?                          int16u[15]
   0xa053   VignettingCorrection?                int16u[15]
   0xa054   VignettingSetting?                   int16u[15]
@@ -20487,6 +20490,21 @@ Matroska specification.
   0xb538667    SignatureSlot                    Matroska
   0xc53bb6b    Cues                             Matroska
   0xf43b675    Cluster                          Matroska
+
+=head2 MOI Tags
+
+MOI files store information about associated MOD or TOD files, and are
+written by some JVC, Canon and Panasonic camcorders.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    MOIVersion                           N
+      6    DateTimeOriginal                     N
+     14    Duration                             N
+    128    AspectRatio                          N
+    132    AudioCodec                           N
+    134    AudioBitrate                         N
+    218    VideoBitrate                         N
 
 =head2 MXF Tags
 

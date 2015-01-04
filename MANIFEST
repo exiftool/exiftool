@@ -77,6 +77,7 @@ html/TagNames/M2TS.html
 html/TagNames/MIE.html
 html/TagNames/MIFF.html
 html/TagNames/MNG.html
+html/TagNames/MOI.html
 html/TagNames/MPC.html
 html/TagNames/MPEG.html
 html/TagNames/MPF.html
@@ -275,6 +276,7 @@ lib/Image/ExifTool/MIE.pm
 lib/Image/ExifTool/MIEUnits.pod
 lib/Image/ExifTool/MIFF.pm
 lib/Image/ExifTool/MNG.pm
+lib/Image/ExifTool/MOI.pm
 lib/Image/ExifTool/MPC.pm
 lib/Image/ExifTool/MPEG.pm
 lib/Image/ExifTool/MPF.pm
@@ -538,6 +540,8 @@ t/MIE_5.out
 t/MIE_6.out
 t/MIFF.t
 t/MIFF_2.out
+t/MOI.t
+t/MOI_2.out
 t/MP3.t
 t/MP3_2.out
 t/MWG.t
@@ -830,6 +834,7 @@ t/images/Lytro.lfp
 t/images/M2TS.mts
 t/images/MIE.mie
 t/images/MIFF.miff
+t/images/MOI.moi
 t/images/MP3.mp3
 t/images/MWG.jpg
 t/images/MXF.mxf

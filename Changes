@@ -7,7 +7,17 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 9.76. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
-Jan. 4, 2014 - Version 9.79 - Windows Unicode file names
+Jan. 7, 2015 - Version 9.80
+
+  - Added a few new Canon and Minolta/Sony LensType values (thanks LibRaw)
+  - Added a few new CanonModelID's
+  - Decode a few new Canon tags
+  - Suppress warning for Canon 7DmkIII VignettingCorrUnknown2 data format
+  - Fixed runtime warning when piping an MOI file to exiftool
+  - Fixed bug in -fileOrder option introduced in version 9.79
+  - Fixed bug using Windows Unicode file names with -tagsFromFile option
+
+Jan. 4, 2015 - Version 9.79 - Windows Unicode file names
 
   - Added support for Windows Unicode file names (but note that support still
     isn't complete -- some things like setting FileModifyDate or creating a

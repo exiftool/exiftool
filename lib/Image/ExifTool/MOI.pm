@@ -14,7 +14,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.00';
+$VERSION = '1.01';
 
 # MOI tags (ref 1)
 %Image::ExifTool::MOI::Main = (
@@ -107,8 +107,10 @@ sub ProcessMOI($$)
     my $buff;
     # read enough to allow skipping over run-in if it exists
     $raf->Read($buff, 256) == 256 and $buff =~ /^V6/ or return 0;
-    my $size = unpack('x2N', $buff);
-    $size == $$et{VALUE}{FileSize} or return 0;
+    if (defined $$et{VALUE}{FileSize}) {
+        my $size = unpack('x2N', $buff);
+        $size == $$et{VALUE}{FileSize} or return 0;
+    }
     SetByteOrder('MM');
     my $tagTablePtr = GetTagTable('Image::ExifTool::MOI::Main');
     return $et->ProcessBinaryData({ DataPt => \$buff }, $tagTablePtr);
@@ -133,7 +135,7 @@ information from MOI files.
 
 =head1 AUTHOR
 
-Copyright 2003-2014, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2015, Phil Harvey (phil at owl.phy.queensu.ca)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

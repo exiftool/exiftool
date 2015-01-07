@@ -3887,7 +3887,10 @@ boot, not including standby time.
   0x4018   LightingOpt                          Canon LightingOpt
   0x4019   LensInfo                             Canon LensInfo
   0x4020   AmbienceInfo                         Canon Ambience
+  0x4021   MultiExp                             Canon MultiExp
   0x4024   FilterInfo                           Canon FilterInfo
+  0x4025   HDRInfo                              Canon HDRInfo
+  0x4028   AFConfig                             Canon AFConfig
 
 =head3 Canon CameraSettings Tags
 
@@ -5496,7 +5499,11 @@ This information is new in images from the EOS 7D.
 
   Index4   Tag Name                             Writable
   ------   --------                             --------
+      1    PeripheralIlluminationCorr           int32s
       2    AutoLightingOptimizer                int32s
+      3    HighlightTonePriority                int32s
+      4    LongExposureNoiseReduction           int32s
+      5    HighISONoiseReduction                int32s
 
 =head3 Canon LensInfo Tags
 
@@ -5509,6 +5516,14 @@ This information is new in images from the EOS 7D.
   Index4   Tag Name                             Writable
   ------   --------                             --------
       1    AmbienceSelection                    int32s
+
+=head3 Canon MultiExp Tags
+
+  Index4   Tag Name                             Writable
+  ------   --------                             --------
+      1    MultiExposure                        int32s
+      2    MultiExposureControl                 int32s
+      3    MultiExposureShots                   int32s
 
 =head3 Canon FilterInfo Tags
 
@@ -5526,6 +5541,22 @@ Information about creative filter settings.
   0x0501   FisheyeFilter                        N
   0x0601   PaintingFilter                       N
   0x0701   WatercolorFilter                     N
+
+=head3 Canon HDRInfo Tags
+
+  Index4   Tag Name                             Writable
+  ------   --------                             --------
+      1    HDR                                  int32s
+      2    HDREffect                            int32s
+
+=head3 Canon AFConfig Tags
+
+  Index4   Tag Name                             Writable
+  ------   --------                             --------
+      1    AFConfigTool                         int32s
+      2    AFTrackingSensitivity                int32s
+      3    AFAccelDecelTracking                 int32s
+      4    AFPointSwitching                     int32s
 
 =head3 Canon CNOP Tags
 
@@ -27993,7 +28024,7 @@ L<Image::ExifTool::BuildTagLookup|Image::ExifTool::BuildTagLookup>.
 
 =head1 AUTHOR
 
-Copyright 2003-2014, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2015, Phil Harvey (phil at owl.phy.queensu.ca)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

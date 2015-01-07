@@ -441,7 +441,19 @@ is UTF&#8209;8 by default, but it may be changed through any of these
 command-line options:
 <blockquote><code>-charset CHARSET</code> &nbsp; or &nbsp;
 <code>-charset exiftool=CHARSET</code> &nbsp; or &nbsp; <code>-L</code>
-</blockquote></li>
+</blockquote>
+<b>File and directory names</b> (specified via the <i>FILE</i> argument on the
+command line) are a special case.  By default, these names are passed straight
+through to the standard C i/o routines without recoding.  On Mac/Linux these
+routines expect UTF&#8209;8, but on Windows they use the system code page (which
+is dependent on your system settings).  However, as of ExifTool 9.79, the
+external filename encoding may be specified:
+<blockquote><code>-charset filename=CHARSET</code></blockquote>
+When this is done, file and directory names are converted from the specified
+encoding to one appropriate for system i/o routines.  In Windows, this also has
+the effect of enabling Unicode filename support via the special Windows
+wide-character i/o routines if the corresponding Perl modules are available
+(included in the Windows executable version of ExifTool).<br><br></li>
 <li>The <b>internal</b> character set for strings stored in file metadata may be
 specified for some metadata types:
 <blockquote><code>-charset TYPE=CHARSET</code></blockquote>
@@ -489,7 +501,7 @@ encoding is also set to something other than the default of UTF&#8209;8.)</block
 
 <blockquote>A few EXIF tags (UserComment, GPSProcessingMethod and
 GPSAreaInformation) support a designated internal text encoding, with values
-stored as ASCII, Unicode (UCS-2) or JIS.  When reading these tags, ExifTool
+stored as ASCII, Unicode (UCS&#8209;2) or JIS.  When reading these tags, ExifTool
 converts Unicode and JIS to the external character set specified by the
 <code>-charset</code> or <code>-L</code> option, or to UTF&#8209;8 by default. 
 ASCII text is not converted.  When writing, text is stored as ASCII unless the
@@ -1123,7 +1135,7 @@ switch to cp1252, then run exiftool with "<code>-charset cp1252</code>" (or
 code pages.</blockquote>
 
 <blockquote>A final alternative is to bypass the command-line encoding problems
-totally by extracting/writing to/from a separate text file, and using a UTF-8
+totally by extracting/writing to/from a separate text file, and using a UTF&#8209;8
 aware text editor to view/edit the text.  For example:
 
 <pre><span class=blk># extracting...</span>
@@ -1493,7 +1505,7 @@ importing.</blockquote>
 for more details.</blockquote>
 
 <hr>
-<i>Last revised Nov 17, 2014</i>
+<i>Last revised Jan 6, 2015</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

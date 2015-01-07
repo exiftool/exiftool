@@ -41,6 +41,7 @@
 #              27) http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,3833.0.html
 #              28) Michael Reitinger private communication (RX100)
 #              29) http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,4086.0.html
+#              30) Iliah Borg private communication (LibRaw)
 #              JD) Jens Duttke private communication
 #------------------------------------------------------------------------------
 
@@ -52,7 +53,7 @@ use vars qw($VERSION %minoltaLensTypes %minoltaTeleconverters %minoltaColorMode
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.18';
+$VERSION = '2.19';
 
 # Full list of product codes for Sony-compatible Minolta lenses
 # (ref http://www.kb.sony.com/selfservice/documentLink.do?externalId=C1000570)
@@ -309,6 +310,8 @@ my %metabonesID = (
     # was 128.2 => 'Tamron 28-300mm F3.5-6.3',
     128.3 => 'Tamron 80-300mm F3.5-6.3',
     128.4 => 'Tamron AF 28-200mm F3.8-5.6 XR Di Aspherical [IF] Macro', #JD (Model A031)
+   # also Tamron AF 28-200mm F3.8-5.6 Aspherical', #30 (Model 71D)
+   # and 'Tamron AF 28-200mm F3.8-5.6 LD Aspherical [IF] Super', #30 (Model 171D)
     128.5 => 'Tamron SP AF 17-35mm F2.8-4 Di LD Aspherical IF', #JD (Model A05)
     128.6 => 'Sigma AF 50-150mm F2.8 EX DC APO HSM II', #JD
     128.7 => 'Sigma 10-20mm F3.5 EX DC HSM', #11 (Model 202-205)
@@ -322,6 +325,8 @@ my %metabonesID = (
    '128.14' => 'Sigma 17-50mm F2.8 EX DC HSM', #Exiv2
    '128.15' => 'Sigma 17-70mm F2.8-4 DC Macro HSM', #25
    '128.16' => 'Sigma 150mm F2.8 EX DG OS HSM APO Macro', #Marcus Holland-Moritz
+   '128.17' => 'Sigma 150-500mm F5-6.3 APO DG OS HSM', #30
+   '128.18' => 'Tamron AF 28-105mm F4-5.6 [IF]', #30 (Model 179D)
     129 => 'Tamron Lens (129)',
     129.1 => 'Tamron 200-400mm F5.6 LD', #12 (LD ref 23)
     129.2 => 'Tamron 70-300mm F4-5.6 LD', #12
@@ -354,6 +359,7 @@ my %metabonesID = (
     25511.2 => 'Sigma AF 28-70mm F2.8', #JD
     25511.3 => 'Sigma M-AF 70-200mm F2.8 EX Aspherical', #12
     25511.4 => 'Quantaray M-AF 35-80mm F4-5.6', #JD
+    25511.5 => 'Tokina 28-70mm F2.8-4.5 AF', #30
     25521 => 'Minolta AF 28-85mm F3.5-4.5 or Other Lens', # not New (ref 18)
     25521.1 => 'Tokina 19-35mm F3.5-4.5', #3
     25521.2 => 'Tokina 28-70mm F2.8 AT-X', #7
@@ -2870,7 +2876,7 @@ and write Minolta RAW (MRW) images.
 
 =head1 AUTHOR
 
-Copyright 2003-2014, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2015, Phil Harvey (phil at owl.phy.queensu.ca)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

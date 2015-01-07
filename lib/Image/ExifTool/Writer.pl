@@ -1071,6 +1071,7 @@ sub SetNewValuesFromFile($$;@)
         Binary          => 1,
         Charset         => $$options{Charset},
         CharsetEXIF     => $$options{CharsetEXIF},
+        CharsetFileName => $$options{CharsetFileName},
         CharsetID3      => $$options{CharsetID3},
         CharsetIPTC     => $$options{CharsetIPTC},
         CharsetPhotoshop=> $$options{CharsetPhotoshop},
@@ -6012,7 +6013,7 @@ used routines.
 
 =head1 AUTHOR
 
-Copyright 2003-2014, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2015, Phil Harvey (phil at owl.phy.queensu.ca)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

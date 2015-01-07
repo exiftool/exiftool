@@ -5,7 +5,7 @@
 #
 # URL:          http://owl.phy.queensu.ca/~phil/exiftool/
 #
-# Legal:        Copyright (c) 2003-2014, Phil Harvey (phil at owl.phy.queensu.ca)
+# Legal:        Copyright (c) 2003-2015, Phil Harvey (phil at owl.phy.queensu.ca)
 #               This library is free software; you can redistribute it and/or
 #               modify it under the same terms as Perl itself.
 #------------------------------------------------------------------------------
@@ -2239,10 +2239,18 @@ of a file.  These character sets may be specified separately as follows:
 
 =over 4
 
-=item External Character Set:
+=item External Character Sets:
 
 The encoding for strings passed to/from ExifTool API functions.  This is set
 via the L</Charset> option, which is 'UTF8' by default.
+
+The encoding of file and directory names is a special case.  By default,
+file names passed to ExifTool are used directly in calls to the system i/o
+routines (which expect UTF-8 strings on Mac/Linux, but default to the system
+code page on Windows), however this may be changed by setting the
+L</CharsetFileName> option.  In Windows, setting L<CharsetFileName> also has
+the effect of activating Unicode filename support, and causes the special
+Windows wide-character i/o routines to be used if available.
 
 =item Internal Character Sets:
 
@@ -2314,7 +2322,7 @@ ExifTool may be used to convert IPTC values to a different internal
 encoding.  To do this, all IPTC tags must be rewritten along with the
 desired value of CodedCharacterSet.  For example, the following command
 changes the internal IPTC encoding to UTF-8 (from Windows Latin1 unless
-CodedCharacterSet was already "UTF8"):
+CodedCharacterSet was already 'UTF8'):
 
   exiftool -tagsfromfile @ -iptc:all -codedcharacterset=utf8 a.jpg
 
@@ -2416,7 +2424,7 @@ specified by the L</Charset> option.
 
 =head1 AUTHOR
 
-Copyright 2003-2014, Phil Harvey
+Copyright 2003-2015, Phil Harvey
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

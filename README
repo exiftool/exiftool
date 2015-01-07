@@ -146,11 +146,13 @@ for calculating digest values for some information types:
   Digest::SHA          (PDF with AES-256 encryption)
   IO::Compress::Bzip2  (RWZ files)
   Win32API::File::Time (enables writing of FileCreateDate in Windows)
+  Win32API::File       (for Windows Unicode file name support)
+  Win32::FindFile      (for Windows Unicode directory support, app only)
   Time::HiRes          (allows generation of ProcessingTime tag)
 
 COPYRIGHT AND LICENSE
 
-Copyright 2003-2014, Phil Harvey
+Copyright 2003-2015, Phil Harvey
 
 This is free software; you can redistribute it and/or modify it under the
 same terms as Perl itself.

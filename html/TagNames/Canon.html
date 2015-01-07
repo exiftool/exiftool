@@ -483,10 +483,25 @@
 <td class=c>-</td>
 <td>--&gt; <a href='Canon.html#Ambience'>Canon Ambience Tags</a></td></tr>
 <tr class=b>
+<td title='0x4021 = 16417'>0x4021</td>
+<td>MultiExp</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Canon.html#MultiExp'>Canon MultiExp Tags</a></td></tr>
+<tr>
 <td title='0x4024 = 16420'>0x4024</td>
 <td>FilterInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Canon.html#FilterInfo'>Canon FilterInfo Tags</a></td></tr>
+<tr class=b>
+<td title='0x4025 = 16421'>0x4025</td>
+<td>HDRInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Canon.html#HDRInfo'>Canon HDRInfo Tags</a></td></tr>
+<tr>
+<td title='0x4028 = 16424'>0x4028</td>
+<td>AFConfig</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Canon.html#AFConfig'>Canon AFConfig Tags</a></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='CanonModelID'>Canon CanonModelID Values</a></h2>
@@ -692,6 +707,9 @@
 </tr><tr><td class=r>0x3750000</td><td>= PowerShot SX60 HS</td>
 </tr><tr><td class=r>0x3760000</td><td>= PowerShot SX520 HS</td>
 </tr><tr><td class=r>0x3780000</td><td>= PowerShot G7 X</td>
+</tr><tr><td class=r>0x3800000</td><td>= PowerShot SX530 HS</td>
+</tr><tr><td class=r>0x3820000</td><td>= PowerShot SX710 HS</td>
+</tr><tr><td class=r>0x3830000</td><td>= PowerShot SX610 HS</td>
 </tr><tr><td class=r>0x4040000</td><td>= PowerShot G1</td>
 </tr><tr><td class=r>0x6040000</td><td>= PowerShot S100 / Digital IXUS / IXY Digital</td>
 </tr><tr><td class=r>0x4007d673</td><td>= DC19/DC21/DC22</td>
@@ -1261,11 +1279,14 @@ attempting to identify the specific lens model.</p>
 </tr><tr><td>33.4</td><td>= Carl Zeiss Distagon T* 15mm f/2.8 ZE</td>
 </tr><tr><td>33.5</td><td>= Carl Zeiss Distagon T* 18mm f/3.5 ZE</td>
 </tr><tr><td>33.6</td><td>= Carl Zeiss Distagon T* 21mm f/2.8 ZE</td>
-</tr><tr><td>33.7</td><td>= Carl Zeiss Distagon T* 28mm f/2 ZE</td>
-</tr><tr><td>33.8</td><td>= Carl Zeiss Distagon T* 35mm f/2 ZE</td>
-</tr><tr><td>33.9</td><td>= Carl Zeiss Apo-Sonnar T* 135mm f/2 ZE</td>
-</tr><tr><td>33.10</td><td>= Carl Zeiss Planar T* 50mm f/1.4 ZE</td>
-</tr><tr><td>33.11</td><td>= Carl Zeiss Makro-Planar T* 100mm f/2 ZE</td>
+</tr><tr><td>33.7</td><td>= Carl Zeiss Distagon T* 25mm f/2 ZE</td>
+</tr><tr><td>33.8</td><td>= Carl Zeiss Distagon T* 28mm f/2 ZE</td>
+</tr><tr><td>33.9</td><td>= Carl Zeiss Distagon T* 35mm f/2 ZE</td>
+</tr><tr><td>33.10</td><td>= Carl Zeiss Distagon T* 35mm f/1.4 ZE</td>
+</tr><tr><td>33.11</td><td>= Carl Zeiss Planar T* 50mm f/1.4 ZE</td>
+</tr><tr><td>33.12</td><td>= Carl Zeiss Makro-Planar T* 50mm f/2 ZE</td>
+</tr><tr><td>33.13</td><td>= Carl Zeiss Makro-Planar T* 100mm f/2 ZE</td>
+</tr><tr><td>33.14</td><td>= Carl Zeiss Apo-Sonnar T* 135mm f/2 ZE</td>
 </tr><tr><td>35</td><td>= Canon EF 35-80mm f/4-5.6</td>
 </tr><tr><td>36</td><td>= Canon EF 38-76mm f/4.5-5.6</td>
 </tr><tr><td>37</td><td>= Canon EF 35-80mm f/4-5.6 or Tamron Lens</td>
@@ -5574,15 +5595,17 @@ may be 7, 9, 11, 19, 31, 45 or 61, depending on the camera model.</p>
 <td class=c>N</td>
 <td><table class=cols><tr>
   <td>0 = Off (Manual Focus)
+  <br>1 = AF Point Expansion (surround)
   <br>2 = Single-point AF
   <br>4 = Multi-point AF or AI AF
   <br>5 = Face Detect AF
   <br>6 = Face + Tracking
   <br>7 = Zone AF
-  <br>8 = AF Point Expansion
+  <br>8 = AF Point Expansion (top/bottom/left/right)
   <br>9 = Spot AF
   <br>11 = Flexizone Multi
-  <br>13 = Flexizone Single</td><td>&nbsp;&nbsp;</td></tr></table>
+  <br>13 = Flexizone Single
+  <br>14 = Manual select Large Zone</td><td>&nbsp;&nbsp;</td></tr></table>
 </td></tr>
 <tr>
 <td class=r title='2 = 0x2'>2</td>
@@ -8248,8 +8271,35 @@ option is used.</p>
 <tr class=h><th>Index4</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
+<td class=r title='1 = 0x1'>1</td>
+<td>PeripheralIlluminationCorr</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr class=b>
 <td class=r title='2 = 0x2'>2</td>
 <td>AutoLightingOptimizer</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = Standard
+  <br>1 = Low
+  <br>2 = Strong
+  <br>3 = Off</span></td></tr>
+<tr>
+<td class=r title='3 = 0x3'>3</td>
+<td>HighlightTonePriority</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>LongExposureNoiseReduction</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = Off
+  <br>1 = Auto
+  <br>2 = On</span></td></tr>
+<tr>
+<td class=r title='5 = 0x5'>5</td>
+<td>HighISONoiseReduction</td>
 <td class=c>int32s</td>
 <td><span class=s>0 = Standard
   <br>1 = Low
@@ -8292,6 +8342,33 @@ to the one printed on the lens)</span></span></td></tr>
   <br>7 = Darker
   <br>8 = Monochrome</td><td>&nbsp;&nbsp;</td></tr></table>
 </td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='MultiExp'>Canon MultiExp Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index4</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='1 = 0x1'>1</td>
+<td>MultiExposure</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>MultiExposureControl</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = Additive
+  <br>1 = Average
+  <br>2 = Bright (comparative)
+  <br>3 = Dark (comparative)</span></td></tr>
+<tr>
+<td class=r title='3 = 0x3'>3</td>
+<td>MultiExposureShots</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='FilterInfo'>Canon FilterInfo Tags</a></h2>
@@ -8354,6 +8431,58 @@ to the one printed on the lens)</span></span></td></tr>
 <td><span class=s>-1 = Off</span></td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='HDRInfo'>Canon HDRInfo Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index4</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='1 = 0x1'>1</td>
+<td>HDR</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = Off
+  <br>1 = Auto
+  <br>2 = On</span></td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>HDREffect</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = Natural
+  <br>1 = Art (standard)
+  <br>2 = Art (vivid)
+  <br>3 = Art (bold)
+  <br>4 = Art (embossed)</span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='AFConfig'>Canon AFConfig Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index4</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='1 = 0x1'>1</td>
+<td>AFConfigTool</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>AFTrackingSensitivity</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='3 = 0x3'>3</td>
+<td>AFAccelDecelTracking</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>AFPointSwitching</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
 <h2><a name='CNOP'>Canon CNOP Tags</a></h2>
 <blockquote>
 <table class=frame><tr><td>
@@ -8414,7 +8543,7 @@ SX280.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jan 4, 2015</i>
+<br><i>Last revised Jan 6, 2015</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

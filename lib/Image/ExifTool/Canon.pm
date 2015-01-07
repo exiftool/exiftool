@@ -83,7 +83,7 @@ sub ProcessSerialData($$$);
 sub ProcessFilters($$$);
 sub SwapWords($);
 
-$VERSION = '3.40';
+$VERSION = '3.41';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -161,11 +161,14 @@ $VERSION = '3.40';
     33.4 => 'Carl Zeiss Distagon T* 15mm f/2.8 ZE', #PH
     33.5 => 'Carl Zeiss Distagon T* 18mm f/3.5 ZE', #PH
     33.6 => 'Carl Zeiss Distagon T* 21mm f/2.8 ZE', #PH
-    33.7 => 'Carl Zeiss Distagon T* 28mm f/2 ZE', #PH
-    33.8 => 'Carl Zeiss Distagon T* 35mm f/2 ZE', #PH
-    33.9 => 'Carl Zeiss Apo-Sonnar T* 135mm f/2 ZE', #54
-   '33.10' => 'Carl Zeiss Planar T* 50mm f/1.4 ZE', #52
-   '33.11' => 'Carl Zeiss Makro-Planar T* 100mm f/2 ZE', #52
+    33.7 => 'Carl Zeiss Distagon T* 25mm f/2 ZE', #52
+    33.8 => 'Carl Zeiss Distagon T* 28mm f/2 ZE', #PH
+    33.9 => 'Carl Zeiss Distagon T* 35mm f/2 ZE', #PH
+   '33.10' => 'Carl Zeiss Distagon T* 35mm f/1.4 ZE', #52
+   '33.11' => 'Carl Zeiss Planar T* 50mm f/1.4 ZE', #52
+   '33.12' => 'Carl Zeiss Makro-Planar T* 50mm f/2 ZE', #52
+   '33.13' => 'Carl Zeiss Makro-Planar T* 100mm f/2 ZE', #52
+   '33.14' => 'Carl Zeiss Apo-Sonnar T* 135mm f/2 ZE', #54
     35 => 'Canon EF 35-80mm f/4-5.6', #32
     36 => 'Canon EF 38-76mm f/4.5-5.6', #32
     37 => 'Canon EF 35-80mm f/4-5.6 or Tamron Lens', #32
@@ -609,6 +612,9 @@ $VERSION = '3.40';
     0x3750000 => 'PowerShot SX60 HS', #52/53
     0x3760000 => 'PowerShot SX520 HS', #52
     0x3780000 => 'PowerShot G7 X', #52
+    0x3800000 => 'PowerShot SX530 HS',
+    0x3820000 => 'PowerShot SX710 HS',
+    0x3830000 => 'PowerShot SX610 HS',
     0x4040000 => 'PowerShot G1',
     0x6040000 => 'PowerShot S100 / Digital IXUS / IXY Digital',
 
@@ -855,6 +861,8 @@ my %binaryDataAttrs = (
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     WRITABLE => 1,
 );
+
+my %offOn = ( 0 => 'Off', 1 => 'On' );
 
 #------------------------------------------------------------------------------
 # Canon EXIF Maker Notes
@@ -1644,7 +1652,7 @@ my %binaryDataAttrs = (
         },
     },{
         Name => 'VignettingCorrUnknown1',
-        Condition => '$$valPt =~ /^[\x01\x02]/ and $$valPt !~ /^\0\0\0\0/',
+        Condition => '$$valPt =~ /^[\x01\x02\x10]/ and $$valPt !~ /^\0\0\0\0/',
         SubDirectory => {
             # (the size word is at byte 2 in this structure)
             Validate => 'Image::ExifTool::Canon::Validate($dirData,$subdirStart+2,$size)',
@@ -1688,7 +1696,13 @@ my %binaryDataAttrs = (
             TagTable => 'Image::ExifTool::Canon::Ambience',
         }
     },
-    # 0x4021 (ExifDSTagMultipleExposure) chromatic aberration correction?
+    0x4021 => { #PH
+        Name => 'MultiExp', # (ExifDSTagMultipleExposure)
+        SubDirectory => {
+            Validate => 'Image::ExifTool::Canon::Validate($dirData,$subdirStart,$size)',
+            TagTable => 'Image::ExifTool::Canon::MultiExp',
+        }
+    },
     0x4024 => { #PH
         Name => 'FilterInfo',
         SubDirectory => {
@@ -1696,8 +1710,20 @@ my %binaryDataAttrs = (
             TagTable => 'Image::ExifTool::Canon::FilterInfo',
         }
     },
-    # 0x4025 (HighDynamicRange)
-    # 0x4028 (AFTabInfo) AF configuration
+    0x4025 => { #PH
+        Name => 'HDRInfo', # (HighDynamicRange)
+        SubDirectory => {
+            Validate => 'Image::ExifTool::Canon::Validate($dirData,$subdirStart,$size)',
+            TagTable => 'Image::ExifTool::Canon::HDRInfo',
+        }
+    },
+    0x4028 => { #PH
+        Name => 'AFConfig', # (AFTabInfo)
+        SubDirectory => {
+            Validate => 'Image::ExifTool::Canon::Validate($dirData,$subdirStart,$size)',
+            TagTable => 'Image::ExifTool::Canon::AFConfig',
+        }
+    },
 );
 
 #..............................................................................
@@ -3020,7 +3046,7 @@ my %ciMaxFocal = (
     0x06 => { %ciISO },
     0x07 => {
         Name => 'HighlightTonePriority',
-        PrintConv => { 0 => 'Off', 1 => 'On' },
+        PrintConv => \%offOn,
     },
     0x08 => {
         Name => 'MeasuredEV2',
@@ -3441,7 +3467,7 @@ my %ciMaxFocal = (
     0x06 => { %ciISO },
     0x07 => {
         Name => 'HighlightTonePriority',
-        PrintConv => { 0 => 'Off', 1 => 'On' },
+        PrintConv => \%offOn,
     },
     0x1b => { %ciMacroMagnification }, #PH
     0x15 => { #PH (580 EX II)
@@ -3795,7 +3821,7 @@ my %ciMaxFocal = (
     0x06 => { %ciISO },
     0x07 => {
         Name => 'HighlightTonePriority',
-        PrintConv => { 0 => 'Off', 1 => 'On' },
+        PrintConv => \%offOn,
     },
     0x08 => { #37
         Name => 'MeasuredEV2',
@@ -4020,7 +4046,7 @@ my %ciMaxFocal = (
     0x06 => { %ciISO },
     0x07 => {
         Name => 'HighlightTonePriority',
-        PrintConv => { 0 => 'Off', 1 => 'On' },
+        PrintConv => \%offOn,
     },
     0x15 => { #PH (580 EX II)
         Name => 'FlashMeteringMode',
@@ -4362,7 +4388,7 @@ my %ciMaxFocal = (
     0x06 => { %ciISO },
     0x07 => {
         Name => 'HighlightTonePriority',
-        PrintConv => { 0 => 'Off', 1 => 'On' },
+        PrintConv => \%offOn,
     },
     0x15 => { #PH (580 EX II)
         Name => 'FlashMeteringMode',
@@ -4475,7 +4501,7 @@ my %ciMaxFocal = (
     0x06 => { %ciISO },
     0x07 => { #(NC)
         Name => 'HighlightTonePriority',
-        PrintConv => { 0 => 'Off', 1 => 'On' },
+        PrintConv => \%offOn,
     },
     0x15 => { #(NC)
         Name => 'FlashMeteringMode',
@@ -4570,7 +4596,7 @@ my %ciMaxFocal = (
     0x06 => { %ciISO },
     0x07 => { #(NC)
         Name => 'HighlightTonePriority',
-        PrintConv => { 0 => 'Off', 1 => 'On' },
+        PrintConv => \%offOn,
     },
     0x15 => { #(NC)
         Name => 'FlashMeteringMode',
@@ -5641,15 +5667,20 @@ my %ciMaxFocal = (
         Name => 'AFAreaMode',
         PrintConv => {
             0 => 'Off (Manual Focus)',
+            1 => 'AF Point Expansion (surround)', #PH
             2 => 'Single-point AF',
+            # 3 - n/a
             4 => 'Multi-point AF or AI AF', # AiAF on A570IS
             5 => 'Face Detect AF',
             6 => 'Face + Tracking', #PH (NC, EOS M)
             7 => 'Zone AF', #46
-            8 => 'AF Point Expansion', #46
+            8 => 'AF Point Expansion (top/bottom/left/right)', #46/PH
             9 => 'Spot AF', #46
+            # 10 - also "Flexizone Multi"? (PH)
             11 => 'Flexizone Multi', #PH (NC, EOS M)
+            # 12 - also "Flexizone Multi"? (PH)
             13 => 'Flexizone Single', #PH (EOS M default)
+            14 => 'Manual select Large Zone', #PH (7DmkII)
         },
     },
     2 => {
@@ -6107,7 +6138,7 @@ my %ciMaxFocal = (
         # (this tag could be valid only for some firmware versions:
         # http://www.breezesys.com/forum/showthread.php?p=16980)
         Name => 'LiveViewShooting',
-        PrintConv => { 0 => 'Off', 1 => 'On' },
+        PrintConv => \%offOn,
     },
     20 => { #47
         Name => 'FocusDistanceUpper',
@@ -6132,7 +6163,7 @@ my %ciMaxFocal = (
     # 23 - values: 0, 21, 22
     25 => { #PH
         Name => 'FlashExposureLock',
-        PrintConv => { 0 => 'Off', 1 => 'On' },
+        PrintConv => \%offOn,
     },
 );
 
@@ -7159,15 +7190,15 @@ my %ciMaxFocal = (
     },
     2 => {
         Name => 'PeripheralLighting',
-        PrintConv => { 0 => 'Off', 1 => 'On' },
+        PrintConv => \%offOn,
     },
     4 => {
         Name => 'ChromaticAberrationCorr',
-        PrintConv => { 0 => 'Off', 1 => 'On' },
+        PrintConv => \%offOn,
     },
     5 => {
         Name => 'ChromaticAberrationCorr',
-        PrintConv => { 0 => 'Off', 1 => 'On' },
+        PrintConv => \%offOn,
     },
     6 => 'PeripheralLightingValue',
     # 10 - flags?
@@ -7199,11 +7230,11 @@ my %ciMaxFocal = (
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     5 => {
         Name => 'PeripheralLightingSetting',
-        PrintConv => { 0 => 'Off', 1 => 'On' },
+        PrintConv => \%offOn,
     },
     6 => {
         Name => 'ChromaticAberrationSetting',
-        PrintConv => { 0 => 'Off', 1 => 'On' },
+        PrintConv => \%offOn,
     },
 );
 
@@ -7214,6 +7245,10 @@ my %ciMaxFocal = (
     FIRST_ENTRY => 1,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     NOTES => 'This information is new in images from the EOS 7D.',
+    1 => {
+        Name => 'PeripheralIlluminationCorr',
+        PrintConv => \%offOn,
+    },
     2 => {
         Name => 'AutoLightingOptimizer',
         PrintConv => {
@@ -7223,7 +7258,30 @@ my %ciMaxFocal = (
             3 => 'Off',
         },
     },
-    # 6 - related to ChromaticAberrationSetting ?
+    3 => {
+        Name => 'HighlightTonePriority',
+        PrintConv => \%offOn,
+    },
+    4 => {
+        Name => 'LongExposureNoiseReduction',
+        PrintConv => {
+            0 => 'Off',
+            1 => 'Auto',
+            2 => 'On',
+        },
+    },
+    5 => {
+        Name => 'HighISONoiseReduction',
+        PrintConv => {
+            0 => 'Standard',
+            1 => 'Low',
+            2 => 'Strong',
+            3 => 'Off',
+        },
+    },
+    # 6 - related to ChromaticAberrationCorr
+    # 7 - related to DistortionCorrection
+    # 8 - related to PeripheralIlluminationCorr and ChromaticAberrationCorr
 );
 
 # Lens information (MakerNotes tag 0x4019) (ref 20)
@@ -7266,13 +7324,35 @@ my %ciMaxFocal = (
     },
 );
 
-# Creative filter information (MakerNotes tag 0x4024) (ref PH)
+# Multi-exposure information (MakerNotes tag 0x4021) (ref PH)
+%Image::ExifTool::Canon::MultiExp = (
+    %binaryDataAttrs,
+    FORMAT => 'int32s',
+    FIRST_ENTRY => 1,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
+    1 => {
+        Name => 'MultiExposure',
+        PrintConv => \%offOn,
+    },
+    2 => {
+        Name => 'MultiExposureControl',
+        PrintConv => {
+            0 => 'Additive',
+            1 => 'Average',
+            2 => 'Bright (comparative)',
+            3 => 'Dark (comparative)',
+        },
+    },
+    3 => 'MultiExposureShots',
+);
+
 my %filterConv = (
     PrintConv => {
         -1 => 'Off',
         OTHER => sub { my $val=shift; return "On ($val)" },
     },
 );
+# Creative filter information (MakerNotes tag 0x4024) (ref PH)
 %Image::ExifTool::Canon::FilterInfo = (
     PROCESS_PROC => \&ProcessFilters,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
@@ -7297,6 +7377,54 @@ my %filterConv = (
     0x501 => { Name => 'FisheyeFilter',     %filterConv }, # (M2)
     0x601 => { Name => 'PaintingFilter',    %filterConv }, # (M2)
     0x701 => { Name => 'WatercolorFilter',  %filterConv }, # (M2)
+);
+
+# HDR information (MakerNotes tag 0x4025) (ref PH)
+%Image::ExifTool::Canon::HDRInfo = (
+    %binaryDataAttrs,
+    FORMAT => 'int32s',
+    FIRST_ENTRY => 1,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
+    1 => {
+        Name => 'HDR',
+        PrintConv => {
+            0 => 'Off',
+            1 => 'Auto',
+            2 => 'On',
+        },
+    },
+    2 => {
+        Name => 'HDREffect',
+        PrintConv => {
+            0 => 'Natural',
+            1 => 'Art (standard)',
+            2 => 'Art (vivid)',
+            3 => 'Art (bold)',
+            4 => 'Art (embossed)',
+        },
+    },
+    # 3 - maybe related to AutoImageAlign?
+);
+
+# AF configuration info (MakerNotes tag 0x4027) (ref PH)
+%Image::ExifTool::Canon::AFConfig = (
+    %binaryDataAttrs,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    FORMAT => 'int32s',
+    FIRST_ENTRY => 1,
+    1 => {
+        Name => 'AFConfigTool',
+        ValueConv => '$val + 1',
+        ValueConvInv => '$val - 1',
+        PrintConv => '"Case $val"',
+        PrintConvInv => '$val=~/(\d+)/ ? $1 : undef',
+    },
+    2 => 'AFTrackingSensitivity',
+    3 => {
+        Name => 'AFAccelDecelTracking',
+        Description => 'AF Accel/Decel Tracking',
+    },
+    4 => 'AFPointSwitching',
 );
 
 # Canon UUID atoms (ref PH, SX280)
@@ -8150,7 +8278,7 @@ Canon maker notes in EXIF information.
 
 =head1 AUTHOR
 
-Copyright 2003-2014, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2015, Phil Harvey (phil at owl.phy.queensu.ca)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

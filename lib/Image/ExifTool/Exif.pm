@@ -2194,8 +2194,6 @@ my %sampleFormat = (
     # 0xc5d8 - found in CR2 images
     # 0xc5d9 - found in CR2 images
     # 0xc5e0 - found in CR2 images
-    0xc640 => 'CR2Slice', #exifprobe
-    0xc6c5 => { Name => 'SRawType', Description => 'SRaw Type' }, #exifprobe
 #
 # DNG tags 0xc6XX and 0xc7XX (ref 2 unless otherwise stated)
 #
@@ -2429,6 +2427,7 @@ my %sampleFormat = (
         RawConv => 'length($val) ? $val : undef',
         ValueConv => '$self->Decode($val, "UTF8")',
     },
+    0xc6c5 => { Name => 'SRawType', Description => 'SRaw Type' }, #exifprobe (CR2 proprietary)
     0xc6d3 => { #PH (Panasonic DMC-FS7)
         Name => 'PanasonicTitle2',
         Format => 'string', # written incorrectly as 'undef'
@@ -2438,6 +2437,7 @@ my %sampleFormat = (
         RawConv => 'length($val) ? $val : undef',
         ValueConv => '$self->Decode($val, "UTF8")',
     },
+    # 0xc6dc - int32u[4]: found in CR2 images (PH, 7DmkIII)
     0xc6f3 => 'CameraCalibrationSig',
     0xc6f4 => 'ProfileCalibrationSig',
     0xc6f5 => {
@@ -4588,7 +4588,7 @@ EXIF and TIFF meta information.
 
 =head1 AUTHOR
 
-Copyright 2003-2014, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2015, Phil Harvey (phil at owl.phy.queensu.ca)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

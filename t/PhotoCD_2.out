@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.07
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.81
 [File, System, Image] FileName - File Name: PhotoCD.pcd
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 4.0 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2012:05:07 13:11:08-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2012:11:19 15:31:05-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2012:11:17 09:18:25-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2015:01:09 07:20:03-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:01:07 07:37:06-05:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: PCD
 [File, File, Image] MIMEType - MIME Type: image/x-photo-cd
@@ -33,3 +33,4 @@
 [PhotoCD, PhotoCD, Image] 1538.2 - Image Height: 3072
 [PhotoCD, PhotoCD, Image] 1538.3 - Compression Class: Class 1 - 35mm film; Pictoral hard copy
 [Composite, Composite, Image] ImageSize - Image Size: 2048x3072
+[Composite, Composite, Image] Megapixels - Megapixels: 6.3

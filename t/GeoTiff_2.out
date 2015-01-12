@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.07
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.81
 [File, System, Image] FileName - File Name: GeoTiff.tif
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 2.6 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2005:11:14 14:47:21-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2012:11:19 15:30:57-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2012:11:17 09:18:25-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2015:01:09 07:19:47-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:01:07 07:37:06-05:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: TIFF
 [File, File, Image] MIMEType - MIME Type: image/tiff
@@ -34,3 +34,4 @@
 [GeoTiff, GeoTiff, Location] 3073 - PCS Citation: Hough UTM zone 17N
 [GeoTiff, GeoTiff, Location] 3074 - Projection: UTM zone 17N
 [Composite, Composite, Image] ImageSize - Image Size: 25x24
+[Composite, Composite, Image] Megapixels - Megapixels: 0.000600

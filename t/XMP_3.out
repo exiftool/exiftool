@@ -1,4 +1,4 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.65
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.81
 [File, System, Image] FileSize - File Size: 9.9 kB
 [File, File, Image] FileType - File Type: JPEG
 [File, File, Image] MIMEType - MIME Type: image/jpeg
@@ -60,7 +60,7 @@
 [EXIF, IFD1, Image] 514 - Thumbnail Length: 0
 [IPTC, IPTC, Other] 90 - Coded Character Set: UTF8
 [IPTC, IPTC, Other] 0 - Envelope Record Version: 4
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 9.65
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 9.81
 [XMP, XMP-rdf, Document] about - About: uuid:80056b68-1045-fa97-3401-6f4ed84cd53d
 [XMP, XMP-iptcCore, Author] CreatorContactInfoCiAdrCtry - Creator Country: Canada
 [XMP, XMP-dc, Author] creator - Creator: Phil Harvey-v2
@@ -133,4 +133,5 @@
 [Composite, Composite, Image] ShutterSpeed - Shutter Speed: 1/64
 [Composite, Composite, Image] ImageSize - Image Size: 8x8
 [Composite, Composite, Image] LightValue - Light Value: 10.4
+[Composite, Composite, Image] Megapixels - Megapixels: 0.000064
 [Composite, Composite, Camera] FocalLength35efl - Focal Length: 6.0 mm

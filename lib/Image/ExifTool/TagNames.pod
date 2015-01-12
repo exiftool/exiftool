@@ -27456,6 +27456,7 @@ values, may created via the ExifTool configuration file.
   MPImage              MPImageStart             N
                        MPImageLength
                        MPImageType
+  Megapixels           ImageSize                N
   OriginalDecisionData OriginalDecisionDataOffset Y!
   OtherImage           OtherImageStart          Y
                        OtherImageLength

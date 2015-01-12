@@ -6693,6 +6693,7 @@ my %tagExists = (
 	'mediaweight' => 1,
 	'mediawhitepoint' => 1,
 	'medium' => 1,
+	'megapixels' => 1,
 	'message' => 1,
 	'meta' => 1,
 	'metadata' => 1,

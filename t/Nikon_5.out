@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.26
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.81
 [File, System, Image] FileName - File Name: NikonD2Hs.jpg
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 3.4 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2006:01:04 14:02:27-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2013:04:08 14:48:29-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2013:04:06 07:35:04-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2015:01:09 07:19:52-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:01:07 07:37:06-05:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: JPEG
 [File, File, Image] MIMEType - MIME Type: image/jpeg
@@ -158,6 +158,7 @@
 [Composite, Composite, Camera] BlueBalance - Blue Balance: 2.097656
 [Composite, Composite, Image] ImageSize - Image Size: 8x8
 [Composite, Composite, Image] LightValue - Light Value: 8.0
+[Composite, Composite, Image] Megapixels - Megapixels: 0.000064
 [Composite, Composite, Camera] RedBalance - Red Balance: 2.195313
 [Composite, Composite, Camera] ScaleFactor35efl - Scale Factor To 35 mm Equivalent: 1.5
 [Composite, Composite, Camera] CircleOfConfusion - Circle Of Confusion: 0.020 mm

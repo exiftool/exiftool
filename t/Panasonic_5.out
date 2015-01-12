@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.78
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.81
 [File, System, Image] FileName - File Name: Panasonic_5_failed.rw2
 [File, System, Image] Directory - Directory: t
 [File, System, Image] FileSize - File Size: 14 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2014:12:11 11:32:37-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2014:12:11 11:32:37-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2014:12:11 11:32:37-05:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2015:01:12 07:52:54-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2015:01:12 07:52:54-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:01:12 07:52:54-05:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: RW2
 [File, File, Image] MIMEType - MIME Type: image/x-panasonic-rw2
@@ -221,7 +221,7 @@
 [PrintIM, PrintIM, Printing] 256 - Print IM 0x0100: 0x00000005
 [PrintIM, PrintIM, Printing] 257 - Print IM 0x0101: 0x00000001
 [PrintIM, PrintIM, Printing] 272 - Print IM 0x0110: 0x00000080
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 9.78
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 9.81
 [XMP, XMP-dc, Image] title - Title: new title
 [IPTC, IPTC, Other] 25 - Keywords: a keyword
 [IPTC, IPTC, Other] 0 - Application Record Version: 4
@@ -240,3 +240,4 @@
 [Composite, Composite, Camera] HyperfocalDistance - Hyperfocal Distance: 1.02 m
 [Composite, Composite, Image] ImageSize - Image Size: 3648x2736
 [Composite, Composite, Image] LightValue - Light Value: 12.3
+[Composite, Composite, Image] Megapixels - Megapixels: 10.0

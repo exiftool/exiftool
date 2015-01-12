@@ -463,7 +463,8 @@ below, case is not significant:
 
 Note that this option affects some types of information when reading/writing
 the file and other types when getting/setting tag values, so it must be
-defined for both types of access.
+defined for both types of access.  See the L</CHARACTER ENCODINGS> section
+for more information about the handling of special characters.
 
 =item CharsetEXIF
 
@@ -474,8 +475,8 @@ all string values without recoding.  Default is undef.
 =item CharsetFileName
 
 External character set used when specifying file names.  When set in
-Windows, this triggers use of Windows Unicode file library routines. 
-Default is undef.
+Windows, this triggers use of Windows wide-character i/o library routines
+(requires Win32API::File).  Default is undef.
 
 =item CharsetID3
 
@@ -2244,20 +2245,20 @@ of a file.  These character sets may be specified separately as follows:
 The encoding for strings passed to/from ExifTool API functions.  This is set
 via the L</Charset> option, which is 'UTF8' by default.
 
-The encoding of file and directory names is a special case.  By default,
-file names passed to ExifTool are used directly in calls to the system i/o
-routines (which expect UTF-8 strings on Mac/Linux, but default to the system
-code page on Windows), however this may be changed by setting the
-L</CharsetFileName> option.  In Windows, setting L<CharsetFileName> also has
-the effect of activating Unicode filename support, and causes the special
-Windows wide-character i/o routines to be used if available.
+The encoding of file names is a special case.  By default, file names passed
+to ExifTool are used directly in calls to the system i/o routines (which
+expect UTF-8 strings on Mac/Linux, but default to the system code page on
+Windows), however this may be changed by setting the L</CharsetFileName>
+option.  In Windows, setting L</CharsetFileName> also has the effect of
+activating Unicode filename support via the special Windows wide-character
+i/o routines if Win32API::File is available.
 
 =item Internal Character Sets:
 
 The encodings used to store strings in the various metadata formats.  These
 encodings may be changed for certain types of metadata via the
-L</CharsetEXIF>, L</CharsetFileName>, L</CharsetID3>, L</CharsetIPTC>,
-L</CharsetPhotoshop> and L</CharsetQuickTime> options.
+L</CharsetEXIF>, L</CharsetID3>, L</CharsetIPTC>, L</CharsetPhotoshop> and
+L</CharsetQuickTime> options.
 
 =back
 

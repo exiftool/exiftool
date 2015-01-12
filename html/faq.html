@@ -452,8 +452,10 @@ external filename encoding may be specified:
 When this is done, file and directory names are converted from the specified
 encoding to one appropriate for system i/o routines.  In Windows, this also has
 the effect of enabling Unicode filename support via the special Windows
-wide-character i/o routines if the corresponding Perl modules are available
-(included in the Windows executable version of ExifTool).<br><br></li>
+wide-character i/o routines if the required Perl modules are available
+(these are included in the Windows executable version of ExifTool).  See
+<a href="exiftool_pod.html#windows_unicode_file_names">WINDOWS UNICODE FILE NAMES</a>
+in the application documentation for more details.<br><br></li>
 <li>The <b>internal</b> character set for strings stored in file metadata may be
 specified for some metadata types:
 <blockquote><code>-charset TYPE=CHARSET</code></blockquote>

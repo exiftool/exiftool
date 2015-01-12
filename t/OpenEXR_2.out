@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.07
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.81
 [File, System, Image] FileName - File Name: OpenEXR.exr
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 395 bytes
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2011:12:10 14:34:35-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2012:11:19 15:31:05-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2012:11:17 09:18:25-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2015:01:09 07:20:03-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:01:07 07:37:06-05:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: EXR
 [File, File, Image] MIMEType - MIME Type: image/x-exr
@@ -21,3 +21,4 @@
 [OpenEXR, OpenEXR, Image] screenWindowCenter - Screen Window Center: 0 0
 [OpenEXR, OpenEXR, Image] screenWindowWidth - Screen Window Width: 1
 [Composite, Composite, Image] ImageSize - Image Size: 3x2
+[Composite, Composite, Image] Megapixels - Megapixels: 0.000006

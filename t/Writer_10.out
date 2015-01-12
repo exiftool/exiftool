@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.73
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.81
 [File, System, Image] FileName - File Name: Writer_10_failed.jpg
 [File, System, Image] Directory - Directory: t
 [File, System, Image] FileSize - File Size: 7.0 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2014:10:04 07:23:16-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2014:10:04 07:23:16-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2014:10:04 07:23:16-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2015:01:12 07:53:07-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2015:01:12 07:53:07-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:01:12 07:53:07-05:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: JPEG
 [File, File, Image] MIMEType - MIME Type: image/jpeg
@@ -213,7 +213,7 @@
 [MakerNotes, Pentax, Image] 16 - WB Shift AB: 0
 [MakerNotes, Pentax, Image] 17 - WB Shift GM: 0
 [PrintIM, PrintIM, Printing] PrintIMVersion - PrintIM Version: 0300
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 9.73
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 9.81
 [XMP, XMP-dc, Time] date - Date: 2008:03:02
 [XMP, XMP-exif, Image] ComponentsConfiguration - Components Configuration: Y, Cb, Cr, -
 [XMP, XMP-exif, Camera] FlashFired - Flash Fired: False
@@ -235,6 +235,7 @@
 [Composite, Composite, Image] ImageSize - Image Size: 8x8
 [Composite, Composite, Camera] LensID - Lens ID: Sigma AF 10-20mm F4-5.6 EX DC
 [Composite, Composite, Image] LightValue - Light Value: 14.0
+[Composite, Composite, Image] Megapixels - Megapixels: 0.000064
 [Composite, Composite, Camera] ScaleFactor35efl - Scale Factor To 35 mm Equivalent: 1.5
 [Composite, Composite, Camera] CircleOfConfusion - Circle Of Confusion: 0.020 mm
 [Composite, Composite, Image] FOV - Field Of View: 100.4 deg

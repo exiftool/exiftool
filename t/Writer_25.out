@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.07
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.81
 [File, System, Image] FileName - File Name: Writer_25_failed.jpg
 [File, System, Image] Directory - Directory: t
 [File, System, Image] FileSize - File Size: 621 bytes
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2012:11:20 07:49:52-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2012:11:20 07:49:52-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2012:11:20 07:49:52-05:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2015:01:12 07:53:08-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2015:01:12 07:53:07-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:01:12 07:53:08-05:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: JPEG
 [File, File, Image] MIMEType - MIME Type: image/jpeg
@@ -36,3 +36,4 @@
 [EXIF, IFD1, Image] 296 - Resolution Unit: inches
 [Composite, Composite, Image] Aperture - Aperture: 25.0
 [Composite, Composite, Image] ImageSize - Image Size: 8x8
+[Composite, Composite, Image] Megapixels - Megapixels: 0.000064

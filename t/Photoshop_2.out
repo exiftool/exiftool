@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.07
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.81
 [File, System, Image] FileName - File Name: Photoshop.psd
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 17 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2007:04:14 21:00:40-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2012:11:19 15:31:04-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2012:11:17 09:18:25-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2015:01:09 07:19:55-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:01:07 07:37:06-05:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: PSD
 [File, File, Image] MIMEType - MIME Type: application/vnd.adobe.photoshop
@@ -94,3 +94,4 @@
 [PhotoMechanic, PhotoMechanic, Image] 219 - Crop Right: 890
 [PhotoMechanic, PhotoMechanic, Image] 220 - Crop Bottom: 1072
 [Composite, Composite, Image] ImageSize - Image Size: 8x8
+[Composite, Composite, Image] Megapixels - Megapixels: 0.000064

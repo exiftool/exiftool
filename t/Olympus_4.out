@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.31
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.81
 [File, System, Image] FileName - File Name: OlympusE1.jpg
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 7.2 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2006:01:04 14:02:27-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2013:05:30 08:55:04-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2013:05:25 07:37:29-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2015:01:09 07:19:53-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:01:07 07:37:06-05:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: JPEG
 [File, File, Image] MIMEType - MIME Type: image/jpeg
@@ -179,6 +179,7 @@
 [Composite, Composite, Camera] ExtenderStatus - Extender Status: Not attached
 [Composite, Composite, Image] ImageSize - Image Size: 8x8
 [Composite, Composite, Camera] LensID - Lens ID: Olympus Zuiko Digital 14-54mm F2.8-3.5
+[Composite, Composite, Image] Megapixels - Megapixels: 0.000064
 [Composite, Composite, Image] PreviewImage - Preview Image: (Binary data 26 bytes)
 [Composite, Composite, Camera] RedBalance - Red Balance: 1.609375
 [Composite, Composite, Camera] ScaleFactor35efl - Scale Factor To 35 mm Equivalent: 2.0

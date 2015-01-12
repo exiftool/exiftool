@@ -1,12 +1,12 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.07
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.81
 [ExifTool, ExifTool, ExifTool]  - Make: Sony
 [ExifTool, ExifTool, ExifTool]  - Model: DSC-F1
 [File, System, Image] FileName - File Name: Sony.pmp
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 375 bytes
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2010:04:13 18:42:12-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2012:11:19 15:31:35-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2012:11:17 09:18:25-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2015:01:09 07:20:03-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:01:07 07:37:06-05:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: PMP
 [File, File, Image] MIMEType - MIME Type: application/unknown
@@ -30,3 +30,4 @@
 [Composite, Composite, Image] JpgFromRaw - Jpg From Raw: (Binary data 251 bytes)
 [Composite, Composite, Image] ShutterSpeed - Shutter Speed: 1/100
 [Composite, Composite, Image] ImageSize - Image Size: 8x8
+[Composite, Composite, Image] Megapixels - Megapixels: 0.000064

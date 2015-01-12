@@ -7,6 +7,12 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 9.76. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Jan. 12, 2015 - Version 9.81
+
+  - Added Composite:Megapixels tag
+  - Added a few new Nikon LensID's (thanks Robert Rottmerhusen)
+  - Fixed problem in Windows using Unicode file names with the -o option
+
 Jan. 7, 2015 - Version 9.80
 
   - Added a few new Canon and Minolta/Sony LensType values (thanks LibRaw)

@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.69
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.81
 [File, System, Image] FileName - File Name: PGF.pgf
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 286 bytes
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2011:01:26 07:32:42-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2014:07:23 08:41:55-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2014:07:19 08:21:42-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2015:01:09 07:20:03-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:01:07 07:37:06-05:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: PGF
 [File, File, Image] MIMEType - MIME Type: image/pgf
@@ -30,3 +30,4 @@
 [PNG, PNG-pHYs, Image] 8 - Pixel Units: meters
 [PNG, PNG, Image] Comment - Comment: ExifTool PGF Test
 [Composite, Composite, Image] ImageSize - Image Size: 8x8
+[Composite, Composite, Image] Megapixels - Megapixels: 0.000064

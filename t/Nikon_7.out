@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.58
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.81
 [File, System, Image] FileName - File Name: Nikon.nef
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 6.0 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2007:01:05 13:00:46-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2014:04:13 13:14:47-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2014:04:12 10:50:12-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2015:01:09 07:20:02-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:01:07 07:37:06-05:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: NEF
 [File, File, Image] MIMEType - MIME Type: image/x-nikon-nef
@@ -255,5 +255,6 @@
 [Composite, Composite, Camera] BlueBalance - Blue Balance: 1.860377
 [Composite, Composite, Image] ImageSize - Image Size: 3040x2014
 [Composite, Composite, Image] LightValue - Light Value: 6.9
+[Composite, Composite, Image] Megapixels - Megapixels: 6.1
 [Composite, Composite, Camera] RedBalance - Red Balance: 1.803774
 [Composite, Composite, Camera] FocalLength35efl - Focal Length: 18.0 mm

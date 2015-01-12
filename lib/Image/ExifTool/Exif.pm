@@ -2713,6 +2713,11 @@ my %sampleFormat = (
             return "$val[0]x$val[1]";
         },
     },
+    Megapixels => {
+        Require => 'ImageSize',
+        ValueConv => 'my @d = ($val =~ /\d+/g); $d[0] * $d[1] / 1000000',
+        PrintConv => 'sprintf("%.*f", ($val >= 1 ? 1 : ($val >= 0.001 ? 3 : 6)), $val)',
+    },
     # pick the best shutter speed value
     ShutterSpeed => {
         Desire => {

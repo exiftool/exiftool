@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.60
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.81
 [File, System, Image] FileName - File Name: DNG.dng
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 13 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2006:02:26 09:30:53-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2014:05:08 10:42:15-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2014:05:03 08:53:45-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2015:01:09 07:19:42-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:01:07 07:37:06-05:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: DNG
 [File, File, Image] MIMEType - MIME Type: image/x-adobe-dng
@@ -311,6 +311,7 @@
 [Composite, Composite, Image] JpgFromRaw - Jpg From Raw: (Binary data 29 bytes)
 [Composite, Composite, Camera] Lens - Lens: 18.0 - 55.0 mm
 [Composite, Composite, Camera] LensID - Lens ID: Unknown 18-55mm
+[Composite, Composite, Image] Megapixels - Megapixels: 8.2
 [Composite, Composite, Image] PreviewImage - Preview Image: (Binary data 26 bytes)
 [Composite, Composite, Camera] ScaleFactor35efl - Scale Factor To 35 mm Equivalent: 1.6
 [Composite, Composite, Camera] ShootingMode - Shooting Mode: Aperture-priority AE

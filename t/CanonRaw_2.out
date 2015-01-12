@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.60
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.81
 [File, System, Image] FileName - File Name: CanonRaw.crw
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 6.7 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2012:01:22 13:31:59-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2014:05:08 10:43:13-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2014:05:03 08:53:45-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2015:01:09 07:19:40-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:01:07 07:37:06-05:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: CRW
 [File, File, Image] MIMEType - MIME Type: image/x-canon-crw
@@ -150,6 +150,7 @@
 [Composite, Composite, Image] ImageSize - Image Size: 3072x2048
 [Composite, Composite, Camera] Lens - Lens: 18.0 - 55.0 mm
 [Composite, Composite, Camera] LensID - Lens ID: Unknown 18-55mm
+[Composite, Composite, Image] Megapixels - Megapixels: 6.3
 [Composite, Composite, Camera] RedEyeReduction - Red Eye Reduction: Off
 [Composite, Composite, Camera] ScaleFactor35efl - Scale Factor To 35 mm Equivalent: 1.6
 [Composite, Composite, Camera] ShootingMode - Shooting Mode: Program AE

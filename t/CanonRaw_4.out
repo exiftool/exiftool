@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.60
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.81
 [File, System, Image] FileName - File Name: CanonRaw_4_failed.crw
 [File, System, Image] Directory - Directory: t
 [File, System, Image] FileSize - File Size: 12 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2014:05:08 10:53:04-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2014:05:08 10:53:04-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2014:05:08 10:53:04-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2015:01:12 07:52:32-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2015:01:12 07:52:32-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:01:12 07:52:32-05:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: CRW
 [File, File, Image] MIMEType - MIME Type: image/x-canon-crw
@@ -141,7 +141,7 @@
 [MakerNotes, CanonRaw, Image] 3 - Raw Jpg Width: 2048
 [MakerNotes, CanonRaw, Image] 4 - Raw Jpg Height: 1360
 [MakerNotes, CanonRaw, Camera] 6203 - Serial Number Format: Format 1
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 9.60
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 9.81
 [XMP, XMP-aux, Camera] Lens - Lens: 18.0 - 55.0 mm
 [XMP, XMP-dc, Image] description - Description: CRW with embedded XMP
 [XMP, XMP-exif, Image] ApertureValue - Aperture Value: 14.0
@@ -207,6 +207,7 @@
 [Composite, Composite, Image] ImageSize - Image Size: 3072x2048
 [Composite, Composite, Camera] LensID - Lens ID: Unknown 18-55mm
 [Composite, Composite, Image] LightValue - Light Value: 5.7
+[Composite, Composite, Image] Megapixels - Megapixels: 6.3
 [Composite, Composite, Camera] RedBalance - Red Balance: 2.067348
 [Composite, Composite, Camera] ScaleFactor35efl - Scale Factor To 35 mm Equivalent: 1.0
 [Composite, Composite, Camera] CircleOfConfusion - Circle Of Confusion: 0.029 mm

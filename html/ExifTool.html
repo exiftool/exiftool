@@ -434,7 +434,8 @@ distribution for examples.</p>
     that this option affects some types of information when reading/writing the
     file and other types when getting/setting tag values, so it must be defined
     for both types of access. Charset values listed to the right have aliases
-    which are given in brackets. Case is not significant.</td>
+    which are given in brackets. Case is not significant.  See
+    <a href="faq.html#Q10">FAQ #10</a> for more information about character sets.</td>
     <td align=center><a name="Charset"></a><table class='clear'>
     <tr><td valign=top align=right>UTF8</td><td>(cp65001, UTF-8)</td></tr>
     <tr><td valign=top align=right>Latin</td><td>(cp1252, Latin1)</td></tr>
@@ -462,7 +463,7 @@ distribution for examples.</p>
     <td align=center><i>(see <a href="#Charset">Charset</a> option)</i><br>or undef</td><td align=center>undef</td></tr>
 <tr><td>CharsetFileName</td><td><a name="CharsetFileName"></a>External character set
     used when specifying file names.  When set in Windows, this triggers use of
-    Windows Unicode file library routines.</td>
+    Windows Unicode file library routines (requires Win32API::File).</td>
     <td align=center><i>(see <a href="#Charset">Charset</a> option)</i><br>or undef</td><td align=center>undef</td></tr>
 <tr><td>CharsetID3</td><td><a name="CharsetID3"></a>Internal encoding to assume for ID3v1 strings.  By
     the specification ID3v1 strings should be encoded in ISO 8859-1 (essentially

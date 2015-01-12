@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '9.80';
+$VERSION = '9.81';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -3110,14 +3110,15 @@ sub Exists($$)
 #------------------------------------------------------------------------------
 # Return true if file is a directory (with Windows Unicode support)
 # Inputs: 0) ExifTool ref, 1) file name
-# Returns: true if file is a directory
+# Returns: true if file is a directory (false if file isn't, or doesn't exist)
 sub IsDirectory($$)
 {
     my ($et, $file) = @_;
     if ($et->EncodeFileName($file)) {
         local $SIG{'__WARN__'} = \&SetWarning;
         my $attrs = eval { Win32API::File::GetFileAttributesW($file) };
-        return 1 if $attrs and $attrs & Win32API::File::FILE_ATTRIBUTE_DIRECTORY();
+        return 1 if $attrs and $attrs != 0xffffffff and
+                    $attrs & Win32API::File::FILE_ATTRIBUTE_DIRECTORY();
     } else {
         return -d $file;
     }

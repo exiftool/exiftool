@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.78
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.81
 [File, System, Image] FileName - File Name: Panasonic_3_failed.jpg
 [File, System, Image] Directory - Directory: t
 [File, System, Image] FileSize - File Size: 7.0 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2014:12:11 11:32:36-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2014:12:11 11:32:36-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2014:12:11 11:32:36-05:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2015:01:12 07:52:53-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2015:01:12 07:52:53-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:01:12 07:52:53-05:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: JPEG
 [File, File, Image] MIMEType - MIME Type: image/jpeg
@@ -117,3 +117,4 @@
 [Composite, Composite, Camera] HyperfocalDistance - Hyperfocal Distance: 1.34 m
 [Composite, Composite, Image] ImageSize - Image Size: 8x8
 [Composite, Composite, Image] LightValue - Light Value: 13.0
+[Composite, Composite, Image] Megapixels - Megapixels: 0.000064

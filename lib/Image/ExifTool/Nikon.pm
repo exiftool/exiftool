@@ -58,7 +58,7 @@ use vars qw($VERSION %nikonLensIDs %nikonTextEncoding);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.98';
+$VERSION = '2.99';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -272,12 +272,10 @@ sub GetAFPointGrid($$;$);
     'A3 3C 29 44 30 30 A5 0E' => 'AF-S Nikkor 16-35mm f/4G ED VR',
     'A4 54 37 37 0C 0C A6 06' => 'AF-S Nikkor 24mm f/1.4G ED',
     'A5 40 3C 8E 2C 3C A7 0E' => 'AF-S Nikkor 28-300mm f/3.5-5.6G ED VR',
-    'A5 4C 44 44 14 14 C0 06' => 'AF-S Nikkor 35mm f/1.8G', #35
     'A6 48 8E 8E 24 24 A8 0E' => 'AF-S VR Nikkor 300mm f/2.8G IF-ED II',
     'A7 4B 62 62 2C 2C A9 0E' => 'AF-S DX Micro Nikkor 85mm f/3.5G ED VR',
     'A8 48 80 98 30 30 AA 0E' => 'AF-S VR Zoom-Nikkor 200-400mm f/4G IF-ED II', #http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,3218.msg15495.html#msg15495
     'A9 54 80 80 18 18 AB 0E' => 'AF-S Nikkor 200mm f/2G ED VR II',
-    'A9 4C 31 31 14 14 C4 06' => 'AF-S Nikkor 20mm f/1.8G ED', #30
     'AA 3C 37 6E 30 30 AC 0E' => 'AF-S Nikkor 24-120mm f/4G ED VR',
     'AC 38 53 8E 34 3C AE 0E' => 'AF-S DX VR Nikkor 55-300mm 4.5-5.6G ED',
     'AD 3C 2D 8E 2C 3C AF 0E' => 'AF-S DX Nikkor 18-300mm 3.5-5.6G ED VR',
@@ -294,6 +292,8 @@ sub GetAFPointGrid($$;$);
     'A0 40 2D 74 2C 3C BB 0E' => 'AF-S DX Nikkor 18-140mm f/3.5-5.6G ED VR', #PH
     'A1 54 55 55 0C 0C BC 06' => 'AF-S Nikkor 58mm f/1.4G', #33
     'A2 40 2D 53 2C 3C BD 0E' => 'AF-S DX VR Nikkor 18-55mm f/3.5-5.6G II',
+    'A5 4C 44 44 14 14 C0 06' => 'AF-S Nikkor 35mm f/1.8G', #35
+    'A9 4C 31 31 14 14 C4 06' => 'AF-S Nikkor 20mm f/1.8G ED', #30
     '01 00 00 00 00 00 02 00' => 'TC-16A',
     '01 00 00 00 00 00 08 00' => 'TC-16A',
     '00 00 00 00 00 00 F1 0C' => 'TC-14E [II] or Sigma APO Tele Converter 1.4x EX DG or Kenko Teleplus PRO 300 DG 1.4x',
@@ -324,6 +324,7 @@ sub GetAFPointGrid($$;$);
     '02 48 65 65 24 24 02 00' => 'Sigma Macro 90mm F2.8',
     '32 54 6A 6A 24 24 35 02.2' => 'Sigma Macro 105mm F2.8 EX DG', #JD
     'E5 54 6A 6A 24 24 35 02' => 'Sigma Macro 105mm F2.8 EX DG',
+    '97 48 6A 6A 24 24 4B 0E' => 'Sigma Macro 105mm F2.8 EX DG OS HSM',
     '48 48 76 76 24 24 4B 06' => 'Sigma APO Macro 150mm F2.8 EX DG HSM',
     'F5 48 76 76 24 24 4B 06' => 'Sigma APO Macro 150mm F2.8 EX DG HSM', #24
     '99 48 76 76 24 24 4B 0E' => 'Sigma APO Macro 150mm F2.8 EX DG OS HSM', #(Christian Hesse)
@@ -420,8 +421,8 @@ sub GetAFPointGrid($$;$);
     '02 3B 44 61 30 3D 02 00' => 'Sigma 35-80mm F4-5.6',
     '02 40 44 73 2B 36 02 00' => 'Sigma 35-135mm F3.5-4.5 a',
     '7A 47 50 76 24 24 4B 06' => 'Sigma 50-150mm F2.8 EX APO DC HSM',
-    '98 48 50 76 24 24 4B 0E' => 'Sigma 50-150mm F2.8 EX APO DC OS HSM', #30
     'FD 47 50 76 24 24 4B 06' => 'Sigma 50-150mm F2.8 EX APO DC HSM II',
+    '98 48 50 76 24 24 4B 0E' => 'Sigma 50-150mm F2.8 EX APO DC OS HSM', #30
     '48 3C 50 A0 30 40 4B 02' => 'Sigma 50-500mm F4-6.3 EX APO RF HSM',
     '9F 37 50 A0 34 40 4B 0E' => 'Sigma 50-500mm F4.5-6.3 DG OS HSM', #16
     '26 3C 54 80 30 3C 1C 06' => 'Sigma 55-200mm F4-5.6 DC',
@@ -466,6 +467,7 @@ sub GetAFPointGrid($$;$);
     '27 54 8E 8E 24 24 1D 02' => 'Tamron SP AF 300mm f/2.8 LD-IF (360E)',
     'F6 3F 18 37 2C 34 84 06' => 'Tamron SP AF 10-24mm f/3.5-4.5 Di II LD Aspherical (IF) (B001)',
     '00 36 1C 2D 34 3C 00 06' => 'Tamron SP AF 11-18mm f/4.5-5.6 Di II LD Aspherical (IF) (A13)',
+    'EA 40 29 8E 2C 40 DF 0E' => 'Tamron AF 16-300mm F/3.5-6.3 Di II VC PZD (B016)',
     '07 46 2B 44 24 30 03 02' => 'Tamron SP AF 17-35mm f/2.8-4 Di LD Aspherical (IF) (A05)',
     '00 53 2B 50 24 24 00 06' => 'Tamron SP AF 17-50mm f/2.8 XR Di II LD Aspherical (IF) (A16)', #PH
     '00 54 2B 50 24 24 00 06' => 'Tamron SP AF 17-50mm f/2.8 XR Di II LD Aspherical (IF) (A16NII)',
@@ -520,8 +522,10 @@ sub GetAFPointGrid($$;$);
     '12 3B 98 98 3D 3D 09 00' => 'Tokina AT-X 400 AF SD (AF 400mm f/5.6)',
     '00 40 18 2B 2C 34 00 06' => 'Tokina AT-X 107 AF DX Fisheye (AF 10-17mm f/3.5-4.5)',
     '00 48 1C 29 24 24 00 06' => 'Tokina AT-X 116 PRO DX (AF 11-16mm f/2.8)',
+    '7A 48 1C 29 24 24 7E 06' => 'Tokina AT-X 116 PRO DX II (AF 11-16mm f/2.8)',
     '00 3C 1F 37 30 30 00 06' => 'Tokina AT-X 124 AF PRO DX (AF 12-24mm f/4)',
     '7A 3C 1F 37 30 30 7E 06.2' => 'Tokina AT-X 124 AF PRO DX II (AF 12-24mm f/4)',
+    '7A 3C 1F 3C 30 30 7E 06' => 'Tokina AT-X 12-28 PRO DX (AF 12-28mm F/4)',
     '00 48 29 3C 24 24 00 06' => 'Tokina AT-X 16-28 AF PRO FX (AF 16-28mm f/2.8)',
     '00 48 29 50 24 24 00 06' => 'Tokina AT-X 165 PRO DX (AF 16-50mm f/2.8)',
     '00 40 2A 72 2C 3C 00 06' => 'Tokina AT-X 16.5-135 DX (AF 16.5-135mm F3.5-5.6)',

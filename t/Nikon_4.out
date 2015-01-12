@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.32
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.81
 [File, System, Image] FileName - File Name: Nikon_4_failed.jpg
 [File, System, Image] Directory - Directory: t
 [File, System, Image] FileSize - File Size: 6.8 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2013:06:12 12:34:49-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2013:06:12 12:34:49-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2013:06:12 12:34:49-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2015:01:12 07:52:52-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2015:01:12 07:52:52-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:01:12 07:52:52-05:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: JPEG
 [File, File, Image] MIMEType - MIME Type: image/jpeg
@@ -136,7 +136,7 @@
 [MakerNotes, Nikon, Camera] 169 - Image Optimization: Custom
 [MakerNotes, Nikon, Camera] 170 - Saturation: Enhanced
 [MakerNotes, Nikon, Camera] 171 - Vari Program: 
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 9.32
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 9.81
 [XMP, XMP-aux, Camera] FlashCompensation - Flash Compensation: 0
 [XMP, XMP-aux, Camera] Lens - Lens: 18-70mm f/3.5-4.5
 [XMP, XMP-exif, Image] ComponentsConfiguration - Components Configuration: Y, Cb, Cr, -
@@ -165,6 +165,7 @@
 [Composite, Composite, Camera] BlueBalance - Blue Balance: 1.410156
 [Composite, Composite, Image] ImageSize - Image Size: 8x8
 [Composite, Composite, Image] LightValue - Light Value: 9.6
+[Composite, Composite, Image] Megapixels - Megapixels: 0.000064
 [Composite, Composite, Camera] RedBalance - Red Balance: 2.332031
 [Composite, Composite, Camera] ScaleFactor35efl - Scale Factor To 35 mm Equivalent: 1.5
 [Composite, Composite, Camera] CircleOfConfusion - Circle Of Confusion: 0.020 mm

@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.07
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.81
 [File, System, Image] FileName - File Name: Sigma_5_failed.x3f
 [File, System, Image] Directory - Directory: t
 [File, System, Image] FileSize - File Size: 7.2 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2012:11:20 07:49:50-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2012:11:20 07:49:50-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2012:11:20 07:49:50-05:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2015:01:12 07:53:03-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2015:01:12 07:53:03-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:01:12 07:53:03-05:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: X3F
 [File, File, Image] MIMEType - MIME Type: image/x-sigma-x3f
@@ -176,7 +176,7 @@
 [MakerNotes, Sigma, Camera] 60 - White Balance: Auto
 [IPTC, IPTC, Other] 25 - Keywords: one, two
 [IPTC, IPTC, Other] 0 - Application Record Version: 4
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 9.07
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 9.81
 [XMP, XMP-dc, Image] title - Title: A title
 [Composite, Composite, Image] Aperture - Aperture: 2.8
 [Composite, Composite, Image] PreviewImage - Preview Image: (Binary data 26 bytes)
@@ -185,6 +185,7 @@
 [Composite, Composite, Image] ImageSize - Image Size: 8x8
 [Composite, Composite, Camera] LensID - Lens ID: Unknown ( )
 [Composite, Composite, Image] LightValue - Light Value: 6.3
+[Composite, Composite, Image] Megapixels - Megapixels: 0.000064
 [Composite, Composite, Camera] ScaleFactor35efl - Scale Factor To 35 mm Equivalent: 1.7
 [Composite, Composite, Camera] CircleOfConfusion - Circle Of Confusion: 0.018 mm
 [Composite, Composite, Image] FOV - Field Of View: 47.4 deg

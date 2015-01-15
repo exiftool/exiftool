@@ -2001,6 +2001,7 @@ my %shootingMode = (
             Notes => 'A Composite tag derived from Model, SceneMode and AdvancedSceneType.',
             '0 1' => 'Off',
             # '0 7' - seen this for V-LUX movies (PH)
+            # '0 8' - seen for D-LUX(Typ104) movies (PH)
             '2 2' => 'Outdoor Portrait', #(FZ28)
             '2 3' => 'Indoor Portrait', #(FZ28)
             '2 4' => 'Creative Portrait', #(FZ28)

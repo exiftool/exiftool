@@ -12,7 +12,7 @@
 use strict;
 require 5.004;
 
-my $version = '9.81';
+my $version = '9.82';
 
 # add our 'lib' directory to the include list BEFORE 'use Image::ExifTool'
 my $exeDir;
@@ -707,7 +707,7 @@ for (;;) {
     /^config$/i and Warn("Ignored -config option (not first on command line)\n"), shift, next;
     if (/^csv(\+?=.*)?/i) {
         my $csvFile = $1;
-        # must process on 2nd pass so -f option is available
+        # must process on 2nd pass so -f and -charset options are available
         unless ($pass) {
             push(@nextPass,"-$_");
             if ($csvFile) {
@@ -721,8 +721,15 @@ for (;;) {
             $csvAdd = 2 if $1 eq '+=';
             $vout = \*STDERR if $srcStdin;
             $verbose and print $vout "Reading CSV file $csvFile\n";
-            require Image::ExifTool::Import;
-            my $msg = Image::ExifTool::Import::ReadCSV($csvFile, \%database, $forcePrint);
+            my $msg;
+            if ($mt->Open(\*CSVFILE, $csvFile)) {
+                binmode CSVFILE;
+                require Image::ExifTool::Import;
+                $msg = Image::ExifTool::Import::ReadCSV(\*CSVFILE, \%database, $forcePrint);
+                close(CSVFILE);
+            } else {
+                $msg = "Error opening CSV file '$csvFile'";
+            }
             $msg and Warn("$msg\n");
             $isWriting = 1;
         }
@@ -855,8 +862,15 @@ for (;;) {
             $vout = \*STDERR if $srcStdin;
             $verbose and print $vout "Reading JSON file $jsonFile\n";
             my $chset = $mt->Options('Charset');
-            require Image::ExifTool::Import;
-            my $msg = Image::ExifTool::Import::ReadJSON($jsonFile, \%database, $forcePrint, $chset);
+            my $msg;
+            if ($mt->Open(\*JSONFILE, $jsonFile)) {
+                binmode JSONFILE;
+                require Image::ExifTool::Import;
+                $msg = Image::ExifTool::Import::ReadJSON(\*JSONFILE, \%database, $forcePrint, $chset);
+                close(JSONFILE);
+            } else {
+                $msg = "Error opening JSON file '$jsonFile'";
+            }
             $msg and Warn("$msg\n");
             $isWriting = 1;
             $csv = 'JSON';
@@ -2560,11 +2574,8 @@ sub SetImageInfo($$$)
 
     # get file time if preserving it
     my ($aTime, $mTime, $cTime);
-    if ($preserveTime and $success and $et->Exists($file)) {
-        $aTime = int($^T - (-A _) * (24 * 3600) + 0.5);
-        $mTime = int($^T - (-M _) * (24 * 3600) + 0.5);
-        $cTime = int($^T - (-C _) * (24 * 3600) + 0.5);
-    }
+    ($aTime, $mTime, $cTime) = $et->GetFileTime($file) if $preserveTime and $success;
+
     if ($success == 1) {
         # preserve the original file times
         if (defined $tmpFile) {
@@ -3108,13 +3119,27 @@ sub ScanDir($$;$)
     # use Win32::FindFile on Windows if available
     # (ReadDir will croak if there is a wildcard, so check for this)
     if ($^O eq 'MSWin32' and $dir !~ /[\*\?]/) {
-        local $SIG{'__WARN__'} = \&SetWarning;
-        if (eval { require Win32::FindFile }) {
-            @fileList = Win32::FindFile::ReadDir($dir);
-            $$et{OPTIONS}{CharsetFileName} = 'UTF8';    # now using UTF8
-            $done = 1;
-        } else {
-            $done = 0;
+        local $SIG{'__WARN__'} = sub { $evalWarning = $_[0] };;
+        my $isUTF8 = 0;
+        if ($dir =~ /[\x80-\xff]/) {
+            require Image::ExifTool::XMP;
+            $isUTF8 = Image::ExifTool::XMP::IsUTF8(\$dir);
+            if ($isUTF8 < 0) {
+                if ($enc) {
+                    Warn("Invalid encoding for directory name $dir\n");
+                } else {
+                    WarnOnce(qq{FileName encoding not specified.  Use "-charset FileName=CHARSET"\n});
+                }
+            }
+        }
+        if ($isUTF8 >= 0) {
+            if (eval { require Win32::FindFile }) {
+                @fileList = Win32::FindFile::ReadDir($dir);
+                $$et{OPTIONS}{CharsetFileName} = 'UTF8';    # now using UTF8
+                $done = 1;
+            } else {
+                $done = 0;
+            }
         }
     }
     unless ($done) {
@@ -3126,7 +3151,7 @@ sub ScanDir($$;$)
             # issue warning if some names would have required Win32::FindFile
             foreach $file ($dir, @fileList) {
                 next unless $file =~ /[\?\x80-\xff]/;
-                $et->WarnOnce('Install Win32::FindFile to support Windows Unicode file names in directory operations');
+                WarnOnce("Install Win32::FindFile to support Windows Unicode file names in directories\n");
                 last;
             }
         }
@@ -3182,18 +3207,21 @@ sub FileNotFound($)
 
 #------------------------------------------------------------------------------
 # Set file system times
-# Inputs: 0) file name, 1) access time, 2) modification time, 3) creation time
+# Inputs: 0) file name, 1) access time, 2) modification time, 3) inode change or creation time
 # Notes: issues warning if modification/access times can't be set
 sub SetFileTime($@)
 {
     my ($file, $aTime, $mTime, $cTime) = @_;
-    unless (utime($aTime, $mTime, $file)) {
-        Warn "Error setting file time - $file\n";
-    }
+    my $success;
     # set creation time for Windows systems only (if Win32API::File::Time is available)
-    if ($^O eq 'MSWin32' and eval 'require Win32API::File::Time') {
-        Win32API::File::Time::SetFileTime($file,undef,undef,$cTime);
+    if ($^O eq 'MSWin32' and eval { require Win32API::File::Time }) {
+        my $wfile = $file;
+        local ${^WIDE_SYSTEM_CALLS} = $mt->EncodeFileName($wfile);
+        $success = Win32API::File::Time::SetFileTime($wfile, $aTime, $mTime, $cTime);
+    } else {
+        $success = utime($aTime, $mTime, $file);
     }
+    $success or Warn "Error setting file time - $file\n";
 }
 
 #------------------------------------------------------------------------------
@@ -4505,7 +4533,7 @@ OPTIONS
 
          produces output like this:
 
-             -- Generated by ExifTool 9.81 --
+             -- Generated by ExifTool 9.82 --
              File: a.jpg - 2003:10:31 15:44:19
              (f/5.6, 1/60s, ISO 100)
              File: b.jpg - 2006:05:23 11:57:38
@@ -5407,17 +5435,14 @@ WINDOWS UNICODE FILE NAMES
     ExifTool will automatically use wide-character routines to scan the
     directory.
 
-    There are, however, a few limitations in the current implementation of
-    Unicode file name support on Windows:
+    There are, however, a couple of limitations in the current
+    implementation of Unicode file name support on Windows:
 
     1) Wildcards will not match files with Unicode characters in their
     names. (Instead of wildcards, provide a directory name and use the -ext
     option to specify the file extensions to process.)
 
     2) Directories may not be created with Unicode characters in the path.
-
-    3) FileModifyDate and FileCreateDate may not be written, and the -P
-    option will not work for files with Unicode names.
 
 READING EXAMPLES
     exiftool -a -u -g1 a.jpg

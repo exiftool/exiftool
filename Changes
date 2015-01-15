@@ -7,6 +7,16 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 9.76. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Jan. 15, 2015 - Version 9.82
+
+  - Added support for Windows Unicode names for input CSV and JSON files
+  - Decode a number of new Sony tags (thanks Jos Roost)
+  - Improved checks and warnings for invalid file name encoding on Windows
+  - Improved Polish translations (thanks Kacper Perschke)
+  - Changed exif2xmp.args and xmp2exif.args files (available in the full
+    ExifTool distribution) to avoid using non-standard XMP namespaces
+  - Fix problem setting file times for Windows Unicode file names
+
 Jan. 12, 2015 - Version 9.81
 
   - Added Composite:Megapixels tag

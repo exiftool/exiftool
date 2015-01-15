@@ -140,7 +140,7 @@ MakerNotes.</p>
 <td title='0x2001 = 8193'>0x2001</td>
 <td>PreviewImage</td>
 <td class=c>undef</td>
-<td>&nbsp;</td></tr>
+<td><span class=s><span class=n>(HD-size preview in JPEG images from almost all DSLR/SLT/ILCA/NEX/ILCE.)</span></span></td></tr>
 <tr class=b>
 <td title='0x2002 = 8194'>0x2002</td>
 <td>Rating</td>
@@ -2980,6 +2980,17 @@ increasing Y downwards)</span></span></td></tr>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td class=r title='2 = 0x2'>2</td>
+<td>HighSpeedSync</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr class=b>
+<td class=r title='3 = 0x3'>3</td>
+<td>ExposureCompensationSet</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td class=r title='4 = 0x4'>4</td>
 <td>DriveMode</td>
 <td class=c>int16u</td>
@@ -2999,20 +3010,63 @@ increasing Y downwards)</span></span></td></tr>
   <br>0x29 = D-Range Optimizer Bracketing High</td><td>&nbsp;&nbsp;</td></tr></table>
 </td></tr>
 <tr class=b>
+<td class=r title='5 = 0x5'>5</td>
+<td>WhiteBalanceSetting</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>2 = Auto
+  <br>4 = Daylight
+  <br>5 = Fluorescent
+  <br>6 = Tungsten
+  <br>7 = Flash
+  <br>16 = Cloudy
+  <br>17 = Shade
+  <br>18 = Color Temperature/Color Filter
+  <br>32 = Custom 1
+  <br>33 = Custom 2
+  <br>34 = Custom 3</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
 <td class=r title='6 = 0x6'>6</td>
 <td>WhiteBalanceFineTune</td>
-<td class=c>int16s</td>
-<td><span class=s><span class=n>(A700 only)</span></span></td></tr>
-<tr>
-<td class=r title='12 = 0xc'>12</td>
-<td>ColorTemperatureSetting</td>
-<td class=c>int16u</td>
+<td class=c>N</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
-<td class=r title='13 = 0xd'>13</td>
+<td class=r title='7 = 0x7'>7</td>
+<td>ColorTemperatureSet</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='8 = 0x8'>8</td>
 <td>ColorCompensationFilterSet</td>
 <td class=c>int16u</td>
 <td><span class=s><span class=n>(negative is green, positive is magenta)</span></span></td></tr>
+<tr class=b>
+<td class=r title='12 = 0xc'>12</td>
+<td>ColorTemperatureCustom</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='13 = 0xd'>13</td>
+<td>ColorCompensationFilterCustom</td>
+<td class=c>int16u</td>
+<td><span class=s><span class=n>(negative is green, positive is magenta)</span></span></td></tr>
+<tr class=b>
+<td class=r title='15 = 0xf'>15</td>
+<td>WhiteBalance</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>2 = Auto
+  <br>4 = Daylight
+  <br>5 = Fluorescent
+  <br>6 = Tungsten
+  <br>7 = Flash</td><td>&nbsp;&nbsp;</td>
+  <td>12 = Color Temperature
+  <br>13 = Color Filter
+  <br>14 = Custom
+  <br>16 = Cloudy
+  <br>17 = Shade</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
 <tr>
 <td class=r title='16 = 0x10'>16</td>
 <td>FocusModeSetting</td>
@@ -3046,6 +3100,23 @@ increasing Y downwards)</span></span></td></tr>
   <br>10 = Far Right
   <br>11 = Far Left</td><td>&nbsp;&nbsp;</td></tr></table>
 </td></tr>
+<tr class=b>
+<td class=r title='19 = 0x13'>19</td>
+<td>FlashMode</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>0 = Autoflash
+  <br>2 = Rear Sync
+  <br>3 = Wireless</td><td>&nbsp;&nbsp;</td>
+  <td>4 = Fill-flash
+  <br>5 = Suppressed
+  <br>6 = Flash Off</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='20 = 0x14'>20</td>
+<td>FlashExposureCompSet</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='21 = 0x15'>21</td>
 <td>MeteringMode</td>
@@ -3125,10 +3196,11 @@ increasing Y downwards)</span></span></td></tr>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='35 = 0x23'>35</td>
-<td>FlashMode</td>
+<td>FlashControl</td>
 <td class=c>int16u</td>
 <td><span class=s>0 = ADI
-  <br>1 = TTL</span></td></tr>
+  <br>1 = Pre-flash TTL
+  <br>2 = Manual</span></td></tr>
 <tr class=b>
 <td class=r title='40 = 0x28'>40</td>
 <td>PrioritySetupShutterRelease</td>
@@ -3210,13 +3282,41 @@ increasing Y downwards)</span></span></td></tr>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
 <tr>
+<td class=r title='62 = 0x3e'>62</td>
+<td>FlashAction</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Did not fire
+  <br>1 = Fired
+  <br>2 = External Flash, Did not fire
+  <br>3 = External Flash, Fired</span></td></tr>
+<tr class=b>
 <td class=r title='63 = 0x3f'>63</td>
 <td>Rotation</td>
 <td class=c>int16u</td>
 <td><span class=s>0 = Horizontal (normal)
   <br>1 = Rotate 90 CW
   <br>2 = Rotate 270 CW</span></td></tr>
+<tr>
+<td class=r title='64 = 0x40'>64</td>
+<td>AELock</td>
+<td class=c>int16u</td>
+<td><span class=s>1 = Off
+  <br>2 = On</span></td></tr>
 <tr class=b>
+<td class=r title='76 = 0x4c'>76</td>
+<td>FlashAction2</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>1 = Fired, Autoflash
+  <br>2 = Fired, Fill-flash
+  <br>3 = Fired, Rear Sync
+  <br>4 = Fired, Wireless
+  <br>5 = Did not fire
+  <br>17 = Fired, Autoflash, Red-eye reduction
+  <br>18 = Fired, Fill-flash, Red-eye reduction
+  <br>34 = Fired, Fill-flash, HSS</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
 <td class=r title='77 = 0x4d'>77</td>
 <td>FocusMode</td>
 <td class=c>int16u</td>
@@ -3225,7 +3325,7 @@ increasing Y downwards)</span></span></td></tr>
   <br>2 = AF-C
   <br>3 = AF-A
   <br>4 = DMF</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='80 = 0x50'>80</td>
 <td>BatteryState</td>
 <td class=c>int16u</td>
@@ -3234,12 +3334,12 @@ increasing Y downwards)</span></span></td></tr>
   <br>4 = Low
   <br>5 = Sufficient
   <br>6 = Full</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='81 = 0x51'>81</td>
 <td>BatteryLevel</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='83 = 0x53'>83</td>
 <td>FocusStatus</td>
 <td class=c>int16u</td>
@@ -3248,20 +3348,20 @@ increasing Y downwards)</span></span></td></tr>
   <br>Bit 0 = Confirmed
   <br>Bit 1 = Failed
   <br>Bit 2 = Tracking</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='84 = 0x54'>84</td>
 <td>SonyImageSize</td>
 <td class=c>int16u</td>
 <td><span class=s>1 = Large
   <br>2 = Medium
   <br>3 = Small</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='85 = 0x55'>85</td>
 <td>AspectRatio</td>
 <td class=c>int16u</td>
 <td><span class=s>1 = 3:2
   <br>2 = 16:9</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='86 = 0x56'>86</td>
 <td>Quality</td>
 <td class=c>int16u</td>
@@ -3274,12 +3374,18 @@ increasing Y downwards)</span></span></td></tr>
   <br>35 = CRAW + JPEG
   <br>48 = Standard</td><td>&nbsp;&nbsp;</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td class=r title='88 = 0x58'>88</td>
 <td>ExposureLevelIncrements</td>
 <td class=c>int16u</td>
 <td><span class=s>33 = 1/3 EV
   <br>50 = 1/2 EV</span></td></tr>
+<tr>
+<td class=r title='106 = 0x6a'>106</td>
+<td>RedEyeReduction</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
 <tr class=b>
 <td class=r title='154 = 0x9a'>154</td>
 <td>FolderNumber</td>
@@ -3310,15 +3416,79 @@ increasing Y downwards)</span></span></td></tr>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td class=r title='11 = 0xb'>11</td>
-<td>ColorTemperatureSetting</td>
+<td class=r title='2 = 0x2'>2</td>
+<td>HighSpeedSync</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr class=b>
+<td class=r title='3 = 0x3'>3</td>
+<td>ExposureCompensationSet</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='4 = 0x4'>4</td>
+<td>WhiteBalanceSetting</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>2 = Auto
+  <br>4 = Daylight
+  <br>5 = Fluorescent
+  <br>6 = Tungsten
+  <br>7 = Flash
+  <br>16 = Cloudy
+  <br>17 = Shade
+  <br>18 = Color Temperature/Color Filter
+  <br>32 = Custom 1
+  <br>33 = Custom 2
+  <br>34 = Custom 3</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='5 = 0x5'>5</td>
+<td>WhiteBalanceFineTune</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='6 = 0x6'>6</td>
+<td>ColorTemperatureSet</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
-<td class=r title='12 = 0xc'>12</td>
+<td class=r title='7 = 0x7'>7</td>
 <td>ColorCompensationFilterSet</td>
 <td class=c>int16u</td>
 <td><span class=s><span class=n>(negative is green, positive is magenta)</span></span></td></tr>
+<tr>
+<td class=r title='8 = 0x8'>8</td>
+<td>CustomWB_RGBLevels</td>
+<td class=c>int16u[3]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='11 = 0xb'>11</td>
+<td>ColorTemperatureCustom</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='12 = 0xc'>12</td>
+<td>ColorCompensationFilterCustom</td>
+<td class=c>int16u</td>
+<td><span class=s><span class=n>(negative is green, positive is magenta)</span></span></td></tr>
+<tr class=b>
+<td class=r title='14 = 0xe'>14</td>
+<td>WhiteBalance</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>2 = Auto
+  <br>4 = Daylight
+  <br>5 = Fluorescent
+  <br>6 = Tungsten
+  <br>7 = Flash
+  <br>12 = Color Temperature/Color Filter (12)
+  <br>13 = Color Temperature/Color Filter (13)
+  <br>14 = Custom
+  <br>16 = Cloudy
+  <br>17 = Shade</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
 <tr>
 <td class=r title='15 = 0xf'>15</td>
 <td>FocusModeSetting</td>
@@ -3350,18 +3520,23 @@ increasing Y downwards)</span></span></td></tr>
   <br>9 = Upper-left</td><td>&nbsp;&nbsp;</td></tr></table>
 </td></tr>
 <tr class=b>
+<td class=r title='18 = 0x12'>18</td>
+<td>FlashExposureCompSet</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td class=r title='19 = 0x13'>19</td>
 <td>MeteringMode</td>
 <td class=c>int16u</td>
 <td><span class=s>1 = Multi-segment
   <br>2 = Center-weighted Average
   <br>4 = Spot</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='20 = 0x14'>20</td>
 <td>ISOSetting</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='22 = 0x16'>22</td>
 <td>DynamicRangeOptimizerMode</td>
 <td class=c>int16u</td>
@@ -3369,12 +3544,12 @@ increasing Y downwards)</span></span></td></tr>
   <br>1 = Standard
   <br>2 = Advanced Auto
   <br>3 = Advanced Level</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='23 = 0x17'>23</td>
 <td>DynamicRangeOptimizerLevel</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='24 = 0x18'>24</td>
 <td>CreativeStyle</td>
 <td class=c>int16u</td>
@@ -3387,34 +3562,35 @@ increasing Y downwards)</span></span></td></tr>
   <br>6 = Night View/Portrait
   <br>8 = B&amp;W</td><td>&nbsp;&nbsp;</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td class=r title='25 = 0x19'>25</td>
 <td>Sharpness</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='26 = 0x1a'>26</td>
 <td>Contrast</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='27 = 0x1b'>27</td>
 <td>Saturation</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='31 = 0x1f'>31</td>
-<td>FlashMode</td>
+<td>FlashControl</td>
 <td class=c>int16u</td>
 <td><span class=s>0 = ADI
-  <br>1 = TTL</span></td></tr>
-<tr>
+  <br>1 = Pre-flash TTL
+  <br>2 = Manual</span></td></tr>
+<tr class=b>
 <td class=r title='37 = 0x25'>37</td>
 <td>LongExposureNoiseReduction</td>
 <td class=c>int16u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='38 = 0x26'>38</td>
 <td>HighISONoiseReduction</td>
 <td class=c>int16u</td>
@@ -3422,7 +3598,7 @@ increasing Y downwards)</span></span></td></tr>
   <br>1 = Low
   <br>2 = Normal
   <br>3 = High</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='39 = 0x27'>39</td>
 <td>ImageStyle</td>
 <td class=c>int16u</td>
@@ -3435,27 +3611,35 @@ increasing Y downwards)</span></span></td></tr>
   <br>7 = Night View/Portrait
   <br>8 = B&amp;W</td><td>&nbsp;&nbsp;</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td class=r title='40 = 0x28'>40</td>
 <td>ShutterSpeedSetting</td>
 <td class=c>int16u</td>
 <td><span class=s><span class=n>(used in M, S and Program Shift S modes)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='41 = 0x29'>41</td>
 <td>ApertureSetting</td>
 <td class=c>int16u</td>
 <td><span class=s><span class=n>(used in M, A and Program Shift A modes)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='60 = 0x3c'>60</td>
 <td>ExposureProgram</td>
 <td class=c>int16u</td>
 <td>--&gt; <a href='Sony.html#ExposureProgram'>Sony ExposureProgram Values</a></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='61 = 0x3d'>61</td>
 <td>ImageStabilizationSetting</td>
 <td class=c>int16u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
+<tr>
+<td class=r title='62 = 0x3e'>62</td>
+<td>FlashAction</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Did not fire
+  <br>1 = Fired
+  <br>2 = External Flash, Did not fire
+  <br>3 = External Flash, Fired</span></td></tr>
 <tr class=b>
 <td class=r title='63 = 0x3f'>63</td>
 <td>Rotation</td>
@@ -3463,6 +3647,26 @@ increasing Y downwards)</span></span></td></tr>
 <td><span class=s>0 = Horizontal (normal)
   <br>1 = Rotate 90 CW
   <br>2 = Rotate 270 CW</span></td></tr>
+<tr>
+<td class=r title='64 = 0x40'>64</td>
+<td>AELock</td>
+<td class=c>int16u</td>
+<td><span class=s>1 = Off
+  <br>2 = On</span></td></tr>
+<tr class=b>
+<td class=r title='76 = 0x4c'>76</td>
+<td>FlashAction2</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>1 = Fired, Autoflash
+  <br>2 = Fired, Fill-flash
+  <br>3 = Fired, Rear Sync
+  <br>4 = Fired, Wireless
+  <br>5 = Did not fire
+  <br>17 = Fired, Autoflash, Red-eye reduction
+  <br>18 = Fired, Fill-flash, Red-eye reduction
+  <br>34 = Fired, Fill-flash, HSS</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
 <tr>
 <td class=r title='77 = 0x4d'>77</td>
 <td>FocusMode</td>
@@ -7479,7 +7683,7 @@ the JPEG image from a PMP file)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jan 5, 2015</i>
+<br><i>Last revised Jan 15, 2015</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

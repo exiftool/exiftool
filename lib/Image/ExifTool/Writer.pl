@@ -1611,20 +1611,28 @@ sub SetFileModifyDate($$;$$$)
     if ($isOverwriting < 0) {  # are we shifting time?
         # use original time of this file if not specified
         unless (defined $originalTime) {
-            $originalTime = ($tag eq 'FileCreateDate') ? -C $file : -M $file;
+            my ($aTime, $mTime, $cTime) = $self->GetFileTime($file);
+            $originalTime = ($tag eq 'FileCreateDate') ? $cTime : $mTime;
             return 0 unless defined $originalTime;
-            undef $isUnixTime;
+            $isUnixTime = 1;
         }
         $originalTime = int($^T - $originalTime*(24*3600) + 0.5) unless $isUnixTime;
         return 0 unless $self->IsOverwriting($nvHash, $originalTime);
         $val = $$nvHash{Value}[0]; # get shifted value
     }
-    if ($tag eq 'FileCreateDate') {
-        unless (eval { require Win32API::File::Time }) {
-            $self->Warn("Install Win32API::File::Time to set $tag");
-            return -1;
+    if (not ref $file and $^O eq 'MSWin32' and eval { require Win32API::File::Time }) {
+        my $wfile = $file;
+        local ${^WIDE_SYSTEM_CALLS} = $self->EncodeFileName($wfile);
+        my ($aTime, $mTime, $cTime);
+        if ($tag eq 'FileCreateDate') {
+            $cTime = $val;
+        } else {
+            $aTime = $mTime = $val;
         }
-        $err = 1 unless Win32API::File::Time::SetFileTime($file,undef,undef,$val);
+        $err = 1 unless Win32API::File::Time::SetFileTime($wfile, $aTime, $mTime, $cTime);
+    } elsif ($tag eq 'FileCreateDate') {
+        $self->Warn("Install Win32API::File::Time to set $tag");
+        return -1;
     } else {
         $err = 1 unless utime($val, $val, $file);
     }
@@ -1738,9 +1746,14 @@ sub SetFileName($$;$$)
             return -1;
         }
         # preserve modification time
-        my $modTime = int($^T - (-M $file) * (24 * 3600) + 0.5);
-        my $accTime = int($^T - (-A $file) * (24 * 3600) + 0.5);
-        utime($accTime, $modTime, $newName);
+        my ($aTime, $mTime, $cTime) = $self->GetFileTime($file);
+        if ($^O eq 'MSWin32' and eval { require Win32API::File::Time }) {
+            my $wfile = $newName;
+            local ${^WIDE_SYSTEM_CALLS} = $self->EncodeFileName($wfile);
+            Win32API::File::Time::SetFileTime($wfile, $aTime, $mTime, $cTime);
+        } else {
+            utime($aTime, $mTime, $newName);
+        }
         # remove the original file
         $self->Unlink($file) or $self->Warn('Error removing old file');
     }
@@ -1775,15 +1788,18 @@ sub WriteInfo($$;$$)
     my ($nvHash, $nvHash2, $originalTime, $createTime);
     my $fileModifyDate = $self->GetNewValues('FileModifyDate', \$nvHash);
     my $fileCreateDate = $self->GetNewValues('FileCreateDate', \$nvHash2);
+    my ($aTime, $mTime, $cTime);
     if (defined $fileModifyDate and $self->IsOverwriting($nvHash) < 0 and
         defined $infile and ref $infile ne 'SCALAR')
     {
-        $originalTime = -M $infile;
+        ($aTime, $mTime, $cTime) = $self->GetFileTime($infile);
+        $originalTime = $mTime;
     }
     if (defined $fileCreateDate and $self->IsOverwriting($nvHash2) < 0 and
         defined $infile and ref $infile ne 'SCALAR')
     {
-        $createTime = -C $infile;
+        ($aTime, $mTime, $cTime) = $self->GetFileTime($infile) unless defined $cTime;
+        $createTime = $cTime;
     }
 #
 # do quick in-place change of file dir/name or date if that is all we are doing
@@ -2195,11 +2211,15 @@ sub WriteInfo($$;$$)
     # set FileModifyDate if requested (and if possible!)
     if ($rtnVal > 0 and ($closeOut or ($closeIn and defined $outBuff))) {
         my $target = $closeOut ? $outfile : $infile;
-        if (defined $fileModifyDate and $self->SetFileModifyDate($target, $originalTime) > 0) {
+        if (defined $fileModifyDate and
+            $self->SetFileModifyDate($target, $originalTime, undef, 1) > 0)
+        {
             ++$$self{CHANGED}; # we changed something
         }
         # set FileCreateDate if requested (and if possible!)
-        if (defined $fileCreateDate and $self->SetFileModifyDate($target, $createTime, 'FileCreateDate')) {
+        if (defined $fileCreateDate and
+            $self->SetFileModifyDate($target, $createTime, 'FileCreateDate', 1))
+        {
             ++$$self{CHANGED}; # we changed something
         }
         # create hard link if requested and no output filename specified (and if possible!)
@@ -5754,12 +5774,32 @@ sub Unlink($@)
     while (@_) {
         my $file = shift;
         if ($self->EncodeFileName($file)) {
-    		++$result if Win32API::File::DeleteFileW($file);
+            ++$result if Win32API::File::DeleteFileW($file);
         } else {
             ++$result if unlink $file;
         }
-	}
+    }
     return $result;
+}
+
+#------------------------------------------------------------------------------
+# Get file times (Unix seconds since the epoch)
+# Inputs: 0) ExifTool ref, 1) File name or ref
+# Returns: 0) access time, 1) modification time, 2) creation time (or undefs on error)
+sub GetFileTime($$)
+{
+    my ($self, $file) = @_;
+    my ($aTime, $mTime, $cTime);
+    if (not ref $file and $^O eq 'MSWin32' and eval { require Win32API::File::Time }) {
+        my $wfile = $file;
+        local ${^WIDE_SYSTEM_CALLS} = $self->EncodeFileName($wfile);
+        ($aTime, $mTime, $cTime) = Win32API::File::Time::GetFileTime($wfile);
+    } elsif (defined -M $file) {
+        $aTime = int($^T - (-A _) * (24 * 3600) + 0.5);
+        $mTime = int($^T - (-M _) * (24 * 3600) + 0.5);
+        $cTime = int($^T - (-C _) * (24 * 3600) + 0.5);
+    }
+    return($aTime, $mTime, $cTime);
 }
 
 #------------------------------------------------------------------------------

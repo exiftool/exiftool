@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.16';
+$VERSION = '2.17';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -367,7 +367,7 @@ my %meterInfo2 = (
     ],
     # 0x0018 - starts with "GYRO" for sweep panorama images (ref 12)
     #        - contains ImageStabilization information for Minolta
-    0x0020 => [ # not present for NEX-5C
+    0x0020 => [
         {
             Name => 'FocusInfo', #PH
             # count: A200/A230/A290/A300/A330/A350/A380/A390==19154, A700/A850/A900=19148
@@ -522,12 +522,31 @@ my %meterInfo2 = (
         Name => 'PreviewImage',
         Writable => 'undef',
         DataTag => 'PreviewImage',
+        Notes => 'HD-size preview in JPEG images from almost all DSLR/SLT/ILCA/NEX/ILCE.',
         # Note: the preview data starts with a 32-byte proprietary Sony header
+        #       first 8 bytes after 32-byte header:
+        #          \x00\xd8\xff\xe1\x00\x27\xff\xff for JPEG files from A33/35/55V/450/500/550/560/580, NEX-3/5/5C/C3/VG10
+        #          \x00\xd8\xff\xdb\x00\x84\x00\x01 for JPEG files from all other models
+        #        ( \xff\xd8\xff\xdb\x00\x84\x00\x01 corresponding bytes for all ARW files )
+        #
+        # DSLR-A700/A850/A900 and DSLR-A200/A300/A350:
+        # - no MPImage2
+        # DSLR-A230/A290/A330/A380/A390:
+        # - PreviewImage start-offset is at 110 bytes inside MPImage2
+        # DSLR-A450/A500/A550/A560/A580, SLT-A33/A35/A55V, NEX-3/5/5C/C3/VG10/VG10E:
+        # - PreviewImage start-offset is at 106 bytes inside MPImage2
+        # - different first bytes after 32-byte header
+        # SLT-A37/A57/A58/A65V/A77V/A99V, ILCA-77M2, NEX-3N/5N/5R/5T/6/7/F3, ILCE-3000/3500/5000/6000/7/7R/7S:
+        # - PreviewImage start-offset is at 130 bytes inside MPImage2
+        # NEX-VG20E/VG30E/VG900, ILCE-QX1: 0x2001 not present
+        # ILCE-5100/ILCE-7M2             : 0x2001 present but Size 0 and Offset 0
+        # 
         WriteCheck => 'return $val=~/^(none|.{32}\xff\xd8\xff)/s ? undef : "Not a valid image"',
         RawConv => q{
             return \$val if $val =~ /^Binary/;
             $val = substr($val,0x20) if length($val) > 0x20;
-            return \$val if $val =~ s/^.(\xd8\xff\xdb)/\xff$1/s;
+#            return \$val if $val =~ s/^.(\xd8\xff\xdb)/\xff$1/s;
+            return \$val if $val =~ s/^.(\xd8\xff[\xdb\xe1])/\xff$1/s;
             $$self{PreviewError} = 1 unless $val eq 'none';
             return undef;
         },
@@ -713,7 +732,7 @@ my %meterInfo2 = (
         #   a2 d3 - DSC-WX60, WX80, WX200, WX300
         #   a3 c3 - NEX-6, DSC-HX300, HX50V
         #   a4 c3 - NEX-3N/5R/5T, ILCE-3000/3500
-        # unknown offsets or values for DSC-TX20/TX55/RX100M2/RX100M3/QX10/QX30/QX100/RX10/HX60V/HX400V/WX220/WX350,
+        # unknown offsets or values for DSC-TX20/TX55/RX100M2/RX100M3/QX10/QX30/QX100/RX10/HX60V/HX400V/WX30/WX220/WX350,
         #                               ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-77M2
     {
         Name => 'Tag2010a', # ad
@@ -3128,6 +3147,20 @@ my %faceInfo = (
         PrintConv => 'Image::ExifTool::Exif::PrintFNumber($val)',
         PrintConvInv => '$val',
     },
+    0x02 => { #12 (requires external flash)
+        Name => 'HighSpeedSync',
+        PrintConv => {
+            0 => 'Off',
+            1 => 'On',
+        },
+    },
+    0x03 => { #12
+        Name => 'ExposureCompensationSet',
+        ValueConv => '($val - 128) / 24',
+        ValueConvInv => 'int($val * 24 + 128.5)',
+        PrintConv => '$val ? sprintf("%+.1f",$val) : $val',
+        PrintConvInv => 'Image::ExifTool::Exif::ConvertFraction($val)',
+    },
     0x04 => { #7/12
         Name => 'DriveMode',
         Mask => 0xff, # (not sure what upper byte is for)
@@ -3147,27 +3180,70 @@ my %faceInfo = (
             0x0b => 'Mirror Lock-up', #12 (A850/A900; not on A700)
         },
     },
-    0x06 => { #7 (A700, not valid for other models?)
-        Name => 'WhiteBalanceFineTune',
-        Condition => '$$self{Model} =~ /DSLR-A700\b/',
-        Format => 'int16s',
-        Notes => 'A700 only',
+    0x05 => { #12
+        Name => 'WhiteBalanceSetting',
+        PrintConv => {
+            2 => 'Auto',
+            4 => 'Daylight',
+            5 => 'Fluorescent',
+            6 => 'Tungsten',
+            7 => 'Flash',
+            16 => 'Cloudy',
+            17 => 'Shade',
+            18 => 'Color Temperature/Color Filter',
+            32 => 'Custom 1',
+            33 => 'Custom 2',
+            34 => 'Custom 3',
+        },
     },
-    0x0c => { #12
-        Name => 'ColorTemperatureSetting',
-        # matches "0xb021 ColorTemperature" when WB set to "Custom" or "Color Temperature/Color Filter"
+    0x06 => { #7 (A700) (ref 12: at least also valid for A200, ValueConv as for ColorCompensationFilterSet)
+        Name => 'WhiteBalanceFineTune',
+        ValueConv => '$val > 128 ? $val - 256 : $val',
+    },
+    0x07 => { #12 as set in WB "Color Temperature/Color Filter" and in White Balance Bracketing
+        Name => 'ColorTemperatureSet',
         ValueConv => '$val * 100',
         ValueConvInv => '$val / 100',
         PrintConv => '"$val K"',
         PrintConvInv => '$val =~ s/ ?K$//i; $val',
     },
-    0x0d => { #12
+    0x08 => { #12 as set in WB "Color Temperature/Color Filter"
         Name => 'ColorCompensationFilterSet',
         Notes => 'negative is green, positive is magenta',
         ValueConv => '$val > 128 ? $val - 256 : $val',
         ValueConvInv => '$val < 0 ? $val + 256 : $val',
         PrintConv => '$val > 0 ? "+$val" : $val',
         PrintConvInv => '$val',
+    },
+    0x0c => { #12 as set in WB "Custom" and in White Balance Bracketing
+        Name => 'ColorTemperatureCustom',
+        ValueConv => '$val * 100',
+        ValueConvInv => '$val / 100',
+        PrintConv => '"$val K"',
+        PrintConvInv => '$val =~ s/ ?K$//i; $val',
+    },
+    0x0d => { #12 as set in WB "Custom"
+        Name => 'ColorCompensationFilterCustom',
+        Notes => 'negative is green, positive is magenta',
+        ValueConv => '$val > 128 ? $val - 256 : $val',
+        ValueConvInv => '$val < 0 ? $val + 256 : $val',
+        PrintConv => '$val > 0 ? "+$val" : $val',
+        PrintConvInv => '$val',
+    },
+    0x0f => { #12
+        Name => 'WhiteBalance',
+        PrintConv => {
+            2 => 'Auto',
+            4 => 'Daylight',
+            5 => 'Fluorescent',
+            6 => 'Tungsten',
+            7 => 'Flash',
+            12 => 'Color Temperature',
+            13 => 'Color Filter',
+            14 => 'Custom',
+            16 => 'Cloudy',
+            17 => 'Shade',
+        },
     },
     0x10 => { #7 (A700)
         Name => 'FocusModeSetting',
@@ -3209,6 +3285,26 @@ my %faceInfo = (
             10 => 'Far Right', # (presumably A700 only)
             11 => 'Far Left', # (presumably A700 only)
         },
+    },
+    0x13 => {
+        Name => 'FlashMode',
+        PrintConv => {
+            0 => 'Autoflash',
+            2 => 'Rear Sync',
+            3 => 'Wireless',
+            4 => 'Fill-flash',
+            5 => 'Suppressed', #nc, seen for A200 Sunset and Landscape Scene-mode
+            6 => 'Flash Off',  #nc, seen for A200
+        },
+    },
+    0x14 => { #12
+        Name => 'FlashExposureCompSet',
+        Description => 'Flash Exposure Comp. Setting',
+        # (as pre-selected by the user, not zero if flash didn't fire)
+        ValueConv => '($val - 128) / 24', #PH
+        ValueConvInv => 'int($val * 24 + 128.5)',
+        PrintConv => '$val ? sprintf("%+.1f",$val) : $val',
+        PrintConvInv => 'Image::ExifTool::Exif::ConvertFraction($val)',
     },
     0x15 => { #7
         Name => 'MeteringMode',
@@ -3302,10 +3398,11 @@ my %faceInfo = (
         PrintConvInv => '$val',
     },
     0x23 => {
-        Name => 'FlashMode',
+        Name => 'FlashControl',
         PrintConv => {
             0 => 'ADI',
-            1 => 'TTL',
+            1 => 'Pre-flash TTL',
+            2 => 'Manual',
         },
     },
     0x28 => { #7
@@ -3392,12 +3489,41 @@ my %faceInfo = (
         Name => 'ImageStabilizationSetting',
         PrintConv => { 0 => 'Off', 1 => 'On' },
     },
+    0x3e => { #12
+        Name => 'FlashAction',
+        PrintConv => {
+            0 => 'Did not fire',
+            1 => 'Fired',
+            2 => 'External Flash, Did not fire',
+            3 => 'External Flash, Fired',
+        },
+    },
     0x3f => { # (verified for A330/A380)
         Name => 'Rotation',
         PrintConv => {
             0 => 'Horizontal (normal)',
             1 => 'Rotate 90 CW', #(NC)
             2 => 'Rotate 270 CW',
+        },
+    },
+    0x40 => { #12
+        Name => 'AELock',
+        PrintConv => {
+            1 => 'Off',
+            2 => 'On',
+        },
+    },
+    0x4c => { #12
+        Name => 'FlashAction2',
+        PrintConv => {
+            1 => 'Fired, Autoflash',
+            2 => 'Fired, Fill-flash',
+            3 => 'Fired, Rear Sync',
+            4 => 'Fired, Wireless',
+            5 => 'Did not fire',
+            17 => 'Fired, Autoflash, Red-eye reduction',
+            18 => 'Fired, Fill-flash, Red-eye reduction',
+            34 => 'Fired, Fill-flash, HSS',
         },
     },
     0x4d => { #12
@@ -3471,6 +3597,13 @@ my %faceInfo = (
             50 => '1/2 EV',
         },
     },
+    0x6a => { #12
+        Name => 'RedEyeReduction',
+        PrintConv => {
+            0 => 'Off',
+            1 => 'On',
+        },
+    },
     0x9a => { #12
         Name => 'FolderNumber',
         Mask => 0x03ff, # (not sure what the upper 6 bits are for)
@@ -3507,23 +3640,89 @@ my %faceInfo = (
         PrintConv => 'Image::ExifTool::Exif::PrintFNumber($val)',
         PrintConvInv => '$val',
     },
+    0x02 => { #12 (requires external flash)
+        Name => 'HighSpeedSync',
+        PrintConv => {
+            0 => 'Off',
+            1 => 'On',
+        },
+    },
+    0x03 => { #12
+        Name => 'ExposureCompensationSet',
+        ValueConv => '($val - 128) / 24',
+        ValueConvInv => 'int($val * 24 + 128.5)',
+        PrintConv => '$val ? sprintf("%+.1f",$val) : $val',
+        PrintConvInv => 'Image::ExifTool::Exif::ConvertFraction($val)',
+    },
 ### 0x04-0x11: subtract 1 from CameraSettings TagID
-    # 0x05 - maybe WhiteBalanceFineTune
-    0x0b => { #12
-        Name => 'ColorTemperatureSetting',
-        # matches "0xb021 ColorTemperature" when WB set to "Custom" or "Color Temperature/Color Filter"
+    0x04 => { #12
+        Name => 'WhiteBalanceSetting',
+        PrintConv => {
+            2 => 'Auto',
+            4 => 'Daylight',
+            5 => 'Fluorescent',
+            6 => 'Tungsten',
+            7 => 'Flash',
+            16 => 'Cloudy',
+            17 => 'Shade',
+            18 => 'Color Temperature/Color Filter',
+            32 => 'Custom 1',
+            33 => 'Custom 2',
+            34 => 'Custom 3',
+        },
+    },
+    0x05 => { #12
+        Name => 'WhiteBalanceFineTune',
+        ValueConv => '$val > 128 ? $val - 256 : $val',
+    },
+    0x06 => { #12 as set in WB "Color Temperature/Color Filter" and in White Balance Bracketing
+        Name => 'ColorTemperatureSet',
         ValueConv => '$val * 100',
         ValueConvInv => '$val / 100',
         PrintConv => '"$val K"',
         PrintConvInv => '$val =~ s/ ?K$//i; $val',
     },
-    0x0c => { #12
+    0x07 => { #12 as set in WB "Color Temperature/Color Filter"
         Name => 'ColorCompensationFilterSet',
         Notes => 'negative is green, positive is magenta',
         ValueConv => '$val > 128 ? $val - 256 : $val',
         ValueConvInv => '$val < 0 ? $val + 256 : $val',
         PrintConv => '$val > 0 ? "+$val" : $val',
         PrintConvInv => '$val',
+    },
+    0x08 => { #12
+        Name => 'CustomWB_RGBLevels',
+        Format => 'int16u[3]',
+    },
+    0x0b => { #12 as set in WB "Custom" and in White Balance Bracketing
+        Name => 'ColorTemperatureCustom',
+        ValueConv => '$val * 100',
+        ValueConvInv => '$val / 100',
+        PrintConv => '"$val K"',
+        PrintConvInv => '$val =~ s/ ?K$//i; $val',
+    },
+    0x0c => { #12 as set in WB "Custom"
+        Name => 'ColorCompensationFilterCustom',
+        Notes => 'negative is green, positive is magenta',
+        ValueConv => '$val > 128 ? $val - 256 : $val',
+        ValueConvInv => '$val < 0 ? $val + 256 : $val',
+        PrintConv => '$val > 0 ? "+$val" : $val',
+        PrintConvInv => '$val',
+    },
+    0x0e => { #12
+        Name => 'WhiteBalance',
+        PrintConv => {
+            2 => 'Auto',
+            4 => 'Daylight',
+            5 => 'Fluorescent',
+            6 => 'Tungsten',
+            7 => 'Flash',
+            12 => 'Color Temperature/Color Filter (12)', # seen on A700
+            13 => 'Color Temperature/Color Filter (13)', # seen on A700 - what is difference ?
+            14 => 'Custom',
+            16 => 'Cloudy',
+            17 => 'Shade',
+        },
     },
     0x0f => { #12/PH (educated guess)
         Name => 'FocusModeSetting',
@@ -3563,6 +3762,15 @@ my %faceInfo = (
         },
     },
 ### 0x12-0x18: subtract 2 from CameraSettings TagID
+    0x12 => { #12
+        Name => 'FlashExposureCompSet',
+        Description => 'Flash Exposure Comp. Setting',
+        # (as pre-selected by the user, not zero if flash didn't fire)
+        ValueConv => '($val - 128) / 24', #PH
+        ValueConvInv => 'int($val * 24 + 128.5)',
+        PrintConv => '$val ? sprintf("%+.1f",$val) : $val',
+        PrintConvInv => 'Image::ExifTool::Exif::ConvertFraction($val)',
+    },
     0x13 => {
         Name => 'MeteringMode',
         PrintConv => {
@@ -3627,10 +3835,11 @@ my %faceInfo = (
     },
 ### 0x1c-0x24: subtract 4 from CameraSettings TagID (not sure about 0x1c)
     0x1f => { #PH (educated guess)
-        Name => 'FlashMode',
+        Name => 'FlashControl',
         PrintConv => {
             0 => 'ADI',
-            1 => 'TTL',
+            1 => 'Pre-flash TTL',
+            2 => 'Manual',
         },
     },
 ### 0x25-0x27: subtract 6 from CameraSettings TagID
@@ -3689,12 +3898,41 @@ my %faceInfo = (
         Name => 'ImageStabilizationSetting',
         PrintConv => { 0 => 'Off', 1 => 'On' },
     },
+    0x3e => { #12
+        Name => 'FlashAction',
+        PrintConv => {
+            0 => 'Did not fire',
+            1 => 'Fired',
+            2 => 'External Flash, Did not fire',
+            3 => 'External Flash, Fired',
+        },
+    },
     0x3f => { # (verified for A330/A380)
         Name => 'Rotation',
         PrintConv => {
             0 => 'Horizontal (normal)',
             1 => 'Rotate 90 CW', #(NC)
             2 => 'Rotate 270 CW',
+        },
+    },
+    0x40 => { #12
+        Name => 'AELock',
+        PrintConv => {
+            1 => 'Off',
+            2 => 'On',
+        },
+    },
+    0x4c => { #12
+        Name => 'FlashAction2',
+        PrintConv => {
+            1 => 'Fired, Autoflash',
+            2 => 'Fired, Fill-flash',
+            3 => 'Fired, Rear Sync',
+            4 => 'Fired, Wireless',
+            5 => 'Did not fire',
+            17 => 'Fired, Autoflash, Red-eye reduction',
+            18 => 'Fired, Fill-flash, Red-eye reduction',
+            34 => 'Fired, Fill-flash, HSS',
         },
     },
     0x4d => { #12
@@ -3753,6 +3991,14 @@ my %faceInfo = (
         },
     },
 ### 0x5a onwards: subtract 1 from CameraSettings TagID
+    # (0x69 not confirmed)
+    #0x69 => { #12
+    #    Name => 'RedEyeReduction',
+    #    PrintConv => {
+    #        0 => 'Off',
+    #        1 => 'On',
+    #    },
+    #},
     0x7e => { #12
         Name => 'DriveMode',
         Mask => 0xff, # (not sure what upper byte is for)
@@ -6660,8 +6906,8 @@ my %exposureProgram2010 = (
         # lens models:
         # 0.00: Unknown lenses/adapters
         # 1.00: Sigma DN, Tamron DiIII, Zeiss Touit, SEL18200LE
-        # 1.07 (Ver.01): Original E-lenses
-        # 1.08: LA-EA1, Metabones Smart
+        # 1.07 (Ver.01): Original E-lenses and LA-EA1
+        # 1.08: LA-EA1 (Ver.02), Metabones Smart
         # 1.14: LA-EA2
         # 1.20 (Ver.02): Newer or firmware-updated E-lenses, LA-EA3
         # 1.30: LA-EA4

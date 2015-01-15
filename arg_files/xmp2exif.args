@@ -10,10 +10,11 @@
 # Revisions:    2009/01/20 - P. Harvey Created
 #               2011/06/22 - PH Copy flash information via Composite:Flash
 #               2013/06/12 - PH Additions for the Exif 2.3 for XMP spec
+#               2015/01/12 - PH Avoid copying from non-standard namespaces
 #
 # References:   http://www.metadataworkinggroup.org/specs/
 #
-# Notes:     1) The first argument copies the bulk of the EXIF and GPS
+# Notes:     1) The first three arguments copy the bulk of the EXIF and GPS
 #               information, and the remaining arguments handle the tags
 #               which have different names and/or formats in XMP and EXIF.
 #
@@ -21,14 +22,16 @@
 #               from the XMP.  The EXIF tags should be deleted beforehand if
 #               required.
 #------------------------------------------------------------------------------
--EXIF:all < XMP:all
+-EXIF:all < XMP-exif:all
+-EXIF:all < XMP-exifEX:all
+-EXIF:all < XMP-tiff:all
 -EXIF:ImageDescription < XMP-dc:Description
 -EXIF:DateTimeOriginal < XMP-photoshop:DateCreated
 # magically extracts sub-seconds from date/time value if available
 -EXIF:SubSecTimeOriginal < XMP-photoshop:DateCreated
-#-EXIF:CreateDate < XMP-xmp:CreateDate (handled by mass copy)
+-EXIF:CreateDate < XMP-xmp:CreateDate
 -EXIF:SubSecTimeDigitized < XMP-xmp:CreateDate
-#-EXIF:ModifyDate < XMP-xmp:ModifyDate (handled by mass copy)
+-EXIF:ModifyDate < XMP-xmp:ModifyDate
 -EXIF:SubSecTime < XMP-xmp:ModifyDate
 -EXIF:Software < -XMP-xmp:CreatorTool
 -EXIF:Copyright < XMP-dc:Rights

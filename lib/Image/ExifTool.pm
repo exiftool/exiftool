@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '9.81';
+$VERSION = '9.82';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -116,6 +116,7 @@ sub Exists($$);
 sub IsDirectory($$);
 sub Rename($$$);
 sub Unlink($@);
+sub GetFileTime($$);
 sub DoEscape($$);
 sub ConvertFileSize($);
 sub ParseArguments($;@); #(defined in attempt to avoid mod_perl problem)
@@ -3042,6 +3043,11 @@ sub EncodeFileName($$;$)
             # recode as UTF-8 for other platforms if necessary
             $_[1] = $self->Decode($file, $enc, undef, 'UTF8') unless $enc eq 'UTF8';
         }
+    } elsif ($^O eq 'MSWin32' and $file =~ /[\x80-\xff]/) {
+        require Image::ExifTool::XMP;
+        if (Image::ExifTool::XMP::IsUTF8(\$file) < 0) {
+            $self->WarnOnce('FileName encoding not specified');
+        }
     }
     return 0;
 }
@@ -3097,6 +3103,7 @@ sub Exists($$)
     my ($self, $file) = @_;
 
     if ($self->EncodeFileName($file)) {
+        local $SIG{'__WARN__'} = \&SetWarning;
         my $wh = Win32API::File::CreateFileW($file, Win32API::File::GENERIC_READ(), 0, [],
                  Win32API::File::OPEN_EXISTING(), 0, []);
         return 0 unless $wh;

@@ -12696,13 +12696,21 @@ Camera settings for the A200, A300, A350, A700, A850 and A900.
   ------   --------                             --------
       0    ExposureTime                         int16u
       1    FNumber                              int16u
+      2    HighSpeedSync                        int16u
+      3    ExposureCompensationSet              int16u
       4    DriveMode                            int16u & 0xff
-      6    WhiteBalanceFineTune                 int16s
-     12    ColorTemperatureSetting              int16u
-     13    ColorCompensationFilterSet           int16u
+      5    WhiteBalanceSetting                  int16u
+      6    WhiteBalanceFineTune                 N
+      7    ColorTemperatureSet                  int16u
+      8    ColorCompensationFilterSet           int16u
+     12    ColorTemperatureCustom               int16u
+     13    ColorCompensationFilterCustom        int16u
+     15    WhiteBalance                         int16u
      16    FocusModeSetting                     int16u
      17    AFAreaMode                           int16u
      18    AFPointSetting                       int16u
+     19    FlashMode                            int16u
+     20    FlashExposureCompSet                 int16u
      21    MeteringMode                         int16u
      22    ISOSetting                           int16u
      24    DynamicRangeOptimizerMode            int16u
@@ -12714,7 +12722,7 @@ Camera settings for the A200, A300, A350, A700, A850 and A900.
      30    Saturation                           int16u
      31    ZoneMatchingValue                    int16u
      34    Brightness                           int16u
-     35    FlashMode                            int16u
+     35    FlashControl                         int16u
      40    PrioritySetupShutterRelease          int16u
      41    AFIlluminator                        int16u
      42    AFWithShutter                        int16u
@@ -12726,7 +12734,10 @@ Camera settings for the A200, A300, A350, A700, A850 and A900.
      48    ApertureSetting                      int16u
      60    ExposureProgram                      int16u
      61    ImageStabilizationSetting            int16u
+     62    FlashAction                          int16u
      63    Rotation                             int16u
+     64    AELock                               int16u
+     76    FlashAction2                         int16u
      77    FocusMode                            int16u
      80    BatteryState                         int16u
      81    BatteryLevel                         int16u
@@ -12735,6 +12746,7 @@ Camera settings for the A200, A300, A350, A700, A850 and A900.
      85    AspectRatio                          int16u
      86    Quality                              int16u
      88    ExposureLevelIncrements              int16u
+    106    RedEyeReduction                      int16u
     154    FolderNumber                         int16u & 0x3ff
     155    ImageNumber                          int16u & 0x3fff
 
@@ -12746,11 +12758,20 @@ Camera settings for the A230, A290, A330, A380 and A390.
   ------   --------                             --------
       0    ExposureTime                         int16u
       1    FNumber                              int16u
-     11    ColorTemperatureSetting              int16u
-     12    ColorCompensationFilterSet           int16u
+      2    HighSpeedSync                        int16u
+      3    ExposureCompensationSet              int16u
+      4    WhiteBalanceSetting                  int16u
+      5    WhiteBalanceFineTune                 N
+      6    ColorTemperatureSet                  int16u
+      7    ColorCompensationFilterSet           int16u
+      8    CustomWB_RGBLevels                   int16u[3]
+     11    ColorTemperatureCustom               int16u
+     12    ColorCompensationFilterCustom        int16u
+     14    WhiteBalance                         int16u
      15    FocusModeSetting                     int16u
      16    AFAreaMode                           int16u
      17    AFPointSetting                       int16u
+     18    FlashExposureCompSet                 int16u
      19    MeteringMode                         int16u
      20    ISOSetting                           int16u
      22    DynamicRangeOptimizerMode            int16u
@@ -12759,7 +12780,7 @@ Camera settings for the A230, A290, A330, A380 and A390.
      25    Sharpness                            int16u
      26    Contrast                             int16u
      27    Saturation                           int16u
-     31    FlashMode                            int16u
+     31    FlashControl                         int16u
      37    LongExposureNoiseReduction           int16u
      38    HighISONoiseReduction                int16u
      39    ImageStyle                           int16u
@@ -12767,7 +12788,10 @@ Camera settings for the A230, A290, A330, A380 and A390.
      41    ApertureSetting                      int16u
      60    ExposureProgram                      int16u
      61    ImageStabilizationSetting            int16u
+     62    FlashAction                          int16u
      63    Rotation                             int16u
+     64    AELock                               int16u
+     76    FlashAction2                         int16u
      77    FocusMode                            int16u
      83    FocusStatus                          int16u
      84    SonyImageSize                        int16u

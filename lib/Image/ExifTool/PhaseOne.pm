@@ -14,7 +14,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.01';
+$VERSION = '1.02';
 
 sub ProcessPhaseOne($$$);
 sub ProcessSensorCalibration($$$);
@@ -179,14 +179,8 @@ my @formatSize = ( undef,        1,       1, undef,        4 );
         ValueConv => '2 ** ($val / 2)',
         PrintConv => 'sprintf("%.1f",$val)',
     },
-    0x0416 => {
-        Name => 'ManufactureDate', # (guess) (in the lens info section -- maybe Lens date?)
-        Format => 'int32u',
-        Groups => { 2 => 'Time' },
-        ValueConv => 'ConvertUnixTime($val)',
-        PrintConv => '$self->ConvertDateTime($val)',
-    },
-    # 0x0417 - int32u: 80 (focal length again?)
+    # 0x0416 - float: (min focal length? ref LibRaw, Credo50) (but looks more like an int32u date for the 645DF - PH)
+    # 0x0417 - float: 80 (max focal length? ref LibRaw)
 );
 
 # Phase One metadata (ref 1)

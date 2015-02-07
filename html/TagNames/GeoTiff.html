@@ -10,9 +10,10 @@
 <p>
 ExifTool extracts the following tags from GeoTIFF images.  See
 <a href="http://www.remotesensing.org/geotiff/spec/geotiffhome.html">http://www.remotesensing.org/geotiff/spec/geotiffhome.html</a> for the
-complete GeoTIFF specification.  These tags are not writable individually,
-but they may be copied en mass via the block tags GeoTiffDirectory,
-GeoTiffDoubleParams and GeoTiffAsciiParams.
+complete GeoTIFF specification.  Also included in the table below are
+ChartTIFF tags (see <a href="http://www.charttiff.com/whitepapers.shtml">http://www.charttiff.com/whitepapers.shtml</a>). GeoTIFF
+tags are not writable individually, but they may be copied en mass via the
+block tags GeoTiffDirectory, GeoTiffDoubleParams and GeoTiffAsciiParams.
 </p>
 <blockquote>
 <table class=frame><tr><td>
@@ -2086,47 +2087,7 @@ GeoTiffDoubleParams and GeoTiffAsciiParams.
 <td title='0x1000 = 4096'>0x1000</td>
 <td>VerticalCSType</td>
 <td class=c>N</td>
-<td><table class=cols><tr>
-  <td>5001 = Airy 1830 ellipsoid
-  <br>5002 = Airy Modified 1849 ellipsoid
-  <br>5003 = ANS ellipsoid
-  <br>5004 = Bessel 1841 ellipsoid
-  <br>5005 = Bessel Modified ellipsoid
-  <br>5006 = Bessel Namibia ellipsoid
-  <br>5007 = Clarke 1858 ellipsoid
-  <br>5008 = Clarke 1866 ellipsoid
-  <br>5010 = Clarke 1880 Benoit ellipsoid
-  <br>5011 = Clarke 1880 IGN ellipsoid
-  <br>5012 = Clarke 1880 RGS ellipsoid
-  <br>5013 = Clarke 1880 Arc ellipsoid
-  <br>5014 = Clarke 1880 SGA 1922 ellipsoid
-  <br>5015 = Everest 1830 1937 Adjustment ellipsoid
-  <br>5016 = Everest 1830 1967 Definition ellipsoid
-  <br>5017 = Everest 1830 1975 Definition ellipsoid
-  <br>5018 = Everest 1830 Modified ellipsoid
-  <br>5019 = GRS 1980 ellipsoid
-  <br>5020 = Helmert 1906 ellipsoid
-  <br>5021 = INS ellipsoid
-  <br>5022 = International 1924 ellipsoid
-  <br>5023 = International 1967 ellipsoid
-  <br>5024 = Krassowsky 1940 ellipsoid
-  <br>5025 = NWL 9D ellipsoid
-  <br>5026 = NWL 10D ellipsoid
-  <br>5027 = Plessis 1817 ellipsoid
-  <br>5028 = Struve 1860 ellipsoid
-  <br>5029 = War Office ellipsoid
-  <br>5030 = WGS 84 ellipsoid
-  <br>5031 = GEM 10C ellipsoid
-  <br>5032 = OSU86F ellipsoid
-  <br>5033 = OSU91A ellipsoid
-  <br>5101 = Newlyn
-  <br>5102 = North American Vertical Datum 1929
-  <br>5103 = North American Vertical Datum 1988
-  <br>5104 = Yellow Sea 1956
-  <br>5105 = Baltic Sea
-  <br>5106 = Caspian Sea
-  <br>32767 = User Defined</td><td>&nbsp;&nbsp;</td></tr></table>
-</td></tr>
+<td>--&gt; <a href='GeoTiff.html#VerticalCS'>GeoTiff VerticalCS Values</a></td></tr>
 <tr class=b>
 <td title='0x1001 = 4097'>0x1001</td>
 <td>VerticalCitation</td>
@@ -2136,13 +2097,119 @@ GeoTiffDoubleParams and GeoTiffAsciiParams.
 <td title='0x1002 = 4098'>0x1002</td>
 <td>VerticalDatum</td>
 <td class=c>N</td>
-<td><span class=s>1 = Vertical Datum Base
-  <br>32767 = User Defined</span></td></tr>
+<td>--&gt; <a href='GeoTiff.html#VerticalCS'>GeoTiff VerticalCS Values</a></td></tr>
 <tr class=b>
 <td title='0x1003 = 4099'>0x1003</td>
 <td>VerticalUnits</td>
 <td class=c>N</td>
 <td>--&gt; <a href='GeoTiff.html#Units'>GeoTiff Units Values</a></td></tr>
+<tr>
+<td title='0xb799 = 47001'>0xb799</td>
+<td>ChartFormat</td>
+<td class=c>N</td>
+<td><table class=cols><tr>
+  <td>47500 = General
+  <br>47501 = Coastal
+  <br>47502 = Harbor
+  <br>47503 = SailingInternational
+  <br>47504 = SmallCraft Route
+  <br>47505 = SmallCraftArea
+  <br>47506 = SmallCraftFolio
+  <br>47507 = Topographic
+  <br>47508 = Recreation
+  <br>47509 = Index
+  <br>47510 = Inset</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
+<td title='0xb79a = 47002'>0xb79a</td>
+<td>ChartSource</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xb79b = 47003'>0xb79b</td>
+<td>ChartSourceEdition</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xb79c = 47004'>0xb79c</td>
+<td>ChartSourceDate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xb79d = 47005'>0xb79d</td>
+<td>ChartCorrDate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xb79e = 47006'>0xb79e</td>
+<td>ChartCountryOrigin</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xb79f = 47007'>0xb79f</td>
+<td>ChartRasterEdition</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xb7a0 = 47008'>0xb7a0</td>
+<td>ChartSoundingDatum</td>
+<td class=c>N</td>
+<td><table class=cols><tr>
+  <td>47600 = Equatorial Spring Low Water
+  <br>47601 = Indian Spring Low Water
+  <br>47602 = Lowest Astronomical Tide
+  <br>47603 = Lowest Low Water
+  <br>47604 = Lowest Normal Low Water
+  <br>47605 = Mean Higher High Water
+  <br>47606 = Mean High Water
+  <br>47607 = Mean High Water Springs
+  <br>47608 = Mean Lower Low Water
+  <br>47609 = Mean Lower Low Water Springs
+  <br>47610 = Mean Low Water
+  <br>47611 = Mean Sea Level
+  <br>47612 = Tropic Higher High Water
+  <br>47613 = Tropic Lower Low Water</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr>
+<td title='0xb7a1 = 47009'>0xb7a1</td>
+<td>ChartDepthUnits</td>
+<td class=c>N</td>
+<td>--&gt; <a href='GeoTiff.html#Units'>GeoTiff Units Values</a></td></tr>
+<tr class=b>
+<td title='0xb7a2 = 47010'>0xb7a2</td>
+<td>ChartMagVar</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xb7a3 = 47011'>0xb7a3</td>
+<td>ChartMagVarYear</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xb7a4 = 47012'>0xb7a4</td>
+<td>ChartMagVarAnnChange</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xb7a5 = 47013'>0xb7a5</td>
+<td>ChartWGSNSShift</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xb7a7 = 47015'>0xb7a7</td>
+<td>InsetNWPixelX</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xb7a8 = 47016'>0xb7a8</td>
+<td>InsetNWPixelY</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xb7a9 = 47017'>0xb7a9</td>
+<td>ChartContourInterval</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='Units'>GeoTiff Units Values</a></h2>
@@ -2176,9 +2243,56 @@ GeoTiffDoubleParams and GeoTiffAsciiParams.
 <td class='r b'>32767</td><td class=b>= User Defined</td>
 </tr></table></td></tr></table></blockquote>
 
+<h2><a name='VerticalCS'>GeoTiff VerticalCS Values</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class='inner sep' cellspacing=1>
+<tr class=h><th>Value</th><th>VerticalCS</th><th>Value</th><th>VerticalCS</th></tr>
+<tr><td class=r>0</td><td>= Undefined</td>
+<td class='r b'>5021</td><td class=b>= INS ellipsoid</td>
+</tr><tr><td class=r>5001</td><td>= Airy 1830 ellipsoid</td>
+<td class='r b'>5022</td><td class=b>= International 1924 ellipsoid</td>
+</tr><tr><td class=r>5002</td><td>= Airy Modified 1849 ellipsoid</td>
+<td class='r b'>5023</td><td class=b>= International 1967 ellipsoid</td>
+</tr><tr><td class=r>5003</td><td>= ANS ellipsoid</td>
+<td class='r b'>5024</td><td class=b>= Krassowsky 1940 ellipsoid</td>
+</tr><tr><td class=r>5004</td><td>= Bessel 1841 ellipsoid</td>
+<td class='r b'>5025</td><td class=b>= NWL 9D ellipsoid</td>
+</tr><tr><td class=r>5005</td><td>= Bessel Modified ellipsoid</td>
+<td class='r b'>5026</td><td class=b>= NWL 10D ellipsoid</td>
+</tr><tr><td class=r>5006</td><td>= Bessel Namibia ellipsoid</td>
+<td class='r b'>5027</td><td class=b>= Plessis 1817 ellipsoid</td>
+</tr><tr><td class=r>5007</td><td>= Clarke 1858 ellipsoid</td>
+<td class='r b'>5028</td><td class=b>= Struve 1860 ellipsoid</td>
+</tr><tr><td class=r>5008</td><td>= Clarke 1866 ellipsoid</td>
+<td class='r b'>5029</td><td class=b>= War Office ellipsoid</td>
+</tr><tr><td class=r>5010</td><td>= Clarke 1880 Benoit ellipsoid</td>
+<td class='r b'>5030</td><td class=b>= WGS 84 ellipsoid</td>
+</tr><tr><td class=r>5011</td><td>= Clarke 1880 IGN ellipsoid</td>
+<td class='r b'>5031</td><td class=b>= GEM 10C ellipsoid</td>
+</tr><tr><td class=r>5012</td><td>= Clarke 1880 RGS ellipsoid</td>
+<td class='r b'>5032</td><td class=b>= OSU86F ellipsoid</td>
+</tr><tr><td class=r>5013</td><td>= Clarke 1880 Arc ellipsoid</td>
+<td class='r b'>5033</td><td class=b>= OSU91A ellipsoid</td>
+</tr><tr><td class=r>5014</td><td>= Clarke 1880 SGA 1922 ellipsoid</td>
+<td class='r b'>5101</td><td class=b>= Newlyn</td>
+</tr><tr><td class=r>5015</td><td>= Everest 1830 1937 Adjustment ellipsoid</td>
+<td class='r b'>5102</td><td class=b>= North American Vertical Datum 1929</td>
+</tr><tr><td class=r>5016</td><td>= Everest 1830 1967 Definition ellipsoid</td>
+<td class='r b'>5103</td><td class=b>= North American Vertical Datum 1988</td>
+</tr><tr><td class=r>5017</td><td>= Everest 1830 1975 Definition ellipsoid</td>
+<td class='r b'>5104</td><td class=b>= Yellow Sea 1956</td>
+</tr><tr><td class=r>5018</td><td>= Everest 1830 Modified ellipsoid</td>
+<td class='r b'>5105</td><td class=b>= Baltic Sea</td>
+</tr><tr><td class=r>5019</td><td>= GRS 1980 ellipsoid</td>
+<td class='r b'>5106</td><td class=b>= Caspian Sea</td>
+</tr><tr><td class=r>5020</td><td>= Helmert 1906 ellipsoid</td>
+<td class='r b'>32767</td><td class=b>= User Defined</td>
+</tr></table></td></tr></table></blockquote>
+
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Feb 24, 2014</i>
+<br><i>Last revised Jan 19, 2015</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

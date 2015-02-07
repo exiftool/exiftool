@@ -32,7 +32,7 @@ use Image::ExifTool::XMP;
 use Image::ExifTool::Canon;
 use Image::ExifTool::Nikon;
 
-$VERSION = '2.80';
+$VERSION = '2.81';
 @ISA = qw(Exporter);
 
 sub NumbersFirst;
@@ -193,12 +193,13 @@ PrintConv to 0, using the -n option, or suffixing the tag name with a C<#>
 character).  An exclamation point (C<!>) indicates a tag that is considered
 unsafe to write under normal circumstances.  These "unsafe" tags are not set
 when calling SetNewValuesFromFile() or copied with the exiftool
--tagsFromFile option unless specified explicitly, and care should be taken
-when editing them manually since they may affect the way an image is
-rendered.  An asterisk (C<*>) indicates a "protected" tag which is not
-writable directly, but is written automatically by ExifTool (often when a
-corresponding Composite or Extra tag is written).  A colon (C<:>) indicates
-a mandatory tag which may be added automatically when writing.
+-tagsFromFile option unless specified explicitly (ie. wildcards may not be
+used), and care should be taken when editing them manually since they may
+affect the way an image is rendered.  An asterisk (C<*>) indicates a
+"protected" tag which is not writable directly, but is written automatically
+by ExifTool (often when a corresponding Composite or Extra tag is written). 
+A colon (C<:>) indicates a mandatory tag which may be added automatically
+when writing.
 
 The HTML version of these tables also lists possible B<Values> for
 discrete-valued tags, as well as B<Notes> for some tags.  The B<Values> are
@@ -402,9 +403,10 @@ been decoded.  Use the Unknown (-u) option to extract PrintIM information.
     GeoTiff => q{
 ExifTool extracts the following tags from GeoTIFF images.  See
 L<http://www.remotesensing.org/geotiff/spec/geotiffhome.html> for the
-complete GeoTIFF specification.  These tags are not writable individually,
-but they may be copied en mass via the block tags GeoTiffDirectory,
-GeoTiffDoubleParams and GeoTiffAsciiParams.
+complete GeoTIFF specification.  Also included in the table below are
+ChartTIFF tags (see L<http://www.charttiff.com/whitepapers.shtml>). GeoTIFF
+tags are not writable individually, but they may be copied en mass via the
+block tags GeoTiffDirectory, GeoTiffDoubleParams and GeoTiffAsciiParams.
 },
     JFIF => q{
 The following information is extracted from the JPEG JFIF header.  See

@@ -1621,17 +1621,24 @@ sub SetFileModifyDate($$;$$$)
         $val = $$nvHash{Value}[0]; # get shifted value
     }
     if (not ref $file and $^O eq 'MSWin32' and eval { require Win32API::File::Time }) {
-        my $wfile = $file;
-        local ${^WIDE_SYSTEM_CALLS} = $self->EncodeFileName($wfile);
-        my ($aTime, $mTime, $cTime);
-        if ($tag eq 'FileCreateDate') {
-            $cTime = $val;
-        } else {
-            $aTime = $mTime = $val;
+        # (hide in an eval because ${^WIDE_SYSTEM_CALLS} doesn't compile under Perl 5.005)
+        eval q{
+            my $wfile = $file;
+            local ${'^WIDE_SYSTEM_CALLS'} = $self->EncodeFileName($wfile);
+            my ($aTime, $mTime, $cTime);
+            if ($tag eq 'FileCreateDate') {
+                $cTime = $val;
+            } else {
+                $aTime = $mTime = $val;
+            }
+            $err = 1 unless Win32API::File::Time::SetFileTime($wfile, $aTime, $mTime, $cTime);
         }
-        $err = 1 unless Win32API::File::Time::SetFileTime($wfile, $aTime, $mTime, $cTime);
     } elsif ($tag eq 'FileCreateDate') {
-        $self->Warn("Install Win32API::File::Time to set $tag");
+        if (ref $file) {
+            $self->Warn("Can't set $tag by file reference");
+        } else {
+            $self->Warn("Install Win32API::File::Time to set $tag");
+        }
         return -1;
     } else {
         $err = 1 unless utime($val, $val, $file);
@@ -1748,9 +1755,11 @@ sub SetFileName($$;$$)
         # preserve modification time
         my ($aTime, $mTime, $cTime) = $self->GetFileTime($file);
         if ($^O eq 'MSWin32' and eval { require Win32API::File::Time }) {
-            my $wfile = $newName;
-            local ${^WIDE_SYSTEM_CALLS} = $self->EncodeFileName($wfile);
-            Win32API::File::Time::SetFileTime($wfile, $aTime, $mTime, $cTime);
+            eval q{
+                my $wfile = $newName;
+                local ${'^WIDE_SYSTEM_CALLS'} = $self->EncodeFileName($wfile);
+                Win32API::File::Time::SetFileTime($wfile, $aTime, $mTime, $cTime);
+            }
         } else {
             utime($aTime, $mTime, $newName);
         }
@@ -5791,9 +5800,11 @@ sub GetFileTime($$)
     my ($self, $file) = @_;
     my ($aTime, $mTime, $cTime);
     if (not ref $file and $^O eq 'MSWin32' and eval { require Win32API::File::Time }) {
-        my $wfile = $file;
-        local ${^WIDE_SYSTEM_CALLS} = $self->EncodeFileName($wfile);
-        ($aTime, $mTime, $cTime) = Win32API::File::Time::GetFileTime($wfile);
+        eval q{
+            my $wfile = $file;
+            local ${'^WIDE_SYSTEM_CALLS'} = $self->EncodeFileName($wfile);
+            ($aTime, $mTime, $cTime) = Win32API::File::Time::GetFileTime($wfile);
+        }
     } elsif (defined -M $file) {
         $aTime = int($^T - (-A _) * (24 * 3600) + 0.5);
         $mTime = int($^T - (-M _) * (24 * 3600) + 0.5);

@@ -58,7 +58,7 @@ use vars qw($VERSION %nikonLensIDs %nikonTextEncoding);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.99';
+$VERSION = '3.00';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -292,7 +292,10 @@ sub GetAFPointGrid($$;$);
     'A0 40 2D 74 2C 3C BB 0E' => 'AF-S DX Nikkor 18-140mm f/3.5-5.6G ED VR', #PH
     'A1 54 55 55 0C 0C BC 06' => 'AF-S Nikkor 58mm f/1.4G', #33
     'A2 40 2D 53 2C 3C BD 0E' => 'AF-S DX VR Nikkor 18-55mm f/3.5-5.6G II',
+    'A4 40 2D 8E 2C 40 BF 0E' => 'AF-S DX Nikkor 18-300mm f/3.5-6.3G ED VR',
     'A5 4C 44 44 14 14 C0 06' => 'AF-S Nikkor 35mm f/1.8G', #35
+    'A8 48 8E 8E 30 30 C3 4E' => 'AF-S Nikkor 300mm f/4E PF ED VR', #35
+    'A8 48 8E 8E 30 30 C3 0E' => 'AF-S Nikkor 300mm f/4E PF ED VR', #30
     'A9 4C 31 31 14 14 C4 06' => 'AF-S Nikkor 20mm f/1.8G ED', #30
     '01 00 00 00 00 00 02 00' => 'TC-16A',
     '01 00 00 00 00 00 08 00' => 'TC-16A',
@@ -370,9 +373,9 @@ sub GetAFPointGrid($$;$);
     '26 40 2D 70 2B 3C 1C 06' => 'Sigma 18-125mm F3.5-5.6 DC',
     'CD 3D 2D 70 2E 3C 4B 0E' => 'Sigma 18-125mm F3.8-5.6 DC OS HSM',
     '26 40 2D 80 2C 40 1C 06' => 'Sigma 18-200mm F3.5-6.3 DC',
+    'FF 40 2D 80 2C 40 4B 06' => 'Sigma 18-200mm F3.5-6.3 DC', #30
     '7A 40 2D 80 2C 40 4B 0E' => 'Sigma 18-200mm F3.5-6.3 DC OS HSM',
     'ED 40 2D 80 2C 40 4B 0E' => 'Sigma 18-200mm F3.5-6.3 DC OS HSM', #JD
-    'FF 40 2D 80 2C 40 4B 06' => 'Sigma 18-200mm F3.5-6.3 DC', #30
     'A5 40 2D 88 2C 40 4B 0E' => 'Sigma 18-250mm F3.5-6.3 DC OS HSM',
   #  LensFStops varies with FocalLength for this lens (ref 2):
     '92 2C 2D 88 2C 40 4B 0E' => 'Sigma 18-250mm F3.5-6.3 DC Macro OS HSM', #2
@@ -466,6 +469,7 @@ sub GetAFPointGrid($$;$);
     '21 56 8E 8E 24 24 14 00' => 'Tamron SP AF 300mm f/2.8 LD-IF (60E)',
     '27 54 8E 8E 24 24 1D 02' => 'Tamron SP AF 300mm f/2.8 LD-IF (360E)',
     'F6 3F 18 37 2C 34 84 06' => 'Tamron SP AF 10-24mm f/3.5-4.5 Di II LD Aspherical (IF) (B001)',
+    'F6 3F 18 37 2C 34 DF 06' => 'Tamron SP AF 10-24mm f/3.5-4.5 Di II LD Aspherical (IF) (B001)', #30
     '00 36 1C 2D 34 3C 00 06' => 'Tamron SP AF 11-18mm f/4.5-5.6 Di II LD Aspherical (IF) (A13)',
     'EA 40 29 8E 2C 40 DF 0E' => 'Tamron AF 16-300mm F/3.5-6.3 Di II VC PZD (B016)',
     '07 46 2B 44 24 30 03 02' => 'Tamron SP AF 17-35mm f/2.8-4 Di LD Aspherical (IF) (A05)',
@@ -1206,10 +1210,12 @@ my %binaryDataAttrs = (
                 0 => 'Continuous',
                 1 => 'Delay',
                 2 => 'PC Control',
+                3 => 'Self-timer', #forum6281 (NC)
                 4 => 'Exposure Bracketing',
                 5 => $$self{Model}=~/D70\b/ ? 'Unused LE-NR Slowdown' : 'Auto ISO',
                 6 => 'White-Balance Bracketing',
                 7 => 'IR Control',
+                8 => 'D-Lighting Bracketing', #forum6281 (NC)
             });
         ],
     },
@@ -1827,6 +1833,7 @@ my %binaryDataAttrs = (
         SubDirectory => { TagTable => 'Image::ExifTool::Nikon::AFTune' },
     },
     # 0x00ba - custom curve data? (ref 28?) (only in NEF images)
+    # 0x00bc - NEFThumbnail? (forum6281)
     0x00bd => { #PH (P6000)
         Name => 'PictureControlData',
         Writable => 'undef',

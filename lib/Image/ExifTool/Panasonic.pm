@@ -1603,6 +1603,7 @@ my %shootingMode = (
         Count => 4,
         PrintConv => {
             '0 0 0 0' => 'Program AE',
+          # '0 1 0 0' - seen for X (Typ 113) - PH
             '1 0 0 0' => 'Aperture-priority AE',
             '1 1 0 0' => 'Aperture-priority AE (1)', # (see for Leica T)
             '2 0 0 0' => 'Shutter speed priority AE', #(guess)

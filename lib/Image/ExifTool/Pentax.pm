@@ -56,7 +56,7 @@ use vars qw($VERSION %pentaxLensTypes);
 use Image::ExifTool::Exif;
 use Image::ExifTool::HP;
 
-$VERSION = '2.85';
+$VERSION = '2.86';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -503,6 +503,7 @@ my %pentaxModelID = (
     0x13010 => '645Z',
     0x1301a => 'K-S1',
     0x1302e => 'Q-S1',
+    0x13056 => 'WG-30', # (Ricoh)
 );
 
 # Pentax city codes - (PH, Optio WP)
@@ -5307,6 +5308,8 @@ my %binaryDataAttrs = (
             800 => 800, #PH
             1600 => 1600, #PH
             3200 => 3200, #PH
+            # seen 65534 for Q-S1 MOV video - PH
+            # seen 65535 for K-S1 MOV video - PH
         },
     },
     0x0017 => {

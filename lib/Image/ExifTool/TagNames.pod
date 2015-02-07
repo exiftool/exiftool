@@ -50,12 +50,13 @@ PrintConv to 0, using the -n option, or suffixing the tag name with a C<#>
 character).  An exclamation point (C<!>) indicates a tag that is considered
 unsafe to write under normal circumstances.  These "unsafe" tags are not set
 when calling SetNewValuesFromFile() or copied with the exiftool
--tagsFromFile option unless specified explicitly, and care should be taken
-when editing them manually since they may affect the way an image is
-rendered.  An asterisk (C<*>) indicates a "protected" tag which is not
-writable directly, but is written automatically by ExifTool (often when a
-corresponding Composite or Extra tag is written).  A colon (C<:>) indicates
-a mandatory tag which may be added automatically when writing.
+-tagsFromFile option unless specified explicitly (ie. wildcards may not be
+used), and care should be taken when editing them manually since they may
+affect the way an image is rendered.  An asterisk (C<*>) indicates a
+"protected" tag which is not writable directly, but is written automatically
+by ExifTool (often when a corresponding Composite or Extra tag is written). 
+A colon (C<:>) indicates a mandatory tag which may be added automatically
+when writing.
 
 The HTML version of these tables also lists possible B<Values> for
 discrete-valued tags, as well as B<Notes> for some tags.  The B<Values> are
@@ -2178,24 +2179,49 @@ group name. (see L<http://www.iptc.org/IPTC4XMP/>)
 
   Tag Name                                      Writable
   --------                                      --------
+  AboutCvTerm                                   CVTermDetails Struct+
+  AboutCvTermCvId                               string_+
+  AboutCvTermId                                 string_+
+  AboutCvTermName                               lang-alt_+
+  AboutCvTermRefinedAbout                       string_+
   AdditionalModelInformation                    string
   ArtworkOrObject                               ArtworkOrObjectDetails Struct+
+  ArtworkCircaDateCreated                       string_+
+  ArtworkSContentDescription                    lang-alt_+
+  ArtworkContributionDescription                lang-alt_+
   ArtworkCopyrightNotice                        string_+
   ArtworkCreator                                string_+
+  ArtworkCreatorID                              string_+
+  ArtworkCopyrightOwnerID                       string_+
+  ArtworkCopyrightOwnerName                     string_+
+  ArtworkLicensorID                             string_+
+  ArtworkLicensorName                           string_+
   ArtworkDateCreated                            date_+
+  ArtworkPhysicalDescription                    lang-alt_+
   ArtworkSource                                 string_+
   ArtworkSourceInventoryNo                      string_+
+  ArtworkSourceInvURL                           string_+
+  ArtworkStylePeriod                            string_+
   ArtworkTitle                                  lang-alt_+
   ControlledVocabularyTerm                      string+
   DigitalImageGUID                              string
   DigitalSourceFileType                         string
   DigitalSourceType                             string
+  EmbdEncRightsExpr                             EEREDetails Struct+
+  EmbeddedEncodedRightsExpr                     string_+
+  EmbeddedEncodedRightsExprType                 string_+
+  EmbeddedEncodedRightsExprLangID               string_+
   Event                                         lang-alt
   IPTCLastEdited                                date
+  LinkedEncRightsExpr                           LEREDetails Struct+
+  LinkedEncodedRightsExpr                       string_+
+  LinkedEncodedRightsExprType                   string_+
+  LinkedEncodedRightsExprLangID                 string_+
   LocationCreated                               LocationDetails Struct+
   LocationCreatedCity                           string_+
   LocationCreatedCountryCode                    string_+
   LocationCreatedCountryName                    string_+
+  LocationCreatedLocationId                     string_+
   LocationCreatedProvinceState                  string_+
   LocationCreatedSublocation                    string_+
   LocationCreatedWorldRegion                    string_+
@@ -2203,6 +2229,7 @@ group name. (see L<http://www.iptc.org/IPTC4XMP/>)
   LocationShownCity                             string_+
   LocationShownCountryCode                      string_+
   LocationShownCountryName                      string_+
+  LocationShownLocationId                       string_+
   LocationShownProvinceState                    string_+
   LocationShownSublocation                      string_+
   LocationShownWorldRegion                      string_+
@@ -2212,20 +2239,69 @@ group name. (see L<http://www.iptc.org/IPTC4XMP/>)
   OrganisationInImageCode                       string+
   OrganisationInImageName                       string+
   PersonInImage                                 string+
+  PersonInImageWDetails                         PersonDetails Struct+
+  PersonInImageCharacteristic                   CVTermDetails Struct_+
+  PersonInImageCvTermCvId                       string_+
+  PersonInImageCvTermId                         string_+
+  PersonInImageCvTermName                       lang-alt_+
+  PersonInImageCvTermRefinedAbout               string_+
+  PersonInImageDescription                      lang-alt_+
+  PersonInImageId                               string_+
+  PersonInImageName                             lang-alt_+
+  ProductInImage                                ProductDetails Struct+
+  ProductInImageDescription                     lang-alt_+
+  ProductInImageGTIN                            string_+
+  ProductInImageName                            lang-alt_+
   RegistryID                                    RegistryEntryDetails Struct+
   RegistryItemID                                string_+
   RegistryOrganisationID                        string_+
+
+=head3 XMP CVTermDetails Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  CvId                                          string
+  CvTermId                                      string
+  CvTermName                                    lang-alt
+  CvTermRefinedAbout                            string
 
 =head3 XMP ArtworkOrObjectDetails Struct
 
   Field Name                                    Writable
   ----------                                    --------
+  AOCircaDateCreated                            string
+  AOContentDescription                          lang-alt
+  AOContributionDescription                     lang-alt
   AOCopyrightNotice                             string
   AOCreator                                     string+
+  AOCreatorId                                   string+
+  AOCurrentCopyrightOwnerId                     string
+  AOCurrentCopyrightOwnerName                   string
+  AOCurrentLicensorId                           string
+  AOCurrentLicensorName                         string
   AODateCreated                                 date
+  AOPhysicalDescription                         lang-alt
   AOSource                                      string
   AOSourceInvNo                                 string
+  AOSourceInvURL                                string
+  AOStylePeriod                                 string+
   AOTitle                                       lang-alt
+
+=head3 XMP EEREDetails Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  EncRightsExpr                                 string
+  RightsExprEncType                             string
+  RightsExprLangId                              string
+
+=head3 XMP LEREDetails Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  LinkedRightsExpr                              string
+  RightsExprEncType                             string
+  RightsExprLangId                              string
 
 =head3 XMP LocationDetails Struct
 
@@ -2234,9 +2310,27 @@ group name. (see L<http://www.iptc.org/IPTC4XMP/>)
   City                                          string
   CountryCode                                   string
   CountryName                                   string
+  LocationId                                    string+
   ProvinceState                                 string
   Sublocation                                   string
   WorldRegion                                   string
+
+=head3 XMP PersonDetails Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  PersonCharacteristic                          CVTermDetails Struct+
+  PersonDescription                             lang-alt
+  PersonId                                      string+
+  PersonName                                    lang-alt
+
+=head3 XMP ProductDetails Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  ProductDescription                            lang-alt
+  ProductGTIN                                   string
+  ProductName                                   lang-alt
 
 =head3 XMP RegistryEntryDetails Struct
 
@@ -2828,7 +2922,7 @@ XMP Dynamic Media namespace tags.
   OutCue                                        Time Struct
   OutCueScale                                   rational_
   OutCueValue                                   integer_
-  PartOfCompilation                             string
+  PartOfCompilation                             boolean
   ProjectName                                   string
   ProjectRef                                    ProjectLink Struct
   ProjectRefPath                                string_
@@ -2902,7 +2996,7 @@ XMP Dynamic Media namespace tags.
   VideoColorSpace                               string
   VideoCompressor                               string
   VideoFieldOrder                               string
-  VideoFrameRate                                string
+  VideoFrameRate                                real
   VideoFrameSize                                Dimensions Struct
   VideoFrameSizeH                               real_
   VideoFrameSizeUnit                            string_
@@ -3388,9 +3482,10 @@ to an image.
 
 ExifTool extracts the following tags from GeoTIFF images.  See
 L<http://www.remotesensing.org/geotiff/spec/geotiffhome.html> for the
-complete GeoTIFF specification.  These tags are not writable individually,
-but they may be copied en mass via the block tags GeoTiffDirectory,
-GeoTiffDoubleParams and GeoTiffAsciiParams.
+complete GeoTIFF specification.  Also included in the table below are
+ChartTIFF tags (see L<http://www.charttiff.com/whitepapers.shtml>). GeoTIFF
+tags are not writable individually, but they may be copied en mass via the
+block tags GeoTiffDirectory, GeoTiffDoubleParams and GeoTiffAsciiParams.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
@@ -3442,6 +3537,22 @@ GeoTiffDoubleParams and GeoTiffAsciiParams.
   0x1001   VerticalCitation                     N
   0x1002   VerticalDatum                        N
   0x1003   VerticalUnits                        N
+  0xb799   ChartFormat                          N
+  0xb79a   ChartSource                          N
+  0xb79b   ChartSourceEdition                   N
+  0xb79c   ChartSourceDate                      N
+  0xb79d   ChartCorrDate                        N
+  0xb79e   ChartCountryOrigin                   N
+  0xb79f   ChartRasterEdition                   N
+  0xb7a0   ChartSoundingDatum                   N
+  0xb7a1   ChartDepthUnits                      N
+  0xb7a2   ChartMagVar                          N
+  0xb7a3   ChartMagVarYear                      N
+  0xb7a4   ChartMagVarAnnChange                 N
+  0xb7a5   ChartWGSNSShift                      N
+  0xb7a7   InsetNWPixelX                        N
+  0xb7a8   InsetNWPixelY                        N
+  0xb7a9   ChartContourInterval                 N
 
 =head2 ICC_Profile Tags
 
@@ -8035,6 +8146,7 @@ White balance information for the Sony DSLR-A100.
    1576    AEMeteringSegments                   int8u[40]
    1680    MeasuredLV                           int8u
    1681    BrightnessValue                      int8u
+   4172    TiffMeteringImage                    N
   18872    ExposureTime                         int8u
   18874    ISO                                  int8u
   18875    FocusDistance                        int8u
@@ -11771,7 +11883,6 @@ These tags are extracted from the maker notes of Phase One images.
   0x0412   LensModel                            N
   0x0414   MaxApertureValue                     N
   0x0415   MinApertureValue                     N
-  0x0416   ManufactureDate                      N
 
 =head3 PhaseOne SensorCalibration Tags
 
@@ -12365,6 +12476,7 @@ MakerNotes.
   0x2013   DistortionCorrectionSetting          int32u
   0x2014   WBShiftAB_GM                         int32s[2]
   0x2016   AutoPortraitFramed                   int16u
+  0x2017   FlashAction                          int32u
   0x201b   FocusMode                            int8u
   0x201c   AFAreaModeSetting                    int8u
   0x201d   FlexibleSpotPosition                 int16u[2]
@@ -12567,6 +12679,7 @@ A200, A230, A290, A300, A330, A350, A380, A390, A700, A850 and A900.
     121    DynamicRangeOptimizerLevel           int8u
    2118    ShutterCount                         int32u
    2491    FocusPosition                        int8u
+   4368    TiffMeteringImage                    N
 
 =head3 Sony MoreInfo Tags
 
@@ -12630,17 +12743,22 @@ A580, A33, A35, A55, NEX-3/5/C3 and VG10E.
      40    Orientation2                         int8u
      41    FocusPosition2                       int8u
            FocalLength2                         int8u
-     42    FlashAction2                         int8u
+     42    FlashAction                          int8u
            ExposureCompensation2                int16s
      43    FocusPosition2                       int8u
      44    FocusMode2                           int8u
-           FlashAction2                         int8u
+           FlashAction                          int8u
            FlashExposureCompSet2                int16s
      46    FocusMode2                           int8u
            Orientation2                         int8u
      47    FocusPosition2                       int8u
-     48    FlashAction2                         int8u
+     48    FlashAction                          int8u
      50    FocusMode2                           int8u
+    119    FlashAction2                         int8u
+    120    FlashActionExternal                  int8u
+    124    FlashActionExternal                  int8u
+    130    FlashStatus                          int8u
+    134    FlashStatus                          int8u
 
 =head3 Sony FaceInfo Tags
 
@@ -12799,6 +12917,7 @@ Camera settings for the A230, A290, A330, A380 and A390.
      86    Quality                              int16u
      88    ExposureLevelIncrements              int16u
     126    DriveMode                            int16u & 0xff
+    127    FlashMode                            int16u
     131    ColorSpace                           int16u
 
 =head3 Sony CameraSettings3 Tags
@@ -12853,7 +12972,8 @@ A560, A580, NEX-3, NEX-5, NEX-C3 and NEX-VG10E.
     132    LiveViewMetering                     int8u
     133    ViewingMode2                         int8u
     134    AELock                               int8u
-    135    FlashAction                          int8u
+    135    FlashStatusBuilt-in                  int8u
+    136    FlashStatusExternal                  int8u
     139    LiveViewFocusMode                    int8u
     153    LensMount                            int8u
     268    SequenceNumber                       int8u
@@ -12864,7 +12984,8 @@ A560, A580, NEX-3, NEX-5, NEX-C3 and NEX-VG10E.
     644    LiveViewMetering                     int8u
     645    ViewingMode2                         int8u
     646    AELock                               int8u
-    647    FlashAction                          int8u
+    647    FlashStatusBuilt-in                  int8u
+    648    FlashStatusExternal                  int8u
     651    LiveViewFocusMode                    int8u
     780    SequenceNumber                       int8u
     788    ImageNumber                          int16u & 0x3fff
@@ -12952,6 +13073,7 @@ Valid for NEX-5N.
   0x04b0   MeterInfo?                           Sony MeterInfo
   0x1128   ReleaseMode3                         int8u
   0x112c   ReleaseMode2                         int8u
+  0x1138   FlashMode                            int8u
   0x113e   StopsAboveBaseISO                    int16u
   0x1140   BrightnessValue                      int16u
   0x1144   DynamicRangeOptimizer                int8u
@@ -13001,6 +13123,7 @@ Valid for SLT-A65/A77, NEX-7/VG20E.
   0x04b4   MeterInfo?                           Sony MeterInfo
   0x1128   ReleaseMode3                         int8u
   0x112c   ReleaseMode2                         int8u
+  0x1138   FlashMode                            int8u
   0x113e   StopsAboveBaseISO                    int16u
   0x1140   BrightnessValue                      int16u
   0x1144   DynamicRangeOptimizer                int8u
@@ -13029,6 +13152,7 @@ Valid for SLT-A37/A57 and NEX-F3.
   0x0490   MeterInfo?                           Sony MeterInfo
   0x1104   ReleaseMode3                         int8u
   0x1108   ReleaseMode2                         int8u
+  0x1114   FlashMode                            int8u
   0x111a   StopsAboveBaseISO                    int16u
   0x111c   BrightnessValue                      int16u
   0x1120   DynamicRangeOptimizer                int8u
@@ -13056,6 +13180,7 @@ not valid for panorama images.
   0x050c   MeterInfo?                           Sony MeterInfo
   0x1180   ReleaseMode3                         int8u
   0x1184   ReleaseMode2                         int8u
+  0x1190   FlashMode                            int8u
   0x1196   StopsAboveBaseISO                    int16u
   0x1198   BrightnessValue                      int16u
   0x119c   DynamicRangeOptimizer                int8u
@@ -13083,6 +13208,7 @@ for panorama images.
   0x04b8   MeterInfo?                           Sony MeterInfo
   0x115c   ReleaseMode3                         int8u
   0x1160   ReleaseMode2                         int8u
+  0x116c   FlashMode                            int8u
   0x1172   StopsAboveBaseISO                    int16u
   0x1174   BrightnessValue                      int16u
   0x1178   DynamicRangeOptimizer                int8u
@@ -13116,6 +13242,7 @@ Valid for DSC-RX100M2, DSC-QX10/QX100.
   0x01e0   MeterInfo?                           Sony MeterInfo
   0x1014   ReleaseMode3                         int8u
   0x1018   ReleaseMode2                         int8u
+  0x1024   FlashMode                            int8u
   0x102a   StopsAboveBaseISO                    int16u
   0x102c   BrightnessValue                      int16u
   0x1030   DynamicRangeOptimizer                int8u
@@ -13142,6 +13269,7 @@ ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-77M2.
   0x0050   DynamicRangeOptimizer                int8u
   0x020c   ReleaseMode3                         int8u
   0x0210   ReleaseMode2                         int8u
+  0x021c   FlashMode                            int8u
   0x0222   StopsAboveBaseISO                    int16u
   0x0224   BrightnessValue                      int16u
   0x0228   DynamicRangeOptimizer                int8u

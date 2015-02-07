@@ -710,6 +710,7 @@
 </tr><tr><td class=r>0x3800000</td><td>= PowerShot SX530 HS</td>
 </tr><tr><td class=r>0x3820000</td><td>= PowerShot SX710 HS</td>
 </tr><tr><td class=r>0x3830000</td><td>= PowerShot SX610 HS</td>
+</tr><tr><td class=r>0x3910000</td><td>= PowerShot SX410 IS</td>
 </tr><tr><td class=r>0x4040000</td><td>= PowerShot G1</td>
 </tr><tr><td class=r>0x6040000</td><td>= PowerShot S100 / Digital IXUS / IXY Digital</td>
 </tr><tr><td class=r>0x4007d673</td><td>= DC19/DC21/DC22</td>
@@ -785,7 +786,11 @@
 </tr><tr><td class=r>0x80000327</td><td>= EOS Rebel T5 / 1200D / Kiss X70</td>
 </tr><tr><td class=r>0x80000331</td><td>= EOS M</td>
 </tr><tr><td class=r>0x80000346</td><td>= EOS Rebel SL1 / 100D / Kiss X7</td>
+</tr><tr><td class=r>0x80000347</td><td>= EOS Rebel T6s / 760D / 8000D</td>
 </tr><tr><td class=r>0x80000355</td><td>= EOS M2</td>
+</tr><tr><td class=r>0x80000382</td><td>= EOS 5DS</td>
+</tr><tr><td class=r>0x80000393</td><td>= EOS Rebel T6i / 750D / Kiss X8i</td>
+</tr><tr><td class=r>0x80000401</td><td>= EOS 5DS R</td>
 </tr></table></td></tr></table></blockquote>
 
 <h2><a name='CameraSettings'>Canon CameraSettings Tags</a></h2>
@@ -1510,8 +1515,10 @@ attempting to identify the specific lens model.</p>
 </tr><tr><td>504</td><td>= Canon EF 24-70mm f/4L IS USM</td>
 </tr><tr><td>505</td><td>= Canon EF 35mm f/2 IS USM</td>
 </tr><tr><td>507</td><td>= Canon EF 16-35mm f/4L IS USM</td>
+</tr><tr><td>508</td><td>= Canon EF 11-24mm f/4L USM</td>
 </tr><tr><td>4142</td><td>= Canon EF-S 18-135mm f/3.5-5.6 IS STM</td>
-</tr><tr><td>4143</td><td>= Canon EF-M 18-55mm f/3.5-5.6 IS STM</td>
+</tr><tr><td>4143</td><td>= Canon EF-M 18-55mm f/3.5-5.6 IS STM or Tamron Lens</td>
+</tr><tr><td>4143.1</td><td>= Tamron 18-200mm F/3.5-6.3 Di III VC</td>
 </tr><tr><td>4144</td><td>= Canon EF 40mm f/2.8 STM</td>
 </tr><tr><td>4145</td><td>= Canon EF-M 22mm f/2 STM</td>
 </tr><tr><td>4146</td><td>= Canon EF-S 18-55mm f/3.5-5.6 IS STM</td>
@@ -1519,6 +1526,7 @@ attempting to identify the specific lens model.</p>
 </tr><tr><td>4148</td><td>= Canon EF-S 55-250mm f/4-5.6 IS STM</td>
 </tr><tr><td>4149</td><td>= Canon EF-M 55-200mm f/4.5-6.3 IS STM</td>
 </tr><tr><td>4150</td><td>= Canon EF-S 10-18mm f/4.5-5.6 IS STM</td>
+</tr><tr><td>4152</td><td>= Canon EF 24-105mm f/3.5-5.6 IS STM</td>
 </tr><tr><td>4154</td><td>= Canon EF-S 24mm f/2.8 STM</td>
 </tr></table></td></tr></table></blockquote>
 
@@ -1740,26 +1748,29 @@ like the A570IS)</span></span></td></tr>
 <table class='inner sep' cellspacing=1>
 <tr class=h><th>Value</th><th>WhiteBalance</th><th>Value</th><th>WhiteBalance</th><th>Value</th><th>WhiteBalance</th></tr>
 <tr><td class=r>0</td><td>= Auto</td>
-<td class='r b'>7</td><td class=b>= Black &amp; White</td>
-<td class=r>15</td><td>= Custom 1</td>
-</tr><tr><td class=r>1</td><td>= Daylight</td>
 <td class='r b'>8</td><td class=b>= Shade</td>
-<td class=r>16</td><td>= Custom 2</td>
-</tr><tr><td class=r>2</td><td>= Cloudy</td>
-<td class='r b'>9</td><td class=b>= Manual Temperature (Kelvin)</td>
 <td class=r>17</td><td>= Underwater</td>
-</tr><tr><td class=r>3</td><td>= Tungsten</td>
-<td class='r b'>10</td><td class=b>= PC Set1</td>
+</tr><tr><td class=r>1</td><td>= Daylight</td>
+<td class='r b'>9</td><td class=b>= Manual Temperature (Kelvin)</td>
 <td class=r>18</td><td>= Custom 3</td>
-</tr><tr><td class=r>4</td><td>= Fluorescent</td>
-<td class='r b'>11</td><td class=b>= PC Set2</td>
+</tr><tr><td class=r>2</td><td>= Cloudy</td>
+<td class='r b'>10</td><td class=b>= PC Set1</td>
 <td class=r>19</td><td>= Custom 4</td>
-</tr><tr><td class=r>5</td><td>= Flash</td>
-<td class='r b'>12</td><td class=b>= PC Set3</td>
+</tr><tr><td class=r>3</td><td>= Tungsten</td>
+<td class='r b'>11</td><td class=b>= PC Set2</td>
 <td class=r>20</td><td>= PC Set4</td>
-</tr><tr><td class=r>6</td><td>= Custom</td>
-<td class='r b'>14</td><td class=b>= Daylight Fluorescent</td>
+</tr><tr><td class=r>4</td><td>= Fluorescent</td>
+<td class='r b'>12</td><td class=b>= PC Set3</td>
 <td class=r>21</td><td>= PC Set5</td>
+</tr><tr><td class=r>5</td><td>= Flash</td>
+<td class='r b'>14</td><td class=b>= Daylight Fluorescent</td>
+<td class=r>23</td><td>= Auto (ambience priority)</td>
+</tr><tr><td class=r>6</td><td>= Custom</td>
+<td class='r b'>15</td><td class=b>= Custom 1</td>
+<td class=r>&nbsp;</td><td>&nbsp;</td>
+</tr><tr><td class=r>7</td><td>= Black &amp; White</td>
+<td class='r b'>16</td><td class=b>= Custom 2</td>
+<td class=r>&nbsp;</td><td>&nbsp;</td>
 </tr></table></td></tr></table></blockquote>
 
 <h2><a name='Panorama'>Canon Panorama Tags</a></h2>
@@ -1902,26 +1913,29 @@ lists CameraInfo tags for the 1D and 1DS.</p>
 <table class='inner sep' cellspacing=1>
 <tr class=h><th>Value</th><th>PictureStyle</th><th>Value</th><th>PictureStyle</th><th>Value</th><th>PictureStyle</th></tr>
 <tr><td class=r>0x0</td><td>= None</td>
-<td class='r b'>0x7</td><td class=b>= CM Set 2</td>
-<td class=r>0x81</td><td>= Standard</td>
-</tr><tr><td class=r>0x1</td><td>= Standard</td>
 <td class='r b'>0x21</td><td class=b>= User Def. 1</td>
-<td class=r>0x82</td><td>= Portrait</td>
-</tr><tr><td class=r>0x2</td><td>= Portrait</td>
-<td class='r b'>0x22</td><td class=b>= User Def. 2</td>
 <td class=r>0x83</td><td>= Landscape</td>
-</tr><tr><td class=r>0x3</td><td>= High Saturation</td>
-<td class='r b'>0x23</td><td class=b>= User Def. 3</td>
+</tr><tr><td class=r>0x1</td><td>= Standard</td>
+<td class='r b'>0x22</td><td class=b>= User Def. 2</td>
 <td class=r>0x84</td><td>= Neutral</td>
-</tr><tr><td class=r>0x4</td><td>= Adobe RGB</td>
-<td class='r b'>0x41</td><td class=b>= PC 1</td>
+</tr><tr><td class=r>0x2</td><td>= Portrait</td>
+<td class='r b'>0x23</td><td class=b>= User Def. 3</td>
 <td class=r>0x85</td><td>= Faithful</td>
-</tr><tr><td class=r>0x5</td><td>= Low Saturation</td>
-<td class='r b'>0x42</td><td class=b>= PC 2</td>
+</tr><tr><td class=r>0x3</td><td>= High Saturation</td>
+<td class='r b'>0x41</td><td class=b>= PC 1</td>
 <td class=r>0x86</td><td>= Monochrome</td>
-</tr><tr><td class=r>0x6</td><td>= CM Set 1</td>
-<td class='r b'>0x43</td><td class=b>= PC 3</td>
+</tr><tr><td class=r>0x4</td><td>= Adobe RGB</td>
+<td class='r b'>0x42</td><td class=b>= PC 2</td>
 <td class=r>0x87</td><td>= Auto</td>
+</tr><tr><td class=r>0x5</td><td>= Low Saturation</td>
+<td class='r b'>0x43</td><td class=b>= PC 3</td>
+<td class=r>0x88</td><td>= Fine Detail</td>
+</tr><tr><td class=r>0x6</td><td>= CM Set 1</td>
+<td class='r b'>0x81</td><td class=b>= Standard</td>
+<td class=r>&nbsp;</td><td>&nbsp;</td>
+</tr><tr><td class=r>0x7</td><td>= CM Set 2</td>
+<td class='r b'>0x82</td><td class=b>= Portrait</td>
+<td class=r>&nbsp;</td><td>&nbsp;</td>
 </tr></table></td></tr></table></blockquote>
 
 <h2><a name='CameraInfo1DmkII'>Canon CameraInfo1DmkII Tags</a></h2>
@@ -7761,7 +7775,7 @@ option is used.</p>
 <td>ColorDataVersion</td>
 <td class=c>int16s</td>
 <td><span class=s>10 = 10 (1DX/5DmkIII/6D/70D/100D/650D/700D/M)
-  <br>11 = 11 (7DmkII)</span></td></tr>
+  <br>11 = 11 (7DmkII, 750D, 760D)</span></td></tr>
 <tr class=b>
 <td class=r title='63 = 0x3f'>63</td>
 <td>WB_RGGBLevelsAsShot</td>
@@ -8135,7 +8149,7 @@ option is used.</p>
 <td class=r title='0 = 0x0'>0</td>
 <td>ColorDataVersion</td>
 <td class=c>N</td>
-<td>&nbsp;</td></tr>
+<td><span class=s>12 = 12 (5DS, 5DS R)</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='ColorInfo'>Canon ColorInfo Tags</a></h2>
@@ -8355,7 +8369,8 @@ to the one printed on the lens)</span></span></td></tr>
 <td>MultiExposure</td>
 <td class=c>int32s</td>
 <td><span class=s>0 = Off
-  <br>1 = On</span></td></tr>
+  <br>1 = On
+  <br>2 = On (RAW)</span></td></tr>
 <tr class=b>
 <td class=r title='2 = 0x2'>2</td>
 <td>MultiExposureControl</td>
@@ -8543,7 +8558,7 @@ SX280.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jan 6, 2015</i>
+<br><i>Last revised Feb 6, 2015</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

@@ -436,14 +436,14 @@ converted to/from HTML character entities with the <code>-E</code> option.
 visible to the ExifTool user, and the <b>internal</b> character used to store
 text in the metadata of a file.  These character sets may be specified
 separately as follows:
-<ol><li>The <b>external</b> character set for strings passed to/from ExifTool
-is UTF&#8209;8 by default, but it may be changed through any of these
+<ol><li>The <b>external</b> character set for <b>tag values</b> passed to/from
+ExifTool is UTF&#8209;8 by default, but it may be changed through any of these
 command-line options:
 <blockquote><code>-charset CHARSET</code> &nbsp; or &nbsp;
 <code>-charset exiftool=CHARSET</code> &nbsp; or &nbsp; <code>-L</code>
 </blockquote>
-<b>File and directory names</b> (specified via the <i>FILE</i> argument on the
-command line) are a special case.  By default, these names are passed straight
+The encoding of <b>file and directory names</b> (eg. the <i>FILE</i> argument on
+the command line) is different.  By default, these names are passed straight
 through to the standard C i/o routines without recoding.  On Mac/Linux these
 routines expect UTF&#8209;8, but on Windows they use the system code page (which
 is dependent on your system settings).  However, as of ExifTool 9.79, the
@@ -897,6 +897,14 @@ exiftool -xmp:gpslatitude=-42.5 a.jpg
 
 Similar styles may be used for longitude.  ExifTool will convert any of these
 coordinate styles to the proper format for the specific tag used.
+</blockquote>
+
+<blockquote>When reading, ExifTool reports coordinates in the format
+<pre>DDD deg MM' SS.SS"</pre>
+where <code>DDD</code> is degress, <code>MM</code> is minutes, and <code>SS.SS</code>
+is seconds.  The <code>-n</code> option may be used to change this to decimal
+degrees, or any arbitrary format may be specified with the <code>-c</code> option.
+See the <a href="exiftool_pod.html">application documentation</a> for details.
 </blockquote>
 
 <a name="Q15"></a>
@@ -1507,7 +1515,7 @@ importing.</blockquote>
 for more details.</blockquote>
 
 <hr>
-<i>Last revised Jan 6, 2015</i>
+<i>Last revised Jan 19, 2015</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

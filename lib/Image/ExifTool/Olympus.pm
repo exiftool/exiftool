@@ -37,7 +37,7 @@ use vars qw($VERSION);
 use Image::ExifTool::Exif;
 use Image::ExifTool::APP12;
 
-$VERSION = '2.26';
+$VERSION = '2.27';
 
 sub PrintLensInfo($$$);
 
@@ -375,6 +375,7 @@ my %olympusCameraTypes = (
     S0046 => 'E-PL7', #21
     S0047 => 'E-M1',
     S0051 => 'E-M10',
+    S0052 => 'E-M5MarkII', #21
     SR45 => 'D220',
     SR55 => 'D320L',
     SR83 => 'D340L',
@@ -483,7 +484,7 @@ my %filters = (
     12 => 'Fish Eye', # (SZ-10 magic filter 3)
     13 => 'Drawing', # (SZ-10 magic filter 4)
     14 => 'Gentle Sepia', # (E-5)
-    15 => 'Tender Light', #11
+    15 => 'Pale & Light Color II', #forum6269 ('Tender Light' ref 11)
     16 => 'Pop Art II', #11 (E-PL3 "(dark)" - PH)
     17 => 'Pin Hole II', #11 (E-PL3 "(color 2)" - PH)
     18 => 'Pin Hole III', #11 (E-M5, E-PL3 "(color 3)" - PH)
@@ -494,11 +495,21 @@ my %filters = (
     23 => 'Sparkle', # (SZ-10 magic filter 7)
     24 => 'Watercolor', # (SZ-10 magic filter 8)
     25 => 'Key Line', # (E-M5)
+    26 => 'Key Line II', #forum6269
     27 => 'Miniature', # (SZ-31MR)
     28 => 'Reflection', # (TG-820,SZ-31MR)
     29 => 'Fragmented', # (TG-820,SZ-31MR)
-    32 => 'Dramatic Tone B&W', # (E-M5)
-    33 => 'Watercolor II', # (E-PM2)
+    31 => 'Cross Process II', #forum6269
+    32 => 'Dramatic Tone II',  #forum6269 (Dramatic Tone B&W for E-M5)
+    33 => 'Watercolor I', # ('Watercolor I' for EM-1 ref forum6269, 'Watercolor II' for E-PM2 ref PH)
+    34 => 'Watercolor II', #forum6269
+    35 => 'Diorama II', #forum6269
+    36 => 'Vintage', #forum6269
+    37 => 'Vintage II', #forum6269
+    38 => 'Vintage III', #forum6269
+    39 => 'Partial Color', #forum6269
+    40 => 'Partial Color II', #forum6269
+    41 => 'Partial Color III', #forum6269
 );
 
 # tag information for WAV "Index" tags
@@ -658,7 +669,7 @@ my %indexInfo = (
         PrintConvInv => '$val=~s/\s*mm$//;$val',
     },
     0x0206 => { Name => 'LensDistortionParams', Writable => 'int16s', Count => 6 }, #6
-    0x0207 => { #PH (was incorrectly FirmwareVersion, ref 1,3)
+    0x0207 => { #PH (was incorrectly FirmwareVersion, ref 1/3)
         Name => 'CameraType',
         Condition => '$$valPt ne "NORMAL"', # FE240, SP510, u730 and u1000 write this
         Writable => 'string',
@@ -2663,13 +2674,17 @@ my %indexInfo = (
             # '0 0' - have seen this with a 16:9 XZ-1 image - PH
             '1 1' => '4:3',
             '1 4' => '1:1', #PH (E-P5 Storyboard effect, does this indicate 4:3 converted to 6:6?)
+            '2 1' => '3:2 (RAW)', #forum6285
             '2 2' => '3:2',
+            '3 1' => '16:9 (RAW)', #forum6285
             '3 3' => '16:9',
+            '4 1' => '1:1 (RAW)', #forum6285
             '4 4' => '6:6',
             '5 5' => '5:4',
             '6 6' => '7:6',
             '7 7' => '6:5',
             '8 8' => '7:5',
+            '9 1' => '3:4 (RAW)', #forum6285
             '9 9' => '3:4',
         },
     },

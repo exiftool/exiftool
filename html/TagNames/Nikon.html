@@ -306,10 +306,12 @@ causes the other information to be re-encrypted with the new key)</span></span><
   <br>Bit 0 = Continuous
   <br>Bit 1 = Delay
   <br>Bit 2 = PC Control
+  <br>Bit 3 = Self-timer
   <br>Bit 4 = Exposure Bracketing
   <br>Bit 5 = Auto ISO
   <br>Bit 6 = White-Balance Bracketing
-  <br>Bit 7 = IR Control</span></td></tr>
+  <br>Bit 7 = IR Control
+  <br>Bit 8 = D-Lighting Bracketing</span></td></tr>
 <tr>
 <td title='0x008b = 139'>0x008b</td>
 <td>LensFStops</td>
@@ -4656,6 +4658,7 @@ ExifTool to choose in these cases (see the
 </tr><tr><td>'A2 48 5C 80 24 24 A4 0E'</td><td>= AF-S Nikkor 70-200mm f/2.8G ED VR II</td>
 </tr><tr><td>'A3 3C 29 44 30 30 A5 0E'</td><td>= AF-S Nikkor 16-35mm f/4G ED VR</td>
 </tr><tr><td>'A3 3C 5C 8E 30 3C 4B 0E'</td><td>= Sigma 70-300mm F4-5.6 DG OS</td>
+</tr><tr><td>'A4 40 2D 8E 2C 40 BF 0E'</td><td>= AF-S DX Nikkor 18-300mm f/3.5-6.3G ED VR</td>
 </tr><tr><td>'A4 47 2D 50 24 34 4B 0E'</td><td>= Sigma 18-50mm F2.8-4.5 DC OS HSM</td>
 </tr><tr><td>'A4 54 37 37 0C 0C A6 06'</td><td>= AF-S Nikkor 24mm f/1.4G ED</td>
 </tr><tr><td>'A5 40 2D 88 2C 40 4B 0E'</td><td>= Sigma 18-250mm F3.5-6.3 DC OS HSM</td>
@@ -4666,6 +4669,8 @@ ExifTool to choose in these cases (see the
 </tr><tr><td>'A7 49 80 A0 24 24 4B 06'</td><td>= Sigma APO 200-500mm F2.8 EX DG</td>
 </tr><tr><td>'A7 4B 62 62 2C 2C A9 0E'</td><td>= AF-S DX Micro Nikkor 85mm f/3.5G ED VR</td>
 </tr><tr><td>'A8 48 80 98 30 30 AA 0E'</td><td>= AF-S VR Zoom-Nikkor 200-400mm f/4G IF-ED II</td>
+</tr><tr><td>'A8 48 8E 8E 30 30 C3 0E'</td><td>= AF-S Nikkor 300mm f/4E PF ED VR</td>
+</tr><tr><td>'A8 48 8E 8E 30 30 C3 4E'</td><td>= AF-S Nikkor 300mm f/4E PF ED VR</td>
 </tr><tr><td>'A9 4C 31 31 14 14 C4 06'</td><td>= AF-S Nikkor 20mm f/1.8G ED</td>
 </tr><tr><td>'A9 54 80 80 18 18 AB 0E'</td><td>= AF-S Nikkor 200mm f/2G ED VR II</td>
 </tr><tr><td>'AA 3C 37 6E 30 30 AC 0E'</td><td>= AF-S Nikkor 24-120mm f/4G ED VR</td>
@@ -4708,6 +4713,7 @@ ExifTool to choose in these cases (see the
 </tr><tr><td>'F5 40 2C 8A 2C 40 40 0E'</td><td>= Tamron AF 18-270mm f/3.5-6.3 Di II VC LD Aspherical (IF) Macro (B003)</td>
 </tr><tr><td>'F5 48 76 76 24 24 4B 06'</td><td>= Sigma APO Macro 150mm F2.8 EX DG HSM</td>
 </tr><tr><td>'F6 3F 18 37 2C 34 84 06'</td><td>= Tamron SP AF 10-24mm f/3.5-4.5 Di II LD Aspherical (IF) (B001)</td>
+</tr><tr><td>'F6 3F 18 37 2C 34 DF 06'</td><td>= Tamron SP AF 10-24mm f/3.5-4.5 Di II LD Aspherical (IF) (B001)</td>
 </tr><tr><td>'F6 48 2D 50 24 24 4B 06'</td><td>= Sigma 18-50mm F2.8 EX DC Macro</td>
 </tr><tr><td>'F7 53 5C 80 24 24 40 06'</td><td>= Tamron SP AF 70-200mm f/2.8 Di LD (IF) Macro (A001)</td>
 </tr><tr><td>'F7 53 5C 80 24 24 84 06'</td><td>= Tamron SP AF 70-200mm f/2.8 Di LD (IF) Macro (A001)</td>
@@ -4733,7 +4739,7 @@ ExifTool to choose in these cases (see the
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jan 12, 2015</i>
+<br><i>Last revised Feb 6, 2015</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

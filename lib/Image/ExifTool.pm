@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '9.82';
+$VERSION = '9.83';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -1080,10 +1080,10 @@ sub DummyWriteProc { return 1; }
         ValueConvInv => '$val=~tr/\\\\/\//; $val',
     },
     MIMEType    => { Notes => 'the MIME type of the source file' },
-    ImageWidth  => { },
-    ImageHeight => { },
-    XResolution => { },
-    YResolution => { },
+    ImageWidth  => { Notes => 'the width of the image in number of pixels' },
+    ImageHeight => { Notes => 'the height of the image in number of pixels' },
+    XResolution => { Notes => 'the horizontal pixel resolution' },
+    YResolution => { Notes => 'the vertical pixel resolution' },
     MaxVal      => { Notes => 'maximum pixel value in PPM or PGM image' },
     EXIF => {
         Notes => 'the full EXIF data block from JPEG, PNG, JP2, MIE and MIFF images',
@@ -1156,6 +1156,7 @@ sub DummyWriteProc { return 1; }
         ValueConv => 'unpack("H*", $val)',
     },
     PreviewImage => {
+        Notes => 'JPEG-format embedded preview image',
         Writable => 1,
         WriteCheck => '$self->CheckImage(\$val)',
         # can't delete, so set to empty string and return no error
@@ -1163,8 +1164,8 @@ sub DummyWriteProc { return 1; }
         # accept either scalar or scalar reference
         RawConv => '$self->ValidateImage(ref $val ? $val : \$val, $tag)',
     },
-    PreviewPNG  => { Binary => 1 },
-    PreviewWMF  => { Binary => 1 },
+    PreviewPNG  => { Binary => 1, Notes => 'PNG-format embedded preview image' },
+    PreviewWMF  => { Binary => 1, Notes => 'WMF-format embedded preview image' },
     ExifByteOrder => {
         Writable => 1,
         Notes => q{
@@ -1204,7 +1205,7 @@ sub DummyWriteProc { return 1; }
         },
         PrintConv => 'sprintf("%.3f s", $val)',
     },
-    RAFVersion => { },
+    RAFVersion => { Notes => 'RAF file version number' },
     JPEGDigest => {
         Notes => q{
             an MD5 digest of the JPEG quantization tables is combined with the component
@@ -1233,7 +1234,7 @@ sub DummyWriteProc { return 1; }
         },
         PrintConv => '$val =~ s/(.{8})(.{4})(.{4})(.{4})/$1-$2-$3-$4-/; $val',
     },
-    ID3Size     => { },
+    ID3Size     => { Notes => 'size of the ID3 data block' },
     Geotag => {
         Writable => 1,
         WriteOnly => 1,

@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.17';
+$VERSION = '2.18';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -816,6 +816,16 @@ my %meterInfo2 = (
         PrintConv => { 0 => 'No', 1 => 'Yes' },
     },
     # 0x2017 - int32u: flash mode. 0=off, 1=fired, 2=red-eye (PH, NEX-6) (also in A99, RX1, NEX-5R)
+    0x2017 => { #12
+        Name => 'FlashAction',
+        Writable => 'int32u',
+        PrintConv => {
+            0 => 'Did not fire',
+            1 => 'Flash Fired',
+            2 => 'External Flash Fired',
+        },
+    },
+    # 0x2018 - something with external flash: seen 1 only when 0x2017 = 2
     0x201b => { #PH (written by SLT-A58/A99, NEX-3N/5R/6 and several DSC-models)
         Name => 'FocusMode',
         Condition => '$$self{Model} !~ /^DSC-/', # (doesn't seem to apply to DSC-models)
@@ -1544,14 +1554,15 @@ my %meterInfo2 = (
         },
     },
     0xb048 => { #9
-        Name => 'FlashLevel',
+        Name => 'FlashLevel',  #12 other name, but values -9 to 9 match FlashExposureCompensation
         Writable => 'int16s',
         RawConv => '($val == -1 and $$self{Model} =~ /DSLR-A100\b/) ? undef : $val',
         PrintConv => {
             -32768 => 'Low',
-            -6 => '-6/3', #12 (NC)
-            -5 => '-5/3', #12 (NC)
-            -4 => '-4/3', #12 (NC)
+            -9 => '-9/3', #12
+            -6 => '-6/3', #12
+            -5 => '-5/3', #12
+            -4 => '-4/3', #12
             -3 => '-3/3',
             -2 => '-2/3',
             -1 => '-1/3', # (for the A100, -1 is effectively 'n/a' - PH)
@@ -2327,6 +2338,33 @@ my %meterInfo2 = (
         Notes => 'only valid for some DSLR models',
         # 128 = infinity -- see Composite:FocusDistance below
     },
+    0x1110 => { # (9600 bytes: 4 sets of 40x30 int16u values in the range 0-8191)
+        Name => 'TiffMeteringImage',
+        Format => 'undef[9600]',
+        Notes => q{
+            13-bit RBGG (?) 40x30 pixels, presumably metering info, converted to a 16-bit
+            TIFF image;
+        },
+        ValueConv => sub {
+            my ($val, $et) = @_;
+            return undef unless length $val >= 9600;
+            return \ "Binary data 7404 bytes" unless $et->Options('Binary');
+            my @dat = unpack('n*', $val);
+            # TIFF header for a 16-bit RGB 10dpi 40x30 image
+            $val = MakeTiffHeader(40,30,3,16,10);
+            # re-order data to RGB pixels
+            my ($i, @val);
+            for ($i=0; $i<40*30; ++$i) {
+                # data is 13-bit (max 8191), shift left to fill 16 bits
+                # (typically, this gives a very dark image since the data should
+                # really be anti-logged to convert from EV to perceived brightness)
+#                push @val, $dat[$i]<<3, $dat[$i+2400]<<3, $dat[$i+1200]<<3;
+                push @val, int(5041.1*log($dat[$i]+1)/log(2)), int(5041.1*log($dat[$i+2400]+1)/log(2)), int(5041.1*log($dat[$i+1200]+1)/log(2));
+            }
+            $val .= pack('v*', @val);   # add TIFF strip data
+            return \$val;
+        },
+    },
 );
 
 # more camera setting information (ref 12)
@@ -2862,7 +2900,7 @@ my %meterInfo2 = (
         PrintConvInv => '$val=~s/\s*mm$//; $val',
     }],
     0x2a => [{
-        Name => 'FlashAction2',
+        Name => 'FlashAction',
         Condition => '$$self{Model} =~ /^DSLR-(A450|A500|A550)/',
         Notes => 'A450, A500 and A550',
         PrintConv => {
@@ -2895,7 +2933,7 @@ my %meterInfo2 = (
             1 => 'MF',
         },
     },{
-        Name => 'FlashAction2',
+        Name => 'FlashAction',
         Condition => '$$self{Model} =~ /^NEX-(3|5|5C)/',
         Notes => 'NEX-3/5/5C FlashAction2',
         PrintConv => {
@@ -2939,7 +2977,7 @@ my %meterInfo2 = (
         Notes => 'models other than the A450, A500, A550 and NEX-3/5/5C',
     },
     0x30 => {
-        Name => 'FlashAction2',
+        Name => 'FlashAction',
         Condition => '$$self{Model} !~ /^NEX-(3|5|5C)|DSLR-(A450|A500|A550)/',
         Notes => 'models other than the A450, A500, A550 and NEX-3/5/5C',
         PrintConv => {
@@ -2956,9 +2994,50 @@ my %meterInfo2 = (
             1 => 'MF',
         },
     },
-    # 0x86: 17=fill flash, 18=slow sync (PH, A550)
-    # 0x89: FlashExposureComp = ($val-128)/24 (PH, A550) [same in MoreInfo_0002]
-    # 0xfa: same as 0x86 (PH, A550) [same in MoreInfo_0002]
+    0x0077 => {
+        Name => 'FlashAction2',
+        Condition => '$$self{Model} =~ /^DSLR-(A450|A500|A550)/',
+        PrintConv => {
+            0 => 'Did not fire',
+            2 => 'External Flash fired (2)',
+            3 => 'Built-in Flash fired',
+            4 => 'External Flash fired (4)', # what is difference with 2 ?
+        },
+    }, 
+    0x0078 => {
+        Name => 'FlashActionExternal',
+        Condition => '$$self{Model} =~ /^NEX-(3|5|5C)/',
+        PrintConv => {
+            136 => 'Did not fire',
+            122 => 'Fired',
+        },
+    }, 
+    0x007c => {
+        Name => 'FlashActionExternal',
+        Condition => '$$self{Model} !~ /^NEX-(3|5|5C)|DSLR-(A450|A500|A550)/',
+        PrintConv => {
+            136 => 'Did not fire',
+            167 => 'Fired',
+            182 => 'Fired, HSS',
+        },
+    }, 
+    0x0082 => {
+        Name => 'FlashStatus',
+        Condition => '$$self{Model} =~ /^NEX-(3|5|5C)/',
+        PrintConv => {
+            0 => 'None',
+            2 => 'External',
+        },
+    },
+    0x0086 => {
+        Name => 'FlashStatus',
+        Condition => '$$self{Model} !~ /^NEX-(3|5|5C)|DSLR-(A450|A500|A550)/',
+        PrintConv => {
+            0 => 'None',
+            1 => 'Built-in',
+            2 => 'External',
+        },
+    },
 );
 
 # Face detection information (ref 12)
@@ -3286,15 +3365,15 @@ my %faceInfo = (
             11 => 'Far Left', # (presumably A700 only)
         },
     },
-    0x13 => {
+    0x13 => { #12
         Name => 'FlashMode',
         PrintConv => {
             0 => 'Autoflash',
             2 => 'Rear Sync',
             3 => 'Wireless',
             4 => 'Fill-flash',
-            5 => 'Suppressed', #nc, seen for A200 Sunset and Landscape Scene-mode
-            6 => 'Flash Off',  #nc, seen for A200
+            5 => 'Flash Off',
+            6 => 'Slow Sync',
         },
     },
     0x14 => { #12
@@ -3521,6 +3600,7 @@ my %faceInfo = (
             3 => 'Fired, Rear Sync',
             4 => 'Fired, Wireless',
             5 => 'Did not fire',
+            6 => 'Fired, Slow Sync',
             17 => 'Fired, Autoflash, Red-eye reduction',
             18 => 'Fired, Fill-flash, Red-eye reduction',
             34 => 'Fired, Fill-flash, HSS',
@@ -3717,8 +3797,8 @@ my %faceInfo = (
             5 => 'Fluorescent',
             6 => 'Tungsten',
             7 => 'Flash',
-            12 => 'Color Temperature/Color Filter (12)', # seen on A700
-            13 => 'Color Temperature/Color Filter (13)', # seen on A700 - what is difference ?
+            12 => 'Color Temperature',
+            13 => 'Color Filter',
             14 => 'Custom',
             16 => 'Cloudy',
             17 => 'Shade',
@@ -3930,6 +4010,7 @@ my %faceInfo = (
             3 => 'Fired, Rear Sync',
             4 => 'Fired, Wireless',
             5 => 'Did not fire',
+            6 => 'Fired, Slow Sync',
             17 => 'Fired, Autoflash, Red-eye reduction',
             18 => 'Fired, Fill-flash, Red-eye reduction',
             34 => 'Fired, Fill-flash, HSS',
@@ -4010,6 +4091,17 @@ my %faceInfo = (
             0x07 => 'Continuous Bracketing', # (A230 val=0x1107, A330 val=0x1307 [0.7 EV])
             0x0a => 'Remote Commander', # (A230)
             0x0b => 'Continuous Self-timer', # (A230 val=0x800b [5 shots], A330 val=0x400b [3 shots])
+        },
+    },
+    0x7f => { #12
+        Name => 'FlashMode',
+        PrintConv => {
+            0 => 'Autoflash',
+            2 => 'Rear Sync',
+            3 => 'Wireless',
+            4 => 'Fill-flash',
+            5 => 'Flash Off',
+            6 => 'Slow Sync',
         },
     },
     0x83 => { #PH
@@ -4454,11 +4546,20 @@ my %faceInfo = (
         },
     },
     0x87 => { #12
-        Name => 'FlashAction',
-        Condition => '$$self{Model} !~ /^(NEX-|DSLR-(A450|A500|A550)$)/', # seen 0 for A550, so better exclude ?
+        Name => 'FlashStatusBuilt-in',
+        Condition => '$$self{Model} !~ /^DSLR-(A450|A500|A550)/',
         PrintConv => {
-            1 => 'Did not fire',
-            2 => 'Fired',
+            1 => 'Off',
+            2 => 'On',
+        },
+    },
+    0x88 => { #12
+        Name => 'FlashStatusExternal',
+        Condition => '$$self{Model} !~ /^DSLR-(A450|A500|A550)/',
+        PrintConv => {
+            1 => 'None',
+            2 => 'Off',
+            3 => 'On',
         },
     },
 #    0x8a => { #12
@@ -4588,12 +4689,22 @@ my %faceInfo = (
         },
     },
     0x287 => { #12
-        Name => 'FlashAction',
+        Name => 'FlashStatusBuilt-in',
         Condition => '$$self{Model} =~ /^DSLR-(A450|A500|A550)$/',
         Notes => 'A450, A500 and A550',
         PrintConv => {
-            1 => 'Did not fire',
-            2 => 'Fired',
+            1 => 'Off',
+            2 => 'On',
+        },
+    },
+    0x288 => { #12
+        Name => 'FlashStatusExternal',
+        Condition => '$$self{Model} =~ /^DSLR-(A450|A500|A550)$/',
+        Notes => 'A450, A500 and A550',
+        PrintConv => {
+            1 => 'None',
+            2 => 'Off',
+            3 => 'On',
         },
     },
     0x28b => { #12
@@ -5153,7 +5264,7 @@ my %releaseMode2010 = (
     PrintConv => {
         0 => 'Normal',
         1 => 'Continuous',
-        2 => 'Continuous - Bracketing', # (also white balance bracketing - PH)
+        2 => 'Bracketing', # (also white balance bracketing - PH) (also Single-frame Exposure Bracketing - ref 12)
         # 3 => 'Remote Commander', (NC) (seen this when other ReleaseMode and ReleaseMode2 are 'Normal' - PH, A77)
         # 4 => 'Continuous - Burst', (NC)
         5 => 'Continuous - Speed/Advance Priority',
@@ -5248,6 +5359,17 @@ my %meteringMode2010 = (
         3 => 'Spot',
     },
 );
+my %flashMode2010 = (
+    Name => 'FlashMode',
+    PrintConv => {
+        0 => 'Autoflash',
+        1 => 'Fill-flash',
+        2 => 'Flash Off',
+        3 => 'Slow Sync',
+        # 4 => 'Rear Sync', #(NC)
+        # 6 => 'Wireless',  #(NC)
+    },
+);
 my %exposureProgram2010 = (
     Name => 'ExposureProgram',
     SeparateTable => 'ExposureProgram3',
@@ -5272,6 +5394,7 @@ my %exposureProgram2010 = (
     },
     0x1128 => { %releaseMode2010 },
     0x112c => { %releaseMode2 },
+    0x1138 => { %flashMode2010 },
     0x113e => { %gain2010 },
     0x1140 => { %brightnessValue2010 },
     0x1144 => { %dynamicRangeOptimizer2010 },
@@ -5323,6 +5446,7 @@ my %exposureProgram2010 = (
     },
     0x1128 => { %releaseMode2010 },
     0x112c => { %releaseMode2 },
+    0x1138 => { %flashMode2010 },
     0x113e => { %gain2010 },
     0x1140 => { %brightnessValue2010 },
     0x1144 => { %dynamicRangeOptimizer2010 },
@@ -5387,6 +5511,7 @@ my %exposureProgram2010 = (
     },
     0x1104 => { %releaseMode2010 },
     0x1108 => { %releaseMode2 },
+    0x1114 => { %flashMode2010 },
     0x111a => { %gain2010 },
     0x111c => { %brightnessValue2010 },
     0x1120 => { %dynamicRangeOptimizer2010 },
@@ -5445,6 +5570,7 @@ my %exposureProgram2010 = (
     },
     0x1180 => { %releaseMode2010 },
     0x1184 => { %releaseMode2 },
+    0x1190 => { %flashMode2010 },
     0x1196 => { %gain2010 },
     0x1198 => { %brightnessValue2010 },
     0x119c => { %dynamicRangeOptimizer2010 },
@@ -5504,6 +5630,7 @@ my %exposureProgram2010 = (
     },
     0x115c => { %releaseMode2010 },
     0x1160 => { %releaseMode2 },
+    0x116c => { %flashMode2010 },
     0x1172 => { %gain2010 },
     0x1174 => { %brightnessValue2010 },
     0x1178 => { %dynamicRangeOptimizer2010 },
@@ -5634,6 +5761,7 @@ my %exposureProgram2010 = (
     },
     0x1014 => { %releaseMode2010 },
     0x1018 => { %releaseMode2 },
+    0x1024 => { %flashMode2010 },
     0x102a => { %gain2010 },
     0x102c => { %brightnessValue2010 },
     0x1030 => { %dynamicRangeOptimizer2010 },
@@ -5699,6 +5827,7 @@ my %exposureProgram2010 = (
     0x0050 => { %dynamicRangeOptimizer2010 },
     0x020c => { %releaseMode2010 },
     0x0210 => { %releaseMode2 },
+    0x021c => { %flashMode2010 },
     0x0222 => { %gain2010 },
     0x0224 => { %brightnessValue2010 },
     0x0228 => { %dynamicRangeOptimizer2010 },
@@ -6076,11 +6205,11 @@ my %exposureProgram2010 = (
         PrintConvInv => 'Image::ExifTool::Sony::PrintInvLensSpec($val, $self, 1)',
     },
 
-#    0x0122 - int16u  LensType  Condition => '$$self{Model} =~ /^(SLT-A(37|57|65V|77V)|NEX-(F3|5N|7|VG20E))/',
-#    0x0123 - int16u  LensType  Condition => '$$self{Model} =~ /^(SLT-A(58|99V)|NEX-(3N|5R|6|VG900|VG30E))/',
+#    0x0122 => {Name=>'9050_LensType',Format=>'int16u',Condition =>'$$self{Model}=~/^(SLT-A(37|57|65V|77V)|Lunar|NEX-(F3|5N|7|VG20E))/'},
+#    0x0123 => {Name=>'9050_LensType',Format=>'int16u',Condition =>'$$self{Model}=~/^(SLT-A(58|99V)|HV|ILCA-77M2|NEX-(3N|5R|5T|6|VG30E|VG900)|ILCE-(3000|3500|5000|5100|6000|7|7R|7S|7M2|QX1))/'},
 
-#    0x012d - int16u  LensType  Condition => '$$self{Model} =~ /^(SLT-A(37|57|65V|77V)|NEX-(F3|5N|7|VG20E))/',
-#    0x012e - int16u  LensType  Condition => '$$self{Model} =~ /^(SLT-A(58|99V)|NEX-(3N|5R|6|VG900|VG30E))/',
+#    0x012d => {Name=>'9050_LensType',Format=>'int16u',Condition =>'$$self{Model}=~/^(SLT-A(37|57|65V|77V)|Lunar|NEX-(F3|5N|7|VG20E))/'},
+#    0x012e => {Name=>'9050_LensType',Format=>'int16u',Condition =>'$$self{Model}=~/^(SLT-A(58|99V)|HV|ILCA-77M2|NEX-(3N|5R|5T|6|VG30E|VG900)|ILCE-(3000|3500|5000|5100|6000|7|7R|7S|7M2|QX1))/'},
 
 #    ImageCount3 = ImageCount   for SLT-A58, ILCE, ILCA, NEX-3N
 #                  ImageCount-1 for SLT-A37,A57,A65,A77,A99, NEX-F3,5N,5R,5T,6,7, sometimes 0
@@ -6104,20 +6233,35 @@ my %exposureProgram2010 = (
         Condition => '$$self{Model} =~ /^(SLT-A(37|57|65V|77V)|Lunar|NEX-(F3|5N|7|VG20E))/'
     },
 
-#    0x0229 - int16u  LensType2  Condition => '$$self{Model} =~ /^NEX-(5R|5T|6)/',
-#    0x022b - int16u  LensType   Condition => '$$self{Model} =~ /^NEX-(5R|6)/',
-#    0x0245 - int16u  LensType   Condition => '$$self{Model} =~ /^NEX-(5R|6)/',
-#    0x0250 - int16u  LensType   Condition => '$$self{Model} =~ /^NEX-(5R|6)/',
-#
-#    0x022c - int16u  LensType2  Condition => '$$self{Model} =~ /^(SLT-A(58|99V)|NEX-(3N|VG900|VG30E)|ILCE-(3000|7|7R))/',
-#    0x022e - int16u  LensType   Condition => '$$self{Model} =~ /^(SLT-A(58|99V)|NEX-(3N|VG900|VG30E))/',
-#    0x0248 - int16u  LensType   Condition => '$$self{Model} =~ /^(SLT-A(58|99V)|NEX-(3N|VG900|VG30E))/',
-#    0x0253 - int16u  LensType   Condition => '$$self{Model} =~ /^(SLT-A(58|99V)|NEX-(3N|VG900|VG30E))/',
-#
-#    0x023c - int16u  LensType2  Condition => '$$self{Model} =~ /^(SLT-A(37|57|65V|77V)|NEX-(F3|5N|7|VG20E))/',
-#    0x023e - int16u  LensType   Condition => '$$self{Model} =~ /^(SLT-A(37|57|65V|77V)|NEX-(F3|5N|7|VG20E))/',
-#    0x0257 - int16u  LensType   Condition => '$$self{Model} =~ /^(SLT-A(37|57|65V|77V)|NEX-(F3|5N|7|VG20E))/',
-#    0x0262 - int16u  LensType   Condition => '$$self{Model} =~ /^(SLT-A(37|57|65V|77V)|NEX-(F3|5N|7|VG20E))/',
+#    0x0222 => {Name=>'9050_LensType2',Format=>'int16u',Condition =>'$$self{Model}=~/^(ILCE-(5100|7S|7M2|QX1))/'},
+#    0x0224 => {Name=>'9050_LensType', Format=>'int16u',Condition =>'$$self{Model}=~/^(ILCE-(5100|7S|7M2|QX1)|ILCA-77M2)/'},
+#    0x0229 => {Name=>'9050_LensType2',Format=>'int16u',Condition =>'$$self{Model}=~/^(NEX-(5R|5T|6|VG30E|VG900))/'},
+#    0x022b => {Name=>'9050_LensType', Format=>'int16u',Condition =>'$$self{Model}=~/^(NEX-(5R|5T|6|VG30E|VG900))/'},
+#    0x022c => {Name=>'9050_LensType2',Format=>'int16u',Condition =>'$$self{Model}=~/^(ILCE-(3000|3500|5000|6000|7|7R)|NEX-3N)\b/'},
+#    0x022e => {Name=>'9050_LensType', Format=>'int16u',Condition =>'$$self{Model}=~/^(ILCE-(3000|3500|5000|6000|7|7R)|NEX-3N|SLT-A(58|99V)|HV)\b/'},
+
+#    0x0231 => {Name=>'9050_LensSpecFeatures',Format=>'undef[2]',Condition=>'$$self{Model}=~/^(ILCE-(7S|7M2|5100|QX1)|ILCA-77M2)/'},
+#    0x0238 => {Name=>'9050_LensSpecFeatures',Format=>'undef[2]',Condition=>'$$self{Model}=~/^(NEX-(5R|5T|6|VG30E|VG900))/'},
+#    0x023b => {Name=>'9050_LensSpecFeatures',Format=>'undef[2]',Condition=>'$$self{Model}=~/^(SLT-A(58|99V)|HV|ILCE-(3000|3500|5000|6000|7|7R)|NEX-3N)\b/'},
+
+#    0x023c => {Name=>'9050_LensType2',Format=>'int16u',Condition =>'$$self{Model}=~/^(Lunar|NEX-(F3|5N|7|VG20E))/'},
+#    0x023e => {Name=>'9050_LensType', Format=>'int16u',Condition =>'$$self{Model}=~/^(SLT-A(37|57|65V|77V)|Lunar|NEX-(F3|5N|7|VG20E)|ILCE-(5100|7S|7M2|QX1)|ILCA-77M2)/'},
+#    0x0245 => {Name=>'9050_LensType', Format=>'int16u',Condition =>'$$self{Model}=~/^(NEX-(5R|5T|6|VG30E|VG900))/'},
+#    0x0248 => {Name=>'9050_LensType', Format=>'int16u',Condition =>'$$self{Model}=~/^(SLT-A(58|99V)|HV|ILCE-(3000|3500|5000|6000|7|7R)|NEX-3N)\b/'},
+#    0x0249 => {Name=>'9050_LensType', Format=>'int16u',Condition =>'$$self{Model}=~/^(ILCE-(5100|7S|7M2|QX1)|ILCA-77M2)/'},
+
+#    0x024a => {Name=>'9050_LensSpecFeatures',Format=>'undef[2]',Condition=>'$$self{Model}=~/^(SLT-A(37|57|65V|77V)|Lunar|NEX-(F3|5N|7|VG20E))/'},
+
+#    0x0250 => {Name=>'9050_LensType', Format=>'int16u',Condition =>'$$self{Model}=~/^(NEX-(5R|5T|6|VG30E|VG900))/'},
+#    0x0253 => {Name=>'9050_LensType', Format=>'int16u',Condition =>'$$self{Model}=~/^(SLT-A(58|99V)|HV|ILCE-(3000|3500|5000|6000|7|7R|7S|7M2)|NEX-3N)\b/'},
+#    0x0257 => {Name=>'9050_LensType', Format=>'int16u',Condition =>'$$self{Model}=~/^(SLT-A(37|57|65V|77V)|Lunar|NEX-(F3|5N|7|VG20E))/'},
+#    0x0262 => {Name=>'9050_LensType', Format=>'int16u',Condition =>'$$self{Model}=~/^(SLT-A(37|57|65V|77V)|Lunar|NEX-(F3|5N|7|VG20E))/'},
+
+#    0x031b => {%gain2010,Condition=>'$$self{Model}=~/^(DSC-RX100M3|ILCA-77M2|ILCE-(5100|7S|7M2|QX1))/'},
+#    0x032c => {%gain2010,Condition=>'$$self{Model}=~/^(NEX-(5R|5T|6|VG30E|VG900))/'},
+#    0x032f => {%gain2010,Condition=>'$$self{Model}=~/^(DSC-RX10|SLT-A(58|99V)|HV|ILCE-(3000|3500|5000|6000|7|7R)|NEX-3N)\b/'},
+#    0x0350 => {%gain2010,Condition=>'$$self{Model}=~/^(SLT-A(37|57)|NEX-F3)/'},
+#    0x037b => {%gain2010,Condition=>'$$self{Model}=~/^(SLT-A(65V|77V)|Lunar|NEX-(7|VG20E))/'},
 );
 
 %Image::ExifTool::Sony::Tag9400a = ( #12

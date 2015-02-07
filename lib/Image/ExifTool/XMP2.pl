@@ -163,7 +163,7 @@ my %sTimecode = (
     markers         => { Struct => \%sMarker, List => 'Seq' },
     metadataModDate => { Groups => { 2 => 'Time' }, %dateTimeInfo },
     outCue          => { Struct => \%sTime },
-    partOfCompilation=>{ }, #12
+    partOfCompilation=>{ Writable => 'boolean' }, #12
     projectName     => { },
     projectRef => {
         Struct => {
@@ -282,7 +282,7 @@ my %sTimecode = (
             Progressive => 'Progressive',
         },
     },
-    videoFrameRate      => { },
+    videoFrameRate      => { Writable => 'real' },
     videoFrameSize      => { Struct => \%sDimensions },
     videoModDate        => { Groups => { 2 => 'Time' }, %dateTimeInfo },
     videoPixelAspectRatio => { Writable => 'rational' },

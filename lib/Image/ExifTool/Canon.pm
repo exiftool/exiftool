@@ -83,7 +83,7 @@ sub ProcessSerialData($$$);
 sub ProcessFilters($$$);
 sub SwapWords($);
 
-$VERSION = '3.41';
+$VERSION = '3.42';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -395,9 +395,11 @@ $VERSION = '3.41';
     504 => 'Canon EF 24-70mm f/4L IS USM', #PH
     505 => 'Canon EF 35mm f/2 IS USM', #PH
     507 => 'Canon EF 16-35mm f/4L IS USM', #42
+    508 => 'Canon EF 11-24mm f/4L USM', #PH
     # (STM lenses seem to start with 0x10xx)
     4142 => 'Canon EF-S 18-135mm f/3.5-5.6 IS STM',
-    4143 => 'Canon EF-M 18-55mm f/3.5-5.6 IS STM',
+    4143 => 'Canon EF-M 18-55mm f/3.5-5.6 IS STM or Tamron Lens',
+    4143.1 => 'Tamron 18-200mm F/3.5-6.3 Di III VC', #42
     4144 => 'Canon EF 40mm f/2.8 STM', #50
     4145 => 'Canon EF-M 22mm f/2 STM', #34
     4146 => 'Canon EF-S 18-55mm f/3.5-5.6 IS STM', #PH
@@ -405,6 +407,7 @@ $VERSION = '3.41';
     4148 => 'Canon EF-S 55-250mm f/4-5.6 IS STM', #42
     4149 => 'Canon EF-M 55-200mm f/4.5-6.3 IS STM', #42
     4150 => 'Canon EF-S 10-18mm f/4.5-5.6 IS STM', #42
+    4152 => 'Canon EF 24-105mm f/3.5-5.6 IS STM', #42
     4154 => 'Canon EF-S 24mm f/2.8 STM', #52
 );
 
@@ -615,6 +618,7 @@ $VERSION = '3.41';
     0x3800000 => 'PowerShot SX530 HS',
     0x3820000 => 'PowerShot SX710 HS',
     0x3830000 => 'PowerShot SX610 HS',
+    0x3910000 => 'PowerShot SX410 IS',
     0x4040000 => 'PowerShot G1',
     0x6040000 => 'PowerShot S100 / Digital IXUS / IXY Digital',
 
@@ -698,6 +702,10 @@ $VERSION = '3.41';
     0x80000331 => 'EOS M',
     0x80000355 => 'EOS M2',
     0x80000346 => 'EOS Rebel SL1 / 100D / Kiss X7',
+    0x80000347 => 'EOS Rebel T6s / 760D / 8000D',
+    0x80000382 => 'EOS 5DS',
+    0x80000393 => 'EOS Rebel T6i / 750D / Kiss X8i',
+    0x80000401 => 'EOS 5DS R',
 );
 
 my %canonQuality = (
@@ -754,7 +762,7 @@ my %canonWhiteBalance = (
     20 => 'PC Set4', #PH
     21 => 'PC Set5', #PH
     # 22 - Custom 2?
-    # 23 - Custom 3?
+    23 => 'Auto (ambience priority)', #PH (5DS)
     # 30 - Click White Balance?
     # 31 - Shot Settings?
     # 137 - Tungsten?
@@ -792,6 +800,7 @@ my %pictureStyles = ( #12
     0x85 => 'Faithful',
     0x86 => 'Monochrome',
     0x87 => 'Auto', #PH
+    0x88 => 'Fine Detail', #PH
 );
 my %userDefStyles = ( #12/48
     Notes => q{
@@ -1652,7 +1661,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
         },
     },{
         Name => 'VignettingCorrUnknown1',
-        Condition => '$$valPt =~ /^[\x01\x02\x10]/ and $$valPt !~ /^\0\0\0\0/',
+        Condition => '$$valPt =~ /^[\x01\x02\x10\x20]/ and $$valPt !~ /^\0\0\0\0/',
         SubDirectory => {
             # (the size word is at byte 2 in this structure)
             Validate => 'Image::ExifTool::Canon::Validate($dirData,$subdirStart+2,$size)',
@@ -6987,7 +6996,7 @@ my %ciMaxFocal = (
         RawConv => '$$self{ColorDataVersion} = $val',
         PrintConv => {
             10 => '10 (1DX/5DmkIII/6D/70D/100D/650D/700D/M)',
-            11 => '11 (7DmkII)',
+            11 => '11 (7DmkII, 750D, 760D)',
         },
     },
     # not really sure about the AsShot, Auto and Measured values any more - PH
@@ -7127,7 +7136,9 @@ my %ciMaxFocal = (
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     0x00 => {
         Name => 'ColorDataVersion',
-        PrintConv => { },
+        PrintConv => {
+            12 => '12 (5DS, 5DS R)',
+        },
     },
 );
 
@@ -7332,7 +7343,11 @@ my %ciMaxFocal = (
     GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
     1 => {
         Name => 'MultiExposure',
-        PrintConv => \%offOn,
+        PrintConv => {
+            0 => 'Off',
+            1 => 'On',
+            2 => 'On (RAW)', #52
+        },
     },
     2 => {
         Name => 'MultiExposureControl',

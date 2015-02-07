@@ -40,7 +40,7 @@ use vars qw($VERSION $AUTOLOAD);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.87';
+$VERSION = '1.88';
 
 sub FixWrongFormat($);
 sub ProcessMOV($$;$);
@@ -5857,7 +5857,7 @@ sub ProcessMOV($$;$)
                 if ($ftypLookup{$type} and $ftypLookup{$type} =~ /\(\.(\w+)/) {
                     $fileType = $1;
                 # check compatible brands
-                } elsif ($buff =~ /^.{8}(.{4})+(mp41|mp42)/s) {
+                } elsif ($buff =~ /^.{8}(.{4})+(mp41|mp42|avc1)/s) {
                     $fileType = 'MP4';
                 } elsif ($buff =~ /^.{8}(.{4})+(f4v )/s) {
                     $fileType = 'F4V';

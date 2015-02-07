@@ -3798,13 +3798,52 @@ group name. (see <a href="http://www.iptc.org/IPTC4XMP/">http://www.iptc.org/IPT
 <tr class=h><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
+<td>AboutCvTerm</td>
+<td class=c title=' + = List'>struct+</td>
+<td>--&gt; <a href='XMP.html#CVTermDetails'>CVTermDetails Struct</a></td></tr>
+<tr class=b>
+<td>AboutCvTermCvId</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>AboutCvTermId</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(AboutCvTermCvTermId)</span></span></td></tr>
+<tr class=b>
+<td>AboutCvTermName</td>
+<td class=c title=' _ = Flattened
+ + = List'>lang-alt_+</td>
+<td><span class=s><span class=n>(AboutCvTermCvTermName)</span></span></td></tr>
+<tr>
+<td>AboutCvTermRefinedAbout</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(AboutCvTermCvTermRefinedAbout)</span></span></td></tr>
+<tr class=b>
 <td>AdditionalModelInformation</td>
 <td class=c>string</td>
 <td><span class=s><span class=n>(called AddlModelInfo by the spec)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>ArtworkOrObject</td>
 <td class=c title=' + = List'>struct+</td>
 <td>--&gt; <a href='XMP.html#ArtworkOrObjectDetails'>ArtworkOrObjectDetails Struct</a></td></tr>
+<tr class=b>
+<td>ArtworkCircaDateCreated</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(ArtworkOrObjectAOCircaDateCreated)</span></span></td></tr>
+<tr>
+<td>ArtworkSContentDescription</td>
+<td class=c title=' _ = Flattened
+ + = List'>lang-alt_+</td>
+<td><span class=s><span class=n>(ArtworkOrObjectAOContentDescription)</span></span></td></tr>
+<tr class=b>
+<td>ArtworkContributionDescription</td>
+<td class=c title=' _ = Flattened
+ + = List'>lang-alt_+</td>
+<td><span class=s><span class=n>(ArtworkOrObjectAOContributionDescription)</span></span></td></tr>
 <tr>
 <td>ArtworkCopyrightNotice</td>
 <td class=c title=' _ = Flattened
@@ -3816,10 +3855,40 @@ group name. (see <a href="http://www.iptc.org/IPTC4XMP/">http://www.iptc.org/IPT
  + = List'>string_+</td>
 <td><span class=s><span class=n>(ArtworkOrObjectAOCreator)</span></span></td></tr>
 <tr>
+<td>ArtworkCreatorID</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(ArtworkOrObjectAOCreatorId)</span></span></td></tr>
+<tr class=b>
+<td>ArtworkCopyrightOwnerID</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(ArtworkOrObjectAOCurrentCopyrightOwnerId)</span></span></td></tr>
+<tr>
+<td>ArtworkCopyrightOwnerName</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(ArtworkOrObjectAOCurrentCopyrightOwnerName)</span></span></td></tr>
+<tr class=b>
+<td>ArtworkLicensorID</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(ArtworkOrObjectAOCurrentLicensorId)</span></span></td></tr>
+<tr>
+<td>ArtworkLicensorName</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(ArtworkOrObjectAOCurrentLicensorName)</span></span></td></tr>
+<tr class=b>
 <td>ArtworkDateCreated</td>
 <td class=c title=' _ = Flattened
  + = List'>date_+</td>
 <td><span class=s><span class=n>(ArtworkOrObjectAODateCreated)</span></span></td></tr>
+<tr>
+<td>ArtworkPhysicalDescription</td>
+<td class=c title=' _ = Flattened
+ + = List'>lang-alt_+</td>
+<td><span class=s><span class=n>(ArtworkOrObjectAOPhysicalDescription)</span></span></td></tr>
 <tr class=b>
 <td>ArtworkSource</td>
 <td class=c title=' _ = Flattened
@@ -3831,6 +3900,16 @@ group name. (see <a href="http://www.iptc.org/IPTC4XMP/">http://www.iptc.org/IPT
  + = List'>string_+</td>
 <td><span class=s><span class=n>(ArtworkOrObjectAOSourceInvNo)</span></span></td></tr>
 <tr class=b>
+<td>ArtworkSourceInvURL</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(ArtworkOrObjectAOSourceInvURL)</span></span></td></tr>
+<tr>
+<td>ArtworkStylePeriod</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(ArtworkOrObjectAOStylePeriod)</span></span></td></tr>
+<tr class=b>
 <td>ArtworkTitle</td>
 <td class=c title=' _ = Flattened
  + = List'>lang-alt_+</td>
@@ -3838,7 +3917,7 @@ group name. (see <a href="http://www.iptc.org/IPTC4XMP/">http://www.iptc.org/IPT
 <tr>
 <td>ControlledVocabularyTerm</td>
 <td class=c title=' + = List'>string+</td>
-<td><span class=s><span class=n>(called CVterm by the spec)</span></span></td></tr>
+<td><span class=s><span class=n>(deprecated by version 1.2)</span></span></td></tr>
 <tr class=b>
 <td>DigitalImageGUID</td>
 <td class=c>string</td>
@@ -3852,6 +3931,25 @@ group name. (see <a href="http://www.iptc.org/IPTC4XMP/">http://www.iptc.org/IPT
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td>EmbdEncRightsExpr</td>
+<td class=c title=' + = List'>struct+</td>
+<td>--&gt; <a href='XMP.html#EEREDetails'>EEREDetails Struct</a></td></tr>
+<tr class=b>
+<td>EmbeddedEncodedRightsExpr</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(EmbdEncRightsExprEncRightsExpr)</span></span></td></tr>
+<tr>
+<td>EmbeddedEncodedRightsExprType</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(EmbdEncRightsExprRightsExprEncType)</span></span></td></tr>
+<tr class=b>
+<td>EmbeddedEncodedRightsExprLangID</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(EmbdEncRightsExprRightsExprLangId)</span></span></td></tr>
+<tr>
 <td>Event</td>
 <td class=c>lang-alt</td>
 <td>&nbsp;</td></tr>
@@ -3859,6 +3957,25 @@ group name. (see <a href="http://www.iptc.org/IPTC4XMP/">http://www.iptc.org/IPT
 <td>IPTCLastEdited</td>
 <td class=c>date</td>
 <td>&nbsp;</td></tr>
+<tr>
+<td>LinkedEncRightsExpr</td>
+<td class=c title=' + = List'>struct+</td>
+<td>--&gt; <a href='XMP.html#LEREDetails'>LEREDetails Struct</a></td></tr>
+<tr class=b>
+<td>LinkedEncodedRightsExpr</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(LinkedEncRightsExprLinkedRightsExpr)</span></span></td></tr>
+<tr>
+<td>LinkedEncodedRightsExprType</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(LinkedEncRightsExprRightsExprEncType)</span></span></td></tr>
+<tr class=b>
+<td>LinkedEncodedRightsExprLangID</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(LinkedEncRightsExprRightsExprLangId)</span></span></td></tr>
 <tr>
 <td>LocationCreated</td>
 <td class=c title=' + = List'>struct+</td>
@@ -3879,36 +3996,46 @@ group name. (see <a href="http://www.iptc.org/IPTC4XMP/">http://www.iptc.org/IPT
  + = List'>string_+</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td>LocationCreatedLocationId</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>LocationCreatedProvinceState</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>LocationCreatedSublocation</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>LocationCreatedWorldRegion</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>LocationShown</td>
 <td class=c title=' + = List'>struct+</td>
 <td>--&gt; <a href='XMP.html#LocationDetails'>LocationDetails Struct</a></td></tr>
-<tr>
+<tr class=b>
 <td>LocationShownCity</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>LocationShownCountryCode</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>LocationShownCountryName</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>LocationShownLocationId</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td>&nbsp;</td></tr>
@@ -3952,19 +4079,107 @@ group name. (see <a href="http://www.iptc.org/IPTC4XMP/">http://www.iptc.org/IPT
 <td class=c title=' + = List'>string+</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td>PersonInImageWDetails</td>
+<td class=c title=' + = List'>struct+</td>
+<td>--&gt; <a href='XMP.html#PersonDetails'>PersonDetails Struct</a></td></tr>
+<tr class=b>
+<td>PersonInImageCharacteristic</td>
+<td class=c title=' _ = Flattened
+ + = List'>struct_+</td>
+<td>--&gt; <a href='XMP.html#CVTermDetails'>CVTermDetails Struct</a>
+  <br><span class='n s'>(PersonInImageWDetailsPersonCharacteristic)</span></td></tr>
+<tr>
+<td>PersonInImageCvTermCvId</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(PersonInImageWDetailsPersonCharacteristicCvId)</span></span></td></tr>
+<tr class=b>
+<td>PersonInImageCvTermId</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(PersonInImageWDetailsPersonCharacteristicCvTermId)</span></span></td></tr>
+<tr>
+<td>PersonInImageCvTermName</td>
+<td class=c title=' _ = Flattened
+ + = List'>lang-alt_+</td>
+<td><span class=s><span class=n>(PersonInImageWDetailsPersonCharacteristicCvTermName)</span></span></td></tr>
+<tr class=b>
+<td>PersonInImageCvTermRefinedAbout</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(PersonInImageWDetailsPersonCharacteristicCvTermRefinedAbout)</span></span></td></tr>
+<tr>
+<td>PersonInImageDescription</td>
+<td class=c title=' _ = Flattened
+ + = List'>lang-alt_+</td>
+<td><span class=s><span class=n>(PersonInImageWDetailsPersonDescription)</span></span></td></tr>
+<tr class=b>
+<td>PersonInImageId</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(PersonInImageWDetailsPersonId)</span></span></td></tr>
+<tr>
+<td>PersonInImageName</td>
+<td class=c title=' _ = Flattened
+ + = List'>lang-alt_+</td>
+<td><span class=s><span class=n>(PersonInImageWDetailsPersonName)</span></span></td></tr>
+<tr class=b>
+<td>ProductInImage</td>
+<td class=c title=' + = List'>struct+</td>
+<td>--&gt; <a href='XMP.html#ProductDetails'>ProductDetails Struct</a></td></tr>
+<tr>
+<td>ProductInImageDescription</td>
+<td class=c title=' _ = Flattened
+ + = List'>lang-alt_+</td>
+<td><span class=s><span class=n>(ProductInImageProductDescription)</span></span></td></tr>
+<tr class=b>
+<td>ProductInImageGTIN</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(ProductInImageProductGTIN)</span></span></td></tr>
+<tr>
+<td>ProductInImageName</td>
+<td class=c title=' _ = Flattened
+ + = List'>lang-alt_+</td>
+<td><span class=s><span class=n>(ProductInImageProductName)</span></span></td></tr>
+<tr class=b>
 <td>RegistryID</td>
 <td class=c title=' + = List'>struct+</td>
 <td>--&gt; <a href='XMP.html#RegistryEntryDetails'>RegistryEntryDetails Struct</a></td></tr>
-<tr class=b>
+<tr>
 <td>RegistryItemID</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td><span class=s><span class=n>(RegistryIdRegItemId)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>RegistryOrganisationID</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td><span class=s><span class=n>(RegistryIdRegOrgId)</span></span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='CVTermDetails'>XMP CVTermDetails Struct</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Field Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>CvId</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>CvTermId</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>CvTermName</td>
+<td class=c>lang-alt</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>CvTermRefinedAbout</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='ArtworkOrObjectDetails'>XMP ArtworkOrObjectDetails Struct</a></h2>
@@ -3974,28 +4189,112 @@ group name. (see <a href="http://www.iptc.org/IPTC4XMP/">http://www.iptc.org/IPT
 <tr class=h><th>Field Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
-<td>AOCopyrightNotice</td>
+<td>AOCircaDateCreated</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>AOContentDescription</td>
+<td class=c>lang-alt</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>AOContributionDescription</td>
+<td class=c>lang-alt</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>AOCopyrightNotice</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>AOCreator</td>
 <td class=c title=' + = List'>string+</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>AOCreatorId</td>
+<td class=c title=' + = List'>string+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>AOCurrentCopyrightOwnerId</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>AOCurrentCopyrightOwnerName</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>AOCurrentLicensorId</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>AOCurrentLicensorName</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>AODateCreated</td>
 <td class=c>date</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>AOPhysicalDescription</td>
+<td class=c>lang-alt</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>AOSource</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>AOSourceInvNo</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
+<tr>
+<td>AOSourceInvURL</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
 <tr class=b>
+<td>AOStylePeriod</td>
+<td class=c title=' + = List'>string+</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>AOTitle</td>
 <td class=c>lang-alt</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='EEREDetails'>XMP EEREDetails Struct</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Field Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>EncRightsExpr</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>RightsExprEncType</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>RightsExprLangId</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='LEREDetails'>XMP LEREDetails Struct</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Field Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>LinkedRightsExpr</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>RightsExprEncType</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>RightsExprLangId</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -4018,16 +4317,64 @@ group name. (see <a href="http://www.iptc.org/IPTC4XMP/">http://www.iptc.org/IPT
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>LocationId</td>
+<td class=c title=' + = List'>string+</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>ProvinceState</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>Sublocation</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>WorldRegion</td>
 <td class=c>string</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='PersonDetails'>XMP PersonDetails Struct</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Field Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>PersonCharacteristic</td>
+<td class=c title=' + = List'>CVTermDetails+</td>
+<td>--&gt; <a href='XMP.html#CVTermDetails'>CVTermDetails Struct</a></td></tr>
+<tr class=b>
+<td>PersonDescription</td>
+<td class=c>lang-alt</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>PersonId</td>
+<td class=c title=' + = List'>string+</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>PersonName</td>
+<td class=c>lang-alt</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ProductDetails'>XMP ProductDetails Struct</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Field Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>ProductDescription</td>
+<td class=c>lang-alt</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>ProductGTIN</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ProductName</td>
+<td class=c>lang-alt</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -6136,7 +6483,7 @@ namespace prefixes are found, they are translated to the newer &quot;xmp&quot;,
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>PartOfCompilation</td>
-<td class=c>string</td>
+<td class=c>boolean</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>ProjectName</td>
@@ -6503,7 +6850,7 @@ namespace prefixes are found, they are translated to the newer &quot;xmp&quot;,
   <br>&#39;Upper&#39; = Upper</span></td></tr>
 <tr class=b>
 <td>VideoFrameRate</td>
-<td class=c>string</td>
+<td class=c>real</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>VideoFrameSize</td>
@@ -7965,7 +8312,7 @@ XMP module for convenience.  (see <a href="http://www.w3.org/TR/SVG11/">http://w
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Sep 17, 2014</i>
+<br><i>Last revised Jan 29, 2015</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

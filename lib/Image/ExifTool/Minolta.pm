@@ -53,7 +53,7 @@ use vars qw($VERSION %minoltaLensTypes %minoltaTeleconverters %minoltaColorMode
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.19';
+$VERSION = '2.20';
 
 # Full list of product codes for Sony-compatible Minolta lenses
 # (ref http://www.kb.sony.com/selfservice/documentLink.do?externalId=C1000570)
@@ -2626,6 +2626,33 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
         ValueConvInv => '$val * 8 + 106',
     },
     # 0x87f - int8u: 33mm Equivalent magnification (FocusDistance = (1.5 * $val + 1) * FocalLength) (255=inf)
+    0x104c => { # (9600 bytes: 4 sets of 40x30 int16u values in the range 0-8191)
+        Name => 'TiffMeteringImage',
+        Format => 'undef[9600]',
+        Notes => q{
+            13-bit RBGG (?) 40x30 pixels, presumably metering info, converted to a 16-bit
+            TIFF image;
+        },
+        ValueConv => sub {
+            my ($val, $et) = @_;
+            return undef unless length $val >= 9600;
+            return \ "Binary data 7404 bytes" unless $et->Options('Binary');
+            my @dat = unpack('n*', $val);  # for Big-endian
+            # TIFF header for a 16-bit RGB 10dpi 40x30 image
+            $val = Image::ExifTool::Sony::MakeTiffHeader(40,30,3,16,10);
+            # re-order data to RGB pixels
+            my ($i, @val);
+            for ($i=0; $i<40*30; ++$i) {
+                # data is 13-bit (max 8191), shift left to fill 16 bits
+                # (typically, this gives a very dark image since the data should
+                # really be anti-logged to convert from EV to perceived brightness)
+#                 push @val, $dat[$i]<<3, $dat[$i+2400]<<3, $dat[$i+1200]<<3;
+                push @val, int(5041.1*log($dat[$i]+1)/log(2)), int(5041.1*log($dat[$i+2400]+1)/log(2)), int(5041.1*log($dat[$i+1200]+1)/log(2));
+            }
+            $val .= pack('v*', @val);   # add TIFF strip data
+            return \$val;
+        },
+    },
     0x49b8 => {
         Name => 'ExposureTime',
         ValueConv => '$val ? 2 ** (6 - $val/8) : 0',

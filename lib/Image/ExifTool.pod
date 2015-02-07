@@ -351,7 +351,7 @@ well as illustrating the use of other ExifTool functions:
 
 ExifTool returns all values as byte strings of encoded characters.  Perl
 wide characters are not used.  See L</CHARACTER ENCODINGS> for details about
-the encodings.  By default, most returned strings are encoded in UTF-8.  For
+the encodings.  By default, most returned values are encoded in UTF-8.  For
 these, Encode::decode_utf8() may be used to convert to a sequence of logical
 Perl characters.
 
@@ -435,7 +435,7 @@ option takes precedence if both are set.
 
 =item Charset
 
-Character set for encoding character strings passed to/from ExifTool with
+Character set for encoding character tag values passed to/from ExifTool with
 code points above U+007F.  Default is 'UTF8'.  Valid values are listed
 below, case is not significant:
 
@@ -474,9 +474,9 @@ all string values without recoding.  Default is undef.
 
 =item CharsetFileName
 
-External character set used when specifying file names.  When set in
-Windows, this triggers use of Windows wide-character i/o library routines
-(requires Win32API::File).  Default is undef.
+External character set used for file names passed to ExifTool functions. 
+When set in Windows, this triggers use of Windows wide-character i/o library
+routines (requires Win32API::File).  Default is undef.
 
 =item CharsetID3
 
@@ -2242,16 +2242,17 @@ of a file.  These character sets may be specified separately as follows:
 
 =item External Character Sets:
 
-The encoding for strings passed to/from ExifTool API functions.  This is set
-via the L</Charset> option, which is 'UTF8' by default.
+The encoding for tag values passed to/from ExifTool API functions is set via
+the L</Charset> option, which is 'UTF8' by default.
 
-The encoding of file names is a special case.  By default, file names passed
-to ExifTool are used directly in calls to the system i/o routines (which
-expect UTF-8 strings on Mac/Linux, but default to the system code page on
-Windows), however this may be changed by setting the L</CharsetFileName>
-option.  In Windows, setting L</CharsetFileName> also has the effect of
-activating Unicode filename support via the special Windows wide-character
-i/o routines if Win32API::File is available.
+The encoding of file names is specified via the L</CharsetFileName> option.
+By default, L</CharsetFileName> is not defined, and file names passed to
+ExifTool are used directly in calls to the system i/o routines (which expect
+UTF-8 strings on Mac/Linux, but default to the system code page on Windows).
+Setting L</CharsetFileName> causes file names to be converted from the
+specified encoding to one appropriate for the system.  In Windows this also
+has the effect of activating Unicode filename support via the special
+Windows wide-character i/o routines if Win32API::File is available.
 
 =item Internal Character Sets:
 

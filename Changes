@@ -7,10 +7,16 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 9.76. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Feb. 10, 2015 - Version 9.84
+
+  - Added a new CanonModelID
+  - Added a new Pentax LensType and PentaxModelID (thanks Louis Granboulan)
+  - Fixed bug introduced in 9.83 that broke the -P option on Windows
+
 Feb. 7, 2015 - Version 9.83
 
   - Added support for Leica X (Typ 113) maker notes
-  - Added support for new IPTC PhotoMetadata version 1.2 XMP tags
+  - Added support for new IPTC Extension version 1.2 XMP tags
   - Added read support for ChartTIFF tags
   - Added a few new Canon LensType values (thanks Norbert Wasser for 2)
   - Added a few new Nikon LensID's (thanks David Puschel, Robert

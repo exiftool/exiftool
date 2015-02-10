@@ -56,7 +56,7 @@ use vars qw($VERSION %pentaxLensTypes);
 use Image::ExifTool::Exif;
 use Image::ExifTool::HP;
 
-$VERSION = '2.86';
+$VERSION = '2.87';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -315,6 +315,7 @@ sub PrintFilter($$$);
     '8 30' => 'Sigma 17-70mm F2.8-4 DC Macro HSM Contemporary', #27
     '8 31' => 'Sigma 18-35mm F1.8 DC HSM', #27
     '8 32' => 'Sigma 30mm F1.4 DC HSM | A', #27
+    '8 59' => 'HD PENTAX-D FA 150-450mm F4.5-5.6 ED DC AW', #29
     '8 200' => 'HD PENTAX-DA 16-85mm F3.5-5.6 ED DC WR', #29
     '8 209' => 'HD PENTAX-DA 20-40mm F2.8-4 ED Limited DC WR', #29
     '8 210' => 'smc PENTAX-DA 18-270mm F3.5-6.3 ED SDM', #Helmut Schutz
@@ -502,6 +503,7 @@ my %pentaxModelID = (
     0x13006 => 'WG-20', # (Ricoh)
     0x13010 => '645Z',
     0x1301a => 'K-S1',
+    0x13024 => 'K-S2', #29 (Ricoh)
     0x1302e => 'Q-S1',
     0x13056 => 'WG-30', # (Ricoh)
 );
@@ -2000,7 +2002,7 @@ my %binaryDataAttrs = (
             12 => '12 (MX-1)',
             13 => '13 (K-3)',
             14 => '14 (645Z)',
-            15 => '15 (K-S1)', #PH
+            15 => '15 (K-S1,K-S2)', #PH
         },
     },
     0x0067 => { #PH (K-5)

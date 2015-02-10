@@ -1624,7 +1624,7 @@ sub SetFileModifyDate($$;$$$)
         # (hide in an eval because ${^WIDE_SYSTEM_CALLS} doesn't compile under Perl 5.005)
         eval q{
             my $wfile = $file;
-            local ${'^WIDE_SYSTEM_CALLS'} = $self->EncodeFileName($wfile);
+            local ${^WIDE_SYSTEM_CALLS} = $self->EncodeFileName($wfile);
             my ($aTime, $mTime, $cTime);
             if ($tag eq 'FileCreateDate') {
                 $cTime = $val;
@@ -1757,7 +1757,7 @@ sub SetFileName($$;$$)
         if ($^O eq 'MSWin32' and eval { require Win32API::File::Time }) {
             eval q{
                 my $wfile = $newName;
-                local ${'^WIDE_SYSTEM_CALLS'} = $self->EncodeFileName($wfile);
+                local ${^WIDE_SYSTEM_CALLS} = $self->EncodeFileName($wfile);
                 Win32API::File::Time::SetFileTime($wfile, $aTime, $mTime, $cTime);
             }
         } else {
@@ -5802,7 +5802,7 @@ sub GetFileTime($$)
     if (not ref $file and $^O eq 'MSWin32' and eval { require Win32API::File::Time }) {
         eval q{
             my $wfile = $file;
-            local ${'^WIDE_SYSTEM_CALLS'} = $self->EncodeFileName($wfile);
+            local ${^WIDE_SYSTEM_CALLS} = $self->EncodeFileName($wfile);
             ($aTime, $mTime, $cTime) = Win32API::File::Time::GetFileTime($wfile);
         }
     } elsif (defined -M $file) {

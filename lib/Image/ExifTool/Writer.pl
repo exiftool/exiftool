@@ -19,7 +19,7 @@ use Image::ExifTool::Fixup;
 
 sub AssembleRational($$@);
 sub LastInList($);
-sub CreateDirectory($);
+sub CreateDirectory($$);
 sub NextFreeTagKey($$);
 sub RemoveNewValueHash($$$);
 sub RemoveNewValuesForGroup($$);
@@ -1600,7 +1600,7 @@ sub RestoreNewValues($)
 sub SetFileModifyDate($$;$$$)
 {
     my ($self, $file, $originalTime, $tag, $isUnixTime) = @_;
-    my ($nvHash, $err);
+    my $nvHash;
     $tag = 'FileModifyDate' unless defined $tag;
     my $val = $self->GetNewValues($tag, \$nvHash);
     return 0 unless defined $val;
@@ -1620,37 +1620,18 @@ sub SetFileModifyDate($$;$$$)
         return 0 unless $self->IsOverwriting($nvHash, $originalTime);
         $val = $$nvHash{Value}[0]; # get shifted value
     }
-    if (not ref $file and $^O eq 'MSWin32' and eval { require Win32API::File::Time }) {
-        # (hide in an eval because ${^WIDE_SYSTEM_CALLS} doesn't compile under Perl 5.005)
-        eval q{
-            my $wfile = $file;
-            local ${^WIDE_SYSTEM_CALLS} = $self->EncodeFileName($wfile);
-            my ($aTime, $mTime, $cTime);
-            if ($tag eq 'FileCreateDate') {
-                $cTime = $val;
-            } else {
-                $aTime = $mTime = $val;
-            }
-            $err = 1 unless Win32API::File::Time::SetFileTime($wfile, $aTime, $mTime, $cTime);
-        }
-    } elsif ($tag eq 'FileCreateDate') {
-        if (ref $file) {
-            $self->Warn("Can't set $tag by file reference");
-        } else {
-            $self->Warn("Install Win32API::File::Time to set $tag");
-        }
-        return -1;
+    my ($aTime, $mTime, $cTime);
+    if ($tag eq 'FileCreateDate') {
+        eval { require Win32::API } or $self->WarnOnce("Install Win32::API to set $tag"), return -1;
+        eval { require Win32API::File } or $self->WarnOnce("Install Win32API::File to set $tag"), return -1;
+        $cTime = $val;
     } else {
-        $err = 1 unless utime($val, $val, $file);
+        $aTime = $mTime = $val;
     }
-    if ($err) {
-        $self->Warn("Error setting $tag");
-        return -1;
-    } else {
-        ++$$self{CHANGED};
-        $self->VerboseValue("+ $tag", $val);
-        return 1;
-    }
+    $self->SetFileTime($file, $aTime, $mTime, $cTime) or $self->Warn("Error setting $tag"), return -1;
+    ++$$self{CHANGED};
+    $self->VerboseValue("+ $tag", $val);
+    return 1;
 }
 
 #------------------------------------------------------------------------------
@@ -1710,7 +1691,7 @@ sub SetFileName($$;$$)
     }
     # create directory for new file if necessary
     my $result;
-    if (($result = CreateDirectory($newName)) != 0) {
+    if (($result = $self->CreateDirectory($newName)) != 0) {
         if ($result < 0) {
             $self->Warn("Error creating directory for '$newName'");
             return -1;
@@ -1754,15 +1735,7 @@ sub SetFileName($$;$$)
         }
         # preserve modification time
         my ($aTime, $mTime, $cTime) = $self->GetFileTime($file);
-        if ($^O eq 'MSWin32' and eval { require Win32API::File::Time }) {
-            eval q{
-                my $wfile = $newName;
-                local ${^WIDE_SYSTEM_CALLS} = $self->EncodeFileName($wfile);
-                Win32API::File::Time::SetFileTime($wfile, $aTime, $mTime, $cTime);
-            }
-        } else {
-            utime($aTime, $mTime, $newName);
-        }
+        $self->SetFileTime($newName, $aTime, $mTime, $cTime);
         # remove the original file
         $self->Unlink($file) or $self->Warn('Error removing old file');
     }
@@ -2826,23 +2799,45 @@ sub IsWritable($)
 
 #------------------------------------------------------------------------------
 # Create directory for specified file
-# Inputs: 0) complete file name including path
+# Inputs: 0) ExifTool ref, 1) complete file name including path
 # Returns: 1 = directory created, 0 = nothing done, -1 = error
-sub CreateDirectory($)
+my $k32CreateDir;
+sub CreateDirectory($$)
 {
     local $_;
-    my $file = shift;
+    my ($self, $file) = @_;
     my $rtnVal = 0;
+    my $enc = $$self{OPTIONS}{CharsetFileName};
     my $dir;
     ($dir = $file) =~ s/[^\/]*$//;  # remove filename from path specification
-    if ($dir and not -d $dir) {
+    # recode as UTF-8 if necessary
+    if ($dir and not $self->IsDirectory($dir)) {
         my @parts = split /\//, $dir;
         $dir = '';
         foreach (@parts) {
             $dir .= $_;
-            if (length $dir and not -d $dir) {
+            if (length $dir and not $self->IsDirectory($dir)) {
                 # create directory since it doesn't exist
-                mkdir($dir, 0777) or return -1;
+                my $d2 = $dir; # (must make a copy in case EncodeFileName recodes it)
+                if ($self->EncodeFileName($d2)) {
+                    # handle Windows Unicode directory names
+                    unless (eval { require Win32::API }) {
+                        $self->Warn('Install Win32::API to create directories with Unicode names');
+                        return -1;
+                    }
+                    unless ($k32CreateDir) {
+                        return -1 if defined $k32CreateDir;
+                        $k32CreateDir = new Win32::API('KERNEL32', 'CreateDirectoryW', 'PP', 'I');
+                        unless ($k32CreateDir) {
+                            $self->Warn('Error calling Win32::API::CreateDirectoryW');
+                            $k32CreateDir = 0;
+                            return -1;
+                        }
+                    }
+                    $k32CreateDir->Call($d2, 0) or return -1;
+                } else {
+                    mkdir($d2, 0777) or return -1;
+                }
                 $rtnVal = 1;
             }
             $dir .= '/';
@@ -5792,25 +5787,63 @@ sub Unlink($@)
 }
 
 #------------------------------------------------------------------------------
-# Get file times (Unix seconds since the epoch)
-# Inputs: 0) ExifTool ref, 1) File name or ref
-# Returns: 0) access time, 1) modification time, 2) creation time (or undefs on error)
-sub GetFileTime($$)
+# Set file times (Unix seconds since the epoch)
+# Inputs: 0) ExifTool ref, 1) file name or ref, 2) access time, 3) modification time,
+#         4) inode change or creation time (or undef for any time to avoid setting)
+# Returns: 1 on success, 0 on error
+my $k32SetFileTime;
+sub SetFileTime($$;$$$)
 {
-    my ($self, $file) = @_;
-    my ($aTime, $mTime, $cTime);
-    if (not ref $file and $^O eq 'MSWin32' and eval { require Win32API::File::Time }) {
-        eval q{
-            my $wfile = $file;
-            local ${^WIDE_SYSTEM_CALLS} = $self->EncodeFileName($wfile);
-            ($aTime, $mTime, $cTime) = Win32API::File::Time::GetFileTime($wfile);
-        }
-    } elsif (defined -M $file) {
-        $aTime = int($^T - (-A _) * (24 * 3600) + 0.5);
-        $mTime = int($^T - (-M _) * (24 * 3600) + 0.5);
-        $cTime = int($^T - (-C _) * (24 * 3600) + 0.5);
+    my ($self, $file, $atime, $mtime, $ctime) = @_;
+
+    # open file by name if necessary
+    unless (ref $file) {
+        local *FH;
+        $self->Open(\*FH, $file, '+<') or $self->Warn("Open '$file' failed"), return 0;
+        $file = *FH;  # (not \*FH, so *FH will be kept open until $file goes out of scope)
     }
-    return($aTime, $mTime, $cTime);
+    # on Windows, try to work around incorrect file times when daylight saving time is in effect
+    if ($^O eq 'MSWin32') {
+        if (not eval { require Win32::API }) {
+            $self->WarnOnce('Install Win32::API for proper handling of Windows file times');
+        } elsif (not eval { require Win32API::File }) {
+            $self->WarnOnce('Install Win32API::File for proper handling of Windows file times');
+        } else {
+            # get Win32 handle, needed for SetFileTime
+            my $win32Handle = Win32API::File::GetOsFHandle($file);
+            unless ($win32Handle) {
+                $self->Warn("Win32API::File::GetOsFHandle returned invalid handle");
+                return 0;
+            }
+            # convert Unix seconds to FILETIME structs
+            my $time;
+            foreach $time ($atime, $mtime, $ctime) {
+                # set to NULL if not defined (i.e. do not change)
+                defined $time or $time = 0, next;
+                # convert to 100 ns intervals since 0:00 UTC Jan 1, 1601
+                # (89 leap years between 1601 and 1970)
+                my $wt = ($time + (((1970-1601)*365+89)*24*3600)) * 1e7;
+                my $hi = int($wt / 4294967296);
+                $time = pack 'LL', int($wt - $hi * 4294967296), $hi; # pack FILETIME struct
+            }
+            unless ($k32SetFileTime) {
+                return 0 if defined $k32SetFileTime;
+                $k32SetFileTime = new Win32::API('KERNEL32', 'SetFileTime', 'NPPP', 'I');
+                unless ($k32SetFileTime) {
+                    $self->Warn('Error calling Win32::API::SetFileTime');
+                    $k32SetFileTime = 0;
+                    return 0;
+                }
+            }
+            unless ($k32SetFileTime->Call($win32Handle, $ctime, $atime, $mtime)) {
+                $self->Warn("Win32::API::SetFileTime returned " . Win32::GetLastError());
+                return 0;
+            }
+            return 1;
+        }
+    }
+    # other os (or Windows fallback)
+    return utime($atime, $mtime, $file);
 }
 
 #------------------------------------------------------------------------------

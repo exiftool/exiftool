@@ -145,8 +145,8 @@ for calculating digest values for some information types:
   Digest::MD5          (PDF files, IPTC information, and JPG Extended XMP)
   Digest::SHA          (PDF with AES-256 encryption)
   IO::Compress::Bzip2  (RWZ files)
-  Win32API::File::Time (enables writing of FileCreateDate in Windows)
-  Win32API::File       (for Windows Unicode file name support)
+  Win32::API           (for proper handling of Windows file times)
+  Win32API::File       (for Windows Unicode file names and file times)
   Win32::FindFile      (for Windows Unicode directory support, app only)
   Time::HiRes          (allows generation of ProcessingTime tag)
 

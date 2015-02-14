@@ -23,7 +23,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.11';
+$VERSION = '1.12';
 
 sub ProcessFLIR($$;$);
 sub ProcessFLIRText($$$);
@@ -438,7 +438,7 @@ my %float8g = ( Format => 'float', PrintConv => 'sprintf("%.8g",$val)' );
     0x1ec => { Name => 'FilterModel',       Format => 'string[16]' },
     0x1fc => { Name => 'FilterPartNumber',  Format => 'string[32]' },
     0x21c => { Name => 'FilterSerialNumber',Format => 'string[32]' },
-    0x308 => { Name => 'PlanckO',           Format => 'int16s' }, #1
+    0x308 => { Name => 'PlanckO',           Format => 'int32s' }, #1
     0x30c => { Name => 'PlanckR2',          %float8g }, #1
     0x338 => { Name => 'RawValueMedian',    Format => 'int16u', Groups => { 2 => 'Image' } },
     0x33c => { Name => 'RawValueRange',     Format => 'int16u', Groups => { 2 => 'Image' } },

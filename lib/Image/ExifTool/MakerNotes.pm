@@ -747,7 +747,8 @@ my $debug;          # set to 1 to enable debugging code
         Condition => q{
             $$self{Make} =~ /^(PENTAX )?RICOH/ and
             $$valPt =~ /^(Ricoh|      |MM\0\x2a|II\x2a\0)/i and
-            $$valPt !~ /^(MM\0\x2a\0\0\0\x08\0.\0\0|II\x2a\0\x08\0\0\0.\0\0\0)/s
+            $$valPt !~ /^(MM\0\x2a\0\0\0\x08\0.\0\0|II\x2a\0\x08\0\0\0.\0\0\0)/s and
+            $$self{Model} ne 'RICOH WG-M1'
         },
         SubDirectory => {
             TagTable => 'Image::ExifTool::Ricoh::Main',
@@ -762,8 +763,8 @@ my $debug;          # set to 1 to enable debugging code
         # being processed as a standard IFD.  Note that the offsets for the HZ15 are all
         # zeros, but they seem to be mostly OK for the XG-1)
         Condition => q{
-            $$self{Make} =~ /^(PENTAX )?RICOH/ and
-            $$valPt =~ /^(MM\0\x2a\0\0\0\x08\0.\0\0|II\x2a\0\x08\0\0\0.\0\0\0)/s
+            $$self{Make} =~ /^(PENTAX )?RICOH/ and ($$self{Model} eq 'RICOH WG-M1' or
+            $$valPt =~ /^(MM\0\x2a\0\0\0\x08\0.\0\0|II\x2a\0\x08\0\0\0.\0\0\0)/s)
         },
         SubDirectory => {
             TagTable => 'Image::ExifTool::Ricoh::Type2',

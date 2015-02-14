@@ -56,7 +56,7 @@ use vars qw($VERSION %pentaxLensTypes);
 use Image::ExifTool::Exif;
 use Image::ExifTool::HP;
 
-$VERSION = '2.87';
+$VERSION = '2.88';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -316,6 +316,9 @@ sub PrintFilter($$$);
     '8 31' => 'Sigma 18-35mm F1.8 DC HSM', #27
     '8 32' => 'Sigma 30mm F1.4 DC HSM | A', #27
     '8 59' => 'HD PENTAX-D FA 150-450mm F4.5-5.6 ED DC AW', #29
+    '8 60' => 'HD PENTAX-D FA* 70-200mm F2.8 ED DC AW', #29
+    '8 198' => 'smc PENTAX-DA L 18-50mm F4-5.6 DC WR RE', #29
+    '8 199' => 'HD PENTAX-DA 18-50mm F4-5.6 DC WR RE', #29
     '8 200' => 'HD PENTAX-DA 16-85mm F3.5-5.6 ED DC WR', #29
     '8 209' => 'HD PENTAX-DA 20-40mm F2.8-4 ED Limited DC WR', #29
     '8 210' => 'smc PENTAX-DA 18-270mm F3.5-6.3 ED SDM', #Helmut Schutz
@@ -3975,23 +3978,56 @@ my %binaryDataAttrs = (
         Name => 'LC1',
         %lensCode,
     },
-    3 => { # LC2 = distance data
-        Name => 'LC2',
-        %lensCode,
-        # FocusRange decoding needs more testing with various lenses - PH
-        TestName => 'FocusRange',
-        TestPrintConv => q{
-            my @v;
-            my $lsb = $val & 0x07;
-            my $msb = $val >> 3;
-            my $ls2 = $lsb ^ 0x07;
-            $ls2 ^= 0x01 if $ls2 & 0x02;
-            $ls2 ^= 0x03 if $ls2 & 0x04;
-            foreach ($ls2, $ls2+1) {
-                push(@v,'inf'), next if $_ > 7;
-                push @v, sprintf("%.2f m", 2 ** ($msb / 4) * 0.18 * ($_ + 4) / 16);
-            }
-            return join ' - ', @v;
+    # LC2 = distance data
+    3 => { #29
+        Name => 'MinFocusDistance',
+        Notes => 'minimum focus distance for the lens',
+        Mask => 0xf8,
+        PrintConv => {
+            0x00 => '0.13-0.19 m',  # (plus K or M lenses)
+            0x08 => '0.20-0.24 m', 
+            0x10 => '0.25-0.28 m',
+            0x18 => '0.28-0.30 m',
+            0x20 => '0.35-0.38 m',
+            0x28 => '0.40-0.45 m',
+            0x30 => '0.49-0.50 m',  # (plus many Sigma lenses)
+            0x38 => '0.6 m',        #PH (NC)
+            0x40 => '0.7 m',        # (plus Sigma 55-200)
+            0x48 => '0.8-0.9 m',    #PH (NC) Tokina 28-70/2.6-2.8
+            0x50 => '1.0 m',        # (plus Sigma 70 macro)
+            0x58 => '1.1-1.2 m',
+            0x60 => '1.4-1.5 m',
+            0x68 => '1.5 m',        # Sigma 70-300/4-5.6 macro
+            0x70 => '2.0 m',
+            0x78 => '2.0-2.1 m',    #PH (NC)
+            0x80 => '2.1 m',        # Sigma 135-400 APO & DG: 2.0-2.2m
+            0x88 => '2.2-2.9 m',    #PH (NC)
+            0x90 => '3.0 m',        # Sigma 50-500 : 1.0-3.0m depending on the focal length
+                                   ## 50mm, 100mm => 1.0m
+                                   ## 200mm       => 1.1m
+                                   ## 300mm       => 1.5m
+                                   ## 400mm       => 2.2m
+                                   ## 500mm       => 3.0m
+            0x98 => '4-5 m',        #PH (NC)
+            0xa0 => '5.6 m',        # Pentax DA 560
+            # To check: Sigma 120-400 OS: MFD 1.5m
+            # To check: Sigma 150-500 OS: MFD 2.2m
+            # To check: Sigma 50-500 has MFD 50-180cm
+            # 0xd0 - seen for the Sigma 4.5mm F2.8 EX DC HSM Circular Fisheye (ref PH)
+        },
+    },
+    3.1 => { #29
+        Name => 'FocusRangeIndex',
+        Mask => 0x07,
+        PrintConv => {
+            7 => '0 (very close)',
+            6 => '1 (close)',
+            4 => '2',
+            5 => '3',
+            1 => '4',
+            0 => '5',
+            2 => '6 (far)',
+            3 => '7 (very far)',
         },
     },
     4 => { # LC3 = K-value data (AF pulses to displace image by unit length)

@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '9.84';
+$VERSION = '9.85';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -116,7 +116,7 @@ sub Exists($$);
 sub IsDirectory($$);
 sub Rename($$$);
 sub Unlink($@);
-sub GetFileTime($$);
+sub SetFileTime($$;$$$);
 sub DoEscape($$);
 sub ConvertFileSize($);
 sub ParseArguments($;@); #(defined in attempt to avoid mod_perl problem)
@@ -1012,14 +1012,14 @@ sub DummyWriteProc { return 1; }
     FileCreateDate => {
         Description => 'File Creation Date/Time',
         Notes => q{
-            the filesystem creation date/time.  Windows only.  Requires
-            Win32API::File::Time for writing.  Note that although ExifTool can not
-            currently access the filesystem creation time on other systems, the creation
-            time is pushed backwards on OS X by writing an earlier modification time,
-            which provides a mechanism to write this indirectly:  1) Rewrite the file to
-            set the filesystem creation and modification times to the current time, 2)
-            Set FileModifyDate to the desired creation time, then 3) Restore
-            FileModifyDate to its original value
+            the filesystem creation date/time.  Windows only.  Requires Win32API::File
+            and Win32::API for writing.  Note that although ExifTool can not currently
+            access the filesystem creation time on other systems, the creation time is
+            pushed backwards on OS X by writing an earlier modification time, which
+            provides a mechanism to write this indirectly:  1) Rewrite the file to set
+            the filesystem creation and modification times to the current time, 2) Set
+            FileModifyDate to the desired creation time, then 3) Restore FileModifyDate
+            to its original value
         },
         Groups => { 1 => 'System', 2 => 'Time' },
         Writable => 1,
@@ -1813,19 +1813,17 @@ sub ExtractInfo($;@)
             # get file size from image in memory
             $self->FoundTag('FileSize', length ${$$raf{BUFF_PT}});
         } elsif (-f $$raf{FILE_PT}) {
-            # get file size and last modified time if this is a plain file
+            # get file tags if this is a plain file
             my $fileSize = -s _;
-            my $fileTime = -M _;
-            my $accTime = -A _;
-            my $cTime = -C _;
-            my @stat = stat _;
+            my $perm = (stat _)[2];
+            my ($aTime, $mTime, $cTime) = $self->GetFileTime($$raf{FILE_PT});
             $self->FoundTag('FileSize', $fileSize) if defined $fileSize;
             $self->FoundTag('ResourceForkSize', $rsize) if $rsize;
-            $self->FoundTag('FileModifyDate', int($^T - $fileTime*(24*3600) + 0.5)) if defined $fileTime;
-            $self->FoundTag('FileAccessDate', int($^T - $accTime*(24*3600) + 0.5)) if defined $accTime;
+            $self->FoundTag('FileModifyDate', $mTime) if defined $mTime;
+            $self->FoundTag('FileAccessDate', $aTime) if defined $aTime;
             my $cTag = $^O eq 'MSWin32' ? 'FileCreateDate' : 'FileInodeChangeDate';
-            $self->FoundTag($cTag, int($^T - $cTime*(24*3600) + 0.5));
-            $self->FoundTag('FilePermissions', $stat[2]) if defined $stat[2];
+            $self->FoundTag($cTag, $cTime) if defined $cTime;
+            $self->FoundTag('FilePermissions', $perm) if defined $perm;
         }
 
         # get list of file types to check
@@ -3056,7 +3054,7 @@ sub EncodeFileName($$;$)
 #------------------------------------------------------------------------------
 # Modified perl open() routine
 # Inputs: 0) ExifTool ref, 1) filehandle, 2) filename,
-#         3) mode ('<'/'>' for read/write -- read default)
+#         3) mode: '<' or undef = read, '>' = write, '+<' = update
 # Returns: true on success
 # Note: Must call like "$et->Open(\*FH,$file)", not "$et->Open(FH,$file)" to avoid
 #       "unopened filehandle" errors due to a change in scope of the filehandle
@@ -3074,6 +3072,9 @@ sub Open($*$;$)
             if ($mode eq '>') {
                 $access = Win32API::File::GENERIC_WRITE();
                 $create = Win32API::File::CREATE_NEW();
+            } elsif ($mode eq '+<') {
+                $access = Win32API::File::GENERIC_READ() | Win32API::File::GENERIC_WRITE();
+                $create = Win32API::File::OPEN_EXISTING();
             } else {
                 $access = Win32API::File::GENERIC_READ();
                 $create = Win32API::File::OPEN_EXISTING();
@@ -3081,10 +3082,7 @@ sub Open($*$;$)
             my $wh = Win32API::File::CreateFileW($file, $access, 0, [], $create, 0, []);
             return undef unless $wh;
             my $fd = Win32API::File::OsFHandleOpenFd($wh, 0);
-            if ($fd < 0) {
-                Win32API::File::CloseHandle($wh);
-                return undef;
-            }
+            $fd < 0 and Win32API::File::CloseHandle($wh), return undef;
             $file = "&=$fd";    # specify file by descriptor
         } else {
             # add leading space to protect against leading characters like '>'
@@ -3131,6 +3129,64 @@ sub IsDirectory($$)
         return -d $file;
     }
     return 0;
+}
+
+#------------------------------------------------------------------------------
+# Get file times (Unix seconds since the epoch)
+# Inputs: 0) ExifTool ref, 1) file name or ref
+# Returns: 0) access time, 1) modification time, 2) creation time (or undefs on error)
+my $k32GetFileTime;
+sub GetFileTime($$)
+{
+    my ($self, $file) = @_;
+
+    # open file by name if necessary
+    unless (ref $file) {
+        local *FH;
+        $self->Open(\*FH, $file) or $self->Warn("Open '$file' failed"), return ();
+        $file = *FH;  # (not \*FH, so *FH will be kept open until $file goes out of scope)
+    }
+    # on Windows, try to work around incorrect file times when daylight saving time is in effect
+    if ($^O eq 'MSWin32') {
+        if (not eval { require Win32::API }) {
+            $self->WarnOnce('Install Win32::API for proper handling of Windows file times');
+        } elsif (not eval { require Win32API::File }) {
+            $self->WarnOnce('Install Win32API::File for proper handling of Windows file times');
+        } else {
+            # get Win32 handle, needed for GetFileTime
+            my $win32Handle = Win32API::File::GetOsFHandle($file);
+            unless ($win32Handle) {
+                $self->Warn("Win32API::File::GetOsFHandle returned invalid handle");
+                return ();
+            }
+            # get FILETIME structs
+            my ($atime, $mtime, $ctime, $time);
+            $atime = $mtime = $ctime = pack 'LL', 0, 0;
+            unless ($k32GetFileTime) {
+                return () if defined $k32GetFileTime;
+                $k32GetFileTime = new Win32::API('KERNEL32', 'GetFileTime', 'NPPP', 'I');
+                unless ($k32GetFileTime) {
+                    $self->Warn('Error calling Win32::API::GetFileTime');
+                    $k32GetFileTime = 0;
+                    return ();
+                }
+            }
+            unless ($k32GetFileTime->Call($win32Handle, $ctime, $atime, $mtime)) {
+                $self->Warn("Win32::API::GetFileTime returned " . Win32::GetLastError());
+                return ();
+            }
+            # convert FILETIME structs to Unix seconds
+            foreach $time ($atime, $mtime, $ctime) {
+                my ($lo, $hi) = unpack 'LL', $time; # unpack FILETIME struct
+                # FILETIME is in 100 ns intervals since 0:00 UTC Jan 1, 1601
+                # (89 leap years between 1601 and 1970)
+                $time = ($hi * 4294967296 + $lo) * 1e-7 - (((1970-1601)*365+89)*24*3600);
+            }
+            return ($atime, $mtime, $ctime);
+        }
+    }
+    # other os (or Windows fallback)
+    return (stat($file))[8, 9, 10];
 }
 
 #------------------------------------------------------------------------------

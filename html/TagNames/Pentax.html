@@ -1937,6 +1937,9 @@ identify the specific lens model.</p>
 </tr><tr><td>'8 31'</td><td>= Sigma 18-35mm F1.8 DC HSM</td>
 </tr><tr><td>'8 32'</td><td>= Sigma 30mm F1.4 DC HSM | A</td>
 </tr><tr><td>'8 59'</td><td>= HD PENTAX-D FA 150-450mm F4.5-5.6 ED DC AW</td>
+</tr><tr><td>'8 60'</td><td>= HD PENTAX-D FA* 70-200mm F2.8 ED DC AW</td>
+</tr><tr><td>'8 198'</td><td>= smc PENTAX-DA L 18-50mm F4-5.6 DC WR RE</td>
+</tr><tr><td>'8 199'</td><td>= HD PENTAX-DA 18-50mm F4-5.6 DC WR RE</td>
 </tr><tr><td>'8 200'</td><td>= HD PENTAX-DA 16-85mm F3.5-5.6 ED DC WR</td>
 </tr><tr><td>'8 209'</td><td>= HD PENTAX-DA 20-40mm F2.8-4 ED Limited DC WR</td>
 </tr><tr><td>'8 210'</td><td>= smc PENTAX-DA 18-270mm F3.5-6.3 ED SDM</td>
@@ -2883,76 +2886,113 @@ gymnastics to decode them into useful values.</p>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='3 = 0x3'>3</td>
-<td>LC2?</td>
+<td>MinFocusDistance</td>
 <td class=c>int8u</td>
-<td>&nbsp;</td></tr>
+<td><span class=s><span class=n>(minimum focus distance for the lens)</span>
+  <br>[Mask 0xf8]</span><table class=cols><tr>
+  <td>0x0 = 0.13-0.19 m
+  <br>0x8 = 0.20-0.24 m
+  <br>0x10 = 0.25-0.28 m
+  <br>0x18 = 0.28-0.30 m
+  <br>0x20 = 0.35-0.38 m
+  <br>0x28 = 0.40-0.45 m
+  <br>0x30 = 0.49-0.50 m
+  <br>0x38 = 0.6 m
+  <br>0x40 = 0.7 m
+  <br>0x48 = 0.8-0.9 m
+  <br>0x50 = 1.0 m</td><td>&nbsp;&nbsp;</td>
+  <td>0x58 = 1.1-1.2 m
+  <br>0x60 = 1.4-1.5 m
+  <br>0x68 = 1.5 m
+  <br>0x70 = 2.0 m
+  <br>0x78 = 2.0-2.1 m
+  <br>0x80 = 2.1 m
+  <br>0x88 = 2.2-2.9 m
+  <br>0x90 = 3.0 m
+  <br>0x98 = 4-5 m
+  <br>0xa0 = 5.6 m</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
 <tr>
+<td class=r title='3 = 0x3'>3.1</td>
+<td>FocusRangeIndex</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x07]</span><table class=cols><tr>
+  <td>0x0 = 5
+  <br>0x1 = 4
+  <br>0x2 = 6 (far)
+  <br>0x3 = 7 (very far)</td><td>&nbsp;&nbsp;</td>
+  <td>0x4 = 2
+  <br>0x5 = 3
+  <br>0x6 = 1 (close)
+  <br>0x7 = 0 (very close)</td><td>&nbsp;&nbsp;</td></tr></table>
+</td></tr>
+<tr class=b>
 <td class=r title='4 = 0x4'>4</td>
 <td>LC3?</td>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='5 = 0x5'>5</td>
 <td>LC4?</td>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='6 = 0x6'>6</td>
 <td>LC5?</td>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='7 = 0x7'>7</td>
 <td>LC6?</td>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='8 = 0x8'>8</td>
 <td>LC7?</td>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='9 = 0x9'>9</td>
 <td>FocalLength</td>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='10 = 0xa'>10</td>
 <td>NominalMaxAperture</td>
 <td class=c>int8u</td>
 <td><span class=s>[Mask 0xf0]</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='10 = 0xa'>10.1</td>
 <td>NominalMinAperture</td>
 <td class=c>int8u</td>
 <td><span class=s>[Mask 0x0f]</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='11 = 0xb'>11</td>
 <td>LC10?</td>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='12 = 0xc'>12</td>
 <td>LC11?</td>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='13 = 0xd'>13</td>
 <td>LC12?</td>
 <td class=c>int8u</td>
 <td><span class=s><span class=n>(ID&#39;s 13-16 are offset by 1 for the K-r, K-5 and K-5II)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='14 = 0xe'>14.1</td>
 <td>MaxAperture</td>
 <td class=c>int8u</td>
 <td><span class=s><span class=n>(effective wide open aperture for current focal length)</span>
   <br>[Mask 0x7f]</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='15 = 0xf'>15</td>
 <td>LC14?</td>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='16 = 0x10'>16</td>
 <td>LC15?</td>
 <td class=c>int8u</td>
@@ -4599,7 +4639,7 @@ stored as ASCII text in a format very similar to some HP models.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Feb 10, 2015</i>
+<br><i>Last revised Feb 13, 2015</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

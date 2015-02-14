@@ -1424,10 +1424,9 @@ file.</blockquote>
 <blockquote>On systems where a filesystem creation date is maintained, ExifTool
 also sets this to the current date/time when the file is edited.  On Windows the
 creation date is accessed through the FileCreateDate tag, and is also preserved
-with the <code>-P</code> option if Win32API::File::Time is available.  On
-Mac/Linux FileInodeChangeDate is available instead of FileCreateDate, and the
-only way to preserve the file creation date is with the
-<code>-overwrite_original_in_place</code> option.</blockquote>
+with the <code>-P</code> option.  On Mac/Linux FileInodeChangeDate is available
+instead of FileCreateDate, and the only way to preserve the file creation date
+is with the <code>-overwrite_original_in_place</code> option.</blockquote>
 
 <blockquote>For example, commands like this act on common metadata tags, setting
 the filesystem modification date/time to the current date/time:

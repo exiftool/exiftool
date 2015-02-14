@@ -7,6 +7,21 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 9.76. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Feb. 14, 2015 - Version 9.85
+
+  - Added a few new Pentax LensType's (thanks Louis Granboulan)
+  - Added support for Ricoh WG-M1 maker notes
+  - Decoded a couple of new Pentax tags (thanks Louis Granboulan)
+  - Enhanced JSON import so an object with a missing SourceFile has the same
+    effect as a SourceFile of "*".
+  - Changed MIMEType for executable script files
+  - Patched remaining known problems involving Windows Unicode file names
+    (creating directories and using wildcards should now work)
+  - Patched long-standing Windows daylight-savings-time bug, and removed the
+    dependency on Win32API::File::Time (reported file times should now be
+    correct, but may disagree with the Windows "dir" command)
+  - Fixed decoding of FLIR:PlanckO (thanks Tomas)
+
 Feb. 10, 2015 - Version 9.84
 
   - Added a new CanonModelID
@@ -15,8 +30,8 @@ Feb. 10, 2015 - Version 9.84
 
 Feb. 7, 2015 - Version 9.83
 
-  - Added support for Leica X (Typ 113) maker notes
   - Added support for new IPTC Extension version 1.2 XMP tags
+  - Added support for Leica X (Typ 113) maker notes
   - Added read support for ChartTIFF tags
   - Added a few new Canon LensType values (thanks Norbert Wasser for 2)
   - Added a few new Nikon LensID's (thanks David Puschel, Robert
@@ -29,6 +44,7 @@ Feb. 7, 2015 - Version 9.83
   - Decode a number of new Sony tags (thanks Jos Roost)
   - Decode a couple more Nikon ShootingMode bits (thanks Leegong)
   - Updated to Nov 2014 XMP specification
+  - Patched incompatibility between Windows Unicode update and Perl 5.005 
 
 Jan. 15, 2015 - Version 9.82
 

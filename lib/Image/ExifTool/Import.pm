@@ -12,7 +12,7 @@ require Exporter;
 
 use vars qw($VERSION @ISA @EXPORT_OK);
 
-$VERSION = '1.04';
+$VERSION = '1.05';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(ReadCSV ReadJSON);
 
@@ -247,14 +247,16 @@ sub ReadJSON($$;$$)
     }
     my ($info, $found);
     foreach $info (@$obj) {
-        next unless ref $info eq 'HASH' and $$info{SourceFile};
+        next unless ref $info eq 'HASH';
+        # assume a SourceFile of '*' if none specified
+        defined $$info{SourceFile} or $$info{SourceFile} = '*';
         if (defined $missingValue) {
             $$info{$_} eq $missingValue and $$info{$_} = undef foreach keys %$info;
         }
         $$database{$$info{SourceFile}} = $info;
         $found = 1;
     }
-    return $found ? undef : "No SourceFile entries in '$file'";
+    return $found ? undef : "No valid JSON objects in '$file'";
 }
 
 

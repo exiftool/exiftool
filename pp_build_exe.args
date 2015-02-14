@@ -43,7 +43,6 @@
 -M Win32::FindFile
 -M Win32API::File
 -M Encode
--M Win32API::File::Time
 -M Image::ExifTool::AES
 -M Image::ExifTool::AFCP
 -M Image::ExifTool::AIFF

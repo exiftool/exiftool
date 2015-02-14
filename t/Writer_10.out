@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.81
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.85
 [File, System, Image] FileName - File Name: Writer_10_failed.jpg
 [File, System, Image] Directory - Directory: t
 [File, System, Image] FileSize - File Size: 7.0 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2015:01:12 07:53:07-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:01:12 07:53:07-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:01:12 07:53:07-05:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2015:02:13 13:00:28-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2015:02:13 13:00:28-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:02:13 13:00:28-05:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: JPEG
 [File, File, Image] MIMEType - MIME Type: image/jpeg
@@ -169,6 +169,8 @@
 [MakerNotes, Pentax, Camera] 0.1 - Auto Aperture: On
 [MakerNotes, Pentax, Camera] 0.2 - Min Aperture: 22
 [MakerNotes, Pentax, Camera] 0.3 - Lens F Stops: 8.5
+[MakerNotes, Pentax, Camera] 3 - Min Focus Distance: 0.49-0.50 m
+[MakerNotes, Pentax, Camera] 3.1 - Focus Range Index: 7 (very far)
 [MakerNotes, Pentax, Camera] 9 - Focal Length: 10.0 mm
 [MakerNotes, Pentax, Camera] 10 - Nominal Max Aperture: 4.0
 [MakerNotes, Pentax, Camera] 10.1 - Nominal Min Aperture: 23
@@ -213,7 +215,7 @@
 [MakerNotes, Pentax, Image] 16 - WB Shift AB: 0
 [MakerNotes, Pentax, Image] 17 - WB Shift GM: 0
 [PrintIM, PrintIM, Printing] PrintIMVersion - PrintIM Version: 0300
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 9.81
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 9.85
 [XMP, XMP-dc, Time] date - Date: 2008:03:02
 [XMP, XMP-exif, Image] ComponentsConfiguration - Components Configuration: Y, Cb, Cr, -
 [XMP, XMP-exif, Camera] FlashFired - Flash Fired: False

@@ -11402,7 +11402,8 @@ gymnastics to decode them into useful values.
     0.3    LensFStops                           int8u & 0x70
       1    LensKind?                            int8u
       2    LC1?                                 int8u
-      3    LC2?                                 int8u
+      3    MinFocusDistance                     int8u & 0xf8
+    3.1    FocusRangeIndex                      int8u & 0x07
       4    LC3?                                 int8u
       5    LC4?                                 int8u
       6    LC5?                                 int8u
@@ -12300,6 +12301,7 @@ cameras.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
+  0x0207   RicohModel                           string
   0x0300   RicohMake                            N
 
 =head3 Ricoh Text Tags

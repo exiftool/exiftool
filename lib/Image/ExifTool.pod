@@ -1644,7 +1644,7 @@ specified, local time is assumed.  When shifting, the time of the original
 file is used unless the optional base time is specified.
 
 The ability to write FileCreateDate is currently restricted to Windows
-systems only, and requires Win32API::File::Time to be installed.
+systems only.
 
 =back
 

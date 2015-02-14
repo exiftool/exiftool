@@ -21,7 +21,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.07';
+$VERSION = '1.08';
 
 sub ProcessPEResources($$);
 sub ProcessPEVersion($$);
@@ -957,7 +957,7 @@ sub ProcessEXE($$)
 {
     my ($et, $dirInfo) = @_;
     my $raf = $$dirInfo{RAF};
-    my ($buff, $buf2, $type, $tagTablePtr, %dirInfo);
+    my ($buff, $buf2, $type, $mime, $tagTablePtr, %dirInfo);
 
     my $size = $raf->Read($buff, 0x40) or return 0;
 #
@@ -1163,6 +1163,7 @@ sub ProcessEXE($$)
 #
     } elsif ($buff =~ m{^#!\s*/\S*bin/(\w+)}) {
         $type = "$1 script";
+        $mime = "text/x-$1";
 #
 # .a libraries
 #
@@ -1170,7 +1171,7 @@ sub ProcessEXE($$)
         $type = 'Static library',
     }
     return 0 unless $type;
-    $et->SetFileType($type);
+    $et->SetFileType($type, $mime);
     return 1;
 }
 

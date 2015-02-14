@@ -12,7 +12,7 @@
 use strict;
 require 5.004;
 
-my $version = '9.84';
+my $version = '9.85';
 
 # add our 'lib' directory to the include list BEFORE 'use Image::ExifTool'
 my $exeDir;
@@ -51,8 +51,8 @@ sub DoSetFromFile($$$);
 sub CleanFilename($);
 sub ProcessFiles($;$);
 sub ScanDir($$;$);
+sub FindFileWindows($$);
 sub FileNotFound($);
-sub SetFileTime($@);
 sub PreserveTime();
 sub AbsPath($);
 sub SuggestedExtension($$$);
@@ -98,6 +98,7 @@ my %printFmt;       # the contents of the print format file
 my %setTags;        # hash of list references for tags to set from files
 my %setTagsList;    # list of other tag lists for multiple -tagsFromFile from the same file
 my %usedFileName;   # lookup for file names we already used in TestName feature
+my %utf8FileName;   # lookup for file names that are UTF-8 encoded
 my %warnedOnce;     # lookup for once-only warnings
 my %wext;           # -W extensions to write
 my $allGroup;       # show group name for all tags
@@ -380,6 +381,7 @@ undef %preserveTime;
 undef %setTags;
 undef %setTagsList;
 undef %usedFileName;
+undef %utf8FileName;
 undef %warnedOnce;
 undef %wext;
 undef $allGroup;
@@ -542,14 +544,14 @@ for (;;) {
     s/^\xe2\x88\x92/-/;         # translate double-dash too
     my $a = lc $_;
     if (/^list([wfrdx]|wf|g(\d*))?$/i) {
-        $pass or push(@nextPass,"-$_");
+        $pass or push @nextPass, "-$_";
         my $type = lc($1 || '');
         if (not $type or $type eq 'w' or $type eq 'x') {
             my $group;
             if ($ARGV[0] and $ARGV[0] =~ /^(-|\xe2\x88\x92)(.+):(all|\*)$/i) {
                 if ($pass == 0) {
                     $useMWG = 1 if lc($2) eq 'mwg';
-                    push(@nextPass, shift);
+                    push @nextPass, shift;
                     next;
                 }
                 $group = $2;
@@ -709,7 +711,7 @@ for (;;) {
         my $csvFile = $1;
         # must process on 2nd pass so -f and -charset options are available
         unless ($pass) {
-            push(@nextPass,"-$_");
+            push @nextPass, "-$_";
             if ($csvFile) {
                 push @newValues, { SaveCount => ++$saveCount }; # marker to save new values now
                 $csvSaveCount = $saveCount;
@@ -805,11 +807,24 @@ for (;;) {
     }
     if ($a eq 'geotag') {
         my $trkfile = shift;
+        unless ($pass) {
+            # defer to next pass so the filename charset is available
+            push @nextPass, '-geotag', $trkfile;
+            next;
+        }
         $trkfile or Error("Expecting file name for -geotag option\n"), $badCmd=1, next;
         # allow wildcards in filename
         if ($trkfile =~ /[*?]/) {
             # CORE::glob() splits on white space, so use File::Glob if possible
-            my @trks = eval('require File::Glob') ? File::Glob::bsd_glob($trkfile) : glob($trkfile);
+            my @trks;
+            if ($^O eq 'MSWin32' and eval { require Win32::FindFile }) {
+                # ("-charset filename=UTF8" must be set for this to work with Unicode file names)
+                @trks = FindFileWindows($mt, $trkfile);
+            } elsif (eval { require File::Glob }) {
+                @trks = File::Glob::bsd_glob($trkfile);
+            } else {
+                @trks = glob($trkfile);
+            }
             @trks or Error("No matching file found for -geotag option\n"), $badCmd=1, next;
             push @newValues, 'geotag='.shift(@trks) while @trks > 1;
             $trkfile = pop(@trks);
@@ -851,7 +866,7 @@ for (;;) {
         if ($2) {
             # must process on 2nd pass because we need -f and -charset options
             unless ($pass) {
-                push(@nextPass,"-$_");
+                push @nextPass, "-$_";
                 push @newValues, { SaveCount => ++$saveCount }; # marker to save new values now
                 $csvSaveCount = $saveCount;
                 next;
@@ -931,7 +946,7 @@ for (;;) {
             LoadPrintFormat($fmt);
         } else {
             # defer to next pass so the filename charset is available
-            push(@nextPass,'-p',$fmt);
+            push @nextPass, '-p', $fmt;
         }
         next;
     }
@@ -1146,13 +1161,24 @@ for (;;) {
             push @tags, $_;
         }
     }
-  } elsif ($doGlob and /[*?]/) {
-    # glob each filespec if necessary - MK/20061010
-    push @files, File::Glob::bsd_glob($_);
-    $doGlob = 2;
   } else {
-    push @files, $_;
-    $srcStdin = 1 if $_ eq '-';
+    unless ($pass) {
+        # defer to next pass so the filename charset is available
+        push @nextPass, $_;
+        next;
+    }
+    if ($doGlob and /[*?]/) {
+        if ($^O eq 'MSWin32' and eval { require Win32::FindFile }) {
+            push @files, FindFileWindows($mt, $_);
+        } else {
+            # glob each filespec if necessary - MK/20061010
+            push @files, File::Glob::bsd_glob($_);
+        }
+        $doGlob = 2;
+    } else {
+        push @files, $_;
+        $srcStdin = 1 if $_ eq '-';
+    }
   }
 }
 
@@ -1302,7 +1328,11 @@ if ($hasBackslash{$^O}) {
 # can't do anything if no file specified
 unless (@files) {
     unless ($outOpt) {
-        Warn "No file specified\n";
+        if ($doGlob and $doGlob == 2) {
+            Warn "No matching files\n";
+        } else {
+            Warn "No file specified\n";
+        }
         $rtnVal = 1;
         next;
     }
@@ -1491,7 +1521,7 @@ $fixLen = ($utf8 and $mt->Options('Lang') ne 'en' and eval 'require Encode');
 # sort input files if specified
 if (@fileOrder) {
     my @allFiles;
-    ProcessFiles(undef, \@allFiles);
+    ProcessFiles($mt, \@allFiles);
     my $sortTool = new Image::ExifTool;
     $sortTool->Options(PrintConv => $mt->Options('PrintConv'));
     $sortTool->Options(Duplicates => 0);
@@ -1529,7 +1559,7 @@ if (@fileOrder) {
 } elsif (defined $progress) {
     # expand FILE argument to count the number of files to process
     my @allFiles;
-    ProcessFiles(undef, \@allFiles);
+    ProcessFiles($mt, \@allFiles);
     @files = @allFiles;
 }
 # set file count for progress message
@@ -2589,7 +2619,7 @@ sub SetImageInfo($$$)
         # preserve the original file times
         if (defined $tmpFile) {
             if ($et->Exists($file)) {
-                SetFileTime($tmpFile, $aTime, $mTime, $cTime) if $preserveTime;
+                $et->SetFileTime($tmpFile, $aTime, $mTime, $cTime) if $preserveTime;
                 if ($isTemporary) {
                     # preserve original file attributes if possible
                     Image::ExifTool::CopyFileAttrs($file, $outfile);
@@ -2633,7 +2663,7 @@ sub SetImageInfo($$$)
                                 $et->SetFileModifyDate($file, $mTime, 'FileModifyDate', 1);
                                 $et->Unlink($newFile);
                                 if ($preserveTime) {
-                                    SetFileTime($file, $aTime, $mTime, $cTime);
+                                    $et->SetFileTime($file, $aTime, $mTime, $cTime);
                                     # save time to set it later again to patch OS X 10.6 bug
                                     $preserveTime{$file} = [ $aTime, $mTime, $cTime ];
                                 }
@@ -2690,7 +2720,7 @@ sub SetImageInfo($$$)
             $et->Unlink($tmpFile);
             ++$countSameWr;
         } else {
-            SetFileTime($outfile, $aTime, $mTime, $cTime) if defined $aTime;
+            $et->SetFileTime($outfile, $aTime, $mTime, $cTime) if defined $aTime;
             if ($overwriteOrig) {
                 $et->Unlink($file) or Warn "Error erasing original $file\n";
             }
@@ -3082,12 +3112,13 @@ sub CleanFilename($)
 #------------------------------------------------------------------------------
 # Process files in our @files list
 # Inputs: 0) ExifTool ref, 1) list ref to just return full file names
-# Notes: arg 0 is not used if arg 1 is defined
 sub ProcessFiles($;$)
 {
     my ($et, $list) = @_;
+    my $enc = $et->Options('CharsetFileName');
     my $file;
     foreach $file (@files) {
+        $et->Options(CharsetFileName => 'UTF8') if $utf8FileName{$file};
         if (defined $progressMax) {
             ++$progress;
             $progStr = " [$progress/$progressMax]";
@@ -3106,9 +3137,13 @@ sub ProcessFiles($;$)
             }
         } else {
             $validFile = 1;
-            $list and push(@$list, $file), next;
-            GetImageInfo($et, $file);
+            if ($list) {
+                push(@$list, $file);
+            } else {
+                GetImageInfo($et, $file);
+            }
         }
+        $et->Options(CharsetFileName => $enc) if $utf8FileName{$file};
     }
 }
 
@@ -3118,16 +3153,19 @@ sub ProcessFiles($;$)
 sub ScanDir($$;$)
 {
     my ($et, $dir, $list) = @_;
-    my (@fileList, $done, $file);
-    my $enc = $$et{OPTIONS}{CharsetFileName};
+    my (@fileList, $done, $file, $utf8Name);
+    my $enc = $et->Options('CharsetFileName');
     # recode as UTF-8 if necessary
-    if ($enc and $enc ne 'UTF8') {
-        $dir = $et->Decode($dir, $enc, undef, 'UTF8');
-        $$et{OPTIONS}{CharsetFileName} = 'UTF8';        # now using UTF8
+    if ($enc) {
+        unless ($enc eq 'UTF8') {
+            $dir = $et->Decode($dir, $enc, undef, 'UTF8');
+            $et->Options(CharsetFileName => 'UTF8');    # now using UTF8
+        }
+        $utf8Name = 1;
     }
     # use Win32::FindFile on Windows if available
     # (ReadDir will croak if there is a wildcard, so check for this)
-    if ($^O eq 'MSWin32' and $dir !~ /[\*\?]/) {
+    if ($^O eq 'MSWin32' and $dir !~ /[*?]/) {
         local $SIG{'__WARN__'} = sub { $evalWarning = $_[0] };;
         my $isUTF8 = 0;
         if ($dir =~ /[\x80-\xff]/) {
@@ -3144,7 +3182,8 @@ sub ScanDir($$;$)
         if ($isUTF8 >= 0) {
             if (eval { require Win32::FindFile }) {
                 @fileList = Win32::FindFile::ReadDir($dir);
-                $$et{OPTIONS}{CharsetFileName} = 'UTF8';    # now using UTF8
+                $et->Options(CharsetFileName => 'UTF8');    # now using UTF8
+                $utf8Name = 1;  # ReadDir returns UTF-8 file names
                 $done = 1;
             } else {
                 $done = 0;
@@ -3195,11 +3234,52 @@ sub ScanDir($$;$)
                 next unless $file =~ /\.(gz|bz2)$/i;
             }
         }
-        $list and push(@$list, $path), next;
-        GetImageInfo($et, $path);
+        if ($list) {
+            push(@$list, $path);
+            $utf8FileName{$path} = 1 if $utf8Name;
+        } else {
+            GetImageInfo($et, $path);
+        }
     }
     ++$countDir;
-    $$et{OPTIONS}{CharsetFileName} = $enc;  # restore original setting
+    $et->Options(CharsetFileName => $enc);  # restore original setting
+}
+
+#------------------------------------------------------------------------------
+# Find files with wildcard expression on Windows
+# Inputs: 0) ExifTool ref, 1) file name with wildcards
+# Returns: list of matching file names
+# Notes:
+# 1) Win32::FindFile must already be loaded
+# 2) Sets flag in %utf8FileName for each file found
+sub FindFileWindows($$)
+{
+    my ($et, $wildfile) = @_;
+
+    # recode file name as UTF-8 if necessary
+    my $enc = $et->Options('CharsetFileName');
+    $wildfile = $et->Decode($wildfile, $enc, undef, 'UTF8') if $enc and $enc ne 'UTF8';
+    $wildfile =~ tr/\\/\//; # use forward slashes
+    my ($dir, $wildname) = ($wildfile =~ m{(.*/)(.*)}) ? ($1, $2) : ('', $wildfile);
+    if ($dir =~ /[*?]/) {
+        Warn "Wildcards don't work in the directory specification\n";
+        return ();
+    }
+    local $SIG{'__WARN__'} = sub { $evalWarning = $_[0] };;
+    my @names = Win32::FindFile::FindFile($wildfile) or return ();
+    my ($rname, $nm, @files);
+    # replace "\?" with ".", and "\*" with ".*" for regular expression
+    ($rname = quotemeta $wildname) =~ s/\\\?/./g;
+    $rname =~ s/\\\*/.*/g;
+    foreach $nm (@names) {
+        # make sure that FindFile behaves
+        # (otherwise "*.jpg" matches things like "a.jpg_original"!)
+        next unless $nm =~ /^$rname$/;
+        my $file = "$dir$nm";
+        push @files, $file;
+        $utf8FileName{$file} = 1;   # flag this file name as UTF-8 encoded
+    }
+    return @files;
 }
 
 #------------------------------------------------------------------------------
@@ -3215,32 +3295,12 @@ sub FileNotFound($)
 }
 
 #------------------------------------------------------------------------------
-# Set file system times
-# Inputs: 0) file name, 1) access time, 2) modification time, 3) inode change or creation time
-# Notes: issues warning if modification/access times can't be set
-sub SetFileTime($@)
-{
-    my ($file, $aTime, $mTime, $cTime) = @_;
-    my $success;
-    # set creation time for Windows systems only (if Win32API::File::Time is available)
-    if ($^O eq 'MSWin32' and eval { require Win32API::File::Time }) {
-        # (don't hide in eval because we build Windows version against Perl 5.8)
-        my $wfile = $file;
-        local ${^WIDE_SYSTEM_CALLS} = $mt->EncodeFileName($wfile);
-        $success = Win32API::File::Time::SetFileTime($wfile, $aTime, $mTime, $cTime);
-    } else {
-        $success = utime($aTime, $mTime, $file);
-    }
-    $success or Warn "Error setting file time - $file\n";
-}
-
-#------------------------------------------------------------------------------
 # Patch for OS X 10.6 to preserve file modify date
 # (this probably isn't a 100% fix, but it may solve a majority of the cases)
 sub PreserveTime()
 {
     local $_;
-    SetFileTime($_, @{$preserveTime{$_}}) foreach keys %preserveTime;
+    $mt->SetFileTime($_, @{$preserveTime{$_}}) foreach keys %preserveTime;
     undef %preserveTime;
 }
 
@@ -3258,7 +3318,7 @@ sub AbsPath($)
         # make the delimiters and case consistent
         # (abs_path is very inconsistent about what it returns in Windows)
         if (defined $path and $hasBackslash{$^O}) {
-            $path =~ tr/\\/\// ;
+            $path =~ tr/\\/\//;
             $path = lc $path;
         }
     }
@@ -3472,22 +3532,38 @@ sub NextUnusedFilename($;$$)
 # Create directory for specified file
 # Inputs: 0) complete file name including path
 # Returns: true if a directory was created
+my $k32CreateDir;
 sub CreateDirectory($)
 {
     my $file = shift;
     my ($dir, $created);
     ($dir = $file) =~ s/[^\/]*$//;  # remove filename from path specification
-    if ($dir and not -d $dir) {
+    if ($dir and not $mt->IsDirectory($dir)) {
         my @parts = split /\//, $dir;
         $dir = '';
         foreach (@parts) {
             $dir .= $_;
-            if (length $dir and not -d $dir and
+            if (length $dir and not $mt->IsDirectory($dir) and
                 # don't try to create a network drive root directory
                 not ($hasBackslash{$^O} and $dir =~ m{^//[^/]*$}))
             {
+                my $success;
                 # create directory since it doesn't exist
-                mkdir($dir, 0777) or Error("Error creating directory $dir\n"), return 0;
+                my $d2 = $dir; # (must make a copy in case EncodeFileName recodes it)
+                if ($mt->EncodeFileName($d2)) {
+                    # handle Windows Unicode directory names
+                    unless (eval { require Win32::API }) {
+                        Error('Install Win32::API to create directories with Unicode names');
+                        return 0;
+                    }
+                    unless ($k32CreateDir) {
+                        $k32CreateDir = new Win32::API('KERNEL32', 'CreateDirectoryW', 'PP', 'I');
+                    }
+                    $success = $k32CreateDir->Call($d2, 0) if $k32CreateDir;
+                } else {
+                    $success = mkdir($d2, 0777);
+                }
+                $success or Error("Error creating directory $dir\n"), return 0;
                 $verbose and print $vout "Created directory $dir\n";
                 $created = 1;
             }
@@ -4217,6 +4293,10 @@ OPTIONS
          Also note that the second command above will produce warning
          messages for any tags which are not writable.
 
+         As well, the -sep option should be used when reading back to
+         maintain separate list items, and the -struct option may be used
+         when extracting to preserve structured XMP information.
+
     -b (-binary)
          Output requested metadata in binary format without tag names or
          descriptions. This option is mainly used for extracting embedded
@@ -4310,9 +4390,9 @@ OPTIONS
          *CSVFILE* must be the ExifTool tag names (with optional group
          names) for each column of the file, and values must be separated by
          commas. A special "SourceFile" column specifies the files
-         associated with each row of information (a SourceFile of "*" may be
-         used to match any source file name). The following examples
-         demonstrate basic use of this option:
+         associated with each row of information (and a SourceFile of "*"
+         may be used to define default tags to be imported for all files).
+         The following examples demonstrate basic use of this option:
 
              # generate CSV file with common tags from all images in a directory
              exiftool -common -csv dir > out.csv
@@ -4441,16 +4521,20 @@ OPTIONS
          If *JSONFILE* is specified, the file is imported and the tag
          definitions from the file are used to set tag values on a per-file
          basis. The special "SourceFile" entry in each JSON object
-         associates the information with a specific target file (see the
-         -csv option for details). The imported JSON file must have the same
-         format as the exported JSON files with the exception that the -g
-         option is not compatible with the import file format (use -G
+         associates the information with a specific target file. An object
+         with a missing SourceFile or a SourceFile of "*" defines default
+         tags for all target files. The imported JSON file must have the
+         same format as the exported JSON files with the exception that the
+         -g option is not compatible with the import file format (use -G
          instead). Additionally, tag names in the input JSON file may be
-         suffixed with a "#" to disable print conversion. Unlike CSV import,
-         empty values are not ignored, and will cause an empty value to be
-         written if supported by the specific metadata type. Tags are
-         deleted by using the -f option and setting the tag value to "-" (or
-         to the MissingTagValue setting if this API option was used).
+         suffixed with a "#" to disable print conversion.
+
+         Unlike CSV import, empty values are not ignored, and will cause an
+         empty value to be written if supported by the specific metadata
+         type. Tags are deleted by using the -f option and setting the tag
+         value to "-" (or to the MissingTagValue setting if this API option
+         was used). Importing with -j+=*JSONFILE* causes new values to be
+         added to existing lists.
 
     -l (-long)
          Use long 2-line Canon-style output format. Adds a description and
@@ -4543,7 +4627,7 @@ OPTIONS
 
          produces output like this:
 
-             -- Generated by ExifTool 9.84 --
+             -- Generated by ExifTool 9.85 --
              File: a.jpg - 2003:10:31 15:44:19
              (f/5.6, 1/60s, ISO 100)
              File: b.jpg - 2006:05:23 11:57:38
@@ -4751,6 +4835,7 @@ OPTIONS
              -w F%-.4nc.txt    # F-0001.txt, F-0002.txt, F-0003.txt ...
              -w G%+c.txt       # G.txt, G_1.txt G_2.txt ...
              -w H%-lc.txt      # H.txt, H-b.txt, H-c.txt ...
+             -w I.%.3uc.txt    # I.AAA.txt, I.AAB.txt, I.AAC.txt ...
 
          A special feature allows the copy number to be incremented for each
          processed file by using %C (upper case) instead of %c. This allows
@@ -5063,8 +5148,8 @@ OPTIONS
          Preserve the filesystem modification date/time of the original file
          ("FileModifyDate") when writing. Note that some filesystems store a
          creation date which is not preserved by this option, with the
-         exception of Windows systems where Win32API::File::Time is
-         available. For other systems, the -overwrite_original_in_place
+         exception of Windows systems where Win32API::File and Win32::API
+         are available. For other systems, the -overwrite_original_in_place
          option may be used if necessary to preserve the creation date.
 
     -password *PASSWD*
@@ -5453,18 +5538,14 @@ WINDOWS UNICODE FILE NAMES
     filename=" option must come before the -@ option to be effective, but
     the order doesn't matter with respect to other options.
 
-    Note that FileName and Directory tag values still use the same encoding
-    as other tag values, and are converted to/from the filename character
-    set when writing/reading if specified.
+    Notes:
 
-    There are, however, two limitations in the current implementation of
-    Unicode file name support on Windows:
+    1) FileName and Directory tag values still use the same encoding as
+    other tag values, and are converted to/from the filename character set
+    when writing/reading if specified.
 
-    1) Wildcards will not match files with Unicode characters in their
-    names. (Instead of wildcards, provide a directory name and use the -ext
-    option to specify the file extensions to process.)
-
-    2) Directories may not be created with Unicode characters in the path.
+    2) Unicode support is not yet implemented for other Windows-based
+    systems like Cygwin.
 
 READING EXAMPLES
     exiftool -a -u -g1 a.jpg

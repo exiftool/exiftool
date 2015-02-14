@@ -336,6 +336,8 @@ my %meterInfo2 = (
         MakerNotes.
     },
     0x0010 => [ #PH
+        # appears to contain mostly AF related information;
+        # for SLT-A77V and newer, similar info is found in 0x940e AFInfo" (ref 12)
         {
             Name => 'CameraInfo',
             # count: A700=368, A850/A900=5478
@@ -368,6 +370,8 @@ my %meterInfo2 = (
     # 0x0018 - starts with "GYRO" for sweep panorama images (ref 12)
     #        - contains ImageStabilization information for Minolta
     0x0020 => [
+        # similar to WBInfoA100 in Minolta.pm.
+        # appears to contain various types of information, as in MoreInfo. (ref 12)
         {
             Name => 'FocusInfo', #PH
             # count: A200/A230/A290/A300/A330/A350/A380/A390==19154, A700/A850/A900=19148
@@ -1885,6 +1889,7 @@ my %meterInfo2 = (
         Condition => '$$self{Model} =~ /^DSLR-A(850|900)\b/',
         Mask => 0x7f,
     },
+    # 0x0166 - 40 x 128 int8u values: AF Info Blocks for A850 and A900, not for A700
 );
 
 # camera information for other DSLR models (ref 12)
@@ -1969,6 +1974,8 @@ my %meterInfo2 = (
     0x002d => { Name => 'AFStatusLeft',             %Image::ExifTool::Minolta::afStatusInfo },
     0x002f => { Name => 'AFStatusCenterHorizontal', %Image::ExifTool::Minolta::afStatusInfo },
     0x0031 => { Name => 'AFStatusRight',            %Image::ExifTool::Minolta::afStatusInfo },
+    # 0x0166 -  59 x 96 int8u values: AF Info Blocks for A230/A290/A330/A380/A390
+    # 0x0182 -  58 x 88 int8u values: AF Info Blocks for A200/A300/A350
 );
 
 # Camera information for the A55 (ref PH)
@@ -2168,8 +2175,8 @@ my %meterInfo2 = (
     0x2d => { Name => 'AFStatusLeft',             Condition => '$$self{Model} =~ /^DSLR-A(450|500|550)\b/', %Image::ExifTool::Minolta::afStatusInfo },
     0x2f => { Name => 'AFStatusCenterHorizontal', Condition => '$$self{Model} =~ /^DSLR-A(450|500|550)\b/', %Image::ExifTool::Minolta::afStatusInfo },
     0x31 => { Name => 'AFStatusRight',            Condition => '$$self{Model} =~ /^DSLR-A(450|500|550)\b/', %Image::ExifTool::Minolta::afStatusInfo },
-    # 0x0166 - starting here there are 96 unknown blocks of 155 bytes each for the SLT-A33/A35/A55 and DSLR-A560/A580,
-    #          starting here there are 86 unknown blocks of 174 bytes each for the DSLR-A450/A500/A550,
+    # 0x0166 - starting here there are 96 AF Info blocks of 155 bytes each for the SLT-A33/A35/A55 and DSLR-A560/A580,
+    #          starting here there are 86 AF Info blocks of 174 bytes each for the DSLR-A450/A500/A550,
     #          but NOT for NEX, and not for the A580 in Contrast-AF mode (ref 12)
     #          The 43rd byte of each block for A580 appears to be the AFPoint as in offset 0x20,
     #          possibly also 73rd and 74th byte
@@ -7246,13 +7253,13 @@ my %exposureProgram2010 = (
         SeparateTable => 'ExposureProgram3',
         PrintConv => \%sonyExposureProgram3,
     },
-    # 0x021b - AFStatus79 ? - 95 int16s values which would match ILCA-77M2 79 AF points + 15 cross + 1 F2.8
-    # 0x04c0 - start 45 blocks of 244 bytes each for ILCA-77M2
-    # 0x01b8 start 65 Blocks of 180 bytes each for SLT (ref 12)
+    # 0x01b8 - 65 AF Info blocks of 180 bytes each for SLT (ref 12)
     # In each block, the 9th, 10th and 11th byte appear to relate to AFPoint as at offsets 0x07, 0x08, 0x09 above..
     # Possibly, these blocks relate to sequential focusing attempts and/or object tracking,
     # the first byte being an Index or Counter.
     # The last block before the block with index 0, appears to relate to the AF data at ShutterRelease.
+    # 0x021b - AFStatus79 ? - 95 int16s values which would match ILCA-77M2 79 AF points + 15 cross + 1 F2.8
+    # 0x04c0 - 45 AF Info blocks of 244 bytes each for ILCA
 
     # 0xf38,0x1208,0x14d8,0x158c,0x1640,(and more) - 0 if AFMicroAdj is On, 1 if Off
     # 0x1ab6 - 0x80 if AFMicroAdj is On, 0 if Off

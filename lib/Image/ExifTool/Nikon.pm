@@ -58,7 +58,7 @@ use vars qw($VERSION %nikonLensIDs %nikonTextEncoding);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '3.00';
+$VERSION = '3.01';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -277,8 +277,8 @@ sub GetAFPointGrid($$;$);
     'A8 48 80 98 30 30 AA 0E' => 'AF-S VR Zoom-Nikkor 200-400mm f/4G IF-ED II', #http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,3218.msg15495.html#msg15495
     'A9 54 80 80 18 18 AB 0E' => 'AF-S Nikkor 200mm f/2G ED VR II',
     'AA 3C 37 6E 30 30 AC 0E' => 'AF-S Nikkor 24-120mm f/4G ED VR',
-    'AC 38 53 8E 34 3C AE 0E' => 'AF-S DX VR Nikkor 55-300mm 4.5-5.6G ED',
-    'AD 3C 2D 8E 2C 3C AF 0E' => 'AF-S DX Nikkor 18-300mm 3.5-5.6G ED VR',
+    'AC 38 53 8E 34 3C AE 0E' => 'AF-S DX VR Nikkor 55-300mm f/4.5-5.6G ED',
+    'AD 3C 2D 8E 2C 3C AF 0E' => 'AF-S DX Nikkor 18-300mm f/3.5-5.6G ED VR',
     'AE 54 62 62 0C 0C B0 06' => 'AF-S Nikkor 85mm f/1.4G',
     'AF 54 44 44 0C 0C B1 06' => 'AF-S Nikkor 35mm f/1.4G',
     'B0 4C 50 50 14 14 B2 06' => 'AF-S Nikkor 50mm f/1.8G',
@@ -840,8 +840,8 @@ my %binaryDataAttrs = (
     #   both:     "Built-in,TTL&Comdr."
     #   no flash: ""
     0x0009 => { Name => 'FlashType',    Writable => 'string' }, #2 (count varies by model - PH)
-    # 0x000a - rational values: 5.6 to 9.283 - found in coolpix models - PH
-    #          (not correlated with any LV or scale factor)
+    # 0x000a - rational values: 5.6 to 9.33 - found in Coolpix models - PH
+    #          (seems constant for a given camera model, but not correlated with scale factor)
     0x000b => { #2
         Name => 'WhiteBalanceFineTune',
         Writable => 'int16s',

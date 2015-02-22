@@ -696,12 +696,12 @@ L10 and LC80)</span></span><table class=cols><tr>
 <td title='0x0090 = 144'>0x0090</td>
 <td>RollAngle</td>
 <td class=c>int16u</td>
-<td><span class=s><span class=n>(degrees of clockwise camera rotation)</span></span></td></tr>
+<td><span class=s><span class=n>(converted to degrees of clockwise camera rotation)</span></span></td></tr>
 <tr>
 <td title='0x0091 = 145'>0x0091</td>
 <td>PitchAngle</td>
 <td class=c>int16u</td>
-<td><span class=s><span class=n>(degrees of upward camera tilt)</span></span></td></tr>
+<td><span class=s><span class=n>(converted to degrees of upward camera tilt)</span></span></td></tr>
 <tr class=b>
 <td title='0x0093 = 147'>0x0093</td>
 <td>SweepPanoramaDirection</td>
@@ -1134,57 +1134,59 @@ on the M9, or the focal length of some multi-focal lenses.</p>
 <table class='inner sep' cellspacing=1>
 <tr class=h><th>Value</th><th>LensType</th><th>Value</th><th>LensType</th></tr>
 <tr><td>1</td><td>= Elmarit-M 21mm f/2.8</td>
-<td class=b>42</td><td class=b>= Tri-Elmar-M 28-35-50mm f/4 ASPH.</td>
-</tr><tr><td>3</td><td>= Elmarit-M 28mm f/2.8 (III)</td>
 <td class=b>43</td><td class=b>= Summarit-M 35mm f/2.5</td>
-</tr><tr><td>4</td><td>= Tele-Elmarit-M 90mm f/2.8 (II)</td>
+</tr><tr><td>3</td><td>= Elmarit-M 28mm f/2.8 (III)</td>
 <td class=b>44</td><td class=b>= Summarit-M 50mm f/2.5</td>
-</tr><tr><td>5</td><td>= Summilux-M 50mm f/1.4 (II)</td>
+</tr><tr><td>4</td><td>= Tele-Elmarit-M 90mm f/2.8 (II)</td>
 <td class=b>45</td><td class=b>= Summarit-M 75mm f/2.5</td>
-</tr><tr><td>6</td><td>= Summicron-M 35mm f/2 (IV)</td>
+</tr><tr><td>5</td><td>= Summilux-M 50mm f/1.4 (II)</td>
 <td class=b>46</td><td class=b>= Summarit-M 90mm f/2.5</td>
-</tr><tr><td>7</td><td>= Summicron-M 90mm f/2 (II)</td>
+</tr><tr><td>6</td><td>= Summicron-M 35mm f/2 (IV)</td>
 <td class=b>47</td><td class=b>= Summilux-M 21mm f/1.4 ASPH.</td>
-</tr><tr><td>9</td><td>= Elmarit-M 135mm f/2.8 (I/II)</td>
+</tr><tr><td>7</td><td>= Summicron-M 90mm f/2 (II)</td>
 <td class=b>48</td><td class=b>= Summilux-M 24mm f/1.4 ASPH.</td>
-</tr><tr><td>16</td><td>= Tri-Elmar-M 16-18-21mm f/4 ASPH.</td>
+</tr><tr><td>9</td><td>= Elmarit-M 135mm f/2.8 (I/II)</td>
 <td class=b>49</td><td class=b>= Noctilux-M 50mm f/0.95 ASPH.</td>
-</tr><tr><td>23</td><td>= Summicron-M 50mm f/2 (III)</td>
+</tr><tr><td>16</td><td>= Tri-Elmar-M 16-18-21mm f/4 ASPH.</td>
 <td class=b>50</td><td class=b>= Elmar-M 24mm f/3.8 ASPH.</td>
-</tr><tr><td>24</td><td>= Elmarit-M 21mm f/2.8 ASPH.</td>
+</tr><tr><td>23</td><td>= Summicron-M 50mm f/2 (III)</td>
 <td class=b>51</td><td class=b>= Super-Elmar-M 21mm f/3.4 Asph</td>
-</tr><tr><td>25</td><td>= Elmarit-M 24mm f/2.8 ASPH.</td>
+</tr><tr><td>24</td><td>= Elmarit-M 21mm f/2.8 ASPH.</td>
 <td class=b>52</td><td class=b>= Super-Elmar-M 18mm f/3.8 ASPH.</td>
-</tr><tr><td>26</td><td>= Summicron-M 28mm f/2 ASPH.</td>
+</tr><tr><td>25</td><td>= Elmarit-M 24mm f/2.8 ASPH.</td>
 <td class=b>'0 0'</td><td class=b>= Uncoded lens</td>
-</tr><tr><td>27</td><td>= Elmarit-M 28mm f/2.8 (IV)</td>
+</tr><tr><td>26</td><td>= Summicron-M 28mm f/2 ASPH.</td>
 <td class=b>'6 0'</td><td class=b>= Summilux-M 35mm f/1.4</td>
-</tr><tr><td>28</td><td>= Elmarit-M 28mm f/2.8 ASPH.</td>
+</tr><tr><td>27</td><td>= Elmarit-M 28mm f/2.8 (IV)</td>
 <td class=b>'9 0'</td><td class=b>= Apo-Telyt-M 135mm f/3.4</td>
-</tr><tr><td>29</td><td>= Summilux-M 35mm f/1.4 ASPH.</td>
+</tr><tr><td>28</td><td>= Elmarit-M 28mm f/2.8 ASPH.</td>
 <td class=b>'16 1'</td><td class=b>= Tri-Elmar-M 16-18-21mm f/4 ASPH. (at 16mm)</td>
-</tr><tr><td>30</td><td>= Summicron-M 35mm f/2 ASPH.</td>
+</tr><tr><td>29</td><td>= Summilux-M 35mm f/1.4 ASPH.</td>
 <td class=b>'16 2'</td><td class=b>= Tri-Elmar-M 16-18-21mm f/4 ASPH. (at 18mm)</td>
-</tr><tr><td>31</td><td>= Noctilux-M 50mm f/1</td>
+</tr><tr><td>30</td><td>= Summicron-M 35mm f/2 ASPH.</td>
 <td class=b>'16 3'</td><td class=b>= Tri-Elmar-M 16-18-21mm f/4 ASPH. (at 21mm)</td>
-</tr><tr><td>32</td><td>= Summilux-M 50mm f/1.4 ASPH.</td>
+</tr><tr><td>31</td><td>= Noctilux-M 50mm f/1</td>
 <td class=b>'29 0'</td><td class=b>= Summilux-M 35mm f/1.4 ASPHERICAL</td>
-</tr><tr><td>33</td><td>= Summicron-M 50mm f/2 (IV, V)</td>
+</tr><tr><td>32</td><td>= Summilux-M 50mm f/1.4 ASPH.</td>
 <td class=b>'31 0'</td><td class=b>= Noctilux-M 50mm f/1.2</td>
-</tr><tr><td>34</td><td>= Elmar-M 50mm f/2.8</td>
+</tr><tr><td>33</td><td>= Summicron-M 50mm f/2 (IV, V)</td>
 <td class=b>'39 0'</td><td class=b>= Tele-Elmar-M 135mm f/4 (II)</td>
-</tr><tr><td>35</td><td>= Summilux-M 75mm f/1.4</td>
+</tr><tr><td>34</td><td>= Elmar-M 50mm f/2.8</td>
 <td class=b>'41 3'</td><td class=b>= Apo-Summicron-M 50mm f/2 Asph</td>
-</tr><tr><td>36</td><td>= Apo-Summicron-M 75mm f/2 ASPH.</td>
+</tr><tr><td>35</td><td>= Summilux-M 75mm f/1.4</td>
 <td class=b>'42 1'</td><td class=b>= Tri-Elmar-M 28-35-50mm f/4 ASPH. (at 28mm)</td>
-</tr><tr><td>37</td><td>= Apo-Summicron-M 90mm f/2 ASPH.</td>
+</tr><tr><td>36</td><td>= Apo-Summicron-M 75mm f/2 ASPH.</td>
 <td class=b>'42 2'</td><td class=b>= Tri-Elmar-M 28-35-50mm f/4 ASPH. (at 35mm)</td>
-</tr><tr><td>38</td><td>= Elmarit-M 90mm f/2.8</td>
+</tr><tr><td>37</td><td>= Apo-Summicron-M 90mm f/2 ASPH.</td>
 <td class=b>'42 3'</td><td class=b>= Tri-Elmar-M 28-35-50mm f/4 ASPH. (at 50mm)</td>
-</tr><tr><td>39</td><td>= Macro-Elmar-M 90mm f/4</td>
+</tr><tr><td>38</td><td>= Elmarit-M 90mm f/2.8</td>
 <td class=b>'51 2'</td><td class=b>= Super-Elmar-M 14mm f/3.8 Asph</td>
-</tr><tr><td>40</td><td>= Macro-Adapter M</td>
+</tr><tr><td>39</td><td>= Macro-Elmar-M 90mm f/4</td>
 <td class=b>'53 2'</td><td class=b>= Apo-Telyt-M 135mm f/3.4</td>
+</tr><tr><td>40</td><td>= Macro-Adapter M</td>
+<td class=b>'53 3'</td><td class=b>= Apo-Summicron-M 50mm f/2 (VI)</td>
+</tr><tr><td>42</td><td>= Tri-Elmar-M 28-35-50mm f/4 ASPH.</td>
+<td class=b>&nbsp;</td><td class=b>&nbsp;</td>
 </tr></table></td></tr></table></blockquote>
 
 <h2><a name='Leica3'>Panasonic Leica3 Tags</a></h2>
@@ -1682,7 +1684,7 @@ various Panasonic and Leica models.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Dec 23, 2014</i>
+<br><i>Last revised Feb 22, 2015</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

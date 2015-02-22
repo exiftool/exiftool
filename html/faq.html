@@ -700,6 +700,12 @@ If you see a "<code>LOADED!</code>" message when you run exiftool, but your new
 tags still don't work, make sure you are using the proper tag name and that the
 file you are writing can support this type of information.</blockquote>
 
+<blockquote>Note that all tag names in the config file are <b>case
+sensitive</b>.  Specifically, the case must be correct for tag names in
+Composite tag Require/Desire entries.  Also note that XMP tag names are
+generated automatically by capitalizing the tag ID unless the tag definition
+contains a "Name" entry.</blockquote>
+
 <blockquote class=prog><b>Programmers</b>: To specify the config file directory from within
 a Perl script when using the ExifTool API, set the <b>EXIFTOOL_HOME</b>
 environment variable before loading the ExifTool module:
@@ -1514,7 +1520,7 @@ importing.</blockquote>
 for more details.</blockquote>
 
 <hr>
-<i>Last revised Jan 19, 2015</i>
+<i>Last revised Feb 19, 2015</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

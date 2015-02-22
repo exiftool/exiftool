@@ -5078,13 +5078,13 @@ my %binaryDataAttrs = (
     },
     1 => {
         Name => 'RollAngle',
-        Notes => 'degrees of clockwise camera rotation',
+        Notes => 'converted to degrees of clockwise camera rotation',
         ValueConv => '-$val / 2',
         ValueConvInv => '-$val * 2',
     },
     2 => {
         Name => 'PitchAngle',
-        Notes => 'degrees of upward camera tilt',
+        Notes => 'converted to degrees of upward camera tilt',
         ValueConv => '-$val / 2',
         ValueConvInv => '-$val * 2',
     },

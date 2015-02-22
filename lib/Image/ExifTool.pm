@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '9.85';
+$VERSION = '9.86';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -3052,7 +3052,7 @@ sub EncodeFileName($$;$)
 }
 
 #------------------------------------------------------------------------------
-# Modified perl open() routine
+# Modified perl open() routine to properly handle special characters in file names
 # Inputs: 0) ExifTool ref, 1) filehandle, 2) filename,
 #         3) mode: '<' or undef = read, '>' = write, '+<' = update
 # Returns: true on success
@@ -3067,17 +3067,16 @@ sub Open($*$;$)
     $mode = ($file =~ /\|$/ ? '' : '<') unless $mode;
     if ($mode) {
         if ($self->EncodeFileName($file)) {
+            # handle Windows Unicode file name
             local $SIG{'__WARN__'} = \&SetWarning;
             my ($access, $create);
             if ($mode eq '>') {
-                $access = Win32API::File::GENERIC_WRITE();
-                $create = Win32API::File::CREATE_NEW();
-            } elsif ($mode eq '+<') {
-                $access = Win32API::File::GENERIC_READ() | Win32API::File::GENERIC_WRITE();
-                $create = Win32API::File::OPEN_EXISTING();
+                $access  = Win32API::File::GENERIC_WRITE();
+                $create  = Win32API::File::CREATE_NEW();
             } else {
-                $access = Win32API::File::GENERIC_READ();
-                $create = Win32API::File::OPEN_EXISTING();
+                $access  = Win32API::File::GENERIC_READ();
+                $access |= Win32API::File::GENERIC_WRITE() if $mode eq '+<'; # update
+                $create  = Win32API::File::OPEN_EXISTING();
             }
             my $wh = Win32API::File::CreateFileW($file, $access, 0, [], $create, 0, []);
             return undef unless $wh;
@@ -3905,14 +3904,7 @@ sub IsRational($) { return scalar($_[0] =~ m{^[-+]?\d+/\d+$}); }
 sub RoundFloat($$)
 {
     my ($val, $sig) = @_;
-    $val == 0 and return 0;
-    # handle integers specially (to avoid rounding problems with "10 ** $exp"
-    # which caused failed tests with Perl 5.16 on MSWin32-x64-multi-thread)
-    return $val if $val == int($val) and abs($val) < "1e$sig";
-    my $sign = $val < 0 ? ($val=-$val, -1) : 1;
-    my $log = log($val) / log(10);
-    my $exp = int($log) - $sig + ($log > 0 ? 1 : 0);
-    return $sign * int(10 ** ($log - $exp) + 0.5) * 10 ** $exp;
+    return sprintf("%.${sig}g", $val);
 }
 
 # Convert strings to floating point numbers (or undef)

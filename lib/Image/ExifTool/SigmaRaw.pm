@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Sigma;
 
-$VERSION = '1.22';
+$VERSION = '1.23';
 
 sub ProcessX3FHeader($$$);
 sub ProcessX3FDirectory($$$);
@@ -570,7 +570,7 @@ sub ProcessX3F($$)
     # check version number
     my $ver = unpack('x4V',$buff);
     $ver = ($ver >> 16) . '.' . ($ver & 0xffff);
-    if ($ver > 4) {
+    if ($ver > 5) {
         &$warn($et, "Untested X3F version ($ver). Please submit sample for testing", 1);
     }
     # read version 2.1/2.2/2.3 extended header

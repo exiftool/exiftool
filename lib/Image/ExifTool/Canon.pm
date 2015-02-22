@@ -83,7 +83,7 @@ sub ProcessSerialData($$$);
 sub ProcessFilters($$$);
 sub SwapWords($);
 
-$VERSION = '3.43';
+$VERSION = '3.44';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -386,7 +386,8 @@ $VERSION = '3.43';
     490 => 'Canon EF 8-15mm f/4L USM', #Klaus Reinfeld
     491 => 'Canon EF 300mm f/2.8L IS II USM', #42
     492 => 'Canon EF 400mm f/2.8L IS II USM', #PH
-    493 => 'Canon EF 24-105mm f/4L IS USM', #PH
+    493 => 'Canon EF 500mm f/4L IS II USM or EF 24-105mm f4L IS USM', #PH
+    493.1 => 'Canon EF 24-105mm f/4L IS USM', #PH (should recheck this)
     494 => 'Canon EF 600mm f/4.0L IS II USM', #PH
     495 => 'Canon EF 24-70mm f/2.8L II USM', #PH
     496 => 'Canon EF 200-400mm f/4L IS USM', #PH
@@ -5681,17 +5682,17 @@ my %ciMaxFocal = (
             1 => 'AF Point Expansion (surround)', #PH
             2 => 'Single-point AF',
             # 3 - n/a
-            4 => 'Multi-point AF or AI AF', # AiAF on A570IS
+            4 => 'Auto', #forum6237 (AiAF on A570IS)
             5 => 'Face Detect AF',
-            6 => 'Face + Tracking', #PH (NC, EOS M)
+            6 => 'Face + Tracking', #PH (NC, EOS M, live view)
             7 => 'Zone AF', #46
-            8 => 'AF Point Expansion (top/bottom/left/right)', #46/PH
+            8 => 'AF Point Expansion (4 point)', #46/PH/forum6237
             9 => 'Spot AF', #46
-            # 10 - also "Flexizone Multi"? (PH)
-            11 => 'Flexizone Multi', #PH (NC, EOS M)
+            10 => 'AF Point Expansion (8 point)', #forum6237
+            11 => 'Flexizone Multi', #PH (NC, EOS M, live view)
             # 12 - also "Flexizone Multi"? (PH)
-            13 => 'Flexizone Single', #PH (EOS M default)
-            14 => 'Manual select Large Zone', #PH (7DmkII)
+            13 => 'Flexizone Single', #PH (EOS M default, live view)
+            14 => 'Large Zone AF', #PH/forum6237 (7DmkII)
         },
     },
     2 => {

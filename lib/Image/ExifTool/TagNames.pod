@@ -6959,6 +6959,7 @@ RAF-format information.
   0x0100  RawImageFullSize                      N
   0x0121  RawImageSize                          N
   0x0130  FujiLayout                            N
+  0x0131  XTransLayout                          N
   0x2000  WB_GRGBLevelsAuto                     N
   0x2100  WB_GRGBLevelsDaylight                 N
   0x2200  WB_GRGBLevelsCloudy                   N
@@ -6969,6 +6970,7 @@ RAF-format information.
   0x2311  WB_GRGBLevelsLivingRoomWarmWhiteFluor N
   0x2400  WB_GRGBLevelsTungsten                 N
   0x2ff0  WB_GRGBLevels                         N
+  0x9650  RawExposureBias                       N
   0xc000  RAFData                               FujiFilm RAFData
 
 =head3 FujiFilm RAFData Tags
@@ -10368,8 +10370,8 @@ any information found here will be extracted, even if the tag is not listed.
   0x0900   ManometerPressure                    int16u
   0x0901   ManometerReading                     int32s[2]
   0x0902   ExtendedWBDetect                     int16u
-  0x0903   LevelGaugeRoll                       int16u
-  0x0904   LevelGaugePitch                      int16u
+  0x0903   RollAngle                            int16s[2]
+  0x0904   PitchAngle                           int16s[2]
   0x0908   DateTimeUTC                          string
 
 =head3 Olympus RawDevelopment Tags

@@ -4567,7 +4567,7 @@ my %nikonFocalConversions = (
     0x350b => {
         Name => 'RollAngle',
         Format => 'fixed32u',
-        Notes => 'degrees of clockwise camera rotation',
+        Notes => 'converted to degrees of clockwise camera rotation',
         ValueConv => '$val < 180 ? -$val : 360 - $val',
         ValueConvInv => '$val <= 0 ? -$val : 360 - $val',
         PrintConv => 'sprintf("%.1f", $val)',
@@ -4576,7 +4576,7 @@ my %nikonFocalConversions = (
     0x350f => {
         Name => 'PitchAngle',
         Format => 'fixed32u',
-        Notes => 'degrees of upward camera tilt',
+        Notes => 'converted to degrees of upward camera tilt',
         ValueConv => '$val <= 180 ? $val : $val - 360',
         ValueConvInv => '$val >= 0 ? $val : $val + 360',
         PrintConv => 'sprintf("%.1f", $val)',

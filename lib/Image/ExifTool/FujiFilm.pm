@@ -26,7 +26,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.48';
+$VERSION = '1.49';
 
 sub ProcessFujiDir($$$);
 sub ProcessFaceRec($$$);
@@ -671,6 +671,13 @@ my %faceCategories = (
             return $val;
         },
     },
+    0x131 => { #5
+        Name => 'XTransLayout',
+        Description => 'X-Trans Layout',
+        Format => 'int8u',
+        Count => 36,
+        PrintConv => '$val =~ tr/012 /RGB/d; join " ", $val =~ /....../g',
+    },
     0x2000 => { #9
         Name => 'WB_GRGBLevelsAuto',
         Format => 'int16u',
@@ -721,6 +728,10 @@ my %faceCategories = (
         Name => 'WB_GRGBLevels',
         Format => 'int16u',
         Count => 4,
+    },
+    0x9650 => { #Frank Markesteijn
+        Name => 'RawExposureBias',
+        Format => 'rational32s',
     },
     0xc000 => {
         Name => 'RAFData',

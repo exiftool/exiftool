@@ -17,6 +17,25 @@ considered development releases, and are not uploaded to <a href="http://search.
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v9.86'><b>Feb. 22, 2015 - Version 9.86</b></a>
+<ul>
+<li>Added check for valid filename encoding when using wildcards in Windows
+<li>Added support for Sigma X3F version 4.1 images
+<li>Added a number of new Sigma LensType values (thanks LibRaw and Niels
+    Kristian Bech Jensen)
+<li>Added a new Canon LensType (thanks Michael Tapes)
+<li>Added a new Leica LensType (thanks LibRaw)
+<li>Added a new Olympus CameraType
+<li>Decode a couple more FujiFilm RAF tags (thanks Frank Markesteijn)
+<li>Always preserve FileCreateDate when writing on Windows if Win32::API and
+    Win32API::File are available
+<li>Changed names of and properly decode new Olympus Pitch/Roll tags
+<li>Changed rounding method for rational values in an attempt to fix failed
+    tests on FreeBSD 10.1 and Perl 5.20.1 with uselongdouble enabled
+<li>Resolved issue with duplicate SamsungModelID values
+<li>Fixed problem with rounding of rational values on some platforms
+</ul>
+
 <a name='v9.85'><b>Feb. 14, 2015 - Version 9.85</b></a>
 <ul>
 <li>Added a few new Pentax LensType's (thanks Louis Granboulan)

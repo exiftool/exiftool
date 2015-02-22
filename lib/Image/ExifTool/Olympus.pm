@@ -37,7 +37,7 @@ use vars qw($VERSION);
 use Image::ExifTool::Exif;
 use Image::ExifTool::APP12;
 
-$VERSION = '2.27';
+$VERSION = '2.28';
 
 sub PrintLensInfo($$$);
 
@@ -346,6 +346,7 @@ my %olympusCameraTypes = (
     D4857 => 'C-1Z,D-150Z',
     DCHC => 'D500L',
     DCHT => 'D600L / D620L',
+    K0055 => 'AIR-A01',
     S0003 => 'E-330',
     S0004 => 'E-500',
     S0009 => 'E-400',
@@ -2321,14 +2322,21 @@ my %indexInfo = (
         PrintConv => \%offOn,
     },
     0x903 => { #11
-        Name => 'LevelGaugeRoll',
-        Writable => 'int16u',
-        PrintConv => \%offOn,
+        Name => 'RollAngle',
+        Notes => 'converted to degrees of clockwise camera rotation',
+        Writable => 'int16s',
+        Count => 2, # (second value is 0 if level gauge is off)
+        # negate to express as clockwise rotation
+        ValueConv => '$val=~s/ 1$// ? -$val/10 : "n/a"',
+        ValueConvInv => 'IsFloat($val) ? sprintf("%.0f 1",-$val*10) : "0 0"',
     },
     0x904 => { #11
-        Name => 'LevelGaugePitch',
-        Writable => 'int16u',
-        PrintConv => \%offOn,
+        Name => 'PitchAngle',
+        Notes => 'converted to degrees of upward camera tilt',
+        Writable => 'int16s',
+        Count => 2, # (second value is 0 if level gauge is off)
+        ValueConv => '$val =~ s/ 1$// ? $val / 10 : "n/a"',
+        ValueConvInv => 'IsFloat($val) ? sprintf("%.0f 1",$val*10) : "0 0"',
     },
     0x908 => { #PH (NC, E-M1)
         Name => 'DateTimeUTC',

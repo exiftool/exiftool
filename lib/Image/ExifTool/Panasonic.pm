@@ -32,7 +32,7 @@ use vars qw($VERSION %leicaLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.89';
+$VERSION = '1.90';
 
 sub ProcessLeicaLEIC($$$);
 sub WhiteBalanceConv($;$$);
@@ -119,6 +119,7 @@ sub WhiteBalanceConv($;$$);
     '51 2' => 'Super-Elmar-M 14mm f/3.8 Asph', # ? (ref 16)
     52 => 'Super-Elmar-M 18mm f/3.8 ASPH.', # ? (ref PH/11)
     '53 2' => 'Apo-Telyt-M 135mm f/3.4', #16
+    '53 3' => 'Apo-Summicron-M 50mm f/2 (VI)', #LibRaw
 );
 
 # M9 frame selector bits for each lens
@@ -1086,7 +1087,7 @@ my %shootingMode = (
         Name => 'RollAngle',
         Writable => 'int16u',
         Format => 'int16s',
-        Notes => 'degrees of clockwise camera rotation',
+        Notes => 'converted to degrees of clockwise camera rotation',
         ValueConv => '$val / 10',
         ValueConvInv => '$val * 10',
     },
@@ -1094,7 +1095,7 @@ my %shootingMode = (
         Name => 'PitchAngle',
         Writable => 'int16u',
         Format => 'int16s',
-        Notes => 'degrees of upward camera tilt',
+        Notes => 'converted to degrees of upward camera tilt',
         ValueConv => '-$val / 10',
         ValueConvInv => '-$val * 10',
     },

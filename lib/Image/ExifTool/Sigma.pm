@@ -7,7 +7,9 @@
 #               02/20/2007 - PH added SD14 tags
 #               24/06/2010 - PH decode some SD15 tags
 #
-# Reference:    http://www.x3f.info/technotes/FileDocs/MakerNoteDoc.html
+# References:   1) http://www.x3f.info/technotes/FileDocs/MakerNoteDoc.html
+#               2) Niels Kristian Bech Jensen
+#               3) Iliah Borg private communication (LibRaw)
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::Sigma;
@@ -16,7 +18,7 @@ use strict;
 use vars qw($VERSION %sigmaLensTypes);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.14';
+$VERSION = '1.15';
 
 # sigma LensType lookup (ref PH)
 %sigmaLensTypes = (
@@ -28,26 +30,75 @@ $VERSION = '1.14';
     # 0 => 'Sigma 50mm F2.8 EX Macro', (0 used for other lenses too)
     # 8 - 18-125mm LENSARANGE@18mm=22-4
     16 => 'Sigma 18-50mm F3.5-5.6 DC',
+    106 => 'Sigma 150mm F2.8 EX DG OS HSM APO Macro', #3
+    107 => 'Sigma APO Macro 180mm F2.8 EX DG OS HSM', #3
     129 => 'Sigma 14mm F2.8 EX Aspherical',
     131 => 'Sigma 17-70mm F2.8-4.5 DC Macro',
     145 => 'Sigma Lens (145)',
     145.1 => 'Sigma 15-30mm F3.5-4.5 EX DG Aspherical',
     145.2 => 'Sigma 18-50mm F2.8 EX DG', #(NC)
     145.3 => 'Sigma 20-40mm F2.8 EX DG',
+    152 => 'Sigma APO 800mm F5.6 EX DG HSM', #3
     165 => 'Sigma 70-200mm F2.8 EX', # ...but what specific model?:
     # 70-200mm F2.8 EX APO - Original version, minimum focus distance 1.8m (1999)
     # 70-200mm F2.8 EX DG - Adds 'digitally optimized' lens coatings to reduce flare (2005)
     # 70-200mm F2.8 EX DG Macro (HSM) - Minimum focus distance reduced to 1m (2006)
     # 70-200mm F2.8 EX DG Macro HSM II - Improved optical performance (2007)
     169 => 'Sigma 18-50mm F2.8 EX DC', #(NC)
+    184 => 'Sigma 500mm F4.5 EX DG APO HSM', #3
+    195 => 'Sigma 300mm F2.8 EX APO DG HSM', #3
+    201 => 'Sigma 10-20mm F4-5.6 EX DC HSM', #3
+    202 => 'Sigma 10-20mm F3.5 EX DC HSM', #3
+    203 => 'Sigma 8-16mm F4.5-5.6 DC HSM', #3
+    204 => 'Sigma 12-24mm F4.5-5.6 DG HSM II', #3
+    258 => 'Sigma 105mm F2.8 EX DG OS HSM Macro', #3
+    270 => 'Sigma 70mm F2.8 EX DG Macro', #2 (SD1)
+    300 => 'Sigma 30mm F1.4 EX DC HSM', #3
+    310 => 'Sigma 50mm F1.4 EX DG HSM', #3
+    320 => 'Sigma 85mm F1.4 EX DG HSM', #3
+    330 => 'Sigma 30mm F2.8 EX DN', #3
+    340 => 'Sigma 35mm F1.4 DG HSM', #3
+    346 => 'Sigma 50mm F2.8 EX DG Macro', #3
+    400 => 'Sigma 9mm F2.8 EX DN', #3
+    411 => 'Sigma 20mm F1.8 EX DG ASP RF', #3
+    432 => 'Sigma 24mm F1.8 EX DG ASP Macro', #3
+    440 => 'Sigma 28mm F1.8 EX DG ASP Macro', #3
+    476 => 'Sigma 15mm F2.8 EX DG Diagonal Fisheye', #3
+    477 => 'Sigma 10mm F2.8 EX DC HSM Fisheye', #3
+    485 => 'Sigma 8mm F3.5 EX DG Circular Fisheye', #3
+    486 => 'Sigma 4.5mm F2.8 EX DC HSM Circular Fisheye', #3
+    508 => 'Sigma 70-300mm F4-5.6 APO DG Macro', #3
+    509 => 'Sigma 70-300mm F4-5.6 DG Macro', #3
+    571 => 'Sigma 24-70mm F2.8 IF EX DG HSM', #3
+    572 => 'Sigma 70-300mm F4-5.6 DG OS', #3
     581 => 'Sigma 18-50mm F2.8 EX DC Macro', # (SD1)
-    583 => 'Sigma 17-50mm F2.8 EX DC OS', # (SD1 kit)
+    583 => 'Sigma 17-50mm F2.8 EX DC OS HSM', # (also SD1 Kit, is this HSM? - PH)
+    589 => 'Sigma APO 70-200mm F2.8 EX DG OS HSM', #3
+    595 => 'Sigma 300-800mm F5.6 EX DG APO HSM', #3
+    597 => 'Sigma 200-500mm F2.8 APO EX DG', #3
+   '5A8'=> 'Sigma 70-300mm F4-5.6 APO DG Macro (Motorized)', #3
+   '5A9'=> 'Sigma 70-300mm F4-5.6 DG Macro (Motorized)', #3
+    668 => 'Sigma 17-70mm F2.8-4 DC Macro OS HSM', #3
+    686 => 'Sigma 50-200mm F4-5.6 DC OS HSM', #3
+    691 => 'Sigma 50-150mm F2.8 EX DC APO HSM II', #3
+    692 => 'Sigma APO 50-150mm F2.8 EX DC OS HSM', #3
+    728 => 'Sigma 120-400mm F4.5-5.6 DG APO OS HSM', #3
+    737 => 'Sigma 150-500mm F5-6.3 APO DG OS HSM', #3
+    738 => 'Sigma 50-500mm F4.5-6.3 APO DG OS HSM', #3
+    824 => 'Sigma 1.4X Teleconverter EX APO DG', #3
+    853 => 'Sigma 18-125mm F3.8-5.6 DC OS HSM', #3
+    861 => 'Sigma 18-50mm F2.8-4.5 DC OS HSM', #2 (SD1)
+    876 => 'Sigma 2.0X Teleconverter EX APO DG', #3
+    880 => 'Sigma 18-250mm F3.5-6.3 DC OS HSM', #3
+    882 => 'Sigma 18-200mm F3.5-6.3 II DC OS HSM', #3
+    883 => 'Sigma 18-250mm F3.5-6.3 DC Macro OS HSM', #3
     1003 => 'Sigma 19mm F2.8', # (DP1 Merrill kit)
     1004 => 'Sigma 30mm F2.8', # (DP2 Merrill kit)
     1005 => 'Sigma 50mm F2.8 Macro', # (DP3 Merrill kit)
+    1006 => 'Sigma 19mm F2.8', #2 (DP1 Quattro kit)
     1007 => 'Sigma 30mm F2.8', # (DP2 Quattro kit)
     8900 => 'Sigma 70-300mm F4-5.6 DG OS', # (SD15)
-    'A100' => 'Sigma 24-70mm F2.8 DG Macro', # (SD15)
+   'A100'=> 'Sigma 24-70mm F2.8 DG Macro', # (SD15)
     # 'FFFF' - seen this for a 28-70mm F2.8 lens
 );
 

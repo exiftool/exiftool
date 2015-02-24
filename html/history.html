@@ -17,6 +17,14 @@ considered development releases, and are not uploaded to <a href="http://search.
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v9.87'><b>Feb. 24, 2015 - Version 9.87</b></a>
+<ul>
+<li>Added a number of new Sigma LensType values (thanks LibRaw)
+<li>Fixed problem introduced in version 9.85 where "*.*" on the command line
+    matches "." and "..", causing unexpected files to be processed
+<li>Fixed problem extracting some Microsoft tags from MP4/MOV videos
+</ul>
+
 <a name='v9.86'><b>Feb. 22, 2015 - Version 9.86</b></a>
 <ul>
 <li>Added check for valid filename encoding when using wildcards in Windows
@@ -33,14 +41,13 @@ considered development releases, and are not uploaded to <a href="http://search.
 <li>Changed rounding method for rational values in an attempt to fix failed
     tests on FreeBSD 10.1 and Perl 5.20.1 with uselongdouble enabled
 <li>Resolved issue with duplicate SamsungModelID values
-<li>Fixed problem with rounding of rational values on some platforms
 </ul>
 
 <a name='v9.85'><b>Feb. 14, 2015 - Version 9.85</b></a>
 <ul>
-<li>Added a few new Pentax LensType's (thanks Louis Granboulan)
 <li>Added support for Ricoh WG-M1 maker notes
-<li>Decoded a couple of new Pentax tags (thanks Louis Granboulan)
+<li>Added a few new Pentax LensType's (thanks Louis Granboulan)
+<li>Decode a couple of new Pentax tags (thanks Louis Granboulan)
 <li>Enhanced JSON import so an object with a missing SourceFile has the same
     effect as a SourceFile of "*".
 <li>Changed MIMEType for executable script files
@@ -64,7 +71,7 @@ considered development releases, and are not uploaded to <a href="http://search.
 <li>Added support for new IPTC Extension version 1.2 XMP tags
 <li>Added support for Leica X (Typ 113) maker notes
 <li>Added read support for ChartTIFF tags
-<li>Added a few new Canon LensType values (thanks Norbert Wasser for 2)
+<li>Added a few new Canon LensType values (thanks Norbert Wasser for two)
 <li>Added a few new Nikon LensID's (thanks David P&uuml;schel, Robert
     Rottmerhusen and Niels)
 <li>Added a number of new Olympus ArtFilterEffect values (thanks Phiber)

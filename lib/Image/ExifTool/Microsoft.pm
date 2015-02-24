@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::XMP;
 
-$VERSION = '1.13';
+$VERSION = '1.14';
 
 sub ProcessXtra($$$);
 
@@ -385,6 +385,7 @@ my %sRegions = (
     'WM/ProviderRating'         => 'ProviderRating',
     'WM/ProviderStyle'          => 'ProviderStyle',
     'WM/Publisher'              => 'Publisher',
+    'WM/SharedUserRating'       => 'SharedUserRating',
     'WM/SubscriptionContentID'  => 'SubscriptionContentID',
     'WM/SubTitle'               => 'SubTitle',
     'WM/SubTitleDescription'    => 'SubTitleDescription',
@@ -754,7 +755,7 @@ my %sRegions = (
 # Extract information from Xtra MP4 atom
 # Inputs: 0) ExifTool object ref, 1) dirInfo ref, 2) tag table ref
 # Returns: 1 on success
-# Reference: http://code.google.com/p/mp4v2/
+# Reference: http://code.google.com/p/mp4v2/ [since removed from trunk]
 sub ProcessXtra($$$)
 {
     my ($et, $dirInfo, $tagTablePtr) = @_;
@@ -770,52 +771,58 @@ sub ProcessXtra($$$)
         my $tagLen = Get32u($dataPt, $pos + 4);
         last if $tagLen + 18 > $size;
         my $tag = substr($$dataPt, $pos + 8, $tagLen);
-        my $version = Get32u($dataPt, $pos + $tagLen + 8);
-        # (have seen a vers=2 type=8 tag that seems to work just like vers=1 - PH)
-        if ($version > 2) {
-            $et->WarnOnce("Unsupported Xtra version ($version)");
-            $pos += $size;
-            next;
+        # (version flags according to the reference, but looks more like a count - PH)
+        my $count = Get32u($dataPt, $pos + $tagLen + 8);
+        my ($i, $valPos, $valLen, $valType, $val, $format, @vals);
+        for ($i=0; ;) {
+            $valPos = $pos + $tagLen + 18;  # point to start of value
+            # (stored value includes size of $valLen and $valType, so subtract 6)
+            $valLen  = Get32u($dataPt, $valPos - 6) - 6;
+            my $more = $size - 18 - $tagLen - $valLen;
+            last if $more < 0;
+            $valType = Get16u($dataPt, $valPos - 2);
+            $val = substr($$dataPt, $valPos, $valLen);
+            # Note: all dumb Microsoft values are little-endian inside a big-endian-format file
+            SetByteOrder('II');
+            if ($valType == 8) {
+                $format = 'Unicode';
+                $val = $et->Decode($val, 'UCS2');
+            } elsif ($valType == 19 and $valLen == 8) {
+                $format = 'int64u';
+                $val = Get64u(\$val, 0);
+            } elsif ($valType == 21 and $valLen == 8) {
+                $format = 'date';
+                $val = Get64u(\$val, 0);
+                # convert time from 100 ns intervals since Jan 1, 1601
+                $val = $val * 1e-7 - 11644473600 if $val;
+                # (the Nikon S100 uses UTC timezone, same as ASF - PH)
+                $val = Image::ExifTool::ConvertUnixTime($val) . 'Z';
+            } elsif ($valType == 72 and $valLen == 16) {
+                $format = 'GUID';
+                $val = uc unpack('H*',pack('NnnNN',unpack('VvvNN',$val)));
+                $val =~ s/(.{8})(.{4})(.{4})(.{4})/$1-$2-$3-$4-/;
+            } elsif ($valType == 65 && $valLen > 4) { #PH (empirical)
+                $format = 'variant';
+                require Image::ExifTool::FlashPix;
+                my $vPos = $valPos; # (necessary because ReadFPXValue updates this)
+                # read entry as a VT_VARIANT (use FlashPix module for this)
+                $val = Image::ExifTool::FlashPix::ReadFPXValue($et, $dataPt, $vPos,
+                       Image::ExifTool::FlashPix::VT_VARIANT(), $valPos+$valLen, 1);
+            } else {
+                $format = "Unknown($valType)";
+            }
+            SetByteOrder('MM'); # back to native QuickTime byte ordering
+            last if ++$i >= $count or $more < 6;
+            push @vals, $val;
+            undef $val;
+            $valPos += $valLen; # step to next value
         }
-        # (stored value includes size of $valLen and $valType, so subtract 6)
-        my $valLen  = Get32u($dataPt, $pos + $tagLen + 12) - 6;
-        last if $tagLen + $valLen + 18 > $size;
-        my $valType = Get16u($dataPt, $pos + $tagLen + 16);
-        my $valPos = $pos + $tagLen + 18;
-        my $val = substr($$dataPt, $valPos, $valLen);
-        my $format;
-
-        # Note: all dumb Microsoft values are little-endian inside a big-endian-format file
-        SetByteOrder('II');
-        if ($valType == 8) {
-            $format = 'Unicode';
-            $val = $et->Decode($val, 'UCS2');
-        } elsif ($valType == 19 and $valLen == 8) {
-            $format = 'int64u';
-            $val = Get64u(\$val, 0);
-        } elsif ($valType == 21 and $valLen == 8) {
-            $format = 'date';
-            $val = Get64u(\$val, 0);
-            # convert time from 100 ns intervals since Jan 1, 1601
-            $val = $val * 1e-7 - 11644473600 if $val;
-            # (the Nikon S100 uses UTC timezone, same as ASF - PH)
-            $val = Image::ExifTool::ConvertUnixTime($val) . 'Z';
-        } elsif ($valType == 72 and $valLen == 16) {
-            $format = 'GUID';
-            $val = uc unpack('H*',pack('NnnNN',unpack('VvvNN',$val)));
-            $val =~ s/(.{8})(.{4})(.{4})(.{4})/$1-$2-$3-$4-/;
-        } elsif ($valType == 65 && $valLen > 4) { #PH (empirical)
-            $format = 'variant';
-            require Image::ExifTool::FlashPix;
-            my $vPos = $valPos; # (necessary because ReadFPXValue updates this)
-            # read entry as a VT_VARIANT (use FlashPix module for this)
-            $val = Image::ExifTool::FlashPix::ReadFPXValue($et, $dataPt, $vPos,
-                   Image::ExifTool::FlashPix::VT_VARIANT(), $valPos+$valLen, 1);
-        } else {
-            $format = "Unknown($valType)";
+        if (@vals) {
+            push @vals, $val if defined $val;
+            $val = \@vals;
+            $valPos = $pos + $tagLen + 18;
+            $valLen = $size - 18 - $tagLen;
         }
-        SetByteOrder('MM'); # back to native QuickTime byte ordering
-        
         if ($tagLen > 0 and $valLen > 0) {
             my $tagInfo = $et->GetTagInfo($tagTablePtr, $tag);
             unless ($tagInfo) {
@@ -823,9 +830,10 @@ sub ProcessXtra($$$)
                 my $name = $tag;
                 $name =~ s{^WM/}{};
               # $name =~ tr/-_A-Za-z0-9//dc;
-                if ($name =~ /^[-\w+]$/) {
+                if ($name =~ /^[-\w]+$/) {
                     $tagInfo = { Name => ucfirst($name) };
                     AddTagToTable($tagTablePtr, $tag, $tagInfo);
+                    $et->VPrint(0, $$et{INDENT}, "[adding Microsoft:$tag]\n");
                 }
             }
             $et->HandleTag($tagTablePtr, $tag, $val,
@@ -835,7 +843,7 @@ sub ProcessXtra($$$)
                 Start   => $valPos,
                 Size    => $valLen,
                 Format  => $format,
-                Extra   => " vers=$version type=$valType",
+                Extra   => " count=$count type=$valType",
             );
         }
         $pos += $size;  # step to next entry

@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '9.86';
+$VERSION = '9.87';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (

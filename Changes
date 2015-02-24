@@ -7,6 +7,13 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 9.76. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Feb. 24, 2015 - Version 9.87
+
+  - Added a number of new Sigma LensType values (thanks LibRaw)
+  - Fixed problem introduced in version 9.85 where "*.*" on the command line
+    matches "." and "..", causing unexpected files to be processed
+  - Fixed problem extracting some Microsoft tags from MP4/MOV videos
+
 Feb. 22, 2015 - Version 9.86
 
   - Added check for valid filename encoding when using wildcards in Windows
@@ -23,13 +30,12 @@ Feb. 22, 2015 - Version 9.86
   - Changed rounding method for rational values in an attempt to fix failed
     tests on FreeBSD 10.1 and Perl 5.20.1 with uselongdouble enabled
   - Resolved issue with duplicate SamsungModelID values
-  - Fixed problem with rounding of rational values on some platforms
 
 Feb. 14, 2015 - Version 9.85
 
-  - Added a few new Pentax LensType's (thanks Louis Granboulan)
   - Added support for Ricoh WG-M1 maker notes
-  - Decoded a couple of new Pentax tags (thanks Louis Granboulan)
+  - Added a few new Pentax LensType's (thanks Louis Granboulan)
+  - Decode a couple of new Pentax tags (thanks Louis Granboulan)
   - Enhanced JSON import so an object with a missing SourceFile has the same
     effect as a SourceFile of "*".
   - Changed MIMEType for executable script files
@@ -51,7 +57,7 @@ Feb. 7, 2015 - Version 9.83
   - Added support for new IPTC Extension version 1.2 XMP tags
   - Added support for Leica X (Typ 113) maker notes
   - Added read support for ChartTIFF tags
-  - Added a few new Canon LensType values (thanks Norbert Wasser for 2)
+  - Added a few new Canon LensType values (thanks Norbert Wasser for two)
   - Added a few new Nikon LensID's (thanks David Puschel, Robert
     Rottmerhusen and Niels)
   - Added a number of new Olympus ArtFilterEffect values (thanks Phiber)

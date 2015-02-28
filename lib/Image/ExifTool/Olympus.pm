@@ -2667,7 +2667,7 @@ my %indexInfo = (
         # 'Drop' because too large for APP1 in JPEG images
         Flags => [ 'Unknown', 'Binary', 'Drop' ],
     },
-    0x1104 => { #PH
+    0x1104 => { #PH (overlaps data for 0x1103 in E-M5 ORF images)
         Name => 'UnknownBlock4',
         Writable => 'undef',
         Notes => 'large unknown data block in ORF images but not JPG images',

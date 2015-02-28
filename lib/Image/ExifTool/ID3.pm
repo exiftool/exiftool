@@ -16,7 +16,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.42';
+$VERSION = '1.43';
 
 sub ProcessID3v2($$$);
 sub ProcessPrivate($$$);
@@ -589,13 +589,36 @@ my %id3v2_common = (
     WPAY => 'PaymentURL',
     WPUB => 'PublisherURL',
     WXXX => 'UserDefinedURL',
+#
+# non-standard frames
+#
+    # the following are written by iTunes 10.5 (ref PH)
+    TSO2 => 'AlbumArtistSortOrder',
+    TSOC => 'ComposerSortOrder',
+    ITNU => { Name => 'iTunesU', Description => 'iTunes U', Binary => 1, Unknown => 1 },
+    PCST => { Name => 'Podcast', Binary => 1, Unknown => 1 },
+    # other proprietary Apple tags (ref http://help.mp3tag.de/main_tags.html)
+    TDES => 'PodcastDescription',
+    TGID => 'PodcastID',
+    WFED => 'PodcastURL',
+    TKWD => 'PodcastKeywords',
+    TCAT => 'PodcastCategory',
+    # more non-standard tags (ref http://eyed3.nicfit.net/compliance.html)
+    # NCON - unknown MusicMatch binary data
+    XDOR => { Name => 'OriginalReleaseTime',Groups => { 2 => 'Time' }, %dateTimeConv },
+    XSOA => 'AlbumSortOrder',
+    XSOP => 'PerformerSortOrder',
+    XSOT => 'TitleSortOrder',
 );
 
 # Tags for ID3v2.3 (http://www.id3.org/id3v2.3.0)
 %Image::ExifTool::ID3::v2_3 = (
     PROCESS_PROC => \&Image::ExifTool::ID3::ProcessID3v2,
     GROUPS => { 1 => 'ID3v2_3', 2 => 'Audio' },
-    NOTES => 'ID3 version 2.3 tags',
+    NOTES => q{
+        ID3 version 2.3 tags.  Includes some non-standard tags written by other
+        software.
+    },
     %id3v2_common,  # include common tags
   # EQUA => 'Equalization',
     IPLS => 'InvolvedPeople',
@@ -612,7 +635,10 @@ my %id3v2_common = (
 %Image::ExifTool::ID3::v2_4 = (
     PROCESS_PROC => \&Image::ExifTool::ID3::ProcessID3v2,
     GROUPS => { 1 => 'ID3v2_4', 2 => 'Audio' },
-    NOTES => 'ID3 version 2.4 tags',
+    NOTES => q{
+        ID3 version 2.4 tags.  Includes some non-standard tags written by other
+        software.
+    },
     %id3v2_common,  # include common tags
   # EQU2 => 'Equalization',
     RVA2 => 'RelativeVolumeAdjustment',
@@ -631,11 +657,6 @@ my %id3v2_common = (
     TSOP => 'PerformerSortOrder',
     TSOT => 'TitleSortOrder',
     TSST => 'SetSubtitle',
-    # the following are written by iTunes 10.5 (ref PH)
-    TSO2 => 'AlbumArtistSortOrder',
-    TSOC => 'ComposerSortOrder',
-    ITNU => { Name => 'iTunesU', Description => 'iTunes U', Binary => 1, Unknown => 1 },
-    PCST => { Name => 'Podcast', Binary => 1, Unknown => 1 },
 );
 
 # Synchronized lyrics/text
@@ -748,6 +769,12 @@ my %id3v2_common = (
     # WM/WMContentID
     # WM/Writer
     # WM/Year
+);
+
+# lookup to check for existence of tags in other ID3 versions
+my %otherTable = (
+    \%Image::ExifTool::ID3::v2_4 => \%Image::ExifTool::ID3::v2_3,
+    \%Image::ExifTool::ID3::v2_3 => \%Image::ExifTool::ID3::v2_4,
 );
 
 # ID3 Composite tags
@@ -1046,12 +1073,18 @@ sub ProcessID3v2($$$)
         last if $offset + $len > $size;
         my $tagInfo = $et->GetTagInfo($tagTablePtr, $id);
         unless ($tagInfo) {
-            next unless $verbose or $et->Options('Unknown');
-            $id =~ tr/-A-Za-z0-9_//dc;
-            $id = 'unknown' unless length $id;
-            unless ($$tagTablePtr{$id}) {
-                $tagInfo = { Name => "ID3_$id", Binary => 1 };
-                AddTagToTable($tagTablePtr, $id, $tagInfo);
+            my $otherTable = $otherTable{$tagTablePtr};
+            $tagInfo = $et->GetTagInfo($otherTable, $id) if $otherTable;
+            if ($tagInfo) {
+                $et->WarnOnce("Frame '$id' is not valid for this ID3 version", 1);
+            } else {
+                next unless $verbose or $et->Options('Unknown');
+                $id =~ tr/-A-Za-z0-9_//dc;
+                $id = 'unknown' unless length $id;
+                unless ($$tagTablePtr{$id}) {
+                    $tagInfo = { Name => "ID3_$id", Binary => 1 };
+                    AddTagToTable($tagTablePtr, $id, $tagInfo);
+                }
             }
         }
         # decode v2.3 and v2.4 flags

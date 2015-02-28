@@ -38,6 +38,7 @@ $VERSION = '2.81';
 sub NumbersFirst;
 
 my $numbersFirst = 1;   # set to -1 to sort numbers last, or 2 to put negative numbers last
+my $caseInsensitive;    # flag to ignore case when sorting tag names
 
 # list of all tables in plug-in modules
 my @pluginTables = ('Image::ExifTool::MWG::Composite');
@@ -131,8 +132,6 @@ my %formatOK = (
     unsigned    => 1,
     utf8        => 1,
 );
-
-my $caseInsensitive;    # flag to ignore case when sorting tag names
 
 # Descriptions for the TagNames documentation
 # (descriptions may also be defined in tag table NOTES)

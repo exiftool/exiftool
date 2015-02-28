@@ -713,7 +713,8 @@ depending on how this information was stored)</span></span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='v2_3'>ID3 v2_3 Tags</a></h2>
-<p>ID3 version 2.3 tags</p>
+<p>ID3 version 2.3 tags.  Includes some non-standard tags written by other
+software.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -750,18 +751,28 @@ depending on how this information was stored)</span></span></td></tr>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td>'ITNU'</td>
+<td>iTunesU?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>'MCDI'</td>
 <td>MusicCDIdentifier</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'OWNE'</td>
 <td>Ownership</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'PCNT'</td>
 <td>PlayCounter</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'PCST'</td>
+<td>Podcast?</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
@@ -790,29 +801,39 @@ depending on how this information was stored)</span></span></td></tr>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td>'TCAT'</td>
+<td>PodcastCategory</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>'TCMP'</td>
 <td>Compilation</td>
 <td class=c>N</td>
 <td><span class=s>0 = No
   <br>1 = Yes</span></td></tr>
-<tr class=b>
+<tr>
 <td>'TCOM'</td>
 <td>Composer</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'TCON'</td>
 <td>Genre</td>
 <td class=c>N</td>
 <td><span class=s><span class=n>(uses same lookup table as ID3v1 Genre)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>'TCOP'</td>
 <td>Copyright</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'TDAT'</td>
 <td>Date</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TDES'</td>
+<td>PodcastDescription</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
@@ -836,28 +857,38 @@ depending on how this information was stored)</span></span></td></tr>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>'TGID'</td>
+<td>PodcastID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>'TIME'</td>
 <td>Time</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'TIT1'</td>
 <td>Grouping</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'TIT2'</td>
 <td>Title</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'TIT3'</td>
 <td>Subtitle</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'TKEY'</td>
 <td>InitialKey</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TKWD'</td>
+<td>PodcastKeywords</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -961,6 +992,16 @@ depending on how this information was stored)</span></span></td></tr>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td>'TSO2'</td>
+<td>AlbumArtistSortOrder</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TSOC'</td>
+<td>ComposerSortOrder</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>'TSRC'</td>
 <td>ISRC</td>
 <td class=c>N</td>
@@ -1001,38 +1042,63 @@ depending on how this information was stored)</span></span></td></tr>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td>'WFED'</td>
+<td>PodcastURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>'WOAF'</td>
 <td>FileURL</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'WOAR'</td>
 <td>ArtistURL</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'WOAS'</td>
 <td>SourceURL</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'WORS'</td>
 <td>InternetRadioStationURL</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'WPAY'</td>
 <td>PaymentURL</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'WPUB'</td>
 <td>PublisherURL</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'WXXX'</td>
 <td>UserDefinedURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'XDOR'</td>
+<td>OriginalReleaseTime</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'XSOA'</td>
+<td>AlbumSortOrder</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'XSOP'</td>
+<td>PerformerSortOrder</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'XSOT'</td>
+<td>TitleSortOrder</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
@@ -1084,7 +1150,8 @@ if they do not appear in this table.</p>
 </table></td></tr></table></blockquote>
 
 <h2><a name='v2_4'>ID3 v2_4 Tags</a></h2>
-<p>ID3 version 2.4 tags</p>
+<p>ID3 version 2.4 tags.  Includes some non-standard tags written by other
+software.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -1171,29 +1238,39 @@ if they do not appear in this table.</p>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td>'TCAT'</td>
+<td>PodcastCategory</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>'TCMP'</td>
 <td>Compilation</td>
 <td class=c>N</td>
 <td><span class=s>0 = No
   <br>1 = Yes</span></td></tr>
-<tr class=b>
+<tr>
 <td>'TCOM'</td>
 <td>Composer</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'TCON'</td>
 <td>Genre</td>
 <td class=c>N</td>
 <td><span class=s><span class=n>(uses same lookup table as ID3v1 Genre)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>'TCOP'</td>
 <td>Copyright</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'TDEN'</td>
 <td>EncodingTime</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TDES'</td>
+<td>PodcastDescription</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
@@ -1237,28 +1314,38 @@ if they do not appear in this table.</p>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>'TGID'</td>
+<td>PodcastID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>'TIPL'</td>
 <td>InvolvedPeople</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'TIT1'</td>
 <td>Grouping</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'TIT2'</td>
 <td>Title</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'TIT3'</td>
 <td>Subtitle</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'TKEY'</td>
 <td>InitialKey</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TKWD'</td>
+<td>PodcastKeywords</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -1427,45 +1514,70 @@ if they do not appear in this table.</p>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>'WFED'</td>
+<td>PodcastURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>'WOAF'</td>
 <td>FileURL</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'WOAR'</td>
 <td>ArtistURL</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'WOAS'</td>
 <td>SourceURL</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'WORS'</td>
 <td>InternetRadioStationURL</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'WPAY'</td>
 <td>PaymentURL</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'WPUB'</td>
 <td>PublisherURL</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'WXXX'</td>
 <td>UserDefinedURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'XDOR'</td>
+<td>OriginalReleaseTime</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'XSOA'</td>
+<td>AlbumSortOrder</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'XSOP'</td>
+<td>PerformerSortOrder</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'XSOT'</td>
+<td>TitleSortOrder</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Mar 5, 2014</i>
+<br><i>Last revised Feb 26, 2015</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

@@ -18930,7 +18930,8 @@ The following tags are extracted from synchronized lyrics/text frames.
 
 =head3 ID3 v2_3 Tags
 
-ID3 version 2.3 tags
+ID3 version 2.3 tags.  Includes some non-standard tags written by other
+software.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
@@ -18940,28 +18941,34 @@ ID3 version 2.3 tags
   'APIC-3' PictureDescription                   N
   'COMM'   Comment                              N
   'IPLS'   InvolvedPeople                       N
+  'ITNU'   iTunesU?                             N
   'MCDI'   MusicCDIdentifier                    N
   'OWNE'   Ownership                            N
   'PCNT'   PlayCounter                          N
+  'PCST'   Podcast?                             N
   'POPM'   Popularimeter                        N
   'PRIV'   Private                              ID3 Private
   'SYLT'   SynLyrics                            ID3 SynLyrics
   'TALB'   Album                                N
   'TBPM'   BeatsPerMinute                       N
+  'TCAT'   PodcastCategory                      N
   'TCMP'   Compilation                          N
   'TCOM'   Composer                             N
   'TCON'   Genre                                N
   'TCOP'   Copyright                            N
   'TDAT'   Date                                 N
+  'TDES'   PodcastDescription                   N
   'TDLY'   PlaylistDelay                        N
   'TENC'   EncodedBy                            N
   'TEXT'   Lyricist                             N
   'TFLT'   FileType                             N
+  'TGID'   PodcastID                            N
   'TIME'   Time                                 N
   'TIT1'   Grouping                             N
   'TIT2'   Title                                N
   'TIT3'   Subtitle                             N
   'TKEY'   InitialKey                           N
+  'TKWD'   PodcastKeywords                      N
   'TLAN'   Language                             N
   'TLEN'   Length                               N
   'TMED'   Media                                N
@@ -18982,6 +18989,8 @@ ID3 version 2.3 tags
   'TRSN'   InternetRadioStationName             N
   'TRSO'   InternetRadioStationOwner            N
   'TSIZ'   Size                                 N
+  'TSO2'   AlbumArtistSortOrder                 N
+  'TSOC'   ComposerSortOrder                    N
   'TSRC'   ISRC                                 N
   'TSSE'   EncoderSettings                      N
   'TXXX'   UserDefinedText                      N
@@ -18990,6 +18999,7 @@ ID3 version 2.3 tags
   'USLT'   Lyrics                               N
   'WCOM'   CommercialURL                        N
   'WCOP'   CopyrightURL                         N
+  'WFED'   PodcastURL                           N
   'WOAF'   FileURL                              N
   'WOAR'   ArtistURL                            N
   'WOAS'   SourceURL                            N
@@ -18997,6 +19007,10 @@ ID3 version 2.3 tags
   'WPAY'   PaymentURL                           N
   'WPUB'   PublisherURL                         N
   'WXXX'   UserDefinedURL                       N
+  'XDOR'   OriginalReleaseTime                  N
+  'XSOA'   AlbumSortOrder                       N
+  'XSOP'   PerformerSortOrder                   N
+  'XSOT'   TitleSortOrder                       N
 
 =head3 ID3 Private Tags
 
@@ -19017,7 +19031,8 @@ if they do not appear in this table.
 
 =head3 ID3 v2_4 Tags
 
-ID3 version 2.4 tags
+ID3 version 2.4 tags.  Includes some non-standard tags written by other
+software.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
@@ -19037,11 +19052,13 @@ ID3 version 2.4 tags
   'SYLT'   SynLyrics                            ID3 SynLyrics
   'TALB'   Album                                N
   'TBPM'   BeatsPerMinute                       N
+  'TCAT'   PodcastCategory                      N
   'TCMP'   Compilation                          N
   'TCOM'   Composer                             N
   'TCON'   Genre                                N
   'TCOP'   Copyright                            N
   'TDEN'   EncodingTime                         N
+  'TDES'   PodcastDescription                   N
   'TDLY'   PlaylistDelay                        N
   'TDOR'   OriginalReleaseTime                  N
   'TDRC'   RecordingTime                        N
@@ -19050,11 +19067,13 @@ ID3 version 2.4 tags
   'TENC'   EncodedBy                            N
   'TEXT'   Lyricist                             N
   'TFLT'   FileType                             N
+  'TGID'   PodcastID                            N
   'TIPL'   InvolvedPeople                       N
   'TIT1'   Grouping                             N
   'TIT2'   Title                                N
   'TIT3'   Subtitle                             N
   'TKEY'   InitialKey                           N
+  'TKWD'   PodcastKeywords                      N
   'TLAN'   Language                             N
   'TLEN'   Length                               N
   'TMCL'   MusicianCredits                      N
@@ -19088,6 +19107,7 @@ ID3 version 2.4 tags
   'USLT'   Lyrics                               N
   'WCOM'   CommercialURL                        N
   'WCOP'   CopyrightURL                         N
+  'WFED'   PodcastURL                           N
   'WOAF'   FileURL                              N
   'WOAR'   ArtistURL                            N
   'WOAS'   SourceURL                            N
@@ -19095,6 +19115,10 @@ ID3 version 2.4 tags
   'WPAY'   PaymentURL                           N
   'WPUB'   PublisherURL                         N
   'WXXX'   UserDefinedURL                       N
+  'XDOR'   OriginalReleaseTime                  N
+  'XSOA'   AlbumSortOrder                       N
+  'XSOP'   PerformerSortOrder                   N
+  'XSOT'   TitleSortOrder                       N
 
 =head2 ITC Tags
 

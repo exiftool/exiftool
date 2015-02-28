@@ -58,7 +58,7 @@ use vars qw($VERSION %nikonLensIDs %nikonTextEncoding);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '3.01';
+$VERSION = '3.02';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -1815,8 +1815,21 @@ my %binaryDataAttrs = (
         # unfortunately, some newer models write this as little-endian
         # (and CaptureNX can change the byte order of the maker notes,
         #  but leaves this structure unchanged)
-        # - it will be an ongoing pain to keep this list of models up-to-date
-        Condition => '$$self{Model} =~ /^NIKON (D4S|D750|D810|D3300|D5200|D5300|D7100)$/',
+        # - it will be an ongoing pain to keep this list of models up-to-date,
+        #   so if only one ordering yields valid DirectoryNumber and FileNumber values,
+        #   use it, otherwise default to a-priori knowledge of the camera model
+        #   (assume that a valid DirectoryNumber is 100-999, and a valid FileNumber
+        #   is 0000-9999, although I have some samples with a DirectoryNumber of 99)
+        Condition => q{
+            if (length($$valPt) >= 0) {
+                my ($dir, $file) = unpack('x6vv', $$valPt);
+                my $littleEndian = ($dir >= 100 and $dir <= 999 and $file <= 9999);
+                ($dir, $file) = unpack('x6nn', $$valPt);
+                my $bigEndian = ($dir >= 100 and $dir <= 999 and $file <= 9999);
+                return $littleEndian if $littleEndian xor $bigEndian;
+            }
+            return $$self{Model} =~ /^NIKON (D4S|D750|D810|D3300|D5200|D5300|D5500|D7100)$/;
+        },
         SubDirectory => {
             TagTable => 'Image::ExifTool::Nikon::FileInfo',
             ByteOrder => 'LittleEndian',

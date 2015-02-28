@@ -1519,15 +1519,15 @@ my %binaryDataAttrs = (
         Notes => '1 or 2 values',
         PrintConvColumns => 2,
         PrintConv => [{ # the *istD has pairs of values - PH
-            0 => 'Low', #PH
-            1 => 'Normal', #PH
-            2 => 'High', #PH
-            3 => 'Med Low', #2
-            4 => 'Med High', #2
-            5 => 'Very Low', #(NC)
-            6 => 'Very High', #(NC)
-            7 => '-4', #PH (K-5)
-            8 => '+4', #PH (NC)
+            0 => '-2 (low)', #PH
+            1 => '0 (normal)', #PH
+            2 => '+2 (high)', #PH
+            3 => '-1 (med low)', #2
+            4 => '+1 (med high)', #2
+            5 => '-3 (very low)', #PH
+            6 => '+3 (very high)', #PH (NC)
+            7 => '-4 (minimum)', #PH (NC)
+            8 => '+4 (maximum)', #PH (K-5)
             65535 => 'None', #PH (Monochrome)
         }],
     },
@@ -1538,16 +1538,16 @@ my %binaryDataAttrs = (
         Notes => '1 or 2 values',
         PrintConvColumns => 2,
         PrintConv => [{ # the *istD has pairs of values - PH
-            0 => 'Low', #PH
-            1 => 'Normal', #PH
-            2 => 'High', #PH
-            3 => 'Med Low', #2
-            4 => 'Med High', #2
-            5 => 'Very Low', #PH
-            6 => 'Very High', #PH (NC)
-            7 => '-4', #PH (NC)
-            8 => '+4', #PH (K-5)
-            # 65535 - got this for a Backlight Silhouette - PH (Q)
+            0 => '-2 (low)', #PH
+            1 => '0 (normal)', #PH
+            2 => '+2 (high)', #PH
+            3 => '-1 (med low)', #2
+            4 => '+1 (med high)', #2
+            5 => '-3 (very low)', #PH
+            6 => '+3 (very high)', #PH (NC)
+            7 => '-4 (minimum)', #PH (NC)
+            8 => '+4 (maximum)', #PH (K-5)
+            65535 => 'n/a', # got this for a Backlight Silhouette - PH (Q)
         }],
     },
     0x0021 => {
@@ -1557,15 +1557,15 @@ my %binaryDataAttrs = (
         Notes => '1 or 2 values',
         PrintConvColumns => 2,
         PrintConv => [{ # the *istD has pairs of values - PH
-            0 => 'Soft', #PH
-            1 => 'Normal', #PH
-            2 => 'Hard', #PH
-            3 => 'Med Soft', #2
-            4 => 'Med Hard', #2
-            5 => 'Very Soft', #(NC)
-            6 => 'Very Hard', #(NC)
-            7 => '-4', #PH (NC)
-            8 => '+4', #PH (NC)
+            0 => '-2 (soft)', #PH
+            1 => '0 (normal)', #PH
+            2 => '+2 (hard)', #PH
+            3 => '-1 (med soft)', #2
+            4 => '+1 (med hard)', #2
+            5 => '-3 (very soft)', #(NC)
+            6 => '+3 (very hard)', #(NC)
+            7 => '-4 (minimum)', #PH (NC)
+            8 => '+4 (maximum)', #PH (NC)
         }],
     },
     0x0022 => { #PH

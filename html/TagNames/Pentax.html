@@ -544,15 +544,15 @@ available.  Extended bracket values are printed as &#39;WB-BA&#39;, &#39;WB-GM&#
 <td class=c>int16u[n]</td>
 <td><span class=s><span class=n>(1 or 2 values)</span>
   <br>[Value 0]</span><table class=cols><tr>
-  <td>0 = Low
-  <br>1 = Normal
-  <br>2 = High
-  <br>3 = Med Low
-  <br>4 = Med High</td><td>&nbsp;&nbsp;</td>
-  <td>5 = Very Low
-  <br>6 = Very High
-  <br>7 = -4
-  <br>8 = +4
+  <td>0 = -2 (low)
+  <br>1 = 0 (normal)
+  <br>2 = +2 (high)
+  <br>3 = -1 (med low)
+  <br>4 = +1 (med high)</td><td>&nbsp;&nbsp;</td>
+  <td>5 = -3 (very low)
+  <br>6 = +3 (very high)
+  <br>7 = -4 (minimum)
+  <br>8 = +4 (maximum)
   <br>65535 = None</td><td>&nbsp;&nbsp;</td></tr></table>
 </td></tr>
 <tr>
@@ -561,15 +561,16 @@ available.  Extended bracket values are printed as &#39;WB-BA&#39;, &#39;WB-GM&#
 <td class=c>int16u[n]</td>
 <td><span class=s><span class=n>(1 or 2 values)</span>
   <br>[Value 0]</span><table class=cols><tr>
-  <td>0 = Low
-  <br>1 = Normal
-  <br>2 = High
-  <br>3 = Med Low
-  <br>4 = Med High</td><td>&nbsp;&nbsp;</td>
-  <td>5 = Very Low
-  <br>6 = Very High
-  <br>7 = -4
-  <br>8 = +4</td><td>&nbsp;&nbsp;</td></tr></table>
+  <td>0 = -2 (low)
+  <br>1 = 0 (normal)
+  <br>2 = +2 (high)
+  <br>3 = -1 (med low)
+  <br>4 = +1 (med high)</td><td>&nbsp;&nbsp;</td>
+  <td>5 = -3 (very low)
+  <br>6 = +3 (very high)
+  <br>7 = -4 (minimum)
+  <br>8 = +4 (maximum)
+  <br>65535 = n/a</td><td>&nbsp;&nbsp;</td></tr></table>
 </td></tr>
 <tr class=b>
 <td title='0x0021 = 33'>0x0021</td>
@@ -577,15 +578,15 @@ available.  Extended bracket values are printed as &#39;WB-BA&#39;, &#39;WB-GM&#
 <td class=c>int16u[n]</td>
 <td><span class=s><span class=n>(1 or 2 values)</span>
   <br>[Value 0]</span><table class=cols><tr>
-  <td>0 = Soft
-  <br>1 = Normal
-  <br>2 = Hard
-  <br>3 = Med Soft
-  <br>4 = Med Hard</td><td>&nbsp;&nbsp;</td>
-  <td>5 = Very Soft
-  <br>6 = Very Hard
-  <br>7 = -4
-  <br>8 = +4</td><td>&nbsp;&nbsp;</td></tr></table>
+  <td>0 = -2 (soft)
+  <br>1 = 0 (normal)
+  <br>2 = +2 (hard)
+  <br>3 = -1 (med soft)
+  <br>4 = +1 (med hard)</td><td>&nbsp;&nbsp;</td>
+  <td>5 = -3 (very soft)
+  <br>6 = +3 (very hard)
+  <br>7 = -4 (minimum)
+  <br>8 = +4 (maximum)</td><td>&nbsp;&nbsp;</td></tr></table>
 </td></tr>
 <tr>
 <td title='0x0022 = 34'>0x0022</td>
@@ -4639,7 +4640,7 @@ stored as ASCII text in a format very similar to some HP models.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Feb 18, 2015</i>
+<br><i>Last revised Feb 26, 2015</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

@@ -7,11 +7,22 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 9.76. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Feb. 28, 2015 - Version 9.88
+
+  - Decode a few more ID3 tags
+  - Improved decoding of some Pentax tags
+  - Extended -list and -listw options to include flattened tags
+  - Patched to recognize ID3v2.3 tags in ID3v2.4 metadata and visa versa
+  - Patched byte ordering problems with Nikon FileInfo tags for the D5500
+  - Fixed bug where other groups were ignored when multiple groups were
+    specified when writing and one of those groups was a specific EXIF IFD (eg.
+    -ExifIFD:Time:all= ignored the Time constraint)
+
 Feb. 24, 2015 - Version 9.87
 
   - Added a number of new Sigma LensType values (thanks LibRaw)
-  - Fixed problem introduced in version 9.85 where "*.*" on the command line
-    matches "." and "..", causing unexpected files to be processed
+  - Fixed bug introduced in the Windows version of 9.85 where "*.*" on the
+    command line matched "." and "..", causing unexpected files to be processed
   - Fixed problem extracting some Microsoft tags from MP4/MOV videos
 
 Feb. 22, 2015 - Version 9.86

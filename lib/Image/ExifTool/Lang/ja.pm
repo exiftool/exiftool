@@ -11,7 +11,7 @@ package Image::ExifTool::Lang::ja;
 use strict;
 use vars qw($VERSION);
 
-$VERSION = '1.21';
+$VERSION = '1.22';
 
 %Image::ExifTool::Lang::ja::Translate = (
    'AEAperture' => 'AE絞り',
@@ -1324,16 +1324,19 @@ $VERSION = '1.21';
    'Contrast' => {
       Description => 'コントラスト',
       PrintConv => {
+        '+1 (med high)' => '+1 (少し高い)',
+        '+2 (high)' => '+2 (ハード)',
+        '+3 (very high)' => '+3 (かなり高い)',
+        '-1 (med low)' => '-1 (少し低い)',
+        '-2 (low)' => '-2 (ソフト)',
+        '-3 (very low)' => '-3 (かなり低い)',
+        '0 (normal)' => '0 (スタンダード)',
         'Film Simulation' => 'フィルムシミュレーション',
         'High' => 'ハード',
         'Low' => 'ソフト',
-        'Med High' => '少し高い',
-        'Med Low' => '少し低い',
         'Medium High' => '少し高い',
         'Medium Low' => '少し低い',
         'Normal' => 'スタンダード',
-        'Very High' => 'かなり高い',
-        'Very Low' => 'かなり低い',
       },
     },
    'ContrastCurve' => 'コントラストカーブ',
@@ -4522,18 +4525,21 @@ $VERSION = '1.21';
    'Saturation' => {
       Description => '彩度',
       PrintConv => {
+        '+1 (med high)' => '+1 (少し高い)',
+        '+2 (high)' => '+2 (ハード)',
+        '+3 (very high)' => '+3 (かなり高い)',
+        '-1 (med low)' => '-1 (少し低い)',
+        '-2 (low)' => '-2 (ソフト)',
+        '-3 (very low)' => '-3 (かなり低い)',
+        '0 (normal)' => '0 (スタンダード)',
         'Film Simulation' => 'フィルムシミュレーション',
         'High' => '高い彩度',
         'Low' => '低い彩度',
-        'Med High' => '少し高い',
-        'Med Low' => '少し低い',
         'Medium High' => '少し高い',
         'Medium Low' => '少し低い',
         'None' => '未設定',
         'None (B&W)' => '無し（黒＆白）',
         'Normal' => '標準',
-        'Very High' => 'かなり高い',
-        'Very Low' => 'かなり低い',
       },
     },
    'SaturationFaithful' => '彩度忠実設定',
@@ -4841,19 +4847,22 @@ $VERSION = '1.21';
    'Sharpness' => {
       Description => 'シャープネス',
       PrintConv => {
+        '+1 (med hard)' => '+1 (少しハード)',
+        '+2 (hard)' => '+2 (ハード)',
+        '+3 (very hard)' => '+3 (かなりハード)',
+        '-1 (med soft)' => '-1 (ミドルソフト)',
+        '-2 (soft)' => '-2 (ソフト)',
+        '-3 (very soft)' => '-3 (かなりソフト)',
+        '0 (normal)' => '0 (ノーマル)',
         'Film Simulation' => 'フィルムシミュレーション',
         'Hard' => 'ハード',
         'Hard2' => 'ハード2',
-        'Med Hard' => '少しハード',
-        'Med Soft' => '少しソフト',
         'Medium Hard' => 'ミドルハード',
         'Medium Soft' => 'ミドルソフト',
         'Normal' => 'ノーマル',
         'Sharp' => 'シャープ',
         'Soft' => 'ソフト',
         'Soft2' => 'ソフト2',
-        'Very Hard' => 'かなりハード',
-        'Very Soft' => 'かなりソフト',
         'n/a' => '該当無し',
       },
     },

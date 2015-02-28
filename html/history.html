@@ -17,11 +17,23 @@ considered development releases, and are not uploaded to <a href="http://search.
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v9.88'><b>Feb. 28, 2015 - Version 9.88</b></a>
+<ul>
+<li>Decode a few more ID3 tags
+<li>Improved decoding of some Pentax tags
+<li>Extended -list and -listw options to include flattened tags
+<li>Patched to recognize ID3v2.3 tags in ID3v2.4 metadata and visa versa
+<li>Patched byte ordering problems with Nikon FileInfo tags for the D5500
+<li>Fixed bug where other groups were ignored when multiple groups were
+    specified when writing and one of those groups was a specific EXIF IFD (eg.
+    -ExifIFD:Time:all= ignored the Time constraint)
+</ul>
+
 <a name='v9.87'><b>Feb. 24, 2015 - Version 9.87</b></a>
 <ul>
 <li>Added a number of new Sigma LensType values (thanks LibRaw)
-<li>Fixed problem introduced in version 9.85 where "*.*" on the command line
-    matches "." and "..", causing unexpected files to be processed
+<li>Fixed bug introduced in the Windows version of 9.85 where "*.*" on the
+    command line matched "." and "..", causing unexpected files to be processed
 <li>Fixed problem extracting some Microsoft tags from MP4/MOV videos
 </ul>
 

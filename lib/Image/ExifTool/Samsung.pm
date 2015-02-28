@@ -227,7 +227,9 @@ my %formatMinMax = (
     # 0x0004 - undef[x] (SamsungContentsID?)
     # 0x000a - int32u (ContinuousShotMode?)
     # 0x000b - int16u (BestPhotoMode?)
+    # 0x000c - int32u ? values: 0,1
     # 0x000e - int32u[2] (SoundMultiPicture?)
+    # 0x0010 - rational64u ? values: undef,inf
     # 0x0020 - int16u[2] (ColorInfoDCM?)
     0x0021 => { #1
         Name => 'PictureWizard',
@@ -272,7 +274,7 @@ my %formatMinMax = (
     # 0x003d - int16u[5] (SmartCropInfo?)
     # 0x003e - int32u (DualCapture?)
     # 0x003f - int16u[2] (SGIFInfo?)
-    # 0x0040 - int32u (FavoriteTagging?)
+    # 0x0040 - int32u (FavoriteTagging?) values: 0
     0x0043 => { #1 (NC)
         Name => 'CameraTemperature',
         Groups => { 2 => 'Camera' },
@@ -284,7 +286,7 @@ my %formatMinMax = (
     0x0045 => { Name => 'RawCompressionMode', Writable => 'int32u' },
     # 0x004a - int32u[7] (ImageVerification?)
     # 0x004b - int32u[2] (RewindInfo?)
-    # 0x0050 - int32u (ColorSpace? - inconsistent)
+    # 0x0050 - int32u (ColorSpace? - inconsistent) values: 1
     # 0x0054 - int16u[2] (WeatherInfo?)
     # 0x0060 - undef (AEInfo?)
     # 0x0080 - undef (AFInfo?)

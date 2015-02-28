@@ -536,14 +536,15 @@ TAG: foreach $tagInfo (@matchingTags) {
                 }
                 # handle family 1 groups specially
                 if ($grp[0] eq 'EXIF' or $grp[0] eq 'SonyIDC') {
-                    next TAG unless $ifdName;
+                    next TAG unless $ifdName and $lcWant eq lc($ifdName);
                     # can't yet write PreviewIFD tags
                     $ifdName eq 'PreviewIFD' and ++$foundMatch, next TAG;
                     $writeGroup = $ifdName;  # write to the specified IFD
                 } elsif ($grp[0] eq 'QuickTime' and $grp[1] eq 'Track#') {
-                    $writeGroup = $movGroup or next TAG;
+                    next TAG unless $movGroup and $lcWant eq lc($movGroup);
+                    $writeGroup = $movGroup;
                 } elsif ($grp[0] eq 'MIE') {
-                    next TAG unless $mieGroup;
+                    next TAG unless $mieGroup and $lcWant eq lc($mieGroup);
                     $writeGroup = $mieGroup; # write to specific MIE group
                     # set specific write group with document number if specified
                     if ($writeGroup =~ /^MIE\d+$/ and $$tagInfo{Table}{WRITE_GROUP}) {
@@ -2242,6 +2243,10 @@ sub GetAllTags(;$)
     # loop through all tables and save tag names to %allTags hash
     while (@tableNames) {
         my $table = GetTagTable(pop @tableNames);
+        # generate flattened tag names for structure fields if this is an XMP table
+        if ($$table{GROUPS} and $$table{GROUPS}{0} eq 'XMP') {
+            Image::ExifTool::XMP::AddFlattenedTags($table);
+        }
         my $tagID;
         foreach $tagID (TagTableKeys($table)) {
             my @infoArray = GetTagInfoList($table,$tagID);
@@ -2283,6 +2288,10 @@ sub GetWritableTags(;$)
     while (@tableNames) {
         my $tableName = pop @tableNames;
         my $table = GetTagTable($tableName);
+        # generate flattened tag names for structure fields if this is an XMP table
+        if ($$table{GROUPS} and $$table{GROUPS}{0} eq 'XMP') {
+            Image::ExifTool::XMP::AddFlattenedTags($table);
+        }
         # attempt to load Write tables if autoloaded
         my @parts = split(/::/,$tableName);
         if (@parts > 3) {

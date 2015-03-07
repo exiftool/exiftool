@@ -827,6 +827,19 @@ Flag to get the values of unknown tags.  If set to 1, unknown tags are
 extracted from EXIF (or other tagged-format) directories.  If set to 2,
 unknown tags are also extracted from binary data blocks.  Default is 0.
 
+=item UserParam
+
+Special option to set/get user-defined parameters. Useful to allow external
+input into tag name expresssions and ValueConv logic. I<PARAM> is the
+user-defined parameter name (not case sensitive).
+
+  PARAM         - Get parameter
+  PARAM=        - Clear parameter
+  PARAM=VALUE   - Set parameter
+
+User-defined parameters are accessed in tag name expressions by prefixing
+the parameter name with a dollar sign, just like normal tags.
+
 =item Verbose
 
 Print verbose messages to file specified by TextOut option.  Value may be

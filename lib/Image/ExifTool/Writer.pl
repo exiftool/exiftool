@@ -1100,6 +1100,7 @@ sub SetNewValuesFromFile($$;@)
         StrictDate      => 1,
         Struct          => $structOpt,
         Unknown         => $$options{Unknown},
+        UserParam       => $$options{UserParam},
         XMPAutoConv     => $$options{XMPAutoConv},
     );
     # avoid extracting tags that are excluded
@@ -2682,7 +2683,12 @@ sub InsertTagValues($$$;$)
 
         for (;;) {
             my $tag = shift @tags;
-            if ($tag =~ /(.*):(.+)/) {
+            my $lcTag = lc $tag;
+            if ($lcTag eq 'all') {
+                $val = 1;   # always some tag available
+            } elsif (defined $$self{OPTIONS}{UserParam}{$lcTag}) {
+                $val = $$self{OPTIONS}{UserParam}{$lcTag};
+            } elsif ($tag =~ /(.*):(.+)/) {
                 my $group;
                 ($group, $tag) = ($1, $2);
                 if (lc $tag eq 'all') {
@@ -2704,8 +2710,6 @@ sub InsertTagValues($$$;$)
                         last unless $tag =~ / /;    # all done if we got our best match
                     }
                 }
-            } elsif (lc $tag eq 'all') {
-                $val = 1;   # always some tag available
             } else {
                 # get the tag value
                 $val = $self->GetValue($tag, $type);

@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '9.88';
+$VERSION = '9.89';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -1581,6 +1581,22 @@ sub Options($$;@)
             } else {
                 $$options{$param} = 'Latin';    # all others default to Latin
             }
+        } elsif ($param eq 'UserParam') {
+            if ($newVal =~ /(.*?)=(.*)/) {
+                $param = lc $1;
+                $newVal = $2;
+            } else {
+                $param = lc $newVal;
+                undef $newVal;
+            }
+            $oldVal = $$options{UserParam}{$param};
+            if (defined $newVal) {
+                if (length $newVal) {
+                    $$options{UserParam}{$param} = $newVal;
+                } else {
+                    delete $$options{UserParam}{$param};
+                }
+            }
         } else {
             if ($param eq 'Escape') {
                 # set ESCAPE_PROC
@@ -1668,6 +1684,7 @@ sub ClearOptions($)
         Struct      => undef,   # return structures as hash references
         TextOut     => \*STDOUT,# file for Verbose/HtmlDump output
         Unknown     => 0,       # flag to get values of unknown tags (0-2)
+        UserParam   => { },     # user parameters for InsertTagValues()
         Verbose     => 0,       # print verbose messages (0-5, higher # = more verbose)
         WriteMode   => 'wcg',   # enable all write modes by default
         XMPAutoConv => 1,       # automatic conversion of unknown XMP tag values

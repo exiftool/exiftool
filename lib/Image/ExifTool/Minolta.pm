@@ -32,7 +32,7 @@
 #              22) http://www.mi-fo.de/forum/index.php?act=attach&type=post&id=6024
 #              23) Marcin Krol private communication
 #              24) http://cpanforum.com/threads/12291
-#              25) Joseph Roost private communication, from one or more of
+#              25) Jos Roost private communication, from one or more of
 #                   - A100 brochure, 2006-07
 #                   - Alpha Lenses Accessories brochure, 2007-09 (JP)
 #                   - Alpha Lenses brochure, 2010-09
@@ -53,7 +53,7 @@ use vars qw($VERSION %minoltaLensTypes %minoltaTeleconverters %minoltaColorMode
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.20';
+$VERSION = '2.21';
 
 # Full list of product codes for Sony-compatible Minolta lenses
 # (ref http://www.kb.sony.com/selfservice/documentLink.do?externalId=C1000570)
@@ -335,6 +335,7 @@ my %metabonesID = (
     136 => 'Tokina EMZ M100 AF 100mm F3.5', #JD
     137 => 'Cosina 70-210mm F2.8-4 AF', #11
     138 => 'Soligor 19-35mm F3.5-4.5', #11
+    139 => 'Tokina AF 28-300mm F4-6.3', #30
     142 => 'Voigtlander 70-300mm F4.5-5.6', #JD
     146 => 'Voigtlander Macro APO-Lanthar 125mm F2.5 SL', #JD
     194 => 'Tamron SP AF 17-50mm F2.8 XR Di II LD Aspherical [IF]', #23 (Model A16)
@@ -491,51 +492,57 @@ my %metabonesID = (
 #
 # Sony E-type lenses (NOTE: these should be kept in sync with %sonyLensTypes2 of Sony.pm)
 #
-    65535.1  => 'Sony E 16mm F2.8',                 #PH (SEL16F28   - 32784)
-    65535.2  => 'Sony E 18-55mm F3.5-5.6 OSS',      #PH (SEL1855    - 32785)
-    65535.3  => 'Sony E 55-210mm F4.5-6.3 OSS',     #PH (SEL55210   - 32786)
-    65535.4  => 'Sony E 18-200mm F3.5-6.3 OSS',     #PH (SEL18200   - 32787)
-    65535.5  => 'Sony E 30mm F3.5 Macro',           #25 (SEL30M35   - 32788)
-    65535.6  => 'Sony E 24mm F1.8 ZA',              #PH (SEL24F18Z  - 32789)
-    65535.7  => 'Sony E 50mm F1.8 OSS',             #PH (SEL50F18   - 32790)
-    65535.8  => 'Sony E 16-70mm F4 ZA OSS',         #25 (SEL1670Z   - 32791)
-    65535.9  => 'Sony E 10-18mm F4 OSS',            #PH (SEL1018    - 32792)
-   '65535.10' => 'Sony E PZ 16-50mm F3.5-5.6 OSS',  #PH (SELP1650   - 32793)
-   '65535.11' => 'Sony FE 35mm F2.8 ZA',            #25 (SEL35F28Z  - 32794)
-   '65535.12' => 'Sony FE 24-70mm F4 ZA OSS',       #25 (SEL2470Z   - 32795)
-   '65535.13' => 'Sony E 18-200mm F3.5-6.3 OSS LE', #25 (SEL18200LE - 32797)
-   '65535.14' => 'Sony E 20mm F2.8',                #PH (SEL20F28   - 32798)
-   '65535.15' => 'Sony E 35mm F1.8 OSS',            #25 (SEL35F18   - 32799)
-   '65535.16' => 'Sony E PZ 18-105mm F4 G OSS',     #25 (SELP18105G - 32800)
-   '65535.17' => 'Sony E 18-50mm F4-5.6',           #25 (SEL1850    - 32803)
-   '65535.18' => 'Sony E PZ 18-200mm F3.5-6.3 OSS', #25 (SELP18200  - 32807)
-   '65535.19' => 'Sony FE 55mm F1.8 ZA',            #25 (SEL55F18Z  - 32808)
-   '65535.20' => 'Sony FE 70-200mm F4 G OSS',       #25 (SEL70200G  - 32810)
-   '65535.21' => 'Sony FE 16-35mm F4 ZA OSS',       #25 (SEL1635Z   - 32811)
-   '65535.22' => 'Sony FE 28-70mm F3.5-5.6 OSS',    #25 (SEL2870    - 32813)
-   '65535.23' => 'Sony FE PZ 28-135mm F4 G OSS',    #25 (SELP28135G - 32817)
+    65535.1  => 'Sony E 16mm F2.8',                 #PH (32784 - SEL16F28)
+    65535.2  => 'Sony E 18-55mm F3.5-5.6 OSS',      #PH (32785 - SEL1855)
+    65535.3  => 'Sony E 55-210mm F4.5-6.3 OSS',     #PH (32786 - SEL55210)
+    65535.4  => 'Sony E 18-200mm F3.5-6.3 OSS',     #PH (32787 - SEL18200)
+    65535.5  => 'Sony E 30mm F3.5 Macro',           #25 (32788 - SEL30M35)
+    65535.6  => 'Sony E 24mm F1.8 ZA',              #PH (32789 - SEL24F18Z)
+    65535.7  => 'Sony E 50mm F1.8 OSS',             #PH (32790 - SEL50F18)
+    65535.8  => 'Sony E 16-70mm F4 ZA OSS',         #25 (32791 - SEL1670Z)
+    65535.9  => 'Sony E 10-18mm F4 OSS',            #PH (32792 - SEL1018)
+   '65535.10' => 'Sony E PZ 16-50mm F3.5-5.6 OSS',  #PH (32793 - SELP1650)
+   '65535.11' => 'Sony FE 35mm F2.8 ZA',            #25 (32794 - SEL35F28Z)
+   '65535.12' => 'Sony FE 24-70mm F4 ZA OSS',       #25 (32795 - SEL2470Z)
+   '65535.13' => 'Sony E 18-200mm F3.5-6.3 OSS LE', #25 (32797 - SEL18200LE)
+   '65535.14' => 'Sony E 20mm F2.8',                #PH (32798 - SEL20F28)
+   '65535.15' => 'Sony E 35mm F1.8 OSS',            #25 (32799 - SEL35F18)
+   '65535.16' => 'Sony E PZ 18-105mm F4 G OSS',     #25 (32800 - SELP18105G)
+   '65535.17' => 'Sony FE 90mm F2.8 Macro G OSS',   #25 (32802 - SEL90M28G)
+   '65535.18' => 'Sony E 18-50mm F4-5.6',           #25 (32803 - SEL1850)
+   '65535.19' => 'Sony E PZ 18-200mm F3.5-6.3 OSS', #25 (32807 - SELP18200)
+   '65535.20' => 'Sony FE 55mm F1.8 ZA',            #25 (32808 - SEL55F18Z)
+   '65535.21' => 'Sony FE 70-200mm F4 G OSS',       #25 (32810 - SEL70200G)
+   '65535.22' => 'Sony FE 16-35mm F4 ZA OSS',       #25 (32811 - SEL1635Z)
+   '65535.23' => 'Sony FE 28-70mm F3.5-5.6 OSS',    #25 (32813 - SEL2870)
+   '65535.24' => 'Sony FE 35mm F1.4 ZA',            #25 (32814 - SEL35F14Z)
+   '65535.25' => 'Sony FE 24-240mm F3.5-6.3 OSS',   #25 (32815 - SEL24240)
+   '65535.26' => 'Sony FE 28mm F2',                 #25 (32816 - SEL28F20)
+   '65535.27' => 'Sony FE PZ 28-135mm F4 G OSS',    #25 (32817 - SELP28135G)
+   '65535.28' => 'Sony FE 21mm F2.8 (SEL28F20 + SEL075UWC)', #25         # (32826 - SEL28F20 + SEL075UWC Ultra-wide converter)
+   '65535.29' => 'Sony FE 16mm F3.5 Fisheye (SEL28F20 + SEL057FEC)', #25 # (32827 - SEL28F20 + SEL057FEC Fisheye converter)
 #
 # 3rd party E lenses
 #
-   '65535.24' => 'Sigma 19mm F2.8 [EX] DN', #25
-   '65535.25' => 'Sigma 30mm F2.8 [EX] DN', #25
-   '65535.26' => 'Sigma 60mm F2.8 DN', #25
-   '65535.27' => 'Tamron 18-200mm F3.5-6.3 Di III VC', #25 (Model B011)
-   '65535.28' => 'Zeiss Loxia 35mm F2', #25
-   '65535.29' => 'Zeiss Loxia 50mm F2', #25
-   '65535.30' => 'Zeiss Touit 12mm F2.8', #25
-   '65535.31' => 'Zeiss Touit 32mm F1.8', #25
-   '65535.32' => 'Zeiss Touit 50mm F2.8 Macro', #25
+   '65535.30' => 'Sigma 19mm F2.8 [EX] DN', #25
+   '65535.31' => 'Sigma 30mm F2.8 [EX] DN', #25
+   '65535.32' => 'Sigma 60mm F2.8 DN', #25
+   '65535.33' => 'Tamron 18-200mm F3.5-6.3 Di III VC', #25 (Model B011)
+   '65535.34' => 'Zeiss Loxia 35mm F2', #25
+   '65535.35' => 'Zeiss Loxia 50mm F2', #25
+   '65535.36' => 'Zeiss Touit 12mm F2.8', #25
+   '65535.37' => 'Zeiss Touit 32mm F1.8', #25
+   '65535.38' => 'Zeiss Touit 50mm F2.8 Macro', #25
 #
 # other lenses
 #
-   '65535.33' => 'Arax MC 35mm F2.8 Tilt+Shift', #JD
-   '65535.34' => 'Arax MC 80mm F2.8 Tilt+Shift', #JD
-   '65535.35' => 'Zenitar MF 16mm F2.8 Fisheye M42', #JD
-   '65535.36' => 'Samyang 500mm Mirror F8.0', #19
-   '65535.37' => 'Pentacon Auto 135mm F2.8', #19
-   '65535.38' => 'Pentacon Auto 29mm F2.8', #19
-   '65535.39' => 'Helios 44-2 58mm F2.0', #19
+   '65535.39' => 'Arax MC 35mm F2.8 Tilt+Shift', #JD
+   '65535.40' => 'Arax MC 80mm F2.8 Tilt+Shift', #JD
+   '65535.41' => 'Zenitar MF 16mm F2.8 Fisheye M42', #JD
+   '65535.42' => 'Samyang 500mm Mirror F8.0', #19
+   '65535.43' => 'Pentacon Auto 135mm F2.8', #19
+   '65535.44' => 'Pentacon Auto 29mm F2.8', #19
+   '65535.45' => 'Helios 44-2 58mm F2.0', #19
 );
 
 %minoltaTeleconverters = (

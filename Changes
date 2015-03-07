@@ -7,6 +7,14 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 9.76. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Mar. 7, 2015 - Version 9.89
+
+  - Added some new Minolta/Sony LensType values (thanks Jos Roost and LibRaw)
+  - Fixed Windows case-sensitivity and sort-order problems when using wildcards
+    in file names on the command line
+  - API Changes:
+      - Added UserParam option
+
 Feb. 28, 2015 - Version 9.88
 
   - Decode a few more ID3 tags

@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.18';
+$VERSION = '2.19';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -81,6 +81,7 @@ my %sonyLensTypes2 = (
     32799 => 'Sony E 35mm F1.8 OSS',            # VX9115
     32800 => 'Sony E PZ 18-105mm F4 G OSS', #12 # VX9116
 
+    32802 => 'Sony FE 90mm F2.8 Macro G OSS',   # VX?
     32803 => 'Sony E 18-50mm F4-5.6',
 
     32807 => 'Sony E PZ 18-200mm F3.5-6.3 OSS', # VX9123
@@ -90,8 +91,18 @@ my %sonyLensTypes2 = (
     32811 => 'Sony FE 16-35mm F4 ZA OSS', #12   # VX9127
 
     32813 => 'Sony FE 28-70mm F3.5-5.6 OSS',    # VX9129
+    32814 => 'Sony FE 35mm F1.4 ZA',            # VX?
+    32815 => 'Sony FE 24-240mm F3.5-6.3 OSS',   # VX?
+    32816 => 'Sony FE 28mm F2', #12             # VX?
+    32817 => 'Sony FE PZ 28-135mm F4 G OSS',#12 # VX?
 
-    32817 => 'Sony FE PZ 28-135mm F4 G OSS',#12 # VX91..
+    32826 => 'Sony FE 21mm F2.8 (SEL28F20 + SEL075UWC)', #12          # (+ Ultra-wide converter)
+    32827 => 'Sony FE 16mm F3.5 Fisheye (SEL28F20 + SEL057FEC)', #12  # (+ Fisheye converter)
+
+    # yet to be determined (ref 12):
+    # 32xxx => 'Sony FE 24-240mm F3.5-6.3 OSS     # (SEL24240)
+    # 32xxx => 'Sony FE 35mm F1.4 ZA              # (SEL35F14Z)
+    # 32xxx => 'Sony FE 90mm F2.8 Macro G         # (SEL90M28G)
 );
 
 # ExposureProgram values (ref PH, mainly decoded from A200)
@@ -8008,8 +8019,8 @@ my @lensFeatures = (
     # ------    ------    -----  ------    -----   -----------
     [ 0x4000, { 0x4000 => 'PZ'                   }, 1 ],
     [ 0x0300, { 0x0100 => 'DT',  0x0200 => 'FE', 0x0300 => 'E'   }, 1 ], # (will come before preceding prefix), FE added (ref 12)
-    [ 0x000c, { 0x0004 => 'ZA',  0x0008 => 'G'   } ],
     [ 0x00e0, { 0x0020 => 'STF', 0x0040 => 'Reflex', 0x0060 => 'Macro', 0x0080 => 'Fisheye' } ],
+    [ 0x000c, { 0x0004 => 'ZA',  0x0008 => 'G'   } ],
     [ 0x0003, { 0x0001 => 'SSM', 0x0002 => 'SAM' } ],
     [ 0x8000, { 0x8000 => 'OSS' } ],
     [ 0x2000, { 0x2000 => 'LE' } ], #12

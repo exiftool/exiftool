@@ -727,6 +727,17 @@ distribution for examples.</p>
         (and other tagged-format) directories</td></tr>
     <tr><td valign=top align=center><b>2</b>&nbsp;=</td><td>Unknown tags also extracted from binary data blocks</td></tr>
     </table></td><td align=center>0</td></tr>
+<tr><td>UserParam</td><td><a name="UserParam"></a>Special option to set/get user-defined parameters.
+    Useful to allow external input into tag name expresssions and ValueConv logic. <i>PARAM</i>
+    is the user-defined parameter name (not case sensitive).  These parameters
+    are accessed in tag name expressions by prefixing the parameter name with a
+    dollar sign, just like normal tags.
+</td>
+    <td><table class='clear'>
+    <tr><td><i>PARAM</i></td><td>- Get parameter</td></tr>
+    <tr><td><i>PARAM=</i></td><td>- Clear parameter</td></tr>
+    <tr><td><i>PARAM=VALUE</i></td><td>- Set parameter</td></tr>
+    </table></td><td align=center>undef</td></tr>
 <tr><td>Verbose</td><td>Print verbose messages to file specified by TextOut option.
     <a href="verbose.html">Click here</a> for example outputs.</td>
     <td><a name="Verbose"></a><table class='clear'>

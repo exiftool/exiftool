@@ -53,7 +53,7 @@ use vars qw($VERSION %minoltaLensTypes %minoltaTeleconverters %minoltaColorMode
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.21';
+$VERSION = '2.22';
 
 # Full list of product codes for Sony-compatible Minolta lenses
 # (ref http://www.kb.sony.com/selfservice/documentLink.do?externalId=C1000570)
@@ -366,10 +366,11 @@ my %metabonesID = (
     25521.2 => 'Tokina 28-70mm F2.8 AT-X', #7
     25521.3 => 'Tokina 80-400mm F4.5-5.6 AT-X AF II 840', #JD
     25521.4 => 'Tokina AF PRO 28-80mm F2.8 AT-X 280', #JD
-    25521.5 => 'Tokina AT-X PRO II AF 28-70mm F2.6-2.8 270', #24
+    25521.5 => 'Tokina AT-X PRO [II] AF 28-70mm F2.6-2.8 270', #24 (original + II versions)
     25521.6 => 'Tamron AF 19-35mm F3.5-4.5', #JD (Model A10)
     25521.7 => 'Angenieux AF 28-70mm F2.6', #JD
     25521.8 => 'Tokina AT-X 17 AF 17mm F3.5', #27
+    25521.9 => 'Tokina 20-35mm F3.5-4.5 II AF', #30
     25531 => 'Minolta AF 28-135mm F4-4.5 or Sigma Lens',
     25531.1 => 'Sigma ZOOM-alpha 35-135mm F3.5-4.5', #16
     25531.2 => 'Sigma 28-105mm F2.8-4 Aspherical', #JD
@@ -474,6 +475,7 @@ my %metabonesID = (
     # - this is the base to which the Canon LensType is added
     30464 => 'Metabones Canon EF Speed Booster', #Metabones
     45671 => 'Tokina 70-210mm F4-5.6', #22
+    45711 => 'Vivitar 70-210mm F4.5-5.6', #30
     45741 => '2x Teleconverter or Tamron or Tokina Lens', #18
     45741.1 => 'Tamron SP AF 90mm F2.5', #JD
     45741.2 => 'Tokina RF 500mm F8.0 x2', #JD

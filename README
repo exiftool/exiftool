@@ -181,7 +181,8 @@ distribution package:
     xmp2pdf.args              - Arguments for converting XMP to PDF
   config_files/             - Sample ExifTool configuration files:
     ExifTool_config           - General example showing basic features
-    convert_regions.config    - Config file for converting face regions
+    convert_regions.config    - Convert between MWG and MP face regions
+    picasa_faces.config       - Convert from Picasa to MWG/MP face regions
   exiftool                  - The exiftool application (Perl script)
   fmt_files/                - Output formatting example files:
     gpx.fmt                   - Format file for creating GPX track

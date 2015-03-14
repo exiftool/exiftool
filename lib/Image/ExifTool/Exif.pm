@@ -845,7 +845,7 @@ my %sampleFormat = (
             # be stored in a TIFF file, but these TIFF-based RAW image formats
             # use IFD1 for a JPEG-compressed thumbnail:  CR2, ARW, SR2 and PEF.
             # (SRF also stores a JPEG image in IFD1, but it is actually a preview
-            # and we don't yet write SRF anyway) 
+            # and we don't yet write SRF anyway)
             WriteCondition => q{
                 $$self{FILE_TYPE} ne "TIFF" or
                 $$self{TIFF_TYPE} =~ /^(CR2|ARW|SR2|PEF)$/
@@ -1143,7 +1143,7 @@ my %sampleFormat = (
         # the following reference indicates this is Unicode:
         # http://social.msdn.microsoft.com/Forums/en-US/isvvba/thread/ce6edcbb-8fc2-40c6-ad98-85f5d835ddfb
         ValueConv => '$self->Decode($val,"UCS2","II")',
-    }, 
+    },
     0x4748 => {
         Name => 'StitchInfo',
         SubDirectory => {

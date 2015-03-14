@@ -58,7 +58,7 @@ use vars qw($VERSION %nikonLensIDs %nikonTextEncoding);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '3.02';
+$VERSION = '3.03';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -274,6 +274,7 @@ sub GetAFPointGrid($$;$);
     'A5 40 3C 8E 2C 3C A7 0E' => 'AF-S Nikkor 28-300mm f/3.5-5.6G ED VR',
     'A6 48 8E 8E 24 24 A8 0E' => 'AF-S VR Nikkor 300mm f/2.8G IF-ED II',
     'A7 4B 62 62 2C 2C A9 0E' => 'AF-S DX Micro Nikkor 85mm f/3.5G ED VR',
+    'A7 3C 53 80 30 3C C2 0E' => 'AF-S DX Nikkor 55-200mm f/4-5.6G ED VR II', #33
     'A8 48 80 98 30 30 AA 0E' => 'AF-S VR Zoom-Nikkor 200-400mm f/4G IF-ED II', #http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,3218.msg15495.html#msg15495
     'A9 54 80 80 18 18 AB 0E' => 'AF-S Nikkor 200mm f/2G ED VR II',
     'AA 3C 37 6E 30 30 AC 0E' => 'AF-S Nikkor 24-120mm f/4G ED VR',
@@ -1372,6 +1373,16 @@ my %binaryDataAttrs = (
                 ByteOrder => 'BigEndian',
             },
         },
+        { #28 (D810 firmware 1.01)
+            Condition => '$$valPt =~ /^0233/',
+            Name => 'ShotInfoD810',
+            SubDirectory => {
+                TagTable => 'Image::ExifTool::Nikon::ShotInfoD810',
+                DecryptStart => 4,
+                DecryptLen => 0x1984,
+                ByteOrder => 'BigEndian',
+            },
+        },
         # 0217 - D3000
         # 0219 - D3100
         # 0224 - D3200
@@ -1846,6 +1857,10 @@ my %binaryDataAttrs = (
         SubDirectory => { TagTable => 'Image::ExifTool::Nikon::AFTune' },
     },
     # 0x00ba - custom curve data? (ref 28?) (only in NEF images)
+    0x00bb => { #forum6281
+        Name => 'RetouchInfo',
+        SubDirectory => { TagTable => 'Image::ExifTool::Nikon::RetouchInfo' },
+    },
     # 0x00bc - NEFThumbnail? (forum6281)
     0x00bd => { #PH (P6000)
         Name => 'PictureControlData',
@@ -2871,6 +2886,29 @@ my %binaryDataAttrs = (
         Format => 'int8s',
         PrintConv => '$val > 0 ? "+$val" : $val',
         PrintConvInv => '$val',
+    },
+);
+
+# Nikon NEF processing information (ref forum6281)
+%Image::ExifTool::Nikon::RetouchInfo = (
+    %binaryDataAttrs,
+    FORMAT => 'int8s',
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    DATAMEMBER => [ 0 ],
+    0 => {
+        Name => 'RetouchInfoVersion',
+        Format => 'undef[4]',
+        Writable => 0,
+        RawConv => '$$self{RetouchInfoVersion} = $val',
+    },
+    # 4 - RetouchExposureComp (+$val/6 or -$val/6?)
+    5 => {
+        Name => 'RetouchNEFProcessing',
+        Condition => '$$self{RetouchInfoVersion} ge "0200"',
+        PrintConv => {
+            -1 => 'Off',
+            1 => 'On',
+        },
     },
 );
 
@@ -4489,6 +4527,75 @@ my %nikonFocalConversions = (
         },
     },
     # note: DecryptLen currently set to 0x720
+);
+
+# shot information for the D810 firmware 1.00(PH)/1.01 (encrypted) - ref 28
+%Image::ExifTool::Nikon::ShotInfoD810 = (
+    PROCESS_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+    WRITE_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+    CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
+    VARS => { ID_LABEL => 'Index' },
+    DATAMEMBER => [ 4 ],
+    IS_SUBDIR => [ 0x18ab, 0x194b ],
+    WRITABLE => 1,
+    FIRST_ENTRY => 0,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    NOTES => 'These tags are extracted from encrypted data in images from the D810.',
+    0x00 => {
+        Name => 'ShotInfoVersion',
+        Format => 'string[4]',
+        Writable => 0,
+    },
+    0x04 => {
+        Name => 'FirmwareVersion',
+        DataMember => 'FirmwareVersion',
+        Format => 'string[5]',
+        Writable => 0,
+        RawConv => '$$self{FirmwareVersion} = $val',
+    },
+    0x16be => { # metering mode
+        Name => 'D810MeteringMode',
+        Condition => '$$self{FirmwareVersion} =~ /^1.00/',
+        Notes => 'firmware version 1.00',
+        Mask => 0x03,
+        PrintConv => {
+            0 => 'Matrix',
+            1 => 'Center',
+            2 => 'Spot',
+            3 => 'Highlight'
+        },
+    },
+    0x175e => { # metering mode
+        Name => 'D810MeteringMode',
+        Condition => '$$self{FirmwareVersion} =~ /^1.01/',
+        Notes => 'firmware version 1.01',
+        Mask => 0x03,
+        PrintConv => {
+            0 => 'Matrix',
+            1 => 'Center',
+            2 => 'Spot',
+            3 => 'Highlight'
+        },
+    },
+    0x18ab => { 
+        Name => 'CustomSettingsD810',
+        Condition => '$$self{FirmwareVersion} =~ /^1.00/',
+        Notes => 'firmware version 1.00',
+        Format => 'undef[53]',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::NikonCustom::SettingsD810',
+        },
+    },
+    0x194b => { 
+        Name => 'CustomSettingsD810',
+        Condition => '$$self{FirmwareVersion} =~ /^1.01/',
+        Notes => 'firmware version 1.01',
+        Format => 'undef[53]',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::NikonCustom::SettingsD810',
+        },
+    },
+    # note: DecryptLen currently set to 0x1984
 );
 
 # shot information for the D4 firmware 1.00g (ref PH)

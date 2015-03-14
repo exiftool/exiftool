@@ -400,6 +400,9 @@ in the full ExifTool distribution for examples.
     # get current Verbose setting
     $isVerbose = $exifTool->Options('Verbose');
 
+    # set a user parameter
+    $exifTool->Options(UserParam => 'MyParam=some value');
+
 =over 4
 
 =item Inputs:
@@ -831,13 +834,13 @@ unknown tags are also extracted from binary data blocks.  Default is 0.
 
 Special option to set/get user-defined parameters. Useful to allow external
 input into tag name expresssions and ValueConv logic. I<PARAM> is the
-user-defined parameter name (not case sensitive).
+user-defined parameter name (case insensitive).
 
   PARAM         - Get parameter
   PARAM=        - Clear parameter
   PARAM=VALUE   - Set parameter
 
-User-defined parameters are accessed in tag name expressions by prefixing
+User-defined parameters may be accessed in tag name expressions by prefixing
 the parameter name with a dollar sign, just like normal tags.
 
 =item Verbose

@@ -83,7 +83,7 @@ sub ProcessSerialData($$$);
 sub ProcessFilters($$$);
 sub SwapWords($);
 
-$VERSION = '3.44';
+$VERSION = '3.45';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -309,6 +309,7 @@ $VERSION = '3.44';
     179 => 'Canon EF 24mm f/1.4L', #20
     180 => 'Canon EF 35mm f/1.4L or Sigma Lens', #9
     180.1 => 'Sigma 50mm f/1.4 DG HSM | A', #50
+    180.2 => 'Sigma 24mm f/1.4 DG HSM | A', #53
     181 => 'Canon EF 100-400mm f/4.5-5.6L IS + 1.4x', #15
     182 => 'Canon EF 100-400mm f/4.5-5.6L IS + 2x',
     183 => 'Canon EF 100-400mm f/4.5-5.6L IS or Sigma Lens',

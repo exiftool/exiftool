@@ -483,12 +483,12 @@ numerical.
                   ValueConv and PrintConv evals will no longer have access to
                   the source @val and @prt values unless the input $val is
                   returned.  RawConv may generate Warning or Error tags, while
-                  ValueConv and PrintConv may not.  Note: RawConv should only be
-                  used if necessary (in general, only if the conversion may
-                  return undef to ignore the tag, or if a Warning may be issued)
-                  because ValueConv is more efficient since it is only executed
-                  if the tag value is requested, while RawConv is executed for
-                  all extracted tags.
+                  ValueConv and PrintConv should not (see ValueConv note below).
+                   Note: RawConv should only be used if necessary (in general,
+                  only if the conversion may return undef to ignore the tag, or
+                  if a Warning may be issued) because ValueConv is more
+                  efficient since it is only executed if the tag value is
+                  requested, while RawConv is executed for all extracted tags.
 
   ValueConv     : Used to convert the Raw value to a useable form. May be a hash
                   reference to act as a lookup table, a scalar which is
@@ -528,13 +528,18 @@ numerical.
                   the converted values of the source tags are needed), set the
                   Priority to 0 to avoid taking priority over a valid tag.  If
                   ValueConv is not specified, the Raw value is not converted.
-                  Composite tags which Require or Desire other tags may access
-                  the ValueConv, PrintConv and Raw values of these tags through
-                  the elements of the @val, @prt and @raw lists respectively
-                  (only if there was no RawConv or it returned a hash
-                  reference).  For these tags, $val may be used in an expression
-                  to represent $val[0], and the first argument passed for a code
-                  reference is a reference to @val.
+                  Composite tags which Require or Desire
+                  other tags may access the ValueConv, PrintConv and Raw values
+                  of these tags through the elements of the @val, @prt and @raw
+                  lists respectively (only if there was no RawConv or it
+                  returned a hash reference).  For these tags, $val may be used
+                  in an expression to represent $val[0], and the first argument
+                  passed for a code reference is a reference to @val.
+                  Note:  Warnings issued by these conversions are intercepted by
+                  ExifTool and saved as Warning tags, but since ValueConv and
+                  PrintConv conversions are done on demand, the warnings may be
+                  generated after the list of extracted tags is returned, so may
+                  easily be missed.  
 
   PrintConv     : This entry is similar to ValueConv above, except that it is
                   used to further convert the tag value to a human readable

@@ -56,7 +56,7 @@ use vars qw($VERSION %pentaxLensTypes);
 use Image::ExifTool::Exif;
 use Image::ExifTool::HP;
 
-$VERSION = '2.88';
+$VERSION = '2.89';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -825,6 +825,7 @@ my %binaryDataAttrs = (
         Writable => 'int16u',
         Count => 2,
         PrintConv => '$val =~ tr/ /x/; $val',
+        PrintConvInv => '$val =~ tr/x/ /; $val',
     },
     0x0003 => { #PH
         Name => 'PreviewImageLength',

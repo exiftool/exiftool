@@ -351,6 +351,7 @@ causes the other information to be re-encrypted with the new key)</span></span><
   <br>ShotInfoD300S
   <br>ShotInfoD700
   <br>ShotInfoD800
+  <br>ShotInfoD810
   <br>ShotInfoD5000
   <br>ShotInfoD5100
   <br>ShotInfoD5200
@@ -359,7 +360,7 @@ causes the other information to be re-encrypted with the new key)</span></span><
   <br>ShotInfoD4S
   <br>ShotInfo02xx
   <br>ShotInfoUnknown</td>
-<td class=c>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-</td>
+<td class=c>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-</td>
 <td>--&gt; <a href='Nikon.html#ShotInfoD40'>Nikon ShotInfoD40 Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfoD80'>Nikon ShotInfoD80 Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfoD90'>Nikon ShotInfoD90 Tags</a>
@@ -372,6 +373,7 @@ causes the other information to be re-encrypted with the new key)</span></span><
   <br>--&gt; <a href='Nikon.html#ShotInfoD300S'>Nikon ShotInfoD300S Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfoD700'>Nikon ShotInfoD700 Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfoD800'>Nikon ShotInfoD800 Tags</a>
+  <br>--&gt; <a href='Nikon.html#ShotInfoD810'>Nikon ShotInfoD810 Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfoD5000'>Nikon ShotInfoD5000 Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfoD5100'>Nikon ShotInfoD5100 Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfoD5200'>Nikon ShotInfoD5200 Tags</a>
@@ -613,21 +615,26 @@ causes the other information to be re-encrypted with the new key)</span></span><
 <td class=c>-</td>
 <td>--&gt; <a href='Nikon.html#AFTune'>Nikon AFTune Tags</a></td></tr>
 <tr class=b>
+<td title='0x00bb = 187'>0x00bb</td>
+<td>RetouchInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Nikon.html#RetouchInfo'>Nikon RetouchInfo Tags</a></td></tr>
+<tr>
 <td title='0x00bd = 189'>0x00bd</td>
 <td>PictureControlData</td>
 <td class=c title=' ! = Unsafe'>undef!</td>
 <td>--&gt; <a href='Nikon.html#PictureControl'>Nikon PictureControl Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0x00c3 = 195'>0x00c3</td>
 <td>BarometerInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Nikon.html#BarometerInfo'>Nikon BarometerInfo Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0e00 = 3584'>0x0e00</td>
 <td>PrintIM</td>
 <td class=c>-</td>
 <td>--&gt; <a href='PrintIM.html'>PrintIM Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0e01 = 3585'>0x0e01</td>
 <td>NikonCaptureData</td>
 <td class=c title=' ! = Unsafe'>undef!</td>
@@ -635,22 +642,22 @@ causes the other information to be re-encrypted with the new key)</span></span><
   <br><span class='n s'>(this data is dropped when copying Nikon MakerNotes since it may be too large
 to fit in the EXIF segment of a JPEG image, but it may be copied as a block
 into existing Nikon MakerNotes later if desired)</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0e09 = 3593'>0x0e09</td>
 <td>NikonCaptureVersion</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x0e0e = 3598'>0x0e0e</td>
 <td>NikonCaptureOffsets</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Nikon.html#CaptureOffsets'>Nikon CaptureOffsets Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0e10 = 3600'>0x0e10</td>
 <td>NikonScanIFD</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Nikon.html#Scan'>Nikon Scan Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0e13 = 3603'>0x0e13</td>
 <td>NikonCaptureEditVersions
   <br>NikonCaptureEditVersions</td>
@@ -658,17 +665,17 @@ into existing Nikon MakerNotes later if desired)</span></td></tr>
 <td><span class=n>(the ExtractEmbedded option may be used to decode settings from the stored
 edit versions, otherwise this is extracted as a binary data block)</span>
   <br>--&gt; <a href='NikonCapture.html'>NikonCapture Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0e1d = 3613'>0x0e1d</td>
 <td>NikonICCProfile</td>
 <td class=c title=' ! = Unsafe'>undef!</td>
 <td>--&gt; <a href='ICC_Profile.html'>ICC_Profile Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0e1e = 3614'>0x0e1e</td>
 <td>NikonCaptureOutput</td>
 <td class=c title=' ! = Unsafe'>undef!</td>
 <td>--&gt; <a href='Nikon.html#CaptureOutput'>Nikon CaptureOutput Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0e22 = 3618'>0x0e22</td>
 <td>NEFBitDepth</td>
 <td class=c title=' ! = Unsafe'>int16u[4]!</td>
@@ -1910,6 +1917,57 @@ firmware 1.02f.</p>
 <td>CustomSettingsD800</td>
 <td class=c>-</td>
 <td>--&gt; <a href='NikonCustom.html#SettingsD800'>NikonCustom SettingsD800 Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ShotInfoD810'>Nikon ShotInfoD810 Tags</a></h2>
+<p>These tags are extracted from encrypted data in images from the D810.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>ShotInfoVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>FirmwareVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='5822 = 0x16be'>5822</td>
+<td>D810MeteringMode</td>
+<td class=c>int8u</td>
+<td><span class=s><span class=n>(firmware version 1.00)</span>
+  <br>[Mask 0x03]
+  <br>0x0 = Matrix
+  <br>0x1 = Center
+  <br>0x2 = Spot
+  <br>0x3 = Highlight</span></td></tr>
+<tr class=b>
+<td class=r title='5982 = 0x175e'>5982</td>
+<td>D810MeteringMode</td>
+<td class=c>int8u</td>
+<td><span class=s><span class=n>(firmware version 1.01)</span>
+  <br>[Mask 0x03]
+  <br>0x0 = Matrix
+  <br>0x1 = Center
+  <br>0x2 = Spot
+  <br>0x3 = Highlight</span></td></tr>
+<tr>
+<td class=r title='6315 = 0x18ab'>6315</td>
+<td>CustomSettingsD810</td>
+<td class=c>-</td>
+<td>--&gt; <a href='NikonCustom.html#SettingsD810'>NikonCustom SettingsD810 Tags</a>
+  <br><span class='n s'>(firmware version 1.00)</span></td></tr>
+<tr class=b>
+<td class=r title='6475 = 0x194b'>6475</td>
+<td>CustomSettingsD810</td>
+<td class=c>-</td>
+<td>--&gt; <a href='NikonCustom.html#SettingsD810'>NikonCustom SettingsD810 Tags</a>
+  <br><span class='n s'>(firmware version 1.01)</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='ShotInfoD5000'>Nikon ShotInfoD5000 Tags</a></h2>
@@ -3430,6 +3488,25 @@ point is F10)</span></span></td></tr>
 <td><span class=s><span class=n>(may only be valid for saved lenses)</span></span></td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='RetouchInfo'>Nikon RetouchInfo Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>RetouchInfoVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='5 = 0x5'>5</td>
+<td>RetouchNEFProcessing</td>
+<td class=c>int8s</td>
+<td><span class=s>-1 = Off
+  <br>1 = On</span></td></tr>
+</table></td></tr></table></blockquote>
+
 <h2><a name='BarometerInfo'>Nikon BarometerInfo Tags</a></h2>
 <blockquote>
 <table class=frame><tr><td>
@@ -4666,6 +4743,7 @@ ExifTool to choose in these cases (see the
 </tr><tr><td>'A5 4C 44 44 14 14 C0 06'</td><td>= AF-S Nikkor 35mm f/1.8G</td>
 </tr><tr><td>'A6 48 37 5C 24 24 4B 06'</td><td>= Sigma 24-70mm F2.8 IF EX DG HSM</td>
 </tr><tr><td>'A6 48 8E 8E 24 24 A8 0E'</td><td>= AF-S VR Nikkor 300mm f/2.8G IF-ED II</td>
+</tr><tr><td>'A7 3C 53 80 30 3C C2 0E'</td><td>= AF-S DX Nikkor 55-200mm f/4-5.6G ED VR II</td>
 </tr><tr><td>'A7 49 80 A0 24 24 4B 06'</td><td>= Sigma APO 200-500mm F2.8 EX DG</td>
 </tr><tr><td>'A7 4B 62 62 2C 2C A9 0E'</td><td>= AF-S DX Micro Nikkor 85mm f/3.5G ED VR</td>
 </tr><tr><td>'A8 48 80 98 30 30 AA 0E'</td><td>= AF-S VR Zoom-Nikkor 200-400mm f/4G IF-ED II</td>
@@ -4739,7 +4817,7 @@ ExifTool to choose in these cases (see the
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Feb 18, 2015</i>
+<br><i>Last revised Mar 14, 2015</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

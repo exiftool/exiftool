@@ -4,8 +4,20 @@ ExifTool Version History
 
 RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 
-Note: The most recent production release is Version 9.76. (Other versions are
+Note: The most recent production release is Version 9.90. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
+
+Mar. 14, 2015 - Version 9.90 (production release)
+
+  - Added config_files/picasa_faces.config to the distribution (thanks StarGeek)
+  - Added a few new Minolta/Sony and Nikon lenses (thanks LibRaw)
+  - Added new Canon and Sigma lenses (thanks Niels Kristian Bech Jensen)
+  - Decode Nikon D810 custom settings (thanks Warren Hatch)
+  - Decode a few new Nikon tags
+  - Fixed superfluous "Open '' failed" warning which could occur in Windows
+  - Fixed problem reading multi-valued Microsoft Xtra tags
+  - Fixed problem on Windows using -overwrite_original_in_place with Unicode
+    file names
 
 Mar. 7, 2015 - Version 9.89
 

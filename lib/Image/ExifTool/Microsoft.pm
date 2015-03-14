@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::XMP;
 
-$VERSION = '1.14';
+$VERSION = '1.15';
 
 sub ProcessXtra($$$);
 
@@ -774,11 +774,12 @@ sub ProcessXtra($$$)
         # (version flags according to the reference, but looks more like a count - PH)
         my $count = Get32u($dataPt, $pos + $tagLen + 8);
         my ($i, $valPos, $valLen, $valType, $val, $format, @vals);
+        # point to start of first value (after 4-byte length and 2-byte type)
+        $valPos = $pos + $tagLen + 18;
         for ($i=0; ;) {
-            $valPos = $pos + $tagLen + 18;  # point to start of value
             # (stored value includes size of $valLen and $valType, so subtract 6)
             $valLen  = Get32u($dataPt, $valPos - 6) - 6;
-            my $more = $size - 18 - $tagLen - $valLen;
+            my $more = $pos + $size - $valPos - $valLen;
             last if $more < 0;
             $valType = Get16u($dataPt, $valPos - 2);
             $val = substr($$dataPt, $valPos, $valLen);
@@ -815,7 +816,7 @@ sub ProcessXtra($$$)
             last if ++$i >= $count or $more < 6;
             push @vals, $val;
             undef $val;
-            $valPos += $valLen; # step to next value
+            $valPos += $valLen + 6; # step to next value
         }
         if (@vals) {
             push @vals, $val if defined $val;

@@ -5812,7 +5812,7 @@ sub SetFileTime($$;$$$)
     # open file by name if necessary
     unless (ref $file) {
         local *FH;
-        $self->Open(\*FH, $file, '+<') or $self->Warn("Open '$file' failed"), return 0;
+        $self->Open(\*FH, $file, '+<') or $self->Warn("SetFileTime error for '$file'"), return 0;
         $file = *FH;  # (not \*FH, so *FH will be kept open until $file goes out of scope)
     }
     # on Windows, try to work around incorrect file times when daylight saving time is in effect

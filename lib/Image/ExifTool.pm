@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '9.89';
+$VERSION = '9.90';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -3089,7 +3089,7 @@ sub Open($*$;$)
             my ($access, $create);
             if ($mode eq '>') {
                 $access  = Win32API::File::GENERIC_WRITE();
-                $create  = Win32API::File::CREATE_NEW();
+                $create  = Win32API::File::CREATE_ALWAYS();
             } else {
                 $access  = Win32API::File::GENERIC_READ();
                 $access |= Win32API::File::GENERIC_WRITE() if $mode eq '+<'; # update
@@ -3159,7 +3159,7 @@ sub GetFileTime($$)
     # open file by name if necessary
     unless (ref $file) {
         local *FH;
-        $self->Open(\*FH, $file) or $self->Warn("Open '$file' failed"), return ();
+        $self->Open(\*FH, $file) or $self->Warn("GetFileTime error for '$file'"), return ();
         $file = *FH;  # (not \*FH, so *FH will be kept open until $file goes out of scope)
     }
     # on Windows, try to work around incorrect file times when daylight saving time is in effect

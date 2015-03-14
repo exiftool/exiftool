@@ -729,8 +729,8 @@ distribution for examples.</p>
     </table></td><td align=center>0</td></tr>
 <tr><td>UserParam</td><td><a name="UserParam"></a>Special option to set/get user-defined parameters.
     Useful to allow external input into tag name expresssions and ValueConv logic. <i>PARAM</i>
-    is the user-defined parameter name (not case sensitive).  These parameters
-    are accessed in tag name expressions by prefixing the parameter name with a
+    is the user-defined parameter name (case insensitive).  These parameters may
+    be accessed in tag name expressions by prefixing the parameter name with a
     dollar sign, just like normal tags.
 </td>
     <td><table class='clear'>
@@ -799,6 +799,11 @@ $oldSetting = $exifTool-&gt;<b>Options</b>(Duplicates =&gt; 0);
 <blockquote><table class='box'><tr><td><pre>
 <span class=com># get current Verbose setting</span>
 $isVerbose = $exifTool-&gt;<b>Options</b>('Verbose');
+</pre></td></tr></table></blockquote>
+
+<blockquote><table class='box'><tr><td><pre>
+<span class=com># set a user parameter</span>
+$exifTool-&gt;<b>Options</b>(UserParam => 'MyParam=some value');
 </pre></td></tr></table></blockquote>
 
 <hr><h2><a name="ClearOptions">ClearOptions</a></h2>

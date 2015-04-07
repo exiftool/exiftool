@@ -12,7 +12,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool::PLIST;
 
-$VERSION = '1.01';
+$VERSION = '1.02';
 
 %Image::ExifTool::Apple::Main = (
     WRITE_PROC => \&Image::ExifTool::Exif::WriteExif,
@@ -30,6 +30,7 @@ $VERSION = '1.01';
     # 0x0005 - int32s: seen values 147-247, and 100 for blank images
     # 0x0006 - int32s: seen values 129-241, and 20 for blank images
     # 0x0007 - int32s: seen 1
+    # 0x0008 - rational64s[3]: eg) "0.02683717579 -0.7210501641 -0.6948792783"
     # 0x0009 - int32s: seen 19
     0x000a => {
         Name => 'HDRImageType',
@@ -39,6 +40,16 @@ $VERSION = '1.01';
             4 => 'Original Image',
         },
     },
+    0x000b => {
+        Name => 'BurstUUID',
+        Writable => 'string',
+        Notes => 'unique ID for all images in a burst',
+    },
+    # 0x000c - rational64s[2]: eg) "0.1640625 0.19921875"
+    # 0x000d - int32s: 0
+    # 0x000e - int32s: 0,1
+    # 0x000f - int32s: 3
+    # 0x0010 - int32s: 1
 );
 
 # PLIST-format CMTime structure (ref PH)

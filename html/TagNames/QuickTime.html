@@ -210,6 +210,7 @@ roll, yaw, speed, altitude)</span></span></td></tr>
   <br>&#39;NDXS&#39; = H.264/MPEG-4 AVC (.MP4) Nero Standard Profile
   <br>&#39;ROSS&#39; = Ross Video
   <br>&#39;XAVC&#39; = Sony XAVC
+  <br>&#39;aax &#39; = Audible Enhanced Audiobook (.AAX)
   <br>&#39;avc1&#39; = MP4 Base w/ AVC ext [ISO 14496-12:2005]
   <br>&#39;caqv&#39; = Casio Digital Camera
   <br>&#39;da0a&#39; = DMB MAF w/ MPEG Layer II aud, MOT slides, DLS, JPG/PNG/MNG images
@@ -424,169 +425,219 @@ added dynamically to this table after processing the Meta Keys information.</p>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#iTunesInfo'>QuickTime iTunesInfo Tags</a></td></tr>
 <tr class=b>
+<td>'@PST'</td>
+<td>ParentShortTitle</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'@ppi'</td>
+<td>ParentProductID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'@pti'</td>
+<td>ParentTitle</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'@sti'</td>
+<td>ShortTitle</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'AACR'</td>
+<td>Unknown_AACR?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'CDEK'</td>
+<td>Unknown_CDEK?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'CDET'</td>
+<td>Unknown_CDET?</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'GUID'</td>
+<td>GUID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'VERS'</td>
+<td>ProductVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>'aART'</td>
 <td>AlbumArtist</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'akID'</td>
 <td>AppleStoreAccountType</td>
 <td class=c>N</td>
 <td><span class=s>0 = iTunes
   <br>1 = AOL</span></td></tr>
-<tr class=b>
+<tr>
 <td>'albm'</td>
 <td>Album</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'apID'</td>
 <td>AppleStoreAccount</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'atID'</td>
 <td>AlbumTitleID</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'auth'</td>
 <td>Author</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'catg'</td>
 <td>Category</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'cnID'</td>
 <td>AppleStoreCatalogID</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'covr'</td>
 <td>CoverArt</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'cpil'</td>
 <td>Compilation</td>
 <td class=c>N</td>
 <td><span class=s>0 = No
   <br>1 = Yes</span></td></tr>
-<tr class=b>
+<tr>
 <td>'cprt'</td>
 <td>Copyright</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'desc'</td>
 <td>Description</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'disk'</td>
 <td>DiskNumber</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'dscp'</td>
 <td>Description</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'egid'</td>
 <td>EpisodeGlobalUniqueID</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'geID'</td>
 <td>GenreID</td>
 <td class=c>N</td>
 <td>--&gt; <a href='QuickTime.html#GenreID'>QuickTime GenreID Values</a></td></tr>
-<tr class=b>
+<tr>
 <td>'gnre'</td>
 <td>Genre</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'grup'</td>
 <td>Grouping</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'gshh'</td>
 <td>GoogleHostHeader</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'gspm'</td>
 <td>GooglePingMessage</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'gspu'</td>
 <td>GooglePingURL</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'gssd'</td>
 <td>GoogleSourceData</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'gsst'</td>
 <td>GoogleStartTime</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'gstd'</td>
 <td>GoogleTrackDuration</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'hdvd'</td>
 <td>HDVideo</td>
 <td class=c>N</td>
 <td><span class=s>0 = No
   <br>1 = Yes</span></td></tr>
-<tr>
+<tr class=b>
 <td>'itnu'</td>
 <td>iTunesU</td>
 <td class=c>N</td>
 <td><span class=s>0 = No
   <br>1 = Yes</span></td></tr>
-<tr class=b>
+<tr>
 <td>'keyw'</td>
 <td>Keyword</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'ldes'</td>
 <td>LongDescription</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'pcst'</td>
 <td>Podcast</td>
 <td class=c>N</td>
 <td><span class=s>0 = No
   <br>1 = Yes</span></td></tr>
-<tr>
+<tr class=b>
 <td>'perf'</td>
 <td>Performer</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'pgap'</td>
 <td>PlayGap</td>
 <td class=c>N</td>
 <td><span class=s>0 = Insert Gap
   <br>1 = No Gap</span></td></tr>
-<tr>
+<tr class=b>
 <td>'plID'</td>
 <td>PlayListID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'prID'</td>
+<td>ProductID</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
@@ -605,6 +656,11 @@ added dynamically to this table after processing the Meta Keys information.</p>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td>'rldt'</td>
+<td>ReleaseDate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>'rtng'</td>
 <td>Rating</td>
 <td class=c>N</td>
@@ -612,42 +668,42 @@ added dynamically to this table after processing the Meta Keys information.</p>
   <br>1 = Explicit
   <br>2 = Clean
   <br>4 = Explicit (old)</span></td></tr>
-<tr class=b>
+<tr>
 <td>'sfID'</td>
 <td>AppleStoreCountry</td>
 <td class=c>N</td>
 <td>--&gt; <a href='QuickTime.html#AppleStoreCountry'>QuickTime AppleStoreCountry Values</a></td></tr>
-<tr>
+<tr class=b>
 <td>'soaa'</td>
 <td>SortAlbumArtist</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'soal'</td>
 <td>SortAlbum</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'soar'</td>
 <td>SortArtist</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'soco'</td>
 <td>SortComposer</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'sonm'</td>
 <td>SortName</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'sosn'</td>
 <td>SortShow</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'stik'</td>
 <td>MediaType</td>
 <td class=c>N</td>
@@ -663,69 +719,74 @@ added dynamically to this table after processing the Meta Keys information.</p>
   <br>14 = Ringtone
   <br>21 = Podcast</td><td>&nbsp;&nbsp;</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td>'titl'</td>
 <td>Title</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'tmpo'</td>
 <td>BeatsPerMinute</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'trkn'</td>
 <td>TrackNumber</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'tven'</td>
 <td>TVEpisodeID</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'tves'</td>
 <td>TVEpisode</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'tvnn'</td>
 <td>TVNetworkName</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'tvsh'</td>
 <td>TVShow</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'tvsn'</td>
 <td>TVSeason</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'yrrc'</td>
 <td>Year</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;ART"</td>
 <td>Artist</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;alb"</td>
 <td>Album</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;cmt"</td>
 <td>Comment</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;com"</td>
 <td>Composer</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>"&copy;cpy"</td>
+<td>Copyright</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -761,6 +822,16 @@ added dynamically to this table after processing the Meta Keys information.</p>
 <tr>
 <td>"&copy;nam"</td>
 <td>Title</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>"&copy;nrt"</td>
+<td>Narrator</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>"&copy;pub"</td>
+<td>Publisher</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
@@ -943,11 +1014,11 @@ added dynamically to this table after processing the Meta Keys information.</p>
 </tr><tr><td class=r>1114</td><td>= Music|Jazz|Smooth Jazz</td>
 </tr><tr><td class=r>1115</td><td>= Music|Latino|Latin Jazz</td>
 </tr><tr><td class=r>1116</td><td>= Music|Latino|Contemporary Latin</td>
-</tr><tr><td class=r>1117</td><td>= Music|Latino|Pop Latino</td>
+</tr><tr><td class=r>1117</td><td>= Music|Latino|Pop in Spanish</td>
 </tr><tr><td class=r>1118</td><td>= Music|Latino|Raices</td>
 </tr><tr><td class=r>1119</td><td>= Music|Latino|Latin Urban</td>
 </tr><tr><td class=r>1120</td><td>= Music|Latino|Baladas y Boleros</td>
-</tr><tr><td class=r>1121</td><td>= Music|Latino|Alternativo &amp; Rock Latino</td>
+</tr><tr><td class=r>1121</td><td>= Music|Latino|Alternative &amp; Rock in Spanish</td>
 </tr><tr><td class=r>1122</td><td>= Music|Brazilian</td>
 </tr><tr><td class=r>1123</td><td>= Music|Latino|Regional Mexicano</td>
 </tr><tr><td class=r>1124</td><td>= Music|Latino|Salsa y Tropical</td>
@@ -1416,12 +1487,12 @@ added dynamically to this table after processing the Meta Keys information.</p>
 </tr><tr><td class=r>1837</td><td>= Music Videos|Jazz|Ragtime</td>
 </tr><tr><td class=r>1838</td><td>= Music Videos|Jazz|Smooth Jazz</td>
 </tr><tr><td class=r>1839</td><td>= Music Videos|Jazz|Trad Jazz</td>
-</tr><tr><td class=r>1840</td><td>= Music Videos|Latin|Alternativo &amp; Rock Latino</td>
+</tr><tr><td class=r>1840</td><td>= Music Videos|Latin|Alternative &amp; Rock in Spanish</td>
 </tr><tr><td class=r>1841</td><td>= Music Videos|Latin|Baladas y Boleros</td>
 </tr><tr><td class=r>1842</td><td>= Music Videos|Latin|Contemporary Latin</td>
 </tr><tr><td class=r>1843</td><td>= Music Videos|Latin|Latin Jazz</td>
 </tr><tr><td class=r>1844</td><td>= Music Videos|Latin|Latin Urban</td>
-</tr><tr><td class=r>1845</td><td>= Music Videos|Latin|Pop Latino</td>
+</tr><tr><td class=r>1845</td><td>= Music Videos|Latin|Pop in Spanish</td>
 </tr><tr><td class=r>1846</td><td>= Music Videos|Latin|Raices</td>
 </tr><tr><td class=r>1847</td><td>= Music Videos|Latin|Regional Mexicano</td>
 </tr><tr><td class=r>1848</td><td>= Music Videos|Latin|Salsa y Tropical</td>
@@ -1811,12 +1882,12 @@ added dynamically to this table after processing the Meta Keys information.</p>
 </tr><tr><td class=r>8218</td><td>= Tones|Ringtones|Korean|Korean Trad Instrumental</td>
 </tr><tr><td class=r>8219</td><td>= Tones|Ringtones|Korean|Korean Trad Song</td>
 </tr><tr><td class=r>8220</td><td>= Tones|Ringtones|Korean|Korean Trad Theater</td>
-</tr><tr><td class=r>8221</td><td>= Tones|Ringtones|Latin|Alternativo &amp; Rock Latino</td>
+</tr><tr><td class=r>8221</td><td>= Tones|Ringtones|Latin|Alternative &amp; Rock in Spanish</td>
 </tr><tr><td class=r>8222</td><td>= Tones|Ringtones|Latin|Baladas y Boleros</td>
 </tr><tr><td class=r>8223</td><td>= Tones|Ringtones|Latin|Contemporary Latin</td>
 </tr><tr><td class=r>8224</td><td>= Tones|Ringtones|Latin|Latin Jazz</td>
 </tr><tr><td class=r>8225</td><td>= Tones|Ringtones|Latin|Latin Urban</td>
-</tr><tr><td class=r>8226</td><td>= Tones|Ringtones|Latin|Pop Latino</td>
+</tr><tr><td class=r>8226</td><td>= Tones|Ringtones|Latin|Pop in Spanish</td>
 </tr><tr><td class=r>8227</td><td>= Tones|Ringtones|Latin|Raices</td>
 </tr><tr><td class=r>8228</td><td>= Tones|Ringtones|Latin|Regional Mexicano</td>
 </tr><tr><td class=r>8229</td><td>= Tones|Ringtones|Latin|Salsa y Tropical</td>
@@ -2035,7 +2106,7 @@ added dynamically to this table after processing the Meta Keys information.</p>
 </tr><tr><td class=r>10053</td><td>= Books|Mysteries &amp; Thrillers|Short Stories</td>
 </tr><tr><td class=r>10054</td><td>= Books|Mysteries &amp; Thrillers|British Detectives</td>
 </tr><tr><td class=r>10055</td><td>= Books|Mysteries &amp; Thrillers|Women Sleuths</td>
-</tr><tr><td class=r>10056</td><td>= Books|Romance|Erotica</td>
+</tr><tr><td class=r>10056</td><td>= Books|Romance|Erotic Romance</td>
 </tr><tr><td class=r>10057</td><td>= Books|Romance|Contemporary</td>
 </tr><tr><td class=r>10058</td><td>= Books|Romance|Fantasy, Futuristic &amp; Ghost</td>
 </tr><tr><td class=r>10059</td><td>= Books|Romance|Historical</td>
@@ -2213,6 +2284,222 @@ added dynamically to this table after processing the Meta Keys information.</p>
 </tr><tr><td class=r>11083</td><td>= Books|Nonfiction|Philosophy|Political</td>
 </tr><tr><td class=r>11084</td><td>= Books|Nonfiction|Philosophy|Religion</td>
 </tr><tr><td class=r>11085</td><td>= Books|Reference|Manuals</td>
+</tr><tr><td class=r>11086</td><td>= Books|Kids</td>
+</tr><tr><td class=r>11087</td><td>= Books|Kids|Animals</td>
+</tr><tr><td class=r>11088</td><td>= Books|Kids|Basic Concepts</td>
+</tr><tr><td class=r>11089</td><td>= Books|Kids|Basic Concepts|Alphabet</td>
+</tr><tr><td class=r>11090</td><td>= Books|Kids|Basic Concepts|Body</td>
+</tr><tr><td class=r>11091</td><td>= Books|Kids|Basic Concepts|Colors</td>
+</tr><tr><td class=r>11092</td><td>= Books|Kids|Basic Concepts|Counting &amp; Numbers</td>
+</tr><tr><td class=r>11093</td><td>= Books|Kids|Basic Concepts|Date &amp; Time</td>
+</tr><tr><td class=r>11094</td><td>= Books|Kids|Basic Concepts|General</td>
+</tr><tr><td class=r>11095</td><td>= Books|Kids|Basic Concepts|Money</td>
+</tr><tr><td class=r>11096</td><td>= Books|Kids|Basic Concepts|Opposites</td>
+</tr><tr><td class=r>11097</td><td>= Books|Kids|Basic Concepts|Seasons</td>
+</tr><tr><td class=r>11098</td><td>= Books|Kids|Basic Concepts|Senses &amp; Sensation</td>
+</tr><tr><td class=r>11099</td><td>= Books|Kids|Basic Concepts|Size &amp; Shape</td>
+</tr><tr><td class=r>11100</td><td>= Books|Kids|Basic Concepts|Sounds</td>
+</tr><tr><td class=r>11101</td><td>= Books|Kids|Basic Concepts|Words</td>
+</tr><tr><td class=r>11102</td><td>= Books|Kids|Biography</td>
+</tr><tr><td class=r>11103</td><td>= Books|Kids|Careers &amp; Occupations</td>
+</tr><tr><td class=r>11104</td><td>= Books|Kids|Computers &amp; Technology</td>
+</tr><tr><td class=r>11105</td><td>= Books|Kids|Cooking &amp; Food</td>
+</tr><tr><td class=r>11106</td><td>= Books|Kids|Arts &amp; Entertainment</td>
+</tr><tr><td class=r>11107</td><td>= Books|Kids|Arts &amp; Entertainment|Art</td>
+</tr><tr><td class=r>11108</td><td>= Books|Kids|Arts &amp; Entertainment|Crafts</td>
+</tr><tr><td class=r>11109</td><td>= Books|Kids|Arts &amp; Entertainment|Music</td>
+</tr><tr><td class=r>11110</td><td>= Books|Kids|Arts &amp; Entertainment|Performing Arts</td>
+</tr><tr><td class=r>11111</td><td>= Books|Kids|Family</td>
+</tr><tr><td class=r>11112</td><td>= Books|Kids|Fiction</td>
+</tr><tr><td class=r>11113</td><td>= Books|Kids|Fiction|Action &amp; Adventure</td>
+</tr><tr><td class=r>11114</td><td>= Books|Kids|Fiction|Animals</td>
+</tr><tr><td class=r>11115</td><td>= Books|Kids|Fiction|Classics</td>
+</tr><tr><td class=r>11116</td><td>= Books|Kids|Fiction|Comics &amp; Graphic Novels</td>
+</tr><tr><td class=r>11117</td><td>= Books|Kids|Fiction|Culture, Places &amp; People</td>
+</tr><tr><td class=r>11118</td><td>= Books|Kids|Fiction|Family &amp; Relationships</td>
+</tr><tr><td class=r>11119</td><td>= Books|Kids|Fiction|Fantasy</td>
+</tr><tr><td class=r>11120</td><td>= Books|Kids|Fiction|Fairy Tales, Myths &amp; Fables</td>
+</tr><tr><td class=r>11121</td><td>= Books|Kids|Fiction|Favorite Characters</td>
+</tr><tr><td class=r>11122</td><td>= Books|Kids|Fiction|Historical</td>
+</tr><tr><td class=r>11123</td><td>= Books|Kids|Fiction|Holidays &amp; Celebrations</td>
+</tr><tr><td class=r>11124</td><td>= Books|Kids|Fiction|Monsters &amp; Ghosts</td>
+</tr><tr><td class=r>11125</td><td>= Books|Kids|Fiction|Mysteries</td>
+</tr><tr><td class=r>11126</td><td>= Books|Kids|Fiction|Nature</td>
+</tr><tr><td class=r>11127</td><td>= Books|Kids|Fiction|Religion</td>
+</tr><tr><td class=r>11128</td><td>= Books|Kids|Fiction|Sci-Fi</td>
+</tr><tr><td class=r>11129</td><td>= Books|Kids|Fiction|Social Issues</td>
+</tr><tr><td class=r>11130</td><td>= Books|Kids|Fiction|Sports &amp; Recreation</td>
+</tr><tr><td class=r>11131</td><td>= Books|Kids|Fiction|Transportation</td>
+</tr><tr><td class=r>11132</td><td>= Books|Kids|Games &amp; Activities</td>
+</tr><tr><td class=r>11133</td><td>= Books|Kids|General Nonfiction</td>
+</tr><tr><td class=r>11134</td><td>= Books|Kids|Health</td>
+</tr><tr><td class=r>11135</td><td>= Books|Kids|History</td>
+</tr><tr><td class=r>11136</td><td>= Books|Kids|Holidays &amp; Celebrations</td>
+</tr><tr><td class=r>11137</td><td>= Books|Kids|Holidays &amp; Celebrations|Birthdays</td>
+</tr><tr><td class=r>11138</td><td>= Books|Kids|Holidays &amp; Celebrations|Christmas &amp; Advent</td>
+</tr><tr><td class=r>11139</td><td>= Books|Kids|Holidays &amp; Celebrations|Easter &amp; Lent</td>
+</tr><tr><td class=r>11140</td><td>= Books|Kids|Holidays &amp; Celebrations|General</td>
+</tr><tr><td class=r>11141</td><td>= Books|Kids|Holidays &amp; Celebrations|Halloween</td>
+</tr><tr><td class=r>11142</td><td>= Books|Kids|Holidays &amp; Celebrations|Hanukkah</td>
+</tr><tr><td class=r>11143</td><td>= Books|Kids|Holidays &amp; Celebrations|Other</td>
+</tr><tr><td class=r>11144</td><td>= Books|Kids|Holidays &amp; Celebrations|Passover</td>
+</tr><tr><td class=r>11145</td><td>= Books|Kids|Holidays &amp; Celebrations|Patriotic Holidays</td>
+</tr><tr><td class=r>11146</td><td>= Books|Kids|Holidays &amp; Celebrations|Ramadan</td>
+</tr><tr><td class=r>11147</td><td>= Books|Kids|Holidays &amp; Celebrations|Thanksgiving</td>
+</tr><tr><td class=r>11148</td><td>= Books|Kids|Holidays &amp; Celebrations|Valentine&#39;s Day</td>
+</tr><tr><td class=r>11149</td><td>= Books|Kids|Humor</td>
+</tr><tr><td class=r>11150</td><td>= Books|Kids|Humor|Jokes &amp; Riddles</td>
+</tr><tr><td class=r>11151</td><td>= Books|Kids|Poetry</td>
+</tr><tr><td class=r>11152</td><td>= Books|Kids|Learning to Read</td>
+</tr><tr><td class=r>11153</td><td>= Books|Kids|Learning to Read|Chapter Books</td>
+</tr><tr><td class=r>11154</td><td>= Books|Kids|Learning to Read|Early Readers</td>
+</tr><tr><td class=r>11155</td><td>= Books|Kids|Learning to Read|Intermediate Readers</td>
+</tr><tr><td class=r>11156</td><td>= Books|Kids|Nursery Rhymes</td>
+</tr><tr><td class=r>11157</td><td>= Books|Kids|Government</td>
+</tr><tr><td class=r>11158</td><td>= Books|Kids|Reference</td>
+</tr><tr><td class=r>11159</td><td>= Books|Kids|Religion</td>
+</tr><tr><td class=r>11160</td><td>= Books|Kids|Science &amp; Nature</td>
+</tr><tr><td class=r>11161</td><td>= Books|Kids|Social Issues</td>
+</tr><tr><td class=r>11162</td><td>= Books|Kids|Social Studies</td>
+</tr><tr><td class=r>11163</td><td>= Books|Kids|Sports &amp; Recreation</td>
+</tr><tr><td class=r>11164</td><td>= Books|Kids|Transportation</td>
+</tr><tr><td class=r>11165</td><td>= Books|Young Adult</td>
+</tr><tr><td class=r>11166</td><td>= Books|Young Adult|Animals</td>
+</tr><tr><td class=r>11167</td><td>= Books|Young Adult|Biography</td>
+</tr><tr><td class=r>11168</td><td>= Books|Young Adult|Careers &amp; Occupations</td>
+</tr><tr><td class=r>11169</td><td>= Books|Young Adult|Computers &amp; Technology</td>
+</tr><tr><td class=r>11170</td><td>= Books|Young Adult|Cooking &amp; Food</td>
+</tr><tr><td class=r>11171</td><td>= Books|Young Adult|Arts &amp; Entertainment</td>
+</tr><tr><td class=r>11172</td><td>= Books|Young Adult|Arts &amp; Entertainment|Art</td>
+</tr><tr><td class=r>11173</td><td>= Books|Young Adult|Arts &amp; Entertainment|Crafts</td>
+</tr><tr><td class=r>11174</td><td>= Books|Young Adult|Arts &amp; Entertainment|Music</td>
+</tr><tr><td class=r>11175</td><td>= Books|Young Adult|Arts &amp; Entertainment|Performing Arts</td>
+</tr><tr><td class=r>11176</td><td>= Books|Young Adult|Family</td>
+</tr><tr><td class=r>11177</td><td>= Books|Young Adult|Fiction</td>
+</tr><tr><td class=r>11178</td><td>= Books|Young Adult|Fiction|Action &amp; Adventure</td>
+</tr><tr><td class=r>11179</td><td>= Books|Young Adult|Fiction|Animals</td>
+</tr><tr><td class=r>11180</td><td>= Books|Young Adult|Fiction|Classics</td>
+</tr><tr><td class=r>11181</td><td>= Books|Young Adult|Fiction|Comics &amp; Graphic Novels</td>
+</tr><tr><td class=r>11182</td><td>= Books|Young Adult|Fiction|Culture, Places &amp; People</td>
+</tr><tr><td class=r>11183</td><td>= Books|Young Adult|Fiction|Dystopian</td>
+</tr><tr><td class=r>11184</td><td>= Books|Young Adult|Fiction|Family &amp; Relationships</td>
+</tr><tr><td class=r>11185</td><td>= Books|Young Adult|Fiction|Fantasy</td>
+</tr><tr><td class=r>11186</td><td>= Books|Young Adult|Fiction|Fairy Tales, Myths &amp; Fables</td>
+</tr><tr><td class=r>11187</td><td>= Books|Young Adult|Fiction|Favorite Characters</td>
+</tr><tr><td class=r>11188</td><td>= Books|Young Adult|Fiction|Historical</td>
+</tr><tr><td class=r>11189</td><td>= Books|Young Adult|Fiction|Holidays &amp; Celebrations</td>
+</tr><tr><td class=r>11190</td><td>= Books|Young Adult|Fiction|Horror, Monsters &amp; Ghosts</td>
+</tr><tr><td class=r>11191</td><td>= Books|Young Adult|Fiction|Crime &amp; Mystery</td>
+</tr><tr><td class=r>11192</td><td>= Books|Young Adult|Fiction|Nature</td>
+</tr><tr><td class=r>11193</td><td>= Books|Young Adult|Fiction|Religion</td>
+</tr><tr><td class=r>11194</td><td>= Books|Young Adult|Fiction|Romance</td>
+</tr><tr><td class=r>11195</td><td>= Books|Young Adult|Fiction|Sci-Fi</td>
+</tr><tr><td class=r>11196</td><td>= Books|Young Adult|Fiction|Coming of Age</td>
+</tr><tr><td class=r>11197</td><td>= Books|Young Adult|Fiction|Sports &amp; Recreation</td>
+</tr><tr><td class=r>11198</td><td>= Books|Young Adult|Fiction|Transportation</td>
+</tr><tr><td class=r>11199</td><td>= Books|Young Adult|Games &amp; Activities</td>
+</tr><tr><td class=r>11200</td><td>= Books|Young Adult|General Nonfiction</td>
+</tr><tr><td class=r>11201</td><td>= Books|Young Adult|Health</td>
+</tr><tr><td class=r>11202</td><td>= Books|Young Adult|History</td>
+</tr><tr><td class=r>11203</td><td>= Books|Young Adult|Holidays &amp; Celebrations</td>
+</tr><tr><td class=r>11204</td><td>= Books|Young Adult|Holidays &amp; Celebrations|Birthdays</td>
+</tr><tr><td class=r>11205</td><td>= Books|Young Adult|Holidays &amp; Celebrations|Christmas &amp; Advent</td>
+</tr><tr><td class=r>11206</td><td>= Books|Young Adult|Holidays &amp; Celebrations|Easter &amp; Lent</td>
+</tr><tr><td class=r>11207</td><td>= Books|Young Adult|Holidays &amp; Celebrations|General</td>
+</tr><tr><td class=r>11208</td><td>= Books|Young Adult|Holidays &amp; Celebrations|Halloween</td>
+</tr><tr><td class=r>11209</td><td>= Books|Young Adult|Holidays &amp; Celebrations|Hanukkah</td>
+</tr><tr><td class=r>11210</td><td>= Books|Young Adult|Holidays &amp; Celebrations|Other</td>
+</tr><tr><td class=r>11211</td><td>= Books|Young Adult|Holidays &amp; Celebrations|Passover</td>
+</tr><tr><td class=r>11212</td><td>= Books|Young Adult|Holidays &amp; Celebrations|Patriotic Holidays</td>
+</tr><tr><td class=r>11213</td><td>= Books|Young Adult|Holidays &amp; Celebrations|Ramadan</td>
+</tr><tr><td class=r>11214</td><td>= Books|Young Adult|Holidays &amp; Celebrations|Thanksgiving</td>
+</tr><tr><td class=r>11215</td><td>= Books|Young Adult|Holidays &amp; Celebrations|Valentine&#39;s Day</td>
+</tr><tr><td class=r>11216</td><td>= Books|Young Adult|Humor</td>
+</tr><tr><td class=r>11217</td><td>= Books|Young Adult|Humor|Jokes &amp; Riddles</td>
+</tr><tr><td class=r>11218</td><td>= Books|Young Adult|Poetry</td>
+</tr><tr><td class=r>11219</td><td>= Books|Young Adult|Politics &amp; Government</td>
+</tr><tr><td class=r>11220</td><td>= Books|Young Adult|Reference</td>
+</tr><tr><td class=r>11221</td><td>= Books|Young Adult|Religion</td>
+</tr><tr><td class=r>11222</td><td>= Books|Young Adult|Science &amp; Nature</td>
+</tr><tr><td class=r>11223</td><td>= Books|Young Adult|Coming of Age</td>
+</tr><tr><td class=r>11224</td><td>= Books|Young Adult|Social Studies</td>
+</tr><tr><td class=r>11225</td><td>= Books|Young Adult|Sports &amp; Recreation</td>
+</tr><tr><td class=r>11226</td><td>= Books|Young Adult|Transportation</td>
+</tr><tr><td class=r>11227</td><td>= Books|Communications &amp; Media</td>
+</tr><tr><td class=r>11228</td><td>= Books|Military &amp; Warfare</td>
+</tr><tr><td class=r>11229</td><td>= Books|Romance|Inspirational</td>
+</tr><tr><td class=r>11230</td><td>= Books|Romance|Boxed Sets</td>
+</tr><tr><td class=r>11231</td><td>= Books|Romance|Holiday</td>
+</tr><tr><td class=r>11232</td><td>= Books|Romance|Wholesome</td>
+</tr><tr><td class=r>11233</td><td>= Books|Romance|Military</td>
+</tr><tr><td class=r>11234</td><td>= Books|Arts &amp; Entertainment|Art History</td>
+</tr><tr><td class=r>11236</td><td>= Books|Arts &amp; Entertainment|Design</td>
+</tr><tr><td class=r>11243</td><td>= Books|Business &amp; Personal Finance|Accounting</td>
+</tr><tr><td class=r>11244</td><td>= Books|Business &amp; Personal Finance|Hospitality</td>
+</tr><tr><td class=r>11245</td><td>= Books|Business &amp; Personal Finance|Real Estate</td>
+</tr><tr><td class=r>11246</td><td>= Books|Humor|Jokes &amp; Riddles</td>
+</tr><tr><td class=r>11247</td><td>= Books|Religion &amp; Spirituality|Comparative Religion</td>
+</tr><tr><td class=r>11255</td><td>= Books|Cookbooks, Food &amp; Wine|Culinary Arts</td>
+</tr><tr><td class=r>11259</td><td>= Books|Mysteries &amp; Thrillers|Cozy</td>
+</tr><tr><td class=r>11260</td><td>= Books|Politics &amp; Current Events|Current Events</td>
+</tr><tr><td class=r>11261</td><td>= Books|Politics &amp; Current Events|Foreign Policy &amp; International Relations</td>
+</tr><tr><td class=r>11262</td><td>= Books|Politics &amp; Current Events|Local Government</td>
+</tr><tr><td class=r>11263</td><td>= Books|Politics &amp; Current Events|National Government</td>
+</tr><tr><td class=r>11264</td><td>= Books|Politics &amp; Current Events|Political Science</td>
+</tr><tr><td class=r>11265</td><td>= Books|Politics &amp; Current Events|Public Administration</td>
+</tr><tr><td class=r>11266</td><td>= Books|Politics &amp; Current Events|World Affairs</td>
+</tr><tr><td class=r>11273</td><td>= Books|Nonfiction|Family &amp; Relationships|Family &amp; Childcare</td>
+</tr><tr><td class=r>11274</td><td>= Books|Nonfiction|Family &amp; Relationships|Love &amp; Romance</td>
+</tr><tr><td class=r>11275</td><td>= Books|Sci-Fi &amp; Fantasy|Fantasy|Urban</td>
+</tr><tr><td class=r>11276</td><td>= Books|Reference|Foreign Languages|Arabic</td>
+</tr><tr><td class=r>11277</td><td>= Books|Reference|Foreign Languages|Bilingual Editions</td>
+</tr><tr><td class=r>11278</td><td>= Books|Reference|Foreign Languages|African Languages</td>
+</tr><tr><td class=r>11279</td><td>= Books|Reference|Foreign Languages|Ancient Languages</td>
+</tr><tr><td class=r>11280</td><td>= Books|Reference|Foreign Languages|Chinese</td>
+</tr><tr><td class=r>11281</td><td>= Books|Reference|Foreign Languages|English</td>
+</tr><tr><td class=r>11282</td><td>= Books|Reference|Foreign Languages|French</td>
+</tr><tr><td class=r>11283</td><td>= Books|Reference|Foreign Languages|German</td>
+</tr><tr><td class=r>11284</td><td>= Books|Reference|Foreign Languages|Hebrew</td>
+</tr><tr><td class=r>11285</td><td>= Books|Reference|Foreign Languages|Hindi</td>
+</tr><tr><td class=r>11286</td><td>= Books|Reference|Foreign Languages|Italian</td>
+</tr><tr><td class=r>11287</td><td>= Books|Reference|Foreign Languages|Japanese</td>
+</tr><tr><td class=r>11288</td><td>= Books|Reference|Foreign Languages|Korean</td>
+</tr><tr><td class=r>11289</td><td>= Books|Reference|Foreign Languages|Linguistics</td>
+</tr><tr><td class=r>11290</td><td>= Books|Reference|Foreign Languages|Other Languages</td>
+</tr><tr><td class=r>11291</td><td>= Books|Reference|Foreign Languages|Portuguese</td>
+</tr><tr><td class=r>11292</td><td>= Books|Reference|Foreign Languages|Russian</td>
+</tr><tr><td class=r>11293</td><td>= Books|Reference|Foreign Languages|Spanish</td>
+</tr><tr><td class=r>11294</td><td>= Books|Reference|Foreign Languages|Speech Pathology</td>
+</tr><tr><td class=r>11295</td><td>= Books|Science &amp; Nature|Mathematics|Advanced Mathematics</td>
+</tr><tr><td class=r>11296</td><td>= Books|Science &amp; Nature|Mathematics|Algebra</td>
+</tr><tr><td class=r>11297</td><td>= Books|Science &amp; Nature|Mathematics|Arithmetic</td>
+</tr><tr><td class=r>11298</td><td>= Books|Science &amp; Nature|Mathematics|Calculus</td>
+</tr><tr><td class=r>11299</td><td>= Books|Science &amp; Nature|Mathematics|Geometry</td>
+</tr><tr><td class=r>11300</td><td>= Books|Science &amp; Nature|Mathematics|Statistics</td>
+</tr><tr><td class=r>11301</td><td>= Books|Professional &amp; Technical|Medical|Veterinary</td>
+</tr><tr><td class=r>11302</td><td>= Books|Professional &amp; Technical|Medical|Neuroscience</td>
+</tr><tr><td class=r>11303</td><td>= Books|Professional &amp; Technical|Medical|Immunology</td>
+</tr><tr><td class=r>11304</td><td>= Books|Professional &amp; Technical|Medical|Nursing</td>
+</tr><tr><td class=r>11305</td><td>= Books|Professional &amp; Technical|Medical|Pharmacology &amp; Toxicology</td>
+</tr><tr><td class=r>11306</td><td>= Books|Professional &amp; Technical|Medical|Anatomy &amp; Physiology</td>
+</tr><tr><td class=r>11307</td><td>= Books|Professional &amp; Technical|Medical|Dentistry</td>
+</tr><tr><td class=r>11308</td><td>= Books|Professional &amp; Technical|Medical|Emergency Medicine</td>
+</tr><tr><td class=r>11309</td><td>= Books|Professional &amp; Technical|Medical|Genetics</td>
+</tr><tr><td class=r>11310</td><td>= Books|Professional &amp; Technical|Medical|Psychiatry</td>
+</tr><tr><td class=r>11311</td><td>= Books|Professional &amp; Technical|Medical|Radiology</td>
+</tr><tr><td class=r>11312</td><td>= Books|Professional &amp; Technical|Medical|Alternative Medicine</td>
+</tr><tr><td class=r>11317</td><td>= Books|Nonfiction|Philosophy|Political Philosophy</td>
+</tr><tr><td class=r>11319</td><td>= Books|Nonfiction|Philosophy|Philosophy of Language</td>
+</tr><tr><td class=r>11320</td><td>= Books|Nonfiction|Philosophy|Philosophy of Religion</td>
+</tr><tr><td class=r>11327</td><td>= Books|Nonfiction|Social Science|Sociology</td>
+</tr><tr><td class=r>11329</td><td>= Books|Professional &amp; Technical|Engineering|Aeronautics</td>
+</tr><tr><td class=r>11330</td><td>= Books|Professional &amp; Technical|Engineering|Chemical &amp; Petroleum Engineering</td>
+</tr><tr><td class=r>11331</td><td>= Books|Professional &amp; Technical|Engineering|Civil Engineering</td>
+</tr><tr><td class=r>11332</td><td>= Books|Professional &amp; Technical|Engineering|Computer Science</td>
+</tr><tr><td class=r>11333</td><td>= Books|Professional &amp; Technical|Engineering|Electrical Engineering</td>
+</tr><tr><td class=r>11334</td><td>= Books|Professional &amp; Technical|Engineering|Environmental Engineering</td>
+</tr><tr><td class=r>11335</td><td>= Books|Professional &amp; Technical|Engineering|Mechanical Engineering</td>
+</tr><tr><td class=r>11336</td><td>= Books|Professional &amp; Technical|Engineering|Power Resources</td>
 </tr><tr><td class=r>12001</td><td>= Mac App Store|Business</td>
 </tr><tr><td class=r>12002</td><td>= Mac App Store|Developer Tools</td>
 </tr><tr><td class=r>12003</td><td>= Mac App Store|Education</td>
@@ -4908,6 +5195,11 @@ multi-language user data tags found, even if they don&#39;t exist in this table.
 <td class=c>-</td>
 <td>--&gt; <a href='Samsung.html#smta'>Samsung smta Tags</a></td></tr>
 <tr class=b>
+<td>'tags'</td>
+<td>Audible_tags</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Audible.html#tags'>Audible tags Tags</a></td></tr>
+<tr>
 <td>'thmb'</td>
 <td>MakerNotePentax5a
   <br>OlympusThumbnail
@@ -4917,262 +5209,262 @@ multi-language user data tags found, even if they don&#39;t exist in this table.
 <td class=c>-<br>-<br>N<br>N<br>N</td>
 <td>--&gt; <a href='Pentax.html'>Pentax Tags</a>
   <br>--&gt; <a href='Olympus.html#thmb'>Olympus thmb Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'titl'</td>
 <td>Title</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'urat'</td>
 <td>UserRating</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'vndr'</td>
 <td>Vendor</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'yrrc'</td>
 <td>Year</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;ART"</td>
 <td>Artist</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;alb"</td>
 <td>Album</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;arg"</td>
 <td>Arranger</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;ark"</td>
 <td>ArrangerKeywords</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;cmt"</td>
 <td>Comment</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;cok"</td>
 <td>ComposerKeywords</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;com"</td>
 <td>Composer</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;cpy"</td>
 <td>Copyright</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;day"</td>
 <td>ContentCreateDate</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;dir"</td>
 <td>Director</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;ed1"</td>
 <td>Edit1</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;ed2"</td>
 <td>Edit2</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;ed3"</td>
 <td>Edit3</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;ed4"</td>
 <td>Edit4</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;ed5"</td>
 <td>Edit5</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;ed6"</td>
 <td>Edit6</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;ed7"</td>
 <td>Edit7</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;ed8"</td>
 <td>Edit8</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;ed9"</td>
 <td>Edit9</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;fmt"</td>
 <td>Format</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;gen"</td>
 <td>Genre</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;grp"</td>
 <td>Grouping</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;inf"</td>
 <td>Information</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;isr"</td>
 <td>ISRCCode</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;lab"</td>
 <td>RecordLabelName</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;lal"</td>
 <td>RecordLabelURL</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;lyr"</td>
 <td>Lyrics</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;mak"</td>
 <td>Make</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;mal"</td>
 <td>MakerURL</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;mod"</td>
 <td>Model</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;nam"</td>
 <td>Title</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;pdk"</td>
 <td>ProducerKeywords</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;phg"</td>
 <td>RecordingCopyright</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;prd"</td>
 <td>Producer</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;prf"</td>
 <td>Performers</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;prk"</td>
 <td>PerformerKeywords</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;prl"</td>
 <td>PerformerURL</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;req"</td>
 <td>Requirements</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;snk"</td>
 <td>SubtitleKeywords</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;snm"</td>
 <td>Subtitle</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;src"</td>
 <td>SourceCredits</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;swf"</td>
 <td>SongWriter</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;swk"</td>
 <td>SongWriterKeywords</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;swr"</td>
 <td>SoftwareVersion</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;too"</td>
 <td>Encoder</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;trk"</td>
 <td>Track</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;wrt"</td>
 <td>Composer</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;xyz"</td>
 <td>GPSCoordinates</td>
 <td class=c>N</td>
@@ -5723,7 +6015,7 @@ multi-language user data tags found, even if they don&#39;t exist in this table.
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Dec 9, 2014</i>
+<br><i>Last revised Apr 7, 2015</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

@@ -5241,7 +5241,6 @@ $VERSION = '1.22';
         'Enable' => 'する',
       },
     },
-   'Timezone' => 'タイムゾーン',
    'Title' => 'タイトル',
    'ToneComp' => 'トーン補正',
    'ToneCurve' => {

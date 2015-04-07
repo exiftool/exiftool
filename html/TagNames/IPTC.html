@@ -26,9 +26,10 @@ the <b>Writable</b> format name.  For tags where a range of lengths is allowed,
 the minimum and maximum lengths are separated by a comma within the
 brackets.  IPTC strings are not null terminated.  When writing, ExifTool
 issues a minor warning and truncates the value if it is longer than allowed
-by the IPTC specification. Minor errors may be ignored with the
+by the IPTC specification.  Minor errors may be ignored with the
 IgnoreMinorErrors (-m) option, allowing longer values to be written, but
-beware that values like this may cause problems for some other IPTC readers.</p>
+beware that values like this may cause problems for some other IPTC readers.
+ExifTool will happily read IPTC values of any length.</p>
 
 <p>Separate IPTC date and time tags may be written with a combined date/time
 value and ExifTool automagically takes the appropriate part of the date/time
@@ -896,7 +897,7 @@ won&#39;t be able to read these tags as written by ExifTool)</span></span></td><
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jun 23, 2014</i>
+<br><i>Last revised Apr 7, 2015</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

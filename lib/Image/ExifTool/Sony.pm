@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.19';
+$VERSION = '2.20';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -5384,7 +5384,7 @@ my %flashMode2010 = (
         1 => 'Fill-flash',
         2 => 'Flash Off',
         3 => 'Slow Sync',
-        # 4 => 'Rear Sync', #(NC)
+        4 => 'Rear Sync',
         # 6 => 'Wireless',  #(NC)
     },
 );

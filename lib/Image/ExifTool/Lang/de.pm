@@ -7882,7 +7882,6 @@ $VERSION = '1.30';
         'Enable' => 'Möglich',
       },
     },
-   'Timezone' => 'Zeitzone',
    'Title' => 'Titel',
    'ToneComp' => 'Tonwertkorrektur',
    'ToneCurve' => {

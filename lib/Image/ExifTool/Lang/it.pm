@@ -7323,7 +7323,6 @@ $VERSION = '1.11';
         'Enable' => 'Abilita',
       },
     },
-   'Timezone' => 'Fiso orario',
    'Tint' => 'Tinta',
    'Title' => 'Titolo',
    'Title2' => 'Titolo 2',

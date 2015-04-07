@@ -32,7 +32,7 @@ use Image::ExifTool::XMP;
 use Image::ExifTool::Canon;
 use Image::ExifTool::Nikon;
 
-$VERSION = '2.81';
+$VERSION = '2.83';
 @ISA = qw(Exporter);
 
 sub NumbersFirst;
@@ -190,13 +190,12 @@ write these tags, the group should be specified.  A tilde (C<~>) indicates a
 tag this is writable only when the print conversion is disabled (by setting
 PrintConv to 0, using the -n option, or suffixing the tag name with a C<#>
 character).  An exclamation point (C<!>) indicates a tag that is considered
-unsafe to write under normal circumstances.  These "unsafe" tags are not set
-when calling SetNewValuesFromFile() or copied with the exiftool
--tagsFromFile option unless specified explicitly (ie. wildcards may not be
+unsafe to write under normal circumstances.  These "unsafe" tags are not
+written unless specified explicitly (ie. wildcards and "all" may not be
 used), and care should be taken when editing them manually since they may
 affect the way an image is rendered.  An asterisk (C<*>) indicates a
 "protected" tag which is not writable directly, but is written automatically
-by ExifTool (often when a corresponding Composite or Extra tag is written). 
+by ExifTool (often when a corresponding Composite or Extra tag is written).
 A colon (C<:>) indicates a mandatory tag which may be added automatically
 when writing.
 
@@ -360,9 +359,10 @@ the B<Writable> format name.  For tags where a range of lengths is allowed,
 the minimum and maximum lengths are separated by a comma within the
 brackets.  IPTC strings are not null terminated.  When writing, ExifTool
 issues a minor warning and truncates the value if it is longer than allowed
-by the IPTC specification. Minor errors may be ignored with the
+by the IPTC specification.  Minor errors may be ignored with the
 IgnoreMinorErrors (-m) option, allowing longer values to be written, but
 beware that values like this may cause problems for some other IPTC readers.
+ExifTool will happily read IPTC values of any length.
 
 Separate IPTC date and time tags may be written with a combined date/time
 value and ExifTool automagically takes the appropriate part of the date/time

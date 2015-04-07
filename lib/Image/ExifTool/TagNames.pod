@@ -48,13 +48,12 @@ write these tags, the group should be specified.  A tilde (C<~>) indicates a
 tag this is writable only when the print conversion is disabled (by setting
 PrintConv to 0, using the -n option, or suffixing the tag name with a C<#>
 character).  An exclamation point (C<!>) indicates a tag that is considered
-unsafe to write under normal circumstances.  These "unsafe" tags are not set
-when calling SetNewValuesFromFile() or copied with the exiftool
--tagsFromFile option unless specified explicitly (ie. wildcards may not be
+unsafe to write under normal circumstances.  These "unsafe" tags are not
+written unless specified explicitly (ie. wildcards and "all" may not be
 used), and care should be taken when editing them manually since they may
 affect the way an image is rendered.  An asterisk (C<*>) indicates a
 "protected" tag which is not writable directly, but is written automatically
-by ExifTool (often when a corresponding Composite or Extra tag is written). 
+by ExifTool (often when a corresponding Composite or Extra tag is written).
 A colon (C<:>) indicates a mandatory tag which may be added automatically
 when writing.
 
@@ -876,9 +875,10 @@ the B<Writable> format name.  For tags where a range of lengths is allowed,
 the minimum and maximum lengths are separated by a comma within the
 brackets.  IPTC strings are not null terminated.  When writing, ExifTool
 issues a minor warning and truncates the value if it is longer than allowed
-by the IPTC specification. Minor errors may be ignored with the
+by the IPTC specification.  Minor errors may be ignored with the
 IgnoreMinorErrors (-m) option, allowing longer values to be written, but
 beware that values like this may cause problems for some other IPTC readers.
+ExifTool will happily read IPTC values of any length.
 
 Separate IPTC date and time tags may be written with a combined date/time
 value and ExifTool automagically takes the appropriate part of the date/time
@@ -3862,6 +3862,7 @@ Tags extracted from maker notes of images from the iPhone 5 with iOS 7.
   ------   --------                             --------
   0x0003   RunTime                              Apple RunTime
   0x000a   HDRImageType                         int32s
+  0x000b   BurstUUID                            string
 
 =head3 Apple RunTime Tags
 
@@ -6996,7 +6997,7 @@ Tags found in the FujiIFD information of RAF images from some models.
   0xf008   StripByteCounts                      N
   0xf00a   BlackLevel                           N
   0xf00c   WB_GRBLevelsStandard                 N
-  0xf00d   WB_GRBLevelsDaylight                 N
+  0xf00d   WB_GRBLevelsAuto                     N
   0xf00e   WB_GRBLevels                         N
 
 =head3 FujiFilm FFMV Tags
@@ -8531,7 +8532,7 @@ DiMAGE X and Xt.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
-      0    Timezone                             int16s
+      0    TimeZone                             int16s
       2    DaylightSavings                      int8u
       3    DateDisplayFormat                    int8u
 
@@ -19760,6 +19761,15 @@ added dynamically to this table after processing the Meta Keys information.
   Tag ID       Tag Name                         Writable
   ------       --------                         --------
   '----'       iTunesInfo                       QuickTime iTunesInfo
+  '@PST'       ParentShortTitle                 N
+  '@ppi'       ParentProductID                  N
+  '@pti'       ParentTitle                      N
+  '@sti'       ShortTitle                       N
+  'AACR'       Unknown_AACR?                    N
+  'CDEK'       Unknown_CDEK?                    N
+  'CDET'       Unknown_CDET?                    N
+  'GUID'       GUID                             N
+  'VERS'       ProductVersion                   N
   'aART'       AlbumArtist                      N
   'akID'       AppleStoreAccountType            N
   'albm'       Album                            N
@@ -19792,9 +19802,11 @@ added dynamically to this table after processing the Meta Keys information.
   'perf'       Performer                        N
   'pgap'       PlayGap                          N
   'plID'       PlayListID                       N
+  'prID'       ProductID                        N
   'purd'       PurchaseDate                     N
   'purl'       PodcastURL                       N
   'rate'       RatingPercent                    N
+  'rldt'       ReleaseDate                      N
   'rtng'       Rating                           N
   'sfID'       AppleStoreCountry                N
   'soaa'       SortAlbumArtist                  N
@@ -19817,6 +19829,7 @@ added dynamically to this table after processing the Meta Keys information.
   "\xa9alb"    Album                            N
   "\xa9cmt"    Comment                          N
   "\xa9com"    Composer                         N
+  "\xa9cpy"    Copyright                        N
   "\xa9day"    ContentCreateDate                N
   "\xa9des"    Description                      N
   "\xa9enc"    EncodedBy                        N
@@ -19824,6 +19837,8 @@ added dynamically to this table after processing the Meta Keys information.
   "\xa9grp"    Grouping                         N
   "\xa9lyr"    Lyrics                           N
   "\xa9nam"    Title                            N
+  "\xa9nrt"    Narrator                         N
+  "\xa9pub"    Publisher                        N
   "\xa9too"    Encoder                          N
   "\xa9trk"    Track                            N
   "\xa9wrt"    Composer                         N
@@ -20362,6 +20377,7 @@ multi-language user data tags found, even if they don't exist in this table.
   'shot'       ShotName                         N
   'slno'       SerialNumber                     N
   'smta'       SamsungSmta                      Samsung smta
+  'tags'       Audible_tags                     Audible tags
   'thmb'       MakerNotePentax5a                Pentax
                OlympusThumbnail                 Olympus thmb
                ThumbnailImage                   N
@@ -20602,6 +20618,52 @@ either "XML" or "PLIST" depending on whether the format is XML or binary.
   'producers//name'            Producers        N+
   'screenwriters//name'        Screenwriters    N+
   'studio//name'               Studio           N+
+
+=head2 Audible Tags
+
+=head3 Audible tags Tags
+
+Information found in "tags" atom of Audible M4B audio books.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  'cvrx'   Audible_cvrx                         Audible cvrx
+  'meta'   Audible_meta                         Audible meta
+  'tseg'   Audible_tseg                         Audible tseg
+
+=head3 Audible cvrx Tags
+
+Audible cover art information in M4B audio books.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  CoverArt                                      N
+  CoverArtType                                  N
+
+=head3 Audible meta Tags
+
+Information found in Audible M4B "meta" atom.
+
+  Tag ID               Tag Name                 Writable
+  ------               --------                 --------
+  'ALBUMARTIST'        AlbumArtist              N
+  'Album'              Album                    N
+  'Artist'             Artist                   N
+  'Comment'            Comment                  N
+  'Genre'              Genre                    N
+  'SUBTITLE'           Subtitle                 N
+  'TOOL'               CreatorTool              N
+  'Title'              Title                    N
+  'Year'               Year                     N
+  'itunesmediatype'    iTunesMediaType          N
+  'track'              ChapterName              N
+
+=head3 Audible tseg Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  'meta'   Audible_meta2                        Audible meta
+  'tshd'   ChapterNumber                        N
 
 =head2 Matroska Tags
 
@@ -27283,6 +27345,28 @@ default language of "en".
   0x0014   PostScriptFontName                   N
   0x0015   WWSFamilyName                        N
   0x0016   WWSSubfamilyName                     N
+
+=head2 VCard Tags
+
+This table lists only those VCard tags which are renamed by ExifTool, but
+any existing VCard tag will be extracted.  Tag names may have "Pref" added
+to indicate the preferred instance of a VCard property.  Other "TYPE"
+parameters are also added to the tag name.
+
+  Tag ID       Tag Name                         Writable
+  ------       --------                         --------
+  'Adr'        Address                          N
+  'Bday'       Birthday                         N
+  'Fn'         FormattedName                    N
+  'Geo'        Geolocation                      N
+  'N'          Name                             N
+  'Org'        Organization                     N
+  'Prodid'     Software                         N
+  'Rev'        Revision                         N
+  'Tel'        Telephone                        N
+  'Tz'         TimeZone                         N
+  'Uid'        UID                              N
+  'Version'    VCardVersion                     N
 
 =head2 RSRC Tags
 

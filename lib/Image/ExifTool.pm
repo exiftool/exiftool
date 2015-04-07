@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '9.90';
+$VERSION = '9.91';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -134,8 +134,8 @@ sub ReadValue($$$$$;$);
     MPEG::Xing M2TS QuickTime QuickTime::ImageFile Matroska MOI MXF DV Flash
     Flash::FLV Real::Media Real::Audio Real::Metafile RIFF AIFF ASF DICOM MIE
     HTML XMP::SVG Palm Palm::MOBI Palm::EXTH Torrent EXE EXE::PEVersion
-    EXE::PEString EXE::MachO EXE::PEF EXE::ELF EXE::CHM LNK Font RSRC Rawzor ZIP
-    ZIP::GZIP ZIP::RAR RTF OOXML iWork FLIR::AFF FLIR::FPF
+    EXE::PEString EXE::MachO EXE::PEF EXE::ELF EXE::CHM LNK Font VCard RSRC
+    Rawzor ZIP ZIP::GZIP ZIP::RAR RTF OOXML iWork FLIR::AFF FLIR::FPF
 );
 
 # alphabetical list of current Lang modules
@@ -172,8 +172,8 @@ $defaultLang = 'en';    # default language
                 BMP PPM RIFF AIFF ASF MOV MPEG Real SWF PSP FLV OGG FLAC APE MPC
                 MKV MXF DV PMP IND PGF ICC ITC FLIR FPF LFP HTML VRD RTF XCF
                 QTIF FPX PICT ZIP GZIP PLIST RAR BZ2 TAR RWZ EXE EXR HDR CHM LNK
-                WMF AVC DEX DPX RAW Font RSRC M2TS PHP Torrent PDB MOI MP3 DICOM
-                PCD);
+                WMF AVC DEX DPX RAW Font RSRC M2TS PHP Torrent VCard PDB MOI MP3
+                DICOM PCD);
 
 # file types that we can write (edit)
 my @writeTypes = qw(JPEG TIFF GIF CRW MRW ORF RAF RAW PNG MIE PSD XMP PPM
@@ -200,6 +200,7 @@ my %fileTypeLookup = (
    '3GP' => ['MOV',  '3rd Gen. Partnership Project audio/video'],
    '3GP2'=>  '3G2',
    '3GPP'=>  '3GP',
+    AAX  => ['MOV',  'Audible Enhanced Audiobook'],
     ACR  => ['DICOM','American College of Radiology ACR-NEMA'],
     ACFM => ['Font', 'Adobe Composite Font Metrics'],
     AFM  => ['Font', 'Adobe Font Metrics'],
@@ -441,6 +442,8 @@ my %fileTypeLookup = (
     TTC  => ['Font', 'True Type Font Collection'],
     TTF  => ['Font', 'True Type Font'],
     TUB  => 'PSP',
+    VCARD=> ['VCard','Virtual Card'],
+    VCF  => 'VCARD',
     VOB  => ['MPEG', 'Video Object'],
     VRD  => ['VRD',  'Canon VRD Recipe Data'],
     VSD  => ['FPX',  'Microsoft Visio Drawing'],
@@ -626,6 +629,7 @@ my %fileDescription = (
     Torrent => 'application/x-bittorrent',
     TTC  => 'application/x-font-ttf',
     TTF  => 'application/x-font-ttf',
+    VCard=> 'text/vcard',
     VSD  => 'application/x-visio',
     WDP  => 'image/vnd.ms-photo',
     WEBM => 'video/webm',
@@ -785,6 +789,7 @@ my %moduleName = (
     SWF  => '[FC]WS[^\0]',
     TAR  => '.{257}ustar(  )?\0', # (this doesn't catch old-style tar files)
     TIFF => '(II|MM)', # don't test magic number (some raw formats are different)
+    VCard=> '(?i)BEGIN:VCARD\r\n',
     VRD  => 'CANON OPTIONAL DATA\0',
     WMF  => '(\xd7\xcd\xc6\x9a\0\0|\x01\0\x09\0\0\x03)',
     X3F  => 'FOVb',
@@ -3003,6 +3008,7 @@ sub Init($)
     $$self{DIR_COUNT}  = { };       # count various types of directories
     $$self{DUPL_TAG}   = { };       # last-used index for duplicate-tag keys
     $$self{WARNED_ONCE}= { };       # WarnOnce() warnings already issued
+    $$self{WRITTEN}    = { };       # list of tags written (selected tags only)
     $$self{PATH}       = [ ];       # current subdirectory path in file when reading
     $$self{NUM_FOUND}  = 0;         # total number of tags found (incl. duplicates)
     $$self{CHANGED}    = 0;         # number of tags changed (writer only)

@@ -1,0 +1,45 @@
+BEGIN:VCARD
+VERSION:3.0
+PRODID:-//Apple Inc.//Mac OS X 10.10.2//EN
+N:Harvey;Phil;;;
+FN:Phil Harvey
+ORG:ExifTool;
+EMAIL;type=INTERNET;type=HOME;type=pref:someone@home.email
+EMAIL;type=INTERNET;type=WORK:someone@work.email
+item1.EMAIL;type=INTERNET:someone@other.email
+item1.X-ABLabel:_$!<Other>!$_
+TEL;type=CELL;type=VOICE;type=pref:555-0000
+TEL;type=IPHONE;type=CELL;type=VOICE:555-1111
+TEL;type=HOME;type=VOICE:555-2222
+TEL;type=WORK;type=VOICE:555-3333
+TEL;type=MAIN:555-4444
+TEL;type=WORK;type=FAX:555-5555
+TEL;type=PAGER:555-6666
+TEL;type=OTHER;type=VOICE:555-7777
+TEL;type=OTHER;type=VOICE:555-8888
+ADR;type=HOME;type=pref:;;Home St.;City;ON;K0K0K0;Canada
+ADR;type=WORK:;;Work St.;City;ON;K0K0K0;Canada
+ADR;type=OTHER;GEO="geo:12.3457,78.910";LABEL=Test\nLabel:;;Other Rd.;City;ON;K0K0K0;Canada
+NOTE:This is "a"\, comma\, \\backslash\nnewline\nnote!
+NOTE;LANGUAGE=fr:Oui!
+item2.URL;type=pref:http://exiftool.com
+item2.X-ABLabel:_$!<HomePage>!$_
+BDAY:1900-01-02
+X-AIM;type=HOME;type=pref:AIMName
+item3.X-ICQ;type=pref:ICQName
+item3.X-ABLabel:_$!<Other>!$_
+IMPP;X-SERVICE-TYPE=AIM;type=HOME;type=pref:aim:AIMName
+IMPP;X-SERVICE-TYPE=Facebook;type=WORK:xmpp:FacebookName
+item4.IMPP;X-SERVICE-TYPE=ICQ:aim:ICQName
+item4.X-ABLabel:_$!<Other>!$_
+PHOTO;ENCODING=b;TYPE=JPEG:PGR1bW15IGltYWdlIGRhdGE+
+X-ABUID:EBAC8BE8-E695-457F-AE4D-E076ECEEA002:ABPerson
+END:VCARD
+BEGIN:VCARD
+VERSION:3.0
+fn:VCard Test
+LABEL;WORK;ENCODING=QUOTED-PRINTABLE:12 Cucumber St.=0D=0ASaladVille ON=0D=0ACanada
+LOGO:data:image/jpeg;base64,PGR1bW15IGltYWdlIGRhdGE+
+SOUND;OGG:http://example.com/sound.ogg
+note:This sample mixes formats from various vCard versions
+END:VCARD

@@ -2114,7 +2114,6 @@ $VERSION = '1.06';
         'White Balance' => '화이트 밸런스',
       },
     },
-   'Timezone' => '표준 시간대',
    'Title' => '제목',
    'ToneComp' => '계조 보정',
    'ToneCurve' => {

@@ -33,8 +33,8 @@ The tables listed below give the names of all tags recognized by ExifTool.
 <a href='FujiFilm.html'>FujiFilm</a><br>
 <a href='GE.html'>GE</a><br>
 <a href='HP.html'>HP</a><br>
-<a href='JVC.html'>JVC</a></td><td width='16%'>
-<a href='Kodak.html'>Kodak</a><br>
+<a href='JVC.html'>JVC</a><br>
+<a href='Kodak.html'>Kodak</a></td><td width='16%'>
 <a href='Leaf.html'>Leaf</a><br>
 <a href='Minolta.html'>Minolta</a><br>
 <a href='Nikon.html'>Nikon</a><br>
@@ -52,9 +52,9 @@ The tables listed below give the names of all tags recognized by ExifTool.
 <a href='Sigma.html'>Sigma</a><br>
 <a href='Sony.html'>Sony</a><br>
 <a href='SonyIDC.html'>SonyIDC</a><br>
-<a href='Unknown.html'>Unknown</a></td><td width='16%'>
+<a href='Unknown.html'>Unknown</a><br>
 <a href='DNG.html'>DNG</a><br>
-<a href='CanonRaw.html'>CanonRaw</a><br>
+<a href='CanonRaw.html'>CanonRaw</a></td><td width='16%'>
 <a href='KyoceraRaw.html'>KyoceraRaw</a><br>
 <a href='MinoltaRaw.html'>MinoltaRaw</a><br>
 <a href='PanasonicRaw.html'>PanasonicRaw</a><br>
@@ -71,10 +71,10 @@ The tables listed below give the names of all tags recognized by ExifTool.
 <a href='DarwinCore.html'>DarwinCore</a><br>
 <a href='FotoStation.html'>FotoStation</a><br>
 <a href='PhotoMechanic.html'>PhotoMechanic</a><br>
-<a href='Microsoft.html'>Microsoft</a></td><td width='16%'>
+<a href='Microsoft.html'>Microsoft</a><br>
 <a href='GIMP.html'>GIMP</a><br>
 <a href='MIE.html'>MIE</a><br>
-<a href='Jpeg2000.html'>Jpeg2000</a><br>
+<a href='Jpeg2000.html'>Jpeg2000</a></td><td width='16%'>
 <a href='GIF.html'>GIF</a><br>
 <a href='BMP.html'>BMP</a><br>
 <a href='PICT.html'>PICT</a><br>
@@ -90,11 +90,11 @@ The tables listed below give the names of all tags recognized by ExifTool.
 <a href='Radiance.html'>Radiance</a><br>
 <a href='PDF.html'>PDF</a><br>
 <a href='PostScript.html'>PostScript</a><br>
-<a href='ID3.html'>ID3</a></td><td width='16%'>
+<a href='ID3.html'>ID3</a><br>
 <a href='ITC.html'>ITC</a><br>
 <a href='Ogg.html'>Ogg</a><br>
 <a href='Vorbis.html'>Vorbis</a><br>
-<a href='FLAC.html'>FLAC</a><br>
+<a href='FLAC.html'>FLAC</a></td><td width='16%'>
 <a href='Theora.html'>Theora</a><br>
 <a href='APE.html'>APE</a><br>
 <a href='MPC.html'>MPC</a><br>
@@ -103,22 +103,24 @@ The tables listed below give the names of all tags recognized by ExifTool.
 <a href='H264.html'>H264</a><br>
 <a href='QuickTime.html'>QuickTime</a><br>
 <a href='PLIST.html'>PLIST</a><br>
+<a href='Audible.html'>Audible</a><br>
 <a href='Matroska.html'>Matroska</a><br>
 <a href='MOI.html'>MOI</a><br>
 <a href='MXF.html'>MXF</a><br>
 <a href='DV.html'>DV</a><br>
 <a href='Flash.html'>Flash</a><br>
 <a href='Real.html'>Real</a><br>
-<a href='RIFF.html'>RIFF</a></td><td width='16%'>
+<a href='RIFF.html'>RIFF</a><br>
 <a href='AIFF.html'>AIFF</a><br>
 <a href='ASF.html'>ASF</a><br>
 <a href='DICOM.html'>DICOM</a><br>
-<a href='HTML.html'>HTML</a><br>
+<a href='HTML.html'>HTML</a></td><td width='16%'>
 <a href='Palm.html'>Palm</a><br>
 <a href='Torrent.html'>Torrent</a><br>
 <a href='EXE.html'>EXE</a><br>
 <a href='LNK.html'>LNK</a><br>
 <a href='Font.html'>Font</a><br>
+<a href='VCard.html'>VCard</a><br>
 <a href='RSRC.html'>RSRC</a><br>
 <a href='Rawzor.html'>Rawzor</a><br>
 <a href='ZIP.html'>ZIP</a><br>
@@ -166,13 +168,12 @@ write these tags, the group should be specified.  A tilde (<code>~</code>) indic
 tag this is writable only when the print conversion is disabled (by setting
 PrintConv to 0, using the -n option, or suffixing the tag name with a <code>#</code>
 character).  An exclamation point (<code>!</code>) indicates a tag that is considered
-unsafe to write under normal circumstances.  These &quot;unsafe&quot; tags are not set
-when calling SetNewValuesFromFile() or copied with the exiftool
--tagsFromFile option unless specified explicitly (ie. wildcards may not be
+unsafe to write under normal circumstances.  These &quot;unsafe&quot; tags are not
+written unless specified explicitly (ie. wildcards and &quot;all&quot; may not be
 used), and care should be taken when editing them manually since they may
 affect the way an image is rendered.  An asterisk (<code>*</code>) indicates a
 &quot;protected&quot; tag which is not writable directly, but is written automatically
-by ExifTool (often when a corresponding Composite or Extra tag is written). 
+by ExifTool (often when a corresponding Composite or Extra tag is written).
 A colon (<code>:</code>) indicates a mandatory tag which may be added automatically
 when writing.</p>
 
@@ -203,7 +204,7 @@ and complete as possible, and feed back any new discoveries to the source.)
 </p>
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Feb 6, 2015</i>
+<br><i>Last revised Apr 7, 2015</i>
 <p class=lf><a href='../index.html'>&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

@@ -40,7 +40,7 @@ use vars qw($VERSION $AUTOLOAD);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.88';
+$VERSION = '1.89';
 
 sub FixWrongFormat($);
 sub ProcessMOV($$;$);
@@ -62,6 +62,7 @@ sub WriteMOV($$);
 my %mimeLookup = (
    '3G2' => 'video/3gpp2',
    '3GP' => 'video/3gpp',
+    AAX  => 'audio/vnd.audible.aax',
     DVB  => 'video/vnd.dvb.file',
     F4A  => 'audio/mp4',
     F4B  => 'audio/mp4',
@@ -94,6 +95,7 @@ my %ftypLookup = (
     '3gp6' => '3GPP Media (.3GP) Release 6 Progressive Download', # video/3gpp
     '3gp6' => '3GPP Media (.3GP) Release 6 Streaming Servers', # video/3gpp
     '3gs7' => '3GPP Media (.3GP) Release 7 Streaming Servers', # video/3gpp
+    'aax ' => 'Audible Enhanced Audiobook (.AAX)', #PH
     'avc1' => 'MP4 Base w/ AVC ext [ISO 14496-12:2005]', # video/mp4
     'CAEP' => 'Canon Digital Camera',
     'caqv' => 'Casio Digital Camera',
@@ -611,6 +613,7 @@ my %graphicsMode = (
         SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::CleanAperture' },
     },
     # avcC - AVC configuration (ref http://thompsonng.blogspot.ca/2010/11/mp4-file-format-part-2.html)
+    # hvcC - HEVC configuration
     # svcC - 7 bytes: 00 00 00 00 ff e0 00
     # esds - elementary stream descriptor
     # d263
@@ -1551,6 +1554,11 @@ my %graphicsMode = (
     albr => { Name => 'AlbumArtist', Groups => { 2 => 'Author' } },
     cvru => 'CoverURI',
     lrcu => 'LyricsURI',
+
+    tags => {   # found in Audible .m4b audio books (ref PH)
+        Name => 'Audible_tags',
+        SubDirectory => { TagTable => 'Image::ExifTool::Audible::tags' },
+    },
 );
 
 # Unknown information stored in HTC One (M8) videos - PH
@@ -1906,7 +1914,7 @@ my %graphicsMode = (
         Name => 'iTunesInfo',
         SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::iTunesInfo' },
     },
-    aART => 'AlbumArtist',
+    aART => { Name => 'AlbumArtist', Groups => { 2 => 'Author' } },
     covr => 'CoverArt',
     cpil => { #10
         Name => 'Compilation',
@@ -2131,11 +2139,11 @@ my %graphicsMode = (
             1114 => 'Music|Jazz|Smooth Jazz',
             1115 => 'Music|Latino|Latin Jazz',
             1116 => 'Music|Latino|Contemporary Latin',
-            1117 => 'Music|Latino|Pop Latino',
+            1117 => 'Music|Latino|Pop in Spanish',
             1118 => 'Music|Latino|Raices', # (Ra&iacute;ces)
             1119 => 'Music|Latino|Latin Urban',
             1120 => 'Music|Latino|Baladas y Boleros',
-            1121 => 'Music|Latino|Alternativo & Rock Latino',
+            1121 => 'Music|Latino|Alternative & Rock in Spanish',
             1122 => 'Music|Brazilian',
             1123 => 'Music|Latino|Regional Mexicano',
             1124 => 'Music|Latino|Salsa y Tropical',
@@ -2604,12 +2612,12 @@ my %graphicsMode = (
             1837 => 'Music Videos|Jazz|Ragtime',
             1838 => 'Music Videos|Jazz|Smooth Jazz',
             1839 => 'Music Videos|Jazz|Trad Jazz',
-            1840 => 'Music Videos|Latin|Alternativo & Rock Latino',
+            1840 => 'Music Videos|Latin|Alternative & Rock in Spanish',
             1841 => 'Music Videos|Latin|Baladas y Boleros',
             1842 => 'Music Videos|Latin|Contemporary Latin',
             1843 => 'Music Videos|Latin|Latin Jazz',
             1844 => 'Music Videos|Latin|Latin Urban',
-            1845 => 'Music Videos|Latin|Pop Latino',
+            1845 => 'Music Videos|Latin|Pop in Spanish',
             1846 => 'Music Videos|Latin|Raices',
             1847 => 'Music Videos|Latin|Regional Mexicano',
             1848 => 'Music Videos|Latin|Salsa y Tropical',
@@ -2999,12 +3007,12 @@ my %graphicsMode = (
             8218 => 'Tones|Ringtones|Korean|Korean Trad Instrumental',
             8219 => 'Tones|Ringtones|Korean|Korean Trad Song',
             8220 => 'Tones|Ringtones|Korean|Korean Trad Theater',
-            8221 => 'Tones|Ringtones|Latin|Alternativo & Rock Latino',
+            8221 => 'Tones|Ringtones|Latin|Alternative & Rock in Spanish',
             8222 => 'Tones|Ringtones|Latin|Baladas y Boleros',
             8223 => 'Tones|Ringtones|Latin|Contemporary Latin',
             8224 => 'Tones|Ringtones|Latin|Latin Jazz',
             8225 => 'Tones|Ringtones|Latin|Latin Urban',
-            8226 => 'Tones|Ringtones|Latin|Pop Latino',
+            8226 => 'Tones|Ringtones|Latin|Pop in Spanish',
             8227 => 'Tones|Ringtones|Latin|Raices',
             8228 => 'Tones|Ringtones|Latin|Regional Mexicano',
             8229 => 'Tones|Ringtones|Latin|Salsa y Tropical',
@@ -3223,7 +3231,7 @@ my %graphicsMode = (
             10053 => 'Books|Mysteries & Thrillers|Short Stories',
             10054 => 'Books|Mysteries & Thrillers|British Detectives',
             10055 => 'Books|Mysteries & Thrillers|Women Sleuths',
-            10056 => 'Books|Romance|Erotica',
+            10056 => 'Books|Romance|Erotic Romance',
             10057 => 'Books|Romance|Contemporary',
             10058 => 'Books|Romance|Fantasy, Futuristic & Ghost',
             10059 => 'Books|Romance|Historical',
@@ -3401,6 +3409,222 @@ my %graphicsMode = (
             11083 => 'Books|Nonfiction|Philosophy|Political',
             11084 => 'Books|Nonfiction|Philosophy|Religion',
             11085 => 'Books|Reference|Manuals',
+            11086 => 'Books|Kids',
+            11087 => 'Books|Kids|Animals',
+            11088 => 'Books|Kids|Basic Concepts',
+            11089 => 'Books|Kids|Basic Concepts|Alphabet',
+            11090 => 'Books|Kids|Basic Concepts|Body',
+            11091 => 'Books|Kids|Basic Concepts|Colors',
+            11092 => 'Books|Kids|Basic Concepts|Counting & Numbers',
+            11093 => 'Books|Kids|Basic Concepts|Date & Time',
+            11094 => 'Books|Kids|Basic Concepts|General',
+            11095 => 'Books|Kids|Basic Concepts|Money',
+            11096 => 'Books|Kids|Basic Concepts|Opposites',
+            11097 => 'Books|Kids|Basic Concepts|Seasons',
+            11098 => 'Books|Kids|Basic Concepts|Senses & Sensation',
+            11099 => 'Books|Kids|Basic Concepts|Size & Shape',
+            11100 => 'Books|Kids|Basic Concepts|Sounds',
+            11101 => 'Books|Kids|Basic Concepts|Words',
+            11102 => 'Books|Kids|Biography',
+            11103 => 'Books|Kids|Careers & Occupations',
+            11104 => 'Books|Kids|Computers & Technology',
+            11105 => 'Books|Kids|Cooking & Food',
+            11106 => 'Books|Kids|Arts & Entertainment',
+            11107 => 'Books|Kids|Arts & Entertainment|Art',
+            11108 => 'Books|Kids|Arts & Entertainment|Crafts',
+            11109 => 'Books|Kids|Arts & Entertainment|Music',
+            11110 => 'Books|Kids|Arts & Entertainment|Performing Arts',
+            11111 => 'Books|Kids|Family',
+            11112 => 'Books|Kids|Fiction',
+            11113 => 'Books|Kids|Fiction|Action & Adventure',
+            11114 => 'Books|Kids|Fiction|Animals',
+            11115 => 'Books|Kids|Fiction|Classics',
+            11116 => 'Books|Kids|Fiction|Comics & Graphic Novels',
+            11117 => 'Books|Kids|Fiction|Culture, Places & People',
+            11118 => 'Books|Kids|Fiction|Family & Relationships',
+            11119 => 'Books|Kids|Fiction|Fantasy',
+            11120 => 'Books|Kids|Fiction|Fairy Tales, Myths & Fables',
+            11121 => 'Books|Kids|Fiction|Favorite Characters',
+            11122 => 'Books|Kids|Fiction|Historical',
+            11123 => 'Books|Kids|Fiction|Holidays & Celebrations',
+            11124 => 'Books|Kids|Fiction|Monsters & Ghosts',
+            11125 => 'Books|Kids|Fiction|Mysteries',
+            11126 => 'Books|Kids|Fiction|Nature',
+            11127 => 'Books|Kids|Fiction|Religion',
+            11128 => 'Books|Kids|Fiction|Sci-Fi',
+            11129 => 'Books|Kids|Fiction|Social Issues',
+            11130 => 'Books|Kids|Fiction|Sports & Recreation',
+            11131 => 'Books|Kids|Fiction|Transportation',
+            11132 => 'Books|Kids|Games & Activities',
+            11133 => 'Books|Kids|General Nonfiction',
+            11134 => 'Books|Kids|Health',
+            11135 => 'Books|Kids|History',
+            11136 => 'Books|Kids|Holidays & Celebrations',
+            11137 => 'Books|Kids|Holidays & Celebrations|Birthdays',
+            11138 => 'Books|Kids|Holidays & Celebrations|Christmas & Advent',
+            11139 => 'Books|Kids|Holidays & Celebrations|Easter & Lent',
+            11140 => 'Books|Kids|Holidays & Celebrations|General',
+            11141 => 'Books|Kids|Holidays & Celebrations|Halloween',
+            11142 => 'Books|Kids|Holidays & Celebrations|Hanukkah',
+            11143 => 'Books|Kids|Holidays & Celebrations|Other',
+            11144 => 'Books|Kids|Holidays & Celebrations|Passover',
+            11145 => 'Books|Kids|Holidays & Celebrations|Patriotic Holidays',
+            11146 => 'Books|Kids|Holidays & Celebrations|Ramadan',
+            11147 => 'Books|Kids|Holidays & Celebrations|Thanksgiving',
+            11148 => "Books|Kids|Holidays & Celebrations|Valentine's Day",
+            11149 => 'Books|Kids|Humor',
+            11150 => 'Books|Kids|Humor|Jokes & Riddles',
+            11151 => 'Books|Kids|Poetry',
+            11152 => 'Books|Kids|Learning to Read',
+            11153 => 'Books|Kids|Learning to Read|Chapter Books',
+            11154 => 'Books|Kids|Learning to Read|Early Readers',
+            11155 => 'Books|Kids|Learning to Read|Intermediate Readers',
+            11156 => 'Books|Kids|Nursery Rhymes',
+            11157 => 'Books|Kids|Government',
+            11158 => 'Books|Kids|Reference',
+            11159 => 'Books|Kids|Religion',
+            11160 => 'Books|Kids|Science & Nature',
+            11161 => 'Books|Kids|Social Issues',
+            11162 => 'Books|Kids|Social Studies',
+            11163 => 'Books|Kids|Sports & Recreation',
+            11164 => 'Books|Kids|Transportation',
+            11165 => 'Books|Young Adult',
+            11166 => 'Books|Young Adult|Animals',
+            11167 => 'Books|Young Adult|Biography',
+            11168 => 'Books|Young Adult|Careers & Occupations',
+            11169 => 'Books|Young Adult|Computers & Technology',
+            11170 => 'Books|Young Adult|Cooking & Food',
+            11171 => 'Books|Young Adult|Arts & Entertainment',
+            11172 => 'Books|Young Adult|Arts & Entertainment|Art',
+            11173 => 'Books|Young Adult|Arts & Entertainment|Crafts',
+            11174 => 'Books|Young Adult|Arts & Entertainment|Music',
+            11175 => 'Books|Young Adult|Arts & Entertainment|Performing Arts',
+            11176 => 'Books|Young Adult|Family',
+            11177 => 'Books|Young Adult|Fiction',
+            11178 => 'Books|Young Adult|Fiction|Action & Adventure',
+            11179 => 'Books|Young Adult|Fiction|Animals',
+            11180 => 'Books|Young Adult|Fiction|Classics',
+            11181 => 'Books|Young Adult|Fiction|Comics & Graphic Novels',
+            11182 => 'Books|Young Adult|Fiction|Culture, Places & People',
+            11183 => 'Books|Young Adult|Fiction|Dystopian',
+            11184 => 'Books|Young Adult|Fiction|Family & Relationships',
+            11185 => 'Books|Young Adult|Fiction|Fantasy',
+            11186 => 'Books|Young Adult|Fiction|Fairy Tales, Myths & Fables',
+            11187 => 'Books|Young Adult|Fiction|Favorite Characters',
+            11188 => 'Books|Young Adult|Fiction|Historical',
+            11189 => 'Books|Young Adult|Fiction|Holidays & Celebrations',
+            11190 => 'Books|Young Adult|Fiction|Horror, Monsters & Ghosts',
+            11191 => 'Books|Young Adult|Fiction|Crime & Mystery',
+            11192 => 'Books|Young Adult|Fiction|Nature',
+            11193 => 'Books|Young Adult|Fiction|Religion',
+            11194 => 'Books|Young Adult|Fiction|Romance',
+            11195 => 'Books|Young Adult|Fiction|Sci-Fi',
+            11196 => 'Books|Young Adult|Fiction|Coming of Age',
+            11197 => 'Books|Young Adult|Fiction|Sports & Recreation',
+            11198 => 'Books|Young Adult|Fiction|Transportation',
+            11199 => 'Books|Young Adult|Games & Activities',
+            11200 => 'Books|Young Adult|General Nonfiction',
+            11201 => 'Books|Young Adult|Health',
+            11202 => 'Books|Young Adult|History',
+            11203 => 'Books|Young Adult|Holidays & Celebrations',
+            11204 => 'Books|Young Adult|Holidays & Celebrations|Birthdays',
+            11205 => 'Books|Young Adult|Holidays & Celebrations|Christmas & Advent',
+            11206 => 'Books|Young Adult|Holidays & Celebrations|Easter & Lent',
+            11207 => 'Books|Young Adult|Holidays & Celebrations|General',
+            11208 => 'Books|Young Adult|Holidays & Celebrations|Halloween',
+            11209 => 'Books|Young Adult|Holidays & Celebrations|Hanukkah',
+            11210 => 'Books|Young Adult|Holidays & Celebrations|Other',
+            11211 => 'Books|Young Adult|Holidays & Celebrations|Passover',
+            11212 => 'Books|Young Adult|Holidays & Celebrations|Patriotic Holidays',
+            11213 => 'Books|Young Adult|Holidays & Celebrations|Ramadan',
+            11214 => 'Books|Young Adult|Holidays & Celebrations|Thanksgiving',
+            11215 => "Books|Young Adult|Holidays & Celebrations|Valentine's Day",
+            11216 => 'Books|Young Adult|Humor',
+            11217 => 'Books|Young Adult|Humor|Jokes & Riddles',
+            11218 => 'Books|Young Adult|Poetry',
+            11219 => 'Books|Young Adult|Politics & Government',
+            11220 => 'Books|Young Adult|Reference',
+            11221 => 'Books|Young Adult|Religion',
+            11222 => 'Books|Young Adult|Science & Nature',
+            11223 => 'Books|Young Adult|Coming of Age',
+            11224 => 'Books|Young Adult|Social Studies',
+            11225 => 'Books|Young Adult|Sports & Recreation',
+            11226 => 'Books|Young Adult|Transportation',
+            11227 => 'Books|Communications & Media',
+            11228 => 'Books|Military & Warfare',
+            11229 => 'Books|Romance|Inspirational',
+            11230 => 'Books|Romance|Boxed Sets',
+            11231 => 'Books|Romance|Holiday',
+            11232 => 'Books|Romance|Wholesome',
+            11233 => 'Books|Romance|Military',
+            11234 => 'Books|Arts & Entertainment|Art History',
+            11236 => 'Books|Arts & Entertainment|Design',
+            11243 => 'Books|Business & Personal Finance|Accounting',
+            11244 => 'Books|Business & Personal Finance|Hospitality',
+            11245 => 'Books|Business & Personal Finance|Real Estate',
+            11246 => 'Books|Humor|Jokes & Riddles',
+            11247 => 'Books|Religion & Spirituality|Comparative Religion',
+            11255 => 'Books|Cookbooks, Food & Wine|Culinary Arts',
+            11259 => 'Books|Mysteries & Thrillers|Cozy',
+            11260 => 'Books|Politics & Current Events|Current Events',
+            11261 => 'Books|Politics & Current Events|Foreign Policy & International Relations',
+            11262 => 'Books|Politics & Current Events|Local Government',
+            11263 => 'Books|Politics & Current Events|National Government',
+            11264 => 'Books|Politics & Current Events|Political Science',
+            11265 => 'Books|Politics & Current Events|Public Administration',
+            11266 => 'Books|Politics & Current Events|World Affairs',
+            11273 => 'Books|Nonfiction|Family & Relationships|Family & Childcare',
+            11274 => 'Books|Nonfiction|Family & Relationships|Love & Romance',
+            11275 => 'Books|Sci-Fi & Fantasy|Fantasy|Urban',
+            11276 => 'Books|Reference|Foreign Languages|Arabic',
+            11277 => 'Books|Reference|Foreign Languages|Bilingual Editions',
+            11278 => 'Books|Reference|Foreign Languages|African Languages',
+            11279 => 'Books|Reference|Foreign Languages|Ancient Languages',
+            11280 => 'Books|Reference|Foreign Languages|Chinese',
+            11281 => 'Books|Reference|Foreign Languages|English',
+            11282 => 'Books|Reference|Foreign Languages|French',
+            11283 => 'Books|Reference|Foreign Languages|German',
+            11284 => 'Books|Reference|Foreign Languages|Hebrew',
+            11285 => 'Books|Reference|Foreign Languages|Hindi',
+            11286 => 'Books|Reference|Foreign Languages|Italian',
+            11287 => 'Books|Reference|Foreign Languages|Japanese',
+            11288 => 'Books|Reference|Foreign Languages|Korean',
+            11289 => 'Books|Reference|Foreign Languages|Linguistics',
+            11290 => 'Books|Reference|Foreign Languages|Other Languages',
+            11291 => 'Books|Reference|Foreign Languages|Portuguese',
+            11292 => 'Books|Reference|Foreign Languages|Russian',
+            11293 => 'Books|Reference|Foreign Languages|Spanish',
+            11294 => 'Books|Reference|Foreign Languages|Speech Pathology',
+            11295 => 'Books|Science & Nature|Mathematics|Advanced Mathematics',
+            11296 => 'Books|Science & Nature|Mathematics|Algebra',
+            11297 => 'Books|Science & Nature|Mathematics|Arithmetic',
+            11298 => 'Books|Science & Nature|Mathematics|Calculus',
+            11299 => 'Books|Science & Nature|Mathematics|Geometry',
+            11300 => 'Books|Science & Nature|Mathematics|Statistics',
+            11301 => 'Books|Professional & Technical|Medical|Veterinary',
+            11302 => 'Books|Professional & Technical|Medical|Neuroscience',
+            11303 => 'Books|Professional & Technical|Medical|Immunology',
+            11304 => 'Books|Professional & Technical|Medical|Nursing',
+            11305 => 'Books|Professional & Technical|Medical|Pharmacology & Toxicology',
+            11306 => 'Books|Professional & Technical|Medical|Anatomy & Physiology',
+            11307 => 'Books|Professional & Technical|Medical|Dentistry',
+            11308 => 'Books|Professional & Technical|Medical|Emergency Medicine',
+            11309 => 'Books|Professional & Technical|Medical|Genetics',
+            11310 => 'Books|Professional & Technical|Medical|Psychiatry',
+            11311 => 'Books|Professional & Technical|Medical|Radiology',
+            11312 => 'Books|Professional & Technical|Medical|Alternative Medicine',
+            11317 => 'Books|Nonfiction|Philosophy|Political Philosophy',
+            11319 => 'Books|Nonfiction|Philosophy|Philosophy of Language',
+            11320 => 'Books|Nonfiction|Philosophy|Philosophy of Religion',
+            11327 => 'Books|Nonfiction|Social Science|Sociology',
+            11329 => 'Books|Professional & Technical|Engineering|Aeronautics',
+            11330 => 'Books|Professional & Technical|Engineering|Chemical & Petroleum Engineering',
+            11331 => 'Books|Professional & Technical|Engineering|Civil Engineering',
+            11332 => 'Books|Professional & Technical|Engineering|Computer Science',
+            11333 => 'Books|Professional & Technical|Engineering|Electrical Engineering',
+            11334 => 'Books|Professional & Technical|Engineering|Environmental Engineering',
+            11335 => 'Books|Professional & Technical|Engineering|Mechanical Engineering',
+            11336 => 'Books|Professional & Technical|Engineering|Power Resources',
             12001 => 'Mac App Store|Business',
             12002 => 'Mac App Store|Developer Tools',
             12003 => 'Mac App Store|Education',
@@ -4266,6 +4490,23 @@ my %graphicsMode = (
     gssd => { Name => 'GoogleSourceData',   Format => 'string' },
     gsst => { Name => 'GoogleStartTime',    Format => 'string' },
     gstd => { Name => 'GoogleTrackDuration',Format => 'string' },
+
+    # atoms observed in AAX audiobooks (ref PH)
+    "\xa9cpy" => { Name => 'Copyright',  Groups => { 2 => 'Author' } },
+    "\xa9pub" => 'Publisher',
+    "\xa9nrt" => 'Narrator',
+    '@pti' => 'ParentTitle', # (guess -- same as "\xa9nam")
+    '@PST' => 'ParentShortTitle', # (guess -- same as "\xa9nam")
+    '@ppi' => 'ParentProductID', # (guess -- same as 'prID')
+    '@sti' => 'ShortTitle', # (guess -- same as "\xa9nam")
+    prID => 'ProductID',
+    rldt => { Name => 'ReleaseDate', Groups => { 2 => 'Time' }},
+    CDEK => { Name => 'Unknown_CDEK', Unknown => 1 }, # eg: "B004ZMTFEG" - used in URL's ("asin=")
+    CDET => { Name => 'Unknown_CDET', Unknown => 1 }, # eg: "ADBL"
+    VERS => 'ProductVersion',
+    GUID => 'GUID',
+    AACR => { Name => 'Unknown_AACR', Unknown => 1 }, # eg: "CR!1T1H1QH6WX7T714G2BMFX3E9MC4S"
+    # ausr - 30 bytes (User Alias?)
 );
 
 # item list keys (ref PH)
@@ -4912,6 +5153,8 @@ my %graphicsMode = (
         SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::Wave' },
     },
     # alac - 28 bytes
+    # adrm - AAX DRM atom? 148 bytes
+    # aabd - AAX unknown 17kB (contains 'aavd' strings)
 );
 
 # AMR decode config box (ref 3)
@@ -5959,8 +6202,21 @@ sub ProcessMOV($$;$)
             $et->HandleTag($tagTablePtr, "$tag-size", $size);
             $et->HandleTag($tagTablePtr, "$tag-offset", $raf->Tell()) if $$tagTablePtr{"$tag-offset"};
         }
-        # load values only if associated with a tag (or verbose) and < 16MB long
-        if ((defined $tagInfo or $verbose) and $size < 0x1000000) {
+        # load values only if associated with a tag (or verbose) and not too big
+        my $ignore;
+        if ($size > 0x2000000) {    # start to get worried above 32 MB
+            $ignore = 1;
+            if ($tagInfo and not $$tagInfo{Unknown}) {
+                my $t = $tag;
+                $t =~ s/([\x00-\x1f\x7f-\xff])/'x'.unpack('H*',$1)/eg;
+                if ($size > 0x8000000) {
+                    $et->Warn("Skipping '$t' atom > 128 MB", 1);
+                } else {
+                    $et->Warn("Skipping '$t' atom > 32 MB", 2) or $ignore = 0;
+                }
+            }
+        }
+        if (defined $tagInfo and not $ignore) {
             my $val;
             my $missing = $size - $raf->Read($val, $size);
             if ($missing) {

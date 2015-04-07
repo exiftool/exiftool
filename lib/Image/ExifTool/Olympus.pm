@@ -37,7 +37,7 @@ use vars qw($VERSION);
 use Image::ExifTool::Exif;
 use Image::ExifTool::APP12;
 
-$VERSION = '2.28';
+$VERSION = '2.29';
 
 sub PrintLensInfo($$$);
 
@@ -58,7 +58,7 @@ my %olympusLensTypes = (
     '0 02 00' => 'Olympus Zuiko Digital ED 150mm F2.0',
     '0 02 10' => 'Olympus M.Zuiko Digital 17mm F2.8 Pancake', #PH (E-P1 pre-production)
     '0 03 00' => 'Olympus Zuiko Digital ED 300mm F2.8',
-    '0 03 10' => 'Olympus M.Zuiko Digital ED 14-150mm F4.0-5.6', #11
+    '0 03 10' => 'Olympus M.Zuiko Digital ED 14-150mm F4.0-5.6 [II]', #11 (The second version of this lens seems to have the same lens ID number as the first version #20)
     '0 04 10' => 'Olympus M.Zuiko Digital ED 9-18mm F4.0-5.6', #11
     '0 05 00' => 'Olympus Zuiko Digital 14-54mm F2.8-3.5',
     '0 05 01' => 'Olympus Zuiko Digital Pro ED 90-250mm F2.8', #9
@@ -150,6 +150,9 @@ my %olympusLensTypes = (
     '2 20 10' => 'Lumix G Vario 12-32mm F3.5-5.6 Asph. Mega OIS', #20
     '2 21 10' => 'Leica DG Nocticron 42.5mm F1.2 Asph. Power OIS', #20
     '2 22 10' => 'Leica DG Summilux 15mm F1.7 Asph.', #20
+  # '2 23 10' => 'Lumix G Vario 35-100mm F4.0-5.6 Asph. Mega OIS', #20 (guess)
+    '2 24 10' => 'Lumix G Macro 30mm F2.8 Asph. Mega OIS', #20
+    '2 25 10' => 'Lumix G 42.5mm F1.7 Asph. Power OIS', #20
     '3 01 00' => 'Leica D Vario Elmarit 14-50mm F2.8-3.5 Asph.',
     '3 02 00' => 'Leica D Summilux 25mm F1.4 Asph.',
     # Tamron lenses
@@ -340,6 +343,7 @@ my %olympusCameraTypes = (
     D4580 => 'SH-60',
     D4581 => 'SH-1',
     D4582 => 'TG-835',
+    D4585 => 'SH-2',
     D4809 => 'C2500L',
     D4842 => 'E-10',
     D4856 => 'C-1',

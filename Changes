@@ -7,6 +7,26 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 9.90. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Apr. 7, 2015 - Version 9.91
+
+  - Added read support for VCard files
+  - Added support for AAX files
+  - Added --sort option
+  - Added a number of new QuickTime GenreID values (thanks Francois Bonzon)
+  - Added new Canon, Nikon, Olympus and Samsung lenses (thanks LibRaw and Niels
+    Kristian Bech Jensen)
+  - Added a new Olympus CameraType
+  - Added a new Sony FlashMode value
+  - Decode a new Apple makernote tag
+  - Decode a number of new QuickTime tags found in Audible audio books
+  - Improved the naming of a FujiFilm tag (thanks LibRaw)
+  - Removed "not yet tested" warning when writing FujiFilm RAF version 0200
+  - Renamed distribution file config_files/ExifTool_config to example.config
+  - Increased maximum metadata atom size for QuickTime files and added warning
+    if an atom is larger than the limit
+  - Changed writing of filesystem date/time tags to override the -P option
+  - Fixed problem writing FileCreateDate in Windows when the -o option was used
+
 Mar. 14, 2015 - Version 9.90 (production release)
 
   - Added config_files/picasa_faces.config to the distribution (thanks StarGeek)

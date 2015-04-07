@@ -802,7 +802,7 @@ sub WriteXMP($$;$)
                 my $regex = quotemeta($fixPath);
                 $regex =~ s/ \d+/ \\d\+/g;  # match any list index
                 my $ok = $regex;
-                my ($ok2, $match, $i, @fixed, %fixed, $fixed, $changed);
+                my ($ok2, $match, $i, @fixed, %fixed, $fixed);
                 # check for incorrect list types
                 if ($regex =~ s{\\/rdf\\:(Bag|Seq|Alt)\\/}{/rdf:(Bag|Seq|Alt)/}g) {
                     # also look for missing bottom-level list
@@ -849,6 +849,7 @@ sub WriteXMP($$;$)
                     $et->Warn("Incorrect $wrn for existing $tg (not changed)");
                 } else {
                     # fix the incorrect property paths for all values of this tag
+                    my $didFix;
                     foreach $fixed (@fixed) {
                         my $match = shift @matches;
                         next if $fixed eq $match;
@@ -856,10 +857,13 @@ sub WriteXMP($$;$)
                         delete $capture{$match};
                         # remove xml:lang attribute from incorrect lang-alt list if necessary
                         delete $capture{$fixed}[1]{'xml:lang'} if $ok2 and $match !~ /^$ok2$/;
-                        $changed = 1;
+                        $didFix = 1;
                     }
                     $cap = $capture{$path} || $capture{$fixed[0]} unless @fixInfo;
-                    $et->Warn("Fixed incorrect $wrn for $tg", 1) if $changed;
+                    if ($didFix) {
+                        $et->Warn("Fixed incorrect $wrn for $tg", 1);
+                        ++$changed;
+                    }
                 }
             }
             last;

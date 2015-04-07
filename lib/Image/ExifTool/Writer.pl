@@ -1598,7 +1598,7 @@ sub RestoreNewValues($)
 #         3) tag name to write (undef for 'FileModifyDate')
 #         4) flag set if argument 2 has already been converted to Unix seconds
 # Returns: 1=time changed OK, 0=nothing done, -1=error setting time
-#          (and increments CHANGED flag if time was changed)
+#          (increments CHANGED flag and sets corresponding WRITTEN tag)
 sub SetFileModifyDate($$;$$$)
 {
     my ($self, $file, $originalTime, $tag, $isUnixTime) = @_;
@@ -1632,6 +1632,7 @@ sub SetFileModifyDate($$;$$$)
     }
     $self->SetFileTime($file, $aTime, $mTime, $cTime) or $self->Warn("Error setting $tag"), return -1;
     ++$$self{CHANGED};
+    $$self{WRITTEN}{$tag} = $val;   # remember that we wrote this tag
     $self->VerboseValue("+ $tag", $val);
     return 1;
 }
@@ -5856,7 +5857,8 @@ sub SetFileTime($$;$$$)
         }
     }
     # other os (or Windows fallback)
-    return utime($atime, $mtime, $file);
+    return utime($atime, $mtime, $file) if defined $atime and defined $mtime;
+    return 1; # (nothing to do)
 }
 
 #------------------------------------------------------------------------------

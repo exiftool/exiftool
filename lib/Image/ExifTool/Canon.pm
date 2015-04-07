@@ -83,7 +83,7 @@ sub ProcessSerialData($$$);
 sub ProcessFilters($$$);
 sub SwapWords($);
 
-$VERSION = '3.45';
+$VERSION = '3.46';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -276,6 +276,7 @@ $VERSION = '3.45';
     161.4 => 'Tamron AF 17-50mm f/2.8 Di-II LD Aspherical', #40
     161.5 => 'Tamron 90mm f/2.8',
     161.6 => 'Tamron SP AF 17-35mm f/2.8-4 Di LD Aspherical IF', #52 (A05)
+    161.7 => 'Tamron SP AF 28-75mm f/2.8 XR Di LD Aspherical [IF] Macro', #52/53
     162 => 'Canon EF 200mm f/2.8L', #32
     163 => 'Canon EF 300mm f/4L', #32
     164 => 'Canon EF 400mm f/5.6L', #32
@@ -3238,7 +3239,7 @@ my %ciMaxFocal = (
         Format => 'string[6]',
         Writable => 0,
     },
-    0x2d0 => {
+    0x2d0 => { # (doesn't seem to work for firmware 2.0.3 - PH)
         Name => 'FileIndex',
         Groups => { 2 => 'Image' },
         Format => 'int32u',

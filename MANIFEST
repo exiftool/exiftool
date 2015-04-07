@@ -14,8 +14,8 @@ arg_files/xmp2exif.args
 arg_files/xmp2gps.args
 arg_files/xmp2iptc.args
 arg_files/xmp2pdf.args
-config_files/ExifTool_config
 config_files/convert_regions.config
+config_files/example.config
 config_files/picasa_faces.config
 exiftool
 fmt_files/gpx.fmt
@@ -30,6 +30,7 @@ html/TagNames/APE.html
 html/TagNames/APP12.html
 html/TagNames/ASF.html
 html/TagNames/Apple.html
+html/TagNames/Audible.html
 html/TagNames/BMP.html
 html/TagNames/Canon.html
 html/TagNames/CanonCustom.html
@@ -134,6 +135,7 @@ html/TagNames/Stim.html
 html/TagNames/Theora.html
 html/TagNames/Torrent.html
 html/TagNames/Unknown.html
+html/TagNames/VCard.html
 html/TagNames/Vorbis.html
 html/TagNames/XMP.html
 html/TagNames/ZIP.html
@@ -173,6 +175,7 @@ lib/Image/ExifTool/APE.pm
 lib/Image/ExifTool/APP12.pm
 lib/Image/ExifTool/ASF.pm
 lib/Image/ExifTool/Apple.pm
+lib/Image/ExifTool/Audible.pm
 lib/Image/ExifTool/BMP.pm
 lib/Image/ExifTool/BZZ.pm
 lib/Image/ExifTool/BigTIFF.pm
@@ -340,6 +343,7 @@ lib/Image/ExifTool/TagNames.pod
 lib/Image/ExifTool/Theora.pm
 lib/Image/ExifTool/Torrent.pm
 lib/Image/ExifTool/Unknown.pm
+lib/Image/ExifTool/VCard.pm
 lib/Image/ExifTool/Vorbis.pm
 lib/Image/ExifTool/WriteCanonRaw.pl
 lib/Image/ExifTool/WriteExif.pl
@@ -672,6 +676,8 @@ t/Torrent_2.out
 t/Unknown.t
 t/Unknown_2.out
 t/Unknown_3.out
+t/VCard.t
+t/VCard_2.out
 t/Vorbis.t
 t/Vorbis_2.out
 t/Writer.t
@@ -890,6 +896,7 @@ t/images/Sony.jpg
 t/images/Sony.pmp
 t/images/Torrent.torrent
 t/images/Unknown.jpg
+t/images/VCard.vcf
 t/images/Vorbis.ogg
 t/images/Writer.jpg
 t/images/XMP.inx

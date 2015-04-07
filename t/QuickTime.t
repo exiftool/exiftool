@@ -37,16 +37,16 @@ my $testnum = 1;
     $exifTool->SetNewValue('Track1:TrackModifyDate' => '2013:11:04 10:32:15');
     foreach $ext (qw(mov m4a)) {
         ++$testnum;
-    	my $testfile = "t/${testname}_$testnum.failed";
-    	unlink $testfile;
+        my $testfile = "t/${testname}_$testnum.failed";
+        unlink $testfile;
         my $rtnVal = $exifTool->WriteInfo("t/images/QuickTime.$ext", $testfile);
         my $info = $exifTool->ImageInfo($testfile, 'title', 'time:all');
-		if (check($exifTool, $info, $testname, $testnum, undef, 5)) {
-			unlink $testfile;
-		} else {
-			print 'not ';
-		}
-		print "ok $testnum\n";
+        if (check($exifTool, $info, $testname, $testnum, undef, 5)) {
+            unlink $testfile;
+        } else {
+            print 'not ';
+        }
+        print "ok $testnum\n";
     }
 }
 

@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.60
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.91
 [File, System, Image] FileName - File Name: QuickTime.m4a
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 5.1 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2013:11:05 10:27:28-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2014:05:07 11:35:28-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2014:05:03 08:53:45-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2013:11:05 10:34:53-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:05 12:43:14-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:03:07 15:31:28-05:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: M4A
 [File, File, Image] MIMEType - MIME Type: audio/mp4
@@ -55,7 +55,7 @@
 [QuickTime, QuickTime, Audio] iTunNORM - Volume Normalization: 80 0 610 0 289C 0 0 0 0 0
 [QuickTime, QuickTime, Audio] ©lyr - Lyrics: these are lyrics
 [QuickTime, QuickTime, Audio] ©ART - Artist: Phil Harvey
-[QuickTime, QuickTime, Audio] aART - Album Artist: album artist
+[QuickTime, QuickTime, Author] aART - Album Artist: album artist
 [QuickTime, QuickTime, Audio] ©wrt - Composer: Composer
 [QuickTime, QuickTime, Audio] ©alb - Album: album
 [QuickTime, QuickTime, Audio] ©grp - Grouping: grouping

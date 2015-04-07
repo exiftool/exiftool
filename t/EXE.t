@@ -20,11 +20,11 @@ my $testnum = 1;
     my $exifTool = new Image::ExifTool;
     my $ext;
     foreach $ext ('exe', 'macho', 'elf') {
-	    ++$testnum;
-		my $info = $exifTool->ImageInfo("t/images/EXE.$ext");
-		print 'not ' unless check($exifTool, $info, $testname, $testnum);
-		print "ok $testnum\n";
-	}
+        ++$testnum;
+        my $info = $exifTool->ImageInfo("t/images/EXE.$ext");
+        print 'not ' unless check($exifTool, $info, $testname, $testnum);
+        print "ok $testnum\n";
+    }
 }
 
 

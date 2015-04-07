@@ -58,7 +58,7 @@ use vars qw($VERSION %nikonLensIDs %nikonTextEncoding);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '3.03';
+$VERSION = '3.04';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -472,7 +472,8 @@ sub GetAFPointGrid($$;$);
     'F6 3F 18 37 2C 34 84 06' => 'Tamron SP AF 10-24mm f/3.5-4.5 Di II LD Aspherical (IF) (B001)',
     'F6 3F 18 37 2C 34 DF 06' => 'Tamron SP AF 10-24mm f/3.5-4.5 Di II LD Aspherical (IF) (B001)', #30
     '00 36 1C 2D 34 3C 00 06' => 'Tamron SP AF 11-18mm f/4.5-5.6 Di II LD Aspherical (IF) (A13)',
-    'EA 40 29 8E 2C 40 DF 0E' => 'Tamron AF 16-300mm F/3.5-6.3 Di II VC PZD (B016)',
+    'E9 48 27 3E 24 24 DF 0E' => 'Tamron SP 15-30mm f/2.8 Di VC USD (A012)', #33
+    'EA 40 29 8E 2C 40 DF 0E' => 'Tamron AF 16-300mm f/3.5-6.3 Di II VC PZD (B016)',
     '07 46 2B 44 24 30 03 02' => 'Tamron SP AF 17-35mm f/2.8-4 Di LD Aspherical (IF) (A05)',
     '00 53 2B 50 24 24 00 06' => 'Tamron SP AF 17-50mm f/2.8 XR Di II LD Aspherical (IF) (A16)', #PH
     '00 54 2B 50 24 24 00 06' => 'Tamron SP AF 17-50mm f/2.8 XR Di II LD Aspherical (IF) (A16NII)',
@@ -2312,7 +2313,7 @@ my %binaryDataAttrs = (
     %binaryDataAttrs,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Time' },
     0 => {
-        Name => 'Timezone',
+        Name => 'TimeZone',
         Format => 'int16s',
         PrintConv => q{
             my $sign = $val < 0 ? '-' : '+';

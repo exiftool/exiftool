@@ -11,6 +11,7 @@
 #               4) Jaroslav Stepanek via rt.cpan.org
 #               5) Niels Kristian Bech Jensen private communication
 #               6) Nick Livchits private communication
+#               7) Iliah Borg private communcation (LibRaw)
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::Samsung;
@@ -20,7 +21,7 @@ use vars qw($VERSION %samsungLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.29';
+$VERSION = '1.30';
 
 sub WriteSTMN($$$);
 sub ProcessINFO($$$);
@@ -48,6 +49,7 @@ sub ProcessSamsungIFD($$$);
     14 => 'Samsung NX 10mm F3.5 Fisheye', #5
     15 => 'Samsung NX 16-50mm F3.5-5.6 Power Zoom ED OIS', #6
     20 => 'Samsung NX 50-150mm F2.8 S ED OIS', #PH
+    21 => 'Samsung NX 300mm F2.8 ED OIS', #7
 );
 
 # range of values for Formats used in encrypted information

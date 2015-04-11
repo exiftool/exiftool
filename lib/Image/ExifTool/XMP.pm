@@ -47,7 +47,7 @@ use Image::ExifTool qw(:Utils);
 use Image::ExifTool::Exif;
 require Exporter;
 
-$VERSION = '2.82';
+$VERSION = '2.83';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -148,11 +148,16 @@ my %xmpNS = (
     DICOM     => 'http://ns.adobe.com/DICOM/',
     svg       => 'http://www.w3.org/2000/svg',
     et        => 'http://ns.exiftool.ca/1.0/',
-    # namespaces defined in XMP2.pl:
+#
+# namespaces defined in XMP2.pl:
+#
     plus      => 'http://ns.useplus.org/ldf/xmp/1.0/',
-    prism     => 'http://prismstandard.org/namespaces/basic/2.1/',
+    # (prism recommendations from http://www.prismstandard.org/specifications/3.0/Image_Guide_3.0.htm)
+    prism     => 'http://prismstandard.org/namespaces/basic/2.0/',
     prl       => 'http://prismstandard.org/namespaces/prl/2.1/',
     pur       => 'http://prismstandard.org/namespaces/prismusagerights/2.1/',
+    pmi       => 'http://prismstandard.org/namespaces/pmi/2.2/',
+    prm       => 'http://prismstandard.org/namespaces/prm/3.0/',
     acdsee    => 'http://ns.acdsee.com/iptc/1.0/',
     digiKam   => 'http://www.digikam.org/ns/1.0/',
     swf       => 'http://ns.adobe.com/swf/1.0',
@@ -165,6 +170,7 @@ my %xmpNS = (
     extensis  => 'http://ns.extensis.com/extensis/1.0/',
     ics       => 'http://ns.idimager.com/ics/1.0/',
     fpv       => 'http://ns.fastpictureviewer.com/fpv/1.0/',
+    creatorAtom=>'http://ns.adobe.com/creatorAtom/1.0/',
    'apple-fi' => 'http://ns.apple.com/faceinfo/1.0/',
     GPano     => 'http://ns.google.com/photos/1.0/panorama/',
     dwc       => 'http://rs.tdwg.org/dwc/index.htm',
@@ -656,6 +662,14 @@ my %sCVTermDetails = (
         Name => 'pur',
         SubDirectory => { TagTable => 'Image::ExifTool::XMP::pur' },
     },
+    pmi => {
+        Name => 'pmi',
+        SubDirectory => { TagTable => 'Image::ExifTool::XMP::pmi' },
+    },
+    prm => {
+        Name => 'prm',
+        SubDirectory => { TagTable => 'Image::ExifTool::XMP::prm' },
+    },
     rdf => {
         Name => 'rdf',
         SubDirectory => { TagTable => 'Image::ExifTool::XMP::rdf' },
@@ -707,6 +721,10 @@ my %sCVTermDetails = (
     fpv => {
         Name => 'fpv',
         SubDirectory => { TagTable => 'Image::ExifTool::XMP::fpv' },
+    },
+    creatorAtom => {
+        Name => 'creatorAtom',
+        SubDirectory => { TagTable => 'Image::ExifTool::XMP::creatorAtom' },
     },
    'apple-fi' => {
         Name => 'apple-fi',
@@ -3290,6 +3308,15 @@ sub ParseXMPElement($$$;$$$$)
                         if ($stdNS) {
                             $val = $try;
                             $et->WarnOnce("Fixed incorrect URI for xmlns:$ns", 1);
+                        } else {
+                            # look for same namespace with different version number
+                            $try = quotemeta $val; # (note: escapes slashes too)
+                            $try =~ s{\\/\d+\\\.\d+(\\/|$)}{\\/\\d+\\\.\\d+$1};
+                            my ($good) = grep /^$try$/, keys %uri2ns;
+                            if ($good) {
+                                $stdNS = $uri2ns{$good};
+                                $et->VPrint(0, $$et{INDENT}, "[different $stdNS version: $val]\n");
+                            }
                         }
                     }
                     # tame wild namespace prefixes (patches Microsoft stupidity)

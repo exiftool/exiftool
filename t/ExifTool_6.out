@@ -1,9 +1,9 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.81
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.92
 [File, System, Image] FileName - File Name: Canon.jpg
 [File, System, Image] Directory - Directory: t/images
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2006:10:03 15:10:31-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:01:12 07:52:36-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:01:07 07:37:06-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:10 10:37:46-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:04:07 07:27:03-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: JPEG
 [File, File, Image] MIMEType - MIME Type: image/jpeg
@@ -61,6 +61,7 @@
 [Composite, Composite, Camera] WB_RGGBLevels - WB RGGB Levels: 1719 832 831 990
 [Composite, Composite, Camera] BlueBalance - Blue Balance: 1.190619
 [Composite, Composite, Camera] CircleOfConfusion - Circle Of Confusion: 0.019 mm
+[Composite, Composite, Image] DOF - Depth Of Field: inf (4.31 m - inf)
 [Composite, Composite, Image] FOV - Field Of View: 36.9 deg
 [Composite, Composite, Camera] FocalLength35efl - Focal Length: 34.0 mm (35 mm equivalent: 54.0 mm)
 [Composite, Composite, Camera] HyperfocalDistance - Hyperfocal Distance: 4.37 m

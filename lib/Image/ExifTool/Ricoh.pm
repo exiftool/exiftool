@@ -9,6 +9,7 @@
 #               2) http://homepage3.nifty.com/kamisaka/makernote/makernote_ricoh.htm
 #               3) Tim Gray private communication (GR)
 #               4) https://github.com/atotto/ricoh-theta-tools/
+#               5) Iliah Borg private communication (LibRaw)
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::Ricoh;
@@ -18,7 +19,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.28';
+$VERSION = '1.29';
 
 sub ProcessRicohText($$$);
 sub ProcessRicohRMETA($$$);
@@ -142,6 +143,7 @@ my %ricohLensIDs = (
             9 => 'Warm White Fluorescent',
             10 => 'Manual',
             11 => 'Kelvin',
+            12 => 'Shade', #5
         },
     }],
     0x1004 => { #3

@@ -26,7 +26,8 @@ my %unescapeVCard = ( '\\'=>'\\', ','=>',', 'n'=>"\n", 'N'=>"\n" );
         This table lists only those VCard tags which are renamed by ExifTool, but
         any existing VCard tag will be extracted.  Tag names may have "Pref" added
         to indicate the preferred instance of a VCard property.  Other "TYPE"
-        parameters are also added to the tag name.
+        parameters are also added to the tag name. See
+        L<https://tools.ietf.org/html/rfc6350> for the VCard 4.0 specification.
     },
     Version => 'VCardVersion',
     VCardVersion => { Description => 'VCard Version', Hidden => 1 }, # (for the Description)

@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.81
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.92
 [File, System, Image] FileName - File Name: Writer_15_failed.jpg
 [File, System, Image] Directory - Directory: t
 [File, System, Image] FileSize - File Size: 2.5 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2015:01:12 07:53:07-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:01:12 07:53:07-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:01:12 07:53:07-05:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2015:04:10 10:38:06-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:10 10:38:06-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:04:10 10:38:06-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: JPEG
 [File, File, Image] MIMEType - MIME Type: image/jpeg
@@ -162,6 +162,7 @@
 [Composite, Composite, Camera] WB_RGGBLevels - WB RGGB Levels: 1719 832 831 990
 [Composite, Composite, Camera] BlueBalance - Blue Balance: 1.190619
 [Composite, Composite, Camera] CircleOfConfusion - Circle Of Confusion: 0.019 mm
+[Composite, Composite, Image] DOF - Depth Of Field: inf (1.29 m - inf)
 [Composite, Composite, Image] FOV - Field Of View: 116.6 deg
 [Composite, Composite, Camera] FocalLength35efl - Focal Length: 7.0 mm (35 mm equivalent: 11.1 mm)
 [Composite, Composite, Camera] HyperfocalDistance - Hyperfocal Distance: 1.30 m

@@ -37,7 +37,7 @@ use vars qw($VERSION);
 use Image::ExifTool::Exif;
 use Image::ExifTool::APP12;
 
-$VERSION = '2.29';
+$VERSION = '2.30';
 
 sub PrintLensInfo($$$);
 
@@ -348,6 +348,7 @@ my %olympusCameraTypes = (
     D4842 => 'E-10',
     D4856 => 'C-1',
     D4857 => 'C-1Z,D-150Z',
+    D4587 => 'TG-860',
     DCHC => 'D500L',
     DCHT => 'D600L / D620L',
     K0055 => 'AIR-A01',

@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.83
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.92
 [File, System, Image] FileName - File Name: Writer_46_failed.jpg
 [File, System, Image] Directory - Directory: t
-[File, System, Image] FileSize - File Size: 8.5 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2015:01:20 08:55:50-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:01:20 08:55:50-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:01:20 08:55:50-05:00
+[File, System, Image] FileSize - File Size: 9.2 kB
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2015:04:09 10:56:52-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:09 10:56:52-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:04:09 10:56:52-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: JPEG
 [File, File, Image] MIMEType - MIME Type: image/jpeg
@@ -34,7 +34,7 @@
 [IPTC, IPTC, Other] 152 - Audio Sampling Resolution: 07
 [IPTC, IPTC, Other] 153 - Audio Duration: 000007
 [IPTC, IPTC, Other] 154 - Audio Outcue: 7
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 9.83
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 9.92
 [XMP, XMP-iptcExt, Author] AboutCvTermCvId - About Cv Term Cv Id: 7
 [XMP, XMP-iptcExt, Author] AboutCvTermCvTermId - About Cv Term Id: 7
 [XMP, XMP-iptcExt, Author] AboutCvTermCvTermName - About Cv Term Name: 7
@@ -67,12 +67,21 @@
 [XMP, XMP-aux, Camera] ApproximateFocusDistance - Approximate Focus Distance: 7
 [XMP, XMP-cc, Author] attributionName - Attribution Name: 7
 [XMP, XMP-cc, Author] attributionURL - Attribution URL: 7
+[XMP, XMP-creatorAtom, Image] aeProjectLinkCompositionID - Ae Project Link Composition ID: 7
+[XMP, XMP-creatorAtom, Image] aeProjectLinkFullPath - Ae Project Link Full Path: 7
+[XMP, XMP-creatorAtom, Image] aeProjectLinkRenderOutputModuleIndex - Ae Project Link Render Output Module Index: 7
+[XMP, XMP-creatorAtom, Image] aeProjectLinkRenderQueueItemID - Ae Project Link Render Queue Item ID: 7
+[XMP, XMP-creatorAtom, Image] aeProjectLinkRenderTimeStamp - Ae Project Link Render Time Stamp: 7
 [XMP, XMP-extensis, Image] Approved - Approved: True
 [XMP, XMP-extensis, Image] ApprovedBy - Approved By: 7
 [XMP, XMP-pdf, Author] Author - Author: 7
 [XMP, XMP-photoshop, Author] AuthorsPosition - Authors Position: 7
+[XMP, XMP-prism, Document] acedemicField - Acedemic Field: 7
+[XMP, XMP-prism, Document] aggregateIssueNumber - Aggregate Issue Number: 7
 [XMP, XMP-prism, Document] aggregationType - Aggregation Type: 7
-[XMP, XMP-prism, Document] alternateTitle - Alternate Title: 7
+[XMP, XMP-prism, Document] alternateTitleA-lang - Alternate Title A-lang: 7
+[XMP, XMP-prism, Document] alternateTitleA-platform - Alternate Title A-platform: 7
+[XMP, XMP-prism, Document] alternateTitleText - Alternate Title Text: 7
 [XMP, XMP-pur, Document] agreement - Agreement: 7
 [XMP, XMP-xmp, Image] Advisory - Advisory: 7
 [XMP, XMP-xmpDM, Image] absPeakAudioFilePath - Abs Peak Audio File Path: 7

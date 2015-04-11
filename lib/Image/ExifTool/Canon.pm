@@ -83,7 +83,7 @@ sub ProcessSerialData($$$);
 sub ProcessFilters($$$);
 sub SwapWords($);
 
-$VERSION = '3.46';
+$VERSION = '3.47';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -616,6 +616,7 @@ $VERSION = '3.46';
     0x3690000 => 'PowerShot ELPH 135 / IXUS 145 / IXY 120',
     0x3700000 => 'PowerShot ELPH 340 HS / IXUS 265 HS / IXY 630',
     0x3710000 => 'PowerShot ELPH 150 IS / IXUS 155 / IXY 140',
+    0x3740000 => 'EOS M3', #52
     0x3750000 => 'PowerShot SX60 HS', #52/53
     0x3760000 => 'PowerShot SX520 HS', #52
     0x3770000 => 'PowerShot SX400 IS',
@@ -1912,6 +1913,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
             60 => 'High-speed Burst HQ', #PH (C='High-speed Burst HQ', same as 59)
             61 => 'Smooth Skin', #51
             62 => 'Soft Focus', #PH (SX260,IXUS240)
+            # 83 - seen for EOS M3 night shot (PH)
             257 => 'Spotlight', #PH
             258 => 'Night 2', #PH
             259 => 'Night+',

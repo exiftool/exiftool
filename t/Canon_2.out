@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.81
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.92
 [File, System, Image] FileName - File Name: Canon1DmkIII.jpg
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 8.1 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2008:01:18 14:10:05-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:01:09 07:19:40-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:01:07 07:37:06-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:10 07:54:43-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:04:07 07:27:03-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: JPEG
 [File, File, Image] MIMEType - MIME Type: image/jpeg
@@ -346,6 +346,7 @@
 [Composite, Composite, Camera] WB_RGGBLevels - WB RGGB Levels: 2275 1024 1024 1357
 [Composite, Composite, Camera] BlueBalance - Blue Balance: 1.325195
 [Composite, Composite, Camera] CircleOfConfusion - Circle Of Confusion: 0.023 mm
+[Composite, Composite, Image] DOF - Depth Of Field: 0.60 m (1.41 - 2.01 m)
 [Composite, Composite, Image] FOV - Field Of View: 43.7 deg
 [Composite, Composite, Camera] FocalLength35efl - Focal Length: 35.0 mm (35 mm equivalent: 44.8 mm)
 [Composite, Composite, Camera] HyperfocalDistance - Hyperfocal Distance: 9.33 m

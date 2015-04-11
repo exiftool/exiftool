@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '9.91';
+$VERSION = '9.92';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -130,12 +130,12 @@ sub ReadValue($$$$$;$);
     SigmaRaw JPEG GIMP Jpeg2000 GIF BMP BMP::OS2 PICT PNG MNG DjVu DPX OpenEXR
     MIFF PGF PSP PhotoCD Radiance PDF PostScript Photoshop::Header FujiFilm::RAF
     FujiFilm::IFD Samsung::Trailer Sony::SRF2 Sony::SR2SubIFD Sony::PMP ITC ID3
-    Vorbis Ogg APE APE::NewHeader APE::OldHeader MPC MPEG::Audio MPEG::Video
-    MPEG::Xing M2TS QuickTime QuickTime::ImageFile Matroska MOI MXF DV Flash
-    Flash::FLV Real::Media Real::Audio Real::Metafile RIFF AIFF ASF DICOM MIE
-    HTML XMP::SVG Palm Palm::MOBI Palm::EXTH Torrent EXE EXE::PEVersion
-    EXE::PEString EXE::MachO EXE::PEF EXE::ELF EXE::CHM LNK Font VCard RSRC
-    Rawzor ZIP ZIP::GZIP ZIP::RAR RTF OOXML iWork FLIR::AFF FLIR::FPF
+    Vorbis Ogg APE APE::NewHeader APE::OldHeader Audible MPC MPEG::Audio
+    MPEG::Video MPEG::Xing M2TS QuickTime QuickTime::ImageFile Matroska MOI MXF
+    DV Flash Flash::FLV Real::Media Real::Audio Real::Metafile RIFF AIFF ASF
+    DICOM MIE HTML XMP::SVG Palm Palm::MOBI Palm::EXTH Torrent EXE
+    EXE::PEVersion EXE::PEString EXE::MachO EXE::PEF EXE::ELF EXE::CHM LNK Font
+    VCard RSRC Rawzor ZIP ZIP::GZIP ZIP::RAR RTF OOXML iWork FLIR::AFF FLIR::FPF
 );
 
 # alphabetical list of current Lang modules
@@ -172,8 +172,8 @@ $defaultLang = 'en';    # default language
                 BMP PPM RIFF AIFF ASF MOV MPEG Real SWF PSP FLV OGG FLAC APE MPC
                 MKV MXF DV PMP IND PGF ICC ITC FLIR FPF LFP HTML VRD RTF XCF
                 QTIF FPX PICT ZIP GZIP PLIST RAR BZ2 TAR RWZ EXE EXR HDR CHM LNK
-                WMF AVC DEX DPX RAW Font RSRC M2TS PHP Torrent VCard PDB MOI MP3
-                DICOM PCD);
+                WMF AVC DEX DPX RAW Font RSRC M2TS PHP Torrent VCard AA PDB MOI
+                MP3 DICOM PCD);
 
 # file types that we can write (edit)
 my @writeTypes = qw(JPEG TIFF GIF CRW MRW ORF RAF RAW PNG MIE PSD XMP PPM
@@ -200,6 +200,7 @@ my %fileTypeLookup = (
    '3GP' => ['MOV',  '3rd Gen. Partnership Project audio/video'],
    '3GP2'=>  '3G2',
    '3GPP'=>  '3GP',
+    AA   => ['AA',   'Audible Audiobook'],
     AAX  => ['MOV',  'Audible Enhanced Audiobook'],
     ACR  => ['DICOM','American College of Radiology ACR-NEMA'],
     ACFM => ['Font', 'Adobe Composite Font Metrics'],
@@ -487,6 +488,7 @@ my %fileDescription = (
 #  types may be specified by some modules, eg. QuickTime.pm and RIFF.pm)
 %mimeType = (
    '3FR' => 'image/x-hasselblad-3fr',
+    AA   => 'audio/audible',
     AI   => 'application/vnd.adobe.illustrator',
     AIFF => 'audio/x-aiff',
     APE  => 'audio/x-monkeys-audio',
@@ -657,6 +659,7 @@ my %fileDescription = (
 # - module name '' defaults to Image::ExifTool
 # - module name '0' indicates a recognized but unsupported file
 my %moduleName = (
+    AA   => 'Audible',
     AVC  => 0,
     BTF  => 'BigTIFF',
     BZ2  => 0,
@@ -710,6 +713,7 @@ my %moduleName = (
 # - must match beginning at first byte in file
 # - this test must not be more stringent than module logic
 %magicNumber = (
+    AA   => '.{4}\x57\x90\x75\x36',
     AIFF => '(FORM....AIF[FC]|AT&TFORM)',
     APE  => '(MAC |APETAGEX|ID3)',
     ASF  => '\x30\x26\xb2\x75\x8e\x66\xcf\x11\xa6\xd9\x00\xaa\x00\x62\xce\x6c',
@@ -782,9 +786,6 @@ my %moduleName = (
     RIFF => '(RIFF|LA0[234]|OFR |LPAC|wvpk)', # RIFF plus other variants
     RSRC => '(....)?\0\0\x01\0',
     RTF  => '[\n\r]*\\{[\n\r]*\\\\rtf',
-    # (don't be too restrictive for RW2/RWL -- how does magic number change for big-endian?)
-    RW2  => '(II|MM)', #(\x55\0\x18\0\0\0\x88\xe7\x74\xd8\xf8\x25\x1d\x4d\x94\x7a\x6e\x77\x82\x2b\x5d\x6a)
-    RWL  => '(II|MM)', #(ditto)
     RWZ  => 'rawzor',
     SWF  => '[FC]WS[^\0]',
     TAR  => '.{257}ustar(  )?\0', # (this doesn't catch old-style tar files)

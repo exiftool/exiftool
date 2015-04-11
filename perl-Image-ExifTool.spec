@@ -1,6 +1,6 @@
 Summary: perl module for image data extraction
 Name: perl-Image-ExifTool
-Version: 9.91
+Version: 9.92
 Release: 1
 License: Artistic/GPL
 Group: Development/Libraries/Perl
@@ -22,9 +22,10 @@ supported by ExifTool (r = read, w = write, c = create):
 
   File Types
   ------------+-------------+-------------+-------------+------------
-  3FR   r     | EIP   r     | LFP   r     | OTF   r     | RWL   r/w
-  3G2   r/w   | EPS   r/w   | LNK   r     | PAC   r     | RWZ   r
-  3GP   r/w   | EPUB  r     | M2TS  r     | PAGES r     | RM    r
+  3FR   r     | DYLIB r     | LA    r     | ORF   r/w   | RW2   r/w  
+  3G2   r/w   | EIP   r     | LFP   r     | OTF   r     | RWL   r/w
+  3GP   r/w   | EPS   r/w   | LNK   r     | PAC   r     | RWZ   r
+  AA    r     | EPUB  r     | M2TS  r     | PAGES r     | RM    r
   AAX   r/w   | ERF   r/w   | M4A/V r/w   | PBM   r/w   | SEQ   r
   ACR   r     | EXE   r     | MEF   r/w   | PCD   r     | SO    r
   AFM   r     | EXIF  r/w/c | MIE   r/w/c | PDB   r     | SR2   r/w
@@ -55,7 +56,6 @@ supported by ExifTool (r = read, w = write, c = create):
   DPX   r     | K25   r     | OFR   r     | RIFF  r     | ZIP   r
   DV    r     | KDC   r     | OGG   r     | RSRC  r     |
   DVB   r/w   | KEY   r     | OGV   r     | RTF   r     |
-  DYLIB r     | LA    r     | ORF   r/w   | RW2   r/w   |
 
   Meta Information
   ----------------------+----------------------+---------------------

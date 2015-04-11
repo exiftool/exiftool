@@ -65,9 +65,10 @@ supported by ExifTool (r = read, w = write, c = create):
 
   File Types
   ------------+-------------+-------------+-------------+------------
-  3FR   r     | EIP   r     | LFP   r     | OTF   r     | RWL   r/w
-  3G2   r/w   | EPS   r/w   | LNK   r     | PAC   r     | RWZ   r
-  3GP   r/w   | EPUB  r     | M2TS  r     | PAGES r     | RM    r
+  3FR   r     | DYLIB r     | LA    r     | ORF   r/w   | RW2   r/w  
+  3G2   r/w   | EIP   r     | LFP   r     | OTF   r     | RWL   r/w
+  3GP   r/w   | EPS   r/w   | LNK   r     | PAC   r     | RWZ   r
+  AA    r     | EPUB  r     | M2TS  r     | PAGES r     | RM    r
   AAX   r/w   | ERF   r/w   | M4A/V r/w   | PBM   r/w   | SEQ   r
   ACR   r     | EXE   r     | MEF   r/w   | PCD   r     | SO    r
   AFM   r     | EXIF  r/w/c | MIE   r/w/c | PDB   r     | SR2   r/w
@@ -98,7 +99,6 @@ supported by ExifTool (r = read, w = write, c = create):
   DPX   r     | K25   r     | OFR   r     | RIFF  r     | ZIP   r
   DV    r     | KDC   r     | OGG   r     | RSRC  r     |
   DVB   r/w   | KEY   r     | OGV   r     | RTF   r     |
-  DYLIB r     | LA    r     | ORF   r/w   | RW2   r/w   |
 
   Meta Information
   ----------------------+----------------------+---------------------
@@ -2041,10 +2041,10 @@ Here is a complete list of groups for each of these families:
 =item Family 0 (Information Type):
 
 AFCP, AIFF, APE, APP0, APP1, APP11, APP12, APP13, APP14, APP15, APP4, APP5,
-APP6, APP8, ASF, CanonVRD, Composite, DICOM, DNG, DV, DjVu, Ducky, EXE,
-EXIF, ExifTool, FLAC, FLIR, File, Flash, FlashPix, Font, FotoStation, GIF,
-GIMP, GeoTiff, H264, HTML, ICC_Profile, ID3, IPTC, ITC, JFIF, JPEG,
-Jpeg2000, LNK, Leaf, Lytro, M2TS, MIE, MIFF, MNG, MPC, MPEG, MPF, MXF, MOI,
+APP6, APP8, ASF, Audible, CanonVRD, Composite, DICOM, DNG, DV, DjVu, Ducky,
+EXE, EXIF, ExifTool, FLAC, FLIR, File, Flash, FlashPix, Font, FotoStation,
+GIF, GIMP, GeoTiff, H264, HTML, ICC_Profile, ID3, IPTC, ITC, JFIF, JPEG,
+Jpeg2000, LNK, Leaf, Lytro, M2TS, MIE, MIFF, MNG, MOI, MPC, MPEG, MPF, MXF,
 MakerNotes, Matroska, Meta, Ogg, OpenEXR, PDF, PICT, PLIST, PNG, PSP, Palm,
 PanasonicRaw, PhotoCD, PhotoMechanic, Photoshop, PostScript, PrintIM,
 QuickTime, RAF, RIFF, RSRC, RTF, Radiance, Rawzor, Real, SVG, SigmaRaw,

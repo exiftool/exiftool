@@ -74,9 +74,9 @@ span.sup        { font-size: 0.8em; font-weight: normal; position: relative; top
 </div>
 
 <blockquote><table class='dl lg'><tr><td><b>
-<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-9.91.tar.gz/download">
-Download        Version 9.91</a> (3.8 MB) -
-<a href="history.html">Apr. 7, 2015</a></b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-9.92.tar.gz/download">
+Download        Version 9.92</a> (3.8 MB) -
+<a href="history.html">Apr. 11, 2015</a></b></td></tr></table></blockquote>
 
 <p><b>ExifTool is a platform-independent <a href="ExifTool.html">Perl
 library</a> plus a <a href="exiftool_pod.html">command-line application</a> for
@@ -125,8 +125,8 @@ distribution above.)</i></p>
 
 <blockquote><table class='dl lg'><tr><td><b>
 <a name="alone">Windows Executable:</a>
-<a href="http://sourceforge.net/projects/exiftool/files/exiftool-9.91.zip/download">
-         exiftool-9.91.zip</a> (3.8 MB)</b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/exiftool-9.92.zip/download">
+         exiftool-9.92.zip</a> (3.8 MB)</b></td></tr></table></blockquote>
 
 <p><b>The stand-alone Windows executable</b> does not require Perl. Just
 download and un-zip the archive then double-click on
@@ -138,7 +138,7 @@ of Windows (including Windows 7).</p>
 <blockquote><table class='dl lg'><tr><td><b>
 Mac OS X Package:
 <a href="http://sourceforge.net/projects/exiftool/files/ExifTool-9.70.dmg/download">
-         ExifTool-9.91.dmg</a> (2.5 MB)</b></td></tr></table></blockquote>
+         ExifTool-9.92.dmg</a> (2.5 MB)</b></td></tr></table></blockquote>
 
 <p><b>The OS X package</b> installs the ExifTool command-line application and
 libraries in /usr/bin. After installing, type "<code>exiftool</code>" in a
@@ -146,6 +146,9 @@ Terminal window to run exiftool and read the application documentation.</p>
 
 <p>Read the <b><a href="install.html">installation instructions</a></b> for help
 installing ExifTool on Windows, Mac OS X and Unix systems.</p>
+
+<p><i>(<a href="http://owl.phy.queensu.ca/~phil/exiftool/checksums.txt">SHA1 and
+MD1 checksums for the current distribution packages</a>.)</i></p>
 
 <h2><a name="features">Features</a></h2>
 <ul>
@@ -253,6 +256,7 @@ for each file format.</p>
 <tr><td>3FR</td><td>R</td><td>Hasselblad RAW (<a href="TagNames/EXIF.html">TIFF</a>-based)</td><td>R</td><td>R</td><td>R</td><td>R</td><td>-</td></tr>
 <tr><td>3G2, 3GP2</td><td>R/W</td><td>3rd Gen. Partnership Project 2 a/v (<a href="TagNames/QuickTime.html">QuickTime</a>-based)</td><td>R/W<span class=sup>2</span></td><td>R/W<span class=sup>2</span></td><td>R/W/C</td><td>-</td><td>R/W <a href="TagNames/QuickTime.html">QuickTime</a><span class=sup>3</span></td></tr>
 <tr><td>3GP, 3GPP</td><td>R/W</td><td>3rd Gen. Partnership Project a/v (<a href="TagNames/QuickTime.html">QuickTime</a>-based)</td><td>R/W<span class=sup>2</span></td><td>R/W<span class=sup>2</span></td><td>R/W/C</td><td>-</td><td>R/W <a href="TagNames/QuickTime.html">QuickTime</a><span class=sup>3</span></td></tr>
+<tr><td><a href="TagNames/Audible.html">AA</a></td><td>R</td><td>Audible Audiobook</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/Audible.html">Audible</a></td></tr>
 <tr><td>AAX</td><td>R/W</td><td>Audible Enhanced Audiobook (<a href="TagNames/QuickTime.html">QuickTime</a>-based)</td><td>R/W<span class=sup>2</span></td><td>R/W<span class=sup>2</span></td><td>R/W/C</td><td>-</td><td>R/W <a href="TagNames/QuickTime.html">QuickTime</a><span class=sup>3</span></td></tr>
 <tr><td><a href="TagNames/DICOM.html">ACR</a></td><td>R</td><td>American College of Radiology ACR-NEMA (DICOM-like)</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/DICOM.html">DICOM</a></td></tr>
 <tr><td><a href="TagNames/Font.html">AFM, ACFM, AMFM</a></td><td>R</td><td>Adobe [Composite/Multiple Master] Font Metrics</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/Font.html">Font</a></td></tr>
@@ -562,64 +566,66 @@ more information:  Right-click on the window's title bar then select
 <table width='100%'><tr valign='top'><td>
 &gt; <code>exiftool -h -canon pics/IMG_0315.JPG</code><br>&nbsp;
 
-<!-- pics/IMG_0315.JPG -->
+<!-- t/images/Canon.jpg -->
 <table class='box sm tight'>
-<tr><td>File Name</td><td>IMG_0315.JPG</td></tr>
+<tr><td>File Name</td><td>Canon.jpg</td></tr>
 <tr><td>Camera Model Name</td><td>Canon EOS DIGITAL REBEL</td></tr>
-<tr><td>Date/Time Original</td><td>2003:09:30 13:37:51</td></tr>
-<tr><td>Shooting Mode</td><td>Sports</td></tr>
-<tr><td>Shutter Speed</td><td>1/2000</td></tr>
-<tr><td>Aperture</td><td>7.1</td></tr>
-<tr><td>Metering Mode</td><td>Evaluative</td></tr>
+<tr><td>Date/Time Original</td><td>2003:12:04 06:46:52</td></tr>
+<tr><td>Shooting Mode</td><td>Bulb</td></tr>
+<tr><td>Shutter Speed</td><td>4</td></tr>
+<tr><td>Aperture</td><td>14.0</td></tr>
+<tr><td>Metering Mode</td><td>Center-weighted average</td></tr>
 <tr><td>Exposure Compensation</td><td>0</td></tr>
-<tr><td>ISO</td><td>400</td></tr>
-<tr><td>Lens</td><td>75.0 - 300.0 mm</td></tr>
-<tr><td>Focal Length</td><td>300.0 mm</td></tr>
-<tr><td>Image Size</td><td>3072x2048</td></tr>
-<tr><td>Quality</td><td>Normal</td></tr>
-<tr><td>Flash</td><td>Off, Did not fire</td></tr>
+<tr><td>ISO</td><td>100</td></tr>
+<tr><td>Lens</td><td>18.0 - 55.0 mm</td></tr>
+<tr><td>Focal Length</td><td>34.0 mm</td></tr>
+<tr><td>Image Size</td><td>8x8</td></tr>
+<tr><td>Quality</td><td>RAW</td></tr>
+<tr><td>Flash</td><td>No Flash</td></tr>
 <tr><td>White Balance</td><td>Auto</td></tr>
-<tr><td>Focus Mode</td><td>AI Servo AF</td></tr>
+<tr><td>Focus Mode</td><td>Manual Focus (3)</td></tr>
 <tr><td>Contrast</td><td>+1</td></tr>
 <tr><td>Sharpness</td><td>+1</td></tr>
 <tr><td>Saturation</td><td>+1</td></tr>
 <tr><td>Color Tone</td><td>Normal</td></tr>
-<tr><td>File Size</td><td>1606 kB</td></tr>
-<tr><td>File Number</td><td>103-0315</td></tr>
-<tr><td>Drive Mode</td><td>Continuous shooting</td></tr>
+<tr><td>Color Space</td><td>sRGB</td></tr>
+<tr><td>File Size</td><td>2.6 kB</td></tr>
+<tr><td>File Number</td><td>118-1861</td></tr>
+<tr><td>Drive Mode</td><td>Continuous Shooting</td></tr>
 <tr><td>Owner Name</td><td>Phil Harvey</td></tr>
-<tr><td>Serial Number</td><td>0560012345</td></tr>
+<tr><td>Serial Number</td><td>0560018150</td></tr>
 </table>
 </td><td>
-&gt; <code>exiftool -lang ja -h -canon pics/IMG_0315.JPG</code><br>&nbsp;
+&gt; <code>exiftool -lang de -h -canon t/images/Canon.jpg</code><br>&nbsp;
 
-<!-- pics/IMG_0315.JPG -->
+<!-- t/images/Canon.jpg -->
 <table class='box sm tight'>
-<tr><td>&#x30d5;&#x30a1;&#x30a4;&#x30eb;&#x540d;</td><td>IMG_0315.JPG</td></tr>
-<tr><td>&#x753b;&#x50cf;&#x5165;&#x529b;&#x6a5f;&#x5668;&#x30e2;&#x30c7;&#x30eb;</td><td>Canon EOS DIGITAL REBEL</td></tr>
-<tr><td>&#x30aa;&#x30ea;&#x30b8;&#x30ca;&#x30eb;&#x30c7;&#x30fc;&#x30bf;&#x4f5c;&#x6210;&#x65e5;&#x6642;</td><td>2003:09:30 13:37:51</td></tr>
-<tr><td>&#x64ae;&#x5f71;&#x30e2;&#x30fc;&#x30c9;</td><td>&#x30b9;&#x30dd;&#x30fc;&#x30c4;</td></tr>
-<tr><td>&#x9732;&#x51fa;&#x6642;&#x9593;</td><td>1/2000</td></tr>
-<tr><td>&#x7d5e;&#x308a;</td><td>7.1</td></tr>
-<tr><td>&#x6e2c;&#x5149;&#x30e2;&#x30fc;&#x30c9;</td><td>&#x8a55;&#x4fa1;</td></tr>
-<tr><td>&#x9732;&#x51fa;&#x88dc;&#x6b63;&#x5024;</td><td>0</td></tr>
-<tr><td>ISO&#x30b9;&#x30d4;&#x30fc;&#x30c9;&#x30ec;&#x30fc;&#x30c8;</td><td>400</td></tr>
-<tr><td>&#x30ec;&#x30f3;&#x30ba;</td><td>75.0 - 300.0 mm</td></tr>
-<tr><td>&#x30ec;&#x30f3;&#x30ba;&#x7126;&#x70b9;&#x8ddd;&#x96e2;</td><td>300.0 mm</td></tr>
-<tr><td>&#x30a4;&#x30e1;&#x30fc;&#x30b8;&#x30b5;&#x30a4;&#x30ba;</td><td>3072x2048</td></tr>
-<tr><td>&#x54c1;&#x8cea;</td><td>&#x6a19;&#x6e96;</td></tr>
-<tr><td>&#x30b9;&#x30c8;&#x30ed;&#x30dc;</td><td>&#x30d5;&#x30e9;&#x30c3;&#x30b7;&#x30e5;&#x672a;&#x767a;&#x5149;&#x3001;&#x5f37;&#x5236;&#x767a;&#x5149;&#x30e2;&#x30fc;&#x30c9;</td></tr>
-<tr><td>&#x30db;&#x30ef;&#x30a4;&#x30c8;&#x30d0;&#x30e9;&#x30f3;&#x30b9;</td><td>&#x30aa;&#x30fc;&#x30c8;</td></tr>
-<tr><td>&#x30d5;&#x30a9;&#x30fc;&#x30ab;&#x30b9;&#x30e2;&#x30fc;&#x30c9;</td><td>AI&#x30b5;&#x30fc;&#x30dc;AF</td></tr>
-<tr><td>&#x30b3;&#x30f3;&#x30c8;&#x30e9;&#x30b9;&#x30c8;</td><td>+1</td></tr>
-<tr><td>&#x30b7;&#x30e3;&#x30fc;&#x30d7;&#x30cd;&#x30b9;</td><td>+1</td></tr>
-<tr><td>&#x5f69;&#x5ea6;</td><td>+1</td></tr>
-<tr><td>&#x30ab;&#x30e9;&#x30fc;&#x30c8;&#x30fc;&#x30f3;</td><td>&#x6a19;&#x6e96;</td></tr>
-<tr><td>&#x30d5;&#x30a1;&#x30a4;&#x30eb;&#x306e;&#x30b5;&#x30a4;&#x30ba;</td><td>1606 kB</td></tr>
-<tr><td>&#x30d5;&#x30a1;&#x30a4;&#x30eb;&#x756a;&#x53f7;</td><td>103-0315</td></tr>
-<tr><td>&#x30c9;&#x30e9;&#x30a4;&#x30d6;&#x30e2;&#x30fc;&#x30c9;</td><td>&#x9023;&#x7d9a;&#x64ae;&#x5f71;</td></tr>
-<tr><td>&#x30aa;&#x30fc;&#x30ca;&#x30fc;&#x540d;</td><td>Phil Harvey</td></tr>
-<tr><td>&#x30b7;&#x30ea;&#x30a2;&#x30eb;&#x756a;&#x53f7;</td><td>0560012345</td></tr>
+<tr><td>Dateiname</td><td>Canon.jpg</td></tr>
+<tr><td>Kameramodell</td><td>Canon EOS DIGITAL REBEL</td></tr>
+<tr><td>Erstellungsdatum/-uhrzeit</td><td>2003:12:04 06:46:52</td></tr>
+<tr><td>Aufnahmemodus</td><td>Bulb</td></tr>
+<tr><td>Belichtungsdauer</td><td>4</td></tr>
+<tr><td>Blende</td><td>14.0</td></tr>
+<tr><td>Belichtungsmessmethode</td><td>Mittenbetont</td></tr>
+<tr><td>Belichtungskorrektur</td><td>0</td></tr>
+<tr><td>ISO-Empfindlichkeit</td><td>100</td></tr>
+<tr><td>Objektiv</td><td>18.0 - 55.0 mm</td></tr>
+<tr><td>Brennweite</td><td>34.0 mm</td></tr>
+<tr><td>Bildgr&ouml;&szlig;e</td><td>8x8</td></tr>
+<tr><td>Bildqualit&auml;t</td><td>RAW</td></tr>
+<tr><td>Blitz</td><td>Blitz wurde nicht ausgel&ouml;st</td></tr>
+<tr><td>Wei&szlig;abgleich</td><td>Automatisch</td></tr>
+<tr><td>Fokus-Modus</td><td>Manueller Fokus (3)</td></tr>
+<tr><td>Kontrast</td><td>+1</td></tr>
+<tr><td>Sch&auml;rfe</td><td>+1</td></tr>
+<tr><td>Farbs&auml;ttigung</td><td>+1</td></tr>
+<tr><td>Farbton</td><td>Normal</td></tr>
+<tr><td>Farbraum</td><td>sRGB</td></tr>
+<tr><td>Dateigr&ouml;&szlig;e</td><td>2.6 kB</td></tr>
+<tr><td>Dateinummer</td><td>118-1861</td></tr>
+<tr><td>Aufnahmeart</td><td>Serienaufnahme</td></tr>
+<tr><td>Name des Besitzers</td><td>Phil Harvey</td></tr>
+<tr><td>Seriennummer</td><td>0560018150</td></tr>
 </table>
 </td></tr></table>
 </blockquote>
@@ -710,10 +716,10 @@ These groups are:</p>
 <tr><th>Family</th><th>Group Names</th></tr>
 <tr><td><b>0 (Information&nbsp;Type)</b></td>
 <td class=sm>AFCP, AIFF, APE, APP0, APP1, APP11, APP12, APP13, APP14, APP15, APP4, APP5,
-APP6, APP8, ASF, CanonVRD, Composite, DICOM, DNG, DV, DjVu, Ducky, EXE,
-EXIF, ExifTool, FLAC, FLIR, File, Flash, FlashPix, Font, FotoStation, GIF,
-GIMP, GeoTiff, H264, HTML, ICC_Profile, ID3, IPTC, ITC, JFIF, JPEG,
-Jpeg2000, LNK, Leaf, Lytro, M2TS, MIE, MIFF, MNG, MPC, MPEG, MPF, MXF,
+APP6, APP8, ASF, Audible, CanonVRD, Composite, DICOM, DNG, DV, DjVu, Ducky,
+EXE, EXIF, ExifTool, FLAC, FLIR, File, Flash, FlashPix, Font, FotoStation,
+GIF, GIMP, GeoTiff, H264, HTML, ICC_Profile, ID3, IPTC, ITC, JFIF, JPEG,
+Jpeg2000, LNK, Leaf, Lytro, M2TS, MIE, MIFF, MNG, MOI, MPC, MPEG, MPF, MXF,
 MakerNotes, Matroska, Meta, Ogg, OpenEXR, PDF, PICT, PLIST, PNG, PSP, Palm,
 PanasonicRaw, PhotoCD, PhotoMechanic, Photoshop, PostScript, PrintIM,
 QuickTime, RAF, RIFF, RSRC, RTF, Radiance, Rawzor, Real, SVG, SigmaRaw,
@@ -864,10 +870,10 @@ that it will corrupt some files</b>.  Be sure to keep backups of your files.</li
 still <b>possible to write illegal values</b> which may cause problems when
 reading the images with other software.  So take care to validate the
 information you are writing.</li>
-<li>ExifTool is <b>not guaranteed to remove metadata completely</b> from a file when
-attempting to delete all metadata. For JPEG images, all APP segments and trailers are removed
-which effectively removes all metadata, but for other formats the results are less
-complete:
+<li>ExifTool is <b>not guaranteed to remove metadata completely</b> from a file
+when attempting to delete all metadata. For JPEG images, all APP segments and
+trailers are removed which effectively removes all metadata, but for other
+formats the results are less complete:
 <ul>
 <li>JPEG - APP segments and trailers are removed.</li>
 <li>TIFF - XMP, IPTC and the ExifIFD are removed, but some EXIF may remain in IFD0.</li>
@@ -876,8 +882,8 @@ complete:
 <li>PS - Only some PostScript and XMP may be deleted.</li>
 <li>MOV/MP4 - Only XMP is deleted.</li>
 <li>RAW formats - It is not recommended to remove all metadata from RAW images
-because this may remove some proprietary information that is necessary for the
-image to be properly rendered.</li>
+because this will likely remove some proprietary information that is necessary
+for proper rendering of the image.</li>
 </ul></li>
 </ul>
 

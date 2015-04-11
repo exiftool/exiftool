@@ -108,6 +108,7 @@ ShootingMode : Bulb
 WB_RGGBLevels : 1719 832 831 990
 ---- Composite:Image ----
 Aperture : 14.0
+DOF : inf (4.31 m - inf)
 FOV : 36.9 deg
 ImageSize : 8x8
 LightValue : 5.6
@@ -177,6 +178,6 @@ FileName : Canon.jpg
 FilePermissions : rw-r--r--
 FileSize : 2.6 kB
 ---- System:Time ----
-FileAccessDate : 2015:01:12 07:52:37-05:00
-FileInodeChangeDate : 2015:01:07 07:37:06-05:00
+FileAccessDate : 2015:04:10 10:37:46-04:00
+FileInodeChangeDate : 2015:04:07 07:27:03-04:00
 FileModifyDate : 2006:10:03 15:10:31-04:00

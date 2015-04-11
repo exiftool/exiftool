@@ -298,9 +298,9 @@ my %graphicsMode = (
         stored as UTC.  Unfortunately, digital cameras often store local time values
         instead (presumably because they don't know the time zone).  For this
         reason, by default ExifTool does not assume a time zone for these values.
-        However, if the QuickTimeUTC option is set via the API or the ExifTool
-        configuration file, then ExifTool will assume these values are properly
-        stored as UTC, and will convert them to local time when extracting.
+        However, if the QuickTimeUTC API option is set, then ExifTool will assume
+        these values are properly stored as UTC, and will convert them to local time
+        when extracting.
 
         See
         L<http://developer.apple.com/mac/library/documentation/QuickTime/QTFF/QTFFChap1/qtff1.html>

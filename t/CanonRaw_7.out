@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.81
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.92
 [File, System, Image] FileName - File Name: CanonRaw_7_failed.jpg
 [File, System, Image] Directory - Directory: t
-[File, System, Image] FileSize - File Size: 7.0 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2015:01:12 07:52:32-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:01:12 07:52:32-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:01:12 07:52:32-05:00
+[File, System, Image] FileSize - File Size: 7.2 kB
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2015:04:09 10:56:31-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:09 10:56:31-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:04:09 10:56:31-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: JPEG
 [File, File, Image] MIMEType - MIME Type: image/jpeg
@@ -209,7 +209,7 @@
 [MakerNotes, Canon, Camera] 52 - Camera Color Calibration 14:  770  382  248 (2871K)
 [MakerNotes, Canon, Camera] 56 - Camera Color Calibration 15:  949  307  397 (2413K)
 [MakerNotes, Canon, Camera] 2 - Color Tone: Normal
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 9.81
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 9.92
 [XMP, XMP-aux, Camera] Lens - Lens: 18.0 - 55.0 mm
 [XMP, XMP-exif, Image] ComponentsConfiguration - Components Configuration: -, -, -, -
 [XMP, XMP-exif, Camera] FlashFired - Flash Fired: False
@@ -218,6 +218,7 @@
 [XMP, XMP-exif, Camera] FlashRedEyeMode - Flash Red Eye Mode: False
 [XMP, XMP-exif, Camera] FlashReturn - Flash Return: No return detection
 [XMP, XMP-exifEX, Image] InteroperabilityIndex - Interoperability Index: R98 - DCF basic file (sRGB)
+[XMP, XMP-pmi, Image] sequenceNumber - Sequence Number: 0
 [XMP, XMP-tiff, Image] BitsPerSample - Bits Per Sample: 8, 8, 8
 [XMP, XMP-tiff, Image] Compression - Compression: JPEG (old-style)
 [XMP, XMP-tiff, Image] ImageLength - Image Height: 1024

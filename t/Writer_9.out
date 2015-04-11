@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.81
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.92
 [File, System, Image] FileName - File Name: Writer_9_failed.jpg
 [File, System, Image] Directory - Directory: t
-[File, System, Image] FileSize - File Size: 9.7 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2015:01:12 07:53:06-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:01:12 07:53:06-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:01:12 07:53:06-05:00
+[File, System, Image] FileSize - File Size: 9.8 kB
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2015:04:10 10:38:05-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:10 10:38:05-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:04:10 10:38:05-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: JPEG
 [File, File, Image] MIMEType - MIME Type: image/jpeg
@@ -162,7 +162,7 @@
 [MakerNotes, Canon, Camera] 9 - AF Area Y Positions: 0 0 -506 0 506 0 0
 [MakerNotes, Canon, Camera] 10 - AF Points In Focus: (none)
 [MakerNotes, Canon, Camera] 19 - Thumbnail Image Valid Area: 0 159 7 112
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 9.81
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 9.92
 [XMP, XMP-aux, Camera] Lens - Lens: 18.0 - 55.0 mm
 [XMP, XMP-exif, Image] ComponentsConfiguration - Components Configuration: Y, Cb, Cr, -
 [XMP, XMP-exif, Image] CompressedBitsPerPixel - Compressed Bits Per Pixel: 9
@@ -172,6 +172,7 @@
 [XMP, XMP-exif, Camera] FlashRedEyeMode - Flash Red Eye Mode: False
 [XMP, XMP-exif, Camera] FlashReturn - Flash Return: No return detection
 [XMP, XMP-exifEX, Image] InteroperabilityIndex - Interoperability Index: THM - DCF thumbnail file
+[XMP, XMP-pmi, Image] sequenceNumber - Sequence Number: 0
 [XMP, XMP-tiff, Image] BitsPerSample - Bits Per Sample: 8
 [XMP, XMP-tiff, Image] ImageLength - Image Height: 8
 [XMP, XMP-tiff, Image] ImageWidth - Image Width: 8
@@ -228,6 +229,7 @@
 [Composite, Composite, Camera] WB_RGGBLevels - WB RGGB Levels: 1719 832 831 990
 [Composite, Composite, Camera] BlueBalance - Blue Balance: 1.190619
 [Composite, Composite, Camera] CircleOfConfusion - Circle Of Confusion: 0.019 mm
+[Composite, Composite, Image] DOF - Depth Of Field: inf (4.21 m - inf)
 [Composite, Composite, Image] FOV - Field Of View: 37.7 deg
 [Composite, Composite, Camera] FocalLength35efl - Focal Length: 34.0 mm (35 mm equivalent: 52.7 mm)
 [Composite, Composite, Camera] HyperfocalDistance - Hyperfocal Distance: 4.26 m

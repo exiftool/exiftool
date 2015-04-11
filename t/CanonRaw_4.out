@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.81
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.92
 [File, System, Image] FileName - File Name: CanonRaw_4_failed.crw
 [File, System, Image] Directory - Directory: t
 [File, System, Image] FileSize - File Size: 12 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2015:01:12 07:52:32-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:01:12 07:52:32-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:01:12 07:52:32-05:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2015:04:10 10:37:43-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:10 10:37:43-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:04:10 10:37:43-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: CRW
 [File, File, Image] MIMEType - MIME Type: image/x-canon-crw
@@ -141,7 +141,7 @@
 [MakerNotes, CanonRaw, Image] 3 - Raw Jpg Width: 2048
 [MakerNotes, CanonRaw, Image] 4 - Raw Jpg Height: 1360
 [MakerNotes, CanonRaw, Camera] 6203 - Serial Number Format: Format 1
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 9.81
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 9.92
 [XMP, XMP-aux, Camera] Lens - Lens: 18.0 - 55.0 mm
 [XMP, XMP-dc, Image] description - Description: CRW with embedded XMP
 [XMP, XMP-exif, Image] ApertureValue - Aperture Value: 14.0
@@ -182,6 +182,7 @@
 [XMP, XMP-exifEX, Image] BodySerialNumber - Serial Number: 1234
 [XMP, XMP-exifEX, Image] CameraOwnerName - Owner Name: Phil Harvey
 [XMP, XMP-exifEX, Image] InteroperabilityIndex - Interoperability Index: THM - DCF thumbnail file
+[XMP, XMP-pmi, Image] sequenceNumber - Sequence Number: 0
 [XMP, XMP-tiff, Image] BitsPerSample - Bits Per Sample: 8
 [XMP, XMP-tiff, Image] ImageLength - Image Height: 8
 [XMP, XMP-tiff, Image] ImageWidth - Image Width: 8
@@ -211,6 +212,7 @@
 [Composite, Composite, Camera] RedBalance - Red Balance: 2.067348
 [Composite, Composite, Camera] ScaleFactor35efl - Scale Factor To 35 mm Equivalent: 1.0
 [Composite, Composite, Camera] CircleOfConfusion - Circle Of Confusion: 0.029 mm
+[Composite, Composite, Image] DOF - Depth Of Field: inf (2.73 m - inf)
 [Composite, Composite, Image] FOV - Field Of View: 54.9 deg
 [Composite, Composite, Camera] FocalLength35efl - Focal Length: 34.0 mm (35 mm equivalent: 34.7 mm)
 [Composite, Composite, Camera] HyperfocalDistance - Hyperfocal Distance: 2.75 m

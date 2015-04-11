@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.81
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.92
 [File, System, Image] FileName - File Name: Writer_6_failed.jpg
 [File, System, Image] Directory - Directory: t
 [File, System, Image] FileSize - File Size: 5.7 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2015:01:12 07:53:05-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:01:12 07:53:05-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:01:12 07:53:05-05:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2015:04:10 10:38:05-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:10 10:38:05-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:04:10 10:38:05-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: JPEG
 [File, File, Image] MIMEType - MIME Type: image/jpeg
@@ -160,7 +160,7 @@
 [MakerNotes, Canon, Camera] 0 - Canon 0x0000: 0 0 0 0 0 0 3072000 892 2048000 595 65540 262146
 [IPTC, IPTC, Other] 15 - Category: IPT
 [IPTC, IPTC, Other] 0 - Application Record Version: 4
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 9.81
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 9.92
 [XMP, XMP-dc, Image] description - Description: New description
 [XMP, XMP-exif, Camera] Contrast - Contrast: High
 [Composite, Composite, Image] Aperture - Aperture: 14.0
@@ -173,6 +173,7 @@
 [Composite, Composite, Camera] WB_RGGBLevels - WB RGGB Levels: 1719 832 831 990
 [Composite, Composite, Camera] BlueBalance - Blue Balance: 1.190619
 [Composite, Composite, Camera] CircleOfConfusion - Circle Of Confusion: 0.019 mm
+[Composite, Composite, Image] DOF - Depth Of Field: inf (4.31 m - inf)
 [Composite, Composite, Image] FOV - Field Of View: 36.9 deg
 [Composite, Composite, Camera] FocalLength35efl - Focal Length: 34.0 mm (35 mm equivalent: 54.0 mm)
 [Composite, Composite, Camera] HyperfocalDistance - Hyperfocal Distance: 4.37 m

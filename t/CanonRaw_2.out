@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.81
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.92
 [File, System, Image] FileName - File Name: CanonRaw.crw
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 6.7 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2012:01:22 13:31:59-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:01:09 07:19:40-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:01:07 07:37:06-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:10 07:55:04-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:04:07 07:27:03-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: CRW
 [File, File, Image] MIMEType - MIME Type: image/x-canon-crw
@@ -159,6 +159,7 @@
 [Composite, Composite, Camera] WB_RGGBLevels - WB RGGB Levels: 1740 832 831 931
 [Composite, Composite, Camera] BlueBalance - Blue Balance: 1.119663
 [Composite, Composite, Camera] CircleOfConfusion - Circle Of Confusion: 0.019 mm
+[Composite, Composite, Image] DOF - Depth Of Field: 0.41 m (1.13 - 1.54 m)
 [Composite, Composite, Image] FOV - Field Of View: 51.6 deg
 [Composite, Composite, Camera] FocalLength35efl - Focal Length: 24.0 mm (35 mm equivalent: 37.2 mm)
 [Composite, Composite, Camera] HyperfocalDistance - Hyperfocal Distance: 8.34 m

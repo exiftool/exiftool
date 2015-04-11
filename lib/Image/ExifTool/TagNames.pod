@@ -1145,6 +1145,7 @@ L<http://www.adobe.com/devnet/xmp/> for the official XMP specification.
   aux                                           XMP aux
   cc                                            XMP cc
   cell                                          XMP cell
+  creatorAtom                                   XMP creatorAtom
   crs                                           XMP crs
   dc                                            XMP dc
   dex                                           XMP dex
@@ -1175,8 +1176,10 @@ L<http://www.adobe.com/devnet/xmp/> for the official XMP specification.
   photoshop                                     XMP photoshop
   PixelLive                                     XMP PixelLive
   plus                                          XMP plus
+  pmi                                           XMP pmi
   prism                                         XMP prism
   prl                                           XMP prl
+  prm                                           XMP prm
   pur                                           XMP pur
   rdf                                           XMP rdf
   swf                                           XMP swf
@@ -1319,6 +1322,53 @@ Location tags written by some Sony Ericsson phones.
   MobileCountryCode                             string
   MobileNetworkCode                             string
   CellR                                         string
+
+=head3 XMP creatorAtom Tags
+
+Adobe creatorAtom tags, written by After Effects.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  AeProjectLink                                 AEProjectLink Struct
+  AeProjectLinkCompositionID                    string_
+  AeProjectLinkFullPath                         string_
+  AeProjectLinkRenderOutputModuleIndex          string_
+  AeProjectLinkRenderQueueItemID                string_
+  AeProjectLinkRenderTimeStamp                  integer_
+  MacAtom                                       MacAtom Struct
+  MacAtomApplicationCode                        string_
+  MacAtomInvocationAppleEvent                   string_
+  MacAtomPosixProjectPath                       string_
+  WindowsAtom                                   WindowsAtom Struct
+  WindowsAtomExtension                          string_
+  WindowsAtomInvocationFlags                    string_
+  WindowsAtomUncProjectPath                     string_
+
+=head3 XMP AEProjectLink Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  CompositionID                                 string
+  FullPath                                      string
+  RenderOutputModuleIndex                       string
+  RenderQueueItemID                             string
+  RenderTimeStamp                               integer
+
+=head3 XMP MacAtom Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  ApplicationCode                               string
+  InvocationAppleEvent                          string
+  PosixProjectPath                              string
+
+=head3 XMP WindowsAtom Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  Extension                                     string
+  InvocationFlags                               string
+  UncProjectPath                                string
 
 =head3 XMP crs Tags
 
@@ -2455,7 +2505,7 @@ namespace URI.
 
 =head3 XMP plus Tags
 
-PLUS License Data Format 1.2.0 namespace tags.  Note that all
+PLUS License Data Format 1.2.1 namespace tags.  Note that all
 controlled-vocabulary tags in this table (ie. tags with a fixed set of
 values) have raw values which begin with "http://ns.useplus.org/ldf/vocab/",
 but to reduce clutter this prefix has been removed from the values shown
@@ -2603,74 +2653,241 @@ below.  (see L<http://ns.useplus.org/>)
   LicensorTelephoneType2                        string
   LicensorURL                                   string
 
+=head3 XMP pmi Tags
+
+PRISM Metadata for Images 3.0 namespace tags.  (see
+L<http://www.prismstandard.org/>)
+
+  Tag Name                                      Writable
+  --------                                      --------
+  Color                                         string/
+  ContactInfo                                   string/
+  DisplayName                                   string/
+  DistributorProductID                          string/
+  EventAlias                                    string/
+  EventEnd                                      string/
+  EventStart                                    string/
+  EventSubtype                                  string/
+  EventType                                     string/
+  Field                                         string/
+  Framing                                       string/
+  Location                                      string/
+  Make                                          string/
+  Manufacturer                                  string/
+  Model                                         string/
+  ModelYear                                     string/
+  ObjectDescription                             string/
+  ObjectSubtype                                 string/
+  ObjectType                                    string/
+  Orientation                                   string/
+  PositionDescriptor                            string/
+  ProductID                                     string/
+  ProductIDType                                 string/
+  Season                                        string/
+  SequenceName                                  string/
+  SequenceNumber                                string/
+  SequenceTotalNumber                           string/
+  Setting                                       string/
+  ShootID                                       string/
+  SlideshowName                                 string/
+  SlideshowNumber                               integer/
+  SlideshowTotalNumber                          integer/
+  Viewpoint                                     string/
+  VisualTechnique                               string/
+
 =head3 XMP prism Tags
 
-Publishing Requirements for Industry Standard Metadata 2.1 namespace
+Publishing Requirements for Industry Standard Metadata 3.0 namespace
 tags.  (see L<http://www.prismstandard.org/>)
 
   Tag Name                                      Writable
   --------                                      --------
+  AcedemicField                                 string/
+  AggregateIssueNumber                          integer/
   AggregationType                               string/+
-  AlternateTitle                                string/+
+  AlternateTitle                                prismAlternateTitle Struct+
+  AlternateTitleA-lang                          string_+
+  AlternateTitleA-platform                      string_+
+  AlternateTitleText                            string_+
+  BlogTitle                                     string/
+  BlogURL                                       string/
+  BookEdition                                   string/
   ByteCount                                     integer/
-  Channel                                       string/+
+  Channel                                       prismChannel Struct+
+  ChannelA-lang                                 string_+
+  ChannelChannel                                string_+
+  ChannelSubchannel1                            string_+
+  ChannelSubchannel2                            string_+
+  ChannelSubchannel3                            string_+
+  ChannelSubchannel4                            string_+
   ComplianceProfile                             string/
-  Copyright                                     string/
+  ContentType                                   string/
+  CopyrightYear                                 string/
   CorporateEntity                               string/+
   CoverDate                                     date/
   CoverDisplayDate                              string/
   CreationDate                                  date/
   DateRecieved                                  date/
+  Device                                        string/
   Distributor                                   string/
   DOI                                           string/
   Edition                                       string/
   EIssn                                         string/
-  EmbargoDate                                   date/+
   EndingPage                                    string/
   Event                                         string/+
-  ExpirationDate                                date/+
   Genre                                         string/+
   HasAlternative                                string/+
-  HasCorrection                                 string/
-  HasPreviousVersion                            string/
+  HasCorrection                                 prismHasCorrection Struct
+  HasCorrectionA-lang                           string_
+  HasCorrectionA-platform                       string_
+  HasCorrectionText                             string_
   HasTranslation                                string/+
   Industry                                      string/+
-  ISBN                                          string/
+  IsAlternativeOf                               string/+
+  ISBN                                          string/+
   IsCorrectionOf                                string/+
   ISSN                                          string/
   IssueIdentifier                               string/
   IssueName                                     string/
+  IssueTeaser                                   string/
+  IssueType                                     string/
   IsTranslationOf                               string/
   Keyword                                       string/+
-  KillDate                                      date/
+  KillDate                                      prismKillDate Struct
+  KillDateA-platform                            string_
+  KillDateDate                                  date_
+  Link                                          string/+
   Location                                      string/+
   ModificationDate                              date/
+  NationalCatalogNumber                         string/
   Number                                        string/
   Object                                        string/+
+  OffSaleDate                                   prismOffSaleDate Struct+
+  OffSaleDateA-platform                         string_+
+  OffSaleDateDate                               date_+
+  OnSaleDate                                    prismOnSaleDate Struct+
+  OnSaleDateA-platform                          string_+
+  OnSaleDateDate                                date_+
+  OnSaleDay                                     prismOnSaleDay Struct+
+  OnSaleDayA-platform                           string_+
+  OnSaleDayDay                                  string_+
   Organization                                  string/+
   OriginPlatform                                string/+
+  PageCount                                     integer/
+  PageProgressionDirection                      string/
   PageRange                                     string/+
   Person                                        string/
-  PublicationDate                               date/+
+  Platform                                      string/
+  ProductCode                                   string/
+  Profession                                    string/
+  PublicationDate                               prismPublicationDate Struct+
+  PublicationDateA-platform                     string_+
+  PublicationDateDate                           date_+
+  PublicationDisplayDate                        prismPublicationDate Struct+
+  PublicationDisplayDateA-platform              string_+
+  PublicationDisplayDateDate                    date_+
   PublicationName                               string/
-  RightsAgent                                   string/
+  PublishingFrequency                           string/
+  Rating                                        string/
+  SamplePageRange                               string/
   Section                                       string/
+  SellingAgency                                 string/
+  SeriesNumber                                  integer/
+  SeriesTitle                                   string/
+  Sport                                         string/
   StartingPage                                  string/
   Subsection1                                   string/
   Subsection2                                   string/
   Subsection3                                   string/
   Subsection4                                   string/
+  Subtitle                                      string/
+  SupplementDisplayID                           string/
+  SupplementStartingPage                        string/
+  SupplementTitle                               string/
   Teaser                                        string/+
   Ticker                                        string/+
   TimePeriod                                    string/
-  URL                                           string/+
+  URL                                           prismUrl Struct+
+  URLA-platform                                 string_+
+  URLUrl                                        string_+
+  UspsNumber                                    string/
   VersionIdentifier                             string/
   Volume                                        string/
   WordCount                                     integer/
 
+=head3 XMP prismAlternateTitle Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  A-lang                                        string
+  A-platform                                    string
+  Text                                          string
+
+=head3 XMP prismChannel Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  A-lang                                        string
+  Channel                                       string
+  Subchannel1                                   string
+  Subchannel2                                   string
+  Subchannel3                                   string
+  Subchannel4                                   string
+
+=head3 XMP prismHasCorrection Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  A-lang                                        string
+  A-platform                                    string
+  Text                                          string
+
+=head3 XMP prismKillDate Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  A-platform                                    string
+  Date                                          date
+
+=head3 XMP prismOffSaleDate Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  A-platform                                    string
+  Date                                          date
+
+=head3 XMP prismOnSaleDate Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  A-platform                                    string
+  Date                                          date
+
+=head3 XMP prismOnSaleDay Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  A-platform                                    string
+  Day                                           string
+
+=head3 XMP prismPublicationDate Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  A-platform                                    string
+  Date                                          date
+
+=head3 XMP prismUrl Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  A-platform                                    string
+  Url                                           string
+
 =head3 XMP prl Tags
 
-PRISM Rights Language 2.1 namespace tags.  (see
+PRISM Rights Language 2.1 namespace tags.  These tags have been deprecated
+since the release of the PRISM Usage Rights 3.0. (see
 L<http://www.prismstandard.org/>)
 
   Tag Name                                      Writable
@@ -2679,9 +2896,36 @@ L<http://www.prismstandard.org/>)
   Industry                                      string/+
   Usage                                         string/+
 
+=head3 XMP prm Tags
+
+PRISM Recipe Metadata 3.0 namespace tags.  (see
+L<http://www.prismstandard.org/>)
+
+  Tag Name                                      Writable
+  --------                                      --------
+  CookingEquipment                              string/
+  CookingMethod                                 string/
+  Course                                        string/
+  Cuisine                                       string/
+  DietaryNeeds                                  string/
+  DishType                                      string/
+  Duration                                      string/
+  IngredientExclusion                           string/
+  MainIngredient                                string/
+  Meal                                          string/
+  RecipeEndingPage                              string/
+  RecipePageRange                               string/
+  RecipeSource                                  string/
+  RecipeStartingPage                            string/
+  RecipeTitle                                   string/
+  ServingSize                                   string/
+  SkillLevel                                    string/
+  SpecialOccasion                               string/
+  Yield                                         string/
+
 =head3 XMP pur Tags
 
-Prism Usage Rights 2.1 namespace tags.  (see
+PRISM Usage Rights 3.0 namespace tags.  (see
 L<http://www.prismstandard.org/>)
 
   Tag Name                                      Writable
@@ -2700,7 +2944,6 @@ L<http://www.prismstandard.org/>)
   ReuseProhibited                               boolean/
   RightsAgent                                   string/
   RightsOwner                                   string/
-  UsageFee                                      string/+
 
 =head3 XMP rdf Tags
 
@@ -2948,6 +3191,8 @@ XMP Dynamic Media namespace tags.
   StartTimecodeTimeFormat                       string_
   StartTimecodeTimeValue                        string_
   StartTimecodeValue                            integer_
+  StartTimeSampleSize                           integer
+  StartTimeScale                                string
   StretchMode                                   string
   TakeNumber                                    integer
   TapeName                                      string
@@ -19451,6 +19696,64 @@ APE MAC audio header for version 3.97 or earlier.
      10    TotalFrames                          N
      12    FinalFrameBlocks                     N
 
+=head2 Audible Tags
+
+ExifTool will extract any information found in the metadata dictionary of
+Audible .AA files, even if not listed in the table below.
+
+  Tag ID               Tag Name                 Writable
+  ------               --------                 --------
+  '_chapter_count'     ChapterCount             N
+  '_cover_art'         CoverArt                 N
+  'author'             Author                   N
+  'copyright'          Copyright                N
+  'pub_date_start'     PublishDateStart         N
+  'pubdate'            PublishDate              N
+
+=head3 Audible tags Tags
+
+Information found in "tags" atom of Audible M4B audio books.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  'cvrx'   Audible_cvrx                         Audible cvrx
+  'meta'   Audible_meta                         Audible meta
+  'tseg'   Audible_tseg                         Audible tseg
+
+=head3 Audible cvrx Tags
+
+Audible cover art information in M4B audio books.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  CoverArt                                      N
+  CoverArtType                                  N
+
+=head3 Audible meta Tags
+
+Information found in Audible M4B "meta" atom.
+
+  Tag ID               Tag Name                 Writable
+  ------               --------                 --------
+  'ALBUMARTIST'        AlbumArtist              N
+  'Album'              Album                    N
+  'Artist'             Artist                   N
+  'Comment'            Comment                  N
+  'Genre'              Genre                    N
+  'SUBTITLE'           Subtitle                 N
+  'TOOL'               CreatorTool              N
+  'Title'              Title                    N
+  'Year'               Year                     N
+  'itunesmediatype'    iTunesMediaType          N
+  'track'              ChapterName              N
+
+=head3 Audible tseg Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  'meta'   Audible_meta2                        Audible meta
+  'tshd'   ChapterNumber                        N
+
 =head2 MPC Tags
 
 Tags used in Musepack (MPC) audio files.  ExifTool also extracts ID3 and APE
@@ -19675,9 +19978,9 @@ According to the specification, many QuickTime date/time tags should be
 stored as UTC.  Unfortunately, digital cameras often store local time values
 instead (presumably because they don't know the time zone).  For this
 reason, by default ExifTool does not assume a time zone for these values.
-However, if the QuickTimeUTC option is set via the API or the ExifTool
-configuration file, then ExifTool will assume these values are properly
-stored as UTC, and will convert them to local time when extracting.
+However, if the QuickTimeUTC API option is set, then ExifTool will assume
+these values are properly stored as UTC, and will convert them to local time
+when extracting.
 
 See
 L<http://developer.apple.com/mac/library/documentation/QuickTime/QTFF/QTFFChap1/qtff1.html>
@@ -20618,52 +20921,6 @@ either "XML" or "PLIST" depending on whether the format is XML or binary.
   'producers//name'            Producers        N+
   'screenwriters//name'        Screenwriters    N+
   'studio//name'               Studio           N+
-
-=head2 Audible Tags
-
-=head3 Audible tags Tags
-
-Information found in "tags" atom of Audible M4B audio books.
-
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  'cvrx'   Audible_cvrx                         Audible cvrx
-  'meta'   Audible_meta                         Audible meta
-  'tseg'   Audible_tseg                         Audible tseg
-
-=head3 Audible cvrx Tags
-
-Audible cover art information in M4B audio books.
-
-  Tag Name                                      Writable
-  --------                                      --------
-  CoverArt                                      N
-  CoverArtType                                  N
-
-=head3 Audible meta Tags
-
-Information found in Audible M4B "meta" atom.
-
-  Tag ID               Tag Name                 Writable
-  ------               --------                 --------
-  'ALBUMARTIST'        AlbumArtist              N
-  'Album'              Album                    N
-  'Artist'             Artist                   N
-  'Comment'            Comment                  N
-  'Genre'              Genre                    N
-  'SUBTITLE'           Subtitle                 N
-  'TOOL'               CreatorTool              N
-  'Title'              Title                    N
-  'Year'               Year                     N
-  'itunesmediatype'    iTunesMediaType          N
-  'track'              ChapterName              N
-
-=head3 Audible tseg Tags
-
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  'meta'   Audible_meta2                        Audible meta
-  'tshd'   ChapterNumber                        N
 
 =head2 Matroska Tags
 
@@ -27351,7 +27608,8 @@ default language of "en".
 This table lists only those VCard tags which are renamed by ExifTool, but
 any existing VCard tag will be extracted.  Tag names may have "Pref" added
 to indicate the preferred instance of a VCard property.  Other "TYPE"
-parameters are also added to the tag name.
+parameters are also added to the tag name. See
+L<https://tools.ietf.org/html/rfc6350> for the VCard 4.0 specification.
 
   Tag ID       Tag Name                         Writable
   ------       --------                         --------
@@ -27693,6 +27951,9 @@ values, may created via the ExifTool configuration file.
                        FocusDistance
                        SubjectDistance
                        ObjectDistance
+                       AverageFocusDistance
+                       FocusDistanceLower
+                       FocusDistanceUpper
   DateCreated          Kodak:YearCreated        N
                        Kodak:MonthDayCreated
   DateTimeCreated      IPTC:DateCreated         N

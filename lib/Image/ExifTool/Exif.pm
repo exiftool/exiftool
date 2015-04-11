@@ -52,7 +52,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '3.68';
+$VERSION = '3.69';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -2825,6 +2825,9 @@ my %sampleFormat = (
             3 => 'FocusDistance',   # focus distance in metres (0 is infinity)
             4 => 'SubjectDistance',
             5 => 'ObjectDistance',
+            6 => 'AverageFocusDistance',
+            7 => 'FocusDistanceLower',
+            8 => 'FocusDistanceUpper',
         },
         ValueConv => q{
             ToFloat(@val);
@@ -2832,8 +2835,11 @@ my %sampleFormat = (
             if (defined $d) {
                 $d or $d = 1e10;    # (use large number for infinity)
             } else {
-                $d = $val[4] || $val[5];
-                return undef unless defined $d;
+                $d = $val[4] || $val[5] || $val[6];
+                unless (defined $d) {
+                    return undef unless defined $val[7] and defined $val[8];
+                    $d = ($val[7] + $val[8]) / 2;
+                }
             }
             return 0 unless $f and $val[2];
             my $t = $val[1] * $val[2] * ($d * 1000 - $f) / ($f * $f);
@@ -2847,7 +2853,7 @@ my %sampleFormat = (
             $v[1] or return sprintf("inf (%.2f m - inf)", $v[0]);
             my $dof = $v[1] - $v[0];
             my $fmt = ($dof>0 and $dof<0.02) ? "%.3f" : "%.2f";
-            return sprintf("$fmt m ($fmt - $fmt)",$dof,$v[0],$v[1]);
+            return sprintf("$fmt m ($fmt - $fmt m)",$dof,$v[0],$v[1]);
         },
     },
     FOV => {

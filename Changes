@@ -7,6 +7,20 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 9.90. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Apr. 11, 2015 - Version 9.92
+
+  - Added support for PRISM pmi and prm tags, and updated to PRISM 3.0
+  - Added read support for Audible .AA files
+  - Added support for Adobe XMP-creatorAtom tags
+  - Added a couple of new XMP-xmpDM tags
+  - Added a new CanonModelID and a new Ricoh WhiteBalance (thanks LibRaw)
+  - Added a new Olympus CameraType
+  - Added a new Nikon LensID (thanks Jurgen Sahlberg)
+  - Updated to XMP PLUS 1.2.1 specification
+  - Enhanced DOF calculation to use AverageFocusDistance or
+    FocusDistanceUpper/Lower if available
+  - Patched to tolerate different version numbers in XMP namespace URI's
+
 Apr. 7, 2015 - Version 9.91
 
   - Added read support for VCard files

@@ -371,6 +371,8 @@ t/APE_2.out
 t/APE_3.out
 t/ASF.t
 t/ASF_2.out
+t/Audible.t
+t/Audible_2.out
 t/BMP.t
 t/BMP_2.out
 t/BigTIFF.t
@@ -777,6 +779,7 @@ t/images/AIFF.aif
 t/images/APE.ape
 t/images/APE.mpc
 t/images/ASF.wmv
+t/images/Audible.aa
 t/images/BMP.bmp
 t/images/BigTIFF.btf
 t/images/Canon.jpg

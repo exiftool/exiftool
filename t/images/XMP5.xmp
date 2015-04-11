@@ -147,7 +147,6 @@
   <plus:Licensee>
    <rdf:Seq>
     <rdf:li rdf:parseType='Resource'>
-     <rdf:type rdf:resource='plus:LicenseeDetail'/>
      <plus:LicenseeName>Phil</plus:LicenseeName>
     </rdf:li>
    </rdf:Seq>

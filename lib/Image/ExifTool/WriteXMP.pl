@@ -235,13 +235,25 @@ sub SetPropertyPath($$;$$$$)
     my ($tagTablePtr, $tagID, $parentID, $structPtr, $propList, $isType) = @_;
     my $table = $structPtr || $tagTablePtr;
     my $tagInfo = $$table{$tagID};
+    my $flatInfo;
 
-    return if ref($tagInfo) ne 'HASH' or $$tagInfo{PropertyPath};
+    return if ref($tagInfo) ne 'HASH'; # (shouldn't happen)
 
-    # don't override existing main table entry if already set by a Struct
     if ($structPtr) {
+        my $flatID = $parentID . ucfirst($tagID);
+        $flatInfo = $$tagTablePtr{$flatID};
+        if ($flatInfo) {
+            return if $$flatInfo{PropertyPath};
+        } else {
+            # flattened tag doesn't exist, so create it now
+            # (could happen if we were just writing a structure)
+            $flatInfo = { Name => ucfirst($flatID), Flat => 1 };
+            AddTagToTable($tagTablePtr, $flatID, $flatInfo);
+        }
         $isType = 1 if $$structPtr{TYPE};
     } else {
+        # don't override existing main table entry if already set by a Struct
+        return if $$tagInfo{PropertyPath};
         # use property path from original tagInfo if this is an alternate-language tag
         my $srcInfo = $$tagInfo{SrcTagInfo};
         $$tagInfo{PropertyPath} = GetPropertyPath($srcInfo) if $srcInfo;
@@ -294,14 +306,7 @@ sub SetPropertyPath($$;$$$$)
     # if this was a structure field and not a normal tag,
     # we set PropertyPath in the corresponding flattened tag
     if ($structPtr) {
-        my $flatID = $parentID . ucfirst($tagID);
-        $tagInfo = $$tagTablePtr{$flatID};
-        # create flattened tag now if necessary
-        # (could happen if we were just writing a structure)
-        unless ($tagInfo) {
-            $tagInfo = { Name => ucfirst($flatID), Flat => 1 };
-            AddTagToTable($tagTablePtr, $flatID, $tagInfo);
-        }
+        $tagInfo = $flatInfo;
         # set StructType flag if any containing structure has a TYPE
         $$tagInfo{StructType} = 1 if $isType;
     }

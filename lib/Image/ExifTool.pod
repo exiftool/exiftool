@@ -472,9 +472,9 @@ for more information about the handling of special characters.
 
 =item CharsetEXIF
 
-Internal encoding to use for stored EXIF "ASCII" string values.  Unlike
-other Charset options, CharsetEXIF may also be set to undef to pass through
-all string values without recoding.  Default is undef.
+Internal encoding to use for stored EXIF "ASCII" string values.  May also be
+set to undef to pass through EXIF "ASCII" values without recoding.  Set to
+"UTF8" to conform with the MWG recommendation.  Default is undef.
 
 =item CharsetFileName
 

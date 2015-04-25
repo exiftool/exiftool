@@ -1498,8 +1498,14 @@ my %sSubVersion = (
     version    => 'SVGVersion',
     id         => 'ID',
     metadataId => 'MetadataID',
-    width      => 'ImageWidth',
-    height     => 'ImageHeight',
+    width      => {
+        Name => 'ImageWidth',
+        ValueConv => '$val =~ s/px$//; $val',
+    },
+    height     => {
+        Name => 'ImageHeight',
+        ValueConv => '$val =~ s/px$//; $val',
+    },
 );
 
 # table to add tags in other namespaces

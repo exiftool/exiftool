@@ -18,7 +18,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::ID3;
 
-$VERSION = '1.06';
+$VERSION = '1.07';
 
 # information for time/date-based tags (time zero is Jan 1, 1904)
 my %timeInfo = (
@@ -181,6 +181,7 @@ sub ProcessAIFF($$)
 
     # verify this is a valid AIFF file
     return 0 unless $raf->Read($buff, 12) == 12;
+    my $fast3 = $$et{OPTIONS}{FastScan} && $$et{OPTIONS}{FastScan} == 3;
     my $pos = 12;
     # check for DjVu image
     if ($buff =~ /^AT&TFORM/) {
@@ -190,14 +191,16 @@ sub ProcessAIFF($$)
         return 0 unless $raf->Read($buf2, 4) == 4 and $buf2 =~ /^(DJVU|DJVM)/;
         $pos += 4;
         $buff = substr($buff, 4) . $buf2;
-        $tagTablePtr = GetTagTable('Image::ExifTool::DjVu::Main');
         $et->SetFileType('DJVU');
+        return 1 if $fast3;
+        $tagTablePtr = GetTagTable('Image::ExifTool::DjVu::Main');
         # modifiy FileType to indicate a multi-page document
         $$et{VALUE}{FileType} .= " (multi-page)" if $buf2 eq 'DJVM';
         $type = 'DjVu';
     } else {
         return 0 unless $buff =~ /^FORM....(AIF(F|C))/s;
         $et->SetFileType($1);
+        return 1 if $fast3;
         $tagTablePtr = GetTagTable('Image::ExifTool::AIFF::Main');
         $type = 'AIFF';
     }

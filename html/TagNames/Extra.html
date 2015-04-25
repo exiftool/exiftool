@@ -166,6 +166,11 @@ requested)</span></span></td></tr>
 <td><span class=s><span class=n>(a short description of the file type.  As a general rule, this is the
 extension commonly used for the file, but there are exceptions to this rule)</span></span></td></tr>
 <tr>
+<td>FileTypeExtension</td>
+<td class=c>N</td>
+<td class=c>File</td>
+<td><span class=s><span class=n>(usual lowercase extension for this file type)</span></span></td></tr>
+<tr class=b>
 <td>Geosync</td>
 <td class=c>Y</td>
 <td class=c>-</td>
@@ -176,7 +181,7 @@ camera clock is 12 seconds faster than GPS time.  Input format is
 Additional features allow calculation of time differences and time drifts,
 and extraction of synchronization times from image files. See the
 <a href="../geotag.html">geotagging documentation</a> for details)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>Geotag</td>
 <td class=c>Y</td>
 <td class=c>-</td>
@@ -184,7 +189,7 @@ and extraction of synchronization times from image files. See the
 file name.  Currently supported track log formats are GPX, NMEA RMC/GGA/GLL,
 KML, IGC, Garmin XML and TCX, Magellan PMGNTRK, Honeywell PTNTHPR, and
 Winplus Beacon text files.  See <a href="../geotag.html">geotag.html</a> for details)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>Geotime</td>
 <td class=c>Y</td>
 <td class=c>-</td>
@@ -195,7 +200,7 @@ files.  The local system timezone is assumed if the date/time value does not
 contain a timezone.  May be deleted to delete associated GPS tags.  A group
 name of &#39;EXIF&#39; or &#39;XMP&#39; may be specified to write or delete only EXIF or XMP
 GPS tags.  The Geotag tag must be assigned before this tag)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>HardLink</td>
 <td class=c title=' ! = Unsafe'>Y!</td>
 <td class=c>-</td>
@@ -205,32 +210,32 @@ HardLink, then the link is made to the updated file.  Note that subsequent
 editing of either the linked file or the original by the exiftool
 application will break the link unless the -overwrite_original_in_place
 option is used)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>ICC_Profile</td>
 <td class=c title=' ! = Unsafe'>Y!</td>
 <td class=c>ICC_Profile</td>
 <td><span class=s><span class=n>(the full ICC_Profile data block)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>ID3Size</td>
 <td class=c>N</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(size of the ID3 data block)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>IPTC</td>
 <td class=c title=' ! = Unsafe'>Y!</td>
 <td class=c>IPTC</td>
 <td><span class=s><span class=n>(the full IPTC data block)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>ImageHeight</td>
 <td class=c>N</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(the height of the image in number of pixels)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>ImageWidth</td>
 <td class=c>N</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(the width of the image in number of pixels)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>JPEGDigest</td>
 <td class=c>N</td>
 <td class=c>File</td>
@@ -239,17 +244,17 @@ sub-sampling values to generate the value of this tag.  The result is
 compared to known values in an attempt to deduce the originating software
 based only on the JPEG image data.  For performance reasons, this tag is
 generated only if specifically requested)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>MIMEType</td>
 <td class=c>N</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(the MIME type of the source file)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>MaxVal</td>
 <td class=c>N</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(maximum pixel value in PPM or PGM image)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>NewGUID</td>
 <td class=c>N</td>
 <td class=c>ExifTool</td>
@@ -258,39 +263,39 @@ YYYYmmdd-HHMM-SSNN-PPPP-RRRRRRRRRRRR, where Y=year, m=month, d=day, H=hour,
 M=minute, S=second, N=file sequence number in hex, P=process ID in hex, and
 R=random hex number; without dashes with the -n option.  Not generated
 unless specifically requested)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>Now</td>
 <td class=c>N</td>
 <td class=c>ExifTool</td>
 <td><span class=s><span class=n>(the current date/time.  Useful when setting the tag values, eg.
 <code>&quot;-modifydate&lt;now&quot;</code>.  Not generated unless specifically requested)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>PreviewImage</td>
 <td class=c>Y</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(JPEG-format embedded preview image)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>PreviewPNG</td>
 <td class=c>N</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(PNG-format embedded preview image)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>PreviewWMF</td>
 <td class=c>N</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(WMF-format embedded preview image)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>ProcessingTime</td>
 <td class=c>N</td>
 <td class=c>ExifTool</td>
 <td><span class=s><span class=n>(the clock time in seconds taken by ExifTool to extract information from this
 file.  Not generated unless specifically requested.  Requires Time::HiRes)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>RAFVersion</td>
 <td class=c>N</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(RAF file version number)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>ResourceForkSize</td>
 <td class=c>N</td>
 <td class=c>System</td>
@@ -299,14 +304,14 @@ tag is generated the ExtractEmbedded option may be used to extract
 resource-fork information as a sub-document.  When writing, the resource
 fork is preserved by default, but it may be deleted with <code>-rsrc:all=</code> on
 the command line)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>TestName</td>
 <td class=c>Y</td>
 <td class=c>-</td>
 <td><span class=s><span class=n>(this write-only tag may be used instead of FileName for dry-run tests of the
 file renaming feature.  Writing this tag prints the old and new file names
 to the console, but does not affect the file itself)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>Warning</td>
 <td class=c>N</td>
 <td class=c>ExifTool</td>
@@ -315,18 +320,18 @@ Use the -a or Duplicates option to see all warnings if more than one
 occurred. Minor warnings may be ignored with the -m or IgnoreMinorErrors
 option.  Minor warnings with a capital &quot;M&quot; in the &quot;[Minor]&quot; designation
 indicate that the processing is affected by ignoring the warning)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>XMP</td>
 <td class=c title=' ! = Unsafe'>Y!</td>
 <td class=c>XMP</td>
 <td><span class=s><span class=n>(the XMP data block, but note that extended XMP in JPEG images may be split
 into multiple blocks)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>XResolution</td>
 <td class=c>N</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(the horizontal pixel resolution)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>YResolution</td>
 <td class=c>N</td>
 <td class=c>File</td>
@@ -335,7 +340,7 @@ into multiple blocks)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Feb 11, 2015</i>
+<br><i>Last revised Apr 20, 2015</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

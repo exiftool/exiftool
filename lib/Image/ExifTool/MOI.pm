@@ -14,7 +14,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.01';
+$VERSION = '1.02';
 
 # MOI tags (ref 1)
 %Image::ExifTool::MOI::Main = (
@@ -111,6 +111,7 @@ sub ProcessMOI($$)
         my $size = unpack('x2N', $buff);
         $size == $$et{VALUE}{FileSize} or return 0;
     }
+    $et->SetFileType();
     SetByteOrder('MM');
     my $tagTablePtr = GetTagTable('Image::ExifTool::MOI::Main');
     return $et->ProcessBinaryData({ DataPt => \$buff }, $tagTablePtr);

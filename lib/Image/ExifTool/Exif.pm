@@ -52,7 +52,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '3.69';
+$VERSION = '3.70';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -2710,7 +2710,8 @@ my %sampleFormat = (
         ValueConv => q{
             return "$val[2]x$val[3]" if $val[2] and $val[3] and
                     $$self{TIFF_TYPE} =~ /^(CR2|Canon 1D RAW|IIQ|EIP)$/;
-            return "$val[0]x$val[1]";
+            return "$val[0]x$val[1]" if IsFloat($val[0]) and IsFloat($val[1]);
+            return undef;
         },
     },
     Megapixels => {
@@ -2825,7 +2826,7 @@ my %sampleFormat = (
             3 => 'FocusDistance',   # focus distance in metres (0 is infinity)
             4 => 'SubjectDistance',
             5 => 'ObjectDistance',
-            6 => 'AverageFocusDistance',
+            6 => 'ApproximateFocusDistance ',
             7 => 'FocusDistanceLower',
             8 => 'FocusDistanceUpper',
         },
@@ -3637,7 +3638,7 @@ sub PrintLensID($$@)
                     abs($lf - $lf0) > 0.5 or abs($la - $la0) > 0.15;
             # the basic parameters match, but also check against additional lens features
             # for Sony E lenses -- the full LensSpec string should match with end of LensType
-            $lensSpecPrt and $lens =~ /\Q$lensSpecPrt\E$/ and @best = ( $lens ), last;
+            $lensSpecPrt and $lens =~ /\Q$lensSpecPrt\E( \(|$)/ and @best = ( $lens ), last;
             # exactly-matching Sony E lens should have been found above, so skip
             # any not-exactly-matching Sony E-lenses
             next if $lens =~ /^Sony E /;

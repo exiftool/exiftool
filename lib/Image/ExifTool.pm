@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '9.92';
+$VERSION = '9.93';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -472,6 +472,20 @@ my %fileTypeLookup = (
     ZIP  => ['ZIP',  'ZIP archive'],
 );
 
+# typical extension for each file type (if different than lowercase FileType)
+my %fileTypeExt = (
+    'Canon 1D RAW' => 'tif',
+    DICOM   => 'dcm',
+    FLIR    => 'fff',
+    GZIP    => 'gz',
+    JPEG    => 'jpg',
+    M2TS    => 'mts',
+    MPEG    => 'mpg',
+    TIFF    => 'tif',
+    Torrent => 'torrent',
+    VCard   => 'vcf',
+);
+
 # descriptions for file types not found in above file extension lookup
 my %fileDescription = (
     DICOM => 'Digital Imaging and Communications in Medicine',
@@ -582,13 +596,14 @@ my %fileDescription = (
     ORF  => 'image/x-olympus-orf',
     OTF  => 'application/x-font-otf',
     PBM  => 'image/x-portable-bitmap',
+    PCD  => 'image/x-photo-cd',
     PDB  => 'application/vnd.palm',
     PDF  => 'application/pdf',
     PEF  => 'image/x-pentax-pef',
+    PFA  => 'application/x-font-type1', # (needed if handled by PostScript module)
     PGF  => 'image/pgf',
     PGM  => 'image/x-portable-graymap',
     PHP  => 'application/x-httpd-php',
-    PCD  => 'image/x-photo-cd',
     PICT => 'image/pict',
     PLIST=> 'application/xml', # (binary PLIST format is 'application/x-plist', recognized at run time)
     PNG  => 'image/png',
@@ -803,7 +818,7 @@ my %moduleName = (
 my %weakMagic = ( MP3 => 1 );
 
 # file types that are determined by the process proc when FastScan == 3
-my %processType = ( JPEG => 1, TIFF => 1, XMP => 1 );
+my %processType = ( JPEG=>1, TIFF=>1, XMP=>1, AIFF=>1, EXE=>1, Font=>1, PS=>1, Real=>1 );
 
 # lookup for valid character set names (keys are all lower case)
 %charsetName = (
@@ -987,6 +1002,7 @@ sub DummyWriteProc { return 1; }
             extension commonly used for the file, but there are exceptions to this rule
         },
     },
+    FileTypeExtension => { Notes => 'usual lowercase extension for this file type' },
     FileModifyDate => {
         Description => 'File Modification Date/Time',
         Notes => q{
@@ -1905,7 +1921,9 @@ sub ExtractInfo($;@)
             $dirInfo{Parent} = ($type eq 'TIFF') ? $tiffType : $type;
             # don't process the file when FastScan == 3
             if ($fast and $fast == 3 and not $processType{$type}) {
-                $self->SetFileType($dirInfo{Parent}); # (uc for Torrent)
+                unless ($weakMagic{$type} and (not $ext or $ext ne $type)) {
+                    $self->SetFileType($dirInfo{Parent});
+                }
                 last;
             }
             my $module = $moduleName{$type};
@@ -6798,10 +6816,11 @@ sub DoEscape($$)
 # Inputs: 0) ExifTool object reference
 #         1) Optional file type (uses FILE_TYPE if not specified)
 #         2) Optional MIME type (uses our lookup if not specified)
+#         3) Optional recommended extension (converted to lower case; uses FileType if undef)
 # Notes:  Will NOT set file type twice (subsequent calls ignored)
-sub SetFileType($;$$)
+sub SetFileType($;$$$)
 {
-    my ($self, $fileType, $mimeType) = @_;
+    my ($self, $fileType, $mimeType, $normExt) = @_;
     unless ($$self{VALUE}{FileType} and not $$self{DOC_NUM}) {
         my $baseType = $$self{FILE_TYPE};
         my $ext = $$self{FILE_EXT};
@@ -6817,7 +6836,12 @@ sub SetFileType($;$$)
         $mimeType or $mimeType = $mimeType{$fileType};
         # use base file type if necessary (except if 'TIFF', which is a special case)
         $mimeType = $mimeType{$baseType} unless $mimeType or $baseType eq 'TIFF';
+        unless (defined $normExt) {
+            $normExt = $fileTypeExt{$fileType};
+            $normExt = $fileType unless defined $normExt;
+        }
         $self->FoundTag('FileType', $fileType);
+        $self->FoundTag('FileTypeExtension', lc $normExt);
         $self->FoundTag('MIMEType', $mimeType || 'application/unknown');
     }
 }
@@ -6831,6 +6855,9 @@ sub OverrideFileType($$)
     my ($self, $fileType) = @_;
     if (defined $$self{VALUE}{FileType} and $fileType ne $$self{VALUE}{FileType}) {
         $$self{VALUE}{FileType} = $fileType;
+        my $normExt = $fileTypeExt{$fileType};
+        $normExt = $fileType unless defined $normExt;
+        $$self{VALUE}{FileTypeExtension} = lc $normExt;
         # only override MIME type if unique for the derived file type
         $$self{VALUE}{MIMEType} = $mimeType{$fileType} if $mimeType{$fileType};
         if ($$self{OPTIONS}{Verbose}) {

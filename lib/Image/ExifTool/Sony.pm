@@ -16,11 +16,11 @@
 #               9) Michael Reitinger private communication (DSC-TX7,RX100)
 #               10) http://www.klingebiel.com/tempest/hd/pmp.html
 #               11) Mike Battilana private communication
-#               12) Jos Roost private communication (A580)
 #               13) http://www.mi-fo.de/forum/index.php?showtopic=33239
 #                   http://www.dyxum.com/dforum/the-alpha-shutter-count-tool_topic97489_page4.html
 #               14) Iliah Borg private communication (LibRaw)
 #               JD) Jens Duttke private communication
+#               JR) Jos Roost private communication
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::Sony;
@@ -58,10 +58,10 @@ my %sonyLensTypes2 = (
     2 => 'Sony LA-EA2 Adapter',
     3 => 'Sony LA-EA3 Adapter', #(NC) ILCE-7 image with A-mount lens, but also has 0x940e 2nd byte=2
     6 => 'Sony LA-EA4 Adapter', #(NC) ILCE-7R image with A-mount lens and having phase-detect info blocks in 0x940e AFInfo
-    44 => 'Metabones Canon EF Smart Adapter', #12
-    78 => 'Metabones Canon EF Smart Adapter Mark III or IV', #PH/12
-    234 => 'Adapter only - no lens attached', #12 (seen with LA-EA4 and Metabones Smart IV)
-    239 => 'Metabones Canon EF Speed Booster', #12
+    44 => 'Metabones Canon EF Smart Adapter', #JR
+    78 => 'Metabones Canon EF Smart Adapter Mark III or IV', #PH/JR
+    234 => 'Adapter only - no lens attached', #JR (seen with LA-EA4 and Metabones Smart IV)
+    239 => 'Metabones Canon EF Speed Booster', #JR
                                                 # Sony VX product code: (http://www.mi-fo.de/forum/index.php?s=7df1c8d3b1cd675f2abf4f4442e19cf2&showtopic=35035&view=findpost&p=303746)
     32784 => 'Sony E 16mm F2.8',                # VX9100
     32785 => 'Sony E 18-55mm F3.5-5.6 OSS',     # VX9101
@@ -79,7 +79,7 @@ my %sonyLensTypes2 = (
     32797 => 'Sony E 18-200mm F3.5-6.3 OSS LE', # VX9113
     32798 => 'Sony E 20mm F2.8',                # VX9114
     32799 => 'Sony E 35mm F1.8 OSS',            # VX9115
-    32800 => 'Sony E PZ 18-105mm F4 G OSS', #12 # VX9116
+    32800 => 'Sony E PZ 18-105mm F4 G OSS', #JR # VX9116
 
     32802 => 'Sony FE 90mm F2.8 Macro G OSS',   # VX?
     32803 => 'Sony E 18-50mm F4-5.6',
@@ -87,19 +87,19 @@ my %sonyLensTypes2 = (
     32807 => 'Sony E PZ 18-200mm F3.5-6.3 OSS', # VX9123
     32808 => 'Sony FE 55mm F1.8 ZA',            # VX9124
 
-    32810 => 'Sony FE 70-200mm F4 G OSS', #12   # VX9126
-    32811 => 'Sony FE 16-35mm F4 ZA OSS', #12   # VX9127
+    32810 => 'Sony FE 70-200mm F4 G OSS', #JR   # VX9126
+    32811 => 'Sony FE 16-35mm F4 ZA OSS', #JR   # VX9127
 
     32813 => 'Sony FE 28-70mm F3.5-5.6 OSS',    # VX9129
     32814 => 'Sony FE 35mm F1.4 ZA',            # VX?
     32815 => 'Sony FE 24-240mm F3.5-6.3 OSS',   # VX?
-    32816 => 'Sony FE 28mm F2', #12             # VX?
-    32817 => 'Sony FE PZ 28-135mm F4 G OSS',#12 # VX?
+    32816 => 'Sony FE 28mm F2', #JR             # VX?
+    32817 => 'Sony FE PZ 28-135mm F4 G OSS',#JR # VX?
 
-    32826 => 'Sony FE 21mm F2.8 (SEL28F20 + SEL075UWC)', #12          # (+ Ultra-wide converter)
-    32827 => 'Sony FE 16mm F3.5 Fisheye (SEL28F20 + SEL057FEC)', #12  # (+ Fisheye converter)
+    32826 => 'Sony FE 21mm F2.8 (SEL28F20 + SEL075UWC)', #JR          # (+ Ultra-wide converter)
+    32827 => 'Sony FE 16mm F3.5 Fisheye (SEL28F20 + SEL057FEC)', #JR  # (+ Fisheye converter)
 
-    # yet to be determined (ref 12):
+    # yet to be determined (ref JR):
     # 32xxx => 'Sony FE 24-240mm F3.5-6.3 OSS     # (SEL24240)
     # 32xxx => 'Sony FE 35mm F1.4 ZA              # (SEL35F14Z)
     # 32xxx => 'Sony FE 90mm F2.8 Macro G         # (SEL90M28G)
@@ -123,7 +123,7 @@ my %sonyExposureProgram = (
     35 => 'Auto No Flash', # (A330)
 );
 
-# ExposureProgram values in CameraSettings3 (ref 12)
+# ExposureProgram values in CameraSettings3 (ref JR)
 my %sonyExposureProgram2 = (            # A580 Mode Dial setting:
      1 => 'Program AE',                 # P
      2 => 'Aperture-priority AE',       # A
@@ -143,7 +143,7 @@ my %sonyExposureProgram2 = (            # A580 Mode Dial setting:
     56 => 'Handheld Night Shot',        # SCN (also called "Hand-held Twilight")
     57 => '3D Sweep Panorama',          # "Panorama" symbol
     64 => 'Auto 2',                     #PH (A33 AUTO)
-    65 => 'Auto 2 (no flash)',          #12 (NC, A35)
+    65 => 'Auto 2 (no flash)',          #JR (NC, A35)
     80 => 'Sweep Panorama',             # "Panorama" symbol
     96 => 'Anti Motion Blur',           #PH (NEX-5)
     # 128-138 are A35 picture effects (combined SCN/Picture effect mode dial position)
@@ -160,7 +160,7 @@ my %sonyExposureProgram2 = (            # A580 Mode Dial setting:
     138 => 'High Contrast Monochrome',
 );
 
-# ExposureProgram values in Tags 2010 and 94xx (ref 12)
+# ExposureProgram values in Tags 2010 and 94xx (ref JR)
 my %sonyExposureProgram3 = (
      0 => 'Program AE',
      1 => 'Aperture-priority AE',
@@ -196,7 +196,7 @@ my %sonyExposureProgram3 = (
     43 => 'Cont. Priority AE',
 );
 
-# WhiteBalanceSetting values (ref 12)
+# WhiteBalanceSetting values (ref JR)
 my %whiteBalanceSetting = (
     0x10 => 'Auto (-3)', #(NC)
     0x11 => 'Auto (-2)', #(NC)
@@ -251,7 +251,7 @@ my %whiteBalanceSetting = (
     0xf3 => 'Color Temperature/Color Filter',
 );
 
-# AF points for cameras with 15-point AF (ref 12)
+# AF points for cameras with 15-point AF (ref JR)
 my %afPoint15 = (
     0 => 'Upper-left',
     1 => 'Left',
@@ -348,7 +348,7 @@ my %meterInfo2 = (
     },
     0x0010 => [ #PH
         # appears to contain mostly AF related information;
-        # for SLT-A77V and newer, similar info is found in 0x940e AFInfo" (ref 12)
+        # for SLT-A77V and newer, similar info is found in 0x940e AFInfo" (ref JR)
         {
             Name => 'CameraInfo',
             # count: A700=368, A850/A900=5478
@@ -378,11 +378,11 @@ my %meterInfo2 = (
             SubDirectory => { TagTable => 'Image::ExifTool::Sony::CameraInfoUnknown' },
         },
     ],
-    # 0x0018 - starts with "GYRO" for sweep panorama images (ref 12)
+    # 0x0018 - starts with "GYRO" for sweep panorama images (ref JR)
     #        - contains ImageStabilization information for Minolta
     0x0020 => [
         # similar to WBInfoA100 in Minolta.pm.
-        # appears to contain various types of information, as in MoreInfo. (ref 12)
+        # appears to contain various types of information, as in MoreInfo. (ref JR)
         {
             Name => 'FocusInfo', #PH
             # count: A200/A230/A290/A300/A330/A350/A380/A390==19154, A700/A850/A900=19148
@@ -392,7 +392,7 @@ my %meterInfo2 = (
                 ByteOrder => 'LittleEndian',
             },
         },{
-            Name => 'MoreInfo', #12
+            Name => 'MoreInfo', #JR
             # count: A450/A500/A550/A560/A580/A33/A35/A55/NEX-3/5/C3/VG10E==20480
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Sony::MoreInfo',
@@ -481,9 +481,9 @@ my %meterInfo2 = (
             0x70 => 'Custom',
         },
     },
-    # Tag 0x0116: extra hardware info (ref 12)
+    # Tag 0x0116: extra hardware info (ref JR)
     # (tag not present for A100, A200, A300, A350, A700, nor for A37, A57, A65, A77)
-    0x0116 => [ #12
+    0x0116 => [ #JR
         {
             Name => 'ExtraInfo',
             Condition => '$$self{Model} =~ /^DSLR-A(850|900)\b/',
@@ -528,7 +528,7 @@ my %meterInfo2 = (
     0x1003 => { #9 (64 bytes, contains Panorama info for various DSC, NEX, SLT and DSLR models)
         Name => 'Panorama',
         # panorama: first 4 bytes '1 1 0 0' (little-endian) or '0 0 1 1' (big-endian)
-        # non-panorama: all bytes are '0' (ref 12)
+        # non-panorama: all bytes are '0' (ref JR)
         Condition => '$$self{Panorama} = ($$valPt =~ /^(\0\0)?\x01\x01/)', # (little- or big-endian int32u = 257)
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Panorama' },
     },
@@ -575,9 +575,9 @@ my %meterInfo2 = (
             return Set32u(length $val) . $size . ("\0" x 8) . $size . ("\0" x 4) . $val;
         },
     },
-    0x2002 => { #12 (written by Sony IDC)
+    0x2002 => { #JR (written by Sony IDC)
         Name => 'Rating',
-        Writable => 'int32u', # (0-5 stars) (4294967295 for an HX9V iSweep Panorama, ref 12)
+        Writable => 'int32u', # (0-5 stars) (4294967295 for an HX9V iSweep Panorama, ref JR)
     },
     # 0x2003 - string[256]: all 0 for DSLR, SLT, NEX; data for DSC-HX9V
     0x2004 => { #PH (NEX-5)
@@ -626,7 +626,7 @@ my %meterInfo2 = (
             2 => 'Normal',
             3 => 'High',
             256 => 'Auto',
-            # it seems that all DSC models except DSC-RX models give n/a here (ref 12)
+            # it seems that all DSC models except DSC-RX models give n/a here (ref JR)
             65535 => 'n/a',
         },
     },
@@ -651,7 +651,7 @@ my %meterInfo2 = (
             0x18 => '5.0 EV',
             0x19 => '5.5 EV',
             0x1a => '6.0 EV',
-        },{ #12 (A580)
+        },{ #JR (A580)
             0 => 'Uncorrected image',  # A580 stores 2 images: uncorrected and HDR
             1 => 'HDR image (good)',
             2 => 'HDR image (fail 1)', # alignment problem?
@@ -675,26 +675,26 @@ my %meterInfo2 = (
         Writable => 'int16u',
         PrintConv => {
             0 => 'Off',
-            1 => 'Toy Camera', #12 (A35)
-            2 => 'Pop Color', # (also A35/NEX-C3, ref 12)
-            3 => 'Posterization', #12 (A35)
-            4 => 'Posterization B/W', #12 (A35)
-            5 => 'Retro Photo', #12 (A35, NEX-5)
-            6 => 'Soft High Key', # (also A65V, A35/NEX-C3 call this "High-key", ref 12)
-            7 => 'Partial Color (red)', #12 (A35)
-            8 => 'Partial Color (green)', #12 (A35, NEX-5)
-            9 => 'Partial Color (blue)', #12 (A35)
-            10 => 'Partial Color (yellow)', #12 (A35, NEX-5)
-            13 => 'High Contrast Monochrome', #12 (A35)
-            16 => 'Toy Camera (normal)', # (also A65, ref 12)
+            1 => 'Toy Camera', #JR (A35)
+            2 => 'Pop Color', # (also A35/NEX-C3, ref JR)
+            3 => 'Posterization', #JR (A35)
+            4 => 'Posterization B/W', #JR (A35)
+            5 => 'Retro Photo', #JR (A35, NEX-5)
+            6 => 'Soft High Key', # (also A65V, A35/NEX-C3 call this "High-key", ref JR)
+            7 => 'Partial Color (red)', #JR (A35)
+            8 => 'Partial Color (green)', #JR (A35, NEX-5)
+            9 => 'Partial Color (blue)', #JR (A35)
+            10 => 'Partial Color (yellow)', #JR (A35, NEX-5)
+            13 => 'High Contrast Monochrome', #JR (A35)
+            16 => 'Toy Camera (normal)', # (also A65, ref JR)
             17 => 'Toy Camera (cool)', # (RX100)
             18 => 'Toy Camera (warm)', # (RX100)
             19 => 'Toy Camera (green)', # (RX100)
             20 => 'Toy Camera (magenta)', # (RX100)
-            32 => 'Soft Focus (low)', #12 (RX100)
-            33 => 'Soft Focus', #12 (A65V)
+            32 => 'Soft Focus (low)', #JR (RX100)
+            33 => 'Soft Focus', #JR (A65V)
             34 => 'Soft Focus (high)', # (RX100)
-            48 => 'Miniature (auto)', #12 (A65V/NEX-7, horizontal)
+            48 => 'Miniature (auto)', #JR (A65V/NEX-7, horizontal)
             49 => 'Miniature (top)', # (RX100)
             50 => 'Miniature (middle horizontal)', # (WX100/HX20V, horizontal)
             51 => 'Miniature (bottom)', # (WX100, rotate 90 CW)
@@ -702,9 +702,9 @@ my %meterInfo2 = (
             53 => 'Miniature (middle vertical)', # (RX100)
             54 => 'Miniature (right)', # (RX100)
             64 => 'HDR Painting (low)', # (RX100)
-            65 => 'HDR Painting', # (also A65V, ref 12)
+            65 => 'HDR Painting', # (also A65V, ref JR)
             66 => 'HDR Painting (high)', # (RX100)
-            80 => 'Rich-tone Monochrome', # (also A65V, ref 12)
+            80 => 'Rich-tone Monochrome', # (also A65V, ref JR)
             97 => 'Water Color', # (HX200V)
             98 => 'Water Color 2',
             112 => 'Illustration (low)', # (RX100)
@@ -720,12 +720,12 @@ my %meterInfo2 = (
             1 => 'Low',
             2 => 'Mid',
             3 => 'High',
-            # 0x10001 - seen (ref 12)
-            # 0x10002 - seen for landscape and portrait flash (ref 12)
+            # 0x10001 - seen (ref JR)
+            # 0x10002 - seen for landscape and portrait flash (ref JR)
             0xffffffff => 'n/a', # (A35)
         },
     },
-    0x2010 => [ #12
+    0x2010 => [ #JR
         # different camera models have similar content but at different offsets, appears to correlate with:
         # 0x1206 - 0x1207 deciphered (0x1205 changes with firmware version):
         #   ad c3 - NEX-5N
@@ -805,7 +805,7 @@ my %meterInfo2 = (
             0xffffffff => 'n/a', # (RX100)
         },
     },
-    0x2013 => { #PH (A77, NEX-5N) ("Setting"; application of such correction is indicated in Tag9405 - ref 12)
+    0x2013 => { #PH (A77, NEX-5N) ("Setting"; application of such correction is indicated in Tag9405 - ref JR)
         Name => 'DistortionCorrectionSetting',
         Writable => 'int32u',
         PrintConv => {
@@ -814,7 +814,7 @@ my %meterInfo2 = (
             0xffffffff => 'n/a', # (RX100)
         },
     },
-    0x2014 => { #12/9
+    0x2014 => { #JR/9
         Name => 'WBShiftAB_GM',
         Writable => 'int32s',
         Count => 2,
@@ -831,7 +831,7 @@ my %meterInfo2 = (
         PrintConv => { 0 => 'No', 1 => 'Yes' },
     },
     # 0x2017 - int32u: flash mode. 0=off, 1=fired, 2=red-eye (PH, NEX-6) (also in A99, RX1, NEX-5R)
-    0x2017 => { #12
+    0x2017 => { #JR
         Name => 'FlashAction',
         Writable => 'int32u',
         PrintConv => {
@@ -855,7 +855,7 @@ my %meterInfo2 = (
             7 => 'AF-D', # "Depth Map Assist Continuous AF"
         },
     },
-    0x201c => [ #12
+    0x201c => [ #JR
         {
             Name => 'AFAreaModeSetting',
             Condition => '$$self{Model} =~ /^(SLT-|HV)/',
@@ -896,12 +896,12 @@ my %meterInfo2 = (
             },
         },
     ],
-    0x201d => { #12
+    0x201d => { #JR
         Name => 'FlexibleSpotPosition',
         Condition => '$$self{Model} =~ /^(NEX-|ILCE-)/',
         Writable => 'int16u',
         Count => 2,
-        # position in an 11x9 grid. Values are (ref 12, NC in brackets)
+        # position in an 11x9 grid. Values are (ref JR, NC in brackets)
         # X = 135,165,196,227,(258),289,320,281,412,442/443
         # Y = (70?),104,(138),(172),206,240,274,308,342,(376?)
         Notes => q{
@@ -915,7 +915,7 @@ my %meterInfo2 = (
         Writable => 'int8u',
         PrintConvColumns => 2,
         PrintConv => {
-            0 => 'Auto', # (NC) (always 0 for NEX/ILCE unless AFAreaModeSetting is Zone, ref 12)
+            0 => 'Auto', # (NC) (always 0 for NEX/ILCE unless AFAreaModeSetting is Zone, ref JR)
             1 => 'Center',
             2 => 'Top',
             3 => 'Upper-right',
@@ -977,7 +977,7 @@ my %meterInfo2 = (
     0x9050 => {
         Name => 'Tag9050',
         # 944 bytes for A37, A57, A99, NEX-F3, NEX-5R, NEX-6, DSC-RX1, DSC-RX100
-        # 3072 bytes for A65, A77, NEX-5N, NEX-7, NEX-VG20 (ref 12)
+        # 3072 bytes for A65, A77, NEX-5N, NEX-7, NEX-VG20 (ref JR)
         SubDirectory => {
             TagTable => 'Image::ExifTool::Sony::Tag9050',
             ByteOrder => 'LittleEndian',
@@ -1015,7 +1015,7 @@ my %meterInfo2 = (
     0x9401 => {
         Name => 'Sony_0x9401',
         %unknownCipherData,
-        # notes for data in this block (ref PH/12):
+        # notes for data in this block (ref PH/JR):
         #   0x02-0x03 appear to have some relation to start-offset of data...
         #   0x00 - 0x03    Metering
         #                  Mode
@@ -1142,7 +1142,7 @@ my %meterInfo2 = (
     0x9406 => [{
         Name => 'Tag9406',
         # - first byte must be 0x01 or 0x02 (enciphered 0x01 or 0x08) and
-        #   third byte must be 0x02 or 0x03 (enciphered 0x08 or 0x1b) - ref 12
+        #   third byte must be 0x02 or 0x03 (enciphered 0x08 or 0x1b) - ref JR
         # (applies to most SLT and NEX models, but no DSC models)
         Condition => '$$valPt =~ /^[\x01\x08].[\x08\x1b]/s',
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag9406' },
@@ -1224,7 +1224,7 @@ my %meterInfo2 = (
             '3 1 0 0' => 'ARW 2.1',
             '3 2 0 0' => 'ARW 2.2', #PH (NEX-5)
             '3 3 0 0' => 'ARW 2.3', #PH (SLT-A65,SLT-A77)
-            '3 3 1 0' => 'ARW 2.3.1', #PH/12 (RX1R,RX100M2)
+            '3 3 1 0' => 'ARW 2.3.1', #PH/JR (RX1R,RX100M2)
             # what about cRAW images?
         },
     },
@@ -1258,45 +1258,45 @@ my %meterInfo2 = (
             282 => 'DSLR-A560', #PH
             283 => 'DSLR-A580', #http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,2881.0.html
             284 => 'NEX-C3', #PH
-            285 => 'SLT-A35', #12
+            285 => 'SLT-A35', #JR
             286 => 'SLT-A65 / SLT-A65V', #PH
             287 => 'SLT-A77 / SLT-A77V', #PH
             288 => 'NEX-5N', #PH
-            289 => 'NEX-7', #PH (also Hasselblad Lunar, ref 12)
-            290 => 'NEX-VG20E', #12
-            291 => 'SLT-A37', #12
-            292 => 'SLT-A57', #12
+            289 => 'NEX-7', #PH (also Hasselblad Lunar, ref JR)
+            290 => 'NEX-VG20E', #JR
+            291 => 'SLT-A37', #JR
+            292 => 'SLT-A57', #JR
             293 => 'NEX-F3', #PH
-            294 => 'SLT-A99 / SLT-A99V', #12 (also Hasselblad HV)
-            295 => 'NEX-6', #12
-            296 => 'NEX-5R', #12
-            297 => 'DSC-RX100', #PH (also Hasselblad Stellar, ref 12)
-            298 => 'DSC-RX1', #12
-            299 => 'NEX-VG900', #12
-            300 => 'NEX-VG30E', #12
-            302 => 'ILCE-3000 / ILCE-3500', #12
-            303 => 'SLT-A58', #12
+            294 => 'SLT-A99 / SLT-A99V', #JR (also Hasselblad HV)
+            295 => 'NEX-6', #JR
+            296 => 'NEX-5R', #JR
+            297 => 'DSC-RX100', #PH (also Hasselblad Stellar, ref JR)
+            298 => 'DSC-RX1', #JR
+            299 => 'NEX-VG900', #JR
+            300 => 'NEX-VG30E', #JR
+            302 => 'ILCE-3000 / ILCE-3500', #JR
+            303 => 'SLT-A58', #JR
             305 => 'NEX-3N', #PH
-            306 => 'ILCE-7', #12
-            307 => 'NEX-5T', #12
-            308 => 'DSC-RX100M2', #12
-            309 => 'DSC-RX10', #12
-            310 => 'DSC-RX1R', #12
-            311 => 'ILCE-7R', #12
-            312 => 'ILCE-6000', #12
-            313 => 'ILCE-5000', #12
-            317 => 'DSC-RX100M3', #12
-            318 => 'ILCE-7S', #12
+            306 => 'ILCE-7', #JR
+            307 => 'NEX-5T', #JR
+            308 => 'DSC-RX100M2', #JR
+            309 => 'DSC-RX10', #JR
+            310 => 'DSC-RX1R', #JR
+            311 => 'ILCE-7R', #JR
+            312 => 'ILCE-6000', #JR
+            313 => 'ILCE-5000', #JR
+            317 => 'DSC-RX100M3', #JR
+            318 => 'ILCE-7S', #JR
             319 => 'ILCA-77M2', #14
-            339 => 'ILCE-5100', #12
-            340 => 'ILCE-7M2', #12
+            339 => 'ILCE-5100', #JR
+            340 => 'ILCE-7M2', #JR
             346 => 'ILCE-QX1', #14
         },
     },
     0xb020 => { #2
         Name => 'CreativeStyle',
         Writable => 'string',
-        # (all of these values have been observed, ref 12 and PH)
+        # (all of these values have been observed, ref JR and PH)
         # - this PrintConv is included to make these strings consistent with
         #   other CreativeStyle tags, and to facilitate the language translations
         # - these values are always English, regardless of the camera language settings
@@ -1374,7 +1374,7 @@ my %meterInfo2 = (
         PrintConv => {
             0 => 'Off',
             1 => 'On',
-            0xffffffff => 'n/a', # (HX9V sweep panorama, ref 12)
+            0xffffffff => 'n/a', # (HX9V sweep panorama, ref JR)
         },
     },
     0xb027 => { #2
@@ -1470,7 +1470,7 @@ my %meterInfo2 = (
             14 => 'Smile Shutter', #9 (T200)
             15 => 'Manual',
             18 => 'High Sensitivity', #9
-            19 => 'Macro', #12
+            19 => 'Macro', #JR
             20 => 'Advanced Sports Shooting', #9
             29 => 'Underwater', #9
             # 30 seen for DSC-W110 and W390, maybe something with Face or Portrait ??
@@ -1482,8 +1482,8 @@ my %meterInfo2 = (
             38 => 'Backlight Correction HDR', #9
             39 => 'Superior Auto', #9
             40 => 'Background Defocus', #PH (HX20V)
-            41 => 'Soft Skin', #12 (HX9V) (HX200V Portrait - PH)
-            42 => '3D Image', #12 (HX9V)
+            41 => 'Soft Skin', #JR (HX9V) (HX200V Portrait - PH)
+            42 => '3D Image', #JR (HX9V)
             # 50 seen for DSC-W530
             65535 => 'n/a', #PH (A100)
         },
@@ -1513,7 +1513,7 @@ my %meterInfo2 = (
         # AFAreaMode only for older models;
         # exclude newest DSC models, which give AFAreaMode in Tag9402 0x0017 (eg. RX100 - PH)
         Writable => 'int16u',
-        Condition => 'not $$self{MetaVersion} or $$self{MetaVersion} ne "DC7303320222000"', #12
+        Condition => 'not $$self{MetaVersion} or $$self{MetaVersion} ne "DC7303320222000"', #JR
         RawConv => '$val == 65535 ? undef : $val',
         Notes => 'older models',
         PrintConv => {
@@ -1524,11 +1524,11 @@ my %meterInfo2 = (
             3 => 'Spot',
             4 => 'Flexible Spot', # (T200)
             6 => 'Touch',
-            14 => 'Tracking', #12 (HX9V) ("Manual" for the T200?, ref 9)
+            14 => 'Tracking', #JR (HX9V) ("Manual" for the T200?, ref 9)
             15 => 'Face Tracking', # (not set when in face detect mode and no faces detected)
             65535 => 'n/a', #PH (A100)
         },
-    },{ #12
+    },{ #JR
         Name => 'AFAreaMode',
         # AFAreaMode for DSC-HX9V generation, having values that appear to be different from older models.
         Writable => 'int16u',
@@ -1564,20 +1564,20 @@ my %meterInfo2 = (
         PrintConv => {
             0 => 'Standard',
             1 => 'Fine',
-            2 => 'Extra Fine', #12
+            2 => 'Extra Fine', #JR
             65535 => 'n/a', #PH (A100)
         },
     },
     0xb048 => { #9
-        Name => 'FlashLevel',  #12 other name, but values -9 to 9 match FlashExposureCompensation
+        Name => 'FlashLevel',  #JR other name, but values -9 to 9 match FlashExposureCompensation
         Writable => 'int16s',
         RawConv => '($val == -1 and $$self{Model} =~ /DSLR-A100\b/) ? undef : $val',
         PrintConv => {
             -32768 => 'Low',
-            -9 => '-9/3', #12
-            -6 => '-6/3', #12
-            -5 => '-5/3', #12
-            -4 => '-4/3', #12
+            -9 => '-9/3', #JR
+            -6 => '-6/3', #JR
+            -5 => '-5/3', #JR
+            -4 => '-4/3', #JR
             -3 => '-3/3',
             -2 => '-2/3',
             -1 => '-1/3', # (for the A100, -1 is effectively 'n/a' - PH)
@@ -1585,10 +1585,10 @@ my %meterInfo2 = (
             1 => '+1/3',
             2 => '+2/3',
             3 => '+3/3',
-            4 => '+4/3', #12 (NC)
-            5 => '+5/3', #12 (NC)
-            6 => '+6/3', #12
-            128 => 'n/a', #12 (HX9V)
+            4 => '+4/3', #JR (NC)
+            5 => '+5/3', #JR (NC)
+            6 => '+6/3', #JR
+            128 => 'n/a', #JR (HX9V)
             32767 => 'High',
         },
     },
@@ -1626,9 +1626,9 @@ my %meterInfo2 = (
             65535 => 'n/a',
         },
     },
-    # 0xb04c - rational64u: 10/10 (seen 5 for HX9V Manual-exposure images, ref 12)
+    # 0xb04c - rational64u: 10/10 (seen 5 for HX9V Manual-exposure images, ref JR)
     # 0xb04d - int16u: 0
-    # (the Kamisaka decoding of 0xb04e seems wrong - ref 12)
+    # (the Kamisaka decoding of 0xb04e seems wrong - ref JR)
     # 0xb04e => { #2
     #     Name => 'LongExposureNoiseReduction',
     #     Notes => 'LongExposureNoiseReduction for other models',
@@ -1642,9 +1642,9 @@ my %meterInfo2 = (
     #         65535 => 'n/a', #PH (A100)
     #     },
     # },
-    0xb04e => { #PH (RX100) - but not in RX100M3 anymore (ref 12)
+    0xb04e => { #PH (RX100) - but not in RX100M3 anymore (ref JR)
         Name => 'FocusMode',
-        Condition => '$$self{MetaVersion} and $$self{MetaVersion} eq "DC7303320222000"', #12
+        Condition => '$$self{MetaVersion} and $$self{MetaVersion} eq "DC7303320222000"', #JR
         Notes => 'valid for DSC-HX9V generation and newer',
         Writable => 'int16u',
         PrintConv => {
@@ -1653,7 +1653,7 @@ my %meterInfo2 = (
             2 => 'AF-S',
             3 => 'AF-C',
             # 4 - seen for HDR-CX360E/CX700E
-            5 => 'Semi-manual', #12 (HX9V)
+            5 => 'Semi-manual', #JR (HX9V)
             6 => 'DMF', # "Direct Manual Focus"
         },
     },
@@ -1677,8 +1677,8 @@ my %meterInfo2 = (
             0 => 'Normal',
             1 => 'High',
             2 => 'Low',
-            3 => 'Off', #12
-            # it seems that all SLT and NEX models give n/a here (ref 12)
+            3 => 'Off', #JR
+            # it seems that all SLT and NEX models give n/a here (ref JR)
             65535 => 'n/a',
         },
     },
@@ -1693,7 +1693,7 @@ my %meterInfo2 = (
         },
     },
     # 0xb053 - int16u: normally 0, but got 1 for a superior auto backlight picture (RX100)
-    0xb054 => { #PH/9/12 (TX1,TX7,RX100,HX9V)
+    0xb054 => { #PH/9/JR (TX1,TX7,RX100,HX9V)
         Name => 'WhiteBalance',
         Writable => 'int16u',
         Notes => q{
@@ -1705,12 +1705,12 @@ my %meterInfo2 = (
             4 => 'Custom', # (manual)
             5 => 'Daylight',
             6 => 'Cloudy',
-            # PrintConv names matching Exif Fluorescent LightSource names (ref 12)
+            # PrintConv names matching Exif Fluorescent LightSource names (ref JR)
             # (Sony uses conflicting names for some models)
-            7 => 'Cool White Fluorescent', # (RX100) (TX7/HX9V "Fluorescent 1 (White)", ref 9/12)
-            8 => 'Day White Fluorescent',  # (RX100) (TX7/HX9V "Fluorescent 2 (Natural White)", ref 9/12)
-            9 => 'Daylight Fluorescent',   # (RX100) (TX7/HX9V "Fluorescent 3 (Day White)", ref 9/12)
-            10 => 'Incandescent2', #12 (HX9V)
+            7 => 'Cool White Fluorescent', # (RX100) (TX7/HX9V "Fluorescent 1 (White)", ref 9/JR)
+            8 => 'Day White Fluorescent',  # (RX100) (TX7/HX9V "Fluorescent 2 (Natural White)", ref 9/JR)
+            9 => 'Daylight Fluorescent',   # (RX100) (TX7/HX9V "Fluorescent 3 (Day White)", ref 9/JR)
+            10 => 'Incandescent2', #JR (HX9V)
             11 => 'Warm White Fluorescent',
             14 => 'Incandescent',
             15 => 'Flash',
@@ -1750,7 +1750,7 @@ my %meterInfo2 = (
     },
 );
 
-# camera information for the A700/A850/A900 (ref 12)
+# camera information for the A700/A850/A900 (ref JR)
 %Image::ExifTool::Sony::CameraInfo = (
     %binaryDataAttrs,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
@@ -1903,7 +1903,7 @@ my %meterInfo2 = (
     # 0x0166 - 40 x 128 int8u values: AF Info Blocks for A850 and A900, not for A700
 );
 
-# camera information for other DSLR models (ref 12)
+# camera information for other DSLR models (ref JR)
 %Image::ExifTool::Sony::CameraInfo2 = (
     %binaryDataAttrs,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
@@ -1923,7 +1923,7 @@ my %meterInfo2 = (
     0x0014 => {
         Name => 'AFPointSelected',
         PrintConvColumns => 2,
-        PrintConv => { #12 (NC) same list as A100, A700/A900, as all have 9 point AF
+        PrintConv => { #JR (NC) same list as A100, A700/A900, as all have 9 point AF
             0 => 'Auto',
             1 => 'Center',
             2 => 'Top',
@@ -1990,7 +1990,7 @@ my %meterInfo2 = (
 );
 
 # Camera information for the A55 (ref PH)
-# (also valid for A33, A35, A560, A580 - ref 12)
+# (also valid for A33, A35, A560, A580 - ref JR)
 %Image::ExifTool::Sony::CameraInfo3 = (
     %binaryDataAttrs,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
@@ -2000,7 +2000,7 @@ my %meterInfo2 = (
         A580, NEX-3/5/5C/C3 and VG10E.  Some tags are valid only for some of these
         models.
     },
-    0x00 => { #12
+    0x00 => { #JR
         Name => 'LensSpec',
         Condition => '$$self{Model} !~ /^NEX-5C/',
         Format => 'undef[8]',
@@ -2009,7 +2009,7 @@ my %meterInfo2 = (
         PrintConv => \&PrintLensSpec,
         PrintConvInv => \&PrintInvLensSpec,
     },
-    0x0e => { #12
+    0x0e => { #JR
         Name => 'FocalLength',
         Condition => '$$self{Model} !~ /^DSLR-(A450|A500|A550)$/',
         Format => 'int16u',
@@ -2019,7 +2019,7 @@ my %meterInfo2 = (
         PrintConv => 'sprintf("%.1f mm",$val)',
         PrintConvInv => '$val =~ s/ mm//; $val',
     },
-    0x10 => { #12
+    0x10 => { #JR
         Name => 'FocalLengthTeleZoom',
         Condition => '$$self{Model} !~ /^DSLR-(A450|A500|A550)$/',
         Format => 'int16u',
@@ -2034,10 +2034,10 @@ my %meterInfo2 = (
 #  1) DSLR-A450/A500/A550 with 9 point AF system: decoding/offsets identical to A200 - A390 in CameraInfo
 #  2) SLT-A33/A35/A55 and DSLR-A560/A580 with 15 point AF system: similar/more info but at different offsets
 #
-    0x14 => { #12
+    0x14 => { #JR
         Name => 'AFPointSelected',
         Condition => '$$self{Model} =~ /^(DSLR-A(450|500|550))\b/',
-        # (these cameras have a 9-point AF system, ref 12)
+        # (these cameras have a 9-point AF system, ref JR)
         PrintConvColumns => 2,
         PrintConv => {
             0 => 'Auto', # (seen in Wide mode and for Manual Focus)
@@ -2052,7 +2052,7 @@ my %meterInfo2 = (
             9 => 'Upper-left',
         },
     },
-    0x15 => { #12
+    0x15 => { #JR
         Name => 'FocusMode',
         Condition => '$$self{Model} =~ /^(DSLR-A(450|500|550))\b/',
         PrintConv => {
@@ -2062,7 +2062,7 @@ my %meterInfo2 = (
             3 => 'AF-A',
         },
     },
-    0x18 => { #12
+    0x18 => { #JR
         Name => 'AFPoint',
         Condition => '$$self{Model} =~ /^DSLR-A(450|500|550)\b/',
         PrintConv => {
@@ -2076,7 +2076,7 @@ my %meterInfo2 = (
             7 => 'Bottom-left',
         },
     },
-    0x19 => { #12
+    0x19 => { #JR
         Name => 'FocusStatus',
         Condition => '$$self{Model} =~ /^(SLT-|DSLR-A(560|580))\b/',
         Notes => 'not valid with Contrast AF or for NEX models',
@@ -2094,7 +2094,7 @@ my %meterInfo2 = (
             64 => 'AF-S - Confirmed',
         },
     },
-    0x1b => { #12
+    0x1b => { #JR
         Name => 'AFStatusActiveSensor',
         Condition => '$$self{Model} =~ /^DSLR-A(450|500|550)\b/',
         %Image::ExifTool::Minolta::afStatusInfo,
@@ -2102,8 +2102,8 @@ my %meterInfo2 = (
     0x1c => {
         Name => 'AFPointSelected',  # (v8.88: renamed from LocalAFAreaPointSelected)
         Condition => '$$self{Model} =~ /^(SLT-|DSLR-A(560|580))\b/',
-        Notes => 'not valid for Contrast AF', #12
-        # (all of these cameras have an 15-point three-cross AF system, ref 12)
+        Notes => 'not valid for Contrast AF', #JR
+        # (all of these cameras have an 15-point three-cross AF system, ref JR)
         PrintConvColumns => 2,
         PrintConv => {
             0 => 'Auto', # (seen in Wide mode)
@@ -2134,28 +2134,28 @@ my %meterInfo2 = (
                 2 => 'AF-C',
                 3 => 'AF-A',
             },
-        },{ #12
+        },{ #JR
             Name => 'AFStatusTop-right',
             Condition => '$$self{Model} =~ /^DSLR-A(450|500|550)\b/',
             %Image::ExifTool::Minolta::afStatusInfo,
         },
     ],
-    0x1f => { #12
+    0x1f => { #JR
         Name => 'AFStatusBottom-right',
         Condition => '$$self{Model} =~ /^DSLR-A(450|500|550)\b/',
         %Image::ExifTool::Minolta::afStatusInfo,
     },
-    0x20 => { #12
+    0x20 => { #JR
         Name => 'AFPoint',  # (v8.88: renamed from LocalAFAreaPointUsed)
         Condition => '$$self{Model} =~ /^(SLT-|DSLR-A(560|580))\b/',
         Notes => 'the AF sensor used for focusing. Not valid for Contrast AF',
         PrintConvColumns => 2,
         PrintConv => {
             %afPoint15,
-            255 => '(none)', #PH (A55, guess; also A35 with non-AF lens, ref 12)
+            255 => '(none)', #PH (A55, guess; also A35 with non-AF lens, ref JR)
         },
     },
-    0x21 => [ #12
+    0x21 => [ #JR
         {
             Name => 'AFStatusActiveSensor',
             Condition => '$$self{Model} =~ /^(SLT-|DSLR-A(560|580))\b/',
@@ -2166,7 +2166,7 @@ my %meterInfo2 = (
             %Image::ExifTool::Minolta::afStatusInfo,
         },
     ],
-    0x23 => [ #12
+    0x23 => [ #JR
         {
             Name => 'AFStatus15',
             Condition => '$$self{Model} =~ /^(SLT-|DSLR-A(560|580))\b/',
@@ -2188,7 +2188,7 @@ my %meterInfo2 = (
     0x31 => { Name => 'AFStatusRight',            Condition => '$$self{Model} =~ /^DSLR-A(450|500|550)\b/', %Image::ExifTool::Minolta::afStatusInfo },
     # 0x0166 - starting here there are 96 AF Info blocks of 155 bytes each for the SLT-A33/A35/A55 and DSLR-A560/A580,
     #          starting here there are 86 AF Info blocks of 174 bytes each for the DSLR-A450/A500/A550,
-    #          but NOT for NEX, and not for the A580 in Contrast-AF mode (ref 12)
+    #          but NOT for NEX, and not for the A580 in Contrast-AF mode (ref JR)
     #          The 43rd byte of each block for A580 appears to be the AFPoint as in offset 0x20,
     #          possibly also 73rd and 74th byte
 );
@@ -2208,7 +2208,7 @@ my %meterInfo2 = (
         More camera settings and focus information decoded for models such as the
         A200, A230, A290, A300, A330, A350, A380, A390, A700, A850 and A900.
     },
-    0x0e => [{ #7/12
+    0x0e => [{ #7/JR
         Name => 'DriveMode2',
         Condition => '$$self{Model} =~ /^DSLR-A(230|290|330|380|390)$/',
         Notes => 'A230, A290, A330, A380 and A390',
@@ -2231,20 +2231,20 @@ my %meterInfo2 = (
         PrintConv => {
             0x01 => 'Single Frame',
             0x02 => 'Continuous High', # A700/A900; not on A850
-            0x12 => 'Continuous Low', #12
+            0x12 => 'Continuous Low', #JR
             0x04 => 'Self-timer 10 sec',
             0x05 => 'Self-timer 2 sec, Mirror Lock-up',
             0x06 => 'Single-frame Bracketing',
             0x07 => 'Continuous Bracketing',
-            0x18 => 'White Balance Bracketing Low', #12
-            0x28 => 'White Balance Bracketing High', #12
-            0x19 => 'D-Range Optimizer Bracketing Low', #12
-            0x29 => 'D-Range Optimizer Bracketing High', #12
-            0x0a => 'Remote Commander', #12
-            0x0b => 'Mirror Lock-up', #12 (A850/A900; not on A700)
+            0x18 => 'White Balance Bracketing Low', #JR
+            0x28 => 'White Balance Bracketing High', #JR
+            0x19 => 'D-Range Optimizer Bracketing Low', #JR
+            0x29 => 'D-Range Optimizer Bracketing High', #JR
+            0x0a => 'Remote Commander', #JR
+            0x0b => 'Mirror Lock-up', #JR (A850/A900; not on A700)
         },
     }],
-    0x10 => { #12 (1 and 2 inverted!)
+    0x10 => { #JR (1 and 2 inverted!)
         Name => 'Rotation',
         PrintConv => {
             0 => 'Horizontal (normal)',
@@ -2265,11 +2265,11 @@ my %meterInfo2 = (
             3 => 'Advanced Level',
         },
     },
-    0x2b => { #12 seen 2,1,3 for both WB and DRO bracketing
+    0x2b => { #JR seen 2,1,3 for both WB and DRO bracketing
         Name => 'BracketShotNumber',
         Notes => 'WB and DRO bracketing',
     },
-    0x2c => { #12
+    0x2c => { #JR
         Name => 'WhiteBalanceBracketing',
         PrintConv => {
             0 => 'Off',
@@ -2277,10 +2277,10 @@ my %meterInfo2 = (
             2 => 'High',
         },
     },
-    0x2d => { #12 seen 2,1,3 for both WB and DRO bracketing
+    0x2d => { #JR seen 2,1,3 for both WB and DRO bracketing
         Name => 'BracketShotNumber2',
     },
-    0x2e => { # 12
+    0x2e => { #JR
         Name => 'DynamicRangeOptimizerBracket',
         PrintConv => {
             0 => 'Off',
@@ -2288,15 +2288,15 @@ my %meterInfo2 = (
             2 => 'High',
         },
     },
-    0x2f => { #12 seen 0,1,2 and 0,1,2,3,4 for 3 and 5 image bracketing sequences
+    0x2f => { #JR seen 0,1,2 and 0,1,2,3,4 for 3 and 5 image bracketing sequences
         Name => 'ExposureBracketShotNumber',
     },
-    0x3f => { #12
+    0x3f => { #JR
         Name => 'ExposureProgram',
         SeparateTable => 'ExposureProgram',
         PrintConv => \%sonyExposureProgram,
     },
-    0x41 => { #12 style actually used (combination of mode dial + creative style menu)
+    0x41 => { #JR style actually used (combination of mode dial + creative style menu)
         Name => 'CreativeStyle',
         PrintConvColumns => 2,
         PrintConv => {
@@ -2330,7 +2330,7 @@ my %meterInfo2 = (
         PrintConv => '$val ? sprintf("%.0f",$val) : "Auto"',
         PrintConvInv => '$val =~ /auto/i ? 0 : $val',
     },
-    0x77 => { #12
+    0x77 => { #JR
         Name => 'DynamicRangeOptimizerMode',
         PrintConv => {
             0 => 'Off',
@@ -2385,7 +2385,7 @@ my %meterInfo2 = (
     },
 );
 
-# more camera setting information (ref 12)
+# more camera setting information (ref JR)
 # - many of these tags are the same as in CameraSettings3
 %Image::ExifTool::Sony::MoreInfo = (
     PROCESS_PROC => \&ProcessMoreInfo,
@@ -2415,8 +2415,8 @@ my %meterInfo2 = (
     # 0x0102: 1804 bytes
     # 0x0103:  176 bytes
     # 0x0104: 1088 bytes
-    # 0x0105:  160 bytes (all zero unless flash is used, ref 12)
-    # 0x0106:  256 bytes (faces detected if first byte is non-zero? ref 12)
+    # 0x0105:  160 bytes (all zero unless flash is used, ref JR)
+    # 0x0106:  256 bytes (faces detected if first byte is non-zero? ref JR)
     0x0107 => { # (7200 bytes: 3 sets of 40x30 int16u values in the range 0-1023)
         Name => 'TiffMeteringImage',
         Notes => q{
@@ -2482,21 +2482,21 @@ my %meterInfo2 = (
 #    },
     0x011b => { #13
         Name => 'ImageCount',
-        Condition => '$$self{Model} !~ /^DSLR-A(450|500|550)$/', #12
+        Condition => '$$self{Model} !~ /^DSLR-A(450|500|550)$/', #JR
         Format => 'int32u',
         Notes => 'not valid for the A450, A500 or A550',
         RawConv => '$val & 0x00ffffff',
     },
     0x0125 => { #13
         Name => 'ShutterCount',
-        Condition => '$$self{Model} !~ /^DSLR-A(450|500|550)$/', #12
+        Condition => '$$self{Model} !~ /^DSLR-A(450|500|550)$/', #JR
         Format => 'int32u',
         Notes => 'not valid for the A450, A500 or A550',
         RawConv => '$val & 0x00ffffff',
     },
     0x014a => { #13
         Name => 'ShutterCount', # (=ImageCount for these models)
-        Condition => '$$self{Model} =~ /^DSLR-A(450|500|550)$/', #12
+        Condition => '$$self{Model} =~ /^DSLR-A(450|500|550)$/', #JR
         Format => 'int32u',
         Notes => 'A450, A500 and A550 only',
         RawConv => '$val & 0x00ffffff',
@@ -2507,7 +2507,7 @@ my %meterInfo2 = (
     %binaryDataAttrs,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     PRIORITY => 0,
-    0x044e => { #12
+    0x044e => { #JR
         Name => 'ShotNumberSincePowerUp',
         Condition => '$$self{Model} !~ /^NEX-(3|5)$/',
         Format => 'int32u',
@@ -2531,7 +2531,7 @@ my %meterInfo2 = (
 #    0x118d - int16u LensType  Condition => '$$self{Model} =~ /^SLT-A35/',
 );
 
-# more camera setting information (ref 12)
+# more camera setting information (ref JR)
 # - many of these tags are the same as in CameraSettings3
 %Image::ExifTool::Sony::MoreSettings = (
     %binaryDataAttrs,
@@ -2595,7 +2595,7 @@ my %meterInfo2 = (
             160 => 'Sunset',
         },
     },
-    0x08 => { #12
+    0x08 => { #JR
         Name => 'ContrastSetting',
         Format => 'int8s',
         PrintConv => '$val > 0 ? "+$val" : $val',
@@ -2698,9 +2698,9 @@ my %meterInfo2 = (
         PrintConvColumns => 3,
         PrintConv => {
             33 => '1 EV',
-            34 => '1.5 EV', #12 (NC)
+            34 => '1.5 EV', #JR (NC)
             35 => '2 EV',
-            36 => '2.5 EV', #12 (NC)
+            36 => '2.5 EV', #JR (NC)
             37 => '3 EV',
             38 => '3.5 EV', #PH (NC)
             39 => '4 EV',
@@ -3058,7 +3058,7 @@ my %meterInfo2 = (
     },
 );
 
-# Face detection information (ref 12)
+# Face detection information (ref JR)
 my %faceInfo = (
     Format => 'int16u[4]',
     # re-order to top,left,height,width and scale to full-sized image like other Sony models
@@ -3230,54 +3230,54 @@ my %faceInfo = (
     FORMAT => 'int16u',
     PRIORITY => 0,
     NOTES => 'Camera settings for the A200, A300, A350, A700, A850 and A900.',
-    0x00 => { #12
+    0x00 => { #JR
         Name => 'ExposureTime',
         ValueConv => '$val ? 2 ** (6 - $val/8) : 0',
         ValueConvInv => '$val ? int((6 - log($val) / log(2)) * 8 + 0.5) : 0',
         PrintConv => '$val ? Image::ExifTool::Exif::PrintExposureTime($val) : "Bulb"',
         PrintConvInv => 'lc($val) eq "bulb" ? 0 : Image::ExifTool::Exif::ConvertFraction($val)',
     },
-    0x01 => { #12
+    0x01 => { #JR
         Name => 'FNumber',
         ValueConv => '2 ** (($val/8 - 1) / 2)',
         ValueConvInv => 'int((log($val) * 2 / log(2) + 1) * 8 + 0.5)',
         PrintConv => 'Image::ExifTool::Exif::PrintFNumber($val)',
         PrintConvInv => '$val',
     },
-    0x02 => { #12 (requires external flash)
+    0x02 => { #JR (requires external flash)
         Name => 'HighSpeedSync',
         PrintConv => {
             0 => 'Off',
             1 => 'On',
         },
     },
-    0x03 => { #12
+    0x03 => { #JR
         Name => 'ExposureCompensationSet',
         ValueConv => '($val - 128) / 24',
         ValueConvInv => 'int($val * 24 + 128.5)',
         PrintConv => '$val ? sprintf("%+.1f",$val) : $val',
         PrintConvInv => 'Image::ExifTool::Exif::ConvertFraction($val)',
     },
-    0x04 => { #7/12
+    0x04 => { #7/JR
         Name => 'DriveMode',
         Mask => 0xff, # (not sure what upper byte is for)
         PrintConv => {
             0x01 => 'Single Frame',
             0x02 => 'Continuous High', # A700/A900; not on A850
-            0x12 => 'Continuous Low', #12
+            0x12 => 'Continuous Low', #JR
             0x04 => 'Self-timer 10 sec',
             0x05 => 'Self-timer 2 sec, Mirror Lock-up',
             0x06 => 'Single-frame Bracketing',
             0x07 => 'Continuous Bracketing', # (A200 val=0x1107)
-            0x18 => 'White Balance Bracketing Low', #12
-            0x28 => 'White Balance Bracketing High', #12
-            0x19 => 'D-Range Optimizer Bracketing Low', #12
-            0x29 => 'D-Range Optimizer Bracketing High', #12
-            0x0a => 'Remote Commander', #12
-            0x0b => 'Mirror Lock-up', #12 (A850/A900; not on A700)
+            0x18 => 'White Balance Bracketing Low', #JR
+            0x28 => 'White Balance Bracketing High', #JR
+            0x19 => 'D-Range Optimizer Bracketing Low', #JR
+            0x29 => 'D-Range Optimizer Bracketing High', #JR
+            0x0a => 'Remote Commander', #JR
+            0x0b => 'Mirror Lock-up', #JR (A850/A900; not on A700)
         },
     },
-    0x05 => { #12
+    0x05 => { #JR
         Name => 'WhiteBalanceSetting',
         PrintConv => {
             2 => 'Auto',
@@ -3293,18 +3293,18 @@ my %faceInfo = (
             34 => 'Custom 3',
         },
     },
-    0x06 => { #7 (A700) (ref 12: at least also valid for A200, ValueConv as for ColorCompensationFilterSet)
+    0x06 => { #7 (A700) (ref JR: at least also valid for A200, ValueConv as for ColorCompensationFilterSet)
         Name => 'WhiteBalanceFineTune',
         ValueConv => '$val > 128 ? $val - 256 : $val',
     },
-    0x07 => { #12 as set in WB "Color Temperature/Color Filter" and in White Balance Bracketing
+    0x07 => { #JR as set in WB "Color Temperature/Color Filter" and in White Balance Bracketing
         Name => 'ColorTemperatureSet',
         ValueConv => '$val * 100',
         ValueConvInv => '$val / 100',
         PrintConv => '"$val K"',
         PrintConvInv => '$val =~ s/ ?K$//i; $val',
     },
-    0x08 => { #12 as set in WB "Color Temperature/Color Filter"
+    0x08 => { #JR as set in WB "Color Temperature/Color Filter"
         Name => 'ColorCompensationFilterSet',
         Notes => 'negative is green, positive is magenta',
         ValueConv => '$val > 128 ? $val - 256 : $val',
@@ -3312,14 +3312,14 @@ my %faceInfo = (
         PrintConv => '$val > 0 ? "+$val" : $val',
         PrintConvInv => '$val',
     },
-    0x0c => { #12 as set in WB "Custom" and in White Balance Bracketing
+    0x0c => { #JR as set in WB "Custom" and in White Balance Bracketing
         Name => 'ColorTemperatureCustom',
         ValueConv => '$val * 100',
         ValueConvInv => '$val / 100',
         PrintConv => '"$val K"',
         PrintConvInv => '$val =~ s/ ?K$//i; $val',
     },
-    0x0d => { #12 as set in WB "Custom"
+    0x0d => { #JR as set in WB "Custom"
         Name => 'ColorCompensationFilterCustom',
         Notes => 'negative is green, positive is magenta',
         ValueConv => '$val > 128 ? $val - 256 : $val',
@@ -3327,7 +3327,7 @@ my %faceInfo = (
         PrintConv => '$val > 0 ? "+$val" : $val',
         PrintConvInv => '$val',
     },
-    0x0f => { #12
+    0x0f => { #JR
         Name => 'WhiteBalance',
         PrintConv => {
             2 => 'Auto',
@@ -3349,7 +3349,7 @@ my %faceInfo = (
             1 => 'AF-S',
             2 => 'AF-C',
             3 => 'AF-A',
-            4 => 'DMF', #12
+            4 => 'DMF', #JR
         },
     },
     0x11 => { #JD (A700)
@@ -3365,9 +3365,9 @@ my %faceInfo = (
         Format => 'int16u',
         # The AF point as selected by the user in AFAreaMode=Local or Spot;
         # Reported value remains at the last-set position in AFAreaModes=Wide.
-        # A200, A300, A350: 9-point centre-cross (ref 12)
-        # A700: 11-point centre-dual-cross (ref 12)
-        # A850, A900: 9-point centre-dual-cross with 10 assist-points (ref 12)
+        # A200, A300, A350: 9-point centre-cross (ref JR)
+        # A700: 11-point centre-dual-cross (ref JR)
+        # A850, A900: 9-point centre-dual-cross with 10 assist-points (ref JR)
         PrintConvColumns => 2,
         PrintConv => {
             1 => 'Center',
@@ -3383,7 +3383,7 @@ my %faceInfo = (
             11 => 'Far Left', # (presumably A700 only)
         },
     },
-    0x13 => { #12
+    0x13 => { #JR
         Name => 'FlashMode',
         PrintConv => {
             0 => 'Autoflash',
@@ -3394,7 +3394,7 @@ my %faceInfo = (
             6 => 'Slow Sync',
         },
     },
-    0x14 => { #12
+    0x14 => { #JR
         Name => 'FlashExposureCompSet',
         Description => 'Flash Exposure Comp. Setting',
         # (as pre-selected by the user, not zero if flash didn't fire)
@@ -3451,7 +3451,7 @@ my %faceInfo = (
             16 => 'Sepia', #7
         },
     },
-    0x1b => { #12
+    0x1b => { #JR
         Name => 'ColorSpace',
         PrintConv => {
             0 => 'sRGB',
@@ -3549,19 +3549,19 @@ my %faceInfo = (
             129 => 'StyleBox1',
             130 => 'StyleBox2',
             131 => 'StyleBox3',
-            132 => 'StyleBox4', #12 (A850)
-            133 => 'StyleBox5', #12 (A850)
-            134 => 'StyleBox6', #12 (A850)
+            132 => 'StyleBox4', #JR (A850)
+            133 => 'StyleBox5', #JR (A850)
+            134 => 'StyleBox6', #JR (A850)
         },
     },
-    0x2e => { #12 (may not apply to A200/A300/A350 -- they don't have the AF/MF button)
+    0x2e => { #JR (may not apply to A200/A300/A350 -- they don't have the AF/MF button)
         Name => 'FocusModeSwitch',
         PrintConv => {
             0 => 'AF',
             1 => 'Manual',
         },
     },
-    0x2f => { #12
+    0x2f => { #JR
         Name => 'ShutterSpeedSetting',
         Notes => 'used in M, S and Program Shift S modes',
         ValueConv => '$val ? 2 ** (6 - $val/8) : 0',
@@ -3569,7 +3569,7 @@ my %faceInfo = (
         PrintConv => '$val ? Image::ExifTool::Exif::PrintExposureTime($val) : "Bulb"',
         PrintConvInv => 'lc($val) eq "bulb" ? 0 : Image::ExifTool::Exif::ConvertFraction($val)',
     },
-    0x30 => { #12
+    0x30 => { #JR
         Name => 'ApertureSetting',
         Notes => 'used in M, A and Program Shift A modes',
         ValueConv => '2 ** (($val/8 - 1) / 2)',
@@ -3586,7 +3586,7 @@ my %faceInfo = (
         Name => 'ImageStabilizationSetting',
         PrintConv => { 0 => 'Off', 1 => 'On' },
     },
-    0x3e => { #12
+    0x3e => { #JR
         Name => 'FlashAction',
         PrintConv => {
             0 => 'Did not fire',
@@ -3603,14 +3603,14 @@ my %faceInfo = (
             2 => 'Rotate 270 CW',
         },
     },
-    0x40 => { #12
+    0x40 => { #JR
         Name => 'AELock',
         PrintConv => {
             1 => 'Off',
             2 => 'On',
         },
     },
-    0x4c => { #12
+    0x4c => { #JR
         Name => 'FlashAction2',
         PrintConv => {
             1 => 'Fired, Autoflash',
@@ -3624,17 +3624,17 @@ my %faceInfo = (
             34 => 'Fired, Fill-flash, HSS',
         },
     },
-    0x4d => { #12
+    0x4d => { #JR
         Name => 'FocusMode', # (focus mode actually used)
         PrintConv => {
             0 => 'Manual',
             1 => 'AF-S',
             2 => 'AF-C',
             3 => 'AF-A',
-            4 => 'DMF', #12
+            4 => 'DMF', #JR
         },
     },
-    0x50 => { #12
+    0x50 => { #JR
         Name => 'BatteryState',
         PrintConv => {
             2 => 'Empty',      # 0%
@@ -3644,12 +3644,12 @@ my %faceInfo = (
             6 => 'Full',       # > 80%
         },
     },
-    0x51 => { #12
+    0x51 => { #JR
         Name => 'BatteryLevel',
         PrintConv => '"$val%"',
         PrintConvInv => '$val=~s/\s*\%//; $val',
     },
-    0x53 => { #12
+    0x53 => { #JR
         Name => 'FocusStatus',
         PrintConv => {
             0 => 'Not confirmed',
@@ -3695,20 +3695,20 @@ my %faceInfo = (
             50 => '1/2 EV',
         },
     },
-    0x6a => { #12
+    0x6a => { #JR
         Name => 'RedEyeReduction',
         PrintConv => {
             0 => 'Off',
             1 => 'On',
         },
     },
-    0x9a => { #12
+    0x9a => { #JR
         Name => 'FolderNumber',
         Mask => 0x03ff, # (not sure what the upper 6 bits are for)
         PrintConv => 'sprintf("%.3d",$val)',
         PrintConvInv => '$val',
     },
-    0x9b => { #12
+    0x9b => { #JR
         Name => 'ImageNumber',
         Mask => 0x3fff, # (not sure what the upper 2 bits are for)
         PrintConv => 'sprintf("%.4d",$val)',
@@ -3724,28 +3724,28 @@ my %faceInfo = (
     PRIORITY => 0,
     NOTES => 'Camera settings for the A230, A290, A330, A380 and A390.',
 ### 0x00-0x03: same TagID as CameraSettings
-    0x00 => { #12
+    0x00 => { #JR
         Name => 'ExposureTime',
         ValueConv => '$val ? 2 ** (6 - $val/8) : 0',
         ValueConvInv => '$val ? int((6 - log($val) / log(2)) * 8 + 0.5) : 0',
         PrintConv => '$val ? Image::ExifTool::Exif::PrintExposureTime($val) : "Bulb"',
         PrintConvInv => 'lc($val) eq "bulb" ? 0 : Image::ExifTool::Exif::ConvertFraction($val)',
     },
-    0x01 => { #12
+    0x01 => { #JR
         Name => 'FNumber',
         ValueConv => '2 ** (($val/8 - 1) / 2)',
         ValueConvInv => 'int((log($val) * 2 / log(2) + 1) * 8 + 0.5)',
         PrintConv => 'Image::ExifTool::Exif::PrintFNumber($val)',
         PrintConvInv => '$val',
     },
-    0x02 => { #12 (requires external flash)
+    0x02 => { #JR (requires external flash)
         Name => 'HighSpeedSync',
         PrintConv => {
             0 => 'Off',
             1 => 'On',
         },
     },
-    0x03 => { #12
+    0x03 => { #JR
         Name => 'ExposureCompensationSet',
         ValueConv => '($val - 128) / 24',
         ValueConvInv => 'int($val * 24 + 128.5)',
@@ -3753,7 +3753,7 @@ my %faceInfo = (
         PrintConvInv => 'Image::ExifTool::Exif::ConvertFraction($val)',
     },
 ### 0x04-0x11: subtract 1 from CameraSettings TagID
-    0x04 => { #12
+    0x04 => { #JR
         Name => 'WhiteBalanceSetting',
         PrintConv => {
             2 => 'Auto',
@@ -3769,18 +3769,18 @@ my %faceInfo = (
             34 => 'Custom 3',
         },
     },
-    0x05 => { #12
+    0x05 => { #JR
         Name => 'WhiteBalanceFineTune',
         ValueConv => '$val > 128 ? $val - 256 : $val',
     },
-    0x06 => { #12 as set in WB "Color Temperature/Color Filter" and in White Balance Bracketing
+    0x06 => { #JR as set in WB "Color Temperature/Color Filter" and in White Balance Bracketing
         Name => 'ColorTemperatureSet',
         ValueConv => '$val * 100',
         ValueConvInv => '$val / 100',
         PrintConv => '"$val K"',
         PrintConvInv => '$val =~ s/ ?K$//i; $val',
     },
-    0x07 => { #12 as set in WB "Color Temperature/Color Filter"
+    0x07 => { #JR as set in WB "Color Temperature/Color Filter"
         Name => 'ColorCompensationFilterSet',
         Notes => 'negative is green, positive is magenta',
         ValueConv => '$val > 128 ? $val - 256 : $val',
@@ -3788,18 +3788,18 @@ my %faceInfo = (
         PrintConv => '$val > 0 ? "+$val" : $val',
         PrintConvInv => '$val',
     },
-    0x08 => { #12
+    0x08 => { #JR
         Name => 'CustomWB_RGBLevels',
         Format => 'int16u[3]',
     },
-    0x0b => { #12 as set in WB "Custom" and in White Balance Bracketing
+    0x0b => { #JR as set in WB "Custom" and in White Balance Bracketing
         Name => 'ColorTemperatureCustom',
         ValueConv => '$val * 100',
         ValueConvInv => '$val / 100',
         PrintConv => '"$val K"',
         PrintConvInv => '$val =~ s/ ?K$//i; $val',
     },
-    0x0c => { #12 as set in WB "Custom"
+    0x0c => { #JR as set in WB "Custom"
         Name => 'ColorCompensationFilterCustom',
         Notes => 'negative is green, positive is magenta',
         ValueConv => '$val > 128 ? $val - 256 : $val',
@@ -3807,7 +3807,7 @@ my %faceInfo = (
         PrintConv => '$val > 0 ? "+$val" : $val',
         PrintConvInv => '$val',
     },
-    0x0e => { #12
+    0x0e => { #JR
         Name => 'WhiteBalance',
         PrintConv => {
             2 => 'Auto',
@@ -3822,7 +3822,7 @@ my %faceInfo = (
             17 => 'Shade',
         },
     },
-    0x0f => { #12/PH (educated guess)
+    0x0f => { #JR/PH (educated guess)
         Name => 'FocusModeSetting',
         PrintConv => {
             0 => 'Manual',
@@ -3832,7 +3832,7 @@ my %faceInfo = (
             # seen 5 for A380 (FocusMode was Manual and FocusStatus was Confirmed)
         },
     },
-    0x10 => { #12/PH (educated guess)
+    0x10 => { #JR/PH (educated guess)
         Name => 'AFAreaMode',
         PrintConv => {
             0 => 'Wide',
@@ -3840,12 +3840,12 @@ my %faceInfo = (
             2 => 'Spot',
         },
     },
-    0x11 => { #12/PH (educated guess)
+    0x11 => { #JR/PH (educated guess)
         Name => 'AFPointSetting',
         Format => 'int16u',
         # The AF point as selected by the user in AFAreaMode=Local or Spot;
         # Reported value remains at the last-set position in AFAreaModes=Wide.
-        # (all of these cameras have a 9-point centre-cross AF system, ref 12)
+        # (all of these cameras have a 9-point centre-cross AF system, ref JR)
         PrintConvColumns => 2,
         PrintConv => {
             1 => 'Center',
@@ -3860,7 +3860,7 @@ my %faceInfo = (
         },
     },
 ### 0x12-0x18: subtract 2 from CameraSettings TagID
-    0x12 => { #12
+    0x12 => { #JR
         Name => 'FlashExposureCompSet',
         Description => 'Flash Exposure Comp. Setting',
         # (as pre-selected by the user, not zero if flash didn't fire)
@@ -3992,11 +3992,11 @@ my %faceInfo = (
         SeparateTable => 'ExposureProgram',
         PrintConv => \%sonyExposureProgram,
     },
-    0x3d => { # (copied from CameraSettings, ref 12)
+    0x3d => { # (copied from CameraSettings, ref JR)
         Name => 'ImageStabilizationSetting',
         PrintConv => { 0 => 'Off', 1 => 'On' },
     },
-    0x3e => { #12
+    0x3e => { #JR
         Name => 'FlashAction',
         PrintConv => {
             0 => 'Did not fire',
@@ -4013,14 +4013,14 @@ my %faceInfo = (
             2 => 'Rotate 270 CW',
         },
     },
-    0x40 => { #12
+    0x40 => { #JR
         Name => 'AELock',
         PrintConv => {
             1 => 'Off',
             2 => 'On',
         },
     },
-    0x4c => { #12
+    0x4c => { #JR
         Name => 'FlashAction2',
         PrintConv => {
             1 => 'Fired, Autoflash',
@@ -4034,7 +4034,7 @@ my %faceInfo = (
             34 => 'Fired, Fill-flash, HSS',
         },
     },
-    0x4d => { #12
+    0x4d => { #JR
         Name => 'FocusMode', # (focus mode actually used)
         PrintConv => {
             0 => 'Manual',
@@ -4043,7 +4043,7 @@ my %faceInfo = (
             3 => 'AF-A',
         },
     },
-    0x53 => { #12 (copied from CameraSettings, but all bits may not be applicable for these models)
+    0x53 => { #JR (copied from CameraSettings, but all bits may not be applicable for these models)
         Name => 'FocusStatus',
         PrintConv => {
             0 => 'Not confirmed',
@@ -4063,14 +4063,14 @@ my %faceInfo = (
             3 => 'Small',
         },
     },
-    0x55 => { # (copied from CameraSettings, ref 12)
+    0x55 => { # (copied from CameraSettings, ref JR)
         Name => 'AspectRatio',
         PrintConv => {
             1 => '3:2',
             2 => '16:9',
         },
     },
-    0x56 => { # (copied from CameraSettings, ref 12)
+    0x56 => { # (copied from CameraSettings, ref JR)
         Name => 'Quality',
         PrintConv => {
             0 => 'RAW',
@@ -4082,7 +4082,7 @@ my %faceInfo = (
             48 => 'Standard',
         },
     },
-    0x58 => { # (copied from CameraSettings, ref 12)
+    0x58 => { # (copied from CameraSettings, ref JR)
         Name => 'ExposureLevelIncrements',
         PrintConv => {
             33 => '1/3 EV',
@@ -4091,14 +4091,14 @@ my %faceInfo = (
     },
 ### 0x5a onwards: subtract 1 from CameraSettings TagID
     # (0x69 not confirmed)
-    #0x69 => { #12
+    #0x69 => { #JR
     #    Name => 'RedEyeReduction',
     #    PrintConv => {
     #        0 => 'Off',
     #        1 => 'On',
     #    },
     #},
-    0x7e => { #12
+    0x7e => { #JR
         Name => 'DriveMode',
         Mask => 0xff, # (not sure what upper byte is for)
         PrintConv => { # (values confirmed for specified models - PH)
@@ -4111,7 +4111,7 @@ my %faceInfo = (
             0x0b => 'Continuous Self-timer', # (A230 val=0x800b [5 shots], A330 val=0x400b [3 shots])
         },
     },
-    0x7f => { #12
+    0x7f => { #JR
         Name => 'FlashMode',
         PrintConv => {
             0 => 'Autoflash',
@@ -4144,7 +4144,7 @@ my %faceInfo = (
         Camera settings for models such as the A33, A35, A55, A450, A500, A550,
         A560, A580, NEX-3, NEX-5, NEX-C3 and NEX-VG10E.
     },
-    0x00 => { #12
+    0x00 => { #JR
         Name => 'ShutterSpeedSetting',
         Notes => 'used only in M and S exposure modes',
         ValueConv => '$val ? 2 ** (6 - $val/8) : 0',
@@ -4152,7 +4152,7 @@ my %faceInfo = (
         PrintConv => '$val ? Image::ExifTool::Exif::PrintExposureTime($val) : "Bulb"',
         PrintConvInv => 'lc($val) eq "bulb" ? 0 : Image::ExifTool::Exif::ConvertFraction($val)',
     },
-    0x01 => { #12
+    0x01 => { #JR
         Name => 'ApertureSetting',
         Notes => 'used only in M and A exposure modes',
         ValueConv => '2 ** (($val/8 - 1) / 2)',
@@ -4174,14 +4174,14 @@ my %faceInfo = (
             254 => 'n/a', # get this for multi-shot noise reduction
         },
     },
-    0x03 => { #12
+    0x03 => { #JR
         Name => 'ExposureCompensationSet',
         ValueConv => '($val - 128) / 24', #PH
         ValueConvInv => 'int($val * 24 + 128.5)',
         PrintConv => '$val ? sprintf("%+.1f",$val) : $val',
         PrintConvInv => 'Image::ExifTool::Exif::ConvertFraction($val)',
     },
-    0x04 => { #12
+    0x04 => { #JR
         Name => 'DriveModeSetting',
         # Same drivemode info is repeated in 0x0034, but with at least the following exceptions:
         # - 0x0034 not for A550 ? - seen "0"
@@ -4205,7 +4205,7 @@ my %faceInfo = (
             0xc0 => 'Remote Commander',
         },
     },
-    0x05 => { #12
+    0x05 => { #JR
         Name => 'ExposureProgram',
         # Camera exposure program/mode as selected with the Mode dial.
         # For SCN a further selection is done via the menu
@@ -4213,7 +4213,7 @@ my %faceInfo = (
         SeparateTable => 'ExposureProgram2',
         PrintConv => \%sonyExposureProgram2,
     },
-    0x06 => { #12
+    0x06 => { #JR
         Name => 'FocusModeSetting',
         PrintConv => {
             17 => 'AF-S',
@@ -4223,7 +4223,7 @@ my %faceInfo = (
             48 => 'DMF', # (NC) (seen for NEX-5)
         },
     },
-    0x07 => { #12
+    0x07 => { #JR
         Name => 'MeteringMode',
         PrintConv => {
             1 => 'Multi-segment',
@@ -4231,7 +4231,7 @@ my %faceInfo = (
             3 => 'Spot',
         },
     },
-    0x09 => { #12
+    0x09 => { #JR
         Name => 'SonyImageSize',
         PrintConv => {  # values confirmed as noted for the A580 and A33
            21 => 'Large (3:2)',    # A580: 16M  (4912x3264), A33: 14M  (4592x3056)
@@ -4242,7 +4242,7 @@ my %faceInfo = (
            27 => 'Small (16:9)',   # A580: 3.4M (2448x1376)
         },
     },
-    0x0a => { #12
+    0x0a => { #JR
         Name => 'AspectRatio',
         # normally 4 for A580 3:2 ratio images
         # seen 8 when selecting 16:9 via menu, and when selecting Panorama mode
@@ -4251,7 +4251,7 @@ my %faceInfo = (
             8 => '16:9',
         },
     },
-    0x0b => { #12
+    0x0b => { #JR
         Name => 'Quality',
         PrintConv => {
             2 => 'RAW',
@@ -4269,14 +4269,14 @@ my %faceInfo = (
         },
     },
     0x0d => 'DynamicRangeOptimizerLevel',
-    0x0e => { #12
+    0x0e => { #JR
         Name => 'ColorSpace',
         PrintConv => {
             1 => 'sRGB',
             2 => 'Adobe RGB',
         },
     },
-    0x0f => { #12
+    0x0f => { #JR
         Name => 'CreativeStyleSetting',
         PrintConvColumns => 2,
         PrintConv => {
@@ -4288,25 +4288,25 @@ my %faceInfo = (
             160 => 'Sunset',
         },
     },
-    0x10 => { #12 (seen values 253, 254, 255, 0, 1, 2, 3)
+    0x10 => { #JR (seen values 253, 254, 255, 0, 1, 2, 3)
         Name => 'ContrastSetting',
         Format => 'int8s',
         PrintConv => '$val > 0 ? "+$val" : $val',
         PrintConvInv => '$val',
     },
-    0x11 => { #12
+    0x11 => { #JR
         Name => 'SaturationSetting',
         Format => 'int8s',
         PrintConv => '$val > 0 ? "+$val" : $val',
         PrintConvInv => '$val',
     },
-    0x12 => { #12
+    0x12 => { #JR
         Name => 'SharpnessSetting',
         Format => 'int8s',
         PrintConv => '$val > 0 ? "+$val" : $val',
         PrintConvInv => '$val',
     },
-    0x16 => { #12
+    0x16 => { #JR
         Name => 'WhiteBalanceSetting',
         # many guessed, based on "logical system" as observed for Daylight and Shade and steps of 16 between the modes
         PrintHex => 1,
@@ -4314,7 +4314,7 @@ my %faceInfo = (
         PrintConv => \%whiteBalanceSetting,
         SeparateTable => 1,
     },
-    0x17 => { #12
+    0x17 => { #JR
         Name => 'ColorTemperatureSetting',
         # matches "0xb021 ColorTemperature" when WB set to "Custom" or "Color Temperature/Color Filter"
         ValueConv => '$val * 100',
@@ -4322,7 +4322,7 @@ my %faceInfo = (
         PrintConv => '"$val K"',
         PrintConvInv => '$val =~ s/ ?K$//i; $val',
     },
-    0x18 => { #12
+    0x18 => { #JR
         Name => 'ColorCompensationFilterSet',
         # seen 0, 1-9 and 245-255, corresponding to 0, M1-M9 and G9-G1 on camera display
         # matches "0xb022 ColorCompensationFilter" when WB set to "Custom" or "Color Temperature/Color Filter"
@@ -4331,15 +4331,15 @@ my %faceInfo = (
         PrintConv => '$val > 0 ? "+$val" : $val',
         PrintConvInv => '$val',
     },
-    0x19 => { #12
+    0x19 => { #JR
         Name => 'CustomWB_RGBLevels',
         Format => 'int16uRev[3]',
         # 0x19 - 0x1e are related to Custom WB measurements performed by the camera.
         # The values change only each time when measuring and setting a new Custom WB.
         # (0x19,0x1a) and (0x1d,0x1e) are same as MoreSettings (0x1a,0x1b) and (0x1c,0x1d)
     },
-    # 0x1f - always 2 (ref 12)
-    0x20 => { #12
+    # 0x1f - always 2 (ref JR)
+    0x20 => { #JR
         Name => 'FlashMode',
         PrintConvColumns => 2,
         PrintConv => {
@@ -4351,14 +4351,14 @@ my %faceInfo = (
             20 => 'Wireless',
         },
     },
-    0x21 => { #12
+    0x21 => { #JR
         Name => 'FlashControl',
         PrintConv => {
             1 => 'ADI Flash',
             2 => 'Pre-flash TTL',
         },
     },
-    0x23 => { #12
+    0x23 => { #JR
         Name => 'FlashExposureCompSet',
         Description => 'Flash Exposure Comp. Setting',
         # (as pre-selected by the user, not zero if flash didn't fire)
@@ -4373,25 +4373,25 @@ my %faceInfo = (
             1 => 'Wide',
             2 => 'Spot',
             3 => 'Local',
-            4 => 'Flexible', #12
+            4 => 'Flexible', #JR
             # (Flexible Spot is a grid of 17x11 points for the NEX-5)
         },
     },
-    0x25 => { #12
+    0x25 => { #JR
         Name => 'LongExposureNoiseReduction',
         PrintConv => {
             1 => 'Off',
             16 => 'On',  # (unused or dark subject)
         },
     },
-    0x26 => { #12
+    0x26 => { #JR
         Name => 'HighISONoiseReduction',
         PrintConv => {
             16 => 'Low',
             19 => 'Auto',
         },
     },
-    0x27 => { #12
+    0x27 => { #JR
         Name => 'SmileShutterMode',
         PrintConv => {
             17 => 'Slight Smile',
@@ -4399,7 +4399,7 @@ my %faceInfo = (
             19 => 'Big Smile',
         },
     },
-    0x28 => { #12
+    0x28 => { #JR
         Name => 'RedEyeReduction',
         PrintConv => {
             1 => 'Off',
@@ -4419,9 +4419,9 @@ my %faceInfo = (
         PrintConvColumns => 3,
         PrintConv => {
             33 => '1 EV',
-            34 => '1.5 EV', #12 (NC)
+            34 => '1.5 EV', #JR (NC)
             35 => '2 EV',
-            36 => '2.5 EV', #12 (NC)
+            36 => '2.5 EV', #JR (NC)
             37 => '3 EV',
             38 => '3.5 EV', #PH (NC)
             39 => '4 EV',
@@ -4429,7 +4429,7 @@ my %faceInfo = (
             41 => '6 EV',
         },
     },
-    0x2f => { #12 (not sure what is difference with 0x85)
+    0x2f => { #JR (not sure what is difference with 0x85)
         Name => 'ViewingMode',
         PrintConv => {
             16 => 'ViewFinder',
@@ -4437,21 +4437,21 @@ my %faceInfo = (
             34 => 'Quick AF Live View',
         },
     },
-    0x30 => { #12
+    0x30 => { #JR
         Name => 'FaceDetection',
         PrintConv => {
             1 => 'Off',
             16 => 'On',
         },
     },
-    0x31 => { #12
+    0x31 => { #JR
         Name => 'SmileShutter',
         PrintConv => {
             1 => 'Off',
             16 => 'On',
         },
     },
-    0x32 => { #12
+    0x32 => { #JR
         Name => 'SweepPanoramaSize',
         Condition => '$$self{Model} !~ /^DSLR-(A450|A500|A550)$/',
         PrintConv => {
@@ -4459,7 +4459,7 @@ my %faceInfo = (
             2 => 'Wide',
         },
     },
-    0x33 => { #12
+    0x33 => { #JR
         Name => 'SweepPanoramaDirection',
         Condition => '$$self{Model} !~ /^DSLR-(A450|A500|A550)$/',
         PrintConv => {
@@ -4469,7 +4469,7 @@ my %faceInfo = (
             4 => 'Down',
         },
     },
-    0x34 => { #12
+    0x34 => { #JR
         Name => 'DriveMode', # (drive mode actually used)
         Condition => '$$self{Model} !~ /^DSLR-(A450|A500|A550)$/',
         PrintHex => 1,
@@ -4503,7 +4503,7 @@ my %faceInfo = (
             255 => 'None', # seen for NEX-3/5/C3
         },
     },
-    0x36 => { #12 (not 100% sure about this one)
+    0x36 => { #JR (not 100% sure about this one)
         Name => 'LiveViewAFSetting',
         Condition => '$$self{Model} !~ /^(NEX-|DSLR-(A450|A500|A550)$)/',
         PrintConv => {
@@ -4515,7 +4515,7 @@ my %faceInfo = (
             # - changes into Phase-AF when switching to Quick AF LV.
         },
     },
-    0x38 => { #12
+    0x38 => { #JR
         Name => 'PanoramaSize3D',
         Description => '3D Panorama Size',
         Condition => '$$self{Model} !~ /^DSLR-(A450|A500|A550)$/',
@@ -4526,7 +4526,7 @@ my %faceInfo = (
             3 => '16:9',
         },
     },
-    0x83 => { #12
+    0x83 => { #JR
         Name => 'AFButtonPressed',
         # only indicates pressing and holding the "AF" button (centre-controller),
         # not pressing the shutter release button halfway down
@@ -4536,7 +4536,7 @@ my %faceInfo = (
             16 => 'Yes',
         },
     },
-    0x84 => { #12 (not 100% sure about this one)
+    0x84 => { #JR (not 100% sure about this one)
         Name => 'LiveViewMetering',
         Condition => '$$self{Model} !~ /^(NEX-|DSLR-(A450|A500|A550)$)/',
         PrintConv => {
@@ -4545,7 +4545,7 @@ my %faceInfo = (
             32 => '1200-zone Evaluative',   # SLT, or DSLR with LiveView/OVF switch in LiveView position
         },
     },
-    0x85 => { #12 (not sure what is difference with 0x2f)
+    0x85 => { #JR (not sure what is difference with 0x2f)
         Name => 'ViewingMode2',
         Condition => '$$self{Model} !~ /^(NEX-|DSLR-(A450|A500|A550)$)/',
         PrintConv => {
@@ -4555,7 +4555,7 @@ my %faceInfo = (
             34 => 'Quick AF Live View',
         },
     },
-    0x86 => { #12
+    0x86 => { #JR
         Name => 'AELock',
         Condition => '$$self{Model} !~ /^(NEX-|DSLR-(A450|A500|A550)$)/',
         PrintConv => {
@@ -4563,7 +4563,7 @@ my %faceInfo = (
             2 => 'Off',
         },
     },
-    0x87 => { #12
+    0x87 => { #JR
         Name => 'FlashStatusBuilt-in',
         Condition => '$$self{Model} !~ /^DSLR-(A450|A500|A550)/',
         PrintConv => {
@@ -4571,7 +4571,7 @@ my %faceInfo = (
             2 => 'On',
         },
     },
-    0x88 => { #12
+    0x88 => { #JR
         Name => 'FlashStatusExternal',
         Condition => '$$self{Model} !~ /^DSLR-(A450|A500|A550)/',
         PrintConv => {
@@ -4580,7 +4580,7 @@ my %faceInfo = (
             3 => 'On',
         },
     },
-#    0x8a => { #12
+#    0x8a => { #JR
 #        Name => 'LensAF',
 #        Condition => '$$self{Model} !~ /^DSLR-(A450|A500|A550)$/',
 #        PrintConv => {
@@ -4588,7 +4588,7 @@ my %faceInfo = (
 #            16 => 'AF Lens',
 #        },
 #    },
-    0x8b => { #12
+    0x8b => { #JR
         Name => 'LiveViewFocusMode',
         Condition => '$$self{Model} !~ /^(NEX-|DSLR-(A450|A500|A550)$)/',
         PrintConv => {
@@ -4597,7 +4597,7 @@ my %faceInfo = (
             16 => 'Manual',
         },
     },
-#    0x8e => { #12
+#    0x8e => { #JR
 #        Name => 'LensSAM',
 #        Condition => '$$self{Model} !~ /^DSLR-(A450|A500|A550)$/',
 #        PrintConv => {
@@ -4605,7 +4605,7 @@ my %faceInfo = (
 #            16 => 'SAM Lens',
 #        },
 #    },
-    0x99 => { #12
+    0x99 => { #JR
         Name => 'LensMount',
         Condition => '$$self{Model} !~ /^DSLR-(A450|A500|A550)$/',
         DataMember => 'LensMount',
@@ -4616,7 +4616,7 @@ my %faceInfo = (
             17 => 'E-mount',
         },
     },
-#    0x9b => { #12
+#    0x9b => { #JR
 #        Name => 'LensOSS',
 #        Condition => '$$self{Model} !~ /^DSLR-(A450|A500|A550)$/',
 #        PrintConv => {
@@ -4626,7 +4626,7 @@ my %faceInfo = (
 #        },
 #    },
     # 0x9c - 1; 2 for multi-shot modes
-    0x10c => { #12
+    0x10c => { #JR
         Name => 'SequenceNumber',
         Condition => '$$self{Model} !~ /^DSLR-(A450|A500|A550)$/', # seen 18 for A550, so better exclude ?
         # normally 0; seen 1,2,3 for bracketing, 6 for Handheld Night Shot, 3 for HDR, 6 for MFNR
@@ -4640,7 +4640,7 @@ my %faceInfo = (
     # - upper 8 bits (0x0117): always value 4, meaning unknown
     # - next 10 bits: FolderNumber (max. 999 according to manual)
     # - last 14 bits: ImageNumber  (max 9999)
-    0x0114 => { #12
+    0x0114 => { #JR
         Name => 'FolderNumber',
         Condition => '$$self{Model} !~ /^DSLR-(A450|A500|A550)$/',
         Format => 'int32u',
@@ -4650,7 +4650,7 @@ my %faceInfo = (
         PrintConv => 'sprintf("%.3d",$val)',
         PrintConvInv => '$val',
     },
-    276.1 => { #12 (0x0114.1)
+    276.1 => { #JR (0x0114.1)
         Name => 'ImageNumber',
         Condition => '$$self{Model} !~ /^DSLR-(A450|A500|A550)$/',
         Format => 'int32u',
@@ -4658,7 +4658,7 @@ my %faceInfo = (
         PrintConv => 'sprintf("%.4d",$val)',
         PrintConvInv => '$val',
     },
-    0x200 => { #12
+    0x200 => { #JR
         Name => 'ShotNumberSincePowerUp2',
         Notes => q{
             same as ShotNumberSincePowerUp for single-shot images, but includes all
@@ -4669,7 +4669,7 @@ my %faceInfo = (
         Condition => '$$self{Model} !~ /^DSLR-(A450|A500|A550)$/',
         Format => 'int32u',
     },
-    0x283 => { #12
+    0x283 => { #JR
         Name => 'AFButtonPressed',
         # only indicates pressing and holding the "AF" button (centre-controller),
         # not pressing the shutter release button halfway down
@@ -4679,7 +4679,7 @@ my %faceInfo = (
             16 => 'Yes',
         },
     },
-    0x284 => { #12 (not 100% sure about this one)
+    0x284 => { #JR (not 100% sure about this one)
         Name => 'LiveViewMetering',
         Condition => '$$self{Model} =~ /^DSLR-(A450|A500|A550)$/',
         PrintConv => {
@@ -4688,7 +4688,7 @@ my %faceInfo = (
             32 => '1200-zone Evaluative',   # DSLR with LiveView/OVF switch in LiveView position
         },
     },
-    0x285 => { #12 (not sure what is difference with 0x2f)
+    0x285 => { #JR (not sure what is difference with 0x2f)
         Name => 'ViewingMode2',
         Condition => '$$self{Model} =~ /^DSLR-(A450|A500|A550)$/',
         PrintConv => {
@@ -4698,7 +4698,7 @@ my %faceInfo = (
             34 => 'Quick AF Live View',
         },
     },
-    0x286 => { #12
+    0x286 => { #JR
         Name => 'AELock',
         Condition => '$$self{Model} =~ /^DSLR-(A450|A500|A550)$/',
         PrintConv => {
@@ -4706,7 +4706,7 @@ my %faceInfo = (
             2 => 'Off',
         },
     },
-    0x287 => { #12
+    0x287 => { #JR
         Name => 'FlashStatusBuilt-in',
         Condition => '$$self{Model} =~ /^DSLR-(A450|A500|A550)$/',
         Notes => 'A450, A500 and A550',
@@ -4715,7 +4715,7 @@ my %faceInfo = (
             2 => 'On',
         },
     },
-    0x288 => { #12
+    0x288 => { #JR
         Name => 'FlashStatusExternal',
         Condition => '$$self{Model} =~ /^DSLR-(A450|A500|A550)$/',
         Notes => 'A450, A500 and A550',
@@ -4725,7 +4725,7 @@ my %faceInfo = (
             3 => 'On',
         },
     },
-    0x28b => { #12
+    0x28b => { #JR
         Name => 'LiveViewFocusMode',
         Condition => '$$self{Model} =~ /^DSLR-(A450|A500|A550)$/',
         PrintConv => {
@@ -4734,7 +4734,7 @@ my %faceInfo = (
             16 => 'Manual',
         },
     },
-    0x30c => { #12
+    0x30c => { #JR
         Name => 'SequenceNumber',
         Condition => '$$self{Model} =~ /^DSLR-(A450|A500|A550)$/',
         Notes => 'A450, A500 and A550',
@@ -4745,7 +4745,7 @@ my %faceInfo = (
             OTHER => sub { shift }, # pass all other numbers straight through
         },
     },
-    0x314 => { #12
+    0x314 => { #JR
         Name => 'ImageNumber',
         Condition => '$$self{Model} =~ /^DSLR-(A450|A500|A550)$/',
         Format => 'int16u',
@@ -4754,7 +4754,7 @@ my %faceInfo = (
         PrintConv => 'sprintf("%.4d",$val)',
         PrintConvInv => '$val',
     },
-    0x316 => { #12
+    0x316 => { #JR
         Name => 'FolderNumber',
         Condition => '$$self{Model} =~ /^DSLR-(A450|A500|A550)$/',
         Notes => 'A450, A500 and A550',
@@ -4778,14 +4778,14 @@ my %faceInfo = (
         PrintConvInv => 'my @a=split(/\./,$val);(hex($a[0])<<8)|hex($a[1])',
         # seen values 1.00, 1.01, 1.02, 1.03 and 1.04 for NEX-3/5/5C/C3/VG10/VG10E with various Firmware versions.
     },
-    0x3f7 => { #12
+    0x3f7 => { #JR
         Name => 'LensType2',
         Condition => '($$self{Model} =~ /^NEX-/) and ($$self{LensMount} != 1)',
         Format => 'int16u',
         SeparateTable => 1,
         PrintConv => \%sonyLensTypes2,
     },
-    0x400 => { #12
+    0x400 => { #JR
         Name => 'ImageNumber',
         Condition => '$$self{Model} =~ /^DSLR-(A450|A500|A550)$/',
         Format => 'int16u',
@@ -4794,7 +4794,7 @@ my %faceInfo = (
         PrintConv => 'sprintf("%.4d",$val)',
         PrintConvInv => '$val',
     },
-    0x402 => { #12
+    0x402 => { #JR
         Name => 'FolderNumber',
         Condition => '$$self{Model} =~ /^DSLR-(A450|A500|A550)$/',
         Format => 'int16u',
@@ -4812,7 +4812,7 @@ my %faceInfo = (
     FORMAT => 'int16u',
 );
 
-# extra hardware information (ref 12)
+# extra hardware information (ref JR)
 %Image::ExifTool::Sony::ExtraInfo = (
     %binaryDataAttrs,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
@@ -4899,7 +4899,7 @@ my %faceInfo = (
     },
 );
 
-# extra hardware information (ref 12)
+# extra hardware information (ref JR)
 %Image::ExifTool::Sony::ExtraInfo2 = (
     %binaryDataAttrs,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
@@ -4918,7 +4918,7 @@ my %faceInfo = (
     },
 );
 
-# extra hardware information (ref 12)
+# extra hardware information (ref JR)
 %Image::ExifTool::Sony::ExtraInfo3 = (
     %binaryDataAttrs,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
@@ -5090,7 +5090,7 @@ my %faceInfo = (
 );
 
 
-# more AF information (ref 12)
+# more AF information (ref JR)
 %Image::ExifTool::Sony::AFInfo2 = (
     %binaryDataAttrs,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
@@ -5164,11 +5164,11 @@ my %faceInfo = (
         PrintConv => '$self->ConvertDateTime($val)',
         PrintConvInv => '$self->InverseDateTime($val,0)',
     },
-    0x1a => { #12
+    0x1a => { #JR
         Name => 'SonyImageHeight',
         Format => 'int16u',
     },
-    0x1c => { #12
+    0x1c => { #JR
         Name => 'SonyImageWidth',
         Format => 'int16u',
     },
@@ -5228,10 +5228,10 @@ my %sequenceFileNumber = ( #PH
     Name => 'SequenceFileNumber',
     Notes => 'file number in burst sequence',
     Format => 'int32u',
-    ValueConv => '$val + 1', #12
+    ValueConv => '$val + 1', #JR
     ValueConvInv => '$val - 1',
 );
-my %releaseMode2 = ( #12
+my %releaseMode2 = ( #JR
     Name => 'ReleaseMode2',
     SeparateTable => 'ReleaseMode2',
     PrintConv => {
@@ -5245,11 +5245,11 @@ my %releaseMode2 = ( #12
         8 => 'Continuous - Anti-Motion Blur, Hand-held Twilight', # (HX9V)
         9 => 'Continuous - HDR',
         10 => 'Continuous - Background defocus', # (HX9V)
-        13 => 'Continuous - 3D Sweep Panorama', #PH/12
-        15 => 'Continuous - High Resolution Sweep Panorama', #12 (HX50V)
+        13 => 'Continuous - 3D Sweep Panorama', #PH/JR
+        15 => 'Continuous - High Resolution Sweep Panorama', #JR (HX50V)
         16 => 'Continuous - 3D Image', # (HX9V)
-        17 => 'Continuous - Burst 2', # (WX7 - PH) (#12 9400-SequenceLength=10 shots)
-        19 => 'Continuous - Speed/Advance Priority', #PH/12 (RX100)
+        17 => 'Continuous - Burst 2', # (WX7 - PH) (#JR 9400-SequenceLength=10 shots)
+        19 => 'Continuous - Speed/Advance Priority', #PH/JR (RX100)
         20 => 'Continuous - Multi Frame NR',
         23 => 'Single-frame - Exposure Bracketing', # (NC, seen for ILCE-7)
         26 => 'Continuous Low', #PH (A77)
@@ -5260,7 +5260,7 @@ my %releaseMode2 = ( #12
     },
 );
 
-# tag definitions for Tag2010 tables (ref 12)
+# tag definitions for Tag2010 tables (ref JR)
 my %sonyDateTime2010 = (
     Name => 'SonyDateTime',
     Format => 'undef[7]',
@@ -5282,7 +5282,7 @@ my %releaseMode2010 = (
     PrintConv => {
         0 => 'Normal',
         1 => 'Continuous',
-        2 => 'Bracketing', # (also white balance bracketing - PH) (also Single-frame Exposure Bracketing - ref 12)
+        2 => 'Bracketing', # (also white balance bracketing - PH) (also Single-frame Exposure Bracketing - ref JR)
         # 3 => 'Remote Commander', (NC) (seen this when other ReleaseMode and ReleaseMode2 are 'Normal' - PH, A77)
         # 4 => 'Continuous - Burst', (NC)
         5 => 'Continuous - Speed/Advance Priority',
@@ -5394,7 +5394,7 @@ my %exposureProgram2010 = (
     PrintConv => \%sonyExposureProgram3,
 );
 
-%Image::ExifTool::Sony::Tag2010a = ( #12
+%Image::ExifTool::Sony::Tag2010a = ( #JR
     PROCESS_PROC => \&ProcessEnciphered,
     WRITE_PROC => \&WriteEnciphered,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
@@ -5427,7 +5427,7 @@ my %exposureProgram2010 = (
     #0x1a0c => { Name => 'SonyImageHeight', Format => 'int16u' },
 );
 
-%Image::ExifTool::Sony::Tag2010b = ( #12
+%Image::ExifTool::Sony::Tag2010b = ( #JR
     PROCESS_PROC => \&ProcessEnciphered,
     WRITE_PROC => \&WriteEnciphered,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
@@ -5490,7 +5490,7 @@ my %exposureProgram2010 = (
     },
 );
 
-%Image::ExifTool::Sony::Tag2010c = ( #12
+%Image::ExifTool::Sony::Tag2010c = ( #JR
     PROCESS_PROC => \&ProcessEnciphered,
     WRITE_PROC => \&WriteEnciphered,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
@@ -5550,7 +5550,7 @@ my %exposureProgram2010 = (
     #0x1a0c => { Name => 'SonyImageHeight', Format => 'int16u' },
 );
 
-%Image::ExifTool::Sony::Tag2010d = ( #12
+%Image::ExifTool::Sony::Tag2010d = ( #JR
     PROCESS_PROC => \&ProcessEnciphered,
     WRITE_PROC => \&WriteEnciphered,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
@@ -5606,7 +5606,7 @@ my %exposureProgram2010 = (
     },
 );
 
-%Image::ExifTool::Sony::Tag2010e = ( #12
+%Image::ExifTool::Sony::Tag2010e = ( #JR
     PROCESS_PROC => \&ProcessEnciphered,
     WRITE_PROC => \&WriteEnciphered,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
@@ -5735,7 +5735,7 @@ my %exposureProgram2010 = (
             2 => 'E-mount',
         },
     },
-    0x1893 => { #12
+    0x1893 => { #JR
         Name => 'LensType2',
         Condition => '$$self{LensMount} == 2',
         Format => 'int16u',
@@ -5757,7 +5757,7 @@ my %exposureProgram2010 = (
     #0x1930 => { Name => 'SonyImageHeight', Format => 'int16u' },
 );
 
-%Image::ExifTool::Sony::Tag2010f = ( #12
+%Image::ExifTool::Sony::Tag2010f = ( #JR
     PROCESS_PROC => \&ProcessEnciphered,
     WRITE_PROC => \&WriteEnciphered,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
@@ -5828,7 +5828,7 @@ my %exposureProgram2010 = (
     #0x1930 => { Name => 'SonyImageHeight', Format => 'int16u' },
 );
 
-%Image::ExifTool::Sony::Tag2010g = ( #12
+%Image::ExifTool::Sony::Tag2010g = ( #JR
     PROCESS_PROC => \&ProcessEnciphered,
     WRITE_PROC => \&WriteEnciphered,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
@@ -5920,7 +5920,7 @@ my %exposureProgram2010 = (
             2 => 'E-mount',
         },
     },
-    0x18bf => { #12
+    0x18bf => { #JR
         Name => 'LensType2',
         Condition => '$$self{LensMount} == 2',
         Format => 'int16u',
@@ -5938,7 +5938,7 @@ my %exposureProgram2010 = (
     },
 );
 
-# possible metering information (ref 12)
+# possible metering information (ref JR)
 %Image::ExifTool::Sony::MeterInfo = (
     %binaryDataAttrs,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
@@ -6004,7 +6004,7 @@ my %exposureProgram2010 = (
     0x0714 => { Name => 'MeterInfo2Row9', %meterInfo2 },
 );
 
-%Image::ExifTool::Sony::Tag900b = ( #12
+%Image::ExifTool::Sony::Tag900b = ( #JR
     PROCESS_PROC => \&ProcessEnciphered,
     WRITE_PROC => \&WriteEnciphered,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
@@ -6035,7 +6035,7 @@ my %exposureProgram2010 = (
     },
 );
 
-%Image::ExifTool::Sony::Tag9050 = ( #12
+%Image::ExifTool::Sony::Tag9050 = ( #JR
     PROCESS_PROC => \&ProcessEnciphered,
     WRITE_PROC => \&WriteEnciphered,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
@@ -6070,7 +6070,7 @@ my %exposureProgram2010 = (
 #           appears to be difference between used FNumber and MaxAperture, 256 being +1 APEX or stop
 #           however, not always valid e.g. bracketing, Shutter-prio e.a.
 #           difference between 0x0002 and 0x0004 mostly 0.0, 0.1 or 0.2 stops.
-    0x0031 => { #12
+    0x0031 => { #JR
         Condition => '$$self{Model} !~ /^(DSC-|Stellar)/',
         Name => 'FlashStatus',
         RawConv => '$$self{FlashFired} = $val',
@@ -6143,13 +6143,13 @@ my %exposureProgram2010 = (
         PrintConv => '$self->ConvertDateTime($val)',
         PrintConvInv => '$self->InverseDateTime($val,0)',
     },
-    0x007c => { #12 valid for ILCE and most NEX
+    0x007c => { #JR valid for ILCE and most NEX
         Name => 'InternalSerialNumber', # (NC)
         Condition => '$$self{Model} !~ /^(DSC-|Stellar|Lunar|NEX-(5N|7|VG20E)|SLT-|HV|ILCA-)/',
         Format => 'int8u[4]',
         PrintConv => 'unpack "H*", pack "C*", split " ", $val',
     },
-    0x00f0 => { #12 valid for SLT/ILCA models
+    0x00f0 => { #JR valid for SLT/ILCA models
         Name => 'InternalSerialNumber', # (NC)
         Condition => '$$self{Model} =~ /^(SLT-|HV|ILCA-)/',
         Format => 'int8u[5]',
@@ -6282,7 +6282,7 @@ my %exposureProgram2010 = (
 #    0x037b => {%gain2010,Condition=>'$$self{Model}=~/^(SLT-A(65V|77V)|Lunar|NEX-(7|VG20E))/'},
 );
 
-%Image::ExifTool::Sony::Tag9400a = ( #12
+%Image::ExifTool::Sony::Tag9400a = ( #JR
     PROCESS_PROC => \&ProcessEnciphered,
     WRITE_PROC => \&WriteEnciphered,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
@@ -6366,7 +6366,7 @@ my %exposureProgram2010 = (
     },
 );
 
-%Image::ExifTool::Sony::Tag9400b = ( #12
+%Image::ExifTool::Sony::Tag9400b = ( #JR
     PROCESS_PROC => \&ProcessEnciphered,
     WRITE_PROC => \&WriteEnciphered,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
@@ -6442,7 +6442,7 @@ my %exposureProgram2010 = (
     },
 );
 
-%Image::ExifTool::Sony::Tag9400c = ( #12
+%Image::ExifTool::Sony::Tag9400c = ( #JR
     PROCESS_PROC => \&ProcessEnciphered,
     WRITE_PROC => \&WriteEnciphered,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
@@ -6536,7 +6536,7 @@ my %exposureProgram2010 = (
         PrintConv => '"$val C"',
         PrintConvInv => '$val=~s/ ?C//; $val',
     },
-    0x16 => { #12
+    0x16 => { #JR
         Name => 'FocusMode',
         Mask => 0x7f, # (often +128, not sure what upper bit is for)
         PrintConv => {
@@ -6556,7 +6556,7 @@ my %exposureProgram2010 = (
             2 => 'Spot', # (NC) seen for DSC-WX300
             3 => 'Flexible Spot',
             10 => 'Selective (for Miniature effect)', # seen for DSC-HX30V,TX30,WX60,WX100
-            11 => 'Zone', #12 (NC) seen in ILCE-7R images
+            11 => 'Zone', #JR (NC) seen in ILCE-7R images
             14 => 'Tracking',
             15 => 'Face Tracking',
             255 => 'Manual',
@@ -6642,7 +6642,7 @@ my %exposureProgram2010 = (
     # 0x18 - maybe another temperature?
 );
 
-# Tag9404 (ref 12)
+# Tag9404 (ref JR)
 %Image::ExifTool::Sony::Tag9404a = (
     PROCESS_PROC => \&ProcessEnciphered,
     WRITE_PROC => \&WriteEnciphered,
@@ -6682,7 +6682,7 @@ my %exposureProgram2010 = (
     },
 );
 
-# Tag9405 (ref 12)
+# Tag9405 (ref JR)
 %Image::ExifTool::Sony::Tag9405a = (
     PROCESS_PROC => \&ProcessEnciphered,
     WRITE_PROC => \&WriteEnciphered,
@@ -6747,7 +6747,7 @@ my %exposureProgram2010 = (
     },
 );
 
-# Tag9405b (ref 12)
+# Tag9405b (ref JR)
 %Image::ExifTool::Sony::Tag9405b = (
     PROCESS_PROC => \&ProcessEnciphered,
     WRITE_PROC => \&WriteEnciphered,
@@ -6908,7 +6908,7 @@ my %exposureProgram2010 = (
     },
 );
 
-# Tag9406 (ref 12)
+# Tag9406 (ref JR)
 %Image::ExifTool::Sony::Tag9406 = (
     PROCESS_PROC => \&ProcessEnciphered,
     WRITE_PROC => \&WriteEnciphered,
@@ -6966,7 +6966,7 @@ my %exposureProgram2010 = (
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     NOTES => 'These tags are currently extracted for SLT models only.',
     # 0x00 - 10(A65,A77,NEX-5N,7,VG20E), 11(A37,A57,A99,NEX-5R,6,F3,RX1,RX100),
-    #        9(HX9V), 4,68,86,110(panoramas) - ref 12
+    #        9(HX9V), 4,68,86,110(panoramas) - ref JR
     0x04 => {
         Name => 'AFPointsSelected',
         Format => 'int32u',
@@ -6981,7 +6981,7 @@ my %exposureProgram2010 = (
             0x7fffffff => '(all)',
             # 0xffffffff - 'n/a' - RX1 and NEX models always give this
             # (on Wide AFAreaMode, outer focus points are dropped
-            #  at progressively higher digital zoom ratios, ref 12)
+            #  at progressively higher digital zoom ratios, ref JR)
             BITMASK => {
                 0 => 'Center',          # (1.04 gave this for Upper-middle and Near Left)
                 1 => 'Top',             # (1.04 didn't give this value)
@@ -7002,7 +7002,7 @@ my %exposureProgram2010 = (
                 16 => 'Lower Far Right',# (1.04 OK, but gave this for Far Right and Lower-right too)
                 17 => 'Lower Far Left', # (1.04 didn't give this value)
                 18 => 'Upper Far Left', # (1.04 OK)
-                # higher bits may be used in panorama images - ref 12
+                # higher bits may be used in panorama images - ref JR
             },
         },
     },
@@ -7010,7 +7010,7 @@ my %exposureProgram2010 = (
     # 0xa6 - 8 bytes face detection info ?; starts with 1, otherwise all 0
 );
 
-# Tag940c (ref 12)
+# Tag940c (ref JR)
 %Image::ExifTool::Sony::Tag940c = (
     PROCESS_PROC => \&ProcessEnciphered,
     WRITE_PROC => \&WriteEnciphered,
@@ -7094,7 +7094,7 @@ my %exposureProgram2010 = (
     DATAMEMBER => [ 0x02 ],
     IS_SUBDIR => [ 0x11 ],
     NOTES => 'These tags are currently extracted for SLT models only.',
-    # first 4 bytes (deciphered) (ref 12):
+    # first 4 bytes (deciphered) (ref JR):
     # (perhaps 0x02 indicates the 15- or 19-point AF?)
     #   2 1 1 0  for A65V
     #   2 1 2 0  for A77V
@@ -7115,14 +7115,14 @@ my %exposureProgram2010 = (
             3 => '79-point', # (NC) seen for ILCA-77M2
         },
     },
-    # 0x04 start 74 Blocks of 164 bytes each for NEX with LA-EA2 15-point Phase-detect AF adapter and A-mount lens (ref 12).
+    # 0x04 start 74 Blocks of 164 bytes each for NEX with LA-EA2 15-point Phase-detect AF adapter and A-mount lens (ref JR).
     # For the NEX probably only the 11th byte might be the AFPoint.
     0x04 => {
         Name => 'AFStatusActiveSensor',
         Condition => '$$self{Model} !~ /^ILCA-/',
         %Image::ExifTool::Minolta::afStatusInfo,
     },
-    0x05 => { #12
+    0x05 => { #JR
         Name => 'FocusMode',
         Condition => '$$self{Model} =~ /^ILCA-/',
         Notes => 'ILCA models only',
@@ -7219,8 +7219,8 @@ my %exposureProgram2010 = (
             7 => 'AF-D', # (unique to A99)
         },
     },
-    # 0x10 - for ILCA-77M2: 10 bytes identical to 0x2020, and probably indicating 'AFPointsUsed' (ref 12)
-    0x11 => [ #12
+    # 0x10 - for ILCA-77M2: 10 bytes identical to 0x2020, and probably indicating 'AFPointsUsed' (ref JR)
+    0x11 => [ #JR
         {
             Name => 'AFStatus15',
             Condition => '$$self{AFType} == 1',
@@ -7233,7 +7233,7 @@ my %exposureProgram2010 = (
             SubDirectory => { TagTable => 'Image::ExifTool::Sony::AFStatus19' },
         },
     ],
-    0x3a => { #12
+    0x3a => { #JR
         Name => 'AFAreaMode',
         Condition => '$$self{Model} =~ /^ILCA-/',
         PrintConv => {
@@ -7250,21 +7250,21 @@ my %exposureProgram2010 = (
         Format => 'int8s',
     },
     # 0x007d - AFStatus79 ? - 95 int16s values which would match ILCA-77M2 79 AF points + 15 cross + 1 F2.8
-    # 0x016e - for SLT: 4 bytes identical to 0x2020 first 4 bytes, and indicating 'AFPointsUsed' (ref 12)
-    0x017d => { #PH (verified for the A77/A99; likely valid for other SLT models - ref 12)
+    # 0x016e - for SLT: 4 bytes identical to 0x2020 first 4 bytes, and indicating 'AFPointsUsed' (ref JR)
+    0x017d => { #PH (verified for the A77/A99; likely valid for other SLT models - ref JR)
         # (different from AFMicroAdjValue because it is 0 when the adjustment is off)
         Name => 'AFMicroAdj',
         Condition => '$$self{Model} !~ /^ILCA-/',
         Format => 'int8s',
     },
-    0x017e => { #12
+    0x017e => { #JR
         Name => 'ExposureProgram',
         Condition => '$$self{Model} !~ /^ILCA-/',
         Priority => 0,
         SeparateTable => 'ExposureProgram3',
         PrintConv => \%sonyExposureProgram3,
     },
-    # 0x01b8 - 65 AF Info blocks of 180 bytes each for SLT (ref 12)
+    # 0x01b8 - 65 AF Info blocks of 180 bytes each for SLT (ref JR)
     # In each block, the 9th, 10th and 11th byte appear to relate to AFPoint as at offsets 0x07, 0x08, 0x09 above..
     # Possibly, these blocks relate to sequential focusing attempts and/or object tracking,
     # the first byte being an Index or Counter.
@@ -7279,7 +7279,7 @@ my %exposureProgram2010 = (
     #   0x14fa, 0x1570, 0x1572, 0x15ae, 0x1f48
 );
 
-# AF Point Status (ref 12)
+# AF Point Status (ref JR)
 %Image::ExifTool::Sony::AFStatus15 = (
     %binaryDataAttrs,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
@@ -7304,7 +7304,7 @@ my %exposureProgram2010 = (
     0x22 => { Name => 'AFStatusLower-middle',         %Image::ExifTool::Minolta::afStatusInfo },
 );
 
-# AF Point Status (ref 12)
+# AF Point Status (ref JR)
 %Image::ExifTool::Sony::AFStatus19 = (
     %binaryDataAttrs,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
@@ -7449,7 +7449,7 @@ my %exposureProgram2010 = (
         cameras.  The width/height values of these tags are not affected by camera
         rotation -- the width is always the longer dimension.
     },
-    # 0: 257 for panorama images, 0 for all other images (ref 12)
+    # 0: 257 for panorama images, 0 for all other images (ref JR)
     1 => 'PanoramaFullWidth', # (including black/grey borders)
     2 => 'PanoramaFullHeight',
     3 => {
@@ -7707,7 +7707,7 @@ my %exposureProgram2010 = (
         Name => 'Barcode',
         ValueConv => 'length($val) > 12 ? substr($val,0,12) : $val',
     },
-    # 'EvA:' - exposure compensation * 10 (ref 12)
+    # 'EvA:' - exposure compensation * 10 (ref JR)
     # for documentation only -- this IFD is handled manually
     IFD => {
         Name => 'PIC_IFD',
@@ -8018,13 +8018,13 @@ my @lensFeatures = (
     #  Mask   {  Bits     Name    Bits     Name  } Prefix flag
     # ------    ------    -----  ------    -----   -----------
     [ 0x4000, { 0x4000 => 'PZ'                   }, 1 ],
-    [ 0x0300, { 0x0100 => 'DT',  0x0200 => 'FE', 0x0300 => 'E'   }, 1 ], # (will come before preceding prefix), FE added (ref 12)
+    [ 0x0300, { 0x0100 => 'DT',  0x0200 => 'FE', 0x0300 => 'E'   }, 1 ], # (will come before preceding prefix), FE added (ref JR)
     [ 0x00e0, { 0x0020 => 'STF', 0x0040 => 'Reflex', 0x0060 => 'Macro', 0x0080 => 'Fisheye' } ],
     [ 0x000c, { 0x0004 => 'ZA',  0x0008 => 'G'   } ],
     [ 0x0003, { 0x0001 => 'SSM', 0x0002 => 'SAM' } ],
     [ 0x8000, { 0x8000 => 'OSS' } ],
-    [ 0x2000, { 0x2000 => 'LE' } ], #12
-    [ 0x0800, { 0x0800 => 'II' } ], #12
+    [ 0x2000, { 0x2000 => 'LE' } ], #JR
+    [ 0x0800, { 0x0800 => 'II' } ], #JR
 );
 sub PrintLensSpec($)
 {

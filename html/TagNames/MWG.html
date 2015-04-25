@@ -44,7 +44,8 @@ EXIF/IPTC/XMP records that exist.</p>
 <p>Contrary to the EXIF specification, the MWG recommends that EXIF &quot;ASCII&quot;
 string values be stored as UTF-8.  To honour this, the exiftool application
 sets the default internal EXIF string encoding to &quot;UTF8&quot; when the MWG module
-is loaded (but this setting does not change automatically via the API).</p>
+is loaded, but via the API this must be done manually by setting the
+CharsetEXIF option.</p>
 
 <p>A complication of the MWG specification is that although the MWG:Creator
 property may consist of multiple values, the associated EXIF tag
@@ -561,7 +562,7 @@ belong to the ExifTool XMP-mwg-coll group.  See
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jul 22, 2013</i>
+<br><i>Last revised Apr 16, 2015</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

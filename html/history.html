@@ -17,6 +17,21 @@ considered development releases, and are not uploaded to <a href="http://search.
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v9.93'><b>Apr. 25, 2015 - Version 9.93</b></a>
+<ul>
+<li>Added FileTypeExtension tag
+<li>Added a few new CanonModelID values
+<li>Added a new Olympus CameraType
+<li>Added a few new Minolta/Sony lenses (thanks Jos Roost)
+<li>Updated arg_files/iptcCore.args for IPTC Extension version 1.2 tags
+<li>Improved VCard parsing/decoding
+<li>Improved -fast3 file identification logic
+<li>Remove "px" string from SVG ImageWidth/Height tags
+<li>Changed DOF calculation to use ApproximateFocusDistance
+<li>Fixed missing FileType for MOI files
+<li>Fixed potential "Internal Error" bug when writing XMP structures
+</ul>
+
 <a name='v9.92'><b>Apr. 11, 2015 - Version 9.92</b></a>
 <ul>
 <li>Added support for PRISM pmi and prm tags, and updated to PRISM 3.0
@@ -350,10 +365,10 @@ considered development releases, and are not uploaded to <a href="http://search.
 <li>Added a new Pentax LensType (thanks Dominique Schrekling)
 <li>Added a new PentaxModelID
 <li>Added a new Olympus CameraType (thanks LibRaw)
-<li>Updated Nikon ISOExpansion values for new models (thanks LibRaw)
 <li>Decode a number of new Sony tags and values (thanks Jos Roost)
 <li>Decode a new Panasonic tag
 <li>Decode another QuickTime tag
+<li>Updated Nikon ISOExpansion values for new models (thanks LibRaw)
 <li>Improved verbose dump for LFP images
 <li>Patched to repair incorrect list types in XMP structures when writing
 <li>Patched to avoid MPEG Layer 3 check for files with a "MUS" extension

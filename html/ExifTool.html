@@ -458,8 +458,9 @@ distribution for examples.</p>
     <tr><td valign=top align=right>MacCroatian</td><td>(cp10082)</td></tr>
     </table></td><td align=center>'UTF8'</td></tr>
 <tr><td>CharsetEXIF</td><td><a name="CharsetEXIF"></a>Internal encoding to use for stored
-    EXIF "ASCII" string values.  Unlike other Charset options, CharsetEXIF may also be set
-    to undef to pass through all string values without recoding.</td>
+    EXIF "ASCII" string values.  May also be set to undef to pass through EXIF
+    "ASCII" values without recoding.  Set to "UTF8" to conform with the MWG
+    recommendation.</td>
     <td align=center><i>(see <a href="#Charset">Charset</a> option)</i><br>or undef</td><td align=center>undef</td></tr>
 <tr><td>CharsetFileName</td><td><a name="CharsetFileName"></a>External character set
     used when specifying file names.  When set in Windows, this triggers use of

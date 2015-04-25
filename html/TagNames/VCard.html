@@ -7,11 +7,11 @@
 </head>
 <body>
 <h2 class=top>VCard Tags</h2>
-<p>This table lists only those VCard tags which are renamed by ExifTool, but
-any existing VCard tag will be extracted.  Tag names may have &quot;Pref&quot; added
-to indicate the preferred instance of a VCard property.  Other &quot;TYPE&quot;
-parameters are also added to the tag name. See
-<a href="https://tools.ietf.org/html/rfc6350">https://tools.ietf.org/html/rfc6350</a> for the VCard 4.0 specification.</p>
+<p>This table lists only a few common vCard tags, but ExifTool will also
+extract any other vCard tags found.  Tag names may have &quot;Pref&quot; added to
+indicate the preferred instance of a vCard property, and other &quot;TYPE&quot;
+parameters may also added to the tag name.  See
+<a href="https://tools.ietf.org/html/rfc6350">https://tools.ietf.org/html/rfc6350</a> for the vCard 4.0 specification.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -23,8 +23,18 @@ parameters are also added to the tag name. See
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>'Anniversary'</td>
+<td>Anniversary</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>'Bday'</td>
 <td>Birthday</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Email'</td>
+<td>Email</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -33,8 +43,28 @@ parameters are also added to the tag name. See
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>'Gender'</td>
+<td>Gender</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>'Geo'</td>
 <td>Geolocation</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Impp'</td>
+<td>IMPP</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Lang'</td>
+<td>Language</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Logo'</td>
+<td>Logo</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -43,18 +73,38 @@ parameters are also added to the tag name. See
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>'Nickname'</td>
+<td>Nickname</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Note'</td>
+<td>Note</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>'Org'</td>
 <td>Organization</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td>'Photo'</td>
+<td>Photo</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>'Prodid'</td>
 <td>Software</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'Rev'</td>
 <td>Revision</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Sound'</td>
+<td>Sound</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -63,13 +113,23 @@ parameters are also added to the tag name. See
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>'Title'</td>
+<td>JobTitle</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>'Tz'</td>
 <td>TimeZone</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'Uid'</td>
 <td>UID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Url'</td>
+<td>URL</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
@@ -77,11 +137,46 @@ parameters are also added to the tag name. See
 <td>VCardVersion</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
+<tr>
+<td>'X-ABLabel'</td>
+<td>ABLabel</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'X-abdate'</td>
+<td>ABDate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'X-abrelatednames'</td>
+<td>ABRelatedNames</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'X-abuid'</td>
+<td>AB_UID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'X-aim'</td>
+<td>AIM</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'X-icq'</td>
+<td>ICQ</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'X-socialprofile'</td>
+<td>SocialProfile</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Apr 10, 2015</i>
+<br><i>Last revised Apr 20, 2015</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

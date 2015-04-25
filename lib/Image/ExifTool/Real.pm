@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Canon;
 
-$VERSION = '1.05';
+$VERSION = '1.06';
 
 sub ProcessRealMeta($$$);
 sub ProcessRealProperties($$$);
@@ -522,6 +522,7 @@ sub ProcessReal($$)
     $raf->Read($buff, 8) == 8 or return 0;
     $buff =~ m{^(\.RMF|\.ra\xfd|pnm://|rtsp://|http://)} or return 0;
 
+    my $fast3 = $$et{OPTIONS}{FastScan} && $$et{OPTIONS}{FastScan} == 3;
     my ($type, $tagTablePtr);
     if ($1 eq '.RMF') {
         $tagTablePtr = GetTagTable('Image::ExifTool::Real::Media');
@@ -544,6 +545,7 @@ sub ProcessReal($$)
                 # must be a Real file type if protocol is http
                 return 0 if $buff =~ /^http/ and $buff !~ /\.(ra|rm|rv|rmvb|smil)$/i;
                 $et->SetFileType($type);
+                return 1 if $fast3;
                 undef $type;
             }
             # save URL or Text from RAM file
@@ -554,6 +556,7 @@ sub ProcessReal($$)
     }
 
     $et->SetFileType($type);
+    return 1 if $fast3;
     SetByteOrder('MM');
     my $verbose = $et->Options('Verbose');
 #

@@ -21,7 +21,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.08';
+$VERSION = '1.09';
 
 sub ProcessPEResources($$);
 sub ProcessPEVersion($$);
@@ -957,9 +957,10 @@ sub ProcessEXE($$)
 {
     my ($et, $dirInfo) = @_;
     my $raf = $$dirInfo{RAF};
-    my ($buff, $buf2, $type, $mime, $tagTablePtr, %dirInfo);
+    my ($buff, $buf2, $type, $mime, $ext, $tagTablePtr, %dirInfo);
 
     my $size = $raf->Read($buff, 0x40) or return 0;
+    my $fast3 = $$et{OPTIONS}{FastScan} && $$et{OPTIONS}{FastScan} == 3;
 #
 # DOS and Windows EXE
 #
@@ -999,7 +1000,8 @@ sub ProcessEXE($$)
                 if ($size >= 0x40) { # NE header is 64 bytes (ref 2)
                     # check for DLL
                     my $appFlags = Get16u(\$buff, 0x0c);
-                    $type = 'Win16 ' . ($appFlags & 0x80 ? 'DLL' : 'EXE');
+                    $ext = $appFlags & 0x80 ? 'DLL' : 'EXE';
+                    $type = "Win16 $ext";
                     # offset 0x02 is 2 bytes with linker version and revision numbers
                     # offset 0x36 is executable type (2 = Windows)
                 }
@@ -1016,7 +1018,9 @@ sub ProcessEXE($$)
                     my $machine = $Image::ExifTool::EXE::Main{0}{PrintConv}{Get16u(\$buff, 4)} || '';
                     my $winType = $machine =~ /64/ ? 'Win64' : 'Win32';
                     my $flags = Get16u(\$buff, 22);
-                    $et->SetFileType($winType . ' ' . ($flags & 0x2000 ? 'DLL' : 'EXE'));
+                    $ext = $flags & 0x2000 ? 'DLL' : 'EXE';
+                    $et->SetFileType("$winType $ext", undef, $ext);
+                    return 1 if $fast3;
                     # read the rest of the optional header if necessary
                     my $optSize = Get16u(\$buff, 20);
                     my $more = $optSize + 24 - $size;
@@ -1057,9 +1061,11 @@ sub ProcessEXE($$)
                 }
             } else {
                 $type = 'Virtual Device Driver';
+                $ext = 'exe'; #?
             }
         } else {
             $type = 'DOS EXE';
+            $ext = 'exe';
         }
 #
 # Mach-O (Mac OS X)
@@ -1070,7 +1076,8 @@ sub ProcessEXE($$)
         $tagTablePtr = GetTagTable('Image::ExifTool::EXE::MachO');
         if ($1 eq "\xca\xfe\xba\xbe") {
             SetByteOrder('MM');
-            $et->SetFileType('Mach-O fat binary executable');
+            $et->SetFileType('Mach-O fat binary executable', undef, '');
+            return 1 if $fast3;
             my $count = Get32u(\$buff, 4);  # get architecture count
             my $more = $count * 20 - ($size - 8);
             if ($more > 0) {
@@ -1106,7 +1113,8 @@ sub ProcessEXE($$)
                 $et->Warn('Error reading file');
             }
        } elsif ($size >= 16) {
-            $et->SetFileType('Mach-O executable');
+            $et->SetFileType('Mach-O executable', undef, '');
+            return 1 if $fast3;
             my $info = {
                 "\xfe\xed\xfa\xce" => ['32 bit', 'Big endian'],
                 "\xce\xfa\xed\xfe" => ['32 bit', 'Little endian'],
@@ -1130,7 +1138,8 @@ sub ProcessEXE($$)
 #
     } elsif ($buff =~ /^Joy!peff/ and $size > 12) {
         # ref http://developer.apple.com/documentation/mac/pdf/MacOS_RT_Architectures.pdf
-        $et->SetFileType('Classic MacOS executable');
+        $et->SetFileType('Classic MacOS executable', undef, '');
+        return 1 if $fast3;
         SetByteOrder('MM');
         $tagTablePtr = GetTagTable('Image::ExifTool::EXE::PEF');
         %dirInfo = (
@@ -1146,7 +1155,8 @@ sub ProcessEXE($$)
 # ELF (Unix)
 #
     } elsif ($buff =~ /^\x7fELF/ and $size >= 16) {
-        $et->SetFileType("ELF executable");
+        $et->SetFileType('ELF executable', undef, '');
+        return 1 if $fast3;
         SetByteOrder(Get8u(\$buff,5) == 1 ? 'II' : 'MM');
         $tagTablePtr = GetTagTable('Image::ExifTool::EXE::ELF');
         %dirInfo = (
@@ -1162,16 +1172,27 @@ sub ProcessEXE($$)
 # various scripts (perl, sh, etc...)
 #
     } elsif ($buff =~ m{^#!\s*/\S*bin/(\w+)}) {
-        $type = "$1 script";
-        $mime = "text/x-$1";
+        my $prog = $1;
+        $prog = $1 if $prog eq 'env' and $buff =~ /\b(perl|python|ruby|php)\b/;
+        $type = "$prog script";
+        $mime = "text/x-$prog";
+        $ext = {
+            perl   => 'pl',
+            python => 'py',
+            ruby   => 'rb',
+            php    => 'php',
+        }->{$1};
+        # use '.sh' for extension of all shell scripts
+        $ext = $prog =~ /sh$/ ? 'sh' : '' unless defined $ext;
 #
 # .a libraries
 #
     } elsif ($buff =~ /^!<arch>\x0a/) {
-        $type = 'Static library',
+        $type = 'Static library';
+        $ext = 'a';
     }
     return 0 unless $type;
-    $et->SetFileType($type, $mime);
+    $et->SetFileType($type, $mime, $ext);
     return 1;
 }
 

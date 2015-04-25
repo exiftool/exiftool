@@ -15,47 +15,67 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.00';
+$VERSION = '1.01';
 
 my %unescapeVCard = ( '\\'=>'\\', ','=>',', 'n'=>"\n", 'N'=>"\n" );
 
-# VCard tags (ref 1)
+# vCard tags (ref 1/2/PH)
 %Image::ExifTool::VCard::Main = (
     GROUPS => { 2 => 'Document' },
     NOTES => q{
-        This table lists only those VCard tags which are renamed by ExifTool, but
-        any existing VCard tag will be extracted.  Tag names may have "Pref" added
-        to indicate the preferred instance of a VCard property.  Other "TYPE"
-        parameters are also added to the tag name. See
-        L<https://tools.ietf.org/html/rfc6350> for the VCard 4.0 specification.
+        This table lists only a few common vCard tags, but ExifTool will also
+        extract any other vCard tags found.  Tag names may have "Pref" added to
+        indicate the preferred instance of a vCard property, and other "TYPE"
+        parameters may also added to the tag name.  See
+        L<https://tools.ietf.org/html/rfc6350> for the vCard 4.0 specification.
     },
-    Version => 'VCardVersion',
-    VCardVersion => { Description => 'VCard Version', Hidden => 1 }, # (for the Description)
-    Prodid => 'Software',
-    Fn   => { Name => 'FormattedName',  Groups => { 2 => 'Author' } },
-    N    => { Name => 'Name',           Groups => { 2 => 'Author' } },
-    Bday => { Name => 'Birthday',       Groups => { 2 => 'Time' } },
-    Tz   => { Name => 'TimeZone',       Groups => { 2 => 'Time' } },
-    Adr  => { Name => 'Address',        Groups => { 2 => 'Location' } },
-    Geo  => { Name => 'Geolocation',    Groups => { 2 => 'Location' } },
-    Rev  => 'Revision',
-    Org  => 'Organization',
-    Tel  => 'Telephone',
-    Uid  => 'UID',
+    Version     => { Name => 'VCardVersion',   Description => 'VCard Version' },
+    Fn          => { Name => 'FormattedName',  Groups => { 2 => 'Author' } },
+    N           => { Name => 'Name',           Groups => { 2 => 'Author' } },
+    Bday        => { Name => 'Birthday',       Groups => { 2 => 'Time' } },
+    Tz          => { Name => 'TimeZone',       Groups => { 2 => 'Time' } },
+    Adr         => { Name => 'Address',        Groups => { 2 => 'Location' } },
+    Geo         => { Name => 'Geolocation',    Groups => { 2 => 'Location' } },
+    Anniversary => { },
+    Email       => { },
+    Gender      => { },
+    Impp        => 'IMPP',
+    Lang        => 'Language',
+    Logo        => { },
+    Nickname    => { },
+    Note        => { },
+    Org         => 'Organization',
+    Photo       => { },
+    Prodid      => 'Software',
+    Rev         => 'Revision',
+    Sound       => { },
+    Tel         => 'Telephone',
+    Title       => 'JobTitle',
+    Uid         => 'UID',
+    Url         => 'URL',
+    'X-ABLabel' => { Name => 'ABLabel', PrintConv => '$val =~ s/^_\$!<(.*)>!\$_$/$1/; $val' },
+    'X-abdate'  => { Name => 'ABDate',  Groups => { 2 => 'Time' } },
+    'X-aim'     => 'AIM',
+    'X-icq'     => 'ICQ',
+    'X-abuid'   => 'AB_UID',
+    'X-abrelatednames' => 'ABRelatedNames',
+    'X-socialprofile'  => 'SocialProfile',
 );
 
 #------------------------------------------------------------------------------
-# Get VCard tag, creating if necessary
-# Inputs: 0) tag table ref, 1) tag ID, 2) source tagInfo ref, 3) language code
+# Get vCard tag, creating if necessary
+# Inputs: 0) ExifTool ref, 1) tag table ref, 2) tag ID, 3) tag Name,
+#         4) source tagInfo ref, 5) lang code
 # Returns: tagInfo ref
-sub GetVCardTag($$;$$)
+sub GetVCardTag($$$$;$$)
 {
-    my ($tagTablePtr, $tag, $srcInfo, $langCode) = @_;
+    my ($et, $tagTablePtr, $tag, $name, $srcInfo, $langCode) = @_;
     my $tagInfo = $$tagTablePtr{$tag};
     unless ($tagInfo) {
         $tagInfo = $srcInfo ? { %$srcInfo } : { };
-        $$tagInfo{Name} = $tag;
+        $$tagInfo{Name} = $name;
         delete $$tagInfo{Description};  # create new description
+        $et->VPrint(0, $$et{INDENT}, "[adding $tag]\n");
         AddTagToTable($tagTablePtr, $tag, $tagInfo);
     }
     # handle alternate languages (the "language" parameter)
@@ -64,8 +84,8 @@ sub GetVCardTag($$;$$)
 }
 
 #------------------------------------------------------------------------------
-# Decode VCard text
-# Inputs: 0) ExifTool ref, 1) VCard text, 2) encoding
+# Decode vCard text
+# Inputs: 0) ExifTool ref, 1) vCard text, 2) encoding
 # Returns: decoded text (or array ref for a list of values)
 sub DecodeVCardText($$;$)
 {
@@ -93,9 +113,9 @@ sub DecodeVCardText($$;$)
 }
 
 #------------------------------------------------------------------------------
-# Read information in a VCard file
+# Read information in a vCard file
 # Inputs: 0) ExifTool ref, 1) dirInfo ref
-# Returns: 1 on success, 0 if this wasn't a valid VCard file
+# Returns: 1 on success, 0 if this wasn't a valid vCard file
 sub ProcessVCard($$)
 {
     local $_;
@@ -137,12 +157,12 @@ sub ProcessVCard($$)
         } else {
             delete $$et{SET_GROUP1};
         }
-        # avoid ugly all-caps tag names
+        # avoid ugly all-caps tag ID's (they are case-insensitive)
         $tag = ucfirst($tag =~ /[a-z]/ ? $tag : lc $tag);
-        my (%param, $p, @val);
+        my (%param, $p, @val, $name);
         while ($val =~ s/^;([-A-Za-z0-9]*)(=?)//) {
             $p = lc $1;
-            # convert old VCard 2.x parameters to the new "TYPE=" format
+            # convert old vCard 2.x parameters to the new "TYPE=" format
             $2 or $val = $1 . $val, $p = 'type';
             for (;;) {
                 last unless $val =~ s/^"([^"]*)",?// or $val =~ s/^([^";:,]+,?)//;
@@ -158,28 +178,37 @@ sub ProcessVCard($$)
         $val =~ s/^:// or $et->WarnOnce('Invalid line in VCard file'), next;
         # get source tagInfo reference
         my $srcInfo = $et->GetTagInfo($tagTablePtr, $tag);
-        $tag = $$srcInfo{Name} if $srcInfo;     # translate name if necessary
-        $tag .= $param{type} if $param{type};   # add 'type' parameter to name
+        if ($srcInfo) {
+            $name = $$srcInfo{Name};    # use our name
+        } else {
+            # use tag ID as name (with leading "X-" removed)
+            ($name = $tag) =~ s/^X-//i and $name = ucfirst $name;
+        }
+        # add 'type' parameter to id and name if it exists
+        $param{type} and $tag .= $param{type}, $name .= $param{type};
         # convert base64-encoded data
         if ($val =~ s{^data:(\w+)/(\w+);base64,}{}) {
-            $tag .= ucfirst(lc $1) . ucfirst(lc $2);
+            my $xtra = ucfirst(lc $1) . ucfirst(lc $2);
+            $tag .= $xtra;
+            $name .= $xtra;
             $param{encoding} = 'base64';
         }
         $val = DecodeVCardText($et, $val, $param{encoding});
-        my $tagInfo = GetVCardTag($tagTablePtr, $tag, $srcInfo, $param{language});
+        my $tagInfo = GetVCardTag($et, $tagTablePtr, $tag, $name, $srcInfo, $param{language});
         $et->HandleTag($tagTablePtr, $tag, $val, TagInfo => $tagInfo);
+        # handle 'geo' and 'label' parameters
         foreach $p (qw(geo label)) {
             next unless defined $param{$p};
-            my $t = $tag . ucfirst($p);
             # set group 2 to "Location" for "geo" parameters
             my $srcTag2;
             if ($p eq 'geo') {
                 $srcTag2 = { Groups => { 2 => 'Location' } };
-                $param{$p} =~ s/^geo://;    # remove "geo:" prefix of VCard 4.0
+                $param{$p} =~ s/^geo://;    # remove "geo:" prefix of vCard 4.0
             }
             $val = DecodeVCardText($et, $param{$p});
-            $tagInfo = GetVCardTag($tagTablePtr, $t, $srcTag2, $param{language});
-            $et->HandleTag($tagTablePtr, $t, $val, TagInfo => $tagInfo);
+            my ($tg, $nm) = ($tag . ucfirst($p), $name . ucfirst($p));
+            $tagInfo = GetVCardTag($et, $tagTablePtr, $tg, $nm, $srcTag2, $param{language});
+            $et->HandleTag($tagTablePtr, $tg, $val, TagInfo => $tagInfo);
         }
     }
     delete $$et{SET_GROUP1};
@@ -203,7 +232,7 @@ This module is used by Image::ExifTool
 =head1 DESCRIPTION
 
 This module contains definitions required by Image::ExifTool to read meta
-information from VCard files.
+information from vCard files.
 
 =head1 AUTHOR
 

@@ -1,12 +1,13 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.07
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.93
 [File, System, Image] FileName - File Name: DICOM.dcm
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 1860 bytes
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2005:11:14 14:47:21-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2012:11:19 15:31:05-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2012:11:17 09:18:25-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:17 10:56:34-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:04:11 08:47:16-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: DICOM
+[File, File, Image] FileTypeExtension - File Type Extension: dcm
 [File, File, Image] MIMEType - MIME Type: application/dicom
 [DICOM, DICOM, Image] 0002,0000 - File Meta Info Group Length: 180
 [DICOM, DICOM, Image] 0002,0001 - File Meta Info Version: 0 1

@@ -67,8 +67,8 @@
 #              51) http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,4110.0.html
 #              52) Iliah Borg private communication (LibRaw)
 #              53) Niels Kristian Bech Jensen private communication
-#              54) Jos Roost private communication
 #              JD) Jens Duttke private communication
+#              JR) Jos Roost private communication
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::Canon;
@@ -83,7 +83,7 @@ sub ProcessSerialData($$$);
 sub ProcessFilters($$$);
 sub SwapWords($);
 
-$VERSION = '3.47';
+$VERSION = '3.48';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -168,7 +168,7 @@ $VERSION = '3.47';
    '33.11' => 'Carl Zeiss Planar T* 50mm f/1.4 ZE', #52
    '33.12' => 'Carl Zeiss Makro-Planar T* 50mm f/2 ZE', #52
    '33.13' => 'Carl Zeiss Makro-Planar T* 100mm f/2 ZE', #52
-   '33.14' => 'Carl Zeiss Apo-Sonnar T* 135mm f/2 ZE', #54
+   '33.14' => 'Carl Zeiss Apo-Sonnar T* 135mm f/2 ZE', #JR
     35 => 'Canon EF 35-80mm f/4-5.6', #32
     36 => 'Canon EF 38-76mm f/4.5-5.6', #32
     37 => 'Canon EF 35-80mm f/4-5.6 or Tamron Lens', #32
@@ -331,8 +331,8 @@ $VERSION = '3.47';
     196 => 'Canon EF 75-300mm f/4-5.6 USM', #15/32
     197 => 'Canon EF 75-300mm f/4-5.6 IS USM',
     198 => 'Canon EF 50mm f/1.4 USM or Zeiss Lens',
-    198.1 => 'Zeiss Otus 55mm f/1.4 ZE', #54 (seen only on Sony camera)
-    198.2 => 'Zeiss Otus 85mm f/1.4 ZE', #54 (NC)
+    198.1 => 'Zeiss Otus 55mm f/1.4 ZE', #JR (seen only on Sony camera)
+    198.2 => 'Zeiss Otus 85mm f/1.4 ZE', #JR (NC)
     199 => 'Canon EF 28-80mm f/3.5-5.6 USM', #32
     200 => 'Canon EF 75-300mm f/4-5.6 USM', #32
     201 => 'Canon EF 28-80mm f/3.5-5.6 USM', #32
@@ -621,9 +621,12 @@ $VERSION = '3.47';
     0x3760000 => 'PowerShot SX520 HS', #52
     0x3770000 => 'PowerShot SX400 IS',
     0x3780000 => 'PowerShot G7 X', #52
+    0x3790000 => 'PowerShot N2',
     0x3800000 => 'PowerShot SX530 HS',
     0x3820000 => 'PowerShot SX710 HS',
     0x3830000 => 'PowerShot SX610 HS',
+    0x3870000 => 'PowerShot ELPH 160 / IXUS 160',
+    0x3890000 => 'PowerShot ELPH 170 IS / IXUS 170',
     0x3910000 => 'PowerShot SX410 IS',
     0x4040000 => 'PowerShot G1',
     0x6040000 => 'PowerShot S100 / Digital IXUS / IXY Digital',

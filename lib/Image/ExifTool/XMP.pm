@@ -2842,7 +2842,7 @@ sub ScanForXMP($$)
     }
     unless ($$et{VALUE}{FileType}) {
         $$et{FILE_TYPE} = $$et{FILE_EXT};
-        $et->SetFileType('<unknown file containing XMP>');
+        $et->SetFileType('<unknown file containing XMP>', undef, '');
     }
     my %dirInfo = (
         DataPt  => \$xmp,
@@ -3713,6 +3713,8 @@ sub ProcessXMP($$;$)
                 $type = 'SVG';
             } elsif ($isXML and not $hasXMP and not $isRDF) {
                 $type = 'XML';
+                my $ext = $$et{FILE_EXT};
+                $type = $ext if $ext and $ext eq 'COS'; # recognize COS by extension
             }
         }
         $et->SetFileType($type);

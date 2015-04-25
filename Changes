@@ -7,6 +7,20 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 9.90. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Apr. 25, 2015 - Version 9.93
+
+  - Added FileTypeExtension tag
+  - Added a few new CanonModelID values
+  - Added a new Olympus CameraType
+  - Added a few new Minolta/Sony lenses (thanks Jos Roost)
+  - Updated arg_files/iptcCore.args for IPTC Extension version 1.2 tags
+  - Improved VCard parsing/decoding
+  - Improved -fast3 file identification logic
+  - Remove "px" string from SVG ImageWidth/Height tags
+  - Changed DOF calculation to use ApproximateFocusDistance
+  - Fixed missing FileType for MOI files
+  - Fixed potential "Internal Error" bug when writing XMP structures
+
 Apr. 11, 2015 - Version 9.92
 
   - Added support for PRISM pmi and prm tags, and updated to PRISM 3.0
@@ -312,10 +326,10 @@ Sept. 3, 2014 - Version 9.70 (production release)
   - Added a new Pentax LensType (thanks Dominique Schrekling)
   - Added a new PentaxModelID
   - Added a new Olympus CameraType (thanks LibRaw)
-  - Updated Nikon ISOExpansion values for new models (thanks LibRaw)
   - Decode a number of new Sony tags and values (thanks Jos Roost)
   - Decode a new Panasonic tag
   - Decode another QuickTime tag
+  - Updated Nikon ISOExpansion values for new models (thanks LibRaw)
   - Improved verbose dump for LFP images
   - Patched to repair incorrect list types in XMP structures when writing
   - Patched to avoid MPEG Layer 3 check for files with a "MUS" extension

@@ -32,7 +32,7 @@ use Image::ExifTool::XMP;
 use Image::ExifTool::Canon;
 use Image::ExifTool::Nikon;
 
-$VERSION = '2.83';
+$VERSION = '2.84';
 @ISA = qw(Exporter);
 
 sub NumbersFirst;
@@ -2330,6 +2330,9 @@ sub WriteTagNames($$)
                             # assume XMP module for this struct unless otherwise specified
                             unshift @names, 'XMP' unless / /;
                             push @structs, $_;  # list this later
+                            # hack to put Area Struct in with XMP tags,
+                            # even though it is only used by the MWG module
+                            push @structs, 'Area' if $_ eq 'Dimensions';
                             $suffix = ' Struct';
                         }
                         $url = (shift @names) . '.html';

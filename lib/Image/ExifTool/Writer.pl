@@ -5767,7 +5767,9 @@ sub Rename($$$)
     }
     for (;;) {
         if ($winUni) {
-            $result = Win32API::File::MoveFileExW($old, $new, Win32API::File::MOVEFILE_REPLACE_EXISTING());
+            $result = Win32API::File::MoveFileExW($old, $new,
+                Win32API::File::MOVEFILE_REPLACE_EXISTING() |
+                Win32API::File::MOVEFILE_COPY_ALLOWED());
         } else {
             $result = rename($old, $new);
         }

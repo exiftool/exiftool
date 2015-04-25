@@ -16,7 +16,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.38';
+$VERSION = '1.39';
 
 sub WritePS($$);
 sub ProcessPS($$;$);
@@ -383,6 +383,7 @@ sub ProcessPS($$;$)
         $raf->Seek($pos, 0);
     }
     $et->SetFileType($type);
+    return 1 if $$et{OPTIONS}{FastScan} and $$et{OPTIONS}{FastScan} == 3;
 #
 # extract TIFF information from DOS header
 #

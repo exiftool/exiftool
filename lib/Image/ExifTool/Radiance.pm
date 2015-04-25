@@ -56,7 +56,7 @@ $VERSION = '1.01';
 );
 
 #------------------------------------------------------------------------------
-# Extract information from a Radiance JDR file
+# Extract information from a Radiance HDR file
 # Inputs: 0) ExifTool object reference, 1) DirInfo reference
 # Returns: 1 on success, 0 if this wasn't a valid RGBE image
 sub ProcessHDR($$)

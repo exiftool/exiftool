@@ -1,52 +1,53 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.91
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.93
 [File, System, Image] FileName - File Name: VCard.vcf
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 1689 bytes
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2015:04:06 14:38:35-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:06 14:38:39-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:04:06 14:38:35-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:18 07:17:35-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:04:06 14:39:17-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: VCard
+[File, File, Image] FileTypeExtension - File Type Extension: vcf
 [File, File, Image] MIMEType - MIME Type: text/vcard
-[VCard, VCard, Document] VCardVersion - VCard Version: 3.0
-[VCard, VCard, Document] Software - Software: -//Apple Inc.//Mac OS X 10.10.2//EN
-[VCard, VCard, Author] Name - Name: Harvey;Phil;;;
-[VCard, VCard, Author] FormattedName - Formatted Name: Phil Harvey
-[VCard, VCard, Document] Organization - Organization: ExifTool;
+[VCard, VCard, Document] Version - VCard Version: 3.0
+[VCard, VCard, Document] Prodid - Software: -//Apple Inc.//Mac OS X 10.10.2//EN
+[VCard, VCard, Author] N - Name: Harvey;Phil;;;
+[VCard, VCard, Author] Fn - Formatted Name: Phil Harvey
+[VCard, VCard, Document] Org - Organization: ExifTool;
 [VCard, VCard, Document] EmailInternetHomePref - Email Internet Home Pref: someone@home.email
 [VCard, VCard, Document] EmailInternetWork - Email Internet Work: someone@work.email
 [VCard, Item1, Document] EmailInternet - Email Internet: someone@other.email
-[VCard, Item1, Document] X-ABLabel - X-AB Label: _$!<Other>!$_
-[VCard, VCard, Document] TelephoneCellVoicePref - Telephone Cell Voice Pref: 555-0000
-[VCard, VCard, Document] TelephoneIphoneCellVoice - Telephone Iphone Cell Voice: 555-1111
-[VCard, VCard, Document] TelephoneHomeVoice - Telephone Home Voice: 555-2222
-[VCard, VCard, Document] TelephoneWorkVoice - Telephone Work Voice: 555-3333
-[VCard, VCard, Document] TelephoneMain - Telephone Main: 555-4444
-[VCard, VCard, Document] TelephoneWorkFax - Telephone Work Fax: 555-5555
-[VCard, VCard, Document] TelephonePager - Telephone Pager: 555-6666
-[VCard, VCard, Document] TelephoneOtherVoice - Telephone Other Voice: 555-7777
-[VCard, VCard, Document] TelephoneOtherVoice - Telephone Other Voice: 555-8888
-[VCard, VCard, Location] AddressHomePref - Address Home Pref: ;;Home St.;City;ON;K0K0K0;Canada
-[VCard, VCard, Location] AddressWork - Address Work: ;;Work St.;City;ON;K0K0K0;Canada
-[VCard, VCard, Location] AddressOther - Address Other: ;;Other Rd.;City;ON;K0K0K0;Canada
-[VCard, VCard, Location] AddressOtherGeo - Address Other Geo: 12.3457, 78.910
-[VCard, VCard, Document] AddressOtherLabel - Address Other Label: Test;Label
+[VCard, Item1, Document] X-ABLabel - AB Label: Other
+[VCard, VCard, Document] TelCellVoicePref - Telephone Cell Voice Pref: 555-0000
+[VCard, VCard, Document] TelIphoneCellVoice - Telephone Iphone Cell Voice: 555-1111
+[VCard, VCard, Document] TelHomeVoice - Telephone Home Voice: 555-2222
+[VCard, VCard, Document] TelWorkVoice - Telephone Work Voice: 555-3333
+[VCard, VCard, Document] TelMain - Telephone Main: 555-4444
+[VCard, VCard, Document] TelWorkFax - Telephone Work Fax: 555-5555
+[VCard, VCard, Document] TelPager - Telephone Pager: 555-6666
+[VCard, VCard, Document] TelOtherVoice - Telephone Other Voice: 555-7777
+[VCard, VCard, Document] TelOtherVoice - Telephone Other Voice: 555-8888
+[VCard, VCard, Location] AdrHomePref - Address Home Pref: ;;Home St.;City;ON;K0K0K0;Canada
+[VCard, VCard, Location] AdrWork - Address Work: ;;Work St.;City;ON;K0K0K0;Canada
+[VCard, VCard, Location] AdrOther - Address Other: ;;Other Rd.;City;ON;K0K0K0;Canada
+[VCard, VCard, Location] AdrOtherGeo - Address Other Geo: 12.3457, 78.910
+[VCard, VCard, Document] AdrOtherLabel - Address Other Label: Test;Label
 [VCard, VCard, Document] Note - Note: This is "a", comma, \backslash;newline;note!
 [VCard, VCard, Document] Note-fr - Note (fr): Oui!
-[VCard, Item2, Document] UrlPref - Url Pref: http://exiftool.com
-[VCard, Item2, Document] X-ABLabel - X-AB Label: _$!<HomePage>!$_
-[VCard, VCard, Time] Birthday - Birthday: 1900-01-02
-[VCard, VCard, Document] X-aimHomePref - X-aim Home Pref: AIMName
-[VCard, Item3, Document] X-icqPref - X-icq Pref: ICQName
-[VCard, Item3, Document] X-ABLabel - X-AB Label: _$!<Other>!$_
-[VCard, VCard, Document] ImppHomePref - Impp Home Pref: aim:AIMName
-[VCard, VCard, Document] ImppWork - Impp Work: xmpp:FacebookName
-[VCard, Item4, Document] Impp - Impp: aim:ICQName
-[VCard, Item4, Document] X-ABLabel - X-AB Label: _$!<Other>!$_
+[VCard, Item2, Document] UrlPref - URL Pref: http://exiftool.com
+[VCard, Item2, Document] X-ABLabel - AB Label: HomePage
+[VCard, VCard, Time] Bday - Birthday: 1900-01-02
+[VCard, VCard, Document] X-aimHomePref - AIM Home Pref: AIMName
+[VCard, Item3, Document] X-icqPref - ICQ Pref: ICQName
+[VCard, Item3, Document] X-ABLabel - AB Label: Other
+[VCard, VCard, Document] ImppHomePref - IMPP Home Pref: aim:AIMName
+[VCard, VCard, Document] ImppWork - IMPP Work: xmpp:FacebookName
+[VCard, Item4, Document] Impp - IMPP: aim:ICQName
+[VCard, Item4, Document] X-ABLabel - AB Label: Other
 [VCard, VCard, Document] PhotoJpeg - Photo Jpeg: (Binary data 18 bytes)
-[VCard, VCard, Document] X-abuid - X-abuid: EBAC8BE8-E695-457F-AE4D-E076ECEEA002:ABPerson
-[VCard, VCard, Document] VCardVersion - VCard Version: 3.0
-[VCard, VCard, Author] FormattedName - Formatted Name: VCard Test
+[VCard, VCard, Document] X-abuid - AB UID: EBAC8BE8-E695-457F-AE4D-E076ECEEA002:ABPerson
+[VCard, VCard, Document] Version - VCard Version: 3.0
+[VCard, VCard, Author] Fn - Formatted Name: VCard Test
 [VCard, VCard, Document] LabelWork - Label Work: 12 Cucumber St.;;SaladVille ON;;Canada
 [VCard, VCard, Document] LogoImageJpeg - Logo Image Jpeg: (Binary data 18 bytes)
 [VCard, VCard, Document] SoundOgg - Sound Ogg: http://example.com/sound.ogg

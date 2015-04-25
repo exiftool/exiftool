@@ -1,13 +1,14 @@
 #------------------------------------------------------------------------------
 # File:         iptcCore.args
 #
-# Description:  ExifTool arguments for IPTC Core and Extension version 1.1 tags
+# Description:  ExifTool arguments for IPTC Core and Extension tags
 #
 # Usage:        exiftool -@ iptcCore.args FILE
 #
 # Requires:     ExifTool version 8.44 or later
 #
-# Revisions:    2011/12/28 - P. Harvey Created
+# Revisions:    2011/12/28 - P. Harvey Created (IPTC Core version 1.1)
+#               2015/04/21 - PH Updated to IPTC Extension version 1.2
 #
 # References:   http://www.iptc.org/IPTC4XMP/
 #
@@ -74,6 +75,13 @@
 
 -XMP-iptcExt:AdditionalModelInformation
 
+# CVTermDetails struct
+-XMP-iptcExt:AboutCvTerm
+-XMP-iptcExt:AboutCvTermCvId
+-XMP-iptcExt:AboutCvTermId
+-XMP-iptcExt:AboutCvTermName
+-XMP-iptcExt:AboutCvTermRefinedAbout
+
 # ArtworkOrObjectDetails struct
 -XMP-iptcExt:ArtworkOrObject
 -XMP-iptcExt:ArtworkCopyrightNotice
@@ -82,13 +90,37 @@
 -XMP-iptcExt:ArtworkSource
 -XMP-iptcExt:ArtworkSourceInventoryNo
 -XMP-iptcExt:ArtworkTitle
+-XMP-iptcExt:ArtworkCopyrightOwnerName
+-XMP-iptcExt:ArtworkCopyrightOwnerID
+-XMP-iptcExt:ArtworkLicensorName
+-XMP-iptcExt:ArtworkLicensorID
+-XMP-iptcExt:ArtworkCreatorID
+-XMP-iptcExt:ArtworkCircaDateCreated
+-XMP-iptcExt:ArtworkStylePeriod
+-XMP-iptcExt:ArtworkSourceInvURL
+-XMP-iptcExt:ArtworkSContentDescription
+-XMP-iptcExt:ArtworkContributionDescription
+-XMP-iptcExt:ArtworkPhysicalDescription
 
 -XMP-iptcExt:ControlledVocabularyTerm
 -XMP-iptcExt:DigitalImageGUID
 -XMP-iptcExt:DigitalSourcefileType
 -XMP-iptcExt:DigitalSourceType
+
+# EEREDetails struct
+-XMP-iptcExt:EmbdEncRightsExpr
+-XMP-iptcExt:EmbeddedEncodedRightsExpr
+-XMP-iptcExt:EmbeddedEncodedRightsExprType
+-XMP-iptcExt:EmbeddedEncodedRightsExprLangID
+
 -XMP-iptcExt:Event
 -XMP-iptcExt:IPTCLastEdited
+
+# LEREDetails struct
+-XMP-iptcExt:LinkedEncRightsExpr
+-XMP-iptcExt:LinkedEncodedRightsExpr
+-XMP-iptcExt:LinkedEncodedRightsExprType
+-XMP-iptcExt:LinkedEncodedRightsExprLangID
 
 # LocationDetails struct
 -XMP-iptcExt:LocationCreated
@@ -98,6 +130,7 @@
 -XMP-iptcExt:LocationCreatedProvinceState
 -XMP-iptcExt:LocationCreatedSublocation
 -XMP-iptcExt:LocationCreatedWorldRegion
+-XMP-iptcExt:LocationCreatedLocationId
 
 # LocationDetails struct
 -XMP-iptcExt:LocationShown
@@ -107,6 +140,7 @@
 -XMP-iptcExt:LocationShownProvinceState
 -XMP-iptcExt:LocationShownSublocation
 -XMP-iptcExt:LocationShownWorldRegion
+-XMP-iptcExt:LocationShownLocationId
 
 -XMP-iptcExt:MaxAvailHeight
 -XMP-iptcExt:MaxAvailWidth
@@ -114,6 +148,24 @@
 -XMP-iptcExt:OrganisationInImageCode
 -XMP-iptcExt:OrganisationInImageName
 -XMP-iptcExt:PersonInImage
+
+# PersonDetails struct
+-XMP-iptcExt:PersonInImageWDetails
+-XMP-iptcExt:PersonInImageId
+-XMP-iptcExt:PersonInImageName
+-XMP-iptcExt:PersonInImageDescription
+# CVTermDetails struct
+#-XMP-iptcExt:PersonInImageCharacteristic
+-XMP-iptcExt:PersonInImageCvTermCvId
+-XMP-iptcExt:PersonInImageCvTermId
+-XMP-iptcExt:PersonInImageCvTermName
+-XMP-iptcExt:PersonInImageCvTermRefinedAbout
+
+# ProductDetails struct
+-XMP-iptcExt:ProductInImage
+-XMP-iptcExt:ProductInImageName
+-XMP-iptcExt:ProductInImageGTIN
+-XMP-iptcExt:ProductInImageDescription
 
 # RegistryEntryDetails struct
 -XMP-iptcExt:RegistryID

@@ -1,12 +1,13 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.81
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.93
 [File, System, Image] FileName - File Name: XMP.svg
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 1402 bytes
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2008:04:07 14:11:53-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:01:09 07:20:03-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:01:07 07:37:06-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:23 08:38:22-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:04:11 08:47:16-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: SVG
+[File, File, Image] FileTypeExtension - File Type Extension: svg
 [File, File, Image] MIMEType - MIME Type: image/svg+xml
 [SVG, SVG, Image] width - Image Width: 4in
 [SVG, SVG, Image] height - Image Height: 3in
@@ -25,5 +26,3 @@
 [XMP, XMP-dc, Image] format - Format: image/svg+xml
 [XMP, XMP-dc, Other] language - Language: en
 [XMP, XMP-dc, Author] creator - Creator: Irving Bird, Mary Lambert
-[Composite, Composite, Image] ImageSize - Image Size: 4inx3in
-[Composite, Composite, Image] Megapixels - Megapixels: 0.000012

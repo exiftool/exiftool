@@ -1,12 +1,13 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.92
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.93
 [File, System, Image] FileName - File Name: CanonRaw_4_failed.crw
 [File, System, Image] Directory - Directory: t
 [File, System, Image] FileSize - File Size: 12 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2015:04:10 10:37:43-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:10 10:37:43-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:04:10 10:37:43-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2015:04:18 07:17:36-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:18 07:17:36-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:04:18 07:17:36-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: CRW
+[File, File, Image] FileTypeExtension - File Type Extension: crw
 [File, File, Image] MIMEType - MIME Type: image/x-canon-crw
 [MakerNotes, CanonRaw, Camera] 8197 - Raw Data: (Binary data 22 bytes)
 [MakerNotes, CanonRaw, Camera] 8199 - Jpg From Raw: (Binary data 16 bytes)
@@ -141,7 +142,7 @@
 [MakerNotes, CanonRaw, Image] 3 - Raw Jpg Width: 2048
 [MakerNotes, CanonRaw, Image] 4 - Raw Jpg Height: 1360
 [MakerNotes, CanonRaw, Camera] 6203 - Serial Number Format: Format 1
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 9.92
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 9.93
 [XMP, XMP-aux, Camera] Lens - Lens: 18.0 - 55.0 mm
 [XMP, XMP-dc, Image] description - Description: CRW with embedded XMP
 [XMP, XMP-exif, Image] ApertureValue - Aperture Value: 14.0

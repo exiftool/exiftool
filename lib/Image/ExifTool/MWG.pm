@@ -16,7 +16,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::XMP;
 
-$VERSION = '1.14';
+$VERSION = '1.15';
 
 sub RecoverTruncatedIPTC($$$);
 sub ListToString($);
@@ -58,7 +58,8 @@ my $mwgLoaded;  # flag set if we alreaded Load()ed the MWG tags
         Contrary to the EXIF specification, the MWG recommends that EXIF "ASCII"
         string values be stored as UTF-8.  To honour this, the exiftool application
         sets the default internal EXIF string encoding to "UTF8" when the MWG module
-        is loaded (but this setting does not change automatically via the API).
+        is loaded, but via the API this must be done manually by setting the
+        CharsetEXIF option.
 
         A complication of the MWG specification is that although the MWG:Creator
         property may consist of multiple values, the associated EXIF tag

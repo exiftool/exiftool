@@ -3364,6 +3364,17 @@ XMP Dynamic Media namespace tags.
   Unit                                          string
   W                                             real
 
+=head3 XMP Area Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  D                                             real
+  H                                             real
+  Unit                                          string
+  W                                             real
+  X                                             real
+  Y                                             real
+
 =head3 XMP xmpMM Tags
 
 XMP Media Management namespace tags.
@@ -27605,26 +27616,45 @@ default language of "en".
 
 =head2 VCard Tags
 
-This table lists only those VCard tags which are renamed by ExifTool, but
-any existing VCard tag will be extracted.  Tag names may have "Pref" added
-to indicate the preferred instance of a VCard property.  Other "TYPE"
-parameters are also added to the tag name. See
-L<https://tools.ietf.org/html/rfc6350> for the VCard 4.0 specification.
+This table lists only a few common vCard tags, but ExifTool will also
+extract any other vCard tags found.  Tag names may have "Pref" added to
+indicate the preferred instance of a vCard property, and other "TYPE"
+parameters may also added to the tag name.  See
+L<https://tools.ietf.org/html/rfc6350> for the vCard 4.0 specification.
 
-  Tag ID       Tag Name                         Writable
-  ------       --------                         --------
-  'Adr'        Address                          N
-  'Bday'       Birthday                         N
-  'Fn'         FormattedName                    N
-  'Geo'        Geolocation                      N
-  'N'          Name                             N
-  'Org'        Organization                     N
-  'Prodid'     Software                         N
-  'Rev'        Revision                         N
-  'Tel'        Telephone                        N
-  'Tz'         TimeZone                         N
-  'Uid'        UID                              N
-  'Version'    VCardVersion                     N
+  Tag ID               Tag Name                 Writable
+  ------               --------                 --------
+  'Adr'                Address                  N
+  'Anniversary'        Anniversary              N
+  'Bday'               Birthday                 N
+  'Email'              Email                    N
+  'Fn'                 FormattedName            N
+  'Gender'             Gender                   N
+  'Geo'                Geolocation              N
+  'Impp'               IMPP                     N
+  'Lang'               Language                 N
+  'Logo'               Logo                     N
+  'N'                  Name                     N
+  'Nickname'           Nickname                 N
+  'Note'               Note                     N
+  'Org'                Organization             N
+  'Photo'              Photo                    N
+  'Prodid'             Software                 N
+  'Rev'                Revision                 N
+  'Sound'              Sound                    N
+  'Tel'                Telephone                N
+  'Title'              JobTitle                 N
+  'Tz'                 TimeZone                 N
+  'Uid'                UID                      N
+  'Url'                URL                      N
+  'Version'            VCardVersion             N
+  'X-ABLabel'          ABLabel                  N
+  'X-abdate'           ABDate                   N
+  'X-abrelatednames'   ABRelatedNames           N
+  'X-abuid'            AB_UID                   N
+  'X-aim'              AIM                      N
+  'X-icq'              ICQ                      N
+  'X-socialprofile'    SocialProfile            N
 
 =head2 RSRC Tags
 
@@ -27877,6 +27907,7 @@ tag is used for dry run testing of writes to FileName.
   FileSequence               ExifTool           N
   FileSize                   System             N
   FileType                   File               N
+  FileTypeExtension          File               N
   Geosync                    -                  Y
   Geotag                     -                  Y
   Geotime                    -                  Y
@@ -27951,7 +27982,7 @@ values, may created via the ExifTool configuration file.
                        FocusDistance
                        SubjectDistance
                        ObjectDistance
-                       AverageFocusDistance
+                       ApproximateFocusDistance
                        FocusDistanceLower
                        FocusDistanceUpper
   DateCreated          Kodak:YearCreated        N
@@ -28448,7 +28479,8 @@ EXIF/IPTC/XMP records that exist.
 Contrary to the EXIF specification, the MWG recommends that EXIF "ASCII"
 string values be stored as UTF-8.  To honour this, the exiftool application
 sets the default internal EXIF string encoding to "UTF8" when the MWG module
-is loaded (but this setting does not change automatically via the API).
+is loaded, but via the API this must be done manually by setting the
+CharsetEXIF option.
 
 A complication of the MWG specification is that although the MWG:Creator
 property may consist of multiple values, the associated EXIF tag
@@ -28570,17 +28602,6 @@ L<http://www.metadataworkinggroup.org/> for the official specification.
   Name                                          string
   Type                                          string
   SeeAlso                                       string
-
-=head3 XMP Area Struct
-
-  Field Name                                    Writable
-  ----------                                    --------
-  D                                             real
-  H                                             real
-  Unit                                          string
-  W                                             real
-  X                                             real
-  Y                                             real
 
 =head3 MWG Extensions Struct
 

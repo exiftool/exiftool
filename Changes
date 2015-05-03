@@ -7,6 +7,23 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 9.90. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+May 3, 2015 - Version 9.94
+
+  - Added Geotag support for Bramor gEO log files
+  - Added support for iCalendar ICS files
+  - Added new "Preview" group for all embedded preview images
+  - Added a new PentaxModelID (thanks Louis Granboulan)
+  - Added a new Canon LensType (thanks Niels Kristian Bech Jensen)
+  - Added tag name to "Invalid EXIF text encoding" warning
+  - Decode ColorData for Canon EOS 5DS and EOS 5DS R (thanks LibRaw)
+  - Changed ListItem option so that it also applies when copying tags
+  - Enhanced FileTypeExtension to return an uppercase extension when the print
+    conversion is disabled (eg. the -n option)
+  - Fixed incorrect FileTypeExtension for virtual device drivers
+  - Fixed an improperly formatted warning for duplicate PDF entries
+  - Fixed bug creating extended XMP in JPEG images when deleting all XMP and
+    adding back in the same step
+
 Apr. 25, 2015 - Version 9.93
 
   - Added FileTypeExtension tag

@@ -481,6 +481,7 @@ t/GeoTiff_2.out
 t/GeoTiff_3.out
 t/GeoTiff_4.out
 t/Geotag.t
+t/Geotag_10.out
 t/Geotag_2.out
 t/Geotag_3.out
 t/Geotag_5.out
@@ -680,6 +681,7 @@ t/Unknown_2.out
 t/Unknown_3.out
 t/VCard.t
 t/VCard_2.out
+t/VCard_3.out
 t/Vorbis.t
 t/Vorbis_2.out
 t/Writer.t
@@ -829,6 +831,7 @@ t/images/Geotag.kml
 t/images/Geotag.log
 t/images/Geotag.xml
 t/images/Geotag2.log
+t/images/Geotag3.log
 t/images/HTML.html
 t/images/IPTC.jpg
 t/images/ITC.itc
@@ -899,6 +902,7 @@ t/images/Sony.jpg
 t/images/Sony.pmp
 t/images/Torrent.torrent
 t/images/Unknown.jpg
+t/images/VCard.ics
 t/images/VCard.vcf
 t/images/Vorbis.ogg
 t/images/Writer.jpg

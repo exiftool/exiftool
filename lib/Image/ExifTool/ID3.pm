@@ -16,7 +16,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.43';
+$VERSION = '1.44';
 
 sub ProcessID3v2($$$);
 sub ProcessPrivate($$$);
@@ -411,7 +411,7 @@ my %genre = (
     IPL => 'InvolvedPeople',
     PIC => {
         Name => 'Picture',
-        Groups => { 2 => 'Image' },
+        Groups => { 2 => 'Preview' },
         Binary => 1,
         Notes => 'the 3 tags below are also extracted from this PIC frame',
     },
@@ -496,7 +496,7 @@ my %id3v2_common = (
   # AENC => 'AudioEncryption', # Owner, preview start, preview length, encr data
     APIC => {
         Name => 'Picture',
-        Groups => { 2 => 'Image' },
+        Groups => { 2 => 'Preview' },
         Binary => 1,
         Notes => 'the 3 tags below are also extracted from this APIC frame',
     },

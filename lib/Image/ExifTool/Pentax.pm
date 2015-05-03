@@ -56,7 +56,7 @@ use vars qw($VERSION %pentaxLensTypes);
 use Image::ExifTool::Exif;
 use Image::ExifTool::HP;
 
-$VERSION = '2.89';
+$VERSION = '2.90';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -509,6 +509,7 @@ my %pentaxModelID = (
     0x13024 => 'K-S2', #29 (Ricoh)
     0x1302e => 'Q-S1',
     0x13056 => 'WG-30', # (Ricoh)
+    0x1309c => 'K-3 II', #29 (Ricoh)
 );
 
 # Pentax city codes - (PH, Optio WP)
@@ -812,7 +813,16 @@ my %binaryDataAttrs = (
         # 9.0.0.0 - K-01
         # 9.1.2.0 - X-5
         # 10.0.0.0 - K-30, K-50, K-500, K-5 II
+        # 10.0.2.0 - Q10
+        # 10.2.0.0 - WG-3
+        # 10.2.1.0 - MX-1
+        # 10.4.1.0 - WG-3 GPS
+        # 10.6.1.0 - Q-S1, Q7
         # 11.0.0.0 - K-3
+        # 11.2.1.0 - 645Z
+        # 11.3.0.0 - K-S1
+        # 11.5.0.0 - K-S2
+        # 11.6.1.0 - K-3 II
     },
     0x0001 => { #PH
         Name => 'PentaxModelType',
@@ -2004,7 +2014,7 @@ my %binaryDataAttrs = (
             10 => '10 (K-01,K-30)',
             11 => '11 (Q10)',
             12 => '12 (MX-1)',
-            13 => '13 (K-3)',
+            13 => '13 (K-3,K-3II)',
             14 => '14 (645Z)',
             15 => '15 (K-S1,K-S2)', #PH
         },
@@ -2442,7 +2452,7 @@ my %binaryDataAttrs = (
             Condition => '$count == 91',
             SubDirectory => { TagTable => 'Image::ExifTool::Pentax::LensInfo4' },
         },{
-            Name => 'LensInfo', # K-01, K-30, K-50, K-500, K-3
+            Name => 'LensInfo', # K-01, K-30, K-50, K-500, K-3, K-3II
             Condition => '$count == 80 or $count == 128',
             SubDirectory => { TagTable => 'Image::ExifTool::Pentax::LensInfo5' },
         }
@@ -3894,7 +3904,7 @@ my %binaryDataAttrs = (
     },
 );
 
-# lens information for K-01 (ref PH)
+# lens information for K-01, K-30, K-50, K-500, K-3, K-3II (ref PH)
 %Image::ExifTool::Pentax::LensInfo5 = (
     %binaryDataAttrs,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
@@ -5492,6 +5502,7 @@ my %binaryDataAttrs = (
     },
     0x04 => {
         Name => 'PreviewImage',
+        Groups => { 2 => 'Preview' },
         Format => 'undef[$val{0}]',
         Notes => '640-pixel-wide JPEG preview', # (360 pixels high, may depend on aspect ratio)
         RawConv => '$self->ValidateImage(\$val,$tag)',
@@ -5661,6 +5672,7 @@ my %binaryDataAttrs = (
     },
     0x7d3 => {
         Name => 'PreviewImage',
+        Groups => { 2 => 'Preview' },
         Format => 'undef[$size-0x7d3]',
         Notes => '640x480 JPEG preview image', # (black borders pad to 480 pixels high)
         RawConv => '$self->ValidateImage(\$val,$tag)',
@@ -5712,6 +5724,7 @@ my %binaryDataAttrs = (
     },
     0x133 => {
         Name => 'ThumbnailImage',
+        Groups => { 2 => 'Preview' },
         Format => 'undef[$val{0x12f}]',
         Notes => '160x120 JPEG thumbnail image',
         RawConv => '$self->ValidateImage(\$val,$tag)',

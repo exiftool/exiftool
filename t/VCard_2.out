@@ -1,9 +1,9 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.93
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.94
 [File, System, Image] FileName - File Name: VCard.vcf
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 1689 bytes
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2015:04:06 14:38:35-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:18 07:17:35-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2015:05:03 07:59:14-04:00
 [File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:04:06 14:39:17-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: VCard
@@ -17,7 +17,7 @@
 [VCard, VCard, Document] EmailInternetHomePref - Email Internet Home Pref: someone@home.email
 [VCard, VCard, Document] EmailInternetWork - Email Internet Work: someone@work.email
 [VCard, Item1, Document] EmailInternet - Email Internet: someone@other.email
-[VCard, Item1, Document] X-ABLabel - AB Label: Other
+[VCard, Item1, Document] X-ablabel - AB Label: Other
 [VCard, VCard, Document] TelCellVoicePref - Telephone Cell Voice Pref: 555-0000
 [VCard, VCard, Document] TelIphoneCellVoice - Telephone Iphone Cell Voice: 555-1111
 [VCard, VCard, Document] TelHomeVoice - Telephone Home Voice: 555-2222
@@ -30,21 +30,21 @@
 [VCard, VCard, Location] AdrHomePref - Address Home Pref: ;;Home St.;City;ON;K0K0K0;Canada
 [VCard, VCard, Location] AdrWork - Address Work: ;;Work St.;City;ON;K0K0K0;Canada
 [VCard, VCard, Location] AdrOther - Address Other: ;;Other Rd.;City;ON;K0K0K0;Canada
-[VCard, VCard, Location] AdrOtherGeo - Address Other Geo: 12.3457, 78.910
+[VCard, VCard, Location] AdrOtherGeo - Address Other Geolocation: 12.3457, 78.910
 [VCard, VCard, Document] AdrOtherLabel - Address Other Label: Test;Label
 [VCard, VCard, Document] Note - Note: This is "a", comma, \backslash;newline;note!
 [VCard, VCard, Document] Note-fr - Note (fr): Oui!
 [VCard, Item2, Document] UrlPref - URL Pref: http://exiftool.com
-[VCard, Item2, Document] X-ABLabel - AB Label: HomePage
-[VCard, VCard, Time] Bday - Birthday: 1900-01-02
+[VCard, Item2, Document] X-ablabel - AB Label: HomePage
+[VCard, VCard, Time] Bday - Birthday: 1900:01:02
 [VCard, VCard, Document] X-aimHomePref - AIM Home Pref: AIMName
 [VCard, Item3, Document] X-icqPref - ICQ Pref: ICQName
-[VCard, Item3, Document] X-ABLabel - AB Label: Other
+[VCard, Item3, Document] X-ablabel - AB Label: Other
 [VCard, VCard, Document] ImppHomePref - IMPP Home Pref: aim:AIMName
 [VCard, VCard, Document] ImppWork - IMPP Work: xmpp:FacebookName
 [VCard, Item4, Document] Impp - IMPP: aim:ICQName
-[VCard, Item4, Document] X-ABLabel - AB Label: Other
-[VCard, VCard, Document] PhotoJpeg - Photo Jpeg: (Binary data 18 bytes)
+[VCard, Item4, Document] X-ablabel - AB Label: Other
+[VCard, VCard, Preview] PhotoJpeg - Photo Jpeg: (Binary data 18 bytes)
 [VCard, VCard, Document] X-abuid - AB UID: EBAC8BE8-E695-457F-AE4D-E076ECEEA002:ABPerson
 [VCard, VCard, Document] Version - VCard Version: 3.0
 [VCard, VCard, Author] Fn - Formatted Name: VCard Test

@@ -19,7 +19,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::ASF;   # for GetGUID()
 
-$VERSION = '1.25';
+$VERSION = '1.26';
 
 sub ProcessFPX($$);
 sub ProcessFPXR($$$);
@@ -427,6 +427,7 @@ my %fpxFileType = (
     },
     Preview => {
         Name => 'PreviewImage',
+        Groups => { 2 => 'Preview' },
         Binary => 1,
         Notes => 'written by some FujiFilm models',
         # skip 47-byte Fuji header
@@ -482,7 +483,11 @@ my %fpxFileType = (
     0x0e => 'Pages',
     0x0f => 'Words',
     0x10 => 'Characters',
-    0x11 => { Name => 'ThumbnailClip',  Binary => 1 },
+    0x11 => {
+        Name => 'ThumbnailClip',
+        # (not a displayable format, so not in the "Preview" group)
+        Binary => 1,
+    },
     0x12 => {
         Name => 'Software',
         RawConv => '$$self{Software} = $val', # (use to determine file type)
@@ -1027,6 +1032,7 @@ my %fpxFileType = (
 %Image::ExifTool::FlashPix::Composite = (
     GROUPS => { 2 => 'Image' },
     PreviewImage => {
+        Groups => { 2 => 'Preview' },
         # extract JPEG preview from ScreenNail if possible
         Require => {
             0 => 'ScreenNail',

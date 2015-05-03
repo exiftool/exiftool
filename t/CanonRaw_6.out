@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.93
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.94
 [File, System, Image] FileName - File Name: CanonRaw_6_failed.cr2
 [File, System, Image] Directory - Directory: t
 [File, System, Image] FileSize - File Size: 8.6 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2015:04:18 07:17:36-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:18 07:17:36-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:04:18 07:17:36-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2015:04:30 07:42:35-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:30 07:42:35-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:04:30 07:42:35-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: CR2
 [File, File, Image] FileTypeExtension - File Type Extension: cr2
@@ -214,10 +214,10 @@
 [Composite, Composite, Camera] DriveMode - Drive Mode: Single-frame Shooting
 [Composite, Composite, Camera] ISO - ISO: 400
 [Composite, Composite, Camera] Lens - Lens: 18.0 - 55.0 mm
-[Composite, Composite, Image] PreviewImage - Preview Image: (Binary data 26 bytes)
+[Composite, Composite, Preview] PreviewImage - Preview Image: (Binary data 26 bytes)
 [Composite, Composite, Camera] ShootingMode - Shooting Mode: Aperture-priority AE
 [Composite, Composite, Image] ShutterSpeed - Shutter Speed: 1/15
-[Composite, Composite, Image] ThumbnailImage - Thumbnail Image: (Binary data 28 bytes)
+[Composite, Composite, Preview] ThumbnailImage - Thumbnail Image: (Binary data 28 bytes)
 [Composite, Composite, Camera] WB_RGGBLevels - WB RGGB Levels: 2002 1185 1187 2364
 [Composite, Composite, Camera] BlueBalance - Blue Balance: 1.993255
 [Composite, Composite, Image] ImageSize - Image Size: 3456x2304

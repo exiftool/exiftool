@@ -15,7 +15,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.03';
+$VERSION = '1.04';
 
 # APE metadata blocks
 %Image::ExifTool::APE::Main = (
@@ -83,7 +83,9 @@ sub MakeTag($$)
     # remove invalid characters in tag name and capitalize following letters
     $name =~ s/[^\w-]+(.?)/\U$1/sg;
     $name =~ s/([a-z0-9])_([a-z])/$1\U$2/g;
-    AddTagToTable($tagTablePtr, $tag, { Name => $name });
+    my %tagInfo = ( Name => $name );
+    $tagInfo{Groups} = { 2 => 'Preview' } if $tag =~ /^Cover Art/ and $tag !~ /Desc$/;
+    AddTagToTable($tagTablePtr, $tag, \%tagInfo);
 }
 
 #------------------------------------------------------------------------------

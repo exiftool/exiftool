@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '9.93';
+$VERSION = '9.94';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -135,7 +135,8 @@ sub ReadValue($$$$$;$);
     DV Flash Flash::FLV Real::Media Real::Audio Real::Metafile RIFF AIFF ASF
     DICOM MIE HTML XMP::SVG Palm Palm::MOBI Palm::EXTH Torrent EXE
     EXE::PEVersion EXE::PEString EXE::MachO EXE::PEF EXE::ELF EXE::CHM LNK Font
-    VCard RSRC Rawzor ZIP ZIP::GZIP ZIP::RAR RTF OOXML iWork FLIR::AFF FLIR::FPF
+    VCard VCard::VCalendar RSRC Rawzor ZIP ZIP::GZIP ZIP::RAR RTF OOXML iWork
+    FLIR::AFF FLIR::FPF
 );
 
 # alphabetical list of current Lang modules
@@ -283,8 +284,10 @@ my %fileTypeLookup = (
     HDR  => ['HDR',  'Radiance RGBE High Dynamic Range'],
     HTM  =>  'HTML',
     HTML => ['HTML', 'HyperText Markup Language'],
+    ICAL =>  'ICS',
     ICC  => ['ICC',  'International Color Consortium'],
     ICM  =>  'ICC',
+    ICS  => ['VCard','iCalendar Schedule'],
     IDML => ['ZIP',  'Adobe InDesign Markup Language'],
     IIQ  => ['TIFF', 'Phase One Intelligent Image Quality RAW'],
     IND  => ['IND',  'Adobe InDesign'],
@@ -547,6 +550,7 @@ my %fileDescription = (
     HDR  => 'image/vnd.radiance',
     HTML => 'text/html',
     ICC  => 'application/vnd.iccprofile',
+    ICS  => 'text/calendar',
     IDML => 'application/vnd.adobe.indesign-idml-package',
     IIQ  => 'image/x-raw',
     IND  => 'application/x-indesign',
@@ -805,7 +809,7 @@ my %moduleName = (
     SWF  => '[FC]WS[^\0]',
     TAR  => '.{257}ustar(  )?\0', # (this doesn't catch old-style tar files)
     TIFF => '(II|MM)', # don't test magic number (some raw formats are different)
-    VCard=> '(?i)BEGIN:VCARD\r\n',
+    VCard=> '(?i)BEGIN:(VCARD|VCALENDAR)\r\n',
     VRD  => 'CANON OPTIONAL DATA\0',
     WMF  => '(\xd7\xcd\xc6\x9a\0\0|\x01\0\x09\0\0\x03)',
     X3F  => 'FOVb',
@@ -818,7 +822,8 @@ my %moduleName = (
 my %weakMagic = ( MP3 => 1 );
 
 # file types that are determined by the process proc when FastScan == 3
-my %processType = ( JPEG=>1, TIFF=>1, XMP=>1, AIFF=>1, EXE=>1, Font=>1, PS=>1, Real=>1 );
+# (when done, the process proc must exit after SetFileType if FastScan is 3)
+my %processType = ( JPEG=>1, TIFF=>1, XMP=>1, AIFF=>1, EXE=>1, Font=>1, PS=>1, Real=>1, VCard=>1 );
 
 # lookup for valid character set names (keys are all lower case)
 %charsetName = (
@@ -998,11 +1003,17 @@ sub DummyWriteProc { return 1; }
     },
     FileType => {
         Notes => q{
-            a short description of the file type.  As a general rule, this is the
-            extension commonly used for the file, but there are exceptions to this rule
+            a short description of the file type.  For many file types this is the just
+            the uppercase file extension
         },
     },
-    FileTypeExtension => { Notes => 'usual lowercase extension for this file type' },
+    FileTypeExtension => {
+        Notes => q{
+            a common lowercase extension for this file type, or uppercase with the -n
+            option
+        },
+        PrintConv => 'lc $val',
+    },
     FileModifyDate => {
         Description => 'File Modification Date/Time',
         Notes => q{
@@ -1179,6 +1190,7 @@ sub DummyWriteProc { return 1; }
     },
     PreviewImage => {
         Notes => 'JPEG-format embedded preview image',
+        Groups => { 2 => 'Preview' },
         Writable => 1,
         WriteCheck => '$self->CheckImage(\$val)',
         # can't delete, so set to empty string and return no error
@@ -1186,8 +1198,16 @@ sub DummyWriteProc { return 1; }
         # accept either scalar or scalar reference
         RawConv => '$self->ValidateImage(ref $val ? $val : \$val, $tag)',
     },
-    PreviewPNG  => { Binary => 1, Notes => 'PNG-format embedded preview image' },
-    PreviewWMF  => { Binary => 1, Notes => 'WMF-format embedded preview image' },
+    PreviewPNG => {
+        Groups => { 2 => 'Preview' },
+        Notes => 'PNG-format embedded preview image',
+        Binary => 1,
+    },
+    PreviewWMF => {
+        Groups => { 2 => 'Preview' },
+        Notes => 'WMF-format embedded preview image',
+        Binary => 1,
+    },
     ExifByteOrder => {
         Writable => 1,
         Notes => q{
@@ -1264,8 +1284,9 @@ sub DummyWriteProc { return 1; }
         Notes => q{
             this write-only tag is used to define the GPS track log data or track log
             file name.  Currently supported track log formats are GPX, NMEA RMC/GGA/GLL,
-            KML, IGC, Garmin XML and TCX, Magellan PMGNTRK, Honeywell PTNTHPR, and
-            Winplus Beacon text files.  See L<geotag.html|../geotag.html> for details
+            KML, IGC, Garmin XML and TCX, Magellan PMGNTRK, Honeywell PTNTHPR, Winplus
+            Beacon text, and Bramor gEO log files.  See L<geotag.html|../geotag.html>
+            for details
         },
         DelCheck => q{
             require Image::ExifTool::Geotag;
@@ -1420,6 +1441,7 @@ sub DummyWriteProc { return 1; }
     GROUPS => { 0 => 'JFIF', 1 => 'JFIF', 2 => 'Image' },
     0x10 => {
         Name => 'ThumbnailImage',
+        Groups => { 2 => 'Preview' },
         RawConv => '$self->ValidateImage(\$val,$tag)',
     },
 );
@@ -6841,7 +6863,7 @@ sub SetFileType($;$$$)
             $normExt = $fileType unless defined $normExt;
         }
         $self->FoundTag('FileType', $fileType);
-        $self->FoundTag('FileTypeExtension', lc $normExt);
+        $self->FoundTag('FileTypeExtension', uc $normExt);
         $self->FoundTag('MIMEType', $mimeType || 'application/unknown');
     }
 }
@@ -6857,7 +6879,7 @@ sub OverrideFileType($$)
         $$self{VALUE}{FileType} = $fileType;
         my $normExt = $fileTypeExt{$fileType};
         $normExt = $fileType unless defined $normExt;
-        $$self{VALUE}{FileTypeExtension} = lc $normExt;
+        $$self{VALUE}{FileTypeExtension} = uc $normExt;
         # only override MIME type if unique for the derived file type
         $$self{VALUE}{MIMEType} = $mimeType{$fileType} if $mimeType{$fileType};
         if ($$self{OPTIONS}{Verbose}) {

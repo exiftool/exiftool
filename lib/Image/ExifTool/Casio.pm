@@ -21,7 +21,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.36';
+$VERSION = '1.37';
 
 # older Casio maker notes (ref 1)
 %Image::ExifTool::Casio::Main = (
@@ -401,6 +401,7 @@ $VERSION = '1.36';
         # this image data is also referenced by tags 3 and 4
         # (nasty that they double-reference the image!)
         %Image::ExifTool::previewImageTagInfo,
+        Groups => { 2 => 'Preview' },
     },
     0x2001 => { #PH
         # I downloaded images from 12 different EX-Z50 cameras, and they showed

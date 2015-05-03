@@ -17,7 +17,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::RIFF;
 
-$VERSION = '1.21';
+$VERSION = '1.22';
 
 sub ProcessASF($$;$);
 sub ProcessContentDescription($$$);
@@ -131,7 +131,7 @@ my %advancedContentEncryption = (
     PROCESS_PROC => \&ProcessContentDescription,
     GROUPS => { 2 => 'Video' },
     0 => 'Title',
-    1 => { Name => 'Author', Groups => { 2 => 'Author' } },
+    1 => { Name => 'Author',    Groups => { 2 => 'Author' } },
     2 => { Name => 'Copyright', Groups => { 2 => 'Author' } },
     3 => 'Description',
     4 => 'Rating',
@@ -149,7 +149,7 @@ my %advancedContentEncryption = (
             3 => 'GIF',
         },
     },
-    1 => { Name => 'BannerImage', Binary => 1 },
+    1 => { Name => 'BannerImage', Groups => { 2 => 'Preview' }, Binary => 1 },
     2 => 'BannerImageURL',
     3 => 'CopyrightURL',
 );
@@ -353,6 +353,7 @@ my %advancedContentEncryption = (
     2 => 'PictureDescription',
     3 => {
         Name => 'Picture',
+        Groups => { 2 => 'Preview' },
         Binary => 1,
     },
 );

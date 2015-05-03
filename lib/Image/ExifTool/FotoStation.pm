@@ -12,7 +12,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.02';
+$VERSION = '1.03';
 
 sub ProcessFotoStation($$);
 
@@ -38,11 +38,13 @@ sub ProcessFotoStation($$);
     },
     0x03 => {
         Name => 'ThumbnailImage',
+        Groups => { 2 => 'Preview' },
         Writable => 1,
         RawConv => '$self->ValidateImage(\$val,$tag)',
     },
     0x04 => {
         Name => 'PreviewImage',
+        Groups => { 2 => 'Preview' },
         Writable => 1,
         RawConv => '$self->ValidateImage(\$val,$tag)',
     },

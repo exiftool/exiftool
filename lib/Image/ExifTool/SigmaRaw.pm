@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Sigma;
 
-$VERSION = '1.23';
+$VERSION = '1.24';
 
 sub ProcessX3FHeader($$$);
 sub ProcessX3FDirectory($$$);
@@ -45,16 +45,19 @@ sub ProcessX3FProperties($$$);
     },
     IMAG => {
         Name => 'PreviewImage',
+        Groups => { 2 => 'Preview' },
         Binary => 1,
     },
     IMA2 => [
         {
             Name => 'PreviewImage',
             Condition => 'not $$self{IsJpgFromRaw}',
+            Groups => { 2 => 'Preview' },
             Binary => 1,
         },
         {
             Name => 'JpgFromRaw',
+            Groups => { 2 => 'Preview' },
             Binary => 1,
         },
     ]

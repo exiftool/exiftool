@@ -19,7 +19,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.29';
+$VERSION = '1.30';
 
 sub ProcessRicohText($$$);
 sub ProcessRicohRMETA($$$);
@@ -886,6 +886,7 @@ my %ricohLensIDs = (
     },
     thum => {
         Name => 'ThumbnailImage',
+        Groups => { 2 => 'Preview' },
         Binary => 1,
     },
 );

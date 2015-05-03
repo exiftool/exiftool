@@ -37,7 +37,7 @@ use vars qw($VERSION);
 use Image::ExifTool::Exif;
 use Image::ExifTool::APP12;
 
-$VERSION = '2.31';
+$VERSION = '2.32';
 
 sub PrintLensInfo($$$);
 
@@ -581,6 +581,7 @@ my %indexInfo = (
     },
     0x0100 => {
         Name => 'ThumbnailImage',
+        Groups => { 2 => 'Preview' },
         Writable => 'undef',
         WriteCheck => '$self->CheckImage(\$val)',
         Binary => 1,
@@ -704,6 +705,7 @@ my %indexInfo = (
     0x020d => { Name => 'EpsonSoftware',    Writable => 'string' }, #PH
     0x0280 => { #PH
         %Image::ExifTool::previewImageTagInfo,
+        Groups => { 2 => 'Preview' },
         Notes => 'found in ERF and JPG images from some Epson models',
         Format => 'undef',
         Writable => 'int8u',
@@ -3334,6 +3336,7 @@ my %indexInfo = (
     },
     8 => {
         Name => 'ThumbnailImage',
+        Groups => { 2 => 'Preview' },
         Format => 'undef[$val{4}]',
         Notes => '160x120 JPEG thumbnail image',
         RawConv => '$self->ValidateImage(\$val,$tag)',
@@ -3400,6 +3403,7 @@ my %indexInfo = (
     },
     4 => {
         Name => 'ThumbnailImage',
+        Groups => { 2 => 'Preview' },
         Format => 'undef[$val{0}]',
         Notes => '160x120 JPEG thumbnail image',
         RawConv => '$self->ValidateImage(\$val,$tag)',
@@ -3417,6 +3421,7 @@ my %indexInfo = (
     },
     4 => {
         Name => 'PreviewImage',
+        Groups => { 2 => 'Preview' },
         Format => 'undef[$val{0}]',
         Notes => '640x480 JPEG preview image',
         RawConv => '$self->ValidateImage(\$val,$tag)',
@@ -3599,6 +3604,7 @@ my %indexInfo = (
         },
     },
     ZoomedPreviewImage => {
+        Groups => { 2 => 'Preview' },
         Require => {
             0 => 'ZoomedPreviewStart',
             1 => 'ZoomedPreviewLength',

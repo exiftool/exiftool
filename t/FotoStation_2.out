@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.93
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.94
 [File, System, Image] FileName - File Name: FotoStation.jpg
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 4.2 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2006:10:28 14:44:59-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:18 07:17:10-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:03:07 15:31:15-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:30 07:45:42-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:04:25 10:57:00-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: JPEG
 [File, File, Image] FileTypeExtension - File Type Extension: jpg
@@ -35,7 +35,7 @@
 [IPTC, IPTC2, Other] 103 - Original Transmission Reference: OTR
 [IPTC, IPTC2, Image] 200 - Object Preview File Format: Unknown (Custom Field 01)
 [IPTC, IPTC2, Image] 201 - Object Preview File Version: Custom Field 02
-[IPTC, IPTC2, Image] 202 - Object Preview Data: (Binary data 15 bytes)
+[IPTC, IPTC2, Preview] 202 - Object Preview Data: (Binary data 15 bytes)
 [IPTC, IPTC2, Other] 230 - Document Notes: Document Notes
 [Composite, Composite, Image] ImageSize - Image Size: 8x8
 [Composite, Composite, Image] Megapixels - Megapixels: 0.000064

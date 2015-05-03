@@ -1,7 +1,7 @@
 # Before "make install", this script should be runnable with "make test".
 # After "make install" it should work as "perl t/VCard.t".
 
-BEGIN { $| = 1; print "1..2\n"; $Image::ExifTool::noConfig = 1; }
+BEGIN { $| = 1; print "1..3\n"; $Image::ExifTool::noConfig = 1; }
 END {print "not ok 1\n" unless $loaded;}
 
 # test 1: Load the module(s)
@@ -15,13 +15,16 @@ use t::TestLib;
 my $testname = 'VCard';
 my $testnum = 1;
 
-# test 2: Extract information from test file
+# tests 2-3: Extract information from test files
 {
-    ++$testnum;
     my $exifTool = new Image::ExifTool;
-    my $info = $exifTool->ImageInfo('t/images/VCard.vcf');
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
-    print "ok $testnum\n";
+    my $ext;
+    foreach $ext (qw(vcf ics)) {
+        ++$testnum;
+        my $info = $exifTool->ImageInfo("t/images/VCard.$ext");
+        print 'not ' unless check($exifTool, $info, $testname, $testnum);
+        print "ok $testnum\n";
+    }
 }
 
 

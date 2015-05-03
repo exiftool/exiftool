@@ -28,7 +28,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD $iptcDigestInfo);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.46';
+$VERSION = '1.47';
 
 sub ProcessPhotoshop($$$);
 sub WritePhotoshop($$$);
@@ -126,6 +126,7 @@ my %thumbnailInfo = (
         Name => 'PhotoshopBGRThumbnail',
         Notes => 'this is a JPEG image, but in BGR format instead of RGB',
         %thumbnailInfo,
+        Groups => { 2 => 'Preview' },
     },
     0x040a => {
         Name => 'CopyrightFlag',
@@ -146,6 +147,7 @@ my %thumbnailInfo = (
     0x040c => {
         Name => 'PhotoshopThumbnail',
         %thumbnailInfo,
+        Groups => { 2 => 'Preview' },
     },
     0x040d => {
         Name => 'GlobalAngle',

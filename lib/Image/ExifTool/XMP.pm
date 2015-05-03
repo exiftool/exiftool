@@ -47,7 +47,7 @@ use Image::ExifTool qw(:Utils);
 use Image::ExifTool::Exif;
 require Exporter;
 
-$VERSION = '2.83';
+$VERSION = '2.84';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -331,6 +331,7 @@ my %sThumbnail = (
    'format'     => { },
     image       => {
         Avoid => 1,
+        Groups => { 2 => 'Preview' },
         ValueConv => 'Image::ExifTool::XMP::DecodeBase64($val)',
         ValueConvInv => 'Image::ExifTool::XMP::EncodeBase64($val)',
     },
@@ -343,6 +344,7 @@ my %sPageInfo = (
     width       => { Writable => 'integer' },
    'format'     => { },
     image       => {
+        Groups => { 2 => 'Preview' },
         ValueConv => 'Image::ExifTool::XMP::DecodeBase64($val)',
         ValueConvInv => 'Image::ExifTool::XMP::EncodeBase64($val)',
     },
@@ -2732,17 +2734,19 @@ sub AddFlattenedTags($;$$)
                 foreach (keys %$fieldInfo) {
                     # must not copy PropertyPath (but can't delete it afterwards
                     # because the flat tag may already have this set)
-                    next if $_ eq 'PropertyPath';
-                    $$flatInfo{$_} = $$fieldInfo{$_} unless defined $$flatInfo{$_};
+                    next if $_ eq 'PropertyPath' or defined $$flatInfo{$_};
+                    # copy the property (making a copy of the Groups hash)
+                    $$flatInfo{$_} = $_ eq 'Groups' ? { %{$$fieldInfo{$_}} } : $$fieldInfo{$_};
                 }
-                # NOTE: Do NOT delete Groups because we need them if GotGroups was done
-                # --> just override group 2 later according to field group
+                # (NOTE: Can NOT delete Groups because we need them if GotGroups was done)
                 # re-generate List flag unless it is set to 0
                 delete $$flatInfo{List} if $$flatInfo{List};
             } else {
                 # generate new flattened tag information based on structure field
                 my $flatName = $flat . $flatField;
                 $flatInfo = { %$fieldInfo, Name => $flatName, Flat => 0 };
+                # make a copy of the Groups hash if necessary
+                $$flatInfo{Groups} = { %{$$fieldInfo{Groups}} } if $$fieldInfo{Groups};
                 # add new flattened tag to table
                 AddTagToTable($tagTablePtr, $flatID, $flatInfo);
                 ++$count;
@@ -3363,9 +3367,9 @@ sub ParseXMPElement($$$;$$$$)
             if ($nItems == 1000) {
                 my ($tg,$ns) = GetXMPTagID($propListPt);
                 if ($isWriting) {
-                    $et->Warn("Excessive number of items for $ns:$tg. Processing may be slow.", 1);
+                    $et->Warn("Excessive number of items for $ns:$tg. Processing may be slow", 1);
                 } elsif (not $$et{OPTIONS}{IgnoreMinorErrors}) {
-                    $et->Warn("Excessive number of items for $ns:$tg. Extracted only the first 1000.", 2);
+                    $et->Warn("Extracted only 1000 $ns:$tg items. Ignore minor errors to extract all", 2);
                     last;
                 }
             }

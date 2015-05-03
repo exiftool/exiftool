@@ -200,30 +200,31 @@
             ValueConv =&gt; 'GetFileType($val,1) || $val',
         },
         <span class=com># calculate physical image size based on resolution</span>
-        PhysicalImageSize => {
-            Require => {
-                0 => 'ImageWidth',
-                1 => 'ImageHeight',
-                2 => 'XResolution',
-                3 => 'YResolution',
-                4 => 'ResolutionUnit',
+        PhysicalImageSize =&gt; {
+            Require =&gt; {
+                0 =&gt; 'ImageWidth',
+                1 =&gt; 'ImageHeight',
+                2 =&gt; 'XResolution',
+                3 =&gt; 'YResolution',
+                4 =&gt; 'ResolutionUnit',
             },
-            ValueConv => '$val[0]/$val[2] . " " . $val[1]/$val[3]',
+            ValueConv =&gt; '$val[0]/$val[2] . " " . $val[1]/$val[3]',
             <span class=com># (the @prt array contains print-formatted values)</span>
-            PrintConv => 'sprintf("%.1fx%.1f $prt[4]", split(" ",$val))',
+            PrintConv =&gt; 'sprintf("%.1fx%.1f $prt[4]", split(" ",$val))',
         },
         <span class=com># [advanced] select largest JPEG preview image</span>
-        BigImage => {
-            Desire => {
-                0 => 'JpgFromRaw',
-                1 => 'PreviewImage',
-                2 => 'OtherImage',
+        BigImage =&gt; {
+            Groups =&gt; { 2 =&gt; 'Preview' },
+            Desire =&gt; {
+                0 =&gt; 'JpgFromRaw',
+                1 =&gt; 'PreviewImage',
+                2 =&gt; 'OtherImage',
                 <span class=com># (DNG and A100 ARW may be have 2 PreviewImage's)</span>
-                3 => 'PreviewImage (1)',
+                3 =&gt; 'PreviewImage (1)',
             },
             <span class=com># ValueConv may also be a code reference
             # Inputs: 0) reference to list of values, 1) ExifTool object</span>
-            ValueConv => sub {
+            ValueConv =&gt; sub {
                 my $val = shift;
                 my ($image, $bigImage, $len, $bigLen);
                 foreach $image (@$val) {
@@ -232,7 +233,7 @@
                     next unless $$image =~ /^(\xff\xd8\xff|Binary data (\d+))/;
                     $len = $2 || length $$image; <span class=com># get image length</span>
                     <span class=com># save largest image</span>
-                    next if defined $bigLen and $bigLen >= $len;
+                    next if defined $bigLen and $bigLen &gt;= $len;
                     $bigLen = $len;
                     $bigImage = $image;
                 }
@@ -254,14 +255,14 @@
     WRITABLE =&gt; 'string',
     <span class=com># Example 8.  XMP-xxx:NewXMPxxxTag1</span>
     <span class=com># - replace "NewXMPxxxTag1" with your own tag name (eg. "MyTag")</span>
-    NewXMPxxxTag1 =&gt; { Writable => 'lang-alt' },
+    NewXMPxxxTag1 =&gt; { Writable =&gt; 'lang-alt' },
     <span class=com># Example 9.  XMP-xxx:NewXMPxxxTag2</span>
     NewXMPxxxTag2 =&gt; { Groups =&gt; { 2 =&gt; 'Author' } },
     <span class=com># Example 10.  XMP-xxx:NewXMPxxxTag3</span>
     NewXMPxxxTag3 =&gt; { List =&gt; 'Bag' },
     <span class=com># Example 11.  XMP-xxx:NewXMPxxxStruct</span>
     <span class=com># - example structured XMP tag</span>
-    NewXMPxxxStruct => {
+    NewXMPxxxStruct =&gt; {
         <span class=com># the "Struct" entry defines the structure fields</span>
         Struct =&gt; {
             <span class=com># optional namespace prefix and URI for structure fields
@@ -294,7 +295,7 @@
     # if desired, but all other tag properties are taken from the
     # structure field definition.  When this is done, the "Flat" flag
     # must also be set in the tag definition.  For example:</span>
-    NewXMPxxxStructX => { Name => 'SomeOtherName', Flat => 1 },
+    NewXMPxxxStructX =&gt; { Name =&gt; 'SomeOtherName', Flat =&gt; 1 },
 );
 
 <span class=com># Adding a new MIE group requires a few extra definitions</span>

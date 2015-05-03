@@ -619,6 +619,7 @@ EXIF 2.3 specification.
            MakerNoteLeica4           ExifIFD    Panasonic Leica4
            MakerNoteLeica5           ExifIFD    Panasonic Leica5
            MakerNoteLeica6           ExifIFD    Panasonic Leica6
+           MakerNoteLeica7           ExifIFD    Panasonic Leica6
            MakerNotePanasonic        ExifIFD    Panasonic
            MakerNotePanasonic2       ExifIFD    Panasonic Type2
            MakerNotePentax           ExifIFD    Pentax
@@ -4241,6 +4242,7 @@ boot, not including standby time.
            ColorData5                           Canon ColorData5
            ColorData6                           Canon ColorData6
            ColorData7                           Canon ColorData7
+           ColorData8                           Canon ColorData8
            ColorDataUnknown                     Canon ColorDataUnknown
   0x4002   CRWParam?                            N
   0x4003   ColorInfo                            Canon ColorInfo
@@ -5810,6 +5812,100 @@ These tags are used by the EOS 1DX, 5DmkIII, 6D, 100D, 650D, 700D, M and 7DmkII.
     732    NormalWhiteLevel                     int16u
     733    SpecularWhiteLevel                   int16u
     734    LinearityUpperMargin                 int16u
+
+=head3 Canon ColorData8 Tags
+
+These tags are used by the EOS 5DS and EOS 5DS R.
+
+  Index2   Tag Name                             Writable
+  ------   --------                             --------
+      0    ColorDataVersion                     int16s
+     63    WB_RGGBLevelsAsShot                  int16s[4]
+     67    ColorTempAsShot                      int16s
+     68    WB_RGGBLevelsAuto                    int16s[4]
+     72    ColorTempAuto                        int16s
+     73    WB_RGGBLevelsMeasured                int16s[4]
+     77    ColorTempMeasured                    int16s
+     78    WB_RGGBLevelsUnknown?                int16s[4]
+     82    ColorTempUnknown?                    int16s
+     83    WB_RGGBLevelsUnknown2?               int16s[4]
+     87    ColorTempUnknown2?                   int16s
+     88    WB_RGGBLevelsUnknown3?               int16s[4]
+     92    ColorTempUnknown3?                   int16s
+     93    WB_RGGBLevelsUnknown4?               int16s[4]
+     97    ColorTempUnknown4?                   int16s
+     98    WB_RGGBLevelsUnknown5?               int16s[4]
+    102    ColorTempUnknown5?                   int16s
+    103    WB_RGGBLevelsUnknown6?               int16s[4]
+    107    ColorTempUnknown6?                   int16s
+    108    WB_RGGBLevelsUnknown7?               int16s[4]
+    112    ColorTempUnknown7?                   int16s
+    113    WB_RGGBLevelsUnknown8?               int16s[4]
+    117    ColorTempUnknown8?                   int16s
+    118    WB_RGGBLevelsUnknown9?               int16s[4]
+    122    ColorTempUnknown9?                   int16s
+    123    WB_RGGBLevelsUnknown10?              int16s[4]
+    127    ColorTempUnknown10?                  int16s
+    128    WB_RGGBLevelsUnknown11?              int16s[4]
+    132    ColorTempUnknown11?                  int16s
+    133    WB_RGGBLevelsDaylight                int16s[4]
+    137    ColorTempDaylight                    int16s
+    138    WB_RGGBLevelsShade                   int16s[4]
+    142    ColorTempShade                       int16s
+    143    WB_RGGBLevelsCloudy                  int16s[4]
+    147    ColorTempCloudy                      int16s
+    148    WB_RGGBLevelsTungsten                int16s[4]
+    152    ColorTempTungsten                    int16s
+    153    WB_RGGBLevelsFluorescent             int16s[4]
+    157    ColorTempFluorescent                 int16s
+    158    WB_RGGBLevelsKelvin                  int16s[4]
+    162    ColorTempKelvin                      int16s
+    163    WB_RGGBLevelsFlash                   int16s[4]
+    167    ColorTempFlash                       int16s
+    168    WB_RGGBLevelsUnknown12?              int16s[4]
+    172    ColorTempUnknown12?                  int16s
+    173    WB_RGGBLevelsUnknown13?              int16s[4]
+    177    ColorTempUnknown13?                  int16s
+    178    WB_RGGBLevelsUnknown14?              int16s[4]
+    182    ColorTempUnknown14?                  int16s
+    183    WB_RGGBLevelsUnknown15?              int16s[4]
+    187    ColorTempUnknown15?                  int16s
+    188    WB_RGGBLevelsUnknown16?              int16s[4]
+    192    ColorTempUnknown16?                  int16s
+    193    WB_RGGBLevelsUnknown17?              int16s[4]
+    197    ColorTempUnknown17?                  int16s
+    198    WB_RGGBLevelsUnknown18?              int16s[4]
+    202    ColorTempUnknown18?                  int16s
+    203    WB_RGGBLevelsUnknown19?              int16s[4]
+    207    ColorTempUnknown19?                  int16s
+    208    WB_RGGBLevelsUnknown20?              int16s[4]
+    212    ColorTempUnknown20?                  int16s
+    213    WB_RGGBLevelsUnknown21?              int16s[4]
+    217    ColorTempUnknown21?                  int16s
+    218    WB_RGGBLevelsUnknown22?              int16s[4]
+    222    ColorTempUnknown22?                  int16s
+    223    WB_RGGBLevelsUnknown23?              int16s[4]
+    227    ColorTempUnknown23?                  int16s
+    228    WB_RGGBLevelsUnknown24?              int16s[4]
+    232    ColorTempUnknown24?                  int16s
+    233    WB_RGGBLevelsUnknown25?              int16s[4]
+    237    ColorTempUnknown25?                  int16s
+    238    WB_RGGBLevelsUnknown26?              int16s[4]
+    242    ColorTempUnknown26?                  int16s
+    243    WB_RGGBLevelsUnknown27?              int16s[4]
+    247    ColorTempUnknown27?                  int16s
+    248    WB_RGGBLevelsUnknown28?              int16s[4]
+    252    ColorTempUnknown28?                  int16s
+    253    WB_RGGBLevelsUnknown29?              int16s[4]
+    257    ColorTempUnknown29?                  int16s
+    258    WB_RGGBLevelsUnknown30?              int16s[4]
+    262    ColorTempUnknown30?                  int16s
+    263    ColorCalib?                          Canon ColorCalib
+    326    AverageBlackLevel                    int16u[4]
+    778    PerChannelBlackLevel                 int16u[4]
+    782    NormalWhiteLevel                     int16u
+    783    SpecularWhiteLevel                   int16u
+    784    LinearityUpperMargin                 int16u
 
 =head3 Canon ColorDataUnknown Tags
 
@@ -14246,6 +14342,7 @@ still proprietary) Adobe format.
            MakerNoteLeica4                      Panasonic Leica4
            MakerNoteLeica5                      Panasonic Leica5
            MakerNoteLeica6                      Panasonic Leica6
+           MakerNoteLeica7                      Panasonic Leica6
            MakerNotePanasonic                   Panasonic
            MakerNotePanasonic2                  Panasonic Type2
            MakerNotePentax                      Pentax
@@ -27616,11 +27713,12 @@ default language of "en".
 
 =head2 VCard Tags
 
-This table lists only a few common vCard tags, but ExifTool will also
-extract any other vCard tags found.  Tag names may have "Pref" added to
-indicate the preferred instance of a vCard property, and other "TYPE"
-parameters may also added to the tag name.  See
-L<https://tools.ietf.org/html/rfc6350> for the vCard 4.0 specification.
+This table lists common vCard tags, but ExifTool will also extract any other
+vCard tags found.  Tag names may have "Pref" added to indicate the preferred
+instance of a vCard property, and other "TYPE" parameters may also added to
+the tag name.  VCF files may contain multiple vCard entries which are
+distinguished by the ExifTool family 3 group name (document  number). See
+L<http://tools.ietf.org/html/rfc6350> for the vCard 4.0 specification.
 
   Tag ID               Tag Name                 Writable
   ------               --------                 --------
@@ -27648,13 +27746,73 @@ L<https://tools.ietf.org/html/rfc6350> for the vCard 4.0 specification.
   'Uid'                UID                      N
   'Url'                URL                      N
   'Version'            VCardVersion             N
-  'X-ABLabel'          ABLabel                  N
   'X-abdate'           ABDate                   N
+  'X-ablabel'          ABLabel                  N
   'X-abrelatednames'   ABRelatedNames           N
   'X-abuid'            AB_UID                   N
   'X-aim'              AIM                      N
   'X-icq'              ICQ                      N
   'X-socialprofile'    SocialProfile            N
+
+=head3 VCard VCalendar Tags
+
+The VCard module is also used to process iCalendar ICS files since they use
+a format similar to vCard.  The following table lists standard iCalendar
+tags, but any existing tags will be extracted.  Top-level iCalendar
+components (eg. Event, Todo, Timezone, etc.) are used for the family 1 group
+names, and embedded components (eg. Alarm) are added as a prefix to the tag
+name.  See L<http://tools.ietf.org/html/rfc5545> for the official iCalendar
+2.0 specification.
+
+  Tag ID               Tag Name                 Writable
+  ------               --------                 --------
+  'Acknowledged'       Acknowledged             N
+  'Action'             Action                   N
+  'Attach'             Attachment               N
+  'Attendee'           Attendee                 N
+  'Calscale'           CalendarScale            N
+  'Categories'         Categories               N
+  'Class'              Classification           N
+  'Comment'            Comment                  N
+  'Completed'          DateTimeCompleted        N
+  'Contact'            Contact                  N
+  'Created'            DateCreated              N
+  'Description'        Description              N
+  'Dtend'              DateTimeEnd              N
+  'Dtstamp'            DateTimeStamp            N
+  'Dtstart'            DateTimeStart            N
+  'Due'                DateTimeDue              N
+  'Duration'           Duration                 N
+  'Exdate'             ExceptionDateTimes       N
+  'Freebusy'           FreeBusyTime             N
+  'Geo'                Geolocation              N
+  'Last-modified'      ModifyDate               N
+  'Location'           Location                 N
+  'Method'             Method                   N
+  'Organizer'          Organizer                N
+  'Percent-complete'   Percent-complete         N
+  'Priority'           Priority                 N
+  'Prodid'             Software                 N
+  'Rdate'              RecurrenceDateTimes      N
+  'Recurrence-id'      RecurrenceID             N
+  'Related-to'         RelatedTo                N
+  'Repeat'             Repeat                   N
+  'Request-status'     RequestStatus            N
+  'Resources'          Resources                N
+  'Rrule'              RecurrenceRule           N
+  'Sequence'           SequenceNumber           N
+  'Status'             Status                   N
+  'Summary'            Summary                  N
+  'Transp'             TimeTransparency         N
+  'Trigger'            Trigger                  N
+  'Tzid'               TimezoneID               N
+  'Tzname'             TimezoneName             N
+  'Tzoffsetfrom'       TimezoneOffsetFrom       N
+  'Tzoffsetto'         TimezoneOffsetTo         N
+  'Tzurl'              TimeZoneURL              N
+  'Uid'                UID                      N
+  'Url'                URL                      N
+  'Version'            VCalendarVersion         N
 
 =head2 RSRC Tags
 
@@ -28372,6 +28530,7 @@ for more details.
                        MakerNoteLeica4
                        MakerNoteLeica5
                        MakerNoteLeica6
+                       MakerNoteLeica7
                        MakerNotePanasonic
                        MakerNotePanasonic2
                        MakerNotePentax

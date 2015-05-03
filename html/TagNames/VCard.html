@@ -7,11 +7,12 @@
 </head>
 <body>
 <h2 class=top>VCard Tags</h2>
-<p>This table lists only a few common vCard tags, but ExifTool will also
-extract any other vCard tags found.  Tag names may have &quot;Pref&quot; added to
-indicate the preferred instance of a vCard property, and other &quot;TYPE&quot;
-parameters may also added to the tag name.  See
-<a href="https://tools.ietf.org/html/rfc6350">https://tools.ietf.org/html/rfc6350</a> for the vCard 4.0 specification.</p>
+<p>This table lists common vCard tags, but ExifTool will also extract any other
+vCard tags found.  Tag names may have &quot;Pref&quot; added to indicate the preferred
+instance of a vCard property, and other &quot;TYPE&quot; parameters may also added to
+the tag name.  VCF files may contain multiple vCard entries which are
+distinguished by the ExifTool family 3 group name (document  number). See
+<a href="http://tools.ietf.org/html/rfc6350">http://tools.ietf.org/html/rfc6350</a> for the vCard 4.0 specification.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -138,13 +139,13 @@ parameters may also added to the tag name.  See
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td>'X-ABLabel'</td>
-<td>ABLabel</td>
+<td>'X-abdate'</td>
+<td>ABDate</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
-<td>'X-abdate'</td>
-<td>ABDate</td>
+<td>'X-ablabel'</td>
+<td>ABLabel</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -174,9 +175,259 @@ parameters may also added to the tag name.  See
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='VCalendar'>VCard VCalendar Tags</a></h2>
+<p>The VCard module is also used to process iCalendar ICS files since they use
+a format similar to vCard.  The following table lists standard iCalendar
+tags, but any existing tags will be extracted.  Top-level iCalendar
+components (eg. Event, Todo, Timezone, etc.) are used for the family 1 group
+names, and embedded components (eg. Alarm) are added as a prefix to the tag
+name.  See <a href="http://tools.ietf.org/html/rfc5545">http://tools.ietf.org/html/rfc5545</a> for the official iCalendar
+2.0 specification.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'Acknowledged'</td>
+<td>Acknowledged</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Action'</td>
+<td>Action</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Attach'</td>
+<td>Attachment</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Attendee'</td>
+<td>Attendee</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Calscale'</td>
+<td>CalendarScale</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Categories'</td>
+<td>Categories</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Class'</td>
+<td>Classification</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Comment'</td>
+<td>Comment</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Completed'</td>
+<td>DateTimeCompleted</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Contact'</td>
+<td>Contact</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Created'</td>
+<td>DateCreated</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Description'</td>
+<td>Description</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Dtend'</td>
+<td>DateTimeEnd</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Dtstamp'</td>
+<td>DateTimeStamp</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Dtstart'</td>
+<td>DateTimeStart</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Due'</td>
+<td>DateTimeDue</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Duration'</td>
+<td>Duration</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Exdate'</td>
+<td>ExceptionDateTimes</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Freebusy'</td>
+<td>FreeBusyTime</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Geo'</td>
+<td>Geolocation</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Last-modified'</td>
+<td>ModifyDate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Location'</td>
+<td>Location</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Method'</td>
+<td>Method</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Organizer'</td>
+<td>Organizer</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Percent-complete'</td>
+<td>Percent-complete</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Priority'</td>
+<td>Priority</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Prodid'</td>
+<td>Software</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Rdate'</td>
+<td>RecurrenceDateTimes</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Recurrence-id'</td>
+<td>RecurrenceID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Related-to'</td>
+<td>RelatedTo</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Repeat'</td>
+<td>Repeat</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Request-status'</td>
+<td>RequestStatus</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Resources'</td>
+<td>Resources</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Rrule'</td>
+<td>RecurrenceRule</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Sequence'</td>
+<td>SequenceNumber</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Status'</td>
+<td>Status</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Summary'</td>
+<td>Summary</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Transp'</td>
+<td>TimeTransparency</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Trigger'</td>
+<td>Trigger</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Tzid'</td>
+<td>TimezoneID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Tzname'</td>
+<td>TimezoneName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Tzoffsetfrom'</td>
+<td>TimezoneOffsetFrom</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Tzoffsetto'</td>
+<td>TimezoneOffsetTo</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Tzurl'</td>
+<td>TimeZoneURL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Uid'</td>
+<td>UID</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Url'</td>
+<td>URL</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Version'</td>
+<td>VCalendarVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Apr 20, 2015</i>
+<br><i>Last revised May 3, 2015</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

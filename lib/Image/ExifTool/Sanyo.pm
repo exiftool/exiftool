@@ -14,7 +14,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.15';
+$VERSION = '1.16';
 
 my %offOn = (
     0 => 'Off',
@@ -33,6 +33,7 @@ my %offOn = (
     },
     0x0100 => {
         Name => 'SanyoThumbnail',
+        Groups => { 2 => 'Preview' },
         Writable => 'undef',
         WriteCheck => '$self->CheckImage(\$val)',
         RawConv => '$self->ValidateImage(\$val,$tag)',

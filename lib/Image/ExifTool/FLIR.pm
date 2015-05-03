@@ -23,7 +23,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.12';
+$VERSION = '1.13';
 
 sub ProcessFLIR($$;$);
 sub ProcessFLIRText($$$);
@@ -235,6 +235,7 @@ my %float8g = ( Format => 'float', PrintConv => 'sprintf("%.8g",$val)' );
     },
     16.1 => {
         Name => 'RawThermalImage',
+        Groups => { 2 => 'Preview' },
         RawConv => '\$$self{RawThermalImage}',
     },
 );
@@ -359,6 +360,7 @@ my %float8g = ( Format => 'float', PrintConv => 'sprintf("%.8g",$val)' );
     },
     16.1 => {
         Name => 'EmbeddedImage',
+        Groups => { 2 => 'Preview' },
         Format => 'undef[$size-0x20]',
         Binary => 1,
     },
@@ -928,7 +930,7 @@ my %float8g = ( Format => 'float', PrintConv => 'sprintf("%.8g",$val)' );
         },
         {
             Name => 'ThumbnailImage',
-            Groups => { 2 => 'Image' },
+            Groups => { 2 => 'Preview' },
             Condition => '$$valPt=~/^\x91\xaf\x9b\x93\x45\x9b\x44\x56\x98\xd1\x5e\x76\xea\x01\x04\xac....\xff\xd8\xff/s',
             RawConv => 'substr($val, 20)',
             Binary => 1,

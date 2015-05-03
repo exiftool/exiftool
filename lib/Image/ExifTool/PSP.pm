@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.04';
+$VERSION = '1.05';
 
 sub ProcessExtData($$$);
 
@@ -65,6 +65,7 @@ sub ProcessExtData($$$);
     # this is inside the composite image bank block (16), which I don't want to parse...
     #18 => {
     #    Name => 'PreviewImage',
+    #    Groups => { 2 => 'Preview' },
     #    RawConv => '$self->ValidateImage(\$val,$tag)',
     #},
 );

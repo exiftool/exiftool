@@ -21,7 +21,7 @@ use vars qw($VERSION %samsungLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.30';
+$VERSION = '1.31';
 
 sub WriteSTMN($$$);
 sub ProcessINFO($$$);
@@ -762,6 +762,7 @@ my %formatMinMax = (
     0x208 => { Name => 'ThumbnailLength', Format => 'int32u' }, # (2 bytes too long in my sample)
     0x20c => {
         Name => 'ThumbnailImage',
+        Groups => { 2 => 'Preview' },
         Format => 'undef[$val{0x208}]',
         Notes => 'the THM image, embedded metadata is extracted as the first sub-document',
         SetBase => 1,
@@ -826,7 +827,7 @@ my %formatMinMax = (
         as the Galaxy S4 and Tab S.
     },
     # stuff written with "Shot & More" feature
-    '0x0001' => { Name => 'EmbeddedImage', Binary => 1 },
+    '0x0001' => { Name => 'EmbeddedImage', Groups => { 2 => 'Preview' }, Binary => 1 },
     '0x0001-name' => 'EmbeddedImageName',
     # 0x0830 - unknown (164004 bytes, name like "1165724808.pre")
 

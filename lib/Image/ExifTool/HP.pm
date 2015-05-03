@@ -12,7 +12,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.03';
+$VERSION = '1.04';
 
 sub ProcessHP($$$);
 sub ProcessTDHD($$$);
@@ -43,6 +43,7 @@ sub ProcessTDHD($$$);
     NOTES => 'These tags are used by the PhotoSmart E427.',
    'PreviewImage' => {
         Name => 'PreviewImage',
+        Groups => { 2 => 'Preview' },
         RawConv => '$self->ValidateImage(\$val,$tag)',
     },
    'Serial Number' => 'SerialNumber',

@@ -535,6 +535,7 @@ my %meterInfo2 = (
     # 0x2000 - undef[1]
     0x2001 => { #PH (JPEG images from all DSLR's except the A100)
         Name => 'PreviewImage',
+        Groups => { 2 => 'Preview' },
         Writable => 'undef',
         DataTag => 'PreviewImage',
         Notes => 'HD-size preview in JPEG images from almost all DSLR/SLT/ILCA/NEX/ILCE.',

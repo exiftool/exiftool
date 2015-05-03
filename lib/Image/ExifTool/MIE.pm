@@ -14,7 +14,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '1.42';
+$VERSION = '1.43';
 
 sub ProcessMIE($$);
 sub ProcessMIEGroup($$$);
@@ -466,6 +466,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
     },
     data => {
         Name => 'FullSizeImage',
+        Groups => { 2 => 'Preview' },
         %binaryConv,
         RawConv => '$self->ValidateImage(\$val,$tag)',
     },
@@ -488,6 +489,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
     },
     data => {
         Name => 'PreviewImage',
+        Groups => { 2 => 'Preview' },
         %binaryConv,
         RawConv => '$self->ValidateImage(\$val,$tag)',
     },
@@ -510,6 +512,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
     },
     data => {
         Name => 'ThumbnailImage',
+        Groups => { 2 => 'Preview' },
         %binaryConv,
         RawConv => '$self->ValidateImage(\$val,$tag)',
     },

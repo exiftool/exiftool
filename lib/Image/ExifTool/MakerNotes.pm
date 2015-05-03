@@ -21,7 +21,7 @@ sub ProcessKodakPatch($$$);
 sub WriteUnknownOrPreview($$$);
 sub FixLeicaBase($$;$);
 
-$VERSION = '1.95';
+$VERSION = '1.96';
 
 my $debug;          # set to 1 to enable debugging code
 
@@ -600,11 +600,11 @@ my $debug;          # set to 1 to enable debugging code
         Name => 'MakerNoteLeica6', # used by the S2, M (Typ 240) and S (Typ 006)
         # (starts with "LEICA\0\x02\xff", Make is "Leica Camera AG", but test the
         # model names separately because the maker notes data may not be loaded
-        # at the time this is tested if they are in a JPEG trailer)
+        # at the time this is tested if they are in a JPEG trailer.  Also, this
+        # header is used by the M Monochrom (Type 246), with different offsets.)
         Condition => q{
-            ($$self{Make} eq 'Leica Camera AG' and ($$self{Model} eq "S2" or
-            $$self{Model} eq "LEICA M (Typ 240)" or $$self{Model} eq "LEICA S (Typ 006)")) or
-            $$valPt =~ /^LEICA\0\x02\xff/
+            ($$self{Make} eq 'Leica Camera AG' and ($$self{Model} eq 'S2' or
+            $$self{Model} eq 'LEICA M (Typ 240)' or $$self{Model} eq 'LEICA S (Typ 006)'))
         },
         DataTag => 'LeicaTrailer',  # (generates fixup name for this tag)
         LeicaTrailer => 1, # flag to special-case this tag in the Exif code
@@ -618,6 +618,19 @@ my $debug;          # set to 1 to enable debugging code
             # ExifTool may also create S2/M maker notes inside the APP1 segment when
             # copying from other files, and for this the normal EXIF offsets are used,
             # Base should not be defined!
+        },
+    },
+    {
+        Name => 'MakerNoteLeica7', # used by the M Monochrom (Typ 246)
+        # (starts with "LEICA\0\x02\xff", Make is "Leica Camera AG")
+        Condition => '$$valPt =~ /^LEICA\0\x02\xff/',
+        DataTag => 'LeicaTrailer',  # (generates fixup name for this tag)
+        LeicaTrailer => 1, # flag to special-case this tag in the Exif code
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Panasonic::Leica6',
+            Start => '$valuePtr + 8',
+            ByteOrder => 'Unknown',
+            Base => '-$base',  # uses absolute file offsets
         },
     },
     {
@@ -1005,6 +1018,8 @@ sub GetMakerNoteOffset($)
         if ($model eq 'S2') {
             # lots of empty space before first value in S2 images
             push @offsets, 4, ($$et{FILE_TYPE} eq 'JPEG' ? 286 : 274);
+        } elsif ($model eq 'LEICA M MONOCHROM (Typ 246)') {
+            push @offsets, 4, 130;
         } elsif ($model eq 'LEICA M (Typ 240)') {
             push @offsets, 4, 118;
         } elsif ($model =~ /^(R8|R9|M8)\b/) {

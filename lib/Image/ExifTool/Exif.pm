@@ -52,7 +52,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '3.70';
+$VERSION = '3.72';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -1709,7 +1709,7 @@ my %sampleFormat = (
         Name => 'UserComment',
         # I have seen other applications write it incorrectly as 'string' or 'int8u'
         Format => 'undef',
-        RawConv => 'Image::ExifTool::Exif::ConvertExifText($self,$val,1)',
+        RawConv => 'Image::ExifTool::Exif::ConvertExifText($self,$val,1,$tag)',
     },
     0x9290 => {
         Name => 'SubSecTime',
@@ -2912,6 +2912,7 @@ my %sampleFormat = (
         PrintConv => '$self->ConvertDateTime($val)',
     },
     ThumbnailImage => {
+        Groups => { 2 => 'Preview' },
         Writable => 1,
         WriteCheck => '$self->CheckImage(\$val)',
         WriteAlso => {
@@ -2927,6 +2928,7 @@ my %sampleFormat = (
         RawConv => 'Image::ExifTool::Exif::ExtractImage($self,$val[0],$val[1],"ThumbnailImage")',
     },
     PreviewImage => {
+        Groups => { 2 => 'Preview' },
         Writable => 1,
         WriteCheck => '$self->CheckImage(\$val)',
         DelCheck => '$val = ""; return undef', # can't delete, so set to empty string
@@ -2961,6 +2963,7 @@ my %sampleFormat = (
         },
     },
     JpgFromRaw => {
+        Groups => { 2 => 'Preview' },
         Writable => 1,
         WriteCheck => '$self->CheckImage(\$val)',
         WriteAlso => {
@@ -2974,6 +2977,7 @@ my %sampleFormat = (
         RawConv => 'Image::ExifTool::Exif::ExtractImage($self,$val[0],$val[1],"JpgFromRaw")',
     },
     OtherImage => {
+        Groups => { 2 => 'Preview' },
         Writable => 1,
         WriteCheck => '$self->CheckImage(\$val)',
         DelCheck => '$val = ""; return undef', # can't delete, so set to empty string
@@ -3300,11 +3304,12 @@ sub ConvertFraction($)
 #------------------------------------------------------------------------------
 # Convert EXIF text to something readable
 # Inputs: 0) ExifTool object reference, 1) EXIF text,
-#         2) flag to apply CharsetEXIF to ASCII text
+#         2) [optional] 1 to apply CharsetEXIF to ASCII text,
+#         3) tag name for warning message (may be argument 2)
 # Returns: text encoded according to Charset option (with trailing spaces removed)
-sub ConvertExifText($$;$)
+sub ConvertExifText($$;$$)
 {
-    my ($et, $val, $asciiFlex) = @_;
+    my ($et, $val, $asciiFlex, $tag) = @_;
     return $val if length($val) < 8;
     my $id = substr($val, 0, 8);
     my $str = substr($val, 8);
@@ -3316,7 +3321,7 @@ sub ConvertExifText($$;$)
         # EXIF spec, but it seems that few people actually read the spec)
         $str =~ s/\0.*//s;
         # allow ASCII text to contain any other specified encoding
-        if ($asciiFlex) {
+        if ($asciiFlex and $asciiFlex eq '1') {
             my $enc = $et->Options('CharsetEXIF');
             $str = $et->Decode($str, $enc) if $enc;
         }
@@ -3331,7 +3336,8 @@ sub ConvertExifText($$;$)
     } elsif ($id =~ /^JIS[\0 ]{5}$/) {
         $str = $et->Decode($str, 'JIS', 'Unknown');
     } else {
-        $et->Warn('Invalid EXIF text encoding');
+        $tag = $asciiFlex if $asciiFlex and $asciiFlex ne 1;
+        $et->Warn('Invalid EXIF text encoding' . ($tag ? " for $tag" : ''));
         $str = $id . $str;
     }
     $str =~ s/ +$//;    # trim trailing blanks

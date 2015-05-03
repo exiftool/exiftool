@@ -15,7 +15,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD %iptcCharset);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.52';
+$VERSION = '1.53';
 
 %iptcCharset = (
     "\x1b%G"  => 'UTF8',
@@ -638,7 +638,7 @@ my %fileFormat = (
     },
     202 => {
         Name => 'ObjectPreviewData',
-        Groups => { 2 => 'Image' },
+        Groups => { 2 => 'Preview' },
         Format => 'undef[0,256000]',
         Binary => 1,
     },

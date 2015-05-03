@@ -2,7 +2,7 @@
 # After "make install" it should work as "perl t/Geotag.t".
 
 BEGIN {
-    $| = 1; print "1..9\n"; $Image::ExifTool::noConfig = 1;
+    $| = 1; print "1..10\n"; $Image::ExifTool::noConfig = 1;
     # must create user-defined tags before loading ExifTool (used in test 8)
     %Image::ExifTool::UserDefined = (
         'Image::ExifTool::GPS::Main' => {
@@ -142,40 +142,31 @@ my $testfile2;
     print "ok $testnum\n";
 }
 
-# test 8: Geotag with attitude information from PTNTHPR sentence
+# test 8:  Geotag with attitude information from PTNTHPR sentence
+# test 9:  Geotag from KML track log (obtained from Google Location),
+# test 10: Geotag from Bramor gEO log
 {
-    ++$testnum;
+    my %dat = (
+        8  => { file => 'Geotag2.log', geotime => '2010:04:24 06:27:30-05:00' },
+        9  => { file => 'Geotag.kml',  geotime => '2013:11:13 09:04:31Z' },
+        10 => { file => 'Geotag3.log', geotime => '2014:04:21 07:06:42Z' },
+    );
     my $exifTool = new Image::ExifTool;
-    my $testfile = "t/${testname}_${testnum}_failed.jpg";
-    unlink $testfile;
-    $exifTool->SetNewValue(Geotag => 't/images/Geotag2.log');
-    $exifTool->SetNewValue(Geotime => '2010:04:24 06:27:30-05:00');
-    $exifTool->WriteInfo('t/images/Writer.jpg', $testfile);
-    my $info = $exifTool->ImageInfo($testfile, @testTags);
-    if (check($exifTool, $info, $testname, $testnum)) {
+    while ($testnum < 10) {
+        ++$testnum;
+        $testfile = "t/${testname}_${testnum}_failed.jpg";
         unlink $testfile;
-    } else {
-        print 'not ';
+        $exifTool->SetNewValue(Geotag => 't/images/' . $dat{$testnum}{file});
+        $exifTool->SetNewValue(Geotime => $dat{$testnum}{geotime});
+        $exifTool->WriteInfo('t/images/Writer.jpg', $testfile);
+        my $info = $exifTool->ImageInfo($testfile, @testTags);
+        if (check($exifTool, $info, $testname, $testnum)) {
+            unlink $testfile;
+        } else {
+            print 'not ';
+        }
+        print "ok $testnum\n";
     }
-    print "ok $testnum\n";
-}
-
-# test 9: Geotag from KML track log, obtained from Google Location
-{
-    ++$testnum;
-    my $exifTool = new Image::ExifTool;
-    $testfile2 = "t/${testname}_${testnum}_failed.jpg";
-    unlink $testfile2;
-    $exifTool->SetNewValue(Geotag => 't/images/Geotag.kml');
-    $exifTool->SetNewValue(Geotime => '2013:11:13 09:04:31Z');
-    $exifTool->WriteInfo('t/images/Writer.jpg', $testfile2);
-    my $info = $exifTool->ImageInfo($testfile2, @testTags);
-    if (check($exifTool, $info, $testname, $testnum)) {
-        unlink $testfile2;
-    } else {
-        print 'not ';
-    }
-    print "ok $testnum\n";
 }
 
 # end

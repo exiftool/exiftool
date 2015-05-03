@@ -1,0 +1,77 @@
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.94
+[File, System, Image] FileName - File Name: VCard.ics
+[File, System, Image] Directory - Directory: t/images
+[File, System, Image] FileSize - File Size: 1910 bytes
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2015:05:02 22:23:33-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2015:05:03 07:45:14-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:05:02 22:25:04-04:00
+[File, System, Image] FilePermissions - File Permissions: rw-r--r--
+[File, File, Image] FileType - File Type: ICS
+[File, File, Image] FileTypeExtension - File Type Extension: ics
+[File, File, Image] MIMEType - MIME Type: text/calendar
+[VCard, VCalendar, Document] Calscale - Calendar Scale: GREGORIAN
+[VCard, VCalendar, Document] Version - VCalendar Version: 2.0
+[VCard, VCalendar, Document] Method - Method: PUBLISH
+[VCard, VCalendar, Document] X-wr-calname - Wr-calname: Calendar
+[VCard, VCalendar, Document] X-wr-timezone - Wr-timezone: America/Toronto
+[VCard, VCalendar, Document] X-apple-calendar-color - Apple-calendar-color: #CC73E1
+[VCard, Timezone1, Time] Tzid - Timezone ID: Canada/Eastern
+[VCard, Timezone1, Time] DaylightTzoffsetfrom - Daylight Timezone Offset From: -0500
+[VCard, Timezone1, Document] DaylightRrule - Daylight Recurrence Rule: FREQ=YEARLY;BYMONTH=3;BYDAY=2SU
+[VCard, Timezone1, Time] DaylightDtstart - Daylight Date Time Start: 2007:03:11 02:00:00
+[VCard, Timezone1, Time] DaylightTzname - Daylight Timezone Name: EDT
+[VCard, Timezone1, Time] DaylightTzoffsetto - Daylight Timezone Offset To: -0400
+[VCard, Timezone1, Time] StandardTzoffsetfrom - Standard Timezone Offset From: -0400
+[VCard, Timezone1, Document] StandardRrule - Standard Recurrence Rule: FREQ=YEARLY;BYMONTH=11;BYDAY=1SU
+[VCard, Timezone1, Time] StandardDtstart - Standard Date Time Start: 2007:11:04 02:00:00
+[VCard, Timezone1, Time] StandardTzname - Standard Timezone Name: EST
+[VCard, Timezone1, Time] StandardTzoffsetto - Standard Timezone Offset To: -0500
+[VCard, Event1, Time] Created - Date Created: 2012:08:07 15:27:46Z
+[VCard, Event1, Document] Uid - UID: 5E9B5BEF-C3D9-452C-AB1A-613510B5BA52
+[VCard, Event1, Document] Rrule - Recurrence Rule: FREQ=WEEKLY;INTERVAL=1;BYDAY=MO;WKST=SU
+[VCard, Event1, Time] Dtend - Date Time End: 2013:09:16 13:30:00
+[VCard, Event1, Time] DtendTzid - Date Time End Timezone ID: Canada/Eastern
+[VCard, Event1, Time] Exdate - Exception Date Times: 2014:12:01 12:30:00
+[VCard, Event1, Time] ExdateTzid - Exception Date Times Timezone ID: Canada/Eastern
+[VCard, Event1, Time] Exdate - Exception Date Times: 2015:04:27 12:30:00
+[VCard, Event1, Time] ExdateTzid - Exception Date Times Timezone ID: Canada/Eastern
+[VCard, Event1, Document] Transp - Time Transparency: OPAQUE
+[VCard, Event1, Document] Summary - Summary: Group meeting
+[VCard, Event1, Time] Dtstart - Date Time Start: 2013:09:16 12:30:00
+[VCard, Event1, Time] DtstartTzid - Date Time Start Timezone ID: Canada/Eastern
+[VCard, Event1, Time] Dtstamp - Date Time Stamp: 2015:04:20 15:55:18Z
+[VCard, Event1, Location] Location - Location: 261
+[VCard, Event1, Document] Sequence - Sequence Number: 0
+[VCard, Event1, Document] Alarm1X-wr-alarmuid - Alarm 1 Wr-alarmuid: C41775A2-C98F-456C-BB8F-8E6FB15A554F
+[VCard, Event1, Document] Alarm1Uid - Alarm 1 UID: C41775A2-C98F-456C-BB8F-8E6FB15A554F
+[VCard, Event1, Document] Alarm1Trigger - Alarm 1 Trigger: -PT5M
+[VCard, Event1, Document] Alarm1Attach - Alarm 1 Attachment: Basso
+[VCard, Event1, Document] Alarm1X-apple-local-default-alarm - Alarm 1 Apple-local-default-alarm: TRUE
+[VCard, Event1, Document] Alarm1Action - Alarm 1 Action: AUDIO
+[VCard, Event1, Document] Alarm1X-apple-default-alarm - Alarm 1 Apple-default-alarm: TRUE
+[VCard, Event1, Document] Alarm2X-wr-alarmuid - Alarm 2 Wr-alarmuid: 70894F68-E6F8-4C00-A737-73D4CDCF0525
+[VCard, Event1, Document] Alarm2Uid - Alarm 2 UID: 70894F68-E6F8-4C00-A737-73D4CDCF0525
+[VCard, Event1, Document] Alarm2Trigger - Alarm 2 Trigger: -PT5M
+[VCard, Event1, Document] Alarm2X-apple-default-alarm - Alarm 2 Apple-default-alarm: TRUE
+[VCard, Event1, Document] Alarm2Attach - Alarm 2 Attachment: Basso
+[VCard, Event1, Document] Alarm2Action - Alarm 2 Action: AUDIO
+[VCard, Event2, Time] Created - Date Created: 2012:08:07 15:27:46Z
+[VCard, Event2, Document] Uid - UID: 5E9B5BEF-C3D9-452C-AB1A-613510B5BA52
+[VCard, Event2, Time] Dtend - Date Time End: 2013:11:25 13:30:00
+[VCard, Event2, Time] DtendTzid - Date Time End Timezone ID: Canada/Eastern
+[VCard, Event2, Document] Transp - Time Transparency: OPAQUE
+[VCard, Event2, Document] Summary - Summary: Group meeting
+[VCard, Event2, Time] Dtstart - Date Time Start: 2013:11:25 12:30:00
+[VCard, Event2, Time] DtstartTzid - Date Time Start Timezone ID: Canada/Eastern
+[VCard, Event2, Time] Dtstamp - Date Time Stamp: 2015:04:08 14:29:41Z
+[VCard, Event2, Location] Location - Location: 501
+[VCard, Event2, Document] Sequence - Sequence Number: 0
+[VCard, Event2, Document] Recurrence-id - Recurrence ID: 20131125T123000
+[VCard, Event2, Time] Recurrence-idTzid - Recurrence ID Timezone ID: Canada/Eastern
+[VCard, Event2, Document] Alarm1X-wr-alarmuid - Alarm 1 Wr-alarmuid: C514D9BB-BDB3-4A5F-B580-9287459DA35C
+[VCard, Event2, Document] Alarm1Uid - Alarm 1 UID: C514D9BB-BDB3-4A5F-B580-9287459DA35C
+[VCard, Event2, Document] Alarm1Trigger - Alarm 1 Trigger: -PT5M
+[VCard, Event2, Document] Alarm1Attach - Alarm 1 Attachment: Basso
+[VCard, Event2, Document] Alarm1X-apple-local-default-alarm - Alarm 1 Apple-local-default-alarm: TRUE
+[VCard, Event2, Document] Alarm1Action - Alarm 1 Action: AUDIO
+[VCard, Event2, Document] Alarm1X-apple-default-alarm - Alarm 1 Apple-default-alarm: TRUE

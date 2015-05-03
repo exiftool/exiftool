@@ -1089,6 +1089,7 @@ sub SetNewValuesFromFile($$;@)
         Lang            => $$options{Lang},
         LargeFileSupport=> $$options{LargeFileSupport},
         List            => 1,
+        ListItem        => $$options{ListItem},
         ListSep         => $$options{ListSep},
         MakerNotes      => 1,
         MissingTagValue => $$options{MissingTagValue},
@@ -3498,18 +3499,15 @@ sub WriteDirectory($$$;$)
                             return '';
                         }
                         $$self{Recreated}{$path} = 1;
-                        # create new empty directory
+                        # empty the directory
                         my $data = '';
-                        my %dirInfo = (
-                            DirName    => $dirName,
-                            Parent     => $parent,
-                            DirStart   => 0,
-                            DirLen     => 0,
-                            DataPt     => \$data,
-                            NewDataPos => $$dirInfo{NewDataPos},
-                            Fixup      => $$dirInfo{Fixup},
-                        );
-                        $dirInfo = \%dirInfo;
+                        $$dirInfo{DataPt}   = \$data;
+                        $$dirInfo{DataLen}  = 0;
+                        $$dirInfo{DirStart} = 0;
+                        $$dirInfo{DirLen}   = 0;
+                        delete $$dirInfo{RAF};
+                        delete $$dirInfo{Base};
+                        delete $$dirInfo{DataPos};
                     } else {
                         $self->Warn("Not recreating $grp1 in $parent (should be in $right)",1);
                         return '';

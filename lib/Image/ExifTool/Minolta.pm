@@ -49,7 +49,7 @@ use vars qw($VERSION %minoltaLensTypes %minoltaTeleconverters %minoltaColorMode
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.23';
+$VERSION = '2.24';
 
 # Full list of product codes for Sony-compatible Minolta lenses
 # (ref http://www.kb.sony.com/selfservice/documentLink.do?externalId=C1000570)
@@ -753,6 +753,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
     0x0081 => {
         # JPEG preview found in DiMAGE 7 images
         %Image::ExifTool::previewImageTagInfo,
+        Groups => { 2 => 'Preview' },
         Permanent => 1,     # don't add this to a file
     },
     0x0088 => {

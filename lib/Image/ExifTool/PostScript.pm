@@ -16,7 +16,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.39';
+$VERSION = '1.40';
 
 sub WritePS($$);
 sub ProcessPS($$;$);
@@ -77,6 +77,7 @@ sub ProcessPS($$;$);
         },
     },
     TIFFPreview => {
+        Groups => { 2 => 'Preview' },
         Binary => 1,
         Notes => q{
             not a real tag ID, but used to represent the TIFF preview extracted from DOS

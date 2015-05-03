@@ -20,7 +20,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.23';
+$VERSION = '1.24';
 
 sub ProcessCanonVRD($$;$);
 sub WriteCanonVRD($$;$);
@@ -121,10 +121,12 @@ my %noYes = ( 0 => 'No', 1 => 'Yes' );
     3 => {
         # (same size as the PreviewImage with DPP 3.0.2.6)
         Name => 'ThumbnailImage',
+        Groups => { 2 => 'Preview' },
         Binary => 1,
     },
     4 => {
         Name => 'PreviewImage',
+        Groups => { 2 => 'Preview' },
         Binary => 1,
     },
     5 => {

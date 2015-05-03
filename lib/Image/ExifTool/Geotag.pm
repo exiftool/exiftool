@@ -9,6 +9,7 @@
 #               2009/09/11 - PH Read ITC GPS track logs
 #               2012/01/08 - PH Extract orientation information from PTNTHPR
 #               2012/05/08 - PH Read Winplus Beacon .TXT files
+#               2015/05/30 - PH Read Bramor gEO log files
 #
 # References:   1) http://www.topografix.com/GPX/1/1/
 #               2) http://www.gpsinformation.org/dale/nmea.htm#GSA
@@ -22,7 +23,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:Public);
 
-$VERSION = '1.45';
+$VERSION = '1.46';
 
 sub JITTER() { return 2 }       # maximum time jitter
 
@@ -196,6 +197,8 @@ sub LoadTrackLog($$;$)
                 $format = 'IGC';
             } elsif (/^TP,D,/) {
                 $format = 'Winplus';
+            } elsif (/^\s*\d+\s+.*\sypr\s*$/ and split == 12) {
+                $format = 'Bramor';
             } else {
                 # search only first 50 lines of file for a valid fix
                 last if ++$skipped > 50;
@@ -297,12 +300,27 @@ sub LoadTrackLog($$;$)
             $$fix{lat} = $1;
             $$fix{lon} = $2;
             $time = Time::Local::timegm($8,$7,$6,$4,$3-1,$5-1900);
-            $isDate = 1;
+DoneFix:    $isDate = 1;
             $$points{$time} = $fix;
             push @fixTimes, $time;
             $fix = { };
             ++$numPoints;
             next;
+#
+# Bramor gEO log file
+#
+        } elsif ($format eq 'Bramor') {
+            my @parts = split ' ', $_;
+            next unless @parts == 12 and $parts[11] eq 'ypr';
+            my @d = split m{/}, $parts[6];  # date (dd/mm/YYYY)
+            my @t = split m{:}, $parts[7];  # time (HH:MM:SS)
+            next unless @d == 3 and @t == 3;
+            @$fix{qw(lat lon alt track dir pitch roll)} = @parts[2,3,4,5,8,9,10];
+            # (add the seconds afterwards in case some models have decimal seconds)
+            $time = Time::Local::timegm(0,$t[1],$t[0],$d[0],$d[1]-1,$d[2]-1900) + $t[2];
+            # set necessary flags for extra available information
+            @$has{qw(alt track orient)} = (1,1,1);
+            goto DoneFix;   # save this fix
         }
         my (%fix, $secs, $date, $nmea);
         if ($format eq 'NMEA') {
@@ -1156,7 +1174,7 @@ This module is used by Image::ExifTool
 This module loads GPS track logs, interpolates to determine position based
 on time, and sets new GPS values for geotagging images.  Currently supported
 formats are GPX, NMEA RMC/GGA/GLL, KML, IGC, Garmin XML and TCX, Magellan
-PMGNTRK, Honeywell PTNTHPR, and Winplus Beacon text files.
+PMGNTRK, Honeywell PTNTHPR, Winplus Beacon text, and Bramor gEO log files.
 
 Methods in this module should not be called directly.  Instead, the Geotag
 feature is accessed by writing the values of the ExifTool Geotag, Geosync

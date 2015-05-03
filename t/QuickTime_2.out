@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.93
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.94
 [File, System, Image] FileName - File Name: QuickTime.mov
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 3.8 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2013:11:05 10:34:53-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:18 07:17:19-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:03:07 15:31:28-05:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2013:11:05 10:27:25-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:29 20:10:39-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:04:25 10:57:00-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: MOV
 [File, File, Image] FileTypeExtension - File Type Extension: mov
@@ -97,7 +97,7 @@
 [QuickTime, QuickTime, Video] 8 - Handler Type: Metadata
 [QuickTime, QuickTime, Video] 12 - Handler Vendor ID: Apple
 [QuickTime, QuickTime, Audio] �lyr - Lyrics: These are lyrics
-[QuickTime, QuickTime, Audio] covr - Cover Art: (Binary data 251 bytes)
+[QuickTime, QuickTime, Preview] covr - Cover Art: (Binary data 251 bytes)
 [QuickTime, QuickTime, Audio] �ART - Artist: årtist
 [QuickTime, QuickTime, Author] aART - Album Artist: ålbüm årtîst
 [QuickTime, QuickTime, Audio] �wrt - Composer: cømpøsér

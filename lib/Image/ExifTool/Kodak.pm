@@ -24,7 +24,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.39';
+$VERSION = '1.41';
 
 sub ProcessKodakIFD($$$);
 sub ProcessKodakText($$$);
@@ -1591,14 +1591,14 @@ my %sceneModeUsed = (
     0xc353 => {
         Name => 'CameraOwner',
         Writable => 'undef',
-        RawConv => 'Image::ExifTool::Exif::ConvertExifText($self,$val)',
+        RawConv => 'Image::ExifTool::Exif::ConvertExifText($self,$val,$tag)',
         RawConvInv => 'Image::ExifTool::Exif::EncodeExifText($self,$val)',
     },
     0xc354 => {
         Name => 'SerialNumber',
         Writable => 'undef',
         Groups => { 2 => 'Camera' },
-        RawConv => 'Image::ExifTool::Exif::ConvertExifText($self,$val)', #PH
+        RawConv => 'Image::ExifTool::Exif::ConvertExifText($self,$val,$tag)', #PH
         RawConvInv => 'Image::ExifTool::Exif::EncodeExifText($self,$val)',
     },
     0xc355 => 'UserSelectGroupTitle',
@@ -1663,7 +1663,7 @@ my %sceneModeUsed = (
     0 => 'DigitalEffectsVersion',
     1 => {
         Name => 'DigitalEffectsName',
-        PrintConv => 'Image::ExifTool::Exif::ConvertExifText($self,$val)',
+        PrintConv => 'Image::ExifTool::Exif::ConvertExifText($self,$val,"DigitalEffectsName")',
     },
     2 => 'DigitalEffectsType',
 );
@@ -1675,7 +1675,7 @@ my %sceneModeUsed = (
     0 => 'BordersVersion',
     1 => {
         Name => 'BorderName',
-        PrintConv => 'Image::ExifTool::Exif::ConvertExifText($self,$val)',
+        PrintConv => 'Image::ExifTool::Exif::ConvertExifText($self,$val,"BorderName")',
     },
     2 => 'BorderID',
     3 => 'BorderLocation',
@@ -1859,8 +1859,8 @@ my %sceneModeUsed = (
     GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
     NOTES => 'Information stored in the "frea" atom of Kodak PixPro SP360 MP4 videos.',
     # tima - 4 bytes: 0 0 0 0x20
-    thma => { Name => 'ThumbnailImage', Binary => 1 },
-    scra => { Name => 'PreviewImage',   Binary => 1 },
+    thma => { Name => 'ThumbnailImage', Groups => { 2 => 'Preview' }, Binary => 1 },
+    scra => { Name => 'PreviewImage',   Groups => { 2 => 'Preview' }, Binary => 1 },
 );
 
 # preview information in free/Scrn atom of MP4 videos (ref PH)
@@ -1873,6 +1873,7 @@ my %sceneModeUsed = (
     2 => { Name => 'PreviewImageLength', Format => 'int32u' },
     4 => {
         Name => 'PreviewImage',
+        Groups => { 2 => 'Preview' },
         Format => 'undef[$val{2}]',
         RawConv => '$self->ValidateImage(\$val, $tag)',
     },

@@ -21,7 +21,7 @@ use vars qw($VERSION $AUTOLOAD $lastFetched);
 use Image::ExifTool qw(:DataAccess :Utils);
 require Exporter;
 
-$VERSION = '1.37';
+$VERSION = '1.38';
 
 sub FetchObject($$$$);
 sub ExtractObject($$;$$);
@@ -326,6 +326,7 @@ my %supportedFilter = (
     },
     Image_stream => {
         Name => 'EmbeddedImage',
+        Groups => { 2 => 'Preview' },
         Binary => 1,
     },
 );
@@ -920,7 +921,7 @@ sub ExtractObject($$;$$)
         }
         if ($$dict{$tag}) {
             # duplicate dictionary entries are not allowed
-            $et->Warn('Duplicate $tag entry in dictionary (ignored)');
+            $et->Warn("Duplicate '$tag' entry in dictionary (ignored)");
         } else {
             # save the entry
             push @tags, $tag;

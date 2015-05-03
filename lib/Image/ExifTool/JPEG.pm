@@ -11,7 +11,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.24';
+$VERSION = '1.25';
 
 sub ProcessOcad($$$);
 sub ProcessJPEG_HDR($$$);
@@ -371,7 +371,11 @@ sub ProcessJPEG_HDR($$$);
     alp => { Name => 'Alpha' }, # (Alpha/Beta are saturation parameters)
     bet => { Name => 'Beta' },
     cor => { Name => 'CorrectionMethod' },
-    RatioImage => { Binary => 1, Notes => 'the embedded JPEG-compressed ratio image' },
+    RatioImage => {
+        Groups => { 2 => 'Preview' },
+        Notes => 'the embedded JPEG-compressed ratio image',
+        Binary => 1,
+    },
 );
 
 # AdobeCM APP13 (no references)

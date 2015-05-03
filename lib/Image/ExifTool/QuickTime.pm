@@ -40,7 +40,7 @@ use vars qw($VERSION $AUTOLOAD);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.89';
+$VERSION = '1.90';
 
 sub FixWrongFormat($);
 sub ProcessMOV($$;$);
@@ -349,10 +349,12 @@ my %graphicsMode = (
     },
     PICT => {
         Name => 'PreviewPICT',
+        Groups => { 2 => 'Preview' },
         Binary => 1,
     },
     pict => { #8
         Name => 'PreviewPICT',
+        Groups => { 2 => 'Preview' },
         Binary => 1,
     },
     moov => {
@@ -412,7 +414,7 @@ my %graphicsMode = (
     },
     thum => { #PH
         Name => 'ThumbnailImage',
-        Groups => { 2 => 'Image' },
+        Groups => { 2 => 'Preview' },
         Binary => 1,
     },
     ardt => { #PH
@@ -1460,13 +1462,16 @@ my %graphicsMode = (
         },{ #17 (format is in bytes 3-7)
             Name => 'ThumbnailImage',
             Condition => '$$valPt =~ /^.{8}\xff\xd8\xff\xdb/s',
+            Groups => { 2 => 'Preview' },
             ValueConv => 'substr($val, 8)',
         },{ #17 (format is in bytes 3-7)
             Name => 'ThumbnailPNG',
             Condition => '$$valPt =~ /^.{8}\x89PNG\r\n\x1a\n/s',
+            Groups => { 2 => 'Preview' },
             ValueConv => 'substr($val, 8)',
         },{
             Name => 'UnknownThumbnail',
+            Groups => { 2 => 'Preview' },
             Binary => 1,
         },
     ],
@@ -1508,6 +1513,7 @@ my %graphicsMode = (
     # ---- Ricoh ----
     RTHU => { #PH (GR)
         Name => 'PreviewImage',
+        Groups => { 2 => 'Preview' },
         RawConv => '$self->ValidateImage(\$val, $tag)',
     },
     RMKN => { #PH (GR)
@@ -1915,7 +1921,7 @@ my %graphicsMode = (
         SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::iTunesInfo' },
     },
     aART => { Name => 'AlbumArtist', Groups => { 2 => 'Author' } },
-    covr => 'CoverArt',
+    covr => { Name => 'CoverArt',    Groups => { 2 => 'Preview' } },
     cpil => { #10
         Name => 'Compilation',
         PrintConv => { 0 => 'No', 1 => 'Yes' },
@@ -5496,6 +5502,7 @@ my %graphicsMode = (
     },
     28 => {
         Name => 'PreviewImage',
+        Groups => { 2 => 'Preview' },
         Format => 'undef[$val{13}]',
         RawConv => '$self->ValidateImage(\$val, $tag)',
     },

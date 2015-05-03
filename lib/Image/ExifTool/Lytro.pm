@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Import;
 
-$VERSION = '1.01';
+$VERSION = '1.02';
 
 sub ExtractTags($$$);
 
@@ -36,7 +36,7 @@ sub ExtractTags($$$);
     },
     EmbeddedImage => {
         Notes => 'JPEG image embedded in LFP files written by Lytro Desktop',
-        Groups => { 2 => 'Image' },
+        Groups => { 2 => 'Preview' },
         Binary => 1,
     },
     Type                => { Name => 'CameraType' },

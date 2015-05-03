@@ -856,15 +856,15 @@ numerical.
                   the position of the new subdirectory.  The expression
                   should use the position of the current tag ($valuePtr).
 
-     Base       : This specifies the base offset for all pointers in the
-                  subdirectory.  This need not be specified if the offset is the
-                  same as the current directory, which is normally the case.
+     Base       : This expression specifies the base offset for all pointers in
+                  the subdirectory.  This need not be specified if the offset is
+                  the same as the current directory, which is normally the case.
                   May use $start to represent the subdirectory start location
                   relative to the current base, and $base for the value of the
                   current base.  If this is defined, the automatic validation of
-                  base offsets is disabled for maker notes directories.  The
-                  IFD is flagged as using relative offsets when writing if
-                  '$start' is used in this expression.
+                  base offsets is disabled for maker notes directories.  The IFD
+                  is flagged as using relative offsets when writing if '$start'
+                  is used in this expression.
 
      EntryBased : [EXIF directories only] Flag indicating that the offsets are
                   based on the individual directory entry position, so offsets

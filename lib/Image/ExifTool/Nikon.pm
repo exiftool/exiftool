@@ -5474,6 +5474,7 @@ my %nikonFocalConversions = (
     },
     ncth => {
         Name => 'ThumbnailImage',
+        Groups => { 2 => 'Preview' },
         Binary => 1,
     },
     ncvr => {
@@ -5482,6 +5483,7 @@ my %nikonFocalConversions = (
     },
     ncvw => {
         Name => 'PreviewImage',
+        Groups => { 2 => 'Preview' },
         RawConv => 'length($val) ? $val : undef',
         Binary => 1,
     },
@@ -5674,8 +5676,18 @@ my %nikonFocalConversions = (
         Name => 'NikonTags',
         SubDirectory => { TagTable => 'Image::ExifTool::Nikon::NCTG' },
     },
-    NCTH => { Name => 'ThumbnailImage', Format => 'undef', Binary => 1 },
-    NCVW => { Name => 'PreviewImage',   Format => 'undef', Binary => 1 },
+    NCTH => {
+        Name => 'ThumbnailImage',
+        Groups => { 2 => 'Preview' },
+        Format => 'undef',
+        Binary => 1,
+    },
+    NCVW => {
+        Name => 'PreviewImage',
+        Groups => { 2 => 'Preview' },
+        Format => 'undef',
+        Binary => 1,
+    },
     NCDB => { # (often 0 bytes long, or 4 null bytes)
         Name => 'NikonNCDB',
         SubDirectory => { TagTable => 'Image::ExifTool::Nikon::NCDB' },

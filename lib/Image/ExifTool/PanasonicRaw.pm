@@ -20,7 +20,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.08';
+$VERSION = '1.09';
 
 sub ProcessJpgFromRaw($$$);
 sub WriteJpgFromRaw($$$);
@@ -150,6 +150,7 @@ my %wbTypeInfo = (
     # 0x2d: 2,3
     0x2e => { #JD
         Name => 'JpgFromRaw', # (writable directory!)
+        Groups => { 2 => 'Preview' },
         Writable => 'undef',
         # protect this tag because it contains all the metadata
         Flags => [ 'Binary', 'Protected', 'NestedHtmlDump', 'BlockExtract' ],

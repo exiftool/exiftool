@@ -12,7 +12,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.03';
+$VERSION = '1.04';
 
 # Sony IDC tags (ref PH)
 %Image::ExifTool::SonyIDC::Main = (
@@ -229,6 +229,7 @@ $VERSION = '1.03';
 %Image::ExifTool::SonyIDC::Composite = (
     GROUPS => { 2 => 'Image' },
     IDCPreviewImage => {
+        Groups => { 2 => 'Preview' },
         Require => {
             0 => 'IDCPreviewStart',
             1 => 'IDCPreviewLength',
@@ -281,7 +282,7 @@ sub ExtractPreviews($)
             unless ($Image::ExifTool::Extra{$tag}) {
                 AddTagToTable(\%Image::ExifTool::Extra, $tag, {
                     Name => $tag,
-                    Groups => { 0 => 'Composite', 1 => 'Composite', 2 => 'Image'},
+                    Groups => { 0 => 'Composite', 1 => 'Composite', 2 => 'Preview'},
                 });
             }
             my $val = Image::ExifTool::Exif::ExtractImage($et, $off, $len, $tag);

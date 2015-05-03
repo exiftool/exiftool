@@ -13,7 +13,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.05';
+$VERSION = '1.06';
 
 sub ProcessLeaf($$$);
 
@@ -47,6 +47,7 @@ sub ProcessLeaf($$$);
     },
     JPEG_preview_data => {
         %Image::ExifTool::previewImageTagInfo,
+        Groups => { 2 => 'Preview' },
     },
     JPEG_preview_info => 'PreviewInfo',
     icc_camera_to_tone_space_flow => {

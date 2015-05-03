@@ -4,9 +4,11 @@
 # Description:  vCard meta information
 #
 # Revisions:    2015/04/05 - P. Harvey Created
+#               2015/05/02 - PH Added VCALENDAR support
 #
 # References:   1) http://en.m.wikipedia.org/wiki/VCard
 #               2) http://tools.ietf.org/html/rfc6350
+#               3) http://tools.ietf.org/html/rfc5545
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::VCard;
@@ -15,27 +17,48 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.01';
+$VERSION = '1.02';
 
 my %unescapeVCard = ( '\\'=>'\\', ','=>',', 'n'=>"\n", 'N'=>"\n" );
 
+# lookup for iCalendar components (used to generate family 1 group names if top level)
+my %isComponent = ( Event=>1, Todo=>1, Journal=>1, Freebusy=>1, Timezone=>1, Alarm=>1 );
+
+my %timeInfo = (
+    # convert common date/time formats to EXIF style
+    ValueConv => q{
+        $val =~ s/(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})(Z?)/$1:$2:$3 $4:$5:$6$7/g;
+        $val =~ s/(\d{4})(\d{2})(\d{2})/$1:$2:$3/g;
+        $val =~ s/(\d{4})-(\d{2})-(\d{2})/$1:$2:$3/g;
+        return $val;
+    },
+    PrintConv => '$self->ConvertDateTime($val)',
+);
+
 # vCard tags (ref 1/2/PH)
+# Note: The case of all tag ID's is normalized to lowercase with uppercase first letter
 %Image::ExifTool::VCard::Main = (
     GROUPS => { 2 => 'Document' },
     NOTES => q{
-        This table lists only a few common vCard tags, but ExifTool will also
-        extract any other vCard tags found.  Tag names may have "Pref" added to
-        indicate the preferred instance of a vCard property, and other "TYPE"
-        parameters may also added to the tag name.  See
-        L<https://tools.ietf.org/html/rfc6350> for the vCard 4.0 specification.
+        This table lists common vCard tags, but ExifTool will also extract any other
+        vCard tags found.  Tag names may have "Pref" added to indicate the preferred
+        instance of a vCard property, and other "TYPE" parameters may also added to
+        the tag name.  VCF files may contain multiple vCard entries which are
+        distinguished by the ExifTool family 3 group name (document  number). See
+        L<http://tools.ietf.org/html/rfc6350> for the vCard 4.0 specification.
     },
     Version     => { Name => 'VCardVersion',   Description => 'VCard Version' },
     Fn          => { Name => 'FormattedName',  Groups => { 2 => 'Author' } },
     N           => { Name => 'Name',           Groups => { 2 => 'Author' } },
-    Bday        => { Name => 'Birthday',       Groups => { 2 => 'Time' } },
+    Bday        => { Name => 'Birthday',       Groups => { 2 => 'Time' }, %timeInfo },
     Tz          => { Name => 'TimeZone',       Groups => { 2 => 'Time' } },
     Adr         => { Name => 'Address',        Groups => { 2 => 'Location' } },
-    Geo         => { Name => 'Geolocation',    Groups => { 2 => 'Location' } },
+    Geo => {
+        Name => 'Geolocation',
+        Groups => { 2 => 'Location' },
+        # when used as a parameter, VCard 4.0 adds a "geo:" prefix that we need to remove
+        ValueConv => '$val =~ s/^geo://; $val',
+    },
     Anniversary => { },
     Email       => { },
     Gender      => { },
@@ -45,7 +68,7 @@ my %unescapeVCard = ( '\\'=>'\\', ','=>',', 'n'=>"\n", 'N'=>"\n" );
     Nickname    => { },
     Note        => { },
     Org         => 'Organization',
-    Photo       => { },
+    Photo       => { Groups => { 2 => 'Preview' } },
     Prodid      => 'Software',
     Rev         => 'Revision',
     Sound       => { },
@@ -53,13 +76,77 @@ my %unescapeVCard = ( '\\'=>'\\', ','=>',', 'n'=>"\n", 'N'=>"\n" );
     Title       => 'JobTitle',
     Uid         => 'UID',
     Url         => 'URL',
-    'X-ABLabel' => { Name => 'ABLabel', PrintConv => '$val =~ s/^_\$!<(.*)>!\$_$/$1/; $val' },
-    'X-abdate'  => { Name => 'ABDate',  Groups => { 2 => 'Time' } },
+    'X-ablabel' => { Name => 'ABLabel', PrintConv => '$val =~ s/^_\$!<(.*)>!\$_$/$1/; $val' },
+    'X-abdate'  => { Name => 'ABDate',  Groups => { 2 => 'Time' }, %timeInfo },
     'X-aim'     => 'AIM',
     'X-icq'     => 'ICQ',
     'X-abuid'   => 'AB_UID',
     'X-abrelatednames' => 'ABRelatedNames',
     'X-socialprofile'  => 'SocialProfile',
+);
+
+%Image::ExifTool::VCard::VCalendar = (
+    GROUPS => { 1 => 'VCalendar', 2 => 'Document' },
+    NOTES => q{
+        The VCard module is also used to process iCalendar ICS files since they use
+        a format similar to vCard.  The following table lists standard iCalendar
+        tags, but any existing tags will be extracted.  Top-level iCalendar
+        components (eg. Event, Todo, Timezone, etc.) are used for the family 1 group
+        names, and embedded components (eg. Alarm) are added as a prefix to the tag
+        name.  See L<http://tools.ietf.org/html/rfc5545> for the official iCalendar
+        2.0 specification.
+    },
+    Version     => { Name => 'VCalendarVersion',   Description => 'VCalendar Version' },
+    Calscale    => 'CalendarScale',
+    Method      => { },
+    Prodid      => 'Software',
+    Attach      => 'Attachment',
+    Categories  => { },
+    Class       => 'Classification',
+    Comment     => { },
+    Description => { },
+    Geo => {
+        Name => 'Geolocation',
+        Groups => { 2 => 'Location' },
+        ValueConv => '$val =~ s/^geo://; $val',
+    },
+    Location    => { Name => 'Location',            Groups => { 2 => 'Location' } },
+    'Percent-complete' => { },
+    Priority    => { },
+    Resources   => { },
+    Status      => { },
+    Summary     => { },
+    Completed   => { Name => 'DateTimeCompleted',   Groups => { 2 => 'Time' }, %timeInfo },
+    Dtend       => { Name => 'DateTimeEnd',         Groups => { 2 => 'Time' }, %timeInfo },
+    Due         => { Name => 'DateTimeDue',         Groups => { 2 => 'Time' }, %timeInfo },
+    Dtstart     => { Name => 'DateTimeStart',       Groups => { 2 => 'Time' }, %timeInfo },
+    Duration    => { },
+    Freebusy    => 'FreeBusyTime',
+    Transp      => 'TimeTransparency',
+    Tzid        => { Name => 'TimezoneID',          Groups => { 2 => 'Time' } },
+    Tzname      => { Name => 'TimezoneName',        Groups => { 2 => 'Time' } },
+    Tzoffsetfrom=> { Name => 'TimezoneOffsetFrom',  Groups => { 2 => 'Time' } },
+    Tzoffsetto  => { Name => 'TimezoneOffsetTo',    Groups => { 2 => 'Time' } },
+    Tzurl       => { Name => 'TimeZoneURL',         Groups => { 2 => 'Time' } },
+    Attendee    => { },
+    Contact     => { },
+    Organizer   => { },
+    'Recurrence-id' => 'RecurrenceID',
+    'Related-to'    => 'RelatedTo',
+    Url         => 'URL',
+    Uid         => 'UID',
+    Exdate      => { Name => 'ExceptionDateTimes',  Groups => { 2 => 'Time' }, %timeInfo },
+    Rdate       => { Name => 'RecurrenceDateTimes', Groups => { 2 => 'Time' }, %timeInfo },
+    Rrule       => 'RecurrenceRule',
+    Action      => { },
+    Repeat      => { },
+    Trigger     => { },
+    Created     => { Name => 'DateCreated',         Groups => { 2 => 'Time' }, %timeInfo },
+    Dtstamp     => { Name => 'DateTimeStamp',       Groups => { 2 => 'Time' }, %timeInfo },
+    'Last-modified' => { Name => 'ModifyDate',      Groups => { 2 => 'Time' }, %timeInfo },
+    Sequence    => 'SequenceNumber',
+    'Request-status' => 'RequestStatus',
+    Acknowledged=> { Name => 'Acknowledged',        Groups => { 2 => 'Time' }, %timeInfo },
 );
 
 #------------------------------------------------------------------------------
@@ -121,12 +208,14 @@ sub ProcessVCard($$)
     local $_;
     my ($et, $dirInfo) = @_;
     my $raf = $$dirInfo{RAF};
-    my ($buff, $val, $ok);
-
-    return 0 unless $raf->Read($buff, 16) and $raf->Seek(0,0) and $buff=~/^BEGIN:VCARD\r\n/i;
-    $et->SetFileType();
+    my ($buff, $val, $ok, $component, %compNum, @count);
+    
+    return 0 unless $raf->Read($buff, 24) and $raf->Seek(0,0) and $buff=~/^BEGIN:(VCARD|VCALENDAR)\r\n/i;
+    my ($type, $lbl, $tbl, $ext) = uc($1) eq 'VCARD' ? qw(VCard vCard Main VCF) : qw(ICS iCalendar VCalendar ICS);
+    $et->SetFileType($type, undef, $ext);
+    return 1 if $$et{OPTIONS}{FastScan} and $$et{OPTIONS}{FastScan} == 3;
     local $/ = "\r\n";
-    my $tagTablePtr = GetTagTable('Image::ExifTool::VCard::Main');
+    my $tagTablePtr = GetTagTable("Image::ExifTool::VCard::$tbl");
     my $more = $raf->ReadLine($buff);   # read first line
     chomp $buff if $more;
     while ($more) {
@@ -139,34 +228,91 @@ sub ProcessVCard($$)
             # add continuation line if necessary
             $buff =~ s/^[ \t]// and $val .= $buff, undef($buff), next;
         }
-        if ($val =~ /^(BEGIN|END):VCARD$/i) {
-            $ok = 1 if uc($1) eq 'END'; # (OK if this is the last line)
+        if ($val =~ /^(BEGIN|END):(V?)(\w+)$/i) {
+            my ($begin, $v, $what) = ((lc($1) eq 'begin' ? 1 : 0), $2, ucfirst lc $3);
+            if ($what eq 'Card' or $what eq 'Calendar') {
+                if ($begin) {
+                    @count = ( { } );   # reset group counters
+                } else {
+                    $ok = 1;    # ok if we read at least on full VCARD or VCALENDAR
+                }
+                next;
+            }
+            # absorb top-level component into family 1 group name
+            if ($isComponent{$what}) {
+                if ($begin) {
+                    unless ($component) {
+                        # begin a new top-level component
+                        @count = ( { } );
+                        $component = $what;
+                        $compNum{$component} = ($compNum{$component} || 0) + 1;
+                        next;
+                    }
+                } elsif ($component and $component eq $what) {
+                    # this top-level component has ended
+                    undef $component;
+                    next;
+                }
+            }
+            # keep count of each component at this level
+            if ($begin) {
+                $count[-1]{$what} = ($count[-1]{$what} || 0) + 1 if $v;
+                push @count, { obj => $what };
+            } elsif (@count > 1) {
+                pop @count;
+            }
             next;
         } elsif ($ok) {
             $ok = 0;
             $$et{DOC_NUM} = ++$$et{DOC_COUNT};  # read next card as a new document
         }
         unless ($val =~ s/^([-A-Za-z0-9.]+)//) {
-            $et->WarnOnce('Unrecognized line in VCard file');
+            $et->WarnOnce("Unrecognized line in $lbl file");
             next;
         }
         my $tag = $1;
         # set group if it exists
         if ($tag =~ s/^([-A-Za-z0-9]+)\.//) {
-            $$et{SET_GROUP1} = ucfirst lc $1; 
+            $$et{SET_GROUP1} = ucfirst lc $1;
+        } elsif ($component) {
+            $$et{SET_GROUP1} = $component . $compNum{$component};
         } else {
             delete $$et{SET_GROUP1};
         }
-        # avoid ugly all-caps tag ID's (they are case-insensitive)
-        $tag = ucfirst($tag =~ /[a-z]/ ? $tag : lc $tag);
-        my (%param, $p, @val, $name);
+        my ($name, %param, $p, @val);
+        # vCard tag ID's are case-insensitive, so normalize to lowercase with
+        # an uppercase first letter for use as a tag name
+        $name = ucfirst $tag if $tag =~ /[a-z]/;    # preserve mixed case in name if it exists
+        $tag = ucfirst lc $tag;
+        # get source tagInfo reference
+        my $srcInfo = $et->GetTagInfo($tagTablePtr, $tag);
+        if ($srcInfo) {
+            $name = $$srcInfo{Name};    # use our name
+        } else {
+            $name or $name = $tag;
+            # remove leading "X-" from name if it exists
+            $name =~ s/^X-// and $name = ucfirst $name;
+        }
+        # add object name(s) to tag if necessary
+        if (@count > 1) {
+            my $i;
+            for ($i=$#count-1; $i>=0; --$i) {
+                my $pre = $count[$i-1]{obj};    # use containing object name as tag prefix
+                my $c = $count[$i]{$pre};       # add index for object number
+                $c = '' unless defined $c;
+                $tag = $pre . $c . $tag;
+                $name = $pre . $c . $name;
+            }
+        }
+        # parse parameters
         while ($val =~ s/^;([-A-Za-z0-9]*)(=?)//) {
-            $p = lc $1;
+            $p = ucfirst lc $1;
             # convert old vCard 2.x parameters to the new "TYPE=" format
-            $2 or $val = $1 . $val, $p = 'type';
+            $2 or $val = $1 . $val, $p = 'Type';
+            # read parameter value
             for (;;) {
                 last unless $val =~ s/^"([^"]*)",?// or $val =~ s/^([^";:,]+,?)//;
-                my $v = $p eq 'type' ? ucfirst lc $1 : $1;
+                my $v = $p eq 'Type' ? ucfirst lc $1 : $1;
                 $param{$p} = defined($param{$p}) ? $param{$p} . $v : $v;
             }
             if (defined $param{$p}) {
@@ -175,45 +321,35 @@ sub ProcessVCard($$)
                 $param{$p} = '';
             }
         }
-        $val =~ s/^:// or $et->WarnOnce('Invalid line in VCard file'), next;
-        # get source tagInfo reference
-        my $srcInfo = $et->GetTagInfo($tagTablePtr, $tag);
-        if ($srcInfo) {
-            $name = $$srcInfo{Name};    # use our name
-        } else {
-            # use tag ID as name (with leading "X-" removed)
-            ($name = $tag) =~ s/^X-//i and $name = ucfirst $name;
-        }
-        # add 'type' parameter to id and name if it exists
-        $param{type} and $tag .= $param{type}, $name .= $param{type};
+        $val =~ s/^:// or $et->WarnOnce("Invalid line in $lbl file"), next;
+        # add 'Type' parameter to id and name if it exists
+        $param{Type} and $tag .= $param{Type}, $name .= $param{Type};
         # convert base64-encoded data
         if ($val =~ s{^data:(\w+)/(\w+);base64,}{}) {
             my $xtra = ucfirst(lc $1) . ucfirst(lc $2);
             $tag .= $xtra;
             $name .= $xtra;
-            $param{encoding} = 'base64';
+            $param{Encoding} = 'base64';
         }
-        $val = DecodeVCardText($et, $val, $param{encoding});
-        my $tagInfo = GetVCardTag($et, $tagTablePtr, $tag, $name, $srcInfo, $param{language});
+        $val = DecodeVCardText($et, $val, $param{Encoding});
+        my $tagInfo = GetVCardTag($et, $tagTablePtr, $tag, $name, $srcInfo, $param{Language});
         $et->HandleTag($tagTablePtr, $tag, $val, TagInfo => $tagInfo);
-        # handle 'geo' and 'label' parameters
-        foreach $p (qw(geo label)) {
+        # handle some parameters that we care about (ignore others for now)
+        foreach $p (qw(Geo Label Tzid)) {
             next unless defined $param{$p};
-            # set group 2 to "Location" for "geo" parameters
-            my $srcTag2;
-            if ($p eq 'geo') {
-                $srcTag2 = { Groups => { 2 => 'Location' } };
-                $param{$p} =~ s/^geo://;    # remove "geo:" prefix of vCard 4.0
-            }
+            # use tag attributes from our table if it exists
+            my $srcTag2 = $et->GetTagInfo($tagTablePtr, $p);
+            my $pn = $srcTag2 ? $$srcTag2{Name} : $p;
             $val = DecodeVCardText($et, $param{$p});
-            my ($tg, $nm) = ($tag . ucfirst($p), $name . ucfirst($p));
-            $tagInfo = GetVCardTag($et, $tagTablePtr, $tg, $nm, $srcTag2, $param{language});
+            # add parameter to tag ID and name
+            my ($tg, $nm) = ($tag . $p, $name . $pn);
+            $tagInfo = GetVCardTag($et, $tagTablePtr, $tg, $nm, $srcTag2, $param{Language});
             $et->HandleTag($tagTablePtr, $tg, $val, TagInfo => $tagInfo);
         }
     }
     delete $$et{SET_GROUP1};
     delete $$et{DOC_NUM};
-    $ok or $et->Warn('Missing VCard end');
+    $ok or $et->Warn("Missing $lbl end");
     return 1;
 }
 
@@ -248,6 +384,8 @@ under the same terms as Perl itself.
 =item L<http://en.m.wikipedia.org/wiki/VCard>
 
 =item L<http://tools.ietf.org/html/rfc6350>
+
+=item L<http://tools.ietf.org/html/rfc5545>
 
 =back
 

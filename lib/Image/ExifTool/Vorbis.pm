@@ -17,7 +17,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.07';
+$VERSION = '1.08';
 
 sub ProcessComments($$$);
 
@@ -96,6 +96,7 @@ sub ProcessComments($$$);
     COVERARTMIME => { Name => 'CoverArtMIMEType' },
     COVERART  => {
         Name => 'CoverArt',
+        Groups => { 2 => 'Preview' },
         Notes => 'base64-encoded image',
         ValueConv => q{
             require Image::ExifTool::XMP;

@@ -21,7 +21,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.09';
+$VERSION = '1.10';
 
 sub ProcessPEResources($$);
 sub ProcessPEVersion($$);
@@ -1061,7 +1061,7 @@ sub ProcessEXE($$)
                 }
             } else {
                 $type = 'Virtual Device Driver';
-                $ext = 'exe'; #?
+                $ext = '386';
             }
         } else {
             $type = 'DOS EXE';

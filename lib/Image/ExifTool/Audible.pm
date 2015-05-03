@@ -16,7 +16,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.01';
+$VERSION = '1.02';
 
 sub ProcessAudible_meta($$$);
 sub ProcessAudible_cvrx($$$);
@@ -40,7 +40,11 @@ sub ProcessAudible_cvrx($$$);
 
     # information extracted from other chunks
     _chapter_count => { Name => 'ChapterCount' },       # from chunk 6
-    _cover_art => { Name => 'CoverArt', Binary => 1 },  # from chunk 11
+    _cover_art => { # from chunk 11
+        Name => 'CoverArt',
+        Groups => { 2 => 'Preview' },
+        Binary => 1,
+    },
 );
 
 # 'tags' atoms observed in Audible .m4b audio books (ref PH)
@@ -86,7 +90,11 @@ sub ProcessAudible_cvrx($$$);
     NOTES => 'Audible cover art information in M4B audio books.',
     VARS => { NO_ID => 1 },
     CoverArtType => 'CoverArtType',
-    CoverArt     => { Name => 'CoverArt', Binary => 1 },
+    CoverArt     => {
+        Name => 'CoverArt',
+        Groups => { 2 => 'Preview' },
+        Binary => 1,
+    },
 );
 
 # 'tseg' information observed in Audible .m4b audio books (ref PH)

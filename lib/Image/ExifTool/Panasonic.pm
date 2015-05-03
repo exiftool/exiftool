@@ -32,7 +32,7 @@ use vars qw($VERSION %leicaLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.90';
+$VERSION = '1.91';
 
 sub ProcessLeicaLEIC($$$);
 sub WhiteBalanceConv($;$$);
@@ -1647,6 +1647,7 @@ my %shootingMode = (
     },
     0x300 => {
         Name => 'PreviewImage',
+        Groups => { 2 => 'Preview' },
         Writable => 'undef',
         Notes => 'S2 and M (Typ 240)',
         DataTag => 'PreviewImage',
@@ -1904,6 +1905,7 @@ my %shootingMode = (
     0x5c => {
         Name => 'ThumbnailImage',
         Condition => '$$self{ThumbType} == 1',
+        Groups => { 2 => 'Preview' },
         Format => 'undef[16384]',
         ValueConv => '$val=~s/\0*$//; \$val',   # remove trailing zeros
     },
@@ -1928,6 +1930,7 @@ my %shootingMode = (
     0x546 => { # (Leica X VARIO)
         Name => 'ThumbnailImage',
         Condition => '$$self{ThumbType} == 2',
+        Groups => { 2 => 'Preview' },
         Format => 'undef[$val{0x53e}]',
         Binary => 1,
     },
@@ -1950,6 +1953,7 @@ my %shootingMode = (
     0x55e => { # (Leica T)
         Name => 'ThumbnailImage',
         Condition => '$$self{ThumbType} == 3',
+        Groups => { 2 => 'Preview' },
         Format => 'undef[$val{0x556}]',
         Binary => 1,
     },

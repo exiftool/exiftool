@@ -27,7 +27,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.38';
+$VERSION = '1.39';
 
 sub ConvertTimecode($);
 
@@ -713,7 +713,7 @@ my %riffMimeType = (
     emnt => { Name => 'MakerNotes',  Binary => 1 },
     eucm => {
         Name => 'UserComment',
-        PrintConv => 'Image::ExifTool::Exif::ConvertExifText($self,$val)',
+        PrintConv => 'Image::ExifTool::Exif::ConvertExifText($self,$val,"RIFF:UserComment")',
     },
 );
 

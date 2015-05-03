@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.93
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.94
 [File, System, Image] FileName - File Name: MP3.mp3
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 395 bytes
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2006:05:13 07:46:22-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:18 07:17:35-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:03:07 15:31:22-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:29 20:10:38-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:04:25 10:57:00-04:00
 [File, System, Image] FilePermissions - File Permissions: rwxr-xr-x
 [File, File, Image] FileType - File Type: MP3
 [File, File, Image] FileTypeExtension - File Type Extension: mp3
@@ -27,7 +27,7 @@
 [ID3, ID3v2_2, Image] PIC-1 - Picture Format: JPG
 [ID3, ID3v2_2, Image] PIC-2 - Picture Type: Other
 [ID3, ID3v2_2, Image] PIC-3 - Picture Description: comment
-[ID3, ID3v2_2, Image] PIC - Picture: (Binary data 15 bytes)
+[ID3, ID3v2_2, Preview] PIC - Picture: (Binary data 15 bytes)
 [ID3, ID3v2_2, Audio] TT2 - Title: ExifTool Test
 [ID3, ID3v2_2, Author] TP1 - Artist: Phil Harvey
 [ID3, ID3v2_2, Audio] TCM - Composer: A Composer

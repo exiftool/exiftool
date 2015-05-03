@@ -14,7 +14,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.06';
+$VERSION = '1.07';
 
 sub ProcessBitStream($$$);
 
@@ -110,6 +110,7 @@ sub ProcessBitStream($$$);
     7 => 'PictureLength',
     8 => {
         Name => 'Picture',
+        Groups => { 2 => 'Preview' },
         Format => 'undef[$val{7}]',
         Binary => 1,
     },

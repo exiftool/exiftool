@@ -14,7 +14,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.06';
+$VERSION = '1.07';
 
 sub ProcessAFCP($$);
 
@@ -37,6 +37,7 @@ for the AFCP specification.
     TEXT => 'Text',
     Nail => {
         Name => 'ThumbnailImage',
+        Groups => { 2 => 'Preview' },
         # (the specification allows for a variable amount of padding before
         #  the image after a 10-byte header, so look for the JPEG SOI marker,
         #  otherwise assume a fixed 8 bytes of padding)
@@ -49,6 +50,7 @@ for the AFCP specification.
     },
     PrVw => {
         Name => 'PreviewImage',
+        Groups => { 2 => 'Preview' },
         RawConv => q{
             pos($val) = 10;
             my $start = ($val =~ /\xff\xd8\xff/g) ? pos($val) - 3 : 18;

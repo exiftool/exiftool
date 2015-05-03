@@ -413,8 +413,9 @@
   <br>ColorData5
   <br>ColorData6
   <br>ColorData7
+  <br>ColorData8
   <br>ColorDataUnknown</td>
-<td class=c>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-</td>
+<td class=c>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-</td>
 <td>--&gt; <a href='Canon.html#ColorData1'>Canon ColorData1 Tags</a>
   <br>--&gt; <a href='Canon.html#ColorData2'>Canon ColorData2 Tags</a>
   <br>--&gt; <a href='Canon.html#ColorData3'>Canon ColorData3 Tags</a>
@@ -422,6 +423,7 @@
   <br>--&gt; <a href='Canon.html#ColorData5'>Canon ColorData5 Tags</a>
   <br>--&gt; <a href='Canon.html#ColorData6'>Canon ColorData6 Tags</a>
   <br>--&gt; <a href='Canon.html#ColorData7'>Canon ColorData7 Tags</a>
+  <br>--&gt; <a href='Canon.html#ColorData8'>Canon ColorData8 Tags</a>
   <br>--&gt; <a href='Canon.html#ColorDataUnknown'>Canon ColorDataUnknown Tags</a></td></tr>
 <tr>
 <td title='0x4002 = 16386'>0x4002</td>
@@ -1443,6 +1445,7 @@ attempting to identify the specific lens model.</p>
 </tr><tr><td>183.1</td><td>= Sigma 150mm f/2.8 EX DG OS HSM APO Macro</td>
 </tr><tr><td>183.2</td><td>= Sigma 105mm f/2.8 EX DG OS HSM Macro</td>
 </tr><tr><td>183.3</td><td>= Sigma 180mm f/2.8 EX DG OS HSM APO Macro</td>
+</tr><tr><td>183.4</td><td>= Sigma 150-600mm f/5-6.3 DG OS HSM | C</td>
 </tr><tr><td>184</td><td>= Canon EF 400mm f/2.8L + 2x</td>
 </tr><tr><td>185</td><td>= Canon EF 600mm f/4L IS</td>
 </tr><tr><td>186</td><td>= Canon EF 70-200mm f/4L</td>
@@ -7785,7 +7788,7 @@ option is used.</p>
 <td>ColorDataVersion</td>
 <td class=c>int16s</td>
 <td><span class=s>10 = 10 (1DX/5DmkIII/6D/70D/100D/650D/700D/M)
-  <br>11 = 11 (7DmkII, 750D, 760D)</span></td></tr>
+  <br>11 = 11 (7DmkII/750D/760D)</span></td></tr>
 <tr class=b>
 <td class=r title='63 = 0x3f'>63</td>
 <td>WB_RGGBLevelsAsShot</td>
@@ -8149,6 +8152,451 @@ option is used.</p>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='ColorData8'>Canon ColorData8 Tags</a></h2>
+<p>These tags are used by the EOS 5DS and EOS 5DS R.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index2</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>ColorDataVersion</td>
+<td class=c>int16s</td>
+<td><span class=s>12 = 12 (5DS/5DSR)</span></td></tr>
+<tr class=b>
+<td class=r title='63 = 0x3f'>63</td>
+<td>WB_RGGBLevelsAsShot</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='67 = 0x43'>67</td>
+<td>ColorTempAsShot</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='68 = 0x44'>68</td>
+<td>WB_RGGBLevelsAuto</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='72 = 0x48'>72</td>
+<td>ColorTempAuto</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='73 = 0x49'>73</td>
+<td>WB_RGGBLevelsMeasured</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='77 = 0x4d'>77</td>
+<td>ColorTempMeasured</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='78 = 0x4e'>78</td>
+<td>WB_RGGBLevelsUnknown?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='82 = 0x52'>82</td>
+<td>ColorTempUnknown?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='83 = 0x53'>83</td>
+<td>WB_RGGBLevelsUnknown2?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='87 = 0x57'>87</td>
+<td>ColorTempUnknown2?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='88 = 0x58'>88</td>
+<td>WB_RGGBLevelsUnknown3?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='92 = 0x5c'>92</td>
+<td>ColorTempUnknown3?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='93 = 0x5d'>93</td>
+<td>WB_RGGBLevelsUnknown4?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='97 = 0x61'>97</td>
+<td>ColorTempUnknown4?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='98 = 0x62'>98</td>
+<td>WB_RGGBLevelsUnknown5?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='102 = 0x66'>102</td>
+<td>ColorTempUnknown5?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='103 = 0x67'>103</td>
+<td>WB_RGGBLevelsUnknown6?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='107 = 0x6b'>107</td>
+<td>ColorTempUnknown6?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='108 = 0x6c'>108</td>
+<td>WB_RGGBLevelsUnknown7?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='112 = 0x70'>112</td>
+<td>ColorTempUnknown7?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='113 = 0x71'>113</td>
+<td>WB_RGGBLevelsUnknown8?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='117 = 0x75'>117</td>
+<td>ColorTempUnknown8?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='118 = 0x76'>118</td>
+<td>WB_RGGBLevelsUnknown9?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='122 = 0x7a'>122</td>
+<td>ColorTempUnknown9?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='123 = 0x7b'>123</td>
+<td>WB_RGGBLevelsUnknown10?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='127 = 0x7f'>127</td>
+<td>ColorTempUnknown10?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='128 = 0x80'>128</td>
+<td>WB_RGGBLevelsUnknown11?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='132 = 0x84'>132</td>
+<td>ColorTempUnknown11?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='133 = 0x85'>133</td>
+<td>WB_RGGBLevelsDaylight</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='137 = 0x89'>137</td>
+<td>ColorTempDaylight</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='138 = 0x8a'>138</td>
+<td>WB_RGGBLevelsShade</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='142 = 0x8e'>142</td>
+<td>ColorTempShade</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='143 = 0x8f'>143</td>
+<td>WB_RGGBLevelsCloudy</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='147 = 0x93'>147</td>
+<td>ColorTempCloudy</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='148 = 0x94'>148</td>
+<td>WB_RGGBLevelsTungsten</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='152 = 0x98'>152</td>
+<td>ColorTempTungsten</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='153 = 0x99'>153</td>
+<td>WB_RGGBLevelsFluorescent</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='157 = 0x9d'>157</td>
+<td>ColorTempFluorescent</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='158 = 0x9e'>158</td>
+<td>WB_RGGBLevelsKelvin</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='162 = 0xa2'>162</td>
+<td>ColorTempKelvin</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='163 = 0xa3'>163</td>
+<td>WB_RGGBLevelsFlash</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='167 = 0xa7'>167</td>
+<td>ColorTempFlash</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='168 = 0xa8'>168</td>
+<td>WB_RGGBLevelsUnknown12?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='172 = 0xac'>172</td>
+<td>ColorTempUnknown12?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='173 = 0xad'>173</td>
+<td>WB_RGGBLevelsUnknown13?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='177 = 0xb1'>177</td>
+<td>ColorTempUnknown13?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='178 = 0xb2'>178</td>
+<td>WB_RGGBLevelsUnknown14?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='182 = 0xb6'>182</td>
+<td>ColorTempUnknown14?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='183 = 0xb7'>183</td>
+<td>WB_RGGBLevelsUnknown15?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='187 = 0xbb'>187</td>
+<td>ColorTempUnknown15?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='188 = 0xbc'>188</td>
+<td>WB_RGGBLevelsUnknown16?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='192 = 0xc0'>192</td>
+<td>ColorTempUnknown16?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='193 = 0xc1'>193</td>
+<td>WB_RGGBLevelsUnknown17?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='197 = 0xc5'>197</td>
+<td>ColorTempUnknown17?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='198 = 0xc6'>198</td>
+<td>WB_RGGBLevelsUnknown18?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='202 = 0xca'>202</td>
+<td>ColorTempUnknown18?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='203 = 0xcb'>203</td>
+<td>WB_RGGBLevelsUnknown19?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='207 = 0xcf'>207</td>
+<td>ColorTempUnknown19?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='208 = 0xd0'>208</td>
+<td>WB_RGGBLevelsUnknown20?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='212 = 0xd4'>212</td>
+<td>ColorTempUnknown20?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='213 = 0xd5'>213</td>
+<td>WB_RGGBLevelsUnknown21?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='217 = 0xd9'>217</td>
+<td>ColorTempUnknown21?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='218 = 0xda'>218</td>
+<td>WB_RGGBLevelsUnknown22?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='222 = 0xde'>222</td>
+<td>ColorTempUnknown22?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='223 = 0xdf'>223</td>
+<td>WB_RGGBLevelsUnknown23?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='227 = 0xe3'>227</td>
+<td>ColorTempUnknown23?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='228 = 0xe4'>228</td>
+<td>WB_RGGBLevelsUnknown24?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='232 = 0xe8'>232</td>
+<td>ColorTempUnknown24?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='233 = 0xe9'>233</td>
+<td>WB_RGGBLevelsUnknown25?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='237 = 0xed'>237</td>
+<td>ColorTempUnknown25?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='238 = 0xee'>238</td>
+<td>WB_RGGBLevelsUnknown26?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='242 = 0xf2'>242</td>
+<td>ColorTempUnknown26?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='243 = 0xf3'>243</td>
+<td>WB_RGGBLevelsUnknown27?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='247 = 0xf7'>247</td>
+<td>ColorTempUnknown27?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='248 = 0xf8'>248</td>
+<td>WB_RGGBLevelsUnknown28?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='252 = 0xfc'>252</td>
+<td>ColorTempUnknown28?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='253 = 0xfd'>253</td>
+<td>WB_RGGBLevelsUnknown29?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='257 = 0x101'>257</td>
+<td>ColorTempUnknown29?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='258 = 0x102'>258</td>
+<td>WB_RGGBLevelsUnknown30?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='262 = 0x106'>262</td>
+<td>ColorTempUnknown30?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='263 = 0x107'>263</td>
+<td>ColorCalib?</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Canon.html#ColorCalib'>Canon ColorCalib Tags</a>
+  <br><span class='n s'>(B, C, A, Temperature)</span></td></tr>
+<tr>
+<td class=r title='326 = 0x146'>326</td>
+<td>AverageBlackLevel</td>
+<td class=c>int16u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='778 = 0x30a'>778</td>
+<td>PerChannelBlackLevel</td>
+<td class=c>int16u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='782 = 0x30e'>782</td>
+<td>NormalWhiteLevel</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='783 = 0x30f'>783</td>
+<td>SpecularWhiteLevel</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='784 = 0x310'>784</td>
+<td>LinearityUpperMargin</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
 <h2><a name='ColorDataUnknown'>Canon ColorDataUnknown Tags</a></h2>
 <blockquote>
 <table class=frame><tr><td>
@@ -8159,7 +8607,7 @@ option is used.</p>
 <td class=r title='0 = 0x0'>0</td>
 <td>ColorDataVersion</td>
 <td class=c>N</td>
-<td><span class=s>12 = 12 (5DS, 5DS R)</span></td></tr>
+<td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='ColorInfo'>Canon ColorInfo Tags</a></h2>
@@ -8568,7 +9016,7 @@ SX280.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Apr 22, 2015</i>
+<br><i>Last revised Apr 29, 2015</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

@@ -1555,6 +1555,14 @@ metadata space with these incredibly bulky image editing parameters.
   LensProfileDistortionScale                    integer
   LensProfileEnable                             integer
   LensProfileFilename                           string
+  LensProfileMatchKeyCameraModelName            string
+  LensProfileMatchKeyExifMake                   string
+  LensProfileMatchKeyExifModel                  string
+  LensProfileMatchKeyIsRaw                      boolean
+  LensProfileMatchKeyLensID                     string
+  LensProfileMatchKeyLensInfo                   string
+  LensProfileMatchKeyLensName                   string
+  LensProfileMatchKeySensorFormatFactor         real
   LensProfileName                               string
   LensProfileSetup                              string
   LensProfileVignettingScale                    integer
@@ -1734,6 +1742,7 @@ metadata space with these incredibly bulky image editing parameters.
   Vibrance                                      integer
   VignetteAmount                                integer
   VignetteMidpoint                              integer
+  What                                          string
   WhiteBalance                                  string/
   Whites2012                                    integer
 

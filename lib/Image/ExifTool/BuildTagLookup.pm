@@ -32,7 +32,7 @@ use Image::ExifTool::XMP;
 use Image::ExifTool::Canon;
 use Image::ExifTool::Nikon;
 
-$VERSION = '2.84';
+$VERSION = '2.85';
 @ISA = qw(Exporter);
 
 sub NumbersFirst;
@@ -787,9 +787,10 @@ TagID:  foreach $tagID (@keys) {
                 my $name = $$tagInfo{Name};
                 my $format = $$tagInfo{Format};
                 # validate Name (must not start with a digit or else XML output will not be valid)
-                if ($name !~ /^[-_A-Za-z][-\w]+$/ and
+                # (must not start with a dash or exiftool command line may get confused)
+                if ($name !~ /^[_A-Za-z][-\w]+$/ and
                     # single-character subdirectory names are allowed
-                    (not $$tagInfo{SubDirectory} or $name !~ /^[-_A-Za-z]$/))
+                    (not $$tagInfo{SubDirectory} or $name !~ /^[_A-Za-z]$/))
                 {
                     warn "Warning: Invalid tag name $short '$name'\n";
                 }

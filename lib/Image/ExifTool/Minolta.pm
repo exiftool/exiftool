@@ -49,7 +49,7 @@ use vars qw($VERSION %minoltaLensTypes %minoltaTeleconverters %minoltaColorMode
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.24';
+$VERSION = '2.25';
 
 # Full list of product codes for Sony-compatible Minolta lenses
 # (ref http://www.kb.sony.com/selfservice/documentLink.do?externalId=C1000570)
@@ -287,9 +287,10 @@ my %metabonesID = (
     55 => 'Sony DT 18-55mm F3.5-5.6 SAM (SAL1855) or SAM II', #PH
     55.1 => 'Sony DT 18-55mm F3.5-5.6 SAM II (SAL18552)', #JR
     56 => 'Sony DT 55-200mm F4-5.6 SAM (SAL55200-2)', #22/JR
-    57 => 'Sony DT 50mm F1.8 SAM (SAL50F18) or Tamron Lens', #22/JR
+    57 => 'Sony DT 50mm F1.8 SAM (SAL50F18) or Tamron or Sigma Lens', #22/JR
     57.1 => 'Tamron SP AF 60mm F2 Di II LD [IF] Macro 1:1', # (Model G005) (ref http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,3858.0.html)
     57.2 => 'Tamron 18-270mm F3.5-6.3 Di II PZD', #27 (Model B008)
+    57.3 => 'Sigma 18-35mm F1.8 DC HSM', #JR
     58 => 'Sony DT 30mm F2.8 Macro SAM (SAL30M28)', #22/JR
     59 => 'Sony 28-75mm F2.8 SAM (SAL2875)', #21/JR
     60 => 'Carl Zeiss Distagon T* 24mm F2 ZA SSM (SAL24F20Z)', #17/JR
@@ -327,6 +328,7 @@ my %metabonesID = (
    '128.16' => 'Sigma 150mm F2.8 EX DG OS HSM APO Macro', #Marcus Holland-Moritz
    '128.17' => 'Sigma 150-500mm F5-6.3 APO DG OS HSM', #30
    '128.18' => 'Tamron AF 28-105mm F4-5.6 [IF]', #30 (Model 179D)
+   '128.19' => 'Sigma 35mm F1.4 DG HSM', #JR
     129 => 'Tamron Lens (129)',
     129.1 => 'Tamron 200-400mm F5.6 LD', #12 (LD ref 23)
     129.2 => 'Tamron 70-300mm F4-5.6 LD', #12
@@ -530,21 +532,23 @@ my %metabonesID = (
    '65535.31' => 'Sigma 30mm F2.8 [EX] DN', #JR
    '65535.32' => 'Sigma 60mm F2.8 DN', #JR
    '65535.33' => 'Tamron 18-200mm F3.5-6.3 Di III VC', #JR (Model B011)
-   '65535.34' => 'Zeiss Loxia 35mm F2', #JR
-   '65535.35' => 'Zeiss Loxia 50mm F2', #JR
-   '65535.36' => 'Zeiss Touit 12mm F2.8', #JR
-   '65535.37' => 'Zeiss Touit 32mm F1.8', #JR
-   '65535.38' => 'Zeiss Touit 50mm F2.8 Macro', #JR
+   '65535.34' => 'Zeiss Batis 25mm F2', #JR
+   '65535.35' => 'Zeiss Batis 85mm F1.8', #JR (OSS ?)
+   '65535.36' => 'Zeiss Loxia 35mm F2', #JR
+   '65535.37' => 'Zeiss Loxia 50mm F2', #JR
+   '65535.38' => 'Zeiss Touit 12mm F2.8', #JR
+   '65535.39' => 'Zeiss Touit 32mm F1.8', #JR
+   '65535.40' => 'Zeiss Touit 50mm F2.8 Macro', #JR
 #
 # other lenses
 #
-   '65535.39' => 'Arax MC 35mm F2.8 Tilt+Shift', #JD
-   '65535.40' => 'Arax MC 80mm F2.8 Tilt+Shift', #JD
-   '65535.41' => 'Zenitar MF 16mm F2.8 Fisheye M42', #JD
-   '65535.42' => 'Samyang 500mm Mirror F8.0', #19
-   '65535.43' => 'Pentacon Auto 135mm F2.8', #19
-   '65535.44' => 'Pentacon Auto 29mm F2.8', #19
-   '65535.45' => 'Helios 44-2 58mm F2.0', #19
+   '65535.41' => 'Arax MC 35mm F2.8 Tilt+Shift', #JD
+   '65535.42' => 'Arax MC 80mm F2.8 Tilt+Shift', #JD
+   '65535.43' => 'Zenitar MF 16mm F2.8 Fisheye M42', #JD
+   '65535.44' => 'Samyang 500mm Mirror F8.0', #19
+   '65535.45' => 'Pentacon Auto 135mm F2.8', #19
+   '65535.46' => 'Pentacon Auto 29mm F2.8', #19
+   '65535.47' => 'Helios 44-2 58mm F2.0', #19
 );
 
 %minoltaTeleconverters = (

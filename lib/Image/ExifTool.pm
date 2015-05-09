@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '9.94';
+$VERSION = '9.95';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -475,7 +475,8 @@ my %fileTypeLookup = (
     ZIP  => ['ZIP',  'ZIP archive'],
 );
 
-# typical extension for each file type (if different than lowercase FileType)
+# typical extension for each file type (if different than FileType)
+# - case is not significant
 my %fileTypeExt = (
     'Canon 1D RAW' => 'tif',
     DICOM   => 'dcm',
@@ -485,7 +486,6 @@ my %fileTypeExt = (
     M2TS    => 'mts',
     MPEG    => 'mpg',
     TIFF    => 'tif',
-    Torrent => 'torrent',
     VCard   => 'vcf',
 );
 
@@ -2361,7 +2361,7 @@ sub GetValue($$;$)
     my (@val, @prt, @raw, $convType);
     foreach $convType (@convTypes) {
         # don't convert a scalar reference or structure
-        last if ref $value eq 'SCALAR';
+        last if ref $value eq 'SCALAR' and not $$tagInfo{ConvertBinary};
         my $conv = $$tagInfo{$convType};
         unless (defined $conv) {
             if ($convType eq 'ValueConv') {
@@ -4433,6 +4433,20 @@ sub ValidateImage($$$)
 }
 
 #------------------------------------------------------------------------------
+# Validate a tag name argument (including group name and wildcards, etc)
+# Inputs: 0) tag name
+# Returns: true if tag name is valid
+# - a tag name may contain [-_A-Za-z0-9], but may not start with [-0-9]
+# - tag names may contain wildcards [?*], and end with a hash [#]
+# - may have group name prefixes (which may have family number prefix), separated by colons
+# - a group name may be zero or more characters
+sub ValidTagName($)
+{
+    my $tag = shift;
+    return $tag =~ /^(([-\w]*|\d*\*):)*[_a-zA-Z?*][-\w?*]*#?$/;
+}
+
+#------------------------------------------------------------------------------
 # Generate a valid tag name based on the tag ID or name
 # Inputs: 0) tag ID or name
 # Returns: valid tag name
@@ -4462,7 +4476,7 @@ sub MakeDescription($;$)
     $desc =~ s/([a-z])([A-Z\d])/$1 $2/g;
     # put a space between acronyms and words
     $desc =~ s/([A-Z])([A-Z][a-z])/$1 $2/g;
-    # put spaces after numbers (if more than one character following number)
+    # put spaces after numbers (if more than one character follows the number)
     $desc =~ s/(\d)([A-Z]\S)/$1 $2/g;
     # add TagID to description
     $desc .= ' ' . $tagID if defined $tagID;

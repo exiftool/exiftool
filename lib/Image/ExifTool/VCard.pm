@@ -1,10 +1,10 @@
 #------------------------------------------------------------------------------
 # File:         VCard.pm
 #
-# Description:  vCard meta information
+# Description:  Read vCard and iCalendar meta information
 #
 # Revisions:    2015/04/05 - P. Harvey Created
-#               2015/05/02 - PH Added VCALENDAR support
+#               2015/05/02 - PH Added iCalendar support
 #
 # References:   1) http://en.m.wikipedia.org/wiki/VCard
 #               2) http://tools.ietf.org/html/rfc6350
@@ -17,7 +17,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.02';
+$VERSION = '1.03';
 
 my %unescapeVCard = ( '\\'=>'\\', ','=>',', 'n'=>"\n", 'N'=>"\n" );
 
@@ -39,6 +39,7 @@ my %timeInfo = (
 # Note: The case of all tag ID's is normalized to lowercase with uppercase first letter
 %Image::ExifTool::VCard::Main = (
     GROUPS => { 2 => 'Document' },
+    VARS => { NO_LOOKUP => 1 }, # omit tags from lookup
     NOTES => q{
         This table lists common vCard tags, but ExifTool will also extract any other
         vCard tags found.  Tag names may have "Pref" added to indicate the preferred
@@ -87,6 +88,7 @@ my %timeInfo = (
 
 %Image::ExifTool::VCard::VCalendar = (
     GROUPS => { 1 => 'VCalendar', 2 => 'Document' },
+    VARS => { NO_LOOKUP => 1 }, # omit tags from lookup
     NOTES => q{
         The VCard module is also used to process iCalendar ICS files since they use
         a format similar to vCard.  The following table lists standard iCalendar
@@ -137,7 +139,7 @@ my %timeInfo = (
     Uid         => 'UID',
     Exdate      => { Name => 'ExceptionDateTimes',  Groups => { 2 => 'Time' }, %timeInfo },
     Rdate       => { Name => 'RecurrenceDateTimes', Groups => { 2 => 'Time' }, %timeInfo },
-    Rrule       => 'RecurrenceRule',
+    Rrule       => { Name => 'RecurrenceRule',      Groups => { 2 => 'Time' } },
     Action      => { },
     Repeat      => { },
     Trigger     => { },
@@ -159,10 +161,14 @@ sub GetVCardTag($$$$;$$)
     my ($et, $tagTablePtr, $tag, $name, $srcInfo, $langCode) = @_;
     my $tagInfo = $$tagTablePtr{$tag};
     unless ($tagInfo) {
-        $tagInfo = $srcInfo ? { %$srcInfo } : { };
+        if ($srcInfo) {
+            $tagInfo = { %$srcInfo };
+        } else {
+            $tagInfo = { };
+            $et->VPrint(0, $$et{INDENT}, "[adding $tag]\n");
+        }
         $$tagInfo{Name} = $name;
         delete $$tagInfo{Description};  # create new description
-        $et->VPrint(0, $$et{INDENT}, "[adding $tag]\n");
         AddTagToTable($tagTablePtr, $tag, $tagInfo);
     }
     # handle alternate languages (the "language" parameter)
@@ -334,7 +340,7 @@ sub ProcessVCard($$)
         $val = DecodeVCardText($et, $val, $param{Encoding});
         my $tagInfo = GetVCardTag($et, $tagTablePtr, $tag, $name, $srcInfo, $param{Language});
         $et->HandleTag($tagTablePtr, $tag, $val, TagInfo => $tagInfo);
-        # handle some parameters that we care about (ignore others for now)
+        # handle some other parameters that we care about (ignore the rest for now)
         foreach $p (qw(Geo Label Tzid)) {
             next unless defined $param{$p};
             # use tag attributes from our table if it exists
@@ -359,7 +365,7 @@ __END__
 
 =head1 NAME
 
-Image::ExifTool::VCard - Read vCard meta information
+Image::ExifTool::VCard - Read vCard and iCalendar meta information
 
 =head1 SYNOPSIS
 
@@ -368,7 +374,7 @@ This module is used by Image::ExifTool
 =head1 DESCRIPTION
 
 This module contains definitions required by Image::ExifTool to read meta
-information from vCard files.
+information from vCard VCF and iCalendar ICS files.
 
 =head1 AUTHOR
 
@@ -392,6 +398,7 @@ under the same terms as Perl itself.
 =head1 SEE ALSO
 
 L<Image::ExifTool::TagNames/VCard Tags>,
+L<Image::ExifTool::TagNames/VCard VCalendar Tags>,
 L<Image::ExifTool(3pm)|Image::ExifTool>
 
 =cut

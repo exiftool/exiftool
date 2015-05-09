@@ -1091,7 +1091,7 @@ sub SetNewValuesFromFile($$;@)
         List            => 1,
         ListItem        => $$options{ListItem},
         ListSep         => $$options{ListSep},
-        MakerNotes      => 1,
+        MakerNotes      => $$options{FastScan} && $$options{FastScan} > 1 ? undef : 1,
         MissingTagValue => $$options{MissingTagValue},
         Password        => $$options{Password},
         PrintConv       => $$options{PrintConv},
@@ -1190,6 +1190,9 @@ sub SetNewValuesFromFile($$;@)
                     $opt = $1 if $tag =~ s/^([-+])\s*//;
                 }
             }
+            # validate tag name(s)
+            $$opts{EXPR} or ValidTagName($tag) or $self->Warn("Invalid tag name '$tag'"), next;
+            ValidTagName($dstTag) or $self->Warn("Invalid tag name '$dstTag'"), next;
             # translate '+' and '-' to appropriate SetNewValue option
             if ($opt) {
                 $$opts{{ '+' => 'AddValue', '-' => 'DelValue' }->{$opt}} = 1;

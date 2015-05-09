@@ -304,6 +304,10 @@ numerical.
                   XMP-like tags to extract as a block with a name other than
                   'XMP'.
 
+                  'ConvertBinary' - true to apply ValueConv and/or PrintConv to
+                  Binary values (ie. SCALAR references).  (By default, these
+                  conversions are not done for Binary values.)
+
                   'DataMember' - name of exiftool data member associated with
                   this tag if it should be stored as a special data member when
                   writing information.  Necessary only if the value of the tag

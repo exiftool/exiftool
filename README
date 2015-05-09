@@ -183,6 +183,7 @@ distribution package:
   config_files/             - Sample ExifTool configuration files:
     ExifTool_config           - General example showing basic features
     convert_regions.config    - Convert between MWG and MP face regions
+    photoshop_paths.config    - For extracting or copying Photoshop paths
     picasa_faces.config       - Convert from Picasa to MWG/MP face regions
   exiftool                  - The exiftool application (Perl script)
   fmt_files/                - Output formatting example files:

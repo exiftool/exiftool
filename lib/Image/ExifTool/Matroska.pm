@@ -14,7 +14,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.05';
+$VERSION = '1.06';
 
 my %noYes = ( 0 => 'No', 1 => 'Yes' );
 
@@ -23,6 +23,7 @@ my %noYes = ( 0 => 'No', 1 => 'Yes' );
 #       (the upper bits), which is not included in the tag ID's below
 %Image::ExifTool::Matroska::Main = (
     GROUPS => { 2 => 'Video' },
+    VARS => { NO_LOOKUP => 1 }, # omit tags from lookup
     NOTES => q{
         The following tags are extracted from Matroska multimedia container files. 
         This container format is used by file types such as MKA, MKV, MKS and WEBM. 

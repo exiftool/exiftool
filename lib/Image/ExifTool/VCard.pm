@@ -17,7 +17,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.03';
+$VERSION = '1.04';
 
 my %unescapeVCard = ( '\\'=>'\\', ','=>',', 'n'=>"\n", 'N'=>"\n" );
 
@@ -113,7 +113,7 @@ my %timeInfo = (
         ValueConv => '$val =~ s/^geo://; $val',
     },
     Location    => { Name => 'Location',            Groups => { 2 => 'Location' } },
-    'Percent-complete' => { },
+    'Percent-complete' => 'PercentComplete',
     Priority    => { },
     Resources   => { },
     Status      => { },

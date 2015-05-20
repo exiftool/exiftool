@@ -388,7 +388,16 @@ t/CanonRaw_7.out
 t/CanonVRD.t
 t/CanonVRD_11.out
 t/CanonVRD_12.out
+t/CanonVRD_13.out
+t/CanonVRD_14.out
+t/CanonVRD_15.out
+t/CanonVRD_16.out
+t/CanonVRD_17.out
+t/CanonVRD_18.out
+t/CanonVRD_19.out
 t/CanonVRD_2.out
+t/CanonVRD_20.out
+t/CanonVRD_21.out
 t/CanonVRD_3.out
 t/CanonVRD_4.out
 t/CanonVRD_5.out
@@ -765,6 +774,7 @@ t/XMP_37.out
 t/XMP_39.out
 t/XMP_40.out
 t/XMP_41.out
+t/XMP_42.out
 t/XMP_5.out
 t/XMP_6.out
 t/XMP_7.out
@@ -789,6 +799,7 @@ t/images/Canon.jpg
 t/images/Canon1DmkIII.jpg
 t/images/CanonRaw.cr2
 t/images/CanonRaw.crw
+t/images/CanonVRD.dr4
 t/images/CanonVRD.vrd
 t/images/CaptureOne.eip
 t/images/Casio.jpg

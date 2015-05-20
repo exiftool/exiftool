@@ -1235,14 +1235,18 @@ sometimes there are more serious errors which can't be ignored.  ExifTool may be
 used to fix metadata problems in JPEG images by deleting all metadata and
 rebuilding it from scratch.  The command looks like this:
 
-<pre>exiftool -all= -tagsfromfile @ -all:all -unsafe bad.jpg
+<pre>exiftool -all= -tagsfromfile @ -all:all -unsafe -icc_profile bad.jpg
 </pre>
 
 where "<code>bad.jpg</code>" is the name of the image that requires fixing. This
 command deletes all metadata then copies all writable tags that can be extracted
 from the original image to the same locations in the updated image.  The
 "<code>Unsafe</code>" tag is a <a href="TagNames/Shortcuts.html">shortcut</a>
-for unsafe EXIF tags in JPEG images which are not normally copied.</blockquote>
+for unsafe EXIF tags in JPEG images which are not normally copied.  JPEG images
+may also contain an ICC color profile which should be preserved.  The
+"<code>ICC_Profile</code>" tag is also marked as unsafe, but is not part of the
+EXIF so it isn't covered by the "<code>Unsafe</code>" shortcut and must be
+specified separately.</blockquote>
 
 <blockquote>After repairing an image like this you should be able to write to it
 without errors, but note that <u>some metadata from the original image may have
@@ -1520,7 +1524,7 @@ importing.</blockquote>
 for more details.</blockquote>
 
 <hr>
-<i>Last revised Feb 19, 2015</i>
+<i>Last revised May 11, 2015</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

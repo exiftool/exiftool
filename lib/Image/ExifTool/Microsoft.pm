@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::XMP;
 
-$VERSION = '1.15';
+$VERSION = '1.16';
 
 sub ProcessXtra($$$);
 
@@ -387,8 +387,8 @@ my %sRegions = (
     'WM/Publisher'              => 'Publisher',
     'WM/SharedUserRating'       => 'SharedUserRating',
     'WM/SubscriptionContentID'  => 'SubscriptionContentID',
-    'WM/SubTitle'               => 'SubTitle',
-    'WM/SubTitleDescription'    => 'SubTitleDescription',
+    'WM/SubTitle'               => 'Subtitle',
+    'WM/SubTitleDescription'    => 'SubtitleDescription',
     'WM/TrackNumber'            => 'TrackNumber',
     'WM/UniqueFileIdentifier'   => 'UniqueFileIdentifier',
     'WM/VideoFrameRate'         => 'VideoFrameRate',
@@ -660,7 +660,7 @@ my %sRegions = (
     '{64440492-4C8B-11D1-8B70-080036B11A03} 36'    => 'EncodedBy',
     '{64440492-4C8B-11D1-8B70-080036B11A03} 22'    => 'Producers',
     '{64440492-4C8B-11D1-8B70-080036B11A03} 30'    => 'Publisher',
-    '{56A3372E-CE9C-11D2-9F0E-006097C686F6} 38'    => 'SubTitle',
+    '{56A3372E-CE9C-11D2-9F0E-006097C686F6} 38'    => 'Subtitle',
     '{64440492-4C8B-11D1-8B70-080036B11A03} 34'    => 'UserWebURL',
     '{64440492-4C8B-11D1-8B70-080036B11A03} 23'    => 'Writers',
     '{E3E0584C-B788-4A5A-BB20-7F5A44C9ACDD} 21'    => 'Attachments',
@@ -700,7 +700,7 @@ my %sRegions = (
     '{64440492-4C8B-11D1-8B70-080036B11A03} 21'    => 'ParentalRating',
     '{10984E0A-F9F2-4321-B7EF-BAF195AF4319} 100'   => 'ParentalRatingReason',
     '{9B174B35-40FF-11D2-A27E-00C04FC30871} 5'     => 'SpaceUsed',
-    '{D35F743A-EB2E-47F2-A286-844132CB1427} 100'   => 'EXIFVersion',
+    '{D35F743A-EB2E-47F2-A286-844132CB1427} 100'   => 'ExifVersion',
     '{14B81DA1-0135-4D31-96D9-6CBFC9671A99} 18248' => 'Event',
     '{14B81DA1-0135-4D31-96D9-6CBFC9671A99} 37380' => 'ExposureBias',
     '{14B81DA1-0135-4D31-96D9-6CBFC9671A99} 34850' => 'ExposureProgram',

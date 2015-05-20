@@ -1,9 +1,9 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.93
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.96
 [File, System, Image] FileName - File Name: CanonVRD.vrd
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 1768 bytes
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2006:11:07 22:13:23-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:18 07:17:07-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2015:05:18 16:16:03-04:00
 [File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:03:07 15:31:02-05:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: VRD
@@ -108,6 +108,8 @@
 [CanonVRD, CanonVRD, Image] 64 - Monochrome Raw Shadow Point: 0
 [CanonVRD, CanonVRD, Image] 65 - Monochrome Output Highlight Point: 4095
 [CanonVRD, CanonVRD, Image] 66 - Monochrome Output Shadow Point: 0
+[CanonVRD, CanonVRD, Image] 76 - Custom Color Tone: 4
+[CanonVRD, CanonVRD, Image] 77 - Custom Saturation: 2
 [CanonVRD, CanonVRD, Image] 78 - Custom Contrast: 0
 [CanonVRD, CanonVRD, Image] 79 - Custom Linear: No
 [CanonVRD, CanonVRD, Image] 80 - Custom Sharpness: 7

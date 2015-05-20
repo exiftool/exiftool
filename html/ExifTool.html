@@ -288,10 +288,11 @@ ordered list of tag keys for the returned information.
 <br>&nbsp;<br>
 There will be 1:1 correspondence between the requested tags and the returned
 tag keys only if the <a href="#Duplicates">Duplicates</a> option is 0 and
-<a href="#Sort">Sort</a> is 'Input'.   (With
+<a href="#Sort">Sort</a> is 'Input'.  (With
 <a href="#Duplicates">Duplicates</a> enabled, there may be more entries in the
 returned list of tag keys, and with other <a href="#Sort">Sort</a> settings the
-entries may not be in the same order as requested.)
+entries may not be in the same order as requested.)  If a requested tag doesn't
+exist, a tag key is still generated, but the tag value is undefined.
 
 </td></tr><tr><td valign=top><b>HASH&nbsp;ref</b></td><td>
 Reference to a hash containing the options settings.  See
@@ -421,7 +422,7 @@ distribution for examples.</p>
     Tag values representing large binary data blocks (eg. ThumbnailImage)
     are not necessarily extracted unless this option is set or the tag is
     specifically requested by name.</td>
-    <td align=center>0 or 1</td><td align=center>0</td></tr>
+    <td align=center>0 or 1</td><td align=center>undef</td></tr>
 <tr><td>ByteOrder</td><td><a name="ByteOrder"></a>The byte order for newly created EXIF segments when
     writing.  Note that if EXIF information already exists, the existing order is
     maintained.  If ByteOrder is not defined, then the order of the maker notes is
@@ -436,7 +437,7 @@ distribution for examples.</p>
     for both types of access. Charset values listed to the right have aliases
     which are given in brackets. Case is not significant.  See
     <a href="faq.html#Q10">FAQ #10</a> for more information about character sets.</td>
-    <td align=center><a name="Charset"></a><table class='clear'>
+    <td align=center><a name="Charset"></a><table class=clear>
     <tr><td valign=top align=right>UTF8</td><td>(cp65001, UTF-8)</td></tr>
     <tr><td valign=top align=right>Latin</td><td>(cp1252, Latin1)</td></tr>
     <tr><td valign=top align=right>Latin2</td><td>(cp1250)</td></tr>
@@ -483,17 +484,17 @@ distribution for examples.</p>
     that the data be padded with blanks to allow in-place editing.  With this
     flag set the 2kB of padding is not written.  Note that this only effects
     embedded XMP since padding is never written for stand-alone XMP files.</td>
-    <td align=center>0 or 1</td><td align=center>0</td></tr>
+    <td align=center>0 or 1</td><td align=center>undef</td></tr>
 <tr><td>Composite</td><td><a name="Composite"></a>Flag to generate Composite tags when extracting information.</td>
     <td align=center>0 or 1</td><td align=center>1</td></tr>
 <tr><td>Compress</td><td><a name="Compress"></a>Flag to write new values in compressed format if possible.
     Has no effect unless Compress::Zlib is installed.</td>
-    <td align=center>0 or 1</td><td align=center>0</td></tr>
+    <td align=center>0 or 1</td><td align=center>undef</td></tr>
 <tr><td>CoordFormat</td><td><a name="CoordFormat"></a>Specify output format for GPS coordinates.</td>
     <td>A printf-style format string with specifiers for degrees, minutes and
     seconds in that order, however minutes and seconds may be omitted.  If the
     hemisphere is known, a reference direction (N, S, E or W) is appended to
-    each printed coordinate, but adding a '<code>+</code>' to the format
+    each printed coordinate, but adding a '<code>+</code>' to the first format
     specifier (eg. <code>'%+.6f'</code>) prints a signed coordinate instead.
     The default for reading is equivalent to a format string of
     <code>q{%d&nbsp;deg&nbsp;%d'&nbsp;%.2f"}</code>, but to avoid a loss
@@ -521,12 +522,28 @@ distribution for examples.</p>
     exclude.  Case is not significant. Tags may also be excluded by preceding
     their name with a '-' in the arguments to ImageInfo.</td>
     <td align=center>undef</td></tr>
+<tr><td>ExtendedXMP</td><td>This setting affects the reading and editing of
+    extended XMP in JPEG images.  According to the XMP specification, extended
+    XMP is only valid if it has the GUID specified by the
+    <a href="TagNames/XMP.html#xmpNote">HasExtendedXMP tag</a>.  ExifTool 9.95
+    and earlier would read extended XMP regardless of GUID, but with the
+    addition of this option in version 9.96 the default behaviour was changed to
+    conform with the XMP specification (to read only extended XMP with the
+    proper GUID).  This option should be set to 2 to emulate pre-9.96
+    behaviour and read all extended XMP.  It may also be set to a GUID to read a
+    specific extended XMP, or 0 to ignore extended XMP entirely.</td>
+    <td><table class=clear>
+    <tr><td valign=top align=right><b>0</b>&nbsp;=</td><td>ignore extended XMP</td></tr>
+    <tr><td valign=top align=right><b>1</b>&nbsp;=</td><td>valid GUID only</td></tr>
+    <tr><td valign=top align=right><b>2</b>&nbsp;=</td><td>any GUID</td></tr>
+    <tr><td valign=top align=right><i>guid</i>&nbsp;=</td><td>specific GUID</td></tr>
+    </table></td><td align=center>1</td></tr>
 <tr><td>ExtractEmbedded</td>
     <td><a name="Embedded"></a>Flag to extract information from embedded
     documents in EPS files, embedded EPS information and JPEG and Jpeg2000
     images in PDF files, embedded MPF images in JPEG and MPO files, streaming
     metadata in AVCHD videos, and the resource fork of Mac OS files.</td>
-    <td align=center>0 or 1</td><td align=center>0</td></tr>
+    <td align=center>0 or 1</td><td align=center>undef</td></tr>
 <tr><td>FastScan</td>
     <td><a name="FastScan"></a>Flag to increase speed of extracting information
     from JPEG images.  With this option set to 1, ExifTool will not scan to the
@@ -539,7 +556,7 @@ distribution for examples.</p>
     ExifTool will also avoid extracting any EXIF MakerNote information. When set
     to 3, the file is not actually parsed, and only an initial guess at FileType
     and some pseudo tags are returned. </td>
-    <td align=center>0, 1, 2 or 3</td><td align=center>0</td></tr>
+    <td align=center>0, 1, 2 or 3</td><td align=center>undef</td></tr>
 <tr><td>FixBase</td>
     <td>Fix maker notes base offset.  Allows values to be extracted from maker notes
     which have been corrupted by editing with 3rd party software.</td>
@@ -595,7 +612,7 @@ distribution for examples.</p>
 <tr><td>HtmlDump</td><td>Dump information in hex to a dynamic HTML web page.
     Option value sets a limit on the maximum block size.  Output file is
     specified by the TextOut option.</td>
-    <td><a name="HtmlDump"></a><table class='clear'>
+    <td><a name="HtmlDump"></a><table class=clear>
     <tr><td valign=top align=center><b>0</b>&nbsp;=</td><td>No HTML dump</td></tr>
     <tr><td valign=top align=center><b>1</b>&nbsp;=</td><td>1 KB size limit</td></tr>
     <tr><td valign=top align=center><b>2</b>&nbsp;=</td><td>16 KB size limit</td></tr>
@@ -603,9 +620,9 @@ distribution for examples.</p>
     </table></td><td align=center>0</td></tr>
 <tr><td>HtmlDumpBase</td><td><a name="HtmlDumpBase"></a>Base for HTML dump
     offsets.  If not defined, the EXIF/TIFF base offset is used.</td>
-    <td><table class='clear'>
+    <td><table class=clear>
     <tr><td valign=top align=right><b>0</b>&nbsp;=</td><td>Absolute offsets</td></tr>
-    <tr><td valign=top align=right><b><i>non&#8209;zero</i></b>&nbsp;=</td><td>Relative offsets</td></tr>
+    <tr><td valign=top align=right><i>non&#8209;zero</i>&nbsp;=</td><td>Relative offsets</td></tr>
     <tr><td valign=top align=right><b>undef</b>&nbsp;=</td><td>EXIF/TIFF offsets</td></tr>
     </table></td><td align=center>undef</td></tr>
 <tr><td>IgnoreMinorErrors</td><td><a name="IgnoreMinorErrors"></a>Flag to ignore minor errors.  Causes minor
@@ -617,16 +634,16 @@ distribution for examples.</p>
     Minor errors/warnings are denoted by "[minor]" at the start of the message,
     or "[Minor]" (with a capital "M") for warnings that affect processing when
     ignored.</td>
-    <td align=center>0 or 1</td><td align=center>0</td></tr>
+    <td align=center>0 or 1</td><td align=center>undef</td></tr>
 <tr><td>Lang</td><td><a name="Lang"></a>Localized language for exiftool tag descriptions, etc.  If the
     specified language isn't available, the option is not changed.  May be set to
     undef to select the built-in default language.</td>
     <td align=left>Image::ExifTool::Lang module name (eg. 'fr', 'zh_cn'), or 'en' or undef for the default language.</td>
     <td align=center>'en'</td></tr>
 <tr><td>LargeFileSupport</td><td><a name="LargeFileSupport"></a>Flag to indicate that 64-bit file offsets are supported on this system.</td>
-    <td align=center>0 or 1</td><td align=center>0</td></tr>
+    <td align=center>0 or 1</td><td align=center>undef</td></tr>
 <tr><td>List</td><td><a name="List"></a>Flag to extract lists of PrintConv values into arrays instead of combining
-    them into a string of values.</td><td align=center>0 or 1</td><td align=center>0</td></tr>
+    them into a string of values.</td><td align=center>0 or 1</td><td align=center>undef</td></tr>
 <tr><td>ListItem</td><td><a name="ListItem"></a>Return only a specific item from
     List-type values.  A value of 0 returns the first item in each list, 1 returns
     the second item, etc. Negative indices may also be used, with -1 representing the
@@ -641,11 +658,11 @@ distribution for examples.</p>
     subdirectories (such as PrintIM) as a data block.  Normally when the MakerNotes
     are extracted they are rebuilt to include data outside the boundaries of the
     original maker note data block, but a value of 2 disables this feature.</td>
-    <td><table class='clear'>
+    <td><table class=clear>
     <tr><td valign=top align=center><b>0</b>&nbsp;=</td><td>Don't extract writable subdirectories</td></tr>
     <tr><td valign=top align=center><b>1</b>&nbsp;=</td><td>Extract and rebuild makernotes into self-contained block</td></tr>
     <tr><td valign=top align=center><b>2</b>&nbsp;=</td><td>Extract without rebuilding makernotes</td></tr>
-    </table></td><td align=center>0</td></tr>
+    </table></td><td align=center>undef</td></tr>
 <tr><td>MissingTagValue</td><td><a name="MissingTagValue"></a>Value for missing tags in
     expressions evaluated by <a href="#SetNewValuesFromFile">SetNewValuesFromFile</a>.
     If not set, a minor error is issued for missing values, or the value
@@ -670,25 +687,25 @@ distribution for examples.</p>
     written. The PNGEarlyXMP option is applied automatically when deleting all
     XMP and writing new XMP back in one step.  When reading, this option causes
     a warning to be issued if standard XMP is found after the IDAT chunk.</td>
-    <td align=center>0 or 1</td><td align=center>0</td></tr>
+    <td align=center>0 or 1</td><td align=center>undef</td></tr>
 <tr><td>PrintConv</td><td><a name="PrintConv"></a>Flag to enable print conversion.  Also enables inverse print
     conversion for writing.</td><td align=center>0 or 1</td><td align=center>1</td></tr>
 <tr><td>QuickTimeUTC</td><td><a name="QuickTimeUTC"></a>Flag set to assume that QuickTime
     date/time values are stored as UTC, causing conversion to local time when they are
     extracted. According to the QuickTime specification date/time values should be UTC,
     but many digital cameras store local time instead (presumably because they don't know
-    the time zone).</td><td align=center>0 or 1</td><td align=center>0</td></tr>
+    the time zone).</td><td align=center>0 or 1</td><td align=center>undef</td></tr>
 <tr><td>RequestAll</td><td><a name="RequestAll"></a>Flag to request all tags to be extracted.
     This causes some tags to be generated which normally would not be unless specifically
     requested (by passing the tag name to ImageInfo or ExtractInfo).  Note that this flag is set
     automatically during a call to <a href="#SetNewValuesFromFile">SetNewValuesFromFile</a> to
-    make all tags available for copying.</td><td align=center>0 or 1</td><td align=center>0</td></tr>
+    make all tags available for copying.</td><td align=center>0 or 1</td><td align=center>undef</td></tr>
 <tr><td>ScanForXMP</td><td><a name="ScanForXMP"></a>Flag to scan all files (even unrecognized
     formats) for XMP information unless XMP was already found in the file.  When combined with
     the FastScan option, only unrecognized file types are scanned for XMP.  
-    </td><td align=center>0 or 1</td><td align=center>0</td></tr>
+    </td><td align=center>0 or 1</td><td align=center>undef</td></tr>
 <tr><td>Sort</td><td>Specifies order to sort tags in the returned tag list.</td>
-    <td><a name="Sort"></a><table class='clear'>
+    <td><a name="Sort"></a><table class=clear>
     <tr><td valign=top align=right><b>Input</b>&nbsp;=</td><td>Sort in same order as input tag arguments</td></tr>
     <tr><td valign=top align=right><b>File</b>&nbsp;=</td><td>Sort in order that tags were found in the file</td></tr>
     <tr><td valign=top align=right><b>Tag</b>&nbsp;=</td><td>Sort alphabetically by tag name</td></tr>
@@ -699,20 +716,20 @@ distribution for examples.</p>
         families.</td></tr>
     </table></td><td align=center>'Input'</td></tr>
 <tr><td>Sort2</td><td>Secondary sort order used for tags within each group when Sort is 'Group'.</td>
-    <td><a name="Sort2"></a><table class='clear'>
+    <td><a name="Sort2"></a><table class=clear>
     <tr><td valign=top align=right><b>File</b>&nbsp;=</td><td>Sort in order that tags were found in the file</td></tr>
     <tr><td valign=top align=right><b>Tag</b>&nbsp;=</td><td>Sort alphabetically by tag name</td></tr>
     <tr><td valign=top align=right><b>Descr</b>&nbsp;=</td><td>Sort by tag description (with current Lang setting)</td></tr>
     </table></td><td align=center>'File'</td></tr>
 <tr><td>StrictDate</td><td><a name="StrictDate"></a>Flag to return undefined value for any date which can't be
     converted when the DateFormat option is used.</td>
-    <td align=center>0 or 1</td><td align=center>0</td></tr>
+    <td align=center>0 or 1</td><td align=center>undef</td></tr>
 <tr><td>Struct</td><td>Flag to return XMP structures as HASH references
     instead of flattening into individual tags.  This setting has no effect
     when writing since both flattened or structured tags may always be written.
     See the <a href="struct.html">Structured Information documentation</a> for
     more details about structured information.</td>
-    <td><a name="Struct"></a><table class='clear'>
+    <td><a name="Struct"></a><table class=clear>
     <tr><td valign=top align=right><b>undef</b>&nbsp;=</td><td>Same as 0 for reading and 2 for copying</td></tr>
     <tr><td valign=top align=right><b>0</b>&nbsp;=</td><td>Read/copy flattened tags</td></tr>
     <tr><td valign=top align=right><b>1</b>&nbsp;=</td><td>Read/copy structures</td></tr>
@@ -722,26 +739,29 @@ distribution for examples.</p>
 <tr><td>TextOut</td><td><a name="TextOut"></a>Output file for Verbose and HtmlDump options.</td>
     <td align=center>File reference</td><td align=center>\*STDOUT</td></tr>
 <tr><td>Unknown</td><td><a name="Unknown"></a>Control extraction of unknown tags.</td>
-    <td><table class='clear'>
+    <td><table class=clear>
     <tr><td valign=top align=center><b>0</b>&nbsp;=</td><td>Unknown tags not extracted</td></tr>
     <tr><td valign=top align=center><b>1</b>&nbsp;=</td><td>Unknown tags are extracted from EXIF
         (and other tagged-format) directories</td></tr>
     <tr><td valign=top align=center><b>2</b>&nbsp;=</td><td>Unknown tags also extracted from binary data blocks</td></tr>
     </table></td><td align=center>0</td></tr>
 <tr><td>UserParam</td><td><a name="UserParam"></a>Special option to set/get user-defined parameters.
-    Useful to allow external input into tag name expresssions and ValueConv logic. <i>PARAM</i>
-    is the user-defined parameter name (case insensitive).  These parameters may
-    be accessed in tag name expressions by prefixing the parameter name with a
-    dollar sign, just like normal tags.
+    Useful to allow external input into tag name expressions and ValueConv logic.
+    <i>PARAM</i> is the user-defined parameter name (case insensitive). These parameters
+    may be accessed in tag name expressions by prefixing the parameter name with a dollar
+    sign, just like normal tags. If called without a parameter name,
+    <code>Options('UserParam')</code> returns a reference to the hash of all user
+    parameters (with lower-case names).
 </td>
-    <td><table class='clear'>
-    <tr><td><i>PARAM</i></td><td>- Get parameter</td></tr>
-    <tr><td><i>PARAM=</i></td><td>- Clear parameter</td></tr>
-    <tr><td><i>PARAM=VALUE</i></td><td>- Set parameter</td></tr>
-    </table></td><td align=center>undef</td></tr>
+    <td><table class=clear>
+    <tr><td valign=top><i>PARAM</i></td><td>- Get parameter</td></tr>
+    <tr><td valign=top><i>PARAM=</i></td><td>- Clear parameter</td></tr></table>
+    <table class=clear>
+    <tr><td valign=top><i>PARAM=VALUE</i></td><td>- Set parameter</td></tr>
+    </table></td><td align=center>{ }</td></tr>
 <tr><td>Verbose</td><td>Print verbose messages to file specified by TextOut option.
     <a href="verbose.html">Click here</a> for example outputs.</td>
-    <td><a name="Verbose"></a><table class='clear'>
+    <td><a name="Verbose"></a><table class=clear>
     <tr><td valign=top align=center><b>0</b>&nbsp;=</td><td>No verbose messages</td></tr>
     <tr><td valign=top align=center><b>1</b>&nbsp;=</td><td>Print tag names and raw values</td></tr>
     <tr><td valign=top align=center><b>2</b>&nbsp;=</td><td>Add additional tag details</td></tr>
@@ -750,7 +770,7 @@ distribution for examples.</p>
     <tr><td valign=top align=center><b>5</b>&nbsp;=</td><td>Remove length limit on dump of JPEG segments</td></tr>
     </table></td><td align=center>0</td></tr>
 <tr><td>WriteMode</td><td>Set tag write/create mode.</td>
-    <td><a name="WriteMode"></a>A string with one or more of these characters:<table class='clear'>
+    <td><a name="WriteMode"></a>A string with one or more of these characters:<table class=clear>
     <tr><td valign=top align=center><b>w</b>&nbsp;=</td><td><b>W</b>rite existing tags</td></tr>
     <tr><td valign=top align=center><b>c</b>&nbsp;=</td><td><b>C</b>reate new tags</td></tr>
     <tr><td valign=top align=center><b>g</b>&nbsp;=</td><td>Create new <b>g</b>roups <sup>&dagger;</sup></td></tr>
@@ -907,8 +927,8 @@ but no changes made, 0 on file write error.
 </td></tr>
 </table></blockquote>
 <p>The source file name may be undefined to create a file from scratch
-(currently only XMP, MIE, ICC, VRD, EXV and EXIF files can be created in this
-way -- see <a href="#CanCreate">CanCreate</a> for details).
+(currently only XMP, MIE, ICC, VRD, DR4, EXV and EXIF files can be created
+in this way -- see <a href="#CanCreate">CanCreate</a> for details).
 If undefined, the destination file type is required unless the type can be
 determined from the extension of the destination file name.</p>
 <p>If a destination file name is given, the specified file must not exist
@@ -1045,16 +1065,18 @@ instead.</p>
     other types.
 </td></tr>
 <tr><td valign=top><b>Returns</b></td><td>
-The value of the specified tag.  If the tag represents a list of values and
-the List option is disabled then PrintConv returns a string of values,
+The value of the specified tag.  If the tag represents a list of multiple values
+and the List option is disabled then PrintConv returns a string of values,
 otherwise a reference to the list is returned in scalar context.  The list
-itself is returned in list context.  Values may also be scalar references to
-binary data, or hash references if the <a href="#Struct">Struct</a> option is
-set.<br>&nbsp;<br> Note: It is possible for <a href="#GetValue">GetValue</a> to
-return an undefined ValueConv or PrintConv value (or an empty list in list
-context) even if the tag exists, since it is possible for these conversions
-to yield undefined values.  And the Rational value will be undefined for any
-non-rational tag.  The Raw value should always exist if the tag exists.
+itself is returned in list context.  (Unless 'Both' values are requested, in
+which case two list references are returned, regardless of context.)  Values may
+also be scalar references to binary data, or hash references if the
+<a href="#Struct">Struct</a> option is set.<br>&nbsp;<br> Note: It is possible
+for <a href="#GetValue">GetValue</a> to return an undefined ValueConv or
+PrintConv value (or an empty list in list context) even if the tag exists, since
+it is possible for these conversions to yield undefined values.  And the
+Rational value will be undefined for any non-rational tag.  The Raw value should
+always exist if the tag exists.
 </td></tr>
 </table></blockquote>
 <p><b>Examples:</b></p>
@@ -1133,7 +1155,7 @@ errors are printed to STDERR.
 <tr><th colspan=4 bgcolor='#dddddd'>SetNewValue Options</th></tr>
 <tr><th>Option</th><th>Description</th><th width='30%'>Values</th><th>Default</th></tr>
 <tr><td>AddValue</td><td>Add value to existing list in a file rather than overwriting</td>
-    <td><table class='clear'>
+    <td><table class=clear>
     <tr><td valign=top align=center><b>0</b>&nbsp;=</td><td>Overwrite existing value(s)</td></tr>
     <tr><td valign=top align=center><b>1</b>&nbsp;=</td><td>Add to existing list, or warn for non-list tags</td></tr>
     <tr><td valign=top align=center><b>2</b>&nbsp;=</td><td>Add to existing list, or overwrite non-list tags</td></tr>
@@ -1156,7 +1178,7 @@ errors are printed to STDERR.
     shortcuts if not found otherwise.</td><td align=center>0 or 1</td><td align=center>0</td></tr>
 <tr><td>Protected</td><td>Allow protected tags to be written</td>
     <td>Bitmask of tag protection levels to write:
-    <table class='clear'>
+    <table class=clear>
     <tr><td valign=top align=center><b>0x01</b>&nbsp;=</td>
     <td>Write '<a href="TagNames/index.html">unsafe</a>' tags (ie. tags not copied
         automatically via <a href="#SetNewValuesFromFile">SetNewValuesFromFile</a>)</td></tr>
@@ -1169,7 +1191,7 @@ errors are printed to STDERR.
 <tr><td>Replace</td><td>Replace previous new values for this tag (ie. replace the values
     set in previous calls to <a href="#SetNewValue">SetNewValue</a>). This option
     is most commonly used to replace previously-set new values for list-type tags.</td>
-    <td><table class='clear'>
+    <td><table class=clear>
     <tr><td valign=top align=center><b>0</b>&nbsp;=</td><td>Set new value normally</td></tr>
     <tr><td valign=top align=center><b>1</b>&nbsp;=</td><td>Reset previous new values and replace with the specifed new value</td></tr>
     <tr><td valign=top align=center><b>2</b>&nbsp;=</td><td>Reset previous new values only</td></tr>
@@ -1177,7 +1199,7 @@ errors are printed to STDERR.
 <tr><td>Shift</td><td>Shift the tag by the specified value.  Currently only date/time tags
     and tags with numerical values may be shifted.  Value is added if Shift is 1, or subtracted
     if Shift is -1.  See <a href="Shift.html">Image::ExifTool::Shift.pl</a> for details time shift formats.</td>
-    <td><table class='clear'>
+    <td><table class=clear>
     <tr><td valign=top align=left colspan=2><b>undef</b>&nbsp;= No shift</td></tr>
     <tr><td valign=top align=right><b>0</b>&nbsp;=</td><td>Shift if shiftable:<br>
     Positive if AddValue set, or<br>

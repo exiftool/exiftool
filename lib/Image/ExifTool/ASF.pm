@@ -17,7 +17,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::RIFF;
 
-$VERSION = '1.22';
+$VERSION = '1.23';
 
 sub ProcessASF($$;$);
 sub ProcessContentDescription($$$);
@@ -268,7 +268,7 @@ my %advancedContentEncryption = (
     Mood => {},
     OriginalAlbumTitle => {},
     OriginalArtist => {},
-    OriginalFilename => {},
+    OriginalFilename => 'OriginalFileName',
     OriginalLyricist => {},
     OriginalReleaseTime => { Groups => { 2 => 'Time' } },
     OriginalReleaseYear => { Groups => { 2 => 'Time' } },
@@ -296,8 +296,8 @@ my %advancedContentEncryption = (
     SharedUserRating => {},
     StreamTypeInfo => {},
     SubscriptionContentID => {},
-    SubTitle => {},
-    SubTitleDescription => {},
+    SubTitle            => 'Subtitle',
+    SubTitleDescription => 'SubtitleDescription',
     Text => {},
     ToolName => {},
     ToolVersion => {},
@@ -317,7 +317,7 @@ my %advancedContentEncryption = (
     WMCollectionID => {},
     WMContentID => {},
     Writer => { Groups => { 2 => 'Author' } },
-    Year => { Groups => { 2 => 'Time' } },
+    Year   => { Groups => { 2 => 'Time' } },
 );
 
 %Image::ExifTool::ASF::Picture = (
@@ -349,7 +349,7 @@ my %advancedContentEncryption = (
             20 => 'Publisher Logo',
         },
     },
-    1 => 'PictureMimeType',
+    1 => 'PictureMIMEType',
     2 => 'PictureDescription',
     3 => {
         Name => 'Picture',

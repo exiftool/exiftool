@@ -1479,7 +1479,7 @@ my %sSubVersion = (
         family 1 group name.
     },
     Personality => { },
-    OriginalFilename => { },
+    OriginalFilename => { Name => 'OriginalFileName' },
     ParentMEID => { },
 );
 

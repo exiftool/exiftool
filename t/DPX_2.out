@@ -1,9 +1,9 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.93
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.96
 [File, System, Image] FileName - File Name: DPX.dpx
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 2.0 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2013:09:20 08:49:38-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:18 07:17:35-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2015:05:11 13:05:40-04:00
 [File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:03:07 15:31:02-05:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: DPX
@@ -24,12 +24,14 @@
 [File, File, Image] 772 - Image Width: 2048
 [File, File, Image] 776 - Image Height: 1556
 [File, File, Image] 780 - Data Sign: Unsigned
+[File, File, Image] 800 - Components Configuration: R, G, B
 [File, File, Image] 803 - Bit Depth: 10
 [File, File, Image] 820 - Image Description: CPD
 [File, File, Image] 1432 - Source File Name: 
 [File, File, Image] 1532 - Source Create Date: 
 [File, File, Image] 1556 - Input Device Name: SPIRIT-4K DATACINE 
 [File, File, Image] 1588 - Input Device Serial Number: 01018
+[File, File, Image] 1724 - Frame Rate: 0
 [File, File, Image] 1732 - Frame ID: 
 [File, File, Image] 1764 - Slate Information: 
 [File, File, Image] 2048 - User ID: Thomson BTS        

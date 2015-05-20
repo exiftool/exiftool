@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '9.95';
+$VERSION = '9.96';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -169,7 +169,7 @@ $defaultLang = 'en';    # default language
 # recognized file types, in the order we test unknown files
 # Notes: 1) There is no need to test for like types separately here
 # 2) Put types with weak file signatures at end of list to avoid false matches
-@fileTypes = qw(JPEG CRW TIFF GIF MRW RAF X3F JP2 PNG MIE MIFF PS PDF PSD XMP
+@fileTypes = qw(JPEG CRW DR4 TIFF GIF MRW RAF X3F JP2 PNG MIE MIFF PS PDF PSD XMP
                 BMP PPM RIFF AIFF ASF MOV MPEG Real SWF PSP FLV OGG FLAC APE MPC
                 MKV MXF DV PMP IND PGF ICC ITC FLIR FPF LFP HTML VRD RTF XCF
                 QTIF FPX PICT ZIP GZIP PLIST RAR BZ2 TAR RWZ EXE EXR HDR CHM LNK
@@ -178,7 +178,7 @@ $defaultLang = 'en';    # default language
 
 # file types that we can write (edit)
 my @writeTypes = qw(JPEG TIFF GIF CRW MRW ORF RAF RAW PNG MIE PSD XMP PPM
-                    EPS X3F PS PDF ICC VRD JP2 EXIF AI AIT IND MOV EXV);
+                    EPS X3F PS PDF ICC VRD DR4 JP2 EXIF AI AIT IND MOV EXV);
 my %writeTypes; # lookup for writable file types (hash filled if required)
 
 # file extensions that we can't write for various base types
@@ -190,7 +190,7 @@ my %writeTypes; # lookup for writable file types (hash filled if required)
 
 # file types that we can create from scratch
 # - must update CanCreate() documentation if this list is changed!
-my %createTypes = (XMP=>1, ICC=>1, MIE=>1, VRD=>1, EXIF=>1, EXV=>1);
+my %createTypes = map { $_ => 1 } qw(XMP ICC MIE VRD DR4 EXIF EXV);
 
 # file type lookup for all recognized file extensions
 # (if extension may be more than one type, the type is a list where
@@ -252,6 +252,7 @@ my %fileTypeLookup = (
     DOTM => [['ZIP','FPX'], 'Office Open XML Document Template Macro-enabled'],
     DOTX => [['ZIP','FPX'], 'Office Open XML Document Template'],
     DPX  => ['DPX',  'Digital Picture Exchange' ],
+    DR4  => ['DR4',  'Canon VRD version 4 Recipe Data'],
     DV   => ['DV',   'Digital Video'],
     DVB  => ['MOV',  'Digital Video Broadcasting'],
     DYLIB=> ['EXE',  'Mach-O Dynamic Link Library'],
@@ -687,6 +688,7 @@ my %moduleName = (
     COS  => 'CaptureOne',
     DEX  => 0,
     DOCX => 'OOXML',
+    DR4  => 'CanonVRD',
     EPS  => 'PostScript',
     EXIF => '',
     EXR  => 'OpenEXR',
@@ -747,6 +749,7 @@ my %moduleName = (
     DICOM=> '(.{128}DICM|\0[\x02\x04\x06\x08]\0[\0-\x20]|[\x02\x04\x06\x08]\0[\0-\x20]\0)',
     DOCX => 'PK\x03\x04',
     DPX  => '(SDPX|XPDS)',
+    DR4  => 'IIII\x04\0\x04\0',
     DV   => '\x1f\x07\0[\x3f\xbf]', # (not tested if extension recognized)
     EPS  => '(%!PS|%!Ad|\xc5\xd0\xd3\xc6)',
     EXE  => '(MZ|\xca\xfe\xba\xbe|\xfe\xed\xfa[\xce\xcf]|[\xce\xcf]\xfa\xed\xfe|Joy!peff|\x7fELF|#!\s*/\S*bin/|!<arch>\x0a)',
@@ -823,7 +826,7 @@ my %weakMagic = ( MP3 => 1 );
 
 # file types that are determined by the process proc when FastScan == 3
 # (when done, the process proc must exit after SetFileType if FastScan is 3)
-my %processType = ( JPEG=>1, TIFF=>1, XMP=>1, AIFF=>1, EXE=>1, Font=>1, PS=>1, Real=>1, VCard=>1 );
+my %processType = map { $_ => 1 } qw(JPEG TIFF XMP AIFF EXE Font PS Real VCard);
 
 # lookup for valid character set names (keys are all lower case)
 %charsetName = (
@@ -859,12 +862,12 @@ my @defaultWriteGroups = qw(EXIF IPTC XMP MakerNotes Photoshop ICC_Profile Canon
 my %allGroupsExifTool = ( 0 => 'ExifTool', 1 => 'ExifTool', 2 => 'ExifTool' );
 
 # special tag names (not used for tag info)
-%specialTags = (
-    TABLE_NAME     =>1, SHORT_NAME =>1, PROCESS_PROC =>1, WRITE_PROC =>1, CHECK_PROC =>1,
-    GROUPS         =>1, FORMAT     =>1, FIRST_ENTRY  =>1, TAG_PREFIX =>1, PRINT_CONV =>1,
-    WRITABLE       =>1, TABLE_DESC =>1, NOTES        =>1, IS_OFFSET  =>1, IS_SUBDIR  =>1,
-    EXTRACT_UNKNOWN=>1, NAMESPACE  =>1, PREFERRED    =>1, SRC_TABLE  =>1, PRIORITY   =>1,
-    WRITE_GROUP    =>1, LANG_INFO  =>1, VARS         =>1, DATAMEMBER =>1, SET_GROUP1 =>1,
+%specialTags = map { $_ => 1 } qw(
+    TABLE_NAME       SHORT_NAME  PROCESS_PROC  WRITE_PROC  CHECK_PROC
+    GROUPS           FORMAT      FIRST_ENTRY   TAG_PREFIX  PRINT_CONV
+    WRITABLE         TABLE_DESC  NOTES         IS_OFFSET   IS_SUBDIR
+    EXTRACT_UNKNOWN  NAMESPACE   PREFERRED     SRC_TABLE   PRIORITY
+    WRITE_GROUP      LANG_INFO   VARS          DATAMEMBER  SET_GROUP1
 );
 
 # headers for various segment types
@@ -1167,6 +1170,16 @@ sub DummyWriteProc { return 1; }
         WriteCheck => q{
             return undef if $val =~ /^CANON OPTIONAL DATA\0/;
             return 'Invalid CanonVRD data';
+        },
+    },
+    CanonDR4 => {
+        Notes => 'the full Canon DPP version 4 DR4 block',
+        Groups => { 0 => 'CanonVRD', 1 => 'CanonVRD' },
+        Flags => ['Writable' ,'Protected', 'Binary'],
+        Permanent => 0, # (this is 1 by default for MakerNotes tags)
+        WriteCheck => q{
+            return undef if $val =~ /^IIII\x04\0\x04\0/;
+            return 'Invalid CanonDR4 data';
         },
     },
     Adobe => {
@@ -1626,7 +1639,7 @@ sub Options($$;@)
                 $$options{$param} = 'Latin';    # all others default to Latin
             }
         } elsif ($param eq 'UserParam') {
-            if ($newVal =~ /(.*?)=(.*)/) {
+            if ($newVal =~ /(.*?)=(.*)/s) {
                 $param = lc $1;
                 $newVal = $2;
             } else {
@@ -1685,6 +1698,7 @@ sub ClearOptions($)
         CharsetFileName => undef,   # external encoding for file names
         CharsetID3  => 'Latin', # internal ID3v1 character set
         CharsetIPTC => 'Latin', # fallback IPTC character set if no CodedCharacterSet
+        CharsetPhotoshop => 'Latin', # internal encoding for Photoshop resource names
         CharsetQuickTime => 'MacRoman', # internal QuickTime string encoding
         Compact     => undef,   # compact XMP and IPTC data
         Composite   => 1,       # flag to calculate Composite tags
@@ -1694,11 +1708,12 @@ sub ClearOptions($)
         Duplicates  => 1,       # flag to save duplicate tag values
         Escape      => undef,   # escape special characters
         Exclude     => undef,   # tags to exclude
+        ExtendedXMP => 1,       # strategy for reading extended XMP
         ExtractEmbedded =>undef,# flag to extract information from embedded documents
         FastScan    => undef,   # flag to avoid scanning for trailer
         FixBase     => undef,   # fix maker notes base offsets
-        GeoMaxIntSecs => undef, # geotag maximum interpolation time (secs)
-        GeoMaxExtSecs => undef, # geotag maximum extrapolation time (secs)
+        GeoMaxIntSecs => 1800,  # geotag maximum interpolation time (secs)
+        GeoMaxExtSecs => 1800,  # geotag maximum extrapolation time (secs)
         GeoMaxHDOP  => undef,   # geotag maximum HDOP
         GeoMaxPDOP  => undef,   # geotag maximum PDOP
         GeoMinSats  => undef,   # geotag minimum satellites
@@ -1723,7 +1738,7 @@ sub ClearOptions($)
         SavePath    => undef,   # (undocumented) save family 5 location path
         ScanForXMP  => undef,   # flag to scan for XMP information in all files
         Sort        => 'Input', # order to sort found tags (Input, File, Tag, Descr, Group#)
-        Sort2       => undef,   # secondary sort order for tags in a group (File, Tag, Descr)
+        Sort2       => 'File',  # secondary sort order for tags in a group (File, Tag, Descr)
         StrictDate  => undef,   # flag to return undef for invalid date conversions
         Struct      => undef,   # return structures as hash references
         TextOut     => \*STDOUT,# file for Verbose/HtmlDump output
@@ -5109,6 +5124,9 @@ sub ProcessJPEG($$)
             if ($verbose) {
                 print $out "JPEG $markerName ($length bytes):\n";
                 HexDump($segDataPt, undef, %dumpParms, Addr=>$segPos) if $verbose>2;
+            } elsif ($htmlDump) {
+                $self->HDump($segPos-4, $length+4, "[JPEG $markerName]", undef, 0x08);
+                $dumpEnd = $segPos + $length;
             }
             next unless $length >= 6;
             # extract some useful information
@@ -5274,6 +5292,7 @@ sub ProcessJPEG($$)
         }
         # handle all other markers
         my $dumpType = '';
+        my ($desc, $tip);
         $length = length $$segDataPt;
         if ($verbose) {
             print $out "JPEG $markerName ($length bytes):\n";
@@ -5373,32 +5392,23 @@ sub ProcessJPEG($$)
                 if ($length > 75) {
                     my ($size, $off) = unpack('x67N2', $$segDataPt);
                     my $guid = substr($$segDataPt, 35, 32);
-                    my $extXMP = $extendedXMP{$guid};
-                    $extXMP or $extXMP = $extendedXMP{$guid} = { };
-                    $$extXMP{Size} = $size;
-                    $$extXMP{$off} = substr($$segDataPt, 75);
-                    # process extended XMP if complete
-                    my @offsets;
-                    for ($off=0; $off<$size; ) {
-                        last unless defined $$extXMP{$off};
-                        push @offsets, $off;
-                        $off += length $$extXMP{$off};
-                    }
-                    if ($off == $size) {
-                        my $buff = '';
-                        # assemble XMP all together
-                        $buff .= $$extXMP{$_} foreach @offsets;
-                        $dumpType = 'Extended XMP';
-                        my $tagTablePtr = GetTagTable('Image::ExifTool::XMP::Main');
-                        my %dirInfo = (
-                            DataPt   => \$buff,
-                            Parent   => $markerName,
-                        );
-                        $self->ProcessDirectory(\%dirInfo, $tagTablePtr);
-                        delete $extendedXMP{$guid};
+                    if ($guid =~ /[^A-Za-z0-9]/) { # (technically, should be uppercase)
+                        $self->WarnOnce($tip = 'Invalid extended XMP GUID');
+                    } else {
+                        my $extXMP = $extendedXMP{$guid};
+                        if (not $extXMP) {
+                            $extXMP = $extendedXMP{$guid} = { };
+                        } elsif ($size != $$extXMP{Size}) {
+                            $self->WarnOnce('Inconsistent extended XMP size');
+                        }
+                        $$extXMP{Size} = $size;
+                        $$extXMP{$off} = substr($$segDataPt, 75);
+                        $tip = "Full length: $size\nChunk offset: $off\nChunk length: " .
+                            ($length - 75) . "\nGUID: $guid";
+                        # (delay processing extended XMP until after reading all segments)
                     }
                 } else {
-                    $self->Warn('Invalid extended XMP segment');
+                    $self->WarnOnce($tip = 'Invalid extended XMP segment');
                 }
             } elsif ($$segDataPt =~ /^QVCI\0/) {
                 $dumpType = 'QVCI';
@@ -5795,19 +5805,61 @@ sub ProcessJPEG($$)
             $self->FoundTag('ImageWidth', $w);
             $self->FoundTag('ImageHeight', $h);
         } elsif (($marker & 0xf0) != 0xe0) {
-            undef $dumpType;    # only dump unknown APP segments
+            $dumpType = "$markerName segment";
+            $desc = "[JPEG $markerName]";   # (other known JPEG segments)
         }
         if (defined $dumpType) {
             if (not $dumpType and $$self{OPTIONS}{Unknown}) {
                 $self->Warn("Unknown $markerName segment", 1);
             }
             if ($htmlDump) {
-                my $desc = $markerName . ($dumpType ? " $dumpType" : '') . ' segment';
-                $self->HDump($segPos-4, $length+4, $desc, undef, 0x08);
+                $desc or $desc = $markerName . ($dumpType ? " $dumpType" : '') . ' segment';
+                $self->HDump($segPos-4, $length+4, $desc, $tip, 0x08);
                 $dumpEnd = $segPos + $length;
             }
         }
         undef $$segDataPt;
+    }
+    # process extended XMP now if it existed
+    if (%extendedXMP) {
+        my $guid;
+        # GUID indicated by the last main XMP segment
+        my $goodGuid = $$self{VALUE}{HasExtendedXMP} || '';
+        # GUID of the extended XMP that we will process ('2' for all)
+        my $readGuid = $$self{OPTIONS}{ExtendedXMP} || 0;
+        $readGuid = $goodGuid if $readGuid eq '1';
+        foreach $guid (sort keys %extendedXMP) {
+            next unless length $guid == 32;     # ignore other (internal) keys
+            my $extXMP = $extendedXMP{$guid};
+            my ($off, @offsets, $warn);
+            # make sure we have all chunks, and create a list of sorted offsets
+            for ($off=0; $off<$$extXMP{Size}; ) {
+                last unless defined $$extXMP{$off};
+                push @offsets, $off;
+                $off += length $$extXMP{$off};
+            }
+            unless ($off == $$extXMP{Size}) {
+                $self->Warn("Incomplete extended XMP (GUID $guid)");
+                next;
+            }
+            if ($guid eq $readGuid or $readGuid eq '2') {
+                $warn = 'Reading non-' if $guid ne $goodGuid;
+                my $buff = '';
+                # assemble XMP all together
+                $buff .= $$extXMP{$_} foreach @offsets;
+                my $tagTablePtr = GetTagTable('Image::ExifTool::XMP::Main');
+                my %dirInfo = (
+                    DataPt   => \$buff,
+                    Parent   => 'APP1',
+                );
+                $self->ProcessDirectory(\%dirInfo, $tagTablePtr);
+            } else {
+                $warn = 'Ignored ';
+                $warn .= 'non-' if $guid ne $goodGuid;
+            }
+            $self->Warn("${warn}standard extended XMP (GUID $guid)") if $warn;
+            delete $extendedXMP{$guid};
+        }
     }
     # calculate JPEGDigest if requested
     if (@dqt and $subSampling) {
@@ -5818,7 +5870,6 @@ sub ProcessJPEG($$)
     $self->Warn('Incomplete ICC_Profile record', 1) if defined $iccChunkCount;
     $self->Warn('Incomplete FLIR record', 1) if defined $flirCount;
     $self->Warn('Error reading PreviewImage', 1) if $$self{PreviewError};
-    $self->Warn('Invalid extended XMP') if %extendedXMP;
     $success or $self->Warn('JPEG format error');
     pop @$path if @$path > $pn;
     return 1;
@@ -6557,7 +6608,8 @@ sub HandleTag($$$$;%)
 {
     my ($self, $tagTablePtr, $tag, $val, %parms) = @_;
     my $verbose = $$self{OPTIONS}{Verbose};
-    my $tagInfo = $parms{TagInfo} || $self->GetTagInfo($tagTablePtr, $tag, \$val, $parms{Format}, $parms{Count});
+    my $pfmt = $parms{Format};
+    my $tagInfo = $parms{TagInfo} || $self->GetTagInfo($tagTablePtr, $tag, \$val, $pfmt, $parms{Count});
     my $dataPt = $parms{DataPt};
     my ($subdir, $format, $count, $size, $noTagInfo, $rational);
 
@@ -6577,6 +6629,7 @@ sub HandleTag($$$$;%)
         # read from data in memory if possible
         if ($start >= 0 and $start + $size <= $dLen) {
             $format = $$tagInfo{Format} || $$tagTablePtr{FORMAT};
+            $format = $pfmt if not $format and $pfmt and $formatSize{$pfmt};
             if ($format) {
                 $val = ReadValue($dataPt, $start, $format, $$tagInfo{Count}, $size, \$rational);
             } else {

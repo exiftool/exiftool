@@ -65,40 +65,40 @@ supported by ExifTool (r = read, w = write, c = create):
 
   File Types
   ------------+-------------+-------------+-------------+------------
-  3FR   r     | DYLIB r     | KEY   r     | OGV   r     | RTF   r
-  3G2   r/w   | EIP   r     | LA    r     | ORF   r/w   | RW2   r/w
-  3GP   r/w   | EPS   r/w   | LFP   r     | OTF   r     | RWL   r/w
-  AA    r     | EPUB  r     | LNK   r     | PAC   r     | RWZ   r
-  AAX   r/w   | ERF   r/w   | M2TS  r     | PAGES r     | RM    r
-  ACR   r     | EXE   r     | M4A/V r/w   | PBM   r/w   | SEQ   r
-  AFM   r     | EXIF  r/w/c | MEF   r/w   | PCD   r     | SO    r
-  AI    r/w   | EXR   r     | MIE   r/w/c | PDB   r     | SR2   r/w
-  AIFF  r     | EXV   r/w/c | MIFF  r     | PDF   r/w   | SRF   r
-  APE   r     | F4A/V r/w   | MKA   r     | PEF   r/w   | SRW   r/w
-  ARW   r/w   | FFF   r/w   | MKS   r     | PFA   r     | SVG   r
-  ASF   r     | FLA   r     | MKV   r     | PFB   r     | SWF   r
-  AVI   r     | FLAC  r     | MNG   r/w   | PFM   r     | THM   r/w
-  AZW   r     | FLV   r     | MOBI  r     | PGF   r     | TIFF  r/w
-  BMP   r     | FPF   r     | MODD  r     | PGM   r/w   | TORRENT r
-  BTF   r     | FPX   r     | MOI   r     | PLIST r     | TTC   r
-  CHM   r     | GIF   r/w   | MOS   r/w   | PICT  r     | TTF   r
-  COS   r     | GZ    r     | MOV   r/w   | PMP   r     | VCF   r
-  CR2   r/w   | HDP   r/w   | MP3   r     | PNG   r/w   | VRD   r/w/c
-  CRW   r/w   | HDR   r     | MP4   r/w   | PPM   r/w   | VSD   r
-  CS1   r/w   | HTML  r     | MPC   r     | PPT   r     | WAV   r
-  DCM   r     | ICC   r/w/c | MPG   r     | PPTX  r     | WDP   r/w
-  DCP   r/w   | ICS   r     | MPO   r/w   | PS    r/w   | WEBP  r
-  DCR   r     | IDML  r     | MQV   r/w   | PSB   r/w   | WEBM  r
-  DFONT r     | IIQ   r/w   | MRW   r/w   | PSD   r/w   | WMA   r
-  DIVX  r     | IND   r/w   | MXF   r     | PSP   r     | WMV   r
-  DJVU  r     | INX   r     | NEF   r/w   | QTIF  r/w   | WV    r
-  DLL   r     | ITC   r     | NRW   r/w   | RA    r     | X3F   r/w
-  DNG   r/w   | J2C   r     | NUMBERS r   | RAF   r/w   | XCF   r
-  DOC   r     | JNG   r/w   | ODP   r     | RAM   r     | XLS   r
-  DOCX  r     | JP2   r/w   | ODS   r     | RAR   r     | XLSX  r
-  DPX   r     | JPEG  r/w   | ODT   r     | RAW   r/w   | XMP   r/w/c
+  3FR   r     | DVB   r/w   | KDC   r     | OGG   r     | RSRC  r
+  3G2   r/w   | DYLIB r     | KEY   r     | OGV   r     | RTF   r
+  3GP   r/w   | EIP   r     | LA    r     | ORF   r/w   | RW2   r/w
+  AA    r     | EPS   r/w   | LFP   r     | OTF   r     | RWL   r/w
+  AAX   r/w   | EPUB  r     | LNK   r     | PAC   r     | RWZ   r
+  ACR   r     | ERF   r/w   | M2TS  r     | PAGES r     | RM    r
+  AFM   r     | EXE   r     | M4A/V r/w   | PBM   r/w   | SEQ   r
+  AI    r/w   | EXIF  r/w/c | MEF   r/w   | PCD   r     | SO    r
+  AIFF  r     | EXR   r     | MIE   r/w/c | PDB   r     | SR2   r/w
+  APE   r     | EXV   r/w/c | MIFF  r     | PDF   r/w   | SRF   r
+  ARW   r/w   | F4A/V r/w   | MKA   r     | PEF   r/w   | SRW   r/w
+  ASF   r     | FFF   r/w   | MKS   r     | PFA   r     | SVG   r
+  AVI   r     | FLA   r     | MKV   r     | PFB   r     | SWF   r
+  AZW   r     | FLAC  r     | MNG   r/w   | PFM   r     | THM   r/w
+  BMP   r     | FLV   r     | MOBI  r     | PGF   r     | TIFF  r/w
+  BTF   r     | FPF   r     | MODD  r     | PGM   r/w   | TORRENT r
+  CHM   r     | FPX   r     | MOI   r     | PLIST r     | TTC   r
+  COS   r     | GIF   r/w   | MOS   r/w   | PICT  r     | TTF   r
+  CR2   r/w   | GZ    r     | MOV   r/w   | PMP   r     | VCF   r
+  CRW   r/w   | HDP   r/w   | MP3   r     | PNG   r/w   | VRD   r/w/c
+  CS1   r/w   | HDR   r     | MP4   r/w   | PPM   r/w   | VSD   r
+  DCM   r     | HTML  r     | MPC   r     | PPT   r     | WAV   r
+  DCP   r/w   | ICC   r/w/c | MPG   r     | PPTX  r     | WDP   r/w
+  DCR   r     | ICS   r     | MPO   r/w   | PS    r/w   | WEBP  r
+  DFONT r     | IDML  r     | MQV   r/w   | PSB   r/w   | WEBM  r
+  DIVX  r     | IIQ   r/w   | MRW   r/w   | PSD   r/w   | WMA   r
+  DJVU  r     | IND   r/w   | MXF   r     | PSP   r     | WMV   r
+  DLL   r     | INX   r     | NEF   r/w   | QTIF  r/w   | WV    r
+  DNG   r/w   | ITC   r     | NRW   r/w   | RA    r     | X3F   r/w
+  DOC   r     | J2C   r     | NUMBERS r   | RAF   r/w   | XCF   r
+  DOCX  r     | JNG   r/w   | ODP   r     | RAM   r     | XLS   r
+  DPX   r     | JP2   r/w   | ODS   r     | RAR   r     | XLSX  r
+  DR4   r/w/c | JPEG  r/w   | ODT   r     | RAW   r/w   | XMP   r/w/c
   DV    r     | K25   r     | OFR   r     | RIFF  r     | ZIP   r
-  DVB   r/w   | KDC   r     | OGG   r     | RSRC  r     |
 
   Meta Information
   ----------------------+----------------------+---------------------
@@ -287,7 +287,8 @@ There will be 1:1 correspondence between the requested tags and the returned
 tag keys only if the L</Duplicates> option is 0 and L</Sort> is 'Input'. 
 (With L</Duplicates> enabled, there may be more entries in the returned list
 of tag keys, and with other L</Sort> settings the entries may not be in the
-same order as requested.)
+same order as requested.)  If a requested tag doesn't exist, a tag key is
+still generated, but the tag value is undefined.
 
 =item HASH ref
 
@@ -425,7 +426,7 @@ in the full ExifTool distribution for examples.
 Flag to extract the value data for all binary tags.  Tag values representing
 large binary data blocks (eg. ThumbnailImage) are not necessarily extracted
 unless this option is set or the tag is specifically requested by name.
-Default is 0.
+Default is undef.
 
 =item ByteOrder
 
@@ -510,10 +511,11 @@ encoding.  Default is 'MacRoman'.
 
 =item Compact
 
-Flag to write compact output.  Default is 0.  The XMP specification suggests
-that the data be padded with blanks to allow in-place editing.  With this
-flag set the 2kB of padding is not written.  Note that this only effects
-embedded XMP since padding is never written for stand-alone XMP files.
+Flag to write compact output.  Default is undef.  The XMP specification
+suggests that the data be padded with blanks to allow in-place editing. 
+With this flag set the 2kB of padding is not written.  Note that this only
+effects embedded XMP since padding is never written for stand-alone XMP
+files.
 
 =item Composite
 
@@ -522,7 +524,7 @@ Flag to generate Composite tags when extracting information.  Default is 1.
 =item Compress
 
 Flag to write new values in compressed format if possible.  Has no effect
-unless Compress::Zlib is installed.  Default is 0.
+unless Compress::Zlib is installed.  Default is undef.
 
 =item CoordFormat
 
@@ -530,9 +532,9 @@ Format for printing GPS coordinates.  This is a printf format string with
 specifiers for degrees, minutes and seconds in that order, however minutes
 and seconds may be omitted.  If the hemisphere is known, a reference
 direction (N, S, E or W) is appended to each printed coordinate, but adding
-a C<+> to the format specifier (eg. C<%+.6f>) prints a signed coordinate
-instead.  For example, the following table gives the output for the same
-coordinate using various formats:
+a C<+> to the first format specifier (eg. C<%+.6f>) prints a signed
+coordinate instead.  For example, the following table gives the output for
+the same coordinate using various formats:
 
       CoordFormat        Example Output
   -------------------  ------------------
@@ -571,12 +573,29 @@ case of tag names is not significant.  This option is ignored for
 specifically requested tags.  Tags may also be excluded by preceding their
 name with a '-' in the arguments to L</ImageInfo>.
 
+=item ExtendedXMP
+
+This setting affects the reading and editing of extended XMP in JPEG images.
+According to the XMP specification, extended XMP is only valid if it has the
+GUID specified by the HasExtendedXMP tag.  ExifTool 9.95 and earlier would
+read extended XMP regardless of GUID, but with the addition of this option
+in version 9.96 the default behaviour was changed to conform with the XMP
+specification (to read only extended XMP with the proper GUID).  This option
+should be set to 2 to emulate pre-9.96 behaviour and read all extended XMP. 
+It may also be set to a GUID to read a specific extended XMP, or 0 to ignore
+extended XMP entirely.
+
+     0   - ignore all extended XMP
+     1   - read extended XMP with valid GUID only (default)
+     2   - read extended XMP with any GUID
+  <guid> - read extended XMP with a specific GUID
+    
 =item ExtractEmbedded
 
 Flag to extract information from embedded documents in EPS files, embedded
 EPS information and JPEG and Jpeg2000 images in PDF files, embedded MPF
 images in JPEG and MPO files, streaming metadata in AVCHD videos, and the
-resource fork of Mac OS files.  Default is 0.
+resource fork of Mac OS files.  Default is undef.
 
 =item FastScan
 
@@ -590,7 +609,7 @@ combined with the ScanForXMP option, prevents scanning for XMP in recognized
 file types.  With a value of 2, ExifTool will also avoid extracting any EXIF
 MakerNote information.  When set to 3, the file is not actually parsed, and
 only an initial guess at FileType and some pseudo tags are returned. 
-Default is 0.
+Default is undef.
 
 =item FixBase
 
@@ -633,11 +652,6 @@ ignored if the PDOP is greater than this.  Default is undef.
 
 Minimum number of satellites for geotagging.  GPS fixes are ignored if the
 number of acquired satellites is less than this.  Default is undef.
-
-=item GoNoInterpolate
-
-Disable interpolation for geotagging.  With this flag set to 1, geotagging
-uses the nearest fix instead of interpolating between fixes.  Default is 0.
 
 =item GlobalTimeShift
 
@@ -687,13 +701,13 @@ set to undef to select the built-in default language.  Default is 'en'.
 =item LargeFileSupport
 
 Flag to indicate that 64-bit file offsets are supported on this system.
-Default is 0.
+Default is undef.
 
 =item List
 
 Flag to extract lists of PrintConv values into arrays instead of joining
 them into a string of values.  The L</ListSep> option specifies the
-separator used when combining values.  Default is 0.
+separator used when combining values.  Default is undef.
 
 =item ListItem
 
@@ -722,7 +736,7 @@ are rebuilt to include data outside the boundaries of the original maker
 note data block, but a value of 2 disables this feature.  Possible values
 are:
 
-  0 - Do not extract writable subdirectories (default)
+  0 - Do not extract writable subdirectories (same as default of undef)
   1 - Extract and rebuild maker notes into self-contained block
   2 - Extract without rebuilding maker notes
 
@@ -766,7 +780,7 @@ Flag set to assume that QuickTime date/time values are stored as UTC,
 causing conversion to local time when they are extracted.  According to the
 QuickTime specification date/time values should be UTC, but many digital
 cameras store local time instead (presumably because they don't know the
-time zone), so the default is 0.
+time zone), so the default is undef.
 
 =item RequestAll
 
@@ -774,13 +788,13 @@ Flag to request all tags to be extracted.  This causes some tags to be
 generated which normally would not be unless specifically requested (by
 passing the tag name to ImageInfo or ExtractInfo).  Note that this flag is
 set automatically during a call to L</SetNewValuesFromFile> to make all tags
-available for copying.  Default is 0.
+available for copying.  Default is undef.
 
 =item ScanForXMP
 
 Flag to scan all files (even unrecognized formats) for XMP information
 unless XMP was already found in the file.  When combined with the FastScan
-option, only unrecognized file types are scanned for XMP.  Default is 0.
+option, only unrecognized file types are scanned for XMP.  Default is undef.
 
 =item Sort
 
@@ -833,8 +847,8 @@ unknown tags are also extracted from binary data blocks.  Default is 0.
 
 =item UserParam
 
-Special option to set/get user-defined parameters. Useful to allow external
-input into tag name expresssions and ValueConv logic. I<PARAM> is the
+Special option to set/get user-defined parameters.  Useful to allow external
+input into tag name expressions and ValueConv logic.  I<PARAM> is the
 user-defined parameter name (case insensitive).
 
   PARAM         - Get parameter
@@ -842,7 +856,9 @@ user-defined parameter name (case insensitive).
   PARAM=VALUE   - Set parameter
 
 User-defined parameters may be accessed in tag name expressions by prefixing
-the parameter name with a dollar sign, just like normal tags.
+the parameter name with a dollar sign, just like normal tags.  If called
+without a parameter name, C<Options('UserParam')> returns a reference to the
+hash of all user parameters (with lower-case names).
 
 =item Verbose
 
@@ -1012,10 +1028,10 @@ and Warning tags.
 =item Notes:
 
 The source file name may be undefined to create a file from scratch
-(currently only XMP, MIE, ICC, VRD, EXV and EXIF files can be created in
-this way -- see L</CanCreate> for details).  If undefined, the destination
-file type is required unless the type can be determined from the extension
-of the destination file name.
+(currently only XMP, MIE, ICC, VRD, DR4, EXV and EXIF files can be created
+in this way -- see L</CanCreate> for details).  If undefined, the
+destination file type is required unless the type can be determined from the
+extension of the destination file name.
 
 If a destination file name is given, the specified file must not exist
 because an existing destination file will not be overwritten.  Any new
@@ -1184,11 +1200,13 @@ types.
 
 =item Return Values:
 
-The value of the specified tag.  If the tag represents a list of values and
-the List option is disabled then PrintConv returns a string of values,
-otherwise a reference to the list is returned in scalar context.  The list
-itself is returned in list context.  Values may also be scalar references to
-binary data, or hash references if the L</Struct> option is set.
+The value of the specified tag.  If the tag represents a list of multiple
+values and the List option is disabled then PrintConv returns a string of
+values, otherwise a reference to the list is returned in scalar context. 
+The list itself is returned in list context.  (Unless 'Both' values are
+requested, in which case two list references are returned, regardless of
+context.)  Values may also be scalar references to binary data, or hash
+references if the L</Struct> option is set.
 
 Note: It is possible for L</GetValue> to return an undefined ValueConv or
 PrintConv value (or an empty list in list context) even if the tag exists,
@@ -2203,7 +2221,7 @@ Can the specified file be created?
 =item Return Value:
 
 True if ExifTool can create files with this extension from scratch.
-Currently, this can only be done with XMP, MIE, ICC, VRD, EXV and EXIF
+Currently, this can only be done with XMP, MIE, ICC, VRD, DR4, EXV and EXIF
 files.
 
 =back

@@ -49,7 +49,7 @@ use vars qw($VERSION %minoltaLensTypes %minoltaTeleconverters %minoltaColorMode
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.25';
+$VERSION = '2.26';
 
 # Full list of product codes for Sony-compatible Minolta lenses
 # (ref http://www.kb.sony.com/selfservice/documentLink.do?externalId=C1000570)
@@ -287,10 +287,10 @@ my %metabonesID = (
     55 => 'Sony DT 18-55mm F3.5-5.6 SAM (SAL1855) or SAM II', #PH
     55.1 => 'Sony DT 18-55mm F3.5-5.6 SAM II (SAL18552)', #JR
     56 => 'Sony DT 55-200mm F4-5.6 SAM (SAL55200-2)', #22/JR
-    57 => 'Sony DT 50mm F1.8 SAM (SAL50F18) or Tamron or Sigma Lens', #22/JR
+    57 => 'Sony DT 50mm F1.8 SAM (SAL50F18) or Tamron Lens', #22/JR
     57.1 => 'Tamron SP AF 60mm F2 Di II LD [IF] Macro 1:1', # (Model G005) (ref http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,3858.0.html)
     57.2 => 'Tamron 18-270mm F3.5-6.3 Di II PZD', #27 (Model B008)
-    57.3 => 'Sigma 18-35mm F1.8 DC HSM', #JR
+    # (note: the Commlite CM-EF-NEX adapter also appears to give LensType 57, ref JR)
     58 => 'Sony DT 30mm F2.8 Macro SAM (SAL30M28)', #22/JR
     59 => 'Sony 28-75mm F2.8 SAM (SAL2875)', #21/JR
     60 => 'Carl Zeiss Distagon T* 24mm F2 ZA SSM (SAL24F20Z)', #17/JR
@@ -329,6 +329,7 @@ my %metabonesID = (
    '128.17' => 'Sigma 150-500mm F5-6.3 APO DG OS HSM', #30
    '128.18' => 'Tamron AF 28-105mm F4-5.6 [IF]', #30 (Model 179D)
    '128.19' => 'Sigma 35mm F1.4 DG HSM', #JR
+   '128.20' => 'Sigma 18-35mm F1.8 DC HSM', #JR
     129 => 'Tamron Lens (129)',
     129.1 => 'Tamron 200-400mm F5.6 LD', #12 (LD ref 23)
     129.2 => 'Tamron 70-300mm F4-5.6 LD', #12
@@ -343,6 +344,7 @@ my %metabonesID = (
     194 => 'Tamron SP AF 17-50mm F2.8 XR Di II LD Aspherical [IF]', #23 (Model A16)
     203 => 'Tamron SP 70-200mm F2.8 Di USD', #JR (Model A009)
     204 => 'Tamron SP 24-70mm F2.8 Di USD', #JR (Model A007)
+    213 => 'Tamron 16-300mm F3.5-6.3 Di II PZD', #JR (Model B016)
     214 => 'Tamron SP 150-600mm F5-6.3 Di USD', #JR (Model A011)
     224 => 'Tamron SP 90mm F2.8 Di Macro 1:1 USD', #JR (Model F004)
     255 => 'Tamron Lens (255)',

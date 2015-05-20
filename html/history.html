@@ -17,6 +17,35 @@ considered development releases, and are not uploaded to <a href="http://search.
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v9.96'><b>May 20, 2015 - Version 9.96</b></a>
+<ul>
+<li>Added support for CanonVRD version 4 information and DR4 files
+<li>Added two new Canon LensType values (thanks Norbert Wasser)
+<li>Added two new Olympus LensType values (thanks Niels Kristian Bech Jensen)
+<li>Added a new Minolta/Sony LensType and fixed another one (thanks Jos Roost)
+<li>Added a new Nikon LensID (thanks John Helour)
+<li>Added a few new QuickTime tags
+<li>Added a new PentaxModelID and a new Pentax PictureMode
+<li>Added a few new XMP-aux tags
+<li>Decode a couple more DXP tags
+<li>Decode NikonCustom tags for D810 firmware version 1.02
+<li>Improved -htmlDump output for extended XMP and some other JPEG segments
+<li>Improved a Canon lens name
+<li>Documented the -userParam command-line option (which has existed since 9.90)
+<li>Changed default behaviour to ignore extended XMP with an incorrect GUID (as
+    per the XMP specification)
+<li>Changed the case of a few tag names for consistency
+<li>Patched problem with Sony cameras giving incorrect LensInfo for some third
+    party lenses, leading to an incorrect LensID by ExifTool (thanks Jos Roost)
+<li>Patched problem where GPS minutes or seconds could round up to 60
+<li>Fixed picasa_faces.config to rotate regions if necessary for RAW file types
+    (thanks Stargeek)
+<li>API Changes:
+    <ul>
+    <li>Added ExtendedXMP option
+    </ul>
+</ul>
+
 <a name='v9.95'><b>May 9, 2015 - Version 9.95</b></a>
 <ul>
 <li>Added a few new Minolta/Sony lenses (thanks Jos Roost)

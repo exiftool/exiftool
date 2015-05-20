@@ -56,7 +56,7 @@ use vars qw($VERSION %pentaxLensTypes);
 use Image::ExifTool::Exif;
 use Image::ExifTool::HP;
 
-$VERSION = '2.90';
+$VERSION = '2.91';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -509,6 +509,7 @@ my %pentaxModelID = (
     0x13024 => 'K-S2', #29 (Ricoh)
     0x1302e => 'Q-S1',
     0x13056 => 'WG-30', # (Ricoh)
+    0x13088 => 'WG-5 GPS', # (Ricoh)
     0x1309c => 'K-3 II', #29 (Ricoh)
 );
 
@@ -1018,6 +1019,7 @@ my %binaryDataAttrs = (
             80 => 'Miniature', #PH (VS20)
             81 => 'HDR', #PH (LS465)
             83 => 'Fisheye', #PH (VS20)
+            85 => 'Digital Filter 4', #PH (WG-5)
             221 => 'P', #PH (Optio 555)
             255=> 'PICT', #PH (Optio 555)
         }],
@@ -1667,7 +1669,7 @@ my %binaryDataAttrs = (
             '1 0 0 0' => 'Resized', #PH (K-5)
             '2 0 0 0' => 'Cropped', #PH
             # note: doesn't apply to digital filters applied when picture is taken
-            '4 0 0 0' => 'Digital Filter 4', #PH (K10D)
+            '4 0 0 0' => 'Digital Filter 4', #PH (K10D, Ricoh WG-5)
             '6 0 0 0' => 'Digital Filter 6', #PH (K-5)
             '8 0 0 0' => 'Red-eye Correction', #PH (WG-10)
             '16 0 0 0' => 'Frame Synthesis?',
@@ -1934,7 +1936,7 @@ my %binaryDataAttrs = (
             4 => 'Vibrant', # (K20D)
             5 => 'Monochrome', # (K20D)
             6 => 'Muted', # (645D)
-            7 => 'Reversal Film', # (645D)
+            7 => 'Reversal Film', # (645D) (Ricoh WG-5 "Slide Film")
             8 => 'Bleach Bypass', # (K-5)
             9 => 'Radiant', # (Q)
         },
@@ -1993,6 +1995,7 @@ my %binaryDataAttrs = (
         ValueConv => \&CryptShutterCount,
         ValueConvInv => '$val',
     },
+    # 0x005e - 
     0x0060 => { #PH (K-5)
         Name => 'FaceInfo',
         Format => 'undef', # (written as int8u)

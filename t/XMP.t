@@ -1,7 +1,7 @@
 # Before "make install", this script should be runnable with "make test".
 # After "make install" it should work as "perl t/XMP.t".
 
-BEGIN { $| = 1; print "1..41\n"; $Image::ExifTool::noConfig = 1; }
+BEGIN { $| = 1; print "1..42\n"; $Image::ExifTool::noConfig = 1; }
 END {print "not ok 1\n" unless $loaded;}
 
 # definitions for user-defined tag test (#26)
@@ -488,7 +488,7 @@ my $testnum = 1;
     print "ok $testnum\n";
 }
 
-# test 40: copy by flattened tag name and structure at the same time
+# test 40: Copy by flattened tag name and structure at the same time
 {
     ++$testnum;
     my $exifTool = new Image::ExifTool;
@@ -505,7 +505,7 @@ my $testnum = 1;
     print "ok $testnum\n";
 }
 
-# test 41: test writing/reading all DarwinCore tags
+# test 41: Rest writing/reading all DarwinCore tags
 {
     ++$testnum;
     my $exifTool = new Image::ExifTool;
@@ -519,6 +519,15 @@ my $testnum = 1;
     } else {
         print 'not ';
     }
+    print "ok $testnum\n";
+}
+
+# test 42: Read extended XMP
+{
+    ++$testnum;
+    my $exifTool = new Image::ExifTool;
+    my $info = $exifTool->ImageInfo('t/images/ExtendedXMP.jpg', 'xmp:all');
+    print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 

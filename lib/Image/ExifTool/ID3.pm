@@ -16,7 +16,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.44';
+$VERSION = '1.45';
 
 sub ProcessID3v2($$$);
 sub ProcessPrivate($$$);
@@ -451,7 +451,7 @@ my %genre = (
     TLE => 'Length',
     TMT => 'Media',
     TOA => { Name => 'OriginalArtist', Groups => { 2 => 'Author' } },
-    TOF => 'OriginalFilename',
+    TOF => 'OriginalFileName',
     TOL => 'OriginalLyricist',
     TOR => 'OriginalReleaseYear',
     TOT => 'OriginalAlbum',
@@ -500,7 +500,7 @@ my %id3v2_common = (
         Binary => 1,
         Notes => 'the 3 tags below are also extracted from this APIC frame',
     },
-    'APIC-1' => { Name => 'PictureMimeType',    Groups => { 2 => 'Image' } },
+    'APIC-1' => { Name => 'PictureMIMEType',    Groups => { 2 => 'Image' } },
     'APIC-2' => {
         Name => 'PictureType',
         Groups => { 2 => 'Image' },
@@ -561,7 +561,7 @@ my %id3v2_common = (
     },
     TMED => 'Media',
     TOAL => 'OriginalAlbum',
-    TOFN => 'OriginalFilename',
+    TOFN => 'OriginalFileName',
     TOLY => 'OriginalLyricist',
     TOPE => { Name => 'OriginalArtist', Groups => { 2 => 'Author' } },
     TOWN => 'FileOwner',

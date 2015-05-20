@@ -74,13 +74,14 @@ types of meta information.  To determine a tag name, either consult this
 documentation or run C<exiftool -s> on a file containing the information in
 question.
 
-(This documentation is the result of years of research, testing and reverse
-engineering, and is the most complete metadata tag list available anywhere
-on the internet.  It is provided not only for ExifTool users, but more
-importantly as a public service to help augment the collective knowledge,
-and is often used as a primary source of information in the development of
-other metadata software.  Please help keep this documentation as accurate
-and complete as possible, and feed back any new discoveries to the source.)
+I<(This documentation is the result of years of research, testing and
+reverse engineering, and is the most complete metadata tag list available
+anywhere on the internet.  It is provided not only for ExifTool users, but
+more importantly as a public service to help augment the collective
+knowledge, and is often used as a primary source of information in the
+development of other metadata software.  Please help keep this documentation
+as accurate and complete as possible, and feed any new discoveries back to
+ExifTool.  A big thanks to everyone who has helped with this so far!)>
 
 =head2 JPEG Tags
 
@@ -1281,15 +1282,20 @@ L<exifEX namespace|/XMP exifEX Tags> are avoided when writing.
   Tag Name                                      Writable
   --------                                      --------
   ApproximateFocusDistance                      rational
+  DistortionCorrectionAlreadyApplied            boolean
   Firmware                                      string
   FlashCompensation                             rational
   ImageNumber                                   string
+  IsMergedHDR                                   boolean
+  IsMergedPanorama                              boolean
+  LateralChromaticAberrationCorrectionAlreadyApplied boolean
   Lens                                          string
   LensID                                        string
   LensInfo                                      string/
   LensSerialNumber                              string/
   OwnerName                                     string/
   SerialNumber                                  string/
+  VignetteCorrectionAlreadyApplied              boolean
 
 =head3 XMP cc Tags
 
@@ -2105,7 +2111,7 @@ family 1 group name.
 
   Tag Name                                      Writable
   --------                                      --------
-  OriginalFilename                              string
+  OriginalFileName                              string
   ParentMEID                                    string
   Personality                                   string
 
@@ -3589,7 +3595,7 @@ XMP Note namespace tags.
 
   Tag Name                                      Writable
   --------                                      --------
-  HasExtendedXMP                                boolean*
+  HasExtendedXMP                                string*
 
 =head3 XMP xmpPLUS Tags
 
@@ -6422,17 +6428,18 @@ well as newer tags and values added by later models.
 =head2 CanonVRD Tags
 
 Canon Digital Photo Professional writes VRD (Recipe Data) information as a
-trailer record to JPEG, TIFF, CRW and CR2 images, or as a stand-alone VRD
-file.  The tags listed below represent information found in this record.
-The complete VRD data record may be accessed as a block using the Extra
-'CanonVRD' tag, but this tag is not extracted or copied unless specified
-explicitly.
+trailer record to JPEG, TIFF, CRW and CR2 images, or as stand-alone VRD or
+DR4 files.  The tags listed below represent information found in this
+record.  The complete VRD/DR4 data record may be accessed as a block using
+the Extra 'CanonVRD' or 'CanonDR4' tag, but this tag is not extracted or
+copied unless specified explicitly.
 
   Tag ID       Tag Name                         Writable
   ------       --------                         --------
   0xffff00f4   EditData                         CanonVRD Edit
   0xffff00f5   IHLData                          CanonVRD IHL
   0xffff00f6   XMP                              XMP
+  0xffff00f7   Edit4Data                        CanonVRD Edit4
 
 =head3 CanonVRD Edit Tags
 
@@ -6567,6 +6574,8 @@ Tags added in DPP version 2.0 and later.
      73    UnknownRawShadowPoint?               int16s
      74    UnknownOutputHighlightPoint?         int16s
      75    UnknownOutputShadowPoint?            int16s
+     76    CustomColorTone                      int16s
+     77    CustomSaturation                     int16s
      78    CustomContrast                       int16s
      79    CustomLinear                         int16s
      80    CustomSharpness                      int16s
@@ -6656,6 +6665,153 @@ Tags added in DPP version 2.0 and later.
   0x0004   PreviewImage                         N
   0x0005   RawCodecVersion                      N
   0x0006   CRCDevelParams?                      N
+
+=head3 CanonVRD Edit4 Tags
+
+Canon DPP version 4 edit information.
+
+   Index   Tag Name                             Writable
+   -----   --------                             --------
+      0    DR4                                  CanonVRD DR4
+
+=head3 CanonVRD DR4 Tags
+
+Tags written by Canon DPP version 4 in CanonVRD trailers and DR4 files.
+
+  Tag ID              Tag Name                  Writable
+  ------              --------                  --------
+  0x10002             Rotation                  Y
+  0x10003             AngleAdj                  Y
+  0x10021             CustomPictureStyle        Y
+  0x10101             CheckMark                 Y
+  0x10200             WorkColorSpace            Y
+  0x20001             RawBrightnessAdj          Y
+  0x20101             WhiteBalanceAdj           Y
+  0x20102             WBAdjColorTemp            Y
+  0x20105             WBAdjMagentaGreen         Y
+  0x20106             WBAdjBlueAmber            Y
+  0x20125             WBAdjRGGBLevels           Y
+  0x20200             GammaLinear               Y
+  0x20301             PictureStyle              Y
+  0x20303             ContrastAdj               Y
+  0x20304             ColorToneAdj              Y
+  0x20305             ColorSaturationAdj        Y
+  0x20306             MonochromeToningEffect    Y
+  0x20307             MonochromeFilterEffect    Y
+  0x20308             UnsharpMaskStrength       Y
+  0x20309             UnsharpMaskFineness       Y
+  0x2030a             UnsharpMaskThreshold      Y
+  0x2030b             ShadowAdj                 Y
+  0x2030c             HighlightAdj              Y
+  0x20310             SharpnessAdj              Y
+  0x20311             SharpnessStrength         Y
+  0x20400             ToneCurve                 CanonVRD ToneCurve
+  0x20410             ToneCurveBrightness       Y
+  0x20411             ToneCurveContrast         Y
+  0x20500             AutoLightingOptimizer     Y
+  0x20600             LuminanceNoiseReduction   Y
+  0x20601             ChrominanceNoiseReduction Y
+  0x20701             ShootingDistance          Y
+  0x20702             PeripheralIllumination    Y
+  0x20703             ChromaticAberration       Y
+  0x20704             ColorBlurOn               Y
+  0x20705             DistortionCorrection      Y
+  0x20706             DLOSetting                Y
+  0x20707             ChromaticAberrationRed    Y
+  0x20708             ChromaticAberrationBlue   Y
+  0x20709             DistortionEffect          Y
+  0x20900             ColorHue                  Y
+  0x20901             SaturationAdj             Y
+  0x20910             RedHSL                    Y
+  0x20911             OrangeHSL                 Y
+  0x20912             GreenHSL                  Y
+  0x20913             AquaHSL                   Y
+  0x20914             BlueHSL                   Y
+  0x20915             BlueHSL                   Y
+  0x20916             PurpleHSL                 Y
+  0x20917             MagentaHSL                Y
+  0x20a00             GammaInfo                 CanonVRD GammaInfo
+  0x30101             CropAspectRatio           Y
+  0x30102             CropAspectRatioCustom     Y
+  0xf0100             CropInfo                  CanonVRD CropInfo
+  0xf0500             CustomPictureStyleData    Y
+  0xf0510             StampInfo                 CanonVRD StampInfo
+  0xf0511             DustInfo                  CanonVRD DustInfo
+  0xf0512             LensFocalLength           Y
+  '0x20310.0'         SharpnessAdjOn            Y
+  '0x20400.1'         ToneCurveOriginal         Y
+  '0x20500.0'         AutoLightingOptimizerOn   Y
+  '0x20702.0'         PeripheralIlluminationOn  Y
+  '0x20703.0'         ChromaticAberrationOn     Y
+  '0x20705.0'         DistortionCorrectionOn    Y
+  '0x20706.0'         DLOOn                     Y
+  'header'            DR4Header                 CanonVRD DR4Header
+
+=head3 CanonVRD ToneCurve Tags
+
+  Index4   Tag Name                             Writable
+  ------   --------                             --------
+      0    ToneCurveColorSpace                  int32u
+      1    ToneCurveShape                       int32u
+      3    ToneCurveInputLevel                  int32u[2]
+      5    ToneCurveOutputLevel                 int32u[2]
+      7    RGBCurvePoints                       int32u[21]
+     10    ToneCurveX                           int32u
+     11    ToneCurveY                           int32u
+     45    RedCurvePoints                       int32u[21]
+     83    GreenCurvePoints                     int32u[21]
+    121    BlueCurvePoints                      int32u[21]
+
+=head3 CanonVRD GammaInfo Tags
+
+  Index8   Tag Name                             Writable
+  ------   --------                             --------
+      2    GammaContrast                        double
+      3    GammaColorTone                       double
+      4    GammaSaturation                      double
+      5    GammaUnsharpMaskStrength             double
+      6    GammaUnsharpMaskFineness             double
+      7    GammaUnsharpMaskThreshold            double
+      8    GammaSharpnessStrength               double
+      9    GammaShadow                          double
+     10    GammaHighlight                       double
+     12    GammaBlackPoint                      double
+     13    GammeWhitePoint                      double
+     14    GammaMidPoint                        double
+     15    GammaCurveOutputLevel                double[2]
+
+=head3 CanonVRD CropInfo Tags
+
+  Index4   Tag Name                             Writable
+  ------   --------                             --------
+      0    CropActive                           int32s
+      1    CropRotatedOriginalWidth             int32s
+      2    CropRotatedOriginalHeight            int32s
+      3    CropX                                int32s
+      4    CropY                                int32s
+      5    CropWidth                            int32s
+      6    CropHeight                           int32s
+      8    CropRotation                         double
+     10    CropOriginalWidth                    int32s
+     11    CropOriginalHeight                   int32s
+
+=head3 CanonVRD StampInfo Tags
+
+  Index4   Tag Name                             Writable
+  ------   --------                             --------
+      2    StampToolCount                       N
+
+=head3 CanonVRD DustInfo Tags
+
+  Index4   Tag Name                             Writable
+  ------   --------                             --------
+      2    DustDeleteApplied                    N
+
+=head3 CanonVRD DR4Header Tags
+
+  Index4   Tag Name                             Writable
+  ------   --------                             --------
+      3    DR4CameraModel                       int32u
 
 =head2 Casio Tags
 
@@ -9696,6 +9852,13 @@ of Nikon AVI videos.
   0x0002   MakerNoteVersion                     N
 
 =head2 NikonCustom Tags
+
+Unfortunately, the NikonCustom settings are stored in a binary data block
+which changes from model to model.  This means that significant effort must
+be spent in decoding these for each model, usually requiring hundreds of
+test images from a dedicated Nikon owner.  For this reason, the NikonCustom
+settings have not been decoded for all models.  The tables below list the
+custom settings for the currently supported models.
 
 =head3 NikonCustom SettingsD40 Tags
 
@@ -17316,8 +17479,8 @@ are not shown because some are unruly GUID's.
   ProviderStyle                                 N
   Publisher                                     N
   SharedUserRating                              N
-  SubTitle                                      N
-  SubTitleDescription                           N
+  Subtitle                                      N
+  SubtitleDescription                           N
   SubscriptionContentID                         N
   TrackNumber                                   N
   UniqueFileIdentifier                          N
@@ -17418,7 +17581,7 @@ are not shown because some are unruly GUID's.
   Beats-per-minute                              N
   Conductors                                    N
   PartOfSet                                     N
-  SubTitle                                      N
+  Subtitle                                      N
   Mood                                          N
   AlbumTitle                                    N
   Year                                          N
@@ -17534,7 +17697,7 @@ are not shown because some are unruly GUID's.
   E-mailDisplayName                             N
   AssistantsName                                N
   Creator                                       N
-  EXIFVersion                                   N
+  ExifVersion                                   N
   BillingInformation                            N
   Children                                      N
   Participants                                  N
@@ -17825,7 +17988,7 @@ Information describing the main document, image or file.
   'Contributors'       Contributors             string+
   'Copyright'          Copyright                string
   'CreateDate'         CreateDate               string
-  'EMail'              EMail                    string
+  'EMail'              Email                    string
   'Keywords'           Keywords                 string+
   'ModifyDate'         ModifyDate               string
   'OriginalDate'       DateTimeOriginal         string
@@ -18757,6 +18920,7 @@ Tags extracted from DPX (Digital Picture Exchange) images.
     772    ImageWidth                           N
     776    ImageHeight                          N
     780    DataSign                             N
+    800    ComponentsConfiguration              N
     803    BitDepth                             N
     820    ImageDescription                     N
     892    Image2Description                    N
@@ -18770,6 +18934,7 @@ Tags extracted from DPX (Digital Picture Exchange) images.
    1532    SourceCreateDate                     N
    1556    InputDeviceName                      N
    1588    InputDeviceSerialNumber              N
+   1724    FrameRate                            N
    1732    FrameID                              N
    1764    SlateInformation                     N
    2048    UserID                               N
@@ -19361,7 +19526,7 @@ ID3 version 2.2 tags.  (These are the tags written by iTunes 5.0.)
   'TLE'    Length                               N
   'TMT'    Media                                N
   'TOA'    OriginalArtist                       N
-  'TOF'    OriginalFilename                     N
+  'TOF'    OriginalFileName                     N
   'TOL'    OriginalLyricist                     N
   'TOR'    OriginalReleaseYear                  N
   'TOT'    OriginalAlbum                        N
@@ -19414,7 +19579,7 @@ software.
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
   'APIC'   Picture                              N
-  'APIC-1' PictureMimeType                      N
+  'APIC-1' PictureMIMEType                      N
   'APIC-2' PictureType                          N
   'APIC-3' PictureDescription                   N
   'COMM'   Comment                              N
@@ -19451,7 +19616,7 @@ software.
   'TLEN'   Length                               N
   'TMED'   Media                                N
   'TOAL'   OriginalAlbum                        N
-  'TOFN'   OriginalFilename                     N
+  'TOFN'   OriginalFileName                     N
   'TOLY'   OriginalLyricist                     N
   'TOPE'   OriginalArtist                       N
   'TORY'   OriginalReleaseYear                  N
@@ -19515,7 +19680,7 @@ software.
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
   'APIC'   Picture                              N
-  'APIC-1' PictureMimeType                      N
+  'APIC-1' PictureMIMEType                      N
   'APIC-2' PictureType                          N
   'APIC-3' PictureDescription                   N
   'COMM'   Comment                              N
@@ -19558,7 +19723,7 @@ software.
   'TMED'   Media                                N
   'TMOO'   Mood                                 N
   'TOAL'   OriginalAlbum                        N
-  'TOFN'   OriginalFilename                     N
+  'TOFN'   OriginalFileName                     N
   'TOLY'   OriginalLyricist                     N
   'TOPE'   OriginalArtist                       N
   'TOWN'   FileOwner                            N
@@ -20327,6 +20492,7 @@ ItemList tags written by the "mdta" handler.  The prefix of
   'camera.framereadouttimeinmicroseconds'
                                FrameReadoutTime N
   'camera.identifier'          CameraIdentifier N
+  'collection.user'            UserCollection   N
   'comment'                    Comment          N
   'copyright'                  Copyright        N
   'creationdate'               CreationDate     N
@@ -20356,9 +20522,11 @@ ItemList tags written by the "mdta" handler.  The prefix of
   'player.movie.visual.contrast' Contrast       N
   'player.movie.visual.tint'   Tint             N
   'player.version'             PlayerVersion    N
+  'producer'                   Producer         N
   'publisher'                  Publisher        N
   'rating.user'                UserRating       N
   'software'                   Software         N
+  'title'                      Title            N
   'version'                    Version          N
   'year'                       Year             N
 
@@ -21099,7 +21267,7 @@ Matroska specification.
   0x005b       CueReference                     Matroska
   0x0060       Video                            Matroska
   0x0061       Audio                            Matroska
-  0x0067       Timecode?                        N
+  0x0067       TimeCode?                        N
   0x0068       TimeSlice                        Matroska
   0x006a       CueCodecState?                   N
   0x006b       CueRefCodecState?                N
@@ -21349,8 +21517,8 @@ because they are bulky 16-byte binary values.
   RoyaltyIncomeInformation                      N
   RestrictionsonUse                             N
   ExCCIData?                                    N
-  Username                                      N
-  Username                                      N
+  UserName                                      N
+  UserName                                      N
   Password                                      N
   Password                                      N
   ScramblingKeyKind                             N
@@ -21460,7 +21628,7 @@ because they are bulky 16-byte binary values.
   FilteringCode                                 N
   ImageHeight                                   N
   ImageWidth                                    N
-  BitsperPixel                                  N
+  BitsPerPixel                                  N
   RoundingMethodCode                            N
   BlackReferenceLevel                           N
   WhiteReferenceLevel                           N
@@ -21636,7 +21804,7 @@ because they are bulky 16-byte binary values.
   SettingCountryName                            N
   TelephoneNumber                               N
   FaxNumber                                     N
-  E-MailAddress                                 N
+  E-mailAddress                                 N
   SettingDescription                            N
   UTCUserDateTime                               N
   LocalUserDateTime                             N
@@ -21812,7 +21980,7 @@ because they are bulky 16-byte binary values.
   VideoLineMap                                  N
   AnalogVideoSystemName?                        N
   VerticalSub-sampling                          N
-  BitsperPixel                                  N
+  BitsPerPixel                                  N
   ColorRangeLevels                              N
   PixelLayout?                                  N
   AlphaSampleDepth                              N
@@ -22229,7 +22397,7 @@ because they are bulky 16-byte binary values.
   SettingCountryName                            N
   TelephoneNumber                               N
   FaxNumber                                     N
-  E-MailAddress                                 N
+  E-mailAddress                                 N
   SettingDescription                            N
   POSIXMicroseconds                             N
   EventElapsedTimeToStart                       N
@@ -23472,7 +23640,7 @@ These tags are part of the EXIF 2.3 specification for WAV audio files.
   Tag ID               Tag Name                 Writable
   ------               --------                 --------
   'IDIT'               DateTimeOriginal         N
-  'ISMP'               Timecode                 N
+  'ISMP'               TimeCode                 N
   'LIST_odml'          OpenDML                  RIFF OpenDML
   'LIST_strl'          Stream                   RIFF Stream
   'avih'               AVIHeader                RIFF AVIHeader
@@ -23809,7 +23977,7 @@ formatting of this table.
   OptimalBitrate                                N
   OriginalAlbumTitle                            N
   OriginalArtist                                N
-  OriginalFilename                              N
+  OriginalFileName                              N
   OriginalLyricist                              N
   OriginalReleaseTime                           N
   OriginalReleaseYear                           N
@@ -23837,8 +24005,8 @@ formatting of this table.
   Signature_Name                                N
   StreamTypeInfo                                N
   Stridable                                     N
-  SubTitle                                      N
-  SubTitleDescription                           N
+  Subtitle                                      N
+  SubtitleDescription                           N
   SubscriptionContentID                         N
   Text                                          N
   Title                                         N
@@ -23868,7 +24036,7 @@ formatting of this table.
   Tag Name                                      Writable
   --------                                      --------
   PictureType                                   N
-  PictureMimeType                               N
+  PictureMIMEType                               N
   PictureDescription                            N
   Picture                                       N
 
@@ -27442,7 +27610,7 @@ existing StringFileInfo tags even if not listed in this table.
   LanguageCode                                  N
   LegalCopyright                                N
   LegalTrademarks                               N
-  OriginalFilename                              N
+  OriginalFileName                              N
   PrivateBuild                                  N
   ProductName                                   N
   ProductVersion                                N
@@ -27799,7 +27967,7 @@ name.  See L<http://tools.ietf.org/html/rfc5545> for the official iCalendar
   'Location'           Location                 N
   'Method'             Method                   N
   'Organizer'          Organizer                N
-  'Percent-complete'   Percent-complete         N
+  'Percent-complete'   PercentComplete          N
   'Priority'           Priority                 N
   'Prodid'             Software                 N
   'Rdate'              RecurrenceDateTimes      N
@@ -28055,6 +28223,7 @@ tag is used for dry run testing of writes to FileName.
   Tag Name                   Group              Writable
   --------                   -----              --------
   Adobe                      Adobe              Y!
+  CanonDR4                   CanonVRD           Y!
   CanonVRD                   CanonVRD           Y!
   Comment                    File               Y
   CurrentIPTCDigest          File               N

@@ -14,7 +14,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '1.43';
+$VERSION = '1.44';
 
 sub ProcessMIE($$);
 sub ProcessMIEGroup($$$);
@@ -298,7 +298,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
     Contributors=> { Groups => { 2 => 'Author' }, List => 1 },
     Copyright   => { Groups => { 2 => 'Author' } },
     CreateDate  => { Groups => { 2 => 'Time' }, %dateInfo },
-    EMail       => { Groups => { 2 => 'Author' } },
+    EMail       => { Name => 'Email', Groups => { 2 => 'Author' } },
     Keywords    => { List => 1 },
     ModifyDate  => { Groups => { 2 => 'Time' }, %dateInfo },
     OriginalDate=> {

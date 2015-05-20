@@ -11,7 +11,7 @@ package Image::ExifTool::Lang::it;
 use strict;
 use vars qw($VERSION);
 
-$VERSION = '1.11';
+$VERSION = '1.12';
 
 %Image::ExifTool::Lang::it::Translate = (
    'A100DataOffset' => 'Offset dati A100',
@@ -4899,7 +4899,7 @@ $VERSION = '1.11';
    'OriginalAlbum' => 'Album originale',
    'OriginalAlbumTitle' => 'Titolo album originale',
    'OriginalArtist' => 'Artista originale',
-   'OriginalFilename' => 'Nome file originale',
+   'OriginalFileName' => 'Nome file originale',
    'OriginalLyricist' => 'Paroliere originale',
    'OriginalMedia' => {
       PrintConv => {
@@ -5040,7 +5040,7 @@ $VERSION = '1.11';
       },
     },
    'PictureFormat' => 'Formato immagine',
-   'PictureMimeType' => 'Mime type immagine',
+   'PictureMIMEType' => 'MIME type immagine',
    'PictureMode' => {
       PrintConv => {
         '1/2 EV steps' => 'Step 1/2 EV',
@@ -7121,7 +7121,6 @@ $VERSION = '1.11';
       },
     },
    'SubsystemVersion' => 'Versione sottosistema',
-   'SubTitle' => 'Sottotitolo',
    'Subtitle' => 'Sottotitolo',
    'Suffix' => 'Suffisso',
    'SuggestedPalette' => 'Tavolozza suggerita',

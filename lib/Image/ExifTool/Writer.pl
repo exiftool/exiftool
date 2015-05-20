@@ -104,20 +104,16 @@ my @delGroups = qw(
 );
 # family 2 group names that we can delete
 my @delGroup2 = qw(
-    Audio Author Camera Copyright Document ExifTool Image Location Other Printing
+    Audio Author Camera Document ExifTool Image Location Other Preview Printing
     Time Video
 );
 
 # lookup for all valid family 2 groups (lower case)
-my %family2groups = (
-    audio     => 1,  document  => 1,  other     => 1,  video     => 1,
-    author    => 1,  exiftool  => 1,  printing  => 1,
-    camera    => 1,  image     => 1, 'time'     => 1,
-    copyright => 1,  location  => 1,  unknown   => 1,
-);
+my %family2groups = map { lc $_ => 1 } @delGroup2, 'Unknown';
 
 # groups we don't delete when deleting all information
 my $protectedGroups = '(IFD1|SubIFD|InteropIFD|GlobParamIFD|PDF-update|Adobe)';
+
 # other group names of new tag values to remove when deleting an entire group
 my %removeGroups = (
     IFD0    => [ 'EXIF', 'MakerNotes' ],
@@ -182,7 +178,7 @@ my %intRange = (
     'int32s' => [-0x80000000, 0x7fffffff],
 );
 # lookup for file types with block-writable EXIF
-my %blockExifTypes = ( JPEG=>1, PNG=>1, JP2=>1, MIE=>1, EXIF=>1 );
+my %blockExifTypes = map { $_ => 1 } qw(JPEG PNG JP2 MIE EXIF);
 
 my $maxSegmentLen = 0xfffd;     # maximum length of data in a JPEG segment
 my $maxXMPLen = $maxSegmentLen; # maximum length of XMP data in JPEG
@@ -191,7 +187,7 @@ my $maxXMPLen = $maxSegmentLen; # maximum length of XMP data in JPEG
 my %listSep = ( PrintConv => '; ?', ValueConv => ' ' );
 
 # printConv hash keys to ignore when doing reverse lookup
-my %ignorePrintConv = ( OTHER => 1, BITMASK => 1, Notes => 1 );
+my %ignorePrintConv = map { $_ => 1 } qw(OTHER BITMASK Notes);
 
 #------------------------------------------------------------------------------
 # Set tag value
@@ -1081,6 +1077,7 @@ sub SetNewValuesFromFile($$;@)
         DateFormat      => $$options{DateFormat},
         Duplicates      => 1,
         Escape          => $$options{Escape},
+        ExtendedXMP     => $$options{ExtendedXMP},
         ExtractEmbedded => $$options{ExtractEmbedded},
         FastScan        => $$options{FastScan},
         FixBase         => $$options{FixBase},
@@ -1657,7 +1654,7 @@ sub SetFileName($$;$$)
     $opt or $opt = '';
     # determine the new file name
     unless (defined $newName) {
-        if ($opt) { 
+        if ($opt) {
             if ($opt eq 'Link') {
                 $newName = $self->GetNewValues('HardLink');
             } elsif ($opt eq 'Test') {
@@ -2036,6 +2033,9 @@ sub WriteInfo($$;$$)
             } elsif ($type eq 'VRD') {
                 require Image::ExifTool::CanonVRD;
                 $rtnVal = Image::ExifTool::CanonVRD::ProcessVRD($self, \%dirInfo);
+            } elsif ($type eq 'DR4') {
+                require Image::ExifTool::CanonVRD;
+                $rtnVal = Image::ExifTool::CanonVRD::ProcessDR4($self, \%dirInfo);
             } elsif ($type eq 'JP2') {
                 require Image::ExifTool::Jpeg2000;
                 $rtnVal = Image::ExifTool::Jpeg2000::ProcessJP2($self, \%dirInfo);
@@ -4508,12 +4508,20 @@ sub AddNewTrailers($;@)
     ref $types[0] and $trailPt = shift @types;
     $types[0] or shift @types; # (in case undef data ref is passed)
     # add all possible trailers if none specified (currently only CanonVRD)
-    @types or @types = qw(CanonVRD);
-    # add trailers as a block
+    @types or @types = qw(CanonVRD CanonDR4);
+    # add trailers as a block (if not done already)
     my $type;
     foreach $type (@types) {
         next unless $$self{NEW_VALUE}{$Image::ExifTool::Extra{$type}};
+        next if $$self{"Did$type"};
         my $val = $self->GetNewValues($type) or next;
+        # DR4 record must be wrapped in VRD trailer package
+        if ($type eq 'CanonDR4') {
+            next if $$self{DidCanonVRD};    # (only allow one VRD trailer)
+            require Image::ExifTool::CanonVRD;
+            $val = Image::ExifTool::CanonVRD::WrapDR4($val);
+            $$self{DidCanonVRD} = 1;
+        }
         my $verb = $trailPt ? 'Writing' : 'Adding';
         $self->VPrint(0, "  $verb $type as a block\n");
         if ($trailPt) {
@@ -4521,6 +4529,7 @@ sub AddNewTrailers($;@)
         } else {
             $trailPt = \$val;
         }
+        $$self{"Did$type"} = 1;
         ++$$self{CHANGED};
     }
     return $trailPt;
@@ -5283,15 +5292,19 @@ sub WriteJPEG($$)
                             } else {
                                 my ($size, $off) = unpack('x67N2', $$segDataPt);
                                 $guid = substr($$segDataPt, 35, 32);
-                                # remember extended data for each GUID
-                                $extXMP = $extendedXMP{$guid};
-                                if ($extXMP) {
-                                    $size == $$extXMP{Size} or $extendedXMP{Error} = 'Invalid size';
+                                if ($guid =~ /[^A-Za-z0-9]/) { # (technically, should be uppercase)
+                                    $extendedXMP{Error} = 'Invalid GUID';
                                 } else {
-                                    $extXMP = $extendedXMP{$guid} = { };
+                                    # remember extended data for each GUID
+                                    $extXMP = $extendedXMP{$guid};
+                                    if ($extXMP) {
+                                        $size == $$extXMP{Size} or $extendedXMP{Error} = 'Inconsistent size';
+                                    } else {
+                                        $extXMP = $extendedXMP{$guid} = { };
+                                    }
+                                    $$extXMP{Size} = $size;
+                                    $$extXMP{$off} = substr($$segDataPt, 75);
                                 }
-                                $$extXMP{Size} = $size;
-                                $$extXMP{$off} = substr($$segDataPt, 75);
                             }
                         } else {
                             # save all main XMP segments (should normally be only one)
@@ -5302,9 +5315,32 @@ sub WriteJPEG($$)
                         next Marker if $dirCount{XMP};
                         # reconstruct an XMP super-segment
                         $$segDataPt = $xmpAPP1hdr;
-                        $$segDataPt .= $_ foreach @{$extendedXMP{Main}};
+                        my $goodGuid = '';
+                        foreach (@{$extendedXMP{Main}}) {
+                            # get the HasExtendedXMP GUID if it exists
+                            if (/:HasExtendedXMP\s*(=\s*['"]|>)(\w{32})/) {
+                                # warn of subsequent XMP blocks specifying a different
+                                # HasExtendedXMP (have never seen this)
+                                if ($goodGuid and $goodGuid ne $2) {
+                                    $self->WarnOnce('Multiple XMP segments specifying different extended XMP GUID');
+                                }
+                                $goodGuid = $2; # GUID for the standard extended XMP
+                            }
+                            $$segDataPt .= $_;
+                        }
+                        # GUID of the extended XMP that we want to read
+                        my $readGuid = $$self{OPTIONS}{ExtendedXMP} || 0;
+                        $readGuid = $goodGuid if $readGuid eq '1';
                         foreach $guid (sort keys %extendedXMP) {
-                            next unless length $guid == 32;     # ignore other keys
+                            next unless length $guid == 32;     # ignore other (internal) keys
+                            if ($guid ne $readGuid and $readGuid ne '2') {
+                                my $non = $guid eq $goodGuid ? '' : 'non-';
+                                $self->Warn("Ignored ${non}standard extended XMP (GUID $guid)");
+                                next;
+                            }
+                            if ($guid ne $goodGuid) {
+                                $self->Warn("Reading non-standard extended XMP (GUID $guid)");
+                            }
                             $extXMP = $extendedXMP{$guid};
                             next unless ref $extXMP eq 'HASH';  # (just to be safe)
                             my $size = $$extXMP{Size};
@@ -5318,7 +5354,7 @@ sub WriteJPEG($$)
                                 # add all XMP to super-segment
                                 $$segDataPt .= $$extXMP{$_} foreach @offsets;
                             } else {
-                                $extendedXMP{Error} = 'Missing XMP data';
+                                $self->Error("Incomplete extended XMP (GUID $guid)", 1);
                             }
                         }
                         $self->Error("$extendedXMP{Error} in extended XMP", 1) if $extendedXMP{Error};
@@ -5712,7 +5748,7 @@ sub CheckValue($$;$)
                         return 'Must be an unsigned rational';
                     }
                 }
-                return 'Not a floating point number' 
+                return 'Not a floating point number';
             }
             if ($format =~ /^rational\d+u$/ and $val < 0) {
                 return 'Must be a positive number';

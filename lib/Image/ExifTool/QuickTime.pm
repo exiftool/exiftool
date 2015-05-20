@@ -31,6 +31,7 @@
 #   19) http://nah6.com/~itsme/cvs-xdadevtools/iphone/tools/decodesinf.pl
 #   20) https://developer.apple.com/legacy/library/documentation/quicktime/reference/QT7-1_Update_Reference/QT7-1_Update_Reference.pdf
 #   21) Francois Bonzon private communication
+#   22) https://developer.apple.com/library/mac/documentation/QuickTime/QTFF/Metadata/Metadata.html
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::QuickTime;
@@ -40,7 +41,7 @@ use vars qw($VERSION $AUTOLOAD);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.90';
+$VERSION = '1.91';
 
 sub FixWrongFormat($);
 sub ProcessMOV($$;$);
@@ -4544,9 +4545,11 @@ my %graphicsMode = (
     },
     description => { },
     director    => { },
+    title       => { }, #22
     genre       => { },
     information => { },
     keywords    => { },
+    producer    => { }, #22
     make        => { Name => 'Make',        Groups => { 2 => 'Camera' } },
     model       => { Name => 'Model',       Groups => { 2 => 'Camera' } },
     publisher   => { },
@@ -4606,6 +4609,7 @@ my %graphicsMode = (
         PrintConv => { 0 => 'Off', 1 => 'On' },
     },
     'rating.user'  => 'UserRating', # (Canon ELPH 510 HS)
+    'collection.user' => 'UserCollection', #22
     'Encoded_With' => 'EncodedWith',
 );
 

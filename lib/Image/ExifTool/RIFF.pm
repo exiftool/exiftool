@@ -27,7 +27,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.39';
+$VERSION = '1.40';
 
 sub ConvertTimecode($);
 
@@ -732,7 +732,7 @@ my %riffMimeType = (
         ValueConv => 'Image::ExifTool::RIFF::ConvertRIFFDate($val)',
         PrintConv => '$self->ConvertDateTime($val)',
     },
-    ISMP => 'Timecode',
+    ISMP => 'TimeCode',
     LIST_strl => {
         Name => 'Stream',
         SubDirectory => { TagTable => 'Image::ExifTool::RIFF::Stream' },

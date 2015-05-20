@@ -2996,7 +2996,6 @@ $VERSION = '1.30';
         'Tv or Av' => 'Tv oder Av',
       },
     },
-   'EMail' => 'E-Mail',
    'ETTLII' => {
       PrintConv => {
         'Average' => 'Integralmessung',
@@ -3073,6 +3072,7 @@ $VERSION = '1.30';
    'EditorialUpdate' => 'Redaktionelle Überarbeitung',
    'EffectiveLV' => 'Effektiver LW',
    'EffectiveMaxAperture' => 'Effektiv größte Blende',
+   'Email' => 'E-Mail',
    'EmbeddedImage' => 'Eingebettetes Bild',
    'EmbeddedImageByteOrder' => 'Eingebettetes Bild Bytereihenfolge',
    'EmbeddedImageHeight' => 'Eingebettetes Bild Bildhöhe',

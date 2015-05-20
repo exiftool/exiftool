@@ -528,16 +528,32 @@ at this time.  For this reason, tags below with equivalents in the
 <td class=c>rational</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>DistortionCorrectionAlreadyApplied</td>
+<td class=c>boolean</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>Firmware</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>FlashCompensation</td>
 <td class=c>rational</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>ImageNumber</td>
 <td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>IsMergedHDR</td>
+<td class=c>boolean</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>IsMergedPanorama</td>
+<td class=c>boolean</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>LateralChromaticAberrationCorrectionAlreadyApplied</td>
+<td class=c>boolean</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>Lens</td>
@@ -562,6 +578,10 @@ at this time.  For this reason, tags below with equivalents in the
 <tr class=b>
 <td>SerialNumber</td>
 <td class=c title=' / = Avoided'>string/</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>VignetteCorrectionAlreadyApplied</td>
+<td class=c>boolean</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -3546,7 +3566,7 @@ family 1 group name.</p>
 <tr class=h><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
-<td>OriginalFilename</td>
+<td>OriginalFileName</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
@@ -8845,8 +8865,10 @@ XMP properties.</p>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
 <td>HasExtendedXMP</td>
-<td class=c title=' * = Protected'>boolean*</td>
-<td>&nbsp;</td></tr>
+<td class=c title=' * = Protected'>string*</td>
+<td><span class=s><span class=n>(this tag is protected so it is not writable directly.  Instead, it is set
+automatically to the GUID of the extended XMP when writing extended XMP to a
+JPEG image)</span></span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='xmpPLUS'>XMP xmpPLUS Tags</a></h2>
@@ -9147,7 +9169,7 @@ XMP module for convenience.  (see <a href="http://www.w3.org/TR/SVG11/">http://w
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised May 8, 2015</i>
+<br><i>Last revised May 14, 2015</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

@@ -58,7 +58,7 @@ use vars qw($VERSION %nikonLensIDs %nikonTextEncoding);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '3.05';
+$VERSION = '3.06';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -377,6 +377,7 @@ sub GetAFPointGrid($$;$);
     'FF 40 2D 80 2C 40 4B 06' => 'Sigma 18-200mm F3.5-6.3 DC', #30
     '7A 40 2D 80 2C 40 4B 0E' => 'Sigma 18-200mm F3.5-6.3 DC OS HSM',
     'ED 40 2D 80 2C 40 4B 0E' => 'Sigma 18-200mm F3.5-6.3 DC OS HSM', #JD
+    '90 40 2D 80 2C 40 4B 0E' => 'Sigma 18-200mm F3.5-6.3 II DC OS HSM', #JohnHelour
     'A5 40 2D 88 2C 40 4B 0E' => 'Sigma 18-250mm F3.5-6.3 DC OS HSM',
   #  LensFStops varies with FocalLength for this lens (ref 2):
     '92 2C 2D 88 2C 40 4B 0E' => 'Sigma 18-250mm F3.5-6.3 DC Macro OS HSM', #2
@@ -3764,7 +3765,7 @@ my %nikonFocalConversions = (
     },
     0x27f => {
         Name => 'ShutterCount',
-        Condition => '$$self{FirmwareVersion} =~ /^2.0[012]/',
+        Condition => '$$self{FirmwareVersion} =~ /^2.0/',
         Notes => 'firmware 2.00, 2.01 and 2.02',
         Format => 'int32u',
         Priority => 0,
@@ -4569,8 +4570,8 @@ my %nikonFocalConversions = (
     },
     0x175e => { # metering mode
         Name => 'D810MeteringMode',
-        Condition => '$$self{FirmwareVersion} =~ /^1.01/',
-        Notes => 'firmware version 1.01',
+        Condition => '$$self{FirmwareVersion} !~ /^1.00/',
+        Notes => 'firmware version 1.01 and 1.02',
         Mask => 0x03,
         PrintConv => {
             0 => 'Matrix',
@@ -4590,8 +4591,8 @@ my %nikonFocalConversions = (
     },
     0x194b => { 
         Name => 'CustomSettingsD810',
-        Condition => '$$self{FirmwareVersion} =~ /^1.01/',
-        Notes => 'firmware version 1.01',
+        Condition => '$$self{FirmwareVersion} !~ /^1.00/',
+        Notes => 'firmware version 1.01 and 1.02',
         Format => 'undef[53]',
         SubDirectory => {
             TagTable => 'Image::ExifTool::NikonCustom::SettingsD810',
@@ -4606,7 +4607,6 @@ my %nikonFocalConversions = (
     WRITE_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     VARS => { ID_LABEL => 'Index' },
-    DATAMEMBER => [ 4 ],
     IS_SUBDIR => [ 0x0751 ],
     WRITABLE => 1,
     FIRST_ENTRY => 0,
@@ -4621,10 +4621,8 @@ my %nikonFocalConversions = (
     },
     0x04 => {
         Name => 'FirmwareVersion',
-        DataMember => 'FirmwareVersion',
         Format => 'string[5]',
         Writable => 0,
-        RawConv => '$$self{FirmwareVersion} = $val',
     },
     0x0751 => { #PH (NC)
         Name => 'CustomSettingsD4',
@@ -4671,7 +4669,7 @@ my %nikonFocalConversions = (
     0x18c2 => { # CSf1-c (no idea why it is so far away from the rest of the settings)
         Name => 'MultiSelectorLiveViewMode',
         Groups => { 1 => 'NikonCustom' },
-        Condition => '$$self{FirmwareVersion} =~ /^1.01/',
+        Condition => '$$self{FirmwareVersion} !~ /^1.00/',
         Mask => 0xc0,
         PrintConv => {
             0x00 => 'Reset',
@@ -4681,7 +4679,7 @@ my %nikonFocalConversions = (
     },
     0x193d => {
         Name => 'CustomSettingsD4S',
-        Condition => '$$self{FirmwareVersion} =~ /^1.01/',
+        Condition => '$$self{FirmwareVersion} !~ /^1.00/',
         Notes => 'firmware version 1.01',
         Format => 'undef[56]',
         SubDirectory => { TagTable => 'Image::ExifTool::NikonCustom::SettingsD4' },

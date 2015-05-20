@@ -11,7 +11,7 @@ package Image::ExifTool::Lang::es;
 use strict;
 use vars qw($VERSION);
 
-$VERSION = '1.13';
+$VERSION = '1.14';
 
 %Image::ExifTool::Lang::es::Translate = (
    'AEAperture' => 'Aperture AE',
@@ -2652,7 +2652,7 @@ $VERSION = '1.13';
     },
    'OriginalAlbumTitle' => 'Título Original Album',
    'OriginalArtist' => 'Artista original',
-   'OriginalFilename' => 'Nombre archivo original',
+   'OriginalFileName' => 'Nombre archivo original',
    'OriginalLyricist' => 'Letrista Original',
    'OriginalRawFileData' => 'Dato Archivo Raw Original',
    'OriginalRawFileDigest' => 'Cifrado Archivo Raw Original',
@@ -3494,8 +3494,6 @@ $VERSION = '1.13';
    'SubSecTimeDigitized' => 'Subsegundos DateTimeDigitized',
    'SubSecTimeOriginal' => 'Subsegundos DateTimeOriginal',
    'SubTileBlockSize' => 'Tamaño Bloque Submosaico',
-   'SubTitle' => 'Subtitulo',
-   'SubTitleDescription' => 'Descripción Subtitulo',
    'SubfileType' => 'Nuevo Tipo Subarchivo',
    'SubimageColor' => {
       PrintConv => {
@@ -3527,6 +3525,7 @@ $VERSION = '1.13';
       },
     },
    'Subtitle' => 'Subtitulo',
+   'SubtitleDescription' => 'Descripción Subtitulo',
    'SuperimposedDisplay' => {
       PrintConv => {
         'Off' => 'Desactivado',

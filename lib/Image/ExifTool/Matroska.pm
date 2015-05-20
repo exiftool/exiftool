@@ -14,7 +14,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.06';
+$VERSION = '1.07';
 
 my %noYes = ( 0 => 'No', 1 => 'Yes' );
 
@@ -151,7 +151,7 @@ my %noYes = ( 0 => 'No', 1 => 'Yes' );
         SubDirectory => { TagTable => 'Image::ExifTool::Matroska::Main' },
     },
     0x67 => {
-        Name => 'Timecode',
+        Name => 'TimeCode',
         Format => 'unsigned',
         Unknown => 1,
         ValueConv => '$$self{TimecodeScale} ? $val * $$self{TimecodeScale} / 1e9 : $val',

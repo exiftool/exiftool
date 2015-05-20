@@ -11,7 +11,7 @@ package Image::ExifTool::Lang::fi;
 use strict;
 use vars qw($VERSION);
 
-$VERSION = '1.01';
+$VERSION = '1.02';
 
 %Image::ExifTool::Lang::fi::Translate = (
    'AEAperture' => 'AE-aukko',
@@ -292,9 +292,9 @@ $VERSION = '1.01';
    'BitDepth' => 'Bittisyvyys',
    'BitsPerComponent' => 'Bittejä per komponentti',
    'BitsPerExtendedRunLength' => 'Bittejä per jatkettu jakson pituus',
+   'BitsPerPixel' => 'Bittejä per pikseli',
    'BitsPerRunLength' => 'Bittejä per jakson pituus',
    'BitsPerSample' => 'Bittejä per näyte',
-   'BitsperPixel' => 'Bittejä per pikseli',
    'BlackLevel' => 'Mustan taso',
    'BlackLevel2' => 'Mustan taso 2',
    'BlackLevelDeltaH' => 'Mustan tason Delta H',

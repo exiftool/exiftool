@@ -21,7 +21,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.10';
+$VERSION = '1.11';
 
 sub ProcessPEResources($$);
 sub ProcessPEVersion($$);
@@ -415,7 +415,7 @@ my %languageCode = (
     InternalName    => { },
     LegalCopyright  => { },
     LegalTrademarks => { },
-    OriginalFilename=> { },
+    OriginalFilename=> { Name => 'OriginalFileName' },
     PrivateBuild    => { },
     ProductName     => { },
     ProductVersion  => { },

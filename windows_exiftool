@@ -12,7 +12,7 @@
 use strict;
 require 5.004;
 
-my $version = '9.95';
+my $version = '9.96';
 
 # add our 'lib' directory to the include list BEFORE 'use Image::ExifTool'
 my $exeDir;
@@ -675,17 +675,13 @@ for (;;) {
         next;
     }
     /^(-?)(a|duplicates)$/i and $mt->Options(Duplicates => ($1 ? 0 : 1)), next;
-    if ($a eq 'api' or $a eq 'userparam') {
+    if ($a eq 'api') {
         my $opt = shift;
-        defined $opt or Error("Expected OPT[=VAL] argument for -$_ option\n"), $badCmd=1, next;
-        if ($a eq 'api') {
-            my $val = ($opt =~ s/=(.*)//s) ? $1 : 1;
-            $mt->Options($opt => (length($val) ? $val : undef));
-            # update $forcePrint in case MissingTagValue was changed
-            $forcePrint = $mt->Options('MissingTagValue') if defined $forcePrint;
-        } else {
-            $mt->Options(UserParam => $opt);
-        }
+        defined $opt or Error("Expected OPT[=VAL] argument for -api option\n"), $badCmd=1, next;
+        my $val = ($opt =~ s/=(.*)//s) ? $1 : 1;
+        $mt->Options($opt => (length($val) ? $val : undef));
+        # update $forcePrint in case MissingTagValue was changed
+        $forcePrint = $mt->Options('MissingTagValue') if defined $forcePrint;
         next;
     }
     /^arg(s|format)$/i and $argFormat = 1, next;
@@ -1066,6 +1062,13 @@ for (;;) {
             Error("Error using module $module\n");
             $badCmd = 1;
         }
+        next;
+    }
+    if ($a eq 'userparam') {
+        my $opt = shift;
+        defined $opt or Error("Expected parameter for -userParam option\n"), $badCmd=1, next;
+        $opt =~ /=/ or $opt .= '=1';
+        $mt->Options(UserParam => $opt);
         next;
     }
     if (/^v(erbose)?(\d*)$/i) {
@@ -2400,6 +2403,7 @@ sub SetImageInfo($$$)
                     my %forceCopy = (
                         ICC => 'ICC_Profile',
                         VRD => 'CanonVRD',
+                        DR4 => 'CanonDR4',
                     );
                     push @setTags, $forceCopy{$outType} if $forceCopy{$outType};
                     # assume "-tagsFromFile @" unless -tagsFromFile already specified
@@ -3014,7 +3018,7 @@ sub ConvertBinary($)
         if (defined $binaryOutput) {
             $obj = $$obj;
             # encode in base64 if necessary
-            if ($json == 1 and ($obj =~ /[^\x09\x0a\x0d\x20-\x7e\x80-\xf7]/ or 
+            if ($json == 1 and ($obj =~ /[^\x09\x0a\x0d\x20-\x7e\x80-\xf7]/ or
                                 Image::ExifTool::XMP::IsUTF8(\$obj) < 0))
             {
                 $obj = 'base64:' . Image::ExifTool::XMP::EncodeBase64($obj, 1);
@@ -3878,40 +3882,40 @@ DESCRIPTION
 
       File Types
       ------------+-------------+-------------+-------------+------------
-      3FR   r     | DYLIB r     | KEY   r     | OGV   r     | RTF   r
-      3G2   r/w   | EIP   r     | LA    r     | ORF   r/w   | RW2   r/w
-      3GP   r/w   | EPS   r/w   | LFP   r     | OTF   r     | RWL   r/w
-      AA    r     | EPUB  r     | LNK   r     | PAC   r     | RWZ   r
-      AAX   r/w   | ERF   r/w   | M2TS  r     | PAGES r     | RM    r
-      ACR   r     | EXE   r     | M4A/V r/w   | PBM   r/w   | SEQ   r
-      AFM   r     | EXIF  r/w/c | MEF   r/w   | PCD   r     | SO    r
-      AI    r/w   | EXR   r     | MIE   r/w/c | PDB   r     | SR2   r/w
-      AIFF  r     | EXV   r/w/c | MIFF  r     | PDF   r/w   | SRF   r
-      APE   r     | F4A/V r/w   | MKA   r     | PEF   r/w   | SRW   r/w
-      ARW   r/w   | FFF   r/w   | MKS   r     | PFA   r     | SVG   r
-      ASF   r     | FLA   r     | MKV   r     | PFB   r     | SWF   r
-      AVI   r     | FLAC  r     | MNG   r/w   | PFM   r     | THM   r/w
-      AZW   r     | FLV   r     | MOBI  r     | PGF   r     | TIFF  r/w
-      BMP   r     | FPF   r     | MODD  r     | PGM   r/w   | TORRENT r
-      BTF   r     | FPX   r     | MOI   r     | PLIST r     | TTC   r
-      CHM   r     | GIF   r/w   | MOS   r/w   | PICT  r     | TTF   r
-      COS   r     | GZ    r     | MOV   r/w   | PMP   r     | VCF   r
-      CR2   r/w   | HDP   r/w   | MP3   r     | PNG   r/w   | VRD   r/w/c
-      CRW   r/w   | HDR   r     | MP4   r/w   | PPM   r/w   | VSD   r
-      CS1   r/w   | HTML  r     | MPC   r     | PPT   r     | WAV   r
-      DCM   r     | ICC   r/w/c | MPG   r     | PPTX  r     | WDP   r/w
-      DCP   r/w   | ICS   r     | MPO   r/w   | PS    r/w   | WEBP  r
-      DCR   r     | IDML  r     | MQV   r/w   | PSB   r/w   | WEBM  r
-      DFONT r     | IIQ   r/w   | MRW   r/w   | PSD   r/w   | WMA   r
-      DIVX  r     | IND   r/w   | MXF   r     | PSP   r     | WMV   r
-      DJVU  r     | INX   r     | NEF   r/w   | QTIF  r/w   | WV    r
-      DLL   r     | ITC   r     | NRW   r/w   | RA    r     | X3F   r/w
-      DNG   r/w   | J2C   r     | NUMBERS r   | RAF   r/w   | XCF   r
-      DOC   r     | JNG   r/w   | ODP   r     | RAM   r     | XLS   r
-      DOCX  r     | JP2   r/w   | ODS   r     | RAR   r     | XLSX  r
-      DPX   r     | JPEG  r/w   | ODT   r     | RAW   r/w   | XMP   r/w/c
+      3FR   r     | DVB   r/w   | KDC   r     | OGG   r     | RSRC  r
+      3G2   r/w   | DYLIB r     | KEY   r     | OGV   r     | RTF   r
+      3GP   r/w   | EIP   r     | LA    r     | ORF   r/w   | RW2   r/w
+      AA    r     | EPS   r/w   | LFP   r     | OTF   r     | RWL   r/w
+      AAX   r/w   | EPUB  r     | LNK   r     | PAC   r     | RWZ   r
+      ACR   r     | ERF   r/w   | M2TS  r     | PAGES r     | RM    r
+      AFM   r     | EXE   r     | M4A/V r/w   | PBM   r/w   | SEQ   r
+      AI    r/w   | EXIF  r/w/c | MEF   r/w   | PCD   r     | SO    r
+      AIFF  r     | EXR   r     | MIE   r/w/c | PDB   r     | SR2   r/w
+      APE   r     | EXV   r/w/c | MIFF  r     | PDF   r/w   | SRF   r
+      ARW   r/w   | F4A/V r/w   | MKA   r     | PEF   r/w   | SRW   r/w
+      ASF   r     | FFF   r/w   | MKS   r     | PFA   r     | SVG   r
+      AVI   r     | FLA   r     | MKV   r     | PFB   r     | SWF   r
+      AZW   r     | FLAC  r     | MNG   r/w   | PFM   r     | THM   r/w
+      BMP   r     | FLV   r     | MOBI  r     | PGF   r     | TIFF  r/w
+      BTF   r     | FPF   r     | MODD  r     | PGM   r/w   | TORRENT r
+      CHM   r     | FPX   r     | MOI   r     | PLIST r     | TTC   r
+      COS   r     | GIF   r/w   | MOS   r/w   | PICT  r     | TTF   r
+      CR2   r/w   | GZ    r     | MOV   r/w   | PMP   r     | VCF   r
+      CRW   r/w   | HDP   r/w   | MP3   r     | PNG   r/w   | VRD   r/w/c
+      CS1   r/w   | HDR   r     | MP4   r/w   | PPM   r/w   | VSD   r
+      DCM   r     | HTML  r     | MPC   r     | PPT   r     | WAV   r
+      DCP   r/w   | ICC   r/w/c | MPG   r     | PPTX  r     | WDP   r/w
+      DCR   r     | ICS   r     | MPO   r/w   | PS    r/w   | WEBP  r
+      DFONT r     | IDML  r     | MQV   r/w   | PSB   r/w   | WEBM  r
+      DIVX  r     | IIQ   r/w   | MRW   r/w   | PSD   r/w   | WMA   r
+      DJVU  r     | IND   r/w   | MXF   r     | PSP   r     | WMV   r
+      DLL   r     | INX   r     | NEF   r/w   | QTIF  r/w   | WV    r
+      DNG   r/w   | ITC   r     | NRW   r/w   | RA    r     | X3F   r/w
+      DOC   r     | J2C   r     | NUMBERS r   | RAF   r/w   | XCF   r
+      DOCX  r     | JNG   r/w   | ODP   r     | RAM   r     | XLS   r
+      DPX   r     | JP2   r/w   | ODS   r     | RAR   r     | XLSX  r
+      DR4   r/w/c | JPEG  r/w   | ODT   r     | RAW   r/w   | XMP   r/w/c
       DV    r     | K25   r     | OFR   r     | RIFF  r     | ZIP   r
-      DVB   r/w   | KDC   r     | OGG   r     | RSRC  r     |
 
       Meta Information
       ----------------------+----------------------+---------------------
@@ -4043,6 +4047,7 @@ OPTIONS
       -execute[NUM]                    Execute multiple commands on one line
       -srcfile FMT                     Set different source file name
       -stay_open FLAG                  Keep reading -@ argfile even after EOF
+      -userParam PARAM[=VAL]           Set user parameter (API UserParam opt)
 
   Option Details
    Tag operations
@@ -4498,9 +4503,10 @@ OPTIONS
 
     -f (-forcePrint)
          Force printing of tags even if their values are not found. This
-         option only applies when tag names are specified. With this option,
-         a dash ("-") is printed for the value of any missing tag (but this
-         may be configured via the API MissingTagValue option). May also be
+         option only applies when specific tags are requested on the command
+         line (ie. not with wildcards or by "-all"). With this option, a
+         dash ("-") is printed for the value of any missing tag, but the
+         dash may be changed via the API MissingTagValue option. May also be
          used to add a 'flags' attribute to the -listx output, or to allow
          tags to be deleted when writing with the -csv=*CSVFILE* feature.
 
@@ -4668,7 +4674,7 @@ OPTIONS
 
          produces output like this:
 
-             -- Generated by ExifTool 9.95 --
+             -- Generated by ExifTool 9.96 --
              File: a.jpg - 2003:10:31 15:44:19
              (f/5.6, 1/60s, ISO 100)
              File: b.jpg - 2006:05:23 11:57:38
@@ -5154,7 +5160,7 @@ OPTIONS
          of file. The following file types may be created using this
          technique:
 
-             XMP, ICC/ICM, MIE, VRD, EXIF, EXV
+             XMP, ICC/ICM, MIE, VRD, DR4, EXIF, EXV
 
          The output file type is determined by the extension of *OUTFILE*
          (specified as "-.EXT" when writing to stdout). The output file is
@@ -5250,6 +5256,9 @@ OPTIONS
              w - Write existing tags
              c - Create new tags
              g - create new Groups as necessary
+
+         For example, use "-wm cg" to only create new tags (and avoid
+         editing existing ones).
 
          The level of the group is the SubDirectory level in the metadata
          structure. For XMP or IPTC this is the full XMP/IPTC block (the
@@ -5553,6 +5562,18 @@ OPTIONS
          "-execute\n". (There is no associated delay when writing arguments
          via a pipe with "-@ -", so the signal is not necessary when using
          this technique.)
+
+    -userParam *PARAM[=VAL]*
+         Set user parameter. *PARAM* is an arbitrary user parameter name.
+         This is an interface to the API UserParam option (see the
+         Image::ExifTool Options documentation), and provides a method to
+         access user-defined parameters from inside tag name expressions (as
+         if it were any other tag, see example below), and from
+         PrintConv/ValueConv logic (via the ExifTool Options function).
+         Similar to the -api option, the parameter value is set to 1 if
+         *=VAL* is omitted, or undef if just *VAL* is omitted.
+
+             exiftool -p "$test from $filename" -userparam test=Hello FILE
 
 WINDOWS UNICODE FILE NAMES
     In Windows, by default, file and directory names are specified on the

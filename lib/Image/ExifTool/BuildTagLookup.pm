@@ -32,7 +32,7 @@ use Image::ExifTool::XMP;
 use Image::ExifTool::Canon;
 use Image::ExifTool::Nikon;
 
-$VERSION = '2.85';
+$VERSION = '2.87';
 @ISA = qw(Exporter);
 
 sub NumbersFirst;
@@ -216,13 +216,14 @@ types of meta information.  To determine a tag name, either consult this
 documentation or run C<exiftool -s> on a file containing the information in
 question.
 
-(This documentation is the result of years of research, testing and reverse
-engineering, and is the most complete metadata tag list available anywhere
-on the internet.  It is provided not only for ExifTool users, but more
-importantly as a public service to help augment the collective knowledge,
-and is often used as a primary source of information in the development of
-other metadata software.  Please help keep this documentation as accurate
-and complete as possible, and feed back any new discoveries to the source.)
+I<(This documentation is the result of years of research, testing and
+reverse engineering, and is the most complete metadata tag list available
+anywhere on the internet.  It is provided not only for ExifTool users, but
+more importantly as a public service to help augment the collective
+knowledge, and is often used as a primary source of information in the
+development of other metadata software.  Please help keep this documentation
+as accurate and complete as possible, and feed any new discoveries back to
+ExifTool.  A big thanks to everyone who has helped with this so far!)>
 },
     EXIF => q{
 EXIF stands for "Exchangeable Image File Format".  This type of information
@@ -450,6 +451,14 @@ CRW images also support the addition of a CanonVRD trailer, which in turn
 supports XMP.  This trailer is created automatically if necessary when
 ExifTool is used to write XMP to a CRW image.
 },
+    NikonCustom => q{
+Unfortunately, the NikonCustom settings are stored in a binary data block
+which changes from model to model.  This means that significant effort must
+be spent in decoding these for each model, usually requiring hundreds of
+test images from a dedicated Nikon owner.  For this reason, the NikonCustom
+settings have not been decoded for all models.  The tables below list the
+custom settings for the currently supported models.
+},
     Unknown => q{
 The following tags are decoded in unsupported maker notes.  Use the Unknown
 (-u) option to display other unknown tags.
@@ -653,7 +662,7 @@ sub new
 # loop through all tables, accumulating TagLookup and TagName information
 #
     my (%tagNameInfo, %id, %longID, %longName, %shortName, %tableNum,
-        %tagLookup, %tagExists, %noLookup, %tableWritable, %sepTable,
+        %tagLookup, %tagExists, %noLookup, %tableWritable, %sepTable, %case,
         %structs, %compositeModules, %isPlugin, %flattened, %structLookup);
     $self->{TAG_NAME_INFO} = \%tagNameInfo;
     $self->{ID_LOOKUP} = \%id;
@@ -785,6 +794,11 @@ TagID:  foreach $tagID (@keys) {
             }
             foreach $tagInfo (@infoArray) {
                 my $name = $$tagInfo{Name};
+                unless ($$tagInfo{SubDirectory} or $$tagInfo{Struct}) {
+                    my $lc = lc $name;
+                    warn "Different case for $tableName $name $case{$lc}\n" if $case{$lc} and $case{$lc} ne $name;
+                    $case{$lc} = $name;
+                }
                 my $format = $$tagInfo{Format};
                 # validate Name (must not start with a digit or else XML output will not be valid)
                 # (must not start with a dash or exiftool command line may get confused)

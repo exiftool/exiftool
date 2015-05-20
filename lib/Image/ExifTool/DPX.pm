@@ -14,7 +14,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.01';
+$VERSION = '1.02';
 
 # DPX tags
 %Image::ExifTool::DPX::Main = (
@@ -57,6 +57,35 @@ $VERSION = '1.01';
     772 => { Name => 'ImageWidth',    Format => 'int32u' },
     776 => { Name => 'ImageHeight',   Format => 'int32u' },
     780 => { Name => 'DataSign',      Format => 'int32u', PrintConv => { 0 => 'Unsigned', 1 => 'Signed' } },
+    800 => {
+        Name => 'ComponentsConfiguration',
+        Format => 'int8u',
+        PrintConv => {
+            0 => 'User-defined single component',
+            1 => 'Red (R)',
+            2 => 'Green (G)',
+            3 => 'Blue (B)',
+            4 => 'Alpha (matte)',
+            6 => 'Luminance (Y)',
+            7 => 'Chrominance (Cb, Cr, subsampled by two)',
+            8 => 'Depth (Z)',
+            9 => 'Composite video',
+            50 => 'R, G, B',
+            51 => 'R, G, B, Alpha',
+            52 => 'Alpha, B, G, R',
+            100 => 'Cb, Y, Cr, Y (4:2:2)',
+            101 => 'Cb, Y, A, Cr, Y, A (4:2:2:4)',
+            102 => 'Cb, Y, Cr (4:4:4)',
+            103 => 'Cb, Y, Cr, A (4:4:4:4)',
+            150 => 'User-defined 2 component element',
+            151 => 'User-defined 3 component element',
+            152 => 'User-defined 4 component element',
+            153 => 'User-defined 5 component element',
+            154 => 'User-defined 6 component element',
+            155 => 'User-defined 7 component element',
+            156 => 'User-defined 8 component element',
+        },
+    },
     803 => { Name => 'BitDepth',      Format => 'int8u' },
     820 => { Name => 'ImageDescription',  Format => 'string[32]' },
     892 => { Name => 'Image2Description', Format => 'string[32]', RawConv => '$val=~/[^\xff]/ ? $val : undef' },
@@ -77,6 +106,7 @@ $VERSION = '1.01';
     1556=> { Name => 'InputDeviceName',   Format => 'string[32]' },
     1588=> { Name => 'InputDeviceSerialNumber', Format => 'string[32]' },
     # 1620=> { Name => 'AspectRatio',       Format => 'int32u' },
+    1724 => { Name => 'FrameRate',        Format => 'float' },
     1732 => { Name => 'FrameID',          Format => 'string[32]' },
     1764 => { Name => 'SlateInformation', Format => 'string[100]' },
     2048 => { Name => 'UserID',           Format => 'string[32]' },

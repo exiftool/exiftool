@@ -83,7 +83,7 @@ sub ProcessSerialData($$$);
 sub ProcessFilters($$$);
 sub SwapWords($);
 
-$VERSION = '3.49';
+$VERSION = '3.50';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -386,7 +386,7 @@ $VERSION = '3.49';
     # Note: LensType 488 (0x1e8) is reported as 232 (0xe8) in 7D CameraSettings
     488 => 'Canon EF-S 15-85mm f/3.5-5.6 IS USM', #PH
     489 => 'Canon EF 70-300mm f/4-5.6L IS USM', #Gerald Kapounek
-    490 => 'Canon EF 8-15mm f/4L USM', #Klaus Reinfeld
+    490 => 'Canon EF 8-15mm f/4L Fisheye USM', #Klaus Reinfeld (PH added "Fisheye")
     491 => 'Canon EF 300mm f/2.8L IS II USM', #42
     492 => 'Canon EF 400mm f/2.8L IS II USM', #PH
     493 => 'Canon EF 500mm f/4L IS II USM or EF 24-105mm f4L IS USM', #PH
@@ -399,6 +399,7 @@ $VERSION = '3.49';
     503 => 'Canon EF 24mm f/2.8 IS USM', #PH
     504 => 'Canon EF 24-70mm f/4L IS USM', #PH
     505 => 'Canon EF 35mm f/2 IS USM', #PH
+    506 => 'Canon EF 400mm f/4 DO IS II USM', #42
     507 => 'Canon EF 16-35mm f/4L IS USM', #42
     508 => 'Canon EF 11-24mm f/4L USM', #PH
     # (STM lenses seem to start with 0x10xx)
@@ -414,6 +415,7 @@ $VERSION = '3.49';
     4150 => 'Canon EF-S 10-18mm f/4.5-5.6 IS STM', #42
     4152 => 'Canon EF 24-105mm f/3.5-5.6 IS STM', #42
     4154 => 'Canon EF-S 24mm f/2.8 STM', #52
+    4156 => 'Canon EF 50mm f/1.8 STM', #42
 );
 
 # Canon model ID numbers (PH)

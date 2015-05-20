@@ -47,7 +47,7 @@ use Image::ExifTool qw(:Utils);
 use Image::ExifTool::Exif;
 require Exporter;
 
-$VERSION = '2.85';
+$VERSION = '2.86';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -888,7 +888,14 @@ my %sCVTermDetails = (
     GROUPS => { 1 => 'XMP-xmpNote' },
     NAMESPACE   => 'xmpNote',
     NOTES => 'XMP Note namespace tags.',
-    HasExtendedXMP => { Writable => 'boolean', Protected => 2 },
+    HasExtendedXMP => {
+        Notes => q{
+            this tag is protected so it is not writable directly.  Instead, it is set
+            automatically to the GUID of the extended XMP when writing extended XMP to a
+            JPEG image
+        },
+        Protected => 2,
+    },
 );
 
 # XMP xmpMM ManifestItem struct (ref PH, written by Adobe PDF library 8.0)
@@ -2075,6 +2082,12 @@ my %sPantryItem = (
         },
     },
     ApproximateFocusDistance => { Writable => 'rational' }, #PH (LR3)
+    # the following new in LR6 (ref forum6497)
+    IsMergedPanorama         => { Writable => 'boolean' },
+    IsMergedHDR              => { Writable => 'boolean' },
+    DistortionCorrectionAlreadyApplied  => { Writable => 'boolean' },
+    VignetteCorrectionAlreadyApplied    => { Writable => 'boolean' },
+    LateralChromaticAberrationCorrectionAlreadyApplied => { Writable => 'boolean' },
 );
 
 # IPTC Core namespace properties (Iptc4xmpCore) (ref 4)
@@ -2892,11 +2905,28 @@ sub PrintLensID(@)
         %$convName or last;
         my $printConv = \%$convName;
         use strict 'refs';
-        my ($minf, $maxf, $maxa, $mina);
+        # sf = short focal
+        # lf = long focal
+        # sa = max aperture at short focal
+        # la = max aperture at long focal
+        my ($sf, $lf, $sa, $la);
         if ($info) {
             my @a = split ' ', $info;
             $_ eq 'undef' and $_ = undef foreach @a;
-            ($minf, $maxf, $maxa, $mina) = @a;
+            ($sf, $lf, $sa, $la) = @a;
+            # for Sony and ambiguous LensID, $info data may be incorrect:
+            # use only if it agrees with $focalLength and $maxAv (ref JR)
+            if ($mk eq 'Sony' and
+                (($focalLength and (($sf and $focalLength < $sf - 0.5) or 
+                                    ($lf and $focalLength > $lf + 0.5))) or
+                 ($maxAv and (($sa and $maxAv < $sa - 0.15) or
+                              ($la and $maxAv > $la + 0.15)))))
+            {
+                undef $sf;
+                undef $lf;
+                undef $sa;
+                undef $la;
+            }
         }
         if ($mk eq 'Pentax' and $id =~ /^\d+$/) {
             # for Pentax, CS4 stores an int16u, but we use 2 x int8u
@@ -2918,7 +2948,7 @@ sub PrintLensID(@)
             $printConv = \%newConv;
         }
         return Image::ExifTool::Exif::PrintLensID($et, $str, $printConv,
-                    undef, $id, $focalLength, $maxa, $maxAv, $minf, $maxf, $lensModel);
+                    undef, $id, $focalLength, $sa, $maxAv, $sf, $lf, $lensModel);
     }
     return "Unknown ($id)";
 }

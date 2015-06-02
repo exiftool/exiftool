@@ -56,7 +56,7 @@ use vars qw($VERSION %pentaxLensTypes);
 use Image::ExifTool::Exif;
 use Image::ExifTool::HP;
 
-$VERSION = '2.91';
+$VERSION = '2.92';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -906,6 +906,7 @@ my %binaryDataAttrs = (
             3 => 'TIFF', #5
             4 => 'RAW', #5
             5 => 'Premium', #PH (K20D)
+            7 => 'RAW (pixel shift enabled)', #forum6536 (K-3 II)
             65535 => 'n/a', #PH (Q MOV video)
         },
     },

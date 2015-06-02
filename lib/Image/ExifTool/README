@@ -201,6 +201,11 @@ is an explanation of the meaning of each special key:
     LONG_TAGS     Suppress "Long tags" warning when generating documentation.
                   Value is the number of long tag names to expect.
 
+    SORT_PROC     Reference to sort procedure for sorting tag ID's in the
+                  documentation.  Takes two arguments and returns -1, 0 or 1
+                  if the first argument is less than, equal to, or greater than
+                  the second argument.
+
   DATAMEMBER : BinaryData tables only.  A reference to a list of sorted tag ID's
   which must be extracted as data members when writing.  Must also list "var_"
   format tags and tags with Hook so offsets are properly calculated if the table
@@ -226,9 +231,9 @@ numerical.
                   tag information hash, the key of the previous tag is changed
                   to the form "TagName (N)", where N starts at 1 and increments
                   for subsequent duplicate tags.  A tag name should start with
-                  an uppercase letter, and contain only the charcters in the set
-                  [A-Za-z0-9_-].  If not given, the Name is taken from the tag
-                  ID with the first character changed to upper case.
+                  an uppercase letter, and contain only the characters in the
+                  set [A-Za-z0-9_-].  If not given, the Name is taken from the
+                  tag ID with the first character changed to upper case.
 
   Description   : A more readable description of tag name.  If a tag doesn't
                   specify a Description, then the tag Name is used instead, with

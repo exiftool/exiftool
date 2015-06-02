@@ -32,10 +32,10 @@ use Image::ExifTool::XMP;
 use Image::ExifTool::Canon;
 use Image::ExifTool::Nikon;
 
-$VERSION = '2.87';
+$VERSION = '2.88';
 @ISA = qw(Exporter);
 
-sub NumbersFirst;
+sub NumbersFirst($$);
 
 my $numbersFirst = 1;   # set to -1 to sort numbers last, or 2 to put negative numbers last
 my $caseInsensitive;    # flag to ignore case when sorting tag names
@@ -767,7 +767,8 @@ sub new
         $caseInsensitive = $isXMP;
         $numbersFirst = 2;
         $numbersFirst = -1 if $$table{VARS} and $$table{VARS}{ALPHA_FIRST};
-        my @keys = sort NumbersFirst TagTableKeys($table);
+        my $sortProc = ($$table{VARS} ? $$table{VARS}{SORT_PROC} : undef) || \&NumbersFirst;
+        my @keys = sort { &$sortProc($a,$b) } TagTableKeys($table);
         $numbersFirst = 1;
         my $defFormat = $table->{FORMAT};
         # use default format for binary data tables
@@ -1062,7 +1063,7 @@ TagID:  foreach $tagID (@keys) {
                             $$printConv{PrintString} = 1 if $$tagInfo{PrintString};
                         } else {
                             $caseInsensitive = 0;
-                            my @pk = sort NumbersFirst keys %$printConv;
+                            my @pk = sort { NumbersFirst($a,$b) } keys %$printConv;
                             my $n = scalar @values;
                             my ($bits, $i);
                             foreach (@pk) {
@@ -1098,7 +1099,7 @@ TagID:  foreach $tagID (@keys) {
                                 }
                             }
                             if ($bits) {
-                                my @pk = sort NumbersFirst keys %$bits;
+                                my @pk = sort { NumbersFirst($a,$b) } keys %$bits;
                                 foreach (@pk) {
                                     push @values, "Bit $_ = " . $$bits{$_};
                                 }
@@ -1121,13 +1122,15 @@ TagID:  foreach $tagID (@keys) {
                                 my @new = splice @values, $n;
                                 my $v = '[!HTML]<table class=cols><tr>';
                                 my $rows = int((scalar(@new) + $cols - 1) / $cols);
-                                for ($n=0; $n<@new; $n+=$rows) {
+                                for ($n=0; ;) {
                                     $v .= "\n  <td>";
                                     for ($i=0; $i<$rows and $n+$i<@new; ++$i) {
                                         $v .= "\n  <br>" if $i;
                                         $v .= EscapeHTML($new[$n+$i]);
                                     }
-                                    $v .= '</td><td>&nbsp;&nbsp;</td>';
+                                    $v .= '</td>';
+                                    last if ($n += $rows) >= @new;
+                                    $v .= '<td>&nbsp;&nbsp;</td>'; # add spaces between columns
                                 }
                                 push @values, $v . "</tr></table>\n";
                             }
@@ -1143,7 +1146,7 @@ TagID:  foreach $tagID (@keys) {
                     if ($@) {
                         warn $@;
                     } else {
-                        my @pk = sort NumbersFirst keys %$bits;
+                        my @pk = sort { NumbersFirst($a,$b) } keys %$bits;
                         foreach (@pk) {
                             push @values, "Bit $_ = " . $$bits{$_};
                         }
@@ -1294,6 +1297,8 @@ TagID:  foreach $tagID (@keys) {
                 }
             } elsif ($short eq 'DICOM') {
                 ($tagIDstr = $tagID) =~ s/_/,/;
+            } elsif ($tagID =~ /^0x([0-9a-f]+)\.(\d+)$/) {  # DR4 tags like '0x20500.0'
+                $tagIDstr = $tagID;
             } else {
                 # convert non-printable characters to hex escape sequences
                 if ($tagID =~ s/([\x00-\x1f\x7f-\xff])/'\x'.unpack('H*',$1)/eg) {
@@ -1530,8 +1535,9 @@ sub WriteTagLookup($$)
 
 #------------------------------------------------------------------------------
 # sort numbers first numerically, then strings alphabetically (case insensitive)
-sub NumbersFirst
+sub NumbersFirst($$)
 {
+    my ($a, $b) = @_;
     my $rtnVal;
     my ($bNum, $bDec);
     ($bNum, $bDec) = ($1, $3) if $b =~ /^(-?[0-9]+)(\.(\d*))?$/;
@@ -1663,7 +1669,8 @@ sub GetTableOrder(@)
         my @moreTables;
         $caseInsensitive = ($$table{GROUPS} and $$table{GROUPS}{0} eq 'XMP');
         $numbersFirst = -1 if $$table{VARS} and $$table{VARS}{ALPHA_FIRST};
-        my @keys = sort NumbersFirst TagTableKeys($table);
+        my $sortProc = ($$table{VARS} ? $$table{VARS}{SORT_PROC} : undef) || \&NumbersFirst;
+        my @keys = sort { &$sortProc($a,$b) } TagTableKeys($table);
         $numbersFirst = 1;
         foreach (@keys) {
             my @infoArray = GetTagInfoList($table,$_);
@@ -1939,7 +1946,7 @@ sub WriteTagNames($$)
                 my $align = ' class=r';
                 my $wid = 0;
                 my @keys;
-                foreach (sort NumbersFirst keys %$printConv) {
+                foreach (sort { NumbersFirst($a,$b) } keys %$printConv) {
                     next if /^(Notes|PrintHex|PrintString|OTHER)$/;
                     $align = '' if $align and /[^\d]/;
                     my $w = length($_) + length($$printConv{$_});
@@ -2266,8 +2273,8 @@ sub WriteTagNames($$)
                 s/^[-=](.+)/$1/ foreach @$writable;
             }
             # add tooltip for hex conversion of Tag ID
-            if ($tagIDstr =~ /^0x[0-9a-f]+$/i) {
-                $tip = sprintf(" title='$tagIDstr = %u'",hex $tagIDstr);
+            if ($tagIDstr =~ /^(0x[0-9a-f]+)(\.\d+)?$/i) {
+                $tip = sprintf(" title='$tagIDstr = %u%s'", hex($1), $2||'');
             } elsif ($tagIDstr =~ /^(\d+)(\.\d*)?$/) {
                 $tip = sprintf(" title='%u = 0x%x'", $1, $1);
             } else {

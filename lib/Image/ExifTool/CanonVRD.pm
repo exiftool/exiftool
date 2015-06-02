@@ -22,7 +22,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Canon;
 
-$VERSION = '1.24';
+$VERSION = '1.25';
 
 sub ProcessCanonVRD($$;$);
 sub WriteCanonVRD($$;$);
@@ -30,6 +30,7 @@ sub ProcessEditData($$$);
 sub ProcessIHL($$$);
 sub ProcessIHLExif($$$);
 sub ProcessDR4($$;$);
+sub SortDR4($$);
 
 # map for adding directories to VRD
 my %vrdMap = (
@@ -66,8 +67,8 @@ my $blankFooter = "CANON OPTIONAL DATA\0" . ("\0" x 42) . "\xff\xd9";
     NOTES => q{
         Canon Digital Photo Professional writes VRD (Recipe Data) information as a
         trailer record to JPEG, TIFF, CRW and CR2 images, or as stand-alone VRD or
-        DR4 files.  The tags listed below represent information found in this
-        record.  The complete VRD/DR4 data record may be accessed as a block using
+        DR4 files.  The tags listed below represent information found in these
+        records.  The complete VRD/DR4 data record may be accessed as a block using
         the Extra 'CanonVRD' or 'CanonDR4' tag, but this tag is not extracted or
         copied unless specified explicitly.
     },
@@ -965,8 +966,13 @@ my $blankFooter = "CANON OPTIONAL DATA\0" . ("\0" x 42) . "\xff\xd9";
     WRITE_PROC => \&ProcessDR4,
     WRITABLE => 1,
     GROUPS => { 2 => 'Image' },
-    VARS => { HEX_ID => 1 },
-    NOTES => 'Tags written by Canon DPP version 4 in CanonVRD trailers and DR4 files.',
+    VARS => { HEX_ID => 1, SORT_PROC => \&SortDR4 },
+    NOTES => q{
+        Tags written by Canon DPP version 4 in CanonVRD trailers and DR4 files. Each
+        tag has three associated flag words which are stored with the directory
+        entry, some of which are extracted as a separate tag, indicated in the table
+        below by a decimal appended to the tag ID (.0, .1 or .2).
+    },
     header => {
         Name => 'DR4Header',
         SubDirectory => { TagTable => 'Image::ExifTool::CanonVRD::DR4Header' },
@@ -1273,8 +1279,8 @@ my $blankFooter = "CANON OPTIONAL DATA\0" . ("\0" x 42) . "\xff\xd9";
             1 => 'Straight',
         },
     },
-    0x03 => { Name => 'ToneCurveInputLevel',  Format => 'int32u[2]', Notes => '255 max' },
-    0x05 => { Name => 'ToneCurveOutputLevel', Format => 'int32u[2]', Notes => '255 max' },
+    0x03 => { Name => 'ToneCurveInputRange',  Format => 'int32u[2]', Notes => '255 max' },
+    0x05 => { Name => 'ToneCurveOutputRange', Format => 'int32u[2]', Notes => '255 max' },
     0x07 => {
         Name => 'RGBCurvePoints',
         Format => 'int32u[21]',
@@ -1344,7 +1350,7 @@ my $blankFooter = "CANON OPTIONAL DATA\0" . ("\0" x 42) . "\xff\xd9";
         PrintConv => 'sprintf("%+.3f", $val)',
         PrintConvInv => '$val',
     },
-    0x0f => { Name => 'GammaCurveOutputLevel', Format => 'double[2]', Notes => '16393 max' },
+    0x0f => { Name => 'GammaCurveOutputRange', Format => 'double[2]', Notes => '16393 max' },
 );
 
 # Version 4 crop information (ref PH)
@@ -1391,6 +1397,28 @@ my $blankFooter = "CANON OPTIONAL DATA\0" . ("\0" x 42) . "\xff\xd9";
     FIRST_ENTRY => 0,
     0x02 => { Name => 'DustDeleteApplied', %noYes },
 );
+
+#------------------------------------------------------------------------------
+# sort DR4 tag ID's for the documentation
+sub SortDR4($$)
+{
+    my ($a, $b) = @_;
+    my ($aHex, $aDec, $bHex, $bDec);
+    ($aHex, $aDec) = ($1, $2) if $a =~ /^(0x[0-9a-f]+)?\.?(\d*?)$/;
+    ($bHex, $bDec) = ($1, $2) if $b =~ /^(0x[0-9a-f]+)?\.?(\d*?)$/;
+    if ($aHex) {
+        return 1 unless defined $bDec;  # $b is 'header';
+        return hex($aHex) <=> hex($bHex) || $aDec <=> $bDec if $bHex;
+        return hex($aHex) <=> $bDec || 1;
+    } elsif ($bHex) {
+        return -1 unless defined $aDec;
+        return $aDec <=> hex($bHex) || -1;
+    } else {
+        return 1 unless defined $bDec;
+        return -1 unless defined $aDec;
+        return $aDec <=> $bDec;
+    }
+}
 
 #------------------------------------------------------------------------------
 # Tone curve print conversion
@@ -1627,7 +1655,7 @@ sub WrapDR4($)
     $val = $blankHeader . "\xff\xff\0\xf7" . Set32u($n+8) . Set32u($n) .
                 $val . "\0\0\0\0" . $blankFooter;
     # update the new VRD length in the header/footer
-    Set32u($n + 16, \$val, 0x18);
+    Set32u($n + 16, \$val, 0x18);  # (extra 16 bytes for the edit record wrapper)
     Set32u($n + 16, \$val, length($val) - 0x2c);
     SetByteOrder($oldOrder);
     return $val;

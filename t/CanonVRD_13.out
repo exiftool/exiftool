@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.96
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.97
 [File, System, Image] FileName - File Name: CanonVRD.dr4
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 5.3 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2015:05:18 15:43:16-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:05:19 20:13:59-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:05:18 15:47:03-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2015:05:18 15:47:02-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2015:05:20 13:35:54-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:05:20 08:47:52-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: DR4
 [File, File, Image] FileTypeExtension - File Type Extension: dr4
@@ -33,8 +33,8 @@
 [CanonVRD, CanonVRD, Image] 131852 - Highlight Adj: 0.5
 [CanonVRD, CanonVRD, Image] 0 - Tone Curve Color Space: Luminance
 [CanonVRD, CanonVRD, Image] 1 - Tone Curve Shape: Straight
-[CanonVRD, CanonVRD, Image] 3 - Tone Curve Input Level: 0 242
-[CanonVRD, CanonVRD, Image] 5 - Tone Curve Output Level: 79 255
+[CanonVRD, CanonVRD, Image] 3 - Tone Curve Input Range: 0 242
+[CanonVRD, CanonVRD, Image] 5 - Tone Curve Output Range: 79 255
 [CanonVRD, CanonVRD, Image] 7 - RGB Curve Points: (0,79) (117,172) (242,255)
 [CanonVRD, CanonVRD, Image] 10 - Tone Curve X: 117
 [CanonVRD, CanonVRD, Image] 11 - Tone Curve Y: 172
@@ -85,7 +85,7 @@
 [CanonVRD, CanonVRD, Image] 12 - Gamma Black Point: +0.000
 [CanonVRD, CanonVRD, Image] 13 - Gamme White Point: -0.000
 [CanonVRD, CanonVRD, Image] 14 - Gamma Mid Point: +0.000
-[CanonVRD, CanonVRD, Image] 15 - Gamma Curve Output Level: 0 16383
+[CanonVRD, CanonVRD, Image] 15 - Gamma Curve Output Range: 0 16383
 [CanonVRD, CanonVRD, Image] 0 - Crop Active: Yes
 [CanonVRD, CanonVRD, Image] 1 - Crop Rotated Original Width: 6089
 [CanonVRD, CanonVRD, Image] 2 - Crop Rotated Original Height: 4740

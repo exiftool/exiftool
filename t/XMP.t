@@ -1,7 +1,7 @@
 # Before "make install", this script should be runnable with "make test".
 # After "make install" it should work as "perl t/XMP.t".
 
-BEGIN { $| = 1; print "1..42\n"; $Image::ExifTool::noConfig = 1; }
+BEGIN { $| = 1; print "1..44\n"; $Image::ExifTool::noConfig = 1; }
 END {print "not ok 1\n" unless $loaded;}
 
 # definitions for user-defined tag test (#26)
@@ -528,6 +528,29 @@ my $testnum = 1;
     my $exifTool = new Image::ExifTool;
     my $info = $exifTool->ImageInfo('t/images/ExtendedXMP.jpg', 'xmp:all');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    print "ok $testnum\n";
+}
+
+# test 43: Read XMP with unusual namespace prefixes
+{
+    ++$testnum;
+    my $exifTool = new Image::ExifTool;
+    my $info = $exifTool->ImageInfo('t/images/XMP6.xmp', 'xmp:all');
+    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    print "ok $testnum\n";
+}
+
+# test 44: Write XMP with unusual namespace prefixes
+{
+    ++$testnum;
+    my $exifTool = new Image::ExifTool;
+    my $testfile = "t/${testname}_${testnum}_failed.xmp";
+    unlink $testfile;
+    $exifTool->SetNewValue('xmp-dc:subject' => 'changed');
+    $exifTool->WriteInfo("t/images/XMP6.xmp", $testfile);
+    my $err = $exifTool->GetValue('Error');
+    warn "\n  $err\n" if $err;
+    print 'not ' unless testCompare("t/XMP_$testnum.out",$testfile,$testnum);
     print "ok $testnum\n";
 }
 

@@ -1,0 +1,48 @@
+<?xpacket begin='﻿' id='W5M0MpCehiHzreSzNTczkc9d'?>
+<!-- using "xmp:xmpmeta" instead of the usual "x:xmpmeta" -->
+<xmp:xmpmeta xmlns:xmp='adobe:ns:meta/' xmp:xmptk='Image::ExifTool 9.97'>
+<rdf:RDF xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'>
+
+ <!-- a non-standard namespace -->
+ <rdf:Description rdf:about=''
+  xmlns:xxxx='http://testtag.com/fish/1.0/'>
+  <xxxx:Test>trout</xxxx:Test>
+ </rdf:Description>
+
+ <!-- a non-standard namespace using an already defined non-standard prefix -->
+ <rdf:Description rdf:about=''
+  xmlns:xxxx='http://testtag.com/feline/1.0/'>
+  <xxxx:Test>tabby</xxxx:Test>
+ </rdf:Description>
+
+ <!-- a standard namespace using the proper (but already defined) standard prefix -->
+ <rdf:Description rdf:about=''
+  xmlns:xmp='http://ns.adobe.com/xap/1.0/'>
+  <xmp:Rating>2</xmp:Rating>
+ </rdf:Description>
+
+ <!-- another standard namespace using the same prefix -->
+ <rdf:Description rdf:about=''
+  xmlns:xmp='http://purl.org/dc/elements/1.1/'>
+  <xmp:subject>
+   <rdf:Bag>
+    <rdf:li>x</rdf:li>
+   </rdf:Bag>
+  </xmp:subject>
+ </rdf:Description>
+
+ <!-- an already-used standard namespace with a different prefix and a non-standard rdf prefix -->
+ <!-- (note: ExifTool currently processes attributes in order, even though the scope of the xmlns
+      should be from the beginning of the element, which is why "z:about" won't yet work below) -->
+ <z:Description rdf:about=''
+  xmlns:y='http://purl.org/dc/elements/1.1/'
+  xmlns:z='http://www.w3.org/1999/02/22-rdf-syntax-ns#'>
+  <y:title>
+   <z:Alt>
+    <z:li xml:lang='x-default'>a title</z:li>
+   </z:Alt>
+  </y:title>
+ </z:Description>
+</rdf:RDF>
+</xmp:xmpmeta>
+<?xpacket end='w'?>

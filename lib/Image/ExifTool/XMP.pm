@@ -47,7 +47,7 @@ use Image::ExifTool qw(:Utils);
 use Image::ExifTool::Exif;
 require Exporter;
 
-$VERSION = '2.86';
+$VERSION = '2.87';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -65,10 +65,6 @@ sub AddFlattenedTags($;$$);
 sub FormatXMPDate($);
 sub ConvertRational($);
 sub ConvertRationalList($);
-
-# namespaces and prefixes currently in effect while parsing the file,
-# and lookup to translate brain-dead-Microsoft-Photo-software prefixes
-my (%curURI, %curNS, %xlatNS);
 
 # lookup for translating to ExifTool namespaces
 # Note: Use $xlatNamespace (only valid during processing) to do the translation
@@ -2624,8 +2620,8 @@ sub GetXMPTagID($;$$)
             $nm =~ s/ .*//; # remove nodeID if it exists
             # all uppercase is ugly, so convert it
             if ($nm !~ /[a-z]/) {
-                my $xlatNS = $$xlatNamespace{$ns} || $ns;
-                my $info = $Image::ExifTool::XMP::Main{$xlatNS};
+                my $xlat = $$xlatNamespace{$ns} || $ns;
+                my $info = $Image::ExifTool::XMP::Main{$xlat};
                 my $table;
                 if (ref $info eq 'HASH' and $$info{SubDirectory}) {
                     $table = GetTagTable($$info{SubDirectory}{TagTable});
@@ -2926,6 +2922,10 @@ sub PrintLensID(@)
                 undef $lf;
                 undef $sa;
                 undef $la;
+            } elsif ($maxAv) {
+                # (using the short-focal-length max aperture in place of MaxAperture
+                # is a bad approximation, so don't do this if MaxApertureValue exists)
+                undef $sa;
             }
         }
         if ($mk eq 'Pentax' and $id =~ /^\d+$/) {
@@ -3154,7 +3154,7 @@ NoLoop:
 
         # add tag Namespace entry for tags in variable-namespace tables
         $$tagInfo{Namespace} = $xns if $xns;
-        if ($curURI{$ns} and $curURI{$ns} =~ m{^http://ns.exiftool.ca/(.*?)/(.*?)/}) {
+        if ($$et{curURI}{$ns} and $$et{curURI}{$ns} =~ m{^http://ns.exiftool.ca/(.*?)/(.*?)/}) {
             my %grps = ( 0 => $1, 1 => $2 );
             # apply a little magic to recover original group names
             # from this exiftool-written RDF/XML file
@@ -3269,6 +3269,7 @@ sub ParseXMPElement($$$;$$$$)
     my ($count, $nItems) = (0, 0);
     my $isWriting = $$et{XMP_CAPTURE};
     my $isSVG = $$et{XMP_IS_SVG};
+    my $saveNS;     # save xlatNS lookup if changed for the scope of this element
 
     # get our parse procs
     my ($attrProc, $foundProc);
@@ -3288,6 +3289,9 @@ sub ParseXMPElement($$$;$$$$)
     # keep track of current nodeID at this nesting level
     my $oldNodeID = $$blankInfo{NodeID};
     pos($$dataPt) = $start;
+
+    # lookup for translating namespace prefixes
+    my $xlatNS = $$et{xlatNS};
 
     Element: for (;;) {
         # all done if there isn't enough data for another element
@@ -3364,42 +3368,55 @@ sub ParseXMPElement($$$;$$$$)
                         }
                     }
                     # tame wild namespace prefixes (patches Microsoft stupidity)
+                    my $newNS;
                     if ($stdNS) {
                         # use standard namespace prefix if pre-defined
                         if ($stdNS ne $ns) {
-                            $xlatNS{$ns} = $stdNS;
-                            $attr = 'xmlns:' . $stdNS;
+                            $newNS = $stdNS;
+                        } elsif ($$xlatNS{$ns}) {
+                            # this prefix is re-defined to the standard prefix in this scope
+                            $newNS = '';
                         }
-                    } elsif ($curNS{$val}) {
-                        # use a consistent prefix for a given namespace URI
-                        if ($curNS{$val} ne $ns) {
-                            $xlatNS{$ns} = $curNS{$val};
-                            $attr = 'xmlns:' . $xlatNS{$ns};
-                        }
+                    } elsif ($$et{curNS}{$val}) {
+                        # use a consistent prefix over the entire XMP for a given namespace URI
+                        $newNS = $$et{curNS}{$val} if $$et{curNS}{$val} ne $ns;
                     } else {
-                        # use unique prefixes for all namespaces
-                        if ($curURI{$ns} or $nsURI{$ns}) {
+                        my $curURI = $$et{curURI};
+                        my $curNS = $$et{curNS};
+                        my $usedNS = $ns;
+                        # use unique prefixes for all namespaces across the entire XMP
+                        if ($$curURI{$ns} or $nsURI{$ns}) {
                             # generate a temporary namespace prefix to resolve any conflict
                             my $i = 0;
-                            ++$i while $curURI{"tmp$i"};
-                            $xlatNS{$ns} = "tmp$i";
-                            $attr = 'xmlns:' . $xlatNS{$ns};
-                            $ns = $xlatNS{$ns};
+                            ++$i while $$curURI{"tmp$i"};
+                            $newNS = $usedNS = "tmp$i";
                         }
                         # keep track of the namespace prefixes and URI's used in this XMP
-                        $curNS{$val} = $ns;
-                        $curURI{$ns} = $val;
+                        $$curNS{$val} = $usedNS;
+                        $$curURI{$usedNS} = $val;
                     }
-                } elsif ($xlatNS{$1}) {
-                    $attr = $xlatNS{$1} . substr($attr, length($1));
+                    if (defined $newNS) {
+                        # save translation used in containing scope if necessary
+                        # create new namespace translation for the scope of this element
+                        $saveNS or $saveNS = $xlatNS, $xlatNS = $$et{xlatNS} = { %$xlatNS };
+                        if (length $newNS) {
+                            # use the new namespace prefix
+                            $$xlatNS{$ns} = $newNS;
+                            $attr = 'xmlns:' . $newNS;
+                        } else {
+                            delete $$xlatNS{$ns};
+                        }
+                    }
+                } elsif ($$xlatNS{$1}) {
+                    $attr = $$xlatNS{$1} . substr($attr, length($1));
                 }
             }
             push @attrs, $attr;    # preserve order
             $attrs{$attr} = $val;
         }
         # tame wild namespace prefixes (patch for Microsoft stupidity)
-        if ($prop =~ /(.*?):/ and $xlatNS{$1}) {
-            $prop = $xlatNS{$1} . substr($prop, length($1));
+        if ($prop =~ /(.*?):/ and $$xlatNS{$1}) {
+            $prop = $$xlatNS{$1} . substr($prop, length($1));
         }
 
         if ($prop eq 'rdf:li') {
@@ -3612,6 +3629,9 @@ sub ParseXMPElement($$$;$$$$)
         ProcessBlankInfo($et, $tagTablePtr, $blankInfo, $isWriting);
         %$blankInfo = ();   # free some memory
     }
+    # restore namespace lookup from the containing scope
+    $$et{xlatNS} = $saveNS if $saveNS;
+
     return $count;  # return the number of elements found at this level
 }
 
@@ -3637,9 +3657,12 @@ sub ProcessXMP($$;$)
     my ($buff, $fmt, $hasXMP, $isXML, $isRDF, $isSVG);
     my $rtnVal = 0;
     my $bom = 0;
-    undef %curURI;
-    undef %curNS;
-    undef %xlatNS;
+
+    # namespaces and prefixes currently in effect while parsing the file,
+    # and lookup to translate brain-dead-Microsoft-Photo-software prefixes
+    $$et{curURI} = { };
+    $$et{curNS}  = { };
+    $$et{xlatNS} = { };
 
     # ignore non-standard XMP while in strict MWG compatibility mode
     if ($Image::ExifTool::MWG::strict and not $$et{XMP_CAPTURE} and
@@ -3961,10 +3984,10 @@ sub ProcessXMP($$;$)
     # reset NO_LIST flag (must do this _after_ RestoreStruct() above)
     delete $$et{NO_LIST};
     delete $$et{XMPParseOpts};
+    delete $$et{curURI};
+    delete $$et{curNS};
+    delete $$et{xlatNS};
 
-    undef %curURI;
-    undef %curNS;
-    undef %xlatNS;
     return $rtnVal;
 }
 

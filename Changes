@@ -7,6 +7,14 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 9.90. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+June 2, 2015 - Version 9.97
+
+  - Added a new Pentax Quality value
+  - Minor improvement to lens identification logic based on XMP information
+  - Changed a few DR4 tag names
+  - Fixed improper scoping of XMP namespace prefixes (so conflicting prefixes
+    are now properly resolved)
+
 May 20, 2015 - Version 9.96
 
   - Added support for CanonVRD version 4 information and DR4 files
@@ -17,7 +25,7 @@ May 20, 2015 - Version 9.96
   - Added a few new QuickTime tags
   - Added a new PentaxModelID and a new Pentax PictureMode
   - Added a few new XMP-aux tags
-  - Decode a couple more DXP tags
+  - Decode a couple more DPX tags
   - Decode NikonCustom tags for D810 firmware version 1.02
   - Improved -htmlDump output for extended XMP and some other JPEG segments
   - Improved a Canon lens name

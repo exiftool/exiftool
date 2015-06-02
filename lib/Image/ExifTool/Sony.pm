@@ -6051,7 +6051,7 @@ my %exposureProgram2010 = (
     },
     0x0000 => {
         Condition => '$$self{Model} !~ /^(NEX-|Lunar|ILCE-|DSC-|Stellar)/',
-        Name => 'MaxAperture',
+        Name => 'MaxAperture', # (at current focal length)
         # seen values from 17 - 48
         ValueConv => '2 ** (($val/8 - 1.06) / 2)',
         ValueConvInv => 'int((log($val) * 2 / log(2) + 1) * 8 + 0.5)',
@@ -6060,7 +6060,7 @@ my %exposureProgram2010 = (
     },
     0x0001 => {
         Condition => '$$self{Model} !~ /^(NEX-|Lunar|ILCE-|DSC-|Stellar)/',
-        Name => 'MinAperture',
+        Name => 'MinAperture', # (at current focal length)
         # seen values from 80 - 95
         ValueConv => '2 ** (($val/8 - 1.06) / 2)',
         ValueConvInv => 'int((log($val) * 2 / log(2) + 1) * 8 + 0.5)',
@@ -6800,7 +6800,7 @@ my %exposureProgram2010 = (
         PrintConvInv => '$val',
     },
     0x0016 => {
-        Name => 'SonyMaxApertureValue',
+        Name => 'SonyMaxApertureValue', # (at current focal length)
         Format => 'int16u',
         ValueConv => '2 ** (($val/256 - 16) / 2)',
         ValueConvInv => '(log($val)*2/log(2)+16)*256',

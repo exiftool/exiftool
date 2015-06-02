@@ -6429,8 +6429,8 @@ well as newer tags and values added by later models.
 
 Canon Digital Photo Professional writes VRD (Recipe Data) information as a
 trailer record to JPEG, TIFF, CRW and CR2 images, or as stand-alone VRD or
-DR4 files.  The tags listed below represent information found in this
-record.  The complete VRD/DR4 data record may be accessed as a block using
+DR4 files.  The tags listed below represent information found in these
+records.  The complete VRD/DR4 data record may be accessed as a block using
 the Extra 'CanonVRD' or 'CanonDR4' tag, but this tag is not extracted or
 copied unless specified explicitly.
 
@@ -6676,76 +6676,85 @@ Canon DPP version 4 edit information.
 
 =head3 CanonVRD DR4 Tags
 
-Tags written by Canon DPP version 4 in CanonVRD trailers and DR4 files.
+Tags written by Canon DPP version 4 in CanonVRD trailers and DR4 files. Each
+tag has three associated flag words which are stored with the directory
+entry, some of which are extracted as a separate tag, indicated in the table
+below by a decimal appended to the tag ID (.0, .1 or .2).
 
-  Tag ID              Tag Name                  Writable
-  ------              --------                  --------
-  0x10002             Rotation                  Y
-  0x10003             AngleAdj                  Y
-  0x10021             CustomPictureStyle        Y
-  0x10101             CheckMark                 Y
-  0x10200             WorkColorSpace            Y
-  0x20001             RawBrightnessAdj          Y
-  0x20101             WhiteBalanceAdj           Y
-  0x20102             WBAdjColorTemp            Y
-  0x20105             WBAdjMagentaGreen         Y
-  0x20106             WBAdjBlueAmber            Y
-  0x20125             WBAdjRGGBLevels           Y
-  0x20200             GammaLinear               Y
-  0x20301             PictureStyle              Y
-  0x20303             ContrastAdj               Y
-  0x20304             ColorToneAdj              Y
-  0x20305             ColorSaturationAdj        Y
-  0x20306             MonochromeToningEffect    Y
-  0x20307             MonochromeFilterEffect    Y
-  0x20308             UnsharpMaskStrength       Y
-  0x20309             UnsharpMaskFineness       Y
-  0x2030a             UnsharpMaskThreshold      Y
-  0x2030b             ShadowAdj                 Y
-  0x2030c             HighlightAdj              Y
-  0x20310             SharpnessAdj              Y
-  0x20311             SharpnessStrength         Y
-  0x20400             ToneCurve                 CanonVRD ToneCurve
-  0x20410             ToneCurveBrightness       Y
-  0x20411             ToneCurveContrast         Y
-  0x20500             AutoLightingOptimizer     Y
-  0x20600             LuminanceNoiseReduction   Y
-  0x20601             ChrominanceNoiseReduction Y
-  0x20701             ShootingDistance          Y
-  0x20702             PeripheralIllumination    Y
-  0x20703             ChromaticAberration       Y
-  0x20704             ColorBlurOn               Y
-  0x20705             DistortionCorrection      Y
-  0x20706             DLOSetting                Y
-  0x20707             ChromaticAberrationRed    Y
-  0x20708             ChromaticAberrationBlue   Y
-  0x20709             DistortionEffect          Y
-  0x20900             ColorHue                  Y
-  0x20901             SaturationAdj             Y
-  0x20910             RedHSL                    Y
-  0x20911             OrangeHSL                 Y
-  0x20912             GreenHSL                  Y
-  0x20913             AquaHSL                   Y
-  0x20914             BlueHSL                   Y
-  0x20915             BlueHSL                   Y
-  0x20916             PurpleHSL                 Y
-  0x20917             MagentaHSL                Y
-  0x20a00             GammaInfo                 CanonVRD GammaInfo
-  0x30101             CropAspectRatio           Y
-  0x30102             CropAspectRatioCustom     Y
-  0xf0100             CropInfo                  CanonVRD CropInfo
-  0xf0500             CustomPictureStyleData    Y
-  0xf0510             StampInfo                 CanonVRD StampInfo
-  0xf0511             DustInfo                  CanonVRD DustInfo
-  0xf0512             LensFocalLength           Y
-  '0x20310.0'         SharpnessAdjOn            Y
-  '0x20400.1'         ToneCurveOriginal         Y
-  '0x20500.0'         AutoLightingOptimizerOn   Y
-  '0x20702.0'         PeripheralIlluminationOn  Y
-  '0x20703.0'         ChromaticAberrationOn     Y
-  '0x20705.0'         DistortionCorrectionOn    Y
-  '0x20706.0'         DLOOn                     Y
-  'header'            DR4Header                 CanonVRD DR4Header
+  Tag ID       Tag Name                         Writable
+  ------       --------                         --------
+  'header'     DR4Header                        CanonVRD DR4Header
+  0x10002      Rotation                         Y
+  0x10003      AngleAdj                         Y
+  0x10021      CustomPictureStyle               Y
+  0x10101      CheckMark                        Y
+  0x10200      WorkColorSpace                   Y
+  0x20001      RawBrightnessAdj                 Y
+  0x20101      WhiteBalanceAdj                  Y
+  0x20102      WBAdjColorTemp                   Y
+  0x20105      WBAdjMagentaGreen                Y
+  0x20106      WBAdjBlueAmber                   Y
+  0x20125      WBAdjRGGBLevels                  Y
+  0x20200      GammaLinear                      Y
+  0x20301      PictureStyle                     Y
+  0x20303      ContrastAdj                      Y
+  0x20304      ColorToneAdj                     Y
+  0x20305      ColorSaturationAdj               Y
+  0x20306      MonochromeToningEffect           Y
+  0x20307      MonochromeFilterEffect           Y
+  0x20308      UnsharpMaskStrength              Y
+  0x20309      UnsharpMaskFineness              Y
+  0x2030a      UnsharpMaskThreshold             Y
+  0x2030b      ShadowAdj                        Y
+  0x2030c      HighlightAdj                     Y
+  0x20310      SharpnessAdj                     Y
+  0x20310.0    SharpnessAdjOn                   Y
+  0x20311      SharpnessStrength                Y
+  0x20400      ToneCurve                        CanonVRD ToneCurve
+  0x20400.1    ToneCurveOriginal                Y
+  0x20410      ToneCurveBrightness              Y
+  0x20411      ToneCurveContrast                Y
+  0x20500      AutoLightingOptimizer            Y
+  0x20500.0    AutoLightingOptimizerOn          Y
+  0x20600      LuminanceNoiseReduction          Y
+  0x20601      ChrominanceNoiseReduction        Y
+  0x20701      ShootingDistance                 Y
+  0x20702      PeripheralIllumination           Y
+  0x20702.0    PeripheralIlluminationOn         Y
+  0x20703      ChromaticAberration              Y
+  0x20703.0    ChromaticAberrationOn            Y
+  0x20704      ColorBlurOn                      Y
+  0x20705      DistortionCorrection             Y
+  0x20705.0    DistortionCorrectionOn           Y
+  0x20706      DLOSetting                       Y
+  0x20706.0    DLOOn                            Y
+  0x20707      ChromaticAberrationRed           Y
+  0x20708      ChromaticAberrationBlue          Y
+  0x20709      DistortionEffect                 Y
+  0x20900      ColorHue                         Y
+  0x20901      SaturationAdj                    Y
+  0x20910      RedHSL                           Y
+  0x20911      OrangeHSL                        Y
+  0x20912      GreenHSL                         Y
+  0x20913      AquaHSL                          Y
+  0x20914      BlueHSL                          Y
+  0x20915      BlueHSL                          Y
+  0x20916      PurpleHSL                        Y
+  0x20917      MagentaHSL                       Y
+  0x20a00      GammaInfo                        CanonVRD GammaInfo
+  0x30101      CropAspectRatio                  Y
+  0x30102      CropAspectRatioCustom            Y
+  0xf0100      CropInfo                         CanonVRD CropInfo
+  0xf0500      CustomPictureStyleData           Y
+  0xf0510      StampInfo                        CanonVRD StampInfo
+  0xf0511      DustInfo                         CanonVRD DustInfo
+  0xf0512      LensFocalLength                  Y
+
+=head3 CanonVRD DR4Header Tags
+
+  Index4   Tag Name                             Writable
+  ------   --------                             --------
+      3    DR4CameraModel                       int32u
 
 =head3 CanonVRD ToneCurve Tags
 
@@ -6753,8 +6762,8 @@ Tags written by Canon DPP version 4 in CanonVRD trailers and DR4 files.
   ------   --------                             --------
       0    ToneCurveColorSpace                  int32u
       1    ToneCurveShape                       int32u
-      3    ToneCurveInputLevel                  int32u[2]
-      5    ToneCurveOutputLevel                 int32u[2]
+      3    ToneCurveInputRange                  int32u[2]
+      5    ToneCurveOutputRange                 int32u[2]
       7    RGBCurvePoints                       int32u[21]
      10    ToneCurveX                           int32u
      11    ToneCurveY                           int32u
@@ -6778,7 +6787,7 @@ Tags written by Canon DPP version 4 in CanonVRD trailers and DR4 files.
      12    GammaBlackPoint                      double
      13    GammeWhitePoint                      double
      14    GammaMidPoint                        double
-     15    GammaCurveOutputLevel                double[2]
+     15    GammaCurveOutputRange                double[2]
 
 =head3 CanonVRD CropInfo Tags
 
@@ -6806,12 +6815,6 @@ Tags written by Canon DPP version 4 in CanonVRD trailers and DR4 files.
   Index4   Tag Name                             Writable
   ------   --------                             --------
       2    DustDeleteApplied                    N
-
-=head3 CanonVRD DR4Header Tags
-
-  Index4   Tag Name                             Writable
-  ------   --------                             --------
-      3    DR4CameraModel                       int32u
 
 =head2 Casio Tags
 

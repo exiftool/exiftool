@@ -18,7 +18,7 @@ use strict;
 use vars qw($VERSION %sigmaLensTypes);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.16';
+$VERSION = '1.17';
 
 # sigma LensType lookup (ref 3)
 %sigmaLensTypes = (
@@ -140,6 +140,7 @@ $VERSION = '1.16';
     1006 => 'Sigma 19mm F2.8', #2 (DP1 Quattro kit)
     1007 => 'Sigma 30mm F2.8', #PH (DP2 Quattro kit)
     1008 => 'Sigma 50mm F2.8 Macro', #2 (DP3 Quattro kit)
+    1009 => 'Sigma 14mm F4', #2 (DP0 Quattro kit)
     8900 => 'Sigma 70-300mm F4-5.6 DG OS', #PH (SD15)
    'A100'=> 'Sigma 24-70mm F2.8 DG Macro', #PH (SD15)
     # 'FFFF' - seen this for a 28-70mm F2.8 lens - PH

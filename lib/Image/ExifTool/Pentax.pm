@@ -2919,8 +2919,12 @@ my %binaryDataAttrs = (
         PrintConv => { 0 => 'Off', 1 => 'On' },
     },
     2 => {
-        Name => 'VignettingCorrection',
+        Name => 'PeripheralIlluminationCorr',
         PrintConv => { 0 => 'Off', 1 => 'On' },
+    },
+    3 => {
+        Name => 'DiffractionCorrection',
+        PrintConv => { 0 => 'Off', 16 => 'On' },
     },
 );
 

@@ -12,7 +12,7 @@
 use strict;
 require 5.004;
 
-my $version = '9.97';
+my $version = '9.98';
 
 # add our 'lib' directory to the include list BEFORE 'use Image::ExifTool'
 my $exeDir;
@@ -1542,7 +1542,7 @@ if (@fileOrder) {
         foreach (@tags) {
             $_ = $$info{$_};
             defined $_ or $_ = '~', next;
-            $isFloat{$_} = 1 if /^[+-]?(?=\d|\.\d)\d*(\.\d*)?([Ee]([+-]?\d+))?$/;
+            $isFloat{$_} = Image::ExifTool::IsFloat($_);
         }
         $sortBy{$file} = \@tags;    # save tag values for each file
     }
@@ -3869,40 +3869,41 @@ supported by ExifTool (r = read, w = write, c = create):
 
   File Types
   ------------+-------------+-------------+-------------+------------
-  3FR   r     | DVB   r/w   | KDC   r     | OGG   r     | RSRC  r
-  3G2   r/w   | DYLIB r     | KEY   r     | OGV   r     | RTF   r
-  3GP   r/w   | EIP   r     | LA    r     | ORF   r/w   | RW2   r/w
-  AA    r     | EPS   r/w   | LFP   r     | OTF   r     | RWL   r/w
-  AAX   r/w   | EPUB  r     | LNK   r     | PAC   r     | RWZ   r
-  ACR   r     | ERF   r/w   | M2TS  r     | PAGES r     | RM    r
-  AFM   r     | EXE   r     | M4A/V r/w   | PBM   r/w   | SEQ   r
-  AI    r/w   | EXIF  r/w/c | MEF   r/w   | PCD   r     | SO    r
-  AIFF  r     | EXR   r     | MIE   r/w/c | PDB   r     | SR2   r/w
-  APE   r     | EXV   r/w/c | MIFF  r     | PDF   r/w   | SRF   r
-  ARW   r/w   | F4A/V r/w   | MKA   r     | PEF   r/w   | SRW   r/w
-  ASF   r     | FFF   r/w   | MKS   r     | PFA   r     | SVG   r
-  AVI   r     | FLA   r     | MKV   r     | PFB   r     | SWF   r
-  AZW   r     | FLAC  r     | MNG   r/w   | PFM   r     | THM   r/w
-  BMP   r     | FLV   r     | MOBI  r     | PGF   r     | TIFF  r/w
-  BTF   r     | FPF   r     | MODD  r     | PGM   r/w   | TORRENT r
-  CHM   r     | FPX   r     | MOI   r     | PLIST r     | TTC   r
-  COS   r     | GIF   r/w   | MOS   r/w   | PICT  r     | TTF   r
-  CR2   r/w   | GZ    r     | MOV   r/w   | PMP   r     | VCF   r
-  CRW   r/w   | HDP   r/w   | MP3   r     | PNG   r/w   | VRD   r/w/c
-  CS1   r/w   | HDR   r     | MP4   r/w   | PPM   r/w   | VSD   r
-  DCM   r     | HTML  r     | MPC   r     | PPT   r     | WAV   r
-  DCP   r/w   | ICC   r/w/c | MPG   r     | PPTX  r     | WDP   r/w
-  DCR   r     | ICS   r     | MPO   r/w   | PS    r/w   | WEBP  r
-  DFONT r     | IDML  r     | MQV   r/w   | PSB   r/w   | WEBM  r
-  DIVX  r     | IIQ   r/w   | MRW   r/w   | PSD   r/w   | WMA   r
-  DJVU  r     | IND   r/w   | MXF   r     | PSP   r     | WMV   r
-  DLL   r     | INX   r     | NEF   r/w   | QTIF  r/w   | WV    r
-  DNG   r/w   | ITC   r     | NRW   r/w   | RA    r     | X3F   r/w
-  DOC   r     | J2C   r     | NUMBERS r   | RAF   r/w   | XCF   r
-  DOCX  r     | JNG   r/w   | ODP   r     | RAM   r     | XLS   r
-  DPX   r     | JP2   r/w   | ODS   r     | RAR   r     | XLSX  r
-  DR4   r/w/c | JPEG  r/w   | ODT   r     | RAW   r/w   | XMP   r/w/c
-  DV    r     | K25   r     | OFR   r     | RIFF  r     | ZIP   r
+  3FR   r     | DVB   r/w   | KEY   r     | ORF   r/w   | RWL   r/w
+  3G2   r/w   | DYLIB r     | LA    r     | OTF   r     | RWZ   r
+  3GP   r/w   | EIP   r     | LFP   r     | PAC   r     | RM    r
+  AA    r     | EPS   r/w   | LNK   r     | PAGES r     | SEQ   r
+  AAX   r/w   | EPUB  r     | M2TS  r     | PBM   r/w   | SO    r
+  ACR   r     | ERF   r/w   | M4A/V r/w   | PCD   r     | SR2   r/w
+  AFM   r     | EXE   r     | MEF   r/w   | PDB   r     | SRF   r
+  AI    r/w   | EXIF  r/w/c | MIE   r/w/c | PDF   r/w   | SRW   r/w
+  AIFF  r     | EXR   r     | MIFF  r     | PEF   r/w   | SVG   r
+  APE   r     | EXV   r/w/c | MKA   r     | PFA   r     | SWF   r
+  ARW   r/w   | F4A/V r/w   | MKS   r     | PFB   r     | THM   r/w
+  ASF   r     | FFF   r/w   | MKV   r     | PFM   r     | TIFF  r/w
+  AVI   r     | FLA   r     | MNG   r/w   | PGF   r     | TORRENT r
+  AZW   r     | FLAC  r     | MOBI  r     | PGM   r/w   | TTC   r
+  BMP   r     | FLV   r     | MODD  r     | PLIST r     | TTF   r
+  BTF   r     | FPF   r     | MOI   r     | PICT  r     | VCF   r
+  CHM   r     | FPX   r     | MOS   r/w   | PMP   r     | VRD   r/w/c
+  COS   r     | GIF   r/w   | MOV   r/w   | PNG   r/w   | VSD   r
+  CR2   r/w   | GZ    r     | MP3   r     | PPM   r/w   | WAV   r
+  CRW   r/w   | HDP   r/w   | MP4   r/w   | PPT   r     | WDP   r/w
+  CS1   r/w   | HDR   r     | MPC   r     | PPTX  r     | WEBP  r
+  DCM   r     | HTML  r     | MPG   r     | PS    r/w   | WEBM  r
+  DCP   r/w   | ICC   r/w/c | MPO   r/w   | PSB   r/w   | WMA   r
+  DCR   r     | ICS   r     | MQV   r/w   | PSD   r/w   | WMV   r
+  DFONT r     | IDML  r     | MRW   r/w   | PSP   r     | WV    r
+  DIVX  r     | IIQ   r/w   | MXF   r     | QTIF  r/w   | X3F   r/w
+  DJVU  r     | IND   r/w   | NEF   r/w   | RA    r     | XCF   r
+  DLL   r     | INX   r     | NRW   r/w   | RAF   r/w   | XLS   r
+  DNG   r/w   | ITC   r     | NUMBERS r   | RAM   r     | XLSX  r
+  DOC   r     | J2C   r     | ODP   r     | RAR   r     | XMP   r/w/c
+  DOCX  r     | JNG   r/w   | ODS   r     | RAW   r/w   | ZIP   r
+  DPX   r     | JP2   r/w   | ODT   r     | RIFF  r     |
+  DR4   r/w/c | JPEG  r/w   | OFR   r     | RSRC  r     |
+  DSS   r     | K25   r     | OGG   r     | RTF   r     |
+  DV    r     | KDC   r     | OGV   r     | RW2   r/w   |
 
   Meta Information
   ----------------------+----------------------+---------------------
@@ -4668,7 +4669,7 @@ with this command:
 
 produces output like this:
 
-    -- Generated by ExifTool 9.97 --
+    -- Generated by ExifTool 9.98 --
     File: a.jpg - 2003:10:31 15:44:19
     (f/5.6, 1/60s, ISO 100)
     File: b.jpg - 2006:05:23 11:57:38
@@ -5050,11 +5051,11 @@ I<TAG>.  For example, to process files in order of date:
     exiftool -fileOrder DateTimeOriginal DIR
 
 Additional B<-fileOrder> options may be added for secondary sort keys. 
-Floating point values are sorted numerically, and all other values are
-sorted alphabetically.  The sort order may be reversed by prefixing the tag
-name with a C<-> (eg. C<-fileOrder -createdate>).  Print conversion of the
-sorted values is disabled with the B<-n> option, or a C<#> appended to the
-tag name.  Other formatting options (eg. B<-d>) have no effect on the sorted
+Numbers are sorted numerically, and all other values are sorted
+alphabetically.  The sort order may be reversed by prefixing the tag name
+with a C<-> (eg. C<-fileOrder -createdate>).  Print conversion of the sorted
+values is disabled with the B<-n> option, or a C<#> appended to the tag
+name.  Other formatting options (eg. B<-d>) have no effect on the sorted
 values.  Note that the B<-fileOrder> option has a large performance impact
 since it involves an additional processing pass of each file.
 

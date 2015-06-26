@@ -58,7 +58,7 @@ use vars qw($VERSION %nikonLensIDs %nikonTextEncoding);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '3.06';
+$VERSION = '3.07';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -1382,8 +1382,11 @@ my %binaryDataAttrs = (
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ShotInfoD810',
                 DecryptStart => 4,
-                DecryptLen => 0x1984,
-                ByteOrder => 'BigEndian',
+                # initially only decrypt enough to extract CustomSettingsOffset
+                DecryptLen => 0x40,
+                # then decrypt through to the end of the custom settings
+                DecryptMore => 'Get32u(\$data, 0x40) + 53 + 4',
+                ByteOrder => 'LittleEndian',
             },
         },
         # 0217 - D3000
@@ -4538,8 +4541,8 @@ my %nikonFocalConversions = (
     WRITE_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     VARS => { ID_LABEL => 'Index' },
-    DATAMEMBER => [ 4 ],
-    IS_SUBDIR => [ 0x18ab, 0x194b ],
+    DATAMEMBER => [ 0x40, 0x175e ],
+    IS_SUBDIR => [ 0x18ab ],
     WRITABLE => 1,
     FIRST_ENTRY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
@@ -4551,15 +4554,20 @@ my %nikonFocalConversions = (
     },
     0x04 => {
         Name => 'FirmwareVersion',
-        DataMember => 'FirmwareVersion',
         Format => 'string[5]',
         Writable => 0,
-        RawConv => '$$self{FirmwareVersion} = $val',
     },
-    0x16be => { # metering mode
+    # 0x0c - number of entries in offset table (= 0x21)
+    # 0x10 - int32u[val 0x0c]: offset table
+    0x40 => {
+        Name => 'CustomSettingsOffset', # (relative offset from start of ShotInfo data)
+        DataMember => 'CustomSettingsOffset',
+        Format => 'int32u',
+        Writable => 0,
+        RawConv => '$$self{CustomSettingsOffset} = $val',
+    },
+    0x175e => {
         Name => 'D810MeteringMode',
-        Condition => '$$self{FirmwareVersion} =~ /^1.00/',
-        Notes => 'firmware version 1.00',
         Mask => 0x03,
         PrintConv => {
             0 => 'Matrix',
@@ -4567,38 +4575,17 @@ my %nikonFocalConversions = (
             2 => 'Spot',
             3 => 'Highlight'
         },
+        Hook => '$varSize += $$self{CustomSettingsOffset} - 0x18ab',
     },
-    0x175e => { # metering mode
-        Name => 'D810MeteringMode',
-        Condition => '$$self{FirmwareVersion} !~ /^1.00/',
-        Notes => 'firmware version 1.01 and 1.02',
-        Mask => 0x03,
-        PrintConv => {
-            0 => 'Matrix',
-            1 => 'Center',
-            2 => 'Spot',
-            3 => 'Highlight'
-        },
-    },
-    0x18ab => { 
+    0x18ab => { # (actual offset adjusted by Hook above)
         Name => 'CustomSettingsD810',
-        Condition => '$$self{FirmwareVersion} =~ /^1.00/',
-        Notes => 'firmware version 1.00',
+        Notes => 'actual offset determined by CustomSettingsOffset',
         Format => 'undef[53]',
         SubDirectory => {
             TagTable => 'Image::ExifTool::NikonCustom::SettingsD810',
         },
     },
-    0x194b => { 
-        Name => 'CustomSettingsD810',
-        Condition => '$$self{FirmwareVersion} !~ /^1.00/',
-        Notes => 'firmware version 1.01 and 1.02',
-        Format => 'undef[53]',
-        SubDirectory => {
-            TagTable => 'Image::ExifTool::NikonCustom::SettingsD810',
-        },
-    },
-    # note: DecryptLen currently set to 0x1984
+    # note: DecryptMore currently set to 53+4 bytes after CustomSettingsOffset
 );
 
 # shot information for the D4 firmware 1.00g (ref PH)
@@ -6339,7 +6326,8 @@ sub Decrypt($$$;$$)
     my ($i, $dat);
 
     $start or $start = 0;
-    $len = length($$dataPt) - $start if not defined $len or $len > length($$dataPt) - $start;
+    my $maxLen = length($$dataPt) - $start;
+    $len = $maxLen if not defined $len or $len > $maxLen;
     return $$dataPt if $len <= 0;
     my $key = 0;
     for ($i=0; $i<4; ++$i) {
@@ -6436,9 +6424,10 @@ sub ProcessNikonEncrypted($$$)
     }
     my $verbose = $$dirInfo{IsWriting} ? 0 : $et->Options('Verbose');
     my $tagInfo = $$dirInfo{TagInfo};
-    my $data = substr(${$$dirInfo{DataPt}}, $$dirInfo{DirStart}, $$dirInfo{DirLen});
+    my $dirStart = $$dirInfo{DirStart};
+    my $data = substr(${$$dirInfo{DataPt}}, $dirStart, $$dirInfo{DirLen});
 
-    my ($start, $len, $offset, $byteOrder, $recrypt, $newSerial, $newCount);
+    my ($start, $len, $more, $offset, $byteOrder, $recrypt, $newSerial, $newCount);
 
     # must re-encrypt when writing if serial number or shutter count changes
     if ($$dirInfo{IsWriting}) {
@@ -6456,28 +6445,47 @@ sub ProcessNikonEncrypted($$$)
         # may decrypt only part of the information to save time
         if ($verbose < 3 and $et->Options('Unknown') < 2 and not $recrypt) {
             $len = $$tagInfo{SubDirectory}{DecryptLen};
+            $more = $$tagInfo{SubDirectory}{DecryptMore};
         }
         $offset = $$tagInfo{SubDirectory}{DirOffset};
         $byteOrder = $$tagInfo{SubDirectory}{ByteOrder};
     }
     $start or $start = 0;
     if (defined $offset) {
-        # offset, if specified, is releative to start of encrypted data
+        # offset, if specified, is relative to start of encrypted data
         $offset += $start;
     } else {
         $offset = 0;
     }
     my $maxLen = length($data) - $start;
     # decrypt all the data unless DecryptLen is given
-    $len = $maxLen unless $len and $len <= $maxLen;
+    unless ($len and $len < $maxLen) {
+        $len = $maxLen;
+        undef $more;    # (can't decrypt more than this)
+    }
 
     $data = Decrypt(\$data, $serial, $count, $start, $len);
 
+    # set appropriate byte ordering before evaluating DecryptMore
+    my $oldOrder = GetByteOrder();
+    SetByteOrder($byteOrder) if $byteOrder;
+
+    if ($more) {
+        #### eval DecryptMore ($data)
+        my $moreLen = eval $more;
+        $moreLen = $maxLen if $moreLen > $maxLen;
+        # re-decrypt with new length
+        if ($len < $moreLen) {
+            $len = $moreLen;
+            $data = substr(${$$dirInfo{DataPt}}, $dirStart, $$dirInfo{DirLen});
+            $data = Decrypt(\$data, $serial, $count, $start, $len);
+        }
+    }
     if ($verbose > 2) {
         $et->VerboseDir("Decrypted $$tagInfo{Name}");
         $et->VerboseDump(\$data,
             Prefix  => $$et{INDENT} . '  ',
-            DataPos => $$dirInfo{DirStart} + $$dirInfo{DataPos} + ($$dirInfo{Base} || 0),
+            DataPos => $dirStart + $$dirInfo{DataPos} + ($$dirInfo{Base} || 0),
         );
     }
     # process the decrypted information
@@ -6486,12 +6494,10 @@ sub ProcessNikonEncrypted($$$)
         DirStart => $offset,
         DirLen   => length($data) - $offset,
         DirName  => $$dirInfo{DirName},
-        DataPos  => $$dirInfo{DataPos} + $$dirInfo{DirStart},
+        DataPos  => $$dirInfo{DataPos} + $dirStart,
         Base     => $$dirInfo{Base},
     );
     my $rtnVal;
-    my $oldOrder = GetByteOrder();
-    SetByteOrder($byteOrder) if $byteOrder;
     if ($$dirInfo{IsWriting}) {
         my $changed = $$et{CHANGED};
         $rtnVal = $et->WriteBinaryData(\%subdirInfo, $tagTablePtr);

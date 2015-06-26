@@ -41,13 +41,13 @@
 package Image::ExifTool::XMP;
 
 use strict;
-use vars qw($VERSION $AUTOLOAD @ISA @EXPORT_OK $xlatNamespace %nsURI %dateTimeInfo
+use vars qw($VERSION $AUTOLOAD @ISA @EXPORT_OK %stdXlatNS %nsURI %dateTimeInfo
             %xmpTableDefaults %specialStruct %sDimensions %sArea %sColorant);
 use Image::ExifTool qw(:Utils);
 use Image::ExifTool::Exif;
 require Exporter;
 
-$VERSION = '2.87';
+$VERSION = '2.88';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -67,8 +67,7 @@ sub ConvertRational($);
 sub ConvertRationalList($);
 
 # lookup for translating to ExifTool namespaces
-# Note: Use $xlatNamespace (only valid during processing) to do the translation
-my %stdXlatNS = (
+%stdXlatNS = (
     # shorten ugly namespace prefixes
     'Iptc4xmpCore' => 'iptcCore',
     'Iptc4xmpExt' => 'iptcExt',
@@ -2620,7 +2619,7 @@ sub GetXMPTagID($;$$)
             $nm =~ s/ .*//; # remove nodeID if it exists
             # all uppercase is ugly, so convert it
             if ($nm !~ /[a-z]/) {
-                my $xlat = $$xlatNamespace{$ns} || $ns;
+                my $xlat = $stdXlatNS{$ns} || $ns;
                 my $info = $Image::ExifTool::XMP::Main{$xlat};
                 my $table;
                 if (ref $info eq 'HASH' and $$info{SubDirectory}) {
@@ -3017,7 +3016,7 @@ sub FoundXMP($$$$;$)
     return 0 unless $tag;   # ignore things that aren't valid tags
 
     # translate namespace if necessary
-    $ns = $$xlatNamespace{$ns} if $$xlatNamespace{$ns};
+    $ns = $stdXlatNS{$ns} if $stdXlatNS{$ns};
     my $info = $$tagTablePtr{$ns};
     my ($table, $added, $xns, $tagID);
     if ($info) {
@@ -3104,7 +3103,7 @@ NoLoop:
                 # 2) add new entry in this tag table, but with namespace prefix on tag ID
                 my $n = $nsList[$i+1];  # namespace of structure field
                 # translate to standard ExifTool namespace
-                $n = $$xlatNamespace{$n} if $$xlatNamespace{$n};
+                $n = $stdXlatNS{$n} if $stdXlatNS{$n};
                 my $xn = $xmpNS{$n} || $n;  # standard XMP namespace
                 # no need to continue with variable-namespace logic if
                 # we are in our own namespace (right?)
@@ -3930,9 +3929,6 @@ sub ProcessXMP($$;$)
         $dirLen = length $$dataPt;
         $dirEnd = $dirStart + $dirLen;
     }
-    # initialize namespace translation
-    $xlatNamespace = \%stdXlatNS;
-
     # avoid scanning for XMP later in case ScanForXMP is set
     $$et{FoundXMP} = 1 if $tagTablePtr eq \%Image::ExifTool::XMP::Main;
 

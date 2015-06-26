@@ -32,10 +32,11 @@ use Image::ExifTool::XMP;
 use Image::ExifTool::Canon;
 use Image::ExifTool::Nikon;
 
-$VERSION = '2.88';
+$VERSION = '2.89';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
+sub SortedTagTablekeys($);
 
 my $numbersFirst = 1;   # set to -1 to sort numbers last, or 2 to put negative numbers last
 my $caseInsensitive;    # flag to ignore case when sorting tag names
@@ -767,8 +768,7 @@ sub new
         $caseInsensitive = $isXMP;
         $numbersFirst = 2;
         $numbersFirst = -1 if $$table{VARS} and $$table{VARS}{ALPHA_FIRST};
-        my $sortProc = ($$table{VARS} ? $$table{VARS}{SORT_PROC} : undef) || \&NumbersFirst;
-        my @keys = sort { &$sortProc($a,$b) } TagTableKeys($table);
+        my @keys = SortedTagTableKeys($table);
         $numbersFirst = 1;
         my $defFormat = $table->{FORMAT};
         # use default format for binary data tables
@@ -1643,6 +1643,29 @@ sub TweakOrder($$)
 }
 
 #------------------------------------------------------------------------------
+# Get a list of sorted tag ID's from a table
+# Inputs: 0) tag table ref
+# Returns: list of sorted keys
+sub SortedTagTableKeys($)
+{
+    my $table = shift;
+    my $vars = $$table{VARS} || { };
+    my @keys = TagTableKeys($table);
+    if ($$vars{NO_ID}) {
+        # sort by tag name if ID not shown
+        my ($key, %name);
+        foreach $key (@keys) {
+            my ($tagInfo) = GetTagInfoList($table, $key);
+            $name{$key} = $$tagInfo{Name};
+        }
+        return sort { $name{$a} cmp $name{$b} or $a cmp $b } @keys;
+    } else {
+        my $sortProc = $$vars{SORT_PROC} || \&NumbersFirst;
+        return sort { &$sortProc($a,$b) } @keys;
+    }
+}
+
+#------------------------------------------------------------------------------
 # Get the order that we want to print the tables in the documentation
 # Inputs: 0-N) Extra tables to add at end
 # Returns: tables in the order we want
@@ -1669,8 +1692,7 @@ sub GetTableOrder(@)
         my @moreTables;
         $caseInsensitive = ($$table{GROUPS} and $$table{GROUPS}{0} eq 'XMP');
         $numbersFirst = -1 if $$table{VARS} and $$table{VARS}{ALPHA_FIRST};
-        my $sortProc = ($$table{VARS} ? $$table{VARS}{SORT_PROC} : undef) || \&NumbersFirst;
-        my @keys = sort { &$sortProc($a,$b) } TagTableKeys($table);
+        my @keys = SortedTagTableKeys($table);
         $numbersFirst = 1;
         foreach (@keys) {
             my @infoArray = GetTagInfoList($table,$_);
@@ -2211,8 +2233,23 @@ sub WriteTagNames($$)
                 $wrStr .= " & $1" if $mask =~ /(0x[\da-f]+)/;
             }
             printf PODFILE "%s%-${wTag2}s", $idStr, $tag;
-            warn "Warning: Pushed $tag\n" if $id and length($tag) > $wTag2;
-            printf PODFILE " %-${wGrp}s", shift(@wGrp) || '-' if $showGrp;
+            my $tGrp = $wGrp;
+            if ($id and length($tag) > $wTag2) {
+                my $madeRoom;
+                if ($showGrp) {
+                    my $wGrp0 = length($wGrp[0] || '-');
+                    if (not $composite and $wGrp > $wGrp0) {
+                        $tGrp = $wGrp - (length($tag) - $wTag2);
+                        if ($tGrp < length $wGrp0) {
+                            $tGrp = length $wGrp0;
+                        } else {
+                            $madeRoom = 1;
+                        }
+                    }
+                }
+                warn "Warning: Pushed $tag\n" unless $madeRoom;
+            }
+            printf PODFILE " %-${tGrp}s", shift(@wGrp) || '-' if $showGrp;
             if ($composite) {
                 @reqs = @$require;
                 $w = $wReq; # Keep writable column in line

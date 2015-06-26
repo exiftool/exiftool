@@ -16,7 +16,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::XMP;
 
-$VERSION = '1.15';
+$VERSION = '1.16';
 
 sub RecoverTruncatedIPTC($$$);
 sub ListToString($);
@@ -422,6 +422,10 @@ my %sRegionStruct = (
     },
     BarCodeValue=> { },
     Extensions  => { Struct => \%sExtensions },
+    Rotation    => { # (observed in LR6 XMP)
+        Writable => 'real',
+        Notes => 'RegionsRegionListRotation, not part of MWG 2.0 spec',
+    },
     seeAlso => { Namespace => 'rdfs', Resource => 1 },
 );
 my %sKeywordStruct;

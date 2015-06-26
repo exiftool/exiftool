@@ -1937,21 +1937,15 @@ firmware 1.02f.</p>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td class=r title='5822 = 0x16be'>5822</td>
-<td>D810MeteringMode</td>
-<td class=c>int8u</td>
-<td><span class=s><span class=n>(firmware version 1.00)</span>
-  <br>[Mask 0x03]
-  <br>0x0 = Matrix
-  <br>0x1 = Center
-  <br>0x2 = Spot
-  <br>0x3 = Highlight</span></td></tr>
+<td class=r title='64 = 0x40'>64</td>
+<td>CustomSettingsOffset</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='5982 = 0x175e'>5982</td>
 <td>D810MeteringMode</td>
 <td class=c>int8u</td>
-<td><span class=s><span class=n>(firmware version 1.01 and 1.02)</span>
-  <br>[Mask 0x03]
+<td><span class=s>[Mask 0x03]
   <br>0x0 = Matrix
   <br>0x1 = Center
   <br>0x2 = Spot
@@ -1961,13 +1955,7 @@ firmware 1.02f.</p>
 <td>CustomSettingsD810</td>
 <td class=c>-</td>
 <td>--&gt; <a href='NikonCustom.html#SettingsD810'>NikonCustom SettingsD810 Tags</a>
-  <br><span class='n s'>(firmware version 1.00)</span></td></tr>
-<tr class=b>
-<td class=r title='6475 = 0x194b'>6475</td>
-<td>CustomSettingsD810</td>
-<td class=c>-</td>
-<td>--&gt; <a href='NikonCustom.html#SettingsD810'>NikonCustom SettingsD810 Tags</a>
-  <br><span class='n s'>(firmware version 1.01 and 1.02)</span></td></tr>
+  <br><span class='n s'>(actual offset determined by CustomSettingsOffset)</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='ShotInfoD5000'>Nikon ShotInfoD5000 Tags</a></h2>
@@ -4820,7 +4808,7 @@ ExifTool to choose in these cases (see the
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised May 14, 2015</i>
+<br><i>Last revised Jun 8, 2015</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

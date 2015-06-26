@@ -34,10 +34,11 @@ package Image::ExifTool::Olympus;
 
 use strict;
 use vars qw($VERSION);
+use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::APP12;
 
-$VERSION = '2.33';
+$VERSION = '2.34';
 
 sub PrintLensInfo($$$);
 
@@ -3584,6 +3585,46 @@ my %indexInfo = (
     0x2a0 => { Name => 'Index16', %indexInfo },
 );
 
+# DSS information written by Olympus voice recorders (ref PH)
+%Image::ExifTool::Olympus::DSS = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Audio' },
+    FIRST_ENTRY => 0,
+    NOTES => q{
+        Information extracted from DSS/DS2 files and the ID3 XOLY frame of MP3 files
+        written by some Olympus voice recorders.
+    },
+    # 0 - file format:
+    #   "\x02dss"(DSS file and XOLY frame in MP3 file)
+    #   "\x03ds2"(DS2 file)
+    #   "\x03mp3"(ID3 XOLY frame in MP3 file)
+    12 => { Name => 'Model', Format => 'string[16]' }, # (name truncated by some models)
+    38 => {
+        Name => 'StartTime',
+        Format => 'string[12]',
+        Groups => { 2 => 'Time' },
+        ValueConv => '$val =~ s/(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/20$1:$2:$3 $4:$5:$6/; $val',
+        PrintConv => '$self->ConvertDateTime($val)',
+    },
+    50 => {
+        Name => 'EndTime',
+        Format => 'string[12]',
+        Groups => { 2 => 'Time' },
+        ValueConv => '$val =~ s/(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/20$1:$2:$3 $4:$5:$6/; $val',
+        PrintConv => '$self->ConvertDateTime($val)',
+    },
+    62 => {
+        Name => 'Duration',
+        Format => 'string[6]',
+        ValueConv => '$val =~ /(\d{2})(\d{2})(\d{2})/ ? ($1 * 60 + $2) * 60 + $3 : undef',
+        PrintConv => 'ConvertDuration($val)',
+    },
+    798 => { # (ref http://search.cpan.org/~rgibson/Audio-DSS-0.02/)
+        Name => 'Comment',
+        Format => 'string[100]',
+    },
+);
+
 # Olympus composite tags
 %Image::ExifTool::Olympus::Composite = (
     GROUPS => { 2 => 'Camera' },
@@ -3669,6 +3710,27 @@ sub PrintAFAreas($)
     }
     $val or $val = 'none';
     return $val;
+}
+
+#------------------------------------------------------------------------------
+# Extract information from a DSS/DS2 voice recorder audio file or ID3 XOLY frame
+# Inputs: 0) ExifTool object reference, 1) dirInfo reference
+# Returns: 1 on success
+sub ProcessDSS($$;$)
+{
+    my ($et, $dirInfo) = @_;
+
+    # allow this to be called with either RAF or DataPt
+    my $raf = $$dirInfo{RAF};
+    if ($raf) {
+        my $buff;
+        $raf->Read($buff, 898) > 68 or return 0;
+        $buff =~ /^(\x02dss|\x03ds2)/ or return 0;
+        $dirInfo = { DataPt => \$buff };
+        $et->SetFileType(uc substr $buff, 1, 3);
+    }
+    my $tagTablePtr = GetTagTable('Image::ExifTool::Olympus::DSS');
+    return $et->ProcessBinaryData($dirInfo, $tagTablePtr);
 }
 
 #------------------------------------------------------------------------------

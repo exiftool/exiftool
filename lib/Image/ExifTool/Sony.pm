@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.20';
+$VERSION = '2.21';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -7661,6 +7661,8 @@ my %exposureProgram2010 = (
     0x782c => 'WB_RGBLevels3200K', #14
     0x782d => 'WB_RGBLevels2500K', #14
     0x787f => 'WhiteLevel', #14 (divide by 4)
+    0x7980 => 'ChromaticAberrationCorrParams', #forum6509 (Sony A7 ARW)
+    0x7982 => 'DistortionCorrParams', #forum6509 (Sony A7 ARW)
 );
 
 %Image::ExifTool::Sony::SR2DataIFD = (

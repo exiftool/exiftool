@@ -9,7 +9,7 @@
 package Image::ExifTool::XMP;
 
 use strict;
-use vars qw(%specialStruct $xlatNamespace);
+use vars qw(%specialStruct %stdXlatNS);
 
 use Image::ExifTool qw(:Utils);
 use Image::ExifTool::XMP;
@@ -633,7 +633,7 @@ sub RestoreStruct($;$)
             if ($tag =~ /(.+):(.+)/) {
                 my $ns;
                 ($ns, $name) = ($1, $2);
-                $ns = $$xlatNamespace{$ns} if $$xlatNamespace{$ns};
+                $ns = $stdXlatNS{$ns} if $stdXlatNS{$ns};
                 $g1 .= "-$ns";
             }
             $strInfo = {
@@ -725,7 +725,7 @@ sub RestoreStruct($;$)
                 # XMP namespace on the tag name.  In this case, add
                 # the corresponding group1 name to the tag ID.
                 my ($ns, $name) = ($1, $2);
-                $ns = $$xlatNamespace{$ns} if $$xlatNamespace{$ns};
+                $ns = $stdXlatNS{$ns} if $stdXlatNS{$ns};
                 $tag = "XMP-$ns:" . ucfirst $name;
             } else {
                 $tag = ucfirst $tag;

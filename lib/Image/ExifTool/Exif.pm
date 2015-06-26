@@ -52,7 +52,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '3.72';
+$VERSION = '3.73';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -1152,6 +1152,8 @@ my %sampleFormat = (
         },
     },
     0x4749 => 'RatingPercent', #PH
+    0x7035 => 'ChromaticAberrationCorrParams', #forum6509 (Sony A7 ARW)
+    0x7037 => 'DistortionCorrParams', #forum6509 (Sony A7 ARW)
     0x800d => 'ImageID', #10
     0x80a3 => { Name => 'WangTag1', Binary => 1 }, #20
     0x80a4 => { Name => 'WangAnnotation', Binary => 1 },

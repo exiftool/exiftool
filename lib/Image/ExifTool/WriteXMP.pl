@@ -8,7 +8,7 @@
 package Image::ExifTool::XMP;
 
 use strict;
-use vars qw(%specialStruct %dateTimeInfo $xlatNamespace);
+use vars qw(%specialStruct %dateTimeInfo %stdXlatNS);
 
 use Image::ExifTool qw(:DataAccess :Utils);
 
@@ -713,7 +713,7 @@ sub WriteXMP($$;$)
             my @propList = split('/',$path); # get property list
             my ($tag, $ns) = GetXMPTagID(\@propList);
             # translate namespace if necessary
-            $ns = $$xlatNamespace{$ns} if $$xlatNamespace{$ns};
+            $ns = $stdXlatNS{$ns} if $stdXlatNS{$ns};
             my ($grp, @g);
             # no "XMP-" added to most groups in exiftool RDF/XML output file
             if ($nsUsed{$ns} and (@g = ($nsUsed{$ns} =~ m{^http://ns.exiftool.ca/(.*?)/(.*?)/}))) {

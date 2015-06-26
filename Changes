@@ -7,9 +7,22 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 9.90. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+June 26, 2015 - Version 9.98
+
+  - Added read support for DSS and DS2 file formats
+  - Added write support for XMP-mwg-rs:Rotation (seen in XMP from LR6)
+  - Added a new Sigma LensType (thanks Niels Kristian Bech Jensen)
+  - Decode Pentax DiffractionCorrection
+  - Decode Olympus ID3 XOLY frame
+  - Decode a few more Sony tags
+  - Improved reliability of decoding Nikon D810 ShotInfo and custom settings
+  - Changed name of Pentax VignettingCorrection to PeripheralIlluminationCorr
+  - Fixed problem with user parameters in tag name expressions when copying
+
 June 2, 2015 - Version 9.97
 
   - Added a new Pentax Quality value
+  - Added a new Panasonic AdvancedSceneMode (thanks Horst Wandres)
   - Minor improvement to lens identification logic based on XMP information
   - Changed a few DR4 tag names
   - Fixed improper scoping of XMP namespace prefixes (so conflicting prefixes

@@ -16,7 +16,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.45';
+$VERSION = '1.46';
 
 sub ProcessID3v2($$$);
 sub ProcessPrivate($$$);
@@ -609,6 +609,10 @@ my %id3v2_common = (
     XSOA => 'AlbumSortOrder',
     XSOP => 'PerformerSortOrder',
     XSOT => 'TitleSortOrder',
+    XOLY => {
+        Name => 'OlympusDSS',
+        SubDirectory => { TagTable => 'Image::ExifTool::Olympus::DSS' },
+    },
 );
 
 # Tags for ID3v2.3 (http://www.id3.org/id3v2.3.0)

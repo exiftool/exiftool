@@ -256,20 +256,41 @@ instead of simply being renamed when the '<code>-o</code>' option is used.
 
 <a name="ex11"></a><table cellpadding=6>
 <tr><td valign='top'>11.</td><td bgcolor='#dddddd'><code class='blk'>
-exiftool -directory=dir1 -filename=dir2/out.jpg -o dir3/ dir4/image.jpg<br>
+exiftool -directory=dir1 -filename=dir2/out.jpg -o dir3/ dir4/image.jpg
 </code></td></tr></table>
 <blockquote>
 This example demonstrates the priorities of directory names specified using
 different techniques.  The output directory is taken from the first directory
 specified from the following list:  1) the <b>Directory</b> tag, 2) the
-<b>FileName</b> tag, 3) the <code>-o</code> option, or 4) the source directory,
-in that order.  Note that both the <b>FileName</b> tag and the <code>-o</code>
-option may be used without a directory specification, in which case the
-directory with the next highest priority is used.  So in this example, the
+directory part of the <b>FileName</b> tag, 3) the directory part of the
+<code>-o</code> option, or 4) the source directory, in that order.  The order of
+the arguments on the command line is not significant.  In this example, the
 target file is copied (not moved, because the <code>-o</code> option was used)
-to '<code>dir1/image.jpg</code>'.  The order of the arguments on the command
-line is not significant.
+to '<code>dir1/image.jpg</code>'. </blockquote>
+<blockquote>Note that both the <b>FileName</b> tag and the <code>-o</code>
+option may be used without a directory specification, in which case the
+directory with the next highest priority is used.  Also note that if
+<code>-o</code> specifies a directory, then the directory name must end with a
+'<code>/</code>' or the directory must already exist, otherwise ExifTool will
+interpret the last part as a file name. (eg. '<code>-o images/test</code>'
+specifies the '<code>images</code>' directory unless the
+'<code>images/test</code>' directory already exists, while '<code>-o
+images/test/</code>' unabiguously specifies the '<code>images/test</code>'
+directory.)
 </blockquote>
+
+<a name="ex12"></a><table cellpadding=6>
+<tr><td valign='top'>12.</td><td bgcolor='#dddddd'><code class='blk'>
+exiftool -d %Y/%m "-directory&lt;filemodifydate" "-directory&lt;createdate" "-directory&lt;datetimeoriginal" .
+</code></td></tr></table>
+<blockquote>Move image files from the current directory (<code>.</code>) into a
+directory hierarcy based on year/month.  In this command the Directory tag is
+set from multiple other date/time tags.  ExifTool evaluates the command-line
+arguments left to right, and latter assignments to the same tag override earlier
+ones, so the Directory for each image is ultimately set by the rightmost copy
+argument that is valid for that image.  Specifically, Directory is set from
+DateTimeOriginal if it exists, otherwise CreateDate if it exists, and finally
+FileModifyDate (which always exists) is used as a fallback.</blockquote>
 
 <a name="codes"></a><h2>Common Date Format Codes</h2>
 <p>Date format codes are used in the argument to the <code>-d</code> option to

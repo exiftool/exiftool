@@ -2058,6 +2058,7 @@ my %shootingMode = (
             '90 8' => 'Monochrome', #PH (GX7)
             '90 9' => 'Rough Monochrome', #PH (GX7)
             '90 10' => 'Silky Monochrome', #PH (GX7)
+            '92 1' => 'Handheld Night Shot', #Horst Wandres (FZ1000)
             # TZ40 Creative Control modes (ref 19)
             'DMC-TZ40 90 1' => 'Expressive',
             'DMC-TZ40 90 2' => 'Retro',

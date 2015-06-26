@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '9.97';
+$VERSION = '9.98';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -171,7 +171,7 @@ $defaultLang = 'en';    # default language
 # 2) Put types with weak file signatures at end of list to avoid false matches
 @fileTypes = qw(JPEG CRW DR4 TIFF GIF MRW RAF X3F JP2 PNG MIE MIFF PS PDF PSD XMP
                 BMP PPM RIFF AIFF ASF MOV MPEG Real SWF PSP FLV OGG FLAC APE MPC
-                MKV MXF DV PMP IND PGF ICC ITC FLIR FPF LFP HTML VRD RTF XCF
+                MKV MXF DV PMP IND PGF ICC ITC FLIR FPF LFP HTML VRD RTF XCF DSS
                 QTIF FPX PICT ZIP GZIP PLIST RAR BZ2 TAR RWZ EXE EXR HDR CHM LNK
                 WMF AVC DEX DPX RAW Font RSRC M2TS PHP Torrent VCard AA PDB MOI
                 MP3 DICOM PCD);
@@ -252,7 +252,9 @@ my %fileTypeLookup = (
     DOTM => [['ZIP','FPX'], 'Office Open XML Document Template Macro-enabled'],
     DOTX => [['ZIP','FPX'], 'Office Open XML Document Template'],
     DPX  => ['DPX',  'Digital Picture Exchange' ],
-    DR4  => ['DR4',  'Canon VRD version 4 Recipe Data'],
+    DR4  => ['DR4',  'Canon VRD version 4 Recipe'],
+    DS2  => ['DSS',  'Digital Speech Standard 2'],
+    DSS  => ['DSS',  'Digital Speech Standard'],
     DV   => ['DV',   'Digital Video'],
     DVB  => ['MOV',  'Digital Video Broadcasting'],
     DYLIB=> ['EXE',  'Mach-O Dynamic Link Library'],
@@ -533,6 +535,8 @@ my %fileDescription = (
     DOTM => 'application/vnd.ms-word.template.macroEnabledTemplate',
     DOTX => 'application/vnd.openxmlformats-officedocument.wordprocessingml.template',
     DPX  => 'image/x-dpx',
+    DS2  => 'audio/x-ds2',
+    DSS  => 'audio/x-dss',
     DV   => 'video/x-dv',
     EIP  => 'application/x-captureone', #(NC)
     EPS  => 'application/postscript',
@@ -689,6 +693,7 @@ my %moduleName = (
     DEX  => 0,
     DOCX => 'OOXML',
     DR4  => 'CanonVRD',
+    DSS  => 'Olympus',
     EPS  => 'PostScript',
     EXIF => '',
     EXR  => 'OpenEXR',
@@ -750,6 +755,7 @@ my %moduleName = (
     DOCX => 'PK\x03\x04',
     DPX  => '(SDPX|XPDS)',
     DR4  => 'IIII\x04\0\x04\0',
+    DSS  => '(\x02dss|\x03ds2)',
     DV   => '\x1f\x07\0[\x3f\xbf]', # (not tested if extension recognized)
     EPS  => '(%!PS|%!Ad|\xc5\xd0\xd3\xc6)',
     EXE  => '(MZ|\xca\xfe\xba\xbe|\xfe\xed\xfa[\xce\xcf]|[\xce\xcf]\xfa\xed\xfe|Joy!peff|\x7fELF|#!\s*/\S*bin/|!<arch>\x0a)',
@@ -1639,6 +1645,9 @@ sub Options($$;@)
                 $$options{$param} = 'Latin';    # all others default to Latin
             }
         } elsif ($param eq 'UserParam') {
+            # allow initialization of entire UserParam hash
+            ref $newVal eq 'HASH' and $$options{$param} = { %$newVal }, next;
+            # set/reset single UserParam parameter
             if ($newVal =~ /(.*?)=(.*)/s) {
                 $param = lc $1;
                 $newVal = $2;

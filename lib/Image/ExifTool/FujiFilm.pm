@@ -26,7 +26,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.50';
+$VERSION = '1.51';
 
 sub ProcessFujiDir($$$);
 sub ProcessFaceRec($$$);
@@ -241,11 +241,16 @@ my %faceCategories = (
             1 => 'Manual',
         },
     },
-    0x1022 => { #8
-        Name => 'AFPointSet',
+    0x1022 => { #8/forum6579
+        Name => 'AFMode',
         Writable => 'int16u',
-        Notes => '"No" for manual and AF-multi focus modes',
-        PrintConv => { 0 => 'No', 1 => 'Yes' },
+        Notes => '"No" for manual and some AF-multi focus modes',
+        PrintConv => {
+            0 => 'No',
+            1 => 'Single Point',
+            256 => 'Zone',
+            512 => 'Wide/Tracking',
+        },
     },
     0x1023 => { #2
         Name => 'FocusPixel',
@@ -526,6 +531,13 @@ my %faceCategories = (
             0 => 'Original Image',
             1 => 'Re-developed from RAW',
         },
+    },
+    0x1438 => { #forum6579 (X-T1 firmware version 3)
+        Name => 'ImageCount',
+        Notes => 'may reset to 0 when new firmware is installed',
+        Writable => 'int16u',
+        ValueConv => '$val & 0x7fff',
+        ValueConvInv => '$val | 0x8000',
     },
     0x3820 => { #PH (HS20EXR MOV)
         Name => 'FrameRate',

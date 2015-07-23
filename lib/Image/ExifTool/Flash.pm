@@ -26,7 +26,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::FLAC;
 
-$VERSION = '1.11';
+$VERSION = '1.12';
 
 sub ProcessMeta($$$;$);
 
@@ -52,7 +52,7 @@ my %processMetaPacket = ( onMetaData => 1, onXMPData => 1 );
         PrintConv => 'ConvertDuration($val)',
     },
     69 => {
-        Name => 'FileAttributes',
+        Name => 'FlashAttributes',
         PrintConv => { BITMASK => {
             0 => 'UseNetwork',
             3 => 'ActionScript3',
@@ -642,7 +642,7 @@ sub ProcessSWF($$)
     FoundFlashTag($et, FrameCount => $vals[1]);
     FoundFlashTag($et, Duration => $vals[1] * 256 / $vals[0]) if $vals[0];
 
-    # scan through the tags to find FileAttributes and XMP
+    # scan through the tags to find FlashAttributes and XMP
     $buff = substr($buff, $nBytes + 4);
     for (;;) {
         my $buffLen = length $buff;
@@ -679,7 +679,7 @@ sub ProcessSWF($$)
             }
             $et->VPrint(1, "  [extended size $size bytes]\n");
         }
-        if ($tag == 69) {       # FileAttributes
+        if ($tag == 69) {       # FlashAttributes
             last unless $size;
             my $flags = Get8u(\$buff, $pos);
             FoundFlashTag($et, $tag => $flags);

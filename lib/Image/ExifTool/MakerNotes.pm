@@ -586,8 +586,8 @@ my $debug;          # set to 1 to enable debugging code
         # (X1 starts with "LEICA\0\x01\0", Make is "LEICA CAMERA AG")
         # (X2 starts with "LEICA\0\x05\0", Make is "LEICA CAMERA AG")
         # (X VARIO starts with "LEICA\0\x04\0", Make is "LEICA CAMERA AG")
-        # (T (Typ 701) starts with LEICA\0\0x6", Make is "LEICA CAMERA AG")
-        # (X (Typ 113) starts with LEICA\0\0x7", Make is "LEICA CAMERA AG")
+        # (T (Typ 701) starts with "LEICA\0\0x6", Make is "LEICA CAMERA AG")
+        # (X (Typ 113) starts with "LEICA\0\0x7", Make is "LEICA CAMERA AG")
         Condition => '$$valPt =~ /^LEICA\0[\x01\x04\x05\x06\x07]\0/',
         SubDirectory => {
             TagTable => 'Image::ExifTool::Panasonic::Leica5',
@@ -631,6 +631,16 @@ my $debug;          # set to 1 to enable debugging code
             Start => '$valuePtr + 8',
             ByteOrder => 'Unknown',
             Base => '-$base',  # uses absolute file offsets
+        },
+    },
+    {
+        Name => 'MakerNoteLeica8', # used by the Q (Type 116)
+        # (Q (Typ 116) starts with "LEICA\0\x08\0", Make is "LEICA CAMERA AG")
+        Condition => '$$valPt =~ /^LEICA\0\x08\0/',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Panasonic::Leica5',
+            Start => '$valuePtr + 8',
+            ByteOrder => 'Unknown',
         },
     },
     {

@@ -558,15 +558,10 @@ sub WritePS($$)
             # - EVENTUALLY IT WOULD BE BETTER TO FIND ANOTHER IDENTIFICATION METHOD
             #   (because Illustrator doesn't care if the Creator is changed)
             if ($tag eq 'Creator' and $val =~ /^Adobe Illustrator/) {
-                # disable writing XMP to PS-format Adobe Illustrator files and
-                # older Illustrator EPS files becaues it confuses Illustrator
-                # (Illustrator 8 and older write PS-Adobe-3.0, newer write PS-Adobe-3.1)
-                if ($$editDirs{XMP} and $psRev == 0) {
-                    if ($flags{EPS}) {
-                        $et->Warn("Can't write XMP to Illustrator 8 or older EPS files");
-                    } else {
-                        $et->Warn("Can't write XMP to PS-format AI files");
-                    }
+                # disable writing XMP to PostScript-format Adobe Illustrator files
+                # because it confuses Illustrator
+                if ($$editDirs{XMP}) {
+                    $et->Warn("Can't write XMP to PostScript-format Illustrator files");
                     # pretend like we wrote it already so we won't try to add it later
                     $doneDir{XMP} = 1;
                 }

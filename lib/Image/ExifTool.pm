@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '9.98';
+$VERSION = '9.99';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -892,6 +892,10 @@ sub DummyWriteProc { return 1; }
 @Image::ExifTool::pluginTags = ( );
 %Image::ExifTool::pluginTags = ( );
 
+my %systemTagsNotes = (
+    Notes => 'extracted only if specifically requested or the SystemTags API option is set',
+);
+
 # tag information for preview image -- this should be used for all
 # PreviewImage tags so they are handled properly when reading/writing
 %Image::ExifTool::previewImageTagInfo = (
@@ -1107,6 +1111,65 @@ sub DummyWriteProc { return 1; }
             return $str;
         },
     },
+    FileAttributes => {
+        Groups => { 1 => 'System' },
+        Notes => q{
+            2 or 3 values: 0. File type, 1. Attribute bits, 2. Windows attribute bits if
+            Win32API::File is available.  Extracted only if the SystemTags API option is
+            set
+        },
+        PrintHex => 1,
+        PrintConvColumns => 2,
+        PrintConv => [{ # stat device types (bitmask 0xf000)
+            0x0000 => 'Unknown',
+            0x1000 => 'FIFO',
+            0x2000 => 'Character',
+            0x3000 => 'Mux Character',
+            0x4000 => 'Directory',
+            0x5000 => 'XENIX Named',
+            0x6000 => 'Block',
+            0x7000 => 'Mux Block',
+            0x8000 => 'Regular',
+            0x9000 => 'VxFS Compressed',
+            0xa000 => 'Symbolic Link',
+            0xb000 => 'Solaris Shadow Inode',
+            0xc000 => 'Socket',
+            0xd000 => 'Solaris Door',
+            0xe000 => 'BSD Whiteout',
+        },{ BITMASK => { # stat attribute bits (bitmask 0x0e00)
+            9 => 'Sticky',
+            10 => 'Set Group ID',
+            11 => 'Set User ID',
+        }},{ BITMASK => { # Windows attribute bits
+            0 => 'Read Only',
+            1 => 'Hidden',
+            2 => 'System',
+            3 => 'Volume Label',
+            4 => 'Directory',
+            5 => 'Archive',
+            6 => 'Device',
+            7 => 'Normal',
+            8 => 'Temporary',
+            9 => 'Sparse File',
+            10 => 'Reparse Point',
+            11 => 'Compressed',
+            12 => 'Offline',
+            13 => 'Not Content Indexed',
+            14 => 'Encrypted',
+        }}],
+    },
+    FileDeviceID => {
+        Groups => { 1 => 'System' },
+        %systemTagsNotes,
+        PrintConv => '(($val >> 24) & 0xff) . "." . ($val & 0xffffff)', # (major.minor)
+    },
+    FileDeviceNumber => { Groups => { 1 => 'System' }, %systemTagsNotes },
+    FileInodeNumber  => { Groups => { 1 => 'System' }, %systemTagsNotes },
+    FileHardLinks    => { Groups => { 1 => 'System' }, %systemTagsNotes },
+    FileUserID       => { Groups => { 1 => 'System' }, %systemTagsNotes, PrintConv => 'getpwuid($val)' },
+    FileGroupID      => { Groups => { 1 => 'System' }, %systemTagsNotes, PrintConv => 'getgrgid($val)' },
+    FileBlockSize    => { Groups => { 1 => 'System' }, %systemTagsNotes },
+    FileBlockCount   => { Groups => { 1 => 'System' }, %systemTagsNotes },
     HardLink => {
         Writable => 1,
         WriteOnly => 1,
@@ -1750,6 +1813,7 @@ sub ClearOptions($)
         Sort2       => 'File',  # secondary sort order for tags in a group (File, Tag, Descr)
         StrictDate  => undef,   # flag to return undef for invalid date conversions
         Struct      => undef,   # return structures as hash references
+        SystemTags  => undef,   # extract additional File System tags
         TextOut     => \*STDOUT,# file for Verbose/HtmlDump output
         Unknown     => 0,       # flag to get values of unknown tags (0-2)
         UserParam   => { },     # user parameters for InsertTagValues()
@@ -1892,6 +1956,7 @@ sub ExtractInfo($;@)
     }
 
     if ($raf) {
+        my @stat;
         if ($reEntry) {
             # we already set these tags
         } elsif (not $$raf{FILE_PT}) {
@@ -1900,7 +1965,7 @@ sub ExtractInfo($;@)
         } elsif (-f $$raf{FILE_PT}) {
             # get file tags if this is a plain file
             my $fileSize = -s _;
-            my $perm = (stat _)[2];
+            @stat = stat _;
             my ($aTime, $mTime, $cTime) = $self->GetFileTime($$raf{FILE_PT});
             $self->FoundTag('FileSize', $fileSize) if defined $fileSize;
             $self->FoundTag('ResourceForkSize', $rsize) if $rsize;
@@ -1908,7 +1973,40 @@ sub ExtractInfo($;@)
             $self->FoundTag('FileAccessDate', $aTime) if defined $aTime;
             my $cTag = $^O eq 'MSWin32' ? 'FileCreateDate' : 'FileInodeChangeDate';
             $self->FoundTag($cTag, $cTime) if defined $cTime;
-            $self->FoundTag('FilePermissions', $perm) if defined $perm;
+            $self->FoundTag('FilePermissions', $stat[2]) if defined $stat[2];
+        } else {
+            @stat = stat $$raf{FILE_PT};
+        }
+        # extract more system info if SystemTags option is set
+        if (@stat) {
+            my $st = $$options{SystemTags};
+            my $req = $$self{REQ_TAG_LOOKUP};
+            if ($st or $$req{fileattributes}) {
+                my @attr = ($stat[2] & 0xf000, $stat[2] & 0x0e00);
+                # add Windows file attributes if available
+                if ($^O eq 'MSWin32' and defined $filename and $filename ne '' and $filename ne '-') {
+                    local $SIG{'__WARN__'} = \&SetWarning;
+                    if (eval { require Win32API::File }) {
+                        my $wattr;
+                        my $file = $filename;
+                        if ($self->EncodeFileName($file)) {
+                            $wattr = eval { Win32API::File::GetFileAttributesW($file) };
+                        } else {
+                            $wattr = eval { Win32API::File::GetFileAttributes($file) };
+                        }
+                        push @attr, $wattr if defined $wattr and $wattr != 0xffffffff;
+                    }
+                }
+                $self->FoundTag('FileAttributes', "@attr");
+            }
+            $self->FoundTag('FileDeviceNumber', $stat[0]) if $st or $$req{filedevicenumber};
+            $self->FoundTag('FileInodeNumber', $stat[1])  if $st or $$req{fileinodenumber};
+            $self->FoundTag('FileHardLinks', $stat[3])    if $st or $$req{filehardlinks};
+            $self->FoundTag('FileUserID', $stat[4])       if $st or $$req{fileuserid};
+            $self->FoundTag('FileGroupID', $stat[5])      if $st or $$req{filegroupid};
+            $self->FoundTag('FileDeviceID', $stat[6])     if $st or $$req{filedeviceid};
+            $self->FoundTag('FileBlockSize', $stat[11])   if $st or $$req{fileblocksize};
+            $self->FoundTag('FileBlockCount', $stat[12])  if $st or $$req{fileblockcount};
         }
 
         # get list of file types to check
@@ -3159,17 +3257,24 @@ sub Open($*$;$)
             local $SIG{'__WARN__'} = \&SetWarning;
             my ($access, $create);
             if ($mode eq '>') {
-                $access  = Win32API::File::GENERIC_WRITE();
-                $create  = Win32API::File::CREATE_ALWAYS();
+                eval {
+                    $access  = Win32API::File::GENERIC_WRITE();
+                    $create  = Win32API::File::CREATE_ALWAYS();
+                }
             } else {
-                $access  = Win32API::File::GENERIC_READ();
-                $access |= Win32API::File::GENERIC_WRITE() if $mode eq '+<'; # update
-                $create  = Win32API::File::OPEN_EXISTING();
+                eval {
+                    $access  = Win32API::File::GENERIC_READ();
+                    $access |= Win32API::File::GENERIC_WRITE() if $mode eq '+<'; # update
+                    $create  = Win32API::File::OPEN_EXISTING();
+                }
             }
-            my $wh = Win32API::File::CreateFileW($file, $access, 0, [], $create, 0, []);
+            my $wh = eval { Win32API::File::CreateFileW($file, $access, 0, [], $create, 0, []) };
             return undef unless $wh;
-            my $fd = Win32API::File::OsFHandleOpenFd($wh, 0);
-            $fd < 0 and Win32API::File::CloseHandle($wh), return undef;
+            my $fd = eval { Win32API::File::OsFHandleOpenFd($wh, 0) };
+            if (not defined $fd or $fd < 0) {
+                eval { Win32API::File::CloseHandle($wh) };
+                return undef;
+            }
             $file = "&=$fd";    # specify file by descriptor
         } else {
             # add leading space to protect against leading characters like '>'
@@ -3190,10 +3295,11 @@ sub Exists($$)
 
     if ($self->EncodeFileName($file)) {
         local $SIG{'__WARN__'} = \&SetWarning;
-        my $wh = Win32API::File::CreateFileW($file, Win32API::File::GENERIC_READ(), 0, [],
-                 Win32API::File::OPEN_EXISTING(), 0, []);
+        my $wh = eval { Win32API::File::CreateFileW($file,
+                        Win32API::File::GENERIC_READ(), 0, [],
+                        Win32API::File::OPEN_EXISTING(), 0, []) };
         return 0 unless $wh;
-        Win32API::File::CloseHandle($wh);
+        eval { Win32API::File::CloseHandle($wh) };
     } else {
         return -e $file;
     }
@@ -3210,8 +3316,8 @@ sub IsDirectory($$)
     if ($et->EncodeFileName($file)) {
         local $SIG{'__WARN__'} = \&SetWarning;
         my $attrs = eval { Win32API::File::GetFileAttributesW($file) };
-        return 1 if $attrs and $attrs != 0xffffffff and
-                    $attrs & Win32API::File::FILE_ATTRIBUTE_DIRECTORY();
+        my $dirBit = eval { Win32API::File::FILE_ATTRIBUTE_DIRECTORY() } || 0;
+        return 1 if $attrs and $attrs != 0xffffffff and $attrs & $dirBit;
     } else {
         return -d $file;
     }
@@ -3241,7 +3347,7 @@ sub GetFileTime($$)
             $self->WarnOnce('Install Win32API::File for proper handling of Windows file times');
         } else {
             # get Win32 handle, needed for GetFileTime
-            my $win32Handle = Win32API::File::GetOsFHandle($file);
+            my $win32Handle = eval { Win32API::File::GetOsFHandle($file) };
             unless ($win32Handle) {
                 $self->Warn("Win32API::File::GetOsFHandle returned invalid handle");
                 return ();
@@ -3273,7 +3379,7 @@ sub GetFileTime($$)
         }
     }
     # other os (or Windows fallback)
-    return (stat($file))[8, 9, 10];
+    return (stat $file)[8, 9, 10];
 }
 
 #------------------------------------------------------------------------------
@@ -3354,7 +3460,7 @@ sub ParseArguments($;@)
         ExpandShortcuts($$self{REQUESTED_TAGS});
         # initialize lookup for requested tags
         foreach (@{$$self{REQUESTED_TAGS}}) {
-            /([-\w]+)#?$/ and $$self{REQ_TAG_LOOKUP}{lc($1)} = 1;
+            /(^|:)([-\w]+)#?$/ and $$self{REQ_TAG_LOOKUP}{lc($2)} = 1;
         }
     }
     if (@exclude or $wasExcludeOpt) {
@@ -4790,8 +4896,8 @@ sub ConvertBitrate($)
 
 #------------------------------------------------------------------------------
 # Convert file name for printing
-# Inputs: 0) ExifTool ref, 1) file name
-# Returns: converted file name
+# Inputs: 0) ExifTool ref, 1) file name in CharsetFileName character set
+# Returns: converted file name in external character set
 sub ConvertFileName($$)
 {
     my ($self, $val) = @_;
@@ -4801,9 +4907,9 @@ sub ConvertFileName($$)
 }
 
 #------------------------------------------------------------------------------
-# Inverse conversion for file name
-# Inputs: 0) ExifTool ref, 1) file name
-# Returns: unconverted file name
+# Inverse conversion for file name (encode 
+# Inputs: 0) ExifTool ref, 1) file name in external character set
+# Returns: file name in CharsetFileName character set
 sub InverseFileName($$)
 {
     my ($self, $val) = @_;

@@ -56,7 +56,7 @@ use vars qw($VERSION %pentaxLensTypes);
 use Image::ExifTool::Exif;
 use Image::ExifTool::HP;
 
-$VERSION = '2.92';
+$VERSION = '2.93';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -133,6 +133,7 @@ sub PrintFilter($$$);
     '3 40' => 'smc PENTAX-F Macro 100mm F2.8',
     '3 41' => 'smc PENTAX-F Macro 50mm F2.8 or Sigma Lens', #4
     '3 41.1' => 'Sigma 50mm F2.8 Macro', #16
+    '3 42' => 'Sigma 300mm F2.8 EX DG APO IF', #27
     '3 44' => 'Sigma or Tamron Lens (3 44)',
     '3 44.1' => 'Sigma AF 10-20mm F4-5.6 EX DC', #JD
     '3 44.2' => 'Sigma 12-24mm F4.5-5.6 EX DG', #12 (added "-5.6", ref 29)
@@ -1329,10 +1330,10 @@ my %binaryDataAttrs = (
             33 => 51200, #PH
             34 => 64000, #PH (NC)
             35 => 80000, #PH (NC)
-            36 => 102400, #forum3833
+            36 => 102400, #27
             37 => 128000, #PH (NC)
             38 => 160000, #PH (NC)
-            39 => 204800, #forum3833
+            39 => 204800, #27
             # Optio 330/430 (oddball)
             50 => 50, #PH
             100 => 100, #PH

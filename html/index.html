@@ -74,9 +74,9 @@ span.sup        { font-size: 0.8em; font-weight: normal; position: relative; top
 </div>
 
 <blockquote><table class='dl lg'><tr><td><b>
-<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-9.98.tar.gz/download">
-Download        Version 9.98</a> (3.8 MB) -
-<a href="history.html">June 26, 2015</a></b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-9.99.tar.gz/download">
+Download        Version 9.99</a> (3.8 MB) -
+<a href="history.html">July 23, 2015</a></b></td></tr></table></blockquote>
 
 <p><b>ExifTool is a platform-independent <a href="ExifTool.html">Perl
 library</a> plus a <a href="exiftool_pod.html">command-line application</a> for
@@ -125,8 +125,8 @@ distribution above.)</i></p>
 
 <blockquote><table class='dl lg'><tr><td><b>
 <a name="alone">Windows Executable:</a>
-<a href="http://sourceforge.net/projects/exiftool/files/exiftool-9.98.zip/download">
-         exiftool-9.98.zip</a> (3.8 MB)</b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/exiftool-9.99.zip/download">
+         exiftool-9.99.zip</a> (3.8 MB)</b></td></tr></table></blockquote>
 
 <p><b>The stand-alone Windows executable</b> does not require Perl. Just
 download and un-zip the archive then double-click on
@@ -138,7 +138,7 @@ of Windows (including Windows 7).</p>
 <blockquote><table class='dl lg'><tr><td><b>
 Mac OS X Package:
 <a href="http://sourceforge.net/projects/exiftool/files/ExifTool-9.70.dmg/download">
-         ExifTool-9.98.dmg</a> (2.5 MB)</b></td></tr></table></blockquote>
+         ExifTool-9.99.dmg</a> (2.5 MB)</b></td></tr></table></blockquote>
 
 <p><b>The OS X package</b> installs the ExifTool command-line application and
 libraries in /usr/bin. After installing, type "<code>exiftool</code>" in a
@@ -263,7 +263,7 @@ for each file format.</p>
 <tr><td>AAX</td><td>R/W</td><td>Audible Enhanced Audiobook (<a href="TagNames/QuickTime.html">QuickTime</a>-based)</td><td>R/W<span class=sup>3</span></td><td>R/W<span class=sup>3</span></td><td>R/W/C</td><td>-</td><td>R/W <a href="TagNames/QuickTime.html">QuickTime</a><span class=sup>4</span></td></tr>
 <tr><td><a href="TagNames/DICOM.html">ACR</a></td><td>R</td><td>American College of Radiology ACR-NEMA (DICOM-like)</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/DICOM.html">DICOM</a></td></tr>
 <tr><td><a href="TagNames/Font.html">AFM, ACFM, AMFM</a></td><td>R</td><td>Adobe [Composite/Multiple Master] Font Metrics</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/Font.html">Font</a></td></tr>
-<tr><td>AI, AIT</td><td>R/W</td><td>Adobe Illustrator [Template] (<a href="TagNames/PostScript.html">PS</a> or <a href="TagNames/PDF.html">PDF</a>)</td><td>R/W/C<span class=sup>5</span></td><td>R/W/C<span class=sup>5</span></td><td>R/W/C</td><td>R/W/C<span class=sup>5</span></td><td>R/W/C <a href="TagNames/PDF.html">PDF</a> <a href="TagNames/PostScript.html">PostScript</a>, R <a href="TagNames/Photoshop.html">Photoshop</a></td></tr>
+<tr><td>AI, AIT</td><td>R/W</td><td>Adobe Illustrator [Template] (<a href="TagNames/PostScript.html">PS</a> or <a href="TagNames/PDF.html">PDF</a>)</td><td>R/W/C<span class=sup>5</span></td><td>R/W/C<span class=sup>5</span></td><td>R/W/C<span class=sup>6</span></td><td>R/W/C<span class=sup>5</span></td><td>R/W/C <a href="TagNames/PDF.html">PDF</a> <a href="TagNames/PostScript.html">PostScript</a>, R <a href="TagNames/Photoshop.html">Photoshop</a></td></tr>
 <tr><td><a href="TagNames/AIFF.html">AIFF, AIF, AIFC</a></td><td>R</td><td>Audio Interchange File Format [Compressed]</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/AIFF.html">AIFF</a> <a href="TagNames/ID3.html">ID3</a></td></tr>
 <tr><td><a href="TagNames/APE.html">APE</a></td><td>R</td><td>Monkey's Audio</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/APE.html">APE</a> <a href="TagNames/ID3.html">ID3</a></td></tr>
 <tr><td>ARW</td><td>R/W</td><td>Sony Alpha RAW (<a href="TagNames/EXIF.html">TIFF</a>-based)</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/W <a href="TagNames/Sony.html">Sony</a> <a href="TagNames/SonyIDC.html">SonyIDC</a></td></tr>
@@ -423,7 +423,8 @@ for each file format.</p>
 <span class=sup>2</span> Block create only,
 <span class=sup>3</span> Non-standard format,
 <span class=sup>4</span> Writes only some date/time tags,
-<span class=sup>5</span> Only writable for PostScript-format file type</span></blockquote>
+<span class=sup>5</span> Only writable for PostScript-format file type,
+<span class=sup>6</span> Only writable for PDF-format file type</span></blockquote>
 <h3><a name="JPEG">Supported JPEG Meta Information</a></h3>
 <p>ExifTool can <b>R</b>ead, <b>W</b>rite and/or <b>C</b>reate the following types
 of meta information in JPEG images:</p>
@@ -488,7 +489,7 @@ the pure Perl version if you already have Perl installed. (You can get a good,
 free Perl interpreter from
 <a href="http://www.activestate.com/activeperl/">activeperl.com</a>.)</p>
 
-<p><b>Everyone else (Mac, Unix, etc):</b> Don't worry, you should already have
+<p><b>Everyone else (Mac, Unix, etc):</b> Don't worry, you already have
 Perl installed.</p>
 
 <h2><a name="running">Running ExifTool</a></h2>
@@ -649,9 +650,9 @@ information that can be very useful for debugging or when decoding new tags.</p>
 information.  Tag names are entered on the command line with a leading
 '<code>-</code>', in the order you want them displayed.  Case is not
 significant.  The tag name may be prefixed by a <a href="#groups">group name</a>
-from family 0 or 1 (separated by a colon) to identify a specific information
-type or location.  A special tag name of "<code>All</code>" may be used to
-represent all tags, or all tags in a specified group. For example:</p>
+(separated by a colon) to identify a specific information type or location.  A
+special tag name of "<code>All</code>" may be used to represent all tags, or all
+tags in a specified group. For example:</p>
 
 <blockquote><pre>
 exiftool -filename -imagesize -exif:fnumber -xmp:all image.jpg
@@ -848,7 +849,7 @@ if no corresponding EXIF tag exists, or finally to the XMP group.</p>
 <p>Alternatively, information may be written to a specific group only, bypassing
 these priorities, by providing a group name for the tag.  The
 "<a href="#writing">Writing Meta Information</a>" section above gave the syntax
-rules for exiftool command-line arguments to do this.  Any family 0 or 1 group
+rules for exiftool command-line arguments to do this.  Any family 0, 1 or 2 group
 name may be used when writing information, although not all groups are writable.</p>
 
 <h3>The "-tagsFromFile" Option</h3>
@@ -1217,6 +1218,7 @@ three droplets to extract information [exiftool must be installed] (thanks to Ro
 <li><a href="http://gitorious.org/mini_exiftool">MiniExiftool</a>: Ruby library wrapper for ExifTool</li>
 <li><a href="https://github.com/mceachen/exiftoolr">exiftoolr</a>: Ruby wrapper for ExifTool</li>
 <li><a href="http://smarnach.github.com/pyexiftool/">pyexiftool</a>: Python wrapper for ExifTool</li>
+<li><a href="https://github.com/guinslym/pyexifinfo">PyExifInfo</a>: Another Python wrapper for ExifTool</li>
 <li><a href="https://github.com/romainneutron/PHPExiftool">PHPExiftool</a>: PHP wrapper for ExifTool (in development)</li>
 <li><a href="http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,5381.0.html">ExifTool_PHP_StayOpen</a>: ExifTool PHP fast processing script using -stayOpen and Gearman</li>
 <li><a href="http://sourceforge.net/projects/moss/">Moss</a>: Collection of Java utilities which includes an exiftool interface</li>

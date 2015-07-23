@@ -265,11 +265,11 @@ complete list of ExifTool tag names.
 </td></tr><tr><td valign=top><b>File&nbsp;ref</b></td><td>
 A reference to an open image file.  If you use this method (or a SCALAR
 reference) to access information in an image, the FileName and Directory tags
-will not be returned.  (Also, the FileSize, FileModifyDate and FilePermissions
-tags will not be returned unless it is a plain file.)  Image processing begins
-at the current file position, and on return the file position is unspecified.
-May be either a standard filehandle or a reference to a File::RandomAccess
-object.
+will not be returned.  (Also, the FileSize, FileModifyDate, FilePermissions and
+FileAttributes tags will not be returned unless it is a plain file.)  Image
+processing begins at the current file position, and on return the file position
+is unspecified. May be either a standard filehandle or a reference to a
+File::RandomAccess object.
 <br>&nbsp;<br>
 [Advanced:  To allow a non-rewindable stream (eg. a network socket) to be
 re-read after processing with ExifTool, first wrap the file reference in a
@@ -736,6 +736,12 @@ distribution for examples.</p>
     <tr><td valign=top align=right><b>2</b>&nbsp;=</td><td>Read/copy both flattened and structured tags,
     but flag flattened tags as "unsafe" for copying</td></tr>
     </table></td><td align=center>undef</td></tr>
+<tr><td>SystemTags</td><td><a name="SystemTags"></a>Flag to extract the
+    following additional File System tags:  FileAttributes, FileDeviceNumber,
+    FileInodeNumber, FileHardLinks, FileUserID, FileGroupID, FileDeviceID,
+    FileBlockSize and FileBlockCount.
+</td>
+    <td align=center>0 or 1</td><td align=center>undef</td></tr>
 <tr><td>TextOut</td><td><a name="TextOut"></a>Output file for Verbose and HtmlDump options.</td>
     <td align=center>File reference</td><td align=center>\*STDOUT</td></tr>
 <tr><td>Unknown</td><td><a name="Unknown"></a>Control extraction of unknown tags.</td>

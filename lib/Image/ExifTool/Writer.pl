@@ -1097,6 +1097,7 @@ sub SetNewValuesFromFile($$;@)
         ScanForXMP      => $$options{ScanForXMP},
         StrictDate      => 1,
         Struct          => $structOpt,
+        SystemTags      => $$options{SystemTags},
         Unknown         => $$options{Unknown},
         UserParam       => $$options{UserParam},
         XMPAutoConv     => $$options{XMPAutoConv},
@@ -5804,9 +5805,9 @@ sub Rename($$$)
     }
     for (;;) {
         if ($winUni) {
-            $result = Win32API::File::MoveFileExW($old, $new,
+            $result = eval { Win32API::File::MoveFileExW($old, $new,
                 Win32API::File::MOVEFILE_REPLACE_EXISTING() |
-                Win32API::File::MOVEFILE_COPY_ALLOWED());
+                Win32API::File::MOVEFILE_COPY_ALLOWED()) };
         } else {
             $result = rename($old, $new);
         }
@@ -5831,7 +5832,7 @@ sub Unlink($@)
     while (@_) {
         my $file = shift;
         if ($self->EncodeFileName($file)) {
-            ++$result if Win32API::File::DeleteFileW($file);
+            ++$result if eval { Win32API::File::DeleteFileW($file) };
         } else {
             ++$result if unlink $file;
         }
@@ -5863,7 +5864,7 @@ sub SetFileTime($$;$$$)
             $self->WarnOnce('Install Win32API::File for proper handling of Windows file times');
         } else {
             # get Win32 handle, needed for SetFileTime
-            my $win32Handle = Win32API::File::GetOsFHandle($file);
+            my $win32Handle = eval { Win32API::File::GetOsFHandle($file) };
             unless ($win32Handle) {
                 $self->Warn("Win32API::File::GetOsFHandle returned invalid handle");
                 return 0;

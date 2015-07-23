@@ -23,7 +23,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:Public);
 
-$VERSION = '1.46';
+$VERSION = '1.47';
 
 sub JITTER() { return 2 }       # maximum time jitter
 
@@ -114,7 +114,7 @@ sub LoadTrackLog($$;$)
     my ($et, $val) = @_;
     my ($raf, $from, $time, $isDate, $noDate, $noDateChanged, $lastDate, $dateFlarm);
     my ($nmeaStart, $fixSecs, @fixTimes, $lastFix, %nmea);
-    my ($canCut, $cutPDOP, $cutHDOP, $cutSats, $e0, $e1);
+    my ($canCut, $cutPDOP, $cutHDOP, $cutSats, $e0, $e1, @tmp);
 
     unless (eval { require Time::Local }) {
         return 'Geotag feature requires Time::Local installed';
@@ -197,7 +197,7 @@ sub LoadTrackLog($$;$)
                 $format = 'IGC';
             } elsif (/^TP,D,/) {
                 $format = 'Winplus';
-            } elsif (/^\s*\d+\s+.*\sypr\s*$/ and split == 12) {
+            } elsif (/^\s*\d+\s+.*\sypr\s*$/ and (@tmp=split) == 12) {
                 $format = 'Bramor';
             } else {
                 # search only first 50 lines of file for a valid fix

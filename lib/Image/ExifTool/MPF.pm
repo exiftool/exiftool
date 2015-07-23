@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.10';
+$VERSION = '1.11';
 
 sub ProcessMPImageList($$$);
 
@@ -26,7 +26,7 @@ sub ProcessMPImageList($$$);
         These tags are part of the CIPA Multi-Picture Format specification, and are
         found in the APP2 "MPF" segment of JPEG images.  MPImage data referenced
         from this segment is stored as a JPEG trailer.  The MPF tags are not
-        writable, however the MPG segment may be deleted as a group (with "MPF:All")
+        writable, however the MPF segment may be deleted as a group (with "MPF:All")
         but then the JPEG trailer should also be deleted (with "Trailer:All").  See
         L<http://www.cipa.jp/std/documents/e/DC-007_E.pdf> for the official
         specification.

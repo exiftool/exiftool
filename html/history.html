@@ -17,6 +17,31 @@ considered development releases, and are not uploaded to <a href="http://search.
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v9.99'><b>July 23, 2015 - Version 9.99</b></a>
+<ul>
+<li>Added support for the Leica Q (Typ 116) maker notes
+<li>Added two new SonyModelID's (thanks Jos Roost for one)
+<li>Added a new Sony LensType2 value (thanks Jos Roost)
+<li>Added a new Pentax LensType
+<li>Extract a number of new File System tags when SystemTags API option is set
+<li>Decode a new FujiFilm tag (thanks TonyB)
+<li>Decode a number of new Sony tags (thanks Jos Roost)
+<li>Disabled writing of XMP to PostScript-format Adobe Illustrator files
+<li>SourceFile values in -csv and -json input/output are now converted to/from
+    filename character set (set by -charset filename option) when
+    reading/writing
+<li>Renamed Flash:FileAttributes to FlashAttributes
+<li>Renamed FujiFilm:AFPointSet to AFMode and improved decoding
+<li>Fixed problem where a partial command could be executed if the -stay_open
+    option was used and the command is aborted due to an error in arguments
+<li>Fixed problem with OS X installer on El Capitan (now installs in
+    /usr/local/bin instead of /usr/bin)
+<li>API Changes:
+    <ul>
+    <li>Added SystemTags option
+    </ul>
+</ul>
+
 <a name='v9.98'><b>June 26, 2015 - Version 9.98</b></a>
 <ul>
 <li>Added read support for DSS and DS2 file formats

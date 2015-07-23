@@ -159,7 +159,7 @@ to your Desktop.
 <pre class='code'>    cd ~/Desktop
     tar -xzf Image-ExifTool-#.##.tar.gz
     cd Image-ExifTool-#.##
-    sudo cp -r exiftool lib /usr/bin
+    sudo cp -r exiftool lib /usr/local/bin
 </pre>
 where "<code>#.##</code>" is the version number of the ExifTool you downloaded.
 <br><span class=lt>(Note: The last step above will require you to enter your
@@ -168,10 +168,10 @@ password.)</span></li>
 <p>You can now run exiftool by typing "<code>exiftool</code>" in a Terminal window.</p>
 
 <p class=lt><b>Notes:</b></p><ul class=lt><li>Both OS X installation techniques outlined above place
-exiftool and its lib directory in /usr/bin, while the standard Unix
+exiftool and its lib directory in /usr/local/bin, while the standard Unix
 "<code>make install</code>" described below puts "<code>exiftool</code>" in
-/usr/bin and the individual libraries in /Library/Perl/#.#.#, where "#.#.#" is
-your Perl version. If both sets of libraries exist, /usr/bin/lib takes
+/usr/local/bin and the individual libraries in /Library/Perl/#.#.#, where "#.#.#" is
+your Perl version. If both sets of libraries exist, /usr/local/bin/lib takes
 precedence for exiftool, but /Library/Perl/#.#.# is the default for any other
 Perl scripts.</li>
 <li>In OS X 10.8 or later, you may see this message when you try to open the install package:
@@ -184,7 +184,7 @@ here</a> for a full description.)</li></ul>
 <h3>Uninstalling</h3>
 <ol type='i'>
 <li>Launch the "Terminal" application from the Applications Utilities folder.</li>
-<li>Type "<code>open /usr/bin</code>" (without the quotes) in the Terminal
+<li>Type "<code>open /usr/local/bin</code>" (without the quotes) in the Terminal
 window, then press RETURN. (This opens a folder that you normally can't access
 from OS X.)</li>
 <li>Drag "<code>exiftool</code>" and "<code>lib</code>" into the trash from the

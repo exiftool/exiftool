@@ -258,13 +258,12 @@ list of ExifTool tag names.
 
 A reference to an open image file.  If you use this method (or a SCALAR
 reference) to access information in an image, the FileName and Directory
-tags will not be returned.  (Also, the FileSize, FileModifyDate and
-FilePermissions tags will not be returned unless it is a plain file.)  Image
-processing begins at the current file position, and on return the file
-position is unspecified.  May be either a standard filehandle, or a
-reference to a L<File::RandomAccess|File::RandomAccess> object.  Note that
-the file remains open and must be closed by the caller after L</ImageInfo>
-returns.
+tags will not be returned.  (Also, a number of the File System tags will not
+be returned unless it is a plain file.)  Image processing begins at the
+current file position, and on return the file position is unspecified.  May
+be either a standard filehandle, or a reference to a
+L<File::RandomAccess|File::RandomAccess> object.  Note that the file remains
+open and must be closed by the caller after L</ImageInfo> returns.
 
 [Advanced:  To allow a non-rewindable stream (eg. a network socket) to be
 re-read after processing with ExifTool, first wrap the file reference in a
@@ -834,6 +833,12 @@ structured tags may always be written.  Possible values are:
     1   - Read/copy structured tags
     2   - Read/copy both flattened and structured tags, but flag
           flattened tags as 'unsafe' for copying
+
+=item SystemTags
+
+Flag to extract the following additional File System tags:  FileAttributes,
+FileDeviceNumber, FileInodeNumber, FileHardLinks, FileUserID, FileGroupID,
+FileDeviceID, FileBlockSize and FileBlockCount.
 
 =item TextOut
 

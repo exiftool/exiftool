@@ -7,6 +7,28 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 9.90. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+July 23, 2015 - Version 9.99
+
+  - Added support for the Leica Q (Typ 116) maker notes
+  - Added two new SonyModelID's (thanks Jos Roost for one)
+  - Added a new Sony LensType2 value (thanks Jos Roost)
+  - Added a new Pentax LensType
+  - Extract a number of new File System tags when SystemTags API option is set
+  - Decode a new FujiFilm tag (thanks TonyB)
+  - Decode a number of new Sony tags (thanks Jos Roost)
+  - Disabled writing of XMP to PostScript-format Adobe Illustrator files
+  - SourceFile values in -csv and -json input/output are now converted to/from
+    filename character set (set by -charset filename option) when
+    reading/writing
+  - Renamed Flash:FileAttributes to FlashAttributes
+  - Renamed FujiFilm:AFPointSet to AFMode and improved decoding
+  - Fixed problem where a partial command could be executed if the -stay_open
+    option was used and the command is aborted due to an error in arguments
+  - Fixed problem with OS X installer on El Capitan (now installs in
+    /usr/local/bin instead of /usr/bin)
+  - API Changes:
+      - Added SystemTags option
+
 June 26, 2015 - Version 9.98
 
   - Added read support for DSS and DS2 file formats

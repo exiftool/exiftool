@@ -296,6 +296,8 @@ sub LoadTrackLog($$;$)
 # Winplus Beacon text file
 #
         } elsif ($format eq 'Winplus') {
+            # TP,D, 44.933666667, -93.186555556, 10/26/2011, 19:07:28, 0
+            #       latitude      longitude      date        time
             /^TP,D,\s*([-+]?\d+\.\d*),\s*([-+]?\d+\.\d*),\s*(\d+)\/(\d+)\/(\d{4}),\s*(\d+):(\d+):(\d+)/ or next;
             $$fix{lat} = $1;
             $$fix{lon} = $2;
@@ -310,6 +312,8 @@ DoneFix:    $isDate = 1;
 # Bramor gEO log file
 #
         } elsif ($format eq 'Bramor') {
+            #   1 0015   18.723675   50.672752  149 169.31 22/04/2015 07:06:55 169.31    8.88   28.07 ypr
+            #   ? index  latitude    longitude  alt track  date       time     dir       pitch  roll
             my @parts = split ' ', $_;
             next unless @parts == 12 and $parts[11] eq 'ypr';
             my @d = split m{/}, $parts[6];  # date (dd/mm/YYYY)

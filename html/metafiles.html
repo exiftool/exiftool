@@ -206,10 +206,20 @@ XML files as it can with other metadata files.  Below are example commands
 demonstrating the use of exiftool XML files.</p>
 
 <p>Create an exiftool XML sidecar file:</p>
-<pre>exiftool a.jpg -X > a.xml</pre>
+<pre>exiftool -X a.jpg > a.xml</pre>
 
 <p>Restore original meta information from exiftool XML file:</p>
 <pre>exiftool -tagsfromfile a.xml -all:all a.jpg</pre>
+
+<p>The <code>-X</code> option also supports extracting binary data when
+<code>-b</code> is added.  For example, the above command may be modified to
+also store the binary MakerNotes block like this:</p>
+<pre>exiftool -X -b -makernotes -all a.jpg > a.xml</pre>
+<p>Note that we needed to add <code>-makernotes</code> because it isn't
+extracted as a block unless requested, and since we specified a tag to extract
+we also needed to add <code>-all</code> to continue extracting other tags as
+well.  Restoring the original metadata from this file is the same as in the
+previous example.</p>
 
 <h4>Via the API</h4>
 
@@ -306,7 +316,7 @@ read, write and create support for this format.</p>
 
 <hr>
 <i>Created Nov 12, 2008</i><br>
-<i>Last revised Feb 22, 2014</i>
+<i>Last revised Jul 27, 2015</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

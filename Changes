@@ -4,14 +4,25 @@ ExifTool Version History
 
 RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 
-Note: The most recent production release is Version 9.90. (Other versions are
+Note: The most recent production release is Version 10.00. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
+
+Aug. 18, 2015 - Version 10.00 (production release)
+
+  - Added a few new CanonModelID's
+  - Added a few new Nikon LensID's (thanks Jaap Voets and Robert Rottmerhusen)
+  - Added a new Canon LensType (thanks Jos Roost)
+  - Decode a number of new Sony tags (thanks Jos Roost)
+  - Decode a couple more RIFF tags and extract Unknown RIFF tags
+  - Changed -b option to avoid splitting PDF List-type tag values
+  - API Changes:
+      - Added NoPDFList option
 
 July 23, 2015 - Version 9.99
 
   - Added support for the Leica Q (Typ 116) maker notes
   - Added two new SonyModelID's (thanks Jos Roost for one)
-  - Added a new Sony LensType2 value (thanks Jos Roost)
+  - Added two new Sony LensType2 values (thanks Jos Roost)
   - Added a new Pentax LensType
   - Extract a number of new File System tags when SystemTags API option is set
   - Decode a new FujiFilm tag (thanks TonyB)

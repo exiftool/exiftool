@@ -45,7 +45,7 @@ package Image::ExifTool::Minolta;
 
 use strict;
 use vars qw($VERSION %minoltaLensTypes %minoltaTeleconverters %minoltaColorMode
-            %sonyColorMode %minoltaSceneMode %afStatusInfo);
+            %sonyColorMode %minoltaSceneMode %afStatusInfo %metabonesID);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
@@ -158,14 +158,16 @@ $VERSION = '2.26';
 # 2687 1.4x TELE CONVERTER APO (D)
 # 2688 2x TELE CONVERTER APO (D)
 
-# high bytes in Canon LensID's identifying Metabones adapters
-my %metabonesID = (
-    0xef00 => \ 'Metabones Adapter',
-    0xf000 => 0xef00,
-    0xff00 => 0xef00,
-    0x7700 => \ 'Metabones Speed Booster',
-    0x7800 => 0x7700,
-    0x8700 => 0x7700,
+# high bytes in Sony LensID's identifying Metabones adapters and high bytes of Canon LensID's
+%metabonesID = (
+    0xef00 => \ 'Metabones Adapter',        # with Canon LensID 0x00xx
+    0xf000 => 0xef00,                       # with Canon LensID 0x01xx
+    0xf100 => 0xef00,                       # with Canon LensID 0x02xx
+    0xff00 => 0xef00,                       # with Canon LensID 0x10xx
+    0x7700 => \ 'Metabones Speed Booster',  # with Canon LensID 0x00xx
+    0x7800 => 0x7700,                       # with Canon LensID 0x01xx
+    0x7900 => 0x7700,                       # with Canon LensID 0x02xx
+    0x8700 => 0x7700,                       # with Canon LensID 0x10xx
 );
 
 # lens ID numbers (ref 3)
@@ -492,6 +494,7 @@ my %metabonesID = (
     # report type 61184 (=0xef00), and add only the lower byte of the Canon LensType (ref JR).
     # For newer firmware versions this is only used by the Smart Adapter, and
     # the full Canon LensType code is added - PH
+    # the metabones adapter translates Canon L -> G, II -> II, USM -> SSM, IS -> OSS (ref JR)
     61184 => 'Metabones Canon EF Adapter', #JR
     # all M42-type lenses give a value of 65535 (and FocalLength=0, FNumber=1)
     65535 => 'E-Mount, T-Mount, Other Lens or no lens', #JD/JR

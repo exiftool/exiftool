@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.22';
+$VERSION = '2.23';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -1194,15 +1194,10 @@ my %meterInfo2 = (
         Name => 'Sony_0x9402',
         %unknownCipherData,
     }],
-    0x9403 => [{
+    0x9403 => {
         Name => 'Tag9403',
-        # first byte must be 0x01
-        Condition => '$$valPt =~ /^\x01/',
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag9403' },
-    },{
-        Name => 'Sony_0x9403',
-        %unknownCipherData,
-    }],
+    },
     # 0x9404 first 5 bytes (deciphered):
     #  4  0  163  1  2     SLT-A65V/A77V, NEX-5N/7, Lunar, DSC-HX7V/HX9V/HX100V/TX10/TX20/TX55/TX100/TX100V/WX9/WX10/WX30...
     #  5  0  172  1  2     DSC-HX10V/HX200V/HX20V/HX30V/TX66/TX200V/TX300V/WX50/WX70/WX100/WX150...
@@ -1210,8 +1205,8 @@ my %meterInfo2 = (
     # 12  0    8  2  2     SLT-A58, NEX-3N, ILCE-3000/3500, DSC-HX300/HX50V/WX60/WX80/WX300/TX30...
     # 13  0    9  2  2     DSC-QX10/QX100/RX100M2
     # 15  0   35  2  2     ILCA-77M2, ILCE-5000/5100/6000/7/7R/7S/7M2/QX1, DSC-HX400V/HX60V/QX30/RX10/RX100M3/WX220/WX350
-    # 16  0   85  2  2     DSC-HX90V/WX500, ILCE-7RM2
-    # 17  0  232  1  2     DSC-RX100M4/RX10M2
+    # 16  0   85  2  2     DSC-HX90V/WX500
+    # 17  0  232  1  2     DSC-RX100M4/RX10M2, ILCE-7RM2
     # other values for Panorama images and several other models
     0x9404 => [{
         Name => 'Tag9404a',
@@ -1299,13 +1294,17 @@ my %meterInfo2 = (
         Name => 'Sony_0x940d',
         %unknownCipherData,
     },
-# 0x940e: 2nd byte = 0: no AFInfo, default for NEX
-#         2nd byte = 1: AFInfo for SLT models (but also seen 1 for DSC-HX20W/HX300/WX70 ...)
-#         2nd byte = 2: AFInfo for NEX/ILCE with LA-EA2 Phase-detect AF Adapter
+#   0x940e: 2nd byte = 0: no AFInfo, default for NEX/ILCE
+#           2nd byte = 1: AFInfo for SLT/ILCA models (but also seen 1 for DSC-HX20W/HX300/WX70 ...)
+#           2nd byte = 2: AFInfo for NEX/ILCE with LA-EA2/EA4 Phase-detect AF Adapter
     0x940e => [{
         Name => 'AFInfo',
-        Condition => '$$self{Model} =~ /^(SLT-|HV|ILCA-77M2)/', # but appears different for ILCA-77M2 ...
+        Condition => '$$self{Model} =~ /^(SLT-|HV|ILCA-77M2)/',
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::AFInfo' },
+    },{
+        Name => 'Tag940e',
+        Condition => '$$self{Model} =~ /^(NEX-|ILCE-)/',
+        SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag940e' },
     },{
         Name => 'Sony_0x940e',
         %unknownCipherData,
@@ -2476,8 +2475,8 @@ my %meterInfo2 = (
         Name => 'TiffMeteringImage',
         Format => 'undef[9600]',
         Notes => q{
-            13-bit RBGG (?) 40x30 pixels, presumably metering info, converted to a 16-bit
-            TIFF image;
+            13-bit RBGG (?) 40x30 pixels, presumably metering info, extracted as a
+            16-bit TIFF image;
         },
         ValueConv => sub {
             my ($val, $et) = @_;
@@ -2536,7 +2535,7 @@ my %meterInfo2 = (
     0x0107 => { # (7200 bytes: 3 sets of 40x30 int16u values in the range 0-1023)
         Name => 'TiffMeteringImage',
         Notes => q{
-            10-bit RGB data from the 1200 AE metering segments, converted to a 16-bit
+            10-bit RGB data from the 1200 AE metering segments, extracted as a 16-bit
             TIFF image
         },
         ValueConv => sub {
@@ -6530,8 +6529,8 @@ my %pictureProfile2010 = (
 #                  ImageCount-1 for SLT-A37,A57,A65,A77,A99, NEX-F3,5N,5R,5T,6,7, sometimes 0
 #                  ImageCount-2 for NEX-VG, and often 0; "ImageCount-2" also seen on a few A99V images
 #    The offset for ImageCount3 changes with firmware version for the ILCE-7/7R/7S/7M2, so don't decode it for now:
-#                 ILCE-7M2/7S: Ê0x01a0 (firmware 1.0x, 1.1x), 0x01b6 (firmware 1.20, 1.21, 2.00)
-#                 ILCE-7/7R: ÊÊÊ0x01aa (firmware 1.0x, 1.1x), 0x01c0 (firmware 1.20, 1.21, 2.00)
+#                 ILCE-7M2/7S: 0x01a0 (firmware 1.0x, 1.1x), 0x01b6 (firmware 1.20, 1.21, 2.00)
+#                 ILCE-7/7R:   0x01aa (firmware 1.0x, 1.1x), 0x01c0 (firmware 1.20, 1.21, 2.00)
     0x01a0 => {
         Name => 'ImageCount3',
         Format => 'int32u',
@@ -6814,6 +6813,11 @@ my %pictureProfile2010 = (
         Name => 'SonyImageHeight',
         Format => 'int16u',
         PrintConv => '$val > 0 ? 8*$val : "n.a."',
+    },
+    0x0053 => {
+        Name => 'ModelReleaseYear',
+        Format => 'int8u',
+        PrintConv => 'sprintf("20%.2d", $val)',
     },
 );
 
@@ -7146,6 +7150,7 @@ my %pictureProfile2010 = (
             7 => 'Deep',
             8 => 'Light',
             9 => 'Sunset',
+            10 => 'Night View/Portrait',
             11 => 'Autumn Leaves',
             13 => 'Sepia',
         },
@@ -7208,7 +7213,14 @@ my %pictureProfile2010 = (
     },
     0x0342 => {
         Name => 'LensZoomPosition',
-        Condition => '$$self{Model} !~ /^ILCA-/',
+        Condition => '$$self{Model} !~ /^(ILCA-|ILCE-7RM2|DSC-(HX90V|RX10M2|RX100M4|WX500))/',
+        Format => 'int16u',
+        PrintConv => 'sprintf("%.0f%%",$val/10.24)',
+        PrintConvInv => '$val=~s/ ?%$//; $val * 10.24',
+    },
+    0x035a => {
+        Name => 'LensZoomPosition',
+        Condition => '$$self{Model} =~ /^(ILCE-7RM2|DSC-(HX90V|RX10M2|RX100M4|WX500))/',
         Format => 'int16u',
         PrintConv => 'sprintf("%.0f%%",$val/10.24)',
         PrintConvInv => '$val=~s/ ?%$//; $val * 10.24',
@@ -7333,7 +7345,7 @@ my %pictureProfile2010 = (
     # 0x0008 - LensMount, but different values from Tag9405-0x0105 and Tag9050-0x0604.
     # don't know what difference is between values '1' and '5' ...
     0x0008 => {
-        Name => 'LensMount', # ? maybe some other meaning ? (A-mount adapter-only images give 0)
+        Name => 'LensMount2', # ? maybe some other meaning ? (A-mount adapter-only images give 0)
         RawConv => '$$self{LensMount} = $val',
         PrintConv => {
             0 => 'Unknown',
@@ -7342,13 +7354,13 @@ my %pictureProfile2010 = (
             5 => 'A-mount (5)',
         },
     },
-    # 0x0009 - LensType2:
+    # 0x0009 - LensType3:
     # This tag appears to also indicate adapter info, similar to CameraSettings3-0x03f7 for the original NEX-3/5.
     # (Tag9405-0x0605 and Tag9050-0x0107 LensType2 always give '0' for adapters/A-mount lenses.)
     # - seen a few instances of 0x0009 indicating an E-mount lens, but 0xb027 LensType indicating an A-mount lens:
     #   possibly due to adapter info not being read/reset correctly ?
     0x0009 => {
-        Name => 'LensType2',
+        Name => 'LensType3',
         RawConv => '(($$self{LensMount} != 0) or ($val > 0 and $val < 32784)) ? $val : undef',
         Format => 'int16u',
         SeparateTable => 1,
@@ -7405,16 +7417,17 @@ my %pictureProfile2010 = (
     IS_SUBDIR => [ 0x11 ],
     NOTES => 'These tags are currently extracted for SLT models only.',
     # first 4 bytes (deciphered) (ref JR):
-    # (perhaps 0x02 indicates the 15- or 19-point AF?)
+    #   0 1 1 0  for A37, A57, A58
     #   2 1 1 0  for A65V
     #   2 1 2 0  for A77V
-    #   0 1 1 0  for A37, A57, A58
     #   0 1 2 0  for A99V
-    #   1 1 3 0  for ILCA-77M2 - but most below decoded tags appear not valid for ILCA-77M2
-    #   0 0 0 0  for NEX
-    #   2 0 0 0  for NEX
-    #   0 2 0 0  for NEX with A-mount lens via LA-EA2 Phase-AF adapter
-    #   2 2 0 0  for NEX with A-mount lens via LA-EA2 Phase-AF adapter
+    #   1 1 3 0  for ILCA-77M2
+    #   0 0 0 0  for NEX and ILCE-3000/3500
+    #   1 0 0 0  for ILCE-5000/5100/6000/7/7M2/7R/7S/QX1
+    #   6 0 0 0  for ILCE-7RM2
+    #   0 2 0 0  for NEX/ILCE with LA-EA2/EA4 Phase-AF adapter
+    #   2 0 0 0  seen for a few NEX-5N images
+    #   2 2 0 0  seen for a few NEX-5N/7 images with LA-EA2 adapter
     0x02 => {
         Name => 'AFType',
         RawConv => '$$self{AFType} = $val',
@@ -7425,8 +7438,6 @@ my %pictureProfile2010 = (
             3 => '79-point', # (NC) seen for ILCA-77M2
         },
     },
-    # 0x04 start 74 Blocks of 164 bytes each for NEX with LA-EA2 15-point Phase-detect AF adapter and A-mount lens (ref JR).
-    # For the NEX probably only the 11th byte might be the AFPoint.
     0x04 => {
         Name => 'AFStatusActiveSensor',
         Condition => '$$self{Model} !~ /^ILCA-/',
@@ -7560,7 +7571,38 @@ my %pictureProfile2010 = (
         Format => 'int8s',
     },
     # 0x007d - AFStatus79 ? - 95 int16s values which would match ILCA-77M2 79 AF points + 15 cross + 1 F2.8
-    # 0x016e - for SLT: 4 bytes identical to 0x2020 first 4 bytes, and indicating 'AFPointsUsed' (ref JR)
+    # 0x016e - SLT: 4 bytes indicating 'AFPointsUsed', identical to first 4 bytes of 0x2020 for A58/A99V
+    0x016e => {
+        Name => 'AFPointsUsed',
+        Condition => '$$self{Model} !~ /^ILCA-/',
+        Notes => 'SLT models only',
+        Format => 'int32u',
+        PrintConvColumns => 2,
+        PrintConv => {
+            0 => '(none)',
+            BITMASK => {
+                0 => 'Center',
+                1 => 'Top',
+                2 => 'Upper-right',
+                3 => 'Right',
+                4 => 'Lower-right',
+                5 => 'Bottom',
+                6 => 'Lower-left',
+                7 => 'Left',
+                8 => 'Upper-left',
+                9 => 'Far Right',
+                10 => 'Far Left',
+                11 => 'Upper-middle',
+                12 => 'Near Right',
+                13 => 'Lower-middle',
+                14 => 'Near Left',
+                15 => 'Upper Far Right',
+                16 => 'Lower Far Right',
+                17 => 'Lower Far Left',
+                18 => 'Upper Far Left',
+            },
+        },
+    },
     0x017d => { #PH (verified for the A77/A99; likely valid for other SLT models - ref JR)
         # (different from AFMicroAdjValue because it is 0 when the adjustment is off)
         Name => 'AFMicroAdj',
@@ -7587,6 +7629,52 @@ my %pictureProfile2010 = (
     # tags also related to AFPoint (PH, A77):
     #   0x11ec, 0x122a, 0x1408, 0x1446, 0x14bc, 0x1f86,
     #   0x14fa, 0x1570, 0x1572, 0x15ae, 0x1f48
+);
+
+%Image::ExifTool::Sony::Tag940e = ( #JR
+    PROCESS_PROC => \&ProcessEnciphered,
+    WRITE_PROC => \&WriteEnciphered,
+    CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
+    FORMAT => 'int8u',
+    FIRST_ENTRY => 0,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
+    NOTES => 'E-mount models.',
+
+    # (see comment in AFInfo for deciphered values of first 4 bytes for various models)
+
+    # 0x0004 - if 0x0001 == 2: LA-EA2/EA4 15-point SLT Phase-detect AF adapter used:
+    #          start of 164-byte AF Info Blocks, possibly the 11th byte might be the AFPoint.
+    #          ILCE-7M2:       40 Blocks of 164 bytes (probably also for 7RM2: tbc)
+    #          other NEX/ILCE: 74 blocks of 164 bytes
+
+    # 0x1a06 onwards - first seen for ILCE-7RM2: appears to be some kind of metering image
+    0x1a06 => { Name => 'TiffMeteringImageWidth',  Condition => '$$self{Model} =~ /^(ILCE-7RM2)\b/' },
+    0x1a07 => { Name => 'TiffMeteringImageHeight', Condition => '$$self{Model} =~ /^(ILCE-7RM2)\b/' },
+    0x1a08 => { # (2640 bytes: 1 set of 44x30 int16u values)
+        Name => 'TiffMeteringImage',
+        Condition => '$$self{Model} =~ /^(ILCE-7RM2)\b/',
+        Format => 'undef[2640]',
+        Notes => q{
+            13(?)-bit intensity data from 1320 (1200) metering segments, extracted as a
+            16-bit TIFF image
+        },
+        ValueConv => sub {
+            my ($val, $et) = @_;
+            return undef unless length $val >= 2640;
+            return \ "Binary data 2640 bytes" unless $et->Options('Binary');
+            my @dat = unpack('v*', $val);
+            # TIFF header for a 16-bit RGB 10dpi 44x30 image
+            $val = MakeTiffHeader(44,30,3,16,10);
+            # re-order data to RGB pixels - use same value for R, G and B
+            my ($i, @val);
+            for ($i=0; $i<44*30; ++$i) {
+                # data is 13-bit (max 8191), shift left to fill 16 bits
+                push @val, int(5041.1*log($dat[$i]+1)/log(2)), int(5041.1*log($dat[$i]+1)/log(2)), int(5041.1*log($dat[$i]+1)/log(2));
+            }
+            $val .= pack('v*', @val);   # add TIFF strip data
+            return \$val;
+        },
+    },
 );
 
 # AF Point Status (ref JR)

@@ -27,7 +27,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.40';
+$VERSION = '1.41';
 
 sub ConvertTimecode($);
 
@@ -351,6 +351,7 @@ my %riffMimeType = (
             ProcessProc => \&Image::ExifTool::RIFF::ProcessChunks,
         },
     },
+    # seen LIST_JUNK
     JUNK => [
         {
             Name => 'OlympusJunk',
@@ -407,6 +408,22 @@ my %riffMimeType = (
     olym => {
         Name => 'Olym',
         SubDirectory => { TagTable => 'Image::ExifTool::Olympus::WAV' },
+    },
+    fact => {
+        Name => 'NumberOfSamples',
+        RawConv => 'Get32u(\$val, 0)',
+    },
+   'cue ' => {
+        Name => 'CuePoints',
+        Binary => 1,
+    },
+    afsp => { },
+    IDIT => {
+        Name => 'DateTimeOriginal',
+        Description => 'Date/Time Original',
+        Groups => { 2 => 'Time' },
+        ValueConv => 'Image::ExifTool::RIFF::ConvertRIFFDate($val)',
+        PrintConv => '$self->ConvertDateTime($val)',
     },
 #
 # WebP-specific tags
@@ -698,6 +715,15 @@ my %riffMimeType = (
         },
         PrintConv => '$self->ConvertDateTime($val)',
     },
+    # not observed, but apparently part of the standard:
+    IDIT => {
+        Name => 'DateTimeOriginal',
+        Description => 'Date/Time Original',
+        Groups => { 2 => 'Time' },
+        ValueConv => 'Image::ExifTool::RIFF::ConvertRIFFDate($val)',
+        PrintConv => '$self->ConvertDateTime($val)',
+    },
+    ISMP => 'TimeCode',
 );
 
 # Sub chunks of EXIF LIST chunk
@@ -1140,6 +1166,9 @@ sub ConvertRIFFDate($)
         # but the Casio QV-3EX writes dates like "2001/ 1/27  1:42PM",
         # and the Casio EX-Z30 writes "2005/11/28/ 09:19"... doh!
         $val = sprintf("%.4d:%.2d:%.2d %.2d:%.2d:00",$1,$2,$3,$4+($6?12:0),$5);
+    } elsif ($val =~ m{(\d{4})[-/](\d+)[-/](\d+)\s+(\d+:\d+:\d+)}) {
+        # the Konica KD500Z writes "2002-12-16  15:35:01\0\0"
+        $val = "$1:$2:$3 $4";
     }
     return $val;
 }
@@ -1267,6 +1296,24 @@ sub ProcessStreamData($$$)
 }
 
 #------------------------------------------------------------------------------
+# Make tag information hash for unknown tag
+# Inputs: 0) Tag table ref, 1) tag ID
+sub MakeTagInfo($$)
+{
+    my ($tagTablePtr, $tag) = @_;
+    my $name = $tag;
+    my $n = ($name =~ s/([\x00-\x1f\x7f-\xff])/'x'.unpack('H*',$1)/eg);
+    # print in hex if tag is numerical
+    $name = sprintf('0x%.4x',unpack('N',$tag)) if $n > 2;
+    AddTagToTable($tagTablePtr, $tag, {
+        Name => "Unknown_$name",
+        Description => "Unknown $name",
+        Unknown => 1,
+        Binary => 1,
+    });
+}
+
+#------------------------------------------------------------------------------
 # Process RIFF chunks
 # Inputs: 0) ExifTool object reference, 1) directory information reference
 #         2) tag table reference
@@ -1279,10 +1326,11 @@ sub ProcessChunks($$$)
     my $size = $$dirInfo{DirLen};
     my $end = $start + $size;
     my $base = $$dirInfo{Base};
+    my $verbose = $et->Options('Verbose');
+    my $unknown = $et->Options('Unknown');
 
-    if ($et->Options('Verbose')) {
-        $et->VerboseDir($$dirInfo{DirName}, 0, $size);
-    }
+    $et->VerboseDir($$dirInfo{DirName}, 0, $size) if $verbose;
+
     while ($start + 8 < $end) {
         my $tag = substr($$dataPt, $start, 4);
         my $len = Get32u($dataPt, $start + 4);
@@ -1316,6 +1364,8 @@ sub ProcessChunks($$$)
                 $val = substr($$dataPt, $start, $len);
                 $val =~ s/\0+$//;   # remove trailing nulls from strings
             }
+        } elsif ($verbose or $unknown) {
+            MakeTagInfo($tagTablePtr, $tag);
         }
         $et->HandleTag($tagTablePtr, $tag, $val,
             DataPt  => $dataPt,
@@ -1341,6 +1391,7 @@ sub ProcessRIFF($$)
     my $raf = $$dirInfo{RAF};
     my ($buff, $buf2, $type, $mime, $err);
     my $verbose = $et->Options('Verbose');
+    my $unknown = $et->Options('Unknown');
 
     # verify this is a valid RIFF file
     return 0 unless $raf->Read($buff, 12) == 12;
@@ -1400,8 +1451,9 @@ sub ProcessRIFF($$)
         }
         # RIFF chunks are padded to an even number of bytes
         my $len2 = $len + ($len & 0x01);
-        if ($$tagTablePtr{$tag} or ($verbose and $tag !~ /^(data|idx1|LIST_movi|RIFF)$/)) {
+        if ($$tagTablePtr{$tag} or (($verbose or $unknown) and $tag !~ /^(data|idx1|LIST_movi|RIFF)$/)) {
             $raf->Read($buff, $len2) == $len2 or $err=1, last;
+            MakeTagInfo($tagTablePtr, $tag) if not $$tagTablePtr{$tag} and ($verbose or $unknown);
             $et->HandleTag($tagTablePtr, $tag, $buff,
                 DataPt  => \$buff,
                 DataPos => 0,   # (relative to Base)

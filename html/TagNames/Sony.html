@@ -662,9 +662,11 @@ Spot)</span></span></td></tr>
 <td>--&gt; <a href='Sony.html#Tag940c'>Sony Tag940c Tags</a></td></tr>
 <tr>
 <td title='0x940e = 37902'>0x940e</td>
-<td>AFInfo</td>
-<td class=c>-</td>
-<td>--&gt; <a href='Sony.html#AFInfo'>Sony AFInfo Tags</a></td></tr>
+<td>AFInfo
+  <br>Tag940e</td>
+<td class=c>-<br>-</td>
+<td>--&gt; <a href='Sony.html#AFInfo'>Sony AFInfo Tags</a>
+  <br>--&gt; <a href='Sony.html#Tag940e'>Sony Tag940e Tags</a></td></tr>
 <tr class=b>
 <td title='0xb000 = 45056'>0xb000</td>
 <td>FileFormat</td>
@@ -2553,8 +2555,8 @@ A200, A230, A290, A300, A330, A350, A380, A390, A700, A850 and A900.</p>
 <td class=r title='4368 = 0x1110'>4368</td>
 <td>TiffMeteringImage</td>
 <td class=c>N</td>
-<td><span class=s><span class=n>(13-bit RBGG (?) 40x30 pixels, presumably metering info, converted to a 16-bit
-TIFF image;)</span></span></td></tr>
+<td><span class=s><span class=n>(13-bit RBGG (?) 40x30 pixels, presumably metering info, extracted as a
+16-bit TIFF image;)</span></span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='ExposureProgram'>Sony ExposureProgram Values</a></h2>
@@ -2603,7 +2605,7 @@ A580, A33, A35, A55, NEX-3/5/C3 and VG10E.</p>
 <td title='0x0107 = 263'>0x0107</td>
 <td>TiffMeteringImage</td>
 <td class=c>N</td>
-<td><span class=s><span class=n>(10-bit RGB data from the 1200 AE metering segments, converted to a 16-bit
+<td><span class=s><span class=n>(10-bit RGB data from the 1200 AE metering segments, extracted as a 16-bit
 TIFF image)</span></span></td></tr>
 <tr class=b>
 <td title='0x0201 = 513'>0x0201</td>
@@ -7193,6 +7195,11 @@ ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-77M2.</p>
 <td>SonyImageHeight</td>
 <td class=c title=' ~ = Writable only with -n'>int16u~</td>
 <td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0053 = 83'>0x0053</td>
+<td>ModelReleaseYear</td>
+<td class=c title=' ~ = Writable only with -n'>int8u~</td>
+<td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='Tag9402'>Sony Tag9402 Tags</a></h2>
@@ -7416,11 +7423,12 @@ ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-77M2.</p>
   <br>2 = Neutral
   <br>3 = Portrait
   <br>4 = Landscape
-  <br>5 = B&amp;W</td><td>&nbsp;&nbsp;</td>
-  <td>6 = Clear
+  <br>5 = B&amp;W
+  <br>6 = Clear
   <br>7 = Deep
   <br>8 = Light
   <br>9 = Sunset
+  <br>10 = Night View/Portrait
   <br>11 = Autumn Leaves
   <br>13 = Sepia</td></tr></table>
 </td></tr>
@@ -7468,6 +7476,11 @@ ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-77M2.</p>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x0342 = 834'>0x0342</td>
+<td>LensZoomPosition</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x035a = 858'>0x035a</td>
 <td>LensZoomPosition</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
@@ -7549,7 +7562,7 @@ ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-77M2.</p>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
 <td title='0x0008 = 8'>0x0008</td>
-<td>LensMount</td>
+<td>LensMount2</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Unknown
   <br>1 = A-mount (1)
@@ -7557,9 +7570,9 @@ ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-77M2.</p>
   <br>5 = A-mount (5)</span></td></tr>
 <tr class=b>
 <td title='0x0009 = 9'>0x0009</td>
-<td>LensType2</td>
+<td>LensType3</td>
 <td class=c>int16u</td>
-<td>--&gt; <a href='Sony.html#LensType2'>Sony LensType2 Values</a></td></tr>
+<td>--&gt; <a href='Sony.html#LensType3'>Sony LensType3 Values</a></td></tr>
 <tr>
 <td title='0x000b = 11'>0x000b</td>
 <td>E-mountVersionCamera</td>
@@ -7571,6 +7584,54 @@ ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-77M2.</p>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
+
+<h2><a name='LensType3'>Sony LensType3 Values</a></h2>
+<p>Lens type numbers for Sony E-mount lenses used by NEX models.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class='inner sep' cellspacing=1>
+<tr class=h><th>Value</th><th>LensType3</th></tr>
+<tr><td class=r>0</td><td>= Unknown E-mount lens or other lens</td>
+</tr><tr><td class=r>1</td><td>= Sony LA-EA1 Adapter</td>
+</tr><tr><td class=r>2</td><td>= Sony LA-EA2 Adapter</td>
+</tr><tr><td class=r>3</td><td>= Sony LA-EA3 Adapter</td>
+</tr><tr><td class=r>6</td><td>= Sony LA-EA4 Adapter</td>
+</tr><tr><td class=r>44</td><td>= Metabones Canon EF Smart Adapter</td>
+</tr><tr><td class=r>78</td><td>= Metabones Canon EF Smart Adapter Mark III or IV</td>
+</tr><tr><td class=r>234</td><td>= Adapter only - no lens attached</td>
+</tr><tr><td class=r>239</td><td>= Metabones Canon EF Speed Booster</td>
+</tr><tr><td class=r>32784</td><td>= Sony E 16mm F2.8</td>
+</tr><tr><td class=r>32785</td><td>= Sony E 18-55mm F3.5-5.6 OSS</td>
+</tr><tr><td class=r>32786</td><td>= Sony E 55-210mm F4.5-6.3 OSS</td>
+</tr><tr><td class=r>32787</td><td>= Sony E 18-200mm F3.5-6.3 OSS</td>
+</tr><tr><td class=r>32788</td><td>= Sony E 30mm F3.5 Macro</td>
+</tr><tr><td class=r>32789</td><td>= Sony E 24mm F1.8 ZA</td>
+</tr><tr><td class=r>32790</td><td>= Sony E 50mm F1.8 OSS</td>
+</tr><tr><td class=r>32791</td><td>= Sony E 16-70mm F4 ZA OSS</td>
+</tr><tr><td class=r>32792</td><td>= Sony E 10-18mm F4 OSS</td>
+</tr><tr><td class=r>32793</td><td>= Sony E PZ 16-50mm F3.5-5.6 OSS</td>
+</tr><tr><td class=r>32794</td><td>= Sony FE 35mm F2.8 ZA</td>
+</tr><tr><td class=r>32795</td><td>= Sony FE 24-70mm F4 ZA OSS</td>
+</tr><tr><td class=r>32797</td><td>= Sony E 18-200mm F3.5-6.3 OSS LE</td>
+</tr><tr><td class=r>32798</td><td>= Sony E 20mm F2.8</td>
+</tr><tr><td class=r>32799</td><td>= Sony E 35mm F1.8 OSS</td>
+</tr><tr><td class=r>32800</td><td>= Sony E PZ 18-105mm F4 G OSS</td>
+</tr><tr><td class=r>32802</td><td>= Sony FE 90mm F2.8 Macro G OSS</td>
+</tr><tr><td class=r>32803</td><td>= Sony E 18-50mm F4-5.6</td>
+</tr><tr><td class=r>32807</td><td>= Sony E PZ 18-200mm F3.5-6.3 OSS</td>
+</tr><tr><td class=r>32808</td><td>= Sony FE 55mm F1.8 ZA</td>
+</tr><tr><td class=r>32810</td><td>= Sony FE 70-200mm F4 G OSS</td>
+</tr><tr><td class=r>32811</td><td>= Sony FE 16-35mm F4 ZA OSS</td>
+</tr><tr><td class=r>32813</td><td>= Sony FE 28-70mm F3.5-5.6 OSS</td>
+</tr><tr><td class=r>32814</td><td>= Sony FE 35mm F1.4 ZA</td>
+</tr><tr><td class=r>32815</td><td>= Sony FE 24-240mm F3.5-6.3 OSS</td>
+</tr><tr><td class=r>32816</td><td>= Sony FE 28mm F2</td>
+</tr><tr><td class=r>32817</td><td>= Sony FE PZ 28-135mm F4 G OSS</td>
+</tr><tr><td class=r>32826</td><td>= Sony FE 21mm F2.8 (SEL28F20 + SEL075UWC)</td>
+</tr><tr><td class=r>32827</td><td>= Sony FE 16mm F3.5 Fisheye (SEL28F20 + SEL057FEC)</td>
+</tr><tr><td class=r>49216</td><td>= Zeiss Batis 25mm F2</td>
+</tr><tr><td class=r>49217</td><td>= Zeiss Batis 85mm F1.8</td>
+</tr></table></td></tr></table></blockquote>
 
 <h2><a name='AFInfo'>Sony AFInfo Tags</a></h2>
 <p>These tags are currently extracted for SLT models only.</p>
@@ -7814,11 +7875,37 @@ ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-77M2.</p>
 <td class=c>int8s</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td title='0x016e = 366'>0x016e</td>
+<td>AFPointsUsed</td>
+<td class=c>int32u</td>
+<td><span class=s><span class=n>(SLT models only)</span></span><table class=cols><tr>
+  <td>0x0 = (none)
+  <br>Bit 0 = Center
+  <br>Bit 1 = Top
+  <br>Bit 2 = Upper-right
+  <br>Bit 3 = Right
+  <br>Bit 4 = Lower-right
+  <br>Bit 5 = Bottom
+  <br>Bit 6 = Lower-left
+  <br>Bit 7 = Left
+  <br>Bit 8 = Upper-left</td><td>&nbsp;&nbsp;</td>
+  <td>Bit 9 = Far Right
+  <br>Bit 10 = Far Left
+  <br>Bit 11 = Upper-middle
+  <br>Bit 12 = Near Right
+  <br>Bit 13 = Lower-middle
+  <br>Bit 14 = Near Left
+  <br>Bit 15 = Upper Far Right
+  <br>Bit 16 = Lower Far Right
+  <br>Bit 17 = Lower Far Left
+  <br>Bit 18 = Upper Far Left</td></tr></table>
+</td></tr>
+<tr>
 <td title='0x017d = 381'>0x017d</td>
 <td>AFMicroAdj</td>
 <td class=c>int8s</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x017e = 382'>0x017e</td>
 <td>ExposureProgram</td>
 <td class=c>int8u</td>
@@ -8072,6 +8159,31 @@ ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-77M2.</p>
   <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
   <td>0 = In Focus</td></tr></table>
 </td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Tag940e'>Sony Tag940e Tags</a></h2>
+<p>E-mount models.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x1a06 = 6662'>0x1a06</td>
+<td>TiffMeteringImageWidth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1a07 = 6663'>0x1a07</td>
+<td>TiffMeteringImageHeight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x1a08 = 6664'>0x1a08</td>
+<td>TiffMeteringImage</td>
+<td class=c>N</td>
+<td><span class=s><span class=n>(13(?)-bit intensity data from 1320 (1200) metering segments, extracted as a
+16-bit TIFF image)</span></span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='PIC'>Sony PIC Tags</a></h2>
@@ -8634,7 +8746,7 @@ the JPEG image from a PMP file)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jul 23, 2015</i>
+<br><i>Last revised Aug 18, 2015</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

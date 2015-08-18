@@ -13165,6 +13165,7 @@ MakerNotes.
   0x940a   Tag940a                              Sony Tag940a
   0x940c   Tag940c                              Sony Tag940c
   0x940e   AFInfo                               Sony AFInfo
+           Tag940e                              Sony Tag940e
   0xb000   FileFormat                           int8u[4]
   0xb001   SonyModelID                          int16u
   0xb020   CreativeStyle                        string
@@ -14139,6 +14140,7 @@ ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-77M2.
   0x0029   CameraOrientation                    int8u
   0x002a   Quality2                             int8u
   0x0047   SonyImageHeight                      int16u~
+  0x0053   ModelReleaseYear                     int8u~
 
 =head3 Sony Tag9402 Tags
 
@@ -14210,6 +14212,7 @@ ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-77M2.
   0x0062   LensType                             int16u
   0x0064   LensParameters?                      int16s[16]~
   0x0342   LensZoomPosition                     int16u
+  0x035a   LensZoomPosition                     int16u
 
 =head3 Sony Tag9406 Tags
 
@@ -14234,8 +14237,8 @@ NEX and ILCE models only.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
-  0x0008   LensMount                            int8u
-  0x0009   LensType2                            int16u
+  0x0008   LensMount2                           int8u
+  0x0009   LensType3                            int16u
   0x000b   E-mountVersionCamera                 int16u
   0x000d   E-mountVersionLens                   int16u
 
@@ -14257,6 +14260,7 @@ These tags are currently extracted for SLT models only.
            AFStatus19                           Sony AFStatus19
   0x003a   AFAreaMode                           int8u
   0x0050   AFMicroAdj                           int8s
+  0x016e   AFPointsUsed                         int32u
   0x017d   AFMicroAdj                           int8s
   0x017e   ExposureProgram                      int8u
 
@@ -14296,6 +14300,16 @@ AF Status information for models with 19-point AF.
      54    AFStatusUpper-rightVertical          int16s
      56    AFStatusRightVertical                int16s
      58    AFStatusLower-rightVertical          int16s
+
+=head3 Sony Tag940e Tags
+
+E-mount models.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  0x1a06   TiffMeteringImageWidth               N
+  0x1a07   TiffMeteringImageHeight              N
+  0x1a08   TiffMeteringImage                    N
 
 =head3 Sony PIC Tags
 
@@ -23548,6 +23562,7 @@ sub-documents, but the Duration is calculated for the full video.
   'ANMF'               ANMF                     RIFF ANMF
   'EXIF'               EXIF                     EXIF
   'ICCP'               ICC_Profile              ICC_Profile
+  'IDIT'               DateTimeOriginal         N
   'JUNK'               OlympusJunk              Olympus AVI
                        CasioJunk                EXIF
                        RicohJunk                Ricoh AVI
@@ -23566,7 +23581,10 @@ sub-documents, but the Duration is calculated for the full video.
   'VP8X'               VP8X                     RIFF VP8X
   'XMP '               XMP                      XMP
   '_PMX'               XMP                      XMP
+  'afsp'               Afsp                     N
   'bext'               BroadcastExtension       RIFF BroadcastExt
+  'cue '               CuePoints                N
+  'fact'               NumberOfSamples          N
   'fmt '               AudioFormat              RIFF AudioFormat
   'olym'               Olym                     Olympus WAV
 
@@ -23636,6 +23654,7 @@ by some software.
   'ICRD'   DateCreated                          N
   'ICRP'   Cropped                              N
   'IDIM'   Dimensions                           N
+  'IDIT'   DateTimeOriginal                     N
   'IDPI'   DotsPerInch                          N
   'IDST'   DistributedBy                        N
   'IEDT'   EditedBy                             N
@@ -23664,6 +23683,7 @@ by some software.
   'ISFT'   Software                             N
   'ISGN'   SecondaryGenre                       N
   'ISHP'   Sharpness                            N
+  'ISMP'   TimeCode                             N
   'ISRC'   Source                               N
   'ISRF'   SourceForm                           N
   'ISTD'   ProductionStudio                     N

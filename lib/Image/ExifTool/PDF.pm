@@ -1931,7 +1931,7 @@ sub ProcessDict($$$$;$$)
                     # otherwise we must first convert from PDFDocEncoding
                     $val = $et->Decode($val, ($val=~s/^\xfe\xff// ? 'UCS2' : 'PDFDoc'), 'MM');
                 }
-                if ($$tagInfo{List}) {
+                if ($$tagInfo{List} and not $$et{OPTIONS}{NoPDFList}) {
                     # separate tokens in comma or whitespace delimited lists
                     my @values = ($val =~ /,/) ? split /,+\s*/, $val : split ' ', $val;
                     foreach $val (@values) {

@@ -52,7 +52,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '3.73';
+$VERSION = '3.74';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -3604,14 +3604,17 @@ sub PrintLensID($$@)
         ($shortFocal, $longFocal) = ($1, $2 || $1);
     }
     if ($$et{Make} eq 'SONY') {
-        if (($lensType & 0xff00) == 0xef00) {
-            # patch for Metabones Canon adapter on a Sony camera (ref Jos Roost)
-            # (note: the adapter kills the high byte for 2-byte LensType values,
-            # so the reported lens will be incorrect for these)
-            require Image::ExifTool::Canon;
-            $printConv = \%Image::ExifTool::Canon::canonLensTypes;
-            $lensType &= 0xff;
-            $lensTypePrt = $$printConv{$lensType} if $$printConv{$lensType};
+        # patch for Metabones Canon adapters on Sony cameras (ref Jos Roost)
+        # (the Metabones adapters add 0xef00 or 0x7700 to the high byte
+        # for 2-byte LensType values, so we need to adjust for these)
+        if ($lensType != 0xffff) {
+            require Image::ExifTool::Minolta;
+            if ($Image::ExifTool::Minolta::metabonesID{$lensType & 0xff00}) {
+                $lensType -= ($lensType >= 0xef00 ? 0xef00 : 0x7700);
+                require Image::ExifTool::Canon;
+                $printConv = \%Image::ExifTool::Canon::canonLensTypes;
+                $lensTypePrt = $$printConv{$lensType} if $$printConv{$lensType};
+            }
         }
     } elsif ($shortFocal and $longFocal) {
         # Canon (and some other makes) include makernote information

@@ -58,7 +58,7 @@ use vars qw($VERSION %nikonLensIDs %nikonTextEncoding);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '3.07';
+$VERSION = '3.08';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -126,6 +126,7 @@ sub GetAFPointGrid($$;$);
     '23 30 BE CA 3C 48 17 00' => 'Zoom-Nikkor 1200-1700mm f/5.6-8 P ED IF',
     '24 48 60 80 24 24 1A 02' => 'AF Zoom-Nikkor 80-200mm f/2.8D ED',
     '25 48 44 5C 24 24 1B 02' => 'AF Zoom-Nikkor 35-70mm f/2.8D',
+    '25 48 44 5C 24 24 3A 02' => 'AF Zoom-Nikkor 35-70mm f/2.8D',
     '25 48 44 5C 24 24 52 02' => 'AF Zoom-Nikkor 35-70mm f/2.8D',
     '26 40 3C 5C 2C 34 1C 02' => 'AF Zoom-Nikkor 28-70mm f/3.5-4.5D',
     '27 48 8E 8E 24 24 1D 02' => 'AF-I Nikkor 300mm f/2.8D IF-ED',
@@ -274,7 +275,6 @@ sub GetAFPointGrid($$;$);
     'A5 40 3C 8E 2C 3C A7 0E' => 'AF-S Nikkor 28-300mm f/3.5-5.6G ED VR',
     'A6 48 8E 8E 24 24 A8 0E' => 'AF-S VR Nikkor 300mm f/2.8G IF-ED II',
     'A7 4B 62 62 2C 2C A9 0E' => 'AF-S DX Micro Nikkor 85mm f/3.5G ED VR',
-    'A7 3C 53 80 30 3C C2 0E' => 'AF-S DX Nikkor 55-200mm f/4-5.6G ED VR II', #33
     'A8 48 80 98 30 30 AA 0E' => 'AF-S VR Zoom-Nikkor 200-400mm f/4G IF-ED II', #http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,3218.msg15495.html#msg15495
     'A9 54 80 80 18 18 AB 0E' => 'AF-S Nikkor 200mm f/2G ED VR II',
     'AA 3C 37 6E 30 30 AC 0E' => 'AF-S Nikkor 24-120mm f/4G ED VR',
@@ -295,9 +295,11 @@ sub GetAFPointGrid($$;$);
     'A2 40 2D 53 2C 3C BD 0E' => 'AF-S DX VR Nikkor 18-55mm f/3.5-5.6G II',
     'A4 40 2D 8E 2C 40 BF 0E' => 'AF-S DX Nikkor 18-300mm f/3.5-6.3G ED VR',
     'A5 4C 44 44 14 14 C0 06' => 'AF-S Nikkor 35mm f/1.8G', #35
+    'A7 3C 53 80 30 3C C2 0E' => 'AF-S DX Nikkor 55-200mm f/4-5.6G ED VR II', #33
     'A8 48 8E 8E 30 30 C3 4E' => 'AF-S Nikkor 300mm f/4E PF ED VR', #35
     'A8 48 8E 8E 30 30 C3 0E' => 'AF-S Nikkor 300mm f/4E PF ED VR', #30
     'A9 4C 31 31 14 14 C4 06' => 'AF-S Nikkor 20mm f/1.8G ED', #30
+    'AA 48 37 5C 24 24 C5 4E' => 'AF-S Nikkor 24-70mm f/2.8E ED VR',
     '01 00 00 00 00 00 02 00' => 'TC-16A',
     '01 00 00 00 00 00 08 00' => 'TC-16A',
     '00 00 00 00 00 00 F1 0C' => 'TC-14E [II] or Sigma APO Tele Converter 1.4x EX DG or Kenko Teleplus PRO 300 DG 1.4x',
@@ -320,6 +322,7 @@ sub GetAFPointGrid($$;$);
     'F8 54 3E 3E 0C 0C 4B 06' => 'Sigma 30mm F1.4 EX DC HSM', #JD
     '91 54 44 44 0C 0C 4B 06' => 'Sigma 35mm F1.4 DG HSM', #30
     'DE 54 50 50 0C 0C 4B 06' => 'Sigma 50mm F1.4 EX DG HSM',
+    '88 54 50 50 0C 0C 4B 06' => 'Sigma 50mm F1.4 DG HSM | A',
     '02 48 50 50 24 24 02 00' => 'Sigma Macro 50mm F2.8', #http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,4027.0.html
     '32 54 50 50 24 24 35 02' => 'Sigma Macro 50mm F2.8 EX DG',
     'E3 54 50 50 24 24 35 02' => 'Sigma Macro 50mm F2.8 EX DG', #http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,3215.0.html
@@ -454,6 +457,7 @@ sub GetAFPointGrid($$;$);
     'CF 38 6E 98 34 3C 4B 0E' => 'Sigma APO 120-400mm F4.5-5.6 DG OS HSM',
     '26 44 73 98 34 3C 1C 02' => 'Sigma 135-400mm F4.5-5.6 APO Aspherical',
     'CE 34 76 A0 38 40 4B 0E' => 'Sigma 150-500mm F5-6.3 DG OS APO HSM', #JD
+    '81 34 76 A6 38 40 4B 0E' => 'Sigma 150-600mm F5-6.3 DG OS HSM | S', #Jaap Voets
     '26 40 7B A0 34 40 1C 02' => 'Sigma APO 170-500mm F5-6.3 Aspherical RF',
     'A7 49 80 A0 24 24 4B 06' => 'Sigma APO 200-500mm F2.8 EX DG',
     '48 3C 8E B0 3C 3C 4B 02' => 'Sigma APO 300-800mm F5.6 EX DG HSM',
@@ -500,6 +504,7 @@ sub GetAFPointGrid($$;$);
     '10 3D 3C 60 2C 3C D2 02' => 'Tamron AF 28-80mm f/3.5-5.6 Aspherical (177D)',
     '45 3D 3C 60 2C 3C 48 02' => 'Tamron AF 28-80mm f/3.5-5.6 Aspherical (177D)',
     '00 48 3C 6A 24 24 00 02' => 'Tamron SP AF 28-105mm f/2.8 LD Aspherical IF (176D)',
+    '4D 3E 3C 80 2E 3C 62 02' => 'Tamron AF 28-200mm F/3.8-5.6 XR Aspherical (IF) Macro (A03N)',
     '0B 3E 3D 7F 2F 3D 0E 00' => 'Tamron AF 28-200mm f/3.8-5.6 (71D)',
     '0B 3E 3D 7F 2F 3D 0E 02' => 'Tamron AF 28-200mm f/3.8-5.6D (171D)',
     '12 3D 3C 80 2E 3C DF 02' => 'Tamron AF 28-200mm f/3.8-5.6 AF Aspherical LD (IF) (271D)',

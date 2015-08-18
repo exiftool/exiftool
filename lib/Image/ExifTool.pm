@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '9.99';
+$VERSION = '10.00';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -1114,9 +1114,9 @@ my %systemTagsNotes = (
     FileAttributes => {
         Groups => { 1 => 'System' },
         Notes => q{
-            2 or 3 values: 0. File type, 1. Attribute bits, 2. Windows attribute bits if
-            Win32API::File is available.  Extracted only if the SystemTags API option is
-            set
+            extracted only if specifically requested or the SystemTags API option is
+            set.  2 or 3 values: 0. File type, 1. Attribute bits, 2. Windows attribute
+            bits if Win32API::File is available
         },
         PrintHex => 1,
         PrintConvColumns => 2,
@@ -1802,6 +1802,7 @@ sub ClearOptions($)
         ListSplit   => undef,   # regex for splitting list-type tag values when writing
         MakerNotes  => undef,   # extract maker notes as a block
         MissingTagValue =>undef,# value for missing tags when expanded in expressions
+        NoPDFList   => undef,   # flag to avoid splitting PDF List-type tag values
         Password    => undef,   # password for password-protected PDF documents
         PNGEarlyXMP => undef,   # write XMP in PNG images before IDAT chunk
         PrintConv   => 1,       # flag to enable print conversion

@@ -589,7 +589,7 @@ extended XMP entirely.
      1   - read extended XMP with valid GUID only (default)
      2   - read extended XMP with any GUID
   <guid> - read extended XMP with a specific GUID
-    
+
 =item ExtractEmbedded
 
 Flag to extract information from embedded documents in EPS files, embedded
@@ -745,6 +745,11 @@ are:
 Value for missing tags in expressions evaluated by L</SetNewValuesFromFile>.
 If not set, a minor error is issued for missing values, or the value is set
 to '' if L</IgnoreMinorErrors> is set.  Default is undef.
+
+=item NoPDFList
+
+Flag to avoid splitting PDF List-type tag values into separate items.
+Default is undef.
 
 =item Password
 

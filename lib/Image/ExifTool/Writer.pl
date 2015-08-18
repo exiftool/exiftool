@@ -1090,6 +1090,7 @@ sub SetNewValuesFromFile($$;@)
         ListSep         => $$options{ListSep},
         MakerNotes      => $$options{FastScan} && $$options{FastScan} > 1 ? undef : 1,
         MissingTagValue => $$options{MissingTagValue},
+        NoPDFList       => $$options{NoPDFList},
         Password        => $$options{Password},
         PrintConv       => $$options{PrintConv},
         QuickTimeUTC    => $$options{QuickTimeUTC},

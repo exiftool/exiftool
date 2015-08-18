@@ -11,17 +11,31 @@
 
 <p>RSS feed: <a href="http://owl.phy.queensu.ca/~phil/exiftool/rss.xml">http://owl.phy.queensu.ca/~phil/exiftool/rss.xml</a></p>
 
-<p><b>Note:</b> The most recent production release is <a href="Image-ExifTool-9.90.tar.gz">Version 9.90</a>. (Other versions are
+<p><b>Note:</b> The most recent production release is <a href="Image-ExifTool-10.00.tar.gz">Version 10.00</a>. (Other versions are
 considered development releases, and are not uploaded to <a href="http://search.cpan.org/dist/Image-ExifTool/">CPAN</a>.)</p>
 
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v10.00'><b>Aug. 18, 2015 - Version 10.00</b></a> <span class=grn>(production release)</span>
+<ul>
+<li>Added a few new CanonModelID's
+<li>Added a few new Nikon LensID's (thanks Jaap Voets and Robert Rottmerhusen)
+<li>Added a new Canon LensType (thanks Jos Roost)
+<li>Decode a number of new Sony tags (thanks Jos Roost)
+<li>Decode a couple more RIFF tags and extract Unknown RIFF tags
+<li>Changed -b option to avoid splitting PDF List-type tag values
+<li>API Changes:
+    <ul>
+    <li>Added NoPDFList option
+    </ul>
+</ul>
+
 <a name='v9.99'><b>July 23, 2015 - Version 9.99</b></a>
 <ul>
 <li>Added support for the Leica Q (Typ 116) maker notes
 <li>Added two new SonyModelID's (thanks Jos Roost for one)
-<li>Added a new Sony LensType2 value (thanks Jos Roost)
+<li>Added two new Sony LensType2 values (thanks Jos Roost)
 <li>Added a new Pentax LensType
 <li>Extract a number of new File System tags when SystemTags API option is set
 <li>Decode a new FujiFilm tag (thanks TonyB)

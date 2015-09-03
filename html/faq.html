@@ -581,6 +581,10 @@ specified (<code>-L</code> or <code>-charset latin</code>); otherwise an iTXt
 chunk is used and the text is converted from the specified character set and
 stored as UTF&#8209;8.</blockquote>
 
+<blockquote><b>JPEG Comment</b>: The encoding for the JPEG Comment (COM segment)
+is not specified, so ExifTool reads/writes this text without
+conversion.</blockquote>
+
 <blockquote><b>ID3</b>: The ID3v1 specification officially supports only ISO
 8859&#8209;1 encoding (a subset of Windows Latin1), although some applications
 may incorrectly use other character sets.  By default ExifTool converts ID3v1
@@ -1524,7 +1528,7 @@ importing.</blockquote>
 for more details.</blockquote>
 
 <hr>
-<i>Last revised May 11, 2015</i>
+<i>Last revised Sept 1, 2015</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

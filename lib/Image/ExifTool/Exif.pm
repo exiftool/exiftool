@@ -52,7 +52,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '3.74';
+$VERSION = '3.75';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -3113,6 +3113,7 @@ my %sampleFormat = (
             7 => 'LensFocalRange',
             8 => 'LensSpec',
             9 => 'LensType2',
+            10 => 'LensFocalLength', # (for Pentax to check for converter)
         },
         Notes => q{
             attempt to identify the actual lens from all lenses with a given LensType.
@@ -3135,7 +3136,13 @@ my %sampleFormat = (
                 $prt[0] = $prt[9];
                 $pcv = $$self{TAG_INFO}{LensType2}{PrintConv};
             }
-            Image::ExifTool::Exif::PrintLensID($self, $prt[0], $pcv, $prt[8], @val);
+            my $lens = Image::ExifTool::Exif::PrintLensID($self, $prt[0], $pcv, $prt[8], @val);
+            # check for use of lens converter (Pentax K-3)
+            if ($val[10] and $val[1] and $lens) {
+                my $conv = $val[1] / $val[10];
+                $lens .= sprintf(' + %.1fx converter', $conv) if $conv > 1.1;
+            }
+            return $lens;
         },
     },
 );
@@ -3610,7 +3617,7 @@ sub PrintLensID($$@)
         if ($lensType != 0xffff) {
             require Image::ExifTool::Minolta;
             if ($Image::ExifTool::Minolta::metabonesID{$lensType & 0xff00}) {
-                $lensType -= ($lensType >= 0xef00 ? 0xef00 : 0x7700);
+                $lensType -= ($lensType >= 0xef00 ? 0xef00 : $lensType >= 0xbc00 ? 0xbc00 : 0x7700); 
                 require Image::ExifTool::Canon;
                 $printConv = \%Image::ExifTool::Canon::canonLensTypes;
                 $lensTypePrt = $$printConv{$lensType} if $$printConv{$lensType};

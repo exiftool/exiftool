@@ -1676,6 +1676,14 @@ my %shootingMode = (
     # 0x340 - same as 0x302
 );
 
+# Leica type9 maker notes (ref PH) (S)
+%Image::ExifTool::Panasonic::Leica9 = (
+    WRITE_PROC => \&Image::ExifTool::Exif::WriteExif,
+    CHECK_PROC => \&Image::ExifTool::Exif::CheckExif,
+    GROUPS => { 0 => 'MakerNotes', 1 => 'Leica', 2 => 'Camera' },
+    NOTES => 'This information is written by the Leica S (Typ 007).',
+);
+
 # Type 2 tags (ref PH)
 %Image::ExifTool::Panasonic::Type2 = (
     PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,

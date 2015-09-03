@@ -49,7 +49,7 @@ use vars qw($VERSION %minoltaLensTypes %minoltaTeleconverters %minoltaColorMode
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.26';
+$VERSION = '2.27';
 
 # Full list of product codes for Sony-compatible Minolta lenses
 # (ref http://www.kb.sony.com/selfservice/documentLink.do?externalId=C1000570)
@@ -168,6 +168,10 @@ $VERSION = '2.26';
     0x7800 => 0x7700,                       # with Canon LensID 0x01xx
     0x7900 => 0x7700,                       # with Canon LensID 0x02xx
     0x8700 => 0x7700,                       # with Canon LensID 0x10xx
+    0xbc00 => \ 'Metabones Speed Booster Ultra', # with Canon LensID 0x00xx
+    0xbd00 => 0xbc00,                       # with Canon LensID 0x01xx
+    0xbe00 => 0xbc00,                       # with Canon LensID 0x02xx
+    0xcc00 => 0xbc00,                       # with Canon LensID 0x10xx
 );
 
 # lens ID numbers (ref 3)
@@ -490,6 +494,9 @@ $VERSION = '2.26';
     45851 => 'Tamron SP AF 300mm F2.8 LD IF', #11
     45861 => 'Tamron SP AF 35-105mm F2.8 LD Aspherical IF', #Fredrik Agert
     45871 => 'Tamron AF 70-210mm F2.8 SP LD', #Fabio Suprani
+    # 48128: the Speed Booster Ultra appears to report type 48128 (=0xbc00)
+    # - this is the base to which the Canon LensType is added
+    48128 => 'Metabones Canon EF Speed Booster Ultra', #JR
     # 61184: older firmware versions of both the Speed Booster and the Smart Adapter
     # report type 61184 (=0xef00), and add only the lower byte of the Canon LensType (ref JR).
     # For newer firmware versions this is only used by the Smart Adapter, and

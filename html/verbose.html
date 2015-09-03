@@ -36,27 +36,32 @@ from the file, before any conversions are applied.  Also printed are details of
 the file and directory structure:</p>
 
 <blockquote><table class='box' width='100%'><tr><td><pre>
-  ExifToolVersion = 6.47
+  ExifToolVersion = 10.00
   FileName = Canon.jpg
   Directory = t/images
   FileSize = 2697
-  FileModifyDate = 1161014681
+  FileModifyDate = 1159902631
+  FileAccessDate = 1439991906
+  FileInodeChangeDate = 1439903472
+  FilePermissions = 33188
   FileType = JPEG
+  FileTypeExtension = JPG
   MIMEType = image/jpeg
 JPEG APP1 (2442 bytes):
+  ExifByteOrder = II
   + [IFD0 directory with 9 entries]
   | 0)  Make = Canon
   | 1)  Model = Canon EOS DIGITAL REBEL
   | 2)  Orientation = 1
-  | 3)  XResolution = 180
-  | 4)  YResolution = 180
+  | 3)  XResolution = 180 (180/1)
+  | 4)  YResolution = 180 (180/1)
   | 5)  ResolutionUnit = 2
   | 6)  ModifyDate = 2003:12:04 06:46:52
   | 7)  YCbCrPositioning = 1
   | 8)  ExifOffset (SubDirectory) -->
   | + [ExifIFD directory with 31 entries]
-  | | 0)  ExposureTime = 4
-  | | 1)  FNumber = 14
+  | | 0)  ExposureTime = 4 (4/1)
+  | | 1)  FNumber = 14 (14/1)
   | | 2)  ISO = 100
   | | 3)  ExifVersion = 0221
   | | 4)  DateTimeOriginal = 2003:12:04 06:46:52
@@ -68,14 +73,19 @@ JPEG APP1 (2442 bytes):
 about the tag ID, data size and format:</p>
 
 <blockquote><table class='box' width='100%'><tr><td><pre>
-  ExifToolVersion = 6.47
+  ExifToolVersion = 10.00
   FileName = Canon.jpg
   Directory = t/images
   FileSize = 2697
-  FileModifyDate = 1161014681
+  FileModifyDate = 1159902631
+  FileAccessDate = 1439991927
+  FileInodeChangeDate = 1439903472
+  FilePermissions = 33188
   FileType = JPEG
+  FileTypeExtension = JPG
   MIMEType = image/jpeg
 JPEG APP1 (2442 bytes):
+  ExifByteOrder = II
   + [IFD0 directory with 9 entries]
   | 0)  Make = Canon
   |     - Tag 0x010f (6 bytes, string[6])
@@ -83,9 +93,9 @@ JPEG APP1 (2442 bytes):
   |     - Tag 0x0110 (24 bytes, string[24])
   | 2)  Orientation = 1
   |     - Tag 0x0112 (2 bytes, int16u[1])
-  | 3)  XResolution = 180
+  | 3)  XResolution = 180 (180/1)
   |     - Tag 0x011a (8 bytes, rational64u[1])
-  | 4)  YResolution = 180
+  | 4)  YResolution = 180 (180/1)
   |     - Tag 0x011b (8 bytes, rational64u[1])
   | 5)  ResolutionUnit = 2
   |     - Tag 0x0128 (2 bytes, int16u[1])
@@ -96,9 +106,9 @@ JPEG APP1 (2442 bytes):
   | 8)  ExifOffset (SubDirectory) -->
   |     - Tag 0x8769 (4 bytes, int32u[1])
   | + [ExifIFD directory with 31 entries]
-  | | 0)  ExposureTime = 4
+  | | 0)  ExposureTime = 4 (4/1)
   | |     - Tag 0x829a (8 bytes, rational64u[1])
-  | | 1)  FNumber = 14
+  | | 1)  FNumber = 14 (14/1)
   | |     - Tag 0x829d (8 bytes, rational64u[1])
   | | 2)  ISO = 100
   | |     - Tag 0x8827 (2 bytes, int16u[1])
@@ -117,12 +127,16 @@ TIFF/EXIF offsets).  If the data is very long, only the first few lines of the
 dump are printed:</p>
 
 <blockquote><table class='box' width='100%'><tr><td><pre>
-  ExifToolVersion = 6.47
+  ExifToolVersion = 10.00
   FileName = Canon.jpg
   Directory = t/images
   FileSize = 2697
-  FileModifyDate = 1161014681
+  FileModifyDate = 1159902631
+  FileAccessDate = 1439991933
+  FileInodeChangeDate = 1439903472
+  FilePermissions = 33188
   FileType = JPEG
+  FileTypeExtension = JPG
   MIMEType = image/jpeg
 JPEG APP1 (2442 bytes):
     0006: 45 78 69 66 00 00 49 49 2a 00 08 00 00 00 09 00 [Exif..II*.......]
@@ -133,6 +147,7 @@ JPEG APP1 (2442 bytes):
     0056: 01 00 00 00 02 00 00 00 32 01 02 00 14 00 00 00 [........2.......]
     0066: a8 00 00 00 13 02 03 00 01 00 00 00 01 00 00 00 [................]
     [snip 2330 bytes]
+  ExifByteOrder = II
   + [IFD0 directory with 9 entries]
   | 0)  Make = Canon
   |     - Tag 0x010f (6 bytes, string[6]):
@@ -144,10 +159,10 @@ JPEG APP1 (2442 bytes):
   | 2)  Orientation = 1
   |     - Tag 0x0112 (2 bytes, int16u[1]):
   |         0036: 01 00                                           [..]
-  | 3)  XResolution = 180
+  | 3)  XResolution = 180 (180/1)
   |     - Tag 0x011a (8 bytes, rational64u[1]):
   |         00a4: b4 00 00 00 01 00 00 00                         [........]
-  | 4)  YResolution = 180
+  | 4)  YResolution = 180 (180/1)
   |     - Tag 0x011b (8 bytes, rational64u[1]):
   |         00ac: b4 00 00 00 01 00 00 00                         [........]
   | 5)  ResolutionUnit = 2
@@ -164,10 +179,10 @@ JPEG APP1 (2442 bytes):
   |     - Tag 0x8769 (4 bytes, int32u[1]):
   |         007e: bc 00 00 00                                     [....]
   | + [ExifIFD directory with 31 entries]
-  | | 0)  ExposureTime = 4
+  | | 0)  ExposureTime = 4 (4/1)
   | |     - Tag 0x829a (8 bytes, rational64u[1]):
   | |         0242: 04 00 00 00 01 00 00 00                         [........]
-  | | 1)  FNumber = 14
+  | | 1)  FNumber = 14 (14/1)
   | |     - Tag 0x829d (8 bytes, rational64u[1]):
   | |         024a: 0e 00 00 00 01 00 00 00                         [........]
   | | 2)  ISO = 100

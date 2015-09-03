@@ -1367,6 +1367,7 @@ adapter is used.</p>
 </tr><tr><td>4585</td><td>= Tamron SP AF 300mm F2.8 LD IF</td>
 </tr><tr><td>4586</td><td>= Tamron SP AF 35-105mm F2.8 LD Aspherical IF</td>
 </tr><tr><td>4587</td><td>= Tamron AF 70-210mm F2.8 SP LD</td>
+</tr><tr><td>4812</td><td>= Metabones Canon EF Speed Booster Ultra</td>
 </tr><tr><td>6118</td><td>= Metabones Canon EF Adapter</td>
 </tr><tr><td>6553</td><td>= E-Mount, T-Mount, Other Lens or no lens</td>
 </tr><tr><td>6553.1</td><td>= Sony E 16mm F2.8</td>
@@ -1536,6 +1537,7 @@ adapter is used.</p>
 </tr><tr><td>45851</td><td>= Tamron SP AF 300mm F2.8 LD IF</td>
 </tr><tr><td>45861</td><td>= Tamron SP AF 35-105mm F2.8 LD Aspherical IF</td>
 </tr><tr><td>45871</td><td>= Tamron AF 70-210mm F2.8 SP LD</td>
+</tr><tr><td>48128</td><td>= Metabones Canon EF Speed Booster Ultra</td>
 </tr><tr><td>61184</td><td>= Metabones Canon EF Adapter</td>
 </tr><tr><td>65535</td><td>= E-Mount, T-Mount, Other Lens or no lens</td>
 </tr><tr><td>65535.1</td><td>= Sony E 16mm F2.8</td>
@@ -4489,13 +4491,13 @@ multi-frame noise reduction)</span></span></td></tr>
   <br>[Mask 0x3ff]</span></td></tr>
 <tr class=b>
 <td class=r title='1008 = 0x3f0'>1008</td>
-<td>E-mountVersionLens</td>
+<td>LensE-mountVersion</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td class=r title='1011 = 0x3f3'>1011</td>
-<td>E-mountVersionCamera</td>
-<td class=c>int16u</td>
+<td class=r title='1012 = 0x3f4'>1012</td>
+<td>LensFirmwareVersion</td>
+<td class=c>int8u</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='1015 = 0x3f7'>1015</td>
@@ -4529,7 +4531,7 @@ multi-frame noise reduction)</span></span></td></tr>
 </tr><tr><td class=r>6</td><td>= Sony LA-EA4 Adapter</td>
 </tr><tr><td class=r>44</td><td>= Metabones Canon EF Smart Adapter</td>
 </tr><tr><td class=r>78</td><td>= Metabones Canon EF Smart Adapter Mark III or IV</td>
-</tr><tr><td class=r>234</td><td>= Adapter only - no lens attached</td>
+</tr><tr><td class=r>234</td><td>= Metabones Canon EF Smart Adapter Mark IV</td>
 </tr><tr><td class=r>239</td><td>= Metabones Canon EF Speed Booster</td>
 </tr><tr><td class=r>32784</td><td>= Sony E 16mm F2.8</td>
 </tr><tr><td class=r>32785</td><td>= Sony E 18-55mm F3.5-5.6 OSS</td>
@@ -7575,13 +7577,18 @@ ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-77M2.</p>
 <td>--&gt; <a href='Sony.html#LensType3'>Sony LensType3 Values</a></td></tr>
 <tr>
 <td title='0x000b = 11'>0x000b</td>
-<td>E-mountVersionCamera</td>
+<td>CameraE-mountVersion</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x000d = 13'>0x000d</td>
-<td>E-mountVersionLens</td>
+<td>LensE-mountVersion</td>
 <td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0015 = 21'>0x0015</td>
+<td>LensFirmwareVersion</td>
+<td class=c>int8u</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -7598,7 +7605,7 @@ ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-77M2.</p>
 </tr><tr><td class=r>6</td><td>= Sony LA-EA4 Adapter</td>
 </tr><tr><td class=r>44</td><td>= Metabones Canon EF Smart Adapter</td>
 </tr><tr><td class=r>78</td><td>= Metabones Canon EF Smart Adapter Mark III or IV</td>
-</tr><tr><td class=r>234</td><td>= Adapter only - no lens attached</td>
+</tr><tr><td class=r>234</td><td>= Metabones Canon EF Smart Adapter Mark IV</td>
 </tr><tr><td class=r>239</td><td>= Metabones Canon EF Speed Booster</td>
 </tr><tr><td class=r>32784</td><td>= Sony E 16mm F2.8</td>
 </tr><tr><td class=r>32785</td><td>= Sony E 18-55mm F3.5-5.6 OSS</td>
@@ -8746,7 +8753,7 @@ the JPEG image from a PMP file)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Aug 18, 2015</i>
+<br><i>Last revised Sep 3, 2015</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

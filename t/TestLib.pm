@@ -28,6 +28,8 @@ $VERSION = '1.21';
 @ISA = qw(Exporter);
 @EXPORT = qw(check writeCheck writeInfo testCompare binaryCompare testVerbose);
 
+my $noTimeLocal;
+
 sub nearEnough($$);
 sub nearTime($$$$);
 sub formatValue($);
@@ -155,8 +157,16 @@ sub nearEnough($$)
             return 1 if $tok1=~ /^[-+]?\d+\./ or $tok2=~/^[-+]?\d+\./;  # check for float
             return $lenChanged
         }
+        if ($tok1 =~ /^(\d{2}|\d{4}):\d{2}:\d{2}/ and $tok2 =~ /^(\d{2}|\d{4}):\d{2}:\d{2}/ and
+            not eval { require Time::Local })
+        {
+            unless ($noTimeLocal) {
+                warn "Ignored time difference(s) because Time::Local is not installed\n";
+                $noTimeLocal = 1;
+            }
+            next;   # ignore times if Time::Local not available
         # account for different timezones
-        if ($tok1 =~ /^(\d{2}:\d{2}:\d{2})(Z|[-+]\d{2}:\d{2})$/i) {
+        } elsif ($tok1 =~ /^(\d{2}:\d{2}:\d{2})(Z|[-+]\d{2}:\d{2})$/i) {
             my $time = $1;  # remove timezone
             # timezone may be wrong if writing date/time value in a different timezone
             next if $tok2 =~ /^(\d{2}:\d{2}:\d{2})(Z|[-+]\d{2}:\d{2})$/i and $time eq $1;

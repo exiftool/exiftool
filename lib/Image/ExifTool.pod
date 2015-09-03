@@ -2417,6 +2417,11 @@ with the L</Compress> option) if the text doesn't contain special characters
 or if Latin encoding is specified; otherwise an iTXt chunk is used and the
 text is converted from the specified character set and stored as UTF-8.
 
+=head2 JPEG Comment
+
+The encoding for the JPEG Comment (COM segment) is not specified, so
+ExifTool reads/writes this text without conversion.
+
 =head2 ID3
 
 The ID3v1 specification officially supports only ISO 8859-1 encoding (a

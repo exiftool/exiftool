@@ -56,7 +56,7 @@ use vars qw($VERSION %pentaxLensTypes);
 use Image::ExifTool::Exif;
 use Image::ExifTool::HP;
 
-$VERSION = '2.93';
+$VERSION = '2.94';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -1891,7 +1891,7 @@ my %binaryDataAttrs = (
         Writable => 'int16u',
     },
     0x0047 => { #PH
-        Name => 'CameraTemperature',
+        Name => 'CameraTemperature', # (chassis temperature, ref forum6677)
         Writable => 'int8s',
         PrintConv => '"$val C"',
         PrintConvInv => '$val=~s/ ?c$//i; $val',
@@ -2693,6 +2693,10 @@ my %binaryDataAttrs = (
     # 0x023b - undef[9] (K-01)
     #  01a700500000000000, 91a700500000000000, 41a700500000000000, 002700500000000000
     #  c00500400000000000, 400500500000000000, 4004ff420100000000, 4087ff480000000000
+    0x0243 => { #PH
+        Name => 'PixelShiftInfo',
+        SubDirectory => { TagTable => 'Image::ExifTool::Pentax::PixelShiftInfo' },
+    },
     0x03fe => { #PH
         Name => 'DataDump',
         Writable => 0,
@@ -4070,9 +4074,11 @@ my %binaryDataAttrs = (
         Name => 'LC7',
         %lensCode,
     },
-    9 => { # LC8 = focal length data
-        Name => 'FocalLength',
+    9 => [{ # LC8 = focal length data
+        Name => 'LensFocalLength',
+        Notes => 'focal length of lens alone, without adapter', #PH
         Priority => 0,
+        Condition => '$$self{Model} !~ /645Z/', #PH (doesn't work for 645Z)
         ValueConv => '10*($val>>2) * 4**(($val&0x03)-2)', #JD
         ValueConvInv => q{
             my $range = int(log($val/10)/(2*log(2)));
@@ -4081,7 +4087,10 @@ my %binaryDataAttrs = (
         },
         PrintConv => 'sprintf("%.1f mm", $val)',
         PrintConvInv => '$val=~s/\s*mm//; $val',
-    },
+    },{
+        Name => 'LC8',
+        %lensCode,
+    }],
     # the following aperture values change with focal length
     10 => { # LC9 = nominal AVmin/AVmax data (open/closed aperture values)
         Name => 'NominalMaxAperture',
@@ -5211,6 +5220,17 @@ my %binaryDataAttrs = (
     }
 );
 
+# Pixel shift information for the K-3II (ref PH)
+%Image::ExifTool::Pentax::PixelShiftInfo = (
+    %binaryDataAttrs,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    NOTES => 'Pixel shift information stored by the K-3 II.',
+    0x00 => {
+        Name => 'PixelShiftResolution',
+        PrintConv => { 0 => 'Off', 1 => 'On' },
+    },
+);
+
 # temperature information for some models - PH
 %Image::ExifTool::Pentax::TempInfo = (
     %binaryDataAttrs,
@@ -5227,7 +5247,7 @@ my %binaryDataAttrs = (
     #  at least one on the sensor itself.  These temperatures seem to rise
     #  more quickly than CameraTemperature when shooting video.)
     0x0c => {
-        Name => 'CameraTemperature2',
+        Name => 'SensorTemperature', #forum6677 (was CameraTemperature2)
         Format => 'int16s',
         ValueConv => '$val / 10',
         ValueConvInv => '$val * 10',
@@ -5235,7 +5255,7 @@ my %binaryDataAttrs = (
         PrintConvInv => '$val=~s/ ?c$//i; $val',
     },
     0x0e => {
-        Name => 'CameraTemperature3',
+        Name => 'SensorTemperature2', #forum6677 (was CameraTemperature3)
         Format => 'int16s',
         ValueConv => '$val / 10',
         ValueConvInv => '$val * 10',

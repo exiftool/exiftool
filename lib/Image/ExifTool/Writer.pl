@@ -1855,7 +1855,7 @@ sub WriteInfo($$;$$)
             $raf = $inRef;
         } elsif ($] >= 5.006 and (eval { require Encode; Encode::is_utf8($$inRef) } or $@)) {
             # convert image data from UTF-8 to character stream if necessary
-            my $buff = $@ ? pack('C*',unpack('U0C*',$$inRef)) : Encode::encode('utf8',$$inRef);
+            my $buff = $@ ? pack('C*',unpack($] < 5.010000 ? 'U0C*' : 'C0C*',$$inRef)) : Encode::encode('utf8',$$inRef);
             if (defined $outfile) {
                 $inRef = \$buff;
             } else {
@@ -2422,7 +2422,7 @@ sub Sanitize($$)
     # (otherwise our byte manipulations get corrupted!!)
     if ($] >= 5.006 and (eval { require Encode; Encode::is_utf8($$valPt) } or $@)) {
         # repack by hand if Encode isn't available
-        $$valPt = $@ ? pack('C*',unpack('U0C*',$$valPt)) : Encode::encode('utf8',$$valPt);
+        $$valPt = $@ ? pack('C*',unpack($] < 5.010000 ? 'U0C*' : 'C0C*',$$valPt)) : Encode::encode('utf8',$$valPt);
     }
     # un-escape value if necessary
     if ($$self{OPTIONS}{Escape}) {

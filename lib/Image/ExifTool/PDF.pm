@@ -1491,7 +1491,7 @@ sub DecryptInit($$$)
             # make sure there is no UTF-8 flag on the password
             if ($] >= 5.006 and (eval { require Encode; Encode::is_utf8($password) } or $@)) {
                 # repack by hand if Encode isn't available
-                $password = $@ ? pack('C*',unpack('U0C*',$password)) : Encode::encode('utf8',$password);
+                $password = $@ ? pack('C*',unpack($] < 5.010000 ? 'U0C*' : 'C0C*',$password)) : Encode::encode('utf8',$password);
             }
         } else {
             return 'Incorrect password';

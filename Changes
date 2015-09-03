@@ -7,6 +7,22 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.00. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Sept. 3, 2015 - Version 10.01
+
+  - Added a new Olympus CameraType
+  - Added a new Canon LensType (thanks Norbert Wasser)
+  - Decode a new Pentax tag
+  - Leica programmers should all be ashamed of the complete shambles of metadata
+    they have created
+  - Minor change to the name of a Sigma lens for Canon
+  - Improved recognition of Pentax lens adapter
+  - Implemented NoPDFList for -b option of Windows version too
+  - Renamed a few Sony tags and improved decoding of others (thanks Jos Roost)
+  - Renamed a few Pentax tags
+  - Fixed problem importing structured information from -X option output
+  - Fixed round-off errors in value and typo in name of CanonVRD:GammaWhitePoint
+  - Fixed test failures if Encode, POSIX or Time::Local modules are missing
+
 Aug. 18, 2015 - Version 10.00 (production release)
 
   - Added a few new CanonModelID's

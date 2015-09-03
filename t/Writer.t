@@ -423,7 +423,9 @@ my $testOK;
 {
     ++$testnum;
     my $skip = '';
-    if ($testOK) {
+    if (not eval { require POSIX }) {
+        $skip = ' # skip Requires POSIX';
+    } elsif ($testOK) {
         my $newfile = "t/${testname}_${testnum}_20060327_failed.jpg";
         unlink $newfile;
         my $exifTool = new Image::ExifTool;

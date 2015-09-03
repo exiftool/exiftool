@@ -83,7 +83,7 @@ sub ProcessSerialData($$$);
 sub ProcessFilters($$$);
 sub SwapWords($);
 
-$VERSION = '3.51';
+$VERSION = '3.52';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -223,7 +223,7 @@ $VERSION = '3.51';
     137.5 => 'Sigma 18-125mm f/3.8-5.6 DC OS HSM', #PH
     137.6 => 'Sigma 17-70mm f/2.8-4 DC Macro OS HSM', #forum2819 (Contemporary version has this ID - PH)
     137.7 => 'Sigma 17-50mm f/2.8 OS HSM', #47
-    137.8 => 'Sigma 18-200mm f/3.5-6.3 II DC OS HSM', #PH
+    137.8 => 'Sigma 18-200mm f/3.5-6.3 DC OS HSM [II]', #PH
     137.9 => 'Tamron AF 18-270mm f/3.5-6.3 Di II VC PZD', #(model B008)forum3090
    '137.10' => 'Sigma 8-16mm f/4.5-5.6 DC HSM', #50-Zwielicht
    '137.11' => 'Tamron SP 17-50mm f/2.8 XR Di II VC', #50 (model B005)
@@ -403,6 +403,7 @@ $VERSION = '3.51';
     507 => 'Canon EF 16-35mm f/4L IS USM', #42
     508 => 'Canon EF 11-24mm f/4L USM', #PH
     747 => 'Canon EF 100-400mm f/4.5-5.6L IS II USM', #JR
+    750 => 'Canon EF 35mm f/1.4L II USM', #42
     # (STM lenses seem to start with 0x10xx)
     4142 => 'Canon EF-S 18-135mm f/3.5-5.6 IS STM',
     4143 => 'Canon EF-M 18-55mm f/3.5-5.6 IS STM or Tamron Lens',

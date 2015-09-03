@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.97
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.01
 [File, System, Image] FileName - File Name: CanonVRD.dr4
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 5.3 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2015:05:18 15:47:02-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:05:20 13:35:54-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:05:20 08:47:52-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2015:08:24 07:54:12-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:08:18 09:11:12-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: DR4
 [File, File, Image] FileTypeExtension - File Type Extension: dr4
@@ -83,7 +83,7 @@
 [CanonVRD, CanonVRD, Image] 9 - Gamma Shadow: 0
 [CanonVRD, CanonVRD, Image] 10 - Gamma Highlight: 0
 [CanonVRD, CanonVRD, Image] 12 - Gamma Black Point: +0.000
-[CanonVRD, CanonVRD, Image] 13 - Gamme White Point: -0.000
+[CanonVRD, CanonVRD, Image] 13 - Gamma White Point: +0.000
 [CanonVRD, CanonVRD, Image] 14 - Gamma Mid Point: +0.000
 [CanonVRD, CanonVRD, Image] 15 - Gamma Curve Output Range: 0 16383
 [CanonVRD, CanonVRD, Image] 0 - Crop Active: Yes

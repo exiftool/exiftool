@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.23';
+$VERSION = '2.24';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -60,7 +60,7 @@ my %sonyLensTypes2 = (
     6 => 'Sony LA-EA4 Adapter', #(NC) ILCE-7R image with A-mount lens and having phase-detect info blocks in 0x940e AFInfo
     44 => 'Metabones Canon EF Smart Adapter', #JR
     78 => 'Metabones Canon EF Smart Adapter Mark III or IV', #PH/JR
-    234 => 'Adapter only - no lens attached', #JR (seen with LA-EA4 and Metabones Smart IV)
+    234 => 'Metabones Canon EF Smart Adapter Mark IV', #JR
     239 => 'Metabones Canon EF Speed Booster', #JR
                                                 # Sony VX product code: (http://www.mi-fo.de/forum/index.php?s=7df1c8d3b1cd675f2abf4f4442e19cf2&showtopic=35035&view=findpost&p=303746)
     32784 => 'Sony E 16mm F2.8',                # VX9100
@@ -4879,19 +4879,27 @@ my %faceInfo = (
         PrintConvInv => '$val',
     },
     0x03f0 => {
-        Name => 'E-mountVersionLens',
+        Name => 'LensE-mountVersion',
         Format => 'int16u',
         Condition => '($$self{Model} =~ /^NEX-/)',
         PrintConv => 'sprintf("%x.%.2x",$val>>8,$val&0xff)',
         PrintConvInv => 'my @a=split(/\./,$val);(hex($a[0])<<8)|hex($a[1])',
     },
-    0x03f3 => {
-        Name => 'E-mountVersionCamera',
-        Format => 'int16u',
+    # maybe this wasn't right (ref JR)
+    #0x03f3 => {
+    #    Name => 'CameraE-mountVersion',
+    #    Format => 'int16u',
+    #    Condition => '($$self{Model} =~ /^NEX-/)',
+    #    PrintConv => 'sprintf("%x.%.2x",$val>>8,$val&0xff)',
+    #    PrintConvInv => 'my @a=split(/\./,$val);(hex($a[0])<<8)|hex($a[1])',
+    #    # seen values 1.00, 1.01, 1.02, 1.03 and 1.04 for NEX-3/5/5C/C3/VG10/VG10E with various Firmware versions.
+    #},
+    0x03f4 => { #JR (NC)
+        Name => 'LensFirmwareVersion',
+        Format => 'int8u',
         Condition => '($$self{Model} =~ /^NEX-/)',
-        PrintConv => 'sprintf("%x.%.2x",$val>>8,$val&0xff)',
-        PrintConvInv => 'my @a=split(/\./,$val);(hex($a[0])<<8)|hex($a[1])',
-        # seen values 1.00, 1.01, 1.02, 1.03 and 1.04 for NEX-3/5/5C/C3/VG10/VG10E with various Firmware versions.
+        PrintConv => 'sprintf("Ver.%.2x",$val)',
+        PrintConvInv => '$val=~s/^Ver\.//; hex($val)',
     },
     0x3f7 => { #JR
         Name => 'LensType2',
@@ -7367,7 +7375,7 @@ my %pictureProfile2010 = (
         PrintConv => \%sonyLensTypes2,
     },
     0x000b => {
-        Name => 'E-mountVersionCamera',
+        Name => 'CameraE-mountVersion',
         Format => 'int16u',
         PrintConv => 'sprintf("%x.%.2x",$val>>8,$val&0xff)',
         PrintConvInv => 'my @a=split(/\./,$val);(hex($a[0])<<8)|hex($a[1])',
@@ -7381,7 +7389,7 @@ my %pictureProfile2010 = (
         # 1.50: ILCE-7M2 v1.00/v1.10/v1.20/1.21, ILCE-7/7R/7S v1.20, ILCE-7RM2
     },
     0x000d => {
-        Name => 'E-mountVersionLens',
+        Name => 'LensE-mountVersion',
         Format => 'int16u',
         PrintConv => 'sprintf("%x.%.2x",$val>>8,$val&0xff)',
         PrintConvInv => 'my @a=split(/\./,$val);(hex($a[0])<<8)|hex($a[1])',
@@ -7398,6 +7406,22 @@ my %pictureProfile2010 = (
         # 1.35: SEL70200G, SEL55210 (Black?, seen with ILCE-3500)
         # 1.40: SEL1635Z, SEL24240, SEL35F14Z, SELP28135G, Zeiss Loxia
         # 1.50: SEL28F20, SEL90M28G
+    },
+    0x0015 => {
+        Name => 'LensFirmwareVersion',
+        Format => 'int8u',
+        PrintConv => 'sprintf("Ver.%.2x",$val)',
+        PrintConvInv => '$val=~/Ver\.//; hex($val)',
+        # 0x00: Sony Ver.00
+        # 0x01: Sony Ver.01
+        # 0x02: Sony Ver.02
+        # 0x16: Metabones V0.16
+        # 0x19: Metabones V0.19
+        # 0x22: Metabones V0.22
+        # 0x24: Metabones V0.24
+        # 0x30: Metabones V0.30
+        # 0x32: Metabones V0.32
+        # 0x41: Metabones V0.41 (ILCE-7RM2 with Metabones Smart IV)
     },
     # 0x0016 - 0x003f: non-0 data present when: 0x0001>0 AND 0x0008=4(E-mount) AND 0x000f<255
 );

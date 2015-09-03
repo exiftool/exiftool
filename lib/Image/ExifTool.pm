@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '10.00';
+$VERSION = '10.01';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -3433,7 +3433,7 @@ sub ParseArguments($;@)
                     (eval { require Encode; Encode::is_utf8($$arg) } or $@))
                 {
                     # repack by hand if Encode isn't available
-                    my $buff = $@ ? pack('C*',unpack('U0C*',$$arg)) : Encode::encode('utf8',$$arg);
+                    my $buff = $@ ? pack('C*',unpack($] < 5.010000 ? 'U0C*' : 'C0C*',$$arg)) : Encode::encode('utf8',$$arg);
                     $arg = \$buff;
                 }
                 $$self{RAF} = new File::RandomAccess($arg);

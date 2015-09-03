@@ -1,8 +1,11 @@
 # Before "make install", this script should be runnable with "make test".
 # After "make install" it should work as "perl t/Geotag.t".
 
+my $numTests;
+
 BEGIN {
-    $| = 1; print "1..10\n"; $Image::ExifTool::noConfig = 1;
+    $numTests = 10;
+    $| = 1; print "1..$numTests\n"; $Image::ExifTool::noConfig = 1;
     # must create user-defined tags before loading ExifTool (used in test 8)
     %Image::ExifTool::UserDefined = (
         'Image::ExifTool::GPS::Main' => {
@@ -30,6 +33,14 @@ my $testname = 'Geotag';
 my $testnum = 1;
 my @testTags = ('Error', 'Warning', 'GPS:*', 'XMP:*');
 my $testfile2;
+
+unless (eval { require Time::Local }) {
+    warn "Install Time::Local to use the Geotag feature\n";
+    while (++$testnum <= $numTests) {
+        print "ok $testnum # skip Requires Time::Local\n";
+    }
+    goto IgnoreAll;
+}
 
 # test 2: Geotag from GPX track log
 {
@@ -168,5 +179,7 @@ my $testfile2;
         print "ok $testnum\n";
     }
 }
+
+IgnoreAll:
 
 # end

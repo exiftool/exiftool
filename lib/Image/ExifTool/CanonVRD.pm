@@ -22,7 +22,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Canon;
 
-$VERSION = '1.25';
+$VERSION = '1.26';
 
 sub ProcessCanonVRD($$;$);
 sub WriteCanonVRD($$;$);
@@ -1331,26 +1331,38 @@ my $blankFooter = "CANON OPTIONAL DATA\0" . ("\0" x 42) . "\xff\xd9";
     # 0x0b - value: 14
     0x0c => {
         Name => 'GammaBlackPoint',
-        ValueConv => '$val > 0 ? log($val / 4.6875) / log(2) + 1 : 0',
+        ValueConv => q{
+            return 0 if $val <= 0;
+            $val = log($val / 4.6875) / log(2) + 1;
+            return abs($val) > 1e-10 ? $val : 0;
+        },
         ValueConvInv => '$val ? exp(($val - 1) * log(2)) * 4.6876 : 0',
         PrintConv => 'sprintf("%+.3f", $val)',
         PrintConvInv => '$val',
     },
     0x0d => {
-        Name => 'GammeWhitePoint',
-        ValueConv => '$val > 0 ? log($val / 4.6875) / log(2) - 11.77109325169954 : $val',
+        Name => 'GammaWhitePoint',
+        ValueConv => q{
+            return $val if $val <= 0;
+            $val = log($val / 4.6875) / log(2) - 11.77109325169954;
+            return abs($val) > 1e-10 ? $val : 0;
+        },
         ValueConvInv => '$val ? exp(($val + 11.77109325169954) * log(2)) * 4.6875 : 0',
         PrintConv => 'sprintf("%+.3f", $val)',
         PrintConvInv => '$val',
     },
     0x0e => {
         Name => 'GammaMidPoint',
-        ValueConv => '$val > 0 ? log($val / 4.6875) / log(2) - 8 : $val',
+        ValueConv => q{
+            return $val if $val <= 0;
+            $val = log($val / 4.6875) / log(2) - 8;
+            return abs($val) > 1e-10 ? $val : 0;
+        },
         ValueConvInv => '$val ? exp(($val + 8) * log(2)) * 4.6876 : 0',
         PrintConv => 'sprintf("%+.3f", $val)',
         PrintConvInv => '$val',
     },
-    0x0f => { Name => 'GammaCurveOutputRange', Format => 'double[2]', Notes => '16393 max' },
+    0x0f => { Name => 'GammaCurveOutputRange', Format => 'double[2]', Notes => '16383 max' },
 );
 
 # Version 4 crop information (ref PH)

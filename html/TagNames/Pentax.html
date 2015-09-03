@@ -1435,33 +1435,38 @@ are left, top, width and height in a 720x480 frame, with Y downwards)</span></sp
 <td class=c>-</td>
 <td>--&gt; <a href='Pentax.html#LensInfoQ'>Pentax LensInfoQ Tags</a></td></tr>
 <tr>
+<td title='0x0243 = 579'>0x0243</td>
+<td>PixelShiftInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Pentax.html#PixelShiftInfo'>Pentax PixelShiftInfo Tags</a></td></tr>
+<tr class=b>
 <td title='0x03fe = 1022'>0x03fe</td>
 <td>DataDump</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x03ff = 1023'>0x03ff</td>
 <td>TempInfo
   <br>UnknownInfo</td>
 <td class=c>-<br>-</td>
 <td>--&gt; <a href='Pentax.html#TempInfo'>Pentax TempInfo Tags</a>
   <br>--&gt; <a href='Pentax.html#UnknownInfo'>Pentax UnknownInfo Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0402 = 1026'>0x0402</td>
 <td>ToneCurve</td>
 <td class=c title=' ~ = Writable only with -n'>Y~</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x0403 = 1027'>0x0403</td>
 <td>ToneCurves</td>
 <td class=c title=' ~ = Writable only with -n'>Y~</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x0405 = 1029'>0x0405</td>
 <td>UnknownBlock?</td>
 <td class=c>undef</td>
 <td><span class=s><span class=n>(large unknown data block in PEF/DNG images but not JPG images)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0e00 = 3584'>0x0e00</td>
 <td>PrintIM</td>
 <td class=c>-</td>
@@ -2963,9 +2968,10 @@ gymnastics to decode them into useful values.</p>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='9 = 0x9'>9</td>
-<td>FocalLength</td>
-<td class=c>int8u</td>
-<td>&nbsp;</td></tr>
+<td>LensFocalLength
+  <br>LC8?</td>
+<td class=c>int8u<br>int8u</td>
+<td><span class=s><span class=n>(focal length of lens alone, without adapter)</span></span></td></tr>
 <tr class=b>
 <td class=r title='10 = 0xa'>10</td>
 <td>NominalMaxAperture</td>
@@ -4177,6 +4183,21 @@ valid for other models.</p>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='PixelShiftInfo'>Pentax PixelShiftInfo Tags</a></h2>
+<p>Pixel shift information stored by the K-3 II.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>PixelShiftResolution</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+</table></td></tr></table></blockquote>
+
 <h2><a name='TempInfo'>Pentax TempInfo Tags</a></h2>
 <p>A number of additional temperature readings are extracted from this 256-byte
 binary-data block in images from models such as the K-01, K-3, K-5, K-50 and
@@ -4189,12 +4210,12 @@ sensors are located in the camera.</p>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
 <td class=r title='12 = 0xc'>12</td>
-<td>CameraTemperature2</td>
+<td>SensorTemperature</td>
 <td class=c>int16s</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='14 = 0xe'>14</td>
-<td>CameraTemperature3</td>
+<td>SensorTemperature2</td>
 <td class=c>int16s</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -4649,7 +4670,7 @@ stored as ASCII text in a format very similar to some HP models.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jul 23, 2015</i>
+<br><i>Last revised Aug 27, 2015</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

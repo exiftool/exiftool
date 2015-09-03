@@ -644,6 +644,17 @@ my $debug;          # set to 1 to enable debugging code
         },
     },
     {
+        Name => 'MakerNoteLeica9', # used by the M9/M-Monochrom
+        # (M9 and M Monochrom start with "LEICA0\x03\0")
+        Condition => '$$self{Make} =~ /^Leica Camera AG/ and $$valPt =~ /^LEICA\0\x02\0/',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Panasonic::Leica9',
+            Start => '$valuePtr + 8',
+            Base => '$start - 8',
+            ByteOrder => 'Unknown',
+        },
+    },
+    {
         Name => 'MakerNotePanasonic',
         # (starts with "Panasonic\0")
         Condition => '$$valPt=~/^Panasonic/',

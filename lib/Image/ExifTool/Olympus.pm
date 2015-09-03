@@ -125,10 +125,10 @@ my %olympusLensTypes = (
     '1 15 00' => 'Sigma 10-20mm F4.0-5.6 EX DC HSM', #11
     '1 16 00' => 'Sigma APO 70-200mm F2.8 II EX DG Macro HSM', #11
     '1 17 00' => 'Sigma 50mm F1.4 EX DG HSM', #11
-    # Panasonic/Leica lenses (ref 11)
-    '2 01 00' => 'Leica D Vario Elmarit 14-50mm F2.8-3.5 Asph.',
+    # Panasonic/Leica lenses
+    '2 01 00' => 'Leica D Vario Elmarit 14-50mm F2.8-3.5 Asph.', #11
     '2 01 10' => 'Lumix G Vario 14-45mm F3.5-5.6 Asph. Mega OIS', #16
-    '2 02 00' => 'Leica D Summilux 25mm F1.4 Asph.',
+    '2 02 00' => 'Leica D Summilux 25mm F1.4 Asph.', #11
     '2 02 10' => 'Lumix G Vario 45-200mm F4.0-5.6 Mega OIS', #16
     '2 03 00' => 'Leica D Vario Elmar 14-50mm F3.8-5.6 Asph. Mega OIS', #11
     '2 03 01' => 'Leica D Vario Elmar 14-50mm F3.8-5.6 Asph.', #14 (L10 kit)
@@ -156,8 +156,8 @@ my %olympusLensTypes = (
   # '2 23 10' => 'Lumix G Vario 35-100mm F4.0-5.6 Asph. Mega OIS', #20 (guess)
     '2 24 10' => 'Lumix G Macro 30mm F2.8 Asph. Mega OIS', #20
     '2 25 10' => 'Lumix G 42.5mm F1.7 Asph. Power OIS', #20
-    '3 01 00' => 'Leica D Vario Elmarit 14-50mm F2.8-3.5 Asph.',
-    '3 02 00' => 'Leica D Summilux 25mm F1.4 Asph.',
+    '3 01 00' => 'Leica D Vario Elmarit 14-50mm F2.8-3.5 Asph.', #11
+    '3 02 00' => 'Leica D Summilux 25mm F1.4 Asph.', #11
     # Tamron lenses
     '5 01 10' => 'Tamron 14-150mm F3.5-5.8 Di III', #20 (model C001)
 );
@@ -386,6 +386,7 @@ my %olympusCameraTypes = (
     S0047 => 'E-M1',
     S0051 => 'E-M10',
     S0052 => 'E-M5MarkII', #21
+    S0059 => 'E-M10MarkII',
     SR45 => 'D220',
     SR55 => 'D320L',
     SR83 => 'D340L',

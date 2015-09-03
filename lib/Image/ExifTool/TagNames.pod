@@ -624,6 +624,7 @@ EXIF 2.3 specification.
            MakerNoteLeica6           ExifIFD    Panasonic Leica6
            MakerNoteLeica7           ExifIFD    Panasonic Leica6
            MakerNoteLeica8           ExifIFD    Panasonic Leica5
+           MakerNoteLeica9           ExifIFD    Panasonic Leica9
            MakerNotePanasonic        ExifIFD    Panasonic
            MakerNotePanasonic2       ExifIFD    Panasonic Type2
            MakerNotePentax           ExifIFD    Pentax
@@ -6788,7 +6789,7 @@ below by a decimal appended to the tag ID (.0, .1 or .2).
       9    GammaShadow                          double
      10    GammaHighlight                       double
      12    GammaBlackPoint                      double
-     13    GammeWhitePoint                      double
+     13    GammaWhitePoint                      double
      14    GammaMidPoint                        double
      15    GammaCurveOutputRange                double[2]
 
@@ -11659,6 +11660,14 @@ images.
   0x0301   UnknownBlock?                        N
   0x0303   LensType                             string
 
+=head3 Panasonic Leica9 Tags
+
+This information is written by the Leica S (Typ 007).
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  [no tags known]
+
 =head3 Panasonic Type2 Tags
 
 This type of maker notes is used by models such as the NV-DS65, PV-D2002,
@@ -11855,6 +11864,7 @@ These tags are used in Pentax/Asahi cameras.
   0x0231   ContrastDetectAFArea                 int16u[4]
   0x0235   CrossProcessParams                   undef[10]
   0x0239   LensInfoQ                            Pentax LensInfoQ
+  0x0243   PixelShiftInfo                       Pentax PixelShiftInfo
   0x03fe   DataDump                             N
   0x03ff   TempInfo                             Pentax TempInfo
            UnknownInfo                          Pentax UnknownInfo
@@ -12071,7 +12081,8 @@ gymnastics to decode them into useful values.
       6    LC5?                                 int8u
       7    LC6?                                 int8u
       8    LC7?                                 int8u
-      9    FocalLength                          int8u
+      9    LensFocalLength                      int8u
+           LC8?                                 int8u
      10    NominalMaxAperture                   int8u & 0xf0
    10.1    NominalMinAperture                   int8u & 0x0f
      11    LC10?                                int8u
@@ -12359,6 +12370,14 @@ More lens information stored by the Pentax Q.
      12    LensModel                            string[30]
      42    LensInfo                             string[20]
 
+=head3 Pentax PixelShiftInfo Tags
+
+Pixel shift information stored by the K-3 II.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    PixelShiftResolution                 int8u
+
 =head3 Pentax TempInfo Tags
 
 A number of additional temperature readings are extracted from this 256-byte
@@ -12368,8 +12387,8 @@ sensors are located in the camera.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
-     12    CameraTemperature2                   int16s
-     14    CameraTemperature3                   int16s
+     12    SensorTemperature                    int16s
+     14    SensorTemperature2                   int16s
      20    CameraTemperature4                   int16s
      22    CameraTemperature5                   int16s
 
@@ -13658,8 +13677,8 @@ A560, A580, NEX-3, NEX-5, NEX-C3 and NEX-VG10E.
     780    SequenceNumber                       int8u
     788    ImageNumber                          int16u & 0x3fff
     790    FolderNumber                         int16u & 0x3ff
-   1008    E-mountVersionLens                   int16u
-   1011    E-mountVersionCamera                 int16u
+   1008    LensE-mountVersion                   int16u
+   1012    LensFirmwareVersion                  int8u
    1015    LensType2                            int16u
    1024    ImageNumber                          int16u & 0x3fff
    1026    FolderNumber                         int16u & 0x3ff
@@ -14239,8 +14258,9 @@ NEX and ILCE models only.
   ------   --------                             --------
   0x0008   LensMount2                           int8u
   0x0009   LensType3                            int16u
-  0x000b   E-mountVersionCamera                 int16u
-  0x000d   E-mountVersionLens                   int16u
+  0x000b   CameraE-mountVersion                 int16u
+  0x000d   LensE-mountVersion                   int16u
+  0x0015   LensFirmwareVersion                  int8u
 
 =head3 Sony AFInfo Tags
 
@@ -14603,6 +14623,7 @@ still proprietary) Adobe format.
            MakerNoteLeica6                      Panasonic Leica6
            MakerNoteLeica7                      Panasonic Leica6
            MakerNoteLeica8                      Panasonic Leica5
+           MakerNoteLeica9                      Panasonic Leica9
            MakerNotePanasonic                   Panasonic
            MakerNotePanasonic2                  Panasonic Type2
            MakerNotePentax                      Pentax
@@ -28546,6 +28567,7 @@ values, may created via the ExifTool configuration file.
                        LensFocalRange
                        LensSpec
                        LensType2
+                       LensFocalLength
   LensID               XMP-aux:LensID           N
                        Make
                        LensInfo
@@ -28815,6 +28837,7 @@ for more details.
                        MakerNoteLeica6
                        MakerNoteLeica7
                        MakerNoteLeica8
+                       MakerNoteLeica9
                        MakerNotePanasonic
                        MakerNotePanasonic2
                        MakerNotePentax

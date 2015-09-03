@@ -630,9 +630,11 @@ sub RestoreStruct($;$)
             # create new entry in tag table for this structure
             my $g1 = $$table{GROUPS}{0} || 'XMP';
             my $name = $tag;
+            # tag keys will have a group 1 prefix when coming from import of XML from -X option
             if ($tag =~ /(.+):(.+)/) {
                 my $ns;
                 ($ns, $name) = ($1, $2);
+                $ns =~ s/^XMP-//; # remove leading "XMP-" if it exists because we add it later
                 $ns = $stdXlatNS{$ns} if $stdXlatNS{$ns};
                 $g1 .= "-$ns";
             }

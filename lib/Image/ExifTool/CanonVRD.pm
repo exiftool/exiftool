@@ -1954,7 +1954,7 @@ sub ProcessCanonVRD($$;$)
             # create blank VRD data from scratch
             my $blank = $blankHeader . $blankFooter;
             $dataPt = \$blank;
-            $verbose and printf $out "  Creating CanonVRD trailer\n";
+            $verbose and print $out "  Creating CanonVRD trailer\n";
             $created = 1;
         }
         $raf = new File::RandomAccess($dataPt);
@@ -2005,7 +2005,7 @@ sub ProcessCanonVRD($$;$)
     my $vrdType = 'VRD';
 
     if ($outfile) {
-        $verbose and not $created and printf $out "  Rewriting CanonVRD trailer\n";
+        $verbose and not $created and print $out "  Rewriting CanonVRD trailer\n";
         # delete CanonVRD information if specified
         my $doDel = $$et{DEL_GROUP}{CanonVRD};
         unless ($doDel) {
@@ -2026,7 +2026,7 @@ sub ProcessCanonVRD($$;$)
             if ($$et{FILE_TYPE} eq 'VRD') {
                 my $newVal = $et->GetNewValues('CanonVRD');
                 if ($newVal) {
-                    $verbose and printf $out "  Writing CanonVRD as a block\n";
+                    $verbose and print $out "  Writing CanonVRD as a block\n";
                     if ($outfile eq $dataPt) {
                         $$outfile = $newVal;
                     } else {
@@ -2038,7 +2038,7 @@ sub ProcessCanonVRD($$;$)
                     $et->Error("Can't delete all CanonVRD information from a VRD file");
                 }
             } else {
-                $verbose and printf $out "  Deleting CanonVRD trailer\n";
+                $verbose and print $out "  Deleting CanonVRD trailer\n";
                 $$outfile = '' if $outfile eq $dataPt;
                 ++$$et{CHANGED};
             }
@@ -2072,7 +2072,7 @@ sub ProcessCanonVRD($$;$)
     # validate VRD trailer and get position and length of edit record
     SetByteOrder('MM'); # VRD header/footer is big-endian
     my $pos = 0x1c;     # start at end of header
- 
+
     # loop through the VRD blocks
     for (;;) {
         my $end = $dirLen - 0x40;   # end of last VRD block (and start of footer)
@@ -2189,7 +2189,7 @@ sub ProcessCanonVRD($$;$)
         if (length $$dataPt) {
             Write($outfile, $$dataPt) or $err = 1 unless $outfile eq $dataPt;
         } else {
-            $verbose and printf $out "  Deleting CanonVRD trailer\n";
+            $verbose and print $out "  Deleting CanonVRD trailer\n";
         }
     } elsif ($vrdType eq 'VRD' and (($$et{TAGS_FROM_FILE} and
         not $$et{EXCL_TAG_LOOKUP}{canonvrd}) or $$et{REQ_TAG_LOOKUP}{canonvrd}))

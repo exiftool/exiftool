@@ -215,7 +215,7 @@ sub ProcessVCard($$)
     my ($et, $dirInfo) = @_;
     my $raf = $$dirInfo{RAF};
     my ($buff, $val, $ok, $component, %compNum, @count);
-    
+
     return 0 unless $raf->Read($buff, 24) and $raf->Seek(0,0) and $buff=~/^BEGIN:(VCARD|VCALENDAR)\r\n/i;
     my ($type, $lbl, $tbl, $ext) = uc($1) eq 'VCARD' ? qw(VCard vCard Main VCF) : qw(ICS iCalendar VCalendar ICS);
     $et->SetFileType($type, undef, $ext);

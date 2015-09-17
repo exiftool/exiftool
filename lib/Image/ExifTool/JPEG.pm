@@ -452,7 +452,7 @@ sub ProcessJPEG_HDR($$$);
             1 => 'Odd',
             2 => 'Even',
         },
-    },    
+    },
 );
 
 # Ocad APP0 segment (ref PH)

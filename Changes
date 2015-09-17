@@ -7,10 +7,22 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.00. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Sept. 17, 2015 - Version 10.02
+
+  - Added ability to read PNG chunks after the normal PNG end of file (IEND)
+  - Added ability to delete a PNG trailer (with -trailer:all=)
+  - Added some new Nikon LensID's (thanks Robert Rottmerhusen and LibRaw)
+  - Added a few new Canon LensType's (thanks Jos Roost and LibRaw)
+  - Added a new Pentax LensType (thanks Niels Kristian Bech Jensen)
+  - Decode some new PanasonicRaw tags (thanks Andrew)
+  - Decode a new Pentax tag
+  - Enhanced -m option to allow IPTC values which are too short to be written
+
 Sept. 3, 2015 - Version 10.01
 
   - Added a new Olympus CameraType
   - Added a new Canon LensType (thanks Norbert Wasser)
+  - Added a few new QuickTime GenreID values (thanks Francois Bonzon)
   - Decode a new Pentax tag
   - Leica programmers should all be ashamed of the complete shambles of metadata
     they have created

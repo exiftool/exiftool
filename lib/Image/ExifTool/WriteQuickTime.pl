@@ -33,8 +33,8 @@ sub IsCurPath($$)
 {
     local $_;
     my ($et, $dir) = @_;
-    $dir = $$et{DirMap}{$dir} and $dir eq $_ or last foreach reverse @{$$et{PATH}}; 
-    return($dir and $dir eq 'MOV');    
+    $dir = $$et{DirMap}{$dir} and $dir eq $_ or last foreach reverse @{$$et{PATH}};
+    return($dir and $dir eq 'MOV');
 }
 
 #------------------------------------------------------------------------------

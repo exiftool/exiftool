@@ -179,7 +179,7 @@ my %dateTimeInfo = (
     103 => 'Description',
     104 => 'ISBN',
     105 => { Name => 'Subject', List => 1 },
-    106 => { 
+    106 => {
         Name => 'PublishDate',
         Groups => { 2 => 'Time' },
         ValueConv => q{

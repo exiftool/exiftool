@@ -112,7 +112,7 @@ sub ExtractTags($$$)
             $tagTablePtr or $tagTablePtr = GetTagTable('Image::ExifTool::Lytro::Main');
             unless ($$tagTablePtr{$tag}) {
                 ($name = $tag) =~ s/[^-_a-zA-Z0-9](.?)/\U$1/g;
-                $name =~ s/ParametersVendorContentComLytroTags//; 
+                $name =~ s/ParametersVendorContentComLytroTags//;
                 my %tagInfo;
                 $tagInfo{Groups} = { 2 => 'Image' } unless $name =~ s/^Devices//;
                 $tagInfo{List} = 1 if ref $$meta{$key} eq 'ARRAY';

@@ -111,7 +111,7 @@ sub ReadBencode($$)
 
     # read next token
     $$dataPt =~ /(.)/sg or return undef;
-    
+
     my $val;
     my $tok = $1;
     if ($tok eq 'i') {      # integer

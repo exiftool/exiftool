@@ -3167,7 +3167,7 @@ $VERSION = '1.12';
             0x40 => 'Release + Focus',
             0x80 => 'Focus',
         },
-    }, 
+    },
     1.2 => { # CSa2
         Name => 'AF-SPrioritySelection',
         Mask => 0x20,
@@ -3362,7 +3362,7 @@ $VERSION = '1.12';
             0x08 => '1 EV',
         },
     },
-    8.1 => { # CSb6 
+    8.1 => { # CSb6
         Name => 'CenterWeightedAreaSize',
         Mask => 0xe0,
         PrintConv => {
@@ -3374,7 +3374,7 @@ $VERSION = '1.12';
         },
     },
     8.2 => { # CSb7-a
-        Name => 'FineTuneOptMatrixMetering',  
+        Name => 'FineTuneOptMatrixMetering',
         Mask => 0x0f,
         ValueConv => '($val > 0x7 ? $val - 0x10 : $val) / 6',
         ValueConvInv => 'int($val*6+($val>0?0.5:-0.5)) & 0x0f',
@@ -3397,7 +3397,7 @@ $VERSION = '1.12';
         PrintConv => '$val ? sprintf("%+.2f", $val) : 0',
         PrintConvInv => 'Image::ExifTool::Exif::ConvertFraction($val)',
     },
-    10.1 => { # CSf2-a                  
+    10.1 => { # CSf2-a
         Name => 'MultiSelectorShootMode',
         Mask => 0xc0,
         PrintConv => {
@@ -3762,7 +3762,7 @@ $VERSION = '1.12';
             0xa0 => '10 min',
         },
     },
-    37.1 => { # CSf2-c 
+    37.1 => { # CSf2-c
         Name => 'MultiSelectorLiveView',
         Mask => 0xc0,
         PrintConv => {
@@ -3846,7 +3846,7 @@ $VERSION = '1.12';
             3 => 'One Step Speed / Aperture',
             4 => 'Choose Non-CPU Lens Number',
             5 => 'Active D-Lighting',
-            8 => 'Exposure Delay Mode',     
+            8 => 'Exposure Delay Mode',
         },
     },
     43.1 => { # CSf5-b
@@ -3859,7 +3859,7 @@ $VERSION = '1.12';
             3 => 'One Step Speed / Aperture',
             4 => 'Choose Non-CPU Lens Number',
             5 => 'Active D-Lighting',
-            8 => 'Exposure Delay Mode', 
+            8 => 'Exposure Delay Mode',
         },
     },
     44.1 => { # CSf6-b
@@ -3870,7 +3870,7 @@ $VERSION = '1.12';
             1 => 'Choose Image Area (FX/DX/5:4)',
             2 => 'Shutter Speed & Aperture Lock',
             4 => 'Choose Non-CPU Lens Number',
-            8 => 'Exposure Delay Mode',     
+            8 => 'Exposure Delay Mode',
         },
     },
     45.1 => { # CSf13
@@ -3880,7 +3880,7 @@ $VERSION = '1.12';
             0 => 'None',
             1 => 'Choose Image Area (FX/DX/5:4)',
             2 => 'Shutter Speed & Aperture Lock',
-            9 => 'White Balance',   
+            9 => 'White Balance',
             10 => 'ISO Sensitivity',
         },
     },
@@ -3908,7 +3908,7 @@ $VERSION = '1.12';
             0x40 => 'On During Manual Focusing',
         },
     },
-    47.3 => { # CSa9 
+    47.3 => { # CSa9
         Name => 'StoreByOrientation',
         Mask => 0x18,
         PrintConv => {

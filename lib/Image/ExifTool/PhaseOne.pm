@@ -492,7 +492,7 @@ sub ProcessPhaseOne($$$)
                         $formatStr = 'float';
                         $value = ReadValue($dataPt,$valuePtr,$formatStr,$count,$size);
                     }
-                }                    
+                }
             }
         }
         my %parms = (

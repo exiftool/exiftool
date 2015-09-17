@@ -1903,7 +1903,7 @@ sub WriteExif($$$)
             }
             $set{$tagID} = $tagInfo;
         }
-        
+
         # fix base offsets (some cameras incorrectly write maker notes in IFD0)
         if ($dirName eq 'MakerNotes' and $$dirInfo{Parent} =~ /^(ExifIFD|IFD0)$/ and
             $$et{TIFF_TYPE} !~ /^(ARW|SR2)$/ and not $$et{LeicaTrailerPos} and
@@ -3618,7 +3618,7 @@ NoOverwrite:            next if $isNew > 0;
                     my $subIfdDataFixup = new Image::ExifTool::Fixup;
                     $subIfdDataFixup->AddFixup($entry + 8);
                     # save fixup in imageData list
-                    $$blockInfo[4] = $subIfdDataFixup; 
+                    $$blockInfo[4] = $subIfdDataFixup;
                 }
                 # must reset entry pointer so we don't use it again in a parent IFD!
                 $$blockInfo[3] = undef;
@@ -3674,7 +3674,7 @@ NoOverwrite:            next if $isNew > 0;
                 $fixup->SetMarkerPointers(\$newData, 'PreviewImage', $newPos);
                 $newData .= $$pt;
                 # set flag to delete old preview unless it was contained in the EXIF
-                $$et{DEL_PREVIEW} = 1 unless $$et{PREVIEW_INFO}{WasContained};       
+                $$et{DEL_PREVIEW} = 1 unless $$et{PREVIEW_INFO}{WasContained};
                 delete $$et{PREVIEW_INFO};   # done with our preview data
             } else {
                 # Doesn't fit, or we still don't know, so save fixup information

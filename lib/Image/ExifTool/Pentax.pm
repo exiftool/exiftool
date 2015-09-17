@@ -56,7 +56,7 @@ use vars qw($VERSION %pentaxLensTypes);
 use Image::ExifTool::Exif;
 use Image::ExifTool::HP;
 
-$VERSION = '2.94';
+$VERSION = '2.95';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -316,6 +316,7 @@ sub PrintFilter($$$);
     '8 30' => 'Sigma 17-70mm F2.8-4 DC Macro HSM Contemporary', #27
     '8 31' => 'Sigma 18-35mm F1.8 DC HSM', #27
     '8 32' => 'Sigma 30mm F1.4 DC HSM | A', #27
+    '8 34' => 'Sigma 18-300mm F3.5-6.3 DC Macro HSM', #25
     '8 59' => 'HD PENTAX-D FA 150-450mm F4.5-5.6 ED DC AW', #29
     '8 60' => 'HD PENTAX-D FA* 70-200mm F2.8 ED DC AW', #29
     '8 198' => 'smc PENTAX-DA L 18-50mm F4-5.6 DC WR RE', #29
@@ -1997,7 +1998,7 @@ my %binaryDataAttrs = (
         ValueConv => \&CryptShutterCount,
         ValueConvInv => '$val',
     },
-    # 0x005e - 
+    # 0x005e -
     0x0060 => { #PH (K-5)
         Name => 'FaceInfo',
         Format => 'undef', # (written as int8u)
@@ -3786,6 +3787,11 @@ my %binaryDataAttrs = (
         PrintConv => \%pentaxLensTypes,
         SeparateTable => 1,
     },
+    3 => { #PH
+        Name => 'ExtenderStatus',
+        Notes => 'not valid if a non-AF lens is used',
+        PrintConv => { 0 => 'Not attached', 1 => 'Attached' },
+    },
     # this is a binaryData table because some cameras add an extra
     # byte or two here (typically zeros)...
 );
@@ -4009,7 +4015,7 @@ my %binaryDataAttrs = (
         Mask => 0xf8,
         PrintConv => {
             0x00 => '0.13-0.19 m',  # (plus K or M lenses)
-            0x08 => '0.20-0.24 m', 
+            0x08 => '0.20-0.24 m',
             0x10 => '0.25-0.28 m',
             0x18 => '0.28-0.30 m',
             0x20 => '0.35-0.38 m',

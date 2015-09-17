@@ -1222,7 +1222,7 @@ sub ProcessContents($$$)
     # then 0x01) followed by a number of zero bytes (from 0x18 to 0x26 of them, related
     # somehow to the value of the first byte), followed by the string "DocumentPage"
     $isFLA = 1 if $$dataPt =~ /^..\0+\xff\xff\x01\0\x0d\0CDocumentPage/s;
-    
+
     # do a brute-force scan of the "Contents" for UTF-16 XMP
     # (this may always be little-endian, but allow for either endianness)
     if ($$dataPt =~ /<\0\?\0x\0p\0a\0c\0k\0e\0t\0 \0b\0e\0g\0i\0n\0=\0['"](\0\xff\xfe|\xfe\xff)/g) {
@@ -1601,7 +1601,7 @@ sub SetDocNum($$;$$$)
         } elsif (@subDoc) {
             $subDoc[-1] = ++$$used[$#subDoc];
         }
-        SetDocNum($hier, $$obj{Child}, \@subDoc, $used, not $meta) 
+        SetDocNum($hier, $$obj{Child}, \@subDoc, $used, not $meta);
     }
 }
 

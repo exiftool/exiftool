@@ -1242,7 +1242,7 @@ sub DecodeStream($$)
                 } elsif ($$decodeParms{EarlyChange}) {
                     $et->WarnOnce("LZWDecode EarlyChange currently not supported");
                     return 0;
-                }                    
+                }
             }
             unless (DecodeLZW(\$$dict{_stream})) {
                 $et->WarnOnce('LZW decompress error');

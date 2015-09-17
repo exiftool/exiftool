@@ -63,10 +63,10 @@ my @vectorVals;
         directory.
 
         B<Tips:>
-        
+
         1) Structural ZIP tags may be ignored (if desired) with C<--ZIP:all> on the
         command line.
-        
+
         2) Tags may be grouped by their document number in the ZIP archive with the
         C<-g3> or C<-G3> option.
     },
@@ -134,7 +134,7 @@ my @vectorVals;
     Matter      => { },
     MMClips     => { },
     modified    => {
-        Name => 'ModifyDate', 
+        Name => 'ModifyDate',
         Groups => { 2 => 'Time' },
         Format => 'date',
         PrintConv => '$self->ConvertDateTime($val)',

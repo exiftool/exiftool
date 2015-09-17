@@ -931,7 +931,7 @@ my $debug;          # set to 1 to enable debugging code
         # (starts with "SONY PIC\0" -- DSC-H200/J20/W370/W510, MHS-TS20)
         Condition => '$$valPt=~/^SONY PIC\0/',
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::PIC' },
-    },    
+    },
     {
         Name => 'MakerNoteSony5', # used in SR2 and ARW images
         Condition => '$$self{Make}=~/^SONY/ and $$valPt!~/^\x01\x00/',
@@ -1373,7 +1373,7 @@ sub LocateIFD($$)
 #
     if ($tagInfo and $$tagInfo{SubDirectory}) {
         my $subdir = $$tagInfo{SubDirectory};
-        unless ($$subdir{ProcessProc} and 
+        unless ($$subdir{ProcessProc} and
                ($$subdir{ProcessProc} eq \&ProcessUnknown or
                 $$subdir{ProcessProc} eq \&ProcessUnknownOrPreview))
         {

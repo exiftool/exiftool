@@ -633,7 +633,7 @@ sub ProcessMetadata($$$)
     my $dirStart = $$dirInfo{DirStart};
     my $dirLen = $$dirInfo{DirLen};
     my $dirEnd = $dirStart + $dirLen;
-    
+
     if ($dirLen < 16 or substr($$dataPt, $dirStart, 4) ne 'dict') {
         $et->Warn('Invalid ICC meta dictionary');
         return 0;
@@ -882,7 +882,7 @@ sub ProcessICC_Profile($$$)
                     }
                     my $strLen = Get32u($dataPt, $recPos + 4);
                     my $strPos = Get32u($dataPt, $recPos + 8);
-                    last if $strPos + $strLen > $size; 
+                    last if $strPos + $strLen > $size;
                     my $str = substr($$dataPt, $valuePtr + $strPos, $strLen);
                     $str = $et->Decode($str, 'UTF16');
                     $et->HandleTag($tagTablePtr, $tagID, $str,

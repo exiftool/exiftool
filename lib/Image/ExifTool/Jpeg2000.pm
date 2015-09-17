@@ -367,7 +367,7 @@ my %j2cMarker = (
         Name => 'CompatibleBrands',
         Format => 'undef[$size-8]',
         # ignore any entry with a null, and return others as a list
-        ValueConv => 'my @a=($val=~/.{4}/sg); @a=grep(!/\0/,@a); \@a', 
+        ValueConv => 'my @a=($val=~/.{4}/sg); @a=grep(!/\0/,@a); \@a',
     },
 );
 

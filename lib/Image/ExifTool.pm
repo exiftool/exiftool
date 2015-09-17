@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '10.01';
+$VERSION = '10.02';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -4908,7 +4908,7 @@ sub ConvertFileName($$)
 }
 
 #------------------------------------------------------------------------------
-# Inverse conversion for file name (encode 
+# Inverse conversion for file name (encode
 # Inputs: 0) ExifTool ref, 1) file name in external character set
 # Returns: file name in CharsetFileName character set
 sub InverseFileName($$)

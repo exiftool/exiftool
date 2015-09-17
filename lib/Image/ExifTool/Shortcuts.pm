@@ -227,7 +227,7 @@ $VERSION = '1.56';
         'IFD0:Artist',
         'IFD0:Copyright',
         # other TIFF tags
-        'IFD0:Rating', 
+        'IFD0:Rating',
         'IFD0:RatingPercent',
         'IFD0:DNGLensInfo',
         'IFD0:PanasonicTitle',

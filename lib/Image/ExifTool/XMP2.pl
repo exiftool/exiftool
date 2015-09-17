@@ -1397,7 +1397,7 @@ my %sSubVersion = (
         },
     },
 );
-    
+
 # FastPictureViewer namespace properties (http://www.fastpictureviewer.com/help/#rtfcomments)
 %Image::ExifTool::XMP::fpv = (
     %xmpTableDefaults,

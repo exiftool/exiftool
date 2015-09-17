@@ -411,7 +411,7 @@ Block:
                         $et->Warn('Duplicate ICC_Profile block created');
                     }
                     $buff = $et->WriteDirectory(\%dirInfo, $iccTable);
-                    # rewrite original ICC_Profile if nothing changed 
+                    # rewrite original ICC_Profile if nothing changed
                     $buff = $icc_profile unless defined $buff;
                     if (length $buff) {
                         # write ICC profile sub-blocks

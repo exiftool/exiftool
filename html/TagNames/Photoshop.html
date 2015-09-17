@@ -17,7 +17,12 @@ after the tag name) because the information they provide is not very useful
 under normal circumstances.  These unknown tags are not extracted unless the
 Unknown (-u) option is used.  See
 <a href="http://www.adobe.com/devnet-apps/photoshop/fileformatashtml/">http://www.adobe.com/devnet-apps/photoshop/fileformatashtml/</a> for the
-official specification
+official specification</p>
+
+<p>Photoshop path tags (Tag ID&#39;s 0x7d0 to 0xbb5) are not defined by default,
+but a config file included in the full ExifTool distribution
+(config_files/photoshop_paths.config) contains the tag definitions to allow
+access to this information.
 </p>
 <blockquote>
 <table class=frame><tr><td>
@@ -564,7 +569,7 @@ synchronized with the IPTC)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Oct 13, 2014</i>
+<br><i>Last revised Sep 17, 2015</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

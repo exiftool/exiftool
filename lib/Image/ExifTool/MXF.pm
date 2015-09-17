@@ -57,7 +57,6 @@ my %knownType = (
     Label => 1,     StrongReferenceBatch => 1,
     Lat => 1,       Timestamp => 1,
     Length => 1,    UID => 1,
-           
 );
 
 # common tag info parameters
@@ -2416,7 +2415,7 @@ my %componentDataDef = (
     '060e2b34.0401.0107.0d010401.02010100' => { Name => 'CryptographicFrameworkLabel', Type => 'Label', Unknown => 1 },
 );
 
-# header information 
+# header information
 %Image::ExifTool::MXF::Header = (
     GROUPS => { 2 => 'Video' },
     PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,

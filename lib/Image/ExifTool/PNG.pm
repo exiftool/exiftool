@@ -26,7 +26,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.34';
+$VERSION = '1.35';
 
 sub ProcessPNG_tEXt($$$);
 sub ProcessPNG_iTXt($$$);
@@ -80,6 +80,12 @@ $Image::ExifTool::PNG::colorType = -1;
         Tags extracted from PNG images.  See
         L<http://www.libpng.org/pub/png/spec/1.2/> for the official PNG 1.2
         specification.
+
+        According to the specification, a PNG file should end at the IEND chunk,
+        however ExifTool will preserve any data found after this when writing unless
+        it is specifically deleted with -Trailer:All=.  When reading, a minor
+        warning is issued if this trailer exists, and ExifTool will attempt to parse
+        this data as additional PNG chunks.
     },
     bKGD => {
         Name => 'BackgroundColor',
@@ -999,7 +1005,7 @@ sub ProcessPNG($$)
     my $datChunk = '';
     my $datCount = 0;
     my $datBytes = 0;
-    my ($sig, $err, $ok);
+    my ($sig, $err);
 
     # check to be sure this is a valid PNG/MNG/JNG image
     return 0 unless $raf->Read($sig,8) == 8 and $pngLookup{$sig};
@@ -1033,14 +1039,26 @@ sub ProcessPNG($$)
     }
     my $verbose = $et->Options('Verbose');
     my $out = $et->Options('TextOut');
-    my ($hbuf, $dbuf, $cbuf, $foundHdr);
+    my ($hbuf, $dbuf, $cbuf, $wasHdr, $wasEnd);
 
     # process the PNG/MNG/JNG chunks
     undef $noCompressLib;
     for (;;) {
-        $raf->Read($hbuf,8) == 8 or $et->Warn("Truncated $fileType image"), last;
+        my $n = $raf->Read($hbuf,8);
+        if ($wasEnd) {
+            last unless $n; # stop now if normal end of PNG
+            $et->WarnOnce("Trailer data after $fileType $endChunk chunk", 1);
+            last if $n < 8;
+            $$et{SET_GROUP1} = 'Trailer';
+        } elsif ($n != 8) {
+            $et->Warn("Truncated $fileType image") unless $wasEnd;
+            last;
+        }
         my ($len, $chunk) = unpack('Na4',$hbuf);
-        $len > 0x7fffffff and $et->Warn("Invalid $fileType box size"), last;
+        if ($len > 0x7fffffff) {
+            $et->Warn("Invalid $fileType chunk size") unless $wasEnd;
+            last;
+        }
         if ($verbose) {
             # don't dump image data chunks in verbose mode (only give count instead)
             if ($datCount and $chunk ne $datChunk) {
@@ -1056,8 +1074,8 @@ sub ProcessPNG($$)
             }
         }
         if ($outfile) {
-            if ($chunk eq 'IEND') {
-                # add any new chunks immediately before the IEND chunk
+            if ($chunk eq $endChunk) {
+                # add any new chunks immediately before the IEND/MEND chunk
                 AddChunks($et, $outfile) or $err = 1;
             } elsif ($chunk eq 'PLTE' or $chunk eq 'IDAT') {
                 if ($chunk eq 'IDAT') {
@@ -1072,27 +1090,45 @@ sub ProcessPNG($$)
             }
         }
         if ($chunk eq $endChunk) {
-            if ($outfile) {
-                # copy over the rest of the file if necessary
-                Write($outfile, $hbuf) or $err = 1;
-                while ($raf->Read($hbuf, 65536)) {
-                    Write($outfile, $hbuf) or $err = 1;
-                }
+            # read CRC
+            unless ($raf->Read($cbuf,4) == 4) {
+                $et->Warn("Truncated $fileType $endChunk chunk") unless $wasEnd;
+                last;
             }
             $verbose and print $out "$fileType $chunk (end of image)\n";
-            $ok = 1;
-            last;
+            $wasEnd = 1;
+            if ($outfile) {
+                # write the IEND/MEND chunk with CRC
+                Write($outfile, $hbuf, $cbuf) or $err = 1;
+                if ($$et{DEL_GROUP}{Trailer}) {
+                    if ($raf->Read($hbuf, 1)) {
+                        $verbose and printf $out "  Deleting PNG trailer\n";
+                        ++$$et{CHANGED};
+                    }
+                } else {
+                    # copy over any existing trailer data
+                    my $tot = 0;
+                    for (;;) {
+                        $n = $raf->Read($hbuf, 65536) or last;
+                        $tot += $n;
+                        Write($outfile, $hbuf) or $err = 1;
+                    }
+                    $tot and $verbose and printf $out "  Copying PNG trailer ($tot bytes)\n";
+                }
+                last;
+            }
+            next;
         }
         # set FoundIDAT flag: 1=after IDAT, 2=after IDAT and warn about late XMP
         $$et{FoundIDAT} = $earlyXMP ? 2 : 1 if $chunk eq 'IDAT';
         # read chunk data and CRC
         unless ($raf->Read($dbuf,$len)==$len and $raf->Read($cbuf, 4)==4) {
-            $et->Warn("Corrupted $fileType image");
+            $et->Warn("Corrupted $fileType image") unless $wasEnd;
             last;
         }
-        unless ($foundHdr) {
+        unless ($wasHdr) {
             if ($chunk eq $hdrChunk) {
-                $foundHdr = 1;
+                $wasHdr = 1;
             } elsif ($hdrChunk eq 'IHDR' and $chunk eq 'CgBI') {
                 $et->Warn('Non-standard PNG image (Apple iPhone format)');
             } else {
@@ -1104,7 +1140,7 @@ sub ProcessPNG($$)
             # check CRC when in verbose mode (since we don't care about speed)
             my $crc = CalculateCRC(\$hbuf, undef, 4);
             $crc = CalculateCRC(\$dbuf, $crc);
-            $crc == unpack('N',$cbuf) or $et->Warn("Bad CRC for $chunk chunk");
+            $crc == unpack('N',$cbuf) or $et->Warn("Bad CRC for $chunk chunk") unless $wasEnd;
             if ($datChunk) {
                 Write($outfile, $hbuf, $dbuf, $cbuf) or $err = 1 if $outfile;
                 next;
@@ -1137,7 +1173,8 @@ sub ProcessPNG($$)
             Write($outfile, $hbuf, $dbuf, $cbuf) or $err = 1;
         }
     }
-    return -1 if $outfile and ($err or not $ok);
+    delete $$et{SET_GROUP1};
+    return -1 if $outfile and ($err or not $wasEnd);
     return 1;   # this was a valid PNG/MNG/JNG image
 }
 

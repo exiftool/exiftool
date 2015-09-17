@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.24';
+$VERSION = '2.25';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -306,7 +306,7 @@ my %afPoint19 = (
     29 => 'Lower-right (vertical)',
 );
 
-# 79 AF point layout and indices for ILCA-77M2, numbered 0-78 for direct look-up from BITMASK in 0x2020, 
+# 79 AF point layout and indices for ILCA-77M2, numbered 0-78 for direct look-up from BITMASK in 0x2020,
 # E6 = Center (ref JR)
 my %afPoints79 = (
                                              0=>'A5',  1=>'A6',  2=>'A7',
@@ -491,6 +491,7 @@ my %meterInfo2 = (
             0x50 => 'Flash',
             0x60 => 'Fluorescent',
             0x70 => 'Custom',
+            0x80 => 'Underwater',
         },
     },
     # Tag 0x0116: extra hardware info (ref JR)
@@ -568,7 +569,7 @@ my %meterInfo2 = (
         # - PreviewImage start-offset is at 130 bytes inside MPImage2
         # NEX-VG20E/VG30E/VG900, ILCE-QX1: 0x2001 not present
         # ILCE-5100/ILCE-7M2             : 0x2001 present but Size 0 and Offset 0
-        # 
+        #
         WriteCheck => 'return $val=~/^(none|.{32}\xff\xd8\xff)/s ? undef : "Not a valid image"',
         RawConv => q{
             return \$val if $val =~ /^Binary/;
@@ -1831,6 +1832,7 @@ my %meterInfo2 = (
             15 => 'Flash',
             17 => 'Underwater 1 (Blue Water)', #9
             18 => 'Underwater 2 (Green Water)', #9
+            19 => 'Underwater Auto', #JR
         },
     },
 );
@@ -3136,7 +3138,7 @@ my %meterInfo2 = (
             3 => 'Built-in Flash fired',
             4 => 'External Flash fired (4)', # what is difference with 2 ?
         },
-    }, 
+    },
     0x0078 => {
         Name => 'FlashActionExternal',
         Condition => '$$self{Model} =~ /^NEX-(3|5|5C)/',
@@ -3144,7 +3146,7 @@ my %meterInfo2 = (
             136 => 'Did not fire',
             122 => 'Fired',
         },
-    }, 
+    },
     0x007c => {
         Name => 'FlashActionExternal',
         Condition => '$$self{Model} !~ /^NEX-(3|5|5C)|DSLR-(A450|A500|A550)/',
@@ -3153,7 +3155,7 @@ my %meterInfo2 = (
             167 => 'Fired',
             182 => 'Fired, HSS',
         },
-    }, 
+    },
     0x0082 => {
         Name => 'FlashStatus',
         Condition => '$$self{Model} =~ /^NEX-(3|5|5C)/',
@@ -5612,7 +5614,7 @@ my %pictureProfile2010 = (
     #0x0134 => { Name => 'SonyImageHeight',  Format => 'int16u' },
     #0x0144 => { Name => 'SonyImageHeight',  Format => 'int16u' },
     #0x0154 => { Name => 'SonyImageHeight',  Format => 'int16u' },
-    0x0200 => { Name => 'DigitalZoomRatio', ValueConv => '$val/16', ValueConvInv => '$val*16' },
+    0x0200 => { Name => 'DigitalZoomRatio', ValueConv => '$val/16', ValueConvInv => '$val*16', Priority => 0 },
     0x0210 => { %sonyDateTime2010, Groups => { 2 => 'Time' } },
     0x0300 => { %dynamicRangeOptimizer2010 },
     0x0490 => {
@@ -5735,7 +5737,7 @@ my %pictureProfile2010 = (
     #0x00e4 => { Name => 'SonyImageHeight',  Format => 'int16u' },
     #0x01fa => { Name => 'SonyImageHeight',  Format => 'int16u' },
     #0x0200 => { Name => 'SonyImageWidth',   Format => 'int16u' },
-    0x021c => { Name => 'DigitalZoomRatio', ValueConv => '$val/16', ValueConvInv => '$val*16' },
+    0x021c => { Name => 'DigitalZoomRatio', ValueConv => '$val/16', ValueConvInv => '$val*16', Priority => 0 },
     0x022c => { %sonyDateTime2010, Groups => { 2 => 'Time' } },
     0x0328 => { %dynamicRangeOptimizer2010 },
     0x04b8 => {
@@ -8256,7 +8258,7 @@ my %pictureProfile2010 = (
             # if this value is the 35mm equivalent magnification, then the formula could
             # be (1.5 * 2**($val/16-5)+1) * FocalLength, but this tends to underestimate
             # distance by about 18% (ref 20) (255=inf)
-            # modified 16-10-2014 based on A99V measurements: use FocalLengthIn35mmFormat and leave out the "1.5*" factor. 
+            # modified 16-10-2014 based on A99V measurements: use FocalLengthIn35mmFormat and leave out the "1.5*" factor.
         Require => {
             0 => 'Sony:FocusPosition2',
             1 => 'FocalLengthIn35mmFormat',
@@ -8479,7 +8481,7 @@ sub PrintLensSpec($)
             # add feature name as a prefix or suffix to the LensSpec
             my $str = $$feature[1]{$bits} || sprintf('Unknown(%.4x)',$bits);
             $rtnVal = $rtnVal ? ($$feature[2] ? "$str $rtnVal" : "$rtnVal $str") : $str;
-        }    
+        }
     } else {
         $rtnVal = "Unknown ($val)";
     }

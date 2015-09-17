@@ -32,7 +32,7 @@ use Image::ExifTool::XMP;
 use Image::ExifTool::Canon;
 use Image::ExifTool::Nikon;
 
-$VERSION = '2.89';
+$VERSION = '2.90';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -396,6 +396,11 @@ under normal circumstances.  These unknown tags are not extracted unless the
 Unknown (-u) option is used.  See
 L<http://www.adobe.com/devnet-apps/photoshop/fileformatashtml/> for the
 official specification
+
+Photoshop path tags (Tag ID's 0x7d0 to 0xbb5) are not defined by default,
+but a config file included in the full ExifTool distribution
+(config_files/photoshop_paths.config) contains the tag definitions to allow
+access to this information.
 },
     PrintIM => q{
 The format of the PrintIM information is known, however no PrintIM tags have
@@ -1597,7 +1602,7 @@ sub Doc2Html($)
     $doc =~ s/B&lt;(.*?)&gt;/<b>$1<\/b>/sg;
     $doc =~ s/C&lt;(.*?)&gt;/<code>$1<\/code>/sg;
     $doc =~ s/I&lt;(.*?)&gt;/<i>$1<\/i>/sg;
-    # L<some text|http://owl.phy.queensu.ca/~phil/exiftool/struct.html#Fields> --> <a href="../struct.html#Fields">some text</a> 
+    # L<some text|http://owl.phy.queensu.ca/~phil/exiftool/struct.html#Fields> --> <a href="../struct.html#Fields">some text</a>
     $doc =~ s{L&lt;([^&]+?)\|\Q$homePage\E/(.*?)&gt;}{<a href="../$2">$1<\/a>}sg;
     # L<http://owl.phy.queensu.ca/~phil/exiftool/struct.html> --> <a href="http://owl.phy.queensu.ca/~phil/exiftool/struct.html">http://owl.phy.queensu.ca/~phil/exiftool/struct.html</a>
     $doc =~ s{L&lt;\Q$homePage\E/(.*?)&gt;}{<a href="../$1">$1<\/a>}sg;
@@ -2256,7 +2261,7 @@ sub WriteTagNames($$)
                 length($tag) > $wTag2 and $w -= length($tag) - $wTag2;
                 printf PODFILE " %-${w}s", shift(@reqs) || '';
             }
-            printf PODFILE " $wrStr\n";
+            print PODFILE " $wrStr\n";
             my $numTags = scalar @$tagNames;
             my $n = 0;
             while (@tags or @reqs or @vals) {
@@ -2432,7 +2437,7 @@ sub WriteTagNames($$)
             warn "Notice: Long tags in $tableName table\n";
         }
         unless ($infoCount) {
-            printf PODFILE "  [no tags known]\n";
+            print PODFILE "  [no tags known]\n";
             my $cols = 3;
             ++$cols if $hid;
             ++$cols if $derived;

@@ -3689,7 +3689,7 @@ sub HexDump($;$%)
         $dat =~ tr /\x00-\x1f\x7f-\xff/./;
         print $out "[$dat]\n";
     }
-    $more and printf $out "$prefix    [snip $more bytes]\n";
+    $more and print $out "$prefix    [snip $more bytes]\n";
 }
 
 #------------------------------------------------------------------------------

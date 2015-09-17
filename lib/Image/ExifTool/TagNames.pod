@@ -4012,6 +4012,11 @@ Unknown (-u) option is used.  See
 L<http://www.adobe.com/devnet-apps/photoshop/fileformatashtml/> for the
 official specification
 
+Photoshop path tags (Tag ID's 0x7d0 to 0xbb5) are not defined by default,
+but a config file included in the full ExifTool distribution
+(config_files/photoshop_paths.config) contains the tag definitions to allow
+access to this information.
+
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
   0x03e8   Photoshop2Info?                      N
@@ -11881,6 +11886,7 @@ models.
   Index1   Tag Name                             Writable
   ------   --------                             --------
       0    LensType                             int8u[2]
+      3    ExtenderStatus                       int8u
 
 =head3 Pentax SRInfo Tags
 
@@ -14943,6 +14949,10 @@ These tags are found in IFD0 of Panasonic/Leica RAW, RW2 and RWL images.
   0x0026   WBBlueLevel                          int16u
   0x0027   WBInfo2                              PanasonicRaw WBInfo2
   0x002e   JpgFromRaw                           JPEG
+  0x002f   CropTop                              int16u
+  0x0030   CropLeft                             int16u
+  0x0031   CropBottom                           int16u
+  0x0032   CropRight                            int16u
   0x010f   Make                                 string
   0x0110   Model                                string
   0x0111   StripOffsets                         N
@@ -18557,6 +18567,12 @@ experimental, and is only enabled with the Verbose or Unknown options.
 Tags extracted from PNG images.  See
 L<http://www.libpng.org/pub/png/spec/1.2/> for the official PNG 1.2
 specification.
+
+According to the specification, a PNG file should end at the IEND chunk,
+however ExifTool will preserve any data found after this when writing unless
+it is specifically deleted with -Trailer:All=.  When reading, a minor
+warning is issued if this trailer exists, and ExifTool will attempt to parse
+this data as additional PNG chunks.
 
   Tag ID             Tag Name                   Writable
   ------             --------                   --------

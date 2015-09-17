@@ -83,7 +83,7 @@ sub ProcessSerialData($$$);
 sub ProcessFilters($$$);
 sub SwapWords($);
 
-$VERSION = '3.52';
+$VERSION = '3.53';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -186,6 +186,8 @@ $VERSION = '3.52';
     44 => 'Canon EF 90-300mm f/4.5-5.6', #32
     45 => 'Canon EF-S 18-55mm f/3.5-5.6 [II]', #PH (same ID for version II, ref 20)
     46 => 'Canon EF 28-90mm f/4-5.6', #32
+    47 => 'Zeiss Milvus 35mm f/2 or 50mm f/2', #52
+    47.1 => 'Zeiss Milvus 50mm f/2 Makro', #52
     48 => 'Canon EF-S 18-55mm f/3.5-5.6 IS', #20
     49 => 'Canon EF-S 55-250mm f/4-5.6 IS', #23
     50 => 'Canon EF-S 18-200mm f/3.5-5.6 IS',
@@ -260,7 +262,8 @@ $VERSION = '3.52';
     153.2 => 'Tamron AF 28-300mm f/3.5-6.3 XR LD Aspherical [IF] Macro',
     153.3 => 'Tamron AF 18-200mm f/3.5-6.3 XR Di II LD Aspherical [IF] Macro Model A14', #15
     153.4 => 'Tamron 18-250mm f/3.5-6.3 Di II LD Aspherical [IF] Macro', #PH
-    154 => 'Canon EF 20mm f/2.8 USM', #15
+    154 => 'Canon EF 20mm f/2.8 USM or Zeiss Lens', #15
+    154.1 => 'Zeiss Milvus 21mm f/2.8', #52
     155 => 'Canon EF 85mm f/1.8 USM',
     156 => 'Canon EF 28-105mm f/3.5-4.5 USM or Tamron Lens',
     156.1 => 'Tamron SP 70-300mm f/4.0-5.6 Di VC USD', #PH (model A005)
@@ -299,18 +302,21 @@ $VERSION = '3.52';
     173 => 'Canon EF 180mm Macro f/3.5L or Sigma Lens', #9
     173.1 => 'Sigma 180mm EX HSM Macro f/3.5', #14
     173.2 => 'Sigma APO Macro 150mm f/2.8 EX DG HSM', #14
-    174 => 'Canon EF 135mm f/2L or Sigma Lens', #9
+    174 => 'Canon EF 135mm f/2L or Other Lens', #9
     174.1 => 'Sigma 70-200mm f/2.8 EX DG APO OS HSM', #PH (probably version II of this lens)
     174.2 => 'Sigma 50-500mm f/4.5-6.3 APO DG OS HSM', #forum4031
     174.3 => 'Sigma 150-500mm f/5-6.3 APO DG OS HSM', #47
+    174.4 => 'Zeiss Milvus 100mm f/2 Makro', #52
     175 => 'Canon EF 400mm f/2.8L', #32
     176 => 'Canon EF 24-85mm f/3.5-4.5 USM',
     177 => 'Canon EF 300mm f/4L IS', #9
     178 => 'Canon EF 28-135mm f/3.5-5.6 IS',
     179 => 'Canon EF 24mm f/1.4L', #20
-    180 => 'Canon EF 35mm f/1.4L or Sigma Lens', #9
+    180 => 'Canon EF 35mm f/1.4L or Other Lens', #9
     180.1 => 'Sigma 50mm f/1.4 DG HSM | A', #50
     180.2 => 'Sigma 24mm f/1.4 DG HSM | A', #53
+    180.3 => 'Zeiss Milvus 50mm f/1.4', #52
+    180.4 => 'Zeiss Milvus 85mm f/1.4', #52
     181 => 'Canon EF 100-400mm f/4.5-5.6L IS + 1.4x', #15
     182 => 'Canon EF 100-400mm f/4.5-5.6L IS + 2x',
     183 => 'Canon EF 100-400mm f/4.5-5.6L IS or Sigma Lens',
@@ -346,6 +352,7 @@ $VERSION = '3.52';
     213 => 'Canon EF 90-300mm f/4.5-5.6 USM or Tamron Lens',
     213.1 => 'Tamron SP 150-600mm f/5-6.3 Di VC USD', #topic5565 (model A011)
     213.2 => 'Tamron 16-300mm f/3.5-6.3 Di II VC PZD Macro', #PH (model B016)
+    213.3 => 'Tamron SP 35mm f/1.8 Di VC USD', #PH (model F012)
     214 => 'Canon EF-S 18-55mm f/3.5-5.6 USM', #PH/34
     215 => 'Canon EF 55-200mm f/4.5-5.6 II USM',
     217 => 'Tamron AF 18-270mm f/3.5-6.3 Di II VC PZD', #47
@@ -374,7 +381,8 @@ $VERSION = '3.52';
     245 => 'Canon EF 70-200mm f/4L IS + 2.8x', #32
     246 => 'Canon EF 16-35mm f/2.8L II', #PH
     247 => 'Canon EF 14mm f/2.8L II USM', #32
-    248 => 'Canon EF 200mm f/2L IS', #42
+    248 => 'Canon EF 200mm f/2L IS or Sigma Lens', #42
+    248.1 => 'Sigma 24-35mm f/2 DG HSM | A', #JR
     249 => 'Canon EF 800mm f/5.6L IS', #35
     250 => 'Canon EF 24 f/1.4L II', #41
     251 => 'Canon EF 70-200mm f/2.8L IS II USM',
@@ -566,7 +574,7 @@ $VERSION = '3.52';
     0x3050000 => 'PowerShot A2200',
     0x3060000 => 'PowerShot A1200',
     0x3070000 => 'PowerShot SX220 HS',
-    0x3080000 => 'PowerShot G1 X', 
+    0x3080000 => 'PowerShot G1 X',
     0x3090000 => 'PowerShot SX150 IS',
     0x3100000 => 'PowerShot ELPH 510 HS / IXUS 1100 HS / IXY 51S',
     0x3110000 => 'PowerShot S100 (new)',
@@ -1460,7 +1468,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
         Writable => 'undef',
         Flags => [ 'Binary', 'Protected' ],
         # 0x00: int8u  - Version (0 or 1)
-        # 0x01: int8u  - LensInfo ? (1) 
+        # 0x01: int8u  - LensInfo ? (1)
         # 0x02: int8u  - AVValue ? (int8u for version 0, int16u for version 1)
         # 0x03: int8u  - POValue ? (int8u for version 0, int16u for version 1)
         # 0x04: int16u - DustCount
@@ -7133,18 +7141,18 @@ my %ciMaxFocal = (
         Condition => '$$self{ColorDataVersion} == 11',
         Format => 'int16u[4]',
     },
-    0x2dc => { 
+    0x2dc => {
         Name => 'NormalWhiteLevel',
         Condition => '$$self{ColorDataVersion} == 11',
         Format => 'int16u',
         RawConv => '$val || undef',
     },
-    0x2dd => { 
+    0x2dd => {
         Name => 'SpecularWhiteLevel',
         Condition => '$$self{ColorDataVersion} == 11',
         Format => 'int16u',
     },
-    0x2de => { 
+    0x2de => {
         Name => 'LinearityUpperMargin',
         Condition => '$$self{ColorDataVersion} == 11',
         Format => 'int16u',

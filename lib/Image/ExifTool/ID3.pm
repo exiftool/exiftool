@@ -403,7 +403,7 @@ my %genre = (
         ExifTool extracts mainly text-based tags from ID3v2 information.  The tags
         in the tables below are those extracted by ExifTool, and don't represent a
         complete list of available ID3v2 tags.
-        
+
         ID3 version 2.2 tags.  (These are the tags written by iTunes 5.0.)
     },
     CNT => 'PlayCounter',

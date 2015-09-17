@@ -171,7 +171,7 @@ sub ProcessFotoStation($$)
             next;
         }
         if ($$et{DEL_GROUP}{FotoStation}) {
-            $verbose and printf $out "  Deleting FotoStation trailer\n";
+            $verbose and print $out "  Deleting FotoStation trailer\n";
             $verbose = 0;   # no more verbose messages after this
             ++$$et{CHANGED};
             next;

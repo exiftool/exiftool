@@ -3617,7 +3617,7 @@ sub PrintLensID($$@)
         if ($lensType != 0xffff) {
             require Image::ExifTool::Minolta;
             if ($Image::ExifTool::Minolta::metabonesID{$lensType & 0xff00}) {
-                $lensType -= ($lensType >= 0xef00 ? 0xef00 : $lensType >= 0xbc00 ? 0xbc00 : 0x7700); 
+                $lensType -= ($lensType >= 0xef00 ? 0xef00 : $lensType >= 0xbc00 ? 0xbc00 : 0x7700);
                 require Image::ExifTool::Canon;
                 $printConv = \%Image::ExifTool::Canon::canonLensTypes;
                 $lensTypePrt = $$printConv{$lensType} if $$printConv{$lensType};

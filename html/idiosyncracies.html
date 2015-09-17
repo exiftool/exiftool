@@ -21,7 +21,7 @@ information).</p>
 
 <p>The difficulty is that these offsets must be recalculated when a file is
 rewritten, but in general this is not possible (particularly for the maker
-notes) because the format of not all information is known.  Some manufacturers
+notes) because the format of all information is not known.  Some manufacturers
 have attempted to avoid this problem using offsets which are relative to the
 start of the maker note IFD instead of the usual start of EXIF.  This is a good
 idea if implemented properly, but this is not done consistently.  (And some
@@ -121,9 +121,11 @@ PreviewImage.</li>
 <li>Tag 0x0302 has an invalid offset (0xffffffff).</li>
 </ul>
 
-<p>OK, I give up on Leica.  The new Leica S (Typ 007) stores the preview image
-in the JPG file using a completely nonsensical technique, as well as various
-other stupid blunders.  [To Leica: Try looking at the MPF specification.]</p>
+<p>OK, I give up on Leica.  The new Leica S (Typ 007) attains a new level of
+stupidity by storing the preview image in the JPG file using a completely
+nonsensical technique (in IFD2 of the EXIF segment, with the data being stored
+outside the EXIF segment after the JPEG EOI), as well as various other brainless
+blunders.  [@Leica: Try reading the MPF specification.]</p>
 
 <p><a name="Minolta"><b>Minolta:</b></a> An obvious bug in the firmware of the Z2 writes an incorrect
 offset for the 'MinoltaCameraSettings2' information -- it writes the offset of
@@ -264,7 +266,7 @@ WB2000] [2013-07-25: Add the NX2000 to this list]</i>)</p>
 
 <hr>
 <i>Created Mar. 25, 2005</i>
-<br><i>Last revised Aug. 25, 2014</i>
+<br><i>Last revised Sept. 4, 2015</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

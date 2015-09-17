@@ -129,9 +129,13 @@ sub CheckIPTC($$$)
         }
         if (defined $minlen) {
             $maxlen or $maxlen = $minlen;
-            return "String too short (minlen is $minlen)" if $len < $minlen;
-            if ($len > $maxlen and not $et->Options('IgnoreMinorErrors')) {
-                $$et{CHECK_WARN} = "[minor] IPTC:$$tagInfo{Name} exceeds length limit (truncated)";
+            if ($len < $minlen) {
+                unless ($$et{OPTIONS}{IgnoreMinorErrors}) {
+                    return "[Minor] String too short (minlen is $minlen)";
+                }
+                $$et{CHECK_WARN} = "String too short for IPTC:$$tagInfo{Name} (written anyway)";
+            } elsif ($len > $maxlen and not $$et{OPTIONS}{IgnoreMinorErrors}) {
+                $$et{CHECK_WARN} = "[Minor] IPTC:$$tagInfo{Name} exceeds length limit (truncated)";
                 $$valPtr = substr($$valPtr, 0, $maxlen);
             }
         }
@@ -213,7 +217,7 @@ sub IptcTime($)
         } elsif ($tz =~ /Z/i) {
             $tz = '+0000';  # UTC
         } else {
-            # use local system timezone by default 
+            # use local system timezone by default
             my (@tm, $time);
             if ($date and $date =~ /^(\d{4}):(\d{2}):(\d{2})\s*$/ and eval { require Time::Local }) {
                 # we were given a date too, so determine the local timezone

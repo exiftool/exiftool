@@ -108,19 +108,19 @@ my %wbTypeInfo = (
     },
     # 0x18,0x19,0x1a: 0
     0x18 => { #4
-        Name => 'HighISOMultiplierRed', 
+        Name => 'HighISOMultiplierRed',
         Writable => 'int16u',
         ValueConv => '$val / 256',
         ValueConvInv => 'int($val * 256 + 0.5)',
     },
     0x19 => { #4
-        Name => 'HighISOMultiplierGreen', 
+        Name => 'HighISOMultiplierGreen',
         Writable => 'int16u',
         ValueConv => '$val / 256',
         ValueConvInv => 'int($val * 256 + 0.5)',
     },
     0x1a => { #4
-        Name => 'HighISOMultiplierBlue', 
+        Name => 'HighISOMultiplierBlue',
         Writable => 'int16u',
         ValueConv => '$val / 256',
         ValueConvInv => 'int($val * 256 + 0.5)',
@@ -167,6 +167,10 @@ my %wbTypeInfo = (
             ProcessProc => \&ProcessJpgFromRaw,
         },
     },
+    0x2f => { Name => 'CropTop',    Writable => 'int16u' },
+    0x30 => { Name => 'CropLeft',   Writable => 'int16u' },
+    0x31 => { Name => 'CropBottom', Writable => 'int16u' },
+    0x32 => { Name => 'CropRight',  Writable => 'int16u' },
     0x10f => {
         Name => 'Make',
         Groups => { 2 => 'Camera' },

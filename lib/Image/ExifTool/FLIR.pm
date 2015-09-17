@@ -115,11 +115,11 @@ my %float8g = ( Format => 'float', PrintConv => 'sprintf("%.8g",$val)' );
     0x05 => { #6
         Name => 'GainDeadData',
         SubDirectory => { TagTable => 'Image::ExifTool::FLIR::GainDeadData' },
-    }, 
+    },
     0x06 => { #6
         Name => 'CoarseData',
         SubDirectory => { TagTable => 'Image::ExifTool::FLIR::CoarseData' },
-    },       
+    },
     # 7 = ImageMap (ref 3)
     0x0e => {
         Name => 'EmbeddedImage',
@@ -154,7 +154,7 @@ my %float8g = ( Format => 'float', PrintConv => 'sprintf("%.8g",$val)' );
     0x28 => {
         Name => 'PaintData',
         SubDirectory => { TagTable => 'Image::ExifTool::FLIR::PaintData' },
-    },       
+    },
     0x2a => {
         Name => 'PiP',
         SubDirectory => {
@@ -737,7 +737,7 @@ my %float8g = ( Format => 'float', PrintConv => 'sprintf("%.8g",$val)' );
             return $val;
         },
     },
-    
+
     326 => {
         Name => 'Reading4Units',
         DataMember => 'Reading4Units',
@@ -1325,11 +1325,11 @@ sub ProcessMeasInfo($$$)
             AddTagToTable($tagTablePtr, $tag, $tagInfo);
         }
         # extract measurement tool type
-        $et->HandleTag($tagTablePtr, "${pre}Type", undef, 
+        $et->HandleTag($tagTablePtr, "${pre}Type", undef,
             DataPt=>$dataPt, DataPos=>$dataPos, Start=>$pos+0x0a, Size=>2);
         last if $pos + 0x24 + $coordLen > $dirEnd;
         # extract measurement parameters
-        $et->HandleTag($tagTablePtr, "${pre}Params", undef, 
+        $et->HandleTag($tagTablePtr, "${pre}Params", undef,
             DataPt=>$dataPt, DataPos=>$dataPos, Start=>$pos+0x24, Size=>$coordLen);
         my @uni;
         # extract label (sometimes-null-terminated Unicode)

@@ -584,7 +584,7 @@ sub ConvertStruct($$$$;$)
             return $val;
         } else {
             my (@list, $val);
-            foreach $val (@$value) {    
+            foreach $val (@$value) {
                 my $v = ConvertStruct($et, $tagInfo, $val, $type, $parentID);
                 push @list, $v if defined $v;
             }

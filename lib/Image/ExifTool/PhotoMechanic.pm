@@ -191,7 +191,7 @@ sub ProcessPhotoMechanic($$)
             $et->ProcessDirectory(\%dirInfo, $tagTablePtr);
         } elsif ($$et{DEL_GROUP}{PhotoMechanic}) {
             # delete the trailer
-            $verbose and printf $out "  Deleting PhotoMechanic trailer\n";
+            $verbose and print $out "  Deleting PhotoMechanic trailer\n";
             ++$$et{CHANGED};
         } else {
             # rewrite the trailer

@@ -41,7 +41,7 @@ use vars qw($VERSION $AUTOLOAD);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.91';
+$VERSION = '1.92';
 
 sub FixWrongFormat($);
 sub ProcessMOV($$;$);
@@ -2146,11 +2146,11 @@ my %graphicsMode = (
             1114 => 'Music|Jazz|Smooth Jazz',
             1115 => 'Music|Latino|Latin Jazz',
             1116 => 'Music|Latino|Contemporary Latin',
-            1117 => 'Music|Latino|Pop in Spanish',
+            1117 => 'Music|Latino|Latin Pop',
             1118 => 'Music|Latino|Raices', # (Ra&iacute;ces)
             1119 => 'Music|Latino|Latin Urban',
             1120 => 'Music|Latino|Baladas y Boleros',
-            1121 => 'Music|Latino|Alternative & Rock in Spanish',
+            1121 => 'Music|Latino|Latin Alternative & Rock',
             1122 => 'Music|Brazilian',
             1123 => 'Music|Latino|Regional Mexicano',
             1124 => 'Music|Latino|Salsa y Tropical',
@@ -3240,7 +3240,7 @@ my %graphicsMode = (
             10055 => 'Books|Mysteries & Thrillers|Women Sleuths',
             10056 => 'Books|Romance|Erotic Romance',
             10057 => 'Books|Romance|Contemporary',
-            10058 => 'Books|Romance|Fantasy, Futuristic & Ghost',
+            10058 => 'Books|Romance|Paranormal',
             10059 => 'Books|Romance|Historical',
             10060 => 'Books|Romance|Short Stories',
             10061 => 'Books|Romance|Suspense',
@@ -3372,7 +3372,6 @@ my %graphicsMode = (
             11038 => 'Books|Biographies & Memoirs|Sports',
             11039 => 'Books|Biographies & Memoirs|Women',
             11040 => 'Books|Romance|New Adult',
-            11041 => 'Books|Romance|Paranormal',
             11042 => 'Books|Romance|Romantic Comedy',
             11043 => 'Books|Romance|Gay & Lesbian',
             11044 => 'Books|Fiction & Literature|Essays',
@@ -3560,7 +3559,6 @@ my %graphicsMode = (
             11227 => 'Books|Communications & Media',
             11228 => 'Books|Military & Warfare',
             11229 => 'Books|Romance|Inspirational',
-            11230 => 'Books|Romance|Boxed Sets',
             11231 => 'Books|Romance|Holiday',
             11232 => 'Books|Romance|Wholesome',
             11233 => 'Books|Romance|Military',
@@ -3632,6 +3630,11 @@ my %graphicsMode = (
             11334 => 'Books|Professional & Technical|Engineering|Environmental Engineering',
             11335 => 'Books|Professional & Technical|Engineering|Mechanical Engineering',
             11336 => 'Books|Professional & Technical|Engineering|Power Resources',
+            11337 => 'Books|Comics & Graphic Novels|Manga|Boys',
+            11338 => 'Books|Comics & Graphic Novels|Manga|Men',
+            11339 => 'Books|Comics & Graphic Novels|Manga|Girls',
+            11340 => 'Books|Comics & Graphic Novels|Manga|Women',
+            11341 => 'Books|Comics & Graphic Novels|Manga|Other',
             12001 => 'Mac App Store|Business',
             12002 => 'Mac App Store|Developer Tools',
             12003 => 'Mac App Store|Education',
@@ -3914,8 +3917,8 @@ my %graphicsMode = (
             15211 => 'Textbooks|Religion & Spirituality|Spirituality',
             15212 => 'Textbooks|Romance',
             15213 => 'Textbooks|Romance|Contemporary',
-            15214 => 'Textbooks|Romance|Erotica',
-            15215 => 'Textbooks|Romance|Fantasy, Futuristic & Ghost',
+            15214 => 'Textbooks|Romance|Erotic Romance',
+            15215 => 'Textbooks|Romance|Paranormal',
             15216 => 'Textbooks|Romance|Historical',
             15217 => 'Textbooks|Romance|Short Stories',
             15218 => 'Textbooks|Romance|Suspense',
@@ -4258,6 +4261,7 @@ my %graphicsMode = (
             50000087 => 'Books|Comics & Graphic Novels|Manga|Sports',
             50000088 => 'Books|Fiction & Literature|Light Novels',
             50000089 => 'Books|Comics & Graphic Novels|Manga|Horror',
+            50000090 => 'Books|Comics & Graphic Novels|Comics',
         },
     },
     grup => 'Grouping', #10
@@ -6054,7 +6058,7 @@ sub ProcessKeys($$$)
         if ($newInfo) {
             $msg or $msg = '';
             AddTagToTable($infoTable, $id, $newInfo);
-            $out and printf $out "$$et{INDENT}Added ItemList Tag $id = $tag$msg\n";
+            $out and print $out "$$et{INDENT}Added ItemList Tag $id = $tag$msg\n";
         }
         $pos += $len;
         ++$index;

@@ -2636,7 +2636,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
             value is for the outer cell, then the values are given row by row, from top
             to bottom, with each row scanned left-to-right.  The 21st value is the
             middle cell, which gives the spot metering
-        },        
+        },
         ValueConv    => sub { join ' ', map( { ($_ - 106) / 8 } split(' ',$_[0]) ) },
         ValueConvInv => sub { join ' ', map( { int($_ * 8 + 106.5) } split(' ',$_[0]) ) },
     },

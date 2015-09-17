@@ -682,7 +682,7 @@ sub RecoverTruncatedIPTC($$$)
             push @vals, RecoverTruncatedIPTC($$iptc[$i], $$xmp[$i], $limit);
         }
         return \@vals;
-    } elsif (defined $iptc and length $iptc == $limit) {    
+    } elsif (defined $iptc and length $iptc == $limit) {
         $xmp = $$xmp[0] if ref $xmp;    # take first element of list
         return $xmp if length $xmp > $limit and $iptc eq substr($xmp, 0, $limit);
     }

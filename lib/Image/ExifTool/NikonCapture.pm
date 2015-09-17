@@ -724,7 +724,7 @@ sub WriteNikonCapture($$$)
     my $tagID = Get32u($dataPt, $dirStart);
     # sometimes size includes 18 header bytes, and other times it doesn't (eg. ViewNX 2.1.1)
     my $size = Get32u($dataPt, $dirStart + 18);
-    my $pad = $dirLen - $size - 18; 
+    my $pad = $dirLen - $size - 18;
     unless ($tagID == 0x7a86a940 and ($pad >= 0 or $pad == -18)) {
         $et->Warn('Unrecognized Nikon Capture Data header');
         return undef;

@@ -102,7 +102,7 @@ sub KeyExpansion($)
 
     # temporary variables (all unsigned characters)
     my ($i,@temp);
-    
+
     # The first round key is the key itself.
     for ($i=0; $i<$nk; ++$i) {
         @RoundKey[$i*4..$i*4+3] = @key[$i*4..$i*4+3];

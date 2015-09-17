@@ -399,7 +399,7 @@ sub WritePDF($$)
 
     # must encrypt all values in dictionary if they came from an encrypted stream
     CryptObject($infoDict) if $$infoDict{_needCrypt};
-    
+
     # must set line separator before calling WritePDFValue()
     local $/ = $capture{newline};
 
@@ -443,7 +443,7 @@ sub WritePDF($$)
         # decide whether we want to write this tag
         # (native PDF information is always preferred, so don't check IsCreating)
         next unless $deleted or $$tagInfo{List} or not exists $$infoDict{$tagID};
-        
+
         # add new values to existing ones
         my @newVals = $et->GetNewValues($nvHash);
         if (@newVals) {

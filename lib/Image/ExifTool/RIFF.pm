@@ -306,7 +306,7 @@ my %riffMimeType = (
         C<exif>, and information about the audio content is stored in the C<fmt >
         chunk.  As well as this information, some video information and proprietary
         manufacturer-specific information is also extracted.
-        
+
         Large AVI videos may be a concatenation of two or more RIFF chunks.  For
         these files, information is extracted from subsequent RIFF chunks as
         sub-documents, but the Duration is calculated for the full video.

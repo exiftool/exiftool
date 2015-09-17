@@ -548,7 +548,7 @@ numerical.
                   ExifTool and saved as Warning tags, but since ValueConv and
                   PrintConv conversions are done on demand, the warnings may be
                   generated after the list of extracted tags is returned, so may
-                  easily be missed.  
+                  easily be missed.
 
   PrintConv     : This entry is similar to ValueConv above, except that it is
                   used to further convert the tag value to a human readable

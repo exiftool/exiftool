@@ -201,8 +201,8 @@ exiftool-specific namespaces to give an exact mapping for all exiftool tag
 names.  This type of file is better suited to general information
 storage/recovery since it facilitates copying of more original metadata than an
 XMP file, but it doesn't have the portability of an XMP file or the ability to
-store native-format data like a MIE file, and ExifTool can not be used to edit
-XML files as it can with other metadata files.  Below are example commands
+store native-format data like a MIE or EXV file, and ExifTool can not be used to
+edit XML files as it can with other metadata files.  Below are example commands
 demonstrating the use of exiftool XML files.</p>
 
 <p>Create an exiftool XML sidecar file:</p>
@@ -311,12 +311,12 @@ which may be useful if disk space is at a premium.</p>
 
 <p>EXV files are used by <a href="http://exiv2.org/">Exiv2</a>, and are
 basically a JPEG file without the image data, so they may be used as a metadata
-file to contain any information supported by the JPEG format.  ExifTool has full
-read, write and create support for this format.</p>
+file to contain any information supported by the JPEG format (EXIF, XMP, IPTC,
+etc.).  ExifTool has full read, write and create support for this format.</p>
 
 <hr>
 <i>Created Nov 12, 2008</i><br>
-<i>Last revised Jul 27, 2015</i>
+<i>Last revised Sept 3, 2015</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

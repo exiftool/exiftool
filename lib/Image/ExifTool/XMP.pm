@@ -2912,7 +2912,7 @@ sub PrintLensID(@)
             # for Sony and ambiguous LensID, $info data may be incorrect:
             # use only if it agrees with $focalLength and $maxAv (ref JR)
             if ($mk eq 'Sony' and
-                (($focalLength and (($sf and $focalLength < $sf - 0.5) or 
+                (($focalLength and (($sf and $focalLength < $sf - 0.5) or
                                     ($lf and $focalLength > $lf + 0.5))) or
                  ($maxAv and (($sa and $maxAv < $sa - 0.15) or
                               ($la and $maxAv > $la + 0.15)))))

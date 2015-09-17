@@ -72,7 +72,7 @@ sub ProcessMPImageList($$$);
                 0x40 => 'Zigzag (column start)',
             },
         ],
-    },          
+    },
     0xb202 => 'PanOverlapH',
     0xb203 => 'PanOverlapV',
     0xb204 => 'BaseViewpointNum',

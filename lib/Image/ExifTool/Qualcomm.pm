@@ -1248,7 +1248,7 @@ sub MakeNameAndDesc($$)
     # convert underlines to spaces in description
     if ($desc =~ tr/_/ /) {
         # remove unnecessary underlines from tag name...
-        s/_([A-Z][a-z])/$1/g; 
+        s/_([A-Z][a-z])/$1/g;
         s/([a-z0-9])_([A-Z])/$1$2/g;
         s/([A-Za-z])_(\d)/$1$2/g;
     }

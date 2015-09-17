@@ -87,7 +87,7 @@ my %ricohLensIDs = (
             2 => 'JPEG',
             3 => 'DNG',
         },
-    },            
+    },
     0x1001 => [{
         Name => 'ImageInfo',
         Condition => '$format ne "int16u"',
@@ -116,7 +116,7 @@ my %ricohLensIDs = (
             1 => 'Continuous',
             8 => 'AF-priority Continuous',
         },
-    },            
+    },
     0x1003 => [{
         Name => 'Sharpness',
         Condition => '$format ne "int16u"',

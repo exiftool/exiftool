@@ -444,15 +444,15 @@ command-line options:
 </blockquote>
 The encoding of <b>file and directory names</b> (eg. the <i>FILE</i> argument on
 the command line) is different.  By default, these names are passed straight
-through to the standard C i/o routines without recoding.  On Mac/Linux these
+through to the standard C I/O routines without recoding.  On Mac/Linux these
 routines expect UTF&#8209;8, but on Windows they use the system code page (which
 is dependent on your system settings).  However, as of ExifTool 9.79, the
 external filename encoding may be specified:
 <blockquote><code>-charset filename=CHARSET</code></blockquote>
 When this is done, file and directory names are converted from the specified
-encoding to one appropriate for system i/o routines.  In Windows, this also has
+encoding to one appropriate for system I/O routines.  In Windows, this also has
 the effect of enabling Unicode filename support via the special Windows
-wide-character i/o routines if the required Perl modules are available
+wide-character I/O routines if the required Perl modules are available
 (these are included in the Windows executable version of ExifTool).  See
 <a href="exiftool_pod.html#windows_unicode_file_names">WINDOWS UNICODE FILE NAMES</a>
 in the application documentation for more details.<br><br></li>

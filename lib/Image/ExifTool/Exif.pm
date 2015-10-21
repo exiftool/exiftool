@@ -52,7 +52,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '3.75';
+$VERSION = '3.76';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -3654,12 +3654,15 @@ sub PrintLensID($$@)
         if ($sf0) {
             next if abs($sf - $sf0) > 0.5 or abs($sa - $sa0) > 0.15 or
                     abs($lf - $lf0) > 0.5 or abs($la - $la0) > 0.15;
-            # the basic parameters match, but also check against additional lens features
-            # for Sony E lenses -- the full LensSpec string should match with end of LensType
-            $lensSpecPrt and $lens =~ /\Q$lensSpecPrt\E( \(|$)/ and @best = ( $lens ), last;
-            # exactly-matching Sony E lens should have been found above, so skip
-            # any not-exactly-matching Sony E-lenses
-            next if $lens =~ /^Sony E /;
+            # the basic parameters match, but also check against additional lens features:
+            # for Sony A and E lenses, the full LensSpec string should match with end of LensType,
+            # excluding any part between () at the end, and preceded by a space.
+            # The preceding space ensures that e.g. Zeiss Loxia 21mm having LensSpec "E 21mm F2.8"
+            # will not be identified as "Sony FE 21mm F2.8 (SEL28F20 + SEL075UWC)".
+            $lensSpecPrt and $lens =~ / \Q$lensSpecPrt\E( \(|$)/ and @best = ( $lens ), last;
+            # exactly-matching Sony lens should have been found above, so skip
+            # any not-exactly-matching Sony lenses
+            next if $lens =~ /^Sony /;
             push @best, $lens;
             next;
         }
@@ -3958,7 +3961,8 @@ sub ProcessExif($$$)
                 $et->Warn("Bad format ($format) for $name entry $index", $inMakerNotes);
                 ++$warnCount;
             }
-            return 0 unless $index; # assume corrupted IFD if this is our first entry
+            # assume corrupted IFD if this is our first entry (except Sony ILCE-7M2 firmware 1.21)
+            return 0 unless $index or $$et{Model} eq 'ILCE-7M2';
             next;
         }
         my $formatStr = $formatName[$format];   # get name of this format
@@ -4500,8 +4504,7 @@ sub ProcessExif($$$)
                 $val = shift @values;           # continue with next subdir
             }
             my $doMaker = $et->Options('MakerNotes');
-            next unless $doMaker or $$et{REQ_TAG_LOOKUP}{lc($tagStr)} or
-                        $$tagInfo{BlockExtract};
+            next unless $doMaker or $$et{REQ_TAG_LOOKUP}{lc($tagStr)} or $$tagInfo{BlockExtract};
             # extract as a block if specified
             if ($$tagInfo{MakerNotes}) {
                 # save maker note byte order (if it was significant and valid)

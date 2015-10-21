@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.25';
+$VERSION = '2.26';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -801,7 +801,7 @@ my %meterInfo2 = (
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag2010g' },
     },{
         Name => 'Tag2010h', # ?
-        Condition => '$$self{Model} =~ /^(DSC-(RX10M2|RX100M4|HX90V|WX500)|ILCE-7RM2)\b/',
+        Condition => '$$self{Model} =~ /^(DSC-(RX1RM2|RX10M2|RX100M4|HX90V|WX500)|ILCE-7RM2|ILCE-7SM2)\b/',
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag2010h' },
     },{
         Name => 'Tag_0x2010',
@@ -1338,6 +1338,7 @@ my %meterInfo2 = (
             '3 2 0 0' => 'ARW 2.2', #PH (NEX-5)
             '3 3 0 0' => 'ARW 2.3', #PH (SLT-A65,SLT-A77)
             '3 3 1 0' => 'ARW 2.3.1', #PH/JR (RX1R,RX100M2)
+            '3 3 2 0' => 'ARW 2.3.2', #JR (RX1RM2,ICLE-7SM2 - support for uncompressed 14-bit RAW)
             # what about cRAW images?
         },
     },
@@ -1405,8 +1406,10 @@ my %meterInfo2 = (
             340 => 'ILCE-7M2', #JR
             341 => 'DSC-RX100M4', #PH
             342 => 'DSC-RX10M2', #JR
+            344 => 'DSC-RX1RM2', #JR
             346 => 'ILCE-QX1', #14
             347 => 'ILCE-7RM2', #JR
+            350 => 'ILCE-7SM2', #JR
         },
     },
     0xb020 => { #2
@@ -6296,10 +6299,10 @@ my %pictureProfile2010 = (
 #           however, not always valid e.g. bracketing, Shutter-prio e.a.
 #           difference between 0x0002 and 0x0004 mostly 0.0, 0.1 or 0.2 stops.
 
-#### July 2015: ILCE-7RM2 offsets appear to be different ... exclude from existing tags
+#### July 2015: ILCE-(7RM2|7SM2) offsets appear to be different ... exclude from existing tags
 
     0x0031 => { #JR
-        Condition => '$$self{Model} !~ /^(DSC-|Stellar|ILCE-7RM2)/',
+        Condition => '$$self{Model} !~ /^(DSC-|Stellar|ILCE-(7RM2|7SM2))/',
         Name => 'FlashStatus',
         RawConv => '$$self{FlashFired} = $val',
         PrintConv => {
@@ -6317,14 +6320,14 @@ my %pictureProfile2010 = (
         # this seems to be valid for the A37,A57,A65,A77,A99, and possibly the NEX-5N/7
         # but I haven't seen a count over 65536, so the Format is not confirmed - PH
         # - not valid for the DSC-RX100 or RX1, so exclude all DSC models
-        Condition => '$$self{Model} !~ /^(DSC-|Stellar|ILCE-7RM2)/', #PH
+        Condition => '$$self{Model} !~ /^(DSC-|Stellar|ILCE-(7RM2|7SM2))/', #PH
         Format => 'int32u',
         Notes => 'total number of image exposures made by the camera',
         RawConv => '$val & 0x00ffffff',
     },
     0x003a => { # appr. same value as Exif ExposureTime, but longer in HDR-modes
         Name => 'SonyExposureTime',
-        Condition => '$$self{Model} !~ /^(DSC-|Stellar|ILCE-7RM2)/',
+        Condition => '$$self{Model} !~ /^(DSC-|Stellar|ILCE-(7RM2|7SM2))/',
         Format => 'int16u',
         ValueConv => '$val ? 2 ** (16 - $val/256) : 0',
         ValueConvInv => '$val ? int((16 - log($val) / log(2)) * 256 + 0.5) : 0',
@@ -6333,7 +6336,7 @@ my %pictureProfile2010 = (
     },
     0x003c => {
         Name => 'SonyFNumber',
-        Condition => '$$self{Model} !~ /^(DSC-|Stellar|ILCE-7RM2)/',
+        Condition => '$$self{Model} !~ /^(DSC-|Stellar|ILCE-(7RM2|7SM2))/',
         Format => 'int16u',
         ValueConv => '2 ** (($val/256 - 16) / 2)',
         ValueConvInv => '(log($val)*2/log(2)+16)*256',
@@ -6342,7 +6345,7 @@ my %pictureProfile2010 = (
     },
     0x003f => {
         Name => 'ReleaseMode2',
-        Condition => '$$self{Model} !~ /^(DSC-|Stellar|ILCE-7RM2)/',
+        Condition => '$$self{Model} !~ /^(DSC-|Stellar|ILCE-(7RM2|7SM2))/',
         %releaseMode2,
     },
     0x004c => { # only ILCE-7/7R/7S/7M2/5000/5100/6000/QX1 - but appears not valid when flash is used ...
@@ -6371,9 +6374,14 @@ my %pictureProfile2010 = (
         PrintConv => '$self->ConvertDateTime($val)',
         PrintConvInv => '$self->InverseDateTime($val,0)',
     },
+    0x0067 => {
+        Name => 'ReleaseMode2',
+        Condition => '$$self{Model} !~ /^(DSC-|Stellar|SLT-A(65V|77V)|Lunar|NEX-(5N|7|VG20E)|ILCE-(7RM2|7SM2))/',
+        %releaseMode2,
+    },
     0x007c => { #JR valid for ILCE and most NEX
         Name => 'InternalSerialNumber', # (NC)
-        Condition => '$$self{Model} !~ /^(DSC-|Stellar|Lunar|NEX-(5N|7|VG20E)|SLT-|HV|ILCA-|ILCE-7RM2)/',
+        Condition => '$$self{Model} !~ /^(DSC-|Stellar|Lunar|NEX-(5N|7|VG20E)|SLT-|HV|ILCA-|ILCE-(7RM2|7SM2))/',
         Format => 'int8u[4]',
         PrintConv => 'unpack "H*", pack "C*", split " ", $val',
     },
@@ -6385,10 +6393,10 @@ my %pictureProfile2010 = (
         PrintConvInv => 'join " ", unpack "C*", pack "H*", $val',
     },
 
-##### ILCE-7RM2: offsets +8
+##### ILCE-(7RM2|7SM2): offsets +8
 
     0x0039 => {
-        Condition => '$$self{Model} =~ /^(ILCE-7RM2)/',
+        Condition => '$$self{Model} =~ /^(ILCE-(7RM2|7SM2))/',
         Name => 'FlashStatus',
         RawConv => '$$self{FlashFired} = $val',
         PrintConv => {
@@ -6403,17 +6411,17 @@ my %pictureProfile2010 = (
     },
     0x003a => {
         Name => 'ImageCount',
-        Condition => '$$self{Model} =~ /^(ILCE-7RM2)/',
+        Condition => '$$self{Model} =~ /^(ILCE-(7RM2|7SM2))/',
         Format => 'int32u',
         Notes => 'total number of image exposures made by the camera',
         RawConv => '$val & 0x00ffffff',
     },
 
-##### ILCE-7RM2: offsets +12 (x0c):
+##### ILCE-(7RM2|7SM2): offsets +12 (x0c):
 
     0x0046 => { # appr. same value as Exif ExposureTime, but longer in HDR-modes
         Name => 'SonyExposureTime',
-        Condition => '$$self{Model} =~ /^(ILCE-7RM2)/',
+        Condition => '$$self{Model} =~ /^(ILCE-(7RM2|7SM2))/',
         Format => 'int16u',
         ValueConv => '$val ? 2 ** (16 - $val/256) : 0',
         ValueConvInv => '$val ? int((16 - log($val) / log(2)) * 256 + 0.5) : 0',
@@ -6422,7 +6430,7 @@ my %pictureProfile2010 = (
     },
     0x0048 => {
         Name => 'SonyFNumber',
-        Condition => '$$self{Model} =~ /^(ILCE-7RM2)/',
+        Condition => '$$self{Model} =~ /^(ILCE-(7RM2|7SM2))/',
         Format => 'int16u',
         ValueConv => '2 ** (($val/256 - 16) / 2)',
         ValueConvInv => '(log($val)*2/log(2)+16)*256',
@@ -6431,18 +6439,18 @@ my %pictureProfile2010 = (
     },
     0x004b => {
         Name => 'ReleaseMode2',
-        Condition => '$$self{Model} =~ /^(ILCE-7RM2)/',
+        Condition => '$$self{Model} =~ /^(ILCE-(7RM2|7SM2))/',
         %releaseMode2,
     },
-    0x0058 => { # only ILCE-7RM2 - but appears not valid when flash is used ...
+    0x0058 => { # only ILCE-(7RM2|7SM2) - but appears not valid when flash is used ...
         Name => 'ImageCount2',
-        Condition => '($$self{Model} =~ /^(ILCE-7RM2)\b/) and (($$self{FlashFired} & 0x01) != 1)',
+        Condition => '($$self{Model} =~ /^(ILCE-(7RM2|7SM2))\b/) and (($$self{FlashFired} & 0x01) != 1)',
         Format => 'int32u',
         RawConv => '$val & 0x00ffffff',
     },
-    0x005d => { # only ILCE-7RM2, but only minutes-seconds ???
+    0x005d => { # only ILCE-(7RM2|7SM2), but only minutes-seconds ???
         Name => 'SonyDateTime2',
-        Condition => '$$self{Model} =~ /^(ILCE-7RM2)\b/',
+        Condition => '$$self{Model} =~ /^(ILCE-(7RM2|7SM2))\b/',
         Groups => { 2 => 'Time' },
         Shift => 'Time',
         Format => 'undef[6]',
@@ -6459,8 +6467,19 @@ my %pictureProfile2010 = (
         PrintConv => '$self->ConvertDateTime($val)',
         PrintConvInv => '$self->InverseDateTime($val,0)',
     },
+    0x0073 => {
+        Name => 'ReleaseMode2',
+        Condition => '$$self{Model} =~ /^(ILCE-(7RM2|7SM2))/',
+        %releaseMode2,
+    },
+    0x0088 => {
+        Name => 'InternalSerialNumber', # (NC)
+        Condition => '$$self{Model} =~ /^(ILCE-(7RM2|7SM2))/',
+        Format => 'int8u[6]',
+        PrintConv => 'unpack "H*", pack "C*", split " ", $val',
+    },
 
-##### ILCE-7RM2: same offsets for lens info tags
+##### ILCE-(7RM2|7SM2): same offsets for lens info tags
 
     # 0x0104 - same as 0x0105, but has value 3 for 50mm F1.4 ZA, DT 18-135mm and for 70-400mm G II: meaning ??
     0x0105 => {
@@ -6563,7 +6582,7 @@ my %pictureProfile2010 = (
         Name => 'ImageCount3',
         Format => 'int32u',
         RawConv => '$val == 0 ? undef : $val',
-        Condition => '$$self{Model} =~ /^(ILCE-7RM2)/',
+        Condition => '$$self{Model} =~ /^(ILCE-(7RM2|7SM2))/',
     },
 
 #    0x0222 => {Name=>'9050_LensType2',Format=>'int16u',Condition =>'$$self{Model}=~/^(ILCE-(5100|7S|7M2|QX1))/'},
@@ -7223,14 +7242,14 @@ my %pictureProfile2010 = (
     },
     0x0342 => {
         Name => 'LensZoomPosition',
-        Condition => '$$self{Model} !~ /^(ILCA-|ILCE-7RM2|DSC-(HX90V|RX10M2|RX100M4|WX500))/',
+        Condition => '$$self{Model} !~ /^(ILCA-|ILCE-(7RM2|7SM2)|DSC-(HX90V|RX10M2|RX100M4|WX500))/',
         Format => 'int16u',
         PrintConv => 'sprintf("%.0f%%",$val/10.24)',
         PrintConvInv => '$val=~s/ ?%$//; $val * 10.24',
     },
     0x035a => {
         Name => 'LensZoomPosition',
-        Condition => '$$self{Model} =~ /^(ILCE-7RM2|DSC-(HX90V|RX10M2|RX100M4|WX500))/',
+        Condition => '$$self{Model} =~ /^(ILCE-(7RM2|7SM2)|DSC-(HX90V|RX10M2|RX100M4|WX500))/',
         Format => 'int16u',
         PrintConv => 'sprintf("%.0f%%",$val/10.24)',
         PrintConvInv => '$val=~s/ ?%$//; $val * 10.24',
@@ -7674,11 +7693,11 @@ my %pictureProfile2010 = (
     #          other NEX/ILCE: 74 blocks of 164 bytes
 
     # 0x1a06 onwards - first seen for ILCE-7RM2: appears to be some kind of metering image
-    0x1a06 => { Name => 'TiffMeteringImageWidth',  Condition => '$$self{Model} =~ /^(ILCE-7RM2)\b/' },
-    0x1a07 => { Name => 'TiffMeteringImageHeight', Condition => '$$self{Model} =~ /^(ILCE-7RM2)\b/' },
+    0x1a06 => { Name => 'TiffMeteringImageWidth',  Condition => '$$self{Model} =~ /^(ILCE-(7RM2|7SM2))\b/' },
+    0x1a07 => { Name => 'TiffMeteringImageHeight', Condition => '$$self{Model} =~ /^(ILCE-(7RM2|7SM2))\b/' },
     0x1a08 => { # (2640 bytes: 1 set of 44x30 int16u values)
         Name => 'TiffMeteringImage',
-        Condition => '$$self{Model} =~ /^(ILCE-7RM2)\b/',
+        Condition => '$$self{Model} =~ /^(ILCE-(7RM2|7SM2))\b/',
         Format => 'undef[2640]',
         Notes => q{
             13(?)-bit intensity data from 1320 (1200) metering segments, extracted as a

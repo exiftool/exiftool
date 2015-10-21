@@ -7,6 +7,20 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.00. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Oct. 21, 2015 - Version 10.03
+
+  - Added support for JPEG 2000 extended-length boxes
+  - Added a few new Canon LensType and CanonModelID values
+  - Added a new Nikon LensID (thanks LibRaw)
+  - Added ExifTool version number as a comment in -listx output
+  - Added support for Leica SL (Typ 601) maker notes
+  - Added a new Sony LensType (thanks Jos Roost)
+  - Decode more Sony tags for some new models (thanks Jos Roost)
+  - Decode a new Pentax tag
+  - Patched for invalid makernote entry written by Sony ILCE-7M2 v1.21
+  - Patched problem reading EXE resources with a missing null terminator
+  - Updated Windows distribution package to use latest version of PAR
+
 Sept. 17, 2015 - Version 10.02
 
   - Added ability to read PNG chunks after the normal PNG end of file (IEND)

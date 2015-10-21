@@ -56,7 +56,7 @@ use vars qw($VERSION %pentaxLensTypes);
 use Image::ExifTool::Exif;
 use Image::ExifTool::HP;
 
-$VERSION = '2.95';
+$VERSION = '2.96';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -4608,6 +4608,12 @@ my %binaryDataAttrs = (
             19 => 'Center (vertical)', #PH
             20 => 'Mid-right',
         },
+    },
+    0x1fd => {
+        Name => 'AFHold',
+        Notes => 'decoded only for the K-3 II',
+        Condition => '$$self{Model} eq "PENTAX K-3 II"',
+        PrintConv => { 0 => 'Off', 1 => 'Short', 2 => 'Medium', 3 => 'Long' },
     },
 );
 

@@ -20,7 +20,7 @@ $VERSION = '1.02';
     WRITABLE => 1,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
     NOTES => 'Tags extracted from maker notes of images from the iPhone 5 with iOS 7.',
-    # 0x0001 - int32s: seen 0, 1
+    # 0x0001 - int32s: seen 0, 1, 2, 3
     # 0x0002 - binary plist with a single data object of size 512 bytes (iPhone5s)
     0x0003 => {
         Name => 'RunTime',
@@ -47,9 +47,11 @@ $VERSION = '1.02';
     },
     # 0x000c - rational64s[2]: eg) "0.1640625 0.19921875"
     # 0x000d - int32s: 0
-    # 0x000e - int32s: 0,1
+    # 0x000e - int32s: 0,1,12
     # 0x000f - int32s: 3
     # 0x0010 - int32s: 1
+    # 0x0011 - string[37]: some type of UID, eg. "FFCBAC24-E547-4BBC-AF47-38B1A3D845E3\0" (iPhone 6s, iOS 6.1)
+    # 0x0014 - int32s: 1,3 (iPhone 6s, iOS 6.1)
 );
 
 # PLIST-format CMTime structure (ref PH)

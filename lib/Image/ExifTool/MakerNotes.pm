@@ -21,7 +21,7 @@ sub ProcessKodakPatch($$$);
 sub WriteUnknownOrPreview($$$);
 sub FixLeicaBase($$;$);
 
-$VERSION = '1.96';
+$VERSION = '1.97';
 
 my $debug;          # set to 1 to enable debugging code
 
@@ -636,7 +636,8 @@ my $debug;          # set to 1 to enable debugging code
     {
         Name => 'MakerNoteLeica8', # used by the Q (Type 116)
         # (Q (Typ 116) starts with "LEICA\0\x08\0", Make is "LEICA CAMERA AG")
-        Condition => '$$valPt =~ /^LEICA\0\x08\0/',
+        # (SL (Typ 601) starts with "LEICA\0\x09\0", Make is "LEICA CAMERA AG")
+        Condition => '$$valPt =~ /^LEICA\0[\x08\x09]\0/',
         SubDirectory => {
             TagTable => 'Image::ExifTool::Panasonic::Leica5',
             Start => '$valuePtr + 8',

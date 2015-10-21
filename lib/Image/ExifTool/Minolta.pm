@@ -540,27 +540,28 @@ $VERSION = '2.27';
 #
 # 3rd party E lenses
 #
-   '65535.30' => 'Sigma 19mm F2.8 [EX] DN', #JR
-   '65535.31' => 'Sigma 30mm F2.8 [EX] DN', #JR
-   '65535.32' => 'Sigma 60mm F2.8 DN', #JR
-   '65535.33' => 'Tamron 18-200mm F3.5-6.3 Di III VC', #JR (Model B011)
-   '65535.34' => 'Zeiss Batis 25mm F2', #JR
-   '65535.35' => 'Zeiss Batis 85mm F1.8', #JR (OSS ?)
-   '65535.36' => 'Zeiss Loxia 35mm F2', #JR
-   '65535.37' => 'Zeiss Loxia 50mm F2', #JR
-   '65535.38' => 'Zeiss Touit 12mm F2.8', #JR
-   '65535.39' => 'Zeiss Touit 32mm F1.8', #JR
-   '65535.40' => 'Zeiss Touit 50mm F2.8 Macro', #JR
+    '65535.30' => 'Sigma 19mm F2.8 [EX] DN', #JR
+    '65535.31' => 'Sigma 30mm F2.8 [EX] DN', #JR
+    '65535.32' => 'Sigma 60mm F2.8 DN', #JR
+    '65535.33' => 'Tamron 18-200mm F3.5-6.3 Di III VC', #JR (Model B011)
+    '65535.34' => 'Zeiss Batis 25mm F2', #JR
+    '65535.35' => 'Zeiss Batis 85mm F1.8', #JR
+    '65535.36' => 'Zeiss Loxia 21mm F2.8', #JR
+    '65535.37' => 'Zeiss Loxia 35mm F2', #JR
+    '65535.38' => 'Zeiss Loxia 50mm F2', #JR
+    '65535.39' => 'Zeiss Touit 12mm F2.8', #JR
+    '65535.40' => 'Zeiss Touit 32mm F1.8', #JR
+    '65535.41' => 'Zeiss Touit 50mm F2.8 Macro', #JR
 #
 # other lenses
 #
-   '65535.41' => 'Arax MC 35mm F2.8 Tilt+Shift', #JD
-   '65535.42' => 'Arax MC 80mm F2.8 Tilt+Shift', #JD
-   '65535.43' => 'Zenitar MF 16mm F2.8 Fisheye M42', #JD
-   '65535.44' => 'Samyang 500mm Mirror F8.0', #19
-   '65535.45' => 'Pentacon Auto 135mm F2.8', #19
-   '65535.46' => 'Pentacon Auto 29mm F2.8', #19
-   '65535.47' => 'Helios 44-2 58mm F2.0', #19
+    '65535.42' => 'Arax MC 35mm F2.8 Tilt+Shift', #JD
+    '65535.43' => 'Arax MC 80mm F2.8 Tilt+Shift', #JD
+    '65535.44' => 'Zenitar MF 16mm F2.8 Fisheye M42', #JD
+    '65535.45' => 'Samyang 500mm Mirror F8.0', #19
+    '65535.46' => 'Pentacon Auto 135mm F2.8', #19
+    '65535.47' => 'Pentacon Auto 29mm F2.8', #19
+    '65535.48' => 'Helios 44-2 58mm F2.0', #19
 );
 
 %minoltaTeleconverters = (

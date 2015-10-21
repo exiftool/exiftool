@@ -71,7 +71,7 @@ extensions are hidden on your system)</span></li>
 <p>You can now run exiftool by typing "<code>exiftool</code>" at the command
 prompt.  (To get to the command prompt, select "Run..." from the Windows "Start"
 menu, then type "<code>cmd</code>" and press Return.)</p>
-<p><b>Notes:</b>
+<p><b>Notes:</b></p>
 <ol type='a'>
 <li>In Windows 7, running exiftool requires administrator privileges.  If
 necessary, this may be enabled by right clicking on exiftool, then selecting
@@ -83,7 +83,7 @@ Uninstalling instructions below then re-install exiftool. Be sure that you have
 sufficient disk space in your TEMP directory for exiftool to unpack about 12 MB
 of temporary files -- these are the Perl libraries used by the exiftool
 application which are unpacked the first time exiftool is run.</li>
-</ol></p>
+</ol>
 <p><b>Uninstalling:</b></p>
 <ol type='i'>
 <li>Drag "<code>exiftool(-k).exe</code>" (or "<code>C:\WINDOWS\exiftool.exe</code>")
@@ -148,6 +148,10 @@ in the OS X package.  Both versions run natively on PPC and Intel Macs.</p>
 </span></li>
 </ol>
 <p>You can now run exiftool by typing "<code>exiftool</code>" in a Terminal window.</p>
+<p>If this doesn't work, then it is likely you have an older version of OS X for which
+/usr/local/bin isn't in the default PATH.  To fix this, add the following line to your
+~/.profile settings using a text editor:</p>
+<blockquote><code>export PATH=$PATH:/usr/local/bin</code></blockquote>
 
 <h3>Full Perl Distribution</h3>
 <ol>

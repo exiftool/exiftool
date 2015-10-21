@@ -21,7 +21,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.11';
+$VERSION = '1.12';
 
 sub ProcessPEResources($$);
 sub ProcessPEVersion($$);
@@ -741,15 +741,15 @@ sub ProcessCHM($$)
 
 #------------------------------------------------------------------------------
 # Read Unicode string (null terminated) from resource
-# Inputs: 0) data ref, 1) start offset, 2) optional ExifTool object ref
+# Inputs: 0) data ref, 1) start offset, 2) data end, 3) optional ExifTool object ref
 # Returns: 0) Unicode string translated to UTF8, or current CharSet with ExifTool ref
 #          1) end pos (rounded up to nearest 4 bytes)
-sub ReadUnicodeStr($$;$)
+sub ReadUnicodeStr($$$;$)
 {
-    my ($dataPt, $pos, $et) = @_;
-    my $len = length $$dataPt;
+    my ($dataPt, $pos, $end, $et) = @_;
+    $end = length $$dataPt if $end > length $$dataPt;   # (be safe)
     my $str = '';
-    while ($pos + 2 <= $len) {
+    while ($pos + 2 <= $end) {
         my $ch = substr($$dataPt, $pos, 2);
         $pos += 2;
         last if $ch eq "\0\0";
@@ -780,7 +780,7 @@ sub ProcessPEVersion($$)
         $valLen = Get16u($dataPt, $pos + 2);
         $type = Get16u($dataPt, $pos + 4);
         return 0 unless $len or $valLen;  # prevent possible infinite loop
-        ($string, $strEnd) = ReadUnicodeStr($dataPt, $pos + 6);
+        ($string, $strEnd) = ReadUnicodeStr($dataPt, $pos + 6, $pos + $len);
         return 0 if $strEnd + $valLen > $end;
         unless ($index or $string eq 'VS_VERSION_INFO') {
             $et->Warn('Invalid Version Info block');
@@ -802,8 +802,9 @@ sub ProcessPEVersion($$)
                 $len = Get16u($dataPt, $pt);
                 $valLen = Get16u($dataPt, $pt + 2);
                 # $type = Get16u($dataPt, $pt + 4);
+                my $entryEnd = $pt + $len;
                 # get tag ID (converted to UTF8)
-                ($string, $pt) = ReadUnicodeStr($dataPt, $pt + 6);
+                ($string, $pt) = ReadUnicodeStr($dataPt, $pt + 6, $entryEnd);
                 unless ($index) {
                     # separate the language code and character set
                     # (not sure what the CharacterSet tag is for, but the string
@@ -828,11 +829,13 @@ sub ProcessPEVersion($$)
                 }
                 # get tag value (converted to current Charset)
                 if ($valLen) {
-                    ($string, $pt) = ReadUnicodeStr($dataPt, $pt, $et);
+                    ($string, $pt) = ReadUnicodeStr($dataPt, $pt, $entryEnd, $et);
                 } else {
                     $string = '';
                 }
                 $et->HandleTag($tagTablePtr, $tag, $string);
+                # step to next entry (padded to an even word)
+                $pt = ($entryEnd + 3) & 0xfffffffc;
             }
         } else {
             $pos += $len + $valLen;

@@ -83,7 +83,7 @@ sub ProcessSerialData($$$);
 sub ProcessFilters($$$);
 sub SwapWords($);
 
-$VERSION = '3.53';
+$VERSION = '3.54';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -317,8 +317,10 @@ $VERSION = '3.53';
     180.2 => 'Sigma 24mm f/1.4 DG HSM | A', #53
     180.3 => 'Zeiss Milvus 50mm f/1.4', #52
     180.4 => 'Zeiss Milvus 85mm f/1.4', #52
-    181 => 'Canon EF 100-400mm f/4.5-5.6L IS + 1.4x', #15
-    182 => 'Canon EF 100-400mm f/4.5-5.6L IS + 2x',
+    181 => 'Canon EF 100-400mm f/4.5-5.6L IS + 1.4x or Sigma Lens', #15
+    181.1 => 'Sigma 150-600mm f/5-6.3 DG OS HSM | S + 1.4x', #50
+    182 => 'Canon EF 100-400mm f/4.5-5.6L IS + 2x or Sigma Lens',
+    182.1 => 'Sigma 150-600mm f/5-6.3 DG OS HSM | S + 2x', #PH (NC)
     183 => 'Canon EF 100-400mm f/4.5-5.6L IS or Sigma Lens',
     183.1 => 'Sigma 150mm f/2.8 EX DG OS HSM APO Macro', #50
     183.2 => 'Sigma 105mm f/2.8 EX DG OS HSM Macro', #50
@@ -353,6 +355,7 @@ $VERSION = '3.53';
     213.1 => 'Tamron SP 150-600mm f/5-6.3 Di VC USD', #topic5565 (model A011)
     213.2 => 'Tamron 16-300mm f/3.5-6.3 Di II VC PZD Macro', #PH (model B016)
     213.3 => 'Tamron SP 35mm f/1.8 Di VC USD', #PH (model F012)
+    213.4 => 'Tamron SP 45mm f/1.8 Di VC USD', #PH (model F013)
     214 => 'Canon EF-S 18-55mm f/3.5-5.6 USM', #PH/34
     215 => 'Canon EF 55-200mm f/4.5-5.6 II USM',
     217 => 'Tamron AF 18-270mm f/3.5-6.3 Di II VC PZD', #47
@@ -424,6 +427,7 @@ $VERSION = '3.53';
     4149 => 'Canon EF-M 55-200mm f/4.5-6.3 IS STM', #42
     4150 => 'Canon EF-S 10-18mm f/4.5-5.6 IS STM', #42
     4152 => 'Canon EF 24-105mm f/3.5-5.6 IS STM', #42
+    4153 => 'Canon EF-M 15-45mm f/3.5-6.3 IS STM', #PH
     4154 => 'Canon EF-S 24mm f/2.8 STM', #52
     4156 => 'Canon EF 50mm f/1.8 STM', #42
 );
@@ -638,12 +642,15 @@ $VERSION = '3.53';
     0x3800000 => 'PowerShot SX530 HS',
     0x3820000 => 'PowerShot SX710 HS',
     0x3830000 => 'PowerShot SX610 HS',
+    0x3840000 => 'EOS M10',
     0x3850000 => 'PowerShot G3 X',
     0x3860000 => 'PowerShot ELPH 165 HS / IXUS 165 / IXY 160',
     0x3870000 => 'PowerShot ELPH 160 / IXUS 160',
     0x3880000 => 'PowerShot ELPH 350 HS / IXUS 275 HS / IXY 640',
     0x3890000 => 'PowerShot ELPH 170 IS / IXUS 170',
     0x3910000 => 'PowerShot SX410 IS',
+    0x3930000 => 'PowerShot G9 X',
+    0x3950000 => 'PowerShot G5 X',
     0x4040000 => 'PowerShot G1',
     0x6040000 => 'PowerShot S100 / Digital IXUS / IXY Digital',
 
@@ -7895,6 +7902,11 @@ sub PrintLensID(@)
                 # see if we can rule out this lens by focal length or aperture
                 $lf = $sf if $sf and not $lf;
                 $la = $sa if $sa and not $la;
+                # account for converter-specific LensType's (ie. end with " + #.#x")
+                if ($lens =~ / \+ (\d+(\.\d+)?)x$/) {
+                    $sf *= $1;  $lf *= $1;
+                    $sa *= $1;  $la *= $1;
+                }
                 next if abs($shortFocal - $sf * $tc) > 0.9;
                 my $tclens = $lens;
                 $tclens .= " + ${tc}x" if $tc > 1;

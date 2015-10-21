@@ -12185,6 +12185,7 @@ Flash information tags for the K10D, K20D and K200D.
       6    AFDefocus                            int8u
       7    AFIntegrationTime                    int8u
      11    AFPointsInFocus                      int8u
+    509    AFHold                               int8u
 
 =head3 Pentax KelvinWB Tags
 
@@ -14101,7 +14102,10 @@ substitution cipher, but the deciphered values are listed below.
   0x0051   SonyDateTime2                        undef[6]
   0x0058   ImageCount2                          int32u
   0x005d   SonyDateTime2                        undef[6]
+  0x0067   ReleaseMode2                         int8u
+  0x0073   ReleaseMode2                         int8u
   0x007c   InternalSerialNumber                 int8u[4]~
+  0x0088   InternalSerialNumber                 int8u[6]~
   0x00f0   InternalSerialNumber                 int8u[5]
   0x0105   LensMount                            int8u
   0x0106   LensFormat                           int8u

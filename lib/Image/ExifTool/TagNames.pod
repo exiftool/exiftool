@@ -12980,6 +12980,7 @@ This information is found in images from the GXR.
   ------   --------                             --------
   0x0003   Accelerometer                        rational64s[2]
   0x0004   Compass                              rational64u
+  0x000a   TimeZone                             string
 
 =head3 Ricoh Type2 Tags
 
@@ -17362,13 +17363,15 @@ namespace prefix is "MicrosoftPhoto", but ExifTool shortens this to
   Tag Name                                      Writable
   --------                                      --------
   CameraSerialNumber                            string
+  CreatorAppID                                  string
+  CreatorOpenWithUIOptions                      string
   DateAcquired                                  date
   FlashManufacturer                             string
   FlashModel                                    string
   LastKeywordIPTC                               string+
   LastKeywordXMP                                string+
   LensManufacturer                              string
-  LensModel                                     string
+  LensModel                                     string/
   RatingPercent                                 string
 
 =head3 Microsoft MP1 Tags
@@ -17377,12 +17380,21 @@ Microsoft Photo 1.1 schema XMP tags which have been observed.
 
   Tag Name                                      Writable
   --------                                      --------
+  Brightness                                    string/
+  CameraModelID                                 string/
+  Contrast                                      string/
+  ExposureCompensation                          string/
   PanoramicStitchCameraMotion                   string
   PanoramicStitchMapType                        string
   PanoramicStitchPhi0                           real
   PanoramicStitchPhi1                           real
   PanoramicStitchTheta0                         real
   PanoramicStitchTheta1                         real
+  PipelineVersion                               string
+  StreamType                                    string
+  WhiteBalance0                                 real
+  WhiteBalance1                                 real
+  WhiteBalance2                                 real
 
 =head3 Microsoft MP Tags
 

@@ -58,7 +58,7 @@ use vars qw($VERSION %nikonLensIDs %nikonTextEncoding);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '3.10';
+$VERSION = '3.11';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -5826,12 +5826,12 @@ my %nikonFocalConversions = (
 #
     0x1200000 => {
         Name => 'GPSVersionID',
-        Groups => { 2 => 'Location' },
+        Groups => { 1 => 'GPS', 2 => 'Location' },
         PrintConv => '$val =~ tr/ /./; $val',
     },
     0x1200001 => {
         Name => 'GPSLatitudeRef',
-        Groups => { 2 => 'Location' },
+        Groups => { 1 => 'GPS', 2 => 'Location' },
         PrintConv => {
             N => 'North',
             S => 'South',
@@ -5839,7 +5839,7 @@ my %nikonFocalConversions = (
     },
     0x1200002 => {
         Name => 'GPSLatitude',
-        Groups => { 2 => 'Location' },
+        Groups => { 1 => 'GPS', 2 => 'Location' },
         ValueConv => q{
             require Image::ExifTool::GPS;
             Image::ExifTool::GPS::ToDegrees($val);
@@ -5848,7 +5848,7 @@ my %nikonFocalConversions = (
     },
     0x1200003 => {
         Name => 'GPSLongitudeRef',
-        Groups => { 2 => 'Location' },
+        Groups => { 1 => 'GPS', 2 => 'Location' },
         PrintConv => {
             E => 'East',
             W => 'West',
@@ -5856,7 +5856,7 @@ my %nikonFocalConversions = (
     },
     0x1200004 => {
         Name => 'GPSLongitude',
-        Groups => { 2 => 'Location' },
+        Groups => { 1 => 'GPS', 2 => 'Location' },
         ValueConv => q{
             require Image::ExifTool::GPS;
             Image::ExifTool::GPS::ToDegrees($val);
@@ -5865,7 +5865,7 @@ my %nikonFocalConversions = (
     },
     0x1200005 => {
         Name => 'GPSAltitudeRef',
-        Groups => { 2 => 'Location' },
+        Groups => { 1 => 'GPS', 2 => 'Location' },
         PrintConv => {
             0 => 'Above Sea Level',
             1 => 'Below Sea Level',
@@ -5873,12 +5873,12 @@ my %nikonFocalConversions = (
     },
     0x1200006 => {
         Name => 'GPSAltitude',
-        Groups => { 2 => 'Location' },
+        Groups => { 1 => 'GPS', 2 => 'Location' },
         PrintConv => '$val =~ /^(inf|undef)$/ ? $val : "$val m"',
     },
     0x1200007 => {
         Name => 'GPSTimeStamp',
-        Groups => { 2 => 'Time' },
+        Groups => { 1 => 'GPS', 2 => 'Time' },
         ValueConv => q{
             require Image::ExifTool::GPS;
             Image::ExifTool::GPS::ConvertTimeStamp($val);
@@ -5887,11 +5887,11 @@ my %nikonFocalConversions = (
     },
     0x1200008 => {
         Name => 'GPSSatellites',
-        Groups => { 2 => 'Location' },
+        Groups => { 1 => 'GPS', 2 => 'Location' },
     },
     0x1200010 => {
         Name => 'GPSImgDirectionRef',
-        Groups => { 2 => 'Location' },
+        Groups => { 1 => 'GPS', 2 => 'Location' },
         PrintConv => {
             M => 'Magnetic North',
             T => 'True North',
@@ -5899,15 +5899,15 @@ my %nikonFocalConversions = (
     },
     0x1200011 => {
         Name => 'GPSImgDirection',
-        Groups => { 2 => 'Location' },
+        Groups => { 1 => 'GPS', 2 => 'Location' },
     },
     0x1200012 => {
         Name => 'GPSMapDatum',
-        Groups => { 2 => 'Location' },
+        Groups => { 1 => 'GPS', 2 => 'Location' },
     },
     0x120001d => {
         Name => 'GPSDateStamp',
-        Groups => { 2 => 'Time' },
+        Groups => { 1 => 'GPS', 2 => 'Time' },
         ValueConv => 'Image::ExifTool::Exif::ExifDate($val)',
     },
 #

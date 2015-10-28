@@ -569,6 +569,8 @@ my %sampleFormat = (
     0x11d => 'PageName',
     0x11e => 'XPosition',
     0x11f => 'YPosition',
+    # FreeOffsets/FreeByteCounts are used by Ricoh for RMETA information
+    # in TIFF images (not yet supported)
     0x120 => {
         Name => 'FreeOffsets',
         IsOffset => 1,

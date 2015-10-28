@@ -7,6 +7,16 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.00. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Oct. 28, 2015 - Version 10.04
+
+  - Added a few new Microsoft XMP tags
+  - Enhanced -r option to allow processing of directory names beginning with "."
+  - Avoid writing XMP-microsoft:LensModel unless specified explicitly
+  - Limit precision of area size in picasa_faces config file (thanks StarGeek)
+  - Moved Nikon NCDT GPS tags into the GPS group so they work with the Composite
+    GPS tags
+  - Fixed problem reading Ricoh RMETA information from some cameras
+
 Oct. 21, 2015 - Version 10.03
 
   - Added support for JPEG 2000 extended-length boxes

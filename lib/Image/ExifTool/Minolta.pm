@@ -49,7 +49,7 @@ use vars qw($VERSION %minoltaLensTypes %minoltaTeleconverters %minoltaColorMode
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.27';
+$VERSION = '2.28';
 
 # Full list of product codes for Sony-compatible Minolta lenses
 # (ref http://www.kb.sony.com/selfservice/documentLink.do?externalId=C1000570)
@@ -293,7 +293,7 @@ $VERSION = '2.27';
     55 => 'Sony DT 18-55mm F3.5-5.6 SAM (SAL1855) or SAM II', #PH
     55.1 => 'Sony DT 18-55mm F3.5-5.6 SAM II (SAL18552)', #JR
     56 => 'Sony DT 55-200mm F4-5.6 SAM (SAL55200-2)', #22/JR
-    57 => 'Sony DT 50mm F1.8 SAM (SAL50F18) or Tamron Lens', #22/JR
+    57 => 'Sony DT 50mm F1.8 SAM (SAL50F18) or Tamron Lens or Commlite CM-EF-NEX adapter', #22/JR
     57.1 => 'Tamron SP AF 60mm F2 Di II LD [IF] Macro 1:1', # (Model G005) (ref http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,3858.0.html)
     57.2 => 'Tamron 18-270mm F3.5-6.3 Di II PZD', #27 (Model B008)
     # (note: the Commlite CM-EF-NEX adapter also appears to give LensType 57, ref JR)

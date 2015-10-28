@@ -19,7 +19,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.30';
+$VERSION = '1.31';
 
 sub ProcessRicohText($$$);
 sub ProcessRicohRMETA($$$);
@@ -603,6 +603,7 @@ my %ricohLensIDs = (
     # the significance of the following 2 dates is not known.  They are usually
     # within a month of each other, but I have seen differences of nearly a year.
     # Sometimes the first is more recent, and sometimes the second.
+    # 0x0003 - int32u[1]
     0x0004 => { # (NC)
         Name => 'ManufactureDate1',
         Groups => { 2 => 'Time' },
@@ -615,8 +616,10 @@ my %ricohLensIDs = (
         Writable => 'string',
         Count => 20,
     },
+    # 0x0006 - undef[16] ?
+    # 0x0007 - int32u[1] ?
     # 0x000c - int32u[2] 1st number is a counter (file number? shutter count?) - PH
-    # 0x0014 - int8u[338] - could contain some data related to face detection? - PH
+    # 0x0014 - int8u[338] could contain some data related to face detection? - PH
     # 0x0015 - int8u[2]: related to noise reduction?
     0x001a => { #PH
         Name => 'FaceInfo',
@@ -644,14 +647,13 @@ my %ricohLensIDs = (
     # 0x000E ProductionNumber? (ref 2) [no. zero for most models - PH]
 );
 
-
 # Ricoh Theta subdirectory tags - Contains orientation information (ref 4)
 %Image::ExifTool::Ricoh::ThetaSubdir = (
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     WRITE_PROC => \&Image::ExifTool::Exif::WriteExif,
     CHECK_PROC => \&Image::ExifTool::Exif::CheckExif,
-    # 0x0001 => Unknown
-    # 0x0002 => Unknown
+    # 0x0001 - int16u[1] ?
+    # 0x0002 - int16u[1] ?
     0x0003 => {
         Name => 'Accelerometer',
         Writable => 'rational64s',
@@ -661,12 +663,20 @@ my %ricohLensIDs = (
         Name => 'Compass',
         Writable => 'rational64u',
     },
-    # 0x0005 => Unknown
-    # 0x0101 => Unknown - ISO Speed?
-    # 0x0102 => Unknown - F Number?
-    # 0x0103 => Unknown - Exposure?
-    # 0x0104 => Unknown - Serial Number?
-    # 0x0105 => Unknown - Serial Number?
+    # 0x0005 - int16u[1] ?
+    # 0x0006 - int16u[1] ?
+    # 0x0007 - int16u[1] ?
+    # 0x0008 - int16u[1] ?
+    # 0x0009 - int16u[1] ?
+    0x000a => {
+        Name => 'TimeZone',
+        Writable => 'string',
+    },
+    # 0x0101 - int16u[4] ISO (why 4 values?)
+    # 0x0102 - rational64s[2] FNumber (why 2 values?)
+    # 0x0103 - rational64u[2] ExposureTime (why 2 values?)
+    # 0x0104 - string[9] SerialNumber?
+    # 0x0105 - string[9] SerialNumber?
 );
 
 # face detection information (ref PH, CX4)
@@ -976,9 +986,11 @@ sub ProcessRicohRMETA($$$)
     my $verbose = $et->Options('Verbose');
 
     $et->VerboseDir('Ricoh RMETA') if $verbose;
-    $dirLen > 6 or $et->Warn('Truncated Ricoh RMETA data', 1), return 0;
+    $dirLen < 20 and $et->Warn('Truncated Ricoh RMETA data', 1), return 0;
     my $byteOrder = substr($$dataPt, $dirStart, 2);
+    $byteOrder = GetByteOrder() if $byteOrder eq "\0\0"; # (same order as container)
     SetByteOrder($byteOrder) or $et->Warn('Bad Ricoh RMETA data', 1), return 0;
+    # get the RMETA segment number
     my $rmetaNum = Get16u($dataPt, $dirStart+4);
     if ($rmetaNum != 0) {
         # not sure how to recognize audio, so do it by checking for "RIFF" header
@@ -999,9 +1011,13 @@ sub ProcessRicohRMETA($$$)
         }
         return 1;
     }
-    # standard RMETA tag directory
-    my (@tags, @vals, @nums, $valPos);
-    my $pos = $dirStart + 6;
+    # decode standard RMETA tag directory
+    my (@tags, @vals, @nums, $valPos, $numPos);
+    my $pos = $dirStart + Get16u($dataPt, $dirStart+8);
+    my $numEntries = Get16u($dataPt, $pos);
+    $numEntries > 100 and $et->Warn('Bad RMETA entry count'), return 0;
+    $pos += 10; # start of first RMETA section
+    # loop through RMETA sections
     while ($pos <= $dataLen - 4) {
         my $type = Get16u($dataPt, $pos);
         my $size = Get16u($dataPt, $pos + 2);
@@ -1012,67 +1028,78 @@ sub ProcessRicohRMETA($$$)
             $et->Warn('Corrupted Ricoh RMETA data', 1);
             last;
         }
-        if ($type eq 1) {
+        my $dat = substr($$dataPt, $pos, $size);
+        if ($verbose) {
+            $et->VPrint(2, "$$et{INDENT}RMETA section type=$type size=$size\n");
+            if ($verbose > 2) {
+                my %dumpParms = ( Addr => $$dirInfo{DataPos} + $pos, Prefix => $$et{INDENT} );
+                $dumpParms{MaxLen} = 96 if $verbose == 3;
+                Image::ExifTool::HexDump(\$dat, undef, %dumpParms);
+            }
+        }
+        if ($type == 1) {                       # section 1: tag names
             # save the tag names
-            my $tags = substr($$dataPt, $pos, $size);
-            $tags =~ s/\0+$//;  # remove trailing nulls
-            @tags = split /\0/, $tags;
-        } elsif ($type eq 2) {
-            # save the ASCII tag values
-            my $vals = substr($$dataPt, $pos, $size);
-            $vals =~ s/\0+$//;
-            @vals = split /\0/, $vals;
-            $valPos = $pos; # save position of first ASCII value
-        } elsif ($type eq 3) {
-            # save the numerical tag values
-            my $nums = substr($$dataPt, $pos, $size);
-            @nums = unpack($byteOrder eq 'MM' ? 'n*' : 'v*', $nums);
-        } elsif ($type eq 0) {
-            $pos += 2;  # why 2 extra bytes?
+            @tags = split /\0/, $dat, $numEntries+1;
+        } elsif ($type == 2 || $type == 18) {   # section 2/18: string values (G800 uses type 18)
+            # save the tag values (assume "ASCII\0" encoding since others never seen)
+            @vals = split /\0/, $dat, $numEntries+1;
+            $valPos = $pos; # save position of first string value
+        } elsif ($type == 3) {                  # section 3: numerical values
+            if ($size < $numEntries * 2) {
+                $et->Warn('Truncated RMETA section 3');
+            } else {
+                # save the numerical tag values
+                # (0=empty, 0xffff=text input, otherwise menu item number)
+                @nums = unpack(($byteOrder eq 'MM' ? 'n' : 'v').$numEntries, $dat);
+                $numPos = $pos; # save position of numerical values
+            }
+        } elsif ($type != 16) {
+            $et->Warn("Unrecognized RMETA section (type $type, len $size)");
         }
         $pos += $size;
     }
-    if (@tags or @vals) {
-        if (@tags < @vals) {
-            my ($nt, $nv) = (scalar(@tags), scalar(@vals));
-            $et->Warn("Fewer tags ($nt) than values ($nv) in Ricoh RMETA", 1);
+    return 1 unless @tags or @vals;
+    $valPos or $valPos = 0; # (just in case there was no value section)
+    # find next tag in null-delimited list
+    # unpack numerical values from block of int16u values
+    my ($i, $name);
+    for ($i=0; $i<$numEntries; ++$i) {
+        my $tag = $tags[$i];
+        my $val = $vals[$i];
+        $val = '' unless defined $val;
+        unless (defined $tag and length $tag) {
+            length $val or ++$valPos, next;     # (skip empty entries)
+            $tag = '';
         }
-        # find next tag in null-delimited list
-        # unpack numerical values from block of int16u values
-        my ($tag, $name, $val);
-        foreach $tag (@tags) {
-            $val = shift @vals;
-            $val = '' unless defined $val;
-            ($name = $tag) =~ s/\b([a-z])/\U$1/gs;  # make capitalize all words
-            $name =~ s/ (\w)/\U$1/g;                # remove special characters
-            $name = 'RMETA_Unknown' unless length($name);
-            my $num = shift @nums;
-            my $tagInfo = $et->GetTagInfo($tagTablePtr, $tag);
-            if ($tagInfo) {
-                # make sure print conversion is defined
-                $$tagInfo{PrintConv} = { } unless ref $$tagInfo{PrintConv} eq 'HASH';
-            } else {
-                # create tagInfo hash
-                $tagInfo = { Name => $name, PrintConv => { } };
-                AddTagToTable($tagTablePtr, $tag, $tagInfo);
-            }
-            # use string value directly if no numerical value
-            $num = $val unless defined $num;
-            # add conversion for this value (replacing any existing entry)
-            $tagInfo->{PrintConv}->{$num} = length $val ? $val : $num;
-            if ($verbose) {
-                $et->VerboseInfo($tag, $tagInfo,
-                    Table   => $tagTablePtr,
-                    Value   => $num,
-                    DataPt  => $dataPt,
-                    DataPos => $$dirInfo{DataPos},
-                    Start   => $valPos,
-                    Size    => length($val),
-                );
-            }
-            $et->FoundTag($tagInfo, $num);
-            $valPos += length($val) + 1;
+        ($name = $tag) =~ s/\b([a-z])/\U$1/gs;  # capitalize all words
+        $name =~ s/ (\w)/\U$1/g;                # remove special characters
+        $name = 'RMETA_Unknown' unless length($name);
+        my $num = $nums[$i];
+        my $tagInfo = $et->GetTagInfo($tagTablePtr, $tag);
+        if ($tagInfo) {
+            # make sure print conversion is defined
+            $$tagInfo{PrintConv} = { } unless ref $$tagInfo{PrintConv} eq 'HASH';
+        } else {
+            # create tagInfo hash
+            $tagInfo = { Name => $name, PrintConv => { } };
+            AddTagToTable($tagTablePtr, $tag, $tagInfo);
         }
+        # use string value directly if no numerical value
+        $num = $val unless defined $num;
+        # add conversion for this value (replacing any existing entry)
+        $tagInfo->{PrintConv}->{$num} = length $val ? $val : $num;
+        if ($verbose) {
+            my %datParms;
+            if (length $val) {
+                %datParms = ( Start => $valPos, Size => length($val), Format => 'string' );
+            } elsif ($numPos) {
+                %datParms = ( Start => $numPos + $i * 2, Size => 2, Format => 'int16u' );
+            }
+            %datParms and $datParms{DataPt} = $dataPt, $datParms{DataPos} = $$dirInfo{DataPos};
+            $et->VerboseInfo($tag, $tagInfo, Table=>$tagTablePtr, Value=>$num, %datParms);
+        }
+        $et->FoundTag($tagInfo, $num);
+        $valPos += length($val) + 1;
     }
     return 1;
 }

@@ -455,7 +455,6 @@ my %writeTable = (
     0x9201 => {             # ShutterSpeedValue
         Writable => 'rational64s',
         ValueConvInv => '$val>0 ? -log($val)/log(2) : -100',
-        # do eval to convert things like '1/100'
         PrintConvInv => 'Image::ExifTool::Exif::ConvertFraction($val)',
     },
     0x9202 => {             # ApertureValue
@@ -466,7 +465,6 @@ my %writeTable = (
     0x9203 => 'rational64s',# BrightnessValue
     0x9204 => {             # ExposureCompensation
         Writable => 'rational64s',
-        # do eval to convert things like '+2/3'
         PrintConvInv => 'Image::ExifTool::Exif::ConvertFraction($val)',
     },
     0x9205 => {             # MaxApertureValue

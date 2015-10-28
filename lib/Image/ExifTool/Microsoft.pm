@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::XMP;
 
-$VERSION = '1.16';
+$VERSION = '1.17';
 
 sub ProcessXtra($$$);
 
@@ -84,7 +84,7 @@ sub ProcessXtra($$$);
     LastKeywordIPTC    => { List => 'Bag' },
     LastKeywordXMP     => { List => 'Bag' },
     LensManufacturer   => { },
-    LensModel          => { },
+    LensModel          => { Avoid => 1 },
     Rating => {
         Name => 'RatingPercent',
         Notes => q{
@@ -92,6 +92,8 @@ sub ProcessXtra($$$);
             correspond to RatingPercent values of 1,25,50,75 and 99 respectively
         },
     },
+    CreatorAppId             => { Name => 'CreatorAppID' },
+    CreatorOpenWithUIOptions => { },
 );
 
 # Microsoft Photo 1.1 schema properties (MP1 - written as 'prefix0' by MSPhoto) (ref PH)
@@ -125,6 +127,15 @@ sub ProcessXtra($$$);
     PanoramicStitchPhi1   => { Writable => 'real' },
     PanoramicStitchTheta0 => { Writable => 'real' },
     PanoramicStitchTheta1 => { Writable => 'real' },
+    WhiteBalance0         => { Writable => 'real' },
+    WhiteBalance1         => { Writable => 'real' },
+    WhiteBalance2         => { Writable => 'real' },
+    Brightness            => { Avoid => 1 },
+    Contrast              => { Avoid => 1 },
+    CameraModelID         => { Avoid => 1 },
+    ExposureCompensation  => { Avoid => 1 },
+    PipelineVersion       => { },
+    StreamType            => { },
 );
 
 # Microsoft Photo 1.2 schema properties (MP) (ref PH)

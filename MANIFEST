@@ -90,6 +90,7 @@ html/TagNames/Matroska.html
 html/TagNames/Microsoft.html
 html/TagNames/Minolta.html
 html/TagNames/MinoltaRaw.html
+html/TagNames/Motorola.html
 html/TagNames/Nikon.html
 html/TagNames/NikonCapture.html
 html/TagNames/NikonCustom.html
@@ -292,6 +293,7 @@ lib/Image/ExifTool/Matroska.pm
 lib/Image/ExifTool/Microsoft.pm
 lib/Image/ExifTool/Minolta.pm
 lib/Image/ExifTool/MinoltaRaw.pm
+lib/Image/ExifTool/Motorola.pm
 lib/Image/ExifTool/Nikon.pm
 lib/Image/ExifTool/NikonCapture.pm
 lib/Image/ExifTool/NikonCustom.pm
@@ -441,6 +443,7 @@ t/ExifTool_25.out
 t/ExifTool_26.out
 t/ExifTool_27.out
 t/ExifTool_28.out
+t/ExifTool_29.out
 t/ExifTool_3.out
 t/ExifTool_4.out
 t/ExifTool_5.out
@@ -576,6 +579,8 @@ t/Minolta.t
 t/Minolta_2.out
 t/Minolta_3.out
 t/Minolta_4.out
+t/Motorola.t
+t/Motorola_2.out
 t/Nikon.t
 t/Nikon_2.out
 t/Nikon_3.out
@@ -869,6 +874,7 @@ t/images/MXF.mxf
 t/images/Matroska.mkv
 t/images/Minolta.jpg
 t/images/Minolta.mrw
+t/images/Motorola.jpg
 t/images/Nikon.jpg
 t/images/Nikon.nef
 t/images/NikonD2Hs.jpg

@@ -124,7 +124,7 @@ sub WritePhotoshop($$$)
                     $$newTags{$tagID} = $tagInfo;   # add later
                     $value = undef;
                 } else {
-                    $value = $et->GetNewValues($nvHash);
+                    $value = $et->GetNewValue($nvHash);
                 }
                 ++$$et{CHANGED};
                 next unless defined $value;     # next if tag is being deleted
@@ -185,7 +185,7 @@ sub WritePhotoshop($$$)
         if ($$newTags{$tagID}) {
             $tagInfo = $$newTags{$tagID};
             my $nvHash = $et->GetNewValueHash($tagInfo);
-            $value = $et->GetNewValues($nvHash);
+            $value = $et->GetNewValue($nvHash);
             # handle new IPTCDigest value specially
             if ($tagInfo eq $iptcDigestInfo and defined $value) {
                 if ($value eq 'new') {

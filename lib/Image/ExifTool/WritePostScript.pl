@@ -290,7 +290,7 @@ sub WriteNewTags($$$)
         my $tagInfo = $$newTags{$tag};
         my $nvHash = $et->GetNewValueHash($tagInfo);
         next unless $$nvHash{IsCreating};
-        my $val = $et->GetNewValues($nvHash);
+        my $val = $et->GetNewValue($nvHash);
         $et->VerboseValue("+ PostScript:$$tagInfo{Name}", $val);
         Write($outfile, EncodeTag($tag, $val)) or $success = 0;
         ++$$et{CHANGED};
@@ -583,7 +583,7 @@ sub WritePS($$)
                 my $nvHash = $et->GetNewValueHash($tagInfo);
                 if ($et->IsOverwriting($nvHash, $val)) {
                     $et->VerboseValue("- PostScript:$$tagInfo{Name}", $val);
-                    $val = $et->GetNewValues($nvHash);
+                    $val = $et->GetNewValue($nvHash);
                     ++$$et{CHANGED};
                     next unless defined $val;   # next if tag is being deleted
                     $et->VerboseValue("+ PostScript:$$tagInfo{Name}", $val);

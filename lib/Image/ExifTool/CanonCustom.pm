@@ -19,7 +19,7 @@ use Image::ExifTool qw(:DataAccess);
 use Image::ExifTool::Canon;
 use Image::ExifTool::Exif;
 
-$VERSION = '1.50';
+$VERSION = '1.51';
 
 sub ProcessCanonCustom($$$);
 sub ProcessCanonCustom2($$$);
@@ -2394,7 +2394,7 @@ sub ProcessCanonCustom2($$$)
                 $tagInfo = $et->GetTagInfo($tagTablePtr, $tag, \$val, undef, $num) or next;
                 my $nvHash = $et->GetNewValueHash($tagInfo) or next;
                 next unless $et->IsOverwriting($nvHash, $val);
-                my $newVal = $et->GetNewValues($nvHash);
+                my $newVal = $et->GetNewValue($nvHash);
                 next unless defined $newVal;    # can't delete from a custom table
                 WriteValue($newVal, 'int32s', $num, $dataPt, $recPos);
                 $et->VerboseValue("- CanonCustom:$$tagInfo{Name}", $val);
@@ -2523,7 +2523,7 @@ sub WriteCanonCustom($$$)
         my $nvHash = $et->GetNewValueHash($tagInfo);
         $val = ($val & 0xff);
         next unless $et->IsOverwriting($nvHash, $val);
-        my $newVal = $et->GetNewValues($nvHash);
+        my $newVal = $et->GetNewValue($nvHash);
         next unless defined $newVal;    # can't delete from a custom table
         Set16u(($newVal & 0xff) + ($tag << 8), $dataPt, $pos);
         $et->VerboseValue("- $dirName:$$tagInfo{Name}", $val);

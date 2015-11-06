@@ -481,6 +481,16 @@ my $debug;          # set to 1 to enable debugging code
         Notes => 'not EXIF-based',
     },
     {
+        Name => 'MakerNoteMotorola',
+        Condition => '$$valPt=~/^MOT\0/',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Motorola::Main',
+            Start => '$valuePtr + 8',
+            Base => '$start - 8',
+            ByteOrder => 'Unknown',
+        },
+    },
+    {
         # older Nikon maker notes
         Name => 'MakerNoteNikon2',
         Condition => '$$valPt=~/^Nikon\x00\x01/',
@@ -1649,7 +1659,7 @@ sub WriteUnknownOrPreview($$$)
     if ($dirLen > 6 and substr($$dataPt, $dirStart, 3) eq "\xff\xd8\xff") {
         if ($$et{NEW_VALUE}{$Image::ExifTool::Extra{PreviewImage}}) {
             # write or delete new preview (if deleted, it can't currently be added back again)
-            $newVal = $et->GetNewValues('PreviewImage') || '';
+            $newVal = $et->GetNewValue('PreviewImage') || '';
             if ($et->Options('Verbose') > 1) {
                 $et->VerboseValue("- MakerNotes:PreviewImage", substr($$dataPt, $dirStart, $dirLen));
                 $et->VerboseValue("+ MakerNotes:PreviewImage", $newVal) if $newVal;

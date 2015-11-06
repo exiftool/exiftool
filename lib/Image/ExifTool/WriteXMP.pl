@@ -56,7 +56,7 @@ sub XMPOpen($)
     my $nv = $$et{NEW_VALUE}{$Image::ExifTool::XMP::x{xmptk}};
     my $tk;
     if (defined $nv) {
-        $tk = $et->GetNewValues($nv);
+        $tk = $et->GetNewValue($nv);
         $et->VerboseValue(($tk ? '+' : '-') . ' XMP-x:XMPToolkit', $tk);
         ++$$et{CHANGED};
     } else {
@@ -667,7 +667,7 @@ sub WriteXMP($$;$)
         }
         $tagInfo = $Image::ExifTool::XMP::rdf{about};
         if (defined $$et{NEW_VALUE}{$tagInfo}) {
-            $about = $et->GetNewValues($$et{NEW_VALUE}{$tagInfo}) || '';
+            $about = $et->GetNewValue($$et{NEW_VALUE}{$tagInfo}) || '';
             if ($verbose > 1) {
                 my $wasAbout = $$et{XMP_ABOUT};
                 $et->VerboseValue('- XMP-rdf:About', UnescapeXML($wasAbout)) if defined $wasAbout;
@@ -690,7 +690,7 @@ sub WriteXMP($$;$)
         $tagInfo = $Image::ExifTool::Extra{XMP};
         if ($tagInfo and $$et{NEW_VALUE}{$tagInfo}) {
             my $rtnVal = 1;
-            my $newVal = $et->GetNewValues($$et{NEW_VALUE}{$tagInfo});
+            my $newVal = $et->GetNewValue($$et{NEW_VALUE}{$tagInfo});
             if (defined $newVal and length $newVal) {
                 $et->VPrint(0, "  Writing XMP as a block\n");
                 ++$$et{CHANGED};
@@ -1028,7 +1028,7 @@ sub WriteXMP($$;$)
             (not $cap and $isCreating);
 
         # get list of new values (all done if no new values specified)
-        my @newValues = $et->GetNewValues($nvHash) or next;
+        my @newValues = $et->GetNewValue($nvHash) or next;
 
         # set language attribute for lang-alt lists
         $attrs{'xml:lang'} = $$tagInfo{LangCode} || 'x-default' if $writable eq 'lang-alt';

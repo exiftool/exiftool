@@ -4769,72 +4769,67 @@ created to enable writing of XMP-pdfx information.</p>
 <td>&nbsp;</td></tr>
 <tr>
 <td>DocumentAncestors</td>
-<td class=c title=' + = List'>struct+</td>
-<td>--&gt; <a href='XMP.html#Ancestor'>Ancestor Struct</a></td></tr>
+<td class=c title=' + = List'>string+</td>
+<td>&nbsp;</td></tr>
 <tr class=b>
-<td>DocumentAncestorID</td>
-<td class=c title=' _ = Flattened
- + = List'>string_+</td>
-<td><span class=s><span class=n>(DocumentAncestorsAncestorID)</span></span></td></tr>
-<tr>
 <td>EmbeddedXMPDigest</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>Headline</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>History</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>ICCProfileName</td>
 <td class=c>string</td>
 <td><span class=s><span class=n>(called ICCProfile by the spec)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>Instructions</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>LegacyIPTCDigest</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>SidecarForExtension</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>Source</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>State</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>SupplementalCategories</td>
 <td class=c title=' + = List'>string+</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>TextLayers</td>
 <td class=c title=' + = List'>struct+</td>
 <td>--&gt; <a href='XMP.html#Layer'>Layer Struct</a></td></tr>
-<tr class=b>
+<tr>
 <td>TextLayerName</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td><span class=s><span class=n>(TextLayersLayerName)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>TextLayerText</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td><span class=s><span class=n>(TextLayersLayerText)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>TransmissionReference</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>Urgency</td>
 <td class=c>integer</td>
 <td><span class=s><span class=n>(should be in the range 1-8 to conform with the XMP spec)</span></span><table class=cols><tr>
@@ -4849,18 +4844,6 @@ created to enable writing of XMP-pdfx information.</p>
   <br>8 = 8 (least urgent)
   <br>9 = 9 (user-defined priority)</td></tr></table>
 </td></tr>
-</table></td></tr></table></blockquote>
-
-<h2><a name='Ancestor'>XMP Ancestor Struct</a></h2>
-<blockquote>
-<table class=frame><tr><td>
-<table class=inner cellspacing=1>
-<tr class=h><th>Field Name</th>
-<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
-<tr>
-<td>AncestorID</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='Layer'>XMP Layer Struct</a></h2>
@@ -9169,7 +9152,7 @@ XMP module for convenience.  (see <a href="http://www.w3.org/TR/SVG11/">http://w
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jun 29, 2015</i>
+<br><i>Last revised Nov 6, 2015</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

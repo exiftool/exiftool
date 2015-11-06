@@ -611,6 +611,7 @@ EXIF 2.3 specification.
            MakerNoteMinolta          ExifIFD    Minolta
            MakerNoteMinolta2         ExifIFD    Olympus
            MakerNoteMinolta3         ExifIFD    undef
+           MakerNoteMotorola         ExifIFD    Motorola
            MakerNoteNikon2           ExifIFD    Nikon Type2
            MakerNoteNikon3           ExifIFD    Nikon
            MakerNoteNintendo         ExifIFD    Nintendo
@@ -2477,8 +2478,7 @@ Adobe Photoshop namespace tags.
   Country                                       string
   Credit                                        string
   DateCreated                                   date
-  DocumentAncestors                             Ancestor Struct+
-  DocumentAncestorID                            string_+
+  DocumentAncestors                             string+
   EmbeddedXMPDigest                             string
   Headline                                      string
   History                                       string
@@ -2494,12 +2494,6 @@ Adobe Photoshop namespace tags.
   TextLayerText                                 string_+
   TransmissionReference                         string
   Urgency                                       integer
-
-=head3 XMP Ancestor Struct
-
-  Field Name                                    Writable
-  ----------                                    --------
-  AncestorID                                    string
 
 =head3 XMP Layer Struct
 
@@ -8846,6 +8840,13 @@ DiMAGE X and Xt.
      50    ExposureCompensation                 N
      72    FocalLength                          N
 
+=head2 Motorola Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  0x665e   Sensor                               string
+  0x6705   ManufactureDate                      string
+
 =head2 Nikon Tags
 
   Tag ID   Tag Name                             Writable
@@ -14621,6 +14622,7 @@ still proprietary) Adobe format.
            MakerNoteMinolta                     Minolta
            MakerNoteMinolta2                    Olympus
            MakerNoteMinolta3                    undef
+           MakerNoteMotorola                    Motorola
            MakerNoteNikon2                      Nikon Type2
            MakerNoteNikon3                      Nikon
            MakerNoteNintendo                    Nintendo
@@ -28855,6 +28857,7 @@ for more details.
                        MakerNoteMinolta
                        MakerNoteMinolta2
                        MakerNoteMinolta3
+                       MakerNoteMotorola
                        MakerNoteNikon
                        MakerNoteNikon2
                        MakerNoteNikon3

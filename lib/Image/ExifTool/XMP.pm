@@ -47,7 +47,7 @@ use Image::ExifTool qw(:Utils);
 use Image::ExifTool::Exif;
 require Exporter;
 
-$VERSION = '2.88';
+$VERSION = '2.89';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -1057,13 +1057,15 @@ my %sPantryItem = (
     Credit          => { Groups => { 2 => 'Author' } },
     DateCreated     => { Groups => { 2 => 'Time' }, %dateTimeInfo },
     DocumentAncestors => {
-        FlatName => 'Document',
         List => 'Bag',
-        Struct => {
-            STRUCT_NAME => 'Ancestor',
-            NAMESPACE   => 'photoshop',
-            AncestorID  => { },
-        },
+        # Contrary to their own XMP specification, Adobe writes this as a simple Bag
+        # of strings instead of structures, so comment out the structure definition...
+        # FlatName => 'Document',
+        # Struct => {
+        #     STRUCT_NAME => 'Ancestor',
+        #     NAMESPACE   => 'photoshop',
+        #     AncestorID  => { },
+        # },
     },
     Headline        => { },
     History         => { }, #PH (CS3)

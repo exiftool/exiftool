@@ -56,7 +56,7 @@ use vars qw($VERSION %pentaxLensTypes);
 use Image::ExifTool::Exif;
 use Image::ExifTool::HP;
 
-$VERSION = '2.96';
+$VERSION = '2.97';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -511,6 +511,7 @@ my %pentaxModelID = (
     0x13024 => 'K-S2', #29 (Ricoh)
     0x1302e => 'Q-S1',
     0x13056 => 'WG-30', # (Ricoh)
+    0x1307e => 'WG-30W', # (Ricoh)
     0x13088 => 'WG-5 GPS', # (Ricoh)
     0x1309c => 'K-3 II', #29 (Ricoh)
 );

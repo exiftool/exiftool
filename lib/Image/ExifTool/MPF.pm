@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.11';
+$VERSION = '1.12';
 
 sub ProcessMPImageList($$$);
 
@@ -191,8 +191,8 @@ sub ExtractMPImages($)
     for ($i=1; $xtra or not defined $xtra; ++$i) {
         # run through MP images in the same order they were extracted
         $xtra = defined $$et{VALUE}{"MPImageStart ($i)"} ? " ($i)" : '';
-        my $off = $et->GetValue("MPImageStart$xtra");
-        my $len = $et->GetValue("MPImageLength$xtra");
+        my $off = $et->GetValue("MPImageStart$xtra", 'ValueConv');
+        my $len = $et->GetValue("MPImageLength$xtra", 'ValueConv');
         if ($off and $len) {
             my $type = $et->GetValue("MPImageType$xtra", 'ValueConv');
             my $tag = "MPImage$i";

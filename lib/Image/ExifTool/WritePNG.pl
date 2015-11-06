@@ -248,7 +248,7 @@ sub AddChunks($$;@)
         my $nvHash = $et->GetNewValueHash($tagInfo);
         # (native PNG information is always preferred, so don't check IsCreating)
         next unless $et->IsOverwriting($nvHash);
-        my $val = $et->GetNewValues($nvHash);
+        my $val = $et->GetNewValue($nvHash);
         if (defined $val) {
             next if $$nvHash{EditOnly};
             my $data;

@@ -16,7 +16,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.24';
+$VERSION = '1.25';
 
 sub ProcessJpeg2000Box($$$);
 
@@ -514,7 +514,7 @@ sub CreateNewBoxes($$)
         # (native JPEG2000 information is always preferred, so don't check IsCreating)
         next unless $$tagInfo{List} or $et->IsOverwriting($nvHash) > 0;
         next if $$nvHash{EditOnly};
-        my @vals = $et->GetNewValues($nvHash);
+        my @vals = $et->GetNewValue($nvHash);
         my $val;
         foreach $val (@vals) {
             my $boxhdr = pack('N', length($val) + 8) . $$tagInfo{TagID};

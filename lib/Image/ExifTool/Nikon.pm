@@ -58,7 +58,7 @@ use vars qw($VERSION %nikonLensIDs %nikonTextEncoding);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '3.11';
+$VERSION = '3.12';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -285,7 +285,6 @@ sub GetAFPointGrid($$;$);
     'AD 3C 2D 8E 2C 3C AF 0E' => 'AF-S DX Nikkor 18-300mm f/3.5-5.6G ED VR',
     'AE 54 62 62 0C 0C B0 06' => 'AF-S Nikkor 85mm f/1.4G',
     'AF 54 44 44 0C 0C B1 06' => 'AF-S Nikkor 35mm f/1.4G',
-    'AF 4C 37 37 14 14 CC 06' => 'AF-S Nikkor 24mm f/1.8G ED', #33
     'B0 4C 50 50 14 14 B2 06' => 'AF-S Nikkor 50mm f/1.8G',
     'B1 48 48 48 24 24 B3 06' => 'AF-S DX Micro Nikkor 40mm f/2.8G', #27
     'B2 48 5C 80 30 30 B4 0E' => 'AF-S Nikkor 70-200mm f/4G ED VR', #35
@@ -305,7 +304,9 @@ sub GetAFPointGrid($$;$);
     'A9 4C 31 31 14 14 C4 06' => 'AF-S Nikkor 20mm f/1.8G ED', #30
     'AA 48 37 5C 24 24 C5 4E' => 'AF-S Nikkor 24-70mm f/2.8E ED VR',
     'AD 48 28 60 24 30 C8 4E' => 'AF-S VR DX 16-80mm f/2.8-4.0E ED',
+    'AE 3C 80 A0 3C 3C C9 4E' => 'AF-S Nikkor 200-500mm f/5.6E ED VR', #PH
     'AE 3C 80 A0 3C 3C C9 0E' => 'AF-S Nikkor 200-500mm f/5.6E ED VR',
+    'AF 4C 37 37 14 14 CC 06' => 'AF-S Nikkor 24mm f/1.8G ED', #33
     '01 00 00 00 00 00 02 00' => 'TC-16A',
     '01 00 00 00 00 00 08 00' => 'TC-16A',
     '00 00 00 00 00 00 F1 0C' => 'TC-14E [II] or Sigma APO Tele Converter 1.4x EX DG or Kenko Teleplus PRO 300 DG 1.4x',
@@ -599,8 +600,11 @@ sub GetAFPointGrid($$;$);
     '00 54 72 72 18 18 00 00' => 'Carl Zeiss Apo Sonnar T* 2/135 ZF.2',
     '00 54 53 53 0C 0C 00 00' => 'Zeiss Otus 1.4/55', #33
     '01 54 62 62 0C 0C 00 00' => 'Zeiss Otus 1.4/85',
+    '52 54 44 44 18 18 00 00' => 'Zeiss Milvus 35mm f/2',
     '53 54 50 50 0C 0C 00 00' => 'Zeiss Milvus 50mm f/1.4', #33
+    '54 54 50 50 18 18 00 00' => 'Zeiss Milvus 50mm f/2 Macro',
     '55 54 62 62 0C 0C 00 00' => 'Zeiss Milvus 85mm f/1.4', #33
+    '56 54 68 68 18 18 00 00' => 'Zeiss Milvus 100mm f/2 Macro',
 #
     '00 54 56 56 30 30 00 00' => 'Coastal Optical Systems 60mm 1:4 UV-VIS-IR Macro Apo',
 #
@@ -6675,8 +6679,8 @@ sub ProcessNikon($$$)
     my $rtnVal;
     if ($$dirInfo{IsWriting}) {
         # get new decryptino keys if they are being changed
-        my $serial = $et->GetNewValues($Image::ExifTool::Nikon::Main{0x001d});
-        my $count = $et->GetNewValues($Image::ExifTool::Nikon::Main{0x00a7});
+        my $serial = $et->GetNewValue($Image::ExifTool::Nikon::Main{0x001d});
+        my $count = $et->GetNewValue($Image::ExifTool::Nikon::Main{0x00a7});
         $$et{NewNikonSerialKey} = SerialKey($et, $serial);
         $$et{NewNikonCountKey} = $count;
         $rtnVal = Image::ExifTool::Exif::WriteExif($et, $dirInfo, $tagTablePtr);

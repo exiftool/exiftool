@@ -516,7 +516,7 @@ sub DoWriteIPTC($$$)
                     $doSet = 1 if not $found and $$nvHash{IsCreating};
                 }
                 if ($doSet) {
-                    @values = $et->GetNewValues($nvHash);
+                    @values = $et->GetNewValue($nvHash);
                     @values and $foundRec{$newRec}->{$newTag} = $found | 0x04;
                     # write tags for each value in list
                     my $value;
@@ -633,7 +633,7 @@ sub WriteIPTC($$$)
         my $nvHash = $$et{NEW_VALUE}{$Image::ExifTool::Photoshop::iptcDigestInfo};
         last unless defined $nvHash;
         last unless IsStandardIPTC($et->MetadataPath());
-        my @values = $et->GetNewValues($nvHash);
+        my @values = $et->GetNewValue($nvHash);
         push @values, @{$$nvHash{DelValue}} if $$nvHash{DelValue};
         my $new = grep /^new$/, @values;
         my $old = grep /^old$/, @values;

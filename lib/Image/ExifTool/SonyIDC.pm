@@ -11,8 +11,9 @@ package Image::ExifTool::SonyIDC;
 use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
+use Image::ExifTool::Exif;
 
-$VERSION = '1.04';
+$VERSION = '1.05';
 
 # Sony IDC tags (ref PH)
 %Image::ExifTool::SonyIDC::Main = (
@@ -273,8 +274,8 @@ sub ExtractPreviews($)
             next;
         }
         # run through IDC preview images in the same order they were extracted
-        my $off = $et->GetValue($key) or last;
-        my $len = $et->GetValue("IDCPreviewLength$xtra") or last;
+        my $off = $et->GetValue($key, 'ValueConv') or last;
+        my $len = $et->GetValue("IDCPreviewLength$xtra", 'ValueConv') or last;
         # get stack version from number in group 1 name
         my $grp1 = $et->GetGroup($key, 1);
         if ($grp1 =~ /(\d+)$/) {

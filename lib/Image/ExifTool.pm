@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '10.04';
+$VERSION = '10.05';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -58,6 +58,7 @@ Exporter::export_ok_tags(keys %EXPORT_TAGS);
 # autoloaded when any of them is called.
 sub SetNewValue($;$$%);
 sub SetNewValuesFromFile($$;@);
+sub GetNewValue($$;$);
 sub GetNewValues($$;$);
 sub CountNewValues($);
 sub SaveNewValues($);
@@ -1783,6 +1784,7 @@ sub ClearOptions($)
         ExtendedXMP => 1,       # strategy for reading extended XMP
         ExtractEmbedded =>undef,# flag to extract information from embedded documents
         FastScan    => undef,   # flag to avoid scanning for trailer
+        Filter      => undef,   # output filter for all tag values
         FixBase     => undef,   # fix maker notes base offsets
         GeoMaxIntSecs => 1800,  # geotag maximum interpolation time (secs)
         GeoMaxExtSecs => 1800,  # geotag maximum extrapolation time (secs)
@@ -2453,7 +2455,7 @@ sub GetValue($$;$)
             require 'Image/ExifTool/XMPStruct.pl';
             # convert strucure field values
             unless ($type eq 'Both') {
-                # (note: ConvertStruct handles the escape too if necessary)
+                # (note: ConvertStruct handles the filtering and escaping too if necessary)
                 return Image::ExifTool::XMP::ConvertStruct($self,$tagInfo,$value,$type);
             }
             $valueConv = Image::ExifTool::XMP::ConvertStruct($self,$tagInfo,$value,'ValueConv');
@@ -2547,6 +2549,9 @@ sub GetValue($$;$)
                     # disable escape of source values so we don't double escape them
                     my $oldEscape = $$self{ESCAPE_PROC};
                     delete $$self{ESCAPE_PROC};
+                    # temporarily delete filter so it isn't applied to the Require'd values
+                    my $oldFilter = $$self{OPTIONS}{Filter};
+                    delete $$self{OPTIONS}{Filter};
                     foreach (keys %$val) {
                         $raw[$_] = $$self{VALUE}{$$val{$_}};
                         ($val[$_], $prt[$_]) = $self->GetValue($$val{$_}, 'Both');
@@ -2554,6 +2559,7 @@ sub GetValue($$;$)
                         $$self{ESCAPE_PROC} = $oldEscape;
                         return wantarray ? () : undef;
                     }
+                    $$self{OPTIONS}{Filter} = $oldFilter if defined $oldFilter;
                     $$self{ESCAPE_PROC} = $oldEscape;
                     # set $val to $val[0], or \@val for a CODE ref conversion
                     $val = ref $conv eq 'CODE' ? \@val : $val[0];
@@ -2651,11 +2657,15 @@ sub GetValue($$;$)
             # $valueConv is undefined if there was no print conversion done
             $valueConv = $value;
         }
+        $self->Filter(\$value) if defined $$self{OPTIONS}{Filter};
         # return Both values as a list (ValueConv, PrintConv)
         return ($valueConv, $value);
     }
     # escape value if necessary
     DoEscape($value, $$self{ESCAPE_PROC}) if $$self{ESCAPE_PROC};
+
+    # filter if necessary
+    $self->Filter(\$value) if defined $$self{OPTIONS}{Filter} and $type eq 'PrintConv';
 
     if (ref $value eq 'ARRAY') {
         if (defined $$self{OPTIONS}{ListItem}) {
@@ -4632,6 +4642,39 @@ sub GetDescriptions($$)
 }
 
 #------------------------------------------------------------------------------
+# Apply filter to value(s) if necessary
+# Inputs: 0) ExifTool ref, 1-N) references to values(s) to filter
+# Returns: nothing, but changes values if necessary
+sub Filter($@)
+{
+    local $_;
+    my $self = shift;
+    return unless defined $$self{OPTIONS}{Filter};
+    while (@_) {
+        my $valPt = shift;
+        next unless defined $$valPt;
+        if (not ref $$valPt) {
+            $_ = $$valPt;
+            #### eval Filter ($_)
+            eval $$self{OPTIONS}{Filter};
+            $$valPt = $_;
+        } elsif (ref $$valPt eq 'SCALAR') {
+            my $val = $$$valPt; # make a copy to avoid filtering twice
+            $self->Filter(\$val);
+            $$valPt = \$val;
+        } elsif (ref $$valPt eq 'ARRAY') {
+            my @val = @{$$valPt}; # make a copy to avoid filtering twice
+            $self->Filter(\$_) foreach @val;
+            $$valPt = \@val;
+        } elsif (ref $$valPt eq 'HASH') {
+            my %val = %{$$valPt}; # make a copy to avoid filtering twice
+            $self->Filter(\$val{$_}) foreach keys %val;
+            $$valPt = \%val;
+        }
+    }
+}
+
+#------------------------------------------------------------------------------
 # Return printable value
 # Inputs: 0) ExifTool object reference
 #         1) value to print, 2) line length limit (undef defaults to 60, 0=unlimited)
@@ -5482,8 +5525,8 @@ sub ProcessJPEG($$)
                 # avoid looking for preview unless necessary because it really slows
                 # us down -- only look for it if we found pointer, and preview is
                 # outside EXIF, and PreviewImage is specifically requested
-                my $start = $self->GetValue('PreviewImageStart');
-                my $plen = $self->GetValue('PreviewImageLength');
+                my $start = $self->GetValue('PreviewImageStart', 'ValueConv');
+                my $plen = $self->GetValue('PreviewImageLength', 'ValueConv');
                 if (not $start or not $plen and $$self{PreviewError}) {
                     $start = $$self{PreviewImageStart};
                     $plen = $$self{PreviewImageLength};

@@ -14,7 +14,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '1.44';
+$VERSION = '1.45';
 
 sub ProcessMIE($$);
 sub ProcessMIEGroup($$$);
@@ -1242,7 +1242,7 @@ sub WriteMIEGroup($$$)
                         and not $$nvHash{EditOnly}));
                 }
                 # get the new value to write (undef to delete)
-                push @newVals, $et->GetNewValues($nvHash);
+                push @newVals, $et->GetNewValue($nvHash);
                 next unless @newVals;
                 $writable = $$newInfo{Writable} || $$tagTablePtr{WRITABLE};
                 if ($writable eq 'string') {

@@ -41,7 +41,7 @@ use vars qw($VERSION $AUTOLOAD);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.92';
+$VERSION = '1.93';
 
 sub FixWrongFormat($);
 sub ProcessMOV($$;$);
@@ -5539,7 +5539,7 @@ my %graphicsMode = (
             my $size = $val[0];
             for (;;) {
                 $key = $self->NextTagKey($key) or last;
-                $size += $self->GetValue($key);
+                $size += $self->GetValue($key, 'ValueConv');
             }
             return int($size * 8 / $val[1] + 0.5);
         },

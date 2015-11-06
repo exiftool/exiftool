@@ -16,7 +16,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.07';
+$VERSION = '1.08';
 
 #------------------------------------------------------------------------------
 # Read or write information in a PPM/PGM/PBM image
@@ -85,7 +85,7 @@ sub ProcessPPM($$)
 #
     if ($outfile) {
         my $nvHash;
-        my $newComment = $et->GetNewValues('Comment', \$nvHash);
+        my $newComment = $et->GetNewValue('Comment', \$nvHash);
         my $oldComment = $info{Comment};
         if ($et->IsOverwriting($nvHash, $oldComment)) {
             ++$$et{CHANGED};

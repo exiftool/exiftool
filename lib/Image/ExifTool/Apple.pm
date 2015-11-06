@@ -10,6 +10,7 @@ package Image::ExifTool::Apple;
 
 use strict;
 use vars qw($VERSION);
+use Image::ExifTool::Exif;
 use Image::ExifTool::PLIST;
 
 $VERSION = '1.02';

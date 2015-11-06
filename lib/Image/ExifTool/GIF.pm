@@ -19,7 +19,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.11';
+$VERSION = '1.12';
 
 # road map of directory locations in GIF images
 my %gifMap = (
@@ -137,7 +137,7 @@ sub ProcessGIF($$)
         $addDirs = $$et{ADD_DIRS};
         # determine if we are editing the File:Comment tag
         my $delGroup = $$et{DEL_GROUP};
-        $newComment = $et->GetNewValues('Comment', \$nvComment);
+        $newComment = $et->GetNewValue('Comment', \$nvComment);
         $setComment = 1 if $nvComment or $$delGroup{File};
         # change to GIF 89a if adding comment, XMP or ICC_Profile
         $buff = 'GIF89a' if $$addDirs{XMP} or $$addDirs{ICC_Profile} or defined $newComment;
@@ -290,7 +290,7 @@ Block:
                     if ($nvComment) {
                         $isOverwriting = $et->IsOverwriting($nvComment,$comment);
                         # get new comment again (may have been shifted)
-                        $newComment = $et->GetNewValues($nvComment) if defined $newComment;
+                        $newComment = $et->GetNewValue($nvComment) if defined $newComment;
                     } else {
                         # group delete, or deleting additional comments after writing one
                         $isOverwriting = 1;

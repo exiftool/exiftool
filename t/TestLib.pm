@@ -137,7 +137,7 @@ sub nearEnough($$)
 
     # allow CurrentIPTCDigest to be zero if Digest::MD5 isn't installed
     return 1 if $line1 =~ /Current IPTC Digest/ and
-                $line2 =~ /Current IPTC Digest: 0{32}/ and
+                $line2 =~ /Current IPTC Digest: (0|#){32}/ and
                 not eval 'require Digest::MD5';
 
     # analyze every token in the line, and allow rounding
@@ -186,6 +186,10 @@ sub nearEnough($$)
             $tok1 .= ' ' . $toks1[$i];      # add time to give date/time value
             $tok2 .= ' ' . $toks2[$i];
             last unless nearTime($tok1, $tok2, $line1, $line2);
+        # handle floating point numbers filtered by ExifTool test 29
+        } elsif ($tok1 =~ s/(\.#)#*(e[-+]\#+)?/$1/g or $tok2 =~ s/(\.#)#*(e[-+]\#+)?/$1/g) {
+            $tok2 =~ s/(\.#)#*(e[-+]\#+)?/$1/g;
+            last if $tok1 ne $tok2;
         } else {
             # check to see if both tokens are floating point numbers (with decimal points!)
             if ($tok1 =~ s/([^\d.]+)$//) {  # remove trailing units

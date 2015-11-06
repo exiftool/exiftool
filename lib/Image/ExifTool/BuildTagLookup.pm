@@ -32,7 +32,7 @@ use Image::ExifTool::XMP;
 use Image::ExifTool::Canon;
 use Image::ExifTool::Nikon;
 
-$VERSION = '2.90';
+$VERSION = '2.91';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -71,11 +71,12 @@ my %tweakOrder = (
    'Kodak::TextualInfo' => 'Kodak::IFD',
    'Kodak::Processing' => 'Kodak::TextualInfo',
     Leaf    => 'Kodak',
-    Nikon   => 'Minolta',
+    Minolta => 'Leaf',
+    Motorola => 'Minolta',
+    Nikon   => 'Motorola',
     NikonCustom => 'Nikon',
     NikonCapture => 'NikonCustom',
     Nintendo => 'NikonCapture',
-    Minolta => 'Leaf',
     Pentax  => 'Panasonic',
     SonyIDC => 'Sony',
     Unknown => 'SonyIDC',
@@ -590,7 +591,8 @@ my %shortcutNotes = (
     },
     Unsafe => q{
         "unsafe" tags in JPEG images which are normally not copied.  Defined here
-        as a shortcut to use when rebuilding JPEG EXIF from scratch
+        as a shortcut to use when rebuilding JPEG EXIF from scratch. See
+        L<FAQ number 20|../faq.html#Q20> for more information
     },
     LargeTags => q{
         large binary data tags which may be excluded to reduce memory usage if

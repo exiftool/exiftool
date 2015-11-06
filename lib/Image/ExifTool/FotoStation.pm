@@ -12,7 +12,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.03';
+$VERSION = '1.04';
 
 sub ProcessFotoStation($$);
 
@@ -195,7 +195,7 @@ sub ProcessFotoStation($$)
             } else {
                 my $nvHash = $et->GetNewValueHash($tagInfo);
                 if ($et->IsOverwriting($nvHash) > 0) {
-                    $newVal = $et->GetNewValues($nvHash);
+                    $newVal = $et->GetNewValue($nvHash);
                     $newVal = '' unless defined $newVal;
                     if ($verbose > 1) {
                         my $n = length $newVal;

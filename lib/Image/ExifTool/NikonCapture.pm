@@ -18,7 +18,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.13';
+$VERSION = '1.14';
 
 sub ProcessNikonCapture($$$);
 
@@ -770,7 +770,7 @@ sub WriteNikonCapture($$$)
                 my $oldVal = ReadValue($dataPt,$pos+22,$format,1,$size);
                 my $nvHash = $et->GetNewValueHash($tagInfo);
                 if ($et->IsOverwriting($nvHash, $oldVal)) {
-                    my $val = $et->GetNewValues($tagInfo);
+                    my $val = $et->GetNewValue($tagInfo);
                     $newVal = WriteValue($val, $$tagInfo{Writable}) if defined $val;
                     if (defined $newVal and length $newVal) {
                         ++$$et{CHANGED};

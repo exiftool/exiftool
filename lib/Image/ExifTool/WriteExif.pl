@@ -1371,7 +1371,7 @@ sub EncodeExifText($$)
     my ($et, $val) = @_;
     # does the string contain special characters?
     if ($val =~ /[\x80-\xff]/) {
-        my $order = $et->GetNewValues('ExifUnicodeByteOrder');
+        my $order = $et->GetNewValue('ExifUnicodeByteOrder');
         return "UNICODE\0" . $et->Encode($val,'UTF16',$order);
     } else {
         return "ASCII\0\0\0$val";
@@ -1832,7 +1832,7 @@ sub WriteExif($$$)
                 my $curInfo = $et->GetTagInfo($tagTablePtr, $tagID);
                 if (defined $curInfo and not $curInfo) {
                     # need value to evaluate the condition
-                    my ($val) = $et->GetNewValues($tagInfo);
+                    my ($val) = $et->GetNewValue($tagInfo);
                     # must convert to binary for evaluating in Condition
                     if ($$tagInfo{Format} and defined $val) {
                         $val = WriteValue($val, $$tagInfo{Format}, $$tagInfo{Count});
@@ -2360,7 +2360,7 @@ Entry:  for (;;) {
                         }
                     }
                     if ($isOverwriting) {
-                        $newVal = $et->GetNewValues($nvHash) unless defined $newVal;
+                        $newVal = $et->GetNewValue($nvHash) unless defined $newVal;
                         # value undefined if deleting this tag
                         # (also delete tag if cross-deleting and this isn't a date/time shift)
                         if (not defined $newVal or ($xDelete{$newID} and not defined $$nvHash{Shift})) {
@@ -2516,7 +2516,7 @@ NoOverwrite:            next if $isNew > 0;
                         # prefer tag from Composite table if it exists (otherwise
                         # PreviewImage data would be taken from Extra tag)
                         my $compInfo = $Image::ExifTool::Composite{$dataTag};
-                        $offsetData{$dataTag} = $et->GetNewValues($compInfo || $dataTag);
+                        $offsetData{$dataTag} = $et->GetNewValue($compInfo || $dataTag);
                         my $err;
                         if (defined $offsetData{$dataTag}) {
                             my $len = length $offsetData{$dataTag};
@@ -2936,7 +2936,7 @@ NoOverwrite:            next if $isNew > 0;
                         my $hasVRD;
                         if ($$et{NEW_VALUE}{$Image::ExifTool::Extra{CanonVRD}}) {
                             # adding or deleting as a block
-                            $hasVRD = $et->GetNewValues('CanonVRD') ? 1 : 0;
+                            $hasVRD = $et->GetNewValue('CanonVRD') ? 1 : 0;
                         } elsif ($$et{DEL_GROUP}{CanonVRD} or
                                  $$et{DEL_GROUP}{Trailer})
                         {
@@ -2959,7 +2959,7 @@ NoOverwrite:            next if $isNew > 0;
                         my $odd;
                         my $oddInfo = $Image::ExifTool::Composite{OriginalDecisionData};
                         if ($oddInfo and $$et{NEW_VALUE}{$oddInfo}) {
-                            $odd = $et->GetNewValues($dataTag);
+                            $odd = $et->GetNewValue($dataTag);
                             if ($verbose > 1) {
                                 print $out "    - $dirName:$dataTag\n" if $$newValuePt ne "\0\0\0\0";
                                 print $out "    + $dirName:$dataTag\n" if $odd;

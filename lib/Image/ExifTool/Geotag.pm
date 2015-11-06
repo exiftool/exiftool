@@ -23,7 +23,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:Public);
 
-$VERSION = '1.47';
+$VERSION = '1.48';
 
 sub JITTER() { return 2 }       # maximum time jitter
 
@@ -120,7 +120,7 @@ sub LoadTrackLog($$;$)
         return 'Geotag feature requires Time::Local installed';
     }
     # add data to existing track
-    my $geotag = $et->GetNewValues('Geotag') || { };
+    my $geotag = $et->GetNewValue('Geotag') || { };
     # get lookup for available information types
     my $has = $$geotag{Has};
     $has or $has = $$geotag{Has} = { 'pos' => 1 };
@@ -612,7 +612,7 @@ DoneFix:    $isDate = 1;
 sub ApplySyncCorr($$)
 {
     my ($et, $time) = @_;
-    my $sync = $et->GetNewValues('Geosync');
+    my $sync = $et->GetNewValue('Geosync');
     if (ref $sync eq 'HASH') {
         my $syncTimes = $$sync{Times};
         if ($syncTimes) {
@@ -706,7 +706,7 @@ sub SetGeoValues($$;$)
 {
     local $_;
     my ($et, $val, $writeGroup) = @_;
-    my $geotag = $et->GetNewValues('Geotag');
+    my $geotag = $et->GetNewValue('Geotag');
     my $verbose = $et->Options('Verbose');
     my ($fix, $time, $fsec, $noDate, $secondTry, $iExt, $iDir);
 
@@ -1013,7 +1013,7 @@ Category:       foreach $category (qw{pos track alt orient}) {
 sub ConvertGeosync($$)
 {
     my ($et, $val) = @_;
-    my $sync = $et->GetNewValues('Geosync') || { };
+    my $sync = $et->GetNewValue('Geosync') || { };
     my ($syncFile, $gpsTime, $imgTime);
 
     if ($val =~ /(.*?)\@(.*)/) {

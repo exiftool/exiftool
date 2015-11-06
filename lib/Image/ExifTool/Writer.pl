@@ -262,12 +262,15 @@ sub SetNewValue($;$$%)
             if (@$value > 1) {
                 # set all list-type tags first
                 my $replace = $options{Replace};
+                my $noJoin;
                 foreach (@$value) {
+                    $noJoin = 1 if ref $_;
                     my ($n, $e) = SetNewValue($self, $tag, $_, %options, ListOnly => 1);
                     $err = $e if $e;
                     $numSet += $n;
                     delete $options{Replace}; # don't replace earlier values in list
                 }
+                return $numSet if $noJoin;  # don't join if list contains objects
                 # and now set only non-list tags
                 $value = join $$self{OPTIONS}{ListSep}, @$value;
                 $options{Replace} = $replace;
@@ -1080,6 +1083,7 @@ sub SetNewValuesFromFile($$;@)
         ExtendedXMP     => $$options{ExtendedXMP},
         ExtractEmbedded => $$options{ExtractEmbedded},
         FastScan        => $$options{FastScan},
+        Filter          => $$options{Filter},
         FixBase         => $$options{FixBase},
         GlobalTimeShift => $$options{GlobalTimeShift},
         IgnoreMinorErrors=>$$options{IgnoreMinorErrors},
@@ -1380,7 +1384,7 @@ SET:    foreach $set (@setList) {
 # 2) Must call AFTER IsOverwriting() returns 1 to get proper value for shifted times
 # 3) Tag name is case sensitive and may be prefixed by family 0 or 1 group name
 # 4) Value may have been modified by CHECK_PROC routine after ValueConv
-sub GetNewValues($$;$)
+sub GetNewValue($$;$)
 {
     local $_;
     my $self = shift;
@@ -1607,7 +1611,7 @@ sub SetFileModifyDate($$;$$$)
     my ($self, $file, $originalTime, $tag, $isUnixTime) = @_;
     my $nvHash;
     $tag = 'FileModifyDate' unless defined $tag;
-    my $val = $self->GetNewValues($tag, \$nvHash);
+    my $val = $self->GetNewValue($tag, \$nvHash);
     return 0 unless defined $val;
     my $isOverwriting = $self->IsOverwriting($nvHash);
     return 0 unless $isOverwriting;
@@ -1658,15 +1662,15 @@ sub SetFileName($$;$$)
     unless (defined $newName) {
         if ($opt) {
             if ($opt eq 'Link') {
-                $newName = $self->GetNewValues('HardLink');
+                $newName = $self->GetNewValue('HardLink');
             } elsif ($opt eq 'Test') {
-                $newName = $self->GetNewValues('TestName');
+                $newName = $self->GetNewValue('TestName');
             }
             return 0 unless defined $newName;
         } else {
-            my $filename = $self->GetNewValues('FileName', \$nvHash);
+            my $filename = $self->GetNewValue('FileName', \$nvHash);
             $doName = 1 if defined $filename and $self->IsOverwriting($nvHash, $file);
-            my $dir = $self->GetNewValues('Directory', \$nvHash);
+            my $dir = $self->GetNewValue('Directory', \$nvHash);
             $doDir = 1 if defined $dir and $self->IsOverwriting($nvHash, $file);
             return 0 unless $doName or $doDir;  # nothing to do
             if ($doName) {
@@ -1774,8 +1778,8 @@ sub WriteInfo($$;$$)
     # first, save original file modify date if necessary
     # (do this now in case we are modifying file in place and shifting date)
     my ($nvHash, $nvHash2, $originalTime, $createTime);
-    my $fileModifyDate = $self->GetNewValues('FileModifyDate', \$nvHash);
-    my $fileCreateDate = $self->GetNewValues('FileCreateDate', \$nvHash2);
+    my $fileModifyDate = $self->GetNewValue('FileModifyDate', \$nvHash);
+    my $fileCreateDate = $self->GetNewValue('FileCreateDate', \$nvHash2);
     my ($aTime, $mTime, $cTime);
     if (defined $fileModifyDate and $self->IsOverwriting($nvHash) < 0 and
         defined $infile and ref $infile ne 'SCALAR')
@@ -1794,12 +1798,12 @@ sub WriteInfo($$;$$)
 #
     my ($numNew, $numPseudo) = $self->CountNewValues();
     if (not defined $outfile and defined $infile) {
-        $hardLink = $self->GetNewValues('HardLink');
-        $testName = $self->GetNewValues('TestName');
+        $hardLink = $self->GetNewValue('HardLink');
+        $testName = $self->GetNewValue('TestName');
         undef $hardLink if defined $hardLink and not length $hardLink;
         undef $testName if defined $testName and not length $testName;
-        my $newFileName =  $self->GetNewValues('FileName', \$nvHash);
-        my $newDir = $self->GetNewValues('Directory');
+        my $newFileName =  $self->GetNewValue('FileName', \$nvHash);
+        my $newDir = $self->GetNewValue('Directory');
         if (defined $newDir and length $newDir) {
             $newDir .= '/' unless $newDir =~ m{/$};
         } else {
@@ -2410,6 +2414,14 @@ sub AddUserDefinedTags($%)
 # Functions below this are not part of the public API
 
 #------------------------------------------------------------------------------
+# Maintain backward compatibility for old GetNewValues function name
+sub GetNewValues($$;$)
+{
+    my ($self, $tag, $nvHashPt) = @_;
+    return $self->GetNewValue($tag, $nvHashPt);
+}
+
+#------------------------------------------------------------------------------
 # Un-escape string according to options settings and clear UTF-8 flag
 # Inputs: 0) ExifTool ref, 1) string ref or string ref ref
 # Notes: also de-references SCALAR values
@@ -3018,7 +3030,7 @@ sub IsOverwriting($$;$)
             return 0;
         }
         # ensure that the shifted value is valid and reformat if necessary
-        my $checkVal = $self->GetNewValues($nvHash);
+        my $checkVal = $self->GetNewValue($nvHash);
         return 0 unless defined $checkVal;
         # don't bother overwriting if value is the same
         return 0 if $val eq $$nvHash{Value}[0];
@@ -3550,7 +3562,7 @@ sub WriteDirectory($$$;$)
         }
         last unless $self->IsOverwriting($nvHash, $dataPt ? $$dataPt : '');
         my $verb = 'Writing';
-        my $newVal = $self->GetNewValues($nvHash);
+        my $newVal = $self->GetNewValue($nvHash);
         unless (defined $newVal and length $newVal) {
             return '' unless $dataPt or $$dirInfo{RAF}; # nothing to do if block never existed
             $verb = 'Deleting';
@@ -4148,7 +4160,7 @@ sub SetPreferredByteOrder($)
 {
     my $self = shift;
     my $byteOrder = $self->Options('ByteOrder') ||
-                    $self->GetNewValues('ExifByteOrder') ||
+                    $self->GetNewValue('ExifByteOrder') ||
                     $$self{MAKER_NOTE_BYTE_ORDER} || 'MM';
     unless (SetByteOrder($byteOrder)) {
         warn "Invalid byte order '$byteOrder'\n" if $self->Options('Verbose');
@@ -4516,7 +4528,7 @@ sub AddNewTrailers($;@)
     foreach $type (@types) {
         next unless $$self{NEW_VALUE}{$Image::ExifTool::Extra{$type}};
         next if $$self{"Did$type"};
-        my $val = $self->GetNewValues($type) or next;
+        my $val = $self->GetNewValue($type) or next;
         # DR4 record must be wrapped in VRD trailer package
         if ($type eq 'CanonDR4') {
             next if $$self{DidCanonVRD};    # (only allow one VRD trailer)
@@ -4930,7 +4942,7 @@ sub WriteJPEG($$)
             last if $dirCount{Adobe};
             if (exists $$addDirs{Adobe} and not defined $doneDir{Adobe}) {
                 $doneDir{Adobe} = 1;
-                my $buff = $self->GetNewValues('Adobe');
+                my $buff = $self->GetNewValue('Adobe');
                 if ($buff) {
                     $verbose and print $out "Creating APP14:\n  Creating Adobe segment\n";
                     my $size = length($buff);
@@ -4949,7 +4961,7 @@ sub WriteJPEG($$)
             if (exists $$addDirs{COM} and not defined $doneDir{COM}) {
                 $doneDir{COM} = 1;
                 next if $$delGroup{File} and $$delGroup{File} != 2;
-                my $newComment = $self->GetNewValues('Comment');
+                my $newComment = $self->GetNewValue('Comment');
                 if (defined $newComment and length($newComment)) {
                     if ($verbose) {
                         print $out "Creating COM:\n";
@@ -5609,7 +5621,7 @@ sub WriteJPEG($$)
                         my $val = $segData;
                         $val =~ s/\0+$//;   # allow for stupid software that adds NULL terminator
                         if ($self->IsOverwriting($nvHash, $val) or $$delGroup{File}) {
-                            $newComment = $self->GetNewValues($nvHash);
+                            $newComment = $self->GetNewValue($nvHash);
                         } else {
                             delete $$editDirs{COM}; # we aren't editing COM after all
                             last;
@@ -6021,7 +6033,7 @@ sub WriteBinaryData($$$)
         next unless defined $val;
         my $nvHash = $self->GetNewValueHash($tagInfo, $$self{CUR_WRITE_GROUP});
         next unless $self->IsOverwriting($nvHash, $val);
-        my $newVal = $self->GetNewValues($nvHash);
+        my $newVal = $self->GetNewValue($nvHash);
         next unless defined $newVal;    # can't delete from a binary table
         # only write masked bits if specified
         my $mask = $$tagInfo{Mask};
@@ -6029,7 +6041,7 @@ sub WriteBinaryData($$$)
         # set the size
         if ($$tagInfo{DataTag} and not $$tagInfo{IsOffset}) {
             warn 'Internal error' unless $newVal == 0xfeedfeed;
-            my $data = $self->GetNewValues($$tagInfo{DataTag});
+            my $data = $self->GetNewValue($$tagInfo{DataTag});
             $newVal = length($data) if defined $data;
             my $format = $$tagInfo{Format} || $$tagTablePtr{FORMAT} || 'int32u';
             if ($format =~ /^int16/ and $newVal > 0xffff) {
@@ -6079,7 +6091,7 @@ sub WriteBinaryData($$$)
             $$previewInfo{IsShort} = 1 unless $format eq 'int32u';
             $$previewInfo{Absolute} = 1 if $$tagInfo{IsOffset} and $$tagInfo{IsOffset} eq '3';
             # get the value of the Composite::PreviewImage tag
-            $$previewInfo{Data} = $self->GetNewValues($Image::ExifTool::Composite{PreviewImage});
+            $$previewInfo{Data} = $self->GetNewValue($Image::ExifTool::Composite{PreviewImage});
             unless (defined $$previewInfo{Data}) {
                 if ($offset >= 0 and $offset + $size <= $$dirInfo{DataLen}) {
                     $$previewInfo{Data} = substr(${$$dirInfo{DataPt}},$offset,$size);

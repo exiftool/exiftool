@@ -17,6 +17,25 @@ considered development releases, and are not uploaded to <a href="http://search.
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v10.05'><b>Nov. 6, 2015 - Version 10.05</b></a>
+<ul>
+<li>Added new Canon and Sony LensType values
+<li>Added some new Nikon LensID's (thanks Robert Rottmerhusen)
+<li>Added a new PentaxModelID
+<li>Added preliminary support for <a href="TagNames/Motorola.html">Motorola maker notes</a>
+<li>Changed format of XMP-photoshop:DocumentAncestors to write a simple Bag of
+    strings rather than structures (since this is what the Adobe software
+    writes, contrary to their own XMP specification)
+<li>Fixed problem where HASH references may be exposed when copying a list of
+    structures to a non-list-type tag
+<li>API Changes:
+    <ul>
+    <li>Added Filter option
+    <li>Changed GetNewValues method name to <a href="ExifTool.html#GetNewValue">GetNewValue</a> (GetNewValues still
+        works for backward compatibility)
+    </ul>
+</ul>
+
 <a name='v10.04'><b>Oct. 28, 2015 - Version 10.04</b></a>
 <ul>
 <li>Added a few new <a href="TagNames/Microsoft.html#XMP">Microsoft XMP</a> tags

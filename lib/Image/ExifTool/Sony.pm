@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.26';
+$VERSION = '2.27';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -101,6 +101,7 @@ my %sonyLensTypes2 = (
 
     49216 => 'Zeiss Batis 25mm F2', #JR
     49217 => 'Zeiss Batis 85mm F1.8', #JR
+    49234 => 'Zeiss Loxia 21mm f/2.8', #PH
 );
 
 # ExposureProgram values (ref PH, mainly decoded from A200)

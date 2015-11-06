@@ -54,8 +54,8 @@ retrieve any number of them.</p>
 </ul>
 </td><td valign=top>
 <ul>
+<li><a href="#GetNewValue">GetNewValue</a></li>
 <li><a href="#SetNewValuesFromFile">SetNewValuesFromFile</a></li>
-<li><a href="#GetNewValues">GetNewValues</a></li>
 <li><a href="#CountNewValues">CountNewValues</a></li>
 <li><a href="#SaveNewValues">SaveNewValues</a></li>
 <li><a href="#RestoreNewValues">RestoreNewValues</a></li>
@@ -557,6 +557,11 @@ distribution for examples.</p>
     to 3, the file is not actually parsed, and only an initial guess at FileType
     and some pseudo tags are returned. </td>
     <td align=center>0, 1, 2 or 3</td><td align=center>undef</td></tr>
+<tr><td>Filter</td>
+    <td>Perl expression used to filter all returned tag values.  Applies to
+    PrintConv values only.</td><td>Expression to act on the value of the Perl
+    default variable ($_), changing the value of this variable as required</td>
+    <td align=center>undef</td></tr>
 <tr><td>FixBase</td>
     <td>Fix maker notes base offset.  Allows values to be extracted from maker notes
     which have been corrupted by editing with 3rd party software.</td>
@@ -863,9 +868,10 @@ $success = $exifTool-&gt;<b>ExtractInfo</b>('image.jpg', \%options);
 <p>The following options are effective in the call to <a href="#ExtractInfo">ExtractInfo</a>:</p>
 <blockquote>
 Binary, Charset, CharsetEXIF, CharsetFileName, CharsetID3, CharsetIPTC,
-CharsetQuickTime, Composite, ExtractEmbedded, FastScan, FixBase, HtmlDump,
-HtmlDumpBase, IgnoreMinorErrors, Lang, LargeFileSupport, MakerNotes,
-PNGEarlyXMP, ScanForXMP, Struct, TextOut, Unknown and Verbose.
+CharsetQuickTime, Composite, ExtendedXMP, ExtractEmbedded, FastScan,
+FixBase, HtmlDump, HtmlDumpBase, IgnoreMinorErrors, Lang, LargeFileSupport,
+MakerNotes, NoPDFList, PNGEarlyXMP, ScanForXMP, Struct, SystemTags, TextOut,
+Unknown and Verbose.
 </blockquote>
 
 <hr><h2><a name="GetInfo">GetInfo</a></h2>
@@ -905,9 +911,9 @@ $info = $exifTool-&gt;<b>GetInfo</b>({Group2 =&gt; ['Author', 'Location']});
 </pre></td></tr></table></blockquote>
 <p>The following options are effective in the call to <a href="#GetInfo">GetInfo</a>:</p>
 <blockquote>
-Charset, CoordFormat, DateFormat, Duplicates, Escape, Exclude, Group#,
-GlobalTimeShift, Lang, List, ListSep, PrintConv, Sort (if a tag list reference
-is given) and StrictDate.
+Charset, CoordFormat, DateFormat, Duplicates, Escape, Exclude, Filter, Group#,
+GlobalTimeShift, Lang, List, ListItem, ListSep, PrintConv, Sort (if a tag
+list reference is given) and StrictDate.
 </blockquote>
 
 <hr><h2><a name="WriteInfo">WriteInfo</a></h2>
@@ -1118,8 +1124,8 @@ my @keywords = $exifTool-&gt;<b>GetValue</b>('Keywords', 'ValueConv');
 <p>The following options are in effect when <a href="#GetValue">GetValue</a> is
 called:</p>
 <blockquote>
-Charset, CoordFormat, DateFormat, Escape, GlobalTimeShift, Lang, List, ListSep,
-PrintConv and StrictDate.
+Charset, CoordFormat, DateFormat, Escape, Filter, GlobalTimeShift, Lang, List,
+ListItem, ListSep, PrintConv and StrictDate.
 </blockquote>
 
 <hr><h2><a name="SetNewValue">SetNewValue</a></h2>
@@ -1320,6 +1326,30 @@ Charset, Escape, IgnoreMinorErrors, Lang, ListSep, ListSplit, PrintConv, Verbose
 and WriteMode.
 </blockquote>
 
+<hr><h2><a name="GetNewValue">GetNewValue</a><a name="GetNewValues"></a></h2>
+<p>Get the new Raw value for a tag.  This is the value set by
+<a href="#SetNewValue">SetNewValue</a> that is queued to be written to
+file.  List-type tags may return multiple values in list context.</p>
+<blockquote><table class='norm'>
+<tr><td><b>Prototype</b></td><td>GetNewValue($$)</td></tr>
+<tr><td valign=top><b>Inputs</b></td><td><b>0)</b> ExifTool object reference
+ <br><b>1)</b> Tag name (case sensitive, may be prefixed by family 0 or 1 group name)
+</td></tr>
+<tr><td valign=top><b>Returns</b></td><td>List of new Raw tag values, or first value in
+list when called in scalar context. The list may be empty either if the tag
+isn't being written, or if it is being deleted (ie. if
+<a href="#SetNewValue">SetNewValue</a> was called without a value).
+</td></tr>
+</table></blockquote>
+<p><b>Examples:</b></p>
+<blockquote><table class='box'><tr><td><pre>
+my $rawVal = $exifTool-&gt;<b>GetNewValue</b>($tag);
+</pre></td></tr></table></blockquote>
+
+<blockquote><table class='box'><tr><td><pre>
+my @rawVals = $exifTool-&gt;<b>GetNewValue</b>($tag);
+</pre></td></tr></table></blockquote>
+
 <hr><h2><a name="SetNewValuesFromFile">SetNewValuesFromFile</a></h2>
 <p>A very powerful routine that sets new values for tags from information found
 in a specified file.</p>
@@ -1461,30 +1491,6 @@ extracted from the source file using this routine.</p>
 extracted by this routine.  This allows the hierarchy of complex structures to
 be preserved when copying, but the Struct option may be set to 0 to override
 this behaviour and copy as flattened tags instead.</p>
-
-<hr><h2><a name="GetNewValues">GetNewValues</a></h2>
-<p>Get list of new Raw values for the specified tag.  These are the values that
-will be written to file.  Most tags return only a single value, but List-type
-tags may return multiple values.</p>
-<blockquote><table class='norm'>
-<tr><td><b>Prototype</b></td><td>GetNewValues($$)</td></tr>
-<tr><td valign=top><b>Inputs</b></td><td><b>0)</b> ExifTool object reference
- <br><b>1)</b> Tag name (case sensitive, may be prefixed by family 0 or 1 group name)
-</td></tr>
-<tr><td valign=top><b>Returns</b></td><td>List of new Raw tag values, or first value in
-list when called in scalar context. The list may be empty either if the tag
-isn't being written, or if it is being deleted (ie. if
-<a href="#SetNewValue">SetNewValue</a> was called without a value).
-</td></tr>
-</table></blockquote>
-<p><b>Examples:</b></p>
-<blockquote><table class='box'><tr><td><pre>
-my $rawVal = $exifTool-&gt;<b>GetNewValues</b>($tag);
-</pre></td></tr></table></blockquote>
-
-<blockquote><table class='box'><tr><td><pre>
-my @rawVals = $exifTool-&gt;<b>GetNewValues</b>($tag);
-</pre></td></tr></table></blockquote>
 
 <hr><h2><a name="CountNewValues">CountNewValues</a></h2>
 <p>Return the total number of new values set.</p>
@@ -1912,11 +1918,11 @@ MIE-Doc, MIE-Extender, MIE-Flash, MIE-GPS, MIE-Geo, MIE-Image, MIE-Lens,
 MIE-Main, MIE-MakerNotes, MIE-Meta, MIE-Orient, MIE-Preview, MIE-Thumbnail,
 MIE-UTM, MIE-Unknown, MIE-Video, MIFF, MNG, MOBI, MOI, MPC, MPEG, MPF0,
 MPImage, MXF, MakerNotes, MakerUnknown, Matroska, MediaJukebox, MetaIFD,
-Microsoft, Minolta, MinoltaRaw, NITF, Nikon, NikonCapture, NikonCustom,
-NikonScan, Nintendo, Ocad, Ogg, Olympus, OpenEXR, PDF, PICT, PNG, PNG-pHYs,
-PSP, Palm, Panasonic, PanasonicRaw, Pentax, PhaseOne, PhotoCD,
-PhotoMechanic, Photoshop, PictureInfo, PostScript, PreviewIFD, PrintIM,
-ProfileIFD, Qualcomm, QuickTime, RAF, RAF2, RIFF, RMETA, RSRC, RTF,
+Microsoft, Minolta, MinoltaRaw, Motorola, NITF, Nikon, NikonCapture,
+NikonCustom, NikonScan, Nintendo, Ocad, Ogg, Olympus, OpenEXR, PDF, PICT,
+PNG, PNG-pHYs, PSP, Palm, Panasonic, PanasonicRaw, Pentax, PhaseOne,
+PhotoCD, PhotoMechanic, Photoshop, PictureInfo, PostScript, PreviewIFD,
+PrintIM, ProfileIFD, Qualcomm, QuickTime, RAF, RAF2, RIFF, RMETA, RSRC, RTF,
 Radiance, Rawzor, Real, Real-CONT, Real-MDPR, Real-PROP, Real-RA3, Real-RA4,
 Real-RA5, Real-RJMD, Reconyx, Ricoh, SPIFF, SR2, SR2DataIFD, SR2SubIFD,
 SRF#, SVG, Samsung, Sanyo, Scalado, Sigma, SigmaRaw, Sony, SonyIDC, Stim,

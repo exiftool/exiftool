@@ -14,7 +14,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.12';
+$VERSION = '1.13';
 
 sub ProcessAPP12($$$);
 sub ProcessDucky($$$);
@@ -183,7 +183,7 @@ sub WriteDucky($$$)
                 $isNew = 1;
             }
             if ($isNew) {
-                $val = $et->GetNewValues($nvHash);
+                $val = $et->GetNewValue($nvHash);
                 ++$$et{CHANGED};
                 next unless defined $val;   # next if tag is being deleted
                 $et->VerboseValue("+ Ducky:$$tagInfo{Name}", $val);

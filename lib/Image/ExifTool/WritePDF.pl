@@ -445,7 +445,7 @@ sub WritePDF($$)
         next unless $deleted or $$tagInfo{List} or not exists $$infoDict{$tagID};
 
         # add new values to existing ones
-        my @newVals = $et->GetNewValues($nvHash);
+        my @newVals = $et->GetNewValue($nvHash);
         if (@newVals) {
             push @vals, @newVals;
             ++$infoChanged;

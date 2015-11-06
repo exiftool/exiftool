@@ -22,7 +22,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Canon;
 
-$VERSION = '1.26';
+$VERSION = '1.27';
 
 sub ProcessCanonVRD($$;$);
 sub WriteCanonVRD($$;$);
@@ -1698,7 +1698,7 @@ sub ProcessDR4($$;$)
     # write CanonDR4 as a block if specified
     if ($isWriting) {
         my $nvHash;
-        my $newVal = $et->GetNewValues('CanonDR4', \$nvHash);
+        my $newVal = $et->GetNewValue('CanonDR4', \$nvHash);
         if ($newVal) {
             $et->VPrint(0, "  Writing CanonDR4 as a block\n");
             $$et{DidCanonVRD} = 1;  # set flag so we don't add this twice
@@ -1825,7 +1825,7 @@ sub ProcessDR4($$;$)
                     }
                     $val = ReadValue($dataPt, $off, $format, undef, $len) unless defined $val;
                     my $nvHash;
-                    my $newVal = $et->GetNewValues($tagInfo, \$nvHash);
+                    my $newVal = $et->GetNewValue($tagInfo, \$nvHash);
                     if ($et->IsOverwriting($nvHash, $val) and defined $newVal) {
                         my $count = int($len / Image::ExifTool::FormatSize($format));
                         my $rtnVal = WriteValue($newVal, $format, $count, $dataPt, $off);
@@ -1878,7 +1878,7 @@ sub ProcessVRD($$)
 
     if (not $num and $$dirInfo{OutFile}) {
         # create new VRD file from scratch
-        my $newVal = $et->GetNewValues('CanonVRD');
+        my $newVal = $et->GetNewValue('CanonVRD');
         if ($newVal) {
             $et->VPrint(0, "  Writing CanonVRD as a block\n");
             Write($$dirInfo{OutFile}, $newVal) or return -1;
@@ -1918,7 +1918,7 @@ sub WriteCanonVRD($$;$)
     my ($et, $dirInfo, $tagTablePtr) = @_;
     $et or return 1;    # allow dummy access
     my $nvHash = $et->GetNewValueHash($Image::ExifTool::Extra{CanonVRD});
-    my $val = $et->GetNewValues($nvHash);
+    my $val = $et->GetNewValue($nvHash);
     $val = '' unless defined $val;
     return undef unless $et->IsOverwriting($nvHash, $val);
     ++$$et{CHANGED};
@@ -2024,7 +2024,7 @@ sub ProcessCanonVRD($$;$)
         }
         if ($doDel) {
             if ($$et{FILE_TYPE} eq 'VRD') {
-                my $newVal = $et->GetNewValues('CanonVRD');
+                my $newVal = $et->GetNewValue('CanonVRD');
                 if ($newVal) {
                     $verbose and print $out "  Writing CanonVRD as a block\n";
                     if ($outfile eq $dataPt) {
@@ -2045,9 +2045,9 @@ sub ProcessCanonVRD($$;$)
             return 1;
         }
         # write now and return if CanonVRD was set as a block
-        my $val = $et->GetNewValues('CanonVRD');
+        my $val = $et->GetNewValue('CanonVRD');
         unless ($val) {
-            $val = $et->GetNewValues('CanonDR4');
+            $val = $et->GetNewValue('CanonDR4');
             $vrdType = 'DR4' if $val;
         }
         if ($val) {
@@ -2138,7 +2138,7 @@ sub ProcessCanonVRD($$;$)
                 if ($$et{NEW_VALUE}{$tagInfo}) {
                     # write as a block
                     $et->VPrint(0, "Writing $$tagInfo{Name} as a block\n");
-                    $dat = $et->GetNewValues($tagInfo);
+                    $dat = $et->GetNewValue($tagInfo);
                     $dat = '' unless defined $dat;
                     ++$$et{CHANGED};
                 } else {

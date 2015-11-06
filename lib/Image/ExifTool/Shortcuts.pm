@@ -19,7 +19,7 @@ package Image::ExifTool::Shortcuts;
 use strict;
 use vars qw($VERSION);
 
-$VERSION = '1.56';
+$VERSION = '1.57';
 
 # this is a special table used to define command-line shortcuts
 # (documentation Notes may be added for these via %shortcutNotes in BuildTagLookup.pm)
@@ -149,6 +149,7 @@ $VERSION = '1.56';
         'MakerNoteMinolta',
         'MakerNoteMinolta2',
         'MakerNoteMinolta3',
+        'MakerNoteMotorola',
         'MakerNoteNikon',
         'MakerNoteNikon2',
         'MakerNoteNikon3',

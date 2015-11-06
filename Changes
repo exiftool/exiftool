@@ -7,6 +7,22 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.00. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Nov. 6, 2015 - Version 10.05
+
+  - Added new Canon and Sony LensType values
+  - Added some new Nikon LensID's (thanks Robert Rottmerhusen)
+  - Added a new PentaxModelID
+  - Added preliminary support for Motorola maker notes
+  - Changed format of XMP-photoshop:DocumentAncestors to write a simple Bag of
+    strings rather than structures (since this is what the Adobe software
+    writes, contrary to their own XMP specification)
+  - Fixed problem where HASH references may be exposed when copying a list of
+    structures to a non-list-type tag
+  - API Changes:
+      - Added Filter option
+      - Changed GetNewValues method name to GetNewValue (GetNewValues still
+        works for backward compatibility)
+
 Oct. 28, 2015 - Version 10.04
 
   - Added a few new Microsoft XMP tags

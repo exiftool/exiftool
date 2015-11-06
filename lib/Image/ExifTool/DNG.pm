@@ -17,7 +17,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::MakerNotes;
 use Image::ExifTool::CanonRaw;
 
-$VERSION = '1.21';
+$VERSION = '1.22';
 
 sub ProcessOriginalRaw($$$);
 sub ProcessAdobeData($$$);
@@ -420,7 +420,7 @@ sub ProcessAdobeCRW($$$)
                 } elsif ($$newTags{$tagID}) {
                     my $nvHash = $et->GetNewValueHash($tagInfo);
                     if ($et->IsOverwriting($nvHash, $val)) {
-                        my $newVal = $et->GetNewValues($nvHash);
+                        my $newVal = $et->GetNewValue($nvHash);
                         my $verboseVal;
                         $verboseVal = $newVal if $verbose > 1;
                         # convert to specified format if necessary

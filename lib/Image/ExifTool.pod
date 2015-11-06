@@ -611,6 +611,13 @@ MakerNote information.  When set to 3, the file is not actually parsed, and
 only an initial guess at FileType and some pseudo tags are returned. 
 Default is undef.
 
+=item Filter
+
+Perl expression used to filter values for all tags.  The expression acts on
+the value of the Perl default variable ($_), and changes the value of this
+variable as required.  Applies to all returned values unless PrintConv
+option is disabled.
+
 =item FixBase
 
 Fix maker notes base offset.  A common problem with image editing software
@@ -943,9 +950,10 @@ is given.  The following options are effective in the call to
 L</ExtractInfo>:
 
 Binary, Charset, CharsetEXIF, CharsetFileName, CharsetID3, CharsetIPTC,
-CharsetPhotoshop, CharsetQuickTime, Composite, ExtractEmbedded, FastScan,
-FixBase, HtmlDump, HtmlDumpBase, IgnoreMinorErrors, Lang, LargeFileSupport,
-MakerNotes, PNGEarlyXMP, ScanForXMP, Struct, TextOut, Unknown and Verbose.
+CharsetPhotoshop, CharsetQuickTime, Composite, ExtendedXMP, ExtractEmbedded,
+FastScan, FixBase, HtmlDump, HtmlDumpBase, IgnoreMinorErrors, Lang,
+LargeFileSupport, MakerNotes, NoPDFList, PNGEarlyXMP, ScanForXMP, Struct,
+TextOut, Unknown and Verbose.
 
 =item Return Value:
 
@@ -979,9 +987,9 @@ L</ImageInfo>.
 Inputs are the same as L</ExtractInfo> and L</ImageInfo> except that an
 image can not be specified.  Options in effect are:
 
-Charset, CoordFormat, DateFormat, Duplicates, Escape, Exclude, Group#,
-GlobalTimeShift, Lang, List, ListSep, PrintConv, Sort (if a tag list
-reference is given) and StrictDate.
+Charset, CoordFormat, DateFormat, Duplicates, Escape, Exclude, Filter,
+Group#, GlobalTimeShift, Lang, List, ListItem, ListSep, PrintConv, Sort (if
+a tag list reference is given) and StrictDate.
 
 =item Return Value:
 
@@ -1189,8 +1197,8 @@ optional group specifier), use L</GetInfo> instead.
 
 The following options are in effect when L</GetValue> is called:
 
-Charset, CoordFormat, DateFormat, Escape, GlobalTimeShift, Lang, List,
-ListSep, PrintConv and StrictDate.
+Charset, CoordFormat, DateFormat, Escape, Filter, GlobalTimeShift, Lang,
+List, ListItem, ListSep, PrintConv and StrictDate.
 
 =over 4
 
@@ -1436,6 +1444,32 @@ The following ExifTool options are effective in the call to L</SetNewValue>:
 Charset, Escape, IgnoreMinorErrors, Lang, ListSep, ListSplit, PrintConv,
 Verbose and WriteMode.
 
+=head2 GetNewValue
+
+Get the new Raw value for a tag.  This is the value set by L</SetNewValue>
+this is queued to be written to file.  List-type tags may return multiple
+values in list context.
+
+    $rawVal = $exifTool->GetNewValue($tag);
+
+    @rawVals = $exifTool->GetNewValue($tag);
+
+=over 4
+
+=item Inputs:
+
+0) ExifTool object reference
+
+1) Tag name (case sensitive, may be prefixed by family 0 or 1 group name)
+
+=item Return Values:
+
+List of new Raw tag values, or first value in list when called in scalar
+context.  The list may be empty either if the tag isn't being written, or if
+it is being deleted (ie. if L</SetNewValue> was called without a value).
+
+=back
+
 =head2 SetNewValuesFromFile
 
 A very powerful routine that sets new values for tags from information found
@@ -1564,32 +1598,6 @@ The L</Struct> option is enabled by default for tags extracted by this
 routine.  This allows the hierarchy of complex structures to be preserved
 when copying, but the Struct option may be set to 0 to override this
 behaviour and copy as flattened tags instead.
-
-=back
-
-=head2 GetNewValues
-
-Get list of new Raw values for the specified tag.  These are the values that
-will be written to file.  Most tags return only a single value, but
-List-type tags may return multiple values.
-
-    $rawVal = $exifTool->GetNewValues($tag);
-
-    @rawVals = $exifTool->GetNewValues($tag);
-
-=over 4
-
-=item Inputs:
-
-0) ExifTool object reference
-
-1) Tag name (case sensitive, may be prefixed by family 0 or 1 group name)
-
-=item Return Values:
-
-List of new Raw tag values, or first value in list when called in scalar
-context.  The list may be empty either if the tag isn't being written, or if
-it is being deleted (ie. if L</SetNewValue> was called without a value).
 
 =back
 
@@ -2096,11 +2104,11 @@ MIE-Doc, MIE-Extender, MIE-Flash, MIE-GPS, MIE-Geo, MIE-Image, MIE-Lens,
 MIE-Main, MIE-MakerNotes, MIE-Meta, MIE-Orient, MIE-Preview, MIE-Thumbnail,
 MIE-UTM, MIE-Unknown, MIE-Video, MIFF, MNG, MOBI, MOI, MPC, MPEG, MPF0,
 MPImage, MXF, MakerNotes, MakerUnknown, Matroska, MediaJukebox, MetaIFD,
-Microsoft, Minolta, MinoltaRaw, NITF, Nikon, NikonCapture, NikonCustom,
-NikonScan, Nintendo, Ocad, Ogg, Olympus, OpenEXR, PDF, PICT, PNG, PNG-pHYs,
-PSP, Palm, Panasonic, PanasonicRaw, Pentax, PhaseOne, PhotoCD,
-PhotoMechanic, Photoshop, PictureInfo, PostScript, PreviewIFD, PrintIM,
-ProfileIFD, Qualcomm, QuickTime, RAF, RAF2, RIFF, RMETA, RSRC, RTF,
+Microsoft, Minolta, MinoltaRaw, Motorola, NITF, Nikon, NikonCapture,
+NikonCustom, NikonScan, Nintendo, Ocad, Ogg, Olympus, OpenEXR, PDF, PICT,
+PNG, PNG-pHYs, PSP, Palm, Panasonic, PanasonicRaw, Pentax, PhaseOne,
+PhotoCD, PhotoMechanic, Photoshop, PictureInfo, PostScript, PreviewIFD,
+PrintIM, ProfileIFD, Qualcomm, QuickTime, RAF, RAF2, RIFF, RMETA, RSRC, RTF,
 Radiance, Rawzor, Real, Real-CONT, Real-MDPR, Real-PROP, Real-RA3, Real-RA4,
 Real-RA5, Real-RJMD, Reconyx, Ricoh, SPIFF, SR2, SR2DataIFD, SR2SubIFD,
 SRF#, SVG, Samsung, Sanyo, Scalado, Sigma, SigmaRaw, Sony, SonyIDC, Stim,

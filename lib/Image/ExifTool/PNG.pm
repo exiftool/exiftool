@@ -26,7 +26,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.35';
+$VERSION = '1.36';
 
 sub ProcessPNG_tEXt($$$);
 sub ProcessPNG_iTXt($$$);
@@ -723,7 +723,7 @@ sub FoundPNG($$$$;$$$$)
                     my $nvHash = $et->GetNewValueHash($tagInfo);
                     $isOverwriting = $et->IsOverwriting($nvHash);
                     if (defined $deflateErr) {
-                        $newVal = $et->GetNewValues($nvHash);
+                        $newVal = $et->GetNewValue($nvHash);
                         # can only write tag now if always overwriting
                         if ($isOverwriting > 0) {
                             $val = '<deflate error>';
@@ -736,7 +736,7 @@ sub FoundPNG($$$$;$$$$)
                             $isOverwriting = $et->IsOverwriting($nvHash, $val);
                         }
                         # (must get new value after IsOverwriting() in case it was shifted)
-                        $newVal = $et->GetNewValues($nvHash);
+                        $newVal = $et->GetNewValue($nvHash);
                     }
                 }
                 if ($isOverwriting) {

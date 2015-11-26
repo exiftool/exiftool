@@ -7,6 +7,11 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.00. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Nov. 26, 2015 - Version 10.07
+
+  - Fixed problem with warnings on some systems about unimplemented functions
+    for FileGroupID and FileUserID when -p and -if are used
+
 Nov. 26, 2015 - Version 10.06
 
   - Added a new Canon LensType (thanks LibRaw)

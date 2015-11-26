@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '10.06';
+$VERSION = '10.07';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -1167,8 +1167,8 @@ my %systemTagsNotes = (
     FileDeviceNumber => { Groups => { 1 => 'System' }, %systemTagsNotes },
     FileInodeNumber  => { Groups => { 1 => 'System' }, %systemTagsNotes },
     FileHardLinks    => { Groups => { 1 => 'System' }, %systemTagsNotes },
-    FileUserID       => { Groups => { 1 => 'System' }, %systemTagsNotes, PrintConv => 'getpwuid($val)' },
-    FileGroupID      => { Groups => { 1 => 'System' }, %systemTagsNotes, PrintConv => 'getgrgid($val)' },
+    FileUserID       => { Groups => { 1 => 'System' }, %systemTagsNotes, PrintConv => 'eval { getpwuid($val) } || $val' },
+    FileGroupID      => { Groups => { 1 => 'System' }, %systemTagsNotes, PrintConv => 'eval { getgrgid($val) } || $val' },
     FileBlockSize    => { Groups => { 1 => 'System' }, %systemTagsNotes },
     FileBlockCount   => { Groups => { 1 => 'System' }, %systemTagsNotes },
     HardLink => {

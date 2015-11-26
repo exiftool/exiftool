@@ -49,7 +49,7 @@ use vars qw($VERSION %minoltaLensTypes %minoltaTeleconverters %minoltaColorMode
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.28';
+$VERSION = '2.29';
 
 # Full list of product codes for Sony-compatible Minolta lenses
 # (ref http://www.kb.sony.com/selfservice/documentLink.do?externalId=C1000570)
@@ -502,7 +502,7 @@ $VERSION = '2.28';
     # For newer firmware versions this is only used by the Smart Adapter, and
     # the full Canon LensType code is added - PH
     # the metabones adapter translates Canon L -> G, II -> II, USM -> SSM, IS -> OSS (ref JR)
-    61184 => 'Metabones Canon EF Adapter', #JR
+    61184 => 'Metabones Canon EF Adapter or Other Adapter', #JR (also Fotodiox or Viltrox)
     # all M42-type lenses give a value of 65535 (and FocalLength=0, FNumber=1)
     65535 => 'E-Mount, T-Mount, Other Lens or no lens', #JD/JR
 #

@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '10.05';
+$VERSION = '10.06';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -1889,7 +1889,7 @@ sub ExtractInfo($;@)
         delete $$self{MAKER_NOTE_BYTE_ORDER};
 
         # return our version number
-        my $reqAll = $$self{OPTIONS}{RequestAll};
+        my $reqAll = $$options{RequestAll};
         $self->FoundTag('ExifToolVersion', "$VERSION$RELEASE");
         $self->FoundTag('Now', TimeNow()) if $$self{REQ_TAG_LOOKUP}{now} or $reqAll;
         $self->FoundTag('NewGUID', NewGUID()) if $$self{REQ_TAG_LOOKUP}{newguid} or $reqAll;
@@ -1929,7 +1929,7 @@ sub ExtractInfo($;@)
                 $self->FoundTag('FileName', $name);
                 $self->FoundTag('Directory', $dir) if defined $dir and length $dir;
                 if ($$self{REQ_TAG_LOOKUP}{filepath} or
-                   ($$self{TAGS_FROM_FILE} and not $$self{EXCL_TAG_LOOKUP}{filepath}))
+                   ($$options{RequestAll} and not $$self{EXCL_TAG_LOOKUP}{filepath}))
                 {
                     local $SIG{'__WARN__'} = \&SetWarning;
                     if (eval { require Cwd }) {
@@ -1982,9 +1982,9 @@ sub ExtractInfo($;@)
         }
         # extract more system info if SystemTags option is set
         if (@stat) {
-            my $st = $$options{SystemTags};
+            my $sys = $$options{SystemTags} || $$options{RequestAll};
             my $req = $$self{REQ_TAG_LOOKUP};
-            if ($st or $$req{fileattributes}) {
+            if ($sys or $$req{fileattributes}) {
                 my @attr = ($stat[2] & 0xf000, $stat[2] & 0x0e00);
                 # add Windows file attributes if available
                 if ($^O eq 'MSWin32' and defined $filename and $filename ne '' and $filename ne '-') {
@@ -2002,14 +2002,14 @@ sub ExtractInfo($;@)
                 }
                 $self->FoundTag('FileAttributes', "@attr");
             }
-            $self->FoundTag('FileDeviceNumber', $stat[0]) if $st or $$req{filedevicenumber};
-            $self->FoundTag('FileInodeNumber', $stat[1])  if $st or $$req{fileinodenumber};
-            $self->FoundTag('FileHardLinks', $stat[3])    if $st or $$req{filehardlinks};
-            $self->FoundTag('FileUserID', $stat[4])       if $st or $$req{fileuserid};
-            $self->FoundTag('FileGroupID', $stat[5])      if $st or $$req{filegroupid};
-            $self->FoundTag('FileDeviceID', $stat[6])     if $st or $$req{filedeviceid};
-            $self->FoundTag('FileBlockSize', $stat[11])   if $st or $$req{fileblocksize};
-            $self->FoundTag('FileBlockCount', $stat[12])  if $st or $$req{fileblockcount};
+            $self->FoundTag('FileDeviceNumber', $stat[0]) if $sys or $$req{filedevicenumber};
+            $self->FoundTag('FileInodeNumber', $stat[1])  if $sys or $$req{fileinodenumber};
+            $self->FoundTag('FileHardLinks', $stat[3])    if $sys or $$req{filehardlinks};
+            $self->FoundTag('FileUserID', $stat[4])       if $sys or $$req{fileuserid};
+            $self->FoundTag('FileGroupID', $stat[5])      if $sys or $$req{filegroupid};
+            $self->FoundTag('FileDeviceID', $stat[6])     if $sys or $$req{filedeviceid};
+            $self->FoundTag('FileBlockSize', $stat[11])   if $sys or $$req{fileblocksize};
+            $self->FoundTag('FileBlockCount', $stat[12])  if $sys or $$req{fileblockcount};
         }
 
         # get list of file types to check

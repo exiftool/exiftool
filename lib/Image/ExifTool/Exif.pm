@@ -52,7 +52,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '3.76';
+$VERSION = '3.77';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -3584,7 +3584,7 @@ sub PrintLensID($$@)
     my ($et, $lensTypePrt, $printConv, $lensSpecPrt, $lensType, $focalLength,
         $maxAperture, $maxApertureValue, $shortFocal, $longFocal, $lensModel,
         $lensFocalRange, $lensSpec) = @_;
-    # the rest of the logic relies on the LensType lookup:
+    # this logic relies on the LensType lookup:
     return undef unless defined $lensType;
     # get print conversion hash if necessary
     $printConv or $printConv = $$et{TAG_INFO}{LensType}{PrintConv};
@@ -3658,14 +3658,12 @@ sub PrintLensID($$@)
                     abs($lf - $lf0) > 0.5 or abs($la - $la0) > 0.15;
             # the basic parameters match, but also check against additional lens features:
             # for Sony A and E lenses, the full LensSpec string should match with end of LensType,
-            # excluding any part between () at the end, and preceded by a space.
-            # The preceding space ensures that e.g. Zeiss Loxia 21mm having LensSpec "E 21mm F2.8"
-            # will not be identified as "Sony FE 21mm F2.8 (SEL28F20 + SEL075UWC)".
+            # excluding any part between () at the end, and preceded by a space (the space
+            # ensures that e.g. Zeiss Loxia 21mm having LensSpec "E 21mm F2.8" will not be
+            # identified as "Sony FE 21mm F2.8 (SEL28F20 + SEL075UWC)")
             $lensSpecPrt and $lens =~ / \Q$lensSpecPrt\E( \(|$)/ and @best = ( $lens ), last;
-            # exactly-matching Sony lens should have been found above, so skip
-            # any not-exactly-matching Sony lenses
-            next if $lens =~ /^Sony /;
-            push @best, $lens;
+            # exactly-matching Sony lens should have been found above, so only add non-Sony lenses
+            push @best, $lens unless $lens =~ /^Sony /;
             next;
         }
         # adjust focal length and aperture if teleconverter is attached (Minolta)
@@ -3711,6 +3709,7 @@ sub PrintLensID($$@)
         }
         push @matches, $lens;
     }
+    # return the user-defined lens if it exists
     if (@user) {
         # choose the best match if we have more than one
         if (@user > 1) {
@@ -3722,6 +3721,7 @@ sub PrintLensID($$@)
         }
         return join(' or ', @user);
     }
+    # return the best match(es) from the possible lenses
     return join(' or ', @best) if @best;
     return join(' or ', @matches) if @matches;
     $lens = $$printConv{$lensType};

@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.27';
+$VERSION = '2.28';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -59,7 +59,7 @@ my %sonyLensTypes2 = (
     3 => 'Sony LA-EA3 Adapter', #(NC) ILCE-7 image with A-mount lens, but also has 0x940e 2nd byte=2
     6 => 'Sony LA-EA4 Adapter', #(NC) ILCE-7R image with A-mount lens and having phase-detect info blocks in 0x940e AFInfo
     44 => 'Metabones Canon EF Smart Adapter', #JR
-    78 => 'Metabones Canon EF Smart Adapter Mark III or IV', #PH/JR
+    78 => 'Metabones Canon EF Smart Adapter Mark III or Other Adapter', #PH/JR (also Mark IV, Fotodiox and Viltrox)
     234 => 'Metabones Canon EF Smart Adapter Mark IV', #JR
     239 => 'Metabones Canon EF Speed Booster', #JR
                                                 # Sony VX product code: (http://www.mi-fo.de/forum/index.php?s=7df1c8d3b1cd675f2abf4f4442e19cf2&showtopic=35035&view=findpost&p=303746)
@@ -101,7 +101,7 @@ my %sonyLensTypes2 = (
 
     49216 => 'Zeiss Batis 25mm F2', #JR
     49217 => 'Zeiss Batis 85mm F1.8', #JR
-    49234 => 'Zeiss Loxia 21mm f/2.8', #PH
+    49234 => 'Zeiss Loxia 21mm F2.8', #PH
 );
 
 # ExposureProgram values (ref PH, mainly decoded from A200)
@@ -1338,8 +1338,8 @@ my %meterInfo2 = (
             '3 1 0 0' => 'ARW 2.1',
             '3 2 0 0' => 'ARW 2.2', #PH (NEX-5)
             '3 3 0 0' => 'ARW 2.3', #PH (SLT-A65,SLT-A77)
-            '3 3 1 0' => 'ARW 2.3.1', #PH/JR (RX1R,RX100M2)
-            '3 3 2 0' => 'ARW 2.3.2', #JR (RX1RM2,ICLE-7SM2 - support for uncompressed 14-bit RAW)
+            '3 3 1 0' => 'ARW 2.3.1', #PH/JR (DSC-RX1R/RX100M2)
+            '3 3 2 0' => 'ARW 2.3.2', #JR (DSC-RX1RM2,ILCE-7SM2 - support for uncompressed 14-bit RAW)
             # what about cRAW images?
         },
     },

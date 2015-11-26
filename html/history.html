@@ -17,20 +17,35 @@ considered development releases, and are not uploaded to <a href="http://search.
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v10.06'><b>Nov. 26, 2015 - Version 10.06</b></a>
+<ul>
+<li>Added a new <a href="TagNames/Canon.html#LensType">Canon LensType</a> (thanks LibRaw)
+<li>Added a new <a href="TagNames/Pentax.html#LensType">Pentax LensType</a> (thanks Louis Granboulan)
+<li>Added a couple of new <a href="TagNames/XMP.html#digiKam">XMP-digiKam tags</a>
+<li>Added a new <a href="TagNames/Canon.html#CanonModelID">CanonModelID</a>
+<li>Added a new <a href="TagNames/XMP.html#acdsee">ACDSee XMP tag</a> (thanks Malus)
+<li>Decode a new <a href="TagNames/Canon.html">Canon tag</a>
+<li>Improved a few lens names (thanks Jos Roost)
+<li>Patched to remove trailing null when reading improperly written QuickTime
+    strings
+<li>Fixed bug where SystemTags weren't available for use with the -p and -if
+    options
+</ul>
+
 <a name='v10.05'><b>Nov. 6, 2015 - Version 10.05</b></a>
 <ul>
-<li>Added new Canon and Sony LensType values
-<li>Added some new Nikon LensID's (thanks Robert Rottmerhusen)
-<li>Added a new PentaxModelID
+<li>Added new <a href="TagNames/Canon.html#LensType">Canon</a> and <a href="TagNames/Sony.html#LensType">Sony LensType</a> values
+<li>Added some new <a href="TagNames/Nikon.html#LensID">Nikon LensID</a>'s (thanks Robert Rottmerhusen)
+<li>Added a new <a href="TagNames/Pentax.html#PentaxModelID">PentaxModelID</a>
 <li>Added preliminary support for <a href="TagNames/Motorola.html">Motorola maker notes</a>
-<li>Changed format of XMP-photoshop:DocumentAncestors to write a simple Bag of
+<li>Changed format of <a href="TagNames/XMP.html#photoshop">XMP-photoshop</a>:DocumentAncestors to write a simple Bag of
     strings rather than structures (since this is what the Adobe software
     writes, contrary to their own XMP specification)
 <li>Fixed problem where HASH references may be exposed when copying a list of
     structures to a non-list-type tag
 <li>API Changes:
     <ul>
-    <li>Added Filter option
+    <li>Added <a href="ExifTool.html#Filter">Filter option</a>
     <li>Changed GetNewValues method name to <a href="ExifTool.html#GetNewValue">GetNewValue</a> (GetNewValues still
         works for backward compatibility)
     </ul>
@@ -50,15 +65,15 @@ considered development releases, and are not uploaded to <a href="http://search.
 <a name='v10.03'><b>Oct. 21, 2015 - Version 10.03</b></a>
 <ul>
 <li>Added support for JPEG 2000 extended-length boxes
-<li>Added a few new Canon LensType and CanonModelID values
-<li>Added a new Nikon LensID (thanks LibRaw)
+<li>Added a few new <a href="TagNames/Canon.html#LensType">Canon LensType</a> and <a href="TagNames/Canon.html#CanonModelID">CanonModelID</a> values
+<li>Added a new <a href="TagNames/Nikon.html#LensID">Nikon LensID</a> (thanks LibRaw)
 <li>Added ExifTool version number as a comment in -listx output
 <li>Added support for Leica SL (Typ 601) maker notes
-<li>Added a new Sony LensType (thanks Jos Roost)
-<li>Decode more Sony tags for some new models (thanks Jos Roost)
-<li>Decode a new Pentax tag
+<li>Added a new <a href="TagNames/Sony.html#LensType">Sony LensType</a> (thanks Jos Roost)
+<li>Decode more <a href="TagNames/Sony.html">Sony tags</a> for some new models (thanks Jos Roost)
+<li>Decode a new <a href="TagNames/Pentax.html">Pentax tag</a>
 <li>Patched for invalid makernote entry written by Sony ILCE-7M2 v1.21
-<li>Patched problem reading EXE resources with a missing null terminator
+<li>Patched problem reading <a href="TagNames/EXE.html#PEString">EXE resources</a> with a missing null terminator
 <li>Updated Windows distribution package to use latest version of PAR
 </ul>
 
@@ -66,27 +81,27 @@ considered development releases, and are not uploaded to <a href="http://search.
 <ul>
 <li>Added ability to read PNG chunks after the normal PNG end of file (IEND)
 <li>Added ability to delete a PNG trailer (with -trailer:all=)
-<li>Added some new Nikon LensID's (thanks Robert Rottmerhusen and LibRaw)
-<li>Added a few new Canon LensType's (thanks Jos Roost and LibRaw)
-<li>Added a new Pentax LensType (thanks Niels Kristian Bech Jensen)
-<li>Decode some new PanasonicRaw tags (thanks Andrew)
-<li>Decode a new Pentax tag
+<li>Added some new <a href="TagNames/Nikon.html#LensID">Nikon LensID</a>'s (thanks Robert Rottmerhusen and LibRaw)
+<li>Added a few new <a href="TagNames/Canon.html#LensType">Canon LensType</a>'s (thanks Jos Roost and LibRaw)
+<li>Added a new <a href="TagNames/Pentax.html#LensType">Pentax LensType</a> (thanks Niels Kristian Bech Jensen)
+<li>Decode some new <a href="TagNames/PanasonicRaw.html">PanasonicRaw tags</a> (thanks Andrew)
+<li>Decode a new <a href="TagNames/Pentax.html#LensType">Pentax tag</a>
 <li>Enhanced -m option to allow IPTC values which are too short to be written
 </ul>
 
 <a name='v10.01'><b>Sept. 3, 2015 - Version 10.01</b></a>
 <ul>
-<li>Added a new Olympus CameraType
-<li>Added a new Canon LensType (thanks Norbert Wasser)
-<li>Added a few new QuickTime GenreID values (thanks Fran&ccedil;ois Bonzon)
-<li>Decode a new Pentax tag
+<li>Added a new <a href="TagNames/Olympus.html#CameraType">Olympus CameraType</a>
+<li>Added a new <a href="TagNames/Canon.html#LensType">Canon LensType</a> (thanks Norbert Wasser)
+<li>Added a few new <a href="TagNames/QuickTime.html#GenreID">QuickTime GenreID</a> values (thanks Fran&ccedil;ois Bonzon)
+<li>Decode a new <a href="TagNames/Pentax.html#LensType">Pentax tag</a>
 <li>Leica programmers should all be ashamed of the <a href="http://owl.phy.queensu.ca/~phil/exiftool/idiosyncracies.html#Leica">complete shambles of metadata</a>
     they have created
 <li>Minor change to the name of a Sigma lens for Canon
 <li>Improved recognition of Pentax lens adapter
-<li>Implemented NoPDFList for -b option of Windows version too
-<li>Renamed a few Sony tags and improved decoding of others (thanks Jos Roost)
-<li>Renamed a few Pentax tags
+<li>Implemented <a href="ExifTool.html#NoPDFList">NoPDFList</a> for -b option of Windows version too
+<li>Renamed a few <a href="TagNames/Sony.html">Sony tags</a> and improved decoding of others (thanks Jos Roost)
+<li>Renamed a few <a href="TagNames/Pentax.html">Pentax tags</a>
 <li>Fixed problem importing structured information from -X option output
 <li>Fixed round-off errors in value and typo in name of CanonVRD:GammaWhitePoint
 <li>Fixed test failures if Encode, POSIX or Time::Local modules are missing
@@ -94,52 +109,52 @@ considered development releases, and are not uploaded to <a href="http://search.
 
 <a name='v10.00'><b>Aug. 18, 2015 - Version 10.00</b></a> <span class=grn>(production release)</span>
 <ul>
-<li>Added a few new CanonModelID's
-<li>Added a few new Nikon LensID's (thanks Jaap Voets and Robert Rottmerhusen)
-<li>Added a new Canon LensType (thanks Jos Roost)
-<li>Decode a number of new Sony tags (thanks Jos Roost)
-<li>Decode a couple more RIFF tags and extract Unknown RIFF tags
+<li>Added a few new <a href="TagNames/Canon.html#CanonModelID">CanonModelID</a>'s
+<li>Added a few new <a href="TagNames/Nikon.html#LensID">Nikon LensID</a>'s (thanks Jaap Voets and Robert Rottmerhusen)
+<li>Added a new <a href="TagNames/Canon.html#LensType">Canon LensType</a> (thanks Jos Roost)
+<li>Decode a number of new <a href="TagNames/Sony.html">Sony tags</a> (thanks Jos Roost)
+<li>Decode a couple more <a href="TagNames/RIFF.html">RIFF tags</a> and extract Unknown <a href="TagNames/RIFF.html">RIFF tags</a>
 <li>Changed -b option to avoid splitting PDF List-type tag values
 <li>API Changes:
     <ul>
-    <li>Added NoPDFList option
+    <li>Added <a href="ExifTool.html#NoPDFList">NoPDFList option</a>
     </ul>
 </ul>
 
 <a name='v9.99'><b>July 23, 2015 - Version 9.99</b></a>
 <ul>
 <li>Added support for the Leica Q (Typ 116) maker notes
-<li>Added two new SonyModelID's (thanks Jos Roost for one)
-<li>Added two new Sony LensType2 values (thanks Jos Roost)
-<li>Added a new Pentax LensType
-<li>Extract a number of new File System tags when SystemTags API option is set
+<li>Added two new <a href="TagNames/Sony.html#SonyModelID">SonyModelID</a>'s (thanks Jos Roost for one)
+<li>Added two new <a href="TagNames/Sony.html#LensType2">Sony LensType2</a> values (thanks Jos Roost)
+<li>Added a new <a href="TagNames/Pentax.html#LensType">Pentax LensType</a>
+<li>Extract a number of new <a href="TagNames/Extra.html">File System tags</a> when SystemTags API option is set
 <li>Decode a new FujiFilm tag (thanks TonyB)
-<li>Decode a number of new Sony tags (thanks Jos Roost)
+<li>Decode a number of new <a href="TagNames/Sony.html">Sony tags</a> (thanks Jos Roost)
 <li>Disabled writing of XMP to PostScript-format Adobe Illustrator files
 <li>SourceFile values in -csv and -json input/output are now converted to/from
     filename character set (set by -charset filename option) when
     reading/writing
-<li>Renamed Flash:FileAttributes to FlashAttributes
-<li>Renamed FujiFilm:AFPointSet to AFMode and improved decoding
+<li>Renamed <a href="TagNames/Flash.html">Flash</a>:FileAttributes to FlashAttributes
+<li>Renamed <a href="TagNames/Flash.html">FujiFilm</a>:AFPointSet to AFMode and improved decoding
 <li>Fixed problem where a partial command could be executed if the -stay_open
     option was used and the command is aborted due to an error in arguments
 <li>Fixed problem with OS X installer on El Capitan (now installs in
     /usr/local/bin instead of /usr/bin)
 <li>API Changes:
     <ul>
-    <li>Added SystemTags option
+    <li>Added <a href="ExifTool.html#SystemTags">SystemTags option</a>
     </ul>
 </ul>
 
 <a name='v9.98'><b>June 26, 2015 - Version 9.98</b></a>
 <ul>
 <li>Added read support for DSS and DS2 file formats
-<li>Added write support for XMP-mwg-rs:Rotation (seen in XMP from LR6)
-<li>Added a new Sigma LensType (thanks Niels Kristian Bech Jensen)
+<li>Added write support for <a href="TagNames/MWG.html#RegionStruct">XMP-mwg-rs</a>:Rotation (seen in XMP from LR6)
+<li>Added a new <a href="TagNames/Sigma.html#LensType">Sigma LensType</a> (thanks Niels Kristian Bech Jensen)
 <li>Decode Pentax DiffractionCorrection
 <li>Decode Olympus ID3 XOLY frame
-<li>Decode a few more Sony tags
-<li>Improved reliability of decoding Nikon D810 ShotInfo and custom settings
+<li>Decode a few more <a href="TagNames/Sony.html">Sony tags</a>
+<li>Improved reliability of decoding <a href="TagNames/Nikon.html#ShotInfoD810">Nikon D810 ShotInfo</a> and <a href="TagNames/NikonCustom.html#SettingsD810">custom settings</a>
 <li>Changed name of Pentax VignettingCorrection to PeripheralIlluminationCorr
 <li>Fixed problem with user parameters in tag name expressions when copying
 </ul>
@@ -156,18 +171,18 @@ considered development releases, and are not uploaded to <a href="http://search.
 
 <a name='v9.96'><b>May 20, 2015 - Version 9.96</b></a>
 <ul>
-<li>Added support for CanonVRD version 4 information and DR4 files
-<li>Added two new Canon LensType values (thanks Norbert Wasser)
-<li>Added two new Olympus LensType values (thanks Niels Kristian Bech Jensen)
-<li>Added a new Minolta/Sony LensType and fixed another one (thanks Jos Roost)
-<li>Added a new Nikon LensID (thanks John Helour)
-<li>Added a few new QuickTime tags
-<li>Added a new PentaxModelID and a new Pentax PictureMode
-<li>Added a few new XMP-aux tags
-<li>Decode a couple more DPX tags
-<li>Decode NikonCustom tags for D810 firmware version 1.02
+<li>Added support for <a href="TagNames/CanonVRD.html#Edit4">CanonVRD version 4</a> information and DR4 files
+<li>Added two new <a href="TagNames/Canon.html#LensType">Canon LensType</a> values (thanks Norbert Wasser)
+<li>Added two new <a href="TagNames/Olympus.html#LensType">Olympus LensType</a> values (thanks Niels Kristian Bech Jensen)
+<li>Added a new Minolta/<a href="TagNames/Sony.html#LensType">Sony LensType</a> and fixed another one (thanks Jos Roost)
+<li>Added a new <a href="TagNames/Nikon.html#LensID">Nikon LensID</a> (thanks John Helour)
+<li>Added a few new <a href="TagNames/QuickTime.html">QuickTime tags</a>
+<li>Added a new <a href="TagNames/Pentax.html#PentaxModelID">PentaxModelID</a> and a new Pentax PictureMode
+<li>Added a few new <a href="TagNames/XMP.html#aux">XMP-aux tags</a>
+<li>Decode a couple more <a href="TagNames/DPX.html">DPX tags</a>
+<li>Decode <a href="TagNames/NikonCustom.html">NikonCustom tags</a> for D810 firmware version 1.02
 <li>Improved -htmlDump output for extended XMP and some other JPEG segments
-<li>Improved a Canon lens name
+<li>Improved a <a href="TagNames/Canon.html#LensType">Canon lens</a> name
 <li>Documented the -userParam command-line option (which has existed since 9.90)
 <li>Changed default behaviour to ignore extended XMP with an incorrect GUID (as
     per the XMP specification)
@@ -179,13 +194,13 @@ considered development releases, and are not uploaded to <a href="http://search.
     (thanks Stargeek)
 <li>API Changes:
     <ul>
-    <li>Added ExtendedXMP option
+    <li>Added <a href="ExifTool.html#ExtendedXMP">ExtendedXMP option</a>
     </ul>
 </ul>
 
 <a name='v9.95'><b>May 9, 2015 - Version 9.95</b></a>
 <ul>
-<li>Added a few new Minolta/Sony lenses (thanks Jos Roost)
+<li>Added a few new <a href="TagNames/Minolta.html#LensType">Minolta</a>/<a href="TagNames/Sony.html#LensType">Sony lenses</a> (thanks Jos Roost)
 <li>Added config_files/photoshop_paths.config to the full distribution
 <li>Avoid rebuilding maker notes when using -tagsFromFile with -fast2 option
 <li>Validate tag names when redirecting (ie. "-DSTTAG&lt;SRCTAG")
@@ -197,8 +212,8 @@ considered development releases, and are not uploaded to <a href="http://search.
 <li>Added support for iCalendar ICS files
 <li>Added support for Leica M Monochrom (Type 246) maker notes
 <li>Added new "Preview" group for all embedded preview images
-<li>Added a new PentaxModelID (thanks Louis Granboulan)
-<li>Added a new Canon LensType (thanks Niels Kristian Bech Jensen)
+<li>Added a new <a href="TagNames/Pentax.html#PentaxModelID">PentaxModelID</a> (thanks Louis Granboulan)
+<li>Added a new <a href="TagNames/Canon.html#LensType">Canon LensType</a> (thanks Niels Kristian Bech Jensen)
 <li>Added tag name to "Invalid EXIF text encoding" warning
 <li>Decode ColorData for Canon EOS 5DS and EOS 5DS R (thanks LibRaw)
 <li>Changed ListItem option so that it also applies when copying tags
@@ -213,9 +228,9 @@ considered development releases, and are not uploaded to <a href="http://search.
 <a name='v9.93'><b>Apr. 25, 2015 - Version 9.93</b></a>
 <ul>
 <li>Added FileTypeExtension tag
-<li>Added a few new CanonModelID values
+<li>Added a few new <a href="TagNames/Canon.html#CanonModelID">CanonModelID</a> values
 <li>Added a new Olympus CameraType
-<li>Added a few new Minolta/Sony lenses (thanks Jos Roost)
+<li>Added a few new <a href="TagNames/Minolta.html#LensType">Minolta</a>/<a href="TagNames/Sony.html#LensType">Sony lenses</a> (thanks Jos Roost)
 <li>Updated arg_files/iptcCore.args for IPTC Extension version 1.2 tags
 <li>Improved VCard parsing/decoding
 <li>Improved -fast3 file identification logic
@@ -227,13 +242,13 @@ considered development releases, and are not uploaded to <a href="http://search.
 
 <a name='v9.92'><b>Apr. 11, 2015 - Version 9.92</b></a>
 <ul>
-<li>Added support for PRISM pmi and prm tags, and updated to PRISM 3.0
+<li>Added support for <a href="TagNames/XMP.html#pmi">PRISM pmi</a> and <a href="TagNames/XMP.html#prm">prm tags</a>, and updated to PRISM 3.0
 <li>Added read support for Audible .AA files
-<li>Added support for Adobe XMP-creatorAtom tags
-<li>Added a couple of new XMP-xmpDM tags
-<li>Added a new CanonModelID and a new Ricoh WhiteBalance (thanks LibRaw)
-<li>Added a new Olympus CameraType
-<li>Added a new Nikon LensID (thanks J&uuml;rgen Sahlberg)
+<li>Added support for Adobe <a href="TagNames/XMP.html#creatorAtom">XMP-creatorAtom tags</a>
+<li>Added a couple of new <a href="TagNames/XMP.html#xmpDM">XMP-xmpDM tags</a>
+<li>Added a new <a href="TagNames/Canon.html#CanonModelID">CanonModelID</a> and a new Ricoh WhiteBalance (thanks LibRaw)
+<li>Added a new <a href="TagNames/Olympus.html#CameraType">Olympus CameraType</a>
+<li>Added a new <a href="TagNames/Nikon.html#LensID">Nikon LensID</a> (thanks J&uuml;rgen Sahlberg)
 <li>Updated to XMP PLUS 1.2.1 specification
 <li>Enhanced DOF calculation to use AverageFocusDistance or
     FocusDistanceUpper/Lower if available
@@ -248,10 +263,10 @@ considered development releases, and are not uploaded to <a href="http://search.
 <li>Added a number of new QuickTime GenreID values (thanks Fran&ccedil;ois Bonzon)
 <li>Added new Canon, Nikon, Olympus and Samsung lenses (thanks LibRaw and Niels
     Kristian Bech Jensen)
-<li>Added a new Olympus CameraType
+<li>Added a new <a href="TagNames/Olympus.html#CameraType">Olympus CameraType</a>
 <li>Added a new Sony FlashMode value
 <li>Decode a new Apple makernote tag
-<li>Decode a number of new QuickTime tags found in Audible audio books
+<li>Decode a number of new <a href="TagNames/QuickTime.html">QuickTime tags</a> found in Audible audio books
 <li>Improved the naming of a FujiFilm tag (thanks LibRaw)
 <li>Removed "not yet tested" warning when writing FujiFilm RAF version 0200
 <li>Renamed distribution file config_files/ExifTool_config to example.config
@@ -264,12 +279,12 @@ considered development releases, and are not uploaded to <a href="http://search.
 <a name='v9.90'><b>Mar. 14, 2015 - Version 9.90</b></a> <span class=grn>(production release)</span>
 <ul>
 <li>Added config_files/picasa_faces.config to the distribution (thanks StarGeek)
-<li>Added a few new Minolta/Sony and Nikon lenses (thanks LibRaw)
+<li>Added a few new <a href="TagNames/Minolta.html#LensType">Minolta</a>/<a href="TagNames/Sony.html#LensType">Sony</a> and Nikon lenses (thanks LibRaw)
 <li>Added new Canon and Sigma lenses (thanks Niels Kristian Bech Jensen)
 <li>Decode Nikon D810 custom settings (thanks Warren Hatch)
-<li>Decode a few new Nikon tags
+<li>Decode a few new <a href="TagNames/Nikon.html">Nikon tags</a>
 <li>Fixed superfluous "Open '' failed" warning which could occur in Windows
-<li>Fixed problem reading multi-valued Microsoft Xtra tags
+<li>Fixed problem reading multi-valued <a href="TagNames/Microsoft.html#Xtra">Microsoft Xtra tags</a>
 <li>Fixed problem on Windows using -overwrite_original_in_place with Unicode
     file names
 </ul>

@@ -1425,12 +1425,11 @@ error string (which is undefined if there was no error).
 
 =item Notes:
 
-When deleting groups of tags, the Replace option may be used as in the last
-example above to exclude specific groups from a mass delete.  However, this
-technique may not be used to exclude individual tags from a group delete
-(unless a family 2 group was specified in the delete).  Instead, use
-L</SetNewValuesFromFile> to recover the values of individual tags after
-deleting a group.
+When deleting groups of tags, the Replace option may be used to exclude
+specific groups from a mass delete.  However, this technique may not be used
+to exclude individual tags from a group delete (unless a family 2 group was
+specified in the delete).  Instead, use L</SetNewValuesFromFile> to recover
+the values of individual tags after deleting a group.
 
 When deleting all tags from a JPEG image, the APP14 "Adobe" information is
 not deleted by default because doing so may affect the appearance of the
@@ -1959,14 +1958,15 @@ Composite option is set.
 
 Tag values are calculated in alphabetical order unless a tag Require's or
 Desire's another composite tag, in which case the calculation is deferred
-until after the other tag is calculated. Composite tags may need to read
-data from the image for their value to be determined, so for these
-L</BuildCompositeTags> must be called while the image is available.  This is
-only a problem if L</ImageInfo> is called with a filename (as opposed to a
-file reference or scalar reference) since in this case the file is closed
-before L</ImageInfo> returns.  However if you enable the Composite option,
-L</BuildCompositeTags> is called from within L</ImageInfo> before the file
-is closed.
+until after the other tag is calculated.
+
+Composite tags may need to read data from the image for their value to be
+determined, and for these L</BuildCompositeTags> must be called while the
+image is available.  This is only a problem if L</ImageInfo> is called with
+a filename (as opposed to a file reference or scalar reference) since in
+this case the file is closed before L</ImageInfo> returns.  Here the
+Composite option may be used so that L</BuildCompositeTags> is called from
+within L</ImageInfo>, before the file is closed.
 
 =back
 
@@ -2275,7 +2275,8 @@ The number of tags added.
 =item Notes
 
 Pre-existing tags with the same ID will be replaced in the destination
-table.
+table. See lib/Image/ExifTool/README in the full distribution for full
+details on the elements of the tag information hash.
 
 =back
 

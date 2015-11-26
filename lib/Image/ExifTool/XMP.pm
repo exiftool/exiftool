@@ -47,7 +47,7 @@ use Image::ExifTool qw(:Utils);
 use Image::ExifTool::Exif;
 require Exporter;
 
-$VERSION = '2.89';
+$VERSION = '2.90';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -249,7 +249,7 @@ my %recognizedAttrs = (
     'rdf:nodeID' => 1,
     'et:toolkit' => 1,
     'rdf:xmlns'  => 1, # this is presumably the default namespace, which we currently ignore
-    'lastUpdate' => [ 'Image::ExifTool::XMP::XML', 'lastUpdate', 'LastUpdate' ], # found in XML from Sony ICLE-7S MP4
+    'lastUpdate' => [ 'Image::ExifTool::XMP::XML', 'lastUpdate', 'LastUpdate' ], # found in XML from Sony ILCE-7S MP4
 );
 
 # special tags in structures below

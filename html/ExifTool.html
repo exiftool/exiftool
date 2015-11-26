@@ -522,16 +522,16 @@ distribution for examples.</p>
     exclude.  Case is not significant. Tags may also be excluded by preceding
     their name with a '-' in the arguments to ImageInfo.</td>
     <td align=center>undef</td></tr>
-<tr><td>ExtendedXMP</td><td>This setting affects the reading and editing of
-    extended XMP in JPEG images.  According to the XMP specification, extended
-    XMP is only valid if it has the GUID specified by the
-    <a href="TagNames/XMP.html#xmpNote">HasExtendedXMP tag</a>.  ExifTool 9.95
-    and earlier would read extended XMP regardless of GUID, but with the
+<tr><td>ExtendedXMP</td><td><a name="ExtendedXMP"></a>This setting affects the
+    reading and editing of extended XMP in JPEG images.  According to the XMP
+    specification, extended XMP is only valid if it has the GUID specified by
+    the <a href="TagNames/XMP.html#xmpNote">HasExtendedXMP tag</a>.  ExifTool
+    9.95 and earlier would read extended XMP regardless of GUID, but with the
     addition of this option in version 9.96 the default behaviour was changed to
     conform with the XMP specification (to read only extended XMP with the
-    proper GUID).  This option should be set to 2 to emulate pre-9.96
-    behaviour and read all extended XMP.  It may also be set to a GUID to read a
-    specific extended XMP, or 0 to ignore extended XMP entirely.</td>
+    proper GUID).  This option should be set to 2 to emulate pre-9.96 behaviour
+    and read all extended XMP.  It may also be set to a GUID to read a specific
+    extended XMP, or 0 to ignore extended XMP entirely.</td>
     <td><table class=clear>
     <tr><td valign=top align=right><b>0</b>&nbsp;=</td><td>ignore extended XMP</td></tr>
     <tr><td valign=top align=right><b>1</b>&nbsp;=</td><td>valid GUID only</td></tr>
@@ -559,9 +559,9 @@ distribution for examples.</p>
     <td align=center>0, 1, 2 or 3</td><td align=center>undef</td></tr>
 <tr><td>Filter</td>
     <td>Perl expression used to filter all returned tag values.  Applies to
-    PrintConv values only.</td><td>Expression to act on the value of the Perl
-    default variable ($_), changing the value of this variable as required</td>
-    <td align=center>undef</td></tr>
+    PrintConv values only.</td><td><a name="Filter"></a>Expression to act on the
+    value of the Perl default variable ($_), changing the value of this variable
+    as required</td> <td align=center>undef</td></tr>
 <tr><td>FixBase</td>
     <td>Fix maker notes base offset.  Allows values to be extracted from maker notes
     which have been corrupted by editing with 3rd party software.</td>
@@ -1309,10 +1309,10 @@ $exifTool-&gt;<b>SetNewValue</b>('XMP:Flash' =&gt; '{mode=on,fired=true,return=n
 description of the structure serialization technique)</blockquote>
 
 <p><b>Notes:</b></p>
-<p>When deleting groups of tags, the Replace option may be used as in the last
-example above to exclude specific groups from a mass delete. However, this
-technique may not be used to exclude individual tags from a group delete (unless
-a family 2 group was specified in the delete).  Instead, use
+<p>When deleting groups of tags, the Replace option may be used to exclude
+specific groups from a mass delete. However, this technique may not be used to
+exclude individual tags from a group delete (unless a family 2 group was
+specified in the delete).  Instead, use
 <a href="#SetNewValuesFromFile">SetNewValuesFromFile</a> to recover the values
 of individual tags after deleting a group.</p>
 <p>When deleting all tags from a JPEG image, the APP14 "Adobe" information is
@@ -1803,13 +1803,13 @@ automatically by <a href="#ImageInfo">ImageInfo</a> if the Composite option is s
 or Desire's another composite tag, in which case the calculation is
 deferred until after the other tag is calculated.</li>
 <li>Composite tags may need to read data from the image for their value to be
-determined, so for these <a href="#BuildCompositeTags">BuildCompositeTags</a>
+determined, and for these <a href="#BuildCompositeTags">BuildCompositeTags</a>
 must be called while the image is available.  This is only a problem if
 <a href="#ImageInfo">ImageInfo</a> is called with a filename (as opposed to a
 file reference or scalar reference) since in this case the file is closed before
-<a href="#ImageInfo">ImageInfo</a> returns.  However if you enable the Composite
-option, <a href="#BuildCompositeTags">BuildCompositeTags</a> is called from
-within <a href="#ImageInfo">ImageInfo</a> before the file is closed.</li>
+<a href="#ImageInfo">ImageInfo</a> returns.  Here the Composite option may be
+used so that <a href="#BuildCompositeTags">BuildCompositeTags</a> is called from
+within <a href="#ImageInfo">ImageInfo</a>, before the file is closed.</li>
 </ol>
 <hr><table bgcolor='#ffaaaa' width='100%' cellpadding=8><tr><td><center><b>
 The following functions access only static data and are not called with an
@@ -2038,7 +2038,7 @@ my $writable = Image::ExifTool::<b>CanWrite</b>($filename);
 <td><b>0)</b> File name or extension</td></tr>
 <tr><td valign=top><b>Returns</b></td><td>True if ExifTool can create files with this
 extension from scratch.<br>Currently, this can only be done with XMP, MIE, ICC,
-VRD, EXV and EXIF files.</td></tr>
+VRD, DR4, EXV and EXIF files.</td></tr>
 </table></blockquote>
 <p><b>Example:</b></p>
 <blockquote><table class='box'><tr><td><pre>
@@ -2068,7 +2068,9 @@ my %tags = (
 my $num = <b>AddUserDefinedTags</b>('Image::ExifTool::PDF::Info', %tags);
 </pre></td></tr></table></blockquote>
 <p><b>Notes:</b></p>
-<p>Pre-existing tags with the same ID will be replaced in the destination table.</p>
+<p>Pre-existing tags with the same ID will be replaced in the destination table.
+See lib/Image/ExifTool/README in the full distribution for full details on the
+elements of the tag information hash.</p>
 
 <hr>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>

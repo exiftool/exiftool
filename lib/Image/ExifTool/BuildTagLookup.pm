@@ -32,7 +32,7 @@ use Image::ExifTool::XMP;
 use Image::ExifTool::Canon;
 use Image::ExifTool::Nikon;
 
-$VERSION = '2.91';
+$VERSION = '2.92';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -521,7 +521,7 @@ they don't represent real metadata in the file.  Instead, this information
 is stored in the directory structure of the filesystem.  The five writable
 "pseudo" tags (FileName, Directory, FileModifyDate, FileCreateDate and
 HardLink) may be written without modifying the file itself.  The TestName
-tag is used for dry run testing of writes to FileName.
+tag is used for dry-run testing before writing FileName.
 },
     Composite => q{
 The values of the composite tags are B<Derived From> the values of other

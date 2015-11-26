@@ -56,7 +56,7 @@ use vars qw($VERSION %pentaxLensTypes);
 use Image::ExifTool::Exif;
 use Image::ExifTool::HP;
 
-$VERSION = '2.97';
+$VERSION = '2.98';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -78,10 +78,12 @@ sub PrintFilter($$$);
         my ($val, $inv, $conv) = @_;
         return undef if $inv;
         # *istD may report a series number of 4 for series 7 lenses
-        $val =~ s/^4 /7 / and $$conv{$val} and return $$conv{$val} . " ($_[0])";
+        $val =~ s/^4 /7 / and $$conv{$val} and return "$$conv{$val} ($_[0])";
         # cameras that don't recognize SDM lenses (eg. older K10 firmware)
         # may report series 7 instead of 8
-        $val =~ s/^7 /8 / and $$conv{$val} and return $$conv{$val} . " ? ($_[0])";
+        $val =~ s/^7 /8 / and $$conv{$val} and return "$$conv{$val} ? ($_[0])";
+        # there seems to some inconsistency between FA and DFA lenses for the 645D...
+        ($val =~ s/^11 /13 / or $val =~ s/^13 /11 /) and $$conv{$val} and return "$$conv{$val} ? ($_[0])";
         return undef;
     },
     '0 0' => 'M-42 or No Lens', #17
@@ -359,6 +361,7 @@ sub PrintFilter($$$);
     '11 14' => 'smc PENTAX-FA 645 55-110mm F5.6', #PH
     '11 16' => 'smc PENTAX-FA 645 33-55mm F4.5 AL', #PH
     '11 17' => 'smc PENTAX-FA 645 150-300mm F5.6 ED [IF]', #PH
+    '11 21' => 'HD PENTAX-D FA 645 35mm F3.5 AL [IF]', #29
     '13 18' => 'smc PENTAX-D FA 645 55mm F2.8 AL [IF] SDM AW', #PH
     '13 19' => 'smc PENTAX-D FA 645 25mm F4 AL [IF] SDM AW', #PH
     '13 20' => 'HD PENTAX-D FA 645 90mm F2.8 ED AW SR', #PH

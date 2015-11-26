@@ -7,6 +7,20 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.00. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Nov. 26, 2015 - Version 10.06
+
+  - Added a new Canon LensType (thanks LibRaw)
+  - Added a new Pentax LensType (thanks Louis Granboulan)
+  - Added a couple of new XMP-digiKam tags
+  - Added a new CanonModelID
+  - Added a new ACDSee XMP tag (thanks Malus)
+  - Decode a new Canon tag
+  - Improved a few lens names (thanks Jos Roost)
+  - Patched to remove trailing null when reading improperly written QuickTime
+    strings
+  - Fixed bug where SystemTags weren't available for use with the -p and -if
+    options
+
 Nov. 6, 2015 - Version 10.05
 
   - Added new Canon and Sony LensType values

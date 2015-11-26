@@ -83,7 +83,7 @@ sub ProcessSerialData($$$);
 sub ProcessFilters($$$);
 sub SwapWords($);
 
-$VERSION = '3.55';
+$VERSION = '3.56';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -317,7 +317,7 @@ $VERSION = '3.55';
     180.2 => 'Sigma 24mm f/1.4 DG HSM | A', #53
     180.3 => 'Zeiss Milvus 50mm f/1.4', #52
     180.4 => 'Zeiss Milvus 85mm f/1.4', #52
-    180.5 => 'Zeiss Otus 28mm f/1.4', #PH
+    180.5 => 'Zeiss Otus 28mm f/1.4 ZE', #PH
     181 => 'Canon EF 100-400mm f/4.5-5.6L IS + 1.4x or Sigma Lens', #15
     181.1 => 'Sigma 150-600mm f/5-6.3 DG OS HSM | S + 1.4x', #50
     182 => 'Canon EF 100-400mm f/4.5-5.6L IS + 2x or Sigma Lens',
@@ -388,7 +388,8 @@ $VERSION = '3.55';
     248 => 'Canon EF 200mm f/2L IS or Sigma Lens', #42
     248.1 => 'Sigma 24-35mm f/2 DG HSM | A', #JR
     249 => 'Canon EF 800mm f/5.6L IS', #35
-    250 => 'Canon EF 24 f/1.4L II', #41
+    250 => 'Canon EF 24mm f/1.4L II or Sigma Lens', #41
+    250.1 => 'Sigma 20mm f/1.4 DG HSM | A', #52
     251 => 'Canon EF 70-200mm f/2.8L IS II USM',
     252 => 'Canon EF 70-200mm f/2.8L IS II USM + 1.4x', #50 (1.4x Mk II)
     253 => 'Canon EF 70-200mm f/2.8L IS II USM + 2x', #PH (NC)
@@ -686,6 +687,7 @@ $VERSION = '3.55';
     0x4007da90 => 'HF S20/S21/S200', # (LEGRIA/VIXIA)
     0x4007da92 => 'FS31/FS36/FS37/FS300/FS305/FS306/FS307',
     0x4007dda9 => 'HF G25', # (LEGRIA)
+    0x4007dfb4 => 'XC10',
 
     # NOTE: some pre-production models may have a model name of
     # "Canon EOS Kxxx", where "xxx" is the last 3 digits of the model ID below.
@@ -3711,6 +3713,13 @@ my %ciMaxFocal = (
     0x157 => { %ciMaxFocal,
         Hook => '$varSize -= 8 if $$self{CanonFirm} < 3',
     },
+    0x164 => {
+        Name => 'LensSerialNumber',
+        Format => 'undef[5]',
+        Priority => 0,
+        ValueConv => 'unpack("H*",$val)',
+        ValueConvInv => 'length($val) < 10 and $val = 0 x (10-length($val)) . $val; pack("H*",$val)',
+    },
     0x23c => {
         Name => 'FirmwareVersion',
         Format => 'string[6]',
@@ -5215,6 +5224,14 @@ my %ciMaxFocal = (
     FIRST_ENTRY => 0,
     PRIORITY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    0x16b => {
+        Name => 'LensSerialNumber',
+        Condition => '$$self{Model} =~ /^Canon EOS 5DS/', # (good for 5DS and 5DSR)
+        Format => 'undef[5]',
+        Priority => 0,
+        ValueConv => 'unpack("H*",$val)',
+        ValueConvInv => 'length($val) < 10 and $val = 0 x (10-length($val)) . $val; pack("H*",$val)',
+    },
 );
 
 # Picture Style information for various cameras (ref 48)
@@ -7451,9 +7468,10 @@ my %ciMaxFocal = (
             to the one printed on the lens
         },
         Format => 'undef[5]',
+        Priority => 0,
         RawConv => '$val=~/^\0\0\0\0/ ? undef : $val', # (rules out 550D and older lenses)
         ValueConv => 'unpack("H*", $val)',
-        ValueConvInv => 'pack("H*", $val)',
+        ValueConvInv => 'length($val) < 10 and $val = 0 x (10-length($val)) . $val; pack("H*",$val)',
     },
 );
 

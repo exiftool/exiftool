@@ -41,7 +41,7 @@ use vars qw($VERSION $AUTOLOAD);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.93';
+$VERSION = '1.94';
 
 sub FixWrongFormat($);
 sub ProcessMOV($$;$);
@@ -6347,6 +6347,8 @@ sub ProcessMOV($$;$)
                             if ($stringEncoding{$flags}) {
                                 # handle all string formats
                                 $value = $et->Decode($value, $stringEncoding{$flags});
+                                # (shouldn't be null terminated, but some software writes it anyway)
+                                $value =~ s/\0$// unless $$tagInfo{Binary};
                             } else {
                                 if (not $format) {
                                     if ($flags == 0x15 or $flags == 0x16) {

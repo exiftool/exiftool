@@ -755,6 +755,7 @@
 </tr><tr><td class=r>0x4007da90</td><td>= HF S20/S21/S200</td>
 </tr><tr><td class=r>0x4007da92</td><td>= FS31/FS36/FS37/FS300/FS305/FS306/FS307</td>
 </tr><tr><td class=r>0x4007dda9</td><td>= HF G25</td>
+</tr><tr><td class=r>0x4007dfb4</td><td>= XC10</td>
 </tr><tr><td class=r>0x80000001</td><td>= EOS-1D</td>
 </tr><tr><td class=r>0x80000167</td><td>= EOS-1DS</td>
 </tr><tr><td class=r>0x80000168</td><td>= EOS 10D</td>
@@ -1451,7 +1452,7 @@ attempting to identify the specific lens model.</p>
 </tr><tr><td>180.2</td><td>= Sigma 24mm f/1.4 DG HSM | A</td>
 </tr><tr><td>180.3</td><td>= Zeiss Milvus 50mm f/1.4</td>
 </tr><tr><td>180.4</td><td>= Zeiss Milvus 85mm f/1.4</td>
-</tr><tr><td>180.5</td><td>= Zeiss Otus 28mm f/1.4</td>
+</tr><tr><td>180.5</td><td>= Zeiss Otus 28mm f/1.4 ZE</td>
 </tr><tr><td>181</td><td>= Canon EF 100-400mm f/4.5-5.6L IS + 1.4x or Sigma Lens</td>
 </tr><tr><td>181.1</td><td>= Sigma 150-600mm f/5-6.3 DG OS HSM | S + 1.4x</td>
 </tr><tr><td>182</td><td>= Canon EF 100-400mm f/4.5-5.6L IS + 2x or Sigma Lens</td>
@@ -1522,7 +1523,8 @@ attempting to identify the specific lens model.</p>
 </tr><tr><td>248</td><td>= Canon EF 200mm f/2L IS or Sigma Lens</td>
 </tr><tr><td>248.1</td><td>= Sigma 24-35mm f/2 DG HSM | A</td>
 </tr><tr><td>249</td><td>= Canon EF 800mm f/5.6L IS</td>
-</tr><tr><td>250</td><td>= Canon EF 24 f/1.4L II</td>
+</tr><tr><td>250</td><td>= Canon EF 24mm f/1.4L II or Sigma Lens</td>
+</tr><tr><td>250.1</td><td>= Sigma 20mm f/1.4 DG HSM | A</td>
 </tr><tr><td>251</td><td>= Canon EF 70-200mm f/2.8L IS II USM</td>
 </tr><tr><td>252</td><td>= Canon EF 70-200mm f/2.8L IS II USM + 1.4x</td>
 </tr><tr><td>253</td><td>= Canon EF 70-200mm f/2.8L IS II USM + 2x</td>
@@ -3823,31 +3825,36 @@ versions 1.0.x, but they may be different for other firmware versions.</p>
 <td class=c>int16uRev</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td class=r title='356 = 0x164'>356</td>
+<td>LensSerialNumber</td>
+<td class=c>undef[5]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td class=r title='572 = 0x23c'>572</td>
 <td>FirmwareVersion</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='652 = 0x28c'>652</td>
 <td>FileIndex</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='656 = 0x290'>656</td>
 <td>FileIndex2</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='664 = 0x298'>664</td>
 <td>DirectoryIndex</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='668 = 0x29c'>668</td>
 <td>DirectoryIndex2</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='944 = 0x3b0'>944</td>
 <td>PictureStyleInfo</td>
 <td class=c>-</td>
@@ -5375,7 +5382,11 @@ SD4000, SX20, SX120 and SX210)</span></span></td></tr>
 <table class=inner cellspacing=1>
 <tr class=h><th>Index1</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
-<tr><td colspan=4 class=c><i>[no tags known]</i></td></tr>
+<tr>
+<td class=r title='363 = 0x16b'>363</td>
+<td>LensSerialNumber</td>
+<td class=c>undef[5]</td>
+<td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='MovieInfo'>Canon MovieInfo Tags</a></h2>
@@ -9286,6 +9297,7 @@ SX280.</p>
 </tr><tr><td class=r>0x4007da90</td><td>= HF S20/S21/S200</td>
 </tr><tr><td class=r>0x4007da92</td><td>= FS31/FS36/FS37/FS300/FS305/FS306/FS307</td>
 </tr><tr><td class=r>0x4007dda9</td><td>= HF G25</td>
+</tr><tr><td class=r>0x4007dfb4</td><td>= XC10</td>
 </tr><tr><td class=r>0x80000001</td><td>= EOS-1D</td>
 </tr><tr><td class=r>0x80000167</td><td>= EOS-1DS</td>
 </tr><tr><td class=r>0x80000168</td><td>= EOS 10D</td>
@@ -9339,7 +9351,7 @@ SX280.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Oct 30, 2015</i>
+<br><i>Last revised Nov 19, 2015</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

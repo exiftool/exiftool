@@ -1246,6 +1246,7 @@ hear.)
   Author                                        string/
   Caption                                       string/
   Categories                                    string/
+  Collections                                   string/
   DateTime                                      date/
   DPP                                           lang-alt
   Keywords                                      string/+
@@ -1902,6 +1903,8 @@ DigiKam namespace tags.
   CaptionsAuthorNames                           lang-alt
   CaptionsDateTimeStamps                        lang-alt
   ColorLabel                                    string
+  ImageHistory                                  string/
+  LensCorrectionSettings                        string
   PickLabel                                     string
   TagsList                                      string+
 
@@ -4784,6 +4787,7 @@ versions 1.0.x, but they may be different for other firmware versions.
     339    LensType                             int16uRev
     341    MinFocalLength                       int16uRev
     343    MaxFocalLength                       int16uRev
+    356    LensSerialNumber                     undef[5]
     572    FirmwareVersion                      N
     652    FileIndex                            int32u
     656    FileIndex2                           int32u
@@ -5171,7 +5175,7 @@ Unknown CameraInfo tags are divided into 3 tables based on format size.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
-  [no tags known]
+    363    LensSerialNumber                     undef[5]
 
 =head3 Canon MovieInfo Tags
 
@@ -28369,7 +28373,7 @@ they don't represent real metadata in the file.  Instead, this information
 is stored in the directory structure of the filesystem.  The five writable
 "pseudo" tags (FileName, Directory, FileModifyDate, FileCreateDate and
 HardLink) may be written without modifying the file itself.  The TestName
-tag is used for dry run testing of writes to FileName.
+tag is used for dry-run testing before writing FileName.
 
   Tag Name                   Group              Writable
   --------                   -----              --------

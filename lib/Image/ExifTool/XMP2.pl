@@ -1134,6 +1134,7 @@ my %sSubVersion = (
     author     => { Avoid => 1, Groups => { 2 => 'Author' } },
     caption    => { Avoid => 1 },
     categories => { Avoid => 1 },
+    collections=> { Avoid => 1 },
     datetime   => { Name => 'DateTime', Avoid => 1, Groups => { 2 => 'Time' }, %dateTimeInfo },
     keywords   => { Avoid => 1, List => 'Bag' },
     notes      => { Avoid => 1 },
@@ -1299,6 +1300,8 @@ my %sSubVersion = (
     TagsList               => { List => 'Seq' },
     ColorLabel             => { },
     PickLabel              => { },
+    ImageHistory           => { Avoid => 1, Notes => 'different format from EXIF:ImageHistory' },
+    LensCorrectionSettings => { },
 );
 
 # SWF namespace tags (ref PH)

@@ -179,7 +179,7 @@ my %timeInfo = (
     # so assume a time zero of Jan 1, 1970 if the date is before this
     RawConv => q{
         my $offset = (66 * 365 + 17) * 24 * 3600;
-        return $val - $offset if $val >= $offset;
+        return $val - $offset if $val >= $offset or $$self{OPTIONS}{QuickTimeUTC};
         $self->WarnOnce('Patched incorrect time zero for QuickTime date/time tag',1) if $val;
         return $val;
     },

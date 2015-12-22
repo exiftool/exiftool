@@ -792,7 +792,9 @@ Flag set to assume that QuickTime date/time values are stored as UTC,
 causing conversion to local time when they are extracted.  According to the
 QuickTime specification date/time values should be UTC, but many digital
 cameras store local time instead (presumably because they don't know the
-time zone), so the default is undef.
+time zone), so the default is undef.  This option also disables the
+autodetection of incorrect time-zero offsets in QuickTime date/time values,
+and enforces a time zero of 1904 as per the QuickTime specification.
 
 =item RequestAll
 

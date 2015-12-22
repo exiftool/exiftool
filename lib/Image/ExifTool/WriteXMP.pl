@@ -130,7 +130,10 @@ sub CheckXMP($$$)
         unless (ref $$valPtr) {
             ($$valPtr, $warn) = InflateStruct($valPtr);
             # expect a structure HASH ref or ARRAY of structures
-            ref $$valPtr or return 'Improperly formed structure';
+            unless (ref $$valPtr) {
+                $$valPtr eq '' and $$valPtr = { }, return undef; # allow empty structures
+                return 'Improperly formed structure';
+            }
         }
         if (ref $$valPtr eq 'ARRAY') {
             return 'Not a list tag' unless $$tagInfo{List};
@@ -1239,7 +1242,7 @@ sub WriteXMP($$;$)
         my ($val, $attrs) = @{$capture{$path}};
         $debug and print "$path = $val\n";
         # open new properties
-        my $attr;
+        my ($attr, $dummy);
         for ($n=@curPropList; $n<$#propList; ++$n) {
             $prop = $propList[$n];
             push @curPropList, $prop;
@@ -1251,19 +1254,29 @@ sub WriteXMP($$;$)
             {
                 # need parseType='Resource' to avoid new 'rdf:Description'
                 $attr = " rdf:parseType='Resource'";
+                # check for empty structure
+                if ($propList[$n+1] =~ /:~dummy~$/) {
+                    $newData .= (' ' x scalar(@curPropList)) . "<$prop$attr/>\n";
+                    pop @curPropList;
+                    $dummy = 1;
+                    last;
+                }
             }
             $newData .= (' ' x scalar(@curPropList)) . "<$prop$attr>\n";
         }
         my $prop2 = pop @propList;  # get new property name
-        $prop2 =~ s/ .*//;          # remove list index if it exists
-        $newData .= (' ' x scalar(@curPropList)) . " <$prop2";
-        # write out attributes
-        foreach $attr (sort keys %$attrs) {
-            my $attrVal = $$attrs{$attr};
-            my $quot = ($attrVal =~ /'/) ? '"' : "'";
-            $newData .= " $attr=$quot$attrVal$quot";
+        # add element unless it was a dummy structure field
+        unless ($dummy or ($val eq '' and $prop2 =~ /:~dummy~$/)) {
+            $prop2 =~ s/ .*//;          # remove list index if it exists
+            $newData .= (' ' x scalar(@curPropList)) . " <$prop2";
+            # write out attributes
+            foreach $attr (sort keys %$attrs) {
+                my $attrVal = $$attrs{$attr};
+                my $quot = ($attrVal =~ /'/) ? '"' : "'";
+                $newData .= " $attr=$quot$attrVal$quot";
+            }
+            $newData .= length $val ? ">$val</$prop2>\n" : "/>\n";
         }
-        $newData .= length $val ? ">$val</$prop2>\n" : "/>\n";
     }
     # close off any open elements
     while ($prop = pop @curPropList) {

@@ -306,7 +306,7 @@ my $testnum = 1;
     ++$testnum;
     my $exifTool = new Image::ExifTool;
     $exifTool->Options(Filter => 'tr/ /_/;tr/0-9/#/');
-    my $info = $exifTool->ImageInfo('t/images/ExifTool.jpg');
+    my $info = $exifTool->ImageInfo('t/images/ExifTool.jpg', '-ExifToolVersion');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }

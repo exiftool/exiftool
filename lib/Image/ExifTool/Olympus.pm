@@ -38,7 +38,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::APP12;
 
-$VERSION = '2.34';
+$VERSION = '2.35';
 
 sub PrintLensInfo($$$);
 
@@ -2256,6 +2256,7 @@ my %indexInfo = (
                     1 => 'WB',
                     2 => 'FL',
                     3 => 'MF',
+                    6 => 'Focus', #PH
                 }) . ' Bracketing';
                 $a =~ s/, /+/g;
             } else {
@@ -2308,6 +2309,15 @@ my %indexInfo = (
             2 => 'On, Mode 2',
             3 => 'On, Mode 3',
             4 => 'On, Mode 4', # (NC, E-P5)
+        },
+    },
+    0x804 => { #PH (E-M1 with firmware update)
+        Name => 'StackedImage',
+        Writable => 'int32u',
+        Count => 2,
+        PrintConv => {
+            '0 0' => 'No',
+            '9 8' => 'Focus-stacked (8 images)',
         },
     },
     0x900 => { #11
@@ -2782,6 +2792,7 @@ my %indexInfo = (
         Binary => 1,
         Unknown => 1, # (but what does it mean?)
     },
+    # 0x214 - int16u: normally 0, but 1 for E-M1 focus-bracketing, and have seen 1 and 256 at other times
     0x300 => { Name => 'ZoomStepCount',     Writable => 'int16u' }, #6
     0x301 => { Name => 'FocusStepCount',    Writable => 'int16u' }, #11
     0x303 => { Name => 'FocusStepInfinity', Writable => 'int16u' }, #11
@@ -2890,14 +2901,10 @@ my %indexInfo = (
         }
     ],
     # 0x31a Continuous AF parameters?
-    # 0x328 Related to AF (maybe Imager AF data?) (ref PH, E-PL1):
-    #  - offset 0x2a (int8u)  ImagerAFMode?  0=Manual, 1=Auto
-    #  - offset 0x30 (int16u) AFAreaXPosition
-    #  - offset 0x32 (int16u) AFAreaWidth (202)
-    #  - offset 0x34 (int16u) AFAreaYPosition
-    #  - offset 0x36 (int16u) AFAreaHeight (50)
-    #  (AF area positions above give the top-left coordinates of the AF area in the
-    #   AF frame. Increasing Y is downwards, and the AF frame size is about 1280x256)
+    0x328 => { #PH
+        Name => 'AFInfo',
+        SubDirectory => { TagTable => 'Image::ExifTool::Olympus::AFInfo' },
+    },
     # 0x1200-0x1209 Flash information:
     0x1201 => { #6
         Name => 'ExternalFlash',
@@ -3001,6 +3008,20 @@ my %indexInfo = (
         },
     },
     # 0x102a same as Subdir4-0x300
+);
+
+# AF information (ref PH)
+%Image::ExifTool::Olympus::AFInfo = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    FIRST_ENTRY => 0,
+    # 0x2a - int8u:  ImagerAFMode?  0=Manual, 1=Auto
+    # 0x30 - int16u: AFAreaXPosition?
+    # 0x32 - int16u: AFAreaWidth? (202)
+    # 0x34 - int16u: AFAreaYPosition?
+    # 0x36 - int16u: AFAreaHeight? (50)
+    #  (AF area positions above give the top-left coordinates of the AF area in the
+    #   AF frame. Increasing Y is downwards, and the AF frame size is about 1280x256)
 );
 
 # Olympus raw information tags (ref 6)

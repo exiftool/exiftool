@@ -1832,7 +1832,7 @@ sub WriteExif($$$)
                 my $curInfo = $et->GetTagInfo($tagTablePtr, $tagID);
                 if (defined $curInfo and not $curInfo) {
                     # need value to evaluate the condition
-                    my ($val) = $et->GetNewValue($tagInfo);
+                    my $val = $et->GetNewValue($tagInfo);
                     # must convert to binary for evaluating in Condition
                     if ($$tagInfo{Format} and defined $val) {
                         $val = WriteValue($val, $$tagInfo{Format}, $$tagInfo{Count});
@@ -2596,6 +2596,7 @@ NoOverwrite:            next if $isNew > 0;
                         } else {
                             $et->Warn('Internal problem getting maker notes tag table');
                         }
+                        $writeProc or $writeProc = $$subTable{WRITE_PROC} if $subTable;
                         $subTable or $subTable = $tagTablePtr;
                         if ($writeProc and
                             $writeProc eq \&Image::ExifTool::MakerNotes::WriteUnknownOrPreview and
@@ -2631,7 +2632,12 @@ NoOverwrite:            next if $isNew > 0;
                             }
                             # rewrite maker notes
                             $subdir = $et->WriteDirectory(\%subdirInfo, $subTable);
-                        } elsif (not $notIFD) {
+                        } elsif ($notIFD) {
+                            if ($writeProc) {
+                                $loc = 0;
+                                $subdir = $et->WriteDirectory(\%subdirInfo, $subTable);
+                            }
+                        } else {
                             my $msg = 'Maker notes could not be parsed';
                             if ($$et{FILE_TYPE} eq 'JPEG') {
                                 $et->Warn($msg, 1);
@@ -3095,7 +3101,7 @@ NoOverwrite:            next if $isNew > 0;
                 }
                 if ($putFirst and $$dirInfo{HeaderPtr}) {
                     my $hdrPtr = $$dirInfo{HeaderPtr};
-                    # place this value immediately after the TIFF header
+                    # place this value immediately after the TIFF header (eg. IIQ maker notes)
                     $offsetVal = Set32u(length $$hdrPtr);
                     $$hdrPtr .= $$newValuePt;
                 } else {

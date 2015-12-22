@@ -702,7 +702,9 @@ distribution for examples.</p>
     date/time values are stored as UTC, causing conversion to local time when they are
     extracted. According to the QuickTime specification date/time values should be UTC,
     but many digital cameras store local time instead (presumably because they don't know
-    the time zone).</td><td align=center>0 or 1</td><td align=center>undef</td></tr>
+    the time zone). This option also disables the autodetection of incorrect time-zero
+    offsets in QuickTime date/time values, and enforces a time zero of 1904 as per the
+    QuickTime specification.</td><td align=center>0 or 1</td><td align=center>undef</td></tr>
 <tr><td>RequestAll</td><td><a name="RequestAll"></a>Flag to request all tags to be extracted.
     This causes some tags to be generated which normally would not be unless specifically
     requested (by passing the tag name to ImageInfo or ExtractInfo).  Note that this flag is set

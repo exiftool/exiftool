@@ -206,6 +206,8 @@ is an explanation of the meaning of each special key:
                   if the first argument is less than, equal to, or greater than
                   the second argument.
 
+    ENTRY_SIZE    Used by ProcessPhaseOne to specify size of IFD entry
+
   DATAMEMBER : BinaryData tables only.  A reference to a list of sorted tag ID's
   which must be extracted as data members when writing.  Must also list "var_"
   format tags and tags with Hook so offsets are properly calculated if the table

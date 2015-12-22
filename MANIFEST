@@ -645,6 +645,9 @@ t/Pentax.t
 t/Pentax_2.out
 t/Pentax_3.out
 t/Pentax_4.out
+t/PhaseOne.t
+t/PhaseOne_2.out
+t/PhaseOne_3.out
 t/PhotoCD.t
 t/PhotoCD_2.out
 t/PhotoMechanic.t
@@ -783,6 +786,7 @@ t/XMP_41.out
 t/XMP_42.out
 t/XMP_43.out
 t/XMP_44.out
+t/XMP_45.out
 t/XMP_5.out
 t/XMP_6.out
 t/XMP_7.out
@@ -900,6 +904,7 @@ t/images/Panasonic.jpg
 t/images/Panasonic.rw2
 t/images/Pentax.avi
 t/images/Pentax.jpg
+t/images/PhaseOne.iiq
 t/images/PhotoCD.pcd
 t/images/PhotoMechanic.jpg
 t/images/Photoshop.psd

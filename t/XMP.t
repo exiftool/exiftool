@@ -1,7 +1,7 @@
 # Before "make install", this script should be runnable with "make test".
 # After "make install" it should work as "perl t/XMP.t".
 
-BEGIN { $| = 1; print "1..44\n"; $Image::ExifTool::noConfig = 1; }
+BEGIN { $| = 1; print "1..45\n"; $Image::ExifTool::noConfig = 1; }
 END {print "not ok 1\n" unless $loaded;}
 
 # definitions for user-defined tag test (#26)
@@ -550,6 +550,19 @@ my $testnum = 1;
     $exifTool->WriteInfo("t/images/XMP6.xmp", $testfile);
     my $err = $exifTool->GetValue('Error');
     warn "\n  $err\n" if $err;
+    print 'not ' unless testCompare("t/XMP_$testnum.out",$testfile,$testnum);
+    print "ok $testnum\n";
+}
+
+# test 45: Write empty structures
+{
+    ++$testnum;
+    my $exifTool = new Image::ExifTool;
+    my $testfile = "t/${testname}_${testnum}_failed.xmp";
+    unlink $testfile;
+    $exifTool->SetNewValue('regioninfo' => '{RegionList=[,]}');
+    $exifTool->SetNewValue('xmp:flash' => '{}');
+    $exifTool->WriteInfo(undef, $testfile);
     print 'not ' unless testCompare("t/XMP_$testnum.out",$testfile,$testnum);
     print "ok $testnum\n";
 }

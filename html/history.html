@@ -17,10 +17,26 @@ considered development releases, and are not uploaded to <a href="http://search.
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v10.08'><b>Dec. 22, 2015 - Version 10.08</b></a>
+<ul>
+<li>Added ability to write empty XMP structures
+<li>Added write support for PhaseOne MakerNotes tags in IIQ files
+<li>Added a new Nikon LensID (thanks David P&uuml;schel)
+<li>Decode a new Olympus tag and improved decoding of DriveMode
+<li>Minor improvements to HtmlDump of PhaseOne IIQ and PDF files
+<li>Patched to allow overwriting of empty XMP written by some PhaseOne cameras
+<li>Fixed bug in HtmlDump feature that could cause a "substr outside of string"
+    error
+<li>API Changes:
+    <ul>
+    <li>Changed QuickTimeUTC API option to also enforce proper time zero
+    </ul>
+</ul>
+
 <a name='v10.07'><b>Nov. 26, 2015 - Version 10.07</b></a>
 <ul>
 <li>Fixed problem with warnings on some systems about unimplemented functions
-    for FileGroupID and FileUserID when -p and -if are used
+    for FileGroupID and FileUserID when -p or -if were used
 </ul>
 
 <a name='v10.06'><b>Nov. 26, 2015 - Version 10.06</b></a>

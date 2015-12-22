@@ -281,12 +281,17 @@ Key:
             foreach $item (@{$$struct{$key}}) {
                 if (not ref $item) {
                     $item = '' unless defined $item; # use empty string for missing items
-                    $$fieldInfo{Struct} and $warn = "$tag items are not valid structures", next Key;
-                    $et->Sanitize(\$item);
-                    ($copy[$i],$err) = $et->ConvInv($item,$fieldInfo,$tag,$strName,$type,'');
-                    $err and $warn = $err, next Key;
-                    $err = CheckXMP($et, $fieldInfo, \$copy[$i]);
-                    $err and $warn = "$err in $strName $tag", next Key;
+                    if ($$fieldInfo{Struct}) {
+                        # (allow empty structures)
+                        $item =~ /^\s*$/ or $warn = "$tag items are not valid structures", next Key;
+                        $copy[$i] = { }; # create hash for empty structure
+                    } else {
+                        $et->Sanitize(\$item);
+                        ($copy[$i],$err) = $et->ConvInv($item,$fieldInfo,$tag,$strName,$type,'');
+                        $err and $warn = $err, next Key;
+                        $err = CheckXMP($et, $fieldInfo, \$copy[$i]);
+                        $err and $warn = "$err in $strName $tag", next Key;
+                    }
                 } elsif (ref $item eq 'HASH') {
                     $$fieldInfo{Struct} or $warn = "$tag is not a structure in $strName", next Key;
                     ($copy[$i], $err) = CheckStruct($et, $item, $$fieldInfo{Struct});
@@ -310,12 +315,12 @@ Key:
             $copy{$tag} = $$fieldInfo{List} ? [ $val ] : $val;
         }
     }
-    if (%copy) {
+    if (%copy or not $warn) {
         $rtnVal = \%copy;
         undef $err;
         $$et{CHECK_WARN} = $warn if $warn;
     } else {
-        $err = $warn || 'Structure has no fields';
+        $err = $warn;
     }
     return wantarray ? ($rtnVal, $err) : $rtnVal;
 }
@@ -474,8 +479,16 @@ sub AddNewStruct($$$$$$)
     my $ns = $$strTable{NAMESPACE} || '';
     my $changed = 0;
 
+    # add dummy field to allow empty structures (name starts with '~' so it will come
+    # after all valid structure fields, which is necessary when serializing the XMP later)
+    %$struct or $$struct{'~dummy~'} = '';
+
     foreach $tag (sort keys %$struct) {
-        my $fieldInfo = $$strTable{$tag} or next;
+        my $fieldInfo = $$strTable{$tag};
+        unless ($fieldInfo) {
+            next unless $tag eq '~dummy~'; # check for dummy field
+            $fieldInfo = { }; # create dummy field info for dummy structure
+        }
         my $val = $$struct{$tag};
         my $propPath = $$fieldInfo{PropertyPath};
         unless ($propPath) {

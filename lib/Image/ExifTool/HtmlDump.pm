@@ -13,7 +13,7 @@ use vars qw($VERSION);
 use Image::ExifTool;    # only for FinishTiffDump()
 use Image::ExifTool::HTML qw(EscapeHTML);
 
-$VERSION = '1.32';
+$VERSION = '1.33';
 
 sub DumpTable($$$;$$$$$);
 sub Open($$$;@);
@@ -383,7 +383,9 @@ sub Print($$;$$$$$)
             for ($try=0; $try<2; ++$try) {
                 $end = $start + $len;
                 # only load as much of the block as we are going to dump
-                my $size = ($len > $limit) ? $limit / 2 : $len;
+                # (read 32 more bytes than necessary just in case there
+                # is only one skipped line that we decide to print)
+                my $size = ($len > $limit + 32) ? $limit / 2 + 16 : $len;
                 if ($start >= $dataPos and $end <= $dataEnd) {
                     $buff = substr($$dataPt, $start-$dataPos, $size);
                     if ($len != $size) {

@@ -11024,6 +11024,7 @@ any information found here will be extracted, even if the tag is not listed.
   0x0601   PanoramaMode                         int16u~
   0x0603   ImageQuality2                        int16u
   0x0604   ImageStabilization                   int32u
+  0x0804   StackedImage                         int32u[2]
   0x0900   ManometerPressure                    int16u
   0x0901   ManometerReading                     int32s[2]
   0x0902   ExtendedWBDetect                     int16u
@@ -11159,6 +11160,7 @@ any information found here will be extracted, even if the tag is not listed.
   0x0304   FocusStepNear                        int16u
   0x0305   FocusDistance                        rational64u
   0x0308   AFPoint                              int16u
+  0x0328   AFInfo                               Olympus AFInfo
   0x1201   ExternalFlash                        int16u[2]
   0x1203   ExternalFlashGuideNumber?            rational64s
   0x1204   ExternalFlashBounce                  int16u
@@ -11168,6 +11170,12 @@ any information found here will be extracted, even if the tag is not listed.
   0x120a   MacroLED                             int16u
   0x1500   SensorTemperature                    int16s
   0x1600   ImageStabilization                   undef~
+
+=head3 Olympus AFInfo Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+  [no tags known]
 
 =head3 Olympus FE Tags
 
@@ -12543,40 +12551,40 @@ These tags are extracted from the maker notes of Phase One images.
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
   0x0100   CameraOrientation                    N
-  0x0102   SerialNumber                         N
-  0x0105   ISO                                  N
-  0x0106   ColorMatrix1                         N
-  0x0107   WB_RGBLevels                         N
-  0x0108   SensorWidth                          N
-  0x0109   SensorHeight                         N
-  0x010a   SensorLeftMargin                     N
-  0x010b   SensorTopMargin                      N
-  0x010c   ImageWidth                           N
-  0x010d   ImageHeight                          N
-  0x010e   RawFormat                            N
+  0x0102   SerialNumber                         string
+  0x0105   ISO                                  int32s
+  0x0106   ColorMatrix1                         float[9]
+  0x0107   WB_RGBLevels                         float[3]
+  0x0108   SensorWidth                          int32s
+  0x0109   SensorHeight                         int32s
+  0x010a   SensorLeftMargin                     int32s
+  0x010b   SensorTopMargin                      int32s
+  0x010c   ImageWidth                           int32s
+  0x010d   ImageHeight                          int32s
+  0x010e   RawFormat                            int32s
   0x010f   RawData                              N
   0x0110   SensorCalibration                    PhaseOne SensorCalibration
   0x0112   DateTimeOriginal                     N
-  0x0113   ImageNumber                          N
-  0x0203   Software                             N
-  0x0204   System                               N
-  0x0210   SensorTemperature                    N
-  0x0211   SensorTemperature2                   N
-  0x0212   UnknownDate?                         N
+  0x0113   ImageNumber                          int32s
+  0x0203   Software                             string
+  0x0204   System                               string
+  0x0210   SensorTemperature                    float
+  0x0211   SensorTemperature2                   float
+  0x0212   UnknownDate?                         int32u
   0x021c   StripOffsets                         N
-  0x021d   BlackLevel                           N
-  0x0222   SplitColumn                          N
-  0x0223   BlackLevelData                       N
-  0x0226   ColorMatrix2                         N
-  0x0301   FirmwareVersions                     N
-  0x0400   ShutterSpeedValue                    N
-  0x0401   ApertureValue                        N
-  0x0402   ExposureCompensation                 N
-  0x0403   FocalLength                          N
-  0x0410   CameraModel                          N
-  0x0412   LensModel                            N
-  0x0414   MaxApertureValue                     N
-  0x0415   MinApertureValue                     N
+  0x021d   BlackLevel                           int32s
+  0x0222   SplitColumn                          int32s
+  0x0223   BlackLevelData                       int16u[n]
+  0x0226   ColorMatrix2                         float[9]
+  0x0301   FirmwareVersions                     string
+  0x0400   ShutterSpeedValue                    float
+  0x0401   ApertureValue                        float
+  0x0402   ExposureCompensation                 float
+  0x0403   FocalLength                          float
+  0x0410   CameraModel                          string
+  0x0412   LensModel                            string
+  0x0414   MaxApertureValue                     float
+  0x0415   MinApertureValue                     float
 
 =head3 PhaseOne SensorCalibration Tags
 
@@ -12584,7 +12592,7 @@ These tags are extracted from the maker notes of Phase One images.
   ------   --------                             --------
   0x0400   SensorDefects                        N
   0x0401   AllColorFlatField1?                  N
-  0x0407   SerialNumber                         N
+  0x0407   SerialNumber                         string
   0x040b   RedBlueFlatField?                    N
   0x0410   AllColorFlatField2?                  N
   0x0416   AllColorFlatField3?                  N

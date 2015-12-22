@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '10.07';
+$VERSION = '10.08';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -184,7 +184,7 @@ my %writeTypes; # lookup for writable file types (hash filled if required)
 
 # file extensions that we can't write for various base types
 %noWriteFile = (
-    TIFF => [ qw(3FR DCR K25 KDC ) ],
+    TIFF => [ qw(3FR DCR K25 KDC) ],
     XMP  => [ 'SVG' ],
     JP2  => [ 'J2C', 'JPC' ],
 );

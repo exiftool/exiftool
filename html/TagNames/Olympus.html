@@ -1914,32 +1914,38 @@ the Make and Model are used to identify the extender)</span>
   <br>3 = On, Mode 3
   <br>4 = On, Mode 4</span></td></tr>
 <tr>
+<td title='0x0804 = 2052'>0x0804</td>
+<td>StackedImage</td>
+<td class=c>int32u[2]</td>
+<td><span class=s>&#39;0 0&#39; = No
+  <br>&#39;9 8&#39; = Focus-stacked (8 images)</span></td></tr>
+<tr class=b>
 <td title='0x0900 = 2304'>0x0900</td>
 <td>ManometerPressure</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x0901 = 2305'>0x0901</td>
 <td>ManometerReading</td>
 <td class=c>int32s[2]</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x0902 = 2306'>0x0902</td>
 <td>ExtendedWBDetect</td>
 <td class=c>int16u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0903 = 2307'>0x0903</td>
 <td>RollAngle</td>
 <td class=c>int16s[2]</td>
 <td><span class=s><span class=n>(converted to degrees of clockwise camera rotation)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0904 = 2308'>0x0904</td>
 <td>PitchAngle</td>
 <td class=c>int16s[2]</td>
 <td><span class=s><span class=n>(converted to degrees of upward camera tilt)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0908 = 2312'>0x0908</td>
 <td>DateTimeUTC</td>
 <td class=c>string</td>
@@ -2673,28 +2679,33 @@ give AF point, upper bits give AF target selection mode)</span>
   <br>3 = Center (vertical)
   <br>255 = None</span></td></tr>
 <tr class=b>
+<td title='0x0328 = 808'>0x0328</td>
+<td>AFInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Olympus.html#AFInfo'>Olympus AFInfo Tags</a></td></tr>
+<tr>
 <td title='0x1201 = 4609'>0x1201</td>
 <td>ExternalFlash</td>
 <td class=c>int16u[2]</td>
 <td><span class=s>&#39;0 0&#39; = Off
   <br>&#39;1 0&#39; = On</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x1203 = 4611'>0x1203</td>
 <td>ExternalFlashGuideNumber?</td>
 <td class=c>rational64s</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x1204 = 4612'>0x1204</td>
 <td>ExternalFlashBounce</td>
 <td class=c>int16u</td>
 <td><span class=s>0 = Bounce or Off
   <br>1 = Direct</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x1205 = 4613'>0x1205</td>
 <td>ExternalFlashZoom</td>
 <td class=c>rational64u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x1208 = 4616'>0x1208</td>
 <td>InternalFlash</td>
 <td class=c>int16u[n]</td>
@@ -2702,27 +2713,36 @@ give AF point, upper bits give AF target selection mode)</span>
   <br>1 = On
   <br>&#39;0 0&#39; = Off
   <br>&#39;1 0&#39; = On</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x1209 = 4617'>0x1209</td>
 <td>ManualFlash</td>
 <td class=c title=' ~ = Writable only with -n'>int16u[2]~</td>
 <td><span class=s><span class=n>(2 numbers: 1. 0=Off, 1=On, 2. Flash strength)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x120a = 4618'>0x120a</td>
 <td>MacroLED</td>
 <td class=c>int16u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x1500 = 5376'>0x1500</td>
 <td>SensorTemperature</td>
 <td class=c>int16s</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x1600 = 5632'>0x1600</td>
 <td>ImageStabilization</td>
 <td class=c title=' ~ = Writable only with -n'>undef~</td>
 <td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='AFInfo'>Olympus AFInfo Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr><td colspan=4 class=c><i>[no tags known]</i></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='FE'>Olympus FE Tags</a></h2>
@@ -3528,7 +3548,7 @@ like the LS-5, LS-10, LS-11.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Aug 26, 2015</i>
+<br><i>Last revised Dec 22, 2015</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

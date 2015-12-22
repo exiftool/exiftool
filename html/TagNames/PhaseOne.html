@@ -24,57 +24,57 @@
 <tr class=b>
 <td title='0x0102 = 258'>0x0102</td>
 <td>SerialNumber</td>
-<td class=c>N</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0105 = 261'>0x0105</td>
 <td>ISO</td>
-<td class=c>N</td>
+<td class=c>int32s</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x0106 = 262'>0x0106</td>
 <td>ColorMatrix1</td>
-<td class=c>N</td>
+<td class=c>float[9]</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0107 = 263'>0x0107</td>
 <td>WB_RGBLevels</td>
-<td class=c>N</td>
+<td class=c>float[3]</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x0108 = 264'>0x0108</td>
 <td>SensorWidth</td>
-<td class=c>N</td>
+<td class=c>int32s</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0109 = 265'>0x0109</td>
 <td>SensorHeight</td>
-<td class=c>N</td>
+<td class=c>int32s</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x010a = 266'>0x010a</td>
 <td>SensorLeftMargin</td>
-<td class=c>N</td>
+<td class=c>int32s</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x010b = 267'>0x010b</td>
 <td>SensorTopMargin</td>
-<td class=c>N</td>
+<td class=c>int32s</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x010c = 268'>0x010c</td>
 <td>ImageWidth</td>
-<td class=c>N</td>
+<td class=c>int32s</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x010d = 269'>0x010d</td>
 <td>ImageHeight</td>
-<td class=c>N</td>
+<td class=c>int32s</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x010e = 270'>0x010e</td>
 <td>RawFormat</td>
-<td class=c>N</td>
+<td class=c>int32s</td>
 <td><span class=s>1 = RAW 1
   <br>2 = RAW 2
   <br>3 = IIQ L
@@ -94,36 +94,36 @@
 <td title='0x0112 = 274'>0x0112</td>
 <td>DateTimeOriginal</td>
 <td class=c>N</td>
-<td><span class=s><span class=n>(also used as a key to encrypt the raw data)</span></span></td></tr>
+<td><span class=s><span class=n>(may be used as a key to encrypt the raw data)</span></span></td></tr>
 <tr class=b>
 <td title='0x0113 = 275'>0x0113</td>
 <td>ImageNumber</td>
-<td class=c>N</td>
+<td class=c>int32s</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0203 = 515'>0x0203</td>
 <td>Software</td>
-<td class=c>N</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x0204 = 516'>0x0204</td>
 <td>System</td>
-<td class=c>N</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0210 = 528'>0x0210</td>
 <td>SensorTemperature</td>
-<td class=c>N</td>
+<td class=c>float</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x0211 = 529'>0x0211</td>
 <td>SensorTemperature2</td>
-<td class=c>N</td>
+<td class=c>float</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0212 = 530'>0x0212</td>
 <td>UnknownDate?</td>
-<td class=c>N</td>
+<td class=c>int32u</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x021c = 540'>0x021c</td>
@@ -133,67 +133,67 @@
 <tr>
 <td title='0x021d = 541'>0x021d</td>
 <td>BlackLevel</td>
-<td class=c>N</td>
+<td class=c>int32s</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x0222 = 546'>0x0222</td>
 <td>SplitColumn</td>
-<td class=c>N</td>
+<td class=c>int32s</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0223 = 547'>0x0223</td>
 <td>BlackLevelData</td>
-<td class=c>N</td>
+<td class=c>int16u[n]</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x0226 = 550'>0x0226</td>
 <td>ColorMatrix2</td>
-<td class=c>N</td>
+<td class=c>float[9]</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0301 = 769'>0x0301</td>
 <td>FirmwareVersions</td>
-<td class=c>N</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x0400 = 1024'>0x0400</td>
 <td>ShutterSpeedValue</td>
-<td class=c>N</td>
+<td class=c>float</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0401 = 1025'>0x0401</td>
 <td>ApertureValue</td>
-<td class=c>N</td>
+<td class=c>float</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x0402 = 1026'>0x0402</td>
 <td>ExposureCompensation</td>
-<td class=c>N</td>
+<td class=c>float</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0403 = 1027'>0x0403</td>
 <td>FocalLength</td>
-<td class=c>N</td>
+<td class=c>float</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x0410 = 1040'>0x0410</td>
 <td>CameraModel</td>
-<td class=c>N</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0412 = 1042'>0x0412</td>
 <td>LensModel</td>
-<td class=c>N</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x0414 = 1044'>0x0414</td>
 <td>MaxApertureValue</td>
-<td class=c>N</td>
+<td class=c>float</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0415 = 1045'>0x0415</td>
 <td>MinApertureValue</td>
-<td class=c>N</td>
+<td class=c>float</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -216,7 +216,7 @@
 <tr>
 <td title='0x0407 = 1031'>0x0407</td>
 <td>SerialNumber</td>
-<td class=c>N</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x040b = 1035'>0x040b</td>
@@ -247,7 +247,7 @@
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jan 29, 2015</i>
+<br><i>Last revised Dec 22, 2015</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

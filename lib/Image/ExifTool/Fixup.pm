@@ -18,6 +18,18 @@
 #   Pointers  - Hash of references to fixup pointer arrays, keyed by ByteOrder
 #               string (with "2" added if pointer is 16-bit [default is 32-bit],
 #               plus "_$marker" suffix if tagged with a marker name).
+#
+# Procedure:
+#
+#            1. Create a Fixup object for each data block containing pointers
+#            2. Call AddFixup with the offset of each pointer in the block
+#               - pointer is assumed int32u with the current byte order
+#               - may also be called with a fixup reference for contained blocks
+#            3. Add the necessary pointer offset to $$fixup{Shift}
+#            4. Add data size to $$fixup{Start} if data is added before the block
+#               - automatically also shifts pointers by this amount
+#            5. Call ApplyFixup to apply the fixup to all pointers
+#               - resets Shift and Start to 0 after applying fixup
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::Fixup;

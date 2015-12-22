@@ -3966,7 +3966,14 @@ sub ProcessXMP($$;$)
         $rtnVal = 1;
     } elsif ($$dirInfo{DirName} and $$dirInfo{DirName} eq 'XMP') {
         # if DirName was 'XMP' we expect well-formed XMP, so set Warning since it wasn't
-        $et->Warn('Invalid XMP');
+        # (but allow empty XMP as written by some PhaseOne cameras)
+        my $xmp = substr($$dataPt, $dirStart, $dirLen);
+        if ($xmp =~ /^ *\0*$/) {
+            $et->Warn('Invalid XMP');
+        } else {
+            $et->Warn('Empty XMP',1);
+            $rtnVal = 1;
+        }
     }
     delete $$et{NO_STRUCT};
 

@@ -58,7 +58,7 @@ use vars qw($VERSION %nikonLensIDs %nikonTextEncoding);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '3.12';
+$VERSION = '3.13';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -471,6 +471,7 @@ sub GetAFPointGrid($$;$);
     '48 3C 8E B0 3C 3C 4B 02' => 'Sigma APO 300-800mm F5.6 EX DG HSM',
 #
     '00 47 25 25 24 24 00 02' => 'Tamron SP AF 14mm f/2.8 Aspherical (IF) (69E)',
+    'E8 4C 44 44 14 14 DF 0E' => 'Tamron SP 35mm f/1.8 VC', #35
     'F4 54 56 56 18 18 84 06' => 'Tamron SP AF 60mm f/2.0 Di II Macro 1:1 (G005)', #24
     '1E 5D 64 64 20 20 13 00' => 'Tamron SP AF 90mm f/2.5 (52E)',
     '20 5A 64 64 20 20 14 00' => 'Tamron SP AF 90mm f/2.5 Macro (152E)',

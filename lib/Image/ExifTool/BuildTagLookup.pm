@@ -32,12 +32,13 @@ use Image::ExifTool::XMP;
 use Image::ExifTool::Canon;
 use Image::ExifTool::Nikon;
 
-$VERSION = '2.92';
+$VERSION = '2.93';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
 sub SortedTagTablekeys($);
 
+# global variables to control sorting order of table entries
 my $numbersFirst = 1;   # set to -1 to sort numbers last, or 2 to put negative numbers last
 my $caseInsensitive;    # flag to ignore case when sorting tag names
 
@@ -557,7 +558,7 @@ L<Image::ExifTool::BuildTagLookup|Image::ExifTool::BuildTagLookup>.
 
 ~head1 AUTHOR
 
-Copyright 2003-2015, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2016, Phil Harvey (phil at owl.phy.queensu.ca)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
@@ -1541,7 +1542,12 @@ sub WriteTagLookup($$)
 }
 
 #------------------------------------------------------------------------------
-# sort numbers first numerically, then strings alphabetically (case insensitive)
+# Sort numbers first numerically, then strings alphabetically (case insensitive)
+# - two global variables are used to change the sort algorithm:
+#   $numbersFirst: -1 = put numbers after other strings
+#                   1 = put numbers before other strings
+#                   2 = put numbers first, but negative numbers last
+#   $caseInsensitive: flag set for case-insensitive sorting
 sub NumbersFirst($$)
 {
     my ($a, $b) = @_;
@@ -2501,7 +2507,7 @@ WriteTagNames().
 
 =head1 AUTHOR
 
-Copyright 2003-2015, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2016, Phil Harvey (phil at owl.phy.queensu.ca)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

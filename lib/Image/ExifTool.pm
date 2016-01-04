@@ -8,7 +8,7 @@
 # Revisions:    Nov. 12/2003 - P. Harvey Created
 #               (See html/history.html for revision history)
 #
-# Legal:        Copyright (c) 2003-2015, Phil Harvey (phil at owl.phy.queensu.ca)
+# Legal:        Copyright (c) 2003-2016, Phil Harvey (phil at owl.phy.queensu.ca)
 #               This library is free software; you can redistribute it and/or
 #               modify it under the same terms as Perl itself.
 #------------------------------------------------------------------------------
@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '10.08';
+$VERSION = '10.09';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -1428,6 +1428,15 @@ my %systemTagsNotes = (
             return Image::ExifTool::Geotag::ConvertGeosync($self, $val);
         },
     },
+    MDItemTags => {
+        Groups => { 1 => 'System', 2 => 'Other' },
+        Notes => q{
+            not a real tag.  On OS X, a whole range of system-specific metadata tags
+            with names starting with "MDItem" may be extracted if specifically
+            requested, or if the MDItemTags API option is set.  Requires that the "mdls"
+            utility is available
+        },
+    },
 );
 
 # YCbCrSubSampling values (used by JPEG SOF, EXIF and XMP)
@@ -1803,6 +1812,7 @@ sub ClearOptions($)
         ListSep     => ', ',    # list item separator
         ListSplit   => undef,   # regex for splitting list-type tag values when writing
         MakerNotes  => undef,   # extract maker notes as a block
+        MDItemTags  => undef,   # extract OS X metadata item tags
         MissingTagValue =>undef,# value for missing tags when expanded in expressions
         NoPDFList   => undef,   # flag to avoid splitting PDF List-type tag values
         Password    => undef,   # password for password-protected PDF documents
@@ -2010,6 +2020,58 @@ sub ExtractInfo($;@)
             $self->FoundTag('FileDeviceID', $stat[6])     if $sys or $$req{filedeviceid};
             $self->FoundTag('FileBlockSize', $stat[11])   if $sys or $$req{fileblocksize};
             $self->FoundTag('FileBlockCount', $stat[12])  if $sys or $$req{fileblockcount};
+        }
+        # extract MDItem tags if requested
+        if ($^O eq 'darwin' and ($$options{MDItemTags} || $$options{RequestAll} ||
+            grep /^MDItem/i, @{$$self{REQUESTED_TAGS}}) and
+            defined $filename and $filename ne '' and $filename ne '-')
+        {
+            my ($fn, $tag, $val);
+            local $SIG{'__WARN__'} = \&SetWarning;
+            undef $evalWarning;
+            ($fn = $filename) =~ s/([`"\$\\])/\\$1/g;     # escape necessary characters
+            my @mdls = eval {`mdls "$fn" 2> /dev/null`};  # get OS X metadata
+            unless ($evalWarning) {
+                my $extra = GetTagTable('Image::ExifTool::Extra');
+                foreach (@mdls) {
+                    chomp;
+                    if (ref $val ne 'ARRAY') {
+                        s/^k(MDItem\w+)\s*= // or next;
+                        $tag = $1;
+                        $_ eq '(' and $val = [ ], next; # (start of a list)
+                        $_ = '' if $_ eq '(null)';
+                        s/^"// and s/"$//;  # remove quotes if they exist
+                        $val = $_;
+                    } elsif ($_ eq ')') {   # (end of a list)
+                        $_ = $$val[0];
+                        next unless defined $_;
+                    } else {
+                        # add item to list
+                        s/^    //;          # remove leading spaces
+                        s/,$//;             # remove trailing comma
+                        $_ = '' if $_ eq '(null)';
+                        s/^"// and s/"$//;  # remove quotes if they exist
+                        push @$val, $_;
+                        next;
+                    }
+                    # add to Extra tags if not done already
+                    unless ($$extra{$tag}) {
+                        # check for a date/time format
+                        my %tagInfo = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/ ? (
+                            Groups => { 1 => 'System', 2 => 'Time' },
+                            ValueConv => '$val=~tr/-/:/; $val=~s/ ([-+])/$1/; $val',
+                            PrintConv => '$self->ConvertDateTime($val)',
+                        ) : ( Groups => { 1 => 'System', 2 => 'Other' } );
+                        $tagInfo{Name} = $tag;
+                        $tagInfo{List} = 1 if ref $val eq 'ARRAY';
+                        $tagInfo{Groups}{2} = 'Audio' if $tag =~ /Audio/;
+                        $tagInfo{Groups}{2} = 'Author' if $tag =~ /(Copyright|Author)/;
+                        AddTagToTable($extra, $tag, \%tagInfo);
+                    }
+                    $self->FoundTag($tag, $val);
+                    undef $val;
+                }
+            }
         }
 
         # get list of file types to check

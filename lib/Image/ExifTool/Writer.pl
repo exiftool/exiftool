@@ -1093,6 +1093,7 @@ sub SetNewValuesFromFile($$;@)
         ListItem        => $$options{ListItem},
         ListSep         => $$options{ListSep},
         MakerNotes      => $$options{FastScan} && $$options{FastScan} > 1 ? undef : 1,
+        MDItemTags      => $$options{MDItemTags},
         MissingTagValue => $$options{MissingTagValue},
         NoPDFList       => $$options{NoPDFList},
         Password        => $$options{Password},
@@ -5650,7 +5651,7 @@ sub WriteJPEG($$)
             next Marker;
         }
         # write out this segment if $segDataPt is still defined
-        if (defined $segDataPt) {
+        if (defined $segDataPt and defined $$segDataPt) {
             # write the data for this record (the data could have been
             # modified, so recalculate the length word)
             my $size = length($$segDataPt);
@@ -5663,6 +5664,7 @@ sub WriteJPEG($$)
                 Write($outfile, $hdr, $s, $$segDataPt) or $err = 1;
             }
             undef $$segDataPt;  # free the buffer
+            undef $segDataPt;
         }
     }
     # make sure the ICC_Profile was complete
@@ -6165,7 +6167,7 @@ used routines.
 
 =head1 AUTHOR
 
-Copyright 2003-2015, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2016, Phil Harvey (phil at owl.phy.queensu.ca)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

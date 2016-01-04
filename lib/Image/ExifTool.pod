@@ -5,7 +5,7 @@
 #
 # URL:          http://owl.phy.queensu.ca/~phil/exiftool/
 #
-# Legal:        Copyright (c) 2003-2015, Phil Harvey (phil at owl.phy.queensu.ca)
+# Legal:        Copyright (c) 2003-2016, Phil Harvey (phil at owl.phy.queensu.ca)
 #               This library is free software; you can redistribute it and/or
 #               modify it under the same terms as Perl itself.
 #------------------------------------------------------------------------------
@@ -746,6 +746,11 @@ are:
   0 - Do not extract writable subdirectories (same as default of undef)
   1 - Extract and rebuild maker notes into self-contained block
   2 - Extract without rebuilding maker notes
+
+=item MDItemTags
+
+Flag to extract the OS X metadata item tags (see the "mdls" man page for
+details).
 
 =item MissingTagValue
 
@@ -2488,7 +2493,7 @@ specified by the L</Charset> option.
 
 =head1 AUTHOR
 
-Copyright 2003-2015, Phil Harvey
+Copyright 2003-2016, Phil Harvey
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

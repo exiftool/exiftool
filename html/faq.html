@@ -286,16 +286,18 @@ to the command line.
 
 <a name="Q8"></a>
 <p>8a. <b>"All maker note information is lost if I change the Make or Model tag"</b>, or
-<br>8b. <b>"I can't copy maker note information to an image"</b></p>
+<br>8b. <b>"I can't copy maker note information to an image"</b>, or
+<br>8c. <b>"I can't view a RAW image after changing the model tag"</p>
 
 <blockquote>
 The Make and Model tags are used by some image utilities (including ExifTool) to
 determine the format of the maker note information.  Deleting or changing either
 of these tags may prevent these utilities from recognizing or properly
-interpreting the maker notes.  Also beware that the maker notes information may
-be damaged if an image is edited when the maker notes are not properly
-recognized. So it is a good idea not to edit the Make and Model tags in the
-first place.</blockquote>
+interpreting the maker notes (which, for a RAW image, may mean that the image
+can no longer be properly rendered).  Also beware that the maker notes
+information may be damaged if an image is edited when the maker notes are not
+properly recognized. So it is a good idea not to edit the Make and Model tags in
+the first place.</blockquote>
 
 <blockquote>If you really want to delete the Make and Model information, you
 might as well delete the maker notes too.  You can do this with either of the
@@ -1528,7 +1530,7 @@ importing.</blockquote>
 for more details.</blockquote>
 
 <hr>
-<i>Last revised Sept 1, 2015</i>
+<i>Last revised Dec. 30, 2015</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

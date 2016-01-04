@@ -2678,6 +2678,7 @@ my %sampleFormat = (
         # this problem shortly after they released the update (Feb 2007), but so far
         # they have taken no steps to address this.
     },
+    # 0xefee - int16u: 0 - seen this from a WIC-scanned image
 
     # tags in the range 0xfde8-0xfe58 have been observed in PS7 files
     # generated from RAW images.  They are all strings with the
@@ -4623,7 +4624,7 @@ EXIF and TIFF meta information.
 
 =head1 AUTHOR
 
-Copyright 2003-2015, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2016, Phil Harvey (phil at owl.phy.queensu.ca)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

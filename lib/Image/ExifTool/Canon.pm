@@ -83,7 +83,7 @@ sub ProcessSerialData($$$);
 sub ProcessFilters($$$);
 sub SwapWords($);
 
-$VERSION = '3.56';
+$VERSION = '3.57';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -7824,7 +7824,14 @@ my %filterConv = (
             DirectoryIndex => '$val=~/(\d+)-(\d+)/; $1',
             FileIndex => '$val=~/(\d+)-(\d+)/; $2',
         },
-        ValueConv => 'sprintf("%.3d-%.4d",@val)',
+        ValueConv => q{
+            # fix the funny things that these numbers do when they wrap over 9999
+            # (it seems that FileIndex and DirectoryIndex actually store the
+            #  numbers from the previous image, so we need special logic
+            #  to handle the FileIndex wrap properly)
+            $val[1] = 1 and ++$val[0] if $val[1] == 10000;
+            return sprintf("%.3d-%.4d",@val);
+        },
     },
 );
 

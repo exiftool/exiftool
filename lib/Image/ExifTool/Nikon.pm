@@ -58,7 +58,7 @@ use vars qw($VERSION %nikonLensIDs %nikonTextEncoding);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '3.13';
+$VERSION = '3.14';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -303,6 +303,7 @@ sub GetAFPointGrid($$;$);
     'A8 48 8E 8E 30 30 C3 0E' => 'AF-S Nikkor 300mm f/4E PF ED VR', #30
     'A9 4C 31 31 14 14 C4 06' => 'AF-S Nikkor 20mm f/1.8G ED', #30
     'AA 48 37 5C 24 24 C5 4E' => 'AF-S Nikkor 24-70mm f/2.8E ED VR',
+    'AC 3C A6 A6 30 30 C7 4E' => 'AF-S Nikkor 600mm f/4E FL ED VR', #PH
     'AD 48 28 60 24 30 C8 4E' => 'AF-S VR DX 16-80mm f/2.8-4.0E ED',
     'AE 3C 80 A0 3C 3C C9 4E' => 'AF-S Nikkor 200-500mm f/5.6E ED VR', #PH
     'AE 3C 80 A0 3C 3C C9 0E' => 'AF-S Nikkor 200-500mm f/5.6E ED VR',
@@ -1162,6 +1163,7 @@ my %binaryDataAttrs = (
                 3 => 'VR',
                 # bit 4 set for Nikon 1 lenses - PH
                 # bit 5 set for FT-1 adapter? - PH
+                # bit 6 set for FL lenses? - PH
             }) : 'AF';
             # remove commas and change "D G" to just "G"
             s/,//g; s/\bD G\b/G/; $_

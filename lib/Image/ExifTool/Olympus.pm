@@ -38,7 +38,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::APP12;
 
-$VERSION = '2.35';
+$VERSION = '2.36';
 
 sub PrintLensInfo($$$);
 
@@ -95,6 +95,7 @@ my %olympusLensTypes = (
     '0 23 00' => 'Olympus Zuiko Digital ED 14-42mm F3.5-5.6', #PH
     '0 23 10' => 'Olympus M.Zuiko Digital ED 7-14mm F2.8 Pro', #20
     '0 24 00' => 'Olympus Zuiko Digital ED 40-150mm F4.0-5.6', #PH
+    '0 24 10' => 'Olympus M.Zuiko Digital ED 300mm F4.0 IS Pro', #20
     '0 25 10' => 'Olympus M.Zuiko Digital ED 8mm F1.8 Fisheye Pro', #20
     '0 30 00' => 'Olympus Zuiko Digital ED 50-200mm F2.8-3.5 SWD', #7
     '0 31 00' => 'Olympus Zuiko Digital ED 12-60mm F2.8-4.0 SWD', #7
@@ -735,6 +736,7 @@ my %indexInfo = (
         Count => 4,
         Notes => 'found in Epson ERF images',
     },
+    # 0x0402 - BitCodedAutoFocus (ref 11)
     0x0403 => { #11
         Name => 'SceneMode',
         Writable => 'int16u',
@@ -784,7 +786,7 @@ my %indexInfo = (
     },
     0x0404 => { Name => 'SerialNumber', Writable => 'string' }, #PH (D595Z, C7070WZ)
     0x0405 => { Name => 'Firmware',     Writable => 'string' }, #11
-    0x0e00 => {
+    0x0e00 => { # (AFFieldCoord for models XZ-2 and XZ-10, ref 11)
         Name => 'PrintIM',
         Description => 'Print Image Matching',
         Writable => 0,
@@ -1666,7 +1668,8 @@ my %indexInfo = (
             5 => 'FL-36',
             6 => 'FL-50R', #11 (or Metz mecablitz digital)
             7 => 'FL-36R', #11
-            # have seen value of 9 - PH
+            9 => 'FL-14', #11
+            11 => 'FL-600R', #11
         },
     },
     0x1002 => { #6

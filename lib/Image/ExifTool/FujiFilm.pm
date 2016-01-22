@@ -26,7 +26,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.52';
+$VERSION = '1.53';
 
 sub ProcessFujiDir($$$);
 sub ProcessFaceRec($$$);
@@ -759,11 +759,14 @@ my %faceCategories = (
 %Image::ExifTool::FujiFilm::RAFData = (
     PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    DATAMEMBER => [ 0, 4, 8 ],
     FIRST_ENTRY => 0,
     # (FujiFilm image dimensions are REALLY confusing)
+    # --> this needs some cleaning up
     0 => {
         Name => 'RawImageWidth',
         Format => 'int32u',
+        DataMember => 'FujiWidth',
         RawConv => '$val < 10000 ? $$self{FujiWidth} = $val : undef', #5
         ValueConv => '$$self{FujiLayout} ? ($val / 2) : $val',
     },
@@ -772,17 +775,39 @@ my %faceCategories = (
             Name => 'RawImageWidth',
             Condition => 'not $$self{FujiWidth}',
             Format => 'int32u',
+            DataMember => 'FujiWidth',
+            RawConv => '$val < 10000 ? $$self{FujiWidth} = $val : undef', #PH
             ValueConv => '$$self{FujiLayout} ? ($val / 2) : $val',
         },
         {
             Name => 'RawImageHeight',
             Format => 'int32u',
+            DataMember => 'FujiHeight',
+            RawConv => '$$self{FujiHeight} = $val',
             ValueConv => '$$self{FujiLayout} ? ($val * 2) : $val',
         },
     ],
-    8 => {
+    8 => [
+        {
+            Name => 'RawImageWidth',
+            Condition => 'not $$self{FujiWidth}',
+            Format => 'int32u',
+            DataMember => 'FujiWidth',
+            RawConv => '$val < 10000 ? $$self{FujiWidth} = $val : undef', #PH
+            ValueConv => '$$self{FujiLayout} ? ($val / 2) : $val',
+        },
+        {
+            Name => 'RawImageHeight',
+            Condition => 'not $$self{FujiHeight}',
+            Format => 'int32u',
+            DataMember => 'FujiHeight',
+            RawConv => '$$self{FujiHeight} = $val',
+            ValueConv => '$$self{FujiLayout} ? ($val * 2) : $val',
+        },
+    ],
+    12 => {
         Name => 'RawImageHeight',
-        Condition => 'not $$self{FujiWidth}',
+        Condition => 'not $$self{FujiHeight}',
         Format => 'int32u',
         ValueConv => '$$self{FujiLayout} ? ($val * 2) : $val',
     },

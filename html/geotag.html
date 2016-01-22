@@ -109,7 +109,8 @@ file name.</i></blockquote>
 
 <p>The <code>Geosync</code> tag is needed only when the image timestamps are not
 properly synchronized with GPS time, and must be set before <code>Geotime</code>
-to be effective.  The value written to the <code>Geosync</code> tag may take a
+to be effective (or before <code>Geotag</code> if <code>Geotime</code> is not
+specified).  The value written to the <code>Geosync</code> tag may take a
 number of different forms, but the basic format is that of a simple time
 difference which is added to <code>Geotime</code> before interpolating the GPS
 position in the track log.  This time difference may be of the form "SS",

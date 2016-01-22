@@ -805,9 +805,17 @@ and enforces a time zero of 1904 as per the QuickTime specification.
 
 Flag to request all tags to be extracted.  This causes some tags to be
 generated which normally would not be unless specifically requested (by
-passing the tag name to ImageInfo or ExtractInfo).  Note that this flag is
-set automatically during a call to L</SetNewValuesFromFile> to make all tags
-available for copying.  Default is undef.
+passing the tag name to L</ImageInfo> or L</ExtractInfo>).  Note that this
+flag is set automatically during a call to L</SetNewValuesFromFile> to make
+all tags available for copying.  Default is undef.
+
+=item RequestTags
+
+List of additional tags to request in next call to L</ExtractInfo>.  This
+option is useful only for tags which aren't extracted unless specifically
+requested.  Value may be a list reference, a delimited string of tag names
+(any delimiter is allowed), or undef to clear the current RequestTags list. 
+Case is not significant.  Default is undef.
 
 =item ScanForXMP
 

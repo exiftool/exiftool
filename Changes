@@ -4,8 +4,31 @@ ExifTool Version History
 
 RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 
-Note: The most recent production release is Version 10.00. (Other versions are
+Note: The most recent production release is Version 10.10. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
+
+Jan. 22, 2016 - Version 10.10 (production release)
+
+  - Added a new Olympus LensType (thanks Niels Kristian Bech Jensen)
+  - Added a couple of new Olympus FlashModel values
+  - Added a new Nikon LensID
+  - Added a new Pentax LensType
+  - Decode a number of new Sony tags (thanks Jos Roost)
+  - Decode H264:DateTimeOriginal DST flag, and add " DST" to time string if set
+  - Decode a few more CanonCustom settings
+  - Fixed problem creating user-defined XMP structure elements with names
+    containing characters which are illegal in tag names
+  - Improved mechanism for generating tags which must be specifically requested
+    when copying or used in -if or -p expressions
+  - Improved warning in Windows if help documentation file can't be created
+  - Patched Composite:FileNumber to handle case where Canon:FileNumber is 10000
+  - Patched reading FujiFilm RawImageWidth/Height for new X-Pro2 RAF images
+  - Fixed problem reading PDF objects which begin with a comment line
+  - Fixed problem which could result in ExifTool corrupting a PDF file when
+    writing
+  - API Changes:
+      - Added RequestTags option
+      - No longer generate MDItem tags when RequestAll option is set
 
 Jan. 4, 2016 - Version 10.09
 

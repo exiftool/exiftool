@@ -710,9 +710,15 @@ distribution for examples.</p>
     QuickTime specification.</td><td align=center>0 or 1</td><td align=center>undef</td></tr>
 <tr><td>RequestAll</td><td><a name="RequestAll"></a>Flag to request all tags to be extracted.
     This causes some tags to be generated which normally would not be unless specifically
-    requested (by passing the tag name to ImageInfo or ExtractInfo).  Note that this flag is set
-    automatically during a call to <a href="#SetNewValuesFromFile">SetNewValuesFromFile</a> to
+    requested (by passing the tag name to <a href="#ImageInfo">ImageInfo</a> or
+    <a href="#ExtractInfo">ExtractInfo</a>).  Note that this flag is set automatically
+    during a call to <a href="#SetNewValuesFromFile">SetNewValuesFromFile</a> to
     make all tags available for copying.</td><td align=center>0 or 1</td><td align=center>undef</td></tr>
+<tr><td>RequestTags</td><td><a name="RequestTags"></a>List of additional tags to request in
+    next call to <a href="#ExtractInfo">ExtractInfo</a>.  This option is useful only for
+    tags which aren't extracted unless specifically requested.</td><td>List reference,
+    delimited string of tag names (any delimiter is allowed), or undef to clear the
+    previous RequestTags list.  Case is not significant.</td><td align=center>undef</td></tr>
 <tr><td>ScanForXMP</td><td><a name="ScanForXMP"></a>Flag to scan all files (even unrecognized
     formats) for XMP information unless XMP was already found in the file.  When combined with
     the FastScan option, only unrecognized file types are scanned for XMP.  

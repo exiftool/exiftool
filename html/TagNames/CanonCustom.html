@@ -1423,7 +1423,7 @@ well as newer tags and values added by later models.</p>
 <td title='0x010f = 271'>0x010f</td>
 <td>FlashSyncSpeedAv</td>
 <td class=c>int32s</td>
-<td><span class=s><span class=n>(40D)</span>
+<td><span class=s><span class=n>(40D and 1Ds Mark III)</span>
   <br>0 = Auto
   <br>1 = 1/250 Fixed
   <br><span class=n>(50D, 60D and 7D)</span>
@@ -1459,13 +1459,20 @@ well as newer tags and values added by later models.</p>
   <br>0 = Disable
   <br>1 = Enable</span></td></tr>
 <tr class=b>
+<td title='0x0112 = 274'>0x0112</td>
+<td>SameExposureForNewAperture</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = Disable
+  <br>1 = ISO Speed
+  <br>2 = Shutter Speed</span></td></tr>
+<tr>
 <td title='0x0201 = 513'>0x0201</td>
 <td>LongExposureNoiseReduction</td>
 <td class=c>int32s</td>
 <td><span class=s>0 = Off
   <br>1 = Auto
   <br>2 = On</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0202 = 514'>0x0202</td>
 <td>HighISONoiseReduction</td>
 <td class=c>int32s</td>
@@ -1477,13 +1484,13 @@ well as newer tags and values added by later models.</p>
   <br><span class=n>(other models)</span>
   <br>0 = Off
   <br>1 = On</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0203 = 515'>0x0203</td>
 <td>HighlightTonePriority</td>
 <td class=c>int32s</td>
 <td><span class=s>0 = Disable
   <br>1 = Enable</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0204 = 516'>0x0204</td>
 <td>AutoLightingOptimizer</td>
 <td class=c>int32s</td>
@@ -1495,37 +1502,37 @@ well as newer tags and values added by later models.</p>
   <br><span class=n>(other models)</span>
   <br>0 = Enable
   <br>1 = Disable</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0304 = 772'>0x0304</td>
 <td>ETTLII</td>
 <td class=c>int32s</td>
 <td><span class=s>0 = Evaluative
   <br>1 = Average</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0305 = 773'>0x0305</td>
 <td>ShutterCurtainSync</td>
 <td class=c>int32s</td>
 <td><span class=s>0 = 1st-curtain sync
   <br>1 = 2nd-curtain sync</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0306 = 774'>0x0306</td>
 <td>FlashFiring</td>
 <td class=c>int32s</td>
 <td><span class=s>0 = Fires
   <br>1 = Does not fire</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0407 = 1031'>0x0407</td>
 <td>ViewInfoDuringExposure</td>
 <td class=c>int32s</td>
 <td><span class=s>0 = Disable
   <br>1 = Enable</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0408 = 1032'>0x0408</td>
 <td>LCDIlluminationDuringBulb</td>
 <td class=c>int32s</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0409 = 1033'>0x0409</td>
 <td>InfoButtonWhenShooting</td>
 <td class=c>int32s</td>
@@ -1535,7 +1542,7 @@ well as newer tags and values added by later models.</p>
   <br><span class=n>(1D Mark IV)</span>
   <br>0 = Displays shooting functions
   <br>1 = Displays camera settings</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x040a = 1034'>0x040a</td>
 <td>ViewfinderWarnings</td>
 <td class=c>int32s</td>
@@ -1544,8 +1551,14 @@ well as newer tags and values added by later models.</p>
   <br>Bit 2 = One-touch image quality
   <br>Bit 3 = ISO expansion
   <br>Bit 4 = Spot metering</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x040b = 1035'>0x040b</td>
+<td>LVShootingAreaDisplay</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = Masked
+  <br>1 = Outlined</span></td></tr>
+<tr>
+<td title='0x040c = 1036'>0x040c</td>
 <td>LVShootingAreaDisplay</td>
 <td class=c>int32s</td>
 <td><span class=s>0 = Masked
@@ -1615,6 +1628,11 @@ well as newer tags and values added by later models.</p>
 <td><span class=s><span class=n>(5D Mark II)</span>
   <br>0 = Disable
   <br>1 = Enable
+  <br><span class=n>(1Ds Mark III)</span>
+  <br>0 = Disable
+  <br>1 = Enable (left/right Assist AF points)
+  <br>2 = Enable (surrounding Assist AF points)
+  <br><span class=n>(other models)</span>
   <br>0 = Disable
   <br>1 = Left/right AF points
   <br>2 = Surrounding AF points
@@ -1659,9 +1677,16 @@ well as newer tags and values added by later models.</p>
 <td title='0x050c = 1292'>0x050c</td>
 <td>AFPointDisplayDuringFocus</td>
 <td class=c>int32s</td>
-<td><span class=s>0 = On
+<td><span class=s><span class=n>(1D models)</span>
+  <br>0 = On
   <br>1 = Off
-  <br>2 = On (when focus achieved)</span></td></tr>
+  <br>2 = On (when focus achieved)
+  <br><span class=n>(other models)</span>
+  <br>0 = Selected (constant)
+  <br>1 = All (constant)
+  <br>2 = Selected (pre-AF, focused)
+  <br>3 = Selected (focused)
+  <br>4 = Disable display</span></td></tr>
 <tr class=b>
 <td title='0x050d = 1293'>0x050d</td>
 <td>AFPointBrightness</td>
@@ -1779,6 +1804,19 @@ well as newer tags and values added by later models.</p>
 <td class=c>int32s</td>
 <td><span class=s>0 = AF area selection button
   <br>1 = Main dial</span></td></tr>
+<tr>
+<td title='0x051c = 1308'>0x051c</td>
+<td>AutoAFPointColorTracking</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = On-Shot AF only
+  <br>1 = Disable</span></td></tr>
+<tr class=b>
+<td title='0x051d = 1309'>0x051d</td>
+<td>VFDisplayIllumination</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = Auto
+  <br>1 = Enable
+  <br>2 = Disable</span></td></tr>
 <tr>
 <td title='0x060f = 1551'>0x060f</td>
 <td>MirrorLockup</td>
@@ -1975,6 +2013,8 @@ well as newer tags and values added by later models.</p>
 <td><span class=s>[Value 0]
   <br>0 = Off
   <br>1 = On
+  <br>2 = On (quick control dial)
+  <br>3 = On (main dial and quick control dial)
   <br>[Value 1]
   <br>Bit 0 = Main dial
   <br>Bit 1 = Quick control dial
@@ -2007,10 +2047,13 @@ well as newer tags and values added by later models.</p>
   <br>0 = Eg-A II
   <br>1 = Eg-D
   <br>2 = Eg-S
+  <br><span class=n>(7D Mark II)</span>
+  <br>0 = Eh-A
+  <br>1 = Eh-S
   <br><span class=n>(1DX)</span>
   <br>0 = Ec-CV
   <br>1 = Ec-A,B,D,H,I,L
-  <br><span class=n>(1DmkIII and 1DmkIV)</span>
+  <br><span class=n>(1DmkIII, 1DSmkIII and 1DmkIV)</span>
   <br>0 = Ec-CIV
   <br>1 = Ec-A,B,C,CII,CIII,D,H,I,L
   <br>2 = Ec-S
@@ -2071,11 +2114,17 @@ well as newer tags and values added by later models.</p>
 <td class=c>int32s</td>
 <td><span class=s>0 = Cancel selected
   <br>1 = Erase selected</span></td></tr>
+<tr>
+<td title='0x0814 = 2068'>0x0814</td>
+<td>RetractLensOnPowerOff</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = Enable
+  <br>1 = Disable</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Sep 18, 2014</i>
+<br><i>Last revised Jan 6, 2016</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

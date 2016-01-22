@@ -1219,17 +1219,79 @@ copied unless specified explicitly.</p>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td class=r title='224 = 0xe0'>224</td>
+<td>DLOInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='CanonVRD.html#DLOInfo'>CanonVRD DLOInfo Tags</a></td></tr>
+<tr class=b>
+<td class=r title='225 = 0xe1'>225</td>
+<td>CameraRawColorTone</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='226 = 0xe2'>226</td>
+<td>CameraRawSaturation</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='227 = 0xe3'>227</td>
+<td>CameraRawContrast</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td class=r title='228 = 0xe4'>228</td>
+<td>CameraRawLinear</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>0 = No</td><td>&nbsp;&nbsp;</td>
+  <td>1 = Yes</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='229 = 0xe5'>229</td>
+<td>CameraRawSharpness</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='230 = 0xe6'>230</td>
+<td>CameraRawHighlightPoint</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='231 = 0xe7'>231</td>
+<td>CameraRawShadowPoint</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='232 = 0xe8'>232</td>
+<td>CameraRawOutputHighlightPoint</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='233 = 0xe9'>233</td>
+<td>CameraRawOutputShadowPoint</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='DLOInfo'>CanonVRD DLOInfo Tags</a></h2>
+<p>Tags added when DLO (Digital Lens Optimizer) is on.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index2</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='4 = 0x4'>4</td>
 <td>DLOSettingApplied</td>
 <td class=c>int16s</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
-<td class=r title='229 = 0xe5'>229</td>
+<td class=r title='5 = 0x5'>5</td>
 <td>DLOVersion</td>
 <td class=c>string[10]</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td class=r title='234 = 0xea'>234</td>
+<td class=r title='10 = 0xa'>10</td>
 <td>DLOData</td>
 <td class=c>N</td>
 <td><span class=s><span class=n>(variable-length Digital Lens Optimizer data, stored in JPEG-like format)</span></span></td></tr>
@@ -1952,7 +2014,7 @@ below by a decimal appended to the tag ID (.0, .1 or .2).</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Aug 26, 2015</i>
+<br><i>Last revised Jan 13, 2016</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

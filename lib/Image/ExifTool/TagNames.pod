@@ -6359,6 +6359,7 @@ well as newer tags and values added by later models.
   0x010f   FlashSyncSpeedAv                     int32s
   0x0110   AEMicroadjustment                    int32s[3]
   0x0111   FEMicroadjustment                    int32s[3]
+  0x0112   SameExposureForNewAperture           int32s
   0x0201   LongExposureNoiseReduction           int32s
   0x0202   HighISONoiseReduction                int32s
   0x0203   HighlightTonePriority                int32s
@@ -6371,6 +6372,7 @@ well as newer tags and values added by later models.
   0x0409   InfoButtonWhenShooting               int32s
   0x040a   ViewfinderWarnings                   int32s
   0x040b   LVShootingAreaDisplay                int32s
+  0x040c   LVShootingAreaDisplay                int32s
   0x0501   USMLensElectronicMF                  int32s
   0x0502   AIServoTrackingSensitivity           int32s
   0x0503   AIServoImagePriority                 int32s
@@ -6399,6 +6401,8 @@ well as newer tags and values added by later models.
   0x0519   AIServoFirstImagePriority            int32s
   0x051a   AIServoSecondImagePriority           int32s
   0x051b   AFAreaSelectMethod                   int32s
+  0x051c   AutoAFPointColorTracking             int32s
+  0x051d   VFDisplayIllumination                int32s
   0x060f   MirrorLockup                         int32s
   0x0610   ContinuousShootingSpeed              int32s[3]
   0x0611   ContinuousShotLimit                  int32s[2]
@@ -6431,6 +6435,7 @@ well as newer tags and values added by later models.
   0x0811   LCDDisplayAtPowerOn                  int32s
   0x0812   MemoAudioQuality                     int32s
   0x0813   DefaultEraseOption                   int32s
+  0x0814   RetractLensOnPowerOff                int32s
 
 =head2 CanonVRD Tags
 
@@ -6658,9 +6663,26 @@ Tags added in DPP version 2.0 and later.
     221    DLOSetting                           int16s
     222    DLOShootingDistance                  int16s
     223    DLODataLength                        N
-    228    DLOSettingApplied                    int16s
-    229    DLOVersion                           string[10]
-    234    DLOData                              N
+    224    DLOInfo                              CanonVRD DLOInfo
+    225    CameraRawColorTone                   int16s
+    226    CameraRawSaturation                  int16s
+    227    CameraRawContrast                    int16s
+    228    CameraRawLinear                      int16s
+    229    CameraRawSharpness                   int16s
+    230    CameraRawHighlightPoint              int16s
+    231    CameraRawShadowPoint                 int16s
+    232    CameraRawOutputHighlightPoint        int16s
+    233    CameraRawOutputShadowPoint           int16s
+
+=head3 CanonVRD DLOInfo Tags
+
+Tags added when DLO (Digital Lens Optimizer) is on.
+
+  Index2   Tag Name                             Writable
+  ------   --------                             --------
+      4    DLOSettingApplied                    int16s
+      5    DLOVersion                           string[10]
+     10    DLOData                              N
 
 =head3 CanonVRD IHL Tags
 
@@ -7509,7 +7531,9 @@ RAF-format information.
       0    RawImageWidth                        N
       4    RawImageWidth                        N
            RawImageHeight                       N
-      8    RawImageHeight                       N
+      8    RawImageWidth                        N
+           RawImageHeight                       N
+     12    RawImageHeight                       N
 
 =head3 FujiFilm IFD Tags
 
@@ -13189,6 +13213,8 @@ MakerNotes.
            AFZoneSelected                       int8u
   0x2020   AFPointsUsed                         N
   0x2022   FocalPlaneAFPointsUsed               N
+  0x2026   WBShiftAB_GM_Precise                 int32s[2]
+  0x2028   VariableLowPassFilter                N
   0x3000   ShotInfo                             Sony ShotInfo
   0x900b   Tag900b                              Sony Tag900b
   0x9050   Tag9050                              Sony Tag9050
@@ -14015,7 +14041,7 @@ ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-77M2.
 
 =head3 Sony Tag2010h Tags
 
-Valid for DSC-HX90V/RX10M2/RX100M4/WX500, ILCE-7RM2.
+Valid for DSC-HX90V/RX1RM2/RX10M2/RX100M4/WX500, ILCE-7RM2/7SM2.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
@@ -14300,10 +14326,17 @@ These tags are currently extracted for SLT models only.
   0x0009   AFPointAtShutterRelease              int8u
   0x000a   AFAreaMode                           int8u
   0x000b   FocusMode                            int8u
+  0x0010   AFPointsUsed                         int8u[10]
   0x0011   AFStatus15                           Sony AFStatus15
            AFStatus19                           Sony AFStatus19
+  0x0037   AFPoint                              int8u
+  0x0038   AFPointInFocus                       int8u
+  0x0039   AFPointAtShutterRelease              int8u
   0x003a   AFAreaMode                           int8u
+  0x003b   AFStatusActiveSensor                 int16s
+  0x0043   ExposureProgram                      int8u
   0x0050   AFMicroAdj                           int8s
+  0x007d   AFStatus79                           Sony AFStatus79
   0x016e   AFPointsUsed                         int32u
   0x017d   AFMicroAdj                           int8s
   0x017e   ExposureProgram                      int8u
@@ -14344,6 +14377,108 @@ AF Status information for models with 19-point AF.
      54    AFStatusUpper-rightVertical          int16s
      56    AFStatusRightVertical                int16s
      58    AFStatusLower-rightVertical          int16s
+
+=head3 Sony AFStatus79 Tags
+
+AF Status information for models with 79-point AF.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    AFStatus_00_B4                       int16s
+      2    AFStatus_01_C4                       int16s
+      4    AFStatus_02_D4                       int16s
+      6    AFStatus_03_E4                       int16s
+      8    AFStatus_04_F4                       int16s
+     10    AFStatus_05_G4                       int16s
+     12    AFStatus_06_H4                       int16s
+     14    AFStatus_07_B3                       int16s
+     16    AFStatus_08_C3                       int16s
+     18    AFStatus_09_D3                       int16s
+     20    AFStatus_10_E3                       int16s
+     22    AFStatus_11_F3                       int16s
+     24    AFStatus_12_G3                       int16s
+     26    AFStatus_13_H3                       int16s
+     28    AFStatus_14_B2                       int16s
+     30    AFStatus_15_C2                       int16s
+     32    AFStatus_16_D2                       int16s
+     34    AFStatus_17_E2                       int16s
+     36    AFStatus_18_F2                       int16s
+     38    AFStatus_19_G2                       int16s
+     40    AFStatus_20_H2                       int16s
+     42    AFStatus_21_C1                       int16s
+     44    AFStatus_22_D1                       int16s
+     46    AFStatus_23_E1                       int16s
+     48    AFStatus_24_F1                       int16s
+     50    AFStatus_25_G1                       int16s
+     52    AFStatus_26_A7_Vertical              int16s
+     54    AFStatus_27_A6_Vertical              int16s
+     56    AFStatus_28_A5_Vertical              int16s
+     58    AFStatus_29_C7_Vertical              int16s
+     60    AFStatus_30_C6_Vertical              int16s
+     62    AFStatus_31_C5_Vertical              int16s
+     64    AFStatus_32_E7_Vertical              int16s
+     66    AFStatus_33_E6_Center_Vertical       int16s
+     68    AFStatus_34_E5_Vertical              int16s
+     70    AFStatus_35_G7_Vertical              int16s
+     72    AFStatus_36_G6_Vertical              int16s
+     74    AFStatus_37_G5_Vertical              int16s
+     76    AFStatus_38_I7_Vertical              int16s
+     78    AFStatus_39_I6_Vertical              int16s
+     80    AFStatus_40_I5_Vertical              int16s
+     82    AFStatus_41_A7                       int16s
+     84    AFStatus_42_B7                       int16s
+     86    AFStatus_43_C7                       int16s
+     88    AFStatus_44_D7                       int16s
+     90    AFStatus_45_E7                       int16s
+     92    AFStatus_46_F7                       int16s
+     94    AFStatus_47_G7                       int16s
+     96    AFStatus_48_H7                       int16s
+     98    AFStatus_49_I7                       int16s
+    100    AFStatus_50_A6                       int16s
+    102    AFStatus_51_B6                       int16s
+    104    AFStatus_52_C6                       int16s
+    106    AFStatus_53_D6                       int16s
+    108    AFStatus_54_E6_Center                int16s
+    110    AFStatus_55_F6                       int16s
+    112    AFStatus_56_G6                       int16s
+    114    AFStatus_57_H6                       int16s
+    116    AFStatus_58_I6                       int16s
+    118    AFStatus_59_A5                       int16s
+    120    AFStatus_60_B5                       int16s
+    122    AFStatus_61_C5                       int16s
+    124    AFStatus_62_D5                       int16s
+    126    AFStatus_63_E5                       int16s
+    128    AFStatus_64_F5                       int16s
+    130    AFStatus_65_G5                       int16s
+    132    AFStatus_66_H5                       int16s
+    134    AFStatus_67_I5                       int16s
+    136    AFStatus_68_C11                      int16s
+    138    AFStatus_69_D11                      int16s
+    140    AFStatus_70_E11                      int16s
+    142    AFStatus_71_F11                      int16s
+    144    AFStatus_72_G11                      int16s
+    146    AFStatus_73_B10                      int16s
+    148    AFStatus_74_C10                      int16s
+    150    AFStatus_75_D10                      int16s
+    152    AFStatus_76_E10                      int16s
+    154    AFStatus_77_F10                      int16s
+    156    AFStatus_78_G10                      int16s
+    158    AFStatus_79_H10                      int16s
+    160    AFStatus_80_B9                       int16s
+    162    AFStatus_81_C9                       int16s
+    164    AFStatus_82_D9                       int16s
+    166    AFStatus_83_E9                       int16s
+    168    AFStatus_84_F9                       int16s
+    170    AFStatus_85_G9                       int16s
+    172    AFStatus_86_H9                       int16s
+    174    AFStatus_87_B8                       int16s
+    176    AFStatus_88_C8                       int16s
+    178    AFStatus_89_D8                       int16s
+    180    AFStatus_90_E8                       int16s
+    182    AFStatus_91_F8                       int16s
+    184    AFStatus_92_G8                       int16s
+    186    AFStatus_93_H8                       int16s
+    188    AFStatus_94_E6_Center_F2-8           int16s
 
 =head3 Sony Tag940e Tags
 
@@ -28426,6 +28561,7 @@ tag is used for dry-run testing before writing FileName.
   ImageHeight                File               N
   ImageWidth                 File               N
   JPEGDigest                 File               N
+  JPEGQualityEstimate        File               N
   MDItemTags                 System             N
   MIMEType                   File               N
   MaxVal                     File               N

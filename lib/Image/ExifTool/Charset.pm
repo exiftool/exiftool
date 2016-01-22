@@ -14,7 +14,7 @@ use strict;
 use vars qw($VERSION %csType);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.08';
+$VERSION = '1.09';
 
 my %charsetTable;   # character set tables we've loaded
 
@@ -103,6 +103,33 @@ sub LoadCharset($)
         }
     }
     return $conv;
+}
+
+#------------------------------------------------------------------------------
+# Does an array contain valid UTF-16 characters?
+# Inputs: 0) array reference to list of UCS-2 values
+# Returns: 0=invalid UTF-16, 1=valid UTF-16 with no surrogates, 2=valid UTF-16 with surrogates
+sub IsUTF16($)
+{
+    local $_;
+    my $uni = shift;
+    my $surrogate;
+    foreach (@$uni) {
+        my $hiBits = ($_ & 0xfc00);
+        if ($hiBits == 0xfc00) {
+            # check for invalid values in UTF-16
+            return 0 if $_ == 0xffff or $_ == 0xfffe or ($_ >= 0xfdd0 and $_ <= 0xfdef);
+        } elsif ($surrogate) {
+            return 0 if $hiBits != 0xdc00;
+            $surrogate = 0;
+        } else {
+            return 0 if $hiBits == 0xdc00;
+            $surrogate = 1 if $hiBits == 0xd800;
+        }
+    }
+    return 1 if not defined $surrogate;
+    return 2 unless $surrogate;
+    return 0;
 }
 
 #------------------------------------------------------------------------------

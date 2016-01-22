@@ -635,8 +635,11 @@ sub WritePDF($$)
             if ($id =~ /^<([0-9a-f]{2})/i) {
                 my $byte = unpack('H2',chr((hex($1) + 1) & 0xff));
                 substr($id, 1, 2) = $byte;
-            } elsif ($id =~ /^\((.)/s) {
-                substr($id, 1, 1) = chr((ord($1) + 1) & 0xff);
+            } elsif ($id =~ /^\((.)/s and $1 ne '\\' and $1 ne ')' and $1 ne '(') {
+                my $ch = chr((ord($1) + 1) & 0xff);
+                # avoid generating characters that could cause problems
+                $ch = 'a' if $ch =~ /[()\\\x00-\x08\x0a-\x1f\x7f\xff]/;
+                substr($id, 1, 1) = $ch;
             }
             $mainDict->{ID}->[1] = $id;
         }

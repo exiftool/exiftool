@@ -21,7 +21,7 @@ use vars qw($VERSION $AUTOLOAD $lastFetched);
 use Image::ExifTool qw(:DataAccess :Utils);
 require Exporter;
 
-$VERSION = '1.39';
+$VERSION = '1.40';
 
 sub FetchObject($$$$);
 sub ExtractObject($$;$$);
@@ -753,6 +753,11 @@ sub FetchObject($$$$)
     unless ($data =~ s/^$obj//) {
         $et->Warn("$tag object ($obj) not found at $offset");
         return undef;
+    }
+    # read the first line of data for the object (skipping comments if necessary)
+    for (;;) {
+        last if $data =~ /\S/ and $data !~ /^\s*%/;
+        $raf->ReadLine($data) or $et->Warn("Error reading $tag data"), return undef;
     }
     return ExtractObject($et, \$data, $raf, $xref);
 }

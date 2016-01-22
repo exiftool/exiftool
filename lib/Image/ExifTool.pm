@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '10.09';
+$VERSION = '10.10';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -894,7 +894,10 @@ sub DummyWriteProc { return 1; }
 %Image::ExifTool::pluginTags = ( );
 
 my %systemTagsNotes = (
-    Notes => 'extracted only if specifically requested or the SystemTags API option is set',
+    Notes => q{
+        extracted only if specifically requested or the SystemTags or RequestAll API
+        option is set
+    },
 );
 
 # tag information for preview image -- this should be used for all
@@ -975,7 +978,10 @@ my %systemTagsNotes = (
     },
     FilePath => {
         Groups => { 1 => 'System' },
-        Notes => 'absolute path of source file. Not generated unless specifically requested',
+        Notes => q{
+            absolute path of source file. Not generated unless specifically requested or
+            the RequestAll API option is set
+        },
     },
     TestName => {
         Writable => 1,
@@ -993,7 +999,7 @@ my %systemTagsNotes = (
             sequence number for each source file when extracting or copying information,
             including files that fail the -if condition of the command-line application,
             beginning at 0 for the first file.  Not generated unless specifically
-            requested
+            requested or the RequestAll API option is set
         },
     },
     FileSize => {
@@ -1060,13 +1066,13 @@ my %systemTagsNotes = (
         Description => 'File Creation Date/Time',
         Notes => q{
             the filesystem creation date/time.  Windows only.  Requires Win32API::File
-            and Win32::API for writing.  Note that although ExifTool can not currently
-            access the filesystem creation time on other systems, the creation time is
-            pushed backwards on OS X by writing an earlier modification time, which
-            provides a mechanism to write this indirectly:  1) Rewrite the file to set
-            the filesystem creation and modification times to the current time, 2) Set
-            FileModifyDate to the desired creation time, then 3) Restore FileModifyDate
-            to its original value
+            and Win32::API for writing.  Note that although ExifTool does not currently
+            support FileCreateDate on other systems, the OS X file creation date may be
+            accessed via the MDItemFSCreationDate tag when the MDItemTags API option is
+            set, and may be written indirectly via the FileModifyDate tag by following
+            these steps:  1. Rewrite the file to set the filesystem creation and
+            modification times to the current time, 2. Set FileModifyDate to the desired
+            creation time, then 3. Restore FileModifyDate to its original value
         },
         Groups => { 1 => 'System', 2 => 'Time' },
         Writable => 1,
@@ -1115,9 +1121,9 @@ my %systemTagsNotes = (
     FileAttributes => {
         Groups => { 1 => 'System' },
         Notes => q{
-            extracted only if specifically requested or the SystemTags API option is
-            set.  2 or 3 values: 0. File type, 1. Attribute bits, 2. Windows attribute
-            bits if Win32API::File is available
+            extracted only if specifically requested or the SystemTags or RequestAll API
+            option is set.  2 or 3 values: 0. File type, 1. Attribute bits, 2. Windows
+            attribute bits if Win32API::File is available
         },
         PrintHex => 1,
         PrintConvColumns => 2,
@@ -1326,7 +1332,8 @@ my %systemTagsNotes = (
         Groups => { 0 => 'ExifTool', 1 => 'ExifTool', 2 => 'Other' },
         Notes => q{
             the clock time in seconds taken by ExifTool to extract information from this
-            file.  Not generated unless specifically requested.  Requires Time::HiRes
+            file.  Not generated unless specifically requested or the RequestAll API
+            option is set.  Requires Time::HiRes
         },
         PrintConv => 'sprintf("%.3f s", $val)',
     },
@@ -1340,11 +1347,19 @@ my %systemTagsNotes = (
             generated only if specifically requested
         },
     },
+    JPEGQualityEstimate => {
+        Notes => q{
+            an estimate of the IJG JPEG quality setting for the image, calculated from
+            the quantization tables.  For performance reasons, this tag is generated
+            only if specifically requested
+        },
+    },
     Now => {
         Groups => { 0 => 'ExifTool', 1 => 'ExifTool', 2 => 'Time' },
         Notes => q{
             the current date/time.  Useful when setting the tag values, eg.
-            C<"-modifydate<now">.  Not generated unless specifically requested
+            C<"-modifydate<now">.  Not generated unless specifically requested or the
+            RequestAll API option is set
         },
         PrintConv => '$self->ConvertDateTime($val)',
     },
@@ -1355,7 +1370,7 @@ my %systemTagsNotes = (
             YYYYmmdd-HHMM-SSNN-PPPP-RRRRRRRRRRRR, where Y=year, m=month, d=day, H=hour,
             M=minute, S=second, N=file sequence number in hex, P=process ID in hex, and
             R=random hex number; without dashes with the -n option.  Not generated
-            unless specifically requested
+            unless specifically requested or the RequestAll API option is set
         },
         PrintConv => '$val =~ s/(.{8})(.{4})(.{4})(.{4})/$1-$2-$3-$4-/; $val',
     },
@@ -1736,6 +1751,19 @@ sub Options($$;@)
                     delete $$options{UserParam}{$param};
                 }
             }
+        } elsif ($param eq 'RequestTags') {
+            if (defined $newVal) {
+                # parse list from delimited string if necessary
+                my @reqList = (ref $newVal eq 'ARRAY') ? @$newVal : ($newVal =~ /(?:[-\w]+:)*[-\w?*]+/g);
+                ExpandShortcuts(\@reqList);
+                # add to existing list
+                $$options{$param} or $$options{$param} = [ ];
+                foreach (@reqList) {
+                    push @{$$options{$param}}, lc($2) if /(^|:)([-\w?*]+)#?$/;
+                }
+            } else {
+                $$options{$param} = undef;  # clear the list
+            }
         } else {
             if ($param eq 'Escape') {
                 # set ESCAPE_PROC
@@ -1820,6 +1848,7 @@ sub ClearOptions($)
         PrintConv   => 1,       # flag to enable print conversion
         QuickTimeUTC=> undef,   # assume that QuickTime date/time tags are stored as UTC
         RequestAll  => undef,   # extract all tags that must be specifically requested
+        RequestTags => undef,   # extra tags to request (on top of those in the tag list)
         SavePath    => undef,   # (undocumented) save family 5 location path
         ScanForXMP  => undef,   # flag to scan for XMP information in all files
         Sort        => 'Input', # order to sort found tags (Input, File, Tag, Descr, Group#)
@@ -1992,7 +2021,7 @@ sub ExtractInfo($;@)
         }
         # extract more system info if SystemTags option is set
         if (@stat) {
-            my $sys = $$options{SystemTags} || $$options{RequestAll};
+            my $sys = $$options{SystemTags} || ($$options{RequestAll} and not defined $$options{SystemTags});
             my $req = $$self{REQ_TAG_LOOKUP};
             if ($sys or $$req{fileattributes}) {
                 my @attr = ($stat[2] & 0xf000, $stat[2] & 0x0e00);
@@ -2021,9 +2050,8 @@ sub ExtractInfo($;@)
             $self->FoundTag('FileBlockSize', $stat[11])   if $sys or $$req{fileblocksize};
             $self->FoundTag('FileBlockCount', $stat[12])  if $sys or $$req{fileblockcount};
         }
-        # extract MDItem tags if requested
-        if ($^O eq 'darwin' and ($$options{MDItemTags} || $$options{RequestAll} ||
-            grep /^MDItem/i, @{$$self{REQUESTED_TAGS}}) and
+        # extract MDItem tags if requested (not extracted with RequestAll for performance reasons)
+        if ($^O eq 'darwin' and ($$options{MDItemTags} || grep /^mditem/i, keys %{$$self{REQ_TAG_LOOKUP}}) and
             defined $filename and $filename ne '' and $filename ne '-')
         {
             my ($fn, $tag, $val);
@@ -3528,12 +3556,16 @@ sub ParseArguments($;@)
             $$self{FILENAME} = $arg;
         }
     }
+    # add additional requested tags to lookup
+    if ($$options{RequestTags}) {
+        $$self{REQ_TAG_LOOKUP}{$_} = 1 foreach @{$$options{RequestTags}};
+    }
     # expand shortcuts in tag arguments if provided
     if (@{$$self{REQUESTED_TAGS}}) {
         ExpandShortcuts($$self{REQUESTED_TAGS});
         # initialize lookup for requested tags
         foreach (@{$$self{REQUESTED_TAGS}}) {
-            /(^|:)([-\w]+)#?$/ and $$self{REQ_TAG_LOOKUP}{lc($2)} = 1;
+            /(^|:)([-\w?*]+)#?$/ and $$self{REQ_TAG_LOOKUP}{lc($2)} = 1;
         }
     }
     if (@exclude or $wasExcludeOpt) {
@@ -5506,7 +5538,7 @@ sub ProcessJPEG($$)
             #  because we aren't checking the RequestAll API option here.
             #  The reason is that there is too much overhead involved in
             #  the calculation of this tag to make this worth the CPU time.)
-            $$self{REQ_TAG_LOOKUP}{jpegdigest})
+            ($$self{REQ_TAG_LOOKUP}{jpegdigest} or $$self{REQ_TAG_LOOKUP}{jpegqualityestimate}))
         {
             my $num = unpack('C',$$segDataPt) & 0x0f;   # get table index
             $dqt[$num] = $$segDataPt if $num < 4;       # save for MD5 calculation
@@ -6083,7 +6115,7 @@ sub ProcessJPEG($$)
         }
     }
     # calculate JPEGDigest if requested
-    if (@dqt and $subSampling) {
+    if (@dqt) {
         require Image::ExifTool::JPEGDigest;
         Image::ExifTool::JPEGDigest::Calculate($self, \@dqt, $subSampling);
     }

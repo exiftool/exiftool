@@ -287,7 +287,7 @@ to the command line.
 <a name="Q8"></a>
 <p>8a. <b>"All maker note information is lost if I change the Make or Model tag"</b>, or
 <br>8b. <b>"I can't copy maker note information to an image"</b>, or
-<br>8c. <b>"I can't view a RAW image after changing the model tag"</p>
+<br>8c. <b>"I can't view a RAW image after changing the model tag"</b></p>
 
 <blockquote>
 The Make and Model tags are used by some image utilities (including ExifTool) to
@@ -411,7 +411,7 @@ that EXIF may not be written as a block to TIFF-based file formats.  Beware that
 overwritten</b> by the new block.
 
 <pre><span class='blk'># copy EXIF as a block between same-named JPG files in different directories</span>
-exiftool -tagsfromfile SRCDIR/%f.%e -ext jpg DSTDIR
+exiftool -tagsfromfile SRCDIR/%f.%e -exif -ext jpg DSTDIR
 
 <span class='blk'># copy XMP as a block from one file to another</span>
 exiftool -tagsfromfile src.jpg -xmp dst.cr2
@@ -1530,7 +1530,7 @@ importing.</blockquote>
 for more details.</blockquote>
 
 <hr>
-<i>Last revised Dec. 30, 2015</i>
+<i>Last revised Jan. 12, 2015</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

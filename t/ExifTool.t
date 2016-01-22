@@ -1,7 +1,7 @@
 # Before "make install", this script should be runnable with "make test".
 # After "make install" it should work as "perl t/ExifTool.t".
 
-BEGIN { $| = 1; print "1..29\n"; $Image::ExifTool::noConfig = 1; }
+BEGIN { $| = 1; print "1..30\n"; $Image::ExifTool::noConfig = 1; }
 END {print "not ok 1\n" unless $loaded;}
 
 # test 1: Load the module(s)
@@ -309,6 +309,20 @@ my $testnum = 1;
     my $info = $exifTool->ImageInfo('t/images/ExifTool.jpg', '-ExifToolVersion');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
+}
+
+# test 30: Calculate JPEGDigest and JPEGQualityEstimate
+{
+    ++$testnum;
+    my $skip = '';
+    if (eval 'require Digest::MD5') {
+        my $exifTool = new Image::ExifTool;
+        my $info = $exifTool->ImageInfo('t/images/Writer.jpg', 'JPEGDigest', 'JPEGQualityEstimate');
+        print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    } else {
+        $skip = ' # skip Requires Digest::MD5';
+    }
+    print "ok $testnum$skip\n";
 }
 
 # end

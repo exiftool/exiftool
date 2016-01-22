@@ -599,6 +599,20 @@ Spot)</span></span></td></tr>
   <br>0x0 = (none)
   <br>0x0 = (none)</span></td></tr>
 <tr class=b>
+<td title='0x2026 = 8230'>0x2026</td>
+<td>WBShiftAB_GM_Precise</td>
+<td class=c>int32s[2]</td>
+<td><span class=s><span class=n>(2 numbers: 1. positive is a shift toward amber, 2. positive is a shift
+toward magenta (tbc))</span></span></td></tr>
+<tr>
+<td title='0x2028 = 8232'>0x2028</td>
+<td>VariableLowPassFilter</td>
+<td class=c>N</td>
+<td><span class=s>0 = n/a
+  <br>1 = Off
+  <br>65537 = Standard
+  <br>131073 = High</span></td></tr>
+<tr class=b>
 <td title='0x3000 = 12288'>0x3000</td>
 <td>ShotInfo</td>
 <td class=c>-</td>
@@ -4828,6 +4842,7 @@ rotation -- the width is always the longer dimension.</p>
 <td><span class=s>0 = Normal
   <br>1 = Continuous
   <br>2 = Bracketing
+  <br>4 = Continuous - Burst
   <br>5 = Continuous - Speed/Advance Priority</span></td></tr>
 <tr>
 <td title='0x112c = 4396'>0x112c</td>
@@ -5199,6 +5214,7 @@ option is used.</p>
 <td><span class=s>0 = Normal
   <br>1 = Continuous
   <br>2 = Bracketing
+  <br>4 = Continuous - Burst
   <br>5 = Continuous - Speed/Advance Priority</span></td></tr>
 <tr class=b>
 <td title='0x112c = 4396'>0x112c</td>
@@ -5404,6 +5420,7 @@ option is used.</p>
 <td><span class=s>0 = Normal
   <br>1 = Continuous
   <br>2 = Bracketing
+  <br>4 = Continuous - Burst
   <br>5 = Continuous - Speed/Advance Priority</span></td></tr>
 <tr>
 <td title='0x1108 = 4360'>0x1108</td>
@@ -5600,6 +5617,7 @@ not valid for panorama images.</p>
 <td><span class=s>0 = Normal
   <br>1 = Continuous
   <br>2 = Bracketing
+  <br>4 = Continuous - Burst
   <br>5 = Continuous - Speed/Advance Priority</span></td></tr>
 <tr class=b>
 <td title='0x1184 = 4484'>0x1184</td>
@@ -5790,6 +5808,7 @@ for panorama images.</p>
 <td><span class=s>0 = Normal
   <br>1 = Continuous
   <br>2 = Bracketing
+  <br>4 = Continuous - Burst
   <br>5 = Continuous - Speed/Advance Priority</span></td></tr>
 <tr>
 <td title='0x1160 = 4448'>0x1160</td>
@@ -6024,6 +6043,7 @@ for panorama images.</p>
 <td><span class=s>0 = Normal
   <br>1 = Continuous
   <br>2 = Bracketing
+  <br>4 = Continuous - Burst
   <br>5 = Continuous - Speed/Advance Priority</span></td></tr>
 <tr>
 <td title='0x1018 = 4120'>0x1018</td>
@@ -6215,6 +6235,7 @@ ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-77M2.</p>
 <td><span class=s>0 = Normal
   <br>1 = Continuous
   <br>2 = Bracketing
+  <br>4 = Continuous - Burst
   <br>5 = Continuous - Speed/Advance Priority</span></td></tr>
 <tr class=b>
 <td title='0x0210 = 528'>0x0210</td>
@@ -6407,7 +6428,7 @@ ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-77M2.</p>
 </table></td></tr></table></blockquote>
 
 <h2><a name='Tag2010h'>Sony Tag2010h Tags</a></h2>
-<p>Valid for DSC-HX90V/RX10M2/RX100M4/WX500, ILCE-7RM2.</p>
+<p>Valid for DSC-HX90V/RX1RM2/RX10M2/RX100M4/WX500, ILCE-7RM2/7SM2.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -6439,6 +6460,7 @@ ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-77M2.</p>
 <td><span class=s>0 = Normal
   <br>1 = Continuous
   <br>2 = Bracketing
+  <br>4 = Continuous - Burst
   <br>5 = Continuous - Speed/Advance Priority</span></td></tr>
 <tr class=b>
 <td title='0x0210 = 528'>0x0210</td>
@@ -7194,11 +7216,14 @@ ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-77M2.</p>
 <td title='0x001e = 30'>0x001e</td>
 <td>SequenceLength</td>
 <td class=c>int8u</td>
-<td><span class=s>0 = Continuous
+<td><table class=cols><tr>
+  <td>0 = Continuous
   <br>1 = 1 file
-  <br>2 = 2 files
-  <br>3 = 3 files
-  <br>5 = 5 files</span></td></tr>
+  <br>2 = 2 files</td><td>&nbsp;&nbsp;</td>
+  <td>3 = 3 files
+  <br>5 = 5 files
+  <br>10 = 10 files</td></tr></table>
+</td></tr>
 <tr>
 <td title='0x0029 = 41'>0x0029</td>
 <td>CameraOrientation</td>
@@ -7885,12 +7910,404 @@ ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-77M2.</p>
   <br>7 = AF-D</td></tr></table>
 </td></tr>
 <tr>
+<td title='0x0010 = 16'>0x0010</td>
+<td>AFPointsUsed</td>
+<td class=c>int8u[10]</td>
+<td><table class=cols><tr>
+  <td>0x0 = (none)
+  <br>Bit 0 = A5
+  <br>Bit 1 = A6
+  <br>Bit 2 = A7
+  <br>Bit 3 = B2
+  <br>Bit 4 = B3
+  <br>Bit 5 = B4
+  <br>Bit 6 = B5
+  <br>Bit 7 = B6
+  <br>Bit 8 = B7
+  <br>Bit 9 = B8
+  <br>Bit 10 = B9
+  <br>Bit 11 = B10
+  <br>Bit 12 = C1
+  <br>Bit 13 = C2
+  <br>Bit 14 = C3
+  <br>Bit 15 = C4
+  <br>Bit 16 = C5
+  <br>Bit 17 = C6
+  <br>Bit 18 = C7
+  <br>Bit 19 = C8
+  <br>Bit 20 = C9
+  <br>Bit 21 = C10
+  <br>Bit 22 = C11
+  <br>Bit 23 = D1
+  <br>Bit 24 = D2
+  <br>Bit 25 = D3</td><td>&nbsp;&nbsp;</td>
+  <td>Bit 26 = D4
+  <br>Bit 27 = D5
+  <br>Bit 28 = D6
+  <br>Bit 29 = D7
+  <br>Bit 30 = D8
+  <br>Bit 31 = D9
+  <br>Bit 32 = D10
+  <br>Bit 33 = D11
+  <br>Bit 34 = E1
+  <br>Bit 35 = E2
+  <br>Bit 36 = E3
+  <br>Bit 37 = E4
+  <br>Bit 38 = E5
+  <br>Bit 39 = E6
+  <br>Bit 40 = E7
+  <br>Bit 41 = E8
+  <br>Bit 42 = E9
+  <br>Bit 43 = E10
+  <br>Bit 44 = E11
+  <br>Bit 45 = F1
+  <br>Bit 46 = F2
+  <br>Bit 47 = F3
+  <br>Bit 48 = F4
+  <br>Bit 49 = F5
+  <br>Bit 50 = F6
+  <br>Bit 51 = F7
+  <br>Bit 52 = F8</td><td>&nbsp;&nbsp;</td>
+  <td>Bit 53 = F9
+  <br>Bit 54 = F10
+  <br>Bit 55 = F11
+  <br>Bit 56 = G1
+  <br>Bit 57 = G2
+  <br>Bit 58 = G3
+  <br>Bit 59 = G4
+  <br>Bit 60 = G5
+  <br>Bit 61 = G6
+  <br>Bit 62 = G7
+  <br>Bit 63 = G8
+  <br>Bit 64 = G9
+  <br>Bit 65 = G10
+  <br>Bit 66 = G11
+  <br>Bit 67 = H2
+  <br>Bit 68 = H3
+  <br>Bit 69 = H4
+  <br>Bit 70 = H5
+  <br>Bit 71 = H6
+  <br>Bit 72 = H7
+  <br>Bit 73 = H8
+  <br>Bit 74 = H9
+  <br>Bit 75 = H10
+  <br>Bit 76 = I5
+  <br>Bit 77 = I6
+  <br>Bit 78 = I7</td></tr></table>
+</td></tr>
+<tr class=b>
 <td title='0x0011 = 17'>0x0011</td>
 <td>AFStatus15
   <br>AFStatus19</td>
 <td class=c>-<br>-</td>
 <td>--&gt; <a href='Sony.html#AFStatus15'>Sony AFStatus15 Tags</a>
   <br>--&gt; <a href='Sony.html#AFStatus19'>Sony AFStatus19 Tags</a></td></tr>
+<tr>
+<td title='0x0037 = 55'>0x0037</td>
+<td>AFPoint</td>
+<td class=c>int8u</td>
+<td><table class=cols><tr>
+  <td>0 = B4
+  <br>1 = C4
+  <br>2 = D4
+  <br>3 = E4
+  <br>4 = F4
+  <br>5 = G4
+  <br>6 = H4
+  <br>7 = B3
+  <br>8 = C3
+  <br>9 = D3
+  <br>10 = E3
+  <br>11 = F3
+  <br>12 = G3
+  <br>13 = H3
+  <br>14 = B2
+  <br>15 = C2
+  <br>16 = D2
+  <br>17 = E2
+  <br>18 = F2
+  <br>19 = G2
+  <br>20 = H2
+  <br>21 = C1
+  <br>22 = D1
+  <br>23 = E1
+  <br>24 = F1
+  <br>25 = G1
+  <br>26 = A7 Vertical
+  <br>27 = A6 Vertical
+  <br>28 = A5 Vertical
+  <br>29 = C7 Vertical
+  <br>30 = C6 Vertical
+  <br>31 = C5 Vertical
+  <br>32 = E7 Vertical
+  <br>33 = E6 Center Vertical
+  <br>34 = E5 Vertical
+  <br>35 = G7 Vertical
+  <br>36 = G6 Vertical
+  <br>37 = G5 Vertical
+  <br>38 = I7 Vertical
+  <br>39 = I6 Vertical
+  <br>40 = I5 Vertical
+  <br>41 = A7
+  <br>42 = B7
+  <br>43 = C7
+  <br>44 = D7
+  <br>45 = E7
+  <br>46 = F7
+  <br>47 = G7</td><td>&nbsp;&nbsp;</td>
+  <td>48 = H7
+  <br>49 = I7
+  <br>50 = A6
+  <br>51 = B6
+  <br>52 = C6
+  <br>53 = D6
+  <br>54 = E6 Center
+  <br>55 = F6
+  <br>56 = G6
+  <br>57 = H6
+  <br>58 = I6
+  <br>59 = A5
+  <br>60 = B5
+  <br>61 = C5
+  <br>62 = D5
+  <br>63 = E5
+  <br>64 = F5
+  <br>65 = G5
+  <br>66 = H5
+  <br>67 = I5
+  <br>68 = C11
+  <br>69 = D11
+  <br>70 = E11
+  <br>71 = F11
+  <br>72 = G11
+  <br>73 = B10
+  <br>74 = C10
+  <br>75 = D10
+  <br>76 = E10
+  <br>77 = F10
+  <br>78 = G10
+  <br>79 = H10
+  <br>80 = B9
+  <br>81 = C9
+  <br>82 = D9
+  <br>83 = E9
+  <br>84 = F9
+  <br>85 = G9
+  <br>86 = H9
+  <br>87 = B8
+  <br>88 = C8
+  <br>89 = D8
+  <br>90 = E8
+  <br>91 = F8
+  <br>92 = G8
+  <br>93 = H8
+  <br>94 = E6 Center F2.8
+  <br>255 = (none)</td></tr></table>
+</td></tr>
+<tr class=b>
+<td title='0x0038 = 56'>0x0038</td>
+<td>AFPointInFocus</td>
+<td class=c>int8u</td>
+<td><table class=cols><tr>
+  <td>0 = B4
+  <br>1 = C4
+  <br>2 = D4
+  <br>3 = E4
+  <br>4 = F4
+  <br>5 = G4
+  <br>6 = H4
+  <br>7 = B3
+  <br>8 = C3
+  <br>9 = D3
+  <br>10 = E3
+  <br>11 = F3
+  <br>12 = G3
+  <br>13 = H3
+  <br>14 = B2
+  <br>15 = C2
+  <br>16 = D2
+  <br>17 = E2
+  <br>18 = F2
+  <br>19 = G2
+  <br>20 = H2
+  <br>21 = C1
+  <br>22 = D1
+  <br>23 = E1
+  <br>24 = F1
+  <br>25 = G1
+  <br>26 = A7 Vertical
+  <br>27 = A6 Vertical
+  <br>28 = A5 Vertical
+  <br>29 = C7 Vertical
+  <br>30 = C6 Vertical
+  <br>31 = C5 Vertical
+  <br>32 = E7 Vertical
+  <br>33 = E6 Center Vertical
+  <br>34 = E5 Vertical
+  <br>35 = G7 Vertical
+  <br>36 = G6 Vertical
+  <br>37 = G5 Vertical
+  <br>38 = I7 Vertical
+  <br>39 = I6 Vertical
+  <br>40 = I5 Vertical
+  <br>41 = A7
+  <br>42 = B7
+  <br>43 = C7
+  <br>44 = D7
+  <br>45 = E7
+  <br>46 = F7
+  <br>47 = G7</td><td>&nbsp;&nbsp;</td>
+  <td>48 = H7
+  <br>49 = I7
+  <br>50 = A6
+  <br>51 = B6
+  <br>52 = C6
+  <br>53 = D6
+  <br>54 = E6 Center
+  <br>55 = F6
+  <br>56 = G6
+  <br>57 = H6
+  <br>58 = I6
+  <br>59 = A5
+  <br>60 = B5
+  <br>61 = C5
+  <br>62 = D5
+  <br>63 = E5
+  <br>64 = F5
+  <br>65 = G5
+  <br>66 = H5
+  <br>67 = I5
+  <br>68 = C11
+  <br>69 = D11
+  <br>70 = E11
+  <br>71 = F11
+  <br>72 = G11
+  <br>73 = B10
+  <br>74 = C10
+  <br>75 = D10
+  <br>76 = E10
+  <br>77 = F10
+  <br>78 = G10
+  <br>79 = H10
+  <br>80 = B9
+  <br>81 = C9
+  <br>82 = D9
+  <br>83 = E9
+  <br>84 = F9
+  <br>85 = G9
+  <br>86 = H9
+  <br>87 = B8
+  <br>88 = C8
+  <br>89 = D8
+  <br>90 = E8
+  <br>91 = F8
+  <br>92 = G8
+  <br>93 = H8
+  <br>94 = E6 Center F2.8
+  <br>255 = (none)</td></tr></table>
+</td></tr>
+<tr>
+<td title='0x0039 = 57'>0x0039</td>
+<td>AFPointAtShutterRelease</td>
+<td class=c>int8u</td>
+<td><table class=cols><tr>
+  <td>0 = B4
+  <br>1 = C4
+  <br>2 = D4
+  <br>3 = E4
+  <br>4 = F4
+  <br>5 = G4
+  <br>6 = H4
+  <br>7 = B3
+  <br>8 = C3
+  <br>9 = D3
+  <br>10 = E3
+  <br>11 = F3
+  <br>12 = G3
+  <br>13 = H3
+  <br>14 = B2
+  <br>15 = C2
+  <br>16 = D2
+  <br>17 = E2
+  <br>18 = F2
+  <br>19 = G2
+  <br>20 = H2
+  <br>21 = C1
+  <br>22 = D1
+  <br>23 = E1
+  <br>24 = F1
+  <br>25 = G1
+  <br>26 = A7 Vertical
+  <br>27 = A6 Vertical
+  <br>28 = A5 Vertical
+  <br>29 = C7 Vertical
+  <br>30 = C6 Vertical
+  <br>31 = C5 Vertical
+  <br>32 = E7 Vertical
+  <br>33 = E6 Center Vertical
+  <br>34 = E5 Vertical
+  <br>35 = G7 Vertical
+  <br>36 = G6 Vertical
+  <br>37 = G5 Vertical
+  <br>38 = I7 Vertical
+  <br>39 = I6 Vertical
+  <br>40 = I5 Vertical
+  <br>41 = A7
+  <br>42 = B7
+  <br>43 = C7
+  <br>44 = D7
+  <br>45 = E7
+  <br>46 = F7
+  <br>47 = G7</td><td>&nbsp;&nbsp;</td>
+  <td>48 = H7
+  <br>49 = I7
+  <br>50 = A6
+  <br>51 = B6
+  <br>52 = C6
+  <br>53 = D6
+  <br>54 = E6 Center
+  <br>55 = F6
+  <br>56 = G6
+  <br>57 = H6
+  <br>58 = I6
+  <br>59 = A5
+  <br>60 = B5
+  <br>61 = C5
+  <br>62 = D5
+  <br>63 = E5
+  <br>64 = F5
+  <br>65 = G5
+  <br>66 = H5
+  <br>67 = I5
+  <br>68 = C11
+  <br>69 = D11
+  <br>70 = E11
+  <br>71 = F11
+  <br>72 = G11
+  <br>73 = B10
+  <br>74 = C10
+  <br>75 = D10
+  <br>76 = E10
+  <br>77 = F10
+  <br>78 = G10
+  <br>79 = H10
+  <br>80 = B9
+  <br>81 = C9
+  <br>82 = D9
+  <br>83 = E9
+  <br>84 = F9
+  <br>85 = G9
+  <br>86 = H9
+  <br>87 = B8
+  <br>88 = C8
+  <br>89 = D8
+  <br>90 = E8
+  <br>91 = F8
+  <br>92 = G8
+  <br>93 = H8
+  <br>94 = E6 Center F2.8
+  <br>95 = (none)</td></tr></table>
+</td></tr>
 <tr class=b>
 <td title='0x003a = 58'>0x003a</td>
 <td>AFAreaMode</td>
@@ -7901,11 +8318,29 @@ ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-77M2.</p>
   <br>3 = Zone
   <br>4 = Expanded Flexible Spot</span></td></tr>
 <tr>
+<td title='0x003b = 59'>0x003b</td>
+<td>AFStatusActiveSensor</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr class=b>
+<td title='0x0043 = 67'>0x0043</td>
+<td>ExposureProgram</td>
+<td class=c>int8u</td>
+<td>--&gt; <a href='Sony.html#ExposureProgram3'>Sony ExposureProgram3 Values</a></td></tr>
+<tr>
 <td title='0x0050 = 80'>0x0050</td>
 <td>AFMicroAdj</td>
 <td class=c>int8s</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td title='0x007d = 125'>0x007d</td>
+<td>AFStatus79</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Sony.html#AFStatus79'>Sony AFStatus79 Tags</a></td></tr>
+<tr>
 <td title='0x016e = 366'>0x016e</td>
 <td>AFPointsUsed</td>
 <td class=c>int32u</td>
@@ -7931,12 +8366,12 @@ ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-77M2.</p>
   <br>Bit 17 = Lower Far Left
   <br>Bit 18 = Upper Far Left</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td title='0x017d = 381'>0x017d</td>
 <td>AFMicroAdj</td>
 <td class=c>int8s</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x017e = 382'>0x017e</td>
 <td>ExposureProgram</td>
 <td class=c>int8u</td>
@@ -8185,6 +8620,775 @@ ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-77M2.</p>
 <tr class=b>
 <td class=r title='58 = 0x3a'>58</td>
 <td>AFStatusLower-rightVertical</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='AFStatus79'>Sony AFStatus79 Tags</a></h2>
+<p>AF Status information for models with 79-point AF.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>AFStatus_00_B4</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>AFStatus_01_C4</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='4 = 0x4'>4</td>
+<td>AFStatus_02_D4</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='6 = 0x6'>6</td>
+<td>AFStatus_03_E4</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='8 = 0x8'>8</td>
+<td>AFStatus_04_F4</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='10 = 0xa'>10</td>
+<td>AFStatus_05_G4</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='12 = 0xc'>12</td>
+<td>AFStatus_06_H4</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='14 = 0xe'>14</td>
+<td>AFStatus_07_B3</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='16 = 0x10'>16</td>
+<td>AFStatus_08_C3</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='18 = 0x12'>18</td>
+<td>AFStatus_09_D3</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='20 = 0x14'>20</td>
+<td>AFStatus_10_E3</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='22 = 0x16'>22</td>
+<td>AFStatus_11_F3</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='24 = 0x18'>24</td>
+<td>AFStatus_12_G3</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='26 = 0x1a'>26</td>
+<td>AFStatus_13_H3</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='28 = 0x1c'>28</td>
+<td>AFStatus_14_B2</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='30 = 0x1e'>30</td>
+<td>AFStatus_15_C2</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='32 = 0x20'>32</td>
+<td>AFStatus_16_D2</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='34 = 0x22'>34</td>
+<td>AFStatus_17_E2</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='36 = 0x24'>36</td>
+<td>AFStatus_18_F2</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='38 = 0x26'>38</td>
+<td>AFStatus_19_G2</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='40 = 0x28'>40</td>
+<td>AFStatus_20_H2</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='42 = 0x2a'>42</td>
+<td>AFStatus_21_C1</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='44 = 0x2c'>44</td>
+<td>AFStatus_22_D1</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='46 = 0x2e'>46</td>
+<td>AFStatus_23_E1</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='48 = 0x30'>48</td>
+<td>AFStatus_24_F1</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='50 = 0x32'>50</td>
+<td>AFStatus_25_G1</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='52 = 0x34'>52</td>
+<td>AFStatus_26_A7_Vertical</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='54 = 0x36'>54</td>
+<td>AFStatus_27_A6_Vertical</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='56 = 0x38'>56</td>
+<td>AFStatus_28_A5_Vertical</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='58 = 0x3a'>58</td>
+<td>AFStatus_29_C7_Vertical</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='60 = 0x3c'>60</td>
+<td>AFStatus_30_C6_Vertical</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='62 = 0x3e'>62</td>
+<td>AFStatus_31_C5_Vertical</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='64 = 0x40'>64</td>
+<td>AFStatus_32_E7_Vertical</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='66 = 0x42'>66</td>
+<td>AFStatus_33_E6_Center_Vertical</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='68 = 0x44'>68</td>
+<td>AFStatus_34_E5_Vertical</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='70 = 0x46'>70</td>
+<td>AFStatus_35_G7_Vertical</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='72 = 0x48'>72</td>
+<td>AFStatus_36_G6_Vertical</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='74 = 0x4a'>74</td>
+<td>AFStatus_37_G5_Vertical</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='76 = 0x4c'>76</td>
+<td>AFStatus_38_I7_Vertical</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='78 = 0x4e'>78</td>
+<td>AFStatus_39_I6_Vertical</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='80 = 0x50'>80</td>
+<td>AFStatus_40_I5_Vertical</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='82 = 0x52'>82</td>
+<td>AFStatus_41_A7</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='84 = 0x54'>84</td>
+<td>AFStatus_42_B7</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='86 = 0x56'>86</td>
+<td>AFStatus_43_C7</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='88 = 0x58'>88</td>
+<td>AFStatus_44_D7</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='90 = 0x5a'>90</td>
+<td>AFStatus_45_E7</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='92 = 0x5c'>92</td>
+<td>AFStatus_46_F7</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='94 = 0x5e'>94</td>
+<td>AFStatus_47_G7</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='96 = 0x60'>96</td>
+<td>AFStatus_48_H7</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='98 = 0x62'>98</td>
+<td>AFStatus_49_I7</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='100 = 0x64'>100</td>
+<td>AFStatus_50_A6</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='102 = 0x66'>102</td>
+<td>AFStatus_51_B6</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='104 = 0x68'>104</td>
+<td>AFStatus_52_C6</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='106 = 0x6a'>106</td>
+<td>AFStatus_53_D6</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='108 = 0x6c'>108</td>
+<td>AFStatus_54_E6_Center</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='110 = 0x6e'>110</td>
+<td>AFStatus_55_F6</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='112 = 0x70'>112</td>
+<td>AFStatus_56_G6</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='114 = 0x72'>114</td>
+<td>AFStatus_57_H6</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='116 = 0x74'>116</td>
+<td>AFStatus_58_I6</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='118 = 0x76'>118</td>
+<td>AFStatus_59_A5</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='120 = 0x78'>120</td>
+<td>AFStatus_60_B5</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='122 = 0x7a'>122</td>
+<td>AFStatus_61_C5</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='124 = 0x7c'>124</td>
+<td>AFStatus_62_D5</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='126 = 0x7e'>126</td>
+<td>AFStatus_63_E5</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='128 = 0x80'>128</td>
+<td>AFStatus_64_F5</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='130 = 0x82'>130</td>
+<td>AFStatus_65_G5</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='132 = 0x84'>132</td>
+<td>AFStatus_66_H5</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='134 = 0x86'>134</td>
+<td>AFStatus_67_I5</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='136 = 0x88'>136</td>
+<td>AFStatus_68_C11</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='138 = 0x8a'>138</td>
+<td>AFStatus_69_D11</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='140 = 0x8c'>140</td>
+<td>AFStatus_70_E11</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='142 = 0x8e'>142</td>
+<td>AFStatus_71_F11</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='144 = 0x90'>144</td>
+<td>AFStatus_72_G11</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='146 = 0x92'>146</td>
+<td>AFStatus_73_B10</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='148 = 0x94'>148</td>
+<td>AFStatus_74_C10</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='150 = 0x96'>150</td>
+<td>AFStatus_75_D10</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='152 = 0x98'>152</td>
+<td>AFStatus_76_E10</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='154 = 0x9a'>154</td>
+<td>AFStatus_77_F10</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='156 = 0x9c'>156</td>
+<td>AFStatus_78_G10</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='158 = 0x9e'>158</td>
+<td>AFStatus_79_H10</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='160 = 0xa0'>160</td>
+<td>AFStatus_80_B9</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='162 = 0xa2'>162</td>
+<td>AFStatus_81_C9</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='164 = 0xa4'>164</td>
+<td>AFStatus_82_D9</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='166 = 0xa6'>166</td>
+<td>AFStatus_83_E9</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='168 = 0xa8'>168</td>
+<td>AFStatus_84_F9</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='170 = 0xaa'>170</td>
+<td>AFStatus_85_G9</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='172 = 0xac'>172</td>
+<td>AFStatus_86_H9</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='174 = 0xae'>174</td>
+<td>AFStatus_87_B8</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='176 = 0xb0'>176</td>
+<td>AFStatus_88_C8</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='178 = 0xb2'>178</td>
+<td>AFStatus_89_D8</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='180 = 0xb4'>180</td>
+<td>AFStatus_90_E8</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='182 = 0xb6'>182</td>
+<td>AFStatus_91_F8</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='184 = 0xb8'>184</td>
+<td>AFStatus_92_G8</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='186 = 0xba'>186</td>
+<td>AFStatus_93_H8</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0 = In Focus</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='188 = 0xbc'>188</td>
+<td>AFStatus_94_E6_Center_F2-8</td>
 <td class=c>int16s</td>
 <td><table class=cols><tr>
   <td>-32768 = Out of Focus</td><td>&nbsp;&nbsp;</td>
@@ -8777,7 +9981,7 @@ the JPEG image from a PMP file)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Nov 19, 2015</i>
+<br><i>Last revised Jan 22, 2016</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

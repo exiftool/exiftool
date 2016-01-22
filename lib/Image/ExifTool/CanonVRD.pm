@@ -22,7 +22,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Canon;
 
-$VERSION = '1.27';
+$VERSION = '1.28';
 
 sub ProcessCanonVRD($$;$);
 sub WriteCanonVRD($$;$);
@@ -486,7 +486,8 @@ my $blankFooter = "CANON OPTIONAL DATA\0" . ("\0" x 42) . "\xff\xd9";
     WRITABLE => 1,
     FIRST_ENTRY => 0,
     FORMAT => 'int16s',
-    DATAMEMBER => [ 0x58, 0xdf, 0xea ], # (required for DataMember and var-format tags)
+    DATAMEMBER => [ 0x58, 0xdc, 0xdf, 0xe0 ], # (required for DataMember and var-format tags)
+    IS_SUBDIR => [ 0xe0 ],
     GROUPS => { 2 => 'Image' },
     NOTES => 'Tags added in DPP version 2.0 and later.',
     0x02 => {
@@ -923,7 +924,12 @@ my $blankFooter = "CANON OPTIONAL DATA\0" . ("\0" x 42) . "\xff\xd9";
     0xd9 => 'CropCircleRadius',
     # 0xda: 0, 1
     # 0xdb: 100
-    0xdc => { Name => 'DLOOn', %noYes },
+    0xdc => {
+        Name => 'DLOOn',
+        DataMember => 'DLOOn',
+        RawConv => '$$self{DLOOn} = $val',
+        %noYes,
+    },
     0xdd => 'DLOSetting',
     # (VRD 3.11.0 edit data ends here: 444 bytes, index 0xde)
     0xde => {
@@ -937,26 +943,53 @@ my $blankFooter = "CANON OPTIONAL DATA\0" . ("\0" x 42) . "\xff\xd9";
     },
     0xdf => {
         Name => 'DLODataLength',
+        DataMember => 'DLODataLength',
         Format => 'int32u',
         Writable => 0,
-        # - have seen 65536 when DLO is Off
-        #   --> this is my only sample where 0xda is 1 -- coincidence?
+        RawConv => '$$self{DLODataLength} = $val',
     },
-    # 0xe1 - 0 without DLO, seen 3112 with DLO
+    0xe0 => { # (yes, this overlaps DLODataLength)
+        Name => 'DLOInfo',
+        # - have seen DLODataLengths of 65536,64869 when DLO is Off, so must test DLOOn flag
+        Condition => '$$self{DLOOn}',
+        SubDirectory => { TagTable => 'Image::ExifTool::CanonVRD::DLOInfo' },
+        Hook => '$varSize += $$self{DLODataLength} + 0x16',
+    },
+    0xe1 => 'CameraRawColorTone',
     # (VRD 3.11.2 edit data ends here: 452 bytes, index 0xe2, unless DLO is on)
-    0xe4 => 'DLOSettingApplied',
-    0xe5 => {
+    0xe2 => 'CameraRawSaturation',
+    0xe3 => 'CameraRawContrast',
+    0xe4 => { Name => 'CameraRawLinear', %noYes },
+    0xe5 => 'CameraRawSharpness',
+    0xe6 => 'CameraRawHighlightPoint',
+    0xe7 => 'CameraRawShadowPoint',
+    0xe8 => 'CameraRawOutputHighlightPoint',
+    0xe9 => 'CameraRawOutputShadowPoint',
+);
+
+# DLO tags (ref PH)
+%Image::ExifTool::CanonVRD::DLOInfo = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    WRITE_PROC => \&Image::ExifTool::WriteBinaryData,
+    CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
+    WRITABLE => 1,
+    FIRST_ENTRY => 1,
+    FORMAT => 'int16s',
+    GROUPS => { 2 => 'Image' },
+    NOTES => 'Tags added when DLO (Digital Lens Optimizer) is on.',
+    # 0x01 - seen 3112,3140
+    0x04 => 'DLOSettingApplied',
+    0x05 => {
         Name => 'DLOVersion', #(NC)
         Format => 'string[10]',
     },
-    0xea => {
+    0x0a => {
         Name => 'DLOData',
         LargeTag => 1, # large tag, so avoid storing unnecessarily
         Notes => 'variable-length Digital Lens Optimizer data, stored in JPEG-like format',
-        Format => 'var_undef[$val{0xdf}]',
+        Format => 'undef[$$self{DLODataLength}]',
         Writable => 0,
         Binary => 1,
-        RawConv => 'length($val) ? \$val : undef', # (don't extract if zero length)
     },
 );
 

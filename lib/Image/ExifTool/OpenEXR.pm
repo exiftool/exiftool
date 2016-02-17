@@ -13,8 +13,9 @@ package Image::ExifTool::OpenEXR;
 use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
+use Image::ExifTool::GPS;
 
-$VERSION = '1.01';
+$VERSION = '1.02';
 
 # supported EXR value format types (other types are extracted as undef binary data)
 my %formatType = (
@@ -109,7 +110,6 @@ my %formatType = (
     latitude => {
         Name => 'GPSLatitude',
         Groups => { 2 => 'Location' },
-        RawConv => 'require Image::ExifTool::GPS; $val', # to load Composite tags and routines
         PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")',
     },
     lineOrder => {
@@ -122,7 +122,6 @@ my %formatType = (
     longitude => {
         Name => 'GPSLongitude',
         Groups => { 2 => 'Location' },
-        RawConv => 'require Image::ExifTool::GPS; $val', # to load Composite tags and routines
         PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "E")',
     },
     lookModTransform    => { },

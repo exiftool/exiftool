@@ -734,6 +734,7 @@ $VERSION = '3.57';
     0x80000325 => 'EOS 70D',
     0x80000326 => 'EOS Rebel T5i / 700D / Kiss X7i',
     0x80000327 => 'EOS Rebel T5 / 1200D / Kiss X70',
+    0x80000328 => 'EOS-1D X MARK II', #42
     0x80000331 => 'EOS M',
     0x80000355 => 'EOS M2',
     0x80000346 => 'EOS Rebel SL1 / 100D / Kiss X7',
@@ -3933,6 +3934,21 @@ my %ciMaxFocal = (
     0x7b => {
         Name => 'ColorTemperature',
         Format => 'int16u',
+    },
+    0xaf => {
+        Name => 'CameraPictureStyle',
+        PrintHex => 1,
+        PrintConv => {
+            0x81 => 'Standard',
+            0x82 => 'Portrait',
+            0x83 => 'Landscape',
+            0x84 => 'Neutral',
+            0x85 => 'Faithful',
+            0x86 => 'Monochrome',
+            0x21 => 'User Defined 1',
+            0x22 => 'User Defined 2',
+            0x23 => 'User Defined 3',
+        },
     },
     0xc9 => {
         Name => 'HighISONoiseReduction',

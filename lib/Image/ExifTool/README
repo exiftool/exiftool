@@ -109,6 +109,7 @@ is an explanation of the meaning of each special key:
     var_ustring - variable-length null-terminated UCS-2 string
     var_pstring - variable-length Pascal string
     var_pstr32  - variable-length Pascal string /w 32-bit len
+    var_ustr32  - variable-length UCS-2 string /w 32-bit len
     var_int16u  - variable-length undef data with int6u count
 
   FIRST_ENTRY : Specifies the index for the first tag entry in a binary table.

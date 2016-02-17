@@ -292,9 +292,9 @@ access to this information.
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0421 = 1057'>0x0421</td>
-<td>VersionInfo?</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
+<td>VersionInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Photoshop.html#VersionInfo'>Photoshop VersionInfo Tags</a></td></tr>
 <tr class=b>
 <td title='0x0422 = 1058'>0x0422</td>
 <td>EXIFInfo</td>
@@ -524,6 +524,30 @@ synchronized with the IPTC)</span></span></td></tr>
   <br>3 = 5 Scans</span></td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='VersionInfo'>Photoshop VersionInfo Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='4 = 0x4'>4</td>
+<td>HasRealMergedData</td>
+<td class=c>N</td>
+<td><span class=s>0 = No
+  <br>1 = Yes</span></td></tr>
+<tr class=b>
+<td class=r title='5 = 0x5'>5</td>
+<td>WriterName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='9 = 0x9'>9</td>
+<td>ReaderName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
 <h2><a name='Header'>Photoshop Header Tags</a></h2>
 <p>This information is found in the PSD file header.</p>
 <blockquote>
@@ -569,7 +593,7 @@ synchronized with the IPTC)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Sep 17, 2015</i>
+<br><i>Last revised Feb 8, 2016</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

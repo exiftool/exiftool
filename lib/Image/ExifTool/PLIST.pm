@@ -19,8 +19,9 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::XMP;
+use Image::ExifTool::GPS;
 
-$VERSION = '1.05';
+$VERSION = '1.06';
 
 sub ExtractObject($$;$);
 sub Get24u($$);
@@ -75,18 +76,12 @@ my %readProc = (
     'MetaDataList//Geolocation/Latitude' => {
         Name => 'GPSLatitude',
         Groups => { 2 => 'Location' },
-        PrintConv => q{
-            require Image::ExifTool::GPS;
-            Image::ExifTool::GPS::ToDMS($self, $val, 1, 'N');
-        },
+        PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")',
     },
     'MetaDataList//Geolocation/Longitude' => {
         Name => 'GPSLongitude',
         Groups => { 2 => 'Location' },
-        PrintConv => q{
-            require Image::ExifTool::GPS;
-            Image::ExifTool::GPS::ToDMS($self, $val, 1, 'E');
-        },
+        PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "E")',
     },
     'MetaDataList//Geolocation/MapDatum' => {
         Name => 'GPSMapDatum',

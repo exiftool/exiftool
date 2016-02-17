@@ -798,6 +798,7 @@
 </tr><tr><td class=r>0x80000325</td><td>= EOS 70D</td>
 </tr><tr><td class=r>0x80000326</td><td>= EOS Rebel T5i / 700D / Kiss X7i</td>
 </tr><tr><td class=r>0x80000327</td><td>= EOS Rebel T5 / 1200D / Kiss X70</td>
+</tr><tr><td class=r>0x80000328</td><td>= EOS-1D X MARK II</td>
 </tr><tr><td class=r>0x80000331</td><td>= EOS M</td>
 </tr><tr><td class=r>0x80000346</td><td>= EOS Rebel SL1 / 100D / Kiss X7</td>
 </tr><tr><td class=r>0x80000347</td><td>= EOS Rebel T6s / 760D / 8000D</td>
@@ -4048,6 +4049,21 @@ versions 1.0.x, but they may be different for other firmware versions.</p>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td class=r title='175 = 0xaf'>175</td>
+<td>CameraPictureStyle</td>
+<td class=c>int8u</td>
+<td><table class=cols><tr>
+  <td>0x21 = User Defined 1
+  <br>0x22 = User Defined 2
+  <br>0x23 = User Defined 3
+  <br>0x81 = Standard
+  <br>0x82 = Portrait</td><td>&nbsp;&nbsp;</td>
+  <td>0x83 = Landscape
+  <br>0x84 = Neutral
+  <br>0x85 = Faithful
+  <br>0x86 = Monochrome</td></tr></table>
+</td></tr>
+<tr class=b>
 <td class=r title='201 = 0xc9'>201</td>
 <td>HighISONoiseReduction</td>
 <td class=c>int8u</td>
@@ -4055,37 +4071,37 @@ versions 1.0.x, but they may be different for other firmware versions.</p>
   <br>1 = Low
   <br>2 = Strong
   <br>3 = Off</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='274 = 0x112'>274</td>
 <td>LensType</td>
 <td class=c>int16uRev</td>
 <td>--&gt; <a href='Canon.html#LensType'>Canon LensType Values</a></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='276 = 0x114'>276</td>
 <td>MinFocalLength</td>
 <td class=c>int16uRev</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='278 = 0x116'>278</td>
 <td>MaxFocalLength</td>
 <td class=c>int16uRev</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='428 = 0x1ac'>428</td>
 <td>FirmwareVersion</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='491 = 0x1eb'>491</td>
 <td>FileIndex</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='503 = 0x1f7'>503</td>
 <td>DirectoryIndex</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='807 = 0x327'>807</td>
 <td>PictureStyleInfo</td>
 <td class=c>-</td>
@@ -9340,6 +9356,7 @@ SX280.</p>
 </tr><tr><td class=r>0x80000325</td><td>= EOS 70D</td>
 </tr><tr><td class=r>0x80000326</td><td>= EOS Rebel T5i / 700D / Kiss X7i</td>
 </tr><tr><td class=r>0x80000327</td><td>= EOS Rebel T5 / 1200D / Kiss X70</td>
+</tr><tr><td class=r>0x80000328</td><td>= EOS-1D X MARK II</td>
 </tr><tr><td class=r>0x80000331</td><td>= EOS M</td>
 </tr><tr><td class=r>0x80000346</td><td>= EOS Rebel SL1 / 100D / Kiss X7</td>
 </tr><tr><td class=r>0x80000347</td><td>= EOS Rebel T6s / 760D / 8000D</td>
@@ -9351,7 +9368,7 @@ SX280.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Nov 19, 2015</i>
+<br><i>Last revised Feb 8, 2016</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

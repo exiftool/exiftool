@@ -22,8 +22,9 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
+use Image::ExifTool::GPS;
 
-$VERSION = '1.13';
+$VERSION = '1.14';
 
 sub ProcessFLIR($$;$);
 sub ProcessFLIRText($$$);
@@ -1106,7 +1107,6 @@ my %float8g = ( Format => 'float', PrintConv => 'sprintf("%.8g",$val)' );
     },
     1 => {
         Name => 'GPSLatitude',
-        RawConv => 'require Image::ExifTool::GPS; $val', # to load Composite tags and routines
         PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")',
     },
     2 => {

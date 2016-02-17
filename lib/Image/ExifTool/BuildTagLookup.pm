@@ -32,7 +32,7 @@ use Image::ExifTool::XMP;
 use Image::ExifTool::Canon;
 use Image::ExifTool::Nikon;
 
-$VERSION = '2.93';
+$VERSION = '2.94';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -130,6 +130,7 @@ my %formatOK = (
     var_string  => 1,
     var_int16u  => 1,
     var_pstr32  => 1,
+    var_ustr32  => 1,
     # Matroska
     signed      => 1,
     unsigned    => 1,

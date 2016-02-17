@@ -40,8 +40,9 @@ use strict;
 use vars qw($VERSION $AUTOLOAD);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
+use Image::ExifTool::GPS;
 
-$VERSION = '1.94';
+$VERSION = '1.95';
 
 sub FixWrongFormat($);
 sub ProcessMOV($$;$);
@@ -996,6 +997,22 @@ my %graphicsMode = (
         ValueConv => \&ConvertISO6709,
         PrintConv => \&PrintGPSCoordinates,
     },
+    # \xa9 tags written by DJI Phantom 3: (ref PH)
+    # \xa9xsp - +0.00
+    # \xa9ysp - +0.00
+    # \xa9zsp - +0.00,+0.40
+    # \xa9fpt - -2.80,-0.80,-0.20,+0.20,+0.70,+6.50
+    # \xa9fyw - -160.70,-83.60,-4.30,+87.20,+125.90,+158.80,
+    # \xa9frl - +1.60,-0.30,+0.40,+0.60,+2.50,+7.20
+    # \xa9gpt - -49.90,-17.50,+0.00
+    # \xa9gyw - -160.60,-83.40,-3.80,+87.60,+126.20,+158.00 (similar values to fyw)
+    # \xa9grl - +0.00
+    # and the following entries don't have the proper 4-byte header for \xa9 tags:
+    "\xa9dji" => { Name => 'UserData_dji', Format => 'undef', Binary => 1, Unknown => 1, Hidden => 1 },
+    "\xa9res" => { Name => 'UserData_res', Format => 'undef', Binary => 1, Unknown => 1, Hidden => 1 },
+    "\xa9uid" => { Name => 'UserData_uid', Format => 'undef', Binary => 1, Unknown => 1, Hidden => 1 },
+    "\xa9mdl" => { Name => 'Model',        Format => 'string', Notes => 'non-standard-format DJI tag' },
+    # end DJI tags
     name => 'Name',
     WLOC => {
         Name => 'WindowLocation',
@@ -5549,19 +5566,13 @@ my %graphicsMode = (
         Require => 'QuickTime:GPSCoordinates',
         Groups => { 2 => 'Location' },
         ValueConv => 'my @c = split " ", $val; $c[0]',
-        PrintConv => q{
-            require Image::ExifTool::GPS;
-            Image::ExifTool::GPS::ToDMS($self, $val, 1, 'N');
-        },
+        PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")',
     },
     GPSLongitude => {
         Require => 'QuickTime:GPSCoordinates',
         Groups => { 2 => 'Location' },
         ValueConv => 'my @c = split " ", $val; $c[1]',
-        PrintConv => q{
-            require Image::ExifTool::GPS;
-            Image::ExifTool::GPS::ToDMS($self, $val, 1, 'E');
-        },
+        PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "E")',
     },
     # split altitude into GPSAltitude/GPSAltitudeRef like EXIF and XMP
     GPSAltitude => {
@@ -5586,20 +5597,14 @@ my %graphicsMode = (
         Require => 'QuickTime:LocationInformation',
         Groups => { 2 => 'Location' },
         ValueConv => '$val =~ /Lat=([-+.\d]+)/; $1',
-        PrintConv => q{
-            require Image::ExifTool::GPS;
-            Image::ExifTool::GPS::ToDMS($self, $val, 1, 'N');
-        },
+        PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")',
     },
     GPSLongitude2 => {
         Name => 'GPSLongitude',
         Require => 'QuickTime:LocationInformation',
         Groups => { 2 => 'Location' },
         ValueConv => '$val =~ /Lon=([-+.\d]+)/; $1',
-        PrintConv => q{
-            require Image::ExifTool::GPS;
-            Image::ExifTool::GPS::ToDMS($self, $val, 1, 'E');
-        },
+        PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "E")',
     },
     GPSAltitude2 => {
         Name => 'GPSAltitude',
@@ -5716,17 +5721,20 @@ sub FixWrongFormat($)
 sub ConvertISO6709($)
 {
     my $val = shift;
-    if ($val =~ /^([-+]\d{2}(?:\.\d*)?)([-+]\d{3}(?:\.\d*)?)([-+]\d+)?/) {
+    if ($val =~ /^([-+]\d{1,2}(?:\.\d*)?)([-+]\d{1,3}(?:\.\d*)?)([-+]\d+(?:\.\d*)?)?/) {
+        # +DD.DDD+DDD.DDD+AA.AAA
         $val = ($1 + 0) . ' ' . ($2 + 0);
         $val .= ' ' . ($3 + 0) if $3;
-    } elsif ($val =~ /^([-+])(\d{2})(\d{2}(?:\.\d*)?)([-+])(\d{3})(\d{2}(?:\.\d*)?)([-+]\d+)?/) {
+    } elsif ($val =~ /^([-+])(\d{2})(\d{2}(?:\.\d*)?)([-+])(\d{3})(\d{2}(?:\.\d*)?)([-+]\d+(?:\.\d*)?)?/) {
+        # +DDMM.MMM+DDDMM.MMM+AA.AAA
         my $lat = $2 + $3 / 60;
         $lat = -$lat if $1 eq '-';
         my $lon = $5 + $6 / 60;
         $lon = -$lon if $4 eq '-';
         $val = "$lat $lon";
         $val .= ' ' . ($7 + 0) if $7;
-    } elsif ($val =~ /^([-+])(\d{2})(\d{2})(\d{2}(?:\.\d*)?)([-+])(\d{3})(\d{2})(\d{2}(?:\.\d*)?)([-+]\d+)?/) {
+    } elsif ($val =~ /^([-+])(\d{2})(\d{2})(\d{2}(?:\.\d*)?)([-+])(\d{3})(\d{2})(\d{2}(?:\.\d*)?)([-+]\d+(?:\.\d*)?)?/) {
+        # +DDMMSS.SSS+DDDMMSS.SSS+AA.AAA
         my $lat = $2 + $3 / 60 + $4 / 3600;
         $lat = -$lat if $1 eq '-';
         my $lon = $6 + $7 / 60 + $8 / 3600;
@@ -5785,7 +5793,6 @@ sub PrintChapter($)
 sub PrintGPSCoordinates($)
 {
     my ($val, $et) = @_;
-    require Image::ExifTool::GPS;
     my @v = split ' ', $val;
     my $prt = Image::ExifTool::GPS::ToDMS($et, $v[0], 1, "N") . ', ' .
               Image::ExifTool::GPS::ToDMS($et, $v[1], 1, "E");
@@ -6418,6 +6425,10 @@ sub ProcessMOV($$;$)
                 } elsif ($tag =~ /^\xa9/ or $$tagInfo{IText}) {
                     # parse international text to extract all languages
                     my $pos = 0;
+                    if ($$tagInfo{Format}) {
+                        $et->FoundTag($tagInfo, ReadValue(\$val, 0, $$tagInfo{Format}, undef, length($val)));
+                        $pos = $size;
+                    }
                     for (;;) {
                         last if $pos + 4 > $size;
                         my ($len, $lang) = unpack("x${pos}nn", $val);

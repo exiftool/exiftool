@@ -21,7 +21,7 @@ use vars qw($VERSION $AUTOLOAD $lastFetched);
 use Image::ExifTool qw(:DataAccess :Utils);
 require Exporter;
 
-$VERSION = '1.40';
+$VERSION = '1.41';
 
 sub FetchObject($$$$);
 sub ExtractObject($$;$$);
@@ -51,11 +51,11 @@ my %supportedFilter = (
     '/JPXDecode' => 1, # (Jpeg2000 image - not filtered)
     '/LZWDecode' => 1, # (usually a bitmapped image)
     '/ASCIIHexDecode' => 1,
+    '/ASCII85Decode' => 1,
     # other standard filters that we currently don't support
     #'/JBIG2Decode' => 0, # (JBIG2 image format not supported)
     #'/CCITTFaxDecode' => 0,
     #'/RunLengthDecode' => 0,
-    #'/ASCII85Decode' => 0,
 );
 
 # tags in main PDF directories
@@ -1260,6 +1260,34 @@ sub DecodeStream($$)
             $$dict{_stream} =~ tr/0-9a-zA-Z//d; # remove illegal characters
             $$dict{_stream} = pack 'H*', $$dict{_stream};
 
+        } elsif ($filter eq '/ASCII85Decode') {
+
+            my ($err, @out, $i);
+            my ($n, $val) = (0, 0);
+            foreach (split //, $$dict{_stream}) {
+                if ($_ ge '!' and $_ le 'u') {;
+                    $val = 85 * $val + ord($_) - 33;
+                    next unless ++$n == 5;
+                } elsif ($_ eq '~') {
+                    $n == 1 and $err = 1;   # error to have a single char in the last group of 5
+                    for ($i=$n; $i<5; ++$i) { $val *= 85; }
+                } elsif ($_ eq 'z') {
+                    $n and $err = 2, last;  # error if 'z' isn't the first char
+                    $n = 5;
+                } else {
+                    next if /^\s$/;         # ignore white space
+                    $err = 3, last;         # any other character is an error
+                }
+                $val = unpack('V', pack('N', $val)); # reverse byte order
+                while (--$n > 0) {
+                    push @out, $val & 0xff;
+                    $val >>= 8;
+                }
+                last if $_ eq '~';
+                # (both $n and $val are zero again now)
+            }
+            $err and $et->WarnOnce("ASCII85Decode error $err");
+            $$dict{_stream} = pack('C*', @out);
         }
     }
     return 1;

@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.29';
+$VERSION = '2.30';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -96,11 +96,17 @@ my %sonyLensTypes2 = (
     32816 => 'Sony FE 28mm F2', #JR             # VX?
     32817 => 'Sony FE PZ 28-135mm F4 G OSS',#JR # VX?
 
+    32821 => 'Sony FE 24-70mm F2.8 GM', #JR/14
+   # 328.. => 'Sony FE 70-200mm F2.8 GM OSS',
+    32823 => 'Sony FE 85mm F1.4 GM', #JR/14
+
     32826 => 'Sony FE 21mm F2.8 (SEL28F20 + SEL075UWC)', #JR          # (+ Ultra-wide converter)
     32827 => 'Sony FE 16mm F3.5 Fisheye (SEL28F20 + SEL057FEC)', #JR  # (+ Fisheye converter)
+    32830 => 'Sony FE 70-200mm F2.8 GM OSS', #JR
 
     49216 => 'Zeiss Batis 25mm F2', #JR
     49217 => 'Zeiss Batis 85mm F1.8', #JR
+    49232 => 'Zeiss Loxia 50mm F2', #JR (lens firmware Ver.02)
     49234 => 'Zeiss Loxia 21mm F2.8', #PH
 );
 
@@ -883,7 +889,7 @@ my %meterInfo2 = (
         },
     },
     # 0x2018 - something with external flash: seen 1 only when 0x2017 = 2
-    # 0x2019 - 0, also seen 1 for ILCE-7M2
+    # 0x2019 - 0 or 1 (seen 1 for ILCA-77M2, ILCE-7M2/7RM2)
     # 0x201a - 0 or 1
     0x201b => { #PH
         # FocusMode for SLT/HV/ILCA and NEX/ILCE; doesn't seem to apply to DSC models (always 0)
@@ -927,7 +933,8 @@ my %meterInfo2 = (
                 0 => 'Multi', # all NEX and ILCE-3000/3500; all other ILCE use the name 'Wide'
                 1 => 'Center',
                 3 => 'Flexible Spot',
-                11 => 'Zone', # (NC)
+                11 => 'Zone',
+                12 => 'Expanded Flexible Spot',
             },
         },{
             Name => 'AFAreaModeSetting',
@@ -939,7 +946,7 @@ my %meterInfo2 = (
                 4 => 'Flexible Spot',
                 8 => 'Zone',
                 9 => 'Center',
-                12 => 'Expanded Flexible Spot', # (NC, new mode in ILCA-77M2)
+                12 => 'Expanded Flexible Spot',
             },
         },
     ],
@@ -958,7 +965,8 @@ my %meterInfo2 = (
     },
     0x201e => [{ #PH (A99)
         # AFPointSelected for SLT/HV/ILCA, non-zero only when AFAreaMode = 'Local' or 'Zone'
-        # (NC) AFZoneSelected for NEX/ILCE, non-zero only when AFAreaMode = 'Zone'
+        # AFZoneSelected for NEX/ILCE, non-zero only when AFAreaMode = 'Zone',
+        #      but also with Expanded Flexible Spot for ILCE-7RM2/7SM2 ...
         # doesn't seem to apply to DSC models (always 0)
         Name => 'AFPointSelected',
         Condition => '$$self{Model} =~ /^(SLT-|HV)/',
@@ -1001,15 +1009,21 @@ my %meterInfo2 = (
             39 => 'E6 (Center)', # (add " (Center)" to central point)
         },
     },{
-        Name => 'AFZoneSelected',
+        Name => 'AFZoneSelected', # each Zone has 3x3 AF Areas --> 9 positions within 5x5 total Contrast AF Areas
         Condition => '$$self{Model} =~ /^(NEX-|ILCE-)/',
         Notes => 'NEX and ILCE models',
         Writable => 'int8u',
-        PrintConv => { # ILCE-6000 allows to select 9 Zones, seen values 1, 4, 5, decoding not yet known
+        PrintConv => {
             0 => 'n/a',
-            1 => 'Zone 1',
-            4 => 'Zone 4',
-            5 => 'Zone 5',
+            1 => 'Center',
+            2 => 'Top',
+            3 => 'Right',
+            4 => 'Left',
+            5 => 'Bottom',
+            6 => 'Bottom Right',
+            7 => 'Bottom Left',
+            8 => 'Top Left',
+            9 => 'Top Right',
         },
     }],
     # 0x201f - 0 0 0 0 for SLT and DSC; 4 values for NEX/ILCE with 4th value always 0:
@@ -1088,22 +1102,19 @@ my %meterInfo2 = (
     # 0x2025 - n1 n2 0 0         DSC-RX100M3/RX100M4/RX10M2/HX90V/WX500, ILCA-77M2, ILCE-5100/7M2/7RM2/7S/QX1
     #          seen n1=0,2,4,5,7 and n2=0,1,3, very often: 7 3 0 0
 
-    # 0x2026 - seen from ILCE-7RM2 onwards, 2 values corresonding to 0x2014 WBShiftAB_GM
-    #          e.g. (0 4000), (2000 2000), (0 -1000) corresponding to 0x2014 values of (0 4), (2 2), (0 -1)
-    #          probably related to more precise WB setting option of ILCE-7RM2.
+    # 0x2026 - 2 values: more precise WB Shift: AB in steps of 0.50, GM in steps of 0.25 (ILCE-7RM2 onwards)
     0x2026 => { #JR
         Name => 'WBShiftAB_GM_Precise',
         Writable => 'int32s',
         Count => 2,
         Notes => q{
             2 numbers: 1. positive is a shift toward amber, 2. positive is a shift
-            toward magenta (tbc)
+            toward magenta
         },
-        # t.b.d. apply scaling to same values as 0x2014 ???
-        # PrintConv => 'my @v=split(" ",$val); $_/=1000 foreach @v; sprintf("%.3f %.3f",$v[0],$v[1])',
+        PrintConv => 'my @v=split(" ",$val); $_/=1000 foreach @v; sprintf("%.2f %.2f",$v[0],$v[1])',
     },
     # 0x2027 - W H W/2 H/2       DSC-HX90V/RX1RM2/RX10M2/RX100M4/WX500, ILCE-7RM2/7SM2
-    #       or W H val1 val2
+    #       or W H val1 val2     maybe position of focus for Playback Zoom ?
     #       or 0 0 0 0
     # 0x2028 - 0 0 for DSC-RX100M4/RX10M2, ILCE-7RM2/7SM2; seen non-zero values only for DSC-RX1RM2
     0x2028 => { #JR
@@ -1114,6 +1125,14 @@ my %meterInfo2 = (
             0x00001 => 'Off',
             0x10001 => 'Standard',
             0x20001 => 'High',
+        },
+    },
+    0x2029 => { # uncompressed 14-bit RAW file type setting introduced 2015
+        Name => 'RAWFileType',
+        Format => 'int16u',
+        PrintConv => {
+            0 => 'Compressed RAW',
+            1 => 'Uncompressed RAW',
         },
     },
     0x3000 => {
@@ -1210,7 +1229,7 @@ my %meterInfo2 = (
         #   4e 30 d6 0e    0x0a5a    (r)  ILCE-7M2 v1.20/v1.21/v2.00
         #   5a 00 14 0f    0x0a85    (s)  DSC-HX90V/WX500
         #   5d 00 56 0f    0x0ac7    (t)  DSC-RX10M2/RX100M4, ILCE-7RM2/7SM2 v1.00/v1.10/v2.00 (also DSC-RX1RM2 samples from Sony)
-        #   5d 1d 58 0f    0x0ac7    (t)  ILCE-7RM2 v3.00
+        #   5d 1d 58 0f    0x0ac7    (t)  ILCE-7RM2 v3.00/v3.05
         #   5d 1e 57 0f    0x0ac7    (t)  DSC-RX1RM2 v1.00
         #
         # 0x0004 - (RX100: 0 or 1. subsequent data valid only if 1 - PH)
@@ -1778,6 +1797,7 @@ my %meterInfo2 = (
             2 => 'Continuous',
             5 => 'Exposure Bracketing',
             6 => 'White Balance Bracketing', # (HX5)
+            8 => 'DRO Bracketing', #JR (ILCE-7RM2)
             65535 => 'n/a', #PH (A100)
         },
     },
@@ -5365,7 +5385,8 @@ my %releaseMode2 = ( #JR
         0 => 'Normal',
         1 => 'Continuous', # (RX100 "Continuous - Self-timer")
         2 => 'Continuous - Exposure Bracketing', # (RX100)
-        3 => 'Continuous - White Balance Bracketing', # (HX9V) (RX100)
+# 3 - also DRO Bracketing (ILCE-7RM2), not "Continuous" because only single exposure from which camera makes 3 versions
+        3 => 'DRO or White Balance Bracketing', # (HX9V) (RX100) (ILCE-7RM2)
         5 => 'Continuous - Burst', # (HX9V)
         6 => 'Single Frame - Capture During Movie', #PH (RX100)
         7 => 'Continuous - Sweep Panorama',
@@ -5378,7 +5399,7 @@ my %releaseMode2 = ( #JR
         17 => 'Continuous - Burst 2', # (WX7 - PH) (#JR 9400-SequenceLength=10 shots)
         19 => 'Continuous - Speed/Advance Priority', #PH/JR (RX100)
         20 => 'Continuous - Multi Frame NR',
-        23 => 'Single-frame - Exposure Bracketing', # (NC, seen for ILCE-7)
+        23 => 'Single-frame - Exposure Bracketing', # (seen for ILCE-7 series)
         26 => 'Continuous Low', #PH (A77)
         27 => 'Continuous - High Sensitivity',  # seen for DSC-WX60 and WX300
         28 => 'Smile Shutter', #PH (RX100)
@@ -5409,10 +5430,26 @@ my %releaseMode2010 = (
     PrintConv => {
         0 => 'Normal',
         1 => 'Continuous',
-        2 => 'Bracketing', # (also white balance bracketing - PH) (also Single-frame Exposure Bracketing - ref JR)
+        2 => 'Bracketing', # (all types: Continuous and Single-Frame Exposure, White Balance and DRO bracketing - PH/JR)
         # 3 => 'Remote Commander', (NC) (seen this when other ReleaseMode and ReleaseMode2 are 'Normal' - PH, A77)
         4 => 'Continuous - Burst', # seen for DSC-WX500 with burst of 10 shots
         5 => 'Continuous - Speed/Advance Priority',
+    },
+);
+my %selfTimer2010 = (
+    Name => 'SelfTimer',
+    PrintConv => {
+        0 => 'Off',
+        1 => 'Self-timer 10 s',
+        2 => 'Self-timer 2 s',
+    },
+);
+my %selfTimerB2010 = (  # also value 1 for new 5 s mode of DSC-HX90V/RX10M2/RX100M4/WX500, ILCE-7RM2/7SM2
+    Name => 'SelfTimer',
+    PrintConv => {
+        0 => 'Off',
+        1 => 'Self-timer 5 or 10 s',
+        2 => 'Self-timer 2 s',
     },
 );
 my %gain2010 = (
@@ -5460,7 +5497,7 @@ my %hdr2010 = (
         13 => 'HDR 6 EV',
     },
 );
-my %exposureComp2010 = (
+my %exposureComp2010 = ( # only as set manually, remains 0 in exposure-bracketing modes
     Name => 'ExposureCompensation',
     Format=>'int16s',
     ValueConv => '-$val/256',
@@ -5512,7 +5549,7 @@ my %flashMode2010 = (
         2 => 'Flash Off',
         3 => 'Slow Sync',
         4 => 'Rear Sync',
-        # 6 => 'Wireless',  #(NC)
+        6 => 'Wireless',
     },
 );
 my %exposureProgram2010 = (
@@ -5565,6 +5602,7 @@ my %pictureProfile2010 = (
     },
     0x1128 => { %releaseMode2010 },
     0x112c => { %releaseMode2 },
+    0x1134 => { %selfTimer2010 },
     0x1138 => { %flashMode2010 },
     0x113e => { %gain2010 },
     0x1140 => { %brightnessValue2010 },
@@ -5619,6 +5657,7 @@ my %pictureProfile2010 = (
     },
     0x1128 => { %releaseMode2010 },
     0x112c => { %releaseMode2 },
+    0x1134 => { %selfTimer2010 },
     0x1138 => { %flashMode2010 },
     0x113e => { %gain2010 },
     0x1140 => { %brightnessValue2010 },
@@ -5686,6 +5725,7 @@ my %pictureProfile2010 = (
     },
     0x1104 => { %releaseMode2010 },
     0x1108 => { %releaseMode2 },
+    0x1110 => { %selfTimer2010 },
     0x1114 => { %flashMode2010 },
     0x111a => { %gain2010 },
     0x111c => { %brightnessValue2010 },
@@ -5747,6 +5787,7 @@ my %pictureProfile2010 = (
     },
     0x1180 => { %releaseMode2010 },
     0x1184 => { %releaseMode2 },
+    0x118c => { %selfTimer2010 },
     0x1190 => { %flashMode2010 },
     0x1196 => { %gain2010 },
     0x1198 => { %brightnessValue2010 },
@@ -5809,6 +5850,7 @@ my %pictureProfile2010 = (
     },
     0x115c => { %releaseMode2010 },
     0x1160 => { %releaseMode2 },
+    0x1168 => { %selfTimer2010 },
     0x116c => { %flashMode2010 },
     0x1172 => { %gain2010 },
     0x1174 => { %brightnessValue2010 },
@@ -5942,6 +5984,7 @@ my %pictureProfile2010 = (
     },
     0x1014 => { %releaseMode2010 },
     0x1018 => { %releaseMode2 },
+    0x1020 => { %selfTimer2010 },
     0x1024 => { %flashMode2010 },
     0x102a => { %gain2010 },
     0x102c => { %brightnessValue2010 },
@@ -6010,6 +6053,7 @@ my %pictureProfile2010 = (
     0x0050 => { %dynamicRangeOptimizer2010 },
     0x020c => { %releaseMode2010 },
     0x0210 => { %releaseMode2 },
+    0x0218 => { %selfTimer2010 },
     0x021c => { %flashMode2010 },
     0x0222 => { %gain2010 },
     0x0224 => { %brightnessValue2010 },
@@ -6125,6 +6169,7 @@ my %pictureProfile2010 = (
     0x0050 => { %dynamicRangeOptimizer2010 },
     0x020c => { %releaseMode2010 },
     0x0210 => { %releaseMode2 },
+    0x0218 => { %selfTimerB2010 },
     0x021c => { %flashMode2010 },
     0x0222 => { %gain2010 },
     0x0224 => { %brightnessValue2010 },
@@ -6618,6 +6663,7 @@ my %pictureProfile2010 = (
 #    The offset for ImageCount3 changes with firmware version for the ILCE-7/7R/7S/7M2, so don't decode it for now:
 #                 ILCE-7M2/7S: 0x01a0 (firmware 1.0x, 1.1x), 0x01b6 (firmware 1.20, 1.21, 2.00)
 #                 ILCE-7/7R:   0x01aa (firmware 1.0x, 1.1x), 0x01c0 (firmware 1.20, 1.21, 2.00)
+#    Similarly for ILCE-6000 v2.00: 0x01aa --> 0x01c0: removed from 0x01aa
     0x01a0 => {
         Name => 'ImageCount3',
         Format => 'int32u',
@@ -6628,7 +6674,7 @@ my %pictureProfile2010 = (
         Name => 'ImageCount3',
         Format => 'int32u',
         RawConv => '$val == 0 ? undef : $val',
-        Condition => '$$self{Model} =~ /^(SLT-A(58|99V?)|HV|NEX-(3N|5R|5T|6|VG900|VG30E)|ILCE-([356]000|3500))\b/',
+        Condition => '$$self{Model} =~ /^(SLT-A(58|99V?)|HV|NEX-(3N|5R|5T|6|VG900|VG30E)|ILCE-([35]000|3500))\b/',
     },
     0x01bd => {
         Name => 'ImageCount3',
@@ -6842,7 +6888,7 @@ my %pictureProfile2010 = (
     WRITABLE => 1,
     NOTES => q{
         Valid for DSC-HX400V/HX60V/QX30/RX10/RX100M3/WX220/WX350,
-        ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-77M2.
+        ILCE-7/7R/7S/7M2/7RM2/7SM2/5000/5100/6000/QX1, ILCA-77M2.
     },
     FIRST_ENTRY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
@@ -6862,6 +6908,7 @@ my %pictureProfile2010 = (
             4 => '4 shots',
             5 => '5 shots',
             6 => '6 shots',
+            9 => '9 shots', # ILCE-7RM2 9-shot bracketing
             10 => '10 shots',
             100 => 'Continuous - iSweep Panorama',
             200 => 'Continuous - Sweep Panorama',
@@ -6876,6 +6923,7 @@ my %pictureProfile2010 = (
             2 => '2 files',
             3 => '3 files',
             5 => '5 files',
+            9 => '9 files', # ILCE-7RM2 9-shot bracketing
             10 => '10 files', # seen for DSC-WX500 with burst of 10 shots
         },
     },
@@ -6949,13 +6997,13 @@ my %pictureProfile2010 = (
     0x17 => {
         Name => 'AFAreaMode',
         PrintConv => {
-            0 => 'Multi',
+            0 => 'Multi', # newer DSC/ILC use name 'Wide'
             1 => 'Center',
             2 => 'Spot', # (NC) seen for DSC-WX300
             3 => 'Flexible Spot',
             10 => 'Selective (for Miniature effect)', # seen for DSC-HX30V,TX30,WX60,WX100
-            11 => 'Zone', #JR (NC) seen in ILCE-7R images
-            12 => 'Expanded Flexible Spot', #JR (NC) first seen for HX90V, which is first DSC to have this mode ...
+            11 => 'Zone', #JR (ILCE-7 series)
+            12 => 'Expanded Flexible Spot', #JR (HX90V, ILCE-7 series)
             14 => 'Tracking',
             15 => 'Face Tracking',
             255 => 'Manual',
@@ -7466,7 +7514,8 @@ my %pictureProfile2010 = (
         # 1.30: NEX-5T v1.00, NEX-6 v1.02/v1.03, NEX-7 v1.03
         # 1.31: ILCE-7/7R v0.95/v1.00/v1.01, ILCE-5000
         # 1.40: ILCE-7/7R v1.02/v1.10, ILCE-7S v1.00, ILCE-5100/6000/QX1
-        # 1.50: ILCE-7/7R/7S v1.20/v2.00, ILCE-7M2/7RM2/7SM2
+        # 1.50: ILCE-7/7R/7S v1.20/v2.00, ILCE-7M2/7RM2/7SM2, ILCE-6000 v1.20/v2.00
+        # 1.60: ILCE-7RM2 v3.05 (w. GM lenses)
     },
     0x000d => {
         Name => 'LensE-mountVersion',
@@ -7484,8 +7533,9 @@ my %pictureProfile2010 = (
         # 1.30: LA-EA4
         # 1.31: original FE-lenses (SEL2470Z, SEL2870, SEL35F28Z, SEL55F18Z), SEL1850
         # 1.35: SEL70200G, SEL55210 (Black?, seen with ILCE-3500)
-        # 1.40: SEL1635Z, SEL24240, SEL35F14Z, SELP28135G, Zeiss Loxia 35mm/50mm
-        # 1.50: SEL28F20, SEL90M28G, Zeiss Batis 25mm/85mm, Zeiss Loxia 21mm
+        # 1.40: SEL1635Z, SEL24240, SEL35F14Z, SELP28135G, Zeiss Loxia 35mm/50mm Ver.01
+        # 1.50: SEL28F20, SEL90M28G, Zeiss Batis 25mm/85mm, Zeiss Loxia 21mm, Zeiss Loxia 50mm Ver.02
+        # 1.60: SEL85F14GM, SEL2470GM, SEL70200GM(?)
     },
     0x0015 => {
         Name => 'LensFirmwareVersion',

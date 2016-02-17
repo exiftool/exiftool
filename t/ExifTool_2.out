@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.94
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.11
 [File, System, Image] FileName - File Name: ExifTool.jpg
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 25 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2014:09:23 09:15:01-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:30 07:42:37-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:04:25 10:57:00-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2016:02:08 13:37:38-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2016:01:22 10:45:55-05:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: JPEG
 [File, File, Image] FileTypeExtension - File Type Extension: jpg
@@ -333,6 +333,9 @@
 [Photoshop, Photoshop, Image] 1049 - Global Altitude: 30
 [Photoshop, Photoshop, Author] 1034 - Copyright Flag: False
 [Photoshop, Photoshop, Author] 1035 - URL: http://owl.phy.queensu.ca/~phil/exiftool/
+[Photoshop, Photoshop, Image] 4 - Has Real Merged Data: Yes
+[Photoshop, Photoshop, Image] 5 - Writer Name: Adobe Photoshop
+[Photoshop, Photoshop, Image] 9 - Reader Name: Adobe Photoshop 7.0
 [Photoshop, Photoshop, Image] 0 - Photoshop Quality: 7
 [Photoshop, Photoshop, Image] 1 - Photoshop Format: Standard
 [Photoshop, Photoshop, Image] 2 - Progressive Scans: 3 Scans

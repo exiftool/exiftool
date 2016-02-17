@@ -435,6 +435,7 @@ EXIF 2.3 specification.
   0x4747   XP_DIP_XML                -          N
   0x4748   StitchInfo                -          Microsoft Stitch
   0x4749   RatingPercent             IFD0       int16u/
+  0x7000   SonyRawFileType           -          N
   0x7035   ChromaticAberrationCorrParams -      N
   0x7037   DistortionCorrParams      -          N
   0x800d   ImageID                   -          N
@@ -1249,11 +1250,18 @@ hear.)
   Collections                                   string/
   DateTime                                      date/
   DPP                                           lang-alt
+  EditStatus                                    string/
+  FixtureIdentifier                             string/
   Keywords                                      string/+
   Notes                                         string/
+  ObjectCycle                                   string/
+  OriginatingProgram                            string/
   Rating                                        real/
   Rawrppused                                    boolean
+  ReleaseDate                                   string/
+  ReleaseTime                                   string/
   RPP                                           lang-alt
+  Snapshots                                     string/+
   Tagged                                        boolean/
 
 =head3 XMP Album Tags
@@ -1474,6 +1482,10 @@ metadata space with these incredibly bulky image editing parameters.
   CropUnit                                      integer
   CropUnits                                     integer
   CropWidth                                     real
+  DefaultAutoGray                               boolean
+  DefaultAutoTone                               boolean
+  DefaultsSpecificToISO                         boolean
+  DefaultsSpecificToSerial                      boolean
   Defringe                                      integer
   DefringeGreenAmount                           integer
   DefringeGreenHueHi                            integer
@@ -1481,6 +1493,7 @@ metadata space with these incredibly bulky image editing parameters.
   DefringePurpleAmount                          integer
   DefringePurpleHueHi                           integer
   DefringePurpleHueLo                           integer
+  DNGIgnoreSidecars                             boolean
   Exposure                                      real
   Exposure2012                                  real
   FillLight                                     integer
@@ -1561,6 +1574,7 @@ metadata space with these incredibly bulky image editing parameters.
   HueAdjustmentYellow                           integer
   IncrementalTemperature                        integer
   IncrementalTint                               integer
+  JPEGHandling                                  string
   LensManualDistortionAmount                    integer
   LensProfileChromaticAberrationScale           integer
   LensProfileDigest                             string
@@ -1590,6 +1604,9 @@ metadata space with these incredibly bulky image editing parameters.
   LuminanceNoiseReductionDetail                 integer
   LuminanceSmoothing                            integer
   MoireFilter                                   string
+  NegativeCacheLargePreviewSize                 integer
+  NegativeCacheMaximumSize                      real
+  NegativeCachePath                             string
   PaintBasedCorrections                         Correction Struct+
   PaintCorrectionActive                         boolean_
   PaintCorrectionAmount                         real_
@@ -1725,6 +1742,7 @@ metadata space with these incredibly bulky image editing parameters.
   SplitToningShadowHue                          integer
   SplitToningShadowSaturation                   integer
   ColorTemperature                              integer/
+  TIFFHandling                                  string
   Tint                                          integer
   ToneCurve                                     string+
   ToneCurveBlue                                 string+
@@ -4068,7 +4086,7 @@ access to this information.
   0x041c   JumpToXPEP?                          N
   0x041d   AlphaIdentifiers?                    N
   0x041e   URL_List?                            N
-  0x0421   VersionInfo?                         N
+  0x0421   VersionInfo                          Photoshop VersionInfo
   0x0422   EXIFInfo                             EXIF
   0x0423   ExifInfo2?                           N
   0x0424   XMP                                  XMP
@@ -4119,6 +4137,14 @@ access to this information.
       0    PhotoshopQuality                     int16s
       1    PhotoshopFormat                      N
       2    ProgressiveScans                     N
+
+=head3 Photoshop VersionInfo Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      4    HasRealMergedData                    N
+      5    WriterName                           N
+      9    ReaderName                           N
 
 =head3 Photoshop Header Tags
 
@@ -4841,6 +4867,7 @@ CameraInfo tags for the EOS 7D.  Indices shown are for firmware versions
      86    FocusDistanceLower                   int16uRev
     119    WhiteBalance                         int16u
     123    ColorTemperature                     int16u
+    175    CameraPictureStyle                   int8u
     201    HighISONoiseReduction                int8u
     274    LensType                             int16uRev
     276    MinFocalLength                       int16uRev
@@ -13213,8 +13240,9 @@ MakerNotes.
            AFZoneSelected                       int8u
   0x2020   AFPointsUsed                         N
   0x2022   FocalPlaneAFPointsUsed               N
-  0x2026   WBShiftAB_GM_Precise                 int32s[2]
+  0x2026   WBShiftAB_GM_Precise                 int32s[2]~
   0x2028   VariableLowPassFilter                N
+  0x2029   RAWFileType                          N
   0x3000   ShotInfo                             Sony ShotInfo
   0x900b   Tag900b                              Sony Tag900b
   0x9050   Tag9050                              Sony Tag9050
@@ -13807,6 +13835,7 @@ Valid for NEX-5N.
   0x04b0   MeterInfo?                           Sony MeterInfo
   0x1128   ReleaseMode3                         int8u
   0x112c   ReleaseMode2                         int8u
+  0x1134   SelfTimer                            int8u
   0x1138   FlashMode                            int8u
   0x113e   StopsAboveBaseISO                    int16u
   0x1140   BrightnessValue                      int16u
@@ -13859,6 +13888,7 @@ Valid for SLT-A65/A77, NEX-7/VG20E.
   0x04b4   MeterInfo?                           Sony MeterInfo
   0x1128   ReleaseMode3                         int8u
   0x112c   ReleaseMode2                         int8u
+  0x1134   SelfTimer                            int8u
   0x1138   FlashMode                            int8u
   0x113e   StopsAboveBaseISO                    int16u
   0x1140   BrightnessValue                      int16u
@@ -13890,6 +13920,7 @@ Valid for SLT-A37/A57 and NEX-F3.
   0x0490   MeterInfo?                           Sony MeterInfo
   0x1104   ReleaseMode3                         int8u
   0x1108   ReleaseMode2                         int8u
+  0x1110   SelfTimer                            int8u
   0x1114   FlashMode                            int8u
   0x111a   StopsAboveBaseISO                    int16u
   0x111c   BrightnessValue                      int16u
@@ -13920,6 +13951,7 @@ not valid for panorama images.
   0x050c   MeterInfo?                           Sony MeterInfo
   0x1180   ReleaseMode3                         int8u
   0x1184   ReleaseMode2                         int8u
+  0x118c   SelfTimer                            int8u
   0x1190   FlashMode                            int8u
   0x1196   StopsAboveBaseISO                    int16u
   0x1198   BrightnessValue                      int16u
@@ -13950,6 +13982,7 @@ for panorama images.
   0x04b8   MeterInfo?                           Sony MeterInfo
   0x115c   ReleaseMode3                         int8u
   0x1160   ReleaseMode2                         int8u
+  0x1168   SelfTimer                            int8u
   0x116c   FlashMode                            int8u
   0x1172   StopsAboveBaseISO                    int16u
   0x1174   BrightnessValue                      int16u
@@ -13986,6 +14019,7 @@ Valid for DSC-RX100M2, DSC-QX10/QX100.
   0x01e0   MeterInfo?                           Sony MeterInfo
   0x1014   ReleaseMode3                         int8u
   0x1018   ReleaseMode2                         int8u
+  0x1020   SelfTimer                            int8u
   0x1024   FlashMode                            int8u
   0x102a   StopsAboveBaseISO                    int16u
   0x102c   BrightnessValue                      int16u
@@ -14015,6 +14049,7 @@ ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-77M2.
   0x0050   DynamicRangeOptimizer                int8u
   0x020c   ReleaseMode3                         int8u
   0x0210   ReleaseMode2                         int8u
+  0x0218   SelfTimer                            int8u
   0x021c   FlashMode                            int8u
   0x0222   StopsAboveBaseISO                    int16u
   0x0224   BrightnessValue                      int16u
@@ -14049,6 +14084,7 @@ Valid for DSC-HX90V/RX1RM2/RX10M2/RX100M4/WX500, ILCE-7RM2/7SM2.
   0x0050   DynamicRangeOptimizer                int8u
   0x020c   ReleaseMode3                         int8u
   0x0210   ReleaseMode2                         int8u
+  0x0218   SelfTimer                            int8u
   0x021c   FlashMode                            int8u
   0x0222   StopsAboveBaseISO                    int16u
   0x0224   BrightnessValue                      int16u
@@ -14196,7 +14232,7 @@ DSC-HX50V, DSC-QX10/QX100.
 =head3 Sony Tag9400c Tags
 
 Valid for DSC-HX400V/HX60V/QX30/RX10/RX100M3/WX220/WX350,
-ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-77M2.
+ILCE-7/7R/7S/7M2/7RM2/7SM2/5000/5100/6000/QX1, ILCA-77M2.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
@@ -21296,6 +21332,7 @@ multi-language user data tags found, even if they don't exist in this table.
   "\xa9lyr"    Lyrics                           N
   "\xa9mak"    Make                             N
   "\xa9mal"    MakerURL                         N
+  "\xa9mdl"    Model                            N
   "\xa9mod"    Model                            N
   "\xa9nam"    Title                            N
   "\xa9pdk"    ProducerKeywords                 N
@@ -28690,25 +28727,25 @@ values, may created via the ExifTool configuration file.
                        FocalLength
   FocusDistance2       Sony:FocusPosition2      N
                        FocalLengthIn35mmFormat
-  GPSAltitude          QuickTime:GPSCoordinates N
-  GPSAltitude          QuickTime:LocationInformation N
   GPSAltitude          GPS:GPSAltitude          N
                        GPS:GPSAltitudeRef
                        XMP:GPSAltitude
                        XMP:GPSAltitudeRef
+  GPSAltitude          QuickTime:GPSCoordinates N
+  GPSAltitude          QuickTime:LocationInformation N
   GPSAltitudeRef       QuickTime:GPSCoordinates N
   GPSAltitudeRef       QuickTime:LocationInformation N
   GPSDateTime          GPS:GPSDateStamp         N
                        GPS:GPSTimeStamp
-  GPSLatitude          QuickTime:GPSCoordinates N
-  GPSLatitude          QuickTime:LocationInformation N
   GPSLatitude          GPS:GPSLatitude          N
                        GPS:GPSLatitudeRef
+  GPSLatitude          QuickTime:GPSCoordinates N
+  GPSLatitude          QuickTime:LocationInformation N
   GPSLatitudeRef       XMP:GPSLatitude          N
-  GPSLongitude         QuickTime:GPSCoordinates N
-  GPSLongitude         QuickTime:LocationInformation N
   GPSLongitude         GPS:GPSLongitude         N
                        GPS:GPSLongitudeRef
+  GPSLongitude         QuickTime:GPSCoordinates N
+  GPSLongitude         QuickTime:LocationInformation N
   GPSLongitudeRef      XMP:GPSLongitude         N
   GPSPosition          GPSLatitude              N
                        GPSLongitude

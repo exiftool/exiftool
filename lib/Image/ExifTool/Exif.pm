@@ -52,7 +52,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '3.77';
+$VERSION = '3.78';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -1154,6 +1154,16 @@ my %sampleFormat = (
         },
     },
     0x4749 => 'RatingPercent', #PH
+    0x7000 => { #JR
+        Name => 'SonyRawFileType',
+        # Writable => 'int16u', (don't allow writes for now)
+        PrintConv => {
+            0 => 'Sony Uncompressed RAW',
+            1 => 'Sony RAW 1', #? (DSLR-A850/A900)
+            2 => 'Sony Compressed RAW',
+            3 => 'Sony RAW 3', #? (DSLR-A200/A230/A290/A300/A330/A350/A380/A390)
+        },
+    },
     0x7035 => 'ChromaticAberrationCorrParams', #forum6509 (Sony A7 ARW)
     0x7037 => 'DistortionCorrParams', #forum6509 (Sony A7 ARW)
     0x800d => 'ImageID', #10

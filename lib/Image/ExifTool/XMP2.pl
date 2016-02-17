@@ -1153,6 +1153,14 @@ my %sSubVersion = (
         Notes => 'newer version of XML raw processing settings',
         Binary => 1,
     },
+    # more tags (ref forum6840)
+    FixtureIdentifier   => { Avoid => 1 },
+    EditStatus          => { Avoid => 1 },
+    ReleaseDate         => { Avoid => 1 },
+    ReleaseTime         => { Avoid => 1 },
+    OriginatingProgram  => { Avoid => 1 },
+    ObjectCycle         => { Avoid => 1 },
+    Snapshots           => { Avoid => 1, List => 'Bag' },
 );
 
 # Picture Licensing Universal System namespace properties (xmpPLUS)

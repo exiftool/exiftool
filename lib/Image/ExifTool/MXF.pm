@@ -36,8 +36,9 @@ package Image::ExifTool::MXF;
 use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
+use Image::ExifTool::GPS;
 
-$VERSION = '1.07';
+$VERSION = '1.08';
 
 sub ProcessPrimer($$$);
 sub ProcessLocalSet($$$);
@@ -77,16 +78,15 @@ my %timestamp = (
 );
 my %geoLat = (
     Groups => { 2 => 'Location' },
-    PrintConv => 'require Image::ExifTool::GPS; Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")',
+    PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")',
 );
 my %geoLon = (
     Groups => { 2 => 'Location' },
-    PrintConv => 'require Image::ExifTool::GPS; Image::ExifTool::GPS::ToDMS($self, $val, 1, "E")',
+    PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "E")',
 );
 my %geoLatLon = (
     Groups => { 2 => 'Location' },
     PrintConv => q{
-        require Image::ExifTool::GPS;
         my ($lat, $lon) = split ' ', $val;
         $lat = Image::ExifTool::GPS::ToDMS($self, $lat, 1, 'N');
         $lon = Image::ExifTool::GPS::ToDMS($self, $lon, 1, 'E');

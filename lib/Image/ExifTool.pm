@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '10.10';
+$VERSION = '10.11';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -2087,7 +2087,17 @@ sub ExtractInfo($;@)
                         # check for a date/time format
                         my %tagInfo = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/ ? (
                             Groups => { 1 => 'System', 2 => 'Time' },
-                            ValueConv => '$val=~tr/-/:/; $val=~s/ ([-+])/$1/; $val',
+                            ValueConv => sub {
+                                my $val = shift;
+                                $val =~ tr/-/:/;
+                                $val =~ s/ ?([-+]\d{2}):?(\d{2})/$1:$2/;
+                                # convert from UTC to local time
+                                if ($val =~ /\+00:00$/) {
+                                    my $time = GetUnixTime($val);
+                                    $val = ConvertUnixTime($time, 1) if $time;
+                                }
+                                return $val;
+                            },
                             PrintConv => '$self->ConvertDateTime($val)',
                         ) : ( Groups => { 1 => 'System', 2 => 'Other' } );
                         $tagInfo{Name} = $tag;
@@ -7446,9 +7456,10 @@ sub ProcessBinaryData($$$)
                 } elsif ($format eq 'pstring') {
                     $count = Get8u($dataPt, ($entry++)+$offset);
                     --$more;
-                } elsif ($format eq 'pstr32') {
+                } elsif ($format eq 'pstr32' or $format eq 'ustr32') {
                     last if $more < 4;
                     $count = Get32u($dataPt, $entry + $offset);
+                    $count *= 2 if $format eq 'ustr32';
                     $entry += 4;
                     $more -= 4;
                 } elsif ($format eq 'int16u') {
@@ -7464,7 +7475,7 @@ sub ProcessBinaryData($$$)
                 $count = $more if not defined $count or $count > $more;
                 $varSize += $count; # shift subsequent indices
                 $val = substr($$dataPt, $entry+$offset, $count);
-                $val = $self->Decode($val, 'UCS2') if $format eq 'ustring';
+                $val = $self->Decode($val, 'UCS2') if $format eq 'ustring' or $format eq 'ustr32';
                 $val =~ s/\0.*//s unless $format eq 'undef';  # truncate at null
                 $wasVar = 1;
                 # save variable size data if required for writing

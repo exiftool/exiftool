@@ -447,12 +447,28 @@ hear.)</p>
 <td class=c>lang-alt</td>
 <td><span class=s><span class=n>(newer version of XML raw processing settings)</span></span></td></tr>
 <tr>
+<td>EditStatus</td>
+<td class=c title=' / = Avoided'>string/</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>FixtureIdentifier</td>
+<td class=c title=' / = Avoided'>string/</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>Keywords</td>
 <td class=c title=' / = Avoided
  + = List'>string/+</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>Notes</td>
+<td class=c title=' / = Avoided'>string/</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ObjectCycle</td>
+<td class=c title=' / = Avoided'>string/</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>OriginatingProgram</td>
 <td class=c title=' / = Avoided'>string/</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -464,10 +480,23 @@ hear.)</p>
 <td class=c>boolean</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td>ReleaseDate</td>
+<td class=c title=' / = Avoided'>string/</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>ReleaseTime</td>
+<td class=c title=' / = Avoided'>string/</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>RPP</td>
 <td class=c>lang-alt</td>
 <td><span class=s><span class=n>(raw processing settings in XML format)</span></span></td></tr>
 <tr class=b>
+<td>Snapshots</td>
+<td class=c title=' / = Avoided
+ + = List'>string/+</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>Tagged</td>
 <td class=c title=' / = Avoided'>boolean/</td>
 <td>&nbsp;</td></tr>
@@ -1172,6 +1201,22 @@ metadata space with these incredibly bulky image editing parameters.</p>
 <td class=c>real</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td>DefaultAutoGray</td>
+<td class=c>boolean</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>DefaultAutoTone</td>
+<td class=c>boolean</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>DefaultsSpecificToISO</td>
+<td class=c>boolean</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>DefaultsSpecificToSerial</td>
+<td class=c>boolean</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>Defringe</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
@@ -1200,326 +1245,334 @@ metadata space with these incredibly bulky image editing parameters.</p>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>DNGIgnoreSidecars</td>
+<td class=c>boolean</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>Exposure</td>
 <td class=c>real</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>Exposure2012</td>
 <td class=c>real</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>FillLight</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>GradientBasedCorrections</td>
 <td class=c title=' + = List'>struct+</td>
 <td>--&gt; <a href='XMP.html#Correction'>Correction Struct</a></td></tr>
-<tr class=b>
+<tr>
 <td>GradientBasedCorrActive</td>
 <td class=c title=' _ = Flattened'>boolean_</td>
 <td><span class=s><span class=n>(GradientBasedCorrectionsCorrectionActive)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>GradientBasedCorrAmount</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(GradientBasedCorrectionsCorrectionAmount)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>GradientBasedCorrMasks</td>
 <td class=c title=' _ = Flattened
  + = List'>struct_+</td>
 <td>--&gt; <a href='XMP.html#CorrectionMask'>CorrectionMask Struct</a>
   <br><span class='n s'>(GradientBasedCorrectionsCorrectionMasks)</span></td></tr>
-<tr>
+<tr class=b>
 <td>GradientBasedCorrMaskAlpha</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(GradientBasedCorrectionsCorrectionMasksAlpha)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>GradientBasedCorrMaskAngle</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(GradientBasedCorrectionsCorrectionMasksAngle)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>GradientBasedCorrMaskBottom</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(GradientBasedCorrectionsCorrectionMasksBottom)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>GradientBasedCorrMaskCenterValue</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(GradientBasedCorrectionsCorrectionMasksCenterValue)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>GradientBasedCorrMaskCenterWeight</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(GradientBasedCorrectionsCorrectionMasksCenterWeight)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>GradientBasedCorrMaskDabs</td>
 <td class=c title=' _ = Flattened'>string_</td>
 <td><span class=s><span class=n>(GradientBasedCorrectionsCorrectionMasksDabs)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>GradientBasedCorrMaskFeather</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(GradientBasedCorrectionsCorrectionMasksFeather)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>GradientBasedCorrMaskFlipped</td>
 <td class=c title=' _ = Flattened'>boolean_</td>
 <td><span class=s><span class=n>(GradientBasedCorrectionsCorrectionMasksFlipped)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>GradientBasedCorrMaskFlow</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(GradientBasedCorrectionsCorrectionMasksFlow)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>GradientBasedCorrMaskFullX</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(GradientBasedCorrectionsCorrectionMasksFullX)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>GradientBasedCorrMaskFullY</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(GradientBasedCorrectionsCorrectionMasksFullY)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>GradientBasedCorrMaskLeft</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(GradientBasedCorrectionsCorrectionMasksLeft)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>GradientBasedCorrMaskValue</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(GradientBasedCorrectionsCorrectionMasksMaskValue)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>GradientBasedCorrMaskMidpoint</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(GradientBasedCorrectionsCorrectionMasksMidpoint)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>GradientBasedCorrMaskPerimeterValue</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(GradientBasedCorrectionsCorrectionMasksPerimeterValue)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>GradientBasedCorrMaskRadius</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(GradientBasedCorrectionsCorrectionMasksRadius)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>GradientBasedCorrMaskRight</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(GradientBasedCorrectionsCorrectionMasksRight)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>GradientBasedCorrMaskRoundness</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(GradientBasedCorrectionsCorrectionMasksRoundness)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>GradientBasedCorrMaskSizeX</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(GradientBasedCorrectionsCorrectionMasksSizeX)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>GradientBasedCorrMaskSizeY</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(GradientBasedCorrectionsCorrectionMasksSizeY)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>GradientBasedCorrMaskTop</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(GradientBasedCorrectionsCorrectionMasksTop)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>GradientBasedCorrMaskVersion</td>
 <td class=c title=' _ = Flattened'>integer_</td>
 <td><span class=s><span class=n>(GradientBasedCorrectionsCorrectionMasksVersion)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>GradientBasedCorrMaskWhat</td>
 <td class=c title=' _ = Flattened'>string_</td>
 <td><span class=s><span class=n>(GradientBasedCorrectionsCorrectionMasksWhat)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>GradientBasedCorrMaskX</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(GradientBasedCorrectionsCorrectionMasksX)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>GradientBasedCorrMaskY</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(GradientBasedCorrectionsCorrectionMasksY)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>GradientBasedCorrMaskZeroX</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(GradientBasedCorrectionsCorrectionMasksZeroX)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>GradientBasedCorrMaskZeroY</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(GradientBasedCorrectionsCorrectionMasksZeroY)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>GradientBasedCorrBrightness</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(GradientBasedCorrectionsLocalBrightness)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>GradientBasedCorrClarity</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(GradientBasedCorrectionsLocalClarity)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>GradientBasedCorrClarity2012</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(GradientBasedCorrectionsLocalClarity2012)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>GradientBasedCorrContrast</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(GradientBasedCorrectionsLocalContrast)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>GradientBasedCorrContrast2012</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(GradientBasedCorrectionsLocalContrast2012)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>GradientBasedCorrDefringe</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(GradientBasedCorrectionsLocalDefringe)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>GradientBasedCorrExposure</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(GradientBasedCorrectionsLocalExposure)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>GradientBasedCorrExposure2012</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(GradientBasedCorrectionsLocalExposure2012)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>GradientBasedCorrHighlights2012</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(GradientBasedCorrectionsLocalHighlights2012)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>GradientBasedCorrLuminanceNoise</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(GradientBasedCorrectionsLocalLuminanceNoise)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>GradientBasedCorrMoire</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(GradientBasedCorrectionsLocalMoire)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>GradientBasedCorrSaturation</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(GradientBasedCorrectionsLocalSaturation)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>GradientBasedCorrShadows2012</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(GradientBasedCorrectionsLocalShadows2012)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>GradientBasedCorrSharpness</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(GradientBasedCorrectionsLocalSharpness)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>GradientBasedCorrTemperature</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(GradientBasedCorrectionsLocalTemperature)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>GradientBasedCorrTint</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(GradientBasedCorrectionsLocalTint)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>GradientBasedCorrHue</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(GradientBasedCorrectionsLocalToningHue)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>GradientBasedCorrSaturation</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(GradientBasedCorrectionsLocalToningSaturation)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>GradientBasedCorrWhat</td>
 <td class=c title=' _ = Flattened'>string_</td>
 <td><span class=s><span class=n>(GradientBasedCorrectionsWhat)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>GrainAmount</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>GrainFrequency</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>GrainSize</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>GrayMixerAqua</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>GrayMixerBlue</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>GrayMixerGreen</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>GrayMixerMagenta</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>GrayMixerOrange</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>GrayMixerPurple</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>GrayMixerRed</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>GrayMixerYellow</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>GreenHue</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>GreenSaturation</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>HasCrop</td>
 <td class=c>boolean</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>HasSettings</td>
 <td class=c>boolean</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>HighlightRecovery</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>Highlights2012</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>HueAdjustmentAqua</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>HueAdjustmentBlue</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>HueAdjustmentGreen</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>HueAdjustmentMagenta</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>HueAdjustmentOrange</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>HueAdjustmentPurple</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>HueAdjustmentRed</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>HueAdjustmentYellow</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>IncrementalTemperature</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>IncrementalTint</td>
 <td class=c>integer</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>JPEGHandling</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>LensManualDistortionAmount</td>
@@ -1639,549 +1692,565 @@ metadata space with these incredibly bulky image editing parameters.</p>
 <td><span class=s>&#39;Off&#39; = Off
   <br>&#39;On&#39; = On</span></td></tr>
 <tr>
+<td>NegativeCacheLargePreviewSize</td>
+<td class=c>integer</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>NegativeCacheMaximumSize</td>
+<td class=c>real</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>NegativeCachePath</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>PaintBasedCorrections</td>
 <td class=c title=' + = List'>struct+</td>
 <td>--&gt; <a href='XMP.html#Correction'>Correction Struct</a></td></tr>
-<tr class=b>
+<tr>
 <td>PaintCorrectionActive</td>
 <td class=c title=' _ = Flattened'>boolean_</td>
 <td><span class=s><span class=n>(PaintBasedCorrectionsCorrectionActive)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>PaintCorrectionAmount</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(PaintBasedCorrectionsCorrectionAmount)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>PaintBasedCorrectionMasks</td>
 <td class=c title=' _ = Flattened
  + = List'>struct_+</td>
 <td>--&gt; <a href='XMP.html#CorrectionMask'>CorrectionMask Struct</a>
   <br><span class='n s'>(PaintBasedCorrectionsCorrectionMasks)</span></td></tr>
-<tr>
+<tr class=b>
 <td>PaintCorrectionMaskAlpha</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(PaintBasedCorrectionsCorrectionMasksAlpha)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>PaintCorrectionMaskAngle</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(PaintBasedCorrectionsCorrectionMasksAngle)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>PaintCorrectionMaskBottom</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(PaintBasedCorrectionsCorrectionMasksBottom)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>PaintCorrectionMaskCenterValue</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(PaintBasedCorrectionsCorrectionMasksCenterValue)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>PaintCorrectionMaskCenterWeight</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(PaintBasedCorrectionsCorrectionMasksCenterWeight)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>PaintCorrectionMaskDabs</td>
 <td class=c title=' _ = Flattened'>string_</td>
 <td><span class=s><span class=n>(PaintBasedCorrectionsCorrectionMasksDabs)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>PaintCorrectionMaskFeather</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(PaintBasedCorrectionsCorrectionMasksFeather)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>PaintCorrectionMaskFlipped</td>
 <td class=c title=' _ = Flattened'>boolean_</td>
 <td><span class=s><span class=n>(PaintBasedCorrectionsCorrectionMasksFlipped)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>PaintCorrectionMaskFlow</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(PaintBasedCorrectionsCorrectionMasksFlow)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>PaintCorrectionMaskFullX</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(PaintBasedCorrectionsCorrectionMasksFullX)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>PaintCorrectionMaskFullY</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(PaintBasedCorrectionsCorrectionMasksFullY)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>PaintCorrectionMaskLeft</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(PaintBasedCorrectionsCorrectionMasksLeft)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>PaintCorrectionMaskValue</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(PaintBasedCorrectionsCorrectionMasksMaskValue)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>PaintCorrectionMaskMidpoint</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(PaintBasedCorrectionsCorrectionMasksMidpoint)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>PaintCorrectionMaskPerimeterValue</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(PaintBasedCorrectionsCorrectionMasksPerimeterValue)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>PaintCorrectionMaskRadius</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(PaintBasedCorrectionsCorrectionMasksRadius)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>PaintCorrectionMaskRight</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(PaintBasedCorrectionsCorrectionMasksRight)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>PaintCorrectionMaskRoundness</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(PaintBasedCorrectionsCorrectionMasksRoundness)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>PaintCorrectionMaskSizeX</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(PaintBasedCorrectionsCorrectionMasksSizeX)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>PaintCorrectionMaskSizeY</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(PaintBasedCorrectionsCorrectionMasksSizeY)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>PaintCorrectionMaskTop</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(PaintBasedCorrectionsCorrectionMasksTop)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>PaintCorrectionMaskVersion</td>
 <td class=c title=' _ = Flattened'>integer_</td>
 <td><span class=s><span class=n>(PaintBasedCorrectionsCorrectionMasksVersion)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>PaintCorrectionMaskWhat</td>
 <td class=c title=' _ = Flattened'>string_</td>
 <td><span class=s><span class=n>(PaintBasedCorrectionsCorrectionMasksWhat)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>PaintCorrectionMaskX</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(PaintBasedCorrectionsCorrectionMasksX)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>PaintCorrectionMaskY</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(PaintBasedCorrectionsCorrectionMasksY)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>PaintCorrectionMaskZeroX</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(PaintBasedCorrectionsCorrectionMasksZeroX)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>PaintCorrectionMaskZeroY</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(PaintBasedCorrectionsCorrectionMasksZeroY)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>PaintCorrectionBrightness</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(PaintBasedCorrectionsLocalBrightness)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>PaintCorrectionClarity</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(PaintBasedCorrectionsLocalClarity)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>PaintCorrectionClarity2012</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(PaintBasedCorrectionsLocalClarity2012)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>PaintCorrectionContrast</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(PaintBasedCorrectionsLocalContrast)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>PaintCorrectionContrast2012</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(PaintBasedCorrectionsLocalContrast2012)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>PaintCorrectionDefringe</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(PaintBasedCorrectionsLocalDefringe)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>PaintCorrectionExposure</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(PaintBasedCorrectionsLocalExposure)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>PaintCorrectionExposure2012</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(PaintBasedCorrectionsLocalExposure2012)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>PaintCorrectionHighlights2012</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(PaintBasedCorrectionsLocalHighlights2012)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>PaintCorrectionLuminanceNoise</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(PaintBasedCorrectionsLocalLuminanceNoise)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>PaintCorrectionMoire</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(PaintBasedCorrectionsLocalMoire)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>PaintCorrectionSaturation</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(PaintBasedCorrectionsLocalSaturation)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>PaintCorrectionShadows2012</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(PaintBasedCorrectionsLocalShadows2012)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>PaintCorrectionSharpness</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(PaintBasedCorrectionsLocalSharpness)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>PaintCorrectionTemperature</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(PaintBasedCorrectionsLocalTemperature)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>PaintCorrectionTint</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(PaintBasedCorrectionsLocalTint)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>PaintCorrectionHue</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(PaintBasedCorrectionsLocalToningHue)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>PaintCorrectionSaturation</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(PaintBasedCorrectionsLocalToningSaturation)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>PaintCorrectionWhat</td>
 <td class=c title=' _ = Flattened'>string_</td>
 <td><span class=s><span class=n>(PaintBasedCorrectionsWhat)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>ParametricDarks</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>ParametricHighlights</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>ParametricHighlightSplit</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>ParametricLights</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>ParametricMidtoneSplit</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>ParametricShadows</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>ParametricShadowSplit</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>PerspectiveAspect</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>PerspectiveHorizontal</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>PerspectiveRotate</td>
 <td class=c>real</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>PerspectiveScale</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>PerspectiveUpright</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>PerspectiveVertical</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>PostCropVignetteAmount</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>PostCropVignetteFeather</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>PostCropVignetteHighlightContrast</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>PostCropVignetteMidpoint</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>PostCropVignetteRoundness</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>PostCropVignetteStyle</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>ProcessVersion</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>RawFileName</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>RedEyeInfo</td>
 <td class=c title=' + = List'>string+</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>RedHue</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>RedSaturation</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>RetouchAreas</td>
 <td class=c title=' + = List'>struct+</td>
 <td>--&gt; <a href='XMP.html#RetouchArea'>RetouchArea Struct</a></td></tr>
-<tr class=b>
+<tr>
 <td>RetouchAreaFeather</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(RetouchAreasFeather)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>RetouchAreaMasks</td>
 <td class=c title=' _ = Flattened
  + = List'>struct_+</td>
 <td>--&gt; <a href='XMP.html#CorrectionMask'>CorrectionMask Struct</a>
   <br><span class='n s'>(RetouchAreasMasks)</span></td></tr>
-<tr class=b>
+<tr>
 <td>RetouchAreaMaskAlpha</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(RetouchAreasMasksAlpha)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>RetouchAreaMaskAngle</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(RetouchAreasMasksAngle)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>RetouchAreaMaskBottom</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(RetouchAreasMasksBottom)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>RetouchAreaMaskCenterValue</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(RetouchAreasMasksCenterValue)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>RetouchAreaMaskCenterWeight</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(RetouchAreasMasksCenterWeight)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>RetouchAreaMaskDabs</td>
 <td class=c title=' _ = Flattened'>string_</td>
 <td><span class=s><span class=n>(RetouchAreasMasksDabs)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>RetouchAreaMaskFeather</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(RetouchAreasMasksFeather)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>RetouchAreaMaskFlipped</td>
 <td class=c title=' _ = Flattened'>boolean_</td>
 <td><span class=s><span class=n>(RetouchAreasMasksFlipped)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>RetouchAreaMaskFlow</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(RetouchAreasMasksFlow)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>RetouchAreaMaskFullX</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(RetouchAreasMasksFullX)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>RetouchAreaMaskFullY</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(RetouchAreasMasksFullY)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>RetouchAreaMaskLeft</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(RetouchAreasMasksLeft)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>RetouchAreaMaskValue</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(RetouchAreasMasksMaskValue)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>RetouchAreaMaskMidpoint</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(RetouchAreasMasksMidpoint)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>RetouchAreaMaskPerimeterValue</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(RetouchAreasMasksPerimeterValue)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>RetouchAreaMaskRadius</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(RetouchAreasMasksRadius)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>RetouchAreaMaskRight</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(RetouchAreasMasksRight)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>RetouchAreaMaskRoundness</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(RetouchAreasMasksRoundness)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>RetouchAreaMaskSizeX</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(RetouchAreasMasksSizeX)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>RetouchAreaMaskSizeY</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(RetouchAreasMasksSizeY)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>RetouchAreaMaskTop</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(RetouchAreasMasksTop)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>RetouchAreaMaskVersion</td>
 <td class=c title=' _ = Flattened'>integer_</td>
 <td><span class=s><span class=n>(RetouchAreasMasksVersion)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>RetouchAreaMaskWhat</td>
 <td class=c title=' _ = Flattened'>string_</td>
 <td><span class=s><span class=n>(RetouchAreasMasksWhat)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>RetouchAreaMaskX</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(RetouchAreasMasksX)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>RetouchAreaMaskY</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(RetouchAreasMasksY)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>RetouchAreaMaskZeroX</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(RetouchAreasMasksZeroX)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>RetouchAreaMaskZeroY</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(RetouchAreasMasksZeroY)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>RetouchAreaMethod</td>
 <td class=c title=' _ = Flattened'>string_</td>
 <td><span class=s><span class=n>(RetouchAreasMethod)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>RetouchAreaOffsetY</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(RetouchAreasOffsetY)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>RetouchAreaOpacity</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(RetouchAreasOpacity)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>RetouchAreaSeed</td>
 <td class=c title=' _ = Flattened'>integer_</td>
 <td><span class=s><span class=n>(RetouchAreasSeed)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>RetouchAreaSourceState</td>
 <td class=c title=' _ = Flattened'>string_</td>
 <td><span class=s><span class=n>(RetouchAreasSourceState)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>RetouchAreaSourceX</td>
 <td class=c title=' _ = Flattened'>real_</td>
 <td><span class=s><span class=n>(RetouchAreasSourceX)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>RetouchAreaSpotType</td>
 <td class=c title=' _ = Flattened'>string_</td>
 <td><span class=s><span class=n>(RetouchAreasSpotType)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>RetouchInfo</td>
 <td class=c title=' + = List'>string+</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>Saturation</td>
 <td class=c title=' / = Avoided'>integer/</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>SaturationAdjustmentAqua</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>SaturationAdjustmentBlue</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>SaturationAdjustmentGreen</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>SaturationAdjustmentMagenta</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>SaturationAdjustmentOrange</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>SaturationAdjustmentPurple</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>SaturationAdjustmentRed</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>SaturationAdjustmentYellow</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>Shadows</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>Shadows2012</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>ShadowTint</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>SharpenDetail</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>SharpenEdgeMasking</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>SharpenRadius</td>
 <td class=c>real</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>Sharpness</td>
 <td class=c title=' / = Avoided'>integer/</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>Smoothness</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>SplitToningBalance</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>SplitToningHighlightHue</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>SplitToningHighlightSaturation</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>SplitToningShadowHue</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>SplitToningShadowSaturation</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>ColorTemperature</td>
 <td class=c title=' / = Avoided'>integer/</td>
 <td><span class=s><span class=n>(called Temperature by the spec)</span></span></td></tr>
+<tr>
+<td>TIFFHandling</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
 <tr class=b>
 <td>Tint</td>
 <td class=c>integer</td>
@@ -9164,7 +9233,7 @@ XMP module for convenience.  (see <a href="http://www.w3.org/TR/SVG11/">http://w
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Nov 19, 2015</i>
+<br><i>Last revised Feb 5, 2016</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

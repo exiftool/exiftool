@@ -23,8 +23,9 @@ use strict;
 use vars qw($VERSION %convMake);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
+use Image::ExifTool::GPS;
 
-$VERSION = '1.13';
+$VERSION = '1.14';
 
 sub ProcessSEI($$);
 
@@ -928,10 +929,6 @@ sub ProcessSEI($$)
     # - plus "GA94" for closed-caption data (currently not decoded)
     return 0 unless $size > 20 and substr($$dataPt, $pos, 20) eq
         "\x17\xee\x8c\x60\xf8\x4d\x11\xd9\x8c\xd6\x08\0\x20\x0c\x9a\x66MDPM";
-
-    # load the GPS module because it contains conversion routines and
-    # Composite tags needed for a number of tags we may be extracting
-    require Image::ExifTool::GPS;
 #
 # parse the MDPM records in the UUID 17ee8c60f84d11d98cd60800200c9a66
 # unregistered user data payload (ref PH)

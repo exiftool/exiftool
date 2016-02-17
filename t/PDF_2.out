@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.93
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.11
 [File, System, Image] FileName - File Name: PDF.pdf
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 8.7 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2009:07:23 11:38:00-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:18 07:17:17-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:03:07 15:31:28-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2016:02:05 14:01:35-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2016:01:22 10:45:55-05:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: PDF
 [File, File, Image] FileTypeExtension - File Type Extension: pdf
@@ -45,6 +45,9 @@
 [Photoshop, Photoshop, Image] 1037 - Global Angle: 30
 [Photoshop, Photoshop, Image] 1049 - Global Altitude: 30
 [Photoshop, Photoshop, Author] 1035 - URL: http://owl.phy.queensu.ca/~phil/exiftool/
+[Photoshop, Photoshop, Image] 4 - Has Real Merged Data: Yes
+[Photoshop, Photoshop, Image] 5 - Writer Name: Adobe Photoshop
+[Photoshop, Photoshop, Image] 9 - Reader Name: Adobe Photoshop 7.0
 [EXIF, IFD0, Image] 270 - Image Description: A witty caption
 [EXIF, IFD0, Camera] 271 - Make: FUJIFILM
 [EXIF, IFD0, Camera] 272 - Camera Model Name: FinePix2400Zoom

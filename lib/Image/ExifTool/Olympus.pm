@@ -38,7 +38,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::APP12;
 
-$VERSION = '2.36';
+$VERSION = '2.37';
 
 sub PrintLensInfo($$$);
 
@@ -347,13 +347,13 @@ my %olympusCameraTypes = (
     D4580 => 'SH-60',
     D4581 => 'SH-1',
     D4582 => 'TG-835',
-    D4585 => 'SH-2',
+    D4585 => 'SH-2 / SH-3',
     D4586 => 'TG-4',
+    D4587 => 'TG-860',
     D4809 => 'C2500L',
     D4842 => 'E-10',
     D4856 => 'C-1',
     D4857 => 'C-1Z,D-150Z',
-    D4587 => 'TG-860',
     DCHC => 'D500L',
     DCHT => 'D600L / D620L',
     K0055 => 'AIR-A01',
@@ -388,6 +388,7 @@ my %olympusCameraTypes = (
     S0051 => 'E-M10',
     S0052 => 'E-M5MarkII', #21
     S0059 => 'E-M10MarkII',
+    S0061 => 'PEN-F', #forum7005
     SR45 => 'D220',
     SR55 => 'D320L',
     SR83 => 'D340L',

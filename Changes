@@ -7,6 +7,21 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.10. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Feb. 17, 2016 - Version 10.11
+
+  - Added a couple of new Olympus CameraType values (thanks LibRaw for one)
+  - Added some new ACDSee XMP tags (thanks Malus)
+  - Added a few more XMP-crs tags
+  - Added a new CanonModelID (thanks Norbert Wasser)
+  - Added a couple of new Sony LensType values (thanks Jos Roost and LibRaw)
+  - Added support for PDF ASCII85Decode filter
+  - Decode a number of new Sony tags (thanks Jos Roost)
+  - Decode a new Canon tag (thanks Juha Iso-Sipila)
+  - Decode a few more Photoshop tags
+  - Convert MDItem date/time values to local time
+  - Patched to read incorrectly written DJI GPSCoordinates in MOV videos
+  - Added a new Olympus LensType (thanks Niels Kristian Bech Jensen)
+
 Jan. 22, 2016 - Version 10.10 (production release)
 
   - Added a new Olympus LensType (thanks Niels Kristian Bech Jensen)

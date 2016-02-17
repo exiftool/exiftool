@@ -45,9 +45,10 @@ use vars qw($VERSION $AUTOLOAD @ISA @EXPORT_OK %stdXlatNS %nsURI %dateTimeInfo
             %xmpTableDefaults %specialStruct %sDimensions %sArea %sColorant);
 use Image::ExifTool qw(:Utils);
 use Image::ExifTool::Exif;
+use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '2.90';
+$VERSION = '2.91';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -182,30 +183,17 @@ my %uri2ns;
 }
 
 # conversions for GPS coordinates
-sub ToDegrees
-{
-    require Image::ExifTool::GPS;
-    Image::ExifTool::GPS::ToDegrees($_[0], 1);
-}
 my %latConv = (
-    ValueConv    => \&ToDegrees,
-    RawConv => 'require Image::ExifTool::GPS; $val', # to load Composite tags and routines
-    ValueConvInv => q{
-        require Image::ExifTool::GPS;
-        Image::ExifTool::GPS::ToDMS($self, $val, 2, "N");
-    },
+    ValueConv    => 'Image::ExifTool::GPS::ToDegrees($val, 1)',
+    ValueConvInv => 'Image::ExifTool::GPS::ToDMS($self, $val, 2, "N")',
     PrintConv    => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")',
-    PrintConvInv => \&ToDegrees,
+    PrintConvInv => 'Image::ExifTool::GPS::ToDegrees($val, 1)',
 );
 my %longConv = (
-    ValueConv    => \&ToDegrees,
-    RawConv => 'require Image::ExifTool::GPS; $val',
-    ValueConvInv => q{
-        require Image::ExifTool::GPS;
-        Image::ExifTool::GPS::ToDMS($self, $val, 2, "E");
-    },
+    ValueConv    => 'Image::ExifTool::GPS::ToDegrees($val, 1)',
+    ValueConvInv => 'Image::ExifTool::GPS::ToDMS($self, $val, 2, "E")',
     PrintConv    => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "E")',
-    PrintConvInv => \&ToDegrees,
+    PrintConvInv => 'Image::ExifTool::GPS::ToDegrees($val, 1)',
 );
 %dateTimeInfo = (
     # NOTE: Do NOT put "Groups" here because Groups hash must not be common!
@@ -1401,6 +1389,17 @@ my %sPantryItem = (
     LensProfileMatchKeyLensName         => { },
     LensProfileMatchKeyIsRaw            => { Writable => 'boolean' },
     LensProfileMatchKeySensorFormatFactor=>{ Writable => 'real' },
+    # more stuff (ref forum6993)
+    DefaultAutoTone                     => { Writable => 'boolean' },
+    DefaultAutoGray                     => { Writable => 'boolean' },
+    DefaultsSpecificToSerial            => { Writable => 'boolean' },
+    DefaultsSpecificToISO               => { Writable => 'boolean' },
+    DNGIgnoreSidecars                   => { Writable => 'boolean' },
+    NegativeCachePath                   => { },
+    NegativeCacheMaximumSize            => { Writable => 'real' },
+    NegativeCacheLargePreviewSize       => { Writable => 'integer' },
+    JPEGHandling                        => { },
+    TIFFHandling                        => { },
 );
 
 # Tiff namespace properties (tiff)
@@ -1847,7 +1846,6 @@ my %sPantryItem = (
     GPSAltitude => {
         Groups => { 2 => 'Location' },
         Writable => 'rational',
-        RawConv => 'require Image::ExifTool::GPS; $val', # to load Composite tags and routines
         # extricate unsigned decimal number from string
         ValueConvInv => '$val=~/((?=\d|\.\d)\d*(?:\.\d*)?)/ ? $1 : undef',
         PrintConv => '$val =~ /^(inf|undef)$/ ? $val : "$val m"',

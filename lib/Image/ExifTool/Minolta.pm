@@ -49,7 +49,7 @@ use vars qw($VERSION %minoltaLensTypes %minoltaTeleconverters %minoltaColorMode
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.29';
+$VERSION = '2.30';
 
 # Full list of product codes for Sony-compatible Minolta lenses
 # (ref http://www.kb.sony.com/selfservice/documentLink.do?externalId=C1000570)
@@ -199,7 +199,7 @@ $VERSION = '2.29';
         return $lens ? "$lens + $$mb" : undef;
     },
     0 => 'Minolta AF 28-85mm F3.5-4.5 New', # New added (ref 13/18)
-    1 => 'Minolta AF 80-200mm F2.8 HS-APO G',
+    1 => 'Minolta AF 80-200mm F2.8 HS-APO G', # white
     2 => 'Minolta AF 28-70mm F2.8 G',
     3 => 'Minolta AF 28-80mm F4-5.6',
     4 => 'Minolta AF 85mm F1.4G', #exiv2 0.23
@@ -256,11 +256,11 @@ $VERSION = '2.29';
     # 31 => 'Sony 50mm F2.8 Macro (SAL50M28)', (ref JR)
     31.1 => 'Minolta/Sony AF 50mm F3.5 Macro',
     32 => 'Minolta/Sony AF 300mm F2.8 G or 1.5x Teleconverter', #13/18
-    # 32 => 'Minolta AF 300mm F2.8 G (D) SSM', (ref 13)
+    # 32 => 'Minolta AF 300mm F2.8 APO G (D) SSM', (ref 13) ("APO" added - ref JR)
     # 32 => 'Sony 300mm F2.8 G (SAL300F28G)', (ref 18/JR)
     33 => 'Minolta/Sony AF 70-200mm F2.8 G',
     # 33 => 'Sony 70-200mm F2.8 G (SAL70200G)', (ref JR)
-    # 33 => 'Minolta AF 70-200mm F2.8 G (D) SSM' (ref 13)
+    # 33 => 'Minolta AF 70-200mm F2.8 APO G (D) SSM' (ref 13) ("APO" added - ref JR)
     35 => 'Minolta AF 85mm F1.4 G (D) Limited',
     36 => 'Minolta AF 28-100mm F3.5-5.6 (D)',
     38 => 'Minolta AF 17-35mm F2.8-4 (D)', # (Konica Minolta, ref 13)
@@ -413,7 +413,7 @@ $VERSION = '2.29';
     25631.4 => 'Sigma 400mm F5.6 APO', #22
     25641 => 'Minolta AF 50mm F2.8 Macro or Sigma Lens',
     25641.1 => 'Sigma 50mm F2.8 EX Macro', #11
-    25651 => 'Minolta AF 600mm F4',
+    25651 => 'Minolta AF 600mm F4 APO', # ("APO" added - ref JR)
     25661 => 'Minolta AF 24mm F2.8 or Sigma Lens',
     25661.1 => 'Sigma 17-35mm F2.8-4 EX Aspherical', #http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,3789.msg17679.html#msg17679
     25721 => 'Minolta/Sony AF 500mm F8 Reflex',
@@ -436,7 +436,7 @@ $VERSION = '2.29';
     25858 => 'Minolta AF 35-105mm F3.5-4.5 New or Tamron Lens',
     25858.1 => 'Tamron 24-135mm F3.5-5.6', # (Model 190D)
     25881 => 'Minolta AF 70-210mm F3.5-4.5',
-    25891 => 'Minolta AF 80-200mm F2.8 APO or Tokina Lens',
+    25891 => 'Minolta AF 80-200mm F2.8 APO or Tokina Lens', # black
     25891.1 => 'Tokina 80-200mm F2.8',
     # 25901 - Note: only get this with older 1.4x and lenses with 5-digit LensTypes (ref 27)
     # 25901 - also "Minolta AF 200mm F2.8 HS-APO G + Minolta AF 1.4x APO"
@@ -444,7 +444,7 @@ $VERSION = '2.29';
     25901.1 => 'Minolta AF 600mm F4 HS-APO G + Minolta AF 1.4x APO', #27
     25911 => 'Minolta AF 35mm F1.4', #(from Sony list) (not G as per ref 13)
     25921 => 'Minolta AF 85mm F1.4 G (D)',
-    25931 => 'Minolta AF 200mm F2.8 G APO',
+    25931 => 'Minolta AF 200mm F2.8 APO', # (not "G", see 26121 - ref JR)
     25941 => 'Minolta AF 3x-1x F1.7-2.8 Macro',
     25961 => 'Minolta AF 28mm F2',
     25971 => 'Minolta AF 35mm F2 [New]', #13
@@ -468,7 +468,7 @@ $VERSION = '2.29';
     26201 => 'Minolta AF 28-70mm F2.8 G', #11
     26211 => 'Minolta AF 100-300mm F4.5-5.6 xi', # xi, not Power Zoom (ref 13/18)
     26241 => 'Minolta AF 35-80mm F4-5.6 Power Zoom',
-    26281 => 'Minolta AF 80-200mm F2.8 G', #11
+    26281 => 'Minolta AF 80-200mm F2.8 HS-APO G', #11 ("HS-APO" added, white, probably same as 1, non-HS is 25891 - ref JR)
     26291 => 'Minolta AF 85mm F1.4 New',
     26311 => 'Minolta/Sony AF 100-300mm F4.5-5.6 APO', #11
     26321 => 'Minolta AF 24-50mm F4 New',
@@ -535,33 +535,36 @@ $VERSION = '2.29';
    '65535.25' => 'Sony FE 24-240mm F3.5-6.3 OSS',   #JR (32815 - SEL24240)
    '65535.26' => 'Sony FE 28mm F2',                 #JR (32816 - SEL28F20)
    '65535.27' => 'Sony FE PZ 28-135mm F4 G OSS',    #JR (32817 - SELP28135G)
-   '65535.28' => 'Sony FE 21mm F2.8 (SEL28F20 + SEL075UWC)', #JR         # (32826 - SEL28F20 + SEL075UWC Ultra-wide converter)
-   '65535.29' => 'Sony FE 16mm F3.5 Fisheye (SEL28F20 + SEL057FEC)', #JR # (32827 - SEL28F20 + SEL057FEC Fisheye converter)
+   '65535.28' => 'Sony FE 24-70mm F2.8 GM',         #JR (32821 - SEL2470GM)
+   '65535.29' => 'Sony FE 85mm F1.4 GM',            #JR (32823 - SEL85F14GM)
+   '65535.30' => 'Sony FE 21mm F2.8 (SEL28F20 + SEL075UWC)', #JR         # (32826 - SEL28F20 + SEL075UWC Ultra-wide converter)
+   '65535.31' => 'Sony FE 16mm F3.5 Fisheye (SEL28F20 + SEL057FEC)', #JR # (32827 - SEL28F20 + SEL057FEC Fisheye converter)
+   '65535.32' => 'Sony FE 70-200mm F2.8 GM OSS',    #JR (32830 - SEL70200GM)
 #
 # 3rd party E lenses
 #
-    '65535.30' => 'Sigma 19mm F2.8 [EX] DN', #JR
-    '65535.31' => 'Sigma 30mm F2.8 [EX] DN', #JR
-    '65535.32' => 'Sigma 60mm F2.8 DN', #JR
-    '65535.33' => 'Tamron 18-200mm F3.5-6.3 Di III VC', #JR (Model B011)
-    '65535.34' => 'Zeiss Batis 25mm F2', #JR
-    '65535.35' => 'Zeiss Batis 85mm F1.8', #JR
-    '65535.36' => 'Zeiss Loxia 21mm F2.8', #JR
-    '65535.37' => 'Zeiss Loxia 35mm F2', #JR
-    '65535.38' => 'Zeiss Loxia 50mm F2', #JR
-    '65535.39' => 'Zeiss Touit 12mm F2.8', #JR
-    '65535.40' => 'Zeiss Touit 32mm F1.8', #JR
-    '65535.41' => 'Zeiss Touit 50mm F2.8 Macro', #JR
+    '65535.33' => 'Sigma 19mm F2.8 [EX] DN', #JR
+    '65535.34' => 'Sigma 30mm F2.8 [EX] DN', #JR
+    '65535.35' => 'Sigma 60mm F2.8 DN', #JR
+    '65535.36' => 'Tamron 18-200mm F3.5-6.3 Di III VC', #JR (Model B011)
+    '65535.37' => 'Zeiss Batis 25mm F2', #JR
+    '65535.38' => 'Zeiss Batis 85mm F1.8', #JR
+    '65535.39' => 'Zeiss Loxia 21mm F2.8', #JR
+    '65535.40' => 'Zeiss Loxia 35mm F2', #JR
+    '65535.41' => 'Zeiss Loxia 50mm F2', #JR
+    '65535.42' => 'Zeiss Touit 12mm F2.8', #JR
+    '65535.43' => 'Zeiss Touit 32mm F1.8', #JR
+    '65535.44' => 'Zeiss Touit 50mm F2.8 Macro', #JR
 #
 # other lenses
 #
-    '65535.42' => 'Arax MC 35mm F2.8 Tilt+Shift', #JD
-    '65535.43' => 'Arax MC 80mm F2.8 Tilt+Shift', #JD
-    '65535.44' => 'Zenitar MF 16mm F2.8 Fisheye M42', #JD
-    '65535.45' => 'Samyang 500mm Mirror F8.0', #19
-    '65535.46' => 'Pentacon Auto 135mm F2.8', #19
-    '65535.47' => 'Pentacon Auto 29mm F2.8', #19
-    '65535.48' => 'Helios 44-2 58mm F2.0', #19
+    '65535.45' => 'Arax MC 35mm F2.8 Tilt+Shift', #JD
+    '65535.46' => 'Arax MC 80mm F2.8 Tilt+Shift', #JD
+    '65535.47' => 'Zenitar MF 16mm F2.8 Fisheye M42', #JD
+    '65535.48' => 'Samyang 500mm Mirror F8.0', #19
+    '65535.49' => 'Pentacon Auto 135mm F2.8', #19
+    '65535.50' => 'Pentacon Auto 29mm F2.8', #19
+    '65535.51' => 'Helios 44-2 58mm F2.0', #19
 );
 
 %minoltaTeleconverters = (

@@ -54,9 +54,10 @@ package Image::ExifTool::Pentax;
 use strict;
 use vars qw($VERSION %pentaxLensTypes);
 use Image::ExifTool::Exif;
+use Image::ExifTool::GPS;
 use Image::ExifTool::HP;
 
-$VERSION = '2.99';
+$VERSION = '3.00';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -5614,7 +5615,7 @@ my %binaryDataAttrs = (
     },
     0xcf => {
         Name => 'GPSLatitudeRef',
-        Condition => '$$self{GPSVersionID} and require Image::ExifTool::GPS',
+        Condition => '$$self{GPSVersionID}',
         Format => 'string[2]',
         Groups => { 1 => 'GPS', 2 => 'Location' },
         PrintConv => {

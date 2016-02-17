@@ -28,7 +28,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD $iptcDigestInfo);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.47';
+$VERSION = '1.48';
 
 sub ProcessPhotoshop($$$);
 sub WritePhotoshop($$$);
@@ -181,7 +181,12 @@ my %thumbnailInfo = (
     0x041c => { Unknown => 1, Name => 'JumpToXPEP' },
     0x041d => { Unknown => 1, Name => 'AlphaIdentifiers' },
     0x041e => { Unknown => 1, Name => 'URL_List' },
-    0x0421 => { Unknown => 1, Name => 'VersionInfo' },
+    0x0421 => {
+        Name => 'VersionInfo',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Photoshop::VersionInfo',
+        },
+    },
     0x0422 => {
         Name => 'EXIFInfo', #PH (Found in EPS and PSD files)
         SubDirectory => {
@@ -347,6 +352,20 @@ my %thumbnailInfo = (
             2 => 'cm',
         },
     },
+);
+
+# Photoshop version information
+%Image::ExifTool::Photoshop::VersionInfo = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    WRITE_PROC => \&Image::ExifTool::WriteBinaryData,
+    CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
+    FIRST_ENTRY => 0,
+    GROUPS => { 2 => 'Image' },
+    # (always 1) 0 => { Name => 'PhotoshopVersion', Format => 'int32u' },
+    4 => { Name => 'HasRealMergedData', Format => 'int8u', PrintConv => { 0 => 'No', 1 => 'Yes' } },
+    5 => { Name => 'WriterName', Format => 'var_ustr32' },
+    9 => { Name => 'ReaderName', Format => 'var_ustr32' },
+    # (always 1) 13 => { Name => 'FileVersion', Format => 'int32u' },
 );
 
 # Photoshop PSD file header

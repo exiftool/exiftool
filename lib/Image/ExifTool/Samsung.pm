@@ -9,9 +9,9 @@
 #               2) http://www.cybercom.net/~dcoffin/dcraw/
 #               3) Pascal de Bruijn private communication (NX100)
 #               4) Jaroslav Stepanek via rt.cpan.org
-#               5) Niels Kristian Bech Jensen private communication
-#               6) Nick Livchits private communication
-#               7) Iliah Borg private communcation (LibRaw)
+#               5) Nick Livchits private communication
+#               IB) Iliah Borg private communcation (LibRaw)
+#               NJ) Niels Kristian Bech Jensen private communication
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::Samsung;
@@ -46,10 +46,10 @@ sub ProcessSamsungIFD($$$);
     11 => 'Samsung NX 45mm F1.8 2D/3D', #3
     12 => 'Samsung NX 12-24mm F4-5.6 ED', #4
     13 => 'Saumsun NX 16-50mm F2-2.8 S ED OIS', #forum3833
-    14 => 'Samsung NX 10mm F3.5 Fisheye', #5
-    15 => 'Samsung NX 16-50mm F3.5-5.6 Power Zoom ED OIS', #6
+    14 => 'Samsung NX 10mm F3.5 Fisheye', #NJ
+    15 => 'Samsung NX 16-50mm F3.5-5.6 Power Zoom ED OIS', #5
     20 => 'Samsung NX 50-150mm F2.8 S ED OIS', #PH
-    21 => 'Samsung NX 300mm F2.8 ED OIS', #7
+    21 => 'Samsung NX 300mm F2.8 ED OIS', #IB
 );
 
 # range of values for Formats used in encrypted information

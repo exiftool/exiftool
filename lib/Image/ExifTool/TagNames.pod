@@ -4331,7 +4331,7 @@ boot, not including standby time.
      18    FocusRange                           int16s
      19    AFPoint                              int16s
      20    CanonExposureMode                    int16s
-     22    LensType                             int16s
+     22    LensType                             int16u
      23    MaxFocalLength                       int16u
      24    MinFocalLength                       int16u
      25    FocalUnits                           int16s
@@ -6430,6 +6430,7 @@ well as newer tags and values added by later models.
   0x051b   AFAreaSelectMethod                   int32s
   0x051c   AutoAFPointColorTracking             int32s
   0x051d   VFDisplayIllumination                int32s
+  0x051e   InitialAFPointAIServoAF              int32s
   0x060f   MirrorLockup                         int32s
   0x0610   ContinuousShootingSpeed              int32s[3]
   0x0611   ContinuousShotLimit                  int32s[2]
@@ -9691,6 +9692,7 @@ These tags are written by Nikon DSLR's which have the live view feature.
   Index2   Tag Name                             Writable
   ------   --------                             --------
       0    FileInfoVersion                      N
+      2    MemoryCardNumber                     int16u
       3    DirectoryNumber                      int16u
       4    FileNumber                           int16u
 
@@ -15356,7 +15358,8 @@ even if they don't appear in the table below.
 =head2 JFIF Tags
 
 The following information is extracted from the JPEG JFIF header.  See
-L<http://www.jpeg.org/public/jfif.pdf> for the JFIF 1.02 specification.
+L<https://www.w3.org/Graphics/JPEG/jfif3.pdf> for the JFIF 1.02
+specification.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------

@@ -40,6 +40,7 @@
 #              27) Gregg Lee private communication
 #              28) http://wwwimages.adobe.com/www.adobe.com/content/dam/Adobe/en/devnet/cinemadng/pdfs/CinemaDNG_Format_Specification_v1_1.pdf
 #              29) http://www.libtiff.org
+#              IB) Iliah Borg private communication (LibRaw)
 #              JD) Jens Duttke private communication
 #------------------------------------------------------------------------------
 
@@ -52,7 +53,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '3.78';
+$VERSION = '3.79';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -1156,12 +1157,13 @@ my %sampleFormat = (
     0x4749 => 'RatingPercent', #PH
     0x7000 => { #JR
         Name => 'SonyRawFileType',
+        # (only valid if Sony:FileFormat >= ARW 2.0, ref IB)
         # Writable => 'int16u', (don't allow writes for now)
         PrintConv => {
-            0 => 'Sony Uncompressed RAW',
-            1 => 'Sony RAW 1', #? (DSLR-A850/A900)
-            2 => 'Sony Compressed RAW',
-            3 => 'Sony RAW 3', #? (DSLR-A200/A230/A290/A300/A330/A350/A380/A390)
+            0 => 'Sony Uncompressed 14-bit RAW',
+            1 => 'Sony Uncompressed 12-bit RAW', #IB
+            2 => 'Sony Compressed RAW', # (lossy, ref IB)
+            3 => 'Sony Lossless Compressed RAW', #IB
         },
     },
     0x7035 => 'ChromaticAberrationCorrParams', #forum6509 (Sony A7 ARW)

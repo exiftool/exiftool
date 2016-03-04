@@ -119,7 +119,7 @@ sub WhiteBalanceConv($;$$);
     '51 2' => 'Super-Elmar-M 14mm f/3.8 Asph', # ? (ref 16)
     52 => 'Super-Elmar-M 18mm f/3.8 ASPH.', # ? (ref PH/11)
     '53 2' => 'Apo-Telyt-M 135mm f/3.4', #16
-    '53 3' => 'Apo-Summicron-M 50mm f/2 (VI)', #LibRaw
+    '53 3' => 'Apo-Summicron-M 50mm f/2 (VI)', #LR
 );
 
 # M9 frame selector bits for each lens

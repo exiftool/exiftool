@@ -11,7 +11,7 @@ package Image::ExifTool::Lang::en_gb;
 use strict;
 use vars qw($VERSION);
 
-$VERSION = '1.10';
+$VERSION = '1.11';
 
 %Image::ExifTool::Lang::en_gb::Translate = (
    'AboveColor' => 'Above Colour',
@@ -687,6 +687,11 @@ $VERSION = '1.10';
       },
     },
    'Photoshop2ColorTable' => 'Photoshop 2 Colour Table',
+   'PhotoshopFormat' => {
+      PrintConv => {
+        'Optimized' => 'Optimised',
+      },
+    },
    'PictureEffect' => {
       PrintConv => {
         'Partial Color (blue)' => 'Partial Colour (blue)',

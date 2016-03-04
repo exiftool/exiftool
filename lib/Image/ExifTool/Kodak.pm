@@ -8,7 +8,7 @@
 # References:   1) http://search.cpan.org/dist/Image-MetaData-JPEG/
 #               2) http://www.ozhiker.com/electronics/pjmt/jpeg_info/meta.html
 #               3) http://www.cybercom.net/~dcoffin/dcraw/
-#               4) Iliah Borg private communication (LibRaw)
+#               IB) Iliah Borg private communication (LibRaw)
 #
 # Notes:        There really isn't much public information about Kodak formats.
 #               The only source I could find was Image::MetaData::JPEG, which
@@ -1360,10 +1360,10 @@ my %sceneModeUsed = (
             TagTable => 'Image::ExifTool::Kodak::TextualInfo',
         },
     },
-    # 0x03f2 - FlashMode (ref 4)
-    # 0x03f3 - FlashCompensation (ref 4)
-    # 0x03f8 - MinAperture (ref 4)
-    # 0x03f9 - MaxAperture (ref 4)
+    # 0x03f2 - FlashMode (ref IB)
+    # 0x03f3 - FlashCompensation (ref IB)
+    # 0x03f8 - MinAperture (ref IB)
+    # 0x03f9 - MaxAperture (ref IB)
     0x03fc => { #3
         Name => 'WhiteBalance',
         Writable => 'int16u',
@@ -1382,7 +1382,7 @@ my %sceneModeUsed = (
         Groups => { 2 => 'Time' },
         Writable => 'string',
     },
-    0x0406 => { #4
+    0x0406 => { #IB
         Name => 'CameraTemperature',
         # (when count is 2, values seem related to temperature, but are not Celius)
         Condition => '$count == 1',
@@ -1391,12 +1391,12 @@ my %sceneModeUsed = (
         PrintConv => '"$val C"',
         PrintConvInv => '$val=~s/ ?C//; $val',
     },
-    0x0407 => { #4
+    0x0407 => { #IB
         Name => 'AdapterVoltage',
         Groups => { 2 => 'Camera' },
         Writable => 'rational64u',
     },
-    0x0408 => { #4
+    0x0408 => { #IB
         Name => 'BatteryVoltage',
         Groups => { 2 => 'Camera' },
         Writable => 'rational64u',
@@ -1406,12 +1406,12 @@ my %sceneModeUsed = (
         Name => 'ColorTemperature',
         Writable => 'int16u',
     },
-    0x0848 => 'WB_RGBLevelsDaylight', #4
-    0x0849 => 'WB_RGBLevelsTungsten', #4
-    0x084a => 'WB_RGBLevelsFluorescent', #4
-    0x084b => 'WB_RGBLevelsFlash', #4
-    0x084c => 'WB_RGBLevelsCustom', #4
-    0x084d => 'WB_RGBLevelsAuto', #4
+    0x0848 => 'WB_RGBLevelsDaylight', #IB
+    0x0849 => 'WB_RGBLevelsTungsten', #IB
+    0x084a => 'WB_RGBLevelsFluorescent', #IB
+    0x084b => 'WB_RGBLevelsFlash', #IB
+    0x084c => 'WB_RGBLevelsCustom', #IB
+    0x084d => 'WB_RGBLevelsAuto', #IB
     0x0852 => 'WB_RGBMul0', #3
     0x0853 => 'WB_RGBMul1', #3
     0x0854 => 'WB_RGBMul2', #3
@@ -1420,26 +1420,26 @@ my %sceneModeUsed = (
     0x085d => { Name => 'WB_RGBCoeffs1', Binary => 1 }, #3
     0x085e => { Name => 'WB_RGBCoeffs2', Binary => 1 }, #3
     0x085f => { Name => 'WB_RGBCoeffs3', Binary => 1 }, #3
-    # 0x089d => true analogue ISO values possible (ref 4)
-    # 0x089e => true analogue ISO used at capture (ref 4)
-    # 0x089f => ISO calibration gain (ref 4)
-    # 0x08a0 => ISO calibration gain table (ref 4)
-    # 0x08a1 => exposure headroom coefficient (ref 4)
-    0x0903 => { Name => 'BaseISO', Writable => 'rational64u' }, #4 (ISO before digital gain)
+    # 0x089d => true analogue ISO values possible (ref IB)
+    # 0x089e => true analogue ISO used at capture (ref IB)
+    # 0x089f => ISO calibration gain (ref IB)
+    # 0x08a0 => ISO calibration gain table (ref IB)
+    # 0x08a1 => exposure headroom coefficient (ref IB)
+    0x0903 => { Name => 'BaseISO', Writable => 'rational64u' }, #IB (ISO before digital gain)
     # 0x090d: linear table (ref 3)
-    0x09ce => { Name => 'SensorSerialNumber', Writable => 'string', Groups => { 2 => 'Camera' } }, #4
+    0x09ce => { Name => 'SensorSerialNumber', Writable => 'string', Groups => { 2 => 'Camera' } }, #IB
     # 0x0c81: some sort of date (manufacture date?) - PH
     0x0ce5 => { Name => 'FirmwareVersion',  Writable => 'string', Groups => { 2 => 'Camera' } },
-    0x0e4c => { #4
+    0x0e4c => { #IB
         Name => 'KodakLook',
         Format => 'undef',
         Writable => 'string',
         ValueConv => '$val=~tr/\0/\n/; $val',
         ValueConvInv => '$val=~tr/\n/\0/; $val',
     },
-    0x1389 => { Name => 'InputProfile',     Writable => 'undef', Binary => 1 }, #4
-    0x138a => { Name => 'KodakLookProfile', Writable => 'undef', Binary => 1 }, #4
-    0x138b => { Name => 'OutputProfile',    Writable => 'undef', Binary => 1 }, #4
+    0x1389 => { Name => 'InputProfile',     Writable => 'undef', Binary => 1 }, #IB
+    0x138a => { Name => 'KodakLookProfile', Writable => 'undef', Binary => 1 }, #IB
+    0x138b => { Name => 'OutputProfile',    Writable => 'undef', Binary => 1 }, #IB
     # 0x1390: value: "DCSProSLRn" (tone curve name?) - PH
     0x1391 => { Name => 'ToneCurveFileName',Writable => 'string' },
     0x1784 => { Name => 'ISO',              Writable => 'int32u' }, #3

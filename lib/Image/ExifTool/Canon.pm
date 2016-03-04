@@ -65,10 +65,10 @@
 #              49) http://www.listware.net/201101/digikam-users/49795-digikam-users-re-lens-recognition.html
 #              50) http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,3833.0.html
 #              51) http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,4110.0.html
-#              52) Iliah Borg private communication (LibRaw)
-#              53) Niels Kristian Bech Jensen private communication
+#              IB) Iliah Borg private communication (LibRaw)
 #              JD) Jens Duttke private communication
 #              JR) Jos Roost private communication
+#              NJ) Niels Kristian Bech Jensen private communication
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::Canon;
@@ -83,7 +83,7 @@ sub ProcessSerialData($$$);
 sub ProcessFilters($$$);
 sub SwapWords($);
 
-$VERSION = '3.57';
+$VERSION = '3.58';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -95,7 +95,7 @@ $VERSION = '3.57';
         have the same LensType, and are used by the Composite LensID tag when
         attempting to identify the specific lens model.
      },
-     -1 => 'n/a',
+    -1 => 'n/a',
      1 => 'Canon EF 50mm f/1.8',
      2 => 'Canon EF 28mm f/2.8',
      # (3 removed in current Kamisaka list)
@@ -161,13 +161,13 @@ $VERSION = '3.57';
     33.4 => 'Carl Zeiss Distagon T* 15mm f/2.8 ZE', #PH
     33.5 => 'Carl Zeiss Distagon T* 18mm f/3.5 ZE', #PH
     33.6 => 'Carl Zeiss Distagon T* 21mm f/2.8 ZE', #PH
-    33.7 => 'Carl Zeiss Distagon T* 25mm f/2 ZE', #52
+    33.7 => 'Carl Zeiss Distagon T* 25mm f/2 ZE', #IB
     33.8 => 'Carl Zeiss Distagon T* 28mm f/2 ZE', #PH
     33.9 => 'Carl Zeiss Distagon T* 35mm f/2 ZE', #PH
-   '33.10' => 'Carl Zeiss Distagon T* 35mm f/1.4 ZE', #52
-   '33.11' => 'Carl Zeiss Planar T* 50mm f/1.4 ZE', #52
-   '33.12' => 'Carl Zeiss Makro-Planar T* 50mm f/2 ZE', #52
-   '33.13' => 'Carl Zeiss Makro-Planar T* 100mm f/2 ZE', #52
+   '33.10' => 'Carl Zeiss Distagon T* 35mm f/1.4 ZE', #IB
+   '33.11' => 'Carl Zeiss Planar T* 50mm f/1.4 ZE', #IB
+   '33.12' => 'Carl Zeiss Makro-Planar T* 50mm f/2 ZE', #IB
+   '33.13' => 'Carl Zeiss Makro-Planar T* 100mm f/2 ZE', #IB
    '33.14' => 'Carl Zeiss Apo-Sonnar T* 135mm f/2 ZE', #JR
     35 => 'Canon EF 35-80mm f/4-5.6', #32
     36 => 'Canon EF 38-76mm f/4.5-5.6', #32
@@ -186,8 +186,8 @@ $VERSION = '3.57';
     44 => 'Canon EF 90-300mm f/4.5-5.6', #32
     45 => 'Canon EF-S 18-55mm f/3.5-5.6 [II]', #PH (same ID for version II, ref 20)
     46 => 'Canon EF 28-90mm f/4-5.6', #32
-    47 => 'Zeiss Milvus 35mm f/2 or 50mm f/2', #52
-    47.1 => 'Zeiss Milvus 50mm f/2 Makro', #52
+    47 => 'Zeiss Milvus 35mm f/2 or 50mm f/2', #IB
+    47.1 => 'Zeiss Milvus 50mm f/2 Makro', #IB
     48 => 'Canon EF-S 18-55mm f/3.5-5.6 IS', #20
     49 => 'Canon EF-S 55-250mm f/4-5.6 IS', #23
     50 => 'Canon EF-S 18-200mm f/3.5-5.6 IS',
@@ -233,7 +233,7 @@ $VERSION = '3.57';
    '137.13' => 'Sigma 10-20mm f/3.5 EX DC HSM', #Gerald Erdmann
    '137.14' => 'Tamron SP 24-70mm f/2.8 Di VC USD', #PH
    '137.15' => 'Sigma 18-35mm f/1.8 DC HSM', #David Monro
-   '137.16' => 'Sigma 12-24mm f/4.5-5.6 DG HSM II', #52
+   '137.16' => 'Sigma 12-24mm f/4.5-5.6 DG HSM II', #IB
     138 => 'Canon EF 28-80mm f/2.8-4L', #32
     139 => 'Canon EF 400mm f/2.8L',
     140 => 'Canon EF 500mm f/4.5L', #32
@@ -250,7 +250,7 @@ $VERSION = '3.57';
     150.1 => 'Sigma 20mm EX f/1.8', #4
     150.2 => 'Sigma 30mm f/1.4 DC HSM', #15
     150.3 => 'Sigma 24mm f/1.8 DG Macro EX', #15
-    150.4 => 'Sigma 28mm f/1.8 DG Macro EX', #52
+    150.4 => 'Sigma 28mm f/1.8 DG Macro EX', #IB
     151 => 'Canon EF 200mm f/2.8L',
     152 => 'Canon EF 300mm f/4L IS or Sigma Lens', #15
     152.1 => 'Sigma 12-24mm f/4.5-5.6 EX DG ASPHERICAL HSM', #15
@@ -263,7 +263,7 @@ $VERSION = '3.57';
     153.3 => 'Tamron AF 18-200mm f/3.5-6.3 XR Di II LD Aspherical [IF] Macro Model A14', #15
     153.4 => 'Tamron 18-250mm f/3.5-6.3 Di II LD Aspherical [IF] Macro', #PH
     154 => 'Canon EF 20mm f/2.8 USM or Zeiss Lens', #15
-    154.1 => 'Zeiss Milvus 21mm f/2.8', #52
+    154.1 => 'Zeiss Milvus 21mm f/2.8', #IB
     155 => 'Canon EF 85mm f/1.8 USM',
     156 => 'Canon EF 28-105mm f/3.5-4.5 USM or Tamron Lens',
     156.1 => 'Tamron SP 70-300mm f/4.0-5.6 Di VC USD', #PH (model A005)
@@ -278,8 +278,8 @@ $VERSION = '3.57';
     161.3 => 'Sigma 24-60mm f/2.8 EX DG', #PH (http://www.lensrentals.com/blog/2012/08/canon-illumination-correction-and-third-party-lenses)
     161.4 => 'Tamron AF 17-50mm f/2.8 Di-II LD Aspherical', #40
     161.5 => 'Tamron 90mm f/2.8',
-    161.6 => 'Tamron SP AF 17-35mm f/2.8-4 Di LD Aspherical IF', #52 (A05)
-    161.7 => 'Tamron SP AF 28-75mm f/2.8 XR Di LD Aspherical [IF] Macro', #52/53
+    161.6 => 'Tamron SP AF 17-35mm f/2.8-4 Di LD Aspherical IF', #IB (A05)
+    161.7 => 'Tamron SP AF 28-75mm f/2.8 XR Di LD Aspherical [IF] Macro', #IB/NJ
     162 => 'Canon EF 200mm f/2.8L', #32
     163 => 'Canon EF 300mm f/4L', #32
     164 => 'Canon EF 400mm f/5.6L', #32
@@ -306,7 +306,7 @@ $VERSION = '3.57';
     174.1 => 'Sigma 70-200mm f/2.8 EX DG APO OS HSM', #PH (probably version II of this lens)
     174.2 => 'Sigma 50-500mm f/4.5-6.3 APO DG OS HSM', #forum4031
     174.3 => 'Sigma 150-500mm f/5-6.3 APO DG OS HSM', #47
-    174.4 => 'Zeiss Milvus 100mm f/2 Makro', #52
+    174.4 => 'Zeiss Milvus 100mm f/2 Makro', #IB
     175 => 'Canon EF 400mm f/2.8L', #32
     176 => 'Canon EF 24-85mm f/3.5-4.5 USM',
     177 => 'Canon EF 300mm f/4L IS', #9
@@ -314,9 +314,9 @@ $VERSION = '3.57';
     179 => 'Canon EF 24mm f/1.4L', #20
     180 => 'Canon EF 35mm f/1.4L or Other Lens', #9
     180.1 => 'Sigma 50mm f/1.4 DG HSM | A', #50
-    180.2 => 'Sigma 24mm f/1.4 DG HSM | A', #53
-    180.3 => 'Zeiss Milvus 50mm f/1.4', #52
-    180.4 => 'Zeiss Milvus 85mm f/1.4', #52
+    180.2 => 'Sigma 24mm f/1.4 DG HSM | A', #NJ
+    180.3 => 'Zeiss Milvus 50mm f/1.4', #IB
+    180.4 => 'Zeiss Milvus 85mm f/1.4', #IB
     180.5 => 'Zeiss Otus 28mm f/1.4 ZE', #PH
     181 => 'Canon EF 100-400mm f/4.5-5.6L IS + 1.4x or Sigma Lens', #15
     181.1 => 'Sigma 150-600mm f/5-6.3 DG OS HSM | S + 1.4x', #50
@@ -325,7 +325,7 @@ $VERSION = '3.57';
     183 => 'Canon EF 100-400mm f/4.5-5.6L IS or Sigma Lens',
     183.1 => 'Sigma 150mm f/2.8 EX DG OS HSM APO Macro', #50
     183.2 => 'Sigma 105mm f/2.8 EX DG OS HSM Macro', #50
-    183.3 => 'Sigma 180mm f/2.8 EX DG OS HSM APO Macro', #52
+    183.3 => 'Sigma 180mm f/2.8 EX DG OS HSM APO Macro', #IB
     183.4 => 'Sigma 150-600mm f/5-6.3 DG OS HSM | C', #47
     184 => 'Canon EF 400mm f/2.8L + 2x', #15
     185 => 'Canon EF 600mm f/4L IS', #32
@@ -389,7 +389,7 @@ $VERSION = '3.57';
     248.1 => 'Sigma 24-35mm f/2 DG HSM | A', #JR
     249 => 'Canon EF 800mm f/5.6L IS', #35
     250 => 'Canon EF 24mm f/1.4L II or Sigma Lens', #41
-    250.1 => 'Sigma 20mm f/1.4 DG HSM | A', #52
+    250.1 => 'Sigma 20mm f/1.4 DG HSM | A', #IB
     251 => 'Canon EF 70-200mm f/2.8L IS II USM',
     252 => 'Canon EF 70-200mm f/2.8L IS II USM + 1.4x', #50 (1.4x Mk II)
     253 => 'Canon EF 70-200mm f/2.8L IS II USM + 2x', #PH (NC)
@@ -430,8 +430,10 @@ $VERSION = '3.57';
     4150 => 'Canon EF-S 10-18mm f/4.5-5.6 IS STM', #42
     4152 => 'Canon EF 24-105mm f/3.5-5.6 IS STM', #42
     4153 => 'Canon EF-M 15-45mm f/3.5-6.3 IS STM', #PH
-    4154 => 'Canon EF-S 24mm f/2.8 STM', #52
+    4154 => 'Canon EF-S 24mm f/2.8 STM', #IB
     4156 => 'Canon EF 50mm f/1.8 STM', #42
+    36912 => 'Canon EF-S 18-135mm f/3.5-5.6 IS USM', #42
+    65535 => 'n/a',
 );
 
 # Canon model ID numbers (PH)
@@ -635,11 +637,11 @@ $VERSION = '3.57';
     0x3690000 => 'PowerShot ELPH 135 / IXUS 145 / IXY 120',
     0x3700000 => 'PowerShot ELPH 340 HS / IXUS 265 HS / IXY 630',
     0x3710000 => 'PowerShot ELPH 150 IS / IXUS 155 / IXY 140',
-    0x3740000 => 'EOS M3', #52
-    0x3750000 => 'PowerShot SX60 HS', #52/53
-    0x3760000 => 'PowerShot SX520 HS', #52
+    0x3740000 => 'EOS M3', #IB
+    0x3750000 => 'PowerShot SX60 HS', #IB/NJ
+    0x3760000 => 'PowerShot SX520 HS', #IB
     0x3770000 => 'PowerShot SX400 IS',
-    0x3780000 => 'PowerShot G7 X', #52
+    0x3780000 => 'PowerShot G7 X', #IB
     0x3790000 => 'PowerShot N2',
     0x3800000 => 'PowerShot SX530 HS',
     0x3820000 => 'PowerShot SX710 HS',
@@ -653,7 +655,14 @@ $VERSION = '3.57';
     0x3910000 => 'PowerShot SX410 IS',
     0x3930000 => 'PowerShot G9 X',
     0x3950000 => 'PowerShot G5 X',
+    0x3970000 => 'PowerShot G7 X Mark II',
+    0x3990000 => 'PowerShot ELPH 360 HS / IXUS 285 HS / IXY 650',
+    0x4010000 => 'PowerShot SX540 HS',
+    0x4020000 => 'PowerShot SX420 IS',
+    0x4030000 => 'PowerShot ELPH 190 IS / IXUS 180 / IXY 190',
     0x4040000 => 'PowerShot G1',
+    0x4040001 => 'IXY 180', # ?? (from Canon sample)
+    0x4050000 => 'PowerShot SX720 HS',
     0x6040000 => 'PowerShot S100 / Digital IXUS / IXY Digital',
 
 # (see http://cweb.canon.jp/e-support/faq/answer/digitalcamera/10447-1.html for PowerShot/IXUS/IXY names)
@@ -725,7 +734,7 @@ $VERSION = '3.57';
     0x80000286 => 'EOS Rebel T3i / 600D / Kiss X5',
     0x80000287 => 'EOS 60D',
     0x80000288 => 'EOS Rebel T3 / 1100D / Kiss X50',
-    0x80000289 => 'EOS 7D Mark II', #52
+    0x80000289 => 'EOS 7D Mark II', #IB
     0x80000297 => 'WFT-E2 II',
     0x80000298 => 'WFT-E4 II',
     0x80000301 => 'EOS Rebel T4i / 650D / Kiss X6i',
@@ -736,6 +745,7 @@ $VERSION = '3.57';
     0x80000327 => 'EOS Rebel T5 / 1200D / Kiss X70',
     0x80000328 => 'EOS-1D X MARK II', #42
     0x80000331 => 'EOS M',
+    0x80000350 => 'EOS 80D', #42
     0x80000355 => 'EOS M2',
     0x80000346 => 'EOS Rebel SL1 / 100D / Kiss X7',
     0x80000347 => 'EOS Rebel T6s / 760D / 8000D',
@@ -1380,7 +1390,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
         ValueConv => 'unpack("H*", $val)',
         ValueConvInv => 'pack("H*", $val)',
     },
-    # 0x29 - WBInfo (ref 52, offset 0x6 is int32u[4] WB_GRBGLevels as shot for PowerShot G9)
+    # 0x29 - WBInfo (ref IB, offset 0x6 is int32u[4] WB_GRBGLevels as shot for PowerShot G9)
     # 0x2d - changes with categories (ref 31)
     0x2f => { #PH (G12)
         Name => 'FaceDetect3',
@@ -1644,7 +1654,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
             Name => 'ColorData7',
             SubDirectory => { TagTable => 'Image::ExifTool::Canon::ColorData7' },
         },
-        {   # (int16u[1560] - 5DS/5DSR, ref 52)
+        {   # (int16u[1560] - 5DS/5DSR, ref IB)
             Condition => '$count == 1560',
             Name => 'ColorData8',
             SubDirectory => { TagTable => 'Image::ExifTool::Canon::ColorData8' },
@@ -2052,6 +2062,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
     },
     22 => { #4
         Name => 'LensType',
+        Format => 'int16u',
         RawConv => '$val ? $$self{LensType}=$val : undef', # don't use if value is zero
         Notes => 'this value is incorrect for EOS 7D images with lenses of type 256 or greater',
         SeparateTable => 1,
@@ -6372,9 +6383,9 @@ my %ciMaxFocal = (
     17 => { Name => 'WB_RGGBLevelsTungsten',   Format => 'int16s[4]' },
     21 => { Name => 'WB_RGGBLevelsFluorescent',Format => 'int16s[4]' },
     25 => { Name => 'WB_RGGBLevelsFlash',      Format => 'int16s[4]' },
-    29 => { Name => 'WB_RGGBLevelsCustom',     Format => 'int16s[4]' }, # (actually black levels for D60, ref 52)
+    29 => { Name => 'WB_RGGBLevelsCustom',     Format => 'int16s[4]' }, # (actually black levels for D60, ref IB)
     33 => { Name => 'WB_RGGBLevelsKelvin',     Format => 'int16s[4]' },
-    37 => { Name => 'WB_RGGBBlackLevels',      Format => 'int16s[4]' }, #52
+    37 => { Name => 'WB_RGGBBlackLevels',      Format => 'int16s[4]' }, #IB
 );
 
 # Measured color levels (MakerNotes tag 0xaa) (ref 37)
@@ -6690,7 +6701,7 @@ my %ciMaxFocal = (
         Notes => 'B, C, A, Temperature',
         SubDirectory => { TagTable => 'Image::ExifTool::Canon::ColorCalib' }
     },
-    0xc4 => { #52
+    0xc4 => { #IB
         Name => 'PerChannelBlackLevel',
         Format => 'int16u[4]',
     },
@@ -6768,7 +6779,7 @@ my %ciMaxFocal = (
         Notes => 'B, C, A, Temperature',
         SubDirectory => { TagTable => 'Image::ExifTool::Canon::ColorCalib' }
     },
-    0x0e7 => { Name => 'AverageBlackLevel',     Format => 'int16u[4]' }, #52
+    0x0e7 => { Name => 'AverageBlackLevel',     Format => 'int16u[4]' }, #IB
     0x280 => { #PH
         Name => 'RawMeasuredRGGB',
         Format => 'int32u[4]',
@@ -6777,33 +6788,33 @@ my %ciMaxFocal = (
         ValueConv => \&SwapWords,
         ValueConvInv => \&SwapWords,
     },
-    0x2b4 => { #52
+    0x2b4 => { #IB
         Name => 'PerChannelBlackLevel',
         Condition => '$$self{ColorDataVersion} == 4 or $$self{ColorDataVersion} == 5',
         Format => 'int16u[4]',
     },
-    0x2b8 => { #52
+    0x2b8 => { #IB
         Name => 'NormalWhiteLevel',
         Condition => '$$self{ColorDataVersion} == 4 or $$self{ColorDataVersion} == 5',
         Format => 'int16u',
         RawConv => '$val || undef',
     },
-    0x2b9 => { #52
+    0x2b9 => { #IB
         Name => 'SpecularWhiteLevel',
         Condition => '$$self{ColorDataVersion} == 4 or $$self{ColorDataVersion} == 5',
         Format => 'int16u',
     },
-    0x2ba => { #52
+    0x2ba => { #IB
         Name => 'LinearityUpperMargin',
         Condition => '$$self{ColorDataVersion} == 4 or $$self{ColorDataVersion} == 5',
         Format => 'int16u',
     },
-    0x2cb => { #52
+    0x2cb => { #IB
         Name => 'PerChannelBlackLevel',
         Condition => '$$self{ColorDataVersion} == 6 or $$self{ColorDataVersion} == 7',
         Format => 'int16u[4]',
     },
-    0x2cf => [{ #52
+    0x2cf => [{ #IB
         Name => 'NormalWhiteLevel',
         Condition => '$$self{ColorDataVersion} == 6 or $$self{ColorDataVersion} == 7',
         Format => 'int16u',
@@ -6813,28 +6824,28 @@ my %ciMaxFocal = (
         Condition => '$$self{ColorDataVersion} == 9',
         Format => 'int16u[4]',
     }],
-    0x2d0 => { #52
+    0x2d0 => { #IB
         Name => 'SpecularWhiteLevel',
         Condition => '$$self{ColorDataVersion} == 6 or $$self{ColorDataVersion} == 7',
         Format => 'int16u',
     },
-    0x2d1 => { #52
+    0x2d1 => { #IB
         Name => 'LinearityUpperMargin',
         Condition => '$$self{ColorDataVersion} == 6 or $$self{ColorDataVersion} == 7',
         Format => 'int16u',
     },
-    0x2d3 => { #52
+    0x2d3 => { #IB
         Name => 'NormalWhiteLevel',
         Condition => '$$self{ColorDataVersion} == 9',
         Format => 'int16u',
         RawConv => '$val || undef',
     },
-    0x2d4 => { #52
+    0x2d4 => { #IB
         Name => 'SpecularWhiteLevel',
         Condition => '$$self{ColorDataVersion} == 9',
         Format => 'int16u',
     },
-    0x2d5 => { #52
+    0x2d5 => { #IB
         Name => 'LinearityUpperMargin',
         Condition => '$$self{ColorDataVersion} == 9',
         Format => 'int16u',
@@ -6964,7 +6975,7 @@ my %ciMaxFocal = (
     0xf6 => { Name => 'CameraColorCalibration13', %cameraColorCalibration2 },
     0xfb => { Name => 'CameraColorCalibration14', %cameraColorCalibration2 },
     0x100=> { Name => 'CameraColorCalibration15', %cameraColorCalibration2 },
-    0x108=> { Name => 'PerChannelBlackLevel', Format => 'int16s[4]' }, #52
+    0x108=> { Name => 'PerChannelBlackLevel', Format => 'int16s[4]' }, #IB
 );
 
 # Color data (MakerNotes tag 0x4001, count=1273|1275) (ref PH)
@@ -7038,7 +7049,7 @@ my %ciMaxFocal = (
         Notes => 'B, C, A, Temperature',
         SubDirectory => { TagTable => 'Image::ExifTool::Canon::ColorCalib' }
     },
-    0x0fb => { Name => 'AverageBlackLevel',     Format => 'int16u[4]' }, #52
+    0x0fb => { Name => 'AverageBlackLevel',     Format => 'int16u[4]' }, #IB
     0x194 => { #PH
         Name => 'RawMeasuredRGGB',
         Format => 'int32u[4]',
@@ -7047,10 +7058,10 @@ my %ciMaxFocal = (
         ValueConv => \&SwapWords,
         ValueConvInv => \&SwapWords,
     },
-    0x1df => { Name => 'PerChannelBlackLevel',  Format => 'int16u[4]' }, #52
-    0x1e3 => { Name => 'NormalWhiteLevel',      Format => 'int16u',  RawConv => '$val || undef' }, #52
-    0x1e4 => { Name => 'SpecularWhiteLevel',    Format => 'int16u' }, #52
-    0x1e5 => { Name => 'LinearityUpperMargin',  Format => 'int16u' }, #52
+    0x1df => { Name => 'PerChannelBlackLevel',  Format => 'int16u[4]' }, #IB
+    0x1e3 => { Name => 'NormalWhiteLevel',      Format => 'int16u',  RawConv => '$val || undef' }, #IB
+    0x1e4 => { Name => 'SpecularWhiteLevel',    Format => 'int16u' }, #IB
+    0x1e5 => { Name => 'LinearityUpperMargin',  Format => 'int16u' }, #IB
 );
 
 # Color data (MakerNotes tag 0x4001, count=1312,1313,1316) (ref PH)
@@ -7139,7 +7150,7 @@ my %ciMaxFocal = (
         Notes => 'B, C, A, Temperature',
         SubDirectory => { TagTable => 'Image::ExifTool::Canon::ColorCalib' }
     },
-    0x114 => { Name => 'AverageBlackLevel',     Format => 'int16u[4]' }, #52
+    0x114 => { Name => 'AverageBlackLevel',     Format => 'int16u[4]' }, #IB
     0x1ad => {
         Name => 'RawMeasuredRGGB',
         Condition => '$$self{ColorDataVersion} == 10',
@@ -7149,23 +7160,23 @@ my %ciMaxFocal = (
         ValueConv => \&SwapWords,
         ValueConvInv => \&SwapWords,
     },
-    0x1f8 => { #52
+    0x1f8 => { #IB
         Name => 'PerChannelBlackLevel',
         Condition => '$$self{ColorDataVersion} == 10',
         Format => 'int16u[4]',
     },
-    0x1fc => { #52
+    0x1fc => { #IB
         Name => 'NormalWhiteLevel',
         Condition => '$$self{ColorDataVersion} == 10',
         Format => 'int16u',
         RawConv => '$val || undef',
     },
-    0x1fd => { #52
+    0x1fd => { #IB
         Name => 'SpecularWhiteLevel',
         Condition => '$$self{ColorDataVersion} == 10',
         Format => 'int16u',
     },
-    0x1fe => { #52
+    0x1fe => { #IB
         Name => 'LinearityUpperMargin',
         Condition => '$$self{ColorDataVersion} == 10',
         Format => 'int16u',
@@ -7200,7 +7211,7 @@ my %ciMaxFocal = (
     },
 );
 
-# Color data (MakerNotes tag 0x4001, count=1560) (ref 52)
+# Color data (MakerNotes tag 0x4001, count=1560) (ref IB)
 %Image::ExifTool::Canon::ColorData8 = (
     %binaryDataAttrs,
     NOTES => 'These tags are used by the EOS 5DS and EOS 5DS R.',
@@ -7524,7 +7535,7 @@ my %ciMaxFocal = (
         PrintConv => {
             0 => 'Off',
             1 => 'On',
-            2 => 'On (RAW)', #52
+            2 => 'On (RAW)', #IB
         },
     },
     2 => {
@@ -7845,7 +7856,7 @@ my %filterConv = (
             # (it seems that FileIndex and DirectoryIndex actually store the
             #  numbers from the previous image, so we need special logic
             #  to handle the FileIndex wrap properly)
-            $val[1] = 1 and ++$val[0] if $val[1] == 10000;
+            $val[1] == 10000 and $val[1] = 1, ++$val[0];
             return sprintf("%.3d-%.4d",@val);
         },
     },
@@ -7919,7 +7930,7 @@ sub PrintLensID(@)
 {
     my ($printConv, $lensType, $shortFocal, $longFocal, $maxAperture, $lensModel) = @_;
     my $lens;
-    $lens = $$printConv{$lensType} unless $lensType eq '-1';
+    $lens = $$printConv{$lensType} unless $lensType eq '-1' or $lensType eq '65535';
     if ($lens) {
         # return this lens unless other lenses have the same LensType
         return LensWithTC($lens, $shortFocal) unless $$printConv{"$lensType.1"};
@@ -7999,7 +8010,8 @@ sub PrintLensID(@)
         $str .= sprintf('-%d', $longFocal) if $longFocal and $longFocal != $shortFocal;
         $str .= 'mm';
     }
-    return "Unknown$str" if $lensType eq '-1'; # (careful because Sigma LensType's may not be integer)
+    # (careful because Sigma LensType's may not be integer, so use string comparison)
+    return "Unknown$str" if $lensType eq '-1' or $lensType eq '65535';
     return "Unknown ($lensType)$str";
 }
 

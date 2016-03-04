@@ -9,7 +9,7 @@
 # References:   1) CPAN forum post by 'hardloaf' (http://www.cpanforum.com/threads/2183)
 #               2) http://www.cybercom.net/~dcoffin/dcraw/
 #               3) http://syscall.eu/#pana
-#               4) Iliah Borg private communication (LibRaw)
+#              IB) Iliah Borg private communication (LibRaw)
 #              JD) Jens Duttke private communication (TZ3,FZ30,FZ50)
 #------------------------------------------------------------------------------
 
@@ -68,7 +68,7 @@ my %wbTypeInfo = (
     # 0x08: 1
     # 0x09: 1,3,4
     # 0x0a: 12
-    0x08 => { #4
+    0x08 => { #IB
         Name => 'BlackLevel1',
         Writable => 'int16u',
         Notes => q{
@@ -76,15 +76,15 @@ my %wbTypeInfo = (
             the BlackLevelRed/Green/Blue tags below
         },
     },
-    0x09 => { Name => 'BlackLevel2', Writable => 'int16u' }, #4
-    0x0a => { Name => 'BlackLevel3', Writable => 'int16u' }, #4
+    0x09 => { Name => 'BlackLevel2', Writable => 'int16u' }, #IB
+    0x0a => { Name => 'BlackLevel3', Writable => 'int16u' }, #IB
     # 0x0b: 0x860c,0x880a,0x880c
     # 0x0c: 2 (only Leica Digilux 2)
     # 0x0d: 0,1
     # 0x0e,0x0f,0x10: 4095
-    0x0e => { Name => 'LinearityLimitRed',   Writable => 'int16u' }, #4
-    0x0f => { Name => 'LinearityLimitGreen', Writable => 'int16u' }, #4
-    0x10 => { Name => 'LinearityLimitBlue',  Writable => 'int16u' }, #4
+    0x0e => { Name => 'LinearityLimitRed',   Writable => 'int16u' }, #IB
+    0x0f => { Name => 'LinearityLimitGreen', Writable => 'int16u' }, #IB
+    0x10 => { Name => 'LinearityLimitBlue',  Writable => 'int16u' }, #IB
     0x11 => { #JD
         Name => 'RedBalance',
         Writable => 'int16u',
@@ -98,7 +98,7 @@ my %wbTypeInfo = (
         ValueConv => '$val / 256',
         ValueConvInv => 'int($val * 256 + 0.5)',
     },
-    0x13 => { #4
+    0x13 => { #IB
         Name => 'WBInfo',
         SubDirectory => { TagTable => 'Image::ExifTool::PanasonicRaw::WBInfo' },
     },
@@ -107,29 +107,29 @@ my %wbTypeInfo = (
         Writable => 'int16u',
     },
     # 0x18,0x19,0x1a: 0
-    0x18 => { #4
+    0x18 => { #IB
         Name => 'HighISOMultiplierRed',
         Writable => 'int16u',
         ValueConv => '$val / 256',
         ValueConvInv => 'int($val * 256 + 0.5)',
     },
-    0x19 => { #4
+    0x19 => { #IB
         Name => 'HighISOMultiplierGreen',
         Writable => 'int16u',
         ValueConv => '$val / 256',
         ValueConvInv => 'int($val * 256 + 0.5)',
     },
-    0x1a => { #4
+    0x1a => { #IB
         Name => 'HighISOMultiplierBlue',
         Writable => 'int16u',
         ValueConv => '$val / 256',
         ValueConvInv => 'int($val * 256 + 0.5)',
     },
     # 0x1b: [binary data] (something to do with the camera ISO cababilities: int16u count N,
-    #                      followed by table of  N entries: int16u ISO, int16u[3] RGB gains - ref 4)
-    0x1c => { Name => 'BlackLevelRed',   Writable => 'int16u' }, #4
-    0x1d => { Name => 'BlackLevelGreen', Writable => 'int16u' }, #4
-    0x1e => { Name => 'BlackLevelBlue',  Writable => 'int16u' }, #4
+    #                      followed by table of  N entries: int16u ISO, int16u[3] RGB gains - ref IB)
+    0x1c => { Name => 'BlackLevelRed',   Writable => 'int16u' }, #IB
+    0x1d => { Name => 'BlackLevelGreen', Writable => 'int16u' }, #IB
+    0x1e => { Name => 'BlackLevelBlue',  Writable => 'int16u' }, #IB
     0x24 => { #2
         Name => 'WBRedLevel',
         Writable => 'int16u',
@@ -142,7 +142,7 @@ my %wbTypeInfo = (
         Name => 'WBBlueLevel',
         Writable => 'int16u',
     },
-    0x27 => { #4
+    0x27 => { #IB
         Name => 'WBInfo2',
         SubDirectory => { TagTable => 'Image::ExifTool::PanasonicRaw::WBInfo2' },
     },
@@ -267,7 +267,7 @@ my %wbTypeInfo = (
     # 0xffff => 'DCSHueShiftValues', #exifprobe (NC)
 );
 
-# white balance information (ref 4)
+# white balance information (ref IB)
 # (PanasonicRawVersion<200: Digilux 2)
 %Image::ExifTool::PanasonicRaw::WBInfo = (
     PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
@@ -293,7 +293,7 @@ my %wbTypeInfo = (
     20 => { Name => 'WB_RBLevels7', Format => 'int16u[2]' },
 );
 
-# white balance information (ref 4)
+# white balance information (ref IB)
 # (PanasonicRawVersion>=200: D-Lux2, D-Lux3, DMC-FZ18/FZ30/LX1/L10)
 %Image::ExifTool::PanasonicRaw::WBInfo2 = (
     PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,

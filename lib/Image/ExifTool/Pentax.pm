@@ -37,14 +37,14 @@
 #              22) Bozi (K10D, http://www.cpanforum.com/posts/8480)
 #              23) Akos Szalkai (https://rt.cpan.org/Ticket/Display.html?id=43743)
 #              24) Albert Bogner private communication
-#              25) Niels Kristian Bech Jensen private communication
 #              26) http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,3444.0.html
 #              27) http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,3833.0.html
 #              28) Klaus Homeister http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,4803.0.html
 #              29) Louis Granboulan private communication (K-5II)
 #              30) http://u88.n24.queensu.ca/exiftool/forum/index.php?topic=5433
-#              31) Iliah Borg private communication (LibRaw)
+#              IB) Iliah Borg private communication (LibRaw)
 #              JD) Jens Duttke private communication
+#              NJ) Niels Kristian Bech Jensen private communication
 #
 # Notes:        See POD documentation at the bottom of this file
 #------------------------------------------------------------------------------
@@ -57,7 +57,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::HP;
 
-$VERSION = '3.00';
+$VERSION = '3.01';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -118,7 +118,7 @@ sub PrintFilter($$$);
     '3 27.1' => 'Tokina AT-X Pro AF 28-70mm F2.6-2.8', #JD
     '3 28' => 'smc PENTAX-F 35-70mm F3.5-4.5 or Tokina Lens',
     '3 28.1' => 'Tokina 19-35mm F3.5-4.5 AF', #12
-    '3 28.2' => 'Tokina AT-X AF 400mm F5.6', #25
+    '3 28.2' => 'Tokina AT-X AF 400mm F5.6', #NJ
     '3 29' => 'PENTAX-F 28-80mm F3.5-4.5 or Sigma or Tokina Lens',
     '3 29.1' => 'Sigma AF 18-125mm F3.5-5.6 DC', #11
     '3 29.2' => 'Tokina AT-X PRO 28-70mm F2.6-2.8', #22
@@ -191,7 +191,7 @@ sub PrintFilter($$$);
     '4 34' => 'smc PENTAX-FA 24-90mm F3.5-4.5 AL[IF]',
     '4 35' => 'smc PENTAX-FA 100-300mm F4.7-5.8',
   # '4 36' => 'Tamron AF70-300mm F4-5.6 LD Macro', # both 572D and A17 (Di) - ref JD
-    '4 36' => 'Tamron AF 70-300mm F4-5.6 LD Macro 1:2', #25
+    '4 36' => 'Tamron AF 70-300mm F4-5.6 LD Macro 1:2', #NJ
     '4 37' => 'Tamron SP AF 24-135mm F3.5-5.6 AD AL (190D)', #13
     '4 38' => 'smc PENTAX-FA 28-105mm F3.2-4.5 AL[IF]',
     '4 39' => 'smc PENTAX-FA 31mm F1.8 AL Limited',
@@ -204,7 +204,7 @@ sub PrintFilter($$$);
     '4 46' => 'smc PENTAX-FA J 28-80mm F3.5-5.6 AL',
     '4 47' => 'smc PENTAX-FA J 18-35mm F4-5.6 AL',
    #'4 49' => 'Tamron SP AF 28-75mm F2.8 XR Di (A09)',
-    '4 49' => 'Tamron SP AF 28-75mm F2.8 XR Di LD Aspherical [IF] Macro', #25
+    '4 49' => 'Tamron SP AF 28-75mm F2.8 XR Di LD Aspherical [IF] Macro', #NJ
     '4 51' => 'smc PENTAX-D FA 50mm F2.8 Macro',
     '4 52' => 'smc PENTAX-D FA 100mm F2.8 Macro',
     '4 55' => 'Samsung/Schneider D-XENOGON 35mm F2', #29
@@ -319,10 +319,12 @@ sub PrintFilter($$$);
     '8 30' => 'Sigma 17-70mm F2.8-4 DC Macro HSM Contemporary', #27
     '8 31' => 'Sigma 18-35mm F1.8 DC HSM', #27
     '8 32' => 'Sigma 30mm F1.4 DC HSM | A', #27
-    '8 34' => 'Sigma 18-300mm F3.5-6.3 DC Macro HSM', #25
+    '8 34' => 'Sigma 18-300mm F3.5-6.3 DC Macro HSM', #NJ
     '8 59' => 'HD PENTAX-D FA 150-450mm F4.5-5.6 ED DC AW', #29
     '8 60' => 'HD PENTAX-D FA* 70-200mm F2.8 ED DC AW', #29
+    '8 61' => 'HD PENTAX-D FA 28-105mm F3.5-5.6 ED DC WR', #PH
     '8 62' => 'HD PENTAX-D FA 24-70mm F2.8 ED SDM WR', #PH
+    '8 63' => 'HD PENTAX-D FA 15-30mm F2.8 ED SDM WR', #PH
     '8 198' => 'smc PENTAX-DA L 18-50mm F4-5.6 DC WR RE', #29
     '8 199' => 'HD PENTAX-DA 18-50mm F4-5.6 DC WR RE', #29
     '8 200' => 'HD PENTAX-DA 16-85mm F3.5-5.6 ED DC WR', #29
@@ -518,6 +520,7 @@ my %pentaxModelID = (
     0x13056 => 'WG-30', # (Ricoh)
     0x1307e => 'WG-30W', # (Ricoh)
     0x13088 => 'WG-5 GPS', # (Ricoh)
+    0x13092 => 'K-1', #IB (Ricoh)
     0x1309c => 'K-3 II', #29 (Ricoh)
 );
 
@@ -594,7 +597,7 @@ my %pentaxCities = (
     68 => 'Amsterdam',
     69 => 'Stockholm',
     70 => 'Lisbon', #14
-    71 => 'Copenhagen', #25
+    71 => 'Copenhagen', #NJ
     72 => 'Warsaw',
     73 => 'Prague',
     74 => 'Budapest',
@@ -1004,10 +1007,10 @@ my %binaryDataAttrs = (
             30 => 'Self Portrait', #PH
             31 => 'Illustrations', #13
             33 => 'Digital Filter', #13
-            35 => 'Night Scene Portrait', #25
+            35 => 'Night Scene Portrait', #NJ
             37 => 'Museum', #PH
             38 => 'Food', #PH
-            39 => 'Underwater', #25
+            39 => 'Underwater', #NJ
             40 => 'Green Mode', #PH
             49 => 'Light Pet', #PH
             50 => 'Dark Pet', #PH
@@ -1017,7 +1020,7 @@ my %binaryDataAttrs = (
             55 => 'Natural Skin Tone', #PH
             56 => 'Synchro Sound Record', #PH
             58 => 'Frame Composite', #14
-            59 => 'Report', #25
+            59 => 'Report', #NJ
             60 => 'Kids', #13
             61 => 'Blur Reduction', #13
             63 => 'Panorama 2', #PH (X-5)
@@ -1860,7 +1863,7 @@ my %binaryDataAttrs = (
             },
         },
     },
-    0x003d => { #31
+    0x003d => { #IB
         Name => 'DataScaling',
         Writable => 'int16u',
         # divide by the second value of Pentax_0x0201 (WhitePoint), usually
@@ -1871,7 +1874,7 @@ my %binaryDataAttrs = (
         # or
         # log2(Pentax_0x007e*(Pentax_0x003d/(2^13))/(2^14))-0.5
         # where
-        # makernotes:Pentax_0x003d/(2^13) is the normalization factor. (ref 31)
+        # makernotes:Pentax_0x003d/(2^13) is the normalization factor. (ref IB)
         # - 8192 for most images, but occasionally 11571 for K100D/K110D,
         #   and 8289 or 8456 for the K-x (ref PH)
     },
@@ -2029,6 +2032,7 @@ my %binaryDataAttrs = (
             13 => '13 (K-3,K-3II)',
             14 => '14 (645Z)',
             15 => '15 (K-S1,K-S2)', #PH
+            16 => '16 (K-1)', #PH
         },
     },
     0x0067 => { #PH (K-5)
@@ -2282,7 +2286,7 @@ my %binaryDataAttrs = (
         Format => 'undef', # (written as int8u)
         SubDirectory => { TagTable => 'Image::ExifTool::Pentax::LensCorr' },
     },
-    0x007e => { #31
+    0x007e => { #IB
         Name => 'WhiteLevel', # (with black level already subtracted)
         Writable => 'int32u',
         # 15859,15860,15864,15865,16315 (K-5 PEF/DNG only) - PH

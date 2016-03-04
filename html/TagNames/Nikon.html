@@ -3440,11 +3440,16 @@ point is F10)</span></span></td></tr>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>MemoryCardNumber</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td class=r title='3 = 0x3'>3</td>
 <td>DirectoryNumber</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='4 = 0x4'>4</td>
 <td>FileNumber</td>
 <td class=c>int16u</td>
@@ -4739,7 +4744,7 @@ ExifTool to choose in these cases (see the
 </tr><tr><td>'A1 40 18 37 2C 34 A3 06'</td><td>= AF-S DX Nikkor 10-24mm f/3.5-4.5G ED</td>
 </tr><tr><td>'A1 41 19 31 2C 2C 4B 06'</td><td>= Sigma 10-20mm F3.5 EX DC HSM</td>
 </tr><tr><td>'A1 54 55 55 0C 0C BC 06'</td><td>= AF-S Nikkor 58mm f/1.4G</td>
-</tr><tr><td>'A2 40 2D 53 2C 3C BD 0E'</td><td>= AF-S DX VR Nikkor 18-55mm f/3.5-5.6G II</td>
+</tr><tr><td>'A2 40 2D 53 2C 3C BD 0E'</td><td>= AF-S DX Nikkor 18-55mm f/3.5-5.6G VR II</td>
 </tr><tr><td>'A2 48 5C 80 24 24 A4 0E'</td><td>= AF-S Nikkor 70-200mm f/2.8G ED VR II</td>
 </tr><tr><td>'A3 3C 29 44 30 30 A5 0E'</td><td>= AF-S Nikkor 16-35mm f/4G ED VR</td>
 </tr><tr><td>'A3 3C 5C 8E 30 3C 4B 0E'</td><td>= Sigma 70-300mm F4-5.6 DG OS</td>
@@ -4748,9 +4753,10 @@ ExifTool to choose in these cases (see the
 </tr><tr><td>'A4 54 37 37 0C 0C A6 06'</td><td>= AF-S Nikkor 24mm f/1.4G ED</td>
 </tr><tr><td>'A5 40 2D 88 2C 40 4B 0E'</td><td>= Sigma 18-250mm F3.5-6.3 DC OS HSM</td>
 </tr><tr><td>'A5 40 3C 8E 2C 3C A7 0E'</td><td>= AF-S Nikkor 28-300mm f/3.5-5.6G ED VR</td>
-</tr><tr><td>'A5 4C 44 44 14 14 C0 06'</td><td>= AF-S Nikkor 35mm f/1.8G</td>
+</tr><tr><td>'A5 4C 44 44 14 14 C0 06'</td><td>= AF-S Nikkor 35mm f/1.8G ED</td>
 </tr><tr><td>'A6 48 37 5C 24 24 4B 06'</td><td>= Sigma 24-70mm F2.8 IF EX DG HSM</td>
 </tr><tr><td>'A6 48 8E 8E 24 24 A8 0E'</td><td>= AF-S VR Nikkor 300mm f/2.8G IF-ED II</td>
+</tr><tr><td>'A6 48 98 98 24 24 C1 0E'</td><td>= AF-S Nikkor 400mm f/2.8E FL ED VR</td>
 </tr><tr><td>'A7 3C 53 80 30 3C C2 0E'</td><td>= AF-S DX Nikkor 55-200mm f/4-5.6G ED VR II</td>
 </tr><tr><td>'A7 49 80 A0 24 24 4B 06'</td><td>= Sigma APO 200-500mm F2.8 EX DG</td>
 </tr><tr><td>'A7 4B 62 62 2C 2C A9 0E'</td><td>= AF-S DX Micro Nikkor 85mm f/3.5G ED VR</td>
@@ -4761,10 +4767,12 @@ ExifTool to choose in these cases (see the
 </tr><tr><td>'A9 54 80 80 18 18 AB 0E'</td><td>= AF-S Nikkor 200mm f/2G ED VR II</td>
 </tr><tr><td>'AA 3C 37 6E 30 30 AC 0E'</td><td>= AF-S Nikkor 24-120mm f/4G ED VR</td>
 </tr><tr><td>'AA 48 37 5C 24 24 C5 4E'</td><td>= AF-S Nikkor 24-70mm f/2.8E ED VR</td>
+</tr><tr><td>'AB 3C A0 A0 30 30 C6 4E'</td><td>= AF-S Nikkor 500mm f/4E FL ED VR</td>
 </tr><tr><td>'AC 38 53 8E 34 3C AE 0E'</td><td>= AF-S DX VR Nikkor 55-300mm f/4.5-5.6G ED</td>
 </tr><tr><td>'AC 3C A6 A6 30 30 C7 4E'</td><td>= AF-S Nikkor 600mm f/4E FL ED VR</td>
 </tr><tr><td>'AD 3C 2D 8E 2C 3C AF 0E'</td><td>= AF-S DX Nikkor 18-300mm f/3.5-5.6G ED VR</td>
-</tr><tr><td>'AD 48 28 60 24 30 C8 4E'</td><td>= AF-S VR DX 16-80mm f/2.8-4.0E ED</td>
+</tr><tr><td>'AD 48 28 60 24 30 C8 0E'</td><td>= AF-S DX Nikkor 16-80mm f/2.8-4E ED VR</td>
+</tr><tr><td>'AD 48 28 60 24 30 C8 4E'</td><td>= AF-S DX Nikkor 16-80mm f/2.8-4E ED VR</td>
 </tr><tr><td>'AE 3C 80 A0 3C 3C C9 0E'</td><td>= AF-S Nikkor 200-500mm f/5.6E ED VR</td>
 </tr><tr><td>'AE 3C 80 A0 3C 3C C9 4E'</td><td>= AF-S Nikkor 200-500mm f/5.6E ED VR</td>
 </tr><tr><td>'AE 54 62 62 0C 0C B0 06'</td><td>= AF-S Nikkor 85mm f/1.4G</td>
@@ -4776,6 +4784,7 @@ ExifTool to choose in these cases (see the
 </tr><tr><td>'B3 4C 62 62 14 14 B5 06'</td><td>= AF-S Nikkor 85mm f/1.8G</td>
 </tr><tr><td>'B4 40 37 62 2C 34 B6 0E'</td><td>= AF-S VR Zoom-Nikkor 24-85mm f/3.5-4.5G IF-ED</td>
 </tr><tr><td>'B5 4C 3C 3C 14 14 B7 06'</td><td>= AF-S Nikkor 28mm f/1.8G</td>
+</tr><tr><td>'B6 3C B0 B0 3C 3C B8 0E'</td><td>= AF-S VR Nikkor 800mm f/5.6E FL ED</td>
 </tr><tr><td>'B6 48 37 56 24 24 1C 02'</td><td>= Sigma 24-60mm F2.8 EX DG</td>
 </tr><tr><td>'B7 44 60 98 34 3C B9 0E'</td><td>= AF-S Nikkor 80-400mm f/4.5-5.6G ED VR</td>
 </tr><tr><td>'B8 40 2D 44 2C 34 BA 06'</td><td>= AF-S Nikkor 18-35mm f/3.5-4.5G ED</td>
@@ -4833,7 +4842,7 @@ ExifTool to choose in these cases (see the
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jan 7, 2016</i>
+<br><i>Last revised Feb 29, 2016</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

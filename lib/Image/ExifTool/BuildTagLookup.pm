@@ -32,7 +32,7 @@ use Image::ExifTool::XMP;
 use Image::ExifTool::Canon;
 use Image::ExifTool::Nikon;
 
-$VERSION = '2.94';
+$VERSION = '2.95';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -419,7 +419,8 @@ block tags GeoTiffDirectory, GeoTiffDoubleParams and GeoTiffAsciiParams.
 },
     JFIF => q{
 The following information is extracted from the JPEG JFIF header.  See
-L<http://www.jpeg.org/public/jfif.pdf> for the JFIF 1.02 specification.
+L<https://www.w3.org/Graphics/JPEG/jfif3.pdf> for the JFIF 1.02
+specification.
 },
     Kodak => q{
 Many Kodak models don't store the maker notes in standard IFD format, and

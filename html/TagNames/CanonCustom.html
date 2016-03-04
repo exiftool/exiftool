@@ -1814,10 +1814,21 @@ well as newer tags and values added by later models.</p>
 <td title='0x051d = 1309'>0x051d</td>
 <td>VFDisplayIllumination</td>
 <td class=c>int32s</td>
-<td><span class=s>0 = Auto
+<td><span class=s>[Value 0]
+  <br>0 = Auto
   <br>1 = Enable
-  <br>2 = Disable</span></td></tr>
+  <br>2 = Disable
+  <br>[Value 1]
+  <br>0 = Non-illuminated
+  <br>1 = Illuminated</span></td></tr>
 <tr>
+<td title='0x051e = 1310'>0x051e</td>
+<td>InitialAFPointAIServoAF</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = Auto
+  <br>1 = Initial AF point selected
+  <br>2 = Manual AF point</span></td></tr>
+<tr class=b>
 <td title='0x060f = 1551'>0x060f</td>
 <td>MirrorLockup</td>
 <td class=c>int32s</td>
@@ -1825,28 +1836,28 @@ well as newer tags and values added by later models.</p>
   <br>0 = Disable
   <br>1 = Enable
   <br>2 = Enable: Down with Set</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0610 = 1552'>0x0610</td>
 <td>ContinuousShootingSpeed</td>
 <td class=c>int32s[3]</td>
 <td><span class=s>[Value 0]
   <br>0 = Disable
   <br>1 = Enable</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0611 = 1553'>0x0611</td>
 <td>ContinuousShotLimit</td>
 <td class=c>int32s[2]</td>
 <td><span class=s>[Value 0]
   <br>0 = Disable
   <br>1 = Enable</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0612 = 1554'>0x0612</td>
 <td>RestrictDriveModes</td>
 <td class=c>int32s[2]</td>
 <td><span class=s>[Value 0]
   <br>0 = Disable
   <br>1 = Enable</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0701 = 1793'>0x0701</td>
 <td>Shutter-AELock
   <br>AFAndMeteringButtons
@@ -1869,13 +1880,13 @@ well as newer tags and values added by later models.</p>
   <br>2 = Metering start/Meter + AF start
   <br>3 = AE lock/Metering + AF start
   <br>4 = Metering + AF start/disable</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0702 = 1794'>0x0702</td>
 <td>AFOnAELockButtonSwitch</td>
 <td class=c>int32s</td>
 <td><span class=s>0 = Disable
   <br>1 = Enable</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0703 = 1795'>0x0703</td>
 <td>QuickControlDialInMeter</td>
 <td class=c>int32s</td>
@@ -1884,7 +1895,7 @@ well as newer tags and values added by later models.</p>
   <br>2 = ISO speed
   <br>3 = AF point selection swapped with Exposure comp
   <br>4 = ISO speed swapped with Exposure comp</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0704 = 1796'>0x0704</td>
 <td>SetButtonWhenShooting</td>
 <td class=c>int32s</td>
@@ -1940,32 +1951,32 @@ well as newer tags and values added by later models.</p>
   <br>6 = Menu display
   <br>7 = Image playback</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td title='0x0705 = 1797'>0x0705</td>
 <td>ManualTv</td>
 <td class=c>int32s</td>
 <td><span class=s>0 = Tv=Main/Av=Control
   <br>1 = Tv=Control/Av=Main</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0706 = 1798'>0x0706</td>
 <td>DialDirectionTvAv</td>
 <td class=c>int32s</td>
 <td><span class=s>0 = Normal
   <br>1 = Reversed</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0707 = 1799'>0x0707</td>
 <td>AvSettingWithoutLens</td>
 <td class=c>int32s</td>
 <td><span class=s>0 = Disable
   <br>1 = Enable</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0708 = 1800'>0x0708</td>
 <td>WBMediaImageSizeSetting</td>
 <td class=c>int32s</td>
 <td><span class=s>0 = Rear LCD panel
   <br>1 = LCD monitor
   <br>2 = Off (disable button)</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0709 = 1801'>0x0709</td>
 <td>LockMicrophoneButton</td>
 <td class=c>int32s</td>
@@ -1974,13 +1985,13 @@ well as newer tags and values added by later models.</p>
   <br>1 = Record memo (protect:disable)
   <br>2 = Play memo (hold:record memo)
   <br>3 = Rating (protect/memo:disable)</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x070a = 1802'>0x070a</td>
 <td>ButtonFunctionControlOff</td>
 <td class=c>int32s</td>
 <td><span class=s>0 = Normal (enable)
   <br>1 = Disable main, Control, Multi-control</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x070b = 1803'>0x070b</td>
 <td>AssignFuncButton</td>
 <td class=c>int32s</td>
@@ -1989,24 +2000,24 @@ well as newer tags and values added by later models.</p>
   <br>2 = Exposure comp./AEB setting
   <br>3 = Image jump with main dial
   <br>4 = Live view function settings</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x070c = 1804'>0x070c</td>
 <td>CustomControls</td>
 <td class=c>int32s</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x070d = 1805'>0x070d</td>
 <td>StartMovieShooting</td>
 <td class=c>int32s</td>
 <td><span class=s>0 = Default (from LV)
   <br>1 = Quick start (FEL button)</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x070e = 1806'>0x070e</td>
 <td>FlashButtonFunction</td>
 <td class=c>int32s</td>
 <td><span class=s>0 = Raise built-in flash
   <br>1 = ISO speed</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x070f = 1807'>0x070f</td>
 <td>MultiFunctionLock</td>
 <td class=c>int32s</td>
@@ -2019,19 +2030,19 @@ well as newer tags and values added by later models.</p>
   <br>Bit 0 = Main dial
   <br>Bit 1 = Quick control dial
   <br>Bit 2 = Multi-controller</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0710 = 1808'>0x0710</td>
 <td>TrashButtonFunction</td>
 <td class=c>int32s</td>
 <td><span class=s>0 = Normal (set center AF point)
   <br>1 = Depth-of-field preview</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0711 = 1809'>0x0711</td>
 <td>ShutterReleaseWithoutLens</td>
 <td class=c>int32s</td>
 <td><span class=s>0 = Disable
   <br>1 = Enable</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x080b = 2059'>0x080b</td>
 <td>FocusingScreen</td>
 <td class=c>int32s</td>
@@ -2058,20 +2069,20 @@ well as newer tags and values added by later models.</p>
   <br>1 = Ec-A,B,C,CII,CIII,D,H,I,L
   <br>2 = Ec-S
   <br>3 = Ec-N,R</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x080c = 2060'>0x080c</td>
 <td>TimerLength</td>
 <td class=c>int32s[4]</td>
 <td><span class=s>[Value 0]
   <br>0 = Disable
   <br>1 = Enable</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x080d = 2061'>0x080d</td>
 <td>ShortReleaseTimeLag</td>
 <td class=c>int32s</td>
 <td><span class=s>0 = Disable
   <br>1 = Enable</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x080e = 2062'>0x080e</td>
 <td>AddAspectRatioInfo</td>
 <td class=c>int32s</td>
@@ -2084,37 +2095,37 @@ well as newer tags and values added by later models.</p>
   <br>5 = 10:12
   <br>6 = 5:7</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td title='0x080f = 2063'>0x080f</td>
 <td>AddOriginalDecisionData</td>
 <td class=c>int32s</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0810 = 2064'>0x0810</td>
 <td>LiveViewExposureSimulation</td>
 <td class=c>int32s</td>
 <td><span class=s>0 = Disable (LCD auto adjust)
   <br>1 = Enable (simulates exposure)</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0811 = 2065'>0x0811</td>
 <td>LCDDisplayAtPowerOn</td>
 <td class=c>int32s</td>
 <td><span class=s>0 = Display
   <br>1 = Retain power off status</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0812 = 2066'>0x0812</td>
 <td>MemoAudioQuality</td>
 <td class=c>int32s</td>
 <td><span class=s>0 = High (48 kHz)
   <br>1 = Low (8 kHz)</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0813 = 2067'>0x0813</td>
 <td>DefaultEraseOption</td>
 <td class=c>int32s</td>
 <td><span class=s>0 = Cancel selected
   <br>1 = Erase selected</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0814 = 2068'>0x0814</td>
 <td>RetractLensOnPowerOff</td>
 <td class=c>int32s</td>
@@ -2124,7 +2135,7 @@ well as newer tags and values added by later models.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jan 6, 2016</i>
+<br><i>Last revised Mar 4, 2016</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

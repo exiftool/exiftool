@@ -37,7 +37,6 @@
 #              22) Tanel Kuusk private communication
 #              23) Alexandre Naaman private communication (D3)
 #              24) Geert De Soete private communication
-#              25) Niels Kristian Bech Jensen private communication
 #              26) Bozi (http://www.cpanforum.com/posts/8983)
 #              27) Jens Kriese private communication
 #              28) Warren Hatch private communication (D3v2.00 with SB-800 and SB-900)
@@ -45,10 +44,11 @@
 #              30) http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,3833.30.html
 #              31) Michael Relt private communication
 #              32) Stefan http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,4494.0.html
-#              33) Iliah Borg private communication (LibRaw)
 #              34) Stewart Bennett private communication (D4S, D810)
 #              35) David Puschel private communication
+#              IB) Iliah Borg private communication (LibRaw)
 #              JD) Jens Duttke private communication
+#              NJ) Niels Kristian Bech Jensen private communication
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::Nikon;
@@ -59,7 +59,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.14';
+$VERSION = '3.15';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -162,7 +162,7 @@ sub GetAFPointGrid($$;$);
     '38 4C 62 62 14 14 37 02' => 'AF Nikkor 85mm f/1.8D',
     '3A 40 3C 5C 2C 34 39 02' => 'AF Zoom-Nikkor 28-70mm f/3.5-4.5D',
     '3B 48 44 5C 24 24 3A 02' => 'AF Zoom-Nikkor 35-70mm f/2.8D N',
-    '3C 48 60 80 24 24 3B 02' => 'AF Zoom-Nikkor 80-200mm f/2.8D ED', #25
+    '3C 48 60 80 24 24 3B 02' => 'AF Zoom-Nikkor 80-200mm f/2.8D ED', #NJ
     '3D 3C 44 60 30 3C 3E 02' => 'AF Zoom-Nikkor 35-80mm f/4-5.6D',
     '3E 48 3C 3C 24 24 3D 02' => 'AF Nikkor 28mm f/2.8D',
     '3F 40 44 6A 2C 34 45 02' => 'AF Zoom-Nikkor 35-105mm f/3.5-4.5D',
@@ -191,14 +191,11 @@ sub GetAFPointGrid($$;$);
     '4E 48 72 72 18 18 51 02' => 'AF DC-Nikkor 135mm f/2D',
     '4F 40 37 5C 2C 3C 53 06' => 'IX-Nikkor 24-70mm f/3.5-5.6',
     '50 48 56 7C 30 3C 54 06' => 'IX-Nikkor 60-180mm f/4-5.6',
-    '52 54 44 44 18 18 00 00' => 'Zeiss Milvus 35mm f/2', #33
     '53 48 60 80 24 24 57 02' => 'AF Zoom-Nikkor 80-200mm f/2.8D ED',
     '53 48 60 80 24 24 60 02' => 'AF Zoom-Nikkor 80-200mm f/2.8D ED',
     '54 44 5C 7C 34 3C 58 02' => 'AF Zoom-Micro Nikkor 70-180mm f/4.5-5.6D ED',
     '54 44 5C 7C 34 3C 61 02' => 'AF Zoom-Micro Nikkor 70-180mm f/4.5-5.6D ED',
-    '54 54 50 50 18 18 00 00' => 'Zeiss Milvus 50mm f/2 Makro', #33
     '56 48 5C 8E 30 3C 5A 02' => 'AF Zoom-Nikkor 70-300mm f/4-5.6D ED',
-    '56 54 68 68 18 18 00 00' => 'Zeiss Milvus 100mm f/2 Makro', #33
     '59 48 98 98 24 24 5D 02' => 'AF-S Nikkor 400mm f/2.8D IF-ED',
     '59 48 98 98 24 24 F1 02' => 'AF-S Nikkor 400mm f/2.8D IF-ED + TC-14E',
     '59 48 98 98 24 24 E1 02' => 'AF-S Nikkor 400mm f/2.8D IF-ED + TC-17E',
@@ -292,23 +289,27 @@ sub GetAFPointGrid($$;$);
     'B3 4C 62 62 14 14 B5 06' => 'AF-S Nikkor 85mm f/1.8G',
     'B4 40 37 62 2C 34 B6 0E' => 'AF-S VR Zoom-Nikkor 24-85mm f/3.5-4.5G IF-ED', #30
     'B5 4C 3C 3C 14 14 B7 06' => 'AF-S Nikkor 28mm f/1.8G', #30
+    'B6 3C B0 B0 3C 3C B8 0E' => 'AF-S VR Nikkor 800mm f/5.6E FL ED',
     'B7 44 60 98 34 3C B9 0E' => 'AF-S Nikkor 80-400mm f/4.5-5.6G ED VR',
     'B8 40 2D 44 2C 34 BA 06' => 'AF-S Nikkor 18-35mm f/3.5-4.5G ED',
     'A0 40 2D 74 2C 3C BB 0E' => 'AF-S DX Nikkor 18-140mm f/3.5-5.6G ED VR', #PH
-    'A1 54 55 55 0C 0C BC 06' => 'AF-S Nikkor 58mm f/1.4G', #33
-    'A2 40 2D 53 2C 3C BD 0E' => 'AF-S DX VR Nikkor 18-55mm f/3.5-5.6G II',
+    'A1 54 55 55 0C 0C BC 06' => 'AF-S Nikkor 58mm f/1.4G', #IB
+    'A2 40 2D 53 2C 3C BD 0E' => 'AF-S DX Nikkor 18-55mm f/3.5-5.6G VR II',
     'A4 40 2D 8E 2C 40 BF 0E' => 'AF-S DX Nikkor 18-300mm f/3.5-6.3G ED VR',
-    'A5 4C 44 44 14 14 C0 06' => 'AF-S Nikkor 35mm f/1.8G', #35
-    'A7 3C 53 80 30 3C C2 0E' => 'AF-S DX Nikkor 55-200mm f/4-5.6G ED VR II', #33
+    'A5 4C 44 44 14 14 C0 06' => 'AF-S Nikkor 35mm f/1.8G ED', #35 ("ED" ref 11)
+    'A6 48 98 98 24 24 C1 0E' => 'AF-S Nikkor 400mm f/2.8E FL ED VR',
+    'A7 3C 53 80 30 3C C2 0E' => 'AF-S DX Nikkor 55-200mm f/4-5.6G ED VR II', #IB
     'A8 48 8E 8E 30 30 C3 4E' => 'AF-S Nikkor 300mm f/4E PF ED VR', #35
     'A8 48 8E 8E 30 30 C3 0E' => 'AF-S Nikkor 300mm f/4E PF ED VR', #30
     'A9 4C 31 31 14 14 C4 06' => 'AF-S Nikkor 20mm f/1.8G ED', #30
     'AA 48 37 5C 24 24 C5 4E' => 'AF-S Nikkor 24-70mm f/2.8E ED VR',
+    'AB 3C A0 A0 30 30 C6 4E' => 'AF-S Nikkor 500mm f/4E FL ED VR',
     'AC 3C A6 A6 30 30 C7 4E' => 'AF-S Nikkor 600mm f/4E FL ED VR', #PH
-    'AD 48 28 60 24 30 C8 4E' => 'AF-S VR DX 16-80mm f/2.8-4.0E ED',
+    'AD 48 28 60 24 30 C8 4E' => 'AF-S DX Nikkor 16-80mm f/2.8-4E ED VR',
+    'AD 48 28 60 24 30 C8 0E' => 'AF-S DX Nikkor 16-80mm f/2.8-4E ED VR', #PH
     'AE 3C 80 A0 3C 3C C9 4E' => 'AF-S Nikkor 200-500mm f/5.6E ED VR', #PH
     'AE 3C 80 A0 3C 3C C9 0E' => 'AF-S Nikkor 200-500mm f/5.6E ED VR',
-    'AF 4C 37 37 14 14 CC 06' => 'AF-S Nikkor 24mm f/1.8G ED', #33
+    'AF 4C 37 37 14 14 CC 06' => 'AF-S Nikkor 24mm f/1.8G ED', #IB
     '01 00 00 00 00 00 02 00' => 'TC-16A',
     '01 00 00 00 00 00 08 00' => 'TC-16A',
     '00 00 00 00 00 00 F1 0C' => 'TC-14E [II] or Sigma APO Tele Converter 1.4x EX DG or Kenko Teleplus PRO 300 DG 1.4x',
@@ -374,10 +375,10 @@ sub GetAFPointGrid($$;$);
     '7F 48 2B 5C 24 34 1C 06' => 'Sigma 17-70mm F2.8-4.5 DC Macro Asp. IF',
     '8E 3C 2B 5C 24 30 4B 0E' => 'Sigma 17-70mm F2.8-4 DC Macro OS HSM Contemporary',
     'A0 48 2A 5C 24 30 4B 0E' => 'Sigma 17-70mm F2.8-4 DC Macro OS HSM', #http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,5170.0.html
-    '8B 4C 2D 44 14 14 4B 06' => 'Sigma 18-35mm F1.8 DC HSM', #30/25
+    '8B 4C 2D 44 14 14 4B 06' => 'Sigma 18-35mm F1.8 DC HSM', #30/NJ
     '26 40 2D 44 2B 34 1C 02' => 'Sigma 18-35mm F3.5-4.5 Aspherical',
     '26 48 2D 50 24 24 1C 06' => 'Sigma 18-50mm F2.8 EX DC',
-    '7F 48 2D 50 24 24 1C 06' => 'Sigma 18-50mm F2.8 EX DC Macro', #25
+    '7F 48 2D 50 24 24 1C 06' => 'Sigma 18-50mm F2.8 EX DC Macro', #NJ
     '7A 48 2D 50 24 24 4B 06' => 'Sigma 18-50mm F2.8 EX DC Macro',
     'F6 48 2D 50 24 24 4B 06' => 'Sigma 18-50mm F2.8 EX DC Macro',
     'A4 47 2D 50 24 34 4B 0E' => 'Sigma 18-50mm F2.8-4.5 DC OS HSM',
@@ -417,7 +418,7 @@ sub GetAFPointGrid($$;$);
     '67 54 37 5C 24 24 1C 02' => 'Sigma 24-70mm F2.8 EX DG Macro',
     'E9 54 37 5C 24 24 1C 02' => 'Sigma 24-70mm F2.8 EX DG Macro',
     '26 40 37 5C 2C 3C 1C 02' => 'Sigma 24-70mm F3.5-5.6 Aspherical HF',
-    '8A 3C 37 6A 30 30 4B 0E' => 'Sigma 24-105mm F4 DG OS HSM', #33
+    '8A 3C 37 6A 30 30 4B 0E' => 'Sigma 24-105mm F4 DG OS HSM', #IB
     '26 54 37 73 24 34 1C 02' => 'Sigma 24-135mm F2.8-4.5',
     '02 46 3C 5C 25 25 02 00' => 'Sigma 28-70mm F2.8',
     '26 54 3C 5C 24 24 1C 02' => 'Sigma 28-70mm F2.8 EX',
@@ -488,7 +489,7 @@ sub GetAFPointGrid($$;$);
     'F6 3F 18 37 2C 34 84 06' => 'Tamron SP AF 10-24mm f/3.5-4.5 Di II LD Aspherical (IF) (B001)',
     'F6 3F 18 37 2C 34 DF 06' => 'Tamron SP AF 10-24mm f/3.5-4.5 Di II LD Aspherical (IF) (B001)', #30
     '00 36 1C 2D 34 3C 00 06' => 'Tamron SP AF 11-18mm f/4.5-5.6 Di II LD Aspherical (IF) (A13)',
-    'E9 48 27 3E 24 24 DF 0E' => 'Tamron SP 15-30mm f/2.8 Di VC USD (A012)', #33
+    'E9 48 27 3E 24 24 DF 0E' => 'Tamron SP 15-30mm f/2.8 Di VC USD (A012)', #IB
     'EA 40 29 8E 2C 40 DF 0E' => 'Tamron AF 16-300mm f/3.5-6.3 Di II VC PZD (B016)',
     '07 46 2B 44 24 30 03 02' => 'Tamron SP AF 17-35mm f/2.8-4 Di LD Aspherical (IF) (A05)',
     '00 53 2B 50 24 24 00 06' => 'Tamron SP AF 17-50mm f/2.8 XR Di II LD Aspherical (IF) (A16)', #PH
@@ -497,7 +498,7 @@ sub GetAFPointGrid($$;$);
     'F3 54 2B 50 24 24 84 0E' => 'Tamron SP AF 17-50mm f/2.8 XR Di II VC LD Aspherical (IF) (B005)',
     '00 3F 2D 80 2B 40 00 06' => 'Tamron AF 18-200mm f/3.5-6.3 XR Di II LD Aspherical (IF) (A14)',
     '00 3F 2D 80 2C 40 00 06' => 'Tamron AF 18-200mm f/3.5-6.3 XR Di II LD Aspherical (IF) Macro (A14)',
-    '00 40 2D 80 2C 40 00 06' => 'Tamron AF 18-200mm f/3.5-6.3 XR Di II LD Aspherical (IF) Macro (A14NII)', #25
+    '00 40 2D 80 2C 40 00 06' => 'Tamron AF 18-200mm f/3.5-6.3 XR Di II LD Aspherical (IF) Macro (A14NII)', #NJ
     'FC 40 2D 80 2C 40 DF 06' => 'Tamron AF 18-200mm f/3.5-6.3 XR Di II LD Aspherical (IF) Macro (A14NII)', #PH (NC)
     '00 40 2D 88 2C 40 62 06' => 'Tamron AF 18-250mm f/3.5-6.3 Di II LD Aspherical (IF) Macro (A18)',
     '00 40 2D 88 2C 40 00 06' => 'Tamron AF 18-250mm f/3.5-6.3 Di II LD Aspherical (IF) Macro (A18NII)', #JD
@@ -527,7 +528,7 @@ sub GetAFPointGrid($$;$);
     'FE 53 5C 80 24 24 84 06' => 'Tamron SP AF 70-200mm f/2.8 Di LD (IF) Macro (A001)',
     'F7 53 5C 80 24 24 40 06' => 'Tamron SP AF 70-200mm f/2.8 Di LD (IF) Macro (A001)',
   # 'FE 54 5C 80 24 24 DF 0E' => 'Tamron SP AF 70-200mm f/2.8 Di VC USD (A009)',
-    'FE 54 5C 80 24 24 DF 0E' => 'Tamron SP 70-200mm f/2.8 Di VC USD (A009)', #25
+    'FE 54 5C 80 24 24 DF 0E' => 'Tamron SP 70-200mm f/2.8 Di VC USD (A009)', #NJ
     '69 48 5C 8E 30 3C 6F 02' => 'Tamron AF 70-300mm f/4-5.6 LD Macro 1:2 (572D/772D)',
     '69 47 5C 8E 30 3C 00 02' => 'Tamron AF 70-300mm f/4-5.6 Di LD Macro 1:2 (A17N)',
     '00 48 5C 8E 30 3C 00 06' => 'Tamron AF 70-300mm f/4-5.6 Di LD Macro 1:2 (A17NII)', #JD
@@ -601,12 +602,12 @@ sub GetAFPointGrid($$;$);
     '00 54 62 62 0C 0C 00 00' => 'Carl Zeiss Planar T* 1.4/85 ZF.2',
     '00 54 68 68 18 18 00 00' => 'Carl Zeiss Makro-Planar T* 2/100 ZF.2',
     '00 54 72 72 18 18 00 00' => 'Carl Zeiss Apo Sonnar T* 2/135 ZF.2',
-    '00 54 53 53 0C 0C 00 00' => 'Zeiss Otus 1.4/55', #33
+    '00 54 53 53 0C 0C 00 00' => 'Zeiss Otus 1.4/55', #IB
     '01 54 62 62 0C 0C 00 00' => 'Zeiss Otus 1.4/85',
     '52 54 44 44 18 18 00 00' => 'Zeiss Milvus 35mm f/2',
-    '53 54 50 50 0C 0C 00 00' => 'Zeiss Milvus 50mm f/1.4', #33
+    '53 54 50 50 0C 0C 00 00' => 'Zeiss Milvus 50mm f/1.4', #IB
     '54 54 50 50 18 18 00 00' => 'Zeiss Milvus 50mm f/2 Macro',
-    '55 54 62 62 0C 0C 00 00' => 'Zeiss Milvus 85mm f/1.4', #33
+    '55 54 62 62 0C 0C 00 00' => 'Zeiss Milvus 85mm f/1.4', #IB
     '56 54 68 68 18 18 00 00' => 'Zeiss Milvus 100mm f/2 Macro',
 #
     '00 54 56 56 30 30 00 00' => 'Coastal Optical Systems 60mm 1:4 UV-VIS-IR Macro Apo',
@@ -1143,11 +1144,11 @@ my %binaryDataAttrs = (
         Name => 'LocationInfo',
         SubDirectory => { TagTable => 'Image::ExifTool::Nikon::LocationInfo' },
     },
-    0x003d => { #33
+    0x003d => { #IB
         Name => 'BlackLevel',
         Writable => 'int16u',
         Count => 4,
-        # (may need to divide by 4 for some images, eg. D3300/D5300, 12 bit - ref 33)
+        # (may need to divide by 4 for some images, eg. D3300/D5300, 12 bit - ref IB)
     },
     0x0080 => { Name => 'ImageAdjustment',  Writable => 'string' },
     0x0081 => { Name => 'ToneComp',         Writable => 'string' }, #2
@@ -1518,8 +1519,8 @@ my %binaryDataAttrs = (
             2 => 'Uncompressed', #JD - D100 (even though TIFF compression is set!)
             3 => 'Lossless',
             4 => 'Lossy (type 2)',
-            6 => 'Uncompressed (reduced to 12 bit)', #33
-            8 => 'Small', #33
+            6 => 'Uncompressed (reduced to 12 bit)', #IB
+            8 => 'Small', #IB
         },
     },
     0x0094 => { Name => 'Saturation',       Writable => 'int16s' },
@@ -2406,14 +2407,14 @@ my %binaryDataAttrs = (
             0x106 => 'Hi 1.5',
             0x107 => 'Hi 1.7',
             0x108 => 'Hi 2.0', #(NC) - D3 should have this mode
-            0x109 => 'Hi 2.3', #33
-            0x10a => 'Hi 2.5', #33
-            0x10b => 'Hi 2.7', #33
-            0x10c => 'Hi 3.0', #33
-            0x10d => 'Hi 3.3', #33
-            0x10e => 'Hi 3.5', #33
-            0x10f => 'Hi 3.7', #33
-            0x110 => 'Hi 4.0', #33
+            0x109 => 'Hi 2.3', #IB
+            0x10a => 'Hi 2.5', #IB
+            0x10b => 'Hi 2.7', #IB
+            0x10c => 'Hi 3.0', #IB
+            0x10d => 'Hi 3.3', #IB
+            0x10e => 'Hi 3.5', #IB
+            0x10f => 'Hi 3.7', #IB
+            0x110 => 'Hi 4.0', #IB
             0x201 => 'Lo 0.3',
             0x202 => 'Lo 0.5',
             0x203 => 'Lo 0.7',
@@ -2959,6 +2960,7 @@ my %binaryDataAttrs = (
         Format => 'undef[4]',
         Writable => 0,
     },
+    2 => 'MemoryCardNumber',
     3 => {
         Name => 'DirectoryNumber',
         PrintConv => 'sprintf("%.3d", $val)',

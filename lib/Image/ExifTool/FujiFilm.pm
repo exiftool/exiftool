@@ -15,7 +15,7 @@
 #                  and http://forum.photome.de/viewtopic.php?f=2&t=353&p=742#p740
 #               7) Kai Lappalainen private communication
 #               8) http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,5223.0.html
-#               9) Iliah Borg private communication (LibRaw)
+#               IB) Iliah Borg private communication (LibRaw)
 #               JD) Jens Duttke private communication
 #------------------------------------------------------------------------------
 
@@ -692,52 +692,52 @@ my %faceCategories = (
         Count => 36,
         PrintConv => '$val =~ tr/012 /RGB/d; join " ", $val =~ /....../g',
     },
-    0x2000 => { #9
+    0x2000 => { #IB
         Name => 'WB_GRGBLevelsAuto',
         Format => 'int16u',
         Count => 4, # (ignore the duplicate values)
     },
-    0x2100 => { #9
+    0x2100 => { #IB
         Name => 'WB_GRGBLevelsDaylight',
         Format => 'int16u',
         Count => 4,
     },
-    0x2200 => { #9
+    0x2200 => { #IB
         Name => 'WB_GRGBLevelsCloudy',
         Format => 'int16u',
         Count => 4,
     },
-    0x2300 => { #9
+    0x2300 => { #IB
         Name => 'WB_GRGBLevelsDaylightFluor',
         Format => 'int16u',
         Count => 4,
     },
-    0x2301 => { #9
+    0x2301 => { #IB
         Name => 'WB_GRGBLevelsDayWhiteFluor',
         Format => 'int16u',
         Count => 4,
     },
-    0x2302 => { #9
+    0x2302 => { #IB
         Name => 'WB_GRGBLevelsWhiteFluorescent',
         Format => 'int16u',
         Count => 4,
     },
-    0x2310 => { #9
+    0x2310 => { #IB
         Name => 'WB_GRGBLevelsWarmWhiteFluor',
         Format => 'int16u',
         Count => 4,
     },
-    0x2311 => { #9
+    0x2311 => { #IB
         Name => 'WB_GRGBLevelsLivingRoomWarmWhiteFluor',
         Format => 'int16u',
         Count => 4,
     },
-    0x2400 => { #9
+    0x2400 => { #IB
         Name => 'WB_GRGBLevelsTungsten',
         Format => 'int16u',
         Count => 4,
     },
-    # 0x2f00 => WB_GRGBLevelsCustom: int32u count, then count * (int16u GRGBGRGB), ref 9
+    # 0x2f00 => WB_GRGBLevelsCustom: int32u count, then count * (int16u GRGBGRGB), ref IB
     0x2ff0 => {
         Name => 'WB_GRGBLevels',
         Format => 'int16u',
@@ -844,10 +844,10 @@ my %faceCategories = (
         OffsetPair => 0xf007,  # point to associated offsets
     },
     # 0xf009 - values: 0, 3
-    0xf00a => 'BlackLevel', #9
+    0xf00a => 'BlackLevel', #IB
     # 0xf00b ?
-    0xf00c => 'WB_GRBLevelsStandard', #9 (GRBXGRBX; X=17 is standard illuminant A, X=21 is D65)
-    0xf00d => 'WB_GRBLevelsAuto', #9
+    0xf00c => 'WB_GRBLevelsStandard', #IB (GRBXGRBX; X=17 is standard illuminant A, X=21 is D65)
+    0xf00d => 'WB_GRBLevelsAuto', #IB
     0xf00e => 'WB_GRBLevels',
     # 0xf00f ?
 );

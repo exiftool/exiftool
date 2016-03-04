@@ -18,7 +18,7 @@
 #               11) Mike Battilana private communication
 #               13) http://www.mi-fo.de/forum/index.php?showtopic=33239
 #                   http://www.dyxum.com/dforum/the-alpha-shutter-count-tool_topic97489_page4.html
-#               14) Iliah Borg private communication (LibRaw)
+#               IB) Iliah Borg private communication (LibRaw)
 #               JD) Jens Duttke private communication
 #               JR) Jos Roost private communication
 #------------------------------------------------------------------------------
@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.30';
+$VERSION = '2.31';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -96,9 +96,9 @@ my %sonyLensTypes2 = (
     32816 => 'Sony FE 28mm F2', #JR             # VX?
     32817 => 'Sony FE PZ 28-135mm F4 G OSS',#JR # VX?
 
-    32821 => 'Sony FE 24-70mm F2.8 GM', #JR/14
+    32821 => 'Sony FE 24-70mm F2.8 GM', #JR/IB
    # 328.. => 'Sony FE 70-200mm F2.8 GM OSS',
-    32823 => 'Sony FE 85mm F1.4 GM', #JR/14
+    32823 => 'Sony FE 85mm F1.4 GM', #JR/IB
 
     32826 => 'Sony FE 21mm F2.8 (SEL28F20 + SEL075UWC)', #JR          # (+ Ultra-wide converter)
     32827 => 'Sony FE 16mm F3.5 Fisheye (SEL28F20 + SEL057FEC)', #JR  # (+ Fisheye converter)
@@ -1478,15 +1478,16 @@ my %meterInfo2 = (
             313 => 'ILCE-5000', #JR
             317 => 'DSC-RX100M3', #JR
             318 => 'ILCE-7S', #JR
-            319 => 'ILCA-77M2', #14
+            319 => 'ILCA-77M2', #IB
             339 => 'ILCE-5100', #JR
             340 => 'ILCE-7M2', #JR
             341 => 'DSC-RX100M4', #PH
             342 => 'DSC-RX10M2', #JR
             344 => 'DSC-RX1RM2', #JR
-            346 => 'ILCE-QX1', #14
+            346 => 'ILCE-QX1', #IB
             347 => 'ILCE-7RM2', #JR
             350 => 'ILCE-7SM2', #JR
+            357 => 'ILCE-6300', #IB
         },
     },
     0xb020 => { #2
@@ -8251,31 +8252,31 @@ my %pictureProfile2010 = (
     3 => { Name => 'SRFDataOffset', Unknown => 1 }, #PH
     4 => { Name => 'RawDataOffset' }, #PH
     5 => { Name => 'RawDataLength' }, #PH
-    0x0043 => 'MaxApertureAtMaxFocal', #14
-    0x0044 => 'MaxApertureAtMinFocal', #14
-    0x0045 => { #14
+    0x0043 => 'MaxApertureAtMaxFocal', #IB
+    0x0044 => 'MaxApertureAtMinFocal', #IB
+    0x0045 => { #IB
         Name => 'MinFocalLength',
         PrintConv => '"$val mm"',
     },
-    0x0046 => { #14
+    0x0046 => { #IB
         Name => 'MaxFocalLength',
         PrintConv => '"$val mm"',
     },
-    0x00c0 => 'WBRedDaylight', #14
-    0x00c1 => 'WBGreenDaylight', #14
-    0x00c2 => 'WBBlueDaylight', #14
-    0x00c3 => 'WBRedCloudy', #14
-    0x00c4 => 'WBGreenCloudy', #14
-    0x00c5 => 'WBBlueCloudy', #14
-    0x00c9 => 'WBRedTungsten', #14
-    0x00ca => 'WBGreenTungsten', #14
-    0x00cb => 'WBBlueTungsten', #14
-    0x00cc => 'WBRedFlash', #14
-    0x00cd => 'WBGreenFlash', #14
-    0x00ce => 'WBBlueFlash', #14
-    0x00d0 => 'WBRedAsShot', #14
-    0x00d1 => 'WBGreenAsShot', #14
-    0x00d2 => 'WBBlueAsShot', #14
+    0x00c0 => 'WBRedDaylight', #IB
+    0x00c1 => 'WBGreenDaylight', #IB
+    0x00c2 => 'WBBlueDaylight', #IB
+    0x00c3 => 'WBRedCloudy', #IB
+    0x00c4 => 'WBGreenCloudy', #IB
+    0x00c5 => 'WBBlueCloudy', #IB
+    0x00c9 => 'WBRedTungsten', #IB
+    0x00ca => 'WBGreenTungsten', #IB
+    0x00cb => 'WBBlueTungsten', #IB
+    0x00cc => 'WBRedFlash', #IB
+    0x00cd => 'WBGreenFlash', #IB
+    0x00ce => 'WBBlueFlash', #IB
+    0x00d0 => 'WBRedAsShot', #IB
+    0x00d1 => 'WBGreenAsShot', #IB
+    0x00d2 => 'WBBlueAsShot', #IB
 );
 
 # tag table for Sony RAW 2 Format Private IFD (ref 1)
@@ -8352,24 +8353,24 @@ my %pictureProfile2010 = (
     GROUPS => { 0 => 'MakerNotes', 1 => 'SR2SubIFD', 2 => 'Camera' },
     SET_GROUP1 => 1, # set group1 name to directory name for all tags in table
     NOTES => 'Tags in the encrypted SR2SubIFD',
-    0x7300 => 'BlackLevel', #14 (R1)
-    0x7302 => 'WB_GRBGLevelsAuto', #14 (R1)
-    0x7303 => 'WB_GRBGLevels', #1 (R1 "as shot", ref 14)
-    0x7310 => 'BlackLevel', #14 (divide by 4)
+    0x7300 => 'BlackLevel', #IB (R1)
+    0x7302 => 'WB_GRBGLevelsAuto', #IB (R1)
+    0x7303 => 'WB_GRBGLevels', #1 (R1 "as shot", ref IB)
+    0x7310 => 'BlackLevel', #IB (divide by 4)
     0x7313 => 'WB_RGGBLevels', #6
-    0x7480 => 'WB_RGBLevelsDaylight', #14 (R1)
-    0x7481 => 'WB_RGBLevelsCloudy', #14 (R1)
-    0x7482 => 'WB_RGBLevelsTungsten', #14 (R1)
-    0x7483 => 'WB_RGBLevelsFlash', #14 (R1)
-    0x7484 => 'WB_RGBLevels4500K', #14 (R1)
-    0x7486 => 'WB_RGBLevelsFluorescent', #14 (R1)
+    0x7480 => 'WB_RGBLevelsDaylight', #IB (R1)
+    0x7481 => 'WB_RGBLevelsCloudy', #IB (R1)
+    0x7482 => 'WB_RGBLevelsTungsten', #IB (R1)
+    0x7483 => 'WB_RGBLevelsFlash', #IB (R1)
+    0x7484 => 'WB_RGBLevels4500K', #IB (R1)
+    0x7486 => 'WB_RGBLevelsFluorescent', #IB (R1)
     0x74a0 => 'MaxApertureAtMaxFocal', #PH
     0x74a1 => 'MaxApertureAtMinFocal', #PH
-    0x74a2 => { #14 (R1)
+    0x74a2 => { #IB (R1)
         Name => 'MaxFocalLength',
         PrintConv => '"$val mm"',
     },
-    0x74a3 => { #14 (R1)
+    0x74a3 => { #IB (R1)
         Name => 'MinFocalLength',
         PrintConv => '"$val mm"',
     },
@@ -8383,22 +8384,22 @@ my %pictureProfile2010 = (
             MaxSubdirs => 20, # an A700 ARW has 14 of these! - PH
         },
     },
-    0x7800 => 'ColorMatrix', #14 (divide by 1024)
-    0x7820 => 'WB_RGBLevelsDaylight', #6 (or 5300K, ref 14)
-    0x7821 => 'WB_RGBLevelsCloudy', #6 (or 6100K, ref 14)
+    0x7800 => 'ColorMatrix', #IB (divide by 1024)
+    0x7820 => 'WB_RGBLevelsDaylight', #6 (or 5300K, ref IB)
+    0x7821 => 'WB_RGBLevelsCloudy', #6 (or 6100K, ref IB)
     0x7822 => 'WB_RGBLevelsTungsten', #6
-    0x7823 => 'WB_RGBLevelsFlash', #14
-    0x7824 => 'WB_RGBLevels4500K', #14
-    0x7825 => 'WB_RGBLevelsShade', #6 (or 7500K, ref 14)
+    0x7823 => 'WB_RGBLevelsFlash', #IB
+    0x7824 => 'WB_RGBLevels4500K', #IB
+    0x7825 => 'WB_RGBLevelsShade', #6 (or 7500K, ref IB)
     0x7826 => 'WB_RGBLevelsFluorescent', #6 (~4000K)
-    0x7827 => 'WB_RGBLevelsFluorescentP1', #14 (~5000K)
-    0x7828 => 'WB_RGBLevelsFluorescentP2', #14 (~6500K) (was Flash, ref 6)
-    0x7829 => 'WB_RGBLevelsFluorescentM1', #14 (~3500K)
-    0x782a => 'WB_RGBLevels8500K', #14
-    0x782b => 'WB_RGBLevels6000K', #14
-    0x782c => 'WB_RGBLevels3200K', #14
-    0x782d => 'WB_RGBLevels2500K', #14
-    0x787f => 'WhiteLevel', #14 (divide by 4)
+    0x7827 => 'WB_RGBLevelsFluorescentP1', #IB (~5000K)
+    0x7828 => 'WB_RGBLevelsFluorescentP2', #IB (~6500K) (was Flash, ref 6)
+    0x7829 => 'WB_RGBLevelsFluorescentM1', #IB (~3500K)
+    0x782a => 'WB_RGBLevels8500K', #IB
+    0x782b => 'WB_RGBLevels6000K', #IB
+    0x782c => 'WB_RGBLevels3200K', #IB
+    0x782d => 'WB_RGBLevels2500K', #IB
+    0x787f => 'WhiteLevel', #IB (divide by 4)
     0x7980 => 'ChromaticAberrationCorrParams', #forum6509 (Sony A7 ARW)
     0x7982 => 'DistortionCorrParams', #forum6509 (Sony A7 ARW)
 );

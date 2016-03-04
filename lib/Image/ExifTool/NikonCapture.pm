@@ -8,7 +8,7 @@
 #               16/04/2011 - P. Harvey Decode NikonCaptureEditVersions
 #
 # References:   1) http://www.cybercom.net/~dcoffin/dcraw/
-#               2) Iliah Borg private communication (LibRaw)
+#               IB) Iliah Borg private communication (LibRaw)
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::NikonCapture;
@@ -354,12 +354,12 @@ my %unsharpColor = (
             2 => 'Recorded Value',
             3 => 'Use Temperature',
             4 => 'Calculate Automatically',
-            5 => 'Auto2', #2
-            6 => 'Underwater', #2
+            5 => 'Auto2', #IB
+            6 => 'Underwater', #IB
             7 => 'Auto1',
         },
     },
-    0x14 => { #2
+    0x14 => { #IB
         Name => 'WBAdjLighting',
         Format => 'int16u',
         PrintHex => 1,

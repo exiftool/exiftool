@@ -297,7 +297,7 @@ my %thumbnailInfo = (
         Name => 'PhotoshopFormat',
         PrintConv => {
             0x0000 => 'Standard',
-            0x0001 => 'Optimised',
+            0x0001 => 'Optimized',
             0x0101 => 'Progressive',
         },
     },

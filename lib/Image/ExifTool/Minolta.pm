@@ -9,7 +9,6 @@
 # References:   1) http://www.dalibor.cz/minolta/makernote.htm
 #               2) Jay Al-Saadi private communication (testing with A2)
 #               3) Shingo Noguchi, PhotoXP (http://www.daifukuya.com/photoxp/)
-#               4) Niels Kristian Bech Jensen private communication
 #               5) http://www.cybercom.net/~dcoffin/dcraw/
 #               6) Pedro Corte-Real private communication
 #               7) ExifTool forum post by bronek (http://www.cpanforum.com/posts/1118)
@@ -36,9 +35,10 @@
 #              27) http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,3833.0.html
 #              28) Michael Reitinger private communication (RX100)
 #              29) http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,4086.0.html
-#              30) Iliah Borg private communication (LibRaw)
+#              IB) Iliah Borg private communication (LibRaw)
 #              JD) Jens Duttke private communication
 #              JR) Jos Roost private communication
+#              NJ) Niels Kristian Bech Jensen private communication
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::Minolta;
@@ -233,7 +233,7 @@ $VERSION = '2.30';
     24.4 => 'Sigma 18-200mm F3.5-6.3 DC', #22
     24.5 => 'Sigma DC 18-125mm F4-5,6 D', #exiv2 0.23
   # 24.6 => 'Tamron SP AF 28-75mm F2.8 XR Di (IF) Macro', #JD
-    24.6 => 'Tamron SP AF 28-75mm F2.8 XR Di LD Aspherical [IF] Macro', #4 (Model A09)
+    24.6 => 'Tamron SP AF 28-75mm F2.8 XR Di LD Aspherical [IF] Macro', #NJ (Model A09)
     25 => 'Minolta AF 100-300mm F4.5-5.6 APO (D) or Sigma Lens',
     25.1 => 'Sigma 100-300mm F4 EX (APO (D) or D IF)', #JD
     25.2 => 'Sigma 70mm F2.8 EX DG Macro', #JD
@@ -286,7 +286,7 @@ $VERSION = '2.30';
     #51.1 => 'Sony AF DT 55-200mm F4-5.5', #11 (anomaly? - PH)
     52 => 'Sony 70-300mm F4.5-5.6 G SSM (SAL70300G) or G SSM II or Tamron Lens', #JD
     52.1 => 'Sony 70-300mm F4.5-5.6 G SSM II (SAL70300G2)', #JR
-    52.2 => 'Tamron SP 70-300mm F4-5.6 Di USD', #JR,4 (Model A005)
+    52.2 => 'Tamron SP 70-300mm F4-5.6 Di USD', #JR,NJ (Model A005)
     53 => 'Sony 70-400mm F4-5.6 G SSM (SAL70400G)', #17(/w correction by Stephen Bishop)/JR
     54 => 'Carl Zeiss Vario-Sonnar T* 16-35mm F2.8 ZA SSM (SAL1635Z) or ZA SSM II', #17/JR
     54.1 => 'Carl Zeiss Vario-Sonnar T* 16-35mm F2.8 ZA SSM II (SAL1635Z2)', #JR
@@ -317,8 +317,8 @@ $VERSION = '2.30';
     # was 128.2 => 'Tamron 28-300mm F3.5-6.3',
     128.3 => 'Tamron 80-300mm F3.5-6.3',
     128.4 => 'Tamron AF 28-200mm F3.8-5.6 XR Di Aspherical [IF] Macro', #JD (Model A031)
-   # also Tamron AF 28-200mm F3.8-5.6 Aspherical', #30 (Model 71D)
-   # and 'Tamron AF 28-200mm F3.8-5.6 LD Aspherical [IF] Super', #30 (Model 171D)
+   # also Tamron AF 28-200mm F3.8-5.6 Aspherical', #IB (Model 71D)
+   # and 'Tamron AF 28-200mm F3.8-5.6 LD Aspherical [IF] Super', #IB (Model 171D)
     128.5 => 'Tamron SP AF 17-35mm F2.8-4 Di LD Aspherical IF', #JD (Model A05)
     128.6 => 'Sigma AF 50-150mm F2.8 EX DC APO HSM II', #JD
     128.7 => 'Sigma 10-20mm F3.5 EX DC HSM', #11 (Model 202-205)
@@ -332,8 +332,8 @@ $VERSION = '2.30';
    '128.14' => 'Sigma 17-50mm F2.8 EX DC HSM', #Exiv2
    '128.15' => 'Sigma 17-70mm F2.8-4 DC Macro HSM', #JR
    '128.16' => 'Sigma 150mm F2.8 EX DG OS HSM APO Macro', #Marcus Holland-Moritz
-   '128.17' => 'Sigma 150-500mm F5-6.3 APO DG OS HSM', #30
-   '128.18' => 'Tamron AF 28-105mm F4-5.6 [IF]', #30 (Model 179D)
+   '128.17' => 'Sigma 150-500mm F5-6.3 APO DG OS HSM', #IB
+   '128.18' => 'Tamron AF 28-105mm F4-5.6 [IF]', #IB (Model 179D)
    '128.19' => 'Sigma 35mm F1.4 DG HSM', #JR
    '128.20' => 'Sigma 18-35mm F1.8 DC HSM', #JR
     129 => 'Tamron Lens (129)',
@@ -344,7 +344,7 @@ $VERSION = '2.30';
     136 => 'Tokina EMZ M100 AF 100mm F3.5', #JD
     137 => 'Cosina 70-210mm F2.8-4 AF', #11
     138 => 'Soligor 19-35mm F3.5-4.5', #11
-    139 => 'Tokina AF 28-300mm F4-6.3', #30
+    139 => 'Tokina AF 28-300mm F4-6.3', #IB
     142 => 'Voigtlander 70-300mm F4.5-5.6', #JD
     146 => 'Voigtlander Macro APO-Lanthar 125mm F2.5 SL', #JD
     194 => 'Tamron SP AF 17-50mm F2.8 XR Di II LD Aspherical [IF]', #23 (Model A16)
@@ -370,7 +370,7 @@ $VERSION = '2.30';
     25511.2 => 'Sigma AF 28-70mm F2.8', #JD
     25511.3 => 'Sigma M-AF 70-200mm F2.8 EX Aspherical', #12
     25511.4 => 'Quantaray M-AF 35-80mm F4-5.6', #JD
-    25511.5 => 'Tokina 28-70mm F2.8-4.5 AF', #30
+    25511.5 => 'Tokina 28-70mm F2.8-4.5 AF', #IB
     25521 => 'Minolta AF 28-85mm F3.5-4.5 or Other Lens', # not New (ref 18)
     25521.1 => 'Tokina 19-35mm F3.5-4.5', #3
     25521.2 => 'Tokina 28-70mm F2.8 AT-X', #7
@@ -380,7 +380,7 @@ $VERSION = '2.30';
     25521.6 => 'Tamron AF 19-35mm F3.5-4.5', #JD (Model A10)
     25521.7 => 'Angenieux AF 28-70mm F2.6', #JD
     25521.8 => 'Tokina AT-X 17 AF 17mm F3.5', #27
-    25521.9 => 'Tokina 20-35mm F3.5-4.5 II AF', #30
+    25521.9 => 'Tokina 20-35mm F3.5-4.5 II AF', #IB
     25531 => 'Minolta AF 28-135mm F4-4.5 or Sigma Lens',
     25531.1 => 'Sigma ZOOM-alpha 35-135mm F3.5-4.5', #16
     25531.2 => 'Sigma 28-105mm F2.8-4 Aspherical', #JD
@@ -485,7 +485,7 @@ $VERSION = '2.30';
     # - this is the base to which the Canon LensType is added
     30464 => 'Metabones Canon EF Speed Booster', #Metabones
     45671 => 'Tokina 70-210mm F4-5.6', #22
-    45711 => 'Vivitar 70-210mm F4.5-5.6', #30
+    45711 => 'Vivitar 70-210mm F4.5-5.6', #IB
     45741 => '2x Teleconverter or Tamron or Tokina Lens', #18
     45741.1 => 'Tamron SP AF 90mm F2.5', #JD
     45741.2 => 'Tokina RF 500mm F8.0 x2', #JD
@@ -816,7 +816,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
     0x0102 => {
         Name => 'MinoltaQuality',
         Writable => 'int32u',
-        # PrintConv strings conform with Minolta reference manual (ref 4)
+        # PrintConv strings conform with Minolta reference manual (ref NJ)
         # (note that Minolta calls an uncompressed TIFF image "Super fine")
         PrintConv => {
             0 => 'Raw',
@@ -836,7 +836,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
             Condition => '$self->{Model} =~ /^DiMAGE (A2|7Hi)$/',
             Notes => 'quality for DiMAGE A2/7Hi',
             Priority => 0, # lower priority because this doesn't work for A200
-            PrintConv => { #4
+            PrintConv => { #NJ
                 0 => 'Raw',
                 1 => 'Super Fine',
                 2 => 'Fine',
@@ -1025,7 +1025,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
     },
     5 => {
         Name => 'MinoltaQuality',
-        PrintConv => { #4
+        PrintConv => { #NJ
             0 => 'Raw',
             1 => 'Super Fine',
             2 => 'Fine',

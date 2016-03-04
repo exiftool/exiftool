@@ -8,8 +8,8 @@
 #               24/06/2010 - PH decode some SD15 tags
 #
 # References:   1) http://www.x3f.info/technotes/FileDocs/MakerNoteDoc.html
-#               2) Niels Kristian Bech Jensen
-#               3) Iliah Borg private communication (LibRaw)
+#               IB) Iliah Borg private communication (LibRaw)
+#               NJ) Niels Kristian Bech Jensen
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::Sigma;
@@ -20,7 +20,7 @@ use Image::ExifTool::Exif;
 
 $VERSION = '1.17';
 
-# sigma LensType lookup (ref 3)
+# sigma LensType lookup (ref IB)
 %sigmaLensTypes = (
     Notes => q{
         Decimal values have been added to differentiate lenses which would otherwise
@@ -66,7 +66,7 @@ $VERSION = '1.17';
     256 => 'Sigma 105mm F2.8 EX Macro',
     257 => 'Sigma 105mm F2.8 EX DG Macro',
     258 => 'Sigma 105mm F2.8 EX DG OS HSM Macro',
-    270 => 'Sigma 70mm F2.8 EX DG Macro', #2 (SD1)
+    270 => 'Sigma 70mm F2.8 EX DG Macro', #NJ (SD1)
     300 => 'Sigma 30mm F1.4 EX DC HSM',
     301 => 'Sigma 30mm F1.4 DC HSM | A',
     310 => 'Sigma 50mm F1.4 EX DG HSM',
@@ -129,7 +129,7 @@ $VERSION = '1.17';
     738 => 'Sigma 50-500mm F4.5-6.3 APO DG OS HSM',
     824 => 'Sigma 1.4X Teleconverter EX APO DG',
     853 => 'Sigma 18-125mm F3.8-5.6 DC OS HSM',
-    861 => 'Sigma 18-50mm F2.8-4.5 DC OS HSM', #2 (SD1)
+    861 => 'Sigma 18-50mm F2.8-4.5 DC OS HSM', #NJ (SD1)
     876 => 'Sigma 2.0X Teleconverter EX APO DG',
     880 => 'Sigma 18-250mm F3.5-6.3 DC OS HSM',
     882 => 'Sigma 18-200mm F3.5-6.3 II DC OS HSM',
@@ -137,10 +137,10 @@ $VERSION = '1.17';
     1003 => 'Sigma 19mm F2.8', #PH (DP1 Merrill kit)
     1004 => 'Sigma 30mm F2.8', #PH (DP2 Merrill kit)
     1005 => 'Sigma 50mm F2.8 Macro', #PH (DP3 Merrill kit)
-    1006 => 'Sigma 19mm F2.8', #2 (DP1 Quattro kit)
+    1006 => 'Sigma 19mm F2.8', #NJ (DP1 Quattro kit)
     1007 => 'Sigma 30mm F2.8', #PH (DP2 Quattro kit)
-    1008 => 'Sigma 50mm F2.8 Macro', #2 (DP3 Quattro kit)
-    1009 => 'Sigma 14mm F4', #2 (DP0 Quattro kit)
+    1008 => 'Sigma 50mm F2.8 Macro', #NJ (DP3 Quattro kit)
+    1009 => 'Sigma 14mm F4', #NJ (DP0 Quattro kit)
     8900 => 'Sigma 70-300mm F4-5.6 DG OS', #PH (SD15)
    'A100'=> 'Sigma 24-70mm F2.8 DG Macro', #PH (SD15)
     # 'FFFF' - seen this for a 28-70mm F2.8 lens - PH

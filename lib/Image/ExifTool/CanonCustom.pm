@@ -19,7 +19,7 @@ use Image::ExifTool qw(:DataAccess);
 use Image::ExifTool::Canon;
 use Image::ExifTool::Exif;
 
-$VERSION = '1.52';
+$VERSION = '1.53';
 
 sub ProcessCanonCustom($$$);
 sub ProcessCanonCustom2($$$);
@@ -1954,10 +1954,21 @@ my %convPFn = ( PrintConv => \&ConvertPfn, PrintConvInv => \&ConvertPfnInv );
     },
     0x051d => { # (750D/760D)
         Name => 'VFDisplayIllumination',
-        PrintConv => {
+        PrintConv => [{
             0 => 'Auto',
             1 => 'Enable',
             2 => 'Disable',
+        },{
+            0 => 'Non-illuminated', # (NC)
+            1 => 'Illuminated', # (NC)
+        }],
+    },
+    0x051e => { # (80D)
+        Name => 'InitialAFPointAIServoAF',
+        PrintConv => {
+            0 => 'Auto',
+            1 => 'Initial AF point selected',
+            2 => 'Manual AF point',
         },
     },
     #### 3b) Drive

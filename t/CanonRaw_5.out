@@ -1,10 +1,10 @@
-  ExifToolVersion = 9.94
+  ExifToolVersion = 10.12
   FileName = CanonRaw.crw
   Directory = t/images
   FileSize = 6816
   FileModifyDate = 1327257119
-  FileAccessDate = 1430317237
-  FileInodeChangeDate = 1429973820
+  FileAccessDate = 1457094142
+  FileInodeChangeDate = 1455728654
   FilePermissions = 33188
   FileType = CRW
   FileTypeExtension = CRW
@@ -124,7 +124,7 @@
   | | | | FocusRange = 2
   | | | | AFPoint = 8197
   | | | | CanonExposureMode = 1
-  | | | | LensType = -1
+  | | | | LensType = 65535
   | | | | MaxFocalLength = 55
   | | | | MinFocalLength = 18
   | | | | FocalUnits = 1

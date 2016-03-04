@@ -724,7 +724,14 @@
 </tr><tr><td class=r>0x3910000</td><td>= PowerShot SX410 IS</td>
 </tr><tr><td class=r>0x3930000</td><td>= PowerShot G9 X</td>
 </tr><tr><td class=r>0x3950000</td><td>= PowerShot G5 X</td>
+</tr><tr><td class=r>0x3970000</td><td>= PowerShot G7 X Mark II</td>
+</tr><tr><td class=r>0x3990000</td><td>= PowerShot ELPH 360 HS / IXUS 285 HS / IXY 650</td>
+</tr><tr><td class=r>0x4010000</td><td>= PowerShot SX540 HS</td>
+</tr><tr><td class=r>0x4020000</td><td>= PowerShot SX420 IS</td>
+</tr><tr><td class=r>0x4030000</td><td>= PowerShot ELPH 190 IS / IXUS 180 / IXY 190</td>
 </tr><tr><td class=r>0x4040000</td><td>= PowerShot G1</td>
+</tr><tr><td class=r>0x4040001</td><td>= IXY 180</td>
+</tr><tr><td class=r>0x4050000</td><td>= PowerShot SX720 HS</td>
 </tr><tr><td class=r>0x6040000</td><td>= PowerShot S100 / Digital IXUS / IXY Digital</td>
 </tr><tr><td class=r>0x4007d673</td><td>= DC19/DC21/DC22</td>
 </tr><tr><td class=r>0x4007d674</td><td>= XH A1</td>
@@ -802,6 +809,7 @@
 </tr><tr><td class=r>0x80000331</td><td>= EOS M</td>
 </tr><tr><td class=r>0x80000346</td><td>= EOS Rebel SL1 / 100D / Kiss X7</td>
 </tr><tr><td class=r>0x80000347</td><td>= EOS Rebel T6s / 760D / 8000D</td>
+</tr><tr><td class=r>0x80000350</td><td>= EOS 80D</td>
 </tr><tr><td class=r>0x80000355</td><td>= EOS M2</td>
 </tr><tr><td class=r>0x80000382</td><td>= EOS 5DS</td>
 </tr><tr><td class=r>0x80000393</td><td>= EOS Rebel T6i / 750D / Kiss X8i</td>
@@ -1091,7 +1099,7 @@ others use a range of 0 to 7 where 0 is no sharpening)</span></span></td></tr>
 <tr>
 <td class=r title='22 = 0x16'>22</td>
 <td>LensType</td>
-<td class=c>int16s</td>
+<td class=c>int16u</td>
 <td>--&gt; <a href='Canon.html#LensType'>Canon LensType Values</a>
   <br><span class='n s'>(this value is incorrect for EOS 7D images with lenses of type 256 or greater)</span></td></tr>
 <tr class=b>
@@ -1566,6 +1574,8 @@ attempting to identify the specific lens model.</p>
 </tr><tr><td>4153</td><td>= Canon EF-M 15-45mm f/3.5-6.3 IS STM</td>
 </tr><tr><td>4154</td><td>= Canon EF-S 24mm f/2.8 STM</td>
 </tr><tr><td>4156</td><td>= Canon EF 50mm f/1.8 STM</td>
+</tr><tr><td>36912</td><td>= Canon EF-S 18-135mm f/3.5-5.6 IS USM</td>
+</tr><tr><td>65535</td><td>= n/a</td>
 </tr></table></td></tr></table></blockquote>
 
 <h2><a name='FocalLength'>Canon FocalLength Tags</a></h2>
@@ -9282,7 +9292,14 @@ SX280.</p>
 </tr><tr><td class=r>0x3910000</td><td>= PowerShot SX410 IS</td>
 </tr><tr><td class=r>0x3930000</td><td>= PowerShot G9 X</td>
 </tr><tr><td class=r>0x3950000</td><td>= PowerShot G5 X</td>
+</tr><tr><td class=r>0x3970000</td><td>= PowerShot G7 X Mark II</td>
+</tr><tr><td class=r>0x3990000</td><td>= PowerShot ELPH 360 HS / IXUS 285 HS / IXY 650</td>
+</tr><tr><td class=r>0x4010000</td><td>= PowerShot SX540 HS</td>
+</tr><tr><td class=r>0x4020000</td><td>= PowerShot SX420 IS</td>
+</tr><tr><td class=r>0x4030000</td><td>= PowerShot ELPH 190 IS / IXUS 180 / IXY 190</td>
 </tr><tr><td class=r>0x4040000</td><td>= PowerShot G1</td>
+</tr><tr><td class=r>0x4040001</td><td>= IXY 180</td>
+</tr><tr><td class=r>0x4050000</td><td>= PowerShot SX720 HS</td>
 </tr><tr><td class=r>0x6040000</td><td>= PowerShot S100 / Digital IXUS / IXY Digital</td>
 </tr><tr><td class=r>0x4007d673</td><td>= DC19/DC21/DC22</td>
 </tr><tr><td class=r>0x4007d674</td><td>= XH A1</td>
@@ -9360,6 +9377,7 @@ SX280.</p>
 </tr><tr><td class=r>0x80000331</td><td>= EOS M</td>
 </tr><tr><td class=r>0x80000346</td><td>= EOS Rebel SL1 / 100D / Kiss X7</td>
 </tr><tr><td class=r>0x80000347</td><td>= EOS Rebel T6s / 760D / 8000D</td>
+</tr><tr><td class=r>0x80000350</td><td>= EOS 80D</td>
 </tr><tr><td class=r>0x80000355</td><td>= EOS M2</td>
 </tr><tr><td class=r>0x80000382</td><td>= EOS 5DS</td>
 </tr><tr><td class=r>0x80000393</td><td>= EOS Rebel T6i / 750D / Kiss X8i</td>
@@ -9368,7 +9386,7 @@ SX280.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Feb 8, 2016</i>
+<br><i>Last revised Mar 4, 2016</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

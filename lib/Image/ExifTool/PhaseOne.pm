@@ -240,8 +240,8 @@ my @formatName = ( undef, 'string', 'int16s', undef, 'int32s' );
         PrintConv => 'sprintf("%.1f",$val)',
         PrintConvInv => '$val',
     },
-    # 0x0416 - float: (min focal length? ref LibRaw, Credo50) (but looks more like an int32u date for the 645DF - PH)
-    # 0x0417 - float: 80 (max focal length? ref LibRaw)
+    # 0x0416 - float: (min focal length? ref LR, Credo50) (but looks more like an int32u date for the 645DF - PH)
+    # 0x0417 - float: 80 (max focal length? ref LR)
 );
 
 # Phase One metadata (ref 1)

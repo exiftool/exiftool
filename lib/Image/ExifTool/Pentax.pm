@@ -57,7 +57,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::HP;
 
-$VERSION = '3.01';
+$VERSION = '3.02';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -316,7 +316,7 @@ sub PrintFilter($$$);
     '8 27' => 'Sigma 18-200mm F3.5-6.3 II DC HSM', #27
     '8 28' => 'Sigma 18-250mm F3.5-6.3 DC Macro HSM', #27
     '8 29' => 'Sigma 35mm F1.4 DG HSM', #27
-    '8 30' => 'Sigma 17-70mm F2.8-4 DC Macro HSM Contemporary', #27
+    '8 30' => 'Sigma 17-70mm F2.8-4 DC Macro HSM | C', #27
     '8 31' => 'Sigma 18-35mm F1.8 DC HSM', #27
     '8 32' => 'Sigma 30mm F1.4 DC HSM | A', #27
     '8 34' => 'Sigma 18-300mm F3.5-6.3 DC Macro HSM', #NJ

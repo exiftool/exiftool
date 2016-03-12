@@ -83,7 +83,7 @@ sub ProcessSerialData($$$);
 sub ProcessFilters($$$);
 sub SwapWords($);
 
-$VERSION = '3.58';
+$VERSION = '3.59';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -223,7 +223,7 @@ $VERSION = '3.58';
     137.3 => 'Sigma 18-250mm f/3.5-6.3 DC OS HSM', #PH (also Sigma 18-250mm f/3.5-6.3 DC Macro OS HSM)
     137.4 => 'Sigma 24-70mm f/2.8 IF EX DG HSM', #PH
     137.5 => 'Sigma 18-125mm f/3.8-5.6 DC OS HSM', #PH
-    137.6 => 'Sigma 17-70mm f/2.8-4 DC Macro OS HSM', #forum2819 (Contemporary version has this ID - PH)
+    137.6 => 'Sigma 17-70mm f/2.8-4 DC Macro OS HSM | C', #forum2819 (Contemporary version has this ID - PH)
     137.7 => 'Sigma 17-50mm f/2.8 OS HSM', #47
     137.8 => 'Sigma 18-200mm f/3.5-6.3 DC OS HSM [II]', #PH
     137.9 => 'Tamron AF 18-270mm f/3.5-6.3 Di II VC PZD', #(model B008)forum3090
@@ -239,7 +239,8 @@ $VERSION = '3.58';
     140 => 'Canon EF 500mm f/4.5L', #32
     141 => 'Canon EF 500mm f/4.5L',
     142 => 'Canon EF 300mm f/2.8L IS', #15
-    143 => 'Canon EF 500mm f/4L IS', #15
+    143 => 'Canon EF 500mm f/4L IS or Sigma Lens', #15
+    143.1 => 'Sigma 17-70mm f/2.8-4 DC Macro OS HSM', #NJ (Exiv2 #1167)
     144 => 'Canon EF 35-135mm f/4-5.6 USM', #26
     145 => 'Canon EF 100-300mm f/4.5-5.6 USM', #32
     146 => 'Canon EF 70-210mm f/3.5-4.5 USM', #32
@@ -272,6 +273,7 @@ $VERSION = '3.58';
     160.2 => 'Tokina AT-X 124 AF Pro DX 12-24mm f/4', #49
     160.3 => 'Tokina AT-X 107 AF DX 10-17mm f/3.5-4.5 Fisheye', #PH (http://osdir.com/ml/digikam-devel/2011-04/msg00275.html)
     160.4 => 'Tokina AT-X 116 AF Pro DX 11-16mm f/2.8', #forum3967
+    160.5 => 'Tokina AT-X 11-20 F2.8 PRO DX Aspherical 11-20mm f/2.8', #NJ (Exiv2 #1166)
     161 => 'Canon EF 28-70mm f/2.8L or Sigma or Tamron Lens',
     161.1 => 'Sigma 24-70mm f/2.8 EX',
     161.2 => 'Sigma 28-70mm f/2.8 EX', #PH (http://www.breezesys.com/forum/showthread.php?t=3718)
@@ -286,7 +288,8 @@ $VERSION = '3.58';
     165 => 'Canon EF 70-200mm f/2.8 L',
     166 => 'Canon EF 70-200mm f/2.8 L + 1.4x',
     167 => 'Canon EF 70-200mm f/2.8 L + 2x',
-    168 => 'Canon EF 28mm f/1.8 USM', #15
+    168 => 'Canon EF 28mm f/1.8 USM or Sigma Lens', #15
+    168.1 => 'Sigma 50-100mm f/1.8 DC HSM | A', #IB
     169 => 'Canon EF 17-35mm f/2.8L or Sigma Lens', #15
     169.1 => 'Sigma 18-200mm f/3.5-6.3 DC OS', #23
     169.2 => 'Sigma 15-30mm f/3.5-4.5 EX DG Aspherical', #4
@@ -371,7 +374,7 @@ $VERSION = '3.58';
     232 => 'Canon EF 70-300mm f/4.5-5.6 DO IS USM', #15
     233 => 'Canon EF 28-300mm f/3.5-5.6L IS', #PH
     234 => 'Canon EF-S 17-85mm f/4-5.6 IS USM or Tokina Lens', #19
-    234.1 => 'Tokina AT-X 12-28mm f/4 PRO DX', #50
+    234.1 => 'Tokina AT-X 12-28 PRO DX 12-28mm f/4', #50/NJ
     235 => 'Canon EF-S 10-22mm f/3.5-4.5 USM', #15
     236 => 'Canon EF-S 60mm f/2.8 Macro USM', #15
     237 => 'Canon EF 24-105mm f/4L IS', #15
@@ -752,6 +755,7 @@ $VERSION = '3.58';
     0x80000382 => 'EOS 5DS',
     0x80000393 => 'EOS Rebel T6i / 750D / Kiss X8i',
     0x80000401 => 'EOS 5DS R',
+    0x80000404 => 'EOS Rebel T6 / 1300D / Kiss X80',
 );
 
 my %canonQuality = (

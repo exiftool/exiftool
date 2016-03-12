@@ -59,7 +59,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.15';
+$VERSION = '3.16';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -373,7 +373,7 @@ sub GetAFPointGrid($$;$);
     '7A 47 2B 5C 24 34 4B 06' => 'Sigma 17-70mm F2.8-4.5 DC Macro Asp. IF HSM',
     '7A 48 2B 5C 24 34 4B 06' => 'Sigma 17-70mm F2.8-4.5 DC Macro Asp. IF HSM',
     '7F 48 2B 5C 24 34 1C 06' => 'Sigma 17-70mm F2.8-4.5 DC Macro Asp. IF',
-    '8E 3C 2B 5C 24 30 4B 0E' => 'Sigma 17-70mm F2.8-4 DC Macro OS HSM Contemporary',
+    '8E 3C 2B 5C 24 30 4B 0E' => 'Sigma 17-70mm F2.8-4 DC Macro OS HSM | C',
     'A0 48 2A 5C 24 30 4B 0E' => 'Sigma 17-70mm F2.8-4 DC Macro OS HSM', #http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,5170.0.html
     '8B 4C 2D 44 14 14 4B 06' => 'Sigma 18-35mm F1.8 DC HSM', #30/NJ
     '26 40 2D 44 2B 34 1C 02' => 'Sigma 18-35mm F3.5-4.5 Aspherical',
@@ -740,7 +740,19 @@ my %retouchValues = ( #PH
     35 => 'Selected Frame', #31 (frame exported from MOV)
     37 => 'Color Sketch', #31
     38 => 'Selective Color', # (S9200)
+    39 => 'Glamour', # (S3500)
     40 => 'Drawing', # (S9200)
+    44 => 'Pop', # (S3500)
+    45 => 'Toy Camera Effect 1', # (S3500)
+    46 => 'Toy Camera Effect 2', # (S3500)
+    47 => 'Cross Process (red)', # (S3500)
+    48 => 'Cross Process (blue)', # (S3500)
+    49 => 'Cross Process (green)', # (S3500)
+    50 => 'Cross Process (yellow)', # (S3500)
+    51 => 'Super Vivid', # (S3500)
+    52 => 'High-contrast Monochrome', # (S3500)
+    53 => 'High Key', # (S3500)
+    54 => 'Low Key', # (S3500)
 );
 
 # AF point indices for models with 51 focus points, eg. D3 (ref JD/PH)
@@ -2538,6 +2550,7 @@ my %binaryDataAttrs = (
             8 => 'Lower-right',
             9 => 'Far Left',
             10 => 'Far Right',
+            # (have also seen values of 11 and 12 when AFPointsInFocus is "(none)" - PH S3500)
         },
     },
     2 => {

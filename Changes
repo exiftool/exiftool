@@ -7,6 +7,18 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.10. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Mar. 12, 2016 - Version 10.13
+
+  - Added a few new Canon LensType values (thanks Niels Kristian Bech Jensen and
+    LibRaw)
+  - Added a new CanonModelID
+  - Added a number of new Nikon RetouchHistory modes
+  - Decode a number of new Sony tags (thanks Jos Roost)
+  - Changed a couple of Sigma "| C" lens names for consistency
+  - API Changes:
+      - Fixed bug which could cause the API Filter option to be ignored for some
+    tags when copying tags with the Composite option set
+
 Mar. 4, 2016 - Version 10.12
 
   - Added a new PentaxModelID and SonyModelID (thanks LibRaw)

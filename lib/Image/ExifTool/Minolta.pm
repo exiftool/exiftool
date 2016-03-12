@@ -49,7 +49,7 @@ use vars qw($VERSION %minoltaLensTypes %minoltaTeleconverters %minoltaColorMode
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.30';
+$VERSION = '2.31';
 
 # Full list of product codes for Sony-compatible Minolta lenses
 # (ref http://www.kb.sony.com/selfservice/documentLink.do?externalId=C1000570)
@@ -546,25 +546,26 @@ $VERSION = '2.30';
     '65535.33' => 'Sigma 19mm F2.8 [EX] DN', #JR
     '65535.34' => 'Sigma 30mm F2.8 [EX] DN', #JR
     '65535.35' => 'Sigma 60mm F2.8 DN', #JR
-    '65535.36' => 'Tamron 18-200mm F3.5-6.3 Di III VC', #JR (Model B011)
-    '65535.37' => 'Zeiss Batis 25mm F2', #JR
-    '65535.38' => 'Zeiss Batis 85mm F1.8', #JR
-    '65535.39' => 'Zeiss Loxia 21mm F2.8', #JR
-    '65535.40' => 'Zeiss Loxia 35mm F2', #JR
-    '65535.41' => 'Zeiss Loxia 50mm F2', #JR
-    '65535.42' => 'Zeiss Touit 12mm F2.8', #JR
-    '65535.43' => 'Zeiss Touit 32mm F1.8', #JR
-    '65535.44' => 'Zeiss Touit 50mm F2.8 Macro', #JR
+    '65535.36' => 'Sigma 30mm F1.4 DC DN | C', #IB
+    '65535.37' => 'Tamron 18-200mm F3.5-6.3 Di III VC', #JR (Model B011)
+    '65535.38' => 'Zeiss Batis 25mm F2', #JR
+    '65535.39' => 'Zeiss Batis 85mm F1.8', #JR
+    '65535.40' => 'Zeiss Loxia 21mm F2.8', #JR
+    '65535.41' => 'Zeiss Loxia 35mm F2', #JR
+    '65535.42' => 'Zeiss Loxia 50mm F2', #JR
+    '65535.43' => 'Zeiss Touit 12mm F2.8', #JR
+    '65535.44' => 'Zeiss Touit 32mm F1.8', #JR
+    '65535.45' => 'Zeiss Touit 50mm F2.8 Macro', #JR
 #
 # other lenses
 #
-    '65535.45' => 'Arax MC 35mm F2.8 Tilt+Shift', #JD
-    '65535.46' => 'Arax MC 80mm F2.8 Tilt+Shift', #JD
-    '65535.47' => 'Zenitar MF 16mm F2.8 Fisheye M42', #JD
-    '65535.48' => 'Samyang 500mm Mirror F8.0', #19
-    '65535.49' => 'Pentacon Auto 135mm F2.8', #19
-    '65535.50' => 'Pentacon Auto 29mm F2.8', #19
-    '65535.51' => 'Helios 44-2 58mm F2.0', #19
+    '65535.46' => 'Arax MC 35mm F2.8 Tilt+Shift', #JD
+    '65535.47' => 'Arax MC 80mm F2.8 Tilt+Shift', #JD
+    '65535.48' => 'Zenitar MF 16mm F2.8 Fisheye M42', #JD
+    '65535.49' => 'Samyang 500mm Mirror F8.0', #19
+    '65535.50' => 'Pentacon Auto 135mm F2.8', #19
+    '65535.51' => 'Pentacon Auto 29mm F2.8', #19
+    '65535.52' => 'Helios 44-2 58mm F2.0', #19
 );
 
 %minoltaTeleconverters = (

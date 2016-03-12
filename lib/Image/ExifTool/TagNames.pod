@@ -13243,8 +13243,10 @@ MakerNotes.
   0x2020   AFPointsUsed                         N
   0x2022   FocalPlaneAFPointsUsed               N
   0x2026   WBShiftAB_GM_Precise                 int32s[2]~
+  0x2027   FocusLocation                        int16u[4]
   0x2028   VariableLowPassFilter                N
   0x2029   RAWFileType                          N
+  0x202a   Tag202a                              Sony Tag202a
   0x3000   ShotInfo                             Sony ShotInfo
   0x900b   Tag900b                              Sony Tag900b
   0x9050   Tag9050                              Sony Tag9050
@@ -14078,7 +14080,7 @@ ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-77M2.
 
 =head3 Sony Tag2010h Tags
 
-Valid for DSC-HX90V/RX1RM2/RX10M2/RX100M4/WX500, ILCE-7RM2/7SM2.
+Valid for DSC-HX90V/RX1RM2/RX10M2/RX100M4/WX500, ILCE-6300/7RM2/7SM2.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
@@ -14110,6 +14112,28 @@ Valid for DSC-HX90V/RX1RM2/RX10M2/RX100M4/WX500, ILCE-7RM2/7SM2.
   0x18ee   LensMount                            int8u
   0x18ef   LensType2                            int16u
   0x18f2   LensType                             int16u
+
+=head3 Sony Tag202a Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      1    FocalPlaneAFPointsUsed               int8u
+      2    FocalPlaneAFPointArea                int16u[2]
+      6    FocalPlaneAFPointLocation1           int16u[2]
+     10    FocalPlaneAFPointLocation2           int16u[2]
+     14    FocalPlaneAFPointLocation3           int16u[2]
+     18    FocalPlaneAFPointLocation4           int16u[2]
+     22    FocalPlaneAFPointLocation5           int16u[2]
+     26    FocalPlaneAFPointLocation6           int16u[2]
+     30    FocalPlaneAFPointLocation7           int16u[2]
+     34    FocalPlaneAFPointLocation8           int16u[2]
+     38    FocalPlaneAFPointLocation9           int16u[2]
+     42    FocalPlaneAFPointLocation10          int16u[2]
+     46    FocalPlaneAFPointLocation11          int16u[2]
+     50    FocalPlaneAFPointLocation12          int16u[2]
+     54    FocalPlaneAFPointLocation13          int16u[2]
+     58    FocalPlaneAFPointLocation14          int16u[2]
+     62    FocalPlaneAFPointLocation15          int16u[2]
 
 =head3 Sony ShotInfo Tags
 
@@ -14234,7 +14258,7 @@ DSC-HX50V, DSC-QX10/QX100.
 =head3 Sony Tag9400c Tags
 
 Valid for DSC-HX400V/HX60V/QX30/RX10/RX100M3/WX220/WX350,
-ILCE-7/7R/7S/7M2/7RM2/7SM2/5000/5100/6000/QX1, ILCA-77M2.
+ILCE-7/7R/7S/7M2/7RM2/7SM2/5000/5100/6000/6300/QX1, ILCA-77M2.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------

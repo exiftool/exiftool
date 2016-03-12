@@ -371,7 +371,7 @@ toward magenta)</span></span></td></tr>
 <td title='0x201d = 8221'>0x201d</td>
 <td>FlexibleSpotPosition</td>
 <td class=c>int16u[2]</td>
-<td><span class=s><span class=n>(X and Y coordinages of the AF point.  Valid only when AFAreaMode is Flexible
+<td><span class=s><span class=n>(X and Y coordinates of the AF point, valid only when AFAreaMode is Flexible
 Spot)</span></span></td></tr>
 <tr>
 <td title='0x201e = 8222'>0x201e</td>
@@ -613,6 +613,11 @@ Spot)</span></span></td></tr>
 <td><span class=s><span class=n>(2 numbers: 1. positive is a shift toward amber, 2. positive is a shift
 toward magenta)</span></span></td></tr>
 <tr>
+<td title='0x2027 = 8231'>0x2027</td>
+<td>FocusLocation</td>
+<td class=c>int16u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td title='0x2028 = 8232'>0x2028</td>
 <td>VariableLowPassFilter</td>
 <td class=c>N</td>
@@ -620,12 +625,17 @@ toward magenta)</span></span></td></tr>
   <br>1 = Off
   <br>65537 = Standard
   <br>131073 = High</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x2029 = 8233'>0x2029</td>
 <td>RAWFileType</td>
 <td class=c>N</td>
 <td><span class=s>0 = Compressed RAW
   <br>1 = Uncompressed RAW</span></td></tr>
+<tr class=b>
+<td title='0x202a = 8234'>0x202a</td>
+<td>Tag202a</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Sony.html#Tag202a'>Sony Tag202a Tags</a></td></tr>
 <tr>
 <td title='0x3000 = 12288'>0x3000</td>
 <td>ShotInfo</td>
@@ -1442,22 +1452,23 @@ adapter is used.</p>
 </tr><tr><td>6553.33</td><td>= Sigma 19mm F2.8 [EX] DN</td>
 </tr><tr><td>6553.34</td><td>= Sigma 30mm F2.8 [EX] DN</td>
 </tr><tr><td>6553.35</td><td>= Sigma 60mm F2.8 DN</td>
-</tr><tr><td>6553.36</td><td>= Tamron 18-200mm F3.5-6.3 Di III VC</td>
-</tr><tr><td>6553.37</td><td>= Zeiss Batis 25mm F2</td>
-</tr><tr><td>6553.38</td><td>= Zeiss Batis 85mm F1.8</td>
-</tr><tr><td>6553.39</td><td>= Zeiss Loxia 21mm F2.8</td>
-</tr><tr><td>6553.40</td><td>= Zeiss Loxia 35mm F2</td>
-</tr><tr><td>6553.41</td><td>= Zeiss Loxia 50mm F2</td>
-</tr><tr><td>6553.42</td><td>= Zeiss Touit 12mm F2.8</td>
-</tr><tr><td>6553.43</td><td>= Zeiss Touit 32mm F1.8</td>
-</tr><tr><td>6553.44</td><td>= Zeiss Touit 50mm F2.8 Macro</td>
-</tr><tr><td>6553.45</td><td>= Arax MC 35mm F2.8 Tilt+Shift</td>
-</tr><tr><td>6553.46</td><td>= Arax MC 80mm F2.8 Tilt+Shift</td>
-</tr><tr><td>6553.47</td><td>= Zenitar MF 16mm F2.8 Fisheye M42</td>
-</tr><tr><td>6553.48</td><td>= Samyang 500mm Mirror F8.0</td>
-</tr><tr><td>6553.49</td><td>= Pentacon Auto 135mm F2.8</td>
-</tr><tr><td>6553.50</td><td>= Pentacon Auto 29mm F2.8</td>
-</tr><tr><td>6553.51</td><td>= Helios 44-2 58mm F2.0</td>
+</tr><tr><td>6553.36</td><td>= Sigma 30mm F1.4 DC DN | C</td>
+</tr><tr><td>6553.37</td><td>= Tamron 18-200mm F3.5-6.3 Di III VC</td>
+</tr><tr><td>6553.38</td><td>= Zeiss Batis 25mm F2</td>
+</tr><tr><td>6553.39</td><td>= Zeiss Batis 85mm F1.8</td>
+</tr><tr><td>6553.40</td><td>= Zeiss Loxia 21mm F2.8</td>
+</tr><tr><td>6553.41</td><td>= Zeiss Loxia 35mm F2</td>
+</tr><tr><td>6553.42</td><td>= Zeiss Loxia 50mm F2</td>
+</tr><tr><td>6553.43</td><td>= Zeiss Touit 12mm F2.8</td>
+</tr><tr><td>6553.44</td><td>= Zeiss Touit 32mm F1.8</td>
+</tr><tr><td>6553.45</td><td>= Zeiss Touit 50mm F2.8 Macro</td>
+</tr><tr><td>6553.46</td><td>= Arax MC 35mm F2.8 Tilt+Shift</td>
+</tr><tr><td>6553.47</td><td>= Arax MC 80mm F2.8 Tilt+Shift</td>
+</tr><tr><td>6553.48</td><td>= Zenitar MF 16mm F2.8 Fisheye M42</td>
+</tr><tr><td>6553.49</td><td>= Samyang 500mm Mirror F8.0</td>
+</tr><tr><td>6553.50</td><td>= Pentacon Auto 135mm F2.8</td>
+</tr><tr><td>6553.51</td><td>= Pentacon Auto 29mm F2.8</td>
+</tr><tr><td>6553.52</td><td>= Helios 44-2 58mm F2.0</td>
 </tr><tr><td>25501</td><td>= Minolta AF 50mm F1.7</td>
 </tr><tr><td>25511</td><td>= Minolta AF 35-70mm F4 or Other Lens</td>
 </tr><tr><td>25511.1</td><td>= Sigma UC AF 28-70mm F3.5-4.5</td>
@@ -1616,22 +1627,23 @@ adapter is used.</p>
 </tr><tr><td>65535.33</td><td>= Sigma 19mm F2.8 [EX] DN</td>
 </tr><tr><td>65535.34</td><td>= Sigma 30mm F2.8 [EX] DN</td>
 </tr><tr><td>65535.35</td><td>= Sigma 60mm F2.8 DN</td>
-</tr><tr><td>65535.36</td><td>= Tamron 18-200mm F3.5-6.3 Di III VC</td>
-</tr><tr><td>65535.37</td><td>= Zeiss Batis 25mm F2</td>
-</tr><tr><td>65535.38</td><td>= Zeiss Batis 85mm F1.8</td>
-</tr><tr><td>65535.39</td><td>= Zeiss Loxia 21mm F2.8</td>
-</tr><tr><td>65535.40</td><td>= Zeiss Loxia 35mm F2</td>
-</tr><tr><td>65535.41</td><td>= Zeiss Loxia 50mm F2</td>
-</tr><tr><td>65535.42</td><td>= Zeiss Touit 12mm F2.8</td>
-</tr><tr><td>65535.43</td><td>= Zeiss Touit 32mm F1.8</td>
-</tr><tr><td>65535.44</td><td>= Zeiss Touit 50mm F2.8 Macro</td>
-</tr><tr><td>65535.45</td><td>= Arax MC 35mm F2.8 Tilt+Shift</td>
-</tr><tr><td>65535.46</td><td>= Arax MC 80mm F2.8 Tilt+Shift</td>
-</tr><tr><td>65535.47</td><td>= Zenitar MF 16mm F2.8 Fisheye M42</td>
-</tr><tr><td>65535.48</td><td>= Samyang 500mm Mirror F8.0</td>
-</tr><tr><td>65535.49</td><td>= Pentacon Auto 135mm F2.8</td>
-</tr><tr><td>65535.50</td><td>= Pentacon Auto 29mm F2.8</td>
-</tr><tr><td>65535.51</td><td>= Helios 44-2 58mm F2.0</td>
+</tr><tr><td>65535.36</td><td>= Sigma 30mm F1.4 DC DN | C</td>
+</tr><tr><td>65535.37</td><td>= Tamron 18-200mm F3.5-6.3 Di III VC</td>
+</tr><tr><td>65535.38</td><td>= Zeiss Batis 25mm F2</td>
+</tr><tr><td>65535.39</td><td>= Zeiss Batis 85mm F1.8</td>
+</tr><tr><td>65535.40</td><td>= Zeiss Loxia 21mm F2.8</td>
+</tr><tr><td>65535.41</td><td>= Zeiss Loxia 35mm F2</td>
+</tr><tr><td>65535.42</td><td>= Zeiss Loxia 50mm F2</td>
+</tr><tr><td>65535.43</td><td>= Zeiss Touit 12mm F2.8</td>
+</tr><tr><td>65535.44</td><td>= Zeiss Touit 32mm F1.8</td>
+</tr><tr><td>65535.45</td><td>= Zeiss Touit 50mm F2.8 Macro</td>
+</tr><tr><td>65535.46</td><td>= Arax MC 35mm F2.8 Tilt+Shift</td>
+</tr><tr><td>65535.47</td><td>= Arax MC 80mm F2.8 Tilt+Shift</td>
+</tr><tr><td>65535.48</td><td>= Zenitar MF 16mm F2.8 Fisheye M42</td>
+</tr><tr><td>65535.49</td><td>= Samyang 500mm Mirror F8.0</td>
+</tr><tr><td>65535.50</td><td>= Pentacon Auto 135mm F2.8</td>
+</tr><tr><td>65535.51</td><td>= Pentacon Auto 29mm F2.8</td>
+</tr><tr><td>65535.52</td><td>= Helios 44-2 58mm F2.0</td>
 </tr></table></td></tr></table></blockquote>
 
 <h2><a name='CameraInfo'>Sony CameraInfo Tags</a></h2>
@@ -4614,6 +4626,7 @@ multi-frame noise reduction)</span></span></td></tr>
 </tr><tr><td class=r>49217</td><td>= Zeiss Batis 85mm F1.8</td>
 </tr><tr><td class=r>49232</td><td>= Zeiss Loxia 50mm F2</td>
 </tr><tr><td class=r>49234</td><td>= Zeiss Loxia 21mm F2.8</td>
+</tr><tr><td class=r>50480</td><td>= Sigma 30mm F1.4 DC DN | C</td>
 </tr></table></td></tr></table></blockquote>
 
 <h2><a name='CameraSettingsUnknown'>Sony CameraSettingsUnknown Tags</a></h2>
@@ -6526,7 +6539,7 @@ ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-77M2.</p>
 </table></td></tr></table></blockquote>
 
 <h2><a name='Tag2010h'>Sony Tag2010h Tags</a></h2>
-<p>Valid for DSC-HX90V/RX1RM2/RX10M2/RX100M4/WX500, ILCE-7RM2/7SM2.</p>
+<p>Valid for DSC-HX90V/RX1RM2/RX10M2/RX100M4/WX500, ILCE-6300/7RM2/7SM2.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -6758,6 +6771,99 @@ ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-77M2.</p>
 <td>LensType</td>
 <td class=c>int16u</td>
 <td>--&gt; <a href='Sony.html#LensType'>Sony LensType Values</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Tag202a'>Sony Tag202a Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='1 = 0x1'>1</td>
+<td>FocalPlaneAFPointsUsed</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>FocalPlaneAFPointArea</td>
+<td class=c>int16u[2]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='6 = 0x6'>6</td>
+<td>FocalPlaneAFPointLocation1</td>
+<td class=c>int16u[2]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='10 = 0xa'>10</td>
+<td>FocalPlaneAFPointLocation2</td>
+<td class=c>int16u[2]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='14 = 0xe'>14</td>
+<td>FocalPlaneAFPointLocation3</td>
+<td class=c>int16u[2]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='18 = 0x12'>18</td>
+<td>FocalPlaneAFPointLocation4</td>
+<td class=c>int16u[2]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='22 = 0x16'>22</td>
+<td>FocalPlaneAFPointLocation5</td>
+<td class=c>int16u[2]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='26 = 0x1a'>26</td>
+<td>FocalPlaneAFPointLocation6</td>
+<td class=c>int16u[2]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='30 = 0x1e'>30</td>
+<td>FocalPlaneAFPointLocation7</td>
+<td class=c>int16u[2]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='34 = 0x22'>34</td>
+<td>FocalPlaneAFPointLocation8</td>
+<td class=c>int16u[2]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='38 = 0x26'>38</td>
+<td>FocalPlaneAFPointLocation9</td>
+<td class=c>int16u[2]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='42 = 0x2a'>42</td>
+<td>FocalPlaneAFPointLocation10</td>
+<td class=c>int16u[2]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='46 = 0x2e'>46</td>
+<td>FocalPlaneAFPointLocation11</td>
+<td class=c>int16u[2]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='50 = 0x32'>50</td>
+<td>FocalPlaneAFPointLocation12</td>
+<td class=c>int16u[2]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='54 = 0x36'>54</td>
+<td>FocalPlaneAFPointLocation13</td>
+<td class=c>int16u[2]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='58 = 0x3a'>58</td>
+<td>FocalPlaneAFPointLocation14</td>
+<td class=c>int16u[2]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='62 = 0x3e'>62</td>
+<td>FocalPlaneAFPointLocation15</td>
+<td class=c>int16u[2]</td>
+<td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='ShotInfo'>Sony ShotInfo Tags</a></h2>
@@ -7278,7 +7384,7 @@ DSC-HX50V, DSC-QX10/QX100.</p>
 
 <h2><a name='Tag9400c'>Sony Tag9400c Tags</a></h2>
 <p>Valid for DSC-HX400V/HX60V/QX30/RX10/RX100M3/WX220/WX350,
-ILCE-7/7R/7S/7M2/7RM2/7SM2/5000/5100/6000/QX1, ILCA-77M2.</p>
+ILCE-7/7R/7S/7M2/7RM2/7SM2/5000/5100/6000/6300/QX1, ILCA-77M2.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -7801,6 +7907,7 @@ ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-77M2.</p>
 </tr><tr><td class=r>49217</td><td>= Zeiss Batis 85mm F1.8</td>
 </tr><tr><td class=r>49232</td><td>= Zeiss Loxia 50mm F2</td>
 </tr><tr><td class=r>49234</td><td>= Zeiss Loxia 21mm F2.8</td>
+</tr><tr><td class=r>50480</td><td>= Sigma 30mm F1.4 DC DN | C</td>
 </tr></table></td></tr></table></blockquote>
 
 <h2><a name='AFInfo'>Sony AFInfo Tags</a></h2>
@@ -10095,7 +10202,7 @@ the JPEG image from a PMP file)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Mar 4, 2016</i>
+<br><i>Last revised Mar 11, 2016</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

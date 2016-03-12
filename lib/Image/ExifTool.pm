@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '10.12';
+$VERSION = '10.13';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -2656,6 +2656,7 @@ sub GetValue($$;$)
                         $raw[$_] = $$self{VALUE}{$$val{$_}};
                         ($val[$_], $prt[$_]) = $self->GetValue($$val{$_}, 'Both');
                         next if defined $val[$_] or not $$tagInfo{Require}{$_};
+                        $$self{OPTIONS}{Filter} = $oldFilter if defined $oldFilter;
                         $$self{ESCAPE_PROC} = $oldEscape;
                         return wantarray ? () : undef;
                     }

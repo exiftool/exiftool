@@ -2219,6 +2219,8 @@ sub WriteInfo($$;$$)
                     $rtnVal = 0;
                 }
             }
+            # the output file should now have the name of the original infile
+            $outfile = $infile if $rtnVal > 0;
         }
     }
     # set FileModifyDate if requested (and if possible!)

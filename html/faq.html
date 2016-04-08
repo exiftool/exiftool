@@ -42,6 +42,7 @@ ol.index { margin: 0; padding: 0 0 0 2em }
 <li><a href="#Q24">Date/time gets reset to today</a></li>
 <li><a href="#Q25">Image validation</a></li>
 <li><a href="#Q26">Import from database</a></li>
+<li><a href="#Q27">Windows .BAT file problems</a></li>
 </ol>
 </div>
 
@@ -1442,9 +1443,11 @@ file.</blockquote>
 <blockquote>On systems where a filesystem creation date is maintained, ExifTool
 also sets this to the current date/time when the file is edited.  On Windows the
 creation date is accessed through the FileCreateDate tag, and is also preserved
-with the <code>-P</code> option.  On Mac/Linux FileInodeChangeDate is available
-instead of FileCreateDate, and the only way to preserve the file creation date
-is with the <code>-overwrite_original_in_place</code> option.</blockquote>
+with the <code>-P</code> option.  On Mac/Linux the FileInodeChangeDate tag is
+available instead of FileCreateDate.  On Mac, the filesystem stores a creation
+date, but currently the only way to preserve this is with the
+<code>-overwrite_original_in_place</code> option.  On Linux, the file creation
+date is not stored.</blockquote>
 
 <blockquote>For example, commands like this act on common metadata tags, setting
 the filesystem modification date/time to the current date/time:
@@ -1478,10 +1481,10 @@ exiftool -alldates+=1 "-filemodifydate&lt;datetimeoriginal" c:\images
 <p>25. <b>"Can ExifTool be used as an image validator?"</b></p>
 
 <blockquote>ExifTool is <u>not</u> designed as an image validator.  It does issue
-warnings about some of the more important problems in the metadata when
-reading, and will often catch more problems when writing, but it does not
-attempt to do a full validation.  If you are looking for a validator,
-try <a href="http://jhove.sourceforge.net">JHOVE</a>.</blockquote>
+warnings about some of the more important problems in the metadata when reading,
+and will often catch more problems when writing, but it does not attempt to do a
+full validation.  There are other packages that are designed to do validation
+like this, for example, <a href="http://jhove.sourceforge.net">JHOVE</a>.</blockquote>
 
 <a name="Q26"></a>
 <p>26. <b>"How do I import information from a database?"</b></p>
@@ -1531,8 +1534,22 @@ importing.</blockquote>
 <a href="exiftool_pod.html#input_output_text_formatting">application documentation</a>
 for more details.</blockquote>
 
+<a name="Q27"></a>
+<p>27. <b>"My ExifTool command doesn't work from a Windows .BAT file."</b></p>
+
+<blockquote>In a Windows .BAT file the "<code>%</code>" character is
+significant, so all "<code>%</code>" characters in ExifTool commands must be
+changed to "<code>%%</code>".  For example, this command line:
+
+<pre>exiftool "-FileName&lt;CreateDate" -d "%Y%m%d_%H%M%S.%%e" image.jpg</pre>
+
+must be changed to this in a .BAT file:
+
+<pre>exiftool "-FileName&lt;CreateDate" -d "%%Y%%m%%d_%%H%%M%%S.%%%%e" image.jpg</pre>
+</blockquote>
+
 <hr>
-<i>Last revised Feb. 19, 2016</i>
+<i>Last revised Apr. 6, 2016</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

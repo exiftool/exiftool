@@ -743,9 +743,20 @@ my %faceCategories = (
         Format => 'int16u',
         Count => 4,
     },
+    0x9200 => { #Frank Markesteijn
+        Name => 'RelativeExposure',
+        Format => 'rational32s',
+        ValueConv => 'log($val) / log(2)',
+        ValueConvInv => 'exp($val * log(2))',
+        PrintConv => '$val ? sprintf("%+.1f",$val) : 0',
+        PrintConvInv => '$val',
+    },
+    # 0x9200 - relative exposure? (ref Frank Markesteijn)
     0x9650 => { #Frank Markesteijn
         Name => 'RawExposureBias',
         Format => 'rational32s',
+        PrintConv => '$val ? sprintf("%+.1f",$val) : 0',
+        PrintConvInv => '$val',
     },
     0xc000 => {
         Name => 'RAFData',

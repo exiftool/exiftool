@@ -391,7 +391,7 @@ my $parsePictureTiming; # flag to enable parsing of picture timing information (
     },
     0xe4 => { #PH
         Name => 'Model',
-        Condition => '$$self{Make} eq "Sony"',
+        Condition => '$$self{Make} eq "Sony"', # (possibly also Canon models?)
         Description => 'Camera Model Name',
         Notes => 'Sony cameras only, combined with tags 0xe5 and 0xe6',
         Format => 'string',

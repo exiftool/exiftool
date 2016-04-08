@@ -59,7 +59,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.16';
+$VERSION = '3.17';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -2427,6 +2427,10 @@ my %binaryDataAttrs = (
             0x10e => 'Hi 3.5', #IB
             0x10f => 'Hi 3.7', #IB
             0x110 => 'Hi 4.0', #IB
+            0x111 => 'Hi 4.3', #IB
+            0x112 => 'Hi 4.5', #IB
+            0x113 => 'Hi 4.7', #IB
+            0x114 => 'Hi 5.0', #IB
             0x201 => 'Lo 0.3',
             0x202 => 'Lo 0.5',
             0x203 => 'Lo 0.7',

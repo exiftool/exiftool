@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.32';
+$VERSION = '2.33';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -1512,6 +1512,8 @@ my %meterInfo2 = (
             346 => 'ILCE-QX1', #IB
             347 => 'ILCE-7RM2', #JR
             350 => 'ILCE-7SM2', #JR
+            353 => 'ICLA-68', #IB
+            355 => 'DSC-RX10M3', #PH
             357 => 'ILCE-6300', #IB
         },
     },
@@ -2967,7 +2969,7 @@ my %meterInfo2 = (
         Notes => 'other models',
         ValueConv => '($val - 128) / 24', #PH
         ValueConvInv => 'int($val * 24 + 128.5)',
-        PrintConv => '$val ? sprintf("%+.1f",$val) : $val',
+        PrintConv => '$val ? sprintf("%+.1f",$val) : 0',
         PrintConvInv => 'Image::ExifTool::Exif::ConvertFraction($val)',
     }],
     0x1f => [{
@@ -2984,7 +2986,7 @@ my %meterInfo2 = (
         Description => 'Flash Exposure Comp. Setting',
         ValueConv => '($val - 128) / 24', #PH
         ValueConvInv => 'int($val * 24 + 128.5)',
-        PrintConv => '$val ? sprintf("%+.1f",$val) : $val',
+        PrintConv => '$val ? sprintf("%+.1f",$val) : 0',
         PrintConvInv => 'Image::ExifTool::Exif::ConvertFraction($val)',
     }],
     0x20 => [{
@@ -3058,7 +3060,7 @@ my %meterInfo2 = (
         Format => 'int16s',
         ValueConv => '$val / 8',
         ValueConvInv => '$val * 8',
-        PrintConv => '$val ? sprintf("%+.1f",$val) : $val',
+        PrintConv => '$val ? sprintf("%+.1f",$val) : 0',
         PrintConvInv => '$val',
     },
     0x25 => [{
@@ -3086,7 +3088,7 @@ my %meterInfo2 = (
         Format => 'int16s',
         ValueConv => '$val / 8',
         ValueConvInv => '$val * 8',
-        PrintConv => '$val ? sprintf("%+.1f",$val) : $val',
+        PrintConv => '$val ? sprintf("%+.1f",$val) : 0',
         PrintConvInv => '$val',
     },{
         Name => 'ExposureCompensation2',
@@ -3095,7 +3097,7 @@ my %meterInfo2 = (
         Format => 'int16s',
         ValueConv => '$val / 8',
         ValueConvInv => '$val * 8',
-        PrintConv => '$val ? sprintf("%+.1f",$val) : $val',
+        PrintConv => '$val ? sprintf("%+.1f",$val) : 0',
         PrintConvInv => '$val',
     },{
         Name => 'FNumber',
@@ -3156,7 +3158,7 @@ my %meterInfo2 = (
         Format => 'int16s',
         ValueConv => '$val / 8',
         ValueConvInv => '$val * 8',
-        PrintConv => '$val ? sprintf("%+.1f",$val) : $val',
+        PrintConv => '$val ? sprintf("%+.1f",$val) : 0',
         PrintConvInv => '$val',
     }],
     0x2b => {
@@ -3189,7 +3191,7 @@ my %meterInfo2 = (
         Format => 'int16s',
         ValueConv => '$val / 8',
         ValueConvInv => '$val * 8',
-        PrintConv => '$val ? sprintf("%+.1f",$val) : $val',
+        PrintConv => '$val ? sprintf("%+.1f",$val) : 0',
         PrintConvInv => '$val',
     }],
     0x2e => [{
@@ -3479,7 +3481,7 @@ my %faceInfo = (
         Name => 'ExposureCompensationSet',
         ValueConv => '($val - 128) / 24',
         ValueConvInv => 'int($val * 24 + 128.5)',
-        PrintConv => '$val ? sprintf("%+.1f",$val) : $val',
+        PrintConv => '$val ? sprintf("%+.1f",$val) : 0',
         PrintConvInv => 'Image::ExifTool::Exif::ConvertFraction($val)',
     },
     0x04 => { #7/JR
@@ -3624,7 +3626,7 @@ my %faceInfo = (
         # (as pre-selected by the user, not zero if flash didn't fire)
         ValueConv => '($val - 128) / 24', #PH
         ValueConvInv => 'int($val * 24 + 128.5)',
-        PrintConv => '$val ? sprintf("%+.1f",$val) : $val',
+        PrintConv => '$val ? sprintf("%+.1f",$val) : 0',
         PrintConvInv => 'Image::ExifTool::Exif::ConvertFraction($val)',
     },
     0x15 => { #7
@@ -3973,7 +3975,7 @@ my %faceInfo = (
         Name => 'ExposureCompensationSet',
         ValueConv => '($val - 128) / 24',
         ValueConvInv => 'int($val * 24 + 128.5)',
-        PrintConv => '$val ? sprintf("%+.1f",$val) : $val',
+        PrintConv => '$val ? sprintf("%+.1f",$val) : 0',
         PrintConvInv => 'Image::ExifTool::Exif::ConvertFraction($val)',
     },
 ### 0x04-0x11: subtract 1 from CameraSettings TagID
@@ -4090,7 +4092,7 @@ my %faceInfo = (
         # (as pre-selected by the user, not zero if flash didn't fire)
         ValueConv => '($val - 128) / 24', #PH
         ValueConvInv => 'int($val * 24 + 128.5)',
-        PrintConv => '$val ? sprintf("%+.1f",$val) : $val',
+        PrintConv => '$val ? sprintf("%+.1f",$val) : 0',
         PrintConvInv => 'Image::ExifTool::Exif::ConvertFraction($val)',
     },
     0x13 => {
@@ -4402,7 +4404,7 @@ my %faceInfo = (
         Name => 'ExposureCompensationSet',
         ValueConv => '($val - 128) / 24', #PH
         ValueConvInv => 'int($val * 24 + 128.5)',
-        PrintConv => '$val ? sprintf("%+.1f",$val) : $val',
+        PrintConv => '$val ? sprintf("%+.1f",$val) : 0',
         PrintConvInv => 'Image::ExifTool::Exif::ConvertFraction($val)',
     },
     0x04 => { #JR
@@ -4588,7 +4590,7 @@ my %faceInfo = (
         # (as pre-selected by the user, not zero if flash didn't fire)
         ValueConv => '($val - 128) / 24', #PH
         ValueConvInv => 'int($val * 24 + 128.5)',
-        PrintConv => '$val ? sprintf("%+.1f",$val) : $val',
+        PrintConv => '$val ? sprintf("%+.1f",$val) : 0',
         PrintConvInv => 'Image::ExifTool::Exif::ConvertFraction($val)',
     },
     0x24 => {
@@ -5529,7 +5531,7 @@ my %exposureComp2010 = ( # only as set manually, remains 0 in exposure-bracketin
     Format=>'int16s',
     ValueConv => '-$val/256',
     ValueConvInv => '-$val*256',
-    PrintConv => '$val ? sprintf("%+.1f",$val) : $val',
+    PrintConv => '$val ? sprintf("%+.1f",$val) : 0',
     PrintConvInv => '$val',
 );
 my %pictureEffect2010 = (
@@ -5912,7 +5914,7 @@ my %pictureProfile2010 = (
         ValueConv => '$val / 10',
         ValueConvInv => '$val * 10',
         PrintConv => 'sprintf("%.1f mm",$val)',
-        PrintConvInv => '$val =~ / ?mm//; $val',
+        PrintConvInv => '$val =~ s/ ?mm//; $val',
     },
     0x127a => {
         Condition => '$$self{Model} =~ /^(SLT-A58|ILCE-(3000|3500)|NEX-3N|DSC-(HX300|HX50V|WX60|WX80|WX200|WX300|TX30))\b/',
@@ -5921,7 +5923,7 @@ my %pictureProfile2010 = (
         ValueConv => '$val / 10',
         ValueConvInv => '$val * 10',
         PrintConv => 'sprintf("%.1f mm",$val)',
-        PrintConvInv => '$val =~ / ?mm//; $val',
+        PrintConvInv => '$val =~ s/ ?mm//; $val',
     },
     0x127c => { # may give 0 for fixed focal length lenses
         Condition => '$$self{Model} =~ /^(SLT-A58|ILCE-(3000|3500)|NEX-3N|DSC-(HX300|HX50V|WX60|WX80|WX200|WX300|TX30))\b/',
@@ -5931,7 +5933,7 @@ my %pictureProfile2010 = (
         ValueConv => '$val / 10',
         ValueConvInv => '$val * 10',
         PrintConv => 'sprintf("%.1f mm",$val)',
-        PrintConvInv => '$val =~ / ?mm//; $val',
+        PrintConvInv => '$val =~ s/ ?mm//; $val',
     },
     0x1280 => {
         Condition => '$$self{Model} =~ /^(SLT-A58|ILCE-(3000|3500)|NEX-3N|DSC-(HX300|HX50V|WX60|WX80|WX200|WX300|TX30))\b/',
@@ -6033,7 +6035,7 @@ my %pictureProfile2010 = (
         ValueConv => '$val / 10',
         ValueConvInv => '$val * 10',
         PrintConv => 'sprintf("%.1f mm",$val)',
-        PrintConvInv => '$val =~ / ?mm//; $val',
+        PrintConvInv => '$val =~ s/ ?mm//; $val',
     },
     0x1136 => {
         Name => 'MinFocalLength',
@@ -6041,7 +6043,7 @@ my %pictureProfile2010 = (
         ValueConv => '$val / 10',
         ValueConvInv => '$val * 10',
         PrintConv => 'sprintf("%.1f mm",$val)',
-        PrintConvInv => '$val =~ / ?mm//; $val',
+        PrintConvInv => '$val =~ s/ ?mm//; $val',
     },
     0x1138 => {
         Name => 'MaxFocalLength',
@@ -6049,7 +6051,7 @@ my %pictureProfile2010 = (
         ValueConv => '$val / 10',
         ValueConvInv => '$val * 10',
         PrintConv => 'sprintf("%.1f mm",$val)',
-        PrintConvInv => '$val =~ / ?mm//; $val',
+        PrintConvInv => '$val =~ s/ ?mm//; $val',
     },
     0x113c => {
         Name => 'SonyISO',
@@ -6100,7 +6102,7 @@ my %pictureProfile2010 = (
         ValueConv => '$val / 10',
         ValueConvInv => '$val * 10',
         PrintConv => 'sprintf("%.1f mm",$val)',
-        PrintConvInv => '$val =~ / ?mm//; $val',
+        PrintConvInv => '$val =~ s/ ?mm//; $val',
     },
     0x032e => {
         Name => 'MinFocalLength',
@@ -6108,7 +6110,7 @@ my %pictureProfile2010 = (
         ValueConv => '$val / 10',
         ValueConvInv => '$val * 10',
         PrintConv => 'sprintf("%.1f mm",$val)',
-        PrintConvInv => '$val =~ / ?mm//; $val',
+        PrintConvInv => '$val =~ s/ ?mm//; $val',
     },
     0x0330 => { # may give 0 for fixed focal length lenses
         Name => 'MaxFocalLength',
@@ -6117,7 +6119,7 @@ my %pictureProfile2010 = (
         ValueConv => '$val / 10',
         ValueConvInv => '$val * 10',
         PrintConv => 'sprintf("%.1f mm",$val)',
-        PrintConvInv => '$val =~ / ?mm//; $val',
+        PrintConvInv => '$val =~ s/ ?mm//; $val',
     },
     0x0344 => {
         Name => 'SonyISO',
@@ -6216,7 +6218,7 @@ my %pictureProfile2010 = (
         ValueConv => '$val / 10',
         ValueConvInv => '$val * 10',
         PrintConv => 'sprintf("%.1f mm",$val)',
-        PrintConvInv => '$val =~ / ?mm//; $val',
+        PrintConvInv => '$val =~ s/ ?mm//; $val',
     },
     0x032e => {
         Name => 'MinFocalLength',
@@ -6224,7 +6226,7 @@ my %pictureProfile2010 = (
         ValueConv => '$val / 10',
         ValueConvInv => '$val * 10',
         PrintConv => 'sprintf("%.1f mm",$val)',
-        PrintConvInv => '$val =~ / ?mm//; $val',
+        PrintConvInv => '$val =~ s/ ?mm//; $val',
     },
     0x0330 => { # may give 0 for fixed focal length lenses
         Name => 'MaxFocalLength',
@@ -6233,7 +6235,7 @@ my %pictureProfile2010 = (
         ValueConv => '$val / 10',
         ValueConvInv => '$val * 10',
         PrintConv => 'sprintf("%.1f mm",$val)',
-        PrintConvInv => '$val =~ / ?mm//; $val',
+        PrintConvInv => '$val =~ s/ ?mm//; $val',
     },
     0x0346 => {
         Name => 'SonyISO',

@@ -208,7 +208,7 @@ my %ricohLensIDs = (
     0x100b => { #3
         Name => 'FlashExposureComp',
         Writable => 'rational64s',
-        PrintConv => '$val ? sprintf("%+.1f",$val) : $val',
+        PrintConv => '$val ? sprintf("%+.1f",$val) : 0',
         PrintConvInv => '$val',
     },
     0x100c => { #3

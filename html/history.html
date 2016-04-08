@@ -17,6 +17,30 @@ considered development releases, and are not uploaded to <a href="http://search.
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v10.14'><b>Apr. 8, 2016 - Version 10.14</b></a>
+<ul>
+<li>Added read support for ISO 9660 disk images
+<li>Added a few new Nikon ISOExpansion values (thanks LibRaw)
+<li>Added a few new Olympus LensType values (thanks Niels Kristian Bech Jensen) 
+<li>Added a couple of new SonyModelID values (thanks LibRaw for one)
+<li>Added a new Olympus CameraType
+<li>Added config_files/gps2utm.config to distribution
+<li>Decode Canon ColorData for the EOS 80D (thanks LibRaw)
+<li>Decode a few new Samsung tags (thanks Fran&ccedil;ois)
+<li>Decode a new Fuji tag (thanks Frank Markesteijn)
+<li>Calculate Duration for APE audio files
+<li>Tightened constraints on M2TS file recognition
+<li>Improved verbose dump of ID3 information
+<li>Changed XMP-acdsee:Snapshots to a Binary data tag
+<li>Fixed bug which prevented writing of various Sony FocalLength tags
+<li>API Changes:
+    <ul>
+    <li>Fixed bug where FileModifyDate wasn't set properly when WriteInfo() was
+        called without a destination file name and other "real" tags were
+        written at the same time
+    </ul>
+</ul>
+
 <a name='v10.13'><b>Mar. 12, 2016 - Version 10.13</b></a>
 <ul>
 <li>Added a few new Canon LensType values (thanks Niels Kristian Bech Jensen and
@@ -28,7 +52,7 @@ considered development releases, and are not uploaded to <a href="http://search.
 <li>API Changes:
     <ul>
     <li>Fixed bug which could cause the API Filter option to be ignored for some
-    tags when copying tags with the Composite option set
+        tags when copying tags with the Composite option set
     </ul>
 </ul>
 

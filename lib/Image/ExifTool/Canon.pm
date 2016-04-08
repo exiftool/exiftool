@@ -83,7 +83,7 @@ sub ProcessSerialData($$$);
 sub ProcessFilters($$$);
 sub SwapWords($);
 
-$VERSION = '3.59';
+$VERSION = '3.60';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -1658,8 +1658,8 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
             Name => 'ColorData7',
             SubDirectory => { TagTable => 'Image::ExifTool::Canon::ColorData7' },
         },
-        {   # (int16u[1560] - 5DS/5DSR, ref IB)
-            Condition => '$count == 1560',
+        {   # (int16u[1560|1592]) - 5DS/5DSR (1560), 80D (1592), ref IB
+            Condition => '$count == 1560 or $count == 1592',
             Name => 'ColorData8',
             SubDirectory => { TagTable => 'Image::ExifTool::Canon::ColorData8' },
         },
@@ -7227,6 +7227,7 @@ my %ciMaxFocal = (
         Name => 'ColorDataVersion',
         PrintConv => {
             12 => '12 (5DS/5DSR)',
+            13 => '13 (80D)', #PH
         },
     },
     0x3f => { Name => 'WB_RGGBLevelsAsShot',     Format => 'int16s[4]' },

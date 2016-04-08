@@ -7,6 +7,27 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.10. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Apr. 8, 2016 - Version 10.14
+
+  - Added read support for ISO 9660 disk images
+  - Added a few new Nikon ISOExpansion values (thanks LibRaw)
+  - Added a few new Olympus LensType values (thanks Niels Kristian Bech Jensen) 
+  - Added a couple of new SonyModelID values (thanks LibRaw for one)
+  - Added a new Olympus CameraType
+  - Added config_files/gps2utm.config to distribution
+  - Decode Canon ColorData for the EOS 80D (thanks LibRaw)
+  - Decode a few new Samsung tags (thanks Francois)
+  - Decode a new Fuji tag (thanks Frank Markesteijn)
+  - Calculate Duration for APE audio files
+  - Tightened constraints on M2TS file recognition
+  - Improved verbose dump of ID3 information
+  - Changed XMP-acdsee:Snapshots to a Binary data tag
+  - Fixed bug which prevented writing of various Sony FocalLength tags
+  - API Changes:
+      - Fixed bug where FileModifyDate wasn't set properly when WriteInfo() was
+        called without a destination file name and other "real" tags were
+        written at the same time
+
 Mar. 12, 2016 - Version 10.13
 
   - Added a few new Canon LensType values (thanks Niels Kristian Bech Jensen and
@@ -17,7 +38,7 @@ Mar. 12, 2016 - Version 10.13
   - Changed a couple of Sigma "| C" lens names for consistency
   - API Changes:
       - Fixed bug which could cause the API Filter option to be ignored for some
-    tags when copying tags with the Composite option set
+        tags when copying tags with the Composite option set
 
 Mar. 4, 2016 - Version 10.12
 

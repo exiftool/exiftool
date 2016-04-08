@@ -16,6 +16,7 @@ arg_files/xmp2iptc.args
 arg_files/xmp2pdf.args
 config_files/convert_regions.config
 config_files/example.config
+config_files/gps2utm.config
 config_files/photoshop_paths.config
 config_files/picasa_faces.config
 exiftool
@@ -66,6 +67,7 @@ html/TagNames/HTML.html
 html/TagNames/ICC_Profile.html
 html/TagNames/ID3.html
 html/TagNames/IPTC.html
+html/TagNames/ISO.html
 html/TagNames/ITC.html
 html/TagNames/JFIF.html
 html/TagNames/JPEG.html
@@ -248,6 +250,7 @@ lib/Image/ExifTool/HtmlDump.pm
 lib/Image/ExifTool/ICC_Profile.pm
 lib/Image/ExifTool/ID3.pm
 lib/Image/ExifTool/IPTC.pm
+lib/Image/ExifTool/ISO.pm
 lib/Image/ExifTool/ITC.pm
 lib/Image/ExifTool/Import.pm
 lib/Image/ExifTool/InDesign.pm

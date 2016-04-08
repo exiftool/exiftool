@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '10.13';
+$VERSION = '10.14';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -137,7 +137,7 @@ sub ReadValue($$$$$;$);
     DICOM MIE HTML XMP::SVG Palm Palm::MOBI Palm::EXTH Torrent EXE
     EXE::PEVersion EXE::PEString EXE::MachO EXE::PEF EXE::ELF EXE::CHM LNK Font
     VCard VCard::VCalendar RSRC Rawzor ZIP ZIP::GZIP ZIP::RAR RTF OOXML iWork
-    FLIR::AFF FLIR::FPF
+    ISO FLIR::AFF FLIR::FPF
 );
 
 # alphabetical list of current Lang modules
@@ -175,7 +175,7 @@ $defaultLang = 'en';    # default language
                 MKV MXF DV PMP IND PGF ICC ITC FLIR FPF LFP HTML VRD RTF XCF DSS
                 QTIF FPX PICT ZIP GZIP PLIST RAR BZ2 TAR RWZ EXE EXR HDR CHM LNK
                 WMF AVC DEX DPX RAW Font RSRC M2TS PHP Torrent VCard AA PDB MOI
-                MP3 DICOM PCD);
+                ISO MP3 DICOM PCD);
 
 # file types that we can write (edit)
 my @writeTypes = qw(JPEG TIFF GIF CRW MRW ORF RAF RAW PNG MIE PSD XMP PPM
@@ -298,6 +298,7 @@ my %fileTypeLookup = (
     INDD => ['IND',  'Adobe InDesign Document'],
     INDT => ['IND',  'Adobe InDesign Template'],
     INX  => ['XMP',  'Adobe InDesign Interchange'],
+    ISO  => ['ISO',  'ISO 9660 disk image'],
     ITC  => ['ITC',  'iTunes Cover Flow'],
     J2C  => ['JP2',  'JPEG 2000 codestream'],
     J2K  =>  'JP2',
@@ -561,6 +562,7 @@ my %fileDescription = (
     IIQ  => 'image/x-raw',
     IND  => 'application/x-indesign',
     INX  => 'application/x-indesign-interchange', #PH (NC)
+    ISO  => 'application/x-iso9660-image',
     ITC  => 'application/itunes',
     JNG  => 'image/jng',
     J2C  => 'image/x-j2c', #PH (NC)
@@ -776,6 +778,7 @@ my %moduleName = (
     HTML => '(\xef\xbb\xbf)?\s*(?i)<(!DOCTYPE\s+HTML|HTML|\?xml)', # (case insensitive)
     ICC  => '.{12}(scnr|mntr|prtr|link|spac|abst|nmcl|nkpf)(XYZ |Lab |Luv |YCbr|Yxy |RGB |GRAY|HSV |HLS |CMYK|CMY |[2-9A-F]CLR){2}',
     IND  => '\x06\x06\xed\xf5\xd8\x1d\x46\xe5\xbd\x31\xef\xe7\xfe\x74\xb7\x1d',
+  # ISO  =>  signature is at byte 32768
     ITC  => '.{4}itch',
     JP2  => '(\0\0\0\x0cjP(  |\x1a\x1a)\x0d\x0a\x87\x0a|\xff\x4f\xff\x51\0)',
     JPEG => '\xff(\xd8\xff|\x01Exiv2)', # (includes EXV so we don't have to add EXV to @fileTypes)
@@ -1888,6 +1891,8 @@ sub ExtractInfo($;@)
     my $self = shift;
     my $options = $$self{OPTIONS};      # pointer to current options
     my $fast = $$options{FastScan};
+    my $req = $$self{REQ_TAG_LOOKUP};
+    my $reqAll = $$options{RequestAll};
     my (%saveOptions, $reEntry, $rsize, $type, @startTime);
 
     # check for internal ReEntry option to allow recursive calls to ExtractInfo
@@ -1928,17 +1933,15 @@ sub ExtractInfo($;@)
         delete $$self{MAKER_NOTE_BYTE_ORDER};
 
         # return our version number
-        my $reqAll = $$options{RequestAll};
         $self->FoundTag('ExifToolVersion', "$VERSION$RELEASE");
-        $self->FoundTag('Now', TimeNow()) if $$self{REQ_TAG_LOOKUP}{now} or $reqAll;
-        $self->FoundTag('NewGUID', NewGUID()) if $$self{REQ_TAG_LOOKUP}{newguid} or $reqAll;
+        $self->FoundTag('Now', TimeNow()) if $$req{now} or $reqAll;
+        $self->FoundTag('NewGUID', NewGUID()) if $$req{newguid} or $reqAll;
         # generate sequence number if necessary
-        if ($$self{REQ_TAG_LOOKUP}{filesequence} or $reqAll) {
-            $self->FoundTag('FileSequence', $$self{FILE_SEQUENCE});
-        }
-        if ($$self{REQ_TAG_LOOKUP}{processingtime} or $reqAll) {
+        $self->FoundTag('FileSequence', $$self{FILE_SEQUENCE}) if $$req{filesequence} or $reqAll;
+
+        if ($$req{processingtime} or $reqAll) {
             eval { require Time::HiRes; @startTime = Time::HiRes::gettimeofday() };
-            if (not @startTime and $$self{REQ_TAG_LOOKUP}{processingtime}) {
+            if (not @startTime and $$req{processingtime}) {
                 $self->WarnOnce('Install Time::HiRes to generate ProcessingTime');
             }
         }
@@ -1967,14 +1970,14 @@ sub ExtractInfo($;@)
                 }
                 $self->FoundTag('FileName', $name);
                 $self->FoundTag('Directory', $dir) if defined $dir and length $dir;
-                if ($$self{REQ_TAG_LOOKUP}{filepath} or
-                   ($$options{RequestAll} and not $$self{EXCL_TAG_LOOKUP}{filepath}))
+                if ($$req{filepath} or
+                   ($reqAll and not $$self{EXCL_TAG_LOOKUP}{filepath}))
                 {
                     local $SIG{'__WARN__'} = \&SetWarning;
                     if (eval { require Cwd }) {
                         my $path = eval { Cwd::abs_path($filename) };
                         $self->FoundTag('FilePath', $path) if defined $path;
-                    } elsif ($$self{REQ_TAG_LOOKUP}{filepath}) {
+                    } elsif ($$req{filepath}) {
                         $self->WarnOnce('The Perl Cwd module must be installed to use FilePath');
                     }
                 }
@@ -2021,8 +2024,7 @@ sub ExtractInfo($;@)
         }
         # extract more system info if SystemTags option is set
         if (@stat) {
-            my $sys = $$options{SystemTags} || ($$options{RequestAll} and not defined $$options{SystemTags});
-            my $req = $$self{REQ_TAG_LOOKUP};
+            my $sys = $$options{SystemTags} || ($reqAll and not defined $$options{SystemTags});
             if ($sys or $$req{fileattributes}) {
                 my @attr = ($stat[2] & 0xf000, $stat[2] & 0x0e00);
                 # add Windows file attributes if available
@@ -2051,7 +2053,7 @@ sub ExtractInfo($;@)
             $self->FoundTag('FileBlockCount', $stat[12])  if $sys or $$req{fileblockcount};
         }
         # extract MDItem tags if requested (not extracted with RequestAll for performance reasons)
-        if ($^O eq 'darwin' and ($$options{MDItemTags} || grep /^mditem/i, keys %{$$self{REQ_TAG_LOOKUP}}) and
+        if ($^O eq 'darwin' and ($$options{MDItemTags} || grep /^mditem/i, keys %$req) and
             defined $filename and $filename ne '' and $filename ne '-')
         {
             my ($fn, $tag, $val);
@@ -2227,7 +2229,7 @@ sub ExtractInfo($;@)
         }
         # extract binary EXIF data block only if requested
         if (defined $$self{EXIF_DATA} and length $$self{EXIF_DATA} > 16 and
-            ($$self{REQ_TAG_LOOKUP}{exif} or
+            ($$req{exif} or
             # (not extracted normally, so check TAGS_FROM_FILE)
             ($$self{TAGS_FROM_FILE} and not $$self{EXCL_TAG_LOOKUP}{exif})))
         {

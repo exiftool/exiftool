@@ -21,7 +21,7 @@ use vars qw($VERSION %samsungLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.31';
+$VERSION = '1.32';
 
 sub WriteSTMN($$$);
 sub ProcessINFO($$$);
@@ -835,6 +835,15 @@ my %formatMinMax = (
     '0x0100' => { Name => 'EmbeddedAudioFile', Binary => 1 },
     '0x0100-name' => 'EmbeddedAudioFileName',
     # 0x0800 - SoundShot_Meta_Info (contains only already-extracted sound shot name)
+    '0x0a01' => { #forum7161
+        Name => 'TimeStamp',
+        Groups => { 2 => 'Time' },
+        ValueConv => 'ConvertUnixTime($val / 1e3, 1)',
+        PrintConv => '$self->ConvertDateTime($val)',
+    },
+    #'0x0a01-name' = "Image_UTC_Data"
+    '0x0a30' => { Name => 'EmbeddedVideoFile', Binary => 1 }, #forum7161
+    '0x0a30-name' => 'EmbeddedVideoType', # ("MotionPhoto_Data")
 );
 
 # Samsung composite tags

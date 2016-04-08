@@ -38,7 +38,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::APP12;
 
-$VERSION = '2.38';
+$VERSION = '2.40';
 
 sub PrintLensInfo($$$);
 
@@ -115,6 +115,7 @@ my %olympusLensTypes = (
     '1 05 00' => 'Sigma 30mm F1.4 EX DC HSM', #10
     '1 05 10' => 'Sigma 60mm F2.8 DN | A', #NJ
     '1 06 00' => 'Sigma APO 50-500mm F4.0-6.3 EX DG HSM', #6
+    '1 06 10' => 'Sigma 30mm F1.4 DC DN | C', #NJ
     '1 07 00' => 'Sigma Macro 105mm F2.8 EX DG', #PH
     '1 08 00' => 'Sigma APO Macro 150mm F2.8 EX DG HSM', #PH
     '1 09 00' => 'Sigma 18-50mm F2.8 EX DC Macro', #NJ
@@ -154,10 +155,12 @@ my %olympusLensTypes = (
     '2 20 10' => 'Lumix G Vario 12-32mm F3.5-5.6 Asph. Mega OIS', #NJ
     '2 21 10' => 'Leica DG Nocticron 42.5mm F1.2 Asph. Power OIS', #NJ
     '2 22 10' => 'Leica DG Summilux 15mm F1.7 Asph.', #NJ
-  # '2 23 10' => 'Lumix G Vario 35-100mm F4.0-5.6 Asph. Mega OIS', #NJ (guess)
+    '2 23 10' => 'Lumix G Vario 35-100mm F4.0-5.6 Asph. Mega OIS', #NJ
     '2 24 10' => 'Lumix G Macro 30mm F2.8 Asph. Mega OIS', #NJ
     '2 25 10' => 'Lumix G 42.5mm F1.7 Asph. Power OIS', #NJ
+    '2 26 10' => 'Lumix G 25mm F1.7 Asph.', #NJ
     '2 27 10' => 'Leica DG Vario-Elmar 100-400mm F4.0-6.3 Asph. Power OIS', #NJ
+    '2 28 10' => 'Lumix G Vario 12-60mm F3.5-5.6 Asph. Power OIS', #NJ
     '3 01 00' => 'Leica D Vario Elmarit 14-50mm F2.8-3.5 Asph.', #11
     '3 02 00' => 'Leica D Summilux 25mm F1.4 Asph.', #11
     # Tamron lenses
@@ -351,6 +354,7 @@ my %olympusCameraTypes = (
     D4585 => 'SH-2 / SH-3',
     D4586 => 'TG-4',
     D4587 => 'TG-860',
+    D4591 => 'TG-870',
     D4809 => 'C2500L',
     D4842 => 'E-10',
     D4856 => 'C-1',

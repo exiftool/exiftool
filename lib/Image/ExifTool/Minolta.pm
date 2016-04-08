@@ -2720,7 +2720,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
         Format => 'int8s',
         ValueConv => '$val / 8',
         ValueConvInv => '$val * 8',
-        PrintConv => '$val ? sprintf("%+.1f",$val) : $val',
+        PrintConv => '$val ? sprintf("%+.1f",$val) : 0',
         PrintConvInv => 'Image::ExifTool::Exif::ConvertFraction($val)',
     },
     0x49c1 => {
@@ -2729,7 +2729,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
         Format => 'int8s',
         ValueConv => '$val / 8',
         ValueConvInv => '$val * 8',
-        PrintConv => '$val ? sprintf("%+.1f",$val) : $val',
+        PrintConv => '$val ? sprintf("%+.1f",$val) : 0',
         PrintConvInv => 'Image::ExifTool::Exif::ConvertFraction($val)',
     },
     0x49c2 => {

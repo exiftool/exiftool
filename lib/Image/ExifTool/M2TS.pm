@@ -31,7 +31,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.11';
+$VERSION = '1.12';
 
 # program map table "stream_type" lookup (ref 6/1)
 my %streamType = (
@@ -327,9 +327,16 @@ sub ProcessM2TS($$)
         $pLen = 192; # 188-byte transport packet + leading 4-byte timecode (ref 4)
         $upkPrefix = 'x4N';
     }
+    my $prePos = $pLen - 188;       # byte position of packet prefix
+    my $readSize = 64 * $pLen;      # read 64 packets at once
+    $raf->Seek(0,0);                # rewind to start
+    $raf->Read($buff, $readSize) >= $pLen * 4 or return 0;  # require at least 4 packets
+    # validate the sync byte in the next 3 packets
+    for ($j=1; $j<4; ++$j) {
+        return 0 unless substr($buff, $prePos + $pLen * $j, 1) eq 'G'; # (0x47)
+    }
     $et->SetFileType($fileType);
     SetByteOrder('MM');
-    $raf->Seek(0,0);        # rewind to start
     my $tagTablePtr = GetTagTable('Image::ExifTool::M2TS::Main');
 
     # PID lookup strings (will add to this with entries from program map table)
@@ -341,11 +348,8 @@ sub ProcessM2TS($$)
     );
     my %didPID = ( 1 => 0, 2 => 0, 0x1fff => 0 );
     my %needPID = ( 0 => 1 );       # lookup for stream PID's that we still need to parse
-    my $prePos = $pLen - 188;       # byte position of packet prefix
-    my $readSize = 64 * $pLen;      # read 64 packets at once
     my $pEnd = 0;
     my $i = 0;
-    $buff = '';
 
     # parse packets from MPEG-2 Transport Stream
     for (;;) {
@@ -461,7 +465,7 @@ sub ProcessM2TS($$)
                 delete $sectLen{$pid};
             }
             my $slen = length($buf2);   # section length
-            $pos + 8 > $slen and $et->Warn("Truncated payload"), last;
+            $pos + 8 > $slen and $et->Warn('Truncated payload'), last;
             # validate table ID
             my $table_id = Get8u(\$buf2, $pos);
             my $name = ($tableID{$table_id} || sprintf('Unknown (0x%x)',$table_id)) . ' Table';
@@ -549,7 +553,7 @@ sub ProcessM2TS($$)
                     $pidName{$elementary_pid} = $str;
                     $pidType{$elementary_pid} = $stream_type;
                     $pos += 5;
-                    $pos + $es_info_length > $slen and $et->Warn('Trunacted ES info'), $pos = $end, last;
+                    $pos + $es_info_length > $slen and $et->Warn('Truncated ES info'), $pos = $end, last;
                     # parse elementary stream descriptors
                     for ($j=0; $j<$es_info_length-2; ) {
                         my $descriptor_tag = Get8u(\$buf2, $pos + $j);

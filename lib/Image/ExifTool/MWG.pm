@@ -605,7 +605,7 @@ sub StringToList($$)
 
 #------------------------------------------------------------------------------
 # Handle logic for overwriting EXIF string-type list tag
-# Inputs: 0) new value hash ref, 1) new value hash ref,
+# Inputs: 0) ExifTool ref, 1) new value hash ref,
 #         2) old string value (or undef if it didn't exist), 3) new value ref
 # Returns: 1 and sets the new value for the tag
 sub OverwriteStringList($$$$)

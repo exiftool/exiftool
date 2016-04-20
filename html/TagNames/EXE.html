@@ -577,7 +577,37 @@ libraries.</p>
   <br>0x6 = Dynamically bound shared library
   <br>0x7 = Dynamic link editor
   <br>0x8 = Dynamically bound bundle
-  <br>0x9 = Shared library stub for static linking</td></tr></table>
+  <br>0x9 = Shared library stub for static linking
+  <br>0xa = Debug information
+  <br>0xb = x86_64 kexts</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='6 = 0x6'>6</td>
+<td>ObjectFlags</td>
+<td class=c>N</td>
+<td><table class=cols><tr>
+  <td>Bit 0 = No undefs
+  <br>Bit 1 = Incrementa link
+  <br>Bit 2 = Dyld link
+  <br>Bit 3 = Bind at load
+  <br>Bit 4 = Prebound
+  <br>Bit 5 = Split segs
+  <br>Bit 6 = Lazy init
+  <br>Bit 7 = Two level
+  <br>Bit 8 = Force flat
+  <br>Bit 9 = No multi defs
+  <br>Bit 10 = No fix prebinding
+  <br>Bit 11 = Prebindable
+  <br>Bit 12 = All mods bound
+  <br>Bit 13 = Subsections via symbols
+  <br>Bit 14 = Canonical
+  <br>Bit 15 = Weak defines
+  <br>Bit 16 = Binds to weak
+  <br>Bit 17 = Allow stack execution
+  <br>Bit 18 = Dead strippable dylib
+  <br>Bit 19 = Root safe
+  <br>Bit 20 = No reexported dylibs
+  <br>Bit 21 = Random address</td></tr></table>
 </td></tr>
 </table></td></tr></table></blockquote>
 
@@ -670,6 +700,20 @@ libraries.</p>
   <br>41872 = S/390 (old)</span></td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='AR'>EXE AR Tags</a></h2>
+<p>Information extracted from static libraries.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='16 = 0x10'>16</td>
+<td>CreateDate</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
 <h2><a name='CHM'>EXE CHM Tags</a></h2>
 <p>Tags extracted from Microsoft Compiled HTML files.</p>
 <blockquote>
@@ -691,7 +735,7 @@ libraries.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised May 14, 2015</i>
+<br><i>Last revised Apr 14, 2016</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

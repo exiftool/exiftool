@@ -1536,7 +1536,7 @@ my %binaryDataAttrs = (
         },
     },
     0x0094 => { Name => 'Saturation',       Writable => 'int16s' },
-    0x0095 => { Name => 'NoiseReduction',   Writable => 'string' }, # (long exposure NR)
+    0x0095 => { Name => 'NoiseReduction',   Writable => 'string' }, # ("Off" or "FPNR"=long exposure NR)
     0x0096 => {
         Name => 'NEFLinearizationTable', # same table as DNG LinearizationTable (ref JD)
         Writable => 'undef',

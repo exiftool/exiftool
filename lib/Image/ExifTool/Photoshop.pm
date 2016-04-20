@@ -28,10 +28,11 @@ use strict;
 use vars qw($VERSION $AUTOLOAD $iptcDigestInfo);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.48';
+$VERSION = '1.49';
 
 sub ProcessPhotoshop($$$);
 sub WritePhotoshop($$$);
+sub ProcessLayers($$$);
 
 # map of where information is stored in PSD image
 my %psdMap = (
@@ -63,6 +64,21 @@ my %thumbnailInfo = (
         $w and $h and $type eq 'JPEG' or warn("Not a valid JPEG image\n"), return undef;
         my $wbytes = int(($w * 24 + 31) / 32) * 4;
         return pack('N6n2', 1, $w, $h, $wbytes, $wbytes * $h, length($val), 24, 1) . $val;
+    },
+);
+
+# tag info to decode Photoshop Unicode string
+my %unicodeString = (
+    ValueConv => sub {
+        my ($val, $et) = @_;
+        return '<err>' if length($val) < 4;
+        my $len = unpack('N', $val) * 2;
+        return '<err>' if length($val) < 4 + $len;
+        return $et->Decode(substr($val, 4, $len), 'UCS2', 'MM');
+    },
+    ValueConvInv => sub {
+        my ($val, $et) = @_;
+        return pack('N', length $val) . $et->Encode($val, 'UCS2', 'MM');
     },
 );
 
@@ -176,11 +192,35 @@ my %thumbnailInfo = (
         ValueConv => 'unpack("N",$val)',
         ValueConvInv => 'pack("N",$val)',
     },
-    0x041a => { Unknown => 1, Name => 'Slices' },
-    0x041b => { Unknown => 1, Name => 'WorkflowURL' },
+    0x041a => {
+        Name => 'SliceInfo',
+        SubDirectory => { TagTable => 'Image::ExifTool::Photoshop::SliceInfo' },
+    },
+    0x041b => { Name => 'WorkflowURL', %unicodeString },
     0x041c => { Unknown => 1, Name => 'JumpToXPEP' },
     0x041d => { Unknown => 1, Name => 'AlphaIdentifiers' },
-    0x041e => { Unknown => 1, Name => 'URL_List' },
+    0x041e => {
+        Name => 'URL_List',
+        List => 1,
+        Writable => 1,
+        ValueConv => sub {
+            my ($val, $et) = @_;
+            return '<err>' if length($val) < 4;
+            my $num = unpack('N', $val);
+            my ($i, @vals);
+            my $pos = 4;
+            for ($i=0; $i<$num; ++$i) {
+                $pos += 8;  # (skip word and ID)
+                last if length($val) < $pos + 4;
+                my $len = unpack("x${pos}N", $val) * 2;
+                last if length($val) < $pos + 4 + $len;
+                push @vals, $et->Decode(substr($val,$pos+4,$len), 'UCS2', 'MM');
+                $pos += 4 + $len;
+            }
+            return \@vals;
+        },
+        # (this is tricky to make writable)
+    },
     0x0421 => {
         Name => 'VersionInfo',
         SubDirectory => {
@@ -230,8 +270,14 @@ my %thumbnailInfo = (
             return undef;
         }
     },
-    0x0426 => { Unknown => 1, Name => 'PrintScale' }, #5
-    0x0428 => { Unknown => 1, Name => 'PixelAspectRatio' }, #5
+    0x0426 => {
+        Name => 'PrintScaleInfo',
+        SubDirectory => { TagTable => 'Image::ExifTool::Photoshop::PrintScaleInfo' },
+    },
+    0x0428 => {
+        Name => 'PixelInfo',
+        SubDirectory => { TagTable => 'Image::ExifTool::Photoshop::PixelInfo' },
+    },
     0x0429 => { Unknown => 1, Name => 'LayerComps' }, #5
     0x042a => { Unknown => 1, Name => 'AlternateDuotoneColors' }, #5
     0x042b => { Unknown => 1, Name => 'AlternateSpotColors' }, #5
@@ -311,6 +357,13 @@ my %thumbnailInfo = (
     },
 );
 
+# Photoshop Slices
+%Image::ExifTool::Photoshop::SliceInfo = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    20 => { Name => 'SlicesGroupName', Format => 'var_ustr32' },
+    24 => { Name => 'NumSlices',       Format => 'int32u' },
+);
+
 # Photoshop resolution information #PH
 %Image::ExifTool::Photoshop::Resolution = (
     PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
@@ -368,6 +421,37 @@ my %thumbnailInfo = (
     # (always 1) 13 => { Name => 'FileVersion', Format => 'int32u' },
 );
 
+# Print Scale
+%Image::ExifTool::Photoshop::PrintScaleInfo = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    WRITE_PROC => \&Image::ExifTool::WriteBinaryData,
+    CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
+    FIRST_ENTRY => 0,
+    GROUPS => { 2 => 'Image' },
+    0 => {
+        Name => 'PrintStyle',
+        Format => 'int16u',
+        PrintConv => {
+            0 => 'Centered',
+            1 => 'Size to Fit',
+            2 => 'User Defined',
+        },
+    },
+    2  => { Name => 'PrintPosition', Format => 'float[2]' },
+    10 => { Name => 'PrintScale',    Format => 'float' },
+);
+
+# Pixel Aspect Ratio
+%Image::ExifTool::Photoshop::PixelInfo = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    WRITE_PROC => \&Image::ExifTool::WriteBinaryData,
+    CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
+    FIRST_ENTRY => 0,
+    GROUPS => { 2 => 'Image' },
+    # 0 - version
+    4 => { Name => 'PixelAspectRatio', Format => 'double' },
+);
+
 # Photoshop PSD file header
 %Image::ExifTool::Photoshop::Header = (
     PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
@@ -390,6 +474,69 @@ my %thumbnailInfo = (
             7 => 'Multichannel',
             8 => 'Duotone',
             9 => 'Lab',
+        },
+    },
+);
+
+# Layer information
+%Image::ExifTool::Photoshop::Layers = (
+    PROCESS_PROC => \&ProcessLayers,
+    GROUPS => { 2 => 'Image' },
+    NOTES => 'Tags extracted from Photoshop layer information.',
+    # tags extracted from layer information
+    # (tag ID's are for convenience only)
+    _xcnt => { Name => 'LayerCount' },
+    _xrct => { Name => 'LayerRectangles', List => 1 },
+    _xnam => { Name => 'LayerNames',      List => 1 },
+    _xbnd => {
+        Name => 'LayerBlendModes',
+        List => 1,
+        PrintConv => {
+            pass => 'Pass Through',
+            norm => 'Normal',
+            diss => 'Dissolve',
+            dark => 'Darken',
+           'mul '=> 'Multiply',
+            idiv => 'Color Burn',
+            lbrn => 'Linear Burn',
+            dkCl => 'Darker Color',
+            lite => 'Lighten',
+            scrn => 'Screen',
+           'div '=> 'Color Dodge',
+            lddg => 'Linear Dodge',
+            lgCl => 'Lighter Color',
+            over => 'Overlay',
+            sLit => 'Soft Light',
+            hLit => 'Hard Light',
+            vLit => 'Vivid Light',
+            lLit => 'Linear Light',
+            pLit => 'Pin Light',
+            hMix => 'Hard Mix',
+            diff => 'Difference',
+            smud => 'Exclusion',
+            fsub => 'Subtract',
+            fdiv => 'Divide',
+           'hue '=> 'Hue',
+           'sat '=> 'Saturation',
+            colr => 'Color',
+           'lum '=> 'Luminosity',
+        },
+    },
+    _xopc  => { 
+        Name => 'LayerOpacities',
+        List => 1,
+        ValueConv => '100 * $val / 255',
+        PrintConv => 'sprintf("%d%%",$val)',
+    },
+    # tags extracted from additional layer information (tag ID's are real)
+    # - must be able to accomodate a blank entry to preserve the list ordering
+    luni => {
+        Name => 'LayerUnicodeNames',
+        List => 1,
+        RawConv => q{
+            return "" if length($val) < 4;
+            my $len = Get32u(\$val, 0);
+            return $self->Decode(substr($val, 4, $len * 2), 'UCS2');
         },
     },
 );
@@ -430,6 +577,94 @@ sub ConvertPascalString($$)
     }
     my $charset = $et->Options('CharsetPhotoshop') || 'Latin';
     return $et->Decode($outStr, $charset);
+}
+
+#------------------------------------------------------------------------------
+# Process Photoshop layers and mask information
+# Inputs: 0) ExifTool ref, 1) DirInfo ref, 2) tag table ref
+# Returns: 1 on success
+sub ProcessLayers($$$)
+{
+    local $_;
+    my ($et, $dirInfo, $tagTablePtr) = @_;
+    my $raf = $$dirInfo{RAF};
+    my $fileType = $$et{VALUE}{FileType};
+    my ($i, $data, %count);
+
+    return 0 unless $fileType eq 'PSD' or $fileType eq 'PSB';   # (no layer section in CS1 files)
+
+    # (some words are 4 bytes in PSD files and 8 bytes in PSB)
+    my ($psb, $psiz) = $fileType eq 'PSB' ? (1, 8) : (undef, 4);
+
+    # read the layer information header
+    my $n = $psiz * 2 + 2;
+    $raf->Read($data, $n) == $n or return 0;
+    my $len = $psb ? Get64u(\$data, $psiz) : Get32u(\$data, $psiz); # length of layer info section
+    $et->VerboseDir('Layers', 0, $len);
+    my $num = Get16u(\$data, $psiz * 2);
+    $num = -$num if $num < 0;       # (first channel is transparency data if negative)
+    $et->HandleTag($tagTablePtr, _xcnt => $num); # LayerCount
+    return 0 if $len > 100000000;   # set a reasonable limit on maximum size
+    my $dataPos = $raf->Tell();
+    # read the layer information data
+    $raf->Read($data, $len) == $len or return 0;
+
+    my $pos = 0;
+    for ($i=0; $i<$num; ++$i) {
+        last if $pos + 18 > $len;
+        # save the layer rectangle
+        $et->HandleTag($tagTablePtr, _xrct => join(' ',ReadValue(\$data, $pos, 'int32u', 4, 16)));
+        my $numChannels = Get16u(\$data, $pos + 16);
+        $pos += 18 + (2 + $psiz) * $numChannels;    # skip the channel information
+        last if $pos + 20 > $len or substr($data, $pos, 4) ne '8BIM'; # verify signature
+        $et->HandleTag($tagTablePtr, _xbnd => substr($data, $pos+4, 4)); # blend mode
+        $et->HandleTag($tagTablePtr, _xopc => Get8u(\$data, $pos+8));    # opacity
+        my $nxt = $pos + 16 + Get32u(\$data, $pos + 12);
+        $n = Get32u(\$data, $pos+16);   # get size of layer mask data
+        $pos += 20 + $n;                # skip layer mask data
+        last if $pos + 4 > $len;
+        $n = Get32u(\$data, $pos);      # get size of layer blending ranges
+        $pos += 4 + $n;                 # skip layer blanding ranges data
+        last if $pos + 1 > $len;
+        $n = Get8u(\$data, $pos);       # get length of layer name
+        last if $pos + 1 + $n > $len;
+        $et->HandleTag($tagTablePtr, _xnam => substr($data, $pos+1, $n)); # layer name
+        $n = ($n + 3) & 0xfffffffc;
+        $pos += $n;
+        # process additional layer info
+        while ($pos + 12 <= $nxt) {
+            my $sig = substr($data, $pos, 4);
+            last unless $sig eq '8BIM' or $sig eq '8B64';   # verify signature
+            my $tag = substr($data, $pos+4, 4);
+            # (some structures have an 8-byte size word [augh!]
+            # --> it would be great if '8B64' indicated a 64-bit version, and this may well
+            # be the case, but it is not mentioned in the Photoshop file format specification)
+            if ($psb and $tag =~ /^(LMsk|Lr16|Lr32|Layr|Mt16|Mt32|Mtrn|Alph|FMsk|lnk2|FEid|FXid|PxSD)$/) {
+                last if $pos + 16 > $nxt;
+                $n = Get64u(\$data, $pos+8);
+                $pos += 4;
+            } else {
+                $n = Get32u(\$data, $pos+8);
+            }
+            $pos += 12;
+            last if $pos + $n > $nxt;
+            my $val = substr($data, $pos, $n);
+            # pad with empty entries if necessary to keep the same index for each item in the layer
+            $count{$tag} = 0 unless defined $count{$tag};
+            while ($count{$tag} < $i) {
+                $et->HandleTag($tagTablePtr, $tag, '');
+                ++$count{$tag};
+            }
+            $et->HandleTag($tagTablePtr, $tag, $val,
+                DataPt => \$val,
+                DataPos => $dataPos + $pos,
+            );
+            ++$count{$tag};
+            $pos += $n; # step to start of next structure
+        }
+        $pos = $nxt;
+    }
+    return 1;
 }
 
 #------------------------------------------------------------------------------
@@ -547,6 +782,7 @@ sub ProcessPSD($$)
         $et->ProcessDirectory(\%dirInfo, $tagTablePtr);
         $raf->Seek($len, 1) or $err = 1;    # skip over color mode data
     }
+    # read image resource section
     $raf->Read($data, 4) == 4 or $err = 1;
     $len = Get32u(\$data, 0);
     $raf->Read($data, $len) == $len or $err = 1;
@@ -599,6 +835,10 @@ sub ProcessPSD($$)
         $et->Warn('File format error');
     } else {
         ProcessPhotoshop($et, \%dirInfo, $tagTablePtr);
+        # process layer and mask information section
+        $dirInfo{RAF} = $raf;
+        $tagTablePtr = GetTagTable('Image::ExifTool::Photoshop::Layers');
+        ProcessLayers($et, \%dirInfo, $tagTablePtr);
         # process trailers if they exist
         my $trailInfo = Image::ExifTool::IdentifyTrailer($raf);
         $et->ProcessTrailers($trailInfo) if $trailInfo;

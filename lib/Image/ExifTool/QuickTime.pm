@@ -42,7 +42,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '1.95';
+$VERSION = '1.96';
 
 sub FixWrongFormat($);
 sub ProcessMOV($$;$);
@@ -199,6 +199,11 @@ my %timeInfo = (
 my %durationInfo = (
     ValueConv => '$$self{TimeScale} ? $val / $$self{TimeScale} : $val',
     PrintConv => '$$self{TimeScale} ? ConvertDuration($val) : $val',
+);
+# handle unknown tags
+my %unknownInfo = (
+    Unknown => 1,
+    ValueConv => '$val =~ /^([\x20-\x7e]*)\0*$/ ? $1 : \$val',
 );
 # parsing for most of the 3gp udta language text boxes
 my %langText = (
@@ -402,8 +407,7 @@ my %graphicsMode = (
         # "\x98\x7f\xa3\xdf\x2a\x85\x43\xc0\x8f\x8f\xd9\x7c\x47\x1e\x8e\xea" - unknown data in Flip videos
         { #8
             Name => 'UUID-Unknown',
-            Unknown => 1,
-            Binary => 1,
+            %unknownInfo,
         },
     ],
     _htc => {
@@ -712,8 +716,7 @@ my %graphicsMode = (
         },
         {
             Name => 'UUID-Unknown',
-            Unknown => 1,
-            Binary => 1,
+            %unknownInfo,
         },
     ],
     cmov => {
@@ -835,8 +838,7 @@ my %graphicsMode = (
         },
         {
             Name => 'UUID-Unknown',
-            Unknown => 1,
-            Binary => 1,
+            %unknownInfo,
         },
     ],
     # edts - edits --> contains elst (edit list)
@@ -1398,8 +1400,19 @@ my %graphicsMode = (
             ByteOrder => 'LittleEndian',
         },
     },
-    # ---- GoPro ----
-    GoPr => 'GoProType', #PH
+    # ---- GoPro ---- (ref PH)
+    GoPr => 'GoProType', # (Hero3+)
+    FIRM => 'FirmwareVersion', # (Hero4)
+    LENS => 'LensSerialNumber', # (Hero4)
+    CAME => { # (Hero4)
+        Name => 'SerialNumberHash',
+        Description => 'Camera Serial Number Hash',
+        ValueConv => 'unpack("H*",$val)',
+    },
+    # SETT? 12 bytes (Hero4)
+    # MUID? 32 bytes (Hero4, starts with serial number hash)
+    # HMMT? 404 bytes (Hero4, all zero)
+    # free (all zero)
     # --- HTC ----
     htcb => {
         Name => 'HTCBinary',
@@ -6213,8 +6226,7 @@ sub ProcessMOV($$;$)
                 $tagInfo = {
                     Name => "Unknown_$name",
                     Description => "Unknown $name",
-                    Unknown => 1,
-                    Binary => 1,
+                    %unknownInfo,
                 };
             }
             AddTagToTable($tagTablePtr, $tag, $tagInfo);

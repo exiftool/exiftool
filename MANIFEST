@@ -433,6 +433,9 @@ t/EXE.t
 t/EXE_2.out
 t/EXE_3.out
 t/EXE_4.out
+t/EXE_5.out
+t/EXE_6.out
+t/EXE_7.out
 t/ExifTool.t
 t/ExifTool_16.out
 t/ExifTool_17.out
@@ -515,6 +518,8 @@ t/IPTC_5.out
 t/IPTC_6.out
 t/IPTC_7.out
 t/IPTC_8.out
+t/ISO.t
+t/ISO_2.out
 t/ITC.t
 t/ITC_2.out
 t/InDesign.t
@@ -826,9 +831,12 @@ t/images/DNG.dng
 t/images/DPX.dpx
 t/images/DV.dv
 t/images/DjVu.djvu
+t/images/EXE.a
+t/images/EXE.dylib
 t/images/EXE.elf
 t/images/EXE.exe
 t/images/EXE.macho
+t/images/EXE.so
 t/images/ExifTool.jpg
 t/images/ExifTool.tif
 t/images/ExtendedXMP.jpg
@@ -862,6 +870,7 @@ t/images/Geotag2.log
 t/images/Geotag3.log
 t/images/HTML.html
 t/images/IPTC.jpg
+t/images/ISO.iso
 t/images/ITC.itc
 t/images/InDesign.indd
 t/images/JVC.jpg

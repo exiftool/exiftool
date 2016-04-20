@@ -65,41 +65,41 @@ supported by ExifTool (r = read, w = write, c = create):
 
   File Types
   ------------+-------------+-------------+-------------+------------
-  3FR   r     | DVB   r/w   | KDC   r     | OGV   r     | RW2   r/w
-  3G2   r/w   | DYLIB r     | KEY   r     | ORF   r/w   | RWL   r/w
-  3GP   r/w   | EIP   r     | LA    r     | OTF   r     | RWZ   r
-  AA    r     | EPS   r/w   | LFP   r     | PAC   r     | RM    r
-  AAX   r/w   | EPUB  r     | LNK   r     | PAGES r     | SEQ   r
-  ACR   r     | ERF   r/w   | M2TS  r     | PBM   r/w   | SO    r
-  AFM   r     | EXE   r     | M4A/V r/w   | PCD   r     | SR2   r/w
-  AI    r/w   | EXIF  r/w/c | MEF   r/w   | PDB   r     | SRF   r
-  AIFF  r     | EXR   r     | MIE   r/w/c | PDF   r/w   | SRW   r/w
-  APE   r     | EXV   r/w/c | MIFF  r     | PEF   r/w   | SVG   r
-  ARW   r/w   | F4A/V r/w   | MKA   r     | PFA   r     | SWF   r
-  ASF   r     | FFF   r/w   | MKS   r     | PFB   r     | THM   r/w
-  AVI   r     | FLA   r     | MKV   r     | PFM   r     | TIFF  r/w
-  AZW   r     | FLAC  r     | MNG   r/w   | PGF   r     | TORRENT r
-  BMP   r     | FLV   r     | MOBI  r     | PGM   r/w   | TTC   r
-  BTF   r     | FPF   r     | MODD  r     | PLIST r     | TTF   r
-  CHM   r     | FPX   r     | MOI   r     | PICT  r     | VCF   r
-  COS   r     | GIF   r/w   | MOS   r/w   | PMP   r     | VRD   r/w/c
-  CR2   r/w   | GZ    r     | MOV   r/w   | PNG   r/w   | VSD   r
-  CRW   r/w   | HDP   r/w   | MP3   r     | PPM   r/w   | WAV   r
-  CS1   r/w   | HDR   r     | MP4   r/w   | PPT   r     | WDP   r/w
-  DCM   r     | HTML  r     | MPC   r     | PPTX  r     | WEBP  r
-  DCP   r/w   | ICC   r/w/c | MPG   r     | PS    r/w   | WEBM  r
-  DCR   r     | ICS   r     | MPO   r/w   | PSB   r/w   | WMA   r
-  DFONT r     | IDML  r     | MQV   r/w   | PSD   r/w   | WMV   r
-  DIVX  r     | IIQ   r/w   | MRW   r/w   | PSP   r     | WV    r
-  DJVU  r     | IND   r/w   | MXF   r     | QTIF  r/w   | X3F   r/w
-  DLL   r     | INX   r     | NEF   r/w   | RA    r     | XCF   r
-  DNG   r/w   | ISO   r     | NRW   r/w   | RAF   r/w   | XLS   r
-  DOC   r     | ITC   r     | NUMBERS r   | RAM   r     | XLSX  r
-  DOCX  r     | J2C   r     | ODP   r     | RAR   r     | XMP   r/w/c
-  DPX   r     | JNG   r/w   | ODS   r     | RAW   r/w   | ZIP   r
-  DR4   r/w/c | JP2   r/w   | ODT   r     | RIFF  r     |
-  DSS   r     | JPEG  r/w   | OFR   r     | RSRC  r     |
-  DV    r     | K25   r     | OGG   r     | RTF   r     |
+  3FR   r     | DV    r     | K25   r     | OFR   r     | RSRC  r
+  3G2   r/w   | DVB   r/w   | KDC   r     | OGG   r     | RTF   r
+  3GP   r/w   | DYLIB r     | KEY   r     | OGV   r     | RW2   r/w
+  A     r     | EIP   r     | LA    r     | ORF   r/w   | RWL   r/w
+  AA    r     | EPS   r/w   | LFP   r     | OTF   r     | RWZ   r
+  AAX   r/w   | EPUB  r     | LNK   r     | PAC   r     | RM    r
+  ACR   r     | ERF   r/w   | M2TS  r     | PAGES r     | SEQ   r
+  AFM   r     | EXE   r     | M4A/V r/w   | PBM   r/w   | SO    r
+  AI    r/w   | EXIF  r/w/c | MEF   r/w   | PCD   r     | SR2   r/w
+  AIFF  r     | EXR   r     | MIE   r/w/c | PDB   r     | SRF   r
+  APE   r     | EXV   r/w/c | MIFF  r     | PDF   r/w   | SRW   r/w
+  ARW   r/w   | F4A/V r/w   | MKA   r     | PEF   r/w   | SVG   r
+  ASF   r     | FFF   r/w   | MKS   r     | PFA   r     | SWF   r
+  AVI   r     | FLA   r     | MKV   r     | PFB   r     | THM   r/w
+  AZW   r     | FLAC  r     | MNG   r/w   | PFM   r     | TIFF  r/w
+  BMP   r     | FLV   r     | MOBI  r     | PGF   r     | TORRENT r
+  BTF   r     | FPF   r     | MODD  r     | PGM   r/w   | TTC   r
+  CHM   r     | FPX   r     | MOI   r     | PLIST r     | TTF   r
+  COS   r     | GIF   r/w   | MOS   r/w   | PICT  r     | VCF   r
+  CR2   r/w   | GZ    r     | MOV   r/w   | PMP   r     | VRD   r/w/c
+  CRW   r/w   | HDP   r/w   | MP3   r     | PNG   r/w   | VSD   r
+  CS1   r/w   | HDR   r     | MP4   r/w   | PPM   r/w   | WAV   r
+  DCM   r     | HTML  r     | MPC   r     | PPT   r     | WDP   r/w
+  DCP   r/w   | ICC   r/w/c | MPG   r     | PPTX  r     | WEBP  r
+  DCR   r     | ICS   r     | MPO   r/w   | PS    r/w   | WEBM  r
+  DFONT r     | IDML  r     | MQV   r/w   | PSB   r/w   | WMA   r
+  DIVX  r     | IIQ   r/w   | MRW   r/w   | PSD   r/w   | WMV   r
+  DJVU  r     | IND   r/w   | MXF   r     | PSP   r     | WV    r
+  DLL   r     | INX   r     | NEF   r/w   | QTIF  r/w   | X3F   r/w
+  DNG   r/w   | ISO   r     | NRW   r/w   | RA    r     | XCF   r
+  DOC   r     | ITC   r     | NUMBERS r   | RAF   r/w   | XLS   r
+  DOCX  r     | J2C   r     | O     r     | RAM   r     | XLSX  r
+  DPX   r     | JNG   r/w   | ODP   r     | RAR   r     | XMP   r/w/c
+  DR4   r/w/c | JP2   r/w   | ODS   r     | RAW   r/w   | ZIP   r
+  DSS   r     | JPEG  r/w   | ODT   r     | RIFF  r     |
 
   Meta Information
   ----------------------+----------------------+---------------------

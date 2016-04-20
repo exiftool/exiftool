@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '10.14';
+$VERSION = '10.15';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -129,15 +129,15 @@ sub ReadValue($$$$$;$);
 @loadAllTables = qw(
     PhotoMechanic Exif GeoTiff CanonRaw KyoceraRaw Lytro MinoltaRaw PanasonicRaw
     SigmaRaw JPEG GIMP Jpeg2000 GIF BMP BMP::OS2 PICT PNG MNG DjVu DPX OpenEXR
-    MIFF PGF PSP PhotoCD Radiance PDF PostScript Photoshop::Header FujiFilm::RAF
-    FujiFilm::IFD Samsung::Trailer Sony::SRF2 Sony::SR2SubIFD Sony::PMP ITC ID3
-    Vorbis Ogg APE APE::NewHeader APE::OldHeader Audible MPC MPEG::Audio
-    MPEG::Video MPEG::Xing M2TS QuickTime QuickTime::ImageFile Matroska MOI MXF
-    DV Flash Flash::FLV Real::Media Real::Audio Real::Metafile RIFF AIFF ASF
-    DICOM MIE HTML XMP::SVG Palm Palm::MOBI Palm::EXTH Torrent EXE
-    EXE::PEVersion EXE::PEString EXE::MachO EXE::PEF EXE::ELF EXE::CHM LNK Font
-    VCard VCard::VCalendar RSRC Rawzor ZIP ZIP::GZIP ZIP::RAR RTF OOXML iWork
-    ISO FLIR::AFF FLIR::FPF
+    MIFF PGF PSP PhotoCD Radiance PDF PostScript Photoshop::Header
+    Photoshop::Layers FujiFilm::RAF FujiFilm::IFD Samsung::Trailer Sony::SRF2
+    Sony::SR2SubIFD Sony::PMP ITC ID3 Vorbis Ogg APE APE::NewHeader
+    APE::OldHeader Audible MPC MPEG::Audio MPEG::Video MPEG::Xing M2TS QuickTime
+    QuickTime::ImageFile Matroska MOI MXF DV Flash Flash::FLV Real::Media
+    Real::Audio Real::Metafile RIFF AIFF ASF DICOM MIE HTML XMP::SVG Palm
+    Palm::MOBI Palm::EXTH Torrent EXE EXE::PEVersion EXE::PEString EXE::MachO
+    EXE::PEF EXE::ELF EXE::AR EXE::CHM LNK Font VCard VCard::VCalendar RSRC
+    Rawzor ZIP ZIP::GZIP ZIP::RAR RTF OOXML iWork ISO FLIR::AFF FLIR::FPF
 );
 
 # alphabetical list of current Lang modules
@@ -202,6 +202,7 @@ my %fileTypeLookup = (
    '3GP' => ['MOV',  '3rd Gen. Partnership Project audio/video'],
    '3GP2'=>  '3G2',
    '3GPP'=>  '3GP',
+    A    => ['EXE',  'Static library'],
     AA   => ['AA',   'Audible Audiobook'],
     AAX  => ['MOV',  'Audible Enhanced Audiobook'],
     ACR  => ['DICOM','American College of Radiology ACR-NEMA'],
@@ -357,6 +358,7 @@ my %fileTypeLookup = (
     NMBTEMPLATE => ['ZIP','Apple Numbers Template'],
     NRW  => ['TIFF', 'Nikon RAW (2)'],
     NUMBERS => ['ZIP','Apple Numbers spreadsheet'],
+    O    => ['EXE',  'Relocatable Object'],
     ODB  => ['ZIP',  'Open Document Database'],
     ODC  => ['ZIP',  'Open Document Chart'],
     ODF  => ['ZIP',  'Open Document Formula'],
@@ -7205,19 +7207,22 @@ sub SetFileType($;$$$)
 # Override the FileType and MIMEType tags
 # Inputs: 0) ExifTool object ref, 1) file type
 # Notes:  does nothing if FileType was not previously defined (ie. when writing)
-sub OverrideFileType($$)
+sub OverrideFileType($$;$$)
 {
-    my ($self, $fileType) = @_;
+    my ($self, $fileType, $mimeType, $normExt) = @_;
     if (defined $$self{VALUE}{FileType} and $fileType ne $$self{VALUE}{FileType}) {
         $$self{VALUE}{FileType} = $fileType;
-        my $normExt = $fileTypeExt{$fileType};
-        $normExt = $fileType unless defined $normExt;
+        unless (defined $normExt) {
+            $normExt = $fileTypeExt{$fileType};
+            $normExt = $fileType unless defined $normExt;
+        }
         $$self{VALUE}{FileTypeExtension} = uc $normExt;
-        # only override MIME type if unique for the derived file type
-        $$self{VALUE}{MIMEType} = $mimeType{$fileType} if $mimeType{$fileType};
+        $mimeType or $mimeType = $mimeType{$fileType};
+        $$self{VALUE}{MIMEType} = $mimeType if $mimeType;
         if ($$self{OPTIONS}{Verbose}) {
             $self->VPrint(0,"$$self{INDENT}FileType [override] = $fileType\n");
-            $self->VPrint(0,"$$self{INDENT}MIMEType [override] = $$self{VALUE}{MIMEType}\n");
+            $self->VPrint(0,"$$self{INDENT}FileTypeExtension [override] = $$self{VALUE}{FileTypeExtension}\n");
+            $self->VPrint(0,"$$self{INDENT}MIMEType [override] = $mimeType\n") if $mimeType;
         }
     }
 }

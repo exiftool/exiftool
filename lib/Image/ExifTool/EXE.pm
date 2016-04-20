@@ -21,7 +21,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.12';
+$VERSION = '1.13';
 
 sub ProcessPEResources($$);
 sub ProcessPEVersion($$);
@@ -598,7 +598,39 @@ my %languageCode = (
             7 => 'Dynamic link editor',
             8 => 'Dynamically bound bundle',
             9 => 'Shared library stub for static linking',
+            # (the following from Apple loader.h header file)
+            10 => 'Debug information',
+            11 => 'x86_64 kexts',
         },
+    },
+    6 => {
+        Name => 'ObjectFlags',
+        PrintHex => 1,
+        # ref Apple loader.h header file
+        PrintConv => { BITMASK => {
+             0 => 'No undefs',
+             1 => 'Incrementa link',
+             2 => 'Dyld link',
+             3 => 'Bind at load',
+             4 => 'Prebound',
+             5 => 'Split segs',
+             6 => 'Lazy init',
+             7 => 'Two level',
+             8 => 'Force flat',
+             9 => 'No multi defs',
+             10 => 'No fix prebinding',
+             11 => 'Prebindable',
+             12 => 'All mods bound',
+             13 => 'Subsections via symbols',
+             14 => 'Canonical',
+             15 => 'Weak defines',
+             16 => 'Binds to weak',
+             17 => 'Allow stack execution',
+             18 => 'Dead strippable dylib',
+             19 => 'Root safe',
+             20 => 'No reexported dylibs',
+             21 => 'Random address',
+        }},
     },
 );
 
@@ -700,6 +732,29 @@ my %languageCode = (
             0xa390 => 'S/390 (old)',
         },
     },
+);
+
+# Information extracted from static library archives
+# (ref http://opensource.apple.com//source/xnu/xnu-1456.1.26/EXTERNAL_HEADERS/ar.h)
+%Image::ExifTool::EXE::AR = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 2 => 'Other' },
+    NOTES => q{
+        Information extracted from static libraries.
+    },
+  #  0  string[16] ar_name
+    16 => {
+        Name => 'CreateDate',
+        Groups => { 2 => 'Time' },
+        Format => 'string[12]',
+        ValueConv => 'ConvertUnixTime($val,1)',
+        PrintConv => '$self->ConvertDateTime($val)',
+    },
+  # 28  string[6]  ar_uid
+  # 34  string[6]  ar_gid
+  # 40  string[8]  ar_mode
+  # 48  string[10] ar_size
+  # 58  string[2]  terminator "`\n"
 );
 
 # Microsoft compiled help format (ref http://www.russotto.net/chm/chmformat.html)
@@ -953,6 +1008,74 @@ sub ProcessPEDict($$)
 }
 
 #------------------------------------------------------------------------------
+# Override file type if necessary for Mach object files and libraries
+# Inputs: 0) ExifTool ref, 1) ObjectFileType number, 2) flag for fat binary
+my %machOverride = (
+    1 => [ 'object file', 'O' ],
+    6 => [ 'dynamic link library', 'DYLIB' ],
+    8 => [ 'dynamic bound bundle', 'DYLIB' ],
+    9 => [ 'dynamic link library stub', 'DYLIB' ],
+);
+sub MachOverride($$;$)
+{
+    my ($et, $objType, $fat) = @_;
+    my $override = $machOverride{$objType};
+    if ($override) {
+        my $desc = 'Mach-O ' . ($fat ? 'fat ' : '') . $$override[0];
+        $et->OverrideFileType($desc, undef, $$override[1]);
+    }
+}
+
+#------------------------------------------------------------------------------
+# Extract tags from Mach header
+# Inputs: 0) ExifTool ref, 1) data ref, 2) flag to extract object type
+# Returns: true if Mach header was found
+# Mach type based on magic number
+# [bit depth, byte order starting with "Little" or "Big"]
+my %machType = (
+    "\xfe\xed\xfa\xce" => ['32 bit', 'Big endian'],
+    "\xce\xfa\xed\xfe" => ['32 bit', 'Little endian'],
+    "\xfe\xed\xfa\xcf" => ['64 bit', 'Big endian'],
+    "\xcf\xfa\xed\xfe" => ['64 bit', 'Little endian'],
+);
+sub ExtractMachTags($$;$)
+{
+    my ($et, $dataPt, $doObj) = @_;
+    # get information about mach header based on the magic number (first 4 bytes)
+    my $info = $machType{substr($$dataPt, 0, 4)};
+    if ($info) {
+        # Mach header structure:
+        #  0 int32u magic
+        #  4 int32u cputype
+        #  8 int32u cpusubtype
+        # 12 int32u filetype
+        # 16 int32u ncmds
+        # 20 int32u sizeofcmds
+        # 24 int32u flags
+        my $tagTablePtr = GetTagTable('Image::ExifTool::EXE::MachO');
+        SetByteOrder($$info[1]);
+        my $cpuType = Get32s($dataPt, 4);
+        my $subType = Get32s($dataPt, 8);
+        $et->HandleTag($tagTablePtr, 0, $$info[0]);
+        $et->HandleTag($tagTablePtr, 1, $$info[1]);
+        $et->HandleTag($tagTablePtr, 3, $cpuType);
+        $et->HandleTag($tagTablePtr, 4, "$cpuType $subType");
+        if ($doObj) {
+            my $objType = Get32u($dataPt, 12);
+            my $flags = Get32u($dataPt, 24);
+            $et->HandleTag($tagTablePtr, 5, $objType);
+            $et->HandleTag($tagTablePtr, 6, $flags);
+            # override file type if this is an object file or library
+            MachOverride($et, $objType);
+        } else { # otherwise this was a static library
+            $et->OverrideFileType('Mach-O static library', undef, 'A');
+        }
+        return 1;
+    }
+    return 0;
+}
+
+#------------------------------------------------------------------------------
 # Extract information from an EXE file
 # Inputs: 0) ExifTool object reference, 1) dirInfo reference
 # Returns: 1 on success, 0 if this wasn't a valid EXE file
@@ -971,25 +1094,25 @@ sub ProcessEXE($$)
         # DOS/Windows executable
         # validate DOS header
         # (ref http://www.delphidabbler.com/articles?article=8&part=2)
-        #   0  magic   : int16u    # Magic number ("MZ")
-        #   2  cblp    : int16u    # Bytes on last page of file
-        #   4  cp      : int16u    # Pages in file
-        #   6  crlc    : int16u    # Relocations
-        #   8  cparhdr : int16u    # Size of header in paragraphs
-        #  10  minalloc: int16u    # Minimum extra paragraphs needed
-        #  12  maxalloc: int16u    # Maximum extra paragraphs needed
-        #  14  ss      : int16u    # Initial (relative) SS value
-        #  16  sp      : int16u    # Initial SP value
-        #  18  csum    : int16u    # Checksum
-        #  20  ip      : int16u    # Initial IP value
-        #  22  cs      : int16u    # Initial (relative) CS value
-        #  24  lfarlc  : int16u    # Address of relocation table
-        #  26  ovno    : int16u    # Overlay number
-        #  28  res     : int16u[4] # Reserved words
-        #  36  oemid   : int16u    # OEM identifier (for oeminfo)
-        #  38  oeminfo : int16u    # OEM info; oemid specific
-        #  40  res2    : int16u[10]# Reserved words
-        #  60  lfanew  : int32u;   # File address of new exe header
+        #   0 int16u     magic    - Magic number ("MZ")
+        #   2 int16u     cblp     - Bytes on last page of file
+        #   4 int16u     cp       - Pages in file
+        #   6 int16u     crlc     - Relocations
+        #   8 int16u     cparhdr  - Size of header in paragraphs
+        #  10 int16u     minalloc - Minimum extra paragraphs needed
+        #  12 int16u     maxalloc - Maximum extra paragraphs needed
+        #  14 int16u     ss       - Initial (relative) SS value
+        #  16 int16u     sp       - Initial SP value
+        #  18 int16u     csum     - Checksum
+        #  20 int16u     ip       - Initial IP value
+        #  22 int16u     cs       - Initial (relative) CS value
+        #  24 int16u     lfarlc   - Address of relocation table
+        #  26 int16u     ovno     - Overlay number
+        #  28 int16u[4]  res      - Reserved words
+        #  36 int16u     oemid    - OEM identifier (for oeminfo)
+        #  38 int16u     oeminfo  - OEM info; oemid specific
+        #  40 int16u[10] res2     - Reserved words
+        #  60 int32u;    lfanew   - File address of new exe header
         SetByteOrder('II');
         my ($cblp, $cp, $lfarlc, $lfanew) = unpack('x2v2x18vx34V', $buff);
         my $fileSize = ($cp - ($cblp ? 1 : 0)) * 512 + $cblp;
@@ -1095,45 +1218,34 @@ sub ProcessEXE($$)
             my $i;
             for ($i=0; $i<$count; ++$i) {
                 my $cpuType = Get32s(\$buff, 8 + $i * 20);
-                my $cpuSubtype = Get32u(\$buff, 12 + $i * 20);
+                my $subType = Get32s(\$buff, 12 + $i * 20);
                 $et->HandleTag($tagTablePtr, 3, $cpuType);
-                $et->HandleTag($tagTablePtr, 4, "$cpuType $cpuSubtype");
+                $et->HandleTag($tagTablePtr, 4, "$cpuType $subType");
             }
             # load first Mach-O header to get the object file type
             my $offset = Get32u(\$buff, 16);
             if ($raf->Seek($offset, 0) and $raf->Read($buf2, 16) == 16) {
                 if ($buf2 =~ /^(\xfe\xed\xfa(\xce|\xcf)|(\xce|\xcf)\xfa\xed\xfe)/) {
                     SetByteOrder($buf2 =~ /^\xfe\xed/ ? 'MM' : 'II');
-                    my $objType = Get32s(\$buf2, 12);
+                    my $objType = Get32u(\$buf2, 12);
                     $et->HandleTag($tagTablePtr, 5, $objType);
+                    # override file type if this is a library or object file
+                    MachOverride($et, $objType, 'fat');
                 } elsif ($buf2 =~ /^!<arch>\x0a/) {
                     # .a libraries use this magic number
                     $et->HandleTag($tagTablePtr, 5, -1);
+                    # override file type since this is a library
+                    $et->OverrideFileType('Mach-O fat static library', undef, 'A');
                 } else {
                     $et->Warn('Unrecognized object file type');
                 }
             } else {
                 $et->Warn('Error reading file');
             }
-       } elsif ($size >= 16) {
+        } elsif ($size >= 16) {
             $et->SetFileType('Mach-O executable', undef, '');
             return 1 if $fast3;
-            my $info = {
-                "\xfe\xed\xfa\xce" => ['32 bit', 'Big endian'],
-                "\xce\xfa\xed\xfe" => ['32 bit', 'Little endian'],
-                "\xfe\xed\xfa\xcf" => ['64 bit', 'Big endian'],
-                "\xcf\xfa\xed\xfe" => ['64 bit', 'Little endian'],
-            }->{substr($buff, 0, 4)};
-            my $byteOrder = ($buff =~ /^\xfe/) ? 'MM' : 'II';
-            SetByteOrder($byteOrder);
-            my $cpuType = Get32s(\$buff, 4);
-            my $cpuSubtype = Get32s(\$buff, 8);
-            my $objType = Get32s(\$buff, 12);
-            $et->HandleTag($tagTablePtr, 0, $$info[0]);
-            $et->HandleTag($tagTablePtr, 1, $$info[1]);
-            $et->HandleTag($tagTablePtr, 3, $cpuType);
-            $et->HandleTag($tagTablePtr, 4, "$cpuType $cpuSubtype");
-            $et->HandleTag($tagTablePtr, 5, $objType);
+            ExtractMachTags($et, \$buff, 1);
         }
         return 1;
 #
@@ -1163,13 +1275,55 @@ sub ProcessEXE($$)
         SetByteOrder(Get8u(\$buff,5) == 1 ? 'II' : 'MM');
         $tagTablePtr = GetTagTable('Image::ExifTool::EXE::ELF');
         %dirInfo = (
-            DataPt => \$buff,
+            DataPt  => \$buff,
             DataPos => 0,
             DataLen => $size,
-            DirStart => 0,
-            DirLen => $size,
+            DirLen  => $size,
         );
         $et->ProcessDirectory(\%dirInfo, $tagTablePtr);
+        # override file type if this is a library or object file
+        my $override = {
+            1 => [ 'ELF object file', 'O' ],
+            3 => [ 'ELF shared library', 'SO' ],
+        }->{$$et{VALUE}{ObjectFileType} || 0};
+        $et->OverrideFileType($$override[0], undef, $$override[1]) if $override;
+        return 1;
+#
+# .a libraries
+#
+    } elsif ($buff =~ /^!<arch>\x0a/) {
+        $et->SetFileType('Static library', undef, 'A');
+        return 1 if $fast3;
+        my $pos = 8;    # current file position
+        my $max = 10;   # maximum number of archive files to check
+        # read into list of ar structures (each 60 bytes long):
+        while ($max-- > 0) {
+            # seek to start of the ar structure and read it
+            $raf->Seek($pos, 0) and $raf->Read($buff, 60) == 60 or last;
+            substr($buff, 58, 2) eq "`\n" or $et->Warn('Invalid archive header'), last;
+            unless ($tagTablePtr) {
+                # extract some information from first file in archive
+                $tagTablePtr = GetTagTable('Image::ExifTool::EXE::AR');
+                %dirInfo = (
+                    DataPt  => \$buff,
+                    DataPos => $pos,
+                );
+                $et->ProcessDirectory(\%dirInfo, $tagTablePtr);
+            }
+            my $name = substr($buff, 0, 16);
+            if ($name =~ m{^#1/(\d+) *$}) { # check for extended archive (BSD variant)
+                my $len = $1;
+                $len > 256 and $et->Warn('Invalid extended archive name length'), last;
+                # (we read the name here just to move the file pointer)
+                $raf->Read($name, $len) == $len or $et->Warn('Error reading archive name'), last;
+            }
+            my $arSize = substr($buff, 48, 10);
+            $arSize =~ s/^(\d+).*/$1/s or last;     # make sure archive size is a number
+            $raf->Read($buff, 28) == 28 or last;    # read (possible) Mach header
+            ExtractMachTags($et, \$buff) and last;  # try to extract tags
+            $pos += 60 + $arSize;   # step to next entry
+            ++$pos if $pos & 0x01;  # padded to an even byte
+        }
         return 1;
 #
 # various scripts (perl, sh, etc...)
@@ -1187,12 +1341,6 @@ sub ProcessEXE($$)
         }->{$1};
         # use '.sh' for extension of all shell scripts
         $ext = $prog =~ /sh$/ ? 'sh' : '' unless defined $ext;
-#
-# .a libraries
-#
-    } elsif ($buff =~ /^!<arch>\x0a/) {
-        $type = 'Static library';
-        $ext = 'a';
     }
     return 0 unless $type;
     $et->SetFileType($type, $mime, $ext);

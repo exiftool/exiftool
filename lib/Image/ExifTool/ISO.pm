@@ -14,7 +14,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.00';
+$VERSION = '1.01';
 
 # trim trailing spaces and ignore tag if empty
 my %rawStr = (
@@ -87,6 +87,18 @@ my %volumeDescriptorType = (
     128 => { Name => 'VolumeBlockSize',     Format => 'int16u' },
     132 => { Name => 'PathTableSize',       Format => 'int32u', Unknown => 1 },
     140 => { Name => 'PathTableLocation',   Format => 'int32u', Unknown => 1 },
+    174 => {
+        Name => 'RootDirectoryCreateDate',
+        Format => 'undef[7]',
+        Groups => { 2 => 'Time' },
+        ValueConv => q{
+            my @a = unpack('C6c', $val);
+            $a[0] += 1900;
+            $a[6] = TimeZoneString($a[6] * 15);
+            return sprintf('%.4d:%.2d:%.2d %.2d:%.2d:%.2d%s', @a);
+        },
+        PrintConv => '$self->ConvertDateTime($val)',
+    },
     190 => { Name => 'VolumeSetName',       Format => 'string[128]', %rawStr },
     318 => { Name => 'Publisher',           Format => 'string[128]', %rawStr },
     446 => { Name => 'DataPreparer',        Format => 'string[128]', %rawStr },
@@ -129,21 +141,22 @@ sub ProcessISO($$)
 
     # verify this is a valid ISO file
     return 0 unless $raf->Seek(32768, 0);
-    
+
     while ($raf->Read($buff, 2048) == 2048) {
         last unless $buff =~ /^[\0-\x03\xff]CD001/;
-        my $type = unpack('C', $buff);
         unless ($tagTablePtr) {
             $et->SetFileType(); # set the FileType tag
             SetByteOrder('II'); # read little-endian values only
             $tagTablePtr = GetTagTable('Image::ExifTool::ISO::Main');
         }
+        my $type = unpack('C', $buff);
         $et->VPrint(0, "Volume descriptor type $type ($volumeDescriptorType{$type})\n");
         last if $type == 255;   # stop at terminator
         next unless $$tagTablePtr{$type};
         my $subTablePtr = GetTagTable($$tagTablePtr{$type}{SubDirectory}{TagTable});
         my %dirInfo = (
             DataPt   => \$buff,
+            DataPos  => $raf->Tell() - 2048,
             DirStart => 0,
             DirLen   => length($buff),
         );

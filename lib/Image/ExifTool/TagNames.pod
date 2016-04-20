@@ -4081,18 +4081,18 @@ access to this information.
   0x0416   IndexedColourTableCount?             N
   0x0417   TransparentIndex?                    N
   0x0419   GlobalAltitude                       int32u
-  0x041a   Slices?                              N
-  0x041b   WorkflowURL?                         N
+  0x041a   SliceInfo                            Photoshop SliceInfo
+  0x041b   WorkflowURL                          N
   0x041c   JumpToXPEP?                          N
   0x041d   AlphaIdentifiers?                    N
-  0x041e   URL_List?                            N
+  0x041e   URL_List                             N+
   0x0421   VersionInfo                          Photoshop VersionInfo
   0x0422   EXIFInfo                             EXIF
   0x0423   ExifInfo2?                           N
   0x0424   XMP                                  XMP
   0x0425   IPTCDigest                           string!
-  0x0426   PrintScale?                          N
-  0x0428   PixelAspectRatio?                    N
+  0x0426   PrintScaleInfo                       Photoshop PrintScaleInfo
+  0x0428   PixelInfo                            Photoshop PixelInfo
   0x0429   LayerComps?                          N
   0x042a   AlternateDuotoneColors?              N
   0x042b   AlternateSpotColors?                 N
@@ -4138,6 +4138,13 @@ access to this information.
       1    PhotoshopFormat                      N
       2    ProgressiveScans                     N
 
+=head3 Photoshop SliceInfo Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+     20    SlicesGroupName                      N
+     24    NumSlices                            N
+
 =head3 Photoshop VersionInfo Tags
 
   Index1   Tag Name                             Writable
@@ -4145,6 +4152,20 @@ access to this information.
       4    HasRealMergedData                    N
       5    WriterName                           N
       9    ReaderName                           N
+
+=head3 Photoshop PrintScaleInfo Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    PrintStyle                           N
+      2    PrintPosition                        N
+     10    PrintScale                           N
+
+=head3 Photoshop PixelInfo Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      4    PixelAspectRatio                     N
 
 =head3 Photoshop Header Tags
 
@@ -4157,6 +4178,19 @@ This information is found in the PSD file header.
       9    ImageWidth                           N
      11    BitDepth                             N
      12    ColorMode                            N
+
+=head3 Photoshop Layers Tags
+
+Tags extracted from Photoshop layer information.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  '_xbnd'  LayerBlendModes                      N+
+  '_xcnt'  LayerCount                           N
+  '_xnam'  LayerNames                           N+
+  '_xopc'  LayerOpacities                       N+
+  '_xrct'  LayerRectangles                      N+
+  'luni'   LayerUnicodeNames                    N+
 
 =head2 Apple Tags
 
@@ -5864,7 +5898,7 @@ These tags are used by the EOS 1DX, 5DmkIII, 6D, 100D, 650D, 700D, M and 7DmkII.
 
 =head3 Canon ColorData8 Tags
 
-These tags are used by the EOS 5DS and EOS 5DS R.
+These tags are used by the EOS 5DS, 5DS R, 80D and 1300D.
 
   Index2   Tag Name                             Writable
   ------   --------                             --------
@@ -5951,6 +5985,10 @@ These tags are used by the EOS 5DS and EOS 5DS R.
     262    ColorTempUnknown30?                  int16s
     263    ColorCalib?                          Canon ColorCalib
     326    AverageBlackLevel                    int16u[4]
+    556    PerChannelBlackLevel                 int16u[4]
+    560    NormalWhiteLevel                     int16u
+    561    SpecularWhiteLevel                   int16u
+    562    LinearityUpperMargin                 int16u
     778    PerChannelBlackLevel                 int16u[4]
     782    NormalWhiteLevel                     int16u
     783    SpecularWhiteLevel                   int16u
@@ -14084,7 +14122,7 @@ ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-77M2.
 
 =head3 Sony Tag2010h Tags
 
-Valid for DSC-HX90V/RX1RM2/RX10M2/RX100M4/WX500, ILCE-6300/7RM2/7SM2.
+Valid for DSC-HX90V/RX1RM2/RX10M2/RX10M3/RX100M4/WX500, ILCE-6300/7RM2/7SM2.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
@@ -14320,8 +14358,8 @@ Valid for SLT, NEX, ILCE-3000/3500 and several DSC models.
 
 =head3 Sony Tag9405b Tags
 
-Valid for DSC-HX400V/HX60V/QX30/RX10/RX100M3/WX220/WX350,
-ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-77M2.
+Valid for DSC-HX400V/HX60V/QX30/RX10/RX10M2/RX10M3/RX100M3/RX100M4/WX220/WX350,
+ILCE-7/7M2/7R/7RM2/7S/7SM2/5000/5100/6000/6300/QX1, ILCA-77M2.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
@@ -21238,6 +21276,7 @@ multi-language user data tags found, even if they don't exist in this table.
   ------       --------                         --------
   '@sec'       SamsungSec                       Samsung sec
   'AllF'       PlayAllFrames                    N
+  'CAME'       SerialNumberHash                 N
   'CNCV'       CompressorVersion                N
   'CNFV'       FirmwareVersion                  N
   'CNMN'       Model                            N
@@ -21245,9 +21284,11 @@ multi-language user data tags found, even if they don't exist in this table.
   'CNTH'       CanonCNTH                        Canon CNTH
   'DcMD'       KodakDcMD                        Kodak DcMD
   'FFMV'       FujiFilmFFMV                     FujiFilm FFMV
+  'FIRM'       FirmwareVersion                  N
   'GoPr'       GoProType                        N
   'INFO'       SamsungINFO                      Samsung INFO
   'LEIC'       LeicaLEIC                        Panasonic PANA
+  'LENS'       LensSerialNumber                 N
   'LOOP'       LoopStyle                        N
   'MMA0'       MinoltaMMA0                      Minolta MMA
   'MMA1'       MinoltaMMA1                      Minolta MMA
@@ -27995,6 +28036,7 @@ libraries.
       3    CPUType                              N+
       4    CPUSubtype                           N+
       5    ObjectFileType                       N
+      6    ObjectFlags                          N
 
 =head3 EXE PEF Tags
 
@@ -28017,6 +28059,14 @@ Information extracted from ELF (Unix) executable files and SO libraries.
       5    CPUByteOrder                         N
      16    ObjectFileType                       N
      18    CPUType                              N
+
+=head3 EXE AR Tags
+
+Information extracted from static libraries.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+     16    CreateDate                           N
 
 =head3 EXE CHM Tags
 
@@ -28600,6 +28650,7 @@ Tags extracted from ISO 9660 disk images.
     128    VolumeBlockSize                      N
     132    PathTableSize?                       N
     140    PathTableLocation?                   N
+    174    RootDirectoryCreateDate              N
     190    VolumeSetName                        N
     318    Publisher                            N
     446    DataPreparer                         N

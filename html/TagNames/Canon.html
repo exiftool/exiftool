@@ -8217,7 +8217,7 @@ option is used.</p>
 </table></td></tr></table></blockquote>
 
 <h2><a name='ColorData8'>Canon ColorData8 Tags</a></h2>
-<p>These tags are used by the EOS 5DS and EOS 5DS R.</p>
+<p>These tags are used by the EOS 5DS, 5DS R, 80D and 1300D.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -8228,7 +8228,8 @@ option is used.</p>
 <td>ColorDataVersion</td>
 <td class=c>int16s</td>
 <td><span class=s>12 = 12 (5DS/5DSR)
-  <br>13 = 13 (80D)</span></td></tr>
+  <br>13 = 13 (80D)
+  <br>14 = 14 (1300D)</span></td></tr>
 <tr class=b>
 <td class=r title='63 = 0x3f'>63</td>
 <td>WB_RGGBLevelsAsShot</td>
@@ -8641,25 +8642,45 @@ option is used.</p>
 <td class=c>int16u[4]</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td class=r title='556 = 0x22c'>556</td>
+<td>PerChannelBlackLevel</td>
+<td class=c>int16u[4]</td>
+<td><span class=s><span class=n>(1300D)</span></span></td></tr>
+<tr>
+<td class=r title='560 = 0x230'>560</td>
+<td>NormalWhiteLevel</td>
+<td class=c>int16u</td>
+<td><span class=s><span class=n>(1300D)</span></span></td></tr>
+<tr class=b>
+<td class=r title='561 = 0x231'>561</td>
+<td>SpecularWhiteLevel</td>
+<td class=c>int16u</td>
+<td><span class=s><span class=n>(1300D)</span></span></td></tr>
+<tr>
+<td class=r title='562 = 0x232'>562</td>
+<td>LinearityUpperMargin</td>
+<td class=c>int16u</td>
+<td><span class=s><span class=n>(1300D)</span></span></td></tr>
+<tr class=b>
 <td class=r title='778 = 0x30a'>778</td>
 <td>PerChannelBlackLevel</td>
 <td class=c>int16u[4]</td>
-<td>&nbsp;</td></tr>
+<td><span class=s><span class=n>(5DS, 5DS R and 80D)</span></span></td></tr>
 <tr>
 <td class=r title='782 = 0x30e'>782</td>
 <td>NormalWhiteLevel</td>
 <td class=c>int16u</td>
-<td>&nbsp;</td></tr>
+<td><span class=s><span class=n>(5DS, 5DS R and 80D)</span></span></td></tr>
 <tr class=b>
 <td class=r title='783 = 0x30f'>783</td>
 <td>SpecularWhiteLevel</td>
 <td class=c>int16u</td>
-<td>&nbsp;</td></tr>
+<td><span class=s><span class=n>(5DS, 5DS R and 80D)</span></span></td></tr>
 <tr>
 <td class=r title='784 = 0x310'>784</td>
 <td>LinearityUpperMargin</td>
 <td class=c>int16u</td>
-<td>&nbsp;</td></tr>
+<td><span class=s><span class=n>(5DS, 5DS R and 80D)</span></span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='ColorDataUnknown'>Canon ColorDataUnknown Tags</a></h2>
@@ -9392,7 +9413,7 @@ SX280.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Mar 18, 2016</i>
+<br><i>Last revised Apr 20, 2016</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

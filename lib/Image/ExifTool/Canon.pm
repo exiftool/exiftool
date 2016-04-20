@@ -83,7 +83,7 @@ sub ProcessSerialData($$$);
 sub ProcessFilters($$$);
 sub SwapWords($);
 
-$VERSION = '3.60';
+$VERSION = '3.61';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -1658,8 +1658,8 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
             Name => 'ColorData7',
             SubDirectory => { TagTable => 'Image::ExifTool::Canon::ColorData7' },
         },
-        {   # (int16u[1560|1592]) - 5DS/5DSR (1560), 80D (1592), ref IB
-            Condition => '$count == 1560 or $count == 1592',
+        {   # (int16u[1560|1592]) - 5DS/5DSR (1560), 80D (1592), 1300D (1353) ref IB
+            Condition => '$count == 1560 or $count == 1592 or $count == 1353',
             Name => 'ColorData8',
             SubDirectory => { TagTable => 'Image::ExifTool::Canon::ColorData8' },
         },
@@ -7215,19 +7215,23 @@ my %ciMaxFocal = (
     },
 );
 
-# Color data (MakerNotes tag 0x4001, count=1560) (ref IB)
+# Color data (MakerNotes tag 0x4001, count=1560,etc) (ref IB)
 %Image::ExifTool::Canon::ColorData8 = (
     %binaryDataAttrs,
-    NOTES => 'These tags are used by the EOS 5DS and EOS 5DS R.',
+    NOTES => 'These tags are used by the EOS 5DS, 5DS R, 80D and 1300D.',
     FORMAT => 'int16s',
     FIRST_ENTRY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    DATAMEMBER => [ 0 ],
     IS_SUBDIR => [ 0x107 ],
     0x00 => {
         Name => 'ColorDataVersion',
+        DataMember => 'ColorDataVersion',
+        RawConv => '$$self{ColorDataVersion} = $val',
         PrintConv => {
             12 => '12 (5DS/5DSR)',
             13 => '13 (80D)', #PH
+            14 => '14 (1300D)', #IB
         },
     },
     0x3f => { Name => 'WB_RGGBLevelsAsShot',     Format => 'int16s[4]' },
@@ -7318,12 +7322,57 @@ my %ciMaxFocal = (
         Notes => 'B, C, A, Temperature',
         SubDirectory => { TagTable => 'Image::ExifTool::Canon::ColorCalib' }
     },
-
-    0x146 => { Name => 'AverageBlackLevel',     Format => 'int16u[4]' },
-    0x30a => { Name => 'PerChannelBlackLevel',  Format => 'int16u[4]' },
-    0x30e => { Name => 'NormalWhiteLevel',      Format => 'int16u', RawConv => '$val || undef' },
-    0x30f => { Name => 'SpecularWhiteLevel',    Format => 'int16u' },
-    0x310 => { Name => 'LinearityUpperMargin',  Format => 'int16u' },
+    0x146 => { Name => 'AverageBlackLevel', Format => 'int16u[4]' },
+    0x22c => {
+        Name => 'PerChannelBlackLevel',
+        Condition => '$$self{ColorDataVersion} == 14',
+        Format => 'int16u[4]',
+        Notes => '1300D',
+    },
+    0x230 => {
+        Name => 'NormalWhiteLevel',
+        Condition => '$$self{ColorDataVersion} == 14',
+        Format => 'int16u',
+        Notes => '1300D',
+        RawConv => '$val || undef',
+    },
+    0x231 => {
+        Name => 'SpecularWhiteLevel',
+        Condition => '$$self{ColorDataVersion} == 14',
+        Format => 'int16u',
+        Notes => '1300D',
+    },
+    0x232 => {
+        Name => 'LinearityUpperMargin',
+        Condition => '$$self{ColorDataVersion} == 14',
+        Format => 'int16u',
+        Notes => '1300D',
+    },
+    0x30a => {
+        Name => 'PerChannelBlackLevel',
+        Condition => '$$self{ColorDataVersion} < 14',
+        Format => 'int16u[4]',
+        Notes => '5DS, 5DS R and 80D',
+    },
+    0x30e => {
+        Name => 'NormalWhiteLevel',
+        Condition => '$$self{ColorDataVersion} < 14',
+        Format => 'int16u',
+        Notes => '5DS, 5DS R and 80D',
+        RawConv => '$val || undef',
+    },
+    0x30f => {
+        Name => 'SpecularWhiteLevel',
+        Condition => '$$self{ColorDataVersion} < 14',
+        Format => 'int16u',
+        Notes => '5DS, 5DS R and 80D',
+    },
+    0x310 => {
+        Name => 'LinearityUpperMargin',
+        Condition => '$$self{ColorDataVersion} < 14',
+        Format => 'int16u',
+        Notes => '5DS, 5DS R and 80D',
+    },
 );
 
 # Unknown color data (MakerNotes tag 0x4001)
@@ -7917,7 +7966,9 @@ sub CalcSensorDiag($$)
             $xres[0] < 10000000 and $yres[0] < 10000000 and
             # minimum sensor size is 0.061 inches (DC models - PH)
             $xres[1] >= 61 and $xres[1] < 1500 and
-            $yres[1] >= 61 and $yres[1] < 1000)
+            $yres[1] >= 61 and $yres[1] < 1000 and
+            # sensor isn't square (may happen if rationals have been reduced)
+            $xres[1] != $yres[1])
         {
             return sqrt($xres[1]*$xres[1] + $yres[1]*$yres[1]) * 0.0254;
         }

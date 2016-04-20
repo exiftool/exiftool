@@ -4,8 +4,20 @@ ExifTool Version History
 
 RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 
-Note: The most recent production release is Version 10.10. (Other versions are
+Note: The most recent production release is Version 10.15. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
+
+Apr. 20, 2016 - Version 10.15 (production release)
+
+  - Added .a and .o to the list of supported file types
+  - Added a few new Sony/Minolta lenses (thanks Jos Roost and LibRaw)
+  - Decode more Photoshop tags (thanks Taylor Bangs for some)
+  - Decode more information from static library (.a) files
+  - Decode a few more tags from GoPro MP4 videos (thanks Calvin Hass)
+  - Decode ColorData for Canon EOS 1300D (thanks LibRaw)
+  - Updated Sony decoding for newer models (thanks Jos Roost)
+  - Fixed bug where ScaleFactor35efl could be calculated incorrectly for Canon
+    images from some models which have had their EXIF rebuilt
 
 Apr. 8, 2016 - Version 10.14
 

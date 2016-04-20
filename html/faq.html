@@ -465,7 +465,8 @@ specified for some metadata types:
 (where <code>TYPE</code> is "<code>exif</code>", "<code>iptc</code>",
 "<code>id3</code>", "<code>photoshop</code>" or "<code>quicktime</code>")</li></ol>
 
-Valid <code>CHARSET</code> values are (with aliases given in brackets):
+Valid <code>CHARSET</code> values are (with aliases given in brackets, case is
+not significant):
 
 <blockquote><table class=clear>
 <tr><td>UTF8</td><td>(cp65001, UTF&#8209;8)</td><td>Thai</td><td>(cp874)</td></tr>
@@ -497,12 +498,13 @@ encodings where ASCII is expected.  To deal with these, ExifTool allows the
 internal EXIF string encoding to be specified with
 "<code>-charset exif=CHARSET</code>", which causes EXIF string values to be
 converted from the specified character set when reading, and stored with this
-character set when writing.  (The
+character set when writing.  The
 <a href="http://www.metadataworkinggroup.org/">MWG</a> recommends using
 UTF&#8209;8 encoding for EXIF strings, and in keeping with this the
 "<code>-use mwg</code>" feature sets the default internal EXIF string encoding
-to UTF&#8209;8, but note that this will have no effect unless the external
-encoding is also set to something other than the default of UTF&#8209;8.)</blockquote>
+to UTF&#8209;8 (ie. "<code>-charset exif=utf8</code>"), but note that this will
+have no effect unless the external encoding is also set to something other than
+the default of UTF&#8209;8.</blockquote>
 
 <blockquote>A few EXIF tags (UserComment, GPSProcessingMethod and
 GPSAreaInformation) support a designated internal text encoding, with values
@@ -529,8 +531,8 @@ values are interpreted.  If CodedCharacterSet exists and has a value of
 assumed to be stored as UTF&#8209;8.  Otherwise the internal IPTC encoding is
 assumed to be Windows Latin1 (cp1252), but this can be changed with
 "<code>-charset iptc=CHARSET</code>". When reading, these strings are converted
-to UTF&#8209;8 by default, or to the character set specified by the
-<code>-charset</code> or <code>-L</code> option. When writing, the inverse
+to UTF&#8209;8 by default, or to the external character set specified by the
+<code>-charset</code> or <code>-L</code> option.  When writing, the inverse
 conversions are performed. No conversion is done if the internal (IPTC) and
 external (ExifTool) character sets are the same.  Note that ISO 2022 character
 set shifting is not supported. Instead, a warning is issued and the string is
@@ -571,18 +573,18 @@ When writing, ExifTool always encodes XMP as UTF&#8209;8, converting the
 following 5 characters to XML character references: <code>&amp; &lt; &gt; &#39;
 &quot;</code>. By default no further conversion is performed, however the
 <code>-charset</code> or <code>-L</code> option may be used used to convert
-text to/from a specified character set when reading/writing.</blockquote>
+text to/from a specified external character set when reading/writing.</blockquote>
 
 <blockquote><b>PNG</b>: <a href="TagNames/PNG.html#TextualData">PNG TextualData
 tags</a> are stored as tEXt, zTXt and iTXt chunks in PNG images.  The tEXt and
 zTXt chunks use ISO 8859-1 encoding, while iTXt uses UTF&#8209;8.  When reading,
-ExifTool converts all PNG textual data to the character set specified by the
-<code>-charset</code> or <code>-L</code> option, or to UTF&#8209;8 by default.
-When writing, ExifTool generates a tEXt chunk (or zTXt with the <code>-z</code>
-option) if the text doesn't contain special characters or if Latin encoding is
-specified (<code>-L</code> or <code>-charset latin</code>); otherwise an iTXt
-chunk is used and the text is converted from the specified character set and
-stored as UTF&#8209;8.</blockquote>
+ExifTool converts all PNG textual data to the external character set specified
+by the <code>-charset</code> or <code>-L</code> option, or to UTF&#8209;8 by
+default.  When writing, ExifTool generates a tEXt chunk (or zTXt with the
+<code>-z</code> option) if the text doesn't contain special characters or if
+Latin encoding is specified (<code>-L</code> or <code>-charset latin</code>);
+otherwise an iTXt chunk is used and the text is converted from the specified
+external character set and stored as UTF&#8209;8.</blockquote>
 
 <blockquote><b>JPEG Comment</b>: The encoding for the JPEG Comment (COM segment)
 is not specified, so ExifTool reads/writes this text without
@@ -591,17 +593,18 @@ conversion.</blockquote>
 <blockquote><b>ID3</b>: The ID3v1 specification officially supports only ISO
 8859&#8209;1 encoding (a subset of Windows Latin1), although some applications
 may incorrectly use other character sets.  By default ExifTool converts ID3v1
-text from Latin to the character set specified by the <code>-charset</code> or
-<code>-L</code> option, or to UTF&#8209;8 by default.  However, the internal
-ID3v1 charset may be specified with "<code>-charset id3=CHARSET</code>".  The
-encoding for ID3v2 information is stored in the file, so ExifTool converts
-ID3v2 text from this encoding to the character set specified by
-<code>-charset</code> or <code>-L</code>, or to UTF&#8209;8 by default. ExifTool
-does not currently write ID3 information.</blockquote>
+text from Latin to the external character set specified by the
+<code>-charset</code> or <code>-L</code> option, or to UTF&#8209;8 by default. 
+However, the internal ID3v1 charset may be specified with
+"<code>-charset id3=CHARSET</code>".  The encoding for ID3v2 information is
+stored in the file, so ExifTool converts ID3v2 text from this encoding to the
+external character set specified by <code>-charset</code> or <code>-L</code>, or
+to UTF&#8209;8 by default. ExifTool does not currently write ID3
+information.</blockquote>
 
 <blockquote><b>PDF</b>: PDF text strings are stored in either PDFDocEncoding
 (similar to Windows Latin1) or Unicode (UCS&#8209;2).  When reading, ExifTool
-converts to the character set specified by the <code>-charset</code> or
+converts to the external character set specified by the <code>-charset</code> or
 <code>-L</code> option, or to UTF&#8209;8 by default.  When writing, ExifTool
 encodes input text from the specified character set as Unicode only if the
 string contains special characters, otherwise PDFDocEncoding is
@@ -610,8 +613,8 @@ used.</blockquote>
 <blockquote><b>Photoshop</b>: Some Photoshop resource names are stored as
 Pascal strings with unknown encoding.  By default, ExifTool assumes MacRoman
 encoding and converts this to UTF&#8209;8, but the internal and external
-character sets may be specified with <code>-charset Photoshop=CHARSET</code>
-and <code>-charset CHARSET</code> respectively.</blockquote>
+character sets may be specified with "<code>-charset Photoshop=CHARSET</code>"
+and "<code>-charset CHARSET</code>" respectively.</blockquote>
 
 <blockquote><b>QuickTime</b>: QuickTime text strings may be stored in a
 variety of poorly documented formats, and ExifTool does its best to decode
@@ -999,7 +1002,8 @@ specified using the <code>-ext</code> option, something like this:
 When a single <code>-ext</code> option is used, only files of the specified type
 are processed.  However, multiple <code>-ext</code> options may be used in the
 same command (as in the example above) to process any number of different file
-types.
+types, or <code>-ext "*"</code> may be used to process files with any extension
+(or none at all).
 </blockquote>
 
 <blockquote class='sm'><sup>&dagger;</sup> <span class=lt>The
@@ -1549,7 +1553,7 @@ must be changed to this in a .BAT file:
 </blockquote>
 
 <hr>
-<i>Last revised Apr. 6, 2016</i>
+<i>Last revised Apr. 20, 2016</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

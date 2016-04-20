@@ -267,12 +267,12 @@ access to this information.
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x041a = 1050'>0x041a</td>
-<td>Slices?</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
+<td>SliceInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Photoshop.html#SliceInfo'>Photoshop SliceInfo Tags</a></td></tr>
 <tr>
 <td title='0x041b = 1051'>0x041b</td>
-<td>WorkflowURL?</td>
+<td>WorkflowURL</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
@@ -287,8 +287,8 @@ access to this information.
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x041e = 1054'>0x041e</td>
-<td>URL_List?</td>
-<td class=c>N</td>
+<td>URL_List</td>
+<td class=c title=' + = List'>N+</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0421 = 1057'>0x0421</td>
@@ -322,14 +322,14 @@ the respective file.  Set this to &quot;new&quot; as an indication that the XMP 
 synchronized with the IPTC)</span></span></td></tr>
 <tr class=b>
 <td title='0x0426 = 1062'>0x0426</td>
-<td>PrintScale?</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
+<td>PrintScaleInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Photoshop.html#PrintScaleInfo'>Photoshop PrintScaleInfo Tags</a></td></tr>
 <tr>
 <td title='0x0428 = 1064'>0x0428</td>
-<td>PixelAspectRatio?</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
+<td>PixelInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Photoshop.html#PixelInfo'>Photoshop PixelInfo Tags</a></td></tr>
 <tr class=b>
 <td title='0x0429 = 1065'>0x0429</td>
 <td>LayerComps?</td>
@@ -524,6 +524,24 @@ synchronized with the IPTC)</span></span></td></tr>
   <br>3 = 5 Scans</span></td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='SliceInfo'>Photoshop SliceInfo Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='20 = 0x14'>20</td>
+<td>SlicesGroupName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='24 = 0x18'>24</td>
+<td>NumSlices</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
 <h2><a name='VersionInfo'>Photoshop VersionInfo Tags</a></h2>
 <blockquote>
 <table class=frame><tr><td>
@@ -544,6 +562,44 @@ synchronized with the IPTC)</span></span></td></tr>
 <tr>
 <td class=r title='9 = 0x9'>9</td>
 <td>ReaderName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='PrintScaleInfo'>Photoshop PrintScaleInfo Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>PrintStyle</td>
+<td class=c>N</td>
+<td><span class=s>0 = Centered
+  <br>1 = Size to Fit
+  <br>2 = User Defined</span></td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>PrintPosition</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='10 = 0xa'>10</td>
+<td>PrintScale</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='PixelInfo'>Photoshop PixelInfo Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='4 = 0x4'>4</td>
+<td>PixelAspectRatio</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
@@ -591,9 +647,77 @@ synchronized with the IPTC)</span></span></td></tr>
 </td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='Layers'>Photoshop Layers Tags</a></h2>
+<p>Tags extracted from Photoshop layer information.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'_xbnd'</td>
+<td>LayerBlendModes</td>
+<td class=c title=' + = List'>N+</td>
+<td><table class=cols><tr>
+  <td>&#39;colr&#39; = Color
+  <br>&#39;dark&#39; = Darken
+  <br>&#39;diff&#39; = Difference
+  <br>&#39;diss&#39; = Dissolve
+  <br>&#39;div &#39; = Color Dodge
+  <br>&#39;dkCl&#39; = Darker Color
+  <br>&#39;fdiv&#39; = Divide
+  <br>&#39;fsub&#39; = Subtract
+  <br>&#39;hLit&#39; = Hard Light
+  <br>&#39;hMix&#39; = Hard Mix
+  <br>&#39;hue &#39; = Hue
+  <br>&#39;idiv&#39; = Color Burn
+  <br>&#39;lLit&#39; = Linear Light
+  <br>&#39;lbrn&#39; = Linear Burn</td><td>&nbsp;&nbsp;</td>
+  <td>&#39;lddg&#39; = Linear Dodge
+  <br>&#39;lgCl&#39; = Lighter Color
+  <br>&#39;lite&#39; = Lighten
+  <br>&#39;lum &#39; = Luminosity
+  <br>&#39;mul &#39; = Multiply
+  <br>&#39;norm&#39; = Normal
+  <br>&#39;over&#39; = Overlay
+  <br>&#39;pLit&#39; = Pin Light
+  <br>&#39;pass&#39; = Pass Through
+  <br>&#39;sLit&#39; = Soft Light
+  <br>&#39;sat &#39; = Saturation
+  <br>&#39;scrn&#39; = Screen
+  <br>&#39;smud&#39; = Exclusion
+  <br>&#39;vLit&#39; = Vivid Light</td></tr></table>
+</td></tr>
+<tr class=b>
+<td>'_xcnt'</td>
+<td>LayerCount</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'_xnam'</td>
+<td>LayerNames</td>
+<td class=c title=' + = List'>N+</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'_xopc'</td>
+<td>LayerOpacities</td>
+<td class=c title=' + = List'>N+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'_xrct'</td>
+<td>LayerRectangles</td>
+<td class=c title=' + = List'>N+</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'luni'</td>
+<td>LayerUnicodeNames</td>
+<td class=c title=' + = List'>N+</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Feb 19, 2016</i>
+<br><i>Last revised Apr 20, 2016</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

@@ -744,6 +744,11 @@ numerical.
                   0) ExifTool object ref, 1) new value hash ref, 2) old value,
                   3) new value reference.
 
+  Override      : [User-defined Composite tags only] Flag to specify that the
+                  new tag definition should override the definition of existing
+                  Composite tags with the same name.  Default is 1 unless
+                  otherwise specified.
+
   AllowGroup    : [Writable tags only] Regular expression string (case
                   insensitive) to match group names which are allowed when
                   writing this tag.  Only needed if tag can be written to

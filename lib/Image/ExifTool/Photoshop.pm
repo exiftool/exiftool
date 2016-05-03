@@ -541,6 +541,22 @@ my %unicodeString = (
     },
 );
 
+# image data
+%Image::ExifTool::Photoshop::ImageData = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 2 => 'Image' },
+    0 => {
+        Name => 'Compression',
+        Format => 'int16u',
+        PrintConv => {
+            0 => 'Uncompressed',
+            1 => 'RLE',
+            2 => 'ZIP without prediction',
+            3 => 'ZIP with prediction',
+        },
+    },
+);
+
 # tags for unknown resource types
 %Image::ExifTool::Photoshop::Unknown = (
     GROUPS => { 2 => 'Unknown' },
@@ -582,7 +598,7 @@ sub ConvertPascalString($$)
 #------------------------------------------------------------------------------
 # Process Photoshop layers and mask information
 # Inputs: 0) ExifTool ref, 1) DirInfo ref, 2) tag table ref
-# Returns: 1 on success
+# Returns: 1 on success (and seeks to the end of this section)
 sub ProcessLayers($$$)
 {
     local $_;
@@ -599,6 +615,7 @@ sub ProcessLayers($$$)
     # read the layer information header
     my $n = $psiz * 2 + 2;
     $raf->Read($data, $n) == $n or return 0;
+    my $tot = $psb ? Get64u(\$data, 0) : Get32u(\$data, 0); # length of layer and mask info
     my $len = $psb ? Get64u(\$data, $psiz) : Get32u(\$data, $psiz); # length of layer info section
     $et->VerboseDir('Layers', 0, $len);
     my $num = Get16u(\$data, $psiz * 2);
@@ -664,7 +681,9 @@ sub ProcessLayers($$$)
         }
         $pos = $nxt;
     }
-    return 1;
+    # seek to the end of this section
+    return 0 unless $raf->Seek($dataPos - 2 - $psiz + $tot, 0);
+    return 1;   # success!
 }
 
 #------------------------------------------------------------------------------
@@ -834,11 +853,22 @@ sub ProcessPSD($$)
     } elsif ($err) {
         $et->Warn('File format error');
     } else {
+        # read IRB resources
         ProcessPhotoshop($et, \%dirInfo, $tagTablePtr);
-        # process layer and mask information section
+        # read layer and mask information section
         $dirInfo{RAF} = $raf;
         $tagTablePtr = GetTagTable('Image::ExifTool::Photoshop::Layers');
-        ProcessLayers($et, \%dirInfo, $tagTablePtr);
+        if (ProcessLayers($et, \%dirInfo, $tagTablePtr) and
+            # read compression mode from image data section
+            $raf->Read($data,2) == 2)
+        {
+            my %dirInfo = (
+                DataPt  => \$data,
+                DataPos => $raf->Tell() - 2,
+            );
+            $tagTablePtr = GetTagTable('Image::ExifTool::Photoshop::ImageData');
+            $et->ProcessDirectory(\%dirInfo, $tagTablePtr);
+        }
         # process trailers if they exist
         my $trailInfo = Image::ExifTool::IdentifyTrailer($raf);
         $et->ProcessTrailers($trailInfo) if $trailInfo;

@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.15
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.16
 [File, System, Image] FileName - File Name: Photoshop_3_failed.psd
 [File, System, Image] Directory - Directory: t
 [File, System, Image] FileSize - File Size: 16 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2016:04:20 07:49:07-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2016:04:20 07:49:07-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2016:04:20 07:49:07-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2016:04:21 10:14:14-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2016:04:21 10:14:14-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2016:04:21 10:14:14-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: PSD
 [File, File, Image] FileTypeExtension - File Type Extension: psd
@@ -43,6 +43,7 @@
 [Photoshop, Photoshop, Image] 5 - Writer Name: Adobe Photoshop
 [Photoshop, Photoshop, Image] 9 - Reader Name: Adobe Photoshop 7.0
 [Photoshop, Photoshop, Image] _xcnt - Layer Count: 0
+[Photoshop, Photoshop, Image] 0 - Compression: RLE
 [IPTC, IPTC, Other] 0 - Application Record Version: 2
 [IPTC, IPTC, Other] 120 - Caption-Abstract: This is a teeny weeny white square
 [IPTC, IPTC, Author] 122 - Writer-Editor: Me too
@@ -50,7 +51,7 @@
 [IPTC, IPTC, Author] 85 - By-line Title: Supreme leader
 [IPTC, IPTC, Other] 5 - Object Name: Test Picture
 [IPTC, IPTC, Author] 116 - Copyright Notice: Free for all
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 10.15
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 10.16
 [XMP, XMP-rdf, Document] about - About: uuid:c197d41e-f8f7-11d9-b03e-c023c3939af5
 [XMP, XMP-dc, Author] creator - Creator: Phil Harvey
 [XMP, XMP-dc, Image] description - Description: This is a teeny weeny white square

@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.34';
+$VERSION = '2.35';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -317,7 +317,7 @@ my %afPoint19 = (
     29 => 'Lower-right (vertical)',
 );
 
-# 79 AF point layout and indices for ILCA-77M2, numbered 0-78 for direct look-up from BITMASK in 0x2020,
+# 79 AF point layout and indices for ILCA-68/77M2, numbered 0-78 for direct look-up from BITMASK in 0x2020,
 # E6 = Center (ref JR)
 my %afPoints79 = (
                                              0=>'A5',  1=>'A6',  2=>'A7',
@@ -795,7 +795,7 @@ my %meterInfo2 = (
         #   a4 c3 - NEX-3N/5R/5T, ILCE-3000/3500
         # unknown offsets or values for DSC-TX20/TX55/WX30
         # unknown offsets or values for DSC-HX60V/HX400V/QX10/QX30/QX100/RX10/RX100M2/RX100M3/WX220/WX350,
-        #                               ILCA-77M2, ILCE-5000/5100/6000/7/7M2/7R/7S/QX1
+        #                               ILCA-68/77M2, ILCE-5000/5100/6000/7/7M2/7R/7S/QX1
         # unknown offsets or values for DSC-HX90V/RX1RM2/RX10M2/RX10M3/RX100M4/WX500, ILCE-6300/7RM2/7SM2
     {
         Name => 'Tag2010a', # ad
@@ -829,7 +829,7 @@ my %meterInfo2 = (
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag2010f' },
     },{
         Name => 'Tag2010g', # ?
-        Condition => '$$self{Model} =~ /^(DSC-(QX30|RX10|RX100M3|HX60V|HX400V|WX220|WX350)|ILCE-(7(R|S|M2)?|[56]000|5100|QX1)|ILCA-77M2)\b/',
+        Condition => '$$self{Model} =~ /^(DSC-(QX30|RX10|RX100M3|HX60V|HX400V|WX220|WX350)|ILCE-(7(R|S|M2)?|[56]000|5100|QX1)|ILCA-(68|77M2))\b/',
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag2010g' },
     },{
         Name => 'Tag2010h', # ?
@@ -1200,7 +1200,7 @@ my %meterInfo2 = (
     # 0x0a (e) for SLT-A37/A57/A65V/A77V/A99V, NEX-F3/5N/5R/5T/6/7/VG20E, DSC-RX100/RX1/RX1R/HX10V/HX20V/HX30V/HX200V/TX200V/TX300V/TX66/WX50/WX100/WX150, Lunar/Stellar/HV
     # 0x0c (e) for ILCE-3000/3500, NEX-3N, SLT-A58, DSC-HX50V/HX300/RX100M2/TX30/WX60/WX80/WX200/WX300, DSC-QX10/QX100
     # 0xd0 (e) H90, W650, W690: tag9400 decoding appears not valid/different
-    # 0x23 (e) for DSC-RX10/HX60V/HX400V/WX220/WX350, ILCE-7/7R/5000/6000, ILCA-77M2
+    # 0x23 (e) for DSC-RX10/HX60V/HX400V/WX220/WX350, ILCE-7/7R/5000/6000, ILCA-68/77M2
     # 0x24 (e) for ILCE-5100/6300/7M2/7RM2/7S/7SM2/QX1, DSC-HX90V/QX30/RX100M3/RX100M4/RX10M2/RX10M3/RX1RM2/WX500
     # first byte decoded: 40, 204, 202, 27, 58, 62, 48 respectively
     {
@@ -1252,7 +1252,7 @@ my %meterInfo2 = (
         #   43 10 66 0e    0x0a1b    (n)  ILCE-7/7R v1.02/v1.10
         #   43 30 6c 0e    0x0a1b    (n)  ILCE-7/7R v1.20/v2.00
         #   44 00 9c 0e    0x0a39    (o)  ILCE-6000 v1.00/v1.10, DSC-HX60V/HX400V/WX220/WX350 (also DSC-QX30 samples from sony.net)
-        #   49 00 b0 0e    0x0a3b    (p)  ILCA-77M2 V1.00/v1.01/v2.00 (also DSC-RX100M3 samples from sony.net)
+        #   49 00 b0 0e    0x0a3b    (p)  ILCA-68 v1.00, ILCA-77M2 V1.00/v1.01/v2.00 (also DSC-RX100M3 samples from sony.net)
         #   4a 00 b3 0e    0x0a3d    (q)  ILCE-7S v1.00, ILCE-5100 v1.00/v1.10, ILCE-QX1, DSC-QX30/RX100M3
         #   4a 20 b9 0e    0x0a3d    (q)  ILCE-7S v1.20/v2.00
         #   4e 10 d0 0e    0x0a5a    (r)  ILCE-7M2 v1.00/v1.10
@@ -1298,7 +1298,7 @@ my %meterInfo2 = (
         #   0x17      0x01     ILCE-7S/7M2/5100/QX1, DSC-QX30/RX100M3
         #   0x19      0x01     DSC-HX90V/RX1RM2/RX10M2/RX100M4/WX500, ILCE-6300/7RM2/7SM2
         #   0x1a      0x01     DSC-RX10M3
-        #   var       var      SLT-A58/A99V, HV, ILCA-77M2
+        #   var       var      SLT-A58/A99V, HV, ILCA-68/77M2
         # only valid when first byte 0x0f, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x17, 0x19, 0x1a (enciphered 0x8a, 0x70, 0xb6, 0x69, 0x88, 0x20, 0x30, 0xd7, 0xbb, 0x92)
         Condition => '$$self{DoubleCipher} ? $$valPt =~ /^[\x7e\x46\x1d\x18\x3a\x95\x24\x26\xd6]\x01/ : $$valPt =~ /^[\x8a\x70\xb6\x69\x88\x20\x30\xd7\xbb\x92]\x01/',
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag9402' },
@@ -1316,7 +1316,7 @@ my %meterInfo2 = (
     #  9  0   38  2  2     SLT-A37/A57/A99V, NEX-5R/5T/6/F3/VG30E/VG900, DSC-RX1/RX1R/RX100, Stellar
     # 12  0    8  2  2     SLT-A58, NEX-3N, ILCE-3000/3500, DSC-HX300/HX50V/WX60/WX80/WX300/TX30...
     # 13  0    9  2  2     DSC-QX10/QX100/RX100M2
-    # 15  0   35  2  2     ILCA-77M2, ILCE-5000/5100/6000/7/7R/7S/7M2/QX1, DSC-HX400V/HX60V/QX30/RX10/RX100M3/WX220/WX350
+    # 15  0   35  2  2     ILCA-68/77M2, ILCE-5000/5100/6000/7/7R/7S/7M2/QX1, DSC-HX400V/HX60V/QX30/RX10/RX100M3/WX220/WX350
     # 16  0   85  2  2     DSC-HX90V/WX500
     # 17  0  232  1  2     DSC-RX1RM2/RX10M2/RX10M3/RX100M4, ILCE-6300/7RM2/7SM2
     # other values for Panorama images and several other models
@@ -1341,7 +1341,7 @@ my %meterInfo2 = (
     #   4   0  (0x40 =  64   0 enc.) DSC-RX1R
     #   5   0  (0x7d = 125   0 enc.) DSC-RX100M2
     # 136 var  (0x3a =  58 var enc.) ILCE-7/7R/5000/6000, DSC-HX400V/HX60V/RX10/WX220/WX350
-    # 137 var  (0xb3 = 179 var enc.) ILCA-77M2, DSC-RX100M3 - appears to go with 136
+    # 137 var  (0xb3 = 179 var enc.) ILCA-68/77M2, DSC-RX100M3 - appears to go with 136
     # 138 var  (0x7e = 126 var enc.) ILCE-7S/5100/QX1, DSC-QX30   - appears to go with 136
     # 139 var  (0x9a = 154 var enc.) ILCE-7M2
     # 142 var  (0x25 =  37 var enc.) DSC-HX90V/RX1RM2/RX10M2/RX10M3/RX100M4/WX500, ILCE-6300/7RM2/7SM2
@@ -1384,7 +1384,7 @@ my %meterInfo2 = (
     },
     0x940a => [{
         Name => 'Tag940a',
-        Condition => '$$self{Model} =~ /^(SLT-|HV)/', # but appears not valid for ILCA-77M2 ...
+        Condition => '$$self{Model} =~ /^(SLT-|HV)/', # but appears not valid for ILCA models ...
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag940a' },
     },{
         Name => 'Sony_0x940a',
@@ -1411,7 +1411,7 @@ my %meterInfo2 = (
 #           2nd byte = 2: AFInfo for NEX/ILCE with LA-EA2/EA4 Phase-detect AF Adapter
     0x940e => [{
         Name => 'AFInfo',
-        Condition => '$$self{Model} =~ /^(SLT-|HV|ILCA-77M2)/',
+        Condition => '$$self{Model} =~ /^(SLT-|HV|ILCA-)/',
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::AFInfo' },
     },{
         Name => 'Tag940e',
@@ -6084,7 +6084,7 @@ my %pictureProfile2010 = (
     FORMAT => 'int8u',
     NOTES => q{
         Valid for DSC-HX400V/HX60V/QX30/RX10/RX100M3/WX220/WX350,
-        ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-77M2.
+        ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-68/77M2.
     },
     WRITABLE => 1,
     FIRST_ENTRY => 0,
@@ -6738,9 +6738,9 @@ my %pictureProfile2010 = (
     },
 
 #    0x0122 => {Name=>'9050_LensType',Format=>'int16u',Condition =>'$$self{Model}=~/^(SLT-A(37|57|65|77)V?|Lunar|NEX-(F3|5N|7|VG20E))/'},
-#    0x0123 => {Name=>'9050_LensType',Format=>'int16u',Condition =>'$$self{Model}=~/^(SLT-A(58|99V?)|HV|ILCA-77M2|NEX-(3N|5R|5T|6|VG30E|VG900)|ILCE-(3000|3500|5000|5100|6000|7|7R|7S|7M2|QX1))/'},
+#    0x0123 => {Name=>'9050_LensType',Format=>'int16u',Condition =>'$$self{Model}=~/^(SLT-A(58|99V?)|HV|ILCA-(68|77M2)|NEX-(3N|5R|5T|6|VG30E|VG900)|ILCE-(3000|3500|5000|5100|6000|7|7R|7S|7M2|QX1))/'},
 #    0x012d => {Name=>'9050_LensType',Format=>'int16u',Condition =>'$$self{Model}=~/^(SLT-A(37|57|65|77)V?|Lunar|NEX-(F3|5N|7|VG20E))/'},
-#    0x012e => {Name=>'9050_LensType',Format=>'int16u',Condition =>'$$self{Model}=~/^(SLT-A(58|99V?)|HV|ILCA-77M2|NEX-(3N|5R|5T|6|VG30E|VG900)|ILCE-(3000|3500|5000|5100|6000|7|7R|7S|7M2|QX1))/'},
+#    0x012e => {Name=>'9050_LensType',Format=>'int16u',Condition =>'$$self{Model}=~/^(SLT-A(58|99V?)|HV|ILCA-(68|77M2)|NEX-(3N|5R|5T|6|VG30E|VG900)|ILCE-(3000|3500|5000|5100|6000|7|7R|7S|7M2|QX1))/'},
 
 #    ImageCount3 = ImageCount   for SLT-A58, ILCE, ILCA, NEX-3N
 #                  ImageCount-1 for SLT-A37,A57,A65,A77,A99, NEX-F3,5N,5R,5T,6,7, sometimes 0
@@ -6753,7 +6753,7 @@ my %pictureProfile2010 = (
         Name => 'ImageCount3',
         Format => 'int32u',
         RawConv => '$val == 0 ? undef : $val',
-        Condition => '$$self{Model} =~ /^(ILCE-(5100|QX1)|ILCA-77M2)/',
+        Condition => '$$self{Model} =~ /^(ILCE-(5100|QX1)|ILCA-(68|77M2))/',
     },
     0x01aa => {
         Name => 'ImageCount3',
@@ -6775,21 +6775,21 @@ my %pictureProfile2010 = (
     },
 
 #    0x0222 => {Name=>'9050_LensType2',Format=>'int16u',Condition =>'$$self{Model}=~/^(ILCE-(5100|7S|7M2|QX1))/'},
-#    0x0224 => {Name=>'9050_LensType', Format=>'int16u',Condition =>'$$self{Model}=~/^(ILCE-(5100|7S|7M2|QX1)|ILCA-77M2)/'},
+#    0x0224 => {Name=>'9050_LensType', Format=>'int16u',Condition =>'$$self{Model}=~/^(ILCE-(5100|7S|7M2|QX1)|ILCA-(68|77M2))/'},
 #    0x0229 => {Name=>'9050_LensType2',Format=>'int16u',Condition =>'$$self{Model}=~/^(NEX-(5R|5T|6|VG30E|VG900))/'},
 #    0x022b => {Name=>'9050_LensType', Format=>'int16u',Condition =>'$$self{Model}=~/^(NEX-(5R|5T|6|VG30E|VG900))/'},
 #    0x022c => {Name=>'9050_LensType2',Format=>'int16u',Condition =>'$$self{Model}=~/^(ILCE-(3000|3500|5000|6000|7|7R)|NEX-3N)\b/'},
 #    0x022e => {Name=>'9050_LensType', Format=>'int16u',Condition =>'$$self{Model}=~/^(ILCE-(3000|3500|5000|6000|7|7R)|NEX-3N|SLT-A(58|99V?)|HV)\b/'},
 
-#    0x0231 => {Name=>'9050_LensSpecFeatures',Format=>'undef[2]',Condition=>'$$self{Model}=~/^(ILCE-(7S|7M2|5100|QX1)|ILCA-77M2)/'},
+#    0x0231 => {Name=>'9050_LensSpecFeatures',Format=>'undef[2]',Condition=>'$$self{Model}=~/^(ILCE-(7S|7M2|5100|QX1)|ILCA-(68|77M2))/'},
 #    0x0238 => {Name=>'9050_LensSpecFeatures',Format=>'undef[2]',Condition=>'$$self{Model}=~/^(NEX-(5R|5T|6|VG30E|VG900))/'},
 #    0x023b => {Name=>'9050_LensSpecFeatures',Format=>'undef[2]',Condition=>'$$self{Model}=~/^(SLT-A(58|99V?)|HV|ILCE-(3000|3500|5000|6000|7|7R)|NEX-3N)\b/'},
 
 #    0x023c => {Name=>'9050_LensType2',Format=>'int16u',Condition =>'$$self{Model}=~/^(Lunar|NEX-(F3|5N|7|VG20E))/'},
-#    0x023e => {Name=>'9050_LensType', Format=>'int16u',Condition =>'$$self{Model}=~/^(SLT-A(37|57|65|77)V?|Lunar|NEX-(F3|5N|7|VG20E)|ILCE-(5100|7S|7M2|QX1)|ILCA-77M2)/'},
+#    0x023e => {Name=>'9050_LensType', Format=>'int16u',Condition =>'$$self{Model}=~/^(SLT-A(37|57|65|77)V?|Lunar|NEX-(F3|5N|7|VG20E)|ILCE-(5100|7S|7M2|QX1)|ILCA-(68|77M2))/'},
 #    0x0245 => {Name=>'9050_LensType', Format=>'int16u',Condition =>'$$self{Model}=~/^(NEX-(5R|5T|6|VG30E|VG900))/'},
 #    0x0248 => {Name=>'9050_LensType', Format=>'int16u',Condition =>'$$self{Model}=~/^(SLT-A(58|99V?)|HV|ILCE-(3000|3500|5000|6000|7|7R)|NEX-3N)\b/'},
-#    0x0249 => {Name=>'9050_LensType', Format=>'int16u',Condition =>'$$self{Model}=~/^(ILCE-(5100|7S|7M2|QX1)|ILCA-77M2)/'},
+#    0x0249 => {Name=>'9050_LensType', Format=>'int16u',Condition =>'$$self{Model}=~/^(ILCE-(5100|7S|7M2|QX1)|ILCA-(68|77M2))/'},
 
 #    0x024a => {Name=>'9050_LensSpecFeatures',Format=>'undef[2]',Condition=>'$$self{Model}=~/^(SLT-A(37|57|65|77)V?|Lunar|NEX-(F3|5N|7|VG20E))/'},
 
@@ -6798,7 +6798,7 @@ my %pictureProfile2010 = (
 #    0x0257 => {Name=>'9050_LensType', Format=>'int16u',Condition =>'$$self{Model}=~/^(SLT-A(37|57|65|77)V?|Lunar|NEX-(F3|5N|7|VG20E))/'},
 #    0x0262 => {Name=>'9050_LensType', Format=>'int16u',Condition =>'$$self{Model}=~/^(SLT-A(37|57|65|77)V?|Lunar|NEX-(F3|5N|7|VG20E))/'},
 
-#    0x031b => {%gain2010,Condition=>'$$self{Model}=~/^(DSC-RX100M3|ILCA-77M2|ILCE-(5100|7S|7M2|QX1))/'},
+#    0x031b => {%gain2010,Condition=>'$$self{Model}=~/^(DSC-RX100M3|ILCA-(68|77M2)|ILCE-(5100|7S|7M2|QX1))/'},
 #    0x032c => {%gain2010,Condition=>'$$self{Model}=~/^(NEX-(5R|5T|6|VG30E|VG900))/'},
 #    0x032f => {%gain2010,Condition=>'$$self{Model}=~/^(DSC-RX10|SLT-A(58|99V?)|HV|ILCE-(3000|3500|5000|6000|7|7R)|NEX-3N)\b/'},
 #    0x0350 => {%gain2010,Condition=>'$$self{Model}=~/^(SLT-A(37|57)|NEX-F3)/'},
@@ -6973,7 +6973,7 @@ my %pictureProfile2010 = (
     WRITABLE => 1,
     NOTES => q{
         Valid for DSC-HX400V/HX60V/QX30/RX10/RX100M3/WX220/WX350,
-        ILCE-7/7R/7S/7M2/7RM2/7SM2/5000/5100/6000/6300/QX1, ILCA-77M2.
+        ILCE-7/7R/7S/7M2/7RM2/7SM2/5000/5100/6000/6300/QX1, ILCA-68/77M2.
     },
     FIRST_ENTRY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
@@ -7292,7 +7292,7 @@ my %pictureProfile2010 = (
     GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
     NOTES => q{
         Valid for DSC-HX400V/HX60V/QX30/RX10/RX10M2/RX10M3/RX100M3/RX100M4/WX220/WX350,
-        ILCE-7/7M2/7R/7RM2/7S/7SM2/5000/5100/6000/6300/QX1, ILCA-77M2.
+        ILCE-7/7M2/7R/7RM2/7S/7SM2/5000/5100/6000/6300/QX1, ILCA-68/77M2.
     },
     0x0004 => {
         Name => 'SonyISO',
@@ -7660,7 +7660,7 @@ my %pictureProfile2010 = (
     #   2 1 1 0  for A65V
     #   2 1 2 0  for A77V
     #   0 1 2 0  for A99V
-    #   1 1 3 0  for ILCA-77M2
+    #   1 1 3 0  for ILCA-68/77M2
     #   0 0 0 0  for NEX and ILCE-3000/3500
     #   1 0 0 0  for ILCE-5000/5100/6000/7/7M2/7R/7S/QX1
     #   6 0 0 0  for ILCE-7RM2/7SM2
@@ -7674,11 +7674,11 @@ my %pictureProfile2010 = (
             # 0 => '?? n.a.', # seen on some A99V images with non-AF (Samyang) lens
             1 => '15-point',
             2 => '19-point',
-            3 => '79-point', # (NC) seen for ILCA-77M2
+            3 => '79-point', # ILCA-68/77M2
         },
     },
 
-### decoding for SLT; ILCA-77M2 (AFType == 3) uses different offsets: see below
+### decoding for SLT; ILCA-68/77M2 (AFType == 3) uses different offsets: see below
 
     0x04 => {
         Name => 'AFStatusActiveSensor',
@@ -7842,7 +7842,7 @@ my %pictureProfile2010 = (
     #   0x11ec, 0x122a, 0x1408, 0x1446, 0x14bc, 0x1f86,
     #   0x14fa, 0x1570, 0x1572, 0x15ae, 0x1f48
 
-### decoding for ILCA-77M2, AFType == 3
+### decoding for ILCA-68/77M2, AFType == 3
 
     0x0005 => { #JR
         Name => 'FocusMode',
@@ -7859,7 +7859,7 @@ my %pictureProfile2010 = (
             # 7 => 'AF-D', # not yet seen
         },
     },
-    # 0x0010 - for ILCA-77M2: 10 bytes identical to 0x2020, and probably indicating 'AFPointsUsed' (ref JR)
+    # 0x0010 - for ILCA-68/77M2: 10 bytes identical to 0x2020, and probably indicating 'AFPointsUsed' (ref JR)
     0x0010 => {
         Name => 'AFPointsUsed',
         Condition => '$$self{Model} =~ /^ILCA-/',
@@ -7871,7 +7871,7 @@ my %pictureProfile2010 = (
             BITMASK => { %afPoints79 },
         },
     },
-    # 0x0037, 0x0038, 0x0039 similar to 0x07, 0x08, 0x09, but using numbers from 0-94 for ILCA-77M2
+    # 0x0037, 0x0038, 0x0039 similar to 0x07, 0x08, 0x09, but using numbers from 0-94 for ILCA-68/77M2
     0x0037 => { # the active AF sensor
         Name => 'AFPoint',
         Condition => '$$self{AFType} == 3',
@@ -7925,7 +7925,7 @@ my %pictureProfile2010 = (
         Condition => '$$self{Model} =~ /^ILCA-/',
         Format => 'int8s',
     },
-    # 0x007d - AFStatus79 - 95 int16s values for the ILCA-77M2 79 AF points + 15 cross + 1 F2.8
+    # 0x007d - AFStatus79 - 95 int16s values for the ILCA-68/77M2 79 AF points + 15 cross + 1 F2.8
     0x007d => {
         Name => 'AFStatus79',
         Condition => '$$self{AFType} == 3',
@@ -8052,7 +8052,7 @@ my %pictureProfile2010 = (
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     NOTES => 'AF Status information for models with 79-point AF.',
 #
-# ILCA-77M2 AF sensor layout:
+# ILCA-68/77M2 AF sensor layout:
 #                           A5*  A6*  A7*
 #         B2   B3   B4      B5   B6   B7      B8   B9   B10
 #    C1   C2   C3   C4      C5*  C6*  C7*     C8   C9   C10   C11

@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '10.15';
+$VERSION = '10.16';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -130,14 +130,15 @@ sub ReadValue($$$$$;$);
     PhotoMechanic Exif GeoTiff CanonRaw KyoceraRaw Lytro MinoltaRaw PanasonicRaw
     SigmaRaw JPEG GIMP Jpeg2000 GIF BMP BMP::OS2 PICT PNG MNG DjVu DPX OpenEXR
     MIFF PGF PSP PhotoCD Radiance PDF PostScript Photoshop::Header
-    Photoshop::Layers FujiFilm::RAF FujiFilm::IFD Samsung::Trailer Sony::SRF2
-    Sony::SR2SubIFD Sony::PMP ITC ID3 Vorbis Ogg APE APE::NewHeader
-    APE::OldHeader Audible MPC MPEG::Audio MPEG::Video MPEG::Xing M2TS QuickTime
-    QuickTime::ImageFile Matroska MOI MXF DV Flash Flash::FLV Real::Media
-    Real::Audio Real::Metafile RIFF AIFF ASF DICOM MIE HTML XMP::SVG Palm
-    Palm::MOBI Palm::EXTH Torrent EXE EXE::PEVersion EXE::PEString EXE::MachO
-    EXE::PEF EXE::ELF EXE::AR EXE::CHM LNK Font VCard VCard::VCalendar RSRC
-    Rawzor ZIP ZIP::GZIP ZIP::RAR RTF OOXML iWork ISO FLIR::AFF FLIR::FPF
+    Photoshop::Layers Photoshop::ImageData FujiFilm::RAF FujiFilm::IFD
+    Samsung::Trailer Sony::SRF2 Sony::SR2SubIFD Sony::PMP ITC ID3 Vorbis Ogg APE
+    APE::NewHeader APE::OldHeader Audible MPC MPEG::Audio MPEG::Video MPEG::Xing
+    M2TS QuickTime QuickTime::ImageFile Matroska MOI MXF DV Flash Flash::FLV
+    Real::Media Real::Audio Real::Metafile RIFF AIFF ASF DICOM MIE HTML XMP::SVG
+    Palm Palm::MOBI Palm::EXTH Torrent EXE EXE::PEVersion EXE::PEString
+    EXE::MachO EXE::PEF EXE::ELF EXE::AR EXE::CHM LNK Font VCard
+    VCard::VCalendar RSRC Rawzor ZIP ZIP::GZIP ZIP::RAR RTF OOXML iWork ISO
+    FLIR::AFF FLIR::FPF
 );
 
 # alphabetical list of current Lang modules
@@ -4068,11 +4069,11 @@ sub ExpandShortcuts($;$)
 #------------------------------------------------------------------------------
 # Add hash of Composite tags to our composites
 # Inputs: 0) hash reference to table of Composite tags to add or module name,
-#         1) overwrite existing tag
+#         1) override existing tag definition
 sub AddCompositeTags($;$)
 {
     local $_;
-    my ($add, $overwrite) = @_;
+    my ($add, $override) = @_;
     my $module;
     unless (ref $add) {
         $module = $add;
@@ -4081,9 +4082,6 @@ sub AddCompositeTags($;$)
         $add = \%$add;
     }
     my $defaultGroups = $$add{GROUPS};
-
-    # MUST get the main Composite table so fetching it later doesn't override our TagID's
-    # (which may be different from the table keys if there were duplicates)
     my $compTable = GetTagTable('Image::ExifTool::Composite');
 
     # make sure default groups are defined in families 0 and 1
@@ -4102,14 +4100,25 @@ sub AddCompositeTags($;$)
         # tagID's MUST be the exact tag name for logic in BuildCompositeTags()
         my $tag = $$tagInfo{Name};
         $$tagInfo{Module} = $module if $$tagInfo{Writable};
+        $$tagInfo{Override} = 1 if $override and not defined $$tagInfo{Override};
         # allow Composite tags with the same name
-        my ($t, $n, $type);
-        while ($$compTable{$tag} and not $overwrite) {
-            $n ? $n += 1 : ($n = 2, $t = $tag);
-            $tag = "${t}-$n";
-            $$tagInfo{NewTagID} = $tag; # save new ID so we can use it in TagLookup
+        if ($$compTable{$tag}) {
+            # determine if we want to override this tag
+            # (=0 keep both, >0 override, <0 keep existing)
+            my $over = ($$tagInfo{Override} || 0) - ($$compTable{$tag}{Override} || 0);
+            next if $over < 0;
+            my $n;
+            my $new = $tag;
+            while ($$compTable{$new}) {
+                delete $$compTable{$new} if $over;  # delete existing entries
+                $n = ($n || 1) + 1;
+                $new = "${tag}-$n";
+            }
+            # use new ID and save it so we can use it in TagLookup
+            $$tagInfo{NewTagID} = $tag = $new unless $over;
         }
         # convert scalar Require/Desire entries
+        my $type;
         foreach $type ('Require','Desire') {
             my $req = $$tagInfo{$type} or next;
             $$tagInfo{$type} = { 0 => $req } if ref($req) ne 'HASH';
@@ -6623,8 +6632,10 @@ sub GetTagTable($)
         }
         # set up the new table
         SetupTagTable($table);
-        # add any user-defined tags
-        if (%UserDefined and $UserDefined{$tableName}) {
+        # add any user-defined tags (except Composite tags, which are handled specially)
+        if (%UserDefined and $UserDefined{$tableName} and
+            $tableName ne 'Image::ExifTool::Composite')
+        {
             my $tagID;
             foreach $tagID (TagTableKeys($UserDefined{$tableName})) {
                 next if $specialTags{$tagID};
@@ -6814,7 +6825,7 @@ sub GetTagInfo($$$;$$$)
 # Inputs: 0) reference to tag table, 1) tag ID
 #         2) [optional] reference to tag information hash or simply tag name
 #         3) [optional] flag to avoid adding prefix when generating tag name
-# Notes: - will not overwrite existing entry in table
+# Notes: - will not override existing entry in table
 # - info need contain no entries when this routine is called
 sub AddTagToTable($$;$$)
 {
@@ -6857,7 +6868,7 @@ sub AddTagToTable($$;$$)
     # tag names must be at least 2 characters long and prefer them to start with a letter
     $name = "Tag$name" if length($name) < 2 or $name !~ /^[A-Z]/i;
     $$tagInfo{Name} = $name;
-    # add tag to table, but never overwrite existing entries (could potentially happen
+    # add tag to table, but never override existing entries (could potentially happen
     # if someone thinks there isn't any tagInfo because a condition wasn't satisfied)
     unless (defined $$tagTablePtr{$tagID} or $specialTags{$tagID}) {
         $$tagTablePtr{$tagID} = $tagInfo;

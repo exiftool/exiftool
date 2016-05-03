@@ -53,7 +53,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '3.79';
+$VERSION = '3.80';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -2756,7 +2756,10 @@ my %sampleFormat = (
         PrintConv => 'Image::ExifTool::Exif::PrintFNumber($val)',
     },
     LightValue => {
-        Notes => 'calculated LV -- similar to exposure value but normalized to ISO 100',
+        Notes => q{
+            calculated LV = 2 * log2(Aperture) - log2(ShutterSpeed) - log2(ISO/100);
+            similar to exposure value but normalized to ISO 100
+        },
         Require => {
             0 => 'Aperture',
             1 => 'ShutterSpeed',
@@ -3209,7 +3212,7 @@ sub CalculateLV($$$)
         $_ = $1;    # extract float from any other garbage
     }
     # (A light value of 0 is defined as f/1.0 at 1 second with ISO 100)
-    return (2*log($_[0]) - log($_[1]) - log($_[2]/100)) / log(2);
+    return log($_[0] * $_[0] * 100 / ($_[1] * $_[2])) / log(2);
 }
 
 #------------------------------------------------------------------------------

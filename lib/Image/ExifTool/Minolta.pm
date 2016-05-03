@@ -49,7 +49,7 @@ use vars qw($VERSION %minoltaLensTypes %minoltaTeleconverters %minoltaColorMode
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.32';
+$VERSION = '2.33';
 
 # Full list of product codes for Sony-compatible Minolta lenses
 # (ref http://www.kb.sony.com/selfservice/documentLink.do?externalId=C1000570)
@@ -336,6 +336,7 @@ $VERSION = '2.32';
    '128.18' => 'Tamron AF 28-105mm F4-5.6 [IF]', #IB (Model 179D)
    '128.19' => 'Sigma 35mm F1.4 DG HSM', #JR
    '128.20' => 'Sigma 18-35mm F1.8 DC HSM', #JR
+   '128.21' => 'Sigma 50-500mm F4.5-6.3 APO DG OS HSM', #JR
     129 => 'Tamron Lens (129)',
     129.1 => 'Tamron 200-400mm F5.6 LD', #12 (LD ref 23)
     129.2 => 'Tamron 70-300mm F4-5.6 LD', #12

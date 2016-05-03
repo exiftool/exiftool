@@ -59,7 +59,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.17';
+$VERSION = '3.18';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -438,6 +438,7 @@ sub GetAFPointGrid($$;$);
     '26 40 3C 8E 2C 40 1C 02' => 'Sigma 28-300mm F3.5-6.3 Macro',
     '02 3B 44 61 30 3D 02 00' => 'Sigma 35-80mm F4-5.6',
     '02 40 44 73 2B 36 02 00' => 'Sigma 35-135mm F3.5-4.5 a',
+    'CC 4C 50 68 14 14 4B 06' => 'Sigma 50-100mm F1.8 DC HSM | A', #forum3833
     '7A 47 50 76 24 24 4B 06' => 'Sigma 50-150mm F2.8 EX APO DC HSM',
     'FD 47 50 76 24 24 4B 06' => 'Sigma 50-150mm F2.8 EX APO DC HSM II',
     '98 48 50 76 24 24 4B 0E' => 'Sigma 50-150mm F2.8 EX APO DC OS HSM', #30
@@ -1819,11 +1820,21 @@ my %binaryDataAttrs = (
     0x00ab => { Name => 'VariProgram',      Writable => 'string' }, #2 (scene mode for DSLR's - PH)
     0x00ac => { Name => 'ImageStabilization',Writable=> 'string' }, #14
     0x00ad => { Name => 'AFResponse',       Writable => 'string' }, #14
-    0x00b0 => { #PH
+    0x00b0 => [{ #PH
         Name => 'MultiExposure',
         Condition => '$$valPt =~ /^0100/',
-        SubDirectory => { TagTable => 'Image::ExifTool::Nikon::MultiExposure' },
-    },
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Nikon::MultiExposure',
+            ByteOrder => 'BigEndian',
+        },
+    },{
+        Name => 'MultiExposure',
+        Condition => '$$valPt =~ /^0101/',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Nikon::MultiExposure',
+            ByteOrder => 'LittleEndian',
+        },
+    }],
     0x00b1 => { #14/PH/JD (D80)
         Name => 'HighISONoiseReduction',
         Writable => 'int16u',
@@ -5329,7 +5340,6 @@ my %nikonFocalConversions = (
     %binaryDataAttrs,
     FORMAT => 'int32u',
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
-    # NOTE: Must set ByteOrder in SubDirectory if any multi-byte integer tags added
     0 => {
         Name => 'MultiExposureVersion',
         Format => 'string[4]',

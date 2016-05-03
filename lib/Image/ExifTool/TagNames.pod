@@ -4192,6 +4192,12 @@ Tags extracted from Photoshop layer information.
   '_xrct'  LayerRectangles                      N+
   'luni'   LayerUnicodeNames                    N+
 
+=head3 Photoshop ImageData Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    Compression                          N
+
 =head2 Apple Tags
 
 Tags extracted from maker notes of images from the iPhone 5 with iOS 7.
@@ -9068,6 +9074,7 @@ DiMAGE X and Xt.
   0x00ac   ImageStabilization                   string
   0x00ad   AFResponse                           string
   0x00b0   MultiExposure                        Nikon MultiExposure
+                                                Nikon MultiExposure
   0x00b1   HighISONoiseReduction                int16u
   0x00b3   ToningEffect                         string
   0x00b6   PowerUpTime                          undef
@@ -14087,7 +14094,7 @@ Valid for DSC-RX100M2, DSC-QX10/QX100.
 =head3 Sony Tag2010g Tags
 
 Valid for DSC-HX400V/HX60V/QX30/RX10/RX100M3/WX220/WX350,
-ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-77M2.
+ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-68/77M2.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
@@ -14300,7 +14307,7 @@ DSC-HX50V, DSC-QX10/QX100.
 =head3 Sony Tag9400c Tags
 
 Valid for DSC-HX400V/HX60V/QX30/RX10/RX100M3/WX220/WX350,
-ILCE-7/7R/7S/7M2/7RM2/7SM2/5000/5100/6000/6300/QX1, ILCA-77M2.
+ILCE-7/7R/7S/7M2/7RM2/7SM2/5000/5100/6000/6300/QX1, ILCA-68/77M2.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
@@ -14359,7 +14366,7 @@ Valid for SLT, NEX, ILCE-3000/3500 and several DSC models.
 =head3 Sony Tag9405b Tags
 
 Valid for DSC-HX400V/HX60V/QX30/RX10/RX10M2/RX10M3/RX100M3/RX100M4/WX220/WX350,
-ILCE-7/7M2/7R/7RM2/7S/7SM2/5000/5100/6000/6300/QX1, ILCA-77M2.
+ILCE-7/7M2/7R/7RM2/7S/7SM2/5000/5100/6000/6300/QX1, ILCA-68/77M2.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------

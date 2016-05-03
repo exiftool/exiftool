@@ -2131,7 +2131,9 @@ sub WriteInfo($$;$$)
     }
     # don't return success code if any error occurred
     if ($rtnVal > 0) {
-        unless (Tell($outRef) or $$self{VALUE}{Error}) {
+        if ($outType and $outType ne $type) {
+            $self->Error("Can't create $outType file from $type"); 
+        } elsif (not Tell($outRef) and not $$self{VALUE}{Error}) {
             # don't write a file with zero length
             if (defined $hdr and length $hdr) {
                 $self->Error("Can't delete all meta information from $type file");

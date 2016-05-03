@@ -17,6 +17,20 @@ considered development releases, and are not uploaded to <a href="http://search.
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v10.16'><b>May 3, 2016 - Version 10.16</b></a>
+<ul>
+<li>Added %D, %F and %E filename format codes
+<li>Added a new Minolta lens (thanks Jos Roost)
+<li>Decode Photoshop Compression mode
+<li>Decode Nikon MultiExposure information for the D5
+<li>Updated decoding of Sony tags for ILCA-68 (thanks Jos Roost)
+<li>Fixed bug adding back XMP tags after deleting all XMP from MOV/MP4 files
+<li>Fixed problem using -o option when reading from stdin (ie. FILE is "-")
+<li>Fixed problem where user-defined Composite tags may not always override
+    pre-defined Composite tags with the same name, and added feature to allow
+    the user to specify whether they should override existing tags or not
+</ul>
+
 <a name='v10.15'><b>Apr. 20, 2016 - Version 10.15</b></a> <span class=grn>(production release)</span>
 <ul>
 <li>Added .a and .o to the list of supported file types

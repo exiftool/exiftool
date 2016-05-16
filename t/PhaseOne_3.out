@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.08
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.17
 [File, System, Image] FileName - File Name: PhaseOne_3_failed.iiq
 [File, System, Image] Directory - Directory: t
 [File, System, Image] FileSize - File Size: 3.3 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2015:12:17 10:49:25-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:12:17 10:49:25-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:12:17 10:49:25-05:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2016:05:06 08:24:15-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2016:05:06 08:24:15-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2016:05:06 08:24:15-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: IIQ
 [File, File, Image] FileTypeExtension - File Type Extension: iiq
@@ -163,6 +163,7 @@
 [Composite, Composite, Image] ImageSize - Image Size: 7320x5484
 [Composite, Composite, Image] Megapixels - Megapixels: 40.1
 [Composite, Composite, Image] ShutterSpeed - Shutter Speed: 1/1250
+[Composite, Composite, Preview] ThumbnailTIFF - Thumbnail TIFF: (Binary data 219 bytes)
 [Composite, Composite, Camera] BlueBalance - Blue Balance: 1.41912
 [Composite, Composite, Image] LightValue - Light Value: 15.3
 [Composite, Composite, Camera] RedBalance - Red Balance: 1.30548

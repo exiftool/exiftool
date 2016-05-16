@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.35';
+$VERSION = '2.36';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -111,7 +111,24 @@ my %sonyLensTypes2 = (
     49232 => 'Zeiss Loxia 50mm F2', #JR (lens firmware Ver.02)
     49234 => 'Zeiss Loxia 21mm F2.8', #PH
 
-    50480 => 'Sigma 30mm F1.4 DC DN | C', #IB
+    50480 => 'Sigma 30mm F1.4 DC DN | C 016', #IB/JR
+    50481 => 'Sigma 50mm F1.4 DG HSM | A 014 + MC-11', #JR
+    50483 => 'Sigma 18-35mm F1.8 DC HSM | A 013 + MC-11', #JR
+    50484 => 'Sigma 24-35mm F2 DG HSM | A 015 + MC-11', #JR
+    50486 => 'Sigma 150-600mm F5-6.3 DG OS HSM | C 015 + MC-11', #JR
+    50487 => 'Sigma 20mm F1.4 DG HSM | A 015 + MC-11', #JR
+    50488 => 'Sigma 35mm F1.4 DG HSM | A 012 + MC-11', #JR
+    50489 => 'Sigma 150-600mm F5-6.3 DG OS HSM | S 014 + MC-11', #JR
+    50490 => 'Sigma 120-300mm F2.8 DG OS HSM | S 013 + MC-11', #JR
+    50492 => 'Sigma 24-105mm F4 DG OS HSM | A 013 + MC-11', #JR
+    50493 => 'Sigma 17-70mm F2.8-4 DC MACRO OS HSM | C 013 + MC-11', #JR
+    50495 => 'Sigma 50-100mm F1.8 DC HSM | A 01x + MC-11', #JR (is this 015 or 016?)
+
+    # lenses listed in the Sigma MC-11 list, but not yet seen:
+    # 504xx => 'Sigma 18-200mm F3.5-6.3 DC MACRO OS HSM | C 014 + MC-11',
+    # 504xx => 'Sigma 18-300mm F3.5-6.3 DC MACRO OS HSM | C 014 + MC-11',
+    # 504xx => 'Sigma 24mm F1.4 DG HSM | A 015 + MC-11',
+    # 504xx => 'Sigma 30mm F1.4 DC HSM | A 013 + MC-11',
 );
 
 # ExposureProgram values (ref PH, mainly decoded from A200)

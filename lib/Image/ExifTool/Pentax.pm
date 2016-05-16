@@ -57,7 +57,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::HP;
 
-$VERSION = '3.02';
+$VERSION = '3.03';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -142,7 +142,8 @@ sub PrintFilter($$$);
     '3 44.2' => 'Sigma 12-24mm F4.5-5.6 EX DG', #12 (added "-5.6", ref 29)
     '3 44.3' => 'Sigma 17-70mm F2.8-4.5 DC Macro', #(Bart Hickman)
     '3 44.4' => 'Sigma 18-50mm F3.5-5.6 DC', #4
-    '3 44.5' => 'Tamron 35-90mm F4 AF', #12
+    '3 44.5' => 'Sigma 17-35mm F2.8-4 EX DG', #29
+    '3 44.6' => 'Tamron 35-90mm F4 AF', #12
     '3 46' => 'Sigma or Samsung Lens (3 46)',
     '3 46.1' => 'Sigma APO 70-200mm F2.8 EX',
     '3 46.2' => 'Sigma EX APO 100-300mm F4 IF', #JD

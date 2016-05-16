@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '10.16';
+$VERSION = '10.17';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -1303,6 +1303,11 @@ my %systemTagsNotes = (
         Notes => 'WMF-format embedded preview image',
         Binary => 1,
     },
+    PreviewTIFF => {
+        Groups => { 2 => 'Preview' },
+        Notes => 'TIFF-format embedded preview image',
+        Binary => 1,
+    },
     ExifByteOrder => {
         Writable => 1,
         Notes => q{
@@ -2392,36 +2397,6 @@ sub GetInfo($;@)
 }
 
 #------------------------------------------------------------------------------
-# Combine information from a list of info hashes
-# Unless Duplicates is enabled, first entry found takes priority
-# Inputs: 0) ExifTool object reference, 1-N) list of info hash references
-# Returns: Combined information hash reference
-sub CombineInfo($;@)
-{
-    local $_;
-    my $self = shift;
-    my (%combinedInfo, $info, $tag, %haveInfo);
-
-    if ($$self{OPTIONS}{Duplicates}) {
-        while ($info = shift) {
-            foreach $tag (keys %$info) {
-                $combinedInfo{$tag} = $$info{$tag};
-            }
-        }
-    } else {
-        while ($info = shift) {
-            foreach $tag (keys %$info) {
-                my $tagName = GetTagName($tag);
-                next if $haveInfo{$tagName};
-                $haveInfo{$tagName} = 1;
-                $combinedInfo{$tag} = $$info{$tag};
-            }
-        }
-    }
-    return \%combinedInfo;
-}
-
-#------------------------------------------------------------------------------
 # Inputs: 0) ExifTool object reference
 #         1) [optional] reference to info hash or tag list ref (default is found tags)
 #         2) [optional] sort order ('File', 'Input', ...)
@@ -2800,28 +2775,6 @@ sub GetTagID($$)
     return '' unless $tagInfo and defined $$tagInfo{TagID};
     return ($$tagInfo{TagID}, $$tagInfo{LangCode}) if wantarray;
     return $$tagInfo{TagID};
-}
-
-#------------------------------------------------------------------------------
-# Get tag table name
-# Inputs: 0) ExifTool object reference, 1) tag key
-# Returns: Table name if available, otherwise ''
-sub GetTableName($$)
-{
-    my ($self, $tag) = @_;
-    my $tagInfo = $$self{TAG_INFO}{$tag} or return '';
-    return $$tagInfo{Table}{SHORT_NAME};
-}
-
-#------------------------------------------------------------------------------
-# Get tag index number
-# Inputs: 0) ExifTool object reference, 1) tag key
-# Returns: Table index number, or undefined if this tag isn't indexed
-sub GetTagIndex($$)
-{
-    my ($self, $tag) = @_;
-    my $tagInfo = $$self{TAG_INFO}{$tag} or return undef;
-    return $$tagInfo{Index};
 }
 
 #------------------------------------------------------------------------------
@@ -3305,6 +3258,78 @@ sub Init($)
     }
     # make sure our TextOut is a file reference
     $$self{OPTIONS}{TextOut} = \*STDOUT unless ref $$self{OPTIONS}{TextOut};
+}
+
+#------------------------------------------------------------------------------
+# Combine information from a list of info hashes
+# Unless Duplicates is enabled, first entry found takes priority
+# Inputs: 0) ExifTool object reference, 1-N) list of info hash references
+# Returns: Combined information hash reference
+sub CombineInfo($;@)
+{
+    local $_;
+    my $self = shift;
+    my (%combinedInfo, $info, $tag, %haveInfo);
+
+    if ($$self{OPTIONS}{Duplicates}) {
+        while ($info = shift) {
+            foreach $tag (keys %$info) {
+                $combinedInfo{$tag} = $$info{$tag};
+            }
+        }
+    } else {
+        while ($info = shift) {
+            foreach $tag (keys %$info) {
+                my $tagName = GetTagName($tag);
+                next if $haveInfo{$tagName};
+                $haveInfo{$tagName} = 1;
+                $combinedInfo{$tag} = $$info{$tag};
+            }
+        }
+    }
+    return \%combinedInfo;
+}
+
+#------------------------------------------------------------------------------
+# Get tag table name
+# Inputs: 0) ExifTool object reference, 1) tag key
+# Returns: Table name if available, otherwise ''
+sub GetTableName($$)
+{
+    my ($self, $tag) = @_;
+    my $tagInfo = $$self{TAG_INFO}{$tag} or return '';
+    return $$tagInfo{Table}{SHORT_NAME};
+}
+
+#------------------------------------------------------------------------------
+# Get tag index number
+# Inputs: 0) ExifTool object reference, 1) tag key
+# Returns: Table index number, or undefined if this tag isn't indexed
+sub GetTagIndex($$)
+{
+    my ($self, $tag) = @_;
+    my $tagInfo = $$self{TAG_INFO}{$tag} or return undef;
+    return $$tagInfo{Index};
+}
+
+#------------------------------------------------------------------------------
+# Find value for specified tag
+# Inputs: 0) ExifTool ref, 1) tag name, 2) tag group (family 1)
+# Returns: value or undef
+sub FindValue($$$)
+{
+    my ($et, $tag, $grp) = @_;
+    my ($i, $val);
+    my $value = $$et{VALUE};
+    for ($i=0; ; ++$i) {
+        my $key = $tag . ($i ? " ($i)" : '');
+        last unless defined $$value{$key};
+        if ($et->GetGroup($key, 1) eq $grp) {
+            $val = $$value{$key};
+            last;
+        }
+    }
+    return $val;
 }
 
 #------------------------------------------------------------------------------

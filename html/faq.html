@@ -274,7 +274,9 @@ subdirectories, thus removing all EXIF information.  But with the TIFF format,
 the main image itself is stored in IFD0, so deleting this directory would
 destroy the image.  The same is true for any TIFF-based RAW file such as DNG,
 CR2, NEF, etc.  For these types of files, ExifTool just deletes the ExifIFD
-subdirectory, so any information stored in other directories is preserved.
+subdirectory, so any information stored in other directories is preserved (BUT
+NOTE THAT WITH PROPRIETARY RAW FORMATS THIS MAY DELETE INFORMATION THAT IS
+NECESSARY FOR PROPER RENDERING OF THE IMAGE).
 </blockquote>
 
 <blockquote>Use "<code>exiftool -a -G1 -s img.tif</code>" to see where the
@@ -1553,7 +1555,7 @@ must be changed to this in a .BAT file:
 </blockquote>
 
 <hr>
-<i>Last revised Apr. 20, 2016</i>
+<i>Last revised May 13, 2016</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

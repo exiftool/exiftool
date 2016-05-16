@@ -12,7 +12,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.44';
+$VERSION = '1.45';
 
 my %coordConv = (
     ValueConv    => 'Image::ExifTool::GPS::ToDegrees($val)',
@@ -124,8 +124,8 @@ my %coordConv = (
         Count => 3,
         Shift => 'Time',
         Notes => q{
-            when writing, date is stripped off if present, and time is adjusted to UTC
-            if it includes a timezone
+            UTC time of GPS fix.  When writing, date is stripped off if present, and
+            time is adjusted to UTC if it includes a timezone
         },
         ValueConv => 'Image::ExifTool::GPS::ConvertTimeStamp($val)',
         ValueConvInv => '$val=~tr/:/ /;$val',

@@ -83,7 +83,7 @@ sub ProcessSerialData($$$);
 sub ProcessFilters($$$);
 sub SwapWords($);
 
-$VERSION = '3.61';
+$VERSION = '3.62';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -330,6 +330,7 @@ $VERSION = '3.61';
     183.2 => 'Sigma 105mm f/2.8 EX DG OS HSM Macro', #50
     183.3 => 'Sigma 180mm f/2.8 EX DG OS HSM APO Macro', #IB
     183.4 => 'Sigma 150-600mm f/5-6.3 DG OS HSM | C', #47
+    183.5 => 'Sigma 150-600mm f/5-6.3 DG OS HSM | S', #forum7109 (Sports 014)
     184 => 'Canon EF 400mm f/2.8L + 2x', #15
     185 => 'Canon EF 600mm f/4L IS', #32
     186 => 'Canon EF 70-200mm f/4L', #9
@@ -8047,6 +8048,15 @@ sub PrintLensID(@)
             }
             # default to returning the first user-defined lens
             return LensWithTC($user[0], $shortFocal);
+        }
+        # differentiate Sigma Art/Contemporary/Sports models
+        if (@matches > 1 and $lensModel and $lensModel =~ /(\| [ACS])/) {
+            my $type = $1;
+            my @best;
+            foreach $lens (@matches) {
+                push @best, $lens if $lens =~ /\Q$type/;
+            }
+            @matches = @best if @best;
         }
         return join(' or ', @matches) if @matches;
         return join(' or ', @likely) if @likely;

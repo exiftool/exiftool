@@ -371,8 +371,8 @@ EXIF 2.3 specification.
   0x014c   InkSet                    IFD0       int16u
   0x014d   InkNames                  -          N
   0x014e   NumberofInks              -          N
-  0x0150   DotRange                  IFD0       string
-  0x0151   TargetPrinter             -          N
+  0x0150   DotRange                  -          N
+  0x0151   TargetPrinter             IFD0       string
   0x0152   ExtraSamples              -          N
   0x0153   SampleFormat              -          N
   0x0154   SMinSampleValue           -          N
@@ -28735,6 +28735,7 @@ tag is used for dry-run testing before writing FileName.
   Now                        ExifTool           N
   PreviewImage               File               Y
   PreviewPNG                 File               N
+  PreviewTIFF                File               N
   PreviewWMF                 File               N
   ProcessingTime             ExifTool           N
   RAFVersion                 File               N
@@ -29008,6 +29009,18 @@ values, may created via the ExifTool configuration file.
                        SubSecTime
   ThumbnailImage       ThumbnailOffset          Y
                        ThumbnailLength
+  ThumbnailTIFF        SubfileType              N
+                       Compression
+                       ImageWidth
+                       ImageHeight
+                       BitsPerSample
+                       PhotometricInterpretation
+                       StripOffsets
+                       SamplesPerPixel
+                       RowsPerStrip
+                       StripByteCounts
+                       PlanarConfiguration
+                       Orientation
   VolumeSize           ISO:VolumeBlockCount     N
                        ISO:VolumeBlockSize
   WB_RGBLevels         KDC_IFD:WhiteBalance     N

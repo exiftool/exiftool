@@ -3299,11 +3299,16 @@ sub ParseXMPElement($$$;$$$$)
         # reset nodeID before processing each element
         my $nodeID = $$blankInfo{NodeID} = $oldNodeID;
         # get next element
-        last if $$dataPt !~ m{<([?/]?)([-\w:.\x80-\xff]+)([^>]*)>}sg or pos($$dataPt) > $end;
+        last if $$dataPt !~ m{<([?/]?)([-\w:.\x80-\xff]+|!--)([^>]*)>}sg or pos($$dataPt) > $end;
         # (the only reason we match '<[?/]' is to keep from scanning past the
         #  "<?xpacket end..." terminator or other closing token, so
         next if $1;
         my ($prop, $attrs) = ($2, $3);
+        # skip comments
+        if ($prop eq '!--') {
+            next if $attrs =~ /--$/ or $$dataPt =~ /-->/sg;
+            last;
+        }
         my $valStart = pos($$dataPt);
         my $valEnd;
         # only look for closing token if this is not an empty element

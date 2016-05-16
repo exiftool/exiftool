@@ -7,6 +7,19 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.15. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+May 16, 2016 - Version 10.17
+
+  - Added support for Leica X-U (Typ 113) maker notes
+  - Added a new Pentax LensType (thanks Louis Granboulan)
+  - Added a number of new Sony lenses (thanks Jos Roost)
+  - Added a new Canon LensType (thanks Mees Dekker)
+  - Extract TIFF-format thumbnails and previews
+  - Patched to ignore XML entities inside comments
+  - Fixed inconsistent conversion of PreviewColorSpace values
+  - Fixed writing of TargetPrinter tag
+  - Fixed bug introduced in 10.16 which which could cause a runtime warning when
+    using the -o option and not writing any "real" tags
+
 May 3, 2016 - Version 10.16
 
   - Added %D, %F and %E filename format codes

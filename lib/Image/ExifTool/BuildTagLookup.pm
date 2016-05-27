@@ -32,7 +32,7 @@ use Image::ExifTool::XMP;
 use Image::ExifTool::Canon;
 use Image::ExifTool::Nikon;
 
-$VERSION = '2.95';
+$VERSION = '2.96';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -2010,7 +2010,9 @@ sub WriteTagNames($$)
                             $index = $key;
                             $prt = '= ' . EscapeHTML($$printConv{$key});
                             if ($$printConv{PrintHex}) {
+                                $index =~ s/(\.\d+)$//; # remove decimal
                                 $index = sprintf('0x%x',$index);
+                                $index .= $1 if $1; # add back decimal
                             } elsif ($$printConv{PrintString} or
                                 $index !~ /^[+-]?(?=\d|\.\d)\d*(\.\d*)?$/)
                             {
@@ -2477,7 +2479,8 @@ This module is used to generate the tag lookup tables in
 Image::ExifTool::TagLookup.pm and tag name documentation in
 Image::ExifTool::TagNames.pod, as well as HTML tag name documentation.  It
 is used before each new ExifTool release to update the lookup tables and
-documentation, but it is not used otherwise.
+documentation, but it is not used otherwise.  It also performs some
+validation and consistency checks on the tag tables.
 
 =head1 SYNOPSIS
 

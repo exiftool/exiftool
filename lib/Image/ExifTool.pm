@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '10.17';
+$VERSION = '10.18';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -66,6 +66,7 @@ sub RestoreNewValues($);
 sub WriteInfo($$;$$);
 sub SetFileModifyDate($$;$$$);
 sub SetFileName($$;$$);
+sub SetFilePermissions($$);
 sub GetAllTags(;$);
 sub GetWritableTags(;$);
 sub GetAllGroups($);
@@ -106,7 +107,7 @@ sub PackUTF8(@);
 sub UnpackUTF8($);
 sub SetPreferredByteOrder($);
 sub CopyBlock($$$);
-sub CopyFileAttrs($$);
+sub CopyFileAttrs($$$);
 sub TimeNow(;$);
 sub NewGUID();
 
@@ -1112,7 +1113,10 @@ my %systemTagsNotes = (
             others.  The ValueConv value is an octal number so bit test operations on
             this value should be done in octal, eg. 'oct($filePermissions#) & 0200'
         },
+        Writable => 1,
+        Protected => 1, # all writable pseudo-tags must be protected!
         ValueConv => 'sprintf("%.3o", $val & 0777)',
+        ValueConvInv => 'oct($val)',
         PrintConv => sub {
             my ($mask, $str, $val) = (0400, '', oct(shift));
             while ($mask) {
@@ -1122,6 +1126,17 @@ my %systemTagsNotes = (
                 }
             }
             return $str;
+        },
+        PrintConvInv => sub {
+            my ($bit, $val, $str) = (8, 0, shift);
+            return undef if length($str) != 9;
+            while ($bit >= 0) {
+                foreach (qw(r w x)) {
+                    $val |= (1 << $bit) if substr($str, 8-$bit, 1) eq $_;
+                    --$bit;
+                }
+            }
+            return sprintf('%.3o', $val);
         },
     },
     FileAttributes => {
@@ -2671,17 +2686,23 @@ sub GetValue($$;$)
                                 }
                                 $value = join ', ', @vals;
                             }
-                        } elsif (not $$conv{OTHER} or
-                                 # use alternate conversion routine if available
-                                 not defined($value = &{$$conv{OTHER}}($val, undef, $conv)))
-                        {
-                            if (($$tagInfo{PrintHex} or
-                                ($$tagInfo{Mask} and not defined $$tagInfo{PrintHex}))
-                                and $val and IsInt($val) and $convType eq 'PrintConv')
-                            {
-                                $val = sprintf('0x%x',$val);
+                        } else {
+                             # use alternate conversion routine if available
+                            if ($$conv{OTHER}) {
+                                local $SIG{'__WARN__'} = \&SetWarning;
+                                undef $evalWarning;
+                                $value = &{$$conv{OTHER}}($val, undef, $conv);
+                                $self->Warn("$convType $tag: " . CleanWarning()) if $evalWarning;
                             }
-                            $value = "Unknown ($val)";
+                            if (not defined $value) {
+                                if (($$tagInfo{PrintHex} or
+                                    ($$tagInfo{Mask} and not defined $$tagInfo{PrintHex}))
+                                    and $val and IsInt($val) and $convType eq 'PrintConv')
+                                {
+                                    $val = sprintf('0x%x',$val);
+                                }
+                                $value = "Unknown ($val)";
+                            }
                         }
                     }
                 } else {

@@ -53,7 +53,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '3.81';
+$VERSION = '3.82';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -4680,6 +4680,13 @@ sub PrintLensID($$@)
                 $lensType -= ($lensType >= 0xef00 ? 0xef00 : $lensType >= 0xbc00 ? 0xbc00 : 0x7700);
                 require Image::ExifTool::Canon;
                 $printConv = \%Image::ExifTool::Canon::canonLensTypes;
+                $lensTypePrt = $$printConv{$lensType} if $$printConv{$lensType};
+            # test for Sigma MC-11 adapter with Sigma lens: upper limit cuts off two highest
+            # Sigma lenses, but prevents conflict with old Minolta 25xxx and higher ID's
+            } elsif ($lensType >= 0x4900 and $lensType <= 0x590a) {
+                require Image::ExifTool::Sigma;
+                $lensType -= 0x4900;
+                $printConv = \%Image::ExifTool::Sigma::sigmaLensTypes;
                 $lensTypePrt = $$printConv{$lensType} if $$printConv{$lensType};
             }
         }

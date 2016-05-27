@@ -59,7 +59,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.18';
+$VERSION = '3.19';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -1497,6 +1497,16 @@ my %binaryDataAttrs = (
                 ByteOrder => 'LittleEndian',
             },
         },
+        { # (D500 firmware version 1.00)
+            Condition => '$$valPt =~ /^0239/',
+            Name => 'ShotInfoD500',
+            SubDirectory => {
+                TagTable => 'Image::ExifTool::Nikon::ShotInfoD500',
+                DecryptStart => 4,
+                DecryptLen => 0x2cb3,
+                ByteOrder => 'LittleEndian',
+            },
+        },
         # 0227 - D7100
         {
             Condition => '$$valPt =~ /^02/',
@@ -2731,7 +2741,7 @@ my %binaryDataAttrs = (
             Condition => '$$self{PhaseDetectAF} == 5',
             Notes => q{
                 Nikon 1 models with newer 135-point AF and 73-point phase-detect AF -- 9
-                rows (B-J) and 15 columns (1-15), inside a grid of 11 rows by 15 columns. 
+                rows (B-J) and 15 columns (1-15), inside a grid of 11 rows by 15 columns.
                 The points are numbered sequentially, with F8 at the center
             },
             PrintConv => {
@@ -2831,7 +2841,7 @@ my %binaryDataAttrs = (
             Name => 'AFPointsUsed',
             Condition => '$$self{PhaseDetectAF} == 4',
             Notes => q{
-                older models with 135-point AF -- 9 rows (A-I) and 15 columns (1-15). 
+                older models with 135-point AF -- 9 rows (A-I) and 15 columns (1-15).
                 Center point is E8.  The odd-numbered columns, columns 2 and 14, and the
                 remaining corner points are not used for 41-point AF mode
             },
@@ -4594,6 +4604,100 @@ my %nikonFocalConversions = (
         },
     },
     # note: DecryptLen currently set to 0x720
+);
+
+# shot information for the D500 firmware 1.01 (encrypted) - ref 28
+%Image::ExifTool::Nikon::ShotInfoD500 = (
+    PROCESS_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+    WRITE_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+    CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
+    VARS => { ID_LABEL => 'Index' },
+    IS_SUBDIR => [ 0x0eeb ],
+    WRITABLE => 1,
+    FIRST_ENTRY => 0,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    NOTES => 'These tags are extracted from encrypted data in images from the D500.',
+    0x00 => {
+        Name => 'ShotInfoVersion',
+        Format => 'string[4]',
+        Writable => 0,
+    },
+    0x04 => {
+        Name => 'FirmwareVersion',
+        Format => 'string[5]',
+        Writable => 0,
+    },
+    0x05e2 => {
+        Name => 'FlickerReductionIndicator',
+        Mask => 0x01,
+        PrintConv => {
+            0x00 => 'On',
+            0x01 => 'Off',
+        },
+    },
+    0x0e7d => {
+        Name => 'PhotoShootingMenuBank',
+        Mask => 0x03,
+        PrintConv => {
+            0 => 'A',
+            1 => 'B',
+            2 => 'C',
+            3 => 'D',
+        },
+    },
+    0x0e84 => [
+        {
+            Name => 'FlickerReduction',
+            Mask => 0x20,
+            PrintConv => {
+                0x00 => 'Enable',
+                0x20 => 'Disable',
+            },
+        },
+        {
+            Name => 'PhotoShootingMenuBankImageArea',
+            Mask => 0x07,
+            PrintConv => {
+                1 => 'DX (24x16)',
+                4 => '1.3x (18x12)',
+            },
+        },
+    ],
+####
+#    0x0014 => [
+#        { #4
+#            Name => 'ColorBalanceA',
+#            Condition => '$format eq "undef" and $count == 2560',
+#            SubDirectory => {
+#                TagTable => 'Image::ExifTool::Nikon::ColorBalanceA',
+#                ByteOrder => 'BigEndian',
+#            },
+#        },
+#        { #PH
+#            Name => 'NRWData',
+#            Condition => '$$valPt =~ /^NRW/', # starts with "NRW 0100"
+#            Notes => 'large unknown block in NRW images, not copied to JPEG images',
+#            # 'Drop' because not found in JPEG images (too large for APP1 anyway)
+#            Flags => [ 'Unknown', 'Binary', 'Drop' ],
+#        },
+#    ],
+    ####
+    0x0eeb => {
+        Name => 'CustomSettingsD500',
+        Format => 'undef[90]',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::NikonCustom::SettingsD500',
+        },
+    },
+    0x2cb2 => {
+        Name => 'ExtendedPhotoShootingBanks',
+        Mask => 0x01,
+        PrintConv => {
+            0x00 => 'On',
+            0x01 => 'Off',
+        },
+    },
+    # note: DecryptLen currently set to 0x2cb3
 );
 
 # shot information for the D810 firmware 1.00(PH)/1.01 (encrypted) - ref 28

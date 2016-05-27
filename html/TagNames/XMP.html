@@ -237,7 +237,7 @@ as extensions from various other sources.  See
 <tr class=b>
 <td>plus</td>
 <td class=c>-</td>
-<td>--&gt; <a href='XMP.html#plus'>XMP plus Tags</a></td></tr>
+<td>--&gt; <a href='PLUS.html#XMP'>PLUS XMP Tags</a></td></tr>
 <tr>
 <td>pmi</td>
 <td class=c>-</td>
@@ -4978,596 +4978,6 @@ namespace URI.</p>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
-<h2><a name='plus'>XMP plus Tags</a></h2>
-<p>PLUS License Data Format 1.2.1 namespace tags.  Note that all
-controlled-vocabulary tags in this table (ie. tags with a fixed set of
-values) have raw values which begin with &quot;http://ns.useplus.org/ldf/vocab/&quot;,
-but to reduce clutter this prefix has been removed from the values shown
-below.  (see <a href="http://ns.useplus.org/">http://ns.useplus.org/</a>)</p>
-<blockquote>
-<table class=frame><tr><td>
-<table class=inner cellspacing=1>
-<tr class=h><th>Tag Name</th>
-<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
-<tr>
-<td>AdultContentWarning</td>
-<td class=c>string</td>
-<td><span class=s>&#39;CW-AWR&#39; = Adult Content Warning Required
-  <br>&#39;CW-NRQ&#39; = Not Required
-  <br>&#39;CW-UNK&#39; = Unknown</span></td></tr>
-<tr class=b>
-<td>CopyrightOwner</td>
-<td class=c title=' + = List'>struct+</td>
-<td>--&gt; <a href='XMP.html#CopyrightOwner'>CopyrightOwner Struct</a></td></tr>
-<tr>
-<td>CopyrightOwnerID</td>
-<td class=c title=' _ = Flattened
- + = List'>string_+</td>
-<td><span class=s><span class=n>(CopyrightOwnerCopyrightOwnerID)</span></span></td></tr>
-<tr class=b>
-<td>CopyrightOwnerName</td>
-<td class=c title=' _ = Flattened
- + = List'>string_+</td>
-<td><span class=s><span class=n>(CopyrightOwnerCopyrightOwnerName)</span></span></td></tr>
-<tr>
-<td>CopyrightOwnerImageID</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>CopyrightRegistrationNumber</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>CopyrightStatus</td>
-<td class=c>string</td>
-<td><span class=s>&#39;CS-PRO&#39; = Protected
-  <br>&#39;CS-PUB&#39; = Public Domain
-  <br>&#39;CS-UNK&#39; = Unknown</span></td></tr>
-<tr class=b>
-<td>CreditLineRequired</td>
-<td class=c>string</td>
-<td><span class=s>&#39;CR-CAI&#39; = Credit Adjacent To Image
-  <br>&#39;CR-CCA&#39; = Credit in Credits Area
-  <br>&#39;CR-COI&#39; = Credit on Image
-  <br>&#39;CR-NRQ&#39; = Not Required</span></td></tr>
-<tr>
-<td>Custom1</td>
-<td class=c title=' + = List'>lang-alt+</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>Custom10</td>
-<td class=c title=' + = List'>lang-alt+</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>Custom2</td>
-<td class=c title=' + = List'>lang-alt+</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>Custom3</td>
-<td class=c title=' + = List'>lang-alt+</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>Custom4</td>
-<td class=c title=' + = List'>lang-alt+</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>Custom5</td>
-<td class=c title=' + = List'>lang-alt+</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>Custom6</td>
-<td class=c title=' + = List'>lang-alt+</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>Custom7</td>
-<td class=c title=' + = List'>lang-alt+</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>Custom8</td>
-<td class=c title=' + = List'>lang-alt+</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>Custom9</td>
-<td class=c title=' + = List'>lang-alt+</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>EndUser</td>
-<td class=c title=' + = List'>struct+</td>
-<td>--&gt; <a href='XMP.html#EndUser'>EndUser Struct</a></td></tr>
-<tr class=b>
-<td>EndUserID</td>
-<td class=c title=' _ = Flattened
- + = List'>string_+</td>
-<td><span class=s><span class=n>(EndUserEndUserID)</span></span></td></tr>
-<tr>
-<td>EndUserName</td>
-<td class=c title=' _ = Flattened
- + = List'>string_+</td>
-<td><span class=s><span class=n>(EndUserEndUserName)</span></span></td></tr>
-<tr class=b>
-<td>FileNameAsDelivered</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>FirstPublicationDate</td>
-<td class=c>date</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>ImageAlterationConstraints</td>
-<td class=c title=' + = List'>string+</td>
-<td><table class=cols><tr>
-  <td>&#39;AL-CLR&#39; = No Colorization
-  <br>&#39;AL-CRP&#39; = No Cropping
-  <br>&#39;AL-DCL&#39; = No De-Colorization
-  <br>&#39;AL-FLP&#39; = No Flipping
-  <br>&#39;AL-MRG&#39; = No Merging
-  <br>&#39;AL-RET&#39; = No Retouching</td></tr></table>
-</td></tr>
-<tr>
-<td>ImageCreator</td>
-<td class=c title=' + = List'>struct+</td>
-<td>--&gt; <a href='XMP.html#ImageCreator'>ImageCreator Struct</a></td></tr>
-<tr class=b>
-<td>ImageCreatorID</td>
-<td class=c title=' _ = Flattened
- + = List'>string_+</td>
-<td><span class=s><span class=n>(ImageCreatorImageCreatorID)</span></span></td></tr>
-<tr>
-<td>ImageCreatorName</td>
-<td class=c title=' _ = Flattened
- + = List'>string_+</td>
-<td><span class=s><span class=n>(ImageCreatorImageCreatorName)</span></span></td></tr>
-<tr class=b>
-<td>ImageCreatorImageID</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>ImageDuplicationConstraints</td>
-<td class=c>string</td>
-<td><span class=s>&#39;DP-LIC&#39; = Duplication Only as Necessary Under License
-  <br>&#39;DP-NDC&#39; = No Duplication Constraints
-  <br>&#39;DP-NOD&#39; = No Duplication</span></td></tr>
-<tr class=b>
-<td>ImageFileConstraints</td>
-<td class=c title=' + = List'>string+</td>
-<td><span class=s>&#39;IF-MFN&#39; = Maintain File Name
-  <br>&#39;IF-MFT&#39; = Maintain File Type
-  <br>&#39;IF-MID&#39; = Maintain ID in File Name
-  <br>&#39;IF-MMD&#39; = Maintain Metadata</span></td></tr>
-<tr>
-<td>ImageFileFormatAsDelivered</td>
-<td class=c>string</td>
-<td><span class=s>&#39;FF-BMP&#39; = Windows Bitmap (BMP)
-  <br>&#39;FF-DNG&#39; = Digital Negative (DNG)
-  <br>&#39;FF-EPS&#39; = Encapsulated PostScript (EPS)
-  <br>&#39;FF-GIF&#39; = Graphics Interchange Format (GIF)
-  <br>&#39;FF-JPG&#39; = JPEG Interchange Formats (JPG, JIF, JFIF)
-  <br>&#39;FF-OTR&#39; = Other
-  <br>&#39;FF-PIC&#39; = Macintosh Picture (PICT)
-  <br>&#39;FF-PNG&#39; = Portable Network Graphics (PNG)
-  <br>&#39;FF-PSD&#39; = Photoshop Document (PSD)
-  <br>&#39;FF-RAW&#39; = Proprietary RAW Image Format
-  <br>&#39;FF-TIF&#39; = Tagged Image File Format (TIFF)
-  <br>&#39;FF-WMP&#39; = Windows Media Photo (HD Photo)</span></td></tr>
-<tr class=b>
-<td>ImageFileSizeAsDelivered</td>
-<td class=c>string</td>
-<td><span class=s>&#39;SZ-G50&#39; = Greater than 50 MB
-  <br>&#39;SZ-U01&#39; = Up to 1 MB
-  <br>&#39;SZ-U10&#39; = Up to 10 MB
-  <br>&#39;SZ-U30&#39; = Up to 30 MB
-  <br>&#39;SZ-U50&#39; = Up to 50 MB</span></td></tr>
-<tr>
-<td>ImageSupplier</td>
-<td class=c title=' + = List'>struct+</td>
-<td>--&gt; <a href='XMP.html#ImageSupplier'>ImageSupplier Struct</a></td></tr>
-<tr class=b>
-<td>ImageSupplierImageID</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>ImageSupplierID</td>
-<td class=c title=' _ = Flattened
- + = List'>string_+</td>
-<td><span class=s><span class=n>(ImageSupplierImageSupplierID)</span></span></td></tr>
-<tr class=b>
-<td>ImageSupplierName</td>
-<td class=c title=' _ = Flattened
- + = List'>string_+</td>
-<td><span class=s><span class=n>(ImageSupplierImageSupplierName)</span></span></td></tr>
-<tr>
-<td>ImageType</td>
-<td class=c>string</td>
-<td><span class=s>&#39;TY-ILL&#39; = Illustrated Image
-  <br>&#39;TY-MCI&#39; = Multimedia or Composited Image
-  <br>&#39;TY-OTR&#39; = Other
-  <br>&#39;TY-PHO&#39; = Photographic Image
-  <br>&#39;TY-VID&#39; = Video</span></td></tr>
-<tr class=b>
-<td>Licensee</td>
-<td class=c title=' + = List'>struct+</td>
-<td>--&gt; <a href='XMP.html#Licensee'>Licensee Struct</a></td></tr>
-<tr>
-<td>LicenseeImageID</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>LicenseeImageNotes</td>
-<td class=c>lang-alt</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>LicenseeID</td>
-<td class=c title=' _ = Flattened
- + = List'>string_+</td>
-<td><span class=s><span class=n>(LicenseeLicenseeID)</span></span></td></tr>
-<tr class=b>
-<td>LicenseeName</td>
-<td class=c title=' _ = Flattened
- + = List'>string_+</td>
-<td><span class=s><span class=n>(LicenseeLicenseeName)</span></span></td></tr>
-<tr>
-<td>LicenseEndDate</td>
-<td class=c>date</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>LicenseeProjectReference</td>
-<td class=c title=' + = List'>string+</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>LicenseeTransactionID</td>
-<td class=c title=' + = List'>string+</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>LicenseID</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>LicenseStartDate</td>
-<td class=c>date</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>LicenseTransactionDate</td>
-<td class=c>date</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>Licensor</td>
-<td class=c title=' + = List'>struct+</td>
-<td>--&gt; <a href='XMP.html#Licensor'>Licensor Struct</a></td></tr>
-<tr class=b>
-<td>LicensorImageID</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>LicensorCity</td>
-<td class=c title=' _ = Flattened
- + = List'>string_+</td>
-<td><span class=s><span class=n>(LicensorLicensorCity)</span></span></td></tr>
-<tr class=b>
-<td>LicensorCountry</td>
-<td class=c title=' _ = Flattened
- + = List'>string_+</td>
-<td><span class=s><span class=n>(LicensorLicensorCountry)</span></span></td></tr>
-<tr>
-<td>LicensorEmail</td>
-<td class=c title=' _ = Flattened
- + = List'>string_+</td>
-<td><span class=s><span class=n>(LicensorLicensorEmail)</span></span></td></tr>
-<tr class=b>
-<td>LicensorExtendedAddress</td>
-<td class=c title=' _ = Flattened
- + = List'>string_+</td>
-<td><span class=s><span class=n>(LicensorLicensorExtendedAddress)</span></span></td></tr>
-<tr>
-<td>LicensorID</td>
-<td class=c title=' _ = Flattened
- + = List'>string_+</td>
-<td><span class=s><span class=n>(LicensorLicensorID)</span></span></td></tr>
-<tr class=b>
-<td>LicensorName</td>
-<td class=c title=' _ = Flattened
- + = List'>string_+</td>
-<td><span class=s><span class=n>(LicensorLicensorName)</span></span></td></tr>
-<tr>
-<td>LicensorPostalCode</td>
-<td class=c title=' _ = Flattened
- + = List'>string_+</td>
-<td><span class=s><span class=n>(LicensorLicensorPostalCode)</span></span></td></tr>
-<tr class=b>
-<td>LicensorRegion</td>
-<td class=c title=' _ = Flattened
- + = List'>string_+</td>
-<td><span class=s><span class=n>(LicensorLicensorRegion)</span></span></td></tr>
-<tr>
-<td>LicensorStreetAddress</td>
-<td class=c title=' _ = Flattened
- + = List'>string_+</td>
-<td><span class=s><span class=n>(LicensorLicensorStreetAddress)</span></span></td></tr>
-<tr class=b>
-<td>LicensorTelephone1</td>
-<td class=c title=' _ = Flattened
- + = List'>string_+</td>
-<td><span class=s><span class=n>(LicensorLicensorTelephone1)</span></span></td></tr>
-<tr>
-<td>LicensorTelephone2</td>
-<td class=c title=' _ = Flattened
- + = List'>string_+</td>
-<td><span class=s><span class=n>(LicensorLicensorTelephone2)</span></span></td></tr>
-<tr class=b>
-<td>LicensorTelephoneType1</td>
-<td class=c title=' _ = Flattened
- + = List'>string_+</td>
-<td><span class=s><span class=n>(LicensorLicensorTelephoneType1)</span>
-  <br>&#39;cell&#39; = Cell
-  <br>&#39;fax&#39; = FAX
-  <br>&#39;home&#39; = Home
-  <br>&#39;pager&#39; = Pager
-  <br>&#39;work&#39; = Work</span></td></tr>
-<tr>
-<td>LicensorTelephoneType2</td>
-<td class=c title=' _ = Flattened
- + = List'>string_+</td>
-<td><span class=s><span class=n>(LicensorLicensorTelephoneType2)</span>
-  <br>&#39;cell&#39; = Cell
-  <br>&#39;fax&#39; = FAX
-  <br>&#39;home&#39; = Home
-  <br>&#39;pager&#39; = Pager
-  <br>&#39;work&#39; = Work</span></td></tr>
-<tr class=b>
-<td>LicensorURL</td>
-<td class=c title=' _ = Flattened
- + = List'>string_+</td>
-<td><span class=s><span class=n>(LicensorLicensorURL)</span></span></td></tr>
-<tr>
-<td>LicensorNotes</td>
-<td class=c>lang-alt</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>LicensorTransactionID</td>
-<td class=c title=' + = List'>string+</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>MediaConstraints</td>
-<td class=c>lang-alt</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>MediaSummaryCode</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>MinorModelAgeDisclosure</td>
-<td class=c>string</td>
-<td><table class=cols><tr>
-  <td>&#39;AG-A15&#39; = Age 15
-  <br>&#39;AG-A16&#39; = Age 16
-  <br>&#39;AG-A17&#39; = Age 17
-  <br>&#39;AG-A18&#39; = Age 18
-  <br>&#39;AG-A19&#39; = Age 19
-  <br>&#39;AG-A20&#39; = Age 20
-  <br>&#39;AG-A21&#39; = Age 21
-  <br>&#39;AG-A22&#39; = Age 22
-  <br>&#39;AG-A23&#39; = Age 23
-  <br>&#39;AG-A24&#39; = Age 24
-  <br>&#39;AG-A25&#39; = Age 25 or Over
-  <br>&#39;AG-U14&#39; = Age 14 or Under
-  <br>&#39;AG-UNK&#39; = Age Unknown</td></tr></table>
-</td></tr>
-<tr class=b>
-<td>ModelReleaseID</td>
-<td class=c title=' + = List'>string+</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>ModelReleaseStatus</td>
-<td class=c>string</td>
-<td><span class=s>&#39;MR-LMR&#39; = Limited or Incomplete Model Releases
-  <br>&#39;MR-NAP&#39; = Not Applicable
-  <br>&#39;MR-NON&#39; = None
-  <br>&#39;MR-UMR&#39; = Unlimited Model Releases</span></td></tr>
-<tr class=b>
-<td>OtherConditions</td>
-<td class=c>lang-alt</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>OtherConstraints</td>
-<td class=c>lang-alt</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>OtherImageInfo</td>
-<td class=c>lang-alt</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>OtherLicenseDocuments</td>
-<td class=c title=' + = List'>string+</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>OtherLicenseInfo</td>
-<td class=c>lang-alt</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>OtherLicenseRequirements</td>
-<td class=c>lang-alt</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>ProductOrServiceConstraints</td>
-<td class=c>lang-alt</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>PropertyReleaseID</td>
-<td class=c title=' + = List'>string+</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>PropertyReleaseStatus</td>
-<td class=c>string</td>
-<td><span class=s>&#39;PR-LPR&#39; = Limited or Incomplete Property Releases
-  <br>&#39;PR-NAP&#39; = Not Applicable
-  <br>&#39;PR-NON&#39; = None
-  <br>&#39;PR-UPR&#39; = Unlimited Property Releases</span></td></tr>
-<tr>
-<td>RegionConstraints</td>
-<td class=c>lang-alt</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>Reuse</td>
-<td class=c>string</td>
-<td><span class=s>&#39;RE-NAP&#39; = Not Applicable
-  <br>&#39;RE-REU&#39; = Repeat Use</span></td></tr>
-<tr>
-<td>TermsAndConditionsText</td>
-<td class=c>lang-alt</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>TermsAndConditionsURL</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>PLUSVersion</td>
-<td class=c>string</td>
-<td><span class=s><span class=n>(called Version by the spec)</span></span></td></tr>
-</table></td></tr></table></blockquote>
-
-<h2><a name='CopyrightOwner'>XMP CopyrightOwner Struct</a></h2>
-<blockquote>
-<table class=frame><tr><td>
-<table class=inner cellspacing=1>
-<tr class=h><th>Field Name</th>
-<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
-<tr>
-<td>CopyrightOwnerID</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>CopyrightOwnerName</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-</table></td></tr></table></blockquote>
-
-<h2><a name='EndUser'>XMP EndUser Struct</a></h2>
-<blockquote>
-<table class=frame><tr><td>
-<table class=inner cellspacing=1>
-<tr class=h><th>Field Name</th>
-<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
-<tr>
-<td>EndUserID</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>EndUserName</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-</table></td></tr></table></blockquote>
-
-<h2><a name='ImageCreator'>XMP ImageCreator Struct</a></h2>
-<blockquote>
-<table class=frame><tr><td>
-<table class=inner cellspacing=1>
-<tr class=h><th>Field Name</th>
-<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
-<tr>
-<td>ImageCreatorID</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>ImageCreatorName</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-</table></td></tr></table></blockquote>
-
-<h2><a name='ImageSupplier'>XMP ImageSupplier Struct</a></h2>
-<blockquote>
-<table class=frame><tr><td>
-<table class=inner cellspacing=1>
-<tr class=h><th>Field Name</th>
-<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
-<tr>
-<td>ImageSupplierID</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>ImageSupplierName</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-</table></td></tr></table></blockquote>
-
-<h2><a name='Licensee'>XMP Licensee Struct</a></h2>
-<blockquote>
-<table class=frame><tr><td>
-<table class=inner cellspacing=1>
-<tr class=h><th>Field Name</th>
-<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
-<tr>
-<td>LicenseeID</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>LicenseeName</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-</table></td></tr></table></blockquote>
-
-<h2><a name='Licensor'>XMP Licensor Struct</a></h2>
-<blockquote>
-<table class=frame><tr><td>
-<table class=inner cellspacing=1>
-<tr class=h><th>Field Name</th>
-<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
-<tr>
-<td>LicensorCity</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>LicensorCountry</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>LicensorEmail</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>LicensorExtendedAddress</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>LicensorID</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>LicensorName</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>LicensorPostalCode</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>LicensorRegion</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>LicensorStreetAddress</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>LicensorTelephone1</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>LicensorTelephone2</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>LicensorTelephoneType1</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>LicensorTelephoneType2</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>LicensorURL</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-</table></td></tr></table></blockquote>
-
 <h2><a name='pmi'>XMP pmi Tags</a></h2>
 <p>PRISM Metadata for Images 3.0 namespace tags.  (see
 <a href="http://www.prismstandard.org/">http://www.prismstandard.org/</a>)</p>
@@ -8936,7 +8346,9 @@ JPEG image)</span></span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='xmpPLUS'>XMP xmpPLUS Tags</a></h2>
-<p>XMP Picture Licensing Universal System (PLUS) namespace tags.</p>
+<p>XMP Picture Licensing Universal System (PLUS) tags as written by some older
+Adobe applications.  See <a href="PLUS.html#XMP">PLUS XMP Tags</a>
+for the current PLUS tags.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -8944,11 +8356,11 @@ JPEG image)</span></span></td></tr>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
 <td>CreditLineReq</td>
-<td class=c>boolean</td>
+<td class=c title=' / = Avoided'>boolean/</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>ReuseAllowed</td>
-<td class=c>boolean</td>
+<td class=c title=' / = Avoided'>boolean/</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -9231,9 +8643,153 @@ XMP module for convenience.  (see <a href="http://www.w3.org/TR/SVG11/">http://w
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='CopyrightOwner'>XMP CopyrightOwner Struct</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Field Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>CopyrightOwnerID</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>CopyrightOwnerName</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='EndUser'>XMP EndUser Struct</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Field Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>EndUserID</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>EndUserName</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ImageCreator'>XMP ImageCreator Struct</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Field Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>ImageCreatorID</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>ImageCreatorName</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ImageSupplier'>XMP ImageSupplier Struct</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Field Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>ImageSupplierID</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>ImageSupplierName</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Licensee'>XMP Licensee Struct</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Field Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>LicenseeID</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>LicenseeName</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Licensor'>XMP Licensor Struct</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Field Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>LicensorCity</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>LicensorCountry</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>LicensorEmail</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>LicensorExtendedAddress</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>LicensorID</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>LicensorName</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>LicensorPostalCode</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>LicensorRegion</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>LicensorStreetAddress</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>LicensorTelephone1</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>LicensorTelephone2</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>LicensorTelephoneType1</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>LicensorTelephoneType2</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>LicensorURL</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Feb 5, 2016</i>
+<br><i>Last revised May 18, 2016</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

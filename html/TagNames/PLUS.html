@@ -1,0 +1,2613 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>PLUS Tags</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h2 class=top><a name='XMP'>PLUS XMP Tags</a></h2>
+<p>PLUS (Picture Licensing Universal System) License Data Format 1.2.1 XMP
+tags.  Note that all controlled-vocabulary tags in this table (ie. tags with
+a fixed set of values) have raw values which begin with
+&quot;http://ns.useplus.org/ldf/vocab/&quot;, but to reduce clutter this prefix has
+been removed from the values shown below.  See <a href="http://ns.useplus.org/">http://ns.useplus.org/</a> for
+the complete specification.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>AdultContentWarning</td>
+<td class=c>string</td>
+<td><span class=s>&#39;CW-AWR&#39; = Adult Content Warning Required
+  <br>&#39;CW-NRQ&#39; = Not Required
+  <br>&#39;CW-UNK&#39; = Unknown</span></td></tr>
+<tr class=b>
+<td>CopyrightOwner</td>
+<td class=c title=' + = List'>struct+</td>
+<td>--&gt; <a href='XMP.html#CopyrightOwner'>CopyrightOwner Struct</a></td></tr>
+<tr>
+<td>CopyrightOwnerID</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(CopyrightOwnerCopyrightOwnerID)</span></span></td></tr>
+<tr class=b>
+<td>CopyrightOwnerName</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(CopyrightOwnerCopyrightOwnerName)</span></span></td></tr>
+<tr>
+<td>CopyrightOwnerImageID</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>CopyrightRegistrationNumber</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>CopyrightStatus</td>
+<td class=c>string</td>
+<td><span class=s>&#39;CS-PRO&#39; = Protected
+  <br>&#39;CS-PUB&#39; = Public Domain
+  <br>&#39;CS-UNK&#39; = Unknown</span></td></tr>
+<tr class=b>
+<td>CreditLineRequired</td>
+<td class=c>string</td>
+<td><span class=s>&#39;CR-CAI&#39; = Credit Adjacent To Image
+  <br>&#39;CR-CCA&#39; = Credit in Credits Area
+  <br>&#39;CR-COI&#39; = Credit on Image
+  <br>&#39;CR-NRQ&#39; = Not Required</span></td></tr>
+<tr>
+<td>Custom1</td>
+<td class=c title=' + = List'>lang-alt+</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Custom10</td>
+<td class=c title=' + = List'>lang-alt+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Custom2</td>
+<td class=c title=' + = List'>lang-alt+</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Custom3</td>
+<td class=c title=' + = List'>lang-alt+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Custom4</td>
+<td class=c title=' + = List'>lang-alt+</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Custom5</td>
+<td class=c title=' + = List'>lang-alt+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Custom6</td>
+<td class=c title=' + = List'>lang-alt+</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Custom7</td>
+<td class=c title=' + = List'>lang-alt+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Custom8</td>
+<td class=c title=' + = List'>lang-alt+</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Custom9</td>
+<td class=c title=' + = List'>lang-alt+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>EndUser</td>
+<td class=c title=' + = List'>struct+</td>
+<td>--&gt; <a href='XMP.html#EndUser'>EndUser Struct</a></td></tr>
+<tr class=b>
+<td>EndUserID</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(EndUserEndUserID)</span></span></td></tr>
+<tr>
+<td>EndUserName</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(EndUserEndUserName)</span></span></td></tr>
+<tr class=b>
+<td>FileNameAsDelivered</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>FirstPublicationDate</td>
+<td class=c>date</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>ImageAlterationConstraints</td>
+<td class=c title=' + = List'>string+</td>
+<td><table class=cols><tr>
+  <td>&#39;AL-CLR&#39; = No Colorization
+  <br>&#39;AL-CRP&#39; = No Cropping
+  <br>&#39;AL-DCL&#39; = No De-Colorization
+  <br>&#39;AL-FLP&#39; = No Flipping
+  <br>&#39;AL-MRG&#39; = No Merging
+  <br>&#39;AL-RET&#39; = No Retouching</td></tr></table>
+</td></tr>
+<tr>
+<td>ImageCreator</td>
+<td class=c title=' + = List'>struct+</td>
+<td>--&gt; <a href='XMP.html#ImageCreator'>ImageCreator Struct</a></td></tr>
+<tr class=b>
+<td>ImageCreatorID</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(ImageCreatorImageCreatorID)</span></span></td></tr>
+<tr>
+<td>ImageCreatorName</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(ImageCreatorImageCreatorName)</span></span></td></tr>
+<tr class=b>
+<td>ImageCreatorImageID</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ImageDuplicationConstraints</td>
+<td class=c>string</td>
+<td><span class=s>&#39;DP-LIC&#39; = Duplication Only as Necessary Under License
+  <br>&#39;DP-NDC&#39; = No Duplication Constraints
+  <br>&#39;DP-NOD&#39; = No Duplication</span></td></tr>
+<tr class=b>
+<td>ImageFileConstraints</td>
+<td class=c title=' + = List'>string+</td>
+<td><span class=s>&#39;IF-MFN&#39; = Maintain File Name
+  <br>&#39;IF-MFT&#39; = Maintain File Type
+  <br>&#39;IF-MID&#39; = Maintain ID in File Name
+  <br>&#39;IF-MMD&#39; = Maintain Metadata</span></td></tr>
+<tr>
+<td>ImageFileFormatAsDelivered</td>
+<td class=c>string</td>
+<td><span class=s>&#39;FF-BMP&#39; = Windows Bitmap (BMP)
+  <br>&#39;FF-DNG&#39; = Digital Negative (DNG)
+  <br>&#39;FF-EPS&#39; = Encapsulated PostScript (EPS)
+  <br>&#39;FF-GIF&#39; = Graphics Interchange Format (GIF)
+  <br>&#39;FF-JPG&#39; = JPEG Interchange Formats (JPG, JIF, JFIF)
+  <br>&#39;FF-OTR&#39; = Other
+  <br>&#39;FF-PIC&#39; = Macintosh Picture (PICT)
+  <br>&#39;FF-PNG&#39; = Portable Network Graphics (PNG)
+  <br>&#39;FF-PSD&#39; = Photoshop Document (PSD)
+  <br>&#39;FF-RAW&#39; = Proprietary RAW Image Format
+  <br>&#39;FF-TIF&#39; = Tagged Image File Format (TIFF)
+  <br>&#39;FF-WMP&#39; = Windows Media Photo (HD Photo)</span></td></tr>
+<tr class=b>
+<td>ImageFileSizeAsDelivered</td>
+<td class=c>string</td>
+<td><span class=s>&#39;SZ-G50&#39; = Greater than 50 MB
+  <br>&#39;SZ-U01&#39; = Up to 1 MB
+  <br>&#39;SZ-U10&#39; = Up to 10 MB
+  <br>&#39;SZ-U30&#39; = Up to 30 MB
+  <br>&#39;SZ-U50&#39; = Up to 50 MB</span></td></tr>
+<tr>
+<td>ImageSupplier</td>
+<td class=c title=' + = List'>struct+</td>
+<td>--&gt; <a href='XMP.html#ImageSupplier'>ImageSupplier Struct</a></td></tr>
+<tr class=b>
+<td>ImageSupplierImageID</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ImageSupplierID</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(ImageSupplierImageSupplierID)</span></span></td></tr>
+<tr class=b>
+<td>ImageSupplierName</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(ImageSupplierImageSupplierName)</span></span></td></tr>
+<tr>
+<td>ImageType</td>
+<td class=c>string</td>
+<td><span class=s>&#39;TY-ILL&#39; = Illustrated Image
+  <br>&#39;TY-MCI&#39; = Multimedia or Composited Image
+  <br>&#39;TY-OTR&#39; = Other
+  <br>&#39;TY-PHO&#39; = Photographic Image
+  <br>&#39;TY-VID&#39; = Video</span></td></tr>
+<tr class=b>
+<td>Licensee</td>
+<td class=c title=' + = List'>struct+</td>
+<td>--&gt; <a href='XMP.html#Licensee'>Licensee Struct</a></td></tr>
+<tr>
+<td>LicenseeImageID</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>LicenseeImageNotes</td>
+<td class=c>lang-alt</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>LicenseeID</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(LicenseeLicenseeID)</span></span></td></tr>
+<tr class=b>
+<td>LicenseeName</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(LicenseeLicenseeName)</span></span></td></tr>
+<tr>
+<td>LicenseEndDate</td>
+<td class=c>date</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>LicenseeProjectReference</td>
+<td class=c title=' + = List'>string+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>LicenseeTransactionID</td>
+<td class=c title=' + = List'>string+</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>LicenseID</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>LicenseStartDate</td>
+<td class=c>date</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>LicenseTransactionDate</td>
+<td class=c>date</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Licensor</td>
+<td class=c title=' + = List'>struct+</td>
+<td>--&gt; <a href='XMP.html#Licensor'>Licensor Struct</a></td></tr>
+<tr class=b>
+<td>LicensorImageID</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>LicensorCity</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(LicensorLicensorCity)</span></span></td></tr>
+<tr class=b>
+<td>LicensorCountry</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(LicensorLicensorCountry)</span></span></td></tr>
+<tr>
+<td>LicensorEmail</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(LicensorLicensorEmail)</span></span></td></tr>
+<tr class=b>
+<td>LicensorExtendedAddress</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(LicensorLicensorExtendedAddress)</span></span></td></tr>
+<tr>
+<td>LicensorID</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(LicensorLicensorID)</span></span></td></tr>
+<tr class=b>
+<td>LicensorName</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(LicensorLicensorName)</span></span></td></tr>
+<tr>
+<td>LicensorPostalCode</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(LicensorLicensorPostalCode)</span></span></td></tr>
+<tr class=b>
+<td>LicensorRegion</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(LicensorLicensorRegion)</span></span></td></tr>
+<tr>
+<td>LicensorStreetAddress</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(LicensorLicensorStreetAddress)</span></span></td></tr>
+<tr class=b>
+<td>LicensorTelephone1</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(LicensorLicensorTelephone1)</span></span></td></tr>
+<tr>
+<td>LicensorTelephone2</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(LicensorLicensorTelephone2)</span></span></td></tr>
+<tr class=b>
+<td>LicensorTelephoneType1</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(LicensorLicensorTelephoneType1)</span>
+  <br>&#39;cell&#39; = Cell
+  <br>&#39;fax&#39; = FAX
+  <br>&#39;home&#39; = Home
+  <br>&#39;pager&#39; = Pager
+  <br>&#39;work&#39; = Work</span></td></tr>
+<tr>
+<td>LicensorTelephoneType2</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(LicensorLicensorTelephoneType2)</span>
+  <br>&#39;cell&#39; = Cell
+  <br>&#39;fax&#39; = FAX
+  <br>&#39;home&#39; = Home
+  <br>&#39;pager&#39; = Pager
+  <br>&#39;work&#39; = Work</span></td></tr>
+<tr class=b>
+<td>LicensorURL</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(LicensorLicensorURL)</span></span></td></tr>
+<tr>
+<td>LicensorNotes</td>
+<td class=c>lang-alt</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>LicensorTransactionID</td>
+<td class=c title=' + = List'>string+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>MediaConstraints</td>
+<td class=c>lang-alt</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>MediaSummaryCode</td>
+<td class=c>string</td>
+<td>--&gt; <a href='PLUS.html#MediaMatrix'>PLUS MediaMatrix Values</a></td></tr>
+<tr>
+<td>MinorModelAgeDisclosure</td>
+<td class=c>string</td>
+<td><table class=cols><tr>
+  <td>&#39;AG-A15&#39; = Age 15
+  <br>&#39;AG-A16&#39; = Age 16
+  <br>&#39;AG-A17&#39; = Age 17
+  <br>&#39;AG-A18&#39; = Age 18
+  <br>&#39;AG-A19&#39; = Age 19
+  <br>&#39;AG-A20&#39; = Age 20
+  <br>&#39;AG-A21&#39; = Age 21
+  <br>&#39;AG-A22&#39; = Age 22
+  <br>&#39;AG-A23&#39; = Age 23
+  <br>&#39;AG-A24&#39; = Age 24
+  <br>&#39;AG-A25&#39; = Age 25 or Over
+  <br>&#39;AG-U14&#39; = Age 14 or Under
+  <br>&#39;AG-UNK&#39; = Age Unknown</td></tr></table>
+</td></tr>
+<tr class=b>
+<td>ModelReleaseID</td>
+<td class=c title=' + = List'>string+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ModelReleaseStatus</td>
+<td class=c>string</td>
+<td><span class=s>&#39;MR-LMR&#39; = Limited or Incomplete Model Releases
+  <br>&#39;MR-NAP&#39; = Not Applicable
+  <br>&#39;MR-NON&#39; = None
+  <br>&#39;MR-UMR&#39; = Unlimited Model Releases</span></td></tr>
+<tr class=b>
+<td>OtherConditions</td>
+<td class=c>lang-alt</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>OtherConstraints</td>
+<td class=c>lang-alt</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>OtherImageInfo</td>
+<td class=c>lang-alt</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>OtherLicenseDocuments</td>
+<td class=c title=' + = List'>string+</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>OtherLicenseInfo</td>
+<td class=c>lang-alt</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>OtherLicenseRequirements</td>
+<td class=c>lang-alt</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>ProductOrServiceConstraints</td>
+<td class=c>lang-alt</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>PropertyReleaseID</td>
+<td class=c title=' + = List'>string+</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>PropertyReleaseStatus</td>
+<td class=c>string</td>
+<td><span class=s>&#39;PR-LPR&#39; = Limited or Incomplete Property Releases
+  <br>&#39;PR-NAP&#39; = Not Applicable
+  <br>&#39;PR-NON&#39; = None
+  <br>&#39;PR-UPR&#39; = Unlimited Property Releases</span></td></tr>
+<tr>
+<td>RegionConstraints</td>
+<td class=c>lang-alt</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Reuse</td>
+<td class=c>string</td>
+<td><span class=s>&#39;RE-NAP&#39; = Not Applicable
+  <br>&#39;RE-REU&#39; = Repeat Use</span></td></tr>
+<tr>
+<td>TermsAndConditionsText</td>
+<td class=c>lang-alt</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>TermsAndConditionsURL</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>PLUSVersion</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(called Version by the spec)</span></span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='MediaMatrix'>PLUS MediaMatrix Values</a></h2>
+<p>The lookup below is used to add human-readable descriptions to Media Matrix
+ID&#39;s in PLUS Media Summary Codes.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class='inner sep' cellspacing=1>
+<tr class=h><th>Value</th><th>MediaMatrix</th></tr>
+<tr><td>'1IAA'</td><td>= 1 Usage Item:</td>
+</tr><tr><td>'1IAB'</td><td>= 2 Usage Items:</td>
+</tr><tr><td>'1IAC'</td><td>= 3 Usage Items:</td>
+</tr><tr><td>'1IAD'</td><td>= 4 Usage Items:</td>
+</tr><tr><td>'1IAE'</td><td>= 5 Usage Items:</td>
+</tr><tr><td>'1UNA'</td><td>= Usage Number A</td>
+</tr><tr><td>'1UNB'</td><td>= Usage Number B</td>
+</tr><tr><td>'1UNC'</td><td>= Usage Number C</td>
+</tr><tr><td>'1UND'</td><td>= Usage Number D</td>
+</tr><tr><td>'1UNE'</td><td>= Usage Number E</td>
+</tr><tr><td>'2AAA'</td><td>= Advertising|All Media Types|All Formats|All Distribution Formats</td>
+</tr><tr><td>'2AAB'</td><td>= All Categories|Book|All Book Types|All Distribution Formats</td>
+</tr><tr><td>'2AAC'</td><td>= All Categories|Periodicals|All Periodical Types|All Distribution Formats</td>
+</tr><tr><td>'2AAD'</td><td>= All Categories|Display|All Display Types|All Distribution Formats</td>
+</tr><tr><td>'2AAE'</td><td>= Editorial|All Media Types|All Formats|All Distribution Formats</td>
+</tr><tr><td>'2AAG'</td><td>= All Categories|Product Packaging|All Product Packaging Types|All Distribution Formats</td>
+</tr><tr><td>'2AAH'</td><td>= All Categories|Merchandise|All Merchandise Types|All Distribution Formats</td>
+</tr><tr><td>'2AAI'</td><td>= Internal Company Use|All Media Types|All Formats|All Distribution Formats</td>
+</tr><tr><td>'2AAL'</td><td>= All Categories|Mobile|All Mobile Types|All Distribution Formats</td>
+</tr><tr><td>'2AAM'</td><td>= Motion Picture &amp; TV|All Media Types|All Formats|All Distribution Formats</td>
+</tr><tr><td>'2AAN'</td><td>= All Categories|Television Programming|All Television Programming Types|All Distribution Formats</td>
+</tr><tr><td>'2AAP'</td><td>= Products|All Media Types|All Formats|All Distribution Formats</td>
+</tr><tr><td>'2AAR'</td><td>= All Categories|Point of Purchase|All Point Of Purchase Types|All Distribution Formats</td>
+</tr><tr><td>'2AAT'</td><td>= All Categories|Marketing Materials|All Marketing Material Types|All Distribution Formats</td>
+</tr><tr><td>'2AAU'</td><td>= Personal Use|All Media Types|All Formats|All Distribution Formats</td>
+</tr><tr><td>'2AAV'</td><td>= All Categories|Music Video|All Music Video Types|All Distribution Formats</td>
+</tr><tr><td>'2AAX'</td><td>= All Categories|Motion Picture|All Motion Picture Types|All Distribution Formats</td>
+</tr><tr><td>'2AAY'</td><td>= Advertising|All Media Types|Promotional Reproduction of Licensed Usage in Context|All Distribution Formats</td>
+</tr><tr><td>'2ACE'</td><td>= Advertising|Periodicals|Magazine, Consumer|Internet Website</td>
+</tr><tr><td>'2ACT'</td><td>= Motion Picture &amp; TV|Motion Picture|All Motion Picture Types|All Electronic Distribution Formats</td>
+</tr><tr><td>'2ADD'</td><td>= Products|Merchandise|Address Book|Printed</td>
+</tr><tr><td>'2ADH'</td><td>= Advertising|Point of Purchase|Adhesive Tag|Printed</td>
+</tr><tr><td>'2ADS'</td><td>= Advertising|Periodicals|Magazine, Consumer|Internet Email</td>
+</tr><tr><td>'2AFT'</td><td>= Advertising|Periodicals|Magazine, Trade|Internet Email</td>
+</tr><tr><td>'2AGE'</td><td>= Advertising|Periodicals|Magazine, Trade|Recordable Media</td>
+</tr><tr><td>'2AGO'</td><td>= Advertising|Periodicals|Magazine, Corporate|Internet Email</td>
+</tr><tr><td>'2AHA'</td><td>= Advertising|Periodicals|Magazine, Education|Internet Email</td>
+</tr><tr><td>'2AID'</td><td>= Motion Picture &amp; TV|Motion Picture|Movie Trailer|All Electronic Distribution Formats</td>
+</tr><tr><td>'2AIL'</td><td>= Advertising|Periodicals|Magazine, Custom Published|Internet Email</td>
+</tr><tr><td>'2AIM'</td><td>= Motion Picture &amp; TV|Motion Picture|Short Film|Recordable Media</td>
+</tr><tr><td>'2ALB'</td><td>= Products|Merchandise|Photo Album|Printed</td>
+</tr><tr><td>'2ALL'</td><td>= All Categories|All Media Types|All Formats|All Distribution Formats</td>
+</tr><tr><td>'2ALP'</td><td>= Advertising|Periodicals|Magazine, Custom Published|Recordable Media</td>
+</tr><tr><td>'2AMI'</td><td>= Advertising|Periodicals|Magazine, Custom Published|All Electronic Distribution Formats</td>
+</tr><tr><td>'2AMP'</td><td>= Advertising|Periodicals|Magazine Reprints, All Types|Internet Email</td>
+</tr><tr><td>'2ANA'</td><td>= Advertising|Periodicals|Magazine, All Types|Internet Website</td>
+</tr><tr><td>'2ANN'</td><td>= Advertising|Periodicals|Annual Report|Printed</td>
+</tr><tr><td>'2ANT'</td><td>= Products|Merchandise|Anthology|Printed</td>
+</tr><tr><td>'2ANY'</td><td>= Advertising|Periodicals|Magazine, All Types|Internet Downloadable File</td>
+</tr><tr><td>'2APE'</td><td>= Advertising|Periodicals|Magazine, All Types|Internet Email</td>
+</tr><tr><td>'2APP'</td><td>= Products|Merchandise|Apparel, General Apparel|Printed or Woven</td>
+</tr><tr><td>'2APT'</td><td>= Advertising|Periodicals|Magazine, All Types|All Internet Distribution Formats</td>
+</tr><tr><td>'2ARC'</td><td>= Motion Picture &amp; TV|Motion Picture|Set Decor|Projected Display</td>
+</tr><tr><td>'2ARK'</td><td>= Advertising|Periodicals|Magazine, All Types|All Electronic Distribution Formats</td>
+</tr><tr><td>'2ARM'</td><td>= Advertising|Periodicals|Newspaper, Weekly Supplement|Internet Email</td>
+</tr><tr><td>'2ART'</td><td>= Advertising|Art|Art Display, All Art Types|Printed</td>
+</tr><tr><td>'2ASH'</td><td>= Advertising|Periodicals|Newspaper, Tabloid|Internet Downloadable File</td>
+</tr><tr><td>'2ASK'</td><td>= Motion Picture &amp; TV|Motion Picture|Short Film|All Internet Distribution Formats</td>
+</tr><tr><td>'2ATE'</td><td>= Motion Picture &amp; TV|Motion Picture|Movie Trailer|Projected Display</td>
+</tr><tr><td>'2ATM'</td><td>= Products|Merchandise|Card, ATM Card|Printed</td>
+</tr><tr><td>'2ATT'</td><td>= Products|Merchandise|Card, Phone Card|Printed</td>
+</tr><tr><td>'2BAA'</td><td>= All Categories|Website|All Web Page Types|All Distribution Formats</td>
+</tr><tr><td>'2BAB'</td><td>= Products|Art|Artist&#39;s Reference, Tattoo|Printed</td>
+</tr><tr><td>'2BAG'</td><td>= Advertising|Periodicals|All Periodical Types|Printed</td>
+</tr><tr><td>'2BAH'</td><td>= Advertising|Periodicals|Quarterly Report|Printed</td>
+</tr><tr><td>'2BAJ'</td><td>= Products|Merchandise|Computer Software|Recordable Media</td>
+</tr><tr><td>'2BAK'</td><td>= Products|Merchandise|Computer Software|Internet Downloadable File</td>
+</tr><tr><td>'2BAL'</td><td>= Advertising|Periodicals|Quarterly Report|Internet Email</td>
+</tr><tr><td>'2BAM'</td><td>= Advertising|Periodicals|Magazine, Advertorial|Internet Downloadable File</td>
+</tr><tr><td>'2BAN'</td><td>= Advertising|Display|Banner, All Types|Electronic Display</td>
+</tr><tr><td>'2BAP'</td><td>= Advertising|Periodicals|Magazine, Advertorial|Internet Website</td>
+</tr><tr><td>'2BAR'</td><td>= Advertising|Point of Purchase|All Point of Purchase Types|All Electronic Distribution Formats</td>
+</tr><tr><td>'2BAS'</td><td>= Advertising|Periodicals|Annual Report|Recordable Media</td>
+</tr><tr><td>'2BAT'</td><td>= Advertising|Periodicals|Free Standing Insert, All Insert Types|Printed</td>
+</tr><tr><td>'2BAU'</td><td>= Products|Merchandise|Computer Software|Internet Email</td>
+</tr><tr><td>'2BAV'</td><td>= Products|Merchandise|Computer Software|All Internet Distribution Formats</td>
+</tr><tr><td>'2BAW'</td><td>= Products|Merchandise|Diary|Recordable Media</td>
+</tr><tr><td>'2BAY'</td><td>= Advertising|Periodicals|Newspaper, Tabloid|Internet Email</td>
+</tr><tr><td>'2BAZ'</td><td>= Products|Merchandise|Diary|Internet Downloadable File</td>
+</tr><tr><td>'2BBA'</td><td>= Products|Merchandise|Diary|Internet Email</td>
+</tr><tr><td>'2BCF'</td><td>= Products|Merchandise|Retail Calendar, Multi-Page|Recordable Media</td>
+</tr><tr><td>'2BCG'</td><td>= Products|Merchandise|Retail Calendar, Multi-Page|All Electronic Distribution Formats</td>
+</tr><tr><td>'2BCH'</td><td>= Products|Merchandise|Retail Calendar, Multi-Page|All Internet Distribution Formats</td>
+</tr><tr><td>'2BCI'</td><td>= Products|Merchandise|Retail Calendar, Multi-Page|Internet Email</td>
+</tr><tr><td>'2BCJ'</td><td>= Products|Merchandise|Retail Calendar, Multi-Page|Internet Downloadable File</td>
+</tr><tr><td>'2BED'</td><td>= Advertising|Periodicals|Newspaper, All Types|Internet Email</td>
+</tr><tr><td>'2BEE'</td><td>= Editorial|Book|Textbook, Middle Reader|Printed</td>
+</tr><tr><td>'2BEG'</td><td>= Advertising|Book|Retail Book, Directory|Printed</td>
+</tr><tr><td>'2BEL'</td><td>= Advertising|Art|Art Display, All Art Types|Internet Website</td>
+</tr><tr><td>'2BEN'</td><td>= Advertising|Periodicals|Magazine, Advertorial|Printed</td>
+</tr><tr><td>'2BER'</td><td>= Motion Picture &amp; TV|Music Video|All Music Video Types|Recordable Media</td>
+</tr><tr><td>'2BES'</td><td>= Motion Picture &amp; TV|Music Video|All Music Video Types|All Internet Distribution Formats</td>
+</tr><tr><td>'2BET'</td><td>= Motion Picture &amp; TV|Motion Picture|Movie Trailer|All Internet Distribution Formats</td>
+</tr><tr><td>'2BEY'</td><td>= Advertising|Art|Art Display, All Art Types|All Internet Distribution Formats</td>
+</tr><tr><td>'2BFH'</td><td>= Personal Use|Art|Art Display, All Art Types|All Electronic Distribution Formats</td>
+</tr><tr><td>'2BFI'</td><td>= Personal Use|Art|Art Display, All Art Types|All Internet Distribution Formats</td>
+</tr><tr><td>'2BFJ'</td><td>= Personal Use|Art|Art Display, All Art Types|Internet Website</td>
+</tr><tr><td>'2BFK'</td><td>= Personal Use|Art|Art Display, All Art Types|Electronic Display</td>
+</tr><tr><td>'2BFN'</td><td>= Personal Use|Art|Art Display, Display Print|Printed</td>
+</tr><tr><td>'2BFP'</td><td>= Personal Use|Art|Study Print, Educational|Printed</td>
+</tr><tr><td>'2BFR'</td><td>= Personal Use|Website|Web Page, All Types|Internet Website</td>
+</tr><tr><td>'2BFS'</td><td>= Personal Use|Website|Web Page, All Types|Recordable Media</td>
+</tr><tr><td>'2BFT'</td><td>= Personal Use|Website|Web Page, All Types|All Electronic Distribution Formats</td>
+</tr><tr><td>'2BFU'</td><td>= Personal Use|Website|Web Page, All Types|All Internet Distribution Formats</td>
+</tr><tr><td>'2BHB'</td><td>= Internal Company Use|Art|Art Display, Display Print|Printed</td>
+</tr><tr><td>'2BHD'</td><td>= Internal Company Use|Email|All Email Types|Intranet and Extranet Email</td>
+</tr><tr><td>'2BHF'</td><td>= Internal Company Use|Live Presentation|Internal Presentation|Projected Display</td>
+</tr><tr><td>'2BHG'</td><td>= Internal Company Use|Promotional Materials|Corporate Brochure|Recordable Media</td>
+</tr><tr><td>'2BHH'</td><td>= Internal Company Use|Promotional Materials|Corporate Brochure|Intranet and Extranet Downloadable File</td>
+</tr><tr><td>'2BHI'</td><td>= Internal Company Use|Promotional Materials|Corporate Brochure|Intranet and Extranet Email</td>
+</tr><tr><td>'2BHK'</td><td>= Internal Company Use|Promotional Materials|Corporate Calendar|Recordable Media</td>
+</tr><tr><td>'2BHL'</td><td>= Internal Company Use|Promotional Materials|Corporate Calendar|Intranet and Extranet Downloadable File</td>
+</tr><tr><td>'2BHM'</td><td>= Internal Company Use|Promotional Materials|Corporate Calendar|Intranet and Extranet Email</td>
+</tr><tr><td>'2BHN'</td><td>= Internal Company Use|Promotional Materials|Corporate Calendar|Printed</td>
+</tr><tr><td>'2BHQ'</td><td>= Internal Company Use|Promotional Materials|Card, Corporate Card|Printed</td>
+</tr><tr><td>'2BHS'</td><td>= Internal Company Use|Promotional Materials|Card, Corporate Card|Recordable Media</td>
+</tr><tr><td>'2BHT'</td><td>= Internal Company Use|Promotional Materials|Card, Corporate Card|Intranet and Extranet Downloadable File</td>
+</tr><tr><td>'2BHU'</td><td>= Internal Company Use|Promotional Materials|Card, Corporate Card|Intranet and Extranet Email</td>
+</tr><tr><td>'2BHV'</td><td>= Internal Company Use|Promotional Materials|Sales Kit|All Electronic Distribution Formats</td>
+</tr><tr><td>'2BHW'</td><td>= Internal Company Use|Promotional Materials|Training Materials|Printed</td>
+</tr><tr><td>'2BHY'</td><td>= Internal Company Use|Promotional Materials|Corporate Folder|Printed</td>
+</tr><tr><td>'2BHZ'</td><td>= Internal Company Use|Promotional Materials|CD ROM|Recordable Media</td>
+</tr><tr><td>'2BIA'</td><td>= Internal Company Use|Periodicals|Magazine, Custom Published|Recordable Media</td>
+</tr><tr><td>'2BIB'</td><td>= Advertising|Point of Purchase|All Point of Purchase Types|Electronic Display</td>
+</tr><tr><td>'2BIC'</td><td>= Internal Company Use|Periodicals|Magazine, Custom Published|Intranet and Extranet Website</td>
+</tr><tr><td>'2BID'</td><td>= Advertising|Periodicals|Newsletter, All Types|Internet Email</td>
+</tr><tr><td>'2BIF'</td><td>= Internal Company Use|Periodicals|Magazine, Custom Published|Intranet and Extranet Downloadable File</td>
+</tr><tr><td>'2BIG'</td><td>= Advertising|Display|All Display Types|Printed</td>
+</tr><tr><td>'2BIH'</td><td>= Internal Company Use|Periodicals|Magazine, Custom Published|All Electronic Distribution Formats</td>
+</tr><tr><td>'2BII'</td><td>= Internal Company Use|Periodicals|Magazine, Custom Published|All Intranet and Extranet Distribution Formats</td>
+</tr><tr><td>'2BIL'</td><td>= Advertising|Display|Billboard, All Types|Printed</td>
+</tr><tr><td>'2BIN'</td><td>= Advertising|Point of Purchase|All Point of Purchase Types|Printed</td>
+</tr><tr><td>'2BIO'</td><td>= Products|Merchandise|Birthday Book|Printed</td>
+</tr><tr><td>'2BIS'</td><td>= Advertising|Art|Art Display, All Art Types|All Electronic Distribution Formats</td>
+</tr><tr><td>'2BIT'</td><td>= Products|Merchandise|Card, Debit Card|Printed</td>
+</tr><tr><td>'2BIZ'</td><td>= Advertising|Marketing Materials|Card, Business Greeting Card|Printed</td>
+</tr><tr><td>'2BJH'</td><td>= Internal Company Use|Website|Webcast, All Types|Intranet and Extranet Website</td>
+</tr><tr><td>'2BJK'</td><td>= Internal Company Use|Website|Web Page, All Types|All Electronic Distribution Formats</td>
+</tr><tr><td>'2BJL'</td><td>= Internal Company Use|Website|Web Page, All Types|Recordable Media</td>
+</tr><tr><td>'2BJN'</td><td>= Internal Company Use|Website|Web Page, Content Body|Intranet and Extranet Website</td>
+</tr><tr><td>'2BLA'</td><td>= Products|Merchandise|Blank Note Book|Printed</td>
+</tr><tr><td>'2BLD'</td><td>= Advertising|Display|Billboard, Building Wrap|Printed</td>
+</tr><tr><td>'2BNK'</td><td>= Products|Merchandise|Card, Bank Card|Printed</td>
+</tr><tr><td>'2BOA'</td><td>= Editorial|Book|Textbook, Student Edition|Printed</td>
+</tr><tr><td>'2BOB'</td><td>= Advertising|Periodicals|Magazine, Consumer|Printed</td>
+</tr><tr><td>'2BOD'</td><td>= Advertising|Periodicals|All Periodical Types|Internet Downloadable File</td>
+</tr><tr><td>'2BOG'</td><td>= Advertising|Display|All Display Types|Electronic Display</td>
+</tr><tr><td>'2BOO'</td><td>= Editorial|Book|Retail Book, All Types|Printed</td>
+</tr><tr><td>'2BOP'</td><td>= Advertising|Periodicals|Magazine, Advertorial|Internet Email</td>
+</tr><tr><td>'2BOS'</td><td>= Advertising|Art|Art Display, All Art Types|Electronic Display</td>
+</tr><tr><td>'2BOT'</td><td>= Advertising|Point of Purchase|Bottlenecker|Printed</td>
+</tr><tr><td>'2BOW'</td><td>= Advertising|Periodicals|All Periodical Types|Internet Email</td>
+</tr><tr><td>'2BOX'</td><td>= Products|Merchandise|Gift Box|Printed</td>
+</tr><tr><td>'2BOY'</td><td>= Advertising|Art|Art Display, Display Print|Printed</td>
+</tr><tr><td>'2BPE'</td><td>= Advertising|Display|Transit Advertising, Bus Poster|Electronic Display</td>
+</tr><tr><td>'2BRA'</td><td>= Advertising|Display|Banner, Airborne Display|Printed</td>
+</tr><tr><td>'2BRO'</td><td>= Advertising|Display|Banner, All Types|Printed</td>
+</tr><tr><td>'2BRR'</td><td>= Advertising|Display|Banner, Backdrop|Printed</td>
+</tr><tr><td>'2BUB'</td><td>= Advertising|Display|Banner, Background|Printed</td>
+</tr><tr><td>'2BUD'</td><td>= Advertising|Display|Billboard, All Types|Electronic Display</td>
+</tr><tr><td>'2BUG'</td><td>= Editorial|Book|Retail Book, Children&#39;s Book|Printed</td>
+</tr><tr><td>'2BUN'</td><td>= Advertising|Marketing Materials|Promo Card|Printed</td>
+</tr><tr><td>'2BUR'</td><td>= Advertising|Display|Billboard, Bulletin|Electronic Display</td>
+</tr><tr><td>'2BUS'</td><td>= Advertising|Display|Transit Advertising, Bus Panel|Printed</td>
+</tr><tr><td>'2BUY'</td><td>= Advertising|Point of Purchase|Floor Graphic|Printed</td>
+</tr><tr><td>'2BYE'</td><td>= Advertising|Display|Billboard, Mobile Billboard|Electronic Display</td>
+</tr><tr><td>'2BYS'</td><td>= Advertising|Display|Billboard, Mobile Billboard|Printed</td>
+</tr><tr><td>'2CAL'</td><td>= Products|Merchandise|Retail Calendar, Multi-Page|Printed</td>
+</tr><tr><td>'2CAR'</td><td>= Advertising|Display|Shopping Cart|Printed</td>
+</tr><tr><td>'2CAS'</td><td>= Advertising|Point of Purchase|Case Card|Printed</td>
+</tr><tr><td>'2CDR'</td><td>= Products|Merchandise|CD ROM|Recordable Media</td>
+</tr><tr><td>'2CHK'</td><td>= Products|Merchandise|Check|Printed</td>
+</tr><tr><td>'2CLO'</td><td>= Products|Merchandise|Retail Calendar, One Page|Printed</td>
+</tr><tr><td>'2COU'</td><td>= Advertising|Point of Purchase|Counter Card|Printed</td>
+</tr><tr><td>'2CRD'</td><td>= Products|Merchandise|Card, Other Card|Printed</td>
+</tr><tr><td>'2CRE'</td><td>= Products|Merchandise|Card, Credit Card|Printed</td>
+</tr><tr><td>'2CRT'</td><td>= Advertising|Display|Shopping Cart|Electronic Display</td>
+</tr><tr><td>'2CUS'</td><td>= Advertising|Periodicals|Magazine, Custom Published|Printed</td>
+</tr><tr><td>'2DAB'</td><td>= Advertising|Display|Billboard, Rotating Billboard|Printed</td>
+</tr><tr><td>'2DAD'</td><td>= Advertising|Display|Billboard, Spectacular|Electronic Display</td>
+</tr><tr><td>'2DAG'</td><td>= Advertising|Display|Billboard, Spectacular|Printed</td>
+</tr><tr><td>'2DAH'</td><td>= Advertising|Display|Billboard, Wallscape|Electronic Display</td>
+</tr><tr><td>'2DAK'</td><td>= Advertising|Display|Billboard, Wallscape|Printed</td>
+</tr><tr><td>'2DAL'</td><td>= Advertising|Display|Event, Stadium Advertising|Electronic Display</td>
+</tr><tr><td>'2DAM'</td><td>= Advertising|Display|Event, Stadium Advertising|Printed</td>
+</tr><tr><td>'2DAP'</td><td>= Advertising|Display|Event, Trade Show Display|Electronic Display</td>
+</tr><tr><td>'2DAW'</td><td>= Advertising|Display|Poster, All Types|Electronic Display</td>
+</tr><tr><td>'2DAY'</td><td>= Products|Product Packaging|All Product Packaging Types|Printed</td>
+</tr><tr><td>'2DEB'</td><td>= Advertising|Periodicals|Magazine, Education|Printed</td>
+</tr><tr><td>'2DEE'</td><td>= Advertising|Periodicals|Wrapper|Printed</td>
+</tr><tr><td>'2DEL'</td><td>= Advertising|Display|Poster, Backlit Print|Printed</td>
+</tr><tr><td>'2DEN'</td><td>= Advertising|Display|Poster, Corporate Poster|Electronic Display</td>
+</tr><tr><td>'2DEV'</td><td>= Advertising|Display|Poster, Corporate Poster|Printed</td>
+</tr><tr><td>'2DEW'</td><td>= Editorial|Book|Trade Book, All Types|Printed</td>
+</tr><tr><td>'2DEX'</td><td>= Advertising|Display|Poster, Display Chrome|Printed</td>
+</tr><tr><td>'2DEY'</td><td>= Advertising|Display|Poster, Door Side Poster|Electronic Display</td>
+</tr><tr><td>'2DIA'</td><td>= Products|Merchandise|Diary|Printed</td>
+</tr><tr><td>'2DIB'</td><td>= Advertising|Display|Poster, Door Side Poster|Printed</td>
+</tr><tr><td>'2DID'</td><td>= Advertising|Display|Poster, Elevator Advertising|Electronic Display</td>
+</tr><tr><td>'2DIG'</td><td>= Motion Picture &amp; TV|Motion Picture|Movie Trailer|Recordable Media</td>
+</tr><tr><td>'2DIM'</td><td>= Personal Use|Personal Review|All Review Types|All Electronic Distribution Formats</td>
+</tr><tr><td>'2DIN'</td><td>= Advertising|Display|Store Display, All Display Types|Electronic Display</td>
+</tr><tr><td>'2DIP'</td><td>= Motion Picture &amp; TV|Motion Picture|All Motion Picture Types|All Internet Distribution Formats</td>
+</tr><tr><td>'2DIR'</td><td>= Editorial|Book|Retail Book, Directory|Printed</td>
+</tr><tr><td>'2DIS'</td><td>= Advertising|Display|Event, Trade Show Display|Printed</td>
+</tr><tr><td>'2DIT'</td><td>= Advertising|Display|Store Display, In-Store Poster|Electronic Display</td>
+</tr><tr><td>'2DOC'</td><td>= Motion Picture &amp; TV|Motion Picture|Documentary Film|All Electronic Distribution Formats</td>
+</tr><tr><td>'2DOE'</td><td>= Advertising|Display|Terminal Advertising, All Types|Electronic Display</td>
+</tr><tr><td>'2DOG'</td><td>= Editorial|Book|Reference Book, All Types|Printed</td>
+</tr><tr><td>'2DOL'</td><td>= Advertising|Display|Terminal Advertising, Bus Stop Advertising|Electronic Display</td>
+</tr><tr><td>'2DOM'</td><td>= Advertising|Display|Terminal Advertising, Bus Stop Advertising|Printed</td>
+</tr><tr><td>'2DON'</td><td>= Advertising|Display|Terminal Advertising, Ferry Terminal Advertising|Electronic Display</td>
+</tr><tr><td>'2DOR'</td><td>= Advertising|Display|Terminal Advertising, Ferry Terminal Advertising|Printed</td>
+</tr><tr><td>'2DOS'</td><td>= Advertising|Display|Terminal Advertising, Shelter Advertising|Electronic Display</td>
+</tr><tr><td>'2DOT'</td><td>= Advertising|Marketing Materials|Artist&#39;s Reference, All Types|All Electronic Distribution Formats</td>
+</tr><tr><td>'2DOW'</td><td>= Advertising|Display|Terminal Advertising, Station Poster|Electronic Display</td>
+</tr><tr><td>'2DRY'</td><td>= Advertising|Display|Poster, Restroom Poster|Printed</td>
+</tr><tr><td>'2DUB'</td><td>= Advertising|Display|Terminal Advertising, Station Poster|Printed</td>
+</tr><tr><td>'2DUE'</td><td>= Advertising|Display|Terminal Advertising, Subway Terminal Advertising|Electronic Display</td>
+</tr><tr><td>'2DUG'</td><td>= Advertising|Display|Terminal Advertising, Subway Terminal Advertising|Printed</td>
+</tr><tr><td>'2DUH'</td><td>= Advertising|Periodicals|Magazine, Advertorial|All Electronic Distribution Formats</td>
+</tr><tr><td>'2DUI'</td><td>= Advertising|Display|Terminal Advertising, Train Terminal Advertising|Electronic Display</td>
+</tr><tr><td>'2DUN'</td><td>= Advertising|Display|Terminal Advertising, Train Terminal Advertising|Printed</td>
+</tr><tr><td>'2DUO'</td><td>= Advertising|Marketing Materials|All Marketing Material Types|Recordable Media</td>
+</tr><tr><td>'2DUP'</td><td>= Advertising|Periodicals|Magazine Reprints, All Types|Printed</td>
+</tr><tr><td>'2DVA'</td><td>= Advertising|Marketing Materials|DVD|Recordable Media</td>
+</tr><tr><td>'2DVD'</td><td>= Products|Merchandise|DVD|Recordable Media</td>
+</tr><tr><td>'2DVE'</td><td>= Editorial|Merchandise|DVD|Recordable Media</td>
+</tr><tr><td>'2DVI'</td><td>= Internal Company Use|Promotional Materials|DVD|Recordable Media</td>
+</tr><tr><td>'2DVL'</td><td>= Products|Product Packaging|Packaging For Recordable Media, Liner Notes|Printed</td>
+</tr><tr><td>'2DVP'</td><td>= Products|Product Packaging|Packaging For Recordable Media, All Packaging Types|Printed</td>
+</tr><tr><td>'2DYE'</td><td>= Advertising|Marketing Materials|All Marketing Material Types|Internet Email</td>
+</tr><tr><td>'2EAB'</td><td>= Editorial|Book|Retail Book, Directory|All E-Book Distribution Formats</td>
+</tr><tr><td>'2EAC'</td><td>= Advertising|Book|Retail Book, Directory|E-Book in Internet Website</td>
+</tr><tr><td>'2EAD'</td><td>= Advertising|Book|Retail Book, Directory|E-Book in Internet Downloadable File</td>
+</tr><tr><td>'2EAE'</td><td>= Advertising|Book|Retail Book, Directory|All E-Book Internet Distribution Formats</td>
+</tr><tr><td>'2EAF'</td><td>= Advertising|Book|Retail Book, Directory|E-Book on Recordable Media</td>
+</tr><tr><td>'2EAG'</td><td>= Advertising|Book|Retail Book, Directory|All E-Book Distribution Formats</td>
+</tr><tr><td>'2EAH'</td><td>= Advertising|Book|Textbook, All Types|E-Book in Internet Website</td>
+</tr><tr><td>'2EAJ'</td><td>= Advertising|Book|Textbook, All Types|E-Book in Internet Downloadable File</td>
+</tr><tr><td>'2EAK'</td><td>= Advertising|Book|Textbook, All Types|All E-Book Internet Distribution Formats</td>
+</tr><tr><td>'2EAL'</td><td>= Advertising|Book|Textbook, All Types|E-Book on Recordable Media</td>
+</tr><tr><td>'2EAM'</td><td>= Advertising|Book|Textbook, All Types|All E-Book Distribution Formats</td>
+</tr><tr><td>'2EAN'</td><td>= Advertising|Book|All Book Types|All E-Book Internet Distribution Formats</td>
+</tr><tr><td>'2EAP'</td><td>= Advertising|Book|All Book Types|All E-Book Distribution Formats</td>
+</tr><tr><td>'2EAQ'</td><td>= Editorial|Book|Reference Book, Encyclopedia|E-Book in Internet Website</td>
+</tr><tr><td>'2EAR'</td><td>= Advertising|Live Presentation|All Live Presentation Types|All Electronic Distribution Formats</td>
+</tr><tr><td>'2EAT'</td><td>= Products|Merchandise|Edible Media|Printed</td>
+</tr><tr><td>'2EAU'</td><td>= Editorial|Display|Poster, Educational Poster|Printed</td>
+</tr><tr><td>'2EBA'</td><td>= Editorial|Book|Textbook Ancillary Materials, Lab Manual|E-Book in Internet Downloadable File</td>
+</tr><tr><td>'2EBB'</td><td>= Editorial|Book|Textbook Ancillary Materials, Workbook|E-Book in Internet Downloadable File</td>
+</tr><tr><td>'2EBC'</td><td>= Editorial|Book|Retail Book, All Types|E-Book in Internet Downloadable File</td>
+</tr><tr><td>'2EBD'</td><td>= Editorial|Book|Textbook Ancillary Materials, Teacher&#39;s Manual|E-Book in Internet Downloadable File</td>
+</tr><tr><td>'2EBE'</td><td>= Editorial|Book|Retail Book, Children&#39;s Book|E-Book in Internet Downloadable File</td>
+</tr><tr><td>'2EBF'</td><td>= Editorial|Book|Retail Book, Concept Book|E-Book in Internet Downloadable File</td>
+</tr><tr><td>'2EBG'</td><td>= Editorial|Book|Retail Book, Directory|E-Book in Internet Downloadable File</td>
+</tr><tr><td>'2EBH'</td><td>= Editorial|Book|Retail Book, Handbook|E-Book in Internet Downloadable File</td>
+</tr><tr><td>'2EBI'</td><td>= Editorial|Book|Retail Book, Hi-lo Book|E-Book in Internet Downloadable File</td>
+</tr><tr><td>'2EBJ'</td><td>= Editorial|Book|Retail Book, Illustrated Book|E-Book in Internet Downloadable File</td>
+</tr><tr><td>'2EBK'</td><td>= Editorial|Book|All Book Types|E-Book in Internet Downloadable File</td>
+</tr><tr><td>'2EBL'</td><td>= Editorial|Book|Retail Book, Illustrated Guide|E-Book in Internet Downloadable File</td>
+</tr><tr><td>'2EBM'</td><td>= Editorial|Book|Retail Book, Manual|E-Book in Internet Downloadable File</td>
+</tr><tr><td>'2EBN'</td><td>= Editorial|Book|Retail Book, Novelty Book|E-Book in Internet Downloadable File</td>
+</tr><tr><td>'2EBP'</td><td>= Editorial|Book|Retail Book, Postcard Book|E-Book in Internet Downloadable File</td>
+</tr><tr><td>'2EBQ'</td><td>= Editorial|Book|Retail Book, Young Adult Book|E-Book in Internet Downloadable File</td>
+</tr><tr><td>'2EBR'</td><td>= Editorial|Book|Textbook, All Types|E-Book in Internet Downloadable File</td>
+</tr><tr><td>'2EBS'</td><td>= Editorial|Book|Textbook, Compendium|E-Book in Internet Downloadable File</td>
+</tr><tr><td>'2EBT'</td><td>= Editorial|Book|Textbook, Middle Reader|E-Book in Internet Downloadable File</td>
+</tr><tr><td>'2EBV'</td><td>= Editorial|Book|Textbook, Student Edition|E-Book in Internet Downloadable File</td>
+</tr><tr><td>'2EBW'</td><td>= Editorial|Book|Textbook Ancillary Materials, Teachers&#39; Edition|E-Book in Internet Downloadable File</td>
+</tr><tr><td>'2ECU'</td><td>= Advertising|Marketing Materials|Artist&#39;s Reference, All Types|All Internet Distribution Formats</td>
+</tr><tr><td>'2EDH'</td><td>= Advertising|Marketing Materials|Artist&#39;s Reference, All Types|Printed</td>
+</tr><tr><td>'2EDU'</td><td>= Advertising|Marketing Materials|CD ROM|Recordable Media</td>
+</tr><tr><td>'2EEL'</td><td>= Editorial|Book|Textbook, Compendium|Printed</td>
+</tr><tr><td>'2EFF'</td><td>= Advertising|Marketing Materials|Brochure|Internet Downloadable File</td>
+</tr><tr><td>'2EFS'</td><td>= Advertising|Marketing Materials|Brochure|Internet Email</td>
+</tr><tr><td>'2EFT'</td><td>= Advertising|Marketing Materials|Brochure|Recordable Media</td>
+</tr><tr><td>'2EFX'</td><td>= Motion Picture &amp; TV|Motion Picture|Prop|All Electronic Distribution Formats</td>
+</tr><tr><td>'2EGA'</td><td>= Editorial|Book|Textbook, All Types|E-Book in Internet Email</td>
+</tr><tr><td>'2EGB'</td><td>= Editorial|Book|Retail Book, Children&#39;s Book|E-Book in Internet Email</td>
+</tr><tr><td>'2EGC'</td><td>= Editorial|Book|Retail Book, Children&#39;s Book|All E-Book Distribution Formats</td>
+</tr><tr><td>'2EGD'</td><td>= Editorial|Book|Retail Book, Concept Book|E-Book in Internet Email</td>
+</tr><tr><td>'2EGE'</td><td>= Editorial|Book|Retail Book, Concept Book|All E-Book Distribution Formats</td>
+</tr><tr><td>'2EGG'</td><td>= Advertising|Marketing Materials|Brochure|Printed</td>
+</tr><tr><td>'2EGH'</td><td>= Editorial|Book|Retail Book, Handbook|E-Book in Internet Email</td>
+</tr><tr><td>'2EGJ'</td><td>= Editorial|Book|Retail Book, Handbook|All E-Book Distribution Formats</td>
+</tr><tr><td>'2EGK'</td><td>= Editorial|Book|Retail Book, Hi-lo Book|E-Book in Internet Email</td>
+</tr><tr><td>'2EGL'</td><td>= Editorial|Book|Retail Book, Hi-lo Book|All E-Book Distribution Formats</td>
+</tr><tr><td>'2EGM'</td><td>= Editorial|Book|Retail Book, Illustrated Book|E-Book in Internet Email</td>
+</tr><tr><td>'2EGN'</td><td>= Editorial|Book|Retail Book, Illustrated Book|All E-Book Distribution Formats</td>
+</tr><tr><td>'2EGO'</td><td>= Advertising|Marketing Materials|Coupon|Internet Downloadable File</td>
+</tr><tr><td>'2EGP'</td><td>= Editorial|Book|Retail Book, Illustrated Guide|E-Book in Internet Email</td>
+</tr><tr><td>'2EGQ'</td><td>= Editorial|Book|Retail Book, Illustrated Guide|All E-Book Distribution Formats</td>
+</tr><tr><td>'2EGR'</td><td>= Editorial|Book|Retail Book, Illustrated Guide|All E-Book Distribution Formats</td>
+</tr><tr><td>'2EGS'</td><td>= Editorial|Book|Retail Book, Manual|E-Book in Internet Email</td>
+</tr><tr><td>'2EGT'</td><td>= Editorial|Book|Retail Book, Manual|All E-Book Distribution Formats</td>
+</tr><tr><td>'2EGV'</td><td>= Editorial|Book|Retail Book, Novelty Book|E-Book in Internet Email</td>
+</tr><tr><td>'2EGW'</td><td>= Editorial|Book|Retail Book, Novelty Book|All E-Book Distribution Formats</td>
+</tr><tr><td>'2EGY'</td><td>= Editorial|Book|Retail Book, Postcard Book|E-Book in Internet Email</td>
+</tr><tr><td>'2EGZ'</td><td>= Editorial|Book|Retail Book, Postcard Book|All E-Book Distribution Formats</td>
+</tr><tr><td>'2EJA'</td><td>= Editorial|Book|All Book Types|All E-Book Distribution Formats</td>
+</tr><tr><td>'2EJB'</td><td>= Editorial|Book|Retail Book, Young Adult Book|E-Book in Internet Email</td>
+</tr><tr><td>'2EJC'</td><td>= Editorial|Book|Retail Book, Young Adult Book|All E-Book Distribution Formats</td>
+</tr><tr><td>'2EJD'</td><td>= Editorial|Book|Retail Book, All Types|E-Book in Internet Email</td>
+</tr><tr><td>'2EJE'</td><td>= Editorial|Book|Retail Book, All Types|All E-Book Distribution Formats</td>
+</tr><tr><td>'2EJF'</td><td>= Editorial|Book|Textbook, Compendium|E-Book in Internet Email</td>
+</tr><tr><td>'2EJJ'</td><td>= Editorial|Book|Textbook, Compendium|All E-Book Distribution Formats</td>
+</tr><tr><td>'2EJK'</td><td>= Editorial|Book|Textbook, Middle Reader|E-Book in Internet Email</td>
+</tr><tr><td>'2EJL'</td><td>= Editorial|Book|Textbook, Middle Reader|All E-Book Distribution Formats</td>
+</tr><tr><td>'2EJM'</td><td>= Editorial|Book|Textbook, Student Edition|E-Book in Internet Email</td>
+</tr><tr><td>'2EJN'</td><td>= Editorial|Book|Textbook, Student Edition|All E-Book Distribution Formats</td>
+</tr><tr><td>'2EJP'</td><td>= Editorial|Book|Textbook, All Types|All E-Book Distribution Formats</td>
+</tr><tr><td>'2EJQ'</td><td>= Editorial|Book|Textbook Ancillary Materials, Lab Manual|E-Book in Internet Email</td>
+</tr><tr><td>'2EJR'</td><td>= Editorial|Book|Textbook Ancillary Materials, Lab Manual|All E-Book Distribution Formats</td>
+</tr><tr><td>'2EJS'</td><td>= Editorial|Book|Textbook Ancillary Materials, Teachers&#39; Edition|E-Book in Internet Email</td>
+</tr><tr><td>'2EJT'</td><td>= Editorial|Book|Textbook Ancillary Materials, Teachers&#39; Edition|All E-Book Distribution Formats</td>
+</tr><tr><td>'2EJU'</td><td>= Editorial|Book|All Book Types|E-Book in Internet Email</td>
+</tr><tr><td>'2EJV'</td><td>= Editorial|Book|Textbook Ancillary Materials, Teacher&#39;s Manual|E-Book in Internet Email</td>
+</tr><tr><td>'2EJW'</td><td>= Editorial|Book|Textbook Ancillary Materials, Teacher&#39;s Manual|All E-Book Distribution Formats</td>
+</tr><tr><td>'2EJY'</td><td>= Editorial|Book|Textbook Ancillary Materials, Workbook|E-Book in Internet Email</td>
+</tr><tr><td>'2EJZ'</td><td>= Editorial|Book|Textbook Ancillary Materials, Workbook|All E-Book Distribution Formats</td>
+</tr><tr><td>'2EKA'</td><td>= Editorial|Book|All Book Types|All E-Book Internet Distribution Formats</td>
+</tr><tr><td>'2EKB'</td><td>= Editorial|Book|Retail Book, Children&#39;s Book|All E-Book Internet Distribution Formats</td>
+</tr><tr><td>'2EKC'</td><td>= Editorial|Book|Retail Book, Concept Book|All E-Book Internet Distribution Formats</td>
+</tr><tr><td>'2EKD'</td><td>= Editorial|Book|Retail Book, Handbook|All E-Book Internet Distribution Formats</td>
+</tr><tr><td>'2EKE'</td><td>= Editorial|Book|Retail Book, Hi-lo Book|All E-Book Internet Distribution Formats</td>
+</tr><tr><td>'2EKF'</td><td>= Editorial|Book|Retail Book, Illustrated Book|All E-Book Internet Distribution Formats</td>
+</tr><tr><td>'2EKG'</td><td>= Editorial|Book|Retail Book, Illustrated Guide|All E-Book Internet Distribution Formats</td>
+</tr><tr><td>'2EKH'</td><td>= Editorial|Book|Retail Book, Manual|All E-Book Internet Distribution Formats</td>
+</tr><tr><td>'2EKJ'</td><td>= Editorial|Book|Retail Book, Novelty Book|All E-Book Internet Distribution Formats</td>
+</tr><tr><td>'2EKK'</td><td>= Editorial|Book|Retail Book, Postcard Book|All E-Book Internet Distribution Formats</td>
+</tr><tr><td>'2EKL'</td><td>= Editorial|Book|Retail Book, Young Adult Book|All E-Book Internet Distribution Formats</td>
+</tr><tr><td>'2EKM'</td><td>= Editorial|Book|Retail Book, All Types|All E-Book Internet Distribution Formats</td>
+</tr><tr><td>'2EKN'</td><td>= Editorial|Book|Textbook, Compendium|All E-Book Internet Distribution Formats</td>
+</tr><tr><td>'2EKP'</td><td>= Editorial|Book|Textbook, Middle Reader|All E-Book Internet Distribution Formats</td>
+</tr><tr><td>'2EKQ'</td><td>= Editorial|Book|Textbook, Student Edition|All E-Book Internet Distribution Formats</td>
+</tr><tr><td>'2EKR'</td><td>= Editorial|Book|Textbook, All Types|All E-Book Internet Distribution Formats</td>
+</tr><tr><td>'2EKS'</td><td>= Editorial|Book|Textbook Ancillary Materials, Lab Manual|All E-Book Internet Distribution Formats</td>
+</tr><tr><td>'2EKT'</td><td>= Editorial|Book|Textbook Ancillary Materials, Teachers&#39; Edition|All E-Book Internet Distribution Formats</td>
+</tr><tr><td>'2EKU'</td><td>= Editorial|Book|Textbook Ancillary Materials, Teacher&#39;s Manual|All E-Book Internet Distribution Formats</td>
+</tr><tr><td>'2EKV'</td><td>= Editorial|Book|Textbook Ancillary Materials, Workbook|All E-Book Internet Distribution Formats</td>
+</tr><tr><td>'2EKW'</td><td>= Editorial|Book|Artist&#39;s Reference, All Types|All E-Book Internet Distribution Formats</td>
+</tr><tr><td>'2ELE'</td><td>= Advertising|Display|Poster, Elevator Advertising|Printed</td>
+</tr><tr><td>'2ELF'</td><td>= Advertising|Marketing Materials|Catalog|Recordable Media</td>
+</tr><tr><td>'2ELK'</td><td>= Editorial|Book|Textbook Ancillary Materials, All Ancillary Types|Printed</td>
+</tr><tr><td>'2ELL'</td><td>= Advertising|Marketing Materials|Catalog|Internet Downloadable File</td>
+</tr><tr><td>'2ELM'</td><td>= Advertising|Book|Textbook, All Types|Printed</td>
+</tr><tr><td>'2ELS'</td><td>= Advertising|Marketing Materials|Catalog|Internet Email</td>
+</tr><tr><td>'2EMA'</td><td>= Advertising|Email|All Email Types|Internet Email</td>
+</tr><tr><td>'2EMB'</td><td>= Editorial|Book|Reference Book, Encyclopedia|E-Book in Internet Downloadable File</td>
+</tr><tr><td>'2EMC'</td><td>= Editorial|Book|Reference Book, Encyclopedia|All E-Book Internet Distribution Formats</td>
+</tr><tr><td>'2EMD'</td><td>= Editorial|Book|Reference Book, Encyclopedia|E-Book on Recordable Media</td>
+</tr><tr><td>'2EMF'</td><td>= Editorial|Book|Reference Book, Telephone Book|E-Book in Internet Website</td>
+</tr><tr><td>'2EMG'</td><td>= Editorial|Book|Reference Book, Telephone Book|E-Book in Internet Downloadable File</td>
+</tr><tr><td>'2EMH'</td><td>= Editorial|Book|Reference Book, Telephone Book|All E-Book Internet Distribution Formats</td>
+</tr><tr><td>'2EMI'</td><td>= Editorial|Book|Reference Book, Telephone Book|E-Book on Recordable Media</td>
+</tr><tr><td>'2EMJ'</td><td>= Editorial|Book|Reference Book, Telephone Book|All E-Book Distribution Formats</td>
+</tr><tr><td>'2EMK'</td><td>= Editorial|Book|Reference Book, All Types|E-Book in Internet Website</td>
+</tr><tr><td>'2EML'</td><td>= Editorial|Book|Reference Book, All Types|E-Book in Internet Downloadable File</td>
+</tr><tr><td>'2EMM'</td><td>= Editorial|Book|Reference Book, All Types|All E-Book Internet Distribution Formats</td>
+</tr><tr><td>'2EMN'</td><td>= Editorial|Book|Reference Book, All Types|E-Book on Recordable Media</td>
+</tr><tr><td>'2EMP'</td><td>= Editorial|Book|Reference Book, All Types|All E-Book Distribution Formats</td>
+</tr><tr><td>'2EMQ'</td><td>= Editorial|Book|Trade Book, All Types|E-Book in Internet Downloadable File</td>
+</tr><tr><td>'2EMR'</td><td>= Editorial|Book|Trade Book, All Types|E-Book in Internet Email</td>
+</tr><tr><td>'2EMS'</td><td>= Editorial|Book|Trade Book, All Types|All E-Book Internet Distribution Formats</td>
+</tr><tr><td>'2EMT'</td><td>= Editorial|Book|Trade Book, All Types|All E-Book Distribution Formats</td>
+</tr><tr><td>'2EMU'</td><td>= Editorial|Book|Textbook, Course Pack|Printed</td>
+</tr><tr><td>'2EMV'</td><td>= Editorial|Book|Artist&#39;s Reference, All Types|All E-Book Distribution Formats</td>
+</tr><tr><td>'2END'</td><td>= Advertising|Marketing Materials|Magalog|Internet Downloadable File</td>
+</tr><tr><td>'2ENG'</td><td>= Advertising|Marketing Materials|Coupon|Internet Email</td>
+</tr><tr><td>'2ENS'</td><td>= Advertising|Marketing Materials|Coupon|Recordable Media</td>
+</tr><tr><td>'2EON'</td><td>= Advertising|Marketing Materials|Magalog|Internet Email</td>
+</tr><tr><td>'2EPA'</td><td>= Editorial|Book|All Book Types|E-Book in Internet Website</td>
+</tr><tr><td>'2EPB'</td><td>= Editorial|Book|Retail Book, All Types|E-Book in Internet Website</td>
+</tr><tr><td>'2EPC'</td><td>= Editorial|Book|Retail Book, Children&#39;s Book|E-Book in Internet Website</td>
+</tr><tr><td>'2EPD'</td><td>= Editorial|Book|Retail Book, Concept Book|E-Book in Internet Website</td>
+</tr><tr><td>'2EPE'</td><td>= Editorial|Book|Retail Book, Directory|E-Book in Internet Website</td>
+</tr><tr><td>'2EPF'</td><td>= Editorial|Book|Retail Book, Handbook|E-Book in Internet Website</td>
+</tr><tr><td>'2EPG'</td><td>= Editorial|Book|Retail Book, Hi-lo Book|E-Book in Internet Website</td>
+</tr><tr><td>'2EPH'</td><td>= Editorial|Book|Retail Book, Illustrated Book|E-Book in Internet Website</td>
+</tr><tr><td>'2EPJ'</td><td>= Editorial|Book|Retail Book, Illustrated Guide|E-Book in Internet Website</td>
+</tr><tr><td>'2EPK'</td><td>= Editorial|Book|Retail Book, Manual|E-Book in Internet Website</td>
+</tr><tr><td>'2EPL'</td><td>= Editorial|Book|Retail Book, Novelty Book|E-Book in Internet Website</td>
+</tr><tr><td>'2EPM'</td><td>= Editorial|Book|Retail Book, Postcard Book|E-Book in Internet Website</td>
+</tr><tr><td>'2EPN'</td><td>= Editorial|Book|Retail Book, Young Adult Book|E-Book in Internet Website</td>
+</tr><tr><td>'2EPP'</td><td>= Editorial|Book|Textbook, All Types|E-Book in Internet Website</td>
+</tr><tr><td>'2EPQ'</td><td>= Editorial|Book|Textbook, Compendium|E-Book in Internet Website</td>
+</tr><tr><td>'2EPR'</td><td>= Editorial|Book|Textbook, Middle Reader|E-Book in Internet Website</td>
+</tr><tr><td>'2EPS'</td><td>= Editorial|Book|Textbook, Student Edition|E-Book in Internet Website</td>
+</tr><tr><td>'2EPT'</td><td>= Editorial|Book|Textbook Ancillary Materials, Teachers&#39; Edition|E-Book in Internet Website</td>
+</tr><tr><td>'2EPV'</td><td>= Editorial|Book|Trade Book, All Types|E-Book in Internet Website</td>
+</tr><tr><td>'2EPW'</td><td>= Editorial|Book|Textbook Ancillary Materials, Teacher&#39;s Manual|E-Book in Internet Website</td>
+</tr><tr><td>'2EPY'</td><td>= Editorial|Book|Textbook Ancillary Materials, Workbook|E-Book in Internet Website</td>
+</tr><tr><td>'2EPZ'</td><td>= Editorial|Book|Textbook Ancillary Materials, Lab Manual|E-Book in Internet Website</td>
+</tr><tr><td>'2ERA'</td><td>= Editorial|Book|Trade Book, All Types|E-Book on Recordable Media</td>
+</tr><tr><td>'2ERB'</td><td>= Editorial|Book|Retail Book, Children&#39;s Book|E-Book on Recordable Media</td>
+</tr><tr><td>'2ERC'</td><td>= Editorial|Book|Retail Book, Concept Book|E-Book on Recordable Media</td>
+</tr><tr><td>'2ERD'</td><td>= Editorial|Book|Retail Book, Directory|E-Book on Recordable Media</td>
+</tr><tr><td>'2ERF'</td><td>= Editorial|Book|Retail Book, Handbook|E-Book on Recordable Media</td>
+</tr><tr><td>'2ERG'</td><td>= Editorial|Book|Retail Book, Hi-lo Book|E-Book on Recordable Media</td>
+</tr><tr><td>'2ERH'</td><td>= Editorial|Book|Retail Book, Illustrated Book|E-Book on Recordable Media</td>
+</tr><tr><td>'2ERI'</td><td>= Editorial|Book|Retail Book, Illustrated Guide|E-Book on Recordable Media</td>
+</tr><tr><td>'2ERJ'</td><td>= Editorial|Book|Retail Book, Manual|E-Book on Recordable Media</td>
+</tr><tr><td>'2ERK'</td><td>= Editorial|Book|Retail Book, Novelty Book|E-Book on Recordable Media</td>
+</tr><tr><td>'2ERL'</td><td>= Editorial|Book|Retail Book, Postcard Book|E-Book on Recordable Media</td>
+</tr><tr><td>'2ERM'</td><td>= Editorial|Book|Retail Book, Young Adult Book|E-Book on Recordable Media</td>
+</tr><tr><td>'2ERN'</td><td>= Editorial|Book|Retail Book, All Types|E-Book on Recordable Media</td>
+</tr><tr><td>'2ERP'</td><td>= Editorial|Book|Textbook, Compendium|E-Book on Recordable Media</td>
+</tr><tr><td>'2ERQ'</td><td>= Editorial|Book|Textbook, Middle Reader|E-Book on Recordable Media</td>
+</tr><tr><td>'2ERS'</td><td>= Editorial|Book|Textbook, Student Edition|E-Book on Recordable Media</td>
+</tr><tr><td>'2ERT'</td><td>= Editorial|Book|Textbook, All Types|E-Book on Recordable Media</td>
+</tr><tr><td>'2ERU'</td><td>= Editorial|Book|Textbook Ancillary Materials, Lab Manual|E-Book on Recordable Media</td>
+</tr><tr><td>'2ERV'</td><td>= Editorial|Book|Textbook Ancillary Materials, Teachers&#39; Edition|E-Book on Recordable Media</td>
+</tr><tr><td>'2ERW'</td><td>= Editorial|Book|Textbook Ancillary Materials, Teacher&#39;s Manual|E-Book on Recordable Media</td>
+</tr><tr><td>'2ERY'</td><td>= Editorial|Book|Textbook Ancillary Materials, Workbook|E-Book on Recordable Media</td>
+</tr><tr><td>'2ERZ'</td><td>= Editorial|Book|All Book Types|E-Book on Recordable Media</td>
+</tr><tr><td>'2ESS'</td><td>= Advertising|Marketing Materials|Promotional Calendar, Multi-Page|Internet Downloadable File</td>
+</tr><tr><td>'2ETA'</td><td>= Advertising|Marketing Materials|Promotional Calendar, Multi-Page|Internet Email</td>
+</tr><tr><td>'2EVE'</td><td>= Products|Product Packaging|Retail Packaging, All Packaging Types|Printed</td>
+</tr><tr><td>'2EWE'</td><td>= Advertising|Marketing Materials|Promotional Calendar, One Page|All Electronic Distribution Formats</td>
+</tr><tr><td>'2EYE'</td><td>= Advertising|Live Presentation|Panel Presentation|Projected Display</td>
+</tr><tr><td>'2FAB'</td><td>= Internal Company Use|Website|Web Page, Content Body|Recordable Media</td>
+</tr><tr><td>'2FAC'</td><td>= Internal Company Use|Website|Web Page, Content Body|All Electronic Distribution Formats</td>
+</tr><tr><td>'2FAD'</td><td>= Advertising|Display|Poster, Movie Poster|Printed</td>
+</tr><tr><td>'2FAH'</td><td>= Internal Company Use|Website|Web Page, Design Element|Intranet and Extranet Website</td>
+</tr><tr><td>'2FAI'</td><td>= Internal Company Use|Website|Web Page, Design Element|Recordable Media</td>
+</tr><tr><td>'2FAJ'</td><td>= Internal Company Use|Website|Web Page, Design Element|All Electronic Distribution Formats</td>
+</tr><tr><td>'2FAN'</td><td>= Editorial|Periodicals|Newspaper, Tabloid|Printed</td>
+</tr><tr><td>'2FAR'</td><td>= Products|Merchandise|Retail Postcard|Printed</td>
+</tr><tr><td>'2FAS'</td><td>= Advertising|Marketing Materials|Promotional Calendar, One Page|Internet Downloadable File</td>
+</tr><tr><td>'2FAT'</td><td>= Advertising|Display|Poster, All Types|Printed</td>
+</tr><tr><td>'2FAX'</td><td>= Advertising|Marketing Materials|Magalog|Recordable Media</td>
+</tr><tr><td>'2FAY'</td><td>= Advertising|Marketing Materials|Promotional Calendar, One Page|Internet Email</td>
+</tr><tr><td>'2FEA'</td><td>= Motion Picture &amp; TV|Motion Picture|Feature Film|Projected Display</td>
+</tr><tr><td>'2FEH'</td><td>= Advertising|Marketing Materials|Promotional E-card|Recordable Media</td>
+</tr><tr><td>'2FEM'</td><td>= Products|Merchandise|Textiles|Printed or Woven</td>
+</tr><tr><td>'2FEN'</td><td>= Advertising|Marketing Materials|Promotional E-card|Internet Downloadable File</td>
+</tr><tr><td>'2FER'</td><td>= Advertising|Display|Transit Advertising, Ferry Advertising|Printed</td>
+</tr><tr><td>'2FET'</td><td>= Advertising|Marketing Materials|Promotional E-card|Internet Email</td>
+</tr><tr><td>'2FEU'</td><td>= Advertising|Marketing Materials|Promotional E-card|All Internet Distribution Formats</td>
+</tr><tr><td>'2FEZ'</td><td>= Advertising|Merchandise|Apparel, General Apparel|Printed or Woven</td>
+</tr><tr><td>'2FIB'</td><td>= Products|Merchandise|Screen Saver|Internet Downloadable File</td>
+</tr><tr><td>'2FID'</td><td>= Advertising|Merchandise|Apparel, T-Shirts|Printed or Woven</td>
+</tr><tr><td>'2FIE'</td><td>= Advertising|Merchandise|Folder|Printed</td>
+</tr><tr><td>'2FIG'</td><td>= Advertising|Marketing Materials|Catalog|Printed</td>
+</tr><tr><td>'2FIL'</td><td>= Motion Picture &amp; TV|Motion Picture|Feature Film|All Electronic Distribution Formats</td>
+</tr><tr><td>'2FIN'</td><td>= Advertising|Point of Purchase|Kiosk, All Types|Printed</td>
+</tr><tr><td>'2FIR'</td><td>= Advertising|Periodicals|All Periodical Types|Recordable Media</td>
+</tr><tr><td>'2FIT'</td><td>= Motion Picture &amp; TV|Motion Picture|Short Film|All Electronic Distribution Formats</td>
+</tr><tr><td>'2FIX'</td><td>= Motion Picture &amp; TV|Motion Picture|All Motion Picture Types|Projected Display</td>
+</tr><tr><td>'2FIZ'</td><td>= Advertising|Periodicals|All Periodical Types|Internet Website</td>
+</tr><tr><td>'2FLU'</td><td>= Advertising|Periodicals|All Periodical Types|All Electronic Distribution Formats</td>
+</tr><tr><td>'2FLY'</td><td>= Advertising|Marketing Materials|Flyer|Printed</td>
+</tr><tr><td>'2FOB'</td><td>= Advertising|Periodicals|All Periodical Types|All Internet Distribution Formats</td>
+</tr><tr><td>'2FOE'</td><td>= Internal Company Use|Periodicals|Magazine, Custom Published|Internet Email</td>
+</tr><tr><td>'2FOG'</td><td>= Advertising|Display|Store Display, All Display Types|Printed</td>
+</tr><tr><td>'2FOH'</td><td>= Advertising|Periodicals|Annual Report|Internet Downloadable File</td>
+</tr><tr><td>'2FOL'</td><td>= Products|Merchandise|Folder|Printed</td>
+</tr><tr><td>'2FON'</td><td>= Advertising|Periodicals|Annual Report|Internet Website</td>
+</tr><tr><td>'2FOP'</td><td>= Advertising|Periodicals|Annual Report|Internet Email</td>
+</tr><tr><td>'2FOU'</td><td>= Advertising|Periodicals|Annual Report|All Electronic Distribution Formats</td>
+</tr><tr><td>'2FOX'</td><td>= Editorial|Book|Textbook, All Types|Printed</td>
+</tr><tr><td>'2FOY'</td><td>= Advertising|Periodicals|Annual Report|All Internet Distribution Formats</td>
+</tr><tr><td>'2FPO'</td><td>= Internal Company Use|Comp Use|All Comp Types|All Electronic Distribution Formats</td>
+</tr><tr><td>'2FRA'</td><td>= Products|Product Packaging|Picture Frame Insert|Printed</td>
+</tr><tr><td>'2FRO'</td><td>= Internal Company Use|Comp Use|All Comp Types|Printed</td>
+</tr><tr><td>'2FRY'</td><td>= Motion Picture &amp; TV|Motion Picture|Prop|Recordable Media</td>
+</tr><tr><td>'2FUB'</td><td>= Advertising|Periodicals|Belly Band|Printed</td>
+</tr><tr><td>'2FUD'</td><td>= Advertising|Periodicals|Cover Wrap|Printed</td>
+</tr><tr><td>'2FUN'</td><td>= Products|Merchandise|Playing Cards|Printed</td>
+</tr><tr><td>'2FUR'</td><td>= Advertising|Live Presentation|Sales Presentation|Projected Display</td>
+</tr><tr><td>'2GAB'</td><td>= Products|Merchandise|Game, Computer Game|Internet Downloadable File</td>
+</tr><tr><td>'2GAD'</td><td>= Products|Merchandise|Game, All Types|All Internet Distribution Formats</td>
+</tr><tr><td>'2GAE'</td><td>= Products|Merchandise|Game, Computer Game|All Internet Distribution Formats</td>
+</tr><tr><td>'2GAG'</td><td>= Products|Merchandise|Game, Computer Game|Recordable Media</td>
+</tr><tr><td>'2GAH'</td><td>= Products|Merchandise|Game, Computer Game|Internet Email</td>
+</tr><tr><td>'2GAL'</td><td>= Editorial|Display|Gallery Exhibition|Printed</td>
+</tr><tr><td>'2GAM'</td><td>= Products|Merchandise|Game, All Types|All Electronic Distribution Formats</td>
+</tr><tr><td>'2GAN'</td><td>= Products|Merchandise|Game, Computer Game|All Electronic Distribution Formats</td>
+</tr><tr><td>'2GAP'</td><td>= Products|Merchandise|Game, All Types|Printed</td>
+</tr><tr><td>'2GAR'</td><td>= Products|Merchandise|Game, All Types|Recordable Media</td>
+</tr><tr><td>'2GAS'</td><td>= Products|Merchandise|Game, All Types|Internet Email</td>
+</tr><tr><td>'2GAT'</td><td>= Products|Merchandise|Game, All Types|Internet Downloadable File</td>
+</tr><tr><td>'2GBM'</td><td>= Editorial|Book|Textbook, Course Pack|Internet Downloadable File</td>
+</tr><tr><td>'2GBN'</td><td>= Editorial|Book|Textbook, Course Pack|Internet Website</td>
+</tr><tr><td>'2GBP'</td><td>= Editorial|Book|Textbook, Course Pack|All Distribution Formats</td>
+</tr><tr><td>'2GBQ'</td><td>= Editorial|Book|Textbook, Course Pack|All Internet Distribution Formats</td>
+</tr><tr><td>'2GBW'</td><td>= Editorial|Book|Textbook Ancillary Materials, All Ancillary Types|All Distribution Formats</td>
+</tr><tr><td>'2GBY'</td><td>= Editorial|Book|Textbook Ancillary Materials, All Ancillary Types|All Internet Distribution Formats</td>
+</tr><tr><td>'2GBZ'</td><td>= Editorial|Book|Textbook Ancillary Materials, Educational Film Set|Projected Display</td>
+</tr><tr><td>'2GDJ'</td><td>= Editorial|Display|Gallery Exhibition|Electronic Display</td>
+</tr><tr><td>'2GDK'</td><td>= Editorial|Display|Museum Display|Electronic Display</td>
+</tr><tr><td>'2GDM'</td><td>= Editorial|Periodicals|Magazine, All Types|Internet Downloadable File</td>
+</tr><tr><td>'2GDP'</td><td>= Editorial|Periodicals|Magazine, All Types|Internet Website</td>
+</tr><tr><td>'2GDQ'</td><td>= Editorial|Periodicals|Magazine, All Types|Internet Email</td>
+</tr><tr><td>'2GDR'</td><td>= Editorial|Periodicals|Magazine, All Types|Recordable Media</td>
+</tr><tr><td>'2GDS'</td><td>= Editorial|Periodicals|Magazine, All Types|All Electronic Distribution Formats</td>
+</tr><tr><td>'2GDT'</td><td>= Editorial|Periodicals|Magazine, All Types|All Internet Distribution Formats</td>
+</tr><tr><td>'2GDV'</td><td>= Editorial|Periodicals|Magazine, Consumer|Recordable Media</td>
+</tr><tr><td>'2GDW'</td><td>= Editorial|Periodicals|Magazine, Consumer|Internet Website</td>
+</tr><tr><td>'2GDY'</td><td>= Editorial|Periodicals|Magazine, Consumer|Internet Downloadable File</td>
+</tr><tr><td>'2GDZ'</td><td>= Editorial|Periodicals|Magazine, Consumer|All Electronic Distribution Formats</td>
+</tr><tr><td>'2GEA'</td><td>= Editorial|Periodicals|Magazine, Consumer|All Internet Distribution Formats</td>
+</tr><tr><td>'2GEC'</td><td>= Editorial|Periodicals|Magazine, Custom Published|Recordable Media</td>
+</tr><tr><td>'2GED'</td><td>= Internal Company Use|Internal Review|All Review Types|Printed</td>
+</tr><tr><td>'2GEE'</td><td>= Editorial|Book|Textbook Ancillary Materials, Workbook|Printed</td>
+</tr><tr><td>'2GEF'</td><td>= Editorial|Periodicals|Magazine, Custom Published|Internet Website</td>
+</tr><tr><td>'2GEG'</td><td>= Editorial|Periodicals|Magazine, Custom Published|Internet Downloadable File</td>
+</tr><tr><td>'2GEH'</td><td>= Editorial|Periodicals|Magazine, Custom Published|All Electronic Distribution Formats</td>
+</tr><tr><td>'2GEI'</td><td>= Editorial|Periodicals|Magazine, Custom Published|All Internet Distribution Formats</td>
+</tr><tr><td>'2GEK'</td><td>= Editorial|Periodicals|Magazine, Education|Recordable Media</td>
+</tr><tr><td>'2GEL'</td><td>= Products|Merchandise|Screen Saver|Internet Email</td>
+</tr><tr><td>'2GEM'</td><td>= Editorial|Periodicals|Magazine, Consumer|Printed</td>
+</tr><tr><td>'2GEN'</td><td>= Advertising|Periodicals|Magazine, Consumer|Internet Downloadable File</td>
+</tr><tr><td>'2GEP'</td><td>= Editorial|Periodicals|Magazine, Education|Internet Website</td>
+</tr><tr><td>'2GEQ'</td><td>= Editorial|Periodicals|Magazine, Education|Internet Downloadable File</td>
+</tr><tr><td>'2GER'</td><td>= Editorial|Periodicals|Magazine, Education|All Electronic Distribution Formats</td>
+</tr><tr><td>'2GES'</td><td>= Editorial|Periodicals|Magazine, Education|All Internet Distribution Formats</td>
+</tr><tr><td>'2GEV'</td><td>= Editorial|Periodicals|Magazine, Partworks|Internet Website</td>
+</tr><tr><td>'2GEW'</td><td>= Editorial|Periodicals|Magazine, Partworks|Internet Downloadable File</td>
+</tr><tr><td>'2GEY'</td><td>= Advertising|Periodicals|Magazine, Consumer|All Electronic Distribution Formats</td>
+</tr><tr><td>'2GEZ'</td><td>= Editorial|Periodicals|Magazine, Partworks|Recordable Media</td>
+</tr><tr><td>'2GFA'</td><td>= Editorial|Periodicals|Magazine, Partworks|All Electronic Distribution Formats</td>
+</tr><tr><td>'2GFB'</td><td>= Editorial|Periodicals|Magazine, Partworks|All Internet Distribution Formats</td>
+</tr><tr><td>'2GFD'</td><td>= Editorial|Periodicals|Magazine, Trade|Recordable Media</td>
+</tr><tr><td>'2GFG'</td><td>= Editorial|Periodicals|Newsletter|Recordable Media</td>
+</tr><tr><td>'2GFH'</td><td>= Editorial|Periodicals|Newsletter|Internet Website</td>
+</tr><tr><td>'2GFI'</td><td>= Editorial|Periodicals|Newsletter|Internet Downloadable File</td>
+</tr><tr><td>'2GFJ'</td><td>= Editorial|Periodicals|Newsletter|All Electronic Distribution Formats</td>
+</tr><tr><td>'2GFK'</td><td>= Editorial|Periodicals|Newsletter|All Internet Distribution Formats</td>
+</tr><tr><td>'2GFM'</td><td>= Editorial|Periodicals|Newspaper, All Types|Recordable Media</td>
+</tr><tr><td>'2GFN'</td><td>= Editorial|Periodicals|Newspaper, All Types|Internet Website</td>
+</tr><tr><td>'2GFP'</td><td>= Editorial|Periodicals|Newspaper, All Types|Internet Downloadable File</td>
+</tr><tr><td>'2GFQ'</td><td>= Editorial|Periodicals|Newspaper, All Types|All Electronic Distribution Formats</td>
+</tr><tr><td>'2GFR'</td><td>= Editorial|Periodicals|Newspaper, All Types|All Internet Distribution Formats</td>
+</tr><tr><td>'2GFS'</td><td>= Editorial|Periodicals|Newspaper, Weekly Supplement|Recordable Media</td>
+</tr><tr><td>'2GFT'</td><td>= Products|Merchandise|Card, Gift Card|Printed</td>
+</tr><tr><td>'2GFU'</td><td>= Editorial|Periodicals|Newspaper, Weekly Supplement|All Electronic Distribution Formats</td>
+</tr><tr><td>'2GFV'</td><td>= Editorial|Periodicals|Newspaper, Weekly Supplement|All Internet Distribution Formats</td>
+</tr><tr><td>'2GFW'</td><td>= Editorial|Periodicals|Newspaper, Weekly Supplement|Internet Website</td>
+</tr><tr><td>'2GFY'</td><td>= Editorial|Periodicals|Newspaper, Weekly Supplement|Internet Downloadable File</td>
+</tr><tr><td>'2GGA'</td><td>= Editorial|Periodicals|Newspaper, Tabloid|Internet Downloadable File</td>
+</tr><tr><td>'2GGD'</td><td>= Editorial|Periodicals|Scholarly Journal|Recordable Media</td>
+</tr><tr><td>'2GGF'</td><td>= Editorial|Periodicals|Scholarly Journal|Internet Website</td>
+</tr><tr><td>'2GGG'</td><td>= Editorial|Periodicals|Scholarly Journal|Internet Downloadable File</td>
+</tr><tr><td>'2GGH'</td><td>= Editorial|Periodicals|Scholarly Journal|All Electronic Distribution Formats</td>
+</tr><tr><td>'2GGI'</td><td>= Editorial|Periodicals|Scholarly Journal|All Internet Distribution Formats</td>
+</tr><tr><td>'2GGM'</td><td>= Editorial|Merchandise|CD ROM|Recordable Media</td>
+</tr><tr><td>'2GHA'</td><td>= Editorial|Website|Webcast, All Types|Internet Website</td>
+</tr><tr><td>'2GHB'</td><td>= Editorial|Website|Web Page, All Types|Internet Website</td>
+</tr><tr><td>'2GHC'</td><td>= Editorial|Website|Web Page, All Types|Recordable Media</td>
+</tr><tr><td>'2GHD'</td><td>= Editorial|Website|Web Page, All Types|All Electronic Distribution Formats</td>
+</tr><tr><td>'2GHF'</td><td>= Editorial|Website|Web Page, All Types|All Internet Distribution Formats</td>
+</tr><tr><td>'2GHG'</td><td>= Editorial|Website|Web Page, Body Content|Internet Website</td>
+</tr><tr><td>'2GHH'</td><td>= Editorial|Website|Web Page, Body Content|Recordable Media</td>
+</tr><tr><td>'2GHI'</td><td>= Advertising|Periodicals|Magazine, Consumer|Recordable Media</td>
+</tr><tr><td>'2GHJ'</td><td>= Editorial|Website|Web Page, Body Content|All Electronic Distribution Formats</td>
+</tr><tr><td>'2GHK'</td><td>= Editorial|Website|Web Page, Body Content|All Internet Distribution Formats</td>
+</tr><tr><td>'2GIB'</td><td>= Advertising|Periodicals|Magazine, Consumer|All Internet Distribution Formats</td>
+</tr><tr><td>'2GID'</td><td>= Internal Company Use|Internal Review|All Review Types|All Electronic Distribution Formats</td>
+</tr><tr><td>'2GIE'</td><td>= Advertising|Periodicals|Magazine, Corporate|Internet Downloadable File</td>
+</tr><tr><td>'2GIF'</td><td>= Products|Merchandise|Gift Certificate|Printed</td>
+</tr><tr><td>'2GIG'</td><td>= Products|Merchandise|Datebook|Printed</td>
+</tr><tr><td>'2GIN'</td><td>= Advertising|Periodicals|Magazine, Corporate|Internet Website</td>
+</tr><tr><td>'2GIP'</td><td>= Advertising|Periodicals|Magazine, Corporate|Recordable Media</td>
+</tr><tr><td>'2GIT'</td><td>= Advertising|Periodicals|Magazine, Corporate|All Electronic Distribution Formats</td>
+</tr><tr><td>'2GNU'</td><td>= Advertising|Periodicals|Magazine, Corporate|All Internet Distribution Formats</td>
+</tr><tr><td>'2GOA'</td><td>= Internal Company Use|Promotional Materials|Corporate Brochure|Printed</td>
+</tr><tr><td>'2GOB'</td><td>= Advertising|Periodicals|Magazine, Advertorial|All Internet Distribution Formats</td>
+</tr><tr><td>'2GOO'</td><td>= Advertising|Periodicals|Magazine, All Types|Recordable Media</td>
+</tr><tr><td>'2GOR'</td><td>= Advertising|Periodicals|Magazine, Custom Published|Internet Website</td>
+</tr><tr><td>'2GOS'</td><td>= Advertising|Periodicals|Magazine, Custom Published|Internet Downloadable File</td>
+</tr><tr><td>'2GOX'</td><td>= Advertising|Periodicals|Magazine, Custom Published|All Internet Distribution Formats</td>
+</tr><tr><td>'2GOY'</td><td>= Internal Company Use|Art|Art Display, All Art Types|Printed</td>
+</tr><tr><td>'2GRE'</td><td>= Products|Merchandise|Card, Greeting Card|Printed</td>
+</tr><tr><td>'2GUL'</td><td>= Advertising|Periodicals|Magazine, Education|Internet Downloadable File</td>
+</tr><tr><td>'2GUM'</td><td>= Advertising|Periodicals|Magazine, Education|Internet Website</td>
+</tr><tr><td>'2GUN'</td><td>= Advertising|Point of Purchase|Kiosk, Interactive Kiosk|Electronic Display</td>
+</tr><tr><td>'2GUT'</td><td>= Advertising|Marketing Materials|Promotional Calendar, One Page|Recordable Media</td>
+</tr><tr><td>'2GUV'</td><td>= Advertising|Periodicals|Magazine, Education|Recordable Media</td>
+</tr><tr><td>'2GUY'</td><td>= Advertising|Periodicals|Magazine, Education|All Electronic Distribution Formats</td>
+</tr><tr><td>'2GYM'</td><td>= Advertising|Point of Purchase|Kiosk, Interactive Kiosk|Printed</td>
+</tr><tr><td>'2GYP'</td><td>= Advertising|Periodicals|Magazine, Education|All Internet Distribution Formats</td>
+</tr><tr><td>'2HAD'</td><td>= Advertising|Marketing Materials|Promotional Calendar, Multi-Page|Recordable Media</td>
+</tr><tr><td>'2HAE'</td><td>= Advertising|Periodicals|Magazine, Trade|Internet Downloadable File</td>
+</tr><tr><td>'2HAG'</td><td>= Advertising|Periodicals|Magazine, Trade|Internet Website</td>
+</tr><tr><td>'2HAH'</td><td>= Advertising|Periodicals|Magazine, Trade|All Electronic Distribution Formats</td>
+</tr><tr><td>'2HAJ'</td><td>= Advertising|Periodicals|Magazine, Trade|All Internet Distribution Formats</td>
+</tr><tr><td>'2HAM'</td><td>= Advertising|Marketing Materials|All Marketing Material Types|Internet Downloadable File</td>
+</tr><tr><td>'2HAN'</td><td>= Editorial|Book|Retail Book, Handbook|Printed</td>
+</tr><tr><td>'2HAO'</td><td>= Internal Company Use|Art|Art Display, All Art Types|Electronic Display</td>
+</tr><tr><td>'2HAP'</td><td>= Advertising|Periodicals|Magazine Reprints, All Types|Internet Downloadable File</td>
+</tr><tr><td>'2HAS'</td><td>= Advertising|Periodicals|Magazine Reprints, All Types|Internet Website</td>
+</tr><tr><td>'2HAT'</td><td>= Advertising|Periodicals|Magazine, Trade|Printed</td>
+</tr><tr><td>'2HAW'</td><td>= Advertising|Periodicals|Magazine Reprints, All Types|Recordable Media</td>
+</tr><tr><td>'2HAY'</td><td>= Advertising|Periodicals|Magazine Reprints, All Types|All Electronic Distribution Formats</td>
+</tr><tr><td>'2HEH'</td><td>= Advertising|Periodicals|Magazine Reprints, All Types|All Internet Distribution Formats</td>
+</tr><tr><td>'2HEM'</td><td>= Advertising|Display|Billboard, Bulletin|Printed</td>
+</tr><tr><td>'2HEN'</td><td>= Advertising|Periodicals|Newsletter, All Types|All Electronic Distribution Formats</td>
+</tr><tr><td>'2HEP'</td><td>= Advertising|Periodicals|Newsletter, All Types|Internet Downloadable File</td>
+</tr><tr><td>'2HER'</td><td>= Products|Merchandise|Card, Hero Card|Printed</td>
+</tr><tr><td>'2HES'</td><td>= Advertising|Periodicals|Newsletter, All Types|Internet Website</td>
+</tr><tr><td>'2HET'</td><td>= Advertising|Periodicals|Newsletter, All Types|Recordable Media</td>
+</tr><tr><td>'2HEW'</td><td>= Advertising|Periodicals|Newsletter, All Types|All Internet Distribution Formats</td>
+</tr><tr><td>'2HEX'</td><td>= Products|Merchandise|Screen Saver|All Electronic Distribution Formats</td>
+</tr><tr><td>'2HEY'</td><td>= Advertising|Periodicals|Newspaper, All Types|All Electronic Distribution Formats</td>
+</tr><tr><td>'2HIC'</td><td>= Advertising|Periodicals|Newspaper, All Types|All Internet Distribution Formats</td>
+</tr><tr><td>'2HID'</td><td>= Advertising|Periodicals|Newspaper, All Types|Internet Website</td>
+</tr><tr><td>'2HIE'</td><td>= Advertising|Periodicals|Newspaper, All Types|Internet Downloadable File</td>
+</tr><tr><td>'2HIL'</td><td>= Editorial|Book|Retail Book, Hi-lo Book|Printed</td>
+</tr><tr><td>'2HIM'</td><td>= Advertising|Periodicals|Newspaper, All Types|Recordable Media</td>
+</tr><tr><td>'2HIP'</td><td>= Advertising|Periodicals|Free Standing Insert, Advertorial Insert|Printed</td>
+</tr><tr><td>'2HIS'</td><td>= Advertising|Periodicals|Newspaper, Weekly Supplement|All Electronic Distribution Formats</td>
+</tr><tr><td>'2HIT'</td><td>= Motion Picture &amp; TV|Motion Picture|Prop|All Internet Distribution Formats</td>
+</tr><tr><td>'2HMM'</td><td>= Advertising|Periodicals|Newspaper, Weekly Supplement|All Internet Distribution Formats</td>
+</tr><tr><td>'2HOB'</td><td>= Advertising|Periodicals|Newspaper, Weekly Supplement|Internet Website</td>
+</tr><tr><td>'2HOD'</td><td>= Advertising|Periodicals|Newspaper, Weekly Supplement|Internet Downloadable File</td>
+</tr><tr><td>'2HOE'</td><td>= Advertising|Periodicals|Newspaper, Weekly Supplement|Recordable Media</td>
+</tr><tr><td>'2HOG'</td><td>= Advertising|Book|All Book Types|Printed</td>
+</tr><tr><td>'2HON'</td><td>= Advertising|Display|Poster, Movie Poster|Electronic Display</td>
+</tr><tr><td>'2HOP'</td><td>= Motion Picture &amp; TV|Motion Picture|Prop|Projected Display</td>
+</tr><tr><td>'2HOT'</td><td>= Advertising|Display|Terminal Advertising, Airport Display|Printed</td>
+</tr><tr><td>'2HOW'</td><td>= Advertising|Periodicals|Newspaper, Tabloid|All Electronic Distribution Formats</td>
+</tr><tr><td>'2HOY'</td><td>= Advertising|Periodicals|Newspaper, Tabloid|Internet Website</td>
+</tr><tr><td>'2HUB'</td><td>= Products|Merchandise|Double Postcard|Printed</td>
+</tr><tr><td>'2HUE'</td><td>= Advertising|Periodicals|Newspaper, Tabloid|Recordable Media</td>
+</tr><tr><td>'2HUG'</td><td>= Motion Picture &amp; TV|Motion Picture|Set Decor|Recordable Media</td>
+</tr><tr><td>'2HUH'</td><td>= Advertising|Periodicals|Newspaper, Tabloid|All Internet Distribution Formats</td>
+</tr><tr><td>'2HUM'</td><td>= Motion Picture &amp; TV|Motion Picture|Set Decor|All Electronic Distribution Formats</td>
+</tr><tr><td>'2HUP'</td><td>= Advertising|Periodicals|Quarterly Report|Internet Downloadable File</td>
+</tr><tr><td>'2HUT'</td><td>= Advertising|Periodicals|Quarterly Report|Internet Website</td>
+</tr><tr><td>'2HYP'</td><td>= Advertising|Periodicals|Quarterly Report|Recordable Media</td>
+</tr><tr><td>'2JAB'</td><td>= Motion Picture &amp; TV|Motion Picture|Set Decor|All Internet Distribution Formats</td>
+</tr><tr><td>'2JAG'</td><td>= Advertising|Periodicals|Quarterly Report|All Electronic Distribution Formats</td>
+</tr><tr><td>'2JAM'</td><td>= Advertising|Marketing Materials|All Marketing Material Types|Printed</td>
+</tr><tr><td>'2JAR'</td><td>= Advertising|Periodicals|Magazine, Corporate|Printed</td>
+</tr><tr><td>'2JAW'</td><td>= Advertising|Live Presentation|Stage Performance|Projected Display</td>
+</tr><tr><td>'2JAY'</td><td>= Advertising|Periodicals|Newsletter, All Types|Printed</td>
+</tr><tr><td>'2JEE'</td><td>= Advertising|Periodicals|Quarterly Report|All Internet Distribution Formats</td>
+</tr><tr><td>'2JET'</td><td>= Editorial|Periodicals|Newspaper, All Types|Printed</td>
+</tr><tr><td>'2JIB'</td><td>= Advertising|Marketing Materials|Public Relations, All Types|Printed</td>
+</tr><tr><td>'2JIG'</td><td>= Products|Merchandise|Jigsaw Puzzle|Printed</td>
+</tr><tr><td>'2JIL'</td><td>= Products|Merchandise|Jigsaw Puzzle|Recordable Media</td>
+</tr><tr><td>'2JIN'</td><td>= Products|Merchandise|Jigsaw Puzzle|Internet Downloadable File</td>
+</tr><tr><td>'2JOB'</td><td>= Advertising|Marketing Materials|Public Relations, Press Kit|Recordable Media</td>
+</tr><tr><td>'2JOE'</td><td>= Advertising|Marketing Materials|Public Relations, Press Kit|All Electronic Distribution Formats</td>
+</tr><tr><td>'2JOG'</td><td>= Motion Picture &amp; TV|Motion Picture|Documentary Film|Projected Display</td>
+</tr><tr><td>'2JOT'</td><td>= Motion Picture &amp; TV|Motion Picture|In Theater Commercial|Projected Display</td>
+</tr><tr><td>'2JOU'</td><td>= Advertising|Display|Terminal Advertising, Airport Display|Electronic Display</td>
+</tr><tr><td>'2JOW'</td><td>= Advertising|Marketing Materials|Public Relations, Press Kit|All Internet Distribution Formats</td>
+</tr><tr><td>'2JOY'</td><td>= Advertising|Display|Terminal Advertising, All Types|Printed</td>
+</tr><tr><td>'2JRN'</td><td>= Products|Merchandise|Journal|Printed</td>
+</tr><tr><td>'2JUG'</td><td>= Advertising|Point of Purchase|Kiosk, Telephone Kiosk|Printed</td>
+</tr><tr><td>'2JUN'</td><td>= Advertising|Marketing Materials|Public Relations, Press Kit|Internet Downloadable File</td>
+</tr><tr><td>'2JUS'</td><td>= Advertising|Marketing Materials|Public Relations, Press Kit|Internet Email</td>
+</tr><tr><td>'2JUT'</td><td>= Advertising|Marketing Materials|Public Relations, Press Kit|Internet Website</td>
+</tr><tr><td>'2JWL'</td><td>= Advertising|Website|Web Page, Web Interstitial Ad|Internet Website</td>
+</tr><tr><td>'2KAB'</td><td>= Advertising|Marketing Materials|Public Relations, Press Kit|Television Broadcast</td>
+</tr><tr><td>'2KAF'</td><td>= Advertising|Marketing Materials|Public Relations, Press Kit|Printed</td>
+</tr><tr><td>'2KAS'</td><td>= Advertising|Marketing Materials|Public Relations, Press Release|Recordable Media</td>
+</tr><tr><td>'2KAT'</td><td>= Advertising|Marketing Materials|Public Relations, Press Release|Internet Downloadable File</td>
+</tr><tr><td>'2KAY'</td><td>= Advertising|Marketing Materials|Public Relations, Press Release|Internet Email</td>
+</tr><tr><td>'2KEA'</td><td>= Advertising|Marketing Materials|Public Relations, Press Release|Internet Website</td>
+</tr><tr><td>'2KEF'</td><td>= Advertising|Marketing Materials|Public Relations, Press Release|Television Broadcast</td>
+</tr><tr><td>'2KEG'</td><td>= Advertising|Periodicals|Newspaper, Weekly Supplement|Printed</td>
+</tr><tr><td>'2KEN'</td><td>= Advertising|Periodicals|Newspaper, Tabloid|Printed</td>
+</tr><tr><td>'2KEP'</td><td>= Products|Merchandise|Souvenir|Printed</td>
+</tr><tr><td>'2KEX'</td><td>= Advertising|Marketing Materials|Public Relations, Press Release|Printed</td>
+</tr><tr><td>'2KID'</td><td>= Advertising|Marketing Materials|Public Relations, Press Release|All Electronic Distribution Formats</td>
+</tr><tr><td>'2KIN'</td><td>= Editorial|Periodicals|Magazine, Consumer|Internet Email</td>
+</tr><tr><td>'2KIO'</td><td>= Advertising|Point of Purchase|Kiosk, All Types|Electronic Display</td>
+</tr><tr><td>'2KIP'</td><td>= Advertising|Periodicals|Program Advertising|Printed</td>
+</tr><tr><td>'2KIT'</td><td>= Personal Use|Art|Art Display, All Art Types|Printed</td>
+</tr><tr><td>'2KOA'</td><td>= Motion Picture &amp; TV|Television Programming|Artist&#39;s Reference, All Types|Projected Display</td>
+</tr><tr><td>'2KOB'</td><td>= Motion Picture &amp; TV|Television Programming|Artist&#39;s Reference, All Types|Internet Downloadable File</td>
+</tr><tr><td>'2KOI'</td><td>= Motion Picture &amp; TV|Television Programming|Artist&#39;s Reference, All Types|All Internet Distribution Formats</td>
+</tr><tr><td>'2KOP'</td><td>= Motion Picture &amp; TV|Television Programming|Artist&#39;s Reference, All Types|Recordable Media</td>
+</tr><tr><td>'2KOR'</td><td>= Motion Picture &amp; TV|Television Programming|Artist&#39;s Reference, All Types|All Electronic Distribution Formats</td>
+</tr><tr><td>'2KOS'</td><td>= Motion Picture &amp; TV|Television Programming|Artist&#39;s Reference, All Types|Television Broadcast</td>
+</tr><tr><td>'2KUE'</td><td>= Advertising|Website|Web Page, All Types|All Internet Distribution Formats</td>
+</tr><tr><td>'2MAB'</td><td>= Products|Merchandise|Map|All Electronic Distribution Formats</td>
+</tr><tr><td>'2MAC'</td><td>= Advertising|Website|Web Page, All Types|Recordable Media</td>
+</tr><tr><td>'2MAD'</td><td>= Products|Merchandise|Map|Internet Downloadable File</td>
+</tr><tr><td>'2MAE'</td><td>= Advertising|Website|Web Page, All Types|All Electronic Distribution Formats</td>
+</tr><tr><td>'2MAG'</td><td>= Editorial|Periodicals|Magazine, All Types|Printed</td>
+</tr><tr><td>'2MAN'</td><td>= Editorial|Book|Retail Book, Manual|Printed</td>
+</tr><tr><td>'2MAP'</td><td>= Products|Merchandise|Map|Printed</td>
+</tr><tr><td>'2MAR'</td><td>= Advertising|Website|Web Page, Design Element|Internet Website</td>
+</tr><tr><td>'2MAS'</td><td>= Advertising|Website|Web Page, Design Element|Recordable Media</td>
+</tr><tr><td>'2MAT'</td><td>= Products|Merchandise|Placemat|Printed</td>
+</tr><tr><td>'2MAW'</td><td>= Advertising|Website|Web Page, Design Element|All Electronic Distribution Formats</td>
+</tr><tr><td>'2MAX'</td><td>= Advertising|Website|Web Page, Design Element|All Internet Distribution Formats</td>
+</tr><tr><td>'2MAY'</td><td>= Editorial|Periodicals|Magazine, Education|Printed</td>
+</tr><tr><td>'2MCH'</td><td>= Products|Merchandise|Other Merchandise|Printed</td>
+</tr><tr><td>'2MED'</td><td>= Advertising|Website|Web Page, Web Banner Ad|Internet Website</td>
+</tr><tr><td>'2MEG'</td><td>= Advertising|Website|Web Page, Web Banner Ad|Recordable Media</td>
+</tr><tr><td>'2MEL'</td><td>= Editorial|Periodicals|Magazine, Partworks|Printed</td>
+</tr><tr><td>'2MEM'</td><td>= Advertising|Website|Web Page, Web Banner Ad|All Electronic Distribution Formats</td>
+</tr><tr><td>'2MEN'</td><td>= Advertising|Point of Purchase|Menu|Printed</td>
+</tr><tr><td>'2MER'</td><td>= Products|Merchandise|All Merchandise Types|Printed</td>
+</tr><tr><td>'2MET'</td><td>= Products|Merchandise|Map|Internet Email</td>
+</tr><tr><td>'2MEW'</td><td>= Advertising|Website|Web Page, Web Banner Ad|All Internet Distribution Formats</td>
+</tr><tr><td>'2MIB'</td><td>= Advertising|Website|Web Page, Web Interstitial Ad|Recordable Media</td>
+</tr><tr><td>'2MID'</td><td>= Advertising|Website|Web Page, Web Interstitial Ad|All Electronic Distribution Formats</td>
+</tr><tr><td>'2MIG'</td><td>= Advertising|Website|Web Page, Web Interstitial Ad|All Internet Distribution Formats</td>
+</tr><tr><td>'2MIL'</td><td>= Advertising|Website|Webcast, All Types|Internet Website</td>
+</tr><tr><td>'2MIM'</td><td>= Products|Merchandise|Map|All Internet Distribution Formats</td>
+</tr><tr><td>'2MIR'</td><td>= Products|Merchandise|Map|Recordable Media</td>
+</tr><tr><td>'2MIX'</td><td>= Motion Picture &amp; TV|Motion Picture|Artist&#39;s Reference, All Types|Recordable Media</td>
+</tr><tr><td>'2MMA'</td><td>= Advertising|Marketing Materials|Bill Insert|Printed</td>
+</tr><tr><td>'2MMB'</td><td>= Advertising|Marketing Materials|Blow In Card|Printed</td>
+</tr><tr><td>'2MMC'</td><td>= Advertising|Marketing Materials|Bound-in Insert|Printed</td>
+</tr><tr><td>'2MMD'</td><td>= Advertising|Marketing Materials|Broadside|Printed</td>
+</tr><tr><td>'2MME'</td><td>= Advertising|Marketing Materials|Buckslip|Printed</td>
+</tr><tr><td>'2MMF'</td><td>= Advertising|Marketing Materials|Business Card|Printed</td>
+</tr><tr><td>'2MMG'</td><td>= Advertising|Marketing Materials|Business Envelope|Printed</td>
+</tr><tr><td>'2MMI'</td><td>= Advertising|Marketing Materials|Business Invitation|Printed</td>
+</tr><tr><td>'2MMJ'</td><td>= Advertising|Marketing Materials|Business Reply Card|Printed</td>
+</tr><tr><td>'2MMK'</td><td>= Advertising|Marketing Materials|Business Reply Envelope|Printed</td>
+</tr><tr><td>'2MML'</td><td>= Advertising|Marketing Materials|Business Stationery|Printed</td>
+</tr><tr><td>'2MMM'</td><td>= Advertising|Marketing Materials|Compliment Slip|Printed</td>
+</tr><tr><td>'2MMN'</td><td>= Advertising|Marketing Materials|Coupon|Printed</td>
+</tr><tr><td>'2MMP'</td><td>= Advertising|Marketing Materials|Coupon Packs|Printed</td>
+</tr><tr><td>'2MMQ'</td><td>= Advertising|Marketing Materials|Flyaway Card|Printed</td>
+</tr><tr><td>'2MMR'</td><td>= Advertising|Marketing Materials|Leaflet|Printed</td>
+</tr><tr><td>'2MMS'</td><td>= Advertising|Marketing Materials|Magalog|Printed</td>
+</tr><tr><td>'2MMT'</td><td>= Advertising|Marketing Materials|One Sheet|Printed</td>
+</tr><tr><td>'2MMU'</td><td>= Advertising|Marketing Materials|Onsert|Printed</td>
+</tr><tr><td>'2MMV'</td><td>= Advertising|Marketing Materials|Polybag|Printed</td>
+</tr><tr><td>'2MMW'</td><td>= Advertising|Marketing Materials|Promotional Calendar, One Page|Printed</td>
+</tr><tr><td>'2MMX'</td><td>= Advertising|Marketing Materials|Promotional Envelope|Printed</td>
+</tr><tr><td>'2MMY'</td><td>= Advertising|Marketing Materials|Sales Kit|Printed</td>
+</tr><tr><td>'2MMZ'</td><td>= Advertising|Marketing Materials|Self Mailer|Printed</td>
+</tr><tr><td>'2MOB'</td><td>= Advertising|Display|Store Display, In-Store Poster|Printed</td>
+</tr><tr><td>'2MOG'</td><td>= Editorial|Book|All Book Types|Printed</td>
+</tr><tr><td>'2MOM'</td><td>= Editorial|Periodicals|Magazine, Trade|Printed</td>
+</tr><tr><td>'2MOO'</td><td>= Advertising|Periodicals|Magazine, All Types|Printed</td>
+</tr><tr><td>'2MOP'</td><td>= Editorial|Periodicals|Magazine, Custom Published|Printed</td>
+</tr><tr><td>'2MOR'</td><td>= Editorial|Book|Artist&#39;s Reference, All Types|Printed</td>
+</tr><tr><td>'2MOU'</td><td>= Products|Merchandise|Mouse Pad|Printed</td>
+</tr><tr><td>'2MOV'</td><td>= Motion Picture &amp; TV|Motion Picture|All Motion Picture Types|Recordable Media</td>
+</tr><tr><td>'2MOW'</td><td>= Editorial|Periodicals|Magazine, Trade|Internet Website</td>
+</tr><tr><td>'2MPA'</td><td>= Motion Picture &amp; TV|Motion Picture|All Motion Picture Types|Television Broadcast</td>
+</tr><tr><td>'2MPB'</td><td>= Motion Picture &amp; TV|Music Video|All Music Video Types|Television Broadcast</td>
+</tr><tr><td>'2MPC'</td><td>= Motion Picture &amp; TV|Motion Picture|Artist&#39;s Reference, All Types|Television Broadcast</td>
+</tr><tr><td>'2MPD'</td><td>= Motion Picture &amp; TV|Motion Picture|Documentary Film|Television Broadcast</td>
+</tr><tr><td>'2MPE'</td><td>= Motion Picture &amp; TV|Motion Picture|Feature Film|Television Broadcast</td>
+</tr><tr><td>'2MPF'</td><td>= Motion Picture &amp; TV|Motion Picture|Movie Trailer|Television Broadcast</td>
+</tr><tr><td>'2MPG'</td><td>= Motion Picture &amp; TV|Motion Picture|Prop|Television Broadcast</td>
+</tr><tr><td>'2MPH'</td><td>= Motion Picture &amp; TV|Motion Picture|Set Decor|Television Broadcast</td>
+</tr><tr><td>'2MPI'</td><td>= Motion Picture &amp; TV|Motion Picture|Short Film|Television Broadcast</td>
+</tr><tr><td>'2MPJ'</td><td>= Motion Picture &amp; TV|Motion Picture|All Motion Picture Types|Internet Downloadable File</td>
+</tr><tr><td>'2MPK'</td><td>= Motion Picture &amp; TV|Music Video|All Music Video Types|Internet Downloadable File</td>
+</tr><tr><td>'2MPL'</td><td>= Motion Picture &amp; TV|Motion Picture|Artist&#39;s Reference, All Types|Internet Downloadable File</td>
+</tr><tr><td>'2MPM'</td><td>= Motion Picture &amp; TV|Motion Picture|Documentary Film|Internet Downloadable File</td>
+</tr><tr><td>'2MPN'</td><td>= Motion Picture &amp; TV|Motion Picture|Feature Film|Internet Downloadable File</td>
+</tr><tr><td>'2MPP'</td><td>= Motion Picture &amp; TV|Motion Picture|Movie Trailer|Internet Downloadable File</td>
+</tr><tr><td>'2MPQ'</td><td>= Motion Picture &amp; TV|Motion Picture|Prop|Internet Downloadable File</td>
+</tr><tr><td>'2MPR'</td><td>= Motion Picture &amp; TV|Motion Picture|Set Decor|Internet Downloadable File</td>
+</tr><tr><td>'2MPS'</td><td>= Motion Picture &amp; TV|Motion Picture|Short Film|Internet Downloadable File</td>
+</tr><tr><td>'2MRP'</td><td>= Products|Merchandise|Plates|Printed</td>
+</tr><tr><td>'2MUG'</td><td>= Products|Merchandise|Mugs|Printed</td>
+</tr><tr><td>'2MUS'</td><td>= Editorial|Display|Museum Display|Printed</td>
+</tr><tr><td>'2MUT'</td><td>= Editorial|Periodicals|Magazine, Trade|Internet Downloadable File</td>
+</tr><tr><td>'2NAB'</td><td>= Editorial|Periodicals|Magazine, Trade|Internet Email</td>
+</tr><tr><td>'2NAG'</td><td>= Editorial|Periodicals|Magazine, Trade|All Internet Distribution Formats</td>
+</tr><tr><td>'2NAH'</td><td>= Editorial|Book|Reference Book, Encyclopedia|All Electronic Distribution Formats</td>
+</tr><tr><td>'2NAP'</td><td>= Motion Picture &amp; TV|Motion Picture|Artist&#39;s Reference, All Types|All Electronic Distribution Formats</td>
+</tr><tr><td>'2NAY'</td><td>= Editorial|Book|Reference Book, Encyclopedia|Printed</td>
+</tr><tr><td>'2NEL'</td><td>= Editorial|Periodicals|Newsletter|Internet Email</td>
+</tr><tr><td>'2NET'</td><td>= Internal Company Use|Website|Web Page, All Types|Intranet and Extranet Website</td>
+</tr><tr><td>'2NEW'</td><td>= Advertising|Periodicals|Newspaper, All Types|Printed</td>
+</tr><tr><td>'2NIP'</td><td>= Editorial|Book|Reference Book, Telephone Book|Printed</td>
+</tr><tr><td>'2NOB'</td><td>= Editorial|Periodicals|Magazine, Trade|All Electronic Distribution Formats</td>
+</tr><tr><td>'2NOD'</td><td>= Motion Picture &amp; TV|Motion Picture|Artist&#39;s Reference, All Types|All Internet Distribution Formats</td>
+</tr><tr><td>'2NOV'</td><td>= Products|Merchandise|Novelty Products|Printed</td>
+</tr><tr><td>'2NOW'</td><td>= Editorial|Periodicals|Magazine, Education|Internet Email</td>
+</tr><tr><td>'2NUN'</td><td>= Editorial|Periodicals|Magazine, Custom Published|Internet Email</td>
+</tr><tr><td>'2NUT'</td><td>= Advertising|Marketing Materials|Promotional Postcard|Printed</td>
+</tr><tr><td>'2TAB'</td><td>= Editorial|Periodicals|Magazine, Partworks|Internet Email</td>
+</tr><tr><td>'2TAD'</td><td>= Editorial|Periodicals|Scholarly Journal|Internet Email</td>
+</tr><tr><td>'2TAE'</td><td>= Editorial|Book|Retail Book, Coffee Table Book|Printed</td>
+</tr><tr><td>'2TAG'</td><td>= Advertising|Point of Purchase|Hang Tag|Printed</td>
+</tr><tr><td>'2TAJ'</td><td>= Editorial|Periodicals|Newspaper, All Types|Internet Email</td>
+</tr><tr><td>'2TAL'</td><td>= Advertising|Point of Purchase|Shelf Talker|Printed</td>
+</tr><tr><td>'2TAN'</td><td>= Advertising|Display|Terminal Advertising, Shelter Advertising|Printed</td>
+</tr><tr><td>'2TAO'</td><td>= Editorial|Periodicals|Newspaper, Weekly Supplement|Internet Email</td>
+</tr><tr><td>'2TAP'</td><td>= Motion Picture &amp; TV|Motion Picture|Artist&#39;s Reference, All Types|Projected Display</td>
+</tr><tr><td>'2TAT'</td><td>= Personal Use|Art|Artist&#39;s Reference, Tattoo|Printed</td>
+</tr><tr><td>'2TAV'</td><td>= Editorial|Book|Retail Book, Concept Book|Printed</td>
+</tr><tr><td>'2TAX'</td><td>= Advertising|Display|Transit Advertising, Taxi Advertising|Printed</td>
+</tr><tr><td>'2TEA'</td><td>= Motion Picture &amp; TV|Television Programming|All Television Advertising Types|Internet Downloadable File</td>
+</tr><tr><td>'2TEB'</td><td>= Motion Picture &amp; TV|Television Programming|Commercial|Internet Downloadable File</td>
+</tr><tr><td>'2TEC'</td><td>= Motion Picture &amp; TV|Television Programming|Commercial|All Internet Distribution Formats</td>
+</tr><tr><td>'2TED'</td><td>= Motion Picture &amp; TV|Television Programming|All Television Advertising Types|Recordable Media</td>
+</tr><tr><td>'2TEE'</td><td>= Motion Picture &amp; TV|Television Programming|All Editorial Television Types|Television Broadcast</td>
+</tr><tr><td>'2TEF'</td><td>= Motion Picture &amp; TV|Television Programming|News Program, Flash|Television Broadcast</td>
+</tr><tr><td>'2TEG'</td><td>= Motion Picture &amp; TV|Television Programming|Commercial|Recordable Media</td>
+</tr><tr><td>'2TEH'</td><td>= Motion Picture &amp; TV|Television Programming|Infomercial|Internet Downloadable File</td>
+</tr><tr><td>'2TEJ'</td><td>= Motion Picture &amp; TV|Television Programming|Infomercial|All Internet Distribution Formats</td>
+</tr><tr><td>'2TEK'</td><td>= Motion Picture &amp; TV|Television Programming|Infomercial|Recordable Media</td>
+</tr><tr><td>'2TEL'</td><td>= Motion Picture &amp; TV|Television Programming|On-Air Promotion|Internet Downloadable File</td>
+</tr><tr><td>'2TEM'</td><td>= Motion Picture &amp; TV|Television Programming|On-Air Promotion|All Internet Distribution Formats</td>
+</tr><tr><td>'2TEP'</td><td>= Motion Picture &amp; TV|Television Programming|On-Air Promotion|Recordable Media</td>
+</tr><tr><td>'2TEQ'</td><td>= Motion Picture &amp; TV|Television Programming|All Television Advertising Types|All Internet Distribution Formats</td>
+</tr><tr><td>'2TER'</td><td>= Motion Picture &amp; TV|Television Programming|Documentary Program|Internet Downloadable File</td>
+</tr><tr><td>'2TES'</td><td>= Motion Picture &amp; TV|Television Programming|Documentary Program|All Internet Distribution Formats</td>
+</tr><tr><td>'2TET'</td><td>= Motion Picture &amp; TV|Television Programming|Documentary Program|Recordable Media</td>
+</tr><tr><td>'2TEU'</td><td>= Motion Picture &amp; TV|Television Programming|Educational Program|Internet Downloadable File</td>
+</tr><tr><td>'2TEV'</td><td>= Motion Picture &amp; TV|Television Programming|Educational Program|All Internet Distribution Formats</td>
+</tr><tr><td>'2TEW'</td><td>= Motion Picture &amp; TV|Television Programming|Educational Program|Recordable Media</td>
+</tr><tr><td>'2TEX'</td><td>= Editorial|Periodicals|Newspaper, Tabloid|Internet Website</td>
+</tr><tr><td>'2TEY'</td><td>= Motion Picture &amp; TV|Television Programming|Entertainment Program|Internet Downloadable File</td>
+</tr><tr><td>'2TEZ'</td><td>= Motion Picture &amp; TV|Television Programming|Entertainment Program|All Internet Distribution Formats</td>
+</tr><tr><td>'2TIC'</td><td>= Products|Merchandise|Sticker|Printed</td>
+</tr><tr><td>'2TIE'</td><td>= Editorial|Periodicals|Newspaper, Tabloid|Recordable Media</td>
+</tr><tr><td>'2TIN'</td><td>= Advertising|Point of Purchase|Slip Case|Printed</td>
+</tr><tr><td>'2TIP'</td><td>= Editorial|Periodicals|Newspaper, Tabloid|Internet Email</td>
+</tr><tr><td>'2TKT'</td><td>= Products|Merchandise|Ticket|Printed</td>
+</tr><tr><td>'2TLA'</td><td>= Motion Picture &amp; TV|Television Programming|Entertainment Program|Recordable Media</td>
+</tr><tr><td>'2TLB'</td><td>= Motion Picture &amp; TV|Television Programming|Made For TV Movie|All Internet Distribution Formats</td>
+</tr><tr><td>'2TLC'</td><td>= Motion Picture &amp; TV|Television Programming|Made For TV Movie|Internet Downloadable File</td>
+</tr><tr><td>'2TLD'</td><td>= Motion Picture &amp; TV|Television Programming|Made For TV Movie|Recordable Media</td>
+</tr><tr><td>'2TLE'</td><td>= Motion Picture &amp; TV|Television Programming|News Program|Internet Downloadable File</td>
+</tr><tr><td>'2TLF'</td><td>= Motion Picture &amp; TV|Television Programming|News Program|All Internet Distribution Formats</td>
+</tr><tr><td>'2TLG'</td><td>= Motion Picture &amp; TV|Television Programming|News Program|Recordable Media</td>
+</tr><tr><td>'2TLH'</td><td>= Motion Picture &amp; TV|Television Programming|Non Broadcast Pilot|Recordable Media</td>
+</tr><tr><td>'2TLJ'</td><td>= Motion Picture &amp; TV|Television Programming|Non Broadcast Pilot|Projected Display</td>
+</tr><tr><td>'2TLK'</td><td>= Motion Picture &amp; TV|Television Programming|Non-Profit Program|Internet Downloadable File</td>
+</tr><tr><td>'2TLL'</td><td>= Motion Picture &amp; TV|Television Programming|Non-Profit Program|All Internet Distribution Formats</td>
+</tr><tr><td>'2TLM'</td><td>= Motion Picture &amp; TV|Television Programming|Non-Profit Program|Recordable Media</td>
+</tr><tr><td>'2TLN'</td><td>= Motion Picture &amp; TV|Television Programming|Prop|Internet Downloadable File</td>
+</tr><tr><td>'2TLP'</td><td>= Motion Picture &amp; TV|Television Programming|Prop|All Internet Distribution Formats</td>
+</tr><tr><td>'2TLQ'</td><td>= Motion Picture &amp; TV|Television Programming|Prop|Recordable Media</td>
+</tr><tr><td>'2TLR'</td><td>= Motion Picture &amp; TV|Television Programming|Prop|Television Broadcast</td>
+</tr><tr><td>'2TLS'</td><td>= Motion Picture &amp; TV|Television Programming|Set Decor|Internet Downloadable File</td>
+</tr><tr><td>'2TLT'</td><td>= Motion Picture &amp; TV|Television Programming|Set Decor|All Internet Distribution Formats</td>
+</tr><tr><td>'2TLU'</td><td>= Motion Picture &amp; TV|Television Programming|Set Decor|Recordable Media</td>
+</tr><tr><td>'2TLV'</td><td>= Motion Picture &amp; TV|Television Programming|Set Decor|Television Broadcast</td>
+</tr><tr><td>'2TLW'</td><td>= Motion Picture &amp; TV|Television Programming|All Editorial Television Types|Internet Downloadable File</td>
+</tr><tr><td>'2TLY'</td><td>= Motion Picture &amp; TV|Television Programming|All Editorial Television Types|All Internet Distribution Formats</td>
+</tr><tr><td>'2TLZ'</td><td>= Motion Picture &amp; TV|Television Programming|All Editorial Television Types|Recordable Media</td>
+</tr><tr><td>'2TOD'</td><td>= Products|Merchandise|Screen Saver|All Internet Distribution Formats</td>
+</tr><tr><td>'2TOE'</td><td>= Advertising|Live Presentation|Trade Show Presentation|Projected Display</td>
+</tr><tr><td>'2TOM'</td><td>= Editorial|Periodicals|Newsletter|Printed</td>
+</tr><tr><td>'2TON'</td><td>= Editorial|Periodicals|Newspaper, Tabloid|All Internet Distribution Formats</td>
+</tr><tr><td>'2TOP'</td><td>= Products|Merchandise|Poster, Retail Poster|Printed</td>
+</tr><tr><td>'2TOT'</td><td>= Editorial|Periodicals|Newspaper, Tabloid|All Electronic Distribution Formats</td>
+</tr><tr><td>'2TOY'</td><td>= Products|Merchandise|Toy|Printed</td>
+</tr><tr><td>'2TRA'</td><td>= Advertising|Display|Transit Advertising, All Types|Printed</td>
+</tr><tr><td>'2TRB'</td><td>= Advertising|Display|Transit Advertising, All Types|Electronic Display</td>
+</tr><tr><td>'2TRC'</td><td>= Advertising|Display|Transit Advertising, Bus Panel|Electronic Display</td>
+</tr><tr><td>'2TRD'</td><td>= Products|Merchandise|Trading Cards|Printed</td>
+</tr><tr><td>'2TRE'</td><td>= Advertising|Display|Transit Advertising, Bus Poster|Printed</td>
+</tr><tr><td>'2TRF'</td><td>= Advertising|Display|Transit Advertising, Bus Rear Display|Electronic Display</td>
+</tr><tr><td>'2TRG'</td><td>= Advertising|Display|Transit Advertising, Bus Rear Display|Printed</td>
+</tr><tr><td>'2TRH'</td><td>= Advertising|Display|Transit Advertising, Ferry Advertising|Electronic Display</td>
+</tr><tr><td>'2TRI'</td><td>= Advertising|Display|Transit Advertising, Subway Advertising|Electronic Display</td>
+</tr><tr><td>'2TRJ'</td><td>= Advertising|Display|Transit Advertising, Subway Advertising|Printed</td>
+</tr><tr><td>'2TRK'</td><td>= Advertising|Display|Transit Advertising, Train Advertising|Electronic Display</td>
+</tr><tr><td>'2TRL'</td><td>= Advertising|Display|Transit Advertising, Train Advertising|Printed</td>
+</tr><tr><td>'2TRM'</td><td>= Advertising|Display|Transit Advertising, Bus Wrap|Electronic Display</td>
+</tr><tr><td>'2TRN'</td><td>= Advertising|Display|Transit Advertising, Bus Wrap|Printed</td>
+</tr><tr><td>'2TRQ'</td><td>= Advertising|Display|Transit Advertising, Commercial Vehicles|Printed</td>
+</tr><tr><td>'2TRR'</td><td>= Advertising|Display|Transit Advertising, Commercial Vehicles|Electronic Display</td>
+</tr><tr><td>'2TRY'</td><td>= Motion Picture &amp; TV|Motion Picture|Documentary Film|Recordable Media</td>
+</tr><tr><td>'2TST'</td><td>= Products|Merchandise|Apparel, T-Shirts|Printed or Woven</td>
+</tr><tr><td>'2TUA'</td><td>= Products|Merchandise|Virtual Reality|Recordable Media</td>
+</tr><tr><td>'2TUB'</td><td>= Editorial|Periodicals|Newspaper, Weekly Supplement|Printed</td>
+</tr><tr><td>'2TUG'</td><td>= Motion Picture &amp; TV|Motion Picture|Documentary Film|All Internet Distribution Formats</td>
+</tr><tr><td>'2TUX'</td><td>= Internal Company Use|Periodicals|Magazine, Custom Published|Printed</td>
+</tr><tr><td>'2TVA'</td><td>= Motion Picture &amp; TV|Television Programming|All Television Advertising Types|Television Broadcast</td>
+</tr><tr><td>'2TVB'</td><td>= Motion Picture &amp; TV|Television Programming|All Television Advertising Types|All Electronic Distribution Formats</td>
+</tr><tr><td>'2TVC'</td><td>= Motion Picture &amp; TV|Television Programming|Commercial|Television Broadcast</td>
+</tr><tr><td>'2TVD'</td><td>= Motion Picture &amp; TV|Television Programming|Commercial|All Electronic Distribution Formats</td>
+</tr><tr><td>'2TVE'</td><td>= Motion Picture &amp; TV|Television Programming|Infomercial|Television Broadcast</td>
+</tr><tr><td>'2TVF'</td><td>= Motion Picture &amp; TV|Television Programming|Infomercial|All Electronic Distribution Formats</td>
+</tr><tr><td>'2TVG'</td><td>= Motion Picture &amp; TV|Television Programming|On-Air Promotion|Television Broadcast</td>
+</tr><tr><td>'2TVH'</td><td>= Motion Picture &amp; TV|Television Programming|On-Air Promotion|All Electronic Distribution Formats</td>
+</tr><tr><td>'2TVI'</td><td>= Motion Picture &amp; TV|Television Programming|Documentary Program|Television Broadcast</td>
+</tr><tr><td>'2TVJ'</td><td>= Motion Picture &amp; TV|Television Programming|Documentary Program|All Electronic Distribution Formats</td>
+</tr><tr><td>'2TVK'</td><td>= Motion Picture &amp; TV|Television Programming|Educational Program|Television Broadcast</td>
+</tr><tr><td>'2TVL'</td><td>= Motion Picture &amp; TV|Television Programming|Educational Program|All Electronic Distribution Formats</td>
+</tr><tr><td>'2TVM'</td><td>= Motion Picture &amp; TV|Television Programming|Entertainment Program|Television Broadcast</td>
+</tr><tr><td>'2TVN'</td><td>= Motion Picture &amp; TV|Television Programming|Entertainment Program|All Electronic Distribution Formats</td>
+</tr><tr><td>'2TVP'</td><td>= Motion Picture &amp; TV|Television Programming|Made For TV Movie|All Electronic Distribution Formats</td>
+</tr><tr><td>'2TVQ'</td><td>= Motion Picture &amp; TV|Television Programming|Set Decor|All Electronic Distribution Formats</td>
+</tr><tr><td>'2TVR'</td><td>= Motion Picture &amp; TV|Music Video|All Music Video Types|All Electronic Distribution Formats</td>
+</tr><tr><td>'2TVS'</td><td>= Motion Picture &amp; TV|Television Programming|News Program|Television Broadcast</td>
+</tr><tr><td>'2TVT'</td><td>= Motion Picture &amp; TV|Television Programming|News Program|All Electronic Distribution Formats</td>
+</tr><tr><td>'2TVU'</td><td>= Motion Picture &amp; TV|Television Programming|Non-Profit Program|Television Broadcast</td>
+</tr><tr><td>'2TVV'</td><td>= Motion Picture &amp; TV|Television Programming|Non-Profit Program|All Electronic Distribution Formats</td>
+</tr><tr><td>'2TVW'</td><td>= Motion Picture &amp; TV|Television Programming|Prop|All Electronic Distribution Formats</td>
+</tr><tr><td>'2TVY'</td><td>= Motion Picture &amp; TV|Television Programming|Made For TV Movie|Television Broadcast</td>
+</tr><tr><td>'2TVZ'</td><td>= Motion Picture &amp; TV|Television Programming|All Editorial Television Types|All Electronic Distribution Formats</td>
+</tr><tr><td>'2UNL'</td><td>= Unlicensed|Not Applicable|Not Applicable|Not Applicable</td>
+</tr><tr><td>'2WAB'</td><td>= Editorial|Book|Retail Book, Illustrated Book|Printed</td>
+</tr><tr><td>'2WAG'</td><td>= Motion Picture &amp; TV|Motion Picture|Feature Film|All Internet Distribution Formats</td>
+</tr><tr><td>'2WAL'</td><td>= Products|Merchandise|Wallpaper|Printed</td>
+</tr><tr><td>'2WAN'</td><td>= Internal Company Use|Website|All Website Types|Intranet and Extranet Website</td>
+</tr><tr><td>'2WAR'</td><td>= Products|Merchandise|Computer Software|All Electronic Distribution Formats</td>
+</tr><tr><td>'2WAX'</td><td>= Advertising|Point of Purchase|Table Tent|Printed</td>
+</tr><tr><td>'2WEB'</td><td>= Advertising|Website|Web Page, All Types|Internet Website</td>
+</tr><tr><td>'2WED'</td><td>= Personal Use|Personal Review|All Review Types|Printed</td>
+</tr><tr><td>'2WEE'</td><td>= Products|Merchandise|Stamp|Printed</td>
+</tr><tr><td>'2WET'</td><td>= Advertising|Display|Poster, Restroom Poster|Electronic Display</td>
+</tr><tr><td>'2WHA'</td><td>= Editorial|Book|Retail Book, Illustrated Guide|Printed</td>
+</tr><tr><td>'2WHO'</td><td>= Products|Product Packaging|Wholesale Packaging, All Packaging Types|Printed</td>
+</tr><tr><td>'2WIG'</td><td>= Editorial|Periodicals|Scholarly Journal|Printed</td>
+</tr><tr><td>'2WIN'</td><td>= Motion Picture &amp; TV|Motion Picture|Feature Film|Recordable Media</td>
+</tr><tr><td>'2WIT'</td><td>= Products|Merchandise|Stationery|Printed</td>
+</tr><tr><td>'2WIZ'</td><td>= Motion Picture &amp; TV|Motion Picture|Short Film|Projected Display</td>
+</tr><tr><td>'2WRP'</td><td>= Products|Merchandise|Gift Wrap|Printed</td>
+</tr><tr><td>'2WRY'</td><td>= Products|Merchandise|Screen Saver|Recordable Media</td>
+</tr><tr><td>'2YAK'</td><td>= Editorial|Book|Textbook Ancillary Materials, Teachers&#39; Edition|Printed</td>
+</tr><tr><td>'2YAM'</td><td>= Advertising|Marketing Materials|Promotional Calendar, Multi-Page|Printed</td>
+</tr><tr><td>'2YAP'</td><td>= Editorial|Book|Retail Book, Novelty Book|Printed</td>
+</tr><tr><td>'2YEA'</td><td>= Editorial|Book|Retail Book, Directory|All Electronic Distribution Formats</td>
+</tr><tr><td>'2YEN'</td><td>= Editorial|Book|Retail Book, Postcard Book|Printed</td>
+</tr><tr><td>'2YET'</td><td>= Editorial|Book|Textbook Ancillary Materials, Packaging For Recordable Media|Printed</td>
+</tr><tr><td>'2YOK'</td><td>= Editorial|Book|Retail Book, Young Adult Book|Printed</td>
+</tr><tr><td>'2YUM'</td><td>= Editorial|Book|Textbook Ancillary Materials, Lab Manual|Printed</td>
+</tr><tr><td>'2ZAG'</td><td>= Editorial|Mobile|All Mobile Types|Mobile</td>
+</tr><tr><td>'2ZAM'</td><td>= Products|Mobile|All Mobile Types|Mobile</td>
+</tr><tr><td>'2ZAP'</td><td>= Products|Mobile|Entertainment Programming|Mobile</td>
+</tr><tr><td>'2ZEN'</td><td>= Products|Mobile|Computer Software|Mobile</td>
+</tr><tr><td>'2ZIG'</td><td>= Products|Mobile|Wallpaper|Mobile</td>
+</tr><tr><td>'2ZIP'</td><td>= Products|Mobile|Game, All Types|Mobile</td>
+</tr><tr><td>'2ZIT'</td><td>= Personal Use|Mobile|Wallpaper|Mobile</td>
+</tr><tr><td>'2ZOA'</td><td>= Editorial|Book|Textbook, Course Pack|Recordable Media</td>
+</tr><tr><td>'2ZOB'</td><td>= Personal Use|Mobile|All Mobile Types|Mobile</td>
+</tr><tr><td>'2ZOO'</td><td>= Editorial|Book|Textbook, Course Pack|Internet Email</td>
+</tr><tr><td>'2ZOT'</td><td>= Editorial|Book|Textbook Ancillary Materials, Teacher&#39;s Manual|Printed</td>
+</tr><tr><td>'2ZUM'</td><td>= Internal Company Use|Mobile|All Mobile Types|Mobile</td>
+</tr><tr><td>'2ZUS'</td><td>= Advertising|Mobile|All Mobile Types|Mobile</td>
+</tr><tr><td>'3PAA'</td><td>= Any Placements on All Pages</td>
+</tr><tr><td>'3PNB'</td><td>= Multiple Placements on One Side</td>
+</tr><tr><td>'3PNC'</td><td>= Multiple Placements on Back Cover</td>
+</tr><tr><td>'3PND'</td><td>= Single Placement as Chapter Opener</td>
+</tr><tr><td>'3PNE'</td><td>= Single Placement on Front Side</td>
+</tr><tr><td>'3PNF'</td><td>= Single Placement on Front Cover And Back Cover</td>
+</tr><tr><td>'3PNH'</td><td>= Multiple Placements in Body Of Program</td>
+</tr><tr><td>'3PNI'</td><td>= Single Placement as Chapter Opener</td>
+</tr><tr><td>'3PNJ'</td><td>= Multiple Placements on Pop Ups</td>
+</tr><tr><td>'3PNK'</td><td>= Multiple Placements on Front Side</td>
+</tr><tr><td>'3PNL'</td><td>= Multiple Placements on Item</td>
+</tr><tr><td>'3PNM'</td><td>= Single Placement in Body Of Program</td>
+</tr><tr><td>'3PNN'</td><td>= Single Placement on Front Cover</td>
+</tr><tr><td>'3PNP'</td><td>= Single Placement on Both Sides</td>
+</tr><tr><td>'3PNQ'</td><td>= Single Placement in Content Body</td>
+</tr><tr><td>'3PNR'</td><td>= Single Placement on Back Cover</td>
+</tr><tr><td>'3PNS'</td><td>= Multiple Placements on Splash Pages</td>
+</tr><tr><td>'3PNT'</td><td>= Single Placement on Front Page</td>
+</tr><tr><td>'3PNU'</td><td>= Multiple Placements on Home Page</td>
+</tr><tr><td>'3PNV'</td><td>= Multiple Placements on Front Side</td>
+</tr><tr><td>'3PNW'</td><td>= Single Placement in Body Of Program</td>
+</tr><tr><td>'3PNX'</td><td>= Multiple Placements as Flash</td>
+</tr><tr><td>'3PNY'</td><td>= Multiple Placements on Inside Cover</td>
+</tr><tr><td>'3PNZ'</td><td>= Single Placement in Bibliography</td>
+</tr><tr><td>'3PPA'</td><td>= Single Placement on Dust Jacket</td>
+</tr><tr><td>'3PPB'</td><td>= Single Placement in Closing Sequence</td>
+</tr><tr><td>'3PPC'</td><td>= Multiple Placements in Packaging Interior</td>
+</tr><tr><td>'3PPD'</td><td>= Single Placement in Packaging Interior</td>
+</tr><tr><td>'3PPE'</td><td>= Single Placement as Flash</td>
+</tr><tr><td>'3PPF'</td><td>= Multiple Placements on Front Cover</td>
+</tr><tr><td>'3PPG'</td><td>= Single Placement on Splash Page</td>
+</tr><tr><td>'3PPH'</td><td>= Single Placement on Inside</td>
+</tr><tr><td>'3PPI'</td><td>= Multiple Placements on Landing Pages</td>
+</tr><tr><td>'3PPJ'</td><td>= Multiple Placements in Body Of Advertisement</td>
+</tr><tr><td>'3PPK'</td><td>= Single Placement on Inside Cover</td>
+</tr><tr><td>'3PPL'</td><td>= Single Placement on Both Sides</td>
+</tr><tr><td>'3PPM'</td><td>= Multiple Placements on Any Pages</td>
+</tr><tr><td>'3PPN'</td><td>= Multiple Placements in Closing Sequence</td>
+</tr><tr><td>'3PPP'</td><td>= Multiple Placements on Front Cover And Interior Pages</td>
+</tr><tr><td>'3PPQ'</td><td>= Multiple Placements on Home Page And Secondary Pages</td>
+</tr><tr><td>'3PPR'</td><td>= Single Placement in Any Part</td>
+</tr><tr><td>'3PPS'</td><td>= Single Placement on Landing Page</td>
+</tr><tr><td>'3PPU'</td><td>= Single Placement on Title Page</td>
+</tr><tr><td>'3PPV'</td><td>= Multiple Placements on Front Cover</td>
+</tr><tr><td>'3PPW'</td><td>= Single Placement as Forward</td>
+</tr><tr><td>'3PPX'</td><td>= Single Placement on Packaging Exterior|Front</td>
+</tr><tr><td>'3PPY'</td><td>= Single Placement on Home Page</td>
+</tr><tr><td>'3PPZ'</td><td>= Multiple Placements in Body Of Program</td>
+</tr><tr><td>'3PQA'</td><td>= Single Placement as Frontispiece</td>
+</tr><tr><td>'3PQB'</td><td>= Multiple Placements on Wrap Around Cover</td>
+</tr><tr><td>'3PQC'</td><td>= Single Placement on Back Side</td>
+</tr><tr><td>'3PQD'</td><td>= Single Placement on Secondary Page</td>
+</tr><tr><td>'3PQE'</td><td>= Single Placement on Spine</td>
+</tr><tr><td>'3PQF'</td><td>= Single Placements in Bibliography</td>
+</tr><tr><td>'3PQG'</td><td>= Single Placement on Any Interior Page</td>
+</tr><tr><td>'3PQH'</td><td>= Single Placement on Back Cover</td>
+</tr><tr><td>'3PQI'</td><td>= Single Placement on Preface</td>
+</tr><tr><td>'3PQJ'</td><td>= Single Placement on Wrap Around Cover</td>
+</tr><tr><td>'3PQK'</td><td>= Multiple Placements on Both Sides</td>
+</tr><tr><td>'3PQL'</td><td>= Multiple Placements in Closing Sequence</td>
+</tr><tr><td>'3PQM'</td><td>= Multiple Placements on Back Side</td>
+</tr><tr><td>'3PQN'</td><td>= Single Placement as Vignette</td>
+</tr><tr><td>'3PQP'</td><td>= Single Placement on Pop Up</td>
+</tr><tr><td>'3PQQ'</td><td>= Single Placement as Unit Opener</td>
+</tr><tr><td>'3PQS'</td><td>= Multiple Placements on Back Cover</td>
+</tr><tr><td>'3PQT'</td><td>= Single Placement on Table Of Contents</td>
+</tr><tr><td>'3PQU'</td><td>= Single Placement in Closing Sequence</td>
+</tr><tr><td>'3PQW'</td><td>= Multiple Placements on Any Interior Pages</td>
+</tr><tr><td>'3PQX'</td><td>= Single Placement on Any Interior Page</td>
+</tr><tr><td>'3PQY'</td><td>= Single Placement on Front Cover</td>
+</tr><tr><td>'3PQZ'</td><td>= Single Placement on Index</td>
+</tr><tr><td>'3PRB'</td><td>= Single Placement on Front Cover</td>
+</tr><tr><td>'3PRC'</td><td>= Single Placement on Table Of Contents</td>
+</tr><tr><td>'3PRD'</td><td>= Multiple Placements in Content Body</td>
+</tr><tr><td>'3PRF'</td><td>= Multiple Placements on Any Interior Pages</td>
+</tr><tr><td>'3PRG'</td><td>= Multiple Placements on Front Cover And Back Cover</td>
+</tr><tr><td>'3PRH'</td><td>= Single Placement on Any Interior Page</td>
+</tr><tr><td>'3PRI'</td><td>= Single Placement as Colophon</td>
+</tr><tr><td>'3PRJ'</td><td>= Multiple Placements on Front Cover</td>
+</tr><tr><td>'3PRK'</td><td>= Multiple Placements on Inside</td>
+</tr><tr><td>'3PRL'</td><td>= Multiple Placements on Any Interior Pages</td>
+</tr><tr><td>'3PRM'</td><td>= Single Placement on Front Cover And Back Cover</td>
+</tr><tr><td>'3PRN'</td><td>= Single Placement on Any Interior Page</td>
+</tr><tr><td>'3PRP'</td><td>= Single Placement in Body Of Advertisement</td>
+</tr><tr><td>'3PRQ'</td><td>= Single Placement on Screen</td>
+</tr><tr><td>'3PRR'</td><td>= Single Placement in Title Sequence</td>
+</tr><tr><td>'3PRS'</td><td>= Single Placement in Content Body</td>
+</tr><tr><td>'3PRT'</td><td>= Single Placement on Pop Up</td>
+</tr><tr><td>'3PRU'</td><td>= Single Placement on Front Side</td>
+</tr><tr><td>'3PRV'</td><td>= Multiple Placements on Both Sides</td>
+</tr><tr><td>'3PRW'</td><td>= Multiple Placements in Any Part</td>
+</tr><tr><td>'3PRY'</td><td>= Multiple Placements in Content Body</td>
+</tr><tr><td>'3PRZ'</td><td>= Multiple Placements on Front Cover</td>
+</tr><tr><td>'3PSA'</td><td>= Single Placement as Front Matter</td>
+</tr><tr><td>'3PSB'</td><td>= Multiple Placements on Back Side</td>
+</tr><tr><td>'3PSC'</td><td>= Single Placement in Title Sequence</td>
+</tr><tr><td>'3PSD'</td><td>= Multiple Placements on Screen</td>
+</tr><tr><td>'3PSF'</td><td>= Multiple Placements on Back Cover</td>
+</tr><tr><td>'3PSH'</td><td>= Single Placement on Back Cover</td>
+</tr><tr><td>'3PSI'</td><td>= Multiple Placements on Packaging Exterior|Front</td>
+</tr><tr><td>'3PSJ'</td><td>= Single Placement on Front Cover</td>
+</tr><tr><td>'3PSK'</td><td>= Multiple Placements in Title Sequence</td>
+</tr><tr><td>'3PSL'</td><td>= Single Placement on Flap</td>
+</tr><tr><td>'3PSM'</td><td>= Multiple Placements on Any Interior Pages</td>
+</tr><tr><td>'3PSN'</td><td>= Multiple Placements on Back Cover</td>
+</tr><tr><td>'3PSP'</td><td>= Single Placement on Back Cover</td>
+</tr><tr><td>'3PSQ'</td><td>= Single Placement on Back Side</td>
+</tr><tr><td>'3PSR'</td><td>= Single Placement on Inside Cover</td>
+</tr><tr><td>'3PSS'</td><td>= Multiple Placements on Front Cover And Back Cover</td>
+</tr><tr><td>'3PST'</td><td>= Single Placement on Any Interior Page</td>
+</tr><tr><td>'3PSU'</td><td>= Multiple Placements on Inside Cover</td>
+</tr><tr><td>'3PSV'</td><td>= Multiple Placements in Title Sequence</td>
+</tr><tr><td>'3PSW'</td><td>= Single Placement on Item</td>
+</tr><tr><td>'3PSY'</td><td>= Multiple Placements on Any Interior Pages</td>
+</tr><tr><td>'3PSZ'</td><td>= Multiple Placements on Secondary Pages</td>
+</tr><tr><td>'3PTA'</td><td>= Single Placement on One Side</td>
+</tr><tr><td>'3PTB'</td><td>= Single Placement on Front Cover And Interior Page</td>
+</tr><tr><td>'3PTC'</td><td>= Multiple Placements on Dust Jacket</td>
+</tr><tr><td>'3PTD'</td><td>= Single Placements on Interior, Covers and Jacket</td>
+</tr><tr><td>'3PTE'</td><td>= Multiple Placements on Interior, Covers and Jacket</td>
+</tr><tr><td>'3PTF'</td><td>= Single Placement on Section Opener Page</td>
+</tr><tr><td>'3PTG'</td><td>= Multiple Placements on Section Opener Page</td>
+</tr><tr><td>'3PTH'</td><td>= Single Placement on Section Opener and Front Page</td>
+</tr><tr><td>'3PTI'</td><td>= Multiple Placements on Section Opener and Front Page</td>
+</tr><tr><td>'3PTJ'</td><td>= Single Placement on Any Covers And Interior Pages</td>
+</tr><tr><td>'3PTK'</td><td>= Multiple Placements on Any Covers And Interior Pages</td>
+</tr><tr><td>'3PTL'</td><td>= Single Placement on Front Cover And Back Cover</td>
+</tr><tr><td>'3PTM'</td><td>= Multiple Placements on Front Cover And Back Cover</td>
+</tr><tr><td>'3PTN'</td><td>= Multiple Placements on Any Covers And Interior Pages</td>
+</tr><tr><td>'3PTP'</td><td>= Single Placement on Any Cover And Interior Page</td>
+</tr><tr><td>'3PTQ'</td><td>= Single Placement on Any Covers And Interior Pages</td>
+</tr><tr><td>'3PTR'</td><td>= Multiple Placements on Any Covers And Interior Pages</td>
+</tr><tr><td>'3PTS'</td><td>= Single Placement Anywhere On Packaging</td>
+</tr><tr><td>'3PTT'</td><td>= Multiple Placements Anywhere On Packaging</td>
+</tr><tr><td>'3PTU'</td><td>= Multiple Placements in Any Part</td>
+</tr><tr><td>'3PTV'</td><td>= Single Placement in Any Part</td>
+</tr><tr><td>'3PTW'</td><td>= Single Placement on Any Pages</td>
+</tr><tr><td>'3PTY'</td><td>= Single Placement on Home Page And Secondary Pages</td>
+</tr><tr><td>'3PTZ'</td><td>= Multiple Placements on Any Pages</td>
+</tr><tr><td>'3PUB'</td><td>= Multiple Placements in Any Part</td>
+</tr><tr><td>'3PUC'</td><td>= Single Placement in Any Part</td>
+</tr><tr><td>'3PUD'</td><td>= Single Placement on Back Cover Or Interior Page</td>
+</tr><tr><td>'3PUF'</td><td>= Single Placement on Front Cover Or Back Cover</td>
+</tr><tr><td>'3PUH'</td><td>= Multiple Placements on Packaging Exterior|Back or Side</td>
+</tr><tr><td>'3PUJ'</td><td>= Single Placement on Packaging Exterior|Back or Side</td>
+</tr><tr><td>'3PUL'</td><td>= Any Placements</td>
+</tr><tr><td>'3PXX'</td><td>= Not Applicable or None</td>
+</tr><tr><td>'4SAA'</td><td>= Any Size Image|Any Size Media</td>
+</tr><tr><td>'4SAB'</td><td>= Up To 1/2 Area Image|Up To A0 Display</td>
+</tr><tr><td>'4SAC'</td><td>= Up To Full Page Image|Up To Full Page Media</td>
+</tr><tr><td>'4SAD'</td><td>= Up To 1/4 Area Image|Up To 16 Sheet Display</td>
+</tr><tr><td>'4SAE'</td><td>= Up To 14 x 20 Inch Image|Any Size Media</td>
+</tr><tr><td>'4SAF'</td><td>= Up To 1/2 Area Image|Up To 4,800 Square Foot Display</td>
+</tr><tr><td>'4SAG'</td><td>= Up To Full Page Image|Any Size Page</td>
+</tr><tr><td>'4SAH'</td><td>= Up To Full Area Image|Up To 69 x 48 Inch Display</td>
+</tr><tr><td>'4SAI'</td><td>= Up To 1/2 Area Image|Up To 180 x 150 Pixels Ad</td>
+</tr><tr><td>'4SAJ'</td><td>= Up To 1/2 Area Image|Up To 11 x 36 Foot Display</td>
+</tr><tr><td>'4SAK'</td><td>= Up To 1/4 Page Image|Any Size Page</td>
+</tr><tr><td>'4SAL'</td><td>= Up To 1/4 Area Image|Up To Full Area Media</td>
+</tr><tr><td>'4SAM'</td><td>= Up To 1/2 Area Image|Up To B1 Media</td>
+</tr><tr><td>'4SAN'</td><td>= Up To Full Area Image|Up To 10 x 8 Foot Media</td>
+</tr><tr><td>'4SAP'</td><td>= Up To 1/4 Screen Image|Up To 32 Inch Screen</td>
+</tr><tr><td>'4SAQ'</td><td>= Up To 1/2 Area Image|Any Size Display</td>
+</tr><tr><td>'4SAR'</td><td>= Up To Full Area Image|Up To  728 x 90 Pixels Ad</td>
+</tr><tr><td>'4SAS'</td><td>= Up To 1/2 Area Image|Up To 24 x 36 Inch Media</td>
+</tr><tr><td>'4SAT'</td><td>= Up To 75 x 75 cm Image|Up To 100 x 100 cm Media</td>
+</tr><tr><td>'4SAU'</td><td>= Up To 1/2 Area Image|Up To 26 x 241 Inch Display</td>
+</tr><tr><td>'4SAV'</td><td>= Up To 8 x 12 Inch Image|Any Size Media</td>
+</tr><tr><td>'4SAW'</td><td>= Up To 1/2 Area Image|Up To 10,000 Square Foot Display</td>
+</tr><tr><td>'4SAX'</td><td>= Up To 1/2 Area Image|Up To 4 x 8 Foot Media</td>
+</tr><tr><td>'4SAY'</td><td>= Up To 1/2 Area Image|Up To 43 x 62 Inch Display</td>
+</tr><tr><td>'4SAZ'</td><td>= Up To 1/2 Area Image|Up To B0 Display</td>
+</tr><tr><td>'4SBA'</td><td>= Up To 1/2 Area Image|Up To 24 x 30 Inch Display</td>
+</tr><tr><td>'4SBC'</td><td>= Up To 1/4 Area Image|Up To 8 Sheet Display</td>
+</tr><tr><td>'4SBD'</td><td>= Up To Full Area Image|Up To 10,000 Square Foot Display</td>
+</tr><tr><td>'4SBE'</td><td>= Up To 1/2 Screen Image|Up To 63 Inch Screen</td>
+</tr><tr><td>'4SBF'</td><td>= Up To Full Area Image|Any Size Display</td>
+</tr><tr><td>'4SBG'</td><td>= Any Size Image|Up To Full Screen Ad</td>
+</tr><tr><td>'4SBH'</td><td>= Up To Full Area Image|Up To A1 Media</td>
+</tr><tr><td>'4SBI'</td><td>= Up To 1/4 Area Image|Up To 10 x 8 Foot Media</td>
+</tr><tr><td>'4SBJ'</td><td>= Up To 20 x 20 cm Image|Up To 100 x 100 cm Media</td>
+</tr><tr><td>'4SBK'</td><td>= Up To 1/16 Page Image|Any Size Page</td>
+</tr><tr><td>'4SBL'</td><td>= Up To 1/2 Area Image|Up To 8 Sheet Display</td>
+</tr><tr><td>'4SBM'</td><td>= Up To Full Area Image|Up To B0 Media</td>
+</tr><tr><td>'4SBN'</td><td>= Up To 1/8 Page Image|Any Size Page</td>
+</tr><tr><td>'4SBP'</td><td>= Any Size Image|Any Size Page</td>
+</tr><tr><td>'4SBQ'</td><td>= Up To 1/2 Area Image|Up To 40 x 60 Inch Media</td>
+</tr><tr><td>'4SBR'</td><td>= Up To 1/2 Area Image|Up To 30 x 240 Inch Display</td>
+</tr><tr><td>'4SBS'</td><td>= Up To 1/4 Area Image|Up To 83 x 135 Inch Display</td>
+</tr><tr><td>'4SBT'</td><td>= Up To Full Area Image|Up To 30 x 40 Inch Display</td>
+</tr><tr><td>'4SBU'</td><td>= Up To 1/2 Page Image|Up To 2 Page Ad</td>
+</tr><tr><td>'4SBV'</td><td>= Up To 1/2 Area Image|Up To 43 x 126 Inch Display</td>
+</tr><tr><td>'4SBW'</td><td>= Up To 1/2 Area Image|Up To 138 x 53 Inch Media</td>
+</tr><tr><td>'4SBX'</td><td>= Up To Full Area Image|Up To 83 x 135 Inch Display</td>
+</tr><tr><td>'4SBY'</td><td>= Up To 1/2 Area Image|Up To 60 x 40 Inch Display</td>
+</tr><tr><td>'4SBZ'</td><td>= Up To Full Screen Image|Up To 32 Inch Screen</td>
+</tr><tr><td>'4SCA'</td><td>= Up To 1/4 Area Image|Up To 468 x 60 Pixels Ad</td>
+</tr><tr><td>'4SCB'</td><td>= Up To 50 x 50 cm Image|Up To 100 x 100 cm Media</td>
+</tr><tr><td>'4SCC'</td><td>= Up To 1/2 Area Image|Up To B1 Display</td>
+</tr><tr><td>'4SCD'</td><td>= Up To 1/4 Area Image|Up To 48 Sheet Display</td>
+</tr><tr><td>'4SCE'</td><td>= Up To 20 x 20 Inch Image|Up To 40 x 40 Inch Media</td>
+</tr><tr><td>'4SCF'</td><td>= Up To 1/4 Area Image|Up To  300 x 600 Pixels Ad</td>
+</tr><tr><td>'4SCG'</td><td>= Up To 1/2 Area Image|Any Size Item</td>
+</tr><tr><td>'4SCH'</td><td>= Up To 1/4 Page Image|Up To 1/2 Page Ad</td>
+</tr><tr><td>'4SCI'</td><td>= Up To 100 x 100 cm Image|Up To 100 x 100 cm Media</td>
+</tr><tr><td>'4SCJ'</td><td>= Up To 1/4 Area Image|Up To B1 Media</td>
+</tr><tr><td>'4SCK'</td><td>= Up To 1/4 Area Image|Up To  728 x 90 Pixels Ad</td>
+</tr><tr><td>'4SCL'</td><td>= Up To 1/2 Area Image|Up To 30 x 40 Inch Display</td>
+</tr><tr><td>'4SCM'</td><td>= Up To 40 x 60 Inch Image|Any Size Media</td>
+</tr><tr><td>'4SCN'</td><td>= Up To 1/8 Page Image|Up To Full Page Media</td>
+</tr><tr><td>'4SCP'</td><td>= Up To Full Page Image|Up To Full Page Ad</td>
+</tr><tr><td>'4SCQ'</td><td>= Up To 70 x 100 cm Image|Any Size Media</td>
+</tr><tr><td>'4SCR'</td><td>= Up To 1/2 Area Image|Up To 14 x 48 Foot Display</td>
+</tr><tr><td>'4SCS'</td><td>= Up To 1/4 Screen Image|Up To 21 Inch Screen</td>
+</tr><tr><td>'4SCT'</td><td>= Up To 40 x 40 Inch Image|Up To 40 x 40 Inch Media</td>
+</tr><tr><td>'4SCU'</td><td>= Up To 6 x 9 Inch Image|Any Size Media</td>
+</tr><tr><td>'4SCV'</td><td>= Up To 1/2 Page Image|Up To 1/2 Page Ad</td>
+</tr><tr><td>'4SCW'</td><td>= Up To 1/2 Area Image|Up To  728 x 90 Pixels Ad</td>
+</tr><tr><td>'4SCX'</td><td>= Up To Full Area Image|Any Size Display</td>
+</tr><tr><td>'4SCY'</td><td>= Up To Full Screen Image|Up To 15 Inch Screen</td>
+</tr><tr><td>'4SCZ'</td><td>= Up To 1/4 Screen Image|Up To 15 Inch Screen</td>
+</tr><tr><td>'4SDA'</td><td>= Up To 11 x 15 cm Image|Any Size Media</td>
+</tr><tr><td>'4SDB'</td><td>= Up To 20 x 24 Inch Image|Any Size Media</td>
+</tr><tr><td>'4SDC'</td><td>= Up To 50 x 71 cm Image|Any Size Media</td>
+</tr><tr><td>'4SDD'</td><td>= Up To 1/4 Area Image|Up To 4 Sheet Display</td>
+</tr><tr><td>'4SDE'</td><td>= Up To 30 x 40 Inch Image|Any Size Media</td>
+</tr><tr><td>'4SDF'</td><td>= Up To 1/2 Area Image|Up To 96 Sheet Display</td>
+</tr><tr><td>'4SDG'</td><td>= Up To 24 x 30 Inch Image|Any Size Media</td>
+</tr><tr><td>'4SDH'</td><td>= Up To 1/4 Area Image|Up To 27 x 141 Inch Display</td>
+</tr><tr><td>'4SDI'</td><td>= Up To Full Area Image|Up To 12 x 24 Foot Media</td>
+</tr><tr><td>'4SDJ'</td><td>= Up To Full Area Image|Up To 138 x 53 Inch Media</td>
+</tr><tr><td>'4SDK'</td><td>= Up To Full Area Image|Up To 96 Sheet Display</td>
+</tr><tr><td>'4SDL'</td><td>= Up To Full Screen Image|Any Size Screen</td>
+</tr><tr><td>'4SDM'</td><td>= Up To 1/4 Area Image|Up To 27 x 85 Inch Display</td>
+</tr><tr><td>'4SDN'</td><td>= Up To Full Area Image|Up To 40 x 60 Inch Media</td>
+</tr><tr><td>'4SDP'</td><td>= Up To 30x 30 Inch Image|Up To 40 x 40 Inch Media</td>
+</tr><tr><td>'4SDQ'</td><td>= Up To 1/2 Screen Image|Up To 100 Diagonal Foot Screen</td>
+</tr><tr><td>'4SDR'</td><td>= Up To Full Area Image|Up To 26 x 241 Inch Display</td>
+</tr><tr><td>'4SDS'</td><td>= Up To Full Area Image|Up To 1,200 Square Foot Display</td>
+</tr><tr><td>'4SDT'</td><td>= Up To 1/4 Area Image|Up To 46 x 60 Inch Media</td>
+</tr><tr><td>'4SDU'</td><td>= Up To 1/2 Area Image|Up To 4 Sheet Display</td>
+</tr><tr><td>'4SDV'</td><td>= Up To 1/4 Area Image|Up To 40 x 60 Inch Media</td>
+</tr><tr><td>'4SDW'</td><td>= Up To Full Area Image|Up To 43 x 62 Inch Display</td>
+</tr><tr><td>'4SDX'</td><td>= Up To 1/2 Area Image|Up To 10 x 40 Foot Display</td>
+</tr><tr><td>'4SDY'</td><td>= Up To 60 x 85 cm Image|Any Size Media</td>
+</tr><tr><td>'4SDZ'</td><td>= Up To 1/2 Area Image|Up To A0 Media</td>
+</tr><tr><td>'4SEA'</td><td>= Up To 1/4 Area Image|Up To 30 Sheet Display</td>
+</tr><tr><td>'4SEB'</td><td>= Up To Full Screen Image|Up To 21 Inch Screen</td>
+</tr><tr><td>'4SEC'</td><td>= Up To Full Area Image|Up To A0 Display</td>
+</tr><tr><td>'4SED'</td><td>= Up To 1/2 Screen Image|Up To 15 Inch Screen</td>
+</tr><tr><td>'4SEE'</td><td>= Up To 42 x 60 cm Image|Any Size Media</td>
+</tr><tr><td>'4SEF'</td><td>= Up To 1/4 Area Image|Up To A1 Media</td>
+</tr><tr><td>'4SEG'</td><td>= Up To Full Area Image|Up To  300 x 600 Pixels Ad</td>
+</tr><tr><td>'4SEH'</td><td>= Up To 1/4 Area Image|Up To 43 x 126 Inch Display</td>
+</tr><tr><td>'4SEI'</td><td>= Up To 1/4 Area Image|Up To B0 Display</td>
+</tr><tr><td>'4SEJ'</td><td>= Up To 1/2 Page Image|Any Size Page</td>
+</tr><tr><td>'4SEK'</td><td>= Up To 1/4 Screen Image|Up To 63 Inch Screen</td>
+</tr><tr><td>'4SEL'</td><td>= Up To Full Area Image|Up To A0 Media</td>
+</tr><tr><td>'4SEM'</td><td>= Up To 1/4 Screen Image|Up To 100 Diagonal Foot Screen</td>
+</tr><tr><td>'4SEN'</td><td>= Up To 1/2 Area Image|Up To 16 Sheet Display</td>
+</tr><tr><td>'4SEP'</td><td>= Up To 1/2 Area Image|Up To 83 x 135 Inch Display</td>
+</tr><tr><td>'4SEQ'</td><td>= Up To 5 x 5 Inch Image|Up To 40 x 40 Inch Media</td>
+</tr><tr><td>'4SER'</td><td>= Up To 1/2 Area Image|Up To 12 Sheet Display</td>
+</tr><tr><td>'4SES'</td><td>= Up To Full Screen Image|Any Size Screen</td>
+</tr><tr><td>'4SET'</td><td>= Up To Full Area Image|Up To B0 Display</td>
+</tr><tr><td>'4SEU'</td><td>= Up To 1/3 Page Image|Any Size Page</td>
+</tr><tr><td>'4SEV'</td><td>= Up To 21 x 30 cm Image|Any Size Media</td>
+</tr><tr><td>'4SEW'</td><td>= Up To 1/4 Area Image|Up To 48 x 71 Inch Display</td>
+</tr><tr><td>'4SEX'</td><td>= Up To 1/2 Area Image|Up To 46 x 60 Inch Media</td>
+</tr><tr><td>'4SEY'</td><td>= Up To 1/4 Area Image|Up To 10,000 Square Foot Display</td>
+</tr><tr><td>'4SEZ'</td><td>= Up To 16 x 20 Inch Image|Any Size Media</td>
+</tr><tr><td>'4SFA'</td><td>= Up To 1/4 Area Image|Any Size Item</td>
+</tr><tr><td>'4SFB'</td><td>= Up To 1/4 Area Image|Up To 138 x 53 Inch Media</td>
+</tr><tr><td>'4SFC'</td><td>= Up To 15 x 21 cm Image|Any Size Media</td>
+</tr><tr><td>'4SFD'</td><td>= Up To Full Area Image|Up To 30 Sheet Display</td>
+</tr><tr><td>'4SFE'</td><td>= Up To 1/4 Area Image|Any Size Display</td>
+</tr><tr><td>'4SFF'</td><td>= Up To 1/4 Area Image|Any Size Media</td>
+</tr><tr><td>'4SFG'</td><td>= Up To 4 Page Image|Any Size Pages</td>
+</tr><tr><td>'4SFH'</td><td>= Up To 5 x 7 Inch Image|Any Size Media</td>
+</tr><tr><td>'4SFI'</td><td>= Up To 2 Page Image|Any Size Pages</td>
+</tr><tr><td>'4SFJ'</td><td>= Up To 2 Page Image|Any Size Pages</td>
+</tr><tr><td>'4SFK'</td><td>= Up To 1/4 Area Image|Up To 30 x 40 Inch Media</td>
+</tr><tr><td>'4SFL'</td><td>= Up To Full Area Image|Up To 4 Sheet Display</td>
+</tr><tr><td>'4SFM'</td><td>= Up To Full Area Image|Up To 11 x 36 Foot Display</td>
+</tr><tr><td>'4SFN'</td><td>= Up To 1/4 Area Image|Up To 25 x 13 Inch Media</td>
+</tr><tr><td>'4SFP'</td><td>= Up To 11 x 14 Inch Image|Any Size Media</td>
+</tr><tr><td>'4SFQ'</td><td>= Up To 30 x 42 cm Image|Any Size Media</td>
+</tr><tr><td>'4SFR'</td><td>= Up To 2 Page Image|Any Size Ad</td>
+</tr><tr><td>'4SFS'</td><td>= Up To Full Area Image|Up To 8 Sheet Display</td>
+</tr><tr><td>'4SFT'</td><td>= Up To 1/2 Area Image|Up To Full Screen Ad</td>
+</tr><tr><td>'4SFU'</td><td>= Up To Full Area Image|Up To 48 Sheet Display</td>
+</tr><tr><td>'4SFV'</td><td>= Up To 1/2 Screen Image|Up To 21 Inch Screen</td>
+</tr><tr><td>'4SFW'</td><td>= Up To Full Area Image|Up To 48 x 71 Inch Display</td>
+</tr><tr><td>'4SFX'</td><td>= Up To 8 x 10 Inch Image|Any Size Media</td>
+</tr><tr><td>'4SFZ'</td><td>= Up To 1/2 Area Image|Up To 27 x 141 Inch Display</td>
+</tr><tr><td>'4SGA'</td><td>= Up To Full Area Image|Up To 27 x 141 Inch Display</td>
+</tr><tr><td>'4SGB'</td><td>= Up To 1/2 Area Image|Up To 30 x 40 Inch Media</td>
+</tr><tr><td>'4SGC'</td><td>= Up To 1/2 Screen Image|Any Size Screen</td>
+</tr><tr><td>'4SGD'</td><td>= Up To Full Area Image|Up To 468 x 60 Pixels Ad</td>
+</tr><tr><td>'4SGE'</td><td>= Up To Full Area Image|Up To 14 x 48 Foot Display</td>
+</tr><tr><td>'4SGF'</td><td>= Up To 1/4 Page Image|Up To 1/4 Page Ad</td>
+</tr><tr><td>'4SGG'</td><td>= Up To Full Area Image|Up To 46 x 60 Inch Media</td>
+</tr><tr><td>'4SGH'</td><td>= Up To 1/4 Screen Image|Any Size Screen</td>
+</tr><tr><td>'4SGI'</td><td>= Up To Full Area Image|Up To 24 x 30 Inch Display</td>
+</tr><tr><td>'4SGJ'</td><td>= Up To 1/2 Screen Image|Up To 32 Inch Screen</td>
+</tr><tr><td>'4SGK'</td><td>= Up To Full Area Image|Up To 27 x 85 Inch Display</td>
+</tr><tr><td>'4SGL'</td><td>= Up To Full Page Image|Up To 2 Page Ad</td>
+</tr><tr><td>'4SGM'</td><td>= Up To Full Page Image|Any Size Ad</td>
+</tr><tr><td>'4SGN'</td><td>= Up To Full Area Image|Up To 43 x 126 Inch Display</td>
+</tr><tr><td>'4SGP'</td><td>= Any Size Image|Any Size Media</td>
+</tr><tr><td>'4SGQ'</td><td>= Up To 1/2 Area Image|Up To 48 Sheet Display</td>
+</tr><tr><td>'4SGR'</td><td>= Up To Full Area Image|Up To B1 Display</td>
+</tr><tr><td>'4SGS'</td><td>= Up To 1/2 Area Image|Up To 1,200 Square Foot Display</td>
+</tr><tr><td>'4SGT'</td><td>= Up To 1/2 Area Image|Up To B0 Media</td>
+</tr><tr><td>'4SGU'</td><td>= Up To 1/4 Area Image|Up To 14 x 48 Foot Display</td>
+</tr><tr><td>'4SGV'</td><td>= Up To 1/2 Area Image|Up To 25 x 13 Inch Media</td>
+</tr><tr><td>'4SGW'</td><td>= Up To 1/2 Page Image|Any Size Page</td>
+</tr><tr><td>'4SGX'</td><td>= Up To Full Area Image|Up To 4,800 Square Foot Display</td>
+</tr><tr><td>'4SGY'</td><td>= Up To 1/2 Screen Image|Up To 30 Diagonal Foot Screen</td>
+</tr><tr><td>'4SGZ'</td><td>= Up To 3 x 4.5 Inch Image|Any Size Media</td>
+</tr><tr><td>'4SHA'</td><td>= Up To 1/4 Area Image|Up To 10 x 40 Foot Display</td>
+</tr><tr><td>'4SIB'</td><td>= Up To 1/4 Area Image|Up To 69 x 48 Inch Display</td>
+</tr><tr><td>'4SIC'</td><td>= Up To 1/2 Area Image|Up To 27 x 85 Inch Display</td>
+</tr><tr><td>'4SID'</td><td>= Up To Full Area Image|Up To 30 x 240 Inch Display</td>
+</tr><tr><td>'4SIE'</td><td>= Up To 1/4 Screen Image|Up To 30 Diagonal Foot Screen</td>
+</tr><tr><td>'4SIF'</td><td>= Up To Full Area Image|Up To 12 Sheet Display</td>
+</tr><tr><td>'4SIG'</td><td>= Up To 18 x 25 cm Image|Any Size Media</td>
+</tr><tr><td>'4SIH'</td><td>= Up To 1/4 Area Image|Up To 24 x 30 Inch Display</td>
+</tr><tr><td>'4SII'</td><td>= Up To 1/2 Area Image|Up To 468 x 60 Pixels Ad</td>
+</tr><tr><td>'4SIJ'</td><td>= Up To 1/2 Screen Image|Up To 10 Diagonal Foot Screen</td>
+</tr><tr><td>'4SIK'</td><td>= Up To 1/4 Area Image|Up To 24 x 36 Inch Media</td>
+</tr><tr><td>'4SIL'</td><td>= Up To Full Area Image|Up To 60 x 40 Inch Display</td>
+</tr><tr><td>'4SIM'</td><td>= Up To 1/4 Area Image|Up To 12 x 24 Foot Media</td>
+</tr><tr><td>'4SIN'</td><td>= Any Size Image|Any Size Media</td>
+</tr><tr><td>'4SIP'</td><td>= Up To 1/4 Area Image|Up To B0 Media</td>
+</tr><tr><td>'4SIQ'</td><td>= Up To Full Area Image|Up To 24 x 36 Inch Media</td>
+</tr><tr><td>'4SIR'</td><td>= Up To 1/4 Area Image|Up To 26 x 53 Inch Media</td>
+</tr><tr><td>'4SIS'</td><td>= Up To Full Area Image|Up To 16 Sheet Display</td>
+</tr><tr><td>'4SIT'</td><td>= Up To Full Area Image|Up To 2,400 Square Foot Display</td>
+</tr><tr><td>'4SIU'</td><td>= Up To 1/4 Area Image|Up To Full Screen Ad</td>
+</tr><tr><td>'4SIV'</td><td>= Up To 10 x 10 Inch Image|Up To 40 x 40 Inch Media</td>
+</tr><tr><td>'4SIW'</td><td>= Any Size Image|Any Size Pages</td>
+</tr><tr><td>'4SIX'</td><td>= Up To 1/4 Area Image|Up To 11 x 36 Foot Display</td>
+</tr><tr><td>'4SIY'</td><td>= Up To 1/4 Page Image|Up To Full Page Ad</td>
+</tr><tr><td>'4SIZ'</td><td>= Up To 1/2 Page Image|Up To Full Page Media</td>
+</tr><tr><td>'4SJA'</td><td>= Up To 1/16 Page|Any Size Page</td>
+</tr><tr><td>'4SJB'</td><td>= Up To 1/4 Page Image|Any Size Page</td>
+</tr><tr><td>'4SJC'</td><td>= Up To 100 x 142 cm Image|Any Size Media</td>
+</tr><tr><td>'4SJD'</td><td>= Up To 21 x 30 cm Image|Any Size Media</td>
+</tr><tr><td>'4SJE'</td><td>= Up To 38 x 50 Inch Image|Any Size Media</td>
+</tr><tr><td>'4SJF'</td><td>= Up To Full Screen Image|Up To 63 Inch Screen</td>
+</tr><tr><td>'4SJG'</td><td>= Up To 1/4 Area Image|Up To A0 Media</td>
+</tr><tr><td>'4SJI'</td><td>= Up To 1/4 Area Image|Up To 4 x 8 Foot Media</td>
+</tr><tr><td>'4SJJ'</td><td>= Up To 25 x 36 cm Image|Any Size Media</td>
+</tr><tr><td>'4SJK'</td><td>= Any Size Image|Up To Full Card</td>
+</tr><tr><td>'4SJL'</td><td>= Up To 1/4 Area Image|Up To 30 x 240 Inch Display</td>
+</tr><tr><td>'4SJM'</td><td>= Up To 1/2 Area Image|Up To Full Area Media</td>
+</tr><tr><td>'4SJN'</td><td>= Up To Full Area Image|Up To 25 x 13 Inch Media</td>
+</tr><tr><td>'4SJP'</td><td>= Up To 1/4 Area Image|Up To 60 x 40 Inch Display</td>
+</tr><tr><td>'4SJQ'</td><td>= Up To 1/4 Area Image|Up To 4,800 Square Foot Display</td>
+</tr><tr><td>'4SJR'</td><td>= Up To 1/2 Area Image|Up To 50 x 24 Inch Media</td>
+</tr><tr><td>'4SJS'</td><td>= Up To 1/8 Page Image|Any Size Page</td>
+</tr><tr><td>'4SJT'</td><td>= Up To Full Area Image|Up To 180 x 150 Pixels Ad</td>
+</tr><tr><td>'4SJU'</td><td>= Up To 2 Page Image|Any Size Pages</td>
+</tr><tr><td>'4SJV'</td><td>= Up To Full Page Image|Any Size Page</td>
+</tr><tr><td>'4SJW'</td><td>= Up To 40 x 40 cm Image|Up To 100 x 100 cm Media</td>
+</tr><tr><td>'4SJX'</td><td>= Up To 1/4 Area Image|Up To B0 Display</td>
+</tr><tr><td>'4SJY'</td><td>= Up To Full Screen Image|Up To 30 Diagonal Foot Screen</td>
+</tr><tr><td>'4SJZ'</td><td>= Up To 3 Page Image|Any Size Pages</td>
+</tr><tr><td>'4SKA'</td><td>= Up To 1/4 Area Image|Up To 20 x 30 Inch Media</td>
+</tr><tr><td>'4SKB'</td><td>= Up To 11 x 14 Inch Image|Any Size Media</td>
+</tr><tr><td>'4SKC'</td><td>= Up To Full Screen Image|Up To 100 Diagonal Foot Screen</td>
+</tr><tr><td>'4SKD'</td><td>= Up To Full Page Image|Any Size Page</td>
+</tr><tr><td>'4SKE'</td><td>= Up To 1/8 Page Image|Any Size Page</td>
+</tr><tr><td>'4SKF'</td><td>= Up To 1/4 Area Image|Up To 672 Square Foot Display</td>
+</tr><tr><td>'4SKG'</td><td>= Any Size Image|Any Size Screen</td>
+</tr><tr><td>'4SKH'</td><td>= Up To Full Area Image|Up To 50 x 24 Inch Media</td>
+</tr><tr><td>'4SKI'</td><td>= Up To 30 x 30 cm Image|Up To 100 x 100 cm Media</td>
+</tr><tr><td>'4SKJ'</td><td>= Up To 1/2 Area Image|Up To A1 Media</td>
+</tr><tr><td>'4SKK'</td><td>= Up To Full Area Image|Up To B0 Display</td>
+</tr><tr><td>'4SKL'</td><td>= Up To 1/2 Area Image|Up To 26 x 53 Inch Media</td>
+</tr><tr><td>'4SKM'</td><td>= Up To Full Area Image|Up To 26 x 53 Inch Media</td>
+</tr><tr><td>'4SKN'</td><td>= Up To Full Area Image|Up To 20 x 30 Inch Media</td>
+</tr><tr><td>'4SKP'</td><td>= Any Size Image|Any Size Ad</td>
+</tr><tr><td>'4SKQ'</td><td>= Up To 1/4 Area Image|Up To 180 x 150 Pixels Ad</td>
+</tr><tr><td>'4SKR'</td><td>= Up To 1/4 Area Image|Up To 1,200 Square Foot Display</td>
+</tr><tr><td>'4SKS'</td><td>= Up To 1/2 Area Image|Up To 672 Square Foot Display</td>
+</tr><tr><td>'4SKT'</td><td>= Up To 1/4 Area Image|Up To 43 x 62 Inch Display</td>
+</tr><tr><td>'4SKU'</td><td>= Up To 1/2 Area Image|Up To 20 x 30 Inch Media</td>
+</tr><tr><td>'4SKV'</td><td>= Up To Full Area Image|Up To 10 x 40 Foot Display</td>
+</tr><tr><td>'4SKW'</td><td>= Up To 1/4 Area Image|Up To 30 x 40 Inch Display</td>
+</tr><tr><td>'4SKX'</td><td>= Up To 1/4 Area Image|Up To 96 Sheet Display</td>
+</tr><tr><td>'4SKY'</td><td>= Up To 1/2 Area Image|Up To 48 x 71 Inch Display</td>
+</tr><tr><td>'4SKZ'</td><td>= Up To Full Area Image|Up To Full Area Media</td>
+</tr><tr><td>'4SLA'</td><td>= Any Size Image|Any Size Pages</td>
+</tr><tr><td>'4SLC'</td><td>= Up To 1/4 Area Image|Up To 50 x 24 Inch Media</td>
+</tr><tr><td>'4SLD'</td><td>= Up To 1/2 Page Image|Any Size Page</td>
+</tr><tr><td>'4SLE'</td><td>= Up To Full Screen Image|Up To 10 Diagonal Foot Screen</td>
+</tr><tr><td>'4SLF'</td><td>= Up To 8 x 10 Inch Image|Any Size Media</td>
+</tr><tr><td>'4SLG'</td><td>= Up To Full Area Image|Up To 4 x 8 Foot Media</td>
+</tr><tr><td>'4SLH'</td><td>= Up To 30 x 42 cm Image|Any Size Media</td>
+</tr><tr><td>'4SLI'</td><td>= Up To 1/2 Area Image|Up To 10 x 8 Foot Media</td>
+</tr><tr><td>'4SLJ'</td><td>= Up To 1/4 Area Image|Up To 12 Sheet Display</td>
+</tr><tr><td>'4SLK'</td><td>= Up To 1/4 Area Image|Up To 2,400 Square Foot Display</td>
+</tr><tr><td>'4SLL'</td><td>= Up To 1/4 Area Image|Up To A0 Display</td>
+</tr><tr><td>'4SLM'</td><td>= Up To 1/2 Area Image|Up To  300 x 600 Pixels Ad</td>
+</tr><tr><td>'4SLN'</td><td>= Up To Full Area Image|Up To 672 Square Foot Display</td>
+</tr><tr><td>'4SLP'</td><td>= Up To 1/2 Area Image|Up To 30 Sheet Display</td>
+</tr><tr><td>'4SLQ'</td><td>= Up To 1/4 Area Image|Up To B1 Display</td>
+</tr><tr><td>'4SLR'</td><td>= Up To Full Area Image|Any Size Item</td>
+</tr><tr><td>'4SLS'</td><td>= Up To 1/2 Area Image|Up To 12 x 24 Foot Media</td>
+</tr><tr><td>'4SLT'</td><td>= Up To Full Area Image|Up To 30 x 40 Inch Media</td>
+</tr><tr><td>'4SLU'</td><td>= Up To Full Area Image|Up To B1 Media</td>
+</tr><tr><td>'4SLV'</td><td>= Up To 1/4 Page Image|Any Size Page</td>
+</tr><tr><td>'4SLW'</td><td>= Up To 1/4 Page Image|Up To Full Page Media</td>
+</tr><tr><td>'4SLX'</td><td>= Up To 1/2 Area Image|Up To B0 Display</td>
+</tr><tr><td>'4SLY'</td><td>= Up To 1/2 Page Image|Up To Full Page Ad</td>
+</tr><tr><td>'4SLZ'</td><td>= Up To 1/4 Screen Image|Up To 10 Diagonal Foot Screen</td>
+</tr><tr><td>'4SMA'</td><td>= Up To 1/2 Area Image|Up To 2,400 Square Foot Display</td>
+</tr><tr><td>'4SMB'</td><td>= Up To 2 Page Image|Up To 2 Page Ad</td>
+</tr><tr><td>'4SMD'</td><td>= Up To 25 x 36 cm Image|Any Size Media</td>
+</tr><tr><td>'4SME'</td><td>= Up To 13 x 18 cm Image|Any Size Media</td>
+</tr><tr><td>'4SMF'</td><td>= Up To 85 x 119 cm Image|Any Size Media</td>
+</tr><tr><td>'4SMG'</td><td>= Up To 3/4 Page Image|Any Size Page</td>
+</tr><tr><td>'4SMH'</td><td>= Up To 150 x 150 Pixels Image|Any Size Screen</td>
+</tr><tr><td>'4SMJ'</td><td>= Up To 300 x 600 Pixels Image|Any Size Screen</td>
+</tr><tr><td>'4SMK'</td><td>= Up To 1/2 Area Image|Any Size Media</td>
+</tr><tr><td>'4SML'</td><td>= Up To Full Area Image|Any Size Media</td>
+</tr><tr><td>'4SMN'</td><td>= Up To 1/4 Area Image|Any Size Display</td>
+</tr><tr><td>'4SMP'</td><td>= Up To 1/2 Area Image|Any Size Display</td>
+</tr><tr><td>'4SMQ'</td><td>= Up To Full Area Image|Any Size Display</td>
+</tr><tr><td>'4SMR'</td><td>= Up To 1/4 Area Image|Any Size Display</td>
+</tr><tr><td>'4SMS'</td><td>= Up To 1/4 Screen Image|Any Size Screen</td>
+</tr><tr><td>'4SMT'</td><td>= Up To 1/2 Screen Image|Any Size Screen</td>
+</tr><tr><td>'4SMU'</td><td>= Up To Full Screen Image|Any Size Screen</td>
+</tr><tr><td>'4SMV'</td><td>= Any Size Image|Any Size Media</td>
+</tr><tr><td>'4SMW'</td><td>= Up To Full Area Image|Any Size Display</td>
+</tr><tr><td>'4SMX'</td><td>= Up To 1/4 Area Image|Any Size Media</td>
+</tr><tr><td>'4SMY'</td><td>= Up To 1/2 Area Image|Any Size Media</td>
+</tr><tr><td>'4SMZ'</td><td>= Up To Full Area Image|Any Size Media</td>
+</tr><tr><td>'4SNG'</td><td>= Up To 1/2 Area Image|Any Size Display</td>
+</tr><tr><td>'4SNO'</td><td>= Up To Full Area Image|Any Size Display</td>
+</tr><tr><td>'4SUL'</td><td>= Any Sizes</td>
+</tr><tr><td>'4SXX'</td><td>= Not Applicable or None</td>
+</tr><tr><td>'5VAA'</td><td>= All Versions</td>
+</tr><tr><td>'5VUG'</td><td>= Single Edition</td>
+</tr><tr><td>'5VUK'</td><td>= Single Hardcover Edition</td>
+</tr><tr><td>'5VUL'</td><td>= Any Versions</td>
+</tr><tr><td>'5VUP'</td><td>= Single Version</td>
+</tr><tr><td>'5VUU'</td><td>= Multiple Hardcover Editions</td>
+</tr><tr><td>'5VUY'</td><td>= Multiple Versions</td>
+</tr><tr><td>'5VUZ'</td><td>= Single Issue</td>
+</tr><tr><td>'5VVB'</td><td>= Multiple Print Versions</td>
+</tr><tr><td>'5VVC'</td><td>= Single Paperback Edition</td>
+</tr><tr><td>'5VVG'</td><td>= Multiple Editions</td>
+</tr><tr><td>'5VVH'</td><td>= Single Edition in All Binding Formats</td>
+</tr><tr><td>'5VVJ'</td><td>= Multiple Issues</td>
+</tr><tr><td>'5VVK'</td><td>= Multiple Paperback Editions</td>
+</tr><tr><td>'5VVL'</td><td>= Multiple Editions in All Binding Formats</td>
+</tr><tr><td>'5VVM'</td><td>= Single Print Version</td>
+</tr><tr><td>'5VXX'</td><td>= Not Applicable or None</td>
+</tr><tr><td>'6QAA'</td><td>= Any Quantity</td>
+</tr><tr><td>'6QAB'</td><td>= Up To 10,000|Impressions</td>
+</tr><tr><td>'6QAC'</td><td>= Up To 1,000|Copies</td>
+</tr><tr><td>'6QAD'</td><td>= Up To 10,000|Copies</td>
+</tr><tr><td>'6QAE'</td><td>= Up To 100|Displays</td>
+</tr><tr><td>'6QAF'</td><td>= Up To 50,000|Copies</td>
+</tr><tr><td>'6QAG'</td><td>= Up To 500|Displays</td>
+</tr><tr><td>'6QAH'</td><td>= Up To 100,000|Print Run</td>
+</tr><tr><td>'6QAI'</td><td>= Up To 500|Copies</td>
+</tr><tr><td>'6QAK'</td><td>= Up To 10|Copies</td>
+</tr><tr><td>'6QAL'</td><td>= Up To 10|Displays</td>
+</tr><tr><td>'6QAM'</td><td>= Any Quantity Of|Copies</td>
+</tr><tr><td>'6QAN'</td><td>= Up To 50,000|Total Circulation</td>
+</tr><tr><td>'6QAP'</td><td>= Up To 500|Displays</td>
+</tr><tr><td>'6QAQ'</td><td>= Up To 5,000|Print Run</td>
+</tr><tr><td>'6QAR'</td><td>= Up To 3 Million|Print Run</td>
+</tr><tr><td>'6QAS'</td><td>= Up To 1,000|Copies</td>
+</tr><tr><td>'6QAT'</td><td>= Up To 5,000|Total Circulation</td>
+</tr><tr><td>'6QAU'</td><td>= One|Print Run</td>
+</tr><tr><td>'6QAV'</td><td>= Up To 5 Million|Total Circulation</td>
+</tr><tr><td>'6QAW'</td><td>= Up To 5|Copies</td>
+</tr><tr><td>'6QAX'</td><td>= Up To 500,000|Displays</td>
+</tr><tr><td>'6QAY'</td><td>= Up To 1,000|Reprints</td>
+</tr><tr><td>'6QAZ'</td><td>= Up To 100|Print Run</td>
+</tr><tr><td>'6QBA'</td><td>= Up To 1,000|Print Run</td>
+</tr><tr><td>'6QBB'</td><td>= Up To 10,000|Total Circulation</td>
+</tr><tr><td>'6QBC'</td><td>= Up To 2,500|Displays</td>
+</tr><tr><td>'6QBD'</td><td>= Up To 50|Displays</td>
+</tr><tr><td>'6QBE'</td><td>= One|Copy</td>
+</tr><tr><td>'6QBF'</td><td>= Up To 10,000|Reprints</td>
+</tr><tr><td>'6QBG'</td><td>= Up To 250,000|Print Run</td>
+</tr><tr><td>'6QBH'</td><td>= Up To 40,000|Print Run</td>
+</tr><tr><td>'6QBI'</td><td>= Up To 100 Million|Viewers</td>
+</tr><tr><td>'6QBK'</td><td>= Four|Copies</td>
+</tr><tr><td>'6QBL'</td><td>= Five|Copies</td>
+</tr><tr><td>'6QBM'</td><td>= Up To 10 Million|Impressions</td>
+</tr><tr><td>'6QBN'</td><td>= Up To 1 Million|Viewers</td>
+</tr><tr><td>'6QBP'</td><td>= Up To 5|Displays</td>
+</tr><tr><td>'6QBQ'</td><td>= Any Quantity Of|Viewers</td>
+</tr><tr><td>'6QBR'</td><td>= Up To 100,000|Impressions</td>
+</tr><tr><td>'6QBS'</td><td>= Up To 500|Copies</td>
+</tr><tr><td>'6QBT'</td><td>= Up To 25,000|Copies</td>
+</tr><tr><td>'6QBU'</td><td>= One|Copy</td>
+</tr><tr><td>'6QBV'</td><td>= Up To 25,000|Print Run</td>
+</tr><tr><td>'6QBW'</td><td>= Up To 250,000|Displays</td>
+</tr><tr><td>'6QBX'</td><td>= Up To 1 Million|Copies</td>
+</tr><tr><td>'6QBY'</td><td>= Up To 1,000|Displays</td>
+</tr><tr><td>'6QBZ'</td><td>= Up To 100,000|Viewers</td>
+</tr><tr><td>'6QCA'</td><td>= Up To 250|Copies</td>
+</tr><tr><td>'6QCB'</td><td>= Up To 100|Reprints</td>
+</tr><tr><td>'6QCC'</td><td>= Any Quantity Of|Viewers</td>
+</tr><tr><td>'6QCD'</td><td>= Up To 1,000|Total Circulation</td>
+</tr><tr><td>'6QCE'</td><td>= Up To 250|Displays</td>
+</tr><tr><td>'6QCF'</td><td>= Three|Copies</td>
+</tr><tr><td>'6QCG'</td><td>= Up To 50,000|Print Run</td>
+</tr><tr><td>'6QCH'</td><td>= One|Copy</td>
+</tr><tr><td>'6QCI'</td><td>= Up To 500,000|Total Circulation</td>
+</tr><tr><td>'6QCJ'</td><td>= Up To 5 Million|Displays</td>
+</tr><tr><td>'6QCK'</td><td>= Up To 2 Million|Total Circulation</td>
+</tr><tr><td>'6QCL'</td><td>= Up To 3 Million|Total Circulation</td>
+</tr><tr><td>'6QCM'</td><td>= Up To 100|Copies</td>
+</tr><tr><td>'6QCN'</td><td>= Up To 1 Million|Total Circulation</td>
+</tr><tr><td>'6QCP'</td><td>= Up To 10|Copies</td>
+</tr><tr><td>'6QCQ'</td><td>= Up To 10,000|Copies</td>
+</tr><tr><td>'6QCR'</td><td>= Up To 100|Copies</td>
+</tr><tr><td>'6QCS'</td><td>= Up To 100,000|Total Circulation</td>
+</tr><tr><td>'6QCT'</td><td>= Up To 2 Million|Print Run</td>
+</tr><tr><td>'6QCU'</td><td>= Any Quantity Of|Reprints</td>
+</tr><tr><td>'6QCV'</td><td>= Up To 100,000|Viewers</td>
+</tr><tr><td>'6QCW'</td><td>= Up To 5,000|Print Run</td>
+</tr><tr><td>'6QCX'</td><td>= One|Display</td>
+</tr><tr><td>'6QCY'</td><td>= Up To 1 Million|Impressions</td>
+</tr><tr><td>'6QCZ'</td><td>= Up To 1 Million|Print Run</td>
+</tr><tr><td>'6QDA'</td><td>= Up To 10|Print Run</td>
+</tr><tr><td>'6QDB'</td><td>= Up To 1 Million|Displays</td>
+</tr><tr><td>'6QDC'</td><td>= Up To 5 Million|Print Run</td>
+</tr><tr><td>'6QDD'</td><td>= Up To 100|Viewers</td>
+</tr><tr><td>'6QDE'</td><td>= Up To 250,000|Print Run</td>
+</tr><tr><td>'6QDF'</td><td>= Up To 1,000|Copies</td>
+</tr><tr><td>'6QDG'</td><td>= Up To 10|Reprints</td>
+</tr><tr><td>'6QDH'</td><td>= Up To 10|Print Run</td>
+</tr><tr><td>'6QDI'</td><td>= One|Display</td>
+</tr><tr><td>'6QDJ'</td><td>= Up To 500,000|Print Run</td>
+</tr><tr><td>'6QDK'</td><td>= Up To 10 Million|Total Circulation</td>
+</tr><tr><td>'6QDL'</td><td>= Any Quantity Of|Print Run</td>
+</tr><tr><td>'6QDM'</td><td>= Up To 500,000|Copies</td>
+</tr><tr><td>'6QDN'</td><td>= Up To 100,000|Copies</td>
+</tr><tr><td>'6QDP'</td><td>= Up To 50,000|Copies</td>
+</tr><tr><td>'6QDQ'</td><td>= Up To 100,000|Print Run</td>
+</tr><tr><td>'6QDR'</td><td>= Up To 10|Total Circulation</td>
+</tr><tr><td>'6QDS'</td><td>= Up To 25,000|Displays</td>
+</tr><tr><td>'6QDT'</td><td>= Up To 250,000|Total Circulation</td>
+</tr><tr><td>'6QDU'</td><td>= Up To 10 Million|Print Run</td>
+</tr><tr><td>'6QDV'</td><td>= Up To 50|Copies</td>
+</tr><tr><td>'6QDW'</td><td>= Up To 5,000|Copies</td>
+</tr><tr><td>'6QDX'</td><td>= Up To 25|Displays</td>
+</tr><tr><td>'6QDY'</td><td>= Up To 5|Displays</td>
+</tr><tr><td>'6QDZ'</td><td>= Up To 100,000|Displays</td>
+</tr><tr><td>'6QEA'</td><td>= Up To 100|Displays</td>
+</tr><tr><td>'6QEB'</td><td>= Up To 10|Copies</td>
+</tr><tr><td>'6QEC'</td><td>= Up To 10,000|Print Run</td>
+</tr><tr><td>'6QED'</td><td>= Up To 100,000|Copies</td>
+</tr><tr><td>'6QEE'</td><td>= Up To 10,000|Copies</td>
+</tr><tr><td>'6QEF'</td><td>= Up To 25,000|Copies</td>
+</tr><tr><td>'6QEG'</td><td>= Up To 10,000|Print Run</td>
+</tr><tr><td>'6QEH'</td><td>= One|Print Run</td>
+</tr><tr><td>'6QEI'</td><td>= Any Quantity Of|Displays</td>
+</tr><tr><td>'6QEJ'</td><td>= Up To 100|Total Circulation</td>
+</tr><tr><td>'6QEK'</td><td>= Up To 2 Million|Displays</td>
+</tr><tr><td>'6QEL'</td><td>= Up To 25|Displays</td>
+</tr><tr><td>'6QEM'</td><td>= Up To 50|Displays</td>
+</tr><tr><td>'6QEN'</td><td>= Up To 500,000|Print Run</td>
+</tr><tr><td>'6QEP'</td><td>= One|Copy</td>
+</tr><tr><td>'6QEQ'</td><td>= Up To 1,000|Viewers</td>
+</tr><tr><td>'6QER'</td><td>= Any Quantity Of|Copies</td>
+</tr><tr><td>'6QES'</td><td>= Up To 50,000|Displays</td>
+</tr><tr><td>'6QET'</td><td>= Up To 5,000|Displays</td>
+</tr><tr><td>'6QEU'</td><td>= Any Quantity Of|Print Run</td>
+</tr><tr><td>'6QEV'</td><td>= Any Quantity Of|Circulation</td>
+</tr><tr><td>'6QEW'</td><td>= Up To 2,500|Copies</td>
+</tr><tr><td>'6QEX'</td><td>= Two|Copies</td>
+</tr><tr><td>'6QEY'</td><td>= Up To 100|Print Run</td>
+</tr><tr><td>'6QEZ'</td><td>= Up To 10,000|Viewers</td>
+</tr><tr><td>'6QFA'</td><td>= Up To 3 Million|Displays</td>
+</tr><tr><td>'6QFB'</td><td>= Up To 1,000|Print Run</td>
+</tr><tr><td>'6QFC'</td><td>= Up To 5|Copies</td>
+</tr><tr><td>'6QFD'</td><td>= Up To 25,000|Print Run</td>
+</tr><tr><td>'6QFE'</td><td>= Up To 5,000|Copies</td>
+</tr><tr><td>'6QFF'</td><td>= Up To 10,000|Displays</td>
+</tr><tr><td>'6QFG'</td><td>= Up To 250|Displays</td>
+</tr><tr><td>'6QFH'</td><td>= Up To 10,000|Viewers</td>
+</tr><tr><td>'6QFI'</td><td>= One|Reprint</td>
+</tr><tr><td>'6QFJ'</td><td>= Up To 10|Displays</td>
+</tr><tr><td>'6QFK'</td><td>= Up To 250,000|Copies</td>
+</tr><tr><td>'6QFL'</td><td>= Up To 100|Copies</td>
+</tr><tr><td>'6QFM'</td><td>= Any Quantity Of|Impressions</td>
+</tr><tr><td>'6QFN'</td><td>= Any Quantity Of|Copies</td>
+</tr><tr><td>'6QFP'</td><td>= Up To 10 Million|Viewers</td>
+</tr><tr><td>'6QFQ'</td><td>= Any Quantity Of|Displays</td>
+</tr><tr><td>'6QFR'</td><td>= Up To 50,000|Print Run</td>
+</tr><tr><td>'6QFS'</td><td>= Up To 25,000|Total Circulation</td>
+</tr><tr><td>'6QFT'</td><td>= One|Copy</td>
+</tr><tr><td>'6QFU'</td><td>= Up To 25|Total Circulation</td>
+</tr><tr><td>'6QFV'</td><td>= Up To 50|Total Circulation</td>
+</tr><tr><td>'6QFW'</td><td>= Up To 250|Total Circulation</td>
+</tr><tr><td>'6QFY'</td><td>= Up To 500|Total Circulation</td>
+</tr><tr><td>'6QFZ'</td><td>= Up To 2,500|Total Circulation</td>
+</tr><tr><td>'6QGB'</td><td>= Up To 25 Million|Total Circulation</td>
+</tr><tr><td>'6QGC'</td><td>= Up To 50 Million|Total Circulation</td>
+</tr><tr><td>'6QGD'</td><td>= Up To 25|Copies</td>
+</tr><tr><td>'6QGE'</td><td>= Up To 50|Copies</td>
+</tr><tr><td>'6QUL'</td><td>= Any Quantity</td>
+</tr><tr><td>'6QXX'</td><td>= Not Applicable or None</td>
+</tr><tr><td>'7DAA'</td><td>= In Perpetuity</td>
+</tr><tr><td>'7DUL'</td><td>= Any Durations</td>
+</tr><tr><td>'7DUQ'</td><td>= Up To 10 Years</td>
+</tr><tr><td>'7DUS'</td><td>= Up To 6 Months</td>
+</tr><tr><td>'7DUT'</td><td>= Up To 10 Years</td>
+</tr><tr><td>'7DUV'</td><td>= Up To 6 Months</td>
+</tr><tr><td>'7DUW'</td><td>= Up To 1 Year</td>
+</tr><tr><td>'7DUY'</td><td>= Up To 3 Years</td>
+</tr><tr><td>'7DUZ'</td><td>= Up To 5 Years</td>
+</tr><tr><td>'7DWB'</td><td>= Up To 7 Years</td>
+</tr><tr><td>'7DWC'</td><td>= Up To 3 Months</td>
+</tr><tr><td>'7DWE'</td><td>= Up To 2 Years</td>
+</tr><tr><td>'7DWG'</td><td>= Up To 15 Years</td>
+</tr><tr><td>'7DWI'</td><td>= Up To 1 Year</td>
+</tr><tr><td>'7DWJ'</td><td>= Up To 1 Month</td>
+</tr><tr><td>'7DWK'</td><td>= Up To 2 Years</td>
+</tr><tr><td>'7DWL'</td><td>= Up To 1 Week</td>
+</tr><tr><td>'7DWM'</td><td>= In Perpetuity</td>
+</tr><tr><td>'7DWP'</td><td>= Up To 13 Weeks</td>
+</tr><tr><td>'7DWR'</td><td>= In Perpetuity</td>
+</tr><tr><td>'7DWS'</td><td>= Life Of Publication</td>
+</tr><tr><td>'7DWT'</td><td>= Up To 52 Weeks</td>
+</tr><tr><td>'7DWU'</td><td>= Up To 7 Years</td>
+</tr><tr><td>'7DWV'</td><td>= Up To 5 Years</td>
+</tr><tr><td>'7DWW'</td><td>= Up To 6 Months</td>
+</tr><tr><td>'7DWY'</td><td>= Up To 3 Months</td>
+</tr><tr><td>'7DWZ'</td><td>= Up To 2 Years</td>
+</tr><tr><td>'7DXA'</td><td>= Full Term Of Copyright</td>
+</tr><tr><td>'7DXB'</td><td>= Up To 1 Week</td>
+</tr><tr><td>'7DXC'</td><td>= Up To 1 Day</td>
+</tr><tr><td>'7DXD'</td><td>= Up To 1 Year</td>
+</tr><tr><td>'7DXE'</td><td>= Up To 1 Year</td>
+</tr><tr><td>'7DXF'</td><td>= Up To 1 Month</td>
+</tr><tr><td>'7DXG'</td><td>= Up To 10 Years</td>
+</tr><tr><td>'7DXH'</td><td>= Life Of Publication</td>
+</tr><tr><td>'7DXI'</td><td>= In Perpetuity</td>
+</tr><tr><td>'7DXK'</td><td>= Up To 1 Month</td>
+</tr><tr><td>'7DXL'</td><td>= Up To 1 Week</td>
+</tr><tr><td>'7DXM'</td><td>= Up To 1 Year</td>
+</tr><tr><td>'7DXP'</td><td>= Up To 3 Years</td>
+</tr><tr><td>'7DXQ'</td><td>= Up To 1 Year</td>
+</tr><tr><td>'7DXR'</td><td>= Up To 10 Years</td>
+</tr><tr><td>'7DXS'</td><td>= In Perpetuity</td>
+</tr><tr><td>'7DXT'</td><td>= Up To 1 Day</td>
+</tr><tr><td>'7DXV'</td><td>= Up To 15 Years</td>
+</tr><tr><td>'7DXW'</td><td>= Up To 6 Months</td>
+</tr><tr><td>'7DXX'</td><td>= Not Applicable or None</td>
+</tr><tr><td>'7DXY'</td><td>= Up To 15 Years</td>
+</tr><tr><td>'7DXZ'</td><td>= Up To 3 Months</td>
+</tr><tr><td>'7DYA'</td><td>= Up To 5 Years</td>
+</tr><tr><td>'7DYB'</td><td>= Up To 6 Months</td>
+</tr><tr><td>'7DYC'</td><td>= Up To 10 Years</td>
+</tr><tr><td>'7DYD'</td><td>= Up To 5 Years</td>
+</tr><tr><td>'7DYE'</td><td>= Up To 3 Months</td>
+</tr><tr><td>'7DYF'</td><td>= Up To 1 Day</td>
+</tr><tr><td>'7DYG'</td><td>= Up To 1 Day</td>
+</tr><tr><td>'7DYI'</td><td>= Up To 1 Month</td>
+</tr><tr><td>'7DYJ'</td><td>= Up To 2 Weeks</td>
+</tr><tr><td>'7DYK'</td><td>= Up To 2 Years</td>
+</tr><tr><td>'7DYL'</td><td>= Up To 3 Years</td>
+</tr><tr><td>'7DYM'</td><td>= Up To 1 Year</td>
+</tr><tr><td>'7DYN'</td><td>= Up To 5 Years</td>
+</tr><tr><td>'7DYP'</td><td>= Up To 1 Week</td>
+</tr><tr><td>'7DYQ'</td><td>= In Perpetuity</td>
+</tr><tr><td>'7DYS'</td><td>= Life Of Publication</td>
+</tr><tr><td>'7DYT'</td><td>= Up To 26 Weeks</td>
+</tr><tr><td>'7DYV'</td><td>= Life Of Event</td>
+</tr><tr><td>'7DYW'</td><td>= Up To 1 Day</td>
+</tr><tr><td>'7DYX'</td><td>= Up To 6 Months</td>
+</tr><tr><td>'7DYY'</td><td>= Up To 10 Years</td>
+</tr><tr><td>'7DYZ'</td><td>= Up To 1 Day</td>
+</tr><tr><td>'7DZA'</td><td>= Up To 1 Year</td>
+</tr><tr><td>'7DZB'</td><td>= Up To 3 Years</td>
+</tr><tr><td>'7DZD'</td><td>= Up To 1 Week</td>
+</tr><tr><td>'7DZF'</td><td>= Up To 2 Months</td>
+</tr><tr><td>'7DZG'</td><td>= Up To 1 Year</td>
+</tr><tr><td>'7DZH'</td><td>= Up To 2 Years</td>
+</tr><tr><td>'7DZJ'</td><td>= Up To 3 Years</td>
+</tr><tr><td>'7DZK'</td><td>= Up To 5 Years</td>
+</tr><tr><td>'7DZL'</td><td>= Up To 10 Years</td>
+</tr><tr><td>'7DZM'</td><td>= Up To 2 Years</td>
+</tr><tr><td>'7DZN'</td><td>= Up To 3 Years</td>
+</tr><tr><td>'7DZP'</td><td>= Up To 2 Years</td>
+</tr><tr><td>'8IAA'</td><td>= All Industries</td>
+</tr><tr><td>'8IAD'</td><td>= Advertising and Marketing</td>
+</tr><tr><td>'8IAE'</td><td>= Arts and Entertainment</td>
+</tr><tr><td>'8IAG'</td><td>= Agriculture, Farming and Horticulture</td>
+</tr><tr><td>'8IAL'</td><td>= Alcohol</td>
+</tr><tr><td>'8IAP'</td><td>= Consumer Appliances and Electronics</td>
+</tr><tr><td>'8IAR'</td><td>= Architecture and Engineering</td>
+</tr><tr><td>'8IAT'</td><td>= Airline Transportation</td>
+</tr><tr><td>'8IAU'</td><td>= Automotive</td>
+</tr><tr><td>'8IAV'</td><td>= Aviation</td>
+</tr><tr><td>'8IBA'</td><td>= Baby and Childcare</td>
+</tr><tr><td>'8IBE'</td><td>= Beauty and Personal Care</td>
+</tr><tr><td>'8IBI'</td><td>= Biotechnology</td>
+</tr><tr><td>'8IBR'</td><td>= Broadcast Media</td>
+</tr><tr><td>'8ICC'</td><td>= Construction and Contracting</td>
+</tr><tr><td>'8ICE'</td><td>= Communications Equipment and Services</td>
+</tr><tr><td>'8ICG'</td><td>= Counseling</td>
+</tr><tr><td>'8ICH'</td><td>= Chemicals</td>
+</tr><tr><td>'8ICO'</td><td>= Business Consulting and Services</td>
+</tr><tr><td>'8IEC'</td><td>= Ecology, Environmental and Conservation</td>
+</tr><tr><td>'8IED'</td><td>= Education</td>
+</tr><tr><td>'8IEM'</td><td>= Employment Training and Recruitment</td>
+</tr><tr><td>'8IEN'</td><td>= Energy, Utilities and Fuel</td>
+</tr><tr><td>'8IEV'</td><td>= Events and Conventions</td>
+</tr><tr><td>'8IFA'</td><td>= Fashion</td>
+</tr><tr><td>'8IFB'</td><td>= Food and Beverage Processing</td>
+</tr><tr><td>'8IFI'</td><td>= Financial Services and Banking</td>
+</tr><tr><td>'8IFL'</td><td>= Food and Beverage Retail</td>
+</tr><tr><td>'8IFO'</td><td>= Forestry and Wood Products</td>
+</tr><tr><td>'8IFR'</td><td>= Freight and Warehousing</td>
+</tr><tr><td>'8IFS'</td><td>= Food Services</td>
+</tr><tr><td>'8IFU'</td><td>= Furniture</td>
+</tr><tr><td>'8IGA'</td><td>= Games, Toys and Hobbies</td>
+</tr><tr><td>'8IGC'</td><td>= Greeting Card</td>
+</tr><tr><td>'8IGI'</td><td>= Gaming Industry</td>
+</tr><tr><td>'8IGL'</td><td>= Gardening and Landscaping</td>
+</tr><tr><td>'8IGO'</td><td>= Government and Politics</td>
+</tr><tr><td>'8IGR'</td><td>= Graphic Design</td>
+</tr><tr><td>'8IHA'</td><td>= Household Appliances</td>
+</tr><tr><td>'8IHC'</td><td>= Household Cleaning Products</td>
+</tr><tr><td>'8IHH'</td><td>= Hotels and Hospitality</td>
+</tr><tr><td>'8IHI'</td><td>= Heavy Industry</td>
+</tr><tr><td>'8IHO'</td><td>= Home Improvement</td>
+</tr><tr><td>'8IHS'</td><td>= Computer Hardware, Software and Peripherals</td>
+</tr><tr><td>'8IIM'</td><td>= Industry and Manufacturing</td>
+</tr><tr><td>'8IIN'</td><td>= Insurance</td>
+</tr><tr><td>'8IIS'</td><td>= Internet Services</td>
+</tr><tr><td>'8IIT'</td><td>= Information Technologies</td>
+</tr><tr><td>'8ILS'</td><td>= Legal Services</td>
+</tr><tr><td>'8IME'</td><td>= Medical and Healthcare</td>
+</tr><tr><td>'8IMM'</td><td>= Mining and Metals</td>
+</tr><tr><td>'8IMS'</td><td>= Microelectronics and Semiconductors</td>
+</tr><tr><td>'8IMU'</td><td>= Music</td>
+</tr><tr><td>'8IMW'</td><td>= Military and Weapons</td>
+</tr><tr><td>'8INP'</td><td>= Not For Profit, Social, Charitable</td>
+</tr><tr><td>'8IOG'</td><td>= Oil and Gas</td>
+</tr><tr><td>'8IOI'</td><td>= Other Industry</td>
+</tr><tr><td>'8IOP'</td><td>= Office Products</td>
+</tr><tr><td>'8IPM'</td><td>= Publishing Media</td>
+</tr><tr><td>'8IPO'</td><td>= Personal Use Only</td>
+</tr><tr><td>'8IPP'</td><td>= Pet Products and Services</td>
+</tr><tr><td>'8IPR'</td><td>= Public Relations</td>
+</tr><tr><td>'8IPS'</td><td>= Pharmaceuticals and Supplements</td>
+</tr><tr><td>'8IPT'</td><td>= Printing and Reprographics</td>
+</tr><tr><td>'8IRE'</td><td>= Real Estate</td>
+</tr><tr><td>'8IRM'</td><td>= Retail Merchandise</td>
+</tr><tr><td>'8IRR'</td><td>= Religion and Religious Services</td>
+</tr><tr><td>'8ISC'</td><td>= Sciences</td>
+</tr><tr><td>'8ISF'</td><td>= Sports, Fitness and Recreation</td>
+</tr><tr><td>'8ISH'</td><td>= Shipping</td>
+</tr><tr><td>'8ISM'</td><td>= Retail Sales and Marketing</td>
+</tr><tr><td>'8ISO'</td><td>= Software</td>
+</tr><tr><td>'8ISS'</td><td>= Safety and Security</td>
+</tr><tr><td>'8ITB'</td><td>= Tobacco</td>
+</tr><tr><td>'8ITE'</td><td>= Telecommunications</td>
+</tr><tr><td>'8ITR'</td><td>= Travel and Tourism</td>
+</tr><tr><td>'8ITX'</td><td>= Textiles and Apparel</td>
+</tr><tr><td>'8IUL'</td><td>= Any Industries</td>
+</tr><tr><td>'8IXX'</td><td>= Not Applicable or None</td>
+</tr><tr><td>'8LAA'</td><td>= All Languages</td>
+</tr><tr><td>'8LAF'</td><td>= Afrikaans</td>
+</tr><tr><td>'8LAR'</td><td>= Arabic</td>
+</tr><tr><td>'8LBO'</td><td>= Bosnian</td>
+</tr><tr><td>'8LBU'</td><td>= Bulgarian</td>
+</tr><tr><td>'8LCA'</td><td>= Chinese-Cantonese</td>
+</tr><tr><td>'8LCH'</td><td>= Chinese-Mandarin</td>
+</tr><tr><td>'8LCP'</td><td>= Chinese-Other</td>
+</tr><tr><td>'8LCR'</td><td>= Croatian</td>
+</tr><tr><td>'8LCZ'</td><td>= Czech</td>
+</tr><tr><td>'8LDA'</td><td>= Danish</td>
+</tr><tr><td>'8LDU'</td><td>= Dutch</td>
+</tr><tr><td>'8LEN'</td><td>= English</td>
+</tr><tr><td>'8LES'</td><td>= Estonian</td>
+</tr><tr><td>'8LFI'</td><td>= Finnish</td>
+</tr><tr><td>'8LFR'</td><td>= French</td>
+</tr><tr><td>'8LGE'</td><td>= German</td>
+</tr><tr><td>'8LGR'</td><td>= Greek</td>
+</tr><tr><td>'8LHE'</td><td>= Hebrew</td>
+</tr><tr><td>'8LHI'</td><td>= Hindi</td>
+</tr><tr><td>'8LHU'</td><td>= Hungarian</td>
+</tr><tr><td>'8LIC'</td><td>= Icelandic</td>
+</tr><tr><td>'8LIG'</td><td>= Irish Gaelic</td>
+</tr><tr><td>'8LIN'</td><td>= Indonesian</td>
+</tr><tr><td>'8LIT'</td><td>= Italian</td>
+</tr><tr><td>'8LJA'</td><td>= Japanese</td>
+</tr><tr><td>'8LKO'</td><td>= Korean</td>
+</tr><tr><td>'8LLA'</td><td>= Latvian</td>
+</tr><tr><td>'8LMG'</td><td>= Mongolian</td>
+</tr><tr><td>'8LNO'</td><td>= Norwegian</td>
+</tr><tr><td>'8LOL'</td><td>= Any One Language</td>
+</tr><tr><td>'8LOT'</td><td>= Other Language</td>
+</tr><tr><td>'8LPO'</td><td>= Polish</td>
+</tr><tr><td>'8LPR'</td><td>= Portuguese</td>
+</tr><tr><td>'8LRO'</td><td>= Romanian</td>
+</tr><tr><td>'8LRU'</td><td>= Russian</td>
+</tr><tr><td>'8LSE'</td><td>= Serbian</td>
+</tr><tr><td>'8LSG'</td><td>= Scottish Gaelic</td>
+</tr><tr><td>'8LSH'</td><td>= Swahili</td>
+</tr><tr><td>'8LSI'</td><td>= Sindhi</td>
+</tr><tr><td>'8LSL'</td><td>= Slovenian</td>
+</tr><tr><td>'8LSP'</td><td>= Spanish</td>
+</tr><tr><td>'8LSV'</td><td>= Slovakian</td>
+</tr><tr><td>'8LSW'</td><td>= Swedish</td>
+</tr><tr><td>'8LSZ'</td><td>= Swazi</td>
+</tr><tr><td>'8LTA'</td><td>= Tagalog</td>
+</tr><tr><td>'8LTH'</td><td>= Thai</td>
+</tr><tr><td>'8LTU'</td><td>= Turkish</td>
+</tr><tr><td>'8LUL'</td><td>= Any Languages</td>
+</tr><tr><td>'8LUR'</td><td>= Ukrainian</td>
+</tr><tr><td>'8LXX'</td><td>= Not Applicable or None</td>
+</tr><tr><td>'8LYI'</td><td>= Yiddish</td>
+</tr><tr><td>'8RAA'</td><td>= Worldwide</td>
+</tr><tr><td>'8RAC'</td><td>= Latin America and Caribbean|All Latin America and Caribbean</td>
+</tr><tr><td>'8RAD'</td><td>= Europe|Andorra</td>
+</tr><tr><td>'8RAE'</td><td>= Middle East|United Arab Emirates</td>
+</tr><tr><td>'8RAF'</td><td>= Middle East|Afghanistan</td>
+</tr><tr><td>'8RAG'</td><td>= Latin America and Caribbean|Antigua and Barbuda</td>
+</tr><tr><td>'8RAH'</td><td>= Broad International Region|All Spanish Speaking Countries</td>
+</tr><tr><td>'8RAI'</td><td>= Latin America and Caribbean|Anguilla</td>
+</tr><tr><td>'8RAJ'</td><td>= Africa|All Africa</td>
+</tr><tr><td>'8RAK'</td><td>= Africa|All African Mediterranean Countries</td>
+</tr><tr><td>'8RAL'</td><td>= Europe|Albania</td>
+</tr><tr><td>'8RAM'</td><td>= Europe|Armenia</td>
+</tr><tr><td>'8RAN'</td><td>= Latin America and Caribbean|Netherlands Antilles</td>
+</tr><tr><td>'8RAO'</td><td>= Africa|Angola</td>
+</tr><tr><td>'8RAP'</td><td>= Africa|All Central Africa</td>
+</tr><tr><td>'8RAQ'</td><td>= Africa|All Eastern Africa</td>
+</tr><tr><td>'8RAR'</td><td>= Latin America and Caribbean|Argentina</td>
+</tr><tr><td>'8RAS'</td><td>= Oceania|American Samoa</td>
+</tr><tr><td>'8RAT'</td><td>= Europe|Austria</td>
+</tr><tr><td>'8RAU'</td><td>= Oceania|Australia</td>
+</tr><tr><td>'8RAV'</td><td>= Asia|Up To 3 States Or Provinces</td>
+</tr><tr><td>'8RAW'</td><td>= Latin America and Caribbean|Aruba</td>
+</tr><tr><td>'8RAX'</td><td>= Europe|Aland Islands</td>
+</tr><tr><td>'8RAY'</td><td>= Asia|China-Northeast</td>
+</tr><tr><td>'8RAZ'</td><td>= Europe|Azerbaijan</td>
+</tr><tr><td>'8RBA'</td><td>= Europe|Bosnia and Herzegovina</td>
+</tr><tr><td>'8RBB'</td><td>= Latin America and Caribbean|Barbados</td>
+</tr><tr><td>'8RBC'</td><td>= Africa|All Southern Africa</td>
+</tr><tr><td>'8RBD'</td><td>= Asia|Bangladesh</td>
+</tr><tr><td>'8RBE'</td><td>= Europe|Belgium</td>
+</tr><tr><td>'8RBF'</td><td>= Africa|Burkina Faso</td>
+</tr><tr><td>'8RBG'</td><td>= Europe|Bulgaria</td>
+</tr><tr><td>'8RBH'</td><td>= Middle East|Bahrain</td>
+</tr><tr><td>'8RBI'</td><td>= Africa|Burundi</td>
+</tr><tr><td>'8RBJ'</td><td>= Africa|Benin</td>
+</tr><tr><td>'8RBK'</td><td>= Northern America|Canada-British Columbia</td>
+</tr><tr><td>'8RBL'</td><td>= Africa|All Western Africa</td>
+</tr><tr><td>'8RBM'</td><td>= Northern America|Bermuda</td>
+</tr><tr><td>'8RBN'</td><td>= Asia|Brunei Darussalam</td>
+</tr><tr><td>'8RBO'</td><td>= Latin America and Caribbean|Bolivia</td>
+</tr><tr><td>'8RBP'</td><td>= Africa|Ascension Island</td>
+</tr><tr><td>'8RBQ'</td><td>= Other Regions|Antarctica</td>
+</tr><tr><td>'8RBR'</td><td>= Latin America and Caribbean|Brazil</td>
+</tr><tr><td>'8RBS'</td><td>= Latin America and Caribbean|Bahamas</td>
+</tr><tr><td>'8RBT'</td><td>= Asia|Bhutan</td>
+</tr><tr><td>'8RBW'</td><td>= Africa|Botswana</td>
+</tr><tr><td>'8RBX'</td><td>= Middle East|Up To 5 States Or Provinces</td>
+</tr><tr><td>'8RBY'</td><td>= Europe|Belarus</td>
+</tr><tr><td>'8RBZ'</td><td>= Latin America and Caribbean|Belize</td>
+</tr><tr><td>'8RCA'</td><td>= Northern America|Canada</td>
+</tr><tr><td>'8RCB'</td><td>= Other Regions|All Arctic and Arctic Ocean Islands</td>
+</tr><tr><td>'8RCC'</td><td>= Oceania|Cocos, Keeling Islands</td>
+</tr><tr><td>'8RCD'</td><td>= Northern America|Up To 5 States Or Provinces</td>
+</tr><tr><td>'8RCE'</td><td>= Northern America|USA and Canada</td>
+</tr><tr><td>'8RCF'</td><td>= Africa|Central African Republic</td>
+</tr><tr><td>'8RCG'</td><td>= Africa|Congo</td>
+</tr><tr><td>'8RCH'</td><td>= Europe|Switzerland</td>
+</tr><tr><td>'8RCI'</td><td>= Africa|Cote D&#39;Ivoire</td>
+</tr><tr><td>'8RCJ'</td><td>= Northern America|Canada-Ontario</td>
+</tr><tr><td>'8RCK'</td><td>= Oceania|Cook Islands</td>
+</tr><tr><td>'8RCL'</td><td>= Latin America and Caribbean|Chile</td>
+</tr><tr><td>'8RCM'</td><td>= Africa|Cameroon</td>
+</tr><tr><td>'8RCN'</td><td>= Asia|All China</td>
+</tr><tr><td>'8RCO'</td><td>= Latin America and Caribbean|Colombia</td>
+</tr><tr><td>'8RCP'</td><td>= Asia|All Eastern Asia</td>
+</tr><tr><td>'8RCR'</td><td>= Latin America and Caribbean|Costa Rica</td>
+</tr><tr><td>'8RCS'</td><td>= Europe|Serbia and Montenegro</td>
+</tr><tr><td>'8RCT'</td><td>= Oceania|All Oceania</td>
+</tr><tr><td>'8RCU'</td><td>= Latin America and Caribbean|Cuba</td>
+</tr><tr><td>'8RCV'</td><td>= Africa|Cape Verde</td>
+</tr><tr><td>'8RCX'</td><td>= Oceania|Christmas Island</td>
+</tr><tr><td>'8RCY'</td><td>= Europe|Cyprus</td>
+</tr><tr><td>'8RCZ'</td><td>= Europe|Czech Republic</td>
+</tr><tr><td>'8RDA'</td><td>= Asia|Tibet</td>
+</tr><tr><td>'8RDB'</td><td>= Asia|All Asia</td>
+</tr><tr><td>'8RDC'</td><td>= Asia|All Central Asia</td>
+</tr><tr><td>'8RDE'</td><td>= Europe|Germany</td>
+</tr><tr><td>'8RDG'</td><td>= Asia|All Southern Asia</td>
+</tr><tr><td>'8RDH'</td><td>= Asia|All Southeastern Asia</td>
+</tr><tr><td>'8RDJ'</td><td>= Africa|Djibouti</td>
+</tr><tr><td>'8RDK'</td><td>= Europe|Denmark</td>
+</tr><tr><td>'8RDM'</td><td>= Latin America and Caribbean|Dominica</td>
+</tr><tr><td>'8RDO'</td><td>= Latin America and Caribbean|Dominican Republic</td>
+</tr><tr><td>'8RDQ'</td><td>= Other Regions|All British Indian Ocean Territories</td>
+</tr><tr><td>'8RDR'</td><td>= Europe|Croatia</td>
+</tr><tr><td>'8RDS'</td><td>= Europe|Faeroe Islands</td>
+</tr><tr><td>'8RDT'</td><td>= Europe|Vatican City State</td>
+</tr><tr><td>'8RDU'</td><td>= Europe|All Europe</td>
+</tr><tr><td>'8RDW'</td><td>= Europe|All Baltic States</td>
+</tr><tr><td>'8RDX'</td><td>= Europe|All Benelux</td>
+</tr><tr><td>'8RDY'</td><td>= Europe|All Caucasian States</td>
+</tr><tr><td>'8RDZ'</td><td>= Africa|Algeria</td>
+</tr><tr><td>'8REA'</td><td>= Europe|All Eastern Europe</td>
+</tr><tr><td>'8REB'</td><td>= Europe|All European Mediterranean Countries</td>
+</tr><tr><td>'8REC'</td><td>= Latin America and Caribbean|Ecuador</td>
+</tr><tr><td>'8RED'</td><td>= Europe|All Northern Europe</td>
+</tr><tr><td>'8REE'</td><td>= Europe|Estonia</td>
+</tr><tr><td>'8REF'</td><td>= Europe|All Scandinavia</td>
+</tr><tr><td>'8REG'</td><td>= Africa|Egypt</td>
+</tr><tr><td>'8REH'</td><td>= Africa|Western Sahara</td>
+</tr><tr><td>'8REI'</td><td>= Europe|All United Kingdom</td>
+</tr><tr><td>'8REJ'</td><td>= Europe|All Western Europe</td>
+</tr><tr><td>'8REK'</td><td>= Broad International Region|Europe, Middle East and Africa</td>
+</tr><tr><td>'8REL'</td><td>= Europe|All European Union Countries</td>
+</tr><tr><td>'8REM'</td><td>= Europe|England</td>
+</tr><tr><td>'8REN'</td><td>= Europe|Scotland</td>
+</tr><tr><td>'8RER'</td><td>= Africa|Eritrea</td>
+</tr><tr><td>'8RES'</td><td>= Europe|Spain</td>
+</tr><tr><td>'8RET'</td><td>= Africa|Ethiopia</td>
+</tr><tr><td>'8REU'</td><td>= Other Regions|All French Southern Territories</td>
+</tr><tr><td>'8REV'</td><td>= Middle East|Palestinian Authority</td>
+</tr><tr><td>'8REX'</td><td>= Middle East|All Middle East</td>
+</tr><tr><td>'8REY'</td><td>= Middle East|All Middle Eastern Gulf States</td>
+</tr><tr><td>'8RFB'</td><td>= Other Regions|All Northern Atlantic Ocean Islands</td>
+</tr><tr><td>'8RFF'</td><td>= Oceania|Midway Islands</td>
+</tr><tr><td>'8RFH'</td><td>= Oceania|Rapa Nui, Easter Island</td>
+</tr><tr><td>'8RFI'</td><td>= Europe|Finland</td>
+</tr><tr><td>'8RFJ'</td><td>= Oceania|Fiji</td>
+</tr><tr><td>'8RFK'</td><td>= Latin America and Caribbean|Falkland Islands, Malvinas</td>
+</tr><tr><td>'8RFL'</td><td>= Oceania|Tahiti</td>
+</tr><tr><td>'8RFM'</td><td>= Oceania|Micronesia</td>
+</tr><tr><td>'8RFP'</td><td>= Oceania|Wallis and Futuna</td>
+</tr><tr><td>'8RFQ'</td><td>= Latin America and Caribbean|Patagonia</td>
+</tr><tr><td>'8RFR'</td><td>= Europe|France</td>
+</tr><tr><td>'8RFS'</td><td>= Latin America and Caribbean|All South America</td>
+</tr><tr><td>'8RFT'</td><td>= Latin America and Caribbean|All Andean Countries</td>
+</tr><tr><td>'8RFU'</td><td>= Latin America and Caribbean|All Southern Cone</td>
+</tr><tr><td>'8RFV'</td><td>= Latin America and Caribbean|All Amazonia</td>
+</tr><tr><td>'8RFW'</td><td>= Other Regions|All Southern Atlantic Ocean Islands</td>
+</tr><tr><td>'8RFX'</td><td>= Other Regions|All Southern Indian Ocean Islands</td>
+</tr><tr><td>'8RFY'</td><td>= Broad International Region|All Americas</td>
+</tr><tr><td>'8RFZ'</td><td>= Latin America and Caribbean|All Caribbean</td>
+</tr><tr><td>'8RGA'</td><td>= Africa|Gabon</td>
+</tr><tr><td>'8RGC'</td><td>= Latin America and Caribbean|All Central America</td>
+</tr><tr><td>'8RGD'</td><td>= Latin America and Caribbean|Grenada</td>
+</tr><tr><td>'8RGE'</td><td>= Europe|Georgia</td>
+</tr><tr><td>'8RGF'</td><td>= Latin America and Caribbean|French Guiana</td>
+</tr><tr><td>'8RGG'</td><td>= Europe|Guernsey</td>
+</tr><tr><td>'8RGH'</td><td>= Africa|Ghana</td>
+</tr><tr><td>'8RGI'</td><td>= Europe|Gibraltar</td>
+</tr><tr><td>'8RGJ'</td><td>= Northern America|All Northern American Countries</td>
+</tr><tr><td>'8RGL'</td><td>= Northern America|Greenland</td>
+</tr><tr><td>'8RGM'</td><td>= Africa|Gambia</td>
+</tr><tr><td>'8RGN'</td><td>= Africa|Guinea</td>
+</tr><tr><td>'8RGP'</td><td>= Latin America and Caribbean|Guadeloupe</td>
+</tr><tr><td>'8RGQ'</td><td>= Africa|Equatorial Guinea</td>
+</tr><tr><td>'8RGR'</td><td>= Europe|Greece</td>
+</tr><tr><td>'8RGT'</td><td>= Latin America and Caribbean|Guatemala</td>
+</tr><tr><td>'8RGU'</td><td>= Oceania|Guam</td>
+</tr><tr><td>'8RGW'</td><td>= Africa|Guinea-Bissau</td>
+</tr><tr><td>'8RGY'</td><td>= Latin America and Caribbean|Guyana</td>
+</tr><tr><td>'8RGZ'</td><td>= Latin America and Caribbean|Bequia</td>
+</tr><tr><td>'8RHA'</td><td>= Latin America and Caribbean|Bonaire</td>
+</tr><tr><td>'8RHB'</td><td>= Latin America and Caribbean|British Virgin Islands</td>
+</tr><tr><td>'8RHC'</td><td>= Latin America and Caribbean|Curacao</td>
+</tr><tr><td>'8RHD'</td><td>= Latin America and Caribbean|Saba</td>
+</tr><tr><td>'8RHE'</td><td>= Latin America and Caribbean|Saint Barthelemy</td>
+</tr><tr><td>'8RHF'</td><td>= Latin America and Caribbean|Saint Eustatius</td>
+</tr><tr><td>'8RHG'</td><td>= Latin America and Caribbean|Saint Martin</td>
+</tr><tr><td>'8RHH'</td><td>= Latin America and Caribbean|U.S. Virgin Islands</td>
+</tr><tr><td>'8RHJ'</td><td>= Northern America|USA-Central</td>
+</tr><tr><td>'8RHK'</td><td>= Asia|Hong Kong</td>
+</tr><tr><td>'8RHN'</td><td>= Latin America and Caribbean|Honduras</td>
+</tr><tr><td>'8RHP'</td><td>= Northern America|USA-Midwest</td>
+</tr><tr><td>'8RHQ'</td><td>= Northern America|USA</td>
+</tr><tr><td>'8RHR'</td><td>= Northern America|USA-Northeast</td>
+</tr><tr><td>'8RHS'</td><td>= Northern America|USA-Pacific Northwest</td>
+</tr><tr><td>'8RHT'</td><td>= Latin America and Caribbean|Haiti</td>
+</tr><tr><td>'8RHU'</td><td>= Europe|Hungary</td>
+</tr><tr><td>'8RHW'</td><td>= Northern America|USA-Southeast</td>
+</tr><tr><td>'8RHX'</td><td>= Northern America|USA-Southwest</td>
+</tr><tr><td>'8RHY'</td><td>= Northern America|USA-Minor Outlying Islands</td>
+</tr><tr><td>'8RIA'</td><td>= Northern America|USA-West</td>
+</tr><tr><td>'8RIB'</td><td>= Middle East|All Middle Eastern Mediterranean Countries</td>
+</tr><tr><td>'8RID'</td><td>= Asia|Indonesia</td>
+</tr><tr><td>'8RIE'</td><td>= Europe|Ireland</td>
+</tr><tr><td>'8RIL'</td><td>= Middle East|Israel</td>
+</tr><tr><td>'8RIM'</td><td>= Europe|Isle Of Man</td>
+</tr><tr><td>'8RIN'</td><td>= Asia|India</td>
+</tr><tr><td>'8RIQ'</td><td>= Middle East|Iraq</td>
+</tr><tr><td>'8RIR'</td><td>= Middle East|Iran</td>
+</tr><tr><td>'8RIS'</td><td>= Europe|Iceland</td>
+</tr><tr><td>'8RIT'</td><td>= Europe|Italy</td>
+</tr><tr><td>'8RJE'</td><td>= Europe|Jersey</td>
+</tr><tr><td>'8RJM'</td><td>= Latin America and Caribbean|Jamaica</td>
+</tr><tr><td>'8RJO'</td><td>= Middle East|Jordan</td>
+</tr><tr><td>'8RJP'</td><td>= Asia|Japan</td>
+</tr><tr><td>'8RKE'</td><td>= Africa|Kenya</td>
+</tr><tr><td>'8RKG'</td><td>= Asia|Kyrgyzstan</td>
+</tr><tr><td>'8RKH'</td><td>= Asia|Cambodia</td>
+</tr><tr><td>'8RKI'</td><td>= Oceania|Kiribati</td>
+</tr><tr><td>'8RKM'</td><td>= Oceania|Comoros</td>
+</tr><tr><td>'8RKN'</td><td>= Latin America and Caribbean|Saint Kitts and Nevis</td>
+</tr><tr><td>'8RKP'</td><td>= Asia|North Korea</td>
+</tr><tr><td>'8RKR'</td><td>= Asia|South Korea</td>
+</tr><tr><td>'8RKW'</td><td>= Middle East|Kuwait</td>
+</tr><tr><td>'8RKY'</td><td>= Latin America and Caribbean|Cayman Islands</td>
+</tr><tr><td>'8RKZ'</td><td>= Asia|Kazakhstan</td>
+</tr><tr><td>'8RLA'</td><td>= Asia|Laos</td>
+</tr><tr><td>'8RLB'</td><td>= Middle East|Lebanon</td>
+</tr><tr><td>'8RLC'</td><td>= Latin America and Caribbean|Saint Lucia</td>
+</tr><tr><td>'8RLI'</td><td>= Europe|Liechtenstein</td>
+</tr><tr><td>'8RLK'</td><td>= Oceania|Sri Lanka</td>
+</tr><tr><td>'8RLR'</td><td>= Africa|Liberia</td>
+</tr><tr><td>'8RLS'</td><td>= Africa|Lesotho</td>
+</tr><tr><td>'8RLT'</td><td>= Europe|Lithuania</td>
+</tr><tr><td>'8RLU'</td><td>= Europe|Luxembourg</td>
+</tr><tr><td>'8RLV'</td><td>= Europe|Latvia</td>
+</tr><tr><td>'8RLY'</td><td>= Africa|Libyan Arab Jamahiriya</td>
+</tr><tr><td>'8RMA'</td><td>= Africa|Morocco</td>
+</tr><tr><td>'8RMC'</td><td>= Europe|Monaco</td>
+</tr><tr><td>'8RMD'</td><td>= Europe|Moldova</td>
+</tr><tr><td>'8RMG'</td><td>= Oceania|Madagascar</td>
+</tr><tr><td>'8RMH'</td><td>= Oceania|Marshall Islands</td>
+</tr><tr><td>'8RMK'</td><td>= Europe|Macedonia</td>
+</tr><tr><td>'8RML'</td><td>= Africa|Mali</td>
+</tr><tr><td>'8RMM'</td><td>= Asia|Myanmar</td>
+</tr><tr><td>'8RMN'</td><td>= Asia|Mongolia</td>
+</tr><tr><td>'8RMO'</td><td>= Asia|Macao</td>
+</tr><tr><td>'8RMP'</td><td>= Oceania|Northern Mariana Islands</td>
+</tr><tr><td>'8RMQ'</td><td>= Latin America and Caribbean|Martinique</td>
+</tr><tr><td>'8RMR'</td><td>= Africa|Mauritania</td>
+</tr><tr><td>'8RMS'</td><td>= Latin America and Caribbean|Montserrat</td>
+</tr><tr><td>'8RMT'</td><td>= Europe|Malta</td>
+</tr><tr><td>'8RMU'</td><td>= Oceania|Mauritius</td>
+</tr><tr><td>'8RMV'</td><td>= Asia|Maldives</td>
+</tr><tr><td>'8RMW'</td><td>= Africa|Malawi</td>
+</tr><tr><td>'8RMX'</td><td>= Latin America and Caribbean|Mexico</td>
+</tr><tr><td>'8RMY'</td><td>= Asia|Malaysia</td>
+</tr><tr><td>'8RMZ'</td><td>= Africa|Mozambique</td>
+</tr><tr><td>'8RNA'</td><td>= Africa|Namibia</td>
+</tr><tr><td>'8RNC'</td><td>= Oceania|New Caledonia</td>
+</tr><tr><td>'8RNE'</td><td>= Africa|Niger</td>
+</tr><tr><td>'8RNF'</td><td>= Oceania|Norfolk Island</td>
+</tr><tr><td>'8RNG'</td><td>= Africa|Nigeria</td>
+</tr><tr><td>'8RNI'</td><td>= Latin America and Caribbean|Nicaragua</td>
+</tr><tr><td>'8RNL'</td><td>= Europe|Netherlands</td>
+</tr><tr><td>'8RNO'</td><td>= Europe|Norway</td>
+</tr><tr><td>'8RNP'</td><td>= Asia|Nepal</td>
+</tr><tr><td>'8RNR'</td><td>= Oceania|Nauru</td>
+</tr><tr><td>'8RNU'</td><td>= Oceania|Niue</td>
+</tr><tr><td>'8RNZ'</td><td>= Oceania|New Zealand</td>
+</tr><tr><td>'8ROM'</td><td>= Middle East|Oman</td>
+</tr><tr><td>'8RPA'</td><td>= Latin America and Caribbean|Panama</td>
+</tr><tr><td>'8RPE'</td><td>= Latin America and Caribbean|Peru</td>
+</tr><tr><td>'8RPF'</td><td>= Oceania|French Polynesia</td>
+</tr><tr><td>'8RPG'</td><td>= Oceania|Papua New Guinea</td>
+</tr><tr><td>'8RPH'</td><td>= Asia|Philippines</td>
+</tr><tr><td>'8RPK'</td><td>= Asia|Pakistan</td>
+</tr><tr><td>'8RPL'</td><td>= Europe|Poland</td>
+</tr><tr><td>'8RPM'</td><td>= Northern America|Saint Pierre and Miquelon</td>
+</tr><tr><td>'8RPN'</td><td>= Oceania|Pitcairn Islands</td>
+</tr><tr><td>'8RPR'</td><td>= Latin America and Caribbean|Puerto Rico</td>
+</tr><tr><td>'8RPT'</td><td>= Europe|Portugal</td>
+</tr><tr><td>'8RPW'</td><td>= Oceania|Palau</td>
+</tr><tr><td>'8RPY'</td><td>= Latin America and Caribbean|Paraguay</td>
+</tr><tr><td>'8RQA'</td><td>= Middle East|Qatar</td>
+</tr><tr><td>'8RQB'</td><td>= Africa|One Metropolitan Area, Adjoining Cities</td>
+</tr><tr><td>'8RQC'</td><td>= Africa|One Minor City, Up To 250,000 Population</td>
+</tr><tr><td>'8RQD'</td><td>= Asia|One Major City, Over 250,000 Population</td>
+</tr><tr><td>'8RQE'</td><td>= Asia|One Metropolitan Area, Adjoining Cities</td>
+</tr><tr><td>'8RQF'</td><td>= Asia|One Minor City, Up To 250,000 Population</td>
+</tr><tr><td>'8RQJ'</td><td>= Europe|One Major City, Over 250,000 Population</td>
+</tr><tr><td>'8RQK'</td><td>= Europe|One Metropolitan Area, Adjoining Cities</td>
+</tr><tr><td>'8RQL'</td><td>= Europe|One Minor City, Up To 250,000 Population</td>
+</tr><tr><td>'8RQM'</td><td>= Latin America and Caribbean|One Major City, Over 250,000 Population</td>
+</tr><tr><td>'8RQN'</td><td>= Latin America and Caribbean|One Metropolitan Area, Adjoining Cities</td>
+</tr><tr><td>'8RQO'</td><td>= Latin America and Caribbean|One Minor City, Up To 250,000 Population</td>
+</tr><tr><td>'8RQP'</td><td>= Middle East|One Major City, Over 250,000 Population</td>
+</tr><tr><td>'8RQR'</td><td>= Middle East|One Metropolitan Area, Adjoining Cities</td>
+</tr><tr><td>'8RQS'</td><td>= Middle East|One Minor City, Up To 250,000 Population</td>
+</tr><tr><td>'8RQT'</td><td>= Northern America|One Major City, Over 250,000 Population</td>
+</tr><tr><td>'8RQU'</td><td>= Northern America|One Metropolitan Area, Adjoining Cities</td>
+</tr><tr><td>'8RQV'</td><td>= Northern America|One Minor City, Up To 250,000 Population</td>
+</tr><tr><td>'8RQW'</td><td>= Oceania|One Major City, Over 250,000 Population</td>
+</tr><tr><td>'8RQX'</td><td>= Africa|One Major City, Over 250,000 Population</td>
+</tr><tr><td>'8RQY'</td><td>= Oceania|One Metropolitan Area, Adjoining Cities</td>
+</tr><tr><td>'8RQZ'</td><td>= Oceania|One Minor City, Up To 250,000 Population</td>
+</tr><tr><td>'8RRB'</td><td>= Africa|One State Or Province</td>
+</tr><tr><td>'8RRC'</td><td>= Asia|One State Or Province</td>
+</tr><tr><td>'8RRE'</td><td>= Africa|Reunion</td>
+</tr><tr><td>'8RRF'</td><td>= Europe|One State Or Province</td>
+</tr><tr><td>'8RRG'</td><td>= Latin America and Caribbean|One State Or Province</td>
+</tr><tr><td>'8RRH'</td><td>= Middle East|One State Or Province</td>
+</tr><tr><td>'8RRJ'</td><td>= Northern America|One State Or Province</td>
+</tr><tr><td>'8RRK'</td><td>= Oceania|One State Or Province</td>
+</tr><tr><td>'8RRO'</td><td>= Europe|Romania</td>
+</tr><tr><td>'8RRU'</td><td>= Europe|Russian Federation</td>
+</tr><tr><td>'8RRW'</td><td>= Africa|Rwanda</td>
+</tr><tr><td>'8RSA'</td><td>= Middle East|Saudi Arabia</td>
+</tr><tr><td>'8RSB'</td><td>= Oceania|Solomon Islands</td>
+</tr><tr><td>'8RSC'</td><td>= Oceania|Seychelles</td>
+</tr><tr><td>'8RSD'</td><td>= Africa|Sudan</td>
+</tr><tr><td>'8RSE'</td><td>= Europe|Sweden</td>
+</tr><tr><td>'8RSG'</td><td>= Asia|Singapore</td>
+</tr><tr><td>'8RSH'</td><td>= Africa|Saint Helena</td>
+</tr><tr><td>'8RSI'</td><td>= Europe|Slovenia</td>
+</tr><tr><td>'8RSK'</td><td>= Europe|Slovakia</td>
+</tr><tr><td>'8RSL'</td><td>= Africa|Sierra Leone</td>
+</tr><tr><td>'8RSM'</td><td>= Europe|San Marino</td>
+</tr><tr><td>'8RSN'</td><td>= Africa|Senegal</td>
+</tr><tr><td>'8RSO'</td><td>= Africa|Somalia</td>
+</tr><tr><td>'8RSR'</td><td>= Latin America and Caribbean|Suriname</td>
+</tr><tr><td>'8RST'</td><td>= Africa|Sao Tome and Principe</td>
+</tr><tr><td>'8RSV'</td><td>= Latin America and Caribbean|El Salvador</td>
+</tr><tr><td>'8RSY'</td><td>= Middle East|Syria</td>
+</tr><tr><td>'8RSZ'</td><td>= Africa|Swaziland</td>
+</tr><tr><td>'8RTC'</td><td>= Latin America and Caribbean|Turks and Caicos Islands</td>
+</tr><tr><td>'8RTD'</td><td>= Africa|Chad</td>
+</tr><tr><td>'8RTG'</td><td>= Africa|Togo</td>
+</tr><tr><td>'8RTH'</td><td>= Asia|Thailand</td>
+</tr><tr><td>'8RTJ'</td><td>= Asia|Tajikistan</td>
+</tr><tr><td>'8RTK'</td><td>= Oceania|Tokelau</td>
+</tr><tr><td>'8RTL'</td><td>= Asia|Timor-Leste</td>
+</tr><tr><td>'8RTM'</td><td>= Asia|Turkmenistan</td>
+</tr><tr><td>'8RTN'</td><td>= Africa|Tunisia</td>
+</tr><tr><td>'8RTO'</td><td>= Oceania|Tonga</td>
+</tr><tr><td>'8RTR'</td><td>= Middle East|Turkey</td>
+</tr><tr><td>'8RTT'</td><td>= Latin America and Caribbean|Trinidad and Tobago</td>
+</tr><tr><td>'8RTV'</td><td>= Oceania|Tuvalu</td>
+</tr><tr><td>'8RTW'</td><td>= Asia|Taiwan</td>
+</tr><tr><td>'8RTZ'</td><td>= Africa|Tanzania, United Republic Of</td>
+</tr><tr><td>'8RUA'</td><td>= Europe|Ukraine</td>
+</tr><tr><td>'8RUB'</td><td>= Asia|China-East</td>
+</tr><tr><td>'8RUC'</td><td>= Asia|China-North</td>
+</tr><tr><td>'8RUD'</td><td>= Asia|China-South Central</td>
+</tr><tr><td>'8RUF'</td><td>= Asia|China-Southwest</td>
+</tr><tr><td>'8RUG'</td><td>= Africa|Uganda</td>
+</tr><tr><td>'8RUH'</td><td>= Europe|Northern Ireland</td>
+</tr><tr><td>'8RUI'</td><td>= Europe|Wales</td>
+</tr><tr><td>'8RUJ'</td><td>= Latin America and Caribbean|All Latin America</td>
+</tr><tr><td>'8RUK'</td><td>= Northern America|USA-All Territories, Protectorates, Dependencies, Outposts</td>
+</tr><tr><td>'8RUL'</td><td>= Any Regions</td>
+</tr><tr><td>'8RUM'</td><td>= Northern America|Canada-Prairies</td>
+</tr><tr><td>'8RUN'</td><td>= Northern America|Canada-Atlantic Provinces</td>
+</tr><tr><td>'8RUP'</td><td>= Northern America|Canada-Quebec</td>
+</tr><tr><td>'8RUQ'</td><td>= Northern America|Canada-Northern Territories</td>
+</tr><tr><td>'8RUR'</td><td>= Oceania|All Australia and New Zealand</td>
+</tr><tr><td>'8RUS'</td><td>= Oceania|All Oceania excluding Australia and New Zealand</td>
+</tr><tr><td>'8RUY'</td><td>= Latin America and Caribbean|Uruguay</td>
+</tr><tr><td>'8RUZ'</td><td>= Asia|Uzbekistan</td>
+</tr><tr><td>'8RVC'</td><td>= Latin America and Caribbean|Saint Vincent and The Grenadines</td>
+</tr><tr><td>'8RVE'</td><td>= Latin America and Caribbean|Venezuela</td>
+</tr><tr><td>'8RVN'</td><td>= Asia|Viet Nam</td>
+</tr><tr><td>'8RVU'</td><td>= Oceania|Vanuatu</td>
+</tr><tr><td>'8RWA'</td><td>= Broad International Region|Worldwide Excluding Northern America</td>
+</tr><tr><td>'8RWB'</td><td>= Broad International Region|Worldwide Excluding USA</td>
+</tr><tr><td>'8RWC'</td><td>= Broad International Region|Worldwide Excluding USA and Europe</td>
+</tr><tr><td>'8RWD'</td><td>= Broad International Region|Worldwide Excluding Europe</td>
+</tr><tr><td>'8RWE'</td><td>= Broad International Region|Worldwide Excluding USA and UK</td>
+</tr><tr><td>'8RWF'</td><td>= Broad International Region|Worldwide Excluding UK</td>
+</tr><tr><td>'8RWG'</td><td>= Broad International Region|All English Speaking Countries</td>
+</tr><tr><td>'8RWH'</td><td>= Broad International Region|All English Speaking Countries Excluding USA</td>
+</tr><tr><td>'8RWI'</td><td>= Broad International Region|All Spanish Speaking Countries Excluding USA</td>
+</tr><tr><td>'8RWJ'</td><td>= Broad International Region|USA, Canada and Mexico</td>
+</tr><tr><td>'8RWS'</td><td>= Oceania|Samoa</td>
+</tr><tr><td>'8RXX'</td><td>= Not Applicable or None</td>
+</tr><tr><td>'8RYB'</td><td>= Africa|Up To 3 States Or Provinces</td>
+</tr><tr><td>'8RYC'</td><td>= Africa|Up To 5 States Or Provinces</td>
+</tr><tr><td>'8RYD'</td><td>= Asia|Up To 5 States Or Provinces</td>
+</tr><tr><td>'8RYE'</td><td>= Middle East|Yemen</td>
+</tr><tr><td>'8RYF'</td><td>= Europe|Up To 3 States Or Provinces</td>
+</tr><tr><td>'8RYG'</td><td>= Europe|Up To 5 States Or Provinces</td>
+</tr><tr><td>'8RYH'</td><td>= Latin America and Caribbean|Up To 3 States Or Provinces</td>
+</tr><tr><td>'8RYI'</td><td>= Latin America and Caribbean|Up To 5 States Or Provinces</td>
+</tr><tr><td>'8RYJ'</td><td>= Middle East|Up To 3 States Or Provinces</td>
+</tr><tr><td>'8RYK'</td><td>= Northern America|Up To 3 States Or Provinces</td>
+</tr><tr><td>'8RYL'</td><td>= Oceania|Up To 3 States Or Provinces</td>
+</tr><tr><td>'8RYM'</td><td>= Oceania|Up To 5 States Or Provinces</td>
+</tr><tr><td>'8RYT'</td><td>= Africa|Mayotte</td>
+</tr><tr><td>'8RZA'</td><td>= Africa|South Africa</td>
+</tr><tr><td>'8RZM'</td><td>= Africa|Zambia</td>
+</tr><tr><td>'8RZW'</td><td>= Africa|Zimbabwe</td>
+</tr><tr><td>'9EIN'</td><td>= Exclusivity For Industry</td>
+</tr><tr><td>'9ELA'</td><td>= Exclusivity For Language</td>
+</tr><tr><td>'9EME'</td><td>= Exclusivity For Media</td>
+</tr><tr><td>'9ENE'</td><td>= Non-Exclusive</td>
+</tr><tr><td>'9ERE'</td><td>= Exclusivity For Region</td>
+</tr><tr><td>'9EXC'</td><td>= All Exclusive</td>
+</tr><tr><td>'9EXX'</td><td>= Not Applicable or None</td>
+</tr></table></td></tr></table></blockquote>
+
+<hr>
+(This document generated automatically by Image::ExifTool::BuildTagLookup)
+<br><i>Last revised May 19, 2016</i>
+<p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
+</body>
+</html>

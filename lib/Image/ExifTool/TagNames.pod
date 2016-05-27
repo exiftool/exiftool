@@ -1183,7 +1183,7 @@ L<http://www.adobe.com/devnet/xmp/> for the official XMP specification.
   photomech                                     PhotoMechanic XMP
   photoshop                                     XMP photoshop
   PixelLive                                     XMP PixelLive
-  plus                                          XMP plus
+  plus                                          PLUS XMP
   pmi                                           XMP pmi
   prism                                         XMP prism
   prl                                           XMP prl
@@ -2538,156 +2538,6 @@ namespace URI.
   Genre                                         N
   Title                                         N
 
-=head3 XMP plus Tags
-
-PLUS License Data Format 1.2.1 namespace tags.  Note that all
-controlled-vocabulary tags in this table (ie. tags with a fixed set of
-values) have raw values which begin with "http://ns.useplus.org/ldf/vocab/",
-but to reduce clutter this prefix has been removed from the values shown
-below.  (see L<http://ns.useplus.org/>)
-
-  Tag Name                                      Writable
-  --------                                      --------
-  AdultContentWarning                           string
-  CopyrightOwner                                CopyrightOwner Struct+
-  CopyrightOwnerID                              string_+
-  CopyrightOwnerName                            string_+
-  CopyrightOwnerImageID                         string
-  CopyrightRegistrationNumber                   string
-  CopyrightStatus                               string
-  CreditLineRequired                            string
-  Custom1                                       lang-alt+
-  Custom10                                      lang-alt+
-  Custom2                                       lang-alt+
-  Custom3                                       lang-alt+
-  Custom4                                       lang-alt+
-  Custom5                                       lang-alt+
-  Custom6                                       lang-alt+
-  Custom7                                       lang-alt+
-  Custom8                                       lang-alt+
-  Custom9                                       lang-alt+
-  EndUser                                       EndUser Struct+
-  EndUserID                                     string_+
-  EndUserName                                   string_+
-  FileNameAsDelivered                           string
-  FirstPublicationDate                          date
-  ImageAlterationConstraints                    string+
-  ImageCreator                                  ImageCreator Struct+
-  ImageCreatorID                                string_+
-  ImageCreatorName                              string_+
-  ImageCreatorImageID                           string
-  ImageDuplicationConstraints                   string
-  ImageFileConstraints                          string+
-  ImageFileFormatAsDelivered                    string
-  ImageFileSizeAsDelivered                      string
-  ImageSupplier                                 ImageSupplier Struct+
-  ImageSupplierImageID                          string
-  ImageSupplierID                               string_+
-  ImageSupplierName                             string_+
-  ImageType                                     string
-  Licensee                                      Licensee Struct+
-  LicenseeImageID                               string
-  LicenseeImageNotes                            lang-alt
-  LicenseeID                                    string_+
-  LicenseeName                                  string_+
-  LicenseEndDate                                date
-  LicenseeProjectReference                      string+
-  LicenseeTransactionID                         string+
-  LicenseID                                     string
-  LicenseStartDate                              date
-  LicenseTransactionDate                        date
-  Licensor                                      Licensor Struct+
-  LicensorImageID                               string
-  LicensorCity                                  string_+
-  LicensorCountry                               string_+
-  LicensorEmail                                 string_+
-  LicensorExtendedAddress                       string_+
-  LicensorID                                    string_+
-  LicensorName                                  string_+
-  LicensorPostalCode                            string_+
-  LicensorRegion                                string_+
-  LicensorStreetAddress                         string_+
-  LicensorTelephone1                            string_+
-  LicensorTelephone2                            string_+
-  LicensorTelephoneType1                        string_+
-  LicensorTelephoneType2                        string_+
-  LicensorURL                                   string_+
-  LicensorNotes                                 lang-alt
-  LicensorTransactionID                         string+
-  MediaConstraints                              lang-alt
-  MediaSummaryCode                              string
-  MinorModelAgeDisclosure                       string
-  ModelReleaseID                                string+
-  ModelReleaseStatus                            string
-  OtherConditions                               lang-alt
-  OtherConstraints                              lang-alt
-  OtherImageInfo                                lang-alt
-  OtherLicenseDocuments                         string+
-  OtherLicenseInfo                              lang-alt
-  OtherLicenseRequirements                      lang-alt
-  ProductOrServiceConstraints                   lang-alt
-  PropertyReleaseID                             string+
-  PropertyReleaseStatus                         string
-  RegionConstraints                             lang-alt
-  Reuse                                         string
-  TermsAndConditionsText                        lang-alt
-  TermsAndConditionsURL                         string
-  PLUSVersion                                   string
-
-=head3 XMP CopyrightOwner Struct
-
-  Field Name                                    Writable
-  ----------                                    --------
-  CopyrightOwnerID                              string
-  CopyrightOwnerName                            string
-
-=head3 XMP EndUser Struct
-
-  Field Name                                    Writable
-  ----------                                    --------
-  EndUserID                                     string
-  EndUserName                                   string
-
-=head3 XMP ImageCreator Struct
-
-  Field Name                                    Writable
-  ----------                                    --------
-  ImageCreatorID                                string
-  ImageCreatorName                              string
-
-=head3 XMP ImageSupplier Struct
-
-  Field Name                                    Writable
-  ----------                                    --------
-  ImageSupplierID                               string
-  ImageSupplierName                             string
-
-=head3 XMP Licensee Struct
-
-  Field Name                                    Writable
-  ----------                                    --------
-  LicenseeID                                    string
-  LicenseeName                                  string
-
-=head3 XMP Licensor Struct
-
-  Field Name                                    Writable
-  ----------                                    --------
-  LicensorCity                                  string
-  LicensorCountry                               string
-  LicensorEmail                                 string
-  LicensorExtendedAddress                       string
-  LicensorID                                    string
-  LicensorName                                  string
-  LicensorPostalCode                            string
-  LicensorRegion                                string
-  LicensorStreetAddress                         string
-  LicensorTelephone1                            string
-  LicensorTelephone2                            string
-  LicensorTelephoneType1                        string
-  LicensorTelephoneType2                        string
-  LicensorURL                                   string
-
 =head3 XMP pmi Tags
 
 PRISM Metadata for Images 3.0 namespace tags.  (see
@@ -3618,12 +3468,14 @@ XMP Note namespace tags.
 
 =head3 XMP xmpPLUS Tags
 
-XMP Picture Licensing Universal System (PLUS) namespace tags.
+XMP Picture Licensing Universal System (PLUS) tags as written by some older
+Adobe applications.  See L<PLUS XMP Tags|Image::ExifTool::TagNames/PLUS XMP Tags>
+for the current PLUS tags.
 
   Tag Name                                      Writable
   --------                                      --------
-  CreditLineReq                                 boolean
-  ReuseAllowed                                  boolean
+  CreditLineReq                                 boolean/
+  ReuseAllowed                                  boolean/
 
 =head3 XMP xmpRights Tags
 
@@ -3844,6 +3696,159 @@ block tags GeoTiffDirectory, GeoTiffDoubleParams and GeoTiffAsciiParams.
   0xb7a7   InsetNWPixelX                        N
   0xb7a8   InsetNWPixelY                        N
   0xb7a9   ChartContourInterval                 N
+
+=head2 PLUS Tags
+
+=head3 PLUS XMP Tags
+
+PLUS (Picture Licensing Universal System) License Data Format 1.2.1 XMP
+tags.  Note that all controlled-vocabulary tags in this table (ie. tags with
+a fixed set of values) have raw values which begin with
+"http://ns.useplus.org/ldf/vocab/", but to reduce clutter this prefix has
+been removed from the values shown below.  See L<http://ns.useplus.org/> for
+the complete specification.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  AdultContentWarning                           string
+  CopyrightOwner                                CopyrightOwner Struct+
+  CopyrightOwnerID                              string_+
+  CopyrightOwnerName                            string_+
+  CopyrightOwnerImageID                         string
+  CopyrightRegistrationNumber                   string
+  CopyrightStatus                               string
+  CreditLineRequired                            string
+  Custom1                                       lang-alt+
+  Custom10                                      lang-alt+
+  Custom2                                       lang-alt+
+  Custom3                                       lang-alt+
+  Custom4                                       lang-alt+
+  Custom5                                       lang-alt+
+  Custom6                                       lang-alt+
+  Custom7                                       lang-alt+
+  Custom8                                       lang-alt+
+  Custom9                                       lang-alt+
+  EndUser                                       EndUser Struct+
+  EndUserID                                     string_+
+  EndUserName                                   string_+
+  FileNameAsDelivered                           string
+  FirstPublicationDate                          date
+  ImageAlterationConstraints                    string+
+  ImageCreator                                  ImageCreator Struct+
+  ImageCreatorID                                string_+
+  ImageCreatorName                              string_+
+  ImageCreatorImageID                           string
+  ImageDuplicationConstraints                   string
+  ImageFileConstraints                          string+
+  ImageFileFormatAsDelivered                    string
+  ImageFileSizeAsDelivered                      string
+  ImageSupplier                                 ImageSupplier Struct+
+  ImageSupplierImageID                          string
+  ImageSupplierID                               string_+
+  ImageSupplierName                             string_+
+  ImageType                                     string
+  Licensee                                      Licensee Struct+
+  LicenseeImageID                               string
+  LicenseeImageNotes                            lang-alt
+  LicenseeID                                    string_+
+  LicenseeName                                  string_+
+  LicenseEndDate                                date
+  LicenseeProjectReference                      string+
+  LicenseeTransactionID                         string+
+  LicenseID                                     string
+  LicenseStartDate                              date
+  LicenseTransactionDate                        date
+  Licensor                                      Licensor Struct+
+  LicensorImageID                               string
+  LicensorCity                                  string_+
+  LicensorCountry                               string_+
+  LicensorEmail                                 string_+
+  LicensorExtendedAddress                       string_+
+  LicensorID                                    string_+
+  LicensorName                                  string_+
+  LicensorPostalCode                            string_+
+  LicensorRegion                                string_+
+  LicensorStreetAddress                         string_+
+  LicensorTelephone1                            string_+
+  LicensorTelephone2                            string_+
+  LicensorTelephoneType1                        string_+
+  LicensorTelephoneType2                        string_+
+  LicensorURL                                   string_+
+  LicensorNotes                                 lang-alt
+  LicensorTransactionID                         string+
+  MediaConstraints                              lang-alt
+  MediaSummaryCode                              string
+  MinorModelAgeDisclosure                       string
+  ModelReleaseID                                string+
+  ModelReleaseStatus                            string
+  OtherConditions                               lang-alt
+  OtherConstraints                              lang-alt
+  OtherImageInfo                                lang-alt
+  OtherLicenseDocuments                         string+
+  OtherLicenseInfo                              lang-alt
+  OtherLicenseRequirements                      lang-alt
+  ProductOrServiceConstraints                   lang-alt
+  PropertyReleaseID                             string+
+  PropertyReleaseStatus                         string
+  RegionConstraints                             lang-alt
+  Reuse                                         string
+  TermsAndConditionsText                        lang-alt
+  TermsAndConditionsURL                         string
+  PLUSVersion                                   string
+
+=head3 XMP CopyrightOwner Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  CopyrightOwnerID                              string
+  CopyrightOwnerName                            string
+
+=head3 XMP EndUser Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  EndUserID                                     string
+  EndUserName                                   string
+
+=head3 XMP ImageCreator Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  ImageCreatorID                                string
+  ImageCreatorName                              string
+
+=head3 XMP ImageSupplier Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  ImageSupplierID                               string
+  ImageSupplierName                             string
+
+=head3 XMP Licensee Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  LicenseeID                                    string
+  LicenseeName                                  string
+
+=head3 XMP Licensor Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  LicensorCity                                  string
+  LicensorCountry                               string
+  LicensorEmail                                 string
+  LicensorExtendedAddress                       string
+  LicensorID                                    string
+  LicensorName                                  string
+  LicensorPostalCode                            string
+  LicensorRegion                                string
+  LicensorStreetAddress                         string
+  LicensorTelephone1                            string
+  LicensorTelephone2                            string
+  LicensorTelephoneType1                        string
+  LicensorTelephoneType2                        string
+  LicensorURL                                   string
 
 =head2 ICC_Profile Tags
 
@@ -9030,6 +9035,7 @@ DiMAGE X and Xt.
            ShotInfoD7000                        Nikon ShotInfoD7000
            ShotInfoD4                           Nikon ShotInfoD4
            ShotInfoD4S                          Nikon ShotInfoD4S
+           ShotInfoD500                         Nikon ShotInfoD500
            ShotInfo02xx                         Nikon ShotInfo
            ShotInfoUnknown                      Nikon ShotInfo
   0x0092   HueAdjustment                        int16s
@@ -9475,6 +9481,21 @@ These tags are extracted from encrypted data in images from the D4S.
   13579    RollAngle                            fixed32u
   13583    PitchAngle                           fixed32u
   13587    YawAngle                             fixed32u
+
+=head3 Nikon ShotInfoD500 Tags
+
+These tags are extracted from encrypted data in images from the D500.
+
+   Index   Tag Name                             Writable
+   -----   --------                             --------
+      0    ShotInfoVersion                      N
+      4    FirmwareVersion                      N
+   1506    FlickerReductionIndicator            int8u & 0x01
+   3709    PhotoShootingMenuBank                int8u & 0x03
+   3716    FlickerReduction                     int8u & 0x20
+           PhotoShootingMenuBankImageArea       int8u & 0x07
+   3819    CustomSettingsD500                   NikonCustom SettingsD500
+  11442    ExtendedPhotoShootingBanks           int8u & 0x01
 
 =head3 Nikon ShotInfo Tags
 
@@ -10674,6 +10695,102 @@ Custom settings for the D4 and D4S.
    53.1    MovieSubSelectorAssignmentPlusDials  int8u & 0x10
    54.1    AssignRemoteFnButton                 int8u & 0x1f
    55.1    LensFocusFunctionButtons             int8u & 0x3f
+
+=head3 NikonCustom SettingsD500 Tags
+
+Custom settings for the D500
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+    0.1    CustomSettingsBank                   int8u & 0x03
+    1.1    AF-CPrioritySelection                int8u & 0xc0
+    1.2    NumberOfFocusPoints                  int8u & 0x10
+    1.3    Three-DTrackingFaceDetection         int8u & 0x08
+    1.4    AF-SPrioritySelection                int8u & 0x20
+    1.5    BlockShotAFResponse                  int8u & 0x07
+    2.1    FocusPointWrap                       int8u & 0x08
+    2.2    AFPointBrightness                    int8u & 0x06
+    4.1    ISODisplay                           int8u & 0x08
+    4.2    GridDisplay                          int8u & 0x02
+    5.1    LCDIllumination                      int8u & 0x20
+    5.2    ElectronicFront-CurtainShutter       int8u & 0x08
+    6.1    ReverseIndicators                    int8u & 0x80
+    6.2    CommandDialsReverseRotation          int8u & 0x18
+    6.3    EasyExposureCompensation             int8u & 0x03
+    7.1    ExposureControlStepSize              int8u & 0xc0
+    7.2    ISOStepSize                          int8u & 0x30
+    7.3    ExposureCompStepSize                 int8u & 0x0c
+    8.1    CenterWeightedAreaSize               int8u & 0xe0
+    8.2    FineTuneOptMatrixMetering            int8u & 0x0f
+    9.1    FineTuneOptCenterWeighted            int8u & 0xf0
+    9.2    FineTuneOptSpotMetering              int8u & 0x0f
+   10.1    MultiSelectorShootMode               int8u & 0xe0
+   10.2    MultiSelectorPlaybackMode            int8u & 0x0c
+   10.3    MultiSelector                        int8u & 0x01
+   11.1    ExposureDelayMode                    int8u & 0xc0
+   11.2    CLModeShootingSpeed                  int8u & 0x0f
+   12.1    MaxContinuousRelease                 int8u
+   13.1    AutoBracketOrder                     int8u & 0x10
+   13.2    AutoBracketModeM                     int8u & 0x0c
+   14.1    Func1Button                          int8u & 0x3f
+   15.1    PreviewButton                        int8u & 0x3f
+   16.1    AssignBktButton                      int8u & 0x07
+   18.1    CommandDialsChangeMainSub            int8u & 0xe0
+   18.2    CommandDialsMenuAndPlayback          int8u & 0x18
+   18.3    CommandDialsApertureSetting          int8u & 0x04
+   18.4    ReleaseButtonToUseDial               int8u & 0x01
+   19.1    StandbyTimer                         int8u & 0xf0
+   20.1    SelfTimerTime                        int8u & 0xc0
+   20.2    SelfTimerShotInterval                int8u & 0x30
+   20.3    SelfTimerShotCount                   int8u & 0x0f
+   21.1    ImageReviewMonitorOffTime            int8u & 0xe0
+   21.2    LiveViewMonitorOffTime               int8u & 0x1c
+   22.1    MenuMonitorOffTime                   int8u & 0xe0
+   22.2    ShootingInfoMonitorOffTime           int8u & 0x1c
+   23.1    FlashSyncSpeed                       int8u & 0xf0
+   23.2    FlashShutterSpeed                    int8u & 0x0f
+   31.1    ModelingFlash                        int8u & 0x20
+   36.1    PlaybackMonitorOffTime               int8u & 0xe0
+   37.1    MultiSelectorLiveView                int8u & 0xc0
+   38.1    ShutterSpeedLock                     int8u & 0x80
+   38.2    ApertureLock                         int8u & 0x40
+   38.3    MovieShutterButton                   int8u & 0x10
+   38.4    FlashExposureCompArea                int8u & 0x04
+   38.5    AutoFlashISOSensitivity              int8u & 0x02
+   41.1    MoviePreviewButton                   int8u & 0xf0
+   41.2    MoviePreviewButton                   int8u & 0x0f
+   42.1    Func1ButtonPlusDials                 int8u & 0x0f
+   43.1    PreviewButtonPlusDials               int8u & 0x0f
+   45.1    AssignMovieRecordButtonPlusDials     int8u & 0x0f
+   46.1    FineTuneOptHighlightWeighted         int8u & 0x0f
+   47.1    DynamicAreaAFDisplay                 int8u & 0x80
+   47.2    AFPointIllumination                  int8u & 0x40
+   47.3    StoreByOrientation                   int8u & 0x18
+   47.4    GroupAreaAFIllumination              int8u & 0x04
+   48.1    MatrixMetering                       int8u & 0x80
+   48.2    LiveViewButtonOptions                int8u & 0x30
+   48.3    AFModeRestrictions                   int8u & 0x03
+   49.1    LimitAFAreaModeSelection             int8u & 0x7e
+   52.1    LensFocusFunctionButtons             int8u & 0x3f
+   66.1    VerticalMultiSelector                int8u & 0xff
+   67.1    AssignMB-D17FuncButton               int8u & 0x3f
+   68.1    AssignMB-D17FuncButtonPlusDials      int8u & 0x0f
+   70.1    AF-OnButton                          int8u & 0x3f
+   71.1    SubSelector                          int8u & 0x80
+   72.1    SubSelectorCenter                    int8u & 0x3f
+   73.1    SubSelectorPlusDials                 int8u & 0x0f
+   74.1    AssignMovieSubselector               int8u & 0xf0
+   75.1    AssignMovieFunc1ButtonPlusDials      int8u & 0x10
+   75.2    AssignMoviePreviewButtonPlusDials    int8u & 0x01
+   76.1    AssignMovieSubselectorPlusDials      int8u & 0x10
+   77.1    SyncReleaseMode                      int8u & 0x80
+   78.1    Three-DTrackingWatchArea             int8u & 0x80
+   78.2    SubjectMotion                        int8u & 0x60
+   78.3    AFActivation                         int8u & 0x08
+   78.4    ShutterReleaseButtonAE-L             int8u & 0x03
+   79.1    AssignMB-D17AF-OnButton              int8u & 0x7f
+   80.1    Func2Button                          int8u & 0x3f
+   82.1    AssignMovieFunc2Button               int8u & 0x70
 
 =head2 NikonCapture Tags
 
@@ -28711,7 +28828,7 @@ tag is used for dry-run testing before writing FileName.
   FileModifyDate             System             Y!
   FileName                   System             Y!
   FilePath                   System             N
-  FilePermissions            System             N
+  FilePermissions            System             Y!
   FileSequence               ExifTool           N
   FileSize                   System             N
   FileType                   File               N

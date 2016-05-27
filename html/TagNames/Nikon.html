@@ -358,9 +358,10 @@ causes the other information to be re-encrypted with the new key)</span></span><
   <br>ShotInfoD7000
   <br>ShotInfoD4
   <br>ShotInfoD4S
+  <br>ShotInfoD500
   <br>ShotInfo02xx
   <br>ShotInfoUnknown</td>
-<td class=c>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-</td>
+<td class=c>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-</td>
 <td>--&gt; <a href='Nikon.html#ShotInfoD40'>Nikon ShotInfoD40 Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfoD80'>Nikon ShotInfoD80 Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfoD90'>Nikon ShotInfoD90 Tags</a>
@@ -380,6 +381,7 @@ causes the other information to be re-encrypted with the new key)</span></span><
   <br>--&gt; <a href='Nikon.html#ShotInfoD7000'>Nikon ShotInfoD7000 Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfoD4'>Nikon ShotInfoD4 Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfoD4S'>Nikon ShotInfoD4S Tags</a>
+  <br>--&gt; <a href='Nikon.html#ShotInfoD500'>Nikon ShotInfoD500 Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfo'>Nikon ShotInfo Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfo'>Nikon ShotInfo Tags</a></td></tr>
 <tr>
@@ -2172,6 +2174,64 @@ firmware 1.01b.</p>
 <td>YawAngle</td>
 <td class=c>fixed32u</td>
 <td><span class=s><span class=n>(the camera pitch angle when shooting in portrait orientation)</span></span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ShotInfoD500'>Nikon ShotInfoD500 Tags</a></h2>
+<p>These tags are extracted from encrypted data in images from the D500.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>ShotInfoVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>FirmwareVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='1506 = 0x5e2'>1506</td>
+<td>FlickerReductionIndicator</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x01]
+  <br>0x0 = On
+  <br>0x1 = Off</span></td></tr>
+<tr class=b>
+<td class=r title='3709 = 0xe7d'>3709</td>
+<td>PhotoShootingMenuBank</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x03]
+  <br>0x0 = A
+  <br>0x1 = B
+  <br>0x2 = C
+  <br>0x3 = D</span></td></tr>
+<tr>
+<td class=r title='3716 = 0xe84'>3716</td>
+<td>FlickerReduction
+  <br>PhotoShootingMenuBankImageArea</td>
+<td class=c>int8u<br>int8u</td>
+<td><span class=s>[Mask 0x20]
+  <br>0x0 = Enable
+  <br>0x20 = Disable
+  <br>[Mask 0x07]
+  <br>0x1 = DX (24x16)
+  <br>0x4 = 1.3x (18x12)</span></td></tr>
+<tr class=b>
+<td class=r title='3819 = 0xeeb'>3819</td>
+<td>CustomSettingsD500</td>
+<td class=c>-</td>
+<td>--&gt; <a href='NikonCustom.html#SettingsD500'>NikonCustom SettingsD500 Tags</a></td></tr>
+<tr>
+<td class=r title='11442 = 0x2cb2'>11442</td>
+<td>ExtendedPhotoShootingBanks</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x01]
+  <br>0x0 = On
+  <br>0x1 = Off</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='ShotInfo'>Nikon ShotInfo Tags</a></h2>
@@ -4860,7 +4920,7 @@ ExifTool to choose in these cases (see the
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised May 3, 2016</i>
+<br><i>Last revised May 26, 2016</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

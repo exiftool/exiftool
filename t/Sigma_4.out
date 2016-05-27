@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.93
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.18
 [File, System, Image] FileName - File Name: Sigma.x3f
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 1464 bytes
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2005:11:14 14:47:22-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:18 07:17:35-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:03:07 15:31:55-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2016:05:17 10:04:21-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2016:05:16 13:00:37-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: X3F
 [File, File, Image] FileTypeExtension - File Type Extension: x3f
@@ -45,7 +45,7 @@
 [SigmaRaw, SigmaRaw, Image] EXPNET - Net Exposure Compensation: 0
 [SigmaRaw, SigmaRaw, Camera] AEMODE - Metering Mode: 8-segment
 [SigmaRaw, SigmaRaw, Camera] DRIVE - Drive Mode: Single Shot
-[SigmaRaw, SigmaRaw, Camera] LENSMODEL - Lens Type: Sigma Lens (145)
+[SigmaRaw, SigmaRaw, Camera] LENSMODEL - Lens Type: Sigma Lens (0x145)
 [SigmaRaw, SigmaRaw, Image] APERTURE - F Number: 8.4
 [SigmaRaw, SigmaRaw, Camera] AP_DESC - Aperture Displayed: 8
 [SigmaRaw, SigmaRaw, Camera] LENSARANGE - Lens Aperture Range: 29 to 4.5

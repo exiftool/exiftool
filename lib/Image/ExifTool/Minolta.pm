@@ -49,7 +49,7 @@ use vars qw($VERSION %minoltaLensTypes %minoltaTeleconverters %minoltaColorMode
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.33';
+$VERSION = '2.34';
 
 # Full list of product codes for Sony-compatible Minolta lenses
 # (ref http://www.kb.sony.com/selfservice/documentLink.do?externalId=C1000570)
@@ -160,7 +160,8 @@ $VERSION = '2.33';
 
 # high bytes in Sony LensID's identifying Metabones adapters and high bytes of Canon LensID's
 %metabonesID = (
-    0xef00 => \ 'Metabones Adapter',        # with Canon LensID 0x00xx
+    # 0xef00 is used by Metabones, Fotodiox, Sigma and Viltrox adapters (JR)
+    0xef00 => \ 'Canon EF Adapter',         # with Canon LensID 0x00xx
     0xf000 => 0xef00,                       # with Canon LensID 0x01xx
     0xf100 => 0xef00,                       # with Canon LensID 0x02xx
     0xff00 => 0xef00,                       # with Canon LensID 0x10xx
@@ -192,11 +193,18 @@ $VERSION = '2.33';
         # Note: Metabones Smart Adapter firmware versions before 31 kill
         # the high byte for 2-byte Canon LensType values, so the reported lens
         # will be incorrect for these
-        my $mb = $metabonesID{$id} or return undef;
-        ref $mb or $id = $mb, $mb = $metabonesID{$id};
-        require Image::ExifTool::Canon;
-        my $lens = $Image::ExifTool::Canon::canonLensTypes{$val - $id};
-        return $lens ? "$lens + $$mb" : undef;
+        my $mb = $metabonesID{$id};
+        if ($mb) {
+            ref $mb or $id = $mb, $mb = $metabonesID{$id};
+            require Image::ExifTool::Canon;
+            my $lens = $Image::ExifTool::Canon::canonLensTypes{$val - $id};
+            return "$lens + $$mb" if $lens;
+        } elsif ($val >= 0x4900) { # test for Sigma MC-11 adapter with Sigma lens
+            require Image::ExifTool::Sigma;
+            my $lens = $Image::ExifTool::Sigma::sigmaLensTypes{$val - 0x4900};
+            return "$lens + MC-11" if $lens;
+        }
+        return undef;
     },
     0 => 'Minolta AF 28-85mm F3.5-4.5 New', # New added (ref 13/18)
     1 => 'Minolta AF 80-200mm F2.8 HS-APO G', # white
@@ -365,6 +373,7 @@ $VERSION = '2.33';
     255.7 => 'Tamron SP AF 70-200mm F2.8 Di LD IF Macro', #22 (Model A001)
     255.8 => 'Tamron SP AF 28-75mm F2.8 XR Di LD Aspherical IF', #24 (Model A09)
     255.9 => 'Tamron AF 90-300mm F4.5-5.6 Telemacro', #Fredrik Agert
+    18688 => 'Sigma MC-11 Adapter', #JR (to this, add Sigma LensType)
     25501 => 'Minolta AF 50mm F1.7', #7
     25511 => 'Minolta AF 35-70mm F4 or Other Lens',
     25511.1 => 'Sigma UC AF 28-70mm F3.5-4.5', #12/16(HighSpeed-AF)
@@ -484,7 +493,7 @@ $VERSION = '2.33';
     26721 => 'Minolta AF 24-105mm F3.5-4.5 (D)', #11
     # 30464: newer firmware versions of the Speed Booster report type 30464 (=0x7700)
     # - this is the base to which the Canon LensType is added
-    30464 => 'Metabones Canon EF Speed Booster', #Metabones
+    30464 => 'Metabones Canon EF Speed Booster', #Metabones (to this, add Canon LensType)
     45671 => 'Tokina 70-210mm F4-5.6', #22
     45711 => 'Vivitar 70-210mm F4.5-5.6', #IB
     45741 => '2x Teleconverter or Tamron or Tokina Lens', #18
@@ -497,13 +506,13 @@ $VERSION = '2.33';
     45871 => 'Tamron AF 70-210mm F2.8 SP LD', #Fabio Suprani
     # 48128: the Speed Booster Ultra appears to report type 48128 (=0xbc00)
     # - this is the base to which the Canon LensType is added
-    48128 => 'Metabones Canon EF Speed Booster Ultra', #JR
+    48128 => 'Metabones Canon EF Speed Booster Ultra', #JR (to this, add Canon LensType)
     # 61184: older firmware versions of both the Speed Booster and the Smart Adapter
     # report type 61184 (=0xef00), and add only the lower byte of the Canon LensType (ref JR).
     # For newer firmware versions this is only used by the Smart Adapter, and
     # the full Canon LensType code is added - PH
     # the metabones adapter translates Canon L -> G, II -> II, USM -> SSM, IS -> OSS (ref JR)
-    61184 => 'Metabones Canon EF Adapter or Other Adapter', #JR (also Fotodiox or Viltrox)
+    61184 => 'Canon EF Adapter', #JR (also Fotodiox or Viltrox) (to this, add Canon LensType)
     # all M42-type lenses give a value of 65535 (and FocalLength=0, FNumber=1)
     65535 => 'E-Mount, T-Mount, Other Lens or no lens', #JD/JR
 #

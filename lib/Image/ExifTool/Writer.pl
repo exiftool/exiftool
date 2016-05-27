@@ -1528,7 +1528,7 @@ sub CountNewValues($)
     my $pseudo = 0;
     if ($newVal) {
         # (Note: all writable "pseudo" tags must be found in Extra table)
-        foreach $tag (qw{FileName Directory FileModifyDate FileCreateDate HardLink TestName}) {
+        foreach $tag (qw{FileName FilePermissions Directory FileModifyDate FileCreateDate HardLink TestName}) {
             ++$pseudo if defined $$newVal{$Image::ExifTool::Extra{$tag}};
         }
     }
@@ -1774,6 +1774,20 @@ sub SetFileName($$;$$)
 }
 
 #------------------------------------------------------------------------------
+# Set file permissions
+# Inputs: 0) Exiftool ref, 1) file name or glob
+# Returns: 1=permissions were set, 0=didn't try, -1=error (and warning set)
+sub SetFilePermissions($$)
+{
+    my ($self, $file) = @_;
+    my $perms = $self->GetNewValue('FilePermissions');
+    return 0 unless defined $perms;
+    return 1 if eval { chmod($perms, $file) };
+    $self->WarnOnce('Error setting FilePermissions');
+    return -1;
+}
+
+#------------------------------------------------------------------------------
 # Write information back to file
 # Inputs: 0) ExifTool object reference,
 #         1) input filename, file ref, RAF ref, or scalar ref (or '' or undef to create from scratch)
@@ -1796,16 +1810,16 @@ sub WriteInfo($$;$$)
     # first, save original file modify date if necessary
     # (do this now in case we are modifying file in place and shifting date)
     my ($nvHash, $nvHash2, $originalTime, $createTime);
-    my $fileModifyDate = $self->GetNewValue('FileModifyDate', \$nvHash);
-    my $fileCreateDate = $self->GetNewValue('FileCreateDate', \$nvHash2);
+    my $setModDate = defined $self->GetNewValue('FileModifyDate', \$nvHash);
+    my $setCreateDate = defined $self->GetNewValue('FileCreateDate', \$nvHash2);
     my ($aTime, $mTime, $cTime);
-    if (defined $fileModifyDate and $self->IsOverwriting($nvHash) < 0 and
+    if ($setModDate and $self->IsOverwriting($nvHash) < 0 and
         defined $infile and ref $infile ne 'SCALAR')
     {
         ($aTime, $mTime, $cTime) = $self->GetFileTime($infile);
         $originalTime = $mTime;
     }
-    if (defined $fileCreateDate and $self->IsOverwriting($nvHash2) < 0 and
+    if ($setCreateDate and $self->IsOverwriting($nvHash2) < 0 and
         defined $infile and ref $infile ne 'SCALAR')
     {
         ($aTime, $mTime, $cTime) = $self->GetFileTime($infile) unless defined $cTime;
@@ -1829,11 +1843,10 @@ sub WriteInfo($$;$$)
         }
         if ($numNew == $numPseudo) {
             $rtnVal = 2;
-            if (defined $fileModifyDate and (not ref $infile or UNIVERSAL::isa($infile,'GLOB'))) {
-                $self->SetFileModifyDate($infile) > 0 and $rtnVal = 1;
-            }
-            if (defined $fileCreateDate and (not ref $infile or UNIVERSAL::isa($infile,'GLOB'))) {
-                $self->SetFileModifyDate($infile, undef, 'FileCreateDate') > 0 and $rtnVal = 1;
+            if (not ref $infile or UNIVERSAL::isa($infile,'GLOB')) {
+                $self->SetFileModifyDate($infile) > 0 and $rtnVal = 1 if $setModDate;
+                $self->SetFileModifyDate($infile, undef, 'FileCreateDate') > 0 and $rtnVal = 1 if $setCreateDate;
+                $self->SetFilePermissions($infile) > 0 and $rtnVal = 1;
             }
             if ((defined $newFileName or defined $newDir) and not ref $infile) {
                 $self->SetFileName($infile) > 0 and $rtnVal = 1;
@@ -2210,7 +2223,7 @@ sub WriteInfo($$;$$)
             $self->Unlink($outfile);
         # else rename temporary file if necessary
         } elsif ($tmpfile) {
-            CopyFileAttrs($infile, $tmpfile);   # copy attributes to new file
+            $self->CopyFileAttrs($infile, $tmpfile);    # copy attributes to new file
             unless ($self->Rename($tmpfile, $infile)) {
                 # some filesystems won't overwrite with 'rename', so try erasing original
                 if (not $self->Unlink($infile)) {
@@ -2226,25 +2239,19 @@ sub WriteInfo($$;$$)
             $outfile = $infile if $rtnVal > 0;
         }
     }
-    # set FileModifyDate if requested (and if possible!)
-    if ($rtnVal > 0 and ($closeOut or ($closeIn and defined $outBuff))) {
+    # set filesystem attributes if requested (and if possible!)
+    if ($rtnVal > 0 and ($closeOut or (defined $outBuff and ($closeIn or UNIVERSAL::isa($infile,'GLOB'))))) {
         my $target = $closeOut ? $outfile : $infile;
-        if (defined $fileModifyDate and
-            $self->SetFileModifyDate($target, $originalTime, undef, 1) > 0)
-        {
-            ++$$self{CHANGED}; # we changed something
+        # set file permissions if requested
+        ++$$self{CHANGED} if $self->SetFilePermissions($target) > 0;
+        if ($closeIn) { # (no use setting file times unless the input file is closed)
+            ++$$self{CHANGED} if $setModDate and $self->SetFileModifyDate($target, $originalTime, undef, 1) > 0;
+            # set FileCreateDate if requested (and if possible!)
+            ++$$self{CHANGED} if $setCreateDate and $self->SetFileModifyDate($target, $createTime, 'FileCreateDate', 1) > 0;
+            # create hard link if requested and no output filename specified (and if possible!)
+            ++$$self{CHANGED} if defined $hardLink and $self->SetFileName($target, $hardLink, 'Link');
+            defined $testName and $self->SetFileName($target, $testName, 'Test');
         }
-        # set FileCreateDate if requested (and if possible!)
-        if (defined $fileCreateDate and
-            $self->SetFileModifyDate($target, $createTime, 'FileCreateDate', 1))
-        {
-            ++$$self{CHANGED}; # we changed something
-        }
-        # create hard link if requested and no output filename specified (and if possible!)
-        if (defined $hardLink and $self->SetFileName($target, $hardLink, 'Link')) {
-            ++$$self{CHANGED}; # we changed something (sort of)
-        }
-        defined $testName and $self->SetFileName($target, $testName, 'Test');
     }
     # check for write error and set appropriate error message and return value
     if ($rtnVal < 0) {
@@ -2613,6 +2620,7 @@ Conv: for (;;) {
                         }
                         $conv = \%newConv;
                     }
+                    undef $evalWarning;
                     if ($$conv{BITMASK}) {
                         my $lookupBits = $$conv{BITMASK};
                         my ($wbits, $tbits) = @$tagInfo{'BitsPerWord','BitsTotal'};
@@ -2635,11 +2643,13 @@ Conv: for (;;) {
                     } else {
                         ($val, $multi) = ReverseLookup($val, $conv);
                     }
-                    unless (defined $val) {
-                        $err = "Can't convert $wgrp1:$tag (" .
-                               ($multi ? 'matches more than one' : 'not in') . " $type)";
+                    if (not defined $val) {
+                        my $prob = $evalWarning ? lcfirst CleanWarning() : ($multi ? 'matches more than one ' : 'not in ') . $type;
+                        $err = "Can't convert $wgrp1:$tag ($prob)";
                         $self->VPrint(2, "$err\n");
                         last Conv;
+                    } elsif ($evalWarning) {
+                        $self->VPrint(2, CleanWarning() . " for $wgrp1:$tag\n");
                     }
                 } elsif (not $$tagInfo{WriteAlso}) {
                     $err = "Can't convert value for $wgrp1:$tag (no ${type}Inv)";
@@ -2903,13 +2913,16 @@ sub CreateDirectory($$)
 
 #------------------------------------------------------------------------------
 # Copy file attributes from one file to another
-# Inputs: 0) source file name, 1) destination file name
+# Inputs: 0) ExifTool ref, 1) source file name, 2) destination file name
 # Notes: eventually add support for extended attributes?
-sub CopyFileAttrs($$)
+sub CopyFileAttrs($$$)
 {
-    my ($src, $dst) = @_;
+    my ($self, $src, $dst) = @_;
     my ($mode, $uid, $gid) = (stat($src))[2, 4, 5];
-    eval { chmod($mode & 07777, $dst) } if defined $mode;
+    # copy file attributes unless we already set them
+    if (defined $mode and not defined $self->GetNewValue('FilePermissions')) {
+        eval { chmod($mode & 07777, $dst) };
+    }
     eval { chown($uid, $gid, $dst) } if defined $uid and defined $gid;
 }
 
@@ -2992,7 +3005,13 @@ PAT:    foreach $pattern (@patterns) {
         }
         unless ($found) {
             # call OTHER conversion routine if available
-            $val = $$conv{OTHER} ? &{$$conv{OTHER}}($val,1,$conv) : undef;
+            if ($$conv{OTHER}) {
+                local $SIG{'__WARN__'} = \&SetWarning;
+                undef $evalWarning;
+                $val = &{$$conv{OTHER}}($val,1,$conv);
+            } else {
+                $val = undef;
+            }
             $multi = 1 if $matches > 1;
         }
     }

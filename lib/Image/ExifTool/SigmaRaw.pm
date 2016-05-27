@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Sigma;
 
-$VERSION = '1.24';
+$VERSION = '1.25';
 
 sub ProcessX3FHeader($$$);
 sub ProcessX3FDirectory($$$);
@@ -226,9 +226,11 @@ sub ProcessX3FProperties($$$);
     LENSFRANGE  => 'LensFocalRange',
     LENSMODEL   => {
         Name => 'LensType',
-        ValueConvInv => '$val=~s/\.\d+$//; $val', # (truncate decimal part)
-        PrintConv => \%Image::ExifTool::Sigma::sigmaLensTypes,
+        ValueConv => '$val =~ /^[0-9a-f]+$/i ? hex($val) : $val',
+        ValueConvInv => '$val=~s/\.\d+$//; IsInt($val) ? sprintf("%x",$val) : $val', # (truncate decimal part)
         SeparateTable => 'Sigma LensType',
+        PrintHex => 1,
+        PrintConv => \%Image::ExifTool::Sigma::sigmaLensTypes,
     },
     PMODE => {
         Name => 'ExposureProgram',

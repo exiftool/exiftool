@@ -7,6 +7,17 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.15. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+May 27, 2016 - Version 10.18
+
+  - Added a few new Sony/Minolta lenses (thanks Jos Roost)
+  - Added ability to write FilePermissions
+  - Added a number of new Sigma LensTypes (thanks LibRaw)
+  - Decode NikonCustom settings for the D500 (thanks Warren Hatch)
+  - Decode PLUS MediaSummaryCode values
+  - Use hexadecimal for Sigma LensType values
+  - Changed -fileOrder option to sort numbers in strings numerically
+  - Fixed typo in Samsung lens name
+
 May 16, 2016 - Version 10.17
 
   - Added support for Leica X-U (Typ 113) maker notes

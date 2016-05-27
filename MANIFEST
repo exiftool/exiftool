@@ -105,6 +105,7 @@ html/TagNames/PDF.html
 html/TagNames/PGF.html
 html/TagNames/PICT.html
 html/TagNames/PLIST.html
+html/TagNames/PLUS.html
 html/TagNames/PNG.html
 html/TagNames/PSP.html
 html/TagNames/Palm.html
@@ -309,6 +310,7 @@ lib/Image/ExifTool/PDF.pm
 lib/Image/ExifTool/PGF.pm
 lib/Image/ExifTool/PICT.pm
 lib/Image/ExifTool/PLIST.pm
+lib/Image/ExifTool/PLUS.pm
 lib/Image/ExifTool/PNG.pm
 lib/Image/ExifTool/PPM.pm
 lib/Image/ExifTool/PSP.pm
@@ -633,6 +635,8 @@ t/PICT_2.out
 t/PLIST.t
 t/PLIST_2.out
 t/PLIST_3.out
+t/PLUS.t
+t/PLUS_2.out
 t/PNG.t
 t/PNG_2.out
 t/PNG_3.out
@@ -909,6 +913,7 @@ t/images/PGF.pgf
 t/images/PICT.pict
 t/images/PLIST-bin.plist
 t/images/PLIST-xml.plist
+t/images/PLUS.xmp
 t/images/PNG.png
 t/images/PPM.ppm
 t/images/PSP.psp

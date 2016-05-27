@@ -516,10 +516,11 @@ numerical.
                   used to convert unknown values.  The OTHER subroutine takes 3
                   arguments: the value, a flag which is set for the inverse
                   conversion, and a reference to the PrintConv hash, and returns
-                  the converted value or undef on error.  The lookup hash may
-                  also contain a 'Notes' entry which is used for documentation
-                  if the SeparateTable flag is set).  In an expression, $self is
-                  a reference to the current ExifTool object, $val is the Raw
+                  the converted value or undef on error -- it may call warn() to
+                  return an error message.  The lookup hash may also contain a
+                  'Notes' entry which is used for documentation if the
+                  SeparateTable flag is set).  In an expression, $self is a
+                  reference to the current ExifTool object, $val is the Raw
                   value, and $tag is the tag key.  The subroutine takes 2
                   arguments: the Raw value and a reference to the current
                   ExifTool object.  The expression or subroutine is evaluated
@@ -540,18 +541,17 @@ numerical.
                   the converted values of the source tags are needed), set the
                   Priority to 0 to avoid taking priority over a valid tag.  If
                   ValueConv is not specified, the Raw value is not converted.
-                  Composite tags which Require or Desire
-                  other tags may access the ValueConv, PrintConv and Raw values
-                  of these tags through the elements of the @val, @prt and @raw
-                  lists respectively (only if there was no RawConv or it
-                  returned a hash reference).  For these tags, $val may be used
-                  in an expression to represent $val[0], and the first argument
-                  passed for a code reference is a reference to @val.
-                  Note:  Warnings issued by these conversions are intercepted by
-                  ExifTool and saved as Warning tags, but since ValueConv and
-                  PrintConv conversions are done on demand, the warnings may be
-                  generated after the list of extracted tags is returned, so may
-                  easily be missed.
+                  Composite tags which Require or Desire other tags may access
+                  the ValueConv, PrintConv and Raw values of these tags through
+                  the elements of the @val, @prt and @raw lists respectively
+                  (only if there was no RawConv or it returned a hash
+                  reference).  For these tags, $val may be used in an expression
+                  to represent $val[0], and the first argument passed for a code
+                  reference is a reference to @val. Note:  Warnings issued by
+                  these conversions are intercepted by ExifTool and saved as
+                  Warning tags, but since ValueConv and PrintConv conversions
+                  are done on demand, the warnings may be generated after the
+                  list of extracted tags is returned, so may easily be missed.
 
   PrintConv     : This entry is similar to ValueConv above, except that it is
                   used to further convert the tag value to a human readable

@@ -589,7 +589,7 @@ my %sCVTermDetails = (
     },
     plus => {
         Name => 'plus',
-        SubDirectory => { TagTable => 'Image::ExifTool::XMP::plus' },
+        SubDirectory => { TagTable => 'Image::ExifTool::PLUS::XMP' },
     },
     cc => {
         Name => 'cc',

@@ -8991,6 +8991,7 @@ DiMAGE X and Xt.
   0x0021   FaceDetect                           Nikon FaceDetect
   0x0022   ActiveD-Lighting                     int16u
   0x0023   PictureControlData                   Nikon PictureControl
+                                                Nikon PictureControl2
   0x0024   WorldTime                            Nikon WorldTime
   0x0025   ISOInfo                              Nikon ISOInfo
   0x002a   VignetteControl                      int16u
@@ -9166,6 +9167,25 @@ DiMAGE X and Xt.
      55    FilterEffect                         int8u
      56    ToningEffect                         int8u
      57    ToningSaturation                     int8u
+
+=head3 Nikon PictureControl2 Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    PictureControlVersion                N
+      4    PictureControlName                   string[20]
+     24    PictureControlBase                   string[20]
+     48    PictureControlAdjust                 int8u
+     49    PictureControlQuickAdjust            int8u
+     51    Sharpness                            int8u
+     53    Clarity                              int8u
+     55    Contrast                             int8u
+     57    Brightness                           int8u
+     59    Saturation                           int8u
+     61    Hue                                  int8u
+     63    FilterEffect                         int8u
+     64    ToningEffect                         int8u
+     65    ToningSaturation                     int8u
 
 =head3 Nikon WorldTime Tags
 
@@ -9490,12 +9510,13 @@ These tags are extracted from encrypted data in images from the D500.
    -----   --------                             --------
       0    ShotInfoVersion                      N
       4    FirmwareVersion                      N
+     80    ShootingMenuOffset                   N
+     88    CustomSettingsOffset                 N
    1506    FlickerReductionIndicator            int8u & 0x01
    3709    PhotoShootingMenuBank                int8u & 0x03
    3716    FlickerReduction                     int8u & 0x20
-           PhotoShootingMenuBankImageArea       int8u & 0x07
+  3716.1    PhotoShootingMenuBankImageArea       int8u & 0x07
    3819    CustomSettingsD500                   NikonCustom SettingsD500
-  11442    ExtendedPhotoShootingBanks           int8u & 0x01
 
 =head3 Nikon ShotInfo Tags
 
@@ -9854,6 +9875,8 @@ various Nikon models.
   ------   --------                             --------
   'NCDB'   NikonNCDB                            Nikon NCDB
   'NCHD'   MakerNoteVersion                     N
+  'NCM1'   PreviewImage1                        N
+  'NCM2'   PreviewImage2                        N
   'NCTG'   NikonTags                            Nikon NCTG
   'NCTH'   ThumbnailImage                       N
   'NCVW'   PreviewImage                         N
@@ -9883,6 +9906,7 @@ videos from some Nikon cameras.
   0x0032       AudioChannels                    N
   0x0033       AudioBitsPerSample               N
   0x0034       AudioSampleRate                  N
+  0x1002       NikonDateTime                    N
   0x110829a    ExposureTime                     N
   0x110829d    FNumber                          N
   0x1108822    ExposureProgram                  N
@@ -9910,7 +9934,9 @@ videos from some Nikon cameras.
   0x200001b    CropHiSpeed                      int16u[7]~
   0x200001e    ColorSpace                       N
   0x200001f    VRInfo                           Nikon VRInfo
+  0x2000022    ActiveD-Lighting                 int16u
   0x2000023    PictureControlData               Nikon PictureControl
+                                                Nikon PictureControl2
   0x2000024    WorldTime                        Nikon WorldTime
   0x2000025    ISOInfo                          Nikon ISOInfo
   0x200002c    UnknownInfo                      Nikon UnknownInfo
@@ -9919,6 +9945,10 @@ videos from some Nikon cameras.
   0x2000083    LensType                         N
   0x2000084    Lens                             N
   0x2000087    FlashMode                        int8u
+  0x20000a8    FlashInfo0100                    Nikon FlashInfo0100
+               FlashInfo0102                    Nikon FlashInfo0102
+               FlashInfo0103                    Nikon FlashInfo0103
+               FlashInfoUnknown                 Nikon FlashInfoUnknown
   0x20000ab    VariProgram                      string
   0x20000b1    HighISONoiseReduction            int16u
   0x20000b7    AFInfo2                          Nikon AFInfo2

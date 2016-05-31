@@ -7,11 +7,18 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.15. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+May 31, 2016 - Version 10.19
+
+  - Added a few new Sony LensType values (thanks Jos Roost)
+  - Decode more Nikon tags (thanks Warren Hatch)
+  - Fixed an incorrect Sigma LensType (thanks LibRaw)
+  - Fixed decoding of D500 custom settings for NEF images (thanks Warren Hatch)
+
 May 27, 2016 - Version 10.18
 
+  - Added a number of new Sigma LensTypes (thanks LibRaw)
   - Added a few new Sony/Minolta lenses (thanks Jos Roost)
   - Added ability to write FilePermissions
-  - Added a number of new Sigma LensTypes (thanks LibRaw)
   - Decode NikonCustom settings for the D500 (thanks Warren Hatch)
   - Decode PLUS MediaSummaryCode values
   - Use hexadecimal for Sigma LensType values

@@ -193,7 +193,8 @@ causes the other information to be re-encrypted with the new key)</span></span><
 <td title='0x0023 = 35'>0x0023</td>
 <td>PictureControlData</td>
 <td class=c title=' ! = Unsafe'>undef!</td>
-<td>--&gt; <a href='Nikon.html#PictureControl'>Nikon PictureControl Tags</a></td></tr>
+<td>--&gt; <a href='Nikon.html#PictureControl'>Nikon PictureControl Tags</a>
+  <br>--&gt; <a href='Nikon.html#PictureControl2'>Nikon PictureControl2 Tags</a></td></tr>
 <tr class=b>
 <td title='0x0024 = 36'>0x0024</td>
 <td>WorldTime</td>
@@ -978,6 +979,105 @@ FaceDetectFrameSize)</span></span></td></tr>
 </td></tr>
 <tr>
 <td class=r title='57 = 0x39'>57</td>
+<td>ToningSaturation</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='PictureControl2'>Nikon PictureControl2 Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>PictureControlVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>PictureControlName</td>
+<td class=c>string[20]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='24 = 0x18'>24</td>
+<td>PictureControlBase</td>
+<td class=c>string[20]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='48 = 0x30'>48</td>
+<td>PictureControlAdjust</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Default Settings
+  <br>1 = Quick Adjust
+  <br>2 = Full Control</span></td></tr>
+<tr>
+<td class=r title='49 = 0x31'>49</td>
+<td>PictureControlQuickAdjust</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='51 = 0x33'>51</td>
+<td>Sharpness</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='53 = 0x35'>53</td>
+<td>Clarity</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='55 = 0x37'>55</td>
+<td>Contrast</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='57 = 0x39'>57</td>
+<td>Brightness</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='59 = 0x3b'>59</td>
+<td>Saturation</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='61 = 0x3d'>61</td>
+<td>Hue</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='63 = 0x3f'>63</td>
+<td>FilterEffect</td>
+<td class=c>int8u</td>
+<td><table class=cols><tr>
+  <td>0x80 = Off
+  <br>0x81 = Yellow
+  <br>0x82 = Orange</td><td>&nbsp;&nbsp;</td>
+  <td>0x83 = Red
+  <br>0x84 = Green
+  <br>0xff = n/a</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='64 = 0x40'>64</td>
+<td>ToningEffect</td>
+<td class=c>int8u</td>
+<td><table class=cols><tr>
+  <td>0x80 = B&amp;W
+  <br>0x81 = Sepia
+  <br>0x82 = Cyanotype
+  <br>0x83 = Red
+  <br>0x84 = Yellow
+  <br>0x85 = Green</td><td>&nbsp;&nbsp;</td>
+  <td>0x86 = Blue-green
+  <br>0x87 = Blue
+  <br>0x88 = Purple-blue
+  <br>0x89 = Red-purple
+  <br>0xff = n/a</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='65 = 0x41'>65</td>
 <td>ToningSaturation</td>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
@@ -2194,6 +2294,16 @@ firmware 1.01b.</p>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td class=r title='80 = 0x50'>80</td>
+<td>ShootingMenuOffset</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='88 = 0x58'>88</td>
+<td>CustomSettingsOffset</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td class=r title='1506 = 0x5e2'>1506</td>
 <td>FlickerReductionIndicator</td>
 <td class=c>int8u</td>
@@ -2211,27 +2321,23 @@ firmware 1.01b.</p>
   <br>0x3 = D</span></td></tr>
 <tr>
 <td class=r title='3716 = 0xe84'>3716</td>
-<td>FlickerReduction
-  <br>PhotoShootingMenuBankImageArea</td>
-<td class=c>int8u<br>int8u</td>
+<td>FlickerReduction</td>
+<td class=c>int8u</td>
 <td><span class=s>[Mask 0x20]
   <br>0x0 = Enable
-  <br>0x20 = Disable
-  <br>[Mask 0x07]
+  <br>0x20 = Disable</span></td></tr>
+<tr class=b>
+<td class=r title='3716 = 0xe84'>3716.1</td>
+<td>PhotoShootingMenuBankImageArea</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x07]
   <br>0x1 = DX (24x16)
   <br>0x4 = 1.3x (18x12)</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='3819 = 0xeeb'>3819</td>
 <td>CustomSettingsD500</td>
 <td class=c>-</td>
 <td>--&gt; <a href='NikonCustom.html#SettingsD500'>NikonCustom SettingsD500 Tags</a></td></tr>
-<tr>
-<td class=r title='11442 = 0x2cb2'>11442</td>
-<td>ExtendedPhotoShootingBanks</td>
-<td class=c>int8u</td>
-<td><span class=s>[Mask 0x01]
-  <br>0x0 = On
-  <br>0x1 = Off</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='ShotInfo'>Nikon ShotInfo Tags</a></h2>
@@ -3804,6 +3910,16 @@ various Nikon models.</p>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td>'NCM1'</td>
+<td>PreviewImage1</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'NCM2'</td>
+<td>PreviewImage2</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>'NCTG'</td>
 <td>NikonTags</td>
 <td class=c>-</td>
@@ -3898,16 +4014,21 @@ videos from some Nikon cameras.</p>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td title='0x1002 = 4098'>0x1002</td>
+<td>NikonDateTime</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td title='0x110829a = 17859226'>0x110829a</td>
 <td>ExposureTime</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x110829d = 17859229'>0x110829d</td>
 <td>FNumber</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x1108822 = 17860642'>0x1108822</td>
 <td>ExposureProgram</td>
 <td class=c>N</td>
@@ -3922,12 +4043,12 @@ videos from some Nikon cameras.</p>
   <br>7 = Portrait
   <br>8 = Landscape</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td title='0x1109204 = 17863172'>0x1109204</td>
 <td>ExposureCompensation</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x1109207 = 17863175'>0x1109207</td>
 <td>MeteringMode</td>
 <td class=c>N</td>
@@ -3941,126 +4062,143 @@ videos from some Nikon cameras.</p>
   <br>6 = Partial
   <br>255 = Other</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td title='0x110920a = 17863178'>0x110920a</td>
 <td>FocalLength</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x110a434 = 17867828'>0x110a434</td>
 <td>LensModel</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x1200000 = 18874368'>0x1200000</td>
 <td>GPSVersionID</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x1200001 = 18874369'>0x1200001</td>
 <td>GPSLatitudeRef</td>
 <td class=c>N</td>
 <td><span class=s>&#39;N&#39; = North
   <br>&#39;S&#39; = South</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x1200002 = 18874370'>0x1200002</td>
 <td>GPSLatitude</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x1200003 = 18874371'>0x1200003</td>
 <td>GPSLongitudeRef</td>
 <td class=c>N</td>
 <td><span class=s>&#39;E&#39; = East
   <br>&#39;W&#39; = West</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x1200004 = 18874372'>0x1200004</td>
 <td>GPSLongitude</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x1200005 = 18874373'>0x1200005</td>
 <td>GPSAltitudeRef</td>
 <td class=c>N</td>
 <td><span class=s>0 = Above Sea Level
   <br>1 = Below Sea Level</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x1200006 = 18874374'>0x1200006</td>
 <td>GPSAltitude</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x1200007 = 18874375'>0x1200007</td>
 <td>GPSTimeStamp</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x1200008 = 18874376'>0x1200008</td>
 <td>GPSSatellites</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x1200010 = 18874384'>0x1200010</td>
 <td>GPSImgDirectionRef</td>
 <td class=c>N</td>
 <td><span class=s>&#39;M&#39; = Magnetic North
   <br>&#39;T&#39; = True North</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x1200011 = 18874385'>0x1200011</td>
 <td>GPSImgDirection</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x1200012 = 18874386'>0x1200012</td>
 <td>GPSMapDatum</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x120001d = 18874397'>0x120001d</td>
 <td>GPSDateStamp</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x2000001 = 33554433'>0x2000001</td>
 <td>MakerNoteVersion</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x2000005 = 33554437'>0x2000005</td>
 <td>WhiteBalance</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x2000007 = 33554439'>0x2000007</td>
 <td>FocusMode</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x200000b = 33554443'>0x200000b</td>
 <td>WhiteBalanceFineTune</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x200001b = 33554459'>0x200001b</td>
 <td>CropHiSpeed</td>
 <td class=c title=' ~ = Writable only with -n'>int16u[7]~</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x200001e = 33554462'>0x200001e</td>
 <td>ColorSpace</td>
 <td class=c>N</td>
 <td><span class=s>1 = sRGB
   <br>2 = Adobe RGB</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x200001f = 33554463'>0x200001f</td>
 <td>VRInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Nikon.html#VRInfo'>Nikon VRInfo Tags</a></td></tr>
+<tr>
+<td title='0x2000022 = 33554466'>0x2000022</td>
+<td>ActiveD-Lighting</td>
+<td class=c>int16u</td>
+<td><table class=cols><tr>
+  <td>0 = Off
+  <br>1 = Low
+  <br>3 = Normal
+  <br>5 = High
+  <br>7 = Extra High</td><td>&nbsp;&nbsp;</td>
+  <td>8 = Extra High 1
+  <br>9 = Extra High 2
+  <br>10 = Extra High 3
+  <br>11 = Extra High 4
+  <br>65535 = Auto</td></tr></table>
+</td></tr>
 <tr class=b>
 <td title='0x2000023 = 33554467'>0x2000023</td>
 <td>PictureControlData</td>
 <td class=c>-</td>
-<td>--&gt; <a href='Nikon.html#PictureControl'>Nikon PictureControl Tags</a></td></tr>
+<td>--&gt; <a href='Nikon.html#PictureControl'>Nikon PictureControl Tags</a>
+  <br>--&gt; <a href='Nikon.html#PictureControl2'>Nikon PictureControl2 Tags</a></td></tr>
 <tr>
 <td title='0x2000024 = 33554468'>0x2000024</td>
 <td>WorldTime</td>
@@ -4112,11 +4250,22 @@ videos from some Nikon cameras.</p>
   <br>9 = Fired, TTL Mode</td></tr></table>
 </td></tr>
 <tr>
+<td title='0x20000a8 = 33554600'>0x20000a8</td>
+<td>FlashInfo0100
+  <br>FlashInfo0102
+  <br>FlashInfo0103
+  <br>FlashInfoUnknown</td>
+<td class=c>-<br>-<br>-<br>-</td>
+<td>--&gt; <a href='Nikon.html#FlashInfo0100'>Nikon FlashInfo0100 Tags</a>
+  <br>--&gt; <a href='Nikon.html#FlashInfo0102'>Nikon FlashInfo0102 Tags</a>
+  <br>--&gt; <a href='Nikon.html#FlashInfo0103'>Nikon FlashInfo0103 Tags</a>
+  <br>--&gt; <a href='Nikon.html#FlashInfoUnknown'>Nikon FlashInfoUnknown Tags</a></td></tr>
+<tr class=b>
 <td title='0x20000ab = 33554603'>0x20000ab</td>
 <td>VariProgram</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x20000b1 = 33554609'>0x20000b1</td>
 <td>HighISONoiseReduction</td>
 <td class=c>int16u</td>
@@ -4129,7 +4278,7 @@ videos from some Nikon cameras.</p>
   <br>5 = Medium High
   <br>6 = High</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td title='0x20000b7 = 33554615'>0x20000b7</td>
 <td>AFInfo2</td>
 <td class=c>-</td>
@@ -4920,7 +5069,7 @@ ExifTool to choose in these cases (see the
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised May 26, 2016</i>
+<br><i>Last revised May 30, 2016</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.37';
+$VERSION = '2.38';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -105,10 +105,14 @@ my %sonyLensTypes2 = (
     32828 => 'Sony FE 70-300mm F4.5-5.6 G OSS', #JR
     32830 => 'Sony FE 70-200mm F2.8 GM OSS', #JR
 
+    49201 => 'Zeiss Touit 12mm F2.8', #JR (lens firmware Ver.02)
+    49202 => 'Zeiss Touit 32mm F1.8', #JR (lens firmware Ver.02)
+    49203 => 'Zeiss Touit 50mm F2.8 Macro', #JR (lens firmware Ver.02)
     49216 => 'Zeiss Batis 25mm F2', #JR
     49217 => 'Zeiss Batis 85mm F1.8', #JR
     49218 => 'Zeiss Batis 18mm F2.8', #IB
     49232 => 'Zeiss Loxia 50mm F2', #JR (lens firmware Ver.02)
+    49233 => 'Zeiss Loxia 35mm F2', #JR (lens firmware Ver.02)
     49234 => 'Zeiss Loxia 21mm F2.8', #PH
 
     50480 => 'Sigma 30mm F1.4 DC DN | C 016', #IB/JR

@@ -268,6 +268,7 @@ $VERSION = '3.62';
     155 => 'Canon EF 85mm f/1.8 USM',
     156 => 'Canon EF 28-105mm f/3.5-4.5 USM or Tamron Lens',
     156.1 => 'Tamron SP 70-300mm f/4.0-5.6 Di VC USD', #PH (model A005)
+    156.2 => 'Tamron SP AF 28-105mm f/2.8 LD Aspherical IF', #JR (Model 176D)
     160 => 'Canon EF 20-35mm f/3.5-4.5 USM or Tamron or Tokina Lens',
     160.1 => 'Tamron AF 19-35mm f/3.5-4.5', #44
     160.2 => 'Tokina AT-X 124 AF Pro DX 12-24mm f/4', #49

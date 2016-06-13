@@ -1304,6 +1304,7 @@ L<exifEX namespace|/XMP exifEX Tags> are avoided when writing.
   IsMergedPanorama                              boolean
   LateralChromaticAberrationCorrectionAlreadyApplied boolean
   Lens                                          string
+  LensDistortInfo                               string
   LensID                                        string
   LensInfo                                      string/
   LensSerialNumber                              string/
@@ -1493,6 +1494,7 @@ metadata space with these incredibly bulky image editing parameters.
   DefringePurpleAmount                          integer
   DefringePurpleHueHi                           integer
   DefringePurpleHueLo                           integer
+  Dehaze                                        real
   DNGIgnoreSidecars                             boolean
   Exposure                                      real
   Exposure2012                                  real
@@ -1754,6 +1756,7 @@ metadata space with these incredibly bulky image editing parameters.
   ToneCurvePV2012Green                          string+
   ToneCurvePV2012Red                            string+
   ToneCurveRed                                  string+
+  ToneMapStrength                               real
   UprightCenterMode                             integer
   UprightCenterNormX                            real
   UprightCenterNormY                            real
@@ -3519,12 +3522,32 @@ XMP Paged-Text namespace tags.
   FontName                                      string_+
   FontType                                      string_+
   FontVersion                                   string_+
+  HasVisibleOverprint                           boolean
+  HasVisibleTransparency                        boolean
   MaxPageSize                                   Dimensions Struct
   MaxPageSizeH                                  real_
   MaxPageSizeUnit                               string_
   MaxPageSizeW                                  real_
   NPages                                        integer
   PlateNames                                    string+
+  SwatchGroups                                  SwatchGroup Struct+
+  SwatchGroupsColorants                         Colorant Struct_+
+  SwatchColorantA                               integer_+
+  SwatchColorantB                               integer_+
+  SwatchColorantBlack                           real_+
+  SwatchColorantBlue                            integer_+
+  SwatchColorantCyan                            real_+
+  SwatchColorantGreen                           integer_+
+  SwatchColorantL                               real_+
+  SwatchColorantMagenta                         real_+
+  SwatchColorantMode                            string_+
+  SwatchColorantRed                             integer_+
+  SwatchColorantSwatchName                      string_+
+  SwatchColorantTint                            integer_+
+  SwatchColorantType                            string_+
+  SwatchColorantYellow                          real_+
+  SwatchGroupName                               string_+
+  SwatchGroupType                               integer_+
 
 =head3 XMP Font Struct
 
@@ -3538,6 +3561,14 @@ XMP Paged-Text namespace tags.
   FontName                                      string
   FontType                                      string
   VersionString                                 string
+
+=head3 XMP SwatchGroup Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  Colorants                                     Colorant Struct+
+  GroupName                                     string
+  GroupType                                     integer
 
 =head3 XMP XML Tags
 
@@ -9907,6 +9938,7 @@ videos from some Nikon cameras.
   0x0033       AudioBitsPerSample               N
   0x0034       AudioSampleRate                  N
   0x1002       NikonDateTime                    N
+  0x1013       ElectronicVR                     N
   0x110829a    ExposureTime                     N
   0x110829d    FNumber                          N
   0x1108822    ExposureProgram                  N

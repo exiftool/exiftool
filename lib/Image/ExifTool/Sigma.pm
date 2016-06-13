@@ -10,6 +10,7 @@
 # References:   1) http://www.x3f.info/technotes/FileDocs/MakerNoteDoc.html
 #               IB) Iliah Borg private communication (LibRaw)
 #               NJ) Niels Kristian Bech Jensen
+#               JR) Jos Roost
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::Sigma;
@@ -18,7 +19,7 @@ use strict;
 use vars qw($VERSION %sigmaLensTypes);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.19';
+$VERSION = '1.20';
 
 # sigma LensType lookup (ref IB)
 %sigmaLensTypes = (
@@ -30,27 +31,41 @@ $VERSION = '1.19';
     },
     # 0x0 => 'Sigma 50mm F2.8 EX Macro', (0x0 used for other lenses too)
     # 0x8 - 18-125mm LENSARANGE@18mm=22-4
+    0x10, 'Sigma 50mm F2.8 EX DG MACRO',
+    # (0x10 = 16)
+    16.1 => 'Sigma 70mm F2.8 EX DG Macro',
+    16.2 => 'Sigma 105mm F2.8 EX DG Macro',
     0x16 => 'Sigma 18-50mm F3.5-5.6 DC', #PH
     0x103 => 'Sigma 180mm F3.5 EX IF HSM APO Macro',
     0x104 => 'Sigma 150mm F2.8 EX DG HSM APO Macro',
     0x105 => 'Sigma 180mm F3.5 EX DG HSM APO Macro',
     0x106 => 'Sigma 150mm F2.8 EX DG OS HSM APO Macro',
     0x107 => 'Sigma 180mm F2.8 EX DG OS HSM APO Macro',
-    0x129 => 'Sigma 14mm F2.8 EX Aspherical', #PH
     # (0x129 = 297)
-    297.1 => "Sigma 30mm F1.4",
-    0x131 => 'Sigma 17-70mm F2.8-4.5 DC Macro', #PH
+    0x129 => 'Sigma Lens (0x129)', #PH
+    297.1 => 'Sigma 14mm F2.8 EX Aspherical', #PH
+    297.2 => 'Sigma 30mm F1.4',
+    # (0x131 = 305)
+    0x131 => 'Sigma Lens (0x131)',
+    305.1 => 'Sigma 17-70mm F2.8-4.5 DC Macro', #PH
+    305.2 => 'Sigma 70-200mm F2.8 APO EX HSM',
+    305.3 => 'Sigma 120-300mm F2.8 APO EX IF HSM',
     0x134 => 'Sigma 100-300mm F4 EX DG HSM APO',
     0x135 => 'Sigma 120-300mm F2.8 EX DG HSM APO',
     0x136 => 'Sigma 120-300mm F2.8 EX DG OS HSM APO',
     0x137 => 'Sigma 120-300mm F2.8 DG OS HSM | S',
     0x143 => 'Sigma 600mm F8 Mirror',
-    0x145 => 'Sigma Lens (0x145)', #PH
     # (0x145 = 325)
+    0x145 => 'Sigma Lens (0x145)', #PH
     325.1 => 'Sigma 15-30mm F3.5-4.5 EX DG Aspherical', #PH
     325.2 => 'Sigma 18-50mm F2.8 EX DG', #PH (NC)
     325.3 => 'Sigma 20-40mm F2.8 EX DG', #PH
-    0x152 => 'Sigma APO 800mm F5.6 EX DG HSM',
+    0x150 => 'Sigma 30mm F1.4 DC HSM',
+    # (0x152 = 338)
+    0x152 => 'Sigma Lens (0x152)',
+    338.1 => 'Sigma APO 800mm F5.6 EX DG HSM',
+    338.2 => 'Sigma 12-24mm F4.5-5.6 EX DG ASP HSM',
+    338.3 => 'Sigma 10-20mm F4-5.6 EX DC HSM',
     0x165 => 'Sigma 70-200mm F2.8 EX', # ...but what specific model?:
     # 70-200mm F2.8 EX APO - Original version, minimum focus distance 1.8m (1999)
     # 70-200mm F2.8 EX DG - Adds 'digitally optimized' lens coatings to reduce flare (2005)
@@ -171,8 +186,10 @@ $VERSION = '1.19';
     0x824 => 'Sigma 1.4X Teleconverter EX APO DG',
     0x853 => 'Sigma 18-125mm F3.8-5.6 DC OS HSM',
     0x861 => 'Sigma 18-50mm F2.8-4.5 DC OS HSM', #NJ (SD1)
+    0x870 => 'Sigma 2.0X Teleconverter TC-2001', #JR
     0x875 => 'Sigma 2.0X TC EX APO',
     0x876 => 'Sigma 2.0X Teleconverter EX APO DG',
+    0x879 => 'Sigma 1.4X Teleconverter TC-1401', #JR
     0x880 => 'Sigma 18-250mm F3.5-6.3 DC OS HSM',
     0x882 => 'Sigma 18-200mm F3.5-6.3 II DC OS HSM',
     0x883 => 'Sigma 18-250mm F3.5-6.3 DC Macro OS HSM',
@@ -180,6 +197,7 @@ $VERSION = '1.19';
     0x885 => 'Sigma 18-200mm F3.5-6.3 DC OS HSM Macro | C',
     0x886 => 'Sigma 18-300mm F3.5-6.3 DC OS HSM Macro | C',
     0x888 => 'Sigma 18-200mm F3.5-6.3 DC OS',
+    0x890 => 'Sigma Mount Converter MC-11', #JR
     0x929 => 'Sigma 19mm F2.8 DN | A',
     0x929 => 'Sigma 30mm F2.8 DN | A',
     0x929 => 'Sigma 60mm F2.8 DN | A',
@@ -475,7 +493,8 @@ $VERSION = '1.19';
         Condition => '$$self{Model} =~ /^SIGMA (SD1( Merrill)?|DP\d (Merrill|Quattro))$/i',
         Notes => 'SD1 and Merrill/Quattro models only',
         ValueConv => '$val =~ /^[0-9a-f]+$/i ? hex($val) : $val',
-        ValueConvInv => '$val=~s/\.\d+$//; IsInt($val) ? sprintf("%x",$val) : $val', # (truncate decimal part)
+        # (truncate decimal part and convert hex)
+        ValueConvInv => '$val=~s/\.\d+$//;$val=~/^0x/ and $val=hex($val);IsInt($val) ? sprintf("%x",$val) : $val',
         SeparateTable => 'LensType',
         PrintHex => 1,
         PrintConv => \%sigmaLensTypes,
@@ -487,7 +506,7 @@ $VERSION = '1.19';
         Writable => 'rational64u',
         Count => 2,
         PrintConv => '$val=~s/ / to /; $val',
-        PrintConvInv => '$val=~s/to /; $val',
+        PrintConvInv => '$val=~s/to //; $val',
     },
     0x002b => { #PH
         Name => 'LensMaxApertureRange',

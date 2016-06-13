@@ -130,19 +130,18 @@ my %mediaMatrix = (
             $num .= " ($1 Media Usages:)" if $num =~ /U0*(\d+)/;
             $code =~ tr/0-9A-Z|//dc;    # remove extraneous characters
             $val = "PLUS $ver $num";
-            while ($code =~ /(\d[A-Z]{3})/ig) {
-                my $m = uc $1;
-                my $c = $$conv{$m};
-                if ($c) {
-                    $val .= " $m ($c)";
-                } elsif ($m =~ /^1I([A-Z])([A-Z])/) {   # decode Usage Item count
+            while ($code =~ /(\d[A-Z]{3})/g) {
+                my $mmid = $1;
+                if (defined $$conv{$mmid}) {
+                    $val .= " $mmid ($$conv{$mmid})";
+                } elsif ($mmid =~ /^1I([A-Z])([A-Z])/) {    # decode Usage Item count
                     my $n = (ord($1)-65) * 26 + ord($2)-65 + 1;
                     # (add a separator before each new Media Usage Code)
-                    $val .= "; $m ($n Usage Items:)";
-                } elsif ($m =~ /^1UN([A-Z])/) {         # decode Usage Number
+                    $val .= "; $mmid ($n Usage Items:)";
+                } elsif ($mmid =~ /^1UN([A-Z])/) {          # decode Usage Number
                     $val .= " (Usage Number $1)";
                 } else {
-                    $val .= " $m";
+                    $val .= " $mmid";
                 }
             }
         }

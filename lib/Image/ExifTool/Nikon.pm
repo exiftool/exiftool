@@ -59,7 +59,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.20';
+$VERSION = '3.21';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -6119,7 +6119,10 @@ my %nikonFocalConversions = (
     },
     # 0x1011 - int32u: 0
     # 0x1012 - int32u: 0
-    # 0x1013 - int16u: 0
+    0x1013 => { #HayoBaan
+        Name => 'ElectronicVR',
+        PrintConv => \%offOn,
+    },
     # 0x1021 - int32u[32]: all zeros
 #
 # 0x110**** tags correspond to 0x**** tags in Exif::Main

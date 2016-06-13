@@ -20,7 +20,10 @@ meta-spec:
     url:      http://module-build.sourceforge.net/META-spec-v1.4.html
     version:  1.4
 recommends:
-    Archive::Zip:    0
-    Compress::Zlib:  0
-    Digest::MD5:     0
-    Digest::SHA:     0
+    Archive::Zip:      0
+    Compress::Zlib:    0
+    Digest::MD5:       0
+    Digest::SHA:       0
+    Time::HiRes:       0
+    Unicode::GCString: 0
+

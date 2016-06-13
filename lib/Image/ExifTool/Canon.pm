@@ -83,7 +83,7 @@ sub ProcessSerialData($$$);
 sub ProcessFilters($$$);
 sub SwapWords($);
 
-$VERSION = '3.62';
+$VERSION = '3.63';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -421,6 +421,7 @@ $VERSION = '3.62';
     507 => 'Canon EF 16-35mm f/4L IS USM', #42
     508 => 'Canon EF 11-24mm f/4L USM', #PH
     747 => 'Canon EF 100-400mm f/4.5-5.6L IS II USM', #JR
+    748 => 'Canon EF 100-400mm f/4.5-5.6L IS II USM + 1.4x', #JR (1.4x Mk III)
     750 => 'Canon EF 35mm f/1.4L II USM', #42
     # (STM lenses seem to start with 0x10xx)
     4142 => 'Canon EF-S 18-135mm f/3.5-5.6 IS STM',
@@ -436,6 +437,7 @@ $VERSION = '3.62';
     4152 => 'Canon EF 24-105mm f/3.5-5.6 IS STM', #42
     4153 => 'Canon EF-M 15-45mm f/3.5-6.3 IS STM', #PH
     4154 => 'Canon EF-S 24mm f/2.8 STM', #IB
+    4155 => 'Canon EF-M 28mm f/3.5 Macro IS STM ', #42
     4156 => 'Canon EF 50mm f/1.8 STM', #42
     36912 => 'Canon EF-S 18-135mm f/3.5-5.6 IS USM', #42
     65535 => 'n/a',

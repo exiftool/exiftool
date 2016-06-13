@@ -48,7 +48,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '2.91';
+$VERSION = '2.92';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -373,6 +373,17 @@ my %sPageInfo = (
     B           => { Writable => 'integer' },
     # 'tint' observed in INDD sample - PH
     tint        => { Writable => 'integer', Notes => 'not part of 2010 XMP specification' },
+);
+my %sSwatchGroup = (
+    STRUCT_NAME => 'SwatchGroup',
+    NAMESPACE   => 'xmpG',
+    groupName   => { },
+    groupType   => { Writable => 'integer' },
+    Colorants => {
+        FlatName => 'SwatchColorant',
+        Struct => \%sColorant,
+        List => 'Seq',
+    },
 );
 my %sFont = (
     STRUCT_NAME => 'Font',
@@ -971,6 +982,16 @@ my %sPantryItem = (
         List => 'Seq',
     },
     PlateNames          => { List => 'Seq' },
+    # the following found in an AI file:
+    HasVisibleTransparency => { Writable => 'boolean' },
+    HasVisibleOverprint    => { Writable => 'boolean' },
+    SwatchGroups => {
+        Struct => \%sSwatchGroup,
+        List => 'Seq',
+    },
+    SwatchGroupsColorants => { Name => 'SwatchGroupsColorants', Flat => 1 },
+    SwatchGroupsGroupName => { Name => 'SwatchGroupName',       Flat => 1 },
+    SwatchGroupsGroupType => { Name => 'SwatchGroupType',       Flat => 1 },
 );
 
 # PDF namespace properties (pdf)
@@ -1400,6 +1421,8 @@ my %sPantryItem = (
     NegativeCacheLargePreviewSize       => { Writable => 'integer' },
     JPEGHandling                        => { },
     TIFFHandling                        => { },
+    Dehaze                              => { Writable => 'real' },
+    ToneMapStrength                     => { Writable => 'real' },
 );
 
 # Tiff namespace properties (tiff)
@@ -2083,6 +2106,7 @@ my %sPantryItem = (
     DistortionCorrectionAlreadyApplied  => { Writable => 'boolean' },
     VignetteCorrectionAlreadyApplied    => { Writable => 'boolean' },
     LateralChromaticAberrationCorrectionAlreadyApplied => { Writable => 'boolean' },
+    LensDistortInfo => { }, # (LR 7.5.1, 4 signed rational values)
 );
 
 # IPTC Core namespace properties (Iptc4xmpCore) (ref 4)

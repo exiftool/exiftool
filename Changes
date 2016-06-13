@@ -4,12 +4,32 @@ ExifTool Version History
 
 RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 
-Note: The most recent production release is Version 10.15. (Other versions are
+Note: The most recent production release is Version 10.20. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
+
+June 13, 2016 - Version 10.20 (production release)
+
+  - Added a few new Sigma LensTypes (thanks LibRaw and Jos Roost)
+  - Added a new Sony LensType (thanks Jos Roost)
+  - Added two new Canon LensTypes (thanks Jos Roost and Norbert Wasser)
+  - Added a couple of new PentaxModelID's (thanks Louis Granboulan for one)
+  - Added a new Pentax LensType (thanks Louis Granboulan)
+  - Added a few new Olympus PictureMode values (thanks Daniel Pollock)
+  - Added a few more XMP tags
+  - Decode a new Nikon video tag (thanks Hayo Baan)
+  - Patched to allow protected binary data tags to be extracted when -b is
+    combined with -php or -X if the tag is specifically requested
+  - Fixed bug introduced in version 9.96 where extended XMP is ignored if the
+    MWG module is used
+  - Fixed problem where the MWG module wasn't loaded automatically if there were
+    MWG tags in the argument to the -p option
+  - Fixed column alignment of alternate-language output (requires
+    Unicode::GCString to be installed)
+  - Fixed problem writing Sigma:LensFocalRange
 
 May 31, 2016 - Version 10.19
 
-  - Added a few new Sony LensType values (thanks Jos Roost)
+  - Added a few new Sony and Sigma LensType values (thanks Jos Roost)
   - Decode more Nikon tags (thanks Warren Hatch)
   - Fixed an incorrect Sigma LensType (thanks LibRaw)
   - Fixed decoding of D500 custom settings for NEF images (thanks Warren Hatch)

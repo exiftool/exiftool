@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '10.19';
+$VERSION = '10.20';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -6175,7 +6175,9 @@ sub ProcessJPEG($$)
                     DataPt   => \$buff,
                     Parent   => 'APP1',
                 );
+                $$path[$pn] = 'APP1';
                 $self->ProcessDirectory(\%dirInfo, $tagTablePtr);
+                pop @$path;
             } else {
                 $warn = 'Ignored ';
                 $warn .= 'non-' if $guid ne $goodGuid;

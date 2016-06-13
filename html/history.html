@@ -11,15 +11,36 @@
 
 <p>RSS feed: <a href="http://owl.phy.queensu.ca/~phil/exiftool/rss.xml">http://owl.phy.queensu.ca/~phil/exiftool/rss.xml</a></p>
 
-<p><b>Note:</b> The most recent production release is <a href="Image-ExifTool-10.15.tar.gz">Version 10.15</a>. (Other versions are
+<p><b>Note:</b> The most recent production release is <a href="Image-ExifTool-10.20.tar.gz">Version 10.20</a>. (Other versions are
 considered development releases, and are not uploaded to <a href="http://search.cpan.org/dist/Image-ExifTool/">CPAN</a>.)</p>
 
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v10.20'><b>June 13, 2016 - Version 10.20</b></a> <span class=grn>(production release)</span>
+<ul>
+<li>Added a few new Sigma LensTypes (thanks LibRaw and Jos Roost)
+<li>Added a new Sony LensType (thanks Jos Roost)
+<li>Added two new Canon LensTypes (thanks Jos Roost and Norbert Wasser)
+<li>Added a couple of new PentaxModelID's (thanks Louis Granboulan for one)
+<li>Added a new Pentax LensType (thanks Louis Granboulan)
+<li>Added a few new Olympus PictureMode values (thanks Daniel Pollock)
+<li>Added a few more XMP tags
+<li>Decode a new Nikon video tag (thanks Hayo Baan)
+<li>Patched to allow protected binary data tags to be extracted when -b is
+    combined with -php or -X if the tag is specifically requested
+<li>Fixed bug introduced in version 9.96 where extended XMP is ignored if the
+    MWG module is used
+<li>Fixed problem where the MWG module wasn't loaded automatically if there were
+    MWG tags in the argument to the -p option
+<li>Fixed column alignment of alternate-language output (requires
+    Unicode::GCString to be installed)
+<li>Fixed problem writing Sigma:LensFocalRange
+</ul>
+
 <a name='v10.19'><b>May 31, 2016 - Version 10.19</b></a>
 <ul>
-<li>Added a few new Sony LensType values (thanks Jos Roost)
+<li>Added a few new Sony and Sigma LensType values (thanks Jos Roost)
 <li>Decode more Nikon tags (thanks Warren Hatch)
 <li>Fixed an incorrect Sigma LensType (thanks LibRaw)
 <li>Fixed decoding of D500 custom settings for NEF images (thanks Warren Hatch)

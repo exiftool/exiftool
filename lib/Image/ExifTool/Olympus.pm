@@ -26,6 +26,7 @@
 #              18) Tomasz Kawecki private communication
 #              19) Brad Grier private communication
 #              22) Herbert Kauer private communication
+#              23) Dan Pollock private communication (PEN-F)
 #              IB) Iliah Borg private communication (LibRaw)
 #              NJ) Niels Kristian Bech Jensen private communication
 #------------------------------------------------------------------------------
@@ -38,7 +39,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::APP12;
 
-$VERSION = '2.40';
+$VERSION = '2.41';
 
 sub PrintLensInfo($$$);
 
@@ -2120,6 +2121,13 @@ my %indexInfo = (
             3 => 'Muted',
             4 => 'Portrait',
             5 => 'i-Enhance', #11
+            7 => 'Color Creator', #23
+            9 => 'Color Profile 1', #23
+            10 => 'Color Profile 2', #23
+            11 => 'Color Profile 3', #23
+            12 => 'Monochrome Profile 1', #23
+            13 => 'Monochrome Profile 2', #23
+            14 => 'Monochrome Profile 3', #23
             256 => 'Monotone',
             512 => 'Sepia',
         }],

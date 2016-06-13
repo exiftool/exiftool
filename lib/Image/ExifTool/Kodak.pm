@@ -1858,7 +1858,7 @@ my %sceneModeUsed = (
 %Image::ExifTool::Kodak::frea = (
     GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
     NOTES => 'Information stored in the "frea" atom of Kodak PixPro SP360 MP4 videos.',
-    # tima - 4 bytes: 0 0 0 0x20
+    # tima - 4 bytes: "0 0 0 0x20" or "0 0 0 0x0a"
     thma => { Name => 'ThumbnailImage', Groups => { 2 => 'Preview' }, Binary => 1 },
     scra => { Name => 'PreviewImage',   Groups => { 2 => 'Preview' }, Binary => 1 },
 );

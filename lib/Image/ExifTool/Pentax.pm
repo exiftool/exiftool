@@ -57,7 +57,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::HP;
 
-$VERSION = '3.04';
+$VERSION = '3.05';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -386,6 +386,7 @@ sub PrintFilter($$$);
     '21 6' => '06 Telephoto Zoom 15-45mm F2.8', #PH
     '21 7' => '07 Mount Shield 11.5mm F9', #PH (NC)
     '21 8' => '08 Wide Zoom 3.8-5.9mm F3.7-4', #PH (NC)
+    '21 233' => 'Adapter Q for K-mount Lens', #29
 );
 
 # Pentax model ID codes - PH
@@ -1112,37 +1113,84 @@ my %binaryDataAttrs = (
             },
         },
     ],
-    0x000e => [{ #7
+    0x000e => [{ #29
         Name => 'AFPointSelected',
-        Condition => '$$self{Model} !~ /K-3\b/',
+        Condition => '$$self{Model} =~ /K-1\b/',
         Writable => 'int16u',
-        Notes => 'all models but the K-3',
+        Notes => 'K-1',
         PrintConvColumns => 2,
         PrintConv => [{
-            # 0 - Contrast-detect AF? - PH (K-5)
             0xffff => 'Auto',
             0xfffe => 'Fixed Center',
             0xfffd => 'Automatic Tracking AF', #JD
             0xfffc => 'Face Detect AF', #JD
             0xfffb => 'AF Select', #PH (Q select from 25-areas)
-            0 => 'None', #PH (Q in manual focus mode)
-            1 => 'Upper-left',
-            2 => 'Top',
-            3 => 'Upper-right',
-            4 => 'Left',
-            5 => 'Mid-left',
-            6 => 'Center',
-            7 => 'Mid-right',
-            8 => 'Right',
-            9 => 'Lower-left',
-            10 => 'Bottom',
-            11 => 'Lower-right',
-        },
-        # (second number exists for K-5II(s) is usually 0, but is 1 for AF.C with
-        # AFPointMode=='Select' and extended tracking focus points are enabled in the settings)
-        ],
+            # AF pattern:
+            #       01 02 03 04 05
+            #    06 07 08 09 10 11 12
+            # 13 14 15 16 17 18 19 20 21
+            #    22 23 24 25 26 27 28
+            #       29 30 31 32 33
+            0 => 'None',
+            1 => 'Top-left',
+            2 => 'Top Near-left',
+            3 => 'Top',
+            4 => 'Top Near-right',
+            5 => 'Top-right',
+            6 => 'Upper Far-left',
+            7 => 'Upper-left',
+            8 => 'Upper Near-left',
+            9 => 'Upper-middle',
+            10 => 'Upper Near-right',
+            11 => 'Upper-right',
+            12 => 'Upper Far-right',
+            13 => 'Far Far Left',
+            14 => 'Far Left',
+            15 => 'Left',
+            16 => 'Near-left',
+            17 => 'Center',
+            18 => 'Near-right',
+            19 => 'Right',
+            20 => 'Far Right',
+            21 => 'Far Far Right',
+            22 => 'Lower Far-left',
+            23 => 'Lower-left',
+            24 => 'Lower Near-left',
+            25 => 'Lower-middle',
+            26 => 'Lower Near-right',
+            27 => 'Lower-right',
+            28 => 'Lower Far-right',
+            29 => 'Bottom-left',
+            30 => 'Bottom Near-left',
+            31 => 'Bottom',
+            32 => 'Bottom Near-right',
+            33 => 'Bottom-right',
+            263 => 'Zone Select Upper-left',       # 01,02;06,07,08;14,15,16
+            264 => 'Zone Select Upper Near-left',  # 01,02,03;07,08,09;15,16,17
+            265 => 'Zone Select Upper Middle',     # 02,03,04;08,09,10;16,17,18
+            266 => 'Zone Select Upper Near-right', # 03,04,05;09,10,11;17,18,19
+            267 => 'Zone Select Upper-right',      # 04,05;10,11,12;18,19,20
+            270 => 'Zone Select Far Left',         # 06,07;13,14,15;22,23
+            271 => 'Zone Select Left',             # 06,07,08;14,15,16;22,23,24
+            272 => 'Zone Select Near-left',        # 07,08,09;15,16,17;23,24,25
+            273 => 'Zone Select Center',           # 08,09,10;16,17,18;24,25,26
+            274 => 'Zone Select Near-right',       # 09,10,11;17,18,19;25,26,27
+            275 => 'Zone Select Right',            # 10,11,12;18,19,20;26,27,28
+            276 => 'Zone Select Far Right',        # 11,12;19,20,21;27,28
+            279 => 'Zone Select Lower-left',       # 14,15,16;22,23,24;29,30
+            280 => 'Zone Select Lower Near-left',  # 15,16,17;23,24,25;29,30,31
+            281 => 'Zone Select Lower-middle',     # 16,17,18;24,25,26;30,31,32
+            282 => 'Zone Select Lower Near-right', # 17,18,19;25,26,27;31,32,33
+            283 => 'Zone Select Lower-right',      # 18,19,20;26,27,28;32,33
+        },{
+            0 => 'Single Point',
+            1 => 'Expanded Area 9-point (S)',
+            3 => 'Expanded Area 25-point (M)',
+            5 => 'Expanded Area 33-point (L)',
+        }],
     },{
         Name => 'AFPointSelected',
+        Condition => '$$self{Model} =~ /K-3\b/',
         Writable => 'int16u',
         Notes => 'K-3',
         PrintConvColumns => 2,
@@ -1221,28 +1269,38 @@ my %binaryDataAttrs = (
             3 => 'Expanded Area 25-point (M)',
             5 => 'Expanded Area 27-point (L)',
         }],
+    },{ #7
+        Name => 'AFPointSelected',
+        Writable => 'int16u',
+        Notes => 'other models',
+        PrintConvColumns => 2,
+        PrintConv => [{
+            # 0 - Contrast-detect AF? - PH (K-5)
+            0xffff => 'Auto',
+            0xfffe => 'Fixed Center',
+            0xfffd => 'Automatic Tracking AF', #JD
+            0xfffc => 'Face Detect AF', #JD
+            0xfffb => 'AF Select', #PH (Q select from 25-areas)
+            0 => 'None', #PH (Q in manual focus mode)
+            1 => 'Upper-left',
+            2 => 'Top',
+            3 => 'Upper-right',
+            4 => 'Left',
+            5 => 'Mid-left',
+            6 => 'Center',
+            7 => 'Mid-right',
+            8 => 'Right',
+            9 => 'Lower-left',
+            10 => 'Bottom',
+            11 => 'Lower-right',
+        },
+        # (second number exists for K-5II(s) is usually 0, but is 1 for AF.C with
+        # AFPointMode=='Select' and extended tracking focus points are enabled in the settings)
+        ],
     }],
     0x000f => [{ #PH
         Name => 'AFPointsInFocus',
-        Condition => '$$self{Model} !~ /K-3\b/',
-        Notes => 'models other than the K-3',
-        Writable => 'int16u',
-        PrintHex => 1,
-        PrintConv => {
-            0xffff => 'None',
-            0 => 'Fixed Center or Multiple', #PH/14
-            1 => 'Top-left',
-            2 => 'Top-center',
-            3 => 'Top-right',
-            4 => 'Left',
-            5 => 'Center',
-            6 => 'Right',
-            7 => 'Bottom-left',
-            8 => 'Bottom-center',
-            9 => 'Bottom-right',
-        },
-    },{ #PH
-        Name => 'AFPointsInFocus',
+        Condition => '$$self{Model} =~ /K-3\b/',
         Writable => 'int32u',
         Notes => 'K-3 only',
         PrintHex => 1,
@@ -1277,6 +1335,24 @@ my %binaryDataAttrs = (
                 25 => 'Bottom Near-right',
                 26 => 'Bottom-right',
             },
+        },
+    },{ #PH
+        Name => 'AFPointsInFocus',
+        Notes => 'other models',
+        Writable => 'int16u',
+        PrintHex => 1,
+        PrintConv => {
+            0xffff => 'None',
+            0 => 'Fixed Center or Multiple', #PH/14
+            1 => 'Top-left',
+            2 => 'Top-center',
+            3 => 'Top-right',
+            4 => 'Left',
+            5 => 'Center',
+            6 => 'Right',
+            7 => 'Bottom-left',
+            8 => 'Bottom-center',
+            9 => 'Bottom-right',
         },
     }],
     0x0010 => { #PH
@@ -4592,11 +4668,11 @@ my %binaryDataAttrs = (
     # 0x0a - values: 00,05,0d,15,86,8e,a6,ae
     0x0b => { #JD
         Name => 'AFPointsInFocus',
-        Condition => '$$self{Model} !~ /K-3\b/',
+        Condition => '$$self{Model} !~ /K-[13]\b/',
         Notes => q{
-            models other than the K-3 only.  May report two points in focus even though
-            a single AFPoint has been selected, in which case the selected AFPoint is
-            the first reported
+            models other than the K-1 and K-3.  May report two points in focus even
+            though a single AFPoint has been selected, in which case the selected
+            AFPoint is the first reported
         },
         PrintConvColumns => 2,
         PrintConv => {

@@ -3116,6 +3116,7 @@ XMP Dynamic Media namespace tags.
   VideoAlphaPremultipleColorBlack               real_
   VideoAlphaPremultipleColorBlue                integer_
   VideoAlphaPremultipleColorCyan                real_
+  VideoAlphaPremultipleColorGray                integer_
   VideoAlphaPremultipleColorGreen               integer_
   VideoAlphaPremultipleColorL                   real_
   VideoAlphaPremultipleColorMagenta             real_
@@ -3235,6 +3236,7 @@ XMP Dynamic Media namespace tags.
   Black                                         real
   Blue                                          integer
   Cyan                                          real
+  Gray                                          integer
   Green                                         integer
   Magenta                                       real
   Mode                                          string
@@ -3504,6 +3506,7 @@ XMP Paged-Text namespace tags.
   ColorantBlack                                 real_+
   ColorantBlue                                  integer_+
   ColorantCyan                                  real_+
+  ColorantGray                                  integer_+
   ColorantGreen                                 integer_+
   ColorantL                                     real_+
   ColorantMagenta                               real_+
@@ -3537,6 +3540,7 @@ XMP Paged-Text namespace tags.
   SwatchColorantBlack                           real_+
   SwatchColorantBlue                            integer_+
   SwatchColorantCyan                            real_+
+  SwatchColorantGray                            integer_+
   SwatchColorantGreen                           integer_+
   SwatchColorantL                               real_+
   SwatchColorantMagenta                         real_+
@@ -9105,6 +9109,7 @@ DiMAGE X and Xt.
   0x00a8   FlashInfo0100                        Nikon FlashInfo0100
            FlashInfo0102                        Nikon FlashInfo0102
            FlashInfo0103                        Nikon FlashInfo0103
+           FlashInfo0107                        Nikon FlashInfo0107
            FlashInfoUnknown                     Nikon FlashInfoUnknown
   0x00a9   ImageOptimization                    string
   0x00aa   Saturation                           string
@@ -9462,8 +9467,17 @@ These tags are extracted from encrypted data in images from the D810.
       0    ShotInfoVersion                      N
       4    FirmwareVersion                      N
      64    CustomSettingsOffset                 N
+    464    SecondarySlotFunction                int8u & 0x03
+   5974    AEBracketingSteps                    int8u & 0xff
+   5975    WBBracketingSteps                    int8u & 0xff
    5982    D810MeteringMode                     int8u & 0x03
+   6236    ISOAutoShutterTime                   int8u & 0x3f
+   6237    ISOAutoHiLimit                       int8u & 0xff
    6315    CustomSettingsD810                   NikonCustom SettingsD810
+  14068    RollAngle                            fixed32u
+  14072    PitchAngle                           fixed32u
+  14076    YawAngle                             fixed32u
+  14526    CameraInclination                    int8u & 0x30
 
 =head3 Nikon ShotInfoD5000 Tags
 
@@ -9526,12 +9540,19 @@ These tags are extracted from encrypted data in images from the D4S.
    -----   --------                             --------
       0    ShotInfoVersion                      N
       4    FirmwareVersion                      N
+    464    SecondarySlotFunction                int8u & 0x03
+   5964    AEBracketingSteps                    int8u & 0xff
+   5965    WBBracketingSteps                    int8u & 0xff
+   6221    ReleaseMode                          int8u & 0xff
    6301    CustomSettingsD4S                    NikonCustom SettingsD4
    6338    MultiSelectorLiveViewMode            int8u & 0xc0
+   6378    ISOAutoShutterTime                   int8u & 0x3f
+   6379    ISOAutoHiLimit                       int8u & 0xff
    6461    CustomSettingsD4S                    NikonCustom SettingsD4
   13579    RollAngle                            fixed32u
   13583    PitchAngle                           fixed32u
   13587    YawAngle                             fixed32u
+  13971    CameraInclination                    int8u & 0x30
 
 =head3 Nikon ShotInfoD500 Tags
 
@@ -9543,8 +9564,17 @@ These tags are extracted from encrypted data in images from the D500.
       4    FirmwareVersion                      N
      80    ShootingMenuOffset                   N
      88    CustomSettingsOffset                 N
+    202    CameraInclination                    int8u & 0x03
    1506    FlickerReductionIndicator            int8u & 0x01
+   2004    JPGCompression                       int8u & 0x01
+   2171    AEBracketingSteps                    int8u & 0xff
+   2172    WBBracketingSteps                    int8u & 0xff
+   2179    ADLBracketingStep                    int8u & 0xf0
+   2180    ADLBracketingType                    int8u & 0x0f
    3709    PhotoShootingMenuBank                int8u & 0x03
+   3711    PrimarySlot                          int8u & 0x80
+   3713    ISOAutoShutterTime                   int8u & 0x3f
+   3714    ISOAutoHiLimit                       int8u & 0xff
    3716    FlickerReduction                     int8u & 0x20
   3716.1    PhotoShootingMenuBankImageArea       int8u & 0x07
    3819    CustomSettingsD500                   NikonCustom SettingsD500
@@ -9765,6 +9795,15 @@ D5200, D7000.
      29    FlashExposureComp3                   int8s
      39    FlashExposureComp4                   int8s
 
+=head3 Nikon FlashInfo0107 Tags
+
+These tags are used by the D500.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    FlashInfoVersion                     N
+      8    ExternalFlashStatus                  int8u[1] & 0x81
+
 =head3 Nikon FlashInfoUnknown Tags
 
   Index1   Tag Name                             Writable
@@ -9793,10 +9832,11 @@ These tags are written by Nikon DSLR's which have the live view feature.
       7    PrimaryAFPoint                       int8u
       8    AFPointsUsed                         undef[7]
            AFPointsUsed                         undef[2]
-           AFPointsUsed                         undef[7]
+           AFPointsUsed                         undef[5]
            AFPointsUsed                         undef[17]
            AFPointsUsed                         undef[21]
            AFPointsUsed                         undef[29]
+           AFPointsUsed                         undef[20]
            AFPointsUsed                         undef[7]
      16    AFImageWidth                         int16u
      18    AFImageHeight                        int16u
@@ -11298,6 +11338,12 @@ any information found here will be extracted, even if the tag is not listed.
   0x052d   PictureModeEffect                    int16s[3]
   0x052e   ToneLevel                            Y
   0x052f   ArtFilterEffect                      int16u[20]
+  0x0532   ColorCreatorEffect                   int16s[6]
+  0x0537   MonochromeProfileSettings            int16s[6]
+  0x0538   FilmGrainEffect                      int16s
+  0x0539   ColorProfileSettings                 int16s[14]
+  0x053a   MonochromeVignetting                 int16s
+  0x053b   MonochromeColor                      int16s
   0x0600   DriveMode                            int16u[n]~
   0x0601   PanoramaMode                         int16u~
   0x0603   ImageQuality2                        int16u
@@ -11422,6 +11468,9 @@ any information found here will be extracted, even if the tag is not listed.
   0x1203   FaceDetectFrameSize                  int16u[6]
   0x1207   FaceDetectFrameCrop                  int16s[12]
   0x1306   CameraTemperature                    N
+  0x1900   KeystoneCompensation                 int8u[2]
+  0x1901   KeystoneDirection                    int8u[2]
+  0x1906   KeystoneValue                        int16s[3]
 
 =head3 Olympus FocusInfo Tags
 
@@ -12023,8 +12072,8 @@ These tags are used in Pentax/Asahi cameras.
   0x000c   FlashMode                            int16u[n]
   0x000d   FocusMode                            int16u
   0x000e   AFPointSelected                      int16u
-  0x000f   AFPointsInFocus                      int16u
-           AFPointsInFocus                      int32u
+  0x000f   AFPointsInFocus                      int32u
+           AFPointsInFocus                      int16u
   0x0010   FocusPosition                        int16u
   0x0012   ExposureTime                         int32u
   0x0013   FNumber                              int16u
@@ -19518,6 +19567,7 @@ Tags extracted from DPX (Digital Picture Exchange) images.
    1724    FrameRate                            N
    1732    FrameID                              N
    1764    SlateInformation                     N
+   1972    Reserved5?                           N
    2048    UserID                               N
 
 =head2 OpenEXR Tags

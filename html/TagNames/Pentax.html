@@ -235,25 +235,69 @@ different from other models)</span>
 <td title='0x000e = 14'>0x000e</td>
 <td>AFPointSelected</td>
 <td class=c>int16u</td>
-<td><span class=s><span class=n>(all models but the K-3)</span>
+<td><span class=s><span class=n>(K-1)</span>
   <br>[Value 0]</span><table class=cols><tr>
   <td>0 = None
-  <br>1 = Upper-left
-  <br>2 = Top
-  <br>3 = Upper-right
-  <br>4 = Left
-  <br>5 = Mid-left
-  <br>6 = Center
-  <br>7 = Mid-right
-  <br>8 = Right</td><td>&nbsp;&nbsp;</td>
-  <td>9 = Lower-left
-  <br>10 = Bottom
-  <br>11 = Lower-right
+  <br>1 = Top-left
+  <br>2 = Top Near-left
+  <br>3 = Top
+  <br>4 = Top Near-right
+  <br>5 = Top-right
+  <br>6 = Upper Far-left
+  <br>7 = Upper-left
+  <br>8 = Upper Near-left
+  <br>9 = Upper-middle
+  <br>10 = Upper Near-right
+  <br>11 = Upper-right
+  <br>12 = Upper Far-right
+  <br>13 = Far Far Left
+  <br>14 = Far Left
+  <br>15 = Left
+  <br>16 = Near-left
+  <br>17 = Center
+  <br>18 = Near-right
+  <br>19 = Right
+  <br>20 = Far Right
+  <br>21 = Far Far Right
+  <br>22 = Lower Far-left
+  <br>23 = Lower-left
+  <br>24 = Lower Near-left
+  <br>25 = Lower-middle
+  <br>26 = Lower Near-right
+  <br>27 = Lower-right</td><td>&nbsp;&nbsp;</td>
+  <td>28 = Lower Far-right
+  <br>29 = Bottom-left
+  <br>30 = Bottom Near-left
+  <br>31 = Bottom
+  <br>32 = Bottom Near-right
+  <br>33 = Bottom-right
+  <br>263 = Zone Select Upper-left
+  <br>264 = Zone Select Upper Near-left
+  <br>265 = Zone Select Upper Middle
+  <br>266 = Zone Select Upper Near-right
+  <br>267 = Zone Select Upper-right
+  <br>270 = Zone Select Far Left
+  <br>271 = Zone Select Left
+  <br>272 = Zone Select Near-left
+  <br>273 = Zone Select Center
+  <br>274 = Zone Select Near-right
+  <br>275 = Zone Select Right
+  <br>276 = Zone Select Far Right
+  <br>279 = Zone Select Lower-left
+  <br>280 = Zone Select Lower Near-left
+  <br>281 = Zone Select Lower-middle
+  <br>282 = Zone Select Lower Near-right
+  <br>283 = Zone Select Lower-right
   <br>65531 = AF Select
   <br>65532 = Face Detect AF
   <br>65533 = Automatic Tracking AF
   <br>65534 = Fixed Center
   <br>65535 = Auto</td></tr></table>
+<span class=s>[Value 1]</span><table class=cols><tr>
+  <td>0 = Single Point
+  <br>1 = Expanded Area 9-point (S)</td><td>&nbsp;&nbsp;</td>
+  <td>3 = Expanded Area 25-point (M)
+  <br>5 = Expanded Area 33-point (L)</td></tr></table>
 <span class=s><span class=n>(K-3)</span>
   <br>[Value 0]</span><table class=cols><tr>
   <td>0 = None
@@ -321,25 +365,32 @@ different from other models)</span>
   <br>1 = Expanded Area 9-point (S)</td><td>&nbsp;&nbsp;</td>
   <td>3 = Expanded Area 25-point (M)
   <br>5 = Expanded Area 27-point (L)</td></tr></table>
+<span class=s><span class=n>(other models)</span>
+  <br>[Value 0]</span><table class=cols><tr>
+  <td>0 = None
+  <br>1 = Upper-left
+  <br>2 = Top
+  <br>3 = Upper-right
+  <br>4 = Left
+  <br>5 = Mid-left
+  <br>6 = Center
+  <br>7 = Mid-right
+  <br>8 = Right</td><td>&nbsp;&nbsp;</td>
+  <td>9 = Lower-left
+  <br>10 = Bottom
+  <br>11 = Lower-right
+  <br>65531 = AF Select
+  <br>65532 = Face Detect AF
+  <br>65533 = Automatic Tracking AF
+  <br>65534 = Fixed Center
+  <br>65535 = Auto</td></tr></table>
 </td></tr>
 <tr>
 <td title='0x000f = 15'>0x000f</td>
 <td>AFPointsInFocus
   <br>AFPointsInFocus</td>
-<td class=c>int16u<br>int32u</td>
-<td><span class=s><span class=n>(models other than the K-3)</span></span><table class=cols><tr>
-  <td>0x0 = Fixed Center or Multiple
-  <br>0x1 = Top-left
-  <br>0x2 = Top-center
-  <br>0x3 = Top-right
-  <br>0x4 = Left
-  <br>0x5 = Center
-  <br>0x6 = Right
-  <br>0x7 = Bottom-left
-  <br>0x8 = Bottom-center
-  <br>0x9 = Bottom-right
-  <br>0xffff = None</td></tr></table>
-<span class=s><span class=n>(K-3 only)</span></span><table class=cols><tr>
+<td class=c>int32u<br>int16u</td>
+<td><span class=s><span class=n>(K-3 only)</span></span><table class=cols><tr>
   <td>0x0 = (none)
   <br>Bit 0 = Top-left
   <br>Bit 1 = Top Near-left
@@ -368,6 +419,18 @@ different from other models)</span>
   <br>Bit 24 = Bottom
   <br>Bit 25 = Bottom Near-right
   <br>Bit 26 = Bottom-right</td></tr></table>
+<span class=s><span class=n>(other models)</span></span><table class=cols><tr>
+  <td>0x0 = Fixed Center or Multiple
+  <br>0x1 = Top-left
+  <br>0x2 = Top-center
+  <br>0x3 = Top-right
+  <br>0x4 = Left
+  <br>0x5 = Center
+  <br>0x6 = Right
+  <br>0x7 = Bottom-left
+  <br>0x8 = Bottom-center
+  <br>0x9 = Bottom-right
+  <br>0xffff = None</td></tr></table>
 </td></tr>
 <tr class=b>
 <td title='0x0010 = 16'>0x0010</td>
@@ -2015,6 +2078,7 @@ identify the specific lens model.</p>
 </tr><tr><td>'21 6'</td><td>= 06 Telephoto Zoom 15-45mm F2.8</td>
 </tr><tr><td>'21 7'</td><td>= 07 Mount Shield 11.5mm F9</td>
 </tr><tr><td>'21 8'</td><td>= 08 Wide Zoom 3.8-5.9mm F3.7-4</td>
+</tr><tr><td>'21 233'</td><td>= Adapter Q for K-mount Lens</td>
 </tr><tr><td>'22 3'</td><td>= 03 Fish-eye 3.2mm F5.6</td>
 </tr><tr><td>'22 4'</td><td>= 04 Toy Lens Wide 6.3mm F7.1</td>
 </tr><tr><td>'22 5'</td><td>= 05 Toy Lens Telephoto 18mm F8</td>
@@ -3394,9 +3458,9 @@ serviced)</span></span></td></tr>
 <td class=r title='11 = 0xb'>11</td>
 <td>AFPointsInFocus</td>
 <td class=c>int8u</td>
-<td><span class=s><span class=n>(models other than the K-3 only.  May report two points in focus even though
-a single AFPoint has been selected, in which case the selected AFPoint is
-the first reported)</span></span><table class=cols><tr>
+<td><span class=s><span class=n>(models other than the K-1 and K-3.  May report two points in focus even
+though a single AFPoint has been selected, in which case the selected
+AFPoint is the first reported)</span></span><table class=cols><tr>
   <td>0 = None
   <br>1 = Lower-left, Bottom
   <br>2 = Bottom
@@ -4700,7 +4764,7 @@ stored as ASCII text in a format very similar to some HP models.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jun 13, 2016</i>
+<br><i>Last revised Jun 28, 2016</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

@@ -14,7 +14,10 @@ WriteMakefile(
             "    Archive::Zip:    0\n" .
             "    Compress::Zlib:  0\n" .
             "    Digest::MD5:     0\n" .
-            "    Digest::SHA:     0\n",
+            "    Digest::SHA:     0\n" .
+            "    Time::HiRes:     0\n" ,
+          # (not worth recommending -- only for column alignment of some languages)
+          #  "    Unicode::LineBreak: 0\n",
           # (not worth recommending -- only for Rawzor files)
           # "    IO::Compress::Bzip2: 0\n",
         ) : ()),
@@ -25,6 +28,8 @@ WriteMakefile(
                 'Compress::Zlib' => 0,
                 'Digest::MD5'    => 0,
                 'Digest::SHA'    => 0,
+                'Time::HiRes'    => 0,
+              # 'Unicode::LineBreak' => 0,
               # 'IO::Compress::Bzip2' => 0,
             },
         } ) : ()),

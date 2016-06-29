@@ -48,7 +48,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '2.92';
+$VERSION = '2.93';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -368,6 +368,7 @@ my %sPageInfo = (
     red         => { Writable => 'integer' },
     green       => { Writable => 'integer' },
     blue        => { Writable => 'integer' },
+    gray        => { Writable => 'integer' },
     L           => { Writable => 'real' },
     A           => { Writable => 'integer' },
     B           => { Writable => 'integer' },

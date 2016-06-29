@@ -513,6 +513,8 @@ $VERSION = '2.34';
     # the full Canon LensType code is added - PH
     # the metabones adapter translates Canon L -> G, II -> II, USM -> SSM, IS -> OSS (ref JR)
     61184 => 'Canon EF Adapter', #JR (also Fotodiox or Viltrox) (to this, add Canon LensType)
+    # 65280 = 0xff00
+    65280 => 'Sigma 16mm F2.8 Filtermatic Fisheye', #IB
     # all M42-type lenses give a value of 65535 (and FocalLength=0, FNumber=1)
     65535 => 'E-Mount, T-Mount, Other Lens or no lens', #JD/JR
 #

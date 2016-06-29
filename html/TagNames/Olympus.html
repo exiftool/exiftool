@@ -1684,6 +1684,7 @@ the Make and Model are used to identify the extender)</span>
   <br>3 = Muted
   <br>4 = Portrait
   <br>5 = i-Enhance
+  <br>6 = e-Portrait
   <br>7 = Color Creator
   <br>9 = Color Profile 1
   <br>10 = Color Profile 2
@@ -1847,7 +1848,11 @@ the Make and Model are used to identify the extender)</span>
 <td title='0x052e = 1326'>0x052e</td>
 <td>ToneLevel</td>
 <td class=c>Y</td>
-<td>&nbsp;</td></tr>
+<td><span class=s>[Values 0, 1, 2, 3, 4, 5 and 6]
+  <br>-31999 = Highlights
+  <br>-31998 = Shadows
+  <br>-31997 = Midtones
+  <br>0 = 0</span></td></tr>
 <tr class=b>
 <td title='0x052f = 1327'>0x052f</td>
 <td>ArtFilterEffect</td>
@@ -1895,10 +1900,68 @@ the Make and Model are used to identify the extender)</span>
   <td>0x0 = No Effect
   <br>0x8010 = Star Light
   <br>0x8020 = Pin Hole
-  <br>0x8030 = Frame</td><td>&nbsp;&nbsp;</td>
-  <td>0x8040 = Soft Focus
-  <br>0x8050 = White Edge
-  <br>0x8060 = B&amp;W</td></tr></table>
+  <br>0x8030 = Frame
+  <br>0x8040 = Soft Focus</td><td>&nbsp;&nbsp;</td>
+  <td>0x8050 = White Edge
+  <br>0x8060 = B&amp;W
+  <br>0x8080 = Blur Top and Bottom
+  <br>0x8081 = Blur Left and Right</td></tr></table>
+<span class=s>[Value 6]</span><table class=cols><tr>
+  <td>0x0 = No Color Filter
+  <br>0x1 = Yellow Color Filter
+  <br>0x2 = Orange Color Filter</td><td>&nbsp;&nbsp;</td>
+  <td>0x3 = Red Color Filter
+  <br>0x4 = Green Color Filter</td></tr></table>
+</td></tr>
+<tr>
+<td title='0x0532 = 1330'>0x0532</td>
+<td>ColorCreatorEffect</td>
+<td class=c>int16s[6]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0537 = 1335'>0x0537</td>
+<td>MonochromeProfileSettings</td>
+<td class=c>int16s[6]</td>
+<td><span class=s>[Value 0]</span><table class=cols><tr>
+  <td>0 = No Filter
+  <br>1 = Yellow Filter
+  <br>2 = Orange Filter
+  <br>3 = Red Filter
+  <br>4 = Magenta Filter</td><td>&nbsp;&nbsp;</td>
+  <td>5 = Blue Filter
+  <br>6 = Cyan Filter
+  <br>7 = Green Filter
+  <br>8 = Yellow-green Filter</td></tr></table>
+</td></tr>
+<tr>
+<td title='0x0538 = 1336'>0x0538</td>
+<td>FilmGrainEffect</td>
+<td class=c>int16s</td>
+<td><span class=s>0 = Off
+  <br>1 = Low
+  <br>2 = Medium
+  <br>3 = High</span></td></tr>
+<tr class=b>
+<td title='0x0539 = 1337'>0x0539</td>
+<td>ColorProfileSettings</td>
+<td class=c>int16s[14]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x053a = 1338'>0x053a</td>
+<td>MonochromeVignetting</td>
+<td class=c>int16s</td>
+<td><span class=s><span class=n>(-5 to +5: positive is white vignetting, negative is black vignetting)</span></span></td></tr>
+<tr class=b>
+<td title='0x053b = 1339'>0x053b</td>
+<td>MonochromeColor</td>
+<td class=c>int16s</td>
+<td><table class=cols><tr>
+  <td>0 = (none)
+  <br>1 = Normal
+  <br>2 = Sepia</td><td>&nbsp;&nbsp;</td>
+  <td>3 = Blue
+  <br>4 = Purple
+  <br>5 = Green</td></tr></table>
 </td></tr>
 <tr>
 <td title='0x0600 = 1536'>0x0600</td>
@@ -2585,6 +2648,23 @@ of the face detect square)</span></span></td></tr>
 <td>CameraTemperature</td>
 <td class=c>N</td>
 <td><span class=s><span class=n>(this seems to be in degrees C only for some models)</span></span></td></tr>
+<tr>
+<td title='0x1900 = 6400'>0x1900</td>
+<td>KeystoneCompensation</td>
+<td class=c>int8u[2]</td>
+<td><span class=s>&#39;0 0&#39; = Off
+  <br>&#39;0 1&#39; = On</span></td></tr>
+<tr class=b>
+<td title='0x1901 = 6401'>0x1901</td>
+<td>KeystoneDirection</td>
+<td class=c>int8u[2]</td>
+<td><span class=s>0 = Vertical
+  <br>1 = Horizontal</span></td></tr>
+<tr>
+<td title='0x1906 = 6406'>0x1906</td>
+<td>KeystoneValue</td>
+<td class=c>int16s[3]</td>
+<td><span class=s><span class=n>(3 numbers: 1. Keystone Value, 2. Min, 3. Max)</span></span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='FocusInfo'>Olympus FocusInfo Tags</a></h2>
@@ -3563,7 +3643,7 @@ like the LS-5, LS-10, LS-11.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jun 13, 2016</i>
+<br><i>Last revised Jun 20, 2016</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

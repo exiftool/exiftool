@@ -14,7 +14,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.02';
+$VERSION = '1.03';
 
 # DPX tags
 %Image::ExifTool::DPX::Main = (
@@ -109,6 +109,7 @@ $VERSION = '1.02';
     1724 => { Name => 'FrameRate',        Format => 'float' },
     1732 => { Name => 'FrameID',          Format => 'string[32]' },
     1764 => { Name => 'SlateInformation', Format => 'string[100]' },
+    1972 => { Name => 'Reserved5',        Format => 'string[76]', Unknown => 1 },
     2048 => { Name => 'UserID',           Format => 'string[32]' },
 );
 

@@ -7,6 +7,21 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.20. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+June 29, 2016 - Version 10.21
+
+  - WARNING: The Windows EXE package for this release was built on Windows 10
+    using Perl 5.24 instead of Windows XP and Perl 5.8 -- please watch for
+    problems and report anything that you find
+  - Added a new Minolta/Sony LensType (thanks LibRaw)
+  - Added a new element to the XMP Colorant structure
+  - Added a new Pentax lens (thanks Louis Granboulan)
+  - Decode Nikon D5/D500 AF information (thanks Michael Tapes for samples)
+  - Decode a number of new Olympus tags (thanks Daniel Pollock)
+  - Decode a number of new Nikon tags (thanks Warren Hatch)
+  - Decode Pentax K-1 AF points (thanks Louis Granboulan)
+  - Extract a new DPX tag
+  - Patched to avoid writing an empty structure field for an undefined value
+
 June 13, 2016 - Version 10.20 (production release)
 
   - Added a few new Sigma LensTypes (thanks LibRaw and Jos Roost)
@@ -24,7 +39,7 @@ June 13, 2016 - Version 10.20 (production release)
   - Fixed problem where the MWG module wasn't loaded automatically if there were
     MWG tags in the argument to the -p option
   - Fixed column alignment of alternate-language output (requires
-    Unicode::GCString to be installed)
+    Unicode::LineBreak to be installed)
   - Fixed problem writing Sigma:LensFocalRange
 
 May 31, 2016 - Version 10.19

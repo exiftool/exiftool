@@ -21,19 +21,19 @@
 #           10) Copy zip archive to web servers.
 #           11) Update zip file version in link and text of html/index.html.
 #------------------------------------------------------------------------------
--T exiftool-10.14
---info=FileVersion=10.1.4.0
---info=ProductVersion=10.1.4.0
-"--info=Build Date=2016:04:08 09:53:47"
-"--info=Bundled Perl Version=ActivePerl 5.8.7"
-"--info=LegalCopyright=Copyright (c) 2003-2016, Phil Harvey"
-"--info=ProductName=ExifTool"
-"--info=Comments=ExifTool EXE for Windows"
-"--info=Home Page=http://owl.phy.queensu.ca/~phil/exiftool/"
-"--info=CompanyName=Phil Harvey"
-"--info=OriginalFilename=exiftool(-k).exe"
-"--info=InternalName=ExifTool"
-"--info=FileDescription=Read and Write meta information"
+-T exiftool-10.21
+#--info=FileVersion=10.2.1.0
+#--info=ProductVersion=10.2.1.0
+##"--info=Build Date=2016:06:29 09:39:50-07:00"
+##"--info=Bundled Perl Version=ActivePerl 5.8.7"
+##"--info=LegalCopyright=Copyright (c) 2003-2016, Phil Harvey"
+##"--info=ProductName=ExifTool"
+##"--info=Comments=ExifTool EXE for Windows"
+##"--info=Home Page=http://owl.phy.queensu.ca/~phil/exiftool/"
+##"--info=CompanyName=Phil Harvey"
+##"--info=OriginalFilename=exiftool(-k).exe"
+##"--info=InternalName=ExifTool"
+##"--info=FileDescription=Read and Write meta information"
 -o exiftool.exe -I lib
 -M Compress::Zlib
 -M Digest::MD5

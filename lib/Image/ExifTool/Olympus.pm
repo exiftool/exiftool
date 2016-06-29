@@ -26,7 +26,7 @@
 #              18) Tomasz Kawecki private communication
 #              19) Brad Grier private communication
 #              22) Herbert Kauer private communication
-#              23) Dan Pollock private communication (PEN-F)
+#              23) Daniel Pollock private communication (PEN-F)
 #              IB) Iliah Borg private communication (LibRaw)
 #              NJ) Niels Kristian Bech Jensen private communication
 #------------------------------------------------------------------------------
@@ -39,7 +39,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::APP12;
 
-$VERSION = '2.41';
+$VERSION = '2.42';
 
 sub PrintLensInfo($$$);
 
@@ -529,6 +529,13 @@ my %filters = (
     39 => 'Partial Color', #forum6269
     40 => 'Partial Color II', #forum6269
     41 => 'Partial Color III', #forum6269
+);
+
+my %toneLevelType = (
+    0 => '0',
+    -31999 => 'Highlights',
+    -31998 => 'Shadows',
+    -31997 => 'Midtones',
 );
 
 # tag information for WAV "Index" tags
@@ -2121,6 +2128,7 @@ my %indexInfo = (
             3 => 'Muted',
             4 => 'Portrait',
             5 => 'i-Enhance', #11
+            6 => 'e-Portrait', #23
             7 => 'Color Creator', #23
             9 => 'Color Profile 1', #23
             10 => 'Color Profile 2', #23
@@ -2229,14 +2237,34 @@ my %indexInfo = (
     0x52e => { #11/PH
         Name => 'ToneLevel',
         PrintConv => [
-            undef, # ?
-            '"Highlights $val"',
+            \%toneLevelType,
+            undef, # (highlights value)
             undef, # (highlights min)
             undef, # (highlights max)
-            undef, # ?
-            '"Shadows $val"',
+            \%toneLevelType,
+            undef, # (shadows value)
             undef, # (shadows min)
             undef, # (shadows max)
+            \%toneLevelType,
+            undef, # (midtones value)
+            undef, # (midtones min)
+            undef, # (midtones max)
+            \%toneLevelType,
+            undef,
+            undef,
+            undef,
+            \%toneLevelType,
+            undef,
+            undef,
+            undef,
+            \%toneLevelType,
+            undef,
+            undef,
+            undef,
+            \%toneLevelType,
+            undef,
+            undef,
+            undef,
         ]
     },
     0x52f => { #PH
@@ -2246,7 +2274,10 @@ my %indexInfo = (
         PrintHex => 1,
         PrintConvColumns => 2,
         PrintConv => [
-            \%filters, undef, undef, undef,
+            \%filters,
+            undef,
+            undef,
+            '"Partial Color $val"', #23
             {   # there are 5 available art filter effects for the E-PL3...
                 0x0000 => 'No Effect',
                 0x8010 => 'Star Light',
@@ -2255,9 +2286,103 @@ my %indexInfo = (
                 0x8040 => 'Soft Focus',
                 0x8050 => 'White Edge',
                 0x8060 => 'B&W', # (NC - E-PL2 with "Grainy Film" filter)
+                0x8080 => 'Blur Top and Bottom', #23
+                0x8081 => 'Blur Left and Right', #23
                 # (E-PL2 also has "Pict. Tone" effect)
             },
+            undef,
+            { #23
+                0 => 'No Color Filter',
+                1 => 'Yellow Color Filter',
+                2 => 'Orange Color Filter',
+                3 => 'Red Color Filter',
+                4 => 'Green Color Filter',
+            },
         ],
+    },
+    0x532 => { #23
+        Name => 'ColorCreatorEffect',
+        Writable => 'int16s',
+        Count => 6,
+        PrintConv => [
+            '"Color $val"',
+            undef, # (Color min)
+            undef, # (Color max)
+            '"Strength $val"',
+            undef, # (Strength min)
+            undef, # (Strength max)
+        ],
+    },
+    0x537 => { #23
+        Name => 'MonochromeProfileSettings',
+        Writable => 'int16s',
+        Count => 6,
+        PrintConv => [
+            {
+                0 => 'No Filter',
+                1 => 'Yellow Filter',
+                2 => 'Orange Filter',
+                3 => 'Red Filter',
+                4 => 'Magenta Filter',
+                5 => 'Blue Filter',
+                6 => 'Cyan Filter',
+                7 => 'Green Filter',
+                8 => 'Yellow-green Filter',
+            },
+            undef, # (Filter number min)
+            undef, # (Filter number max)
+            '"Strength $val"',
+            undef, # (Strength min)
+            undef, # (Strength max)
+        ],
+    },
+    0x538 => { #23
+        Name => 'FilmGrainEffect',
+        Writable => 'int16s',
+        PrintConv => {
+            0 => 'Off',
+            1 => 'Low',
+            2 => 'Medium',
+            3 => 'High',
+        },
+    },
+    0x539 => { #23
+        Name => 'ColorProfileSettings',
+        Writable => 'int16s',
+        Count => 14,
+        PrintConv => [
+            '"Min $val"',
+            '"Max $val"',
+            '"Yellow $val"',
+            '"Orange $val"',
+            '"Orange-red $val"',
+            '"Red $val"',
+            '"Magenta $val"',
+            '"Violet $val"',
+            '"Blue $val"',
+            '"Blue-cyan $val"',
+            '"Cyan $val"',
+            '"Green-cyan $val"',
+            '"Green $val"',
+            '"Yellow-green $val"',
+        ],
+    },
+    0x53a => { #23
+        Name => 'MonochromeVignetting',
+        Writable => 'int16s',
+        Notes => '-5 to +5: positive is white vignetting, negative is black vignetting',
+    },
+    0x53b => { #23
+        Name => 'MonochromeColor',
+        Writable => 'int16s',
+        PrintConv => {
+            0 => '(none)',
+            1 => 'Normal',
+            2 => 'Sepia',
+            3 => 'Blue',
+            4 => 'Purple',
+            5 => 'Green',
+        },
     },
     0x600 => { #PH/4
         Name => 'DriveMode',
@@ -2774,7 +2899,32 @@ my %indexInfo = (
         ValueConv => '$val ? $val : undef', # zero for some models (how to differentiate from 0 C?)
         Notes => 'this seems to be in degrees C only for some models',
     },
+    0x1900 => { #23
+        Name => 'KeystoneCompensation',
+        Writable => 'int8u',
+        Count => 2,
+        PrintConv => {
+            '0 0' => 'Off',
+            '0 1' => 'On',
+        },
+    },
+    0x1901 => { #23
+        Name => 'KeystoneDirection',
+        Writable => 'int8u',
+        Count => 2,
+        PrintConv => {
+            0 => 'Vertical',
+            1 => 'Horizontal',
+        },
+    },
     # 0x1905 - focal length (PH, E-M1)
+    0x1906 => { #23
+        Name => 'KeystoneValue',
+        Writable => 'int16s',
+        Count => 3,
+        # (use in conjunction with KeystoneDirection, -ve is Top or Right, +ve is Bottom or Left)
+        Notes => '3 numbers: 1. Keystone Value, 2. Min, 3. Max',
+    },
 );
 
 # Olympus Focus Info IFD

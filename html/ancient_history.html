@@ -13,6 +13,144 @@
 <p><b>Note:</b> This page gives the history of older exiftool versions.  See
 <a href="history.html">history.html</a> for the recent history.</p>
 
+<a name='v10.09'><b>Jan. 4, 2016 - Version 10.09</b></a>
+<ul>
+<li>Added ability to extract OS X system metadata ("MDItem" tags)
+<li>Added a value conversion for GoogleTrackDuration
+<li>Enchanced the -i option to allow full path names to be specified
+<li>Fixed a potential runtime error when writing corrupted JPEG images
+<li>API Changes:
+    <ul>
+    <li>Added MDItemTags option
+    </ul>
+</ul>
+
+<a name='v10.08'><b>Dec. 22, 2015 - Version 10.08</b></a>
+<ul>
+<li>Added ability to write empty XMP structures
+<li>Added write support for PhaseOne MakerNotes tags in IIQ files
+<li>Added a new Nikon LensID (thanks David P&uuml;schel)
+<li>Decode a new Olympus tag and improved decoding of DriveMode
+<li>Minor improvements to HtmlDump of PhaseOne IIQ and PDF files
+<li>Patched to allow overwriting of empty XMP written by some PhaseOne cameras
+<li>Fixed bug in HtmlDump feature that could cause a "substr outside of string"
+    error
+<li>API Changes:
+    <ul>
+    <li>Changed QuickTimeUTC API option to also enforce proper time zero
+    </ul>
+</ul>
+
+<a name='v10.07'><b>Nov. 26, 2015 - Version 10.07</b></a>
+<ul>
+<li>Fixed problem with warnings on some systems about unimplemented functions
+    for FileGroupID and FileUserID when -p or -if were used
+</ul>
+
+<a name='v10.06'><b>Nov. 26, 2015 - Version 10.06</b></a>
+<ul>
+<li>Added a new <a href="TagNames/Canon.html#LensType">Canon LensType</a> (thanks LibRaw)
+<li>Added a new <a href="TagNames/Pentax.html#LensType">Pentax LensType</a> (thanks Louis Granboulan)
+<li>Added a couple of new <a href="TagNames/XMP.html#digiKam">XMP-digiKam tags</a>
+<li>Added a new <a href="TagNames/Canon.html#CanonModelID">CanonModelID</a>
+<li>Added a new <a href="TagNames/XMP.html#acdsee">ACDSee XMP tag</a> (thanks Malus)
+<li>Decode a new <a href="TagNames/Canon.html">Canon tag</a>
+<li>Improved a few lens names (thanks Jos Roost)
+<li>Patched to remove trailing null when reading improperly written QuickTime
+    strings
+<li>Fixed bug where SystemTags weren't available for use with the -p and -if
+    options
+</ul>
+
+<a name='v10.05'><b>Nov. 6, 2015 - Version 10.05</b></a>
+<ul>
+<li>Added new <a href="TagNames/Canon.html#LensType">Canon</a> and <a href="TagNames/Sony.html#LensType">Sony LensType</a> values
+<li>Added some new <a href="TagNames/Nikon.html#LensID">Nikon LensID</a>'s (thanks Robert Rottmerhusen)
+<li>Added a new <a href="TagNames/Pentax.html#PentaxModelID">PentaxModelID</a>
+<li>Added preliminary support for <a href="TagNames/Motorola.html">Motorola maker notes</a>
+<li>Changed format of <a href="TagNames/XMP.html#photoshop">XMP-photoshop</a>:DocumentAncestors to write a simple Bag of
+    strings rather than structures (since this is what the Adobe software
+    writes, contrary to their own XMP specification)
+<li>Fixed problem where HASH references may be exposed when copying a list of
+    structures to a non-list-type tag
+<li>API Changes:
+    <ul>
+    <li>Added <a href="ExifTool.html#Filter">Filter option</a>
+    <li>Changed GetNewValues method name to <a href="ExifTool.html#GetNewValue">GetNewValue</a> (GetNewValues still
+        works for backward compatibility)
+    </ul>
+</ul>
+
+<a name='v10.04'><b>Oct. 28, 2015 - Version 10.04</b></a>
+<ul>
+<li>Added a few new <a href="TagNames/Microsoft.html#XMP">Microsoft XMP</a> tags
+<li>Enhanced -r option to allow processing of directory names beginning with "."
+<li>Avoid writing <a href="TagNames/Microsoft.html#XMP">XMP-microsoft:LensModel</a> unless specified explicitly
+<li>Limit precision of area size in picasa_faces config file (thanks StarGeek)
+<li>Moved <a href="TagNames/Nikon.html#NCDT">Nikon NCDT GPS tags</a> into the GPS group so they work with the <a href="TagNames/Composite.html">Composite
+    GPS tags</a>
+<li>Fixed problem reading <a href="TagNames/Ricoh.html#RMETA">Ricoh RMETA</a> information from some cameras
+</ul>
+
+<a name='v10.03'><b>Oct. 21, 2015 - Version 10.03</b></a>
+<ul>
+<li>Added support for JPEG 2000 extended-length boxes
+<li>Added a few new <a href="TagNames/Canon.html#LensType">Canon LensType</a> and <a href="TagNames/Canon.html#CanonModelID">CanonModelID</a> values
+<li>Added a new <a href="TagNames/Nikon.html#LensID">Nikon LensID</a> (thanks LibRaw)
+<li>Added ExifTool version number as a comment in -listx output
+<li>Added support for Leica SL (Typ 601) maker notes
+<li>Added a new <a href="TagNames/Sony.html#LensType">Sony LensType</a> (thanks Jos Roost)
+<li>Decode more <a href="TagNames/Sony.html">Sony tags</a> for some new models (thanks Jos Roost)
+<li>Decode a new <a href="TagNames/Pentax.html">Pentax tag</a>
+<li>Patched for invalid makernote entry written by Sony ILCE-7M2 v1.21
+<li>Patched problem reading <a href="TagNames/EXE.html#PEString">EXE resources</a> with a missing null terminator
+<li>Updated Windows distribution package to use latest version of PAR
+</ul>
+
+<a name='v10.02'><b>Sept. 17, 2015 - Version 10.02</b></a>
+<ul>
+<li>Added ability to read PNG chunks after the normal PNG end of file (IEND)
+<li>Added ability to delete a PNG trailer (with -trailer:all=)
+<li>Added some new <a href="TagNames/Nikon.html#LensID">Nikon LensID</a>'s (thanks Robert Rottmerhusen and LibRaw)
+<li>Added a few new <a href="TagNames/Canon.html#LensType">Canon LensType</a>'s (thanks Jos Roost and LibRaw)
+<li>Added a new <a href="TagNames/Pentax.html#LensType">Pentax LensType</a> (thanks Niels Kristian Bech Jensen)
+<li>Decode some new <a href="TagNames/PanasonicRaw.html">PanasonicRaw tags</a> (thanks Andrew)
+<li>Decode a new <a href="TagNames/Pentax.html#LensType">Pentax tag</a>
+<li>Enhanced -m option to allow IPTC values which are too short to be written
+</ul>
+
+<a name='v10.01'><b>Sept. 3, 2015 - Version 10.01</b></a>
+<ul>
+<li>Added a new <a href="TagNames/Olympus.html#CameraType">Olympus CameraType</a>
+<li>Added a new <a href="TagNames/Canon.html#LensType">Canon LensType</a> (thanks Norbert Wasser)
+<li>Added a few new <a href="TagNames/QuickTime.html#GenreID">QuickTime GenreID</a> values (thanks Fran&ccedil;ois Bonzon)
+<li>Decode a new <a href="TagNames/Pentax.html#LensType">Pentax tag</a>
+<li>Leica programmers should all be ashamed of the <a href="http://owl.phy.queensu.ca/~phil/exiftool/idiosyncracies.html#Leica">complete shambles of metadata</a>
+    they have created
+<li>Minor change to the name of a Sigma lens for Canon
+<li>Improved recognition of Pentax lens adapter
+<li>Implemented <a href="ExifTool.html#NoPDFList">NoPDFList</a> for -b option of Windows version too
+<li>Renamed a few <a href="TagNames/Sony.html">Sony tags</a> and improved decoding of others (thanks Jos Roost)
+<li>Renamed a few <a href="TagNames/Pentax.html">Pentax tags</a>
+<li>Fixed problem importing structured information from -X option output
+<li>Fixed round-off errors in value and typo in name of CanonVRD:GammaWhitePoint
+<li>Fixed test failures if Encode, POSIX or Time::Local modules are missing
+</ul>
+
+<a name='v10.00'><b>Aug. 18, 2015 - Version 10.00</b></a> <span class=grn>(production release)</span>
+<ul>
+<li>Added a few new <a href="TagNames/Canon.html#CanonModelID">CanonModelID</a>'s
+<li>Added a few new <a href="TagNames/Nikon.html#LensID">Nikon LensID</a>'s (thanks Jaap Voets and Robert Rottmerhusen)
+<li>Added a new <a href="TagNames/Canon.html#LensType">Canon LensType</a> (thanks Jos Roost)
+<li>Decode a number of new <a href="TagNames/Sony.html">Sony tags</a> (thanks Jos Roost)
+<li>Decode a couple more <a href="TagNames/RIFF.html">RIFF tags</a> and extract Unknown <a href="TagNames/RIFF.html">RIFF tags</a>
+<li>Changed -b option to avoid splitting PDF List-type tag values
+<li>API Changes:
+    <ul>
+    <li>Added <a href="ExifTool.html#NoPDFList">NoPDFList option</a>
+    </ul>
+</ul>
+
 <a name='v9.99'><b>July 23, 2015 - Version 9.99</b></a>
 <ul>
 <li>Added support for the Leica Q (Typ 116) maker notes

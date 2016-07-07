@@ -7,6 +7,12 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.20. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+July 7, 2016 - Version 10.22
+
+  - Added read support for BPG images
+  - Minor changes to a few of the new Nikon tags
+  - Fixed problem in Windows version where not all 10.21 updates were included
+
 June 29, 2016 - Version 10.21
 
   - WARNING: The Windows EXE package for this release was built on Windows 10

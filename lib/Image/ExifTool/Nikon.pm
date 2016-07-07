@@ -59,7 +59,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.22';
+$VERSION = '3.23';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -4903,13 +4903,13 @@ my %nikonFocalConversions = (
         RawConv => '$$self{CustomSettingsOffset} = $val',
     },
     0xca => {
-        Name => 'CameraInclination',
+        Name => 'Rotation',
         Mask => 0x03,
         PrintConv => {
-            0x00 => 'Grip on Right',
-            0x01 => 'Grip on Top',
-            0x02 => 'Grip On Bottom',
-            0x03 => 'Upside Down',
+            0x00 => 'Horizontal',
+            0x01 => 'Rotate 270 CW',
+            0x02 => 'Rotate 90 CW',
+            0x03 => 'Rotate 180',
         },
     },
     0x05e2 => {
@@ -5467,7 +5467,7 @@ my %nikonFocalConversions = (
     0x36f4 => {
         Name => 'RollAngle',
         Format => 'fixed32u',
-        Notes => 'converted to degrees of upward camera tilt',
+        Notes => 'converted to degrees of clockwise camera roll',
         ValueConv => '$val <= 180 ? $val : $val - 360',
         ValueConvInv => '$val >= 0 ? $val : $val + 360',
         PrintConv => 'sprintf("%.1f", $val)',
@@ -5485,20 +5485,20 @@ my %nikonFocalConversions = (
     0x36fc => {
         Name => 'YawAngle',
         Format => 'fixed32u',
-        Notes => 'the camera pitch angle when shooting in portrait orientation',
+        Notes => 'the camera yaw angle when shooting in portrait orientation',
         ValueConv => '$val <= 180 ? $val : $val - 360',
         ValueConvInv => '$val >= 0 ? $val : $val + 360',
         PrintConv => 'sprintf("%.1f", $val)',
         PrintConvInv => '$val',
     },
     0x38be => {
-        Name => 'CameraInclination',
+        Name => 'Rotation',
         Mask => 0x30,
         PrintConv => {
-            0x00 => 'Grip on Right',
-            0x10 => 'Grip on Top',
-            0x20 => 'Grip On Bottom',
-            0x30 => 'Upside Down',
+            0x00 => 'Horizontal',
+            0x10 => 'Rotate 270 CW',
+            0x20 => 'Rotate 90 CW',
+            0x30 => 'Rotate 180',
         },
     },
     # note: DecryptMore currently set to 53+4 bytes after CustomSettingsOffset
@@ -5808,7 +5808,7 @@ my %nikonFocalConversions = (
     0x350b => {
         Name => 'RollAngle',
         Format => 'fixed32u',
-        Notes => 'converted to degrees of clockwise camera rotation',
+        Notes => 'converted to degrees of clockwise camera roll',
         ValueConv => '$val < 180 ? -$val : 360 - $val',
         ValueConvInv => '$val <= 0 ? -$val : 360 - $val',
         PrintConv => 'sprintf("%.1f", $val)',
@@ -5826,20 +5826,20 @@ my %nikonFocalConversions = (
     0x3513 => {
         Name => 'YawAngle',
         Format => 'fixed32u',
-        Notes => 'the camera pitch angle when shooting in portrait orientation',
+        Notes => 'the camera yaw angle when shooting in portrait orientation',
         ValueConv => '$val <= 180 ? $val : $val - 360',
         ValueConvInv => '$val >= 0 ? $val : $val + 360',
         PrintConv => 'sprintf("%.1f", $val)',
         PrintConvInv => '$val',
     },
     0x3693 => {
-        Name => 'CameraInclination',
+        Name => 'Rotation',
         Mask => 0x30,
         PrintConv => {
-            0x00 => 'Grip on Right',
-            0x10 => 'Grip on Top',
-            0x20 => 'Grip On Bottom',
-            0x30 => 'Upside Down',
+            0x00 => 'Horizontal',
+            0x10 => 'Rotate 270 CW',
+            0x20 => 'Rotate 90 CW',
+            0x30 => 'Rotate 180',
         },
     },
     # note: DecryptLen currently set to 0x3697

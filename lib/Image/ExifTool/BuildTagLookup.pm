@@ -131,6 +131,7 @@ my %formatOK = (
     var_int16u  => 1,
     var_pstr32  => 1,
     var_ustr32  => 1,
+    var_ue7     => 1, # (BPG)
     # Matroska
     signed      => 1,
     unsigned    => 1,

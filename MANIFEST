@@ -34,6 +34,7 @@ html/TagNames/ASF.html
 html/TagNames/Apple.html
 html/TagNames/Audible.html
 html/TagNames/BMP.html
+html/TagNames/BPG.html
 html/TagNames/Canon.html
 html/TagNames/CanonCustom.html
 html/TagNames/CanonRaw.html
@@ -182,6 +183,7 @@ lib/Image/ExifTool/ASF.pm
 lib/Image/ExifTool/Apple.pm
 lib/Image/ExifTool/Audible.pm
 lib/Image/ExifTool/BMP.pm
+lib/Image/ExifTool/BPG.pm
 lib/Image/ExifTool/BZZ.pm
 lib/Image/ExifTool/BigTIFF.pm
 lib/Image/ExifTool/BuildTagLookup.pm
@@ -383,6 +385,8 @@ t/Audible.t
 t/Audible_2.out
 t/BMP.t
 t/BMP_2.out
+t/BPG.t
+t/BPG_2.out
 t/BigTIFF.t
 t/BigTIFF_2.out
 t/Canon.t
@@ -819,6 +823,7 @@ t/images/APE.mpc
 t/images/ASF.wmv
 t/images/Audible.aa
 t/images/BMP.bmp
+t/images/BPG.bpg
 t/images/BigTIFF.btf
 t/images/Canon.jpg
 t/images/Canon1DmkIII.jpg

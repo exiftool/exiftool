@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '10.21';
+$VERSION = '10.22';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -129,17 +129,17 @@ sub ReadValue($$$$$;$);
 # unless tweaked in BuildTagLookup::GetTableOrder().
 @loadAllTables = qw(
     PhotoMechanic Exif GeoTiff CanonRaw KyoceraRaw Lytro MinoltaRaw PanasonicRaw
-    SigmaRaw JPEG GIMP Jpeg2000 GIF BMP BMP::OS2 PICT PNG MNG DjVu DPX OpenEXR
-    MIFF PGF PSP PhotoCD Radiance PDF PostScript Photoshop::Header
-    Photoshop::Layers Photoshop::ImageData FujiFilm::RAF FujiFilm::IFD
-    Samsung::Trailer Sony::SRF2 Sony::SR2SubIFD Sony::PMP ITC ID3 Vorbis Ogg APE
-    APE::NewHeader APE::OldHeader Audible MPC MPEG::Audio MPEG::Video MPEG::Xing
-    M2TS QuickTime QuickTime::ImageFile Matroska MOI MXF DV Flash Flash::FLV
-    Real::Media Real::Audio Real::Metafile RIFF AIFF ASF DICOM MIE HTML XMP::SVG
-    Palm Palm::MOBI Palm::EXTH Torrent EXE EXE::PEVersion EXE::PEString
-    EXE::MachO EXE::PEF EXE::ELF EXE::AR EXE::CHM LNK Font VCard
-    VCard::VCalendar RSRC Rawzor ZIP ZIP::GZIP ZIP::RAR RTF OOXML iWork ISO
-    FLIR::AFF FLIR::FPF
+    SigmaRaw JPEG GIMP Jpeg2000 GIF BMP BMP::OS2 BPG BPG::Extensions PICT PNG
+    MNG DjVu DPX OpenEXR MIFF PGF PSP PhotoCD Radiance PDF PostScript
+    Photoshop::Header Photoshop::Layers Photoshop::ImageData FujiFilm::RAF
+    FujiFilm::IFD Samsung::Trailer Sony::SRF2 Sony::SR2SubIFD Sony::PMP ITC ID3
+    Vorbis Ogg APE APE::NewHeader APE::OldHeader Audible MPC MPEG::Audio
+    MPEG::Video MPEG::Xing M2TS QuickTime QuickTime::ImageFile Matroska MOI MXF
+    DV Flash Flash::FLV Real::Media Real::Audio Real::Metafile RIFF AIFF ASF
+    DICOM MIE HTML XMP::SVG Palm Palm::MOBI Palm::EXTH Torrent EXE
+    EXE::PEVersion EXE::PEString EXE::MachO EXE::PEF EXE::ELF EXE::AR EXE::CHM
+    LNK Font VCard VCard::VCalendar RSRC Rawzor ZIP ZIP::GZIP ZIP::RAR RTF OOXML
+    iWork ISO FLIR::AFF FLIR::FPF
 );
 
 # alphabetical list of current Lang modules
@@ -173,11 +173,11 @@ $defaultLang = 'en';    # default language
 # Notes: 1) There is no need to test for like types separately here
 # 2) Put types with weak file signatures at end of list to avoid false matches
 @fileTypes = qw(JPEG CRW DR4 TIFF GIF MRW RAF X3F JP2 PNG MIE MIFF PS PDF PSD XMP
-                BMP PPM RIFF AIFF ASF MOV MPEG Real SWF PSP FLV OGG FLAC APE MPC
-                MKV MXF DV PMP IND PGF ICC ITC FLIR FPF LFP HTML VRD RTF XCF DSS
-                QTIF FPX PICT ZIP GZIP PLIST RAR BZ2 TAR RWZ EXE EXR HDR CHM LNK
-                WMF AVC DEX DPX RAW Font RSRC M2TS PHP Torrent VCard AA PDB MOI
-                ISO MP3 DICOM PCD);
+                BMP BPG PPM RIFF AIFF ASF MOV MPEG Real SWF PSP FLV OGG FLAC APE
+                MPC MKV MXF DV PMP IND PGF ICC ITC FLIR FPF LFP HTML VRD RTF XCF
+                DSS QTIF FPX PICT ZIP GZIP PLIST RAR BZ2 TAR RWZ EXE EXR HDR CHM
+                LNK WMF AVC DEX DPX RAW Font RSRC M2TS PHP Torrent VCard AA PDB
+                MOI ISO MP3 DICOM PCD);
 
 # file types that we can write (edit)
 my @writeTypes = qw(JPEG TIFF GIF CRW MRW ORF RAF RAW PNG MIE PSD XMP PPM
@@ -224,6 +224,7 @@ my %fileTypeLookup = (
     AZW  =>  'MOBI', # (see http://wiki.mobileread.com/wiki/AZW)
     AZW3 =>  'MOBI',
     BMP  => ['BMP',  'Windows Bitmap'],
+    BPG  => ['BPG',  'Better Portable Graphics'],
     BTF  => ['BTF',  'Big Tagged Image File Format'], #(unofficial)
     BZ2  => ['BZ2',  'BZIP2 archive'],
     CHM  => ['CHM',  'Microsoft Compiled HTML format'],
@@ -521,6 +522,7 @@ my %fileDescription = (
     ASF  => 'video/x-ms-asf',
     ARW  => 'image/x-sony-arw',
     BMP  => 'image/bmp',
+    BPG  => 'image/bpg',
     BTF  => 'image/x-tiff-big', #(NC) (ref http://www.asmail.be/msg0055371937.html)
     BZ2  => 'application/bzip2',
    'Canon 1D RAW' => 'image/x-raw', # (uses .TIF file extension)
@@ -753,6 +755,7 @@ my %moduleName = (
     AVC  => '\+A\+V\+C\+',
     Torrent => 'd\d+:\w+',
     BMP  => 'BM',
+    BPG  => "BPG\xfb",
     BTF  => '(II\x2b\0|MM\0\x2b)',
     BZ2  => 'BZh[1-9]\x31\x41\x59\x26\x53\x59',
     CHM  => 'ITSF.{20}\x10\xfd\x01\x7c\xaa\x7b\xd0\x11\x9e\x0c\0\xa0\xc9\x22\xe6\xec',
@@ -4549,6 +4552,7 @@ my %formatSize = (
    'undef' => 1,
     ifd => 4,
     ifd64 => 8,
+    ue7 => 1,
 );
 my %readValueProc = (
     int8s => \&Get8s,
@@ -7535,15 +7539,22 @@ sub ProcessBinaryData($$$)
                     $count = Get16u($dataPt, $entry + $offset) + 2;
                     $varSize -= 2;  # ($count includes size word)
                     $format = 'undef';
+                } elsif ($format eq 'ue7') {
+                    require Image::ExifTool::BPG;
+                    ($val, $count) = Image::ExifTool::BPG::Get_ue7($dataPt, $entry + $offset);
+                    last unless defined $val;
+                    --$varSize;     # ($count includes base size of 1 byte)
                 } elsif ($$dataPt =~ /\0/g) {
                     $count = pos($$dataPt) - ($entry+$offset);
                     --$varSize;     # ($count includes base size of 1 byte)
                 }
                 $count = $more if not defined $count or $count > $more;
                 $varSize += $count; # shift subsequent indices
-                $val = substr($$dataPt, $entry+$offset, $count);
-                $val = $self->Decode($val, 'UCS2') if $format eq 'ustring' or $format eq 'ustr32';
-                $val =~ s/\0.*//s unless $format eq 'undef';  # truncate at null
+                unless (defined $val) {
+                    $val = substr($$dataPt, $entry+$offset, $count);
+                    $val = $self->Decode($val, 'UCS2') if $format eq 'ustring' or $format eq 'ustr32';
+                    $val =~ s/\0.*//s unless $format eq 'undef';  # truncate at null
+                }
                 $wasVar = 1;
                 # save variable size data if required for writing
                 if ($$dirInfo{VarFormatData}) {

@@ -2267,7 +2267,7 @@ firmware 1.02f.</p>
 <td class=r title='14068 = 0x36f4'>14068</td>
 <td>RollAngle</td>
 <td class=c>fixed32u</td>
-<td><span class=s><span class=n>(converted to degrees of upward camera tilt)</span></span></td></tr>
+<td><span class=s><span class=n>(converted to degrees of clockwise camera roll)</span></span></td></tr>
 <tr class=b>
 <td class=r title='14072 = 0x36f8'>14072</td>
 <td>PitchAngle</td>
@@ -2277,16 +2277,16 @@ firmware 1.02f.</p>
 <td class=r title='14076 = 0x36fc'>14076</td>
 <td>YawAngle</td>
 <td class=c>fixed32u</td>
-<td><span class=s><span class=n>(the camera pitch angle when shooting in portrait orientation)</span></span></td></tr>
+<td><span class=s><span class=n>(the camera yaw angle when shooting in portrait orientation)</span></span></td></tr>
 <tr class=b>
 <td class=r title='14526 = 0x38be'>14526</td>
-<td>CameraInclination</td>
+<td>Rotation</td>
 <td class=c>int8u</td>
 <td><span class=s>[Mask 0x30]
-  <br>0x0 = Grip on Right
-  <br>0x10 = Grip on Top
-  <br>0x20 = Grip On Bottom
-  <br>0x30 = Upside Down</span></td></tr>
+  <br>0x0 = Horizontal
+  <br>0x10 = Rotate 270 CW
+  <br>0x20 = Rotate 90 CW
+  <br>0x30 = Rotate 180</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='ShotInfoD5000'>Nikon ShotInfoD5000 Tags</a></h2>
@@ -2673,7 +2673,7 @@ firmware 1.01b.</p>
 <td class=r title='13579 = 0x350b'>13579</td>
 <td>RollAngle</td>
 <td class=c>fixed32u</td>
-<td><span class=s><span class=n>(converted to degrees of clockwise camera rotation)</span></span></td></tr>
+<td><span class=s><span class=n>(converted to degrees of clockwise camera roll)</span></span></td></tr>
 <tr>
 <td class=r title='13583 = 0x350f'>13583</td>
 <td>PitchAngle</td>
@@ -2683,16 +2683,16 @@ firmware 1.01b.</p>
 <td class=r title='13587 = 0x3513'>13587</td>
 <td>YawAngle</td>
 <td class=c>fixed32u</td>
-<td><span class=s><span class=n>(the camera pitch angle when shooting in portrait orientation)</span></span></td></tr>
+<td><span class=s><span class=n>(the camera yaw angle when shooting in portrait orientation)</span></span></td></tr>
 <tr>
 <td class=r title='13971 = 0x3693'>13971</td>
-<td>CameraInclination</td>
+<td>Rotation</td>
 <td class=c>int8u</td>
 <td><span class=s>[Mask 0x30]
-  <br>0x0 = Grip on Right
-  <br>0x10 = Grip on Top
-  <br>0x20 = Grip On Bottom
-  <br>0x30 = Upside Down</span></td></tr>
+  <br>0x0 = Horizontal
+  <br>0x10 = Rotate 270 CW
+  <br>0x20 = Rotate 90 CW
+  <br>0x30 = Rotate 180</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='ShotInfoD500'>Nikon ShotInfoD500 Tags</a></h2>
@@ -2724,13 +2724,13 @@ firmware 1.01b.</p>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='202 = 0xca'>202</td>
-<td>CameraInclination</td>
+<td>Rotation</td>
 <td class=c>int8u</td>
 <td><span class=s>[Mask 0x03]
-  <br>0x0 = Grip on Right
-  <br>0x1 = Grip on Top
-  <br>0x2 = Grip On Bottom
-  <br>0x3 = Upside Down</span></td></tr>
+  <br>0x0 = Horizontal
+  <br>0x1 = Rotate 270 CW
+  <br>0x2 = Rotate 90 CW
+  <br>0x3 = Rotate 180</span></td></tr>
 <tr class=b>
 <td class=r title='1506 = 0x5e2'>1506</td>
 <td>FlickerReductionIndicator</td>
@@ -5901,7 +5901,7 @@ ExifTool to choose in these cases (see the
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jun 23, 2016</i>
+<br><i>Last revised Jul 5, 2016</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

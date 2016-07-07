@@ -9477,7 +9477,7 @@ These tags are extracted from encrypted data in images from the D810.
   14068    RollAngle                            fixed32u
   14072    PitchAngle                           fixed32u
   14076    YawAngle                             fixed32u
-  14526    CameraInclination                    int8u & 0x30
+  14526    Rotation                             int8u & 0x30
 
 =head3 Nikon ShotInfoD5000 Tags
 
@@ -9552,7 +9552,7 @@ These tags are extracted from encrypted data in images from the D4S.
   13579    RollAngle                            fixed32u
   13583    PitchAngle                           fixed32u
   13587    YawAngle                             fixed32u
-  13971    CameraInclination                    int8u & 0x30
+  13971    Rotation                             int8u & 0x30
 
 =head3 Nikon ShotInfoD500 Tags
 
@@ -9564,7 +9564,7 @@ These tags are extracted from encrypted data in images from the D500.
       4    FirmwareVersion                      N
      80    ShootingMenuOffset                   N
      88    CustomSettingsOffset                 N
-    202    CameraInclination                    int8u & 0x03
+    202    Rotation                             int8u & 0x03
    1506    FlickerReductionIndicator            int8u & 0x01
    2004    JPGCompression                       int8u & 0x01
    2171    AEBracketingSteps                    int8u & 0xff
@@ -18909,6 +18909,32 @@ Information extracted from OS/2-format BMP images.
       6    ImageHeight                          N
       8    Planes                               N
      10    BitDepth                             N
+
+=head2 BPG Tags
+
+The information listed below is extracted from BPG (Better Portable
+Graphics) images.  See L<http://bellard.org/bpg/> for the specification.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      4    PixelFormat                          N
+    4.1    Alpha                                N
+    4.2    BitDepth                             N
+    4.3    ColorSpace                           N
+    4.4    Flags                                N
+      6    ImageWidth                           N
+      7    ImageHeight                          N
+      8    ImageLength                          N
+
+=head3 BPG Extensions Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  0x0001   EXIF                                 EXIF
+  0x0002   ICC_Profile                          ICC_Profile
+  0x0003   XMP                                  XMP
+  0x0004   ThumbnailBPG                         N
+  0x0005   AnimationControl?                    N
 
 =head2 PICT Tags
 

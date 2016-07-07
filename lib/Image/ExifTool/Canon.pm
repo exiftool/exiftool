@@ -7668,7 +7668,7 @@ my %filterConv = (
     # 3 - maybe related to AutoImageAlign?
 );
 
-# AF configuration info (MakerNotes tag 0x4027) (ref PH)
+# AF configuration info (MakerNotes tag 0x4028) (ref PH)
 %Image::ExifTool::Canon::AFConfig = (
     %binaryDataAttrs,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },

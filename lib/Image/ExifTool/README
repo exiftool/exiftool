@@ -111,6 +111,7 @@ is an explanation of the meaning of each special key:
     var_pstr32  - variable-length Pascal string /w 32-bit len
     var_ustr32  - variable-length UCS-2 string /w 32-bit len
     var_int16u  - variable-length undef data with int6u count
+    var_ue7     - variable-length 7-bit-at-a-time integer (BPG)
 
   FIRST_ENTRY : Specifies the index for the first tag entry in a binary table.
   This value is only used if the Unknown option is set to 2 or higher, and
@@ -197,7 +198,8 @@ is an explanation of the meaning of each special key:
                   Note that for certain types errors, the response is to delete
                   the entire IFD from the image.
 
-    NUMBERS_LAST  Sort numerical tags after character tags in documentation.
+
+    ALPHA_FIRST   Sort alphabetical tags before numerical in documentation.
 
     LONG_TAGS     Suppress "Long tags" warning when generating documentation.
                   Value is the number of long tag names to expect.

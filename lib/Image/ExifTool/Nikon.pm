@@ -59,7 +59,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.23';
+$VERSION = '3.24';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -3886,9 +3886,9 @@ my %nikonFocalConversions = (
         Mask => 0x07,
         PrintConv => {
             0x00 => 'Horizontal',
-            0x01 => 'Rotated 270 CW',
-            0x02 => 'Rotated 90 CW',
-            0x03 => 'Rotated 180',
+            0x01 => 'Rotate 270 CW',
+            0x02 => 'Rotate 90 CW',
+            0x03 => 'Rotate 180',
         },
     },
     590.2 => {

@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '10.22';
+$VERSION = '10.23';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -373,6 +373,7 @@ my %fileTypeLookup = (
     OFR  => ['RIFF', 'OptimFROG audio'],
     OGG  => ['OGG',  'Ogg Vorbis audio file'],
     OGV  => ['OGG',  'Ogg Video file'],
+    OPUS => ['OGG',  'Ogg Opus audio file'],
     ORF  => ['ORF',  'Olympus RAW format'],
     OTF  => ['Font', 'Open Type Font'],
     PAC  => ['RIFF', 'Lossless Predictive Audio Compression'],
@@ -608,8 +609,8 @@ my %fileDescription = (
     ODP  => 'application/vnd.oasis.opendocument.presentation',
     ODS  => 'application/vnd.oasis.opendocument.spreadsheet',
     ODT  => 'application/vnd.oasis.opendocument.text',
-    OGG  => 'audio/x-ogg',
-    OGV  => 'video/x-ogg',
+    OGG  => 'audio/ogg',
+    OGV  => 'video/ogg',
     EXR  => 'image/x-exr',
     ORF  => 'image/x-olympus-orf',
     OTF  => 'application/x-font-otf',
@@ -1412,8 +1413,9 @@ my %systemTagsNotes = (
             this write-only tag is used to define the GPS track log data or track log
             file name.  Currently supported track log formats are GPX, NMEA RMC/GGA/GLL,
             KML, IGC, Garmin XML and TCX, Magellan PMGNTRK, Honeywell PTNTHPR, Winplus
-            Beacon text, and Bramor gEO log files.  See L<geotag.html|../geotag.html>
-            for details
+            Beacon text, and Bramor gEO log files.  May be set to the special value of
+            "DATETIMEONLY" (all caps) to set GPS date/time tags if no input track points
+            are available.  See L<geotag.html|../geotag.html> for details
         },
         DelCheck => q{
             require Image::ExifTool::Geotag;
@@ -1754,8 +1756,8 @@ sub Options($$;@)
                 } else {
                     warn "Invalid Charset $newVal\n";
                 }
-            } elsif ($param eq 'CharsetEXIF' or $param eq 'CharsetFileName') {
-                $$options{$param} = $newVal;    # only CharsetEXIF and CharsetFileName may be set to a false value
+            } elsif ($param eq 'CharsetEXIF' or $param eq 'CharsetFileName' or $param eq 'CharsetRIFF') {
+                $$options{$param} = $newVal;    # only these may be set to a false value
             } elsif ($param eq 'CharsetQuickTime') {
                 $$options{$param} = 'MacRoman'; # QuickTime defaults to MacRoman
             } else {
@@ -1839,6 +1841,7 @@ sub ClearOptions($)
         CharsetIPTC => 'Latin', # fallback IPTC character set if no CodedCharacterSet
         CharsetPhotoshop => 'Latin', # internal encoding for Photoshop resource names
         CharsetQuickTime => 'MacRoman', # internal QuickTime string encoding
+        CharsetRIFF => 0,       # internal RIFF string encoding (0=default to Latin)
         Compact     => undef,   # compact XMP and IPTC data
         Composite   => 1,       # flag to calculate Composite tags
         Compress    => undef,   # flag to write new values as compressed if possible
@@ -6952,7 +6955,7 @@ sub HandleTag($$$$;%)
         $noTagInfo = 1;
     }
     # read value if not done already (not necessary for subdir)
-    unless (defined $val or ($subdir and not $$tagInfo{Writable})) {
+    unless (defined $val or ($subdir and not $$tagInfo{Writable} and not $$tagInfo{RawConv})) {
         my $start = $parms{Start} || 0;
         my $dLen = $dataPt ? length($$dataPt) : -1;
         my $size = $parms{Size};
@@ -6987,6 +6990,25 @@ sub HandleTag($$$$;%)
         if ($subdir) {
             my $subdirStart = $parms{Start};
             my $subdirLen = $parms{Size};
+            if ($$tagInfo{RawConv} and not $$tagInfo{Writable}) {
+                my $conv = $$tagInfo{RawConv};
+                local $SIG{'__WARN__'} = \&SetWarning;
+                undef $evalWarning;
+                if (ref $conv eq 'CODE') {
+                    $val = &$conv($val, $self);
+                } else {
+                    # NOTE: RawConv is evaluated in Writer.pl and twice in ExifTool.pm
+                    #### eval RawConv ($self, $val, $tag, $tagInfo)
+                    $val = eval $conv;
+                    $@ and $evalWarning = $@;
+                }
+                $self->Warn("RawConv $tag: " . CleanWarning()) if $evalWarning;
+                return undef unless defined $val;
+                $val = $$val if ref $val eq 'SCALAR';
+                $dataPt = \$val;
+                $subdirStart = 0;
+                $subdirLen = length $val;
+            }
             if ($$subdir{Start}) {
                 my $valuePtr = 0;
                 #### eval Start ($valuePtr)

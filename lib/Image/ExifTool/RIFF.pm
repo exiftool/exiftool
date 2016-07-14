@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------
 # File:         RIFF.pm
 #
-# Description:  Read RIFF/WAV/AVI meta information
+# Description:  Read RIFF/AVI/WAV meta information
 #
 # Revisions:    09/14/2005 - P. Harvey Created
 #
@@ -27,7 +27,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.41';
+$VERSION = '1.42';
 
 sub ConvertTimecode($);
 
@@ -47,6 +47,30 @@ my %riffMimeType = (
     OFR  => 'audio/x-ofr',
     PAC  => 'audio/x-lpac',
     WV   => 'audio/x-wavpack',
+);
+
+# character sets for recognized Windows code pages
+my %code2charset = (
+    0     => 'Latin',
+    65001 => 'UTF8',
+    1252  => 'Latin',
+    1250  => 'Latin2',
+    1251  => 'Cyrillic',
+    1253  => 'Greek',
+    1254  => 'Turkish',
+    1255  => 'Hebrew',
+    1256  => 'Arabic',
+    1257  => 'Baltic',
+    1258  => 'Vietnam',
+    874   => 'Thai',
+    10000 => 'MacRoman',
+    10029 => 'MacLatin2',
+    10007 => 'MacCyrillic',
+    10006 => 'MacGreek',
+    10081 => 'MacTurkish',
+    10010 => 'MacRomanian',
+    10079 => 'MacIceland',
+    10082 => 'MacCroatian',
 );
 
 %Image::ExifTool::RIFF::audioEncoding = ( #2
@@ -300,7 +324,7 @@ my %riffMimeType = (
 %Image::ExifTool::RIFF::Main = (
     PROCESS_PROC => \&Image::ExifTool::RIFF::ProcessChunks,
     NOTES => q{
-        The RIFF container format is used various types of fines including WAV, AVI,
+        The RIFF container format is used various types of fines including AVI, WAV,
         WEBP, LA, OFR, PAC and WV.  According to the EXIF specification, Meta
         information is embedded in two types of RIFF C<LIST> chunks: C<INFO> and
         C<exif>, and information about the audio content is stored in the C<fmt >
@@ -424,6 +448,10 @@ my %riffMimeType = (
         Groups => { 2 => 'Time' },
         ValueConv => 'Image::ExifTool::RIFF::ConvertRIFFDate($val)',
         PrintConv => '$self->ConvertDateTime($val)',
+    },
+    CSET => {
+        Name => 'CharacterSet',
+        SubDirectory => { TagTable => 'Image::ExifTool::RIFF::CSET' },
     },
 #
 # WebP-specific tags
@@ -555,8 +583,9 @@ my %riffMimeType = (
 %Image::ExifTool::RIFF::Info = (
     PROCESS_PROC => \&Image::ExifTool::RIFF::ProcessChunks,
     GROUPS => { 2 => 'Audio' },
+    FORMAT => 'string',
     NOTES => q{
-        RIFF INFO tags found in WAV audio and AVI video files.  Tags which are part
+        RIFF INFO tags found in AVI video and WAV audio files.  Tags which are part
         of the EXIF 2.3 specification have an underlined Tag Name in the HTML
         version of this documentation.  Other tags are found in AVI files generated
         by some software.
@@ -774,6 +803,20 @@ my %riffMimeType = (
     PROCESS_PROC => \&Image::ExifTool::RIFF::ProcessChunks,
     GROUPS => { 2 => 'Video' },
     # (have seen tc_O, tc_A, rn_O and rn_A)
+);
+
+# RIFF character set chunk
+%Image::ExifTool::RIFF::CSET = (
+    PROCESS_PROC => \&Image::ExifTool::RIFF::ProcessBinaryData,
+    GROUPS => { 2 => 'Other' },
+    Format => 'int16u',
+    0 => {
+        Name => 'CodePage',
+        RawConv => '$$self{CodePage} = $val',
+    },
+    1 => 'CountryCode',
+    2 => 'LanguageCode',
+    3 => 'Dialect',
 );
 
 %Image::ExifTool::RIFF::AVIHeader = (
@@ -1328,6 +1371,15 @@ sub ProcessChunks($$$)
     my $base = $$dirInfo{Base};
     my $verbose = $et->Options('Verbose');
     my $unknown = $et->Options('Unknown');
+    my $charset = $et->Options('CharsetRIFF');
+
+    unless ($charset) {
+        if ($$et{CodePage}) {
+            $charset = $$et{CodePage};
+        } elsif (defined $charset and $charset eq '0') {
+            $charset = 'Latin';
+        }
+    }
 
     $et->VerboseDir($$dirInfo{DirName}, 0, $size) if $verbose;
 
@@ -1361,8 +1413,13 @@ sub ProcessChunks($$$)
                     $start -= $base;
                 }
             } elsif (not $$tagInfo{Binary}) {
-                $val = substr($$dataPt, $start, $len);
-                $val =~ s/\0+$//;   # remove trailing nulls from strings
+                my $format = $$tagInfo{Format} || $$tagTablePtr{FORMAT};
+                if ($format and $format eq 'string') {
+                    $val = substr($$dataPt, $start, $len);
+                    $val =~ s/\0+$//;   # remove trailing nulls from strings
+                    # decode if necessary
+                    $val = $et->Decode($val, $charset) if $charset;
+                }
             }
         } elsif ($verbose or $unknown) {
             MakeTagInfo($tagTablePtr, $tag);
@@ -1482,7 +1539,7 @@ __END__
 
 =head1 NAME
 
-Image::ExifTool::RIFF - Read RIFF/WAV/AVI meta information
+Image::ExifTool::RIFF - Read RIFF/AVI/WAV meta information
 
 =head1 SYNOPSIS
 

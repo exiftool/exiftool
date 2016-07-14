@@ -17,11 +17,29 @@ considered development releases, and are not uploaded to <a href="http://search.
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v10.23'><b>July 14, 2016 - Version 10.23</b></a>
+<ul>
+<li>Added read support for Ogg Opus audio files
+<li>Added ability to geotag GPS date/time only if no position information is
+    available by setting Geotag to "DATETIMEONLY" (all caps)
+<li>Added "-charset RIFF" option
+<li>Added a new Sony LensType (thanks Jos Roost)
+<li>Decode a number of new Canon tags (thanks Kai Harrekilde-Petersen)
+<li>Changed handling of special characters in RIFF-format files (eg. AVI, WAV)
+<li>Changed MIME type of OGG files to audio/ogg (was audio/x-ogg)
+<li>Minor change to wording of new Nikon D80 Rotation tag for consistency
+<li>API Changes:
+    <ul>
+    <li>Added CharsetRIFF option
+    </ul>
+</ul>
+
 <a name='v10.22'><b>July 7, 2016 - Version 10.22</b></a>
 <ul>
-<li>Added read support for BPG images
+<li>Added read support for <a href="TagNames/BPG.html">BPG images</a>
 <li>Minor changes to a few of the new Nikon tags
 <li>Fixed problem in Windows version where not all 10.21 updates were included
+    in the release
 </ul>
 
 <a name='v10.21'><b>June 29, 2016 - Version 10.21</b></a>
@@ -124,9 +142,9 @@ considered development releases, and are not uploaded to <a href="http://search.
 
 <a name='v10.14'><b>Apr. 8, 2016 - Version 10.14</b></a>
 <ul>
-<li>Added read support for ISO 9660 disk images
+<li>Added read support for <a href="TagNames/ISO.html">ISO 9660 disk images</a>
 <li>Added a few new Nikon ISOExpansion values (thanks LibRaw)
-<li>Added a few new Olympus LensType values (thanks Niels Kristian Bech Jensen) 
+<li>Added a few new Olympus LensType values (thanks Niels Kristian Bech Jensen)
 <li>Added a couple of new SonyModelID values (thanks LibRaw for one)
 <li>Added a new Olympus CameraType
 <li>Added config_files/gps2utm.config to distribution

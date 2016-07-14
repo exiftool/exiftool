@@ -7,7 +7,7 @@
 </head>
 <body>
 <h2 class=top>RIFF Tags</h2>
-<p>The RIFF container format is used various types of fines including WAV, AVI,
+<p>The RIFF container format is used various types of fines including AVI, WAV,
 WEBP, LA, OFR, PAC and WV.  According to the EXIF specification, Meta
 information is embedded in two types of RIFF <code>LIST</code> chunks: <code>INFO</code> and
 <code>exif</code>, and information about the audio content is stored in the <code>fmt </code>
@@ -38,23 +38,28 @@ sub-documents, but the Duration is calculated for the full video.</p>
 <td class=c>-</td>
 <td>--&gt; <a href='RIFF.html#ANMF'>RIFF ANMF Tags</a></td></tr>
 <tr class=b>
+<td>'CSET'</td>
+<td>CharacterSet</td>
+<td class=c>-</td>
+<td>--&gt; <a href='RIFF.html#CSET'>RIFF CSET Tags</a></td></tr>
+<tr>
 <td>'EXIF'</td>
 <td>EXIF</td>
 <td class=c>-</td>
 <td>--&gt; <a href='EXIF.html'>EXIF Tags</a>
   <br><span class='n s'>(WebP files)</span></td></tr>
-<tr>
+<tr class=b>
 <td>'ICCP'</td>
 <td>ICC_Profile</td>
 <td class=c>-</td>
 <td>--&gt; <a href='ICC_Profile.html'>ICC_Profile Tags</a>
   <br><span class='n s'>(WebP files)</span></td></tr>
-<tr class=b>
+<tr>
 <td>'IDIT'</td>
 <td>DateTimeOriginal</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'JUNK'</td>
 <td>OlympusJunk
   <br>CasioJunk
@@ -68,94 +73,94 @@ sub-documents, but the Duration is calculated for the full video.</p>
   <br>--&gt; <a href='Ricoh.html#AVI'>Ricoh AVI Tags</a>
   <br>--&gt; <a href='Pentax.html#Junk'>Pentax Junk Tags</a>
   <br>--&gt; <a href='Pentax.html#Junk2'>Pentax Junk2 Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'JUNQ'</td>
 <td>OldXMP</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'LIST_INFO'</td>
 <td>Info</td>
 <td class=c>-</td>
 <td>--&gt; <a href='RIFF.html#Info'>RIFF Info Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'LIST_Tdat'</td>
 <td>Tdat</td>
 <td class=c>-</td>
 <td>--&gt; <a href='RIFF.html#Tdat'>RIFF Tdat Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'LIST_exif'</td>
 <td>Exif</td>
 <td class=c>-</td>
 <td>--&gt; <a href='RIFF.html#Exif'>RIFF Exif Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'LIST_hdrl'</td>
 <td>Hdrl</td>
 <td class=c>-</td>
 <td>--&gt; <a href='RIFF.html#Hdrl'>RIFF Hdrl Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'LIST_hydt'</td>
 <td>PentaxData</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Pentax.html#AVI'>Pentax AVI Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'LIST_ncdt'</td>
 <td>NikonData</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Nikon.html#AVI'>Nikon AVI Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'VP8 '</td>
 <td>VP8Bitstream</td>
 <td class=c>-</td>
 <td>--&gt; <a href='RIFF.html#VP8'>RIFF VP8 Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'VP8L'</td>
 <td>VP8L</td>
 <td class=c>-</td>
 <td>--&gt; <a href='RIFF.html#VP8L'>RIFF VP8L Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'VP8X'</td>
 <td>VP8X</td>
 <td class=c>-</td>
 <td>--&gt; <a href='RIFF.html#VP8X'>RIFF VP8X Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'XMP '</td>
 <td>XMP</td>
 <td class=c>-</td>
 <td>--&gt; <a href='XMP.html'>XMP Tags</a>
   <br><span class='n s'>(WebP files)</span></td></tr>
-<tr>
+<tr class=b>
 <td>'_PMX'</td>
 <td>XMP</td>
 <td class=c>-</td>
 <td>--&gt; <a href='XMP.html'>XMP Tags</a>
   <br><span class='n s'>(AVI and WAV files)</span></td></tr>
-<tr class=b>
+<tr>
 <td>'afsp'</td>
 <td>Afsp</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'bext'</td>
 <td>BroadcastExtension</td>
 <td class=c>-</td>
 <td>--&gt; <a href='RIFF.html#BroadcastExt'>RIFF BroadcastExt Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'cue '</td>
 <td>CuePoints</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'fact'</td>
 <td>NumberOfSamples</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'fmt '</td>
 <td>AudioFormat</td>
 <td class=c>-</td>
 <td>--&gt; <a href='RIFF.html#AudioFormat'>RIFF AudioFormat Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'olym'</td>
 <td>Olym</td>
 <td class=c>-</td>
@@ -227,8 +232,41 @@ sub-documents, but the Duration is calculated for the full video.</p>
 <td><span class=s><span class=n>(extracted as the sum of durations of all animation frames)</span></span></td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='CSET'>RIFF CSET Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x0000 = 0'>0x0000</td>
+<td>CodePage</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0001 = 1'>0x0001</td>
+<td>CountryCode</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0002 = 2'>0x0002</td>
+<td>LanguageCode</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0003 = 3'>0x0003</td>
+<td>Dialect</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Format'</td>
+<td>int16u</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
 <h2><a name='Info'>RIFF Info Tags</a></h2>
-<p>RIFF INFO tags found in WAV audio and AVI video files.  Tags which are part
+<p>RIFF INFO tags found in AVI video and WAV audio files.  Tags which are part
 of the EXIF 2.3 specification have an underlined Tag Name in the HTML
 version of this documentation.  Other tags are found in AVI files generated
 by some software.</p>
@@ -1338,7 +1376,7 @@ container specification.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jul 31, 2015</i>
+<br><i>Last revised Jul 11, 2016</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

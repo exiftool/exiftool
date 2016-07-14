@@ -6154,6 +6154,21 @@ Information about creative filter settings.
       2    AFTrackingSensitivity                int32s
       3    AFAccelDecelTracking                 int32s
       4    AFPointSwitching                     int32s
+      5    AIServoFirstImage                    int32s
+      6    AIServoSecondImage                   int32s
+      7    USMLensElectronicMF                  int32s
+      8    AFAssistBeam                         int32s
+      9    OneShotAFRelease                     int32s
+     10    AutoAFPointSelEOSiTRAF               int32s
+     11    LensDriveWhenAFImpossible            int32s
+     12    SelectAFAreaSelectionMode            int32s
+     13    AFAreaSelectionMethod                int32s
+     14    OrientationLinkedAF                  int32s
+     15    ManualAFPointSelPattern              int32s
+     16    AFPointDisplayDuringFocus            int32s
+     17    VFDisplayIllumination                int32s
+     18    AFStatusViewfinder                   int32s
+     19    InitialAFPointInServo                int32s
 
 =head3 Canon CNOP Tags
 
@@ -20449,76 +20464,21 @@ This information is found in iTunes Cover Flow data files.
       7    ImageWidth                           N
       8    ImageHeight                          N
 
-=head2 Ogg Tags
+=head2 FLAC Tags
 
-ExifTool extracts the following types of information from Ogg files.  See
-L<http://www.xiph.org/vorbis/doc/> for the Ogg specification.
+=head3 FLAC Picture Tags
 
-  Tag ID   Tag Name                             Writable
+  Index4   Tag Name                             Writable
   ------   --------                             --------
-  'FLAC'   FLAC                                 FLAC
-  'ID3'    ID3                                  ID3
-  'theora' Theora                               Theora
-  'vorbis' Vorbis                               Vorbis
-
-=head2 Vorbis Tags
-
-Information extracted from Ogg Vorbis files.  See
-L<http://www.xiph.org/vorbis/doc/> for the Vorbis specification.
-
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  0x0001   Identification                       Vorbis Identification
-  0x0003   Comments                             Vorbis Comments
-
-=head3 Vorbis Identification Tags
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-      0    VorbisVersion                        N
-      4    AudioChannels                        N
-      5    SampleRate                           N
-      9    MaximumBitrate                       N
-     13    NominalBitrate                       N
-     17    MinimumBitrate                       N
-
-=head3 Vorbis Comments Tags
-
-The tags below are only some common tags found in the Vorbis comments of Ogg
-Vorbis and Ogg FLAC audio files, however ExifTool will extract values from
-any tag found, even if not listed here.
-
-  Tag ID                  Tag Name              Writable
-  ------                  --------              --------
-  'ACTOR'                 Actor                 N
-  'ALBUM'                 Album                 N
-  'ARTIST'                Artist                N+
-  'COMMENT'               Comment               N
-  'COMPOSER'              Composer              N
-  'CONTACT'               Contact               N+
-  'COPYRIGHT'             Copyright             N
-  'COVERART'              CoverArt              N
-  'COVERARTMIME'          CoverArtMIMEType      N
-  'DATE'                  Date                  N
-  'DESCRIPTION'           Description           N
-  'DIRECTOR'              Director              N
-  'ENCODED_BY'            EncodedBy             N
-  'ENCODED_USING'         EncodedUsing          N
-  'GENRE'                 Genre                 N
-  'ISRC'                  ISRCNumber            N
-  'LICENSE'               License               N
-  'LOCATION'              Location              N
-  'ORGANIZATION'          Organization          N
-  'PERFORMER'             Performer             N+
-  'PRODUCER'              Producer              N
-  'REPLAYGAIN_ALBUM_GAIN' ReplayGainAlbumGain   N
-  'REPLAYGAIN_ALBUM_PEAK' ReplayGainAlbumPeak   N
-  'REPLAYGAIN_TRACK_GAIN' ReplayGainTrackGain   N
-  'REPLAYGAIN_TRACK_PEAK' ReplayGainTrackPeak   N
-  'TITLE'                 Title                 N
-  'TRACKNUMBER'           TrackNumber           N
-  'VERSION'               Version               N
-  'vendor'                Vendor                N
+      0    PictureType                          N
+      1    PictureMIMEType                      N
+      2    PictureDescription                   N
+      3    PictureWidth                         N
+      4    PictureHeight                        N
+      5    PictureBitsPerPixel                  N
+      6    PictureIndexedColors                 N
+      7    PictureLength                        N
+      8    Picture                              N
 
 =head2 FLAC Tags
 
@@ -20550,19 +20510,99 @@ FLAC is big-endian, so bit 0 is the high-order bit in this table.
   'Bit103-107'         BitsPerSample            N
   'Bit108-143'         TotalSamples             N
 
-=head3 FLAC Picture Tags
+=head2 Ogg Tags
 
-  Index4   Tag Name                             Writable
+ExifTool extracts the following types of information from Ogg files.  See
+L<http://www.xiph.org/vorbis/doc/> for the Ogg specification.
+
+  Tag ID   Tag Name                             Writable
   ------   --------                             --------
-      0    PictureType                          N
-      1    PictureMIMEType                      N
-      2    PictureDescription                   N
-      3    PictureWidth                         N
-      4    PictureHeight                        N
-      5    PictureBitsPerPixel                  N
-      6    PictureIndexedColors                 N
-      7    PictureLength                        N
-      8    Picture                              N
+  'FLAC'   FLAC                                 FLAC
+  'ID3'    ID3                                  ID3
+  'Opus'   Opus                                 Opus
+  'theora' Theora                               Theora
+  'vorbis' Vorbis                               Vorbis
+
+=head2 Vorbis Tags
+
+Information extracted from Ogg Vorbis files.  See
+L<http://www.xiph.org/vorbis/doc/> for the Vorbis specification.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  0x0001   Identification                       Vorbis Identification
+  0x0003   Comments                             Vorbis Comments
+
+=head3 Vorbis Identification Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    VorbisVersion                        N
+      4    AudioChannels                        N
+      5    SampleRate                           N
+      9    MaximumBitrate                       N
+     13    NominalBitrate                       N
+     17    MinimumBitrate                       N
+
+=head3 Vorbis Comments Tags
+
+The tags below are only some common tags found in the Vorbis comments of Ogg
+Vorbis and Ogg FLAC audio files, however ExifTool will extract values from
+any tag found, even if not listed here.
+
+  Tag ID                   Tag Name             Writable
+  ------                   --------             --------
+  'ACTOR'                  Actor                N
+  'ALBUM'                  Album                N
+  'ARTIST'                 Artist               N+
+  'COMMENT'                Comment              N
+  'COMPOSER'               Composer             N
+  'CONTACT'                Contact              N+
+  'COPYRIGHT'              Copyright            N
+  'COVERART'               CoverArt             N
+  'COVERARTMIME'           CoverArtMIMEType     N
+  'DATE'                   Date                 N
+  'DESCRIPTION'            Description          N
+  'DIRECTOR'               Director             N
+  'ENCODED_BY'             EncodedBy            N
+  'ENCODED_USING'          EncodedUsing         N
+  'ENCODER'                Encoder              N
+  'ENCODER_OPTIONS'        EncoderOptions       N
+  'GENRE'                  Genre                N
+  'ISRC'                   ISRCNumber           N
+  'LICENSE'                License              N
+  'LOCATION'               Location             N
+  'METADATA_BLOCK_PICTURE' Picture              FLAC Picture
+  'ORGANIZATION'           Organization         N
+  'PERFORMER'              Performer            N+
+  'PRODUCER'               Producer             N
+  'REPLAYGAIN_ALBUM_GAIN'  ReplayGainAlbumGain  N
+  'REPLAYGAIN_ALBUM_PEAK'  ReplayGainAlbumPeak  N
+  'REPLAYGAIN_TRACK_GAIN'  ReplayGainTrackGain  N
+  'REPLAYGAIN_TRACK_PEAK'  ReplayGainTrackPeak  N
+  'TITLE'                  Title                N
+  'TRACKNUMBER'            TrackNumber          N
+  'VERSION'                Version              N
+  'vendor'                 Vendor               N
+
+=head2 Opus Tags
+
+Information extracted from Ogg Opus files.  See
+L<https://www.opus-codec.org/docs/> for the specification.
+
+  Tag ID       Tag Name                         Writable
+  ------       --------                         --------
+  'OpusHead'   Header                           Opus Header
+  'OpusTags'   Comments                         Vorbis Comments
+
+=head3 Opus Header Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    OpusVersion                          N
+      1    AudioChannels                        N
+      4    SampleRate                           N
+      8    OutputGain                           N
 
 =head2 Theora Tags
 
@@ -24117,7 +24157,7 @@ RealMedia Plug-in Metafile (RAM and RPM) files.
 
 =head2 RIFF Tags
 
-The RIFF container format is used various types of fines including WAV, AVI,
+The RIFF container format is used various types of fines including AVI, WAV,
 WEBP, LA, OFR, PAC and WV.  According to the EXIF specification, Meta
 information is embedded in two types of RIFF C<LIST> chunks: C<INFO> and
 C<exif>, and information about the audio content is stored in the C<fmt >
@@ -24133,6 +24173,7 @@ sub-documents, but the Duration is calculated for the full video.
   'ALPH'               ALPH                     RIFF ALPH
   'ANIM'               ANIM                     RIFF ANIM
   'ANMF'               ANMF                     RIFF ANMF
+  'CSET'               CharacterSet             RIFF CSET
   'EXIF'               EXIF                     EXIF
   'ICCP'               ICC_Profile              ICC_Profile
   'IDIT'               DateTimeOriginal         N
@@ -24188,9 +24229,19 @@ WebP animation frame chunk.
   ------   --------                             --------
      12    Duration                             N
 
+=head3 RIFF CSET Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  0x0000   CodePage                             N
+  0x0001   CountryCode                          N
+  0x0002   LanguageCode                         N
+  0x0003   Dialect                              N
+  'Format' int16u                               N
+
 =head3 RIFF Info Tags
 
-RIFF INFO tags found in WAV audio and AVI video files.  Tags which are part
+RIFF INFO tags found in AVI video and WAV audio files.  Tags which are part
 of the EXIF 2.3 specification have an underlined Tag Name in the HTML
 version of this documentation.  Other tags are found in AVI files generated
 by some software.

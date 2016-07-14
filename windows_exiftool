@@ -12,7 +12,7 @@
 use strict;
 require 5.004;
 
-my $version = '10.22';
+my $version = '10.23';
 
 # add our 'lib' directory to the include list BEFORE 'use Image::ExifTool'
 my $exeDir;
@@ -709,7 +709,7 @@ for (;;) {
         } else {
             # set internal encoding of specified metadata type
             my $type = { id3 => 'ID3', iptc => 'IPTC', exif => 'EXIF', filename => 'FileName',
-                         photoshop => 'Photoshop', quicktime => 'QuickTime' }->{lc $1};
+                         photoshop => 'Photoshop', quicktime => 'QuickTime', riff=>'RIFF' }->{lc $1};
             $type or Warn("Unknown type for -charset option: $1\n"), next;
             $mt->Options("Charset$type" => $charset);
         }
@@ -3930,41 +3930,42 @@ DESCRIPTION
 
       File Types
       ------------+-------------+-------------+-------------+------------
-      3FR   r     | DSS   r     | JPEG  r/w   | ODT   r     | RIFF  r
-      3G2   r/w   | DV    r     | K25   r     | OFR   r     | RSRC  r
-      3GP   r/w   | DVB   r/w   | KDC   r     | OGG   r     | RTF   r
-      A     r     | DYLIB r     | KEY   r     | OGV   r     | RW2   r/w
-      AA    r     | EIP   r     | LA    r     | ORF   r/w   | RWL   r/w
-      AAX   r/w   | EPS   r/w   | LFP   r     | OTF   r     | RWZ   r
-      ACR   r     | EPUB  r     | LNK   r     | PAC   r     | RM    r
-      AFM   r     | ERF   r/w   | M2TS  r     | PAGES r     | SEQ   r
-      AI    r/w   | EXE   r     | M4A/V r/w   | PBM   r/w   | SO    r
-      AIFF  r     | EXIF  r/w/c | MEF   r/w   | PCD   r     | SR2   r/w
-      APE   r     | EXR   r     | MIE   r/w/c | PDB   r     | SRF   r
-      ARW   r/w   | EXV   r/w/c | MIFF  r     | PDF   r/w   | SRW   r/w
-      ASF   r     | F4A/V r/w   | MKA   r     | PEF   r/w   | SVG   r
-      AVI   r     | FFF   r/w   | MKS   r     | PFA   r     | SWF   r
-      AZW   r     | FLA   r     | MKV   r     | PFB   r     | THM   r/w
-      BMP   r     | FLAC  r     | MNG   r/w   | PFM   r     | TIFF  r/w
-      BPG   r     | FLV   r     | MOBI  r     | PGF   r     | TORRENT r
-      BTF   r     | FPF   r     | MODD  r     | PGM   r/w   | TTC   r
-      CHM   r     | FPX   r     | MOI   r     | PLIST r     | TTF   r
-      COS   r     | GIF   r/w   | MOS   r/w   | PICT  r     | VCF   r
-      CR2   r/w   | GZ    r     | MOV   r/w   | PMP   r     | VRD   r/w/c
-      CRW   r/w   | HDP   r/w   | MP3   r     | PNG   r/w   | VSD   r
-      CS1   r/w   | HDR   r     | MP4   r/w   | PPM   r/w   | WAV   r
-      DCM   r     | HTML  r     | MPC   r     | PPT   r     | WDP   r/w
-      DCP   r/w   | ICC   r/w/c | MPG   r     | PPTX  r     | WEBP  r
-      DCR   r     | ICS   r     | MPO   r/w   | PS    r/w   | WEBM  r
-      DFONT r     | IDML  r     | MQV   r/w   | PSB   r/w   | WMA   r
-      DIVX  r     | IIQ   r/w   | MRW   r/w   | PSD   r/w   | WMV   r
-      DJVU  r     | IND   r/w   | MXF   r     | PSP   r     | WV    r
-      DLL   r     | INX   r     | NEF   r/w   | QTIF  r/w   | X3F   r/w
-      DNG   r/w   | ISO   r     | NRW   r/w   | RA    r     | XCF   r
-      DOC   r     | ITC   r     | NUMBERS r   | RAF   r/w   | XLS   r
-      DOCX  r     | J2C   r     | O     r     | RAM   r     | XLSX  r
-      DPX   r     | JNG   r/w   | ODP   r     | RAR   r     | XMP   r/w/c
-      DR4   r/w/c | JP2   r/w   | ODS   r     | RAW   r/w   | ZIP   r
+      3FR   r     | DV    r     | KDC   r     | OGV   r     | RW2   r/w
+      3G2   r/w   | DVB   r/w   | KEY   r     | OPUS  r     | RWL   r/w
+      3GP   r/w   | DYLIB r     | LA    r     | ORF   r/w   | RWZ   r
+      A     r     | EIP   r     | LFP   r     | OTF   r     | RM    r
+      AA    r     | EPS   r/w   | LNK   r     | PAC   r     | SEQ   r
+      AAX   r/w   | EPUB  r     | M2TS  r     | PAGES r     | SO    r
+      ACR   r     | ERF   r/w   | M4A/V r/w   | PBM   r/w   | SR2   r/w
+      AFM   r     | EXE   r     | MEF   r/w   | PCD   r     | SRF   r
+      AI    r/w   | EXIF  r/w/c | MIE   r/w/c | PDB   r     | SRW   r/w
+      AIFF  r     | EXR   r     | MIFF  r     | PDF   r/w   | SVG   r
+      APE   r     | EXV   r/w/c | MKA   r     | PEF   r/w   | SWF   r
+      ARW   r/w   | F4A/V r/w   | MKS   r     | PFA   r     | THM   r/w
+      ASF   r     | FFF   r/w   | MKV   r     | PFB   r     | TIFF  r/w
+      AVI   r     | FLA   r     | MNG   r/w   | PFM   r     | TORRENT r
+      AZW   r     | FLAC  r     | MOBI  r     | PGF   r     | TTC   r
+      BMP   r     | FLV   r     | MODD  r     | PGM   r/w   | TTF   r
+      BPG   r     | FPF   r     | MOI   r     | PLIST r     | VCF   r
+      BTF   r     | FPX   r     | MOS   r/w   | PICT  r     | VRD   r/w/c
+      CHM   r     | GIF   r/w   | MOV   r/w   | PMP   r     | VSD   r
+      COS   r     | GZ    r     | MP3   r     | PNG   r/w   | WAV   r
+      CR2   r/w   | HDP   r/w   | MP4   r/w   | PPM   r/w   | WDP   r/w
+      CRW   r/w   | HDR   r     | MPC   r     | PPT   r     | WEBP  r
+      CS1   r/w   | HTML  r     | MPG   r     | PPTX  r     | WEBM  r
+      DCM   r     | ICC   r/w/c | MPO   r/w   | PS    r/w   | WMA   r
+      DCP   r/w   | ICS   r     | MQV   r/w   | PSB   r/w   | WMV   r
+      DCR   r     | IDML  r     | MRW   r/w   | PSD   r/w   | WV    r
+      DFONT r     | IIQ   r/w   | MXF   r     | PSP   r     | X3F   r/w
+      DIVX  r     | IND   r/w   | NEF   r/w   | QTIF  r/w   | XCF   r
+      DJVU  r     | INX   r     | NRW   r/w   | RA    r     | XLS   r
+      DLL   r     | ISO   r     | NUMBERS r   | RAF   r/w   | XLSX  r
+      DNG   r/w   | ITC   r     | O     r     | RAM   r     | XMP   r/w/c
+      DOC   r     | J2C   r     | ODP   r     | RAR   r     | ZIP   r
+      DOCX  r     | JNG   r/w   | ODS   r     | RAW   r/w   |
+      DPX   r     | JP2   r/w   | ODT   r     | RIFF  r     |
+      DR4   r/w/c | JPEG  r/w   | OFR   r     | RSRC  r     |
+      DSS   r     | K25   r     | OGG   r     | RTF   r     |
 
       Meta Information
       ----------------------+----------------------+---------------------
@@ -4482,9 +4483,12 @@ OPTIONS
                          IPTC:CodedCharacterSet is not defined
              Photoshop  Internal encoding of Photoshop IRB strings   Latin
              QuickTime  Internal encoding of QuickTime strings       MacRoman
+             RIFF       Internal encoding of RIFF strings            0
 
          See <http://owl.phy.queensu.ca/~phil/exiftool/faq.html#Q10> for
-         more information about coded character sets.
+         more information about coded character sets, and the
+         Image::ExifTool Options for more details about the -charset
+         settings.
 
     -csv[=*CSVFILE*]
          Export information in CSV format, or import information if
@@ -4735,7 +4739,7 @@ OPTIONS
 
          produces output like this:
 
-             -- Generated by ExifTool 10.22 --
+             -- Generated by ExifTool 10.23 --
              File: a.jpg - 2003:10:31 15:44:19
              (f/5.6, 1/60s, ISO 100)
              File: b.jpg - 2006:05:23 11:57:38

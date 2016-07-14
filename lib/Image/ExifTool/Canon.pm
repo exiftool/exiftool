@@ -65,6 +65,7 @@
 #              49) http://www.listware.net/201101/digikam-users/49795-digikam-users-re-lens-recognition.html
 #              50) http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,3833.0.html
 #              51) http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,4110.0.html
+#              52) Kai Harrekilde-Petersen private communication
 #              IB) Iliah Borg private communication (LibRaw)
 #              JD) Jens Duttke private communication
 #              JR) Jos Roost private communication
@@ -83,7 +84,7 @@ sub ProcessSerialData($$$);
 sub ProcessFilters($$$);
 sub SwapWords($);
 
-$VERSION = '3.63';
+$VERSION = '3.64';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -7687,6 +7688,134 @@ my %filterConv = (
         Description => 'AF Accel/Decel Tracking',
     },
     4 => 'AFPointSwitching',
+    5 => { #52
+        Name => 'AIServoFirstImage',
+        PrintConv => {
+             0 => 'Equal Priority',
+             1 => 'Release Priority',
+             2 => 'Focus Priority',
+        },
+    },
+    6 => { #52
+        Name => 'AIServoSecondImage',
+        PrintConv => {
+             0 => 'Equal Priority',
+             1 => 'Release Priority',
+             2 => 'Focus Priority',
+             3 => 'Release High Priority',
+             4 => 'Focus High Priority',
+        },
+    },
+    7 => { #52
+        Name => 'USMLensElectronicMF',
+        PrintConv => {
+             0 => 'Enable After AF',
+             1 => 'Disable After AF',
+             2 => 'Disable in AF Mode',
+        },
+    },
+    8 => { #52
+        Name => 'AFAssistBeam',
+        PrintConv => {
+             0 => 'Enable',
+             1 => 'Disable',
+             2 => 'IR AF Assist Beam Only',
+        },
+    },
+    9 => { #52
+        Name => 'OneShotAFRelease',
+        PrintConv => {
+             0 => 'Focus Priority',
+             1 => 'Release Priority',
+        },
+    },
+    10 => { #52
+        Name => 'AutoAFPointSelEOSiTRAF',
+        Description => 'Auto AF Point Sel EOS iTR AF',
+        Notes => 'only valid for some models',
+        Condition => '$$self{Model} !~ /5D /',
+        PrintConv => {
+             0 => 'Enable',
+             1 => 'Disable',
+        },
+    },
+    11 => { #52
+        Name => 'LensDriveWhenAFImpossible',
+        PrintConv => {
+             0 => 'Continue Focus Search',
+             1 => 'Stop Focus Search',
+        },
+    },
+    12 => { #52
+        Name => 'SelectAFAreaSelectionMode',
+        PrintConv => { BITMASK => {
+            0 => 'Single pt',
+            1 => 'Auto', # (61 point)
+            2 => 'Zone',
+            3 => 'Expand area 4pt',
+            4 => 'Spot',
+            5 => 'Expand area 8pt',
+        }},
+    },
+    13 => { #52
+        Name => 'AFAreaSelectionMethod',
+        PrintConv => {
+             0 => 'M-Fn Button',
+             1 => 'Main Dial',
+        },
+    },
+    14 => { #52
+        Name => 'OrientationLinkedAF',
+        PrintConv => { # Covers both 1Dx (0-2) and 5D3 (0-1)
+             0 => 'Same for Vert/Horiz Points',
+             1 => 'Separate Vert/Horiz Points',
+             2 => 'Separate Area+Points',
+        },
+    },
+    15 => { #52
+        Name => 'ManualAFPointSelPattern',
+        PrintConv => {
+             0 => 'Stops at AF Area Edges',
+             1 => 'Continuous',
+        },
+    },
+    16 => { #52
+        Name => 'AFPointDisplayDuringFocus',
+        PrintConv => {
+             0 => 'Selected (constant)',
+             1 => 'All (constant)',
+             2 => 'Selected (pre-AF, focused)',
+             3 => 'Selected (focused)',
+             4 => 'Disabled',
+        },
+    },
+    17 => { #52
+        Name => 'VFDisplayIllumination',
+        PrintConv => {
+             0 => 'Auto',
+             1 => 'Enable',
+             2 => 'Disable',
+        },
+    },
+    18 => { #52
+        Name => 'AFStatusViewfinder',
+        Condition => '$$self{Model} =~ /1D X/',
+        Notes => '1D X only',
+        PrintConv => {
+             0 => 'Show in Field of View',
+             1 => 'Show Outside View',
+        },
+    },
+    19 => { #52
+        Name => 'InitialAFPointInServo',
+        Condition => '$$self{Model} =~ /1D X/',
+        Notes => '1D X only',
+        PrintConv => {
+             0 => 'Initial AF Point Selected',
+             1 => 'Manual AF Point',
+             2 => 'Auto', #PH (1DXmkII)
+        },
+    },
 );
 
 # Canon UUID atoms (ref PH, SX280)
@@ -8592,10 +8721,10 @@ Thanks Michael Rommel and Daniel Pittman for information they provided about
 the Digital Ixus and PowerShot S70 cameras, Juha Eskelinen and Emil Sit for
 figuring out the 20D and 30D FileNumber, Denny Priebe for figuring out a
 couple of 1D tags, and Michael Tiemann, Rainer Honle, Dave Nicholson, Chris
-Huebsch, Ger Vermeulen, Darryl Zurn, D.J. Cristi, Bogdan and Vesa Kivisto
-for decoding a number of new tags.  Also thanks to everyone who made
-contributions to the LensType lookup list or the meanings of other tag
-values.
+Huebsch, Ger Vermeulen, Darryl Zurn, D.J. Cristi, Bogdan, Vesa Kivisto and
+Kai Harrekilde-Petersen for decoding a number of new tags.  Also thanks to
+everyone who made contributions to the LensType lookup list or the meanings
+of other tag values.
 
 =head1 SEE ALSO
 

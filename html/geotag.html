@@ -99,6 +99,10 @@ supported with the <code>-geotag=</code> syntax.  See the
 <p>Deleting the <code>Geotag</code> tag (with <code>-geotag=</code>) causes the
 GPS tags written by the <code>-geotag</code> feature to be deleted.</p>
 
+<p>A special feature allows writing of only GPS date/time tags when there is no
+position available by specifying a log file name of "DATETIMEONLY" (all
+capitals).</p>
+
 <blockquote class=lt><i>Programmers:  You may write either a GPS log file name
 or the GPS log data as the value for <code>Geotag</code>.  If the value contains
 a newline or a null byte it is assumed to be data, otherwise it is taken as a

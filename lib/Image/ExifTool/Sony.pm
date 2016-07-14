@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.39';
+$VERSION = '2.40';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -97,6 +97,7 @@ my %sonyLensTypes2 = (
     32817 => 'Sony FE PZ 28-135mm F4 G OSS',#JR # VX?
 
     32821 => 'Sony FE 24-70mm F2.8 GM', #JR/IB
+    32822 => 'Sony FE 50mm F1.4 ZA', #JR
     32823 => 'Sony FE 85mm F1.4 GM', #JR/IB
     32824 => 'Sony FE 50mm F1.8', #JR (Sony code 'SEL50F18F' with trailing "F" as compared to 'SEL50F18' for 32790)
 

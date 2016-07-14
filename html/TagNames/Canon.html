@@ -9044,6 +9044,117 @@ to the one printed on the lens)</span></span></td></tr>
 <td>AFPointSwitching</td>
 <td class=c>int32s</td>
 <td>&nbsp;</td></tr>
+<tr>
+<td class=r title='5 = 0x5'>5</td>
+<td>AIServoFirstImage</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = Equal Priority
+  <br>1 = Release Priority
+  <br>2 = Focus Priority</span></td></tr>
+<tr class=b>
+<td class=r title='6 = 0x6'>6</td>
+<td>AIServoSecondImage</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = Equal Priority
+  <br>1 = Release Priority
+  <br>2 = Focus Priority
+  <br>3 = Release High Priority
+  <br>4 = Focus High Priority</span></td></tr>
+<tr>
+<td class=r title='7 = 0x7'>7</td>
+<td>USMLensElectronicMF</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = Enable After AF
+  <br>1 = Disable After AF
+  <br>2 = Disable in AF Mode</span></td></tr>
+<tr class=b>
+<td class=r title='8 = 0x8'>8</td>
+<td>AFAssistBeam</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = Enable
+  <br>1 = Disable
+  <br>2 = IR AF Assist Beam Only</span></td></tr>
+<tr>
+<td class=r title='9 = 0x9'>9</td>
+<td>OneShotAFRelease</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = Focus Priority
+  <br>1 = Release Priority</span></td></tr>
+<tr class=b>
+<td class=r title='10 = 0xa'>10</td>
+<td>AutoAFPointSelEOSiTRAF</td>
+<td class=c>int32s</td>
+<td><span class=s><span class=n>(only valid for some models)</span>
+  <br>0 = Enable
+  <br>1 = Disable</span></td></tr>
+<tr>
+<td class=r title='11 = 0xb'>11</td>
+<td>LensDriveWhenAFImpossible</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = Continue Focus Search
+  <br>1 = Stop Focus Search</span></td></tr>
+<tr class=b>
+<td class=r title='12 = 0xc'>12</td>
+<td>SelectAFAreaSelectionMode</td>
+<td class=c>int32s</td>
+<td><table class=cols><tr>
+  <td>Bit 0 = Single pt
+  <br>Bit 1 = Auto
+  <br>Bit 2 = Zone</td><td>&nbsp;&nbsp;</td>
+  <td>Bit 3 = Expand area 4pt
+  <br>Bit 4 = Spot
+  <br>Bit 5 = Expand area 8pt</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='13 = 0xd'>13</td>
+<td>AFAreaSelectionMethod</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = M-Fn Button
+  <br>1 = Main Dial</span></td></tr>
+<tr class=b>
+<td class=r title='14 = 0xe'>14</td>
+<td>OrientationLinkedAF</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = Same for Vert/Horiz Points
+  <br>1 = Separate Vert/Horiz Points
+  <br>2 = Separate Area+Points</span></td></tr>
+<tr>
+<td class=r title='15 = 0xf'>15</td>
+<td>ManualAFPointSelPattern</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = Stops at AF Area Edges
+  <br>1 = Continuous</span></td></tr>
+<tr class=b>
+<td class=r title='16 = 0x10'>16</td>
+<td>AFPointDisplayDuringFocus</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = Selected (constant)
+  <br>1 = All (constant)
+  <br>2 = Selected (pre-AF, focused)
+  <br>3 = Selected (focused)
+  <br>4 = Disabled</span></td></tr>
+<tr>
+<td class=r title='17 = 0x11'>17</td>
+<td>VFDisplayIllumination</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = Auto
+  <br>1 = Enable
+  <br>2 = Disable</span></td></tr>
+<tr class=b>
+<td class=r title='18 = 0x12'>18</td>
+<td>AFStatusViewfinder</td>
+<td class=c>int32s</td>
+<td><span class=s><span class=n>(1D X only)</span>
+  <br>0 = Show in Field of View
+  <br>1 = Show Outside View</span></td></tr>
+<tr>
+<td class=r title='19 = 0x13'>19</td>
+<td>InitialAFPointInServo</td>
+<td class=c>int32s</td>
+<td><span class=s><span class=n>(1D X only)</span>
+  <br>0 = Initial AF Point Selected
+  <br>1 = Manual AF Point
+  <br>2 = Auto</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='CNOP'>Canon CNOP Tags</a></h2>
@@ -9417,7 +9528,7 @@ SX280.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jun 20, 2016</i>
+<br><i>Last revised Jul 14, 2016</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

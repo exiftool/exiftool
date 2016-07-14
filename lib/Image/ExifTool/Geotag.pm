@@ -10,6 +10,7 @@
 #               2012/01/08 - PH Extract orientation information from PTNTHPR
 #               2012/05/08 - PH Read Winplus Beacon .TXT files
 #               2015/05/30 - PH Read Bramor gEO log files
+#               2016/07/13 - PH Added ability to geotag date/time only
 #
 # References:   1) http://www.topografix.com/GPX/1/1/
 #               2) http://www.gpsinformation.org/dale/nmea.htm#GSA
@@ -23,7 +24,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:Public);
 
-$VERSION = '1.48';
+$VERSION = '1.49';
 
 sub JITTER() { return 2 }       # maximum time jitter
 
@@ -121,9 +122,15 @@ sub LoadTrackLog($$;$)
     }
     # add data to existing track
     my $geotag = $et->GetNewValue('Geotag') || { };
+
+    # initialize track points lookup
+    my $points = $$geotag{Points};
+    $points or $points = $$geotag{Points} = { };
+
     # get lookup for available information types
     my $has = $$geotag{Has};
     $has or $has = $$geotag{Has} = { 'pos' => 1 };
+
     my $format = '';
     # is $val track log data?
     if ($val =~ /^(\xef\xbb\xbf)?<(\?xml|gpx)[\s>]/) {
@@ -133,33 +140,38 @@ sub LoadTrackLog($$;$)
         $/ = $1;
     } else {
         # $val is track file name
-        $et->Open(\*EXIFTOOL_TRKFILE, $val) or return "Error opening GPS file '$val'";
-        $raf = new File::RandomAccess(\*EXIFTOOL_TRKFILE);
-        unless ($raf->Read($_, 256)) {
-            close EXIFTOOL_TRKFILE;
-            return "Empty track file '$val'";
-        }
-        # look for XML or GPX header (might as well allow UTF-8 BOM)
-        if (/^(\xef\xbb\xbf)?<(\?xml|gpx)[\s>]/) {
-            $format = 'XML';
-            $/ = '>';   # set input record separator to '>' for XML/GPX data
-        } elsif (/(\x0d\x0a|\x0d|\x0a)/) {
-            $/ = $1;
+        if ($et->Open(\*EXIFTOOL_TRKFILE, $val)) {
+            $raf = new File::RandomAccess(\*EXIFTOOL_TRKFILE);
+            unless ($raf->Read($_, 256)) {
+                close EXIFTOOL_TRKFILE;
+                return "Empty track file '$val'";
+            }
+            # look for XML or GPX header (might as well allow UTF-8 BOM)
+            if (/^(\xef\xbb\xbf)?<(\?xml|gpx)[\s>]/) {
+                $format = 'XML';
+                $/ = '>';   # set input record separator to '>' for XML/GPX data
+            } elsif (/(\x0d\x0a|\x0d|\x0a)/) {
+                $/ = $1;
+            } else {
+                close EXIFTOOL_TRKFILE;
+                return "Invalid track file '$val'";
+            }
+            $raf->Seek(0,0);
+            $from = "file '$val'";
+        } elsif ($val eq 'DATETIMEONLY') {
+            $$geotag{DateTimeOnly} = 1;
+            $$geotag{IsDate} = 1;
+            $et->VPrint(0, 'Geotagging date/time only');
+            return $geotag;
         } else {
-            close EXIFTOOL_TRKFILE;
-            return "Invalid track file '$val'";
+            return "Error opening GPS file '$val'";
         }
-        $raf->Seek(0,0);
-        $from = "file '$val'";
     }
     unless ($from) {
         # set up RAF for reading log file in memory
         $raf = new File::RandomAccess(\$val);
         $from = 'data';
     }
-    # initialize track points lookup
-    my $points = $$geotag{Points};
-    $points or $points = $$geotag{Points} = { };
 
     # initialize cuts
     my $maxHDOP = $et->Options('GeoMaxHDOP');
@@ -736,7 +748,7 @@ sub SetGeoValues($$;$)
             my @times = sort { $a <=> $b } keys %$points;
             $times = $$geotag{Times} = \@times;
         }
-        unless ($times and @$times) {
+        unless ($times and @$times or $$geotag{DateTimeOnly}) {
             $err = 'GPS track is empty';
             last;
         }
@@ -792,11 +804,14 @@ sub SetGeoValues($$;$)
             }
             print $out '  Geotime value:   ' . PrintFixTime($time) . "$str\n";
         }
+        if (not $times or not @$times) {
+            $fix = { }; # dummy fix to geotag date/time only
         # interpolate GPS track at $time
-        if ($time < $$times[0]) {
+        } elsif ($time < $$times[0]) {
             if ($time < $$times[0] - $geoMaxExtSecs) {
                 $err or $err = 'Time is too far before track';
                 $et->VPrint(2, '  Track start:     ', PrintFixTime($$times[0]), "\n") if $verbose > 2;
+                $fix = { } if $$geotag{DateTimeOnly};
             } else {
                 $fix = $$points{$$times[0]};
                 $iExt = 0;  $iDir = 1;
@@ -807,6 +822,7 @@ sub SetGeoValues($$;$)
             if ($time > $$times[-1] + $geoMaxExtSecs) {
                 $err or $err = 'Time is too far beyond track';
                 $et->VPrint(2, '  Track end:       ', PrintFixTime($$times[-1]), "\n") if $verbose > 2;
+                $fix = { } if $$geotag{DateTimeOnly};
             } else {
                 $fix = $$points{$$times[-1]};
                 $iExt = $#$times;  $iDir = -1;
@@ -844,6 +860,7 @@ sub SetGeoValues($$;$)
                 if (abs($time - $tn) > $geoMaxExtSecs) {
                     $err or $err = 'Time is too far from nearest GPS fix';
                     $et->VPrint(2, '  Nearest fix:     ', PrintFixTime($tn), "\n") if $verbose > 2;
+                    $fix = { } if $$geotag{DateTimeOnly};
                 } else {
                     $fix = $$points{$tn};
                     $et->VPrint(2, "  Taking pos from fix:\n",
@@ -974,8 +991,11 @@ Category:       foreach $category (qw{pos track alt orient}) {
             @r = $et->SetNewValue(GPSRoll => $$tFix{roll}, %opts);
         }
         unless ($xmp) {
-            @r = $et->SetNewValue(GPSLatitudeRef => ($$fix{lat} > 0 ? 'N' : 'S'), %opts);
-            @r = $et->SetNewValue(GPSLongitudeRef => ($$fix{lon} > 0 ? 'E' : 'W'), %opts);
+            my ($latRef, $lonRef);
+            $latRef = ($$fix{lat} > 0 ? 'N' : 'S') if defined $$fix{lat};
+            $lonRef = ($$fix{lon} > 0 ? 'E' : 'W') if defined $$fix{lon};
+            @r = $et->SetNewValue(GPSLatitudeRef => $latRef, %opts);
+            @r = $et->SetNewValue(GPSLongitudeRef => $lonRef, %opts);
             @r = $et->SetNewValue(GPSDateStamp => $gpsDate, %opts);
             @r = $et->SetNewValue(GPSTimeStamp => $gpsTime, %opts);
             # set options to edit XMP:GPSDateTime only if it already exists

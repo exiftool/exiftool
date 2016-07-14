@@ -858,8 +858,10 @@ numerical.
 
   SubDirectory {  If it exists, this specifies the start of a new subdirectory.
                   It contains a collection of variables which specify the type
-                  and location of the subdirectory.  These variables are
-                  described below:
+                  and location of the subdirectory.  Note that ValueConv and
+                  PrintConv do not apply to SubDirectory tags, but RawConv is
+                  evaluated before the SubDirectory is processed.  The following
+                  is a list of SubDirectory variables:
 
      TagTable   : Specifies the name of the tag table lookup for the new
                   subdirectory.  If not specified, the parent tag table is used.

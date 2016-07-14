@@ -487,8 +487,8 @@ The <code>-L</code> option is equivalent to "<code>-charset Latin</code>",
 "<code>-charset Latin1</code>" and "<code>-charset cp1252</code>".</blockquote>
 
 <blockquote>Type-specific details are given below about the special character
-handling for EXIF, IPTC, XMP, PNG, ID3, PDF, Photoshop, QuickTime, AIFF, MIE and
-Vorbis information:</blockquote>
+handling for EXIF, IPTC, XMP, PNG, ID3, PDF, Photoshop, QuickTime, AIFF, RIFF,
+MIE and Vorbis information:</blockquote>
 
 <!-- NOTE: CHANGES TO FAQ 10 MUST ALSO BE REFLECTED IN ExifTool.pod! -->
 
@@ -627,6 +627,11 @@ a default encoding of MacRoman, but this may be changed with
 
 <blockquote><b>AIFF</b>: AIFF strings are assumed to be stored in MacRoman, and
 are converted according to the <code>-charset</code> option when reading.
+</blockquote>
+
+<blockquote><b>RIFF</b>: The internal encoding of RIFF strings (eg. in AVI and
+WAV files) is assumed to be Latin unless otherwise specified by the RIFF CSET
+chunk or the "<code>-charset RIFF=CHARSET</code>" option.
 </blockquote>
 
 <blockquote><b>MIE</b>: MIE strings are stored as either UTF&#8209;8 or ISO

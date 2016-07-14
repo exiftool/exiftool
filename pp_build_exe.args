@@ -3,7 +3,7 @@
 #
 # Description:  Arguments for building stand-alone Windows executable
 #
-# Revisions:    2006-11-22 - P. Harvey Created
+# Created:      2006-11-22 - P. Harvey
 #
 # Requires:     The PAR (Perl Archive) module must be installed
 #
@@ -25,7 +25,7 @@
 #--info=FileVersion=10.2.2.0
 #--info=ProductVersion=10.2.2.0
 ##"--info=Build Date=2016:07:07 12:25:41-04:00"
-##"--info=Bundled Perl Version=ActivePerl 5.8.7"
+##"--info=Bundled Perl Version=ActivePerl 5.24.0"
 ##"--info=LegalCopyright=Copyright (c) 2003-2016, Phil Harvey"
 ##"--info=ProductName=ExifTool"
 ##"--info=Comments=ExifTool EXE for Windows"
@@ -176,6 +176,7 @@
 -M Image::ExifTool::Olympus
 -M Image::ExifTool::OOXML
 -M Image::ExifTool::OpenEXR
+-M Image::ExifTool::Opus
 -M Image::ExifTool::Palm
 -M Image::ExifTool::Panasonic
 -M Image::ExifTool::PanasonicRaw

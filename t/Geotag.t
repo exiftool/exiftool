@@ -4,7 +4,7 @@
 my $numTests;
 
 BEGIN {
-    $numTests = 10;
+    $numTests = 11;
     $| = 1; print "1..$numTests\n"; $Image::ExifTool::noConfig = 1;
     # must create user-defined tags before loading ExifTool (used in test 8)
     %Image::ExifTool::UserDefined = (
@@ -178,6 +178,22 @@ unless (eval { require Time::Local }) {
         }
         print "ok $testnum\n";
     }
+}
+
+# test 11: Geotag date/time only with drift correction
+{
+    ++$testnum;
+    my $exifTool = new Image::ExifTool;
+    $testfile2 = "t/${testname}_${testnum}_failed.jpg";
+    unlink $testfile2;
+    $exifTool->SetNewValue(Geotag => 'DATETIMEONLY');
+    $exifTool->SetNewValue(Geosync => '2009:01:01 01:00:00Z@2009:01:01 01:00:00Z');
+    $exifTool->SetNewValue(Geosync => '2011:01:01 02:00:00Z@2011:01:01 01:00:00Z');
+    $exifTool->SetNewValue(Geotime => '2010:01:01 01:00:00Z');
+    $exifTool->WriteInfo('t/images/Writer.jpg', $testfile2);
+    my $info = $exifTool->ImageInfo($testfile2, @testTags);
+    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    print "ok $testnum\n";
 }
 
 IgnoreAll:

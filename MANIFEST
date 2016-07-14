@@ -102,6 +102,7 @@ html/TagNames/OOXML.html
 html/TagNames/Ogg.html
 html/TagNames/Olympus.html
 html/TagNames/OpenEXR.html
+html/TagNames/Opus.html
 html/TagNames/PDF.html
 html/TagNames/PGF.html
 html/TagNames/PICT.html
@@ -308,6 +309,7 @@ lib/Image/ExifTool/OOXML.pm
 lib/Image/ExifTool/Ogg.pm
 lib/Image/ExifTool/Olympus.pm
 lib/Image/ExifTool/OpenEXR.pm
+lib/Image/ExifTool/Opus.pm
 lib/Image/ExifTool/PDF.pm
 lib/Image/ExifTool/PGF.pm
 lib/Image/ExifTool/PICT.pm
@@ -508,6 +510,7 @@ t/GeoTiff_3.out
 t/GeoTiff_4.out
 t/Geotag.t
 t/Geotag_10.out
+t/Geotag_11.out
 t/Geotag_2.out
 t/Geotag_3.out
 t/Geotag_5.out
@@ -613,6 +616,8 @@ t/Olympus_7.out
 t/Olympus_8.out
 t/OpenEXR.t
 t/OpenEXR_2.out
+t/Opus.t
+t/Opus_2.out
 t/PDF.t
 t/PDF_10.out
 t/PDF_11.out
@@ -912,6 +917,7 @@ t/images/Olympus2.jpg
 t/images/OlympusE1.jpg
 t/images/OpenDoc.ods
 t/images/OpenEXR.exr
+t/images/Opus.opus
 t/images/PDF.pdf
 t/images/PDF2.pdf
 t/images/PGF.pgf

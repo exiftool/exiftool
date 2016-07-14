@@ -7,11 +7,26 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.20. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+July 14, 2016 - Version 10.23
+
+  - Added read support for Ogg Opus audio files
+  - Added ability to geotag GPS date/time only if no position information is
+    available by setting Geotag to "DATETIMEONLY" (all caps)
+  - Added "-charset RIFF" option
+  - Added a new Sony LensType (thanks Jos Roost)
+  - Decode a number of new Canon tags (thanks Kai Harrekilde-Petersen)
+  - Changed handling of special characters in RIFF-format files (eg. AVI, WAV)
+  - Changed MIME type of OGG files to audio/ogg (was audio/x-ogg)
+  - Minor change to wording of new Nikon D80 Rotation tag for consistency
+  - API Changes:
+      - Added CharsetRIFF option
+
 July 7, 2016 - Version 10.22
 
   - Added read support for BPG images
   - Minor changes to a few of the new Nikon tags
   - Fixed problem in Windows version where not all 10.21 updates were included
+    in the release
 
 June 29, 2016 - Version 10.21
 
@@ -108,7 +123,7 @@ Apr. 8, 2016 - Version 10.14
 
   - Added read support for ISO 9660 disk images
   - Added a few new Nikon ISOExpansion values (thanks LibRaw)
-  - Added a few new Olympus LensType values (thanks Niels Kristian Bech Jensen) 
+  - Added a few new Olympus LensType values (thanks Niels Kristian Bech Jensen)
   - Added a couple of new SonyModelID values (thanks LibRaw for one)
   - Added a new Olympus CameraType
   - Added config_files/gps2utm.config to distribution

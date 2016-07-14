@@ -116,6 +116,22 @@ sub ProcessComments($$$);
     PRODUCER    => { Name => 'Producer' },
     COMPOSER    => { Name => 'Composer' },
     ACTOR       => { Name => 'Actor' },
+    # Opus tags
+    ENCODER     => { Name => 'Encoder' },
+    ENCODER_OPTIONS => { Name => 'EncoderOptions' },
+    METADATA_BLOCK_PICTURE => {
+        Name => 'Picture',
+        Binary => 1,
+        # ref https://wiki.xiph.org/VorbisComment#METADATA_BLOCK_PICTURE
+        RawConv => q{
+            require Image::ExifTool::XMP;
+            Image::ExifTool::XMP::DecodeBase64($val);
+        },
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::FLAC::Picture',
+            ByteOrder => 'BigEndian',
+        },
+    },
 );
 
 # Vorbis composite tags
@@ -158,7 +174,7 @@ sub ProcessComments($$$)
         my ($tag, $val);
         if (defined $num) {
             $buff =~ /(.*?)=(.*)/s or last;
-            ($tag, $val) = ($1, $2);
+            ($tag, $val) = (uc $1, $2);
             # Vorbis tag ID's are all capitals, so they may conflict with our internal tags
             # --> protect against this by adding a trailing underline if necessary
             $tag .= '_' if $Image::ExifTool::specialTags{$tag};
@@ -175,6 +191,7 @@ sub ProcessComments($$$)
             # remove invalid characters in tag name and capitalize following letters
             $name =~ s/[^\w-]+(.?)/\U$1/sg;
             $name =~ s/([a-z0-9])_([a-z])/$1\U$2/g;
+            $et->VPrint(0, "  | [adding $tag]\n");
             AddTagToTable($tagTablePtr, $tag, { Name => $name });
         }
         $et->HandleTag($tagTablePtr, $tag, $et->Decode($val, 'UTF8'),

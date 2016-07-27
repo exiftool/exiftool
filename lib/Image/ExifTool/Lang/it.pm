@@ -11,7 +11,7 @@ package Image::ExifTool::Lang::it;
 use strict;
 use vars qw($VERSION);
 
-$VERSION = '1.12';
+$VERSION = '1.13';
 
 %Image::ExifTool::Lang::it::Translate = (
    'A100DataOffset' => 'Offset dati A100',
@@ -6273,7 +6273,7 @@ $VERSION = '1.12';
     },
    'RecordingTime' => 'Tempo registrazione',
    'RedAdjust' => 'Correzione rosso',
-   'RedBalance' => 'Bilanciamento rosso',
+   'RedBalance' => 'Bilanciamento del rosso',
    'RedCurveLimits' => 'Limiti curva rosso',
    'RedCurvePoints' => 'Punti curva rosso',
    'RedEyeCorrection' => {
@@ -6769,7 +6769,7 @@ $VERSION = '1.12';
         'Change parameters' => 'Cambia parametri',
         'ISO speed' => 'Velocità ISO',
         'Normal (disabled)' => 'Normale (disabilitato)',
-        'White balance' => 'Bilanciameno bianco',
+        'White balance' => 'Bilanciamento del bianco',
       },
     },
    'SetCookie' => 'Imposta cookie',
@@ -7314,7 +7314,7 @@ $VERSION = '1.12';
       PrintConv => {
         'Self-timer' => 'Autoscatto',
         'Shooting Mode' => 'Modo scatto',
-        'White Balance' => 'Bilanciameno bianco',
+        'White Balance' => 'Bilanciamento del bianco',
       },
     },
    'TimerLength' => {
@@ -7729,7 +7729,7 @@ $VERSION = '1.12';
     },
    'WCSProfiles' => 'Profilo Windows Color System',
    'WhiteBalance' => {
-      Description => 'Bilanciameno bianco',
+      Description => 'Bilanciamento del bianco',
       PrintConv => {
         'Auto' => 'Equilibrio del bianco automatico',
         'Black & White' => 'Monocromatico',
@@ -7753,7 +7753,7 @@ $VERSION = '1.12';
         'White Fluorescent' => 'Fluorescente bianca',
       },
     },
-   'WhiteBalance2' => 'Bilanciameno bianco 2',
+   'WhiteBalance2' => 'Bilanciamento del bianco 2',
    'WhiteBalanceAdj' => {
       Description => 'Adattamento bilanciamento bianco',
       PrintConv => {

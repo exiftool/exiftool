@@ -1005,7 +1005,8 @@ for live view or video recording)</span></span></td></tr>
   <br>13 = 13 (K-3,K-3II)
   <br>14 = 14 (645Z)
   <br>15 = 15 (K-S1,K-S2)
-  <br>16 = 16 (K-1)</td></tr></table>
+  <br>16 = 16 (K-1)
+  <br>17 = 17 (K-70)</td></tr></table>
 </td></tr>
 <tr>
 <td title='0x0067 = 103'>0x0067</td>
@@ -1256,13 +1257,14 @@ other models)</span>
 <td title='0x0085 = 133'>0x0085</td>
 <td>HDR</td>
 <td class=c>int8u[4]</td>
-<td><span class=s>[Value 0]
-  <br>0 = Off
+<td><span class=s>[Value 0]</span><table class=cols><tr>
+  <td>0 = Off
   <br>1 = HDR Auto
-  <br>2 = HDR 1
-  <br>3 = HDR 2
+  <br>2 = HDR 1</td><td>&nbsp;&nbsp;</td>
+  <td>3 = HDR 2
   <br>4 = HDR 3
-  <br>[Value 1]
+  <br>5 = HDR Advanced</td></tr></table>
+<span class=s>[Value 1]
   <br>0 = Auto-align Off
   <br>1 = Auto-align On
   <br>[Value 2]
@@ -1504,33 +1506,38 @@ are left, top, width and height in a 720x480 frame, with Y downwards)</span></sp
 <td class=c>-</td>
 <td>--&gt; <a href='Pentax.html#PixelShiftInfo'>Pentax PixelShiftInfo Tags</a></td></tr>
 <tr class=b>
+<td title='0x0245 = 581'>0x0245</td>
+<td>AFPointInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Pentax.html#AFPointInfo'>Pentax AFPointInfo Tags</a></td></tr>
+<tr>
 <td title='0x03fe = 1022'>0x03fe</td>
 <td>DataDump</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x03ff = 1023'>0x03ff</td>
 <td>TempInfo
   <br>UnknownInfo</td>
 <td class=c>-<br>-</td>
 <td>--&gt; <a href='Pentax.html#TempInfo'>Pentax TempInfo Tags</a>
   <br>--&gt; <a href='Pentax.html#UnknownInfo'>Pentax UnknownInfo Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0402 = 1026'>0x0402</td>
 <td>ToneCurve</td>
 <td class=c title=' ~ = Writable only with -n'>Y~</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x0403 = 1027'>0x0403</td>
 <td>ToneCurves</td>
 <td class=c title=' ~ = Writable only with -n'>Y~</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x0405 = 1029'>0x0405</td>
 <td>UnknownBlock?</td>
 <td class=c>undef</td>
 <td><span class=s><span class=n>(large unknown data block in PEF/DNG images but not JPG images)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0e00 = 3584'>0x0e00</td>
 <td>PrintIM</td>
 <td class=c>-</td>
@@ -1813,8 +1820,8 @@ identify the specific lens model.</p>
 </tr><tr><td>'3 23.3'</td><td>= Tokina 80-200mm F2.8 ATX-Pro</td>
 </tr><tr><td>'3 24'</td><td>= smc PENTAX-F 35-135mm F3.5-4.5</td>
 </tr><tr><td>'3 25'</td><td>= smc PENTAX-F 35-105mm F4-5.6 or Sigma or Tokina Lens</td>
-</tr><tr><td>'3 25.1'</td><td>= Sigma AF 28-300mm F3.5-5.6 DL IF</td>
-</tr><tr><td>'3 25.2'</td><td>= Sigma 55-200mm F4-5.6 DC</td>
+</tr><tr><td>'3 25.1'</td><td>= Sigma 55-200mm F4-5.6 DC</td>
+</tr><tr><td>'3 25.2'</td><td>= Sigma AF 28-300mm F3.5-5.6 DL IF</td>
 </tr><tr><td>'3 25.3'</td><td>= Sigma AF 28-300mm F3.5-6.3 DL IF</td>
 </tr><tr><td>'3 25.4'</td><td>= Sigma AF 28-300mm F3.5-6.3 DG IF Macro</td>
 </tr><tr><td>'3 25.5'</td><td>= Tokina 80-200mm F2.8 ATX-Pro</td>
@@ -1849,6 +1856,7 @@ identify the specific lens model.</p>
 </tr><tr><td>'3 44.4'</td><td>= Sigma 18-50mm F3.5-5.6 DC</td>
 </tr><tr><td>'3 44.5'</td><td>= Sigma 17-35mm F2.8-4 EX DG</td>
 </tr><tr><td>'3 44.6'</td><td>= Tamron 35-90mm F4 AF</td>
+</tr><tr><td>'3 44.7'</td><td>= Sigma AF 18-35mm F3.5-4.5 Aspherical</td>
 </tr><tr><td>'3 46'</td><td>= Sigma or Samsung Lens (3 46)</td>
 </tr><tr><td>'3 46.1'</td><td>= Sigma APO 70-200mm F2.8 EX</td>
 </tr><tr><td>'3 46.2'</td><td>= Sigma EX APO 100-300mm F4 IF</td>
@@ -4292,6 +4300,35 @@ valid for other models.</p>
   <br>1 = On</span></td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='AFPointInfo'>Pentax AFPointInfo Tags</a></h2>
+<p>AF point information written by the K-1.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='2 = 0x2'>2</td>
+<td>NumAFPoints</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>AFPointsInFocus</td>
+<td class=c title=' ~ = Writable only with -n'>int8u[9]~</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='4 = 0x4'>4.1</td>
+<td>AFPointsSelected</td>
+<td class=c title=' ~ = Writable only with -n'>int8u[9]~</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4.2</td>
+<td>AFPointsSpecial</td>
+<td class=c title=' ~ = Writable only with -n'>int8u[9]~</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
 <h2><a name='TempInfo'>Pentax TempInfo Tags</a></h2>
 <p>A number of additional temperature readings are extracted from this 256-byte
 binary-data block in images from models such as the K-01, K-3, K-5, K-50 and
@@ -4764,7 +4801,7 @@ stored as ASCII text in a format very similar to some HP models.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jun 28, 2016</i>
+<br><i>Last revised Jul 27, 2016</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

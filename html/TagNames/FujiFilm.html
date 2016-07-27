@@ -82,6 +82,10 @@ necessarily correspond to the camera body number -- this needs to be checked)</s
   <br>0x303 = B&amp;W Green Filter
   <br>0x310 = B&amp;W Sepia
   <br>0x400 = Low 2
+  <br>0x500 = Acros
+  <br>0x501 = Acros Red Filter
+  <br>0x502 = Acros Yellow Filter
+  <br>0x503 = Acros Green Filter
   <br>0x8000 = Film Simulation</td></tr></table>
 </td></tr>
 <tr>
@@ -133,11 +137,14 @@ necessarily correspond to the camera body number -- this needs to be checked)</s
 <td title='0x1010 = 4112'>0x1010</td>
 <td>FujiFlashMode</td>
 <td class=c>int16u</td>
-<td><span class=s>0 = Auto
+<td><table class=cols><tr>
+  <td>0 = Auto
   <br>1 = On
-  <br>2 = Off
-  <br>3 = Red-eye reduction
-  <br>4 = External</span></td></tr>
+  <br>2 = Off</td><td>&nbsp;&nbsp;</td>
+  <td>3 = Red-eye reduction
+  <br>4 = External
+  <br>16 = Commander</td></tr></table>
+</td></tr>
 <tr class=b>
 <td title='0x1011 = 4113'>0x1011</td>
 <td>FlashExposureComp</td>
@@ -818,7 +825,7 @@ RAF-format information.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Apr 7, 2016</i>
+<br><i>Last revised Jul 27, 2016</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

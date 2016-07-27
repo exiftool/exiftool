@@ -7,10 +7,26 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.20. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+July 27, 2016 - Version 10.24
+
+  - Added support for DJI Phantom maker notes
+  - Added a few more XMP-crs tags
+  - Added ability to write DNG OpcodeList tags
+  - Added a new Sony/Minolta LensType (thanks Jos Roost)
+  - Added a few new FujiFilm Saturation values
+  - Added a new FujiFlashMode value and fixed an incorrect Italian translation
+    (thanks Massimo Sanna, ApolloOne)
+  - Decode more Pentax tags (thanks Louis Granboulan)
+  - Changed -config option to search the current directory first for the config
+    file (patches problem introduced in ExifTool 10.21 for Windows where the
+    working directory might not be searched when using the -config option)
+  - Changed print conversion of ProcessingTime to show 3 significant digits
+  - Fixed bug decoding PanasonicRaw DistortionInfo in DNG images
+
 July 14, 2016 - Version 10.23
 
   - Added read support for Ogg Opus audio files
-  - Added ability to geotag GPS date/time only if no position information is
+  - Added ability to geotag only GPS date/time if no position information is
     available by setting Geotag to "DATETIMEONLY" (all caps)
   - Added "-charset RIFF" option
   - Added a new Sony LensType (thanks Jos Roost)

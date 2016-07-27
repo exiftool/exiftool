@@ -42,6 +42,7 @@ html/TagNames/CanonVRD.html
 html/TagNames/Casio.html
 html/TagNames/Composite.html
 html/TagNames/DICOM.html
+html/TagNames/DJI.html
 html/TagNames/DNG.html
 html/TagNames/DPX.html
 html/TagNames/DV.html
@@ -226,6 +227,7 @@ lib/Image/ExifTool/Charset/Thai.pm
 lib/Image/ExifTool/Charset/Turkish.pm
 lib/Image/ExifTool/Charset/Vietnam.pm
 lib/Image/ExifTool/DICOM.pm
+lib/Image/ExifTool/DJI.pm
 lib/Image/ExifTool/DNG.pm
 lib/Image/ExifTool/DPX.pm
 lib/Image/ExifTool/DV.pm

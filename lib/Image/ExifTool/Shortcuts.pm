@@ -117,6 +117,7 @@ $VERSION = '1.57';
         'MakerNoteCanon',
         'MakerNoteCasio',
         'MakerNoteCasio2',
+        'MakerNoteDJI',
         'MakerNoteFLIR',
         'MakerNoteFujiFilm',
         'MakerNoteGE',

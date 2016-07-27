@@ -3316,6 +3316,9 @@ my %sampleFormat = (
     },
     0xc740 => { # DNG 1.3
         Name => 'OpcodeList1',
+        Writable => 'undef',
+        WriteGroup => 'SubIFD',
+        Protected => 1,
         Binary => 1,
         # opcodes:
         # 1 => 'WarpRectilinear',
@@ -3334,10 +3337,16 @@ my %sampleFormat = (
     },
     0xc741 => { # DNG 1.3
         Name => 'OpcodeList2',
+        Writable => 'undef',
+        WriteGroup => 'SubIFD',
+        Protected => 1,
         Binary => 1,
     },
     0xc74e => { # DNG 1.3
         Name => 'OpcodeList3',
+        Writable => 'undef',
+        WriteGroup => 'SubIFD',
+        Protected => 1,
         Binary => 1,
     },
     0xc761 => { # DNG 1.3

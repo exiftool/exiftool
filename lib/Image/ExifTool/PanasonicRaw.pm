@@ -20,7 +20,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.09';
+$VERSION = '1.10';
 
 sub ProcessJpgFromRaw($$$);
 sub WriteJpgFromRaw($$$);
@@ -425,7 +425,7 @@ sub ProcessDistortionInfo($$$)
     my ($et, $dirInfo, $tagTablePtr) = @_;
     my $dataPt = $$dirInfo{DataPt};
     my $start = $$dirInfo{DirStart} || 0;
-    my $size = $$dirInfo{DataLen} || (length($$dataPt) - $start);
+    my $size = $$dirInfo{DirLen} || (length($$dataPt) - $start);
     if ($size == 32) {
         # verify the checksums (ref 3)
         my $csum1 = Checksum($dataPt, $start +  4, 12, 1);

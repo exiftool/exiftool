@@ -43,6 +43,7 @@ ol.index { margin: 0; padding: 0 0 0 2em }
 <li><a href="#Q25">Image validation</a></li>
 <li><a href="#Q26">Import from database</a></li>
 <li><a href="#Q27">Windows .BAT file problems</a></li>
+<li><a href="#Q28">Copying a shifted date/time</a></li>
 </ol>
 </div>
 
@@ -1559,8 +1560,28 @@ must be changed to this in a .BAT file:
 <pre>exiftool "-FileName&lt;CreateDate" -d "%%Y%%m%%d_%%H%%M%%S.%%%%e" image.jpg</pre>
 </blockquote>
 
+<a name="Q28"></a>
+<p>28. <b>"How do I copy a shifted date/time value?"</b></p>
+
+<blockquote>The <code>-TAG+=</code> and <code>-TAG-=</code> arguments always act
+on the <b>existing</b> tag value, so they can not be used to shift a <b>new</b>
+tag value without running a second command.  For example, this is <b>wrong</b>
+because the copy operation is superseded by the shift, and the result is that
+the existing DateTimeOriginal is shifted back by two hours:
+
+<pre>exiftool "-datetimeoriginal&lt;filemodifydate" -datetimeoriginal-=2 image.jpg <span class=blk>(WRONG!)</span>
+</pre>
+
+The <code>-globalTimeShift</code> option was created to fill this void -- it
+shifts all date/time tags by the specified amount when reading or copying,
+allowing a shifted date/time value to be copied to another tag.  So this is the
+proper technique for shifting a date/time value when copying:
+
+<pre>exiftool "-datetimeoriginal&lt;filemodifydate" -globaltimeshift -2 image.jpg</pre>
+</blockquote>
+
 <hr>
-<i>Last revised May 13, 2016</i>
+<i>Last revised Jul 21, 2016</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

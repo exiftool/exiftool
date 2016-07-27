@@ -26,7 +26,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.53';
+$VERSION = '1.54';
 
 sub ProcessFujiDir($$$);
 sub ProcessFaceRec($$$);
@@ -152,6 +152,10 @@ my %faceCategories = (
             0x303 => 'B&W Green Filter', #PH/8
             0x310 => 'B&W Sepia', #PH (X100)
             0x400 => 'Low 2', #8 ("Color -2")
+            0x500 => 'Acros', #PH (X-Pro2)
+            0x501 => 'Acros Red Filter', #PH (X-Pro2)
+            0x502 => 'Acros Yellow Filter', #PH (X-Pro2)
+            0x503 => 'Acros Green Filter', #PH (X-Pro2)
             0x8000 => 'Film Simulation', #2
         },
     },
@@ -220,6 +224,7 @@ my %faceCategories = (
             2 => 'Off',
             3 => 'Red-eye reduction',
             4 => 'External', #JD
+            16 => 'Commander',
         },
     },
     0x1011 => {
@@ -449,12 +454,12 @@ my %faceCategories = (
         Writable => 'int16u',
         PrintHex => 1,
         PrintConv => {
-            0x000 => 'F0/Standard (Provia)',
+            0x000 => 'F0/Standard (Provia)', # X-Pro2 "Provia/Standard"
             0x100 => 'F1/Studio Portrait',
             0x110 => 'F1a/Studio Portrait Enhanced Saturation',
-            0x120 => 'F1b/Studio Portrait Smooth Skin Tone (Astia)',
+            0x120 => 'F1b/Studio Portrait Smooth Skin Tone (Astia)', # X-Pro2 "Astia/Soft"
             0x130 => 'F1c/Studio Portrait Increased Sharpness',
-            0x200 => 'F2/Fujichrome (Velvia)',
+            0x200 => 'F2/Fujichrome (Velvia)', # X-Pro2 "Velvia/Vivid"
             0x300 => 'F3/Studio Portrait Ex',
             0x400 => 'F4/Velvia',
             0x500 => 'Pro Neg. Std', #PH (X-Pro1)

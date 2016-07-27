@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.40';
+$VERSION = '2.41';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -68,7 +68,8 @@ my %sonyLensTypes2 = (
     32786 => 'Sony E 55-210mm F4.5-6.3 OSS',    # VX9102
     32787 => 'Sony E 18-200mm F3.5-6.3 OSS',    # VX9103
     32788 => 'Sony E 30mm F3.5 Macro',          # VX9104
-    32789 => 'Sony E 24mm F1.8 ZA',             # VX9105
+    32789 => 'Sony E 24mm F1.8 ZA or Samyang AF 50mm F1.4 FE', # VX9105
+    32789.1 => 'Samyang AF 50mm F1.4 FE', 
     32790 => 'Sony E 50mm F1.8 OSS',            # VX9106
     32791 => 'Sony E 16-70mm F4 ZA OSS',        # VX9107
     32792 => 'Sony E 10-18mm F4 OSS',           # VX9108

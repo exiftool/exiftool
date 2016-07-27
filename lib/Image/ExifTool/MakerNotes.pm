@@ -21,7 +21,7 @@ sub ProcessKodakPatch($$$);
 sub WriteUnknownOrPreview($$$);
 sub FixLeicaBase($$;$);
 
-$VERSION = '1.98';
+$VERSION = '1.99';
 
 my $debug;          # set to 1 to enable debugging code
 
@@ -87,6 +87,15 @@ my $debug;          # set to 1 to enable debugging code
             Start => '$valuePtr + 6',
             ByteOrder => 'Unknown',
             FixBase => 1, # necessary for AVI and MOV videos
+        },
+    },
+    {
+        Name => 'MakerNoteDJI',
+        Condition => '$$self{Make} eq "DJI" and $$valPt !~ /^...\@AMBA/s',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::DJI::Main',
+            Start => '$valuePtr',
+            ByteOrder => 'Unknown',
         },
     },
     {

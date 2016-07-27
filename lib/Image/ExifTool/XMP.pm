@@ -48,7 +48,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '2.93';
+$VERSION = '2.94';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -1424,6 +1424,10 @@ my %sPantryItem = (
     TIFFHandling                        => { },
     Dehaze                              => { Writable => 'real' },
     ToneMapStrength                     => { Writable => 'real' },
+    # yet more
+    PerspectiveX                        => { Writable => 'real' },
+    PerspectiveY                        => { Writable => 'real' },
+    UprightFourSegmentsCount            => { Writable => 'integer' },
 );
 
 # Tiff namespace properties (tiff)

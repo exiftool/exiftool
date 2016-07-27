@@ -17,10 +17,27 @@ considered development releases, and are not uploaded to <a href="http://search.
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v10.24'><b>July 27, 2016 - Version 10.24</b></a>
+<ul>
+<li>Added support for DJI Phantom maker notes
+<li>Added a few more XMP-crs tags
+<li>Added ability to write DNG OpcodeList tags
+<li>Added a new Sony/Minolta LensType (thanks Jos Roost)
+<li>Added a few new FujiFilm Saturation values
+<li>Added a new FujiFlashMode value and fixed an incorrect Italian translation
+    (thanks Massimo Sanna, ApolloOne)
+<li>Decode more Pentax tags (thanks Louis Granboulan)
+<li>Changed -config option to search the current directory first for the config
+    file (patches problem introduced in ExifTool 10.21 for Windows where the
+    working directory might not be searched when using the -config option)
+<li>Changed print conversion of ProcessingTime to show 3 significant digits
+<li>Fixed bug decoding PanasonicRaw DistortionInfo in DNG images
+</ul>
+
 <a name='v10.23'><b>July 14, 2016 - Version 10.23</b></a>
 <ul>
 <li>Added read support for Ogg Opus audio files
-<li>Added ability to geotag GPS date/time only if no position information is
+<li>Added ability to geotag only GPS date/time if no position information is
     available by setting Geotag to "DATETIMEONLY" (all caps)
 <li>Added "-charset RIFF" option
 <li>Added a new Sony LensType (thanks Jos Roost)

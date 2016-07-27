@@ -3628,7 +3628,10 @@ sub WriteDirectory($$$;$)
             } else {
                 $self->Warn("Deleting duplicate $dirName directory");
                 $out and print $out "  Deleting $dirName\n";
-                return '';  # delete the duplicate directory
+                # delete the duplicate directory (don't recreate it when writing new
+                # tags to prevent propagating a duplicate IFD in cases like when the
+                # same ExifIFD exists in both IFD0 and IFD1) 
+                return ''; 
             }
         } else {
             $$self{PROCESSED}{$addr} = $dirName;

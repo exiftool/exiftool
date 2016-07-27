@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '10.23';
+$VERSION = '10.24';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -1365,7 +1365,7 @@ my %systemTagsNotes = (
             file.  Not generated unless specifically requested or the RequestAll API
             option is set.  Requires Time::HiRes
         },
-        PrintConv => 'sprintf("%.3f s", $val)',
+        PrintConv => 'sprintf("%.3g s", $val)',
     },
     RAFVersion => { Notes => 'RAF file version number' },
     JPEGDigest => {
@@ -7708,7 +7708,9 @@ until ($Image::ExifTool::noConfig) {
         length $file or last;   # filename of "" disables configuration
         -r $file or warn("Config file not found\n"), last;
     }
+    unshift @INC, '.';      # look in current directory first
     eval { require $file }; # load the config file
+    shift @INC;
     # print warning (minus "Compilation failed" part)
     $@ and $_=$@, s/Compilation failed.*//s, warn $_;
     last;

@@ -580,6 +580,7 @@ EXIF 2.3 specification.
            MakerNoteCanon            ExifIFD    Canon
            MakerNoteCasio            ExifIFD    Casio
            MakerNoteCasio2           ExifIFD    Casio Type2
+           MakerNoteDJI              ExifIFD    DJI
            MakerNoteFLIR             ExifIFD    FLIR
            MakerNoteFujiFilm         ExifIFD    FujiFilm
            MakerNoteGE               ExifIFD    GE
@@ -826,9 +827,9 @@ EXIF 2.3 specification.
   0xc71f   RowInterleaveFactor       -          N
   0xc725   ProfileLookTableDims      IFD0       int32u[3]!
   0xc726   ProfileLookTableData      IFD0       float[n]!
-  0xc740   OpcodeList1               -          N
-  0xc741   OpcodeList2               -          N
-  0xc74e   OpcodeList3               -          N
+  0xc740   OpcodeList1               SubIFD     undef!
+  0xc741   OpcodeList2               SubIFD     undef!
+  0xc74e   OpcodeList3               SubIFD     undef!
   0xc761   NoiseProfile              SubIFD     double[n]!
   0xc763   TimeCodes                 IFD0       int8u[n]
   0xc764   FrameRate                 IFD0       rational64s
@@ -1672,6 +1673,8 @@ metadata space with these incredibly bulky image editing parameters.
   PerspectiveScale                              integer
   PerspectiveUpright                            integer
   PerspectiveVertical                           integer
+  PerspectiveX                                  real
+  PerspectiveY                                  real
   PostCropVignetteAmount                        integer
   PostCropVignetteFeather                       integer
   PostCropVignetteHighlightContrast             integer
@@ -1763,6 +1766,7 @@ metadata space with these incredibly bulky image editing parameters.
   UprightDependentDigest                        string
   UprightFocalLength35mm                        real
   UprightFocalMode                              integer
+  UprightFourSegmentsCount                      integer
   UprightPreview                                boolean
   UprightTransform_0                            string
   UprightTransform_1                            string
@@ -7700,6 +7704,24 @@ This information is found in MOV videos from some FujiFilm cameras.
      50    FNumber                              N
      58    ExposureCompensation                 N
 
+=head2 DJI Tags
+
+This table lists tags found in the maker notes of images from some DJI
+Phantom drones.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  0x0001   Make                                 string
+  0x0003   SpeedX                               float
+  0x0004   SpeedY                               float
+  0x0005   SpeedZ                               float
+  0x0006   Pitch                                float
+  0x0007   Yaw                                  float
+  0x0008   Roll                                 float
+  0x0009   CameraPitch                          float
+  0x000a   CameraYaw                            float
+  0x000b   CameraRoll                           float
+
 =head2 GE Tags
 
 This table lists tags found in the maker notes of some General Imaging
@@ -12225,6 +12247,7 @@ These tags are used in Pentax/Asahi cameras.
   0x0235   CrossProcessParams                   undef[10]
   0x0239   LensInfoQ                            Pentax LensInfoQ
   0x0243   PixelShiftInfo                       Pentax PixelShiftInfo
+  0x0245   AFPointInfo                          Pentax AFPointInfo
   0x03fe   DataDump                             N
   0x03ff   TempInfo                             Pentax TempInfo
            UnknownInfo                          Pentax UnknownInfo
@@ -12739,6 +12762,17 @@ Pixel shift information stored by the K-3 II.
   Index1   Tag Name                             Writable
   ------   --------                             --------
       0    PixelShiftResolution                 int8u
+
+=head3 Pentax AFPointInfo Tags
+
+AF point information written by the K-1.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      2    NumAFPoints                          int16u
+      4    AFPointsInFocus                      int8u[9]~
+    4.1    AFPointsSelected                     int8u[9]~
+    4.2    AFPointsSpecial                      int8u[9]~
 
 =head3 Pentax TempInfo Tags
 
@@ -15091,6 +15125,7 @@ still proprietary) Adobe format.
            MakerNoteCanon                       Canon
            MakerNoteCasio                       Casio
            MakerNoteCasio2                      Casio Type2
+           MakerNoteDJI                         DJI
            MakerNoteFLIR                        FLIR
            MakerNoteFujiFilm                    FujiFilm
            MakerNoteGE                          GE
@@ -21697,8 +21732,14 @@ multi-language user data tags found, even if they don't exist in this table.
   "\xa9ed8"    Edit8                            N
   "\xa9ed9"    Edit9                            N
   "\xa9fmt"    Format                           N
+  "\xa9fpt"    Pitch                            N
+  "\xa9frl"    Roll                             N
+  "\xa9fyw"    Yaw                              N
   "\xa9gen"    Genre                            N
+  "\xa9gpt"    CameraPitch                      N
+  "\xa9grl"    CameraRoll                       N
   "\xa9grp"    Grouping                         N
+  "\xa9gyw"    CameraYaw                        N
   "\xa9inf"    Information                      N
   "\xa9isr"    ISRCCode                         N
   "\xa9lab"    RecordLabelName                  N
@@ -21725,7 +21766,10 @@ multi-language user data tags found, even if they don't exist in this table.
   "\xa9too"    Encoder                          N
   "\xa9trk"    Track                            N
   "\xa9wrt"    Composer                         N
+  "\xa9xsp"    SpeedX                           N
   "\xa9xyz"    GPSCoordinates                   N
+  "\xa9ysp"    SpeedY                           N
+  "\xa9zsp"    SpeedZ                           N
 
 =head3 QuickTime HintTrackInfo Tags
 
@@ -29465,6 +29509,7 @@ for more details.
                        MakerNoteCanon
                        MakerNoteCasio
                        MakerNoteCasio2
+                       MakerNoteDJI
                        MakerNoteFLIR
                        MakerNoteFujiFilm
                        MakerNoteGE

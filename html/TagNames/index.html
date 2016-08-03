@@ -168,21 +168,21 @@ of values written, or the number of characters in a fixed-length string
 (including a null terminator which is added if required).</p>
 
 <p>A plus sign (<code>+</code>) after an entry in the <b>Writable</b> column indicates a
-&quot;list&quot; tag which supports multiple values and allows individual values to be
-added and deleted.  A slash (<code>/</code>) indicates an &quot;avoided&quot; tag that is not
-created when writing if another same-named tag may be created instead.  To
-write these tags, the group should be specified.  A tilde (<code>~</code>) indicates a
-tag this is writable only when the print conversion is disabled (by setting
-PrintConv to 0, using the -n option, or suffixing the tag name with a <code>#</code>
-character).  An exclamation point (<code>!</code>) indicates a tag that is considered
-unsafe to write under normal circumstances.  These &quot;unsafe&quot; tags are not
-written unless specified explicitly (ie. wildcards and &quot;all&quot; may not be
-used), and care should be taken when editing them manually since they may
-affect the way an image is rendered.  An asterisk (<code>*</code>) indicates a
-&quot;protected&quot; tag which is not writable directly, but is written automatically
-by ExifTool (often when a corresponding Composite or Extra tag is written).
-A colon (<code>:</code>) indicates a mandatory tag which may be added automatically
-when writing.</p>
+<i>List</i> tag which supports multiple values and allows individual values to
+be added and deleted.  A slash (<code>/</code>) indicates a tag that ExifTool will
+<i>Avoid</i> when writing.  These tags are not created when writing if another
+same-named tag may be created instead.  To write these tags, the group
+should be specified.  A tilde (<code>~</code>) indicates a tag this is writable only
+when the print conversion is disabled (by setting PrintConv to 0, using the
+-n option, or suffixing the tag name with a <code>#</code> character).  An exclamation
+point (<code>!</code>) indicates a tag that is considered <i>Unsafe</i> to write under
+normal circumstances.  These tags are not written unless specified
+explicitly (ie. wildcards and &quot;all&quot; may not be used), and care should be
+taken when editing them manually since they may affect the way an image is
+rendered.  An asterisk (<code>*</code>) indicates a <i>Protected</i> tag which is not
+writable directly, but is written automatically by ExifTool (often when a
+corresponding Composite or Extra tag is written). A colon (<code>:</code>) indicates a
+<i>Mandatory</i> tag which may be added automatically when writing.</p>
 
 <p>The HTML version of these tables also lists possible <b>Values</b> for
 discrete-valued tags, as well as <b>Notes</b> for some tags.  The <b>Values</b> are
@@ -212,7 +212,7 @@ ExifTool.  A big thanks to everyone who has helped with this so far!)</i>
 </p>
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jul 25, 2016</i>
+<br><i>Last revised Jul 28, 2016</i>
 <p class=lf><a href='../index.html'>&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

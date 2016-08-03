@@ -7,6 +7,17 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.20. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Aug. 3, 2016 - Version 10.25
+
+  - Added a new Pentax PictureMode (thanks Louis Granboulan)
+  - Added a new Nikon LensID (thanks LibRaw)
+  - Decode a new Samsung tag (thanks LibRaw)
+  - Decode a few more Canon tags (thanks Anton Reiser)
+  - Removed "Avoid" flag for XMP-crs:ColorTemperature
+  - Changed the format of a number of XMP-GPano tags from integer to real
+  - Fixed incorrect tag ID's for some obscure Island Graphics EXIF tags
+  - Fixed decoding of some UTF-8 DNG tags which may be stored in BYTE format
+
 July 27, 2016 - Version 10.24
 
   - Added support for DJI Phantom maker notes

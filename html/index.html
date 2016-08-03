@@ -74,9 +74,9 @@ span.sup        { font-size: 0.8em; font-weight: normal; position: relative; top
 </div>
 
 <blockquote><table class='dl lg'><tr><td><b>
-<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-10.24.tar.gz/download">
-Download        Version 10.24</a> (4.0 MB) -
-<a href="history.html">July 27, 2016</a></b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-10.25.tar.gz/download">
+Download        Version 10.25</a> (4.0 MB) -
+<a href="history.html">Aug. 3, 2016</a></b></td></tr></table></blockquote>
 
 <p><b>ExifTool is a platform-independent <a href="ExifTool.html">Perl
 library</a> plus a <a href="exiftool_pod.html">command-line application</a> for
@@ -127,8 +127,8 @@ distribution above.)</i></p>
 
 <blockquote><table class='dl lg'><tr><td><b>
 <a name="alone">Windows Executable:</a>
-<a href="http://sourceforge.net/projects/exiftool/files/exiftool-10.24.zip/download">
-         exiftool-10.24.zip</a> (4.9 MB)</b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/exiftool-10.25.zip/download">
+         exiftool-10.25.zip</a> (4.9 MB)</b></td></tr></table></blockquote>
 
 <p><b>The stand-alone Windows executable</b> does not require Perl. Just
 download and un-zip the archive then double-click on
@@ -140,7 +140,7 @@ of Windows.</p>
 <blockquote><table class='dl lg'><tr><td><b>
 Mac OS X Package:
 <a href="http://sourceforge.net/projects/exiftool/files/ExifTool-9.70.dmg/download">
-         ExifTool-10.24.dmg</a> (2.6 MB)</b></td></tr></table></blockquote>
+         ExifTool-10.25.dmg</a> (2.6 MB)</b></td></tr></table></blockquote>
 
 <p><b>The OS X package</b> installs the ExifTool command-line application and
 libraries in /usr/bin. After installing, type "<code>exiftool</code>" in a
@@ -906,8 +906,15 @@ for proper rendering of the image.</li>
 
 <h2><font color='#cc6600'><a name="problems">Known Problems</a></font></h2>
 <ul>
-<li>Adobe Camera Raw and DNG Converter 9.5.1 fail to recognize edited SRW images
-from some Samsung models (NX30, NX300, NX2000 and EK-GN120).
+<li>Some antivirus software has been known to cause problems for the <b>Windows</b>
+version of ExifTool. <b>Norton Antivirus</b> may delete ExifTool when it is run,
+and <b>Windows Defender</b> may slow down launching of ExifTool or hang it
+altogether.  Presumably this is due to the way the ExifTool package for Windows
+works -- it unpacks executable files into a temporary directory and runs from
+there, which apparently may be seen as a threat by antivirus software.  A
+work-around is to add ExifTool to the exclusion list of the antivirus software.</li>
+<li><b>Adobe Camera Raw and DNG Converter 9.5.1</b> fail to recognize edited
+<b>Samsung SRW</b> images from some models (NX30, NX300, NX2000 and EK-GN120).
 <i class=red>[This bug was reported to Adobe on May 26, 2016.]</i></li>
 <li>In <b>Windows</b>, ExifTool will not process files with <b>Unicode characters
 in the file name</b>.  This is due to an underlying lack of support for Unicode
@@ -1021,7 +1028,7 @@ feature.</p>
 <h2><a name="performance">Improving Performance</a></h2>
 
 <p>There is a significant overhead in loading ExifTool, so performance may be
-greatly improved by taking advantage of ExifTool's batch processing capabilities
+greatly improved by taking advantage of ExifTool's <b>batch processing capabilities</b>
 (the ability to process multiple files or entire directories with a single
 command) to reduce the number of executed commands when performing complex
 operations or processing multiple files.<span class=sm><sup>&dagger;</sup></span>
@@ -1031,7 +1038,11 @@ command instead of running exiftool separately on each file.]</i> Also, the
 <code>-execute</code> option may be used to perform multiple independent
 operations with a single invocation of exiftool, and together with the
 <code>-stay_open</code> option provides a method for calling applications to
-avoid this startup overhead.</p>
+<b>avoid this startup overhead</b>.</p>
+
+<p>It has also been observed that the loading time of ExifTool for Windows
+increases significantly when Windows Defender is active.  <b>Disabling Windows
+Defender</b> may speed things up significantly.</p>
 
 <p>The processing speed of ExifTool can be improved when extracting information
 by reducing the amount of work that it must do.  Decrease the number of
@@ -1088,7 +1099,7 @@ binary data.  The simple script above does not handle this case.</p>
 <li><a href="faq.html">ExifTool FAQ</a></li>
 <li><a href="https://sourceforge.net/p/exiftool/discussion/">ExifTool Forum</a></li>
 <li><a href="TagNames/index.html">ExifTool Tag Names</a></li>
-<li><a href="history.html">July 27, 2016</a> (<a href="http://owl.phy.queensu.ca/~phil/exiftool/rss.xml">RSS feed</a>)</li>
+<li><a href="history.html">Aug. 3, 2016</a> (<a href="http://owl.phy.queensu.ca/~phil/exiftool/rss.xml">RSS feed</a>)</li>
 <li><a href="exiftool_pod.html">exiftool Application Documentation</a> (<a href="http://owl.phy.queensu.ca/~phil/exiftool/exiftool_pod.pdf">download in PDF format</a>)</li>
 <li><a href="ExifTool.html">Image::ExifTool API Documentation</a> (<a href="http://owl.phy.queensu.ca/~phil/exiftool/ExifTool.pdf">download in PDF format</a>)</li>
 <li><a href="Shift.html">Date/Time Shift Module</a> (<a href="http://owl.phy.queensu.ca/~phil/exiftool/Shift.pdf">download in PDF format</a>)</li>

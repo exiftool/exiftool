@@ -57,7 +57,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::HP;
 
-$VERSION = '3.05';
+$VERSION = '3.06';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -1830,6 +1830,7 @@ my %binaryDataAttrs = (
             '10 0' => 'Aperture Priority, Off-Auto-Aperture',
             '11 0' => 'Manual, Off-Auto-Aperture',
             '12 0' => 'Bulb, Off-Auto-Aperture',
+            '19 0' => 'Astrotracer', #29
             # extra K10D modes (ref 16)
             '13 0' => 'Shutter & Aperture Priority AE',
             '15 0' => 'Sensitivity Priority AE',

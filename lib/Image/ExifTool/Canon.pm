@@ -66,6 +66,7 @@
 #              50) http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,3833.0.html
 #              51) http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,4110.0.html
 #              52) Kai Harrekilde-Petersen private communication
+#              53) Anton Reiser private communication
 #              IB) Iliah Borg private communication (LibRaw)
 #              JD) Jens Duttke private communication
 #              JR) Jos Roost private communication
@@ -84,7 +85,7 @@ sub ProcessSerialData($$$);
 sub ProcessFilters($$$);
 sub SwapWords($);
 
-$VERSION = '3.64';
+$VERSION = '3.65';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -856,6 +857,8 @@ my %pictureStyles = ( #12
     0x86 => 'Monochrome',
     0x87 => 'Auto', #PH
     0x88 => 'Fine Detail', #PH
+    0xff => 'n/a', #PH (guess)
+    0xffff => 'n/a', #PH (guess)
 );
 my %userDefStyles = ( #12/48
     Notes => q{
@@ -1690,11 +1693,22 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
         # 'Drop' because not found in JPEG images (too large for APP1 anyway)
         Flags => [ 'Unknown', 'Binary', 'Drop' ],
     },
-    0x4008 => { #PH guess (1DmkIII)
-        Name => 'BlackLevel', # (BasePictStyleOfUser)
-        Unknown => 1,
+    0x4008 => { #53
+        Name => 'PictureStyleUserDef', # (BasePictStyleOfUser)
+        Format => 'int16u',
+        Count => 3, # UserDef1, UserDef2, UserDef3
+        PrintHex => 1,
+        SeparateTable => 'PictureStyle',
+        PrintConv => [\%pictureStyles,\%pictureStyles,\%pictureStyles],
     },
-    # 0x4009 (BasePictStyleOfPC)
+    0x4009 => { #53
+        Name => 'PictureStylePC', # (BasePictStyleOfUser)
+        Format => 'int16u',
+        Count => 3, # PC1, PC2, PC3
+        PrintHex => 1,
+        SeparateTable => 'PictureStyle',
+        PrintConv => [\%pictureStyles,\%pictureStyles,\%pictureStyles],
+    },
     0x4010 => { #forum2933
         Name => 'CustomPictureStyleFileName', # (PictStyleCaption)
         Writable => 'string',

@@ -442,20 +442,27 @@
 <td><span class=s><span class=n>(unknown 49kB block, not copied to JPEG images)</span></span></td></tr>
 <tr class=b>
 <td title='0x4008 = 16392'>0x4008</td>
-<td>BlackLevel?</td>
+<td>PictureStyleUserDef</td>
 <td class=c>N</td>
-<td>&nbsp;</td></tr>
+<td><span class=s>[Values 0-2]</span>
+  <br>--&gt; <a href='Canon.html#PictureStyle'>Canon PictureStyle Values</a></td></tr>
 <tr>
+<td title='0x4009 = 16393'>0x4009</td>
+<td>PictureStylePC</td>
+<td class=c>N</td>
+<td><span class=s>[Values 0-2]</span>
+  <br>--&gt; <a href='Canon.html#PictureStyle'>Canon PictureStyle Values</a></td></tr>
+<tr class=b>
 <td title='0x4010 = 16400'>0x4010</td>
 <td>CustomPictureStyleFileName</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x4013 = 16403'>0x4013</td>
 <td>AFMicroAdj</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Canon.html#AFMicroAdj'>Canon AFMicroAdj Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0x4015 = 16405'>0x4015</td>
 <td>VignettingCorr
   <br>VignettingCorrUnknown1
@@ -464,42 +471,42 @@
 <td>--&gt; <a href='Canon.html#VignettingCorr'>Canon VignettingCorr Tags</a>
   <br>--&gt; <a href='Canon.html#VignettingCorrUnknown'>Canon VignettingCorrUnknown Tags</a>
   <br>--&gt; <a href='Canon.html#VignettingCorrUnknown'>Canon VignettingCorrUnknown Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x4016 = 16406'>0x4016</td>
 <td>VignettingCorr2</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Canon.html#VignettingCorr2'>Canon VignettingCorr2 Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0x4018 = 16408'>0x4018</td>
 <td>LightingOpt</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Canon.html#LightingOpt'>Canon LightingOpt Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x4019 = 16409'>0x4019</td>
 <td>LensInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Canon.html#LensInfo'>Canon LensInfo Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0x4020 = 16416'>0x4020</td>
 <td>AmbienceInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Canon.html#Ambience'>Canon Ambience Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x4021 = 16417'>0x4021</td>
 <td>MultiExp</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Canon.html#MultiExp'>Canon MultiExp Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0x4024 = 16420'>0x4024</td>
 <td>FilterInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Canon.html#FilterInfo'>Canon FilterInfo Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x4025 = 16421'>0x4025</td>
 <td>HDRInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Canon.html#HDRInfo'>Canon HDRInfo Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0x4028 = 16424'>0x4028</td>
 <td>AFConfig</td>
 <td class=c>-</td>
@@ -815,6 +822,37 @@
 </tr><tr><td class=r>0x80000393</td><td>= EOS Rebel T6i / 750D / Kiss X8i</td>
 </tr><tr><td class=r>0x80000401</td><td>= EOS 5DS R</td>
 </tr><tr><td class=r>0x80000404</td><td>= EOS Rebel T6 / 1300D / Kiss X80</td>
+</tr></table></td></tr></table></blockquote>
+
+<h2><a name='PictureStyle'>Canon PictureStyle Values</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class='inner sep' cellspacing=1>
+<tr class=h><th>Value</th><th>PictureStyle</th><th>Value</th><th>PictureStyle</th><th>Value</th><th>PictureStyle</th></tr>
+<tr><td class=r>0x0</td><td>= None</td>
+<td class='r b'>0x21</td><td class=b>= User Def. 1</td>
+<td class=r>0x83</td><td>= Landscape</td>
+</tr><tr><td class=r>0x1</td><td>= Standard</td>
+<td class='r b'>0x22</td><td class=b>= User Def. 2</td>
+<td class=r>0x84</td><td>= Neutral</td>
+</tr><tr><td class=r>0x2</td><td>= Portrait</td>
+<td class='r b'>0x23</td><td class=b>= User Def. 3</td>
+<td class=r>0x85</td><td>= Faithful</td>
+</tr><tr><td class=r>0x3</td><td>= High Saturation</td>
+<td class='r b'>0x41</td><td class=b>= PC 1</td>
+<td class=r>0x86</td><td>= Monochrome</td>
+</tr><tr><td class=r>0x4</td><td>= Adobe RGB</td>
+<td class='r b'>0x42</td><td class=b>= PC 2</td>
+<td class=r>0x87</td><td>= Auto</td>
+</tr><tr><td class=r>0x5</td><td>= Low Saturation</td>
+<td class='r b'>0x43</td><td class=b>= PC 3</td>
+<td class=r>0x88</td><td>= Fine Detail</td>
+</tr><tr><td class=r>0x6</td><td>= CM Set 1</td>
+<td class='r b'>0x81</td><td class=b>= Standard</td>
+<td class=r>0xff</td><td>= n/a</td>
+</tr><tr><td class=r>0x7</td><td>= CM Set 2</td>
+<td class='r b'>0x82</td><td class=b>= Portrait</td>
+<td class=r>0xffff</td><td>= n/a</td>
 </tr></table></td></tr></table></blockquote>
 
 <h2><a name='CameraSettings'>Canon CameraSettings Tags</a></h2>
@@ -1962,37 +2000,6 @@ lists CameraInfo tags for the 1D and 1DS.</p>
 <td>--&gt; <a href='Canon.html#PictureStyle'>Canon PictureStyle Values</a>
   <br><span class='n s'>(1DS only)</span></td></tr>
 </table></td></tr></table></blockquote>
-
-<h2><a name='PictureStyle'>Canon PictureStyle Values</a></h2>
-<blockquote>
-<table class=frame><tr><td>
-<table class='inner sep' cellspacing=1>
-<tr class=h><th>Value</th><th>PictureStyle</th><th>Value</th><th>PictureStyle</th><th>Value</th><th>PictureStyle</th></tr>
-<tr><td class=r>0x0</td><td>= None</td>
-<td class='r b'>0x21</td><td class=b>= User Def. 1</td>
-<td class=r>0x83</td><td>= Landscape</td>
-</tr><tr><td class=r>0x1</td><td>= Standard</td>
-<td class='r b'>0x22</td><td class=b>= User Def. 2</td>
-<td class=r>0x84</td><td>= Neutral</td>
-</tr><tr><td class=r>0x2</td><td>= Portrait</td>
-<td class='r b'>0x23</td><td class=b>= User Def. 3</td>
-<td class=r>0x85</td><td>= Faithful</td>
-</tr><tr><td class=r>0x3</td><td>= High Saturation</td>
-<td class='r b'>0x41</td><td class=b>= PC 1</td>
-<td class=r>0x86</td><td>= Monochrome</td>
-</tr><tr><td class=r>0x4</td><td>= Adobe RGB</td>
-<td class='r b'>0x42</td><td class=b>= PC 2</td>
-<td class=r>0x87</td><td>= Auto</td>
-</tr><tr><td class=r>0x5</td><td>= Low Saturation</td>
-<td class='r b'>0x43</td><td class=b>= PC 3</td>
-<td class=r>0x88</td><td>= Fine Detail</td>
-</tr><tr><td class=r>0x6</td><td>= CM Set 1</td>
-<td class='r b'>0x81</td><td class=b>= Standard</td>
-<td class=r>&nbsp;</td><td>&nbsp;</td>
-</tr><tr><td class=r>0x7</td><td>= CM Set 2</td>
-<td class='r b'>0x82</td><td class=b>= Portrait</td>
-<td class=r>&nbsp;</td><td>&nbsp;</td>
-</tr></table></td></tr></table></blockquote>
 
 <h2><a name='CameraInfo1DmkII'>Canon CameraInfo1DmkII Tags</a></h2>
 <p>CameraInfo tags for the 1DmkII and 1DSmkII.</p>
@@ -9528,7 +9535,7 @@ SX280.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jul 14, 2016</i>
+<br><i>Last revised Aug 3, 2016</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

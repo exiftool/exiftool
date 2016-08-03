@@ -32,7 +32,7 @@ use Image::ExifTool::XMP;
 use Image::ExifTool::Canon;
 use Image::ExifTool::Nikon;
 
-$VERSION = '2.96';
+$VERSION = '2.97';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -188,21 +188,21 @@ of values written, or the number of characters in a fixed-length string
 (including a null terminator which is added if required).
 
 A plus sign (C<+>) after an entry in the B<Writable> column indicates a
-"list" tag which supports multiple values and allows individual values to be
-added and deleted.  A slash (C</>) indicates an "avoided" tag that is not
-created when writing if another same-named tag may be created instead.  To
-write these tags, the group should be specified.  A tilde (C<~>) indicates a
-tag this is writable only when the print conversion is disabled (by setting
-PrintConv to 0, using the -n option, or suffixing the tag name with a C<#>
-character).  An exclamation point (C<!>) indicates a tag that is considered
-unsafe to write under normal circumstances.  These "unsafe" tags are not
-written unless specified explicitly (ie. wildcards and "all" may not be
-used), and care should be taken when editing them manually since they may
-affect the way an image is rendered.  An asterisk (C<*>) indicates a
-"protected" tag which is not writable directly, but is written automatically
-by ExifTool (often when a corresponding Composite or Extra tag is written).
-A colon (C<:>) indicates a mandatory tag which may be added automatically
-when writing.
+I<List> tag which supports multiple values and allows individual values to
+be added and deleted.  A slash (C</>) indicates a tag that ExifTool will
+I<Avoid> when writing.  These tags are not created when writing if another
+same-named tag may be created instead.  To write these tags, the group
+should be specified.  A tilde (C<~>) indicates a tag this is writable only
+when the print conversion is disabled (by setting PrintConv to 0, using the
+-n option, or suffixing the tag name with a C<#> character).  An exclamation
+point (C<!>) indicates a tag that is considered I<Unsafe> to write under
+normal circumstances.  These tags are not written unless specified
+explicitly (ie. wildcards and "all" may not be used), and care should be
+taken when editing them manually since they may affect the way an image is
+rendered.  An asterisk (C<*>) indicates a I<Protected> tag which is not
+writable directly, but is written automatically by ExifTool (often when a
+corresponding Composite or Extra tag is written). A colon (C<:>) indicates a
+I<Mandatory> tag which may be added automatically when writing.
 
 The HTML version of these tables also lists possible B<Values> for
 discrete-valued tags, as well as B<Notes> for some tags.  The B<Values> are
@@ -297,7 +297,7 @@ indicates a structured tag, and C<lang-alt> is a tag that supports alternate
 languages.
 
 When reading, C<struct> tags are extracted only if the Struct (-struct)
-option is used.  Otherwise the corresponding "flattened" tags, indicated by
+option is used.  Otherwise the corresponding I<Flattened> tags, indicated by
 an underline (C<_>) after the B<Writable> type, are extracted.  When
 copying, by default both structured and flattened tags are available, but
 the flattened tags are considered "unsafe" so they they aren't copied unless
@@ -594,7 +594,7 @@ my %shortcutNotes = (
         L<FAQ number 7|../faq.html#Q7> for details
     },
     Unsafe => q{
-        "unsafe" tags in JPEG images which are normally not copied.  Defined here
+        I<Unsafe> tags in JPEG images which are normally not copied.  Defined here
         as a shortcut to use when rebuilding JPEG EXIF from scratch. See
         L<FAQ number 20|../faq.html#Q20> for more information
     },
@@ -2342,7 +2342,7 @@ sub WriteTagNames($$)
             my %wattr = (
                 '_' => 'Flattened',
                 '+' => 'List',
-                '/' => 'Avoided',
+                '/' => 'Avoid',
                 '~' => 'Writable only with -n',
                 '!' => 'Unsafe',
                 '*' => 'Protected',

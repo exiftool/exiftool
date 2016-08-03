@@ -53,7 +53,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '3.82';
+$VERSION = '3.83';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -287,6 +287,14 @@ sub BINARY_DATA_LIMIT { return 10 * 1024 * 1024; }
         0 => 'Normal',
         OTHER => \&Image::ExifTool::Exif::PrintParameter,
     },
+);
+
+# convert DNG UTF-8 string values (may be string or int8u format)
+my %utf8StringConv = (
+    Writable => 'string',
+    Format => 'string',
+    ValueConv => '$self->Decode($val, "UTF8")',
+    ValueConvInv => '$self->Encode($val,"UTF8")',
 );
 
 # ValueConv that makes long values binary type
@@ -1366,11 +1374,11 @@ my %sampleFormat = (
         Name => 'WangTag4',
         PrintConv => 'length($val) <= 64 ? $val : \$val',
     },
-    # tags 0x80b8-0x80bb are registered to Island Graphics
-    0x80b8 => 'ImageReferencePoints', #29
-    0x80b9 => 'RegionXformTackPoint', #29
-    0x80ba => 'WarpQuadrilateral', #29
-    0x80bb => 'AffineTransformMat', #29
+    # tags 0x80b8-0x80bc are registered to Island Graphics
+    0x80b9 => 'ImageReferencePoints', #29
+    0x80ba => 'RegionXformTackPoint', #29
+    0x80bb => 'WarpQuadrilateral', #29
+    0x80bc => 'AffineTransformMat', #29
     0x80e3 => 'Matteing', #9
     0x80e4 => 'DataType', #9
     0x80e5 => 'ImageDepth', #9
@@ -2658,9 +2666,8 @@ my %sampleFormat = (
     },
     0xc615 => {
         Name => 'LocalizedCameraModel',
-        Format => 'string',
-        Writable => 'string',
         WriteGroup => 'IFD0',
+        %utf8StringConv,
         PrintConv => '$self->Printable($val, 0)',
         PrintConvInv => '$val',
     },
@@ -3008,10 +3015,9 @@ my %sampleFormat = (
     },
     0xc68b => {
         Name => 'OriginalRawFileName',
-        Format => 'string', # sometimes written as int8u
-        Writable => 'string',
         WriteGroup => 'IFD0',
         Protected => 1,
+        %utf8StringConv,
     },
     0xc68c => {
         Name => 'OriginalRawFileData', # (writable directory!)
@@ -3116,15 +3122,15 @@ my %sampleFormat = (
     # 0xc6dc - int32u[4]: found in CR2 images (PH, 7DmkIII)
     0xc6f3 => {
         Name => 'CameraCalibrationSig',
-        Writable => 'string',
         WriteGroup => 'IFD0',
         Protected => 1,
+        %utf8StringConv,
     },
     0xc6f4 => {
         Name => 'ProfileCalibrationSig',
-        Writable => 'string',
         WriteGroup => 'IFD0',
         Protected => 1,
+        %utf8StringConv,
     },
     0xc6f5 => {
         Name => 'ProfileIFD', # (ExtraCameraProfiles)
@@ -3142,9 +3148,9 @@ my %sampleFormat = (
     },
     0xc6f6 => {
         Name => 'AsShotProfileName',
-        Writable => 'string',
         WriteGroup => 'IFD0',
         Protected => 1,
+        %utf8StringConv,
     },
     0xc6f7 => {
         Name => 'NoiseReductionApplied',
@@ -3154,9 +3160,9 @@ my %sampleFormat = (
     },
     0xc6f8 => {
         Name => 'ProfileName',
-        Writable => 'string',
         WriteGroup => 'IFD0',
         Protected => 1,
+        %utf8StringConv,
     },
     0xc6f9 => {
         Name => 'ProfileHueSatMapDims',
@@ -3203,9 +3209,9 @@ my %sampleFormat = (
     },
     0xc6fe => {
         Name => 'ProfileCopyright',
-        Writable => 'string',
         WriteGroup => 'IFD0',
         Protected => 1,
+        %utf8StringConv,
     },
     0xc714 => {
         Name => 'ForwardMatrix1',
@@ -3223,21 +3229,23 @@ my %sampleFormat = (
     },
     0xc716 => {
         Name => 'PreviewApplicationName',
-        Writable => 'string',
         WriteGroup => 'IFD0',
         Protected => 1,
+        %utf8StringConv,
     },
     0xc717 => {
         Name => 'PreviewApplicationVersion',
         Writable => 'string',
         WriteGroup => 'IFD0',
         Protected => 1,
+        %utf8StringConv,
     },
     0xc718 => {
         Name => 'PreviewSettingsName',
         Writable => 'string',
         WriteGroup => 'IFD0',
         Protected => 1,
+        %utf8StringConv,
     },
     0xc719 => {
         Name => 'PreviewSettingsDigest',

@@ -41,21 +41,21 @@ of values written, or the number of characters in a fixed-length string
 (including a null terminator which is added if required).
 
 A plus sign (C<+>) after an entry in the B<Writable> column indicates a
-"list" tag which supports multiple values and allows individual values to be
-added and deleted.  A slash (C</>) indicates an "avoided" tag that is not
-created when writing if another same-named tag may be created instead.  To
-write these tags, the group should be specified.  A tilde (C<~>) indicates a
-tag this is writable only when the print conversion is disabled (by setting
-PrintConv to 0, using the -n option, or suffixing the tag name with a C<#>
-character).  An exclamation point (C<!>) indicates a tag that is considered
-unsafe to write under normal circumstances.  These "unsafe" tags are not
-written unless specified explicitly (ie. wildcards and "all" may not be
-used), and care should be taken when editing them manually since they may
-affect the way an image is rendered.  An asterisk (C<*>) indicates a
-"protected" tag which is not writable directly, but is written automatically
-by ExifTool (often when a corresponding Composite or Extra tag is written).
-A colon (C<:>) indicates a mandatory tag which may be added automatically
-when writing.
+I<List> tag which supports multiple values and allows individual values to
+be added and deleted.  A slash (C</>) indicates a tag that ExifTool will
+I<Avoid> when writing.  These tags are not created when writing if another
+same-named tag may be created instead.  To write these tags, the group
+should be specified.  A tilde (C<~>) indicates a tag this is writable only
+when the print conversion is disabled (by setting PrintConv to 0, using the
+-n option, or suffixing the tag name with a C<#> character).  An exclamation
+point (C<!>) indicates a tag that is considered I<Unsafe> to write under
+normal circumstances.  These tags are not written unless specified
+explicitly (ie. wildcards and "all" may not be used), and care should be
+taken when editing them manually since they may affect the way an image is
+rendered.  An asterisk (C<*>) indicates a I<Protected> tag which is not
+writable directly, but is written automatically by ExifTool (often when a
+corresponding Composite or Extra tag is written). A colon (C<:>) indicates a
+I<Mandatory> tag which may be added automatically when writing.
 
 The HTML version of these tables also lists possible B<Values> for
 discrete-valued tags, as well as B<Notes> for some tags.  The B<Values> are
@@ -443,10 +443,10 @@ EXIF 2.3 specification.
   0x80a4   WangAnnotation            -          N
   0x80a5   WangTag3                  -          N
   0x80a6   WangTag4                  -          N
-  0x80b8   ImageReferencePoints      -          N
-  0x80b9   RegionXformTackPoint      -          N
-  0x80ba   WarpQuadrilateral         -          N
-  0x80bb   AffineTransformMat        -          N
+  0x80b9   ImageReferencePoints      -          N
+  0x80ba   RegionXformTackPoint      -          N
+  0x80bb   WarpQuadrilateral         -          N
+  0x80bc   AffineTransformMat        -          N
   0x80e3   Matteing                  -          N
   0x80e4   DataType                  -          N
   0x80e5   ImageDepth                -          N
@@ -1096,7 +1096,7 @@ indicates a structured tag, and C<lang-alt> is a tag that supports alternate
 languages.
 
 When reading, C<struct> tags are extracted only if the Struct (-struct)
-option is used.  Otherwise the corresponding "flattened" tags, indicated by
+option is used.  Otherwise the corresponding I<Flattened> tags, indicated by
 an underline (C<_>) after the B<Writable> type, are extracted.  When
 copying, by default both structured and flattened tags are available, but
 the flattened tags are considered "unsafe" so they they aren't copied unless
@@ -1746,7 +1746,7 @@ metadata space with these incredibly bulky image editing parameters.
   SplitToningHighlightSaturation                integer
   SplitToningShadowHue                          integer
   SplitToningShadowSaturation                   integer
-  ColorTemperature                              integer/
+  ColorTemperature                              integer
   TIFFHandling                                  string
   Tint                                          integer
   ToneCurve                                     string+
@@ -2156,22 +2156,22 @@ L<https://developers.google.com/panorama/metadata/> for the specification.
   Tag Name                                      Writable
   --------                                      --------
   CaptureSoftware                               string
-  CroppedAreaImageHeightPixels                  integer
-  CroppedAreaImageWidthPixels                   integer
-  CroppedAreaLeftPixels                         integer
-  CroppedAreaTopPixels                          integer
+  CroppedAreaImageHeightPixels                  real
+  CroppedAreaImageWidthPixels                   real
+  CroppedAreaLeftPixels                         real
+  CroppedAreaTopPixels                          real
   ExposureLockUsed                              boolean
   FirstPhotoDate                                date
-  FullPanoHeightPixels                          integer
-  FullPanoWidthPixels                           integer
+  FullPanoHeightPixels                          real
+  FullPanoWidthPixels                           real
   InitialHorizontalFOVDegrees                   real
-  InitialViewHeadingDegrees                     integer
-  InitialViewPitchDegrees                       integer
-  InitialViewRollDegrees                        integer
-  LargestValidInteriorRectHeight                integer
-  LargestValidInteriorRectLeft                  integer
-  LargestValidInteriorRectTop                   integer
-  LargestValidInteriorRectWidth                 integer
+  InitialViewHeadingDegrees                     real
+  InitialViewPitchDegrees                       real
+  InitialViewRollDegrees                        real
+  LargestValidInteriorRectHeight                real
+  LargestValidInteriorRectLeft                  real
+  LargestValidInteriorRectTop                   real
+  LargestValidInteriorRectWidth                 real
   LastPhotoDate                                 date
   PoseHeadingDegrees                            real
   PosePitchDegrees                              real
@@ -4378,7 +4378,10 @@ boot, not including standby time.
   0x4002   CRWParam?                            N
   0x4003   ColorInfo                            Canon ColorInfo
   0x4005   Flavor?                              N
-  0x4008   BlackLevel?                          N
+  0x4008   PictureStyleUserDef                  [Values 0-2]
+                                                Canon PictureStyle
+  0x4009   PictureStylePC                       [Values 0-2]
+                                                Canon PictureStyle
   0x4010   CustomPictureStyleFileName           string
   0x4013   AFMicroAdj                           Canon AFMicroAdj
   0x4015   VignettingCorr                       Canon VignettingCorr
@@ -8617,9 +8620,10 @@ has been removed.
 =head3 Leaf SubIFD Tags
 
 Leaf writes a TIFF-format sub-IFD inside IFD0 of a MOS image.  No tags in
-this sub-IFD are currently known, except for tag 0x8606 which really
-shouldn't be here anyway (so it doesn't appear in the table below) because
-it duplicates a reference to the same data of tag 0x8606 in IFD0.
+this sub-IFD are currently known, except for tags 0x8602 and 0x8606 which
+really shouldn't be here anyway (so they don't appear in the table below)
+because they duplicate references to the same data from tags with the same
+ID in IFD0.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
@@ -13140,6 +13144,7 @@ Tags found in the EXIF-format maker notes of newer Samsung models.
   0xa022   WB_RGGBLevelsAuto                    int32u[4]
   0xa023   WB_RGGBLevelsIlluminator1            int32u[4]
   0xa024   WB_RGGBLevelsIlluminator2            int32u[4]
+  0xa025   HighlightLinearityLimit              int32u
   0xa028   WB_RGGBLevelsBlack                   int32s[4]
   0xa030   ColorMatrix                          int32s[9]
   0xa031   ColorMatrixSRGB                      int32s[9]

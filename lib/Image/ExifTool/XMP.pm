@@ -48,7 +48,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '2.94';
+$VERSION = '2.95';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -1174,7 +1174,7 @@ my %sPantryItem = (
     ShadowTint      => { Writable => 'integer' },
     Sharpness       => { Writable => 'integer', Avoid => 1 },
     Smoothness      => { Writable => 'integer' },
-    Temperature     => { Writable => 'integer', Avoid => 1, Name => 'ColorTemperature' },
+    Temperature     => { Writable => 'integer', Name => 'ColorTemperature' },
     Tint            => { Writable => 'integer' },
     ToneCurve       => { List => 'Seq' },
     ToneCurveName => {

@@ -21,7 +21,7 @@ use vars qw($VERSION %samsungLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.33';
+$VERSION = '1.34';
 
 sub WriteSTMN($$$);
 sub ProcessINFO($$$);
@@ -440,6 +440,10 @@ my %formatMinMax = (
     #    RawConv    => 'Image::ExifTool::Samsung::Crypt($self,$val,$tagInfo,6)',
     #    RawConvInv => 'Image::ExifTool::Samsung::Crypt($self,$val,$tagInfo,-6)',
     #},
+    0xa025 => { #IB
+        Name => 'HighlightLinearityLimit',
+        Writable => 'int32u',
+    },
     0xa028 => { #2/PH
         Name => 'WB_RGGBLevelsBlack',
         Writable => 'int32s',

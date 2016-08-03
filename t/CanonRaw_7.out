@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.93
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.25
 [File, System, Image] FileName - File Name: CanonRaw_7_failed.jpg
 [File, System, Image] Directory - Directory: t
 [File, System, Image] FileSize - File Size: 7.2 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2015:04:18 07:17:37-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:18 07:17:37-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:04:18 07:17:37-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2016:07:28 07:41:10-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2016:07:28 07:41:10-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2016:07:28 07:41:10-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: JPEG
 [File, File, Image] FileTypeExtension - File Type Extension: jpg
@@ -210,7 +210,7 @@
 [MakerNotes, Canon, Camera] 52 - Camera Color Calibration 14:  770  382  248 (2871K)
 [MakerNotes, Canon, Camera] 56 - Camera Color Calibration 15:  949  307  397 (2413K)
 [MakerNotes, Canon, Camera] 2 - Color Tone: Normal
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 9.93
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 10.25
 [XMP, XMP-aux, Camera] Lens - Lens: 18.0 - 55.0 mm
 [XMP, XMP-exif, Image] ComponentsConfiguration - Components Configuration: -, -, -, -
 [XMP, XMP-exif, Camera] FlashFired - Flash Fired: False
@@ -227,6 +227,7 @@
 [XMP, XMP-tiff, Image] PhotometricInterpretation - Photometric Interpretation: RGB
 [XMP, XMP-tiff, Image] PlanarConfiguration - Planar Configuration: Chunky
 [XMP, XMP-tiff, Image] SamplesPerPixel - Samples Per Pixel: 3
+[XMP, XMP-crs, Image] Temperature - Color Temperature: 5200
 [XMP, XMP-crs, Image] ToneCurve - Tone Curve: Standard
 [Composite, Composite, Image] Aperture - Aperture: 8.0
 [Composite, Composite, Camera] DriveMode - Drive Mode: Single-frame Shooting

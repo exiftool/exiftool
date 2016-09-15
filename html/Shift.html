@@ -23,7 +23,13 @@
 
 	<li><a href="#name">NAME</a></li>
 	<li><a href="#description">DESCRIPTION</a></li>
-	<li><a href="#details">DETAILS</a></li>
+	<li><a href="#methods">METHODS</a></li>
+	<ul>
+
+		<li><a href="#shifttime">ShiftTime</a></li>
+	</ul>
+
+	<li><a href="#shift_string">SHIFT STRING</a></li>
 	<li><a href="#notes">NOTES</a></li>
 	<li><a href="#tricky">TRICKY</a></li>
 	<li><a href="#bugs">BUGS</a></li>
@@ -48,7 +54,37 @@ values.</p>
 <p>
 </p>
 <hr />
-<h1><a name="details">DETAILS</a></h1>
+<h1><a name="methods">METHODS</a></h1>
+<p>
+</p>
+<h2><a name="shifttime">ShiftTime</a></h2>
+<p>Shift date/time value</p>
+<pre>
+    use Image::ExifTool;
+    $err = Image::ExifTool::ShiftTime($dateTime, $shift);</pre>
+<dl>
+<dt><strong><a name="inputs" class="item">Inputs:</a></strong></dt>
+
+<dd>
+<p>0) Date/time string in EXIF format (eg. <code>2016:01:30 11:45:00</code>).</p>
+<p>1) Shift string (see below) with optional leading sign for shift direction.</p>
+<p>2) [optional] Direction of shift (-1 or +1), or 0 or undef to use the sign
+from the shift string.</p>
+<p>3) [optional] Reference to time-shift hash -- filled in by first call to
+<strong>ShiftTime</strong>, and used in subsequent calls to shift date/time values by the
+same relative amount (see <a href="#tricky">TRICKY</a> section below).</p>
+</dd>
+<dt><strong><a name="return_value" class="item">Return value:</a></strong></dt>
+
+<dd>
+<p>Error string, or undef on success and the input date/time string is shifted
+by the specified amount.</p>
+</dd>
+</dl>
+<p>
+</p>
+<hr />
+<h1><a name="shift_string">SHIFT STRING</a></h1>
 <p>Time shifts are applied to standard EXIF-formatted date/time values (eg.
 <code>2005:03:14 18:55:00</code>).  Date-only and time-only values may also be
 shifted, and an optional timezone (eg. <code>-05:00</code>) is also supported.  Here

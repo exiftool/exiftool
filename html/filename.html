@@ -35,21 +35,22 @@ without making any changes to the files.  (Note that there is no corresponding
 test tag for <b>Directory</b>, but <b>TestName</b> supports a full path name
 just like <b>FileName</b>, so the directory may be tested as well.)</p>
 
-<p>The <code>%d</code>, <code>%f</code>, <code>%e</code> file name format codes
-may be used to represent the directory, name and extension of the original file
-when specifying <b>FileName</b> and <b>Directory</b> tags via the command-line
-interface. (In a similar way to the <code>-o</code>, <code>-w</code> and
-<code>-tagsFromFile</code> options.) Also, <code>%c</code> may be used to add a
-copy number to the output file name to avoid collisions with existing file
-names. Note that these codes must be escaped with an extra <code>%</code> if
-used within a date format string.  Modifiers may also be used to change the
-default behaviour of these format codes.  See the <code>-w</code> option in the
-<a href="exiftool_pod.html">application documentation</a> for details.</p>
+<p>When writing the <b>FileName</b>, <b>Directory</b> or <b>TestName</b> tag,
+<code>%d</code>, <code>%f</code> and <code>%e</code> may be used to represent
+the directory, name and extension of the original file (in a similar way to the
+<code>-o</code>, <code>-w</code> and <code>-tagsFromFile</code> options).  Also,
+<code>%c</code> may be used to add a copy number to the output file name to
+avoid collisions with existing file names. Note that these codes must be escaped
+with an extra <code>%</code> if used within a date format string.  Modifiers may
+also be used to change the default behaviour of these format codes.  See the
+<code>-w</code> option in the <a href="exiftool_pod.html">application
+documentation</a> for details.</p>
 
-<p>When organizing files by date/time, use of the <code>-d</code> (date format)
-option is essential to specify a format for the filename (and/or directory
-name).  The examples below demonstrate the use of this feature.  Also, a list of
-of <a href="#codes">common date format codes</a> is provided for reference.</p>
+<p>When organizing files by date/time, the <code>-d</code> (date format) option
+is essential for specifying a format for the date/time tag(s) used to generate
+the new file and/or directory name.  The examples below demonstrate the use of
+this feature.  Also, a list of of <a href="#codes">common date format codes</a>
+is provided for reference.</p>
 
 <blockquote class=prog><b class=red>Advanced feature:</b> The write-only
 <b>HardLink</b> tag may be written using a technique similar to <b>FileName</b>.
@@ -179,18 +180,17 @@ example the file '<code>pics/toys/new_car.jpg</code>' is moved to
 <a name="ex5"></a><table cellpadding=6>
 <tr><td valign='top'>&nbsp;5.</td><td bgcolor='#dddddd'><code class='blk'>
 exiftool -r -o %e_images/%d pics<br>
-exiftool -r -o dummy/ -directory=%e_images/%d pics
+exiftool -r -o . -directory=%e_images/%d pics
 </code></td></tr></table>
 <blockquote>
 Both of these commands have the same effect as example 3 above except that
-images are copied instead of moved since the <code>-o</code> option was used. In
-the second command the trailing '<code>/</code>' on '<code>dummy/</code>' is
-necessary because otherwise '<code>dummy</code>' would be interpreted as a file
-name.  This technique of using <code>-o</code> with a dummy directory name is
-necessary when the directory name is derived from the value of other tags (eg.
-'<code>-directory&lt;createDate</code>') and you want the files to be copied
-instead of moved.  (Because the values of other tags may not be used with the
-<code>-o</code> option.)
+images are copied instead of moved since the <code>-o</code> option was used.
+The output directory specified by the <code>-o</code> option is overridden in
+the second example by writing the Directory tag.  This technique of using
+<code>-o</code> with a dummy directory name is necessary when you want the files
+to be copied instead of moved and the directory name is derived from the value
+of other tags (eg. '<code>-directory&lt;createDate</code>').  (Because the
+values of other tags may not be used with the <code>-o</code> option.)
 </blockquote>
 
 <a name="ex6"></a><table cellpadding=6>

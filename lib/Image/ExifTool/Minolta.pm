@@ -49,7 +49,7 @@ use vars qw($VERSION %minoltaLensTypes %minoltaTeleconverters %minoltaColorMode
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.36';
+$VERSION = '2.37';
 
 # Full list of product codes for Sony-compatible Minolta lenses
 # (ref http://www.kb.sony.com/selfservice/documentLink.do?externalId=C1000570)
@@ -199,10 +199,10 @@ $VERSION = '2.36';
             require Image::ExifTool::Canon;
             my $lens = $Image::ExifTool::Canon::canonLensTypes{$val - $id};
             return "$lens + $$mb" if $lens;
-        } elsif ($val >= 0x4900) { # test for Sigma MC-11 adapter with Sigma lens
+        } elsif ($val >= 0x4900) { # test for Sigma MC-11 SA-E adapter with Sigma SA-mount lens
             require Image::ExifTool::Sigma;
             my $lens = $Image::ExifTool::Sigma::sigmaLensTypes{$val - 0x4900};
-            return "$lens + MC-11" if $lens;
+            return "$lens + MC-11 SA-E" if $lens;
         }
         return undef;
     },
@@ -373,7 +373,10 @@ $VERSION = '2.36';
     255.7 => 'Tamron SP AF 70-200mm F2.8 Di LD IF Macro', #22 (Model A001)
     255.8 => 'Tamron SP AF 28-75mm F2.8 XR Di LD Aspherical IF', #24 (Model A09)
     255.9 => 'Tamron AF 90-300mm F4.5-5.6 Telemacro', #Fredrik Agert
-    18688 => 'Sigma MC-11 Adapter', #JR (to this, add Sigma LensType)
+    18688 => 'Sigma MC-11 SA-E Mount Converter with not-supported Sigma lens',
+    # The MC-11 SA-E Mount Converter uses this 18688 offset for not-supported SIGMA mount lenses.
+    # The MC-11 EF-E Mount Converter uses the 61184 offset for not-supported CANON mount lenses, as also used by Metabones.
+    # Both MC-11 SA-E and EF-E Mount Converters use the 504xx LensType2 values for supported SA-mount or EF-mount Sigma lenses.
     25501 => 'Minolta AF 50mm F1.7', #7
     25511 => 'Minolta AF 35-70mm F4 or Other Lens',
     25511.1 => 'Sigma UC AF 28-70mm F3.5-4.5', #12/16(HighSpeed-AF)
@@ -512,7 +515,8 @@ $VERSION = '2.36';
     # For newer firmware versions this is only used by the Smart Adapter, and
     # the full Canon LensType code is added - PH
     # the metabones adapter translates Canon L -> G, II -> II, USM -> SSM, IS -> OSS (ref JR)
-    61184 => 'Canon EF Adapter', #JR (also Fotodiox or Viltrox) (to this, add Canon LensType)
+    # This offset is used by Metabones, Fotodiox, Sigma MC-11 EF-E and Viltrox Canon EF adapters.
+    61184 => 'Canon EF Adapter', #JR (to this, add Canon LensType)
     # 65280 = 0xff00
     65280 => 'Sigma 16mm F2.8 Filtermatic Fisheye', #IB
     # all M42-type lenses give a value of 65535 (and FocalLength=0, FNumber=1)
@@ -555,34 +559,36 @@ $VERSION = '2.36';
    '65535.33' => 'Sony FE 16mm F3.5 Fisheye (SEL28F20 + SEL057FEC)', #JR # (32827 - SEL28F20 + SEL057FEC Fisheye converter)
    '65535.34' => 'Sony FE 70-300mm F4.5-5.6 G OSS', #JR (32828 - SEL70300G)
    '65535.35' => 'Sony FE 70-200mm F2.8 GM OSS',    #JR (32830 - SEL70200GM)
+   '65535.36' => 'Sony FE 70-200mm F2.8 GM OSS + 1.4X Teleconverter', #JR (33072 - SEL70200GM + SEL14TC)
+   '65535.37' => 'Sony FE 70-200mm F2.8 GM OSS + 2X Teleconverter',   #JR (33073 - SEL70200GM + SEL20TC)
 #
 # 3rd party E lenses
 #
-    '65535.36' => 'Sigma 19mm F2.8 [EX] DN', #JR
-    '65535.37' => 'Sigma 30mm F2.8 [EX] DN', #JR
-    '65535.38' => 'Sigma 60mm F2.8 DN', #JR
-    '65535.39' => 'Sigma 30mm F1.4 DC DN | C', #IB (50480)
-    '65535.40' => 'Tamron 18-200mm F3.5-6.3 Di III VC', #JR (Model B011)
-    '65535.41' => 'Zeiss Batis 25mm F2', #JR (49216)
-    '65535.42' => 'Zeiss Batis 85mm F1.8', #JR (49217)
-    '65535.43' => 'Zeiss Batis 18mm F2.8', #IB (49218)
-    '65535.44' => 'Zeiss Loxia 21mm F2.8', #JR (49234)
-    '65535.45' => 'Zeiss Loxia 35mm F2', #JR
-    '65535.46' => 'Zeiss Loxia 50mm F2', #JR (49232 or 0)
-    '65535.47' => 'Zeiss Touit 12mm F2.8', #JR
-    '65535.48' => 'Zeiss Touit 32mm F1.8', #JR
-    '65535.49' => 'Zeiss Touit 50mm F2.8 Macro', #JR
-    '65535.50' => 'Samyang AF 50mm F1.4 FE', #JR (32789)
+    '65535.38' => 'Sigma 19mm F2.8 [EX] DN', #JR
+    '65535.39' => 'Sigma 30mm F2.8 [EX] DN', #JR
+    '65535.40' => 'Sigma 60mm F2.8 DN', #JR
+    '65535.41' => 'Sigma 30mm F1.4 DC DN | C', #IB (50480)
+    '65535.42' => 'Tamron 18-200mm F3.5-6.3 Di III VC', #JR (Model B011)
+    '65535.43' => 'Zeiss Batis 25mm F2', #JR (49216)
+    '65535.44' => 'Zeiss Batis 85mm F1.8', #JR (49217)
+    '65535.45' => 'Zeiss Batis 18mm F2.8', #IB (49218)
+    '65535.46' => 'Zeiss Loxia 21mm F2.8', #JR (49234)
+    '65535.47' => 'Zeiss Loxia 35mm F2', #JR
+    '65535.48' => 'Zeiss Loxia 50mm F2', #JR (49232 or 0)
+    '65535.49' => 'Zeiss Touit 12mm F2.8', #JR
+    '65535.50' => 'Zeiss Touit 32mm F1.8', #JR
+    '65535.51' => 'Zeiss Touit 50mm F2.8 Macro', #JR
+    '65535.52' => 'Samyang AF 50mm F1.4 FE', #JR (32789)
 #
 # other lenses
 #
-    '65535.51' => 'Arax MC 35mm F2.8 Tilt+Shift', #JD
-    '65535.52' => 'Arax MC 80mm F2.8 Tilt+Shift', #JD
-    '65535.53' => 'Zenitar MF 16mm F2.8 Fisheye M42', #JD
-    '65535.54' => 'Samyang 500mm Mirror F8.0', #19
-    '65535.55' => 'Pentacon Auto 135mm F2.8', #19
-    '65535.56' => 'Pentacon Auto 29mm F2.8', #19
-    '65535.57' => 'Helios 44-2 58mm F2.0', #19
+    '65535.53' => 'Arax MC 35mm F2.8 Tilt+Shift', #JD
+    '65535.54' => 'Arax MC 80mm F2.8 Tilt+Shift', #JD
+    '65535.55' => 'Zenitar MF 16mm F2.8 Fisheye M42', #JD
+    '65535.56' => 'Samyang 500mm Mirror F8.0', #19
+    '65535.57' => 'Pentacon Auto 135mm F2.8', #19
+    '65535.58' => 'Pentacon Auto 29mm F2.8', #19
+    '65535.59' => 'Helios 44-2 58mm F2.0', #19
 );
 
 %minoltaTeleconverters = (

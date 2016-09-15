@@ -13,7 +13,7 @@ use vars qw($VERSION);
 use Image::ExifTool;    # only for FinishTiffDump()
 use Image::ExifTool::HTML qw(EscapeHTML);
 
-$VERSION = '1.33';
+$VERSION = '1.34';
 
 sub DumpTable($$$;$$$$$);
 sub Open($$$;@);
@@ -739,6 +739,7 @@ sub FinishTiffDump($$$)
         AlphaOffset       => 'AlphaByteCount',
         MPImageStart      => 'MPImageLength',
         IDCPreviewStart   => 'IDCPreviewLength',
+        SamsungRawPointersOffset => 'SamsungRawPointersLength',
     );
 
     # add TIFF data to html dump

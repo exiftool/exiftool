@@ -12,7 +12,7 @@
 use strict;
 require 5.004;
 
-my $version = '10.25';
+my $version = '10.26';
 
 # add our 'lib' directory to the include list BEFORE 'use Image::ExifTool'
 my $exeDir;
@@ -49,6 +49,7 @@ sub Infile($;$);
 sub AddSetTagsFile($;$);
 sub DoSetFromFile($$$);
 sub CleanFilename($);
+sub SetWindowTitle($);
 sub ProcessFiles($;$);
 sub ScanDir($$;$);
 sub FindFileWindows($$);
@@ -153,7 +154,8 @@ my $outOpt;         # output file or directory name
 my $overwriteOrig;  # flag to overwrite original file (1=overwrite, 2=in place)
 my $pause;          # pause before returning
 my $preserveTime;   # flag to preserve times of updated files (2=preserve FileCreateDate only)
-my $progress;       # progress count
+my $progress;       # flag to calculate total files to process (0=calculate but don't display)
+my $progressCount;  # count of files processed
 my $progressMax;    # total number of files to process
 my $progStr;        # progress message string
 my $quiet;          # flag to disable printing of informational messages / warnings
@@ -178,6 +180,7 @@ my $utf8;           # flag set if we are using UTF-8 encoding
 my $validFile;      # flag indicating we processed a valid file
 my $verbose;        # verbose setting
 my $vout;           # verbose output file reference (\*STDOUT or \*STDERR)
+my $windowTitle;    # title for console window
 my $xml;            # flag for XML-formatted output
 
 # flag to keep the input -@ argfile open:
@@ -390,6 +393,7 @@ undef $multiFile;
 undef $outOpt;
 undef $preserveTime;
 undef $progress;
+undef $progressCount;
 undef $progressMax;
 undef $recurse;
 undef $scanWritable;
@@ -403,6 +407,7 @@ undef $tmpFile;
 undef $tmpText;
 undef $validFile;
 undef $verbose;
+undef $windowTitle;
 
 $count = 0;
 $countBad = 0;
@@ -946,9 +951,16 @@ for (;;) {
     }
     (/^P$/ or $a eq 'preserve') and $preserveTime = 1, next;
     /^password$/i and $mt->Options(Password => shift), next;
-    if ($a eq 'progress') {
-        $progress = 0;
-        $verbose = 0 unless defined $verbose;
+    if (/^progress(:.*)?/i) {
+        if ($1) {
+            $windowTitle = substr $1, 1;
+            $windowTitle = 'ExifTool %p%%' unless length $windowTitle;
+            $windowTitle =~ /%\d*[bpr]/ and $progress = 0 unless defined $progress;
+        } else {
+            $progress = 1;
+            $verbose = 0 unless defined $verbose;
+        }
+        $progressCount = 0;
         next;
     }
     /^q(uiet)?$/i and ++$quiet, next;
@@ -1697,6 +1709,8 @@ $rtnVal = 1 if $countBadWr or $countBadCr or $countBad or ($countFailed and not 
 # last ditch effort to preserve filemodifydate
 PreserveTime() if %preserveTime;
 
+SetWindowTitle('') if defined $windowTitle; # reset window title
+
 } # end "Command" loop ........................................................
 
 close STAYOPEN if $stayOpen >= 2;
@@ -1712,6 +1726,24 @@ sub GetImageInfo($$)
     my ($et, $orig) = @_;
     my (@foundTags, $info, $file, $ind);
 
+    # set window title for this file if necessary
+    if (defined $windowTitle) {
+        my $prog = $progressMax ? "$progressCount/$progressMax" : '0/0';
+        my $title = $windowTitle;
+        my ($num, $denom) = split '/', $prog;
+        my $frac = $num / ($denom || 1);
+        my $n = 20; # length of bar
+        my $bar = int($frac * $n + 0.5);
+        my %lkup = (
+            b => ('I' x $bar) . ('.' x ($n - $bar)), # (undocumented)
+            f => $orig,
+            p => int(100 * $frac + 0.5),
+            r => $prog,
+           '%'=> '%',
+        );
+        $title =~ s/%([%bfpr])/$lkup{$1}/eg;
+        SetWindowTitle($title);
+    }
     # determine the name of the source file based on the original input file name
     if (@srcFmt) {
         my ($fmt, $first);
@@ -1796,6 +1828,8 @@ sub GetImageInfo($$)
         }
         return;
     }
+    ++$seqFileNum;  # increment our file counter
+
     my $lineCount = 0;
     my ($fp, $outfile, $append);
     if ($textOut and $verbose and not $tagOut) {
@@ -3190,6 +3224,20 @@ sub CheckUTF8($$)
 }
 
 #------------------------------------------------------------------------------
+# Set window title
+# Inputs: title string
+sub SetWindowTitle($)
+{
+    my $title = shift;
+    if ($^O eq 'MSWin32') {
+        eval { system qq{title $title} };
+    } else {
+        # (this only works for XTerm terminals, and STDERR must go to the console)
+        printf STDERR "\033]0;%s\007", $title;
+    }
+}
+
+#------------------------------------------------------------------------------
 # Process files in our @files list
 # Inputs: 0) ExifTool ref, 1) list ref to just return full file names
 sub ProcessFiles($;$)
@@ -3200,8 +3248,8 @@ sub ProcessFiles($;$)
     foreach $file (@files) {
         $et->Options(CharsetFileName => 'UTF8') if $utf8FileName{$file};
         if (defined $progressMax) {
-            ++$progress;
-            $progStr = " [$progress/$progressMax]";
+            ++$progressCount;
+            $progStr = " [$progressCount/$progressMax]";
         }
         if ($mt->IsDirectory($file)) {
             $multiFile = $validFile = 1;
@@ -3581,8 +3629,9 @@ sub NextUnusedFilename($;$$)
             $filename .= substr($fmt, $pos, pos($fmt) - $pos - length($1));
             $pos = pos($fmt);
             my ($sign, $wid, $dec, $wid2, $mod, $tok) = ($2, $3 || 0, $4, $5 || 0, $6, $7);
+            my $seq = $seqFileNum - 1;
             if ($tok eq 'C') {
-                $seqFileNum = $wid if $wid and not $seqFileNum;
+                $seq += $wid if $wid;
                 $wid = $wid2;
             } else {
                 next unless $dec or $copy;
@@ -3591,13 +3640,13 @@ sub NextUnusedFilename($;$$)
             # add dash or underline separator if '-' or '+' specified
             $filename .= $sep{$sign} if $sign;
             if ($mod and $mod ne 'n') {
-                my $a = $tok eq 'C' ? Num2Alpha($seqFileNum++) : $alpha;
+                my $a = $tok eq 'C' ? Num2Alpha($seq) : $alpha;
                 my $str = ($wid and $wid > length $a) ? 'a' x ($wid - length($a)) : '';
                 $str .= $a;
                 $str = uc $str if $mod eq 'u';
                 $filename .= $str;
             } else {
-                my $c = $tok eq 'C' ? $seqFileNum++ : $copy;
+                my $c = $tok eq 'C' ? $seq : $copy;
                 my $num = $c + ($mod ? 1 : 0);
                 $filename .= $wid ? sprintf("%.${wid}d",$num) : $num;
             }
@@ -3870,19 +3919,23 @@ exiftool - Read and write meta information in files
 
 =head1 SYNOPSIS
 
-=over 4
+=head2 Reading
 
-=item B<exiftool> [I<OPTIONS>] [-I<TAG>...] [--I<TAG>...] I<FILE>...
+B<exiftool> [I<OPTIONS>] [-I<TAG>...] [--I<TAG>...] I<FILE>...
 
-=item B<exiftool> [I<OPTIONS>] -I<TAG>[+-E<lt>]=[I<VALUE>]... I<FILE>...
+=head2 Writing
 
-=item B<exiftool> [I<OPTIONS>] B<-tagsFromFile> I<SRCFILE>
+B<exiftool> [I<OPTIONS>] -I<TAG>[+-E<lt>]=[I<VALUE>]... I<FILE>...
+
+=head2 Copying
+
+B<exiftool> [I<OPTIONS>] B<-tagsFromFile> I<SRCFILE>
 [-I<SRCTAG>[E<gt>I<DSTTAG>]...] I<FILE>...
 
-=item B<exiftool> [ B<-ver> |
-B<-list>[B<w>|B<f>|B<r>|B<wf>|B<g>[I<NUM>]|B<d>|B<x>] ]
+=head2 Other
 
-=back
+B<exiftool> [ B<-ver> |
+B<-list>[B<w>|B<f>|B<r>|B<wf>|B<g>[I<NUM>]|B<d>|B<x>] ]
 
 For specific examples, see the L<EXAMPLES|/READING EXAMPLES> sections below.
 
@@ -4049,7 +4102,7 @@ L<Processing control|/Processing control>
   -overwrite_original_in_place     Overwrite original by copying tmp file
   -P          (-preserve)          Preserve date/time of original file
   -password PASSWD                 Password for processing protected files
-  -progress                        Show file progress count
+  -progress[:[TITLE]]              Show file progress count
   -q          (-quiet)             Quiet processing
   -r[.]       (-recurse)           Recursively process subdirectories
   -scanForXMP                      Brute force XMP scan
@@ -4086,6 +4139,7 @@ L<Advanced options|/Advanced options>
   -srcfile FMT                     Process a different source file
   -stay_open FLAG                  Keep reading -@ argfile even after EOF
   -userParam PARAM[=VAL]           Set user parameter (API UserParam opt)
+  -windowTitle TITLE               Set console window title for each file
 
 =head2 Option Details
 
@@ -4737,7 +4791,7 @@ with this command:
 
 produces output like this:
 
-    -- Generated by ExifTool 10.25 --
+    -- Generated by ExifTool 10.26 --
     File: a.jpg - 2003:10:31 15:44:19
     (f/5.6, 1/60s, ISO 100)
     File: b.jpg - 2006:05:23 11:57:38
@@ -5284,7 +5338,7 @@ If a password is required but not given, a warning is issued and the
 document is not processed.  This option is ignored if a password is not
 required.
 
-=item B<-progress>
+=item B<-progress>[:[I<TITLE>]]
 
 Show file progress count in messages.  The progress count appears in
 brackets after the name of each processed file, and gives the current file
@@ -5293,6 +5347,14 @@ option, which prints the name of each processed file when writing.  When
 combined with the B<-if> option, the total count includes all files before
 the condition is applied, but files that fail the condition will not have
 their names printed.
+
+If followed by a colon (ie. B<-progress:>), the console window title is set
+according to the specified I<TITLE> string.  If no I<TITLE> is given, a
+default I<TITLE> string of "ExifTool %p%%" is assumed. In this string, %f
+represents the file name, %p is the progress as a percent, %r is the
+progress as a ratio, and %% is a % character.  May be combined with the
+normal B<-progress> option to also show the progress count in console
+messages.
 
 =item B<-q> (B<-quiet>)
 

@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.41';
+$VERSION = '2.42';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -107,6 +107,9 @@ my %sonyLensTypes2 = (
     32828 => 'Sony FE 70-300mm F4.5-5.6 G OSS', #JR
     32830 => 'Sony FE 70-200mm F2.8 GM OSS', #JR
 
+    33072 => 'Sony FE 70-200mm F2.8 GM OSS + 1.4X Teleconverter', #JR
+    33073 => 'Sony FE 70-200mm F2.8 GM OSS + 2X Teleconverter', #JR
+
     49201 => 'Zeiss Touit 12mm F2.8', #JR (lens firmware Ver.02)
     49202 => 'Zeiss Touit 32mm F1.8', #JR (lens firmware Ver.02)
     49203 => 'Zeiss Touit 50mm F2.8 Macro', #JR (lens firmware Ver.02)
@@ -133,7 +136,6 @@ my %sonyLensTypes2 = (
 
     # lenses listed in the Sigma MC-11 list, but not yet seen:
     # 504xx => 'Sigma 18-200mm F3.5-6.3 DC MACRO OS HSM | C 014 + MC-11',
-    # 504xx => 'Sigma 18-300mm F3.5-6.3 DC MACRO OS HSM | C 014 + MC-11',
     # 504xx => 'Sigma 24mm F1.4 DG HSM | A 015 + MC-11',
     # 504xx => 'Sigma 30mm F1.4 DC HSM | A 013 + MC-11',
 );

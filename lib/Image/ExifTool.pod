@@ -585,13 +585,9 @@ name with a '-' in the arguments to L</ImageInfo>.
 
 This setting affects the reading and editing of extended XMP in JPEG images.
 According to the XMP specification, extended XMP is only valid if it has the
-GUID specified by the HasExtendedXMP tag.  ExifTool 9.95 and earlier would
-read extended XMP regardless of GUID, but with the addition of this option
-in version 9.96 the default behaviour was changed to conform with the XMP
-specification (to read only extended XMP with the proper GUID).  This option
-should be set to 2 to emulate pre-9.96 behaviour and read all extended XMP. 
-It may also be set to a GUID to read a specific extended XMP, or 0 to ignore
-extended XMP entirely.
+GUID specified by the HasExtendedXMP tag, so by default ExifTool will ignore
+other extended XMP, but this option allows full control over the extended
+XMP to be extracted.
 
      0   - ignore all extended XMP
      1   - read extended XMP with valid GUID only (default)

@@ -778,6 +778,9 @@ numerical.
   BitsTotal     : [Writable BITMASK tags only] Total number of bits in bit mask.
                   Defaults to BitsPerWord if not specified.
 
+  FixedSize     : [EXIF only] Hack to ignore value size and use this instead.
+                  Only valid if Format is also defined.
+
   Struct        : [XMP tags only] Reference to structure hash for structured XMP
                   tags.  See "STRUCTURES" section below for more details.  (For
                   backward compatibility, this may be a name to an entry in

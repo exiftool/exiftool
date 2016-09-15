@@ -15,7 +15,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::IPTC;
 use Image::ExifTool::XMP;
 
-$VERSION = '1.04';
+$VERSION = '1.05';
 
 sub ProcessPhotoMechanic($$);
 
@@ -108,7 +108,7 @@ my %rawCropConv = (
     NOTES => q{
         Below is a list of the observed PhotoMechanic XMP tags.  The actual
         namespace prefix is "photomechanic" but ExifTool shortens this in
-        the "XMP-photomech" family 1 group name.
+        the family 1 group name.
     },
     ColorClass  => {
         Writable => 'integer',

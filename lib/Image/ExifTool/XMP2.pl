@@ -1166,6 +1166,7 @@ my %sSubVersion = (
     FullPanoHeightPixels            => { Writable => 'real' },
     CroppedAreaLeftPixels           => { Writable => 'real' },
     CroppedAreaTopPixels            => { Writable => 'real' },
+    InitialCameraDolly              => { Writable => 'real' },
     # (the following have been observed, but are not in the specification)
     LargestValidInteriorRectLeft    => { Writable => 'real' },
     LargestValidInteriorRectTop     => { Writable => 'real' },
@@ -1180,12 +1181,47 @@ my %sSubVersion = (
     NAMESPACE => 'GettyImagesGIFT',
     NOTES => q{
         The actual Getty Images namespace prefix is "GettyImagesGIFT", which is the
-        prefix recorded in the file, but ExifTool shortens this for the "XMP-getty"
-        family 1 group name.
+        prefix recorded in the file, but ExifTool shortens this for the family 1
+        group name.
     },
     Personality => { },
     OriginalFilename => { Name => 'OriginalFileName' },
     ParentMEID => { },
+);
+
+# Google Spherical Images namespace (ref https://github.com/google/spatial-media/blob/master/docs/spherical-video-rfc.md)
+%Image::ExifTool::XMP::GSpherical = (
+    %xmpTableDefaults,
+    WRITABLE => 0,
+    GROUPS => { 1 => 'XMP-GSpherical', 2 => 'Image' },
+    NAMESPACE => 'GSpherical',
+    NOTES => q{
+        Not actually XMP.  These RDF/XML tags are used in Google spherical MP4
+        videos.  See
+        L<https://github.com/google/spatial-media/blob/master/docs/spherical-video-rfc.md>
+        for the specification.
+    },
+    Spherical                   => { },
+    Stitched                    => { },
+    StitchingSoftware           => { },
+    ProjectionType              => { },
+    StereoMode                  => { },
+    SourceCount                 => { },
+    InitialViewHeadingDegrees   => { },
+    InitialViewPitchDegrees     => { },
+    InitialViewRollDegrees      => { },
+    Timestamp                   => {
+        Name => 'TimeStamp',
+        Groups => { 2 => 'Time' },
+        ValueConv => 'ConvertUnixTime($val)', #(NC)
+        PrintConv => '$self->ConvertDateTime($val)',
+    },
+    FullPanoWidthPixels         => { },
+    FullPanoHeightPixels        => { },
+    CroppedAreaImageWidthPixels => { },
+    CroppedAreaImageHeightPixels=> { },
+    CroppedAreaLeftPixels       => { },
+    CroppedAreaTopPixels        => { },
 );
 
 # SVG namespace properties (ref 9)

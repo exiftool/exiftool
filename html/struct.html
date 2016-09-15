@@ -204,8 +204,9 @@ Struct option.)</p>
 <h2>Deleting / Replacing</h2>
 
 <p>A <b>complete structure is deleted</b> by specifying one or more matching
-fields. For example, the following command deletes all HierarchicalKeywords
-structures which have the Keyword "<code>Terrier</code>" at the second level:</p>
+fields.  All fields must match for the structure to be deleted.  For example,
+the following command deletes all HierarchicalKeywords structures which have the
+Keyword "<code>Terrier</code>" at the second level:</p>
 
 <blockquote><table class='box'><tr><td>
 <pre class=code>exiftool -hierarchicalkeywords-="{Children={Keyword=Terrier}}" a.jpg</pre>
@@ -285,14 +286,13 @@ field name, or inside or after a string value, and an optional comma may be
 added after the last field in a structure.</li>
 </ol>
 
-<p>For example, with a command like this:</p>
+<p>For example, with this command:</p>
 
 <blockquote><table class='box'><tr><td>
 <pre class=code>exiftool "-RegionInfo&lt;=INFILE" a.xmp</pre>
 </td></tr></table></blockquote>
 
-<p>the INFILE below may be used to write structured information to
-XMP:RegionInfo.</p>
+<p>the INFILE below writes structured information to XMP-mwg-rs:RegionInfo.</p>
 
 <blockquote><table class='box'><tr><td>
 <pre>{
@@ -425,7 +425,7 @@ See the NewXMPxxxStruct tag definition in the <a href="config.html#xmp-xxx">XMP-
 examples of the sample config file</a> for more details.</p>
 
 <hr>
-<i>Last revised Nov. 25, 2014</i>
+<i>Last revised Sept. 7, 2016</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

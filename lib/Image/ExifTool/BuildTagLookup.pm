@@ -32,7 +32,7 @@ use Image::ExifTool::XMP;
 use Image::ExifTool::Canon;
 use Image::ExifTool::Nikon;
 
-$VERSION = '2.97';
+$VERSION = '2.98';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -197,7 +197,7 @@ when the print conversion is disabled (by setting PrintConv to 0, using the
 -n option, or suffixing the tag name with a C<#> character).  An exclamation
 point (C<!>) indicates a tag that is considered I<Unsafe> to write under
 normal circumstances.  These tags are not written unless specified
-explicitly (ie. wildcards and "all" may not be used), and care should be
+explicitly (ie. not when wildcards or "all" are used), and care should be
 taken when editing them manually since they may affect the way an image is
 rendered.  An asterisk (C<*>) indicates a I<Protected> tag which is not
 writable directly, but is written automatically by ExifTool (often when a
@@ -812,8 +812,8 @@ TagID:  foreach $tagID (@keys) {
                     $case{$lc} = $name;
                 }
                 my $format = $$tagInfo{Format};
-                # validate Name (must not start with a digit or else XML output will not be valid)
-                # (must not start with a dash or exiftool command line may get confused)
+                # validate Name (must not start with a digit or else XML output will not be valid;
+                # must not start with a dash or exiftool command line may get confused)
                 if ($name !~ /^[_A-Za-z][-\w]+$/ and
                     # single-character subdirectory names are allowed
                     (not $$tagInfo{SubDirectory} or $name !~ /^[_A-Za-z]$/))
@@ -2078,6 +2078,15 @@ sub WriteTagNames($$)
         } else {
             my $table = GetTagTable($tableName);
             $notes = $$table{NOTES};
+            if ($$table{NAMESPACE}) {
+                my $ns = $Image::ExifTool::XMP::stdXlatNS{$$table{NAMESPACE}} || $$table{NAMESPACE};
+                my $msg = "These tags belong to the ExifTool XMP-$ns family 1 group.";
+                if ($notes) {
+                    $notes .= "\n\n" . $msg;
+                } else {
+                    $notes = $msg;
+                }
+            }
             $longTags = $$table{VARS}{LONG_TAGS} if $$table{VARS};
             if ($$table{GROUPS}{0} eq 'Composite') {
                 $composite = 1;
@@ -2489,9 +2498,17 @@ validation and consistency checks on the tag tables.
 
   $builder = new Image::ExifTool::BuildTagLookup;
 
+  # update Image::ExifTool::TagLookup
   $ok = $builder->WriteTagLookup('lib/Image/ExifTool/TagLookup.pm');
 
+  # update the tag name documentation
   $ok = $builder->WriteTagNames('lib/Image/ExifTool/TagNames.pod','html');
+
+  # print some statistics
+  my $count = $$builder{COUNT};
+  foreach (sort keys %$count) {
+      printf "%5d %s\n", $$count{$_}, $_;
+  }
 
 =head1 MEMBER VARIABLES
 

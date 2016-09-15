@@ -3825,9 +3825,11 @@ ItemList tags written by the &quot;mdta&quot; handler.  The prefix of
 <tr>
 <td>'uuid'</td>
 <td>UUID-USMT
+  <br>SphericalVideoXML
   <br>UUID-Unknown?</td>
-<td class=c>-<br>N</td>
-<td>--&gt; <a href='QuickTime.html#UserMedia'>QuickTime UserMedia Tags</a></td></tr>
+<td class=c>-<br>-<br>N</td>
+<td>--&gt; <a href='QuickTime.html#UserMedia'>QuickTime UserMedia Tags</a>
+  <br>--&gt; <a href='XMP.html'>XMP Tags</a></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='Media'>QuickTime Media Tags</a></h2>
@@ -4576,6 +4578,18 @@ atoms.</p>
 <td>PixelAspectRatio</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
+<tr>
+<td>'st3d'</td>
+<td>Stereoscopic3D</td>
+<td class=c>N</td>
+<td><span class=s>0 = Monoscopic
+  <br>1 = Stereoscopic Top-Bottom
+  <br>2 = Stereoscopic Left-Right</span></td></tr>
+<tr class=b>
+<td>'sv3d'</td>
+<td>SphericalVideo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='QuickTime.html#sv3d'>QuickTime sv3d Tags</a></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='Bitrate'>QuickTime Bitrate Tags</a></h2>
@@ -4625,6 +4639,118 @@ atoms.</p>
 <tr class=b>
 <td class=r title='3 = 0x3'>3</td>
 <td>CleanApertureOffsetY</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='sv3d'>QuickTime sv3d Tags</a></h2>
+<p>Tags defined by the Spherical Video V2 specification (see
+https://github.com/google/spatial-media/blob/master/docs/spherical-video-v2-rfc.md).</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'proj'</td>
+<td>Projection</td>
+<td class=c>-</td>
+<td>--&gt; <a href='QuickTime.html#proj'>QuickTime proj Tags</a></td></tr>
+<tr class=b>
+<td>'svhd'</td>
+<td>MetadataSource</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='proj'>QuickTime proj Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'cbmp'</td>
+<td>CubemapProj</td>
+<td class=c>-</td>
+<td>--&gt; <a href='QuickTime.html#cbmp'>QuickTime cbmp Tags</a></td></tr>
+<tr class=b>
+<td>'equi'</td>
+<td>EquirectangularProj</td>
+<td class=c>-</td>
+<td>--&gt; <a href='QuickTime.html#equi'>QuickTime equi Tags</a></td></tr>
+<tr>
+<td>'prhd'</td>
+<td>ProjectionHeader</td>
+<td class=c>-</td>
+<td>--&gt; <a href='QuickTime.html#prhd'>QuickTime prhd Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='cbmp'>QuickTime cbmp Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index4</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='1 = 0x1'>1</td>
+<td>Layout</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>Padding</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='equi'>QuickTime equi Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index4</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='1 = 0x1'>1</td>
+<td>ProjectionBoundsTop</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>ProjectionBoundsBottom</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='3 = 0x3'>3</td>
+<td>ProjectionBoundsLeft</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>ProjectionBoundsRight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='prhd'>QuickTime prhd Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index4</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='1 = 0x1'>1</td>
+<td>PoseYawDegrees</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>PosePitchDegrees</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='3 = 0x3'>3</td>
+<td>PoseRollDegrees</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
@@ -6099,7 +6225,7 @@ multi-language user data tags found, even if they don&#39;t exist in this table.
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jul 25, 2016</i>
+<br><i>Last revised Sep 13, 2016</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

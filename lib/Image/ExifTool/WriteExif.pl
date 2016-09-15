@@ -953,6 +953,10 @@ Entry:  for (;;) {
                                 $readFormName = $oldFormName;
                                 $readFormat = $oldFormat;
                             }
+                            if ($$oldInfo{FixedSize}) {
+                                $oldSize = $$oldInfo{FixedSize} if $$oldInfo{FixedSize};
+                                $oldValue = substr($$valueDataPt, $valuePtr, $oldSize);
+                            }
                             # adjust number of items to read if format size changed
                             $readCount = $oldSize / $formatSize[$readFormat];
                         }
@@ -1781,7 +1785,8 @@ NoOverwrite:            next if $isNew > 0;
             my $newSize = length($$newValuePt);
             my $fsize = $formatSize[$newFormat];
             my $offsetVal;
-            $newCount = int(($newSize + $fsize - 1) / $fsize);  # set proper count
+            # set proper count
+            $newCount = int(($newSize + $fsize - 1) / $fsize) unless $oldInfo and $$oldInfo{FixedSize};
             if ($newSize > 4) {
                 # zero-pad to an even number of bytes (required by EXIF standard)
                 # and make sure we are a multiple of the format size

@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::XMP;
 
-$VERSION = '1.17';
+$VERSION = '1.18';
 
 sub ProcessXtra($$$);
 
@@ -74,8 +74,8 @@ sub ProcessXtra($$$);
     NOTES => q{
         Microsoft Photo 1.0 schema XMP tags.  This is likely not a complete list,
         but represents tags which have been observed in sample images.  The actual
-        namespace prefix is "MicrosoftPhoto", but ExifTool shortens this to
-        "XMP-microsoft" in the family 1 group name.
+        namespace prefix is "MicrosoftPhoto", but ExifTool shortens this in the
+        family 1 group name.
     },
     CameraSerialNumber => { },
     DateAcquired       => { Groups => { 2 => 'Time' }, %Image::ExifTool::XMP::dateTimeInfo },

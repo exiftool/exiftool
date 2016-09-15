@@ -74,9 +74,9 @@ span.sup        { font-size: 0.8em; font-weight: normal; position: relative; top
 </div>
 
 <blockquote><table class='dl lg'><tr><td><b>
-<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-10.25.tar.gz/download">
-Download        Version 10.25</a> (4.0 MB) -
-<a href="history.html">Aug. 3, 2016</a></b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-10.26.tar.gz/download">
+Download        Version 10.26</a> (4.0 MB) -
+<a href="history.html">Sept. 15, 2016</a></b></td></tr></table></blockquote>
 
 <p><b>ExifTool is a platform-independent <a href="ExifTool.html">Perl
 library</a> plus a <a href="exiftool_pod.html">command-line application</a> for
@@ -127,8 +127,8 @@ distribution above.)</i></p>
 
 <blockquote><table class='dl lg'><tr><td><b>
 <a name="alone">Windows Executable:</a>
-<a href="http://sourceforge.net/projects/exiftool/files/exiftool-10.25.zip/download">
-         exiftool-10.25.zip</a> (4.9 MB)</b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/exiftool-10.26.zip/download">
+         exiftool-10.26.zip</a> (4.9 MB)</b></td></tr></table></blockquote>
 
 <p><b>The stand-alone Windows executable</b> does not require Perl. Just
 download and un-zip the archive then double-click on
@@ -140,11 +140,11 @@ of Windows.</p>
 <blockquote><table class='dl lg'><tr><td><b>
 Mac OS X Package:
 <a href="http://sourceforge.net/projects/exiftool/files/ExifTool-9.70.dmg/download">
-         ExifTool-10.25.dmg</a> (2.6 MB)</b></td></tr></table></blockquote>
+         ExifTool-10.26.dmg</a> (2.6 MB)</b></td></tr></table></blockquote>
 
 <p><b>The OS X package</b> installs the ExifTool command-line application and
-libraries in /usr/bin. After installing, type "<code>exiftool</code>" in a
-Terminal window to run exiftool and read the application documentation.</p>
+libraries in /usr/local/bin. After installing, type "<code>exiftool</code>" in
+a Terminal window to run exiftool and read the application documentation.</p>
 
 <p>Read the <b><a href="install.html">installation instructions</a></b> for help
 installing ExifTool on Windows, Mac OS X and Unix systems.</p>
@@ -229,9 +229,9 @@ the metadata like ExifTool"</i> - <a href="http://web.archive.org/web/2008030710
 detailed exif data of /any/ tool I've found."</i>
 - <a href="http://mail.gnome.org/archives/eog-list/2005-August/msg00002.html">gnome mail archives</a>
 </blockquote>
-<blockquote><i>"... no program or API gets close to ExifTool in terms of robustness,
+<!-- <blockquote><i>"... no program or API gets close to ExifTool in terms of robustness,
 feature count and support."</i> - <a href="http://www.christian-etter.de/?p=33">CE's Blog</a>
-</blockquote>
+</blockquote> [dead link] -->
 <blockquote><i>"ExifTool makes every other EXIF reader (and writer) than I've
 seen, including the camera manufacturers' readers, look lame."</i>
 - <a href="http://photo.net/bboard/q-and-a-fetch-msg?msg_id=00IfoF">photo.net Nikon forum</a>
@@ -915,7 +915,8 @@ there, which apparently may be seen as a threat by antivirus software.  A
 work-around is to add ExifTool to the exclusion list of the antivirus software.</li>
 <li><b>Adobe Camera Raw and DNG Converter 9.5.1</b> fail to recognize edited
 <b>Samsung SRW</b> images from some models (NX30, NX300, NX2000 and EK-GN120).
-<i class=red>[This bug was reported to Adobe on May 26, 2016.]</i></li>
+<i class=red>[This problem was fixed for the NX models in ExifTool 10.26, but
+remains for the EK-GN120]</i></li>
 <li>In <b>Windows</b>, ExifTool will not process files with <b>Unicode characters
 in the file name</b>.  This is due to an underlying lack of support for Unicode
 filenames in the Windows standard C I/O libraries. <i class=grn>[This deficiency
@@ -1032,13 +1033,13 @@ greatly improved by taking advantage of ExifTool's <b>batch processing capabilit
 (the ability to process multiple files or entire directories with a single
 command) to reduce the number of executed commands when performing complex
 operations or processing multiple files.<span class=sm><sup>&dagger;</sup></span>
-<i>[One exiftool user <a href="http://www.christian-etter.de/?p=458">documented
-a 60x speed increase</a> by processing a large number of files with a single
-command instead of running exiftool separately on each file.]</i> Also, the
-<code>-execute</code> option may be used to perform multiple independent
-operations with a single invocation of exiftool, and together with the
-<code>-stay_open</code> option provides a method for calling applications to
-<b>avoid this startup overhead</b>.</p>
+<i>[One exiftool user <!-- <a href="http://www.christian-etter.de/?p=458"> [dead link] -->
+documented a 60x speed increase <!-- </a> --> by processing a large number of files
+with a single command instead of running exiftool separately on each
+file.]</i> Also, the <code>-execute</code> option may be used to perform
+multiple independent operations with a single invocation of exiftool, and
+together with the <code>-stay_open</code> option provides a method for
+calling applications to <b>avoid this startup overhead</b>.</p>
 
 <p>It has also been observed that the loading time of ExifTool for Windows
 increases significantly when Windows Defender is active.  <b>Disabling Windows
@@ -1099,7 +1100,7 @@ binary data.  The simple script above does not handle this case.</p>
 <li><a href="faq.html">ExifTool FAQ</a></li>
 <li><a href="https://sourceforge.net/p/exiftool/discussion/">ExifTool Forum</a></li>
 <li><a href="TagNames/index.html">ExifTool Tag Names</a></li>
-<li><a href="history.html">Aug. 3, 2016</a> (<a href="http://owl.phy.queensu.ca/~phil/exiftool/rss.xml">RSS feed</a>)</li>
+<li><a href="history.html">Sept. 15, 2016</a> (<a href="http://owl.phy.queensu.ca/~phil/exiftool/rss.xml">RSS feed</a>)</li>
 <li><a href="exiftool_pod.html">exiftool Application Documentation</a> (<a href="http://owl.phy.queensu.ca/~phil/exiftool/exiftool_pod.pdf">download in PDF format</a>)</li>
 <li><a href="ExifTool.html">Image::ExifTool API Documentation</a> (<a href="http://owl.phy.queensu.ca/~phil/exiftool/ExifTool.pdf">download in PDF format</a>)</li>
 <li><a href="Shift.html">Date/Time Shift Module</a> (<a href="http://owl.phy.queensu.ca/~phil/exiftool/Shift.pdf">download in PDF format</a>)</li>

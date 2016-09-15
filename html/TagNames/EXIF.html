@@ -2037,6 +2037,30 @@ indicated by &quot;Uncalibrated&quot; with an InteropIndex of &quot;R03&quot;.  
 <td class=c>-</td>
 <td>--&gt; <a href='EXIF.html'>EXIF Tags</a></td></tr>
 <tr class=b>
+<td title='0xa010 = 40976'>0xa010</td>
+<td>SamsungRawPointersOffset</td>
+<td class=c>N</td>
+<td class=c>-</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xa011 = 40977'>0xa011</td>
+<td>SamsungRawPointersLength</td>
+<td class=c>N</td>
+<td class=c>-</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0xa101 = 41217'>0xa101</td>
+<td>SamsungRawByteOrder</td>
+<td class=c>N</td>
+<td class=c>-</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xa102 = 41218'>0xa102</td>
+<td>SamsungRawUnknown?</td>
+<td class=c>N</td>
+<td class=c>-</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td title='0xa20b = 41483'>0xa20b</td>
 <td><u>FlashEnergy</u></td>
 <td class=c>rational64u[n]</td>
@@ -2552,7 +2576,9 @@ unnecessary clutter)</span></span><table class=cols><tr>
 <td>DNGVersion</td>
 <td class=c title=' ! = Unsafe'>int8u[4]!</td>
 <td class=c>IFD0</td>
-<td><span class=s><span class=n>(tags 0xc612-0xc7b5 are used in DNG images unless otherwise noted)</span></span></td></tr>
+<td><span class=s><span class=n>(tags 0xc612-0xc7b5 are defined by the DNG specification unless otherwise
+noted.  See <a href="https://helpx.adobe.com/photoshop/digital-negative.html">https://helpx.adobe.com/photoshop/digital-negative.html</a> for
+the specification)</span></span></td></tr>
 <tr>
 <td title='0xc613 = 50707'>0xc613</td>
 <td>DNGBackwardVersion</td>
@@ -3390,7 +3416,7 @@ these unless they already exist in the file)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jul 27, 2016</i>
+<br><i>Last revised Sep 15, 2016</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

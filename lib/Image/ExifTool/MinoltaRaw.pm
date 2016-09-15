@@ -17,7 +17,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Minolta;
 
-$VERSION = '1.14';
+$VERSION = '1.15';
 
 sub ProcessMRW($$;$);
 sub WriteMRW($$;$);
@@ -186,7 +186,8 @@ sub WriteMRW($$;$);
             OTHER => sub {
                 my ($val, $inv) = @_;
                 return int(2 ** (($val-48)/8) * 100 + 0.5) unless $inv;
-                return 48 + 8*log($val/100)/log(2) if Image::ExifTool::IsFloat($val);
+                # (must check for zero below in inverse conversion)
+                return 48 + 8*log($val/100)/log(2) if Image::ExifTool::IsFloat($val) and $val != 0;
                 return undef;
             },
         },

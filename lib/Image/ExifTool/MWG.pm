@@ -444,8 +444,7 @@ my %sKeywordStruct;
     NAMESPACE => 'mwg-rs',
     NOTES => q{
         Image region metadata defined by the MWG 2.0 specification.  These tags
-        belong to the ExifTool XMP-mwg-rs group, and as such they may be accessed
-        without the need to load the MWG Composite tags above.  See
+        may be accessed without the need to load the MWG Composite tags above.  See
         L<http://www.metadataworkinggroup.org/> for the official specification.
     },
     Regions => {
@@ -471,11 +470,11 @@ my %sKeywordStruct;
     GROUPS => { 0 => 'XMP', 1 => 'XMP-mwg-kw', 2 => 'Image' },
     NAMESPACE => 'mwg-kw',
     NOTES => q{
-        Hierarchical keywords metadata defined by the MWG 2.0 specification.  These
-        tags belong to the ExifTool XMP-mwg-kw group. ExifTool unrolls keyword
-        structures to an arbitrary depth of 6 to allow individual levels to be
-        accessed with different tag names, and to avoid infinite recursion.  See
-        L<http://www.metadataworkinggroup.org/> for the official specification.
+        Hierarchical keywords metadata defined by the MWG 2.0 specification. 
+        ExifTool unrolls keyword structures to an arbitrary depth of 6 to allow
+        individual levels to be accessed with different tag names, and to avoid
+        infinite recursion.  See L<http://www.metadataworkinggroup.org/> for the
+        official specification.
     },
     # arbitrarily define only the first 6 levels of the keyword hierarchy
     Keywords => {
@@ -512,8 +511,7 @@ my %sKeywordStruct;
     GROUPS => { 0 => 'XMP', 1 => 'XMP-mwg-coll', 2 => 'Image' },
     NAMESPACE => 'mwg-coll',
     NOTES => q{
-        Collections metadata defined by the MWG 2.0 specification.  These tags
-        belong to the ExifTool XMP-mwg-coll group.  See
+        Collections metadata defined by the MWG 2.0 specification.  See
         L<http://www.metadataworkinggroup.org/> for the official specification.
     },
     Collections => {

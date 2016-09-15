@@ -42,7 +42,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '1.97';
+$VERSION = '1.98';
 
 sub FixWrongFormat($);
 sub ProcessMOV($$;$);
@@ -628,6 +628,93 @@ my %graphicsMode = (
     gama => { Name => 'Gamma', Format => 'fixed32u' },
     # mjqt - default quantization table for MJPEG
     # mjht - default Huffman table for MJPEG
+#
+# spherical video v2 stuff (untested)
+#
+    st3d => {
+        Name => 'Stereoscopic3D',
+        Format => 'int8u',
+        ValueConv => '$val =~ s/.* //; $val', # (remove leading version/flags bytes?)
+        PrintConv => {
+            0 => 'Monoscopic',
+            1 => 'Stereoscopic Top-Bottom',
+            2 => 'Stereoscopic Left-Right',
+        },
+    },
+    sv3d => {
+        Name => 'SphericalVideo',
+        SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::sv3d' },
+    },
+);
+
+# 'sv3d' atom information (ref https://github.com/google/spatial-media/blob/master/docs/spherical-video-v2-rfc.md)
+%Image::ExifTool::QuickTime::sv3d = (
+    PROCESS_PROC => \&ProcessMOV,
+    GROUPS => { 2 => 'Video' },
+    NOTES => q{
+        Tags defined by the Spherical Video V2 specification (see
+        https://github.com/google/spatial-media/blob/master/docs/spherical-video-v2-rfc.md).
+    },
+    svhd => {
+        Name => 'MetadataSource',
+        Format => 'undef',
+        ValueConv => '$val=~tr/\0//d; $val', # (remove version/flags? and terminator?)
+    },
+    proj => {
+        Name => 'Projection',
+        SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::proj' },
+    },
+);
+
+# 'proj' atom information (ref https://github.com/google/spatial-media/blob/master/docs/spherical-video-v2-rfc.md)
+%Image::ExifTool::QuickTime::proj = (
+    PROCESS_PROC => \&ProcessMOV,
+    GROUPS => { 2 => 'Video' },
+    prhd => {
+        Name => 'ProjectionHeader',
+        SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::prhd' },
+    },
+    cbmp => {
+        Name => 'CubemapProj',
+        SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::cbmp' },
+    },
+    equi => {
+        Name => 'EquirectangularProj',
+        SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::equi' },
+    },
+);
+
+# 'prhd' atom information (ref https://github.com/google/spatial-media/blob/master/docs/spherical-video-v2-rfc.md)
+%Image::ExifTool::QuickTime::prhd = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 2 => 'Video' },
+    FORMAT => 'fixed32s',
+    # 0 - version (high 8 bits) / flags (low 24 bits)
+    1 => 'PoseYawDegrees',
+    2 => 'PosePitchDegrees',
+    3 => 'PoseRollDegrees',
+);
+
+# 'cbmp' atom information (ref https://github.com/google/spatial-media/blob/master/docs/spherical-video-v2-rfc.md)
+%Image::ExifTool::QuickTime::cbmp = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 2 => 'Video' },
+    FORMAT => 'int32u',
+    # 0 - version (high 8 bits) / flags (low 24 bits)
+    1 => 'Layout',
+    2 => 'Padding',
+);
+
+# 'equi' atom information (ref https://github.com/google/spatial-media/blob/master/docs/spherical-video-v2-rfc.md)
+%Image::ExifTool::QuickTime::equi = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 2 => 'Video' },
+    FORMAT => 'int32u', # (actually 0.32 fixed point)
+    # 0 - version (high 8 bits) / flags (low 24 bits)
+    1 => { Name => 'ProjectionBoundsTop',   ValueConv => '$val / 4294967296' },
+    2 => { Name => 'ProjectionBoundsBottom',ValueConv => '$val / 4294967296' },
+    3 => { Name => 'ProjectionBoundsLeft',  ValueConv => '$val / 4294967296' },
+    4 => { Name => 'ProjectionBoundsRight', ValueConv => '$val / 4294967296' },
 );
 
 # 'btrt' atom information (ref http://lists.freedesktop.org/archives/gstreamer-commits/2011-October/054459.html)
@@ -833,6 +920,15 @@ my %graphicsMode = (
             Condition => '$$valPt=~/^USMT!\xd2\x4f\xce\xbb\x88\x69\x5c\xfa\xc9\xc7\x40/',
             SubDirectory => {
                 TagTable => 'Image::ExifTool::QuickTime::UserMedia',
+                Start => 16,
+            },
+        },
+        { #https://github.com/google/spatial-media/blob/master/docs/spherical-video-rfc.md
+            Name => 'SphericalVideoXML',
+            Condition => '$$valPt=~/^\xff\xcc\x82\x63\xf8\x55\x4a\x93\x88\x14\x58\x7a\x02\x52\x1f\xdd/',
+            Flags => [ 'Binary', 'BlockExtract' ],
+            SubDirectory => {
+                TagTable => 'Image::ExifTool::XMP::Main',
                 Start => 16,
             },
         },

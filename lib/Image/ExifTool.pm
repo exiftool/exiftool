@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '10.25';
+$VERSION = '10.26';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -980,7 +980,7 @@ my %systemTagsNotes = (
         Notes => q{
             may be written with a full path name to set FileName and Directory in one
             operation.  This is such a powerful feature that a TestName tag is provided
-            to allow dry-run tests before actually writing the file name. See
+            to allow dry-run tests before actually writing the file name.  See
             L<filename.html|../filename.html> for more information on writing the
             FileName, Directory and TestName tags
         },
@@ -996,6 +996,7 @@ my %systemTagsNotes = (
     },
     TestName => {
         Writable => 1,
+        Protected => 1,
         WriteOnly => 1,
         Notes => q{
             this write-only tag may be used instead of FileName for dry-run tests of the
@@ -1809,6 +1810,8 @@ sub Options($$;@)
                 }
                 # must forget saved values since they depend on Escape method
                 $$self{BOTH} = { };
+            } elsif ($param eq 'GlobalTimeShift') {
+                delete $$self{GLOBAL_TIME_OFFSET};  # reset our calculated offset
             }
             $$options{$param} = $newVal;
         }

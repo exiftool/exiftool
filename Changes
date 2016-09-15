@@ -7,6 +7,24 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.20. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Sept. 15, 2016 - Version 10.26
+
+  - Added read support for GSpherical metadata in MP4 videos
+  - Added a few new XMP-xmpMM tags and a new XMP-crs tags
+  - Added some new Minolta/Sony lenses (thanks Jos Roost)
+  - Added two new CanonModelID's (thanks Norbert Wasser and Laurent Clevy)
+  - Added two new Canon LensType's (thanks Norbert Wasser)
+  - Decode a number of Nikon D610 custom settings (thanks Tor)
+  - Removed a questionable Samsung tag
+  - Marked TestName tag as "Unsafe" for writing
+  - Enhanced -progress option with ability to set console window title
+  - Changed behaviour of %C to increment for each processed file as documented
+    (was incrementing for each output file created)
+  - Patched to recreate XMP in the standard location of PNG images when deleting
+    certain non-standard XMP as a group and recreating in one step
+  - Fixed runtime warning when writing 0 to MinoltaRaw ISOSetting
+  - Fixed problem writing SRW images from some newer Samsung models
+
 Aug. 3, 2016 - Version 10.25
 
   - Added a new Pentax PictureMode (thanks Louis Granboulan)

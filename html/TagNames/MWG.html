@@ -184,9 +184,11 @@ implements this policy and changes EXIF:Artist to a list-type tag.</p>
 
 <h2><a name='Regions'>MWG Regions Tags</a></h2>
 <p>Image region metadata defined by the MWG 2.0 specification.  These tags
-belong to the ExifTool XMP-mwg-rs group, and as such they may be accessed
-without the need to load the MWG Composite tags above.  See
+may be accessed without the need to load the MWG Composite tags above.  See
 <a href="http://www.metadataworkinggroup.org/">http://www.metadataworkinggroup.org/</a> for the official specification.</p>
+
+<p>
+These tags belong to the ExifTool XMP-mwg-rs family 1 group.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -383,11 +385,14 @@ conversion).</p>
 </table></td></tr></table></blockquote>
 
 <h2><a name='Keywords'>MWG Keywords Tags</a></h2>
-<p>Hierarchical keywords metadata defined by the MWG 2.0 specification.  These
-tags belong to the ExifTool XMP-mwg-kw group. ExifTool unrolls keyword
-structures to an arbitrary depth of 6 to allow individual levels to be
-accessed with different tag names, and to avoid infinite recursion.  See
-<a href="http://www.metadataworkinggroup.org/">http://www.metadataworkinggroup.org/</a> for the official specification.</p>
+<p>Hierarchical keywords metadata defined by the MWG 2.0 specification.
+ExifTool unrolls keyword structures to an arbitrary depth of 6 to allow
+individual levels to be accessed with different tag names, and to avoid
+infinite recursion.  See <a href="http://www.metadataworkinggroup.org/">http://www.metadataworkinggroup.org/</a> for the
+official specification.</p>
+
+<p>
+These tags belong to the ExifTool XMP-mwg-kw family 1 group.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -529,9 +534,11 @@ accessed with different tag names, and to avoid infinite recursion.  See
 </table></td></tr></table></blockquote>
 
 <h2><a name='Collections'>MWG Collections Tags</a></h2>
-<p>Collections metadata defined by the MWG 2.0 specification.  These tags
-belong to the ExifTool XMP-mwg-coll group.  See
+<p>Collections metadata defined by the MWG 2.0 specification.  See
 <a href="http://www.metadataworkinggroup.org/">http://www.metadataworkinggroup.org/</a> for the official specification.</p>
+
+<p>
+These tags belong to the ExifTool XMP-mwg-coll family 1 group.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -571,7 +578,7 @@ belong to the ExifTool XMP-mwg-coll group.  See
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jun 8, 2015</i>
+<br><i>Last revised Sep 14, 2016</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

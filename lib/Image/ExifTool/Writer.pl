@@ -1110,6 +1110,7 @@ sub SetNewValuesFromFile($$;@)
         UserParam       => $$options{UserParam},
         XMPAutoConv     => $$options{XMPAutoConv},
     );
+    $$srcExifTool{GLOBAL_TIME_OFFSET} = $$self{GLOBAL_TIME_OFFSET};
     foreach $tag (@setTags) {
         next if ref $tag;
         if ($tag =~ /^-(.*)/) {

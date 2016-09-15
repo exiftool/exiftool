@@ -14,7 +14,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.07';
+$VERSION = '1.08';
 
 my %noYes = ( 0 => 'No', 1 => 'Yes' );
 
@@ -632,6 +632,47 @@ my %noYes = ( 0 => 'No', 1 => 'Yes' );
     0x484 => { Name => 'TagDefault',        Format => 'unsigned', PrintConv => \%noYes },
     0x487 => { Name => 'TagString',         Format => 'utf8' },
     0x485 => { Name => 'TagBinary',         Binary => 1 },
+#
+# Spherical Video V2 (untested)
+#
+    0x7670 => {
+        Name => 'Projection',
+        SubDirectory => { TagTable => 'Image::ExifTool::Matroska::Projection' },
+    },
+);
+
+# Spherical video v2 projection tags (ref https://github.com/google/spatial-media/blob/master/docs/spherical-video-v2-rfc.md)
+%Image::ExifTool::Matroska::Projection = (
+    GROUPS => { 2 => 'Video' },
+    VARS => { NO_LOOKUP => 1 }, # omit tags from lookup
+    NOTES => q{
+        Projection tags defined by the Spherical Video V2 specification.  See
+        L<https://github.com/google/spatial-media/blob/master/docs/spherical-video-v2-rfc.md>
+        for the specification.
+    },
+    0x7671 => {
+        Name => 'ProjectionType',
+        Format => 'unsigned',
+        DataMember => 'ProjectionType',
+        RawConv => '$$self{ProjectionType} = $val',
+        PrintConv => {
+            0 => 'Rectangular',
+            1 => 'Equirectangular',
+            2 => 'Cubemap',
+        },
+    },
+    0x7672 => [{
+        Name => 'EquirectangularProj',
+        Condition => '$$self{ProjectionType} == 1',
+        SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::equi' },
+    },{
+        Name => 'CubemapProj',
+        Condition => '$$self{ProjectionType} == 2',
+        SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::cbmp' },
+    }],
+    0x7673 => { Name => 'ProjectionPosYaw',   Format => 'float' },
+    0x7674 => { Name => 'ProjectionPosPitch', Format => 'float' },
+    0x7675 => { Name => 'ProjectionPosRoll',  Format => 'float' },
 );
 
 #------------------------------------------------------------------------------
@@ -889,4 +930,3 @@ L<Image::ExifTool::TagNames/Matroska Tags>,
 L<Image::ExifTool(3pm)|Image::ExifTool>
 
 =cut
-

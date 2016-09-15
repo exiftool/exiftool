@@ -285,10 +285,10 @@ my %formatMinMax = (
         PrintConv => '"$val C"',
         PrintConvInv => '$val=~s/ ?C//; $val',
     },
-    0x0045 => { Name => 'RawCompressionMode', Writable => 'int32u' },
+    # 0x0045 => { Name => 'RawCompressionMode', Writable => 'int32u' }, # (related to ExposureMode, not raw compresison? ref forum7432)
     # 0x004a - int32u[7] (ImageVerification?)
     # 0x004b - int32u[2] (RewindInfo?)
-    # 0x0050 - int32u (ColorSpace? - inconsistent) values: 1
+    # 0x0050 - int32u (ColorSpace? - inconsistent) values: 1 (related to compression mode, ref forum7432)
     # 0x0054 - int16u[2] (WeatherInfo?)
     # 0x0060 - undef (AEInfo?)
     # 0x0080 - undef (AFInfo?)

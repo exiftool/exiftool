@@ -53,7 +53,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '3.83';
+$VERSION = '3.85';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -2209,6 +2209,27 @@ my %sampleFormat = (
             MaxSubdirs => 1,
         },
     },
+    # the following 4 tags found in SubIFD1 of some Samsung SRW images
+    0xa010 => {
+        Name => 'SamsungRawPointersOffset',
+        IsOffset => 1,
+        OffsetPair => 0xa011,  # point to associated byte count
+    },
+    0xa011 => {
+        Name => 'SamsungRawPointersLength',
+        OffsetPair => 0xa010,  # point to associated offset
+    },
+    0xa101 => {
+        Name => 'SamsungRawByteOrder',
+        Format => 'undef',
+        # this is written incorrectly as string[1], but is "\0\0MM" or "II\0\0"
+        FixedSize => 4,
+        Count => 1,
+    },
+    0xa102 => {
+        Name => 'SamsungRawUnknown',
+        Unknown => 1,
+    },
     0xa20b => {
         Name => 'FlashEnergy',
         Groups => { 2 => 'Camera' },
@@ -2640,7 +2661,11 @@ my %sampleFormat = (
 #
     0xc612 => {
         Name => 'DNGVersion',
-        Notes => 'tags 0xc612-0xc7b5 are used in DNG images unless otherwise noted',
+        Notes => q{
+            tags 0xc612-0xc7b5 are defined by the DNG specification unless otherwise
+            noted.  See L<https://helpx.adobe.com/photoshop/digital-negative.html> for
+            the specification
+        },
         Writable => 'int8u',
         WriteGroup => 'IFD0',
         Count => 4,
@@ -4688,18 +4713,21 @@ sub PrintLensID($$@)
         ($shortFocal, $longFocal) = ($1, $2 || $1);
     }
     if ($$et{Make} eq 'SONY') {
-        # patch for Metabones Canon adapters on Sony cameras (ref Jos Roost)
-        # (the Metabones adapters add 0xef00 or 0x7700 to the high byte
-        # for 2-byte LensType values, so we need to adjust for these)
-        if ($lensType != 0xffff) {
+        # Patch for Metabones or other adapters on Sony E-mount cameras (ref Jos Roost)
+        # Metabones Canon EF to E-mount adapters add 0xef00, 0xbc00 or 0x7700 to the
+        # high byte for 2-byte Canon LensType values, so we need to adjust for these.
+        # Offset 0xef00 is also used by Sigma MC-11, Fotodiox and Viltrox EF-E adapters.
+        # Have to exclude A-mount Sigma Filtermatic with 'odd' LensType=0xff00.
+        if ($lensType != 0xffff and $lensType != 0xff00) {
             require Image::ExifTool::Minolta;
             if ($Image::ExifTool::Minolta::metabonesID{$lensType & 0xff00}) {
                 $lensType -= ($lensType >= 0xef00 ? 0xef00 : $lensType >= 0xbc00 ? 0xbc00 : 0x7700);
                 require Image::ExifTool::Canon;
                 $printConv = \%Image::ExifTool::Canon::canonLensTypes;
                 $lensTypePrt = $$printConv{$lensType} if $$printConv{$lensType};
-            # test for Sigma MC-11 adapter with Sigma lens: upper limit cuts off two highest
-            # Sigma lenses, but prevents conflict with old Minolta 25xxx and higher ID's
+            # Test for Sigma MC-11 SA-E adapter with Sigma SA lens using 0x4900 offset.
+            # (upper limit of test cuts off two highest Sigma lenses, but prevents
+            # conflict with old Minolta 25xxx and higher ID's)
             } elsif ($lensType >= 0x4900 and $lensType <= 0x590a) {
                 require Image::ExifTool::Sigma;
                 $lensType -= 0x4900;
@@ -5381,6 +5409,7 @@ sub ProcessExif($$$)
                 if ($newNum and $newNum != $format) {
                     $origFormStr = $formatName[$format] . '[' . $count . ']';
                     $format = $newNum;
+                    $size = $readSize = $$tagInfo{FixedSize} if $$tagInfo{FixedSize};
                     # adjust number of items for new format size
                     $count = int($size / $formatSize[$format]);
                 }

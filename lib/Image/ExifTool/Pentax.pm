@@ -98,7 +98,7 @@ sub DecodeAFPoints($$$$;$);
     # (and 'Sigma 70mm F2.8 EX DG Macro')
     # (and 'Sigma 105mm F2.8 EX DG Macro', ref 24)
     # (and 'Sigma 180mm F4.5 EX DG Macro')
-    '3 17' => 'smc PENTAX-FA SOFT 85mm F2.8',
+    '3 17' => 'smc PENTAX-FA SOFT 85mm F2.8', # (also F version, ref 29)
     '3 18' => 'smc PENTAX-F 1.7X AF ADAPTER',
     '3 19' => 'smc PENTAX-F 24-50mm F4',
     '3 20' => 'smc PENTAX-F 35-80mm F4-5.6',

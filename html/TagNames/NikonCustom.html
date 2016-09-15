@@ -4204,14 +4204,14 @@ custom settings for the currently supported models.
   <br>0x5 = 5 Long</td></tr></table>
 </td></tr>
 <tr>
-<td class=r title='1 = 0x1'>1.2</td>
+<td class=r title='1 = 0x1'>1.1</td>
 <td>FocusPointWrap</td>
 <td class=c>int8u</td>
 <td><span class=s>[Mask 0x08]
   <br>0x0 = No Wrap
   <br>0x8 = Wrap</span></td></tr>
 <tr class=b>
-<td class=r title='1 = 0x1'>1.3</td>
+<td class=r title='1 = 0x1'>1.2</td>
 <td>AFPointIllumination</td>
 <td class=c>int8u</td>
 <td><span class=s>[Mask 0x06]
@@ -4219,7 +4219,7 @@ custom settings for the currently supported models.
   <br>0x2 = On
   <br>0x4 = Off</span></td></tr>
 <tr>
-<td class=r title='1 = 0x1'>1.4</td>
+<td class=r title='1 = 0x1'>1.3</td>
 <td>AFAssist</td>
 <td class=c>int8u</td>
 <td><span class=s>[Mask 0x01]
@@ -6582,9 +6582,235 @@ custom settings for the currently supported models.
   <br>0x40 = View Photo Shooting Info</span></td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='SettingsD610'>NikonCustom SettingsD610 Tags</a></h2>
+<p>Custom settings for the D610</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0.1</td>
+<td>AF-CPrioritySelection</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x80]
+  <br>0x0 = Release
+  <br>0x80 = Focus</span></td></tr>
+<tr class=b>
+<td class=r title='0 = 0x0'>0.2</td>
+<td>AF-SPrioritySelection</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x20]
+  <br>0x0 = Release
+  <br>0x20 = Focus</span></td></tr>
+<tr>
+<td class=r title='0 = 0x0'>0.3</td>
+<td>NumberOfFocusPoints</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x10]
+  <br>0x0 = 39 Points
+  <br>0x10 = 11 Points</span></td></tr>
+<tr class=b>
+<td class=r title='0 = 0x0'>0.4</td>
+<td>FocusTrackingLockOn</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x07]</span><table class=cols><tr>
+  <td>0x0 = Off
+  <br>0x1 = 1 Short
+  <br>0x2 = 2</td><td>&nbsp;&nbsp;</td>
+  <td>0x3 = 3 Normal
+  <br>0x4 = 4
+  <br>0x5 = 5 Long</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='1 = 0x1'>1.1</td>
+<td>FocusPointWrap</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x08]
+  <br>0x0 = No Wrap
+  <br>0x8 = Wrap</span></td></tr>
+<tr class=b>
+<td class=r title='1 = 0x1'>1.2</td>
+<td>AFPointIllumination</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x06]
+  <br>0x0 = Auto
+  <br>0x2 = On
+  <br>0x4 = Off</span></td></tr>
+<tr>
+<td class=r title='1 = 0x1'>1.3</td>
+<td>AFAssist</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x01]
+  <br>0x0 = On
+  <br>0x1 = Off</span></td></tr>
+<tr class=b>
+<td class=r title='5 = 0x5'>5.1</td>
+<td>EasyExposureCompensation</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x03]
+  <br>0x0 = Off
+  <br>0x1 = On
+  <br>0x2 = On Auto Reset</span></td></tr>
+<tr>
+<td class=r title='6 = 0x6'>6.1</td>
+<td>ExposureControlStep</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x40]
+  <br>0x0 = 1/3 EV
+  <br>0x40 = 1/2 EV</span></td></tr>
+<tr class=b>
+<td class=r title='6 = 0x6'>6.2</td>
+<td>ISOSensitivityStep</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x10]
+  <br>0x0 = 1/3 EV
+  <br>0x10 = 1/2 EV</span></td></tr>
+<tr>
+<td class=r title='7 = 0x7'>7.1</td>
+<td>CenterWeightedAreaSize</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0xe0]
+  <br>0x0 = 8 mm
+  <br>0x20 = 12 mm
+  <br>0x40 = 15 mm
+  <br>0x60 = 20 mm
+  <br>0x80 = Average</span></td></tr>
+<tr class=b>
+<td class=r title='7 = 0x7'>7.2</td>
+<td>FineTuneOptMatrixMetering</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x0f]</span></td></tr>
+<tr>
+<td class=r title='8 = 0x8'>8.1</td>
+<td>FineTuneOptCenterWeighted</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0xf0]</span></td></tr>
+<tr class=b>
+<td class=r title='8 = 0x8'>8.2</td>
+<td>FineTuneOptSpotMetering</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x0f]</span></td></tr>
+<tr>
+<td class=r title='17 = 0x11'>17.1</td>
+<td>ShutterReleaseButtonAE-L</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x02]
+  <br>0x0 = Off
+  <br>0x2 = On</span></td></tr>
+<tr class=b>
+<td class=r title='18 = 0x12'>18.1</td>
+<td>StandbyTimer</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0xf0]</span><table class=cols><tr>
+  <td>0x0 = 4 s
+  <br>0x10 = 6 s
+  <br>0x20 = 10 s
+  <br>0x30 = 30 s
+  <br>0x40 = 1 min</td><td>&nbsp;&nbsp;</td>
+  <td>0x50 = 5 min
+  <br>0x60 = 10 min
+  <br>0x70 = 30 min
+  <br>0x80 = No Limit</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='18 = 0x12'>18.2</td>
+<td>RemoteOnDuration</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x03]
+  <br>0x0 = 1 min
+  <br>0x1 = 5 min
+  <br>0x2 = 10 min
+  <br>0x3 = 20 min</span></td></tr>
+<tr class=b>
+<td class=r title='19 = 0x13'>19.1</td>
+<td>SelfTimerTime</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0xc0]
+  <br>0x0 = 2 s
+  <br>0x40 = 5 s
+  <br>0x80 = 10 s
+  <br>0xc0 = 20 s</span></td></tr>
+<tr>
+<td class=r title='19 = 0x13'>19.2</td>
+<td>SelfTimerShotInterval</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x30]
+  <br>0x0 = 0.5 s
+  <br>0x10 = 1 s
+  <br>0x20 = 2 s
+  <br>0x30 = 3 s</span></td></tr>
+<tr class=b>
+<td class=r title='19 = 0x13'>19.3</td>
+<td>SelfTimerShotCount</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x0f]</span></td></tr>
+<tr>
+<td class=r title='20 = 0x14'>20.1</td>
+<td>ImageReviewMonitorOffTime</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0xe0]</span><table class=cols><tr>
+  <td>0x0 = 2 s
+  <br>0x20 = 4 s
+  <br>0x40 = 10 s
+  <br>0x60 = 20 s</td><td>&nbsp;&nbsp;</td>
+  <td>0x80 = 1 min
+  <br>0xa0 = 5 min
+  <br>0xc0 = 10 min</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='20 = 0x14'>20.2</td>
+<td>LiveViewMonitorOffTime</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x1c]</span><table class=cols><tr>
+  <td>0x0 = 5 min
+  <br>0x4 = 10 min
+  <br>0x8 = 15 min</td><td>&nbsp;&nbsp;</td>
+  <td>0xc = 20 min
+  <br>0x10 = 30 min
+  <br>0x14 = No Limit</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='21 = 0x15'>21.1</td>
+<td>MenuMonitorOffTime</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0xe0]</span><table class=cols><tr>
+  <td>0x0 = 4 s
+  <br>0x20 = 10 s
+  <br>0x40 = 20 s</td><td>&nbsp;&nbsp;</td>
+  <td>0x60 = 1 min
+  <br>0x80 = 5 min
+  <br>0xa0 = 10 min</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='21 = 0x15'>21.2</td>
+<td>ShootingInfoMonitorOffTime</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x1c]</span><table class=cols><tr>
+  <td>0x0 = 4 s
+  <br>0x4 = 10 s
+  <br>0x8 = 20 s</td><td>&nbsp;&nbsp;</td>
+  <td>0xc = 1 min
+  <br>0x10 = 5 min
+  <br>0x14 = 10 min</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='35 = 0x23'>35.1</td>
+<td>PlaybackMonitorOffTime</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0xe0]</span><table class=cols><tr>
+  <td>0x0 = 4 s
+  <br>0x20 = 10 s
+  <br>0x40 = 20 s</td><td>&nbsp;&nbsp;</td>
+  <td>0x60 = 1 min
+  <br>0x80 = 5 min
+  <br>0xa0 = 10 min</td></tr></table>
+</td></tr>
+</table></td></tr></table></blockquote>
+
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised May 26, 2016</i>
+<br><i>Last revised Sep 15, 2016</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

@@ -50,7 +50,7 @@ when the print conversion is disabled (by setting PrintConv to 0, using the
 -n option, or suffixing the tag name with a C<#> character).  An exclamation
 point (C<!>) indicates a tag that is considered I<Unsafe> to write under
 normal circumstances.  These tags are not written unless specified
-explicitly (ie. wildcards and "all" may not be used), and care should be
+explicitly (ie. not when wildcards or "all" are used), and care should be
 taken when editing them manually since they may affect the way an image is
 rendered.  An asterisk (C<*>) indicates a I<Protected> tag which is not
 writable directly, but is written automatically by ExifTool (often when a
@@ -677,6 +677,10 @@ EXIF 2.3 specification.
   0xa003   ExifImageHeight           ExifIFD    int16u:
   0xa004   RelatedSoundFile          ExifIFD    string
   0xa005   InteropOffset             -          EXIF
+  0xa010   SamsungRawPointersOffset  -          N
+  0xa011   SamsungRawPointersLength  -          N
+  0xa101   SamsungRawByteOrder       -          N
+  0xa102   SamsungRawUnknown?        -          N
   0xa20b   FlashEnergy               ExifIFD    rational64u[n]
   0xa20c   SpatialFrequencyResponse  -          N
   0xa20d   Noise                     -          N
@@ -1168,6 +1172,7 @@ L<http://www.adobe.com/devnet/xmp/> for the official XMP specification.
   fpv                                           XMP fpv
   getty                                         XMP GettyImages
   GPano                                         XMP GPano
+  GSpherical                                    XMP GSpherical
   ics                                           XMP ics
   iptcCore                                      XMP iptcCore
   iptcExt                                       XMP iptcExt
@@ -1207,6 +1212,8 @@ L<http://www.adobe.com/devnet/xmp/> for the official XMP specification.
 
 Apple Adjustment Settings used by iPhone/iPad.
 
+These tags belong to the ExifTool XMP-aas family 1 group.
+
   Tag Name                                      Writable
   --------                                      --------
   AffineA                                       real
@@ -1243,6 +1250,9 @@ most valuable features of metadata: interoperability.  Your applications
 mumble to themselves instead of speaking out for the rest of the world to
 hear.)
 
+
+These tags belong to the ExifTool XMP-acdsee family 1 group.
+
   Tag Name                                      Writable
   --------                                      --------
   Author                                        string/
@@ -1269,6 +1279,8 @@ hear.)
 
 Adobe Album namespace tags.
 
+These tags belong to the ExifTool XMP-album family 1 group.
+
   Tag Name                                      Writable
   --------                                      --------
   Notes                                         string
@@ -1277,6 +1289,9 @@ Adobe Album namespace tags.
 
 Face information tags written by the Apple iPhone 5 inside the mwg-rs
 RegionExtensions.
+
+
+These tags belong to the ExifTool XMP-apple-fi family 1 group.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -1293,6 +1308,9 @@ specification until it was dropped in 2012, presumably due to the
 introduction of the EXIF 2.3 for XMP specification and the exifEX namespace
 at this time.  For this reason, tags below with equivalents in the
 L<exifEX namespace|/XMP exifEX Tags> are avoided when writing.
+
+
+These tags belong to the ExifTool XMP-aux family 1 group.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -1319,6 +1337,9 @@ Creative Commons namespace tags.  Note that the CC specification for XMP is
 non-existent, so ExifTool must make some assumptions about the format of the
 specific properties in XMP (see L<http://creativecommons.org/ns>).
 
+
+These tags belong to the ExifTool XMP-cc family 1 group.
+
   Tag Name                                      Writable
   --------                                      --------
   AttributionName                               string
@@ -1337,6 +1358,8 @@ specific properties in XMP (see L<http://creativecommons.org/ns>).
 
 Location tags written by some Sony Ericsson phones.
 
+These tags belong to the ExifTool XMP-cell family 1 group.
+
   Tag Name                                      Writable
   --------                                      --------
   CellTowerID                                   string
@@ -1349,6 +1372,8 @@ Location tags written by some Sony Ericsson phones.
 =head3 XMP creatorAtom Tags
 
 Adobe creatorAtom tags, written by After Effects.
+
+These tags belong to the ExifTool XMP-creatorAtom family 1 group.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -1397,6 +1422,9 @@ Adobe creatorAtom tags, written by After Effects.
 
 Photoshop Camera Raw namespace tags.  It is a shame that Adobe pollutes the
 metadata space with these incredibly bulky image editing parameters.
+
+
+These tags belong to the ExifTool XMP-crs family 1 group.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -1773,6 +1801,7 @@ metadata space with these incredibly bulky image editing parameters.
   UprightTransform_2                            string
   UprightTransform_3                            string
   UprightTransform_4                            string
+  UprightTransform_5                            string
   UprightTransformCount                         integer
   UprightVersion                                integer
   Version                                       string
@@ -1860,6 +1889,8 @@ metadata space with these incredibly bulky image editing parameters.
 
 Dublin Core namespace tags.
 
+These tags belong to the ExifTool XMP-dc family 1 group.
+
   Tag Name                                      Writable
   --------                                      --------
   Contributor                                   string+
@@ -1884,6 +1915,9 @@ Description Explorer namespace tags.  These tags are not very common.  The
 Source and Rating tags are avoided when writing due to name conflicts with
 other XMP tags.  (see L<http://www.optimasc.com/products/fileid/>)
 
+
+These tags belong to the ExifTool XMP-dex family 1 group.
+
   Tag Name                                      Writable
   --------                                      --------
   CRC32                                         integer
@@ -1901,6 +1935,9 @@ DICOM namespace tags.  These XMP tags allow some DICOM information to be
 stored in files of other than DICOM format.  See the
 L<DICOM Tags documentation|Image::ExifTool::TagNames/DICOM Tags> for a list
 of tags available in DICOM-format files.
+
+
+These tags belong to the ExifTool XMP-DICOM family 1 group.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -1923,6 +1960,8 @@ of tags available in DICOM-format files.
 
 DigiKam namespace tags.
 
+These tags belong to the ExifTool XMP-digiKam family 1 group.
+
   Tag Name                                      Writable
   --------                                      --------
   CaptionsAuthorNames                           lang-alt
@@ -1938,6 +1977,9 @@ DigiKam namespace tags.
 EXIF namespace for EXIF tags.  See
 L<http://www.cipa.jp/std/documents/e/DC-010-2012_E.pdf> for the
 specification.
+
+
+These tags belong to the ExifTool XMP-exif family 1 group.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -2082,6 +2124,9 @@ specification.
 EXIF tags added by the EXIF 2.3 for XMP specification (see
 L<http://www.cipa.jp/std/documents/e/DC-010-2012_E.pdf>).
 
+
+These tags belong to the ExifTool XMP-exifEX family 1 group.
+
   Tag Name                                      Writable
   --------                                      --------
   SerialNumber                                  string
@@ -2105,6 +2150,9 @@ L<http://www.cipa.jp/std/documents/e/DC-010-2012_E.pdf>).
 Microsoft Expression Media namespace tags.  These tags are avoided when
 writing due to name conflicts with tags in other schemas.
 
+
+These tags belong to the ExifTool XMP-expressionmedia family 1 group.
+
   Tag Name                                      Writable
   --------                                      --------
   CatalogSets                                   string/+
@@ -2115,6 +2163,8 @@ writing due to name conflicts with tags in other schemas.
 =head3 XMP extensis Tags
 
 Tags used by Extensis Portfolio.
+
+These tags belong to the ExifTool XMP-extensis family 1 group.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -2132,6 +2182,9 @@ Tags used by Extensis Portfolio.
 Fast Picture Viewer tags (see
 L<http://www.fastpictureviewer.com/help/#rtfcomments>).
 
+
+These tags belong to the ExifTool XMP-fpv family 1 group.
+
   Tag Name                                      Writable
   --------                                      --------
   RichTextComment                               string
@@ -2139,8 +2192,11 @@ L<http://www.fastpictureviewer.com/help/#rtfcomments>).
 =head3 XMP GettyImages Tags
 
 The actual Getty Images namespace prefix is "GettyImagesGIFT", which is the
-prefix recorded in the file, but ExifTool shortens this for the "XMP-getty"
-family 1 group name.
+prefix recorded in the file, but ExifTool shortens this for the family 1
+group name.
+
+
+These tags belong to the ExifTool XMP-getty family 1 group.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -2153,6 +2209,9 @@ family 1 group name.
 Panorama tags written by Google Photosphere. See
 L<https://developers.google.com/panorama/metadata/> for the specification.
 
+
+These tags belong to the ExifTool XMP-GPano family 1 group.
+
   Tag Name                                      Writable
   --------                                      --------
   CaptureSoftware                               string
@@ -2164,6 +2223,7 @@ L<https://developers.google.com/panorama/metadata/> for the specification.
   FirstPhotoDate                                date
   FullPanoHeightPixels                          real
   FullPanoWidthPixels                           real
+  InitialCameraDolly                            real
   InitialHorizontalFOVDegrees                   real
   InitialViewHeadingDegrees                     real
   InitialViewPitchDegrees                       real
@@ -2181,10 +2241,42 @@ L<https://developers.google.com/panorama/metadata/> for the specification.
   StitchingSoftware                             string
   UsePanoramaViewer                             boolean
 
+=head3 XMP GSpherical Tags
+
+Not actually XMP.  These RDF/XML tags are used in Google spherical MP4
+videos.  See
+L<https://github.com/google/spatial-media/blob/master/docs/spherical-video-rfc.md>
+for the specification.
+
+
+These tags belong to the ExifTool XMP-GSpherical family 1 group.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  CroppedAreaImageHeightPixels                  N
+  CroppedAreaImageWidthPixels                   N
+  CroppedAreaLeftPixels                         N
+  CroppedAreaTopPixels                          N
+  FullPanoHeightPixels                          N
+  FullPanoWidthPixels                           N
+  InitialViewHeadingDegrees                     N
+  InitialViewPitchDegrees                       N
+  InitialViewRollDegrees                        N
+  ProjectionType                                N
+  SourceCount                                   N
+  Spherical                                     N
+  StereoMode                                    N
+  Stitched                                      N
+  StitchingSoftware                             N
+  TimeStamp                                     N
+
 =head3 XMP ics Tags
 
 Tags used by IDimager.  Nested TagStructure structures are unrolled to an
 arbitrary depth of 6 to avoid infinite recursion.
+
+
+These tags belong to the ExifTool XMP-ics family 1 group.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -2237,8 +2329,11 @@ arbitrary depth of 6 to avoid infinite recursion.
 
 IPTC Core namespace tags.  The actual IPTC Core namespace prefix is
 "Iptc4xmpCore", which is the prefix recorded in the file, but ExifTool
-shortens this for the "XMP-iptcCore" family 1 group name. (see
+shortens this for the family 1 group name. (see
 L<http://www.iptc.org/IPTC4XMP/>)
+
+
+These tags belong to the ExifTool XMP-iptcCore family 1 group.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -2273,8 +2368,11 @@ L<http://www.iptc.org/IPTC4XMP/>)
 =head3 XMP iptcExt Tags
 
 IPTC Extension namespace tags.  The actual namespace prefix is
-"Iptc4xmpExt", but ExifTool shortens this for the "XMP-iptcExt" family 1
-group name. (see L<http://www.iptc.org/IPTC4XMP/>)
+"Iptc4xmpExt", but ExifTool shortens this for the family 1 group name. (see
+L<http://www.iptc.org/IPTC4XMP/>)
+
+
+These tags belong to the ExifTool XMP-iptcExt family 1 group.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -2442,6 +2540,8 @@ group name. (see L<http://www.iptc.org/IPTC4XMP/>)
 
 Adobe Lightroom "lr" namespace tags.
 
+These tags belong to the ExifTool XMP-lr family 1 group.
+
   Tag Name                                      Writable
   --------                                      --------
   HierarchicalSubject                           string+
@@ -2450,6 +2550,8 @@ Adobe Lightroom "lr" namespace tags.
 =head3 XMP MediaPro Tags
 
 iView MediaPro namespace tags.
+
+These tags belong to the ExifTool XMP-mediapro family 1 group.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -2466,6 +2568,9 @@ Adobe PDF namespace tags.  The official XMP specification defines only
 Keywords, PDFVersion, Producer and Trapped.  The other tags are included
 because they have been observed in PDF files, but some are avoided when
 writing due to name conflicts with other XMP namespaces.
+
+
+These tags belong to the ExifTool XMP-pdf family 1 group.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -2488,6 +2593,9 @@ PDF extension tags.  This namespace is used to store application-defined PDF
 information, so there are no pre-defined tags.  User-defined tags must be
 created to enable writing of XMP-pdfx information.
 
+
+These tags belong to the ExifTool XMP-pdfx family 1 group.
+
   Tag Name                                      Writable
   --------                                      --------
   [no tags known]
@@ -2495,6 +2603,8 @@ created to enable writing of XMP-pdfx information.
 =head3 XMP photoshop Tags
 
 Adobe Photoshop namespace tags.
+
+These tags belong to the ExifTool XMP-photoshop family 1 group.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -2536,6 +2646,9 @@ PixelLive namespace tags.  These tags are not writable becase they are very
 uncommon and I haven't been able to locate a reference which gives the
 namespace URI.
 
+
+These tags belong to the ExifTool XMP-PixelLive family 1 group.
+
   Tag Name                                      Writable
   --------                                      --------
   Author                                        N
@@ -2549,6 +2662,9 @@ namespace URI.
 
 PRISM Metadata for Images 3.0 namespace tags.  (see
 L<http://www.prismstandard.org/>)
+
+
+These tags belong to the ExifTool XMP-pmi family 1 group.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -2591,6 +2707,9 @@ L<http://www.prismstandard.org/>)
 
 Publishing Requirements for Industry Standard Metadata 3.0 namespace
 tags.  (see L<http://www.prismstandard.org/>)
+
+
+These tags belong to the ExifTool XMP-prism family 1 group.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -2782,6 +2901,9 @@ PRISM Rights Language 2.1 namespace tags.  These tags have been deprecated
 since the release of the PRISM Usage Rights 3.0. (see
 L<http://www.prismstandard.org/>)
 
+
+These tags belong to the ExifTool XMP-prl family 1 group.
+
   Tag Name                                      Writable
   --------                                      --------
   Geography                                     string/+
@@ -2792,6 +2914,9 @@ L<http://www.prismstandard.org/>)
 
 PRISM Recipe Metadata 3.0 namespace tags.  (see
 L<http://www.prismstandard.org/>)
+
+
+These tags belong to the ExifTool XMP-prm family 1 group.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -2820,6 +2945,9 @@ L<http://www.prismstandard.org/>)
 PRISM Usage Rights 3.0 namespace tags.  (see
 L<http://www.prismstandard.org/>)
 
+
+These tags belong to the ExifTool XMP-pur family 1 group.
+
   Tag Name                                      Writable
   --------                                      --------
   AdultContentWarning                           string/+
@@ -2842,6 +2970,9 @@ L<http://www.prismstandard.org/>)
 Most RDF attributes are handled internally, but the "about" attribute is
 treated specially to allow it to be set to a specific value if required.
 
+
+These tags belong to the ExifTool XMP-rdf family 1 group.
+
   Tag Name                                      Writable
   --------                                      --------
   About                                         string!
@@ -2849,6 +2980,8 @@ treated specially to allow it to be set to a specific value if required.
 =head3 XMP swf Tags
 
 Adobe SWF namespace tags.
+
+These tags belong to the ExifTool XMP-swf family 1 group.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -2862,6 +2995,9 @@ Adobe SWF namespace tags.
 EXIF namespace for TIFF tags.  See
 L<http://www.cipa.jp/std/documents/e/DC-010-2012_E.pdf> for the
 specification.
+
+
+These tags belong to the ExifTool XMP-tiff family 1 group.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -2899,6 +3035,9 @@ The "x" namespace is used for the "xmpmeta" wrapper, and may contain an
 the XMPToolkit tag is generated automatically by ExifTool unless
 specifically set to another value.
 
+
+These tags belong to the ExifTool XMP-x family 1 group.
+
   Tag Name                                      Writable
   --------                                      --------
   XMPToolkit                                    string!
@@ -2908,6 +3047,9 @@ specifically set to another value.
 XMP namespace tags.  If the older "xap", "xapBJ", "xapMM" or "xapRights"
 namespace prefixes are found, they are translated to the newer "xmp",
 "xmpBJ", "xmpMM" and "xmpRights" prefixes for use in family 1 group names.
+
+
+These tags belong to the ExifTool XMP-xmp family 1 group.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -2961,6 +3103,8 @@ namespace prefixes are found, they are translated to the newer "xmp",
 
 XMP Basic Job Ticket namespace tags.
 
+These tags belong to the ExifTool XMP-xmpBJ family 1 group.
+
   Tag Name                                      Writable
   --------                                      --------
   JobRef                                        JobRef Struct+
@@ -2979,6 +3123,8 @@ XMP Basic Job Ticket namespace tags.
 =head3 XMP xmpDM Tags
 
 XMP Dynamic Media namespace tags.
+
+These tags belong to the ExifTool XMP-xmpDM family 1 group.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -3273,6 +3419,8 @@ XMP Dynamic Media namespace tags.
 
 XMP Media Management namespace tags.
 
+These tags belong to the ExifTool XMP-xmpMM family 1 group.
+
   Tag Name                                      Writable
   --------                                      --------
   DerivedFrom                                   ResourceRef Struct
@@ -3282,6 +3430,9 @@ XMP Media Management namespace tags.
   DerivedFromFromPart                           string_
   DerivedFromInstanceID                         string_
   DerivedFromLastModifyDate                     date_
+  DerivedFromLastURL                            string_
+  DerivedFromLinkCategory                       string_
+  DerivedFromLinkForm                           string_
   DerivedFromManager                            string_
   DerivedFromManagerVariant                     string_
   DerivedFromManageTo                           string_
@@ -3289,6 +3440,9 @@ XMP Media Management namespace tags.
   DerivedFromMaskMarkers                        string_
   DerivedFromOriginalDocumentID                 string_
   DerivedFromPartMapping                        string_
+  DerivedFromPlacedResolutionUnit               string_
+  DerivedFromPlacedXResolution                  string_
+  DerivedFromPlacedYResolution                  string_
   DerivedFromRenditionClass                     string_
   DerivedFromRenditionParams                    string_
   DerivedFromToPart                             string_
@@ -3308,6 +3462,9 @@ XMP Media Management namespace tags.
   IngredientsFromPart                           string_+
   IngredientsInstanceID                         string_+
   IngredientsLastModifyDate                     date_+
+  IngredientsLastURL                            string_+
+  IngredientsLinkCategory                       string_+
+  IngredientsLinkForm                           string_+
   IngredientsManager                            string_+
   IngredientsManagerVariant                     string_+
   IngredientsManageTo                           string_+
@@ -3315,6 +3472,9 @@ XMP Media Management namespace tags.
   IngredientsMaskMarkers                        string_+
   IngredientsOriginalDocumentID                 string_+
   IngredientsPartMapping                        string_+
+  IngredientsPlacedResolutionUnit               string_+
+  IngredientsPlacedXResolution                  string_+
+  IngredientsPlacedYResolution                  string_+
   IngredientsRenditionClass                     string_+
   IngredientsRenditionParams                    string_+
   IngredientsToPart                             string_+
@@ -3328,6 +3488,9 @@ XMP Media Management namespace tags.
   ManagedFromFromPart                           string_
   ManagedFromInstanceID                         string_
   ManagedFromLastModifyDate                     date_
+  ManagedFromLastURL                            string_
+  ManagedFromLinkCategory                       string_
+  ManagedFromLinkForm                           string_
   ManagedFromManager                            string_
   ManagedFromManagerVariant                     string_
   ManagedFromManageTo                           string_
@@ -3335,6 +3498,9 @@ XMP Media Management namespace tags.
   ManagedFromMaskMarkers                        string_
   ManagedFromOriginalDocumentID                 string_
   ManagedFromPartMapping                        string_
+  ManagedFromPlacedResolutionUnit               string_
+  ManagedFromPlacedXResolution                  string_
+  ManagedFromPlacedYResolution                  string_
   ManagedFromRenditionClass                     string_
   ManagedFromRenditionParams                    string_
   ManagedFromToPart                             string_
@@ -3355,6 +3521,9 @@ XMP Media Management namespace tags.
   ManifestReferenceFromPart                     string_+
   ManifestReferenceInstanceID                   string_+
   ManifestReferenceLastModifyDate               date_+
+  ManifestReferenceLastURL                      string_+
+  ManifestReferenceLinkCategory                 string_+
+  ManifestReferenceLinkForm                     string_+
   ManifestReferenceManager                      string_+
   ManifestReferenceManagerVariant               string_+
   ManifestReferenceManageTo                     string_+
@@ -3362,6 +3531,9 @@ XMP Media Management namespace tags.
   ManifestReferenceMaskMarkers                  string_+
   ManifestReferenceOriginalDocumentID           string_+
   ManifestReferencePartMapping                  string_+
+  ManifestReferencePlacedResolutionUnit         string_+
+  ManifestReferencePlacedXResolution            string_+
+  ManifestReferencePlacedYResolution            string_+
   ManifestReferenceRenditionClass               string_+
   ManifestReferenceRenditionParams              string_+
   ManifestReferenceToPart                       string_+
@@ -3377,6 +3549,9 @@ XMP Media Management namespace tags.
   RenditionOfFromPart                           string_
   RenditionOfInstanceID                         string_
   RenditionOfLastModifyDate                     date_
+  RenditionOfLastURL                            string_
+  RenditionOfLinkCategory                       string_
+  RenditionOfLinkForm                           string_
   RenditionOfManager                            string_
   RenditionOfManagerVariant                     string_
   RenditionOfManageTo                           string_
@@ -3384,6 +3559,9 @@ XMP Media Management namespace tags.
   RenditionOfMaskMarkers                        string_
   RenditionOfOriginalDocumentID                 string_
   RenditionOfPartMapping                        string_
+  RenditionOfPlacedResolutionUnit               string_
+  RenditionOfPlacedXResolution                  string_
+  RenditionOfPlacedYResolution                  string_
   RenditionOfRenditionClass                     string_
   RenditionOfRenditionParams                    string_
   RenditionOfToPart                             string_
@@ -3415,6 +3593,9 @@ XMP Media Management namespace tags.
   FromPart                                      string
   InstanceID                                    string
   LastModifyDate                                date
+  LastURL                                       string
+  LinkCategory                                  string
+  LinkForm                                      string
   ManageTo                                      string
   ManageUI                                      string
   Manager                                       string
@@ -3422,6 +3603,9 @@ XMP Media Management namespace tags.
   MaskMarkers                                   string
   OriginalDocumentID                            string
   PartMapping                                   string
+  PlacedResolutionUnit                          string
+  PlacedXResolution                             string
+  PlacedYResolution                             string
   RenditionClass                                string
   RenditionParams                               string
   ToPart                                        string
@@ -3471,6 +3655,8 @@ XMP properties.
 
 XMP Note namespace tags.
 
+These tags belong to the ExifTool XMP-xmpNote family 1 group.
+
   Tag Name                                      Writable
   --------                                      --------
   HasExtendedXMP                                string*
@@ -3481,6 +3667,9 @@ XMP Picture Licensing Universal System (PLUS) tags as written by some older
 Adobe applications.  See L<PLUS XMP Tags|Image::ExifTool::TagNames/PLUS XMP Tags>
 for the current PLUS tags.
 
+
+These tags belong to the ExifTool XMP-xmpPLUS family 1 group.
+
   Tag Name                                      Writable
   --------                                      --------
   CreditLineReq                                 boolean/
@@ -3489,6 +3678,8 @@ for the current PLUS tags.
 =head3 XMP xmpRights Tags
 
 XMP Rights Management namespace tags.
+
+These tags belong to the ExifTool XMP-xmpRights family 1 group.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -3501,6 +3692,8 @@ XMP Rights Management namespace tags.
 =head3 XMP xmpTPg Tags
 
 XMP Paged-Text namespace tags.
+
+These tags belong to the ExifTool XMP-xmpTPg family 1 group.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -3592,6 +3785,9 @@ SVG and Metadata tags are extracted from these images, but all graphics tags
 may be extracted by setting the Unknown option to 2 (-U on the command
 line).  The SVG tags are not part of XMP as such, but are included with the
 XMP module for convenience.  (see L<http://www.w3.org/TR/SVG11/>)
+
+
+These tags belong to the ExifTool XMP-svg family 1 group.
 
   Tag ID               Tag Name                 Writable
   ------               --------                 --------
@@ -3746,6 +3942,9 @@ a fixed set of values) have raw values which begin with
 "http://ns.useplus.org/ldf/vocab/", but to reduce clutter this prefix has
 been removed from the values shown below.  See L<http://ns.useplus.org/> for
 the complete specification.
+
+
+These tags belong to the ExifTool XMP-plus family 1 group.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -9113,6 +9312,7 @@ DiMAGE X and Xt.
            ShotInfoD4                           Nikon ShotInfoD4
            ShotInfoD4S                          Nikon ShotInfoD4S
            ShotInfoD500                         Nikon ShotInfoD500
+           ShotInfoD610                         Nikon ShotInfoD610
            ShotInfo02xx                         Nikon ShotInfo
            ShotInfoUnknown                      Nikon ShotInfo
   0x0092   HueAdjustment                        int16s
@@ -9619,6 +9819,16 @@ These tags are extracted from encrypted data in images from the D500.
    3716    FlickerReduction                     int8u & 0x20
   3716.1    PhotoShootingMenuBankImageArea       int8u & 0x07
    3819    CustomSettingsD500                   NikonCustom SettingsD500
+
+=head3 Nikon ShotInfoD610 Tags
+
+These tags are extracted from encrypted data in images from the D610.
+
+   Index   Tag Name                             Writable
+   -----   --------                             --------
+      0    ShotInfoVersion                      N
+      4    FirmwareVersion                      N
+   1999    CustomSettingsD610                   NikonCustom SettingsD610
 
 =head3 Nikon ShotInfo Tags
 
@@ -10682,9 +10892,9 @@ Custom settings for the D7000.
     0.2    AF-SPrioritySelection                int8u & 0x20
     0.3    NumberOfFocusPoints                  int8u & 0x10
     0.4    FocusTrackingLockOn                  int8u & 0x07
-    1.2    FocusPointWrap                       int8u & 0x08
-    1.3    AFPointIllumination                  int8u & 0x06
-    1.4    AFAssist                             int8u & 0x01
+    1.1    FocusPointWrap                       int8u & 0x08
+    1.2    AFPointIllumination                  int8u & 0x06
+    1.3    AFAssist                             int8u & 0x01
     2.1    BatteryOrder                         int8u & 0x40
     2.2    AF-OnForMB-D11                       int8u & 0x1c
     2.3    MB-D11BatteryType                    int8u & 0x03
@@ -10934,6 +11144,38 @@ Custom settings for the D500
    79.1    AssignMB-D17AF-OnButton              int8u & 0x7f
    80.1    Func2Button                          int8u & 0x3f
    82.1    AssignMovieFunc2Button               int8u & 0x70
+
+=head3 NikonCustom SettingsD610 Tags
+
+Custom settings for the D610
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+    0.1    AF-CPrioritySelection                int8u & 0x80
+    0.2    AF-SPrioritySelection                int8u & 0x20
+    0.3    NumberOfFocusPoints                  int8u & 0x10
+    0.4    FocusTrackingLockOn                  int8u & 0x07
+    1.1    FocusPointWrap                       int8u & 0x08
+    1.2    AFPointIllumination                  int8u & 0x06
+    1.3    AFAssist                             int8u & 0x01
+    5.1    EasyExposureCompensation             int8u & 0x03
+    6.1    ExposureControlStep                  int8u & 0x40
+    6.2    ISOSensitivityStep                   int8u & 0x10
+    7.1    CenterWeightedAreaSize               int8u & 0xe0
+    7.2    FineTuneOptMatrixMetering            int8u & 0x0f
+    8.1    FineTuneOptCenterWeighted            int8u & 0xf0
+    8.2    FineTuneOptSpotMetering              int8u & 0x0f
+   17.1    ShutterReleaseButtonAE-L             int8u & 0x02
+   18.1    StandbyTimer                         int8u & 0xf0
+   18.2    RemoteOnDuration                     int8u & 0x03
+   19.1    SelfTimerTime                        int8u & 0xc0
+   19.2    SelfTimerShotInterval                int8u & 0x30
+   19.3    SelfTimerShotCount                   int8u & 0x0f
+   20.1    ImageReviewMonitorOffTime            int8u & 0xe0
+   20.2    LiveViewMonitorOffTime               int8u & 0x1c
+   21.1    MenuMonitorOffTime                   int8u & 0xe0
+   21.2    ShootingInfoMonitorOffTime           int8u & 0x1c
+   35.1    PlaybackMonitorOffTime               int8u & 0xe0
 
 =head2 NikonCapture Tags
 
@@ -13123,7 +13365,6 @@ Tags found in the EXIF-format maker notes of newer Samsung models.
   0x0031   LocationName                         string
   0x0035   PreviewIFD                           Nikon PreviewIFD
   0x0043   CameraTemperature                    rational64s
-  0x0045   RawCompressionMode                   int32u
   0x0100   FaceDetect                           int16u
   0x0120   FaceRecognition                      int32u
   0x0123   FaceName                             string
@@ -13508,6 +13749,7 @@ are less than consistent about their metadata formats.
   0x0057   Firmware                             string
   0x0058   WhiteBalance                         string
   0x0059   DigitalFilter                        string
+  0x0084   Model                                string
 
 =head2 Sony Tags
 
@@ -17424,6 +17666,9 @@ for the AFCP specification.
 Tags defined in the Darwin Core (dwc) XMP namespace.  See
 L<http://rs.tdwg.org/dwc/index.htm> for the official specification.
 
+
+These tags belong to the ExifTool XMP-dwc family 1 group.
+
   Tag Name                                      Writable
   --------                                      --------
   DCTermsLocation                               DarwinCore DCTermsLocation Struct
@@ -17883,7 +18128,10 @@ soft edit information stored under record number 2.
 
 Below is a list of the observed PhotoMechanic XMP tags.  The actual
 namespace prefix is "photomechanic" but ExifTool shortens this in
-the "XMP-photomech" family 1 group name.
+the family 1 group name.
+
+
+These tags belong to the ExifTool XMP-photomech family 1 group.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -17901,8 +18149,11 @@ the "XMP-photomech" family 1 group name.
 
 Microsoft Photo 1.0 schema XMP tags.  This is likely not a complete list,
 but represents tags which have been observed in sample images.  The actual
-namespace prefix is "MicrosoftPhoto", but ExifTool shortens this to
-"XMP-microsoft" in the family 1 group name.
+namespace prefix is "MicrosoftPhoto", but ExifTool shortens this in the
+family 1 group name.
+
+
+These tags belong to the ExifTool XMP-microsoft family 1 group.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -17921,6 +18172,9 @@ namespace prefix is "MicrosoftPhoto", but ExifTool shortens this to
 =head3 Microsoft MP1 Tags
 
 Microsoft Photo 1.1 schema XMP tags which have been observed.
+
+
+These tags belong to the ExifTool XMP-MP1 family 1 group.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -17943,6 +18197,9 @@ Microsoft Photo 1.1 schema XMP tags which have been observed.
 =head3 Microsoft MP Tags
 
 Microsoft Photo 1.2 schema XMP tags which have been observed.
+
+
+These tags belong to the ExifTool XMP-MP family 1 group.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -21301,6 +21558,7 @@ ItemList tags written by the "mdta" handler.  The prefix of
   'tref'   TrackRef                             QuickTime TrackRef
   'udta'   UserData                             QuickTime UserData
   'uuid'   UUID-USMT                            QuickTime UserMedia
+           SphericalVideoXML                    XMP
            UUID-Unknown?                        N
 
 =head3 QuickTime Media Tags
@@ -21529,6 +21787,8 @@ Child atoms found in "sinf" and/or "pinf" atoms.
   'fiel'   VideoFieldOrder                      N
   'gama'   Gamma                                N
   'pasp'   PixelAspectRatio                     N
+  'st3d'   Stereoscopic3D                       N
+  'sv3d'   SphericalVideo                       QuickTime sv3d
 
 =head3 QuickTime Bitrate Tags
 
@@ -21546,6 +21806,48 @@ Child atoms found in "sinf" and/or "pinf" atoms.
       1    CleanApertureHeight                  N
       2    CleanApertureOffsetX                 N
       3    CleanApertureOffsetY                 N
+
+=head3 QuickTime sv3d Tags
+
+Tags defined by the Spherical Video V2 specification (see
+https://github.com/google/spatial-media/blob/master/docs/spherical-video-v2-rfc.md).
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  'proj'   Projection                           QuickTime proj
+  'svhd'   MetadataSource                       N
+
+=head3 QuickTime proj Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  'cbmp'   CubemapProj                          QuickTime cbmp
+  'equi'   EquirectangularProj                  QuickTime equi
+  'prhd'   ProjectionHeader                     QuickTime prhd
+
+=head3 QuickTime cbmp Tags
+
+  Index4   Tag Name                             Writable
+  ------   --------                             --------
+      1    Layout                               N
+      2    Padding                              N
+
+=head3 QuickTime equi Tags
+
+  Index4   Tag Name                             Writable
+  ------   --------                             --------
+      1    ProjectionBoundsTop                  N
+      2    ProjectionBoundsBottom               N
+      3    ProjectionBoundsLeft                 N
+      4    ProjectionBoundsRight                N
+
+=head3 QuickTime prhd Tags
+
+  Index4   Tag Name                             Writable
+  ------   --------                             --------
+      1    PoseYawDegrees                       N
+      2    PosePitchDegrees                     N
+      3    PoseRollDegrees                      N
 
 =head3 QuickTime HintSampleDesc Tags
 
@@ -22144,6 +22446,7 @@ Matroska specification.
   0x3e9a       SignatureHash                    N
   0x3ea5       SignaturePublicKey?              N
   0x3eb5       Signature?                       N
+  0x7670       Projection                       Matroska Projection
   0x2b59c      TrackLanguage                    N
   0x3314f      TrackTimecodeScale               N
   0x383e3      FrameRate                        N
@@ -22173,6 +22476,21 @@ Matroska specification.
   0xb538667    SignatureSlot                    Matroska
   0xc53bb6b    Cues                             Matroska
   0xf43b675    Cluster                          Matroska
+
+=head3 Matroska Projection Tags
+
+Projection tags defined by the Spherical Video V2 specification.  See
+L<https://github.com/google/spatial-media/blob/master/docs/spherical-video-v2-rfc.md>
+for the specification.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  0x7671   ProjectionType                       N
+  0x7672   EquirectangularProj                  QuickTime equi
+           CubemapProj                          QuickTime cbmp
+  0x7673   ProjectionPosYaw                     N
+  0x7674   ProjectionPosPitch                   N
+  0x7675   ProjectionPosRoll                    N
 
 =head2 MOI Tags
 
@@ -29095,7 +29413,7 @@ tag is used for dry-run testing before writing FileName.
   ProcessingTime             ExifTool           N
   RAFVersion                 File               N
   ResourceForkSize           System             N
-  TestName                   -                  Y
+  TestName                   -                  Y!
   Warning                    ExifTool           N
   XMP                        XMP                Y!
   XResolution                File               N
@@ -29747,9 +30065,11 @@ implements this policy and changes EXIF:Artist to a list-type tag.
 =head3 MWG Regions Tags
 
 Image region metadata defined by the MWG 2.0 specification.  These tags
-belong to the ExifTool XMP-mwg-rs group, and as such they may be accessed
-without the need to load the MWG Composite tags above.  See
+may be accessed without the need to load the MWG Composite tags above.  See
 L<http://www.metadataworkinggroup.org/> for the official specification.
+
+
+These tags belong to the ExifTool XMP-mwg-rs family 1 group.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -29812,11 +30132,14 @@ conversion).
 
 =head3 MWG Keywords Tags
 
-Hierarchical keywords metadata defined by the MWG 2.0 specification.  These
-tags belong to the ExifTool XMP-mwg-kw group. ExifTool unrolls keyword
-structures to an arbitrary depth of 6 to allow individual levels to be
-accessed with different tag names, and to avoid infinite recursion.  See
-L<http://www.metadataworkinggroup.org/> for the official specification.
+Hierarchical keywords metadata defined by the MWG 2.0 specification.
+ExifTool unrolls keyword structures to an arbitrary depth of 6 to allow
+individual levels to be accessed with different tag names, and to avoid
+infinite recursion.  See L<http://www.metadataworkinggroup.org/> for the
+official specification.
+
+
+These tags belong to the ExifTool XMP-mwg-kw family 1 group.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -29856,9 +30179,11 @@ L<http://www.metadataworkinggroup.org/> for the official specification.
 
 =head3 MWG Collections Tags
 
-Collections metadata defined by the MWG 2.0 specification.  These tags
-belong to the ExifTool XMP-mwg-coll group.  See
+Collections metadata defined by the MWG 2.0 specification.  See
 L<http://www.metadataworkinggroup.org/> for the official specification.
+
+
+These tags belong to the ExifTool XMP-mwg-coll family 1 group.
 
   Tag Name                                      Writable
   --------                                      --------

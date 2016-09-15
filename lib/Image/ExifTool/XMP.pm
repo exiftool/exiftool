@@ -48,7 +48,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '2.95';
+$VERSION = '2.96';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -67,7 +67,7 @@ sub FormatXMPDate($);
 sub ConvertRational($);
 sub ConvertRationalList($);
 
-# lookup for translating to ExifTool namespaces
+# lookup for translating to ExifTool namespaces (and family 1 group names)
 %stdXlatNS = (
     # shorten ugly namespace prefixes
     'Iptc4xmpCore' => 'iptcCore',
@@ -78,14 +78,13 @@ sub ConvertRationalList($);
     'GettyImagesGIFT' => 'getty',
 );
 
-# translate ExifTool XMP family 1 group names to standard XMP namespace prefixes
+# translate ExifTool XMP family 1 group names back to standard XMP namespace prefixes
 my %xmpNS = (
-    # shorten ugly namespace prefixes
     'iptcCore' => 'Iptc4xmpCore',
     'iptcExt' => 'Iptc4xmpExt',
-    'photomechanic'=> 'photomech',
+    'photomech'=> 'photomechanic',
     'microsoft' => 'MicrosoftPhoto',
-    'gettyImages' => 'GettyImagesGIFT',
+    'getty' => 'GettyImagesGIFT',
     # (prism changed their spec to now use 'pur')
     # 'pur' => 'prismusagerights',
 );
@@ -171,6 +170,7 @@ my %xmpNS = (
     GPano     => 'http://ns.google.com/photos/1.0/panorama/',
     dwc       => 'http://rs.tdwg.org/dwc/index.htm',
     GettyImagesGIFT => 'http://xmp.gettyimages.com/gift/1.0/',
+    GSpherical=> 'http://ns.google.com/videos/1.0/spherical/',
 );
 
 # build reverse namespace lookup
@@ -278,6 +278,13 @@ my %sResourceRef = (
     toPart          => { },
     # added May 2010
     originalDocumentID => { }, # (undocumented property written by Adobe InDesign)
+    # added Aug 2016 (INDD again)
+    lastURL         => { },
+    linkForm        => { },
+    linkCategory    => { },
+    placedXResolution    => { },
+    placedYResolution    => { },
+    placedResolutionUnit => { },
 );
 my %sResourceEvent = (
     STRUCT_NAME => 'ResourceEvent',
@@ -738,6 +745,10 @@ my %sCVTermDetails = (
     getty => {
         Name => 'getty',
         SubDirectory => { TagTable => 'Image::ExifTool::XMP::GettyImages' },
+    },
+    GSpherical => {
+        Name => 'GSpherical',
+        SubDirectory => { TagTable => 'Image::ExifTool::XMP::GSpherical' },
     },
 );
 
@@ -1401,6 +1412,7 @@ my %sPantryItem = (
     UprightTransform_2                  => { },
     UprightTransform_3                  => { },
     UprightTransform_4                  => { },
+    UprightTransform_5                  => { },
     # more stuff seen in lens profile file (unknown source)
     What => { }, # (with value "LensProfileDefaultSettings")
     LensProfileMatchKeyExifMake         => { },
@@ -2123,7 +2135,7 @@ my %sPantryItem = (
     NOTES => q{
         IPTC Core namespace tags.  The actual IPTC Core namespace prefix is
         "Iptc4xmpCore", which is the prefix recorded in the file, but ExifTool
-        shortens this for the "XMP-iptcCore" family 1 group name. (see
+        shortens this for the family 1 group name. (see
         L<http://www.iptc.org/IPTC4XMP/>)
     },
     CountryCode         => { Groups => { 2 => 'Location' } },
@@ -2163,8 +2175,8 @@ my %sPantryItem = (
     TABLE_DESC => 'XMP IPTC Extension',
     NOTES => q{
         IPTC Extension namespace tags.  The actual namespace prefix is
-        "Iptc4xmpExt", but ExifTool shortens this for the "XMP-iptcExt" family 1
-        group name. (see L<http://www.iptc.org/IPTC4XMP/>)
+        "Iptc4xmpExt", but ExifTool shortens this for the family 1 group name. (see
+        L<http://www.iptc.org/IPTC4XMP/>)
     },
     AboutCvTerm => {
         Struct => \%sCVTermDetails,

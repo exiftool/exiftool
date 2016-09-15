@@ -15,7 +15,7 @@ package Image::ExifTool::NikonCustom;
 use strict;
 use vars qw($VERSION);
 
-$VERSION = '1.13';
+$VERSION = '1.14';
 
 # custom settings for the D80 (encrypted) - ref JD
 %Image::ExifTool::NikonCustom::SettingsD80 = (
@@ -4159,6 +4159,249 @@ $VERSION = '1.13';
     },
 );
 
+# D610 custom settings (ref forum6942)
+%Image::ExifTool::NikonCustom::SettingsD610 = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    WRITE_PROC => \&Image::ExifTool::WriteBinaryData,
+    CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
+    WRITABLE => 1,
+    FIRST_ENTRY => 0,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    NOTES => 'Custom settings for the D610',
+    0.1 => { #CSa1
+        Name => 'AF-CPrioritySelection',
+        Mask => 0x80,
+        PrintConv => {
+            0x00 => 'Release',
+            0x80 => 'Focus',
+        },
+    },
+    0.2 => { #CSa2
+        Name => 'AF-SPrioritySelection',
+        Mask => 0x20,
+        PrintConv => {
+            0x00 => 'Release',
+            0x20 => 'Focus',
+        },
+    },
+    0.3 => { # CSa6
+        Name => 'NumberOfFocusPoints',
+        Mask => 0x10,
+        PrintConv => {
+            0x00 => '39 Points',
+            0x10 => '11 Points',
+        },
+    },
+    0.4 => { # CSa3
+        Name => 'FocusTrackingLockOn',
+        Mask => 0x07,
+        PrintConv => {
+            0x00 => 'Off',
+            0x01 => '1 Short',
+            0x02 => '2',
+            0x03 => '3 Normal',
+            0x04 => '4',
+            0x05 => '5 Long',
+        },
+    },
+    1.1 => { # CSa5
+        Name => 'FocusPointWrap',
+        Mask => 0x08,
+        PrintConv => {
+            0x00 => 'No Wrap',
+            0x08 => 'Wrap',
+        },
+    },
+    1.2 => { # CSa4
+        Name => 'AFPointIllumination',
+        Mask => 0x06,
+        PrintConv => {
+            0x00 => 'Auto',
+            0x02 => 'On',
+            0x04 => 'Off',
+        },
+    },
+    1.3 => { # CSa7
+        Name => 'AFAssist',
+        Mask => 0x01,
+        PrintConv => { 0x00 => 'On', 0x01 => 'Off' },
+    },
+    5.1 => { # CSb3
+        Name => 'EasyExposureCompensation',
+        Mask => 0x03,
+        PrintConv => {
+            0x00 => 'Off',
+            0x01 => 'On',
+            0x02 => 'On Auto Reset',
+        },
+    },
+    6.1 => { # CSb2
+        Name => 'ExposureControlStep',
+        Mask => 0x40,
+        PrintConv => {
+            0x00 => '1/3 EV',
+            0x40 => '1/2 EV',
+        },
+    },
+    6.2 => { # CSb1
+        Name => 'ISOSensitivityStep',
+        Mask => 0x10,
+        PrintConv => {
+            0x00 => '1/3 EV',
+            0x10 => '1/2 EV',
+        },
+    },
+    7.1 => { # CSb4
+        Name => 'CenterWeightedAreaSize',
+        Mask => 0xe0,
+        PrintConv => {
+            0x00 => '8 mm',
+            0x20 => '12 mm',
+            0x40 => '15 mm',
+            0x60 => '20 mm',
+            0x80 => 'Average',
+        },
+    },
+    7.2 => { # CSb5-a
+        Name => 'FineTuneOptMatrixMetering',
+        Mask => 0x0f,
+        ValueConv => '($val > 0x7 ? $val - 0x10 : $val) / 6',
+        ValueConvInv => 'int($val*6+($val>0?0.5:-0.5)) & 0x0f',
+        PrintConv => '$val ? sprintf("%+.2f", $val) : 0',
+        PrintConvInv => 'Image::ExifTool::Exif::ConvertFraction($val)',
+    },
+    8.1 => { # CSb5-b
+        Name => 'FineTuneOptCenterWeighted',
+        Mask => 0xf0,
+        ValueConv => '($val > 0x70 ? $val - 0x100 : $val) / 0x60',
+        ValueConvInv => '(int($val*6+($val>0?0.5:-0.5))<<4) & 0xf0',
+        PrintConv => '$val ? sprintf("%+.2f", $val) : 0',
+        PrintConvInv => 'Image::ExifTool::Exif::ConvertFraction($val)',
+    },
+    8.2 => { # CSb5-c
+        Name => 'FineTuneOptSpotMetering',
+        Mask => 0x0f,
+        ValueConv => '($val > 0x7 ? $val - 0x10 : $val) / 6',
+        ValueConvInv => 'int($val*6+($val>0?0.5:-0.5)) & 0x0f',
+        PrintConv => '$val ? sprintf("%+.2f", $val) : 0',
+        PrintConvInv => 'Image::ExifTool::Exif::ConvertFraction($val)',
+    },
+    17.1 => { # CSc1
+        Name => 'ShutterReleaseButtonAE-L',
+        Mask => 0x02,
+        PrintConv => { 0x00 => 'Off', 0x02 => 'On' },
+    },
+    18.1 => { # CSc2
+        Name => 'StandbyTimer',
+        Mask => 0xf0,
+        PrintConv => {
+            0x00 => '4 s',
+            0x10 => '6 s',
+            0x20 => '10 s',
+            0x30 => '30 s',
+            0x40 => '1 min',
+            0x50 => '5 min',
+            0x60 => '10 min',
+            0x70 => '30 min',
+            0x80 => 'No Limit',
+        },
+    },
+    18.2 => { # CSc5
+        Name => 'RemoteOnDuration',
+        Mask => 0x03,
+        PrintConv => {
+            0x00 => '1 min',
+            0x01 => '5 min',
+            0x02 => '10 min',
+            0x03 => '20 min',
+        },
+    },
+    19.1 => { # CSc3-a
+        Name => 'SelfTimerTime',
+        Mask => 0xc0,
+        PrintConv => {
+            0x00 => '2 s',
+            0x40 => '5 s',
+            0x80 => '10 s',
+            0xc0 => '20 s',
+        },
+    },
+    19.2 => { # CSc3-c
+        Name => 'SelfTimerShotInterval',
+        Mask => 0x30,
+        PrintConv => {
+            0x00 => '0.5 s',
+            0x10 => '1 s',
+            0x20 => '2 s',
+            0x30 => '3 s',
+        },
+    },
+    19.3 => { # CSc3-b
+        Name => 'SelfTimerShotCount',
+        Mask => 0x0f,
+    },
+    20.1 => { # CSc4-d
+        Name => 'ImageReviewMonitorOffTime',
+        Mask => 0xe0,
+        PrintConv => {
+            0x00 => '2 s',
+            0x20 => '4 s',
+            0x40 => '10 s',
+            0x60 => '20 s',
+            0x80 => '1 min',
+            0xa0 => '5 min',
+            0xc0 => '10 min',
+        },
+    },
+    20.2 => { # CSc4-e
+        Name => 'LiveViewMonitorOffTime',
+        Mask => 0x1c,
+        PrintConv => {
+            0x00 => '5 min',
+            0x04 => '10 min',
+            0x08 => '15 min',
+            0x0c => '20 min',
+            0x10 => '30 min',
+            0x14 => 'No Limit',
+        },
+    },
+    21.1 => { # CSc4-b
+        Name => 'MenuMonitorOffTime',
+        Mask => 0xe0,
+        PrintConv => {
+            0x00 => '4 s',
+            0x20 => '10 s',
+            0x40 => '20 s', # default
+            0x60 => '1 min',
+            0x80 => '5 min',
+            0xa0 => '10 min',
+        },
+    },
+    21.2 => { # CSc4-c
+        Name => 'ShootingInfoMonitorOffTime',
+        Mask => 0x1c,
+        PrintConv => {
+            0x00 => '4 s',
+            0x04 => '10 s', # default
+            0x08 => '20 s',
+            0x0c => '1 min',
+            0x10 => '5 min',
+            0x14 => '10 min',
+        },
+    },
+    35.1 => { # CSc4-a
+        Name => 'PlaybackMonitorOffTime',
+        Mask => 0xe0,
+        PrintConv => {
+            0x00 => '4 s',
+            0x20 => '10 s',
+            0x40 => '20 s',
+            0x60 => '1 min',
+            0x80 => '5 min',
+            0xa0 => '10 min',
+        },
+    },
+);
 
 # D810 custom settings (ref 1)
 %Image::ExifTool::NikonCustom::SettingsD810 = (
@@ -5781,15 +6024,15 @@ $VERSION = '1.13';
         Name => 'FocusTrackingLockOn',
         Mask => 0x07,
         PrintConv => {
-            0x05 => '5 Long',
-            0x04 => '4',
-            0x03 => '3 Normal',
-            0x02 => '2',
-            0x01 => '1 Short',
             0x00 => 'Off',
+            0x01 => '1 Short',
+            0x02 => '2',
+            0x03 => '3 Normal',
+            0x04 => '4',
+            0x05 => '5 Long',
         },
     },
-    1.2 => { # CSa5
+    1.1 => { # CSa5
         Name => 'FocusPointWrap',
         Mask => 0x08,
         PrintConv => {
@@ -5797,7 +6040,7 @@ $VERSION = '1.13';
             0x08 => 'Wrap',
         },
     },
-    1.3 => { # CSa4
+    1.2 => { # CSa4
         Name => 'AFPointIllumination',
         Mask => 0x06,
         PrintConv => {
@@ -5806,7 +6049,7 @@ $VERSION = '1.13';
             0x04 => 'Off',
         },
     },
-    1.4 => { # CSa7
+    1.3 => { # CSa7
         Name => 'AFAssist',
         Mask => 0x01,
         PrintConv => { 0x00 => 'On', 0x01 => 'Off' },

@@ -26,7 +26,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.36';
+$VERSION = '1.37';
 
 sub ProcessPNG_tEXt($$$);
 sub ProcessPNG_iTXt($$$);
@@ -871,7 +871,7 @@ sub ProcessProfile($$$)
             $dir =~ s/_Profile// unless $dir =~ /^ICC/;
             return 1 unless $$editDirs{$dir};
             $$outBuff = $et->WriteDirectory(\%dirInfo, $tagTablePtr);
-            DoneDir($et, $dir, $outBuff);
+            DoneDir($et, $dir, $outBuff, $$tagInfo{NonStandard});
         } else {
             $processed = $et->ProcessDirectory(\%dirInfo, $tagTablePtr);
         }

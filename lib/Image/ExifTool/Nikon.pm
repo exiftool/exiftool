@@ -59,7 +59,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.25';
+$VERSION = '3.26';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -275,6 +275,7 @@ sub GetAFPointGrid($$;$);
     'A4 54 37 37 0C 0C A6 06' => 'AF-S Nikkor 24mm f/1.4G ED',
     'A5 40 3C 8E 2C 3C A7 0E' => 'AF-S Nikkor 28-300mm f/3.5-5.6G ED VR',
     'A5 54 6A 6A 0C 0C D0 46' => 'AF-S Nikkor 105mm f/1.4E ED', #IB
+    'A5 54 6A 6A 0C 0C D0 06' => 'AF-S Nikkor 105mm f/1.4E ED', #IB
     'A6 48 8E 8E 24 24 A8 0E' => 'AF-S VR Nikkor 300mm f/2.8G IF-ED II',
     'A7 4B 62 62 2C 2C A9 0E' => 'AF-S DX Micro Nikkor 85mm f/3.5G ED VR',
     'A8 48 80 98 30 30 AA 0E' => 'AF-S VR Zoom-Nikkor 200-400mm f/4G IF-ED II', #http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,3218.msg15495.html#msg15495
@@ -1373,7 +1374,7 @@ my %binaryDataAttrs = (
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ShotInfoD80',
                 DecryptStart => 4,
-                DecryptLen => 764,
+                DecryptLen => 765,
                 # (Capture NX can change the makernote byte order, but this stays big-endian)
                 ByteOrder => 'BigEndian',
             },
@@ -1569,6 +1570,16 @@ my %binaryDataAttrs = (
                 # then decrypt through to the end of the custom settings
                 DecryptMore => 'Get32u(\$data, 0x58) + 90 + 4',
                 ByteOrder => 'LittleEndian',
+            },
+        },
+        { # (D610 firmware version 1.00)
+            Condition => '$$valPt =~ /^0232/',
+            Name => 'ShotInfoD610',
+            SubDirectory => {
+                TagTable => 'Image::ExifTool::Nikon::ShotInfoD610',
+                DecryptStart => 4,
+                DecryptLen => 0x7ff,
+                ByteOrder => 'BigEndian',
             },
         },
         # 0227 - D7100
@@ -3937,7 +3948,7 @@ my %nikonFocalConversions = (
             TagTable => 'Image::ExifTool::NikonCustom::SettingsD80',
         },
     },
-    # note: DecryptLen currently set to 764
+    # note: DecryptLen currently set to 765
 );
 
 # shot information for D90 (encrypted) - ref PH
@@ -5216,6 +5227,37 @@ my %nikonFocalConversions = (
 #            0x01 => 'Off',
 #        },
 #    },
+);
+
+# shot information for the D610 firmware 1.00 (encrypted) - ref PH
+%Image::ExifTool::Nikon::ShotInfoD610 = (
+    PROCESS_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+    WRITE_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+    CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
+    VARS => { ID_LABEL => 'Index' },
+    IS_SUBDIR => [ 0x07cf ],
+    WRITABLE => 1,
+    FIRST_ENTRY => 0,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    NOTES => 'These tags are extracted from encrypted data in images from the D610.',
+    0x00 => {
+        Name => 'ShotInfoVersion',
+        Format => 'string[4]',
+        Writable => 0,
+    },
+    0x04 => {
+        Name => 'FirmwareVersion',
+        Format => 'string[5]',
+        Writable => 0,
+    },
+    0x07cf => {
+        Name => 'CustomSettingsD610',
+        Format => 'undef[48]',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::NikonCustom::SettingsD610',
+        },
+    },
+    # note: DecryptLen currently set to 0x7ff
 );
 
 # shot information for the D810 firmware 1.00(PH)/1.01 (encrypted) - ref 28

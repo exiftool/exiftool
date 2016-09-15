@@ -17,6 +17,25 @@ considered development releases, and are not uploaded to <a href="http://search.
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v10.26'><b>Sept. 15, 2016 - Version 10.26</b></a>
+<ul>
+<li>Added read support for GSpherical metadata in MP4 videos
+<li>Added a few new XMP-xmpMM tags and a new XMP-crs tags
+<li>Added some new Minolta/Sony lenses (thanks Jos Roost)
+<li>Added two new CanonModelID's (thanks Norbert Wasser and Laurent Clevy)
+<li>Added two new Canon LensType's (thanks Norbert Wasser)
+<li>Decode a number of Nikon D610 custom settings (thanks Tor)
+<li>Removed a questionable Samsung tag
+<li>Marked TestName tag as "Unsafe" for writing
+<li>Enhanced -progress option with ability to set console window title
+<li>Changed behaviour of %C to increment for each processed file as documented
+    (was incrementing for each output file created)
+<li>Patched to recreate XMP in the standard location of PNG images when deleting
+    certain non-standard XMP as a group and recreating in one step
+<li>Fixed runtime warning when writing 0 to MinoltaRaw ISOSetting
+<li>Fixed problem writing SRW images from some newer Samsung models
+</ul>
+
 <a name='v10.25'><b>Aug. 3, 2016 - Version 10.25</b></a>
 <ul>
 <li>Added a new Pentax PictureMode (thanks Louis Granboulan)

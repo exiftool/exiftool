@@ -274,6 +274,7 @@ my %profileClass = (
     4 => {
         Name => 'ProfileCMMType',
         Format => 'string[4]',
+        # seen: "    ",ACMS,ADBE,APPLE,KCMS,Lino,NKON,UCCM,appl,etc2,lino,none
     },
     8 => {
         Name => 'ProfileVersion',
@@ -327,6 +328,18 @@ my %profileClass = (
         Name => 'DeviceManufacturer',
         Format => 'string[4]',
         # KODA = Kodak
+        # ADBE = Adobe ...?
+        # appl = Apple
+        # HP   = HP
+        # CANO = Canon
+        # ISL  = ?
+        # JPEG = JPEG
+        # Leaf = Leaf
+        # MNLT = ?
+        # MSFT = Microsoft
+        # POne = ?
+        # etc2 = ?
+        # lcms = ?
     },
     52 => {
         Name => 'DeviceModel',

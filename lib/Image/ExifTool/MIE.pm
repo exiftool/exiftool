@@ -14,7 +14,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '1.45';
+$VERSION = '1.46';
 
 sub ProcessMIE($$);
 sub ProcessMIEGroup($$$);
@@ -570,7 +570,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
     ExposureTime    => {
         Writable => 'rational64u',
         PrintConv => 'Image::ExifTool::Exif::PrintExposureTime($val)',
-        PrintConvInv => 'Image::ExifTool::Exif::ConvertFraction($val)',
+        PrintConvInv => '$val',
     },
     Flash => {
         SubDirectory => {

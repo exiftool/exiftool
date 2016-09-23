@@ -53,7 +53,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '3.85';
+$VERSION = '3.86';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -1468,7 +1468,7 @@ my %sampleFormat = (
         Name => 'ExposureTime',
         Writable => 'rational64u',
         PrintConv => 'Image::ExifTool::Exif::PrintExposureTime($val)',
-        PrintConvInv => 'Image::ExifTool::Exif::ConvertFraction($val)',
+        PrintConvInv => '$val',
     },
     0x829d => {
         Name => 'FNumber',
@@ -1927,7 +1927,7 @@ my %sampleFormat = (
         Notes => 'called ExposureBiasValue by the EXIF spec.',
         Writable => 'rational64s',
         PrintConv => 'Image::ExifTool::Exif::PrintFraction($val)',
-        PrintConvInv => 'Image::ExifTool::Exif::ConvertFraction($val)',
+        PrintConvInv => '$val',
     },
     0x9205 => {
         Name => 'MaxApertureValue',

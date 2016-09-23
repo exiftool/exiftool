@@ -17,10 +17,31 @@ considered development releases, and are not uploaded to <a href="http://search.
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v10.27'><b>Sept. 23, 2016 - Version 10.27</b></a>
+<ul>
+<li>Added a new CanonModelID (thanks LibRaw)
+<li>Added a new Sony LensType (thanks Jos Roost)
+<li>Added a few new NikonLensID's (thanks Yang You and Robert Rottmerhusen)
+<li>Added a couple of new Olympus LensType values (thanks LibRaw and Niels
+    Kristian Bech Jensen)
+<li>Added a new Olympus CameraType
+<li>Decode some Canon 80D, 750D, 760D and 1200D CameraInfo tags
+<li>Changed writing of some ExposureTime and ExposureCompensation tags to allow
+    the exact numerator and denominator of the stored rational value to be
+    specified
+<li>Fixed Timecode printout in -v3 output for M2TS videos (thanks Ken Neighbors)
+<li>Fixed some problems with the new "-progress:TITLE" feature
+<li>Fixed problem where _exiftool_tmp file could be left around after a failed
+    write attempt
+<li>Fixed potential "isn't numeric" runtime error when reading a PDF file with
+    the -ee option
+</ul>
+
+<li>Added read support for GSpherical metadata in MP4 videos
 <a name='v10.26'><b>Sept. 15, 2016 - Version 10.26</b></a>
 <ul>
 <li>Added read support for GSpherical metadata in MP4 videos
-<li>Added a few new XMP-xmpMM tags and a new XMP-crs tags
+<li>Added a few new XMP-xmpMM tags and a new XMP-crs tag
 <li>Added some new Minolta/Sony lenses (thanks Jos Roost)
 <li>Added two new CanonModelID's (thanks Norbert Wasser and Laurent Clevy)
 <li>Added two new Canon LensType's (thanks Norbert Wasser)

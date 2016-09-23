@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.42';
+$VERSION = '2.43';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -70,7 +70,8 @@ my %sonyLensTypes2 = (
     32788 => 'Sony E 30mm F3.5 Macro',          # VX9104
     32789 => 'Sony E 24mm F1.8 ZA or Samyang AF 50mm F1.4 FE', # VX9105
     32789.1 => 'Samyang AF 50mm F1.4 FE', 
-    32790 => 'Sony E 50mm F1.8 OSS',            # VX9106
+    32790 => 'Sony E 50mm F1.8 OSS or Samyang AF 14mm F2.8 FE', # VX9106
+    32790.1 => 'Samyang AF 14mm F2.8 FE',
     32791 => 'Sony E 16-70mm F4 ZA OSS',        # VX9107
     32792 => 'Sony E 10-18mm F4 OSS',           # VX9108
     32793 => 'Sony E PZ 16-50mm F3.5-5.6 OSS',  # VX9109
@@ -7345,7 +7346,7 @@ my %pictureProfile2010 = (
         Name => 'ExposureTime',
         Format => 'rational32u',
         PrintConv => '$val ? Image::ExifTool::Exif::PrintExposureTime($val) : "Bulb"', # (Bulb NC)
-        PrintConvInv => 'lc($val) eq "bulb" ? 0 : Image::ExifTool::Exif::ConvertFraction($val)',
+        PrintConvInv => 'lc($val) eq "bulb" ? 0 : $val',
     },
     0x0014 => { # but often odd results for DSC models: exclude
         Name => 'SonyFNumber',

@@ -4494,13 +4494,18 @@ boot, not including standby time.
            CanonCameraInfo50D                   Canon CameraInfo50D
            CanonCameraInfo60D                   Canon CameraInfo60D
            CanonCameraInfo70D                   Canon CameraInfo70D
+           CanonCameraInfo80D                   Canon CameraInfo80D
            CanonCameraInfo450D                  Canon CameraInfo450D
            CanonCameraInfo500D                  Canon CameraInfo500D
            CanonCameraInfo550D                  Canon CameraInfo550D
            CanonCameraInfo600D                  Canon CameraInfo600D
            CanonCameraInfo650D                  Canon CameraInfo650D
+           CanonCameraInfo700D                  Canon CameraInfo650D
+           CanonCameraInfo750D                  Canon CameraInfo750D
+           CanonCameraInfo760D                  Canon CameraInfo750D
            CanonCameraInfo1000D                 Canon CameraInfo1000D
            CanonCameraInfo1100D                 Canon CameraInfo600D
+           CanonCameraInfo1200D                 Canon CameraInfo60D
            CanonCameraInfoPowerShot             Canon CameraInfoPowerShot
            CanonCameraInfoPowerShot2            Canon CameraInfoPowerShot2
            CanonCameraInfoUnknown32             Canon CameraInfoUnknown32
@@ -5222,7 +5227,7 @@ CameraInfo tags for the EOS 50D.  Indices shown are for firmware versions
 
 =head3 Canon CameraInfo60D Tags
 
-CameraInfo tags for the EOS 60D.
+CameraInfo tags for the EOS 60D and 1200D.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
@@ -5241,6 +5246,7 @@ CameraInfo tags for the EOS 60D.
     409    FirmwareVersion                      N
     473    FileIndex                            int32u
     485    DirectoryIndex                       int32u
+    761    PictureStyleInfo                     Canon PSInfo2
     801    PictureStyleInfo                     Canon PSInfo2
 
 =head3 Canon CameraInfo70D Tags
@@ -5265,6 +5271,28 @@ CameraInfo tags for the EOS 70D.
     691    FileIndex                            int32u
     703    DirectoryIndex                       int32u
     975    PictureStyleInfo                     Canon PSInfo2
+
+=head3 Canon CameraInfo80D Tags
+
+CameraInfo tags for the EOS 70D.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      3    FNumber                              int8u
+      4    ExposureTime                         int8u
+      6    ISO                                  int8u
+     27    CameraTemperature                    int8u
+     35    FocalLength                          int16uRev
+    150    CameraOrientation                    int8u
+    165    FocusDistanceUpper                   int16uRev
+    167    FocusDistanceLower                   int16uRev
+    314    ColorTemperature                     int16u
+    393    LensType                             int16uRev
+    395    MinFocalLength                       int16uRev
+    397    MaxFocalLength                       int16uRev
+   1114    FirmwareVersion                      N
+   1198    FileIndex                            int32u
+   1210    DirectoryIndex                       int32u
 
 =head3 Canon CameraInfo450D Tags
 
@@ -5402,6 +5430,28 @@ CameraInfo tags for the EOS 650D and 700D.
     636    DirectoryIndex                       int32u
     640    DirectoryIndex                       int32u
     912    PictureStyleInfo                     Canon PSInfo2
+
+=head3 Canon CameraInfo750D Tags
+
+CameraInfo tags for the EOS 750D and 760D.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      3    FNumber                              int8u
+      4    ExposureTime                         int8u
+      6    ISO                                  int8u
+     27    CameraTemperature                    int8u
+     35    FocalLength                          int16uRev
+    165    FocusDistanceUpper                   int16uRev
+    167    FocusDistanceLower                   int16uRev
+    305    WhiteBalance                         int16u
+    309    ColorTemperature                     int16u
+    361    PictureStyle                         int8u
+    388    LensType                             int16uRev
+    390    MinFocalLength                       int16uRev
+    392    MaxFocalLength                       int16uRev
+   1085    FirmwareVersion                      N
+   1097    FirmwareVersion                      N
 
 =head3 Canon CameraInfo1000D Tags
 

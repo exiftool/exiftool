@@ -4236,6 +4236,8 @@ sub AssembleRational($$@)
 # - the returned rational will be accurate to at least 8 significant figures if possible
 # - eg. an input of 3.14159265358979 returns a rational of 104348/33215,
 #   which equals    3.14159265392142 and is accurate to 10 significant figures
+# - the returned rational will be reduced to the lowest common denominator except when
+#   the input is a fraction in which case the input is returned unchanged
 # - these routines were a bit tricky, but fun to write!
 sub Rationalize($;$)
 {

@@ -19,7 +19,7 @@ use strict;
 use vars qw($VERSION %sigmaLensTypes);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.21';
+$VERSION = '1.22';
 
 # sigma LensType lookup (ref IB)
 %sigmaLensTypes = (
@@ -568,7 +568,7 @@ $VERSION = '1.21';
         Notes => 'models other than the SD1 and Merrill/Quattro models',
         Writable => 'rational64u',
         PrintConv => 'Image::ExifTool::Exif::PrintExposureTime($val)',
-        PrintConvInv => 'Image::ExifTool::Exif::ConvertFraction($val)',
+        PrintConvInv => '$val',
         Priority => 0,
     },
     0x0033 => { #PH
@@ -649,7 +649,7 @@ $VERSION = '1.21';
         Notes => 'SD1 and Merrill/Quattro models only',
         Writable => 'rational64u',
         PrintConv => 'Image::ExifTool::Exif::PrintExposureTime($val)',
-        PrintConvInv => 'Image::ExifTool::Exif::ConvertFraction($val)',
+        PrintConvInv => '$val',
         Priority => 0,
     },
     0x004b => [{ #PH

@@ -48,7 +48,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '2.96';
+$VERSION = '2.97';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -1592,7 +1592,7 @@ my %sPantryItem = (
     ExposureTime => {
         Writable => 'rational',
         PrintConv => 'Image::ExifTool::Exif::PrintExposureTime($val)',
-        PrintConvInv => 'Image::ExifTool::Exif::ConvertFraction($val)',
+        PrintConvInv => '$val',
     },
     FNumber => {
         Writable => 'rational',
@@ -1646,7 +1646,7 @@ my %sPantryItem = (
         Name => 'ExposureCompensation',
         Writable => 'rational',
         PrintConv => 'Image::ExifTool::Exif::PrintFraction($val)',
-        PrintConvInv => 'Image::ExifTool::Exif::ConvertFraction($val)',
+        PrintConvInv => '$val',
     },
     MaxApertureValue => {
         Groups => { 2 => 'Camera' },

@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '10.26';
+$VERSION = '10.27';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -4156,6 +4156,7 @@ sub AddCompositeTags($;$)
         my $tag = $$tagInfo{Name};
         $$tagInfo{Module} = $module if $$tagInfo{Writable};
         $$tagInfo{Override} = 1 if $override and not defined $$tagInfo{Override};
+        $$tagInfo{IsComposite} = 1;
         # allow Composite tags with the same name
         if ($$compTable{$tag}) {
             # determine if we want to override this tag
@@ -7083,7 +7084,7 @@ sub FoundTag($$$)
     if ($$tagInfo{RawConv}) {
         # initialize @val for use in Composite RawConv expressions
         my @val;
-        if (ref $value eq 'HASH') {
+        if (ref $value eq 'HASH' and $$tagInfo{IsComposite}) {
             foreach (keys %$value) { $val[$_] = $$valueHash{$$value{$_}}; }
         }
         my $conv = $$tagInfo{RawConv};

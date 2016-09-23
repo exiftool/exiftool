@@ -84,19 +84,24 @@
   <br>CanonCameraInfo50D
   <br>CanonCameraInfo60D
   <br>CanonCameraInfo70D
+  <br>CanonCameraInfo80D
   <br>CanonCameraInfo450D
   <br>CanonCameraInfo500D
   <br>CanonCameraInfo550D
   <br>CanonCameraInfo600D
   <br>CanonCameraInfo650D
+  <br>CanonCameraInfo700D
+  <br>CanonCameraInfo750D
+  <br>CanonCameraInfo760D
   <br>CanonCameraInfo1000D
   <br>CanonCameraInfo1100D
+  <br>CanonCameraInfo1200D
   <br>CanonCameraInfoPowerShot
   <br>CanonCameraInfoPowerShot2
   <br>CanonCameraInfoUnknown32
   <br>CanonCameraInfoUnknown16
   <br>CanonCameraInfoUnknown</td>
-<td class=c>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-</td>
+<td class=c>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-</td>
 <td>--&gt; <a href='Canon.html#CameraInfo1D'>Canon CameraInfo1D Tags</a>
   <br>--&gt; <a href='Canon.html#CameraInfo1DmkII'>Canon CameraInfo1DmkII Tags</a>
   <br>--&gt; <a href='Canon.html#CameraInfo1DmkIIN'>Canon CameraInfo1DmkIIN Tags</a>
@@ -112,13 +117,18 @@
   <br>--&gt; <a href='Canon.html#CameraInfo50D'>Canon CameraInfo50D Tags</a>
   <br>--&gt; <a href='Canon.html#CameraInfo60D'>Canon CameraInfo60D Tags</a>
   <br>--&gt; <a href='Canon.html#CameraInfo70D'>Canon CameraInfo70D Tags</a>
+  <br>--&gt; <a href='Canon.html#CameraInfo80D'>Canon CameraInfo80D Tags</a>
   <br>--&gt; <a href='Canon.html#CameraInfo450D'>Canon CameraInfo450D Tags</a>
   <br>--&gt; <a href='Canon.html#CameraInfo500D'>Canon CameraInfo500D Tags</a>
   <br>--&gt; <a href='Canon.html#CameraInfo550D'>Canon CameraInfo550D Tags</a>
   <br>--&gt; <a href='Canon.html#CameraInfo600D'>Canon CameraInfo600D Tags</a>
   <br>--&gt; <a href='Canon.html#CameraInfo650D'>Canon CameraInfo650D Tags</a>
+  <br>--&gt; <a href='Canon.html#CameraInfo650D'>Canon CameraInfo650D Tags</a>
+  <br>--&gt; <a href='Canon.html#CameraInfo750D'>Canon CameraInfo750D Tags</a>
+  <br>--&gt; <a href='Canon.html#CameraInfo750D'>Canon CameraInfo750D Tags</a>
   <br>--&gt; <a href='Canon.html#CameraInfo1000D'>Canon CameraInfo1000D Tags</a>
   <br>--&gt; <a href='Canon.html#CameraInfo600D'>Canon CameraInfo600D Tags</a>
+  <br>--&gt; <a href='Canon.html#CameraInfo60D'>Canon CameraInfo60D Tags</a>
   <br>--&gt; <a href='Canon.html#CameraInfoPowerShot'>Canon CameraInfoPowerShot Tags</a>
   <br>--&gt; <a href='Canon.html#CameraInfoPowerShot2'>Canon CameraInfoPowerShot2 Tags</a>
   <br>--&gt; <a href='Canon.html#CameraInfoUnknown32'>Canon CameraInfoUnknown32 Tags</a>
@@ -730,6 +740,7 @@
 </tr><tr><td class=r>0x3890000</td><td>= PowerShot ELPH 170 IS / IXUS 170</td>
 </tr><tr><td class=r>0x3910000</td><td>= PowerShot SX410 IS</td>
 </tr><tr><td class=r>0x3930000</td><td>= PowerShot G9 X</td>
+</tr><tr><td class=r>0x3940000</td><td>= EOS M5</td>
 </tr><tr><td class=r>0x3950000</td><td>= PowerShot G5 X</td>
 </tr><tr><td class=r>0x3970000</td><td>= PowerShot G7 X Mark II</td>
 </tr><tr><td class=r>0x3990000</td><td>= PowerShot ELPH 360 HS / IXUS 285 HS / IXY 650</td>
@@ -4386,7 +4397,7 @@ versions 1.0.x, but they may be different for other firmware versions.</p>
 </table></td></tr></table></blockquote>
 
 <h2><a name='CameraInfo60D'>Canon CameraInfo60D Tags</a></h2>
-<p>CameraInfo tags for the EOS 60D.</p>
+<p>CameraInfo tags for the EOS 60D and 1200D.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -4421,24 +4432,25 @@ versions 1.0.x, but they may be different for other firmware versions.</p>
 <td class=r title='54 = 0x36'>54</td>
 <td>CameraOrientation</td>
 <td class=c>int8u</td>
-<td><span class=s>0 = Horizontal (normal)
+<td><span class=s><span class=n>(60D only)</span>
+  <br>0 = Horizontal (normal)
   <br>1 = Rotate 90 CW
   <br>2 = Rotate 270 CW</span></td></tr>
 <tr>
 <td class=r title='85 = 0x55'>85</td>
 <td>FocusDistanceUpper</td>
 <td class=c>int16uRev</td>
-<td>&nbsp;</td></tr>
+<td><span class=s><span class=n>(60D only)</span></span></td></tr>
 <tr class=b>
 <td class=r title='87 = 0x57'>87</td>
 <td>FocusDistanceLower</td>
 <td class=c>int16uRev</td>
-<td>&nbsp;</td></tr>
+<td><span class=s><span class=n>(60D only)</span></span></td></tr>
 <tr>
 <td class=r title='125 = 0x7d'>125</td>
 <td>ColorTemperature</td>
 <td class=c>int16u</td>
-<td>&nbsp;</td></tr>
+<td><span class=s><span class=n>(60D only)</span></span></td></tr>
 <tr class=b>
 <td class=r title='232 = 0xe8'>232</td>
 <td>LensType</td>
@@ -4463,17 +4475,24 @@ versions 1.0.x, but they may be different for other firmware versions.</p>
 <td class=r title='473 = 0x1d9'>473</td>
 <td>FileIndex</td>
 <td class=c>int32u</td>
-<td>&nbsp;</td></tr>
+<td><span class=s><span class=n>(60D only)</span></span></td></tr>
 <tr>
 <td class=r title='485 = 0x1e5'>485</td>
 <td>DirectoryIndex</td>
 <td class=c>int32u</td>
-<td>&nbsp;</td></tr>
+<td><span class=s><span class=n>(60D only)</span></span></td></tr>
 <tr class=b>
+<td class=r title='761 = 0x2f9'>761</td>
+<td>PictureStyleInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Canon.html#PSInfo2'>Canon PSInfo2 Tags</a>
+  <br><span class='n s'>(1200D)</span></td></tr>
+<tr>
 <td class=r title='801 = 0x321'>801</td>
 <td>PictureStyleInfo</td>
 <td class=c>-</td>
-<td>--&gt; <a href='Canon.html#PSInfo2'>Canon PSInfo2 Tags</a></td></tr>
+<td>--&gt; <a href='Canon.html#PSInfo2'>Canon PSInfo2 Tags</a>
+  <br><span class='n s'>(60D)</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='CameraInfo70D'>Canon CameraInfo70D Tags</a></h2>
@@ -4565,6 +4584,92 @@ versions 1.0.x, but they may be different for other firmware versions.</p>
 <td>PictureStyleInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Canon.html#PSInfo2'>Canon PSInfo2 Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='CameraInfo80D'>Canon CameraInfo80D Tags</a></h2>
+<p>CameraInfo tags for the EOS 70D.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='3 = 0x3'>3</td>
+<td>FNumber</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>ExposureTime</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='6 = 0x6'>6</td>
+<td>ISO</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='27 = 0x1b'>27</td>
+<td>CameraTemperature</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='35 = 0x23'>35</td>
+<td>FocalLength</td>
+<td class=c>int16uRev</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='150 = 0x96'>150</td>
+<td>CameraOrientation</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Horizontal (normal)
+  <br>1 = Rotate 90 CW
+  <br>2 = Rotate 270 CW</span></td></tr>
+<tr>
+<td class=r title='165 = 0xa5'>165</td>
+<td>FocusDistanceUpper</td>
+<td class=c>int16uRev</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='167 = 0xa7'>167</td>
+<td>FocusDistanceLower</td>
+<td class=c>int16uRev</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='314 = 0x13a'>314</td>
+<td>ColorTemperature</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='393 = 0x189'>393</td>
+<td>LensType</td>
+<td class=c>int16uRev</td>
+<td>--&gt; <a href='Canon.html#LensType'>Canon LensType Values</a></td></tr>
+<tr>
+<td class=r title='395 = 0x18b'>395</td>
+<td>MinFocalLength</td>
+<td class=c>int16uRev</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='397 = 0x18d'>397</td>
+<td>MaxFocalLength</td>
+<td class=c>int16uRev</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='1114 = 0x45a'>1114</td>
+<td>FirmwareVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='1198 = 0x4ae'>1198</td>
+<td>FileIndex</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='1210 = 0x4ba'>1210</td>
+<td>DirectoryIndex</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='CameraInfo450D'>Canon CameraInfo450D Tags</a></h2>
@@ -5155,6 +5260,90 @@ versions 1.0.x, but they may be different for other firmware versions.</p>
 <td>PictureStyleInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Canon.html#PSInfo2'>Canon PSInfo2 Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='CameraInfo750D'>Canon CameraInfo750D Tags</a></h2>
+<p>CameraInfo tags for the EOS 750D and 760D.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='3 = 0x3'>3</td>
+<td>FNumber</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>ExposureTime</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='6 = 0x6'>6</td>
+<td>ISO</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='27 = 0x1b'>27</td>
+<td>CameraTemperature</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='35 = 0x23'>35</td>
+<td>FocalLength</td>
+<td class=c>int16uRev</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='165 = 0xa5'>165</td>
+<td>FocusDistanceUpper</td>
+<td class=c>int16uRev</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='167 = 0xa7'>167</td>
+<td>FocusDistanceLower</td>
+<td class=c>int16uRev</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='305 = 0x131'>305</td>
+<td>WhiteBalance</td>
+<td class=c>int16u</td>
+<td>--&gt; <a href='Canon.html#WhiteBalance'>Canon WhiteBalance Values</a></td></tr>
+<tr>
+<td class=r title='309 = 0x135'>309</td>
+<td>ColorTemperature</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='361 = 0x169'>361</td>
+<td>PictureStyle</td>
+<td class=c>int8u</td>
+<td>--&gt; <a href='Canon.html#PictureStyle'>Canon PictureStyle Values</a></td></tr>
+<tr>
+<td class=r title='388 = 0x184'>388</td>
+<td>LensType</td>
+<td class=c>int16uRev</td>
+<td>--&gt; <a href='Canon.html#LensType'>Canon LensType Values</a></td></tr>
+<tr class=b>
+<td class=r title='390 = 0x186'>390</td>
+<td>MinFocalLength</td>
+<td class=c>int16uRev</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='392 = 0x188'>392</td>
+<td>MaxFocalLength</td>
+<td class=c>int16uRev</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='1085 = 0x43d'>1085</td>
+<td>FirmwareVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='1097 = 0x449'>1097</td>
+<td>FirmwareVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='CameraInfo1000D'>Canon CameraInfo1000D Tags</a></h2>
@@ -9443,6 +9632,7 @@ SX280.</p>
 </tr><tr><td class=r>0x3890000</td><td>= PowerShot ELPH 170 IS / IXUS 170</td>
 </tr><tr><td class=r>0x3910000</td><td>= PowerShot SX410 IS</td>
 </tr><tr><td class=r>0x3930000</td><td>= PowerShot G9 X</td>
+</tr><tr><td class=r>0x3940000</td><td>= EOS M5</td>
 </tr><tr><td class=r>0x3950000</td><td>= PowerShot G5 X</td>
 </tr><tr><td class=r>0x3970000</td><td>= PowerShot G7 X Mark II</td>
 </tr><tr><td class=r>0x3990000</td><td>= PowerShot ELPH 360 HS / IXUS 285 HS / IXY 650</td>
@@ -9541,7 +9731,7 @@ SX280.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Aug 30, 2016</i>
+<br><i>Last revised Sep 19, 2016</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

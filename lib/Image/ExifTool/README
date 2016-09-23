@@ -354,6 +354,8 @@ numerical.
                   'Hidden' - set to hide tag from the TagName documentation.
                   Also suppresses verbose output of a BinaryData tag.
 
+                  'IsComposite' - flag set for Composite tags
+
                   'IsOffset' - flag set if the tag represents an offset to some
                   data, and causes value will be adjusted to an absolute file
                   offset.  If set to 2, the offset base of the parent directory

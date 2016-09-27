@@ -5,12 +5,13 @@
 #
 # Usage:        exiftool -tagsFromFile SRCFILE -@ xmp2exif.args DSTFILE
 #
-# Requires:     ExifTool version 8.60 or later
+# Requires:     ExifTool version 10.28 or later
 #
 # Revisions:    2009/01/20 - P. Harvey Created
 #               2011/06/22 - PH Copy flash information via Composite:Flash
 #               2013/06/12 - PH Additions for the Exif 2.3 for XMP spec
 #               2015/01/12 - PH Avoid copying from non-standard namespaces
+#               2016/09/26 - PH Write Composite SubSec tags
 #
 # References:   http://www.metadataworkinggroup.org/specs/
 #
@@ -27,12 +28,11 @@
 -EXIF:all < XMP-tiff:all
 -EXIF:ImageDescription < XMP-dc:Description
 -EXIF:DateTimeOriginal < XMP-photoshop:DateCreated
-# magically extracts sub-seconds from date/time value if available
--EXIF:SubSecTimeOriginal < XMP-photoshop:DateCreated
--EXIF:CreateDate < XMP-xmp:CreateDate
--EXIF:SubSecTimeDigitized < XMP-xmp:CreateDate
--EXIF:ModifyDate < XMP-xmp:ModifyDate
--EXIF:SubSecTime < XMP-xmp:ModifyDate
+# the following 3 SubSec tags also write/delete the corresponding EXIF
+# SubSecTime and OffsetTime tags as appropriate
+-EXIF:SubSecDateTimeOriginal < XMP-photoshop:DateCreated
+-EXIF:SubSecCreateDate < XMP-xmp:CreateDate
+-EXIF:SubSecModifyDate < XMP-xmp:ModifyDate
 -EXIF:Software < -XMP-xmp:CreatorTool
 -EXIF:Copyright < XMP-dc:Rights
 -EXIF:Artist < XMP-dc:Creator

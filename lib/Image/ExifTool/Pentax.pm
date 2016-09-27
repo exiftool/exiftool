@@ -57,7 +57,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::HP;
 
-$VERSION = '3.06';
+$VERSION = '3.07';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -177,6 +177,7 @@ sub DecodeAFPoints($$$$;$);
     '4 2' => 'smc PENTAX-FA 80-320mm F4.5-5.6',
     '4 3' => 'smc PENTAX-FA 43mm F1.9 Limited',
     '4 6' => 'smc PENTAX-FA 35-80mm F4-5.6',
+    '4 10' => 'Irix 15mm F2.4', #forum3833
     '4 12' => 'smc PENTAX-FA 50mm F1.4', #17
     '4 15' => 'smc PENTAX-FA 28-105mm F4-5.6 [IF]',
     '4 16' => 'Tamron AF 80-210mm F4-5.6 (178D)', #13

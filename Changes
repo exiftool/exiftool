@@ -7,6 +7,19 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.20. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Sept. xx, 2016 - Version 10.28 - "EXIF 2.31"
+
+  - Added support for new EXIF 2.31 tags
+  - Added some new Canon LensType values (thanks Norbert Wasser for one)
+  - Added a new Olympus LensType (thanks LibRaw and Niels Kristian Bech Jensen)
+  - Added a new Sony LensType and SonyModelID (thanks Jos Roost)
+  - Added a new Pentax LensType
+  - Added fotoware.config and bibble.config files to the distribution
+  - Made Composite SubSecDateTimeOriginal, SubSecCreateDate and SubSecModifyDate
+    tags writable, and expanded to include new EXIF 2.31 time zone tags
+  - Fixed problem writing user-defined structured tag elements with a dot (.) in
+    their tag ID
+
 Sept. 23, 2016 - Version 10.27
 
   - Added a new CanonModelID (thanks LibRaw)
@@ -21,11 +34,10 @@ Sept. 23, 2016 - Version 10.27
     specified
   - Fixed Timecode printout in -v3 output for M2TS videos (thanks Ken Neighbors)
   - Fixed some problems with the new "-progress:TITLE" feature
-  - Fixed problem where _exiftool_tmp file could be left around after a failed
+  - Fixed problem where "_exiftool_tmp" file could be left around after a failed
     write attempt
   - Fixed potential "isn't numeric" runtime error when reading a PDF file with
     the -ee option
-  - Added read support for GSpherical metadata in MP4 videos
 
 Sept. 15, 2016 - Version 10.26
 

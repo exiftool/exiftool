@@ -17,7 +17,7 @@ require Exporter;
 use vars qw($VERSION @ISA @EXPORT_OK);
 use Image::ExifTool qw(:Utils);
 
-$VERSION = '1.13';
+$VERSION = '1.14';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(FindTagInfo TagExists);
 
@@ -485,6 +485,7 @@ my %tagLookup = (
 	'aboutcvtermname' => { 421 => [\'AboutCvTerm','AboutCvTermCvTermName'] },
 	'aboutcvtermrefinedabout' => { 421 => [\'AboutCvTerm','AboutCvTermCvTermRefinedAbout'] },
 	'abspeakaudiofilepath' => { 435 => 'absPeakAudioFilePath' },
+	'acceleration' => { 109 => 0x9404 },
 	'accelerationtracking' => { 75 => 0x518 },
 	'accelerometer' => { 341 => 0x3 },
 	'accelerometerx' => { 279 => 0x8d },
@@ -816,7 +817,7 @@ my %tagLookup = (
 	'alttimecodetimevalue' => { 435 => [\'altTimecode','altTimecodeTimeValue'] },
 	'alttimecodevalue' => { 435 => [\'altTimecode','altTimecodeValue'] },
 	'ambienceselection' => { 4 => 0x1 },
-	'ambienttemperature' => { 334 => 0x14, 387 => 0x4 },
+	'ambienttemperature' => { 109 => 0x9400, 334 => 0x14, 387 => 0x4 },
 	'ambienttemperaturefahrenheit' => { 334 => 0x13 },
 	'analogbalance' => { 109 => 0xc627 },
 	'angleadj' => { 94 => 0x10003, 100 => 0x8b },
@@ -1055,6 +1056,7 @@ my %tagLookup = (
 	'cameracolorcalibration14' => { 35 => 0x34, 41 => 0xfb },
 	'cameracolorcalibration15' => { 35 => 0x38, 41 => 0x100 },
 	'camerae-mountversion' => { 395 => 0xb },
+	'cameraelevationangle' => { 109 => 0x9405 },
 	'cameraid' => { 263 => 0x209, 346 => 0x209 },
 	'cameraiso' => { 33 => 0x10 },
 	'cameralabel' => { 109 => 0xc7a1, 435 => 'cameraLabel' },
@@ -2564,6 +2566,7 @@ my %tagLookup = (
 	'hueadjustmentred' => { 411 => 'HueAdjustmentRed' },
 	'hueadjustmentyellow' => { 411 => 'HueAdjustmentYellow' },
 	'huesetting' => { 266 => 0x1011 },
+	'humidity' => { 109 => 0x9401 },
 	'icc_profile' => { 110 => 'ICC_Profile' },
 	'iccprofilename' => { 423 => 'ICCProfile' },
 	'idccreativestyle' => { 396 => 0x8000 },
@@ -3490,6 +3493,9 @@ my %tagLookup = (
 	'offsaledatea-platform' => { 425 => [\'offSaleDate','offSaleDateA-platform'] },
 	'offsaledatedate' => { 425 => [\'offSaleDate','offSaleDateDate'] },
 	'offsetschema' => { 109 => 0xea1d },
+	'offsettime' => { 109 => 0x9010 },
+	'offsettimedigitized' => { 109 => 0x9012 },
+	'offsettimeoriginal' => { 109 => 0x9011 },
 	'okbutton' => { 252 => '15.1', 256 => '16.1' },
 	'oldsubfiletype' => { 109 => 0xff },
 	'olympusimageheight' => { 263 => 0x102f },
@@ -3865,6 +3871,7 @@ my %tagLookup = (
 	'preservedfilename' => { 436 => 'PreservedFileName' },
 	'presetwhitebalance' => { 164 => 0x24, 396 => 0x8002 },
 	'presetwhitebalanceadj' => { 396 => 0x8014 },
+	'pressure' => { 109 => 0x9402 },
 	'previewapplicationname' => { 109 => 0xc716 },
 	'previewapplicationversion' => { 109 => 0xc717 },
 	'previewbutton' => { 243 => ['14.1','15.1'], 244 => '15.1', 246 => '15.1', 251 => '29.1', 252 => '14.1', 255 => '15.1' },
@@ -4546,6 +4553,9 @@ my %tagLookup = (
 	'sublables1' => { 419 => [\'TagStructure','TagStructureSubLabels'] },
 	'sublables2' => { 419 => [\'TagStructure','TagStructureSubLabelsSubLabels'] },
 	'sublables3' => { 419 => [\'TagStructure','TagStructureSubLabelsSubLabelsSubLabels'] },
+	'subseccreatedate' => { 105 => 'SubSecCreateDate' },
+	'subsecdatetimeoriginal' => { 105 => 'SubSecDateTimeOriginal' },
+	'subsecmodifydate' => { 105 => 'SubSecModifyDate' },
 	'subsectime' => { 109 => 0x9290 },
 	'subsectimedigitized' => { 109 => 0x9292 },
 	'subsectimeoriginal' => { 109 => 0x9291 },
@@ -4949,6 +4959,7 @@ my %tagLookup = (
 	'vr_0x66' => { 206 => 0x66 },
 	'vrdoffset' => { 57 => 0xd0 },
 	'vrmode' => { 227 => 0x6 },
+	'waterdepth' => { 109 => 0x9403 },
 	'wb_bluelevel3500k' => { 167 => 0x19a },
 	'wb_bluelevel6500k' => { 167 => 0x18a },
 	'wb_bluelevelcustom' => { 167 => 0x18e },
@@ -8460,9 +8471,6 @@ my %tagExists = (
 	'subpacketh' => 1,
 	'subpacketsize' => 1,
 	'subscriptioncontentid' => 1,
-	'subseccreatedate' => 1,
-	'subsecdatetimeoriginal' => 1,
-	'subsecmodifydate' => 1,
 	'subsystem' => 1,
 	'subsystemversion' => 1,
 	'subtileblocksize' => 1,
@@ -9044,6 +9052,9 @@ my %compositeModules = (
 	'originaldecisiondata' => 'Image::ExifTool::Canon',
 	'otherimage' => 'Image::ExifTool::Exif',
 	'previewimage' => 'Image::ExifTool::Exif',
+	'subseccreatedate' => 'Image::ExifTool::Exif',
+	'subsecdatetimeoriginal' => 'Image::ExifTool::Exif',
+	'subsecmodifydate' => 'Image::ExifTool::Exif',
 	'thumbnailimage' => 'Image::ExifTool::Exif',
 );
 
@@ -9110,7 +9121,8 @@ sub AddFields($$$$$$;$$)
         my $fieldInfo = $$strTable{$field};
         my $flatName;
         $flatName = $$fieldInfo{FlatName} if ref $fieldInfo eq 'HASH';
-        my $lc = ($flatInfo and $$flatInfo{Name}) ? lc $$flatInfo{Name} : $lcTag . lc($flatName || $field);
+        $flatName or ($flatName = $field) =~ tr/-_a-zA-Z0-9//dc;    # remove illegal characters
+        my $lc = ($flatInfo and $$flatInfo{Name}) ? lc $$flatInfo{Name} : $lcTag . lc($flatName);
         my $copyID = $baseID;
         push @$tagIDs, \$copyID, $id;
         push @$lcTags, $lc, $lc;

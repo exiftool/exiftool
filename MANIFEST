@@ -14,8 +14,10 @@ arg_files/xmp2exif.args
 arg_files/xmp2gps.args
 arg_files/xmp2iptc.args
 arg_files/xmp2pdf.args
+config_files/bibble.config
 config_files/convert_regions.config
 config_files/example.config
+config_files/fotoware.config
 config_files/gps2utm.config
 config_files/photoshop_paths.config
 config_files/picasa_faces.config

@@ -39,7 +39,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::APP12;
 
-$VERSION = '2.43';
+$VERSION = '2.44';
 
 sub PrintLensInfo($$$);
 
@@ -98,6 +98,7 @@ my %olympusLensTypes = (
     '0 24 00' => 'Olympus Zuiko Digital ED 40-150mm F4.0-5.6', #PH
     '0 24 10' => 'Olympus M.Zuiko Digital ED 300mm F4.0 IS Pro', #NJ
     '0 25 10' => 'Olympus M.Zuiko Digital ED 8mm F1.8 Fisheye Pro', #NJ
+    '0 26 10' => 'Olympus M.Zuiko Digital ED 12-100mm F4.0 IS Pro', #IB/NJ
     '0 27 10' => 'Olympus M.Zuiko Digital ED 30mm F3.5 Macro', #IB/NJ
     '0 28 10' => 'Olympus M.Zuiko Digital ED 25mm F1.2 Pro', #IB/NJ
     '0 30 00' => 'Olympus Zuiko Digital ED 50-200mm F2.8-3.5 SWD', #7

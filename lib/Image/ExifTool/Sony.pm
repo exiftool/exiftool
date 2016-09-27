@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.43';
+$VERSION = '2.44';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -92,6 +92,7 @@ my %sonyLensTypes2 = (
     32810 => 'Sony FE 70-200mm F4 G OSS', #JR   # VX9126
     32811 => 'Sony FE 16-35mm F4 ZA OSS', #JR   # VX9127
 
+    32812 => 'Sony FE 50mm F2.8 Macro', #JR
     32813 => 'Sony FE 28-70mm F3.5-5.6 OSS',    # VX9129
     32814 => 'Sony FE 35mm F1.4 ZA',            # VX?
     32815 => 'Sony FE 24-240mm F3.5-6.3 OSS',   # VX?
@@ -1549,6 +1550,7 @@ my %meterInfo2 = (
             347 => 'ILCE-7RM2', #JR
             350 => 'ILCE-7SM2', #JR
             353 => 'ILCA-68', #IB
+            354 => 'ILCA-99M2', #JR
             355 => 'DSC-RX10M3', #PH
             357 => 'ILCE-6300', #IB
         },

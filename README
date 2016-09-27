@@ -101,8 +101,8 @@ your home directory, then you would type the following commands in a
 terminal window to extract and run ExifTool:
 
   cd ~/Desktop
-  gzip -dc Image-ExifTool-10.27.tar.gz | tar -xf -
-  cd Image-ExifTool-10.27
+  gzip -dc Image-ExifTool-10.28.tar.gz | tar -xf -
+  cd Image-ExifTool-10.28
   ./exiftool t/images/ExifTool.jpg
 
 Note:  These commands extract meta information from one of the test images. 
@@ -180,8 +180,10 @@ distribution package:
     xmp2iptc.args             - Arguments for converting XMP to IPTC
     xmp2pdf.args              - Arguments for converting XMP to PDF
   config_files/             - Sample ExifTool configuration files:
+    bibble.config             - Definitions for writing Bibble XMP tags
     convert_regions.config    - Convert between MWG and MP face regions
     example.config            - General example showing config features
+    fotoware.config           - Definitions for writing Fotoware XMP tags
     gps2utm.config            - Generate UTM coordinate tags from GPS info
     photoshop_paths.config    - For extracting or copying Photoshop paths
     picasa_faces.config       - Convert from Picasa to MWG/MP face regions

@@ -500,7 +500,7 @@ numerical.
                   the source @val and @prt values unless the input $val is
                   returned.  RawConv may generate Warning or Error tags, while
                   ValueConv and PrintConv should not (see ValueConv note below).
-                   Note: RawConv should only be used if necessary (in general,
+                  Note: RawConv should only be used if necessary (in general,
                   only if the conversion may return undef to ignore the tag, or
                   if a Warning may be issued) because ValueConv is more
                   efficient since it is only executed if the tag value is
@@ -596,9 +596,10 @@ numerical.
                   conversion is not applied for deleted tags (ie. $val is
                   undef).
 
-  PrintConvInv  : The inverse of PrintConv.  Only necessary if for Writable tags
-                  when PrintConv is specified (unless WriteAlso is used).  See
-                  ValueConvInv above for more details.
+  PrintConvInv  : The inverse of PrintConv.  Necessary for Writable tags
+                  when PrintConv is specified (unless WriteAlso is used), but
+                  may be used without PrintConv.  See ValueConvInv above for
+                  more details.
 
   PrintConvColumns : Number of columns for PrintConv lookup in HTML docs. If not
                   set, the number of columns is determined automatically

@@ -17,6 +17,20 @@ considered development releases, and are not uploaded to <a href="http://search.
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v10.28'><b>Sept. xx, 2016 - Version 10.28</b> - "EXIF 2.31"</a>
+<ul>
+<li>Added support for new EXIF 2.31 tags
+<li>Added some new Canon LensType values (thanks Norbert Wasser for one)
+<li>Added a new Olympus LensType (thanks LibRaw and Niels Kristian Bech Jensen)
+<li>Added a new Sony LensType and SonyModelID (thanks Jos Roost)
+<li>Added a new Pentax LensType
+<li>Added fotoware.config and bibble.config files to the distribution
+<li>Made Composite SubSecDateTimeOriginal, SubSecCreateDate and SubSecModifyDate
+    tags writable, and expanded to include new EXIF 2.31 time zone tags
+<li>Fixed problem writing user-defined structured tag elements with a dot (.) in
+    their tag ID
+</ul>
+
 <a name='v10.27'><b>Sept. 23, 2016 - Version 10.27</b></a>
 <ul>
 <li>Added a new CanonModelID (thanks LibRaw)
@@ -31,13 +45,12 @@ considered development releases, and are not uploaded to <a href="http://search.
     specified
 <li>Fixed Timecode printout in -v3 output for M2TS videos (thanks Ken Neighbors)
 <li>Fixed some problems with the new "-progress:TITLE" feature
-<li>Fixed problem where _exiftool_tmp file could be left around after a failed
+<li>Fixed problem where "_exiftool_tmp" file could be left around after a failed
     write attempt
 <li>Fixed potential "isn't numeric" runtime error when reading a PDF file with
     the -ee option
 </ul>
 
-<li>Added read support for GSpherical metadata in MP4 videos
 <a name='v10.26'><b>Sept. 15, 2016 - Version 10.26</b></a>
 <ul>
 <li>Added read support for GSpherical metadata in MP4 videos

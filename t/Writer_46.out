@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.93
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.28
 [File, System, Image] FileName - File Name: Writer_46_failed.jpg
 [File, System, Image] Directory - Directory: t
-[File, System, Image] FileSize - File Size: 9.2 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2015:04:18 07:17:53-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:18 07:17:53-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:04:18 07:17:53-04:00
+[File, System, Image] FileSize - File Size: 9.3 kB
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2016:09:26 11:36:05-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2016:09:26 11:36:05-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2016:09:26 11:36:05-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: JPEG
 [File, File, Image] FileTypeExtension - File Type Extension: jpg
@@ -22,9 +22,11 @@
 [EXIF, IFD0, Image] 296 - Resolution Unit: inches
 [EXIF, IFD0, Author] 315 - Artist: 7
 [EXIF, IFD0, Image] 531 - Y Cb Cr Positioning: Centered
-[EXIF, ExifIFD, Image] 36864 - Exif Version: 0230
+[EXIF, ExifIFD, Image] 36864 - Exif Version: 0231
 [EXIF, ExifIFD, Image] 37121 - Components Configuration: Y, Cb, Cr, -
 [EXIF, ExifIFD, Image] 37378 - Aperture Value: 7.0
+[EXIF, ExifIFD, Image] 37888 - Ambient Temperature: 7
+[EXIF, ExifIFD, Image] 37892 - Acceleration: 7
 [EXIF, ExifIFD, Image] 40960 - Flashpix Version: 0100
 [EXIF, ExifIFD, Image] 40961 - Color Space: Uncalibrated
 [IPTC, IPTC, Other] 120 - ARM Identifier: 7
@@ -35,7 +37,7 @@
 [IPTC, IPTC, Other] 152 - Audio Sampling Resolution: 07
 [IPTC, IPTC, Other] 153 - Audio Duration: 000007
 [IPTC, IPTC, Other] 154 - Audio Outcue: 7
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 9.93
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 10.28
 [XMP, XMP-iptcExt, Author] AboutCvTermCvId - About Cv Term Cv Id: 7
 [XMP, XMP-iptcExt, Author] AboutCvTermCvTermId - About Cv Term Id: 7
 [XMP, XMP-iptcExt, Author] AboutCvTermCvTermName - About Cv Term Name: 7

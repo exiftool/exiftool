@@ -295,11 +295,11 @@ B<Group> listed below is used unless another group is specified.
 
 The table below lists all EXIF tags.  Also listed are TIFF, DNG, HDP and
 other tags which are not part of the EXIF specification, but may co-exist
-with EXIF tags in some images.  Tags which are part of the EXIF 2.3
+with EXIF tags in some images.  Tags which are part of the EXIF 2.31
 specification have an underlined B<Tag Name> in the HTML version of this
 documentation.  See
-L<http://www.cipa.jp/std/documents/e/DC-008-2012_E.pdf> for the official
-EXIF 2.3 specification.
+L<http://www.cipa.jp/std/documents/e/DC-008-Translation-2016-E.pdf> for the
+official EXIF 2.31 specification.
 
   Tag ID   Tag Name                  Group      Writable
   ------   --------                  -----      --------
@@ -546,6 +546,9 @@ EXIF 2.3 specification.
   0x9003   DateTimeOriginal          ExifIFD    string
   0x9004   CreateDate                ExifIFD    string
   0x9009   GooglePlusUploadCode      ExifIFD    undef[n]
+  0x9010   OffsetTime                ExifIFD    string
+  0x9011   OffsetTimeOriginal        ExifIFD    string
+  0x9012   OffsetTimeDigitized       ExifIFD    string
   0x9101   ComponentsConfiguration   ExifIFD    undef[4]!:
   0x9102   CompressedBitsPerPixel    ExifIFD    rational64u!
   0x9201   ShutterSpeedValue         ExifIFD    rational64s
@@ -666,6 +669,12 @@ EXIF 2.3 specification.
   0x9330   MSPropertySetStorage      -          N
   0x9331   MSDocumentTextPosition    -          N
   0x935c   ImageSourceData           IFD0       undef!
+  0x9400   AmbientTemperature        ExifIFD    rational64s
+  0x9401   Humidity                  ExifIFD    rational64u
+  0x9402   Pressure                  ExifIFD    rational64u
+  0x9403   WaterDepth                ExifIFD    rational64s
+  0x9404   Acceleration              ExifIFD    rational64u
+  0x9405   CameraElevationAngle      ExifIFD    rational64s
   0x9c9b   XPTitle                   IFD0       int8u
   0x9c9c   XPComment                 IFD0       int8u
   0x9c9d   XPAuthor                  IFD0       int8u
@@ -29724,12 +29733,15 @@ values, may created via the ExifTool configuration file.
   ShutterSpeed         ExposureTime             N
                        ShutterSpeedValue
                        BulbDuration
-  SubSecCreateDate     EXIF:CreateDate          N
+  SubSecCreateDate     EXIF:CreateDate          Y
                        SubSecTimeDigitized
-  SubSecDateTimeOriginal EXIF:DateTimeOriginal  N
+                       OffsetTimeDigitized
+  SubSecDateTimeOriginal EXIF:DateTimeOriginal  Y
                        SubSecTimeOriginal
-  SubSecModifyDate     EXIF:ModifyDate          N
+                       OffsetTimeOriginal
+  SubSecModifyDate     EXIF:ModifyDate          Y
                        SubSecTime
+                       OffsetTime
   ThumbnailImage       ThumbnailOffset          Y
                        ThumbnailLength
   ThumbnailTIFF        SubfileType              N

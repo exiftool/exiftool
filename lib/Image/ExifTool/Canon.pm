@@ -85,7 +85,7 @@ sub ProcessSerialData($$$);
 sub ProcessFilters($$$);
 sub SwapWords($);
 
-$VERSION = '3.67';
+$VERSION = '3.68';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -401,7 +401,7 @@ $VERSION = '3.67';
     252 => 'Canon EF 70-200mm f/2.8L IS II USM + 1.4x', #50 (1.4x Mk II)
     253 => 'Canon EF 70-200mm f/2.8L IS II USM + 2x', #PH (NC)
     254 => 'Canon EF 100mm f/2.8L Macro IS USM', #42
-    255 => 'Sigma 24-105mm f/4 DG OS HSM | A or Other Sigma Lens', #50
+    255 => 'Sigma 24-105mm f/4 DG OS HSM | A or Sigma Lens', #50
     255.1 => 'Sigma 180mm f/2.8 EX DG OS HSM APO Macro', #50
     # Note: LensType 488 (0x1e8) is reported as 232 (0xe8) in 7D CameraSettings
     488 => 'Canon EF-S 15-85mm f/3.5-5.6 IS USM', #PH
@@ -422,7 +422,8 @@ $VERSION = '3.67';
     506 => 'Canon EF 400mm f/4 DO IS II USM', #42
     507 => 'Canon EF 16-35mm f/4L IS USM', #42
     508 => 'Canon EF 11-24mm f/4L USM', #PH
-    747 => 'Canon EF 100-400mm f/4.5-5.6L IS II USM', #JR
+    747 => 'Canon EF 100-400mm f/4.5-5.6L IS II USM or Tamron Lens', #JR
+    747.1 => 'Tamron SP 150-600mm F5-6.3 Di VC USD G2', #forum3833
     748 => 'Canon EF 100-400mm f/4.5-5.6L IS II USM + 1.4x', #JR (1.4x Mk III)
     750 => 'Canon EF 35mm f/1.4L II USM', #42
     751 => 'Canon EF 16-35mm f/2.8L III USM', #42
@@ -443,6 +444,7 @@ $VERSION = '3.67';
     4154 => 'Canon EF-S 24mm f/2.8 STM', #IB
     4155 => 'Canon EF-M 28mm f/3.5 Macro IS STM', #42
     4156 => 'Canon EF 50mm f/1.8 STM', #42
+    4157 => 'Canon EF-M 18-150mm 1:3.5-6.3 IS STM',#42
     36912 => 'Canon EF-S 18-135mm f/3.5-5.6 IS USM', #42
     65535 => 'n/a',
 );

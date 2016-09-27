@@ -53,7 +53,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '3.86';
+$VERSION = '3.87';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -1851,6 +1851,39 @@ my %sampleFormat = (
         Writable => 'undef',
         Count => -1,
     },
+    0x9010 => {
+        Name => 'OffsetTime',
+        Groups => { 2 => 'Time' },
+        Notes => 'time zone for ModifyDate',
+        Writable => 'string',
+        PrintConvInv => q{
+            return "+00:00" if $val =~ /\d{2}Z$/;
+            return sprintf("%s%.2d:%.2d",$1,$2,$3) if $val =~ /([-+])(\d{1,2}):(\d{2})/;
+            return undef;
+        },
+    },
+    0x9011 => {
+        Name => 'OffsetTimeOriginal',
+        Groups => { 2 => 'Time' },
+        Notes => 'time zone for DateTimeOriginal',
+        Writable => 'string',
+        PrintConvInv => q{
+            return "+00:00" if $val =~ /\d{2}Z$/;
+            return sprintf("%s%.2d:%.2d",$1,$2,$3) if $val =~ /([-+])(\d{1,2}):(\d{2})/;
+            return undef;
+        },
+    },
+    0x9012 => {
+        Name => 'OffsetTimeDigitized',
+        Groups => { 2 => 'Time' },
+        Notes => 'time zone for CreateDate',
+        Writable => 'string',
+        PrintConvInv => q{
+            return "+00:00" if $val =~ /\d{2}Z$/;
+            return sprintf("%s%.2d:%.2d",$1,$2,$3) if $val =~ /([-+])(\d{1,2}):(\d{2})/;
+            return undef;
+        },
+    },
     0x9101 => {
         Name => 'ComponentsConfiguration',
         Format => 'int8u',
@@ -2066,6 +2099,7 @@ my %sampleFormat = (
     0x9290 => {
         Name => 'SubSecTime',
         Groups => { 2 => 'Time' },
+        Notes => 'fractional seconds for ModifyDate',
         Writable => 'string',
         ValueConv => '$val=~s/ +$//; $val', # trim trailing blanks
         # extract fractional seconds from a full date/time value
@@ -2074,6 +2108,7 @@ my %sampleFormat = (
     0x9291 => {
         Name => 'SubSecTimeOriginal',
         Groups => { 2 => 'Time' },
+        Notes => 'fractional seconds for DateTimeOriginal',
         Writable => 'string',
         ValueConv => '$val=~s/ +$//; $val', # trim trailing blanks
         ValueConvInv => '$val=~/^(\d+)\s*$/ ? $1 : ($val=~/\.(\d+)/ ? $1 : undef)',
@@ -2081,6 +2116,7 @@ my %sampleFormat = (
     0x9292 => {
         Name => 'SubSecTimeDigitized',
         Groups => { 2 => 'Time' },
+        Notes => 'fractional seconds for CreateDate',
         Writable => 'string',
         ValueConv => '$val=~s/ +$//; $val', # trim trailing blanks
         ValueConvInv => '$val=~/^(\d+)\s*$/ ? $1 : ($val=~/\.(\d+)/ ? $1 : undef)',
@@ -2106,6 +2142,34 @@ my %sampleFormat = (
         Protected => 1,
         Binary => 1,
         Protected => 1, # (because this can be hundreds of megabytes)
+    },
+    0x9400 => {
+        Name => 'AmbientTemperature',
+        Notes => 'ambient temperature in degrees C, called Temperature by the EXIF spec.',
+        Writable => 'rational64s',
+    },
+    0x9401 => {
+        Name => 'Humidity',
+        Writable => 'rational64u',
+    },
+    0x9402 => {
+        Name => 'Pressure',
+        Notes => 'air pressure in hPa or mbar',
+        Writable => 'rational64u',
+    },
+    0x9403 => {
+        Name => 'WaterDepth',
+        Notes => 'depth under water in metres, negative for above water',
+        Writable => 'rational64s',
+    },
+    0x9404 => {
+        Name => 'Acceleration',
+        Notes => 'directionless camera acceleration in units of mGal, or 10-5 m/s2',
+        Writable => 'rational64u',
+    },
+    0x9405 => {
+        Name => 'CameraElevationAngle',
+        Writable => 'rational64s',
     },
     0x9c9b => {
         Name => 'XPTitle',
@@ -3774,6 +3838,25 @@ my %sampleFormat = (
     },
 );
 
+# conversions for Composite SubSec date/time tags
+my %subSecConv = (
+    # @val array: 0) date/time, 1) sub-seconds, 2) time zone offset
+    RawConv => q{
+        my $v;
+        if (defined $val[1] and $val[1]=~/^(\d+)/) {
+            my $subSec = $1;
+            # be careful here just in case the time already contains a timezone (contrary to spec)
+            undef $v unless ($v = $val[0]) =~ s/( \d{2}:\d{2}:\d{2})/$1\.$subSec/;
+        }
+        if (defined $val[2] and $val[0]!~/[-+]/ and $val[2]=~/^([-+])(\d{1,2}):(\d{2})/) {
+            $v = ($v || $val[0]) . sprintf('%s%.2d:%.2d', $1, $2, $3);
+        }
+        return $v;
+    },
+    PrintConv => '$self->ConvertDateTime($val)',
+    PrintConvInv => '$self->InverseDateTime($val)',
+);
+
 # EXIF Composite tags (plus other more general Composite tags)
 %Image::ExifTool::Exif::Composite = (
     GROUPS => { 2 => 'Image' },
@@ -4106,42 +4189,56 @@ my %sampleFormat = (
     SubSecDateTimeOriginal => {
         Description => 'Date/Time Original',
         Groups => { 2 => 'Time' },
+        Writable => 1,
         Require => {
             0 => 'EXIF:DateTimeOriginal',
+        },
+        Desire => {
             1 => 'SubSecTimeOriginal',
+            2 => 'OffsetTimeOriginal',
         },
-        # be careful here just in case there is a timezone following the seconds
-        RawConv => '$val[1]=~/\d/ ? $val : undef',
-        ValueConv => q{
-            $_ = $val[0]; s/( \d{2}:\d{2}:\d{2})/$1\.$val[1]/; $_;
+        WriteAlso => {
+            'EXIF:DateTimeOriginal' => '($val and $val=~/^(\d{4}:\d{2}:\d{2} \d{2}:\d{2}:\d{2})/) ? $1 : undef',
+            'EXIF:SubSecTimeOriginal' => '($val and $val=~/\.(\d+)/) ? $1 : undef',
+            'EXIF:OffsetTimeOriginal' => '($val and $val=~/([-+]\d{2}:\d{2}|Z)$/) ? ($1 eq "Z" ? "+00:00" : $1) : undef',
         },
-        PrintConv => '$self->ConvertDateTime($val)',
+        %subSecConv,
     },
     SubSecCreateDate => {
         Description => 'Create Date',
         Groups => { 2 => 'Time' },
+        Writable => 1,
         Require => {
             0 => 'EXIF:CreateDate',
+        },
+        Desire => {
             1 => 'SubSecTimeDigitized',
+            2 => 'OffsetTimeDigitized',
         },
-        RawConv => '$val[1]=~/\d/ ? $val : undef',
-        ValueConv => q{
-            $_ = $val[0]; s/( \d{2}:\d{2}:\d{2})/$1\.$val[1]/; $_;
+        WriteAlso => {
+            'EXIF:CreateDate' => '($val and $val=~/^(\d{4}:\d{2}:\d{2} \d{2}:\d{2}:\d{2})/) ? $1 : undef',
+            'EXIF:SubSecTimeDigitized' => '($val and $val=~/\.(\d+)/) ? $1 : undef',
+            'EXIF:OffsetTimeDigitized' => '($val and $val=~/([-+]\d{2}:\d{2}|Z)$/) ? ($1 eq "Z" ? "+00:00" : $1) : undef',
         },
-        PrintConv => '$self->ConvertDateTime($val)',
+        %subSecConv,
     },
     SubSecModifyDate => {
         Description => 'Modify Date',
         Groups => { 2 => 'Time' },
+        Writable => 1,
         Require => {
             0 => 'EXIF:ModifyDate',
+        },
+        Desire => {
             1 => 'SubSecTime',
+            2 => 'OffsetTime',
         },
-        RawConv => '$val[1]=~/\d/ ? $val : undef',
-        ValueConv => q{
-            $_ = $val[0]; s/( \d{2}:\d{2}:\d{2})/$1\.$val[1]/; $_;
+        WriteAlso => {
+            'EXIF:ModifyDate' => '($val and $val=~/^(\d{4}:\d{2}:\d{2} \d{2}:\d{2}:\d{2})/) ? $1 : undef',
+            'EXIF:SubSecTime' => '($val and $val=~/\.(\d+)/) ? $1 : undef',
+            'EXIF:OffsetTime' => '($val and $val=~/([-+]\d{2}:\d{2}|Z)$/) ? ($1 eq "Z" ? "+00:00" : $1) : undef',
         },
-        PrintConv => '$self->ConvertDateTime($val)',
+        %subSecConv,
     },
     CFAPattern => {
         Require => {

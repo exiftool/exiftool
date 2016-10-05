@@ -414,18 +414,18 @@ my %float8g = ( Format => 'float', PrintConv => 'sprintf("%.8g",$val)' );
     0x070 => { Name => 'AtmosphericTransAlpha1', %float6f }, #1 (value: 0.006569)
     0x074 => { Name => 'AtmosphericTransAlpha2', %float6f }, #1 (value: 0.012620)
     0x078 => { Name => 'AtmosphericTransBeta1',  %float6f }, #1 (value: -0.002276)
-    0x07C => { Name => 'AtmosphericTransBeta2',  %float6f }, #1 (value: -0.006670)
+    0x07c => { Name => 'AtmosphericTransBeta2',  %float6f }, #1 (value: -0.006670)
     0x080 => { Name => 'AtmosphericTransX',      %float6f }, #1 (value: 1.900000)
     # 0x84,0x88: 0
     # 0x8c - float: 0,4,6
     0x90 => { Name => 'CameraTemperatureRangeMax', %floatKelvin },
     0x94 => { Name => 'CameraTemperatureRangeMin', %floatKelvin },
-    0x98 => { Name => 'UnknownTemperature1', %floatKelvin, Unknown => 1 }, # 50 degrees over camera max
-    0x9c => { Name => 'UnknownTemperature2', %floatKelvin, Unknown => 1 }, # usually 10 or 20 degrees below camera min
-    0xa0 => { Name => 'UnknownTemperature3', %floatKelvin, Unknown => 1 }, # same as camera max
-    0xa4 => { Name => 'UnknownTemperature4', %floatKelvin, Unknown => 1 }, # same as camera min
-    0xa8 => { Name => 'UnknownTemperature5', %floatKelvin, Unknown => 1 }, # usually 50 or 88 degrees over camera max
-    0xac => { Name => 'UnknownTemperature6', %floatKelvin, Unknown => 1 }, # usually 10, 20 or 40 degrees below camera min
+    0x98 => { Name => 'CameraTemperatureMaxClip', %floatKelvin }, # 50 degrees over camera max
+    0x9c => { Name => 'CameraTemperatureMinClip', %floatKelvin }, # usually 10 or 20 degrees below camera min
+    0xa0 => { Name => 'CameraTemperatureMaxWarn', %floatKelvin }, # same as camera max
+    0xa4 => { Name => 'CameraTemperatureMinWarn', %floatKelvin }, # same as camera min
+    0xa8 => { Name => 'CameraTemperatureMaxSaturated', %floatKelvin }, # usually 50 or 88 degrees over camera max
+    0xac => { Name => 'CameraTemperatureMinSaturated', %floatKelvin }, # usually 10, 20 or 40 degrees below camera min
     0xd4 => { Name => 'CameraModel',        Format => 'string[32]' },
     0xf4 => { Name => 'CameraPartNumber',   Format => 'string[16]' }, #1
     0x104 => { Name => 'CameraSerialNumber',Format => 'string[16]' }, #1

@@ -49,7 +49,7 @@ use vars qw($VERSION %minoltaLensTypes %minoltaTeleconverters %minoltaColorMode
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.38';
+$VERSION = '2.39';
 
 # Full list of product codes for Sony-compatible Minolta lenses
 # (ref http://www.kb.sony.com/selfservice/documentLink.do?externalId=C1000570)
@@ -520,10 +520,6 @@ $VERSION = '2.38';
     # 65280 = 0xff00
     65280 => 'Sigma 16mm F2.8 Filtermatic Fisheye', #IB
     # all M42-type lenses give a value of 65535 (and FocalLength=0, FNumber=1)
-    65535 => 'E-Mount, T-Mount, Other Lens or no lens', #JD/JR
-#
-# Sony E-type lenses (NOTE: these should be kept in sync with %sonyLensTypes2 of Sony.pm)
-#
     65535 => 'E-Mount, T-Mount, Other Lens or no lens', #JD/JR
 #
 # Sony E-type lenses (NOTE: these should be kept in sync with %sonyLensTypes2 of Sony.pm)

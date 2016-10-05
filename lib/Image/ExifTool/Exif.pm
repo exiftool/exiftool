@@ -1364,8 +1364,37 @@ my %sampleFormat = (
             3 => 'Sony Lossless Compressed RAW', #IB
         },
     },
-    0x7035 => 'ChromaticAberrationCorrParams', #forum6509 (Sony A7 ARW)
-    0x7037 => 'DistortionCorrParams', #forum6509 (Sony A7 ARW)
+    # 0x7001 - int16u[1] (in SubIFD of Sony ARW images) - values: 0,1
+    # 0x7010 - int16u[4] (in SubIFD of Sony ARW images) - values: "0 9824 11512 16362","8000 10400 12900 14100"
+    # 0x7011 - int16u[4] (in SubIFD of Sony ARW images) - values: "0 4912 8212 12287","4000 7200 10050 12075"
+    # 0x7020 - int32u[1] (in SubIFD of Sony ARW images) - values: 0,3
+    # 0x7031 - int16u[1] (in SubIFD of Sony ARW images) - values: 256,257
+    0x7032 => {
+        Name => 'LightFalloffParams', #forum7640
+        Notes => 'found in Sony ARW images',
+        Protected => 1,
+        Writable => 'int16s',
+        WriteGroup => 'SubIFD',
+        Count => 17,
+    },
+    # 0x7034 - int16u[1] (in SubIFD of Sony ARW images) - values: 1
+    0x7035 => {
+        Name => 'ChromaticAberrationCorrParams', #forum6509
+        Notes => 'found in Sony ARW images',
+        Protected => 1,
+        Writable => 'int16s',
+        WriteGroup => 'SubIFD',
+        Count => 33,
+    },
+    # 0x7036 - int16u[1] (in SubIFD of Sony ARW images) - values: 0,1,17
+    0x7037 => {
+        Name => 'DistortionCorrParams', #forum6509
+        Notes => 'found in Sony ARW images',
+        Protected => 1,
+        Writable => 'int16s',
+        WriteGroup => 'SubIFD',
+        Count => 17,
+    },
     0x800d => 'ImageID', #10
     0x80a3 => { Name => 'WangTag1', Binary => 1 }, #20
     0x80a4 => { Name => 'WangAnnotation', Binary => 1 },
@@ -2147,9 +2176,12 @@ my %sampleFormat = (
         Name => 'AmbientTemperature',
         Notes => 'ambient temperature in degrees C, called Temperature by the EXIF spec.',
         Writable => 'rational64s',
+        PrintConv => '"$val C"',
+        PrintConvInv => '$val=~s/ ?C//; $val',
     },
     0x9401 => {
         Name => 'Humidity',
+        Notes => 'ambient relative humidity in percent',
         Writable => 'rational64u',
     },
     0x9402 => {

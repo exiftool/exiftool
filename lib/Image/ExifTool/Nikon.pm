@@ -59,7 +59,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.27';
+$VERSION = '3.28';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -1562,6 +1562,19 @@ my %binaryDataAttrs = (
                 TagTable => 'Image::ExifTool::Nikon::ShotInfoD4S',
                 DecryptStart => 4,
                 DecryptLen => 0x3697,
+                ByteOrder => 'LittleEndian',
+            },
+        },
+        { #28 (D5 firmware version 1.10a)
+            Condition => '$$valPt =~ /^0238/',
+            Name => 'ShotInfoD5',
+            SubDirectory => {
+                TagTable => 'Image::ExifTool::Nikon::ShotInfoD500',
+                DecryptStart => 4,
+                # initially only decrypt enough to extract CustomSettingsOffset
+                DecryptLen => 0x58,
+                # then decrypt through to the end of the custom settings
+                DecryptMore => 'Get32u(\$data, 0x58) + 90 + 4',
                 ByteOrder => 'LittleEndian',
             },
         },
@@ -4884,7 +4897,7 @@ my %nikonFocalConversions = (
     # note: DecryptLen currently set to 0x720
 );
 
-# shot information for the D500 firmware 1.01 (encrypted) - ref 28
+# shot information for the D5 firmware 1.10a and D500 firmware 1.01 (encrypted) - ref 28
 %Image::ExifTool::Nikon::ShotInfoD500 = (
     PROCESS_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
     WRITE_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
@@ -4895,7 +4908,7 @@ my %nikonFocalConversions = (
     WRITABLE => 1,
     FIRST_ENTRY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
-    NOTES => 'These tags are extracted from encrypted data in images from the D500.',
+    NOTES => 'These tags are extracted from encrypted data in images from the D5 and D500.',
     0x00 => {
         Name => 'ShotInfoVersion',
         Format => 'string[4]',
@@ -4938,22 +4951,6 @@ my %nikonFocalConversions = (
             0x01 => 'Off',
         },
     },
-    0x0e7c => {
-        Name => 'Hook1',
-        Hidden => 1,
-        RawConv => 'undef',
-        # account for variable location of Shooting Menu data
-        Hook => '$varSize = $$self{ShootingMenuOffset} - 0x0e7d',
-    },
-#    0x0f68 => {  #this decode works, but involves more bits than should be necessary
-#        Name => 'ShutterTrigger',
-#        Mask => 0xff,
-#        PrintConv => {
-#           0 => 'Timer',
-#           15 => 'Cable Release/Remote',
-#           195 => 'Shutter Button',
-#       },
-#   },
     0x07d4 => {
         Name => 'JPGCompression',
         Mask => 0x01,
@@ -5084,6 +5081,13 @@ my %nikonFocalConversions = (
             4 => '5 Shots',
         },
     },
+    0x0e7c => {
+        Name => 'Hook1',
+        Hidden => 1,
+        RawConv => 'undef',
+        # account for variable location of Shooting Menu data
+        Hook => '$varSize = $$self{ShootingMenuOffset} - 0x0e7d',
+    },
     0x0e7d => {
         Name => 'PhotoShootingMenuBank',
         Mask => 0x03,
@@ -5096,6 +5100,8 @@ my %nikonFocalConversions = (
     },
     0x0e7f => {
         Name => 'PrimarySlot',
+        Condition => '$$self{Model} =~ /\bD500\b/',
+        Notes => 'D500 only',
         Mask => 0x80,
         PrintConv => {
             0x00 => 'XQD Card',
@@ -5215,15 +5221,31 @@ my %nikonFocalConversions = (
         # account for variable location of CustomSettings data
         Hook => '$varSize = $$self{CustomSettingsOffset} - 0x0eeb',
     },
-    0x0eeb => {
+    0x0eeb => [{
+        Name => 'CustomSettingsD5',
+        Condition => '$$self{Model} =~ /\bD5\b/',
+        Format => 'undef[90]',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::NikonCustom::SettingsD5',
+        },
+    },{
         Name => 'CustomSettingsD500',
         Format => 'undef[90]',
         SubDirectory => {
             TagTable => 'Image::ExifTool::NikonCustom::SettingsD500',
         },
-    },
+    }],
     # note: DecryptMore currently set to 90+4 bytes after CustomSettingsOffset
 
+#    0x0f68 => {  #this decode works, but involves more bits than should be necessary
+#        Name => 'ShutterTrigger',
+#        Mask => 0xff,
+#        PrintConv => {
+#           0 => 'Timer',
+#           15 => 'Cable Release/Remote',
+#           195 => 'Shutter Button',
+#       },
+#   },
 # don't decode because it requires decrypting a LOT of data just for this little bit
 #    0x2cb2 => {
 #        Name => 'ExtendedPhotoShootingBanks',

@@ -113,8 +113,9 @@ the root directory, <b>BlockSize</b> is the length of the file.</p>
 <p>The <b>OtherData</b> normally does not exist (eg. the <b>DirEntries</b>
 usually end at the <b>DirStart</b> pointer), but this is not always the case:
 Canon Digital Photo Professional uses this area in the root directory block to
-store VRD data in edited CRW images.  (Note that VRD supports embedded XMP,
-which provides a technique to store modern metadata in CRW images!)</p>
+store <a href="TagNames/CanonVRD.html">VRD data</a> in edited CRW images.  (Note
+that VRD supports embedded XMP, which provides a technique to store modern
+metadata in CRW images!)</p>
 
 <h3>CRW Directory Entry Format</h3>
 <p>The CRW directory consists of N 10-byte entries.  The format of each entry is

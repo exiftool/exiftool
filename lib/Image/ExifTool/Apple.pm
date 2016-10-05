@@ -53,6 +53,10 @@ $VERSION = '1.02';
     # 0x0010 - int32s: 1
     # 0x0011 - string[37]: some type of UID, eg. "FFCBAC24-E547-4BBC-AF47-38B1A3D845E3\0" (iPhone 6s, iOS 6.1)
     # 0x0014 - int32s: 1,2,3,5 (iPhone 6s, iOS 6.1)
+    0x0015 => {
+        Name => 'ImageUniqueID',
+        Writable => 'string',
+    },
 );
 
 # PLIST-format CMTime structure (ref PH)

@@ -37,7 +37,7 @@
     error
 <li>API Changes:
     <ul>
-    <li>Changed QuickTimeUTC API option to also enforce proper time zero
+    <li>Changed API QuickTimeUTC option to also enforce proper time zero
     </ul>
 </ul>
 
@@ -157,7 +157,7 @@
 <li>Added two new <a href="TagNames/Sony.html#SonyModelID">SonyModelID</a>'s (thanks Jos Roost for one)
 <li>Added two new <a href="TagNames/Sony.html#LensType2">Sony LensType2</a> values (thanks Jos Roost)
 <li>Added a new <a href="TagNames/Pentax.html#LensType">Pentax LensType</a>
-<li>Extract a number of new <a href="TagNames/Extra.html">File System tags</a> when SystemTags API option is set
+<li>Extract a number of new <a href="TagNames/Extra.html">File System tags</a> when API SystemTags option is set
 <li>Decode a new FujiFilm tag (thanks TonyB)
 <li>Decode a number of new <a href="TagNames/Sony.html">Sony tags</a> (thanks Jos Roost)
 <li>Disabled writing of XMP to PostScript-format Adobe Illustrator files
@@ -509,7 +509,7 @@
 <li>Improved warning message if "DIR" or "FILE" is used literally on the command
     line
 <li>Improved "-j -b" output to encode any non-UTF8 values as Base64
-<li>Enhanced -fast option (FastScan API option) to allow file processing to be
+<li>Enhanced -fast option (API FastScan option) to allow file processing to be
     bypassed entirely
 <li>Changed conversions for a couple of Nikon 1 AF tags for consistency
 <li>Changed reported FileType for LNK, KEY, KTH, NUMBERS, NMBTEMPLATE and PAGES
@@ -6112,7 +6112,7 @@
 <li>Made Photoshop:XResolution and Photoshop:YResolution writable
 <li>Fixed problem with processing some RIFF files
 <li>Added a new Canon LensType
-<li>API changes:
+<li>API Changes:
     <ul>
     <li>SetNewValue() now accepts an ARRAY reference for setting list-type tags
         such as Keywords, or a SCALAR reference for binary data, so it may now
@@ -6187,7 +6187,7 @@
     and David Buret)
 <li>Decode PrintIM information in Casio QV-4000
 <li>Fixed Decoding of Canon EOS D60 serial numbers to agree with Canon utilities
-<li>API changes:
+<li>API Changes:
     <ul>
     <li>Added HtmlDump and TextOut options
     </ul>
@@ -7826,7 +7826,7 @@
 <li>Improvements to TIFF processing
 <li>Set value to "Undefined" if PrintConv evaluates to undefined value
 <li>Added -G option
-<li>API changes:
+<li>API Changes:
     <ul>
     <li>Changed all option names: shortened and changed to mixed case (sorry!)
     </ul>
@@ -7866,7 +7866,7 @@
 <li>Improve XMP parsing for 'Bag' elements
 <li>Capitalize first letter of XMP tag descriptions
 <li>Patch problem with APP13 resource written by older Photoshop versions
-<li>API changes:
+<li>API Changes:
     <ul>
     <li>Added EXCLUDE and GROUP# options
     <li>Change default value of SAVE_DUPLICATES option to 1
@@ -7877,7 +7877,7 @@
 <ul>
 <li>Restructuring only -- the behaviour of the exiftool script was not changed
 <li>Moved html documentation to new html directory
-<li>API changes:
+<li>API Changes:
     <ul>
     <li>Conform to standard Perl module mechanics:
         <ul>
@@ -7911,7 +7911,7 @@
     File::RandomAccessFile)
 <li>Added IxusAFPoint tag to Canon maker notes
 <li>Avoid scanning past end of Canon binary data blocks
-<li>API changes:
+<li>API Changes:
     <ul>
     <li>GetFoundTags() and GetRequestedTags() now return list instead of list
         reference
@@ -7925,7 +7925,7 @@
 
 <a name='v3.01'><b>Feb. 15, 2004 - Version 3.01</b></a>
 <ul>
-<li>API changes:
+<li>API Changes:
     <ul>
     <li>Added GetValue() function
     <li>Completed API documentation
@@ -7937,7 +7937,7 @@
 <li>Removed -all option (it is now the default -- specify -common for previous
     default behaviour)
 <li>Added -a option to allow printout of duplicate tag values
-<li>API changes:
+<li>API Changes:
     <ul>
     <li>I am finally happy with the API, so future major changes are less likely
         (hence the major version number)
@@ -7953,7 +7953,7 @@
 <a name='v2.71'><b>Feb. 12, 2004 - Version 2.71</b></a>
 <ul>
 <li>Still more playing with Pentax maker notes
-<li>More API changes:
+<li>More API Changes:
     <ul>
     <li>Added RandomAccessFile.pm
     <li>All image file i/o now done through a RandomAccessFile object

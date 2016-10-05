@@ -4141,7 +4141,7 @@ sub NewGUID()
 sub InverseDateTime($$;$$)
 {
     my ($self, $val, $tzFlag, $dateOnly) = @_;
-    my ($rtnVal, $tz);
+    my ($rtnVal, $tz, $noStrptime);
     # strip off timezone first if it exists
     if ($val =~ s/([+-])(\d{1,2}):?(\d{2})\s*$//i) {
         $tz = sprintf("$1%.2d:$3", $2);
@@ -4151,6 +4151,37 @@ sub InverseDateTime($$;$$)
         $tz = '';
         # allow special value of 'now'
         return TimeNow($tzFlag) if lc($val) eq 'now';
+    }
+    my $fmt = $$self{OPTIONS}{DateFormat};
+    # only convert date if a format was specified and the date is recognizable
+    if ($fmt) {
+        if (eval { require POSIX::strptime }) {
+            my @a = POSIX::strptime($val, $fmt);
+            if (defined $a[5] and length $a[5]) {
+                $a[5] += 1900; # add 1900 to year
+            } else {
+                warn "Invalid date/time (no year)\n";
+                return undef;
+            }
+            ++$a[4] if defined $a[4] and length $a[4];  # add 1 to month
+            my $i;
+            foreach $i (0..4) {
+                if (not defined $a[$i] or not length $a[$i]) {
+                    if ($i < 2 or $dateOnly) { # (allow missing minutes/seconds)
+                        $a[$i] = '  ';
+                    } else {
+                        warn("Incomplete date/time specification\n");
+                        return undef;
+                    }
+                } elsif (length($a[$i]) < 2) {
+                    $$a[$i] = "0$a[$i]";# pad to 2 digits if necessary
+                }
+            }
+            $val = join(':', @a[5,4,3]) . ' ' . join(':', @a[2,1,0]);
+        } elsif ($$self{OPTIONS}{StrictDate}) {
+            warn "Install POSIX::strptime to do inverse date/time conversions\n";
+            return undef;
+        }
     }
     if ($val =~ /(\d{4})/g) {           # get YYYY
         my $yr = $1;

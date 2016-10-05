@@ -495,22 +495,26 @@ distribution for examples.</p>
 <tr><td>Compress</td><td><a name="Compress"></a>Flag to write new values in compressed format if possible.
     Has no effect unless Compress::Zlib is installed.</td>
     <td align=center>0 or 1</td><td align=center>undef</td></tr>
-<tr><td>CoordFormat</td><td><a name="CoordFormat"></a>Specify output format for GPS coordinates.</td>
-    <td>A printf-style format string with specifiers for degrees, minutes and
-    seconds in that order, however minutes and seconds may be omitted.  If the
-    hemisphere is known, a reference direction (N, S, E or W) is appended to
-    each printed coordinate, but adding a '<code>+</code>' to the first format
-    specifier (eg. <code>'%+.6f'</code>) prints a signed coordinate instead.
-    The default for reading is equivalent to a format string of
-    <code>q{%d&nbsp;deg&nbsp;%d'&nbsp;%.2f"}</code>, but to avoid a loss
+<tr><td>CoordFormat</td><td>Specify output format for GPS coordinates.</td>
+    <td><a name="CoordFormat"></a>A printf-style format string with specifiers
+    for degrees, minutes and seconds in that order, however minutes and seconds
+    may be omitted.  If the hemisphere is known, a reference direction (N, S, E
+    or W) is appended to each printed coordinate, but adding a '<code>+</code>'
+    to the first format specifier (eg. <code>'%+.6f'</code>) prints a signed
+    coordinate instead. The default for reading is equivalent to a format string
+    of <code>q{%d&nbsp;deg&nbsp;%d'&nbsp;%.2f"}</code>, but to avoid a loss
     of precision the default for copying tags with
     <a href="#SetNewValuesFromFile">SetNewValuesFromFile</a> is
     <code>q{%d&nbsp;%d&nbsp;%.8f}</code>.
     </td><td align=center>undef</td></tr>
-<tr><td>DateFormat</td><td><a name="DateFormat"></a>Output format for date/time values. If date can not
+<tr><td>DateFormat</td><td>Output format for date/time values. If date can not
     be converted, value is left unchanged unless the StrictDate option is set.
-    Timezones are ignored.</td> <td>See strftime manpage for details.  The default
-    is similar to a format string of <code>"%Y:%m:%d %H:%M:%S"</code>.</td>
+    Timezones are ignored.  The inversion conversion (ie. when calling
+    <a href="#SetNewValue">SetNewValue</a>) is only performed if POSIX::strptime
+    is installed.</td> <td><a name="DateFormat"></a>See strftime manpage for
+    details.  The default setting of undef causes date/time values to remain in
+    standard EXIF format (similar to a DateFormat of
+    <code>"%Y:%m:%d %H:%M:%S"</code>).</td>
     <td align=center>undef</td></tr>
 <tr><td>Duplicates</td><td><a name="Duplicates"></a>Flag to return values from
     tags with duplicate names when extracting information.</td>
@@ -655,7 +659,7 @@ distribution for examples.</p>
 <tr><td>List</td><td><a name="List"></a>Flag to extract lists of PrintConv values into arrays instead of combining
     them into a string of values.</td><td align=center>0 or 1</td><td align=center>undef</td></tr>
 <tr><td>ListItem</td><td><a name="ListItem"></a>Return only a specific item from
-    List-type values.  A value of 0 returns the first item in each list, 1 returns
+    list-type values.  A value of 0 returns the first item in each list, 1 returns
     the second item, etc. Negative indices may also be used, with -1 representing the
     last item in the list. Applies only to the top-level list of nested lists.</td>
     <td align=center>An integer, or undef</td><td align=center>undef</td></tr>
@@ -664,11 +668,11 @@ distribution for examples.</p>
 <tr><td>ListSplit</td><td><a name="ListSplit"></a>Regular expression used to split values of list-type tags
     into individual items when writing.  (eg. use ',\\s*' to split a comma-separated list)</td>
     <td align=center>A regular expression pattern</td><td align=center>undef</td></tr>
-<tr><td>MakerNotes</td><td><a name="MakerNotes"></a>Option to extract MakerNotes and other writable
+<tr><td>MakerNotes</td><td>Option to extract MakerNotes and other writable
     subdirectories (such as PrintIM) as a data block.  Normally when the MakerNotes
     are extracted they are rebuilt to include data outside the boundaries of the
     original maker note data block, but a value of 2 disables this feature.</td>
-    <td><table class=clear>
+    <td><a name="MakerNotes"></a><table class=clear>
     <tr><td valign=top align=center><b>0</b>&nbsp;=</td><td>Don't extract writable subdirectories</td></tr>
     <tr><td valign=top align=center><b>1</b>&nbsp;=</td><td>Extract and rebuild makernotes into self-contained block</td></tr>
     <tr><td valign=top align=center><b>2</b>&nbsp;=</td><td>Extract without rebuilding makernotes</td></tr>
@@ -681,7 +685,7 @@ distribution for examples.</p>
     If not set, a minor error is issued for missing values, or the value
     is set to '' if IgnoreMinorErrors is set.</td>
     <td align=center>Any string, or undef</td><td align=center>undef</td></tr>
-<tr><td>NoPDFList</td><td><a name="NoPDFList"></a>Flag to avoid splitting PDF List-type tag
+<tr><td>NoPDFList</td><td><a name="NoPDFList"></a>Flag to avoid splitting PDF list-type tag
     values into separate items.</td>
     <td align=center>0 or 1</td><td align=center>undef</td></tr>
 <tr><td>Password</td><td><a name="Password"></a><a name="Passwd"></a>Password for reading/writing
@@ -778,16 +782,20 @@ distribution for examples.</p>
     Useful to allow external input into tag name expressions and ValueConv logic.
     <i>PARAM</i> is the user-defined parameter name (case insensitive). These parameters
     may be accessed in tag name expressions by prefixing the parameter name with a dollar
-    sign, just like normal tags. If called without a parameter name,
+    sign, just like normal tags. If called without no additional arguments,
     <code>Options('UserParam')</code> returns a reference to the hash of all user
     parameters (with lower-case names).
 </td>
     <td><table class=clear>
-    <tr><td valign=top><i>PARAM</i></td><td>- Get parameter</td></tr>
-    <tr><td valign=top><i>PARAM=</i></td><td>- Clear parameter</td></tr></table>
+    <tr><td valign=top><i>PARAM</i></td><td valign=top>-</td><td>Get parameter</td></tr>
+    <tr><td valign=top><i>PARAM=</i></td><td valign=top>-</td><td>Clear parameter</td></tr></table>
     <table class=clear>
-    <tr><td valign=top><i>PARAM=VALUE</i></td><td>- Set parameter</td></tr>
-    </table></td><td align=center>{ }</td></tr>
+    <tr><td valign=top><i>PARAM=VALUE</i></td><td valign=top>-</td><td>Set parameter</td></tr>
+    </table><table class=clear>
+    <tr><td valign=top><i>hash&nbsp;ref</i></td><td valign=top>-</td><td>Set UserParam hash</td></tr>
+    <tr><td valign=top><b>undef</b></td><td valign=top>-</td><td>Clear UserParam hash</td></tr>
+    </table>
+    </td><td align=center>{ }</td></tr>
 <tr><td>Verbose</td><td>Print verbose messages to file specified by TextOut option.
     <a href="verbose.html">Click here</a> for example outputs.</td>
     <td><a name="Verbose"></a><table class=clear>
@@ -1190,7 +1198,12 @@ errors are printed to STDERR.
     <tr><td valign=top align=center><b>1</b>&nbsp;=</td><td>Add to existing list, or warn for non-list tags</td></tr>
     <tr><td valign=top align=center><b>2</b>&nbsp;=</td><td>Add to existing list, or overwrite non-list tags</td></tr>
     </table></td><td align=center>0</td></tr>
-<tr><td>DelValue</td><td>Delete existing tag from a file if it has the specified value</td>
+<tr><td>DelValue</td><td>Delete existing tag from a file if it has the specified
+    value.  For list-type tags this deletes a specified item from the list.  For
+    non-list tags this may be used to conditionally replace a tag by providing a
+    new value in a separate call to <a href="#SetNewValue">SetNewValue</a> (see
+    examples below).  For structured tags, the entire structure is deleted/replaced
+    only if all of the specified fields match the existing structure.</td>
     <td align=center>0 or 1</td><td align=center>0</td></tr>
 <tr><td>EditGroup</td><td>Create tags in existing groups only. Don't create new group.
     Effectively removes the 'g' from the ExifTool WriteMode option for this tag only.</td>
@@ -1283,6 +1296,14 @@ $exifTool-&gt;<b>SetNewValue</b>(Keywords =&gt; $word, AddValue =&gt; 1);
 </pre></td></tr></table></blockquote>
 
 <blockquote><table class='box'><tr><td><pre>
+<span class=com># conditionally add or replace a tag if it didn't exist before
+# or had a specified value ("old value")</span>
+$exifTool-&gt;<b>SetNewValue</b>(Description =&gt; '', DelValue =&gt; 1);
+$exifTool-&gt;<b>SetNewValue</b>(Description =&gt; 'old value', DelValue =&gt; 1);
+$exifTool-&gt;<b>SetNewValue</b>(Description =&gt; 'new value');
+</pre></td></tr></table></blockquote>
+
+<blockquote><table class='box'><tr><td><pre>
 <span class=com># set a tag in a specific group</span>
 $exifTool-&gt;<b>SetNewValue</b>(Headline =&gt; $val, Group =&gt; 'XMP');
 $exifTool-&gt;<b>SetNewValue</b>('XMP:Headline' =&gt; $val);  <span class=com># (equivalent)</span>
@@ -1337,8 +1358,8 @@ group (with '<code>Adobe:*</code>') or as a block (with '<code>Adobe</code>').</
 <p>The following ExifTool options are effective in the call to
 <a href="#SetNewValue">SetNewValue</a>:</p>
 <blockquote>
-Charset, Escape, IgnoreMinorErrors, Lang, ListSep, ListSplit, PrintConv, Verbose
-and WriteMode.
+Charset, DateFormat, Escape, IgnoreMinorErrors, Lang, ListSep, ListSplit,
+PrintConv, StrictDate, Verbose and WriteMode.
 </blockquote>
 
 <hr><h2><a name="GetNewValue">GetNewValue</a><a name="GetNewValues"></a></h2>

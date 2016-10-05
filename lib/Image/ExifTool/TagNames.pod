@@ -436,8 +436,9 @@ official EXIF 2.31 specification.
   0x4748   StitchInfo                -          Microsoft Stitch
   0x4749   RatingPercent             IFD0       int16u/
   0x7000   SonyRawFileType           -          N
-  0x7035   ChromaticAberrationCorrParams -      N
-  0x7037   DistortionCorrParams      -          N
+  0x7032   LightFalloffParams        SubIFD     int16s[17]!
+  0x7035   ChromaticAberrationCorrParams SubIFD int16s[33]!
+  0x7037   DistortionCorrParams      SubIFD     int16s[17]!
   0x800d   ImageID                   -          N
   0x80a3   WangTag1                  -          N
   0x80a4   WangAnnotation            -          N
@@ -4459,6 +4460,7 @@ Tags extracted from maker notes of images from the iPhone 5 with iOS 7.
   0x0003   RunTime                              Apple RunTime
   0x000a   HDRImageType                         int32s
   0x000b   BurstUUID                            string
+  0x0015   ImageUniqueID                        string
 
 =head3 Apple RunTime Tags
 
@@ -7496,12 +7498,12 @@ for details.
     128    AtmosphericTransX                    N
     144    CameraTemperatureRangeMax            N
     148    CameraTemperatureRangeMin            N
-    152    UnknownTemperature1?                 N
-    156    UnknownTemperature2?                 N
-    160    UnknownTemperature3?                 N
-    164    UnknownTemperature4?                 N
-    168    UnknownTemperature5?                 N
-    172    UnknownTemperature6?                 N
+    152    CameraTemperatureMaxClip             N
+    156    CameraTemperatureMinClip             N
+    160    CameraTemperatureMaxWarn             N
+    164    CameraTemperatureMinWarn             N
+    168    CameraTemperatureMaxSaturated        N
+    172    CameraTemperatureMinSaturated        N
     212    CameraModel                          N
     244    CameraPartNumber                     N
     260    CameraSerialNumber                   N
@@ -9370,6 +9372,7 @@ DiMAGE X and Xt.
            ShotInfoD7000                        Nikon ShotInfoD7000
            ShotInfoD4                           Nikon ShotInfoD4
            ShotInfoD4S                          Nikon ShotInfoD4S
+           ShotInfoD5                           Nikon ShotInfoD500
            ShotInfoD500                         Nikon ShotInfoD500
            ShotInfoD610                         Nikon ShotInfoD610
            ShotInfo02xx                         Nikon ShotInfo
@@ -9856,7 +9859,7 @@ These tags are extracted from encrypted data in images from the D4S.
 
 =head3 Nikon ShotInfoD500 Tags
 
-These tags are extracted from encrypted data in images from the D500.
+These tags are extracted from encrypted data in images from the D5 and D500.
 
    Index   Tag Name                             Writable
    -----   --------                             --------
@@ -9877,7 +9880,8 @@ These tags are extracted from encrypted data in images from the D500.
    3714    ISOAutoHiLimit                       int8u & 0xff
    3716    FlickerReduction                     int8u & 0x20
   3716.1    PhotoShootingMenuBankImageArea       int8u & 0x07
-   3819    CustomSettingsD500                   NikonCustom SettingsD500
+   3819    CustomSettingsD5                     NikonCustom SettingsD5
+           CustomSettingsD500                   NikonCustom SettingsD500
 
 =head3 Nikon ShotInfoD610 Tags
 
@@ -10754,7 +10758,7 @@ Custom settings for the D800 and D800E.
 
 =head3 NikonCustom SettingsD810 Tags
 
-Custom settings for the D810
+Custom settings for the D810.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
@@ -11108,9 +11112,99 @@ Custom settings for the D4 and D4S.
    54.1    AssignRemoteFnButton                 int8u & 0x1f
    55.1    LensFocusFunctionButtons             int8u & 0x3f
 
+=head3 NikonCustom SettingsD5 Tags
+
+Custom settings for the D5.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+    0.1    CustomSettingsBank                   int8u & 0x03
+    1.1    AF-CPrioritySelection                int8u & 0xc0
+    1.2    NumberOfFocusPoints                  int8u & 0x10
+    1.3    Three-DTrackingFaceDetection         int8u & 0x08
+    1.4    AF-SPrioritySelection                int8u & 0x20
+    1.5    BlockShotAFResponse                  int8u & 0x07
+    2.1    FocusPointWrap                       int8u & 0x08
+    2.2    AFPointBrightness                    int8u & 0x06
+    4.1    ISODisplay                           int8u & 0x08
+    4.2    GridDisplay                          int8u & 0x02
+    5.1    LCDIllumination                      int8u & 0x20
+    5.2    ElectronicFront-CurtainShutter       int8u & 0x08
+    6.1    ReverseIndicators                    int8u & 0x80
+    6.2    CommandDialsReverseRotation          int8u & 0x18
+    6.3    EasyExposureCompensation             int8u & 0x03
+    7.1    ExposureControlStepSize              int8u & 0xc0
+    7.2    ISOStepSize                          int8u & 0x30
+    7.3    ExposureCompStepSize                 int8u & 0x0c
+    8.1    CenterWeightedAreaSize               int8u & 0xe0
+    8.2    FineTuneOptMatrixMetering            int8u & 0x0f
+    9.1    FineTuneOptCenterWeighted            int8u & 0xf0
+    9.2    FineTuneOptSpotMetering              int8u & 0x0f
+   10.1    MultiSelectorShootMode               int8u & 0xe0
+   10.3    MultiSelector                        int8u & 0x01
+   11.1    ExposureDelayMode                    int8u & 0xc0
+   11.2    CLModeShootingSpeed                  int8u & 0x0f
+   12.1    MaxContinuousRelease                 int8u
+   13.1    AutoBracketOrder                     int8u & 0x10
+   13.2    AutoBracketModeM                     int8u & 0x0c
+   14.1    Func1Button                          int8u & 0x3f
+   15.1    PreviewButton                        int8u & 0x3f
+   16.1    AssignBktButton                      int8u & 0x07
+   18.1    CommandDialsChangeMainSub            int8u & 0xe0
+   18.2    CommandDialsMenuAndPlayback          int8u & 0x18
+   18.3    CommandDialsApertureSetting          int8u & 0x04
+   18.4    ReleaseButtonToUseDial               int8u & 0x01
+   19.1    StandbyTimer                         int8u & 0xf0
+   20.1    SelfTimerTime                        int8u & 0xc0
+   20.2    SelfTimerShotInterval                int8u & 0x30
+   20.3    SelfTimerShotCount                   int8u & 0x0f
+   21.1    ImageReviewMonitorOffTime            int8u & 0xe0
+   21.2    LiveViewMonitorOffTime               int8u & 0x1c
+   22.1    MenuMonitorOffTime                   int8u & 0xe0
+   22.2    ShootingInfoMonitorOffTime           int8u & 0x1c
+   23.1    FlashSyncSpeed                       int8u & 0xf0
+   23.2    FlashShutterSpeed                    int8u & 0x0f
+   31.1    ModelingFlash                        int8u & 0x20
+   36.1    PlaybackMonitorOffTime               int8u & 0xe0
+   37.1    MultiSelectorLiveView                int8u & 0xc0
+   38.1    ShutterSpeedLock                     int8u & 0x80
+   38.2    ApertureLock                         int8u & 0x40
+   38.3    MovieShutterButton                   int8u & 0x10
+   38.4    FlashExposureCompArea                int8u & 0x04
+   38.5    AutoFlashISOSensitivity              int8u & 0x02
+   41.1    MovieFunc1Button                     int8u & 0xf0
+   41.2    MoviePreviewButton                   int8u & 0x0f
+   42.1    Func1ButtonPlusDials                 int8u & 0x0f
+   43.1    PreviewButtonPlusDials               int8u & 0x0f
+   45.1    AssignMovieRecordButtonPlusDials     int8u & 0x0f
+   46.1    FineTuneOptHighlightWeighted         int8u & 0x0f
+   47.1    DynamicAreaAFDisplay                 int8u & 0x80
+   47.2    AFPointIllumination                  int8u & 0x40
+   47.3    StoreByOrientation                   int8u & 0x18
+   48.1    MatrixMetering                       int8u & 0x80
+   48.2    LiveViewButtonOptions                int8u & 0x30
+   48.3    AFModeRestrictions                   int8u & 0x03
+   49.1    LimitAFAreaModeSelection             int8u & 0x7e
+   52.1    LensFocusFunctionButtons             int8u & 0x3f
+   70.1    AF-OnButton                          int8u & 0x3f
+   71.1    SubSelector                          int8u & 0x80
+   72.1    SubSelectorCenter                    int8u & 0x3f
+   73.1    SubSelectorPlusDials                 int8u & 0x0f
+   74.1    AssignMovieSubselector               int8u & 0xf0
+   75.1    AssignMovieFunc1ButtonPlusDials      int8u & 0x10
+   75.2    AssignMoviePreviewButtonPlusDials    int8u & 0x01
+   76.1    AssignMovieSubselectorPlusDials      int8u & 0x10
+   77.1    SyncReleaseMode                      int8u & 0x80
+   78.1    Three-DTrackingWatchArea             int8u & 0x80
+   78.2    SubjectMotion                        int8u & 0x60
+   78.3    AFActivation                         int8u & 0x08
+   78.4    ShutterReleaseButtonAE-L             int8u & 0x03
+   80.1    Func2Button                          int8u & 0x3f
+   82.1    AssignMovieFunc2Button               int8u & 0x70
+
 =head3 NikonCustom SettingsD500 Tags
 
-Custom settings for the D500
+Custom settings for the D500.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
@@ -11169,7 +11263,7 @@ Custom settings for the D500
    38.3    MovieShutterButton                   int8u & 0x10
    38.4    FlashExposureCompArea                int8u & 0x04
    38.5    AutoFlashISOSensitivity              int8u & 0x02
-   41.1    MoviePreviewButton                   int8u & 0xf0
+   41.1    MovieFunc1Button                     int8u & 0xf0
    41.2    MoviePreviewButton                   int8u & 0x0f
    42.1    Func1ButtonPlusDials                 int8u & 0x0f
    43.1    PreviewButtonPlusDials               int8u & 0x0f
@@ -11206,7 +11300,7 @@ Custom settings for the D500
 
 =head3 NikonCustom SettingsD610 Tags
 
-Custom settings for the D610
+Custom settings for the D610.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
@@ -15310,6 +15404,7 @@ Tags in the encrypted SR2SubIFD
   0x782c   WB_RGBLevels3200K                    N
   0x782d   WB_RGBLevels2500K                    N
   0x787f   WhiteLevel                           N
+  0x797d   LightFalloffParams                   N
   0x7980   ChromaticAberrationCorrParams        N
   0x7982   DistortionCorrParams                 N
 

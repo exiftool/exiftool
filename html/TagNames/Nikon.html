@@ -359,11 +359,12 @@ causes the other information to be re-encrypted with the new key)</span></span><
   <br>ShotInfoD7000
   <br>ShotInfoD4
   <br>ShotInfoD4S
+  <br>ShotInfoD5
   <br>ShotInfoD500
   <br>ShotInfoD610
   <br>ShotInfo02xx
   <br>ShotInfoUnknown</td>
-<td class=c>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-</td>
+<td class=c>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-</td>
 <td>--&gt; <a href='Nikon.html#ShotInfoD40'>Nikon ShotInfoD40 Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfoD80'>Nikon ShotInfoD80 Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfoD90'>Nikon ShotInfoD90 Tags</a>
@@ -383,6 +384,7 @@ causes the other information to be re-encrypted with the new key)</span></span><
   <br>--&gt; <a href='Nikon.html#ShotInfoD7000'>Nikon ShotInfoD7000 Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfoD4'>Nikon ShotInfoD4 Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfoD4S'>Nikon ShotInfoD4S Tags</a>
+  <br>--&gt; <a href='Nikon.html#ShotInfoD500'>Nikon ShotInfoD500 Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfoD500'>Nikon ShotInfoD500 Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfoD610'>Nikon ShotInfoD610 Tags</a>
   <br>--&gt; <a href='Nikon.html#ShotInfo'>Nikon ShotInfo Tags</a>
@@ -2698,7 +2700,7 @@ firmware 1.01b.</p>
 </table></td></tr></table></blockquote>
 
 <h2><a name='ShotInfoD500'>Nikon ShotInfoD500 Tags</a></h2>
-<p>These tags are extracted from encrypted data in images from the D500.</p>
+<p>These tags are extracted from encrypted data in images from the D5 and D500.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -2870,7 +2872,8 @@ firmware 1.01b.</p>
 <td class=r title='3711 = 0xe7f'>3711</td>
 <td>PrimarySlot</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x80]
+<td><span class=s><span class=n>(D500 only)</span>
+  <br>[Mask 0x80]
   <br>0x0 = XQD Card
   <br>0x80 = SD Card</span></td></tr>
 <tr class=b>
@@ -2979,9 +2982,11 @@ firmware 1.01b.</p>
   <br>0x4 = 1.3x (18x12)</span></td></tr>
 <tr class=b>
 <td class=r title='3819 = 0xeeb'>3819</td>
-<td>CustomSettingsD500</td>
-<td class=c>-</td>
-<td>--&gt; <a href='NikonCustom.html#SettingsD500'>NikonCustom SettingsD500 Tags</a></td></tr>
+<td>CustomSettingsD5
+  <br>CustomSettingsD500</td>
+<td class=c>-<br>-</td>
+<td>--&gt; <a href='NikonCustom.html#SettingsD5'>NikonCustom SettingsD5 Tags</a>
+  <br>--&gt; <a href='NikonCustom.html#SettingsD500'>NikonCustom SettingsD500 Tags</a></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='ShotInfoD610'>Nikon ShotInfoD610 Tags</a></h2>
@@ -5935,7 +5940,7 @@ ExifTool to choose in these cases (see the
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Sep 19, 2016</i>
+<br><i>Last revised Oct 5, 2016</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

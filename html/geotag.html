@@ -61,7 +61,7 @@ must be <a href="#Orient">user-defined</a>.</i></blockquote>
 <h3>Implementation</h3>
 
 <p>Geotagging is accomplished in ExifTool through the use of three special
-<a href="TagNames/Extra.html">Extra tags</a>:
+write-only <a href="TagNames/Extra.html">Extra tags</a>:
 <code>Geotag</code>, <code>Geosync</code> and <code>Geotime</code>.</p>
 
 <blockquote class=lt><i>Note: When writing these tags, order is important. If
@@ -80,9 +80,8 @@ track log file "track.log" in the current directory:</p>
 <pre>exiftool -geotag=track.log /Users/Phil/Pictures
 </pre>
 
-<p>As a convienience the exiftool application also provides a
-<code>-geotag</code> option, so the following command is equivalent to the one
-above:</p>
+<p>For convienience, the exiftool application also provides a
+<code>-geotag</code> option, so this command is equivalent to the one above:</p>
 
 <pre>exiftool -geotag track.log /Users/Phil/Pictures
 </pre>

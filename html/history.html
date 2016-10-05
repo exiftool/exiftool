@@ -17,7 +17,22 @@ considered development releases, and are not uploaded to <a href="http://search.
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
-<a name='v10.28'><b>Sept. xx, 2016 - Version 10.28</b> - "EXIF 2.31"</a>
+<a name='v10.29'><b>Oct. 5, 2016 - Version 10.29</b></a>
+<ul>
+<li>Added a couple of new Sony LensType values (thanks LibRaw)
+<li>Decode a few new Sony tags
+<li>Decode a few new FLIR tags
+<li>Decode some new Nikon D5 tags (thanks Warren Hatch)
+<li>Decode a new Apple tag
+<li>Enhanced -geotag option to allow tagging from KML placemarks with a TimeSpan
+<li>Enhanced -d option (and API DateFormat option) to perform inverse date/time
+    conversion when writing if the POSIX::strptime module is available.  If
+    POSIX::strptime is not available then the behaviour is like older versions
+    (ie. the date/time is not converted) unless the API StrictDate option is set
+    in which case a warning is issued and the tag is not written
+</ul>
+
+<a name='v10.28'><b>Sept. 27, 2016 - Version 10.28</b> - "EXIF 2.31"</a>
 <ul>
 <li>Added support for new EXIF 2.31 tags
 <li>Added some new Canon LensType values (thanks Norbert Wasser for one)

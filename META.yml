@@ -25,4 +25,5 @@ recommends:
     Digest::MD5:       0
     Digest::SHA:       0
     Time::HiRes:       0
+    POSIX::strptime:   0
 

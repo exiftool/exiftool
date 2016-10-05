@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.44';
+$VERSION = '2.45';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -135,6 +135,9 @@ my %sonyLensTypes2 = (
     50492 => 'Sigma 24-105mm F4 DG OS HSM | A 013 + MC-11', #JR
     50493 => 'Sigma 17-70mm F2.8-4 DC MACRO OS HSM | C 013 + MC-11', #JR
     50495 => 'Sigma 50-100mm F1.8 DC HSM | A 016 + MC-11', #JR
+
+    50993 => 'Voigtlander HELIAR-HYPER WIDE 10mm F5.6', #IB
+    50994 => 'Voigtlander HELIAR-HYPER WIDE 12mm F5.6 III Aspherical', #IB (LensType2 has this value, but unfortunately LensType3 is 50993 for this lens!)
 
     # lenses listed in the Sigma MC-11 list, but not yet seen:
     # 504xx => 'Sigma 18-200mm F3.5-6.3 DC MACRO OS HSM | C 014 + MC-11',
@@ -8513,6 +8516,7 @@ my %pictureProfile2010 = (
     0x782c => 'WB_RGBLevels3200K', #IB
     0x782d => 'WB_RGBLevels2500K', #IB
     0x787f => 'WhiteLevel', #IB (divide by 4)
+    0x797d => 'LightFalloffParams', #forum7640
     0x7980 => 'ChromaticAberrationCorrParams', #forum6509 (Sony A7 ARW)
     0x7982 => 'DistortionCorrParams', #forum6509 (Sony A7 ARW)
 );

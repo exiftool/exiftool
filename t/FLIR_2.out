@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.94
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.29
 [File, System, Image] FileName - File Name: FLIR.jpg
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 7.2 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2013:04:02 10:46:04-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:29 20:10:38-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:04:25 10:57:00-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2016:09:30 08:01:21-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2016:09:27 13:04:04-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: JPEG
 [File, File, Image] FileTypeExtension - File Type Extension: jpg
@@ -82,6 +82,12 @@
 [APP1, FLIR, Camera] 128 - Atmospheric Trans X: 1.900000
 [APP1, FLIR, Camera] 144 - Camera Temperature Range Max: 250.0 C
 [APP1, FLIR, Camera] 148 - Camera Temperature Range Min: -0.0 C
+[APP1, FLIR, Camera] 152 - Camera Temperature Max Clip: 270.0 C
+[APP1, FLIR, Camera] 156 - Camera Temperature Min Clip: -40.0 C
+[APP1, FLIR, Camera] 160 - Camera Temperature Max Warn: 250.0 C
+[APP1, FLIR, Camera] 164 - Camera Temperature Min Warn: -0.0 C
+[APP1, FLIR, Camera] 168 - Camera Temperature Max Saturated: 270.0 C
+[APP1, FLIR, Camera] 172 - Camera Temperature Min Saturated: -60.0 C
 [APP1, FLIR, Camera] 212 - Camera Model: FLIR_i7
 [APP1, FLIR, Camera] 244 - Camera Part Number: T197600
 [APP1, FLIR, Camera] 260 - Camera Serial Number: 470023842

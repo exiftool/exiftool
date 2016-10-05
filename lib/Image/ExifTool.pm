@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '10.28';
+$VERSION = '10.29';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -1765,8 +1765,15 @@ sub Options($$;@)
                 $$options{$param} = 'Latin';    # all others default to Latin
             }
         } elsif ($param eq 'UserParam') {
+            # clear options if $newVal is undef
+            defined $newVal or $$options{$param} = {}, next;
             # allow initialization of entire UserParam hash
-            ref $newVal eq 'HASH' and $$options{$param} = { %$newVal }, next;
+            if (ref $newVal eq 'HASH') {
+                my %newParams;
+                $newParams{lc $_} = $$newVal{$_} foreach sort keys %$newVal;
+                $$options{$param} = \%newParams;
+                next;
+            }
             # set/reset single UserParam parameter
             if ($newVal =~ /(.*?)=(.*)/s) {
                 $param = lc $1;

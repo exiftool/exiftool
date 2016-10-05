@@ -557,9 +557,12 @@ different when copying tags with L</SetNewValuesFromFile>.
 =item DateFormat
 
 Format for printing date/time values.  See C<strftime> in the L<POSIX>
-package for details about the format string.  The default is similar to a
-format of "%Y:%m:%d %H:%M:%S".  If date can not be converted, value is left
-unchanged unless the StrictDate option is set.  Timezones are ignored.
+package for details about the format string.  If date can not be converted,
+value is left unchanged unless the StrictDate option is set.  Timezones are
+ignored. The inverse conversion (ie. when calling L</SetNewValue>) is only
+performed if POSIX::strptime is installed.  The default setting of undef
+causes date/time values to remain in standard EXIF format (similar to a
+DateFormat of "%Y:%m:%d %H:%M:%S").
 
 =item Duplicates
 
@@ -722,7 +725,7 @@ separator used when combining values.  Default is undef.
 
 =item ListItem
 
-Return only a specific item from List-type values.  A value of 0 returns the
+Return only a specific item from list-type values.  A value of 0 returns the
 first item in the list, 1 return the second item, etc.  Negative indices may
 also be used, with -1 representing the last item in the list.  Applies only
 to the top-level list of nested lists.  Default is undef to return all items
@@ -764,7 +767,7 @@ to '' if L</IgnoreMinorErrors> is set.  Default is undef.
 
 =item NoPDFList
 
-Flag to avoid splitting PDF List-type tag values into separate items.
+Flag to avoid splitting PDF list-type tag values into separate items.
 Default is undef.
 
 =item Password
@@ -885,17 +888,21 @@ unknown tags are also extracted from binary data blocks.  Default is 0.
 =item UserParam
 
 Special option to set/get user-defined parameters.  Useful to allow external
-input into tag name expressions and ValueConv logic.  I<PARAM> is the
-user-defined parameter name (case insensitive).
+input into tag name expressions and ValueConv logic.  Valid UserParam values
+are:
 
   PARAM         - Get parameter
   PARAM=        - Clear parameter
   PARAM=VALUE   - Set parameter
+  <hash ref>    - Set entire UserParam hash lookup
+  undef         - Clear all user parameters
+
+Where I<PARAM> is the user-defined parameter name (case insensitive).
 
 User-defined parameters may be accessed in tag name expressions by prefixing
 the parameter name with a dollar sign, just like normal tags.  If called
-without a parameter name, C<Options('UserParam')> returns a reference to the
-hash of all user parameters (with lower-case names).
+without no additional arguments, C<Options('UserParam')> returns a reference
+to the hash of all user parameters (with lower-case names).
 
 =item Verbose
 
@@ -1288,6 +1295,12 @@ name for each value, or call with a reference to the list of values.
     # add a keyword without replacing existing keywords in the file
     $exifTool->SetNewValue(Keywords => $word, AddValue => 1);
 
+    # conditionally add a tag if it didn't exist before,
+    # or replace it if it had a specified value ("old value")
+    $exifTool->SetNewValue(Description => '', DelValue => 1);
+    $exifTool->SetNewValue(Description => 'old value', DelValue => 1);
+    $exifTool->SetNewValue(Description => 'new value');
+
     # set a tag in a specific group
     $exifTool->SetNewValue(Headline => $val, Group => 'XMP');
     $exifTool->SetNewValue('XMP:Headline' => $val);  # (equivalent)
@@ -1363,8 +1376,13 @@ list and overwrite non-list tags).  Default is 0.
 
 =item DelValue
 
-Delete existing tag from a file if it has the specified value.  Option
-values are 0 or 1.  Default is 0.
+Delete existing tag from a file if it has the specified value.  For
+list-type tags this deletes a specified item from the list.  For non-list
+tags this may be used to conditionally replace a tag by providing a new
+value in a separate call to L<SetNewValue> (see examples above).  For
+structured tags, the entire structure is deleted/replaced only if all of the
+specified fields match the existing structure.  Option values are 0 or 1. 
+Default is 0.
 
 =item EditGroup
 
@@ -1459,8 +1477,8 @@ explicitly, either by group (with 'Adobe:*') or as a block (with 'Adobe').
 
 The following ExifTool options are effective in the call to L</SetNewValue>:
 
-Charset, Escape, IgnoreMinorErrors, Lang, ListSep, ListSplit, PrintConv,
-Verbose and WriteMode.
+Charset, DateFormat, Escape, IgnoreMinorErrors, Lang, ListSep, ListSplit,
+PrintConv, StrictDate, Verbose and WriteMode.
 
 =head2 GetNewValue
 
@@ -2474,7 +2492,7 @@ string contains special characters, otherwise PDFDocEncoding is used.
 Some Photoshop resource names are stored as Pascal strings with unknown
 encoding.  By default, ExifTool assumes MacRoman encoding and converts this
 to UTF-8, but the internal and external character sets may be specified with
-L</CharsetPhotoshop> and L</Charset> options respectively.
+the L</CharsetPhotoshop> and L</Charset> options respectively.
 
 =head2 QuickTime
 

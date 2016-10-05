@@ -7,7 +7,21 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.20. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
-Sept. xx, 2016 - Version 10.28 - "EXIF 2.31"
+Oct. 5, 2016 - Version 10.29
+
+  - Added a couple of new Sony LensType values (thanks LibRaw)
+  - Decode a few new Sony tags
+  - Decode a few new FLIR tags
+  - Decode some new Nikon D5 tags (thanks Warren Hatch)
+  - Decode a new Apple tag
+  - Enhanced -geotag option to allow tagging from KML placemarks with a TimeSpan
+  - Enhanced -d option (and API DateFormat option) to perform inverse date/time
+    conversion when writing if the POSIX::strptime module is available.  If
+    POSIX::strptime is not available then the behaviour is like older versions
+    (ie. the date/time is not converted) unless the API StrictDate option is set
+    in which case a warning is issued and the tag is not written
+
+Sept. 27, 2016 - Version 10.28 - "EXIF 2.31"
 
   - Added support for new EXIF 2.31 tags
   - Added some new Canon LensType values (thanks Norbert Wasser for one)
@@ -300,7 +314,7 @@ Dec. 22, 2015 - Version 10.08
   - Fixed bug in HtmlDump feature that could cause a "substr outside of string"
     error
   - API Changes:
-      - Changed QuickTimeUTC API option to also enforce proper time zero
+      - Changed API QuickTimeUTC option to also enforce proper time zero
 
 Nov. 26, 2015 - Version 10.07
 
@@ -406,7 +420,7 @@ July 23, 2015 - Version 9.99
   - Added two new SonyModelID's (thanks Jos Roost for one)
   - Added two new Sony LensType2 values (thanks Jos Roost)
   - Added a new Pentax LensType
-  - Extract a number of new File System tags when SystemTags API option is set
+  - Extract a number of new File System tags when API SystemTags option is set
   - Decode a new FujiFilm tag (thanks TonyB)
   - Decode a number of new Sony tags (thanks Jos Roost)
   - Disabled writing of XMP to PostScript-format Adobe Illustrator files
@@ -727,7 +741,7 @@ Nov. 15, 2014 - Version 9.76 (production release)
   - Improved warning message if "DIR" or "FILE" is used literally on the command
     line
   - Improved "-j -b" output to encode any non-UTF8 values as Base64
-  - Enhanced -fast option (FastScan API option) to allow file processing to be
+  - Enhanced -fast option (API FastScan option) to allow file processing to be
     bypassed entirely
   - Changed conversions for a couple of Nikon 1 AF tags for consistency
   - Changed reported FileType for LNK, KEY, KTH, NUMBERS, NMBTEMPLATE and PAGES
@@ -5784,7 +5798,7 @@ Jan. 6, 2006 - Version 5.90
   - Made Photoshop:XResolution and Photoshop:YResolution writable
   - Fixed problem with processing some RIFF files
   - Added a new Canon LensType
-  - API changes:
+  - API Changes:
       - SetNewValue() now accepts an ARRAY reference for setting list-type tags
         such as Keywords, or a SCALAR reference for binary data, so it may now
         be called directly with any value returned by GetValue().
@@ -5850,7 +5864,7 @@ Dec. 12, 2005 - Version 5.83
     and David Buret)
   - Decode PrintIM information in Casio QV-4000
   - Fixed Decoding of Canon EOS D60 serial numbers to agree with Canon utilities
-  - API changes:
+  - API Changes:
       - Added HtmlDump and TextOut options
 
 Nov. 26, 2005 - Version 5.82
@@ -7251,7 +7265,7 @@ Mar. 1, 2004 - Version 3.15
   - Improvements to TIFF processing
   - Set value to "Undefined" if PrintConv evaluates to undefined value
   - Added -G option
-  - API changes:
+  - API Changes:
       - Changed all option names: shortened and changed to mixed case (sorry!)
   - Internal changes:
       - Standardized arguments to all processing procedures
@@ -7283,7 +7297,7 @@ Feb. 25, 2004 - Version 3.11
   - Improve XMP parsing for 'Bag' elements
   - Capitalize first letter of XMP tag descriptions
   - Patch problem with APP13 resource written by older Photoshop versions
-  - API changes:
+  - API Changes:
       - Added EXCLUDE and GROUP# options
       - Change default value of SAVE_DUPLICATES option to 1
 
@@ -7291,7 +7305,7 @@ Feb. 20, 2004 - Version 3.10
 
   - Restructuring only -- the behaviour of the exiftool script was not changed
   - Moved html documentation to new html directory
-  - API changes:
+  - API Changes:
       - Conform to standard Perl module mechanics:
           - Changed ExifTool package name to Image::ExifTool
           - Added Makefile.PL and other standard files
@@ -7318,7 +7332,7 @@ Feb. 17, 2004 - Version 3.03
     File::RandomAccessFile)
   - Added IxusAFPoint tag to Canon maker notes
   - Avoid scanning past end of Canon binary data blocks
-  - API changes:
+  - API Changes:
       - GetFoundTags() and GetRequestedTags() now return list instead of list
         reference
 
@@ -7328,7 +7342,7 @@ Feb. 16, 2004 - Version 3.02
 
 Feb. 15, 2004 - Version 3.01
 
-  - API changes:
+  - API Changes:
       - Added GetValue() function
       - Completed API documentation
 
@@ -7337,7 +7351,7 @@ Feb. 13, 2004 - Version 3.00
   - Removed -all option (it is now the default -- specify -common for previous
     default behaviour)
   - Added -a option to allow printout of duplicate tag values
-  - API changes:
+  - API Changes:
       - I am finally happy with the API, so future major changes are less likely
         (hence the major version number)
       - No longer return ARRAY reference for list of tags (Instead, tag values
@@ -7350,7 +7364,7 @@ Feb. 13, 2004 - Version 3.00
 Feb. 12, 2004 - Version 2.71
 
   - Still more playing with Pentax maker notes
-  - More API changes:
+  - More API Changes:
       - Added RandomAccessFile.pm
       - All image file i/o now done through a RandomAccessFile object
         --> allows proper piping and use of string i/o

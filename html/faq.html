@@ -1096,10 +1096,11 @@ any command where the same tag is set with "<code>+=</code>" or
 "<code>-=</code>" in another assignment.  (ie. existing items will be preserved
 unless specifically deleted with "<code>-=</code>".)</blockquote>
 
-<blockquote>To prevent duplication when adding new items, specific items can be
-deleted then added back again in the same command.  For example, the following
-command adds the keywords "one" and "two", ensuring that they are not duplicated
-if they already existed in the keywords of an image:
+<blockquote><a name="nodups"></a><b>To prevent duplication when adding new
+items</b>, specific items can be deleted then added back again in the same
+command.  For example, the following command adds the keywords "one" and "two",
+ensuring that they are not duplicated if they already existed in the keywords of
+an image:
 
 <pre>exiftool -keywords-=one -keywords+=one -keywords-=two -keywords+=two DIR
 </pre>

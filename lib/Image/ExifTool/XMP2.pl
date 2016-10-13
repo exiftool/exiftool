@@ -1004,6 +1004,7 @@ my %sSubVersion = (
     PickLabel              => { },
     ImageHistory           => { Avoid => 1, Notes => 'different format from EXIF:ImageHistory' },
     LensCorrectionSettings => { },
+    ImageUniqueID          => { Avoid => 1 },
 );
 
 # SWF namespace tags (ref PH)

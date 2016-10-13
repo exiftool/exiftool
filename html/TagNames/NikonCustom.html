@@ -6192,7 +6192,7 @@ custom settings for the currently supported models.
 <td class=c>int8u</td>
 <td><span class=s>[Mask 0x0f]</span><table class=cols><tr>
   <td>0x0 = None
-  <br>0x1 = Choose Image Area (DX/1.3x)
+  <br>0x1 = Choose Image Area
   <br>0x2 = Shutter Speed &amp; Aperture Lock
   <br>0x3 = One Step Speed / Aperture
   <br>0x4 = Choose Non-CPU Lens Number
@@ -6206,7 +6206,7 @@ custom settings for the currently supported models.
 <td class=c>int8u</td>
 <td><span class=s>[Mask 0x0f]
   <br>0x0 = None
-  <br>0x1 = Choose Image Area (DX/1.3x)
+  <br>0x1 = Choose Image Area
   <br>0x2 = Shutter Speed &amp; Aperture Lock
   <br>0x7 = Photo Shooting Menu Bank
   <br>0xb = Exposure Mode</span></td></tr>
@@ -6299,6 +6299,76 @@ custom settings for the currently supported models.
   <br>0x31 = Sync Release (Master Only)
   <br>0x32 = Sync Release (Remote Only)</span></td></tr>
 <tr>
+<td class=r title='66 = 0x42'>66.1</td>
+<td>VerticalMultiSelector</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0xff]
+  <br>0x0 = Same as Multi-Selector with Info(U/D) &amp; Playback(R/L)
+  <br>0x8 = Same as Multi-Selector with Info(R/L) &amp; Playback(U/D)
+  <br>0x80 = Focus Point Selection</span></td></tr>
+<tr class=b>
+<td class=r title='67 = 0x43'>67.1</td>
+<td>VerticalFuncButton</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x3f]
+  <br>0x0 = None
+  <br>0x1 = Preview
+  <br>0x2 = FV Lock
+  <br>0x3 = AE/AF Lock
+  <br>0x4 = AE Lock Only
+  <br>0x5 = AE Lock (reset on release)
+  <br>0x6 = AE Lock (hold)
+  <br>0x7 = AF Lock Only
+  <br>0x8 = AF-On
+  <br>0xa = Bracketing Burst
+  <br>0xb = Matrix Metering
+  <br>0xc = Center-weighted Metering
+  <br>0xd = Spot Metering
+  <br>0xe = Playback
+  <br>0xf = My Menu Top Item
+  <br>0x10 = +NEF(RAW)
+  <br>0x11 = Virtual Horizon
+  <br>0x12 = Reset Focus Point
+  <br>0x13 = Grid Display
+  <br>0x14 = My Menu
+  <br>0x16 = Remote Release Only
+  <br>0x17 = Preset Focus Point
+  <br>0x1a = Flash Disable/Enable
+  <br>0x1b = Highlight-weighted Metering
+  <br>0x24 = AF-Area Mode (Single)
+  <br>0x25 = AF-Area Mode (Dynamic Area 25 Points)
+  <br>0x26 = AF-Area Mode (Dynamic Area 72 Points)
+  <br>0x27 = AF-Area Mode (Dynamic Area 152 Points)
+  <br>0x28 = AF-Area Mode (Group Area AF)
+  <br>0x29 = AF-Area Mode (Auto Area AF)
+  <br>0x2a = AF-Area Mode + AF-On (Single)
+  <br>0x2b = AF-Area Mode + AF-On (Dynamic Area 25 Points)
+  <br>0x2c = AF-Area Mode + AF-On (Dynamic Area 72 Points)
+  <br>0x2d = AF-Area Mode + AF-On (Dynamic Area 152 Points)
+  <br>0x2e = AF-Area Mode + AF-On (Group Area AF)
+  <br>0x2f = AF-Area Mode + AF-On (Auto Area AF)
+  <br>0x31 = Sync Release (Master Only)
+  <br>0x32 = Sync Release (Remote Only)
+  <br>0x36 = Highlight Active Focus Point</span></td></tr>
+<tr>
+<td class=r title='68 = 0x44'>68.1</td>
+<td>VerticalFuncPlusDials</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x0f]</span><table class=cols><tr>
+  <td>0x0 = None
+  <br>0x1 = Choose Image Area
+  <br>0x2 = Shutter Speed &amp; Aperture Lock
+  <br>0x3 = One Step Speed / Aperture
+  <br>0x4 = Choose Non-CPU Lens Number
+  <br>0x5 = Active D-Lighting
+  <br>0x7 = Photo Shooting Menu Bank
+  <br>0x8 = Exposure Delay Mode
+  <br>0xa = ISO Sensitivity
+  <br>0xb = Exposure Mode
+  <br>0xc = Exposure Compensation
+  <br>0xd = Metering</td></tr></table>
+</td></tr>
+<tr class=b>
 <td class=r title='70 = 0x46'>70.1</td>
 <td>AF-OnButton</td>
 <td class=c>int8u</td>
@@ -6322,14 +6392,14 @@ custom settings for the currently supported models.
   <br>0x2d = AF-Area Mode + AF-On (Dynamic Area 152 Points)
   <br>0x2e = AF-Area Mode + AF-On (Group Area AF)
   <br>0x2f = AF-Area Mode + AF-On (Auto Area AF)</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='71 = 0x47'>71.1</td>
 <td>SubSelector</td>
 <td class=c>int8u</td>
 <td><span class=s>[Mask 0x80]
   <br>0x0 = Focus Point Selection
   <br>0x80 = Same as MultiSelector</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='72 = 0x48'>72.1</td>
 <td>SubSelectorCenter</td>
 <td class=c>int8u</td>
@@ -6373,17 +6443,17 @@ custom settings for the currently supported models.
   <br>0x31 = Sync Release (Master Only)
   <br>0x32 = Sync Release (Remote Only)
   <br>0x36 = Highlight Active Focus Point</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='73 = 0x49'>73.1</td>
 <td>SubSelectorPlusDials</td>
 <td class=c>int8u</td>
 <td><span class=s>[Mask 0x0f]
   <br>0x0 = None
-  <br>0x1 = Choose Image Area (DX/1.3x)
+  <br>0x1 = Choose Image Area
   <br>0x2 = Shutter Speed &amp; Aperture Lock
   <br>0x4 = Choose Non-CPU Lens Number
   <br>0x7 = Photo Shooting Menu Bank</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='74 = 0x4a'>74.1</td>
 <td>AssignMovieSubselector</td>
 <td class=c>int8u</td>
@@ -6396,42 +6466,42 @@ custom settings for the currently supported models.
   <br>0x70 = AE Lock (Hold)
   <br>0x80 = AF Lock (Only)</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td class=r title='75 = 0x4b'>75.1</td>
 <td>AssignMovieFunc1ButtonPlusDials</td>
 <td class=c>int8u</td>
 <td><span class=s>[Mask 0x10]
   <br>0x0 = None
-  <br>0x10 = Choose Image Area (DX/1.3x)</span></td></tr>
-<tr>
+  <br>0x10 = Choose Image Area</span></td></tr>
+<tr class=b>
 <td class=r title='75 = 0x4b'>75.2</td>
 <td>AssignMoviePreviewButtonPlusDials</td>
 <td class=c>int8u</td>
 <td><span class=s>[Mask 0x01]
   <br>0x0 = None
   <br>0x1 = Choose Image Area (DX/1.3x)</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='76 = 0x4c'>76.1</td>
 <td>AssignMovieSubselectorPlusDials</td>
 <td class=c>int8u</td>
 <td><span class=s>[Mask 0x10]
   <br>0x0 = None
-  <br>0x10 = Choose Image Area (DX/1.3x)</span></td></tr>
-<tr>
+  <br>0x10 = Choose Image Area</span></td></tr>
+<tr class=b>
 <td class=r title='77 = 0x4d'>77.1</td>
 <td>SyncReleaseMode</td>
 <td class=c>int8u</td>
 <td><span class=s>[Mask 0x80]
   <br>0x0 = No Sync
   <br>0x80 = Sync</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='78 = 0x4e'>78.1</td>
 <td>Three-DTrackingWatchArea</td>
 <td class=c>int8u</td>
 <td><span class=s>[Mask 0x80]
   <br>0x0 = Wide
   <br>0x80 = Normal</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='78 = 0x4e'>78.2</td>
 <td>SubjectMotion</td>
 <td class=c>int8u</td>
@@ -6439,14 +6509,14 @@ custom settings for the currently supported models.
   <br>0x0 = Steady
   <br>0x20 = Middle
   <br>0x40 = Erratic</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='78 = 0x4e'>78.3</td>
 <td>AFActivation</td>
 <td class=c>int8u</td>
 <td><span class=s>[Mask 0x08]
   <br>0x0 = Shutter/AF-On
   <br>0x8 = AF-On Only</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='78 = 0x4e'>78.4</td>
 <td>ShutterReleaseButtonAE-L</td>
 <td class=c>int8u</td>
@@ -6454,6 +6524,31 @@ custom settings for the currently supported models.
   <br>0x0 = Off
   <br>0x1 = On (Half Press)
   <br>0x2 = On (Burst Mode)</span></td></tr>
+<tr>
+<td class=r title='79 = 0x4f'>79.1</td>
+<td>VerticalAFOnButton</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x7f]
+  <br>0x0 = None
+  <br>0x3 = AE/AF Lock
+  <br>0x4 = AE Lock Only
+  <br>0x5 = AE Lock (reset on release)
+  <br>0x6 = AE Lock (hold)
+  <br>0x7 = AF Lock Only
+  <br>0x8 = AF-On
+  <br>0x24 = AF-Area Mode (Single)
+  <br>0x25 = AF-Area Mode (Dynamic Area 25 Points)
+  <br>0x26 = AF-Area Mode (Dynamic Area 72 Points)
+  <br>0x27 = AF-Area Mode (Dynamic Area 152 Points)
+  <br>0x28 = AF-Area Mode (Group Area AF)
+  <br>0x29 = AF-Area Mode (Auto Area AF)
+  <br>0x2a = AF-Area Mode + AF-On (Single)
+  <br>0x2b = AF-Area Mode + AF-On (Dynamic Area 25 Points)
+  <br>0x2c = AF-Area Mode + AF-On (Dynamic Area 72 Points)
+  <br>0x2d = AF-Area Mode + AF-On (Dynamic Area 152 Points)
+  <br>0x2e = AF-Area Mode + AF-On (Group Area AF)
+  <br>0x2f = AF-Area Mode + AF-On (Auto Area AF)
+  <br>0x64 = Same as AF-On</span></td></tr>
 <tr class=b>
 <td class=r title='80 = 0x50'>80.1</td>
 <td>Func2Button</td>
@@ -6497,6 +6592,20 @@ custom settings for the currently supported models.
   <br>0x31 = Sync Release (Master Only)
   <br>0x32 = Sync Release (Remote Only)</span></td></tr>
 <tr>
+<td class=r title='81 = 0x51'>81.1</td>
+<td>Func2ButtonPlusDials</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x0f]</span><table class=cols><tr>
+  <td>0x0 = None
+  <br>0x1 = Choose Image Area
+  <br>0x2 = Shutter Speed &amp; Aperture Lock
+  <br>0x3 = One Step Speed / Aperture
+  <br>0x4 = Choose Non-CPU Lens Number
+  <br>0x5 = Active D-Lighting
+  <br>0x7 = Photo Shooting Menu Bank
+  <br>0x8 = Exposure Delay Mode</td></tr></table>
+</td></tr>
+<tr class=b>
 <td class=r title='82 = 0x52'>82.1</td>
 <td>AssignMovieFunc2Button</td>
 <td class=c>int8u</td>
@@ -6504,6 +6613,15 @@ custom settings for the currently supported models.
   <br>0x0 = None
   <br>0x30 = Index Marking
   <br>0x40 = View Photo Shooting Info</span></td></tr>
+<tr>
+<td class=r title='83 = 0x53'>83.1</td>
+<td>Func3Button</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x03]
+  <br>0x0 = None
+  <br>0x1 = Voice Memo
+  <br>0x2 = Rating
+  <br>0x3 = Connect To Network</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='SettingsD500'>NikonCustom SettingsD500 Tags</a></h2>
@@ -7690,7 +7808,7 @@ custom settings for the currently supported models.
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Sep 30, 2016</i>
+<br><i>Last revised Oct 11, 2016</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

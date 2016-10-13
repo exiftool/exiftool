@@ -48,7 +48,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '2.97';
+$VERSION = '2.98';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -3190,7 +3190,7 @@ NoLoop:
                 last;
             }
         }
-        $tagInfo or $tagInfo = { Name => $name, WasAdded => 1 };
+        $tagInfo or $tagInfo = { Name => $name, WasAdded => 1, Priority => 0 };
 
         # add tag Namespace entry for tags in variable-namespace tables
         $$tagInfo{Namespace} = $xns if $xns;

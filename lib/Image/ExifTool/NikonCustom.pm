@@ -3320,7 +3320,7 @@ $VERSION = '1.15';
     },
     10.1 => { # CSf2-a
         Name => 'MultiSelectorShootMode',
-        Mask => 0xe0,                       
+        Mask => 0xe0,
         PrintConv => {
             0x00 => 'Select Center Focus Point (Reset)',
             0x20 => 'Zoom On/Off',  # this is the documented (and actual) default value, but the choice does not appear on the camera menu
@@ -3407,24 +3407,24 @@ $VERSION = '1.15';
             17 => 'Virtual Horizon',
             19 => 'Grid Display',
             20 => 'My Menu',
-            21 => 'Disable Synchronized Release',   
+            21 => 'Disable Synchronized Release',
             22 => 'Remote Release Only',
             26 => 'Flash Disable/Enable',
             27 => 'Highlight-weighted Metering',
-            36 => 'AF-Area Mode (Single)',                              
-            37 => 'AF-Area Mode (Dynamic Area 25 Points)',             
-            38 => 'AF-Area Mode (Dynamic Area 72 Points)',              
-            39 => 'AF-Area Mode (Dynamic Area 152 Points)',             
-            40 => 'AF-Area Mode (Group Area AF)',                       
-            41 => 'AF-Area Mode (Auto Area AF)',                        
-            42 => 'AF-Area Mode + AF-On (Single)',                      
-            43 => 'AF-Area Mode + AF-On (Dynamic Area 25 Points)',      
-            44 => 'AF-Area Mode + AF-On (Dynamic Area 72 Points)',      
-            45 => 'AF-Area Mode + AF-On (Dynamic Area 152 Points)',     
-            46 => 'AF-Area Mode + AF-On (Group Area AF)',               
-            47 => 'AF-Area Mode + AF-On (Auto Area AF)',                
-            49 => 'Sync Release (Master Only)',                         
-            50 => 'Sync Release (Remote Only)',                         
+            36 => 'AF-Area Mode (Single)',
+            37 => 'AF-Area Mode (Dynamic Area 25 Points)',
+            38 => 'AF-Area Mode (Dynamic Area 72 Points)',
+            39 => 'AF-Area Mode (Dynamic Area 152 Points)',
+            40 => 'AF-Area Mode (Group Area AF)',
+            41 => 'AF-Area Mode (Auto Area AF)',
+            42 => 'AF-Area Mode + AF-On (Single)',
+            43 => 'AF-Area Mode + AF-On (Dynamic Area 25 Points)',
+            44 => 'AF-Area Mode + AF-On (Dynamic Area 72 Points)',
+            45 => 'AF-Area Mode + AF-On (Dynamic Area 152 Points)',
+            46 => 'AF-Area Mode + AF-On (Group Area AF)',
+            47 => 'AF-Area Mode + AF-On (Auto Area AF)',
+            49 => 'Sync Release (Master Only)',
+            50 => 'Sync Release (Remote Only)',
         },
     },
     15.1 => { # CSf1-a
@@ -3450,27 +3450,27 @@ $VERSION = '1.15';
             17 => 'Virtual Horizon',
             19 => 'Grid Display',
             20 => 'My Menu',
-            21 => 'Disable Synchronized Release',   
+            21 => 'Disable Synchronized Release',
             22 => 'Remote Release Only',
             26 => 'Flash Disable/Enable',
             27 => 'Highlight-weighted Metering',
-            36 => 'AF-Area Mode (Single)',                              
-            37 => 'AF-Area Mode (Dynamic Area 25 Points)',             
-            38 => 'AF-Area Mode (Dynamic Area 72 Points)',              
-            39 => 'AF-Area Mode (Dynamic Area 152 Points)',             
-            40 => 'AF-Area Mode (Group Area AF)',                       
-            41 => 'AF-Area Mode (Auto Area AF)',                        
-            42 => 'AF-Area Mode + AF-On (Single)',                      
-            43 => 'AF-Area Mode + AF-On (Dynamic Area 25 Points)',      
-            44 => 'AF-Area Mode + AF-On (Dynamic Area 72 Points)',      
-            45 => 'AF-Area Mode + AF-On (Dynamic Area 152 Points)',     
-            46 => 'AF-Area Mode + AF-On (Group Area AF)',               
-            47 => 'AF-Area Mode + AF-On (Auto Area AF)',                
-            49 => 'Sync Release (Master Only)',                         
-            50 => 'Sync Release (Remote Only)',                         
+            36 => 'AF-Area Mode (Single)',
+            37 => 'AF-Area Mode (Dynamic Area 25 Points)',
+            38 => 'AF-Area Mode (Dynamic Area 72 Points)',
+            39 => 'AF-Area Mode (Dynamic Area 152 Points)',
+            40 => 'AF-Area Mode (Group Area AF)',
+            41 => 'AF-Area Mode (Auto Area AF)',
+            42 => 'AF-Area Mode + AF-On (Single)',
+            43 => 'AF-Area Mode + AF-On (Dynamic Area 25 Points)',
+            44 => 'AF-Area Mode + AF-On (Dynamic Area 72 Points)',
+            45 => 'AF-Area Mode + AF-On (Dynamic Area 152 Points)',
+            46 => 'AF-Area Mode + AF-On (Group Area AF)',
+            47 => 'AF-Area Mode + AF-On (Auto Area AF)',
+            49 => 'Sync Release (Master Only)',
+            50 => 'Sync Release (Remote Only)',
         },
     },
-    16.1 => { # CSf1-j
+    16.1 => { # CSf1-p
         Name => 'AssignBktButton',
         Mask => 0x07,
         PrintConv => {
@@ -3745,21 +3745,21 @@ $VERSION = '1.15';
         Mask => 0x0f,
         PrintConv => {
             0 => 'None',
-            1 => 'Choose Image Area (DX/1.3x)',
+            1 => 'Choose Image Area',
             2 => 'Shutter Speed & Aperture Lock',
             3 => 'One Step Speed / Aperture',
             4 => 'Choose Non-CPU Lens Number',
             5 => 'Active D-Lighting',
-            7 => 'Photo Shooting Menu Bank',                                #new with D500
+            7 => 'Photo Shooting Menu Bank',    # new with D500
             8 => 'Exposure Delay Mode',
         },
     },
-    45.1 => { # CSf1-k
+    45.1 => { # CSf1-q
         Name => 'AssignMovieRecordButtonPlusDials',
         Mask => 0x0f,
         PrintConv => {
             0 => 'None',
-            1 => 'Choose Image Area (DX/1.3x)',
+            1 => 'Choose Image Area',
             2 => 'Shutter Speed & Aperture Lock',
             7 => 'Photo Shooting Menu Bank',
             11 => 'Exposure Mode',
@@ -3811,7 +3811,7 @@ $VERSION = '1.15';
         Mask => 0x30,
         PrintConv => {
             0x00 => 'Enable',
-            0x10 => 'Enable (Standby Timer Active)',            #new with D500
+            0x10 => 'Enable (Standby Timer Active)',    # new with D500
             0x20 => 'Disable',
         },
     },
@@ -3839,7 +3839,7 @@ $VERSION = '1.15';
             },
         },
     },
-    52.1 => { # CSf1-l
+    52.1 => { # CSf1-r
         Name => 'LensFocusFunctionButtons',
         Mask => 0x3f,
         PrintConv => {
@@ -3865,7 +3865,79 @@ $VERSION = '1.15';
             50 => 'Sync Release (Remote Only)',
         },
     },
-    70.1 => { # CSf1-f
+    66.1 => { # CSf1-o
+        Name => 'VerticalMultiSelector',
+        Mask => 0xff,
+        PrintConv => {
+            0x00 => 'Same as Multi-Selector with Info(U/D) & Playback(R/L)',
+            0x08 => 'Same as Multi-Selector with Info(R/L) & Playback(U/D)',
+            0x80 => 'Focus Point Selection',
+        },
+    },
+    67.1 => { # CSf1-g
+        Name => 'VerticalFuncButton',
+        Mask => 0x3f,
+        PrintConv => {
+            0 => 'None',
+            1 => 'Preview',
+            2 => 'FV Lock',
+            3 => 'AE/AF Lock',
+            4 => 'AE Lock Only',
+            5 => 'AE Lock (reset on release)',
+            6 => 'AE Lock (hold)',
+            7 => 'AF Lock Only',
+            8 => 'AF-On',
+            10 => 'Bracketing Burst',
+            11 => 'Matrix Metering',
+            12 => 'Center-weighted Metering',
+            13 => 'Spot Metering',
+            14 => 'Playback',
+            15 => 'My Menu Top Item',
+            16 => '+NEF(RAW)',
+            17 => 'Virtual Horizon',
+            18 => 'Reset Focus Point',
+            19 => 'Grid Display',
+            20 => 'My Menu',
+            22 => 'Remote Release Only',
+            23 => 'Preset Focus Point',
+            26 => 'Flash Disable/Enable',
+            27 => 'Highlight-weighted Metering',
+            36 => 'AF-Area Mode (Single)',
+            37 => 'AF-Area Mode (Dynamic Area 25 Points)',
+            38 => 'AF-Area Mode (Dynamic Area 72 Points)',
+            39 => 'AF-Area Mode (Dynamic Area 152 Points)',
+            40 => 'AF-Area Mode (Group Area AF)',
+            41 => 'AF-Area Mode (Auto Area AF)',
+            42 => 'AF-Area Mode + AF-On (Single)',
+            43 => 'AF-Area Mode + AF-On (Dynamic Area 25 Points)',
+            44 => 'AF-Area Mode + AF-On (Dynamic Area 72 Points)',
+            45 => 'AF-Area Mode + AF-On (Dynamic Area 152 Points)',
+            46 => 'AF-Area Mode + AF-On (Group Area AF)',
+            47 => 'AF-Area Mode + AF-On (Auto Area AF)',
+            49 => 'Sync Release (Master Only)',
+            50 => 'Sync Release (Remote Only)',
+            54 => 'Highlight Active Focus Point',
+        },
+    },
+    68.1 => { # CSf1-h
+        Name => 'VerticalFuncPlusDials',
+        Mask => 0x0f,
+        PrintConv => {
+            0 => 'None',
+            1 => 'Choose Image Area',
+            2 => 'Shutter Speed & Aperture Lock',
+            3 => 'One Step Speed / Aperture',
+            4 => 'Choose Non-CPU Lens Number',
+            5 => 'Active D-Lighting',
+            7 => 'Photo Shooting Menu Bank',
+            8 => 'Exposure Delay Mode',
+            10 => 'ISO Sensitivity',
+            11 => 'Exposure Mode',
+            12 => 'Exposure Compensation',
+            13 => 'Metering',
+        },
+    },
+    70.1 => { # CSf1-j
         Name => 'AF-OnButton',
         Mask => 0x3f,
         PrintConv => {
@@ -3890,7 +3962,7 @@ $VERSION = '1.15';
             47 => 'AF-Area Mode + AF-On (Auto Area AF)',
         },
     },
-    71.1 => { # CSf1-g
+    71.1 => { # CSf1-k
         Name => 'SubSelector',
         Mask => 0x80,
         PrintConv => {
@@ -3898,7 +3970,7 @@ $VERSION = '1.15';
             0x80 => 'Same as MultiSelector',
         },
     },
-    72.1 => { # CSf1-h
+    72.1 => { # CSf1-l
         Name => 'SubSelectorCenter',
         Mask => 0x3f,
         PrintConv => {
@@ -3943,12 +4015,12 @@ $VERSION = '1.15';
             54 => 'Highlight Active Focus Point',
         },
     },
-    73.1 => { # CSf1-i
+    73.1 => { # CSf1-m
         Name => 'SubSelectorPlusDials',
         Mask => 0x0f,
         PrintConv => {
             0 => 'None',
-            1 => 'Choose Image Area (DX/1.3x)',
+            1 => 'Choose Image Area',
             2 => 'Shutter Speed & Aperture Lock',
             4 => 'Choose Non-CPU Lens Number',
             7 => 'Photo Shooting Menu Bank',
@@ -3972,7 +4044,7 @@ $VERSION = '1.15';
         Mask => 0x10,
         PrintConv => {
             0x00  => 'None',
-            0x10  => 'Choose Image Area (DX/1.3x)',
+            0x10  => 'Choose Image Area',
         },
     },
     75.2 => { # CSg1-b
@@ -3988,11 +4060,11 @@ $VERSION = '1.15';
         Mask => 0x10,
         PrintConv => {
             0x00  => 'None',
-            0x10  => 'Choose Image Area (DX/1.3x)',
+            0x10  => 'Choose Image Area',
         },
     },
     77.1 => { # CSd4
-        Name => 'SyncReleaseMode',          #new with D500
+        Name => 'SyncReleaseMode',              # new with D500
         Mask => 0x80,
         PrintConv => {
             0x00 => 'No Sync',
@@ -4000,7 +4072,7 @@ $VERSION = '1.15';
         },
     },
     78.1 => { # CSa5
-        Name => 'Three-DTrackingWatchArea',      #new with D500
+        Name => 'Three-DTrackingWatchArea',     # new with D500
         Mask => 0x80,
         PrintConv => {
             0x00 => 'Wide',
@@ -4031,6 +4103,32 @@ $VERSION = '1.15';
             0x00 => 'Off',
             0x01 => 'On (Half Press)',
             0x02 => 'On (Burst Mode)'
+        },
+    },
+    79.1 => { # CSf1-n
+        Name => 'VerticalAFOnButton',
+        Mask => 0x7f,
+        PrintConv => {
+            0 => 'None',
+            3 => 'AE/AF Lock',
+            4 => 'AE Lock Only',
+            5 => 'AE Lock (reset on release)',
+            6 => 'AE Lock (hold)',
+            7 => 'AF Lock Only',
+            8 => 'AF-On',
+            36 => 'AF-Area Mode (Single)',
+            37 => 'AF-Area Mode (Dynamic Area 25 Points)',
+            38 => 'AF-Area Mode (Dynamic Area 72 Points)',
+            39 => 'AF-Area Mode (Dynamic Area 152 Points)',
+            40 => 'AF-Area Mode (Group Area AF)',
+            41 => 'AF-Area Mode (Auto Area AF)',
+            42 => 'AF-Area Mode + AF-On (Single)',
+            43 => 'AF-Area Mode + AF-On (Dynamic Area 25 Points)',
+            44 => 'AF-Area Mode + AF-On (Dynamic Area 72 Points)',
+            45 => 'AF-Area Mode + AF-On (Dynamic Area 152 Points)',
+            46 => 'AF-Area Mode + AF-On (Group Area AF)',
+            47 => 'AF-Area Mode + AF-On (Auto Area AF)',
+            100 => 'Same as AF-On',
         },
     },
     80.1 => { # CSf1-e
@@ -4076,6 +4174,20 @@ $VERSION = '1.15';
             50 => 'Sync Release (Remote Only)',
         },
     },
+    81.1 => { # CSf1-f
+        Name => 'Func2ButtonPlusDials',
+        Mask => 0x0f,
+        PrintConv => {
+            0 => 'None',
+            1 => 'Choose Image Area',
+            2 => 'Shutter Speed & Aperture Lock',
+            3 => 'One Step Speed / Aperture',
+            4 => 'Choose Non-CPU Lens Number',
+            5 => 'Active D-Lighting',
+            7 => 'Photo Shooting Menu Bank',
+            8 => 'Exposure Delay Mode',
+        },
+    },
     82.1 => { # CSg1-e
         Name => 'AssignMovieFunc2Button',
         Mask => 0x70,
@@ -4083,6 +4195,16 @@ $VERSION = '1.15';
             0x00 => 'None',
             0x30 => 'Index Marking',
             0x40 => 'View Photo Shooting Info',
+        },
+    },
+    83.1 => { # CSf1-i
+        Name => 'Func3Button',
+        Mask => 0x03,
+        PrintConv => {
+            0 => 'None',
+            1 => 'Voice Memo',
+            2 => 'Rating',
+            3 => 'Connect To Network',
         },
     },
 );
@@ -4405,24 +4527,24 @@ $VERSION = '1.15';
             17 => 'Virtual Horizon',
             19 => 'Grid Display',
             20 => 'My Menu',
-#           21 => 'Disable Synchronized Release',   #removed with D500
+#           21 => 'Disable Synchronized Release',   # removed with D500
             22 => 'Remote Release Only',
             26 => 'Flash Disable/Enable',
             27 => 'Highlight-weighted Metering',
-            36 => 'AF-Area Mode (Single)',                              #new with D500
-            37 => 'AF-Area Mode (Dynamic Area 25 Points)',              #new with D500
-            38 => 'AF-Area Mode (Dynamic Area 72 Points)',              #new with D500
-            39 => 'AF-Area Mode (Dynamic Area 152 Points)',             #new with D500
-            40 => 'AF-Area Mode (Group Area AF)',                       #new with D500
-            41 => 'AF-Area Mode (Auto Area AF)',                        #new with D500
-            42 => 'AF-Area Mode + AF-On (Single)',                      #new with D500
-            43 => 'AF-Area Mode + AF-On (Dynamic Area 25 Points)',      #new with D500
-            44 => 'AF-Area Mode + AF-On (Dynamic Area 72 Points)',      #new with D500
-            45 => 'AF-Area Mode + AF-On (Dynamic Area 152 Points)',     #new with D500
-            46 => 'AF-Area Mode + AF-On (Group Area AF)',               #new with D500
-            47 => 'AF-Area Mode + AF-On (Auto Area AF)',                #new with D500
-            49 => 'Sync Release (Master Only)',                         #new with D500
-            50 => 'Sync Release (Remote Only)',                         #new with D500
+            36 => 'AF-Area Mode (Single)',                         # new with D500
+            37 => 'AF-Area Mode (Dynamic Area 25 Points)',         # new with D500
+            38 => 'AF-Area Mode (Dynamic Area 72 Points)',         # new with D500
+            39 => 'AF-Area Mode (Dynamic Area 152 Points)',        # new with D500
+            40 => 'AF-Area Mode (Group Area AF)',                  # new with D500
+            41 => 'AF-Area Mode (Auto Area AF)',                   # new with D500
+            42 => 'AF-Area Mode + AF-On (Single)',                 # new with D500
+            43 => 'AF-Area Mode + AF-On (Dynamic Area 25 Points)', # new with D500
+            44 => 'AF-Area Mode + AF-On (Dynamic Area 72 Points)', # new with D500
+            45 => 'AF-Area Mode + AF-On (Dynamic Area 152 Points)',# new with D500
+            46 => 'AF-Area Mode + AF-On (Group Area AF)',          # new with D500
+            47 => 'AF-Area Mode + AF-On (Auto Area AF)',           # new with D500
+            49 => 'Sync Release (Master Only)',                    # new with D500
+            50 => 'Sync Release (Remote Only)',                    # new with D500
         },
     },
     16.1 => { # CSf1-j
@@ -4705,7 +4827,7 @@ $VERSION = '1.15';
             3 => 'One Step Speed / Aperture',
             4 => 'Choose Non-CPU Lens Number',
             5 => 'Active D-Lighting',
-            7 => 'Photo Shooting Menu Bank',                                #new with D500
+            7 => 'Photo Shooting Menu Bank',    # new with D500
             8 => 'Exposure Delay Mode',
         },
     },
@@ -4774,7 +4896,7 @@ $VERSION = '1.15';
         Mask => 0x30,
         PrintConv => {
             0x00 => 'Enable',
-            0x10 => 'Enable (Standby Timer Active)',            #new with D500
+            0x10 => 'Enable (Standby Timer Active)',    # new with D500
             0x20 => 'Disable',
         },
     },
@@ -5027,7 +5149,7 @@ $VERSION = '1.15';
         },
     },
     77.1 => { # CSd4
-        Name => 'SyncReleaseMode',          #new with D500
+        Name => 'SyncReleaseMode',          # new with D500
         Mask => 0x80,
         PrintConv => {
             0x00 => 'No Sync',
@@ -5035,7 +5157,7 @@ $VERSION = '1.15';
         },
     },
     78.1 => { # CSa5
-        Name => 'Three-DTrackingWatchArea',      #new with D500
+        Name => 'Three-DTrackingWatchArea', # new with D500
         Mask => 0x80,
         PrintConv => {
             0x00 => 'Wide',

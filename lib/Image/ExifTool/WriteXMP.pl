@@ -662,6 +662,7 @@ sub WriteXMP($$;$)
                     }
                 }
             } else {
+                $success = 2 if $success and $success eq '1';
                 if ($et->Warn($err, $success)) {
                     delete $$et{XMP_CAPTURE};
                     return undef;

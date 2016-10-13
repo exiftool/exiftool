@@ -17,6 +17,27 @@ considered development releases, and are not uploaded to <a href="http://search.
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v10.30'><b>Oct. 13, 2016 - Version 10.30</b></a>
+<ul>
+<li>Added read support for FLIF images
+<li>Added a couple of new Minolta/Sony LensType values (thanks Jos Roost)
+<li>Added a new SonyModelID (thanks LibRaw and Jos Roost)
+<li>Added a new digiKam XMP tag
+<li>Decode a new Apple tag (thanks Neal Krawetz)
+<li>Decode a few new FujiFilm tags (thanks Chris Schucker)
+<li>Decode more Nikon D5 custom settings (thanks Warren Hatch)
+<li>Decode a couple more Samsung tags (thanks Klaus Homeister)
+<li>Improved decoding of Nikon D500/D5 ShotInfo information
+<li>Enhanced -ver option to output system information when -v is added
+<li>Minor change to parsing of -@ argfile (comment lines may may no longer have
+    spaces before the "#")
+<li>Patched Jpeg2000 reader to read bad UUID-EXIF boxes
+<li>Lowered priority of unknown XMP tags when reading
+<li>Fixed problem in new xmp2exif.args date/time arguments introduced in 10.28
+<li>Fixed potential "Use of uninitialized value" warning when decoding
+    compressed PNG iTXt chunk
+</ul>
+
 <a name='v10.29'><b>Oct. 5, 2016 - Version 10.29</b></a>
 <ul>
 <li>Added a couple of new Sony LensType values (thanks LibRaw)

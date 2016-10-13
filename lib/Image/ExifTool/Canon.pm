@@ -7921,6 +7921,8 @@ my %filterConv = (
     10 => { #52
         Name => 'AutoAFPointSelEOSiTRAF',
         Description => 'Auto AF Point Sel EOS iTR AF',
+        # valid for: 1DX, 1DXmkII, 7DmkII, 5DS, 5DSR
+        # not valid for: 5DmkIII
         Notes => 'only valid for some models',
         Condition => '$$self{Model} !~ /5D /',
         PrintConv => {
@@ -7938,12 +7940,12 @@ my %filterConv = (
     12 => { #52
         Name => 'SelectAFAreaSelectionMode',
         PrintConv => { BITMASK => {
-            0 => 'Single pt',
+            0 => 'Single-point AF',
             1 => 'Auto', # (61 point)
-            2 => 'Zone',
-            3 => 'Expand area 4pt',
-            4 => 'Spot',
-            5 => 'Expand area 8pt',
+            2 => 'Zone AF',
+            3 => 'AF Point Expansion (4 point)',
+            4 => 'Spot AF',
+            5 => 'AF Point Expansion (8 point)',
         }},
     },
     13 => { #52

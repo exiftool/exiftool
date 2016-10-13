@@ -30,9 +30,9 @@
 -EXIF:DateTimeOriginal < XMP-photoshop:DateCreated
 # the following 3 SubSec tags also write/delete the corresponding EXIF
 # SubSecTime and OffsetTime tags as appropriate
--EXIF:SubSecDateTimeOriginal < XMP-photoshop:DateCreated
--EXIF:SubSecCreateDate < XMP-xmp:CreateDate
--EXIF:SubSecModifyDate < XMP-xmp:ModifyDate
+-Composite:SubSecDateTimeOriginal < XMP-photoshop:DateCreated
+-Composite:SubSecCreateDate < XMP-xmp:CreateDate
+-Composite:SubSecModifyDate < XMP-xmp:ModifyDate
 -EXIF:Software < -XMP-xmp:CreatorTool
 -EXIF:Copyright < XMP-dc:Rights
 -EXIF:Artist < XMP-dc:Creator

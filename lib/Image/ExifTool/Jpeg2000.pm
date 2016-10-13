@@ -16,7 +16,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.25';
+$VERSION = '1.26';
 
 sub ProcessJpeg2000Box($$$);
 
@@ -57,6 +57,8 @@ my %jp2Map = (
 # UUID's for writable UUID directories (by tag name)
 my %uuid = (
     'UUID-EXIF'   => 'JpgTiffExif->JP2',
+    'UUID-EXIF2'  => '',    # (flags a warning when writing)
+    'UUID-EXIF_bad' => '0', # (flags a warning when reading and writing)
     'UUID-IPTC'   => "\x33\xc7\xa4\xd2\xb8\x1d\x47\x23\xa0\xba\xf1\xa3\xe0\x97\xad\x38",
     'UUID-XMP'    => "\xbe\x7a\xcf\xcb\x97\xa9\x42\xe8\x9c\x71\x99\x94\x91\xe3\xaf\xac",
   # (can't yet write GeoJP2 information)
@@ -216,7 +218,7 @@ my %j2cMarker = (
         {
             Name => 'UUID-EXIF',
             # (this is the EXIF that we create)
-            Condition => '$$valPt=~/^JpgTiffExif->JP2/',
+            Condition => '$$valPt=~/^JpgTiffExif->JP2(?!Exif\0\0)/',
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Exif::Main',
                 ProcessProc => \&Image::ExifTool::ProcessTIFF,
@@ -235,6 +237,18 @@ my %j2cMarker = (
                 WriteProc => \&Image::ExifTool::WriteTIFF,
                 DirName => 'EXIF',
                 Start => '$valuePtr + 16',
+            },
+        },
+        {
+            Name => 'UUID-EXIF_bad',
+            # written by Digikam
+            Condition => '$$valPt=~/^JpgTiffExif->JP2/',
+            SubDirectory => {
+                TagTable => 'Image::ExifTool::Exif::Main',
+                ProcessProc => \&Image::ExifTool::ProcessTIFF,
+                WriteProc => \&Image::ExifTool::WriteTIFF,
+                DirName => 'EXIF',
+                Start => '$valuePtr + 22',
             },
         },
         {
@@ -725,6 +739,7 @@ sub ProcessJpeg2000Box($$$)
                 OutFile => $outfile,
                 Base => $base + $dataPos + $subdirStart,
             );
+            my $uuid = $uuid{$$tagInfo{Name}};
             # remove "UUID-" prefix to allow appropriate directories to be written as a block
             $subdirInfo{DirName} =~ s/^UUID-//;
             my $subTable = GetTagTable($$subdir{TagTable}) || $tagTablePtr;
@@ -733,9 +748,11 @@ sub ProcessJpeg2000Box($$$)
                 delete $$et{AddJp2Dirs}{$$tagInfo{Name}};
                 my $newdir;
                 # only edit writable UUID boxes
-                if ($uuid{$$tagInfo{Name}}) {
+                if ($uuid) {
                     $newdir = $et->WriteDirectory(\%subdirInfo, $subTable, $$subdir{WriteProc});
                     next if defined $newdir and not length $newdir; # next if deleting the box
+                } elsif (defined $uuid) {
+                    $et->Warn("Not editing $$tagInfo{Name} box", 1);
                 }
                 # use old box data if not changed
                 defined $newdir or $newdir = substr($$dataPt, $subdirStart, $subdirLen);
@@ -746,14 +763,13 @@ sub ProcessJpeg2000Box($$$)
             } else {
                 # extract as a block if specified
                 $subdirInfo{BlockInfo} = $tagInfo if $$tagInfo{BlockExtract};
+                $et->Warn("Reading non-standard $$tagInfo{Name} box") if defined $uuid and $uuid eq '0';
                 unless ($et->ProcessDirectory(\%subdirInfo, $subTable, $$subdir{ProcessProc})) {
                     if ($subTable eq $tagTablePtr) {
                         $err = 'JPEG 2000 format error';
-                    } else {
-                        $err = "Unrecognized $$tagInfo{Name} box";
-                        next if $$tagInfo{Name} eq 'XML';
+                        last;
                     }
-                    last;
+                    $et->Warn("Unrecognized $$tagInfo{Name} box");
                 }
             }
         } elsif ($$tagInfo{Format} and not $outfile) {

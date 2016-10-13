@@ -26,7 +26,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.37';
+$VERSION = '1.38';
 
 sub ProcessPNG_tEXt($$$);
 sub ProcessPNG_iTXt($$$);
@@ -675,7 +675,7 @@ sub FoundPNG($$$$;$$$$)
                 OutBuff  => $outBuff,
             );
             # no need to re-decompress if already done
-            undef $processProc if $wasCompressed and $processProc eq \&ProcessPNG_Compressed;
+            undef $processProc if $wasCompressed and $processProc and $processProc eq \&ProcessPNG_Compressed;
             # rewrite this directory if necessary (but always process TextualData normally)
             if ($outBuff and not $processProc and $subTable ne \%Image::ExifTool::PNG::TextualData) {
                 return 1 unless $$et{EDIT_DIRS}{$dirName};

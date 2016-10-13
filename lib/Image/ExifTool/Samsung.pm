@@ -21,7 +21,7 @@ use vars qw($VERSION %samsungLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.35';
+$VERSION = '1.36';
 
 sub WriteSTMN($$$);
 sub ProcessINFO($$$);
@@ -276,7 +276,13 @@ my %formatMinMax = (
     # 0x003d - int16u[5] (SmartCropInfo?)
     # 0x003e - int32u (DualCapture?)
     # 0x003f - int16u[2] (SGIFInfo?)
-    # 0x0040 - int32u (FavoriteTagging?) values: 0
+    0x0040 => { #forum7432
+        Name => 'RawDataByteOrder',
+        PrintConv => {
+            0 => 'Little-endian (Intel, II)',
+            1 => 'Big-endian (Motorola, MM)', #(NC)
+        },
+    },
     0x0043 => { #1 (NC)
         Name => 'CameraTemperature',
         Groups => { 2 => 'Camera' },
@@ -289,6 +295,14 @@ my %formatMinMax = (
     # 0x004a - int32u[7] (ImageVerification?)
     # 0x004b - int32u[2] (RewindInfo?)
     # 0x0050 - int32u (ColorSpace? - inconsistent) values: 1 (related to compression mode, ref forum7432)
+    0x0050 => { #forum7432
+        Name => 'RawDataCFAPattern',
+        PrintConv => {
+            0 => 'Unchanged',
+            1 => 'Swap',
+            65535 => 'Roll',
+        },
+    },
     # 0x0054 - int16u[2] (WeatherInfo?)
     # 0x0060 - undef (AEInfo?)
     # 0x0080 - undef (AFInfo?)

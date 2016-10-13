@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '10.29';
+$VERSION = '10.30';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -136,7 +136,7 @@ sub ReadValue($$$$$;$);
     Vorbis Ogg APE APE::NewHeader APE::OldHeader Audible MPC MPEG::Audio
     MPEG::Video MPEG::Xing M2TS QuickTime QuickTime::ImageFile Matroska MOI MXF
     DV Flash Flash::FLV Real::Media Real::Audio Real::Metafile RIFF AIFF ASF
-    DICOM MIE HTML XMP::SVG Palm Palm::MOBI Palm::EXTH Torrent EXE
+    FLIF DICOM MIE HTML XMP::SVG Palm Palm::MOBI Palm::EXTH Torrent EXE
     EXE::PEVersion EXE::PEString EXE::MachO EXE::PEF EXE::ELF EXE::AR EXE::CHM
     LNK Font VCard VCard::VCalendar RSRC Rawzor ZIP ZIP::GZIP ZIP::RAR RTF OOXML
     iWork ISO FLIR::AFF FLIR::FPF
@@ -174,10 +174,10 @@ $defaultLang = 'en';    # default language
 # 2) Put types with weak file signatures at end of list to avoid false matches
 @fileTypes = qw(JPEG CRW DR4 TIFF GIF MRW RAF X3F JP2 PNG MIE MIFF PS PDF PSD XMP
                 BMP BPG PPM RIFF AIFF ASF MOV MPEG Real SWF PSP FLV OGG FLAC APE
-                MPC MKV MXF DV PMP IND PGF ICC ITC FLIR FPF LFP HTML VRD RTF XCF
-                DSS QTIF FPX PICT ZIP GZIP PLIST RAR BZ2 TAR RWZ EXE EXR HDR CHM
-                LNK WMF AVC DEX DPX RAW Font RSRC M2TS PHP Torrent VCard AA PDB
-                MOI ISO MP3 DICOM PCD);
+                MPC MKV MXF DV PMP IND PGF ICC ITC FLIR FLIF FPF LFP HTML VRD
+                RTF XCF DSS QTIF FPX PICT ZIP GZIP PLIST RAR BZ2 TAR RWZ EXE EXR
+                HDR CHM LNK WMF AVC DEX DPX RAW Font RSRC M2TS PHP Torrent VCard
+                AA PDB MOI ISO MP3 DICOM PCD);
 
 # file types that we can write (edit)
 my @writeTypes = qw(JPEG TIFF GIF CRW MRW ORF RAF RAW PNG MIE PSD XMP PPM
@@ -281,6 +281,7 @@ my %fileTypeLookup = (
     FFF  => [['TIFF','FLIR'], 'Hasselblad Flexible File Format'],
     FLAC => ['FLAC', 'Free Lossless Audio Codec'],
     FLA  => ['FPX',  'Macromedia/Adobe Flash project'],
+    FLIF => ['FLIF', 'Free Lossless Image Format'],
     FLIR => ['FLIR', 'FLIR File Format'], # (not an actual extension)
     FLV  => ['FLV',  'Flash Video'],
     FPF  => ['FPF',  'FLIR Public image Format'],
@@ -555,6 +556,7 @@ my %fileDescription = (
     FFF  => 'image/x-hasselblad-fff',
     FLA  => 'application/vnd.adobe.fla',
     FLAC => 'audio/flac',
+    FLIF => 'image/flif',
     FLV  => 'video/x-flv',
     Font => 'application/x-font-type1', # covers PFA, PFB and PFM (not sure about PFM)
     FPX  => 'image/vnd.fpx',
@@ -774,6 +776,7 @@ my %moduleName = (
     EXR  => '\x76\x2f\x31\x01',
     EXV  => '\xff\x01Exiv2',
     FLAC => '(fLaC|ID3)',
+    FLIF => 'FLIF[0-\x6f][0-2]',
     FLIR => '[AF]FF\0',
     FLV  => 'FLV\x01',
     Font => '((\0\x01\0\0|OTTO|true|typ1)[\0\x01]|ttcf\0[\x01\x02]\0\0|\0[\x01\x02]|' .
@@ -6956,7 +6959,7 @@ sub HandleTag($$$$;%)
     my $pfmt = $parms{Format};
     my $tagInfo = $parms{TagInfo} || $self->GetTagInfo($tagTablePtr, $tag, \$val, $pfmt, $parms{Count});
     my $dataPt = $parms{DataPt};
-    my ($subdir, $format, $count, $size, $noTagInfo, $rational);
+    my ($subdir, $format, $noTagInfo, $rational);
 
     if ($tagInfo) {
         $subdir = $$tagInfo{SubDirectory}
@@ -6992,7 +6995,7 @@ sub HandleTag($$$$;%)
         $parms{Value} .= " ($rational)" if defined $rational;
         $parms{Table} = $tagTablePtr;
         if ($format) {
-            $count or $count = int(($parms{Size} || 0) / ($formatSize{$format} || 1));
+            my $count = int(($parms{Size} || 0) / ($formatSize{$format} || 1));
             $parms{Format} = $format . "[$count]";
         }
         $self->VerboseInfo($tag, $tagInfo, %parms);

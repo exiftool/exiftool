@@ -12,7 +12,7 @@
 use strict;
 require 5.004;
 
-my $version = '10.29';
+my $version = '10.30';
 
 # add our 'lib' directory to the include list BEFORE 'use Image::ExifTool'
 my $exeDir;
@@ -239,6 +239,20 @@ my %optArgs = (
     '-wm' => 1,
     '-x' => 1, '-exclude' => 1,
     '-X' => 0,
+);
+
+my @recommends = qw(
+  Archive::Zip
+  Compress::Zlib
+  Digest::MD5
+  Digest::SHA
+  IO::Compress::Bzip2
+  Time::HiRes
+  POSIX::strptime
+  Unicode::LineBreak
+  Win32::API
+  Win32::FindFile
+  Win32API::File
 );
 
 # exit routine
@@ -598,7 +612,18 @@ for (;;) {
         $pass or push(@nextPass,'-ver'), next;
         my $libVer = $Image::ExifTool::VERSION;
         my $str = $libVer eq $version ? '' : " [Warning: Library version is $libVer]";
-        print("$version$str$Image::ExifTool::RELEASE\n");
+        if ($verbose) {
+            print "ExifTool version $version$str$Image::ExifTool::RELEASE\n";
+            print "Platform: $^O\n";
+            print "Optional libraries:\n";
+            foreach (@recommends) {
+                next if /^Win32/ and $^O ne 'MSWin32';
+                my $ver = eval "require $_ and \$${_}::VERSION";
+                printf "  %-21s %s\n", $_, $ver || '(not installed)';
+            }
+        } else {
+            print "$version$str$Image::ExifTool::RELEASE\n";
+        }
         $helped = 1;
         next;
     }
@@ -654,10 +679,11 @@ for (;;) {
                 s/^\xef\xbb\xbf//;
                 $didBOM = 1;
             }
+            next if /^#/;   # ignore lines beginning with '#'
             s/^\s+//; s/[\x0d\x0a]+$//s; # remove leading white space and trailing newline
             # remove white space before, and single space after '=', '+=', '-=' or '<='
             s/^(-[-:\w]+#?)\s*([-+<]?=) ?/$1$2/;
-            push @newArgs, $_ unless $_ eq '' or /^#/;
+            push @newArgs, $_ unless $_ eq '';
         }
         close ARGFILE;
         unshift @ARGV, @newArgs;
@@ -3978,42 +4004,42 @@ supported by ExifTool (r = read, w = write, c = create):
 
   File Types
   ------------+-------------+-------------+-------------+------------
-  3FR   r     | DV    r     | KDC   r     | OGV   r     | RW2   r/w
-  3G2   r/w   | DVB   r/w   | KEY   r     | OPUS  r     | RWL   r/w
-  3GP   r/w   | DYLIB r     | LA    r     | ORF   r/w   | RWZ   r
-  A     r     | EIP   r     | LFP   r     | OTF   r     | RM    r
-  AA    r     | EPS   r/w   | LNK   r     | PAC   r     | SEQ   r
-  AAX   r/w   | EPUB  r     | M2TS  r     | PAGES r     | SO    r
-  ACR   r     | ERF   r/w   | M4A/V r/w   | PBM   r/w   | SR2   r/w
-  AFM   r     | EXE   r     | MEF   r/w   | PCD   r     | SRF   r
-  AI    r/w   | EXIF  r/w/c | MIE   r/w/c | PDB   r     | SRW   r/w
-  AIFF  r     | EXR   r     | MIFF  r     | PDF   r/w   | SVG   r
-  APE   r     | EXV   r/w/c | MKA   r     | PEF   r/w   | SWF   r
-  ARW   r/w   | F4A/V r/w   | MKS   r     | PFA   r     | THM   r/w
-  ASF   r     | FFF   r/w   | MKV   r     | PFB   r     | TIFF  r/w
-  AVI   r     | FLA   r     | MNG   r/w   | PFM   r     | TORRENT r
-  AZW   r     | FLAC  r     | MOBI  r     | PGF   r     | TTC   r
-  BMP   r     | FLV   r     | MODD  r     | PGM   r/w   | TTF   r
-  BPG   r     | FPF   r     | MOI   r     | PLIST r     | VCF   r
-  BTF   r     | FPX   r     | MOS   r/w   | PICT  r     | VRD   r/w/c
-  CHM   r     | GIF   r/w   | MOV   r/w   | PMP   r     | VSD   r
-  COS   r     | GZ    r     | MP3   r     | PNG   r/w   | WAV   r
-  CR2   r/w   | HDP   r/w   | MP4   r/w   | PPM   r/w   | WDP   r/w
-  CRW   r/w   | HDR   r     | MPC   r     | PPT   r     | WEBP  r
-  CS1   r/w   | HTML  r     | MPG   r     | PPTX  r     | WEBM  r
-  DCM   r     | ICC   r/w/c | MPO   r/w   | PS    r/w   | WMA   r
-  DCP   r/w   | ICS   r     | MQV   r/w   | PSB   r/w   | WMV   r
-  DCR   r     | IDML  r     | MRW   r/w   | PSD   r/w   | WV    r
-  DFONT r     | IIQ   r/w   | MXF   r     | PSP   r     | X3F   r/w
-  DIVX  r     | IND   r/w   | NEF   r/w   | QTIF  r/w   | XCF   r
-  DJVU  r     | INX   r     | NRW   r/w   | RA    r     | XLS   r
-  DLL   r     | ISO   r     | NUMBERS r   | RAF   r/w   | XLSX  r
-  DNG   r/w   | ITC   r     | O     r     | RAM   r     | XMP   r/w/c
-  DOC   r     | J2C   r     | ODP   r     | RAR   r     | ZIP   r
-  DOCX  r     | JNG   r/w   | ODS   r     | RAW   r/w   |
-  DPX   r     | JP2   r/w   | ODT   r     | RIFF  r     |
-  DR4   r/w/c | JPEG  r/w   | OFR   r     | RSRC  r     |
-  DSS   r     | K25   r     | OGG   r     | RTF   r     |
+  3FR   r     | DV    r     | K25   r     | OGG   r     | RTF   r
+  3G2   r/w   | DVB   r/w   | KDC   r     | OGV   r     | RW2   r/w
+  3GP   r/w   | DYLIB r     | KEY   r     | OPUS  r     | RWL   r/w
+  A     r     | EIP   r     | LA    r     | ORF   r/w   | RWZ   r
+  AA    r     | EPS   r/w   | LFP   r     | OTF   r     | RM    r
+  AAX   r/w   | EPUB  r     | LNK   r     | PAC   r     | SEQ   r
+  ACR   r     | ERF   r/w   | M2TS  r     | PAGES r     | SO    r
+  AFM   r     | EXE   r     | M4A/V r/w   | PBM   r/w   | SR2   r/w
+  AI    r/w   | EXIF  r/w/c | MEF   r/w   | PCD   r     | SRF   r
+  AIFF  r     | EXR   r     | MIE   r/w/c | PDB   r     | SRW   r/w
+  APE   r     | EXV   r/w/c | MIFF  r     | PDF   r/w   | SVG   r
+  ARW   r/w   | F4A/V r/w   | MKA   r     | PEF   r/w   | SWF   r
+  ASF   r     | FFF   r/w   | MKS   r     | PFA   r     | THM   r/w
+  AVI   r     | FLA   r     | MKV   r     | PFB   r     | TIFF  r/w
+  AZW   r     | FLAC  r     | MNG   r/w   | PFM   r     | TORRENT r
+  BMP   r     | FLIF  r     | MOBI  r     | PGF   r     | TTC   r
+  BPG   r     | FLV   r     | MODD  r     | PGM   r/w   | TTF   r
+  BTF   r     | FPF   r     | MOI   r     | PLIST r     | VCF   r
+  CHM   r     | FPX   r     | MOS   r/w   | PICT  r     | VRD   r/w/c
+  COS   r     | GIF   r/w   | MOV   r/w   | PMP   r     | VSD   r
+  CR2   r/w   | GZ    r     | MP3   r     | PNG   r/w   | WAV   r
+  CRW   r/w   | HDP   r/w   | MP4   r/w   | PPM   r/w   | WDP   r/w
+  CS1   r/w   | HDR   r     | MPC   r     | PPT   r     | WEBP  r
+  DCM   r     | HTML  r     | MPG   r     | PPTX  r     | WEBM  r
+  DCP   r/w   | ICC   r/w/c | MPO   r/w   | PS    r/w   | WMA   r
+  DCR   r     | ICS   r     | MQV   r/w   | PSB   r/w   | WMV   r
+  DFONT r     | IDML  r     | MRW   r/w   | PSD   r/w   | WV    r
+  DIVX  r     | IIQ   r/w   | MXF   r     | PSP   r     | X3F   r/w
+  DJVU  r     | IND   r/w   | NEF   r/w   | QTIF  r/w   | XCF   r
+  DLL   r     | INX   r     | NRW   r/w   | RA    r     | XLS   r
+  DNG   r/w   | ISO   r     | NUMBERS r   | RAF   r/w   | XLSX  r
+  DOC   r     | ITC   r     | O     r     | RAM   r     | XMP   r/w/c
+  DOCX  r     | J2C   r     | ODP   r     | RAR   r     | ZIP   r
+  DPX   r     | JNG   r/w   | ODS   r     | RAW   r/w   |
+  DR4   r/w/c | JP2   r/w   | ODT   r     | RIFF  r     |
+  DSS   r     | JPEG  r/w   | OFR   r     | RSRC  r     |
 
   Meta Information
   ----------------------+----------------------+---------------------
@@ -4799,7 +4825,7 @@ with this command:
 
 produces output like this:
 
-    -- Generated by ExifTool 10.29 --
+    -- Generated by ExifTool 10.30 --
     File: a.jpg - 2003:10:31 15:44:19
     (f/5.6, 1/60s, ISO 100)
     File: b.jpg - 2006:05:23 11:57:38
@@ -5438,11 +5464,12 @@ padding in embedded XMP, saving 2424 bytes when writing XMP in a file.
 Read command-line arguments from the specified file.  The file contains one
 argument per line (NOT one option per line -- some options require
 additional arguments, and all arguments must be placed on separate lines).
-Blank lines and lines beginning with C<#> are ignored.  Normal shell
-processing of arguments is not performed, which among other things means
-that arguments should not be quoted and spaces are treated as any other
-character.  I<ARGFILE> may exist relative to either the current directory or
-the exiftool directory unless an absolute pathname is given.
+Blank lines and lines beginning with C<#> are ignored.  White space at the
+start of a line is removed.  Normal shell processing of arguments is not
+performed, which among other things means that arguments should not be
+quoted and spaces are treated as any other character.  I<ARGFILE> may exist
+relative to either the current directory or the exiftool directory unless an
+absolute pathname is given.
 
 For example, the following I<ARGFILE> will set the value of Copyright to
 "Copyright YYYY, Phil Harvey", where "YYYY" is the year of CreateDate:
@@ -5501,7 +5528,9 @@ Note that none of the B<-list> options require an input I<FILE>.
 
 =item B<-ver>
 
-Print exiftool version number.
+Print exiftool version number.  The B<-v> option may be added to print
+addition system information (see the README file of the full distribution
+for more details about optional libraries).
 
 =back
 

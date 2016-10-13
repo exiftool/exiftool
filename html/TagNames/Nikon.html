@@ -2717,16 +2717,31 @@ firmware 1.01b.</p>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td class=r title='16 = 0x10'>16</td>
+<td>RotationInfoOffset</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='20 = 0x14'>20</td>
+<td>JPGInfoOffset</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='44 = 0x2c'>44</td>
+<td>BracketingInfoOffset</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td class=r title='80 = 0x50'>80</td>
 <td>ShootingMenuOffset</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='88 = 0x58'>88</td>
 <td>CustomSettingsOffset</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='202 = 0xca'>202</td>
 <td>Rotation</td>
 <td class=c>int8u</td>
@@ -2735,21 +2750,21 @@ firmware 1.01b.</p>
   <br>0x1 = Rotate 270 CW
   <br>0x2 = Rotate 90 CW
   <br>0x3 = Rotate 180</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='1506 = 0x5e2'>1506</td>
 <td>FlickerReductionIndicator</td>
 <td class=c>int8u</td>
 <td><span class=s>[Mask 0x01]
   <br>0x0 = On
   <br>0x1 = Off</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='2004 = 0x7d4'>2004</td>
 <td>JPGCompression</td>
 <td class=c>int8u</td>
 <td><span class=s>[Mask 0x01]
   <br>0x0 = Size Priority
   <br>0x1 = Optimal Quality</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='2171 = 0x87b'>2171</td>
 <td>AEBracketingSteps</td>
 <td class=c>int8u</td>
@@ -2804,7 +2819,7 @@ firmware 1.01b.</p>
   <br>0xd5 = 3F3
   <br>0xd6 = 5F3</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td class=r title='2172 = 0x87c'>2172</td>
 <td>WBBracketingSteps</td>
 <td class=c>int8u</td>
@@ -2837,7 +2852,7 @@ firmware 1.01b.</p>
   <br>0x27 = 7F 3
   <br>0x28 = 9F 3</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td class=r title='2179 = 0x883'>2179</td>
 <td>ADLBracketingStep</td>
 <td class=c>int8u</td>
@@ -2849,7 +2864,7 @@ firmware 1.01b.</p>
   <br>0x40 = Extra High
   <br>0x80 = Auto</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td class=r title='2180 = 0x884'>2180</td>
 <td>ADLBracketingType</td>
 <td class=c>int8u</td>
@@ -2859,7 +2874,7 @@ firmware 1.01b.</p>
   <br>0x2 = 3 Shots
   <br>0x3 = 4 Shots
   <br>0x4 = 5 Shots</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='3709 = 0xe7d'>3709</td>
 <td>PhotoShootingMenuBank</td>
 <td class=c>int8u</td>
@@ -2868,7 +2883,7 @@ firmware 1.01b.</p>
   <br>0x1 = B
   <br>0x2 = C
   <br>0x3 = D</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='3711 = 0xe7f'>3711</td>
 <td>PrimarySlot</td>
 <td class=c>int8u</td>
@@ -2876,7 +2891,7 @@ firmware 1.01b.</p>
   <br>[Mask 0x80]
   <br>0x0 = XQD Card
   <br>0x80 = SD Card</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='3713 = 0xe81'>3713</td>
 <td>ISOAutoShutterTime</td>
 <td class=c>int8u</td>
@@ -2919,7 +2934,7 @@ firmware 1.01b.</p>
   <br>0x23 = Auto (Faster)
   <br>0x24 = Auto (Fastest)</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td class=r title='3714 = 0xe82'>3714</td>
 <td>ISOAutoHiLimit</td>
 <td class=c>int8u</td>
@@ -2966,21 +2981,21 @@ firmware 1.01b.</p>
   <br>0x6c = ISO Hi 4.0
   <br>0x72 = ISO Hi 5.0</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td class=r title='3716 = 0xe84'>3716</td>
 <td>FlickerReduction</td>
 <td class=c>int8u</td>
 <td><span class=s>[Mask 0x20]
   <br>0x0 = Enable
   <br>0x20 = Disable</span></td></tr>
-<tr>
+<tr class=b>
 <td class=r title='3716 = 0xe84'>3716.1</td>
 <td>PhotoShootingMenuBankImageArea</td>
 <td class=c>int8u</td>
 <td><span class=s>[Mask 0x07]
   <br>0x1 = DX (24x16)
   <br>0x4 = 1.3x (18x12)</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='3819 = 0xeeb'>3819</td>
 <td>CustomSettingsD5
   <br>CustomSettingsD500</td>
@@ -5940,7 +5955,7 @@ ExifTool to choose in these cases (see the
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Oct 5, 2016</i>
+<br><i>Last revised Oct 13, 2016</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

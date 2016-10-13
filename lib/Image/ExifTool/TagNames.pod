@@ -1978,6 +1978,7 @@ These tags belong to the ExifTool XMP-digiKam family 1 group.
   CaptionsDateTimeStamps                        lang-alt
   ColorLabel                                    string
   ImageHistory                                  string/
+  ImageUniqueID                                 string/
   LensCorrectionSettings                        string
   PickLabel                                     string
   TagsList                                      string+
@@ -4453,11 +4454,12 @@ Tags extracted from Photoshop layer information.
 
 =head2 Apple Tags
 
-Tags extracted from maker notes of images from the iPhone 5 with iOS 7.
+Tags extracted from the maker notes of iPhone images.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
   0x0003   RunTime                              Apple RunTime
+  0x0008   AccelerationVector                   rational64s[3]
   0x000a   HDRImageType                         int32s
   0x000b   BurstUUID                            string
   0x0015   ImageUniqueID                        string
@@ -7828,9 +7830,12 @@ Tags extracted from FLIR Public image Format (FPF) files.
   0x1034   EXRMode                              int16u
   0x1040   ShadowTone                           int32s
   0x1041   HighlightTone                        int32s
+  0x1044   DigitalZoom                          int32u
   0x1050   ShutterType                          int16u
   0x1100   AutoBracketing                       int16u
   0x1101   SequenceNumber                       int16u
+  0x1153   PanoramaAngle                        int16u
+  0x1154   PanoramaDirection                    int16u
   0x1201   AdvancedFilter                       int32u
   0x1210   ColorMode                            int16u
   0x1300   BlurWarning                          int16u
@@ -9865,6 +9870,9 @@ These tags are extracted from encrypted data in images from the D5 and D500.
    -----   --------                             --------
       0    ShotInfoVersion                      N
       4    FirmwareVersion                      N
+     16    RotationInfoOffset                   N
+     20    JPGInfoOffset                        N
+     44    BracketingInfoOffset                 N
      80    ShootingMenuOffset                   N
      88    CustomSettingsOffset                 N
     202    Rotation                             int8u & 0x03
@@ -11186,6 +11194,9 @@ Custom settings for the D5.
    48.3    AFModeRestrictions                   int8u & 0x03
    49.1    LimitAFAreaModeSelection             int8u & 0x7e
    52.1    LensFocusFunctionButtons             int8u & 0x3f
+   66.1    VerticalMultiSelector                int8u & 0xff
+   67.1    VerticalFuncButton                   int8u & 0x3f
+   68.1    VerticalFuncPlusDials                int8u & 0x0f
    70.1    AF-OnButton                          int8u & 0x3f
    71.1    SubSelector                          int8u & 0x80
    72.1    SubSelectorCenter                    int8u & 0x3f
@@ -11199,8 +11210,11 @@ Custom settings for the D5.
    78.2    SubjectMotion                        int8u & 0x60
    78.3    AFActivation                         int8u & 0x08
    78.4    ShutterReleaseButtonAE-L             int8u & 0x03
+   79.1    VerticalAFOnButton                   int8u & 0x7f
    80.1    Func2Button                          int8u & 0x3f
+   81.1    Func2ButtonPlusDials                 int8u & 0x0f
    82.1    AssignMovieFunc2Button               int8u & 0x70
+   83.1    Func3Button                          int8u & 0x03
 
 =head3 NikonCustom SettingsD500 Tags
 
@@ -13517,7 +13531,9 @@ Tags found in the EXIF-format maker notes of newer Samsung models.
   0x0030   LocalLocationName                    string
   0x0031   LocationName                         string
   0x0035   PreviewIFD                           Nikon PreviewIFD
+  0x0040   RawDataByteOrder                     Y
   0x0043   CameraTemperature                    rational64s
+  0x0050   RawDataCFAPattern                    Y
   0x0100   FaceDetect                           int16u
   0x0120   FaceRecognition                      int32u
   0x0123   FaceName                             string
@@ -19253,6 +19269,7 @@ currently writes only EXIF, IPTC and XMP tags in these images.
   'url '   URL                                  N
   'uuid'   UUID-EXIF                            EXIF
            UUID-EXIF2                           EXIF
+           UUID-EXIF_bad                        EXIF
            UUID-IPTC                            IPTC
            UUID-IPTC2                           IPTC
            UUID-XMP                             XMP
@@ -25333,6 +25350,22 @@ Tags with index 54 and greater are conditional based on the StreamType.
      56    AudioChannels                        N
      58    AudioSampleRate                      N
            ImageHeight                          N
+
+=head2 FLIF Tags
+
+Tags read from Free Lossless Image Format files.  See L<http://flif.info/>
+for more information.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+      0    ImageType                            N
+      1    BitDepth                             N
+      2    ImageWidth                           N
+      3    ImageHeight                          N
+      4    Frames                               N
+  'eXif'   EXIF                                 EXIF
+  'eXmp'   XMP                                  XMP
+  'iCCP'   ICC_Profile                          ICC_Profile
 
 =head2 DICOM Tags
 

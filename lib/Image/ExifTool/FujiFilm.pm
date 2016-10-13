@@ -355,6 +355,12 @@ my %faceCategories = (
             32 => 'Soft',
         },
     },
+    0x1044 => { #forum7668
+        Name => 'DigitalZoom',
+        Writable => 'int32u',
+        ValueConv => '$val / 8',
+        ValueConvInv => '$val * 8',
+    },
     0x1050 => { #forum6109
         Name => 'ShutterType',
         Writable => 'int16u',
@@ -380,6 +386,20 @@ my %faceCategories = (
     # 0x1150 - Pro Low-light - val=1; Pro Focus - val=2 (ref 7)
     # 0x1151 - Pro Low-light - val=4 (number of pictures taken?); Pro Focus - val=2,3 (ref 7)
     # 0x1152 - Pro Low-light - val=1,3,4 (stacked pictures used?); Pro Focus - val=1,2 (ref 7)
+    0x1153 => { #forum7668
+        Name => 'PanoramaAngle',
+        Writable => 'int16u',
+    },
+    0x1154 => { #forum7668
+        Name => 'PanoramaDirection',
+        Writable => 'int16u',
+        PrintConv => {
+            1 => 'Right',
+            2 => 'Up',
+            3 => 'Left',
+            4 => 'Down',
+        },
+    },
     0x1201 => { #forum6109
         Name => 'AdvancedFilter',
         Writable => 'int32u',

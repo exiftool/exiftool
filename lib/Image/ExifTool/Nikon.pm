@@ -59,7 +59,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.28';
+$VERSION = '3.29';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -4903,7 +4903,7 @@ my %nikonFocalConversions = (
     WRITE_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     VARS => { ID_LABEL => 'Index' },
-    DATAMEMBER => [ 0x50, 0x58, 0x0e7c, 0x0eea ],
+    DATAMEMBER => [ 0x10, 0x14, 0x2c, 0x50, 0x58, 0xb0, 0x07b0, 0x086c, 0x0e7c, 0x0eea ],
     IS_SUBDIR => [ 0x0eeb ],
     WRITABLE => 1,
     FIRST_ENTRY => 0,
@@ -4919,19 +4919,52 @@ my %nikonFocalConversions = (
         Format => 'string[5]',
         Writable => 0,
     },
+    0x10 => {
+        Name => 'RotationInfoOffset',
+        DataMember => 'RotationInfoOffset',
+        Format => 'int32u',
+        Writable => 0,
+        RawConv => '$$self{RotationInfoOffset} = $val || 0x10000000; $val', # (ignore if 0)
+    },
+    0x14 => {
+        Name => 'JPGInfoOffset',
+        DataMember => 'JPGInfoOffset',
+        Format => 'int32u',
+        Writable => 0,
+        RawConv => '$$self{JPGInfoOffset} = $val || 0x10000000; $val', # (ignore if 0)
+    },
+    0x2c => {
+        Name => 'BracketingInfoOffset',
+        DataMember => 'BracketingInfoOffset',
+        Format => 'int32u',
+        Writable => 0,
+        RawConv => '$$self{BracketingInfoOffset} = $val || 0x10000000; $val', # (ignore if 0)
+    },
     0x50 => {
         Name => 'ShootingMenuOffset',
         DataMember => 'ShootingMenuOffset',
         Format => 'int32u',
         Writable => 0,
-        RawConv => '$$self{ShootingMenuOffset} = $val',
+        RawConv => '$$self{ShootingMenuOffset} = $val || 0x10000000; $val', # (ignore if 0)
     },
     0x58 => {
         Name => 'CustomSettingsOffset',
         DataMember => 'CustomSettingsOffset',
         Format => 'int32u',
         Writable => 0,
-        RawConv => '$$self{CustomSettingsOffset} = $val',
+        RawConv => '$$self{CustomSettingsOffset} = $val || 0x10000000; $val', # (ignore if 0)
+    },
+#
+# Tag ID's below are the offsets for a D500 JPEG image, but these offsets change
+# for various image types according to the offset table above
+#
+### 0xb0 - RotationInfo start
+    0xb0 => {
+        Name => 'Hook1',
+        Hidden => 1,
+        RawConv => 'undef',
+        # account for variable location of Rotation data
+        Hook => '$varSize = $$self{RotationInfoOffset} - 0xb0',
     },
     0xca => {
         Name => 'Rotation',
@@ -4951,6 +4984,14 @@ my %nikonFocalConversions = (
             0x01 => 'Off',
         },
     },
+### 0x07b0 - JPEGInfo start
+    0x07b0 => {
+        Name => 'Hook2',
+        Hidden => 1,
+        RawConv => 'undef',
+        # account for variable location of Shooting Menu data
+        Hook => '$varSize = $$self{JPGInfoOffset} - 0x07b0',
+    },
     0x07d4 => {
         Name => 'JPGCompression',
         Mask => 0x01,
@@ -4958,6 +4999,15 @@ my %nikonFocalConversions = (
             0x00 => 'Size Priority',
             0x01 => 'Optimal Quality',
         },
+    },
+### 0x0830 - ? start
+### 0x086c - BracketingInfo start
+    0x086c => {
+        Name => 'Hook3',
+        Hidden => 1,
+        RawConv => 'undef',
+        # account for variable location of Shooting Menu data
+        Hook => '$varSize = $$self{BracketingInfoOffset} - 0x086c',
     },
     0x087b => {
         Name => 'AEBracketingSteps',
@@ -5068,7 +5118,7 @@ my %nikonFocalConversions = (
             0x30 => 'High',
             0x40 => 'Extra High',
             0x80 => 'Auto',
-            },
+        },
     },
     0x0884 => {
         Name => 'ADLBracketingType',
@@ -5081,8 +5131,17 @@ my %nikonFocalConversions = (
             4 => '5 Shots',
         },
     },
+### 0x0887 - ? start
+### 0x089f - ? start
+### 0x0929 - ? start
+### 0x09c9 - ? start
+### 0x0ac5 - ? start
+### 0x0bc1 - ? start
+### 0x0cbd - ? start
+### 0x0d98 - ? start
+### 0x0e7d - ShootingMenuOffset start
     0x0e7c => {
-        Name => 'Hook1',
+        Name => 'Hook4',
         Hidden => 1,
         RawConv => 'undef',
         # account for variable location of Shooting Menu data
@@ -5214,8 +5273,10 @@ my %nikonFocalConversions = (
             4 => '1.3x (18x12)',
         },
     },
+### 0x0ec4 - ? start
+### 0x0eeb - CustomSettings start
     0x0eea => {
-        Name => 'Hook2',
+        Name => 'Hook5',
         Hidden => 1,
         RawConv => 'undef',
         # account for variable location of CustomSettings data

@@ -7,6 +7,26 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.20. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Oct. 13, 2016 - Version 10.30
+
+  - Added read support for FLIF images
+  - Added a couple of new Minolta/Sony LensType values (thanks Jos Roost)
+  - Added a new SonyModelID (thanks LibRaw and Jos Roost)
+  - Added a new digiKam XMP tag
+  - Decode a new Apple tag (thanks Neal Krawetz)
+  - Decode a few new FujiFilm tags (thanks Chris Schucker)
+  - Decode more Nikon D5 custom settings (thanks Warren Hatch)
+  - Decode a couple more Samsung tags (thanks Klaus Homeister)
+  - Improved decoding of Nikon D500/D5 ShotInfo information
+  - Enhanced -ver option to output system information when -v is added
+  - Minor change to parsing of -@ argfile (comment lines may may no longer have
+    spaces before the "#")
+  - Patched Jpeg2000 reader to read bad UUID-EXIF boxes
+  - Lowered priority of unknown XMP tags when reading
+  - Fixed problem in new xmp2exif.args date/time arguments introduced in 10.28
+  - Fixed potential "Use of uninitialized value" warning when decoding
+    compressed PNG iTXt chunk
+
 Oct. 5, 2016 - Version 10.29
 
   - Added a couple of new Sony LensType values (thanks LibRaw)

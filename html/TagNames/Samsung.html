@@ -134,10 +134,23 @@ information.</p>
 <td class=c>-</td>
 <td>--&gt; <a href='Nikon.html#PreviewIFD'>Nikon PreviewIFD Tags</a></td></tr>
 <tr class=b>
+<td title='0x0040 = 64'>0x0040</td>
+<td>RawDataByteOrder</td>
+<td class=c>Y</td>
+<td><span class=s>0 = Little-endian (Intel, II)
+  <br>1 = Big-endian (Motorola, MM)</span></td></tr>
+<tr>
 <td title='0x0043 = 67'>0x0043</td>
 <td>CameraTemperature</td>
 <td class=c>rational64s</td>
 <td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0050 = 80'>0x0050</td>
+<td>RawDataCFAPattern</td>
+<td class=c>Y</td>
+<td><span class=s>0 = Unchanged
+  <br>1 = Swap
+  <br>65535 = Roll</span></td></tr>
 <tr>
 <td title='0x0100 = 256'>0x0100</td>
 <td>FaceDetect</td>
@@ -610,7 +623,7 @@ such as the Galaxy S4.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Aug 9, 2016</i>
+<br><i>Last revised Oct 13, 2016</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

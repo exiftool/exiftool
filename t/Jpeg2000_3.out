@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.93
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.30
 [File, System, Image] FileName - File Name: Jpeg2000_3_failed.jp2
 [File, System, Image] Directory - Directory: t
 [File, System, Image] FileSize - File Size: 3.6 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2015:04:18 07:17:42-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:18 07:17:42-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:04:18 07:17:42-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2016:10:10 15:46:43-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2016:10:10 15:46:43-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2016:10:10 15:46:43-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: JP2
 [File, File, Image] FileTypeExtension - File Type Extension: jp2
@@ -37,6 +37,7 @@
 [EXIF, IFD0, Image] 282 - X Resolution: 72
 [EXIF, IFD0, Image] 283 - Y Resolution: 72
 [EXIF, IFD0, Image] 296 - Resolution Unit: inches
+[EXIF, IFD0, Author] 315 - Artist: me
 [EXIF, IFD0, Image] 531 - Y Cb Cr Positioning: Centered
 [GeoTiff, GeoTiff, Location] 1 - Geo Tiff Version: 1.1.0
 [GeoTiff, GeoTiff, Location] 1024 - GT Model Type: Projected
@@ -45,7 +46,7 @@
 [GeoTiff, GeoTiff, Location] 3072 - Projected CS Type: NAD83 UTM zone 18N
 [GeoTiff, GeoTiff, Location] 3076 - Proj Linear Units: Linear Meter
 [XMP, XMP, Unknown] :test - Test: Yippee
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 9.93
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 10.30
 [XMP, XMP-photoshop, Location] City - City: a city
 [IPTC, IPTC, Other] 25 - Keywords: test keyword
 [IPTC, IPTC, Other] 0 - Application Record Version: 4

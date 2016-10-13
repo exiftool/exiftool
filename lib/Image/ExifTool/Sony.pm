@@ -69,7 +69,7 @@ my %sonyLensTypes2 = (
     32787 => 'Sony E 18-200mm F3.5-6.3 OSS',    # VX9103
     32788 => 'Sony E 30mm F3.5 Macro',          # VX9104
     32789 => 'Sony E 24mm F1.8 ZA or Samyang AF 50mm F1.4 FE', # VX9105
-    32789.1 => 'Samyang AF 50mm F1.4 FE', 
+    32789.1 => 'Samyang AF 50mm F1.4 FE',
     32790 => 'Sony E 50mm F1.8 OSS or Samyang AF 14mm F2.8 FE', # VX9106
     32790.1 => 'Samyang AF 14mm F2.8 FE',
     32791 => 'Sony E 16-70mm F4 ZA OSS',        # VX9107
@@ -91,7 +91,6 @@ my %sonyLensTypes2 = (
 
     32810 => 'Sony FE 70-200mm F4 G OSS', #JR   # VX9126
     32811 => 'Sony FE 16-35mm F4 ZA OSS', #JR   # VX9127
-
     32812 => 'Sony FE 50mm F2.8 Macro', #JR
     32813 => 'Sony FE 28-70mm F3.5-5.6 OSS',    # VX9129
     32814 => 'Sony FE 35mm F1.4 ZA',            # VX?
@@ -1555,6 +1554,7 @@ my %meterInfo2 = (
             353 => 'ILCA-68', #IB
             354 => 'ILCA-99M2', #JR
             355 => 'DSC-RX10M3', #PH
+            356 => 'DSC-RX100M5', #IB/JR
             357 => 'ILCE-6300', #IB
         },
     },
@@ -5058,7 +5058,7 @@ my %faceInfo = (
         Name => 'LensType2',
         Condition => '($$self{Model} =~ /^NEX-/) and ($$self{LensMount} != 1)',
         Format => 'int16u',
-        SeparateTable => 1,
+        SeparateTable => 'LensType2',
         PrintConv => \%sonyLensTypes2,
     },
     0x400 => { #JR
@@ -6017,7 +6017,7 @@ my %pictureProfile2010 = (
         Name => 'LensType2',
         Condition => '$$self{LensMount} == 2',
         Format => 'int16u',
-        SeparateTable => 1,
+        SeparateTable => 'LensType2',
         PrintConv => \%sonyLensTypes2,
     },
     0x1896 => {
@@ -6208,7 +6208,7 @@ my %pictureProfile2010 = (
         Name => 'LensType2',
         Condition => '$$self{LensMount} == 2',
         Format => 'int16u',
-        SeparateTable => 1,
+        SeparateTable => 'LensType2',
         PrintConv => \%sonyLensTypes2,
     },
     0x18c2 => {
@@ -6324,7 +6324,7 @@ my %pictureProfile2010 = (
         Name => 'LensType2',
         Condition => '$$self{LensMount} == 2',
         Format => 'int16u',
-        SeparateTable => 1,
+        SeparateTable => 'LensType2',
         PrintConv => \%sonyLensTypes2,
     },
     0x18f2 => {
@@ -6726,7 +6726,7 @@ my %pictureProfile2010 = (
         Name => 'LensType2',
         Condition => '$$self{LensMount} == 2',
         Format => 'int16u',
-        SeparateTable => 1,
+        SeparateTable => 'LensType2',
         PrintConv => \%sonyLensTypes2,
     },
     # 0x0108 - 128 for Sony E-mount lenses, 0 for all other
@@ -7291,7 +7291,7 @@ my %pictureProfile2010 = (
         Condition => '$$self{LensMount} == 2',
         Format => 'int16u',
         Notes => 'E-mount lenses',
-        SeparateTable => 1,
+        SeparateTable => 'LensType2',
         PrintConv => \%sonyLensTypes2,
     },
     0x0608 => {
@@ -7446,7 +7446,7 @@ my %pictureProfile2010 = (
         Condition => '$$self{LensMount} == 2',
         Format => 'int16u',
         Notes => 'E-mount lenses',
-        SeparateTable => 1,
+        SeparateTable => 'LensType2',
         PrintConv => \%sonyLensTypes2,
     },
     0x0062 => {
@@ -7616,7 +7616,7 @@ my %pictureProfile2010 = (
         Name => 'LensType3',
         RawConv => '(($$self{LensMount} != 0) or ($val > 0 and $val < 32784)) ? $val : undef',
         Format => 'int16u',
-        SeparateTable => 1,
+        SeparateTable => 'LensType2',
         PrintConv => \%sonyLensTypes2,
     },
     0x000b => {

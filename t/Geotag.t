@@ -184,15 +184,19 @@ unless (eval { require Time::Local }) {
 {
     ++$testnum;
     my $exifTool = new Image::ExifTool;
-    $testfile2 = "t/${testname}_${testnum}_failed.jpg";
-    unlink $testfile2;
+    my $testfile = "t/${testname}_${testnum}_failed.jpg";
+    unlink $testfile;
     $exifTool->SetNewValue(Geotag => 'DATETIMEONLY');
     $exifTool->SetNewValue(Geosync => '2009:01:01 01:00:00Z@2009:01:01 01:00:00Z');
     $exifTool->SetNewValue(Geosync => '2011:01:01 02:00:00Z@2011:01:01 01:00:00Z');
     $exifTool->SetNewValue(Geotime => '2010:01:01 01:00:00Z');
-    $exifTool->WriteInfo('t/images/Writer.jpg', $testfile2);
-    my $info = $exifTool->ImageInfo($testfile2, @testTags);
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    $exifTool->WriteInfo('t/images/Writer.jpg', $testfile);
+    my $info = $exifTool->ImageInfo($testfile, @testTags);
+    if (check($exifTool, $info, $testname, $testnum)) {
+        unlink $testfile;
+    } else {
+        print 'not ';
+    }
     print "ok $testnum\n";
 }
 

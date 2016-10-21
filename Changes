@@ -7,6 +7,19 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.20. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Oct. 19, 2016 - Version 10.31
+
+  - Added write support for FLIF images
+  - Added support for animated PNG images
+  - Added a few new SamsungModelID values
+  - Added a new Canon LensType
+  - Added a new Sony/Minolta LensType (thanks Jos Roost)
+  - Decode more Samsung tags (thanks Klaus Homeister and Sreerag Raghavan)
+  - Decode more Nikon tags (thanks Warren Hatch)
+  - Changed "TAG does not exist" warning when writing to "TAG is not supported"
+  - Fixed problem importing information from CSV or JSON databases for files
+    with special characters in their name
+
 Oct. 13, 2016 - Version 10.30
 
   - Added read support for FLIF images

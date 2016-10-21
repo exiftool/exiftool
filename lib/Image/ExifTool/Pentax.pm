@@ -5695,7 +5695,7 @@ my %binaryDataAttrs = (
         Description => 'Camera Model Name',
         Format => 'string[24]',
     },
-    0x38 => { # (NC)
+    0x38 => { #(NC)
         Name => 'ExposureTime',
         Format => 'int32u',
         ValueConv => '$val ? 10 / $val : 0',
@@ -5706,12 +5706,12 @@ my %binaryDataAttrs = (
         Format => 'rational64u',
         PrintConv => 'sprintf("%.1f",$val)',
     },
-    0x44 => { # (NC)
+    0x44 => { #(NC)
         Name => 'ExposureCompensation',
         Format => 'rational64s',
         PrintConv => '$val ? sprintf("%+.1f", $val) : 0',
     },
-    0x54 => { # (NC)
+    0x54 => { #(NC)
         Name => 'FocalLength',
         Format => 'int32u',
         PrintConv => '"$val mm"',
@@ -5726,7 +5726,7 @@ my %binaryDataAttrs = (
         Format => 'string[24]',
         Groups => { 2 => 'Time' },
     },
-    0xa7 => { # (NC)
+    0xa7 => { #(NC)
         Name => 'ISO',
         Format => 'int32u',
     },
@@ -5838,7 +5838,7 @@ my %binaryDataAttrs = (
         Format => 'string[11]',
         ValueConv => 'Image::ExifTool::Exif::ExifDate($val)',
     },
-    0x173 => { # (NC)
+    0x173 => { #(NC)
         Name => 'AudioCodecID',
         Format => 'string[4]',
     },

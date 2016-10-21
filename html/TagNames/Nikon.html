@@ -3856,7 +3856,8 @@ D5200, D7000.</p>
 </table></td></tr></table></blockquote>
 
 <h2><a name='FlashInfo0107'>Nikon FlashInfo0107 Tags</a></h2>
-<p>These tags are used by the D500.</p>
+<p>These tags are used by the D4S, D750, D810, D5500, D7200 (FlashInfoVersion
+0107) and the D5, D500 and D3400 (FlashInfoVersion 0108).</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -3868,6 +3869,18 @@ D5200, D7000.</p>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>FlashSource</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = None
+  <br>1 = External
+  <br>2 = Internal</span></td></tr>
+<tr>
+<td class=r title='6 = 0x6'>6</td>
+<td>ExternalFlashFirmware</td>
+<td class=c>int8u[2]</td>
+<td>--&gt; <a href='Nikon.html#FlashFirmware'>Nikon FlashFirmware Values</a></td></tr>
+<tr class=b>
 <td class=r title='8 = 0x8'>8</td>
 <td>ExternalFlashStatus</td>
 <td class=c>int8u[1]</td>
@@ -3875,6 +3888,34 @@ D5200, D7000.</p>
   <br>0x0 = Flash Not Attached
   <br>0x80 = Flash Not Ready
   <br>0x81 = Flash Ready</span></td></tr>
+<tr>
+<td class=r title='9 = 0x9'>9</td>
+<td>ExternalFlashReadyState</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x07]
+  <br>0x0 = n/a
+  <br>0x1 = Ready
+  <br>0x6 = Not Ready</span></td></tr>
+<tr class=b>
+<td class=r title='10 = 0xa'>10</td>
+<td>FlashCompensation</td>
+<td class=c>int8s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='13 = 0xd'>13</td>
+<td>RepeatingFlashRate</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='14 = 0xe'>14</td>
+<td>RepeatingFlashCount</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='15 = 0xf'>15</td>
+<td>FlashGNDistance</td>
+<td class=c>int8u</td>
+<td>--&gt; <a href='Nikon.html#FlashGNDistance'>Nikon FlashGNDistance Values</a></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='FlashInfoUnknown'>Nikon FlashInfoUnknown Tags</a></h2>

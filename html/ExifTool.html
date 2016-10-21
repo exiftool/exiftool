@@ -2038,13 +2038,13 @@ return value for unsupported files is undef).
 </td></tr>
 <tr><td valign=top><b>Returns</b></td><td>A string, based on the file extension, which
 indicates the basic format of the file.  Note that some files may be based on
-other formats (like many RAW image formats are based on TIFF).  In array
-context, may return more than one file type if the file may be based on
-different formats.  Returns undef if files with this extension are not yet
-supported by ExifTool.  Returns a list of extensions for all supported file
-types if no input extension is specified (or all recognized file types if the
-description flag is set to 0).  Returns a more detailed description of the
-specific file format when the description flag is set.</td></tr>
+other formats (like many RAW image formats are based on TIFF).  In list context,
+may return more than one file type if the file may be based on different
+formats.  Returns undef if files with this extension are not yet supported by
+ExifTool.  Returns a list of extensions for all supported file types if no input
+extension is specified (or all recognized file types if the description flag is
+set to 0).  Returns a more detailed description of the specific file format when
+the description flag is set.</td></tr>
 </table></blockquote>
 <p><b>Examples:</b></p>
 <blockquote><table class='box'><tr><td><pre>

@@ -59,7 +59,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.29';
+$VERSION = '3.30';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -1892,6 +1892,8 @@ my %binaryDataAttrs = (
         Name => 'ShutterCount',
         Writable => 'int32u',
         Protected => 1,
+        PrintConv => '$val == 4294965247 ? "n/a" : $val',
+        PrintConvInv => '$val eq "n/a" ? 4294965247 : $val',
         Notes => q{
             this value is used as a key to decrypt other information -- writing this tag
             causes the other information to be re-encrypted with the new key
@@ -1915,7 +1917,7 @@ my %binaryDataAttrs = (
             SubDirectory => { TagTable => 'Image::ExifTool::Nikon::FlashInfo0103' },
         },
         {
-            Name => 'FlashInfo0107', # (D4S,D500,D810)
+            Name => 'FlashInfo0107', # (0107 for D4S/D750/D810/D5500/D7200, 0108 for D5/D500/D3400)
             Condition => '$$valPt =~ /^010[78]/',
             SubDirectory => { TagTable => 'Image::ExifTool::Nikon::FlashInfo0107' },
         },
@@ -2631,7 +2633,7 @@ my %binaryDataAttrs = (
     65 => {
         Name => 'ToningSaturation',
         DelValue => 0xff,
-        ValueConv => '$val - 0x80',           #$val == 0x7f (N/A) for "B&W"
+        ValueConv => '$val - 0x80',           #$val == 0x7f (n/a) for "B&W"
         ValueConvInv => '$val + 0x80',
         PrintConv => 'Image::ExifTool::Nikon::PrintPC($val,"None","%.2f",4)',
         PrintConvInv => 'Image::ExifTool::Nikon::PrintPCInv($val,4)',
@@ -6539,17 +6541,33 @@ my %nikonFocalConversions = (
     # 0x2b - related to flash power (PH, D800, 96=full,62=1/4,2=1/128)
 );
 
-# Flash information for the D4S, D500 and D810
+# Flash information for the D4S/D750/D810/D5500/D7200 (0107)
+# and D5/D500/D3400 (0108) (ref 28)
 %Image::ExifTool::Nikon::FlashInfo0107 = (
     %binaryDataAttrs,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     NOTES => q{
-        These tags are used by the D500.
+        These tags are used by the D4S, D750, D810, D5500, D7200 (FlashInfoVersion
+        0107) and the D5, D500 and D3400 (FlashInfoVersion 0108).
     },
     0 => {
         Name => 'FlashInfoVersion',
         Format => 'string[4]',
         Writable => 0,
+    },
+    4 => { 
+        Name => 'FlashSource',
+        PrintConv => {
+            0 => 'None',
+            1 => 'External',
+            2 => 'Internal',
+        },
+    },
+    6 => {
+        Format => 'int8u[2]',
+        Name => 'ExternalFlashFirmware',
+        SeparateTable => 'FlashFirmware',
+        PrintConv => \%flashFirmware,
     },
     8 => {
         Format => 'int8u[1]',
@@ -6560,6 +6578,41 @@ my %nikonFocalConversions = (
             0x80 => 'Flash Not Ready',
             0x81 => 'Flash Ready',
         },
+    },
+    9 => {
+        Name => 'ExternalFlashReadyState',
+        Mask => 0x07,
+        PrintConv => {
+            0x00 => 'n/a',
+            0x01 => 'Ready',
+            0x06 => 'Not Ready',
+        },
+    },
+    10 => {
+        Name => 'FlashCompensation',
+        # this is the compensation from the camera (0x0012) for "Built-in" FlashType, or
+        # the compensation from the external unit (0x0017) for "Optional" FlashType - PH
+        Format => 'int8s',
+        Priority => 0,
+        ValueConv => '-$val/6',
+        ValueConvInv => '-6 * $val',
+        PrintConv => 'Image::ExifTool::Exif::PrintFraction($val)',
+        PrintConvInv => 'Image::ExifTool::Exif::ConvertFraction($val)',
+    },
+    13 => { #JD
+        Name => 'RepeatingFlashRate',
+        RawConv => '($val and $val != 255) ? $val : undef',
+        PrintConv => '"$val Hz"',
+        PrintConvInv => '$val=~/(\d+)/; $1 || 0',
+    },
+    14 => { #JD
+        Name => 'RepeatingFlashCount',
+        RawConv => '($val and $val != 255) ? $val : undef',
+    },
+    15 => {
+        Name => 'FlashGNDistance',
+        SeparateTable => 1,
+        PrintConv => \%flashGNDistance,
     },
 );
 

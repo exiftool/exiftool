@@ -17,8 +17,8 @@ B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
 is the identifier that is actually stored in the file.  B<Index#> refers to
 the location of a value when found at a fixed position within a data block
-(B<#> is the multiplier for calculating a byte offset: B<1>, B<2> or B<4>).
-B<Sequence> gives the order of values for a serial data stream.
+(B<#> is the multiplier for calculating a byte offset: B<1>, B<2>, B<4> or
+B<8>). B<Sequence> gives the order of values for a serial data stream.
 
 A B<Tag Name> is the handle by which the information is accessed in
 ExifTool.  In some instances, more than one name may correspond to a single
@@ -8129,6 +8129,100 @@ Z7590.
     104    DigitalZoom                          int16u
     107    Sharpness                            int8s
 
+=head3 Kodak IFD Tags
+
+These tags are found in a separate IFD of JPEG, TIFF, DCR and KDC images
+from some older Kodak models such as the DC50, DC120, DCS760C, DCS Pro 14N,
+14nx, SLR/n, Pro Back and Canon EOS D2000.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  0x0001   UnknownEV?                           rational64u
+  0x0003   ExposureValue                        rational64u
+  0x03e9   OriginalFileName                     string
+  0x03eb   SensorLeftBorder                     N
+  0x03ec   SensorTopBorder                      N
+  0x03ed   SensorImageWidth                     N
+  0x03ee   SensorImageHeight                    N
+  0x03f1   TextualInfo                          Kodak TextualInfo
+  0x03fc   WhiteBalance                         int16u
+  0x03fd   Processing                           Kodak Processing
+  0x0401   Time                                 string
+  0x0406   CameraTemperature                    rational64s
+  0x0407   AdapterVoltage                       rational64u
+  0x0408   BatteryVoltage                       rational64u
+  0x0414   NCDFileInfo                          string
+  0x0846   ColorTemperature                     int16u
+  0x0848   WB_RGBLevelsDaylight                 N
+  0x0849   WB_RGBLevelsTungsten                 N
+  0x084a   WB_RGBLevelsFluorescent              N
+  0x084b   WB_RGBLevelsFlash                    N
+  0x084c   WB_RGBLevelsCustom                   N
+  0x084d   WB_RGBLevelsAuto                     N
+  0x0852   WB_RGBMul0                           N
+  0x0853   WB_RGBMul1                           N
+  0x0854   WB_RGBMul2                           N
+  0x0855   WB_RGBMul3                           N
+  0x085c   WB_RGBCoeffs0                        N
+  0x085d   WB_RGBCoeffs1                        N
+  0x085e   WB_RGBCoeffs2                        N
+  0x085f   WB_RGBCoeffs3                        N
+  0x0903   BaseISO                              rational64u
+  0x09ce   SensorSerialNumber                   string
+  0x0ce5   FirmwareVersion                      string
+  0x0e4c   KodakLook                            string
+  0x1389   InputProfile                         undef
+  0x138a   KodakLookProfile                     undef
+  0x138b   OutputProfile                        undef
+  0x1391   ToneCurveFileName                    string
+  0x1784   ISO                                  int32u
+
+=head3 Kodak TextualInfo Tags
+
+Below is a list of tags which have been observed in the Kodak TextualInfo
+data, however ExifTool will extract information from any tags found here.
+
+  Tag ID                Tag Name                Writable
+  ------                --------                --------
+  'AF Function'         AFMode                  N
+  'Actual Compensation' ActualCompensation      N
+  'Aperture'            Aperture                N
+  'Auto Bracket'        AutoBracket             N
+  'Brightness Value'    BrightnessValue         N
+  'Camera'              CameraModel             N
+  'Camera body'         CameraBody              N
+  'Compensation'        ExposureCompensation    N
+  'Date'                Date                    N
+  'Exposure Bias'       ExposureBias            N
+  'Exposure Mode'       ExposureMode            N
+  'Firmware Version'    FirmwareVersion         N
+  'Flash Compensation'  FlashExposureComp       N
+  'Flash Fired'         FlashFired              N
+  'Flash Sync Mode'     FlashSyncMode           N
+  'Focal Length'        FocalLength             N
+  'Height'              KodakImageHeight        N
+  'ISO'                 ISO                     N
+  'ISO Speed'           ISO                     N
+  'Image Number'        ImageNumber             N
+  'Max Aperture'        MaxAperture             N
+  'Meter Mode'          MeterMode               N
+  'Min Aperture'        MinAperture             N
+  'Popup Flash'         PopupFlash              N
+  'Serial Number'       SerialNumber            N
+  'Shooting Mode'       ShootingMode            N
+  'Shutter'             ShutterSpeed            N
+  'Temperature'         Temperature             N
+  'Time'                Time                    N
+  'White balance'       WhiteBalance            N
+  'Width'               KodakImageWidth         N
+  '_other_info'         OtherInfo               N
+
+=head3 Kodak Processing Tags
+
+  Index2   Tag Name                             Writable
+  ------   --------                             --------
+     20    WB_RGBLevels                         N
+
 =head3 Kodak Type2 Tags
 
 These tags are used by the Kodak DC220, DC260, DC265 and DC290,
@@ -8375,100 +8469,6 @@ on my nerves.
   Index1   Tag Name                             Writable
   ------   --------                             --------
   [no tags known]
-
-=head3 Kodak IFD Tags
-
-These tags are found in a separate IFD of JPEG, TIFF, DCR and KDC images
-from some older Kodak models such as the DC50, DC120, DCS760C, DCS Pro 14N,
-14nx, SLR/n, Pro Back and Canon EOS D2000.
-
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  0x0001   UnknownEV?                           rational64u
-  0x0003   ExposureValue                        rational64u
-  0x03e9   OriginalFileName                     string
-  0x03eb   SensorLeftBorder                     N
-  0x03ec   SensorTopBorder                      N
-  0x03ed   SensorImageWidth                     N
-  0x03ee   SensorImageHeight                    N
-  0x03f1   TextualInfo                          Kodak TextualInfo
-  0x03fc   WhiteBalance                         int16u
-  0x03fd   Processing                           Kodak Processing
-  0x0401   Time                                 string
-  0x0406   CameraTemperature                    rational64s
-  0x0407   AdapterVoltage                       rational64u
-  0x0408   BatteryVoltage                       rational64u
-  0x0414   NCDFileInfo                          string
-  0x0846   ColorTemperature                     int16u
-  0x0848   WB_RGBLevelsDaylight                 N
-  0x0849   WB_RGBLevelsTungsten                 N
-  0x084a   WB_RGBLevelsFluorescent              N
-  0x084b   WB_RGBLevelsFlash                    N
-  0x084c   WB_RGBLevelsCustom                   N
-  0x084d   WB_RGBLevelsAuto                     N
-  0x0852   WB_RGBMul0                           N
-  0x0853   WB_RGBMul1                           N
-  0x0854   WB_RGBMul2                           N
-  0x0855   WB_RGBMul3                           N
-  0x085c   WB_RGBCoeffs0                        N
-  0x085d   WB_RGBCoeffs1                        N
-  0x085e   WB_RGBCoeffs2                        N
-  0x085f   WB_RGBCoeffs3                        N
-  0x0903   BaseISO                              rational64u
-  0x09ce   SensorSerialNumber                   string
-  0x0ce5   FirmwareVersion                      string
-  0x0e4c   KodakLook                            string
-  0x1389   InputProfile                         undef
-  0x138a   KodakLookProfile                     undef
-  0x138b   OutputProfile                        undef
-  0x1391   ToneCurveFileName                    string
-  0x1784   ISO                                  int32u
-
-=head3 Kodak TextualInfo Tags
-
-Below is a list of tags which have been observed in the Kodak TextualInfo
-data, however ExifTool will extract information from any tags found here.
-
-  Tag ID                Tag Name                Writable
-  ------                --------                --------
-  'AF Function'         AFMode                  N
-  'Actual Compensation' ActualCompensation      N
-  'Aperture'            Aperture                N
-  'Auto Bracket'        AutoBracket             N
-  'Brightness Value'    BrightnessValue         N
-  'Camera'              CameraModel             N
-  'Camera body'         CameraBody              N
-  'Compensation'        ExposureCompensation    N
-  'Date'                Date                    N
-  'Exposure Bias'       ExposureBias            N
-  'Exposure Mode'       ExposureMode            N
-  'Firmware Version'    FirmwareVersion         N
-  'Flash Compensation'  FlashExposureComp       N
-  'Flash Fired'         FlashFired              N
-  'Flash Sync Mode'     FlashSyncMode           N
-  'Focal Length'        FocalLength             N
-  'Height'              KodakImageHeight        N
-  'ISO'                 ISO                     N
-  'ISO Speed'           ISO                     N
-  'Image Number'        ImageNumber             N
-  'Max Aperture'        MaxAperture             N
-  'Meter Mode'          MeterMode               N
-  'Min Aperture'        MinAperture             N
-  'Popup Flash'         PopupFlash              N
-  'Serial Number'       SerialNumber            N
-  'Shooting Mode'       ShootingMode            N
-  'Shutter'             ShutterSpeed            N
-  'Temperature'         Temperature             N
-  'Time'                Time                    N
-  'White balance'       WhiteBalance            N
-  'Width'               KodakImageWidth         N
-  '_other_info'         OtherInfo               N
-
-=head3 Kodak Processing Tags
-
-  Index2   Tag Name                             Writable
-  ------   --------                             --------
-     20    WB_RGBLevels                         N
 
 =head3 Kodak Meta Tags
 
@@ -10119,12 +10119,20 @@ D5200, D7000.
 
 =head3 Nikon FlashInfo0107 Tags
 
-These tags are used by the D500.
+These tags are used by the D4S, D750, D810, D5500, D7200 (FlashInfoVersion
+0107) and the D5, D500 and D3400 (FlashInfoVersion 0108).
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
       0    FlashInfoVersion                     N
+      4    FlashSource                          int8u
+      6    ExternalFlashFirmware                int8u[2]
       8    ExternalFlashStatus                  int8u[1] & 0x81
+      9    ExternalFlashReadyState              int8u & 0x07
+     10    FlashCompensation                    int8s
+     13    RepeatingFlashRate                   int8u
+     14    RepeatingFlashCount                  int8u
+     15    FlashGNDistance                      int8u
 
 =head3 Nikon FlashInfoUnknown Tags
 
@@ -13527,11 +13535,14 @@ Tags found in the EXIF-format maker notes of newer Samsung models.
   0x0001   MakerNoteVersion                     undef[4]
   0x0002   DeviceType                           int32u
   0x0003   SamsungModelID                       int32u
+  0x0011   OrientationInfo                      Samsung OrientationInfo
+  0x0020   SmartAlbumColor                      int16u[2]
   0x0021   PictureWizard                        Samsung PictureWizard
   0x0030   LocalLocationName                    string
   0x0031   LocationName                         string
   0x0035   PreviewIFD                           Nikon PreviewIFD
   0x0040   RawDataByteOrder                     Y
+  0x0041   WhiteBalanceSetup                    int32u
   0x0043   CameraTemperature                    rational64s
   0x0050   RawDataCFAPattern                    Y
   0x0100   FaceDetect                           int16u
@@ -13573,6 +13584,16 @@ Tags found in the EXIF-format maker notes of newer Samsung models.
   0xa052   Vignetting?                          int16u[15]
   0xa053   VignettingCorrection?                int16u[15]
   0xa054   VignettingSetting?                   int16u[15]
+
+=head3 Samsung OrientationInfo Tags
+
+Camera orientation information written by the Gear 360 (SM-C200).
+
+  Index8   Tag Name                             Writable
+  ------   --------                             --------
+      0    YawAngle?                            rational64s
+      1    PitchAngle                           rational64s
+      2    RollAngle                            rational64s
 
 =head3 Samsung PictureWizard Tags
 
@@ -19592,6 +19613,7 @@ this data as additional PNG chunks.
   ------             --------                   --------
   'IHDR'             ImageHeader                PNG ImageHeader
   'PLTE'             Palette                    N
+  'acTL'             AnimationControl           PNG AnimationControl
   'bKGD'             BackgroundColor            N
   'cHRM'             PrimaryChromaticities      PNG PrimaryChromaticities
   'dSIG'             DigitalSignature           N
@@ -19630,6 +19652,16 @@ this data as additional PNG chunks.
      10    Compression                          N
      11    Filter                               N
      12    Interlace                            N
+
+=head3 PNG AnimationControl Tags
+
+Tags found in the Animation Conrol chunk.  See
+L<https://wiki.mozilla.org/APNG_Specification> for details.
+
+  Index4   Tag Name                             Writable
+  ------   --------                             --------
+      0    AnimationFrames                      N
+      1    AnimationPlays                       N
 
 =head3 PNG PrimaryChromaticities Tags
 
@@ -19953,6 +19985,22 @@ JNG images.
   ------   --------                             --------
       0    DeltaType                            N
       2    Priority                             N
+
+=head2 FLIF Tags
+
+Information extracted from Free Lossless Image Format files.  See
+L<http://flif.info/> for more information.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+      0    ImageType                            N
+      1    BitDepth                             N
+      2    ImageWidth                           N
+      3    ImageHeight                          N
+      4    AnimationFrames                      N
+  'eXif'   EXIF                                 EXIF
+  'eXmp'   XMP                                  XMP
+  'iCCP'   ICC_Profile                          ICC_Profile
 
 =head2 DjVu Tags
 
@@ -20934,22 +20982,6 @@ This information is found in iTunes Cover Flow data files.
 
 =head2 FLAC Tags
 
-=head3 FLAC Picture Tags
-
-  Index4   Tag Name                             Writable
-  ------   --------                             --------
-      0    PictureType                          N
-      1    PictureMIMEType                      N
-      2    PictureDescription                   N
-      3    PictureWidth                         N
-      4    PictureHeight                        N
-      5    PictureBitsPerPixel                  N
-      6    PictureIndexedColors                 N
-      7    PictureLength                        N
-      8    Picture                              N
-
-=head2 FLAC Tags
-
 Free Lossless Audio Codec (FLAC) meta information.  ExifTool also extracts
 ID3 information from these files.
 
@@ -20978,6 +21010,20 @@ FLAC is big-endian, so bit 0 is the high-order bit in this table.
   'Bit103-107'         BitsPerSample            N
   'Bit108-143'         TotalSamples             N
 
+=head3 FLAC Picture Tags
+
+  Index4   Tag Name                             Writable
+  ------   --------                             --------
+      0    PictureType                          N
+      1    PictureMIMEType                      N
+      2    PictureDescription                   N
+      3    PictureWidth                         N
+      4    PictureHeight                        N
+      5    PictureBitsPerPixel                  N
+      6    PictureIndexedColors                 N
+      7    PictureLength                        N
+      8    Picture                              N
+
 =head2 Ogg Tags
 
 ExifTool extracts the following types of information from Ogg files.  See
@@ -21000,17 +21046,6 @@ L<http://www.xiph.org/vorbis/doc/> for the Vorbis specification.
   ------   --------                             --------
   0x0001   Identification                       Vorbis Identification
   0x0003   Comments                             Vorbis Comments
-
-=head3 Vorbis Identification Tags
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-      0    VorbisVersion                        N
-      4    AudioChannels                        N
-      5    SampleRate                           N
-      9    MaximumBitrate                       N
-     13    NominalBitrate                       N
-     17    MinimumBitrate                       N
 
 =head3 Vorbis Comments Tags
 
@@ -21052,6 +21087,17 @@ any tag found, even if not listed here.
   'TRACKNUMBER'            TrackNumber          N
   'VERSION'                Version              N
   'vendor'                 Vendor               N
+
+=head3 Vorbis Identification Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    VorbisVersion                        N
+      4    AudioChannels                        N
+      5    SampleRate                           N
+      9    MaximumBitrate                       N
+     13    NominalBitrate                       N
+     17    MinimumBitrate                       N
 
 =head2 Opus Tags
 
@@ -25350,22 +25396,6 @@ Tags with index 54 and greater are conditional based on the StreamType.
      56    AudioChannels                        N
      58    AudioSampleRate                      N
            ImageHeight                          N
-
-=head2 FLIF Tags
-
-Tags read from Free Lossless Image Format files.  See L<http://flif.info/>
-for more information.
-
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-      0    ImageType                            N
-      1    BitDepth                             N
-      2    ImageWidth                           N
-      3    ImageHeight                          N
-      4    Frames                               N
-  'eXif'   EXIF                                 EXIF
-  'eXmp'   XMP                                  XMP
-  'iCCP'   ICC_Profile                          ICC_Profile
 
 =head2 DICOM Tags
 
@@ -29675,14 +29705,14 @@ values, may created via the ExifTool configuration file.
                        Canon:DigitalZoom
   DriveMode            ContinuousDrive          N
                        SelfTimer
+  Duration             FLAC:SampleRate          N
+                       FLAC:TotalSamples
   Duration             Vorbis:NominalBitrate    N
                        FileSize
   Duration             APE:SampleRate           N
                        APE:TotalFrames
                        APE:BlocksPerFrame
                        APE:FinalFrameBlocks
-  Duration             FLAC:SampleRate          N
-                       FLAC:TotalSamples
   Duration             FileSize                 N
                        ID3Size
                        MPEG:AudioBitrate

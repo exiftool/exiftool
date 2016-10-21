@@ -1,19 +1,21 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.30
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.31
 [File, System, Image] FileName - File Name: FLIF.flif
 [File, System, Image] Directory - Directory: t/images
-[File, System, Image] FileSize - File Size: 672 bytes
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2016:10:13 10:03:05-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2016:10:13 10:46:26-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2016:10:13 10:03:05-04:00
+[File, System, Image] FileSize - File Size: 674 bytes
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2016:10:19 09:52:32-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2016:10:19 09:53:01-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2016:10:19 09:52:32-04:00
 [File, System, Image] FilePermissions - File Permissions: rwxr-xr-x
 [File, File, Image] FileType - File Type: FLIF
 [File, File, Image] FileTypeExtension - File Type Extension: flif
 [File, File, Image] MIMEType - MIME Type: image/flif
-[File, File, Image] 0 - Image Type: Grayscale, non-interlaced
+[File, File, Image] 0 - Image Type: RGB (non-interlaced)
 [File, File, Image] 1 - Bit Depth: 8
 [File, File, Image] 2 - Image Width: 16
 [File, File, Image] 3 - Image Height: 16
 [File, File, Image] ExifByteOrder - Exif Byte Order: Big-endian (Motorola, MM)
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 6.51
+[XMP, XMP-dc, Author] creator - Creator: Phil Harvey
 [EXIF, IFD0, Image] 282 - X Resolution: 72
 [EXIF, IFD0, Image] 283 - Y Resolution: 72
 [EXIF, IFD0, Image] 296 - Resolution Unit: inches
@@ -44,7 +46,5 @@
 [ICC_Profile, ICC_Profile, Image] bTRC - Blue Tone Reproduction Curve: (Binary data 14 bytes)
 [ICC_Profile, ICC_Profile, Image] wtpt - Media White Point: 0.9505 1 1.0891
 [ICC_Profile, ICC_Profile, Image] cprt - Profile Copyright: Nikon Inc. & Nikon Corporation 2001
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 6.51
-[XMP, XMP-dc, Author] creator - Creator: Phil Harvey
 [Composite, Composite, Image] ImageSize - Image Size: 16x16
 [Composite, Composite, Image] Megapixels - Megapixels: 0.000256

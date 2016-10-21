@@ -1,0 +1,51 @@
+{
+   "abstract" : "Read and write meta information",
+   "author" : [
+      "Phil Harvey (phil@owl.phy.queensu.ca)"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "ExtUtils::MakeMaker version 6.66, CPAN::Meta::Converter version 2.133380",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "Image-ExifTool",
+   "no_index" : {
+      "directory" : [
+         "t",
+         "inc"
+      ]
+   },
+   "prereqs" : {
+      "build" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "configure" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "runtime" : {
+         "recommends" : {
+            "Archive::Zip" : "0",
+            "Compress::Zlib" : "0",
+            "Digest::MD5" : "0",
+            "Digest::SHA" : "0",
+            "IO::Compress::RawDeflate" : "0",
+            "IO::Uncompress::RawInflate" : "0",
+            "POSIX::strptime" : "0",
+            "Time::HiRes" : "0"
+         },
+         "requires" : {
+            "perl" : "5.004"
+         }
+      }
+   },
+   "release_status" : "stable",
+   "version" : "10.31"
+}

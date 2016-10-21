@@ -226,6 +226,399 @@ Z7590.</p>
 <td><span class=s>0 = Normal</span></td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='IFD'>Kodak IFD Tags</a></h2>
+<p>These tags are found in a separate IFD of JPEG, TIFF, DCR and KDC images
+from some older Kodak models such as the DC50, DC120, DCS760C, DCS Pro 14N,
+14nx, SLR/n, Pro Back and Canon EOS D2000.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x0001 = 1'>0x0001</td>
+<td>UnknownEV?</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0003 = 3'>0x0003</td>
+<td>ExposureValue</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x03e9 = 1001'>0x03e9</td>
+<td>OriginalFileName</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x03eb = 1003'>0x03eb</td>
+<td>SensorLeftBorder</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x03ec = 1004'>0x03ec</td>
+<td>SensorTopBorder</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x03ed = 1005'>0x03ed</td>
+<td>SensorImageWidth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x03ee = 1006'>0x03ee</td>
+<td>SensorImageHeight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x03f1 = 1009'>0x03f1</td>
+<td>TextualInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Kodak.html#TextualInfo'>Kodak TextualInfo Tags</a></td></tr>
+<tr>
+<td title='0x03fc = 1020'>0x03fc</td>
+<td>WhiteBalance</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x03fd = 1021'>0x03fd</td>
+<td>Processing</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Kodak.html#Processing'>Kodak Processing Tags</a></td></tr>
+<tr>
+<td title='0x0401 = 1025'>0x0401</td>
+<td>Time</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0406 = 1030'>0x0406</td>
+<td>CameraTemperature</td>
+<td class=c>rational64s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0407 = 1031'>0x0407</td>
+<td>AdapterVoltage</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0408 = 1032'>0x0408</td>
+<td>BatteryVoltage</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0414 = 1044'>0x0414</td>
+<td>NCDFileInfo</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0846 = 2118'>0x0846</td>
+<td>ColorTemperature</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0848 = 2120'>0x0848</td>
+<td>WB_RGBLevelsDaylight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0849 = 2121'>0x0849</td>
+<td>WB_RGBLevelsTungsten</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x084a = 2122'>0x084a</td>
+<td>WB_RGBLevelsFluorescent</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x084b = 2123'>0x084b</td>
+<td>WB_RGBLevelsFlash</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x084c = 2124'>0x084c</td>
+<td>WB_RGBLevelsCustom</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x084d = 2125'>0x084d</td>
+<td>WB_RGBLevelsAuto</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0852 = 2130'>0x0852</td>
+<td>WB_RGBMul0</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0853 = 2131'>0x0853</td>
+<td>WB_RGBMul1</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0854 = 2132'>0x0854</td>
+<td>WB_RGBMul2</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0855 = 2133'>0x0855</td>
+<td>WB_RGBMul3</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x085c = 2140'>0x085c</td>
+<td>WB_RGBCoeffs0</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x085d = 2141'>0x085d</td>
+<td>WB_RGBCoeffs1</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x085e = 2142'>0x085e</td>
+<td>WB_RGBCoeffs2</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x085f = 2143'>0x085f</td>
+<td>WB_RGBCoeffs3</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0903 = 2307'>0x0903</td>
+<td>BaseISO</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x09ce = 2510'>0x09ce</td>
+<td>SensorSerialNumber</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0ce5 = 3301'>0x0ce5</td>
+<td>FirmwareVersion</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e4c = 3660'>0x0e4c</td>
+<td>KodakLook</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x1389 = 5001'>0x1389</td>
+<td>InputProfile</td>
+<td class=c>undef</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x138a = 5002'>0x138a</td>
+<td>KodakLookProfile</td>
+<td class=c>undef</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x138b = 5003'>0x138b</td>
+<td>OutputProfile</td>
+<td class=c>undef</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1391 = 5009'>0x1391</td>
+<td>ToneCurveFileName</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x1784 = 6020'>0x1784</td>
+<td>ISO</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='TextualInfo'>Kodak TextualInfo Tags</a></h2>
+<p>Below is a list of tags which have been observed in the Kodak TextualInfo
+data, however ExifTool will extract information from any tags found here.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'AF Function'</td>
+<td>AFMode</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Actual Compensation'</td>
+<td>ActualCompensation</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Aperture'</td>
+<td>Aperture</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Auto Bracket'</td>
+<td>AutoBracket</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Brightness Value'</td>
+<td>BrightnessValue</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Camera'</td>
+<td>CameraModel</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Camera body'</td>
+<td>CameraBody</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Compensation'</td>
+<td>ExposureCompensation</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Date'</td>
+<td>Date</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Exposure Bias'</td>
+<td>ExposureBias</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Exposure Mode'</td>
+<td>ExposureMode</td>
+<td class=c>N</td>
+<td><span class=s>&#39;A&#39; = Aperture Priority
+  <br>&#39;B&#39; = Bulb
+  <br>&#39;M&#39; = Manual
+  <br>&#39;P&#39; = Program
+  <br>&#39;S&#39; = Shutter Priority</span></td></tr>
+<tr class=b>
+<td>'Firmware Version'</td>
+<td>FirmwareVersion</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Flash Compensation'</td>
+<td>FlashExposureComp</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Flash Fired'</td>
+<td>FlashFired</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Flash Sync Mode'</td>
+<td>FlashSyncMode</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Focal Length'</td>
+<td>FocalLength</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Height'</td>
+<td>KodakImageHeight</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'ISO'</td>
+<td>ISO</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'ISO Speed'</td>
+<td>ISO</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Image Number'</td>
+<td>ImageNumber</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Max Aperture'</td>
+<td>MaxAperture</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Meter Mode'</td>
+<td>MeterMode</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Min Aperture'</td>
+<td>MinAperture</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Popup Flash'</td>
+<td>PopupFlash</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Serial Number'</td>
+<td>SerialNumber</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Shooting Mode'</td>
+<td>ShootingMode</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Shutter'</td>
+<td>ShutterSpeed</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Temperature'</td>
+<td>Temperature</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Time'</td>
+<td>Time</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'White balance'</td>
+<td>WhiteBalance</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Width'</td>
+<td>KodakImageWidth</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'_other_info'</td>
+<td>OtherInfo</td>
+<td class=c>N</td>
+<td><span class=s><span class=n>(any other information without a tag name)</span></span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Processing'>Kodak Processing Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index2</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='20 = 0x14'>20</td>
+<td>WB_RGBLevels</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
 <h2><a name='Type2'>Kodak Type2 Tags</a></h2>
 <p>These tags are used by the Kodak DC220, DC260, DC265 and DC290,
 Hewlett-Packard PhotoSmart 618, C500 and C912, Pentax EI-200 and EI-2000,
@@ -981,399 +1374,6 @@ on my nerves.</p>
 <tr class=h><th>Index1</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr><td colspan=4 class=c><i>[no tags known]</i></td></tr>
-</table></td></tr></table></blockquote>
-
-<h2><a name='IFD'>Kodak IFD Tags</a></h2>
-<p>These tags are found in a separate IFD of JPEG, TIFF, DCR and KDC images
-from some older Kodak models such as the DC50, DC120, DCS760C, DCS Pro 14N,
-14nx, SLR/n, Pro Back and Canon EOS D2000.</p>
-<blockquote>
-<table class=frame><tr><td>
-<table class=inner cellspacing=1>
-<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
-<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
-<tr>
-<td title='0x0001 = 1'>0x0001</td>
-<td>UnknownEV?</td>
-<td class=c>rational64u</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td title='0x0003 = 3'>0x0003</td>
-<td>ExposureValue</td>
-<td class=c>rational64u</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td title='0x03e9 = 1001'>0x03e9</td>
-<td>OriginalFileName</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td title='0x03eb = 1003'>0x03eb</td>
-<td>SensorLeftBorder</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td title='0x03ec = 1004'>0x03ec</td>
-<td>SensorTopBorder</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td title='0x03ed = 1005'>0x03ed</td>
-<td>SensorImageWidth</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td title='0x03ee = 1006'>0x03ee</td>
-<td>SensorImageHeight</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td title='0x03f1 = 1009'>0x03f1</td>
-<td>TextualInfo</td>
-<td class=c>-</td>
-<td>--&gt; <a href='Kodak.html#TextualInfo'>Kodak TextualInfo Tags</a></td></tr>
-<tr>
-<td title='0x03fc = 1020'>0x03fc</td>
-<td>WhiteBalance</td>
-<td class=c>int16u</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td title='0x03fd = 1021'>0x03fd</td>
-<td>Processing</td>
-<td class=c>-</td>
-<td>--&gt; <a href='Kodak.html#Processing'>Kodak Processing Tags</a></td></tr>
-<tr>
-<td title='0x0401 = 1025'>0x0401</td>
-<td>Time</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td title='0x0406 = 1030'>0x0406</td>
-<td>CameraTemperature</td>
-<td class=c>rational64s</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td title='0x0407 = 1031'>0x0407</td>
-<td>AdapterVoltage</td>
-<td class=c>rational64u</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td title='0x0408 = 1032'>0x0408</td>
-<td>BatteryVoltage</td>
-<td class=c>rational64u</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td title='0x0414 = 1044'>0x0414</td>
-<td>NCDFileInfo</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td title='0x0846 = 2118'>0x0846</td>
-<td>ColorTemperature</td>
-<td class=c>int16u</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td title='0x0848 = 2120'>0x0848</td>
-<td>WB_RGBLevelsDaylight</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td title='0x0849 = 2121'>0x0849</td>
-<td>WB_RGBLevelsTungsten</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td title='0x084a = 2122'>0x084a</td>
-<td>WB_RGBLevelsFluorescent</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td title='0x084b = 2123'>0x084b</td>
-<td>WB_RGBLevelsFlash</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td title='0x084c = 2124'>0x084c</td>
-<td>WB_RGBLevelsCustom</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td title='0x084d = 2125'>0x084d</td>
-<td>WB_RGBLevelsAuto</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td title='0x0852 = 2130'>0x0852</td>
-<td>WB_RGBMul0</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td title='0x0853 = 2131'>0x0853</td>
-<td>WB_RGBMul1</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td title='0x0854 = 2132'>0x0854</td>
-<td>WB_RGBMul2</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td title='0x0855 = 2133'>0x0855</td>
-<td>WB_RGBMul3</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td title='0x085c = 2140'>0x085c</td>
-<td>WB_RGBCoeffs0</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td title='0x085d = 2141'>0x085d</td>
-<td>WB_RGBCoeffs1</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td title='0x085e = 2142'>0x085e</td>
-<td>WB_RGBCoeffs2</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td title='0x085f = 2143'>0x085f</td>
-<td>WB_RGBCoeffs3</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td title='0x0903 = 2307'>0x0903</td>
-<td>BaseISO</td>
-<td class=c>rational64u</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td title='0x09ce = 2510'>0x09ce</td>
-<td>SensorSerialNumber</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td title='0x0ce5 = 3301'>0x0ce5</td>
-<td>FirmwareVersion</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td title='0x0e4c = 3660'>0x0e4c</td>
-<td>KodakLook</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td title='0x1389 = 5001'>0x1389</td>
-<td>InputProfile</td>
-<td class=c>undef</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td title='0x138a = 5002'>0x138a</td>
-<td>KodakLookProfile</td>
-<td class=c>undef</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td title='0x138b = 5003'>0x138b</td>
-<td>OutputProfile</td>
-<td class=c>undef</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td title='0x1391 = 5009'>0x1391</td>
-<td>ToneCurveFileName</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td title='0x1784 = 6020'>0x1784</td>
-<td>ISO</td>
-<td class=c>int32u</td>
-<td>&nbsp;</td></tr>
-</table></td></tr></table></blockquote>
-
-<h2><a name='TextualInfo'>Kodak TextualInfo Tags</a></h2>
-<p>Below is a list of tags which have been observed in the Kodak TextualInfo
-data, however ExifTool will extract information from any tags found here.</p>
-<blockquote>
-<table class=frame><tr><td>
-<table class=inner cellspacing=1>
-<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
-<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
-<tr>
-<td>'AF Function'</td>
-<td>AFMode</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>'Actual Compensation'</td>
-<td>ActualCompensation</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>'Aperture'</td>
-<td>Aperture</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>'Auto Bracket'</td>
-<td>AutoBracket</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>'Brightness Value'</td>
-<td>BrightnessValue</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>'Camera'</td>
-<td>CameraModel</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>'Camera body'</td>
-<td>CameraBody</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>'Compensation'</td>
-<td>ExposureCompensation</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>'Date'</td>
-<td>Date</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>'Exposure Bias'</td>
-<td>ExposureBias</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>'Exposure Mode'</td>
-<td>ExposureMode</td>
-<td class=c>N</td>
-<td><span class=s>&#39;A&#39; = Aperture Priority
-  <br>&#39;B&#39; = Bulb
-  <br>&#39;M&#39; = Manual
-  <br>&#39;P&#39; = Program
-  <br>&#39;S&#39; = Shutter Priority</span></td></tr>
-<tr class=b>
-<td>'Firmware Version'</td>
-<td>FirmwareVersion</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>'Flash Compensation'</td>
-<td>FlashExposureComp</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>'Flash Fired'</td>
-<td>FlashFired</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>'Flash Sync Mode'</td>
-<td>FlashSyncMode</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>'Focal Length'</td>
-<td>FocalLength</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>'Height'</td>
-<td>KodakImageHeight</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>'ISO'</td>
-<td>ISO</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>'ISO Speed'</td>
-<td>ISO</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>'Image Number'</td>
-<td>ImageNumber</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>'Max Aperture'</td>
-<td>MaxAperture</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>'Meter Mode'</td>
-<td>MeterMode</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>'Min Aperture'</td>
-<td>MinAperture</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>'Popup Flash'</td>
-<td>PopupFlash</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>'Serial Number'</td>
-<td>SerialNumber</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>'Shooting Mode'</td>
-<td>ShootingMode</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>'Shutter'</td>
-<td>ShutterSpeed</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>'Temperature'</td>
-<td>Temperature</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>'Time'</td>
-<td>Time</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>'White balance'</td>
-<td>WhiteBalance</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>'Width'</td>
-<td>KodakImageWidth</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>'_other_info'</td>
-<td>OtherInfo</td>
-<td class=c>N</td>
-<td><span class=s><span class=n>(any other information without a tag name)</span></span></td></tr>
-</table></td></tr></table></blockquote>
-
-<h2><a name='Processing'>Kodak Processing Tags</a></h2>
-<blockquote>
-<table class=frame><tr><td>
-<table class=inner cellspacing=1>
-<tr class=h><th>Index2</th><th>Tag Name</th>
-<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
-<tr>
-<td class=r title='20 = 0x14'>20</td>
-<td>WB_RGBLevels</td>
-<td class=c>N</td>
-<td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='Meta'>Kodak Meta Tags</a></h2>

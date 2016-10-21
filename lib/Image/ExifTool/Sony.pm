@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.45';
+$VERSION = '2.46';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -120,6 +120,7 @@ my %sonyLensTypes2 = (
     49232 => 'Zeiss Loxia 50mm F2', #JR (lens firmware Ver.02)
     49233 => 'Zeiss Loxia 35mm F2', #JR (lens firmware Ver.02)
     49234 => 'Zeiss Loxia 21mm F2.8', #PH
+    49235 => 'Zeiss Loxia 85mm F2.4', #JR
 
     50480 => 'Sigma 30mm F1.4 DC DN | C 016', #IB/JR
     50481 => 'Sigma 50mm F1.4 DG HSM | A 014 + MC-11', #JR
@@ -1008,7 +1009,7 @@ my %meterInfo2 = (
         Writable => 'int8u',
         PrintConvColumns => 2,
         PrintConv => {
-            0 => 'Auto', # (NC)
+            0 => 'Auto', #(NC)
             1 => 'Center',
             2 => 'Top',
             3 => 'Upper-right',
@@ -1301,8 +1302,8 @@ my %meterInfo2 = (
         #     PrintConv => {
         #         0 => 'Disabled', # seen for Panorama images
         #         1 => 'Auto',
-        #         3 => 'Lv1', #NC
-        #         4 => 'Lv2', #NC
+        #         3 => 'Lv1', #(NC)
+        #         4 => 'Lv2', #(NC)
         #         5 => 'Lv3',
         #         6 => 'Lv4',
         #         7 => 'Lv5',
@@ -1802,7 +1803,7 @@ my %meterInfo2 = (
         PrintConv => {
             0 => 'Multi',
             1 => 'Center',
-            2 => 'Spot', # (NC) seen for DSC-WX9
+            2 => 'Spot', #(NC) seen for DSC-WX9
             3 => 'Flexible Spot',
             10 => 'Selective (for Miniature effect)', # seen for Miniature effect of DSC-WX30
             14 => 'Tracking',
@@ -2098,21 +2099,21 @@ my %meterInfo2 = (
             1 => 'Left',
             2 => 'Lower-left',
             3 => 'Far Left',
-            4 => 'Bottom Assist-left', #NC
+            4 => 'Bottom Assist-left', #(NC)
             5 => 'Bottom',
-            6 => 'Bottom Assist-right', #NC
+            6 => 'Bottom Assist-right', #(NC)
             # values 7-14: 8 center points: 4 from double-cross + 4 assist; 7-10 appear horizontal, 11-14 vertical
-            7  => 'Center (7)', #NC
+            7  => 'Center (7)', #(NC)
             8  => 'Center (horizontal)',
-            9  => 'Center (9)', #NC
-            10 => 'Center (10)', #NC
-            11 => 'Center (11)', #NC
-            12 => 'Center (12)', #NC
+            9  => 'Center (9)', #(NC)
+            10 => 'Center (10)', #(NC)
+            11 => 'Center (11)', #(NC)
+            12 => 'Center (12)', #(NC)
             13 => 'Center (vertical)',
-            14 => 'Center (14)', #NC
-            15 => 'Top Assist-left', #NC
+            14 => 'Center (14)', #(NC)
+            15 => 'Top Assist-left', #(NC)
             16 => 'Top',
-            17 => 'Top Assist-right', #NC
+            17 => 'Top Assist-right', #(NC)
             18 => 'Far Right',
             19 => 'Upper-right',
             20 => 'Right',
@@ -2939,7 +2940,7 @@ my %meterInfo2 = (
             18 => 'AF-C',
             19 => 'AF-A',
             32 => 'Manual',
-            48 => 'DMF', # (NC) (seen for NEX-5)
+            48 => 'DMF', #(NC) (seen for NEX-5)
         },
     },
     0x15 => {
@@ -4488,7 +4489,7 @@ my %faceInfo = (
             18 => 'AF-C',
             19 => 'AF-A',
             32 => 'Manual',
-            48 => 'DMF', # (NC) (seen for NEX-5)
+            48 => 'DMF', #(NC) (seen for NEX-5)
         },
     },
     0x07 => { #JR
@@ -5027,7 +5028,7 @@ my %faceInfo = (
         Condition => '$$self{Model} =~ /^DSLR-(A450|A500|A550)$/',
         Notes => 'A450, A500 and A550',
         Format => 'int16u',
-        Mask => 0x03ff, # (NC)
+        Mask => 0x03ff, #(NC)
         PrintConv => 'sprintf("%.3d",$val)',
         PrintConvInv => '$val',
     },
@@ -5074,7 +5075,7 @@ my %faceInfo = (
         Name => 'FolderNumber',
         Condition => '$$self{Model} =~ /^DSLR-(A450|A500|A550)$/',
         Format => 'int16u',
-        Mask => 0x03ff, # (NC)
+        Mask => 0x03ff, #(NC)
         Notes => 'A450, A500 and A550',
         PrintConv => 'sprintf("%.3d",$val)',
         PrintConvInv => '$val',
@@ -5341,7 +5342,7 @@ my %faceInfo = (
             0x00 =>  'Horizontal (normal)',
             0x40 =>  'Rotate 90 CW',
             0x80 =>  'Rotate 270 CW',
-            0xc0 =>  'Rotate 180', # (NC)
+            0xc0 =>  'Rotate 180', #(NC)
         },
 
     }],
@@ -6601,13 +6602,13 @@ my %pictureProfile2010 = (
         %releaseMode2,
     },
     0x007c => { #JR valid for ILCE and most NEX
-        Name => 'InternalSerialNumber', # (NC)
+        Name => 'InternalSerialNumber', #(NC)
         Condition => '$$self{Model} !~ /^(DSC-|Stellar|Lunar|NEX-(5N|7|VG20E)|SLT-|HV|ILCA-|ILCE-(6300|7RM2|7SM2))/',
         Format => 'int8u[4]',
         PrintConv => 'unpack "H*", pack "C*", split " ", $val',
     },
     0x00f0 => { #JR valid for SLT/ILCA models
-        Name => 'InternalSerialNumber', # (NC)
+        Name => 'InternalSerialNumber', #(NC)
         Condition => '$$self{Model} =~ /^(SLT-|HV|ILCA-)/',
         Format => 'int8u[5]',
         PrintConv => 'unpack "H*", pack "C*", split " ", $val',
@@ -6694,7 +6695,7 @@ my %pictureProfile2010 = (
         %releaseMode2,
     },
     0x0088 => {
-        Name => 'InternalSerialNumber', # (NC)
+        Name => 'InternalSerialNumber', #(NC)
         Condition => '$$self{Model} =~ /^(ILCE-(6300|7RM2|7SM2))/',
         Format => 'int8u[6]',
         PrintConv => 'unpack "H*", pack "C*", split " ", $val',
@@ -7116,7 +7117,7 @@ my %pictureProfile2010 = (
         PrintConv => {
             0 => 'Multi', # newer DSC/ILC use name 'Wide'
             1 => 'Center',
-            2 => 'Spot', # (NC) seen for DSC-WX300
+            2 => 'Spot', #(NC) seen for DSC-WX300
             3 => 'Flexible Spot',
             10 => 'Selective (for Miniature effect)', # seen for DSC-HX30V,TX30,WX60,WX100
             11 => 'Zone', #JR (ILCE-7 series)
@@ -7936,7 +7937,7 @@ my %pictureProfile2010 = (
             1 => 'Center',
             2 => 'Flexible Spot',
             3 => 'Zone',
-            4 => 'Expanded Flexible Spot', # (NC)
+            4 => 'Expanded Flexible Spot', #(NC)
         },
     },
     0x003b => {
@@ -8306,7 +8307,7 @@ my %pictureProfile2010 = (
         rotation -- the width is always the longer dimension.
     },
     # 0: 257 for panorama images, 0 for all other images (ref JR)
-    1 => 'PanoramaFullWidth', # (including black/grey borders)
+    1 => 'PanoramaFullWidth', # (including black/gray borders)
     2 => 'PanoramaFullHeight',
     3 => {
         Name => 'PanoramaDirection',
@@ -8315,7 +8316,7 @@ my %pictureProfile2010 = (
             1 => 'Right or Down',
         },
     },
-    # crop area to remove black/grey borders from full image
+    # crop area to remove black/gray borders from full image
     4 => 'PanoramaCropLeft',
     5 => 'PanoramaCropTop', #PH guess (NC)
     6 => 'PanoramaCropRight',

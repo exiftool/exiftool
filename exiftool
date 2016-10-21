@@ -12,7 +12,7 @@
 use strict;
 require 5.004;
 
-my $version = '10.30';
+my $version = '10.31';
 
 # add our 'lib' directory to the include list BEFORE 'use Image::ExifTool'
 my $exeDir;
@@ -56,6 +56,7 @@ sub FindFileWindows($$);
 sub FileNotFound($);
 sub PreserveTime();
 sub AbsPath($);
+sub MyConvertFileName($$);
 sub SuggestedExtension($$$);
 sub LoadPrintFormat($);
 sub FilenameSPrintf($;$@);
@@ -76,7 +77,7 @@ END {
 
 # declare all static file-scope variables
 my @commonArgs;     # arguments common to all commands
-my @csvFiles;       # list of files when reading with CSV option
+my @csvFiles;       # list of files when reading with CSV option (in ExifTool Charset)
 my @csvTags;        # order of tags for first file with CSV option (lower case)
 my @delFiles;       # list of files to delete
 my @dynamicFiles;   # list of -tagsFromFile files with dynamic names and -TAG<=FMT pairs
@@ -91,7 +92,7 @@ my @tags;           # list of tags to extract
 my %appended;       # list of files appended to
 my %created;        # list of files we created
 my %csvTags;        # lookup for all found tags with CSV option (lower case keys)
-my %database;       # lookup for database information based on file name
+my %database;       # lookup for database information based on file name (in ExifTool Charset)
 my %filterExt;      # lookup for filtered extensions
 my %ignore;         # directory names to ignore
 my %preserveTime;   # preserved timestamps for files
@@ -250,6 +251,8 @@ my @recommends = qw(
   Time::HiRes
   POSIX::strptime
   Unicode::LineBreak
+  IO::Compress::RawDeflate
+  IO::Uncompress::RawInflate
   Win32::API
   Win32::FindFile
   Win32API::File
@@ -619,7 +622,7 @@ for (;;) {
             foreach (@recommends) {
                 next if /^Win32/ and $^O ne 'MSWin32';
                 my $ver = eval "require $_ and \$${_}::VERSION";
-                printf "  %-21s %s\n", $_, $ver || '(not installed)';
+                printf "  %-28s %s\n", $_, $ver || '(not installed)';
             }
         } else {
             print "$version$str$Image::ExifTool::RELEASE\n";
@@ -1629,24 +1632,14 @@ if (@fileOrder) {
 # set file count for progress message
 $progressMax = scalar @files if defined $progress;
 
-# store duplicate database information under absolute path,
-# and translate the filename character set if necessary
+# store duplicate database information under absolute path
 my @dbKeys = keys %database;
 if (@dbKeys) {
-    my $enc = $mt->Options('CharsetFileName');
-    if ($enc) {
-        foreach (@dbKeys) {
-            my $f = $mt->InverseFileName($_);
-            next if $f eq $_;
-            $database{$f} = $database{$_};
-            delete $database{$_};
-            $_ = $f;
-        }
-    }
     if (eval { require Cwd }) {
         undef $evalWarning;
         local $SIG{'__WARN__'} = sub { $evalWarning = $_[0] };
         foreach (@dbKeys) {
+            # (punt on using ConvertFileName here, so $absPath may be a mix of encodings)
             my $absPath = AbsPath($_);
             if (defined $absPath) {
                 $database{$absPath} = $database{$_} unless $database{$absPath};
@@ -2047,17 +2040,18 @@ sub GetImageInfo($$)
                 # set delimiters for JSON or PHP output
                 ($bra, $ket, $sep) = $json == 1 ? ('{','}',':') : ('Array(',')',' =>');
                 print $fp ",\n" if $comma;
-                print $fp qq($bra\n  "SourceFile"$sep ), EscapeJSON($mt->ConvertFileName($file, 1));
+                print $fp qq($bra\n  "SourceFile"$sep ), EscapeJSON(MyConvertFileName($et,$file));
                 $comma = 1;
                 $ind = (defined $showGroup and not $allGroup) ? '    ' : '  ';
             } elsif ($csv) {
-                $database{$file} = \%csvInfo;
-                push @csvFiles, $file;
+                my $file2 = MyConvertFileName($et, $file);
+                $database{$file2} = \%csvInfo;
+                push @csvFiles, $file2;
             }
         }
         # suppress duplicates manually in JSON and short XML output
         my $noDups = ($json or ($xml and $outFormat > 0));
-        my $printConv = $mt->Options('PrintConv');
+        my $printConv = $et->Options('PrintConv');
         my $lastGroup = '';
 TAG:    foreach $tag (@foundTags) {
             my $tagName = GetTagName($tag);
@@ -2141,7 +2135,7 @@ TAG:    foreach $tag (@foundTags) {
                         }
                         next TAG;
                     }
-                    my @groups = $mt->GetGroup($tag);
+                    my @groups = $et->GetGroup($tag);
                     $outfile and close($fp), undef($tmpText); # (shouldn't happen)
                     ($fp, $outfile, $append) = OpenOutputFile($orig, $tagName, \@groups, $ext);
                     $fp or ++$countBad, next TAG;
@@ -2557,24 +2551,28 @@ sub SetImageInfo($$$)
                 my $opts = $$dyFile[2];
                 if (defined $fname and SlurpFile($fname, \$buff)) {
                     $verbose and print $vout "Reading $$dyFile[0] from $fname\n";
-                    ($rtn, $wrn) = $mt->SetNewValue($$dyFile[0], $buff, %$opts);
+                    ($rtn, $wrn) = $et->SetNewValue($$dyFile[0], $buff, %$opts);
                     $wrn and Warn "$wrn\n";
                 }
                 # remove this tag if we couldn't set it properly
-                $rtn or $mt->SetNewValue($$dyFile[0], undef, Replace => 2,
+                $rtn or $et->SetNewValue($$dyFile[0], undef, Replace => 2,
                                          ProtectSaved => $$opts{ProtectSaved});
                 next;
             } elsif (ref $dyFile eq 'SCALAR') {
-                # set new values from CSV database
+                # set new values from CSV or JSON database
                 my ($f, $found, $tag);
                 undef $evalWarning;
                 local $SIG{'__WARN__'} = sub { $evalWarning = $_[0] };
+                # force UTF-8 if the database was JSON
+                my $old = $et->Options('Charset');
+                $et->Options(Charset => 'UTF8') if $csv eq 'JSON';
                 # read tags for SourceFile '*' plus the specific file
-                foreach $f ('*', $file) {
+                foreach $f ('*', MyConvertFileName($et, $file)) {
                     my $csvInfo = $database{$f};
                     unless ($csvInfo) {
                         next if $f eq '*';
                         # check absolute path
+                        # (punt on using ConvertFileName here, so $absPath may be a mix of encodings)
                         my $absPath = AbsPath($f);
                         next unless defined $absPath and $csvInfo = $database{$absPath};
                     }
@@ -2582,12 +2580,13 @@ sub SetImageInfo($$$)
                     $verbose and print $vout "Setting new values from $csv database\n";
                     foreach $tag (sort keys %$csvInfo) {
                         next if $tag =~ /\b(SourceFile|Directory|FileName)$/i; # don't write these
-                        my ($rtn, $wrn) = $mt->SetNewValue($tag, $$csvInfo{$tag},
+                        my ($rtn, $wrn) = $et->SetNewValue($tag, $$csvInfo{$tag},
                                           Protected => 1, AddValue => $csvAdd,
                                           ProtectSaved => $csvSaveCount);
                         $wrn and Warn "$wrn\n" if $verbose;
                     }
                 }
+                $et->Options(Charset => $old) if $csv eq 'JSON';
                 unless ($found) {
                     Warn("No SourceFile '$file' in imported $csv database\n");
                     my $absPath = AbsPath($file);
@@ -3058,7 +3057,7 @@ sub PrintCSV()
     print join(',', 'SourceFile', @tags), "\n";
     my $empty = defined($forcePrint) ? $forcePrint : '';
     foreach $file (@csvFiles) {
-        my @vals = (FormatCSV($mt->ConvertFileName($file))); # start with full file name
+        my @vals = (FormatCSV($file)); # start with full file name
         my $csvInfo = $database{$file};
         foreach $lcTag (@csvTags) {
             next unless $csvTags{$lcTag};
@@ -3285,11 +3284,11 @@ sub ProcessFiles($;$)
             ++$progressCount;
             $progStr = " [$progressCount/$progressMax]" if $progress;
         }
-        if ($mt->IsDirectory($file)) {
+        if ($et->IsDirectory($file)) {
             $multiFile = $validFile = 1;
-            ScanDir($mt, $file, $list);
+            ScanDir($et, $file, $list);
         } elsif ($filterFlag and not AcceptFile($file)) {
-            if ($mt->Exists($file)) {
+            if ($et->Exists($file)) {
                 $filtered = 1;
                 $verbose and print $vout "-------- $file (wrong extension)$progStr\n";
             } else {
@@ -3389,9 +3388,9 @@ sub ScanDir($$;$)
                 next unless $file =~ /\.(gz|bz2)$/i;
             }
         }
+        $utf8FileName{$path} = 1 if $utf8Name;
         if ($list) {
             push(@$list, $path);
-            $utf8FileName{$path} = 1 if $utf8Name;
         } else {
             GetImageInfo($et, $path);
         }
@@ -3483,6 +3482,20 @@ sub AbsPath($)
         }
     }
     return $path;
+}
+
+#------------------------------------------------------------------------------
+# Convert file name to ExifTool Charset
+# Inputs: 0) ExifTool ref, 1) file name in CharsetFileName
+# Returns: file name in ExifTool Charset
+sub MyConvertFileName($$)
+{
+    my ($et, $file) = @_;
+    my $enc = $et->Options('CharsetFileName');
+    $et->Options(CharsetFileName => 'UTF8') if $utf8FileName{$file};
+    my $convFile = $et->ConvertFileName($file);
+    $et->Options(CharsetFileName => $enc) if $utf8FileName{$file};
+    return $convFile;
 }
 
 #------------------------------------------------------------------------------
@@ -4019,7 +4032,7 @@ supported by ExifTool (r = read, w = write, c = create):
   ASF   r     | FFF   r/w   | MKS   r     | PFA   r     | THM   r/w
   AVI   r     | FLA   r     | MKV   r     | PFB   r     | TIFF  r/w
   AZW   r     | FLAC  r     | MNG   r/w   | PFM   r     | TORRENT r
-  BMP   r     | FLIF  r     | MOBI  r     | PGF   r     | TTC   r
+  BMP   r     | FLIF  r/w   | MOBI  r     | PGF   r     | TTC   r
   BPG   r     | FLV   r     | MODD  r     | PGM   r/w   | TTF   r
   BTF   r     | FPF   r     | MOI   r     | PLIST r     | VCF   r
   CHM   r     | FPX   r     | MOS   r/w   | PICT  r     | VRD   r/w/c
@@ -4825,7 +4838,7 @@ with this command:
 
 produces output like this:
 
-    -- Generated by ExifTool 10.30 --
+    -- Generated by ExifTool 10.31 --
     File: a.jpg - 2003:10:31 15:44:19
     (f/5.6, 1/60s, ISO 100)
     File: b.jpg - 2006:05:23 11:57:38

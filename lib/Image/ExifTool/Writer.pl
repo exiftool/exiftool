@@ -178,7 +178,7 @@ my %intRange = (
     'int32s' => [-0x80000000, 0x7fffffff],
 );
 # lookup for file types with block-writable EXIF
-my %blockExifTypes = map { $_ => 1 } qw(JPEG PNG JP2 MIE EXIF);
+my %blockExifTypes = map { $_ => 1 } qw(JPEG PNG JP2 MIE EXIF FLIF);
 
 my $maxSegmentLen = 0xfffd;     # maximum length of data in a JPEG segment
 my $maxXMPLen = $maxSegmentLen; # maximum length of XMP data in JPEG
@@ -464,7 +464,7 @@ sub SetNewValue($;$$%)
         }
         unless ($listOnly) {
             if (not TagExists($tag)) {
-                $err = "Tag '$origTag' does not exist";
+                $err = "Tag '$origTag' is not supported";
                 $err .= ' or has a bad language code' if $origTag =~ /-/;
             } elsif ($langCode) {
                 $err = "Tag '$tag' does not support alternate languages";
@@ -1006,7 +1006,7 @@ WriteAlso:
             } elsif ($foundMatch) {
                 $err = "Sorry, $pre$tag is not writable";
             } else {
-                $err = "Tag '$pre$tag' does not exist";
+                $err = "Tag '$pre$tag' is not supported";
             }
         }
         if ($err) {
@@ -2083,6 +2083,9 @@ sub WriteInfo($$;$$)
             } elsif ($type eq 'MOV') {
                 require Image::ExifTool::QuickTime;
                 $rtnVal = Image::ExifTool::QuickTime::WriteMOV($self, \%dirInfo);
+            } elsif ($type eq 'FLIF') {
+                require Image::ExifTool::FLIF;
+                $rtnVal = Image::ExifTool::FLIF::WriteFLIF($self, \%dirInfo);
             } elsif ($type eq 'EXIF') {
                 # go through WriteDirectory so block writes, etc are handled
                 my $tagTablePtr = GetTagTable('Image::ExifTool::Exif::Main');
@@ -3498,7 +3501,7 @@ sub InitWriteDirs($$;$)
 # Write an image directory
 # Inputs: 0) ExifTool object reference, 1) source directory information reference
 #         2) tag table reference, 3) optional reference to writing procedure
-# Returns: New directory data or undefined on error
+# Returns: New directory data or undefined on error (or empty string to delete directory)
 sub WriteDirectory($$$;$)
 {
     my ($self, $dirInfo, $tagTablePtr, $writeProc) = @_;

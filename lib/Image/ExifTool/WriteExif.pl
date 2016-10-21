@@ -553,11 +553,12 @@ sub WriteExif($$$)
                     # need value to evaluate the condition
                     my $val = $et->GetNewValue($tagInfo);
                     # must convert to binary for evaluating in Condition
-                    if ($$tagInfo{Format} and defined $val) {
-                        $val = WriteValue($val, $$tagInfo{Format}, $$tagInfo{Count});
+                    my $fmt = $$tagInfo{Writable} || $$tagInfo{Format};
+                    if ($fmt and defined $val) {
+                        $val = WriteValue($val, $fmt, $$tagInfo{Count});
                     }
                     if (defined $val) {
-                        my $fmt = $$tagInfo{Writable} || $$tagInfo{Format} || 'undef';
+                        $fmt or $fmt = 'undef';
                         my $cnt = $$tagInfo{Count} || 1;
                         # always use old format/count for Condition in maker notes
                         if ($inMakerNotes) {

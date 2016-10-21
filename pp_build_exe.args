@@ -21,10 +21,10 @@
 #           10) Copy zip archive to web servers.
 #           11) Update zip file version in link and text of html/index.html.
 #------------------------------------------------------------------------------
--T exiftool-10.22
-#--info=FileVersion=10.2.2.0
-#--info=ProductVersion=10.2.2.0
-##"--info=Build Date=2016:07:07 12:25:41-04:00"
+-T exiftool-10.31
+#--info=FileVersion=10.3.1.0
+#--info=ProductVersion=10.3.1.0
+##"--info=Build Date=2016:09:06 08:46:41-04:00"
 ##"--info=Bundled Perl Version=ActivePerl 5.24.0"
 ##"--info=LegalCopyright=Copyright (c) 2003-2016, Phil Harvey"
 ##"--info=ProductName=ExifTool"
@@ -35,10 +35,14 @@
 ##"--info=InternalName=ExifTool"
 ##"--info=FileDescription=Read and Write meta information"
 -o exiftool.exe -I lib
+-M Archive::Zip
 -M Compress::Zlib
 -M Digest::MD5
 -M Digest::SHA
--M Archive::Zip
+-M IO::Compress::Bzip2
+-M Time::HiRes
+-M IO::Compress::RawDeflate
+-M IO::Uncompress::RawInflate
 -M Win32::API
 -M Win32::FindFile
 -M Win32API::File

@@ -85,7 +85,7 @@ sub ProcessSerialData($$$);
 sub ProcessFilters($$$);
 sub SwapWords($);
 
-$VERSION = '3.68';
+$VERSION = '3.69';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -197,6 +197,7 @@ $VERSION = '3.68';
     52 => 'Canon EF-S 18-55mm f/3.5-5.6 IS II', #PH
     53 => 'Canon EF-S 18-55mm f/3.5-5.6 III', #Jon Charnas
     54 => 'Canon EF-S 55-250mm f/4-5.6 IS II', #47
+    60 => 'Irix 11mm f/4', #50
     94 => 'Canon TS-E 17mm f/4L', #42
     95 => 'Canon TS-E 24.0mm f/3.5 L II', #43
     124 => 'Canon MP-E 65mm f/2.8 1-5x Macro Photo', #9
@@ -300,11 +301,11 @@ $VERSION = '3.68';
     169.4 => 'Sigma 50mm f/1.4 EX DG HSM', #PH
     169.5 => 'Sigma 85mm f/1.4 EX DG HSM', #Rolando Ruzic
     169.6 => 'Sigma 30mm f/1.4 EX DC HSM', #Rodolfo Borges
-    169.7 => 'Sigma 35mm f/1.4 DG HSM', #PH (also "| A" version, ref forum3833)
+    169.7 => 'Sigma 35mm f/1.4 DG HSM', #PH (also "| A" version, ref 50)
     170 => 'Canon EF 200mm f/2.8L II', #9
     171 => 'Canon EF 300mm f/4L', #15
     172 => 'Canon EF 400mm f/5.6L or Sigma Lens', #32
-    172.1 =>'Sigma 150-600mm f/5-6.3 DG OS HSM | S', #forum3833
+    172.1 =>'Sigma 150-600mm f/5-6.3 DG OS HSM | S', #50
     173 => 'Canon EF 180mm Macro f/3.5L or Sigma Lens', #9
     173.1 => 'Sigma 180mm EX HSM Macro f/3.5', #14
     173.2 => 'Sigma APO Macro 150mm f/2.8 EX DG HSM', #14
@@ -423,7 +424,7 @@ $VERSION = '3.68';
     507 => 'Canon EF 16-35mm f/4L IS USM', #42
     508 => 'Canon EF 11-24mm f/4L USM', #PH
     747 => 'Canon EF 100-400mm f/4.5-5.6L IS II USM or Tamron Lens', #JR
-    747.1 => 'Tamron SP 150-600mm F5-6.3 Di VC USD G2', #forum3833
+    747.1 => 'Tamron SP 150-600mm F5-6.3 Di VC USD G2', #50
     748 => 'Canon EF 100-400mm f/4.5-5.6L IS II USM + 1.4x', #JR (1.4x Mk III)
     750 => 'Canon EF 35mm f/1.4L II USM', #42
     751 => 'Canon EF 16-35mm f/2.8L III USM', #42
@@ -754,7 +755,7 @@ $VERSION = '3.68';
     0x80000298 => 'WFT-E4 II',
     0x80000301 => 'EOS Rebel T4i / 650D / Kiss X6i',
     0x80000302 => 'EOS 6D', #25
-    0x80000324 => 'EOS-1D C', # (NC)
+    0x80000324 => 'EOS-1D C', #(NC)
     0x80000325 => 'EOS 70D',
     0x80000326 => 'EOS Rebel T5i / 700D / Kiss X7i',
     0x80000327 => 'EOS Rebel T5 / 1200D / Kiss X70',
@@ -4971,7 +4972,7 @@ my %ciMaxFocal = (
         Writable => 0,
         RawConv => '$val=~/^\d+\.\d+\.\d+\s*$/ ? $val : undef',
     },
-    0x270 => { # (NC)
+    0x270 => { #(NC)
         Name => 'FileIndex',
         Condition => '$$self{Model} =~ /(650D|REBEL T4i|Kiss X6i)\b/',
         Notes => '650D',
@@ -4980,7 +4981,7 @@ my %ciMaxFocal = (
         ValueConv => '$val + 1',
         ValueConvInv => '$val - 1',
     },
-    0x274 => { # (NC)
+    0x274 => { #(NC)
         Name => 'FileIndex',
         Condition => '$$self{Model} =~ /(700D|REBEL T5i|Kiss X7i)\b/',
         Notes => '700D',
@@ -4989,7 +4990,7 @@ my %ciMaxFocal = (
         ValueConv => '$val + 1',
         ValueConvInv => '$val - 1',
     },
-    0x27c => { # (NC)
+    0x27c => { #(NC)
         Name => 'DirectoryIndex',
         Condition => '$$self{Model} =~ /(650D|REBEL T4i|Kiss X6i)\b/',
         Notes => '650D',
@@ -4998,7 +4999,7 @@ my %ciMaxFocal = (
         ValueConv => '$val - 1',
         ValueConvInv => '$val + 1',
     },
-    0x280 => { # (NC)
+    0x280 => { #(NC)
         Name => 'DirectoryIndex',
         Condition => '$$self{Model} =~ /(700D|REBEL T5i|Kiss X7i)\b/',
         Notes => '700D',
@@ -6120,7 +6121,7 @@ my %ciMaxFocal = (
             31 => 'Anchorage',      # [-9]
             32 => 'Honolulu',       # [-10]
             33 => 'Samoa',          # [+13]
-            32766 => '(not set)',   # (NC)
+            32766 => '(not set)',   #(NC)
         },
     },
     3 => {

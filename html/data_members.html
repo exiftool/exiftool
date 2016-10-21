@@ -25,7 +25,8 @@ value.</p>
 
 <tr><td>ADD_DIRS</td><td>Hash of parent directories for each directory added during
     writing (Note: entry may exist but be undefined for top-level
-    directory!)</td></tr>
+    directory!)  To avoid adding a directory twice, entries may be
+    deleted from this lookup, but only AFTER WriteDirectory() is called.</td></tr>
 
 <tr><td>BASE</td><td>Absolute position of current image in containing file
     (for example, when processing JPEG image in FujiFilm RAF file)</td></tr>

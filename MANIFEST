@@ -1,5 +1,6 @@
 Changes
 MANIFEST
+META.json
 META.yml
 Makefile.PL
 README
@@ -480,6 +481,10 @@ t/FLAC_2.out
 t/FLAC_3.out
 t/FLIF.t
 t/FLIF_2.out
+t/FLIF_3.out
+t/FLIF_4.out
+t/FLIF_5.out
+t/FLIF_6.out
 t/FLIR.t
 t/FLIR_2.out
 t/FLIR_3.out

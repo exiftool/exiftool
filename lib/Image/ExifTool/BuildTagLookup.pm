@@ -32,7 +32,7 @@ use Image::ExifTool::XMP;
 use Image::ExifTool::Canon;
 use Image::ExifTool::Nikon;
 
-$VERSION = '2.99';
+$VERSION = '3.00';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -68,9 +68,6 @@ my %tweakOrder = (
     FLIR    => 'Casio',
     FujiFilm => 'FLIR',
     Kodak   => 'JVC',
-   'Kodak::IFD' => 'Kodak::Unknown',
-   'Kodak::TextualInfo' => 'Kodak::IFD',
-   'Kodak::Processing' => 'Kodak::TextualInfo',
     Leaf    => 'Kodak',
     Minolta => 'Leaf',
     Motorola => 'Minolta',
@@ -164,8 +161,8 @@ B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
 is the identifier that is actually stored in the file.  B<Index#> refers to
 the location of a value when found at a fixed position within a data block
-(B<#> is the multiplier for calculating a byte offset: B<1>, B<2> or B<4>).
-B<Sequence> gives the order of values for a serial data stream.
+(B<#> is the multiplier for calculating a byte offset: B<1>, B<2>, B<4> or
+B<8>). B<Sequence> gives the order of values for a serial data stream.
 
 A B<Tag Name> is the handle by which the information is accessed in
 ExifTool.  In some instances, more than one name may correspond to a single
@@ -1639,8 +1636,28 @@ sub Doc2Html($)
 # Inputs: 0) table list ref, 1) reference to tweak hash
 sub TweakOrder($$)
 {
+    local $_;
     my ($sortedTables, $tweakOrder) = @_;
     my @tweak = sort keys %$tweakOrder;
+    my (%addedMain, @sorted);
+    # flag files which have a "Main" table
+    foreach (@$sortedTables) {
+        $addedMain{$1} = 0 if /^Image::ExifTool::(\w+)::(\w+)/ and $2 eq 'Main';
+    }
+    # make sure that the main table always comes first in each file
+    foreach (@$sortedTables) {
+        if (/^Image::ExifTool::(\w+)::(\w+)/) {
+            if ($addedMain{$1}) {
+                next if $2 eq 'Main';   # don't add again
+            } elsif (defined $addedMain{$1}) {
+                push @sorted, "Image::ExifTool::${1}::Main" if $2 ne 'Main';
+                $addedMain{$1} = 1;
+            }
+        }
+        push @sorted, $_;
+    }
+    @$sortedTables = @sorted;
+    # apply manual tweaks
     while (@tweak) {
         my $table = shift @tweak;
         my $first = $$tweakOrder{$table};

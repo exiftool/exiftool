@@ -1,6 +1,6 @@
 Summary: perl module for image data extraction
 Name: perl-Image-ExifTool
-Version: 10.30
+Version: 10.31
 Release: 1
 License: Artistic/GPL
 Group: Development/Libraries/Perl
@@ -37,7 +37,7 @@ supported by ExifTool (r = read, w = write, c = create):
   ASF   r     | FFF   r/w   | MKS   r     | PFA   r     | THM   r/w
   AVI   r     | FLA   r     | MKV   r     | PFB   r     | TIFF  r/w
   AZW   r     | FLAC  r     | MNG   r/w   | PFM   r     | TORRENT r
-  BMP   r     | FLIF  r     | MOBI  r     | PGF   r     | TTC   r
+  BMP   r     | FLIF  r/w   | MOBI  r     | PGF   r     | TTC   r
   BPG   r     | FLV   r     | MODD  r     | PGM   r/w   | TTF   r
   BTF   r     | FPF   r     | MOI   r     | PLIST r     | VCF   r
   CHM   r     | FPX   r     | MOS   r/w   | PICT  r     | VRD   r/w/c

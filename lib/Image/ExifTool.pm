@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '10.30';
+$VERSION = '10.31';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -130,13 +130,13 @@ sub ReadValue($$$$$;$);
 @loadAllTables = qw(
     PhotoMechanic Exif GeoTiff CanonRaw KyoceraRaw Lytro MinoltaRaw PanasonicRaw
     SigmaRaw JPEG GIMP Jpeg2000 GIF BMP BMP::OS2 BPG BPG::Extensions PICT PNG
-    MNG DjVu DPX OpenEXR MIFF PGF PSP PhotoCD Radiance PDF PostScript
+    MNG FLIF DjVu DPX OpenEXR MIFF PGF PSP PhotoCD Radiance PDF PostScript
     Photoshop::Header Photoshop::Layers Photoshop::ImageData FujiFilm::RAF
     FujiFilm::IFD Samsung::Trailer Sony::SRF2 Sony::SR2SubIFD Sony::PMP ITC ID3
-    Vorbis Ogg APE APE::NewHeader APE::OldHeader Audible MPC MPEG::Audio
+    FLAC Ogg Vorbis APE APE::NewHeader APE::OldHeader Audible MPC MPEG::Audio
     MPEG::Video MPEG::Xing M2TS QuickTime QuickTime::ImageFile Matroska MOI MXF
     DV Flash Flash::FLV Real::Media Real::Audio Real::Metafile RIFF AIFF ASF
-    FLIF DICOM MIE HTML XMP::SVG Palm Palm::MOBI Palm::EXTH Torrent EXE
+    DICOM MIE HTML XMP::SVG Palm Palm::MOBI Palm::EXTH Torrent EXE
     EXE::PEVersion EXE::PEString EXE::MachO EXE::PEF EXE::ELF EXE::AR EXE::CHM
     LNK Font VCard VCard::VCalendar RSRC Rawzor ZIP ZIP::GZIP ZIP::RAR RTF OOXML
     iWork ISO FLIR::AFF FLIR::FPF
@@ -180,8 +180,8 @@ $defaultLang = 'en';    # default language
                 AA PDB MOI ISO MP3 DICOM PCD);
 
 # file types that we can write (edit)
-my @writeTypes = qw(JPEG TIFF GIF CRW MRW ORF RAF RAW PNG MIE PSD XMP PPM
-                    EPS X3F PS PDF ICC VRD DR4 JP2 EXIF AI AIT IND MOV EXV);
+my @writeTypes = qw(JPEG TIFF GIF CRW MRW ORF RAF RAW PNG MIE PSD XMP PPM EPS
+                    X3F PS PDF ICC VRD DR4 JP2 EXIF AI AIT IND MOV EXV FLIF);
 my %writeTypes; # lookup for writable file types (hash filled if required)
 
 # file extensions that we can't write for various base types
@@ -217,6 +217,7 @@ my %fileTypeLookup = (
     AIFF => ['AIFF', 'Audio Interchange File Format'],
     AIT  =>  'AI',
     APE  => ['APE',  "Monkey's Audio format"],
+    APNG => ['PNG',  'Animated Portable Network Graphics'],
     ARW  => ['TIFF', 'Sony Alpha RAW format'],
     ASF  => ['ASF',  'Microsoft Advanced Systems Format'],
     AVC  => ['AVC',  'Advanced Video Connection'], # (extensions are actually _AU,_AD,_IM,_ID)
@@ -521,6 +522,7 @@ my %fileDescription = (
     AI   => 'application/vnd.adobe.illustrator',
     AIFF => 'audio/x-aiff',
     APE  => 'audio/x-monkeys-audio',
+    APNG => 'image/apng',
     ASF  => 'video/x-ms-asf',
     ARW  => 'image/x-sony-arw',
     BMP  => 'image/bmp',
@@ -2550,7 +2552,7 @@ sub GetValue($$;$)
     # start with the raw value
     my $value = $$self{VALUE}{$tag};
     if (not defined $value) {
-        return wantarray ? () : undef unless ref $tag;
+        return () unless ref $tag;
         # get the value of a structure field
         $tagInfo = $tag;
         $tag = $$tagInfo{Name};
@@ -2641,7 +2643,7 @@ sub GetValue($$;$)
             } else {
                 $value = \@valList;
             }
-            return wantarray ? () : undef unless @$value;
+            return () unless @$value;
         }
         # initialize array so we can iterate over values in list
         if (ref $value eq 'ARRAY') {
@@ -2672,7 +2674,7 @@ sub GetValue($$;$)
                         next if defined $val[$_] or not $$tagInfo{Require}{$_};
                         $$self{OPTIONS}{Filter} = $oldFilter if defined $oldFilter;
                         $$self{ESCAPE_PROC} = $oldEscape;
-                        return wantarray ? () : undef;
+                        return ();
                     }
                     $$self{OPTIONS}{Filter} = $oldFilter if defined $oldFilter;
                     $$self{ESCAPE_PROC} = $oldEscape;
@@ -2756,7 +2758,7 @@ sub GetValue($$;$)
             $conv = $$convList[$i] if $convList;
         }
         # return undefined now if no value
-        return wantarray ? () : undef unless defined $value;
+        return () unless defined $value;
         # join back into single value if split for conversion list
         if ($convList and ref $value eq 'ARRAY') {
             $value = join($convType eq 'PrintConv' ? '; ' : ' ', @$value);
@@ -2806,8 +2808,8 @@ sub GetValue($$;$)
 #------------------------------------------------------------------------------
 # Get tag identification number
 # Inputs: 0) ExifTool object reference, 1) tag key
-# Returns: Scalar context: Tag ID if available, otherwise ''
-#          List context: 0) Tag ID (or ''), 1) language code (or undef)
+# Returns: Scalar context: tag ID if available, otherwise ''
+#          List context: 0) tag ID (or ''), 1) language code (or undef)
 sub GetTagID($$)
 {
     my ($self, $tag) = @_;
@@ -2866,8 +2868,8 @@ sub GetDescription($$)
 #         1) tag key (or reference to tagInfo hash, not part of the public API)
 #         2) [optional] group family (-1 to get extended group list, or multiple
 #            families separated by colons to return multiple groups as a string)
-# Returns: Scalar context: Group name (for family 0 if not otherwise specified)
-#          Array context: Group name if family specified, otherwise list of
+# Returns: Scalar context: group name (for family 0 if not otherwise specified)
+#          List context: group name if family specified, otherwise list of
 #          group names for each family.  Returns '' for undefined tag.
 # Notes: Mutiple families may be specified with ':' in family argument (eg. '1:2')
 sub GetGroup($$;$)
@@ -3166,7 +3168,7 @@ sub GetShortcuts()
 #            or FileType value if a description is requested
 #         1) flag to return long description instead of type ('0' to return any recognized type)
 # Returns: File type (or desc) or undef if extension not supported or if
-#          description is the same as the input FileType.  In array context,
+#          description is the same as the input FileType.  In list context,
 #          may return more than one file type if the file may be different formats.
 #          Returns list of all supported extensions if no file specified
 sub GetFileType(;$$)
@@ -3202,7 +3204,7 @@ sub GetFileType(;$$)
         my $mod = $moduleName{$$fileType[0]};
         undef $fileType if defined $mod and $mod eq '0';
     }
-    $fileType or return wantarray ? () : undef;
+    $fileType or return ();
     $fileType = $$fileType[0];      # get file type (or list of types)
     if (wantarray) {
         return @$fileType if ref $fileType eq 'ARRAY';
@@ -3389,7 +3391,7 @@ sub NextTagKey($$)
 
 #------------------------------------------------------------------------------
 # Encode file name for calls to system i/o routines
-# Inputs: 0) ExifTool ref, 1) file name, 2) flag to force conversion
+# Inputs: 0) ExifTool ref, 1) file name in CharSetFileName, 2) flag to force conversion
 # Returns: true if Windows Unicode routines should be used (in which case
 #          the file name will be encoded as a null-terminated UTF-16LE string)
 sub EncodeFileName($$;$)
@@ -5136,7 +5138,7 @@ sub ConvertFileName($$)
 }
 
 #------------------------------------------------------------------------------
-# Inverse conversion for file name (encode
+# Inverse conversion for file name (encode in CharsetFileName)
 # Inputs: 0) ExifTool ref, 1) file name in external character set
 # Returns: file name in CharsetFileName character set
 sub InverseFileName($$)
@@ -7304,7 +7306,7 @@ sub SetFileType($;$$$)
 
 #------------------------------------------------------------------------------
 # Override the FileType and MIMEType tags
-# Inputs: 0) ExifTool object ref, 1) file type
+# Inputs: 0) ExifTool object ref, 1) file type, 2) MIME type, 3) normal extension
 # Notes:  does nothing if FileType was not previously defined (ie. when writing)
 sub OverrideFileType($$;$$)
 {

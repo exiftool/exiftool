@@ -7,6 +7,19 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.20. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Oct. xx, 2016 - Version 10.32
+
+  - The Windows EXE version is now packaged with Perl 5.22.2
+  - Time::Piece may now be used as an alternative to POSIX::strptime for parsing
+    date/time values when writing, and is included in the Windows package
+  - Added a number of new XMP tags (thanks StarGeek)
+  - Added support for a few new Sony cameras (thanks Jos Roost)
+  - Added new Nikon LensID (thanks Tanel)
+  - Decode a new Nikon tag (thanks Warren Hatch)
+  - Decode FLIF encoding type
+  - Decode a new Samsung tag (thanks Klaus Homeister)
+  - Ignore -filter option for a tag if it returns an undefined value
+
 Oct. 19, 2016 - Version 10.31
 
   - Added write support for FLIF images

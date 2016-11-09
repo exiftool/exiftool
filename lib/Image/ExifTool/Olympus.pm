@@ -39,7 +39,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::APP12;
 
-$VERSION = '2.44';
+$VERSION = '2.45';
 
 sub PrintLensInfo($$$);
 
@@ -399,6 +399,7 @@ my %olympusCameraTypes = (
     S0059 => 'E-M10MarkII',
     S0061 => 'PEN-F', #forum7005
     S0065 => 'E-PL8',
+    S0067 => 'E-M1MarkII',
     SR45 => 'D220',
     SR55 => 'D320L',
     SR83 => 'D340L',
@@ -2463,6 +2464,7 @@ my %indexInfo = (
         Count => 2,
         PrintConv => {
             '0 0' => 'No',
+            #'8 8' - seen this for the E-M1mkII
             '9 8' => 'Focus-stacked (8 images)',
         },
     },

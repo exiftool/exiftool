@@ -49,7 +49,7 @@ use vars qw($VERSION %minoltaLensTypes %minoltaTeleconverters %minoltaColorMode
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.41';
+$VERSION = '2.42';
 
 # Full list of product codes for Sony-compatible Minolta lenses
 # (ref http://www.kb.sony.com/selfservice/documentLink.do?externalId=C1000570)
@@ -1014,7 +1014,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
         models (and sometimes even between different firmware versions), so this
         information may not be as reliable as it should be.  Because of this, tags
         in the following tables are set to lower priority to prevent them from
-        superceding the values of same-named tags in other locations when duplicate
+        superseding the values of same-named tags in other locations when duplicate
         tags are disabled.
     },
     1 => {

@@ -510,10 +510,10 @@ distribution for examples.</p>
 <tr><td>DateFormat</td><td>Output format for date/time values. If date can not
     be converted, value is left unchanged unless the StrictDate option is set.
     Timezones are ignored.  The inversion conversion (ie. when calling
-    <a href="#SetNewValue">SetNewValue</a>) is only performed if POSIX::strptime
-    is installed.</td> <td><a name="DateFormat"></a>See strftime manpage for
-    details.  The default setting of undef causes date/time values to remain in
-    standard EXIF format (similar to a DateFormat of
+    <a href="#SetNewValue">SetNewValue</a>) is performed only if POSIX::strptime
+    or Time::Piece is installed.</td> <td><a name="DateFormat"></a>See strftime
+    manpage for details.  The default setting of undef causes date/time values
+    to remain in standard EXIF format (similar to a DateFormat of
     <code>"%Y:%m:%d %H:%M:%S"</code>).</td>
     <td align=center>undef</td></tr>
 <tr><td>Duplicates</td><td><a name="Duplicates"></a>Flag to return values from
@@ -570,7 +570,8 @@ distribution for examples.</p>
     <td>Perl expression used to filter all returned tag values.  Applies to
     PrintConv values only.</td><td><a name="Filter"></a>Expression to act on the
     value of the Perl default variable ($_), changing the value of this variable
-    as required</td> <td align=center>undef</td></tr>
+    as required.  The value is not changed if the expression returns undef</td>
+    <td align=center>undef</td></tr>
 <tr><td>FixBase</td>
     <td>Fix maker notes base offset.  Allows values to be extracted from maker notes
     which have been corrupted by editing with 3rd party software.</td>

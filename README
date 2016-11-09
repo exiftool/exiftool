@@ -101,8 +101,8 @@ your home directory, then you would type the following commands in a
 terminal window to extract and run ExifTool:
 
   cd ~/Desktop
-  gzip -dc Image-ExifTool-10.31.tar.gz | tar -xf -
-  cd Image-ExifTool-10.31
+  gzip -dc Image-ExifTool-10.32.tar.gz | tar -xf -
+  cd Image-ExifTool-10.32
   ./exiftool t/images/ExifTool.jpg
 
 Note:  These commands extract meta information from one of the test images. 
@@ -146,6 +146,7 @@ for calculating digest values and providing other features listed below:
   IO::Compress::Bzip2  (RWZ files)
   Time::HiRes          (for generating ProcessingTime tag)
   POSIX::strptime      (for inverse date/time conversion)
+  Time::Piece          (alternative to POSIX::strptime)
   Unicode::LineBreak   (for column alignment of alternate-language output)
   Win32::API           (for proper handling of Windows file times)
   Win32::FindFile      (for Windows Unicode directory support, app only)

@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '10.31';
+$VERSION = '10.32';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -4844,7 +4844,7 @@ sub Filter($@)
             $_ = $$valPt;
             #### eval Filter ($_)
             eval $$self{OPTIONS}{Filter};
-            $$valPt = $_;
+            $$valPt = $_ if defined $_;
         } elsif (ref $$valPt eq 'SCALAR') {
             my $val = $$$valPt; # make a copy to avoid filtering twice
             $self->Filter(\$val);

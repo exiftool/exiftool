@@ -1065,6 +1065,11 @@ my %sSubVersion = (
     Curve4y    => { Writable => 'real' },
     Shadows    => { Writable => 'real', Avoid => 1 },
     Highlights => { Writable => 'real', Avoid => 1 },
+    # the following from StarGeek
+    FaceBalanceOrigI    => { Writable => 'real' },
+    FaceBalanceOrigQ    => { Writable => 'real' },
+    FaceBalanceStrength => { Writable => 'real' },
+    FaceBalanceWarmth   => { Writable => 'real' },
 );
 
 # Adobe creatorAtom properties (ref PH)
@@ -1185,9 +1190,27 @@ my %sSubVersion = (
         prefix recorded in the file, but ExifTool shortens this for the family 1
         group name.
     },
-    Personality => { },
-    OriginalFilename => { Name => 'OriginalFileName' },
-    ParentMEID => { },
+    Personality         => { },
+    OriginalFilename    => { Name => 'OriginalFileName' },
+    ParentMEID          => { },
+    # the following from StarGeek
+    AssetID             => { },
+    CallForImage        => { },
+    CameraFilename      => { },
+    CameraMakeModel     => { Avoid => 1 },
+    Composition         => { },
+    CameraSerialNumber  => { Avoid => 1 },
+    ExclusiveCoverage   => { },
+    GIFTFtpPriority     => { },
+    ImageRank           => { },
+    MediaEventIdDate    => { },
+    OriginalCreateDateTime => { %dateTimeInfo, Groups => { 2 => 'Time' }, Avoid => 1 },
+    ParentMediaEventID  => { },
+    PrimaryFTP          => { List => 'Bag' },
+    RoutingDestinations => { List => 'Bag' },
+    RoutingExclusions   => { List => 'Bag' },
+    SecondaryFTP        => { List => 'Bag' },
+    TimeShot            => { },
 );
 
 # Google Spherical Images namespace (ref https://github.com/google/spatial-media/blob/master/docs/spherical-video-rfc.md)

@@ -3881,26 +3881,38 @@ D5200, D7000.</p>
 <td class=c>int8u[2]</td>
 <td>--&gt; <a href='Nikon.html#FlashFirmware'>Nikon FlashFirmware Values</a></td></tr>
 <tr class=b>
-<td class=r title='8 = 0x8'>8</td>
-<td>ExternalFlashStatus</td>
-<td class=c>int8u[1]</td>
-<td><span class=s>[Mask 0x81]
-  <br>0x0 = Flash Not Attached
-  <br>0x80 = Flash Not Ready
-  <br>0x81 = Flash Ready</span></td></tr>
+<td class=r title='8 = 0x8'>8.1</td>
+<td>ExternalFlashZoomOverride</td>
+<td class=c>int8u</td>
+<td><span class=s><span class=n>(indicates that the user has overridden the flash zoom distance)</span>
+  <br>[Mask 0x80]
+  <br>0x0 = No
+  <br>0x80 = Yes</span></td></tr>
 <tr>
-<td class=r title='9 = 0x9'>9</td>
+<td class=r title='8 = 0x8'>8.2</td>
+<td>ExternalFlashStatus</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x01]
+  <br>0x0 = Flash Not Attached
+  <br>0x1 = Flash Attached</span></td></tr>
+<tr class=b>
+<td class=r title='9 = 0x9'>9.1</td>
 <td>ExternalFlashReadyState</td>
 <td class=c>int8u</td>
 <td><span class=s>[Mask 0x07]
   <br>0x0 = n/a
   <br>0x1 = Ready
   <br>0x6 = Not Ready</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='10 = 0xa'>10</td>
 <td>FlashCompensation</td>
 <td class=c>int8s</td>
 <td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='12 = 0xc'>12</td>
+<td>FlashFocalLength</td>
+<td class=c>int8u</td>
+<td><span class=s><span class=n>(only valid if flash pattern is &quot;Standard Illumination&quot;)</span></span></td></tr>
 <tr>
 <td class=r title='13 = 0xd'>13</td>
 <td>RepeatingFlashRate</td>
@@ -5950,6 +5962,7 @@ ExifTool to choose in these cases (see the
 </tr><tr><td>'E1 58 37 37 14 14 1C 02'</td><td>= Sigma 24mm F1.8 EX DG Aspherical Macro</td>
 </tr><tr><td>'E3 54 50 50 24 24 35 02'</td><td>= Sigma Macro 50mm F2.8 EX DG</td>
 </tr><tr><td>'E5 54 6A 6A 24 24 35 02'</td><td>= Sigma Macro 105mm F2.8 EX DG</td>
+</tr><tr><td>'E6 40 2D 80 2C 40 DF 0E'</td><td>= Tamron AF 18-200mm f/3.5-6.3 Di II VC (B018)</td>
 </tr><tr><td>'E6 41 3C 8E 2C 40 1C 02'</td><td>= Sigma 28-300mm F3.5-6.3 DG Macro</td>
 </tr><tr><td>'E7 4C 4C 4C 14 14 DF 0E'</td><td>= Tamron SP 45mm f/1.8 Di VC USD (F013)</td>
 </tr><tr><td>'E8 4C 44 44 14 14 DF 0E'</td><td>= Tamron SP 35mm f/1.8 Di VC USD (F012)</td>
@@ -5996,7 +6009,7 @@ ExifTool to choose in these cases (see the
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Oct 13, 2016</i>
+<br><i>Last revised Nov 2, 2016</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

@@ -16,7 +16,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.01';
+$VERSION = '1.02';
 
 my %flifMap = (
     EXIF         => 'FLIF',
@@ -72,6 +72,12 @@ my %flifMap = (
     2 => 'ImageWidth',
     3 => 'ImageHeight',
     4 => 'AnimationFrames',
+    5 => {
+        Name => 'Encoding',
+        PrintConv => {
+            0 => 'FLIF16',
+        },
+    },
 #
 # metadata chunks
 #
@@ -275,7 +281,9 @@ sub ProcessFLIF($$)
     # loop through the FLIF chunks
     for (;;) {
         $raf->Read($tag, 4) == 4 or $et->Warn('Unexpected EOF'), last;
-        last if substr($tag, 0, 1) lt ' ';
+        my $byte = ord substr($tag, 0, 1);
+        # all done if we arrived at the image chunk
+        $byte < 32 and $et->HandleTag($tagTablePtr, 5, $byte), last;
         my $size = GetVarInt($raf);
         $et->VPrint(0, "FLIF $tag ($size bytes):\n") if $verbose;
         if ($$tagTablePtr{$tag}) {

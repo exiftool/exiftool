@@ -59,7 +59,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.30';
+$VERSION = '3.31';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -507,6 +507,7 @@ sub GetAFPointGrid($$;$);
     '00 3F 2D 80 2C 40 00 06' => 'Tamron AF 18-200mm f/3.5-6.3 XR Di II LD Aspherical (IF) Macro (A14)',
     '00 40 2D 80 2C 40 00 06' => 'Tamron AF 18-200mm f/3.5-6.3 XR Di II LD Aspherical (IF) Macro (A14NII)', #NJ
     'FC 40 2D 80 2C 40 DF 06' => 'Tamron AF 18-200mm f/3.5-6.3 XR Di II LD Aspherical (IF) Macro (A14NII)', #PH (NC)
+    'E6 40 2D 80 2C 40 DF 0E' => 'Tamron AF 18-200mm f/3.5-6.3 Di II VC (B018)', #Tanel
     '00 40 2D 88 2C 40 62 06' => 'Tamron AF 18-250mm f/3.5-6.3 Di II LD Aspherical (IF) Macro (A18)',
     '00 40 2D 88 2C 40 00 06' => 'Tamron AF 18-250mm f/3.5-6.3 Di II LD Aspherical (IF) Macro (A18NII)', #JD
     'F5 40 2C 8A 2C 40 40 0E' => 'Tamron AF 18-270mm f/3.5-6.3 Di II VC LD Aspherical (IF) Macro (B003)',
@@ -6569,17 +6570,24 @@ my %nikonFocalConversions = (
         SeparateTable => 'FlashFirmware',
         PrintConv => \%flashFirmware,
     },
-    8 => {
-        Format => 'int8u[1]',
-        Name => 'ExternalFlashStatus',
-        Mask => 0x81,
+    8.1 => {
+        Name => 'ExternalFlashZoomOverride',
+        Mask => 0x80,
+        Notes => 'indicates that the user has overridden the flash zoom distance',
         PrintConv => {
-            0x00 => 'Flash Not Attached',
-            0x80 => 'Flash Not Ready',
-            0x81 => 'Flash Ready',
+            0x00 => 'No',
+            0x80 => 'Yes',
         },
     },
-    9 => {
+    8.2 => {
+        Name => 'ExternalFlashStatus',
+        Mask => 0x01,
+        PrintConv => {
+            0x00 => 'Flash Not Attached',
+            0x01 => 'Flash Attached',
+        },
+    },
+    9.1 => {
         Name => 'ExternalFlashReadyState',
         Mask => 0x07,
         PrintConv => {
@@ -6599,13 +6607,20 @@ my %nikonFocalConversions = (
         PrintConv => 'Image::ExifTool::Exif::PrintFraction($val)',
         PrintConvInv => 'Image::ExifTool::Exif::ConvertFraction($val)',
     },
-    13 => { #JD
+    12 => {
+        Name => 'FlashFocalLength',
+        Notes => 'only valid if flash pattern is "Standard Illumination"',
+        RawConv => '($val and $val != 255) ? $val : undef',
+        PrintConv => '"$val mm"',
+        PrintConvInv => '$val=~/(\d+)/; $1 || 0',
+    },
+    13 => {
         Name => 'RepeatingFlashRate',
         RawConv => '($val and $val != 255) ? $val : undef',
         PrintConv => '"$val Hz"',
         PrintConvInv => '$val=~/(\d+)/; $1 || 0',
     },
-    14 => { #JD
+    14 => {
         Name => 'RepeatingFlashCount',
         RawConv => '($val and $val != 255) ? $val : undef',
     },
@@ -6614,6 +6629,7 @@ my %nikonFocalConversions = (
         SeparateTable => 1,
         PrintConv => \%flashGNDistance,
     },
+    # 24 or 25 may indicate flash illumination pattern (Standard, Center-weighted, Even)
 );
 
 # Unknown Flash information

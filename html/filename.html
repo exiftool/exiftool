@@ -64,11 +64,12 @@ documentation</a> for more information.</blockquote>
 <p>Writing the <b>FileName</b> and/or <b>Directory</b> tags alone causes the
 file to be renamed or moved, not copied.  However, if any "real" tags are
 written at the same time, then the file is rewritten to the new destination and
-the original file is left unchanged.  (Only the four writable "pseudo" tags,
-<b>FileName</b>, <b>Directory</b>, <b>FileModifyDate</b> and 
-<b>FileCreateDate</b>, may be set without causing the file to be rewritten.)  If
-desired, the <code>-overwrite_original</code> option may be used to remove the
-original copy when the file is rewritten.</p>
+the original file is left unchanged.  (Only the seven writable "pseudo" tags,
+<b>FileName</b>, <b>Directory</b>, <b>FileModifyDate</b>, <b>FileCreateDate</b>,
+<b>FilePermissions</b>, <b>HardLink</b> and <b>TestName</b> may be set without
+causing the file to be rewritten.)  If desired, the
+<code>-overwrite_original</code> option may be used to remove the original copy
+when the file is rewritten.</p>
 
 <p>Conversely, the <code>-o</code> option may be used to force exiftool to
 always create a copy of the file, even if no meta-information tags are written. 

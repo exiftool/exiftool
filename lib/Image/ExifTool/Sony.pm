@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.46';
+$VERSION = '2.47';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -864,7 +864,7 @@ my %meterInfo2 = (
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag2010g' },
     },{
         Name => 'Tag2010h', # ?
-        Condition => '$$self{Model} =~ /^(DSC-(RX1RM2|RX10M2|RX10M3|RX100M4|HX90V|WX500)|ILCE-(6300|7RM2|7SM2))\b/',
+        Condition => '$$self{Model} =~ /^(DSC-(RX1RM2|RX10M2|RX10M3|RX100M4|RX100M5|HX90V|WX500)|ILCE-(6300|6500|7RM2|7SM2)|ILCA-99M2)\b/',
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag2010h' },
     },{
         Name => 'Tag_0x2010',
@@ -1557,6 +1557,7 @@ my %meterInfo2 = (
             355 => 'DSC-RX10M3', #PH
             356 => 'DSC-RX100M5', #IB/JR
             357 => 'ILCE-6300', #IB
+            360 => 'ILCE-6500', #JR
         },
     },
     0xb020 => { #2
@@ -6291,6 +6292,14 @@ my %pictureProfile2010 = (
     0x0388 => {
         Name => 'MeterInfo',
         Format => 'int32u[486]',
+        Condition => '$$self{Model} !~ /^(ILCA-99M2|ILCE-6500|DSC-RX100M5)/',
+        Unknown => 1,
+        SubDirectory => { TagTable => 'Image::ExifTool::Sony::MeterInfo' },
+    },
+    0x0398 => {
+        Name => 'MeterInfo',
+        Format => 'int32u[486]',
+        Condition => '$$self{Model} =~ /^(ILCA-99M2|ILCE-6500|DSC-RX100M5)/',
         Unknown => 1,
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::MeterInfo' },
     },

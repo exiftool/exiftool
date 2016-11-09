@@ -1246,6 +1246,10 @@ These tags belong to the ExifTool XMP-aas family 1 group.
   Curve3y                                       real
   Curve4x                                       real
   Curve4y                                       real
+  FaceBalanceOrigI                              real
+  FaceBalanceOrigQ                              real
+  FaceBalanceStrength                           real
+  FaceBalanceWarmth                             real
   Highlights                                    real/
   Shadows                                       real/
   Vibrance                                      real/
@@ -2211,9 +2215,26 @@ These tags belong to the ExifTool XMP-getty family 1 group.
 
   Tag Name                                      Writable
   --------                                      --------
+  AssetID                                       string
+  CallForImage                                  string
+  CameraFilename                                string
+  CameraMakeModel                               string/
+  CameraSerialNumber                            string/
+  Composition                                   string
+  ExclusiveCoverage                             string
+  GIFTFtpPriority                               string
+  ImageRank                                     string
+  MediaEventIdDate                              string
+  OriginalCreateDateTime                        date/
   OriginalFileName                              string
+  ParentMediaEventID                            string
   ParentMEID                                    string
   Personality                                   string
+  PrimaryFTP                                    string+
+  RoutingDestinations                           string+
+  RoutingExclusions                             string+
+  SecondaryFTP                                  string+
+  TimeShot                                      string
 
 =head3 XMP GPano Tags
 
@@ -8943,7 +8964,7 @@ There is some variability in CameraSettings information between different
 models (and sometimes even between different firmware versions), so this
 information may not be as reliable as it should be.  Because of this, tags
 in the following tables are set to lower priority to prevent them from
-superceding the values of same-named tags in other locations when duplicate
+superseding the values of same-named tags in other locations when duplicate
 tags are disabled.
 
   Index4   Tag Name                             Writable
@@ -10127,9 +10148,11 @@ These tags are used by the D4S, D750, D810, D5500, D7200 (FlashInfoVersion
       0    FlashInfoVersion                     N
       4    FlashSource                          int8u
       6    ExternalFlashFirmware                int8u[2]
-      8    ExternalFlashStatus                  int8u[1] & 0x81
-      9    ExternalFlashReadyState              int8u & 0x07
+    8.1    ExternalFlashZoomOverride            int8u & 0x80
+    8.2    ExternalFlashStatus                  int8u & 0x01
+    9.1    ExternalFlashReadyState              int8u & 0x07
      10    FlashCompensation                    int8s
+     12    FlashFocalLength                     int8u
      13    RepeatingFlashRate                   int8u
      14    RepeatingFlashCount                  int8u
      15    FlashGNDistance                      int8u
@@ -14870,6 +14893,7 @@ Valid for DSC-HX90V/RX1RM2/RX10M2/RX10M3/RX100M4/WX500, ILCE-6300/7RM2/7SM2.
   0x0330   MaxFocalLength                       int16u
   0x0346   SonyISO                              N
   0x0388   MeterInfo?                           Sony MeterInfo
+  0x0398   MeterInfo?                           Sony MeterInfo
   0x18cc   LensParameters?                      int16s[16]~
   0x18ed   LensFormat                           int8u
   0x18ee   LensMount                            int8u
@@ -19998,6 +20022,7 @@ L<http://flif.info/> for more information.
       2    ImageWidth                           N
       3    ImageHeight                          N
       4    AnimationFrames                      N
+      5    Encoding                             N
   'eXif'   EXIF                                 EXIF
   'eXmp'   XMP                                  XMP
   'iCCP'   ICC_Profile                          ICC_Profile

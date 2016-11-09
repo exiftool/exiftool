@@ -200,12 +200,11 @@ matches the above criteria (eg. "IMG_20110927_103000.jpg").
 CreateDate and ModifyDate.  See the <a href="TagNames/Shortcuts.html">Shortcuts
 Tags documentation</a> for more information.]</i></blockquote>
 
-<blockquote>The <code>-d</code> option allows full control over the format of
-date/time values when reading.  However, the effect of the <code>-d</code>
-option is not reversible, so date/time values must be written using the format
-described above, even when the <code>-d</code> option is used.  Note that when
-reading, the effect of the <code>-n</code> option on date/time values is only to
-disable the <code>-d</code> formatting.</blockquote>
+<blockquote>The <code>-d</code> option provides additional flexibility in
+parsing strings when writing date/time tags if POSIX::strptime or Time::Piece is
+installed and the ExifTool version is 10.32 or later (use "<code>exiftool -ver -v</code>"
+to check the installed packages).  The format of the <code>-d</code> argument is
+the same for reading and writing.</blockquote>
 
 <blockquote><b>Special feature</b>: A value of "<code>now</code>" may be used to
 represent the current time when writing any date/time tag.  For example:
@@ -892,7 +891,8 @@ different position within the file.</blockquote>
 with ExifTool is "lossless" as far as the image is concerned</b>.</blockquote>
 
 <a name="Q14"></a>
-<p>14. <b>"What format do I use for writing GPS coordinates?"</b></p>
+<p>14a. <b>"What format do I use for writing GPS coordinates?"</b>, or<br>
+14b. <b>"How do I change the format of extracted GPS coordinates?"</b></p>
 
 <blockquote>ExifTool is very flexible in the formats allowed for entering GPS
 coordinates.  Any string containing between 1 and 3 floating point numbers is
@@ -1583,7 +1583,7 @@ proper technique for shifting a date/time value when copying:
 </blockquote>
 
 <hr>
-<i>Last revised Oct 19, 2016</i>
+<i>Last revised Nov 4, 2016</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

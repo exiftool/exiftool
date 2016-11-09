@@ -275,7 +275,7 @@ my %formatMinMax = (
         Writable => 'int16u',
         SubDirectory => { TagTable => 'Image::ExifTool::Samsung::PictureWizard' },
     },
-    # 0x0022 - int32u (CaptureMode?)
+    # 0x0022 - int32u (CaptureMode?) (Gamma? eg. 65538 = 1.2, ref forum7720)
     # 0x0023 - string: "0123456789" (PH) (placeholder for SerialNumber?)
     # 0x0025 - int32u (ImageCount?)
     # 0x002a - undef[4] (SNSDirectShare?)

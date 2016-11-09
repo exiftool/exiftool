@@ -91,6 +91,11 @@ my %dirMap = (
     EXIF => \%exifMap,
 );
 
+# (Note: all writable "pseudo" tags must be found in Extra table)
+my @writablePseudoTags =  qw(
+    FileName FilePermissions Directory FileModifyDate FileCreateDate HardLink TestName
+);
+
 # groups we are allowed to delete
 # Notes:
 # 1) these names must either exist in %dirMap, or be translated in InitWriteDirs())
@@ -1528,8 +1533,8 @@ sub CountNewValues($)
     return $num unless wantarray;
     my $pseudo = 0;
     if ($newVal) {
-        # (Note: all writable "pseudo" tags must be found in Extra table)
-        foreach $tag (qw{FileName FilePermissions Directory FileModifyDate FileCreateDate HardLink TestName}) {
+        # count the number of pseudo tags we are writing
+        foreach $tag (@writablePseudoTags) {
             ++$pseudo if defined $$newVal{$Image::ExifTool::Extra{$tag}};
         }
     }
@@ -4141,6 +4146,7 @@ sub NewGUID()
 #         3) flag to allow date-only (YYYY, YYYY:mm or YYYY:mm:dd) or time without seconds
 # Returns: formatted date/time string (or undef and issues warning on error)
 # Notes: currently accepts different separators, but doesn't use DateFormat yet
+my $hasStrptime; # flag for strptime available
 sub InverseDateTime($$;$$)
 {
     my ($self, $val, $tzFlag, $dateOnly) = @_;
@@ -4158,8 +4164,22 @@ sub InverseDateTime($$;$$)
     my $fmt = $$self{OPTIONS}{DateFormat};
     # only convert date if a format was specified and the date is recognizable
     if ($fmt) {
-        if (eval { require POSIX::strptime }) {
-            my @a = POSIX::strptime($val, $fmt);
+        unless (defined $hasStrptime) {
+            if (eval { require POSIX::strptime }) {
+                $hasStrptime = 1;
+            } elsif (eval { require Time::Piece }) {
+                $hasStrptime = 2;
+            } else {
+                $hasStrptime = 0;
+            }
+        }
+        if ($hasStrptime) {
+            my @a;
+            if ($hasStrptime == 1) {
+                @a = POSIX::strptime($val, $fmt);
+            } else {
+                @a = Time::Piece::_strptime($val, $fmt);
+            }
             if (defined $a[5] and length $a[5]) {
                 $a[5] += 1900; # add 1900 to year
             } else {

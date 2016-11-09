@@ -559,10 +559,10 @@ different when copying tags with L</SetNewValuesFromFile>.
 Format for printing date/time values.  See C<strftime> in the L<POSIX>
 package for details about the format string.  If date can not be converted,
 value is left unchanged unless the StrictDate option is set.  Timezones are
-ignored. The inverse conversion (ie. when calling L</SetNewValue>) is only
-performed if POSIX::strptime is installed.  The default setting of undef
-causes date/time values to remain in standard EXIF format (similar to a
-DateFormat of "%Y:%m:%d %H:%M:%S").
+ignored. The inverse conversion (ie. when calling L</SetNewValue>) is
+performed only if POSIX::strptime or Time::Piece is installed.  The default
+setting of undef causes date/time values to remain in standard EXIF format
+(similar to a DateFormat of "%Y:%m:%d %H:%M:%S").
 
 =item Duplicates
 
@@ -622,8 +622,8 @@ Default is undef.
 
 Perl expression used to filter values for all tags.  The expression acts on
 the value of the Perl default variable ($_), and changes the value of this
-variable as required.  Applies to all returned values unless PrintConv
-option is disabled.
+variable as required.  The value is not changed if the expression returns
+undef.  Applies to all returned values unless PrintConv option is disabled.
 
 =item FixBase
 

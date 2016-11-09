@@ -17,9 +17,23 @@ considered development releases, and are not uploaded to <a href="http://search.
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v10.32'><b>Nov. 9, 2016 - Version 10.32</b></a>
+<ul>
+<li>The Windows EXE version is now packaged with Perl 5.22.2
+<li>Time::Piece may now be used as an alternative to POSIX::strptime for parsing
+    date/time values when writing, and is included in the Windows package
+<li>Added a number of new XMP tags (thanks StarGeek)
+<li>Added support for a few new Sony cameras (thanks Jos Roost)
+<li>Added new Nikon LensID (thanks Tanel)
+<li>Decode a new Nikon tag (thanks Warren Hatch)
+<li>Decode FLIF encoding type
+<li>Decode a new Samsung tag (thanks Klaus Homeister)
+<li>Ignore -filter option for a tag if it returns an undefined value
+</ul>
+
 <a name='v10.31'><b>Oct. 19, 2016 - Version 10.31</b></a>
 <ul>
-<li>Added write support for FLIF images
+<li>Added write support for <a href="TagNames/FLIF.html">FLIF images</a>
 <li>Added support for animated PNG images
 <li>Added a few new SamsungModelID values
 <li>Added a new Canon LensType
@@ -33,7 +47,7 @@ considered development releases, and are not uploaded to <a href="http://search.
 
 <a name='v10.30'><b>Oct. 13, 2016 - Version 10.30</b></a>
 <ul>
-<li>Added read support for FLIF images
+<li>Added read support for <a href="TagNames/FLIF.html">FLIF images<a>
 <li>Added a couple of new Minolta/Sony LensType values (thanks Jos Roost)
 <li>Added a new SonyModelID (thanks LibRaw and Jos Roost)
 <li>Added a new digiKam XMP tag

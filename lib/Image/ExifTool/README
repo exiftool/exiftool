@@ -18,11 +18,11 @@ Twenty-five special keys (TABLE_NAME, SHORT_NAME, PROCESS_PROC, WRITE_PROC,
 CHECK_PROC, GROUPS, FORMAT, FIRST_ENTRY, TAG_PREFIX, PRINT_CONV, WRITABLE,
 TABLE_DESC, NOTES, IS_OFFSET, IS_SUBDIR, EXTRACT_UNKNOWN, NAMESPACE, PREFERRED,
 SRC_TABLE, PRIORITY, WRITE_GROUP, LANG_INFO, VARS, DATAMEMBER and SET_GROUP1)
-are used to provide additional information about a table. The special keys have
+are used to provide additional information about a table.  The special keys have
 names that are all capitalized to avoid possible conflicts with tag keys.  Below
 is an explanation of the meaning of each special key:
 
-  TABLE_NAME : Name of this table (set by GetTagTable()).
+  TABLE_NAME : Name of this table (set automatically by GetTagTable()).
 
   SHORT_NAME : Table name with leading "Image::ExifTool::" removed.
 
@@ -70,8 +70,8 @@ is an explanation of the meaning of each special key:
   according to the name of the module.
 
   FORMAT : Specifies the default tag Format, and corresponding pointer increment
-  for entries in a BinaryData table.  Defaults to 'int8u' if not specified.  The
-  possible values of FORMAT are:
+  for entries in a BinaryData table.  Defaults to 'int8u' for BinaryData tables
+  if not specified.  The possible values of FORMAT are:
 
     int8s       - Signed 8-bit integer                    (EXIF 'SBYTE')
     int8u       - Unsigned 8-bit integer                  (EXIF 'BYTE')
@@ -131,13 +131,13 @@ is an explanation of the meaning of each special key:
   for XML tag database output.
 
   NOTES : Notes to introduce the table in the TagNames documentation.  Pod
-  formatting codes B<> and C<> may be used in this text.
+  formatting codes B<>, C<> and L<> may be used in this text.
 
-  IS_OFFSET : Reference to list of sorted TagID's representing offsets for
-  writable binary data tables only.  Not used for EXIF tables.
+  IS_OFFSET : Writable BinaryData tables only.  Reference to list of sorted
+  TagID's representing offsets.
 
-  IS_SUBDIR : BinaryData tables only.  A reference to a list of sorted tag ID's
-  representing subdirectories.  Required for writable subdirectories only.
+  IS_SUBDIR : Writable BinaryData tables only.  A reference to a list of sorted
+  tag ID's representing subdirectories.
 
   EXTRACT_UNKNOWN : Used in PDF tables to specify a directory where all unknown
   tags should be extracted.  Set to 0 to extract only unknown numbered tags for
@@ -150,7 +150,7 @@ is an explanation of the meaning of each special key:
   To define the URI, the NAMESPACE value is a reference to a hash where the key
   is the namespace prefix and and the value is the URI (alternatively, a
   reference to a 2-element array containing the prefix and URI is also allowed
-  for backward compatibility).  The NAMESAPCE value may be undef for XMP tables
+  for backward compatibility).  The NAMESPACE value may be undef for XMP tables
   where tags have variable namespaces (in this case each tag must have a
   Namespace entry).
 

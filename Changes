@@ -7,8 +7,15 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.20. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
-Oct. xx, 2016 - Version 10.32
+Nov. 11, 2016 - Version 10.33
 
+  - Windows EXE version is 32-bit again, and packaged with Perl 5.24.0
+  - Fixed encoding problem with EXIF:Copyright when writing MWG tags using an
+    alternate EXIF charset
+
+Nov. 9, 2016 - Version 10.32
+
+  - WARNING: The Windows EXE version for this release is for 64-bit Windows!
   - The Windows EXE version is now packaged with Perl 5.22.2
   - Time::Piece may now be used as an alternative to POSIX::strptime for parsing
     date/time values when writing, and is included in the Windows package

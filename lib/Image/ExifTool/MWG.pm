@@ -16,7 +16,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::XMP;
 
-$VERSION = '1.16';
+$VERSION = '1.17';
 
 sub RecoverTruncatedIPTC($$$);
 sub ListToString($);
@@ -258,7 +258,16 @@ my $mwgLoaded;  # flag set if we alreaded Load()ed the MWG tags
         DelCheck   => 'Image::ExifTool::MWG::ReconcileIPTCDigest($self)',
         WriteCheck => 'Image::ExifTool::MWG::ReconcileIPTCDigest($self)',
         WriteAlso  => {
-            'EXIF:Copyright'       => '$val',
+            'EXIF:Copyright' => q{
+                # encode if necessary (not automatic because Format is 'undef')
+                my $enc = $self->Options('CharsetEXIF');
+                if ($enc) {
+                    my $v = $val;
+                    $self->Encode($v,$enc);
+                    return $v;
+                }
+                return $val;
+            },
             'IPTC:CopyrightNotice' => '$opts{EditGroup} = 1; $val',
             'XMP-dc:Rights'        => '$val',
         },

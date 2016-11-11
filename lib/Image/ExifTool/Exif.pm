@@ -1461,7 +1461,7 @@ my %sampleFormat = (
         RawConvInv => '$val . "\0"',
         PrintConvInv => sub {
             my ($val, $self) = @_;
-            # encode if necessary
+            # encode if necessary (not automatic because Format is 'undef')
             my $enc = $self->Options('CharsetEXIF');
             $val = $self->Encode($val,$enc) if $enc and $val !~ /\0/;
             if ($val =~ /(.*?)\s*[\n\r]+\s*(.*)/s) {

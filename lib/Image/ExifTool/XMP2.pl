@@ -8,6 +8,7 @@
 # References:   1) PLUS - http://ns.useplus.org/
 #               2) PRISM - http://www.prismstandard.org/
 #               3) http://www.portfoliofaq.com/pfaq/v7mappings.htm
+#               4) http://www.iptc.org/IPTC4XMP/
 #               5) http://creativecommons.org/technology/xmp
 #                  --> changed to http://wiki.creativecommons.org/Companion_File_metadata_specification (2007/12/21)
 #               6) http://www.optimasc.com/products/fileid/xmp-extensions.pdf
@@ -1681,6 +1682,8 @@ under the same terms as Perl itself.
 =item L<http://www.prismstandard.org/>
 
 =item L<http://www.portfoliofaq.com/pfaq/v7mappings.htm>
+
+=item L<http://www.iptc.org/IPTC4XMP/>
 
 =item L<http://creativecommons.org/technology/xmp>
 

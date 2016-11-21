@@ -42,7 +42,6 @@
 -M IO::Compress::Bzip2
 -M Time::HiRes
 -M Time::Piece
--M Unicode::LineBreak
 -M IO::Compress::RawDeflate
 -M IO::Uncompress::RawInflate
 -M Win32::API

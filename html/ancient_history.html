@@ -13,6 +13,162 @@
 <p><b>Note:</b> This page gives the history of older exiftool versions.  See
 <a href="history.html">history.html</a> for the recent history.</p>
 
+<a name='v10.19'><b>May 31, 2016 - Version 10.19</b></a>
+<ul>
+<li>Added a few new Sony and Sigma LensType values (thanks Jos Roost)
+<li>Decode more Nikon tags (thanks Warren Hatch)
+<li>Fixed an incorrect Sigma LensType (thanks LibRaw)
+<li>Fixed decoding of D500 custom settings for NEF images (thanks Warren Hatch)
+</ul>
+
+<a name='v10.18'><b>May 27, 2016 - Version 10.18</b></a>
+<ul>
+<li>Added a number of new Sigma LensTypes (thanks LibRaw)
+<li>Added a few new Sony/Minolta lenses (thanks Jos Roost)
+<li>Added ability to write FilePermissions
+<li>Decode NikonCustom settings for the D500 (thanks Warren Hatch)
+<li>Decode PLUS MediaSummaryCode values
+<li>Use hexadecimal for Sigma LensType values
+<li>Changed -fileOrder option to sort numbers in strings numerically
+<li>Fixed typo in Samsung lens name
+</ul>
+
+<a name='v10.17'><b>May 16, 2016 - Version 10.17</b></a>
+<ul>
+<li>Added support for Leica X-U (Typ 113) maker notes
+<li>Added a new Pentax LensType (thanks Louis Granboulan)
+<li>Added a number of new Sony lenses (thanks Jos Roost)
+<li>Added a new Canon LensType (thanks Mees Dekker)
+<li>Extract TIFF-format thumbnails and previews
+<li>Patched to ignore XML entities inside comments
+<li>Fixed inconsistent conversion of PreviewColorSpace values
+<li>Fixed writing of TargetPrinter tag
+<li>Fixed bug introduced in 10.16 which which could cause a runtime warning when
+    using the -o option and not writing any "real" tags
+</ul>
+
+<a name='v10.16'><b>May 3, 2016 - Version 10.16</b></a>
+<ul>
+<li>Added %D, %F and %E filename format codes
+<li>Added a new Minolta lens (thanks Jos Roost)
+<li>Decode Photoshop Compression mode
+<li>Decode Nikon MultiExposure information for the D5
+<li>Updated decoding of Sony tags for ILCA-68 (thanks Jos Roost)
+<li>Fixed bug adding back XMP tags after deleting all XMP from MOV/MP4 files
+<li>Fixed problem using -o option when reading from stdin (ie. FILE is "-")
+<li>Fixed problem where user-defined Composite tags may not always override
+    pre-defined Composite tags with the same name, and added feature to allow
+    the user to specify whether they should override existing tags or not
+</ul>
+
+<a name='v10.15'><b>Apr. 20, 2016 - Version 10.15</b></a> <span class=grn>(production release)</span>
+<ul>
+<li>Added .a and .o to the list of supported file types
+<li>Added a few new Sony/Minolta lenses (thanks Jos Roost and LibRaw)
+<li>Decode more Photoshop tags (thanks Taylor Bangs for some)
+<li>Decode more information from static library (.a) files
+<li>Decode a few more tags from GoPro MP4 videos (thanks Calvin Hass)
+<li>Decode ColorData for Canon EOS 1300D (thanks LibRaw)
+<li>Updated Sony decoding for newer models (thanks Jos Roost)
+<li>Fixed bug where ScaleFactor35efl could be calculated incorrectly for Canon
+    images from some models which have had their EXIF rebuilt
+</ul>
+
+<a name='v10.14'><b>Apr. 8, 2016 - Version 10.14</b></a>
+<ul>
+<li>Added read support for <a href="TagNames/ISO.html">ISO 9660 disk images</a>
+<li>Added a few new Nikon ISOExpansion values (thanks LibRaw)
+<li>Added a few new Olympus LensType values (thanks Niels Kristian Bech Jensen)
+<li>Added a couple of new SonyModelID values (thanks LibRaw for one)
+<li>Added a new Olympus CameraType
+<li>Added config_files/gps2utm.config to distribution
+<li>Decode Canon ColorData for the EOS 80D (thanks LibRaw)
+<li>Decode a few new Samsung tags (thanks Fran&ccedil;ois)
+<li>Decode a new Fuji tag (thanks Frank Markesteijn)
+<li>Calculate Duration for APE audio files
+<li>Tightened constraints on M2TS file recognition
+<li>Improved verbose dump of ID3 information
+<li>Changed XMP-acdsee:Snapshots to a Binary data tag
+<li>Fixed bug which prevented writing of various Sony FocalLength tags
+<li>API Changes:
+    <ul>
+    <li>Fixed bug where FileModifyDate wasn't set properly when WriteInfo() was
+        called without a destination file name and other "real" tags were
+        written at the same time
+    </ul>
+</ul>
+
+<a name='v10.13'><b>Mar. 12, 2016 - Version 10.13</b></a>
+<ul>
+<li>Added a few new Canon LensType values (thanks Niels Kristian Bech Jensen and
+    LibRaw)
+<li>Added a new CanonModelID
+<li>Added a number of new Nikon RetouchHistory modes
+<li>Decode a number of new Sony tags (thanks Jos Roost)
+<li>Changed a couple of Sigma "| C" lens names for consistency
+<li>API Changes:
+    <ul>
+    <li>Fixed bug which could cause the API Filter option to be ignored for some
+        tags when copying tags with the Composite option set
+    </ul>
+</ul>
+
+<a name='v10.12'><b>Mar. 4, 2016 - Version 10.12</b></a>
+<ul>
+<li>Added a new PentaxModelID and SonyModelID (thanks LibRaw)
+<li>Added a number of new CanonModelID values (thanks Norbert Wasser for one)
+<li>Added a new Olypus LensType (thanks Niels Kristian Bech Jensen)
+<li>Added two new Pentax LensType values
+<li>Added a few new Nikon LensID values and updated some others
+<li>Added a new Canon LensType (thanks Norbert Wasser)
+<li>Decode a new Nikon tag
+<li>Decode a new CanonCustom tag for the EOS 80D
+<li>Improved decoding of SonyRawFileType (thanks Jos Roost and LibRaw)
+<li>Changed "Optimised" to "Optimized" in a Photoshop tag value
+<li>Fixed warning that could be generated by the Canon FileNumber conversion
+</ul>
+
+<a name='v10.11'><b>Feb. 17, 2016 - Version 10.11</b></a>
+<ul>
+<li>Added a couple of new Olympus CameraType values (thanks LibRaw for one)
+<li>Added some new ACDSee XMP tags (thanks Malus)
+<li>Added a few more XMP-crs tags
+<li>Added a new CanonModelID (thanks Norbert Wasser)
+<li>Added a couple of new Sony LensType values (thanks Jos Roost and LibRaw)
+<li>Added support for PDF ASCII85Decode filter
+<li>Decode a number of new Sony tags (thanks Jos Roost)
+<li>Decode a new Canon tag (thanks Juha Iso-Sipil&auml;)
+<li>Decode a few more Photoshop tags
+<li>Convert MDItem date/time values to local time
+<li>Patched to read incorrectly written DJI GPSCoordinates in MOV videos
+</ul>
+
+<a name='v10.10'><b>Jan. 22, 2016 - Version 10.10</b></a> <span class=grn>(production release)</span>
+<ul>
+<li>Added a new Olympus LensType (thanks Niels Kristian Bech Jensen)
+<li>Added a couple of new Olympus FlashModel values
+<li>Added a new Nikon LensID
+<li>Added a new Pentax LensType
+<li>Decode a number of new Sony tags (thanks Jos Roost)
+<li>Decode H264:DateTimeOriginal DST flag, and add " DST" to time string if set
+<li>Decode a few more CanonCustom settings
+<li>Fixed problem creating user-defined XMP structure elements with names
+    containing characters which are illegal in tag names
+<li>Improved mechanism for generating tags which must be specifically requested
+    when copying or used in -if or -p expressions
+<li>Improved warning in Windows if help documentation file can't be created
+<li>Patched Composite:FileNumber to handle case where Canon:FileNumber is 10000
+<li>Patched reading FujiFilm RawImageWidth/Height for new X-Pro2 RAF images
+<li>Fixed problem reading PDF objects which begin with a comment line
+<li>Fixed problem which could result in ExifTool corrupting a PDF file when
+    writing
+<li>API Changes:
+    <ul>
+    <li>Added RequestTags option
+    <li>No longer generate MDItem tags when RequestAll option is set
+    </ul>
+</ul>
+
 <a name='v10.09'><b>Jan. 4, 2016 - Version 10.09</b></a>
 <ul>
 <li>Added ability to extract OS X system metadata ("MDItem" tags)

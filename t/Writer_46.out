@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.32
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.34
 [File, System, Image] FileName - File Name: Writer_46_failed.jpg
 [File, System, Image] Directory - Directory: t
-[File, System, Image] FileSize - File Size: 9.4 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2016:11:09 08:15:24-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2016:11:09 08:15:24-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2016:11:09 08:15:24-05:00
+[File, System, Image] FileSize - File Size: 9.5 kB
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2016:11:17 13:49:32-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2016:11:17 13:49:31-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2016:11:17 13:49:32-05:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: JPEG
 [File, File, Image] FileTypeExtension - File Type Extension: jpg
@@ -37,15 +37,15 @@
 [IPTC, IPTC, Other] 152 - Audio Sampling Resolution: 07
 [IPTC, IPTC, Other] 153 - Audio Duration: 000007
 [IPTC, IPTC, Other] 154 - Audio Outcue: 7
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 10.32
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 10.34
 [XMP, XMP-getty, Image] AssetID - Asset ID: 7
 [XMP, XMP-iptcExt, Author] AboutCvTermCvId - About Cv Term Cv Id: 7
 [XMP, XMP-iptcExt, Author] AboutCvTermCvTermId - About Cv Term Id: 7
 [XMP, XMP-iptcExt, Author] AboutCvTermCvTermName - About Cv Term Name: 7
 [XMP, XMP-iptcExt, Author] AboutCvTermCvTermRefinedAbout - About Cv Term Refined About: 7
 [XMP, XMP-iptcExt, Author] AddlModelInfo - Additional Model Information: 7
-[XMP, XMP-iptcExt, Author] ArtworkOrObjectAOCircaDateCreated - Artwork Circa Date Created: 7
-[XMP, XMP-iptcExt, Author] ArtworkOrObjectAOContentDescription - Artwork S Content Description: 7
+[XMP, XMP-iptcExt, Time] ArtworkOrObjectAOCircaDateCreated - Artwork Circa Date Created: 7
+[XMP, XMP-iptcExt, Author] ArtworkOrObjectAOContentDescription - Artwork Content Description: 7
 [XMP, XMP-iptcExt, Author] ArtworkOrObjectAOContributionDescription - Artwork Contribution Description: 7
 [XMP, XMP-iptcExt, Author] ArtworkOrObjectAOCopyrightNotice - Artwork Copyright Notice: 7
 [XMP, XMP-iptcExt, Author] ArtworkOrObjectAOCreator - Artwork Creator: 7
@@ -60,6 +60,8 @@
 [XMP, XMP-iptcExt, Author] ArtworkOrObjectAOSourceInvURL - Artwork Source Inv URL: 7
 [XMP, XMP-iptcExt, Author] ArtworkOrObjectAOStylePeriod - Artwork Style Period: 7
 [XMP, XMP-iptcExt, Author] ArtworkOrObjectAOTitle - Artwork Title: 7
+[XMP, XMP-iptcExt, Audio] audioBitRate - Audio Bitrate: 7
+[XMP, XMP-iptcExt, Audio] audioChannelCount - Audio Channel Count: 7
 [XMP, XMP-aas, Image] AffineA - Affine A: 7
 [XMP, XMP-aas, Image] AffineB - Affine B: 7
 [XMP, XMP-aas, Image] AffineC - Affine C: 7

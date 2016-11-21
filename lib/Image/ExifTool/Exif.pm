@@ -53,7 +53,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '3.87';
+$VERSION = '3.88';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -3394,6 +3394,7 @@ my %sampleFormat = (
         Name => 'PreviewDateTime',
         Groups => { 2 => 'Time' },
         Writable => 'string',
+        Shift => 'Time',
         WriteGroup => 'IFD0',
         Protected => 1,
         ValueConv => q{
@@ -3404,6 +3405,7 @@ my %sampleFormat = (
             require Image::ExifTool::XMP;
             return Image::ExifTool::XMP::FormatXMPDate($val);
         },
+        PrintConv => '$self->ConvertDateTime($val)',
         PrintConvInv => '$self->InverseDateTime($val,1,1)',
     },
     0xc71c => {
@@ -4222,6 +4224,7 @@ my %subSecConv = (
         Description => 'Date/Time Original',
         Groups => { 2 => 'Time' },
         Writable => 1,
+        Shift => 0, # don't shift this tag
         Require => {
             0 => 'EXIF:DateTimeOriginal',
         },
@@ -4240,6 +4243,7 @@ my %subSecConv = (
         Description => 'Create Date',
         Groups => { 2 => 'Time' },
         Writable => 1,
+        Shift => 0, # don't shift this tag
         Require => {
             0 => 'EXIF:CreateDate',
         },
@@ -4258,6 +4262,7 @@ my %subSecConv = (
         Description => 'Modify Date',
         Groups => { 2 => 'Time' },
         Writable => 1,
+        Shift => 0, # don't shift this tag
         Require => {
             0 => 'EXIF:ModifyDate',
         },

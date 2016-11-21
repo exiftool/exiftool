@@ -16,7 +16,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::XMP;
 
-$VERSION = '1.17';
+$VERSION = '1.18';
 
 sub RecoverTruncatedIPTC($$$);
 sub ListToString($);
@@ -118,25 +118,23 @@ my $mwgLoaded;  # flag set if we alreaded Load()ed the MWG tags
         Groups => { 2 => 'Time' },
         Notes => '"creation date of the intellectual content being shown" - MWG',
         Writable => 1,
+        Shift => 0, # don't shift this tag
         Desire => {
-            0 => 'EXIF:DateTimeOriginal',
-            1 => 'EXIF:SubSecTimeOriginal',
-            2 => 'IPTC:DateCreated',
-            3 => 'IPTC:TimeCreated',
-            4 => 'XMP-photoshop:DateCreated',
-            5 => 'CurrentIPTCDigest',
-            6 => 'IPTCDigest',
+            0 => 'Composite:SubSecDateTimeOriginal',
+            1 => 'IPTC:DateCreated',
+            2 => 'IPTC:TimeCreated',
+            3 => 'XMP-photoshop:DateCreated',
+            4 => 'CurrentIPTCDigest',
+            5 => 'IPTCDigest',
         },
         # must check for validity in RawConv to avoid hiding a same-named tag,
         # but IPTC dates use a ValueConv so we need to derive the value there
-        RawConv => '(defined $val[0] or defined $val[2] or defined $val[4]) ? $val : undef',
+        RawConv => '(defined $val[0] or defined $val[1] or defined $val[3]) ? $val : undef',
         ValueConv => q{
-            if (defined $val[0] and $val[0] !~ /^[: ]*$/) {
-                return ($val[1] and $val[1] !~ /^ *$/) ? "$val[0].$val[1]" : $val[0];
-            }
-            return $val[4] if not defined $val[5] or (defined $val[4] and
-                             (not defined $val[6] or $val[5] eq $val[6]));
-            return $val[3] ? "$val[2] $val[3]" : $val[2] if $val[2];
+            return $val[0] if defined $val[0] and $val[0] !~ /^[: ]*$/;
+            return $val[3] if not defined $val[4] or (defined $val[3] and
+                             (not defined $val[5] or $val[4] eq $val[5]));
+            return $val[2] ? "$val[1] $val[2]" : $val[1] if $val[1];
             return undef;
         },
         PrintConv => '$self->ConvertDateTime($val)',
@@ -146,34 +144,31 @@ my $mwgLoaded;  # flag set if we alreaded Load()ed the MWG tags
         WriteAlso  => {
             # set EXIF date/time values according to PrintConv option instead
             # of defaulting to Type=ValueConv to allow reformatting to be applied
-            'EXIF:DateTimeOriginal'     => 'delete $opts{Type}; $val',
-            'EXIF:SubSecTimeOriginal'   => 'delete $opts{Type}; $val',
-            'IPTC:DateCreated'          => '$opts{EditGroup} = 1; $val',
-            'IPTC:TimeCreated'          => '$opts{EditGroup} = 1; $val',
-            'XMP-photoshop:DateCreated' => '$val',
+            'Composite:SubSecDateTimeOriginal'  => 'delete $opts{Type}; $val',
+            'IPTC:DateCreated'                  => '$opts{EditGroup} = 1; $val',
+            'IPTC:TimeCreated'                  => '$opts{EditGroup} = 1; $val',
+            'XMP-photoshop:DateCreated'         => '$val',
         },
     },
     CreateDate => {
         Groups => { 2 => 'Time' },
         Notes => '"creation date of the digital representation" - MWG',
         Writable => 1,
+        Shift => 0, # don't shift this tag
         Desire => {
-            0 => 'EXIF:CreateDate',
-            1 => 'EXIF:SubSecTimeDigitized',
-            2 => 'IPTC:DigitalCreationDate',
-            3 => 'IPTC:DigitalCreationTime',
-            4 => 'XMP-xmp:CreateDate',
-            5 => 'CurrentIPTCDigest',
-            6 => 'IPTCDigest',
+            0 => 'Composite:SubSecCreateDate',
+            1 => 'IPTC:DigitalCreationDate',
+            2 => 'IPTC:DigitalCreationTime',
+            3 => 'XMP-xmp:CreateDate',
+            4 => 'CurrentIPTCDigest',
+            5 => 'IPTCDigest',
         },
-        RawConv => '(defined $val[0] or defined $val[2] or defined $val[4]) ? $val : undef',
+        RawConv => '(defined $val[0] or defined $val[1] or defined $val[3]) ? $val : undef',
         ValueConv => q{
-            if (defined $val[0] and $val[0] !~ /^[: ]*$/) {
-                return ($val[1] and $val[1] !~ /^ *$/) ? "$val[0].$val[1]" : $val[0];
-            }
-            return $val[4] if not defined $val[5] or (defined $val[4] and
-                             (not defined $val[6] or $val[5] eq $val[6]));
-            return $val[3] ? "$val[2] $val[3]" : $val[2] if $val[2];
+            return $val[0] if defined $val[0] and $val[0] !~ /^[: ]*$/;
+            return $val[3] if not defined $val[4] or (defined $val[3] and
+                             (not defined $val[5] or $val[4] eq $val[5]));
+            return $val[2] ? "$val[1] $val[2]" : $val[1] if $val[1];
             return undef;
         },
         PrintConv => '$self->ConvertDateTime($val)',
@@ -181,29 +176,26 @@ my $mwgLoaded;  # flag set if we alreaded Load()ed the MWG tags
         DelCheck   => 'Image::ExifTool::MWG::ReconcileIPTCDigest($self)',
         WriteCheck => 'Image::ExifTool::MWG::ReconcileIPTCDigest($self)',
         WriteAlso  => {
-            'EXIF:CreateDate'          => 'delete $opts{Type}; $val',
-            'EXIF:SubSecTimeDigitized' => 'delete $opts{Type}; $val',
-            'IPTC:DigitalCreationDate' => '$opts{EditGroup} = 1; $val',
-            'IPTC:DigitalCreationTime' => '$opts{EditGroup} = 1; $val',
-            'XMP-xmp:CreateDate'       => '$val',
+            'Composite:SubSecCreateDate' => 'delete $opts{Type}; $val',
+            'IPTC:DigitalCreationDate'   => '$opts{EditGroup} = 1; $val',
+            'IPTC:DigitalCreationTime'   => '$opts{EditGroup} = 1; $val',
+            'XMP-xmp:CreateDate'         => '$val',
         },
     },
     ModifyDate => {
         Groups => { 2 => 'Time' },
         Notes => '"modification date of the digital image file" - MWG',
         Writable => 1,
+        Shift => 0, # don't shift this tag
         Desire => {
-            0 => 'EXIF:ModifyDate',
-            1 => 'EXIF:SubSecTime',
-            2 => 'XMP-xmp:ModifyDate',
-            3 => 'CurrentIPTCDigest',
-            4 => 'IPTCDigest',
+            0 => 'Composite:SubSecModifyDate',
+            1 => 'XMP-xmp:ModifyDate',
+            2 => 'CurrentIPTCDigest',
+            3 => 'IPTCDigest',
         },
         RawConv => q{
-            if (defined $val[0] and $val[0] !~ /^[: ]*$/) {
-                return ($val[1] and $val[1] !~ /^ *$/) ? "$val[0].$val[1]" : $val[0];
-            }
-            return $val[2] if not defined $val[3] or not defined $val[4] or $val[3] eq $val[4];
+            return $val[0] if defined $val[0] and $val[0] !~ /^[: ]*$/;
+            return $val[1] if not defined $val[2] or not defined $val[3] or $val[2] eq $val[3];
             return undef;
         },
         PrintConv => '$self->ConvertDateTime($val)',
@@ -213,9 +205,8 @@ my $mwgLoaded;  # flag set if we alreaded Load()ed the MWG tags
         DelCheck   => '""',
         WriteCheck => '""',
         WriteAlso  => {
-            'EXIF:ModifyDate'    => 'delete $opts{Type}; $val',
-            'EXIF:SubSecTime'    => 'delete $opts{Type}; $val',
-            'XMP-xmp:ModifyDate' => '$val',
+            'Composite:SubSecModifyDate' => 'delete $opts{Type}; $val',
+            'XMP-xmp:ModifyDate'         => '$val',
         },
     },
     Orientation => {

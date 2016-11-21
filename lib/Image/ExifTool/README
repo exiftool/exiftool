@@ -678,7 +678,8 @@ numerical.
 
   Shift         : [Writable tags only] Specifies type of shift to apply if this
                   value may be shifted.  Set to 'Time' for shifting date/time
-                  tags.
+                  tags, or '0' to prevent tag from being shifted or
+                  conditionally deleted.
 
   Writable      : Indicates this tag can be written (or not written if Writable
                   is set to zero), and for EXIF-type tables gives format for
@@ -709,12 +710,12 @@ numerical.
                   SetNewValue options for each tag.  By default, Type is set to
                   "ValueConv" and the Protected option has bit 0x02 set to allow
                   writing of Protected tags that aren't directly writable.  The
-                  AddValue and DelValue options from the parent tag are also
-                  defined, but no other options are set by default.  Previous
-                  new values of WriteAlso tags have already been removed prior
-                  to the eval if the Replace option was used for the parent tag.
-                   If an empty warning is issued ("\n"), the target tag is not
-                  written and no error is reported.
+                  AddValue, DelValue, Shift and Replace options from the parent
+                  tag are also defined, but no other options are set by default. 
+                  Previous new values of WriteAlso tags have already been
+                  removed prior to the eval if the Replace option was used for
+                  the parent tag.  If an empty warning is issued ("\n"), the
+                  target tag is not written and no error is reported.
 
   WriteCheck    : If given, specifies a scalar which is evaluated as a Perl
                   expression for a one-time validatation the Raw value being

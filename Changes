@@ -7,6 +7,18 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.20. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Nov. 21, 2016 - Version 10.34
+
+  - Added support for new IPTC Extension tags (version 1.3 + video metadata)
+  - Added missing print conversion for PreviewDateTime
+  - Decode a few new FujiFilm tags (thanks Zilvinas Brobliauskas)
+  - Enhanced MWG date/time tags to support new EXIF time offsets
+  - Patched loophole in WriteMode which would allow creation of new metadata
+    files when creation of new groups was disallowed
+  - Fixed problem where some EXIF date/time tags may not shifted when shifting
+    all date/time tags with "-time:all-=VAL" for ExifTool version 10.28-10.33 or
+    when the MWG feature was used
+
 Nov. 11, 2016 - Version 10.33
 
   - Windows EXE version is 32-bit again, and packaged with Perl 5.24.0
@@ -15,8 +27,8 @@ Nov. 11, 2016 - Version 10.33
 
 Nov. 9, 2016 - Version 10.32
 
-  - WARNING: The Windows EXE version for this release is for 64-bit Windows!
-  - The Windows EXE version is now packaged with Perl 5.22.2
+  - WARNING: The Windows EXE version for this release is 64-bit (and packaged
+    with Perl 5.22.2 instead of 5.24.0)
   - Time::Piece may now be used as an alternative to POSIX::strptime for parsing
     date/time values when writing, and is included in the Windows package
   - Added a number of new XMP tags (thanks StarGeek)

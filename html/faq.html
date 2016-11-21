@@ -518,7 +518,7 @@ string contains special characters, in which case it is converted from the
 external character set (UTF&#8209;8 by default), and stored as Unicode. ExifTool
 writes Unicode in native EXIF byte ordering by default, but the byte order may
 be specified by setting the ExifUnicodeByteOrder tag (see the
-<a href="TagNames/Extra.html">Extra Tags</a> documentation).</blockquote>
+<a href="TagNames/Extra.html">Extra Tags documentation</a>).</blockquote>
 
 <blockquote>The EXIF "XP" tags (XPTitle, XPComment, etc) are always stored
 internally as little-endian Unicode (UCS&#8209;2), and are read and written
@@ -1457,11 +1457,13 @@ file.</blockquote>
 <blockquote>On systems where a filesystem creation date is maintained, ExifTool
 also sets this to the current date/time when the file is edited.  On Windows the
 creation date is accessed through the FileCreateDate tag, and is also preserved
-with the <code>-P</code> option.  On Mac/Linux the FileInodeChangeDate tag is
-available instead of FileCreateDate.  On Mac, the filesystem stores a creation
-date, but currently the only way to preserve this is with the
+with the <code>-P</code> option.  On Mac, the filesystem does store a creation
+date readable via the MDItemFSCreationDate tag, but this tag is not writable and
+is extracted only if specified explicitly or the MDItemTags API option is used,
+and currently the only way to preserve this is with the
 <code>-overwrite_original_in_place</code> option.  On Linux, the file creation
-date is not stored.</blockquote>
+date is not stored.  See the <a href="TagNames/Extra.html">Extra Tags documentation</a>
+for more information about these tags.</blockquote>
 
 <blockquote>For example, commands like this act on common metadata tags, setting
 the filesystem modification date/time to the current date/time:
@@ -1583,7 +1585,7 @@ proper technique for shifting a date/time value when copying:
 </blockquote>
 
 <hr>
-<i>Last revised Nov 4, 2016</i>
+<i>Last revised Nov 17, 2016</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

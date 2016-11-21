@@ -74,9 +74,9 @@ span.sup        { font-size: 0.8em; font-weight: normal; position: relative; top
 </div>
 
 <blockquote><table class='dl lg'><tr><td><b>
-<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-10.33.tar.gz/download">
-Download        Version 10.33</a> (4.0 MB) -
-<a href="history.html">Nov. 11, 2016</a></b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-10.34.tar.gz/download">
+Download        Version 10.34</a> (4.0 MB) -
+<a href="history.html">Nov. 21, 2016</a></b></td></tr></table></blockquote>
 
 <p><b>ExifTool is a platform-independent <a href="ExifTool.html">Perl
 library</a> plus a <a href="exiftool_pod.html">command-line application</a> for
@@ -127,8 +127,8 @@ distribution above.)</i></p>
 
 <blockquote><table class='dl lg'><tr><td><b>
 <a name="alone">Windows Executable:</a>
-<a href="http://sourceforge.net/projects/exiftool/files/exiftool-10.33.zip/download">
-         exiftool-10.33.zip</a> (5.8 MB)</b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/exiftool-10.34.zip/download">
+         exiftool-10.34.zip</a> (5.9 MB)</b></td></tr></table></blockquote>
 
 <p><b>The stand-alone Windows executable</b> does not require Perl. Just
 download and un-zip the archive then double-click on
@@ -140,7 +140,7 @@ of Windows.</p>
 <blockquote><table class='dl lg'><tr><td><b>
 Mac OS X Package:
 <a href="http://sourceforge.net/projects/exiftool/files/ExifTool-9.70.dmg/download">
-         ExifTool-10.33.dmg</a> (2.6 MB)</b></td></tr></table></blockquote>
+         ExifTool-10.34.dmg</a> (2.6 MB)</b></td></tr></table></blockquote>
 
 <p><b>The OS X package</b> installs the ExifTool command-line application and
 libraries in /usr/local/bin. After installing, type "<code>exiftool</code>" in
@@ -378,7 +378,7 @@ for each file format.</p>
 <tr><td><a href="TagNames/PLIST.html">PLIST</a></td><td>R</td><td>Apple Property List (binary and XML formats)</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/PLIST.html">PLIST</a></td></tr>
 <tr><td><a href="TagNames/Sony.html#PMP">PMP</a></td><td>R</td><td>Sony DSC-F1 Cyber-Shot image</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/Sony.html#PMP">Sony</a></td></tr>
 <tr><td><a href="TagNames/PNG.html">PNG</a>, <a href="TagNames/MNG.html">JNG, MNG</a></td><td>R/W</td><td>Portable/JPEG/Multiple-image Network Graphics</td><td>R/W/C<span class=sup>3</span></td><td>R/W/C<span class=sup>3</span></td><td>R/W/C</td><td>R/W/C</td><td>R/W/C <a href="TagNames/PNG.html">PNG</a></td></tr>
-<tr><td>PPM, PBM, PGM</td><td>R/W</td><td>Portable Pixel/Bit/Gray Map</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R PPM</td></tr>
+<tr><td>PPM, PBM, PGM</td><td>R/W</td><td>Portable Pixel/Bit/Gray Map</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R PPM, R/W/C Comment</td></tr>
 <tr><td>PPT, PPS, POT</td><td>R</td><td>PowerPoint Presentation/Slideshow/Template (<a href="TagNames/FlashPix.html">FPX</a>-like)</td><td>-</td><td>-</td><td>R</td><td>R</td><td>R <a href="TagNames/FlashPix.html">FlashPix</a></td></tr>
 <tr><td><a href="TagNames/OOXML.html">POTX, POTM</a></td><td>R</td><td>Office Open XML Presentation Template [Macro-enabled]</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/OOXML.html">XML</a> <a href="TagNames/ZIP.html">ZIP</a></td></tr>
 <tr><td><a href="TagNames/OOXML.html">PPSX, PPSM</a></td><td>R</td><td>Office Open XML Presentation Slideshow [Macro-enabled]</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/OOXML.html">XML</a> <a href="TagNames/ZIP.html">ZIP</a></td></tr>
@@ -912,11 +912,12 @@ for proper rendering of the image.</li>
 <ul>
 <li>Some antivirus software has been known to cause problems for the <b>Windows</b>
 version of ExifTool. <b>Norton Antivirus</b> may delete ExifTool when it is run,
-and <b>Windows Defender</b> may slow down launching of ExifTool or hang it
-altogether.  Presumably this is due to the way the ExifTool package for Windows
-works -- it unpacks executable files into a temporary directory and runs from
-there, which apparently may be seen as a threat by antivirus software.  A
-work-around is to add ExifTool to the exclusion list of the antivirus software.</li>
+<b>Windows Defender</b> may slow down launching of ExifTool or hang it altogether,
+and <b>Bitdefender Antivirus</b> may block ExifTool from writing files.
+Presumably this is due to the way the ExifTool package for Windows works -- it
+unpacks executable files into a temporary directory and runs from there, which
+apparently may be seen as a threat by antivirus software.  A work-around is to
+add ExifTool to the exclusion list of the antivirus software.</li>
 <li><b>Adobe Camera Raw and DNG Converter 9.5.1</b> fail to recognize edited
 <b>Samsung SRW</b> images from some models (NX30, NX300, NX2000 and EK-GN120).
 <i class=red>[This problem was fixed for the NX models in ExifTool 10.26, but
@@ -1104,7 +1105,7 @@ binary data.  The simple script above does not handle this case.</p>
 <li><a href="faq.html">ExifTool FAQ</a></li>
 <li><a href="https://sourceforge.net/p/exiftool/discussion/">ExifTool Forum</a></li>
 <li><a href="TagNames/index.html">ExifTool Tag Names</a></li>
-<li><a href="history.html">Nov. 11, 2016</a> (<a href="http://owl.phy.queensu.ca/~phil/exiftool/rss.xml">RSS feed</a>)</li>
+<li><a href="history.html">Nov. 21, 2016</a> (<a href="http://owl.phy.queensu.ca/~phil/exiftool/rss.xml">RSS feed</a>)</li>
 <li><a href="exiftool_pod.html">exiftool Application Documentation</a> (<a href="http://owl.phy.queensu.ca/~phil/exiftool/exiftool_pod.pdf">download in PDF format</a>)</li>
 <li><a href="ExifTool.html">Image::ExifTool API Documentation</a> (<a href="http://owl.phy.queensu.ca/~phil/exiftool/ExifTool.pdf">download in PDF format</a>)</li>
 <li><a href="Shift.html">Date/Time Shift Module</a> (<a href="http://owl.phy.queensu.ca/~phil/exiftool/Shift.pdf">download in PDF format</a>)</li>

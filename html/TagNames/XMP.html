@@ -4382,7 +4382,7 @@ These tags belong to the ExifTool XMP-iptcExt family 1 group.</p>
  + = List'>string_+</td>
 <td><span class=s><span class=n>(ArtworkOrObjectAOCircaDateCreated)</span></span></td></tr>
 <tr>
-<td>ArtworkSContentDescription</td>
+<td>ArtworkContentDescription</td>
 <td class=c title=' _ = Flattened
  + = List'>lang-alt_+</td>
 <td><span class=s><span class=n>(ArtworkOrObjectAOContentDescription)</span></span></td></tr>
@@ -4462,43 +4462,264 @@ These tags belong to the ExifTool XMP-iptcExt family 1 group.</p>
  + = List'>lang-alt_+</td>
 <td><span class=s><span class=n>(ArtworkOrObjectAOTitle)</span></span></td></tr>
 <tr>
+<td>AudioBitrate</td>
+<td class=c>rational</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>AudioBitrateType</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(called audioBitRateMode by the spec)</span>
+  <br>&#39;fixed&#39; = Fixed
+  <br>&#39;variable&#39; = Variable</span></td></tr>
+<tr>
+<td>AudioChannelCount</td>
+<td class=c>integer</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>BroadcastDate</td>
+<td class=c title=' + = List'>struct+</td>
+<td>--&gt; <a href='XMP.html#PublicationEvent'>PublicationEvent Struct</a></td></tr>
+<tr>
+<td>BroadcastDateDate</td>
+<td class=c title=' _ = Flattened
+ + = List'>date_+</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>BroadcastDateIdentifier</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>BroadcastDateName</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>CircaDateCreated</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ContainerFormat</td>
+<td class=c>struct</td>
+<td>--&gt; <a href='XMP.html#Entity'>Entity Struct</a></td></tr>
+<tr class=b>
+<td>ContainerFormatIdentifier</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ContainerFormatName</td>
+<td class=c title=' _ = Flattened'>lang-alt_</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Contributor</td>
+<td class=c title=' + = List'>struct+</td>
+<td>--&gt; <a href='XMP.html#EntityWithRole'>EntityWithRole Struct</a></td></tr>
+<tr>
+<td>ContributorIdentifier</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>ContributorName</td>
+<td class=c title=' _ = Flattened
+ + = List'>lang-alt_+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ContributorRole</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>CopyrightYear</td>
+<td class=c>integer</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Creator</td>
+<td class=c title=' + = List'>struct+</td>
+<td>--&gt; <a href='XMP.html#EntityWithRole'>EntityWithRole Struct</a></td></tr>
+<tr class=b>
+<td>CreatorIdentifier</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>CreatorName</td>
+<td class=c title=' _ = Flattened
+ + = List'>lang-alt_+</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>CreatorRole</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>ControlledVocabularyTerm</td>
 <td class=c title=' + = List'>string+</td>
 <td><span class=s><span class=n>(deprecated by version 1.2)</span></span></td></tr>
 <tr class=b>
+<td>DataOnScreen</td>
+<td class=c title=' + = List'>struct+</td>
+<td>--&gt; <a href='XMP.html#TextRegion'>TextRegion Struct</a></td></tr>
+<tr>
+<td>DataOnScreenRegion</td>
+<td class=c title=' _ = Flattened
+ + = List'>struct_+</td>
+<td>--&gt; <a href='XMP.html#Area'>Area Struct</a></td></tr>
+<tr class=b>
+<td>DataOnScreenRegionD</td>
+<td class=c title=' _ = Flattened
+ + = List'>real_+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>DataOnScreenRegionH</td>
+<td class=c title=' _ = Flattened
+ + = List'>real_+</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>DataOnScreenRegionText</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>DataOnScreenRegionUnit</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>DataOnScreenRegionW</td>
+<td class=c title=' _ = Flattened
+ + = List'>real_+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>DataOnScreenRegionX</td>
+<td class=c title=' _ = Flattened
+ + = List'>real_+</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>DataOnScreenRegionY</td>
+<td class=c title=' _ = Flattened
+ + = List'>real_+</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>DigitalImageGUID</td>
 <td class=c>string</td>
 <td><span class=s><span class=n>(called DigImageGUID by the spec)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>DigitalSourceFileType</td>
 <td class=c>string</td>
 <td><span class=s><span class=n>(now deprecated -- replaced by DigitalSourceType)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>DigitalSourceType</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
+<tr class=b>
+<td>Dopesheet</td>
+<td class=c>lang-alt</td>
+<td>&nbsp;</td></tr>
 <tr>
+<td>DopesheetLink</td>
+<td class=c title=' + = List'>struct+</td>
+<td>--&gt; <a href='XMP.html#QualifiedLink'>QualifiedLink Struct</a></td></tr>
+<tr class=b>
+<td>DopesheetLinkLink</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>DopesheetLinkLinkQualifier</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>EmbdEncRightsExpr</td>
 <td class=c title=' + = List'>struct+</td>
 <td>--&gt; <a href='XMP.html#EEREDetails'>EEREDetails Struct</a></td></tr>
-<tr class=b>
+<tr>
 <td>EmbeddedEncodedRightsExpr</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td><span class=s><span class=n>(EmbdEncRightsExprEncRightsExpr)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>EmbeddedEncodedRightsExprType</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td><span class=s><span class=n>(EmbdEncRightsExprRightsExprEncType)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>EmbeddedEncodedRightsExprLangID</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td><span class=s><span class=n>(EmbdEncRightsExprRightsExprLangId)</span></span></td></tr>
+<tr class=b>
+<td>Episode</td>
+<td class=c>struct</td>
+<td>--&gt; <a href='XMP.html#EpisodeOrSeason'>EpisodeOrSeason Struct</a></td></tr>
 <tr>
+<td>EpisodeIdentifier</td>
+<td class=c title=' _ = Flattened'>string_</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>EpisodeName</td>
+<td class=c title=' _ = Flattened'>string_</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>EpisodeNumber</td>
+<td class=c title=' _ = Flattened'>string_</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>Event</td>
 <td class=c>lang-alt</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ShownEvent</td>
+<td class=c title=' + = List'>struct+</td>
+<td>--&gt; <a href='XMP.html#Entity'>Entity Struct</a>
+  <br><span class='n s'>(called EventExt by the spec)</span></td></tr>
+<tr class=b>
+<td>ShownEventIdentifier</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(EventExtIdentifier)</span></span></td></tr>
+<tr>
+<td>ShownEventName</td>
+<td class=c title=' _ = Flattened
+ + = List'>lang-alt_+</td>
+<td><span class=s><span class=n>(EventExtName)</span></span></td></tr>
+<tr class=b>
+<td>ExternalMetadataLink</td>
+<td class=c title=' + = List'>string+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>FeedIdentifier</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Genre</td>
+<td class=c title=' + = List'>struct+</td>
+<td>--&gt; <a href='XMP.html#CVTermDetails'>CVTermDetails Struct</a></td></tr>
+<tr>
+<td>GenreCvId</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>GenreCvTermId</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>GenreCvTermName</td>
+<td class=c title=' _ = Flattened
+ + = List'>lang-alt_+</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>GenreCvTermRefinedAbout</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Headline</td>
+<td class=c title=' / = Avoid'>lang-alt/</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>IPTCLastEdited</td>
@@ -4543,48 +4764,98 @@ These tags belong to the ExifTool XMP-iptcExt family 1 group.</p>
  + = List'>string_+</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td>LocationCreatedGPSAltitude</td>
+<td class=c title=' _ = Flattened
+ + = List'>rational_+</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>LocationCreatedGPSLatitude</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>LocationCreatedGPSLongitude</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>LocationCreatedIdentifier</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>LocationCreatedLocationId</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>LocationCreatedLocationName</td>
+<td class=c title=' _ = Flattened
+ + = List'>lang-alt_+</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>LocationCreatedProvinceState</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>LocationCreatedSublocation</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>LocationCreatedWorldRegion</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>LocationShown</td>
 <td class=c title=' + = List'>struct+</td>
 <td>--&gt; <a href='XMP.html#LocationDetails'>LocationDetails Struct</a></td></tr>
-<tr class=b>
+<tr>
 <td>LocationShownCity</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>LocationShownCountryCode</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>LocationShownCountryName</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td>&nbsp;</td></tr>
+<tr class=b>
+<td>LocationShownGPSAltitude</td>
+<td class=c title=' _ = Flattened
+ + = List'>rational_+</td>
+<td>&nbsp;</td></tr>
 <tr>
+<td>LocationShownGPSLatitude</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>LocationShownGPSLongitude</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>LocationShownIdentifier</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>LocationShownLocationId</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>LocationShownLocationName</td>
+<td class=c title=' _ = Flattened
+ + = List'>lang-alt_+</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>LocationShownProvinceState</td>
@@ -4622,87 +4893,351 @@ These tags belong to the ExifTool XMP-iptcExt family 1 group.</p>
 <td class=c title=' + = List'>string+</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>PersonHeard</td>
+<td class=c title=' + = List'>struct+</td>
+<td>--&gt; <a href='XMP.html#Entity'>Entity Struct</a></td></tr>
+<tr>
+<td>PersonHeardIdentifier</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>PersonHeardName</td>
+<td class=c title=' _ = Flattened
+ + = List'>lang-alt_+</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>PersonInImage</td>
 <td class=c title=' + = List'>string+</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>PersonInImageWDetails</td>
 <td class=c title=' + = List'>struct+</td>
 <td>--&gt; <a href='XMP.html#PersonDetails'>PersonDetails Struct</a></td></tr>
-<tr class=b>
+<tr>
 <td>PersonInImageCharacteristic</td>
 <td class=c title=' _ = Flattened
  + = List'>struct_+</td>
 <td>--&gt; <a href='XMP.html#CVTermDetails'>CVTermDetails Struct</a>
   <br><span class='n s'>(PersonInImageWDetailsPersonCharacteristic)</span></td></tr>
-<tr>
+<tr class=b>
 <td>PersonInImageCvTermCvId</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td><span class=s><span class=n>(PersonInImageWDetailsPersonCharacteristicCvId)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>PersonInImageCvTermId</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td><span class=s><span class=n>(PersonInImageWDetailsPersonCharacteristicCvTermId)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>PersonInImageCvTermName</td>
 <td class=c title=' _ = Flattened
  + = List'>lang-alt_+</td>
 <td><span class=s><span class=n>(PersonInImageWDetailsPersonCharacteristicCvTermName)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>PersonInImageCvTermRefinedAbout</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td><span class=s><span class=n>(PersonInImageWDetailsPersonCharacteristicCvTermRefinedAbout)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>PersonInImageDescription</td>
 <td class=c title=' _ = Flattened
  + = List'>lang-alt_+</td>
 <td><span class=s><span class=n>(PersonInImageWDetailsPersonDescription)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>PersonInImageId</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td><span class=s><span class=n>(PersonInImageWDetailsPersonId)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>PersonInImageName</td>
 <td class=c title=' _ = Flattened
  + = List'>lang-alt_+</td>
 <td><span class=s><span class=n>(PersonInImageWDetailsPersonName)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>ProductInImage</td>
 <td class=c title=' + = List'>struct+</td>
 <td>--&gt; <a href='XMP.html#ProductDetails'>ProductDetails Struct</a></td></tr>
-<tr>
+<tr class=b>
 <td>ProductInImageDescription</td>
 <td class=c title=' _ = Flattened
  + = List'>lang-alt_+</td>
 <td><span class=s><span class=n>(ProductInImageProductDescription)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>ProductInImageGTIN</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td><span class=s><span class=n>(ProductInImageProductGTIN)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>ProductInImageName</td>
 <td class=c title=' _ = Flattened
  + = List'>lang-alt_+</td>
 <td><span class=s><span class=n>(ProductInImageProductName)</span></span></td></tr>
+<tr>
+<td>Rating</td>
+<td class=c title=' + = List'>struct+</td>
+<td>--&gt; <a href='XMP.html#Rating'>Rating Struct</a></td></tr>
+<tr class=b>
+<td>RatingRatingRegion</td>
+<td class=c title=' _ = Flattened
+ + = List'>struct_+</td>
+<td>--&gt; <a href='XMP.html#LocationDetails'>LocationDetails Struct</a></td></tr>
+<tr>
+<td>RatingRegionCity</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(RatingRatingRegionCity)</span></span></td></tr>
+<tr class=b>
+<td>RatingRegionCountryCode</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(RatingRatingRegionCountryCode)</span></span></td></tr>
+<tr>
+<td>RatingRegionCountryName</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(RatingRatingRegionCountryName)</span></span></td></tr>
+<tr class=b>
+<td>RatingRegionGPSAltitude</td>
+<td class=c title=' _ = Flattened
+ + = List'>rational_+</td>
+<td><span class=s><span class=n>(RatingRatingRegionGPSAltitude)</span></span></td></tr>
+<tr>
+<td>RatingRegionGPSLatitude</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(RatingRatingRegionGPSLatitude)</span></span></td></tr>
+<tr class=b>
+<td>RatingRegionGPSLongitude</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(RatingRatingRegionGPSLongitude)</span></span></td></tr>
+<tr>
+<td>RatingRegionIdentifier</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(RatingRatingRegionIdentifier)</span></span></td></tr>
+<tr class=b>
+<td>RatingRegionLocationId</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(RatingRatingRegionLocationId)</span></span></td></tr>
+<tr>
+<td>RatingRegionLocationName</td>
+<td class=c title=' _ = Flattened
+ + = List'>lang-alt_+</td>
+<td><span class=s><span class=n>(RatingRatingRegionLocationName)</span></span></td></tr>
+<tr class=b>
+<td>RatingRegionProvinceState</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(RatingRatingRegionProvinceState)</span></span></td></tr>
+<tr>
+<td>RatingRegionSublocation</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(RatingRatingRegionSublocation)</span></span></td></tr>
+<tr class=b>
+<td>RatingRegionWorldRegion</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(RatingRatingRegionWorldRegion)</span></span></td></tr>
+<tr>
+<td>RatingScaleMaxValue</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(RatingRatingScaleMaxValue)</span></span></td></tr>
+<tr class=b>
+<td>RatingScaleMinValue</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(RatingRatingScaleMinValue)</span></span></td></tr>
+<tr>
+<td>RatingSourceLink</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(RatingRatingSourceLink)</span></span></td></tr>
+<tr class=b>
+<td>RatingValue</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(RatingRatingValue)</span></span></td></tr>
+<tr>
+<td>RatingValueLogoLink</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(RatingRatingValueLogoLink)</span></span></td></tr>
 <tr class=b>
 <td>RegistryID</td>
 <td class=c title=' + = List'>struct+</td>
 <td>--&gt; <a href='XMP.html#RegistryEntryDetails'>RegistryEntryDetails Struct</a></td></tr>
 <tr>
+<td>RegistryEntryRole</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(RegistryIdRegEntryRole)</span></span></td></tr>
+<tr class=b>
 <td>RegistryItemID</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td><span class=s><span class=n>(RegistryIdRegItemId)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>RegistryOrganisationID</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td><span class=s><span class=n>(RegistryIdRegOrgId)</span></span></td></tr>
+<tr class=b>
+<td>ReleaseReady</td>
+<td class=c>boolean</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Season</td>
+<td class=c>struct</td>
+<td>--&gt; <a href='XMP.html#EpisodeOrSeason'>EpisodeOrSeason Struct</a></td></tr>
+<tr class=b>
+<td>SeasonIdentifier</td>
+<td class=c title=' _ = Flattened'>string_</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>SeasonName</td>
+<td class=c title=' _ = Flattened'>string_</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>SeasonNumber</td>
+<td class=c title=' _ = Flattened'>string_</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Series</td>
+<td class=c>struct</td>
+<td>--&gt; <a href='XMP.html#Series'>Series Struct</a></td></tr>
+<tr class=b>
+<td>SeriesIdentifier</td>
+<td class=c title=' _ = Flattened'>string_</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>SeriesName</td>
+<td class=c title=' _ = Flattened'>string_</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>StorylineIdentifier</td>
+<td class=c title=' + = List'>string+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>StreamReady</td>
+<td class=c>string</td>
+<td><span class=s>&#39;false&#39; = False
+  <br>&#39;true&#39; = True
+  <br>&#39;unknown&#39; = Unknown</span></td></tr>
+<tr class=b>
+<td>StylePeriod</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>SupplyChainSource</td>
+<td class=c title=' + = List'>struct+</td>
+<td>--&gt; <a href='XMP.html#Entity'>Entity Struct</a></td></tr>
+<tr class=b>
+<td>SupplyChainSourceIdentifier</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>SupplyChainSourceName</td>
+<td class=c title=' _ = Flattened
+ + = List'>lang-alt_+</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>TemporalCoverage</td>
+<td class=c>struct</td>
+<td>--&gt; <a href='XMP.html#TemporalCoverage'>TemporalCoverage Struct</a></td></tr>
+<tr>
+<td>TemporalCoverageFrom</td>
+<td class=c title=' _ = Flattened'>date_</td>
+<td><span class=s><span class=n>(TemporalCoverageTempCoverageFrom)</span></span></td></tr>
+<tr class=b>
+<td>TemporalCoverageTo</td>
+<td class=c title=' _ = Flattened'>date_</td>
+<td><span class=s><span class=n>(TemporalCoverageTempCoverageTo)</span></span></td></tr>
+<tr>
+<td>Transcript</td>
+<td class=c>lang-alt</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>TranscriptLink</td>
+<td class=c title=' + = List'>struct+</td>
+<td>--&gt; <a href='XMP.html#QualifiedLink'>QualifiedLink Struct</a></td></tr>
+<tr>
+<td>TranscriptLinkLink</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>TranscriptLinkLinkQualifier</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>VideoBitrate</td>
+<td class=c>rational</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>VideoBitrateType</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(called videoBitRateMode by the spec)</span>
+  <br>&#39;fixed&#39; = Fixed
+  <br>&#39;variable&#39; = Variable</span></td></tr>
+<tr>
+<td>VideoDisplayAspectRatio</td>
+<td class=c>rational</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>VideoEncodingProfile</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>VideoShotType</td>
+<td class=c title=' + = List'>struct+</td>
+<td>--&gt; <a href='XMP.html#Entity'>Entity Struct</a></td></tr>
+<tr class=b>
+<td>VideoShotTypeIdentifier</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>VideoShotTypeName</td>
+<td class=c title=' _ = Flattened
+ + = List'>lang-alt_+</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>VideoStreamsCount</td>
+<td class=c>integer</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>VisualColour</td>
+<td class=c>string</td>
+<td><span class=s>&#39;bw-monochrome&#39; = B&amp;W
+  <br>&#39;colour&#39; = Color</span></td></tr>
+<tr class=b>
+<td>WorkflowTag</td>
+<td class=c>struct</td>
+<td>--&gt; <a href='XMP.html#CVTermDetails'>CVTermDetails Struct</a></td></tr>
+<tr>
+<td>WorkflowTagCvId</td>
+<td class=c title=' _ = Flattened'>string_</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>WorkflowTagCvTermId</td>
+<td class=c title=' _ = Flattened'>string_</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>WorkflowTagCvTermName</td>
+<td class=c title=' _ = Flattened'>lang-alt_</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>WorkflowTagCvTermRefinedAbout</td>
+<td class=c title=' _ = Flattened'>string_</td>
+<td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='CVTermDetails'>XMP CVTermDetails Struct</a></h2>
@@ -4805,6 +5340,126 @@ These tags belong to the ExifTool XMP-iptcExt family 1 group.</p>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='PublicationEvent'>XMP PublicationEvent Struct</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Field Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>Date</td>
+<td class=c>date</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Identifier</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Name</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Entity'>XMP Entity Struct</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Field Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>Identifier</td>
+<td class=c title=' + = List'>string+</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Name</td>
+<td class=c>lang-alt</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='EntityWithRole'>XMP EntityWithRole Struct</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Field Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>Identifier</td>
+<td class=c title=' + = List'>string+</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Name</td>
+<td class=c>lang-alt</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Role</td>
+<td class=c title=' + = List'>string+</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='TextRegion'>XMP TextRegion Struct</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Field Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>Region</td>
+<td class=c>Area</td>
+<td>--&gt; <a href='XMP.html#Area'>Area Struct</a></td></tr>
+<tr class=b>
+<td>RegionText</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Area'>XMP Area Struct</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Field Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>D</td>
+<td class=c>real</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>H</td>
+<td class=c>real</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Unit</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>W</td>
+<td class=c>real</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>X</td>
+<td class=c>real</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Y</td>
+<td class=c>real</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='QualifiedLink'>XMP QualifiedLink Struct</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Field Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>Link</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>LinkQualifier</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
 <h2><a name='EEREDetails'>XMP EEREDetails Struct</a></h2>
 <blockquote>
 <table class=frame><tr><td>
@@ -4821,6 +5476,26 @@ These tags belong to the ExifTool XMP-iptcExt family 1 group.</p>
 <td>&nbsp;</td></tr>
 <tr>
 <td>RightsExprLangId</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='EpisodeOrSeason'>XMP EpisodeOrSeason Struct</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Field Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>Identifier</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Name</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Number</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
@@ -4864,8 +5539,32 @@ These tags belong to the ExifTool XMP-iptcExt family 1 group.</p>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>GPSAltitude</td>
+<td class=c>rational</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>GPSLatitude</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>GPSLongitude</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>GROUPS</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Identifier</td>
+<td class=c title=' + = List'>string+</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>LocationId</td>
 <td class=c title=' + = List'>string+</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>LocationName</td>
+<td class=c>lang-alt</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>ProvinceState</td>
@@ -4925,6 +5624,38 @@ These tags belong to the ExifTool XMP-iptcExt family 1 group.</p>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='Rating'>XMP Rating Struct</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Field Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>RatingRegion</td>
+<td class=c title=' + = List'>LocationDetails+</td>
+<td>--&gt; <a href='XMP.html#LocationDetails'>LocationDetails Struct</a></td></tr>
+<tr class=b>
+<td>RatingScaleMaxValue</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>RatingScaleMinValue</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>RatingSourceLink</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>RatingValue</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>RatingValueLogoLink</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
 <h2><a name='RegistryEntryDetails'>XMP RegistryEntryDetails Struct</a></h2>
 <blockquote>
 <table class=frame><tr><td>
@@ -4932,12 +5663,48 @@ These tags belong to the ExifTool XMP-iptcExt family 1 group.</p>
 <tr class=h><th>Field Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
-<td>RegItemId</td>
+<td>RegEntryRole</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>RegItemId</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>RegOrgId</td>
 <td class=c>string</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Series'>XMP Series Struct</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Field Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>Identifier</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Name</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='TemporalCoverage'>XMP TemporalCoverage Struct</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Field Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>TempCoverageFrom</td>
+<td class=c>date</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>TempCoverageTo</td>
+<td class=c>date</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -7851,38 +8618,6 @@ These tags belong to the ExifTool XMP-xmp family 1 group.</p>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
-<h2><a name='Area'>XMP Area Struct</a></h2>
-<blockquote>
-<table class=frame><tr><td>
-<table class=inner cellspacing=1>
-<tr class=h><th>Field Name</th>
-<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
-<tr>
-<td>D</td>
-<td class=c>real</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>H</td>
-<td class=c>real</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>Unit</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>W</td>
-<td class=c>real</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>X</td>
-<td class=c>real</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>Y</td>
-<td class=c>real</td>
-<td>&nbsp;</td></tr>
-</table></td></tr></table></blockquote>
-
 <h2><a name='xmpMM'>XMP xmpMM Tags</a></h2>
 <p>XMP Media Management namespace tags.</p>
 
@@ -9410,7 +10145,7 @@ These tags belong to the ExifTool XMP-svg family 1 group.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Nov 9, 2016</i>
+<br><i>Last revised Nov 21, 2016</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

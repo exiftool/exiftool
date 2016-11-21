@@ -32,7 +32,7 @@ use Image::ExifTool::XMP;
 use Image::ExifTool::Canon;
 use Image::ExifTool::Nikon;
 
-$VERSION = '3.00';
+$VERSION = '3.01';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -882,9 +882,7 @@ TagID:  foreach $tagID (@keys) {
                 if ($$tagInfo{PrintConv} and $$tagInfo{PrintConv} eq '$self->ConvertDateTime($val)') {
                     my @g = $et->GetGroup($tagInfo);
                     warn "$short $name should be in 'Time' group!\n" unless $g[2] eq 'Time';
-                    if ($writable and not $$tagInfo{Shift} and $g[0] ne 'Composite' and
-                        $short ne 'PostScript')
-                    {
+                    if ($writable and not defined $$tagInfo{Shift} and $short ne 'PostScript') {
                         warn "$short $name is not shiftable!\n";
                     }
                     if ($writable and (not $$tagInfo{PrintConvInv} or

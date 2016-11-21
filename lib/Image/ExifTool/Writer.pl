@@ -91,6 +91,32 @@ my %dirMap = (
     EXIF => \%exifMap,
 );
 
+# module names and processing functions for each writable file type
+# (defaults to "$type" and "Process$type" if not defined)
+# - types that are handled specially will not appear in this list
+my %writableType = (
+    CRW => [ 'CanonRaw',    'WriteCRW' ],
+    DR4 =>   'CanonVRD',
+    EPS => [ 'PostScript',  'WritePS'  ],
+    FLIF=> [ undef,         'WriteFLIF'],
+    GIF =>   undef,
+    ICC => [ 'ICC_Profile', 'WriteICC' ],
+    IND =>   'InDesign',
+    JP2 =>   'Jpeg2000',
+    MIE =>   undef,
+    MOV => [ 'QuickTime',   'WriteMOV' ],
+    MRW =>   'MinoltaRaw',
+    PDF => [ undef,         'WritePDF' ],
+    PNG =>   undef,
+    PPM =>   undef,
+    PS  =>   'PostScript',
+    PSD =>   'Photoshop',
+    RAF => [ 'FujiFilm',    'WriteRAF' ],
+    VRD =>   'CanonVRD',
+    X3F =>   'SigmaRaw',
+    XMP => [ undef,         'WriteXMP' ],
+);
+
 # (Note: all writable "pseudo" tags must be found in Extra table)
 my @writablePseudoTags =  qw(
     FileName FilePermissions Directory FileModifyDate FileCreateDate HardLink TestName
@@ -700,15 +726,17 @@ TAG: foreach $tagInfo (@matchingTags) {
         my $addValue = $options{AddValue};
         if (defined $shift) {
             # (can't currently shift list-type tags)
-            if (not $$tagInfo{List}) {
+            my $shiftable;
+            if ($$tagInfo{List}) {
+                $shiftable = '';    # can add/delete but not shift
+            } else {
+                $shiftable = $$tagInfo{Shift};
                 unless ($shift) {
                     # set shift according to AddValue/DelValue
                     $shift = 1 if $addValue;
-                    if ($options{DelValue}) {
-                        # can shift a date/time with -=, but this is
-                        # a conditional delete operation for other tags
-                        $shift = -1 if $$tagInfo{Shift} and $$tagInfo{Shift} eq 'Time';
-                    }
+                    # can shift a date/time with -=, but this is
+                    # a conditional delete operation for other tags
+                    $shift = -1 if $options{DelValue} and defined $shiftable and $shiftable eq 'Time';
                 }
                 if ($shift and (not defined $value or not length $value)) {
                     # (now allow -= to be used for shiftable tag - v8.05)
@@ -717,7 +745,12 @@ TAG: foreach $tagInfo (@matchingTags) {
                     #next;
                     undef $shift;
                 }
-            } elsif ($shift) {
+            }
+                # can't shift List-type tag
+            if ((defined $shiftable and not $shiftable) and
+                # and don't try to conditionally delete if Shift is "0"
+                ($shift or ($shiftable eq '0' and $options{DelValue})))
+            {
                 $err = "$wgrp1:$tag is not shiftable";
                 $verbose > 2 and print $out "$err\n";
                 next;
@@ -956,12 +989,13 @@ WriteAlso:
             foreach $wtag (keys %$writeAlso) {
                 my %opts = (
                     Type => 'ValueConv',
-                    Protected => $protected | 0x02,
-                    AddValue => $addValue,
-                    DelValue => $options{DelValue},
-                    Replace => $options{Replace}, # handle lists properly
-                    CreateGroups => $createGroups,
-                    SetTags => \%alsoWrote, # remember tags already written
+                    Protected   => $protected | 0x02,
+                    AddValue    => $addValue,
+                    DelValue    => $options{DelValue},
+                    Shift       => $options{Shift},
+                    Replace     => $options{Replace},   # handle lists properly
+                    CreateGroups=> $createGroups,
+                    SetTags     => \%alsoWrote,         # remember tags already written
                 );
                 undef $evalWarning;
                 #### eval WriteAlso ($val)
@@ -1924,10 +1958,15 @@ sub WriteInfo($$;$$)
         # create file from scratch
         $outType = GetFileExtension($outfile) unless $outType or ref $outfile;
         if (CanCreate($outType)) {
-            $fileType = $tiffType = $outType;   # use output file type if no input file
-            $infile = "$fileType file";         # make bogus file name
-            $self->VPrint(0, "Creating $infile...\n");
-            $inRef = \ '';      # set $inRef to reference to empty data
+            if ($$self{OPTIONS}{WriteMode} =~ /g/i) {
+                $fileType = $tiffType = $outType;   # use output file type if no input file
+                $infile = "$fileType file";         # make bogus file name
+                $self->VPrint(0, "Creating $infile...\n");
+                $inRef = \ '';      # set $inRef to reference to empty data
+            } else {
+                $self->Error("Not creating new $outType file (disallowed by WriteMode)");
+                return 0;
+            }
         } elsif ($outType) {
             $self->Error("Can't create $outType files");
             return 0;
@@ -2032,65 +2071,21 @@ sub WriteInfo($$;$$)
                     $dirInfo{Parent} = $tiffType;
                     $rtnVal = $self->ProcessTIFF(\%dirInfo);
                 }
-            } elsif ($type eq 'GIF') {
-                require Image::ExifTool::GIF;
-                $rtnVal = Image::ExifTool::GIF::ProcessGIF($self,\%dirInfo);
-            } elsif ($type eq 'CRW') {
-                require Image::ExifTool::CanonRaw;
-                $rtnVal = Image::ExifTool::CanonRaw::WriteCRW($self, \%dirInfo);
-            } elsif ($type eq 'MRW') {
-                require Image::ExifTool::MinoltaRaw;
-                $rtnVal = Image::ExifTool::MinoltaRaw::ProcessMRW($self, \%dirInfo);
-            } elsif ($type eq 'RAF') {
-                require Image::ExifTool::FujiFilm;
-                $rtnVal = Image::ExifTool::FujiFilm::WriteRAF($self, \%dirInfo);
+            } elsif (exists $writableType{$type}) {
+                my ($module, $func);
+                if (ref $writableType{$type} eq 'ARRAY') {
+                    $module = $writableType{$type}[0] || $type;
+                    $func = $writableType{$type}[1];
+                } else {
+                    $module = $writableType{$type} || $type;
+                }
+                require "Image/ExifTool/$module.pm";
+                $func = "Image::ExifTool::${module}::" . ($func || "Process$type");
+                no strict 'refs';
+                $rtnVal = &$func($self, \%dirInfo);
+                use strict 'refs';
             } elsif ($type eq 'ORF' or $type eq 'RAW') {
                 $rtnVal = $self->ProcessTIFF(\%dirInfo);
-            } elsif ($type eq 'X3F') {
-                require Image::ExifTool::SigmaRaw;
-                $rtnVal = Image::ExifTool::SigmaRaw::ProcessX3F($self, \%dirInfo);
-            } elsif ($type eq 'PNG') {
-                require Image::ExifTool::PNG;
-                $rtnVal = Image::ExifTool::PNG::ProcessPNG($self, \%dirInfo);
-            } elsif ($type eq 'MIE') {
-                require Image::ExifTool::MIE;
-                $rtnVal = Image::ExifTool::MIE::ProcessMIE($self, \%dirInfo);
-            } elsif ($type eq 'XMP') {
-                require Image::ExifTool::XMP;
-                $rtnVal = Image::ExifTool::XMP::WriteXMP($self, \%dirInfo);
-            } elsif ($type eq 'PPM') {
-                require Image::ExifTool::PPM;
-                $rtnVal = Image::ExifTool::PPM::ProcessPPM($self, \%dirInfo);
-            } elsif ($type eq 'PSD') {
-                require Image::ExifTool::Photoshop;
-                $rtnVal = Image::ExifTool::Photoshop::ProcessPSD($self, \%dirInfo);
-            } elsif ($type eq 'EPS' or $type eq 'PS') {
-                require Image::ExifTool::PostScript;
-                $rtnVal = Image::ExifTool::PostScript::WritePS($self, \%dirInfo);
-            } elsif ($type eq 'PDF') {
-                require Image::ExifTool::PDF;
-                $rtnVal = Image::ExifTool::PDF::WritePDF($self, \%dirInfo);
-            } elsif ($type eq 'ICC') {
-                require Image::ExifTool::ICC_Profile;
-                $rtnVal = Image::ExifTool::ICC_Profile::WriteICC($self, \%dirInfo);
-            } elsif ($type eq 'VRD') {
-                require Image::ExifTool::CanonVRD;
-                $rtnVal = Image::ExifTool::CanonVRD::ProcessVRD($self, \%dirInfo);
-            } elsif ($type eq 'DR4') {
-                require Image::ExifTool::CanonVRD;
-                $rtnVal = Image::ExifTool::CanonVRD::ProcessDR4($self, \%dirInfo);
-            } elsif ($type eq 'JP2') {
-                require Image::ExifTool::Jpeg2000;
-                $rtnVal = Image::ExifTool::Jpeg2000::ProcessJP2($self, \%dirInfo);
-            } elsif ($type eq 'IND') {
-                require Image::ExifTool::InDesign;
-                $rtnVal = Image::ExifTool::InDesign::ProcessIND($self, \%dirInfo);
-            } elsif ($type eq 'MOV') {
-                require Image::ExifTool::QuickTime;
-                $rtnVal = Image::ExifTool::QuickTime::WriteMOV($self, \%dirInfo);
-            } elsif ($type eq 'FLIF') {
-                require Image::ExifTool::FLIF;
-                $rtnVal = Image::ExifTool::FLIF::WriteFLIF($self, \%dirInfo);
             } elsif ($type eq 'EXIF') {
                 # go through WriteDirectory so block writes, etc are handled
                 my $tagTablePtr = GetTagTable('Image::ExifTool::Exif::Main');
@@ -5969,7 +5964,7 @@ sub SetFileTime($$;$$$)
     # open file by name if necessary
     unless (ref $file) {
         local *FH;
-        $self->Open(\*FH, $file, '+<') or $self->Warn("SetFileTime error for '$file'"), return 0;
+        $self->Open(\*FH, $file, '+<') or $self->Warn('Error opening file for update'), return 0;
         $file = *FH;  # (not \*FH, so *FH will be kept open until $file goes out of scope)
     }
     # on Windows, try to work around incorrect file times when daylight saving time is in effect

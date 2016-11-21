@@ -41,14 +41,14 @@
 package Image::ExifTool::XMP;
 
 use strict;
-use vars qw($VERSION $AUTOLOAD @ISA @EXPORT_OK %stdXlatNS %nsURI %dateTimeInfo
-            %xmpTableDefaults %specialStruct %sDimensions %sArea %sColorant);
+use vars qw($VERSION $AUTOLOAD @ISA @EXPORT_OK %stdXlatNS %nsURI %latConv %longConv
+            %dateTimeInfo %xmpTableDefaults %specialStruct %sDimensions %sArea %sColorant);
 use Image::ExifTool qw(:Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '2.98';
+$VERSION = '2.99';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -183,13 +183,13 @@ my %uri2ns;
 }
 
 # conversions for GPS coordinates
-my %latConv = (
+%latConv = (
     ValueConv    => 'Image::ExifTool::GPS::ToDegrees($val, 1)',
     ValueConvInv => 'Image::ExifTool::GPS::ToDMS($self, $val, 2, "N")',
     PrintConv    => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")',
     PrintConvInv => 'Image::ExifTool::GPS::ToDegrees($val, 1)',
 );
-my %longConv = (
+%longConv = (
     ValueConv    => 'Image::ExifTool::GPS::ToDegrees($val, 1)',
     ValueConvInv => 'Image::ExifTool::GPS::ToDMS($self, $val, 2, "E")',
     PrintConv    => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "E")',
@@ -248,6 +248,7 @@ my %recognizedAttrs = (
     NOTES       => 1, # [optional] notes for documentation about this structure
     TYPE        => 1, # [optional] rdf:type resource for struct (if used, the StructType flag
                       # will be set automatically for all derived flattened tags when writing)
+    GROUPS      => 1, # [optional] specifies family group 2 name for the structure
 );
 # XMP structures (each structure is similar to a tag table so we can
 # recurse through them in SetPropertyPath() as if they were tag tables)
@@ -497,28 +498,6 @@ my %sRetouchArea = (
         Struct => \%sCorrectionMask,
         List => 'Seq',
     },
-);
-
-# IPTC Extension 1.0 structures
-my %sLocationDetails = (
-    STRUCT_NAME => 'LocationDetails',
-    NAMESPACE   => 'Iptc4xmpExt',
-    City         => { },
-    CountryCode  => { },
-    CountryName  => { },
-    ProvinceState=> { },
-    Sublocation  => { },
-    WorldRegion  => { },
-    LocationId   => { List => 'Bag' },
-);
-
-my %sCVTermDetails = (
-    STRUCT_NAME => 'CVTermDetails',
-    NAMESPACE   => 'Iptc4xmpExt',
-    CvTermId    => { },
-    CvTermName  => { Writable => 'lang-alt' },
-    CvId        => { },
-    CvTermRefinedAbout => { },
 );
 
 # main XMP tag table (tag ID's are used for the family 1 group names)
@@ -2165,175 +2144,6 @@ my %sPantryItem = (
     Location            => { Groups => { 2 => 'Location' } },
     Scene               => { Groups => { 2 => 'Other' }, List => 'Bag' },
     SubjectCode         => { Groups => { 2 => 'Other' }, List => 'Bag' },
-);
-
-# IPTC Extension namespace properties (Iptc4xmpExt) (ref 4)
-%Image::ExifTool::XMP::iptcExt = (
-    %xmpTableDefaults,
-    GROUPS => { 1 => 'XMP-iptcExt', 2 => 'Author' },
-    NAMESPACE   => 'Iptc4xmpExt',
-    TABLE_DESC => 'XMP IPTC Extension',
-    NOTES => q{
-        IPTC Extension namespace tags.  The actual namespace prefix is
-        "Iptc4xmpExt", but ExifTool shortens this for the family 1 group name. (see
-        L<http://www.iptc.org/IPTC4XMP/>)
-    },
-    AboutCvTerm => {
-        Struct => \%sCVTermDetails,
-        List => 'Bag',
-    },
-    AboutCvTermCvId                 => { Flat => 1, Name => 'AboutCvTermCvId' },
-    AboutCvTermCvTermId             => { Flat => 1, Name => 'AboutCvTermId' },
-    AboutCvTermCvTermName           => { Flat => 1, Name => 'AboutCvTermName' },
-    AboutCvTermCvTermRefinedAbout   => { Flat => 1, Name => 'AboutCvTermRefinedAbout' },
-    AddlModelInfo   => { Name => 'AdditionalModelInformation' },
-    ArtworkOrObject => {
-        Struct => {
-            STRUCT_NAME => 'ArtworkOrObjectDetails',
-            NAMESPACE   => 'Iptc4xmpExt',
-            AOCopyrightNotice => { },
-            AOCreator    => { List => 'Seq' },
-            AODateCreated=> { Groups => { 2 => 'Time' }, %dateTimeInfo },
-            AOSource     => { },
-            AOSourceInvNo=> { },
-            AOTitle      => { Writable => 'lang-alt' },
-            AOCurrentCopyrightOwnerName => { },
-            AOCurrentCopyrightOwnerId   => { },
-            AOCurrentLicensorName       => { },
-            AOCurrentLicensorId         => { },
-            AOCreatorId                 => { List => 'Seq' },
-            AOCircaDateCreated          => { },
-            AOStylePeriod               => { List => 'Bag' },
-            AOSourceInvURL              => { },
-            AOContentDescription        => { Writable => 'lang-alt' },
-            AOContributionDescription   => { Writable => 'lang-alt' },
-            AOPhysicalDescription       => { Writable => 'lang-alt' },
-        },
-        List => 'Bag',
-    },
-    ArtworkOrObjectAOCopyrightNotice           => { Flat => 1, Name => 'ArtworkCopyrightNotice' },
-    ArtworkOrObjectAOCreator                   => { Flat => 1, Name => 'ArtworkCreator' },
-    ArtworkOrObjectAODateCreated               => { Flat => 1, Name => 'ArtworkDateCreated' },
-    ArtworkOrObjectAOSource                    => { Flat => 1, Name => 'ArtworkSource' },
-    ArtworkOrObjectAOSourceInvNo               => { Flat => 1, Name => 'ArtworkSourceInventoryNo' },
-    ArtworkOrObjectAOTitle                     => { Flat => 1, Name => 'ArtworkTitle' },
-    ArtworkOrObjectAOCurrentCopyrightOwnerName => { Flat => 1, Name => 'ArtworkCopyrightOwnerName' },
-    ArtworkOrObjectAOCurrentCopyrightOwnerId   => { Flat => 1, Name => 'ArtworkCopyrightOwnerID' },
-    ArtworkOrObjectAOCurrentLicensorName       => { Flat => 1, Name => 'ArtworkLicensorName' },
-    ArtworkOrObjectAOCurrentLicensorId         => { Flat => 1, Name => 'ArtworkLicensorID' },
-    ArtworkOrObjectAOCreatorId                 => { Flat => 1, Name => 'ArtworkCreatorID' },
-    ArtworkOrObjectAOCircaDateCreated          => { Flat => 1, Name => 'ArtworkCircaDateCreated' },
-    ArtworkOrObjectAOStylePeriod               => { Flat => 1, Name => 'ArtworkStylePeriod' },
-    ArtworkOrObjectAOSourceInvURL              => { Flat => 1, Name => 'ArtworkSourceInvURL' },
-    ArtworkOrObjectAOContentDescription        => { Flat => 1, Name => 'ArtworkSContentDescription' },
-    ArtworkOrObjectAOContributionDescription   => { Flat => 1, Name => 'ArtworkContributionDescription' },
-    ArtworkOrObjectAOPhysicalDescription       => { Flat => 1, Name => 'ArtworkPhysicalDescription' },
-    CVterm => {
-        Name => 'ControlledVocabularyTerm',
-        List => 'Bag',
-        Notes => 'deprecated by version 1.2',
-    },
-    DigImageGUID            => { Name => 'DigitalImageGUID' },
-    DigitalSourcefileType   => {
-        Name => 'DigitalSourceFileType',
-        Notes => 'now deprecated -- replaced by DigitalSourceType',
-    },
-    DigitalSourceType       => { Name => 'DigitalSourceType' },
-    EmbdEncRightsExpr => {
-        Struct => {
-            STRUCT_NAME => 'EEREDetails',
-            NAMESPACE   => 'Iptc4xmpExt',
-            EncRightsExpr       => { },
-            RightsExprEncType   => { },
-            RightsExprLangId    => { },
-        },
-        List => 'Bag',
-    },
-    EmbdEncRightsExprEncRightsExpr      => { Flat => 1, Name => 'EmbeddedEncodedRightsExpr' },
-    EmbdEncRightsExprRightsExprEncType  => { Flat => 1, Name => 'EmbeddedEncodedRightsExprType' },
-    EmbdEncRightsExprRightsExprLangId   => { Flat => 1, Name => 'EmbeddedEncodedRightsExprLangID' },
-    Event       => { Writable => 'lang-alt' },
-    IptcLastEdited => {
-        Name => 'IPTCLastEdited',
-        Groups => { 2 => 'Time' },
-        %dateTimeInfo,
-    },
-    LinkedEncRightsExpr => {
-        Struct => {
-            STRUCT_NAME => 'LEREDetails',
-            NAMESPACE   => 'Iptc4xmpExt',
-            LinkedRightsExpr    => { },
-            RightsExprEncType   => { },
-            RightsExprLangId    => { },
-        },
-        List => 'Bag',
-    },
-    LinkedEncRightsExprLinkedRightsExpr  => { Flat => 1, Name => 'LinkedEncodedRightsExpr' },
-    LinkedEncRightsExprRightsExprEncType => { Flat => 1, Name => 'LinkedEncodedRightsExprType' },
-    LinkedEncRightsExprRightsExprLangId  => { Flat => 1, Name => 'LinkedEncodedRightsExprLangID' },
-    LocationCreated => {
-        Struct => \%sLocationDetails,
-        Groups => { 2 => 'Location' },
-        List => 'Bag',
-    },
-    LocationShown => {
-        Struct => \%sLocationDetails,
-        Groups => { 2 => 'Location' },
-        List => 'Bag',
-    },
-    MaxAvailHeight          => { Writable => 'integer' },
-    MaxAvailWidth           => { Writable => 'integer' },
-    ModelAge                => { List => 'Bag', Writable => 'integer' },
-    OrganisationInImageCode => { List => 'Bag' },
-    OrganisationInImageName => { List => 'Bag' },
-    PersonInImage           => { List => 'Bag' },
-    PersonInImageWDetails => {
-        Struct => {
-            STRUCT_NAME => 'PersonDetails',
-            NAMESPACE   => 'Iptc4xmpExt',
-            PersonId    => { List => 'Bag' },
-            PersonName  => { Writable => 'lang-alt' },
-            PersonCharacteristic => {
-                Struct  => \%sCVTermDetails,
-                List    => 'Bag',
-            },
-            PersonDescription => { Writable => 'lang-alt' },
-        },
-        List => 'Bag',
-    },
-    PersonInImageWDetailsPersonId                               => { Flat => 1, Name => 'PersonInImageId' },
-    PersonInImageWDetailsPersonName                             => { Flat => 1, Name => 'PersonInImageName' },
-    PersonInImageWDetailsPersonCharacteristic                   => { Flat => 1, Name => 'PersonInImageCharacteristic' },
-    PersonInImageWDetailsPersonCharacteristicCvId               => { Flat => 1, Name => 'PersonInImageCvTermCvId' },
-    PersonInImageWDetailsPersonCharacteristicCvTermId           => { Flat => 1, Name => 'PersonInImageCvTermId' },
-    PersonInImageWDetailsPersonCharacteristicCvTermName         => { Flat => 1, Name => 'PersonInImageCvTermName' },
-    PersonInImageWDetailsPersonCharacteristicCvTermRefinedAbout => { Flat => 1, Name => 'PersonInImageCvTermRefinedAbout' },
-    PersonInImageWDetailsPersonDescription                      => { Flat => 1, Name => 'PersonInImageDescription' },
-    ProductInImage => {
-        Struct => {
-            STRUCT_NAME => 'ProductDetails',
-            NAMESPACE   => 'Iptc4xmpExt',
-            ProductName => { Writable => 'lang-alt' },
-            ProductGTIN => { },
-            ProductDescription => { Writable => 'lang-alt' },
-        },
-        List => 'Bag',
-    },
-    ProductInImageProductName        => { Flat => 1, Name => 'ProductInImageName' },
-    ProductInImageProductGTIN        => { Flat => 1, Name => 'ProductInImageGTIN' },
-    ProductInImageProductDescription => { Flat => 1, Name => 'ProductInImageDescription' },
-    RegistryId => {
-        Name => 'RegistryID',
-        Struct => {
-            STRUCT_NAME => 'RegistryEntryDetails',
-            NAMESPACE   => 'Iptc4xmpExt',
-            RegItemId   => { },
-            RegOrgId    => { },
-        },
-        List => 'Bag',
-    },
-    RegistryIdRegItemId => { Flat => 1, Name => 'RegistryItemID' },
-    RegistryIdRegOrgId  => { Flat => 1, Name => 'RegistryOrganisationID' },
 );
 
 # Adobe Lightroom namespace properties (lr) (ref PH)

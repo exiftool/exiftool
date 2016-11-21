@@ -525,6 +525,7 @@ my %shootingMode = (
                 # 0x08 - GX7 in DynamicMonochrome mode
                 0x0d => 'High Dynamic', #PH (FZ47 in ?)
                 # 0x13 - seen for LX100 (PH)
+                # 0x18 - seen for FZ2500 (PH)
                 # DMC-LC1 values:
                 0x100 => 'Low',
                 0x110 => 'Normal',
@@ -609,13 +610,15 @@ my %shootingMode = (
     0x2d => {
         Name => 'NoiseReduction',
         Writable => 'int16u',
+        Notes => 'the encoding for this value is not consistent between models',
         PrintConv => {
             0 => 'Standard',
             1 => 'Low (-1)',
             2 => 'High (+1)',
             3 => 'Lowest (-2)', #JD
             4 => 'Highest (+2)', #JD
-            # 65531 - seen for LX100 "NR1" test shots at imaging-resource (PH)
+            # 65531 - seen for LX100/FZ2500 "NR1" test shots at imaging-resource (PH)
+            #     0 - seen for FZ2500 "NR6D" test shots (PH)
         },
     },
     0x2e => { #4
@@ -626,6 +629,7 @@ my %shootingMode = (
             2 => '10 s',
             3 => '2 s',
             4 => '10 s / 3 pictures', #17
+            # 258 - seen for FZ2500 (PH)
         },
     },
     # 0x2f - values: 1 (LZ6,FX10K)

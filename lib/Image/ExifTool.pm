@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '10.35';
+$VERSION = '10.36';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -334,6 +334,7 @@ my %fileTypeLookup = (
     M4B  => ['MOV',  'MPEG-4 audio Book'],
     M4P  => ['MOV',  'MPEG-4 Protected'],
     M4V  => ['MOV',  'MPEG-4 Video'],
+    MAX  => ['FPX',  '3D Studio MAX'],
     MEF  => ['TIFF', 'Mamiya (RAW) Electronic Format'],
     MIE  => ['MIE',  'Meta Information Encapsulation format'],
     MIF  =>  'MIFF',
@@ -585,6 +586,7 @@ my %fileDescription = (
     KDC  => 'image/x-kodak-kdc',
     LFP  => 'image/x-lytro-lfp', #PH (NC)
     LNK  => 'application/octet-stream',
+    MAX  => 'application/x-3ds',
     M2T  => 'video/mpeg',
     M2TS => 'video/m2ts',
     MEF  => 'image/x-mamiya-mef',

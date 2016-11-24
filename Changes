@@ -4,12 +4,20 @@ ExifTool Version History
 
 RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 
-Note: The most recent production release is Version 10.20. (Other versions are
+Note: The most recent production release is Version 10.36. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
+
+Nov. 24, 2016 - Version 10.36 (production release)
+
+  - Added 3D Studio MAX files to the list of supported file types
+  - Decode more Sony tags (thanks Jos Roost)
+  - Decode a couple more FlashPix tags
+  - Minor changes to some of the new IPTC Extension tags
+  - Fixed problem reading some FlashPix (Windows Compound Binary Format) files
 
 Nov. 21, 2016 - Version 10.35
 
-  - Fixed bug in Windows version introduced in 10.31 which could cause ExifTool
+  - Fixed bug in Windows version introduced in 10.32 which could cause ExifTool
     to exit with an error if the -lang option was used
 
 Nov. 21, 2016 - Version 10.34

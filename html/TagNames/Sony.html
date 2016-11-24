@@ -355,13 +355,14 @@ toward magenta)</span></span></td></tr>
   <br>4 = Local
   <br>8 = Zone
   <br>9 = Spot
-  <br><span class=n>(NEX and ILCE models)</span>
-  <br>0 = Multi
+  <br><span class=n>(NEX and ILCE models)</span></span><table class=cols><tr>
+  <td>0 = Multi
   <br>1 = Center
   <br>3 = Flexible Spot
+  <br>4 = Flexible Spot (LA-EA4)
   <br>11 = Zone
-  <br>12 = Expanded Flexible Spot
-  <br><span class=n>(ILCA models)</span>
+  <br>12 = Expanded Flexible Spot</td></tr></table>
+<span class=s><span class=n>(ILCA models)</span>
   <br>0 = Wide
   <br>4 = Flexible Spot
   <br>8 = Zone
@@ -399,7 +400,7 @@ Spot)</span></span></td></tr>
   <br>17 = Lower Far Right
   <br>18 = Lower Far Left
   <br>19 = Upper Far Left</td></tr></table>
-<span class=s><span class=n>(ILCA models)</span></span><table class=cols><tr>
+<span class=s><span class=n>(ILCA-68 and ILCA-77M2)</span></span><table class=cols><tr>
   <td>-1 = Auto
   <br>0 = A5
   <br>1 = A6
@@ -480,7 +481,10 @@ Spot)</span></span></td></tr>
   <br>76 = I5
   <br>77 = I6
   <br>78 = I7</td></tr></table>
-<span class=s><span class=n>(NEX and ILCE models)</span></span><table class=cols><tr>
+<span class=s><span class=n>(ILCA-99M2, appears to indicate the number of the selectable Focal Plane AF Point)</span>
+  <br>0 = Auto
+  <br>162 = 162 = E6 (Center)
+  <br><span class=n>(NEX and ILCE models)</span></span><table class=cols><tr>
   <td>0 = n/a
   <br>1 = Center
   <br>2 = Top
@@ -648,9 +652,11 @@ toward magenta)</span></span></td></tr>
 <td>--&gt; <a href='Sony.html#Tag900b'>Sony Tag900b Tags</a></td></tr>
 <tr>
 <td title='0x9050 = 36944'>0x9050</td>
-<td>Tag9050</td>
-<td class=c>-</td>
-<td>--&gt; <a href='Sony.html#Tag9050'>Sony Tag9050 Tags</a></td></tr>
+<td>Tag9050a
+  <br>Tag9050b</td>
+<td class=c>-<br>-</td>
+<td>--&gt; <a href='Sony.html#Tag9050a'>Sony Tag9050a Tags</a>
+  <br>--&gt; <a href='Sony.html#Tag9050b'>Sony Tag9050b Tags</a></td></tr>
 <tr class=b>
 <td title='0x9400 = 37888'>0x9400</td>
 <td>Tag9400a
@@ -1273,6 +1279,7 @@ adapter is used.</p>
 </tr><tr><td>128.19</td><td>= Sigma 35mm F1.4 DG HSM</td>
 </tr><tr><td>128.20</td><td>= Sigma 18-35mm F1.8 DC HSM</td>
 </tr><tr><td>128.21</td><td>= Sigma 50-500mm F4.5-6.3 APO DG OS HSM</td>
+</tr><tr><td>128.22</td><td>= Sigma 24-105mm F4 DG HSM | Art 013</td>
 </tr><tr><td>129</td><td>= Tamron Lens (129)</td>
 </tr><tr><td>129.1</td><td>= Tamron 200-400mm F5.6 LD</td>
 </tr><tr><td>129.2</td><td>= Tamron 70-300mm F4-5.6 LD</td>
@@ -6600,7 +6607,8 @@ ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-68/77M2.</p>
 </table></td></tr></table></blockquote>
 
 <h2><a name='Tag2010h'>Sony Tag2010h Tags</a></h2>
-<p>Valid for DSC-HX90V/RX1RM2/RX10M2/RX10M3/RX100M4/WX500, ILCE-6300/7RM2/7SM2.</p>
+<p>Valid for DSC-HX90V/RX1RM2/RX10M2/RX10M3/RX100M4/RX100M5/WX500,
+ILCE-6300/6500/7RM2/7SM2, ILCA-99M2.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -7112,7 +7120,7 @@ the full-sized unrotated image, with increasing Y downwards)</span></span></td><
   <br>98 = On</span></td></tr>
 </table></td></tr></table></blockquote>
 
-<h2><a name='Tag9050'>Sony Tag9050 Tags</a></h2>
+<h2><a name='Tag9050a'>Sony Tag9050a Tags</a></h2>
 <p>Data for tags 0x9050, 0x94xx and 0x2010 is encrypted by a simple
 substitution cipher, but the deciphered values are listed below.</p>
 <blockquote>
@@ -7149,45 +7157,17 @@ substitution cipher, but the deciphered values are listed below.</p>
 <td class=c>int32u</td>
 <td><span class=s><span class=n>(total number of image exposures made by the camera)</span></span></td></tr>
 <tr>
-<td title='0x0039 = 57'>0x0039</td>
-<td>FlashStatus</td>
-<td class=c>int8u</td>
-<td><table class=cols><tr>
-  <td>0 = No Flash present
-  <br>2 = Flash Inhibited
-  <br>64 = Built-in Flash present
-  <br>65 = Built-in Flash Fired
-  <br>66 = Built-in Flash Inhibited
-  <br>128 = External Flash present
-  <br>129 = External Flash Fired</td></tr></table>
-</td></tr>
-<tr class=b>
 <td title='0x003a = 58'>0x003a</td>
-<td>ImageCount</td>
-<td class=c>int32u</td>
-<td><span class=s><span class=n>(total number of image exposures made by the camera)</span></span></td></tr>
-<tr>
-<td title='0x003c = 60'>0x003c</td>
-<td>SonyFNumber</td>
-<td class=c>int16u</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td title='0x003f = 63'>0x003f</td>
-<td>ReleaseMode2</td>
-<td class=c>int8u</td>
-<td>--&gt; <a href='Sony.html#ReleaseMode2'>Sony ReleaseMode2 Values</a></td></tr>
-<tr>
-<td title='0x0046 = 70'>0x0046</td>
 <td>SonyExposureTime</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
-<td title='0x0048 = 72'>0x0048</td>
+<td title='0x003c = 60'>0x003c</td>
 <td>SonyFNumber</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td title='0x004b = 75'>0x004b</td>
+<td title='0x003f = 63'>0x003f</td>
 <td>ReleaseMode2</td>
 <td class=c>int8u</td>
 <td>--&gt; <a href='Sony.html#ReleaseMode2'>Sony ReleaseMode2 Values</a></td></tr>
@@ -7202,34 +7182,14 @@ substitution cipher, but the deciphered values are listed below.</p>
 <td class=c>undef[6]</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
-<td title='0x0058 = 88'>0x0058</td>
-<td>ImageCount2</td>
-<td class=c>int32u</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td title='0x005d = 93'>0x005d</td>
-<td>SonyDateTime2</td>
-<td class=c>undef[6]</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
 <td title='0x0067 = 103'>0x0067</td>
 <td>ReleaseMode2</td>
 <td class=c>int8u</td>
 <td>--&gt; <a href='Sony.html#ReleaseMode2'>Sony ReleaseMode2 Values</a></td></tr>
 <tr>
-<td title='0x0073 = 115'>0x0073</td>
-<td>ReleaseMode2</td>
-<td class=c>int8u</td>
-<td>--&gt; <a href='Sony.html#ReleaseMode2'>Sony ReleaseMode2 Values</a></td></tr>
-<tr class=b>
 <td title='0x007c = 124'>0x007c</td>
 <td>InternalSerialNumber</td>
 <td class=c title=' ~ = Writable only with -n'>int8u[4]~</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td title='0x0088 = 136'>0x0088</td>
-<td>InternalSerialNumber</td>
-<td class=c title=' ~ = Writable only with -n'>int8u[6]~</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x00f0 = 240'>0x00f0</td>
@@ -7286,10 +7246,127 @@ substitution cipher, but the deciphered values are listed below.</p>
 <td>ImageCount3</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Tag9050b'>Sony Tag9050b Tags</a></h2>
+<p>Valid from July 2015 for ILCE-6300/6500/7RM2/7SM2, ILCA-99M2.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x0000 = 0'>0x0000</td>
+<td>MaxAperture</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
 <tr class=b>
+<td title='0x0001 = 1'>0x0001</td>
+<td>MinAperture</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0039 = 57'>0x0039</td>
+<td>FlashStatus</td>
+<td class=c>int8u</td>
+<td><table class=cols><tr>
+  <td>0 = No Flash present
+  <br>2 = Flash Inhibited
+  <br>64 = Built-in Flash present
+  <br>65 = Built-in Flash Fired
+  <br>66 = Built-in Flash Inhibited
+  <br>128 = External Flash present
+  <br>129 = External Flash Fired</td></tr></table>
+</td></tr>
+<tr class=b>
+<td title='0x003a = 58'>0x003a</td>
+<td>ImageCount</td>
+<td class=c>int32u</td>
+<td><span class=s><span class=n>(total number of image exposures made by the camera)</span></span></td></tr>
+<tr>
+<td title='0x0046 = 70'>0x0046</td>
+<td>SonyExposureTime</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0048 = 72'>0x0048</td>
+<td>SonyFNumber</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x004b = 75'>0x004b</td>
+<td>ReleaseMode2</td>
+<td class=c>int8u</td>
+<td>--&gt; <a href='Sony.html#ReleaseMode2'>Sony ReleaseMode2 Values</a></td></tr>
+<tr class=b>
+<td title='0x0058 = 88'>0x0058</td>
+<td>ImageCount2</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0061 = 97'>0x0061</td>
+<td>SonyTimeMinSec</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0073 = 115'>0x0073</td>
+<td>ReleaseMode2</td>
+<td class=c>int8u</td>
+<td>--&gt; <a href='Sony.html#ReleaseMode2'>Sony ReleaseMode2 Values</a></td></tr>
+<tr>
+<td title='0x0088 = 136'>0x0088</td>
+<td>InternalSerialNumber</td>
+<td class=c title=' ~ = Writable only with -n'>int8u[6]~</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0105 = 261'>0x0105</td>
+<td>LensMount</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Unknown
+  <br>1 = A-mount
+  <br>2 = E-mount</span></td></tr>
+<tr>
+<td title='0x0106 = 262'>0x0106</td>
+<td>LensFormat</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Unknown
+  <br>1 = APS-C
+  <br>2 = Full-frame</span></td></tr>
+<tr class=b>
+<td title='0x0107 = 263'>0x0107</td>
+<td>LensType2</td>
+<td class=c>int16u</td>
+<td>--&gt; <a href='Sony.html#LensType2'>Sony LensType2 Values</a></td></tr>
+<tr>
+<td title='0x0109 = 265'>0x0109</td>
+<td>LensType</td>
+<td class=c>int16u</td>
+<td>--&gt; <a href='Sony.html#LensType'>Sony LensType Values</a>
+  <br><span class='n s'>(SLT models, and NEX with A-mount lenses)</span></td></tr>
+<tr class=b>
+<td title='0x0116 = 278'>0x0116</td>
+<td>LensSpecFeatures</td>
+<td class=c>undef[2]</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td title='0x01cb = 459'>0x01cb</td>
 <td>ImageCount3</td>
 <td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x01cd = 461'>0x01cd</td>
+<td>ImageCount3</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x021c = 540'>0x021c</td>
+<td>LensSpecFeatures</td>
+<td class=c>undef[2]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x021e = 542'>0x021e</td>
+<td>LensSpecFeatures</td>
+<td class=c>undef[2]</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -7449,8 +7526,9 @@ DSC-HX50V, DSC-QX10/QX100.</p>
 </table></td></tr></table></blockquote>
 
 <h2><a name='Tag9400c'>Sony Tag9400c Tags</a></h2>
-<p>Valid for DSC-HX400V/HX60V/QX30/RX10/RX100M3/WX220/WX350,
-ILCE-7/7R/7S/7M2/7RM2/7SM2/5000/5100/6000/6300/QX1, ILCA-68/77M2.</p>
+<p>Valid for DSC-HX400V/HX60V/HX90V/QX30/RX1RM2/RX10/RX10M2/RX10M3/RX100M3/
+RX100M4/RX100M5/WX220/WX350/WX500, ILCE-7/7R/7S/7M2/7RM2/7SM2/5000/5100/
+6000/6300/6500/QX1, ILCA-68/77M2/99M2.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -7669,8 +7747,9 @@ ILCE-7/7R/7S/7M2/7RM2/7SM2/5000/5100/6000/6300/QX1, ILCA-68/77M2.</p>
 </table></td></tr></table></blockquote>
 
 <h2><a name='Tag9405b'>Sony Tag9405b Tags</a></h2>
-<p>Valid for DSC-HX400V/HX60V/QX30/RX10/RX10M2/RX10M3/RX100M3/RX100M4/WX220/WX350,
-ILCE-7/7M2/7R/7RM2/7S/7SM2/5000/5100/6000/6300/QX1, ILCA-68/77M2.</p>
+<p>Valid for DSC-HX400V/HX60V/QX30/RX10/RX10M2/RX10M3/RX100M3/RX100M4/RX100M5/
+WX220/WX350, ILCE-7/7M2/7R/7RM2/7S/7SM2/5000/5100/6000/6300/6500/QX1,
+ILCA-68/77M2/99M2.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -10219,7 +10298,7 @@ the JPEG image from a PMP file)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Nov 9, 2016</i>
+<br><i>Last revised Nov 23, 2016</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

@@ -28,7 +28,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD $iptcDigestInfo);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.49';
+$VERSION = '1.50';
 
 sub ProcessPhotoshop($$$);
 sub WritePhotoshop($$$);
@@ -184,7 +184,7 @@ my %unicodeString = (
     0x0413 => { Unknown => 1, Name => 'SpotHalftone' },
     0x0414 => { Unknown => 1, Name => 'IDsBaseValue', Description => 'IDs Base Value', Format => 'int32u' },
     0x0415 => { Unknown => 1, Name => 'UnicodeAlphaNames' },
-    0x0416 => { Unknown => 1, Name => 'IndexedColourTableCount', Format => 'int16u' },
+    0x0416 => { Unknown => 1, Name => 'IndexedColorTableCount', Format => 'int16u' },
     0x0417 => { Unknown => 1, Name => 'TransparentIndex', Format => 'int16u' },
     0x0419 => {
         Name => 'GlobalAltitude',

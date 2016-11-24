@@ -309,7 +309,7 @@ my %sTextRegion = (
     Episode         => { Groups => { 2 => 'Video' }, Struct => \%sEpisode },
     ExternalMetadataLink => { Groups => { 2 => 'Other' }, List => 'Bag' },
     FeedIdentifier  => { Groups => { 2 => 'Video' } },
-    BroadcastDate   => { Groups => { 2 => 'Video' }, List => 'Bag', Struct => \%sPublicationEvent },
+    PublicationEvent=> { Groups => { 2 => 'Video' }, List => 'Bag', Struct => \%sPublicationEvent },
     Rating          => {
         Groups => { 2 => 'Other' },
         Struct  => \%sRating,
@@ -332,9 +332,10 @@ my %sTextRegion = (
     Transcript      => { Groups => { 2 => 'Video' }, Writable => 'lang-alt' },
     TranscriptLink  => { Groups => { 2 => 'Video' }, List => 'Bag', Struct => \%sQualifiedLink },
     VisualColour    => {
+        Name => 'VisualColor',
         Groups => { 2 => 'Video' },
         PrintConv => {
-            'bw-monochrome' => 'B&W',
+            'bw-monochrome' => 'Monochrome',
             'colour'        => 'Color',
         },
     },
@@ -342,9 +343,9 @@ my %sTextRegion = (
     CopyrightYear   => { Groups => { 2 => 'Time' },  Writable => 'integer' },
     Creator         => { List => 'Bag', Struct => \%sEntityWithRole },
     SupplyChainSource => { Groups => { 2 => 'Other' }, List => 'Bag', Struct => \%sEntity },
-    audioBitRate    => { Groups => { 2 => 'Audio' }, Writable => 'rational', Name => 'AudioBitrate' },
+    audioBitRate    => { Groups => { 2 => 'Audio' }, Writable => 'integer', Name => 'AudioBitrate' },
     audioBitRateMode=> {
-        Name => 'AudioBitrateType',
+        Name => 'AudioBitrateMode',
         Groups => { 2 => 'Audio' },
         PrintConv => {
             fixed => 'Fixed',
@@ -362,9 +363,9 @@ my %sTextRegion = (
             unknown => 'Unknown',
         },
     },
-    videoBitRate     => { Groups => { 2 => 'Video' }, Writable => 'rational', Name => 'VideoBitrate' },
+    videoBitRate     => { Groups => { 2 => 'Video' }, Writable => 'integer', Name => 'VideoBitrate' },
     videoBitRateMode => {
-        Name => 'VideoBitrateType',
+        Name => 'VideoBitrateMode',
         Groups => { 2 => 'Video' },
         PrintConv => {
             fixed => 'Fixed',

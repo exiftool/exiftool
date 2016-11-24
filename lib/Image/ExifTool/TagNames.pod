@@ -2432,13 +2432,9 @@ These tags belong to the ExifTool XMP-iptcExt family 1 group.
   ArtworkSourceInvURL                           string_+
   ArtworkStylePeriod                            string_+
   ArtworkTitle                                  lang-alt_+
-  AudioBitrate                                  rational
-  AudioBitrateType                              string
+  AudioBitrate                                  integer
+  AudioBitrateMode                              string
   AudioChannelCount                             integer
-  BroadcastDate                                 PublicationEvent Struct+
-  BroadcastDateDate                             date_+
-  BroadcastDateIdentifier                       string_+
-  BroadcastDateName                             string_+
   CircaDateCreated                              string
   ContainerFormat                               Entity Struct
   ContainerFormatIdentifier                     string_+
@@ -2542,6 +2538,10 @@ These tags belong to the ExifTool XMP-iptcExt family 1 group.
   ProductInImageDescription                     lang-alt_+
   ProductInImageGTIN                            string_+
   ProductInImageName                            lang-alt_+
+  PublicationEvent                              PublicationEvent Struct+
+  PublicationEventDate                          date_+
+  PublicationEventIdentifier                    string_+
+  PublicationEventName                          string_+
   Rating                                        Rating Struct+
   RatingRatingRegion                            LocationDetails Struct_+
   RatingRegionCity                              string_+
@@ -2586,15 +2586,15 @@ These tags belong to the ExifTool XMP-iptcExt family 1 group.
   TranscriptLink                                QualifiedLink Struct+
   TranscriptLinkLink                            string_+
   TranscriptLinkLinkQualifier                   string_+
-  VideoBitrate                                  rational
-  VideoBitrateType                              string
+  VideoBitrate                                  integer
+  VideoBitrateMode                              string
   VideoDisplayAspectRatio                       rational
   VideoEncodingProfile                          string
   VideoShotType                                 Entity Struct+
   VideoShotTypeIdentifier                       string_+
   VideoShotTypeName                             lang-alt_+
   VideoStreamsCount                             integer
-  VisualColour                                  string
+  VisualColor                                   string
   WorkflowTag                                   CVTermDetails Struct
   WorkflowTagCvId                               string_
   WorkflowTagCvTermId                           string_
@@ -2631,14 +2631,6 @@ These tags belong to the ExifTool XMP-iptcExt family 1 group.
   AOSourceInvURL                                string
   AOStylePeriod                                 string+
   AOTitle                                       lang-alt
-
-=head3 XMP PublicationEvent Struct
-
-  Field Name                                    Writable
-  ----------                                    --------
-  Date                                          date
-  Identifier                                    string
-  Name                                          string
 
 =head3 XMP Entity Struct
 
@@ -2738,6 +2730,14 @@ These tags belong to the ExifTool XMP-iptcExt family 1 group.
   ProductDescription                            lang-alt
   ProductGTIN                                   string
   ProductName                                   lang-alt
+
+=head3 XMP PublicationEvent Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  Date                                          date
+  Identifier                                    string
+  Name                                          string
 
 =head3 XMP Rating Struct
 
@@ -4546,7 +4546,7 @@ access to this information.
   0x0413   SpotHalftone?                        N
   0x0414   IDsBaseValue?                        N
   0x0415   UnicodeAlphaNames?                   N
-  0x0416   IndexedColourTableCount?             N
+  0x0416   IndexedColorTableCount?              N
   0x0417   TransparentIndex?                    N
   0x0419   GlobalAltitude                       int32u
   0x041a   SliceInfo                            Photoshop SliceInfo
@@ -14231,7 +14231,8 @@ MakerNotes.
   0x202a   Tag202a                              Sony Tag202a
   0x3000   ShotInfo                             Sony ShotInfo
   0x900b   Tag900b                              Sony Tag900b
-  0x9050   Tag9050                              Sony Tag9050
+  0x9050   Tag9050a                             Sony Tag9050a
+           Tag9050b                             Sony Tag9050b
   0x9400   Tag9400a                             Sony Tag9400a
            Tag9400b                             Sony Tag9400b
            Tag9400c                             Sony Tag9400c
@@ -15062,7 +15063,8 @@ ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-68/77M2.
 
 =head3 Sony Tag2010h Tags
 
-Valid for DSC-HX90V/RX1RM2/RX10M2/RX10M3/RX100M4/WX500, ILCE-6300/7RM2/7SM2.
+Valid for DSC-HX90V/RX1RM2/RX10M2/RX10M3/RX100M4/RX100M5/WX500,
+ILCE-6300/6500/7RM2/7SM2, ILCA-99M2.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
@@ -15165,7 +15167,7 @@ Valid for DSC-HX90V/RX1RM2/RX10M2/RX10M3/RX100M4/WX500, ILCE-6300/7RM2/7SM2.
   0x0002   FacesDetected                        N
   0x00bd   FaceDetection                        N
 
-=head3 Sony Tag9050 Tags
+=head3 Sony Tag9050a Tags
 
 Data for tags 0x9050, 0x94xx and 0x2010 is encrypted by a simple
 substitution cipher, but the deciphered values are listed below.
@@ -15176,21 +15178,13 @@ substitution cipher, but the deciphered values are listed below.
   0x0001   MinAperture                          int8u
   0x0031   FlashStatus                          int8u
   0x0032   ImageCount                           int32u
-  0x0039   FlashStatus                          int8u
-  0x003a   ImageCount                           int32u
+  0x003a   SonyExposureTime                     int16u
   0x003c   SonyFNumber                          int16u
   0x003f   ReleaseMode2                         int8u
-  0x0046   SonyExposureTime                     int16u
-  0x0048   SonyFNumber                          int16u
-  0x004b   ReleaseMode2                         int8u
   0x004c   ImageCount2                          int32u
   0x0051   SonyDateTime2                        undef[6]
-  0x0058   ImageCount2                          int32u
-  0x005d   SonyDateTime2                        undef[6]
   0x0067   ReleaseMode2                         int8u
-  0x0073   ReleaseMode2                         int8u
   0x007c   InternalSerialNumber                 int8u[4]~
-  0x0088   InternalSerialNumber                 int8u[6]~
   0x00f0   InternalSerialNumber                 int8u[5]
   0x0105   LensMount                            int8u
   0x0106   LensFormat                           int8u
@@ -15201,7 +15195,33 @@ substitution cipher, but the deciphered values are listed below.
   0x01a0   ImageCount3                          int32u
   0x01aa   ImageCount3                          int32u
   0x01bd   ImageCount3                          int32u
+
+=head3 Sony Tag9050b Tags
+
+Valid from July 2015 for ILCE-6300/6500/7RM2/7SM2, ILCA-99M2.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  0x0000   MaxAperture                          int8u
+  0x0001   MinAperture                          int8u
+  0x0039   FlashStatus                          int8u
+  0x003a   ImageCount                           int32u
+  0x0046   SonyExposureTime                     int16u
+  0x0048   SonyFNumber                          int16u
+  0x004b   ReleaseMode2                         int8u
+  0x0058   ImageCount2                          int32u
+  0x0061   SonyTimeMinSec                       N
+  0x0073   ReleaseMode2                         int8u
+  0x0088   InternalSerialNumber                 int8u[6]~
+  0x0105   LensMount                            int8u
+  0x0106   LensFormat                           int8u
+  0x0107   LensType2                            int16u
+  0x0109   LensType                             int16u
+  0x0116   LensSpecFeatures                     undef[2]
   0x01cb   ImageCount3                          int32u
+  0x01cd   ImageCount3                          int32u
+  0x021c   LensSpecFeatures                     undef[2]
+  0x021e   LensSpecFeatures                     undef[2]
 
 =head3 Sony Tag9400a Tags
 
@@ -15240,8 +15260,9 @@ DSC-HX50V, DSC-QX10/QX100.
 
 =head3 Sony Tag9400c Tags
 
-Valid for DSC-HX400V/HX60V/QX30/RX10/RX100M3/WX220/WX350,
-ILCE-7/7R/7S/7M2/7RM2/7SM2/5000/5100/6000/6300/QX1, ILCA-68/77M2.
+Valid for DSC-HX400V/HX60V/HX90V/QX30/RX1RM2/RX10/RX10M2/RX10M3/RX100M3/
+RX100M4/RX100M5/WX220/WX350/WX500, ILCE-7/7R/7S/7M2/7RM2/7SM2/5000/5100/
+6000/6300/6500/QX1, ILCA-68/77M2/99M2.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
@@ -15299,8 +15320,9 @@ Valid for SLT, NEX, ILCE-3000/3500 and several DSC models.
 
 =head3 Sony Tag9405b Tags
 
-Valid for DSC-HX400V/HX60V/QX30/RX10/RX10M2/RX10M3/RX100M3/RX100M4/WX220/WX350,
-ILCE-7/7M2/7R/7RM2/7S/7SM2/5000/5100/6000/6300/QX1, ILCA-68/77M2.
+Valid for DSC-HX400V/HX60V/QX30/RX10/RX10M2/RX10M3/RX100M3/RX100M4/RX100M5/
+WX220/WX350, ILCE-7/7M2/7R/7RM2/7S/7SM2/5000/5100/6000/6300/6500/QX1,
+ILCA-68/77M2/99M2.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
@@ -16646,6 +16668,8 @@ property tables, even though they are only listed in the SummaryInfo table.
   0x0011       ThumbnailClip                    N
   0x0012       Software                         N
   0x0013       Security                         N
+  0x0022       CreatedBy                        N
+  0x0023       DocumentID                       N
   0x80000000   LocaleIndicator                  N
 
 =head3 FlashPix Transform Tags

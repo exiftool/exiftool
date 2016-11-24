@@ -4463,36 +4463,16 @@ These tags belong to the ExifTool XMP-iptcExt family 1 group.</p>
 <td><span class=s><span class=n>(ArtworkOrObjectAOTitle)</span></span></td></tr>
 <tr>
 <td>AudioBitrate</td>
-<td class=c>rational</td>
+<td class=c>integer</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
-<td>AudioBitrateType</td>
+<td>AudioBitrateMode</td>
 <td class=c>string</td>
-<td><span class=s><span class=n>(called audioBitRateMode by the spec)</span>
-  <br>&#39;fixed&#39; = Fixed
+<td><span class=s>&#39;fixed&#39; = Fixed
   <br>&#39;variable&#39; = Variable</span></td></tr>
 <tr>
 <td>AudioChannelCount</td>
 <td class=c>integer</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>BroadcastDate</td>
-<td class=c title=' + = List'>struct+</td>
-<td>--&gt; <a href='XMP.html#PublicationEvent'>PublicationEvent Struct</a></td></tr>
-<tr>
-<td>BroadcastDateDate</td>
-<td class=c title=' _ = Flattened
- + = List'>date_+</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>BroadcastDateIdentifier</td>
-<td class=c title=' _ = Flattened
- + = List'>string_+</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>BroadcastDateName</td>
-<td class=c title=' _ = Flattened
- + = List'>string_+</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>CircaDateCreated</td>
@@ -4975,6 +4955,25 @@ These tags belong to the ExifTool XMP-iptcExt family 1 group.</p>
  + = List'>lang-alt_+</td>
 <td><span class=s><span class=n>(ProductInImageProductName)</span></span></td></tr>
 <tr>
+<td>PublicationEvent</td>
+<td class=c title=' + = List'>struct+</td>
+<td>--&gt; <a href='XMP.html#PublicationEvent'>PublicationEvent Struct</a></td></tr>
+<tr class=b>
+<td>PublicationEventDate</td>
+<td class=c title=' _ = Flattened
+ + = List'>date_+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>PublicationEventIdentifier</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>PublicationEventName</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>Rating</td>
 <td class=c title=' + = List'>struct+</td>
 <td>--&gt; <a href='XMP.html#Rating'>Rating Struct</a></td></tr>
@@ -5179,13 +5178,12 @@ These tags belong to the ExifTool XMP-iptcExt family 1 group.</p>
 <td>&nbsp;</td></tr>
 <tr>
 <td>VideoBitrate</td>
-<td class=c>rational</td>
+<td class=c>integer</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
-<td>VideoBitrateType</td>
+<td>VideoBitrateMode</td>
 <td class=c>string</td>
-<td><span class=s><span class=n>(called videoBitRateMode by the spec)</span>
-  <br>&#39;fixed&#39; = Fixed
+<td><span class=s>&#39;fixed&#39; = Fixed
   <br>&#39;variable&#39; = Variable</span></td></tr>
 <tr>
 <td>VideoDisplayAspectRatio</td>
@@ -5214,9 +5212,10 @@ These tags belong to the ExifTool XMP-iptcExt family 1 group.</p>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td>VisualColour</td>
+<td>VisualColor</td>
 <td class=c>string</td>
-<td><span class=s>&#39;bw-monochrome&#39; = B&amp;W
+<td><span class=s><span class=n>(called VisualColour by the spec)</span>
+  <br>&#39;bw-monochrome&#39; = Monochrome
   <br>&#39;colour&#39; = Color</span></td></tr>
 <tr class=b>
 <td>WorkflowTag</td>
@@ -5337,26 +5336,6 @@ These tags belong to the ExifTool XMP-iptcExt family 1 group.</p>
 <tr>
 <td>AOTitle</td>
 <td class=c>lang-alt</td>
-<td>&nbsp;</td></tr>
-</table></td></tr></table></blockquote>
-
-<h2><a name='PublicationEvent'>XMP PublicationEvent Struct</a></h2>
-<blockquote>
-<table class=frame><tr><td>
-<table class=inner cellspacing=1>
-<tr class=h><th>Field Name</th>
-<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
-<tr>
-<td>Date</td>
-<td class=c>date</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>Identifier</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>Name</td>
-<td class=c>string</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -5621,6 +5600,26 @@ These tags belong to the ExifTool XMP-iptcExt family 1 group.</p>
 <tr>
 <td>ProductName</td>
 <td class=c>lang-alt</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='PublicationEvent'>XMP PublicationEvent Struct</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Field Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>Date</td>
+<td class=c>date</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>Identifier</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Name</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -10145,7 +10144,7 @@ These tags belong to the ExifTool XMP-svg family 1 group.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Nov 21, 2016</i>
+<br><i>Last revised Nov 23, 2016</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

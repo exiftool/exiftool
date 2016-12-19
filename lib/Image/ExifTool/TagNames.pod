@@ -19636,6 +19636,7 @@ of image related information.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
+      0    BMPVersion                           N
       4    ImageWidth                           N
       8    ImageHeight                          N
      12    Planes                               N
@@ -19646,6 +19647,20 @@ of image related information.
      28    PixelsPerMeterY                      N
      32    NumColors                            N
      36    NumImportantColors                   N
+     40    RedMask                              N
+     44    GreenMask                            N
+     48    BlueMask                             N
+     52    AlphaMask                            N
+     56    ColorSpace                           N
+     60    RedEndpoint                          N
+     72    GreenEndpoint                        N
+     84    BlueEndpoint                         N
+     96    GammaRed                             N
+    100    GammaGreen                           N
+    104    GammaBlue                            N
+    108    RenderingIntent                      N
+    112    ProfileDataOffset                    N
+    116    ProfileSize                          N
 
 =head3 BMP OS2 Tags
 
@@ -19653,10 +19668,22 @@ Information extracted from OS/2-format BMP images.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
+      0    BMPVersion                           N
       4    ImageWidth                           N
       6    ImageHeight                          N
       8    Planes                               N
      10    BitDepth                             N
+
+=head3 BMP Extra Tags
+
+Extra information extracted from some BMP images.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  EmbeddedJPG                                   N
+  EmbeddedPNG                                   N
+  ICC_Profile                                   ICC_Profile
+  LinkedProfileName                             N
 
 =head2 BPG Tags
 

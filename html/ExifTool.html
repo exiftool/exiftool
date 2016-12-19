@@ -949,6 +949,11 @@ specified information.  May be called repeatedly to write the same information
 to additional files without the need to call <a href="#SetNewValue">SetNewValue</a>
 again.</p>
 
+<p>Note that it is <b>NOT</b> necessary to call <a href="#ExtractInfo">ExtractInfo</a>
+or <a href="#ImageInfo">ImageInfo</a> before <a href="#WriteInfo">WriteInfo</a>.
+<a href="#WriteInfo">WriteInfo</a> changes only metadata specified by previous
+calls to <a href="#SetNewValue">SetNewValue</a>.</p>
+
 <blockquote><table class='norm'>
 <tr><td><b>Prototype</b></td><td>WriteInfo($$;$$)</td></tr>
 <tr><td valign=top><b>Inputs</b></td><td><b>0)</b> ExifTool object reference

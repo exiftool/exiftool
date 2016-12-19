@@ -1032,6 +1032,11 @@ created in the destination file as required to store the specified
 information.  May be called repeatedly to write the same information to
 additional files without the need to call L</SetNewValue> again.
 
+Note that it is NOT necessary to call L</ExtractInfo> or L</ImageInfo>
+before L</WriteInfo>.  L</WriteInfo> changes only metadata specified by
+previous calls to L</SetNewValue>.
+
+
     # add information to a source file, writing output to new file
     $exifTool->WriteInfo($srcfile, $dstfile);
 

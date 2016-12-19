@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '10.36';
+$VERSION = '10.37';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -129,14 +129,14 @@ sub ReadValue($$$$$;$);
 # unless tweaked in BuildTagLookup::GetTableOrder().
 @loadAllTables = qw(
     PhotoMechanic Exif GeoTiff CanonRaw KyoceraRaw Lytro MinoltaRaw PanasonicRaw
-    SigmaRaw JPEG GIMP Jpeg2000 GIF BMP BMP::OS2 BPG BPG::Extensions PICT PNG
-    MNG FLIF DjVu DPX OpenEXR MIFF PGF PSP PhotoCD Radiance PDF PostScript
-    Photoshop::Header Photoshop::Layers Photoshop::ImageData FujiFilm::RAF
-    FujiFilm::IFD Samsung::Trailer Sony::SRF2 Sony::SR2SubIFD Sony::PMP ITC ID3
-    FLAC Ogg Vorbis APE APE::NewHeader APE::OldHeader Audible MPC MPEG::Audio
-    MPEG::Video MPEG::Xing M2TS QuickTime QuickTime::ImageFile Matroska MOI MXF
-    DV Flash Flash::FLV Real::Media Real::Audio Real::Metafile RIFF AIFF ASF
-    DICOM MIE HTML XMP::SVG Palm Palm::MOBI Palm::EXTH Torrent EXE
+    SigmaRaw JPEG GIMP Jpeg2000 GIF BMP BMP::OS2 BMP::Extra BPG BPG::Extensions
+    PICT PNG MNG FLIF DjVu DPX OpenEXR MIFF PGF PSP PhotoCD Radiance PDF
+    PostScript Photoshop::Header Photoshop::Layers Photoshop::ImageData
+    FujiFilm::RAF FujiFilm::IFD Samsung::Trailer Sony::SRF2 Sony::SR2SubIFD
+    Sony::PMP ITC ID3 FLAC Ogg Vorbis APE APE::NewHeader APE::OldHeader Audible
+    MPC MPEG::Audio MPEG::Video MPEG::Xing M2TS QuickTime QuickTime::ImageFile
+    Matroska MOI MXF DV Flash Flash::FLV Real::Media Real::Audio Real::Metafile
+    RIFF AIFF ASF DICOM MIE HTML XMP::SVG Palm Palm::MOBI Palm::EXTH Torrent EXE
     EXE::PEVersion EXE::PEString EXE::MachO EXE::PEF EXE::ELF EXE::AR EXE::CHM
     LNK Font VCard VCard::VCalendar RSRC Rawzor ZIP ZIP::GZIP ZIP::RAR RTF OOXML
     iWork ISO FLIR::AFF FLIR::FPF

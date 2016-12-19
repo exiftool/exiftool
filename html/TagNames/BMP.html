@@ -15,26 +15,36 @@ of image related information.</p>
 <tr class=h><th>Index1</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>BMPVersion</td>
+<td class=c>N</td>
+<td><span class=s><span class=n>(this is actually the size of the BMP header, but used to determine the BMP
+version)</span>
+  <br>40 = Windows V3
+  <br>68 = AVI BMP structure?
+  <br>108 = Windows V4
+  <br>124 = Windows V5</span></td></tr>
+<tr class=b>
 <td class=r title='4 = 0x4'>4</td>
 <td>ImageWidth</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='8 = 0x8'>8</td>
 <td>ImageHeight</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='12 = 0xc'>12</td>
 <td>Planes</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='14 = 0xe'>14</td>
 <td>BitDepth</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='16 = 0x10'>16</td>
 <td>Compression</td>
 <td class=c>N</td>
@@ -46,29 +56,110 @@ of image related information.</p>
   <br>4 = JPEG
   <br>5 = PNG</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td class=r title='20 = 0x14'>20</td>
 <td>ImageLength</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='24 = 0x18'>24</td>
 <td>PixelsPerMeterX</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='28 = 0x1c'>28</td>
 <td>PixelsPerMeterY</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='32 = 0x20'>32</td>
 <td>NumColors</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='36 = 0x24'>36</td>
 <td>NumImportantColors</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='40 = 0x28'>40</td>
+<td>RedMask</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='44 = 0x2c'>44</td>
+<td>GreenMask</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='48 = 0x30'>48</td>
+<td>BlueMask</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='52 = 0x34'>52</td>
+<td>AlphaMask</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='56 = 0x38'>56</td>
+<td>ColorSpace</td>
+<td class=c>N</td>
+<td><table class=cols><tr>
+  <td>0 = Calibrated RGB
+  <br>1 = Device RGB
+  <br>2 = Device CMYK
+  <br>&#39;LINK&#39; = Linked Color Profile
+  <br>&#39;MBED&#39; = Embedded Color Profile
+  <br>&#39;Win &#39; = Windows Color Space
+  <br>&#39;sRGB&#39; = sRGB</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='60 = 0x3c'>60</td>
+<td>RedEndpoint</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='72 = 0x48'>72</td>
+<td>GreenEndpoint</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='84 = 0x54'>84</td>
+<td>BlueEndpoint</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='96 = 0x60'>96</td>
+<td>GammaRed</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='100 = 0x64'>100</td>
+<td>GammaGreen</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='104 = 0x68'>104</td>
+<td>GammaBlue</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='108 = 0x6c'>108</td>
+<td>RenderingIntent</td>
+<td class=c>N</td>
+<td><span class=s>1 = Graphic (LCS_GM_BUSINESS)
+  <br>2 = Proof (LCS_GM_GRAPHICS)
+  <br>4 = Picture (LCS_GM_IMAGES)
+  <br>8 = Absolute Colorimetric (LCS_GM_ABS_COLORIMETRIC)</span></td></tr>
+<tr class=b>
+<td class=r title='112 = 0x70'>112</td>
+<td>ProfileDataOffset</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='116 = 0x74'>116</td>
+<td>ProfileSize</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
@@ -81,30 +172,62 @@ of image related information.</p>
 <tr class=h><th>Index1</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>BMPVersion</td>
+<td class=c>N</td>
+<td><span class=s><span class=n>(again, the header size is used to determine the BMP version)</span>
+  <br>12 = OS/2 V1
+  <br>64 = OS/2 V2</span></td></tr>
+<tr class=b>
 <td class=r title='4 = 0x4'>4</td>
 <td>ImageWidth</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='6 = 0x6'>6</td>
 <td>ImageHeight</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='8 = 0x8'>8</td>
 <td>Planes</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='10 = 0xa'>10</td>
 <td>BitDepth</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='Extra'>BMP Extra Tags</a></h2>
+<p>Extra information extracted from some BMP images.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>EmbeddedJPG</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>EmbeddedPNG</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ICC_Profile</td>
+<td class=c>-</td>
+<td>--&gt; <a href='ICC_Profile.html'>ICC_Profile Tags</a></td></tr>
+<tr class=b>
+<td>LinkedProfileName</td>
+<td class=c>N</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jan 21, 2010</i>
+<br><i>Last revised Dec 7, 2016</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

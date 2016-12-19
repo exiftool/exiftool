@@ -16,6 +16,7 @@
 #               7) Kai Lappalainen private communication
 #               8) http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,5223.0.html
 #               9) Zilvinas Brobliauskas private communication
+#               10) Albert Shan private communication
 #               IB) Iliah Borg private communication (LibRaw)
 #               JD) Jens Duttke private communication
 #------------------------------------------------------------------------------
@@ -27,7 +28,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.54';
+$VERSION = '1.55';
 
 sub ProcessFujiDir($$$);
 sub ProcessFaceRec($$$);
@@ -219,6 +220,7 @@ my %faceCategories = (
     0x1010 => {
         Name => 'FujiFlashMode',
         Writable => 'int16u',
+        PrintHex => 1,
         PrintConv => {
             0 => 'Auto',
             1 => 'On',
@@ -226,6 +228,9 @@ my %faceCategories = (
             3 => 'Red-eye reduction',
             4 => 'External', #JD
             16 => 'Commander',
+            0xa920 => '1st Curtain (front)', #10 (EF-X500 flash)
+            0xc920 => '2nd Curtain (rear)', #10
+            0xe920 => 'High Speed Sync (HSS)', #10
         },
     },
     0x1011 => {

@@ -42,7 +42,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '1.98';
+$VERSION = '1.99';
 
 sub FixWrongFormat($);
 sub ProcessMOV($$;$);
@@ -6617,11 +6617,19 @@ sub ProcessMOV($$;$)
     # fill in missing defaults for alternate language tags
     # (the first language is taken as the default)
     if ($doDefaultLang and $$et{QTLang}) {
+QTLang:
         foreach $tag (@{$$et{QTLang}}) {
             next unless defined $$et{VALUE}{$tag};
             my $langInfo = $$et{TAG_INFO}{$tag} or next;
             my $tagInfo = $$langInfo{SrcTagInfo} or next;
-            next if defined $$et{VALUE}{$$tagInfo{Name}};
+            my $infoHash = $$et{TAG_INFO};
+            my $name = $$tagInfo{Name};
+            # loop through all instances of this tag name and generate the default-language
+            # version only if we don't already have a QuickTime tag with this name
+            my ($i, $key, $found);
+            for ($i=0, $key=$name; $$infoHash{$key}; ++$i, $key="$name ($i)") {
+                next QTLang if $et->GetGroup($key, 0) eq 'QuickTime';
+            }
             $et->FoundTag($tagInfo, $$et{VALUE}{$tag});
         }
         delete $$et{QTLang};

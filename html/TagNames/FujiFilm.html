@@ -138,12 +138,15 @@ necessarily correspond to the camera body number -- this needs to be checked)</s
 <td>FujiFlashMode</td>
 <td class=c>int16u</td>
 <td><table class=cols><tr>
-  <td>0 = Auto
-  <br>1 = On
-  <br>2 = Off</td><td>&nbsp;&nbsp;</td>
-  <td>3 = Red-eye reduction
-  <br>4 = External
-  <br>16 = Commander</td></tr></table>
+  <td>0x0 = Auto
+  <br>0x1 = On
+  <br>0x2 = Off
+  <br>0x3 = Red-eye reduction
+  <br>0x4 = External
+  <br>0x10 = Commander
+  <br>0xa920 = 1st Curtain (front)
+  <br>0xc920 = 2nd Curtain (rear)
+  <br>0xe920 = High Speed Sync (HSS)</td></tr></table>
 </td></tr>
 <tr class=b>
 <td title='0x1011 = 4113'>0x1011</td>
@@ -858,7 +861,7 @@ RAF-format information.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Nov 21, 2016</i>
+<br><i>Last revised Dec 6, 2016</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

@@ -109,7 +109,7 @@ sub Write(;$$%)
         $numbersFirst = -1 if $$table{VARS} and $$table{VARS}{ALPHA_FIRST};
         my @keys = sort NumbersFirst TagTableKeys($table);
         $numbersFirst = 1;
-        # loop throug all tag ID's in this table
+        # loop through all tag ID's in this table
         foreach $tagID (@keys) {
             my @infoArray = GetTagInfoList($table, $tagID);
             my $xmlID = Image::ExifTool::XMP::FullEscapeXML($tagID);

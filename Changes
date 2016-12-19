@@ -7,6 +7,18 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.36. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Dec. 19, 2016 - Version 10.37
+
+  - Decode more information from BMP V4 and V5 images
+  - Added a few new FujiFlashMode values (thanks Albert Shan)
+  - Changed -geotime default to use unconverted value of DateTimeOriginal
+  - Changed a couple of Sony Voigtlander LensType strings (thanks Jos Roost)
+  - Warn about invalid TAG name
+  - Generate default-language version of QuickTime tags even if the same-named
+    tag already exists in another group
+  - Fixed bug reading some Photoshop layer information
+  - Fixed problems in sample config file time_zone.config (thanks Hayo Baan)
+
 Nov. 24, 2016 - Version 10.36 (production release)
 
   - Added 3D Studio MAX files to the list of supported file types

@@ -28,7 +28,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD $iptcDigestInfo);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.50';
+$VERSION = '1.51';
 
 sub ProcessPhotoshop($$$);
 sub WritePhotoshop($$$);
@@ -617,17 +617,20 @@ sub ProcessLayers($$$)
     $raf->Read($data, $n) == $n or return 0;
     my $tot = $psb ? Get64u(\$data, 0) : Get32u(\$data, 0); # length of layer and mask info
     my $len = $psb ? Get64u(\$data, $psiz) : Get32u(\$data, $psiz); # length of layer info section
-    $et->VerboseDir('Layers', 0, $len);
-    my $num = Get16u(\$data, $psiz * 2);
+    my $num = Get16s(\$data, $psiz * 2);
     $num = -$num if $num < 0;       # (first channel is transparency data if negative)
     $et->HandleTag($tagTablePtr, _xcnt => $num); # LayerCount
     return 0 if $len > 100000000;   # set a reasonable limit on maximum size
+    $et->VerboseDir('Layers', $num, $len);
     my $dataPos = $raf->Tell();
     # read the layer information data
     $raf->Read($data, $len) == $len or return 0;
+    my $oldIndent = $$et{INDENT};
+    $$et{INDENT} .= '| ';
 
     my $pos = 0;
     for ($i=0; $i<$num; ++$i) {
+        $et->VPrint(0, $oldIndent.'+ [Layer '.($i+1)." of $num]\n");
         last if $pos + 18 > $len;
         # save the layer rectangle
         $et->HandleTag($tagTablePtr, _xrct => join(' ',ReadValue(\$data, $pos, 'int32u', 4, 16)));
@@ -646,7 +649,7 @@ sub ProcessLayers($$$)
         $n = Get8u(\$data, $pos);       # get length of layer name
         last if $pos + 1 + $n > $len;
         $et->HandleTag($tagTablePtr, _xnam => substr($data, $pos+1, $n)); # layer name
-        $n = ($n + 3) & 0xfffffffc;
+        $n = ($n + 4) & 0xfffffffc;     # +1 for length byte then pad to multiple of 4 bytes
         $pos += $n;
         # process additional layer info
         while ($pos + 12 <= $nxt) {
@@ -681,6 +684,7 @@ sub ProcessLayers($$$)
         }
         $pos = $nxt;
     }
+    $$et{INDENT} = $oldIndent;
     # seek to the end of this section
     return 0 unless $raf->Seek($dataPos - 2 - $psiz + $tot, 0);
     return 1;   # success!
@@ -858,6 +862,8 @@ sub ProcessPSD($$)
         # read layer and mask information section
         $dirInfo{RAF} = $raf;
         $tagTablePtr = GetTagTable('Image::ExifTool::Photoshop::Layers');
+        my $oldIndent = $$et{INDENT};
+        $$et{INDENT} .= '| ';
         if (ProcessLayers($et, \%dirInfo, $tagTablePtr) and
             # read compression mode from image data section
             $raf->Read($data,2) == 2)
@@ -869,6 +875,7 @@ sub ProcessPSD($$)
             $tagTablePtr = GetTagTable('Image::ExifTool::Photoshop::ImageData');
             $et->ProcessDirectory(\%dirInfo, $tagTablePtr);
         }
+        $$et{INDENT} = $oldIndent;
         # process trailers if they exist
         my $trailInfo = Image::ExifTool::IdentifyTrailer($raf);
         $et->ProcessTrailers($trailInfo) if $trailInfo;

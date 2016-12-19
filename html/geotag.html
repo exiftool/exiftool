@@ -192,8 +192,8 @@ DateTimeOriginal, CreateDate, ModifyDate, FileModifyDate</li>
 position is calculated (by interpolating between fixes in the GPS track log). 
 Unless a group is specified, exiftool writes the generated tags to the default
 groups.  If a value for <code>Geotime</code> is not given, it is taken from
-<code>DateTimeOriginal</code> for each image (as if
-<code>"-Geotime&lt;DateTimeOriginal"</code> had been specified), but the value
+unformatted value of <code>DateTimeOriginal</code> for each image (as if
+<code>"-Geotime&lt;DateTimeOriginal#"</code> had been specified), but the value
 may be copied from any other date/time tag or set directly from a date/time
 string.</p>
 
@@ -216,7 +216,7 @@ lines illustrating various aspects of the geotagging feature.</p>
 
 <blockquote class=lt><i>Programmers:  Note that <code>Geotime</code> must always
 be specified when geotagging via the API -- the default value of
-<code>DateTimeOriginal</code> is implemented by the application.</i>
+<code>DateTimeOriginal#</code> is implemented by the application.</i>
 </blockquote>
 
 <a name="Examples"></a>
@@ -224,8 +224,9 @@ be specified when geotagging via the API -- the default value of
 
 <p>Geotag all images in the "c:\images" directory from position information in a
 GPS track log ("c:\gps logs\track.log").  Since the <code>Geotime</code> time is
-not specified, the value of <code>DateTimeOriginal</code> is used.  Local system
-time is assumed unless <code>DateTimeOriginal</code> contains a timezone:</p>
+not specified, the value of <code>DateTimeOriginal#</code> is used.  Local
+system time is assumed unless <code>DateTimeOriginal#</code> contains a
+timezone:</p>
 
 <pre>exiftool -geotag "c:\gps logs\track.log" c:\images</pre>
 
@@ -654,7 +655,7 @@ forum post</a> for more useful tips about creating KML files.</p>
 
 <hr>
 <i>Created Apr. 2, 2009</i><br>
-<i>Last revised Nov. 23, 2016</i>
+<i>Last revised Dec. 6, 2016</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

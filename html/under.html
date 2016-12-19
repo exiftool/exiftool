@@ -58,9 +58,12 @@ translate numbers into words for better readability.  The <code>-lang</code>
 <code>-c</code> and <code>-d</code> (CoordFormat and DateFormat) options specify
 this formatting for GPS coordinates and date/time values.</li></ol>
 
-<ol start=2><li>The "<b>ValueConv</b>" value is a numerical value, suitable for
-use in calculations.  Typically, this value is converted to standard units (eg.
-degrees, meters, or seconds) to make calculations simpler.  This value is
+<ol start=2><li>For numerical values, the "<b>ValueConv</b>" value is a
+machine-readable value suitable for use in calculations, typically converted to
+standard units (eg. degrees, meters, or seconds).  For date/time values the
+standard EXIF date/time format is used ("YYYY:mm:dd HH:MM:SS" plus decimal
+seconds and time zone of they exist).  For tags which are a closed choice of
+string, this is the stored value of the string.  The ValueConv value is
 returned for all tags when the <code>-n</code> option is used, or for individual
 tags by suffixing the tag name with a <code>#</code> character.</li></ol>
 
@@ -82,13 +85,19 @@ gives the format of this binary data for writable tags.</li></ol>
 
 <blockquote><table class=norm>
 <tr><th>Tag</th><th>3.&nbsp;PrintConv</th><th>2.&nbsp;ValueConv</th><th>1.&nbsp;Raw</th><th>0.&nbsp;Binary</th></tr>
-<tr align='center'><td>Orientation</td><td>Horizontal (normal)</td><td>1</td><td>1</td><td><pre>00 01</pre></td></tr>
-<tr align='center'><td>GPSLatitude</td><td>45 deg 20' 11.00"</td><td>45.3363888888889</td><td>45 20 11<br>(45/1 20/1 11/1)</td>
+<tr align='center'><td>EXIF:Orientation</td><td>Horizontal (normal)</td><td>1</td><td>1</td><td><pre>00 01</pre></td></tr>
+<tr align='center'><td>EXIF:GPSLatitude</td><td>45 deg 20' 11.00"</td><td>45.3363888888889</td><td>45 20 11<br>(45/1 20/1 11/1)</td>
   <td><pre>00 00 00 2d 00 00 00 01<br>00 00 00 14 00 00 00 01<br>00 00 00 0b 00 00 00 01</pre></td></tr>
-<tr align='center'><td>ExposureTime</td><td>1/30</td><td>0.03333333333</td><td>0.03333333333<br>(1/30)</td>
+<tr align='center'><td>XMP:GPSLatitude</td><td>45 deg 20' 11.00"</td><td>45.3363888888889</td><td>45,20.183333N</td>
+  <td>"45,20.183333N"</td></tr>
+<tr align='center'><td>EXIF:ExposureTime</td><td>1/30</td><td>0.03333333333</td><td>0.03333333333<br>(1/30)</td>
   <td><pre>00 00 00 01 00 00 00 1e</pre></td></tr>
-<tr align='center'><td>ShutterSpeedValue</td><td>1/30</td><td>0.0333333334629176</td><td>4.90689059<br>(19868/4049)</td>
+<tr align='center'><td>EXIF:ShutterSpeedValue</td><td>1/30</td><td>0.0333333334629176</td><td>4.90689059<br>(19868/4049)</td>
   <td><pre>00 00 4d 9c 00 00 0f d1</pre></td></tr>
+<tr align='center'><td>EXIF:ModifyDate</td><td>(set by <code>-d</code> option)</td><td>2016:11:25 11:56:39</td><td>2016:11:25 11:56:39</td>
+  <td>"2016:11:25 11:56:39\0"</td></tr>
+<tr align='center'><td>XMP:ModifyDate</td><td>(set by <code>-d</code> option)</td><td>2016:11:25 11:56:39.00-05:00</td><td>2016-11-25T11:56:39.00-05:00</td>
+  <td>"2016-11-25T11:56:39.00-05:00"</td></tr>
 </table></blockquote>
 
 <a name="philophies"></a>
@@ -122,7 +131,7 @@ which have helped to influence the overall development:</p>
 
 <hr>
 <i>Created Jun. 24, 2009</i><br>
-<i>Last revised Dec. 24, 2013</i>
+<i>Last revised Nov. 25, 2016</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

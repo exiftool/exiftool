@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.94
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.38
 [File, System, Image] FileName - File Name: Panasonic.rw2
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 12 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2009:03:25 12:10:29-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:29 20:10:34-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:04:25 10:57:00-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2016:12:30 10:41:44-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:03:07 15:31:28-05:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: RW2
 [File, File, Image] FileTypeExtension - File Type Extension: rw2
@@ -111,6 +111,7 @@
 [EXIF, ExifIFD, Camera] 37385 - Flash: Off, Did not fire
 [EXIF, ExifIFD, Camera] 37386 - Focal Length: 5.1 mm
 [EXIF, ExifIFD, Image] 41728 - File Source: Digital Camera
+[EXIF, IFD1, Preview] ThumbnailImage - Thumbnail Image: (Binary data 28 bytes)
 [PanasonicRaw, PanasonicRaw, Other] 0 - Num WB Entries: 7
 [PanasonicRaw, PanasonicRaw, Other] 1 - WB Type 1: Fine Weather
 [PanasonicRaw, PanasonicRaw, Other] 2 - WB RGB Levels 1: 573 256 416
@@ -196,7 +197,6 @@
 [Composite, Composite, Camera] RedBalance - Red Balance: 2.1673
 [Composite, Composite, Camera] ScaleFactor35efl - Scale Factor To 35 mm Equivalent: 4.7
 [Composite, Composite, Image] ShutterSpeed - Shutter Speed: 1/250
-[Composite, Composite, Preview] ThumbnailImage - Thumbnail Image: (Binary data 28 bytes)
 [Composite, Composite, Camera] CircleOfConfusion - Circle Of Confusion: 0.006 mm
 [Composite, Composite, Image] FOV - Field Of View: 73.7 deg
 [Composite, Composite, Camera] FocalLength35efl - Focal Length: 5.1 mm (35 mm equivalent: 24.0 mm)

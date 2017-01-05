@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.94
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.38
 [File, System, Image] FileName - File Name: Ricoh2.jpg
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 3.1 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2006:09:29 19:47:55-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:29 20:10:57-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:04:25 10:57:00-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2016:12:30 10:42:02-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:03:07 15:31:55-05:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: JPEG
 [File, File, Image] FileTypeExtension - File Type Extension: jpg
@@ -85,6 +85,7 @@
 [EXIF, IFD1, Image] 296 - Resolution Unit: inches
 [EXIF, IFD1, Image] 513 - Thumbnail Offset: 2492
 [EXIF, IFD1, Image] 514 - Thumbnail Length: 28
+[EXIF, IFD1, Preview] ThumbnailImage - Thumbnail Image: (Binary data 28 bytes)
 [MakerNotes, Ricoh, Camera] 1 - Maker Note Type: Rdc
 [MakerNotes, Ricoh, Camera] 2 - Firmware Version: 22.19
 [MakerNotes, Ricoh, Camera] 5 - Internal Serial Number: 00000000000000012207000003100957
@@ -109,6 +110,5 @@
 [Composite, Composite, Image] ImageSize - Image Size: 8x8
 [Composite, Composite, Image] Megapixels - Megapixels: 0.000064
 [Composite, Composite, Image] ShutterSpeed - Shutter Speed: 1/1740
-[Composite, Composite, Preview] ThumbnailImage - Thumbnail Image: (Binary data 28 bytes)
 [Composite, Composite, Image] LightValue - Light Value: 15.4
 [Composite, Composite, Camera] FocalLength35efl - Focal Length: 5.7 mm

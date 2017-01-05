@@ -28,7 +28,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD $iptcDigestInfo);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.51';
+$VERSION = '1.52';
 
 sub ProcessPhotoshop($$$);
 sub WritePhotoshop($$$);
@@ -487,7 +487,13 @@ my %unicodeString = (
     # (tag ID's are for convenience only)
     _xcnt => { Name => 'LayerCount' },
     _xrct => { Name => 'LayerRectangles', List => 1 },
-    _xnam => { Name => 'LayerNames',      List => 1 },
+    _xnam => { Name => 'LayerNames',
+        List => 1,
+        ValueConv => q{
+            my $charset = $self->Options('CharsetPhotoshop') || 'Latin';
+            return $self->Decode($val, $charset);
+        },
+    },
     _xbnd => {
         Name => 'LayerBlendModes',
         List => 1,
@@ -522,7 +528,7 @@ my %unicodeString = (
            'lum '=> 'Luminosity',
         },
     },
-    _xopc  => { 
+    _xopc  => {
         Name => 'LayerOpacities',
         List => 1,
         ValueConv => '100 * $val / 255',
@@ -916,7 +922,7 @@ be preserved when copying Photoshop information via user-defined tags.
 
 =head1 AUTHOR
 
-Copyright 2003-2016, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2017, Phil Harvey (phil at owl.phy.queensu.ca)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.94
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.38
 [File, System, Image] FileName - File Name: Olympus_3_failed.jpg
 [File, System, Image] Directory - Directory: t
 [File, System, Image] FileSize - File Size: 4.3 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2015:04:30 07:42:49-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:30 07:42:49-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:04:30 07:42:49-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2016:12:30 10:42:33-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2016:12:30 10:42:33-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2016:12:30 10:42:33-05:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: JPEG
 [File, File, Image] FileTypeExtension - File Type Extension: jpg
@@ -56,6 +56,7 @@
 [EXIF, IFD1, Image] 296 - Resolution Unit: inches
 [EXIF, IFD1, Image] 513 - Thumbnail Offset: 1296
 [EXIF, IFD1, Image] 514 - Thumbnail Length: 28
+[EXIF, IFD1, Preview] ThumbnailImage - Thumbnail Image: (Binary data 28 bytes)
 [MakerNotes, Olympus, Camera] 512 - Special Mode: Normal, Sequence: 0, Panorama: (none)
 [MakerNotes, Olympus, Camera] 513 - Quality: SQ (Low)
 [MakerNotes, Olympus, Camera] 514 - Macro: On
@@ -68,14 +69,13 @@
 [MakerNotes, Olympus, Camera] Type - Camera Type: C2000Z
 [MakerNotes, Olympus, Camera] 521 - Camera ID: OLYMPUS DIGITAL CAMERA
 [MakerNotes, Olympus, Camera] 3840 - Data Dump: (Binary data 186 bytes)
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 9.94
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 10.38
 [XMP, XMP-tiff, Image] Software - Software: ExifTool
 [Composite, Composite, Image] Aperture - Aperture: 2.0
 [Composite, Composite, Image] ImageSize - Image Size: 8x8
 [Composite, Composite, Image] Megapixels - Megapixels: 0.000064
 [Composite, Composite, Camera] ScaleFactor35efl - Scale Factor To 35 mm Equivalent: 5.5
 [Composite, Composite, Image] ShutterSpeed - Shutter Speed: 1/30
-[Composite, Composite, Preview] ThumbnailImage - Thumbnail Image: (Binary data 28 bytes)
 [Composite, Composite, Camera] CircleOfConfusion - Circle Of Confusion: 0.005 mm
 [Composite, Composite, Image] FOV - Field Of View: 49.7 deg
 [Composite, Composite, Camera] FocalLength35efl - Focal Length: 7.0 mm (35 mm equivalent: 38.8 mm)

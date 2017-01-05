@@ -560,7 +560,7 @@ my %tagLookup = (
 	'af-spriorityselection' => { 243 => '1.2', 244 => '1.2', 246 => '1.4', 247 => '1.4', 251 => '0.2', 252 => '1.2', 253 => '0.2', 256 => '1.2' },
 	'afacceldeceltracking' => { 2 => 0x3 },
 	'afactivation' => { 243 => '2.1', 244 => '2.1', 246 => '78.3', 247 => '78.3', 252 => '2.1', 256 => '2.1' },
-	'afadjustment' => { 314 => 0x72 },
+	'afadjustment' => { 314 => 0x72, 323 => 0x267 },
 	'afandmeteringbuttons' => { 75 => 0x701 },
 	'afaperture' => { 194 => 0x5, 195 => 0x5 },
 	'afareaheight' => { 173 => 0x1a },
@@ -842,6 +842,7 @@ my %tagLookup = (
 	'approvedby' => { 420 => 'ApprovedBy' },
 	'approximatefnumber' => { 276 => 0x313, 282 => 0x3406 },
 	'approximatefocusdistance' => { 410 => 'ApproximateFocusDistance' },
+	'appversion' => { 422 => 'AppVersion' },
 	'aquahsl' => { 94 => 0x20913 },
 	'armidentifier' => { 118 => 0x78 },
 	'armversion' => { 118 => 0x7a },
@@ -4821,7 +4822,7 @@ my %tagLookup = (
 	'timeshot' => { 404 => 'TimeShot' },
 	'timesignature' => { 438 => 'timeSignature' },
 	'timesincepoweron' => { 280 => 0x29 },
-	'timestamp' => { 10 => 0x45e, 18 => 0x11c, 258 => 0x8, 272 => 'TimeStamp', 409 => 'Timestamp' },
+	'timestamp' => { 10 => 0x45e, 18 => 0x11c, 258 => 0x8, 272 => 'TimeStamp', 409 => 'Timestamp', 422 => 'TimeStamp' },
 	'timestamp1' => { 10 => 0x45a },
 	'timezone' => { 70 => 0x1, 228 => 0x0, 342 => 0xa },
 	'timezonecity' => { 70 => 0x2 },
@@ -5078,6 +5079,7 @@ my %tagLookup = (
 	'videoshottypeidentifier' => { 424 => [\'VideoShotType','VideoShotTypeIdentifier'] },
 	'videoshottypename' => { 424 => [\'VideoShotType','VideoShotTypeName'] },
 	'videostreamscount' => { 424 => 'videoStreamsCount' },
+	'viewfinder' => { 323 => 0x455 },
 	'viewfinderdisplay' => { 243 => '12.4', 244 => '6.3' },
 	'viewfinderwarning' => { 243 => '13.4', 253 => '3.5', 254 => '6.2', 257 => '4.4' },
 	'viewfinderwarnings' => { 75 => 0x40a },
@@ -5498,7 +5500,6 @@ my %tagExists = (
 	'applicationdata' => 1,
 	'applicationmissingmsg' => 1,
 	'applicationversion' => 1,
-	'appversion' => 1,
 	'archivallocation' => 1,
 	'archivedfilename' => 1,
 	'ardronefile' => 1,
@@ -9500,7 +9501,7 @@ Provides a fast, case insensitive lookup for tag names.
 
 =head1 AUTHOR
 
-Copyright 2003-2016, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2017, Phil Harvey (phil at owl.phy.queensu.ca)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

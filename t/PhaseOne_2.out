@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.17
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.38
 [File, System, Image] FileName - File Name: PhaseOne.iiq
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 3.3 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2015:12:17 10:49:08-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2016:05:06 08:21:44-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2016:05:03 13:37:55-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2015:12:17 14:25:00-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2016:12:29 11:25:02-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:12:17 14:25:01-05:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: IIQ
 [File, File, Image] FileTypeExtension - File Type Extension: iiq
@@ -57,6 +57,7 @@
 [EXIF, IFD1, Image] 283 - Y Resolution: 341.3333333
 [EXIF, IFD1, Image] 284 - Planar Configuration: Chunky
 [EXIF, IFD1, Image] 296 - Resolution Unit: inches
+[EXIF, IFD1, Preview] ThumbnailTIFF - Thumbnail TIFF: (Binary data 219 bytes)
 [MakerNotes, PhaseOne, Camera] 271 - Raw Data: (Binary data 15 bytes)
 [MakerNotes, PhaseOne, Camera] 256 - Camera Orientation: Horizontal (normal)
 [MakerNotes, PhaseOne, Camera] 264 - Sensor Width: 7372
@@ -94,6 +95,5 @@
 [Composite, Composite, Image] Megapixels - Megapixels: 40.1
 [Composite, Composite, Camera] RedBalance - Red Balance: 1.30548
 [Composite, Composite, Image] ShutterSpeed - Shutter Speed: 1/1250
-[Composite, Composite, Preview] ThumbnailTIFF - Thumbnail TIFF: (Binary data 219 bytes)
 [Composite, Composite, Camera] FocalLength35efl - Focal Length: 80.0 mm
 [Composite, Composite, Image] LightValue - Light Value: 15.3

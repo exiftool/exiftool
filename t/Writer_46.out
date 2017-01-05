@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.34
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.38
 [File, System, Image] FileName - File Name: Writer_46_failed.jpg
 [File, System, Image] Directory - Directory: t
-[File, System, Image] FileSize - File Size: 9.5 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2016:11:17 13:49:32-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2016:11:17 13:49:31-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2016:11:17 13:49:32-05:00
+[File, System, Image] FileSize - File Size: 9.7 kB
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2016:12:22 08:00:57-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2016:12:22 08:00:57-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2016:12:22 08:00:57-05:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: JPEG
 [File, File, Image] FileTypeExtension - File Type Extension: jpg
@@ -37,7 +37,7 @@
 [IPTC, IPTC, Other] 152 - Audio Sampling Resolution: 07
 [IPTC, IPTC, Other] 153 - Audio Duration: 000007
 [IPTC, IPTC, Other] 154 - Audio Outcue: 7
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 10.34
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 10.38
 [XMP, XMP-getty, Image] AssetID - Asset ID: 7
 [XMP, XMP-iptcExt, Author] AboutCvTermCvId - About Cv Term Cv Id: 7
 [XMP, XMP-iptcExt, Author] AboutCvTermCvTermId - About Cv Term Id: 7
@@ -80,6 +80,7 @@
 [XMP, XMP-creatorAtom, Image] aeProjectLinkRenderTimeStamp - Ae Project Link Render Time Stamp: 7
 [XMP, XMP-extensis, Image] Approved - Approved: True
 [XMP, XMP-extensis, Image] ApprovedBy - Approved By: 7
+[XMP, XMP-ics, Image] AppVersion - App Version: 7
 [XMP, XMP-pdf, Author] Author - Author: 7
 [XMP, XMP-photoshop, Author] AuthorsPosition - Authors Position: 7
 [XMP, XMP-prism, Document] acedemicField - Acedemic Field: 7

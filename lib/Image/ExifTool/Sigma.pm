@@ -19,7 +19,7 @@ use strict;
 use vars qw($VERSION %sigmaLensTypes);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.22';
+$VERSION = '1.23';
 
 # sigma LensType lookup (ref IB)
 %sigmaLensTypes = (
@@ -377,6 +377,7 @@ $VERSION = '1.22';
             OffsetPair => 0x001b,
             DataTag => 'PreviewImage',
             Writable => 'int32u',
+            WriteGroup => 'MakerNotes',
             Protected => 2,
         },{ # (written by Sigma Photo Pro)
             Name => 'ChrominanceNoiseReduction',
@@ -398,6 +399,7 @@ $VERSION = '1.22';
             OffsetPair => 0x001a,
             DataTag => 'PreviewImage',
             Writable => 'int32u',
+            WriteGroup => 'MakerNotes',
             Protected => 2,
         },{ # (written by Sigma Photo Pro)
             Name => 'LuminanceNoiseReduction',
@@ -424,6 +426,7 @@ $VERSION = '1.22';
             OffsetPair => 0x001d,
             DataTag => 'PreviewImage',
             Writable => 'int32u',
+            WriteGroup => 'MakerNotes',
             Protected => 2,
         },
     ],
@@ -442,6 +445,7 @@ $VERSION = '1.22';
             OffsetPair => 0x001c,
             DataTag => 'PreviewImage',
             Writable => 'int32u',
+            WriteGroup => 'MakerNotes',
             Protected => 2,
         },
     ],
@@ -739,7 +743,7 @@ Sigma and Foveon maker notes in EXIF information.
 
 =head1 AUTHOR
 
-Copyright 2003-2016, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2017, Phil Harvey (phil at owl.phy.queensu.ca)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

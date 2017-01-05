@@ -148,7 +148,7 @@ my %fixed2_30 = (
             1 => 'Device RGB',
             2 => 'Device CMYK',
             LINK => 'Linked Color Profile',
-            MBED => 'Embedded Color Profile',            
+            MBED => 'Embedded Color Profile',
             sRGB => 'sRGB',
             'Win ' => 'Windows Color Space',
         },
@@ -335,7 +335,7 @@ This module contains definitions required by Image::ExifTool to read BMP
 
 =head1 AUTHOR
 
-Copyright 2003-2016, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2017, Phil Harvey (phil at owl.phy.queensu.ca)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

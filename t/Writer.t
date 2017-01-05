@@ -1,7 +1,7 @@
 # Before "make install", this script should be runnable with "make test".
 # After "make install" it should work as "perl t/Writer.t".
 
-BEGIN { $| = 1; print "1..56\n"; $Image::ExifTool::noConfig = 1; }
+BEGIN { $| = 1; print "1..57\n"; $Image::ExifTool::noConfig = 1; }
 END {print "not ok 1\n" unless $loaded;}
 
 # test 1: Load the module(s)
@@ -195,7 +195,7 @@ my $testfile;
 {
     ++$testnum;
     my $exifTool = new Image::ExifTool;
-    $exifTool->Options('IgnoreMinorErrors' => 1);
+    $exifTool->Options(IgnoreMinorErrors => 1);
     $exifTool->SetNewValuesFromFile('t/images/Pentax.jpg');
     $testfile = "t/${testname}_${testnum}_failed.jpg";
     unlink $testfile;
@@ -964,7 +964,7 @@ my $testOK;
     print "ok $testnum\n";
 }
 
-# test 55-56: Create and edit EXV file
+# tests 55-56: Create and edit EXV file
 {
     ++$testnum;
     my $exifTool = new Image::ExifTool;
@@ -993,6 +993,62 @@ my $testOK;
     } else {
         print 'not ';
     }
+    print "ok $testnum\n";
+}
+
+# test 57: Test setting Composite PreviewImage using various groups
+{
+    ++$testnum;
+    my $ok = 1;
+    my $exifTool = new Image::ExifTool;
+    $exifTool->Options(IgnoreMinorErrors => 1);
+    my %try = (
+        'previewimage'              => 1,
+        'composite:previewimage'    => 0,   # (shouldn't be in the Composite group)
+        'composite:thumbnailimage'  => 0,
+        'composite:jpgfromraw'      => 0,
+        'composite:otherimage'      => 0,
+        'ifd0:previewimage'         => 1,
+        '0ifd0:previewimage'        => 0,
+        '1ifd0:previewimage'        => 1,
+        '2ifd0:previewimage'        => 0,
+        'exif:previewimage'         => 1,
+        '0exif:previewimage'        => 1,
+        '1exif:previewimage'        => 0,
+        '2exif:previewimage'        => 0,
+        'preview:previewimage'      => 1,
+        '0preview:previewimage'     => 0,
+        '1preview:previewimage'     => 0,
+        '2preview:previewimage'     => 1,
+        'makernotes:previewimage'   => 1,
+        '0makernotes:previewimage'  => 1,
+        '1makernotes:previewimage'  => 0,
+        '2makernotes:previewimage'  => 0,
+        'xxx:previewimage'          => 0,
+        '0xxx:previewimage'         => 0,
+        '1xxx:previewimage'         => 0,
+        '2xxx:previewimage'         => 0,
+        'ifd0:exif:preview:previewimage'    => 1,
+        '0ifd0:exif:preview:previewimage'   => 0,
+        '1ifd0:exif:preview:previewimage'   => 1,
+        '2ifd0:exif:preview:previewimage'   => 0,
+        'ifd0:0exif:preview:previewimage'   => 1,
+        'ifd0:1exif:preview:previewimage'   => 0,
+        'ifd0:2exif:preview:previewimage'   => 0,
+        'ifd0:exif:0preview:previewimage'   => 0,
+        'ifd0:exif:1preview:previewimage'   => 0,
+        'ifd0:exif:2preview:previewimage'   => 1,
+        '1ifd0:0exif:2preview:previewimage' => 1,
+        'exif:makernotes:previewimage'      => 1,   # (but wouldn't write anything)
+    );
+    my $tag;
+    foreach $tag (sort keys %try) {
+        my ($num, $err) = $exifTool->SetNewValue($tag => 'test');
+        next unless $num xor $try{$tag};
+        warn "\nError setting $tag\n";
+        $ok = 0;
+    }
+    print 'not ' unless $ok;
     print "ok $testnum\n";
 }
 

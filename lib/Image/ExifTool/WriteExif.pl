@@ -465,10 +465,14 @@ sub WriteExif($$$)
     $$dirInfo{Multi} = 1 if $dirName =~ /^(IFD0|SubIFD)$/ and not defined $$dirInfo{Multi};
     $inMakerNotes = 1 if $$tagTablePtr{GROUPS}{0} eq 'MakerNotes';
     my $ifd;
+
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # loop through each IFD
 #
     for ($ifd=0; ; ++$ifd) {  # loop through multiple IFD's
+
+        # make sure that Compression and SubfileType are defined for this IFD (for Condition's)
+        $$et{Compression} = $$et{SubfileType} = '';
 
         # save pointer to start of this IFD within the newData
         my $newStart = length($newData);
@@ -544,82 +548,11 @@ sub WriteExif($$$)
         # loop through new values and accumulate all information for this IFD
         my (%set, %mayDelete, $tagInfo);
         my $wrongDir = $crossDelete{$dirName};
-        foreach $tagInfo ($et->GetNewTagInfoList($tagTablePtr)) {
+        my @newTagInfo = $et->GetNewTagInfoList($tagTablePtr);
+        foreach $tagInfo (@newTagInfo) {
             my $tagID = $$tagInfo{TagID};
-            # evaluate conditional lists now if necessary
-            if (ref $$tagTablePtr{$tagID} eq 'ARRAY' or $$tagInfo{Condition}) {
-                my $curInfo = $et->GetTagInfo($tagTablePtr, $tagID);
-                if (defined $curInfo and not $curInfo) {
-                    # need value to evaluate the condition
-                    my $val = $et->GetNewValue($tagInfo);
-                    # must convert to binary for evaluating in Condition
-                    my $fmt = $$tagInfo{Writable} || $$tagInfo{Format};
-                    if ($fmt and defined $val) {
-                        $val = WriteValue($val, $fmt, $$tagInfo{Count});
-                    }
-                    if (defined $val) {
-                        $fmt or $fmt = 'undef';
-                        my $cnt = $$tagInfo{Count} || 1;
-                        # always use old format/count for Condition in maker notes
-                        if ($inMakerNotes) {
-                            for ($index=0; $index<$numEntries; ++$index) {
-                                my $entry = $dirStart + 2 + 12 * $index;
-                                my $id = Get16u($dataPt, $entry);
-                                if ($id eq $tagID) {
-                                    my $f = Get16u($dataPt, $entry + 2);
-                                    if ($formatName[$f]) {
-                                        $fmt = $formatName[$f];
-                                        $cnt = Get32u($dataPt, $entry + 4);
-                                    }
-                                    last;
-                                }
-                            }
-                        }
-                        $curInfo = $et->GetTagInfo($tagTablePtr, $tagID, \$val, $fmt, $cnt);
-                    } else {
-                        # may want to delete this, but we need to see the value first
-                        $mayDelete{$tagID} = 1;
-                    }
-                }
-                # don't set this tag unless valid for the current condition
-                next unless defined $curInfo and $curInfo eq $tagInfo;
-            }
-            if ($$tagInfo{WriteCondition}) {
-                my $self = $et;   # set $self to be used in eval
-                #### eval WriteCondition ($self)
-                unless (eval $$tagInfo{WriteCondition}) {
-                    $@ and warn $@;
-                    next;
-                }
-            }
-            my $nvHash = $et->GetNewValueHash($tagInfo, $dirName);
-            unless ($nvHash) {
-                next unless $wrongDir;
-                # delete stuff from the wrong directory if setting somewhere else
-                $nvHash = $et->GetNewValueHash($tagInfo, $wrongDir);
-                # don't cross delete if not overwriting
-                next unless $et->IsOverwriting($nvHash);
-                # don't cross delete if specifically deleting from the other directory
-                # (Note: don't call GetValue() here because it shouldn't be called
-                #  if IsOverwriting returns < 0 -- eg. when shifting)
-                next if not defined $$nvHash{Value} and $$nvHash{WantGroup} and
-                        lc($$nvHash{WantGroup}) eq lc($wrongDir);
-                # remove this tag if found in this IFD
-                $xDelete{$tagID} = 1;
-            }
-            if ($set{$tagID}) {
-                # this tag is being set twice, which can happen if two Condition's
-                # were true for this tag.  Hopefully the only case where this can
-                # happen is the MakerNotes tag since it may store two very different
-                # types of information (MakerNotes and PreviewImage), but we want
-                # to store the MakerNotes if both are available
-                if ($tagID == 0x927c and $dirName =~ /^(ExifIFD|IFD0)$/) {
-                    next if $$tagInfo{Name} eq 'PreviewImage';
-                } else {
-                    $et->Warn(sprintf("Multiple new values for $name tag 0x%.4x",$tagID));
-                }
-            }
-            $set{$tagID} = $tagInfo;
+            # must evaluate Condition later when we have all DataMember's available
+            $set{$tagID} = (ref $$tagTablePtr{$tagID} eq 'ARRAY' or $$tagInfo{Condition}) ? '' : $tagInfo;
         }
 
         # fix base offsets (some cameras incorrectly write maker notes in IFD0)
@@ -648,7 +581,7 @@ sub WriteExif($$$)
             # add mandatory tags if creating a new directory
             unless ($numEntries) {
                 foreach (keys %$mandatory) {
-                    $set{$_} or $set{$_} = $$tagTablePtr{$_};
+                    defined $set{$_} or $set{$_} = $$tagTablePtr{$_};
                 }
             }
         } else {
@@ -662,6 +595,7 @@ sub WriteExif($$$)
             #  because we allow out-of-order tags in MakerNote IFD's but our
             #  logic to add new tags relies on ordered entries)
             foreach (keys %set) {
+                next unless $set{$_};
                 my $perm = $set{$_}{Permanent};
                 push @newTags, $_ if defined $perm and not $perm;
             }
@@ -709,7 +643,7 @@ Entry:  for (;;) {
 # read next entry from existing directory
 #
                 if ($index < $numEntries) {
-                    $entry = $dirStart + 2 + 12 * $index;
+                   $entry = $dirStart + 2 + 12 * $index;
                     $oldID = Get16u($dataPt, $entry);
                     $readFormat = $oldFormat = Get16u($dataPt, $entry+2);
                     $readCount = $oldCount = Get32u($dataPt, $entry+4);
@@ -845,7 +779,7 @@ Entry:  for (;;) {
                                 # copy huge data blocks later instead of loading into memory
                                 $oldValue = ''; # dummy empty value
                                 # copy this value later unless writing a new value
-                                unless ($set{$oldID}) {
+                                unless (defined $set{$oldID}) {
                                     my $pad = $oldSize & 0x01 ? 1 : 0;
                                     # save block information to copy later (set directory offset later)
                                     $oldImageData = [$base+$valuePtr+$dataPos, $oldSize, $pad];
@@ -986,7 +920,7 @@ Entry:  for (;;) {
                 $isNew = 1;
             } elsif (not defined $newID) {
                 # maker notes will have no new tags defined
-                if ($set{$oldID}) {
+                if (defined $set{$oldID}) {
                     $newID = $oldID;
                     $isNew = 0;
                 } else {
@@ -1007,6 +941,78 @@ Entry:  for (;;) {
             if ($isNew >= 0) {
                 # add, edit or delete this tag
                 shift @newTags; # remove from list
+                my $curInfo = $set{$newID};
+                unless ($curInfo or $$addDirs{$newID}) {
+                    # we can finally get the specific tagInfo reference for this tag
+                    # (because we can now evaluate the Condition statement since all
+                    #  DataMember's have been obtained for tags up to this one)
+                    $curInfo = $et->GetTagInfo($tagTablePtr, $newID);
+                    if (defined $curInfo and not $curInfo) {
+                        # need value to evaluate the condition
+                        # (tricky because we need the tagInfo ref to get the value,
+                        #  so we must loop through all new tagInfo's...)
+                        foreach $tagInfo (@newTagInfo) {
+                            next unless $$tagInfo{TagID} == $newID;
+                            my $val = $et->GetNewValue($tagInfo);
+                            defined $val or $mayDelete{$newID} = 1, next;
+                            # must convert to binary for evaluating in Condition
+                            my $fmt = $$tagInfo{Writable} || $$tagInfo{Format};
+                            if ($fmt) {
+                                $val = WriteValue($val, $fmt, $$tagInfo{Count});
+                                defined $val or $mayDelete{$newID} = 1, next;
+                            }
+                            $curInfo = $et->GetTagInfo($tagTablePtr, $newID, \$val, $oldFormName, $oldCount);
+                            if ($curInfo) {
+                                last if $curInfo eq $tagInfo;
+                                undef $curInfo;
+                            }
+                        }
+                        # may want to delete this, but we need to see the old value first
+                        $mayDelete{$newID} = 1 unless $curInfo;
+                    }
+                    # don't set this tag unless valid for the current condition
+                    if ($curInfo and $$et{NEW_VALUE}{$curInfo}) {
+                        $set{$newID} = $curInfo;
+                    } else {
+                        next if $isNew > 0;
+                        $isNew = -1;
+                        undef $curInfo;
+                    }
+                }
+                if ($curInfo) {
+                    if ($$curInfo{WriteCondition}) {
+                        my $self = $et;   # set $self to be used in eval
+                        #### eval WriteCondition ($self)
+                        unless (eval $$curInfo{WriteCondition}) {
+                            $@ and warn $@;
+                            goto NoWrite;   # GOTO !
+                        }
+                    }
+                    my $nvHash;
+                    $nvHash = $et->GetNewValueHash($curInfo, $dirName) if $isNew >= 0;
+                    unless ($nvHash or defined $$mandatory{$newID}) {
+                        goto NoWrite unless $wrongDir;  # GOTO !
+                        # delete stuff from the wrong directory if setting somewhere else
+                        $nvHash = $et->GetNewValueHash($curInfo, $wrongDir);
+                        # don't cross delete if not overwriting
+                        goto NoWrite unless $et->IsOverwriting($nvHash);    # GOTO !
+                        # don't cross delete if specifically deleting from the other directory
+                        # (Note: don't call GetValue() here because it shouldn't be called
+                        #  if IsOverwriting returns < 0 -- eg. when shifting)
+                        if (not defined $$nvHash{Value} and $$nvHash{WantGroup} and
+                                lc($$nvHash{WantGroup}) eq lc($wrongDir))
+                        {
+                            goto NoWrite;   # GOTO !
+                        } else {
+                            # remove this tag if found in this IFD
+                            $xDelete{$newID} = 1;
+                        }
+                    }
+                } elsif (not $$addDirs{$newID}) {
+NoWrite:            next if $isNew > 0;
+                    delete $set{$newID};
+                    $isNew = -1;
+                }
                 if ($set{$newID}) {
 #
 # set the new tag value (or 'next' if deleting tag)
@@ -1141,8 +1147,12 @@ Entry:  for (;;) {
                             }
                             if ($verbose > 1) {
                                 $et->VerboseValue("- $dirName:$$newInfo{Name}", $val) unless $isNew;
-                                my $str = $nvHash ? '' : ' (mandatory)';
-                                $et->VerboseValue("+ $dirName:$$newInfo{Name}", $newVal, $str);
+                                if ($$newInfo{OffsetPair} and $newVal eq '4277010157') { # (0xfeedfeed)
+                                    print { $$et{OPTIONS}{TextOut} } "    + $dirName:$$newInfo{Name} = <tbd>\n";
+                                } else {
+                                    my $str = $nvHash ? '' : ' (mandatory)';
+                                    $et->VerboseValue("+ $dirName:$$newInfo{Name}", $newVal, $str);
+                                }
                             }
                         }
                     } else {
@@ -1276,7 +1286,7 @@ NoOverwrite:            next if $isNew > 0;
                         next;
                     }
                     my $saveOrder = GetByteOrder();
-                    if ($isNew >= 0 and $set{$newID}) {
+                    if ($isNew >= 0 and defined $set{$newID}) {
                         # we are writing a whole new maker note block
                         # --> add fixup information if necessary
                         my $nvHash = $et->GetNewValueHash($newInfo, $dirName);
@@ -1771,8 +1781,9 @@ NoOverwrite:            next if $isNew > 0;
                         if (ref $conv eq 'CODE') {
                             &$conv($val, $et);
                         } else {
-                            my ($self, $tag, $taginfo) = ($et, $$newInfo{Name}, $newInfo);
-                            #### eval RawConv ($self, $val, $tag, $tagInfo)
+                            my ($priority, @grps);
+                            my ($self, $tag, $tagInfo) = ($et, $$newInfo{Name}, $newInfo);
+                            #### eval RawConv ($self, $val, $tag, $tagInfo, $priority, @grps)
                             eval $conv;
                         }
                     } else {
@@ -2459,7 +2470,7 @@ This file contains routines to write EXIF metadata.
 
 =head1 AUTHOR
 
-Copyright 2003-2016, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2017, Phil Harvey (phil at owl.phy.queensu.ca)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

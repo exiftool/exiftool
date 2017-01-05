@@ -12,7 +12,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.45';
+$VERSION = '1.46';
 
 my %coordConv = (
     ValueConv    => 'Image::ExifTool::GPS::ToDegrees($val)',
@@ -307,6 +307,7 @@ my %coordConv = (
             when writing, time is stripped off if present, after adjusting date/time to
             UTC if time includes a timezone.  Format is YYYY:mm:dd
         },
+        RawConv => '$val =~ s/\0+$//; $val',
         ValueConv => 'Image::ExifTool::Exif::ExifDate($val)',
         ValueConvInv => '$val',
         # pull date out of any format date/time string
@@ -536,7 +537,7 @@ GPS (Global Positioning System) meta information in EXIF data.
 
 =head1 AUTHOR
 
-Copyright 2003-2016, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2017, Phil Harvey (phil at owl.phy.queensu.ca)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

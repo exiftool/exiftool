@@ -5,7 +5,7 @@
 #
 # URL:          http://owl.phy.queensu.ca/~phil/exiftool/
 #
-# Legal:        Copyright (c) 2003-2016, Phil Harvey (phil at owl.phy.queensu.ca)
+# Legal:        Copyright (c) 2003-2017, Phil Harvey (phil at owl.phy.queensu.ca)
 #               This library is free software; you can redistribute it and/or
 #               modify it under the same terms as Perl itself.
 #------------------------------------------------------------------------------
@@ -978,8 +978,8 @@ L</ExtractInfo>:
 Binary, Charset, CharsetEXIF, CharsetFileName, CharsetID3, CharsetIPTC,
 CharsetPhotoshop, CharsetQuickTime, Composite, ExtendedXMP, ExtractEmbedded,
 FastScan, FixBase, HtmlDump, HtmlDumpBase, IgnoreMinorErrors, Lang,
-LargeFileSupport, MakerNotes, NoPDFList, PNGEarlyXMP, ScanForXMP, Struct,
-TextOut, Unknown and Verbose.
+LargeFileSupport, MakerNotes, NoPDFList, PNGEarlyXMP, QuickTimeUTC (enforced
+1904 time zero), ScanForXMP, Struct, TextOut, Unknown and Verbose.
 
 =item Return Value:
 
@@ -1022,6 +1022,13 @@ a tag list reference is given) and StrictDate.
 Reference to information hash, the same as with L</ImageInfo>.
 
 =back
+
+The following options are effective in the call to L</GetInfo>:
+
+Charset, CoordFormat, DateFormat, Duplicates, Escape, Exclude, Filter,
+Group#, GlobalTimeShift, Lang, List, ListItem, ListSep, PrintConv,
+QuickTimeUTC (conversion to local time), Sort (if a tag list reference is
+given) and StrictDate.
 
 =head2 WriteInfo
 
@@ -1229,7 +1236,8 @@ optional group specifier), use L</GetInfo> instead.
 The following options are in effect when L</GetValue> is called:
 
 Charset, CoordFormat, DateFormat, Escape, Filter, GlobalTimeShift, Lang,
-List, ListItem, ListSep, PrintConv and StrictDate.
+List, ListItem, ListSep, PrintConv, QuickTimeUTC (conversion to local time),
+and StrictDate.
 
 =over 4
 
@@ -1483,7 +1491,7 @@ explicitly, either by group (with 'Adobe:*') or as a block (with 'Adobe').
 The following ExifTool options are effective in the call to L</SetNewValue>:
 
 Charset, DateFormat, Escape, IgnoreMinorErrors, Lang, ListSep, ListSplit,
-PrintConv, StrictDate, Verbose and WriteMode.
+PrintConv, QuickTimeUTC, StrictDate, Verbose and WriteMode.
 
 =head2 GetNewValue
 
@@ -2534,7 +2542,7 @@ specified by the L</Charset> option.
 
 =head1 AUTHOR
 
-Copyright 2003-2016, Phil Harvey
+Copyright 2003-2017, Phil Harvey
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

@@ -59,7 +59,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.31';
+$VERSION = '3.32';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -272,6 +272,7 @@ sub GetAFPointGrid($$;$);
     'A1 40 18 37 2C 34 A3 06' => 'AF-S DX Nikkor 10-24mm f/3.5-4.5G ED',
     'A2 48 5C 80 24 24 A4 0E' => 'AF-S Nikkor 70-200mm f/2.8G ED VR II',
     'A3 3C 29 44 30 30 A5 0E' => 'AF-S Nikkor 16-35mm f/4G ED VR',
+    'A4 48 5C 80 24 24 CF 0E' => 'AF-S Nikkor 70-200mm f/2.8E FL ED VR',
     'A4 54 37 37 0C 0C A6 06' => 'AF-S Nikkor 24mm f/1.4G ED',
     'A5 40 3C 8E 2C 3C A7 0E' => 'AF-S Nikkor 28-300mm f/3.5-5.6G ED VR',
     'A6 48 8E 8E 24 24 A8 0E' => 'AF-S VR Nikkor 300mm f/2.8G IF-ED II',
@@ -3471,6 +3472,7 @@ my %binaryDataAttrs = (
         OffsetPair => 0x202,
         DataTag => 'PreviewImage',
         Writable => 'int32u',
+        WriteGroup => 'MakerNotes',
         Protected => 2,
     },
     0x202 => {
@@ -3479,6 +3481,7 @@ my %binaryDataAttrs = (
         OffsetPair => 0x201,
         DataTag => 'PreviewImage',
         Writable => 'int32u',
+        WriteGroup => 'MakerNotes',
         Protected => 2,
     },
     0x213 => {
@@ -3543,7 +3546,7 @@ my %nikonFocalConversions = (
         Name => 'MaxApertureAtMaxFocal',
         %nikonApertureConversions,
     },
-    0x0c => 'MCUVersion', #8
+    0x0c => 'MCUVersion', #8 (MCU = Micro Controller Unit)
 );
 
 # Nikon lens data (note: needs decrypting if LensDataVersion is 020x)
@@ -3624,7 +3627,7 @@ my %nikonFocalConversions = (
         Name => 'MaxApertureAtMaxFocal',
         %nikonApertureConversions,
     },
-    0x11 => 'MCUVersion', #8
+    0x11 => 'MCUVersion', #8 (MCU = Micro Controller Unit)
     0x12 => { #8
         Name => 'EffectiveMaxAperture',
         %nikonApertureConversions,
@@ -3710,7 +3713,7 @@ my %nikonFocalConversions = (
         Name => 'MaxApertureAtMaxFocal',
         %nikonApertureConversions,
     },
-    0x12 => 'MCUVersion', #8
+    0x12 => 'MCUVersion', #8 (MCU = Micro Controller Unit)
     0x13 => { #8
         Name => 'EffectiveMaxAperture',
         %nikonApertureConversions,
@@ -6556,7 +6559,7 @@ my %nikonFocalConversions = (
         Format => 'string[4]',
         Writable => 0,
     },
-    4 => { 
+    4 => {
         Name => 'FlashSource',
         PrintConv => {
             0 => 'None',
@@ -7446,7 +7449,6 @@ my %nikonFocalConversions = (
 %Image::ExifTool::Nikon::Composite = (
     GROUPS => { 2 => 'Camera' },
     LensSpec => {
-        Description => 'Lens',
         Require => {
             0 => 'Nikon:Lens',
             1 => 'Nikon:LensType',
@@ -8129,7 +8131,7 @@ Nikon maker notes in EXIF information.
 
 =head1 AUTHOR
 
-Copyright 2003-2016, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2017, Phil Harvey (phil at owl.phy.queensu.ca)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

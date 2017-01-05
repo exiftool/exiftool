@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.17
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.38
 [File, System, Image] FileName - File Name: PhaseOne_3_failed.iiq
 [File, System, Image] Directory - Directory: t
 [File, System, Image] FileSize - File Size: 3.3 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2016:05:06 08:24:15-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2016:05:06 08:24:15-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2016:05:06 08:24:15-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2016:12:29 11:37:22-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2016:12:29 11:37:22-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2016:12:29 11:37:22-05:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: IIQ
 [File, File, Image] FileTypeExtension - File Type Extension: iiq
@@ -58,6 +58,7 @@
 [EXIF, IFD1, Image] 283 - Y Resolution: 341.3333333
 [EXIF, IFD1, Image] 284 - Planar Configuration: Chunky
 [EXIF, IFD1, Image] 296 - Resolution Unit: inches
+[EXIF, IFD1, Preview] ThumbnailTIFF - Thumbnail TIFF: (Binary data 219 bytes)
 [MakerNotes, PhaseOne, Camera] 271 - Raw Data: (Binary data 15 bytes)
 [MakerNotes, PhaseOne, Camera] 256 - Camera Orientation: Horizontal (normal)
 [MakerNotes, PhaseOne, Camera] 533 - Phase One 0x0215: 2
@@ -136,7 +137,7 @@
 [MakerNotes, PhaseOne, Camera] 1078 - Sensor Calibration 0x0436: 1836409916 1679849837 1046574177
 [MakerNotes, PhaseOne, Camera] 1079 - Sensor Calibration 0x0437: 1836409916 1679849837 1046574177
 [MakerNotes, PhaseOne, Camera] 1052 - Sensor Calibration 0x041c: 0.989000022411346 0.972000002861023
-[MakerNotes, PhaseOne, Camera] 1044 - Sensor Calibration 0x0414: II.‘Cà?8-xΩ©jÇª∆øO;‚;Å?.·Qº+¡‚;ø.ú<`Yy?"lp?€Öf=”.ñ;˜íFªÛq}?Â'U<ñÏÿª≤Ù°ºk`É?|,}?)Àx?#-e?
+[MakerNotes, PhaseOne, Camera] 1044 - Sensor Calibration 0x0414: 4 1.06456995010376 -0.060589998960495 -0.00398000003769994 0.00316999992355704 1.00963997840881 -0.012810000218451 0.00692000007256866 0.0190500002354383 0.974020004272461 0.939149975776672 0.0562799982726574 0.00457999994978309 -0.00303000002168119 0.990019977092743 0.0130099998787045 -0.00662000011652708 -0.0197700001299381 1.02637994289398 0.988960027694702 0.971849977970123 0.89521998167038
 [MakerNotes, PhaseOne, Camera] 1075 - Sensor Calibration 0x0433: 1836409916 1679849837 1046574177
 [MakerNotes, PhaseOne, Camera] 1024 - Sensor Defects: (Binary data 12 bytes)
 [MakerNotes, PhaseOne, Camera] 1040 - All Color Flat Field 2: (Binary data 12 bytes)
@@ -163,7 +164,6 @@
 [Composite, Composite, Image] ImageSize - Image Size: 7320x5484
 [Composite, Composite, Image] Megapixels - Megapixels: 40.1
 [Composite, Composite, Image] ShutterSpeed - Shutter Speed: 1/1250
-[Composite, Composite, Preview] ThumbnailTIFF - Thumbnail TIFF: (Binary data 219 bytes)
 [Composite, Composite, Camera] BlueBalance - Blue Balance: 1.41912
 [Composite, Composite, Image] LightValue - Light Value: 15.3
 [Composite, Composite, Camera] RedBalance - Red Balance: 1.30548

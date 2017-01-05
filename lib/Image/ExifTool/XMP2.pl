@@ -1161,6 +1161,8 @@ my %sSubVersion = (
     SubVersions => { Struct => \%sSubVersion, List => 'Bag' },
     SubVersionsVersRef => { Name => 'SubVersionReference', Flat => 1 },
     SubVersionsFileName => { Name => 'SubVersionFileName', Flat => 1 },
+    TimeStamp  => { Avoid => 1, Groups => { 2 => 'Time' }, %dateTimeInfo },
+    AppVersion => { Avoid => 1 },
 );
 
 # ACDSee namespace (acdsee) (ref PH)
@@ -1669,7 +1671,7 @@ This file contains definitions for less common XMP namespaces.
 
 =head1 AUTHOR
 
-Copyright 2003-2016, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2017, Phil Harvey (phil at owl.phy.queensu.ca)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

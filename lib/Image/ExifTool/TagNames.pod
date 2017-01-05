@@ -323,14 +323,14 @@ official EXIF 2.31 specification.
   0x0110   Model                     IFD0       string
   0x0111   StripOffsets              -          N
            PreviewImageStart         IFD0       int32u*
-           PreviewImageStart         SubIFD1    int32u*
+           PreviewImageStart         All        int32u*
            JpgFromRawStart           SubIFD2    int32u*
   0x0112   Orientation               IFD0       int16u
   0x0115   SamplesPerPixel           IFD0       int16u!
   0x0116   RowsPerStrip              IFD0       int32u!
   0x0117   StripByteCounts           -          N
            PreviewImageLength        IFD0       int32u*
-           PreviewImageLength        SubIFD1    int32u*
+           PreviewImageLength        All        int32u*
            JpgFromRawLength          SubIFD2    int32u*
   0x0118   MinSampleValue            IFD0       int16u
   0x0119   MaxSampleValue            IFD0       int16u
@@ -2312,6 +2312,7 @@ These tags belong to the ExifTool XMP-ics family 1 group.
 
   Tag Name                                      Writable
   --------                                      --------
+  AppVersion                                    string/
   ImageRef                                      string
   SubVersions                                   SubVersion Struct+
   SubVersionFileName                            string_+
@@ -2340,6 +2341,7 @@ These tags belong to the ExifTool XMP-ics family 1 group.
   LabelName6                                    string_+
   ParentReference6                              string_+
   Reference6                                    string_+
+  TimeStamp                                     date/
 
 =head3 XMP SubVersion Struct
 
@@ -13592,6 +13594,7 @@ These tags are extracted from the maker notes of Phase One images.
   0x0222   SplitColumn                          int32s
   0x0223   BlackLevelData                       int16u[n]
   0x0226   ColorMatrix2                         float[9]
+  0x0267   AFAdjustment                         float
   0x0301   FirmwareVersions                     string
   0x0400   ShutterSpeedValue                    float
   0x0401   ApertureValue                        float
@@ -13601,6 +13604,7 @@ These tags are extracted from the maker notes of Phase One images.
   0x0412   LensModel                            string
   0x0414   MaxApertureValue                     float
   0x0415   MinApertureValue                     float
+  0x0455   Viewfinder                           string
 
 =head3 PhaseOne SensorCalibration Tags
 
@@ -30695,7 +30699,7 @@ L<Image::ExifTool::BuildTagLookup|Image::ExifTool::BuildTagLookup>.
 
 =head1 AUTHOR
 
-Copyright 2003-2016, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2017, Phil Harvey (phil at owl.phy.queensu.ca)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

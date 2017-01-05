@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.94
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.38
 [File, System, Image] FileName - File Name: Panasonic.jpg
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 6.9 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2006:01:04 14:02:27-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:30 07:42:50-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:04:25 10:57:00-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2016:12:30 10:42:32-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:03:07 15:31:28-05:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: JPEG
 [File, File, Image] FileTypeExtension - File Type Extension: jpg
@@ -66,6 +66,7 @@
 [EXIF, IFD1, Image] 513 - Thumbnail Offset: 6822
 [EXIF, IFD1, Image] 514 - Thumbnail Length: 28
 [EXIF, IFD1, Image] 531 - Y Cb Cr Positioning: Co-sited
+[EXIF, IFD1, Preview] ThumbnailImage - Thumbnail Image: (Binary data 28 bytes)
 [MakerNotes, Panasonic, Camera] 1 - Image Quality: High
 [MakerNotes, Panasonic, Camera] 2 - Firmware Version: 0.1.0.8
 [MakerNotes, Panasonic, Camera] 3 - White Balance: Auto
@@ -93,7 +94,6 @@
 [Composite, Composite, Image] Megapixels - Megapixels: 0.000064
 [Composite, Composite, Camera] ScaleFactor35efl - Scale Factor To 35 mm Equivalent: 7.6
 [Composite, Composite, Image] ShutterSpeed - Shutter Speed: 1/400
-[Composite, Composite, Preview] ThumbnailImage - Thumbnail Image: (Binary data 28 bytes)
 [Composite, Composite, Camera] CircleOfConfusion - Circle Of Confusion: 0.004 mm
 [Composite, Composite, Image] FOV - Field Of View: 54.4 deg
 [Composite, Composite, Camera] FocalLength35efl - Focal Length: 4.6 mm (35 mm equivalent: 35.0 mm)

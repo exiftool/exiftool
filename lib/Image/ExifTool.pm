@@ -8,7 +8,7 @@
 # Revisions:    Nov. 12/2003 - P. Harvey Created
 #               (See html/history.html for revision history)
 #
-# Legal:        Copyright (c) 2003-2016, Phil Harvey (phil at owl.phy.queensu.ca)
+# Legal:        Copyright (c) 2003-2017, Phil Harvey (phil at owl.phy.queensu.ca)
 #               This library is free software; you can redistribute it and/or
 #               modify it under the same terms as Perl itself.
 #------------------------------------------------------------------------------
@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '10.37';
+$VERSION = '10.38';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -186,7 +186,7 @@ my %writeTypes; # lookup for writable file types (hash filled if required)
 
 # file extensions that we can't write for various base types
 %noWriteFile = (
-    TIFF => [ qw(3FR DCR K25 KDC) ],
+    TIFF => [ qw(3FR DCR K25 KDC SRF) ],
     XMP  => [ 'SVG' ],
     JP2  => [ 'J2C', 'JPC' ],
 );
@@ -998,7 +998,8 @@ my %systemTagsNotes = (
         Groups => { 1 => 'System' },
         Notes => q{
             absolute path of source file. Not generated unless specifically requested or
-            the RequestAll API option is set
+            the RequestAll API option is set.  Does not support Windows Unicode file
+            names
         },
     },
     TestName => {
@@ -1315,6 +1316,7 @@ my %systemTagsNotes = (
         Groups => { 2 => 'Preview' },
         Writable => 1,
         WriteCheck => '$self->CheckImage(\$val)',
+        WriteGroup => 'All',
         # can't delete, so set to empty string and return no error
         DelCheck => '$val = ""; return undef',
         # accept either scalar or scalar reference
@@ -6466,7 +6468,7 @@ sub DoProcessTIFF($$;$)
         # update FileType if necessary now that we know more about the file
         if ($$self{DNGVersion} and $$self{VALUE}{FileType} ne 'DNG') {
             # override whatever FileType we set since we now know it is DNG
-            $self->OverrideFileType('DNG');
+            $self->OverrideFileType($$self{TIFF_TYPE} = 'DNG');
         }
         return 1;
     }
@@ -6757,8 +6759,7 @@ sub ProcessDirectory($$$;$)
         $$self{PROCESSED}{$addr} = $dirName;
     }
     my $oldOrder = GetByteOrder();
-    my $oldIndent = $$self{INDENT};
-    my $oldDir = $$self{DIR_NAME};
+    my @save = @$self{'INDENT','DIR_NAME','Compression','SubfileType'};
     $$self{LIST_TAGS} = { };    # don't build lists across different directories
     $$self{INDENT} .= '| ';
     $$self{DIR_NAME} = $dirName;
@@ -6768,8 +6769,7 @@ sub ProcessDirectory($$$;$)
     my $rtnVal = &$proc($self, $dirInfo, $tagTablePtr);
 
     pop @{$$self{PATH}};
-    $$self{INDENT} = $oldIndent;
-    $$self{DIR_NAME} = $oldDir;
+    @$self{'INDENT','DIR_NAME','Compression','SubfileType'} = @save;
     SetByteOrder($oldOrder);
     return $rtnVal;
 }
@@ -7015,8 +7015,9 @@ sub HandleTag($$$$;%)
                 if (ref $conv eq 'CODE') {
                     $val = &$conv($val, $self);
                 } else {
+                    my ($priority, @grps);
                     # NOTE: RawConv is evaluated in Writer.pl and twice in ExifTool.pm
-                    #### eval RawConv ($self, $val, $tag, $tagInfo)
+                    #### eval RawConv ($self, $val, $tag, $tagInfo, $priority, @grps)
                     $val = eval $conv;
                     $@ and $evalWarning = $@;
                 }
@@ -7070,11 +7071,12 @@ sub HandleTag($$$$;%)
 # Inputs: 0) ExifTool object reference
 #         1) reference to tagInfo hash or tag name
 #         2) data value (or reference to require hash if Composite)
+#         3) optional family 0 group, 4) optional family 1 group
 # Returns: tag key or undef if no value
 sub FoundTag($$$)
 {
     local $_;
-    my ($self, $tagInfo, $value) = @_;
+    my ($self, $tagInfo, $value, @grps) = @_;
     my ($tag, $noListDel);
 
     if (ref $tagInfo eq 'HASH') {
@@ -7094,6 +7096,8 @@ sub FoundTag($$$)
         $priority = $$tagInfo{Table}{PRIORITY};
         $priority = 0 if not defined $priority and $$tagInfo{Avoid};
     }
+    $grps[0] or $grps[0] = $$self{SET_GROUP0};
+    $grps[1] or $grps[1] = $$self{SET_GROUP1};
     my $valueHash = $$self{VALUE};
     if ($$tagInfo{RawConv}) {
         # initialize @val for use in Composite RawConv expressions
@@ -7109,7 +7113,7 @@ sub FoundTag($$$)
         } else {
             my $val = $value;   # do this so eval can use $val
             # NOTE: RawConv is also evaluated in Writer.pl
-            #### eval RawConv ($self, $val, $tag, $tagInfo, $priority)
+            #### eval RawConv ($self, $val, $tag, $tagInfo, $priority, @grps)
             $value = eval $conv;
             $@ and $evalWarning = $@;
         }
@@ -7198,8 +7202,8 @@ sub FoundTag($$$)
     $$self{FILE_ORDER}{$tag} = ++$$self{NUM_FOUND};
     $$self{TAG_INFO}{$tag} = $tagInfo;
     # set dynamic groups 0, 1 and 3 if necessary
-    $$self{TAG_EXTRA}{$tag}{G0} = $$self{SET_GROUP0} if $$self{SET_GROUP0};
-    $$self{TAG_EXTRA}{$tag}{G1} = $$self{SET_GROUP1} if $$self{SET_GROUP1};
+    $$self{TAG_EXTRA}{$tag}{G0} = $grps[0] if $grps[0];
+    $$self{TAG_EXTRA}{$tag}{G1} = $grps[1] if $grps[1];
     if ($$self{DOC_NUM}) {
         $$self{TAG_EXTRA}{$tag}{G3} = $$self{DOC_NUM};
         if ($$self{DOC_NUM} =~ /^(\d+)/) {

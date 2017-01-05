@@ -894,8 +894,8 @@ $success = $exifTool-&gt;<b>ExtractInfo</b>('image.jpg', \%options);
 Binary, Charset, CharsetEXIF, CharsetFileName, CharsetID3, CharsetIPTC,
 CharsetQuickTime, Composite, ExtendedXMP, ExtractEmbedded, FastScan,
 FixBase, HtmlDump, HtmlDumpBase, IgnoreMinorErrors, Lang, LargeFileSupport,
-MakerNotes, NoPDFList, PNGEarlyXMP, ScanForXMP, Struct, SystemTags, TextOut,
-Unknown and Verbose.
+MakerNotes, NoPDFList, PNGEarlyXMP, QuickTimeUTC (enforced 1904 time zero),
+ScanForXMP, Struct, SystemTags, TextOut, Unknown and Verbose.
 </blockquote>
 
 <hr><h2><a name="GetInfo">GetInfo</a></h2>
@@ -936,8 +936,9 @@ $info = $exifTool-&gt;<b>GetInfo</b>({Group2 =&gt; ['Author', 'Location']});
 <p>The following options are effective in the call to <a href="#GetInfo">GetInfo</a>:</p>
 <blockquote>
 Charset, CoordFormat, DateFormat, Duplicates, Escape, Exclude, Filter, Group#,
-GlobalTimeShift, Lang, List, ListItem, ListSep, PrintConv, Sort (if a tag
-list reference is given) and StrictDate.
+GlobalTimeShift, Lang, List, ListItem, ListSep, PrintConv, QuickTimeUTC
+(conversion to local time), Sort (if a tag list reference is given) and
+StrictDate.
 </blockquote>
 
 <hr><h2><a name="WriteInfo">WriteInfo</a></h2>
@@ -1154,7 +1155,8 @@ my @keywords = $exifTool-&gt;<b>GetValue</b>('Keywords', 'ValueConv');
 called:</p>
 <blockquote>
 Charset, CoordFormat, DateFormat, Escape, Filter, GlobalTimeShift, Lang, List,
-ListItem, ListSep, PrintConv and StrictDate.
+ListItem, ListSep, PrintConv, QuickTimeUTC (conversion to local time) and
+StrictDate.
 </blockquote>
 
 <hr><h2><a name="SetNewValue">SetNewValue</a></h2>
@@ -1365,7 +1367,7 @@ group (with '<code>Adobe:*</code>') or as a block (with '<code>Adobe</code>').</
 <a href="#SetNewValue">SetNewValue</a>:</p>
 <blockquote>
 Charset, DateFormat, Escape, IgnoreMinorErrors, Lang, ListSep, ListSplit,
-PrintConv, StrictDate, Verbose and WriteMode.
+PrintConv, QuickTimeUTC, StrictDate, Verbose and WriteMode.
 </blockquote>
 
 <hr><h2><a name="GetNewValue">GetNewValue</a><a name="GetNewValues"></a></h2>

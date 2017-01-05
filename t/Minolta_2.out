@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.94
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.38
 [File, System, Image] FileName - File Name: Minolta.jpg
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 13 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2006:01:04 14:02:27-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:29 20:10:32-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:04:25 10:57:00-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2016:12:30 10:41:42-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:03:07 15:31:22-05:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: JPEG
 [File, File, Image] FileTypeExtension - File Type Extension: jpg
@@ -67,6 +67,7 @@
 [EXIF, IFD1, Image] 513 - Thumbnail Offset: 13224
 [EXIF, IFD1, Image] 514 - Thumbnail Length: 28
 [EXIF, IFD1, Image] 531 - Y Cb Cr Positioning: Centered
+[EXIF, IFD1, Preview] ThumbnailImage - Thumbnail Image: (Binary data 28 bytes)
 [MakerNotes, Minolta, Camera] 0 - Maker Note Version: MLT0
 [MakerNotes, Minolta, Camera] 1 - Exposure Mode: Program
 [MakerNotes, Minolta, Camera] 2 - Flash Mode: Fill flash
@@ -118,15 +119,14 @@
 [MakerNotes, Minolta, Camera] 64 - Compressed Image Size: 2396300
 [MakerNotes, Minolta, Camera] 136 - Preview Image Start: 13042
 [MakerNotes, Minolta, Camera] 137 - Preview Image Length: 26
+[MakerNotes, Minolta, Preview] PreviewImage - Preview Image: (Binary data 26 bytes)
 [PrintIM, PrintIM, Printing] PrintIMVersion - PrintIM Version: 0100
 [PrintIM, PrintIM, Printing] PrintIMVersion - PrintIM Version: 0250
 [Composite, Composite, Image] Aperture - Aperture: 5.6
 [Composite, Composite, Image] ImageSize - Image Size: 8x8
 [Composite, Composite, Image] Megapixels - Megapixels: 0.000064
-[Composite, Composite, Preview] PreviewImage - Preview Image: (Binary data 26 bytes)
 [Composite, Composite, Camera] ScaleFactor35efl - Scale Factor To 35 mm Equivalent: 3.9
 [Composite, Composite, Image] ShutterSpeed - Shutter Speed: 1/180
-[Composite, Composite, Preview] ThumbnailImage - Thumbnail Image: (Binary data 28 bytes)
 [Composite, Composite, Camera] CircleOfConfusion - Circle Of Confusion: 0.008 mm
 [Composite, Composite, Image] DOF - Depth Of Field: 0.19 m (1.91 - 2.10 m)
 [Composite, Composite, Image] FOV - Field Of View: 12.0 deg (0.42 m)

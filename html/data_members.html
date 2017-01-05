@@ -44,6 +44,9 @@ value.</p>
 
 <tr><td>CHECK_WARN</td><td>Used to return CHECK_PROC warnings</td></tr>
 
+<tr><td>Compression</td><td>Compression for current EXIF IFD (or '' if no Compression tag).
+    Valid only in EXIF directories for tags after 0x0103.</td></tr>
+    
 <tr><td>CUR_LANG</td><td>Hash reference for localized language lookup corresponding
     to current 'Lang' options setting.</td></tr>
 
@@ -236,6 +239,9 @@ value.</p>
 <tr><td>SET_GROUP1</td><td>Value to use for family 1 group name when new tags
     are found.  May start with a '+' sign to add to existing group name</td></tr>
 
+<tr><td>SubfileType</td><td>SubfileType for current EXIF IFD (or '' if no SubfileType tag).
+    Valid only in EXIF directories for tags after 0x00fe.</td></tr>
+    
 <tr><td>TAG_EXTRA</td><td>Hash of extra tag information keyed by tag key.  Current extra
 information may include:
     <table class='clear'>

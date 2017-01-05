@@ -85,7 +85,7 @@ sub ProcessSerialData($$$);
 sub ProcessFilters($$$);
 sub SwapWords($);
 
-$VERSION = '3.69';
+$VERSION = '3.70';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -6684,6 +6684,7 @@ my %ciMaxFocal = (
         Name => 'PreviewImageLength',
         OffsetPair => 5,   # point to associated offset
         DataTag => 'PreviewImage',
+        WriteGroup => 'MakerNotes',
         Protected => 2,
     },
     3 => 'PreviewImageWidth',
@@ -6693,6 +6694,7 @@ my %ciMaxFocal = (
         Flags => 'IsOffset',
         OffsetPair => 2,  # associated byte count tagID
         DataTag => 'PreviewImage',
+        WriteGroup => 'MakerNotes',
         Protected => 2,
     },
     # NOTE: The size of the PreviewImageInfo structure is incorrectly
@@ -8886,7 +8888,7 @@ Canon maker notes in EXIF information.
 
 =head1 AUTHOR
 
-Copyright 2003-2016, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2017, Phil Harvey (phil at owl.phy.queensu.ca)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

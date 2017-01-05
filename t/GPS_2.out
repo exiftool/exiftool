@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.94
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.38
 [File, System, Image] FileName - File Name: GPS.jpg
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 2.1 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2008:10:14 11:39:46-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:29 20:10:28-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:04:25 10:57:00-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2016:12:30 10:42:02-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:03:07 15:31:15-05:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: JPEG
 [File, File, Image] FileTypeExtension - File Type Extension: jpg
@@ -67,6 +67,7 @@
 [EXIF, IFD1, Image] 296 - Resolution Unit: inches
 [EXIF, IFD1, Image] 513 - Thumbnail Offset: 1050
 [EXIF, IFD1, Image] 514 - Thumbnail Length: 28
+[EXIF, IFD1, Preview] ThumbnailImage - Thumbnail Image: (Binary data 28 bytes)
 [IPTC, IPTC, Other] 0 - Application Record Version: 2
 [IPTC, IPTC, Other] 120 - Caption-Abstract: Communications
 [IPTC, IPTC, Author] 122 - Writer-Editor: Ian Britton
@@ -92,5 +93,4 @@
 [Composite, Composite, Image] ImageSize - Image Size: 120x80
 [Composite, Composite, Image] Megapixels - Megapixels: 0.010
 [Composite, Composite, Image] ShutterSpeed - Shutter Speed: 1/724
-[Composite, Composite, Preview] ThumbnailImage - Thumbnail Image: (Binary data 28 bytes)
 [Composite, Composite, Camera] FocalLength35efl - Focal Length: 0.0 mm

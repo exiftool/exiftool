@@ -194,10 +194,16 @@ my %exifDirs = (
     subifd       => 'SubIFD',
     globparamifd => 'GlobParamIFD',
     interopifd   => 'InteropIFD',
-    makernotes   => 'MakerNotes',
     previewifd   => 'PreviewIFD', # (in MakerNotes)
     metaifd      => 'MetaIFD', # Kodak APP3 Meta
+    makernotes   => 'MakerNotes',
 );
+# valid family 0 groups when WriteGroup is set to "All"
+my %allFam0 = (
+    exif         => 1,
+    makernotes   => 1,
+);
+
 # min/max values for integer formats
 my %intRange = (
     'int8u'  => [0, 0xff],
@@ -207,6 +213,8 @@ my %intRange = (
     'int16s' => [-0x8000, 0x7fff],
     'int32u' => [0, 0xffffffff],
     'int32s' => [-0x80000000, 0x7fffffff],
+    'int64u' => [0, 18446744073709551615],
+    'int64s' => [-9223372036854775808, 9223372036854775807],
 );
 # lookup for file types with block-writable EXIF
 my %blockExifTypes = map { $_ => 1 } qw(JPEG PNG JP2 MIE EXIF FLIF);
@@ -451,6 +459,37 @@ sub SetNewValue($;$$%)
             $editGroup = 1;             # don't create new groups
         }
     }
+    my ($ifdName, $mieGroup, $movGroup, $fg);
+    # set family 1 group names
+    foreach $fg (@wantGroup) {
+        next if defined $$fg[0] and $$fg[0] != 1;
+        $_ = $$fg[1];
+        # set $ifdName if this group is a valid IFD or SubIFD name
+        my $grpName;
+        if (/^IFD(\d+)$/i) {
+            $grpName = $ifdName = "IFD$1";
+        } elsif (/^SubIFD(\d+)$/i) {
+            $grpName = $ifdName = "SubIFD$1";
+        } elsif (/^Version(\d+)$/i) {
+            $grpName = $ifdName = "Version$1"; # Sony IDC VersionIFD
+        } elsif ($exifDirs{$_}) {
+            $grpName = $exifDirs{$_};
+            $ifdName = $grpName unless $ifdName and $allFam0{$_};
+        } elsif ($allFam0{$_}) {
+            $grpName = $allFam0{$_};
+        } elsif (/^Track(\d+)$/i) {
+            $grpName = $movGroup = "Track$1";  # QuickTime track
+        } elsif (/^MIE(\d*-?)(\w+)$/i) {
+            $grpName = $mieGroup = "MIE$1" . ucfirst(lc($2));
+        } elsif (not $ifdName and /^XMP\b/i) {
+            # must load XMP table to set group1 names
+            my $table = GetTagTable('Image::ExifTool::XMP::Main');
+            my $writeProc = $$table{WRITE_PROC};
+            $writeProc and &$writeProc();
+        }
+        # fix case for known groups
+        $wantGroup =~ s/$grpName/$grpName/i if $grpName and $grpName ne $_;
+    }
 #
 # get list of tags we want to set
 #
@@ -495,7 +534,8 @@ sub SetNewValue($;$$%)
         }
         unless ($listOnly) {
             if (not TagExists($tag)) {
-                $err = "Tag '$origTag' is not supported";
+                my $pre = $wantGroup ? $wantGroup . ':' : '';
+                $err = "Tag '$pre$origTag' is not defined";
                 $err .= ' or has a bad language code' if $origTag =~ /-/;
             } elsif ($langCode) {
                 $err = "Tag '$tag' does not support alternate languages";
@@ -513,32 +553,6 @@ sub SetNewValue($;$$%)
     }
     # get group name that we're looking for
     my $foundMatch = 0;
-    my ($ifdName, $mieGroup, $movGroup, $fg);
-    # set family 1 group names
-    foreach $fg (@wantGroup) {
-        next if $$fg[0] and $$fg[0] != 1;
-        $_ = $$fg[1];
-        # set $ifdName if this group is a valid IFD or SubIFD name
-        if (/^IFD(\d+)$/i) {
-            $ifdName = "IFD$1";
-        } elsif (/^SubIFD(\d+)$/i) {
-            $ifdName = "SubIFD$1";
-        } elsif (/^Version(\d+)$/i) {
-            $ifdName = "Version$1"; # Sony IDC VersionIFD
-        } elsif (/^Track(\d+)$/i) {
-            $movGroup = "Track$1";  # QuickTime track
-        } elsif (/^MIE(\d*-?)(\w+)$/i) {
-            $mieGroup = "MIE$1" . ucfirst(lc($2));
-        } else {
-            $ifdName = $exifDirs{$_} if $exifDirs{$_};
-            if (not $ifdName and /^XMP\b/i) {
-                # must load XMP table to set group1 names
-                my $table = GetTagTable('Image::ExifTool::XMP::Main');
-                my $writeProc = $$table{WRITE_PROC};
-                $writeProc and &$writeProc();
-            }
-        }
-    }
 #
 # determine the groups for all tags found, and the tag with
 # the highest priority group
@@ -553,23 +567,40 @@ TAG: foreach $tagInfo (@matchingTags) {
         $highestPriority{$lcTag} = -999 unless defined $highestPriority{$lcTag};
         my ($priority, $writeGroup);
         if ($wantGroup) {
+            # a WriteGroup of All is special
+            my $wgAll = ($$tagInfo{WriteGroup} and $$tagInfo{WriteGroup} eq 'All');
             my @grp = $self->GetGroup($tagInfo);
             foreach $fg (@wantGroup) {
                 my ($fam, $lcWant) = @$fg;
                 $lcWant = $translateWantGroup{$lcWant} if $translateWantGroup{$lcWant};
                 # only set tag in specified group
                 if (not defined $fam) {
-                    next if $lcWant eq lc $grp[0] or $lcWant eq lc $grp[2];
+                    if ($lcWant eq lc $grp[0]) {
+                        # don't go to more generate write group of "All"
+                        # if something more specific was wanted
+                        $writeGroup = $grp[0] if $wgAll and not $writeGroup;
+                        next;
+                    }
+                    next if $lcWant eq lc $grp[2];
                 } elsif ($fam != 1 and not $$tagInfo{AllowGroup}) {
                     next if $lcWant eq lc $grp[$fam];
+                    if ($wgAll and not $fam and $allFam0{$lcWant}) {
+                        $writeGroup or $writeGroup = $allFam0{$lcWant};
+                        next;
+                    }
                     next TAG;   # wrong group
                 }
                 # handle family 1 groups specially
-                if ($grp[0] eq 'EXIF' or $grp[0] eq 'SonyIDC') {
-                    next TAG unless $ifdName and $lcWant eq lc($ifdName);
-                    # can't yet write PreviewIFD tags
-                    $ifdName eq 'PreviewIFD' and ++$foundMatch, next TAG;
-                    $writeGroup = $ifdName;  # write to the specified IFD
+                if ($grp[0] eq 'EXIF' or $grp[0] eq 'SonyIDC' or $wgAll) {
+                    unless ($ifdName and $lcWant eq lc $ifdName) {
+                        next TAG unless $wgAll and not $fam and $allFam0{$lcWant};
+                        $writeGroup = $allFam0{$lcWant} unless $writeGroup;
+                        next;
+                    }
+                    next TAG if $wgAll and $allFam0{$lcWant} and $fam;
+                    # can't yet write PreviewIFD tags (except for image)
+                    $lcWant eq 'PreviewIFD' and ++$foundMatch, next TAG;
+                    $writeGroup = $ifdName; # write to the specified IFD
                 } elsif ($grp[0] eq 'QuickTime' and $grp[1] eq 'Track#') {
                     next TAG unless $movGroup and $lcWant eq lc($movGroup);
                     $writeGroup = $movGroup;
@@ -586,7 +617,7 @@ TAG: foreach $tagInfo (@matchingTags) {
                     next TAG unless $lcWant eq lc $grp[1];
                 }
             }
-            $writeGroup or $writeGroup = $grp[0];
+            $writeGroup or $writeGroup = ($$tagInfo{WriteGroup} || $grp[0]);
             $priority = 1000; # highest priority since group was specified
         }
         ++$foundMatch;
@@ -605,7 +636,9 @@ TAG: foreach $tagInfo (@matchingTags) {
         next unless $writable or ($$table{WRITABLE} and
             not defined $writable and not $$tagInfo{SubDirectory});
         # set specific write group (if we didn't already)
-        if (not $writeGroup or $translateWriteGroup{$writeGroup}) {
+        if (not $writeGroup or ($translateWriteGroup{$writeGroup} and
+            (not $$tagInfo{WriteGroup} or $$tagInfo{WriteGroup} ne 'All')))
+        {
             # use default write group
             $writeGroup = $$tagInfo{WriteGroup} || $$tagInfo{Table}{WRITE_GROUP};
             # use group 0 name if no WriteGroup specified
@@ -848,9 +881,14 @@ TAG: foreach $tagInfo (@matchingTags) {
             $self->GetNewValueHash($tagInfo, $writeGroup, 'delete', $options{ProtectSaved});
             # also delete related tag previous new values
             if ($$tagInfo{WriteAlso}) {
-                my $wtag;
+                my ($wgrp, $wtag);
+                if ($$tagInfo{WriteGroup} and $$tagInfo{WriteGroup} eq 'All' and $writeGroup) {
+                    $wgrp = $writeGroup . ':';
+                } else {
+                    $wgrp = '';
+                }
                 foreach $wtag (keys %{$$tagInfo{WriteAlso}}) {
-                    my ($n,$e) = $self->SetNewValue($wtag, undef, Replace=>2);
+                    my ($n,$e) = $self->SetNewValue($wgrp . $wtag, undef, Replace=>2);
                     $numSet += $n;
                 }
             }
@@ -984,7 +1022,12 @@ WriteAlso:
         # also write related tags
         my $writeAlso = $$tagInfo{WriteAlso};
         if ($writeAlso) {
-            my ($wtag, $n);
+            my ($wgrp, $wtag, $n);
+            if ($$tagInfo{WriteGroup} and $$tagInfo{WriteGroup} eq 'All' and $writeGroup) {
+                $wgrp = $writeGroup . ':';
+            } else {
+                $wgrp = '';
+            }
             local $SIG{'__WARN__'} = \&SetWarning;
             foreach $wtag (keys %$writeAlso) {
                 my %opts = (
@@ -1002,7 +1045,7 @@ WriteAlso:
                 my $v = eval $$writeAlso{$wtag};
                 $@ and $evalWarning = $@;
                 unless ($evalWarning) {
-                    ($n,$evalWarning) = $self->SetNewValue($wtag, $v, %opts);
+                    ($n,$evalWarning) = $self->SetNewValue($wgrp . $wtag, $v, %opts);
                     $numSet += $n;
                     # count this as being set if any related tag is set
                     $prioritySet = 1 if $n and $$pref{$tagInfo};
@@ -1023,7 +1066,7 @@ WriteAlso:
     if (defined $err and not $prioritySet) {
         warn "$err\n" if $err and not wantarray;
     } elsif (not $numSet) {
-        my $pre = $wantGroup ? ($ifdName || $wantGroup) . ':' : '';
+        my $pre = $wantGroup ? $wantGroup . ':' : '';
         if ($wasProtected) {
             $verbose = 0;   # we already printed this verbose message
             unless ($options{Replace} and $options{Replace} == 2) {
@@ -1045,7 +1088,7 @@ WriteAlso:
             } elsif ($foundMatch) {
                 $err = "Sorry, $pre$tag is not writable";
             } else {
-                $err = "Tag '$pre$tag' is not supported";
+                $err = "Tag '$pre$tag' is not defined";
             }
         }
         if ($err) {
@@ -1524,7 +1567,7 @@ GNV_TagInfo:    foreach $tagInfo (@tagInfoList) {
             if (ref($conv) eq 'CODE') {
                 $val = &$conv($val, $self);
             } else {
-                #### eval RawConvInv ($self, $val, $taginfo)
+                #### eval RawConvInv ($self, $val, $tagInfo)
                 $val = eval $conv;
                 $@ and $evalWarning = $@;
             }
@@ -2149,7 +2192,7 @@ sub WriteInfo($$;$$)
     # don't return success code if any error occurred
     if ($rtnVal > 0) {
         if ($outType and $type and $outType ne $type) {
-            $self->Error("Can't create $outType file from $type"); 
+            $self->Error("Can't create $outType file from $type");
         } elsif (not Tell($outRef) and not $$self{VALUE}{Error}) {
             # don't write a file with zero length
             if (defined $hdr and length $hdr) {
@@ -3050,8 +3093,9 @@ sub IsOverwriting($$;$)
         if (ref $conv eq 'CODE') {
             $val = &$conv($val, $self);
         } else {
+            my ($priority, @grps);
             my $tag = $$tagInfo{Name};
-            #### eval RawConv ($self, $val, $tag, $tagInfo)
+            #### eval RawConv ($self, $val, $tag, $tagInfo, $priority, @grps)
             $val = eval $conv;
             $@ and $evalWarning = $@;
         }
@@ -3129,9 +3173,9 @@ sub GetNewValueHash($$;$$$)
 
     if ($writeGroup) {
         # find the new value in the list with the specified write group
-        # (QuickTime is a special case because all group1 tags may be updated at once)
+        # (QuickTime and All are special cases because all group1 tags may be updated at once)
         while ($nvHash and $$nvHash{WriteGroup} ne $writeGroup and
-            $$nvHash{WriteGroup} ne 'QuickTime')
+            $$nvHash{WriteGroup} !~ /^(QuickTime|All)$/)
         {
             $nvHash = $$nvHash{Next};
         }
@@ -3634,14 +3678,15 @@ sub WriteDirectory($$$;$)
                 $out and print $out "  Deleting $dirName\n";
                 # delete the duplicate directory (don't recreate it when writing new
                 # tags to prevent propagating a duplicate IFD in cases like when the
-                # same ExifIFD exists in both IFD0 and IFD1) 
-                return ''; 
+                # same ExifIFD exists in both IFD0 and IFD1)
+                return '';
             }
         } else {
             $$self{PROCESSED}{$addr} = $dirName;
         }
     }
     my $oldDir = $$self{DIR_NAME};
+    my @save = @$self{'Compression','SubfileType'};
     my $name;
     if ($out) {
         $name = ($dirName eq 'MakerNotes' and $$dirInfo{TagInfo}) ?
@@ -3661,6 +3706,7 @@ sub WriteDirectory($$$;$)
     # nothing changed if error occurred or nothing was created
     $$self{CHANGED} = $oldChanged unless defined $newData and (length($newData) or $isRewriting);
     $$self{DIR_NAME} = $oldDir;
+    @$self{'Compression','SubfileType'} = @save;
     SetByteOrder($saveOrder);
     print $out "  Deleting $name\n" if $out and defined $newData and not length $newData;
     return $newData;
@@ -5792,7 +5838,7 @@ sub CheckImage($$)
     if (length($$valPtr) and $$valPtr!~/^\xff\xd8/ and not
         $self->Options('IgnoreMinorErrors'))
     {
-        return '[minor] Not a valid image';
+        return '[Minor] Not a valid image';
     }
     return undef;
 }
@@ -6263,7 +6309,7 @@ used routines.
 
 =head1 AUTHOR
 
-Copyright 2003-2016, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2017, Phil Harvey (phil at owl.phy.queensu.ca)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

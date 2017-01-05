@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.25
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.38
 [File, System, Image] FileName - File Name: Canon1DmkIII.jpg
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 8.1 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2008:01:18 14:10:05-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2016:08:03 07:47:44-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2016:07:27 09:11:56-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2016:12:30 10:41:32-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:03:07 15:31:02-05:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: JPEG
 [File, File, Image] FileTypeExtension - File Type Extension: jpg
@@ -62,6 +62,7 @@
 [EXIF, IFD1, Image] 296 - Resolution Unit: inches
 [EXIF, IFD1, Image] 513 - Thumbnail Offset: 8060
 [EXIF, IFD1, Image] 514 - Thumbnail Length: 28
+[EXIF, IFD1, Preview] ThumbnailImage - Thumbnail Image: (Binary data 28 bytes)
 [MakerNotes, Canon, Camera] 1 - Macro Mode: Normal
 [MakerNotes, Canon, Camera] 2 - Self Timer: Off
 [MakerNotes, Canon, Camera] 3 - Quality: Fine
@@ -345,7 +346,6 @@
 [Composite, Composite, Time] SubSecCreateDate - Create Date: 2007:02:22 17:02:42.81
 [Composite, Composite, Time] SubSecDateTimeOriginal - Date/Time Original: 2007:02:22 17:02:42.81
 [Composite, Composite, Time] SubSecModifyDate - Modify Date: 2007:02:22 17:02:42.81
-[Composite, Composite, Preview] ThumbnailImage - Thumbnail Image: (Binary data 28 bytes)
 [Composite, Composite, Camera] WB_RGGBLevels - WB RGGB Levels: 2275 1024 1024 1357
 [Composite, Composite, Camera] BlueBalance - Blue Balance: 1.325195
 [Composite, Composite, Camera] CircleOfConfusion - Circle Of Confusion: 0.023 mm

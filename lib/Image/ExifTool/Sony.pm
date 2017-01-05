@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.49';
+$VERSION = '2.50';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -136,7 +136,6 @@ my %sonyLensTypes2 = (
     50493 => 'Sigma 17-70mm F2.8-4 DC MACRO OS HSM | C 013 + MC-11', #JR
     50495 => 'Sigma 50-100mm F1.8 DC HSM | A 016 + MC-11', #JR
 
-    50992 => 'Voigtlander SUPER WIDE-HELIAR 15mm F4.5 III', #JR
     50993 => 'Voigtlander HELIAR-HYPER WIDE 10mm F5.6', #IB
     50994 => 'Voigtlander ULTRA WIDE-HELIAR 12mm F5.6 III', #IB
 
@@ -544,6 +543,7 @@ my %meterInfo2 = (
     0x0115 => { #JD
         Name => 'WhiteBalance',
         Writable => 'int32u',
+        Priority => 2, # (more reliable for the RX100)
         PrintHex => 1,
         PrintConv => {
             0x00 => 'Auto',
@@ -2041,6 +2041,7 @@ my %meterInfo2 = (
         OffsetPair => 0x202,
         DataTag => 'PreviewImage',
         Writable => 'int32u',
+        WriteGroup => 'MakerNotes',
         Protected => 2,
         Notes => 'a small 320x200 preview image',
     },
@@ -2049,6 +2050,7 @@ my %meterInfo2 = (
         OffsetPair => 0x201,
         DataTag => 'PreviewImage',
         Writable => 'int32u',
+        WriteGroup => 'MakerNotes',
         Protected => 2,
     },
 );
@@ -7813,9 +7815,8 @@ my %pictureProfile2010 = (
         # 1.40: SEL1635Z, SEL24240, SEL35F14Z, SELP28135G, Zeiss Loxia 35mm/50mm Ver.01, Zeiss Touit Ver.02
         # 1.41: SELP18105G Ver.02
         # 1.50: SEL28F20, SEL90M28G, Zeiss Batis 18mm/25mm/85mm, Zeiss Loxia 21mm, Zeiss Loxia 35mm/50mm Ver.02
-        # 1.60: SEL85F14GM, SEL2470GM, SEL70200GM, SEL50F18F, SEL50F14Z, SEL50M28, SEL70300G, Sigma 30mm F1.4 DC DN,
-        #       Sigma MC-11, Voigtlander SUPER WIDE-HELIAR 15mm F4.5 III
-        # 1.70: Voigtlander HELIAR-HYPER WIDE 10mm F5.6, ULTRA WIDE-HELIAR 12mm F5.6 III, Zeiss Loxia 85mm
+        # 1.60: SEL85F14GM, SEL2470GM, SEL70200GM, SEL50F18F, SEL50F14Z, SEL50M28, SEL70300G, Sigma 30mm F1.4 DC DN, Sigma MC-11
+        # 1.70: Voigtlander ULTRA WIDE-HELIAR 12mm F5.6 III
     },
     0x0015 => {
         Name => 'LensFirmwareVersion',
@@ -9763,7 +9764,7 @@ Minolta.
 
 =head1 AUTHOR
 
-Copyright 2003-2016, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2017, Phil Harvey (phil at owl.phy.queensu.ca)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

@@ -42,7 +42,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '1.99';
+$VERSION = '2.00';
 
 sub FixWrongFormat($);
 sub ProcessMOV($$;$);
@@ -743,6 +743,7 @@ my %graphicsMode = (
 %Image::ExifTool::QuickTime::Preview = (
     PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
     WRITE_PROC => \&Image::ExifTool::WriteBinaryData,
+    CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     GROUPS => { 2 => 'Image' },
     FORMAT => 'int16u',
     0 => {
@@ -824,6 +825,7 @@ my %graphicsMode = (
 %Image::ExifTool::QuickTime::MovieHeader = (
     PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
     WRITE_PROC => \&Image::ExifTool::WriteBinaryData,
+    CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     GROUPS => { 2 => 'Video' },
     FORMAT => 'int32u',
     DATAMEMBER => [ 0, 1, 2, 3, 4 ],
@@ -949,6 +951,7 @@ my %graphicsMode = (
 %Image::ExifTool::QuickTime::TrackHeader = (
     PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
     WRITE_PROC => \&Image::ExifTool::WriteBinaryData,
+    CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     GROUPS => { 1 => 'Track#', 2 => 'Video' },
     FORMAT => 'int32u',
     DATAMEMBER => [ 0, 1, 2, 5 ],
@@ -4989,6 +4992,7 @@ my %graphicsMode = (
 %Image::ExifTool::QuickTime::MediaHeader = (
     PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
     WRITE_PROC => \&Image::ExifTool::WriteBinaryData,
+    CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     GROUPS => { 1 => 'Track#', 2 => 'Video' },
     FORMAT => 'int32u',
     DATAMEMBER => [ 0, 1, 2, 3, 4 ],
@@ -6617,8 +6621,7 @@ sub ProcessMOV($$;$)
     # fill in missing defaults for alternate language tags
     # (the first language is taken as the default)
     if ($doDefaultLang and $$et{QTLang}) {
-QTLang:
-        foreach $tag (@{$$et{QTLang}}) {
+QTLang: foreach $tag (@{$$et{QTLang}}) {
             next unless defined $$et{VALUE}{$tag};
             my $langInfo = $$et{TAG_INFO}{$tag} or next;
             my $tagInfo = $$langInfo{SrcTagInfo} or next;
@@ -6626,7 +6629,7 @@ QTLang:
             my $name = $$tagInfo{Name};
             # loop through all instances of this tag name and generate the default-language
             # version only if we don't already have a QuickTime tag with this name
-            my ($i, $key, $found);
+            my ($i, $key);
             for ($i=0, $key=$name; $$infoHash{$key}; ++$i, $key="$name ($i)") {
                 next QTLang if $et->GetGroup($key, 0) eq 'QuickTime';
             }
@@ -6667,7 +6670,7 @@ information from QuickTime and MP4 video, and M4A audio files.
 
 =head1 AUTHOR
 
-Copyright 2003-2016, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2017, Phil Harvey (phil at owl.phy.queensu.ca)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

@@ -184,9 +184,10 @@ official EXIF 2.31 specification.
   <br>PreviewImageStart
   <br>JpgFromRawStart</td>
 <td class=c title=' * = Protected'>N<br>int32u*<br>int32u*<br>int32u*</td>
-<td class=c>-<br>IFD0<br>SubIFD1<br>SubIFD2</td>
-<td><span class=s><span class=n>(PreviewImageStart in IFD0 of CR2 images and SubIFD1 of DNG images, and
-JpgFromRawStart in SubIFD2 of DNG images)</span></span></td></tr>
+<td class=c>-<br>IFD0<br>All<br>SubIFD2</td>
+<td><span class=s><span class=n>(called StripOffsets in most locations, but it is PreviewImageStart in IFD0
+of CR2 images and various IFD&#39;s of DNG images except for SubIFD2 where it is
+JpgFromRawStart)</span></span></td></tr>
 <tr class=b>
 <td title='0x0112 = 274'>0x0112</td>
 <td><u>Orientation</u></td>
@@ -221,9 +222,10 @@ JpgFromRawStart in SubIFD2 of DNG images)</span></span></td></tr>
   <br>PreviewImageLength
   <br>JpgFromRawLength</td>
 <td class=c title=' * = Protected'>N<br>int32u*<br>int32u*<br>int32u*</td>
-<td class=c>-<br>IFD0<br>SubIFD1<br>SubIFD2</td>
-<td><span class=s><span class=n>(PreviewImageLength in IFD0 of CR2 images and SubIFD1 of DNG images, and
-JpgFromRawLength in SubIFD2 of DNG images)</span></span></td></tr>
+<td class=c>-<br>IFD0<br>All<br>SubIFD2</td>
+<td><span class=s><span class=n>(called StripByteCounts in most locations, but it is PreviewImageLength in
+IFD0 of CR2 images and various IFD&#39;s of DNG images except for SubIFD2 where
+it is JpgFromRawLength)</span></span></td></tr>
 <tr class=b>
 <td title='0x0118 = 280'>0x0118</td>
 <td>MinSampleValue</td>
@@ -3476,7 +3478,7 @@ these unless they already exist in the file)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Oct 5, 2016</i>
+<br><i>Last revised Jan 5, 2017</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

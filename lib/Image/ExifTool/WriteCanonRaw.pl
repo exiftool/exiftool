@@ -174,7 +174,7 @@ sub CheckCanonRaw($$$)
     my $tagName = $$tagInfo{Name};
     if ($tagName eq 'JpgFromRaw' or $tagName eq 'ThumbnailImage') {
         unless ($$valPtr =~ /^\xff\xd8/ or $et->Options('IgnoreMinorErrors')) {
-            return '[minor] Not a valid image';
+            return '[Minor] Not a valid image';
         }
     } else {
         my $format = $$tagInfo{Format};
@@ -623,7 +623,7 @@ files, and would lead to far fewer problems with corrupted metadata.
 
 =head1 AUTHOR
 
-Copyright 2003-2016, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2017, Phil Harvey (phil at owl.phy.queensu.ca)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

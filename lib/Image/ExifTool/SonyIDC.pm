@@ -13,7 +13,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.05';
+$VERSION = '1.06';
 
 # Sony IDC tags (ref PH)
 %Image::ExifTool::SonyIDC::Main = (
@@ -237,6 +237,7 @@ $VERSION = '1.05';
         },
         # extract all preview images (not just one)
         RawConv => q{
+            @grps = $self->GetGroup($$val{0});
             require Image::ExifTool::SonyIDC;
             Image::ExifTool::SonyIDC::ExtractPreviews($self);
         },
@@ -287,7 +288,7 @@ sub ExtractPreviews($)
                 });
             }
             my $val = Image::ExifTool::Exif::ExtractImage($et, $off, $len, $tag);
-            $et->FoundTag($tag, $val);
+            $et->FoundTag($tag, $val, $et->GetGroup($key));
         } else {
             $preview = Image::ExifTool::Exif::ExtractImage($et, $off, $len, 'IDCPreviewImage');
         }
@@ -318,7 +319,7 @@ write Sony Image Data Converter version 3.0 metadata in ARW images.
 
 =head1 AUTHOR
 
-Copyright 2003-2016, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2017, Phil Harvey (phil at owl.phy.queensu.ca)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

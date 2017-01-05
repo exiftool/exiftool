@@ -198,7 +198,6 @@ is an explanation of the meaning of each special key:
                   Note that for certain types errors, the response is to delete
                   the entire IFD from the image.
 
-
     ALPHA_FIRST   Sort alphabetical tags before numerical in documentation.
 
     LONG_TAGS     Suppress "Long tags" warning when generating documentation.
@@ -486,23 +485,24 @@ numerical.
                   which are done later only if the value is requested).  May be
                   a scalar expression using $val (the Raw tag value), $self (the
                   current ExifTool object), $tag (the tag key), $tagInfo
-                  (reference to the tag information hash), and $priority (to
-                  dyanmically set the priority of a tag), or a code reference
-                  with $val and $self as arguments.  For Composite tags, $val is
-                  a reference to a hash of source ("derived from") tag names,
-                  and @val may be used to access the Raw values of these tags.
-                  The returned value may be a scalar which is used as the new
-                  Raw value, a scalar reference to a binary data value, a hash
-                  reference for Composite tags, an ARRAY reference for a list of
-                  values, or undefined to indicate that the tag should be
-                  ignored.  If RawConv is specified for a Composite tag, then
-                  ValueConv and PrintConv evals will no longer have access to
-                  the source @val and @prt values unless the input $val is
-                  returned.  RawConv may generate Warning or Error tags, while
-                  ValueConv and PrintConv should not (see ValueConv note below).
-                  Note: RawConv should only be used if necessary (in general,
-                  only if the conversion may return undef to ignore the tag, or
-                  if a Warning may be issued) because ValueConv is more
+                  (reference to the tag information hash), $priority (to
+                  dynamically set the priority of a tag), and @grps (to
+                  dynamically set the family and/or groups), or a code
+                  reference with $val and $self as arguments.  For Composite
+                  tags, $val is a reference to a hash of source ("derived from")
+                  tag names, and @val may be used to access the Raw values of
+                  these tags. The returned value may be a scalar which is used
+                  as the new Raw value, a scalar reference to a binary data
+                  value, a hash reference for Composite tags, an ARRAY reference
+                  for a list of values, or undefined to indicate that the tag
+                  should be ignored.  If RawConv is specified for a Composite
+                  tag, then ValueConv and PrintConv evals will no longer have
+                  access to the source @val and @prt values unless the input
+                  $val is returned.  RawConv may generate Warning or Error tags,
+                  while ValueConv and PrintConv should not (see ValueConv note
+                  below). Note: RawConv should only be used if necessary (in
+                  general, only if the conversion may return undef to ignore the
+                  tag, or if a Warning may be issued) because ValueConv is more
                   efficient since it is only executed if the tag value is
                   requested, while RawConv is executed for all extracted tags.
 
@@ -635,7 +635,7 @@ numerical.
                   data of $$valPt is always 'undef' type, and may not be used
                   when writing except for SubDirectory tags).  EXIF tags (and
                   maybe some other types) may also reference the format string
-                  and value count through $format and $count. Note that if the
+                  and value count through $format and $count.  Note that if the
                   value is writable and $valPt is used, the tag must have a
                   Format (unless 'undef' or 'string'), and a Count (unless 1 or
                   length of the 'undef' or 'string'), so the raw data may be
@@ -740,12 +740,19 @@ numerical.
                   The condition may use $self to reference the ExifTool object,
                   and returns true if it is OK for writing.  Unlike WriteCheck
                   which is done only once when the new value is set, this
-                  condition is evaluated just before the tags of the specific
-                  SubDirectory are written.
+                  condition is evaluated just before the tag is written to the
+                  file.
 
-  WriteGroup    : [Writable EXIF tags only] Specifies the IFD where the
-                  information gets written by default.  Must be defined for
-                  writable EXIF tags if WRITE_GROUP is not specified in table.
+  WriteGroup    : [Writable EXIF and Composite tags only] Specifies the IFD
+                  where the information gets written by default.  Must be
+                  defined for writable EXIF tags if WRITE_GROUP is not specified
+                  in table.  A WriteGroup of 'All' is special:  For writable
+                  Composite tags this causes any group specified for the
+                  Composite tag to be propagated to the WriteAlso tags when
+                  writing.  For other tags this allows writing to all EXIF IFD's
+                  simultaneously (in which case the tag should have a Condition
+                  or WriteCondition to restrict the IFD's to which the tag is
+                  actually written).
 
   IsOverwriting : [Writable EXIF tags only] Specifies reference to subroutine
                   which determines if tag should be overwritten.  Arguments are:

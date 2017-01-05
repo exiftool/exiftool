@@ -53,7 +53,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '3.88';
+$VERSION = '3.89';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -503,8 +503,8 @@ my %sampleFormat = (
         },
         {
             Condition => q[
-                ($$self{TIFF_TYPE} ne 'CR2' or $$self{DIR_NAME} ne 'IFD0') and
-                ($$self{TIFF_TYPE} ne 'DNG' or $$self{DIR_NAME} !~ /^SubIFD[12]$/)
+                not ($$self{TIFF_TYPE} eq 'CR2' and $$self{DIR_NAME} eq 'IFD0') and
+                not ($$self{TIFF_TYPE} eq 'DNG' and $$self{Compression} eq '7' and $$self{SubfileType} ne '0')
             ],
             Name => 'StripOffsets',
             IsOffset => 1,
@@ -512,40 +512,44 @@ my %sampleFormat = (
             ValueConv => 'length($val) > 32 ? \$val : $val',
         },
         {
-            Condition => '$$self{DIR_NAME} eq "IFD0"',
+            # PreviewImageStart in IFD0 of CR2 images
+            Condition => '$$self{TIFF_TYPE} eq "CR2"',
             Name => 'PreviewImageStart',
             IsOffset => 1,
             OffsetPair => 0x117,
             Notes => q{
-                PreviewImageStart in IFD0 of CR2 images and SubIFD1 of DNG images, and
-                JpgFromRawStart in SubIFD2 of DNG images
+                called StripOffsets in most locations, but it is PreviewImageStart in IFD0
+                of CR2 images and various IFD's of DNG images except for SubIFD2 where it is
+                JpgFromRawStart
             },
             DataTag => 'PreviewImage',
             Writable => 'int32u',
             WriteGroup => 'IFD0',
-            WriteCondition => '$$self{TIFF_TYPE} eq "CR2"',
             Protected => 2,
+            Permanent => 1,
         },
         {
-            Condition => '$$self{DIR_NAME} eq "SubIFD1"',
+            # PreviewImageStart in various IFD's of DNG images except SubIFD2
+            Condition => '$$self{DIR_NAME} ne "SubIFD2"',
             Name => 'PreviewImageStart',
             IsOffset => 1,
             OffsetPair => 0x117,
             DataTag => 'PreviewImage',
             Writable => 'int32u',
-            WriteGroup => 'SubIFD1',
-            WriteCondition => '$$self{TIFF_TYPE} eq "DNG"',
+            WriteGroup => 'All',    # (writes to specific group of associated Composite tag)
             Protected => 2,
+            Permanent => 1,
         },
         {
+            # JpgFromRawStart in various IFD's of DNG images except SubIFD2
             Name => 'JpgFromRawStart',
             IsOffset => 1,
             OffsetPair => 0x117,
             DataTag => 'JpgFromRaw',
             Writable => 'int32u',
             WriteGroup => 'SubIFD2',
-            WriteCondition => '$$self{TIFF_TYPE} eq "DNG"',
             Protected => 2,
+            Permanent => 1,
         },
     ],
     0x112 => {
@@ -583,45 +587,49 @@ my %sampleFormat = (
         },
         {
             Condition => q[
-                ($$self{TIFF_TYPE} ne 'CR2' or $$self{DIR_NAME} ne 'IFD0') and
-                ($$self{TIFF_TYPE} ne 'DNG' or $$self{DIR_NAME} !~ /^SubIFD[12]$/)
+                not ($$self{TIFF_TYPE} eq 'CR2' and $$self{DIR_NAME} eq 'IFD0') and
+                not ($$self{TIFF_TYPE} eq 'DNG' and $$self{Compression} eq '7' and $$self{SubfileType} ne '0')
             ],
             Name => 'StripByteCounts',
             OffsetPair => 0x111,   # point to associated offset
             ValueConv => 'length($val) > 32 ? \$val : $val',
         },
         {
-            Condition => '$$self{DIR_NAME} eq "IFD0"',
+            # PreviewImageLength in IFD0 of CR2 images
+            Condition => '$$self{TIFF_TYPE} eq "CR2"',
             Name => 'PreviewImageLength',
             OffsetPair => 0x111,
             Notes => q{
-                PreviewImageLength in IFD0 of CR2 images and SubIFD1 of DNG images, and
-                JpgFromRawLength in SubIFD2 of DNG images
+                called StripByteCounts in most locations, but it is PreviewImageLength in
+                IFD0 of CR2 images and various IFD's of DNG images except for SubIFD2 where
+                it is JpgFromRawLength
             },
             DataTag => 'PreviewImage',
             Writable => 'int32u',
             WriteGroup => 'IFD0',
-            WriteCondition => '$$self{TIFF_TYPE} eq "CR2"',
             Protected => 2,
+            Permanent => 1,
         },
         {
-            Condition => '$$self{DIR_NAME} eq "SubIFD1"',
+            # PreviewImageLength in various IFD's of DNG images except SubIFD2
+            Condition => '$$self{DIR_NAME} ne "SubIFD2"',
             Name => 'PreviewImageLength',
             OffsetPair => 0x111,
             DataTag => 'PreviewImage',
             Writable => 'int32u',
-            WriteGroup => 'SubIFD1',
-            WriteCondition => '$$self{TIFF_TYPE} eq "DNG"',
+            WriteGroup => 'All',    # (writes to specific group of associated Composite tag)
             Protected => 2,
+            Permanent => 1,
         },
         {
+            # JpgFromRawLength in SubIFD2 of DNG images
             Name => 'JpgFromRawLength',
             OffsetPair => 0x111,
             DataTag => 'JpgFromRaw',
             Writable => 'int32u',
             WriteGroup => 'SubIFD2',
-            WriteCondition => '$$self{TIFF_TYPE} eq "DNG"',
             Protected => 2,
+            Permanent => 1,
         },
     ],
     0x118 => {
@@ -996,6 +1004,10 @@ my %sampleFormat = (
             # thumbnail is found in IFD1 of JPEG and TIFF images, and
             # IFD0 of EXIF information in FujiFilm AVI (RIFF) and MOV videos
             Condition => q{
+                # recognize NRW file from a JPEG-compressed thumbnail in IFD0
+                if ($$self{TIFF_TYPE} eq 'NEF' and $$self{DIR_NAME} eq 'IFD0' and $$self{Compression} == 6) {
+                    $self->OverrideFileType($$self{TIFF_TYPE} = 'NRW');
+                }
                 $$self{DIR_NAME} eq 'IFD1' or
                 ($$self{DIR_NAME} eq 'IFD0' and $$self{FILE_TYPE} =~ /^(RIFF|MOV)$/)
             },
@@ -1027,8 +1039,8 @@ my %sampleFormat = (
             DataTag => 'ThumbnailImage',
             Writable => 'int32u',
             WriteGroup => 'IFD0',
-            WriteCondition => '$$self{FILE_TYPE} =~ /^(MRW|NRW)$/',
             Protected => 2,
+            Permanent => 1,
         },
         {
             Name => 'ThumbnailOffset',
@@ -1042,8 +1054,8 @@ my %sampleFormat = (
             DataTag => 'ThumbnailImage',
             Writable => 'int32u',
             WriteGroup => 'SubIFD',
-            WriteCondition => '$$self{TIFF_TYPE} eq "SRW"',
             Protected => 2,
+            Permanent => 1,
         },
         {
             Name => 'PreviewImageStart',
@@ -1053,8 +1065,8 @@ my %sampleFormat = (
             DataTag => 'PreviewImage',
             Writable => 'int32u',
             WriteGroup => 'MakerNotes',
-            # (no WriteCondition necessary because MakerNotes won't be created)
             Protected => 2,
+            Permanent => 1,
         },
         {
             Name => 'PreviewImageStart',
@@ -1065,8 +1077,8 @@ my %sampleFormat = (
             DataTag => 'PreviewImage',
             Writable => 'int32u',
             WriteGroup => 'IFD0',
-            WriteCondition => '$$self{TIFF_TYPE} =~ /^(ARW|SR2)$/',
             Protected => 2,
+            Permanent => 1,
         },
         {
             Name => 'JpgFromRawStart',
@@ -1077,8 +1089,8 @@ my %sampleFormat = (
             Writable => 'int32u',
             WriteGroup => 'SubIFD',
             # JpgFromRaw is in SubIFD of NEF, NRW and SRW files
-            WriteCondition => '$$self{TIFF_TYPE} =~ /^(NEF|NRW|SRW)$/',
             Protected => 2,
+            Permanent => 1,
         },
         {
             Name => 'JpgFromRawStart',
@@ -1089,8 +1101,8 @@ my %sampleFormat = (
             Writable => 'int32u',
             WriteGroup => 'IFD2',
             # JpgFromRaw is in IFD2 of PEF files
-            WriteCondition => '$$self{TIFF_TYPE} eq "PEF"',
             Protected => 2,
+            Permanent => 1,
         },
         {
             Name => 'OtherImageStart',
@@ -1101,8 +1113,8 @@ my %sampleFormat = (
             Writable => 'int32u',
             WriteGroup => 'SubIFD1',
             Protected => 2,
-            Permanent => 1, # (don't add/delete this tag: makes WriteCondition unnecessary)
-       },
+            Permanent => 1,
+        },
         {
             Name => 'OtherImageStart',
             Condition => '$$self{DIR_NAME} eq "SubIFD2"',
@@ -1112,7 +1124,7 @@ my %sampleFormat = (
             Writable => 'int32u',
             WriteGroup => 'SubIFD2',
             Protected => 2,
-            Permanent => 1, # (don't add/delete this tag: makes WriteCondition unnecessary)
+            Permanent => 1,
         },
         {
             Name => 'OtherImageStart',
@@ -1153,8 +1165,8 @@ my %sampleFormat = (
             DataTag => 'ThumbnailImage',
             Writable => 'int32u',
             WriteGroup => 'IFD0',
-            WriteCondition => '$$self{FILE_TYPE} =~ /^(MRW|NRW)$/',
             Protected => 2,
+            Permanent => 1,
         },
         {
             Name => 'ThumbnailLength',
@@ -1167,8 +1179,8 @@ my %sampleFormat = (
             DataTag => 'ThumbnailImage',
             Writable => 'int32u',
             WriteGroup => 'SubIFD',
-            WriteCondition => '$$self{TIFF_TYPE} eq "SRW"',
             Protected => 2,
+            Permanent => 1,
         },
         {
             Name => 'PreviewImageLength',
@@ -1177,8 +1189,8 @@ my %sampleFormat = (
             DataTag => 'PreviewImage',
             Writable => 'int32u',
             WriteGroup => 'MakerNotes',
-            # (no WriteCondition necessary because MakerNotes won't be created)
             Protected => 2,
+            Permanent => 1,
         },
         {
             Name => 'PreviewImageLength',
@@ -1188,8 +1200,8 @@ my %sampleFormat = (
             DataTag => 'PreviewImage',
             Writable => 'int32u',
             WriteGroup => 'IFD0',
-            WriteCondition => '$$self{TIFF_TYPE} =~ /^(ARW|SR2)$/',
             Protected => 2,
+            Permanent => 1,
         },
         {
             Name => 'JpgFromRawLength',
@@ -1198,8 +1210,8 @@ my %sampleFormat = (
             DataTag => 'JpgFromRaw',
             Writable => 'int32u',
             WriteGroup => 'SubIFD',
-            WriteCondition => '$$self{TIFF_TYPE} =~ /^(NEF|NRW|SRW)$/',
             Protected => 2,
+            Permanent => 1,
         },
         {
             Name => 'JpgFromRawLength',
@@ -1208,8 +1220,8 @@ my %sampleFormat = (
             DataTag => 'JpgFromRaw',
             Writable => 'int32u',
             WriteGroup => 'IFD2',
-            WriteCondition => '$$self{TIFF_TYPE} eq "PEF"',
             Protected => 2,
+            Permanent => 1,
         },
         {
             Name => 'OtherImageLength',
@@ -1219,7 +1231,7 @@ my %sampleFormat = (
             Writable => 'int32u',
             WriteGroup => 'SubIFD1',
             Protected => 2,
-            Permanent => 1, # (don't add/delete this tag: makes WriteCondition unnecessary)
+            Permanent => 1,
         },
         {
             Name => 'OtherImageLength',
@@ -1229,7 +1241,7 @@ my %sampleFormat = (
             Writable => 'int32u',
             WriteGroup => 'SubIFD2',
             Protected => 2,
-            Permanent => 1, # (don't add/delete this tag: makes WriteCondition unnecessary)
+            Permanent => 1,
         },
         {
             Name => 'OtherImageLength',
@@ -4112,8 +4124,9 @@ my %subSecConv = (
         PrintConv => '$self->ConvertDateTime($val)',
     },
     ThumbnailImage => {
-        Groups => { 2 => 'Preview' },
+        Groups => { 0 => 'EXIF', 1 => 'IFD1', 2 => 'Preview' },
         Writable => 1,
+        WriteGroup => 'All',
         WriteCheck => '$self->CheckImage(\$val)',
         WriteAlso => {
             # (the 0xfeedfeed values are translated in the Exif write routine)
@@ -4124,8 +4137,17 @@ my %subSecConv = (
             0 => 'ThumbnailOffset',
             1 => 'ThumbnailLength',
         },
+        Notes => q{
+            this tag is writable, and may be used to update existing thumbnails, but may
+            only create a thumbnail in IFD1 of certain types of files.  Note that for
+            this and other Composite embedded-image tags the family 0 and 1 groups match
+            those of the originating tags
+        },
         # retrieve the thumbnail from our EXIF data
-        RawConv => 'Image::ExifTool::Exif::ExtractImage($self,$val[0],$val[1],"ThumbnailImage")',
+        RawConv => q{
+            @grps = $self->GetGroup($$val{0});  # set groups from ThumbnailOffsets
+            Image::ExifTool::Exif::ExtractImage($self,$val[0],$val[1],"ThumbnailImage");
+        },
     },
     ThumbnailTIFF => {
         Groups => { 2 => 'Preview' },
@@ -4146,17 +4168,22 @@ my %subSecConv = (
             11 => 'Orientation',
         },
         # rebuild the TIFF thumbnail from our EXIF data
-        RawConv => 'Image::ExifTool::Exif::RebuildTIFF($self, @val)',
+        RawConv => q{
+            my $tiff;
+            ($tiff, @grps) = Image::ExifTool::Exif::RebuildTIFF($self, @val);
+            return $tiff;
+        },
     },
     PreviewImage => {
-        Groups => { 2 => 'Preview' },
+        Groups => { 0 => 'EXIF', 1 => 'SubIFD', 2 => 'Preview' },
         Writable => 1,
+        WriteGroup => 'All',
         WriteCheck => '$self->CheckImage(\$val)',
         DelCheck => '$val = ""; return undef', # can't delete, so set to empty string
         WriteAlso => {
             PreviewImageStart  => 'defined $val ? 0xfeedfeed : undef',
             PreviewImageLength => 'defined $val ? 0xfeedfeed : undef',
-            PreviewImageValid  => 'defined $val and length $val ? 1 : 0',
+            PreviewImageValid  => 'defined $val and length $val ? 1 : 0', # (for Olympus)
         },
         Require => {
             0 => 'PreviewImageStart',
@@ -4167,6 +4194,10 @@ my %subSecConv = (
             # (DNG and A100 ARW may be have 2 preview images)
             3 => 'PreviewImageStart (1)',
             4 => 'PreviewImageLength (1)',
+        },
+        Notes => q{
+            this tag is writable, and may be used to update existing embedded images,
+            but not create or delete them
         },
         # note: extract 2nd preview, but ignore double-referenced preview
         # (in A100 ARW images, the 2nd PreviewImageLength from IFD0 may be wrong anyway)
@@ -4180,13 +4211,16 @@ my %subSecConv = (
                 $self->FoundTag($tagInfo, \%val);
             }
             return undef if defined $val[2] and not $val[2];
+            @grps = $self->GetGroup($$val{0});
             return Image::ExifTool::Exif::ExtractImage($self,$val[0],$val[1],'PreviewImage');
         },
     },
     JpgFromRaw => {
-        Groups => { 2 => 'Preview' },
+        Groups => { 0 => 'EXIF', 1 => 'SubIFD', 2 => 'Preview' },
         Writable => 1,
+        WriteGroup => 'All',
         WriteCheck => '$self->CheckImage(\$val)',
+        # (don't allow this to be deleted -- no DelCheck)
         WriteAlso => {
             JpgFromRawStart  => 'defined $val ? 0xfeedfeed : undef',
             JpgFromRawLength => 'defined $val ? 0xfeedfeed : undef',
@@ -4195,11 +4229,19 @@ my %subSecConv = (
             0 => 'JpgFromRawStart',
             1 => 'JpgFromRawLength',
         },
-        RawConv => 'Image::ExifTool::Exif::ExtractImage($self,$val[0],$val[1],"JpgFromRaw")',
+        Notes => q{
+            this tag is writable, and may be used to update existing embedded images,
+            but not create or delete them
+        },
+        RawConv => q{
+            @grps = $self->GetGroup($$val{0});
+            return Image::ExifTool::Exif::ExtractImage($self,$val[0],$val[1],"JpgFromRaw");
+        },
     },
     OtherImage => {
-        Groups => { 2 => 'Preview' },
+        Groups => { 0 => 'EXIF', 1 => 'SubIFD', 2 => 'Preview' },
         Writable => 1,
+        WriteGroup => 'All',
         WriteCheck => '$self->CheckImage(\$val)',
         DelCheck => '$val = ""; return undef', # can't delete, so set to empty string
         WriteAlso => {
@@ -4210,8 +4252,15 @@ my %subSecConv = (
             0 => 'OtherImageStart',
             1 => 'OtherImageLength',
         },
+        Notes => q{
+            this tag is writable, and may be used to update existing embedded images,
+            but not create or delete them
+        },
         # retrieve the thumbnail from our EXIF data
-        RawConv => 'Image::ExifTool::Exif::ExtractImage($self,$val[0],$val[1],"OtherImage")',
+        RawConv => q{
+            @grps = $self->GetGroup($$val{0});
+            Image::ExifTool::Exif::ExtractImage($self,$val[0],$val[1],"OtherImage");
+        },
     },
     PreviewImageSize => {
         Require => {
@@ -5048,13 +5097,13 @@ sub GenerateTIFF($$)
 # Inputs: 0) ExifTool ref, 1) SubfileType, 2) Compression, 3) ImageWidth, 4) ImageHeight,
 #         5) BitsPerSample, 6) PhotometricInterpretation, 7) StripOffsets, 8) SamplesPerPixel,
 #         9) RowsPerStrip, 10) StripByteCounts, 10) PlanarConfiguration, 11) Orientation
-# Returns: TIFF image or undef
+# Returns: 0) TIFF image or undef, 1/2) Family 0/1 groups for TIFF preview IFD
 sub RebuildTIFF($;@)
 {
     local $_;
     my $et = $_[0];
     my $value = $$et{VALUE};
-    my ($i, $j, $rtn);
+    my ($i, $j, $rtn, $grp0, $grp1);
     return undef if $$et{FILE_TYPE} eq 'RWZ';
 SubFile:
     for ($i=0; ; ++$i) {
@@ -5110,12 +5159,14 @@ SubFile:
         if (not defined $img) {
             $et->Warn('Invalid ' . ($w > 256 ? 'Preview' : 'Thumbnail') . 'TIFF data');
         } elsif ($rtn or $w > 256) { # (call it a preview if larger than 256 pixels)
-            $et->FoundTag('PreviewTIFF', \$img);
+            $et->FoundTag('PreviewTIFF', \$img, $et->GetGroup($key));
         } else {
             $rtn = \$img;
+            ($grp0, $grp1) = $et->GetGroup($key);
         }
     }
-    return $rtn;
+    return $rtn unless wantarray;
+    return ($rtn, $grp0, $grp1);
 }
 
 #------------------------------------------------------------------------------
@@ -5298,6 +5349,9 @@ sub ProcessExif($$$)
             $dirEnd -= 12;
         }
     }
+
+    # make sure that Compression and SubfileType are defined for this IFD (for Condition's)
+    $$et{Compression} = $$et{SubfileType} = '';
 
     # loop through all entries in an EXIF directory (IFD)
     my ($index, $valEnd, $offList, $offHash);
@@ -5979,7 +6033,7 @@ EXIF and TIFF meta information.
 
 =head1 AUTHOR
 
-Copyright 2003-2016, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2017, Phil Harvey (phil at owl.phy.queensu.ca)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

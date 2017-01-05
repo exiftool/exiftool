@@ -417,7 +417,8 @@ manual mode)</span>
 <td class=c>Y</td>
 <td class=n>JpgFromRawStart
   <br>JpgFromRawLength</td>
-<td>&nbsp;</td></tr>
+<td><span class=s><span class=n>(this tag is writable, and may be used to update existing embedded images,
+but not create or delete them)</span></span></td></tr>
 <tr>
 <td>Lens</td>
 <td class=c>N</td>
@@ -514,7 +515,8 @@ option may be used to extract information from these embedded images.)</span></s
 <td class=c>Y</td>
 <td class=n>OtherImageStart
   <br>OtherImageLength</td>
-<td>&nbsp;</td></tr>
+<td><span class=s><span class=n>(this tag is writable, and may be used to update existing embedded images,
+but not create or delete them)</span></span></td></tr>
 <tr>
 <td>PeakSpectralSensitivity</td>
 <td class=c>N</td>
@@ -528,7 +530,8 @@ option may be used to extract information from these embedded images.)</span></s
   <br>PreviewImageValid
   <br>PreviewImageStart (1)
   <br>PreviewImageLength (1)</td>
-<td>&nbsp;</td></tr>
+<td><span class=s><span class=n>(this tag is writable, and may be used to update existing embedded images,
+but not create or delete them)</span></span></td></tr>
 <tr>
 <td>PreviewImage</td>
 <td class=c>N</td>
@@ -652,7 +655,10 @@ resized)</span></span></td></tr>
 <td class=c>Y</td>
 <td class=n>ThumbnailOffset
   <br>ThumbnailLength</td>
-<td>&nbsp;</td></tr>
+<td><span class=s><span class=n>(this tag is writable, and may be used to update existing thumbnails, but may
+only create a thumbnail in IFD1 of certain types of files.  Note that for
+this and other Composite embedded-image tags the family 0 and 1 groups match
+those of the originating tags)</span></span></td></tr>
 <tr>
 <td>ThumbnailTIFF</td>
 <td class=c>N</td>
@@ -733,7 +739,7 @@ resized)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Nov 2, 2016</i>
+<br><i>Last revised Dec 30, 2016</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

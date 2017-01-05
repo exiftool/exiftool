@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.17
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.38
 [File, System, Image] FileName - File Name: DNG.dng
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 13 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2006:02:26 09:30:53-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2016:05:05 12:26:54-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2016:05:03 13:37:55-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2016:12:29 11:24:51-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:03:07 15:31:02-05:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: DNG
 [File, File, Image] FileTypeExtension - File Type Extension: dng
@@ -126,6 +126,9 @@
 [EXIF, IFD0, Image] 50779 - Calibration Illuminant 2: D65
 [EXIF, IFD0, Image] 50781 - Raw Data Unique ID: 0358DB4E08632D90925171A6BB8848A2
 [EXIF, IFD0, Image] 50827 - Original Raw File Name: Canon350D.CR2
+[EXIF, SubIFD2, Preview] JpgFromRaw - Jpg From Raw: (Binary data 29 bytes)
+[EXIF, SubIFD1, Preview] PreviewImage - Preview Image: (Binary data 26 bytes)
+[EXIF, IFD0, Preview] ThumbnailTIFF - Thumbnail TIFF: (Binary data 408 bytes)
 [XMP, XMP-x, Document] xmptk - XMP Toolkit: XMP toolkit 3.0-28, framework 1.6
 [XMP, XMP-exif, Image] ExifVersion - Exif Version: 0221
 [XMP, XMP-exif, Image] ExposureTime - Exposure Time: 1/15
@@ -309,15 +312,12 @@
 [Composite, Composite, Other] Flash - Flash: Off, Did not fire
 [Composite, Composite, Camera] ISO - ISO: 400
 [Composite, Composite, Image] ImageSize - Image Size: 3516x2328
-[Composite, Composite, Preview] JpgFromRaw - Jpg From Raw: (Binary data 29 bytes)
 [Composite, Composite, Camera] Lens - Lens: 18.0 - 55.0 mm
 [Composite, Composite, Camera] LensID - Lens ID: Unknown 18-55mm
 [Composite, Composite, Image] Megapixels - Megapixels: 8.2
-[Composite, Composite, Preview] PreviewImage - Preview Image: (Binary data 26 bytes)
 [Composite, Composite, Camera] ScaleFactor35efl - Scale Factor To 35 mm Equivalent: 1.6
 [Composite, Composite, Camera] ShootingMode - Shooting Mode: Aperture-priority AE
 [Composite, Composite, Image] ShutterSpeed - Shutter Speed: 1/15
-[Composite, Composite, Preview] ThumbnailTIFF - Thumbnail TIFF: (Binary data 408 bytes)
 [Composite, Composite, Camera] WB_RGGBLevels - WB RGGB Levels: 2002 1185 1187 2364
 [Composite, Composite, Camera] BlueBalance - Blue Balance: 1.993255
 [Composite, Composite, Camera] CircleOfConfusion - Circle Of Confusion: 0.019 mm

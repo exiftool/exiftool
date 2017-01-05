@@ -7,13 +7,31 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.36. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Jan. 5, 2017 - Version 10.38
+
+  - Added a couple of new XMP-ics tags
+  - Added a new Nikon LensID (thanks Ken Cochran)
+  - Decode a couple more PhaseOne tags
+  - Increased priority of Sony 0x0115 WhiteBalance when reading
+  - Range check QuickTime date/time values when writing
+  - Apply CharsetPhotoshop setting to decoding of Photoshop LayerNames
+  - Improved identification of Nikon NRW images
+  - Minor improvements to verbose dump of FLIR information
+  - Improvements to sample time_zone.config config file (thanks Hayo Baan)
+  - Removed trailing null in -b output for GPSDateStamp
+  - Changed "TAG is not supported" warning when writing to "TAG is not defined"
+  - Changed groups of Composite Preview/Thumbnail/JpgFromRaw images to match the
+    tags from which they are derived
+  - Changed description of Composite Nikon LensSpec tag to match the tag name
+  - Fixed problems reading/writing PreviewImage from some DNG files
+
 Dec. 19, 2016 - Version 10.37
 
   - Decode more information from BMP V4 and V5 images
   - Added a few new FujiFlashMode values (thanks Albert Shan)
   - Changed -geotime default to use unconverted value of DateTimeOriginal
   - Changed a couple of Sony Voigtlander LensType strings (thanks Jos Roost)
-  - Warn about invalid TAG name
+  - Warn about invalid tag names used on the command line
   - Generate default-language version of QuickTime tags even if the same-named
     tag already exists in another group
   - Fixed bug reading some Photoshop layer information

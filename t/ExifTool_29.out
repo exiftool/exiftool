@@ -191,6 +191,7 @@
 [FlashPix, FlashPix, Other] 7 - Extension Description: Presized_image_for_LCD_display
 [FlashPix, FlashPix, Other] 4096 - Storage-Stream Pathname: /.Screen_Nail_bd##########a###
 [FlashPix, FlashPix, Other] Screen Nail - Screen Nail: (Binary data 5917 bytes)
+[FlashPix, FlashPix, Preview] PreviewImage - Preview Image: (Binary data 5777 bytes)
 [MPF, MPF0, Image] 45056 - MPF Version: ####
 [MPF, MPF0, Image] 45057 - Number Of Images: #
 [MPF, MPImage1, Image] 0.1 - MP Image Flags: Dependent_parent_image
@@ -207,6 +208,7 @@
 [MPF, MPImage2, Image] 8 - MP Image Start: #######
 [MPF, MPImage2, Image] 12 - Dependent Image 1 Entry Number: #
 [MPF, MPImage2, Image] 14 - Dependent Image 2 Entry Number: #
+[MPF, MPImage2, Preview] PreviewImage - Preview Image: (Binary data 25 bytes)
 [Meta, MetaIFD, Image] 50000 - Film Product Code: ##
 [Meta, MetaIFD, Image] 50001 - Image Source EK: #
 [Meta, MetaIFD, Image] 50002 - Capture Conditions PAR: #
@@ -414,9 +416,7 @@
 [FotoStation, FotoStation, Image] 11 - Crop Rotation: #
 [Composite, Composite, Image] Aperture - Aperture: #.#
 [Composite, Composite, Image] ImageSize - Image Size: #x#
-[Composite, Composite, Preview] PreviewImage - Preview Image: (Binary data 25 bytes)
 [Composite, Composite, Image] Megapixels - Megapixels: #.######
-[Composite, Composite, Preview] PreviewImage - Preview Image: (Binary data 5777 bytes)
 [Composite, Composite, Image] ShutterSpeed - Shutter Speed: #/###
 [Composite, Composite, Image] LightValue - Light Value: ##.#
 [Composite, Composite, Camera] ScaleFactor35efl - Scale Factor To 35 mm Equivalent: #.#

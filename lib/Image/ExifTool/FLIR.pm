@@ -24,7 +24,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '1.14';
+$VERSION = '1.15';
 
 sub ProcessFLIR($$;$);
 sub ProcessFLIRText($$$);
@@ -1426,12 +1426,15 @@ sub ProcessFLIR($$;$)
 
         my $entry = $i * 0x20;
         my $recType = Get16u(\$buff, $entry);
-        next if $recType == 0;  # ignore free records
+        if ($recType == 0) {
+            $verbose and print $out "$$et{INDENT}$i) FLIR Record 0x00 (empty)\n";
+            next;
+        }
         my $recPos = Get32u(\$buff, $entry + 0x0c);
         my $recLen = Get32u(\$buff, $entry + 0x10);
 
-        $verbose and printf $out "%sFLIR Record 0x%.2x, offset 0x%.4x, length 0x%.4x\n",
-                                 $$et{INDENT}, $recType, $recPos, $recLen;
+        $verbose and printf $out "%s%d) FLIR Record 0x%.2x, offset 0x%.4x, length 0x%.4x\n",
+                                 $$et{INDENT}, $i, $recType, $recPos, $recLen;
 
         unless ($raf->Seek($recPos) and $raf->Read($rec, $recLen) == $recLen) {
             $et->Warn('Invalid FLIR record');
@@ -1443,7 +1446,6 @@ sub ProcessFLIR($$;$)
                 DataPos => $recPos,
                 Start   => 0,
                 Size    => $recLen,
-                Index => $i,
             );
         } elsif ($verbose > 2) {
             my %parms = ( DataPos => $recPos, Prefix => $$et{INDENT} );
@@ -1497,7 +1499,7 @@ Systems Inc. thermal image files (FFF, FPF and JPEG format).
 
 =head1 AUTHOR
 
-Copyright 2003-2016, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2017, Phil Harvey (phil at owl.phy.queensu.ca)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

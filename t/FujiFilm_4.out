@@ -1,4 +1,4 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.14
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.38
 [File, System, Image] FileSize - File Size: 38 kB
 [File, File, Image] FileType - File Type: RAF
 [File, File, Image] FileTypeExtension - File Type Extension: raf
@@ -71,6 +71,7 @@
 [EXIF, IFD1, Image] 513 - Thumbnail Offset: 2704
 [EXIF, IFD1, Image] 514 - Thumbnail Length: 9362
 [EXIF, IFD1, Image] 531 - Y Cb Cr Positioning: Co-sited
+[EXIF, IFD1, Preview] ThumbnailImage - Thumbnail Image: (Binary data 9362 bytes)
 [MakerNotes, FujiFilm, Camera] 0 - Version: 0130
 [MakerNotes, FujiFilm, Camera] 16 - Internal Serial Number: FPX20582698 592D31313436 2007:02:19 8C0020100A84
 [MakerNotes, FujiFilm, Camera] 4096 - Quality: NORMAL 
@@ -130,7 +131,6 @@
 [RAF, RAF2, Image] 38480 - Raw Exposure Bias: 0
 [Composite, Composite, Image] Aperture - Aperture: 8.0
 [Composite, Composite, Image] ShutterSpeed - Shutter Speed: 1/250
-[Composite, Composite, Preview] ThumbnailImage - Thumbnail Image: (Binary data 9362 bytes)
 [Composite, Composite, Camera] BlueBalance - Blue Balance: 1.341146
 [Composite, Composite, Image] ImageSize - Image Size: 8x8
 [Composite, Composite, Image] LightValue - Light Value: 14.0

@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.03';
+$VERSION = '1.04';
 
 sub WritePhaseOne($$$);
 sub ProcessPhaseOne($$$);
@@ -165,6 +165,10 @@ my @formatName = ( undef, 'string', 'int16s', undef, 'int32s' );
     # 0x0227 - int32u: 0,1
     # 0x0228 - int32u: 1,2
     # 0x0229 - int32s: -2,0
+    0x0267 => { #PH
+        Name => 'AFAdjustment',
+        Format => 'float',
+    },
     0x022b => { #PH
         Name => 'PhaseOne_0x022b',
         Format => 'float',
@@ -242,6 +246,10 @@ my @formatName = ( undef, 'string', 'int16s', undef, 'int32s' );
     },
     # 0x0416 - float: (min focal length? ref LR, Credo50) (but looks more like an int32u date for the 645DF - PH)
     # 0x0417 - float: 80 (max focal length? ref LR)
+    0x0455 => { #PH
+        Name => 'Viewfinder',
+        Format => 'string',
+    },
 );
 
 # Phase One metadata (ref 1)
@@ -315,6 +323,15 @@ my @formatName = ( undef, 'string', 'int16s', undef, 'int32s' );
         Name => 'SensorCalibration_0x0414',
         Format => 'undef',
         Flags => ['Unknown','Hidden'],
+        ValueConv => q{
+            my $order = GetByteOrder();
+            if (length $val >= 8 and SetByteOrder(substr($val,0,2))) {
+                $val = ReadValue(\$val, 2, 'int16u', 1, length($val)-2) . ' ' .
+                       ReadValue(\$val, 4, 'float', undef, length($val)-4);
+                SetByteOrder($order);
+            }
+            return $val;
+        },
     },
     0x0416 => {
         Name => 'AllColorFlatField3',
@@ -348,7 +365,8 @@ my @formatName = ( undef, 'string', 'int16s', undef, 'int32s' );
         ValueConv => q{
             my $order = GetByteOrder();
             if (length $val >= 8 and SetByteOrder(substr($val,0,2))) {
-                $val = ReadValue(\$val, 4, 'float', undef, length($val)-4);
+                $val = ReadValue(\$val, 2, 'int16u', 1, length($val)-2) . ' ' .
+                       ReadValue(\$val, 4, 'float', undef, length($val)-4);
                 SetByteOrder($order);
             }
             return $val;
@@ -686,7 +704,7 @@ One maker notes.
 
 =head1 AUTHOR
 
-Copyright 2003-2016, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2017, Phil Harvey (phil at owl.phy.queensu.ca)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.94
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.38
 [File, System, Image] FileName - File Name: Unknown.jpg
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 7.0 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2006:06:16 10:57:05-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:29 20:10:41-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:04:25 10:57:00-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2016:12:30 10:41:50-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:03:07 15:31:55-05:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: JPEG
 [File, File, Image] FileTypeExtension - File Type Extension: jpg
@@ -67,6 +67,7 @@
 [EXIF, IFD1, Image] 296 - Resolution Unit: inches
 [EXIF, IFD1, Image] 513 - Thumbnail Offset: 6922
 [EXIF, IFD1, Image] 514 - Thumbnail Length: 28
+[EXIF, IFD1, Preview] ThumbnailImage - Thumbnail Image: (Binary data 28 bytes)
 [MakerNotes, MakerUnknown, Camera] 1 - Unknown 0x0001: ADM0000037036
 [MakerNotes, MakerUnknown, Camera] 4 - Unknown 0x0004: AE.. ^;k...MULTIoo/..................;[...]
 [MakerNotes, MakerUnknown, Camera] 6 - Unknown 0x0006: AFˇˇ...€.ˇˇgÚ.r·.˝HÓù;üÕ.~4.".†Ü.à.€.€.€.˜[...]
@@ -87,6 +88,5 @@
 [Composite, Composite, Time] SubSecCreateDate - Create Date: 2005:08:10 06:24:38.331
 [Composite, Composite, Time] SubSecDateTimeOriginal - Date/Time Original: 2005:08:10 06:24:38.331
 [Composite, Composite, Time] SubSecModifyDate - Modify Date: 2005:08:10 06:24:38.331
-[Composite, Composite, Preview] ThumbnailImage - Thumbnail Image: (Binary data 28 bytes)
 [Composite, Composite, Camera] FocalLength35efl - Focal Length: 57.0 mm
 [Composite, Composite, Image] LightValue - Light Value: 10.1

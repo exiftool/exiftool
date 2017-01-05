@@ -57,7 +57,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::HP;
 
-$VERSION = '3.07';
+$VERSION = '3.08';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -864,16 +864,18 @@ my %binaryDataAttrs = (
         DataTag => 'PreviewImage',
         Groups => { 2 => 'Image' },
         Writable => 'int32u',
+        WriteGroup => 'MakerNotes',
         Protected => 2,
     },
     0x0004 => { #PH
         Name => 'PreviewImageStart',
         IsOffset => 2,  # code to use original base
-        Protected => 2,
         OffsetPair => 0x0003, # point to associated byte count
         DataTag => 'PreviewImage',
         Groups => { 2 => 'Image' },
         Writable => 'int32u',
+        WriteGroup => 'MakerNotes',
+        Protected => 2,
     },
     0x0005 => { #13
         Name => 'PentaxModelID',
@@ -6119,7 +6121,7 @@ values.
 
 =head1 AUTHOR
 
-Copyright 2003-2016, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2017, Phil Harvey (phil at owl.phy.queensu.ca)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

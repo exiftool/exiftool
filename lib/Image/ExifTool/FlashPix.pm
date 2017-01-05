@@ -19,7 +19,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::ASF;   # for GetGUID()
 
-$VERSION = '1.27';
+$VERSION = '1.28';
 
 sub ProcessFPX($$);
 sub ProcessFPXR($$$);
@@ -1063,6 +1063,7 @@ my %fpxFileType = (
         Binary => 1,
         RawConv => q{
             return undef unless $val[0] =~ /\xff\xd8\xff/g;
+            @grps = $self->GetGroup($$val{0});  # set groups from ScreenNail
             return substr($val[0], pos($val[0])-3);
         },
     },
@@ -1930,7 +1931,7 @@ JPEG images.
 
 =head1 AUTHOR
 
-Copyright 2003-2016, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2017, Phil Harvey (phil at owl.phy.queensu.ca)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

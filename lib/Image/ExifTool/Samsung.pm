@@ -22,7 +22,7 @@ use vars qw($VERSION %samsungLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.37';
+$VERSION = '1.38';
 
 sub WriteSTMN($$$);
 sub ProcessINFO($$$);
@@ -86,12 +86,14 @@ my %formatMinMax = (
         DataTag => 'PreviewImage',
         IsOffset => 3,
         Protected => 2,
+        WriteGroup => 'MakerNotes',
     },
     3 => {
         Name => 'PreviewImageLength',
         OffsetPair => 2,   # point to associated offset
         DataTag => 'PreviewImage',
         Protected => 2,
+        WriteGroup => 'MakerNotes',
     },
     11 => {
         Name => 'SamsungIFD',
@@ -1242,7 +1244,7 @@ Samsung maker notes in EXIF information.
 
 =head1 AUTHOR
 
-Copyright 2003-2016, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2017, Phil Harvey (phil at owl.phy.queensu.ca)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

@@ -1,7 +1,7 @@
 # Before "make install", this script should be runnable with "make test".
 # After "make install" it should work as "perl t/MWG.t".
 
-BEGIN { $| = 1; print "1..6\n"; $Image::ExifTool::noConfig = 1; }
+BEGIN { $| = 1; print "1..7\n"; $Image::ExifTool::noConfig = 1; }
 END {print "not ok 1\n" unless $loaded;}
 
 # test 1: Load the module(s)
@@ -84,6 +84,15 @@ my $testnum = 1;
     } else {
         print 'not ';
     }
+    print "ok $testnum\n";
+}
+
+# test 7: Extract MWG information from ExifTool.jpg
+{
+    ++$testnum;
+    my $exifTool = new Image::ExifTool;
+    my $info = $exifTool->ImageInfo('t/images/Exiftool.jpg', 'MWG:*');
+    print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }
 

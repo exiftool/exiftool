@@ -605,6 +605,7 @@ t/MWG_3.out
 t/MWG_4.out
 t/MWG_5.out
 t/MWG_6.out
+t/MWG_7.out
 t/MXF.t
 t/MXF_2.out
 t/Matroska.t
@@ -786,6 +787,7 @@ t/Writer_53.out
 t/Writer_54.out
 t/Writer_55.out
 t/Writer_56.out
+t/Writer_58.out
 t/Writer_6.out
 t/Writer_7.out
 t/Writer_9.out
@@ -901,6 +903,7 @@ t/images/Geotag.xml
 t/images/Geotag2.log
 t/images/Geotag3.log
 t/images/HTML.html
+t/images/ICC_Profile.icc
 t/images/IPTC.jpg
 t/images/ISO.iso
 t/images/ITC.itc

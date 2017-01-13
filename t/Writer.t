@@ -1,7 +1,7 @@
 # Before "make install", this script should be runnable with "make test".
 # After "make install" it should work as "perl t/Writer.t".
 
-BEGIN { $| = 1; print "1..57\n"; $Image::ExifTool::noConfig = 1; }
+BEGIN { $| = 1; print "1..58\n"; $Image::ExifTool::noConfig = 1; }
 END {print "not ok 1\n" unless $loaded;}
 
 # test 1: Load the module(s)
@@ -1049,6 +1049,22 @@ my $testOK;
         $ok = 0;
     }
     print 'not ' unless $ok;
+    print "ok $testnum\n";
+}
+
+# test 58: Set ICC_Profile from an external file
+{
+    ++$testnum;
+    my $exifTool = new Image::ExifTool;
+    open IN, 't/images/ICC_Profile.icc' or die;
+    binmode IN;
+    my $buff;
+    read IN, $buff, 1000;
+    close IN;
+    my @writeInfo = (
+        [ICC_Profile => \$buff, Protected => 1],
+    );
+    print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum);
     print "ok $testnum\n";
 }
 

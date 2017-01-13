@@ -30514,6 +30514,7 @@ implements this policy and changes EXIF:Artist to a list-type tag.
                        CurrentIPTCDigest
                        IPTCDigest
   CreateDate           Composite:SubSecCreateDate Y
+                       EXIF:CreateDate
                        IPTC:DigitalCreationDate
                        IPTC:DigitalCreationTime
                        XMP-xmp:CreateDate
@@ -30525,6 +30526,7 @@ implements this policy and changes EXIF:Artist to a list-type tag.
                        CurrentIPTCDigest
                        IPTCDigest
   DateTimeOriginal     Composite:SubSecDateTimeOriginal Y
+                       EXIF:DateTimeOriginal
                        IPTC:DateCreated
                        IPTC:TimeCreated
                        XMP-photoshop:DateCreated
@@ -30545,6 +30547,7 @@ implements this policy and changes EXIF:Artist to a list-type tag.
                        CurrentIPTCDigest
                        IPTCDigest
   ModifyDate           Composite:SubSecModifyDate Y
+                       EXIF:ModifyDate
                        XMP-xmp:ModifyDate
                        CurrentIPTCDigest
                        IPTCDigest

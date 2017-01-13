@@ -487,22 +487,23 @@ numerical.
                   current ExifTool object), $tag (the tag key), $tagInfo
                   (reference to the tag information hash), $priority (to
                   dynamically set the priority of a tag), and @grps (to
-                  dynamically set the family and/or groups), or a code
-                  reference with $val and $self as arguments.  For Composite
-                  tags, $val is a reference to a hash of source ("derived from")
-                  tag names, and @val may be used to access the Raw values of
-                  these tags. The returned value may be a scalar which is used
-                  as the new Raw value, a scalar reference to a binary data
-                  value, a hash reference for Composite tags, an ARRAY reference
-                  for a list of values, or undefined to indicate that the tag
-                  should be ignored.  If RawConv is specified for a Composite
-                  tag, then ValueConv and PrintConv evals will no longer have
-                  access to the source @val and @prt values unless the input
-                  $val is returned.  RawConv may generate Warning or Error tags,
-                  while ValueConv and PrintConv should not (see ValueConv note
-                  below). Note: RawConv should only be used if necessary (in
-                  general, only if the conversion may return undef to ignore the
-                  tag, or if a Warning may be issued) because ValueConv is more
+                  dynamically set the family and/or groups), or a code reference
+                  with $val and $self as arguments (in which case $$self{grps}
+                  may be used to set the groups).  For Composite tags, $val is a
+                  reference to a hash of source ("derived from") tag names, and
+                  @val may be used to access the Raw values of these tags. The
+                  returned value may be a scalar which is used as the new Raw
+                  value, a scalar reference to a binary data value, a hash
+                  reference for Composite tags, an ARRAY reference for a list of
+                  values, or undefined to indicate that the tag should be
+                  ignored.  If RawConv is specified for a Composite tag, then
+                  ValueConv and PrintConv evals will no longer have access to
+                  the source @val and @prt values unless the input $val is
+                  returned.  RawConv may generate Warning or Error tags, while
+                  ValueConv and PrintConv should not (see ValueConv note below).
+                  Note: RawConv should only be used if necessary (in general,
+                  only if the conversion may return undef to ignore the tag, or
+                  if a Warning may be issued) because ValueConv is more
                   efficient since it is only executed if the tag value is
                   requested, while RawConv is executed for all extracted tags.
 

@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '10.38';
+$VERSION = '10.39';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -1619,7 +1619,7 @@ sub SetWarning($) { $evalWarning = $_[0]; }
 sub GetWarning()  { return $evalWarning; }
 
 # Clean unnecessary information (line number, LF) from warning
-# Inputs: 0) warning string or undef to use current warning
+# Inputs: 0) warning string or undef to use $evalWarning
 # Returns: cleaned warning
 sub CleanWarning(;$)
 {
@@ -1649,6 +1649,7 @@ sub new
 
     $self->ClearOptions();      # create default options hash
     $$self{VALUE} = { };        # must initialize this for warning messages
+    $$self{PATH} = [ ];         # (this too)
     $$self{DEL_GROUP} = { };    # lookup for groups to delete when writing
     $$self{SAVE_COUNT} = 0;     # count calls to SaveNewValues()
     $$self{FILE_SEQUENCE} = 0;  # sequence number for files when reading
@@ -7110,6 +7111,7 @@ sub FoundTag($$$)
         undef $evalWarning;
         if (ref $conv eq 'CODE') {
             $value = &$conv($value, $self);
+            $$self{grps} and @grps = @{$$self{grps}}, delete $$self{grps};
         } else {
             my $val = $value;   # do this so eval can use $val
             # NOTE: RawConv is also evaluated in Writer.pl

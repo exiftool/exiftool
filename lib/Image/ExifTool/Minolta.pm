@@ -569,7 +569,7 @@ $VERSION = '2.44';
 # 3rd party E lenses
 #
    '65535.39' => 'Samyang AF 50mm F1.4 FE',         #JR (32789)
-   '65535.40' => 'Samyang AF 14mm F2.8 FE',         #JR (32790)
+   '65535.40' => 'Samyang AF 14mm F2.8 FE',         #JR (32790 and 51505)
    '65535.41' => 'Sigma 19mm F2.8 [EX] DN',         #JR (0)
    '65535.42' => 'Sigma 30mm F2.8 [EX] DN',         #JR (0)
    '65535.43' => 'Sigma 60mm F2.8 DN',              #JR (0)

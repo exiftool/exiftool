@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.50';
+$VERSION = '2.51';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -143,6 +143,8 @@ my %sonyLensTypes2 = (
     # 504xx => 'Sigma 18-200mm F3.5-6.3 DC MACRO OS HSM | C 014 + MC-11',
     # 504xx => 'Sigma 24mm F1.4 DG HSM | A 015 + MC-11',
     # 504xx => 'Sigma 30mm F1.4 DC HSM | A 013 + MC-11',
+
+    51505 => 'Samyang AF 14mm F2.8 FE', #forum3833
 );
 
 # ExposureProgram values (ref PH, mainly decoded from A200)

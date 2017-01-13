@@ -305,6 +305,7 @@ my %sTextRegion = (
     Genre           => { Groups => { 2 => 'Image' }, List => 'Bag', Struct => \%sCVTermDetails },
 
     # new video properties (Oct 2016, ref Michael Steidl)
+    # (see http://www.iptc.org/std/videometadatahub/recommendation/IPTC-VideoMetadataHub-props-Rec_1.0.html)
     CircaDateCreated=> { Groups => { 2 => 'Time' } },
     Episode         => { Groups => { 2 => 'Video' }, Struct => \%sEpisode },
     ExternalMetadataLink => { Groups => { 2 => 'Other' }, List => 'Bag' },

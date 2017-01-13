@@ -2510,6 +2510,7 @@ sub Sanitize($$)
     # make sure the Perl UTF-8 flag is OFF for the value if perl 5.6 or greater
     # (otherwise our byte manipulations get corrupted!!)
     if ($] >= 5.006 and (eval { require Encode; Encode::is_utf8($$valPt) } or $@)) {
+        local $SIG{'__WARN__'} = \&SetWarning;
         # repack by hand if Encode isn't available
         $$valPt = $@ ? pack('C*',unpack($] < 5.010000 ? 'U0C*' : 'C0C*',$$valPt)) : Encode::encode('utf8',$$valPt);
     }

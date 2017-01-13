@@ -121,20 +121,22 @@ my $mwgLoaded;  # flag set if we alreaded Load()ed the MWG tags
         Shift => 0, # don't shift this tag
         Desire => {
             0 => 'Composite:SubSecDateTimeOriginal',
-            1 => 'IPTC:DateCreated',
-            2 => 'IPTC:TimeCreated',
-            3 => 'XMP-photoshop:DateCreated',
-            4 => 'CurrentIPTCDigest',
-            5 => 'IPTCDigest',
+            1 => 'EXIF:DateTimeOriginal',
+            2 => 'IPTC:DateCreated',
+            3 => 'IPTC:TimeCreated',
+            4 => 'XMP-photoshop:DateCreated',
+            5 => 'CurrentIPTCDigest',
+            6 => 'IPTCDigest',
         },
         # must check for validity in RawConv to avoid hiding a same-named tag,
         # but IPTC dates use a ValueConv so we need to derive the value there
         RawConv => '(defined $val[0] or defined $val[1] or defined $val[3]) ? $val : undef',
         ValueConv => q{
             return $val[0] if defined $val[0] and $val[0] !~ /^[: ]*$/;
-            return $val[3] if not defined $val[4] or (defined $val[3] and
-                             (not defined $val[5] or $val[4] eq $val[5]));
-            return $val[2] ? "$val[1] $val[2]" : $val[1] if $val[1];
+            return $val[1] if defined $val[1] and $val[1] !~ /^[: ]*$/;
+            return $val[4] if not defined $val[5] or (defined $val[4] and
+                             (not defined $val[6] or $val[5] eq $val[6]));
+            return $val[3] ? "$val[2] $val[3]" : $val[2] if $val[2];
             return undef;
         },
         PrintConv => '$self->ConvertDateTime($val)',
@@ -157,18 +159,20 @@ my $mwgLoaded;  # flag set if we alreaded Load()ed the MWG tags
         Shift => 0, # don't shift this tag
         Desire => {
             0 => 'Composite:SubSecCreateDate',
-            1 => 'IPTC:DigitalCreationDate',
-            2 => 'IPTC:DigitalCreationTime',
-            3 => 'XMP-xmp:CreateDate',
-            4 => 'CurrentIPTCDigest',
-            5 => 'IPTCDigest',
+            1 => 'EXIF:CreateDate',
+            2 => 'IPTC:DigitalCreationDate',
+            3 => 'IPTC:DigitalCreationTime',
+            4 => 'XMP-xmp:CreateDate',
+            5 => 'CurrentIPTCDigest',
+            6 => 'IPTCDigest',
         },
         RawConv => '(defined $val[0] or defined $val[1] or defined $val[3]) ? $val : undef',
         ValueConv => q{
             return $val[0] if defined $val[0] and $val[0] !~ /^[: ]*$/;
-            return $val[3] if not defined $val[4] or (defined $val[3] and
-                             (not defined $val[5] or $val[4] eq $val[5]));
-            return $val[2] ? "$val[1] $val[2]" : $val[1] if $val[1];
+            return $val[1] if defined $val[1] and $val[1] !~ /^[: ]*$/;
+            return $val[4] if not defined $val[5] or (defined $val[4] and
+                             (not defined $val[6] or $val[5] eq $val[6]));
+            return $val[3] ? "$val[2] $val[3]" : $val[2] if $val[2];
             return undef;
         },
         PrintConv => '$self->ConvertDateTime($val)',
@@ -189,13 +193,15 @@ my $mwgLoaded;  # flag set if we alreaded Load()ed the MWG tags
         Shift => 0, # don't shift this tag
         Desire => {
             0 => 'Composite:SubSecModifyDate',
-            1 => 'XMP-xmp:ModifyDate',
-            2 => 'CurrentIPTCDigest',
-            3 => 'IPTCDigest',
+            1 => 'EXIF:ModifyDate',
+            2 => 'XMP-xmp:ModifyDate',
+            3 => 'CurrentIPTCDigest',
+            4 => 'IPTCDigest',
         },
         RawConv => q{
             return $val[0] if defined $val[0] and $val[0] !~ /^[: ]*$/;
-            return $val[1] if not defined $val[2] or not defined $val[3] or $val[2] eq $val[3];
+            return $val[1] if defined $val[1] and $val[1] !~ /^[: ]*$/;
+            return $val[2] if not defined $val[3] or not defined $val[4] or $val[3] eq $val[4];
             return undef;
         },
         PrintConv => '$self->ConvertDateTime($val)',

@@ -1279,7 +1279,7 @@ $VERSION = '1.22';
       Description => '圧縮計画',
       PrintConv => {
         'JPEG' => 'JPEG圧縮率',
-        'JPEG (old-style)' => 'JPEG(古い形式)',
+        'JPEG (old-style)' => 'JPEG (古い形式)',
         'None' => '無し',
         'Uncompressed' => '非圧縮',
       },

@@ -16,7 +16,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::XMP;
 
-$VERSION = '1.18';
+$VERSION = '1.19';
 
 sub RecoverTruncatedIPTC($$$);
 sub ListToString($);

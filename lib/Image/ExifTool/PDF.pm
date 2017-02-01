@@ -21,13 +21,14 @@ use vars qw($VERSION $AUTOLOAD $lastFetched);
 use Image::ExifTool qw(:DataAccess :Utils);
 require Exporter;
 
-$VERSION = '1.41';
+$VERSION = '1.42';
 
 sub FetchObject($$$$);
 sub ExtractObject($$;$$);
 sub ReadToNested($;$);
 sub ProcessDict($$$$;$$);
 sub ProcessAcroForm($$$$;$$);
+sub ExpandArray($);
 sub ReadPDFValue($);
 sub CheckPDF($$$);
 
@@ -1704,6 +1705,22 @@ sub ProcessAcroForm($$$$;$$)
 }
 
 #------------------------------------------------------------------------------
+# Expand array into a string
+# Inputs: 0) array ref
+# Return: string
+sub ExpandArray($)
+{
+    my $val = shift;
+    my @list = @$val;
+    foreach (@list) {
+        ref $_ eq 'SCALAR' and $_ = "ref($$_)", next;
+        ref $_ eq 'ARRAY' and $_ = ExpandArray($_), next;
+        defined $_ or $_ = '<undef>', next;
+    }
+    return '[' . join(',',@list) . ']';
+}
+
+#------------------------------------------------------------------------------
 # Process PDF dictionary extract tag values
 # Inputs: 0) ExifTool object reference, 1) tag table reference
 #         2) dictionary reference, 3) cross-reference table reference,
@@ -1823,14 +1840,7 @@ sub ProcessDict($$$$;$$)
                     SubDirectory => { TagTable => 'Image::ExifTool::PDF::Unknown' },
                 };
             } else {
-                if (ref $val eq 'ARRAY') {
-                    my @list = @$val;
-                    foreach (@list) {
-                        $_ = "ref($$_)" if ref $_ eq 'SCALAR';
-                        $_ = '<undef>' unless defined $_;
-                    }
-                    $val2 = '[' . join(',',@list) . ']';
-                }
+                $val2 = ExpandArray($val) if ref $val eq 'ARRAY';
                 # generate tag info if we will use it later
                 if (not $tagInfo and defined $val and $unknown) {
                     $tagInfo = NewPDFTag($tagTablePtr, $tag);

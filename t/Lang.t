@@ -1,7 +1,7 @@
 # Before `make install' is performed this script should be runnable with
 # `make test'. After `make install' it should work as `perl t/Lang.t'
 
-BEGIN { $Image::ExifTool::noConfig = 1; }
+BEGIN { $Image::ExifTool::configFile = ''; }
 
 use Image::ExifTool;
 use t::TestLib;

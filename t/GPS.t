@@ -1,7 +1,7 @@
 # Before "make install", this script should be runnable with "make test".
 # After "make install" it should work as "perl t/GPS.t".
 
-BEGIN { $| = 1; print "1..3\n"; $Image::ExifTool::noConfig = 1; }
+BEGIN { $| = 1; print "1..3\n"; $Image::ExifTool::configFile = ''; }
 END {print "not ok 1\n" unless $loaded;}
 
 # test 1: Load the module(s)
@@ -28,14 +28,18 @@ my $testnum = 1;
 # test 3: Write some new information
 {
     ++$testnum;
-    my @writeInfo = (
-        ['GPSLatitude' => "12 deg 21' 23.345"],
-        ['GPSLatitudeRef' => 'south' ],
-        ['GPSTimeStamp' => '2007:03:02 18:46:10.55-05:30' ],
-        ['GPSDateStamp' => '2007:03:02 18:46:10.55-05:30' ],
-    );
-    print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum);
-    print "ok $testnum\n";
+    if (eval { require Time::Local }) {
+        my @writeInfo = (
+            ['GPSLatitude' => "12 deg 21' 23.345"],
+            ['GPSLatitudeRef' => 'south' ],
+            ['GPSTimeStamp' => '2007:03:02 18:46:10.55-05:30' ],
+            ['GPSDateStamp' => '2007:03:02 18:46:10.55-05:30' ],
+        );
+        print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum);
+        print "ok $testnum\n";
+    } else {
+        print "ok $testnum # skip Requires Time::Local\n";
+    }
 }
 
 

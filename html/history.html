@@ -17,6 +17,26 @@ considered development releases, and are not uploaded to <a href="http://search.
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v10.41'><b>Feb. 1, 2017 - Version 10.41</b></a>
+<ul>
+<li>Added an experimental metadata validation feature (invoked either by
+    requesting the new <a href="TagNames/Extra.html">Extra</a> Validate tag or by setting the API Validate option)
+<li>Added support for PSDT file extension
+<li>Added age.config to the distribution
+<li>Added a new Sony lens (thanks Jos Roost)
+<li>Added a new PentaxModelID (thanks Louis Granboulan)
+<li>Enhanced -p option to allow files to be grouped in sections
+<li>Made makernote offset warning minor
+<li>Relaxed parsing of NMEA GGA sentence so comma after the geoid units is now
+    optional
+<li>Patched problem extracting value of an unsafe binary tag with the -b option
+    when specified using -TAG# instead of -TAG with -n
+<li>API Changes:
+    <ul>
+    <li>Added experimental Validate option
+    </ul>
+</ul>
+
 <a name='v10.40'><b>Jan. 14, 2017 - Version 10.40</b></a> <span class=grn>(production release)</span>
 <ul>
 <li>Fixed tests that were failing on some platforms

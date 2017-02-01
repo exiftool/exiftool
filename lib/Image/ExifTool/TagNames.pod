@@ -806,7 +806,7 @@ official EXIF 2.31 specification.
   0xc68b   OriginalRawFileName       IFD0       string!
   0xc68c   OriginalRawFileData       IFD0       DNG OriginalRaw
   0xc68d   ActiveArea                SubIFD     int32u[4]!
-  0xc68e   MaskedAreas               SubIFD     int32u[4]!
+  0xc68e   MaskedAreas               SubIFD     int32u[n]!
   0xc68f   AsShotICCProfile          IFD0       ICC_Profile
   0xc690   AsShotPreProfileMatrix    IFD0       rational64s[n]!
   0xc691   CurrentICCProfile         IFD0       ICC_Profile
@@ -29908,6 +29908,7 @@ FileName.
   RAFVersion                 File               N
   ResourceForkSize           System             N
   TestName                   -                  Y!
+  Validate                   ExifTool           N
   Warning                    ExifTool           N
   XMP                        XMP                Y!
   XResolution                File               N

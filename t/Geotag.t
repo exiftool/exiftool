@@ -5,7 +5,7 @@ my $numTests;
 
 BEGIN {
     $numTests = 11;
-    $| = 1; print "1..$numTests\n"; $Image::ExifTool::noConfig = 1;
+    $| = 1; print "1..$numTests\n"; $Image::ExifTool::configFile = '';
     # must create user-defined tags before loading ExifTool (used in test 8)
     %Image::ExifTool::UserDefined = (
         'Image::ExifTool::GPS::Main' => {

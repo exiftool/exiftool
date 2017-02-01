@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '10.40';
+$VERSION = '10.41';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -418,6 +418,7 @@ my %fileTypeLookup = (
     PS3  =>  'PS',
     PSB  => ['PSD',  'Photoshop Large Document'],
     PSD  => ['PSD',  'Photoshop Document'],
+    PSDT => ['PSD',  'Photoshop Document Template'],
     PSP  => ['PSP',  'Paint Shop Pro'],
     PSPFRAME => 'PSP',
     PSPIMAGE => 'PSP',
@@ -1911,6 +1912,7 @@ sub ClearOptions($)
         TextOut     => \*STDOUT,# file for Verbose/HtmlDump output
         Unknown     => 0,       # flag to get values of unknown tags (0-2)
         UserParam   => { },     # user parameters for InsertTagValues()
+        Validate    => undef,   # perform additional validation
         Verbose     => 0,       # print verbose messages (0-5, higher # = more verbose)
         WriteMode   => 'wcg',   # enable all write modes by default
         XMPAutoConv => 1,       # automatic conversion of unknown XMP tag values
@@ -1961,11 +1963,13 @@ sub ExtractInfo($;@)
         delete $$self{EXIF_DATA};
         delete $$self{EXIF_POS};
     } else {
-        if (defined $_[0] or $$options{HtmlDump}) {
+        if (defined $_[0] or $$options{HtmlDump} or $$req{validate}) {
             %saveOptions = %$options;       # save original options
 
             # require duplicates for html dump
             $self->Options(Duplicates => 1) if $$options{HtmlDump};
+            # enable Validate option if Validate tag is requested
+            $self->Options(Validate => 1) if $$req{validate};
 
             if (defined $_[0]) {
                 # only initialize filename if called with arguments
@@ -1994,8 +1998,10 @@ sub ExtractInfo($;@)
                 $self->WarnOnce('Install Time::HiRes to generate ProcessingTime');
             }
         }
+
         ++$$self{FILE_SEQUENCE};        # count files read
     }
+
     my $filename = $$self{FILENAME};    # image file name ('' if already open)
     my $raf = $$self{RAF};              # RandomAccess object
 
@@ -2319,6 +2325,13 @@ sub ExtractInfo($;@)
             }
         }
     }
+
+    # generate Validate tag if requested
+    if ($$options{Validate} and not $reEntry) {
+        require Image::ExifTool::Validate;
+        Image::ExifTool::Validate::FinishValidate($self, $$req{validate});
+    }
+
     @startTime and $self->FoundTag('ProcessingTime', Time::HiRes::tv_interval(\@startTime));
 
     # restore original options
@@ -2328,7 +2341,7 @@ sub ExtractInfo($;@)
         # restore necessary members when exiting re-entrant code
         $$self{$_} = $$reEntry{$_} foreach keys %$reEntry;
     }
-
+    
     # ($type may be undef without an Error when processing sub-documents)
     return 0 if not defined $type or exists $$self{VALUE}{Error};
     return 1;
@@ -5617,6 +5630,7 @@ sub ProcessJPEG($$)
                 }
                 next if $trailInfo or $wantTrailer or $verbose > 2 or $htmlDump;
             }
+            next if $$self{Validate};   # (validate to EOI)
             # nothing interesting to parse after start of scan (SOS)
             $success = 1;
             last;   # all done parsing file
@@ -5632,10 +5646,10 @@ sub ProcessJPEG($$)
             next;
         } elsif ($marker == 0xdb and length($$segDataPt) and    # DQT
             # save the DQT data only if JPEGDigest has been requested
-            # (Note: this will not work with the application -p option
-            #  because we aren't checking the RequestAll API option here.
-            #  The reason is that there is too much overhead involved in
-            #  the calculation of this tag to make this worth the CPU time.)
+            # (Note: since we aren't checking the RequestAll API option here, the application
+            #  must use the RequestTags option to generate these tags if they have not been
+            #  specifically requested.  The reason is that there is too much overhead involved
+            #  in the calculation of this tag to make this worth the CPU time.)
             ($$self{REQ_TAG_LOOKUP}{jpegdigest} or $$self{REQ_TAG_LOOKUP}{jpegqualityestimate}))
         {
             my $num = unpack('C',$$segDataPt) & 0x0f;   # get table index

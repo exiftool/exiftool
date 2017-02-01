@@ -48,7 +48,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '2.99';
+$VERSION = '3.00';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -3520,13 +3520,17 @@ sub ProcessXMP($$;$)
     $$et{xlatNS} = { };
 
     # ignore non-standard XMP while in strict MWG compatibility mode
-    if ($Image::ExifTool::MWG::strict and not $$et{XMP_CAPTURE} and
+    if (($Image::ExifTool::MWG::strict or $et->Options('Validate')) and not $$et{XMP_CAPTURE} and
         $$et{FILE_TYPE} =~ /^(JPEG|TIFF|PSD)$/)
     {
         my $path = $et->MetadataPath();
         unless ($path =~ /^(JPEG-APP1-XMP|TIFF-IFD0-XMP|PSD-XMP)$/) {
-            $et->Warn("Ignored non-standard XMP at $path");
-            return 1;
+            if ($Image::ExifTool::MWG::strict) {
+                $et->Warn("Ignored non-standard XMP at $path");
+                return 1;
+            } else {
+                $et->Warn("Non-standard XMP at $path", 1);
+            }
         }
     }
     if ($dataPt) {

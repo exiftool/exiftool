@@ -1162,7 +1162,7 @@ sub SetNewValuesFromFile($$;@)
         DateFormat      => $$options{DateFormat},
         Duplicates      => 1,
         Escape          => $$options{Escape},
-      # Exclude set below
+      # Exclude (set below)
         ExtendedXMP     => $$options{ExtendedXMP},
         ExtractEmbedded => $$options{ExtractEmbedded},
         FastScan        => $$options{FastScan},
@@ -1190,6 +1190,7 @@ sub SetNewValuesFromFile($$;@)
         SystemTags      => $$options{SystemTags},
         Unknown         => $$options{Unknown},
         UserParam       => $$options{UserParam},
+        Validate        => $$options{Validate},
         XMPAutoConv     => $$options{XMPAutoConv},
     );
     $$srcExifTool{GLOBAL_TIME_OFFSET} = $$self{GLOBAL_TIME_OFFSET};

@@ -1,7 +1,7 @@
 # Before "make install", this script should be runnable with "make test".
 # After "make install" it should work as "perl t/ExifTool.t".
 
-BEGIN { $| = 1; print "1..30\n"; $Image::ExifTool::noConfig = 1; }
+BEGIN { $| = 1; print "1..31\n"; $Image::ExifTool::configFile = ''; }
 END {print "not ok 1\n" unless $loaded;}
 
 # test 1: Load the module(s)
@@ -263,13 +263,17 @@ my $testnum = 1;
 # test 25: Test GlobalTimeShift option
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
-    $exifTool->Options(GlobalTimeShift => '-0:1:0 0:0:0');
-    # Note: can't extract system times because this could result in a different
-    # calculated global time offset (since I am shifting by 1 month)
-    my $info = $exifTool->ImageInfo('t/images/ExifTool.jpg', 'time:all', '-system:all');
-    print 'not ' unless check($exifTool, $info, $testname, $testnum);
-    print "ok $testnum\n";
+    if (eval { require Time::Local }) {
+        my $exifTool = new Image::ExifTool;
+        $exifTool->Options(GlobalTimeShift => '-0:1:0 0:0:0');
+        # Note: can't extract system times because this could result in a different
+        # calculated global time offset (since I am shifting by 1 month)
+        my $info = $exifTool->ImageInfo('t/images/ExifTool.jpg', 'time:all', '-system:all');
+        print 'not ' unless check($exifTool, $info, $testname, $testnum);
+        print "ok $testnum\n";
+    } else {
+        print "ok $testnum # skip Requires Time::Local\n";
+    }
 }
 
 # test 26: Test reading with wildcards
@@ -323,6 +327,15 @@ my $testnum = 1;
         $skip = ' # skip Requires Digest::MD5';
     }
     print "ok $testnum$skip\n";
+}
+
+# test 31: Test Validate feature
+{
+    ++$testnum;
+    my $exifTool = new Image::ExifTool;
+    my $info = $exifTool->ImageInfo('t/images/CanonRaw.cr2', 'Validate', 'Warning', 'Error');
+    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    print "ok $testnum\n";
 }
 
 # end

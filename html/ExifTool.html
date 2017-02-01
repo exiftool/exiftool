@@ -797,6 +797,10 @@ distribution for examples.</p>
     <tr><td valign=top><b>undef</b></td><td valign=top>-</td><td>Clear UserParam hash</td></tr>
     </table>
     </td><td align=center>{ }</td></tr>
+<tr><td>Validate</td><td><a name="Validate"></a>[Experimental] Flag to perform extra validation
+    when reading. Causes a minor warning to be issued for tags not defined in the EXIF, TIFF,
+    DNG or DCF specification.</td>
+    <td align=center>0 or 1</td><td align=center>undef</td></tr>
 <tr><td>Verbose</td><td>Print verbose messages to file specified by TextOut option.
     <a href="verbose.html">Click here</a> for example outputs.</td>
     <td><a name="Verbose"></a><table class=clear>
@@ -1219,9 +1223,10 @@ errors are printed to STDERR.
 <tr><td>EditOnly</td><td>Edit tag only if it already exists. Don't create new tag.
     Effectively removes the 'c' from the ExifTool WriteMode option for this tag only.</td>
     <td align=center>0 or 1</td><td align=center>0</td></tr>
-<tr><td>Group</td><td>Specifies group name where tag should be written.
-    If not specified, tag is written to highest priority group as specified
-    by <a href="#SetNewGroups">SetNewGroups</a>.  Case is not significant</td>
+<tr><td>Group</td><td>Specifies group name where tag should be written.  This
+    option is superseded by any group specified in the tag name. If not
+    specified, tag is written to highest priority group as specified by
+    <a href="#SetNewGroups">SetNewGroups</a>.  Case is not significant</td>
     <td align=center>One or more family 0, 1 or 2 groups with optional leading
     family number, separated by colons</td><td align=center>undef</td></tr>
 <tr><td>NoFlat</td><td>Treat flattened tags as 'unsafe'</td><td align=center>0 or 1</td><td align=center>0</td></tr>

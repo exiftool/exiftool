@@ -8947,6 +8947,7 @@ my %tagExists = (
 	'uuidinfo' => 1,
 	'uuidlist' => 1,
 	'validafpoints' => 1,
+	'validate' => 1,
 	'value0' => 1,
 	'value1' => 1,
 	'value2' => 1,

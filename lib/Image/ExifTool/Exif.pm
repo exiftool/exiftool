@@ -3172,7 +3172,7 @@ my %sampleFormat = (
         Name => 'MaskedAreas',
         Writable => 'int32u',
         WriteGroup => 'SubIFD',
-        Count => 4,
+        Count => -1,
         Protected => 1,
     },
     0xc68f => {
@@ -5226,23 +5226,30 @@ sub ProcessExif($$$)
     my $firstBase = $base;
     my $raf = $$dirInfo{RAF};
     my $verbose = $et->Options('Verbose');
+    my $validate = $et->Options('Validate');
     my $htmlDump = $$et{HTML_DUMP};
     my $success = 1;
     my ($tagKey, $dirSize, $makerAddr, $strEnc);
     my $inMakerNotes = $$tagTablePtr{GROUPS}{0} eq 'MakerNotes';
 
+    require Image::ExifTool::Validate if $validate;
+
     # set encoding to assume for strings
     $strEnc = $et->Options('CharsetEXIF') if $$tagTablePtr{GROUPS}{0} eq 'EXIF';
 
     # ignore non-standard EXIF while in strict MWG compatibility mode
-    if ($Image::ExifTool::MWG::strict and $dirName eq 'IFD0' and
+    if (($validate or $Image::ExifTool::MWG::strict) and $dirName eq 'IFD0' and
         $tagTablePtr eq \%Image::ExifTool::Exif::Main and
         $$et{FILE_TYPE} =~ /^(JPEG|TIFF|PSD)$/)
     {
         my $path = $et->MetadataPath();
         unless ($path =~ /^(JPEG-APP1-IFD0|TIFF-IFD0|PSD-EXIFInfo-IFD0)$/) {
-            $et->Warn("Ignored non-standard EXIF at $path");
-            return 1;
+            if ($Image::ExifTool::MWG::strict) {
+                $et->Warn("Ignored non-standard EXIF at $path");
+                return 1;
+            } else {
+                $et->Warn("Non-standard EXIF at $path", 1);
+            }
         }
     }
     $verbose = -1 if $htmlDump; # mix htmlDump into verbose so we can test for both at once
@@ -5368,7 +5375,7 @@ sub ProcessExif($$$)
             $et->HDump($entry+$dataPos+$base,12,"[invalid IFD entry]",
                        "Bad format type: $format", 1);
             # warn unless the IFD was just padded with zeros
-            if ($format) {
+            if ($format or $validate) {
                 $et->Warn("Bad format ($format) for $name entry $index", $inMakerNotes);
                 ++$warnCount;
             }
@@ -5394,15 +5401,28 @@ sub ProcessExif($$$)
                 $origFormStr = $formatName[$format] . '[' . $oldCount . ']' if $oldCount != $count;
             }
         }
+        $validate and not $inMakerNotes and Image::ExifTool::Validate::ValidateExif(
+            $et, $tagTablePtr, $tagID, $tagInfo, $lastID, $name, $count, $formatStr);
         my $size = $count * $formatSize[$format];
         my $readSize = $size;
         if ($size > 4) {
             if ($size > 0x7fffffff) {
-                $et->Warn(sprintf("Invalid size (%u) for %s tag 0x%.4x", $size, $name, $tagID));
+                $et->Warn(sprintf("Invalid size (%u) for %s tag 0x%.4x", $size, $name, $tagID), $inMakerNotes);
                 ++$warnCount;
                 next;
             }
             $valuePtr = Get32u($dataPt, $valuePtr);
+            if ($validate and not $inMakerNotes) {
+                $et->Warn(sprintf('Odd offset for %s tag 0x%.4x', $name, $tagID), 1) if $valuePtr & 0x01;
+                if ($valuePtr < 8 || $valuePtr + $size > ($$et{VALUE}{FileSize} || length($$dataPt))) {
+                    $et->Warn(sprintf("Invalid offset for %s tag 0x%.4x", $name, $tagID));
+                    ++$warnCount;
+                    next;
+                }
+                if ($valuePtr + $size > $dirStart + $dataPos and $valuePtr < $dirEnd + $dataPos + 4) {
+                    $et->Warn(sprintf("Value for %s tag 0x%.4x overlaps IFD", $name, $tagID));
+                }
+            }
             # fix valuePtr if necessary
             if ($$dirInfo{FixOffsets}) {
                 my $wFlag;
@@ -5516,7 +5536,7 @@ sub ProcessExif($$$)
                             };
                         }
                     } else {
-                        $et->Warn("Bad $name offset for $tagStr");
+                        $et->Warn("Bad offset for $name $tagStr", $inMakerNotes);
                         ++$warnCount;
                     }
                     unless (defined $buff) {

@@ -12,7 +12,7 @@
 use strict;
 require 5.004;
 
-my $version = '10.40';
+my $version = '10.41';
 
 # add our 'lib' directory to the include list BEFORE 'use Image::ExifTool'
 my $exeDir;
@@ -146,6 +146,7 @@ my $isWriting;      # flag set if we are writing tags
 my $joinLists;      # flag set to join list values into a single string
 my $json;           # flag for JSON/PHP output format (1=JSON, 2=PHP)
 my $langOpt;        # language option
+my $lastSection;    # last section header for -p option
 my $listItem;       # item number for extracting single item from a list
 my $listSep;        # list item separator (', ' by default)
 my $mt;             # main ExifTool object
@@ -165,6 +166,7 @@ my $recurse;        # recurse into subdirectories (2=also hidden directories)
 my $rtnVal;         # command return value (0=success)
 my $saveCount;      # count the number of times we will/did call SaveNewValues()
 my $scanWritable;   # flag to process only writable file types
+my $sectionTrailer; # trailer to print at end of section with -p option
 my $seqFileNum;     # sequential file number used for %C
 my $showGroup;      # number of group to show (may be zero or '')
 my $showTagID;      # non-zero to show tag ID's
@@ -411,6 +413,7 @@ undef $fixLen;
 undef $forcePrint;
 undef $joinLists;
 undef $langOpt;
+undef $lastSection;
 undef $listItem;
 undef $multiFile;
 undef $outOpt;
@@ -420,6 +423,7 @@ undef $progressCount;
 undef $progressMax;
 undef $recurse;
 undef $scanWritable;
+undef $sectionTrailer;
 undef $showGroup;
 undef $showTagID;
 undef $structOpt;
@@ -1380,6 +1384,7 @@ if ($xml) {
     }
     $mt->Options(List => 1) unless $joinLists;
     $mt->Options(Duplicates => 0) unless defined $showGroup;
+    $showTagID = 'D' if $tabFormat and not $showTagID;
 } elsif ($structOpt) {
     $mt->Options(List => 1);
 } else {
@@ -1671,7 +1676,8 @@ if ($filtered and not $validFile) {
 # print CSV information if necessary
 PrintCSV() if $csv and not $isWriting;
 
-# print file trailer if necessary
+# print folder/file trailer if necessary
+print $sectionTrailer if $sectionTrailer;
 print $fileTrailer if $fileTrailer and not $textOut and not $fileHeader;
 
 if (defined $deleteOrig) {
@@ -1955,7 +1961,7 @@ sub GetImageInfo($$)
     if ($binaryOutput or not %$info) {
         my $errs = $et->GetInfo('Warning', 'Error');
         PrintErrors($et, $errs, $file) and $rtnVal = 1;
-    } elsif ($et->GetValue('Error')) {
+    } elsif ($et->GetValue('Error') or ($$et{Validate} and $et->GetValue('Warning'))) {
         $rtnVal = 1;
     }
 
@@ -1973,7 +1979,7 @@ sub GetImageInfo($$)
         undef $fileTrailer;
         # repeat for each embedded document if necessary
         my $lastDoc = $et->Options('ExtractEmbedded') ? $$et{DOC_COUNT} : 0;
-        foreach $type ('HEAD', 'BODY', 'TAIL') {
+        foreach $type (qw(HEAD SECT BODY ENDS TAIL)) {
             my $prf = $printFmt{$type} or next;
             for ($doc=0; $doc<=$lastDoc; ++$doc) {
                 if ($lastDoc) {
@@ -1994,9 +2000,23 @@ sub GetImageInfo($$)
                     push @lines, $line if defined $line;
                 }
                 $lineCount += scalar @lines;
-                if ($type eq 'TAIL') {
+                if ($type eq 'SECT') {
+                    my $sectionHeader = join '', @lines;
+                    if ($lastSection and $lastSection ne $sectionHeader) {
+                        print $sectionTrailer if $sectionTrailer;
+                        undef $lastSection;
+                    }
+                    undef $sectionTrailer;
+                    unless ($lastSection) {
+                        print $fp $sectionHeader;
+                        $lastSection = $sectionHeader;
+                    }
+                } elsif ($type eq 'TAIL') {
                     $fileTrailer = '' unless defined $fileTrailer;
                     $fileTrailer .= join '', @lines;
+                } elsif ($type eq 'ENDS') {
+                    $sectionTrailer = '' unless defined $sectionTrailer;
+                    $sectionTrailer .= join '', @lines if defined $lastSection;
                 } elsif (@lines) {
                     print $fp @lines;
                 }
@@ -2068,9 +2088,12 @@ TAG:    foreach $tag (@foundTags) {
             # make sure this tag has a value
             my $val = $$info{$tag};
             if (ref $val) {
-                if (defined $binaryOutput and not $binaryOutput) { # happens with -X -b or -php -b
+                # happens with -X, -j or -php when combined with -b:
+                if (defined $binaryOutput and not $binaryOutput and $$et{TAG_INFO}{$tag}{Protected}) {
                     # avoid extracting Protected binary tags (eg. data blocks) [insider information]
-                    next if $$et{TAG_INFO}{$tag}{Protected} and not $$et{REQ_TAG_LOOKUP}{lc $tag};
+                    my $lcTag = lc $tag;
+                    $lcTag =~ s/ .*//;
+                    next unless $$et{REQ_TAG_LOOKUP}{$lcTag};
                 }
                 $val = ConvertBinary($val); # convert SCALAR references
                 if ($structOpt) {
@@ -2296,6 +2319,11 @@ TAG:    foreach $tag (@foundTags) {
                         my $id = $et->GetTagID($tag);
                         $id = sprintf('0x%.4x', $id) if $showTagID eq 'H' and $id =~ /^\d+$/;
                         $$val{id} = $id;
+                    }
+                    if ($tabFormat) {
+                        $$val{table} = $et->GetTableName($tag);
+                        my $index = $et->GetTagIndex($tag);
+                        $$val{index} = $index if defined $index;
                     }
                     if ($outFormat < 0) {
                         $$val{desc} = $desc;
@@ -3522,7 +3550,7 @@ sub AddPrintFormat($)
     my $expr = shift;
     my $type;
     if ($expr =~ /^#/) {
-        $expr =~ s/^#\[(HEAD|BODY|TAIL)\]// or return; # ignore comments
+        $expr =~ s/^#\[(HEAD|SECT|BODY|ENDS|TAIL)\]// or return; # ignore comments
         $type = $1;
     } else {
         $type = 'BODY';
@@ -4747,8 +4775,9 @@ the B<-D> or B<-H> option changes tag values to JSON objects with "val" and
 "id" fields, and adding B<-l> adds a "desc" field, and a "num" field if the
 numerical value is different from the converted "val".  The B<-b> option may
 be added to output binary data, encoded in base64 if necessary (indicated by
-"base64:" as the first 7 bytes of the value).  The JSON output is UTF-8
-regardless of any B<-L> or B<-charset> option setting, but the UTF-8
+"base64:" as the first 7 bytes of the value), and B<-t> may be added to
+include tag table information (see B<-t> for details).  The JSON output is
+UTF-8 regardless of any B<-L> or B<-charset> option setting, but the UTF-8
 validation is disabled if a character set other than UTF-8 is specified.
 
 If I<JSONFILE> is specified, the file is imported and the tag definitions
@@ -4847,10 +4876,13 @@ Case is not significant.  Braces C<{}> may be used around the tag name to
 separate it from subsequent text.  Use C<$$> to represent a C<$> symbol, and
 C<$/> for a newline.  Multiple B<-p> options may be used, each contributing
 a line of text to the output.  Lines beginning with C<#[HEAD]> and
-C<#[TAIL]> are output only for the first and last processed files
-respectively.  Lines beginning with C<#[BODY]> and lines not beginning with
-C<#> are output for each processed file.  Other lines beginning with C<#>
-are ignored.  For example, this format file:
+C<#[TAIL]> are output before the first processed file and after the last
+processed file respectively.  Lines beginning with C<#[BODY]> and lines not
+beginning with C<#> are output for each processed file.  Lines beginning
+with C<#[SECT]> and C<#[ENDS]> are output around each section of files. A
+section is defined as a group of files with the same section header (eg.
+files are grouped by directory if C<#[SECT]> contains C<$directory>). Other
+lines beginning with C<#> are ignored. For example, this format file:
 
     # this is a comment line
     #[HEAD]-- Generated by ExifTool $exifToolVersion --
@@ -4864,7 +4896,7 @@ with this command:
 
 produces output like this:
 
-    -- Generated by ExifTool 10.40 --
+    -- Generated by ExifTool 10.41 --
     File: a.jpg - 2003:10:31 15:44:19
     (f/5.6, 1/60s, ISO 100)
     File: b.jpg - 2006:05:23 11:57:38
@@ -4903,8 +4935,9 @@ file names, so this feature is useful if tag values are used in file names.)
 Format output as a PHP Array.  The B<-g>, B<-G>, B<-D>, B<-H>, B<-l>,
 B<-sep> and B<-struct> options combine with B<-php>, and duplicate tags are
 handled in the same way as with the B<-json> option.  As well, the B<-b>
-option may be added to output binary data.  Here is a simple example showing
-how this could be used in a PHP script:
+option may be added to output binary data, and B<-t> may be added to include
+tag table information (see B<-t> for details).  Here is a simple example
+showing how this could be used in a PHP script:
 
     <?php
     eval('$array=' . `exiftool -php -q image.jpg`);
@@ -4968,8 +5001,9 @@ may always be used when writing.
 Output a tab-delimited list of description/values (useful for database
 import).  May be combined with B<-s> to print tag names instead of
 descriptions, or B<-S> to print tag values only, tab-delimited on a single
-line.  The B<-t> option may also be used to add tag table information to the
-B<-X> option output.
+line.  The B<-t> option may be combined with B<-j>, B<-php> or B<-X> to add
+tag table information (table C<name>, decimal tag C<id>, and C<index> for
+cases where multiple conditional tags exist with the same ID).
 
 =item B<-T> (B<-table>)
 
@@ -5163,9 +5197,8 @@ B<-s> or B<-sep> is used.  Using B<-L> changes the XML encoding from "UTF-8"
 to "windows-1252".  Other B<-charset> settings change the encoding only if
 there is a corresponding standard XML character set.  The B<-b> option
 causes binary data values to be written, encoded in base64 if necessary. 
-The B<-t> option adds tag table information to the output (table C<name>,
-decimal tag C<id>, and C<index> for cases where multiple conditional tags
-exist with the same ID).
+The B<-t> option adds tag table information to the output (see B<-t> for
+details).
 
 Note:  This output is NOT the same as XMP because it uses
 dynamically-generated property names corresponding to the ExifTool tag
@@ -5721,11 +5754,12 @@ options on the command line.
 
 Load specified configuration file instead of the default ".ExifTool_config".
 If used, this option must come before all other arguments on the command
-line.  The I<CFGFILE> name may contain a directory specification (otherwise
-the file must exist in the current directory), or may be set to an empty
-string ("") to disable loading of the config file.  See the sample
-configuration file and "config.html" in the full ExifTool distribution for
-more information about the ExifTool configuration file.
+line and applies to all B<-execute>'d commands.  The I<CFGFILE> name may
+contain a directory specification (otherwise the file must exist in the
+current directory), or may be set to an empty string ("") to disable loading
+of the config file.  See the sample configuration file and "config.html" in
+the full ExifTool distribution for more information about the ExifTool
+configuration file.
 
 =item B<-echo>[I<NUM>] I<TEXT>
 
@@ -5739,10 +5773,10 @@ respectively) after processing is complete.
 Execute command for all arguments up to this point on the command line (plus
 any arguments specified by B<-common_args>).  The result is as if the
 commands were executed as separate command lines (with the exception of the
-B<-use> option which remains in effect for subsequent commands).  Allows
-multiple commands to be executed from a single command line.  I<NUM> is an
-optional number that is echoed in the "{ready}" message when using the
-B<-stay_open> feature.
+B<-config> and B<-use> options which remain in effect for subsequent
+commands).  Allows multiple commands to be executed from a single command
+line.  I<NUM> is an optional number that is echoed in the "{ready}" message
+when using the B<-stay_open> feature.
 
 =item B<-srcfile> I<FMT>
 

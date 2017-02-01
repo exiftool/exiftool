@@ -15,6 +15,7 @@ arg_files/xmp2exif.args
 arg_files/xmp2gps.args
 arg_files/xmp2iptc.args
 arg_files/xmp2pdf.args
+config_files/age.config
 config_files/bibble.config
 config_files/convert_regions.config
 config_files/example.config
@@ -364,6 +365,7 @@ lib/Image/ExifTool/Theora.pm
 lib/Image/ExifTool/Torrent.pm
 lib/Image/ExifTool/Unknown.pm
 lib/Image/ExifTool/VCard.pm
+lib/Image/ExifTool/Validate.pm
 lib/Image/ExifTool/Vorbis.pm
 lib/Image/ExifTool/WriteCanonRaw.pl
 lib/Image/ExifTool/WriteExif.pl
@@ -470,6 +472,7 @@ t/ExifTool_28.out
 t/ExifTool_29.out
 t/ExifTool_3.out
 t/ExifTool_30.out
+t/ExifTool_31.out
 t/ExifTool_4.out
 t/ExifTool_5.out
 t/ExifTool_6.out

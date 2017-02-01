@@ -31,8 +31,9 @@ use Image::ExifTool::IPTC;
 use Image::ExifTool::XMP;
 use Image::ExifTool::Canon;
 use Image::ExifTool::Nikon;
+use Image::ExifTool::Validate;
 
-$VERSION = '3.01';
+$VERSION = '3.03';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -603,39 +604,6 @@ my %shortcutNotes = (
 );
 
 
-
-# EXIF table tag ID's which are part of the EXIF 2.3 specification
-# (used only to add underlines in HTML version of EXIF Tag Table)
-my %exifSpec = (
-    0x100 => 1,  0x214 => 1,   0x9205 => 1,  0xa210 => 1,
-    0x101 => 1,  0x8298 => 1,  0x9206 => 1,  0xa214 => 1,
-    0x102 => 1,  0x829a => 1,  0x9207 => 1,  0xa215 => 1,
-    0x103 => 1,  0x829d => 1,  0x9208 => 1,  0xa217 => 1,
-    0x106 => 1,  0x8769 => 1,  0x9209 => 1,  0xa300 => 1,
-    0x10e => 1,  0x8822 => 1,  0x920a => 1,  0xa301 => 1,
-    0x10f => 1,  0x8824 => 1,  0x9214 => 1,  0xa302 => 1,
-    0x110 => 1,  0x8825 => 1,  0x927c => 1,  0xa401 => 1,
-    0x111 => 1,  0x8827 => 1,  0x9286 => 1,  0xa402 => 1,
-    0x112 => 1,  0x8828 => 1,  0x9290 => 1,  0xa403 => 1,
-    0x115 => 1,  0x8830 => 1,  0x9291 => 1,  0xa404 => 1,
-    0x116 => 1,  0x8831 => 1,  0x9292 => 1,  0xa405 => 1,
-    0x117 => 1,  0x8832 => 1,  0x9400 => 1,  0xa406 => 1,
-    0x11a => 1,  0x8833 => 1,  0x9401 => 1,  0xa407 => 1,
-    0x11b => 1,  0x8834 => 1,  0x9402 => 1,  0xa408 => 1,
-    0x11c => 1,  0x8835 => 1,  0x9403 => 1,  0xa409 => 1,
-    0x128 => 1,  0x9000 => 1,  0x9404 => 1,  0xa40a => 1,
-    0x12d => 1,  0x9003 => 1,  0x9405 => 1,  0xa40b => 1,
-    0x131 => 1,  0x9004 => 1,  0xa000 => 1,  0xa40c => 1,
-    0x132 => 1,  0x9010 => 1,  0xa001 => 1,  0xa420 => 1,
-    0x13b => 1,  0x9011 => 1,  0xa002 => 1,  0xa430 => 1,
-    0x13e => 1,  0x9012 => 1,  0xa003 => 1,  0xa431 => 1,
-    0x13f => 1,  0x9101 => 1,  0xa004 => 1,  0xa432 => 1,
-    0x201 => 1,  0x9102 => 1,  0xa005 => 1,  0xa433 => 1,
-    0x202 => 1,  0x9201 => 1,  0xa20b => 1,  0xa434 => 1,
-    0x211 => 1,  0x9202 => 1,  0xa20c => 1,  0xa435 => 1,
-    0x212 => 1,  0x9203 => 1,  0xa20e => 1,
-    0x213 => 1,  0x9204 => 1,  0xa20f => 1,
-);
 # same thing for RIFF INFO tags found in the EXIF spec
 my %riffSpec = (
     IARL => 1,  ICRD => 1,  IGNR => 1,  IPLT => 1,  ISRC => 1,
@@ -1926,7 +1894,7 @@ sub WriteTagNames($$)
     # open the file and write the header
     open(PODFILE, ">$podFile") or return 0;
     print PODFILE Doc2Pod($docs{PodHeader}, $docs{ExifTool}, $docs{ExifTool2});
-    mkdir "$htmldir/TagNames";
+    mkdir "$htmldir/TagNames", 0777;
     OpenHtmlFile($htmldir) or return 0;
     print HTMLFILE "<blockquote>\n";
     print HTMLFILE "<table width='100%' class=frame><tr><td>\n";
@@ -2340,7 +2308,7 @@ sub WriteTagNames($$)
             foreach (@$tagNames) {
                 push @htmlTags, EscapeHTML($_);
             }
-            if (($isExif and $exifSpec{hex $tagIDstr}) or
+            if (($isExif and $Image::ExifTool::Validate::exifSpec{hex $tagIDstr}) or
                 ($isRiff and $tagIDstr=~/(\w+)/ and $riffSpec{$1}) or
                 ($isXmpMain and $tagIDstr=~/([-\w]+)/ and $xmpSpec{$1}))
             {

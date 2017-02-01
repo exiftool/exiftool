@@ -7,6 +7,23 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.40. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Feb. 1, 2017 - Version 10.41
+
+  - Added an experimental metadata validation feature (invoked either by
+    requesting the new Extra Validate tag or by setting the API Validate option)
+  - Added support for PSDT file extension
+  - Added age.config to the distribution
+  - Added a new Sony lens (thanks Jos Roost)
+  - Added a new PentaxModelID (thanks Louis Granboulan)
+  - Enhanced -p option to allow files to be grouped in sections
+  - Made makernote offset warning minor
+  - Relaxed parsing of NMEA GGA sentence so comma after the geoid units is now
+    optional
+  - Patched problem extracting value of an unsafe binary tag with the -b option
+    when specified using -TAG# instead of -TAG with -n
+  - API Changes:
+      - Added experimental Validate option
+
 Jan. 14, 2017 - Version 10.40 (production release)
 
   - Fixed tests that were failing on some platforms

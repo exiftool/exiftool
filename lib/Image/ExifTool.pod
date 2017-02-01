@@ -904,6 +904,13 @@ the parameter name with a dollar sign, just like normal tags.  If called
 without no additional arguments, C<Options('UserParam')> returns a reference
 to the hash of all user parameters (with lower-case names).
 
+=item Validate
+
+[Experimental] Flag to perform extra validation when reading.  Causes a
+minor warning to be issued for tags not defined in the EXIF, TIFF, DNG or
+DCF specification. The numerical value of this tag gives the number of
+errors, warnings and minor warnings encountered.
+
 =item Verbose
 
 Print verbose messages to file specified by TextOut option.  Value may be
@@ -1411,10 +1418,11 @@ this tag only.  Default is 0.
 
 =item Group
 
-Specifies group name where tag should be written.  If not specified, tag is
-written to highest priority group as specified by L</SetNewGroups>.  May be
-one or more family 0, 1 or 2 groups with optional leading family number,
-separated by colons.  Case is not significant.
+Specifies group name where tag should be written.  This option is superseded
+by any group specified in the tag name.  If not specified, tag is written to
+highest priority group as specified by L</SetNewGroups>.  May be one or more
+family 0, 1 or 2 groups with optional leading family number, separated by
+colons.  Case is not significant.
 
 =item NoFlat
 

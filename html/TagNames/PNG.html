@@ -52,83 +52,90 @@ this data as additional PNG chunks.</p>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td>'eXIF'</td>
+<td>eXIF</td>
+<td class=c>-</td>
+<td>--&gt; <a href='EXIF.html'>EXIF Tags</a>
+  <br><span class='n s'>(proposed but not yet registered.  This is where ExifTool will create new
+EXIF without the Compress option)</span></td></tr>
+<tr class=b>
 <td>'fRAc'</td>
 <td>FractalParameters</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'gAMA'</td>
 <td>Gamma</td>
 <td class=c>N</td>
 <td><span class=s><span class=n>(ExifTool reports the gamma for decoding the image, which is consistent with
 the EXIF convention, but is the inverse of the stored encoding gamma)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>'gIFg'</td>
 <td>GIFGraphicControlExtension</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'gIFt'</td>
 <td>GIFPlainTextExtension</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'gIFx'</td>
 <td>GIFApplicationExtension</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'hIST'</td>
 <td>PaletteHistogram</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'iCCP'</td>
 <td>ICC_Profile</td>
 <td class=c>-</td>
 <td>--&gt; <a href='ICC_Profile.html'>ICC_Profile Tags</a>
   <br><span class='n s'>(this is where ExifTool will write a new ICC_Profile)</span></td></tr>
-<tr class=b>
+<tr>
 <td>'iCCP-name'</td>
 <td>ProfileName</td>
 <td class=c>N</td>
 <td><span class=s><span class=n>(not a real tag ID, this tag represents the iCCP profile name)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>'iTXt'</td>
 <td>InternationalText</td>
 <td class=c>-</td>
 <td>--&gt; <a href='PNG.html#TextualData'>PNG TextualData Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'oFFs'</td>
 <td>ImageOffset</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'pCAL'</td>
 <td>PixelCalibration</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'pHYs'</td>
 <td>PhysicalPixel</td>
 <td class=c>-</td>
 <td>--&gt; <a href='PNG.html#PhysicalPixel'>PNG PhysicalPixel Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'sBIT'</td>
 <td>SignificantBits</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'sCAL'</td>
 <td>SubjectScale</td>
 <td class=c>-</td>
 <td>--&gt; <a href='PNG.html#SubjectScale'>PNG SubjectScale Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'sPLT'</td>
 <td>SuggestedPalette</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'sRGB'</td>
 <td>SRGBRendering</td>
 <td class=c>N</td>
@@ -136,42 +143,49 @@ the EXIF convention, but is the inverse of the stored encoding gamma)</span></sp
   <br>1 = Relative Colorimetric
   <br>2 = Saturation
   <br>3 = Absolute Colorimetric</span></td></tr>
-<tr>
+<tr class=b>
 <td>'sTER'</td>
 <td>StereoImage</td>
 <td class=c>-</td>
 <td>--&gt; <a href='PNG.html#StereoImage'>PNG StereoImage Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'tEXt'</td>
 <td>TextualData</td>
 <td class=c>-</td>
 <td>--&gt; <a href='PNG.html#TextualData'>PNG TextualData Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'tIME'</td>
 <td>ModifyDate</td>
 <td class=c>Y</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'tRNS'</td>
 <td>Transparency</td>
 <td class=c>N</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'tXMP'</td>
 <td>XMP</td>
 <td class=c>-</td>
 <td>--&gt; <a href='XMP.html'>XMP Tags</a>
   <br><span class='n s'>(obsolete location specified by a September 2001 XMP draft)</span></td></tr>
-<tr class=b>
+<tr>
 <td>'vpAg'</td>
 <td>VirtualPage</td>
 <td class=c>-</td>
 <td>--&gt; <a href='PNG.html#VirtualPage'>PNG VirtualPage Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'zTXt'</td>
 <td>CompressedText</td>
 <td class=c>-</td>
 <td>--&gt; <a href='PNG.html#TextualData'>PNG TextualData Tags</a></td></tr>
+<tr>
+<td>'zXIF'</td>
+<td>zXIF</td>
+<td class=c>-</td>
+<td>--&gt; <a href='EXIF.html'>EXIF Tags</a>
+  <br><span class='n s'>(proposed but not yet registered.  This is where ExifTool will create new
+EXIF with the Compress option)</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='ImageHeader'>PNG ImageHeader Tags</a></h2>
@@ -386,7 +400,7 @@ ImageMagick.</p>
 <td class=c>-</td>
 <td>--&gt; <a href='EXIF.html'>EXIF Tags</a>
   <br>--&gt; <a href='XMP.html'>XMP Tags</a>
-  <br><span class='n s'>(unregistered.  This is where ExifTool will create new EXIF)</span></td></tr>
+  <br><span class='n s'>(unregistered)</span></td></tr>
 <tr class=b>
 <td>'Raw profile type exif'</td>
 <td>EXIF_Profile</td>
@@ -558,7 +572,7 @@ when any of these tags is written, and may only be deleted as a group.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Aug 30, 2016</i>
+<br><i>Last revised Feb 10, 2017</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

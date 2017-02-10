@@ -570,7 +570,7 @@ distribution for examples.</p>
     <td>Perl expression used to filter all returned tag values.  Applies to
     PrintConv values only.</td><td><a name="Filter"></a>Expression to act on the
     value of the Perl default variable ($_), changing the value of this variable
-    as required.  The value is not changed if the expression returns undef</td>
+    as required.  The value is not changed if $_ is set to undef.</td>
     <td align=center>undef</td></tr>
 <tr><td>FixBase</td>
     <td>Fix maker notes base offset.  Allows values to be extracted from maker notes
@@ -798,8 +798,7 @@ distribution for examples.</p>
     </table>
     </td><td align=center>{ }</td></tr>
 <tr><td>Validate</td><td><a name="Validate"></a>[Experimental] Flag to perform extra validation
-    when reading. Causes a minor warning to be issued for tags not defined in the EXIF, TIFF,
-    DNG or DCF specification.</td>
+    checks when reading, causing extra warnings to be generated if problems are found.</td>
     <td align=center>0 or 1</td><td align=center>undef</td></tr>
 <tr><td>Verbose</td><td>Print verbose messages to file specified by TextOut option.
     <a href="verbose.html">Click here</a> for example outputs.</td>

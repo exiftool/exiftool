@@ -7,6 +7,21 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.40. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Feb. 10, 2017 - Version 10.42
+
+  - Added ability to read/write PNG eXIF and zXIF chunks, and made these the
+    place where new EXIF is created in PNG images (zXIF if Compress option is
+    used, or eXIF otherwise)
+  - Added ability to copy Photoshop OriginPathInfo with photoshop_paths.config
+  - Made FileUserID and FileGroupID writable
+  - Changed format for a Sony ImageCount tag
+  - Improvements to experimental Validate feature
+  - Fixed incorrect XMP swf namespace URI
+  - Fixed problem using new -p section feature when combined with -w or -ee
+  - Fixed formatting problem in -listx output when -lang option was used
+  - Fixed problem where UserComment wasn't removed if found in IFD0 when writing
+    it to the correct IFD
+
 Feb. 1, 2017 - Version 10.41
 
   - Added an experimental metadata validation feature (invoked either by

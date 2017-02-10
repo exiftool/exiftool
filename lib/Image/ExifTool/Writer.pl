@@ -119,7 +119,8 @@ my %writableType = (
 
 # (Note: all writable "pseudo" tags must be found in Extra table)
 my @writablePseudoTags =  qw(
-    FileName FilePermissions Directory FileModifyDate FileCreateDate HardLink TestName
+    FileName FilePermissions FileUserID FileGroupID Directory FileModifyDate
+    FileCreateDate HardLink TestName
 );
 
 # groups we are allowed to delete
@@ -1858,17 +1859,39 @@ sub SetFileName($$;$$)
 }
 
 #------------------------------------------------------------------------------
-# Set file permissions
+# Set file permissions and group/user id from new tag values
 # Inputs: 0) Exiftool ref, 1) file name or glob
-# Returns: 1=permissions were set, 0=didn't try, -1=error (and warning set)
+# Returns: 1=permissions and/or id was set, 0=didn't try, -1=error (and warning set)
+# Notes: There may be errors even if 1 is returned
 sub SetFilePermissions($$)
 {
     my ($self, $file) = @_;
-    my $perms = $self->GetNewValue('FilePermissions');
-    return 0 unless defined $perms;
-    return 1 if eval { chmod($perms, $file) };
-    $self->WarnOnce('Error setting FilePermissions');
-    return -1;
+    my $perm = $self->GetNewValue('FilePermissions');
+    my $uid = $self->GetNewValue('FileUserID');
+    my $gid = $self->GetNewValue('FileGroupID');
+    my $result = 0;
+    if (defined $perm) {
+        if (eval { chmod($perm & 07777, $file) }) {
+            $self->VerboseValue('+ FilePermissions', $perm);
+            $result = 1;
+        } else {
+            $self->WarnOnce('Error setting FilePermissions');
+            $result = -1;
+        }
+    }
+    if (defined $uid or defined $gid) {
+        defined $uid or $uid = -1;
+        defined $gid or $gid = -1;
+        if (eval { chown($uid, $gid, $file) }) {
+            $self->VerboseValue('+ FileUserID', $uid) if $uid >= 0;
+            $self->VerboseValue('+ FileGroupID', $gid) if $gid >= 0;
+            $result = 1;
+        } else {
+            $self->WarnOnce('Error setting FileGroup/UserID');
+            $result = -1 unless $result;
+        }
+    }
+    return $result;
 }
 
 #------------------------------------------------------------------------------
@@ -2972,7 +2995,13 @@ sub CopyFileAttrs($$$)
     if (defined $mode and not defined $self->GetNewValue('FilePermissions')) {
         eval { chmod($mode & 07777, $dst) };
     }
-    eval { chown($uid, $gid, $dst) } if defined $uid and defined $gid;
+    my $newUid = $self->GetNewValue('FileUserID');
+    my $newGid = $self->GetNewValue('FileGroupID');
+    if (defined $uid and defined $gid and (not defined $newUid or not defined $newGid)) {
+        defined $newGid and $gid = $newGid;
+        defined $newUid and $uid = $newUid;
+        eval { chown($uid, $gid, $dst) };
+    }
 }
 
 #------------------------------------------------------------------------------

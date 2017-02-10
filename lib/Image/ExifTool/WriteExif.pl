@@ -1094,7 +1094,7 @@ NoWrite:            next if $isNew > 0;
                         # value undefined if deleting this tag
                         # (also delete tag if cross-deleting and this isn't a date/time shift)
                         if (not defined $newVal or ($xDelete{$newID} and not defined $$nvHash{Shift})) {
-                            if ($$newInfo{RawConvInv} and defined $$nvHash{Value}) {
+                            if (not defined $newVal and $$newInfo{RawConvInv} and defined $$nvHash{Value}) {
                                 # error in RawConvInv, so rewrite existing tag
                                 goto NoOverwrite; # GOTO!
                             }

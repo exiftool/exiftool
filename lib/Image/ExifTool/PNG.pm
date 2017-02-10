@@ -26,10 +26,11 @@ use strict;
 use vars qw($VERSION $AUTOLOAD);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.39';
+$VERSION = '1.40';
 
 sub ProcessPNG_tEXt($$$);
 sub ProcessPNG_iTXt($$$);
+sub ProcessPNG_eXIF($$$);
 sub ProcessPNG_Compressed($$$);
 sub CalculateCRC($;$$$);
 sub HexEncode($);
@@ -249,6 +250,30 @@ $Image::ExifTool::PNG::colorType = -1;
         Name => 'AnimationControl',
         SubDirectory => {
             TagTable => 'Image::ExifTool::PNG::AnimationControl',
+        },
+    },
+    eXIF => {
+        Name => 'eXIF',
+        Notes => q{
+            proposed but not yet registered.  This is where ExifTool will create new
+            EXIF without the Compress option
+        },
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Exif::Main',
+            DirName => 'EXIF', # (to write as a block)
+            ProcessProc => \&ProcessPNG_eXIF,
+        },
+    },
+    zXIF => {
+        Name => 'zXIF',
+        Notes => q{
+            proposed but not yet registered.  This is where ExifTool will create new
+            EXIF with the Compress option
+        },
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Exif::Main',
+            DirName => 'EXIF', # (to write as a block)
+            ProcessProc => \&ProcessPNG_eXIF,
         },
     },
     # fcTL - animation frame control for each frame
@@ -477,7 +502,8 @@ my %unreg = ( Notes => 'unregistered' );
             # EXIF table must come first because we key on this in ProcessProfile()
             # (No condition because this is just for BuildTagLookup)
             Name => 'APP1_Profile',
-            Notes => 'unregistered.  This is where ExifTool will create new EXIF',
+            %unreg,
+            NonStandard => 1,
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Exif::Main',
                 ProcessProc => \&ProcessProfile,
@@ -657,9 +683,7 @@ sub FoundPNG($$$$;$$$$)
             $et->VerboseDir("Unable to decompress $$tagInfo{Name}", 0, length($val));
         }
         # issue warning if relevant
-        if ($deflateErr and (not $outBuff or
-            ($tagInfo and $$tagInfo{SubDirectory} and $$et{EDIT_DIRS}{$$tagInfo{Name}})))
-        {
+        if ($deflateErr and not $outBuff) {
             $et->Warn($deflateErr);
             $noCompressLib = 1 if $deflateErr =~ /^Install/;
         }
@@ -674,61 +698,76 @@ sub FoundPNG($$$$;$$$$)
     if ($tagInfo) {
         my $tagName = $$tagInfo{Name};
         my $processed;
-        if ($$tagInfo{SubDirectory} and not $compressed) {
-            my $len = length $val;
-            if ($verbose and $$et{INDENT} ne '  ') {
-                if ($wasCompressed and $verbose > 2) {
-                    my $name = $tagName;
-                    $wasCompressed and $name = "Decompressed $name";
-                    $et->VerboseDir($name, 0, $len);
-                    $et->VerboseDump(\$val);
-                }
-                # don't indent next directory (since it is really the same data)
-                $$et{INDENT} =~ s/..$//;
-            }
+        if ($$tagInfo{SubDirectory}) {
             my $subdir = $$tagInfo{SubDirectory};
-            my $processProc = $$subdir{ProcessProc};
-            # nothing more to do if writing and subdirectory is not writable
-            my $subTable = GetTagTable($$subdir{TagTable});
-            return 1 if $outBuff and not $$subTable{WRITE_PROC};
             my $dirName = $$subdir{DirName} || $tagName;
-            my %subdirInfo = (
-                DataPt   => \$val,
-                DirStart => 0,
-                DataLen  => $len,
-                DirLen   => $len,
-                DirName  => $dirName,
-                TagInfo  => $tagInfo,
-                ReadOnly => 1, # (used only by WriteXMP)
-                OutBuff  => $outBuff,
-            );
-            # no need to re-decompress if already done
-            undef $processProc if $wasCompressed and $processProc and $processProc eq \&ProcessPNG_Compressed;
-            # rewrite this directory if necessary (but always process TextualData normally)
-            if ($outBuff and not $processProc and $subTable ne \%Image::ExifTool::PNG::TextualData) {
-                return 1 unless $$et{EDIT_DIRS}{$dirName};
-                $$outBuff = $et->WriteDirectory(\%subdirInfo, $subTable);
-                if ($tagName eq 'XMP' and $$outBuff) {
-                    if ($$et{FoundIDAT} and $$et{DEL_GROUP}{XMP}) {
-                        $et->VPrint(0,'  Deleting XMP');
-                        $$outBuff = '';
-                    } else {
-                        # make sure the XMP is marked as read-only
-                        Image::ExifTool::XMP::ValidateXMP($outBuff,'r');
+            if (not $compressed) {
+                my $len = length $val;
+                if ($verbose and $$et{INDENT} ne '  ') {
+                    if ($wasCompressed and $verbose > 2) {
+                        my $name = $tagName;
+                        $wasCompressed and $name = "Decompressed $name";
+                        $et->VerboseDir($name, 0, $len);
+                        $et->VerboseDump(\$val);
                     }
+                    # don't indent next directory (since it is really the same data)
+                    $$et{INDENT} =~ s/..$//;
                 }
-                DoneDir($et, $dirName, $outBuff, $$tagInfo{NonStandard});
-            } else {
-                # issue warning for standard XMP after IDAT (PNGEarlyXMP option)
-                if ($tagName eq 'XMP' and not $$tagInfo{NonStandard} and
-                    $$et{FoundIDAT} and $$et{FoundIDAT} == 2)
-                {
-                    $et->Warn('XMP found after PNG IDAT');
-                    $$et{FoundIDAT} = 1;
+                my $processProc = $$subdir{ProcessProc};
+                # nothing more to do if writing and subdirectory is not writable
+                my $subTable = GetTagTable($$subdir{TagTable});
+                return 1 if $outBuff and not $$subTable{WRITE_PROC};
+                my $dirName = $$subdir{DirName} || $tagName;
+                my %subdirInfo = (
+                    DataPt   => \$val,
+                    DirStart => 0,
+                    DataLen  => $len,
+                    DirLen   => $len,
+                    DirName  => $dirName,
+                    TagInfo  => $tagInfo,
+                    ReadOnly => 1, # (used only by WriteXMP)
+                    OutBuff  => $outBuff,
+                );
+                # no need to re-decompress if already done
+                undef $processProc if $wasCompressed and $processProc and $processProc eq \&ProcessPNG_Compressed;
+                # rewrite this directory if necessary (but always process TextualData normally)
+                if ($outBuff and not $processProc and $subTable ne \%Image::ExifTool::PNG::TextualData) {
+                    return 1 unless $$et{EDIT_DIRS}{$dirName};
+                    $$outBuff = $et->WriteDirectory(\%subdirInfo, $subTable);
+                    if ($tagName eq 'XMP' and $$outBuff) {
+                        if ($$et{FoundIDAT} and $$et{DEL_GROUP}{XMP}) {
+                            $et->VPrint(0,'  Deleting XMP');
+                            $$outBuff = '';
+                        } else {
+                            # make sure the XMP is marked as read-only
+                            Image::ExifTool::XMP::ValidateXMP($outBuff,'r');
+                        }
+                    }
+                    DoneDir($et, $dirName, $outBuff, $$tagInfo{NonStandard});
+                } else {
+                    # issue warning for standard XMP after IDAT (PNGEarlyXMP option)
+                    if ($tagName eq 'XMP' and not $$tagInfo{NonStandard} and
+                        $$et{FoundIDAT} and $$et{FoundIDAT} == 2)
+                    {
+                        $et->Warn('XMP found after PNG IDAT');
+                        $$et{FoundIDAT} = 1;
+                    }
+                    $processed = $et->ProcessDirectory(\%subdirInfo, $subTable, $processProc);
                 }
-                $processed = $et->ProcessDirectory(\%subdirInfo, $subTable, $processProc);
+                $compressed = 1;    # pretend this is compressed since it is binary data
+            } elsif ($outBuff) {
+                if ($$et{DEL_GROUP}{$dirName} or ($dirName eq 'EXIF' and $$et{DEL_GROUP}{IFD0})) {
+                    $$outBuff = '';
+                    ++$$et{CHANGED};
+                    $et->VPrint(0, "  Deleting $tag chunk");
+                } else {
+                    if ($$et{EDIT_DIRS}{$dirName} or ($dirName eq 'EXIF' and $$et{EDIT_DIRS}{IFD0})) {
+                        $et->Warn("Can't write $dirName. Requires Compress::Zlib");
+                    }
+                    # pretend we did this directory so we don't try to recreate it
+                    DoneDir($et, $dirName, $outBuff, $$tagInfo{NonStandard});
+                }
             }
-            $compressed = 1;    # pretend this is compressed since it is binary data
         }
         if ($outBuff) {
             my $writable = $$tagInfo{Writable};
@@ -779,17 +818,19 @@ sub FoundPNG($$$$;$$$$)
                     $$outBuff = BuildTextChunk($et, $tag, $tagInfo, $$outBuff, $lang);
                 } elsif ($wasCompressed) {
                     # re-compress the output data
-                    my $deflate;
-                    if (eval { require Compress::Zlib }) {
-                        my $deflate = Compress::Zlib::deflateInit();
-                        if ($deflate) {
-                            $$outBuff = $deflate->deflate($$outBuff);
-                            $$outBuff .= $deflate->flush() if defined $$outBuff;
-                        } else {
-                            undef $$outBuff;
-                        }
+                    my $len = length $$outBuff;
+                    my $deflate = Compress::Zlib::deflateInit();
+                    if ($deflate) {
+                        $$outBuff = $deflate->deflate($$outBuff);
+                        $$outBuff .= $deflate->flush() if defined $$outBuff;
+                    } else {
+                        undef $$outBuff;
                     }
-                    $$outBuff or $et->Warn("PNG:$tagName not written (compress error)");
+                    if (not $$outBuff) {
+                        $et->Warn("PNG:$tagName not written (compress error)");
+                    } elsif ($tag eq 'zXIF') {
+                        $$outBuff = "\0" . pack('N',$len) . $$outBuff;  # add zXIF header
+                    }
                 }
             }
             return 1;
@@ -910,6 +951,12 @@ sub ProcessProfile($$$)
         $dirInfo{DirStart} += $hdrLen;
         $dirInfo{DirLen} -= $hdrLen;
         if ($outBuff) {
+            # delete non-standard EXIF if recreating from scratch
+            if ($$et{DEL_GROUP}{EXIF} or $$et{DEL_GROUP}{IFD0}) {
+                $$outBuff = '';
+                $et->VPrint(0, '  Deleting non-standard APP1 EXIF information');
+                return 1;
+            }
             $$outBuff = $et->WriteDirectory(\%dirInfo, $tagTablePtr,
                                             \&Image::ExifTool::WriteTIFF);
             $$outBuff = $Image::ExifTool::exifAPP1hdr . $$outBuff if $$outBuff;
@@ -933,8 +980,14 @@ sub ProcessProfile($$$)
         }
     } elsif ($buff =~ /^(MM\0\x2a|II\x2a\0)/) {
         # TIFF information
-        return 1 if $outBuff and not $$editDirs{IFD0};
+        return 1 if $outBuff and not $$editDirs{IFD0};  
         if ($outBuff) {
+            # delete non-standard EXIF if recreating from scratch
+            if ($$et{DEL_GROUP}{EXIF} or $$et{DEL_GROUP}{IFD0}) {
+                $$outBuff = '';
+                $et->VPrint(0, '  Deleting non-standard EXIF/TIFF information');
+                return 1;
+            }
             $$outBuff = $et->WriteDirectory(\%dirInfo, $tagTablePtr,
                                             \&Image::ExifTool::WriteTIFF);
             DoneDir($et, 'IFD0', $outBuff);
@@ -1019,6 +1072,51 @@ sub ProcessPNG_iTXt($$$)
     $compressed and $compressed = 2 + $meth;
     my $outBuff = $$dirInfo{OutBuff};
     return FoundPNG($et, $tagTablePtr, $tag, $val, $compressed, $outBuff, 'UTF8', $lang);
+}
+
+#------------------------------------------------------------------------------
+# Process PNG eXIF/zXIF chunk
+# Inputs: 0) ExifTool object reference, 1) DirInfo reference, 2) Pointer to tag table
+# Returns: 1 on success
+# Notes: writes new chunk data to ${$$dirInfo{OutBuff}} if writing tag
+sub ProcessPNG_eXIF($$$)
+{
+    my ($et, $dirInfo, $tagTablePtr) = @_;
+    my $outBuff = $$dirInfo{OutBuff};
+    my $dataPt = $$dirInfo{DataPt};
+    my $tagInfo = $$dirInfo{TagInfo};
+    my $tag = $$tagInfo{TagID};
+    my $del = $outBuff && ($$et{DEL_GROUP}{EXIF} or $$et{DEL_GROUP}{IFD0});
+    my $type;
+
+    if ($$dataPt =~ /^(\0|II|MM)/) {
+        $type = $1;
+    } elsif ($del) {
+        $et->VPrint(0, "  Deleting invalid $tag chunk");
+        $$outBuff = '';
+        ++$$et{CHANGED};
+        return 1;
+    } else {
+        $et->Warn("Invalid $tag chunk");
+        return 0;
+    }
+    if ($type eq "\0") {    # is this compressed EXIF?
+        my $buf = substr($$dataPt, 5);
+        # go around again to uncompress the data
+        $tagTablePtr = GetTagTable('Image::ExifTool::PNG::Main');
+        return FoundPNG($et, $tagTablePtr, $$tagInfo{TagID}, \$buf, 2, $outBuff);
+    } elsif (not $outBuff) {
+        return $et->ProcessTIFF($dirInfo);
+    } elsif ($del and ($et->Options('Compress') xor $tag eq 'zXIF')) {
+        $et->VPrint(0, "  Deleting $tag chunk");
+        $$outBuff = '';
+        ++$$et{CHANGED};
+    } elsif ($$et{EDIT_DIRS}{IFD0}) {
+        $$outBuff = $et->WriteDirectory($dirInfo, $tagTablePtr,
+                                        \&Image::ExifTool::WriteTIFF);
+        DoneDir($et, 'IFD0', $outBuff, $$tagInfo{NonStandard});
+    }
+    return 1;
 }
 
 #------------------------------------------------------------------------------

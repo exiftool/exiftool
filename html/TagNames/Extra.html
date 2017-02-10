@@ -15,11 +15,11 @@ in this column are write-only.</p>
 
 <p>Tags in the family 1 &quot;System&quot; group are referred to as &quot;pseudo&quot; tags because
 they don&#39;t represent real metadata in the file.  Instead, this information
-is stored in the directory structure of the filesystem.  Seven writable
+is stored in the directory structure of the filesystem.  Nine writable
 &quot;pseudo&quot; tags (FileName, Directory, FileModifyDate, FileCreateDate,
-FilePermissions, HardLink and TestName) may be written without modifying the
-file itself.  The TestName tag is used for dry-run testing before writing
-FileName.
+FilePermissions, FileUserID, FileGroupID, HardLink and TestName) may be
+written without modifying the file itself.  The TestName tag is used for
+dry-run testing before writing FileName.
 </p>
 <blockquote>
 <table class=frame><tr><td>
@@ -187,10 +187,11 @@ option is set)</span></span></td></tr>
 option is set)</span></span></td></tr>
 <tr>
 <td>FileGroupID</td>
-<td class=c>N</td>
+<td class=c title=' ! = Unsafe'>Y!</td>
 <td class=c>System</td>
 <td><span class=s><span class=n>(extracted only if specifically requested or the SystemTags or RequestAll API
-option is set)</span></span></td></tr>
+option is set.  Returns group ID number with the -n option, or name
+otherwise.  May be written with either group name or number)</span></span></td></tr>
 <tr class=b>
 <td>FileHardLinks</td>
 <td class=c>N</td>
@@ -267,10 +268,11 @@ the uppercase file extension)</span></span></td></tr>
 option)</span></span></td></tr>
 <tr>
 <td>FileUserID</td>
-<td class=c>N</td>
+<td class=c title=' ! = Unsafe'>Y!</td>
 <td class=c>System</td>
 <td><span class=s><span class=n>(extracted only if specifically requested or the SystemTags or RequestAll API
-option is set)</span></span></td></tr>
+option is set.  Returns user ID number with the -n option, or name
+otherwise.  May be written with either user name or number)</span></span></td></tr>
 <tr class=b>
 <td>Geosync</td>
 <td class=c>Y</td>
@@ -441,9 +443,9 @@ to the console, but does not affect the file itself)</span></span></td></tr>
 <td class=c>N</td>
 <td class=c>ExifTool</td>
 <td><span class=s><span class=n>([experimental] generated only if specifically requested.  Requesting this
-tag automatically enables the API Validate option, imposing additional
-validation checks when extracting metadata.  Returns the number of errors,
-warnings and minor warnings encountered)</span>
+tag automatically enables the <a href="../ExifTool.html#Validate">API Validate option</a>,
+imposing additional validation checks when extracting metadata.  Returns the
+number of errors, warnings and minor warnings encountered)</span>
   <br>&#39;0 0 0&#39; = OK</span></td></tr>
 <tr>
 <td>Warning</td>
@@ -474,7 +476,7 @@ into multiple blocks)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jan 30, 2017</i>
+<br><i>Last revised Feb 6, 2017</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

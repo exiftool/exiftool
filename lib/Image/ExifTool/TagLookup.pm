@@ -2159,6 +2159,7 @@ my %tagLookup = (
 	'filecreatedate' => { 110 => 'FileCreateDate' },
 	'filedatarate' => { 438 => 'fileDataRate' },
 	'fileformat' => { 86 => 0x0, 118 => 0x14, 349 => [0x22,0x26], 369 => 0xb000 },
+	'filegroupid' => { 110 => 'FileGroupID' },
 	'fileindex' => { 6 => 0x143, 8 => 0x2d0, 10 => 0x172, 12 => 0x22c, 13 => 0x133, 14 => 0x13f, 15 => 0x1d3, 16 => 0x19b, 17 => 0x1e4, 18 => 0xd0, 19 => 0x1bb, 20 => 0x28c, 21 => 0x1db, 22 => 0x1d9, 23 => [0x270,0x274], 24 => 0x2aa, 25 => 0x2b3, 27 => 0x1eb, 28 => 0x4ae, 281 => 0x0 },
 	'fileindex2' => { 20 => 0x290 },
 	'filemodifydate' => { 110 => 'FileModifyDate' },
@@ -2169,6 +2170,7 @@ my %tagLookup = (
 	'filenumbersequence' => { 243 => '12.2', 248 => '3.1', 249 => '4.1', 250 => '4.1', 252 => '11.1', 253 => '4.3', 257 => '5.2' },
 	'filepermissions' => { 110 => 'FilePermissions' },
 	'filesource' => { 109 => 0xa300, 114 => 0x8000, 418 => 'FileSource' },
+	'fileuserid' => { 110 => 'FileUserID' },
 	'fileversion' => { 118 => 0x16 },
 	'fillflashautoreduction' => { 73 => 0xe, 74 => 0xe, 81 => 0xa },
 	'filllight' => { 414 => 'FillLight' },
@@ -6623,7 +6625,6 @@ my %tagExists = (
 	'fileflagsmask' => 1,
 	'filefunctionflags' => 1,
 	'fileglobalprofile' => 1,
-	'filegroupid' => 1,
 	'filehardlinks' => 1,
 	'fileid' => 1,
 	'fileinfo' => 1,
@@ -6647,7 +6648,6 @@ my %tagExists = (
 	'filetype' => 1,
 	'filetypeextension' => 1,
 	'fileurl' => 1,
-	'fileuserid' => 1,
 	'fileversionnumber' => 1,
 	'fillattributes' => 1,
 	'fillmethod' => 1,
@@ -9215,6 +9215,7 @@ my %tagExists = (
 	'zoom' => 1,
 	'zoomedpreviewimage' => 1,
 	'zoompos' => 1,
+	'zxif' => 1,
 );
 
 # module names for writable Composite tags

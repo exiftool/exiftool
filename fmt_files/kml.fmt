@@ -4,12 +4,13 @@
 # Description:  Example ExifTool print format file for generating a
 #               Google Earth KML file from a collection of geotagged images
 #
-# Usage:        exiftool -p kml.fmt FILE [...] > out.kml
+# Usage:        exiftool -p kml.fmt -r DIR [...] > out.kml
 #
-# Requires:     ExifTool version 8.10 or later
+# Requires:     ExifTool version 10.41 or later
 #
 # Revisions:    2010/02/05 - P. Harvey created
 #               2013/02/05 - PH Fixed camera icon to work with new Google Earth
+#               2017/02/02 - PH Organize into folders based on file directory
 #
 # Notes:     1) All input files must contain GPSLatitude and GPSLongitude.
 #            2) For Google Earth to be able to find the images, the input
@@ -34,9 +35,9 @@
 #[HEAD]        </Icon>
 #[HEAD]      </IconStyle>
 #[HEAD]    </Style>
-#[HEAD]    <Folder>
-#[HEAD]      <name>Waypoints</name>
-#[HEAD]      <open>0</open>
+#[SECT]    <Folder>
+#[SECT]      <name>$directory</name>
+#[SECT]      <open>0</open>
 #[BODY]      <Placemark>
 #[BODY]        <description><![CDATA[<br/><table><tr><td>
 #[BODY]        <img src='$directory/$filename'
@@ -50,6 +51,6 @@
 #[BODY]          <coordinates>$gpslongitude#,$gpslatitude#,0</coordinates>
 #[BODY]        </Point>
 #[BODY]      </Placemark>
-#[TAIL]    </Folder>
+#[ENDS]    </Folder>
 #[TAIL]  </Document>
 #[TAIL]</kml>

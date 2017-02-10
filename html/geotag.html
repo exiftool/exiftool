@@ -589,7 +589,8 @@ with pictures ("gpx_wpt.fmt").</p>
 <h4>Creating a Google Earth KML file</h4>
 
 <p>Below is an example of a print format file which generates a Google Earth KML
-file from a collection of geotagged images:</p>
+file from a collection of geotagged images.  This example uses the SECT feature added
+in ExifTool 10.41 to divide the placemarks into folders based on directory name:</p>
 
 <pre>#------------------------------------------------------------------------------
 # File:         kml.fmt
@@ -597,12 +598,13 @@ file from a collection of geotagged images:</p>
 # Description:  Example ExifTool print format file for generating a
 #               Google Earth KML file from a collection of geotagged images
 #
-# Usage:        exiftool -p kml.fmt FILE [...] > out.kml
+# Usage:        exiftool -p kml.fmt -r DIR [...] &gt; out.kml
 #
-# Requires:     ExifTool version 8.10 or later
+# Requires:     ExifTool version 10.41 or later
 #
 # Revisions:    2010/02/05 - P. Harvey created
 #               2013/02/05 - PH Fixed camera icon to work with new Google Earth
+#               2017/02/02 - PH Organize into folders based on file directory
 #
 # Notes:     1) All input files must contain GPSLatitude and GPSLongitude.
 #            2) For Google Earth to be able to find the images, the input
@@ -627,9 +629,9 @@ file from a collection of geotagged images:</p>
 #[HEAD]        &lt;/Icon&gt;
 #[HEAD]      &lt;/IconStyle&gt;
 #[HEAD]    &lt;/Style&gt;
-#[HEAD]    &lt;Folder&gt;
-#[HEAD]      &lt;name&gt;Waypoints&lt;/name&gt;
-#[HEAD]      &lt;open&gt;0&lt;/open&gt;
+#[SECT]    &lt;Folder&gt;
+#[SECT]      &lt;name&gt;$directory&lt;/name&gt;
+#[SECT]      &lt;open&gt;0&lt;/open&gt;
 #[BODY]      &lt;Placemark&gt;
 #[BODY]        &lt;description&gt;&lt;![CDATA[&lt;br/&gt;&lt;table&gt;&lt;tr&gt;&lt;td&gt;
 #[BODY]        &lt;img src='$directory/$filename'
@@ -643,19 +645,19 @@ file from a collection of geotagged images:</p>
 #[BODY]          &lt;coordinates&gt;$gpslongitude#,$gpslatitude#,0&lt;/coordinates&gt;
 #[BODY]        &lt;/Point&gt;
 #[BODY]      &lt;/Placemark&gt;
-#[TAIL]    &lt;/Folder&gt;
+#[ENDS]    &lt;/Folder&gt;
 #[TAIL]  &lt;/Document&gt;
 #[TAIL]&lt;/kml&gt;
 </pre>
 
-<p>This example print format file is included in the "fmt_files" directory of
-the full ExifTool distribution.  See
+<p>This example file is included in the "fmt_files" directory of the full
+ExifTool distribution.  See
 <a href="http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,7836.0.html">this
 forum post</a> for more useful tips about creating KML files.</p>
 
 <hr>
 <i>Created Apr. 2, 2009</i><br>
-<i>Last revised Dec. 6, 2016</i>
+<i>Last revised Feb. 2, 2017</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

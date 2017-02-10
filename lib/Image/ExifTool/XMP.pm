@@ -48,7 +48,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.00';
+$VERSION = '3.01';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -155,7 +155,7 @@ my %xmpNS = (
     prm       => 'http://prismstandard.org/namespaces/prm/3.0/',
     acdsee    => 'http://ns.acdsee.com/iptc/1.0/',
     digiKam   => 'http://www.digikam.org/ns/1.0/',
-    swf       => 'http://ns.adobe.com/swf/1.0',
+    swf       => 'http://ns.adobe.com/swf/1.0/',
     cell      => 'http://developer.sonyericsson.com/cell/1.0/',
     aas       => 'http://ns.apple.com/adjustment-settings/1.0/',
    'mwg-rs'   => 'http://www.metadataworkinggroup.com/schemas/regions/',

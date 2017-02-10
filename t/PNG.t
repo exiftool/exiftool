@@ -1,7 +1,7 @@
 # Before "make install", this script should be runnable with "make test".
 # After "make install" it should work as "perl t/PNG.t".
 
-BEGIN { $| = 1; print "1..5\n"; $Image::ExifTool::configFile = ''; }
+BEGIN { $| = 1; print "1..6\n"; $Image::ExifTool::configFile = ''; }
 END {print "not ok 1\n" unless $loaded;}
 
 # test 1: Load the module(s)
@@ -97,6 +97,24 @@ my $testnum = 1;
     close PNG_TEST_5;
     if (testCompare('t/PNG_5.out', $txtfile, $testnum)) {
         unlink $txtfile;
+    } else {
+        print 'not ';
+    }
+    print "ok $testnum\n";
+}
+
+# test 6: Write EXIF
+{
+    ++$testnum;
+    my $exifTool = new Image::ExifTool;
+    $exifTool->SetNewValue('EXIF:Artist' => 'me');
+    my $testfile = "t/${testname}_${testnum}_failed.png";
+    unlink $testfile;
+    my $rtnVal = $exifTool->WriteInfo('t/images/PNG.png', $testfile);
+    $exifTool->Options(Charset => 'UTF8');
+    my $info = $exifTool->ImageInfo($testfile, 'EXIF:*');
+    if (check($exifTool, $info, $testname, $testnum)) {
+        unlink $testfile;
     } else {
         print 'not ';
     }

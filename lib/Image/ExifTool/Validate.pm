@@ -105,9 +105,9 @@ my %validateInfo = (
     Groups => { 0 => 'ExifTool', 1 => 'ExifTool', 2 => 'ExifTool' },
     Notes => q{
         [experimental] generated only if specifically requested.  Requesting this
-        tag automatically enables the API Validate option, imposing additional
-        validation checks when extracting metadata.  Returns the number of errors,
-        warnings and minor warnings encountered
+        tag automatically enables the L<API Validate option|../ExifTool.html#Validate>,
+        imposing additional validation checks when extracting metadata.  Returns the
+        number of errors, warnings and minor warnings encountered
     },
     PrintConv => {
         '0 0 0' => 'OK',

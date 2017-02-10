@@ -17,10 +17,26 @@ considered development releases, and are not uploaded to <a href="http://search.
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v10.42'><b>Feb. 10, 2017 - Version 10.42</b></a>
+<ul>
+<li>Added ability to read/write PNG eXIF and zXIF chunks, and made these the
+    place where new EXIF is created in PNG images (zXIF if Compress option is
+    used, or eXIF otherwise)
+<li>Added ability to copy Photoshop OriginPathInfo with photoshop_paths.config
+<li>Made FileUserID and FileGroupID writable
+<li>Changed format for a Sony ImageCount tag
+<li>Improvements to experimental Validate feature
+<li>Fixed incorrect XMP swf namespace URI
+<li>Fixed problem using new -p section feature when combined with -w or -ee
+<li>Fixed formatting problem in -listx output when -lang option was used
+<li>Fixed problem where UserComment wasn't removed if found in IFD0 when writing
+    it to the correct IFD
+</ul>
+
 <a name='v10.41'><b>Feb. 1, 2017 - Version 10.41</b></a>
 <ul>
 <li>Added an experimental metadata validation feature (invoked either by
-    requesting the new <a href="TagNames/Extra.html">Extra</a> Validate tag or by setting the API Validate option)
+    requesting the new <a href="TagNames/Extra.html">Extra</a> Validate tag or by setting the <a href="ExifTool.html#Validate">API Validate option</a>)
 <li>Added support for PSDT file extension
 <li>Added age.config to the distribution
 <li>Added a new Sony lens (thanks Jos Roost)

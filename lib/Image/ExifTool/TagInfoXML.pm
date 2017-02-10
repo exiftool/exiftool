@@ -15,7 +15,7 @@ use vars qw($VERSION @ISA);
 use Image::ExifTool qw(:Utils :Vars);
 use Image::ExifTool::XMP;
 
-$VERSION = '1.28';
+$VERSION = '1.29';
 @ISA = qw(Exporter);
 
 # set this to a language code to generate Lang module with 'MISSING' entries
@@ -204,6 +204,8 @@ PTILoop:    for ($index=0; $index<@infoArray; ++$index) {
                     # short output format
                     print $fp "/>\n";   # empty tag element
                     next;               # no descriptions or values
+                } else {
+                    print $fp ">";
                 }
                 my $desc = $$tagInfo{Description};
                 $desc = Image::ExifTool::MakeDescription($name) unless defined $desc;
@@ -225,7 +227,7 @@ PTILoop:    for ($index=0; $index<@infoArray; ++$index) {
                 # print tag descriptions
                 $desc = Image::ExifTool::XMP::EscapeXML($desc);
                 unless ($opts{Lang} and $altDescr) {
-                    print $fp ">\n  <desc lang='$defaultLang'>$desc</desc>";
+                    print $fp "\n  <desc lang='$defaultLang'>$desc</desc>";
                 }
                 print $fp "$altDescr\n";
                 for (my $i=0; ; ++$i) {

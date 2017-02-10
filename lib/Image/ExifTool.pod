@@ -622,8 +622,8 @@ Default is undef.
 
 Perl expression used to filter values for all tags.  The expression acts on
 the value of the Perl default variable ($_), and changes the value of this
-variable as required.  The value is not changed if the expression returns
-undef.  Applies to all returned values unless PrintConv option is disabled.
+variable as required.  The value is not changed if $_ is set to undef. 
+Applies to all returned values unless PrintConv option is disabled.
 
 =item FixBase
 
@@ -906,10 +906,8 @@ to the hash of all user parameters (with lower-case names).
 
 =item Validate
 
-[Experimental] Flag to perform extra validation when reading.  Causes a
-minor warning to be issued for tags not defined in the EXIF, TIFF, DNG or
-DCF specification. The numerical value of this tag gives the number of
-errors, warnings and minor warnings encountered.
+[Experimental] Flag to perform extra validation checks when reading, causing
+extra warnings to be generated if problems are found.  Default is undef.
 
 =item Verbose
 

@@ -60,7 +60,7 @@ sub HexEncode($)
 }
 
 #------------------------------------------------------------------------------
-# Write profile to tEXt or zTXt chunk (zTXt if Zlib is available)
+# Write profile chunk (possibly compressed if Zlib is available)
 # Inputs: 0) outfile, 1) Raw profile type, 2) data ref
 #         3) profile header type (undef if not a text profile)
 # Returns: 1 on success
@@ -68,19 +68,29 @@ sub WriteProfile($$$;$)
 {
     my ($outfile, $rawType, $dataPt, $profile) = @_;
     my ($buff, $prefix, $chunk, $deflate);
-    if (eval { require Compress::Zlib }) {
+    if ($rawType ne 'eXIF' and eval { require Compress::Zlib }) {
         $deflate = Compress::Zlib::deflateInit();
     }
     if (not defined $profile) {
         # write ICC profile as compressed iCCP chunk if possible
-        return 0 unless $deflate;
-        $buff = $deflate->deflate($$dataPt);
-        return 0 unless defined $buff;
-        $buff .= $deflate->flush();
-        my %rawTypeChunk = ( icm => 'iCCP' );
-        $chunk = $rawTypeChunk{$rawType} or return 0;
-        $prefix = "$rawType\0\0";
-        $dataPt = \$buff;
+        if ($rawType eq 'icm') {
+            return 0 unless $deflate;
+            $chunk = 'iCCP';
+            $prefix = "$rawType\0\0";
+        } else {
+            $chunk = $rawType;
+            if ($rawType eq 'zXIF') {
+                $prefix = "\0" . pack('N', length $$dataPt);
+            } else {
+                $prefix = '';
+            }
+        }
+        if ($deflate) {
+            $buff = $deflate->deflate($$dataPt);
+            return 0 unless defined $buff;
+            $buff .= $deflate->flush();
+            $dataPt = \$buff;
+        }
     } else {
         # write as ASCII-hex encoded profile in tEXt or zTXt chunk
         my $txtHdr = sprintf("\n$profile profile\n%8d\n", length($$dataPt));
@@ -134,6 +144,7 @@ sub Add_iCCP($$)
 sub DoneDir($$$;$)
 {
     my ($et, $dir, $outBuff, $nonStandard) = @_;
+    $dir = 'IFD0' if $dir eq 'EXIF';
     # don't add this directory again unless this is in a non-standard location
     delete $$et{ADD_DIRS}{$dir} unless $nonStandard;
     # handle problem with duplicate XMP when using PNGEarlyXMP option
@@ -276,14 +287,20 @@ sub AddChunks($$;@)
             DirName => $dir,
         );
         if ($dir eq 'IFD0') {
-            $et->Warn('Creating non-standard EXIF in PNG', 1);
-            $et->VPrint(0, "Creating EXIF profile:\n");
+            my $chunk = 'eXIF';
+            if ($et->Options('Compress')) {
+                if (eval { require Compress::Zlib }) {
+                    $chunk = 'zXIF';
+                } else {
+                    $et->Warn('Creating uncompressed eXIF chunk (Compress::Zlib not available)');
+                }
+            }
+            $et->VPrint(0, "Creating $chunk chunk:\n");
             $$et{TIFF_TYPE} = 'APP1';
             $tagTablePtr = Image::ExifTool::GetTagTable('Image::ExifTool::Exif::Main');
             $buff = $et->WriteDirectory(\%dirInfo, $tagTablePtr, \&Image::ExifTool::WriteTIFF);
             if (defined $buff and length $buff) {
-                $buff = $Image::ExifTool::exifAPP1hdr . $buff;
-                WriteProfile($outfile, 'APP1', \$buff, 'generic') or $err = 1;
+                WriteProfile($outfile, $chunk, \$buff) or $err = 1;
             }
         } elsif ($dir eq 'XMP') {
             $et->VPrint(0, "Creating XMP iTXt chunk:\n");

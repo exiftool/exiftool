@@ -1093,9 +1093,11 @@ With commands like this, new items are added to the list in place of the first
 deleted item, or at the end of the list if no items were removed.</blockquote>
 
 <blockquote>Note: Using "<code>=</code>" is equivalent to "<code>+=</code>" in
-any command where the same tag is set with "<code>+=</code>" or
+any command where the same List-type tag is set with "<code>+=</code>" or
 "<code>-=</code>" in another assignment.  (ie. existing items will be preserved
-unless specifically deleted with "<code>-=</code>".)</blockquote>
+unless specifically deleted with "<code>-=</code>".)  <i class=lt>[For non
+List-type tags, "<code>+=</code>" has a different meaning, and is used to
+increment numerical values or shift dates.]</i></blockquote>
 
 <blockquote><a name="nodups"></a><b>To prevent duplication when adding new
 items</b>, specific items can be deleted then added back again in the same
@@ -1585,7 +1587,7 @@ proper technique for shifting a date/time value when copying:
 </blockquote>
 
 <hr>
-<i>Last revised Nov 17, 2016</i>
+<i>Last revised Feb 6, 2017</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

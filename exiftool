@@ -12,7 +12,7 @@
 use strict;
 require 5.004;
 
-my $version = '10.41';
+my $version = '10.42';
 
 # add our 'lib' directory to the include list BEFORE 'use Image::ExifTool'
 my $exeDir;
@@ -146,7 +146,6 @@ my $isWriting;      # flag set if we are writing tags
 my $joinLists;      # flag set to join list values into a single string
 my $json;           # flag for JSON/PHP output format (1=JSON, 2=PHP)
 my $langOpt;        # language option
-my $lastSection;    # last section header for -p option
 my $listItem;       # item number for extracting single item from a list
 my $listSep;        # list item separator (', ' by default)
 my $mt;             # main ExifTool object
@@ -166,7 +165,8 @@ my $recurse;        # recurse into subdirectories (2=also hidden directories)
 my $rtnVal;         # command return value (0=success)
 my $saveCount;      # count the number of times we will/did call SaveNewValues()
 my $scanWritable;   # flag to process only writable file types
-my $sectionTrailer; # trailer to print at end of section with -p option
+my $sectHeader;     # current section header for -p option
+my $sectTrailer;    # section trailer for -p option
 my $seqFileNum;     # sequential file number used for %C
 my $showGroup;      # number of group to show (may be zero or '')
 my $showTagID;      # non-zero to show tag ID's
@@ -407,13 +407,11 @@ undef $escapeHTML;
 undef $evalWarning;
 undef $executeID;
 undef $fileHeader;
-undef $fileTrailer;
 undef $filtered;
 undef $fixLen;
 undef $forcePrint;
 undef $joinLists;
 undef $langOpt;
-undef $lastSection;
 undef $listItem;
 undef $multiFile;
 undef $outOpt;
@@ -423,7 +421,7 @@ undef $progressCount;
 undef $progressMax;
 undef $recurse;
 undef $scanWritable;
-undef $sectionTrailer;
+undef $sectHeader;
 undef $showGroup;
 undef $showTagID;
 undef $structOpt;
@@ -450,6 +448,7 @@ $countLink = 0;
 $countNewDir = 0;
 $countSameWr = 0;
 $csvSaveCount = 0;
+$fileTrailer = '';
 $filterFlag = 0;
 $html = 0;
 $isWriting = 0;
@@ -460,6 +459,7 @@ $overwriteOrig = 0;
 $progStr = '';
 $quiet = 0;
 $saveCount = 0;
+$sectTrailer = '';
 $seqFileNum = 0;
 $tabFormat = 0;
 $utf8 = 1;
@@ -1677,7 +1677,7 @@ if ($filtered and not $validFile) {
 PrintCSV() if $csv and not $isWriting;
 
 # print folder/file trailer if necessary
-print $sectionTrailer if $sectionTrailer;
+print $sectTrailer if $sectTrailer and not $textOut;
 print $fileTrailer if $fileTrailer and not $textOut and not $fileHeader;
 
 if (defined $deleteOrig) {
@@ -1976,22 +1976,22 @@ sub GetImageInfo($$)
     if (%printFmt) {
         # output using print format file (-p) option
         my ($type, $doc, $grp);
-        undef $fileTrailer;
+        $fileTrailer = '';
         # repeat for each embedded document if necessary
         my $lastDoc = $et->Options('ExtractEmbedded') ? $$et{DOC_COUNT} : 0;
-        foreach $type (qw(HEAD SECT BODY ENDS TAIL)) {
-            my $prf = $printFmt{$type} or next;
-            for ($doc=0; $doc<=$lastDoc; ++$doc) {
+        for ($doc=0; $doc<=$lastDoc; ++$doc) {
+            foreach $type (qw(HEAD SECT BODY ENDS TAIL)) {
+                my $prf = $printFmt{$type} or next;
                 if ($lastDoc) {
                     if ($doc) {
-                        last unless $type eq 'BODY'; # only repeat BODY lines
+                        next if $type eq 'HEAD' or $type eq 'TAIL'; # only repeat SECT/BODY/ENDS
                         $grp = "Doc$doc:";
                     } else {
                         $grp = 'Main:';
                     }
                     # change tag groups to print next document by adding "Main:" or "Doc#:"
                     # to all tags which don't already start with a family 3 group name
-                    $prf = [ @{$printFmt{$type}} ];
+                    $prf = [ @$prf ];
                     s/((^|[^\$])(\$\$)*\$\{?)((?!(Main|Doc\d+):)[\w])/$1$grp$4/ig foreach @$prf;
                 }
                 my @lines;
@@ -2001,22 +2001,17 @@ sub GetImageInfo($$)
                 }
                 $lineCount += scalar @lines;
                 if ($type eq 'SECT') {
-                    my $sectionHeader = join '', @lines;
-                    if ($lastSection and $lastSection ne $sectionHeader) {
-                        print $sectionTrailer if $sectionTrailer;
-                        undef $lastSection;
+                    my $thisHeader = join '', @lines;
+                    if ($sectHeader and $sectHeader ne $thisHeader) {
+                        print $fp $sectTrailer if $sectTrailer;
+                        undef $sectHeader;
                     }
-                    undef $sectionTrailer;
-                    unless ($lastSection) {
-                        print $fp $sectionHeader;
-                        $lastSection = $sectionHeader;
-                    }
-                } elsif ($type eq 'TAIL') {
-                    $fileTrailer = '' unless defined $fileTrailer;
-                    $fileTrailer .= join '', @lines;
+                    $sectTrailer = '';
+                    print $fp $sectHeader = $thisHeader unless $sectHeader;
                 } elsif ($type eq 'ENDS') {
-                    $sectionTrailer = '' unless defined $sectionTrailer;
-                    $sectionTrailer .= join '', @lines if defined $lastSection;
+                    $sectTrailer .= join '', @lines if defined $sectHeader;
+                } elsif ($type eq 'TAIL') {
+                    $fileTrailer .= join '', @lines;
                 } elsif (@lines) {
                     print $fp @lines;
                 }
@@ -2453,7 +2448,9 @@ TAG:    foreach $tag (@foundTags) {
         }
     }
     if ($outfile) {
-        print $fp $fileTrailer if $fileTrailer; # write file trailer
+        # write section and file trailers before closing the file
+        print $fp $sectTrailer and $sectTrailer = '' if $sectTrailer;
+        print $fp $fileTrailer if $fileTrailer;
         close($fp);
         undef $tmpText;
         if ($lineCount) {
@@ -4869,20 +4866,20 @@ when writing.  For example, the following commands all have the same effect:
 
 =item B<-p> I<FMTFILE> or I<STR> (B<-printFormat>)
 
-Print output in the format specified by the given file or string (and ignore
-other format options).  Tag names in the format file or string begin with a
-C<$> symbol and may contain a leading group names and/or a trailing C<#>. 
-Case is not significant.  Braces C<{}> may be used around the tag name to
-separate it from subsequent text.  Use C<$$> to represent a C<$> symbol, and
-C<$/> for a newline.  Multiple B<-p> options may be used, each contributing
-a line of text to the output.  Lines beginning with C<#[HEAD]> and
-C<#[TAIL]> are output before the first processed file and after the last
-processed file respectively.  Lines beginning with C<#[BODY]> and lines not
-beginning with C<#> are output for each processed file.  Lines beginning
-with C<#[SECT]> and C<#[ENDS]> are output around each section of files. A
-section is defined as a group of files with the same section header (eg.
-files are grouped by directory if C<#[SECT]> contains C<$directory>). Other
-lines beginning with C<#> are ignored. For example, this format file:
+Print output in the format specified by the given file or string.  Tag names
+in the format file or string begin with a C<$> symbol and may contain a
+leading group names and/or a trailing C<#>.  Case is not significant. 
+Braces C<{}> may be used around the tag name to separate it from subsequent
+text.  Use C<$$> to represent a C<$> symbol, and C<$/> for a newline. 
+Multiple B<-p> options may be used, each contributing a line of text to the
+output.  Lines beginning with C<#[HEAD]> and C<#[TAIL]> are output before
+the first processed file and after the last processed file respectively. 
+Lines beginning with C<#[SECT]> and C<#[ENDS]> are output around each
+section of files.  A section is defined as a group of consecutive files with
+the same section header (eg. files are grouped by directory if C<#[SECT]>
+contains C<$directory>).  Lines beginning with C<#[BODY]> and lines not
+beginning with C<#> are output for each processed file.  Other lines
+beginning with C<#> are ignored.  For example, this format file:
 
     # this is a comment line
     #[HEAD]-- Generated by ExifTool $exifToolVersion --
@@ -4896,7 +4893,7 @@ with this command:
 
 produces output like this:
 
-    -- Generated by ExifTool 10.41 --
+    -- Generated by ExifTool 10.42 --
     File: a.jpg - 2003:10:31 15:44:19
     (f/5.6, 1/60s, ISO 100)
     File: b.jpg - 2006:05:23 11:57:38
@@ -4912,23 +4909,24 @@ to set the value of missing tags to '-' (but this may be configured via the
 MissingTagValue API option), or the B<-m> option may be used to ignore minor
 warnings and leave the missing values empty.
 
-An advanced formatting feature allows an arbitrary Perl expression to be
+An B<advanced formatting feature> allows an arbitrary Perl expression to be
 applied to the value of any tag by placing it inside the braces after the
 tag name, separated by a semicolon.  The expression acts on the value of the
 tag through the default input variable (C<$_>), and has access to the full
 ExifTool API through the current ExifTool object (C<$self>).  It may contain
 any valid Perl code, including translation (C<tr///>) and substitution
 (C<s///>) operations, but note that braces within the expression must be
-balanced. The example below prints the camera Make with spaces translated to
-underlines, and multiple consecutive underlines replaced by a single
+balanced.  The example below prints the camera Make with spaces translated
+to underlines, and multiple consecutive underlines replaced by a single
 underline:
 
     exiftool -p '${make;tr/ /_/;s/__+/_/g}' image.jpg
 
 A default expression of C<tr(/\\?*:|"E<lt>E<gt>\0)()d> is assumed if the
-expression is empty.  This removes the characters / \ ? * : | E<lt> E<gt>
-and null from the printed value.  (These characters are illegal in Windows
-file names, so this feature is useful if tag values are used in file names.)
+expression is empty (ie. C<${TAG;}>).  This removes the characters / \ ? * :
+| E<lt> E<gt> and null from the printed value.  (These characters are
+illegal in Windows file names, so this feature is useful if tag values are
+used in file names.)
 
 =item B<-php>
 

@@ -7,10 +7,22 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.40. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Feb. 16, 2017 - Version 10.43
+
+  - Restrict writing of EXIF:FlashEnergy to a single value as per EXIF spec
+  - Reverted format change of Sony ImageCount tag
+  - Changed PNG new eXIF/zXIF chunk names to "exIf" and "zxIf" until the
+    proposed chunks are accepted (of course, while maintaining backward
+    compatibility for reading/updating the other chunks)
+  - Lowered priority of XMP-pdf:Keywords so it doesn't take precedence over
+    PDF:Keywords when the Duplicates option is not used
+  - Improved config_files/convert_regions.config to handle the case where the
+    RegionInfoMP is missing a Rectangle
+
 Feb. 10, 2017 - Version 10.42
 
   - Added ability to read/write PNG eXIF and zXIF chunks, and made these the
-    place where new EXIF is created in PNG images (zXIF if Compress option is
+    place where new EXIF is created in PNG images (zXIF if the -z option is
     used, or eXIF otherwise)
   - Added ability to copy Photoshop OriginPathInfo with photoshop_paths.config
   - Made FileUserID and FileGroupID writable

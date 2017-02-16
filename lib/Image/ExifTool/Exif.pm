@@ -2058,7 +2058,7 @@ my %sampleFormat = (
         PrintConvInv => '$val=~s/\s*mm$//;$val',
     },
     # Note: tags 0x920b-0x9217 are duplicates of 0xa20b-0xa217
-    # (The TIFF standard uses 0xa2xx, but you'll find both in images)
+    # (The EXIF standard uses 0xa2xx, but you'll find both in images)
     0x920b => { #12
         Name => 'FlashEnergy',
         Groups => { 2 => 'Camera' },
@@ -2342,7 +2342,6 @@ my %sampleFormat = (
         Name => 'FlashEnergy',
         Groups => { 2 => 'Camera' },
         Writable => 'rational64u',
-        Count => -1, # 1 or 2 (ref 12)
     },
     0xa20c => {
         Name => 'SpatialFrequencyResponse',

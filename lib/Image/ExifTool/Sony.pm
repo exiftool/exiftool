@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.53';
+$VERSION = '2.54';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -6590,11 +6590,15 @@ my %pictureProfile2010 = (
     },
     0x0032 => { #13
         Name => 'ImageCount',
-        # this seems to be valid for the A37,A57,A65,A77,A99,A7R and possibly the NEX-5N/7
-        # but I haven't seen a count over 65536, and it has been confirmed to be
-        # a 16-bit integer for the A7R, so the format is int16u - PH
-        Format => 'int16u',
-        Notes => 'total number of image exposures made by the camera, modulo 65536',
+        # this seems to be valid for the A7R,A37,A57,A65,A77,A99,A99V and possibly the
+        # NEX-5N/7.  For the A99V it is definitely more than 16 bits, but it wraps at
+        # 65536 for the A7R.
+        Format => 'int32u',
+        Notes => q{
+            total number of image exposures made by the camera, modulo 65536 for some
+            models
+        },
+        RawConv => '$val & 0x00ffffff',
     },
     0x003a => { # appr. same value as Exif ExposureTime, but longer in HDR-modes
         Name => 'SonyExposureTime',

@@ -68,7 +68,7 @@ sub WriteProfile($$$;$)
 {
     my ($outfile, $rawType, $dataPt, $profile) = @_;
     my ($buff, $prefix, $chunk, $deflate);
-    if ($rawType ne 'eXIF' and eval { require Compress::Zlib }) {
+    if ($rawType ne $stdCase{exif} and eval { require Compress::Zlib }) {
         $deflate = Compress::Zlib::deflateInit();
     }
     if (not defined $profile) {
@@ -79,7 +79,7 @@ sub WriteProfile($$$;$)
             $prefix = "$rawType\0\0";
         } else {
             $chunk = $rawType;
-            if ($rawType eq 'zXIF') {
+            if ($rawType eq $stdCase{zxif}) {
                 $prefix = "\0" . pack('N', length $$dataPt);
             } else {
                 $prefix = '';
@@ -287,12 +287,12 @@ sub AddChunks($$;@)
             DirName => $dir,
         );
         if ($dir eq 'IFD0') {
-            my $chunk = 'eXIF';
+            my $chunk = $stdCase{exif};
             if ($et->Options('Compress')) {
                 if (eval { require Compress::Zlib }) {
-                    $chunk = 'zXIF';
+                    $chunk = $stdCase{zxif};
                 } else {
-                    $et->Warn('Creating uncompressed eXIF chunk (Compress::Zlib not available)');
+                    $et->Warn("Creating uncompressed $stdCase{exif} chunk (Compress::Zlib not available)");
                 }
             }
             $et->VPrint(0, "Creating $chunk chunk:\n");

@@ -23,14 +23,14 @@
 package Image::ExifTool::PNG;
 
 use strict;
-use vars qw($VERSION $AUTOLOAD);
+use vars qw($VERSION $AUTOLOAD %stdCase);
 use Image::ExifTool qw(:DataAccess :Utils);
 
 $VERSION = '1.40';
 
 sub ProcessPNG_tEXt($$$);
 sub ProcessPNG_iTXt($$$);
-sub ProcessPNG_eXIF($$$);
+sub ProcessPNG_eXIf($$$);
 sub ProcessPNG_Compressed($$$);
 sub CalculateCRC($;$$$);
 sub HexEncode($);
@@ -39,6 +39,9 @@ sub Add_iCCP($$);
 sub DoneDir($$$;$);
 sub GetLangInfo($$);
 sub BuildTextChunk($$$$$);
+
+# translate lower-case to actual case used for eXIf/zXIf chunks
+%stdCase = ( 'zxif' => 'zxIf', exif => 'exIf' );
 
 my $noCompressLib;
 
@@ -252,8 +255,9 @@ $Image::ExifTool::PNG::colorType = -1;
             TagTable => 'Image::ExifTool::PNG::AnimationControl',
         },
     },
-    eXIF => {
-        Name => 'eXIF',
+    # eXIf
+    $stdCase{exif} => {
+        Name => $stdCase{exif},
         Notes => q{
             proposed but not yet registered.  This is where ExifTool will create new
             EXIF without the Compress option
@@ -261,11 +265,12 @@ $Image::ExifTool::PNG::colorType = -1;
         SubDirectory => {
             TagTable => 'Image::ExifTool::Exif::Main',
             DirName => 'EXIF', # (to write as a block)
-            ProcessProc => \&ProcessPNG_eXIF,
+            ProcessProc => \&ProcessPNG_eXIf,
         },
     },
-    zXIF => {
-        Name => 'zXIF',
+    # zXIf
+    $stdCase{zxif} => {
+        Name => $stdCase{zxif},
         Notes => q{
             proposed but not yet registered.  This is where ExifTool will create new
             EXIF with the Compress option
@@ -273,7 +278,7 @@ $Image::ExifTool::PNG::colorType = -1;
         SubDirectory => {
             TagTable => 'Image::ExifTool::Exif::Main',
             DirName => 'EXIF', # (to write as a block)
-            ProcessProc => \&ProcessPNG_eXIF,
+            ProcessProc => \&ProcessPNG_eXIf,
         },
     },
     # fcTL - animation frame control for each frame
@@ -828,8 +833,8 @@ sub FoundPNG($$$$;$$$$)
                     }
                     if (not $$outBuff) {
                         $et->Warn("PNG:$tagName not written (compress error)");
-                    } elsif ($tag eq 'zXIF') {
-                        $$outBuff = "\0" . pack('N',$len) . $$outBuff;  # add zXIF header
+                    } elsif (lc $tag eq 'zxif') {
+                        $$outBuff = "\0" . pack('N',$len) . $$outBuff;  # add zXIf header
                     }
                 }
             }
@@ -1075,11 +1080,11 @@ sub ProcessPNG_iTXt($$$)
 }
 
 #------------------------------------------------------------------------------
-# Process PNG eXIF/zXIF chunk
+# Process PNG eXIf/zXIf chunk
 # Inputs: 0) ExifTool object reference, 1) DirInfo reference, 2) Pointer to tag table
 # Returns: 1 on success
 # Notes: writes new chunk data to ${$$dirInfo{OutBuff}} if writing tag
-sub ProcessPNG_eXIF($$$)
+sub ProcessPNG_eXIf($$$)
 {
     my ($et, $dirInfo, $tagTablePtr) = @_;
     my $outBuff = $$dirInfo{OutBuff};
@@ -1107,7 +1112,7 @@ sub ProcessPNG_eXIF($$$)
         return FoundPNG($et, $tagTablePtr, $$tagInfo{TagID}, \$buf, 2, $outBuff);
     } elsif (not $outBuff) {
         return $et->ProcessTIFF($dirInfo);
-    } elsif ($del and ($et->Options('Compress') xor $tag eq 'zXIF')) {
+    } elsif ($del and ($et->Options('Compress') xor lc($tag) eq 'zxif')) {
         $et->VPrint(0, "  Deleting $tag chunk");
         $$outBuff = '';
         ++$$et{CHANGED};
@@ -1273,6 +1278,19 @@ sub ProcessPNG($$)
             }
             print $out "$fileType $chunk ($len bytes):\n";
             $et->VerboseDump(\$dbuf, Addr => $raf->Tell() - $len - 4) if $verbose > 2;
+        }
+        # translate case of chunk name if necessary
+        if (not $$tagTablePtr{$chunk}) {
+            my $stdChunk = $stdCase{lc $chunk};
+            if ($stdChunk) {
+                if ($outfile and ($$et{EDIT_DIRS}{IFD0} or $stdChunk !~ /^[ez]xif$/i)) {
+                    $et->Warn("Changed $chunk chunk to $stdChunk", 1);
+                    ++$$et{CHANGED};
+                } else {
+                    $et->Warn("$chunk chunk should be $stdChunk", 1);
+                }
+                $chunk = $stdCase{lc $chunk};
+            }
         }
         # only extract information from chunks in our tables
         my ($theBuff, $outBuff);

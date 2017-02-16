@@ -48,7 +48,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.01';
+$VERSION = '3.02';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -1011,7 +1011,7 @@ my %sPantryItem = (
         ValueConvInv => '"/$val"',
         PrintConv => { True => 'True', False => 'False', Unknown => 'Unknown' },
     },
-    Keywords    => { Priority => 0 },
+    Keywords    => { Priority => -1 }, # (-1 to get below Priority 0 PDF:Keywords)
     PDFVersion  => { },
     Producer    => { Groups => { 2 => 'Author' } },
 );

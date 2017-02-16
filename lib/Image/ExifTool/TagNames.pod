@@ -691,7 +691,7 @@ official EXIF 2.31 specification.
   0xa011   SamsungRawPointersLength  -          N
   0xa101   SamsungRawByteOrder       -          N
   0xa102   SamsungRawUnknown?        -          N
-  0xa20b   FlashEnergy               ExifIFD    rational64u[n]
+  0xa20b   FlashEnergy               ExifIFD    rational64u
   0xa20c   SpatialFrequencyResponse  -          N
   0xa20d   Noise                     -          N
   0xa20e   FocalPlaneXResolution     ExifIFD    rational64u
@@ -15181,7 +15181,7 @@ substitution cipher, but the deciphered values are listed below.
   0x0000   MaxAperture                          int8u
   0x0001   MinAperture                          int8u
   0x0031   FlashStatus                          int8u
-  0x0032   ImageCount                           int16u
+  0x0032   ImageCount                           int32u
   0x003a   SonyExposureTime                     int16u
   0x003c   SonyFNumber                          int16u
   0x003f   ReleaseMode2                         int8u
@@ -19892,7 +19892,7 @@ this data as additional PNG chunks.
   'bKGD'             BackgroundColor            N
   'cHRM'             PrimaryChromaticities      PNG PrimaryChromaticities
   'dSIG'             DigitalSignature           N
-  'eXIF'             eXIF                       EXIF
+  'exIf'             exIf                       EXIF
   'fRAc'             FractalParameters          N
   'gAMA'             Gamma                      N
   'gIFg'             GIFGraphicControlExtension N
@@ -19916,7 +19916,7 @@ this data as additional PNG chunks.
   'tXMP'             XMP                        XMP
   'vpAg'             VirtualPage                PNG VirtualPage
   'zTXt'             CompressedText             PNG TextualData
-  'zXIF'             zXIF                       EXIF
+  'zxIf'             zxIf                       EXIF
 
 =head3 PNG ImageHeader Tags
 

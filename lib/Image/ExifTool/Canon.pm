@@ -85,7 +85,7 @@ sub ProcessSerialData($$$);
 sub ProcessFilters($$$);
 sub SwapWords($);
 
-$VERSION = '3.71';
+$VERSION = '3.72';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -445,7 +445,8 @@ $VERSION = '3.71';
     4154 => 'Canon EF-S 24mm f/2.8 STM', #IB
     4155 => 'Canon EF-M 28mm f/3.5 Macro IS STM', #42
     4156 => 'Canon EF 50mm f/1.8 STM', #42
-    4157 => 'Canon EF-M 18-150mm 1:3.5-6.3 IS STM',#42
+    4157 => 'Canon EF-M 18-150mm 1:3.5-6.3 IS STM', #42
+    4158 => 'Canon EF-S 18-55mm f/4-5.6 IS STM', #PH
     36910 => 'Canon EF 70-300mm f/4-5.6 IS II USM', #42
     36912 => 'Canon EF-S 18-135mm f/3.5-5.6 IS USM', #42
     65535 => 'n/a',
@@ -680,6 +681,8 @@ $VERSION = '3.71';
     0x4040001 => 'IXY 180', # ?? (from Canon sample)
     0x4050000 => 'PowerShot SX720 HS',
     0x4060000 => 'PowerShot SX620 HS',
+    0x4070000 => 'EOS M6',
+    0x4100000 => 'PowerShot G9 X Mark II',
     0x6040000 => 'PowerShot S100 / Digital IXUS / IXY Digital',
 
 # (see http://cweb.canon.jp/e-support/faq/answer/digitalcamera/10447-1.html for PowerShot/IXUS/IXY names)
@@ -771,6 +774,8 @@ $VERSION = '3.71';
     0x80000393 => 'EOS Rebel T6i / 750D / Kiss X8i',
     0x80000401 => 'EOS 5DS R',
     0x80000404 => 'EOS Rebel T6 / 1300D / Kiss X80',
+    0x80000405 => 'EOS Rebel T7i / 800D / Kiss X9i',
+    0x80000408 => 'EOS 77D / 9000D',
 );
 
 my %canonQuality = (

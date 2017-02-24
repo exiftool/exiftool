@@ -121,6 +121,10 @@ information that could be very useful to camera owners (eg. camera pitch/roll
 angles, sensor temperature, face detection, auto-focus points, image
 stabilization, flash exposure compensation, etc). <i>[Some of these tags
 were added in the Exif 2.31 specification.]</i></li>
+<li>0xffffffff in the numerator or denominator of some rational-value tags is
+used to indicate an unknown or infinite value. This is completely unnecessary
+and not supported by many applications because it requires extra tag-specific
+logic to be implemented.</li>
 </ol>
 
 <p><b>Simple solutions:</b></p>
@@ -151,6 +155,8 @@ this to allow UTF-16 surrogate pairs may be a good idea.</li>
 a zoom lens, or over the entire zoom range.</li>
 <li>Expand the standard to include additional useful information available from
 modern digital cameras.</li>
+<li>Use a rational value of 1/0 to indicate infinity, and 0/0 to indicate an
+unknown/undefined value.</li>
 </ol>
 
 <a name="PhotoInfo"></a>
@@ -282,7 +288,7 @@ so the URL's referenced here are now broken.]</i></p>
 </ol>
 <hr>
 <i>Created Sep 17, 2009</i><br>
-<i>Last revised Sept 26, 2016</i>
+<i>Last revised Feb 17, 2017</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

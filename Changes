@@ -7,6 +7,17 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.40. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Feb. 24, 2017 - Version 10.44
+
+  - Added a few new CanonModelID values and a new Canon LensType
+  - Added two new Nikon lenses (thanks Rolf Probst)
+  - Added a few new Sony/Minolta lenses (thanks Jos Roost)
+  - Added two new Sony MeteringMode values (thanks Jos Roost)
+  - Improved verbose dump of Photoshop Layer information
+  - Patched to allow "FileName encoding not specified" warnings to be avoided by
+    setting -charset filename=""
+  - Fixed problem in photoshop_paths.config printing some paths
+
 Feb. 16, 2017 - Version 10.43
 
   - Restrict writing of EXIF:FlashEnergy to a single value as per EXIF spec

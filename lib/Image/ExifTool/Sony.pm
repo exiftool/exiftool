@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.54';
+$VERSION = '2.55';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -77,7 +77,7 @@ my %sonyLensTypes2 = (
     32793 => 'Sony E PZ 16-50mm F3.5-5.6 OSS',  # VX9109
     32794 => 'Sony FE 35mm F2.8 ZA',            # VX9110
     32795 => 'Sony FE 24-70mm F4 ZA OSS',       # VX9111
-
+    32796 => 'Sony FE 85mm F1.8', #JR
     32797 => 'Sony E 18-200mm F3.5-6.3 OSS LE', # VX9113
     32798 => 'Sony E 20mm F2.8',                # VX9114
     32799 => 'Sony E 35mm F1.8 OSS',            # VX9115
@@ -98,6 +98,8 @@ my %sonyLensTypes2 = (
     32816 => 'Sony FE 28mm F2', #JR             # VX?
     32817 => 'Sony FE PZ 28-135mm F4 G OSS',#JR # VX?
 
+    32819 => 'Sony FE 100mm F2.8 STF GM OSS',   #JR also seen one image with LensType2=33076...
+
     32821 => 'Sony FE 24-70mm F2.8 GM', #JR/IB
     32822 => 'Sony FE 50mm F1.4 ZA', #JR
     32823 => 'Sony FE 85mm F1.4 GM', #JR/IB
@@ -107,6 +109,8 @@ my %sonyLensTypes2 = (
     32827 => 'Sony FE 16mm F3.5 Fisheye (SEL28F20 + SEL057FEC)', #JR  # (+ Fisheye converter)
     32828 => 'Sony FE 70-300mm F4.5-5.6 G OSS', #JR
     32830 => 'Sony FE 70-200mm F2.8 GM OSS', #JR
+
+    33002 => 'Sigma 85mm F1.4 DG HSM | A 016 (+ Metabones Ver.50)', #PH/JR
 
     33072 => 'Sony FE 70-200mm F2.8 GM OSS + 1.4X Teleconverter', #JR
     33073 => 'Sony FE 70-200mm F2.8 GM OSS + 2X Teleconverter', #JR
@@ -5654,7 +5658,8 @@ my %meteringMode2010 = (
         0 => 'Multi-segment',
         2 => 'Center-weighted average',
         3 => 'Spot',
-      # 5 => '...',  # seen for ILCA-99M2
+        4 => 'Entire Screen Avg.', # (NC) seen for ILCA-99M2 with Exif indicating "Average"
+        5 => 'Highlight', # (NC) seen for ILCA-99M2 with Exif indicating "Other"
     },
 );
 my %flashMode2010 = (

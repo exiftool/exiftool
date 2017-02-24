@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '10.43';
+$VERSION = '10.44';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -3438,21 +3438,23 @@ sub EncodeFileName($$;$)
 {
     my ($self, $file, $force) = @_;
     my $enc = $$self{OPTIONS}{CharsetFileName};
-    if ($enc and ($file =~ /[\x80-\xff]/ or $force)) {
-        # encode for use in Windows Unicode functions if necessary
-        if ($^O eq 'MSWin32') {
-            local $SIG{'__WARN__'} = \&SetWarning;
-            if (eval { require Win32API::File }) {
-                # recode as UTF-16LE and add null terminator
-                $_[1] = $self->Decode($file, $enc, undef, 'UTF16', 'II') . "\0\0";
-                return 1;
+    if ($enc) {
+        if ($file =~ /[\x80-\xff]/ or $force) {
+            # encode for use in Windows Unicode functions if necessary
+            if ($^O eq 'MSWin32') {
+                local $SIG{'__WARN__'} = \&SetWarning;
+                if (eval { require Win32API::File }) {
+                    # recode as UTF-16LE and add null terminator
+                    $_[1] = $self->Decode($file, $enc, undef, 'UTF16', 'II') . "\0\0";
+                    return 1;
+                }
+                $self->WarnOnce('Install Win32API::File for Windows Unicode file support');
+            } else {
+                # recode as UTF-8 for other platforms if necessary
+                $_[1] = $self->Decode($file, $enc, undef, 'UTF8') unless $enc eq 'UTF8';
             }
-            $self->WarnOnce('Install Win32API::File for Windows Unicode file support');
-        } else {
-            # recode as UTF-8 for other platforms if necessary
-            $_[1] = $self->Decode($file, $enc, undef, 'UTF8') unless $enc eq 'UTF8';
         }
-    } elsif ($^O eq 'MSWin32' and $file =~ /[\x80-\xff]/) {
+    } elsif ($^O eq 'MSWin32' and $file =~ /[\x80-\xff]/ and not defined $enc) {
         require Image::ExifTool::XMP;
         if (Image::ExifTool::XMP::IsUTF8(\$file) < 0) {
             $self->WarnOnce('FileName encoding not specified');

@@ -465,7 +465,8 @@ distribution for examples.</p>
     <td align=center><i>(see <a href="#Charset">Charset</a> option)</i><br>or undef</td><td align=center>undef</td></tr>
 <tr><td>CharsetFileName</td><td><a name="CharsetFileName"></a>External character set
     used when specifying file names.  When set in Windows, this triggers use of
-    Windows Unicode file library routines (requires Win32API::File).</td>
+    Windows Unicode file library routines (requires Win32API::File).  May also
+    be set to an empty string to avoid "encoding not specified" warnings on Windows.</td>
     <td align=center><i>(see <a href="#Charset">Charset</a> option)</i><br>or undef</td><td align=center>undef</td></tr>
 <tr><td>CharsetID3</td><td><a name="CharsetID3"></a>Internal encoding to assume for ID3v1 strings.  By
     the specification ID3v1 strings should be encoded in ISO 8859-1 (essentially

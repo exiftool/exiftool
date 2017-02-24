@@ -28,7 +28,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD $iptcDigestInfo);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.52';
+$VERSION = '1.53';
 
 sub ProcessPhotoshop($$$);
 sub WritePhotoshop($$$);
@@ -485,9 +485,10 @@ my %unicodeString = (
     NOTES => 'Tags extracted from Photoshop layer information.',
     # tags extracted from layer information
     # (tag ID's are for convenience only)
-    _xcnt => { Name => 'LayerCount' },
-    _xrct => { Name => 'LayerRectangles', List => 1 },
+    _xcnt => { Name => 'LayerCount', Format => 'int16u' },
+    _xrct => { Name => 'LayerRectangles', List => 1, Format => 'int32u', Count => 4 },
     _xnam => { Name => 'LayerNames',
+        Format => 'string',
         List => 1,
         ValueConv => q{
             my $charset = $self->Options('CharsetPhotoshop') || 'Latin';
@@ -496,6 +497,7 @@ my %unicodeString = (
     },
     _xbnd => {
         Name => 'LayerBlendModes',
+        Format => 'undef',
         List => 1,
         PrintConv => {
             pass => 'Pass Through',
@@ -530,6 +532,7 @@ my %unicodeString = (
     },
     _xopc  => {
         Name => 'LayerOpacities',
+        Format => 'int8u',
         List => 1,
         ValueConv => '100 * $val / 255',
         PrintConv => 'sprintf("%d%%",$val)',
@@ -620,17 +623,19 @@ sub ProcessLayers($$$)
 
     # read the layer information header
     my $n = $psiz * 2 + 2;
+    my $dataPos = $raf->Tell();
     $raf->Read($data, $n) == $n or return 0;
+    my %dinfo = ( DataPt => \$data, DataPos => $dataPos );
     my $tot = $psb ? Get64u(\$data, 0) : Get32u(\$data, 0); # length of layer and mask info
     my $len = $psb ? Get64u(\$data, $psiz) : Get32u(\$data, $psiz); # length of layer info section
     my $num = Get16s(\$data, $psiz * 2);
     $num = -$num if $num < 0;       # (first channel is transparency data if negative)
-    $et->HandleTag($tagTablePtr, _xcnt => $num); # LayerCount
+    $et->HandleTag($tagTablePtr, '_xcnt', $num, Start => $psiz*2, Size => 2, %dinfo); # LayerCount
     return 0 if $len > 100000000;   # set a reasonable limit on maximum size
     $et->VerboseDir('Layers', $num, $len);
-    my $dataPos = $raf->Tell();
     # read the layer information data
     $raf->Read($data, $len) == $len or return 0;
+    $dinfo{DataPos} = ($dataPos += $n);
     my $oldIndent = $$et{INDENT};
     $$et{INDENT} .= '| ';
 
@@ -639,22 +644,22 @@ sub ProcessLayers($$$)
         $et->VPrint(0, $oldIndent.'+ [Layer '.($i+1)." of $num]\n");
         last if $pos + 18 > $len;
         # save the layer rectangle
-        $et->HandleTag($tagTablePtr, _xrct => join(' ',ReadValue(\$data, $pos, 'int32u', 4, 16)));
+        $et->HandleTag($tagTablePtr, '_xrct', undef, Start => $pos, Size => 16, %dinfo);
         my $numChannels = Get16u(\$data, $pos + 16);
         $pos += 18 + (2 + $psiz) * $numChannels;    # skip the channel information
         last if $pos + 20 > $len or substr($data, $pos, 4) ne '8BIM'; # verify signature
-        $et->HandleTag($tagTablePtr, _xbnd => substr($data, $pos+4, 4)); # blend mode
-        $et->HandleTag($tagTablePtr, _xopc => Get8u(\$data, $pos+8));    # opacity
+        $et->HandleTag($tagTablePtr, '_xbnd', undef, Start => $pos + 4, Size => 4, %dinfo);
+        $et->HandleTag($tagTablePtr, '_xopc', undef, Start => $pos + 8, Size => 1, %dinfo);
         my $nxt = $pos + 16 + Get32u(\$data, $pos + 12);
         $n = Get32u(\$data, $pos+16);   # get size of layer mask data
         $pos += 20 + $n;                # skip layer mask data
         last if $pos + 4 > $len;
         $n = Get32u(\$data, $pos);      # get size of layer blending ranges
-        $pos += 4 + $n;                 # skip layer blanding ranges data
+        $pos += 4 + $n;                 # skip layer blending ranges data
         last if $pos + 1 > $len;
         $n = Get8u(\$data, $pos);       # get length of layer name
         last if $pos + 1 + $n > $len;
-        $et->HandleTag($tagTablePtr, _xnam => substr($data, $pos+1, $n)); # layer name
+        $et->HandleTag($tagTablePtr, '_xnam', undef, Start => $pos + 1, Size => $n, %dinfo);
         $n = ($n + 4) & 0xfffffffc;     # +1 for length byte then pad to multiple of 4 bytes
         $pos += $n;
         # process additional layer info
@@ -681,10 +686,7 @@ sub ProcessLayers($$$)
                 $et->HandleTag($tagTablePtr, $tag, '');
                 ++$count{$tag};
             }
-            $et->HandleTag($tagTablePtr, $tag, $val,
-                DataPt => \$val,
-                DataPos => $dataPos + $pos,
-            );
+            $et->HandleTag($tagTablePtr, $tag, $val, DataPt => \$val, DataPos => $dataPos + $pos);
             ++$count{$tag};
             $pos += $n; # step to start of next structure
         }

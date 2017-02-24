@@ -482,7 +482,8 @@ set to undef to pass through EXIF "ASCII" values without recoding.  Set to
 
 External character set used for file names passed to ExifTool functions. 
 When set in Windows, this triggers use of Windows wide-character i/o library
-routines (requires Win32API::File).  Default is undef.
+routines (requires Win32API::File).  Default is undef.  May also be set to
+an empty string to avoid "encoding not specified" warnings on Windows.
 
 =item CharsetID3
 
@@ -2360,10 +2361,13 @@ The encoding of file names is specified via the L</CharsetFileName> option.
 By default, L</CharsetFileName> is not defined, and file names passed to
 ExifTool are used directly in calls to the system i/o routines (which expect
 UTF-8 strings on Mac/Linux, but default to the system code page on Windows).
-Setting L</CharsetFileName> causes file names to be converted from the
-specified encoding to one appropriate for the system.  In Windows this also
-has the effect of activating Unicode filename support via the special
-Windows wide-character i/o routines if Win32API::File is available.
+In this mode on Windows a warning is issued if a file name contains special
+characters, but this warning may be avoided by setting L</CharsetFileName>
+to an empty string.  Setting L</CharsetFileName> to any other value causes
+file names to be converted from the specified encoding to one appropriate
+for the system.  In Windows this also has the effect of activating Unicode
+filename support via the special Windows wide-character i/o routines if
+Win32API::File is available.
 
 =item Internal Character Sets:
 

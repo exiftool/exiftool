@@ -15,7 +15,7 @@ package Image::ExifTool::JPEGDigest;
 use strict;
 use vars qw($VERSION);
 
-$VERSION = '1.05';
+$VERSION = '1.06';
 
 # the print conversion for the JPEGDigest tag
 my %PrintConv = ( #JD
@@ -2537,12 +2537,13 @@ sub Calculate($$$)
     my ($et, $dqtList, $subSampling) = @_;
 
     # estimate JPEG quality if requested
-    if ($$et{REQ_TAG_LOOKUP}{jpegqualityestimate}) {
+    my $all = ($$et{OPTIONS}{RequestAll} and $$et{OPTIONS}{RequestAll} > 2);
+    if ($all or $$et{REQ_TAG_LOOKUP}{jpegqualityestimate}) {
         my $quality = EstimateQuality($dqtList);
         $quality = '<unknown>' unless defined $quality;
         $et->FoundTag('JPEGQualityEstimate', $quality);
     }
-    return unless $$et{REQ_TAG_LOOKUP}{jpegdigest} and $subSampling;
+    return unless ($all or $$et{REQ_TAG_LOOKUP}{jpegdigest}) and $subSampling;
 
     unless (eval { require Digest::MD5 }) {
         $et->Warn('Digest::MD5 must be installed to calculate JPEGDigest');

@@ -485,7 +485,6 @@ distribution for examples.</p>
     metadata (eg. AVI and WAV files).  The default value of 0 assumes 'Latin' encoding unless otherwise
     specified by the RIFF CSET chunk.  Set to undef to pass through strings without recoding.</td>
     <td align=center><i>(see <a href="#Charset">Charset</a> option)</i><br>or 0 or undef</td><td align=center>0</td></tr>
-
 <tr><td>Compact</td><td><a name="Compact"></a>Flag to write compact output.  The XMP specification suggests
     that the data be padded with blanks to allow in-place editing.  With this
     flag set the 2kB of padding is not written.  Note that this only effects
@@ -723,8 +722,9 @@ distribution for examples.</p>
     This causes some tags to be generated which normally would not be unless specifically
     requested (by passing the tag name to <a href="#ImageInfo">ImageInfo</a> or
     <a href="#ExtractInfo">ExtractInfo</a>).  Note that this flag is set automatically
-    during a call to <a href="#SetNewValuesFromFile">SetNewValuesFromFile</a> to
-    make all tags available for copying.</td><td align=center>0 or 1</td><td align=center>undef</td></tr>
+    during a call to <a href="#SetNewValuesFromFile">SetNewValuesFromFile</a> to make
+    all tags available for copying.  May be set to 2 or 3 to enable generation of some
+    additional tags. </td><td align=center>0, 1, 2 or 3</td><td align=center>undef</td></tr>
 <tr><td>RequestTags</td><td><a name="RequestTags"></a>List of additional tags to request in
     next call to <a href="#ExtractInfo">ExtractInfo</a>.  This option is useful only for
     tags which aren't extracted unless specifically requested.</td><td>List reference,
@@ -817,6 +817,9 @@ distribution for examples.</p>
     <tr><td valign=top align=center><b>c</b>&nbsp;=</td><td><b>C</b>reate new tags</td></tr>
     <tr><td valign=top align=center><b>g</b>&nbsp;=</td><td>Create new <b>g</b>roups <sup>&dagger;</sup></td></tr>
     </table></td><td align=center>'wcg'</td></tr>
+<tr><td>XAttrTags</td><td><a name="XAttrTags"></a>Flag to extract the OS X
+    extended attribute tags (see the "xattr" man page for details).</td>
+    <td align=center>0 or 1</td><td align=center>undef</td></tr>
 <tr><td>XMPAutoConv</td><td><a name="XMPAutoConv"></a>Flag to enable automatic conversion
     for unknown XMP tags with values that look like rational numbers or dates.</td>
     <td align=center>0 or 1</td>

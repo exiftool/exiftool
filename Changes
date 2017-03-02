@@ -7,6 +7,14 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.40. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Mar. 2, 2017 - Version 10.45
+
+  - Added ability to write a number of Mac OS X system tags
+  - Added ability to extract OS X extended attributes ("XAttr" tags)
+  - API Changes:
+      - Added XAttrTags option
+      - Enhanced RequestAll option
+
 Feb. 24, 2017 - Version 10.44
 
   - Added a few new CanonModelID values and a new Canon LensType

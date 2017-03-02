@@ -120,7 +120,8 @@ my %writableType = (
 # (Note: all writable "pseudo" tags must be found in Extra table)
 my @writablePseudoTags =  qw(
     FileName FilePermissions FileUserID FileGroupID Directory FileModifyDate
-    FileCreateDate HardLink TestName
+    FileCreateDate HardLink TestName MDItemFinderComment MDItemFSCreationDate
+    MDItemFSLabel XAttrQuarantine
 );
 
 # groups we are allowed to delete
@@ -1183,7 +1184,7 @@ sub SetNewValuesFromFile($$;@)
         Password        => $$options{Password},
         PrintConv       => $$options{PrintConv},
         QuickTimeUTC    => $$options{QuickTimeUTC},
-        RequestAll      => 1, # (is this still necessary now that RequestTags are being set?)
+        RequestAll      => $$options{RequestAll} || 1, # (is this still necessary now that RequestTags are being set?)
         RequestTags     => $$options{RequestTags},
         ScanForXMP      => $$options{ScanForXMP},
         StrictDate      => 1,
@@ -1614,6 +1615,7 @@ sub CountNewValues($)
     if ($newVal) {
         # count the number of pseudo tags we are writing
         foreach $tag (@writablePseudoTags) {
+            next unless defined $Image::ExifTool::Extra{$tag}; # (tag not written if not loaded)
             ++$pseudo if defined $$newVal{$Image::ExifTool::Extra{$tag}};
         }
     }
@@ -1859,17 +1861,16 @@ sub SetFileName($$;$$)
 }
 
 #------------------------------------------------------------------------------
-# Set file permissions and group/user id from new tag values
-# Inputs: 0) Exiftool ref, 1) file name or glob
-# Returns: 1=permissions and/or id was set, 0=didn't try, -1=error (and warning set)
+# Set file permissions, group/user id and various MDItem tags from new tag values
+# Inputs: 0) Exiftool ref, 1) file name or glob (must be a name for MDItem tags)
+# Returns: 1=something was set OK, 0=didn't try, -1=error (and warning set)
 # Notes: There may be errors even if 1 is returned
-sub SetFilePermissions($$)
+sub SetSystemTags($$)
 {
     my ($self, $file) = @_;
-    my $perm = $self->GetNewValue('FilePermissions');
-    my $uid = $self->GetNewValue('FileUserID');
-    my $gid = $self->GetNewValue('FileGroupID');
     my $result = 0;
+
+    my $perm = $self->GetNewValue('FilePermissions');
     if (defined $perm) {
         if (eval { chmod($perm & 07777, $file) }) {
             $self->VerboseValue('+ FilePermissions', $perm);
@@ -1879,6 +1880,8 @@ sub SetFilePermissions($$)
             $result = -1;
         }
     }
+    my $uid = $self->GetNewValue('FileUserID');
+    my $gid = $self->GetNewValue('FileGroupID');
     if (defined $uid or defined $gid) {
         defined $uid or $uid = -1;
         defined $gid or $gid = -1;
@@ -1890,6 +1893,18 @@ sub SetFilePermissions($$)
             $self->WarnOnce('Error setting FileGroup/UserID');
             $result = -1 unless $result;
         }
+    }
+    my $tag;
+    foreach $tag (qw(MDItemFinderComment MDItemFSCreationDate MDItemFSLabel XAttrQuarantine)) {
+        my $nvHash;
+        my $val = $self->GetNewValue($tag, \$nvHash);
+        next unless $nvHash;
+        $^O eq 'darwin' or $self->WarnOnce('Can only set MDItem tags on OS X'), last;
+        ref $file and $self->Warn('Setting MDItem tags requires a file name'), last;
+        require Image::ExifTool::MacOSX;
+        my $res = Image::ExifTool::MacOSX::SetOSXTags($self, $file);
+        $result = $res if $res == 1 or not $result;
+        last;
     }
     return $result;
 }
@@ -1953,7 +1968,7 @@ sub WriteInfo($$;$$)
             if (not ref $infile or UNIVERSAL::isa($infile,'GLOB')) {
                 $self->SetFileModifyDate($infile) > 0 and $rtnVal = 1 if $setModDate;
                 $self->SetFileModifyDate($infile, undef, 'FileCreateDate') > 0 and $rtnVal = 1 if $setCreateDate;
-                $self->SetFilePermissions($infile) > 0 and $rtnVal = 1;
+                $self->SetSystemTags($infile) > 0 and $rtnVal = 1;
             }
             if ((defined $newFileName or defined $newDir) and not ref $infile) {
                 $self->SetFileName($infile) > 0 and $rtnVal = 1;
@@ -2314,7 +2329,7 @@ sub WriteInfo($$;$$)
     if ($rtnVal > 0 and ($closeOut or (defined $outBuff and ($closeIn or UNIVERSAL::isa($infile,'GLOB'))))) {
         my $target = $closeOut ? $outfile : $infile;
         # set file permissions if requested
-        ++$$self{CHANGED} if $self->SetFilePermissions($target) > 0;
+        ++$$self{CHANGED} if $self->SetSystemTags($target) > 0;
         if ($closeIn) { # (no use setting file times unless the input file is closed)
             ++$$self{CHANGED} if $setModDate and $self->SetFileModifyDate($target, $originalTime, undef, 1) > 0;
             # set FileCreateDate if requested (and if possible!)

@@ -17,7 +17,7 @@ require Exporter;
 use vars qw($VERSION @ISA @EXPORT_OK);
 use Image::ExifTool qw(:Utils);
 
-$VERSION = '1.15';
+$VERSION = '1.16';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(FindTagInfo TagExists);
 
@@ -3316,6 +3316,9 @@ my %tagLookup = (
 	'mb-d80batterytype' => { 257 => '3.2' },
 	'mcuversion' => { 193 => 0xc, 194 => 0x11, 195 => 0x12 },
 	'md5digest' => { 147 => 'zmd5' },
+	'mditemfindercomment' => { 110 => 'MDItemFinderComment' },
+	'mditemfscreationdate' => { 110 => 'MDItemFSCreationDate' },
+	'mditemfslabel' => { 110 => 'MDItemFSLabel' },
 	'meal' => { 430 => 'meal' },
 	'measuredev' => { 27 => 0x9, 69 => 0x3, 88 => 0x1814, 139 => 'MeasuredEV' },
 	'measuredev2' => { 12 => 0x8, 27 => 0x8, 69 => 0x17 },
@@ -5329,6 +5332,7 @@ my %tagLookup = (
 	'worldtimelocation' => { 280 => 0x3a, 314 => 0x22, 320 => '0.1' },
 	'writer-editor' => { 117 => 0x7a },
 	'x3filllight' => { 349 => 0x12 },
+	'xattrquarantine' => { 110 => 'XAttrQuarantine' },
 	'xml' => { 121 => 'xml ' },
 	'xmp' => { 97 => 0xffff00f6, 110 => 'XMP' },
 	'xmptoolkit' => { 435 => 'xmptk' },
@@ -9176,6 +9180,8 @@ my %tagExists = (
 	'wwsfamilyname' => 1,
 	'wwssubfamilyname' => 1,
 	'x' => 1,
+	'xattrfinderinfo' => 1,
+	'xattrtags' => 1,
 	'xcfversion' => 1,
 	'xclippathunits' => 1,
 	'xheight' => 1,
@@ -9218,11 +9224,14 @@ my %tagExists = (
 	'zxif' => 1,
 );
 
-# module names for writable Composite tags
+# module names for writable dynamically-loaded (usually Composite) tags
 my %compositeModules = (
 	'filenumber' => 'Image::ExifTool::Canon',
 	'flash' => 'Image::ExifTool::XMP',
 	'jpgfromraw' => 'Image::ExifTool::Exif',
+	'mditemfindercomment' => 'Image::ExifTool::MacOSX',
+	'mditemfscreationdate' => 'Image::ExifTool::MacOSX',
+	'mditemfslabel' => 'Image::ExifTool::MacOSX',
 	'originaldecisiondata' => 'Image::ExifTool::Canon',
 	'otherimage' => 'Image::ExifTool::Exif',
 	'previewimage' => 'Image::ExifTool::Exif',
@@ -9230,6 +9239,7 @@ my %compositeModules = (
 	'subsecdatetimeoriginal' => 'Image::ExifTool::Exif',
 	'subsecmodifydate' => 'Image::ExifTool::Exif',
 	'thumbnailimage' => 'Image::ExifTool::Exif',
+	'xattrquarantine' => 'Image::ExifTool::MacOSX',
 );
 
 #++++ End automatically generated code ++++

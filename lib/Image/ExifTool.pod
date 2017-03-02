@@ -815,7 +815,8 @@ Flag to request all tags to be extracted.  This causes some tags to be
 generated which normally would not be unless specifically requested (by
 passing the tag name to L</ImageInfo> or L</ExtractInfo>).  Note that this
 flag is set automatically during a call to L</SetNewValuesFromFile> to make
-all tags available for copying.  Default is undef.
+all tags available for copying.  May be set to 2 or 3 to enable generation
+of some additional tags.  Default is undef.
 
 =item RequestTags
 
@@ -932,6 +933,11 @@ list below.  Default is 'wcg'.
 The level of the group differs for different types of metadata. For XMP or
 IPTC this is the full XMP/IPTC block (the family 0 group), but for EXIF this
 is the individual IFD (the family 1 group).
+
+=item XAttrTags
+
+Flag to extract the OS X extended attribute tags (see the "xattr" man page
+for details).
 
 =item XMPAutoConv
 

@@ -32,8 +32,9 @@ use Image::ExifTool::XMP;
 use Image::ExifTool::Canon;
 use Image::ExifTool::Nikon;
 use Image::ExifTool::Validate;
+use Image::ExifTool::MacOSX;
 
-$VERSION = '3.03';
+$VERSION = '3.04';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -520,9 +521,10 @@ in this column are write-only.
 
 Tags in the family 1 "System" group are referred to as "pseudo" tags because
 they don't represent real metadata in the file.  Instead, this information
-is stored in the directory structure of the filesystem.  Nine writable
+is stored in the directory structure of the filesystem.  13 writable
 "pseudo" tags (FileName, Directory, FileModifyDate, FileCreateDate,
-FilePermissions, FileUserID, FileGroupID, HardLink and TestName) may be
+FilePermissions, FileUserID, FileGroupID, HardLink, MDItemFSCreationDate,
+MDItemFSLabel, MDItemFinderComment, XAttrQuarantine and TestName) may be
 written without modifying the file itself.  The TestName tag is used for
 dry-run testing before writing FileName.
 },
@@ -1250,9 +1252,8 @@ TagID:  foreach $tagID (@keys) {
                 }
                 $tableWritable{$tableName} = 1;
                 $tagLookup{$lcName}->{$tableNum} = $tagIDs;
-                if ($short eq 'Composite' and $$tagInfo{Module}) {
-                    $compositeModules{$lcName} = $$tagInfo{Module};
-                }
+                # keep track of extra modules needed for Composite tags
+                $compositeModules{$lcName} = $$tagInfo{Module} if $$tagInfo{Module};
             }
 #
 # save TagName information
@@ -1461,7 +1462,7 @@ sub WriteTagLookup($$)
 # write module lookup for writable composite tags
 #
     my $compositeModules = $self->{COMPOSITE_MODULES};
-    print OUTFILE ");\n\n# module names for writable Composite tags\n";
+    print OUTFILE ");\n\n# module names for writable dynamically-loaded (usually Composite) tags\n";
     print OUTFILE "my \%compositeModules = (\n";
     foreach (sort keys %$compositeModules) {
         print OUTFILE "\t'$_' => '$$compositeModules{$_}',\n";

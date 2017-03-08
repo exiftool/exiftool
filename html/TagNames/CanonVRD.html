@@ -73,7 +73,7 @@ copied unless specified explicitly.</p>
 <tr>
 <td class=r title='2 = 0x2'>2</td>
 <td>VRDVersion</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='6 = 0x6'>6</td>
@@ -353,7 +353,7 @@ copied unless specified explicitly.</p>
 <tr>
 <td class=r title='0 = 0x0'>0</td>
 <td>StampToolCount</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -771,7 +771,7 @@ copied unless specified explicitly.</p>
 <tr>
 <td class=r title='88 = 0x58'>88</td>
 <td>CustomPictureStyleData</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s><span class=n>(variable-length data structure)</span></span></td></tr>
 <tr class=b>
 <td class=r title='94 = 0x5e'>94</td>
@@ -1216,7 +1216,7 @@ copied unless specified explicitly.</p>
 <tr class=b>
 <td class=r title='223 = 0xdf'>223</td>
 <td>DLODataLength</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='224 = 0xe0'>224</td>
@@ -1293,7 +1293,7 @@ copied unless specified explicitly.</p>
 <tr>
 <td class=r title='10 = 0xa'>10</td>
 <td>DLOData</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s><span class=n>(variable-length Digital Lens Optimizer data, stored in JPEG-like format)</span></span></td></tr>
 </table></td></tr></table></blockquote>
 
@@ -1307,29 +1307,29 @@ copied unless specified explicitly.</p>
 <td title='0x0001 = 1'>0x0001</td>
 <td>IHL_EXIF
   <br>IHL_EXIF?</td>
-<td class=c>-<br>N</td>
+<td class=c>-<br>no</td>
 <td>--&gt; <a href='EXIF.html'>EXIF Tags</a>
   <br><span class=n>(extracted as a block if the Unknown option is used, or processed as the
 first sub-document with the ExtractEmbedded option)</span></td></tr>
 <tr class=b>
 <td title='0x0003 = 3'>0x0003</td>
 <td>ThumbnailImage</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0004 = 4'>0x0004</td>
 <td>PreviewImage</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x0005 = 5'>0x0005</td>
 <td>RawCodecVersion</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0006 = 6'>0x0006</td>
 <td>CRCDevelParams?</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -1365,22 +1365,22 @@ below by a decimal appended to the tag ID (.0, .1 or .2).</p>
 <tr class=b>
 <td title='0x10002 = 65538'>0x10002</td>
 <td>Rotation</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x10003 = 65539'>0x10003</td>
 <td>AngleAdj</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x10021 = 65569'>0x10021</td>
 <td>CustomPictureStyle</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x10101 = 65793'>0x10101</td>
 <td>CheckMark</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td><table class=cols><tr>
   <td>0 = Clear
   <br>1 = 1
@@ -1392,7 +1392,7 @@ below by a decimal appended to the tag ID (.0, .1 or .2).</p>
 <tr class=b>
 <td title='0x10200 = 66048'>0x10200</td>
 <td>WorkColorSpace</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td><span class=s>1 = sRGB
   <br>2 = Adobe RGB
   <br>3 = Wide Gamut RGB
@@ -1401,12 +1401,12 @@ below by a decimal appended to the tag ID (.0, .1 or .2).</p>
 <tr>
 <td title='0x20001 = 131073'>0x20001</td>
 <td>RawBrightnessAdj</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x20101 = 131329'>0x20101</td>
 <td>WhiteBalanceAdj</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td><table class=cols><tr>
   <td>-1 = Manual (Click)
   <br>0 = Auto
@@ -1422,27 +1422,27 @@ below by a decimal appended to the tag ID (.0, .1 or .2).</p>
 <tr>
 <td title='0x20102 = 131330'>0x20102</td>
 <td>WBAdjColorTemp</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x20105 = 131333'>0x20105</td>
 <td>WBAdjMagentaGreen</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x20106 = 131334'>0x20106</td>
 <td>WBAdjBlueAmber</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x20125 = 131365'>0x20125</td>
 <td>WBAdjRGGBLevels</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x20200 = 131584'>0x20200</td>
 <td>GammaLinear</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td><table class=cols><tr>
   <td>0 = No</td><td>&nbsp;&nbsp;</td>
   <td>1 = Yes</td></tr></table>
@@ -1450,7 +1450,7 @@ below by a decimal appended to the tag ID (.0, .1 or .2).</p>
 <tr class=b>
 <td title='0x20301 = 131841'>0x20301</td>
 <td>PictureStyle</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td><table class=cols><tr>
   <td>0x81 = Standard
   <br>0x82 = Portrait
@@ -1466,22 +1466,22 @@ below by a decimal appended to the tag ID (.0, .1 or .2).</p>
 <tr>
 <td title='0x20303 = 131843'>0x20303</td>
 <td>ContrastAdj</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x20304 = 131844'>0x20304</td>
 <td>ColorToneAdj</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x20305 = 131845'>0x20305</td>
 <td>ColorSaturationAdj</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x20306 = 131846'>0x20306</td>
 <td>MonochromeToningEffect</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td><span class=s>0 = None
   <br>1 = Sepia
   <br>2 = Blue
@@ -1490,7 +1490,7 @@ below by a decimal appended to the tag ID (.0, .1 or .2).</p>
 <tr>
 <td title='0x20307 = 131847'>0x20307</td>
 <td>MonochromeFilterEffect</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td><span class=s>0 = None
   <br>1 = Yellow
   <br>2 = Orange
@@ -1499,38 +1499,38 @@ below by a decimal appended to the tag ID (.0, .1 or .2).</p>
 <tr class=b>
 <td title='0x20308 = 131848'>0x20308</td>
 <td>UnsharpMaskStrength</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x20309 = 131849'>0x20309</td>
 <td>UnsharpMaskFineness</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x2030a = 131850'>0x2030a</td>
 <td>UnsharpMaskThreshold</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x2030b = 131851'>0x2030b</td>
 <td>ShadowAdj</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x2030c = 131852'>0x2030c</td>
 <td>HighlightAdj</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x20310 = 131856'>0x20310</td>
 <td>SharpnessAdj</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td><span class=s>0 = Sharpness
   <br>1 = Unsharp Mask</span></td></tr>
 <tr class=b>
 <td title='0x20310.0 = 131856.0'>0x20310.0</td>
 <td>SharpnessAdjOn</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td><table class=cols><tr>
   <td>0 = No</td><td>&nbsp;&nbsp;</td>
   <td>1 = Yes</td></tr></table>
@@ -1538,7 +1538,7 @@ below by a decimal appended to the tag ID (.0, .1 or .2).</p>
 <tr>
 <td title='0x20311 = 131857'>0x20311</td>
 <td>SharpnessStrength</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x20400 = 132096'>0x20400</td>
@@ -1548,7 +1548,7 @@ below by a decimal appended to the tag ID (.0, .1 or .2).</p>
 <tr>
 <td title='0x20400.1 = 132096.1'>0x20400.1</td>
 <td>ToneCurveOriginal</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td><table class=cols><tr>
   <td>0 = No</td><td>&nbsp;&nbsp;</td>
   <td>1 = Yes</td></tr></table>
@@ -1556,24 +1556,24 @@ below by a decimal appended to the tag ID (.0, .1 or .2).</p>
 <tr class=b>
 <td title='0x20410 = 132112'>0x20410</td>
 <td>ToneCurveBrightness</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x20411 = 132113'>0x20411</td>
 <td>ToneCurveContrast</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x20500 = 132352'>0x20500</td>
 <td>AutoLightingOptimizer</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td><span class=s>0 = Low
   <br>1 = Standard
   <br>2 = Strong</span></td></tr>
 <tr>
 <td title='0x20500.0 = 132352.0'>0x20500.0</td>
 <td>AutoLightingOptimizerOn</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td><span class=s><span class=n>(ignored if gamma is linear)</span></span><table class=cols><tr>
   <td>0 = No</td><td>&nbsp;&nbsp;</td>
   <td>1 = Yes</td></tr></table>
@@ -1581,27 +1581,27 @@ below by a decimal appended to the tag ID (.0, .1 or .2).</p>
 <tr class=b>
 <td title='0x20600 = 132608'>0x20600</td>
 <td>LuminanceNoiseReduction</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x20601 = 132609'>0x20601</td>
 <td>ChrominanceNoiseReduction</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x20701 = 132865'>0x20701</td>
 <td>ShootingDistance</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td><span class=s><span class=n>(100% = infinity)</span></span></td></tr>
 <tr>
 <td title='0x20702 = 132866'>0x20702</td>
 <td>PeripheralIllumination</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x20702.0 = 132866.0'>0x20702.0</td>
 <td>PeripheralIlluminationOn</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td><table class=cols><tr>
   <td>0 = No</td><td>&nbsp;&nbsp;</td>
   <td>1 = Yes</td></tr></table>
@@ -1609,12 +1609,12 @@ below by a decimal appended to the tag ID (.0, .1 or .2).</p>
 <tr>
 <td title='0x20703 = 132867'>0x20703</td>
 <td>ChromaticAberration</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x20703.0 = 132867.0'>0x20703.0</td>
 <td>ChromaticAberrationOn</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td><table class=cols><tr>
   <td>0 = No</td><td>&nbsp;&nbsp;</td>
   <td>1 = Yes</td></tr></table>
@@ -1622,7 +1622,7 @@ below by a decimal appended to the tag ID (.0, .1 or .2).</p>
 <tr>
 <td title='0x20704 = 132868'>0x20704</td>
 <td>ColorBlurOn</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td><table class=cols><tr>
   <td>0 = No</td><td>&nbsp;&nbsp;</td>
   <td>1 = Yes</td></tr></table>
@@ -1630,12 +1630,12 @@ below by a decimal appended to the tag ID (.0, .1 or .2).</p>
 <tr class=b>
 <td title='0x20705 = 132869'>0x20705</td>
 <td>DistortionCorrection</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x20705.0 = 132869.0'>0x20705.0</td>
 <td>DistortionCorrectionOn</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td><table class=cols><tr>
   <td>0 = No</td><td>&nbsp;&nbsp;</td>
   <td>1 = Yes</td></tr></table>
@@ -1643,12 +1643,12 @@ below by a decimal appended to the tag ID (.0, .1 or .2).</p>
 <tr class=b>
 <td title='0x20706 = 132870'>0x20706</td>
 <td>DLOSetting</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x20706.0 = 132870.0'>0x20706.0</td>
 <td>DLOOn</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td><table class=cols><tr>
   <td>0 = No</td><td>&nbsp;&nbsp;</td>
   <td>1 = Yes</td></tr></table>
@@ -1656,17 +1656,17 @@ below by a decimal appended to the tag ID (.0, .1 or .2).</p>
 <tr class=b>
 <td title='0x20707 = 132871'>0x20707</td>
 <td>ChromaticAberrationRed</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x20708 = 132872'>0x20708</td>
 <td>ChromaticAberrationBlue</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x20709 = 132873'>0x20709</td>
 <td>DistortionEffect</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td><span class=s>0 = Shot Settings
   <br>1 = Emphasize Linearity
   <br>2 = Emphasize Distance
@@ -1675,52 +1675,52 @@ below by a decimal appended to the tag ID (.0, .1 or .2).</p>
 <tr>
 <td title='0x20900 = 133376'>0x20900</td>
 <td>ColorHue</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x20901 = 133377'>0x20901</td>
 <td>SaturationAdj</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x20910 = 133392'>0x20910</td>
 <td>RedHSL</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x20911 = 133393'>0x20911</td>
 <td>OrangeHSL</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x20912 = 133394'>0x20912</td>
 <td>GreenHSL</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x20913 = 133395'>0x20913</td>
 <td>AquaHSL</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x20914 = 133396'>0x20914</td>
 <td>BlueHSL</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x20915 = 133397'>0x20915</td>
 <td>BlueHSL</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x20916 = 133398'>0x20916</td>
 <td>PurpleHSL</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x20917 = 133399'>0x20917</td>
 <td>MagentaHSL</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x20a00 = 133632'>0x20a00</td>
@@ -1730,7 +1730,7 @@ below by a decimal appended to the tag ID (.0, .1 or .2).</p>
 <tr class=b>
 <td title='0x30101 = 196865'>0x30101</td>
 <td>CropAspectRatio</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td><table class=cols><tr>
   <td>0 = Free
   <br>1 = Custom
@@ -1747,7 +1747,7 @@ below by a decimal appended to the tag ID (.0, .1 or .2).</p>
 <tr>
 <td title='0x30102 = 196866'>0x30102</td>
 <td>CropAspectRatioCustom</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0xf0100 = 983296'>0xf0100</td>
@@ -1757,7 +1757,7 @@ below by a decimal appended to the tag ID (.0, .1 or .2).</p>
 <tr>
 <td title='0xf0500 = 984320'>0xf0500</td>
 <td>CustomPictureStyleData</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0xf0510 = 984336'>0xf0510</td>
@@ -1772,7 +1772,7 @@ below by a decimal appended to the tag ID (.0, .1 or .2).</p>
 <tr class=b>
 <td title='0xf0512 = 984338'>0xf0512</td>
 <td>LensFocalLength</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -1992,7 +1992,7 @@ below by a decimal appended to the tag ID (.0, .1 or .2).</p>
 <tr>
 <td class=r title='2 = 0x2'>2</td>
 <td>StampToolCount</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -2005,7 +2005,7 @@ below by a decimal appended to the tag ID (.0, .1 or .2).</p>
 <tr>
 <td class=r title='2 = 0x2'>2</td>
 <td>DustDeleteApplied</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><table class=cols><tr>
   <td>0 = No</td><td>&nbsp;&nbsp;</td>
   <td>1 = Yes</td></tr></table>

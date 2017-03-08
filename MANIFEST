@@ -96,6 +96,7 @@ html/TagNames/MPEG.html
 html/TagNames/MPF.html
 html/TagNames/MWG.html
 html/TagNames/MXF.html
+html/TagNames/MacOS.html
 html/TagNames/Matroska.html
 html/TagNames/Microsoft.html
 html/TagNames/Minolta.html
@@ -304,7 +305,7 @@ lib/Image/ExifTool/MPEG.pm
 lib/Image/ExifTool/MPF.pm
 lib/Image/ExifTool/MWG.pm
 lib/Image/ExifTool/MXF.pm
-lib/Image/ExifTool/MacOSX.pm
+lib/Image/ExifTool/MacOS.pm
 lib/Image/ExifTool/MakerNotes.pm
 lib/Image/ExifTool/Matroska.pm
 lib/Image/ExifTool/Microsoft.pm

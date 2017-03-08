@@ -45,7 +45,7 @@
   <br>FPXR
   <br>MPF
   <br>PreviewImage</td>
-<td class=c>-<br>-<br>-<br>N</td>
+<td class=c>-<br>-<br>-<br>no</td>
 <td>--&gt; <a href='ICC_Profile.html'>ICC_Profile Tags</a>
   <br>--&gt; <a href='FlashPix.html'>FlashPix Tags</a>
   <br>--&gt; <a href='MPF.html'>MPF Tags</a>
@@ -55,7 +55,7 @@
 <td>Meta
   <br>Stim
   <br>PreviewImage</td>
-<td class=c>-<br>-<br>N</td>
+<td class=c>-<br>-<br>no</td>
 <td>--&gt; <a href='Kodak.html#Meta'>Kodak Meta Tags</a>
   <br>--&gt; <a href='Stim.html'>Stim Tags</a>
   <br><span class=n>(Samsung/HP preview image)</span></td></tr>
@@ -64,7 +64,7 @@
 <td>Scalado
   <br>FPXR
   <br>PreviewImage</td>
-<td class=c>-<br>-<br>N</td>
+<td class=c>-<br>-<br>no</td>
 <td>--&gt; <a href='Scalado.html'>Scalado Tags</a>
   <br>--&gt; <a href='FlashPix.html'>FlashPix Tags</a>
   <br><span class=n>(continued from APP3)</span></td></tr>
@@ -72,7 +72,7 @@
 <td>'APP5'</td>
 <td>RMETA
   <br>PreviewImage</td>
-<td class=c>-<br>N</td>
+<td class=c>-<br>no</td>
 <td>--&gt; <a href='Ricoh.html#RMETA'>Ricoh RMETA Tags</a>
   <br><span class=n>(continued from APP4)</span></td></tr>
 <tr>
@@ -104,7 +104,7 @@
 <tr>
 <td>'APP10'</td>
 <td>Comment</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s><span class=n>(PhotoStudio Unicode comment)</span></span></td></tr>
 <tr class=b>
 <td>'APP11'</td>
@@ -128,7 +128,7 @@
 <tr>
 <td>'APP14'</td>
 <td>Adobe</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td>--&gt; <a href='JPEG.html#Adobe'>JPEG Adobe Tags</a></td></tr>
 <tr class=b>
 <td>'APP15'</td>
@@ -138,12 +138,12 @@
 <tr>
 <td>'COM'</td>
 <td>Comment</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'DQT'</td>
 <td>DefineQuantizationTable</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s><span class=n>(used to calculate the Extra JPEGDigest tag value)</span></span></td></tr>
 <tr>
 <td>'SOF'</td>
@@ -159,7 +159,7 @@
   <br>MIE
   <br>Samsung
   <br>PreviewImage</td>
-<td class=c>-<br>-<br>-<br>-<br>-<br>-<br>Y</td>
+<td class=c>-<br>-<br>-<br>-<br>-<br>-<br>yes</td>
 <td>--&gt; <a href='AFCP.html'>AFCP Tags</a>
   <br>--&gt; <a href='CanonVRD.html'>CanonVRD Tags</a>
   <br>--&gt; <a href='FotoStation.html'>FotoStation Tags</a>
@@ -178,7 +178,7 @@
 <tr>
 <td class=r title='0 = 0x0'>0</td>
 <td>InterleavedField</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>0 = Not Interleaved
   <br>1 = Odd
   <br>2 = Even</span></td></tr>
@@ -195,7 +195,7 @@ images).</p>
 <tr>
 <td>'Rev'</td>
 <td>OcadRevision</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -226,64 +226,64 @@ the official specification.</p>
 <tr>
 <td class=r title='0 = 0x0'>0</td>
 <td>NITFVersion</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='2 = 0x2'>2</td>
 <td>ImageFormat</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>&#39;B&#39; = IMode B</span></td></tr>
 <tr>
 <td class=r title='3 = 0x3'>3</td>
 <td>BlocksPerRow</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='5 = 0x5'>5</td>
 <td>BlocksPerColumn</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='7 = 0x7'>7</td>
 <td>ImageColor</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>0 = Monochrome</span></td></tr>
 <tr class=b>
 <td class=r title='8 = 0x8'>8</td>
 <td>BitDepth</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='9 = 0x9'>9</td>
 <td>ImageClass</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>0 = General Purpose
   <br>4 = Tactical Imagery</span></td></tr>
 <tr class=b>
 <td class=r title='10 = 0xa'>10</td>
 <td>JPEGProcess</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>1 = Baseline sequential DCT, Huffman coding, 8-bit samples
   <br>4 = Extended sequential DCT, Huffman coding, 12-bit samples</span></td></tr>
 <tr>
 <td class=r title='11 = 0xb'>11</td>
 <td>Quality</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='12 = 0xc'>12</td>
 <td>StreamColor</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>0 = Monochrome</span></td></tr>
 <tr>
 <td class=r title='13 = 0xd'>13</td>
 <td>StreamBitDepth</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='14 = 0xe'>14</td>
 <td>Flags</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -300,12 +300,12 @@ specification.</p>
 <tr>
 <td class=r title='0 = 0x0'>0</td>
 <td>SPIFFVersion</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='2 = 0x2'>2</td>
 <td>ProfileID</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>0 = Not Specified
   <br>1 = Continuous-tone Base
   <br>2 = Continuous-tone Progressive
@@ -314,23 +314,23 @@ specification.</p>
 <tr>
 <td class=r title='3 = 0x3'>3</td>
 <td>ColorComponents</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='6 = 0x6'>6</td>
 <td>ImageHeight</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s><span class=n>(at index 4 in specification, but there are 2 extra bytes here in my only
 SPIFF sample, version 1.2)</span></span></td></tr>
 <tr>
 <td class=r title='10 = 0xa'>10</td>
 <td>ImageWidth</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='14 = 0xe'>14</td>
 <td>ColorSpace</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><table class=cols><tr>
   <td>0 = Bi-level
   <br>1 = YCbCr, ITU-R BT 709, video
@@ -348,12 +348,12 @@ SPIFF sample, version 1.2)</span></span></td></tr>
 <tr>
 <td class=r title='15 = 0xf'>15</td>
 <td>BitsPerSample</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='16 = 0x10'>16</td>
 <td>Compression</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><table class=cols><tr>
   <td>0 = Uncompressed, interleaved, 8 bits per sample
   <br>1 = Modified Huffman
@@ -365,19 +365,19 @@ SPIFF sample, version 1.2)</span></span></td></tr>
 <tr>
 <td class=r title='17 = 0x11'>17</td>
 <td>ResolutionUnit</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>0 = None
   <br>1 = inches
   <br>2 = cm</span></td></tr>
 <tr class=b>
 <td class=r title='18 = 0x12'>18</td>
 <td>YResolution</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='22 = 0x16'>22</td>
 <td>XResolution</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -390,39 +390,39 @@ SPIFF sample, version 1.2)</span></span></td></tr>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
 <td>Album</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>Caption</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>Date</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>Keywords</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>Name</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>People</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>Places</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>Tool_Name</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>Tool_Version</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -436,42 +436,42 @@ SPIFF sample, version 1.2)</span></span></td></tr>
 <tr>
 <td>'RatioImage'</td>
 <td>RatioImage</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s><span class=n>(the embedded JPEG-compressed ratio image)</span></span></td></tr>
 <tr class=b>
 <td>'alp'</td>
 <td>Alpha</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'bet'</td>
 <td>Beta</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'cor'</td>
 <td>CorrectionMethod</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'ln0'</td>
 <td>Ln0</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'ln1'</td>
 <td>Ln1</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'s2n'</td>
 <td>S2n</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'ver'</td>
 <td>JPEG-HDRVersion</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -487,7 +487,7 @@ has an idea about what this means, please let me know.</p>
 <tr>
 <td class=r title='0 = 0x0'>0</td>
 <td>AdobeCMType</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -504,23 +504,23 @@ because it may affect the appearance of the image.</p>
 <tr>
 <td class=r title='0 = 0x0'>0</td>
 <td>DCTEncodeVersion</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='1 = 0x1'>1</td>
 <td>APP14Flags0</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>0x0 = (none)
   <br>Bit 15 = Encoded with Blend=1 downsampling</span></td></tr>
 <tr>
 <td class=r title='2 = 0x2'>2</td>
 <td>APP14Flags1</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>0x0 = (none)</span></td></tr>
 <tr class=b>
 <td class=r title='3 = 0x3'>3</td>
 <td>ColorTransform</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>0 = Unknown (RGB or CMYK)
   <br>1 = YCbCr
   <br>2 = YCCK</span></td></tr>
@@ -536,7 +536,7 @@ because it may affect the appearance of the image.</p>
 <tr>
 <td>'Q'</td>
 <td>Quality</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -549,15 +549,15 @@ because it may affect the appearance of the image.</p>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
 <td>BitsPerSample</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>ColorComponents</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>EncodingProcess</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>0x0 = Baseline DCT, Huffman coding
   <br>0x1 = Extended sequential DCT, Huffman coding
   <br>0x2 = Progressive DCT, Huffman coding
@@ -573,15 +573,15 @@ because it may affect the appearance of the image.</p>
   <br>0xf = Lossless, differential arithmetic coding</span></td></tr>
 <tr class=b>
 <td>ImageHeight</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>ImageWidth</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>YCbCrSubSampling</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s><span class=n>(calculated from components table)</span></span><table class=cols><tr>
   <td>&#39;1 1&#39; = YCbCr4:4:4 (1 1)
   <br>&#39;1 2&#39; = YCbCr4:4:0 (1 2)

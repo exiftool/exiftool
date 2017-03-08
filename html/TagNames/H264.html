@@ -16,11 +16,11 @@ stored in this stream.</p>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
 <td>ImageHeight</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>ImageWidth</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>MDPM</td>
@@ -45,12 +45,12 @@ which case subsequent occurrences are extracted as sub-documents).</p>
 <tr>
 <td title='0x0013 = 19'>0x0013</td>
 <td>TimeCode</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s><span class=n>(hours:minutes:seconds:frames)</span></span></td></tr>
 <tr class=b>
 <td title='0x0018 = 24'>0x0018</td>
 <td>DateTimeOriginal</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s><span class=n>(combined with tag 0x19)</span></span></td></tr>
 <tr>
 <td title='0x0070 = 112'>0x0070</td>
@@ -70,17 +70,17 @@ which case subsequent occurrences are extracted as sub-documents).</p>
 <tr class=b>
 <td title='0x00a0 = 160'>0x00a0</td>
 <td>ExposureTime</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x00a1 = 161'>0x00a1</td>
 <td>FNumber</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x00a2 = 162'>0x00a2</td>
 <td>ExposureProgram</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><table class=cols><tr>
   <td>0 = Not Defined
   <br>1 = Manual
@@ -95,44 +95,44 @@ which case subsequent occurrences are extracted as sub-documents).</p>
 <tr>
 <td title='0x00a3 = 163'>0x00a3</td>
 <td>BrightnessValue</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x00a4 = 164'>0x00a4</td>
 <td>ExposureCompensation</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x00a5 = 165'>0x00a5</td>
 <td>MaxApertureValue</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x00a6 = 166'>0x00a6</td>
 <td>Flash</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>--&gt; <a href='EXIF.html#Flash'>EXIF Flash Values</a></td></tr>
 <tr>
 <td title='0x00a7 = 167'>0x00a7</td>
 <td>CustomRendered</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>0 = Normal
   <br>1 = Custom</span></td></tr>
 <tr class=b>
 <td title='0x00a8 = 168'>0x00a8</td>
 <td>WhiteBalance</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>0 = Auto
   <br>1 = Manual</span></td></tr>
 <tr>
 <td title='0x00a9 = 169'>0x00a9</td>
 <td>FocalLengthIn35mmFormat</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x00aa = 170'>0x00aa</td>
 <td>SceneCaptureType</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>0 = Standard
   <br>1 = Landscape
   <br>2 = Portrait
@@ -140,101 +140,101 @@ which case subsequent occurrences are extracted as sub-documents).</p>
 <tr>
 <td title='0x00b0 = 176'>0x00b0</td>
 <td>GPSVersionID</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x00b1 = 177'>0x00b1</td>
 <td>GPSLatitudeRef</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>&#39;N&#39; = North
   <br>&#39;S&#39; = South</span></td></tr>
 <tr>
 <td title='0x00b2 = 178'>0x00b2</td>
 <td>GPSLatitude</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s><span class=n>(combined with tags 0xb3 and 0xb4)</span></span></td></tr>
 <tr class=b>
 <td title='0x00b5 = 181'>0x00b5</td>
 <td>GPSLongitudeRef</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>&#39;E&#39; = East
   <br>&#39;W&#39; = West</span></td></tr>
 <tr>
 <td title='0x00b6 = 182'>0x00b6</td>
 <td>GPSLongitude</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s><span class=n>(combined with tags 0xb7 and 0xb8)</span></span></td></tr>
 <tr class=b>
 <td title='0x00b9 = 185'>0x00b9</td>
 <td>GPSAltitudeRef</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>0 = Above Sea Level
   <br>1 = Below Sea Level</span></td></tr>
 <tr>
 <td title='0x00ba = 186'>0x00ba</td>
 <td>GPSAltitude</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x00bb = 187'>0x00bb</td>
 <td>GPSTimeStamp</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s><span class=n>(combined with tags 0xbc and 0xbd)</span></span></td></tr>
 <tr>
 <td title='0x00be = 190'>0x00be</td>
 <td>GPSStatus</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>&#39;A&#39; = Measurement Active
   <br>&#39;V&#39; = Measurement Void</span></td></tr>
 <tr class=b>
 <td title='0x00bf = 191'>0x00bf</td>
 <td>GPSMeasureMode</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>2 = 2-Dimensional Measurement
   <br>3 = 3-Dimensional Measurement</span></td></tr>
 <tr>
 <td title='0x00c0 = 192'>0x00c0</td>
 <td>GPSDOP</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x00c1 = 193'>0x00c1</td>
 <td>GPSSpeedRef</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>&#39;K&#39; = km/h
   <br>&#39;M&#39; = mph
   <br>&#39;N&#39; = knots</span></td></tr>
 <tr>
 <td title='0x00c2 = 194'>0x00c2</td>
 <td>GPSSpeed</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x00c3 = 195'>0x00c3</td>
 <td>GPSTrackRef</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>&#39;M&#39; = Magnetic North
   <br>&#39;T&#39; = True North</span></td></tr>
 <tr>
 <td title='0x00c4 = 196'>0x00c4</td>
 <td>GPSTrack</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x00c5 = 197'>0x00c5</td>
 <td>GPSImgDirectionRef</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>&#39;M&#39; = Magnetic North
   <br>&#39;T&#39; = True North</span></td></tr>
 <tr>
 <td title='0x00c6 = 198'>0x00c6</td>
 <td>GPSImgDirection</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x00c7 = 199'>0x00c7</td>
 <td>GPSMapDatum</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s><span class=n>(combined with tag 0xc8)</span></span></td></tr>
 <tr>
 <td title='0x00e0 = 224'>0x00e0</td>
@@ -250,7 +250,7 @@ which case subsequent occurrences are extracted as sub-documents).</p>
 <tr>
 <td title='0x00e4 = 228'>0x00e4</td>
 <td>Model</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s><span class=n>(Sony cameras only, combined with tags 0xe5 and 0xe6)</span></span></td></tr>
 <tr class=b>
 <td title='0x00ee = 238'>0x00ee</td>
@@ -269,18 +269,18 @@ which case subsequent occurrences are extracted as sub-documents).</p>
 <tr>
 <td class=r title='0 = 0x0'>0</td>
 <td>ApertureSetting</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>0xfe = Closed
   <br>0xff = Auto</span></td></tr>
 <tr class=b>
 <td class=r title='1 = 0x1'>1</td>
 <td>Gain</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>[Mask 0x0f]</span></td></tr>
 <tr>
 <td class=r title='1 = 0x1'>1.1</td>
 <td>ExposureProgram</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>[Mask 0xf0]
   <br>0x0 = Program AE
   <br>0x10 = Gain
@@ -290,7 +290,7 @@ which case subsequent occurrences are extracted as sub-documents).</p>
 <tr class=b>
 <td class=r title='2 = 0x2'>2.1</td>
 <td>WhiteBalance</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>[Mask 0xe0]
   <br>0x0 = Auto
   <br>0x20 = Hold
@@ -299,7 +299,7 @@ which case subsequent occurrences are extracted as sub-documents).</p>
 <tr>
 <td class=r title='3 = 0x3'>3</td>
 <td>Focus</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -312,7 +312,7 @@ which case subsequent occurrences are extracted as sub-documents).</p>
 <tr>
 <td class=r title='1 = 0x1'>1</td>
 <td>ImageStabilization</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>0x0 = Off
   <br>0x3f = On (0x3f)
   <br>0xbf = Off (0xbf)
@@ -328,7 +328,7 @@ which case subsequent occurrences are extracted as sub-documents).</p>
 <tr>
 <td class=r title='1 = 0x1'>1.1</td>
 <td>ExposureTime</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>[Mask 0x7fff]</span></td></tr>
 </table></td></tr></table></blockquote>
 
@@ -341,7 +341,7 @@ which case subsequent occurrences are extracted as sub-documents).</p>
 <tr>
 <td class=r title='0 = 0x0'>0</td>
 <td>Make</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>0x103 = Panasonic
   <br>0x108 = Sony
   <br>0x1011 = Canon
@@ -358,7 +358,7 @@ which case subsequent occurrences are extracted as sub-documents).</p>
 <tr>
 <td class=r title='0 = 0x0'>0</td>
 <td>RecordingMode</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>2 = XP+
   <br>4 = SP
   <br>5 = LP
@@ -376,12 +376,12 @@ which case subsequent occurrences are extracted as sub-documents).</p>
 <tr>
 <td class=r title='0 = 0x0'>0</td>
 <td>CaptureFrameRate</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='1 = 0x1'>1</td>
 <td>VideoFrameRate</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 

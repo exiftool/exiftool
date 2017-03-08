@@ -57,7 +57,7 @@ sub-documents, but the Duration is calculated for the full video.</p>
 <tr>
 <td>'IDIT'</td>
 <td>DateTimeOriginal</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'JUNK'</td>
@@ -67,7 +67,7 @@ sub-documents, but the Duration is calculated for the full video.</p>
   <br>PentaxJunk
   <br>PentaxJunk2
   <br>TextJunk</td>
-<td class=c>-<br>-<br>-<br>-<br>-<br>N</td>
+<td class=c>-<br>-<br>-<br>-<br>-<br>no</td>
 <td>--&gt; <a href='Olympus.html#AVI'>Olympus AVI Tags</a>
   <br>--&gt; <a href='EXIF.html'>EXIF Tags</a>
   <br>--&gt; <a href='Ricoh.html#AVI'>Ricoh AVI Tags</a>
@@ -76,7 +76,7 @@ sub-documents, but the Duration is calculated for the full video.</p>
 <tr>
 <td>'JUNQ'</td>
 <td>OldXMP</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'LIST_INFO'</td>
@@ -138,7 +138,7 @@ sub-documents, but the Duration is calculated for the full video.</p>
 <tr>
 <td>'afsp'</td>
 <td>Afsp</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'bext'</td>
@@ -148,12 +148,12 @@ sub-documents, but the Duration is calculated for the full video.</p>
 <tr>
 <td>'cue '</td>
 <td>CuePoints</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'fact'</td>
 <td>NumberOfSamples</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'fmt '</td>
@@ -177,14 +177,14 @@ sub-documents, but the Duration is calculated for the full video.</p>
 <tr>
 <td class=r title='0 = 0x0'>0</td>
 <td>AlphaPreprocessing</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>[Mask 0x03]
   <br>0x0 = none
   <br>0x1 = Level Reduction</span></td></tr>
 <tr class=b>
 <td class=r title='0 = 0x0'>0.1</td>
 <td>AlphaFiltering</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>[Mask 0x03]
   <br>0x0 = none
   <br>0x1 = Horizontal
@@ -193,7 +193,7 @@ sub-documents, but the Duration is calculated for the full video.</p>
 <tr>
 <td class=r title='0 = 0x0'>0.2</td>
 <td>AlphaCompression</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>[Mask 0x03]
   <br>0x0 = none
   <br>0x1 = Lossless</span></td></tr>
@@ -209,12 +209,12 @@ sub-documents, but the Duration is calculated for the full video.</p>
 <tr>
 <td class=r title='0 = 0x0'>0</td>
 <td>BackgroundColor</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='4 = 0x4'>4</td>
 <td>AnimationLoopCount</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -228,7 +228,7 @@ sub-documents, but the Duration is calculated for the full video.</p>
 <tr>
 <td class=r title='12 = 0xc'>12</td>
 <td>Duration</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s><span class=n>(extracted as the sum of durations of all animation frames)</span></span></td></tr>
 </table></td></tr></table></blockquote>
 
@@ -241,27 +241,27 @@ sub-documents, but the Duration is calculated for the full video.</p>
 <tr>
 <td title='0x0000 = 0'>0x0000</td>
 <td>CodePage</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x0001 = 1'>0x0001</td>
 <td>CountryCode</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0002 = 2'>0x0002</td>
 <td>LanguageCode</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x0003 = 3'>0x0003</td>
 <td>Dialect</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'Format'</td>
 <td>int16u</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -278,434 +278,434 @@ by some software.</p>
 <tr>
 <td>'AGES'</td>
 <td>Rated</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'CMNT'</td>
 <td>Comment</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'CODE'</td>
 <td>EncodedBy</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'COMM'</td>
 <td>Comments</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'DIRC'</td>
 <td>Directory</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'DISP'</td>
 <td>SoundSchemeTitle</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'DTIM'</td>
 <td>DateTimeOriginal</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'GENR'</td>
 <td>Genre</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'IARL'</td>
 <td><u>ArchivalLocation</u></td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'IART'</td>
 <td><u>Artist</u></td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'IAS1'</td>
 <td>FirstLanguage</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'IAS2'</td>
 <td>SecondLanguage</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'IAS3'</td>
 <td>ThirdLanguage</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'IAS4'</td>
 <td>FourthLanguage</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'IAS5'</td>
 <td>FifthLanguage</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'IAS6'</td>
 <td>SixthLanguage</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'IAS7'</td>
 <td>SeventhLanguage</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'IAS8'</td>
 <td>EighthLanguage</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'IAS9'</td>
 <td>NinthLanguage</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'IBSU'</td>
 <td>BaseURL</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'ICAS'</td>
 <td>DefaultAudioStream</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'ICDS'</td>
 <td>CostumeDesigner</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'ICMS'</td>
 <td><u>Commissioned</u></td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'ICMT'</td>
 <td><u>Comment</u></td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'ICNM'</td>
 <td>Cinematographer</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'ICNT'</td>
 <td>Country</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'ICOP'</td>
 <td><u>Copyright</u></td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'ICRD'</td>
 <td><u>DateCreated</u></td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'ICRP'</td>
 <td><u>Cropped</u></td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'IDIM'</td>
 <td><u>Dimensions</u></td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'IDIT'</td>
 <td>DateTimeOriginal</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'IDPI'</td>
 <td><u>DotsPerInch</u></td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'IDST'</td>
 <td>DistributedBy</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'IEDT'</td>
 <td>EditedBy</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'IENC'</td>
 <td>EncodedBy</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'IENG'</td>
 <td><u>Engineer</u></td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'IGNR'</td>
 <td><u>Genre</u></td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'IKEY'</td>
 <td><u>Keywords</u></td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'ILGT'</td>
 <td><u>Lightness</u></td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'ILGU'</td>
 <td>LogoURL</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'ILIU'</td>
 <td>LogoIconURL</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'ILNG'</td>
 <td>Language</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'IMBI'</td>
 <td>MoreInfoBannerImage</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'IMBU'</td>
 <td>MoreInfoBannerURL</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'IMED'</td>
 <td><u>Medium</u></td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'IMIT'</td>
 <td>MoreInfoText</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'IMIU'</td>
 <td>MoreInfoURL</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'IMUS'</td>
 <td>MusicBy</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'INAM'</td>
 <td><u>Title</u></td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'IPDS'</td>
 <td>ProductionDesigner</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'IPLT'</td>
 <td><u>NumColors</u></td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'IPRD'</td>
 <td><u>Product</u></td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'IPRO'</td>
 <td>ProducedBy</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'IRIP'</td>
 <td>RippedBy</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'IRTD'</td>
 <td>Rating</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'ISBJ'</td>
 <td><u>Subject</u></td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'ISFT'</td>
 <td><u>Software</u></td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'ISGN'</td>
 <td>SecondaryGenre</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'ISHP'</td>
 <td><u>Sharpness</u></td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'ISMP'</td>
 <td>TimeCode</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'ISRC'</td>
 <td><u>Source</u></td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'ISRF'</td>
 <td><u>SourceForm</u></td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'ISTD'</td>
 <td>ProductionStudio</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'ISTR'</td>
 <td>Starring</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'ITCH'</td>
 <td><u>Technician</u></td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'IWMU'</td>
 <td>WatermarkURL</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'IWRI'</td>
 <td>WrittenBy</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'LANG'</td>
 <td>Language</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'LOCA'</td>
 <td>Location</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'PRT1'</td>
 <td>Part</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'PRT2'</td>
 <td>NumberOfParts</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'RATE'</td>
 <td>Rate</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'STAR'</td>
 <td>Starring</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'STAT'</td>
 <td>Statistics</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>[Value 3]
   <br>0 = Bad
   <br>1 = OK</span></td></tr>
 <tr>
 <td>'TAPE'</td>
 <td>TapeName</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'TCDO'</td>
 <td>EndTimecode</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'TCOD'</td>
 <td>StartTimecode</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'TITL'</td>
 <td>Title</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'TLEN'</td>
 <td>Length</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'TORG'</td>
 <td>Organization</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'TRCK'</td>
 <td>TrackNumber</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'TURL'</td>
 <td>URL</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'TVER'</td>
 <td>Version</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'VMAJ'</td>
 <td>VegasVersionMajor</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'VMIN'</td>
 <td>VegasVersionMinor</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'YEAR'</td>
 <td>Year</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -728,37 +728,37 @@ by some software.</p>
 <tr>
 <td>'ecor'</td>
 <td>Make</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'emdl'</td>
 <td>Model</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'emnt'</td>
 <td>MakerNotes</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'erel'</td>
 <td>RelatedImageFile</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'etim'</td>
 <td>TimeCreated</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'eucm'</td>
 <td>UserComment</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'ever'</td>
 <td>ExifVersion</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -771,12 +771,12 @@ by some software.</p>
 <tr>
 <td>'IDIT'</td>
 <td>DateTimeOriginal</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'ISMP'</td>
 <td>TimeCode</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'LIST_odml'</td>
@@ -817,7 +817,7 @@ by some software.</p>
 <tr>
 <td class=r title='0 = 0x0'>0</td>
 <td>TotalFrameCount</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -847,7 +847,7 @@ by some software.</p>
 <tr class=b>
 <td>'strn'</td>
 <td>StreamName</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -872,12 +872,12 @@ cameras.  The first 4 characters of the data are used as the Tag ID below.</p>
 <tr>
 <td>'Zora'</td>
 <td>VendorName</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'unknown'</td>
 <td>UnknownData</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -890,27 +890,27 @@ cameras.  The first 4 characters of the data are used as the Tag ID below.</p>
 <tr>
 <td class=r title='0 = 0x0'>0</td>
 <td>Encoding</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>--&gt; <a href='RIFF.html#AudioEncoding'>RIFF AudioEncoding Values</a></td></tr>
 <tr class=b>
 <td class=r title='1 = 0x1'>1</td>
 <td>NumChannels</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='2 = 0x2'>2</td>
 <td>SampleRate</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='4 = 0x4'>4</td>
 <td>AvgBytesPerSec</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='7 = 0x7'>7</td>
 <td>BitsPerSample</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -1174,7 +1174,7 @@ cameras.  The first 4 characters of the data are used as the Tag ID below.</p>
 <tr>
 <td class=r title='0 = 0x0'>0</td>
 <td>StreamType</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>&#39;auds&#39; = Audio
   <br>&#39;iavs&#39; = Interleaved Audio+Video
   <br>&#39;mids&#39; = MIDI
@@ -1185,31 +1185,31 @@ cameras.  The first 4 characters of the data are used as the Tag ID below.</p>
 <td>AudioCodec
   <br>VideoCodec
   <br>Codec</td>
-<td class=c>N<br>N<br>N</td>
+<td class=c>no<br>no<br>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='5 = 0x5'>5</td>
 <td>AudioSampleRate
   <br>VideoFrameRate
   <br>StreamSampleRate</td>
-<td class=c>N<br>N<br>N</td>
+<td class=c>no<br>no<br>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='8 = 0x8'>8</td>
 <td>AudioSampleCount
   <br>VideoFrameCount
   <br>StreamSampleCount</td>
-<td class=c>N<br>N<br>N</td>
+<td class=c>no<br>no<br>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='10 = 0xa'>10</td>
 <td>Quality</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='11 = 0xb'>11</td>
 <td>SampleSize</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -1222,32 +1222,32 @@ cameras.  The first 4 characters of the data are used as the Tag ID below.</p>
 <tr>
 <td class=r title='0 = 0x0'>0</td>
 <td>FrameRate</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='1 = 0x1'>1</td>
 <td>MaxDataRate</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='4 = 0x4'>4</td>
 <td>FrameCount</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='6 = 0x6'>6</td>
 <td>StreamCount</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='8 = 0x8'>8</td>
 <td>ImageWidth</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='9 = 0x9'>9</td>
 <td>ImageHeight</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -1263,7 +1263,7 @@ container specification.</p>
 <tr>
 <td class=r title='0 = 0x0'>0</td>
 <td>VP8Version</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>[Mask 0x0e]
   <br>0x0 = 0 (bicubic reconstruction, normal loop)
   <br>0x1 = 1 (bilinear reconstruction, simple loop)
@@ -1272,22 +1272,22 @@ container specification.</p>
 <tr class=b>
 <td class=r title='6 = 0x6'>6</td>
 <td>ImageWidth</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>[Mask 0x3fff]</span></td></tr>
 <tr>
 <td class=r title='6 = 0x6'>6.1</td>
 <td>HorizontalScale</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>[Mask 0xc000]</span></td></tr>
 <tr class=b>
 <td class=r title='8 = 0x8'>8</td>
 <td>ImageHeight</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>[Mask 0x3fff]</span></td></tr>
 <tr>
 <td class=r title='8 = 0x8'>8.1</td>
 <td>VerticalScale</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>[Mask 0xc000]</span></td></tr>
 </table></td></tr></table></blockquote>
 
@@ -1301,12 +1301,12 @@ container specification.</p>
 <tr>
 <td class=r title='1 = 0x1'>1</td>
 <td>ImageWidth</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='2 = 0x2'>2</td>
 <td>ImageHeight</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -1320,12 +1320,12 @@ container specification.</p>
 <tr>
 <td class=r title='4 = 0x4'>4</td>
 <td>ImageWidth</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='6 = 0x6'>6</td>
 <td>ImageHeight</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -1340,37 +1340,37 @@ container specification.</p>
 <tr>
 <td class=r title='0 = 0x0'>0</td>
 <td>Description</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='256 = 0x100'>256</td>
 <td>Originator</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='288 = 0x120'>288</td>
 <td>OriginatorReference</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='320 = 0x140'>320</td>
 <td>DateTimeOriginal</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='338 = 0x152'>338</td>
 <td>TimeReference</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s><span class=n>(first sample count since midnight)</span></span></td></tr>
 <tr class=b>
 <td class=r title='346 = 0x15a'>346</td>
 <td>BWFVersion</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='602 = 0x25a'>602</td>
 <td>CodingHistory</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 

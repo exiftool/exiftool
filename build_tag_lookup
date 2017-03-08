@@ -2,9 +2,10 @@
 #
 # Description:  Generate tag lookup for ExifTool writer
 #
-# Syntax:       build_tag_lookup [-p]
+# Syntax:       build_tag_lookup [-p] [-v]
 #
 # Options:      -p  - preserve existing revision date in html files
+#               -v  - verbose mode
 #
 # Created:      12/31/04 - P. Harvey
 #
@@ -15,6 +16,7 @@ print "Building tag lookup...\n";
 my $file = 'lib/Image/ExifTool/TagLookup.pm';
 my $podFile = 'lib/Image/ExifTool/TagNames.pod';
 my $htmldir = 'html';
+my $verbose;
 
 BEGIN {
     # get exe directory (and change to forward slashes)
@@ -32,13 +34,27 @@ foreach (@ARGV) {
         $$builder{PRESERVE_DATE} = 1;
         print("(preserving revision dates)\n");
         next;
+    } elsif ($_ eq '-v') {
+        $verbose = 1;
+    } else {
+        die "Unknown option '$_'\n";
     }
-    die "Unknown option '$_'\n";
 }
 
 my $count = $builder->{COUNT};
 foreach (sort keys %$count) {
     printf "%5d %s\n", $$count{$_}, $_;
+}
+
+if ($verbose) {
+    printf "%5d writable pseudo tags:", scalar(@{$$builder{WRITE_PSEUDO}});
+    my $len = 999;
+    foreach (sort @{$$builder{WRITE_PSEUDO}}) {
+        $len + length() > 78 and print("\n     "), $len = 5;
+        print ' ', $_;
+        $len += length() + 1;
+    }
+    print "\n";
 }
 
 if ($builder->WriteTagLookup($file)) {

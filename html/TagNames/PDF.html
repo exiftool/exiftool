@@ -55,7 +55,7 @@ information is never actually deleted from the file.
 <tr class=b>
 <td>'_linearized'</td>
 <td>Linearized</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s><span class=n>(flag set if document is linearized for fast web display; not a real Tag ID)</span>
   <br>&#39;false&#39; = No
   <br>&#39;true&#39; = Yes</span></td></tr>
@@ -71,13 +71,13 @@ information is never actually deleted from the file.
 <tr>
 <td>'Filter'</td>
 <td>Encryption</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s><span class=n>(extracted value is actually a combination of the Filter, SubFilter, V, R and
 Length information from the Encrypt dictionary)</span></span></td></tr>
 <tr class=b>
 <td>'P'</td>
 <td>UserAccess</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><table class=cols><tr>
   <td>Bit 2 = Print
   <br>Bit 3 = Modify
@@ -171,7 +171,7 @@ when reading)</span></span></td></tr>
 <tr class=b>
 <td>'Lang'</td>
 <td>Language</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'MarkInfo'</td>
@@ -186,12 +186,12 @@ when reading)</span></span></td></tr>
 <tr>
 <td>'PageLayout'</td>
 <td>PageLayout</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'PageMode'</td>
 <td>PageMode</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'Pages'</td>
@@ -206,7 +206,7 @@ when reading)</span></span></td></tr>
 <tr>
 <td>'Version'</td>
 <td>PDFVersion</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -219,7 +219,7 @@ when reading)</span></span></td></tr>
 <tr>
 <td>'_has_xfa'</td>
 <td>HasXFA</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s><span class=n>(this tag is defined if a document contains form fields, and is true if it
 uses XML Forms Architecture; not a real Tag ID)</span>
   <br>&#39;false&#39; = No
@@ -235,7 +235,7 @@ uses XML Forms Architecture; not a real Tag ID)</span>
 <tr>
 <td>'Marked'</td>
 <td>TaggedPDF</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s><span class=n>(not a Tagged PDF if this tag is missing)</span>
   <br>&#39;false&#39; = No
   <br>&#39;true&#39; = Yes</span></td></tr>
@@ -263,7 +263,7 @@ uses XML Forms Architecture; not a real Tag ID)</span>
 <tr>
 <td>'Count'</td>
 <td>PageCount</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'Kids'</td>
@@ -396,17 +396,17 @@ PostScript documents in the AIPrivateData# and AIPDFPrivateData# streams)</span>
 <tr class=b>
 <td>'ContainerVersion'</td>
 <td>ContainerVersion</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'CreatorVersion'</td>
 <td>CreatorVersion</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'RoundTripVersion'</td>
 <td>RoundTripVersion</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -558,27 +558,27 @@ image formats.</p>
 <tr>
 <td>'ColorSpace'</td>
 <td>EmbeddedImageColorSpace</td>
-<td class=c title=' + = List'>N+</td>
+<td class=c title=' + = List'>no+</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'Filter'</td>
 <td>EmbeddedImageFilter</td>
-<td class=c title=' + = List'>N+</td>
+<td class=c title=' + = List'>no+</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'Height'</td>
 <td>EmbeddedImageHeight</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'Image_stream'</td>
 <td>EmbeddedImage</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'Width'</td>
 <td>EmbeddedImageWidth</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -615,37 +615,37 @@ image formats.</p>
 <tr>
 <td>'ContactInfo'</td>
 <td>SignerContactInfo</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'Location'</td>
 <td>SigningLocation</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'M'</td>
 <td>SigningDate</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'Name'</td>
 <td>SigningAuthority</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'Prop_AuthTime'</td>
 <td>AuthenticationTime</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'Prop_AuthType'</td>
 <td>AuthenticationType</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'Reason'</td>
 <td>SigningReason</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'Reference'</td>
@@ -676,7 +676,7 @@ image formats.</p>
 <tr>
 <td>'Action'</td>
 <td>FieldPermissions</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s><span class=n>(FieldMDP signatures only)</span>
   <br>&#39;All&#39; = Disallow changes to all form fields
   <br>&#39;Exclude&#39; = Allow changes to specified form fields
@@ -684,45 +684,45 @@ image formats.</p>
 <tr class=b>
 <td>'Annots'</td>
 <td>AnnotationUsageRights</td>
-<td class=c title=' + = List'>N+</td>
+<td class=c title=' + = List'>no+</td>
 <td><span class=s><span class=n>(possible values are Create, Delete, Modify, Copy, Import and Export;
 additional values for UR3 signatures are Online and SummaryView)</span></span></td></tr>
 <tr>
 <td>'Document'</td>
 <td>DocumentUsageRights</td>
-<td class=c title=' + = List'>N+</td>
+<td class=c title=' + = List'>no+</td>
 <td><span class=s><span class=n>(only possible value is FullSave)</span></span></td></tr>
 <tr class=b>
 <td>'EF'</td>
 <td>EmbeddedFileUsageRights</td>
-<td class=c title=' + = List'>N+</td>
+<td class=c title=' + = List'>no+</td>
 <td><span class=s><span class=n>(possible values are Create, Delete, Modify and Import)</span></span></td></tr>
 <tr>
 <td>'Fields'</td>
 <td>FormFields</td>
-<td class=c title=' + = List'>N+</td>
+<td class=c title=' + = List'>no+</td>
 <td><span class=s><span class=n>(FieldMDP signatures only)</span></span></td></tr>
 <tr class=b>
 <td>'Form'</td>
 <td>FormUsageRights</td>
-<td class=c title=' + = List'>N+</td>
+<td class=c title=' + = List'>no+</td>
 <td><span class=s><span class=n>(possible values are FillIn, Import, Export, SubmitStandalone and
 SpawnTemplate; additional values for UR3 signatures are BarcodePlaintext and
 Online)</span></span></td></tr>
 <tr>
 <td>'FormEX'</td>
 <td>FormExtraUsageRights</td>
-<td class=c title=' + = List'>N+</td>
+<td class=c title=' + = List'>no+</td>
 <td><span class=s><span class=n>(UR signatures only; only possible value is BarcodePlaintext)</span></span></td></tr>
 <tr class=b>
 <td>'Msg'</td>
 <td>UsageRightsMessage</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'P'</td>
 <td>ModificationPermissions</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s><span class=n>(1-3 for DocMDP signatures, default 2; true/false for UR3 signatures, default
 false)</span>
   <br>1 = No changes permitted
@@ -733,7 +733,7 @@ false)</span>
 <tr class=b>
 <td>'Signature'</td>
 <td>SignatureUsageRights</td>
-<td class=c title=' + = List'>N+</td>
+<td class=c title=' + = List'>no+</td>
 <td><span class=s><span class=n>(only possible value is Modify)</span></span></td></tr>
 </table></td></tr></table></blockquote>
 

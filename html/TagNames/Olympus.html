@@ -41,17 +41,17 @@ Pentax, Ricoh, Samsung, Sanyo, SeaLife, Sony, Supra and Vivitar.
 <tr>
 <td title='0x0081 = 129'>0x0081</td>
 <td>PreviewImageData</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x0088 = 136'>0x0088</td>
 <td>PreviewImageStart</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0089 = 137'>0x0089</td>
 <td>PreviewImageLength</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x0100 = 256'>0x0100</td>
@@ -238,12 +238,12 @@ with 1)</span></span></td></tr>
 <tr class=b>
 <td title='0x0f00 = 3840'>0x0f00</td>
 <td>DataDump</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0f01 = 3841'>0x0f01</td>
 <td>DataDump2</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x0f04 = 3844'>0x0f04</td>
@@ -1034,12 +1034,12 @@ any information found here will be extracted, even if the tag is not listed.</p>
 <tr>
 <td>'Resolution'</td>
 <td>Resolution</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'Type'</td>
 <td>CameraType</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>--&gt; <a href='Olympus.html#CameraType'>Olympus CameraType Values</a></td></tr>
 </table></td></tr></table></blockquote>
 
@@ -1379,7 +1379,7 @@ the Make and Model are used to identify the extender)</span>
 <tr>
 <td title='0x0204 = 516'>0x0204</td>
 <td>NDFilter</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
 <tr class=b>
@@ -1853,7 +1853,7 @@ the Make and Model are used to identify the extender)</span>
 <tr>
 <td title='0x052e = 1326'>0x052e</td>
 <td>ToneLevel</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td><span class=s>[Values 0, 1, 2, 3, 4, 5 and 6]
   <br>-31999 = Highlights
   <br>-31998 = Shadows
@@ -2652,7 +2652,7 @@ of the face detect square)</span></span></td></tr>
 <tr class=b>
 <td title='0x1306 = 4870'>0x1306</td>
 <td>CameraTemperature</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s><span class=n>(this seems to be in degrees C only for some models)</span></span></td></tr>
 <tr>
 <td title='0x1900 = 6400'>0x1900</td>
@@ -2951,7 +2951,7 @@ information remains unknown.</p>
 <tr>
 <td title='0x0601 = 1537'>0x0601</td>
 <td>YCbCrCoefficients</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s><span class=n>(stored as int16u[6], but extracted as rational32u[3])</span></span></td></tr>
 <tr class=b>
 <td title='0x0611 = 1553'>0x0611</td>
@@ -3083,27 +3083,27 @@ written by some Olympus voice recorders.</p>
 <tr>
 <td class=r title='12 = 0xc'>12</td>
 <td>Model</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='38 = 0x26'>38</td>
 <td>StartTime</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='50 = 0x32'>50</td>
 <td>EndTime</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='62 = 0x3e'>62</td>
 <td>Duration</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='798 = 0x31e'>798</td>
 <td>Comment</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -3118,32 +3118,32 @@ D540Z, D595Z, FE100, FE110, FE115, FE170 and FE200.</p>
 <tr>
 <td class=r title='0 = 0x0'>0</td>
 <td>Make</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='24 = 0x18'>24</td>
 <td>Model</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>--&gt; <a href='Olympus.html#CameraType'>Olympus CameraType Values</a></td></tr>
 <tr>
 <td class=r title='38 = 0x26'>38</td>
 <td>ExposureUnknown?</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='42 = 0x2a'>42</td>
 <td>FNumber</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='50 = 0x32'>50</td>
 <td>ExposureCompensation</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='72 = 0x48'>72</td>
 <td>FocalLength</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -3158,37 +3158,37 @@ FE120, FE140 and FE190.</p>
 <tr>
 <td class=r title='0 = 0x0'>0</td>
 <td>Make</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='24 = 0x18'>24</td>
 <td>Model</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s><span class=n>(the actual model name, no decoding necessary)</span></span></td></tr>
 <tr>
 <td class=r title='54 = 0x36'>54</td>
 <td>ExposureTime</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='58 = 0x3a'>58</td>
 <td>FNumber</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='66 = 0x42'>66</td>
 <td>ExposureCompensation</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='88 = 0x58'>88</td>
 <td>FocalLength</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='193 = 0xc1'>193</td>
 <td>ISO</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -3203,12 +3203,12 @@ u7040 and u9010.</p>
 <tr>
 <td class=r title='0 = 0x0'>0</td>
 <td>Make</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='24 = 0x18'>24</td>
 <td>Model</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s><span class=n>(oddly different than CameraType values in JPEG images by the same camera)</span></span><table class=cols><tr>
   <td>&#39;SG472&#39; = u7040,S7040
   <br>&#39;SG473&#39; = u9010,S9010
@@ -3223,12 +3223,12 @@ u7040 and u9010.</p>
 <tr>
 <td class=r title='40 = 0x28'>40</td>
 <td>FNumber</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='48 = 0x30'>48</td>
 <td>ExposureCompensation</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='104 = 0x68'>104</td>
@@ -3251,17 +3251,17 @@ u7040 and u9010.</p>
 <tr>
 <td class=r title='4 = 0x4'>4</td>
 <td>ISO</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='44 = 0x2c'>44</td>
 <td>EncoderVersion</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='60 = 0x3c'>60</td>
 <td>DecoderVersion</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='131 = 0x83'>131</td>
@@ -3279,22 +3279,22 @@ u7040 and u9010.</p>
 <tr>
 <td class=r title='1 = 0x1'>1</td>
 <td>ThumbnailWidth</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='2 = 0x2'>2</td>
 <td>ThumbnailHeight</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='3 = 0x3'>3</td>
 <td>ThumbnailLength</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='4 = 0x4'>4</td>
 <td>ThumbnailOffset</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -3346,22 +3346,22 @@ such as the OM E-M5.</p>
 <tr>
 <td class=r title='18 = 0x12'>18</td>
 <td>Make</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='44 = 0x2c'>44</td>
 <td>Model</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>--&gt; <a href='Olympus.html#CameraType'>Olympus CameraType Values</a></td></tr>
 <tr>
 <td class=r title='131 = 0x83'>131</td>
 <td>DateTime1</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='157 = 0x9d'>157</td>
 <td>DateTime2</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -3388,12 +3388,12 @@ such as the OM E-M5.</p>
 <tr>
 <td class=r title='0 = 0x0'>0</td>
 <td>PreviewImageLength</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='4 = 0x4'>4</td>
 <td>PreviewImage</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s><span class=n>(640x480 JPEG preview image)</span></span></td></tr>
 </table></td></tr></table></blockquote>
 
@@ -3406,22 +3406,22 @@ such as the OM E-M5.</p>
 <tr>
 <td class=r title='0 = 0x0'>0</td>
 <td>ThumbnailWidth</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='2 = 0x2'>2</td>
 <td>ThumbnailHeight</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='4 = 0x4'>4</td>
 <td>ThumbnailLength</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='8 = 0x8'>8</td>
 <td>ThumbnailImage</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s><span class=n>(160x120 JPEG thumbnail image)</span></span></td></tr>
 </table></td></tr></table></blockquote>
 
@@ -3435,12 +3435,12 @@ such as the OM E-M5.</p>
 <tr>
 <td class=r title='0 = 0x0'>0</td>
 <td>ThumbnailLength</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='4 = 0x4'>4</td>
 <td>ThumbnailImage</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s><span class=n>(160x120 JPEG thumbnail image)</span></span></td></tr>
 </table></td></tr></table></blockquote>
 
@@ -3454,37 +3454,37 @@ such as the OM E-M5.</p>
 <tr>
 <td class=r title='14 = 0xe'>14</td>
 <td>Make</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='40 = 0x28'>40</td>
 <td>Model</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>--&gt; <a href='Olympus.html#CameraType'>Olympus CameraType Values</a></td></tr>
 <tr>
 <td class=r title='90 = 0x5a'>90</td>
 <td>FNumber</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='127 = 0x7f'>127</td>
 <td>DateTimeOriginal</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='153 = 0x99'>153</td>
 <td>DateTime2</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='265 = 0x109'>265</td>
 <td>ThumbnailWidth</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='267 = 0x10b'>267</td>
 <td>ThumbnailHeight</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -3498,27 +3498,27 @@ such as the OM E-M5.</p>
 <tr>
 <td class=r title='18 = 0x12'>18</td>
 <td>Make</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='44 = 0x2c'>44</td>
 <td>Model</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>--&gt; <a href='Olympus.html#CameraType'>Olympus CameraType Values</a></td></tr>
 <tr>
 <td class=r title='94 = 0x5e'>94</td>
 <td>FNumber</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='131 = 0x83'>131</td>
 <td>DateTime1</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='157 = 0x9d'>157</td>
 <td>DateTime2</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='297 = 0x129'>297</td>
@@ -3538,112 +3538,112 @@ like the LS-5, LS-10, LS-11.</p>
 <tr>
 <td class=r title='12 = 0xc'>12</td>
 <td>Model</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='28 = 0x1c'>28</td>
 <td>FileNumber</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='38 = 0x26'>38</td>
 <td>DateTimeOriginal</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s><span class=n>(time at start of recording)</span></span></td></tr>
 <tr class=b>
 <td class=r title='50 = 0x32'>50</td>
 <td>DateTimeEnd</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s><span class=n>(time at end of recording)</span></span></td></tr>
 <tr>
 <td class=r title='62 = 0x3e'>62</td>
 <td>RecordingTime</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='512 = 0x200'>512</td>
 <td>Duration</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='522 = 0x20a'>522</td>
 <td>Index01</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='532 = 0x214'>532</td>
 <td>Index02</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='542 = 0x21e'>542</td>
 <td>Index03</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='552 = 0x228'>552</td>
 <td>Index04</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='562 = 0x232'>562</td>
 <td>Index05</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='572 = 0x23c'>572</td>
 <td>Index06</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='582 = 0x246'>582</td>
 <td>Index07</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='592 = 0x250'>592</td>
 <td>Index08</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='602 = 0x25a'>602</td>
 <td>Index09</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='612 = 0x264'>612</td>
 <td>Index10</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='622 = 0x26e'>622</td>
 <td>Index11</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='632 = 0x278'>632</td>
 <td>Index12</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='642 = 0x282'>642</td>
 <td>Index13</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='652 = 0x28c'>652</td>
 <td>Index14</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='662 = 0x296'>662</td>
 <td>Index15</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='672 = 0x2a0'>672</td>
 <td>Index16</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 

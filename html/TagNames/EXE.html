@@ -19,7 +19,7 @@ DLL libraries.</p>
 <tr>
 <td class=r title='0 = 0x0'>0</td>
 <td>MachineType</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><table class=cols><tr>
   <td>0x14c = Intel 386 or later, and compatibles
   <br>0x14d = Intel i860
@@ -52,58 +52,58 @@ DLL libraries.</p>
 <tr class=b>
 <td class=r title='2 = 0x2'>2</td>
 <td>TimeStamp</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='10 = 0xa'>10</td>
 <td>PEType</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>0x10b = PE32
   <br>0x20b = PE32+</span></td></tr>
 <tr class=b>
 <td class=r title='11 = 0xb'>11</td>
 <td>LinkerVersion</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='12 = 0xc'>12</td>
 <td>CodeSize</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='14 = 0xe'>14</td>
 <td>InitializedDataSize</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='16 = 0x10'>16</td>
 <td>UninitializedDataSize</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='18 = 0x12'>18</td>
 <td>EntryPoint</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='30 = 0x1e'>30</td>
 <td>OSVersion</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='32 = 0x20'>32</td>
 <td>ImageVersion</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='34 = 0x22'>34</td>
 <td>SubsystemVersion</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='44 = 0x2c'>44</td>
 <td>Subsystem</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><table class=cols><tr>
   <td>0 = Unknown
   <br>1 = Native
@@ -131,22 +131,22 @@ files.</p>
 <tr>
 <td class=r title='2 = 0x2'>2</td>
 <td>FileVersionNumber</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='4 = 0x4'>4</td>
 <td>ProductVersionNumber</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='6 = 0x6'>6</td>
 <td>FileFlagsMask</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='7 = 0x7'>7</td>
 <td>FileFlags</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><table class=cols><tr>
   <td>Bit 0 = Debug
   <br>Bit 1 = Pre-release
@@ -158,7 +158,7 @@ files.</p>
 <tr>
 <td class=r title='8 = 0x8'>8</td>
 <td>FileOS</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><table class=cols><tr>
   <td>0x1 = Win16
   <br>0x2 = PM-16
@@ -177,7 +177,7 @@ files.</p>
 <tr class=b>
 <td class=r title='9 = 0x9'>9</td>
 <td>ObjectFileType</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><table class=cols><tr>
   <td>0 = Unknown
   <br>1 = Executable application
@@ -190,7 +190,7 @@ files.</p>
 <tr>
 <td class=r title='10 = 0xa'>10</td>
 <td>FileSubtype</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -205,15 +205,15 @@ existing StringFileInfo tags even if not listed in this table.</p>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
 <td>BuildDate</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>BuildVersion</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>CharacterSet</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s><span class=n>(extracted from the StringFileInfo value)</span></span><table class=cols><tr>
   <td>&#39;0000&#39; = ASCII
   <br>&#39;03A4&#39; = Windows, Japan (Shift - JIS X-0208)
@@ -231,60 +231,60 @@ existing StringFileInfo tags even if not listed in this table.</p>
 </td></tr>
 <tr class=b>
 <td>Comments</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>CompanyName</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>Copyright</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>FileDescription</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>FileVersion</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>InternalName</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>LanguageCode</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>--&gt; <a href='EXE.html#LanguageCode'>EXE LanguageCode Values</a>
   <br><span class='n s'>(extracted from the StringFileInfo value)</span></td></tr>
 <tr>
 <td>LegalCopyright</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>LegalTrademarks</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>OriginalFileName</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>PrivateBuild</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>ProductName</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>ProductVersion</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>SpecialBuild</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -420,22 +420,22 @@ libraries.</p>
 <tr>
 <td class=r title='0 = 0x0'>0</td>
 <td>CPUArchitecture</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='1 = 0x1'>1</td>
 <td>CPUByteOrder</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='2 = 0x2'>2</td>
 <td>CPUCount</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='3 = 0x3'>3</td>
 <td>CPUType</td>
-<td class=c title=' + = List'>N+</td>
+<td class=c title=' + = List'>no+</td>
 <td><table class=cols><tr>
   <td>-1 = Any
   <br>1 = VAX
@@ -460,7 +460,7 @@ libraries.</p>
 <tr>
 <td class=r title='4 = 0x4'>4</td>
 <td>CPUSubtype</td>
-<td class=c title=' + = List'>N+</td>
+<td class=c title=' + = List'>no+</td>
 <td><table class=cols><tr>
   <td>&#39;1 0&#39; = VAX (all)
   <br>&#39;1 1&#39; = VAX780
@@ -566,7 +566,7 @@ libraries.</p>
 <tr class=b>
 <td class=r title='5 = 0x5'>5</td>
 <td>ObjectFileType</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><table class=cols><tr>
   <td>-1 = Static library
   <br>0x1 = Relocatable object
@@ -584,7 +584,7 @@ libraries.</p>
 <tr>
 <td class=r title='6 = 0x6'>6</td>
 <td>ObjectFlags</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><table class=cols><tr>
   <td>Bit 0 = No undefs
   <br>Bit 1 = Incrementa link
@@ -622,18 +622,18 @@ libraries.</p>
 <tr>
 <td class=r title='2 = 0x2'>2</td>
 <td>CPUArchitecture</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>&#39;m68k&#39; = 68000
   <br>&#39;pwpc&#39; = PowerPC</span></td></tr>
 <tr class=b>
 <td class=r title='3 = 0x3'>3</td>
 <td>PEFVersion</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='4 = 0x4'>4</td>
 <td>TimeStamp</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -647,19 +647,19 @@ libraries.</p>
 <tr>
 <td class=r title='4 = 0x4'>4</td>
 <td>CPUArchitecture</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>1 = 32 bit
   <br>2 = 64 bit</span></td></tr>
 <tr class=b>
 <td class=r title='5 = 0x5'>5</td>
 <td>CPUByteOrder</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>1 = Little endian
   <br>2 = Big endian</span></td></tr>
 <tr>
 <td class=r title='16 = 0x10'>16</td>
 <td>ObjectFileType</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>0 = None
   <br>1 = Relocatable file
   <br>2 = Executable file
@@ -668,7 +668,7 @@ libraries.</p>
 <tr class=b>
 <td class=r title='18 = 0x12'>18</td>
 <td>CPUType</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>0 = None
   <br>1 = AT&amp;T WE 32100
   <br>2 = SPARC
@@ -710,7 +710,7 @@ libraries.</p>
 <tr>
 <td class=r title='16 = 0x10'>16</td>
 <td>CreateDate</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -724,12 +724,12 @@ libraries.</p>
 <tr>
 <td class=r title='1 = 0x1'>1</td>
 <td>CHMVersion</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='5 = 0x5'>5</td>
 <td>LanguageCode</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>--&gt; <a href='EXE.html#LanguageCode'>EXE LanguageCode Values</a></td></tr>
 </table></td></tr></table></blockquote>
 

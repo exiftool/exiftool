@@ -21,7 +21,7 @@ use vars qw($VERSION $AUTOLOAD $lastFetched);
 use Image::ExifTool qw(:DataAccess :Utils);
 require Exporter;
 
-$VERSION = '1.42';
+$VERSION = '1.43';
 
 sub FetchObject($$$$);
 sub ExtractObject($$;$$);
@@ -2124,8 +2124,9 @@ sub ReadPDF($$)
     $len = 1024 if $len > 1024;
     $raf->Seek(-$len, 2) or return -2;
     $raf->Read($buff, $len) == $len or return -3;
-    # find the LAST xref table in the file (may be multiple %%EOF marks)
-    $buff =~ /^.*startxref(\s+)(\d+)(\s+)%%EOF/s or return -4;
+    # find the LAST xref table in the file (may be multiple %%EOF marks,
+    # and comments between "startxref" and "%%EOF")
+    $buff =~ /^.*startxref(\s+)(\d+)(\s+)(%[^\x0d\x0a]*\s+)*%%EOF/s or return -4;
     my $ws = $1 . $3;
     my $xr = $2;
     push @xrefOffsets, $xr, 'Main';

@@ -159,7 +159,7 @@ information.</p>
 <tr class=b>
 <td title='0x0040 = 64'>0x0040</td>
 <td>RawDataByteOrder</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td><span class=s>0 = Little-endian (Intel, II)
   <br>1 = Big-endian (Motorola, MM)</span></td></tr>
 <tr>
@@ -176,7 +176,7 @@ information.</p>
 <tr>
 <td title='0x0050 = 80'>0x0050</td>
 <td>RawDataCFAPattern</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td><span class=s>0 = Unchanged
   <br>1 = Swap
   <br>65535 = Roll</span></td></tr>
@@ -482,31 +482,31 @@ as the Galaxy S4 and Tab S.</p>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
 <td>EmbeddedAudioFile</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>EmbeddedAudioFileName</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>EmbeddedImage</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>EmbeddedImageName</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>EmbeddedVideoFile</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>EmbeddedVideoType</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>TimeStamp</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -521,32 +521,32 @@ such as the WB30F.</p>
 <tr>
 <td class=r title='0 = 0x0'>0</td>
 <td>Make</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='32 = 0x20'>32</td>
 <td>Model</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='512 = 0x200'>512</td>
 <td>ThumbnailWidth</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='516 = 0x204'>516</td>
 <td>ThumbnailHeight</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='520 = 0x208'>520</td>
 <td>ThumbnailLength</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='524 = 0x20c'>524</td>
 <td>ThumbnailImage</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s><span class=n>(the THM image, embedded metadata is extracted as the first sub-document)</span></span></td></tr>
 </table></td></tr></table></blockquote>
 
@@ -561,12 +561,12 @@ SMX-C20N.</p>
 <tr>
 <td>'EFCT'</td>
 <td>Effect</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'QLTY'</td>
 <td>Quality</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -581,37 +581,37 @@ WP10.</p>
 <tr>
 <td class=r title='0 = 0x0'>0</td>
 <td>Make</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='24 = 0x18'>24</td>
 <td>Model</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='46 = 0x2e'>46</td>
 <td>ExposureTime</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='50 = 0x32'>50</td>
 <td>FNumber</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='58 = 0x3a'>58</td>
 <td>ExposureCompensation</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='106 = 0x6a'>106</td>
 <td>ISO</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='125 = 0x7d'>125</td>
 <td>Software</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='244 = 0xf4'>244</td>
@@ -629,22 +629,22 @@ WP10.</p>
 <tr>
 <td class=r title='1 = 0x1'>1</td>
 <td>ThumbnailWidth</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='2 = 0x2'>2</td>
 <td>ThumbnailHeight</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='3 = 0x3'>3</td>
 <td>ThumbnailLength</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='4 = 0x4'>4</td>
 <td>ThumbnailOffset</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 

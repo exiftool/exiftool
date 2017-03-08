@@ -49,7 +49,7 @@ use vars qw($VERSION %minoltaLensTypes %minoltaTeleconverters %minoltaColorMode
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.45';
+$VERSION = '2.46';
 
 # Full list of product codes for Sony-compatible Minolta lenses
 # (ref http://www.kb.sony.com/selfservice/documentLink.do?externalId=C1000570)
@@ -540,13 +540,13 @@ $VERSION = '2.45';
    '65535.10' => 'Sony E PZ 16-50mm F3.5-5.6 OSS',  #PH (32793 - SELP1650)
    '65535.11' => 'Sony FE 35mm F2.8 ZA',            #JR (32794 - SEL35F28Z)
    '65535.12' => 'Sony FE 24-70mm F4 ZA OSS',       #JR (32795 - SEL2470Z)
-   '65535.13' => 'Sony FE 85mm F1.8', #JR
+   '65535.13' => 'Sony FE 85mm F1.8',               #JR (32796 - SEL85F18)
    '65535.14' => 'Sony E 18-200mm F3.5-6.3 OSS LE', #JR (32797 or 0 - SEL18200LE)
    '65535.15' => 'Sony E 20mm F2.8',                #PH (32798 - SEL20F28)
    '65535.16' => 'Sony E 35mm F1.8 OSS',            #JR (32799 - SEL35F18)
    '65535.17' => 'Sony E PZ 18-105mm F4 G OSS',     #JR (32800 - SELP18105G)
    '65535.18' => 'Sony FE 90mm F2.8 Macro G OSS',   #JR (32802 - SEL90M28G)
-   '65535.10' => 'Sony E 18-50mm F4-5.6',           #JR (32803 - SEL1850)
+   '65535.19' => 'Sony E 18-50mm F4-5.6',           #JR (32803 - SEL1850)
    '65535.20' => 'Sony E PZ 18-200mm F3.5-6.3 OSS', #JR (32807 - SELP18200)
    '65535.21' => 'Sony FE 55mm F1.8 ZA',            #JR (32808 - SEL55F18Z)
    '65535.22' => 'Sony FE 70-200mm F4 G OSS',       #JR (32810 - SEL70200G)
@@ -557,7 +557,7 @@ $VERSION = '2.45';
    '65535.27' => 'Sony FE 24-240mm F3.5-6.3 OSS',   #JR (32815 - SEL24240)
    '65535.28' => 'Sony FE 28mm F2',                 #JR (32816 - SEL28F20)
    '65535.29' => 'Sony FE PZ 28-135mm F4 G OSS',    #JR (32817 - SELP28135G)
-   '65535.30' => 'Sony FE 100mm F2.8 STF GM OSS',   #JR also seen one image with LensType2=33076...
+   '65535.30' => 'Sony FE 100mm F2.8 STF GM OSS',   #JR (32819 - SEL100F28GM) also seen one image with LensType2=33076...
    '65535.31' => 'Sony FE 24-70mm F2.8 GM',         #JR (32821 - SEL2470GM)
    '65535.32' => 'Sony FE 50mm F1.4 ZA',            #JR (32822 - SEL50F14Z)
    '65535.33' => 'Sony FE 85mm F1.4 GM',            #JR (32823 - SEL85F14GM)

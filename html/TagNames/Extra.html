@@ -15,12 +15,10 @@ in this column are write-only.</p>
 
 <p>Tags in the family 1 &quot;System&quot; group are referred to as &quot;pseudo&quot; tags because
 they don&#39;t represent real metadata in the file.  Instead, this information
-is stored in the directory structure of the filesystem.  13 writable
-&quot;pseudo&quot; tags (FileName, Directory, FileModifyDate, FileCreateDate,
-FilePermissions, FileUserID, FileGroupID, HardLink, MDItemFSCreationDate,
-MDItemFSLabel, MDItemFinderComment, XAttrQuarantine and TestName) may be
-written without modifying the file itself.  The TestName tag is used for
-dry-run testing before writing FileName.
+is stored in the directory structure of the filesystem.  The <b>Writable</b>
+System &quot;pseudo&quot; tags in this table may be written without modifying the file
+itself.  The TestName tag is used for dry-run testing before writing
+FileName.
 </p>
 <blockquote>
 <table class=frame><tr><td>
@@ -29,28 +27,28 @@ dry-run testing before writing FileName.
 <th>Writable</th><th>Group</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
 <td>Adobe</td>
-<td class=c title=' ! = Unsafe'>Y!</td>
+<td class=c title=' ! = Unsafe'>yes!</td>
 <td class=c>Adobe</td>
 <td><span class=s><span class=n>(the JPEG APP14 Adobe segment.  Extracted only if specified. See the
 <a href="JPEG.html#Adobe">JPEG Adobe Tags</a> for more information)</span></span></td></tr>
 <tr class=b>
 <td>CanonDR4</td>
-<td class=c title=' ! = Unsafe'>Y!</td>
+<td class=c title=' ! = Unsafe'>yes!</td>
 <td class=c>CanonVRD</td>
 <td><span class=s><span class=n>(the full Canon DPP version 4 DR4 block)</span></span></td></tr>
 <tr>
 <td>CanonVRD</td>
-<td class=c title=' ! = Unsafe'>Y!</td>
+<td class=c title=' ! = Unsafe'>yes!</td>
 <td class=c>CanonVRD</td>
 <td><span class=s><span class=n>(the full Canon DPP VRD trailer block)</span></span></td></tr>
 <tr class=b>
 <td>Comment</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(comment embedded in JPEG, GIF89a or PPM/PGM/PBM image)</span></span></td></tr>
 <tr>
 <td>CurrentIPTCDigest</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(MD5 digest of existing IPTC data.  All zeros if IPTC exists but Digest::MD5
 is not installed.  Only calculated for IPTC in the standard location as
@@ -59,26 +57,26 @@ automates the handling of this tag in the MWG module -- see the
 <a href="MWG.html">MWG Composite Tags</a> for details)</span></span></td></tr>
 <tr class=b>
 <td>Directory</td>
-<td class=c title=' ! = Unsafe'>Y!</td>
+<td class=c title=' ! = Unsafe'>yes!</td>
 <td class=c>System</td>
 <td><span class=s><span class=n>(the directory of the file as specified in the call to ExifTool, or &quot;.&quot; if no
 directory was specified.  May be written to move the file to another
 directory that will be created if doesn&#39;t already exist)</span></span></td></tr>
 <tr>
 <td>EXIF</td>
-<td class=c title=' ! = Unsafe'>Y!</td>
+<td class=c title=' ! = Unsafe'>yes!</td>
 <td class=c>EXIF</td>
 <td><span class=s><span class=n>(the full EXIF data block from JPEG, PNG, JP2, MIE and MIFF images)</span></span></td></tr>
 <tr class=b>
 <td>Error</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>ExifTool</td>
 <td><span class=s><span class=n>(returns errors that may have occurred while reading or writing a file.  Any
 Error will prevent the file from being processed.  Minor errors may be
 downgraded to warnings with the -m or IgnoreMinorErrors option)</span></span></td></tr>
 <tr>
 <td>ExifByteOrder</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(represents the byte order of EXIF information.  May be written to set the
 byte order only for newly created EXIF segments)</span>
@@ -86,12 +84,12 @@ byte order only for newly created EXIF segments)</span>
   <br>&#39;MM&#39; = Big-endian (Motorola, MM)</span></td></tr>
 <tr class=b>
 <td>ExifToolVersion</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>ExifTool</td>
 <td><span class=s><span class=n>(the version of ExifTool currently running)</span></span></td></tr>
 <tr>
 <td>ExifUnicodeByteOrder</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td class=c>-</td>
 <td><span class=s><span class=n>(specifies the byte order to use when writing EXIF Unicode text.  The EXIF
 specification is particularly vague about this byte ordering, and different
@@ -102,13 +100,13 @@ specific order)</span>
   <br>&#39;MM&#39; = Big-endian (Motorola, MM)</span></td></tr>
 <tr class=b>
 <td>FileAccessDate</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>System</td>
 <td><span class=s><span class=n>(the date/time of last access of the file.  Note that this access time is
 updated whenever any software, including ExifTool, reads the file)</span></span></td></tr>
 <tr>
 <td>FileAttributes</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>System</td>
 <td><span class=s><span class=n>(extracted only if specifically requested or the SystemTags or RequestAll API
 option is set.  2 or 3 values: 0. File type, 1. Attribute bits, 2. Windows
@@ -152,70 +150,70 @@ attribute bits if Win32API::File is available)</span>
 </td></tr>
 <tr class=b>
 <td>FileBlockCount</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>System</td>
 <td><span class=s><span class=n>(extracted only if specifically requested or the SystemTags or RequestAll API
 option is set)</span></span></td></tr>
 <tr>
 <td>FileBlockSize</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>System</td>
 <td><span class=s><span class=n>(extracted only if specifically requested or the SystemTags or RequestAll API
 option is set)</span></span></td></tr>
 <tr class=b>
 <td>FileCreateDate</td>
-<td class=c title=' ! = Unsafe'>Y!</td>
+<td class=c title=' ! = Unsafe'>yes!</td>
 <td class=c>System</td>
 <td><span class=s><span class=n>(the filesystem creation date/time.  Windows only.  Requires Win32API::File
-and Win32::API for writing.  See MDItemFSCreationDate below for the Mac OS X
-equivalent)</span></span></td></tr>
+and Win32::API for writing.  See <a href="MacOS.html">MDItemFSCreationDate</a>
+for the Mac OS X equivalent)</span></span></td></tr>
 <tr>
 <td>FileDeviceID</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>System</td>
 <td><span class=s><span class=n>(extracted only if specifically requested or the SystemTags or RequestAll API
 option is set)</span></span></td></tr>
 <tr class=b>
 <td>FileDeviceNumber</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>System</td>
 <td><span class=s><span class=n>(extracted only if specifically requested or the SystemTags or RequestAll API
 option is set)</span></span></td></tr>
 <tr>
 <td>FileGroupID</td>
-<td class=c title=' ! = Unsafe'>Y!</td>
+<td class=c title=' ! = Unsafe'>yes!</td>
 <td class=c>System</td>
 <td><span class=s><span class=n>(extracted only if specifically requested or the SystemTags or RequestAll API
 option is set.  Returns group ID number with the -n option, or name
 otherwise.  May be written with either group name or number)</span></span></td></tr>
 <tr class=b>
 <td>FileHardLinks</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>System</td>
 <td><span class=s><span class=n>(extracted only if specifically requested or the SystemTags or RequestAll API
 option is set)</span></span></td></tr>
 <tr>
 <td>FileInodeChangeDate</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>System</td>
 <td><span class=s><span class=n>(the date/time when the file&#39;s directory information was last changed.
 Non-Windows systems only)</span></span></td></tr>
 <tr class=b>
 <td>FileInodeNumber</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>System</td>
 <td><span class=s><span class=n>(extracted only if specifically requested or the SystemTags or RequestAll API
 option is set)</span></span></td></tr>
 <tr>
 <td>FileModifyDate</td>
-<td class=c title=' ! = Unsafe'>Y!</td>
+<td class=c title=' ! = Unsafe'>yes!</td>
 <td class=c>System</td>
 <td><span class=s><span class=n>(the filesystem modification date/time.  Note that ExifTool may not be able
 to handle filesystem dates before 1970 depending on the limitations of the
 system&#39;s standard libraries)</span></span></td></tr>
 <tr class=b>
 <td>FileName</td>
-<td class=c title=' ! = Unsafe'>Y!</td>
+<td class=c title=' ! = Unsafe'>yes!</td>
 <td class=c>System</td>
 <td><span class=s><span class=n>(may be written with a full path name to set FileName and Directory in one
 operation.  This is such a powerful feature that a TestName tag is provided
@@ -224,21 +222,21 @@ to allow dry-run tests before actually writing the file name.  See
 FileName, Directory and TestName tags)</span></span></td></tr>
 <tr>
 <td>FilePath</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>System</td>
 <td><span class=s><span class=n>(absolute path of source file. Not generated unless specifically requested or
 the RequestAll API option is set.  Does not support Windows Unicode file
 names)</span></span></td></tr>
 <tr class=b>
 <td>FilePermissions</td>
-<td class=c title=' ! = Unsafe'>Y!</td>
+<td class=c title=' ! = Unsafe'>yes!</td>
 <td class=c>System</td>
 <td><span class=s><span class=n>(r=read, w=write and x=execute permissions for the file owner, group and
 others.  The ValueConv value is an octal number so bit test operations on
 this value should be done in octal, eg. &#39;oct($filePermissions#) &amp; 0200&#39;)</span></span></td></tr>
 <tr>
 <td>FileSequence</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>ExifTool</td>
 <td><span class=s><span class=n>(sequence number for each source file when extracting or copying information,
 including files that fail the -if condition of the command-line application,
@@ -246,32 +244,32 @@ beginning at 0 for the first file.  Not generated unless specifically
 requested or the RequestAll API option is set)</span></span></td></tr>
 <tr class=b>
 <td>FileSize</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>System</td>
 <td><span class=s><span class=n>(note that the print conversion for this tag uses historic prefixes: 1 kB =
 1024 bytes, etc.)</span></span></td></tr>
 <tr>
 <td>FileType</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(a short description of the file type.  For many file types this is the just
 the uppercase file extension)</span></span></td></tr>
 <tr class=b>
 <td>FileTypeExtension</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(a common lowercase extension for this file type, or uppercase with the -n
 option)</span></span></td></tr>
 <tr>
 <td>FileUserID</td>
-<td class=c title=' ! = Unsafe'>Y!</td>
+<td class=c title=' ! = Unsafe'>yes!</td>
 <td class=c>System</td>
 <td><span class=s><span class=n>(extracted only if specifically requested or the SystemTags or RequestAll API
 option is set.  Returns user ID number with the -n option, or name
 otherwise.  May be written with either user name or number)</span></span></td></tr>
 <tr class=b>
 <td>Geosync</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td class=c>-</td>
 <td><span class=s><span class=n>(this write-only tag specifies a time difference to add to Geotime for
 synchronization with the GPS clock.  For example, set this to &quot;-12&quot; if the
@@ -282,7 +280,7 @@ and extraction of synchronization times from image files. See the
 <a href="../geotag.html">geotagging documentation</a> for details)</span></span></td></tr>
 <tr>
 <td>Geotag</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td class=c>-</td>
 <td><span class=s><span class=n>(this write-only tag is used to define the GPS track log data or track log
 file name.  Currently supported track log formats are GPX, NMEA RMC/GGA/GLL,
@@ -292,7 +290,7 @@ Beacon text, and Bramor gEO log files.  May be set to the special value of
 are available.  See <a href="../geotag.html">geotag.html</a> for details)</span></span></td></tr>
 <tr class=b>
 <td>Geotime</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td class=c>-</td>
 <td><span class=s><span class=n>(this write-only tag is used to define a date/time for interpolating a
 position in the GPS track specified by the Geotag tag.  Writing this tag
@@ -303,7 +301,7 @@ name of &#39;EXIF&#39; or &#39;XMP&#39; may be specified to write or delete only
 GPS tags.  The Geotag tag must be assigned before this tag)</span></span></td></tr>
 <tr>
 <td>HardLink</td>
-<td class=c title=' ! = Unsafe'>Y!</td>
+<td class=c title=' ! = Unsafe'>yes!</td>
 <td class=c>-</td>
 <td><span class=s><span class=n>(this write-only tag is used to create a hard link to the file.  If the file
 is edited, copied, renamed or moved in the same operation as writing
@@ -313,32 +311,32 @@ application will break the link unless the -overwrite_original_in_place
 option is used)</span></span></td></tr>
 <tr class=b>
 <td>ICC_Profile</td>
-<td class=c title=' ! = Unsafe'>Y!</td>
+<td class=c title=' ! = Unsafe'>yes!</td>
 <td class=c>ICC_Profile</td>
 <td><span class=s><span class=n>(the full ICC_Profile data block)</span></span></td></tr>
 <tr>
 <td>ID3Size</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(size of the ID3 data block)</span></span></td></tr>
 <tr class=b>
 <td>IPTC</td>
-<td class=c title=' ! = Unsafe'>Y!</td>
+<td class=c title=' ! = Unsafe'>yes!</td>
 <td class=c>IPTC</td>
 <td><span class=s><span class=n>(the full IPTC data block)</span></span></td></tr>
 <tr>
 <td>ImageHeight</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(the height of the image in number of pixels)</span></span></td></tr>
 <tr class=b>
 <td>ImageWidth</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(the width of the image in number of pixels)</span></span></td></tr>
 <tr>
 <td>JPEGDigest</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(an MD5 digest of the JPEG quantization tables is combined with the component
 sub-sampling values to generate the value of this tag.  The result is
@@ -348,52 +346,25 @@ generated only if specifically requested or the RequestAll API option is set
 to 3 or higher)</span></span></td></tr>
 <tr class=b>
 <td>JPEGQualityEstimate</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(an estimate of the IJG JPEG quality setting for the image, calculated from
 the quantization tables.  For performance reasons, this tag is generated
 only if specifically requested or the RequestAll API option is set to 3 or
 higher)</span></span></td></tr>
 <tr>
-<td>MDItemFSCreationDate</td>
-<td class=c title=' ! = Unsafe'>Y!</td>
-<td class=c>System</td>
-<td><span class=s><span class=n>(Mac OS X file creation date.  See MDItemTags below for more information.
-Requires &quot;setfile&quot; for writing)</span></span></td></tr>
-<tr class=b>
-<td>MDItemFSLabel</td>
-<td class=c title=' ! = Unsafe'>Y!</td>
-<td class=c>System</td>
-<td><span class=s><span class=n>(Mac OS X label number.  See MDItemTags below for more information)</span></span></td></tr>
-<tr>
-<td>MDItemFinderComment</td>
-<td class=c title=' ! = Unsafe'>Y!</td>
-<td class=c>System</td>
-<td><span class=s><span class=n>(Mac OS X Finder comment.  See MDItemTags below for more information)</span></span></td></tr>
-<tr class=b>
-<td>MDItemTags</td>
-<td class=c>N</td>
-<td class=c>System</td>
-<td><span class=s><span class=n>(this entry is for documentation purposes only.  On Mac OS X, there are a
-number of additional tags with names beginning with &quot;MDItem&quot; that may be
-extracted if specifically requested, or if the MDItemTags API option is set
-or the RequestAll API option is set to 2 or higher.  Requires that the
-&quot;mdls&quot; utility is available.  Note that these tags do not necessarily
-reflect the current state of the file -- they are updated only when the file
-is indexed by Spotlight)</span></span></td></tr>
-<tr>
 <td>MIMEType</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(the MIME type of the source file)</span></span></td></tr>
 <tr class=b>
 <td>MaxVal</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(maximum pixel value in PPM or PGM image)</span></span></td></tr>
 <tr>
 <td>NewGUID</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>ExifTool</td>
 <td><span class=s><span class=n>(generates a new, random GUID with format
 YYYYmmdd-HHMM-SSNN-PPPP-RRRRRRRRRRRR, where Y=year, m=month, d=day, H=hour,
@@ -402,46 +373,46 @@ R=random hex number; without dashes with the -n option.  Not generated
 unless specifically requested or the RequestAll API option is set)</span></span></td></tr>
 <tr class=b>
 <td>Now</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>ExifTool</td>
 <td><span class=s><span class=n>(the current date/time.  Useful when setting the tag values, eg.
 <code>&quot;-modifydate&lt;now&quot;</code>.  Not generated unless specifically requested or the
 RequestAll API option is set)</span></span></td></tr>
 <tr>
 <td>PreviewImage</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(JPEG-format embedded preview image)</span></span></td></tr>
 <tr class=b>
 <td>PreviewPNG</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(PNG-format embedded preview image)</span></span></td></tr>
 <tr>
 <td>PreviewTIFF</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(TIFF-format embedded preview image)</span></span></td></tr>
 <tr class=b>
 <td>PreviewWMF</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(WMF-format embedded preview image)</span></span></td></tr>
 <tr>
 <td>ProcessingTime</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>ExifTool</td>
 <td><span class=s><span class=n>(the clock time in seconds taken by ExifTool to extract information from this
 file.  Not generated unless specifically requested or the RequestAll API
 option is set.  Requires Time::HiRes)</span></span></td></tr>
 <tr class=b>
 <td>RAFVersion</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(RAF file version number)</span></span></td></tr>
 <tr>
 <td>ResourceForkSize</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>System</td>
 <td><span class=s><span class=n>(size of the file&#39;s resource fork if it contains data.  Mac OS only.  If this
 tag is generated the ExtractEmbedded option may be used to extract
@@ -450,14 +421,14 @@ fork is preserved by default, but it may be deleted with <code>-rsrc:all=</code>
 the command line)</span></span></td></tr>
 <tr class=b>
 <td>TestName</td>
-<td class=c title=' ! = Unsafe'>Y!</td>
+<td class=c title=' ! = Unsafe'>yes!</td>
 <td class=c>-</td>
 <td><span class=s><span class=n>(this write-only tag may be used instead of FileName for dry-run tests of the
 file renaming feature.  Writing this tag prints the old and new file names
 to the console, but does not affect the file itself)</span></span></td></tr>
 <tr>
 <td>Validate</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>ExifTool</td>
 <td><span class=s><span class=n>([experimental] generated only if specifically requested.  Requesting this
 tag automatically enables the <a href="../ExifTool.html#Validate">API Validate option</a>,
@@ -466,7 +437,7 @@ number of errors, warnings and minor warnings encountered)</span>
   <br>&#39;0 0 0&#39; = OK</span></td></tr>
 <tr class=b>
 <td>Warning</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>ExifTool</td>
 <td><span class=s><span class=n>(returns warnings that may have occurred while reading or writing a file.
 Use the -a or Duplicates option to see all warnings if more than one
@@ -474,46 +445,26 @@ occurred. Minor warnings may be ignored with the -m or IgnoreMinorErrors
 option.  Minor warnings with a capital &quot;M&quot; in the &quot;[Minor]&quot; designation
 indicate that the processing is affected by ignoring the warning)</span></span></td></tr>
 <tr>
-<td>XAttrFinderInfo</td>
-<td class=c>N</td>
-<td class=c>System</td>
-<td><span class=s><span class=n>(Mac OS X finder information.  See XAttrTags below for more information)</span></span></td></tr>
-<tr class=b>
-<td>XAttrQuarantine</td>
-<td class=c title=' ! = Unsafe'>Y!</td>
-<td class=c>System</td>
-<td><span class=s><span class=n>(Mac OS X quarantine information for files downloaded from the internet. See
-XAttrTags below for more information.  May only be deleted when writing)</span></span></td></tr>
-<tr>
-<td>XAttrTags</td>
-<td class=c>N</td>
-<td class=c>System</td>
-<td><span class=s><span class=n>(this entry is for documentation purposes only.  On Mac OS X, there are a
-number of additional tags with names beginning with &quot;XAttr&quot; that may be
-extracted if specifically requested, or if the XAttrTags API option is set,
-or if the RequestAll API option is set to 2 or higher.  Requires that the
-&quot;xattr&quot; utility is available)</span></span></td></tr>
-<tr class=b>
 <td>XMP</td>
-<td class=c title=' ! = Unsafe'>Y!</td>
+<td class=c title=' ! = Unsafe'>yes!</td>
 <td class=c>XMP</td>
 <td><span class=s><span class=n>(the XMP data block, but note that extended XMP in JPEG images may be split
 into multiple blocks)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>XResolution</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(the horizontal pixel resolution)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>YResolution</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(the vertical pixel resolution)</span></span></td></tr>
 </table></td></tr></table></blockquote>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Mar 2, 2017</i>
+<br><i>Last revised Mar 3, 2017</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

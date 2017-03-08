@@ -757,8 +757,8 @@ are:
 
 =item MDItemTags
 
-Flag to extract the OS X metadata item tags (see the "mdls" man page for
-details).
+Flag to extract the OS X metadata item tags (see the "mdls" man page and
+L<Image::ExifTool::TagNames/MacOS MDItem Tags> for more information).
 
 =item MissingTagValue
 
@@ -813,18 +813,19 @@ and enforces a time zero of 1904 as per the QuickTime specification.
 
 Flag to request all tags to be extracted.  This causes some tags to be
 generated which normally would not be unless specifically requested (by
-passing the tag name to L</ImageInfo> or L</ExtractInfo>).  Note that this
-flag is set automatically during a call to L</SetNewValuesFromFile> to make
-all tags available for copying.  May be set to 2 or 3 to enable generation
-of some additional tags.  Default is undef.
+passing the tag name to L</ImageInfo> or L</ExtractInfo>).  May be set to 2
+or 3 to enable generation of some additional tags mentioned in the tag name
+documentation.  Default is undef.
 
 =item RequestTags
 
-List of additional tags to request in next call to L</ExtractInfo>.  This
-option is useful only for tags which aren't extracted unless specifically
-requested.  Value may be a list reference, a delimited string of tag names
-(any delimiter is allowed), or undef to clear the current RequestTags list. 
-Case is not significant.  Default is undef.
+List of additional tag and/or group names to request in the next call to
+L</ExtractInfo>.  This option is useful only for tags/groups which aren't
+extracted unless specifically requested.  Value may be a list reference, a
+delimited string of names (any delimiter is allowed), or undef to clear the
+current RequestTags list.  Groups are requested by adding a colon after the
+name (eg. "MacOS:").  Names are converted to lower case as they are added to
+the list.  Default is undef.
 
 =item ScanForXMP
 
@@ -937,7 +938,7 @@ is the individual IFD (the family 1 group).
 =item XAttrTags
 
 Flag to extract the OS X extended attribute tags (see the "xattr" man page
-for details).
+and L<Image::ExifTool::TagNames/MacOS XAttr Tags> for more information).
 
 =item XMPAutoConv
 
@@ -988,10 +989,12 @@ is given.  The following options are effective in the call to
 L</ExtractInfo>:
 
 Binary, Charset, CharsetEXIF, CharsetFileName, CharsetID3, CharsetIPTC,
-CharsetPhotoshop, CharsetQuickTime, Composite, ExtendedXMP, ExtractEmbedded,
-FastScan, FixBase, HtmlDump, HtmlDumpBase, IgnoreMinorErrors, Lang,
-LargeFileSupport, MakerNotes, NoPDFList, PNGEarlyXMP, QuickTimeUTC (enforced
-1904 time zero), ScanForXMP, Struct, TextOut, Unknown and Verbose.
+CharsetPhotoshop, CharsetQuickTime, CharsetRIFF, Composite, ExtendedXMP,
+ExtractEmbedded, FastScan, FixBase, HtmlDump, HtmlDumpBase,
+IgnoreMinorErrors, Lang, LargeFileSupport, MakerNotes, MDItemTags,
+NoPDFList, Password, PNGEarlyXMP, QuickTimeUTC (enforced 1904 time zero),
+RequestAll, RequestTags, ScanForXMP, Struct, TextOut, Unknown, Verbose,
+XAttrTags and XMPAutoConv.
 
 =item Return Value:
 
@@ -1122,7 +1125,7 @@ called with a source file name.
 The following ExifTool options are effective in the call to L</WriteInfo>:
 
 ByteOrder, Charset, CharsetEXIF, CharsetFileName, CharsetIPTC, Compact,
-Compress, FixBase, IgnoreMinorErrors, PNGEarlyXMP and Verbose.
+Compress, FixBase, IgnoreMinorErrors, Password, PNGEarlyXMP and Verbose.
 
 =head2 GetTagList
 
@@ -2166,25 +2169,26 @@ Leaf, LeafSubIFD, Leica, Lytro, M2TS, MAC, MIE-Audio, MIE-Camera, MIE-Canon,
 MIE-Doc, MIE-Extender, MIE-Flash, MIE-GPS, MIE-Geo, MIE-Image, MIE-Lens,
 MIE-Main, MIE-MakerNotes, MIE-Meta, MIE-Orient, MIE-Preview, MIE-Thumbnail,
 MIE-UTM, MIE-Unknown, MIE-Video, MIFF, MNG, MOBI, MOI, MPC, MPEG, MPF0,
-MPImage, MXF, MakerNotes, MakerUnknown, Matroska, MediaJukebox, MetaIFD,
-Microsoft, Minolta, MinoltaRaw, Motorola, NITF, Nikon, NikonCapture,
-NikonCustom, NikonScan, Nintendo, Ocad, Ogg, Olympus, OpenEXR, Opus, PDF,
-PICT, PNG, PNG-pHYs, PSP, Palm, Panasonic, PanasonicRaw, Pentax, PhaseOne,
-PhotoCD, PhotoMechanic, Photoshop, PictureInfo, PostScript, PreviewIFD,
-PrintIM, ProfileIFD, Qualcomm, QuickTime, RAF, RAF2, RIFF, RMETA, RSRC, RTF,
-Radiance, Rawzor, Real, Real-CONT, Real-MDPR, Real-PROP, Real-RA3, Real-RA4,
-Real-RA5, Real-RJMD, Reconyx, Ricoh, SPIFF, SR2, SR2DataIFD, SR2SubIFD,
-SRF#, SVG, Samsung, Sanyo, Scalado, Sigma, SigmaRaw, Sony, SonyIDC, Stim,
-SubIFD, System, Theora, Torrent, Track#, VCalendar, VCard, Version0, Vorbis,
-XML, XMP, XMP-DICOM, XMP-GPano, XMP-MP, XMP-MP1, XMP-PixelLive, XMP-aas,
-XMP-acdsee, XMP-album, XMP-apple-fi, XMP-aux, XMP-cc, XMP-cell,
-XMP-creatorAtom, XMP-crs, XMP-dc, XMP-dex, XMP-digiKam, XMP-dwc, XMP-exif,
-XMP-exifEX, XMP-expressionmedia, XMP-extensis, XMP-fpv, XMP-getty, XMP-ics,
-XMP-iptcCore, XMP-iptcExt, XMP-lr, XMP-mediapro, XMP-microsoft,
-XMP-mwg-coll, XMP-mwg-kw, XMP-mwg-rs, XMP-pdf, XMP-pdfx, XMP-photomech,
-XMP-photoshop, XMP-plus, XMP-pmi, XMP-prism, XMP-prl, XMP-prm, XMP-pur,
-XMP-rdf, XMP-swf, XMP-tiff, XMP-x, XMP-xmp, XMP-xmpBJ, XMP-xmpDM, XMP-xmpMM,
-XMP-xmpNote, XMP-xmpPLUS, XMP-xmpRights, XMP-xmpTPg, ZIP
+MPImage, MXF, MacOS, MakerNotes, MakerUnknown, Matroska, MediaJukebox,
+MetaIFD, Microsoft, Minolta, MinoltaRaw, Motorola, NITF, Nikon,
+NikonCapture, NikonCustom, NikonScan, Nintendo, Ocad, Ogg, Olympus, OpenEXR,
+Opus, PDF, PICT, PNG, PNG-pHYs, PSP, Palm, Panasonic, PanasonicRaw, Pentax,
+PhaseOne, PhotoCD, PhotoMechanic, Photoshop, PictureInfo, PostScript,
+PreviewIFD, PrintIM, ProfileIFD, Qualcomm, QuickTime, RAF, RAF2, RIFF,
+RMETA, RSRC, RTF, Radiance, Rawzor, Real, Real-CONT, Real-MDPR, Real-PROP,
+Real-RA3, Real-RA4, Real-RA5, Real-RJMD, Reconyx, Ricoh, SPIFF, SR2,
+SR2DataIFD, SR2SubIFD, SRF#, SVG, Samsung, Sanyo, Scalado, Sigma, SigmaRaw,
+Sony, SonyIDC, Stim, SubIFD, System, Theora, Torrent, Track#, VCalendar,
+VCard, Version0, Vorbis, XML, XMP, XMP-DICOM, XMP-GPano, XMP-MP, XMP-MP1,
+XMP-PixelLive, XMP-aas, XMP-acdsee, XMP-album, XMP-apple-fi, XMP-aux,
+XMP-cc, XMP-cell, XMP-creatorAtom, XMP-crs, XMP-dc, XMP-dex, XMP-digiKam,
+XMP-dwc, XMP-exif, XMP-exifEX, XMP-expressionmedia, XMP-extensis, XMP-fpv,
+XMP-getty, XMP-ics, XMP-iptcCore, XMP-iptcExt, XMP-lr, XMP-mediapro,
+XMP-microsoft, XMP-mwg-coll, XMP-mwg-kw, XMP-mwg-rs, XMP-pdf, XMP-pdfx,
+XMP-photomech, XMP-photoshop, XMP-plus, XMP-pmi, XMP-prism, XMP-prl,
+XMP-prm, XMP-pur, XMP-rdf, XMP-swf, XMP-tiff, XMP-x, XMP-xmp, XMP-xmpBJ,
+XMP-xmpDM, XMP-xmpMM, XMP-xmpNote, XMP-xmpPLUS, XMP-xmpRights, XMP-xmpTPg,
+ZIP
 
 =item Family 2 (Category):
 

@@ -48,7 +48,7 @@ located in 5 different places.)
 <td title='0x0018 = 24'>0x0018</td>
 <td>ISInfoA100
   <br>ImageStabilization</td>
-<td class=c>-<br>N</td>
+<td class=c>-<br>no</td>
 <td>--&gt; <a href='Minolta.html#ISInfoA100'>Minolta ISInfoA100 Tags</a>
   <br><span class=n>(a block of binary data which exists in DiMAGE A2 (and A1/X1?) images only if
 image stabilization is enabled)</span></td></tr>
@@ -280,7 +280,7 @@ image stabilization is enabled)</span></td></tr>
 <tr>
 <td title='0x0f00 = 3840'>0x0f00</td>
 <td>MinoltaCameraSettings2</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -577,7 +577,7 @@ adapter is used.</p>
 </tr><tr><td>65535.7</td><td>= Sony E 50mm F1.8 OSS</td>
 </tr><tr><td>65535.8</td><td>= Sony E 16-70mm F4 ZA OSS</td>
 </tr><tr><td>65535.9</td><td>= Sony E 10-18mm F4 OSS</td>
-</tr><tr><td>65535.10</td><td>= Sony E 18-50mm F4-5.6</td>
+</tr><tr><td>65535.10</td><td>= Sony E PZ 16-50mm F3.5-5.6 OSS</td>
 </tr><tr><td>65535.11</td><td>= Sony FE 35mm F2.8 ZA</td>
 </tr><tr><td>65535.12</td><td>= Sony FE 24-70mm F4 ZA OSS</td>
 </tr><tr><td>65535.13</td><td>= Sony FE 85mm F1.8</td>
@@ -586,6 +586,7 @@ adapter is used.</p>
 </tr><tr><td>65535.16</td><td>= Sony E 35mm F1.8 OSS</td>
 </tr><tr><td>65535.17</td><td>= Sony E PZ 18-105mm F4 G OSS</td>
 </tr><tr><td>65535.18</td><td>= Sony FE 90mm F2.8 Macro G OSS</td>
+</tr><tr><td>65535.19</td><td>= Sony E 18-50mm F4-5.6</td>
 </tr><tr><td>65535.20</td><td>= Sony E PZ 18-200mm F3.5-6.3 OSS</td>
 </tr><tr><td>65535.21</td><td>= Sony FE 55mm F1.8 ZA</td>
 </tr><tr><td>65535.22</td><td>= Sony FE 70-200mm F4 G OSS</td>
@@ -1682,7 +1683,7 @@ middle cell, which gives the spot metering)</span></span></td></tr>
 <tr>
 <td class=r title='4172 = 0x104c'>4172</td>
 <td>TiffMeteringImage</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s><span class=n>(13-bit RBGG (?) 40x30 pixels, presumably metering info, converted to a 16-bit
 TIFF image;)</span></span></td></tr>
 <tr class=b>
@@ -2540,12 +2541,12 @@ DiMAGE A2, S414 and 7Hi.</p>
 <tr>
 <td class=r title='0 = 0x0'>0</td>
 <td>Make</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='20 = 0x14'>20</td>
 <td>SoftwareVersion</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -2560,32 +2561,32 @@ as the DiMage Z10 and X50.</p>
 <tr>
 <td class=r title='0 = 0x0'>0</td>
 <td>Make</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='32 = 0x20'>32</td>
 <td>ModelType</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='46 = 0x2e'>46</td>
 <td>ExposureTime</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='50 = 0x32'>50</td>
 <td>FNumber</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='58 = 0x3a'>58</td>
 <td>ExposureCompensation</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='80 = 0x50'>80</td>
 <td>FocalLength</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -2600,38 +2601,38 @@ DiMAGE X and Xt.</p>
 <tr>
 <td class=r title='0 = 0x0'>0</td>
 <td>Make</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='24 = 0x18'>24</td>
 <td>ModelType</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='38 = 0x26'>38</td>
 <td>ExposureTime</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='42 = 0x2a'>42</td>
 <td>FNumber</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='50 = 0x32'>50</td>
 <td>ExposureCompensation</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='72 = 0x48'>72</td>
 <td>FocalLength</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Feb 24, 2017</i>
+<br><i>Last revised Mar 3, 2017</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

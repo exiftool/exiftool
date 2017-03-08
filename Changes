@@ -7,9 +7,22 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.40. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Mar. 8, 2017 - Version 10.46
+
+  - Moved Mac System tags from the Extra table into a new MacOS group and added
+    ability to extract them by requesting the MacOS group
+  - Updated QuickTime GenreID list (thanks Francois Bonzon)
+  - Fixed "Invalid xref" problem when reading some PDF files
+  - Fixed error in Minolta lens list (thanks Jos Roost)
+  - Fixed minor problem with -U option generating Unknown tags for some known
+    bytes in variable-sized strings
+  - API Changes:
+      - Enhanced RequestTags option to allow groups to be requested
+
 Mar. 2, 2017 - Version 10.45
 
-  - Added ability to write a number of Mac OS X system tags
+  - Added ability to write a number of Mac OS X system tags (including the file
+    creation date!)
   - Added ability to extract OS X extended attributes ("XAttr" tags)
   - API Changes:
       - Added XAttrTags option

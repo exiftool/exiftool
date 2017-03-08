@@ -23,12 +23,12 @@ block tags GeoTiffDirectory, GeoTiffDoubleParams and GeoTiffAsciiParams.
 <tr>
 <td title='0x0001 = 1'>0x0001</td>
 <td>GeoTiffVersion</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x0400 = 1024'>0x0400</td>
 <td>GTModelType</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>1 = Projected
   <br>2 = Geographic
   <br>3 = Geocentric
@@ -36,19 +36,19 @@ block tags GeoTiffDirectory, GeoTiffDoubleParams and GeoTiffAsciiParams.
 <tr>
 <td title='0x0401 = 1025'>0x0401</td>
 <td>GTRasterType</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>1 = Pixel Is Area
   <br>2 = Pixel Is Point
   <br>32767 = User Defined</span></td></tr>
 <tr class=b>
 <td title='0x0402 = 1026'>0x0402</td>
 <td>GTCitation</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0800 = 2048'>0x0800</td>
 <td>GeographicType</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><table class=cols><tr>
   <td>4001 = Airy 1830
   <br>4002 = Airy Modified 1849
@@ -230,12 +230,12 @@ block tags GeoTiffDirectory, GeoTiffDoubleParams and GeoTiffAsciiParams.
 <tr class=b>
 <td title='0x0801 = 2049'>0x0801</td>
 <td>GeogCitation</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0802 = 2050'>0x0802</td>
 <td>GeogGeodeticDatum</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><table class=cols><tr>
   <td>6001 = Airy 1830
   <br>6002 = Airy Modified 1849
@@ -398,7 +398,7 @@ block tags GeoTiffDirectory, GeoTiffDoubleParams and GeoTiffAsciiParams.
 <tr class=b>
 <td title='0x0803 = 2051'>0x0803</td>
 <td>GeogPrimeMeridian</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><table class=cols><tr>
   <td>8901 = Greenwich
   <br>8902 = Lisbon
@@ -416,27 +416,27 @@ block tags GeoTiffDirectory, GeoTiffDoubleParams and GeoTiffAsciiParams.
 <tr>
 <td title='0x0804 = 2052'>0x0804</td>
 <td>GeogLinearUnits</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>--&gt; <a href='GeoTiff.html#Units'>GeoTiff Units Values</a></td></tr>
 <tr class=b>
 <td title='0x0805 = 2053'>0x0805</td>
 <td>GeogLinearUnitSize</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0806 = 2054'>0x0806</td>
 <td>GeogAngularUnits</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>--&gt; <a href='GeoTiff.html#Units'>GeoTiff Units Values</a></td></tr>
 <tr class=b>
 <td title='0x0807 = 2055'>0x0807</td>
 <td>GeogAngularUnitSize</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0808 = 2056'>0x0808</td>
 <td>GeogEllipsoid</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><table class=cols><tr>
   <td>7001 = Airy 1830
   <br>7002 = Airy Modified 1849
@@ -478,37 +478,37 @@ block tags GeoTiffDirectory, GeoTiffDoubleParams and GeoTiffAsciiParams.
 <tr class=b>
 <td title='0x0809 = 2057'>0x0809</td>
 <td>GeogSemiMajorAxis</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x080a = 2058'>0x080a</td>
 <td>GeogSemiMinorAxis</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x080b = 2059'>0x080b</td>
 <td>GeogInvFlattening</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x080c = 2060'>0x080c</td>
 <td>GeogAzimuthUnits</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>--&gt; <a href='GeoTiff.html#Units'>GeoTiff Units Values</a></td></tr>
 <tr class=b>
 <td title='0x080d = 2061'>0x080d</td>
 <td>GeogPrimeMeridianLong</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x080e = 2062'>0x080e</td>
 <td>GeogToWGS84</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x0c00 = 3072'>0x0c00</td>
 <td>ProjectedCSType</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><table class=cols><tr>
   <td>2100 = GGRS87 Greek Grid
   <br>2176 = ETRS89 Poland CS2000 zone 5
@@ -1507,12 +1507,12 @@ block tags GeoTiffDirectory, GeoTiffDoubleParams and GeoTiffAsciiParams.
 <tr>
 <td title='0x0c01 = 3073'>0x0c01</td>
 <td>PCSCitation</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x0c02 = 3074'>0x0c02</td>
 <td>Projection</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><table class=cols><tr>
   <td>10101 = Alabama CS27 East
   <br>10102 = Alabama CS27 West
@@ -1946,7 +1946,7 @@ block tags GeoTiffDirectory, GeoTiffDoubleParams and GeoTiffAsciiParams.
 <tr>
 <td title='0x0c03 = 3075'>0x0c03</td>
 <td>ProjCoordTrans</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><table class=cols><tr>
   <td>1 = Transverse Mercator
   <br>2 = Transverse Mercator Modified Alaska
@@ -1981,132 +1981,132 @@ block tags GeoTiffDirectory, GeoTiffDoubleParams and GeoTiffAsciiParams.
 <tr class=b>
 <td title='0x0c04 = 3076'>0x0c04</td>
 <td>ProjLinearUnits</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>--&gt; <a href='GeoTiff.html#Units'>GeoTiff Units Values</a></td></tr>
 <tr>
 <td title='0x0c05 = 3077'>0x0c05</td>
 <td>ProjLinearUnitSize</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x0c06 = 3078'>0x0c06</td>
 <td>ProjStdParallel1</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0c07 = 3079'>0x0c07</td>
 <td>ProjStdParallel2</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x0c08 = 3080'>0x0c08</td>
 <td>ProjNatOriginLong</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0c09 = 3081'>0x0c09</td>
 <td>ProjNatOriginLat</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x0c0a = 3082'>0x0c0a</td>
 <td>ProjFalseEasting</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0c0b = 3083'>0x0c0b</td>
 <td>ProjFalseNorthing</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x0c0c = 3084'>0x0c0c</td>
 <td>ProjFalseOriginLong</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0c0d = 3085'>0x0c0d</td>
 <td>ProjFalseOriginLat</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x0c0e = 3086'>0x0c0e</td>
 <td>ProjFalseOriginEasting</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0c0f = 3087'>0x0c0f</td>
 <td>ProjFalseOriginNorthing</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x0c10 = 3088'>0x0c10</td>
 <td>ProjCenterLong</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0c11 = 3089'>0x0c11</td>
 <td>ProjCenterLat</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x0c12 = 3090'>0x0c12</td>
 <td>ProjCenterEasting</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0c13 = 3091'>0x0c13</td>
 <td>ProjCenterNorthing</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x0c14 = 3092'>0x0c14</td>
 <td>ProjScaleAtNatOrigin</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0c15 = 3093'>0x0c15</td>
 <td>ProjScaleAtCenter</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x0c16 = 3094'>0x0c16</td>
 <td>ProjAzimuthAngle</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0c17 = 3095'>0x0c17</td>
 <td>ProjStraightVertPoleLong</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x0c18 = 3096'>0x0c18</td>
 <td>ProjRectifiedGridAngle</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x1000 = 4096'>0x1000</td>
 <td>VerticalCSType</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>--&gt; <a href='GeoTiff.html#VerticalCS'>GeoTiff VerticalCS Values</a></td></tr>
 <tr class=b>
 <td title='0x1001 = 4097'>0x1001</td>
 <td>VerticalCitation</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x1002 = 4098'>0x1002</td>
 <td>VerticalDatum</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>--&gt; <a href='GeoTiff.html#VerticalCS'>GeoTiff VerticalCS Values</a></td></tr>
 <tr class=b>
 <td title='0x1003 = 4099'>0x1003</td>
 <td>VerticalUnits</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>--&gt; <a href='GeoTiff.html#Units'>GeoTiff Units Values</a></td></tr>
 <tr>
 <td title='0xb799 = 47001'>0xb799</td>
 <td>ChartFormat</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><table class=cols><tr>
   <td>47500 = General
   <br>47501 = Coastal
@@ -2123,37 +2123,37 @@ block tags GeoTiffDirectory, GeoTiffDoubleParams and GeoTiffAsciiParams.
 <tr class=b>
 <td title='0xb79a = 47002'>0xb79a</td>
 <td>ChartSource</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0xb79b = 47003'>0xb79b</td>
 <td>ChartSourceEdition</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0xb79c = 47004'>0xb79c</td>
 <td>ChartSourceDate</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0xb79d = 47005'>0xb79d</td>
 <td>ChartCorrDate</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0xb79e = 47006'>0xb79e</td>
 <td>ChartCountryOrigin</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0xb79f = 47007'>0xb79f</td>
 <td>ChartRasterEdition</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0xb7a0 = 47008'>0xb7a0</td>
 <td>ChartSoundingDatum</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><table class=cols><tr>
   <td>47600 = Equatorial Spring Low Water
   <br>47601 = Indian Spring Low Water
@@ -2173,42 +2173,42 @@ block tags GeoTiffDirectory, GeoTiffDoubleParams and GeoTiffAsciiParams.
 <tr>
 <td title='0xb7a1 = 47009'>0xb7a1</td>
 <td>ChartDepthUnits</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>--&gt; <a href='GeoTiff.html#Units'>GeoTiff Units Values</a></td></tr>
 <tr class=b>
 <td title='0xb7a2 = 47010'>0xb7a2</td>
 <td>ChartMagVar</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0xb7a3 = 47011'>0xb7a3</td>
 <td>ChartMagVarYear</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0xb7a4 = 47012'>0xb7a4</td>
 <td>ChartMagVarAnnChange</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0xb7a5 = 47013'>0xb7a5</td>
 <td>ChartWGSNSShift</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0xb7a7 = 47015'>0xb7a7</td>
 <td>InsetNWPixelX</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0xb7a8 = 47016'>0xb7a8</td>
 <td>InsetNWPixelY</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0xb7a9 = 47017'>0xb7a9</td>
 <td>ChartContourInterval</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 

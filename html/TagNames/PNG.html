@@ -29,7 +29,7 @@ this data as additional PNG chunks.</p>
 <tr class=b>
 <td>'PLTE'</td>
 <td>Palette</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'acTL'</td>
@@ -39,7 +39,7 @@ this data as additional PNG chunks.</p>
 <tr class=b>
 <td>'bKGD'</td>
 <td>BackgroundColor</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'cHRM'</td>
@@ -49,7 +49,7 @@ this data as additional PNG chunks.</p>
 <tr class=b>
 <td>'dSIG'</td>
 <td>DigitalSignature</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'exIf'</td>
@@ -61,33 +61,33 @@ EXIF without the Compress option)</span></td></tr>
 <tr class=b>
 <td>'fRAc'</td>
 <td>FractalParameters</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'gAMA'</td>
 <td>Gamma</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s><span class=n>(ExifTool reports the gamma for decoding the image, which is consistent with
 the EXIF convention, but is the inverse of the stored encoding gamma)</span></span></td></tr>
 <tr class=b>
 <td>'gIFg'</td>
 <td>GIFGraphicControlExtension</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'gIFt'</td>
 <td>GIFPlainTextExtension</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'gIFx'</td>
 <td>GIFApplicationExtension</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'hIST'</td>
 <td>PaletteHistogram</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'iCCP'</td>
@@ -98,7 +98,7 @@ the EXIF convention, but is the inverse of the stored encoding gamma)</span></sp
 <tr>
 <td>'iCCP-name'</td>
 <td>ProfileName</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s><span class=n>(not a real tag ID, this tag represents the iCCP profile name)</span></span></td></tr>
 <tr class=b>
 <td>'iTXt'</td>
@@ -108,12 +108,12 @@ the EXIF convention, but is the inverse of the stored encoding gamma)</span></sp
 <tr>
 <td>'oFFs'</td>
 <td>ImageOffset</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'pCAL'</td>
 <td>PixelCalibration</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'pHYs'</td>
@@ -123,7 +123,7 @@ the EXIF convention, but is the inverse of the stored encoding gamma)</span></sp
 <tr class=b>
 <td>'sBIT'</td>
 <td>SignificantBits</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'sCAL'</td>
@@ -133,12 +133,12 @@ the EXIF convention, but is the inverse of the stored encoding gamma)</span></sp
 <tr class=b>
 <td>'sPLT'</td>
 <td>SuggestedPalette</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'sRGB'</td>
 <td>SRGBRendering</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>0 = Perceptual
   <br>1 = Relative Colorimetric
   <br>2 = Saturation
@@ -156,12 +156,12 @@ the EXIF convention, but is the inverse of the stored encoding gamma)</span></sp
 <tr class=b>
 <td>'tIME'</td>
 <td>ModifyDate</td>
-<td class=c>Y</td>
+<td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'tRNS'</td>
 <td>Transparency</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'tXMP'</td>
@@ -197,22 +197,22 @@ EXIF with the Compress option)</span></td></tr>
 <tr>
 <td class=r title='0 = 0x0'>0</td>
 <td>ImageWidth</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='4 = 0x4'>4</td>
 <td>ImageHeight</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='8 = 0x8'>8</td>
 <td>BitDepth</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='9 = 0x9'>9</td>
 <td>ColorType</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>0 = Grayscale
   <br>2 = RGB
   <br>3 = Palette
@@ -221,17 +221,17 @@ EXIF with the Compress option)</span></td></tr>
 <tr>
 <td class=r title='10 = 0xa'>10</td>
 <td>Compression</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>0 = Deflate/Inflate</span></td></tr>
 <tr class=b>
 <td class=r title='11 = 0xb'>11</td>
 <td>Filter</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>0 = Adaptive</span></td></tr>
 <tr>
 <td class=r title='12 = 0xc'>12</td>
 <td>Interlace</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>0 = Noninterlaced
   <br>1 = Adam7 Interlace</span></td></tr>
 </table></td></tr></table></blockquote>
@@ -247,12 +247,12 @@ EXIF with the Compress option)</span></td></tr>
 <tr>
 <td class=r title='0 = 0x0'>0</td>
 <td>AnimationFrames</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='1 = 0x1'>1</td>
 <td>AnimationPlays</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -265,42 +265,42 @@ EXIF with the Compress option)</span></td></tr>
 <tr>
 <td class=r title='0 = 0x0'>0</td>
 <td>WhitePointX</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='1 = 0x1'>1</td>
 <td>WhitePointY</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='2 = 0x2'>2</td>
 <td>RedX</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='3 = 0x3'>3</td>
 <td>RedY</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='4 = 0x4'>4</td>
 <td>GreenX</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='5 = 0x5'>5</td>
 <td>GreenY</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='6 = 0x6'>6</td>
 <td>BlueX</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='7 = 0x7'>7</td>
 <td>BlueY</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -518,18 +518,18 @@ when any of these tags is written, and may only be deleted as a group.</p>
 <tr>
 <td class=r title='0 = 0x0'>0</td>
 <td>SubjectUnits</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>1 = meters
   <br>2 = radians</span></td></tr>
 <tr class=b>
 <td class=r title='1 = 0x1'>1</td>
 <td>SubjectPixelWidth</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='2 = 0x2'>2</td>
 <td>SubjectPixelHeight</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -542,7 +542,7 @@ when any of these tags is written, and may only be deleted as a group.</p>
 <tr>
 <td class=r title='0 = 0x0'>0</td>
 <td>StereoMode</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>0 = Cross-fuse Layout
   <br>1 = Diverging-fuse Layout</span></td></tr>
 </table></td></tr></table></blockquote>
@@ -556,17 +556,17 @@ when any of these tags is written, and may only be deleted as a group.</p>
 <tr>
 <td class=r title='0 = 0x0'>0</td>
 <td>VirtualImageWidth</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='1 = 0x1'>1</td>
 <td>VirtualImageHeight</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='2 = 0x2'>2</td>
 <td>VirtualPageUnits</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 

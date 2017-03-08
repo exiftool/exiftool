@@ -22,12 +22,12 @@ specification.</p>
 <tr>
 <td title='0xb000 = 45056'>0xb000</td>
 <td>MPFVersion</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0xb001 = 45057'>0xb001</td>
 <td>NumberOfImages</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0xb002 = 45058'>0xb002</td>
@@ -37,22 +37,22 @@ specification.</p>
 <tr class=b>
 <td title='0xb003 = 45059'>0xb003</td>
 <td>ImageUIDList</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0xb004 = 45060'>0xb004</td>
 <td>TotalFrames</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0xb101 = 45313'>0xb101</td>
 <td>MPIndividualNum</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0xb201 = 45569'>0xb201</td>
 <td>PanOrientation</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s><span class=n>(long integer is split into 4 bytes)</span>
   <br>[Value 2]
   <br>0x0 = [unused]
@@ -73,62 +73,62 @@ specification.</p>
 <tr class=b>
 <td title='0xb202 = 45570'>0xb202</td>
 <td>PanOverlapH</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0xb203 = 45571'>0xb203</td>
 <td>PanOverlapV</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0xb204 = 45572'>0xb204</td>
 <td>BaseViewpointNum</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0xb205 = 45573'>0xb205</td>
 <td>ConvergenceAngle</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0xb206 = 45574'>0xb206</td>
 <td>BaselineLength</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0xb207 = 45575'>0xb207</td>
 <td>VerticalDivergence</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0xb208 = 45576'>0xb208</td>
 <td>AxisDistanceX</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0xb209 = 45577'>0xb209</td>
 <td>AxisDistanceY</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0xb20a = 45578'>0xb20a</td>
 <td>AxisDistanceZ</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0xb20b = 45579'>0xb20b</td>
 <td>YawAngle</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0xb20c = 45580'>0xb20c</td>
 <td>PitchAngle</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0xb20d = 45581'>0xb20d</td>
 <td>RollAngle</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -145,7 +145,7 @@ embedded images.</p>
 <tr>
 <td class=r title='0 = 0x0'>0.1</td>
 <td>MPImageFlags</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>[Mask 0xf8000000]
   <br>Bit 29 = Representative image
   <br>Bit 30 = Dependent child image
@@ -153,13 +153,13 @@ embedded images.</p>
 <tr class=b>
 <td class=r title='0 = 0x0'>0.2</td>
 <td>MPImageFormat</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>[Mask 0x7000000]
   <br>0x0 = JPEG</span></td></tr>
 <tr>
 <td class=r title='0 = 0x0'>0.3</td>
 <td>MPImageType</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td><span class=s>[Mask 0xffffff]</span><table class=cols><tr>
   <td>0x0 = Undefined
   <br>0x10001 = Large Thumbnail (VGA equivalent)
@@ -172,22 +172,22 @@ embedded images.</p>
 <tr class=b>
 <td class=r title='4 = 0x4'>4</td>
 <td>MPImageLength</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='8 = 0x8'>8</td>
 <td>MPImageStart</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='12 = 0xc'>12</td>
 <td>DependentImage1EntryNumber</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='14 = 0xe'>14</td>
 <td>DependentImage2EntryNumber</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 

@@ -17,9 +17,25 @@ considered development releases, and are not uploaded to <a href="http://search.
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v10.46'><b>Mar. 8, 2017 - Version 10.46</b></a>
+<ul>
+<li>Moved Mac System tags from the Extra table into a new <a href="TagNames/MacOS.html">MacOS group</a> and added
+    ability to extract them by requesting the MacOS group
+<li>Updated QuickTime GenreID list (thanks Fran&ccedil;ois Bonzon)
+<li>Fixed "Invalid xref" problem when reading some PDF files
+<li>Fixed error in Minolta lens list (thanks Jos Roost)
+<li>Fixed minor problem with -U option generating Unknown tags for some known
+    bytes in variable-sized strings
+<li>API Changes:
+    <ul>
+    <li>Enhanced RequestTags option to allow groups to be requested
+    </ul>
+</ul>
+
 <a name='v10.45'><b>Mar. 2, 2017 - Version 10.45</b></a>
 <ul>
-<li>Added ability to write a number of Mac OS X system tags
+<li>Added ability to write a number of Mac OS X system tags (including the file
+    creation date!)
 <li>Added ability to extract OS X extended attributes ("XAttr" tags)
 <li>API Changes:
     <ul>

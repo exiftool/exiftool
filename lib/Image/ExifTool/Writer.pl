@@ -117,13 +117,6 @@ my %writableType = (
     XMP => [ undef,         'WriteXMP' ],
 );
 
-# (Note: all writable "pseudo" tags must be found in Extra table)
-my @writablePseudoTags =  qw(
-    FileName FilePermissions FileUserID FileGroupID Directory FileModifyDate
-    FileCreateDate HardLink TestName MDItemFinderComment MDItemFSCreationDate
-    MDItemFSLabel XAttrQuarantine
-);
-
 # groups we are allowed to delete
 # Notes:
 # 1) these names must either exist in %dirMap, or be translated in InitWriteDirs())
@@ -204,6 +197,10 @@ my %exifDirs = (
 my %allFam0 = (
     exif         => 1,
     makernotes   => 1,
+);
+
+my @writableMacOSTags = qw(
+    MDItemFinderComment MDItemFSCreationDate MDItemFSLabel XAttrQuarantine
 );
 
 # min/max values for integer formats
@@ -1193,6 +1190,7 @@ sub SetNewValuesFromFile($$;@)
         Unknown         => $$options{Unknown},
         UserParam       => $$options{UserParam},
         Validate        => $$options{Validate},
+        XAttrTags       => $$options{XAttrTags},
         XMPAutoConv     => $$options{XMPAutoConv},
     );
     $$srcExifTool{GLOBAL_TIME_OFFSET} = $$self{GLOBAL_TIME_OFFSET};
@@ -1600,25 +1598,19 @@ sub CountNewValues($)
 {
     my $self = shift;
     my $newVal = $$self{NEW_VALUE};
-    my $num = 0;
-    my $tag;
+    my ($num, $pseudo) = (0, 0);
     if ($newVal) {
         $num += scalar keys %$newVal;
         # don't count "fake" tags (only in Extra table)
-        foreach $tag (qw{Geotag Geosync}) {
-            --$num if defined $$newVal{$Image::ExifTool::Extra{$tag}};
+        my $nv;
+        foreach $nv (values %$newVal) {
+            my $tagInfo = $$nv{TagInfo};
+            --$num if $$tagInfo{WriteNothing};
+            ++$pseudo if $$tagInfo{WritePseudo};
         }
     }
     $num += scalar keys %{$$self{DEL_GROUP}};
     return $num unless wantarray;
-    my $pseudo = 0;
-    if ($newVal) {
-        # count the number of pseudo tags we are writing
-        foreach $tag (@writablePseudoTags) {
-            next unless defined $Image::ExifTool::Extra{$tag}; # (tag not written if not loaded)
-            ++$pseudo if defined $$newVal{$Image::ExifTool::Extra{$tag}};
-        }
-    }
     return ($num, $pseudo);
 }
 
@@ -1895,14 +1887,14 @@ sub SetSystemTags($$)
         }
     }
     my $tag;
-    foreach $tag (qw(MDItemFinderComment MDItemFSCreationDate MDItemFSLabel XAttrQuarantine)) {
+    foreach $tag (@writableMacOSTags) {
         my $nvHash;
         my $val = $self->GetNewValue($tag, \$nvHash);
         next unless $nvHash;
         $^O eq 'darwin' or $self->WarnOnce('Can only set MDItem tags on OS X'), last;
         ref $file and $self->Warn('Setting MDItem tags requires a file name'), last;
-        require Image::ExifTool::MacOSX;
-        my $res = Image::ExifTool::MacOSX::SetOSXTags($self, $file);
+        require Image::ExifTool::MacOS;
+        my $res = Image::ExifTool::MacOS::SetMacOSTags($self, $file, \@writableMacOSTags);
         $result = $res if $res == 1 or not $result;
         last;
     }

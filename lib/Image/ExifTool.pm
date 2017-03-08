@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '10.45';
+$VERSION = '10.46';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -139,7 +139,7 @@ sub ReadValue($$$$$;$);
     RIFF AIFF ASF DICOM MIE HTML XMP::SVG Palm Palm::MOBI Palm::EXTH Torrent EXE
     EXE::PEVersion EXE::PEString EXE::MachO EXE::PEF EXE::ELF EXE::AR EXE::CHM
     LNK Font VCard VCard::VCalendar RSRC Rawzor ZIP ZIP::GZIP ZIP::RAR RTF OOXML
-    iWork ISO FLIR::AFF FLIR::FPF
+    iWork ISO FLIR::AFF FLIR::FPF MacOS::MDItem MacOS::XAttr
 );
 
 # alphabetical list of current Lang modules
@@ -976,6 +976,7 @@ my %systemTagsNotes = (
             directory that will be created if doesn't already exist
         },
         Writable => 1,
+        WritePseudo => 1,
         DelCheck => q{"Can't delete"},
         Protected => 1,
         RawConv => '$self->ConvertFileName($val)',
@@ -985,6 +986,7 @@ my %systemTagsNotes = (
     FileName => {
         Groups => { 1 => 'System' },
         Writable => 1,
+        WritePseudo => 1,
         DelCheck => q{"Can't delete"},
         Protected => 1,
         Notes => q{
@@ -1007,6 +1009,7 @@ my %systemTagsNotes = (
     },
     TestName => {
         Writable => 1,
+        WritePseudo => 1,
         DelCheck => q{"Can't delete"},
         Protected => 1,
         WriteOnly => 1,
@@ -1067,6 +1070,7 @@ my %systemTagsNotes = (
         },
         Groups => { 1 => 'System', 2 => 'Time' },
         Writable => 1,
+        WritePseudo => 1,
         DelCheck => q{"Can't delete"},
         # all writable pseudo-tags must be protected so -tagsfromfile fails with
         # unrecognized files unless a pseudo tag is specified explicitly
@@ -1091,11 +1095,12 @@ my %systemTagsNotes = (
         Description => 'File Creation Date/Time',
         Notes => q{
             the filesystem creation date/time.  Windows only.  Requires Win32API::File
-            and Win32::API for writing.  See MDItemFSCreationDate below for the Mac OS X
-            equivalent
+            and Win32::API for writing.  See L<MDItemFSCreationDate|MacOS.html>
+            for the Mac OS X equivalent
         },
         Groups => { 1 => 'System', 2 => 'Time' },
         Writable => 1,
+        WritePseudo => 1,
         DelCheck => q{"Can't delete"},
         Protected => 1, # all writable pseudo-tags must be protected!
         Shift => 'Time',
@@ -1128,6 +1133,7 @@ my %systemTagsNotes = (
             this value should be done in octal, eg. 'oct($filePermissions#) & 0200'
         },
         Writable => 1,
+        WritePseudo => 1,
         DelCheck => q{"Can't delete"},
         Protected => 1, # all writable pseudo-tags must be protected!
         ValueConv => 'sprintf("%.3o", $val & 0777)',
@@ -1217,6 +1223,7 @@ my %systemTagsNotes = (
             otherwise.  May be written with either user name or number
         },
         Writable => 1,
+        WritePseudo => 1,
         DelCheck => q{"Can't delete"},
         Protected => 1, # all writable pseudo-tags must be protected!
         PrintConv => 'eval { getpwuid($val) } || $val',
@@ -1230,6 +1237,7 @@ my %systemTagsNotes = (
             otherwise.  May be written with either group name or number
         },
         Writable => 1,
+        WritePseudo => 1,
         DelCheck => q{"Can't delete"},
         Protected => 1, # all writable pseudo-tags must be protected!
         PrintConv => 'eval { getgrgid($val) } || $val',
@@ -1241,6 +1249,7 @@ my %systemTagsNotes = (
         Writable => 1,
         DelCheck => q{"Can't delete"},
         WriteOnly => 1,
+        WritePseudo => 1,
         Protected => 1,
         Notes => q{
             this write-only tag is used to create a hard link to the file.  If the file
@@ -1449,6 +1458,7 @@ my %systemTagsNotes = (
     Geotag => {
         Writable => 1,
         WriteOnly => 1,
+        WriteNothing => 1,
         AllowGroup => '(exif|gps|xmp|xmp-exif)',
         Notes => q{
             this write-only tag is used to define the GPS track log data or track log
@@ -1499,6 +1509,7 @@ my %systemTagsNotes = (
     Geosync => {
         Writable => 1,
         WriteOnly => 1,
+        WriteNothing => 1,
         AllowGroup => '(exif|gps|xmp|xmp-exif)',
         Shift => 'Time', # enables "+=" syntax as well as "=+"
         Notes => q{
@@ -1825,12 +1836,15 @@ sub Options($$;@)
         } elsif ($param eq 'RequestTags') {
             if (defined $newVal) {
                 # parse list from delimited string if necessary
-                my @reqList = (ref $newVal eq 'ARRAY') ? @$newVal : ($newVal =~ /(?:[-\w]+:)*[-\w?*]+/g);
+                my @reqList = (ref $newVal eq 'ARRAY') ? @$newVal : ($newVal =~ /[-\w?*:]+/g);
                 ExpandShortcuts(\@reqList);
                 # add to existing list
                 $$options{$param} or $$options{$param} = [ ];
                 foreach (@reqList) {
-                    push @{$$options{$param}}, lc($2) if /(^|:)([-\w?*]+)#?$/;
+                    /^(.*:)?([-\w?*]*)#?$/ or next;
+                    push @{$$options{$param}}, lc($2) if $2;
+                    next unless $1;
+                    push @{$$options{$param}}, lc($_).':' foreach split /:/, $1;
                 }
             } else {
                 $$options{$param} = undef;  # clear the list
@@ -1914,7 +1928,7 @@ sub ClearOptions($)
         ListSep     => ', ',    # list item separator
         ListSplit   => undef,   # regex for splitting list-type tag values when writing
         MakerNotes  => undef,   # extract maker notes as a block
-        MDItemTags  => undef,   # extract OS X metadata item tags
+        MDItemTags  => undef,   # extract MacOS metadata item tags
         MissingTagValue =>undef,# value for missing tags when expanded in expressions
         NoPDFList   => undef,   # flag to avoid splitting PDF List-type tag values
         Password    => undef,   # password for password-protected PDF documents
@@ -1936,6 +1950,7 @@ sub ClearOptions($)
         Validate    => undef,   # perform additional validation
         Verbose     => 0,       # print verbose messages (0-5, higher # = more verbose)
         WriteMode   => 'wcg',   # enable all write modes by default
+        XAttrTags   => undef,   # extract MacOS extended attribute tags
         XMPAutoConv => 1,       # automatic conversion of unknown XMP tag values
     };
     # keep necessary member variables in sync with options
@@ -2130,12 +2145,13 @@ sub ExtractInfo($;@)
         }
         # extract MDItem tags if requested (only on plain files)
         if ($^O eq 'darwin' and defined $filename and $filename ne '' and defined $fileSize) {
-            my $mdItem = ($reqAll > 1 || $$options{MDItemTags} || grep /^mditem/i, keys %$req);
-            my $xattr  = ($reqAll > 1 || $$options{XAttrTags}  || grep /^xattr/i,  keys %$req);
+            my $reqMacOS = ($reqAll > 1 or $$req{'macos:'});
+            my $mdItem = ($reqMacOS || $$options{MDItemTags} || grep /^mditem/, keys %$req);
+            my $xattr  = ($reqMacOS || $$options{XAttrTags}  || grep /^xattr/,  keys %$req);
             if ($mdItem or $xattr) {
-                require Image::ExifTool::MacOSX;
-                Image::ExifTool::MacOSX::ExtractMDItemTags($self, $filename) if $mdItem;
-                Image::ExifTool::MacOSX::ExtractXAttrTags($self, $filename) if $xattr;
+                require Image::ExifTool::MacOS;
+                Image::ExifTool::MacOS::ExtractMDItemTags($self, $filename) if $mdItem;
+                Image::ExifTool::MacOS::ExtractXAttrTags($self, $filename) if $xattr;
             }
         }
 
@@ -3638,7 +3654,10 @@ sub ParseArguments($;@)
         ExpandShortcuts($$self{REQUESTED_TAGS});
         # initialize lookup for requested tags
         foreach (@{$$self{REQUESTED_TAGS}}) {
-            /(^|:)([-\w?*]+)#?$/ and $$self{REQ_TAG_LOOKUP}{lc($2)} = 1;
+            /^(.*:)?([-\w?*]*)#?$/ or next;
+            $$self{REQ_TAG_LOOKUP}{lc($2)} = 1 if $2;
+            next unless $1;
+            $$self{REQ_TAG_LOOKUP}{lc($_).':'} = 1 foreach split /:/, $1;
         }
     }
     if (@exclude or $wasExcludeOpt) {
@@ -7566,6 +7585,7 @@ sub ProcessBinaryData($$$)
                     $count *= 2 if $format eq 'ustr32';
                     $entry += 4;
                     $more -= 4;
+                    $nextIndex += 4 / $increment;   # (increment next index for int32u)
                 } elsif ($format eq 'int16u') {
                     # int16u size of binary data to follow
                     last if $more < 2;

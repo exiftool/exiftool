@@ -104,7 +104,7 @@ is an explanation of the meaning of each special key:
   cause subsequent tag indices to be incremented according to the size of the
   data, not including the terminator.  See "Format" below for more details.
 
-    pstring     - Pascal string
+    pstring     - Pascal string (1-byte length followed by ASCII string)
     var_string  - variable-length null-terminated ASCII string
     var_ustring - variable-length null-terminated UCS-2 string
     var_pstring - variable-length Pascal string
@@ -113,6 +113,18 @@ is an explanation of the meaning of each special key:
     var_int16u  - variable-length undef data with int6u count
     var_ue7     - variable-length 7-bit-at-a-time integer (BPG)
 
+  And the following format codes are used for string values in XMP metadata.
+  (See the XMP specification for more details.)
+
+    boolean     - "True" or "False"
+    date        - date/time string
+    integer     - integer as a string
+    lang-alt    - list of alternate-language strings
+    rational    - "N/D" where N=numerator, D=Denominator
+    real        - floating point value as a string
+    string      - unformatted string
+    struct      - structure
+    
   FIRST_ENTRY : Specifies the index for the first tag entry in a binary table.
   This value is only used if the Unknown option is set to 2 or higher, and
   allows the binary data to be scanned for unknown tag entries.
@@ -247,7 +259,7 @@ numerical.
 
   Groups        : Hash lookup for group names for this tag.
 
-  Format        : Only valid for BinaryData, EXIF and IPTC tables. For a Binary
+  Format        : Only valid for BinaryData, EXIF and IPTC tables.  For a Binary
                   or EXIF table, this gives the format that is used to convert
                   the binary data, and is one of the FORMAT types specified
                   above.  If not specified, the Format of an EXIF entry is taken
@@ -476,6 +488,14 @@ numerical.
                   'Unknown' - this is an unknown tag (only extracted when the
                   Unknown option is set).
 
+                  'WriteNothing' - flag indicating that nothing is actually
+                  written when this tag is set.  It is a fake writable tag that
+                  isn't actually written (eg. Geotag).
+
+                  'WritePseudo' - flag indicating that this is a writable pseudo
+                  tag.  If set, this tag may be written without actually writing
+                  to the file (eg. FileName, FileModifyDate).
+ 
                   'WrongBase' - ['IsOffset' tags only] An expression using $self
                   that is evaluated to generate a base shift for 'IsOffset' tags
                   which use a different base than the rest of the tags.

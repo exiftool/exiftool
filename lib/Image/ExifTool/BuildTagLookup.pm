@@ -32,9 +32,9 @@ use Image::ExifTool::XMP;
 use Image::ExifTool::Canon;
 use Image::ExifTool::Nikon;
 use Image::ExifTool::Validate;
-use Image::ExifTool::MacOSX;
+use Image::ExifTool::MacOS;
 
-$VERSION = '3.04';
+$VERSION = '3.05';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -103,7 +103,7 @@ my %tweakOrder = (
 
 # list of all recognized Format strings
 # (not a complete list, but this is all we use so far)
-# (also, formats like "var_X[Y]" are allowed for any valid X)
+# (also, formats like "var_X[num]" are allowed for any valid X)
 my %formatOK = (
     %Image::ExifTool::Exif::formatNumber,
     0 => 1,
@@ -178,7 +178,7 @@ default when extracting information with exiftool.  To see the tag names
 instead of the descriptions, use C<exiftool -s>.
 
 The B<Writable> column indicates whether the tag is writable by ExifTool.
-Anything but an C<N> in this column means the tag is writable.  A C<Y>
+Anything but a C<no> in this column means the tag is writable.  A C<yes>
 indicates writable information that is either unformatted or written using
 the existing format.  Other expressions give details about the information
 format, and vary depending on the general type of information.  The format
@@ -521,12 +521,10 @@ in this column are write-only.
 
 Tags in the family 1 "System" group are referred to as "pseudo" tags because
 they don't represent real metadata in the file.  Instead, this information
-is stored in the directory structure of the filesystem.  13 writable
-"pseudo" tags (FileName, Directory, FileModifyDate, FileCreateDate,
-FilePermissions, FileUserID, FileGroupID, HardLink, MDItemFSCreationDate,
-MDItemFSLabel, MDItemFinderComment, XAttrQuarantine and TestName) may be
-written without modifying the file itself.  The TestName tag is used for
-dry-run testing before writing FileName.
+is stored in the directory structure of the filesystem.  The B<Writable>
+System "pseudo" tags in this table may be written without modifying the file
+itself.  The TestName tag is used for dry-run testing before writing
+FileName.
 },
     Composite => q{
 The values of the composite tags are B<Derived From> the values of other
@@ -553,6 +551,19 @@ synchronized when writing.  The MWG Composite tags below are designed to aid
 in the implementation of these recommendations.  As well, the MWG defines
 new XMP tags which are listed in the subsequent tables below.  See
 L<http://www.metadataworkinggroup.org/> for the official MWG specification.
+},
+    MacOS => q{
+On MacOS systems, there are a number of additional tags with names beginning
+with "MDItem" and "XAttr" that may be extracted.  These tags are not
+extracted by default -- they must be specifically requested or enabled via
+an API option.
+
+The tables below list some of the tags that may be extracted, but ExifTool
+will extract all available information even for tags not listed.
+
+Tags in these tables are referred to as "pseudo" tags because their
+information is not stored in the file itself.  As such, B<Writable> tags in
+these tables may be changed without having to rewrite the file.
 },
     PodTrailer => q{
 ~head1 NOTES
@@ -645,7 +656,8 @@ sub new
 #
     my (%tagNameInfo, %id, %longID, %longName, %shortName, %tableNum,
         %tagLookup, %tagExists, %noLookup, %tableWritable, %sepTable, %case,
-        %structs, %compositeModules, %isPlugin, %flattened, %structLookup);
+        %structs, %compositeModules, %isPlugin, %flattened, %structLookup,
+        @writePseudo);
     $self->{TAG_NAME_INFO} = \%tagNameInfo;
     $self->{ID_LOOKUP} = \%id;
     $self->{LONG_ID} = \%longID;
@@ -661,6 +673,7 @@ sub new
     $self->{STRUCT_LOOKUP} = \%structLookup;  # lookup for Struct hash ref based on Struct name
     $self->{COMPOSITE_MODULES} = \%compositeModules;
     $self->{COUNT} = \%count;
+    $self->{WRITE_PSEUDO} = \@writePseudo;
 
     Image::ExifTool::LoadAllTables();
     my @tableNames = sort keys %allTables;
@@ -776,6 +789,10 @@ TagID:  foreach $tagID (@keys) {
             }
             foreach $tagInfo (@infoArray) {
                 my $name = $$tagInfo{Name};
+                if ($$tagInfo{WritePseudo}) {
+                    push @writePseudo, $name;
+                    warn "Writable pseudo tag $name is not protected!\n" unless $$tagInfo{Protected};
+                }
                 unless ($$tagInfo{SubDirectory} or $$tagInfo{Struct}) {
                     my $lc = lc $name;
                     warn "Different case for $tableName $name $case{$lc}\n" if $case{$lc} and $case{$lc} ne $name;
@@ -1134,7 +1151,7 @@ TagID:  foreach $tagID (@keys) {
                 if ($subdir and not $$tagInfo{SeparateTable}) {
                     # subdirectories are only writable if specified explicitly
                     my $tw = $$tagInfo{Writable};
-                    $writable = 'Y' if $tw and $writable eq '1';
+                    $writable = 'yes' if $tw and $writable eq '1';
                     $writable = '-' . ($tw ? $writable : '');
                     $writable .= '!' if $tw and ($$tagInfo{Protected} || 0) & 0x01;
                     $writable .= '+' if $$tagInfo{List};
@@ -1155,9 +1172,9 @@ TagID:  foreach $tagID (@keys) {
                         }
                     }
                     if (not $writable) {
-                        $writable = 'N';
+                        $writable = 'no';
                     } else {
-                        $writable eq '1' and $writable = $format ? $format : 'Y';
+                        $writable eq '1' and $writable = $format ? $format : 'yes';
                         my $count = $$tagInfo{Count} || 1;
                         # adjust count to Writable size if different than Format
                         if ($writable and $format and $writable ne $format and
@@ -1462,7 +1479,7 @@ sub WriteTagLookup($$)
 # write module lookup for writable composite tags
 #
     my $compositeModules = $self->{COMPOSITE_MODULES};
-    print OUTFILE ");\n\n# module names for writable dynamically-loaded (usually Composite) tags\n";
+    print OUTFILE ");\n\n# module names for writable Composite tags\n";
     print OUTFILE "my \%compositeModules = (\n";
     foreach (sort keys %$compositeModules) {
         print OUTFILE "\t'$_' => '$$compositeModules{$_}',\n";
@@ -2227,7 +2244,7 @@ sub WriteTagNames($$)
                 }
                 if ($$sepTable{$vals[0]}) {
                     $wrStr =~ s/^[-=]//;
-                    $wrStr = 'N' unless $wrStr;
+                    $wrStr = 'no' unless $wrStr;
                 } elsif ($$structs{$vals[0]}) {
                     my $flags = $wrStr =~ /([+_]+)$/ ? $1 : '';
                     $wrStr = "$vals[0] Struct$flags";
@@ -2235,7 +2252,7 @@ sub WriteTagNames($$)
                     $wrStr = $vals[0];
                 }
                 shift @vals;
-            } elsif ($wrStr and $wrStr ne 'N' and @masks) {
+            } elsif ($wrStr and $wrStr ne 'no' and @masks) {
                 # fill in missing entries if masks are different
                 my $mask = shift @masks;
                 while (@masks > @vals) {
@@ -2512,6 +2529,10 @@ Reference to hash containing counting statistics.  Keys are the
 descriptions, and values are the numerical counts.  Valid after
 BuildTagLookup object is created, but additional statistics are added by
 WriteTagNames().
+
+=item WRITE_PSEUDO
+
+List of writable pseudo tags.
 
 =back
 

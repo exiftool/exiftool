@@ -183,7 +183,7 @@ official EXIF 2.31 specification.
   <br>PreviewImageStart
   <br>PreviewImageStart
   <br>JpgFromRawStart</td>
-<td class=c title=' * = Protected'>N<br>int32u*<br>int32u*<br>int32u*</td>
+<td class=c title=' * = Protected'>no<br>int32u*<br>int32u*<br>int32u*</td>
 <td class=c>-<br>IFD0<br>All<br>SubIFD2</td>
 <td><span class=s><span class=n>(called StripOffsets in most locations, but it is PreviewImageStart in IFD0
 of CR2 images and various IFD&#39;s of DNG images except for SubIFD2 where it is
@@ -221,7 +221,7 @@ JpgFromRawStart)</span></span></td></tr>
   <br>PreviewImageLength
   <br>PreviewImageLength
   <br>JpgFromRawLength</td>
-<td class=c title=' * = Protected'>N<br>int32u*<br>int32u*<br>int32u*</td>
+<td class=c title=' * = Protected'>no<br>int32u*<br>int32u*<br>int32u*</td>
 <td class=c>-<br>IFD0<br>All<br>SubIFD2</td>
 <td><span class=s><span class=n>(called StripByteCounts in most locations, but it is PreviewImageLength in
 IFD0 of CR2 images and various IFD&#39;s of DNG images except for SubIFD2 where
@@ -278,13 +278,13 @@ it is JpgFromRawLength)</span></span></td></tr>
 <tr class=b>
 <td title='0x0120 = 288'>0x0120</td>
 <td>FreeOffsets</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0121 = 289'>0x0121</td>
 <td>FreeByteCounts</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
@@ -300,13 +300,13 @@ it is JpgFromRawLength)</span></span></td></tr>
 <tr>
 <td title='0x0123 = 291'>0x0123</td>
 <td>GrayResponseCurve</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x0124 = 292'>0x0124</td>
 <td>T4Options</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td><span class=s>Bit 0 = 2-Dimensional encoding
   <br>Bit 1 = Uncompressed
@@ -314,7 +314,7 @@ it is JpgFromRawLength)</span></span></td></tr>
 <tr>
 <td title='0x0125 = 293'>0x0125</td>
 <td>T6Options</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td><span class=s>Bit 1 = Uncompressed</span></td></tr>
 <tr class=b>
@@ -335,7 +335,7 @@ it is JpgFromRawLength)</span></span></td></tr>
 <tr class=b>
 <td title='0x012c = 300'>0x012c</td>
 <td>ColorResponseUnit</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -390,7 +390,7 @@ it is JpgFromRawLength)</span></span></td></tr>
 <tr>
 <td title='0x0140 = 320'>0x0140</td>
 <td>ColorMap</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
@@ -414,25 +414,25 @@ it is JpgFromRawLength)</span></span></td></tr>
 <tr>
 <td title='0x0144 = 324'>0x0144</td>
 <td>TileOffsets</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x0145 = 325'>0x0145</td>
 <td>TileByteCounts</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0146 = 326'>0x0146</td>
 <td>BadFaxLines</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x0147 = 327'>0x0147</td>
 <td>CleanFaxData</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td><span class=s>0 = Clean
   <br>1 = Regenerated
@@ -440,14 +440,14 @@ it is JpgFromRawLength)</span></span></td></tr>
 <tr>
 <td title='0x0148 = 328'>0x0148</td>
 <td>ConsecutiveBadFaxLines</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x014a = 330'>0x014a</td>
 <td>SubIFD
   <br>A100DataOffset</td>
-<td class=c>-<br>N</td>
+<td class=c>-<br>no</td>
 <td class=c>-<br>-</td>
 <td>--&gt; <a href='EXIF.html'>EXIF Tags</a>
   <br><span class=n>(the data offset in original Sony DSLR-A100 ARW images)</span></td></tr>
@@ -461,19 +461,19 @@ it is JpgFromRawLength)</span></span></td></tr>
 <tr class=b>
 <td title='0x014d = 333'>0x014d</td>
 <td>InkNames</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x014e = 334'>0x014e</td>
 <td>NumberofInks</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x0150 = 336'>0x0150</td>
 <td>DotRange</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -485,7 +485,7 @@ it is JpgFromRawLength)</span></span></td></tr>
 <tr class=b>
 <td title='0x0152 = 338'>0x0152</td>
 <td>ExtraSamples</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td><span class=s>0 = Unspecified
   <br>1 = Associated Alpha
@@ -493,7 +493,7 @@ it is JpgFromRawLength)</span></span></td></tr>
 <tr>
 <td title='0x0153 = 339'>0x0153</td>
 <td>SampleFormat</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td><span class=s><span class=n>(SamplesPerPixel values)</span>
   <br>[Values 0-3]</span><table class=cols><tr>
@@ -507,56 +507,56 @@ it is JpgFromRawLength)</span></span></td></tr>
 <tr class=b>
 <td title='0x0154 = 340'>0x0154</td>
 <td>SMinSampleValue</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0155 = 341'>0x0155</td>
 <td>SMaxSampleValue</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x0156 = 342'>0x0156</td>
 <td>TransferRange</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0157 = 343'>0x0157</td>
 <td>ClipPath</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x0158 = 344'>0x0158</td>
 <td>XClipPathUnits</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0159 = 345'>0x0159</td>
 <td>YClipPathUnits</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x015a = 346'>0x015a</td>
 <td>Indexed</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td><span class=s>0 = Not indexed
   <br>1 = Indexed</span></td></tr>
 <tr>
 <td title='0x015b = 347'>0x015b</td>
 <td>JPEGTables</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x015f = 351'>0x015f</td>
 <td>OPIProxy</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td><span class=s>0 = Higher resolution image does not exist
   <br>1 = Higher resolution image exists</span></td></tr>
@@ -569,14 +569,14 @@ it is JpgFromRawLength)</span></span></td></tr>
 <tr class=b>
 <td title='0x0191 = 401'>0x0191</td>
 <td>ProfileType</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td><span class=s>0 = Unspecified
   <br>1 = Group 3 FAX</span></td></tr>
 <tr>
 <td title='0x0192 = 402'>0x0192</td>
 <td>FaxProfile</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td><table class=cols><tr>
   <td>0 = Unknown
@@ -592,7 +592,7 @@ it is JpgFromRawLength)</span></span></td></tr>
 <tr class=b>
 <td title='0x0193 = 403'>0x0193</td>
 <td>CodingMethods</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td><table class=cols><tr>
   <td>Bit 0 = Unspecified compression
@@ -606,43 +606,43 @@ it is JpgFromRawLength)</span></span></td></tr>
 <tr>
 <td title='0x0194 = 404'>0x0194</td>
 <td>VersionYear</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x0195 = 405'>0x0195</td>
 <td>ModeNumber</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x01b1 = 433'>0x01b1</td>
 <td>Decode</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x01b2 = 434'>0x01b2</td>
 <td>DefaultImageColor</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x01b3 = 435'>0x01b3</td>
 <td>T82Options</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x01b5 = 437'>0x01b5</td>
 <td>JPEGTables</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0200 = 512'>0x0200</td>
 <td>JPEGProc</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td><span class=s>1 = Baseline
   <br>14 = Lossless</span></td></tr>
@@ -658,7 +658,7 @@ it is JpgFromRawLength)</span></span></td></tr>
   <br>OtherImageStart
   <br>OtherImageStart
   <br>OtherImageStart</td>
-<td class=c title=' * = Protected'>int32u*<br>int32u*<br>int32u*<br>int32u*<br>int32u*<br>int32u*<br>int32u*<br>int32u*<br>int32u*<br>N</td>
+<td class=c title=' * = Protected'>int32u*<br>int32u*<br>int32u*<br>int32u*<br>int32u*<br>int32u*<br>int32u*<br>int32u*<br>int32u*<br>no</td>
 <td class=c>IFD1<br>IFD0<br>SubIFD<br>MakerNotes<br>IFD0<br>SubIFD<br>IFD2<br>SubIFD1<br>SubIFD2<br>-</td>
 <td><span class=s><span class=n>(ThumbnailOffset in IFD1 of JPEG and some TIFF-based images, IFD0 of MRW
 images and AVI and MOV videos, and the SubIFD in IFD1 of SRW images;
@@ -677,7 +677,7 @@ OtherImageStart in everything else)</span></span></td></tr>
   <br>OtherImageLength
   <br>OtherImageLength
   <br>OtherImageLength</td>
-<td class=c title=' * = Protected'>int32u*<br>int32u*<br>int32u*<br>int32u*<br>int32u*<br>int32u*<br>int32u*<br>int32u*<br>int32u*<br>N</td>
+<td class=c title=' * = Protected'>int32u*<br>int32u*<br>int32u*<br>int32u*<br>int32u*<br>int32u*<br>int32u*<br>int32u*<br>int32u*<br>no</td>
 <td class=c>IFD1<br>IFD0<br>SubIFD<br>MakerNotes<br>IFD0<br>SubIFD<br>IFD2<br>SubIFD1<br>SubIFD2<br>-</td>
 <td><span class=s><span class=n>(ThumbnailLength in IFD1 of JPEG and some TIFF-based images, IFD0 of MRW
 images and AVI and MOV videos, and the SubIFD in IFD1 of SRW images;
@@ -687,37 +687,37 @@ OtherImageLength in everything else)</span></span></td></tr>
 <tr class=b>
 <td title='0x0203 = 515'>0x0203</td>
 <td>JPEGRestartInterval</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0205 = 517'>0x0205</td>
 <td>JPEGLosslessPredictors</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x0206 = 518'>0x0206</td>
 <td>JPEGPointTransforms</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0207 = 519'>0x0207</td>
 <td>JPEGQTables</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x0208 = 520'>0x0208</td>
 <td>JPEGDCTables</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0209 = 521'>0x0209</td>
 <td>JPEGACTables</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
@@ -758,7 +758,7 @@ OtherImageLength in everything else)</span></span></td></tr>
 <tr class=b>
 <td title='0x022f = 559'>0x022f</td>
 <td>StripRowCounts</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -770,7 +770,7 @@ OtherImageLength in everything else)</span></span></td></tr>
 <tr class=b>
 <td title='0x03e7 = 999'>0x03e7</td>
 <td>USPTOMiscellaneous</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -800,7 +800,7 @@ OtherImageLength in everything else)</span></span></td></tr>
 <tr>
 <td title='0x4747 = 18247'>0x4747</td>
 <td>XP_DIP_XML</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
@@ -818,7 +818,7 @@ OtherImageLength in everything else)</span></span></td></tr>
 <tr class=b>
 <td title='0x7000 = 28672'>0x7000</td>
 <td>SonyRawFileType</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td><span class=s>0 = Sony Uncompressed 14-bit RAW
   <br>1 = Sony Uncompressed 12-bit RAW
@@ -845,127 +845,127 @@ OtherImageLength in everything else)</span></span></td></tr>
 <tr class=b>
 <td title='0x800d = 32781'>0x800d</td>
 <td>ImageID</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x80a3 = 32931'>0x80a3</td>
 <td>WangTag1</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x80a4 = 32932'>0x80a4</td>
 <td>WangAnnotation</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x80a5 = 32933'>0x80a5</td>
 <td>WangTag3</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x80a6 = 32934'>0x80a6</td>
 <td>WangTag4</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x80b9 = 32953'>0x80b9</td>
 <td>ImageReferencePoints</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x80ba = 32954'>0x80ba</td>
 <td>RegionXformTackPoint</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x80bb = 32955'>0x80bb</td>
 <td>WarpQuadrilateral</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x80bc = 32956'>0x80bc</td>
 <td>AffineTransformMat</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x80e3 = 32995'>0x80e3</td>
 <td>Matteing</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x80e4 = 32996'>0x80e4</td>
 <td>DataType</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x80e5 = 32997'>0x80e5</td>
 <td>ImageDepth</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x80e6 = 32998'>0x80e6</td>
 <td>TileDepth</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x8214 = 33300'>0x8214</td>
 <td>ImageFullWidth</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x8215 = 33301'>0x8215</td>
 <td>ImageFullHeight</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x8216 = 33302'>0x8216</td>
 <td>TextureFormat</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x8217 = 33303'>0x8217</td>
 <td>WrapModes</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x8218 = 33304'>0x8218</td>
 <td>FovCot</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x8219 = 33305'>0x8219</td>
 <td>MatrixWorldToScreen</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x821a = 33306'>0x821a</td>
 <td>MatrixWorldToCamera</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x827d = 33405'>0x827d</td>
 <td>Model2</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -983,7 +983,7 @@ OtherImageLength in everything else)</span></span></td></tr>
 <tr>
 <td title='0x828f = 33423'>0x828f</td>
 <td>BatteryLevel</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
@@ -1017,91 +1017,91 @@ conversion)</span></span></td></tr>
 <tr class=b>
 <td title='0x82a5 = 33445'>0x82a5</td>
 <td>MDFileTag</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td><span class=s><span class=n>(tags 0x82a5-0x82ac are used in Molecular Dynamics GEL files)</span></span></td></tr>
 <tr>
 <td title='0x82a6 = 33446'>0x82a6</td>
 <td>MDScalePixel</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x82a7 = 33447'>0x82a7</td>
 <td>MDColorTable</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x82a8 = 33448'>0x82a8</td>
 <td>MDLabName</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x82a9 = 33449'>0x82a9</td>
 <td>MDSampleInfo</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x82aa = 33450'>0x82aa</td>
 <td>MDPrepDate</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x82ab = 33451'>0x82ab</td>
 <td>MDPrepTime</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x82ac = 33452'>0x82ac</td>
 <td>MDFileUnits</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x830e = 33550'>0x830e</td>
 <td>PixelScale</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x8335 = 33589'>0x8335</td>
 <td>AdventScale</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x8336 = 33590'>0x8336</td>
 <td>AdventRevision</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x835c = 33628'>0x835c</td>
 <td>UIC1Tag</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x835d = 33629'>0x835d</td>
 <td>UIC2Tag</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x835e = 33630'>0x835e</td>
 <td>UIC3Tag</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x835f = 33631'>0x835f</td>
 <td>UIC4Tag</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -1113,55 +1113,55 @@ conversion)</span></span></td></tr>
 <tr class=b>
 <td title='0x847e = 33918'>0x847e</td>
 <td>IntergraphPacketData</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x847f = 33919'>0x847f</td>
 <td>IntergraphFlagRegisters</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x8480 = 33920'>0x8480</td>
 <td>IntergraphMatrix</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x8481 = 33921'>0x8481</td>
 <td>INGRReserved</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x8482 = 33922'>0x8482</td>
 <td>ModelTiePoint</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x84e0 = 34016'>0x84e0</td>
 <td>Site</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x84e1 = 34017'>0x84e1</td>
 <td>ColorSequence</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x84e2 = 34018'>0x84e2</td>
 <td>IT8Header</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x84e3 = 34019'>0x84e3</td>
 <td>RasterPadding</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td><span class=s>0 = Byte
   <br>1 = Word
@@ -1171,69 +1171,69 @@ conversion)</span></span></td></tr>
 <tr>
 <td title='0x84e4 = 34020'>0x84e4</td>
 <td>BitsPerRunLength</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x84e5 = 34021'>0x84e5</td>
 <td>BitsPerExtendedRunLength</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x84e6 = 34022'>0x84e6</td>
 <td>ColorTable</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x84e7 = 34023'>0x84e7</td>
 <td>ImageColorIndicator</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td><span class=s>0 = Unspecified Image Color
   <br>1 = Specified Image Color</span></td></tr>
 <tr>
 <td title='0x84e8 = 34024'>0x84e8</td>
 <td>BackgroundColorIndicator</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td><span class=s>0 = Unspecified Background Color
   <br>1 = Specified Background Color</span></td></tr>
 <tr class=b>
 <td title='0x84e9 = 34025'>0x84e9</td>
 <td>ImageColorValue</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x84ea = 34026'>0x84ea</td>
 <td>BackgroundColorValue</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x84eb = 34027'>0x84eb</td>
 <td>PixelIntensityRange</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x84ec = 34028'>0x84ec</td>
 <td>TransparencyIndicator</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x84ed = 34029'>0x84ed</td>
 <td>ColorCharacterization</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x84ee = 34030'>0x84ee</td>
 <td>HCUsage</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td><span class=s>0 = CT
   <br>1 = Line Art
@@ -1241,13 +1241,13 @@ conversion)</span></span></td></tr>
 <tr class=b>
 <td title='0x84ef = 34031'>0x84ef</td>
 <td>TrapIndicator</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x84f0 = 34032'>0x84f0</td>
 <td>CMYKEquivalent</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
@@ -1265,25 +1265,25 @@ conversion)</span></span></td></tr>
 <tr class=b>
 <td title='0x85b8 = 34232'>0x85b8</td>
 <td>PixelMagicJBIGOptions</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x85d7 = 34263'>0x85d7</td>
 <td>JPLCartoIFD</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x85d8 = 34264'>0x85d8</td>
 <td>ModelTransform</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x8602 = 34306'>0x8602</td>
 <td>WB_GRGBLevels</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td><span class=s><span class=n>(found in IFD0 of Leaf MOS images)</span></span></td></tr>
 <tr class=b>
@@ -1313,7 +1313,7 @@ conversion)</span></span></td></tr>
 <tr class=b>
 <td title='0x877f = 34687'>0x877f</td>
 <td>TIFF_FXExtensions</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td><span class=s>Bit 0 = Resolution/Image Width
   <br>Bit 1 = N Layer Profile M
@@ -1323,7 +1323,7 @@ conversion)</span></span></td></tr>
 <tr>
 <td title='0x8780 = 34688'>0x8780</td>
 <td>MultiProfiles</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td><table class=cols><tr>
   <td>Bit 0 = Profile S
@@ -1341,19 +1341,19 @@ conversion)</span></span></td></tr>
 <tr class=b>
 <td title='0x8781 = 34689'>0x8781</td>
 <td>SharedData</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x8782 = 34690'>0x8782</td>
 <td>T88Options</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x87ac = 34732'>0x87ac</td>
 <td>ImageLayer</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -1379,7 +1379,7 @@ automatically when copying between TIFF images with different byte order)</span>
 <tr class=b>
 <td title='0x87be = 34750'>0x87be</td>
 <td>JBIGOptions</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -1421,13 +1421,13 @@ automatically when copying between TIFF images with different byte order)</span>
 <tr>
 <td title='0x8828 = 34856'>0x8828</td>
 <td><u>Opto-ElectricConvFactor</u></td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td><span class=s><span class=n>(called OECF by the EXIF spec.)</span></span></td></tr>
 <tr class=b>
 <td title='0x8829 = 34857'>0x8829</td>
 <td>Interlace</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -1490,25 +1490,25 @@ hours, 2. If present, the time zone offset of ModifyDate)</span></span></td></tr
 <tr>
 <td title='0x885c = 34908'>0x885c</td>
 <td>FaxRecvParams</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x885d = 34909'>0x885d</td>
 <td>FaxSubAddress</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x885e = 34910'>0x885e</td>
 <td>FaxRecvTime</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x8871 = 34929'>0x8871</td>
 <td>FedexEDR</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -1652,37 +1652,37 @@ hours, 2. If present, the time zone offset of ModifyDate)</span></span></td></tr
 <tr>
 <td title='0x920b = 37387'>0x920b</td>
 <td>FlashEnergy</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x920c = 37388'>0x920c</td>
 <td>SpatialFrequencyResponse</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x920d = 37389'>0x920d</td>
 <td>Noise</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x920e = 37390'>0x920e</td>
 <td>FocalPlaneXResolution</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x920f = 37391'>0x920f</td>
 <td>FocalPlaneYResolution</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x9210 = 37392'>0x9210</td>
 <td>FocalPlaneResolutionUnit</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td><span class=s>1 = None
   <br>2 = inches
@@ -1720,19 +1720,19 @@ hours, 2. If present, the time zone offset of ModifyDate)</span></span></td></tr
 <tr>
 <td title='0x9215 = 37397'>0x9215</td>
 <td>ExposureIndex</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x9216 = 37398'>0x9216</td>
 <td>TIFF-EPStandardID</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x9217 = 37399'>0x9217</td>
 <td>SensingMethod</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td><span class=s><span class=n>(values 1 and 6 are not standard EXIF)</span></span><table class=cols><tr>
   <td>1 = Monochrome area
@@ -1747,25 +1747,25 @@ hours, 2. If present, the time zone offset of ModifyDate)</span></span></td></tr
 <tr class=b>
 <td title='0x923a = 37434'>0x923a</td>
 <td>CIP3DataFile</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x923b = 37435'>0x923b</td>
 <td>CIP3Sheet</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x923c = 37436'>0x923c</td>
 <td>CIP3Side</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x923f = 37439'>0x923f</td>
 <td>StoNits</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
@@ -1965,19 +1965,19 @@ hours, 2. If present, the time zone offset of ModifyDate)</span></span></td></tr
 <tr>
 <td title='0x932f = 37679'>0x932f</td>
 <td>MSDocumentText</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x9330 = 37680'>0x9330</td>
 <td>MSPropertySetStorage</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x9331 = 37681'>0x9331</td>
 <td>MSDocumentTextPosition</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
@@ -2101,25 +2101,25 @@ indicated by &quot;Uncalibrated&quot; with an InteropIndex of &quot;R03&quot;.  
 <tr class=b>
 <td title='0xa010 = 40976'>0xa010</td>
 <td>SamsungRawPointersOffset</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0xa011 = 40977'>0xa011</td>
 <td>SamsungRawPointersLength</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0xa101 = 41217'>0xa101</td>
 <td>SamsungRawByteOrder</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0xa102 = 41218'>0xa102</td>
 <td>SamsungRawUnknown?</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
@@ -2131,13 +2131,13 @@ indicated by &quot;Uncalibrated&quot; with an InteropIndex of &quot;R03&quot;.  
 <tr>
 <td title='0xa20c = 41484'>0xa20c</td>
 <td><u>SpatialFrequencyResponse</u></td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0xa20d = 41485'>0xa20d</td>
 <td>Noise</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -2166,19 +2166,19 @@ indicated by &quot;Uncalibrated&quot; with an InteropIndex of &quot;R03&quot;.  
 <tr class=b>
 <td title='0xa211 = 41489'>0xa211</td>
 <td>ImageNumber</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0xa212 = 41490'>0xa212</td>
 <td>SecurityClassification</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0xa213 = 41491'>0xa213</td>
 <td>ImageHistory</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -2196,7 +2196,7 @@ indicated by &quot;Uncalibrated&quot; with an InteropIndex of &quot;R03&quot;.  
 <tr>
 <td title='0xa216 = 41494'>0xa216</td>
 <td>TIFF-EPStandardID</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
@@ -2314,7 +2314,7 @@ indicated by &quot;Uncalibrated&quot; with an InteropIndex of &quot;R03&quot;.  
 <tr class=b>
 <td title='0xa40b = 41995'>0xa40b</td>
 <td><u>DeviceSettingDescription</u></td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -2372,13 +2372,13 @@ by the EXIF spec.)</span></span></td></tr>
 <tr>
 <td title='0xa480 = 42112'>0xa480</td>
 <td>GDALMetadata</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0xa481 = 42113'>0xa481</td>
 <td>GDALNoData</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -2390,43 +2390,43 @@ by the EXIF spec.)</span></span></td></tr>
 <tr class=b>
 <td title='0xafc0 = 44992'>0xafc0</td>
 <td>ExpandSoftware</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0xafc1 = 44993'>0xafc1</td>
 <td>ExpandLens</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0xafc2 = 44994'>0xafc2</td>
 <td>ExpandFilm</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0xafc3 = 44995'>0xafc3</td>
 <td>ExpandFilterLens</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0xafc4 = 44996'>0xafc4</td>
 <td>ExpandScanner</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0xafc5 = 44997'>0xafc5</td>
 <td>ExpandFlashLamp</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0xbc01 = 48129'>0xbc01</td>
 <td>PixelFormat</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td><span class=s><span class=n>(tags 0xbc** are used in Windows HD Photo (HDP and WDP) images. The actual
 PixelFormat values are 16-byte GUID&#39;s but the leading 15 bytes,
@@ -2491,7 +2491,7 @@ unnecessary clutter)</span></span><table class=cols><tr>
 <tr>
 <td title='0xbc02 = 48130'>0xbc02</td>
 <td>Transformation</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td><table class=cols><tr>
   <td>0 = Horizontal (normal)
@@ -2506,69 +2506,69 @@ unnecessary clutter)</span></span><table class=cols><tr>
 <tr class=b>
 <td title='0xbc03 = 48131'>0xbc03</td>
 <td>Uncompressed</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td><span class=s>0 = No
   <br>1 = Yes</span></td></tr>
 <tr>
 <td title='0xbc04 = 48132'>0xbc04</td>
 <td>ImageType</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td><span class=s>Bit 0 = Preview
   <br>Bit 1 = Page</span></td></tr>
 <tr class=b>
 <td title='0xbc80 = 48256'>0xbc80</td>
 <td>ImageWidth</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0xbc81 = 48257'>0xbc81</td>
 <td>ImageHeight</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0xbc82 = 48258'>0xbc82</td>
 <td>WidthResolution</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0xbc83 = 48259'>0xbc83</td>
 <td>HeightResolution</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0xbcc0 = 48320'>0xbcc0</td>
 <td>ImageOffset</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0xbcc1 = 48321'>0xbcc1</td>
 <td>ImageByteCount</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0xbcc2 = 48322'>0xbcc2</td>
 <td>AlphaOffset</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0xbcc3 = 48323'>0xbcc3</td>
 <td>AlphaByteCount</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0xbcc4 = 48324'>0xbcc4</td>
 <td>ImageDataDiscard</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td><span class=s>0 = Full Resolution
   <br>1 = Flexbits Discarded
@@ -2577,7 +2577,7 @@ unnecessary clutter)</span></span><table class=cols><tr>
 <tr>
 <td title='0xbcc5 = 48325'>0xbcc5</td>
 <td>AlphaDataDiscard</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td><span class=s>0 = Full Resolution
   <br>1 = Flexbits Discarded
@@ -2586,31 +2586,31 @@ unnecessary clutter)</span></span><table class=cols><tr>
 <tr class=b>
 <td title='0xc427 = 50215'>0xc427</td>
 <td>OceScanjobDesc</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0xc428 = 50216'>0xc428</td>
 <td>OceApplicationSelector</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0xc429 = 50217'>0xc429</td>
 <td>OceIDNumber</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0xc42a = 50218'>0xc42a</td>
 <td>OceImageLogic</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0xc44f = 50255'>0xc44f</td>
 <td>Annotations</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -2622,13 +2622,13 @@ unnecessary clutter)</span></span><table class=cols><tr>
 <tr class=b>
 <td title='0xc573 = 50547'>0xc573</td>
 <td>OriginalFileName</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td><span class=s><span class=n>(used by some obscure software)</span></span></td></tr>
 <tr>
 <td title='0xc580 = 50560'>0xc580</td>
 <td>USPTOOriginalContentType</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td><span class=s>0 = Text or Drawing
   <br>1 = Grayscale
@@ -2662,13 +2662,13 @@ the specification)</span></span></td></tr>
 <tr class=b>
 <td title='0xc616 = 50710'>0xc616</td>
 <td>CFAPlaneColor</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0xc617 = 50711'>0xc617</td>
 <td>CFALayout</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td><span class=s>1 = Rectangular
   <br>2 = Even columns offset down 1/2 row
@@ -2870,7 +2870,7 @@ the specification)</span></span></td></tr>
 <tr class=b>
 <td title='0xc640 = 50752'>0xc640</td>
 <td>RawImageSegmentation</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td><span class=s><span class=n>(used in segmented Canon CR2 images.  3 numbers: 1. Number of segments minus
 one; 2. Pixel width of segments except last; 3. Pixel width of last segment)</span></span></td></tr>
@@ -2901,7 +2901,7 @@ one; 2. Pixel width of segments except last; 3. Pixel width of last segment)</sp
 <tr>
 <td title='0xc660 = 50784'>0xc660</td>
 <td>AliasLayerMetadata</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td><span class=s><span class=n>(used by Alias Sketchbook Pro)</span></span></td></tr>
 <tr class=b>
@@ -2961,7 +2961,7 @@ one; 2. Pixel width of segments except last; 3. Pixel width of last segment)</sp
 <tr>
 <td title='0xc6c5 = 50885'>0xc6c5</td>
 <td>SRawType</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
@@ -3118,13 +3118,13 @@ one; 2. Pixel width of segments except last; 3. Pixel width of last segment)</sp
 <tr class=b>
 <td title='0xc71e = 50974'>0xc71e</td>
 <td>SubTileBlockSize</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0xc71f = 50975'>0xc71f</td>
 <td>RowInterleaveFactor</td>
-<td class=c>N</td>
+<td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
 <tr class=b>

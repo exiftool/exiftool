@@ -2634,6 +2634,15 @@ unnecessary clutter)</span></span><table class=cols><tr>
   <br>1 = Grayscale
   <br>2 = Color</span></td></tr>
 <tr class=b>
+<td title='0xc5e0 = 50656'>0xc5e0</td>
+<td>CR2CFAPattern</td>
+<td class=c>no</td>
+<td class=c>-</td>
+<td><span class=s>1 =&gt; &#39;0 1 1 2&#39; = [Red,Green][Green,Blue]
+  <br>4 =&gt; &#39;1 0 2 1&#39; = [Green,Red][Blue,Green]
+  <br>3 =&gt; &#39;1 2 0 1&#39; = [Green,Blue][Red,Green]
+  <br>2 =&gt; &#39;2 1 1 0&#39; = [Blue,Green][Green,Red]</span></td></tr>
+<tr>
 <td title='0xc612 = 50706'>0xc612</td>
 <td>DNGVersion</td>
 <td class=c title=' ! = Unsafe'>int8u[4]!</td>
@@ -2641,31 +2650,31 @@ unnecessary clutter)</span></span><table class=cols><tr>
 <td><span class=s><span class=n>(tags 0xc612-0xc7b5 are defined by the DNG specification unless otherwise
 noted.  See <a href="https://helpx.adobe.com/photoshop/digital-negative.html">https://helpx.adobe.com/photoshop/digital-negative.html</a> for
 the specification)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td title='0xc613 = 50707'>0xc613</td>
 <td>DNGBackwardVersion</td>
 <td class=c title=' ! = Unsafe'>int8u[4]!</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xc614 = 50708'>0xc614</td>
 <td>UniqueCameraModel</td>
 <td class=c>string</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xc615 = 50709'>0xc615</td>
 <td>LocalizedCameraModel</td>
 <td class=c>string</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xc616 = 50710'>0xc616</td>
 <td>CFAPlaneColor</td>
 <td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xc617 = 50711'>0xc617</td>
 <td>CFALayout</td>
 <td class=c>no</td>
@@ -2679,175 +2688,175 @@ the specification)</span></span></td></tr>
   <br>7 = Even rows offset up by 1/2 row, even columns offset right by 1/2 column
   <br>8 = Even rows offset down by 1/2 row, even columns offset left by 1/2 column
   <br>9 = Even rows offset down by 1/2 row, even columns offset right by 1/2 column</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0xc618 = 50712'>0xc618</td>
 <td>LinearizationTable</td>
 <td class=c title=' ! = Unsafe'>int16u[n]!</td>
 <td class=c>SubIFD</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xc619 = 50713'>0xc619</td>
 <td>BlackLevelRepeatDim</td>
 <td class=c title=' ! = Unsafe'>int16u[2]!</td>
 <td class=c>SubIFD</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xc61a = 50714'>0xc61a</td>
 <td>BlackLevel</td>
 <td class=c title=' ! = Unsafe'>rational64u[n]!</td>
 <td class=c>SubIFD</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xc61b = 50715'>0xc61b</td>
 <td>BlackLevelDeltaH</td>
 <td class=c title=' ! = Unsafe'>rational64s[n]!</td>
 <td class=c>SubIFD</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xc61c = 50716'>0xc61c</td>
 <td>BlackLevelDeltaV</td>
 <td class=c title=' ! = Unsafe'>rational64s[n]!</td>
 <td class=c>SubIFD</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xc61d = 50717'>0xc61d</td>
 <td>WhiteLevel</td>
 <td class=c title=' ! = Unsafe'>int32u[n]!</td>
 <td class=c>SubIFD</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xc61e = 50718'>0xc61e</td>
 <td>DefaultScale</td>
 <td class=c title=' ! = Unsafe'>rational64u[2]!</td>
 <td class=c>SubIFD</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xc61f = 50719'>0xc61f</td>
 <td>DefaultCropOrigin</td>
 <td class=c title=' ! = Unsafe'>int32u[2]!</td>
 <td class=c>SubIFD</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xc620 = 50720'>0xc620</td>
 <td>DefaultCropSize</td>
 <td class=c title=' ! = Unsafe'>int32u[2]!</td>
 <td class=c>SubIFD</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xc621 = 50721'>0xc621</td>
 <td>ColorMatrix1</td>
 <td class=c title=' ! = Unsafe'>rational64s[n]!</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xc622 = 50722'>0xc622</td>
 <td>ColorMatrix2</td>
 <td class=c title=' ! = Unsafe'>rational64s[n]!</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xc623 = 50723'>0xc623</td>
 <td>CameraCalibration1</td>
 <td class=c title=' ! = Unsafe'>rational64s[n]!</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xc624 = 50724'>0xc624</td>
 <td>CameraCalibration2</td>
 <td class=c title=' ! = Unsafe'>rational64s[n]!</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xc625 = 50725'>0xc625</td>
 <td>ReductionMatrix1</td>
 <td class=c title=' ! = Unsafe'>rational64s[n]!</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xc626 = 50726'>0xc626</td>
 <td>ReductionMatrix2</td>
 <td class=c title=' ! = Unsafe'>rational64s[n]!</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xc627 = 50727'>0xc627</td>
 <td>AnalogBalance</td>
 <td class=c title=' ! = Unsafe'>rational64u[n]!</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xc628 = 50728'>0xc628</td>
 <td>AsShotNeutral</td>
 <td class=c title=' ! = Unsafe'>rational64u[n]!</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xc629 = 50729'>0xc629</td>
 <td>AsShotWhiteXY</td>
 <td class=c title=' ! = Unsafe'>rational64u[2]!</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xc62a = 50730'>0xc62a</td>
 <td>BaselineExposure</td>
 <td class=c title=' ! = Unsafe'>rational64s!</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xc62b = 50731'>0xc62b</td>
 <td>BaselineNoise</td>
 <td class=c title=' ! = Unsafe'>rational64u!</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xc62c = 50732'>0xc62c</td>
 <td>BaselineSharpness</td>
 <td class=c title=' ! = Unsafe'>rational64u!</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xc62d = 50733'>0xc62d</td>
 <td>BayerGreenSplit</td>
 <td class=c title=' ! = Unsafe'>int32u!</td>
 <td class=c>SubIFD</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xc62e = 50734'>0xc62e</td>
 <td>LinearResponseLimit</td>
 <td class=c title=' ! = Unsafe'>rational64u!</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xc62f = 50735'>0xc62f</td>
 <td>CameraSerialNumber</td>
 <td class=c>string</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xc630 = 50736'>0xc630</td>
 <td>DNGLensInfo</td>
 <td class=c>rational64u[4]</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xc631 = 50737'>0xc631</td>
 <td>ChromaBlurRadius</td>
 <td class=c title=' ! = Unsafe'>rational64u!</td>
 <td class=c>SubIFD</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xc632 = 50738'>0xc632</td>
 <td>AntiAliasStrength</td>
 <td class=c title=' ! = Unsafe'>rational64u!</td>
 <td class=c>SubIFD</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xc633 = 50739'>0xc633</td>
 <td>ShadowScale</td>
 <td class=c title=' ! = Unsafe'>rational64u!</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xc634 = 50740'>0xc634</td>
 <td>SR2Private
   <br>DNGAdobeData
@@ -2860,183 +2869,183 @@ the specification)</span></span></td></tr>
   <br>--&gt; <a href='DNG.html#AdobeData'>DNG AdobeData Tags</a>
   <br>--&gt; <a href='Pentax.html'>Pentax Tags</a>
   <br>--&gt; <a href='Pentax.html'>Pentax Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0xc635 = 50741'>0xc635</td>
 <td>MakerNoteSafety</td>
 <td class=c>int16u</td>
 <td class=c>IFD0</td>
 <td><span class=s>0 = Unsafe
   <br>1 = Safe</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0xc640 = 50752'>0xc640</td>
 <td>RawImageSegmentation</td>
 <td class=c>no</td>
 <td class=c>-</td>
 <td><span class=s><span class=n>(used in segmented Canon CR2 images.  3 numbers: 1. Number of segments minus
 one; 2. Pixel width of segments except last; 3. Pixel width of last segment)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td title='0xc65a = 50778'>0xc65a</td>
 <td>CalibrationIlluminant1</td>
 <td class=c title=' ! = Unsafe'>int16u!</td>
 <td class=c>IFD0</td>
 <td>--&gt; <a href='EXIF.html#LightSource'>EXIF LightSource Values</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0xc65b = 50779'>0xc65b</td>
 <td>CalibrationIlluminant2</td>
 <td class=c title=' ! = Unsafe'>int16u!</td>
 <td class=c>IFD0</td>
 <td>--&gt; <a href='EXIF.html#LightSource'>EXIF LightSource Values</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0xc65c = 50780'>0xc65c</td>
 <td>BestQualityScale</td>
 <td class=c title=' ! = Unsafe'>rational64u!</td>
 <td class=c>SubIFD</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xc65d = 50781'>0xc65d</td>
 <td>RawDataUniqueID</td>
 <td class=c title=' ! = Unsafe'>int8u[16]!</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xc660 = 50784'>0xc660</td>
 <td>AliasLayerMetadata</td>
 <td class=c>no</td>
 <td class=c>-</td>
 <td><span class=s><span class=n>(used by Alias Sketchbook Pro)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td title='0xc68b = 50827'>0xc68b</td>
 <td>OriginalRawFileName</td>
 <td class=c title=' ! = Unsafe'>string!</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xc68c = 50828'>0xc68c</td>
 <td>OriginalRawFileData</td>
 <td class=c title=' ! = Unsafe'>undef!</td>
 <td class=c>IFD0</td>
 <td>--&gt; <a href='DNG.html#OriginalRaw'>DNG OriginalRaw Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0xc68d = 50829'>0xc68d</td>
 <td>ActiveArea</td>
 <td class=c title=' ! = Unsafe'>int32u[4]!</td>
 <td class=c>SubIFD</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xc68e = 50830'>0xc68e</td>
 <td>MaskedAreas</td>
 <td class=c title=' ! = Unsafe'>int32u[n]!</td>
 <td class=c>SubIFD</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xc68f = 50831'>0xc68f</td>
 <td>AsShotICCProfile</td>
 <td class=c title=' ! = Unsafe'>undef!</td>
 <td class=c>IFD0</td>
 <td>--&gt; <a href='ICC_Profile.html'>ICC_Profile Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0xc690 = 50832'>0xc690</td>
 <td>AsShotPreProfileMatrix</td>
 <td class=c title=' ! = Unsafe'>rational64s[n]!</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xc691 = 50833'>0xc691</td>
 <td>CurrentICCProfile</td>
 <td class=c title=' ! = Unsafe'>undef!</td>
 <td class=c>IFD0</td>
 <td>--&gt; <a href='ICC_Profile.html'>ICC_Profile Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0xc692 = 50834'>0xc692</td>
 <td>CurrentPreProfileMatrix</td>
 <td class=c title=' ! = Unsafe'>rational64s[n]!</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xc6bf = 50879'>0xc6bf</td>
 <td>ColorimetricReference</td>
 <td class=c title=' ! = Unsafe'>int16u!</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xc6c5 = 50885'>0xc6c5</td>
 <td>SRawType</td>
 <td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xc6d2 = 50898'>0xc6d2</td>
 <td>PanasonicTitle</td>
 <td class=c>undef</td>
 <td class=c>IFD0</td>
 <td><span class=s><span class=n>(proprietary Panasonic tag used for baby/pet name, etc)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td title='0xc6d3 = 50899'>0xc6d3</td>
 <td>PanasonicTitle2</td>
 <td class=c>undef</td>
 <td class=c>IFD0</td>
 <td><span class=s><span class=n>(proprietary Panasonic tag used for baby/pet name with age)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td title='0xc6f3 = 50931'>0xc6f3</td>
 <td>CameraCalibrationSig</td>
 <td class=c title=' ! = Unsafe'>string!</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xc6f4 = 50932'>0xc6f4</td>
 <td>ProfileCalibrationSig</td>
 <td class=c title=' ! = Unsafe'>string!</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xc6f5 = 50933'>0xc6f5</td>
 <td>ProfileIFD</td>
 <td class=c>-</td>
 <td class=c>-</td>
 <td>--&gt; <a href='EXIF.html'>EXIF Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0xc6f6 = 50934'>0xc6f6</td>
 <td>AsShotProfileName</td>
 <td class=c title=' ! = Unsafe'>string!</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xc6f7 = 50935'>0xc6f7</td>
 <td>NoiseReductionApplied</td>
 <td class=c title=' ! = Unsafe'>rational64u!</td>
 <td class=c>SubIFD</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xc6f8 = 50936'>0xc6f8</td>
 <td>ProfileName</td>
 <td class=c title=' ! = Unsafe'>string!</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xc6f9 = 50937'>0xc6f9</td>
 <td>ProfileHueSatMapDims</td>
 <td class=c title=' ! = Unsafe'>int32u[3]!</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xc6fa = 50938'>0xc6fa</td>
 <td>ProfileHueSatMapData1</td>
 <td class=c title=' ! = Unsafe'>float[n]!</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xc6fb = 50939'>0xc6fb</td>
 <td>ProfileHueSatMapData2</td>
 <td class=c title=' ! = Unsafe'>float[n]!</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xc6fc = 50940'>0xc6fc</td>
 <td>ProfileToneCurve</td>
 <td class=c title=' ! = Unsafe'>float[n]!</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xc6fd = 50941'>0xc6fd</td>
 <td>ProfileEmbedPolicy</td>
 <td class=c title=' ! = Unsafe'>int32u!</td>
@@ -3045,49 +3054,49 @@ one; 2. Pixel width of segments except last; 3. Pixel width of last segment)</sp
   <br>1 = Embed if Used
   <br>2 = Never Embed
   <br>3 = No Restrictions</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0xc6fe = 50942'>0xc6fe</td>
 <td>ProfileCopyright</td>
 <td class=c title=' ! = Unsafe'>string!</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xc714 = 50964'>0xc714</td>
 <td>ForwardMatrix1</td>
 <td class=c title=' ! = Unsafe'>rational64s[n]!</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xc715 = 50965'>0xc715</td>
 <td>ForwardMatrix2</td>
 <td class=c title=' ! = Unsafe'>rational64s[n]!</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xc716 = 50966'>0xc716</td>
 <td>PreviewApplicationName</td>
 <td class=c title=' ! = Unsafe'>string!</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xc717 = 50967'>0xc717</td>
 <td>PreviewApplicationVersion</td>
 <td class=c title=' ! = Unsafe'>string!</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xc718 = 50968'>0xc718</td>
 <td>PreviewSettingsName</td>
 <td class=c title=' ! = Unsafe'>string!</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xc719 = 50969'>0xc719</td>
 <td>PreviewSettingsDigest</td>
 <td class=c title=' ! = Unsafe'>int8u!</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xc71a = 50970'>0xc71a</td>
 <td>PreviewColorSpace</td>
 <td class=c title=' ! = Unsafe'>int32u!</td>
@@ -3097,178 +3106,178 @@ one; 2. Pixel width of segments except last; 3. Pixel width of last segment)</sp
   <br>2 = sRGB
   <br>3 = Adobe RGB
   <br>4 = ProPhoto RGB</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0xc71b = 50971'>0xc71b</td>
 <td>PreviewDateTime</td>
 <td class=c title=' ! = Unsafe'>string!</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xc71c = 50972'>0xc71c</td>
 <td>RawImageDigest</td>
 <td class=c title=' ! = Unsafe'>int8u[16]!</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xc71d = 50973'>0xc71d</td>
 <td>OriginalRawFileDigest</td>
 <td class=c title=' ! = Unsafe'>int8u[16]!</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xc71e = 50974'>0xc71e</td>
 <td>SubTileBlockSize</td>
 <td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xc71f = 50975'>0xc71f</td>
 <td>RowInterleaveFactor</td>
 <td class=c>no</td>
 <td class=c>-</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xc725 = 50981'>0xc725</td>
 <td>ProfileLookTableDims</td>
 <td class=c title=' ! = Unsafe'>int32u[3]!</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xc726 = 50982'>0xc726</td>
 <td>ProfileLookTableData</td>
 <td class=c title=' ! = Unsafe'>float[n]!</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xc740 = 51008'>0xc740</td>
 <td>OpcodeList1</td>
 <td class=c title=' ! = Unsafe'>undef!</td>
 <td class=c>SubIFD</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xc741 = 51009'>0xc741</td>
 <td>OpcodeList2</td>
 <td class=c title=' ! = Unsafe'>undef!</td>
 <td class=c>SubIFD</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xc74e = 51022'>0xc74e</td>
 <td>OpcodeList3</td>
 <td class=c title=' ! = Unsafe'>undef!</td>
 <td class=c>SubIFD</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xc761 = 51041'>0xc761</td>
 <td>NoiseProfile</td>
 <td class=c title=' ! = Unsafe'>double[n]!</td>
 <td class=c>SubIFD</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xc763 = 51043'>0xc763</td>
 <td>TimeCodes</td>
 <td class=c>int8u[n]</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xc764 = 51044'>0xc764</td>
 <td>FrameRate</td>
 <td class=c>rational64s</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xc772 = 51058'>0xc772</td>
 <td>TStop</td>
 <td class=c>rational64u[n]</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xc789 = 51081'>0xc789</td>
 <td>ReelName</td>
 <td class=c>string</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xc791 = 51089'>0xc791</td>
 <td>OriginalDefaultFinalSize</td>
 <td class=c title=' ! = Unsafe'>int32u[2]!</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xc792 = 51090'>0xc792</td>
 <td>OriginalBestQualitySize</td>
 <td class=c title=' ! = Unsafe'>int32u[2]!</td>
 <td class=c>IFD0</td>
 <td><span class=s><span class=n>(called OriginalBestQualityFinalSize by the DNG spec)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td title='0xc793 = 51091'>0xc793</td>
 <td>OriginalDefaultCropSize</td>
 <td class=c title=' ! = Unsafe'>rational64u[2]!</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xc7a1 = 51105'>0xc7a1</td>
 <td>CameraLabel</td>
 <td class=c>string</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xc7a3 = 51107'>0xc7a3</td>
 <td>ProfileHueSatMapEncoding</td>
 <td class=c title=' ! = Unsafe'>int32u!</td>
 <td class=c>IFD0</td>
 <td><span class=s>0 = Linear
   <br>1 = sRGB</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0xc7a4 = 51108'>0xc7a4</td>
 <td>ProfileLookTableEncoding</td>
 <td class=c title=' ! = Unsafe'>int32u!</td>
 <td class=c>IFD0</td>
 <td><span class=s>0 = Linear
   <br>1 = sRGB</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0xc7a5 = 51109'>0xc7a5</td>
 <td>BaselineExposureOffset</td>
 <td class=c title=' ! = Unsafe'>rational64s!</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xc7a6 = 51110'>0xc7a6</td>
 <td>DefaultBlackRender</td>
 <td class=c title=' ! = Unsafe'>int32u!</td>
 <td class=c>IFD0</td>
 <td><span class=s>0 = Auto
   <br>1 = None</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0xc7a7 = 51111'>0xc7a7</td>
 <td>NewRawImageDigest</td>
 <td class=c title=' ! = Unsafe'>int8u[16]!</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xc7a8 = 51112'>0xc7a8</td>
 <td>RawToPreviewGain</td>
 <td class=c title=' ! = Unsafe'>double!</td>
 <td class=c>IFD0</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xc7b5 = 51125'>0xc7b5</td>
 <td>DefaultUserCrop</td>
 <td class=c title=' ! = Unsafe'>rational64u[4]!</td>
 <td class=c>SubIFD</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xea1c = 59932'>0xea1c</td>
 <td>Padding</td>
 <td class=c>undef</td>
 <td class=c>ExifIFD</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xea1d = 59933'>0xea1d</td>
 <td>OffsetSchema</td>
 <td class=c>int32s</td>
 <td class=c>ExifIFD</td>
 <td><span class=s><span class=n>(Microsoft&#39;s ill-conceived maker note offset difference)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td title='0xfde8 = 65000'>0xfde8</td>
 <td>OwnerName</td>
 <td class=c title=' / = Avoid'>string/</td>
@@ -3276,86 +3285,86 @@ one; 2. Pixel width of segments except last; 3. Pixel width of last segment)</sp
 <td><span class=s><span class=n>(tags 0xfde8-0xfdea and 0xfe4c-0xfe58 are generated by Photoshop Camera RAW.
 Some names are the same as other EXIF tags, but ExifTool will avoid writing
 these unless they already exist in the file)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td title='0xfde9 = 65001'>0xfde9</td>
 <td>SerialNumber</td>
 <td class=c title=' / = Avoid'>string/</td>
 <td class=c>ExifIFD</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xfdea = 65002'>0xfdea</td>
 <td>Lens</td>
 <td class=c title=' / = Avoid'>string/</td>
 <td class=c>ExifIFD</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xfe00 = 65024'>0xfe00</td>
 <td>KDC_IFD</td>
 <td class=c>-</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Kodak.html#KDC_IFD'>Kodak KDC_IFD Tags</a>
   <br><span class='n s'>(used in some Kodak KDC images)</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0xfe4c = 65100'>0xfe4c</td>
 <td>RawFile</td>
 <td class=c title=' / = Avoid'>string/</td>
 <td class=c>ExifIFD</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xfe4d = 65101'>0xfe4d</td>
 <td>Converter</td>
 <td class=c title=' / = Avoid'>string/</td>
 <td class=c>ExifIFD</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xfe4e = 65102'>0xfe4e</td>
 <td>WhiteBalance</td>
 <td class=c title=' / = Avoid'>string/</td>
 <td class=c>ExifIFD</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xfe51 = 65105'>0xfe51</td>
 <td>Exposure</td>
 <td class=c title=' / = Avoid'>string/</td>
 <td class=c>ExifIFD</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xfe52 = 65106'>0xfe52</td>
 <td>Shadows</td>
 <td class=c title=' / = Avoid'>string/</td>
 <td class=c>ExifIFD</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xfe53 = 65107'>0xfe53</td>
 <td>Brightness</td>
 <td class=c title=' / = Avoid'>string/</td>
 <td class=c>ExifIFD</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xfe54 = 65108'>0xfe54</td>
 <td>Contrast</td>
 <td class=c title=' / = Avoid'>string/</td>
 <td class=c>ExifIFD</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xfe55 = 65109'>0xfe55</td>
 <td>Saturation</td>
 <td class=c title=' / = Avoid'>string/</td>
 <td class=c>ExifIFD</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xfe56 = 65110'>0xfe56</td>
 <td>Sharpness</td>
 <td class=c title=' / = Avoid'>string/</td>
 <td class=c>ExifIFD</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0xfe57 = 65111'>0xfe57</td>
 <td>Smoothness</td>
 <td class=c title=' / = Avoid'>string/</td>
 <td class=c>ExifIFD</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xfe58 = 65112'>0xfe58</td>
 <td>MoireFilter</td>
 <td class=c title=' / = Avoid'>string/</td>
@@ -3478,7 +3487,7 @@ these unless they already exist in the file)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Feb 13, 2017</i>
+<br><i>Last revised Mar 13, 2017</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

@@ -136,6 +136,7 @@
 -M Image::ExifTool::JPEG
 -M Image::ExifTool::JPEGDigest
 -M Image::ExifTool::Jpeg2000
+-M Image::ExifTool::JSON
 -M Image::ExifTool::JVC
 -M Image::ExifTool::LNK
 -M Image::ExifTool::Kodak

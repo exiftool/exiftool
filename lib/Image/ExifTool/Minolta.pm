@@ -49,7 +49,7 @@ use vars qw($VERSION %minoltaLensTypes %minoltaTeleconverters %minoltaColorMode
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.46';
+$VERSION = '2.47';
 
 # Full list of product codes for Sony-compatible Minolta lenses
 # (ref http://www.kb.sony.com/selfservice/documentLink.do?externalId=C1000570)
@@ -358,14 +358,15 @@ $VERSION = '2.46';
     142 => 'Voigtlander 70-300mm F4.5-5.6', #JD
     146 => 'Voigtlander Macro APO-Lanthar 125mm F2.5 SL', #JD
     194 => 'Tamron SP AF 17-50mm F2.8 XR Di II LD Aspherical [IF]', #23 (Model A16)
+    202 => 'Tamron SP AF 70-200mm F2.8 Di LD [IF] Macro', #JR (Model A001) (see also 255.7)
     203 => 'Tamron SP 70-200mm F2.8 Di USD', #JR (Model A009)
     204 => 'Tamron SP 24-70mm F2.8 Di USD', #JR (Model A007)
     212 => 'Tamron 28-300mm F3.5-6.3 Di PZD', #JR (Model A010)
     213 => 'Tamron 16-300mm F3.5-6.3 Di II PZD Macro', #JR (Model B016)
     214 => 'Tamron SP 150-600mm F5-6.3 Di USD', #JR (Model A011)
     215 => 'Tamron SP 15-30mm F2.8 Di USD', #JR (Model A012)
-    218 => 'Tamron SP 90mm F2.8 Di Macro 1:1 USD', #JR (Model F004) - also seen with LensType 224
-    224 => 'Tamron SP 90mm F2.8 Di Macro 1:1 USD', #JR (Model F004) - also seen with LensType 218
+    218 => 'Tamron SP 90mm F2.8 Di Macro 1:1 USD (F017)', #JR (Model F017)
+    224 => 'Tamron SP 90mm F2.8 Di Macro 1:1 USD (F004)', #JR (Model F004)
     255 => 'Tamron Lens (255)',
     255.1 => 'Tamron SP AF 17-50mm F2.8 XR Di II LD Aspherical', # (Model A16)
     255.2 => 'Tamron AF 18-250mm F3.5-6.3 XR Di II LD', #JD (Model A18?)

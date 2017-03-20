@@ -28,7 +28,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD $iptcDigestInfo);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.53';
+$VERSION = '1.54';
 
 sub ProcessPhotoshop($$$);
 sub WritePhotoshop($$$);
@@ -614,7 +614,7 @@ sub ProcessLayers($$$)
     my ($et, $dirInfo, $tagTablePtr) = @_;
     my $raf = $$dirInfo{RAF};
     my $fileType = $$et{VALUE}{FileType};
-    my ($i, $data, %count);
+    my ($i, $data, $dat2, %count);
 
     return 0 unless $fileType eq 'PSD' or $fileType eq 'PSB';   # (no layer section in CS1 files)
 
@@ -631,11 +631,8 @@ sub ProcessLayers($$$)
     my $num = Get16s(\$data, $psiz * 2);
     $num = -$num if $num < 0;       # (first channel is transparency data if negative)
     $et->HandleTag($tagTablePtr, '_xcnt', $num, Start => $psiz*2, Size => 2, %dinfo); # LayerCount
-    return 0 if $len > 100000000;   # set a reasonable limit on maximum size
     $et->VerboseDir('Layers', $num, $len);
-    # read the layer information data
-    $raf->Read($data, $len) == $len or return 0;
-    $dinfo{DataPos} = ($dataPos += $n);
+    $dataPos += $n; # point to start of layer information section
     my $oldIndent = $$et{INDENT};
     $$et{INDENT} .= '| ';
 
@@ -643,50 +640,65 @@ sub ProcessLayers($$$)
     for ($i=0; $i<$num; ++$i) {
         $et->VPrint(0, $oldIndent.'+ [Layer '.($i+1)." of $num]\n");
         last if $pos + 18 > $len;
+        # read the layer information data
+        $raf->Seek($dataPos + $pos, 0) and $raf->Read($data, 18) == 18 or last;
+        $dinfo{DataPos} = $dataPos + $pos;
         # save the layer rectangle
-        $et->HandleTag($tagTablePtr, '_xrct', undef, Start => $pos, Size => 16, %dinfo);
-        my $numChannels = Get16u(\$data, $pos + 16);
+        $et->HandleTag($tagTablePtr, '_xrct', undef, Size => 16, %dinfo);
+        my $numChannels = Get16u(\$data, 16);
         $pos += 18 + (2 + $psiz) * $numChannels;    # skip the channel information
-        last if $pos + 20 > $len or substr($data, $pos, 4) ne '8BIM'; # verify signature
-        $et->HandleTag($tagTablePtr, '_xbnd', undef, Start => $pos + 4, Size => 4, %dinfo);
-        $et->HandleTag($tagTablePtr, '_xopc', undef, Start => $pos + 8, Size => 1, %dinfo);
-        my $nxt = $pos + 16 + Get32u(\$data, $pos + 12);
-        $n = Get32u(\$data, $pos+16);   # get size of layer mask data
+        last if $pos + 20 > $len;
+        $raf->Seek($dinfo{DataPos} = $dataPos + $pos, 0) or last;
+        $raf->Read($data, 20) == 20 and substr($data, 0, 4) eq '8BIM' or last; # verify signature
+        $et->HandleTag($tagTablePtr, '_xbnd', undef, Start => 4, Size => 4, %dinfo);
+        $et->HandleTag($tagTablePtr, '_xopc', undef, Start => 8, Size => 1, %dinfo);
+        my $nxt = $pos + 16 + Get32u(\$data, 12);
+        $n = Get32u(\$data, 16);        # get size of layer mask data
         $pos += 20 + $n;                # skip layer mask data
         last if $pos + 4 > $len;
-        $n = Get32u(\$data, $pos);      # get size of layer blending ranges
+        $raf->Seek($dataPos + $pos, 0) or last;
+        $raf->Read($data, 4) == 4 or last;
+        $n = Get32u(\$data, 0);         # get size of layer blending ranges
         $pos += 4 + $n;                 # skip layer blending ranges data
         last if $pos + 1 > $len;
-        $n = Get8u(\$data, $pos);       # get length of layer name
+        $raf->Seek($dataPos + $pos, 0) or last;
+        $raf->Read($data, 1) == 1 or last;
+        $n = Get8u(\$data, 0);          # get length of layer name
         last if $pos + 1 + $n > $len;
-        $et->HandleTag($tagTablePtr, '_xnam', undef, Start => $pos + 1, Size => $n, %dinfo);
+        $raf->Read($data, $n) == $n or last;
+        $dinfo{DataPos} = $dataPos + $pos + 1;
+        $et->HandleTag($tagTablePtr, '_xnam', undef, Size => $n, %dinfo);
         $n = ($n + 4) & 0xfffffffc;     # +1 for length byte then pad to multiple of 4 bytes
         $pos += $n;
         # process additional layer info
         while ($pos + 12 <= $nxt) {
-            my $sig = substr($data, $pos, 4);
+            $raf->Seek($dataPos + $pos, 0) and $raf->Read($data, 12) == 12 or last;
+            my $sig = substr($data, 0, 4);
             last unless $sig eq '8BIM' or $sig eq '8B64';   # verify signature
-            my $tag = substr($data, $pos+4, 4);
+            my $tag = substr($data, 4, 4);
             # (some structures have an 8-byte size word [augh!]
             # --> it would be great if '8B64' indicated a 64-bit version, and this may well
             # be the case, but it is not mentioned in the Photoshop file format specification)
             if ($psb and $tag =~ /^(LMsk|Lr16|Lr32|Layr|Mt16|Mt32|Mtrn|Alph|FMsk|lnk2|FEid|FXid|PxSD)$/) {
                 last if $pos + 16 > $nxt;
-                $n = Get64u(\$data, $pos+8);
+                $raf->Read($dat2, 4) == 4 or last;
+                $data .= $dat2;
+                $n = Get64u(\$data, 8);
                 $pos += 4;
             } else {
-                $n = Get32u(\$data, $pos+8);
+                $n = Get32u(\$data, 8);
             }
             $pos += 12;
             last if $pos + $n > $nxt;
-            my $val = substr($data, $pos, $n);
+            $raf->Read($data, $n) == $n or last;
+            $dinfo{DataPos} = $dataPos + $pos;
             # pad with empty entries if necessary to keep the same index for each item in the layer
             $count{$tag} = 0 unless defined $count{$tag};
             while ($count{$tag} < $i) {
                 $et->HandleTag($tagTablePtr, $tag, '');
                 ++$count{$tag};
             }
-            $et->HandleTag($tagTablePtr, $tag, $val, DataPt => \$val, DataPos => $dataPos + $pos);
+            $et->HandleTag($tagTablePtr, $tag, $data, %dinfo);
             ++$count{$tag};
             $pos += $n; # step to start of next structure
         }

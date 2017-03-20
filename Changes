@@ -7,6 +7,18 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.40. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Mar. 20, 2017 - Version 10.47
+
+  - Added read support for JSON-format files
+  - Added two new Sony/Minolta lenses (thanks Jos Roost)
+  - Added a number of new Pentax tag values
+  - Decode a new Canon CR2 tag (thanks Ed Hannon)
+  - Decode WB information for Canon 800D (thanks LibRaw)
+  - Improved config_files/photoshop_paths.config to indicate start of paths
+  - Attempt to validate new file names in Windows before renaming images
+  - Experimental Validate feature no longer warns about Windows XP tags
+  - Fixed problem extracting layer information from very large PSD/PSB files
+
 Mar. 8, 2017 - Version 10.46
 
   - Moved Mac System tags from the Extra table into a new MacOS group and added

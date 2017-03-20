@@ -79,6 +79,7 @@ html/TagNames/ISO.html
 html/TagNames/ITC.html
 html/TagNames/JFIF.html
 html/TagNames/JPEG.html
+html/TagNames/JSON.html
 html/TagNames/JVC.html
 html/TagNames/Jpeg2000.html
 html/TagNames/Kodak.html
@@ -270,6 +271,7 @@ lib/Image/ExifTool/Import.pm
 lib/Image/ExifTool/InDesign.pm
 lib/Image/ExifTool/JPEG.pm
 lib/Image/ExifTool/JPEGDigest.pm
+lib/Image/ExifTool/JSON.pm
 lib/Image/ExifTool/JVC.pm
 lib/Image/ExifTool/Jpeg2000.pm
 lib/Image/ExifTool/Kodak.pm
@@ -556,6 +558,8 @@ t/InDesign.t
 t/InDesign_2.out
 t/InDesign_3.out
 t/InDesign_4.out
+t/JSON.t
+t/JSON_2.out
 t/JVC.t
 t/JVC_2.out
 t/JVC_3.out
@@ -914,6 +918,7 @@ t/images/IPTC.jpg
 t/images/ISO.iso
 t/images/ITC.itc
 t/images/InDesign.indd
+t/images/JSON.json
 t/images/JVC.jpg
 t/images/JVC2.jpg
 t/images/Jpeg2000.j2c

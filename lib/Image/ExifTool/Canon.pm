@@ -85,7 +85,7 @@ sub ProcessSerialData($$$);
 sub ProcessFilters($$$);
 sub SwapWords($);
 
-$VERSION = '3.72';
+$VERSION = '3.73';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -1706,7 +1706,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
             SubDirectory => { TagTable => 'Image::ExifTool::Canon::ColorData7' },
         },
         {   # (int16u[1560|1592]) - 5DS/5DSR (1560), 80D (1592), 1300D (1353) ref IB
-            Condition => '$count == 1560 or $count == 1592 or $count == 1353',
+            Condition => '$count == 1560 or $count == 1592 or $count == 1353 or $count == 1602',
             Name => 'ColorData8',
             SubDirectory => { TagTable => 'Image::ExifTool::Canon::ColorData8' },
         },
@@ -7435,6 +7435,7 @@ my %ciMaxFocal = (
             12 => '12 (5DS/5DSR)',
             13 => '13 (80D)', #PH
             14 => '14 (1300D)', #IB
+            15 => '15 (77D/800D)', #IB
         },
     },
     0x3f => { Name => 'WB_RGGBLevelsAsShot',     Format => 'int16s[4]' },
@@ -7553,28 +7554,28 @@ my %ciMaxFocal = (
     },
     0x30a => {
         Name => 'PerChannelBlackLevel',
-        Condition => '$$self{ColorDataVersion} < 14',
+        Condition => '$$self{ColorDataVersion} < 14 or $$self{ColorDataVersion} == 15',
         Format => 'int16u[4]',
-        Notes => '5DS, 5DS R and 80D',
+        Notes => '5DS, 5DS R, 77D, 80D and 800D',
     },
     0x30e => {
         Name => 'NormalWhiteLevel',
-        Condition => '$$self{ColorDataVersion} < 14',
+        Condition => '$$self{ColorDataVersion} < 14 or $$self{ColorDataVersion} == 15',
         Format => 'int16u',
-        Notes => '5DS, 5DS R and 80D',
+        Notes => '5DS, 5DS R, 77D, 80D and 800D',
         RawConv => '$val || undef',
     },
     0x30f => {
         Name => 'SpecularWhiteLevel',
-        Condition => '$$self{ColorDataVersion} < 14',
+        Condition => '$$self{ColorDataVersion} < 14 or $$self{ColorDataVersion} == 15',
         Format => 'int16u',
-        Notes => '5DS, 5DS R and 80D',
+        Notes => '5DS, 5DS R, 77D, 80D and 800D',
     },
     0x310 => {
         Name => 'LinearityUpperMargin',
-        Condition => '$$self{ColorDataVersion} < 14',
+        Condition => '$$self{ColorDataVersion} < 14 or $$self{ColorDataVersion} == 15',
         Format => 'int16u',
-        Notes => '5DS, 5DS R and 80D',
+        Notes => '5DS, 5DS R, 77D, 80D and 800D',
     },
 );
 

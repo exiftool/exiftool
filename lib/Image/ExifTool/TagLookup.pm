@@ -6170,6 +6170,7 @@ my %tagExists = (
 	'cpusubtype' => 1,
 	'cputype' => 1,
 	'cpuversions' => 1,
+	'cr2cfapattern' => 1,
 	'crcdevelparams' => 1,
 	'crdinfo' => 1,
 	'createdby' => 1,

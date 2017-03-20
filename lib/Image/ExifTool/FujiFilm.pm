@@ -805,6 +805,7 @@ my %faceCategories = (
     FIRST_ENTRY => 0,
     # (FujiFilm image dimensions are REALLY confusing)
     # --> this needs some cleaning up
+    # [Note to self: See email from Iliah Borg for more information about WB settings in this data]
     0 => {
         Name => 'RawImageWidth',
         Format => 'int32u',

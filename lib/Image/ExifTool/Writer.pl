@@ -1754,6 +1754,7 @@ sub SetFileName($$;$$)
 {
     my ($self, $file, $newName, $opt) = @_;
     my ($nvHash, $doName, $doDir);
+
     $opt or $opt = '';
     # determine the new file name
     unless (defined $newName) {
@@ -1778,7 +1779,33 @@ sub SetFileName($$;$$)
             }
         }
     }
-    $newName =~ tr/\0//d;   # make sure name doesn't contain nulls
+    # validate new file name in Windows
+    if ($^O eq 'MSWin32') {
+        if ($newName =~ /[\0-\x1f<>"|*]/) {
+            $self->Warn('New file name not allowed in Windows (contains reserved characters)');
+            return -1;
+        }
+        if ($newName =~ /:/ and $newName !~ /^[A-Z]:[^:]*$/i) {
+            $self->Warn("New file name not allowed in Windows (contains ':')");
+            return -1;
+        }
+        if ($newName =~ /\?/ and $newName !~ m{^[\\/]{2}\?[\\/][^?]*$}) {
+            $self->Warn("New file name not allowed in Windows (contains '?')");
+            return -1;
+        }
+        if ($newName =~ m{(^|[\\/])(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])(\.[^.]*)?$}i) {
+            $self->Warn('New file name not allowed in Windows (reserved device name)');
+            return -1;
+        }
+        if ($newName =~ /([. ])$/) {
+            $self->Warn("New file name not recommended for Windows (ends with '$1')", 2) and return -1;
+        }
+        if (length $newName > 259 and $newName !~ /\?/) {
+            $self->Warn('New file name not recommended for Windows (exceeds 260 chars)', 2) and return -1;
+        }
+    } else {
+        $newName =~ tr/\0//d;   # make sure name doesn't contain nulls
+    }
     # protect against empty file name
     length $newName or $self->Warn('New file name is empty'), return -1;
     # don't replace existing file

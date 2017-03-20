@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '10.46';
+$VERSION = '10.47';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -136,10 +136,10 @@ sub ReadValue($$$$$;$);
     Sony::PMP ITC ID3 FLAC Ogg Vorbis APE APE::NewHeader APE::OldHeader Audible
     MPC MPEG::Audio MPEG::Video MPEG::Xing M2TS QuickTime QuickTime::ImageFile
     Matroska MOI MXF DV Flash Flash::FLV Real::Media Real::Audio Real::Metafile
-    RIFF AIFF ASF DICOM MIE HTML XMP::SVG Palm Palm::MOBI Palm::EXTH Torrent EXE
-    EXE::PEVersion EXE::PEString EXE::MachO EXE::PEF EXE::ELF EXE::AR EXE::CHM
-    LNK Font VCard VCard::VCalendar RSRC Rawzor ZIP ZIP::GZIP ZIP::RAR RTF OOXML
-    iWork ISO FLIR::AFF FLIR::FPF MacOS::MDItem MacOS::XAttr
+    RIFF AIFF ASF DICOM MIE JSON HTML XMP::SVG Palm Palm::MOBI Palm::EXTH
+    Torrent EXE EXE::PEVersion EXE::PEString EXE::MachO EXE::PEF EXE::ELF
+    EXE::AR EXE::CHM LNK Font VCard VCard::VCalendar RSRC Rawzor ZIP ZIP::GZIP
+    ZIP::RAR RTF OOXML iWork ISO FLIR::AFF FLIR::FPF MacOS::MDItem MacOS::XAttr
 );
 
 # alphabetical list of current Lang modules
@@ -177,7 +177,7 @@ $defaultLang = 'en';    # default language
                 MPC MKV MXF DV PMP IND PGF ICC ITC FLIR FLIF FPF LFP HTML VRD
                 RTF XCF DSS QTIF FPX PICT ZIP GZIP PLIST RAR BZ2 TAR RWZ EXE EXR
                 HDR CHM LNK WMF AVC DEX DPX RAW Font RSRC M2TS PHP Torrent VCard
-                AA PDB MOI ISO MP3 DICOM PCD);
+                AA PDB MOI ISO JSON MP3 DICOM PCD);
 
 # file types that we can write (edit)
 my @writeTypes = qw(JPEG TIFF GIF CRW MRW ORF RAF RAW PNG MIE PSD XMP PPM EPS
@@ -318,6 +318,7 @@ my %fileTypeLookup = (
     JPG =>   'JPEG',
     JPM  => ['JP2',  'JPEG 2000 compound image'],
     JPX  => ['JP2',  'JPEG 2000 with extensions'],
+    JSON => ['JSON', 'JavaScript Object Notation'],
     JXR  => ['TIFF', 'JPEG XR'],
     K25  => ['TIFF', 'Kodak DC25 RAW'],
     KDC  => ['TIFF', 'Kodak Digital Camera RAW'],
@@ -583,6 +584,7 @@ my %fileDescription = (
     JPEG => 'image/jpeg',
     JPM  => 'image/jpm',
     JPX  => 'image/jpx',
+    JSON => 'application/json',
     K25  => 'image/x-kodak-k25',
     KDC  => 'image/x-kodak-kdc',
     LFP  => 'image/x-lytro-lfp', #PH (NC)
@@ -798,6 +800,7 @@ my %moduleName = (
     ITC  => '.{4}itch',
     JP2  => '(\0\0\0\x0cjP(  |\x1a\x1a)\x0d\x0a\x87\x0a|\xff\x4f\xff\x51\0)',
     JPEG => '\xff(\xd8\xff|\x01Exiv2)', # (includes EXV so we don't have to add EXV to @fileTypes)
+    JSON => '\s*(\[\s*)?\{\s*"[^"]+"\s*:',
     LFP  => '\x89LFP\x0d\x0a\x1a\x0a',
     LNK  => '.{4}\x01\x14\x02\0{5}\xc0\0{6}\x46',
     M2TS => '(....)?\x47',

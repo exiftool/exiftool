@@ -34,7 +34,7 @@ use Image::ExifTool::Nikon;
 use Image::ExifTool::Validate;
 use Image::ExifTool::MacOS;
 
-$VERSION = '3.05';
+$VERSION = '3.06';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -996,7 +996,7 @@ TagID:  foreach $tagID (@keys) {
                     }
                 }
                 if (ref($printConv) =~ /^(HASH|ARRAY)$/) {
-                    my (@printConvList, @indexList, $index);
+                    my (@printConvList, @indexList, $index, $valueConvHash);
                     if (ref $printConv eq 'ARRAY') {
                         for ($index=0; $index<@$printConv; ++$index) {
                             next if ref $$printConv[$index] ne 'HASH';
@@ -1016,6 +1016,8 @@ TagID:  foreach $tagID (@keys) {
                         }
                         $printConv = shift @printConvList;
                         $index = shift @indexList;
+                    } else {
+                        $valueConvHash = $$tagInfo{ValueConv} if ref $$tagInfo{ValueConv} eq 'HASH';
                     }
                     while (defined $printConv) {
                         if (defined $index) {
@@ -1061,7 +1063,7 @@ TagID:  foreach $tagID (@keys) {
                             $caseInsensitive = 0;
                             my @pk = sort { NumbersFirst($a,$b) } keys %$printConv;
                             my $n = scalar @values;
-                            my ($bits, $i);
+                            my ($bits, $i, $v);
                             foreach (@pk) {
                                 next if $_ eq '';
                                 $_ eq 'BITMASK' and $bits = $$printConv{$_}, next;
@@ -1089,6 +1091,13 @@ TagID:  foreach $tagID (@keys) {
                                     }
                                 }
                                 push @values, "$index = " . $$printConv{$_};
+                                if ($valueConvHash) {
+                                    foreach $v (keys %$valueConvHash) {
+                                        next unless $$valueConvHash{$v} eq $_;
+                                        $values[-1] = "$v => " . $values[-1];
+                                        last;
+                                    }
+                                }
                                 # validate all PrintConv values
                                 if ($$printConv{$_} =~ /[\0-\x1f\x7f-\xff]/) {
                                     warn "Warning: Special characters in $short $name PrintConv ($$printConv{$_})\n";

@@ -53,7 +53,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '3.89';
+$VERSION = '3.90';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -2762,7 +2762,21 @@ my %sampleFormat = (
     },
     # 0xc5d8 - found in CR2 images
     # 0xc5d9 - found in CR2 images
-    # 0xc5e0 - found in CR2 images
+    0xc5e0 => { #forum8153 (CR2 images)
+        Name => 'CR2CFAPattern',
+        ValueConv => {
+            1 => '0 1 1 2',
+            2 => '2 1 1 0',
+            3 => '1 2 0 1',
+            4 => '1 0 2 1',
+        },
+        PrintConv => {
+            '0 1 1 2' => '[Red,Green][Green,Blue]',
+            '2 1 1 0' => '[Blue,Green][Green,Red]',
+            '1 2 0 1' => '[Green,Blue][Red,Green]',
+            '1 0 2 1' => '[Green,Red][Blue,Green]',
+        },
+    },
 #
 # DNG tags 0xc6XX and 0xc7XX (ref 2 unless otherwise stated)
 #

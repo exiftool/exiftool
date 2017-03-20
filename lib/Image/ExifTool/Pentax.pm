@@ -57,7 +57,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::HP;
 
-$VERSION = '3.09';
+$VERSION = '3.10';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -1431,6 +1431,12 @@ my %binaryDataAttrs = (
             37 => 128000, #PH (NC)
             38 => 160000, #PH (NC)
             39 => 204800, #27
+            40 => 256000, #PH (NC)
+            41 => 320000, #PH (NC)
+            42 => 409600, #PH (NC)
+            43 => 512000, #PH (NC)
+            44 => 640000, #PH (NC)
+            45 => 819200, #PH (KP)
             # Optio 330/430 (oddball)
             50 => 50, #PH
             100 => 100, #PH
@@ -1461,6 +1467,14 @@ my %binaryDataAttrs = (
             276 => 25600, #PH
             277 => 36000, #PH
             278 => 51200, #PH
+            279 => 72000, #PH (NC)
+            280 => 102400, #PH (NC)
+            281 => 144000, #PH (NC)
+            282 => 204800, #PH (NC)
+            283 => 288000, #PH (NC)
+            284 => 409600, #PH (NC)
+            285 => 576000, #PH (NC)
+            286 => 819200, #PH (NC)
             # 65534 Auto? (Q/Q10/Q7 MOV) PH
             # 65535 Auto? (K-01 MP4) PH
         },
@@ -2122,6 +2136,7 @@ my %binaryDataAttrs = (
             15 => '15 (K-S1,K-S2)', #PH
             16 => '16 (K-1)', #PH
             17 => '17 (K-70)', #29
+            18 => '18 (KP)', #PH
         },
     },
     0x0067 => { #PH (K-5)

@@ -11,7 +11,7 @@ package Image::ExifTool::Validate;
 use strict;
 use vars qw($VERSION %exifSpec);
 
-$VERSION = '1.00';
+$VERSION = '1.01';
 
 use Image::ExifTool qw(:Utils);
 use Image::ExifTool::Exif;
@@ -67,6 +67,7 @@ my %stdFormat = (
         All  => '', # all defined GPS tags are standard
     },
     IFD => {
+        # TIFF, EXIF, XMP, IPTC, ICC_Profile and PrintIM standard tags:
         0xfe  => 'int32u',      0x11f => 'rational64u', 0x14a => 'int32u',      0x205 => 'int16u',
         0xff  => 'int16u',      0x120 => 'int32u',      0x14c => 'int16u',      0x206 => 'int16u',
         0x100 => 'int(16|32)u', 0x121 => 'int32u',      0x14d => 'string',      0x207 => 'int32u',
@@ -83,6 +84,9 @@ my %stdFormat = (
         0x119 => 'int16u',      0x143 => 'int(16|32)u', 0x201 => 'int32u',      0x8773 => 'undef',
         0x11d => 'string',      0x144 => 'int32u',      0x202 => 'int32u',      0xc4a5 => 'undef',
         0x11e => 'rational64u', 0x145 => 'int(16|32)u', 0x203 => 'int16u',
+        # Windows Explorer tags:
+        0x9c9b => 'int8u',      0x9c9d => 'int8u',      0x9c9f => 'int8u',
+        0x9c9c => 'int8u',      0x9c9e => 'int8u',
         # DNG tags:
         0xc615 => '(string|int8u)',              0xc6d3 => '',
         0xc61a => '(int16u|int32u|rational64u)', 0xc6f4 => '(string|int8u)',

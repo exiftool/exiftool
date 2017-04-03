@@ -530,7 +530,8 @@ different from other models)</span>
   <br>400 = 400
   <br>800 = 800
   <br>1600 = 1600
-  <br>3200 = 3200</td></tr></table>
+  <br>3200 = 3200
+  <br>65535 = Auto</td></tr></table>
 </td></tr>
 <tr class=b>
 <td title='0x0015 = 21'>0x0015</td>
@@ -833,6 +834,7 @@ available.  Extended bracket values are printed as &#39;WB-BA&#39;, &#39;WB-GM&#
   <br>32 = HDR Strong 1</td><td>&nbsp;&nbsp;</td>
   <td>48 = HDR Strong 2
   <br>64 = HDR Strong 3
+  <br>128 = HDR Manual
   <br>224 = HDR Auto
   <br>255 = Video</td></tr></table>
 </td></tr>
@@ -932,12 +934,14 @@ available.  Extended bracket values are printed as &#39;WB-BA&#39;, &#39;WB-GM&#
   <br>1 = Bright
   <br>2 = Portrait
   <br>3 = Landscape
-  <br>4 = Vibrant</td><td>&nbsp;&nbsp;</td>
-  <td>5 = Monochrome
-  <br>6 = Muted
+  <br>4 = Vibrant
+  <br>5 = Monochrome</td><td>&nbsp;&nbsp;</td>
+  <td>6 = Muted
   <br>7 = Reversal Film
   <br>8 = Bleach Bypass
-  <br>9 = Radiant</td></tr></table>
+  <br>9 = Radiant
+  <br>10 = Cross Processing
+  <br>11 = Flat</td></tr></table>
 </td></tr>
 <tr class=b>
 <td title='0x0050 = 80'>0x0050</td>
@@ -1014,9 +1018,9 @@ for live view or video recording)</span></span></td></tr>
   <br>7 = 7 (K-r)
   <br>8 = 8 (K-5,K-5II,K-5IIs)
   <br>9 = 9 (Q)
-  <br>10 = 10 (K-01,K-30)
+  <br>10 = 10 (K-01,K-30,K-50,K-500)
   <br>11 = 11 (Q10)
-  <br>12 = 12 (MX-1)
+  <br>12 = 12 (MX-1,Q-S1,Q7)
   <br>13 = 13 (K-3,K-3II)
   <br>14 = 14 (645Z)
   <br>15 = 15 (K-S1,K-S2)
@@ -1242,15 +1246,16 @@ other models)</span>
 <td>BleachBypassToning</td>
 <td class=c>int16u</td>
 <td><table class=cols><tr>
-  <td>1 = Green
+  <td>0 = Off
+  <br>1 = Green
   <br>2 = Yellow
   <br>3 = Orange
-  <br>4 = Red
-  <br>5 = Magenta</td><td>&nbsp;&nbsp;</td>
-  <td>6 = Purple
+  <br>4 = Red</td><td>&nbsp;&nbsp;</td>
+  <td>5 = Magenta
+  <br>6 = Purple
   <br>7 = Blue
   <br>8 = Cyan
-  <br>65535 = Off</td></tr></table>
+  <br>65535 = n/a</td></tr></table>
 </td></tr>
 <tr class=b>
 <td title='0x0080 = 128'>0x0080</td>
@@ -1299,6 +1304,18 @@ other models)</span>
 <td>ISO</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
+<tr>
+<td title='0x0095 = 149'>0x0095</td>
+<td>SkinToneCorrection</td>
+<td class=c>int8s[2]</td>
+<td><span class=s>&#39;0 0&#39; = Off
+  <br>&#39;1 1&#39; = On (type 1)
+  <br>&#39;1 2&#39; = On (type 2)</span></td></tr>
+<tr class=b>
+<td title='0x0096 = 150'>0x0096</td>
+<td>ClarityControl</td>
+<td class=c>int8s[2]</td>
+<td><span class=s>&#39;0 0&#39; = Off</span></td></tr>
 <tr>
 <td title='0x0200 = 512'>0x0200</td>
 <td>BlackPoint</td>
@@ -2757,13 +2774,14 @@ but it varies slightly by lens)</span></span></td></tr>
   <br>0x40 = Daylight Fluorescent
   <br>0x50 = Day White Fluorescent
   <br>0x60 = White Fluorescent
-  <br>0x70 = Tungsten</td></tr></table>
+  <br>0x70 = Tungsten
+  <br>0x80 = Unknown</td></tr></table>
 </td></tr>
 <tr>
 <td class=r title='13 = 0xd'>13.1</td>
 <td>AEMeteringMode2</td>
 <td class=c>int8u</td>
-<td><span class=s><span class=n>(K7 and Kx, override for an incompatable metering mode setting)</span>
+<td><span class=s><span class=n>(K7 and Kx, override for an incompatible metering mode setting)</span>
   <br>[Mask 0x0f]
   <br>0x0 = Multi-segment
   <br>Bit 0 = Center-weighted average
@@ -4135,28 +4153,31 @@ used.</p>
 <table class='inner sep' cellspacing=1>
 <tr class=h><th>Value</th><th>DigitalFilter</th><th>Value</th><th>DigitalFilter</th><th>Value</th><th>DigitalFilter</th></tr>
 <tr><td class=r>0</td><td>= Off</td>
-<td class='r b'>9</td><td class=b>= Fisheye</td>
-<td class=r>18</td><td>= Posterization</td>
-</tr><tr><td class=r>1</td><td>= Base Parameter Adjust</td>
 <td class='r b'>10</td><td class=b>= Toy Camera</td>
-<td class=r>19</td><td>= Sketch Filter</td>
-</tr><tr><td class=r>2</td><td>= Soft Focus</td>
-<td class='r b'>11</td><td class=b>= Retro</td>
 <td class=r>20</td><td>= Shading</td>
-</tr><tr><td class=r>3</td><td>= High Contrast</td>
-<td class='r b'>12</td><td class=b>= Pastel</td>
+</tr><tr><td class=r>1</td><td>= Base Parameter Adjust</td>
+<td class='r b'>11</td><td class=b>= Retro</td>
 <td class=r>21</td><td>= Invert Color</td>
-</tr><tr><td class=r>4</td><td>= Color Filter</td>
-<td class='r b'>13</td><td class=b>= Water Color</td>
+</tr><tr><td class=r>2</td><td>= Soft Focus</td>
+<td class='r b'>12</td><td class=b>= Pastel</td>
 <td class=r>23</td><td>= Tone Expansion</td>
-</tr><tr><td class=r>5</td><td>= Extract Color</td>
+</tr><tr><td class=r>3</td><td>= High Contrast</td>
+<td class='r b'>13</td><td class=b>= Water Color</td>
+<td class=r>27</td><td>= Unicolor Bold</td>
+</tr><tr><td class=r>4</td><td>= Color Filter</td>
 <td class='r b'>14</td><td class=b>= HDR</td>
-<td class=r>254</td><td>= Custom Filter</td>
-</tr><tr><td class=r>6</td><td>= Monochrome</td>
+<td class=r>28</td><td>= Bold Monochrome</td>
+</tr><tr><td class=r>5</td><td>= Extract Color</td>
 <td class='r b'>16</td><td class=b>= Miniature</td>
-<td class=r>&nbsp;</td><td>&nbsp;</td>
-</tr><tr><td class=r>7</td><td>= Slim</td>
+<td class=r>29</td><td>= Replace Color</td>
+</tr><tr><td class=r>6</td><td>= Monochrome</td>
 <td class='r b'>17</td><td class=b>= Starburst</td>
+<td class=r>254</td><td>= Custom Filter</td>
+</tr><tr><td class=r>7</td><td>= Slim</td>
+<td class='r b'>18</td><td class=b>= Posterization</td>
+<td class=r>&nbsp;</td><td>&nbsp;</td>
+</tr><tr><td class=r>9</td><td>= Fisheye</td>
+<td class='r b'>19</td><td class=b>= Sketch Filter</td>
 <td class=r>&nbsp;</td><td>&nbsp;</td>
 </tr></table></td></tr></table></blockquote>
 
@@ -4818,7 +4839,7 @@ stored as ASCII text in a format very similar to some HP models.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Mar 14, 2017</i>
+<br><i>Last revised Apr 3, 2017</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

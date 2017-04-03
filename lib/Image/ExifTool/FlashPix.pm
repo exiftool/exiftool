@@ -19,7 +19,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::ASF;   # for GetGUID()
 
-$VERSION = '1.28';
+$VERSION = '1.29';
 
 sub ProcessFPX($$);
 sub ProcessFPXR($$$);
@@ -1638,7 +1638,7 @@ sub ProcessFPX($$)
     my ($et, $dirInfo) = @_;
     my $raf = $$dirInfo{RAF};
     my ($buff, $out, %dumpParms, $oldIndent, $miniStreamBuff);
-    my ($tag, %hier, %objIndex);
+    my ($tag, %hier, %objIndex, %loadedDifSect);
 
     # read header
     return 0 unless $raf->Read($buff,HDR_SIZE) == HDR_SIZE;
@@ -1681,7 +1681,9 @@ sub ProcessFPX($$)
     my $endPos = length($buff);
     my $fat = '';
     my $fatCountCheck = 0;
+    my $difCountCheck = 0;
     my $hdrSize = $sectSize > HDR_SIZE ? $sectSize : HDR_SIZE;
+
     for (;;) {
         while ($pos <= $endPos - 4) {
             my $sect = Get32u(\$buff, $pos);
@@ -1700,11 +1702,20 @@ sub ProcessFPX($$)
         }
         last if $difStart >= END_OF_CHAIN;
         # read next DIF (Dual Indirect FAT) sector
+        if (++$difCountCheck > $difCount) {
+            $et->Warn('Unterminated DIF FAT');
+            last;
+        }
+        if ($loadedDifSect{$difStart}) {
+            $et->Warn('Cyclical reference in DIF FAT');
+            last;
+        }
         my $offset = $difStart * $sectSize + $hdrSize;
         unless ($raf->Seek($offset, 0) and $raf->Read($buff, $sectSize) == $sectSize) {
             $et->Error("Error reading DIF sector $difStart");
             return 1;
         }
+        $loadedDifSect{$difStart} = 1;
         # set end of sector information in this DIF
         $pos = 0;
         $endPos = $sectSize - 4;

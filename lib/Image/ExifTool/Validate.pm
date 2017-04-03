@@ -11,7 +11,7 @@ package Image::ExifTool::Validate;
 use strict;
 use vars qw($VERSION %exifSpec);
 
-$VERSION = '1.01';
+$VERSION = '1.02';
 
 use Image::ExifTool qw(:Utils);
 use Image::ExifTool::Exif;
@@ -126,6 +126,9 @@ my %validateInfo = (
     },
 );
 
+# generate lookup for any IFD
+my %stdFormatAnyIFD = map { %{$stdFormat{$_}} } keys %stdFormat;
+
 # add "Validate" tag to Extra table
 AddTagToTable(\%Image::ExifTool::Extra, Validate => \%validateInfo, 1);
 
@@ -148,15 +151,22 @@ sub ValidateExif($$$$$$$$)
             ($exifSpec{$tag} or $$stdFmt{$tag} or
             ($tag >= 0xc612 and $tag <= 0xc7b5 and not defined $$stdFmt{$tag})))) # (DNG tags)
         {
-            my $wgp = $$ti{WriteGroup};
-            if ($wgp and $wgp ne $ifd and $wgp ne 'All' and
+            my $wgp = $$ti{WriteGroup} || $$tagTablePtr{WRITE_GROUP};
+            if ($wgp and $wgp ne $ifd and $wgp ne 'All' and not $$ti{OffsetPair} and
                 ($ifd =~ /^(Sub|Profile)?IFD\d*$/ xor $wgp =~ /^(Sub)?IFD\d*$/))
             {
-                $et->Warn(sprintf('Wrong IFD for %s tag 0x%.4x %s (found in %s)', $ifd, $tag, $$ti{Name}, $wgp));
+                $et->Warn(sprintf('Wrong IFD for 0x%.4x %s (should be %s not %s)', $tag, $$ti{Name}, $wgp, $ifd));
             }
             my $fmt = $$stdFmt{$tag} || $$ti{Writable};
             if ($fmt and $formatStr !~ /^$fmt$/) {
                 $et->Warn(sprintf('Non-standard format (%s) for %s 0x%.4x %s', $formatStr, $ifd, $tag, $$ti{Name}))
+            }
+        } elsif ($stdFormatAnyIFD{$tag}) {
+            my $wgp = $$ti{WriteGroup} || $$tagTablePtr{WRITE_GROUP};
+            if ($wgp) {
+                $et->Warn(sprintf('Wrong IFD for 0x%.4x %s (should be %s not %s)', $tag, $$ti{Name}, $wgp, $ifd));
+            } else {
+                $et->Warn(sprintf('Wrong IFD for 0x%.4x %s (found in %s)', $tag, $$ti{Name}, $ifd));
             }
         } else {
             $et->Warn(sprintf('Non-standard %s tag 0x%.4x %s', $ifd, $tag, $$ti{Name}), 1);

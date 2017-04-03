@@ -42,6 +42,7 @@
 #              28) Klaus Homeister http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,4803.0.html
 #              29) Louis Granboulan private communication (K-5II)
 #              30) http://u88.n24.queensu.ca/exiftool/forum/index.php?topic=5433
+#              31) Andras Salamon private communication (K-70)
 #              IB) Iliah Borg private communication (LibRaw)
 #              JD) Jens Duttke private communication
 #              NJ) Niels Kristian Bech Jensen private communication
@@ -57,7 +58,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::HP;
 
-$VERSION = '3.10';
+$VERSION = '3.11';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -648,6 +649,9 @@ my %digitalFilter = (
         20 => 'Shading', # (Q)
         21 => 'Invert Color', # (Q)
         23 => 'Tone Expansion', #Forum5247
+        27 => 'Unicolor Bold', #31
+        28 => 'Bold Monochrome', #31
+        29 => 'Replace Color', #31
         254 => 'Custom Filter',
     },
 );
@@ -665,8 +669,8 @@ my %filterSettings = (
     8  => ['HighContrast', '%d'],   # High Contrast/Custom (1-5)
     9  => ['Color',         { 1=>'Red',2=>'Magenta',3=>'Blue',4=>'Cyan',5=>'Green',6=>'Yellow' }], # Color Filter
     10 => ['Density',       { 1=>'Light',2=>'Standard',3=>'Dark' }], # Color Filter
-    11 => ['ExtractedColor',{ 0=>'Off',1=>'Red',2=>'Magenta',3=>'Blue',4=>'Cyan',5=>'Green',6=>'Yellow' }], # ExtractColor [x2]
-    12 => ['ColorRange', '%+d'],    # ExtractColor [x2] (-2-+2)
+    11 => ['ExtractedColor',{ 0=>'Off',1=>'Red',2=>'Magenta',3=>'Blue',4=>'Cyan',5=>'Green',6=>'Yellow' }], # Extract Color [x2]
+    12 => ['ColorRange', '%+d'],    # Extract Color [x2] (-2-+2)
     13 => ['FilterEffect',  { 0=>'Off',1=>'Red',2=>'Green',3=>'Blue',4=>'Infrared'}], # Monochrome
     14 => ['ToningBA', '%+d'],      # Monochrome (-3-+3)
     15 => ['InvertColor',   { 0=>'Off',1=>'On' }], # Custom/Invert Color
@@ -698,6 +702,12 @@ my %filterSettings = (
     41 => ['Contrast2',     { 1=>'Low',2=>'Medium',3=>'High'}], # Sketch Filter
     42 => ['ScratchEffect', { 0=>'Off',1=>'On' }], # Sketch Filter
     45 => ['ToneExpansion', { 1=>'Low',2=>'Medium',3=>'High' }], # Tone Expansion (ref Forum5247)
+    47 => ['UnicolorBold',  { 1=>'Red',2=>'Magenta',3=>'Blue',4=>'Cyan',5=>'Green',6=>'Yellow' }], #31 Unicolor Bold
+    48 => ['BoldMonochrome', '%d'], #31 Bold Monochrome (1-3)
+    49 => ['OriginalColor', { 1=>'Red',2=>'Magenta',3=>'Blue',4=>'Cyan',5=>'Green',6=>'Yellow' }], #31 Replace Color
+    50 => ['NewColor',      { 1=>'Red',2=>'Magenta',3=>'Blue',4=>'Cyan',5=>'Green',6=>'Yellow' }], #31 Replace Color
+    51 => ['ColorScale', '%d'], #31 Replace Color (1-5)
+    52 => ['Toning2', '%+d'], #31 Extract Color (-3-+3)
 );
 
 # decoding for Pentax Firmware ID tags - PH
@@ -805,6 +815,7 @@ my %binaryDataAttrs = (
         # 0.1.0.3 - PENTAX Optio E40
         # 3.0.0.0 - K10D
         # 3.1.0.0 - Optio A40/S10/L36/L40/M40/V10
+        # 3.1.1.0 - Optio L36/L40/M40/V10
         # 3.1.2.0 - Optio Z10
         # 4.0.2.0 - Optio E50
         # 4.1.0.0 - Optio S12
@@ -816,17 +827,17 @@ my %binaryDataAttrs = (
         # 4.2.3.0 - Optio M60
         # 4.4.0.1 - K-m, K2000
         # 4.5.0.0 - Optio E70/L70
-        # 4.5.0.0 - Optio P70
+        # 4.5.0.0 - Optio E70/L70/P70
         # 4.6.0.0 - Optio E80/E90/W80
         # 5.0.0.0 - K-7, Optio P80/WS80
         # 5.1.0.0 - K-x
         # 5.2.0.0 - Optio I-10
         # 5.3.0.0 - Optio H90
-        # 5.3.2.0 - Optio W90
+        # 5.3.2.0 - Optio W90/X90
         # 6.0.0.0 - K-r, 645D
         # 6.1.3.0 - Optio LS1000/RS1000/RS1500/RZ10
         # 7.0.0.0 - K-5
-        # 7.1.0.0 - Optio WG-1GPS/WG-10
+        # 7.1.0.0 - Optio WG-1GPS/WG-10/WG-20
         # 7.2.0.0 - Optio S1
         # 8.0.0.0 - Q
         # 8.0.1.0 - Optio RZ18
@@ -834,17 +845,21 @@ my %binaryDataAttrs = (
         # 8.1.0.0 - Optio LS465/WG-2GPS
         # 9.0.0.0 - K-01
         # 9.1.2.0 - X-5
-        # 10.0.0.0 - K-30, K-50, K-500, K-5 II
+        # 10.0.0.0 - K-30, K-50, K-500, K-5 II, K-5 II s
         # 10.0.2.0 - Q10
-        # 10.2.0.0 - WG-3
+        # 10.2.0.0 - WG-3/WG-4
         # 10.2.1.0 - MX-1
-        # 10.4.1.0 - WG-3 GPS
+        # 10.4.1.0 - WG-3/4/5 GPS, WG-30/30W
         # 10.6.1.0 - Q-S1, Q7
         # 11.0.0.0 - K-3
         # 11.2.1.0 - 645Z
         # 11.3.0.0 - K-S1
         # 11.5.0.0 - K-S2
         # 11.6.1.0 - K-3 II
+        # 11.7.5.0 - WG-M2
+        # 12.0.0.0 - K-1
+        # 12.1.3.0 - K-70
+        # 12.1.5.0 - KP
     },
     0x0001 => { #PH
         Name => 'PentaxModelType',
@@ -1476,7 +1491,7 @@ my %binaryDataAttrs = (
             285 => 576000, #PH (NC)
             286 => 819200, #PH (NC)
             # 65534 Auto? (Q/Q10/Q7 MOV) PH
-            # 65535 Auto? (K-01 MP4) PH
+            65535 => 'Auto', #PH/31 (K-01/K-70 MP4)
         },
     },
     0x0015 => { #PH
@@ -1899,7 +1914,8 @@ my %binaryDataAttrs = (
             0x20 => 'HDR Strong 1', #PH (NC) (K-5)
             0x30 => 'HDR Strong 2', #PH (K-5)
             0x40 => 'HDR Strong 3', #PH (K-5)
-            0xe0 => 'HDR Auto', #PH (K-5)
+            0x80 => 'HDR Manual', #31 (K-70 HDR 1 and HDR 2)
+            0xe0 => 'HDR Auto', #PH (K-5, K-70)
             0xff => 'Video', #PH (K-x)
         }],
     },
@@ -2053,6 +2069,8 @@ my %binaryDataAttrs = (
             7 => 'Reversal Film', # (645D) (Ricoh WG-5 "Slide Film")
             8 => 'Bleach Bypass', # (K-5)
             9 => 'Radiant', # (Q)
+            10 => 'Cross Processing', #31 (K-70)
+            11 => 'Flat', #31 (K-70)
         },
     },
     0x0050 => { #PH
@@ -2128,9 +2146,9 @@ my %binaryDataAttrs = (
             7 => '7 (K-r)',
             8 => '8 (K-5,K-5II,K-5IIs)',
             9 => '9 (Q)',
-            10 => '10 (K-01,K-30)',
+            10 => '10 (K-01,K-30,K-50,K-500)',
             11 => '11 (Q10)',
-            12 => '12 (MX-1)',
+            12 => '12 (MX-1,Q-S1,Q7)',
             13 => '13 (K-3,K-3II)',
             14 => '14 (645Z)',
             15 => '15 (K-S1,K-S2)', #PH
@@ -2401,7 +2419,8 @@ my %binaryDataAttrs = (
         Writable => 'int16u',
         PrintConvColumns => 2,
         PrintConv => {
-            65535 => 'Off',
+            65535 => 'n/a', #31
+            0 => 'Off', #31
             1 => 'Green',
             2 => 'Yellow',
             3 => 'Orange',
@@ -2477,6 +2496,35 @@ my %binaryDataAttrs = (
         Name => 'ISO',
         Priority => 0,
         Writable => 'int32u',
+    },
+    0x0095 => { #31
+        Name => 'SkinToneCorrection',
+        Writable => 'int8s',
+        Count => 2,
+        PrintConv => {
+            '0 0' => 'Off',
+            '1 1' => 'On (type 1)',
+            '1 2' => 'On (type 2)',
+        },
+    },
+    0x0096 => { #31
+        Name => 'ClarityControl',
+        Writable => 'int8s',
+        Count => 2,
+        PrintConv => {
+            '0 0' => 'Off',
+            OTHER => sub {
+                my ($val, $inv) = @_;
+                if ($inv) {
+                    $val =~ /(\d+ -?\d+)/ and return $1;
+                    return ("1 $val");
+                } elsif ($val =~ /^1 (-?\d+)$/) {
+                    return $1 ? sprintf('%+d', $1) : 0;
+                } else {
+                    return "Unknown ($val)";
+                }
+            },
+        },
     },
     0x0200 => { #5
         Name => 'BlackPoint',
@@ -3658,12 +3706,13 @@ my %binaryDataAttrs = (
             0x50 => 'Day White Fluorescent',
             0x60 => 'White Fluorescent',
             0x70 => 'Tungsten',
+            0x80 => 'Unknown', #31 (or not set due to inadequate lighting)
         },
     },
     13.1 => { #30
         Name => 'AEMeteringMode2',
         Condition => '$$self{AEInfoSize} == 24', # (not thoroughly tested for other sizes)
-        Notes => 'K7 and Kx, override for an incompatable metering mode setting',
+        Notes => 'K7 and Kx, override for an incompatible metering mode setting',
         Mask => 0x0f,
         PrintConv => {
             0 => 'Multi-segment',

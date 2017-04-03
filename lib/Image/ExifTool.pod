@@ -859,13 +859,17 @@ Secondary sort order used for tags within each group when Sort is 'Group':
 Flag to return undefined value for any date which can't be converted when
 the DateFormat option is used.  Default is undef.
 
+  undef - Same as 0 for reading, 1 for copying
+    0   - Return date/time value unchanged if it can't be converted
+    1   - Return undef if date/time value can't be converted
+
 =item Struct
 
 Flag to return XMP structures as hash references instead of flattening into
 individual tags.  Has no effect when writing since both flattened and
 structured tags may always be written.  Possible values are:
 
-  undef - Same as 0 for reading, 2 for copying
+  undef - (default) Same as 0 for reading, 2 for copying
     0   - Read/copy flattened tags
     1   - Read/copy structured tags
     2   - Read/copy both flattened and structured tags, but flag

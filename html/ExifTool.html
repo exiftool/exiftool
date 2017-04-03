@@ -418,26 +418,26 @@ distribution for examples.</p>
 <table class='norm'>
 <tr><th colspan=4 bgcolor='#dddddd'><font size='+1'>ExifTool Options</font></th></tr>
 <tr><th>Option</th><th>Description</th><th>Values</th><th>Default</th></tr>
-<tr><td>Binary</td><td><a name="Binary"></a>Flag to extract the value data for all binary tags.
+<tr id="Binary"><td>Binary</td><td>Flag to extract the value data for all binary tags.
     Tag values representing large binary data blocks (eg. ThumbnailImage)
     are not necessarily extracted unless this option is set or the tag is
     specifically requested by name.</td>
     <td align=center>0 or 1</td><td align=center>undef</td></tr>
-<tr><td>ByteOrder</td><td><a name="ByteOrder"></a>The byte order for newly created EXIF segments when
+<tr id="ByteOrder"><td>ByteOrder</td><td>The byte order for newly created EXIF segments when
     writing.  Note that if EXIF information already exists, the existing order is
     maintained.  If ByteOrder is not defined, then the order of the maker notes is
     used (if they are being copied), otherwise big-endian ('MM') order is assumed.
     This can also be set via the <a href="TagNames/Extra.html">ExifByteOrder tag</a>,
     but the ByteOrder option takes precedence if both are set.</td>
     <td align=center>'MM','II' or undef</td><td align=center>undef</td></tr>
-<tr><td>Charset</td><td>Character set for encoding character
+<tr id="Charset"><td>Charset</td><td>Character set for encoding character
     strings passed to/from ExifTool containing code points above U+007F.  Note
     that this option affects some types of information when reading/writing the
     file and other types when getting/setting tag values, so it must be defined
     for both types of access. Charset values listed to the right have aliases
     which are given in brackets. Case is not significant.  See
     <a href="faq.html#Q10">FAQ #10</a> for more information about character sets.</td>
-    <td align=center><a name="Charset"></a><table class=clear>
+    <td align=center><table class=clear>
     <tr><td valign=top align=right>UTF8</td><td>(cp65001, UTF-8)</td></tr>
     <tr><td valign=top align=right>Latin</td><td>(cp1252, Latin1)</td></tr>
     <tr><td valign=top align=right>Latin2</td><td>(cp1250)</td></tr>
@@ -458,45 +458,45 @@ distribution for examples.</p>
     <tr><td valign=top align=right>MacIceland</td><td>(cp10079)</td></tr>
     <tr><td valign=top align=right>MacCroatian</td><td>(cp10082)</td></tr>
     </table></td><td align=center>'UTF8'</td></tr>
-<tr><td>CharsetEXIF</td><td><a name="CharsetEXIF"></a>Internal encoding to use for stored
+<tr id="CharsetEXIF"><td>CharsetEXIF</td><td>Internal encoding to use for stored
     EXIF "ASCII" string values.  May also be set to undef to pass through EXIF
     "ASCII" values without recoding.  Set to "UTF8" to conform with the MWG
     recommendation.</td>
     <td align=center><i>(see <a href="#Charset">Charset</a> option)</i><br>or undef</td><td align=center>undef</td></tr>
-<tr><td>CharsetFileName</td><td><a name="CharsetFileName"></a>External character set
+<tr id="CharsetFileName"><td>CharsetFileName</td><td>External character set
     used when specifying file names.  When set in Windows, this triggers use of
     Windows Unicode file library routines (requires Win32API::File).  May also
     be set to an empty string to avoid "encoding not specified" warnings on Windows.</td>
     <td align=center><i>(see <a href="#Charset">Charset</a> option)</i><br>or undef</td><td align=center>undef</td></tr>
-<tr><td>CharsetID3</td><td><a name="CharsetID3"></a>Internal encoding to assume for ID3v1 strings.  By
+<tr id="CharsetID3"><td>CharsetID3</td><td>Internal encoding to assume for ID3v1 strings.  By
     the specification ID3v1 strings should be encoded in ISO 8859-1 (essentially
     'Latin'), but some applications may use local encoding instead.  This option
     allows different encodings to be specified.</td>
     <td align=center><i>(see <a href="#Charset">Charset</a> option)</i></td><td align=center>'Latin'</td></tr>
-<tr><td>CharsetIPTC</td><td><a name="CharsetIPTC"></a>Fallback internal IPTC character set to assume if IPTC information
+<tr id="CharsetIPTC"><td>CharsetIPTC</td><td>Fallback internal IPTC character set to assume if IPTC information
     contains no CodedCharacterSet tag.</td>
     <td align=center><i>(see <a href="#Charset">Charset</a> option)</i></td><td align=center>'Latin'</td></tr>
-<tr><td>CharsetPhotoshop</td><td><a name="CharsetPhotoshop"></a>Internal encoding to assume for Photoshop IRB resource names.</td>
+<tr id="CharsetPhotoshop"><td>CharsetPhotoshop</td><td>Internal encoding to assume for Photoshop IRB resource names.</td>
     <td align=center><i>(see <a href="#Charset">Charset</a> option)</i></td><td align=center>'Latin'</td></tr>
-<tr><td>CharsetQuickTime</td><td><a name="CharsetQuickTime"></a>Internal encoding to assume for QuickTime
+<tr id="CharsetQuickTime"><td>CharsetQuickTime</td><td>Internal encoding to assume for QuickTime
     strings stored with an unspecified encoding.</td>
     <td align=center><i>(see <a href="#Charset">Charset</a> option)</i></td><td align=center>'MacRoman'</td></tr>
-<tr><td>CharsetRIFF</td><td><a name="CharsetRIFF"></a>Internal encoding to assume for strings in RIFF
+<tr id="CharsetRIFF"><td>CharsetRIFF</td><td>Internal encoding to assume for strings in RIFF
     metadata (eg. AVI and WAV files).  The default value of 0 assumes 'Latin' encoding unless otherwise
     specified by the RIFF CSET chunk.  Set to undef to pass through strings without recoding.</td>
     <td align=center><i>(see <a href="#Charset">Charset</a> option)</i><br>or 0 or undef</td><td align=center>0</td></tr>
-<tr><td>Compact</td><td><a name="Compact"></a>Flag to write compact output.  The XMP specification suggests
+<tr id="Compact"><td>Compact</td><td>Flag to write compact output.  The XMP specification suggests
     that the data be padded with blanks to allow in-place editing.  With this
     flag set the 2kB of padding is not written.  Note that this only effects
     embedded XMP since padding is never written for stand-alone XMP files.</td>
     <td align=center>0 or 1</td><td align=center>undef</td></tr>
-<tr><td>Composite</td><td><a name="Composite"></a>Flag to generate Composite tags when extracting information.</td>
+<tr id="Composite"><td>Composite</td><td>Flag to generate Composite tags when extracting information.</td>
     <td align=center>0 or 1</td><td align=center>1</td></tr>
-<tr><td>Compress</td><td><a name="Compress"></a>Flag to write new values in compressed format if possible.
+<tr id="Compress"><td>Compress</td><td>Flag to write new values in compressed format if possible.
     Has no effect unless Compress::Zlib is installed.</td>
     <td align=center>0 or 1</td><td align=center>undef</td></tr>
-<tr><td>CoordFormat</td><td>Specify output format for GPS coordinates.</td>
-    <td><a name="CoordFormat"></a>A printf-style format string with specifiers
+<tr id="CoordFormat"><td>CoordFormat</td><td>Specify output format for GPS coordinates.</td>
+    <td>A printf-style format string with specifiers
     for degrees, minutes and seconds in that order, however minutes and seconds
     may be omitted.  If the hemisphere is known, a reference direction (N, S, E
     or W) is appended to each printed coordinate, but adding a '<code>+</code>'
@@ -507,31 +507,31 @@ distribution for examples.</p>
     <a href="#SetNewValuesFromFile">SetNewValuesFromFile</a> is
     <code>q{%d&nbsp;%d&nbsp;%.8f}</code>.
     </td><td align=center>undef</td></tr>
-<tr><td>DateFormat</td><td>Output format for date/time values. If date can not
+<tr id="DateFormat"><td>DateFormat</td><td>Output format for date/time values. If date can not
     be converted, value is left unchanged unless the StrictDate option is set.
     Timezones are ignored.  The inversion conversion (ie. when calling
     <a href="#SetNewValue">SetNewValue</a>) is performed only if POSIX::strptime
-    or Time::Piece is installed.</td> <td><a name="DateFormat"></a>See strftime
+    or Time::Piece is installed.</td> <td>See strftime
     manpage for details.  The default setting of undef causes date/time values
     to remain in standard EXIF format (similar to a DateFormat of
     <code>"%Y:%m:%d %H:%M:%S"</code>).</td>
     <td align=center>undef</td></tr>
-<tr><td>Duplicates</td><td><a name="Duplicates"></a>Flag to return values from
+<tr id="Duplicates"><td>Duplicates</td><td>Flag to return values from
     tags with duplicate names when extracting information.</td>
     <td align=center>0 or 1</td><td align=center>1</td></tr>
-<tr><td>Escape</td>
-    <td><a name="Escape"></a>Escape special characters in extracted values for
+<tr id="Escape"><td>Escape</td>
+    <td>Escape special characters in extracted values for
     HTML or XML.  Also unescapes HTML or XML character entities in input values
     passed to <a href="#SetNewValue">SetNewValue</a>.</td> <td
     align=center>HTML, XML or undef</td>
     <td align=center>undef</td></tr>
-<tr><td>Exclude</td>
+<tr id="Exclude"><td>Exclude</td>
     <td>Exclude specified tags when extracting information.</td>
-    <td><a name="Exclude"></a>Tag name or reference to a list of tag names to
+    <td>Tag name or reference to a list of tag names to
     exclude.  Case is not significant. Tags may also be excluded by preceding
     their name with a '-' in the arguments to ImageInfo.</td>
     <td align=center>undef</td></tr>
-<tr><td>ExtendedXMP</td><td><a name="ExtendedXMP"></a>This setting affects the
+<tr id="ExtendedXMP"><td>ExtendedXMP</td><td>This setting affects the
     reading and editing of extended XMP in JPEG images.  According to the XMP
     specification, extended XMP is only valid if it has the GUID specified by
     the <a href="TagNames/XMP.html#xmpNote">HasExtendedXMP tag</a>.  ExifTool
@@ -547,14 +547,14 @@ distribution for examples.</p>
     <tr><td valign=top align=right><b>2</b>&nbsp;=</td><td>any GUID</td></tr>
     <tr><td valign=top align=right><i>guid</i>&nbsp;=</td><td>specific GUID</td></tr>
     </table></td><td align=center>1</td></tr>
-<tr><td>ExtractEmbedded</td>
-    <td><a name="Embedded"></a>Flag to extract information from embedded
+<tr id="ExtractEmbedded"><td>ExtractEmbedded</td>
+    <td>Flag to extract information from embedded
     documents in EPS files, embedded EPS information and JPEG and Jpeg2000
     images in PDF files, embedded MPF images in JPEG and MPO files, streaming
     metadata in AVCHD videos, and the resource fork of Mac OS files.</td>
     <td align=center>0 or 1</td><td align=center>undef</td></tr>
-<tr><td>FastScan</td>
-    <td><a name="FastScan"></a>Flag to increase speed of extracting information
+<tr id="FastScan"><td>FastScan</td>
+    <td>Flag to increase speed of extracting information
     from JPEG images.  With this option set to 1, ExifTool will not scan to the
     end of a JPEG image to check for an AFCP, CanonVRD, FotoStation,
     PhotoMechanic, MIE or PreviewImage trailer.  This also stops the parsing
@@ -566,21 +566,21 @@ distribution for examples.</p>
     to 3, the file is not actually parsed, and only an initial guess at FileType
     and some pseudo tags are returned. </td>
     <td align=center>0, 1, 2 or 3</td><td align=center>undef</td></tr>
-<tr><td>Filter</td>
+<tr id="Filter"><td>Filter</td>
     <td>Perl expression used to filter all returned tag values.  Applies to
-    PrintConv values only.</td><td><a name="Filter"></a>Expression to act on the
+    PrintConv values only.</td><td>Expression to act on the
     value of the Perl default variable ($_), changing the value of this variable
     as required.  The value is not changed if $_ is set to undef.</td>
     <td align=center>undef</td></tr>
-<tr><td>FixBase</td>
+<tr id="FixBase"><td>FixBase</td>
     <td>Fix maker notes base offset.  Allows values to be extracted from maker notes
     which have been corrupted by editing with 3rd party software.</td>
-    <td><a name="FixBase"></a>An integer specifying a value to be added to the
+    <td>An integer specifying a value to be added to the
     maker notes base offset, or the empty string ('') for ExifTool to take its
     best guess at the correct base.</td>
     <td align=center>undef</td></tr>
-<tr><td>GeoMaxIntSecs</td>
-    <td><a name="GeoMaxIntSecs"></a>Maximum interpolation time in seconds for
+<tr id="GeoMaxIntSecs"><td>GeoMaxIntSecs</td>
+    <td>Maximum interpolation time in seconds for
     geotagging.  Geotagging is treated as an extrapolation if the Geotime value
     lies between two fixes in the same track which are separated by a number of
     seconds greater than this.  Otherwise, the coordinates are calculated as a
@@ -590,57 +590,57 @@ distribution for examples.</p>
     geotagging fails).</td>
     <td align=center>A floating point number</td>
     <td align=center>1800</td></tr>
-<tr><td>GeoMaxExtSecs</td>
-    <td><a name="GeoMaxExtSecs"></a>Maximum extrapolation time in seconds for
+<tr id="GeoMaxExtSecs"><td>GeoMaxExtSecs</td>
+    <td>Maximum extrapolation time in seconds for
     geotagging.  Geotagging fails if the Geotime value lies outside a GPS track
     by a number of seconds greater than this.  Otherwise, the coordinates of the
     nearest fix are taken.</td>
     <td align=center>A floating point number</td>
     <td align=center>1800</td></tr>
-<tr><td>GeoMaxHDOP</td>
-    <td><a name="GeoMaxHDOP"></a>Maximum Horizontal (2D) Dilution Of Precision
+<tr id="GeoMaxHDOP"><td>GeoMaxHDOP</td>
+    <td>Maximum Horizontal (2D) Dilution Of Precision
     for geotagging.  GPS fixes are ignored if the HDOP is greater than this.</td>
     <td align=center>A floating point number, or undef</td>
     <td align=center>undef</td></tr>
-<tr><td>GeoMaxPDOP</td>
-    <td><a name="GeoMaxPDOP"></a>Maximum Position (3D) Dilution Of Precision for
+<tr id="GeoMaxPDOP"><td>GeoMaxPDOP</td>
+    <td>Maximum Position (3D) Dilution Of Precision for
     geotagging.  GPS fixes are ignored if the PDOP is greater than this.</td>
     <td align=center>A floating point number, or undef</td>
     <td align=center>undef</td></tr>
-<tr><td>GeoMinSats</td>
-    <td><a name="GeoMinSats"></a>Minimum number of satellites for geotagging. 
+<tr id="GeoMinSats"><td>GeoMinSats</td>
+    <td>Minimum number of satellites for geotagging. 
     GPS fixes are ignored if the number of acquired satellites is less than this.</td>
     <td align=center>A positive integer, or undef</td>
     <td align=center>undef</td></tr>
-<tr><td>GlobalTimeShift</td>
-    <td><a name="GlobalTimeShift"></a>Time shift to apply to all extracted
+<tr id="GlobalTimeShift"><td>GlobalTimeShift</td>
+    <td>Time shift to apply to all extracted
     date/time PrintConv values.  Does not affect ValueConv values.</td>
     <td align=center>Date/time shift string with leading '-' for negative shifts<br>(see <a href="Shift.html">Image::ExifTool::Shift.pl</a>)</td>
     <td align=center>undef</td></tr>
-<tr><td>Group#</td><td>Extract tags only for specified groups in family #
+<tr id="GroupNum"><td>Group#</td><td>Extract tags only for specified groups in family #
     (Group0 assumed if # not given).</td>
-    <td><a name="Group"></a>Group name or reference to list of group names.
+    <td>Group name or reference to list of group names.
     Group name may begin with '-' to exclude a group.  Case IS significant.
     See <a href="#GetGroup">GetGroup</a> for a description of group families,
     and <a href="#GetAllGroups">GetAllGroups</a> for a list of available groups.</td>
     <td align=center>undef</td></tr>
-<tr><td>HtmlDump</td><td>Dump information in hex to a dynamic HTML web page.
+<tr id="HtmlDump"><td>HtmlDump</td><td>Dump information in hex to a dynamic HTML web page.
     Option value sets a limit on the maximum block size.  Output file is
     specified by the TextOut option.</td>
-    <td><a name="HtmlDump"></a><table class=clear>
+    <td><table class=clear>
     <tr><td valign=top align=center><b>0</b>&nbsp;=</td><td>No HTML dump</td></tr>
     <tr><td valign=top align=center><b>1</b>&nbsp;=</td><td>1 KB size limit</td></tr>
     <tr><td valign=top align=center><b>2</b>&nbsp;=</td><td>16 KB size limit</td></tr>
     <tr><td valign=top align=center><b>3</b>&nbsp;=</td><td>Full dump</td></tr>
     </table></td><td align=center>0</td></tr>
-<tr><td>HtmlDumpBase</td><td><a name="HtmlDumpBase"></a>Base for HTML dump
+<tr id="HtmlDumpBase"><td>HtmlDumpBase</td><td>Base for HTML dump
     offsets.  If not defined, the EXIF/TIFF base offset is used.</td>
     <td><table class=clear>
     <tr><td valign=top align=right><b>0</b>&nbsp;=</td><td>Absolute offsets</td></tr>
     <tr><td valign=top align=right><i>non&#8209;zero</i>&nbsp;=</td><td>Relative offsets</td></tr>
     <tr><td valign=top align=right><b>undef</b>&nbsp;=</td><td>EXIF/TIFF offsets</td></tr>
     </table></td><td align=center>undef</td></tr>
-<tr><td>IgnoreMinorErrors</td><td><a name="IgnoreMinorErrors"></a>Flag to ignore minor errors.  Causes minor
+<tr id="IgnoreMinorErrors"><td>IgnoreMinorErrors</td><td>Flag to ignore minor errors.  Causes minor
     errors to be downgraded to warnings, and minor warnings to be ignored.  This
     option is provided mainly to allow writing of files when minor errors occur,
     but by ignoring some minor warnings the behaviour of ExifTool may be changed
@@ -650,51 +650,51 @@ distribution for examples.</p>
     or "[Minor]" (with a capital "M") for warnings that affect processing when
     ignored.</td>
     <td align=center>0 or 1</td><td align=center>undef</td></tr>
-<tr><td>Lang</td><td><a name="Lang"></a>Localized language for exiftool tag descriptions, etc.  If the
+<tr id="Lang"><td>Lang</td><td>Localized language for exiftool tag descriptions, etc.  If the
     specified language isn't available, the option is not changed.  May be set to
     undef to select the built-in default language.</td>
     <td align=left>Image::ExifTool::Lang module name (eg. 'fr', 'zh_cn'), or 'en' or undef for the default language.</td>
     <td align=center>'en'</td></tr>
-<tr><td>LargeFileSupport</td><td><a name="LargeFileSupport"></a>Flag to indicate that 64-bit file offsets are supported on this system.</td>
+<tr id="LargeFileSupport"><td>LargeFileSupport</td><td>Flag to indicate that 64-bit file offsets are supported on this system.</td>
     <td align=center>0 or 1</td><td align=center>undef</td></tr>
-<tr><td>List</td><td><a name="List"></a>Flag to extract lists of PrintConv values into arrays instead of combining
+<tr id="List"><td>List</td><td>Flag to extract lists of PrintConv values into arrays instead of combining
     them into a string of values.</td><td align=center>0 or 1</td><td align=center>undef</td></tr>
-<tr><td>ListItem</td><td><a name="ListItem"></a>Return only a specific item from
+<tr id="ListItem"><td>ListItem</td><td>Return only a specific item from
     list-type values.  A value of 0 returns the first item in each list, 1 returns
     the second item, etc. Negative indices may also be used, with -1 representing the
     last item in the list. Applies only to the top-level list of nested lists.</td>
     <td align=center>An integer, or undef</td><td align=center>undef</td></tr>
-<tr><td>ListSep</td><td><a name="ListSep"></a>Separator string used to join lists of PrintConv values when
+<tr id="ListSep"><td>ListSep</td><td>Separator string used to join lists of PrintConv values when
     List option is not set.</td><td align=center>Any string</td><td align=center>', '</td></tr>
-<tr><td>ListSplit</td><td><a name="ListSplit"></a>Regular expression used to split values of list-type tags
+<tr id="ListSplit"><td>ListSplit</td><td>Regular expression used to split values of list-type tags
     into individual items when writing.  (eg. use ',\\s*' to split a comma-separated list)</td>
     <td align=center>A regular expression pattern</td><td align=center>undef</td></tr>
-<tr><td>MakerNotes</td><td>Option to extract MakerNotes and other writable
+<tr id="MakerNotes"><td>MakerNotes</td><td>Option to extract MakerNotes and other writable
     subdirectories (such as PrintIM) as a data block.  Normally when the MakerNotes
     are extracted they are rebuilt to include data outside the boundaries of the
     original maker note data block, but a value of 2 disables this feature.</td>
-    <td><a name="MakerNotes"></a><table class=clear>
+    <td><table class=clear>
     <tr><td valign=top align=center><b>0</b>&nbsp;=</td><td>Don't extract writable subdirectories</td></tr>
     <tr><td valign=top align=center><b>1</b>&nbsp;=</td><td>Extract and rebuild makernotes into self-contained block</td></tr>
     <tr><td valign=top align=center><b>2</b>&nbsp;=</td><td>Extract without rebuilding makernotes</td></tr>
     </table></td><td align=center>undef</td></tr>
-<tr><td>MDItemTags</td><td><a name="MDItemTags"></a>Flag to extract the OS X
+<tr id="MDItemTags"><td>MDItemTags</td><td>Flag to extract the OS X
     metadata item tags (see the "mdls" man page and the
     <a href="TagNames/MacOS.html#MDItem">MacOS MDItem Tags documentation</a> for more information).</td>
     <td align=center>0 or 1</td><td align=center>undef</td></tr>
-<tr><td>MissingTagValue</td><td><a name="MissingTagValue"></a>Value for missing tags in
+<tr id="MissingTagValue"><td>MissingTagValue</td><td>Value for missing tags in
     expressions evaluated by <a href="#SetNewValuesFromFile">SetNewValuesFromFile</a>.
     If not set, a minor error is issued for missing values, or the value
     is set to '' if IgnoreMinorErrors is set.</td>
     <td align=center>Any string, or undef</td><td align=center>undef</td></tr>
-<tr><td>NoPDFList</td><td><a name="NoPDFList"></a>Flag to avoid splitting PDF list-type tag
+<tr id="NoPDFList"><td>NoPDFList</td><td>Flag to avoid splitting PDF list-type tag
     values into separate items.</td>
     <td align=center>0 or 1</td><td align=center>undef</td></tr>
-<tr><td>Password</td><td><a name="Password"></a><a name="Passwd"></a>Password for reading/writing
+<tr id="Password"><td>Password</td><td>Password for reading/writing
     password-protected PDF documents. Ignored if a password is not required. Character encoding of
     the password is determined by the value of the Charset option at processing time.</td>
     <td align=center>Any string</td><td align=center>undef</td></tr>
-<tr><td>PNGEarlyXMP</td><td><a name="PNGEarlyXMP"></a>Flag to write XMP in PNG
+<tr id="PNGEarlyXMP"><td>PNGEarlyXMP</td><td>Flag to write XMP in PNG
     images before the IDAT (image data) chunk.  By default, ExifTool adds new
     XMP to the end of a PNG file (just before IEND). This is allowed by the PNG
     and XMP specifications, but some utilities seem to ignore XMP if it comes
@@ -710,34 +710,34 @@ distribution for examples.</p>
     XMP and writing new XMP back in one step.  When reading, this option causes
     a warning to be issued if standard XMP is found after the IDAT chunk.</td>
     <td align=center>0 or 1</td><td align=center>undef</td></tr>
-<tr><td>PrintConv</td><td><a name="PrintConv"></a>Flag to enable print conversion.  Also enables inverse print
+<tr id="PrintConv"><td>PrintConv</td><td>Flag to enable print conversion.  Also enables inverse print
     conversion for writing.</td><td align=center>0 or 1</td><td align=center>1</td></tr>
-<tr><td>QuickTimeUTC</td><td><a name="QuickTimeUTC"></a>Flag set to assume that QuickTime
+<tr id="QuickTimeUTC"><td>QuickTimeUTC</td><td>Flag set to assume that QuickTime
     date/time values are stored as UTC, causing conversion to local time when they are
     extracted. According to the QuickTime specification date/time values should be UTC,
     but many digital cameras store local time instead (presumably because they don't know
     the time zone). This option also disables the autodetection of incorrect time-zero
     offsets in QuickTime date/time values, and enforces a time zero of 1904 as per the
     QuickTime specification.</td><td align=center>0 or 1</td><td align=center>undef</td></tr>
-<tr><td>RequestAll</td><td><a name="RequestAll"></a>Flag to request all tags to be extracted.
+<tr id="RequestAll"><td>RequestAll</td><td>Flag to request all tags to be extracted.
     This causes some tags to be generated which normally would not be unless specifically
     requested (by passing the tag name to <a href="#ImageInfo">ImageInfo</a> or
     <a href="#ExtractInfo">ExtractInfo</a>).  May be set to 2 or 3 to enable generation
     of some additional tags mentioned in the tag name documentation.</td>
     <td align=center>0, 1, 2 or 3</td><td align=center>undef</td></tr>
-<tr><td>RequestTags</td><td><a name="RequestTags"></a>List of additional tag and/or group names
+<tr id="RequestTags"><td>RequestTags</td><td>List of additional tag and/or group names
     to request in the next call to <a href="#ExtractInfo">ExtractInfo</a>. This option is
     useful only for tags/groups which aren't extracted unless specifically requested. Groups
     are requested by adding a colon after the name (eg. "MacOS:"). Names are converted to lower
     case as they are added to the list.</td><td>List reference, delimited string of names
     (any delimiter is allowed), or undef to clear the previous RequestTags list.</td>
     <td align=center>undef</td></tr>
-<tr><td>ScanForXMP</td><td><a name="ScanForXMP"></a>Flag to scan all files (even unrecognized
+<tr id="ScanForXMP"><td>ScanForXMP</td><td>Flag to scan all files (even unrecognized
     formats) for XMP information unless XMP was already found in the file.  When combined with
     the FastScan option, only unrecognized file types are scanned for XMP.  
     </td><td align=center>0 or 1</td><td align=center>undef</td></tr>
-<tr><td>Sort</td><td>Specifies order to sort tags in the returned tag list.</td>
-    <td><a name="Sort"></a><table class=clear>
+<tr id="Sort"><td>Sort</td><td>Specifies order to sort tags in the returned tag list.</td>
+    <td><table class=clear>
     <tr><td valign=top align=right><b>Input</b>&nbsp;=</td><td>Sort in same order as input tag arguments</td></tr>
     <tr><td valign=top align=right><b>File</b>&nbsp;=</td><td>Sort in order that tags were found in the file</td></tr>
     <tr><td valign=top align=right><b>Tag</b>&nbsp;=</td><td>Sort alphabetically by tag name</td></tr>
@@ -747,42 +747,46 @@ distribution for examples.</p>
         Group0 is assumed.  See <a href="#GetGroup">GetGroup</a> for a description of group
         families.</td></tr>
     </table></td><td align=center>'Input'</td></tr>
-<tr><td>Sort2</td><td>Secondary sort order used for tags within each group when Sort is 'Group'.</td>
-    <td><a name="Sort2"></a><table class=clear>
+<tr id="Sort2"><td>Sort2</td><td>Secondary sort order used for tags within each group when Sort is 'Group'.</td>
+    <td><table class=clear>
     <tr><td valign=top align=right><b>File</b>&nbsp;=</td><td>Sort in order that tags were found in the file</td></tr>
     <tr><td valign=top align=right><b>Tag</b>&nbsp;=</td><td>Sort alphabetically by tag name</td></tr>
     <tr><td valign=top align=right><b>Descr</b>&nbsp;=</td><td>Sort by tag description (with current Lang setting)</td></tr>
     </table></td><td align=center>'File'</td></tr>
-<tr><td>StrictDate</td><td><a name="StrictDate"></a>Flag to return undefined value for any date which can't be
+<tr id="StrictDate"><td>StrictDate</td><td>Flag to return undefined value for any date which can't be
     converted when the DateFormat option is used.</td>
-    <td align=center>0 or 1</td><td align=center>undef</td></tr>
-<tr><td>Struct</td><td>Flag to return XMP structures as HASH references
+    <td><table class=clear>
+    <tr><td valign=top align=right><b>undef</b>&nbsp;=</td><td>Same as 0 for reading and 1 for copying</td></tr>
+    <tr><td valign=top align=right><b>0</b>&nbsp;=</td><td>Return bad date/time values unchanged</td></tr>
+    <tr><td valign=top align=right><b>1</b>&nbsp;=</td><td>Return undef if date/time value can't be converted</td></tr>
+    </table></td><td align=center>undef</td></tr>
+<tr id="Struct"><td>Struct</td><td>Flag to return XMP structures as HASH references
     instead of flattening into individual tags.  This setting has no effect
     when writing since both flattened or structured tags may always be written.
     See the <a href="struct.html">Structured Information documentation</a> for
     more details about structured information.</td>
-    <td><a name="Struct"></a><table class=clear>
+    <td><table class=clear>
     <tr><td valign=top align=right><b>undef</b>&nbsp;=</td><td>Same as 0 for reading and 2 for copying</td></tr>
     <tr><td valign=top align=right><b>0</b>&nbsp;=</td><td>Read/copy flattened tags</td></tr>
     <tr><td valign=top align=right><b>1</b>&nbsp;=</td><td>Read/copy structures</td></tr>
     <tr><td valign=top align=right><b>2</b>&nbsp;=</td><td>Read/copy both flattened and structured tags,
     but flag flattened tags as "unsafe" for copying</td></tr>
     </table></td><td align=center>undef</td></tr>
-<tr><td>SystemTags</td><td><a name="SystemTags"></a>Flag to extract the
+<tr id="SystemTags"><td>SystemTags</td><td>Flag to extract the
     following additional File System tags:  FileAttributes, FileDeviceNumber,
     FileInodeNumber, FileHardLinks, FileUserID, FileGroupID, FileDeviceID,
     FileBlockSize and FileBlockCount.</td>
     <td align=center>0 or 1</td><td align=center>undef</td></tr>
-<tr><td>TextOut</td><td><a name="TextOut"></a>Output file for Verbose and HtmlDump options.</td>
+<tr id="TextOut"><td>TextOut</td><td>Output file for Verbose and HtmlDump options.</td>
     <td align=center>File reference</td><td align=center>\*STDOUT</td></tr>
-<tr><td>Unknown</td><td><a name="Unknown"></a>Control extraction of unknown tags.</td>
+<tr id="Unknown"><td>Unknown</td><td>Control extraction of unknown tags.</td>
     <td><table class=clear>
     <tr><td valign=top align=center><b>0</b>&nbsp;=</td><td>Unknown tags not extracted</td></tr>
     <tr><td valign=top align=center><b>1</b>&nbsp;=</td><td>Unknown tags are extracted from EXIF
         (and other tagged-format) directories</td></tr>
     <tr><td valign=top align=center><b>2</b>&nbsp;=</td><td>Unknown tags also extracted from binary data blocks</td></tr>
     </table></td><td align=center>0</td></tr>
-<tr><td>UserParam</td><td><a name="UserParam"></a>Special option to set/get user-defined parameters.
+<tr id="UserParam"><td>UserParam</td><td>Special option to set/get user-defined parameters.
     Useful to allow external input into tag name expressions and ValueConv logic.
     <i>PARAM</i> is the user-defined parameter name (case insensitive). These parameters
     may be accessed in tag name expressions by prefixing the parameter name with a dollar
@@ -800,12 +804,12 @@ distribution for examples.</p>
     <tr><td valign=top><b>undef</b></td><td valign=top>-</td><td>Clear UserParam hash</td></tr>
     </table>
     </td><td align=center>{ }</td></tr>
-<tr><td>Validate</td><td><a name="Validate"></a>[Experimental] Flag to perform extra validation
+<tr id="Validate"><td>Validate</td><td>[Experimental] Flag to perform extra validation
     checks when reading, causing extra warnings to be generated if problems are found.</td>
     <td align=center>0 or 1</td><td align=center>undef</td></tr>
-<tr><td>Verbose</td><td>Print verbose messages to file specified by TextOut option.
+<tr id="Verbose"><td>Verbose</td><td>Print verbose messages to file specified by TextOut option.
     <a href="verbose.html">Click here</a> for example outputs.</td>
-    <td><a name="Verbose"></a><table class=clear>
+    <td><table class=clear>
     <tr><td valign=top align=center><b>0</b>&nbsp;=</td><td>No verbose messages</td></tr>
     <tr><td valign=top align=center><b>1</b>&nbsp;=</td><td>Print tag names and raw values</td></tr>
     <tr><td valign=top align=center><b>2</b>&nbsp;=</td><td>Add additional tag details</td></tr>
@@ -813,17 +817,17 @@ distribution for examples.</p>
     <tr><td valign=top align=center><b>4</b>&nbsp;=</td><td>Remove length limit on dump of tag values</td></tr>
     <tr><td valign=top align=center><b>5</b>&nbsp;=</td><td>Remove length limit on dump of JPEG segments</td></tr>
     </table></td><td align=center>0</td></tr>
-<tr><td>WriteMode</td><td>Set tag write/create mode.</td>
-    <td><a name="WriteMode"></a>A string with one or more of these characters:<table class=clear>
+<tr id="WriteMode"><td>WriteMode</td><td>Set tag write/create mode.</td>
+    <td>A string with one or more of these characters:<table class=clear>
     <tr><td valign=top align=center><b>w</b>&nbsp;=</td><td><b>W</b>rite existing tags</td></tr>
     <tr><td valign=top align=center><b>c</b>&nbsp;=</td><td><b>C</b>reate new tags</td></tr>
     <tr><td valign=top align=center><b>g</b>&nbsp;=</td><td>Create new <b>g</b>roups <sup>&dagger;</sup></td></tr>
     </table></td><td align=center>'wcg'</td></tr>
-<tr><td>XAttrTags</td><td><a name="XAttrTags"></a>Flag to extract the OS X
+<tr id="XAttrTags"><td>XAttrTags</td><td>Flag to extract the OS X
     extended attribute tags (see the "xattr" man page and the
     <a href="TagNames/MacOS.html#XAttr">MacOS XAttr Tags documentation</a> for more information).</td>
     <td align=center>0 or 1</td><td align=center>undef</td></tr>
-<tr><td>XMPAutoConv</td><td><a name="XMPAutoConv"></a>Flag to enable automatic conversion
+<tr id="XMPAutoConv"><td>XMPAutoConv</td><td>Flag to enable automatic conversion
     for unknown XMP tags with values that look like rational numbers or dates.</td>
     <td align=center>0 or 1</td>
     <td align=center>1</td></tr>

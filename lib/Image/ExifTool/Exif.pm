@@ -53,7 +53,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '3.90';
+$VERSION = '3.91';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -1650,6 +1650,7 @@ my %sampleFormat = (
     0x8769 => {
         Name => 'ExifOffset',
         Groups => { 1 => 'ExifIFD' },
+        WriteGroup => 'IFD0', # (only for Validate)
         SubIFD => 2,
         SubDirectory => {
             DirName => 'ExifIFD',
@@ -1771,6 +1772,7 @@ my %sampleFormat = (
     0x8825 => {
         Name => 'GPSInfo',
         Groups => { 1 => 'GPS' },
+        WriteGroup => 'IFD0', # (only for Validate)
         Flags => 'SubIFD',
         SubDirectory => {
             DirName => 'GPS',
@@ -4620,6 +4622,12 @@ sub ConvertExifText($$;$$)
     return $val if length($val) < 8;
     my $id = substr($val, 0, 8);
     my $str = substr($val, 8);
+    my $type;
+
+    delete $$et{WrongByteOrder};
+    if ($$et{OPTIONS}{Validate} and $id =~ /^(ASCII|UNICODE|JIS)?\0* \0*$/) {
+        $et->Warn(($1 || 'Undefined') . ' text header' . ($tag ? " for $tag" : '') . ' has spaces instead of nulls');
+    }
     # Note: allow spaces instead of nulls in the ID codes because
     # it is fairly common for camera manufacturers to get this wrong
     # (also handle Canon ZoomBrowser EX 4.5 null followed by 7 bytes of garbage)
@@ -4636,16 +4644,22 @@ sub ConvertExifText($$;$$)
     # apparently Kodak sometimes uses "Unicode\0" in the APP3 "Meta" information.
     # However, unfortunately Ricoh uses "Unicode\0" in the RR30 EXIF UserComment
     # when the text is actually ASCII, so only recognize uppercase "UNICODE\0".
-    } elsif ($id =~ /^UNICODE[\0 ]$/) {
+    } elsif ($id =~ /^(UNICODE)[\0 ]$/) {
+        $type = $1;
         # MicrosoftPhoto writes as little-endian even in big-endian EXIF,
         # so we must guess at the true byte ordering
         $str = $et->Decode($str, 'UTF16', 'Unknown');
-    } elsif ($id =~ /^JIS[\0 ]{5}$/) {
+    } elsif ($id =~ /^(JIS)[\0 ]{5}$/) {
+        $type = $1;
         $str = $et->Decode($str, 'JIS', 'Unknown');
     } else {
         $tag = $asciiFlex if $asciiFlex and $asciiFlex ne 1;
         $et->Warn('Invalid EXIF text encoding' . ($tag ? " for $tag" : ''));
         $str = $id . $str;
+    }
+    if ($$et{WrongByteOrder} and $$et{OPTIONS}{Validate}) {
+        $et->Warn('Wrong byte order for EXIF' . ($tag ? " $tag" : '') .
+                  ($type ? " $type" : '') . ' text');
     }
     $str =~ s/ +$//;    # trim trailing blanks
     return $str;

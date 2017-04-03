@@ -7,6 +7,18 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.40. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Apr. 3, 2017 - Version 10.48
+
+  - Added a new FujiFlashMode value (thanks Albert Shan)
+  - Added a new Sony LensType (thanks Jos Roost)
+  - Added a new Canon LensType (thanks LibRaw)
+  - Added a new CanonModelID and minor changes to some others (thanks Dmitry)
+  - Decode two Pentax tags and added a number of new values for other Pentax
+    tags (thanks Andras Salamon)
+  - Decode a new Sony tag (thanks Jos Roost)
+  - Improvements to the experimental Validate feature
+  - Fixed problem which could cause hang when reading bad PPT documents
+
 Mar. 20, 2017 - Version 10.47
 
   - Added read support for JSON-format files

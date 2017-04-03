@@ -513,7 +513,7 @@ official EXIF 2.31 specification.
   0x8602   WB_GRGBLevels             -          no
   0x8606   LeafData                  -          Leaf
   0x8649   PhotoshopSettings         -          Photoshop
-  0x8769   ExifOffset                -          EXIF
+  0x8769   ExifOffset                IFD0       EXIF
   0x8773   ICC_Profile               -          ICC_Profile
   0x877f   TIFF_FXExtensions         -          no
   0x8780   MultiProfiles             -          no
@@ -526,7 +526,7 @@ official EXIF 2.31 specification.
   0x87be   JBIGOptions               -          no
   0x8822   ExposureProgram           ExifIFD    int16u
   0x8824   SpectralSensitivity       ExifIFD    string
-  0x8825   GPSInfo                   -          GPS
+  0x8825   GPSInfo                   IFD0       GPS
   0x8827   ISO                       ExifIFD    int16u[n]
   0x8828   Opto-ElectricConvFactor   -          no
   0x8829   Interlace                 -          no
@@ -12840,6 +12840,8 @@ These tags are used in Pentax/Asahi cameras.
   0x0085   HDR                                  int8u[4]
   0x0088   NeutralDensityFilter                 int8u
   0x008b   ISO                                  int32u
+  0x0095   SkinToneCorrection                   int8s[2]
+  0x0096   ClarityControl                       int8s[2]
   0x0200   BlackPoint                           int16u[4]
   0x0201   WhitePoint                           int16u[4]
   0x0203   ColorMatrixA                         int16s[9]
@@ -14231,9 +14233,10 @@ MakerNotes.
   0x2022   FocalPlaneAFPointsUsed               no
   0x2026   WBShiftAB_GM_Precise                 int32s[2]~
   0x2027   FocusLocation                        int16u[4]
-  0x2028   VariableLowPassFilter                no
-  0x2029   RAWFileType                          no
+  0x2028   VariableLowPassFilter                int32u
+  0x2029   RAWFileType                          int16u
   0x202a   Tag202a                              Sony Tag202a
+  0x202c   MeteringMode2                        int16u
   0x3000   ShotInfo                             Sony ShotInfo
   0x900b   Tag900b                              Sony Tag900b
   0x9050   Tag9050a                             Sony Tag9050a

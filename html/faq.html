@@ -1458,14 +1458,18 @@ file.</blockquote>
 
 <blockquote>On systems where a filesystem creation date is maintained, ExifTool
 also sets this to the current date/time when the file is edited.  On Windows the
-creation date is accessed through the FileCreateDate tag, and is also preserved
-with the <code>-P</code> option.  On Mac, the filesystem does store a creation
-date readable via the MDItemFSCreationDate tag, but this tag is not writable and
-is extracted only if specified explicitly or the MDItemTags API option is used,
-and currently the only way to preserve this is with the
-<code>-overwrite_original_in_place</code> option.  On Linux, the file creation
-date is not stored.  See the <a href="TagNames/Extra.html">Extra Tags documentation</a>
-for more information about these tags.</blockquote>
+creation date is readable/writable through the FileCreateDate tag (see the
+<a href="TagNames/Extra.html">Extra Tags documentation</a>), and is preserved
+with the <code>-P</code> option. On Mac the MDItemFSCreationDate tag is used
+(see the <a href="TagNames/MacOS.html#MDItem">MacOS MDItem Tags documentation</a>),
+however this tag is extracted only if specified explicitly or the MDItemTags API
+option is set.  The <code>-P</code> option does not preserve the creation date
+when editing a file on Mac systems, but the
+<code>-overwrite_original_in_place</code> option may be used to preserve all
+Finder information including the creation date, or the MDItemFSCreationDate may
+be copied back specifically (ie.
+<code>-tagsfromfile @ -MDItemFSCreationDate</code>).  On Linux, the file
+creation date is not stored.</blockquote>
 
 <blockquote>For example, commands like this act on common metadata tags, setting
 the filesystem modification date/time to the current date/time:
@@ -1587,7 +1591,7 @@ proper technique for shifting a date/time value when copying:
 </blockquote>
 
 <hr>
-<i>Last revised Feb 6, 2017</i>
+<i>Last revised Mar 31, 2017</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

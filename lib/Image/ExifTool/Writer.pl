@@ -1184,7 +1184,7 @@ sub SetNewValuesFromFile($$;@)
         RequestAll      => $$options{RequestAll} || 1, # (is this still necessary now that RequestTags are being set?)
         RequestTags     => $$options{RequestTags},
         ScanForXMP      => $$options{ScanForXMP},
-        StrictDate      => 1,
+        StrictDate      => defined $$options{StrictDate} ? $$options{StrictDate} : 1,
         Struct          => $structOpt,
         SystemTags      => $$options{SystemTags},
         Unknown         => $$options{Unknown},

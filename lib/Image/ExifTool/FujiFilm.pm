@@ -28,7 +28,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.55';
+$VERSION = '1.56';
 
 sub ProcessFujiDir($$$);
 sub ProcessFaceRec($$$);
@@ -102,6 +102,7 @@ my %faceCategories = (
         Flags => 'PrintHex',
         Writable => 'int16u',
         PrintConv => {
+            0x00 => 'Very Soft', #10 (-4)
             0x01 => 'Soft',
             0x02 => 'Soft2',
             0x03 => 'Normal',
@@ -215,6 +216,8 @@ my %faceCategories = (
             0x180 => 'Medium Strong', #8 ("NR+1")
             0x200 => 'Weak', # ("NR-2, ref 8)
             0x280 => 'Medium Weak', #8 ("NR-1")
+            0x2c0 => 'Very Weak', #10 (-3)
+            0x2e0 => 'Weakest', #10 (-4)
         },
     },
     0x1010 => {
@@ -228,6 +231,10 @@ my %faceCategories = (
             3 => 'Red-eye reduction',
             4 => 'External', #JD
             16 => 'Commander',
+            0x8000 => 'Not Attached', #10 (X-T2) (or external flash off)
+            0x8120 => 'TTL', #10 (X-T2)
+            0x9840 => 'Manual', #10 (X-T2)
+            0x9880 => 'Multi-flash', #10 (X-T2)
             0xa920 => '1st Curtain (front)', #10 (EF-X500 flash)
             0xc920 => '2nd Curtain (rear)', #10
             0xe920 => 'High Speed Sync (HSS)', #10

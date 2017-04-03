@@ -33,7 +33,8 @@ necessarily correspond to the camera body number -- this needs to be checked)</s
 <td>Sharpness</td>
 <td class=c>int16u</td>
 <td><table class=cols><tr>
-  <td>0x1 = Soft
+  <td>0x0 = Very Soft
+  <br>0x1 = Soft
   <br>0x2 = Soft2
   <br>0x3 = Normal
   <br>0x4 = Hard
@@ -128,11 +129,15 @@ necessarily correspond to the camera body number -- this needs to be checked)</s
 <td title='0x100e = 4110'>0x100e</td>
 <td>HighISONoiseReduction</td>
 <td class=c>int16u</td>
-<td><span class=s>0x0 = Normal
+<td><table class=cols><tr>
+  <td>0x0 = Normal
   <br>0x100 = Strong
   <br>0x180 = Medium Strong
-  <br>0x200 = Weak
-  <br>0x280 = Medium Weak</span></td></tr>
+  <br>0x200 = Weak</td><td>&nbsp;&nbsp;</td>
+  <td>0x280 = Medium Weak
+  <br>0x2c0 = Very Weak
+  <br>0x2e0 = Weakest</td></tr></table>
+</td></tr>
 <tr>
 <td title='0x1010 = 4112'>0x1010</td>
 <td>FujiFlashMode</td>
@@ -144,6 +149,10 @@ necessarily correspond to the camera body number -- this needs to be checked)</s
   <br>0x3 = Red-eye reduction
   <br>0x4 = External
   <br>0x10 = Commander
+  <br>0x8000 = Not Attached
+  <br>0x8120 = TTL
+  <br>0x9840 = Manual
+  <br>0x9880 = Multi-flash
   <br>0xa920 = 1st Curtain (front)
   <br>0xc920 = 2nd Curtain (rear)
   <br>0xe920 = High Speed Sync (HSS)</td></tr></table>
@@ -861,7 +870,7 @@ RAF-format information.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Dec 6, 2016</i>
+<br><i>Last revised Apr 3, 2017</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.56';
+$VERSION = '2.57';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -98,7 +98,7 @@ my %sonyLensTypes2 = (
     32816 => 'Sony FE 28mm F2', #JR             # VX?
     32817 => 'Sony FE PZ 28-135mm F4 G OSS',#JR # VX?
 
-    32819 => 'Sony FE 100mm F2.8 STF GM OSS',   #JR also seen one image with LensType2=33076...
+    32819 => 'Sony FE 100mm F2.8 STF GM OSS',   #JR (appears to use 33076 when switched to macro mode)
 
     32821 => 'Sony FE 24-70mm F2.8 GM', #JR/IB
     32822 => 'Sony FE 50mm F1.4 ZA', #JR
@@ -114,6 +114,7 @@ my %sonyLensTypes2 = (
 
     33072 => 'Sony FE 70-200mm F2.8 GM OSS + 1.4X Teleconverter', #JR
     33073 => 'Sony FE 70-200mm F2.8 GM OSS + 2X Teleconverter', #JR
+    33076 => 'Sony FE 100mm F2.8 STF GM OSS (macro mode)', #JR (with macro switching ring set to "0.57m - 1.0m")
 
     49201 => 'Zeiss Touit 12mm F2.8', #JR (lens firmware Ver.02)
     49202 => 'Zeiss Touit 32mm F1.8', #JR (lens firmware Ver.02)
@@ -1189,7 +1190,7 @@ my %meterInfo2 = (
     # 0x2028 - 0 0 for DSC-RX100M4/RX10M2, ILCE-7RM2/7SM2; seen non-zero values only for DSC-RX1RM2
     0x2028 => { #JR
         Name => 'VariableLowPassFilter',
-        Format => 'int32u',
+        Writable => 'int32u',
         PrintConv => {
             0x00000 => 'n/a',
             0x00001 => 'Off',
@@ -1199,7 +1200,7 @@ my %meterInfo2 = (
     },
     0x2029 => { # uncompressed 14-bit RAW file type setting introduced 2015
         Name => 'RAWFileType',
-        Format => 'int16u',
+        Writable => 'int16u',
         PrintConv => {
             0 => 'Compressed RAW',
             1 => 'Uncompressed RAW',
@@ -1216,7 +1217,19 @@ my %meterInfo2 = (
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag202a' },
     },
     # 0x202b - int8u       - 0    first seen for ILCA-99M2, ILCE-6500, DSC-RX100M5
-    # 0x202c - int16u      - 256  first seen for ILCA-99M2, ILCE-6500, DSC-RX100M5
+    0x202c => { #JR
+        Name => 'MeteringMode2',
+        Writable => 'int16u',
+        PrintHex => 1,
+        PrintConv => {
+            0x100 => 'Multi-segment',
+            0x200 => 'Center-weighted average',
+          # 0x300 => 'Spot',        # not yet seen; 768/769 being std/large is educated guess
+            0x301 => 'Spot (large)',# seen for ILCA-99M2 with Exif indicating "Spot"
+            0x400 => 'Average',     # (NC) seen for ILCA-99M2 with Exif indicating "Average"
+            0x500 => 'Highlight',   # (NC) seen for ILCA-99M2 with Exif indicating "Other"
+        },
+    },
     # 0x202d - rational64s - 0/6  first seen for ILCA-99M2, ILCE-6500, DSC-RX100M5
     0x3000 => {
         Name => 'ShotInfo',
@@ -3721,7 +3734,7 @@ my %faceInfo = (
         Name => 'MeteringMode',
         PrintConv => {
             1 => 'Multi-segment',
-            2 => 'Center-weighted Average',
+            2 => 'Center-weighted average',
             4 => 'Spot',
         },
     },
@@ -4187,7 +4200,7 @@ my %faceInfo = (
         Name => 'MeteringMode',
         PrintConv => {
             1 => 'Multi-segment',
-            2 => 'Center-weighted Average',
+            2 => 'Center-weighted average',
             4 => 'Spot',
         },
     },
@@ -5659,7 +5672,7 @@ my %meteringMode2010 = (
         0 => 'Multi-segment',
         2 => 'Center-weighted average',
         3 => 'Spot',
-        4 => 'Entire Screen Avg.', # (NC) seen for ILCA-99M2 with Exif indicating "Average"
+        4 => 'Average', # (NC) seen for ILCA-99M2 with Exif indicating "Average"
         5 => 'Highlight', # (NC) seen for ILCA-99M2 with Exif indicating "Other"
     },
 );

@@ -32,7 +32,7 @@ use vars qw($VERSION %leicaLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.91';
+$VERSION = '1.92';
 
 sub ProcessLeicaLEIC($$$);
 sub WhiteBalanceConv($;$$);
@@ -1162,6 +1162,14 @@ my %shootingMode = (
         Name => 'TouchAE',
         Writable => 'int16u',
         PrintConv => { 0 => 'Off', 1 => 'On' },
+    },
+    0xaf => { #PH
+        Name => 'TimeStamp',
+        Writable => 'string',
+        Groups => { 2 => 'Time' },
+        Shift => 'Time',
+        PrintConv => '$self->ConvertDateTime($val)',
+        PrintConvInv => '$self->InverseDateTime($val)',
     },
     0x0e00 => {
         Name => 'PrintIM',

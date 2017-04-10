@@ -34,7 +34,7 @@ use Image::ExifTool::Nikon;
 use Image::ExifTool::Validate;
 use Image::ExifTool::MacOS;
 
-$VERSION = '3.06';
+$VERSION = '3.07';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -1592,7 +1592,7 @@ sub Doc2Pod($;@)
     $doc .= shift while @_;
     $doc =~ s/\n~/\n=/g;
     $doc =~ s/L<[^>]+?\|(http[^>]+)>/L<$1>/g; # POD doesn't support text for http links
-    $doc =~ s/L<([^>]+?)\|[^>]+\.html>/$1/g;  # remove relative HTML links
+    $doc =~ s/L<([^>]+?)\|[^>]+\.html(#\w+)?>/$1/g;  # remove relative HTML links
     return $doc;
 }
 

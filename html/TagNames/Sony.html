@@ -624,11 +624,11 @@ toward magenta)</span></span></td></tr>
 <tr class=b>
 <td title='0x2028 = 8232'>0x2028</td>
 <td>VariableLowPassFilter</td>
-<td class=c>int32u</td>
-<td><span class=s>0 = n/a
-  <br>1 = Off
-  <br>65537 = Standard
-  <br>131073 = High</span></td></tr>
+<td class=c>int16u[2]</td>
+<td><span class=s>&#39;0 0&#39; = n/a
+  <br>&#39;1 0&#39; = Off
+  <br>&#39;1 1&#39; = Standard
+  <br>&#39;1 2&#39; = High</span></td></tr>
 <tr>
 <td title='0x2029 = 8233'>0x2029</td>
 <td>RAWFileType</td>
@@ -1499,17 +1499,18 @@ adapter is used.</p>
 </tr><tr><td>6553.52</td><td>= Zeiss Batis 25mm F2</td>
 </tr><tr><td>6553.53</td><td>= Zeiss Batis 85mm F1.8</td>
 </tr><tr><td>6553.54</td><td>= Zeiss Batis 18mm F2.8</td>
-</tr><tr><td>6553.55</td><td>= Zeiss Loxia 50mm F2</td>
-</tr><tr><td>6553.56</td><td>= Zeiss Loxia 35mm F2</td>
-</tr><tr><td>6553.57</td><td>= Zeiss Loxia 21mm F2.8</td>
-</tr><tr><td>6553.58</td><td>= Zeiss Loxia 85mm F2.4</td>
-</tr><tr><td>6553.59</td><td>= Arax MC 35mm F2.8 Tilt+Shift</td>
-</tr><tr><td>6553.60</td><td>= Arax MC 80mm F2.8 Tilt+Shift</td>
-</tr><tr><td>6553.61</td><td>= Zenitar MF 16mm F2.8 Fisheye M42</td>
-</tr><tr><td>6553.62</td><td>= Samyang 500mm Mirror F8.0</td>
-</tr><tr><td>6553.63</td><td>= Pentacon Auto 135mm F2.8</td>
-</tr><tr><td>6553.64</td><td>= Pentacon Auto 29mm F2.8</td>
-</tr><tr><td>6553.65</td><td>= Helios 44-2 58mm F2.0</td>
+</tr><tr><td>6553.55</td><td>= Zeiss Batis 135mm F2.8</td>
+</tr><tr><td>6553.56</td><td>= Zeiss Loxia 50mm F2</td>
+</tr><tr><td>6553.57</td><td>= Zeiss Loxia 35mm F2</td>
+</tr><tr><td>6553.58</td><td>= Zeiss Loxia 21mm F2.8</td>
+</tr><tr><td>6553.59</td><td>= Zeiss Loxia 85mm F2.4</td>
+</tr><tr><td>6553.60</td><td>= Arax MC 35mm F2.8 Tilt+Shift</td>
+</tr><tr><td>6553.61</td><td>= Arax MC 80mm F2.8 Tilt+Shift</td>
+</tr><tr><td>6553.62</td><td>= Zenitar MF 16mm F2.8 Fisheye M42</td>
+</tr><tr><td>6553.63</td><td>= Samyang 500mm Mirror F8.0</td>
+</tr><tr><td>6553.64</td><td>= Pentacon Auto 135mm F2.8</td>
+</tr><tr><td>6553.65</td><td>= Pentacon Auto 29mm F2.8</td>
+</tr><tr><td>6553.66</td><td>= Helios 44-2 58mm F2.0</td>
 </tr><tr><td>18688</td><td>= Sigma MC-11 SA-E Mount Converter with not-supported Sigma lens</td>
 </tr><tr><td>25501</td><td>= Minolta AF 50mm F1.7</td>
 </tr><tr><td>25511</td><td>= Minolta AF 35-70mm F4 or Other Lens</td>
@@ -1689,17 +1690,18 @@ adapter is used.</p>
 </tr><tr><td>65535.52</td><td>= Zeiss Batis 25mm F2</td>
 </tr><tr><td>65535.53</td><td>= Zeiss Batis 85mm F1.8</td>
 </tr><tr><td>65535.54</td><td>= Zeiss Batis 18mm F2.8</td>
-</tr><tr><td>65535.55</td><td>= Zeiss Loxia 50mm F2</td>
-</tr><tr><td>65535.56</td><td>= Zeiss Loxia 35mm F2</td>
-</tr><tr><td>65535.57</td><td>= Zeiss Loxia 21mm F2.8</td>
-</tr><tr><td>65535.58</td><td>= Zeiss Loxia 85mm F2.4</td>
-</tr><tr><td>65535.59</td><td>= Arax MC 35mm F2.8 Tilt+Shift</td>
-</tr><tr><td>65535.60</td><td>= Arax MC 80mm F2.8 Tilt+Shift</td>
-</tr><tr><td>65535.61</td><td>= Zenitar MF 16mm F2.8 Fisheye M42</td>
-</tr><tr><td>65535.62</td><td>= Samyang 500mm Mirror F8.0</td>
-</tr><tr><td>65535.63</td><td>= Pentacon Auto 135mm F2.8</td>
-</tr><tr><td>65535.64</td><td>= Pentacon Auto 29mm F2.8</td>
-</tr><tr><td>65535.65</td><td>= Helios 44-2 58mm F2.0</td>
+</tr><tr><td>65535.55</td><td>= Zeiss Batis 135mm F2.8</td>
+</tr><tr><td>65535.56</td><td>= Zeiss Loxia 50mm F2</td>
+</tr><tr><td>65535.57</td><td>= Zeiss Loxia 35mm F2</td>
+</tr><tr><td>65535.58</td><td>= Zeiss Loxia 21mm F2.8</td>
+</tr><tr><td>65535.59</td><td>= Zeiss Loxia 85mm F2.4</td>
+</tr><tr><td>65535.60</td><td>= Arax MC 35mm F2.8 Tilt+Shift</td>
+</tr><tr><td>65535.61</td><td>= Arax MC 80mm F2.8 Tilt+Shift</td>
+</tr><tr><td>65535.62</td><td>= Zenitar MF 16mm F2.8 Fisheye M42</td>
+</tr><tr><td>65535.63</td><td>= Samyang 500mm Mirror F8.0</td>
+</tr><tr><td>65535.64</td><td>= Pentacon Auto 135mm F2.8</td>
+</tr><tr><td>65535.65</td><td>= Pentacon Auto 29mm F2.8</td>
+</tr><tr><td>65535.66</td><td>= Helios 44-2 58mm F2.0</td>
 </tr></table></td></tr></table></blockquote>
 
 <h2><a name='CameraInfo'>Sony CameraInfo Tags</a></h2>
@@ -4697,6 +4699,7 @@ multi-frame noise reduction)</span></span></td></tr>
 </tr><tr><td>49216</td><td>= Zeiss Batis 25mm F2</td>
 </tr><tr><td>49217</td><td>= Zeiss Batis 85mm F1.8</td>
 </tr><tr><td>49218</td><td>= Zeiss Batis 18mm F2.8</td>
+</tr><tr><td>49219</td><td>= Zeiss Batis 135mm F2.8</td>
 </tr><tr><td>49232</td><td>= Zeiss Loxia 50mm F2</td>
 </tr><tr><td>49233</td><td>= Zeiss Loxia 35mm F2</td>
 </tr><tr><td>49234</td><td>= Zeiss Loxia 21mm F2.8</td>
@@ -10339,7 +10342,7 @@ the JPEG image from a PMP file)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Apr 3, 2017</i>
+<br><i>Last revised Apr 6, 2017</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

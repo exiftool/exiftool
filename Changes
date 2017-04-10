@@ -7,9 +7,21 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.40. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Apr. 10, 2017 - Version 10.49
+
+  - Added "DateFmt" utility function for use in advanced formatting expressions
+  - Added a new Sony/Minolta LensType (thanks LibRaw)
+  - Decode a new Panasonic tag
+  - Fixed problem decoding Sony VariableLowPassFilter values (thanks Jos Roost)
+  - Fixed problem setting XMP:About when creating new XMP in a file
+  - Fixed an incorect Pentax DriveMode value (thanks Andras Salamon)
+  - API Changes
+      - Allow access to the advanced formatting expression via a new ExifTool
+        "FMT_EXPR" member variable
+
 Apr. 3, 2017 - Version 10.48
 
-  - Added a new FujiFlashMode value (thanks Albert Shan)
+  - Added some new FujiFlashMode values (thanks Albert Shan)
   - Added a new Sony LensType (thanks Jos Roost)
   - Added a new Canon LensType (thanks LibRaw)
   - Added a new CanonModelID and minor changes to some others (thanks Dmitry)
@@ -439,7 +451,7 @@ Apr. 8, 2016 - Version 10.14
   - Added a few new Olympus LensType values (thanks Niels Kristian Bech Jensen)
   - Added a couple of new SonyModelID values (thanks LibRaw for one)
   - Added a new Olympus CameraType
-  - Added config_files/gps2utm.config to distribution
+  - Added config_files/gps2utm.config to the distribution
   - Decode Canon ColorData for the EOS 80D (thanks LibRaw)
   - Decode a few new Samsung tags (thanks Francois)
   - Decode a new Fuji tag (thanks Frank Markesteijn)

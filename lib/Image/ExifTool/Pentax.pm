@@ -58,7 +58,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::HP;
 
-$VERSION = '3.11';
+$VERSION = '3.12';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -1914,7 +1914,7 @@ my %binaryDataAttrs = (
             0x20 => 'HDR Strong 1', #PH (NC) (K-5)
             0x30 => 'HDR Strong 2', #PH (K-5)
             0x40 => 'HDR Strong 3', #PH (K-5)
-            0x80 => 'HDR Manual', #31 (K-70 HDR 1 and HDR 2)
+            0x50 => 'HDR Manual', #31 (K-70 HDR 1 and HDR 2)
             0xe0 => 'HDR Auto', #PH (K-5, K-70)
             0xff => 'Video', #PH (K-x)
         }],

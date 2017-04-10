@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.57';
+$VERSION = '2.58';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -122,6 +122,7 @@ my %sonyLensTypes2 = (
     49216 => 'Zeiss Batis 25mm F2', #JR
     49217 => 'Zeiss Batis 85mm F1.8', #JR
     49218 => 'Zeiss Batis 18mm F2.8', #IB
+    49219 => 'Zeiss Batis 135mm F2.8', #IB
     49232 => 'Zeiss Loxia 50mm F2', #JR (lens firmware Ver.02)
     49233 => 'Zeiss Loxia 35mm F2', #JR (lens firmware Ver.02)
     49234 => 'Zeiss Loxia 21mm F2.8', #PH
@@ -1190,12 +1191,13 @@ my %meterInfo2 = (
     # 0x2028 - 0 0 for DSC-RX100M4/RX10M2, ILCE-7RM2/7SM2; seen non-zero values only for DSC-RX1RM2
     0x2028 => { #JR
         Name => 'VariableLowPassFilter',
-        Writable => 'int32u',
+        Writable => 'int16u',
+        Count => 2,
         PrintConv => {
-            0x00000 => 'n/a',
-            0x00001 => 'Off',
-            0x10001 => 'Standard',
-            0x20001 => 'High',
+            '0 0' => 'n/a',
+            '1 0' => 'Off',
+            '1 1' => 'Standard',
+            '1 2' => 'High',
         },
     },
     0x2029 => { # uncompressed 14-bit RAW file type setting introduced 2015

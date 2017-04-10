@@ -17,9 +17,24 @@ considered development releases, and are not uploaded to <a href="http://search.
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v10.49'><b>Apr. 10, 2017 - Version 10.49</b></a>
+<ul>
+<li>Added "DateFmt" utility function for use in advanced formatting expressions
+<li>Added a new Sony/Minolta LensType (thanks LibRaw)
+<li>Decode a new Panasonic tag
+<li>Fixed problem decoding Sony VariableLowPassFilter values (thanks Jos Roost)
+<li>Fixed problem setting XMP:About when creating new XMP in a file
+<li>Fixed an incorect Pentax DriveMode value (thanks Andras Salamon)
+<li>API Changes
+    <ul>
+    <li>Allow access to the advanced formatting expression via a new ExifTool
+        "FMT_EXPR" member variable
+    </ul>
+</ul>
+
 <a name='v10.48'><b>Apr. 3, 2017 - Version 10.48</b></a>
 <ul>
-<li>Added a new FujiFlashMode value (thanks Albert Shan)
+<li>Added some new FujiFlashMode values (thanks Albert Shan)
 <li>Added a new Sony LensType (thanks Jos Roost)
 <li>Added a new Canon LensType (thanks LibRaw)
 <li>Added a new CanonModelID and minor changes to some others (thanks Dmitry)

@@ -548,10 +548,12 @@ numerical.
                   reference to the current ExifTool object, $val is the Raw
                   value, and $tag is the tag key.  The subroutine takes 2
                   arguments: the Raw value and a reference to the current
-                  ExifTool object.  The expression or subroutine is evaluated
-                  when and if the tag value is requested (ie. only after all
-                  extraction is complete), so if necessary at this time the
-                  values of all other tags are available via calls to
+                  ExifTool object.  The advanced formatting expression (if any)
+                  may be accessed via the ExifTool "FMT_EXPR" member variable. 
+                  The expression or subroutine is evaluated when and if the tag
+                  value is requested (ie. only after all extraction is
+                  complete), so if necessary at this time the values of all
+                  other tags are available via calls to
                   $self->GetValue("Tag","Raw"). (Note: In theory, types other
                   than "Raw" may be accessed, but they are slower and may lead
                   to cyclical dependencies so they should be avoided). When

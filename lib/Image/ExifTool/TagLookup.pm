@@ -4832,7 +4832,7 @@ my %tagLookup = (
 	'timeshot' => { 406 => 'TimeShot' },
 	'timesignature' => { 440 => 'timeSignature' },
 	'timesincepoweron' => { 282 => 0x29 },
-	'timestamp' => { 10 => 0x45e, 18 => 0x11c, 260 => 0x8, 274 => 'TimeStamp', 411 => 'Timestamp', 424 => 'TimeStamp' },
+	'timestamp' => { 10 => 0x45e, 18 => 0x11c, 260 => 0x8, 274 => 'TimeStamp', 282 => 0xaf, 411 => 'Timestamp', 424 => 'TimeStamp' },
 	'timestamp1' => { 10 => 0x45a },
 	'timezone' => { 70 => 0x1, 230 => 0x0, 344 => 0xa },
 	'timezonecity' => { 70 => 0x2 },

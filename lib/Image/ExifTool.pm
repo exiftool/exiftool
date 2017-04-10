@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '10.48';
+$VERSION = '10.49';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -1098,7 +1098,7 @@ my %systemTagsNotes = (
         Description => 'File Creation Date/Time',
         Notes => q{
             the filesystem creation date/time.  Windows only.  Requires Win32API::File
-            and Win32::API for writing.  See L<MDItemFSCreationDate|MacOS.html>
+            and Win32::API for writing.  See L<MDItemFSCreationDate|MacOS.html#MDItem>
             for the Mac OS X equivalent
         },
         Groups => { 1 => 'System', 2 => 'Time' },
@@ -3313,6 +3313,7 @@ sub Init($)
     $$self{PRIORITY_DIR} = '';      # the priority directory name
     $$self{LOW_PRIORITY_DIR} = { PreviewIFD => 1 }; # names of priority 0 directories
     $$self{TIFF_TYPE}  = '';        # type of TIFF data (APP1, TIFF, NEF, etc...)
+    $$self{FMT_EXPR}   = undef;     # current advanced formatting expression
     $$self{Make}       = '';        # camera make
     $$self{Model}      = '';        # camera model
     $$self{CameraType} = '';        # Olympus camera type

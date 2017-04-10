@@ -49,7 +49,7 @@ use vars qw($VERSION %minoltaLensTypes %minoltaTeleconverters %minoltaColorMode
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.47';
+$VERSION = '2.48';
 
 # Full list of product codes for Sony-compatible Minolta lenses
 # (ref http://www.kb.sony.com/selfservice/documentLink.do?externalId=C1000570)
@@ -586,20 +586,21 @@ $VERSION = '2.47';
    '65535.52' => 'Zeiss Batis 25mm F2',             #JR (49216)
    '65535.53' => 'Zeiss Batis 85mm F1.8',           #JR (49217)
    '65535.54' => 'Zeiss Batis 18mm F2.8',           #IB (49218)
-   '65535.55' => 'Zeiss Loxia 50mm F2',             #JR (49232 or 0)
-   '65535.56' => 'Zeiss Loxia 35mm F2',             #JR (49233 or 0)
-   '65535.57' => 'Zeiss Loxia 21mm F2.8',           #JR (49234)
-   '65535.58' => 'Zeiss Loxia 85mm F2.4',           #JR (49235)
+   '65535.55' => 'Zeiss Batis 135mm F2.8',          #IB (49219)
+   '65535.56' => 'Zeiss Loxia 50mm F2',             #JR (49232 or 0)
+   '65535.57' => 'Zeiss Loxia 35mm F2',             #JR (49233 or 0)
+   '65535.58' => 'Zeiss Loxia 21mm F2.8',           #JR (49234)
+   '65535.59' => 'Zeiss Loxia 85mm F2.4',           #JR (49235)
 #
 # other lenses
 #
-   '65535.59' => 'Arax MC 35mm F2.8 Tilt+Shift', #JD
-   '65535.60' => 'Arax MC 80mm F2.8 Tilt+Shift', #JD
-   '65535.61' => 'Zenitar MF 16mm F2.8 Fisheye M42', #JD
-   '65535.62' => 'Samyang 500mm Mirror F8.0', #19
-   '65535.63' => 'Pentacon Auto 135mm F2.8', #19
-   '65535.64' => 'Pentacon Auto 29mm F2.8', #19
-   '65535.65' => 'Helios 44-2 58mm F2.0', #19
+   '65535.60' => 'Arax MC 35mm F2.8 Tilt+Shift', #JD
+   '65535.61' => 'Arax MC 80mm F2.8 Tilt+Shift', #JD
+   '65535.62' => 'Zenitar MF 16mm F2.8 Fisheye M42', #JD
+   '65535.63' => 'Samyang 500mm Mirror F8.0', #19
+   '65535.64' => 'Pentacon Auto 135mm F2.8', #19
+   '65535.65' => 'Pentacon Auto 29mm F2.8', #19
+   '65535.66' => 'Helios 44-2 58mm F2.0', #19
 );
 
 %minoltaTeleconverters = (

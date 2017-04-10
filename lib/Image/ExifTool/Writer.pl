@@ -2821,14 +2821,14 @@ sub InsertTagValues($$$;$)
         $type = 'ValueConv' if $line =~ s/^#//;
         # remove trailing bracket if there was a leading one
         # and extract Perl expression from inside brackets if it exists
-        if ($bra and not $line =~ s/^\s*\}// and $line =~ s/^\s*;\s*(.*?)\}//s) {
+        if ($bra and not $line =~ s/^\s*\}// and $line =~ s/^\s*;\s*(.*?)\s*\}//s) {
             my $part = $1;
             $expr = '';
             for ($level=0; ; --$level) {
                 # increase nesting level for each opening brace
                 ++$level while $part =~ /\{/g;
                 $expr .= $part;
-                last unless $level and $line =~ s/^(.*?)\}//s; # get next part
+                last unless $level and $line =~ s/^(.*?)\s*\}//s; # get next part
                 $part = $1;
                 $expr .= '}';  # this brace was part of the expression
             }
@@ -2838,6 +2838,8 @@ sub InsertTagValues($$$;$)
         push @tags, $var;
         ExpandShortcuts(\@tags);
         @tags or $rtnStr .= $pre, next;
+        # save advanced formatting expression to allow access by user-defined ValueConv
+        $$self{FMT_EXPR} = $expr;
 
         for (;;) {
             my $tag = shift @tags;
@@ -2921,7 +2923,7 @@ sub InsertTagValues($$$;$)
             $val = $$self{OPTIONS}{MissingTagValue};
             unless (defined $val) {
                 no strict 'refs';
-                return undef if $opt and &$opt($self, "Tag '$var' not defined", 2);
+                $opt and &$opt($self, "Tag '$var' not defined", 2) and return $$self{FMT_EXPR} = undef;
                 $val = '';
             }
         }
@@ -2930,7 +2932,7 @@ sub InsertTagValues($$$;$)
             if (defined $expr) {
                 # generate unique variable name for this modified tag value
                 my $i = 1;
-                ++$i while exists $$opt{"$val.expr$i"};
+                ++$i while exists $$opt{"$var.expr$i"};
                 $var .= '.expr' . $i;
             }
             $rtnStr .= "$pre\$info{'$var'}";
@@ -2939,6 +2941,7 @@ sub InsertTagValues($$$;$)
             $rtnStr .= "$pre$val";
         }
     }
+    $$self{FMT_EXPR} = undef;
     return $rtnStr . $line;
 }
 
@@ -4215,6 +4218,20 @@ sub UnpackUTF8($)
 }
 
 #------------------------------------------------------------------------------
+# Generate a new, random GUID
+# Inputs: <none>
+# Returns: GUID string
+my $guidCount;
+sub NewGUID()
+{
+    my @tm = localtime time;
+    $guidCount = 0 unless defined $guidCount and ++$guidCount < 0x100;
+    return sprintf('%.4d%.2d%.2d%.2d%.2d%.2d%.2X%.4X%.4X%.4X%.4X',
+                   $tm[5]+1900, $tm[4]+1, $tm[3], $tm[2], $tm[1], $tm[0], $guidCount,
+                   $$ & 0xffff, rand(0x10000), rand(0x10000), rand(0x10000));
+}
+
+#------------------------------------------------------------------------------
 # Return current time in EXIF format
 # Inputs: 0) flag to include timezone (0 to disable, undef or 1 to include)
 # Returns: time string
@@ -4230,17 +4247,13 @@ sub TimeNow(;$)
 }
 
 #------------------------------------------------------------------------------
-# Generate a new, random GUID
-# Inputs: <none>
-# Returns: GUID string
-my $guidCount;
-sub NewGUID()
+# Reformat date/time value in $_ based on specified format string
+# Inputs: 0) date/time format string
+sub DateFmt($)
 {
-    my @tm = localtime time;
-    $guidCount = 0 unless defined $guidCount and ++$guidCount < 0x100;
-    return sprintf('%.4d%.2d%.2d%.2d%.2d%.2d%.2X%.4X%.4X%.4X%.4X',
-                   $tm[5]+1900, $tm[4]+1, $tm[3], $tm[2], $tm[1], $tm[0], $guidCount,
-                   $$ & 0xffff, rand(0x10000), rand(0x10000), rand(0x10000));
+    my $et = bless { OPTIONS => { DateFormat => shift, StrictDate => 1 } };
+    $_ = $et->ConvertDateTime($_);
+    defined $_ or warn "Error converting date/time\n";
 }
 
 #------------------------------------------------------------------------------

@@ -87,7 +87,7 @@ $Image::ExifTool::PNG::colorType = -1;
 
         According to the specification, a PNG file should end at the IEND chunk,
         however ExifTool will preserve any data found after this when writing unless
-        it is specifically deleted with -Trailer:All=.  When reading, a minor
+        it is specifically deleted with C<-Trailer:All=>.  When reading, a minor
         warning is issued if this trailer exists, and ExifTool will attempt to parse
         this data as additional PNG chunks.
     },

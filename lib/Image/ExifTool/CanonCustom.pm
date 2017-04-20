@@ -19,7 +19,7 @@ use Image::ExifTool qw(:DataAccess);
 use Image::ExifTool::Canon;
 use Image::ExifTool::Exif;
 
-$VERSION = '1.53';
+$VERSION = '1.54';
 
 sub ProcessCanonCustom($$$);
 sub ProcessCanonCustom2($$$);
@@ -2444,7 +2444,7 @@ sub ProcessCanonCustom2($$$)
         $newTags = $et->GetNewTagInfoHash($tagTablePtr);
         $et->VPrint(0, "  Rewriting CanonCustom2\n");
     } elsif ($verbose) {
-        $et->VerboseDir('CanonCustom2', $count);
+        $et->VerboseDir('CanonCustom2', $count, $len);
     }
     my $pos = $offset + 8;
     my $end = $offset + $size;
@@ -2463,7 +2463,7 @@ sub ProcessCanonCustom2($$$)
             return 0;
         }
         if ($verbose and not $write) {
-            $et->VerboseDir("CanonCustom2 group $recNum", $recCount);
+            $et->VerboseDir("CanonCustom2 group $recNum", $recCount, $recLen);
         }
         my ($i, $num, $tag);
         for ($i=0; $recPos + 8 < $recEnd; ++$i, $recPos+=4*$num) {

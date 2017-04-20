@@ -34,7 +34,7 @@ use Image::ExifTool::Nikon;
 use Image::ExifTool::Validate;
 use Image::ExifTool::MacOS;
 
-$VERSION = '3.07';
+$VERSION = '3.08';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -317,15 +317,20 @@ to preserve other existing languages (eg. "XMP-dc:Description-x-default").
 When reading, "x-default" is not specified.
 
 The XMP tags are organized according to schema B<Namespace> in the following
-tables.  Note that a few of the longer namespace prefixes given below have
-been shortened for convenience (since the family 1 group names are derived
-from these by adding a leading "XMP-").  In cases where a tag name exists in
-more than one namespace, less common namespaces are avoided when writing.
-However, any namespace may be written by specifying a family 1 group name
-for the tag, eg) XMP-exif:Contrast or XMP-crs:Contrast.  When deciding on
-which tags to add to an image, using standard schemas such as
-L<dc|/XMP dc Tags>, L<xmp|/XMP xmp Tags>, L<iptcCore|/XMP iptcCore Tags>
-and L<iptcExt|/XMP iptcExt Tags> is recommended if possible.
+tables.  In general, the ExifTool family 1 group names are derived from the
+namespace prefixes by adding a leading "XMP-" (eg. "XMP-dc"), but a few of
+the longer prefixes have been shortened for convenience (as mentioned in the
+documentation below).  The tags of any namespace may be deleted as a group
+by specifying the family 1 group name (eg. "-XMP-dc:all=" on the command
+line).  This includes namespaces which are not pre-defined by ExifTool.
+
+In cases where a tag name exists in more than one namespace, less common
+namespaces are avoided when writing.  However, a specific namespace may be
+written by providing a family 1 group name for the tag (eg. XMP-crs:Contrast
+or XMP-exif:Contrast).  When deciding on which tags to add to an image,
+using standard schemas such as L<dc|/XMP dc Tags>, L<xmp|/XMP xmp Tags>,
+L<iptcCore|/XMP iptcCore Tags> and L<iptcExt|/XMP iptcExt Tags> is
+recommended if possible.
 
 For structures, the heading of the first column is B<Field Name>.  Field
 names are very similar to tag names, except they are used to identify fields

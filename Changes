@@ -4,8 +4,17 @@ ExifTool Version History
 
 RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 
-Note: The most recent production release is Version 10.40. (Other versions are
+Note: The most recent production release is Version 10.50. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
+
+Apr. 20, 2017 - Version 10.50 (production release)
+
+  - Decode a new Pentax tag (thanks Andras Salamon)
+  - Improved decoding of Olympus DriveMode (thanks Herbert Kauer)
+  - Improved handling of errors from utime when setting file times
+  - Fixed potential hang problem when reading corrupted QuickTime metadata
+  - Fixed problem deleting duplicate EXIF tags when writing other tags at the
+    same time
 
 Apr. 10, 2017 - Version 10.49
 

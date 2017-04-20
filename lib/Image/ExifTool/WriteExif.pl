@@ -899,7 +899,9 @@ Entry:  for (;;) {
                     if ($oldID <= $lastTagID and not $inMakerNotes) {
                         my $str = $oldInfo ? "$$oldInfo{Name} tag" : sprintf('tag 0x%x',$oldID);
                         if ($oldID == $lastTagID) {
-                            $et->Warn("Duplicate $str in $name");;
+                            $et->Warn("Duplicate $str in $name");
+                            # put this tag back into the newTags list if necessary
+                            unshift @newTags, $oldID if defined $set{$oldID};
                         } else {
                             $et->Warn("\u$str out of sequence in $name");
                         }

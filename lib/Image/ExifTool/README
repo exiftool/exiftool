@@ -550,13 +550,13 @@ numerical.
                   arguments: the Raw value and a reference to the current
                   ExifTool object.  The advanced formatting expression (if any)
                   may be accessed via the ExifTool "FMT_EXPR" member variable. 
-                  The expression or subroutine is evaluated when and if the tag
+                  The expression or subroutine is evaluated if and when the tag
                   value is requested (ie. only after all extraction is
                   complete), so if necessary at this time the values of all
                   other tags are available via calls to
-                  $self->GetValue("Tag","Raw"). (Note: In theory, types other
+                  $self->GetValue("Tag","Raw").  (Note: In theory, types other
                   than "Raw" may be accessed, but they are slower and may lead
-                  to cyclical dependencies so they should be avoided). When
+                  to cyclical dependencies so they should be avoided).  When
                   evaluated, the expression or subroutine returns a scalar for
                   the converted value, a SCALAR reference to a binary data value
                   (see the 'Binary' flag), or an ARRAY reference for a list of

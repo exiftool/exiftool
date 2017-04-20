@@ -1073,7 +1073,10 @@ Category:       foreach $category (qw{pos track alt orient}) {
 # Inputs: 0) exiftool object ref,
 #         1) time difference string ("[+-]DD MM:HH:SS.ss"), geosync'd file name,
 #            "GPSTIME@IMAGETIME", or "GPSTIME@FILENAME"
-# Returns: geosync hash
+# Returns: geosync hash:
+#           Offset = Offset in seconds for latest synchronization (GPS - image time)
+#           Points = hash of all sync offsets keyed by image times in seconds
+#           Times = sorted list of image synchronization times (keys in Points hash) 
 # Notes: calling this routine with more than one geosync'd file causes time drift
 #        correction to be implemented
 sub ConvertGeosync($$)
@@ -1102,7 +1105,11 @@ sub ConvertGeosync($$)
             my $info = ImageInfo($syncFile, { PrintConv => 0 }, @timeTags,
                                  'GPSDateTime', 'GPSTimeStamp');
             $$info{Error} and warn("$$info{Err}\n"), return undef;
-            $gpsTime or $gpsTime = $$info{GPSDateTime} || $$info{GPSTimeStamp};
+            unless ($gpsTime) {
+                $gpsTime = $$info{GPSDateTime} || $$info{GPSTimeStamp};
+                $gpsTime .= 'Z' if $gpsTime and not $$info{GPSDateTime};
+            }
+            $gpsTime or warn("No GPSTimeStamp in '$syncFile\n"), return undef;
             my $tag;
             foreach $tag (@timeTags) {
                 if ($$info{$tag}) {
@@ -1111,7 +1118,6 @@ sub ConvertGeosync($$)
                     last;
                 }
             }
-            $gpsTime or warn("No GPSTimeStamp in '$syncFile\n"), return undef;
             $imgTime or warn("No image timestamp in '$syncFile'\n"), return undef;
         }
         # add date to date-less timestamps

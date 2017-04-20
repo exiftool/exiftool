@@ -2769,6 +2769,7 @@ my %tagLookup = (
 	'intervallength' => { 163 => 0x10 },
 	'intervalmode' => { 163 => 0x26 },
 	'intervalnumber' => { 163 => 0x11 },
+	'intervalshooting' => { 316 => 0x92 },
 	'introtime' => { 440 => 'introTime' },
 	'introtimescale' => { 440 => [\'introTime','introTimeScale'] },
 	'introtimevalue' => { 440 => [\'introTime','introTimeValue'] },

@@ -42,7 +42,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.01';
+$VERSION = '2.02';
 
 sub FixWrongFormat($);
 sub ProcessMOV($$;$);
@@ -6155,7 +6155,7 @@ sub ProcessKeys($$$)
         if ($ns eq 'mdta') {
             $tag =~ s/^com\.apple\.quicktime\.//;   # remove common apple quicktime domain
         }
-        next unless $tag;
+        $tag = "Tag_$ns" unless $tag;
         # (I have some samples where the tag is a reversed ItemList or UserData tag ID)
         my $tagInfo = $et->GetTagInfo($tagTablePtr, $tag);
         unless ($tagInfo) {

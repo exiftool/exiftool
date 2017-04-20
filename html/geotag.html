@@ -171,7 +171,7 @@ other.</li>
 synchronization point may only be used for constant time offset (ie. no time
 drift correction will be applied).</li>
 <li>Both the GPS and the image times are assumed to be local unless another
-timezone is specified.</li>
+timezone is specified (unless taken from GPSTimeStamp which is UTC).</li>
 <li>Both the GPS and the image time values may contain decimal seconds.</li>
 <li>The applied value of the time drift correction is calculated from a
 piecewise linear interpolation/extrapolation between the synchronization points

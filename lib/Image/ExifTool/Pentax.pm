@@ -58,7 +58,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::HP;
 
-$VERSION = '3.12';
+$VERSION = '3.13';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -2496,6 +2496,24 @@ my %binaryDataAttrs = (
         Name => 'ISO',
         Priority => 0,
         Writable => 'int32u',
+    },
+    0x0092 => { #31
+        Name => 'IntervalShooting',
+        Notes => '2 numbers: 1. Shot number 2. Total number of shots',
+        Writable => 'int16u',
+        Count => 2,
+        PrintConv => {
+            '0 0' => 'Off',
+            OTHER => sub {
+                my ($val, $inv) = @_;
+                if ($inv) {
+                    $val =~ tr/0-9 //dc;
+                } else {
+                    $val =~ s/(\d+) (\d+)/Shot $1 of $2/;
+                }
+                return $val;
+            },
+        },
     },
     0x0095 => { #31
         Name => 'SkinToneCorrection',
@@ -6145,8 +6163,8 @@ Pentax and Asahi maker notes in EXIF information.
 
 I couldn't find a good source for Pentax maker notes information, but I've
 managed to discover a fair bit of information by analyzing sample images
-downloaded from the internet, and through tests with my own Optio WP,
-K10D, and K-5, and with help provided by other ExifTool users (see
+downloaded from the internet, and through tests with my own Optio S, Optio
+WP, K10D, K-01 and K-5, and with help provided by other ExifTool users (see
 L</ACKNOWLEDGEMENTS>).
 
 The Pentax maker notes are stored in standard EXIF format, but the offsets
@@ -6178,11 +6196,11 @@ the information should be stored to deduce the correct offsets.
 
 =head1 ACKNOWLEDGEMENTS
 
-Thanks to Wayne Smith, John Francis, Douglas O'Brien Cvetan Ivanov, Jens
-Duttke and Dave Nicholson for help figuring out some Pentax tags, Ger
-Vermeulen and Niels Kristian Bech Jensen for contributing print conversion
-values for some tags, and everyone who helped contribute to the LensType
-values.
+Thanks to Wayne Smith, John Francis, Douglas O'Brien, Cvetan Ivanov, Jens
+Duttke, Dave Nicholson, Iliah Borg, Klaus Homeister, Louis Granboulan and
+Andras Salamon for help figuring out some Pentax tags, Ger Vermeulen and
+Niels Kristian Bech Jensen for contributing print conversion values for some
+tags, and everyone who helped contribute to the LensType values.
 
 =head1 AUTHOR
 

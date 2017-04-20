@@ -1734,7 +1734,7 @@ sub SetFileModifyDate($$;$$$)
     } else {
         $aTime = $mTime = $val;
     }
-    $self->SetFileTime($file, $aTime, $mTime, $cTime) or $self->Warn("Error setting $tag"), return -1;
+    $self->SetFileTime($file, $aTime, $mTime, $cTime, 1) or $self->Warn("Error setting $tag"), return -1;
     ++$$self{CHANGED};
     $$self{WRITTEN}{$tag} = $val;   # remember that we wrote this tag
     $self->VerboseValue("+ $tag", $val);
@@ -6079,11 +6079,12 @@ sub Unlink($@)
 # Set file times (Unix seconds since the epoch)
 # Inputs: 0) ExifTool ref, 1) file name or ref, 2) access time, 3) modification time,
 #         4) inode change or creation time (or undef for any time to avoid setting)
+#         5) flag to suppress warning
 # Returns: 1 on success, 0 on error
 my $k32SetFileTime;
-sub SetFileTime($$;$$$)
+sub SetFileTime($$;$$$$)
 {
-    my ($self, $file, $atime, $mtime, $ctime) = @_;
+    my ($self, $file, $atime, $mtime, $ctime, $noWarn) = @_;
 
     # open file by name if necessary
     unless (ref $file) {
@@ -6101,7 +6102,7 @@ sub SetFileTime($$;$$$)
             # get Win32 handle, needed for SetFileTime
             my $win32Handle = eval { Win32API::File::GetOsFHandle($file) };
             unless ($win32Handle) {
-                $self->Warn("Win32API::File::GetOsFHandle returned invalid handle");
+                $self->Warn('Win32API::File::GetOsFHandle returned invalid handle');
                 return 0;
             }
             # convert Unix seconds to FILETIME structs
@@ -6125,14 +6126,26 @@ sub SetFileTime($$;$$$)
                 }
             }
             unless ($k32SetFileTime->Call($win32Handle, $ctime, $atime, $mtime)) {
-                $self->Warn("Win32::API::SetFileTime returned " . Win32::GetLastError());
+                $self->Warn('Win32::API::SetFileTime returned ' . Win32::GetLastError());
                 return 0;
             }
             return 1;
         }
     }
-    # other os (or Windows fallback)
-    return utime($atime, $mtime, $file) if defined $atime and defined $mtime;
+    # other OS (or Windows fallback)
+    if (defined $atime and defined $mtime) {
+        local $SIG{'__WARN__'} = \&SetWarning; # (this may not be necessary)
+        undef $evalWarning;
+        my $success = eval { utime($atime, $mtime, $file) };
+        unless ($noWarn) {
+            if ($@ or $evalWarning) {
+                $self->Warn(CleanWarning($@ || $evalWarning));
+            } elsif (not $success) {
+                $self->Warn('Error setting file time');
+            }
+        }
+        return $success;
+    }
     return 1; # (nothing to do)
 }
 

@@ -53,15 +53,20 @@ to preserve other existing languages (eg. &quot;XMP-dc:Description-x-default&quo
 When reading, &quot;x-default&quot; is not specified.</p>
 
 <p>The XMP tags are organized according to schema <b>Namespace</b> in the following
-tables.  Note that a few of the longer namespace prefixes given below have
-been shortened for convenience (since the family 1 group names are derived
-from these by adding a leading &quot;XMP-&quot;).  In cases where a tag name exists in
-more than one namespace, less common namespaces are avoided when writing.
-However, any namespace may be written by specifying a family 1 group name
-for the tag, eg) XMP-exif:Contrast or XMP-crs:Contrast.  When deciding on
-which tags to add to an image, using standard schemas such as
-<a href="#dc">dc</a>, <a href="#xmp">xmp</a>, <a href="#iptcCore">iptcCore</a>
-and <a href="#iptcExt">iptcExt</a> is recommended if possible.</p>
+tables.  In general, the ExifTool family 1 group names are derived from the
+namespace prefixes by adding a leading &quot;XMP-&quot; (eg. &quot;XMP-dc&quot;), but a few of
+the longer prefixes have been shortened for convenience (as mentioned in the
+documentation below).  The tags of any namespace may be deleted as a group
+by specifying the family 1 group name (eg. &quot;-XMP-dc:all=&quot; on the command
+line).  This includes namespaces which are not pre-defined by ExifTool.</p>
+
+<p>In cases where a tag name exists in more than one namespace, less common
+namespaces are avoided when writing.  However, a specific namespace may be
+written by providing a family 1 group name for the tag (eg. XMP-crs:Contrast
+or XMP-exif:Contrast).  When deciding on which tags to add to an image,
+using standard schemas such as <a href="#dc">dc</a>, <a href="#xmp">xmp</a>,
+<a href="#iptcCore">iptcCore</a> and <a href="#iptcExt">iptcExt</a> is
+recommended if possible.</p>
 
 <p>For structures, the heading of the first column is <b>Field Name</b>.  Field
 names are very similar to tag names, except they are used to identify fields
@@ -10152,7 +10157,7 @@ These tags belong to the ExifTool XMP-svg family 1 group.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Dec 21, 2016</i>
+<br><i>Last revised Apr 19, 2017</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

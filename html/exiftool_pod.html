@@ -39,6 +39,7 @@
           <li><a href="#Special-features">Special features</a></li>
           <li><a href="#Utilities">Utilities</a></li>
           <li><a href="#Advanced-options">Advanced options</a></li>
+          <li><a href="#Advanced-formatting-feature">Advanced formatting feature</a></li>
         </ul>
       </li>
     </ul>
@@ -337,7 +338,7 @@
 
 <p>A powerful redirection feature allows a destination tag to be specified for each copied tag. With this feature, information may be written to a tag with a different name or group. This is done using &quot;&#39;-<i>DSTTAG</i>&lt;<i>SRCTAG</i>&#39;&quot; or &quot;&#39;-<i>SRCTAG</i>&gt;<i>DSTTAG</i>&#39;&quot; on the command line after <b>-tagsFromFile</b>, and causes the value of <i>SRCTAG</i> to be copied from <i>SRCFILE</i> and written to <i>DSTTAG</i> in <i>FILE</i>. Note that this argument must be quoted to prevent shell redirection, and there is no <code>=</code> sign as when assigning new values. Source and/or destination tags may be prefixed by a group name and/or suffixed by <code>#</code>. Wildcards are allowed in both the source and destination tag names. A destination group and/or tag name of <code>All</code> or <code>*</code> writes to the same family 1 group and/or tag name as the source. If no destination group is specified, the information is written to the preferred group. Whitespace around the <code>&gt;</code> or <code>&lt;</code> is ignored. As a convenience, <code>-tagsFromFile @</code> is assumed for any redirected tags which are specified without a prior <b>-tagsFromFile</b> option. Copied tags may also be added or deleted from a list with arguments of the form &quot;&#39;-<i>SRCTAG</i>+&lt;<i>DSTTAG</i>&#39;&quot; or &quot;&#39;-<i>SRCTAG</i>-&lt;<i>DSTTAG</i>&#39;&quot;.</p>
 
-<p>An extension of the redirection feature allows strings involving tag names to be used on the right hand side of the <code>&lt;</code> symbol with the syntax &quot;&#39;-<i>DSTTAG</i>&lt;<i>STR</i>&#39;&quot;, where tag names in <i>STR</i> are prefixed with a <code>$</code> symbol. See the <b>-p</b> option for more details about this syntax. Strings starting with a <code>=</code> sign must insert a single space after the <code>&lt;</code> to avoid confusion with the <code>&lt;=</code> operator which sets the tag value from the contents of a file. A single space at the start of the string is removed if it exists, but all other whitespace in the string is preserved. See note 8 below about using shortcuts or wildcards with the redirection feature.</p>
+<p>An extension of the redirection feature allows strings involving tag names to be used on the right hand side of the <code>&lt;</code> symbol with the syntax &quot;&#39;-<i>DSTTAG</i>&lt;<i>STR</i>&#39;&quot;, where tag names in <i>STR</i> are prefixed with a <code>$</code> symbol. See the <a href="#Advanced-formatting-feature">&quot;Advanced formatting feature&quot;</a> for more details about this syntax. Strings starting with a <code>=</code> sign must insert a single space after the <code>&lt;</code> to avoid confusion with the <code>&lt;=</code> operator which sets the tag value from the contents of a file. A single space at the start of the string is removed if it exists, but all other whitespace in the string is preserved. See note 8 below about using the redirection feature with list-type stags, shortcuts or when using wildcards in tag names.</p>
 
 <p>See <a href="#COPYING-EXAMPLES">&quot;COPYING EXAMPLES&quot;</a> for examples using <b>-tagsFromFile</b>.</p>
 
@@ -367,7 +368,7 @@
 
 <p>7) Structured tags are copied by default when copying tags. See the <b>-struct</b> option for details.</p>
 
-<p>8) With the redirection feature, copying a tag directly (ie. &quot;&#39;-<i>DSTTAG</i>&lt;<i>SRCTAG</i>&#39;&quot;) is not the same as interpolating its value inside a string (ie. &quot;&#39;-<i>DSTTAG</i>&lt;$<i>SRCTAG</i>&#39;&quot;) for <a>shortcut tags</a> or tag names containing wildcards. When copying directly, the values of each matching source tag are copied individually to the destination tag (as if multiple redirection arguments were used). However, when interpolated inside a string, the values of shortcut tags are concatenated, and wildcards are not allowed.</p>
+<p>8) With the redirection feature, copying a tag directly (ie. &quot;&#39;-<i>DSTTAG</i>&lt;<i>SRCTAG</i>&#39;&quot;) is not the same as interpolating its value inside a string (ie. &quot;&#39;-<i>DSTTAG</i>&lt;$<i>SRCTAG</i>&#39;&quot;) for list-type tags, <a>shortcut tags</a>, or tag names containing wildcards. When copying directly, the values of each matching source tag are copied individually to the destination tag (as if they were separate assignments). However, when interpolated inside a string, list items and the values of shortcut tags are concatenated (with a separator set by the <b>-sep</b> option), and wildcards are not allowed.</p>
 
 </dd>
 <dt id="x-TAG--exclude"><b>-x</b> <i>TAG</i> (<b>-exclude</b>)</dt>
@@ -626,7 +627,7 @@
 
 <p>produces output like this:</p>
 
-<pre><code>    -- Generated by ExifTool 10.50 --
+<pre><code>    -- Generated by ExifTool 10.51 --
     File: a.jpg - 2003:10:31 15:44:19
     (f/5.6, 1/60s, ISO 100)
     File: b.jpg - 2006:05:23 11:57:38
@@ -637,15 +638,7 @@
 
 <p>If a specified tag does not exist, a minor warning is issued and the line with the missing tag is not printed. However, the <b>-f</b> option may be used to set the value of missing tags to &#39;-&#39; (but this may be configured via the MissingTagValue API option), or the <b>-m</b> option may be used to ignore minor warnings and leave the missing values empty.</p>
 
-<p>An <b>advanced formatting feature</b> allows an arbitrary Perl expression to be applied to the value of any tag by placing it inside the braces after the tag name, separated by a semicolon. The expression acts on the value of the tag through the default input variable (<code>$_</code>), and has access to the full ExifTool API through the current ExifTool object (<code>$self</code>). It may contain any valid Perl code, including translation (<code>tr///</code>) and substitution (<code>s///</code>) operations, but note that braces within the expression must be balanced. The example below prints the camera Make with spaces translated to underlines, and multiple consecutive underlines replaced by a single underline:</p>
-
-<pre><code>    exiftool -p &#39;${make;tr/ /_/;s/__+/_/g}&#39; image.jpg</code></pre>
-
-<p>A default expression of <code>tr(/\\?*:|&quot;&lt;&gt;\0)()d</code> is assumed if the expression is empty (ie. <code>${TAG;}</code>). This removes the characters / \ ? * : | &lt; &gt; and null from the printed value. (These characters are illegal in Windows file names, so this feature is useful if tag values are used in file names.)</p>
-
-<p>ExifTool provides a <code>DateFmt</code> utility to simplify reformatting of individual date/time values. The function acts on a standard EXIF-formatted date/time value in <code>$_</code> and formats it according to the specified format string (see the <b>-d</b> option). For example:</p>
-
-<pre><code>    exiftool -p &#39;${createdate#;DateFmt(&quot;%Y-%m-%d_%H%M%S&quot;)}&#39; a.jpg</code></pre>
+<p>The <a href="#Advanced-formatting-feature">&quot;Advanced formatting feature&quot;</a> may be used to modify the values of individual tags with the <b>-p</b> option.</p>
 
 </dd>
 <dt id="php"><b>-php</b></dt>
@@ -975,7 +968,7 @@
 <dt id="progress-:-TITLE"><b>-progress</b>[:[<i>TITLE</i>]]</dt>
 <dd>
 
-<p>Show file progress count in messages. The progress count appears in brackets after the name of each processed file, and gives the current file number and the total number of files to be processed. Implies the <b>-v0</b> option if <i>TITLE</i> is not used, printing the name of each processed file when writing. When combined with the <b>-if</b> option, the total count includes all files before the condition is applied, but files that fail the condition will not have their names printed.</p>
+<p>Show the progress when processing files. The progress count appears in brackets after the name of each processed file, and gives the current file number and the total number of files to be processed. Implies the <b>-v0</b> option if <i>TITLE</i> is not used, printing the name of each processed file when writing. When combined with the <b>-if</b> option, the total count includes all files before the condition is applied, but files that fail the condition will not have their names printed.</p>
 
 <p>If followed by a colon (ie. <b>-progress:</b>), the console window title is set according to the specified <i>TITLE</i> string. If no <i>TITLE</i> is given, a default <i>TITLE</i> string of &quot;ExifTool %p%%&quot; is assumed. In the string, %f represents the file name, %p is the progress as a percent, %r is the progress as a ratio, and %% is a % character. May be combined with the normal <b>-progress</b> option to also show the progress count in console messages. (Note: This feature works on Mac/Linux only if stderr goes to the console.)</p>
 
@@ -1079,7 +1072,7 @@
 <dt id="ver"><b>-ver</b></dt>
 <dd>
 
-<p>Print exiftool version number. The <b>-v</b> option may be added to print addition system information (see the README file of the full distribution for more details about optional libraries).</p>
+<p>Print exiftool version number. The <b>-v</b> option may be added to print addition system information (see the README file of the full distribution for more details about optional libraries), or <b>-v2</b> to also list the Perl include directories.</p>
 
 </dd>
 </dl>
@@ -1243,6 +1236,28 @@
 
 </dd>
 </dl>
+
+<h3 id="Advanced-formatting-feature">Advanced formatting feature</h3>
+
+<p>An advanced formatting feature allows modification of the value of any tag interpolated within a <b>-if</b> or <b>-p</b> option argument, or a <b>-tagsFromFile</b> redirection string. Tag names within these strings are prefixed by a <code>$</code> symbol, and an arbitrary Perl expression may be applied to the tag value by placing braces around the tag name and inserting the expression after the name, separated by a semicolon (ie. <code>${TAG;EXPR}</code>). The expression acts on the value of the tag through the default input variable (<code>$_</code>), and has access to the full ExifTool API through the current ExifTool object (<code>$self</code>). It may contain any valid Perl code, including translation (<code>tr///</code>) and substitution (<code>s///</code>) operations, but note that braces within the expression must be balanced. The example below prints the camera Make with spaces translated to underlines, and multiple consecutive underlines replaced by a single underline:</p>
+
+<pre><code>    exiftool -p &#39;${make;tr/ /_/;s/__+/_/g}&#39; image.jpg</code></pre>
+
+<p>A default expression of <code>tr(/\\?*:|&quot;&lt;&gt;\0)()d</code> is assumed if the expression is empty (ie. <code>${TAG;}</code>). This removes the characters / \ ? * : | &lt; &gt; and null from the printed value. (These characters are illegal in Windows file names, so this feature is useful if tag values are used in file names.)</p>
+
+<p>ExifTool provides a <code>DateFmt</code> utility to simplify reformatting of individual date/time values. The function acts on a standard EXIF-formatted date/time value in <code>$_</code> and formats it according to the specified format string (see the <b>-d</b> option). For example:</p>
+
+<pre><code>    exiftool -p &#39;${createdate#;DateFmt(&quot;%Y-%m-%d_%H%M%S&quot;)}&#39; a.jpg</code></pre>
+
+<p>Note that function names are case sensitive.</p>
+
+<p>A <code>NoDups</code> utility is also provided to remove duplicate items from a list with a separator specified by the <b>-sep</b> option. This function is most useful when copying list-type tags. For example, the following command may be used to remove duplicate Keywords:</p>
+
+<pre><code>    exiftool -sep &#39;##&#39; &#39;-keywords&lt;${keywords;NoDups}&#39; a.jpg</code></pre>
+
+<p>An optional flag may be set to 1 to cause <code>NoDups</code> to return undef if no duplicates existed, thus preventing the file from being rewritten unnecessarily:</p>
+
+<pre><code>    exiftool -sep &#39;##&#39; &#39;-keywords&lt;${keywords;NoDups(1)}&#39; a.jpg</code></pre>
 
 <h1 id="WINDOWS-UNICODE-FILE-NAMES">WINDOWS UNICODE FILE NAMES</h1>
 
@@ -1635,7 +1650,7 @@
 <dt id="exiftool--Description-FileName-s-.-.-dir">exiftool &#39;-Description&lt;${FileName;s/\.[^.]*$//}&#39; dir</dt>
 <dd>
 
-<p>Set the image Description from the file name after removing the extension. This example uses an advanced formatting expression to perform a substitution operation to remove the last dot and subsequent characters from the file name.</p>
+<p>Set the image Description from the file name after removing the extension. This example uses the <a href="#Advanced-formatting-feature">&quot;Advanced formatting feature&quot;</a> to perform a substitution operation to remove the last dot and subsequent characters from the file name.</p>
 
 </dd>
 <dt id="exiftool---iptc2xmp.args--iptc:all-a.jpg">exiftool -@ iptc2xmp.args -iptc:all= a.jpg</dt>
@@ -1721,7 +1736,7 @@
 <dt id="exiftool--filename-f_-model-.-e-dir">exiftool &#39;-filename&lt;%f_${model;}.%e&#39; dir</dt>
 <dd>
 
-<p>Rename all files in <code>dir</code> by adding the camera model name to the file name. The semicolon after the tag name inside the braces causes characters which are invalid in Windows file names to be deleted from the tag value (see the <b>-p</b> option documentation for an explanation).</p>
+<p>Rename all files in <code>dir</code> by adding the camera model name to the file name. The semicolon after the tag name inside the braces causes characters which are invalid in Windows file names to be deleted from the tag value (see the <a href="#Advanced-formatting-feature">&quot;Advanced formatting feature&quot;</a> for an explanation).</p>
 
 </dd>
 <dt id="exiftool--FileNameCreateDate--d-Y-m-d_-H-M-S--c.-e-dir">exiftool &#39;-FileName&lt;CreateDate&#39; -d %Y%m%d_%H%M%S%%-c.%%e dir</dt>

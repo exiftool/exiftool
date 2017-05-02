@@ -13,6 +13,241 @@
 <p><b>Note:</b> This page gives the history of older exiftool versions.  See
 <a href="history.html">history.html</a> for the recent history.</p>
 
+<a name='v10.35'><b>Nov. 21, 2016 - Version 10.35</b></a>
+<ul>
+<li>Fixed bug in Windows version introduced in 10.32 which could cause ExifTool
+    to exit with an error if the -lang option was used
+</ul>
+
+<a name='v10.34'><b>Nov. 21, 2016 - Version 10.34</b></a>
+<ul>
+<li>Added support for new IPTC Extension version 1.3 + video metadata XMP tags
+<li>Added missing print conversion for PreviewDateTime
+<li>Decode a few new FujiFilm tags (thanks Zilvinas Brobliauskas)
+<li>Enhanced MWG date/time tags to support new EXIF time offsets
+<li>Patched loophole in WriteMode which would allow creation of new metadata
+    files when creation of new groups was disallowed
+<li>Fixed problem where some EXIF date/time tags may not shifted when shifting
+    all date/time tags with "-time:all-=VAL" for ExifTool version 10.28-10.33 or
+    when the MWG feature was used
+</ul>
+
+<a name='v10.33'><b>Nov. 11, 2016 - Version 10.33</b></a>
+<ul>
+<li>Windows EXE version is 32-bit again, and packaged with Perl 5.24.0
+<li>Fixed encoding problem with EXIF:Copyright when writing MWG tags using an
+    alternate EXIF charset
+</ul>
+
+<a name='v10.32'><b>Nov. 9, 2016 - Version 10.32</b></a>
+<ul>
+<li>WARNING: The Windows EXE version for this release is 64-bit (and packaged
+    with Perl 5.22.2 instead of 5.24.0)
+<li>Time::Piece may now be used as an alternative to POSIX::strptime for parsing
+    date/time values when writing, and is included in the Windows package
+<li>Added a number of new XMP tags (thanks StarGeek)
+<li>Added support for a few new Sony cameras (thanks Jos Roost)
+<li>Added new Nikon LensID (thanks Tanel)
+<li>Decode a new Nikon tag (thanks Warren Hatch)
+<li>Decode FLIF encoding type
+<li>Decode a new Samsung tag (thanks Klaus Homeister)
+<li>Ignore -filter option for a tag if it returns an undefined value
+</ul>
+
+<a name='v10.31'><b>Oct. 19, 2016 - Version 10.31</b></a>
+<ul>
+<li>Added write support for <a href="TagNames/FLIF.html">FLIF images</a>
+<li>Added support for animated PNG images
+<li>Added a few new SamsungModelID values
+<li>Added a new Canon LensType
+<li>Added a new Sony/Minolta LensType (thanks Jos Roost)
+<li>Decode more Samsung tags (thanks Klaus Homeister and Sreerag Raghavan)
+<li>Decode more Nikon tags (thanks Warren Hatch)
+<li>Changed "TAG does not exist" warning when writing to "TAG is not supported"
+<li>Fixed problem importing information from CSV or JSON databases for files
+    with special characters in their name
+</ul>
+
+<a name='v10.30'><b>Oct. 13, 2016 - Version 10.30</b></a>
+<ul>
+<li>Added read support for <a href="TagNames/FLIF.html">FLIF images</a>
+<li>Added a couple of new Minolta/Sony LensType values (thanks Jos Roost)
+<li>Added a new SonyModelID (thanks LibRaw and Jos Roost)
+<li>Added a new digiKam XMP tag
+<li>Decode a new Apple tag (thanks Neal Krawetz)
+<li>Decode a few new FujiFilm tags (thanks Chris Schucker)
+<li>Decode more Nikon D5 custom settings (thanks Warren Hatch)
+<li>Decode a couple more Samsung tags (thanks Klaus Homeister)
+<li>Improved decoding of Nikon D500/D5 ShotInfo information
+<li>Enhanced -ver option to output system information when -v is added
+<li>Minor change to parsing of -@ argfile (comment lines may may no longer have
+    spaces before the "#")
+<li>Patched Jpeg2000 reader to read bad UUID-EXIF boxes
+<li>Lowered priority of unknown XMP tags when reading
+<li>Fixed problem in new xmp2exif.args date/time arguments introduced in 10.28
+<li>Fixed potential "Use of uninitialized value" warning when decoding
+    compressed PNG iTXt chunk
+</ul>
+
+<a name='v10.29'><b>Oct. 5, 2016 - Version 10.29</b></a>
+<ul>
+<li>Added a couple of new Sony LensType values (thanks LibRaw)
+<li>Decode a few new Sony tags
+<li>Decode a few new FLIR tags
+<li>Decode some new Nikon D5 tags (thanks Warren Hatch)
+<li>Decode a new Apple tag
+<li>Enhanced -geotag option to allow tagging from KML placemarks with a TimeSpan
+<li>Enhanced -d option (and API DateFormat option) to perform inverse date/time
+    conversion when writing if the POSIX::strptime module is available.  If
+    POSIX::strptime is not available then the behaviour is like older versions
+    (ie. the date/time is not converted) unless the API StrictDate option is set
+    in which case a warning is issued and the tag is not written
+</ul>
+
+<a name='v10.28'><b>Sept. 27, 2016 - Version 10.28</b> - "EXIF 2.31"</a>
+<ul>
+<li>Added support for new EXIF 2.31 tags
+<li>Added some new Canon LensType values (thanks Norbert Wasser for one)
+<li>Added a new Olympus LensType (thanks LibRaw and Niels Kristian Bech Jensen)
+<li>Added a new Sony LensType and SonyModelID (thanks Jos Roost)
+<li>Added a new Pentax LensType
+<li>Added fotoware.config and bibble.config files to the distribution
+<li>Made Composite SubSecDateTimeOriginal, SubSecCreateDate and SubSecModifyDate
+    tags writable, and expanded to include new EXIF 2.31 time zone tags
+<li>Fixed problem writing user-defined structured tag elements with a dot (.) in
+    their tag ID
+</ul>
+
+<a name='v10.27'><b>Sept. 23, 2016 - Version 10.27</b></a>
+<ul>
+<li>Added a new CanonModelID (thanks LibRaw)
+<li>Added a new Sony LensType (thanks Jos Roost)
+<li>Added a few new NikonLensID's (thanks Yang You and Robert Rottmerhusen)
+<li>Added a couple of new Olympus LensType values (thanks LibRaw and Niels
+    Kristian Bech Jensen)
+<li>Added a new Olympus CameraType
+<li>Decode some Canon 80D, 750D, 760D and 1200D CameraInfo tags
+<li>Changed writing of some ExposureTime and ExposureCompensation tags to allow
+    the exact numerator and denominator of the stored rational value to be
+    specified
+<li>Fixed Timecode printout in -v3 output for M2TS videos (thanks Ken Neighbors)
+<li>Fixed some problems with the new "-progress:TITLE" feature
+<li>Fixed problem where "_exiftool_tmp" file could be left around after a failed
+    write attempt
+<li>Fixed potential "isn't numeric" runtime error when reading a PDF file with
+    the -ee option
+</ul>
+
+<a name='v10.26'><b>Sept. 15, 2016 - Version 10.26</b></a>
+<ul>
+<li>Added read support for GSpherical metadata in MP4 videos
+<li>Added a few new XMP-xmpMM tags and a new XMP-crs tag
+<li>Added some new Minolta/Sony lenses (thanks Jos Roost)
+<li>Added two new CanonModelID's (thanks Norbert Wasser and Laurent Clevy)
+<li>Added two new Canon LensType's (thanks Norbert Wasser)
+<li>Decode a number of Nikon D610 custom settings (thanks Tor)
+<li>Removed a questionable Samsung tag
+<li>Marked TestName tag as "Unsafe" for writing
+<li>Enhanced -progress option with ability to set console window title
+<li>Changed behaviour of %C to increment for each processed file as documented
+    (was incrementing for each output file created)
+<li>Patched to recreate XMP in the standard location of PNG images when deleting
+    certain non-standard XMP as a group and recreating in one step
+<li>Fixed runtime warning when writing 0 to MinoltaRaw ISOSetting
+<li>Fixed problem writing SRW images from some newer Samsung models
+</ul>
+
+<a name='v10.25'><b>Aug. 3, 2016 - Version 10.25</b></a>
+<ul>
+<li>Added a new Pentax PictureMode (thanks Louis Granboulan)
+<li>Added a new Nikon LensID (thanks LibRaw)
+<li>Decode a new Samsung tag (thanks LibRaw)
+<li>Decode a few more Canon tags (thanks Anton Reiser)
+<li>Removed "Avoid" flag for XMP-crs:ColorTemperature
+<li>Changed the format of a number of XMP-GPano tags from integer to real
+<li>Fixed incorrect tag ID's for some obscure Island Graphics EXIF tags
+<li>Fixed decoding of some UTF-8 DNG tags which may be stored in BYTE format
+</ul>
+
+<a name='v10.24'><b>July 27, 2016 - Version 10.24</b></a>
+<ul>
+<li>Added support for DJI Phantom maker notes
+<li>Added a few more XMP-crs tags
+<li>Added ability to write DNG OpcodeList tags
+<li>Added a new Sony/Minolta LensType (thanks Jos Roost)
+<li>Added a few new FujiFilm Saturation values
+<li>Added a new FujiFlashMode value and fixed an incorrect Italian translation
+    (thanks Massimo Sanna, ApolloOne)
+<li>Decode more Pentax tags (thanks Louis Granboulan)
+<li>Changed -config option to search the current directory first for the config
+    file (patches problem introduced in ExifTool 10.21 for Windows where the
+    working directory might not be searched when using the -config option)
+<li>Changed print conversion of ProcessingTime to show 3 significant digits
+<li>Fixed bug decoding PanasonicRaw DistortionInfo in DNG images
+</ul>
+
+<a name='v10.23'><b>July 14, 2016 - Version 10.23</b></a>
+<ul>
+<li>Added read support for Ogg Opus audio files
+<li>Added ability to geotag only GPS date/time if no position information is
+    available by setting Geotag to "DATETIMEONLY" (all caps)
+<li>Added "-charset RIFF" option
+<li>Added a new Sony LensType (thanks Jos Roost)
+<li>Decode a number of new Canon tags (thanks Kai Harrekilde-Petersen)
+<li>Changed handling of special characters in RIFF-format files (eg. AVI, WAV)
+<li>Changed MIME type of OGG files to audio/ogg (was audio/x-ogg)
+<li>Minor change to wording of new Nikon D80 Rotation tag for consistency
+<li>API Changes:
+    <ul>
+    <li>Added CharsetRIFF option
+    </ul>
+</ul>
+
+<a name='v10.22'><b>July 7, 2016 - Version 10.22</b></a>
+<ul>
+<li>Added read support for <a href="TagNames/BPG.html">BPG images</a>
+<li>Minor changes to a few of the new Nikon tags
+<li>Fixed problem in Windows version where not all 10.21 updates were included
+    in the release
+</ul>
+
+<a name='v10.21'><b>June 29, 2016 - Version 10.21</b></a>
+<ul>
+<li>WARNING: The Windows EXE package for this release was built on Windows 10
+    using Perl 5.24 instead of Windows XP and Perl 5.8 -- please watch for
+    problems and report anything that you find
+<li>Added a new Minolta/Sony LensType (thanks LibRaw)
+<li>Added a new element to the XMP Colorant structure
+<li>Added a new Pentax lens (thanks Louis Granboulan)
+<li>Decode Nikon D5/D500 AF information (thanks Michael Tapes for samples)
+<li>Decode a number of new Olympus tags (thanks Daniel Pollock)
+<li>Decode a number of new Nikon tags (thanks Warren Hatch)
+<li>Decode Pentax K-1 AF points (thanks Louis Granboulan)
+<li>Extract a new DPX tag
+<li>Patched to avoid writing an empty structure field for an undefined value
+</ul>
+
+<a name='v10.20'><b>June 13, 2016 - Version 10.20</b></a> <span class=grn>(production release)</span>
+<ul>
+<li>Added a few new Sigma LensTypes (thanks LibRaw and Jos Roost)
+<li>Added a new Sony LensType (thanks Jos Roost)
+<li>Added two new Canon LensTypes (thanks Jos Roost and Norbert Wasser)
+<li>Added a couple of new PentaxModelID's (thanks Louis Granboulan for one)
+<li>Added a new Pentax LensType (thanks Louis Granboulan)
+<li>Added a few new Olympus PictureMode values (thanks Daniel Pollock)
+<li>Added a few more XMP tags
+<li>Decode a new Nikon video tag (thanks Hayo Baan)
+<li>Patched to allow protected binary data tags to be extracted when -b is
+    combined with -php or -X if the tag is specifically requested
+<li>Fixed bug introduced in version 9.96 where extended XMP is ignored if the
+    MWG module is used
+<li>Fixed problem where the MWG module wasn't loaded automatically if there were
+    MWG tags in the argument to the -p option
+<li>Fixed column alignment of alternate-language output (requires
+    Unicode::LineBreak to be installed)
+<li>Fixed problem writing Sigma:LensFocalRange
+</ul>
+
 <a name='v10.19'><b>May 31, 2016 - Version 10.19</b></a>
 <ul>
 <li>Added a few new Sony and Sigma LensType values (thanks Jos Roost)

@@ -28,7 +28,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.56';
+$VERSION = '1.57';
 
 sub ProcessFujiDir($$$);
 sub ProcessFaceRec($$$);
@@ -351,9 +351,9 @@ my %faceCategories = (
         Writable => 'int32s',
         PrintConv => {
             -32 => 'Hard',
-            -16 => 'Medium-hard',
+            -16 => 'Medium Hard',
             0 => 'Normal',
-            16 => 'Medium-soft',
+            16 => 'Medium Soft',
             32 => 'Soft',
         },
     },
@@ -362,9 +362,9 @@ my %faceCategories = (
         Writable => 'int32s',
         PrintConv => {
             -32 => 'Hard',
-            -16 => 'Medium-hard',
+            -16 => 'Medium Hard',
             0 => 'Normal',
-            16 => 'Medium-soft',
+            16 => 'Medium Soft',
             32 => 'Soft',
         },
     },

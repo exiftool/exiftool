@@ -58,7 +58,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::HP;
 
-$VERSION = '3.13';
+$VERSION = '3.14';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -377,8 +377,7 @@ sub DecodeAFPoints($$$$;$);
     '13 19' => 'smc PENTAX-D FA 645 25mm F4 AL [IF] SDM AW', #PH
     '13 20' => 'HD PENTAX-D FA 645 90mm F2.8 ED AW SR', #PH
     '13 253' => 'HD PENTAX-DA 645 28-45mm F4.5 ED AW SR', #Dominique Schrekling email
-    # missing:
-    # 'smc PENTAX-DA 645 25mm F4.0 AL SDM AW [IF]' ? different than D FA version?
+    '13 254' => 'smc PENTAX-DA 645 25mm F4 AL [IF] SDM AW', #forum8253
 #
 # Q-mount lenses (21=auto focus lens, 22=manual focus)
 #
@@ -1906,6 +1905,10 @@ my %binaryDataAttrs = (
             1 => 'Remote Control (3 s delay)', #19
             2 => 'Remote Control', #19
             4 => 'Remote Continuous Shooting', # (K-5)
+            8 => 'Interval Shooting', #31
+            10 => 'Composite Average', #31
+            11 => 'Composite Additive', #31
+            12 => 'Composite Bright', #31
         },{
             0x00 => 'Single Exposure',
             0x01 => 'Multiple Exposure',

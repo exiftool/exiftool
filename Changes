@@ -7,6 +7,20 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.50. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+May 2, 2017 - Version 10.51
+
+  - Added a new Pentax LensType (thanks JohnK)
+  - Added some new Pentax DriveMode values (thanks Andras Salamon)
+  - Added utility "NoDups" function for use in advanced formatting expressions
+  - Enhanced -ver option to report Perl include directories with -v2
+  - Improved warning message when advanced formatting expression returns undef
+  - Minor change to a few FujiFilm print conversion strings (thanks Albert Shan)
+  - Changed behaviour when expanding Shortcut tags in an advanced formatting
+    expression -- the values are now separated according to the -sep option
+    setting instead of being simply concatenated
+  - Patched to allow file times to be set on systems where futimes is not
+    available
+
 Apr. 20, 2017 - Version 10.50 (production release)
 
   - Decode a new Pentax tag (thanks Andras Salamon)

@@ -28,6 +28,7 @@ sub Sanitize($$);
 sub ConvInv($$$$$;$$);
 
 my $loadedAllTables;    # flag indicating we loaded all tables
+my $advFmtSelf;         # ExifTool during evaluation of advanced formatting expr
 
 # the following is a road map of where we write each directory
 # in the different types of files.
@@ -2838,6 +2839,7 @@ sub InsertTagValues($$$;$)
         push @tags, $var;
         ExpandShortcuts(\@tags);
         @tags or $rtnStr .= $pre, next;
+        undef $advFmtSelf;  # reset this as indicator that we had an expression
         # save advanced formatting expression to allow access by user-defined ValueConv
         $$self{FMT_EXPR} = $expr;
 
@@ -2901,8 +2903,9 @@ sub InsertTagValues($$$;$)
             if (defined $expr) {
                 local $SIG{'__WARN__'} = \&SetWarning;
                 undef $evalWarning;
+                $advFmtSelf = $self;
                 $_ = $val;
-                #### eval translation expression ($_, $self)
+                #### eval translation expression ($_, $self, $advFmtSelf)
                 eval $expr;
                 $val = $_;
                 $@ and $evalWarning = $@;
@@ -2917,13 +2920,15 @@ sub InsertTagValues($$$;$)
         }
         if (@vals) {
             push @vals, $val if defined $val;
-            $val = join '', @vals;
+            $val = join($$self{OPTIONS}{ListSep}, @vals);
         }
         unless (defined $val or ref $opt) {
             $val = $$self{OPTIONS}{MissingTagValue};
             unless (defined $val) {
+                my $msg = $advFmtSelf ? "Advanced formatting expression returned undef for '$var'" :
+                                        "Tag '$var' not defined";
                 no strict 'refs';
-                $opt and &$opt($self, "Tag '$var' not defined", 2) and return $$self{FMT_EXPR} = undef;
+                $opt and &$opt($self, $msg, 2) and return $$self{FMT_EXPR} = $advFmtSelf = undef;
                 $val = '';
             }
         }
@@ -2941,8 +2946,30 @@ sub InsertTagValues($$$;$)
             $rtnStr .= "$pre$val";
         }
     }
-    $$self{FMT_EXPR} = undef;
+    $$self{FMT_EXPR} = $advFmtSelf = undef;
     return $rtnStr . $line;
+}
+
+#------------------------------------------------------------------------------
+# Reformat date/time value in $_ based on specified format string
+# Inputs: 0) date/time format string
+sub DateFmt($)
+{
+    my $et = bless { OPTIONS => { DateFormat => shift, StrictDate => 1 } };
+    $_ = $et->ConvertDateTime($_);
+    defined $_ or warn "Error converting date/time\n";
+}
+
+#------------------------------------------------------------------------------
+# Utility routine to remove duplicate items from default input string
+# Inputs: 0) true to set $_ to undef if not changed
+# Notes: - for use only in advanced formatting expressions
+sub NoDups
+{
+    my %seen;
+    my $sep = $advFmtSelf ? $$advFmtSelf{OPTIONS}{ListSep} : ', ';
+    my $new = join $sep, grep { !$seen{$_}++ } split /$sep/, $_;
+    $_ = ($_[0] and $new eq $_) ? undef : $new;
 }
 
 #------------------------------------------------------------------------------
@@ -4244,16 +4271,6 @@ sub TimeNow(;$)
     return sprintf("%4d:%.2d:%.2d %.2d:%.2d:%.2d%s",
                    $tm[5]+1900, $tm[4]+1, $tm[3],
                    $tm[2], $tm[1], $tm[0], $tz);
-}
-
-#------------------------------------------------------------------------------
-# Reformat date/time value in $_ based on specified format string
-# Inputs: 0) date/time format string
-sub DateFmt($)
-{
-    my $et = bless { OPTIONS => { DateFormat => shift, StrictDate => 1 } };
-    $_ = $et->ConvertDateTime($_);
-    defined $_ or warn "Error converting date/time\n";
 }
 
 #------------------------------------------------------------------------------
@@ -6085,12 +6102,15 @@ my $k32SetFileTime;
 sub SetFileTime($$;$$$$)
 {
     my ($self, $file, $atime, $mtime, $ctime, $noWarn) = @_;
+    my $saveFile;
+    local *FH;
 
     # open file by name if necessary
     unless (ref $file) {
-        local *FH;
+        # (file will be automatically closed when *FH goes out of scope)
         $self->Open(\*FH, $file, '+<') or $self->Warn('Error opening file for update'), return 0;
-        $file = *FH;  # (not \*FH, so *FH will be kept open until $file goes out of scope)
+        $saveFile = $file;
+        $file = \*FH;
     }
     # on Windows, try to work around incorrect file times when daylight saving time is in effect
     if ($^O eq 'MSWin32') {
@@ -6134,9 +6154,17 @@ sub SetFileTime($$;$$$$)
     }
     # other OS (or Windows fallback)
     if (defined $atime and defined $mtime) {
+        my $success;
         local $SIG{'__WARN__'} = \&SetWarning; # (this may not be necessary)
-        undef $evalWarning;
-        my $success = eval { utime($atime, $mtime, $file) };
+        for (;;) {
+            undef $evalWarning;
+            # (this may fail on the first try if futimes is not implemented)
+            $success = eval { utime($atime, $mtime, $file) };
+            last if $success or not defined $saveFile;
+            close $file;
+            $file = $saveFile;
+            undef $saveFile;
+        }
         unless ($noWarn) {
             if ($@ or $evalWarning) {
                 $self->Warn(CleanWarning($@ || $evalWarning));

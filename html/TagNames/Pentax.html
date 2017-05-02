@@ -821,12 +821,16 @@ available.  Extended bracket values are printed as &#39;WB-BA&#39;, &#39;WB-GM&#
   <td>15 = Video
   <br>16 = Mirror Lock-up
   <br>255 = n/a</td></tr></table>
-<span class=s>[Value 2]
-  <br>0 = Shutter Button
+<span class=s>[Value 2]</span><table class=cols><tr>
+  <td>0 = Shutter Button
   <br>1 = Remote Control (3 s delay)
   <br>2 = Remote Control
   <br>4 = Remote Continuous Shooting
-  <br>[Value 3]</span><table class=cols><tr>
+  <br>8 = Interval Shooting
+  <br>10 = Composite Average
+  <br>11 = Composite Additive
+  <br>12 = Composite Bright</td></tr></table>
+<span class=s>[Value 3]</span><table class=cols><tr>
   <td>0 = Single Exposure
   <br>1 = Multiple Exposure
   <br>15 = Interval Movie
@@ -2120,6 +2124,7 @@ identify the specific lens model.</p>
 </tr><tr><td>'13 19'</td><td>= smc PENTAX-D FA 645 25mm F4 AL [IF] SDM AW</td>
 </tr><tr><td>'13 20'</td><td>= HD PENTAX-D FA 645 90mm F2.8 ED AW SR</td>
 </tr><tr><td>'13 253'</td><td>= HD PENTAX-DA 645 28-45mm F4.5 ED AW SR</td>
+</tr><tr><td>'13 254'</td><td>= smc PENTAX-DA 645 25mm F4 AL [IF] SDM AW</td>
 </tr><tr><td>'21 0'</td><td>= Pentax Q Manual Lens</td>
 </tr><tr><td>'21 1'</td><td>= 01 Standard Prime 8.5mm F1.9</td>
 </tr><tr><td>'21 2'</td><td>= 02 Standard Zoom 5-15mm F2.8-4.5</td>
@@ -4845,7 +4850,7 @@ stored as ASCII text in a format very similar to some HP models.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Apr 19, 2017</i>
+<br><i>Last revised May 2, 2017</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

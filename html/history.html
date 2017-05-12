@@ -17,17 +17,29 @@ considered development releases, and are not uploaded to <a href="http://search.
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v10.52'><b>May 12, 2017 - Version 10.52</b></a>
+<ul>
+<li>Added some new values to a number of FujiFilm tags and changed some others
+    (thanks Albert Shan)
+<li>Decode a number of new Sony tags for the ICLE-9 (thanks Jos Roost)
+<li>Made SonyISO writable
+<li>Changed behaviour of advanced formatting expression for Shortcut tags so it
+    now applies to the combined value rather than individual constituent values
+<li>Minor changes to some Pentax print conversions
+<li>Fixed problem using new NoDups utility with Shortcut tags
+</ul>
+
 <a name='v10.51'><b>May 2, 2017 - Version 10.51</b></a>
 <ul>
+<li>Added "NoDups" utility function for use in advanced formatting expressions
 <li>Added a new Pentax LensType (thanks JohnK)
 <li>Added some new Pentax DriveMode values (thanks Andras Salamon)
-<li>Added utility "NoDups" function for use in advanced formatting expressions
 <li>Enhanced -ver option to report Perl include directories with -v2
 <li>Improved warning message when advanced formatting expression returns undef
 <li>Minor change to a few FujiFilm print conversion strings (thanks Albert Shan)
-<li>Changed behaviour when expanding Shortcut tags in an advanced formatting
-    expression -- the values are now separated according to the -sep option
-    setting instead of being simply concatenated
+<li>Changed behaviour when interpolating Shortcut tags in a string (the values
+    are now separated according to the -sep option setting instead of simply
+    being concatenated)
 <li>Patched to allow file times to be set on systems where futimes is not
     available
 </ul>

@@ -30,9 +30,9 @@
 #               for more information about converting the IPTC encoding:
 #               http://owl.phy.queensu.ca/~phil/exiftool/faq.html#Q10
 #
-#            3) These arguments will not delete IPTC tags which are missing
-#               from the XMP.  The IPTC tags should be deleted beforehand if
-#               required.
+#            3) These arguments will not delete existing IPTC tags which are
+#               missing from the XMP.  The IPTC tags should be deleted
+#               beforehand if required.
 #------------------------------------------------------------------------------
 -IPTC:By-line < XMP-dc:Creator
 -IPTC:Caption-Abstract < XMP-dc:Description

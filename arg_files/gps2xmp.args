@@ -13,9 +13,9 @@
 #               the XMP GPS coordinate and date/time tags are composites of
 #               more than one EXIF GPS tag, so they are handled separately.
 #
-#            2) These arguments will not delete XMP tags which are missing
-#               from the GPS.  The XMP tags should be deleted beforehand if
-#               required.
+#            2) These arguments will not delete existing XMP tags which are
+#               missing from the GPS.  The XMP GPS tags should be deleted
+#               first with "-xmp:gps*=" if required.
 #------------------------------------------------------------------------------
 -XMP:all < GPS:all
 -XMP:GPSLatitude < Composite:GPSLatitude

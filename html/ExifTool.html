@@ -1428,29 +1428,29 @@ in a specified file.</p>
  'ValueConv' for this tag only).  Wildcards ('<code>*</code>' and
  '<code>?</code>') may be used in the tag name.  A tag name of '<code>*</code>'
  is commonly used when a group is specified to copy all tags in the group (eg.
- '<code>XMP:*</code>').<br>&nbsp;<br> A special feature allows tag names of the
- form '<code>DSTTAG&lt;SRCTAG</code>' (or '<code>SRCTAG&gt;DSTTAG</code>') to be
- specified to copy information to a tag with a different name or a specified
- group.  Both '<code>SRCTAG</code>' and '<code>DSTTAG</code>' may contain
- wildcards and/or be prefixed by a group name (eg.
- '<code>fileModifyDate&lt;modifyDate</code>' or '<code>xmp:*&lt;*</code>'),
+ '<code>XMP:*</code>').<br>&nbsp;<br> 
+ A special feature allows tag names of the form '<code>DSTTAG&lt;SRCTAG</code>'
+ (or '<code>SRCTAG&gt;DSTTAG</code>') to be specified to copy information to a
+ tag with a different name or a specified group.  Both '<code>SRCTAG</code>' and
+ '<code>DSTTAG</code>' may contain wildcards and/or be prefixed by a group name
+ (eg. '<code>fileModifyDate&lt;modifyDate</code>' or '<code>xmp:*&lt;*</code>'),
  and/or suffixed by a '<code>#</code>' to disable print conversion.  Copied tags
  may also be added or deleted from a list with arguments of the form
  '<code>DSTTAG+&lt;SRCTAG</code>' or '<code>DSTTAG-&lt;SRCTAG</code>'.  Tags are
  evaluated in order, so exclusions apply only to tags included earlier in the
- list.  An extension of this feature allows the tag value to be set from an
- expression containing tag names with leading '<code>$</code>' symbols (eg.
+ list.  An extension of this feature allows the tag value to be set from a
+ string containing tag names with leading '<code>$</code>' symbols (eg.
  '<code>Comment&lt;the file is $filename</code>'). Braces '<code>{}</code>' may
  be used around the tag name to separate it from subsequent text, and a
  '<code>$$</code>' is used to to represent a '<code>$</code>' symbol.  The
- behaviour for missing tags in expressions is defined by the <a
- href="#MissingTagValue">MissingTagValue</a> option.  The tag value may be
- modified via changes to the default input variable (<code>$_</code>) in Perl
- expressions placed inside the braces and after a semicolon following the tag
- name.  Braces within the expression must be balanced.
- <br>&nbsp;<br>
+ behaviour for missing tags in expressions is defined by the
+ <a href="#MissingTagValue">MissingTagValue</a> option.  The tag value may be
+ modified via changes to the default input variable (<code>$_</code>) in a Perl
+ expression placed inside the braces and after a semicolon following the tag
+ name (see the last example below).  Braces within the expression must be
+ balanced.<br>&nbsp;<br>
  Multiple options hash references may be passed to set different options for
- different tags.  Options apply to subsequent tags in the argument list. 
+ different tags.  Options apply to subsequent tags in the argument list.
 </td></tr>
 <tr><td valign=top><b>Returns</b></td><td>A hash of information that was set
 successfully.  May include Warning or Error entries if there were problems
@@ -1500,16 +1500,16 @@ $exifTool-&gt;<b>SetNewValuesFromFile</b>($srcFile, $tag1, $tag2...);
 
 <blockquote><table class='box'><tr><td><pre>
 <span class=com># set new value from a different tag in specific group</span>
-$exifTool-&gt;<b>SetNewValuesFromFile</b>($src, 'IPTC:Keywords&gt;XMP-dc:Subject');
+$exifTool-&gt;<b>SetNewValuesFromFile</b>($src, 'XMP-dc:Subject&lt;IPTC:Keywords');
 </pre></td></tr></table></blockquote>
 
 <blockquote><table class='box'><tr><td><pre>
 <span class=com># add all IPTC keywords to XMP subject list</span>
-$exifTool-&gt;<b>SetNewValuesFromFile</b>($src, 'IPTC:Keywords+&gt;XMP-dc:Subject');
+$exifTool-&gt;<b>SetNewValuesFromFile</b>($src, 'XMP-dc:Subject+&lt;IPTC:Keywords');
 </pre></td></tr></table></blockquote>
 
 <blockquote><table class='box'><tr><td><pre>
-<span class=com># set new value from an expression involving other tags</span>
+<span class=com># set new value from a string involving other tags</span>
 $exifTool-><b>SetNewValuesFromFile</b>($file,
     'Comment&lt;ISO=$ISO Aperture=$aperture Exposure=$shutterSpeed');
 </pre></td></tr></table></blockquote>
@@ -1522,8 +1522,8 @@ $exifTool-&gt;<b>SetNewValuesFromFile</b>($file, { Replace =&gt; 0 },
 
 <blockquote><table class='box'><tr><td><pre>
 <span class=com># copy all EXIF information, preserving the original IFD
-# (without '&gt;*.*' tags would be copied to the preferred EXIF IFD)</span>
-$exifTool-&gt;<b>SetNewValuesFromFile</b>($file, 'EXIF:*&gt;*:*');
+# (without '*.*&lt;' tags would be copied to the preferred EXIF IFD)</span>
+$exifTool-&gt;<b>SetNewValuesFromFile</b>($file, '*:*&lt;EXIF:*');
 </pre></td></tr></table></blockquote>
 
 <blockquote><table class='box'><tr><td><pre>

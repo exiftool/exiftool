@@ -16,9 +16,9 @@
 #               and time parts respectively when writing date-only and
 #               time-only tags with a date/time value.
 #
-#            2) These arguments will not delete GPS tags which are missing
-#               from the XMP.  The GPS tags should be deleted beforehand if
-#               required.
+#            2) These arguments will not delete existing GPS tags which are
+#               missing from the XMP.  The GPS tags should be deleted with
+#               "-gps:all=" first if required.
 #------------------------------------------------------------------------------
 -GPS:all < XMP-exif:all
 -GPS:GPSLatitudeRef < Composite:GPSLatitudeRef

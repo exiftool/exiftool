@@ -11,15 +11,15 @@ package Image::ExifTool::TagInfoXML;
 use strict;
 require Exporter;
 
-use vars qw($VERSION @ISA);
+use vars qw($VERSION @ISA $makeMissing);
 use Image::ExifTool qw(:Utils :Vars);
 use Image::ExifTool::XMP;
 
-$VERSION = '1.29';
+$VERSION = '1.30';
 @ISA = qw(Exporter);
 
 # set this to a language code to generate Lang module with 'MISSING' entries
-my $makeMissing = '';
+$makeMissing = '';
 
 sub LoadLangModules($;$);
 sub WriteLangModule($$;$);
@@ -391,6 +391,7 @@ sub BuildLangModules($;$)
                 if ($makeMissing and $lang eq 'en') {
                     $lang = $makeMissing;
                     $val = 'MISSING';
+                    undef $cap;
                 }
                 my $isDefault = ($lang eq $Image::ExifTool::defaultLang);
                 unless ($langInfo{$lang} or $isDefault) {

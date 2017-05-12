@@ -21,9 +21,9 @@
 #
 # Notes:     1) Also updates Photoshop:IPTCDigest as per MWG recommendation.
 #
-#            2) These arguments will not delete XMP tags which are missing
-#               from the IPTC.  The XMP tags should be deleted beforehand if
-#               required.
+#            2) These arguments will not delete existing XMP tags which are
+#               missing from the IPTC.  The XMP tags should be deleted
+#               beforehand if required.
 #------------------------------------------------------------------------------
 -XMP-dc:Creator < IPTC:By-line
 -XMP-dc:Description < IPTC:Caption-Abstract

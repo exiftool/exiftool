@@ -33,14 +33,15 @@ necessarily correspond to the camera body number -- this needs to be checked)</s
 <td>Sharpness</td>
 <td class=c>int16u</td>
 <td><table class=cols><tr>
-  <td>0x0 = Very Soft
-  <br>0x1 = Soft
-  <br>0x2 = Soft2
-  <br>0x3 = Normal
-  <br>0x4 = Hard
-  <br>0x5 = Hard2
-  <br>0x82 = Medium Soft
-  <br>0x84 = Medium Hard
+  <td>0x0 = -4 (softest)
+  <br>0x1 = -3 (very soft)
+  <br>0x2 = -2 (soft)
+  <br>0x3 = 0 (normal)
+  <br>0x4 = +2 (hard)
+  <br>0x5 = +3 (very hard)
+  <br>0x6 = +4 (hardest)
+  <br>0x82 = -1 (medium soft)
+  <br>0x84 = +1 (medium hard)
   <br>0x8000 = Film Simulation
   <br>0xffff = n/a</td></tr></table>
 </td></tr>
@@ -72,17 +73,21 @@ necessarily correspond to the camera body number -- this needs to be checked)</s
 <td>Saturation</td>
 <td class=c>int16u</td>
 <td><table class=cols><tr>
-  <td>0x0 = Normal
-  <br>0x80 = Medium High
-  <br>0x100 = High
-  <br>0x180 = Medium Low
+  <td>0x0 = 0 (normal)
+  <br>0x80 = +1 (medium high)
+  <br>0xc0 = +3 (very high)
+  <br>0xe0 = +4 (highest)
+  <br>0x100 = +2 (high)
+  <br>0x180 = -1 (medium low)
   <br>0x200 = Low
   <br>0x300 = None (B&amp;W)
   <br>0x301 = B&amp;W Red Filter
   <br>0x302 = B&amp;W Yellow Filter
   <br>0x303 = B&amp;W Green Filter
   <br>0x310 = B&amp;W Sepia
-  <br>0x400 = Low 2
+  <br>0x400 = -2 (low)
+  <br>0x4c0 = -3 (very low)
+  <br>0x4e0 = -4 (lowest)
   <br>0x500 = Acros
   <br>0x501 = Acros Red Filter
   <br>0x502 = Acros Yellow Filter
@@ -130,13 +135,15 @@ necessarily correspond to the camera body number -- this needs to be checked)</s
 <td>HighISONoiseReduction</td>
 <td class=c>int16u</td>
 <td><table class=cols><tr>
-  <td>0x0 = Normal
-  <br>0x100 = Strong
-  <br>0x180 = Medium Strong
-  <br>0x200 = Weak</td><td>&nbsp;&nbsp;</td>
-  <td>0x280 = Medium Weak
-  <br>0x2c0 = Very Weak
-  <br>0x2e0 = Weakest</td></tr></table>
+  <td>0x0 = 0 (normal)
+  <br>0x100 = +2 (strong)
+  <br>0x180 = +1 (medium strong)
+  <br>0x1c0 = +3 (very strong)
+  <br>0x1e0 = +4 (strongest)
+  <br>0x200 = -2 (weak)
+  <br>0x280 = -1 (medium weak)
+  <br>0x2c0 = -3 (very weak)
+  <br>0x2e0 = -4 (weakest)</td></tr></table>
 </td></tr>
 <tr>
 <td title='0x1010 = 4112'>0x1010</td>
@@ -254,20 +261,28 @@ necessarily correspond to the camera body number -- this needs to be checked)</s
 <td title='0x1040 = 4160'>0x1040</td>
 <td>ShadowTone</td>
 <td class=c>int32s</td>
-<td><span class=s>-32 = Hard
-  <br>-16 = Medium Hard
-  <br>0 = Normal
-  <br>16 = Medium Soft
-  <br>32 = Soft</span></td></tr>
+<td><table class=cols><tr>
+  <td>-64 = +4 (hardest)
+  <br>-48 = +3 (very hard)
+  <br>-32 = +2 (hard)
+  <br>-16 = +1 (medium hard)</td><td>&nbsp;&nbsp;</td>
+  <td>0 = 0 (normal)
+  <br>16 = -1 (medium soft)
+  <br>32 = -2 (soft)</td></tr></table>
+</td></tr>
 <tr>
 <td title='0x1041 = 4161'>0x1041</td>
 <td>HighlightTone</td>
 <td class=c>int32s</td>
-<td><span class=s>-32 = Hard
-  <br>-16 = Medium Hard
-  <br>0 = Normal
-  <br>16 = Medium Soft
-  <br>32 = Soft</span></td></tr>
+<td><table class=cols><tr>
+  <td>-64 = +4 (hardest)
+  <br>-48 = +3 (very hard)
+  <br>-32 = +2 (hard)
+  <br>-16 = +1 (medium hard)</td><td>&nbsp;&nbsp;</td>
+  <td>0 = 0 (normal)
+  <br>16 = -1 (medium soft)
+  <br>32 = -2 (soft)</td></tr></table>
+</td></tr>
 <tr class=b>
 <td title='0x1044 = 4164'>0x1044</td>
 <td>DigitalZoom</td>
@@ -870,7 +885,7 @@ RAF-format information.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised May 2, 2017</i>
+<br><i>Last revised May 10, 2017</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

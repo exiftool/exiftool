@@ -1339,7 +1339,7 @@ sub SetNewValuesFromFile($$;@)
             # redirect this tag
             $isExclude and return { Error => "Can't redirect excluded tag" };
             # set destination group the same as source if necessary
-          # (removed in 7.72 so '-xmp:*>*:*' will preserve XMP family 1 groups)
+          # (removed in 7.72 so '-*:*<xmp:*' will preserve XMP family 1 groups)
           # $dstGrp = $grp if $dstGrp eq '*' and $grp;
             # write to specified destination group/tag
             $dst = [ $dstGrp, $dstTag ];
@@ -2802,9 +2802,9 @@ sub InsertTagValues($$$;$)
     local $_;
     my ($self, $foundTags, $line, $opt) = @_;
     my $rtnStr = '';
-    while ($line =~ /(.*?)\$(\{\s*)?([-\w]*\w|\$|\/)(.*)/s) {
-        my (@tags, $pre, $var, $bra, $val, $tg, @vals, $type, $expr, $level);
-        ($pre, $bra, $var, $line) = ($1, $2, $3, $4);
+    while ($line =~ s/(.*?)\$(\{\s*)?([-\w]*\w|\$|\/)//s) {
+        my ($pre, $bra, $var) = ($1, $2, $3);
+        my (@tags, $val, $tg, @vals, $type, $expr, $didExpr, $level);
         # "$$" represents a "$" symbol, and "$/" is a newline
         if ($var eq '$' or $var eq '/') {
             $var = "\n" if $var eq '/';
@@ -2822,7 +2822,7 @@ sub InsertTagValues($$$;$)
         $type = 'ValueConv' if $line =~ s/^#//;
         # remove trailing bracket if there was a leading one
         # and extract Perl expression from inside brackets if it exists
-        if ($bra and not $line =~ s/^\s*\}// and $line =~ s/^\s*;\s*(.*?)\s*\}//s) {
+        if ($bra and $line !~ s/^\s*\}// and $line =~ s/^\s*;\s*(.*?)\s*\}//s) {
             my $part = $1;
             $expr = '';
             for ($level=0; ; --$level) {
@@ -2839,7 +2839,6 @@ sub InsertTagValues($$$;$)
         push @tags, $var;
         ExpandShortcuts(\@tags);
         @tags or $rtnStr .= $pre, next;
-        undef $advFmtSelf;  # reset this as indicator that we had an expression
         # save advanced formatting expression to allow access by user-defined ValueConv
         $$self{FMT_EXPR} = $expr;
 
@@ -2899,36 +2898,38 @@ sub InsertTagValues($$$;$)
                 last unless @tags;
                 next;
             }
-            # evaluate advanced formatting expression if given (eg. "${TAG;EXPR}")
-            if (defined $expr) {
-                local $SIG{'__WARN__'} = \&SetWarning;
-                undef $evalWarning;
-                $advFmtSelf = $self;
-                $_ = $val;
-                #### eval translation expression ($_, $self, $advFmtSelf)
-                eval $expr;
-                $val = $_;
-                $@ and $evalWarning = $@;
-                if ($evalWarning) {
-                    my $str = CleanWarning() . " for $tag";
-                    ($opt and $opt eq 'Error') ? $self->Error($str) : $self->Warn($str);
-                }
-            }
             last unless @tags;
             push @vals, $val;
             undef $val;
         }
         if (@vals) {
             push @vals, $val if defined $val;
-            $val = join($$self{OPTIONS}{ListSep}, @vals);
+            $val = join $$self{OPTIONS}{ListSep}, @vals;
+        }
+        # evaluate advanced formatting expression if given (eg. "${TAG;EXPR}")
+        if (defined $expr and defined $val) {
+            local $SIG{'__WARN__'} = \&SetWarning;
+            undef $evalWarning;
+            $advFmtSelf = $self;
+            $_ = $val;
+            #### eval advanced formatting expression ($_, $self, $advFmtSelf)
+            eval $expr;
+            $val = $_;
+            $@ and $evalWarning = $@;
+            if ($evalWarning) {
+                my $str = CleanWarning() . " for '$var'";
+                ($opt and $opt eq 'Error') ? $self->Error($str) : $self->Warn($str);
+            }
+            undef $advFmtSelf;
+            $didExpr = 1;   # set flag indicating an expression was evaluated
         }
         unless (defined $val or ref $opt) {
             $val = $$self{OPTIONS}{MissingTagValue};
             unless (defined $val) {
-                my $msg = $advFmtSelf ? "Advanced formatting expression returned undef for '$var'" :
-                                        "Tag '$var' not defined";
+                my $msg = $didExpr ? "Advanced formatting expression returned undef for '$var'" :
+                                     "Tag '$var' not defined";
                 no strict 'refs';
-                $opt and &$opt($self, $msg, 2) and return $$self{FMT_EXPR} = $advFmtSelf = undef;
+                $opt and &$opt($self, $msg, 2) and return $$self{FMT_EXPR} = undef;
                 $val = '';
             }
         }
@@ -2946,7 +2947,7 @@ sub InsertTagValues($$$;$)
             $rtnStr .= "$pre$val";
         }
     }
-    $$self{FMT_EXPR} = $advFmtSelf = undef;
+    $$self{FMT_EXPR} = undef;
     return $rtnStr . $line;
 }
 

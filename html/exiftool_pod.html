@@ -256,8 +256,7 @@
   -execute[NUM]                    Execute multiple commands on one line
   -srcfile FMT                     Process a different source file
   -stay_open FLAG                  Keep reading -@ argfile even after EOF
-  -userParam PARAM[=VAL]           Set user parameter (API UserParam opt)
-  -windowTitle TITLE               Set console window title for each file</code></pre>
+  -userParam PARAM[=VAL]           Set user parameter (API UserParam opt)</code></pre>
 
 <h2 id="Option-Details">Option Details</h2>
 
@@ -338,7 +337,7 @@
 
 <p>A powerful redirection feature allows a destination tag to be specified for each copied tag. With this feature, information may be written to a tag with a different name or group. This is done using &quot;&#39;-<i>DSTTAG</i>&lt;<i>SRCTAG</i>&#39;&quot; or &quot;&#39;-<i>SRCTAG</i>&gt;<i>DSTTAG</i>&#39;&quot; on the command line after <b>-tagsFromFile</b>, and causes the value of <i>SRCTAG</i> to be copied from <i>SRCFILE</i> and written to <i>DSTTAG</i> in <i>FILE</i>. Note that this argument must be quoted to prevent shell redirection, and there is no <code>=</code> sign as when assigning new values. Source and/or destination tags may be prefixed by a group name and/or suffixed by <code>#</code>. Wildcards are allowed in both the source and destination tag names. A destination group and/or tag name of <code>All</code> or <code>*</code> writes to the same family 1 group and/or tag name as the source. If no destination group is specified, the information is written to the preferred group. Whitespace around the <code>&gt;</code> or <code>&lt;</code> is ignored. As a convenience, <code>-tagsFromFile @</code> is assumed for any redirected tags which are specified without a prior <b>-tagsFromFile</b> option. Copied tags may also be added or deleted from a list with arguments of the form &quot;&#39;-<i>SRCTAG</i>+&lt;<i>DSTTAG</i>&#39;&quot; or &quot;&#39;-<i>SRCTAG</i>-&lt;<i>DSTTAG</i>&#39;&quot;.</p>
 
-<p>An extension of the redirection feature allows strings involving tag names to be used on the right hand side of the <code>&lt;</code> symbol with the syntax &quot;&#39;-<i>DSTTAG</i>&lt;<i>STR</i>&#39;&quot;, where tag names in <i>STR</i> are prefixed with a <code>$</code> symbol. See the <a href="#Advanced-formatting-feature">&quot;Advanced formatting feature&quot;</a> for more details about this syntax. Strings starting with a <code>=</code> sign must insert a single space after the <code>&lt;</code> to avoid confusion with the <code>&lt;=</code> operator which sets the tag value from the contents of a file. A single space at the start of the string is removed if it exists, but all other whitespace in the string is preserved. See note 8 below about using the redirection feature with list-type stags, shortcuts or when using wildcards in tag names.</p>
+<p>An extension of the redirection feature allows strings involving tag names to be used on the right hand side of the <code>&lt;</code> symbol with the syntax &quot;&#39;-<i>DSTTAG</i>&lt;<i>STR</i>&#39;&quot;, where tag names in <i>STR</i> are prefixed with a <code>$</code> symbol. See the <b>-p</b> option and the <a href="#Advanced-formatting-feature">&quot;Advanced formatting feature&quot;</a> section for more details about this syntax. Strings starting with a <code>=</code> sign must insert a single space after the <code>&lt;</code> to avoid confusion with the <code>&lt;=</code> operator which sets the tag value from the contents of a file. A single space at the start of the string is removed if it exists, but all other whitespace in the string is preserved. See note 8 below about using the redirection feature with list-type stags, shortcuts or when using wildcards in tag names.</p>
 
 <p>See <a href="#COPYING-EXAMPLES">&quot;COPYING EXAMPLES&quot;</a> for examples using <b>-tagsFromFile</b>.</p>
 
@@ -472,7 +471,7 @@
 <dt id="csv-CSVFILE"><b>-csv</b>[=<i>CSVFILE</i>]</dt>
 <dd>
 
-<p>Export information in CSV format, or import information if <i>CSVFILE</i> is specified. When importing, the CSV file must be in exactly the same format as the exported file. The first row of the <i>CSVFILE</i> must be the ExifTool tag names (with optional group names) for each column of the file, and values must be separated by commas. A special &quot;SourceFile&quot; column specifies the files associated with each row of information (and a SourceFile of &quot;*&quot; may be used to define default tags to be imported for all files). The following examples demonstrate basic use of this option:</p>
+<p>Export information in CSV format, or import information if <i>CSVFILE</i> is specified. When importing, the CSV file must be in exactly the same format as the exported file. The first row of the <i>CSVFILE</i> must be the ExifTool tag names (with optional group names) for each column of the file, and values must be separated by commas. A special &quot;SourceFile&quot; column specifies the files associated with each row of information (and a SourceFile of &quot;*&quot; may be used to define default tags to be imported for all files which are combined with any tags specified for the specific SourceFile processed). The following examples demonstrate basic use of this option:</p>
 
 <pre><code>    # generate CSV file with common tags from all images in a directory
     exiftool -common -csv dir &gt; out.csv
@@ -552,7 +551,7 @@
 
 <p>Use JSON (JavaScript Object Notation) formatting for console output, or import JSON file if <i>JSONFILE</i> is specified. This option may be combined with <b>-g</b> to organize the output into objects by group, or <b>-G</b> to add group names to each tag. List-type tags with multiple items are output as JSON arrays unless <b>-sep</b> is used. By default XMP structures are flattened into individual tags in the JSON output, but the original structure may be preserved with the <b>-struct</b> option (this also causes all list-type XMP tags to be output as JSON arrays, otherwise single-item lists are output as simple strings). The <b>-a</b> option is implied if the <b>-g</b> or <b>-G</b> options are used, otherwise it is ignored and duplicate tags are suppressed. Adding the <b>-D</b> or <b>-H</b> option changes tag values to JSON objects with &quot;val&quot; and &quot;id&quot; fields, and adding <b>-l</b> adds a &quot;desc&quot; field, and a &quot;num&quot; field if the numerical value is different from the converted &quot;val&quot;. The <b>-b</b> option may be added to output binary data, encoded in base64 if necessary (indicated by &quot;base64:&quot; as the first 7 bytes of the value), and <b>-t</b> may be added to include tag table information (see <b>-t</b> for details). The JSON output is UTF-8 regardless of any <b>-L</b> or <b>-charset</b> option setting, but the UTF-8 validation is disabled if a character set other than UTF-8 is specified.</p>
 
-<p>If <i>JSONFILE</i> is specified, the file is imported and the tag definitions from the file are used to set tag values on a per-file basis. The special &quot;SourceFile&quot; entry in each JSON object associates the information with a specific target file. An object with a missing SourceFile or a SourceFile of &quot;*&quot; defines default tags for all target files. The imported JSON file must have the same format as the exported JSON files with the exception that the <b>-g</b> option is not compatible with the import file format (use <b>-G</b> instead). Additionally, tag names in the input JSON file may be suffixed with a <code>#</code> to disable print conversion.</p>
+<p>If <i>JSONFILE</i> is specified, the file is imported and the tag definitions from the file are used to set tag values on a per-file basis. The special &quot;SourceFile&quot; entry in each JSON object associates the information with a specific target file. An object with a missing SourceFile or a SourceFile of &quot;*&quot; defines default tags for all target files which are combined with any tags specified for the specific SourceFile processed. The imported JSON file must have the same format as the exported JSON files with the exception that the <b>-g</b> option is not compatible with the import file format (use <b>-G</b> instead). Additionally, tag names in the input JSON file may be suffixed with a <code>#</code> to disable print conversion.</p>
 
 <p>Unlike CSV import, empty values are not ignored, and will cause an empty value to be written if supported by the specific metadata type. Tags are deleted by using the <b>-f</b> option and setting the tag value to &quot;-&quot; (or to the MissingTagValue setting if this API option was used). Importing with <b>-j</b>+=<i>JSONFILE</i> causes new values to be added to existing lists.</p>
 
@@ -627,12 +626,14 @@
 
 <p>produces output like this:</p>
 
-<pre><code>    -- Generated by ExifTool 10.51 --
+<pre><code>    -- Generated by ExifTool 10.52 --
     File: a.jpg - 2003:10:31 15:44:19
     (f/5.6, 1/60s, ISO 100)
     File: b.jpg - 2006:05:23 11:57:38
     (f/8.0, 1/13s, ISO 100)
     -- end --</code></pre>
+
+<p>The values of List-type tags with multiple items and Shortcut tags representing multiple tags are joined according the the <b>-sep</b> option setting when interpolated in the string.</p>
 
 <p>When <b>-ee</b> (<b>-extractEmbedded</b>) is combined with <b>-p</b>, embedded documents are effectively processed as separate input files.</p>
 
@@ -970,7 +971,7 @@
 
 <p>Show the progress when processing files. The progress count appears in brackets after the name of each processed file, and gives the current file number and the total number of files to be processed. Implies the <b>-v0</b> option if <i>TITLE</i> is not used, printing the name of each processed file when writing. When combined with the <b>-if</b> option, the total count includes all files before the condition is applied, but files that fail the condition will not have their names printed.</p>
 
-<p>If followed by a colon (ie. <b>-progress:</b>), the console window title is set according to the specified <i>TITLE</i> string. If no <i>TITLE</i> is given, a default <i>TITLE</i> string of &quot;ExifTool %p%%&quot; is assumed. In the string, %f represents the file name, %p is the progress as a percent, %r is the progress as a ratio, and %% is a % character. May be combined with the normal <b>-progress</b> option to also show the progress count in console messages. (Note: This feature works on Mac/Linux only if stderr goes to the console.)</p>
+<p>If followed by a colon (ie. <b>-progress:</b>), the console window title is set according to the specified <i>TITLE</i> string. If no <i>TITLE</i> is given, a default <i>TITLE</i> string of &quot;ExifTool %p%%&quot; is assumed. In the string, %f represents the file name, %p is the progress as a percent, %r is the progress as a ratio, and %% is a % character. May be combined with the normal <b>-progress</b> option to also show the progress count in console messages. (Note: For this feature to function correctly on Mac/Linux, stderr must go to the console.)</p>
 
 </dd>
 <dt id="q--quiet"><b>-q</b> (<b>-quiet</b>)</dt>
@@ -1249,15 +1250,17 @@
 
 <pre><code>    exiftool -p &#39;${createdate#;DateFmt(&quot;%Y-%m-%d_%H%M%S&quot;)}&#39; a.jpg</code></pre>
 
-<p>Note that function names are case sensitive.</p>
-
 <p>A <code>NoDups</code> utility is also provided to remove duplicate items from a list with a separator specified by the <b>-sep</b> option. This function is most useful when copying list-type tags. For example, the following command may be used to remove duplicate Keywords:</p>
 
 <pre><code>    exiftool -sep &#39;##&#39; &#39;-keywords&lt;${keywords;NoDups}&#39; a.jpg</code></pre>
 
-<p>An optional flag may be set to 1 to cause <code>NoDups</code> to return undef if no duplicates existed, thus preventing the file from being rewritten unnecessarily:</p>
+<p>The <b>-sep</b> option is necessary to split the string back into individual list items when writing to a list-type tag.</p>
+
+<p>An optional flag argument may be set to 1 to cause <code>NoDups</code> to return undef if no duplicates existed, thus preventing the file from being rewritten unnecessarily:</p>
 
 <pre><code>    exiftool -sep &#39;##&#39; &#39;-keywords&lt;${keywords;NoDups(1)}&#39; a.jpg</code></pre>
+
+<p>Note that function names are case sensitive.</p>
 
 <h1 id="WINDOWS-UNICODE-FILE-NAMES">WINDOWS UNICODE FILE NAMES</h1>
 

@@ -11,7 +11,7 @@ package Image::ExifTool::Lang::fr;
 use strict;
 use vars qw($VERSION);
 
-$VERSION = '1.30';
+$VERSION = '1.31';
 
 %Image::ExifTool::Lang::fr::Translate = (
    'AEAperture' => 'Ouverture AE',
@@ -1118,10 +1118,10 @@ $VERSION = '1.30';
    'Contrast' => {
       Description => 'Contraste',
       PrintConv => {
-        '+1 (med high)' => '+1 (Assez fort)',
+        '+1 (medium high)' => '+1 (Assez fort)',
         '+2 (high)' => '+2 (Forte)',
         '+3 (very high)' => '+3 (Très fort)',
-        '-1 (med low)' => '-1 (Assez faible)',
+        '-1 (medium low)' => '-1 (Assez faible)',
         '-2 (low)' => '-2 (Faible)',
         '-3 (very low)' => '-3 (Très faible)',
         '0 (normal)' => '0 (Normale)',
@@ -3750,12 +3750,16 @@ $VERSION = '1.30';
    'SamplesPerPixel' => 'Nombre de composantes',
    'Saturation' => {
       PrintConv => {
-        '+1 (med high)' => '+1 (Assez fort)',
+        '+1 (medium high)' => '+1 (Assez fort)',
         '+2 (high)' => '+2 (Forte)',
         '+3 (very high)' => '+3 (Très fort)',
-        '-1 (med low)' => '-1 (Assez faible)',
+        '+4 (highest)' => '+4',
+        '+4 (maximum)' => '+4',
+        '-1 (medium low)' => '-1 (Assez faible)',
         '-2 (low)' => '-2 (Faible)',
         '-3 (very low)' => '-3 (Très faible)',
+        '-4 (lowest)' => '-4',
+        '-4 (minimum)' => '-4',
         '0 (normal)' => '0 (Normale)',
         'High' => 'Forte',
         'Low' => 'Faible',
@@ -3977,15 +3981,20 @@ $VERSION = '1.30';
    'Sharpness' => {
       Description => 'Accentuation',
       PrintConv => {
-        '+1 (med hard)' => '+1 (Assez dure)',
+        '+1 (medium hard)' => '+1 (Assez dure)',
         '+2 (hard)' => '+2 (Dure)',
         '+3 (very hard)' => '+3 (Très dure)',
-        '-1 (med soft)' => '-1 (Assez dure)',
+        '+4 (hardest)' => '+4',
+        '+4 (maximum)' => '+4',
+        '-1 (medium soft)' => '-1 (Assez dure)',
         '-2 (soft)' => '-2 (Douce)',
         '-3 (very soft)' => '-3 (Très douce)',
+        '-4 (minimum)' => '-4',
+        '-4 (softest)' => '-4',
         '0 (normal)' => '0 (Normale)',
         'Hard' => 'Dure',
         'Normal' => 'Normale',
+        'Sharp' => 'Dure',
         'Soft' => 'Douce',
         'n/a' => 'Non établie',
       },

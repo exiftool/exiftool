@@ -230,7 +230,7 @@ my $testnum = 1;
     my $exifTool = new Image::ExifTool;
     my @foundTags;
     $exifTool->ImageInfo('t/images/ExifTool.jpg', \@foundTags);
-    my $str = $exifTool->InsertTagValues(\@foundTags, '$ifd0:model - $1ciff:3main:model');
+    my $str = $exifTool->InsertTagValues(\@foundTags, '${ifd0:model;tr/i/_/} - $1ciff:3main:model');
     my $testfile = "t/ExifTool_$testnum";
     open(TESTFILE,">$testfile.failed");
     my $oldSep = $/;   

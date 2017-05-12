@@ -1556,10 +1556,10 @@ in a specified file.
     $exifTool->SetNewValuesFromFile($srcFile, @tags);
 
     # set new value from a different tag in specific group
-    $exifTool->SetNewValuesFromFile($fp, 'IPTC:Keywords>XMP-dc:Subject');
+    $exifTool->SetNewValuesFromFile($fp, 'XMP-dc:Subject<IPTC:Keywords');
 
     # add all IPTC keywords to XMP subject list
-    $exifTool->SetNewValuesFromFile($fp, 'IPTC:Keywords+>XMP-dc:Subject');
+    $exifTool->SetNewValuesFromFile($fp, 'XMP-dc:Subject+<IPTC:Keywords');
 
     # set new value from an expression involving other tags
     $exifTool->SetNewValuesFromFile($file,
@@ -1570,8 +1570,8 @@ in a specified file.
         'keywords<xmp:subject', 'keywords<filename');
 
     # copy all EXIF information, preserving the original IFD
-    # (without '>*.*' tags would be copied to the preferred EXIF IFD)
-    $exifTool->SetNewValuesFromFile($file, 'EXIF:*>*:*');
+    # (without '*.*<' tags would be copied to the preferred EXIF IFD)
+    $exifTool->SetNewValuesFromFile($file, '*:*<EXIF:*');
 
     # copy all tags with names starting with "gps" (note: this is
     # different than "gps:*" because it will also copy XMP GPS tags)
@@ -1591,30 +1591,32 @@ in a specified file.
 
 2-N) [optional] List of tag names to set or options hash references.  All
 writable tags are set if none are specified.  The tag names are not case
-sensitive, and may be prefixed by one or more family 0, 1 or 2 group names with
-optional leading family numbers, separated by colons (eg. 'exif:iso').  A
-leading '-' indicates tags to be excluded (eg. '-comment'), or a trailing '#'
-causes the ValueConv value to be copied (same as setting the Type option to
-'ValueConv' for this tag only).  Wildcards ('*' and '?') may be used in the tag
-name.  A tag name of '*' is commonly used when a group is specified to copy all
-tags in the group (eg. 'XMP:*').  A special feature allows tag names of the form
-'DSTTAGE<lt>SRCTAG' (or 'SRCTAGE<gt>DSTTAG') to be specified to copy information
-to a tag with a different name or a specified group.  Both 'SRCTAG' and 'DSTTAG'
-may contain wildcards and/or be prefixed by a group name (eg.
-'fileModifyDateE<lt>modifyDate' or 'xmp:*E<lt>*'), and/or suffixed by a '#' to
-disable print conversion.  Copied tags may also be added or deleted from a list
-with arguments of the form 'DSTTAG+E<lt>SRCTAG' or 'DSTTAG-E<lt>SRCTAG'.  Tags
-are evaluated in order, so exclusions apply only to tags included earlier in the
-list.  An extension of this feature allows the tag value to be set from an
-expression containing tag names with leading '$' symbols (eg. 'CommentE<lt>the
-file is $filename').  Braces '{}' may be used around the tag name to separate it
-from subsequent text, and a '$$' is used to to represent a '$' symbol.  The
-behaviour for missing tags in expressions is defined by the L</MissingTagValue>
-option.  The tag value may be modified via changes to the default input variable
-($_) in Perl expressions placed inside the braces and after a semicolon
-following the tag name.  Braces within the expression must be balanced. 
-Multiple options hash references may be passed to set different options for
-different tags.  Options apply to subsequent tags in the argument list.
+sensitive, and may be prefixed by one or more family 0, 1 or 2 group names
+with optional leading family numbers, separated by colons (eg. 'exif:iso'). 
+A leading '-' indicates tags to be excluded (eg. '-comment'), or a trailing
+'#' causes the ValueConv value to be copied (same as setting the Type option
+to 'ValueConv' for this tag only).  Wildcards ('*' and '?') may be used in
+the tag name.  A tag name of '*' is commonly used when a group is specified
+to copy all tags in the group (eg. 'XMP:*').  A special feature allows tag
+names of the form 'DSTTAGE<lt>SRCTAG' (or 'SRCTAGE<gt>DSTTAG') to be
+specified to copy information to a tag with a different name or a specified
+group.  Both 'SRCTAG' and 'DSTTAG' may contain wildcards and/or be prefixed
+by a group name (eg. 'fileModifyDateE<lt>modifyDate' or 'xmp:*E<lt>*'),
+and/or suffixed by a '#' to disable print conversion.  Copied tags may also
+be added or deleted from a list with arguments of the form
+'DSTTAG+E<lt>SRCTAG' or 'DSTTAG-E<lt>SRCTAG'.  Tags are evaluated in order,
+so exclusions apply only to tags included earlier in the list.  An extension
+of this feature allows the tag value to be set from a string containing tag
+names with leading '$' symbols (eg. 'CommentE<lt>the file is $filename'). 
+Braces '{}' may be used around the tag name to separate it from subsequent
+text, and a '$$' is used to to represent a '$' symbol.  The behaviour for
+missing tags in expressions is defined by the L</MissingTagValue> option. 
+The tag value may be modified via changes to the default input variable ($_)
+in a Perl expression placed inside the braces and after a semicolon
+following the tag name (see the last example above).  Braces within the
+expression must be balanced.  Multiple options hash references may be passed
+to set different options for different tags.  Options apply to subsequent
+tags in the argument list.
 
 By default, this routine will commute information between same-named tags in
 different groups, allowing information to be translated between images with
@@ -1622,10 +1624,10 @@ different formats.  This behaviour may be modified by specifying a group
 name for extracted tags (even if '*' is used as a group name), in which case
 the information is written to the original group, unless redirected to a
 different group.  When '*' is used for a group name, by default the family 1
-group of the original tag is preserved, but a different family may be specified
-with a leading family number.  (For example, specifying '*:*' copies all
-information while preserving the original family 1 groups, while '0*:*'
-preserves the family 0 group.)
+group of the original tag is preserved, but a different family may be
+specified with a leading family number.  (For example, specifying '*:*'
+copies all information while preserving the original family 1 groups, while
+'0*:*' preserves the family 0 group.)
 
 =item SetNewValuesFromFile Options:
 

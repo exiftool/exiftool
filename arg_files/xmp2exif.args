@@ -19,9 +19,9 @@
 #               information, and the remaining arguments handle the tags
 #               which have different names and/or formats in XMP and EXIF.
 #
-#            2) These arguments will not delete EXIF tags which are missing
-#               from the XMP.  The EXIF tags should be deleted beforehand if
-#               required.
+#            2) These arguments will not delete existing EXIF tags which are
+#               missing from the XMP.  The EXIF tags should be deleted
+#               beforehand if required.
 #------------------------------------------------------------------------------
 -EXIF:all < XMP-exif:all
 -EXIF:all < XMP-exifEX:all

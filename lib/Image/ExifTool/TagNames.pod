@@ -14225,6 +14225,7 @@ MakerNotes.
            Tag2010f                             Sony Tag2010f
            Tag2010g                             Sony Tag2010g
            Tag2010h                             Sony Tag2010h
+           Tag2010i                             Sony Tag2010i
   0x2011   VignettingCorrection                 int32u
   0x2012   LateralChromaticAberration           int32u
   0x2013   DistortionCorrectionSetting          int32u
@@ -14582,7 +14583,7 @@ Camera settings for the A200, A300, A350, A700, A850 and A900.
       3    ExposureCompensationSet              int16u
       4    DriveMode                            int16u & 0xff
       5    WhiteBalanceSetting                  int16u
-      6    WhiteBalanceFineTune                 no
+      6    WhiteBalanceFineTune                 int16u
       7    ColorTemperatureSet                  int16u
       8    ColorCompensationFilterSet           int16u
      12    ColorTemperatureCustom               int16u
@@ -14643,7 +14644,7 @@ Camera settings for the A230, A290, A330, A380 and A390.
       2    HighSpeedSync                        int16u
       3    ExposureCompensationSet              int16u
       4    WhiteBalanceSetting                  int16u
-      5    WhiteBalanceFineTune                 no
+      5    WhiteBalanceFineTune                 int16u
       6    ColorTemperatureSet                  int16u
       7    ColorCompensationFilterSet           int16u
       8    CustomWB_RGBLevels                   int16u[3]
@@ -14904,7 +14905,7 @@ Valid for SLT-A65/A77, NEX-7/VG20E.
   0x1178   MeteringMode                         int8u
   0x1179   ExposureProgram                      int8u
   0x1180   WB_RGBLevels                         int16u[3]
-  0x1218   SonyISO                              no
+  0x1218   SonyISO                              int16u
   0x1a23   LensParameters                       int16s[16]~
 
 =head3 Sony Tag2010c Tags
@@ -14936,7 +14937,7 @@ Valid for SLT-A37/A57 and NEX-F3.
   0x1154   MeteringMode                         int8u
   0x1155   ExposureProgram                      int8u
   0x115c   WB_RGBLevels                         int16u[3]
-  0x11f4   SonyISO                              no
+  0x11f4   SonyISO                              int16u
 
 =head3 Sony Tag2010d Tags
 
@@ -14965,7 +14966,7 @@ not valid for panorama images.
   0x11d0   MeteringMode                         int8u
   0x11d1   ExposureProgram                      int8u
   0x11d8   WB_RGBLevels                         int16u[3]
-  0x1270   SonyISO                              no
+  0x1270   SonyISO                              int16u
 
 =head3 Sony Tag2010e Tags
 
@@ -14998,12 +14999,12 @@ for panorama images.
   0x11ac   MeteringMode                         int8u
   0x11ad   ExposureProgram                      int8u
   0x11b4   WB_RGBLevels                         int16u[3]
-  0x1254   SonyISO                              no
-  0x1258   SonyISO                              no
+  0x1254   SonyISO                              int16u
+  0x1258   SonyISO                              int16u
   0x1278   FocalLength                          int16u
   0x127a   MinFocalLength                       int16u
   0x127c   MaxFocalLength                       int16u
-  0x1280   SonyISO                              no
+  0x1280   SonyISO                              int16u
   0x1870   LensParameters?                      int16s[16]~
   0x1891   LensFormat                           int8u
   0x1892   LensMount                            int8u
@@ -15038,7 +15039,7 @@ Valid for DSC-RX100M2, DSC-QX10/QX100.
   0x1134   FocalLength                          int16u
   0x1136   MinFocalLength                       int16u
   0x1138   MaxFocalLength                       int16u
-  0x113c   SonyISO                              no
+  0x113c   SonyISO                              int16u
 
 =head3 Sony Tag2010g Tags
 
@@ -15068,7 +15069,7 @@ ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-68/77M2.
   0x032c   FocalLength                          int16u
   0x032e   MinFocalLength                       int16u
   0x0330   MaxFocalLength                       int16u
-  0x0344   SonyISO                              no
+  0x0344   SonyISO                              int16u
   0x0388   MeterInfo?                           Sony MeterInfo
   0x189c   LensParameters?                      int16s[16]~
   0x18bd   LensFormat                           int8u
@@ -15104,7 +15105,7 @@ ILCE-6300/6500/7RM2/7SM2, ILCA-99M2.
   0x032c   FocalLength                          int16u
   0x032e   MinFocalLength                       int16u
   0x0330   MaxFocalLength                       int16u
-  0x0346   SonyISO                              no
+  0x0346   SonyISO                              int16u
   0x0388   MeterInfo?                           Sony MeterInfo
   0x0398   MeterInfo?                           Sony MeterInfo
   0x18cc   LensParameters?                      int16s[16]~
@@ -15112,6 +15113,38 @@ ILCE-6300/6500/7RM2/7SM2, ILCA-99M2.
   0x18ee   LensMount                            int8u
   0x18ef   LensType2                            int16u
   0x18f2   LensType                             int16u
+
+=head3 Sony Tag2010i Tags
+
+Valid for ILCE-9.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  0x0004   ReleaseMode2                         int32u
+  0x004e   DynamicRangeOptimizer                int8u
+  0x0204   ReleaseMode3                         int8u
+  0x0208   ReleaseMode2                         int8u
+  0x0217   StopsAboveBaseISO                    int16u
+  0x0219   BrightnessValue                      int16u
+  0x021b   DynamicRangeOptimizer                int8u
+  0x021f   HDRSetting                           int8u
+  0x0223   ExposureCompensation                 int16s
+  0x0237   PictureProfile                       int8u
+  0x0238   PictureProfile                       int8u
+  0x023c   PictureEffect2                       int8u
+  0x0247   Quality2                             int8u
+  0x024b   MeteringMode                         int8u
+  0x024c   ExposureProgram                      int8u
+  0x0252   WB_RGBLevels                         int16u[3]
+  0x030a   FocalLength                          int16u
+  0x030c   MinFocalLength                       int16u
+  0x030e   MaxFocalLength                       int16u
+  0x0320   SonyISO                              int16u
+  0x17d0   LensParameters?                      int16s[16]~
+  0x17f1   LensFormat                           int8u
+  0x17f2   LensMount                            int8u
+  0x17f3   LensType2                            int16u
+  0x17f6   LensType                             int16u
 
 =head3 Sony Tag202a Tags
 
@@ -15282,7 +15315,8 @@ RX100M4/RX100M5/WX220/WX350/WX500, ILCE-7/7R/7S/7M2/7RM2/7SM2/5000/5100/
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
   0x0009   ReleaseMode2                         int8u
-  0x000a   ShotNumberSincePowerUp               int32u
+  0x000a   ShotNumberSincePowerUp               int8u
+           ShotNumberSincePowerUp               int32u
   0x0012   SequenceImageNumber                  int32u
   0x0016   SequenceLength                       int8u
   0x001a   SequenceFileNumber                   int32u
@@ -15341,8 +15375,8 @@ ILCA-68/77M2/99M2.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
-  0x0004   SonyISO                              no
-  0x0006   BaseISO                              no
+  0x0004   SonyISO                              int16u
+  0x0006   BaseISO                              int16u
   0x000a   StopsAboveBaseISO                    int16u
   0x000e   SonyExposureTime2                    int16u
   0x0010   ExposureTime                         rational32u

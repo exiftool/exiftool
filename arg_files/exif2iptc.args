@@ -12,9 +12,9 @@
 # Notes:     1) IPTC requires a timezone but EXIF does not support one, so
 #               the local timezone is assumed when writing the IPTC times
 #
-#            2) These arguments will not delete IPTC tags which are missing
-#               from the EXIF.  The IPTC tags should be deleted beforehand if
-#               required.
+#            2) These arguments will not delete existing IPTC tags which are
+#               missing from the EXIF.  The IPTC tags should be deleted
+#               beforehand if required.
 #------------------------------------------------------------------------------
 -IPTC:By-line < EXIF:Artist
 -IPTC:CopyrightNotice < EXIF:Copyright

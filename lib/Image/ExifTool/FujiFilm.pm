@@ -28,7 +28,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.57';
+$VERSION = '1.58';
 
 sub ProcessFujiDir($$$);
 sub ProcessFaceRec($$$);
@@ -102,14 +102,15 @@ my %faceCategories = (
         Flags => 'PrintHex',
         Writable => 'int16u',
         PrintConv => {
-            0x00 => 'Very Soft', #10 (-4)
-            0x01 => 'Soft',
-            0x02 => 'Soft2',
-            0x03 => 'Normal',
-            0x04 => 'Hard',
-            0x05 => 'Hard2',
-            0x82 => 'Medium Soft', #2
-            0x84 => 'Medium Hard', #2
+            0x00 => '-4 (softest)', #10
+            0x01 => '-3 (very soft)',
+            0x02 => '-2 (soft)',
+            0x03 => '0 (normal)',
+            0x04 => '+2 (hard)',
+            0x05 => '+3 (very hard)',
+            0x06 => '+4 (hardest)',
+            0x82 => '-1 (medium soft)', #2
+            0x84 => '+1 (medium hard)', #2
             0x8000 => 'Film Simulation', #2
             0xffff => 'n/a', #2
         },
@@ -144,17 +145,21 @@ my %faceCategories = (
         Flags => 'PrintHex',
         Writable => 'int16u',
         PrintConv => {
-            0x0   => 'Normal', # # ("Color 0", ref 8)
-            0x080 => 'Medium High', #2 ("Color +1", ref 8)
-            0x100 => 'High', # ("Color +2", ref 8)
-            0x180 => 'Medium Low', #2 ("Color -1", ref 8)
+            0x0   => '0 (normal)', # # ("Color 0", ref 8)
+            0x080 => '+1 (medium high)', #2 ("Color +1", ref 8)
+            0x100 => '+2 (high)', # ("Color +2", ref 8)
+            0x0c0 => '+3 (very high)',
+            0x0e0 => '+4 (highest)',
+            0x180 => '-1 (medium low)', #2 ("Color -1", ref 8)
             0x200 => 'Low',
             0x300 => 'None (B&W)', #2
             0x301 => 'B&W Red Filter', #PH/8
             0x302 => 'B&W Yellow Filter', #PH (X100)
             0x303 => 'B&W Green Filter', #PH/8
             0x310 => 'B&W Sepia', #PH (X100)
-            0x400 => 'Low 2', #8 ("Color -2")
+            0x400 => '-2 (low)', #8 ("Color -2")
+            0x4c0 => '-3 (very low)',
+            0x4e0 => '-4 (lowest)',
             0x500 => 'Acros', #PH (X-Pro2)
             0x501 => 'Acros Red Filter', #PH (X-Pro2)
             0x502 => 'Acros Yellow Filter', #PH (X-Pro2)
@@ -211,13 +216,15 @@ my %faceCategories = (
         Flags => 'PrintHex',
         Writable => 'int16u',
         PrintConv => {
-            0x000 => 'Normal', # ("NR 0, ref 8)
-            0x100 => 'Strong', # ("NR+2, ref 8)
-            0x180 => 'Medium Strong', #8 ("NR+1")
-            0x200 => 'Weak', # ("NR-2, ref 8)
-            0x280 => 'Medium Weak', #8 ("NR-1")
-            0x2c0 => 'Very Weak', #10 (-3)
-            0x2e0 => 'Weakest', #10 (-4)
+            0x000 => '0 (normal)', # ("NR 0, ref 8)
+            0x100 => '+2 (strong)', # ("NR+2, ref 8)
+            0x180 => '+1 (medium strong)', #8 ("NR+1")
+            0x1c0 => '+3 (very strong)',
+            0x1e0 => '+4 (strongest)',
+            0x200 => '-2 (weak)', # ("NR-2, ref 8)
+            0x280 => '-1 (medium weak)', #8 ("NR-1")
+            0x2c0 => '-3 (very weak)', #10 (-3)
+            0x2e0 => '-4 (weakest)', #10 (-4)
         },
     },
     0x1010 => {
@@ -350,22 +357,26 @@ my %faceCategories = (
         Name => 'ShadowTone',
         Writable => 'int32s',
         PrintConv => {
-            -32 => 'Hard',
-            -16 => 'Medium Hard',
-            0 => 'Normal',
-            16 => 'Medium Soft',
-            32 => 'Soft',
+            -64 => '+4 (hardest)',
+            -48 => '+3 (very hard)',
+            -32 => '+2 (hard)',
+            -16 => '+1 (medium hard)',
+            0 => '0 (normal)',
+            16 => '-1 (medium soft)',
+            32 => '-2 (soft)',
         },
     },
     0x1041 => { #8
         Name => 'HighlightTone',
         Writable => 'int32s',
         PrintConv => {
-            -32 => 'Hard',
-            -16 => 'Medium Hard',
-            0 => 'Normal',
-            16 => 'Medium Soft',
-            32 => 'Soft',
+            -64 => '+4 (hardest)',
+            -48 => '+3 (very hard)',
+            -32 => '+2 (hard)',
+            -16 => '+1 (medium hard)',
+            0 => '0 (normal)',
+            16 => '-1 (medium soft)',
+            32 => '-2 (soft)',
         },
     },
     0x1044 => { #forum7668

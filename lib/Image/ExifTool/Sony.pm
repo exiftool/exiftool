@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.58';
+$VERSION = '2.59';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -108,6 +108,7 @@ my %sonyLensTypes2 = (
     32826 => 'Sony FE 21mm F2.8 (SEL28F20 + SEL075UWC)', #JR          # (+ Ultra-wide converter)
     32827 => 'Sony FE 16mm F3.5 Fisheye (SEL28F20 + SEL057FEC)', #JR  # (+ Fisheye converter)
     32828 => 'Sony FE 70-300mm F4.5-5.6 G OSS', #JR
+    32829 => 'Sony FE 100-400mm F4.5-5.6 GM OSS', #JR
     32830 => 'Sony FE 70-200mm F2.8 GM OSS', #JR
 
     33002 => 'Sigma 85mm F1.4 DG HSM | A 016 (+ Metabones Ver.50)', #PH/JR
@@ -244,6 +245,8 @@ my %sonyExposureProgram3 = (
     37 => 'Soft Skin',
     42 => '3D Image',
     43 => 'Cont. Priority AE',
+    45 => 'Document',
+    46 => 'Party',
 );
 
 # WhiteBalanceSetting values (ref JR)
@@ -839,6 +842,7 @@ my %meterInfo2 = (
         # unknown offsets or values for DSC-HX60V/HX400V/QX10/QX30/QX100/RX10/RX100M2/RX100M3/WX220/WX350,
         #                               ILCA-68/77M2, ILCE-5000/5100/6000/7/7M2/7R/7S/QX1
         # unknown offsets or values for DSC-HX90V/RX1RM2/RX10M2/RX10M3/RX100M4/RX100M5/WX500, ILCE-6300/6500/7RM2/7SM2, ILCA-99M2
+        # unknown offsets or values for ILCE-9
     {
         Name => 'Tag2010a', # ad
         Condition => '$$self{Model} =~ /^NEX-5N$/',
@@ -877,6 +881,10 @@ my %meterInfo2 = (
         Name => 'Tag2010h', # ?
         Condition => '$$self{Model} =~ /^(DSC-(RX1RM2|RX10M2|RX10M3|RX100M4|RX100M5|HX90V?|WX500)|ILCE-(6300|6500|7RM2|7SM2)|ILCA-99M2)\b/',
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag2010h' },
+    },{
+        Name => 'Tag2010i', # ?
+        Condition => '$$self{Model} =~ /^ILCE-9\b/',
+        SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag2010i' },
     },{
         Name => 'Tag_0x2010',
         %unknownCipherData,
@@ -980,6 +988,7 @@ my %meterInfo2 = (
                 1 => 'Center',
                 3 => 'Flexible Spot',
                 4 => 'Flexible Spot (LA-EA4)', # seen for ILCE-7RM2 with LA-EA4
+                9 => 'Center (LA-EA4)', # seen for ILCE-7RM2 with LA-EA4
                 11 => 'Zone',
                 12 => 'Expanded Flexible Spot',
             },
@@ -1261,14 +1270,14 @@ my %meterInfo2 = (
     # from mid-2015: ILCE-7RM2/7SM2/6300 and newer models use different offsets
     {
         Name => 'Tag9050a',
-        Condition => '$$self{Model} !~ /^(DSC-|Stellar|ILCE-(6300|6500|7RM2|7SM2)|ILCA-99M2)/',
+        Condition => '$$self{Model} !~ /^(DSC-|Stellar|ILCE-(6300|6500|7RM2|7SM2|9)|ILCA-99M2)/',
         SubDirectory => {
             TagTable => 'Image::ExifTool::Sony::Tag9050a',
             ByteOrder => 'LittleEndian',
         },
     },{
         Name => 'Tag9050b',
-        Condition => '$$self{Model} =~ /^(ILCE-(6300|6500|7RM2|7SM2)|ILCA-99M2)/',
+        Condition => '$$self{Model} =~ /^(ILCE-(6300|6500|7RM2|7SM2|9)|ILCA-99M2)/',
         SubDirectory => {
             TagTable => 'Image::ExifTool::Sony::Tag9050b',
             ByteOrder => 'LittleEndian',
@@ -1286,6 +1295,7 @@ my %meterInfo2 = (
     # 0xd0 (e) H90, W650, W690: tag9400 decoding appears not valid/different
     # 0x23 (e) for DSC-RX10/HX60V/HX400V/WX220/WX350, ILCE-7/7R/5000/6000, ILCA-68/77M2
     # 0x24 (e) for ILCA-99M2,ILCE-5100/6300/6500/7M2/7RM2/7S/7SM2/QX1, DSC-HX90V/QX30/RX100M3/RX100M4/RX100M5/RX10M2/RX10M3/RX1RM2/WX500
+    # 0x26 (e) for ILCE-9
     # first byte decoded: 40, 204, 202, 27, 58, 62, 48 respectively
     {
         Name => 'Tag9400a',
@@ -1300,7 +1310,7 @@ my %meterInfo2 = (
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag9400b' },
     },{
         Name => 'Tag9400c',
-        Condition => '$$valPt =~ /^[\x23\x24]/',
+        Condition => '$$valPt =~ /^[\x23\x24\x26]/',
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag9400c' },
     },{
         Name => 'Sony_0x9400',
@@ -1433,6 +1443,7 @@ my %meterInfo2 = (
     # 142 var  (0x25 =  37 var enc.) DSC-HX90V/RX1RM2/RX10M2/RX10M3/RX100M4/WX500, ILCE-6300/7RM2/7SM2
     # 144 var  (0xe1 = 225 var enc.) DSC-RX100M5
     # 145 var  (0x76 = 118 var enc.) ILCA-99M2, ILCE-6500
+    # 163 var  (0x8b = 139 var enc.) ILCE-9
     0x9405 => [{
         Name => 'Tag9405a',
         # first byte must be 0x1b or 0x40 or 0x7d
@@ -1441,7 +1452,7 @@ my %meterInfo2 = (
     },{
         Name => 'Tag9405b',
         # first byte must be 0x3a, 0xb3, 0x7e, 0x9a or 0x25 or 0xe1 or 0x76
-        Condition => '$$valPt =~ /^[\x3a\xb3\x7e\x9a\x25\xe1\x76]/',
+        Condition => '$$valPt =~ /^[\x3a\xb3\x7e\x9a\x25\xe1\x76\x8b]/',
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag9405b' },
     },{
         Name => 'Sony_0x9405',
@@ -1538,6 +1549,7 @@ my %meterInfo2 = (
             '3 3 0 0' => 'ARW 2.3', #PH (SLT-A65,SLT-A77)
             '3 3 1 0' => 'ARW 2.3.1', #PH/JR (DSC-RX1R/RX100M2)
             '3 3 2 0' => 'ARW 2.3.2', #JR (DSC-RX1RM2,ILCE-7SM2 - support for uncompressed 14-bit RAW)
+            '3 3 3 0' => 'ARW 2.3.3', #JR (ILCE-9)
             # what about cRAW images?
         },
     },
@@ -1614,6 +1626,7 @@ my %meterInfo2 = (
             355 => 'DSC-RX10M3', #PH
             356 => 'DSC-RX100M5', #IB/JR
             357 => 'ILCE-6300', #IB
+            358 => 'ILCE-9', #JR
             360 => 'ILCE-6500', #JR
         },
     },
@@ -2989,6 +3002,7 @@ my %meterInfo2 = (
         Name => 'HighISONoiseReduction',
         PrintConv => {
             16 => 'Low',
+            17 => 'High',
             19 => 'Auto',
         },
     },
@@ -3625,6 +3639,7 @@ my %faceInfo = (
     0x06 => { #7 (A700) (ref JR: at least also valid for A200, ValueConv as for ColorCompensationFilterSet)
         Name => 'WhiteBalanceFineTune',
         ValueConv => '$val > 128 ? $val - 256 : $val',
+        ValueConvInv => '$val < 0 ? $val + 256 : $val',
     },
     0x07 => { #JR as set in WB "Color Temperature/Color Filter" and in White Balance Bracketing
         Name => 'ColorTemperatureSet',
@@ -4101,6 +4116,7 @@ my %faceInfo = (
     0x05 => { #JR
         Name => 'WhiteBalanceFineTune',
         ValueConv => '$val > 128 ? $val - 256 : $val',
+        ValueConvInv => '$val < 0 ? $val + 256 : $val',
     },
     0x06 => { #JR as set in WB "Color Temperature/Color Filter" and in White Balance Bracketing
         Name => 'ColorTemperatureSet',
@@ -4717,6 +4733,7 @@ my %faceInfo = (
         Name => 'HighISONoiseReduction',
         PrintConv => {
             16 => 'Low',
+            17 => 'High',
             19 => 'Auto',
         },
     },
@@ -5811,8 +5828,10 @@ my %pictureProfile2010 = (
     0x1218 => {
         Name => 'SonyISO',
         Format => 'int16u',
-        ValueConv => '3.125*(2**(21-($val/256)))',
+        ValueConv => '100 * 2**(16 - $val/256)',
+        ValueConvInv => '256 * (16 - log($val/100)/log(2))',
         PrintConv => 'sprintf("%.0f",$val)',
+        PrintConvInv => '$val',
     },
     #0x1a08 => { Name => 'SonyImageWidth',  Format => 'int16u' },
     #0x1a0c => { Name => 'SonyImageHeight', Format => 'int16u' },
@@ -5879,8 +5898,10 @@ my %pictureProfile2010 = (
     0x11f4 => {
         Name => 'SonyISO',
         Format => 'int16u',
-        ValueConv => '3.125*(2**(21-($val/256)))',
+        ValueConv => '100 * 2**(16 - $val/256)',
+        ValueConvInv => '256 * (16 - log($val/100)/log(2))',
         PrintConv => 'sprintf("%.0f",$val)',
+        PrintConvInv => '$val',
     },
     #0x1a08 => { Name => 'SonyImageWidth',  Format => 'int16u' },
     #0x1a0c => { Name => 'SonyImageHeight', Format => 'int16u' },
@@ -5940,8 +5961,10 @@ my %pictureProfile2010 = (
     0x1270 => {
         Name => 'SonyISO',
         Format => 'int16u',
-        ValueConv => '3.125*(2**(21-($val/256)))',
+        ValueConv => '100 * 2**(16 - $val/256)',
+        ValueConvInv => '256 * (16 - log($val/100)/log(2))',
         PrintConv => 'sprintf("%.0f",$val)',
+        PrintConvInv => '$val',
     },
 );
 
@@ -6005,15 +6028,19 @@ my %pictureProfile2010 = (
         Condition => '$$self{Model} =~ /^(SLT-(A99|A99V)|NEX-(5R|5T|6|VG900|VG30E)|DSC-RX100|Stellar|HV)\b/',
         Name => 'SonyISO',
         Format => 'int16u',
-        ValueConv => '3.125*(2**(21-($val/256)))',
+        ValueConv => '100 * 2**(16 - $val/256)',
+        ValueConvInv => '256 * (16 - log($val/100)/log(2))',
         PrintConv => 'sprintf("%.0f",$val)',
+        PrintConvInv => '$val',
     },
     0x1258 => {
         Condition => '$$self{Model} =~ /^(DSC-(RX1|RX1R))\b/',
         Name => 'SonyISO',
         Format => 'int16u',
-        ValueConv => '3.125*(2**(21-($val/256)))',
+        ValueConv => '100 * 2**(16 - $val/256)',
+        ValueConvInv => '256 * (16 - log($val/100)/log(2))',
         PrintConv => 'sprintf("%.0f",$val)',
+        PrintConvInv => '$val',
     },
     0x1278 => {
         Condition => '$$self{Model} =~ /^(SLT-A58|ILCE-(3000|3500)|NEX-3N|DSC-(HX300|HX50V|WX60|WX80|WX200|WX300|TX30))\b/',
@@ -6047,8 +6074,10 @@ my %pictureProfile2010 = (
         Condition => '$$self{Model} =~ /^(SLT-A58|ILCE-(3000|3500)|NEX-3N|DSC-(HX300|HX50V|WX60|WX80|WX200|WX300|TX30))\b/',
         Name => 'SonyISO',
         Format => 'int16u',
-        ValueConv => '3.125*(2**(21-($val/256)))',
+        ValueConv => '100 * 2**(16 - $val/256)',
+        ValueConvInv => '256 * (16 - log($val/100)/log(2))',
         PrintConv => 'sprintf("%.0f",$val)',
+        PrintConvInv => '$val',
     },
     0x1870 => {
         Name => 'LensParameters',
@@ -6164,8 +6193,10 @@ my %pictureProfile2010 = (
     0x113c => {
         Name => 'SonyISO',
         Format => 'int16u',
-        ValueConv => '3.125*(2**(21-($val/256)))',
+        ValueConv => '100 * 2**(16 - $val/256)',
+        ValueConvInv => '256 * (16 - log($val/100)/log(2))',
         PrintConv => 'sprintf("%.0f",$val)',
+        PrintConvInv => '$val',
     },
     #0x1914 => { Name => 'SonyImageWidth',  Format => 'int16u' },
     #0x1918 => { Name => 'SonyImageHeight', Format => 'int16u' },
@@ -6232,8 +6263,10 @@ my %pictureProfile2010 = (
     0x0344 => {
         Name => 'SonyISO',
         Format => 'int16u',
-        ValueConv => '3.125*(2**(21-($val/256)))',
+        ValueConv => '100 * 2**(16 - $val/256)',
+        ValueConvInv => '256 * (16 - log($val/100)/log(2))',
         PrintConv => 'sprintf("%.0f",$val)',
+        PrintConvInv => '$val',
     },
     0x0388 => {
         Name => 'MeterInfo',
@@ -6349,8 +6382,10 @@ my %pictureProfile2010 = (
     0x0346 => {
         Name => 'SonyISO',
         Format => 'int16u',
-        ValueConv => '3.125*(2**(21-($val/256)))',
+        ValueConv => '100 * 2**(16 - $val/256)',
+        ValueConvInv => '256 * (16 - log($val/100)/log(2))',
         PrintConv => 'sprintf("%.0f",$val)',
+        PrintConvInv => '$val',
     },
     0x0388 => {
         Name => 'MeterInfo',
@@ -6413,6 +6448,114 @@ my %pictureProfile2010 = (
     # 0x1974 => { Name => 'SonyImageHeight', Format => 'int16u' },
     # 0x198a => { Name => 'SonyImageWidth',  Format => 'int16u' },
     # 0x198c => { Name => 'SonyImageHeight', Format => 'int16u' },
+);
+
+%Image::ExifTool::Sony::Tag2010i = ( #JR
+    PROCESS_PROC => \&ProcessEnciphered,
+    WRITE_PROC => \&WriteEnciphered,
+    CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
+    FORMAT => 'int8u',
+    NOTES => q{
+        Valid for ILCE-9.
+    },
+    WRITABLE => 1,
+    FIRST_ENTRY => 0,
+    PRIORITY => 0,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
+    0x0004 => { %releaseMode2, Format => 'int32u' },
+    0x004e => { %dynamicRangeOptimizer2010 },
+    0x0204 => { %releaseMode2010 },
+    0x0208 => { %releaseMode2 },
+#    0x020c => { %selfTimerB2010 }, #nc
+#    0x0211 => { %flashMode2010 }, #nc
+    0x0217 => { %gain2010 },
+    0x0219 => { %brightnessValue2010 },
+    0x021b => { %dynamicRangeOptimizer2010 },
+    0x021f => { %hdr2010 },
+    0x0223 => { %exposureComp2010 },
+    0x0237 => { %pictureProfile2010 },
+    0x0238 => { %pictureProfile2010 },
+    0x023c => { %pictureEffect2010 },
+    0x0247 => { %quality2010 },
+    0x024b => { %meteringMode2010 },
+    0x024c => { %exposureProgram2010 },
+    0x0252 => { Name => 'WB_RGBLevels', Format => 'int16u[3]' },
+    0x030a => {
+        Name => 'FocalLength',
+        Format => 'int16u',
+        ValueConv => '$val / 10',
+        ValueConvInv => '$val * 10',
+        PrintConv => 'sprintf("%.1f mm",$val)',
+        PrintConvInv => '$val =~ s/ ?mm//; $val',
+    },
+    0x030c => {
+        Name => 'MinFocalLength',
+        Format => 'int16u',
+        ValueConv => '$val / 10',
+        ValueConvInv => '$val * 10',
+        PrintConv => 'sprintf("%.1f mm",$val)',
+        PrintConvInv => '$val =~ s/ ?mm//; $val',
+    },
+    0x030e => { # may give 0 for fixed focal length lenses
+        Name => 'MaxFocalLength',
+        Format => 'int16u',
+        RawConv => '$val || undef',
+        ValueConv => '$val / 10',
+        ValueConvInv => '$val * 10',
+        PrintConv => 'sprintf("%.1f mm",$val)',
+        PrintConvInv => '$val =~ s/ ?mm//; $val',
+    },
+    0x0320 => {
+        Name => 'SonyISO',
+        Format => 'int16u',
+        ValueConv => '100 * 2**(16 - $val/256)',
+        ValueConvInv => '256 * (16 - log($val/100)/log(2))',
+        PrintConv => 'sprintf("%.0f",$val)',
+        PrintConvInv => '$val',
+    },
+    0x17d0 => {
+        Name => 'LensParameters',
+        Condition => '$$self{Model} !~ /^DSC-/',
+        Format => 'int16s[16]',
+        Unknown => 1,
+        PrintConv => 'sprintf("%5d" . " %5d" x 15, split(" ",$val))',
+    },
+    # 0x17f0 - same as 0x17f2, but has value 3 for LensType>=65, except SAL300F28G2
+    0x17f1 => {
+        Name => 'LensFormat',
+        Condition => '$$self{Model} !~ /^DSC-/',
+        PrintConv => {
+            0 => 'Unknown',
+            1 => 'APS-C',
+            2 => 'Full-frame',
+        },
+    },
+    0x17f2 => {
+        Name => 'LensMount',
+        DataMember => 'LensMount',
+        RawConv => '$$self{LensMount} = $val; $$self{Model} =~ /^DSC-/ ? undef : $val',
+        PrintConv => {
+            0 => 'Unknown',
+            1 => 'A-mount',
+            2 => 'E-mount',
+        },
+    },
+    0x17f3 => { #JR
+        Name => 'LensType2',
+        Condition => '$$self{LensMount} == 2',
+        Format => 'int16u',
+        SeparateTable => 'LensType2',
+        PrintConv => \%sonyLensTypes2,
+    },
+    0x17f6 => {
+        Name => 'LensType',
+        Condition => '$$self{LensMount} == 1',
+        Priority => 0, #PH (just to be safe)
+        Format => 'int16u', #PH
+        SeparateTable => 1,
+        ValueConvInv => '($val & 0xff00) == 0x8000 ? 0 : int($val)',
+        PrintConv => \%sonyLensTypes,
+    },
 );
 
 %Image::ExifTool::Sony::Tag202a = (
@@ -6887,9 +7030,9 @@ my %pictureProfile2010 = (
         Format => 'int32u',
         RawConv => '$val & 0x00ffffff',
     },
-    0x0061 => { # only minutes-seconds, not for ILCA-99M2
+    0x0061 => { # only minutes-seconds, not for ILCA-99M2, ILCE-9
         Name => 'SonyTimeMinSec',
-        Condition => '$$self{Model} !~ /^(ILCA-99M2)/',
+        Condition => '$$self{Model} !~ /^(ILCA-99M2|ILCE-9)/',
         Format => 'undef[2]',
         ValueConv => q{
             my @v = unpack('C*', $val);
@@ -7197,10 +7340,14 @@ my %pictureProfile2010 = (
     FIRST_ENTRY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
     0x0009 => { %releaseMode2 },
-    0x000a => {
+    0x000a => [{
+        Condition => '$$self{Model} =~ /^ILCE-9\b/',
+        Name => 'ShotNumberSincePowerUp',
+        Format => 'int8u',
+    },{
         Name => 'ShotNumberSincePowerUp',
         Format => 'int32u',
-    },
+    }],
     0x0012 => { %sequenceImageNumber },
     0x0016 => {
         Name => 'SequenceLength',
@@ -7517,14 +7664,18 @@ my %pictureProfile2010 = (
     0x0004 => {
         Name => 'SonyISO',
         Format => 'int16u',
-        ValueConv => '3.125*(2**(21-($val/256)))',
+        ValueConv => '100 * 2**(16 - $val/256)',
+        ValueConvInv => '256 * (16 - log($val/100)/log(2))',
         PrintConv => 'sprintf("%.0f",$val)',
+        PrintConvInv => '$val',
     },
     0x0006 => {
         Name => 'BaseISO',
         Format => 'int16u',
-        ValueConv => '3.125*(2**(21-($val/256)))',
+        ValueConv => '100 * 2**(16 - $val/256)',
+        ValueConvInv => '256 * (16 - log($val/100)/log(2))',
         PrintConv => 'sprintf("%.0f",$val)',
+        PrintConvInv => '$val',
     },
     0x000a => { %gain2010 },
     0x000e => { # appr. same value as Exif ExposureTime, but shorter in HDR-modes
@@ -7654,7 +7805,7 @@ my %pictureProfile2010 = (
     },
     0x0342 => {
         Name => 'LensZoomPosition',
-        Condition => '$$self{Model} !~ /^(ILCA-|ILCE-(7RM2|7SM2|6500)|DSC-(HX90V|RX10M2|RX10M3|RX100M4|RX100M5|WX500))/',
+        Condition => '$$self{Model} !~ /^(ILCA-|ILCE-(7RM2|7SM2|6500|9)|DSC-(HX90V|RX10M2|RX10M3|RX100M4|RX100M5|WX500))/',
         Format => 'int16u',
         PrintConv => 'sprintf("%.0f%%",$val/10.24)',
         PrintConvInv => '$val=~s/ ?%$//; $val * 10.24',
@@ -7823,6 +7974,7 @@ my %pictureProfile2010 = (
         # 1.50: ILCE-7/7R/7S v1.20-v3.20, ILCE-7M2 v1.00-v3.10, ILCE-7RM2 v1.00-v3.00, ILCE-7SM2 v1.00-v2.10,
         #       ILCE-6000 v1.20-v3.20
         # 1.60: ILCE-6300 v1.00-v1.10, ILCE-6500 v1.00, ILCE-7RM2 v3.05-v3.30
+        # 1.70: ILCE-9
     },
     0x000d => {
         Name => 'LensE-mountVersion',
@@ -7842,10 +7994,11 @@ my %pictureProfile2010 = (
         # 1.35: SEL70200G, SEL55210 (Black?, seen with ILCE-3500)
         # 1.40: SEL1635Z, SEL24240, SEL35F14Z, SELP28135G, Zeiss Loxia 35mm/50mm Ver.01, Zeiss Touit Ver.02
         # 1.41: SELP18105G Ver.02
-        # 1.50: SEL28F20, SEL90M28G, Zeiss Batis 18mm/25mm/85mm, Zeiss Loxia 21mm, Zeiss Loxia 35mm/50mm Ver.02
-        # 1.60: SEL85F14GM, SEL2470GM, SEL70200GM, SEL50F18F, SEL50F14Z, SEL50M28, SEL70300G, Sigma 30mm F1.4 DC DN,
-        #       Sigma MC-11, Voigtlander SUPER WIDE-HELIAR 15mm F4.5 III
-        # 1.70: Voigtlander HELIAR-HYPER WIDE 10mm F5.6, ULTRA WIDE-HELIAR 12mm F5.6 III, Zeiss Loxia 85mm
+        # 1.50: SEL28F20, SEL90M28G, Zeiss Batis 18mm/25mm/85mm/135mm, Zeiss Loxia 21mm, Zeiss Loxia 35mm/50mm Ver.02,
+        #       Tokina Firin 20mm
+        # 1.60: SEL2470GM, SEL50F14Z, SEL50F18F, SEL50M28, SEL70200GM, SEL70300G, SEL85F14GM, SEL85F18, SEL100F28GM,
+        #       SEL100400GM, Sigma 30mm F1.4 DC DN, Sigma MC-11, Samyang AF 14mm/50mm, Voigtlander 15mm
+        # 1.70: Voigtlander 10mm/12mm/40mm, Zeiss Loxia 85mm
     },
     0x0015 => {
         Name => 'LensFirmwareVersion',
@@ -8080,7 +8233,7 @@ my %pictureProfile2010 = (
             2 => 'AF-S',
             3 => 'AF-C',
             4 => 'AF-A',
-            # 6 => 'DMF', # not yet seen
+            6 => 'DMF',
             # 7 => 'AF-D', # not yet seen
         },
     },

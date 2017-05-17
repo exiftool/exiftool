@@ -66,7 +66,7 @@ sub WritePhotoshop($$$)
 # rewrite existing tags in the old directory, deleting ones as necessary
 # (the Photoshop directory entries aren't in any particular order)
 #
-    # Format: 0) Type, 4 bytes - '8BIM' (or the rare 'PHUT', 'DCSR' or 'AgHg')
+    # Format: 0) Type, 4 bytes - '8BIM' (or the rare 'PHUT', 'DCSR', 'AgHg' or 'MeSa')
     #         1) TagID,2 bytes
     #         2) Name, pascal string padded to even no. bytes
     #         3) Size, 4 bytes - N
@@ -76,7 +76,7 @@ sub WritePhotoshop($$$)
         # each entry must be on same even byte boundary as directory start
         ++$pos if ($pos ^ $start) & 0x01;
         my $type = substr($$dataPt, $pos, 4);
-        if ($type !~ /^(8BIM|PHUT|DCSR|AgHg)$/) {
+        if ($type !~ /^(8BIM|PHUT|DCSR|AgHg|MeSa)$/) {
             $et->Error("Bad Photoshop IRB resource");
             undef $newData;
             last;

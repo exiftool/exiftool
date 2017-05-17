@@ -2804,7 +2804,7 @@ sub InsertTagValues($$$;$)
     my $rtnStr = '';
     while ($line =~ s/(.*?)\$(\{\s*)?([-\w]*\w|\$|\/)//s) {
         my ($pre, $bra, $var) = ($1, $2, $3);
-        my (@tags, $val, $tg, @vals, $type, $expr, $didExpr, $level);
+        my (@tags, $val, $tg, @val, $type, $expr, $didExpr, $level, $asList);
         # "$$" represents a "$" symbol, and "$/" is a newline
         if ($var eq '$' or $var eq '/') {
             $var = "\n" if $var eq '/';
@@ -2820,6 +2820,11 @@ sub InsertTagValues($$$;$)
         }
         # allow trailing '#' to indicate ValueConv value
         $type = 'ValueConv' if $line =~ s/^#//;
+        # (and undocumented feature to allow '@' to evaluate values separately, but only in braces)
+        if ($bra and $line =~ s/^\@(#)?//) {
+            $asList = 1;
+            $type = 'ValueConv' if $1;
+        }
         # remove trailing bracket if there was a leading one
         # and extract Perl expression from inside brackets if it exists
         if ($bra and $line !~ s/^\s*\}// and $line =~ s/^\s*;\s*(.*?)\s*\}//s) {
@@ -2884,7 +2889,9 @@ sub InsertTagValues($$$;$)
                 }
             }
             if (ref $val eq 'ARRAY') {
-                $val = join($$self{OPTIONS}{ListSep}, @$val);
+                push @val, @$val;
+                undef $val;
+                last unless @tags;
             } elsif (ref $val eq 'SCALAR') {
                 if ($$self{OPTIONS}{Binary} or $$val =~ /^Binary data/) {
                     $val = $$val;
@@ -2895,27 +2902,39 @@ sub InsertTagValues($$$;$)
                 require 'Image/ExifTool/XMPStruct.pl';
                 $val = Image::ExifTool::XMP::SerializeStruct($val);
             } elsif (not defined $val) {
-                last unless @tags;
-                next;
+                $val = $$self{OPTIONS}{MissingTagValue} if $asList;
             }
             last unless @tags;
-            push @vals, $val;
+            push @val, $val if defined $val;
             undef $val;
         }
-        if (@vals) {
-            push @vals, $val if defined $val;
-            $val = join $$self{OPTIONS}{ListSep}, @vals;
+        if (@val) {
+            push @val, $val if defined $val;
+            $val = join $$self{OPTIONS}{ListSep}, @val;
+        } else {
+            push @val, $val if defined $val; # (so the eval has access to @val if required)
         }
         # evaluate advanced formatting expression if given (eg. "${TAG;EXPR}")
         if (defined $expr and defined $val) {
             local $SIG{'__WARN__'} = \&SetWarning;
             undef $evalWarning;
             $advFmtSelf = $self;
-            $_ = $val;
-            #### eval advanced formatting expression ($_, $self, $advFmtSelf)
-            eval $expr;
-            $val = $_;
-            $@ and $evalWarning = $@;
+            if ($asList) {
+                foreach (@val) {
+                    #### eval advanced formatting expression ($_, $self, @val, $advFmtSelf)
+                    eval $expr;
+                    $@ and $evalWarning = $@;
+                }
+                # join back together if any values are still defined
+                @val = grep defined, @val;
+                $val = @val ? join $$self{OPTIONS}{ListSep}, @val : undef;
+            } else {
+                $_ = $val;
+                #### eval advanced formatting expression ($_, $self, @val, $advFmtSelf)
+                eval $expr;
+                $@ and $evalWarning = $@;
+                $val = $_;
+            }
             if ($evalWarning) {
                 my $str = CleanWarning() . " for '$var'";
                 ($opt and $opt eq 'Error') ? $self->Error($str) : $self->Warn($str);

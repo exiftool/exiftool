@@ -2291,22 +2291,22 @@ These tags belong to the ExifTool XMP-GSpherical family 1 group.
 
   Tag Name                                      Writable
   --------                                      --------
-  CroppedAreaImageHeightPixels                  no
-  CroppedAreaImageWidthPixels                   no
-  CroppedAreaLeftPixels                         no
-  CroppedAreaTopPixels                          no
-  FullPanoHeightPixels                          no
-  FullPanoWidthPixels                           no
-  InitialViewHeadingDegrees                     no
-  InitialViewPitchDegrees                       no
-  InitialViewRollDegrees                        no
-  ProjectionType                                no
-  SourceCount                                   no
-  Spherical                                     no
-  StereoMode                                    no
-  Stitched                                      no
-  StitchingSoftware                             no
-  TimeStamp                                     no
+  CroppedAreaImageHeightPixels                  integer/
+  CroppedAreaImageWidthPixels                   integer/
+  CroppedAreaLeftPixels                         integer/
+  CroppedAreaTopPixels                          integer/
+  FullPanoHeightPixels                          integer/
+  FullPanoWidthPixels                           integer/
+  InitialViewHeadingDegrees                     real/
+  InitialViewPitchDegrees                       real/
+  InitialViewRollDegrees                        real/
+  ProjectionType                                string/
+  SourceCount                                   integer/
+  Spherical                                     boolean/
+  StereoMode                                    string/
+  Stitched                                      boolean/
+  StitchingSoftware                             string/
+  TimeStamp                                     date/
 
 =head3 XMP ics Tags
 

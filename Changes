@@ -7,6 +7,12 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.50. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+May 17, 2017 - Version 10.53
+
+  - Added support for "MeSa" Photoshop IRB resource
+  - Made XMP-GSpherical tags writable
+  - Improved German translations (thanks Jobi)
+
 May 12, 2017 - Version 10.52
 
   - Added some new values to a number of FujiFilm tags and changed some others

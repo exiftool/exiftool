@@ -1575,7 +1575,6 @@ my %sSubVersion = (
 # Google Spherical Images namespace (ref https://github.com/google/spatial-media/blob/master/docs/spherical-video-rfc.md)
 %Image::ExifTool::XMP::GSpherical = (
     %xmpTableDefaults,
-    WRITABLE => 0,
     GROUPS => { 1 => 'XMP-GSpherical', 2 => 'Image' },
     NAMESPACE => 'GSpherical',
     NOTES => q{
@@ -1584,27 +1583,33 @@ my %sSubVersion = (
         L<https://github.com/google/spatial-media/blob/master/docs/spherical-video-rfc.md>
         for the specification.
     },
-    Spherical                   => { },
-    Stitched                    => { },
-    StitchingSoftware           => { },
-    ProjectionType              => { },
-    StereoMode                  => { },
-    SourceCount                 => { },
-    InitialViewHeadingDegrees   => { },
-    InitialViewPitchDegrees     => { },
-    InitialViewRollDegrees      => { },
+    # (avoid due to conflicts with XMP-GPano tags)
+    Spherical                   => { Avoid => 1, Writable => 'boolean' },
+    Stitched                    => { Avoid => 1, Writable => 'boolean' },
+    StitchingSoftware           => { Avoid => 1 },
+    ProjectionType              => { Avoid => 1 },
+    StereoMode                  => { Avoid => 1 },
+    SourceCount                 => { Avoid => 1, Writable => 'integer' },
+    InitialViewHeadingDegrees   => { Avoid => 1, Writable => 'real' },
+    InitialViewPitchDegrees     => { Avoid => 1, Writable => 'real' },
+    InitialViewRollDegrees      => { Avoid => 1, Writable => 'real' },
     Timestamp                   => {
         Name => 'TimeStamp',
         Groups => { 2 => 'Time' },
+        Avoid => 1,
+        Writable => 'date',
+        Shift => 'Time',
         ValueConv => 'ConvertUnixTime($val)', #(NC)
+        ValueConvInv => 'GetUnixTime($val)',
         PrintConv => '$self->ConvertDateTime($val)',
+        PrintConvInv => '$self->InverseDateTime($val)',
     },
-    FullPanoWidthPixels         => { },
-    FullPanoHeightPixels        => { },
-    CroppedAreaImageWidthPixels => { },
-    CroppedAreaImageHeightPixels=> { },
-    CroppedAreaLeftPixels       => { },
-    CroppedAreaTopPixels        => { },
+    FullPanoWidthPixels         => { Avoid => 1, Writable => 'integer' },
+    FullPanoHeightPixels        => { Avoid => 1, Writable => 'integer' },
+    CroppedAreaImageWidthPixels => { Avoid => 1, Writable => 'integer' },
+    CroppedAreaImageHeightPixels=> { Avoid => 1, Writable => 'integer' },
+    CroppedAreaLeftPixels       => { Avoid => 1, Writable => 'integer' },
+    CroppedAreaTopPixels        => { Avoid => 1, Writable => 'integer' },
 );
 
 # SVG namespace properties (ref 9)

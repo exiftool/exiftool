@@ -248,6 +248,7 @@ $VERSION = '2.48';
     25.3 => 'Sigma 20mm F1.8 EX DG Aspherical RF', #19
     25.4 => 'Sigma 30mm F1.4 EX DC', #21/27
     25.5 => 'Sigma 24mm F1.8 EX DG ASP Macro', #Florian Knorn
+    # 25 - also seen for an "old Sigma 50mm Macro" (forum2833)
     27 => 'Minolta AF 85mm F1.4 G (D)', # added (D) (ref 13)
     28 => 'Minolta/Sony AF 100mm F2.8 Macro (D) or Tamron Lens',
     # 28 => 'Sony 100mm F2.8 Macro (SAL100M28)', (ref 18/JR)

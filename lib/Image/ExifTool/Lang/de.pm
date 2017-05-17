@@ -11,7 +11,7 @@ package Image::ExifTool::Lang::de;
 use strict;
 use vars qw($VERSION);
 
-$VERSION = '1.31';
+$VERSION = '1.32';
 
 %Image::ExifTool::Lang::de::Translate = (
    'AEAperture' => 'AE-Blende',
@@ -312,8 +312,8 @@ $VERSION = '1.31';
       Description => 'AF-Feinabstimmung',
       PrintConv => {
         'Off' => 'Aus',
-        'On (1)' => 'An (1)',
-        'On (2)' => 'An (2)',
+        'On (1)' => 'Ein (1)',
+        'On (2)' => 'Ein (2)',
       },
     },
    'AFFineTuneAdj' => 'AF-Feinabstimmung',
@@ -338,7 +338,7 @@ $VERSION = '1.31';
         'Adjust by lens' => 'Korrektur objektivabhängig',
         'Disable' => 'Deaktiviert',
         'Off' => 'Aus',
-        'On' => 'An',
+        'On' => 'Ein',
       },
     },
    'AFMicroAdjRegisteredLenses' => 'AF Feinabstimmung bekannte Objektive',
@@ -470,7 +470,7 @@ $VERSION = '1.31';
       PrintConv => {
         'All 45 points area' => 'Alle 45 Punkte',
         'Disable' => 'Aus',
-        'Enable' => 'An',
+        'Enable' => 'Ein',
         'Left/right AF points' => 'Möglich (linkes/rechtes zusätzliches AF-Messfeld)',
         'Surrounding AF points' => 'Möglich (entsprechendes zusätzliches AF-Messfeld)',
       },
@@ -1181,7 +1181,7 @@ $VERSION = '1.31';
         'Effect' => 'Effekt',
         'No flash & flash' => 'Kein Blitz & Blitz',
         'Off' => 'Aus',
-        'On' => 'An',
+        'On' => 'Ein',
         'WB' => 'Weißabgleich',
         'WB2' => 'Weißabgleich 2',
       },
@@ -1290,7 +1290,7 @@ $VERSION = '1.31';
       Description => 'Schwarz-Weiß Modus',
       PrintConv => {
         'Off' => 'Aus',
-        'On' => 'An',
+        'On' => 'Ein',
       },
     },
    'BabyAge' => 'Kindesalter',
@@ -1731,24 +1731,24 @@ $VERSION = '1.31';
       Description => 'Farbabweichung Korrektur',
       PrintConv => {
         'Off' => 'Aus',
-        'On' => 'An',
+        'On' => 'Ein',
       },
     },
    'ChromaticAberrationCorrection' => {
       Description => 'Farbabweichung Korrektur',
       PrintConv => {
         'Off' => 'Aus',
-        'On' => 'An',
+        'On' => 'Ein',
       },
     },
-   'ChromaticAberrationOn' => 'Farbabweichung An',
+   'ChromaticAberrationOn' => 'Farbabweichung Ein',
    'ChromaticAberrationR' => 'Farbabweichung R',
    'ChromaticAberrationRed' => 'Farbabweichung Rot',
    'ChromaticAberrationSetting' => {
       Description => 'Farbabweichung Einstellung',
       PrintConv => {
         'Off' => 'Aus',
-        'On' => 'An',
+        'On' => 'Ein',
       },
     },
    'Chromaticity' => 'Chromatizität',
@@ -2158,8 +2158,8 @@ $VERSION = '1.31';
     },
    'ConditionalFEC' => 'Blitzbelichtungskorrektur',
    'ConnectionSpaceIlluminant' => 'Weißpunkt des Verbindungsfarbraums',
-   'ConstrainedCropHeight' => 'Crop erzeugte Höhe',
-   'ConstrainedCropWidth' => 'Crop erzeugte Breite',
+   'ConstrainedCropHeight' => 'Ausschnitt erzeugte Höhe',
+   'ConstrainedCropWidth' => 'Ausschnitt erzeugte Breite',
    'Contact' => 'Kontakt',
    'ContentLocationCode' => 'Inhaltspositionscode',
    'ContentLocationName' => 'Inhaltspositionsname',
@@ -2229,7 +2229,7 @@ $VERSION = '1.31';
       Description => 'Kontrast helle Stellen',
       PrintConv => {
         'Off' => 'Aus',
-        'On' => 'An',
+        'On' => 'Ein',
       },
     },
    'ContrastLandscape' => {
@@ -2331,9 +2331,9 @@ $VERSION = '1.31';
       },
     },
    'CoringValues' => 'Coring Werte',
-   'Country' => 'Staat',
-   'Country-PrimaryLocationCode' => 'ISO-Landescode',
-   'Country-PrimaryLocationName' => 'Staat',
+   'Country' => 'Land',
+   'Country-PrimaryLocationCode' => 'ISO-Ländercode',
+   'Country-PrimaryLocationName' => 'Land',
    'CountryCode' => 'Länderkennzeichen',
    'Coverage' => 'Anwendungsbereich',
    'CreateDate' => 'Digitalisierungsdatum/-uhrzeit',
@@ -2383,15 +2383,15 @@ $VERSION = '1.31';
    'CreatorWorkURL' => 'Ersteller - Webseite(n)',
    'Credit' => 'Anbieter',
    'CropActive' => {
-      Description => 'Crop aktiviert',
+      Description => 'Ausschnitt aktiviert',
       PrintConv => {
         'No' => 'Nein',
         'Yes' => 'Ja',
       },
     },
-   'CropAngle' => 'Crop Winkel',
+   'CropAngle' => 'Ausschnitt Winkel',
    'CropAspectRatio' => {
-      Description => 'Crop Bildformat',
+      Description => 'Ausschnitt Bildformat',
       PrintConv => {
         'A-size Landscape' => 'DIN A Querformat',
         'A-size Portrait' => 'DIN A Hochformat',
@@ -2402,42 +2402,42 @@ $VERSION = '1.31';
         'Letter-size Portrait' => 'Letter Querformat',
       },
     },
-   'CropBottom' => 'Crop Unten',
-   'CropBottomMargin' => 'Crop Rand Unten',
+   'CropBottom' => 'Ausschnitt Unten',
+   'CropBottomMargin' => 'Ausschnitt Rand Unten',
    'CropCircleActive' => {
       PrintConv => {
         'No' => 'Nein',
         'Yes' => 'Ja',
       },
     },
-   'CropHeight' => 'Crop Höhe',
-   'CropHiSpeed' => 'Highspeed-Bildformat',
-   'CropLeft' => 'Crop Links',
-   'CropLeftMargin' => 'Crop Rand Links',
-   'CropRight' => 'Crop Rechts',
-   'CropRightMargin' => 'Crop Rand Rechts',
-   'CropRotation' => 'Crop Drehung',
-   'CropTop' => 'Crop Oben',
-   'CropTopMargin' => 'Crop Rand Oben',
+   'CropHeight' => 'Ausschnitt Höhe',
+   'CropHiSpeed' => 'Ausschnitt Highspeed',
+   'CropLeft' => 'Ausschnitt Links',
+   'CropLeftMargin' => 'Ausschnitt Rand Links',
+   'CropRight' => 'Ausschnitt Rechts',
+   'CropRightMargin' => 'Ausschnitt Rand Rechts',
+   'CropRotation' => 'Ausschnitt Drehung',
+   'CropTop' => 'Ausschnitt Oben',
+   'CropTopMargin' => 'Ausschnitt Rand Oben',
    'CropUnit' => {
-      Description => 'Crop Einheit',
+      Description => 'Ausschnitt Einheit',
       PrintConv => {
-        'inches' => 'Inch',
+        'inches' => 'Zoll',
         'pixels' => 'Pixel',
       },
     },
    'CropUnits' => {
-      Description => 'Crop Einheiten',
+      Description => 'Ausschnitt Einheiten',
       PrintConv => {
-        'inches' => 'Inch',
+        'inches' => 'Zoll',
         'pixels' => 'Pixel',
       },
     },
-   'CropWidth' => 'Crop Breite',
-   'CroppedImageHeight' => 'Crop Bildhöhe',
-   'CroppedImageLeft' => 'Crop Bildanfang Links',
-   'CroppedImageTop' => 'Crop Bildanfang Oben',
-   'CroppedImageWidth' => 'Crop Bildbreite',
+   'CropWidth' => 'Ausschnitt Breite',
+   'CroppedImageHeight' => 'Ausschnitt Bildhöhe',
+   'CroppedImageLeft' => 'Ausschnitt Bildanfang Links',
+   'CroppedImageTop' => 'Ausschnitt Bildanfang Oben',
+   'CroppedImageWidth' => 'Ausschnitt Bildbreite',
    'CurrentICCProfile' => 'Aktuelles ICC-Profile',
    'CurrentIPTCDigest' => 'Aktueller IPTC Kennwert',
    'Curves' => {
@@ -2550,8 +2550,8 @@ $VERSION = '1.31';
       },
     },
    'Declination' => 'Deklination',
-   'DefaultCropOrigin' => 'System-Crop Beginn',
-   'DefaultCropSize' => 'System-Crop Größe',
+   'DefaultCropOrigin' => 'System-Ausschnitt Beginn',
+   'DefaultCropSize' => 'System-Ausschnitt Größe',
    'DefaultDisplayHeight' => 'Default Anzeigehöhe',
    'DefaultDisplayWidth' => 'Default Anzeigebreite',
    'DefaultEraseOption' => {
@@ -2764,13 +2764,13 @@ $VERSION = '1.31';
    'DisplayUnit' => {
       PrintConv => {
         'Pixels' => 'Pixel',
-        'inches' => 'Inch',
+        'inches' => 'Zoll',
       },
     },
    'DisplayUnits' => {
       Description => 'Anzeigeeinheit',
       PrintConv => {
-        'inches' => 'Inch',
+        'inches' => 'Zoll',
         'meters' => 'Meter',
       },
     },
@@ -2787,13 +2787,13 @@ $VERSION = '1.31';
    'DisplayedUnitsX' => {
       Description => 'Einheit der horiz. Auflösung',
       PrintConv => {
-        'inches' => 'Inch',
+        'inches' => 'Zoll',
       },
     },
    'DisplayedUnitsY' => {
       Description => 'Einheit der vert. Auflösung',
       PrintConv => {
-        'inches' => 'Inch',
+        'inches' => 'Zoll',
       },
     },
    'DistortionControl' => {
@@ -2818,7 +2818,7 @@ $VERSION = '1.31';
         'On' => 'Ein',
       },
     },
-   'DistortionCorrectionOn' => 'Verzeichnungskorrektur An',
+   'DistortionCorrectionOn' => 'Verzeichnungskorrektur Ein',
    'DistortionN' => 'Verzeichnung N',
    'DistortionParam02' => 'Verzeichnungsparameter 02',
    'DistortionParam04' => 'Verzeichnungsparameter 04',
@@ -3640,7 +3640,7 @@ $VERSION = '1.31';
       PrintConv => {
         'Extra fine' => 'Extra',
         'Off' => 'Aus',
-        'On' => 'An',
+        'On' => 'Ein',
       },
     },
    'FineTuneOptCenterWeighted' => 'Feinabst. der Bel.Messung Mittenbetonte Messung',
@@ -4076,7 +4076,7 @@ $VERSION = '1.31';
       Description => 'Einheit der Sensorauflösung',
       PrintConv => {
         'None' => 'Keine',
-        'inches' => 'Inch',
+        'inches' => 'Zoll',
         'um' => 'µm (Mikrometer)',
       },
     },
@@ -4659,7 +4659,7 @@ $VERSION = '1.31';
    'Image::ExifTool::Canon::CameraInfoPowerShot' => 'Canon KameraInfo PowerShot',
    'Image::ExifTool::Canon::CameraInfoPowerShot2' => 'Canon KameraInfo PowerShot2',
    'Image::ExifTool::Canon::CameraInfoUnknown32' => 'Canon KameraInfo Unbekannt32',
-   'Image::ExifTool::Canon::CropInfo' => 'Canon Crop Info',
+   'Image::ExifTool::Canon::CropInfo' => 'Canon Ausschnitt Info',
    'Image::ExifTool::CanonRaw::ImageFormat' => 'CanonRaw Bildformat',
    'Image::ExifTool::DNG::OriginalRaw' => 'DNG Original RAW',
    'Image::ExifTool::ICC_Profile::Measurement' => 'ICC_Profil Messung',
@@ -4688,7 +4688,7 @@ $VERSION = '1.31';
       Description => 'Bild-Authentifikation',
       PrintConv => {
         'Off' => 'Aus',
-        'On' => 'An',
+        'On' => 'Ein',
       },
     },
    'ImageBoundary' => 'Bildbegrenzung',
@@ -5255,8 +5255,8 @@ $VERSION = '1.31';
       Description => 'Langzeit Rauschunterdrückung 2',
       PrintConv => {
         'Off' => 'Aus',
-        'On' => 'An',
-        'On (1D)' => 'An (1D)',
+        'On' => 'Ein',
+        'On (1D)' => 'Ein (1D)',
       },
     },
    'Luminance' => 'Luminanz',
@@ -5755,7 +5755,7 @@ $VERSION = '1.31';
       Description => 'Ruisond. Multi Frame',
       PrintConv => {
         'Off' => 'Aus',
-        'On' => 'An',
+        'On' => 'Ein',
         'n/a' => '(nicht gesetzt)',
       },
     },
@@ -5924,7 +5924,7 @@ $VERSION = '1.31';
       Description => 'Rauschunterdrückungsmodus',
       PrintConv => {
         'Off' => 'Aus',
-        'On' => 'An',
+        'On' => 'Ein',
       },
     },
    'NoiseReductionSharpness' => 'Rauschunterdrückung Schärfe',
@@ -5990,8 +5990,8 @@ $VERSION = '1.31';
       Description => 'Sofort-Weißabgleich',
       PrintConv => {
         'Off' => 'Aus',
-        'On' => 'An',
-        'On (Preset)' => 'An (Preset)',
+        'On' => 'Ein',
+        'On (Preset)' => 'Ein (Preset)',
       },
     },
    'OperatingSystem' => {
@@ -6088,10 +6088,10 @@ $VERSION = '1.31';
    'PanasonicImageHeight' => 'Panasonic Bildhöhe',
    'PanasonicImageWidth' => 'Panasonic Bildbreite',
    'PanasonicTitle' => 'Titel',
-   'PanoramaCropBottom' => 'Panorama Crop Unten',
-   'PanoramaCropLeft' => 'Panorama Crop Links',
-   'PanoramaCropRight' => 'Panorame Crop Rechts',
-   'PanoramaCropTop' => 'Panorama Crop Oben',
+   'PanoramaCropBottom' => 'Panorama Ausschnitt Unten',
+   'PanoramaCropLeft' => 'Panorama Ausschnitt Links',
+   'PanoramaCropRight' => 'Panorame Ausschnitt Rechts',
+   'PanoramaCropTop' => 'Panorama Ausschnitt Oben',
    'PanoramaDirection' => {
       Description => 'Panorama-Richtung',
       PrintConv => {
@@ -6455,10 +6455,10 @@ $VERSION = '1.31';
         'Unknown' => 'Unbekannt',
       },
     },
-   'PreviewCropBottom' => 'Vorschau Crop Unten',
-   'PreviewCropLeft' => 'Vorschau Crop Links',
-   'PreviewCropRight' => 'Vorschau Crop Rechts',
-   'PreviewCropTop' => 'Vorschau Crop Oben',
+   'PreviewCropBottom' => 'Vorschau Ausschnitt Unten',
+   'PreviewCropLeft' => 'Vorschau Ausschnitt Links',
+   'PreviewCropRight' => 'Vorschau Ausschnitt Rechts',
+   'PreviewCropTop' => 'Vorschau Ausschnitt Oben',
    'PreviewIFD' => 'Preview-IFD-Zeiger',
    'PreviewImage' => 'Vorschaubild',
    'PreviewImageBorders' => 'Vorschaubild-Ränder',
@@ -6661,10 +6661,10 @@ $VERSION = '1.31';
         'Shot Settings' => 'Aufnahmeeinstellung',
       },
     },
-   'RawCropBottom' => 'Raw Crop Unten',
-   'RawCropLeft' => 'Raw Crop Links',
-   'RawCropRight' => 'Raw Crop Rechts',
-   'RawCropTop' => 'Raw Crop Oben',
+   'RawCropBottom' => 'Raw Ausschnitt Unten',
+   'RawCropLeft' => 'Raw Ausschnitt Links',
+   'RawCropRight' => 'Raw Ausschnitt Rechts',
+   'RawCropTop' => 'Raw Ausschnitt Oben',
    'RawData' => 'Raw-Daten',
    'RawDataByteOrder' => 'RAW Daten Bytereihenfolge',
    'RawDataLength' => 'RAW-Daten Länge',
@@ -6862,7 +6862,7 @@ $VERSION = '1.31';
       Description => 'Einheit der X- und Y-Auflösung',
       PrintConv => {
         'None' => 'Keine',
-        'inches' => 'Inch',
+        'inches' => 'Zoll',
       },
     },
    'RetouchHistory' => {
@@ -7626,7 +7626,7 @@ $VERSION = '1.31';
       Description => 'Slow-Synchro',
       PrintConv => {
         'Off' => 'Aus',
-        'On' => 'An',
+        'On' => 'Ein',
       },
     },
    'SoftSkinEffect' => {
@@ -8534,7 +8534,7 @@ $VERSION = '1.31';
       Description => 'Weißabgleich automatische Abstimmung',
       PrintConv => {
         'Off' => 'Aus',
-        'On' => 'An',
+        'On' => 'Ein',
       },
     },
    'WhiteBalanceBias' => 'Weißabgleich Bias',

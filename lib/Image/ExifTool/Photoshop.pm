@@ -28,7 +28,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD $iptcDigestInfo);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.54';
+$VERSION = '1.55';
 
 sub ProcessPhotoshop($$$);
 sub WritePhotoshop($$$);
@@ -728,7 +728,7 @@ sub ProcessPhotoshop($$$)
     $verbose and $et->VerboseDir('Photoshop', 0, $$dirInfo{DirLen});
 
     # scan through resource blocks:
-    # Format: 0) Type, 4 bytes - '8BIM' (or the rare 'PHUT', 'DCSR' or 'AgHg')
+    # Format: 0) Type, 4 bytes - '8BIM' (or the rare 'PHUT', 'DCSR', 'AgHg' or 'MeSa')
     #         1) TagID,2 bytes
     #         2) Name, pascal string padded to even no. bytes
     #         3) Size, 4 bytes - N
@@ -738,7 +738,7 @@ sub ProcessPhotoshop($$$)
         my ($ttPtr, $extra, $val, $name);
         if ($type eq '8BIM') {
             $ttPtr = $tagTablePtr;
-        } elsif ($type =~ /^(PHUT|DCSR|AgHg)$/) {
+        } elsif ($type =~ /^(PHUT|DCSR|AgHg|MeSa)$/) { # (PHUT~ImageReady, MeSa~PhotoDeluxe)
             $ttPtr = GetTagTable('Image::ExifTool::Photoshop::Unknown');
         } else {
             $type =~ s/([^\w])/sprintf("\\x%.2x",ord($1))/ge;

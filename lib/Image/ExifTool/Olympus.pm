@@ -39,7 +39,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::APP12;
 
-$VERSION = '2.48';
+$VERSION = '2.49';
 
 sub PrintLensInfo($$$);
 
@@ -359,6 +359,7 @@ my %olympusCameraTypes = (
     D4586 => 'TG-4',
     D4587 => 'TG-860',
     D4591 => 'TG-870',
+    D4593 => 'TG-5', #IB
     D4809 => 'C2500L',
     D4842 => 'E-10',
     D4856 => 'C-1',

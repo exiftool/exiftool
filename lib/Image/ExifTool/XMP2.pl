@@ -1500,6 +1500,32 @@ my %sSubVersion = (
     ConfidenceLevel => { Writable => 'integer' },
 );
 
+# Google audio namespace
+%Image::ExifTool::XMP::GAudio = (
+    %xmpTableDefaults,
+    GROUPS => { 1 => 'XMP-GAudio', 2 => 'Audio' },
+    NAMESPACE => 'GAudio',
+    Data => {
+        Name => 'AudioData',
+        ValueConv => 'Image::ExifTool::XMP::DecodeBase64($val)',
+        ValueConvInv => 'Image::ExifTool::XMP::EncodeBase64($val)',
+    },
+    Mime => { Name => 'AudioMimeType' },
+);
+
+# Google image namespace
+%Image::ExifTool::XMP::GImage = (
+    %xmpTableDefaults,
+    GROUPS => { 1 => 'XMP-GImage', 2 => 'Image' },
+    NAMESPACE => 'GImage',
+    Data => {
+        Name => 'ImageData',
+        ValueConv => 'Image::ExifTool::XMP::DecodeBase64($val)',
+        ValueConvInv => 'Image::ExifTool::XMP::EncodeBase64($val)',
+    },
+    Mime => { Name => 'ImageMimeType' },
+);
+
 # Google panorama namespace properties
 # (ref http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,4569.0.html)
 %Image::ExifTool::XMP::GPano = (
@@ -1537,39 +1563,6 @@ my %sSubVersion = (
     LargestValidInteriorRectTop     => { Writable => 'real' },
     LargestValidInteriorRectWidth   => { Writable => 'real' },
     LargestValidInteriorRectHeight  => { Writable => 'real' },
-);
-
-# Getty Images namespace (ref PH)
-%Image::ExifTool::XMP::GettyImages = (
-    %xmpTableDefaults,
-    GROUPS => { 1 => 'XMP-getty', 2 => 'Image' },
-    NAMESPACE => 'GettyImagesGIFT',
-    NOTES => q{
-        The actual Getty Images namespace prefix is "GettyImagesGIFT", which is the
-        prefix recorded in the file, but ExifTool shortens this for the family 1
-        group name.
-    },
-    Personality         => { },
-    OriginalFilename    => { Name => 'OriginalFileName' },
-    ParentMEID          => { },
-    # the following from StarGeek
-    AssetID             => { },
-    CallForImage        => { },
-    CameraFilename      => { },
-    CameraMakeModel     => { Avoid => 1 },
-    Composition         => { },
-    CameraSerialNumber  => { Avoid => 1 },
-    ExclusiveCoverage   => { },
-    GIFTFtpPriority     => { },
-    ImageRank           => { },
-    MediaEventIdDate    => { },
-    OriginalCreateDateTime => { %dateTimeInfo, Groups => { 2 => 'Time' }, Avoid => 1 },
-    ParentMediaEventID  => { },
-    PrimaryFTP          => { List => 'Bag' },
-    RoutingDestinations => { List => 'Bag' },
-    RoutingExclusions   => { List => 'Bag' },
-    SecondaryFTP        => { List => 'Bag' },
-    TimeShot            => { },
 );
 
 # Google Spherical Images namespace (ref https://github.com/google/spatial-media/blob/master/docs/spherical-video-rfc.md)
@@ -1610,6 +1603,39 @@ my %sSubVersion = (
     CroppedAreaImageHeightPixels=> { Avoid => 1, Writable => 'integer' },
     CroppedAreaLeftPixels       => { Avoid => 1, Writable => 'integer' },
     CroppedAreaTopPixels        => { Avoid => 1, Writable => 'integer' },
+);
+
+# Getty Images namespace (ref PH)
+%Image::ExifTool::XMP::GettyImages = (
+    %xmpTableDefaults,
+    GROUPS => { 1 => 'XMP-getty', 2 => 'Image' },
+    NAMESPACE => 'GettyImagesGIFT',
+    NOTES => q{
+        The actual Getty Images namespace prefix is "GettyImagesGIFT", which is the
+        prefix recorded in the file, but ExifTool shortens this for the family 1
+        group name.
+    },
+    Personality         => { },
+    OriginalFilename    => { Name => 'OriginalFileName' },
+    ParentMEID          => { },
+    # the following from StarGeek
+    AssetID             => { },
+    CallForImage        => { },
+    CameraFilename      => { },
+    CameraMakeModel     => { Avoid => 1 },
+    Composition         => { },
+    CameraSerialNumber  => { Avoid => 1 },
+    ExclusiveCoverage   => { },
+    GIFTFtpPriority     => { },
+    ImageRank           => { },
+    MediaEventIdDate    => { },
+    OriginalCreateDateTime => { %dateTimeInfo, Groups => { 2 => 'Time' }, Avoid => 1 },
+    ParentMediaEventID  => { },
+    PrimaryFTP          => { List => 'Bag' },
+    RoutingDestinations => { List => 'Bag' },
+    RoutingExclusions   => { List => 'Bag' },
+    SecondaryFTP        => { List => 'Bag' },
+    TimeShot            => { },
 );
 
 # SVG namespace properties (ref 9)

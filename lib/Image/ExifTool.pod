@@ -318,8 +318,8 @@ Values of the returned hash are usually simple scalars, but a scalar
 reference is used to indicate binary data and an array reference may be used
 to indicate a list.  Also, a hash reference may be returned if the L</Struct>
 option is used.  Lists of values are joined by commas into a single
-string only if the PrintConv option is enabled and the List option is
-disabled (which are the defaults).  Note that binary values are not
+string only if the PrintConv option is enabled and the ListJoin option is
+enabled (which are the defaults).  Note that binary values are not
 necessarily extracted unless specifically requested, or the Binary option is
 enabled and the tag is not specifically excluded.  If not extracted the
 value is a reference to a string of the form "Binary data ##### bytes".
@@ -718,12 +718,6 @@ set to undef to select the built-in default language.  Default is 'en'.
 Flag to indicate that 64-bit file offsets are supported on this system.
 Default is undef.
 
-=item List
-
-Flag to extract lists of PrintConv values into arrays instead of joining
-them into a string of values.  The L</ListSep> option specifies the
-separator used when combining values.  Default is undef.
-
 =item ListItem
 
 Return only a specific item from list-type values.  A value of 0 returns the
@@ -732,16 +726,17 @@ also be used, with -1 representing the last item in the list.  Applies only
 to the top-level list of nested lists.  Default is undef to return all items
 in the list.
 
-=item ListSep
+=item ListJoin
 
-Separator string used to join lists of PrintConv values when L</List> option
-is not set.  Default is ', '.
+Separator used to join the PrintConv value of multi-item List-type tags into
+a single string.  If not defined, multi-item lists are returned as a list
+reference.  Does not affect ValueConv values.  Default is ', '.
 
 =item ListSplit
 
 Regular expression used to split values of list-type tags into individual
-items when writing.  (eg. use ',\\s*' to split a comma-separated list.) 
-Default is undef.
+items when writing.  (eg. use ',\\s*' to split a comma-separated list.)
+Split when writing either PrintConv or ValueConv values.  Default is undef.
 
 =item MakerNotes
 
@@ -1033,8 +1028,8 @@ Inputs are the same as L</ExtractInfo> and L</ImageInfo> except that an
 image can not be specified.  Options in effect are:
 
 Charset, CoordFormat, DateFormat, Duplicates, Escape, Exclude, Filter,
-Group#, GlobalTimeShift, Lang, List, ListItem, ListSep, PrintConv, Sort (if
-a tag list reference is given) and StrictDate.
+Group#, GlobalTimeShift, Lang, ListItem, ListJoin, PrintConv, Sort (if a tag
+list reference is given) and StrictDate.
 
 =item Return Value:
 
@@ -1045,9 +1040,9 @@ Reference to information hash, the same as with L</ImageInfo>.
 The following options are effective in the call to L</GetInfo>:
 
 Charset, CoordFormat, DateFormat, Duplicates, Escape, Exclude, Filter,
-Group#, GlobalTimeShift, Lang, List, ListItem, ListSep, PrintConv,
-QuickTimeUTC (conversion to local time), Sort (if a tag list reference is
-given) and StrictDate.
+Group#, GlobalTimeShift, Lang, ListItem, ListJoin, PrintConv, QuickTimeUTC
+(conversion to local time), Sort (if a tag list reference is given) and
+StrictDate.
 
 =head2 WriteInfo
 
@@ -1224,9 +1219,9 @@ unless the PrintConv option is disabled.
 Tags which represent lists of multiple values (as may happen with 'Keywords'
 for example) are handled specially.  In scalar context, the returned
 PrintConv value for these tags is either a string of values or a list
-reference (depending on the List option setting), and the ValueConv value is
-always a list reference.  But in list context, L</GetValue> always returns
-the list itself.
+reference (depending on the ListJoin option setting), and the ValueConv
+value is always a list reference.  But in list context, L</GetValue> always
+returns the list itself.
 
 Note that L</GetValue> requires a case-sensitive tag key as an argument.  To
 retrieve tag information based on a case-insensitive tag name (with an
@@ -1255,8 +1250,8 @@ optional group specifier), use L</GetInfo> instead.
 The following options are in effect when L</GetValue> is called:
 
 Charset, CoordFormat, DateFormat, Escape, Filter, GlobalTimeShift, Lang,
-List, ListItem, ListSep, PrintConv, QuickTimeUTC (conversion to local time),
-and StrictDate.
+ListItem, ListJoin, PrintConv, QuickTimeUTC (conversion to local time), and
+StrictDate.
 
 =over 4
 
@@ -1278,9 +1273,9 @@ types.
 =item Return Values:
 
 The value of the specified tag.  If the tag represents a list of multiple
-values and the List option is disabled then PrintConv returns a string of
-values, otherwise a reference to the list is returned in scalar context. 
-The list itself is returned in list context.  (Unless 'Both' values are
+values and the ListJoin option is enabled then PrintConv returns a string of
+values, otherwise a reference to the list is returned in scalar context. The
+list itself is returned in list context.  (Unless 'Both' values are
 requested, in which case two list references are returned, regardless of
 context.)  Values may also be scalar references to binary data, or hash
 references if the L</Struct> option is set.
@@ -1510,7 +1505,7 @@ explicitly, either by group (with 'Adobe:*') or as a block (with 'Adobe').
 
 The following ExifTool options are effective in the call to L</SetNewValue>:
 
-Charset, DateFormat, Escape, IgnoreMinorErrors, Lang, ListSep, ListSplit,
+Charset, DateFormat, Escape, IgnoreMinorErrors, Lang, ListJoin, ListSplit,
 PrintConv, QuickTimeUTC, StrictDate, Verbose and WriteMode.
 
 =head2 GetNewValue

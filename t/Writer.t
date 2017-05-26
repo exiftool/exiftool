@@ -143,7 +143,7 @@ my $testfile;
 {
     ++$testnum;
     my $exifTool = new Image::ExifTool;
-    $exifTool->Options(Duplicates => 1, Binary => 1, List => 1);
+    $exifTool->Options(Duplicates => 1, Binary => 1, ListJoin => undef);
     my $info = $exifTool->ImageInfo('t/images/Canon.jpg');
     my $tag;
     foreach $tag (keys %$info) {
@@ -155,7 +155,7 @@ my $testfile;
     my $image;
     writeInfo($exifTool, 't/images/Canon.jpg', \$image);
     # (must drop Composite tags because their order may change)
-    $exifTool->Options(Unknown => 1, Binary => 0, List => 0, Composite => 0);
+    $exifTool->Options(Unknown => 1, Binary => 0, ListJoin => ', ', Composite => 0);
     # (must ignore filesize because it changes as null padding is discarded)
     $info = $exifTool->ImageInfo(\$image, '-filesize');
     $testfile = "t/${testname}_${testnum}_failed.jpg";
@@ -210,12 +210,12 @@ my $testfile;
 }
 
 # tests 11/12: Try creating something from nothing and removing it again
-#              (also test ListSplit and ListSep options)
+#              (also test ListSplit and ListJoin options)
 {
     ++$testnum;
     my $exifTool = new Image::ExifTool;
     $exifTool->Options(ListSplit => ';\\s*');
-    $exifTool->Options(ListSep => ' <<separator>> ');
+    $exifTool->Options(ListJoin => ' <<separator>> ');
     $exifTool->SetNewValue(DateTimeOriginal => '2005:01:19 13:37:22', Group => 'EXIF');
     $exifTool->SetNewValue(FileVersion => 12, Group => 'IPTC');
     $exifTool->SetNewValue(Contributor => 'Guess who', Group => 'XMP');
@@ -590,7 +590,7 @@ my $testOK;
 {
     ++$testnum;
     my $exifTool = new Image::ExifTool;
-    $exifTool->Options(List => 1);
+    $exifTool->Options(ListJoin => undef);
     $exifTool->SetNewValuesFromFile('t/images/IPTC.jpg',
             { Replace => 1 },
             'xmp:subject<filename',

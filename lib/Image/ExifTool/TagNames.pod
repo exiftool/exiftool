@@ -1186,7 +1186,9 @@ L<http://www.adobe.com/devnet/xmp/> for the official XMP specification.
   expressionmedia                               XMP ExpressionMedia
   extensis                                      XMP extensis
   fpv                                           XMP fpv
+  GAudio                                        XMP GAudio
   getty                                         XMP GettyImages
+  GImage                                        XMP GImage
   GPano                                         XMP GPano
   GSpherical                                    XMP GSpherical
   ics                                           XMP ics
@@ -2210,6 +2212,15 @@ These tags belong to the ExifTool XMP-fpv family 1 group.
   --------                                      --------
   RichTextComment                               string
 
+=head3 XMP GAudio Tags
+
+These tags belong to the ExifTool XMP-GAudio family 1 group.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  AudioData                                     string
+  AudioMimeType                                 string
+
 =head3 XMP GettyImages Tags
 
 The actual Getty Images namespace prefix is "GettyImagesGIFT", which is the
@@ -2241,6 +2252,15 @@ These tags belong to the ExifTool XMP-getty family 1 group.
   RoutingExclusions                             string+
   SecondaryFTP                                  string+
   TimeShot                                      string
+
+=head3 XMP GImage Tags
+
+These tags belong to the ExifTool XMP-GImage family 1 group.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  ImageData                                     string
+  ImageMimeType                                 string
 
 =head3 XMP GPano Tags
 

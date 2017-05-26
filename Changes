@@ -7,6 +7,20 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.50. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+May 26, 2017 - Version 10.54
+
+  - Added support for Google XMP GImage and GAudio tags
+  - Added a new Olympus CameraType (thanks LibRaw)
+  - Added a two new Sony lenses and decode more ILCE-9 tags (thanks Jos Roost)
+  - Added new values to some Pentax tags (thanks Andras Salamon)
+  - Added a new Canon LensType
+  - Added an additional checks to experimental -validate feature
+  - Improved user-defined FileTypes feature to provide more flexibility
+  - Enhanced -ext option to allow specific files extensions to be processed as
+    well as supported file extensions
+  - API Changes:
+      - Added ListJoin option to replace List and ListSep options
+
 May 17, 2017 - Version 10.53
 
   - Added support for "MeSa" Photoshop IRB resource
@@ -17,7 +31,7 @@ May 12, 2017 - Version 10.52
 
   - Added some new values to a number of FujiFilm tags and changed some others
     (thanks Albert Shan)
-  - Decode a number of new Sony tags for the ICLE-9 (thanks Jos Roost)
+  - Decode a number of new Sony tags for the ILCE-9 (thanks Jos Roost)
   - Made SonyISO writable
   - Changed behaviour of advanced formatting expression for Shortcut tags so it
     now applies to the combined value rather than individual constituent values

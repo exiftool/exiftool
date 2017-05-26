@@ -85,7 +85,7 @@ sub ProcessSerialData($$$);
 sub ProcessFilters($$$);
 sub SwapWords($);
 
-$VERSION = '3.74';
+$VERSION = '3.75';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -450,6 +450,7 @@ $VERSION = '3.74';
     4158 => 'Canon EF-S 18-55mm f/4-5.6 IS STM', #PH
     36910 => 'Canon EF 70-300mm f/4-5.6 IS II USM', #42
     36912 => 'Canon EF-S 18-135mm f/3.5-5.6 IS USM', #42
+    61494 => 'Canon CN-E 85mm T1.3 L F', #PH
     65535 => 'n/a',
 );
 

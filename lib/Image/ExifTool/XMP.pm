@@ -48,7 +48,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.02';
+$VERSION = '3.03';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -167,10 +167,12 @@ my %xmpNS = (
     fpv       => 'http://ns.fastpictureviewer.com/fpv/1.0/',
     creatorAtom=>'http://ns.adobe.com/creatorAtom/1.0/',
    'apple-fi' => 'http://ns.apple.com/faceinfo/1.0/',
+    GAudio    => 'http://ns.google.com/photos/1.0/audio/',
+    GImage    => 'http://ns.google.com/photos/1.0/image/',
     GPano     => 'http://ns.google.com/photos/1.0/panorama/',
+    GSpherical=> 'http://ns.google.com/videos/1.0/spherical/',
     dwc       => 'http://rs.tdwg.org/dwc/index.htm',
     GettyImagesGIFT => 'http://xmp.gettyimages.com/gift/1.0/',
-    GSpherical=> 'http://ns.google.com/videos/1.0/spherical/',
 );
 
 # build reverse namespace lookup
@@ -713,9 +715,21 @@ my %sRetouchArea = (
         Name => 'apple-fi',
         SubDirectory => { TagTable => 'Image::ExifTool::XMP::apple_fi' },
     },
+    GAudio => {
+        Name => 'GAudio',
+        SubDirectory => { TagTable => 'Image::ExifTool::XMP::GAudio' },
+    },
+    GImage => {
+        Name => 'GImage',
+        SubDirectory => { TagTable => 'Image::ExifTool::XMP::GImage' },
+    },
     GPano => {
         Name => 'GPano',
         SubDirectory => { TagTable => 'Image::ExifTool::XMP::GPano' },
+    },
+    GSpherical => {
+        Name => 'GSpherical',
+        SubDirectory => { TagTable => 'Image::ExifTool::XMP::GSpherical' },
     },
     dwc => {
         Name => 'dwc',
@@ -724,10 +738,6 @@ my %sRetouchArea = (
     getty => {
         Name => 'getty',
         SubDirectory => { TagTable => 'Image::ExifTool::XMP::GettyImages' },
-    },
-    GSpherical => {
-        Name => 'GSpherical',
-        SubDirectory => { TagTable => 'Image::ExifTool::XMP::GSpherical' },
     },
 );
 

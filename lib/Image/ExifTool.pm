@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '10.53';
+$VERSION = '10.54';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -1867,6 +1867,16 @@ sub Options($$;@)
             } else {
                 $$options{$param} = undef;  # clear the list
             }
+        } elsif ($param eq 'ListJoin') {
+            $$options{$param} = $newVal;
+            # ListJoin just sets the List and ListSep options for backward compatibility
+            if (defined $newVal) {
+                $$options{List} = 0;
+                $$options{ListSep} = $newVal;
+            } else {
+                $$options{List} = 1;
+                # (ListSep must be defined)
+            }
         } else {
             if ($param eq 'Escape') {
                 # set ESCAPE_PROC
@@ -1941,9 +1951,10 @@ sub ClearOptions($)
         IgnoreMinorErrors => undef, # ignore minor errors when reading/writing
         Lang        => $defaultLang,# localized language for descriptions etc
         LargeFileSupport => undef,  # flag indicating support of 64-bit file offsets
-        List        => undef,   # extract lists of PrintConv values into arrays
+        List        => undef,   # extract lists of PrintConv values into arrays [no longer documented]
         ListItem    => undef,   # used to return a specific item from lists
-        ListSep     => ', ',    # list item separator
+        ListJoin    => ', ',    # join lists together with this separator
+        ListSep     => ', ',    # list item separator [no longer documented]
         ListSplit   => undef,   # regex for splitting list-type tag values when writing
         MakerNotes  => undef,   # extract maker notes as a block
         MDItemTags  => undef,   # extract MacOS metadata item tags
@@ -3216,7 +3227,7 @@ sub GetFileType(;$$)
     my $fileExt = GetFileExtension($file);
     $fileExt = uc($file) unless $fileExt;
     $fileExt and $fileType = $fileTypeLookup{$fileExt}; # look up the file type
-    $fileType = $fileTypeLookup{$fileType} if $fileType and not ref $fileType;
+    $fileType = $fileTypeLookup{$fileType} while $fileType and not ref $fileType;
     # return description if specified
     # (allow input $file to be a FileType for this purpose)
     if ($desc) {
@@ -7777,11 +7788,19 @@ if (%Image::ExifTool::UserDefined::FileTypes) {
         my $fileInfo = $Image::ExifTool::UserDefined::FileTypes{$_};
         my $type = uc $_;
         ref $fileInfo eq 'HASH' or $fileTypeLookup{$type} = $fileInfo, next;
-        if ($$fileInfo{BaseType}) {
+        my $baseType = $$fileInfo{BaseType};
+        if ($baseType) {
             if ($$fileInfo{Description}) {
-                $fileTypeLookup{$type} = [ $$fileInfo{BaseType}, $$fileInfo{Description} ];
+                $fileTypeLookup{$type} = [ $baseType, $$fileInfo{Description} ];
             } else {
-                $fileTypeLookup{$type} = $$fileInfo{BaseType};
+                $fileTypeLookup{$type} = $baseType;
+            }
+            if (defined $$fileInfo{Writable} and not $$fileInfo{Writable}) {
+                # first make sure we are using an actual base type and not a derived type
+                $baseType = $fileTypeLookup{$baseType} while $baseType and not ref $fileTypeLookup{$baseType};
+                # mark this type as not writable
+                $noWriteFile{$baseType} or $noWriteFile{$baseType} = [ ];
+                push @{$noWriteFile{$baseType}}, $type;
             }
         } else {
             $fileTypeLookup{$type} = [ $type, $$fileInfo{Description} || $type ];

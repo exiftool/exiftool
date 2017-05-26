@@ -58,7 +58,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::HP;
 
-$VERSION = '3.14';
+$VERSION = '3.15';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -1489,7 +1489,7 @@ my %binaryDataAttrs = (
             284 => 409600, #PH (NC)
             285 => 576000, #PH (NC)
             286 => 819200, #PH (NC)
-            # 65534 Auto? (Q/Q10/Q7 MOV) PH
+            65534 => 'Auto 2', #PH (Q/Q10/Q7 MOV) [how is this different from 65535?]
             65535 => 'Auto', #PH/31 (K-01/K-70 MP4)
         },
     },
@@ -1873,8 +1873,13 @@ my %binaryDataAttrs = (
             '18 3' => 'Auto Program (MTF)', #PH (NC)
             '18 22' => 'Auto Program (Shallow DOF)', #PH (NC)
             '20 22' => 'Blur Control', #PH (Q)
-            '254 0' => 'Video', #PH (K-7,K-5)
-            '255 0' => 'Video (Auto Aperture)', #PH (K-5)
+            '249 0' => 'Movie (TAv)', #31
+            '250 0' => 'Movie (TAv, Auto Aperture)', #31
+            '251 0' => 'Movie (Manual)', #31
+            '252 0' => 'Movie (Manual, Auto Aperture)', #31
+            '253 0' => 'Movie (Av)', #31
+            '254 0' => 'Movie (Av, Auto Aperture)', #31
+            '255 0' => 'Movie (P, Auto Aperture)', #31
             '255 4' => 'Video (4)', #PH (K-x,K-01)
         },{
             # EV step size (ref 19)
@@ -5617,8 +5622,8 @@ my %binaryDataAttrs = (
             800 => 800, #PH
             1600 => 1600, #PH
             3200 => 3200, #PH
-            # seen 65534 for Q-S1 MOV video - PH
-            # seen 65535 for K-S1 MOV video - PH
+            65534 => 'Auto 2', #PH (Q-S1 MOV) [how is this different from 65535?]
+            65535 => 'Auto', #PH (K-S1 MOV)
         },
     },
     0x0017 => {

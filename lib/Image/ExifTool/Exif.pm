@@ -5279,7 +5279,9 @@ sub ProcessExif($$$)
             }
         }
     }
-    $verbose = -1 if $htmlDump; # mix htmlDump into verbose so we can test for both at once
+    # mix htmlDump and Validate into verbose so we can test for all at once
+    $verbose = -1 if $htmlDump;
+    $verbose = -2 if $validate and not $verbose;
     $dirName eq 'EXIF' and $dirName = $$dirInfo{DirName} = 'IFD0';
     $$dirInfo{Multi} = 1 if $dirName =~ /^(IFD0|SubIFD)$/ and not defined $$dirInfo{Multi};
     # get a more descriptive name for MakerNote sub-directories
@@ -5293,10 +5295,10 @@ sub ProcessExif($$$)
         $dirSize = 2 + 12 * $numEntries;
         $dirEnd = $dirStart + $dirSize;
         if ($dirSize > $dirLen) {
-            if ($verbose > 0 and not $$dirInfo{SubIFD}) {
+            if (($verbose > 0 or $validate) and not $$dirInfo{SubIFD}) {
                 my $short = $dirSize - $dirLen;
                 $$et{INDENT} =~ s/..$//; # keep indent the same
-                $et->Warn("Short directory size (missing $short bytes)");
+                $et->Warn("Short directory size for $name (missing $short bytes)");
                 $$et{INDENT} .= '| ';
             }
             undef $dirSize if $dirEnd > $dataLen; # read from file if necessary
@@ -5759,19 +5761,21 @@ sub ProcessExif($$$)
                     $et->Warn(sprintf('Tag ID 0x%.4x out of sequence in %s', $tagID, $dirName));
                 }
                 $lastID = $tagID;
-                my $fstr = $formatName[$format];
-                $fstr = "$origFormStr read as $fstr" if $origFormStr;
-                $et->VerboseInfo($tagID, $tagInfo,
-                    Table   => $tagTablePtr,
-                    Index   => $index,
-                    Value   => $tval,
-                    DataPt  => $valueDataPt,
-                    DataPos => $valueDataPos + $base,
-                    Size    => $size,
-                    Start   => $valuePtr,
-                    Format  => $fstr,
-                    Count   => $count,
-                );
+                if ($verbose > 0) {
+                    my $fstr = $formatName[$format];
+                    $fstr = "$origFormStr read as $fstr" if $origFormStr;
+                    $et->VerboseInfo($tagID, $tagInfo,
+                        Table   => $tagTablePtr,
+                        Index   => $index,
+                        Value   => $tval,
+                        DataPt  => $valueDataPt,
+                        DataPos => $valueDataPos + $base,
+                        Size    => $size,
+                        Start   => $valuePtr,
+                        Format  => $fstr,
+                        Count   => $count,
+                    );
+                }
             }
             next if not $tagInfo or $wrongFormat;
         }

@@ -31,7 +31,7 @@ my $testnum = 1;
     $exifTool->SetNewValue('Comment', 'A new comment');
     my $image;
     $exifTool->WriteInfo('t/images/PPM.ppm', \$image);
-    $exifTool->Options(Unknown => 1, Binary => 0, List => 0);
+    $exifTool->Options(Unknown => 1, Binary => 0, ListJoin => ', ');
     my $info = $exifTool->ImageInfo(\$image);
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";

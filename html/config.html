@@ -169,8 +169,8 @@
         # the numerical (-n) values of these tags.  All Require'd tags must
         # exist for the Composite tag to be evaluated.  If no Require'd tags
         # are specified, then at least one of the Desire'd tags must exist.
-        # See the Composite table in Image::ExifTool::Exif for more
-        # examples, and lib/Image/ExifTool/README for all of the details.</span>
+        # See the Composite table in Image::ExifTool::Exif for more examples,
+        # and lib/Image/ExifTool/README for all of the details.</span>
         BaseName =&gt; {
             Require =&gt; {
                 0 =&gt; 'FileName',
@@ -318,18 +318,21 @@ use Image::ExifTool::MIE;
 <span class=com># User-defined file types to recognize</span>
 %Image::ExifTool::UserDefined::FileTypes = (
     XXX =&gt; { <span class=com># &lt;-- the extension of the new file type (case insensitive)</span>
-        <span class=com># BaseType specifies the format upon which this file is based.
-        # If BaseType is defined, then the file will be fully supported,
-        # and in this case the Magic pattern should not be defined</span>
+        <span class=com># BaseType specifies the format upon which this file is based (case
+        # sensitive).  If BaseType is defined, then the file will be fully
+        # supported, and in this case the Magic pattern should not be defined</span>
         BaseType =&gt; 'TIFF',
         MIMEType =&gt; 'image/x-xxx',
         Description =&gt; 'My XXX file type',
+        <span class=com># if the BaseType is writable by ExifTool, then the new file type
+        # will also be writable unless otherwise specified, like this:</span>
+        Writable =&gt; 0,
     },
     YYY =&gt; {
         <span class=com># without BaseType, the file will be recognized but not supported</span>
         Magic =&gt; '0123abcd',    <span class=com># regular expression to match at start of file</span>
         MIMEType =&gt; 'application/test',
-        Description =&gt; 'Test imaginary file type',
+        Description =&gt; 'My YYY file type',
     },
     ZZZ =&gt; {
         <span class=com># if neither BaseType nor Magic are defined, the file will be
@@ -337,6 +340,10 @@ use Image::ExifTool::MIE;
         # unless otherwise specified</span>
         Description =&gt; 'My ZZZ file type',
     },
+    <span class=com># if only BaseType is specified, then the following simplified syntax
+    # may be used.  In this example, files with extension "TTT" will be
+    # processed as JPEG files</span>
+    TTT =&gt; 'JPEG',
 );
 
 <span class=com># Specify default ExifTool option values

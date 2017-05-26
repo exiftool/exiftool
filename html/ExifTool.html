@@ -315,11 +315,12 @@ same as requested.</p>
 reference is used to indicate binary data and an array reference may be used to
 indicate a list.  Also, a hash reference may be returned if the
 <a href="#Struct">Struct</a> option is used.  Lists of values are joined by
-commas into a single string only if the PrintConv option is enabled and the List
-option is disabled (which are the defaults).  Note that binary values are not
-necessarily extracted unless specifically requested, or the Binary option is
-enabled and the tag is not specifically excluded. If not extracted the value is
-a reference to a string of the form "<code>Binary data ##### bytes</code>".</p>
+commas into a single string only if the PrintConv option is enabled and the
+ListJoin option is enabled (which are the defaults).  Note that binary values
+are not necessarily extracted unless specifically requested, or the Binary
+option is enabled and the tag is not specifically excluded. If not extracted the
+value is a reference to a string of the form "<code>Binary data #####
+bytes</code>".</p>
 
 <p>Here is a simple example to print out the information returned by
 <a href="#ImageInfo">ImageInfo</a>:</p>
@@ -657,18 +658,27 @@ distribution for examples.</p>
     <td align=center>'en'</td></tr>
 <tr id="LargeFileSupport"><td>LargeFileSupport</td><td>Flag to indicate that 64-bit file offsets are supported on this system.</td>
     <td align=center>0 or 1</td><td align=center>undef</td></tr>
+<!-- deprecated in ExifTool 10.54; use "ListJoin" instead
 <tr id="List"><td>List</td><td>Flag to extract lists of PrintConv values into arrays instead of combining
     them into a string of values.</td><td align=center>0 or 1</td><td align=center>undef</td></tr>
+-->
 <tr id="ListItem"><td>ListItem</td><td>Return only a specific item from
     list-type values.  A value of 0 returns the first item in each list, 1 returns
     the second item, etc. Negative indices may also be used, with -1 representing the
     last item in the list. Applies only to the top-level list of nested lists.</td>
     <td align=center>An integer, or undef</td><td align=center>undef</td></tr>
+<tr id="ListJoin"><td>ListJoin</td><td>Separator used to join the PrintConv value of
+    multi-item List-type tags into a single string.  If not defined, multi-item lists
+    are returned as a list reference.  Does not affect ValueConv values. </td>
+    <td align=center>Any string, or undef</td><td align=center>', '</td></tr>
+<!-- deprecated in ExifTool 10.54; use "ListJoin" instead
 <tr id="ListSep"><td>ListSep</td><td>Separator string used to join lists of PrintConv values when
     List option is not set.</td><td align=center>Any string</td><td align=center>', '</td></tr>
+-->
 <tr id="ListSplit"><td>ListSplit</td><td>Regular expression used to split values of list-type tags
-    into individual items when writing.  (eg. use ',\\s*' to split a comma-separated list)</td>
-    <td align=center>A regular expression pattern</td><td align=center>undef</td></tr>
+    into individual items when writing. (eg. Use <code>',\\s*'</code> to split a comma-separated
+    list.)  Split when writing either PrintConv or ValueConv values.</td>
+    <td align=center>A regular expression pattern, or undef</td><td align=center>undef</td></tr>
 <tr id="MakerNotes"><td>MakerNotes</td><td>Option to extract MakerNotes and other writable
     subdirectories (such as PrintIM) as a data block.  Normally when the MakerNotes
     are extracted they are rebuilt to include data outside the boundaries of the
@@ -952,9 +962,8 @@ $info = $exifTool-&gt;<b>GetInfo</b>({Group2 =&gt; ['Author', 'Location']});
 <p>The following options are effective in the call to <a href="#GetInfo">GetInfo</a>:</p>
 <blockquote>
 Charset, CoordFormat, DateFormat, Duplicates, Escape, Exclude, Filter, Group#,
-GlobalTimeShift, Lang, List, ListItem, ListSep, PrintConv, QuickTimeUTC
-(conversion to local time), Sort (if a tag list reference is given) and
-StrictDate.
+GlobalTimeShift, Lang, ListItem, ListJoin, PrintConv, QuickTimeUTC (conversion
+to local time), Sort (if a tag list reference is given) and StrictDate.
 </blockquote>
 
 <hr><h2><a name="WriteInfo">WriteInfo</a></h2>
@@ -1106,7 +1115,7 @@ in the tag/value hash unless the PrintConv option is disabled.</p>
 <p>Tags which represent lists of multiple values (as may happen with
 '<code>Keywords</code>' for example) are handled specially.  In scalar context,
 the returned PrintConv value for these tags is either a string of values or
-a list reference (depending on the List option setting), and the ValueConv
+a list reference (depending on the ListJoin option setting), and the ValueConv
 value is always a list reference.  But in list context,
 <a href="#GetValue">GetValue</a> always returns the list itself.</p>
 <p>Note that <a href="#GetInfo">GetValue</a> requires a case-sensitive tag key
@@ -1127,7 +1136,7 @@ instead.</p>
 </td></tr>
 <tr><td valign=top><b>Returns</b></td><td>
 The value of the specified tag.  If the tag represents a list of multiple values
-and the List option is disabled then PrintConv returns a string of values,
+and the ListJoin option is enabled then PrintConv returns a string of values,
 otherwise a reference to the list is returned in scalar context.  The list
 itself is returned in list context.  (Unless 'Both' values are requested, in
 which case two list references are returned, regardless of context.)  Values may
@@ -1170,8 +1179,8 @@ my @keywords = $exifTool-&gt;<b>GetValue</b>('Keywords', 'ValueConv');
 <p>The following options are in effect when <a href="#GetValue">GetValue</a> is
 called:</p>
 <blockquote>
-Charset, CoordFormat, DateFormat, Escape, Filter, GlobalTimeShift, Lang, List,
-ListItem, ListSep, PrintConv, QuickTimeUTC (conversion to local time) and
+Charset, CoordFormat, DateFormat, Escape, Filter, GlobalTimeShift, Lang,
+ListItem, ListJoin, PrintConv, QuickTimeUTC (conversion to local time) and
 StrictDate.
 </blockquote>
 
@@ -1216,7 +1225,7 @@ errors are printed to STDERR.
 <blockquote><table class='norm'>
 <tr><th colspan=4 bgcolor='#dddddd'>SetNewValue Options</th></tr>
 <tr><th>Option</th><th>Description</th><th width='30%'>Values</th><th>Default</th></tr>
-<tr><td>AddValue</td><td>Add value to existing list in a file rather than overwriting</td>
+<tr><td>AddValue</td><td>Add value to existing list <b>in a file</b> rather than overwriting</td>
     <td><table class=clear>
     <tr><td valign=top align=center><b>0</b>&nbsp;=</td><td>Overwrite existing value(s)</td></tr>
     <tr><td valign=top align=center><b>1</b>&nbsp;=</td><td>Add to existing list, or warn for non-list tags</td></tr>
@@ -1383,7 +1392,7 @@ group (with '<code>Adobe:*</code>') or as a block (with '<code>Adobe</code>').</
 <p>The following ExifTool options are effective in the call to
 <a href="#SetNewValue">SetNewValue</a>:</p>
 <blockquote>
-Charset, DateFormat, Escape, IgnoreMinorErrors, Lang, ListSep, ListSplit,
+Charset, DateFormat, Escape, IgnoreMinorErrors, Lang, ListJoin, ListSplit,
 PrintConv, QuickTimeUTC, StrictDate, Verbose and WriteMode.
 </blockquote>
 

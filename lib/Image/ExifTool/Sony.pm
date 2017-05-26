@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.59';
+$VERSION = '2.60';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -82,7 +82,7 @@ my %sonyLensTypes2 = (
     32798 => 'Sony E 20mm F2.8',                # VX9114
     32799 => 'Sony E 35mm F1.8 OSS',            # VX9115
     32800 => 'Sony E PZ 18-105mm F4 G OSS', #JR # VX9116
-
+    32801 => 'Sony FE 12-24mm F4 G', #JR
     32802 => 'Sony FE 90mm F2.8 Macro G OSS',   # VX?
     32803 => 'Sony E 18-50mm F4-5.6',
 
@@ -110,6 +110,7 @@ my %sonyLensTypes2 = (
     32828 => 'Sony FE 70-300mm F4.5-5.6 G OSS', #JR
     32829 => 'Sony FE 100-400mm F4.5-5.6 GM OSS', #JR
     32830 => 'Sony FE 70-200mm F2.8 GM OSS', #JR
+    32831 => 'Sony FE 16-35mm F2.8 GM', #JR
 
     33002 => 'Sigma 85mm F1.4 DG HSM | A 016 (+ Metabones Ver.50)', #PH/JR
 
@@ -8334,11 +8335,11 @@ my %pictureProfile2010 = (
     #          other NEX/ILCE: 74 blocks of 164 bytes
 
     # 0x1a06 onwards - first seen for ILCE-7RM2: appears to be some kind of metering image
-    0x1a06 => { Name => 'TiffMeteringImageWidth',  Condition => '$$self{Model} =~ /^(ILCE-(6300|6500|7RM2|7SM2))\b/' },
-    0x1a07 => { Name => 'TiffMeteringImageHeight', Condition => '$$self{Model} =~ /^(ILCE-(6300|6500|7RM2|7SM2))\b/' },
+    0x1a06 => { Name => 'TiffMeteringImageWidth',  Condition => '$$self{Model} =~ /^(ILCE-(6300|6500|7RM2|7SM2|9))\b/' },
+    0x1a07 => { Name => 'TiffMeteringImageHeight', Condition => '$$self{Model} =~ /^(ILCE-(6300|6500|7RM2|7SM2|9))\b/' },
     0x1a08 => { # (2640 bytes: 1 set of 44x30 int16u values)
         Name => 'TiffMeteringImage',
-        Condition => '$$self{Model} =~ /^(ILCE-(6300|6500|7RM2|7SM2))\b/',
+        Condition => '$$self{Model} =~ /^(ILCE-(6300|6500|7RM2|7SM2|9))\b/',
         Format => 'undef[2640]',
         Notes => q{
             13(?)-bit intensity data from 1320 (1200) metering segments, extracted as a

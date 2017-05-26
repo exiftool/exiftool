@@ -54,7 +54,7 @@ my $testnum = 1;
 {
     ++$testnum;
     my $exifTool = new Image::ExifTool;
-    $exifTool->Options(Duplicates => 1, Binary => 1, List => 1);
+    $exifTool->Options(Duplicates => 1, Binary => 1, ListJoin => undef);
     my $info = $exifTool->ImageInfo('t/images/XMP.jpg');
     my $tag;
     foreach $tag (keys %$info) {

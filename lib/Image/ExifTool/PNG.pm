@@ -26,7 +26,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD %stdCase);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.40';
+$VERSION = '1.41';
 
 sub ProcessPNG_tEXt($$$);
 sub ProcessPNG_iTXt($$$);
@@ -1094,6 +1094,12 @@ sub ProcessPNG_eXIf($$$)
     my $del = $outBuff && ($$et{DEL_GROUP}{EXIF} or $$et{DEL_GROUP}{IFD0});
     my $type;
 
+    if ($$dataPt =~ /^Exif\0\0/) {
+        $et->Warn('Improper "Exif00" header in EXIF chunk');
+        $$dataPt = substr($$dataPt, 6);
+        $$dirInfo{DataLen} = length $$dataPt;
+        $$dirInfo{DirLen} -= 6 if $$dirInfo{DirLen};
+    }
     if ($$dataPt =~ /^(\0|II|MM)/) {
         $type = $1;
     } elsif ($del) {

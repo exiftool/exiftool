@@ -1,7 +1,10 @@
 # Before "make install", this script should be runnable with "make test".
 # After "make install" it should work as "perl t/Writer.t".
 
-BEGIN { $| = 1; print "1..58\n"; $Image::ExifTool::configFile = ''; }
+BEGIN {
+    $| = 1; print "1..58\n"; $Image::ExifTool::configFile = '';
+    require './t/TestLib.pm'; t::TestLib->import();
+}
 END {print "not ok 1\n" unless $loaded;}
 
 # test 1: Load the module(s)
@@ -10,8 +13,6 @@ $loaded = 1;
 print "ok 1\n";
 
 ######################### End of black magic.
-
-use t::TestLib;
 
 my $testname = 'Writer';
 my $testnum = 1;

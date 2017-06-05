@@ -1,12 +1,13 @@
 # Before `make install' is performed this script should be runnable with
 # `make test'. After `make install' it should work as `perl t/Lang.t'
 
-BEGIN { $Image::ExifTool::configFile = ''; }
+BEGIN {
+    $| = 1; $Image::ExifTool::configFile = '';
+    require './t/TestLib.pm'; t::TestLib->import();
+}
 
 use Image::ExifTool;
-use t::TestLib;
 
-$| = 1;
 print "1..", scalar(@Image::ExifTool::langs), "\n";
 
 my $testname = 'Lang';

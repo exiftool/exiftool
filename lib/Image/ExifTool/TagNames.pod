@@ -426,7 +426,7 @@ official EXIF 2.31 specification.
   0x0213   YCbCrPositioning          IFD0       int16u!:
   0x0214   ReferenceBlackWhite       IFD0       rational64u[6]
   0x022f   StripRowCounts            -          no
-  0x02bc   ApplicationNotes          ExifIFD    XMP
+  0x02bc   ApplicationNotes          IFD0       XMP
   0x03e7   USPTOMiscellaneous        -          no
   0x1000   RelatedImageFileFormat    InteropIFD string!
   0x1001   RelatedImageWidth         InteropIFD int16u!
@@ -436,7 +436,7 @@ official EXIF 2.31 specification.
   0x4748   StitchInfo                -          Microsoft Stitch
   0x4749   RatingPercent             IFD0       int16u/
   0x7000   SonyRawFileType           -          no
-  0x7032   LightFalloffParams        SubIFD     int16s[17]!
+  0x7032   VignettingCorrParams      SubIFD     int16s[17]!
   0x7035   ChromaticAberrationCorrParams SubIFD int16s[33]!
   0x7037   DistortionCorrParams      SubIFD     int16s[17]!
   0x800d   ImageID                   -          no
@@ -514,7 +514,7 @@ official EXIF 2.31 specification.
   0x8606   LeafData                  -          Leaf
   0x8649   PhotoshopSettings         -          Photoshop
   0x8769   ExifOffset                IFD0       EXIF
-  0x8773   ICC_Profile               -          ICC_Profile
+  0x8773   ICC_Profile               IFD0       ICC_Profile
   0x877f   TIFF_FXExtensions         -          no
   0x8780   MultiProfiles             -          no
   0x8781   SharedData                -          no
@@ -12918,6 +12918,7 @@ These tags are used in Pentax/Asahi cameras.
   0x0231   ContrastDetectAFArea                 int16u[4]
   0x0235   CrossProcessParams                   undef[10]
   0x0239   LensInfoQ                            Pentax LensInfoQ
+  0x023f   Model                                string
   0x0243   PixelShiftInfo                       Pentax PixelShiftInfo
   0x0245   AFPointInfo                          Pentax AFPointInfo
   0x03fe   DataDump                             no
@@ -14926,7 +14927,7 @@ Valid for SLT-A65/A77, NEX-7/VG20E.
   0x1179   ExposureProgram                      int8u
   0x1180   WB_RGBLevels                         int16u[3]
   0x1218   SonyISO                              int16u
-  0x1a23   LensParameters                       int16s[16]~
+  0x1a23   DistortionCorrParams                 int16s[16]
 
 =head3 Sony Tag2010c Tags
 
@@ -15025,11 +15026,13 @@ for panorama images.
   0x127a   MinFocalLength                       int16u
   0x127c   MaxFocalLength                       int16u
   0x1280   SonyISO                              int16u
-  0x1870   LensParameters?                      int16s[16]~
+  0x1870   DistortionCorrParams                 int16s[16]
   0x1891   LensFormat                           int8u
   0x1892   LensMount                            int8u
   0x1893   LensType2                            int16u
   0x1896   LensType                             int16u
+  0x1898   DistortionCorrParamsPresent          int8u
+  0x1899   DistortionCorrParamsNumber           int8u
 
 =head3 Sony Tag2010f Tags
 
@@ -15091,11 +15094,13 @@ ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-68/77M2.
   0x0330   MaxFocalLength                       int16u
   0x0344   SonyISO                              int16u
   0x0388   MeterInfo?                           Sony MeterInfo
-  0x189c   LensParameters?                      int16s[16]~
+  0x189c   DistortionCorrParams                 int16s[16]
   0x18bd   LensFormat                           int8u
   0x18be   LensMount                            int8u
   0x18bf   LensType2                            int16u
   0x18c2   LensType                             int16u
+  0x18c4   DistortionCorrParamsPresent          int8u
+  0x18c5   DistortionCorrParamsNumber           int8u
 
 =head3 Sony Tag2010h Tags
 
@@ -15128,11 +15133,13 @@ ILCE-6300/6500/7RM2/7SM2, ILCA-99M2.
   0x0346   SonyISO                              int16u
   0x0388   MeterInfo?                           Sony MeterInfo
   0x0398   MeterInfo?                           Sony MeterInfo
-  0x18cc   LensParameters?                      int16s[16]~
+  0x18cc   DistortionCorrParams                 int16s[16]
   0x18ed   LensFormat                           int8u
   0x18ee   LensMount                            int8u
   0x18ef   LensType2                            int16u
   0x18f2   LensType                             int16u
+  0x18f4   DistortionCorrParamsPresent          int8u
+  0x18f5   DistortionCorrParamsNumber           int8u
 
 =head3 Sony Tag2010i Tags
 
@@ -15144,6 +15151,7 @@ Valid for ILCE-9.
   0x004e   DynamicRangeOptimizer                int8u
   0x0204   ReleaseMode3                         int8u
   0x0208   ReleaseMode2                         int8u
+  0x0210   SelfTimer                            int8u
   0x0217   StopsAboveBaseISO                    int16u
   0x0219   BrightnessValue                      int16u
   0x021b   DynamicRangeOptimizer                int8u
@@ -15160,11 +15168,13 @@ Valid for ILCE-9.
   0x030c   MinFocalLength                       int16u
   0x030e   MaxFocalLength                       int16u
   0x0320   SonyISO                              int16u
-  0x17d0   LensParameters?                      int16s[16]~
+  0x17d0   DistortionCorrParams                 int16s[16]
   0x17f1   LensFormat                           int8u
   0x17f2   LensMount                            int8u
   0x17f3   LensType2                            int16u
   0x17f6   LensType                             int16u
+  0x17f8   DistortionCorrParamsPresent          int8u
+  0x17f9   DistortionCorrParamsNumber           int8u
 
 =head3 Sony Tag202a Tags
 
@@ -15258,6 +15268,7 @@ substitution cipher, but the deciphered values are listed below.
   0x0106   LensFormat                           int8u
   0x0107   LensType2                            int16u
   0x0109   LensType                             int16u
+  0x010b   DistortionCorrParamsPresent          int8u
   0x0115   LensSpecFeatures                     undef[2]
   0x0116   LensSpecFeatures                     undef[2]
   0x01a0   ImageCount3                          int32u
@@ -15285,7 +15296,9 @@ Valid from July 2015 for ILCE-6300/6500/7RM2/7SM2, ILCA-99M2.
   0x0106   LensFormat                           int8u
   0x0107   LensType2                            int16u
   0x0109   LensType                             int16u
+  0x010b   DistortionCorrParamsPresent          int8u
   0x0116   LensSpecFeatures                     undef[2]
+  0x019f   ImageCount3                          int32u
   0x01cb   ImageCount3                          int32u
   0x01cd   ImageCount3                          int32u
   0x021c   LensSpecFeatures                     undef[2]
@@ -15380,12 +15393,15 @@ Valid for SLT, NEX, ILCE-3000/3500 and several DSC models.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
+  0x0600   DistortionCorrParamsPresent          int8u
   0x0601   DistortionCorrection                 int8u
   0x0603   LensFormat                           int8u
   0x0604   LensMount                            int8u
   0x0605   LensType2                            int16u
   0x0608   LensType                             int16u
-  0x06ca   LensParameters?                      int16s[16]~
+  0x064a   VignettingCorrParams                 int16s[16]
+  0x066a   ChromaticAberrationCorrParams        int16s[32]
+  0x06ca   DistortionCorrParams                 int16s[16]
 
 =head3 Sony Tag9405b Tags
 
@@ -15404,20 +15420,32 @@ ILCA-68/77M2/99M2.
   0x0016   SonyMaxApertureValue                 int16u
   0x0024   SequenceImageNumber                  int32u
   0x0034   ReleaseMode2                         int8u
+  0x003e   SonyImageWidthMax                    int16u
+  0x0040   SonyImageHeightMax                   int16u
   0x0042   HighISONoiseReduction                int8u
   0x0044   LongExposureNoiseReduction           int8u
   0x0046   PictureEffect2                       int8u
   0x0048   ExposureProgram                      int8u
   0x004a   CreativeStyle                        int8u
   0x0052   Sharpness                            int8s
+  0x005a   DistortionCorrParamsPresent          int8u
   0x005b   DistortionCorrection                 int8u
   0x005d   LensFormat                           int8u
   0x005e   LensMount                            int8u
   0x0060   LensType2                            int16u
   0x0062   LensType                             int16u
-  0x0064   LensParameters?                      int16s[16]~
+  0x0064   DistortionCorrParams                 int16s[16]
   0x0342   LensZoomPosition                     int16u
+  0x034a   VignettingCorrParams                 int16s[16]
+  0x0350   VignettingCorrParams                 int16s[16]
   0x035a   LensZoomPosition                     int16u
+  0x035c   VignettingCorrParams                 int16s[16]
+  0x0368   VignettingCorrParams                 int16s[16]
+  0x037c   ChromaticAberrationCorrParams        int16s[32]
+  0x0384   ChromaticAberrationCorrParams        int16s[32]
+  0x039c   ChromaticAberrationCorrParams        int16s[32]
+  0x03b0   ChromaticAberrationCorrParams        int16s[32]
+  0x03b8   ChromaticAberrationCorrParams        int16s[32]
 
 =head3 Sony Tag9406 Tags
 
@@ -15752,7 +15780,7 @@ Tags in the encrypted SR2SubIFD
   0x782c   WB_RGBLevels3200K                    no
   0x782d   WB_RGBLevels2500K                    no
   0x787f   WhiteLevel                           no
-  0x797d   LightFalloffParams                   no
+  0x797d   VignettingCorrParams                 no
   0x7980   ChromaticAberrationCorrParams        no
   0x7982   DistortionCorrParams                 no
 
@@ -19669,21 +19697,44 @@ specification.
   --------                                      --------
   Comment                                       yes
   Duration                                      no
-  ExtensionAnimation                            GIF Animate
-  ExtensionICC                                  ICC_Profile
-  ExtensionXMP                                  XMP
+  Extensions                                    GIF Extensions
   FrameCount                                    no
   GIFVersion                                    no
   ScreenDescriptor                              GIF Screen
   Text                                          no
 
-=head3 GIF Animate Tags
+=head3 GIF Extensions Tags
+
+Tags extracted from GIF89a application extensions.
+
+  Tag ID               Tag Name                 Writable
+  ------               --------                 --------
+  'ICCRGBG1/012'       ICC_Profile              ICC_Profile
+  'MIDICTRL/Jon'       MIDIControl              GIF MIDIControl
+  'MIDISONG/Dm7'       MIDISong                 no
+  'NETSCAPE/2.0'       Animation                GIF Animation
+  'XMP Data/XMP'       XMP                      XMP
+
+=head3 GIF MIDIControl Tags
+
+Information extracted from the MIDI control block extension.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    MIDIControlVersion                   no
+      1    SequenceNumber                       no
+      2    MelodicPolyphony                     no
+      3    PercussivePolyphony                  no
+      4    ChannelUsage                         no
+      6    DelayTime                            no
+
+=head3 GIF Animation Tags
 
 Information extracted from the "NETSCAPE2.0" animation extension.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
-      2    AnimationIterations                  no
+      1    AnimationIterations                  no
 
 =head3 GIF Screen Tags
 

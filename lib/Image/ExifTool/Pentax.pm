@@ -58,7 +58,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::HP;
 
-$VERSION = '3.15';
+$VERSION = '3.16';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -1910,13 +1910,13 @@ my %binaryDataAttrs = (
             1 => 'Remote Control (3 s delay)', #19
             2 => 'Remote Control', #19
             4 => 'Remote Continuous Shooting', # (K-5)
-            8 => 'Interval Shooting', #31
             10 => 'Composite Average', #31
             11 => 'Composite Additive', #31
             12 => 'Composite Bright', #31
         },{
             0x00 => 'Single Exposure',
             0x01 => 'Multiple Exposure',
+            0x08 => 'Interval Shooting', #31
             0x0f => 'Interval Movie', #PH (K-01)
             0x10 => 'HDR', #PH (645D)
             0x20 => 'HDR Strong 1', #PH (NC) (K-5)
@@ -2847,10 +2847,10 @@ my %binaryDataAttrs = (
         Groups => { 2 => 'Author' },
         Writable => 'string',
     },
-    0x0230 => { #PH (K-x AVI videos)
+    0x0230 => { #PH (K-x AVI videos) (and K-70/Q-S1 MOV videos, ref 31)
         Name => 'FirmwareVersion',
-        Notes => 'only in AVI videos',
-        # this tag only exists in AVI videos, and for the K-x the value of
+        Notes => 'only in videos',
+        # this tag only exists in AVI/MOV videos, and for the K-x the value of
         # this tag is "K-x Ver 1.00", which is the same as the EXIF Software
         # tag.  I used a different tag name for this because Pentax uses the
         # AVI Software tag for a different string, "PENTAX K-x".
@@ -2883,6 +2883,11 @@ my %binaryDataAttrs = (
     # 0x023b - undef[9] (K-01)
     #  01a700500000000000, 91a700500000000000, 41a700500000000000, 002700500000000000
     #  c00500400000000000, 400500500000000000, 4004ff420100000000, 4087ff480000000000
+    0x023f => { #31 (K-70 MOV videos)
+        Name => 'Model',
+        Description => 'Camera Model Name',
+        Writable => 'string',
+    },
     0x0243 => { #PH
         Name => 'PixelShiftInfo',
         SubDirectory => { TagTable => 'Image::ExifTool::Pentax::PixelShiftInfo' },
@@ -5752,6 +5757,7 @@ my %binaryDataAttrs = (
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     0x0c => {
         Name => 'Model',
+        Description => 'Camera Model Name',
         Format => 'string[32]',
     },
 );

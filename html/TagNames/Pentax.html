@@ -832,13 +832,13 @@ available.  Extended bracket values are printed as &#39;WB-BA&#39;, &#39;WB-GM&#
   <br>1 = Remote Control (3 s delay)
   <br>2 = Remote Control
   <br>4 = Remote Continuous Shooting
-  <br>8 = Interval Shooting
   <br>10 = Composite Average
   <br>11 = Composite Additive
   <br>12 = Composite Bright</td></tr></table>
 <span class=s>[Value 3]</span><table class=cols><tr>
   <td>0 = Single Exposure
   <br>1 = Multiple Exposure
+  <br>8 = Interval Shooting
   <br>15 = Interval Movie
   <br>16 = HDR
   <br>32 = HDR Strong 1</td><td>&nbsp;&nbsp;</td>
@@ -1532,7 +1532,7 @@ segments for the K-3, converted to LV)</span></span></td></tr>
 <td title='0x0230 = 560'>0x0230</td>
 <td>FirmwareVersion</td>
 <td class=c>string</td>
-<td><span class=s><span class=n>(only in AVI videos)</span></span></td></tr>
+<td><span class=s><span class=n>(only in videos)</span></span></td></tr>
 <tr>
 <td title='0x0231 = 561'>0x0231</td>
 <td>ContrastDetectAFArea</td>
@@ -1550,43 +1550,48 @@ are left, top, width and height in a 720x480 frame, with Y downwards)</span></sp
 <td class=c>-</td>
 <td>--&gt; <a href='Pentax.html#LensInfoQ'>Pentax LensInfoQ Tags</a></td></tr>
 <tr class=b>
+<td title='0x023f = 575'>0x023f</td>
+<td>Model</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td title='0x0243 = 579'>0x0243</td>
 <td>PixelShiftInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Pentax.html#PixelShiftInfo'>Pentax PixelShiftInfo Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0245 = 581'>0x0245</td>
 <td>AFPointInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Pentax.html#AFPointInfo'>Pentax AFPointInfo Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x03fe = 1022'>0x03fe</td>
 <td>DataDump</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x03ff = 1023'>0x03ff</td>
 <td>TempInfo
   <br>UnknownInfo</td>
 <td class=c>-<br>-</td>
 <td>--&gt; <a href='Pentax.html#TempInfo'>Pentax TempInfo Tags</a>
   <br>--&gt; <a href='Pentax.html#UnknownInfo'>Pentax UnknownInfo Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0402 = 1026'>0x0402</td>
 <td>ToneCurve</td>
 <td class=c title=' ~ = Writable only with -n'>yes~</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x0403 = 1027'>0x0403</td>
 <td>ToneCurves</td>
 <td class=c title=' ~ = Writable only with -n'>yes~</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x0405 = 1029'>0x0405</td>
 <td>UnknownBlock?</td>
 <td class=c>undef</td>
 <td><span class=s><span class=n>(large unknown data block in PEF/DNG images but not JPG images)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0e00 = 3584'>0x0e00</td>
 <td>PrintIM</td>
 <td class=c>-</td>
@@ -4858,7 +4863,7 @@ stored as ASCII text in a format very similar to some HP models.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised May 19, 2017</i>
+<br><i>Last revised May 30, 2017</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

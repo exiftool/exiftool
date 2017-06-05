@@ -53,7 +53,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '3.91';
+$VERSION = '3.92';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -1309,8 +1309,9 @@ my %sampleFormat = (
     0x22f => 'StripRowCounts',
     0x2bc => {
         Name => 'ApplicationNotes', # (writable directory!)
-        Writable => 'int8u',
         Format => 'undef',
+        Writable => 'int8u',
+        WriteGroup => 'IFD0', # (only for Validate)
         Flags => [ 'Binary', 'Protected' ],
         # this could be an XMP block
         SubDirectory => {
@@ -1382,7 +1383,7 @@ my %sampleFormat = (
     # 0x7020 - int32u[1] (in SubIFD of Sony ARW images) - values: 0,3
     # 0x7031 - int16u[1] (in SubIFD of Sony ARW images) - values: 256,257
     0x7032 => {
-        Name => 'LightFalloffParams', #forum7640
+        Name => 'VignettingCorrParams', #forum7640
         Notes => 'found in Sony ARW images',
         Protected => 1,
         Writable => 'int16s',
@@ -1659,6 +1660,7 @@ my %sampleFormat = (
     },
     0x8773 => {
         Name => 'ICC_Profile',
+        WriteGroup => 'IFD0', # (only for Validate)
         SubDirectory => {
             TagTable => 'Image::ExifTool::ICC_Profile::Main',
         },

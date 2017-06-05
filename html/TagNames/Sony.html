@@ -1313,6 +1313,8 @@ adapter is used.</p>
 </tr><tr><td>213</td><td>= Tamron 16-300mm F3.5-6.3 Di II PZD Macro</td>
 </tr><tr><td>214</td><td>= Tamron SP 150-600mm F5-6.3 Di USD</td>
 </tr><tr><td>215</td><td>= Tamron SP 15-30mm F2.8 Di USD</td>
+</tr><tr><td>216</td><td>= Tamron SP 45mm F1.8 Di VC USD</td>
+</tr><tr><td>217</td><td>= Tamron SP 35mm F1.8 Di VC USD</td>
 </tr><tr><td>218</td><td>= Tamron SP 90mm F2.8 Di Macro 1:1 USD (F017)</td>
 </tr><tr><td>224</td><td>= Tamron SP 90mm F2.8 Di Macro 1:1 USD (F004)</td>
 </tr><tr><td>255</td><td>= Tamron Lens (255)</td>
@@ -5533,8 +5535,8 @@ option is used.</p>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x1a23 = 6691'>0x1a23</td>
-<td>LensParameters</td>
-<td class=c title=' ~ = Writable only with -n'>int16s[16]~</td>
+<td>DistortionCorrParams</td>
+<td class=c>int16s[16]</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -6188,8 +6190,8 @@ for panorama images.</p>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x1870 = 6256'>0x1870</td>
-<td>LensParameters?</td>
-<td class=c title=' ~ = Writable only with -n'>int16s[16]~</td>
+<td>DistortionCorrParams</td>
+<td class=c>int16s[16]</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x1891 = 6289'>0x1891</td>
@@ -6215,6 +6217,18 @@ for panorama images.</p>
 <td>LensType</td>
 <td class=c>int16u</td>
 <td>--&gt; <a href='Sony.html#LensType'>Sony LensType Values</a></td></tr>
+<tr>
+<td title='0x1898 = 6296'>0x1898</td>
+<td>DistortionCorrParamsPresent</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = No
+  <br>1 = Yes</span></td></tr>
+<tr class=b>
+<td title='0x1899 = 6297'>0x1899</td>
+<td>DistortionCorrParamsNumber</td>
+<td class=c>int8u</td>
+<td><span class=s>11 = 11 (APS-C)
+  <br>16 = 16 (Full-frame)</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='Tag2010f'>Sony Tag2010f Tags</a></h2>
@@ -6634,8 +6648,8 @@ ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-68/77M2.</p>
 <td>--&gt; <a href='Sony.html#MeterInfo'>Sony MeterInfo Tags</a></td></tr>
 <tr class=b>
 <td title='0x189c = 6300'>0x189c</td>
-<td>LensParameters?</td>
-<td class=c title=' ~ = Writable only with -n'>int16s[16]~</td>
+<td>DistortionCorrParams</td>
+<td class=c>int16s[16]</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x18bd = 6333'>0x18bd</td>
@@ -6661,6 +6675,18 @@ ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-68/77M2.</p>
 <td>LensType</td>
 <td class=c>int16u</td>
 <td>--&gt; <a href='Sony.html#LensType'>Sony LensType Values</a></td></tr>
+<tr>
+<td title='0x18c4 = 6340'>0x18c4</td>
+<td>DistortionCorrParamsPresent</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = No
+  <br>1 = Yes</span></td></tr>
+<tr class=b>
+<td title='0x18c5 = 6341'>0x18c5</td>
+<td>DistortionCorrParamsNumber</td>
+<td class=c>int8u</td>
+<td><span class=s>11 = 11 (APS-C)
+  <br>16 = 16 (Full-frame)</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='Tag2010h'>Sony Tag2010h Tags</a></h2>
@@ -6877,8 +6903,8 @@ ILCE-6300/6500/7RM2/7SM2, ILCA-99M2.</p>
 <td>--&gt; <a href='Sony.html#MeterInfo'>Sony MeterInfo Tags</a></td></tr>
 <tr>
 <td title='0x18cc = 6348'>0x18cc</td>
-<td>LensParameters?</td>
-<td class=c title=' ~ = Writable only with -n'>int16s[16]~</td>
+<td>DistortionCorrParams</td>
+<td class=c>int16s[16]</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x18ed = 6381'>0x18ed</td>
@@ -6904,6 +6930,18 @@ ILCE-6300/6500/7RM2/7SM2, ILCA-99M2.</p>
 <td>LensType</td>
 <td class=c>int16u</td>
 <td>--&gt; <a href='Sony.html#LensType'>Sony LensType Values</a></td></tr>
+<tr class=b>
+<td title='0x18f4 = 6388'>0x18f4</td>
+<td>DistortionCorrParamsPresent</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = No
+  <br>1 = Yes</span></td></tr>
+<tr>
+<td title='0x18f5 = 6389'>0x18f5</td>
+<td>DistortionCorrParamsNumber</td>
+<td class=c>int8u</td>
+<td><span class=s>11 = 11 (APS-C)
+  <br>16 = 16 (Full-frame)</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='Tag2010i'>Sony Tag2010i Tags</a></h2>
@@ -6947,16 +6985,23 @@ ILCE-6300/6500/7RM2/7SM2, ILCA-99M2.</p>
 <td class=c>int8u</td>
 <td>--&gt; <a href='Sony.html#ReleaseMode2'>Sony ReleaseMode2 Values</a></td></tr>
 <tr>
+<td title='0x0210 = 528'>0x0210</td>
+<td>SelfTimer</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = Self-timer 5 or 10 s
+  <br>2 = Self-timer 2 s</span></td></tr>
+<tr class=b>
 <td title='0x0217 = 535'>0x0217</td>
 <td>StopsAboveBaseISO</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x0219 = 537'>0x0219</td>
 <td>BrightnessValue</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x021b = 539'>0x021b</td>
 <td>DynamicRangeOptimizer</td>
 <td class=c>int8u</td>
@@ -6970,7 +7015,7 @@ ILCE-6300/6500/7RM2/7SM2, ILCA-99M2.</p>
   <br>7 = Lv5
   <br>8 = n/a</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td title='0x021f = 543'>0x021f</td>
 <td>HDRSetting</td>
 <td class=c>int8u</td>
@@ -6984,12 +7029,12 @@ ILCE-6300/6500/7RM2/7SM2, ILCA-99M2.</p>
   <br>11 = HDR 5 EV
   <br>13 = HDR 6 EV</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td title='0x0223 = 547'>0x0223</td>
 <td>ExposureCompensation</td>
 <td class=c>int16s</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x0237 = 567'>0x0237</td>
 <td>PictureProfile</td>
 <td class=c>int8u</td>
@@ -7013,7 +7058,7 @@ ILCE-6300/6500/7RM2/7SM2, ILCA-99M2.</p>
   <br>28 = Gamma S-Log2 (PP7)
   <br>29 = Gamma ITU709(800%)</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td title='0x0238 = 568'>0x0238</td>
 <td>PictureProfile</td>
 <td class=c>int8u</td>
@@ -7037,19 +7082,19 @@ ILCE-6300/6500/7RM2/7SM2, ILCA-99M2.</p>
   <br>28 = Gamma S-Log2 (PP7)
   <br>29 = Gamma ITU709(800%)</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td title='0x023c = 572'>0x023c</td>
 <td>PictureEffect2</td>
 <td class=c>int8u</td>
 <td>--&gt; <a href='Sony.html#PictureEffect2'>Sony PictureEffect2 Values</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0247 = 583'>0x0247</td>
 <td>Quality2</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = JPEG
   <br>1 = RAW
   <br>2 = RAW + JPEG</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x024b = 587'>0x024b</td>
 <td>MeteringMode</td>
 <td class=c>int8u</td>
@@ -7058,65 +7103,77 @@ ILCE-6300/6500/7RM2/7SM2, ILCA-99M2.</p>
   <br>3 = Spot
   <br>4 = Average
   <br>5 = Highlight</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x024c = 588'>0x024c</td>
 <td>ExposureProgram</td>
 <td class=c>int8u</td>
 <td>--&gt; <a href='Sony.html#ExposureProgram3'>Sony ExposureProgram3 Values</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0252 = 594'>0x0252</td>
 <td>WB_RGBLevels</td>
 <td class=c>int16u[3]</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x030a = 778'>0x030a</td>
 <td>FocalLength</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x030c = 780'>0x030c</td>
 <td>MinFocalLength</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x030e = 782'>0x030e</td>
 <td>MaxFocalLength</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x0320 = 800'>0x0320</td>
 <td>SonyISO</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
-<td title='0x17d0 = 6096'>0x17d0</td>
-<td>LensParameters?</td>
-<td class=c title=' ~ = Writable only with -n'>int16s[16]~</td>
-<td>&nbsp;</td></tr>
 <tr class=b>
+<td title='0x17d0 = 6096'>0x17d0</td>
+<td>DistortionCorrParams</td>
+<td class=c>int16s[16]</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td title='0x17f1 = 6129'>0x17f1</td>
 <td>LensFormat</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Unknown
   <br>1 = APS-C
   <br>2 = Full-frame</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x17f2 = 6130'>0x17f2</td>
 <td>LensMount</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Unknown
   <br>1 = A-mount
   <br>2 = E-mount</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x17f3 = 6131'>0x17f3</td>
 <td>LensType2</td>
 <td class=c>int16u</td>
 <td>--&gt; <a href='Sony.html#LensType2'>Sony LensType2 Values</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0x17f6 = 6134'>0x17f6</td>
 <td>LensType</td>
 <td class=c>int16u</td>
 <td>--&gt; <a href='Sony.html#LensType'>Sony LensType Values</a></td></tr>
+<tr>
+<td title='0x17f8 = 6136'>0x17f8</td>
+<td>DistortionCorrParamsPresent</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = No
+  <br>1 = Yes</span></td></tr>
+<tr class=b>
+<td title='0x17f9 = 6137'>0x17f9</td>
+<td>DistortionCorrParamsNumber</td>
+<td class=c>int8u</td>
+<td><span class=s>11 = 11 (APS-C)
+  <br>16 = 16 (Full-frame)</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='Tag202a'>Sony Tag202a Tags</a></h2>
@@ -7495,26 +7552,32 @@ models)</span></span></td></tr>
 <td>--&gt; <a href='Sony.html#LensType'>Sony LensType Values</a>
   <br><span class='n s'>(SLT models, and NEX with A-mount lenses)</span></td></tr>
 <tr>
+<td title='0x010b = 267'>0x010b</td>
+<td>DistortionCorrParamsPresent</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = No
+  <br>1 = Yes</span></td></tr>
+<tr class=b>
 <td title='0x0115 = 277'>0x0115</td>
 <td>LensSpecFeatures</td>
 <td class=c>undef[2]</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x0116 = 278'>0x0116</td>
 <td>LensSpecFeatures</td>
 <td class=c>undef[2]</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x01a0 = 416'>0x01a0</td>
 <td>ImageCount3</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x01aa = 426'>0x01aa</td>
 <td>ImageCount3</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x01bd = 445'>0x01bd</td>
 <td>ImageCount3</td>
 <td class=c>int32u</td>
@@ -7617,9 +7680,20 @@ models)</span></span></td></tr>
 <td>--&gt; <a href='Sony.html#LensType'>Sony LensType Values</a>
   <br><span class='n s'>(SLT models, and NEX with A-mount lenses)</span></td></tr>
 <tr class=b>
+<td title='0x010b = 267'>0x010b</td>
+<td>DistortionCorrParamsPresent</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = No
+  <br>1 = Yes</span></td></tr>
+<tr>
 <td title='0x0116 = 278'>0x0116</td>
 <td>LensSpecFeatures</td>
 <td class=c>undef[2]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x019f = 415'>0x019f</td>
+<td>ImageCount3</td>
+<td class=c>int32u</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x01cb = 459'>0x01cb</td>
@@ -7982,41 +8056,57 @@ RX100M4/RX100M5/WX220/WX350/WX500, ILCE-7/7R/7S/7M2/7RM2/7SM2/5000/5100/
 <tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
+<td title='0x0600 = 1536'>0x0600</td>
+<td>DistortionCorrParamsPresent</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = No
+  <br>1 = Yes</span></td></tr>
+<tr class=b>
 <td title='0x0601 = 1537'>0x0601</td>
 <td>DistortionCorrection</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = None
   <br>1 = Applied</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0603 = 1539'>0x0603</td>
 <td>LensFormat</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Unknown
   <br>1 = APS-C
   <br>2 = Full-frame</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0604 = 1540'>0x0604</td>
 <td>LensMount</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Unknown
   <br>1 = A-mount
   <br>2 = E-mount</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0605 = 1541'>0x0605</td>
 <td>LensType2</td>
 <td class=c>int16u</td>
 <td>--&gt; <a href='Sony.html#LensType2'>Sony LensType2 Values</a>
   <br><span class='n s'>(E-mount lenses)</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0608 = 1544'>0x0608</td>
 <td>LensType</td>
 <td class=c>int16u</td>
 <td>--&gt; <a href='Sony.html#LensType'>Sony LensType Values</a>
   <br><span class='n s'>(A-mount lenses on SLT and NEX)</span></td></tr>
+<tr>
+<td title='0x064a = 1610'>0x064a</td>
+<td>VignettingCorrParams</td>
+<td class=c>int16s[16]</td>
+<td>&nbsp;</td></tr>
 <tr class=b>
+<td title='0x066a = 1642'>0x066a</td>
+<td>ChromaticAberrationCorrParams</td>
+<td class=c>int16s[32]</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td title='0x06ca = 1738'>0x06ca</td>
-<td>LensParameters?</td>
-<td class=c title=' ~ = Writable only with -n'>int16s[16]~</td>
+<td>DistortionCorrParams</td>
+<td class=c>int16s[16]</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -8075,6 +8165,16 @@ ILCA-68/77M2/99M2.</p>
 <td class=c>int8u</td>
 <td>--&gt; <a href='Sony.html#ReleaseMode2'>Sony ReleaseMode2 Values</a></td></tr>
 <tr class=b>
+<td title='0x003e = 62'>0x003e</td>
+<td>SonyImageWidthMax</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0040 = 64'>0x0040</td>
+<td>SonyImageHeightMax</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td title='0x0042 = 66'>0x0042</td>
 <td>HighISONoiseReduction</td>
 <td class=c>int8u</td>
@@ -8123,51 +8223,102 @@ ILCA-68/77M2/99M2.</p>
 <td class=c>int8s</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td title='0x005a = 90'>0x005a</td>
+<td>DistortionCorrParamsPresent</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = No
+  <br>1 = Yes</span></td></tr>
+<tr>
 <td title='0x005b = 91'>0x005b</td>
 <td>DistortionCorrection</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = None
   <br>1 = Applied</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x005d = 93'>0x005d</td>
 <td>LensFormat</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Unknown
   <br>1 = APS-C
   <br>2 = Full-frame</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x005e = 94'>0x005e</td>
 <td>LensMount</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Unknown
   <br>1 = A-mount
   <br>2 = E-mount</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0060 = 96'>0x0060</td>
 <td>LensType2</td>
 <td class=c>int16u</td>
 <td>--&gt; <a href='Sony.html#LensType2'>Sony LensType2 Values</a>
   <br><span class='n s'>(E-mount lenses)</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0062 = 98'>0x0062</td>
 <td>LensType</td>
 <td class=c>int16u</td>
 <td>--&gt; <a href='Sony.html#LensType'>Sony LensType Values</a>
   <br><span class='n s'>(A-mount lenses on SLT and NEX)</span></td></tr>
-<tr>
-<td title='0x0064 = 100'>0x0064</td>
-<td>LensParameters?</td>
-<td class=c title=' ~ = Writable only with -n'>int16s[16]~</td>
-<td>&nbsp;</td></tr>
 <tr class=b>
+<td title='0x0064 = 100'>0x0064</td>
+<td>DistortionCorrParams</td>
+<td class=c>int16s[16]</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td title='0x0342 = 834'>0x0342</td>
 <td>LensZoomPosition</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x034a = 842'>0x034a</td>
+<td>VignettingCorrParams</td>
+<td class=c>int16s[16]</td>
+<td>&nbsp;</td></tr>
 <tr>
+<td title='0x0350 = 848'>0x0350</td>
+<td>VignettingCorrParams</td>
+<td class=c>int16s[16]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td title='0x035a = 858'>0x035a</td>
 <td>LensZoomPosition</td>
 <td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x035c = 860'>0x035c</td>
+<td>VignettingCorrParams</td>
+<td class=c>int16s[16]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0368 = 872'>0x0368</td>
+<td>VignettingCorrParams</td>
+<td class=c>int16s[16]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x037c = 892'>0x037c</td>
+<td>ChromaticAberrationCorrParams</td>
+<td class=c>int16s[32]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0384 = 900'>0x0384</td>
+<td>ChromaticAberrationCorrParams</td>
+<td class=c>int16s[32]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x039c = 924'>0x039c</td>
+<td>ChromaticAberrationCorrParams</td>
+<td class=c>int16s[32]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x03b0 = 944'>0x03b0</td>
+<td>ChromaticAberrationCorrParams</td>
+<td class=c>int16s[32]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x03b8 = 952'>0x03b8</td>
+<td>ChromaticAberrationCorrParams</td>
+<td class=c>int16s[32]</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -10456,7 +10607,7 @@ this information is also written to ARW images by other models.</p>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x797d = 31101'>0x797d</td>
-<td>LightFalloffParams</td>
+<td>VignettingCorrParams</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
@@ -10573,7 +10724,7 @@ the JPEG image from a PMP file)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised May 19, 2017</i>
+<br><i>Last revised Jun 5, 2017</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

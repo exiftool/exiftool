@@ -4,8 +4,22 @@ ExifTool Version History
 
 RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 
-Note: The most recent production release is Version 10.50. (Other versions are
+Note: The most recent production release is Version 10.55. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
+
+June 5, 2017 - Version 10.55 (production release)
+
+  - Added support for GIF multimedia extensions
+  - Added a couple of new Sony/Minolta lenses (thanks Chris)
+  - Added a new Nikon LensID (thanks Jakob Dettner)
+  - Added new Composite TotalPathPoints tag to photoshop_paths.config
+  - Decode a number of new Sony tags and updated some others (thanks Jos Roost)
+  - Decode a new Pentax tag and fixed decoding of another (thanks Andras
+    Salamon)
+  - Updated iptcCore.args for new IPTC specification
+  - Changed description of a couple of AVI Model tags to match EXIF
+  - Patched tests to avoid failures with Perl 5.25.11 due to missing "." in @INC
+  - Fixed an incorrect warning from the experimental Validate feature
 
 May 26, 2017 - Version 10.54
 
@@ -14,10 +28,10 @@ May 26, 2017 - Version 10.54
   - Added a two new Sony lenses and decode more ILCE-9 tags (thanks Jos Roost)
   - Added new values to some Pentax tags (thanks Andras Salamon)
   - Added a new Canon LensType
-  - Added an additional checks to experimental -validate feature
+  - Added an additional checks to the experimental -validate feature
   - Improved user-defined FileTypes feature to provide more flexibility
-  - Enhanced -ext option to allow specific files extensions to be processed as
-    well as supported file extensions
+  - Enhanced -ext option to allow specific files extensions to be processed
+    along with supported files
   - API Changes:
       - Added ListJoin option to replace List and ListSep options
 

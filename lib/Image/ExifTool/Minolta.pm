@@ -49,7 +49,7 @@ use vars qw($VERSION %minoltaLensTypes %minoltaTeleconverters %minoltaColorMode
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.49';
+$VERSION = '2.50';
 
 # Full list of product codes for Sony-compatible Minolta lenses
 # (ref http://www.kb.sony.com/selfservice/documentLink.do?externalId=C1000570)
@@ -366,6 +366,8 @@ $VERSION = '2.49';
     213 => 'Tamron 16-300mm F3.5-6.3 Di II PZD Macro', #JR (Model B016)
     214 => 'Tamron SP 150-600mm F5-6.3 Di USD', #JR (Model A011)
     215 => 'Tamron SP 15-30mm F2.8 Di USD', #JR (Model A012)
+    216 => 'Tamron SP 45mm F1.8 Di VC USD', #forum8320 (F013)
+    217 => 'Tamron SP 35mm F1.8 Di VC USD', #forum8320 (F012)
     218 => 'Tamron SP 90mm F2.8 Di Macro 1:1 USD (F017)', #JR (Model F017)
     224 => 'Tamron SP 90mm F2.8 Di Macro 1:1 USD (F004)', #JR (Model F004)
     255 => 'Tamron Lens (255)',

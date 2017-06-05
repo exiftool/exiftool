@@ -11,11 +11,26 @@
 
 <p>RSS feed: <a href="http://owl.phy.queensu.ca/~phil/exiftool/rss.xml">http://owl.phy.queensu.ca/~phil/exiftool/rss.xml</a></p>
 
-<p><b>Note:</b> The most recent production release is <a href="Image-ExifTool-10.50.tar.gz">Version 10.50</a>. (Other versions are
+<p><b>Note:</b> The most recent production release is <a href="Image-ExifTool-10.55.tar.gz">Version 10.55</a>. (Other versions are
 considered development releases, and are not uploaded to <a href="http://search.cpan.org/dist/Image-ExifTool/">CPAN</a>.)</p>
 
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
+
+<a name='v10.55'><b>June 5, 2017 - Version 10.55</b></a> <span class=grn>(production release)</span>
+<ul>
+<li>Added support for GIF multimedia extensions
+<li>Added a couple of new Sony/Minolta lenses (thanks Chris)
+<li>Added a new Nikon LensID (thanks Jakob Dettner)
+<li>Added new Composite TotalPathPoints tag to photoshop_paths.config
+<li>Decode a number of new Sony tags and updated some others (thanks Jos Roost)
+<li>Decode a new Pentax tag and fixed decoding of another (thanks Andras
+    Salamon)
+<li>Updated iptcCore.args for new IPTC specification
+<li>Changed description of a couple of AVI Model tags to match EXIF
+<li>Patched tests to avoid failures with Perl 5.25.11 due to missing "." in @INC
+<li>Fixed an incorrect warning from the experimental Validate feature
+</ul>
 
 <a name='v10.54'><b>May 26, 2017 - Version 10.54</b></a>
 <ul>
@@ -24,10 +39,10 @@ considered development releases, and are not uploaded to <a href="http://search.
 <li>Added a two new Sony lenses and decode more ILCE-9 tags (thanks Jos Roost)
 <li>Added new values to some Pentax tags (thanks Andras Salamon)
 <li>Added a new Canon LensType
-<li>Added an additional checks to experimental -validate feature
+<li>Added an additional checks to the experimental -validate feature
 <li>Improved user-defined FileTypes feature to provide more flexibility
-<li>Enhanced -ext option to allow specific files extensions to be processed as
-    well as supported file extensions
+<li>Enhanced -ext option to allow specific files extensions to be processed
+    along with supported files
 <li>API Changes:
     <ul>
     <li>Added ListJoin option to replace List and ListSep options

@@ -6,6 +6,7 @@ my $numTests;
 BEGIN {
     $numTests = 11;
     $| = 1; print "1..$numTests\n"; $Image::ExifTool::configFile = '';
+    require './t/TestLib.pm'; t::TestLib->import();
     # must create user-defined tags before loading ExifTool (used in test 8)
     %Image::ExifTool::UserDefined = (
         'Image::ExifTool::GPS::Main' => {
@@ -26,8 +27,6 @@ use Image::ExifTool 'ImageInfo';
 use Image::ExifTool::Geotag;
 $loaded = 1;
 print "ok 1\n";
-
-use t::TestLib;
 
 my $testname = 'Geotag';
 my $testnum = 1;

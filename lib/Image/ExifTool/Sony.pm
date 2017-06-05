@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.60';
+$VERSION = '2.61';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -1228,7 +1228,7 @@ my %meterInfo2 = (
         Condition => '$$valPt =~ /^\x01/',
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag202a' },
     },
-    # 0x202b - int8u       - 0    first seen for ILCA-99M2, ILCE-6500, DSC-RX100M5
+    # 0x202b - int8u  -  0, 1, 2    seen for ILCA-99M2, ILCE-6500/9, DSC-RX100M5
     0x202c => { #JR
         Name => 'MeteringMode2',
         Writable => 'int16u',
@@ -1345,22 +1345,25 @@ my %meterInfo2 = (
         #   3a 20 47 0e    0x0a01    (m)  DSC-RX100M2
         #   43 00 66 0e    0x0a1b    (n)  ILCE-7/7R v0.xx/v1.00/v1.01, ILCE-5000, DSC-RX10
         #   43 10 66 0e    0x0a1b    (n)  ILCE-7/7R v1.02/v1.10
-        #   43 30 6c 0e    0x0a1b    (n)  ILCE-7/7R v1.20/v2.00
+        #   43 30 6c 0e    0x0a1b    (n)  ILCE-7/7R v1.20-v3.20
         #   44 00 9c 0e    0x0a39    (o)  ILCE-6000 v1.00/v1.10, DSC-HX60V/HX400V/WX220/WX350 (also DSC-QX30 samples from sony.net)
+        #   44 10 a2 0e    0x0a39    (o)  ILCE-6000 v1.20/v1.21
+        #   44 20 a2 0e    0x0a39    (o)  ILCE-6000 v2.00-v3.20
         #   49 00 b0 0e    0x0a3b    (p)  ILCA-68 v1.00, ILCA-77M2 V1.00/v1.01/v2.00 (also DSC-RX100M3 samples from sony.net)
         #   4a 00 b3 0e    0x0a3d    (q)  ILCE-7S v1.00, ILCE-5100 v1.00/v1.10, ILCE-QX1, DSC-QX30/RX100M3
-        #   4a 20 b9 0e    0x0a3d    (q)  ILCE-7S v1.20/v2.00
+        #   4a 20 b9 0e    0x0a3d    (q)  ILCE-7S v1.20-v3.10
         #   4e 10 d0 0e    0x0a5a    (r)  ILCE-7M2 v1.00/v1.10
-        #   4e 30 d6 0e    0x0a5a    (r)  ILCE-7M2 v1.20-v3.10
+        #   4e 30 d6 0e    0x0a5a    (r)  ILCE-7M2 v1.20-v3.30
         #   5a 00 14 0f    0x0a85    (s)  DSC-HX90V/WX500
-        #   5d 00 56 0f    0x0ac7    (t)  DSC-RX10M2/RX100M4, ILCE-7RM2/7SM2 v1.00/v1.10/v2.00 (also DSC-RX1RM2 samples from Sony)
+        #   5d 00 56 0f    0x0ac7    (t)  DSC-RX10M2/RX100M4, ILCE-7RM2/7SM2 v1.00-v2.20 (also DSC-RX1RM2 samples from Sony)
         #   5d 1d 58 0f    0x0ac7    (t)  ILCE-7RM2 v3.00-v3.30
         #   5d 1e 57 0f    0x0ac7    (t)  DSC-RX1RM2 v1.00
         #   5d 10 56 0f    0x0ac7    (t)  ILCE-6300 v1.00 (samples from Sony)
-        #   5d 20 58 0f    0x0ac7    (t)  ILCE-6300 v1.00
+        #   5d 20 58 0f    0x0ac7    (t)  ILCE-6300 v1.00/v1.10
         #   5e 00 56 0f    0x0ac7    (t)  DSC-RX10M3 v1.00
         #   64 00 a8 0f    0x0b15    (u)  DSC-RX100M5 v1.00
         #   67 00 f9 0f    0x0b66    (v)  ILCA-99M2 v1.00, ILCE-6500 v1.00
+        #   7c 00 fe 0f    0x0adb    (w)  ILCE-9 v0.01/v1.00
         #
         # 0x0004 - (RX100: 0 or 1. subsequent data valid only if 1 - PH)
         # 0x0007 => {
@@ -1415,7 +1418,7 @@ my %meterInfo2 = (
     # 13  0    9  2  2     DSC-QX10/QX100/RX100M2
     # 15  0   35  2  2     ILCA-68/77M2, ILCE-5000/5100/6000/7/7R/7S/7M2/QX1, DSC-HX400V/HX60V/QX30/RX10/RX100M3/WX220/WX350
     # 16  0   85  2  2     DSC-HX90V/WX500
-    # 17  0  232  1  2     DSC-RX1RM2/RX10M2/RX10M3/RX100M4/RX100M5, ILCE-6300/6500/7RM2/7SM2, ILCA-99M2
+    # 17  0  232  1  2     DSC-RX1RM2/RX10M2/RX10M3/RX100M4/RX100M5, ILCE-6300/6500/7RM2/7SM2/9, ILCA-99M2
     # other values for Panorama images and several other models
     0x9404 => [{
         Name => 'Tag9404a',
@@ -5837,9 +5840,8 @@ my %pictureProfile2010 = (
     #0x1a08 => { Name => 'SonyImageWidth',  Format => 'int16u' },
     #0x1a0c => { Name => 'SonyImageHeight', Format => 'int16u' },
     0x1a23 => { # only for NEX-7 with Firmware v1.02 and higher, but slightly different from Tag9405 ...
-        Name => 'LensParameters',
+        Name => 'DistortionCorrParams',
         Format => 'int16s[16]',
-        PrintConv => 'sprintf("%5d" . " %5d" x 15, split(" ",$val))',
     },
 );
 
@@ -6081,11 +6083,9 @@ my %pictureProfile2010 = (
         PrintConvInv => '$val',
     },
     0x1870 => {
-        Name => 'LensParameters',
+        Name => 'DistortionCorrParams',
         Condition => '$$self{Model} !~ /^(DSC-|Stellar)/',
         Format => 'int16s[16]',
-        Unknown => 1, # (not sure how these are applied)
-        PrintConv => 'sprintf("%5d" . " %5d" x 15, split(" ",$val))',
     },
     # 0x1890 - same as 0x1892, but has value 3 for 50mm F1.4 ZA, DT 18-135mm and for 70-400mm G II: meaning ??
     0x1891 => {
@@ -6122,6 +6122,16 @@ my %pictureProfile2010 = (
         SeparateTable => 1,
         ValueConvInv => '($val & 0xff00) == 0x8000 ? 0 : int($val)',
         PrintConv => \%sonyLensTypes,
+    },
+    0x1898 => {
+        Name => 'DistortionCorrParamsPresent',
+        Condition => '$$self{Model} !~ /^(DSC-|Stellar)/',
+        PrintConv => { 0 => 'No', 1 => 'Yes'},
+    },
+    0x1899 => {
+        Name => 'DistortionCorrParamsNumber',
+        Condition => '$$self{Model} !~ /^DSC-/',
+        PrintConv => { 11 => '11 (APS-C)', 16 => '16 (Full-frame)'},
     },
     #0x1914 => { Name => 'SonyImageWidth',  Format => 'int16u' },
     #0x1918 => { Name => 'SonyImageHeight', Format => 'int16u' },
@@ -6276,11 +6286,9 @@ my %pictureProfile2010 = (
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::MeterInfo' },
     },
     0x189c => {
-        Name => 'LensParameters',
+        Name => 'DistortionCorrParams',
         Condition => '$$self{Model} !~ /^DSC-/',
         Format => 'int16s[16]',
-        Unknown => 1,
-        PrintConv => 'sprintf("%5d" . " %5d" x 15, split(" ",$val))',
     },
     # 0x18bc - same as 0x18be, but has value 3 for 50mm F1.4 ZA, DT 18-135mm and for 70-400mm G II: meaning ??
     0x18bd => {
@@ -6317,6 +6325,16 @@ my %pictureProfile2010 = (
         SeparateTable => 1,
         ValueConvInv => '($val & 0xff00) == 0x8000 ? 0 : int($val)',
         PrintConv => \%sonyLensTypes,
+    },
+    0x18c4 => {
+        Name => 'DistortionCorrParamsPresent',
+        Condition => '$$self{Model} !~ /^DSC-/',
+        PrintConv => { 0 => 'No', 1 => 'Yes'},
+    },
+    0x18c5 => {
+        Name => 'DistortionCorrParamsNumber',
+        Condition => '$$self{Model} !~ /^DSC-/',
+        PrintConv => { 11 => '11 (APS-C)', 16 => '16 (Full-frame)'},
     },
     # 0x1940 => { Name => 'SonyImageWidth',  Format => 'int16u' },
     # 0x1944 => { Name => 'SonyImageHeight', Format => 'int16u' },
@@ -6403,11 +6421,9 @@ my %pictureProfile2010 = (
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::MeterInfo' },
     },
     0x18cc => {
-        Name => 'LensParameters',
+        Name => 'DistortionCorrParams',
         Condition => '$$self{Model} !~ /^DSC-/',
         Format => 'int16s[16]',
-        Unknown => 1,
-        PrintConv => 'sprintf("%5d" . " %5d" x 15, split(" ",$val))',
     },
     # 0x18ec - same as 0x18ee, but has value 3 for LensType>=65, except SAL300F28G2
     0x18ed => {
@@ -6445,6 +6461,16 @@ my %pictureProfile2010 = (
         ValueConvInv => '($val & 0xff00) == 0x8000 ? 0 : int($val)',
         PrintConv => \%sonyLensTypes,
     },
+    0x18f4 => {
+        Name => 'DistortionCorrParamsPresent',
+        Condition => '$$self{Model} !~ /^DSC-/',
+        PrintConv => { 0 => 'No', 1 => 'Yes'},
+    },
+    0x18f5 => {
+        Name => 'DistortionCorrParamsNumber',
+        Condition => '$$self{Model} !~ /^DSC-/',
+        PrintConv => { 11 => '11 (APS-C)', 16 => '16 (Full-frame)'},
+    },
     # 0x1970 => { Name => 'SonyImageWidth',  Format => 'int16u' },
     # 0x1974 => { Name => 'SonyImageHeight', Format => 'int16u' },
     # 0x198a => { Name => 'SonyImageWidth',  Format => 'int16u' },
@@ -6467,7 +6493,7 @@ my %pictureProfile2010 = (
     0x004e => { %dynamicRangeOptimizer2010 },
     0x0204 => { %releaseMode2010 },
     0x0208 => { %releaseMode2 },
-#    0x020c => { %selfTimerB2010 }, #nc
+    0x0210 => { %selfTimerB2010 },
 #    0x0211 => { %flashMode2010 }, #nc
     0x0217 => { %gain2010 },
     0x0219 => { %brightnessValue2010 },
@@ -6515,11 +6541,9 @@ my %pictureProfile2010 = (
         PrintConvInv => '$val',
     },
     0x17d0 => {
-        Name => 'LensParameters',
+        Name => 'DistortionCorrParams',
         Condition => '$$self{Model} !~ /^DSC-/',
         Format => 'int16s[16]',
-        Unknown => 1,
-        PrintConv => 'sprintf("%5d" . " %5d" x 15, split(" ",$val))',
     },
     # 0x17f0 - same as 0x17f2, but has value 3 for LensType>=65, except SAL300F28G2
     0x17f1 => {
@@ -6556,6 +6580,16 @@ my %pictureProfile2010 = (
         SeparateTable => 1,
         ValueConvInv => '($val & 0xff00) == 0x8000 ? 0 : int($val)',
         PrintConv => \%sonyLensTypes,
+    },
+    0x17f8 => {
+        Name => 'DistortionCorrParamsPresent',
+        Condition => '$$self{Model} !~ /^DSC-/',
+        PrintConv => { 0 => 'No', 1 => 'Yes'},
+    },
+    0x17f9 => {
+        Name => 'DistortionCorrParamsNumber',
+        Condition => '$$self{Model} !~ /^DSC-/',
+        PrintConv => { 11 => '11 (APS-C)', 16 => '16 (Full-frame)'},
     },
 );
 
@@ -6866,6 +6900,10 @@ my %pictureProfile2010 = (
         ValueConvInv => '($val & 0xff00) == 0x8000 ? 0 : int($val)',
         PrintConv => \%sonyLensTypes,
     },
+    0x010b => {
+        Name => 'DistortionCorrParamsPresent',
+        PrintConv => { 0 => 'No', 1 => 'Yes'},
+    },
     # 0x0115 and 0x0116, or 0x0116 and 0x0117:
     # give the same info as the first and last bytes of LensSpec,
     # but also for older Sony and Minolta lenses where all LensSpec bytes are 0.
@@ -7089,6 +7127,10 @@ my %pictureProfile2010 = (
         ValueConvInv => '($val & 0xff00) == 0x8000 ? 0 : int($val)',
         PrintConv => \%sonyLensTypes,
     },
+    0x010b => {
+        Name => 'DistortionCorrParamsPresent',
+        PrintConv => { 0 => 'No', 1 => 'Yes'},
+    },
     # 0x0116 and 0x0117:
     # give the same info as the first and last bytes of LensSpec,
     # but also for older Sony and Minolta lenses where all LensSpec bytes are 0.
@@ -7106,6 +7148,12 @@ my %pictureProfile2010 = (
 #
 # tags becoming model- and/or firmware-dependent from here.
 #
+    0x019f => {
+        Name => 'ImageCount3',
+        Condition => '$$self{Model} =~ /^(ILCE-9)/',
+        Format => 'int32u',
+        RawConv => '$val == 0 ? undef : $val',
+    },
     0x01cb => {
         Name => 'ImageCount3',
         Condition => '$$self{Model} =~ /^(ILCE-(7RM2|7SM2))/',
@@ -7593,6 +7641,11 @@ my %pictureProfile2010 = (
     DATAMEMBER => [ 0x0604 ],
     GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
     NOTES => 'Valid for SLT, NEX, ILCE-3000/3500 and several DSC models.',
+    0x0600 => {
+        Name => 'DistortionCorrParamsPresent',
+        Condition => '$$self{Model} !~ /^(DSC-|Stellar)/',
+        PrintConv => { 0 => 'No', 1 => 'Yes'},
+    },
     0x0601 => {
         Name => 'DistortionCorrection',
         PrintConv => {
@@ -7637,12 +7690,20 @@ my %pictureProfile2010 = (
         SeparateTable => 1,
         PrintConv => \%sonyLensTypes,
     },
-    0x06ca => {
-        Name => 'LensParameters',
+    0x064a => {
+        Name => 'VignettingCorrParams',
         Condition => '$$self{Model} !~ /^(DSC-|Stellar)/',
         Format => 'int16s[16]',
-        Unknown => 1,
-        PrintConv => 'sprintf("%5d" . " %5d" x 15, split(" ",$val))',
+    },
+    0x066a => {
+        Name => 'ChromaticAberrationCorrParams',
+        Condition => '$$self{Model} !~ /^(DSC-|Stellar)/',
+        Format => 'int16s[32]',
+    },
+    0x06ca => {
+        Name => 'DistortionCorrParams',
+        Condition => '$$self{Model} !~ /^(DSC-|Stellar)/',
+        Format => 'int16s[16]',
     },
 );
 
@@ -7694,6 +7755,7 @@ my %pictureProfile2010 = (
         PrintConvInv => 'lc($val) eq "bulb" ? 0 : $val',
     },
     0x0014 => { # but often odd results for DSC models: exclude
+                # also often deviating results for Sony FE 90mm F2.8 Macro G OSS ...
         Name => 'SonyFNumber',
         Format => 'int16u',
         Condition => '$$self{Model} !~ /^DSC-/',
@@ -7712,6 +7774,9 @@ my %pictureProfile2010 = (
     },
     0x0024 => { %sequenceImageNumber },
     0x0034 => { %releaseMode2 },
+    #  0x003e and 0x0040: maximum image size; ShotInfo gives actual image size
+    0x003e => { Name => 'SonyImageWidthMax', Format => 'int16u' },
+    0x0040 => { Name => 'SonyImageHeightMax', Format => 'int16u' },
     0x0042 => {
         Name => 'HighISONoiseReduction',
         PrintConv => {
@@ -7753,6 +7818,11 @@ my %pictureProfile2010 = (
         Format => 'int8s',
         PrintConv => '$val > 0 ? "+$val" : $val',
         PrintConvInv => '$val',
+    },
+    0x005a => {
+        Name => 'DistortionCorrParamsPresent',
+        Condition => '$$self{Model} !~ /^DSC-/',
+        PrintConv => { 0 => 'No', 1 => 'Yes'},
     },
     0x005b => {
         Name => 'DistortionCorrection',
@@ -7798,11 +7868,9 @@ my %pictureProfile2010 = (
         PrintConv => \%sonyLensTypes,
     },
     0x0064 => {
-        Name => 'LensParameters',
+        Name => 'DistortionCorrParams',
         Condition => '$$self{Model} !~ /^DSC-/',
         Format => 'int16s[16]',
-        Unknown => 1,
-        PrintConv => 'sprintf("%5d" . " %5d" x 15, split(" ",$val))',
     },
     0x0342 => {
         Name => 'LensZoomPosition',
@@ -7811,12 +7879,57 @@ my %pictureProfile2010 = (
         PrintConv => 'sprintf("%.0f%%",$val/10.24)',
         PrintConvInv => '$val=~s/ ?%$//; $val * 10.24',
     },
+    0x034a => {
+        Name => 'VignettingCorrParams',
+        Condition => '$$self{Model} =~ /^(ILCA-(68|77M2)|ILCE-(5000|5100|6000|7|7R|7S|QX1))\b/',
+        Format => 'int16s[16]',
+    },
+    0x0350 => {
+        Name => 'VignettingCorrParams',
+        Condition => '$$self{Model} =~ /^(ILCE-7M2)/',
+        Format => 'int16s[16]',
+    },
+    0x035c => {
+        Name => 'VignettingCorrParams',
+        Condition => '$$self{Model} =~ /^(ILCA-99M2|ILCE-6500|ILCE-9)/',
+        Format => 'int16s[16]',
+    },
     0x035a => {
         Name => 'LensZoomPosition',
         Condition => '$$self{Model} =~ /^(ILCE-(7RM2|7SM2)|DSC-(HX90V|RX10M2|RX10M3|RX100M4|WX500))/',
         Format => 'int16u',
         PrintConv => 'sprintf("%.0f%%",$val/10.24)',
         PrintConvInv => '$val=~s/ ?%$//; $val * 10.24',
+    },
+    0x0368 => {
+        Name => 'VignettingCorrParams',
+        Condition => '$$self{Model} =~ /^(ILCE-(6300|7RM2|7SM2))/',
+        Format => 'int16s[16]',
+    },
+    0x037c => {
+        Name => 'ChromaticAberrationCorrParams',
+        Condition => '$$self{Model} =~ /^(ILCA-(68|77M2)|ILCE-(5000|5100|6000|7|7R|7S|QX1))\b/',
+        Format => 'int16s[32]',
+    },
+    0x0384 => {
+        Name => 'ChromaticAberrationCorrParams',
+        Condition => '$$self{Model} =~ /^(ILCE-7M2)/',
+        Format => 'int16s[32]',
+    },
+    0x039c => {
+        Name => 'ChromaticAberrationCorrParams',
+        Condition => '$$self{Model} =~ /^(ILCE-(6300|7RM2|7SM2))/',
+        Format => 'int16s[32]',
+    },
+    0x03b0 => {
+        Name => 'ChromaticAberrationCorrParams',
+        Condition => '$$self{Model} =~ /^(ILCA-99M2|ILCE-6500)/',
+        Format => 'int16s[32]',
+    },
+    0x03b8 => {
+        Name => 'ChromaticAberrationCorrParams',
+        Condition => '$$self{Model} =~ /^(ILCE-9)/',
+        Format => 'int16s[32]',
     },
 );
 
@@ -7989,7 +8102,7 @@ my %pictureProfile2010 = (
         # 1.08: LA-EA1 (Ver.02), Metabones Smart
         # 1.14: LA-EA2
         # 1.20: (Ver.02) firmware-updated E-lenses (SEL1855, SEL24F18Z, SEL30M35, SEL50F18, SEL55210),
-        #       newer E-lenses (SEL1018, SEL1670Z, SEL20F28, SEL35F18, SELP1650, SELP18105G, SELP18200) or LA-EA3
+        #       newer E-lenses (SEL1018, SEL1670Z, SEL20F28, SEL35F18, SELP1650, SELP18105G, SELP18200) or LA-EA3 Ver.01
         # 1.30: LA-EA4
         # 1.31: original FE-lenses (SEL2470Z, SEL2870, SEL35F28Z, SEL55F18Z), SEL1850
         # 1.35: SEL70200G, SEL55210 (Black?, seen with ILCE-3500)
@@ -7997,9 +8110,9 @@ my %pictureProfile2010 = (
         # 1.41: SELP18105G Ver.02
         # 1.50: SEL28F20, SEL90M28G, Zeiss Batis 18mm/25mm/85mm/135mm, Zeiss Loxia 21mm, Zeiss Loxia 35mm/50mm Ver.02,
         #       Tokina Firin 20mm
-        # 1.60: SEL2470GM, SEL50F14Z, SEL50F18F, SEL50M28, SEL70200GM, SEL70300G, SEL85F14GM, SEL85F18, SEL100F28GM,
-        #       SEL100400GM, Sigma 30mm F1.4 DC DN, Sigma MC-11, Samyang AF 14mm/50mm, Voigtlander 15mm
-        # 1.70: Voigtlander 10mm/12mm/40mm, Zeiss Loxia 85mm
+        # 1.60: SEL1224G, SEL1635GM, SEL2470GM, SEL50F14Z, SEL50F18F, SEL50M28, SEL70200GM, SEL70300G, SEL85F14GM, SEL85F18,
+        #       SEL100F28GM, SEL100400GM, Sigma 30mm F1.4 DC DN, Sigma MC-11, Samyang AF 14mm/50mm, Voigtlander 15mm
+        # 1.70: LA-EA3 Ver.02, Voigtlander 10mm/12mm/40mm, Zeiss Loxia 85mm
     },
     0x0015 => {
         Name => 'LensFirmwareVersion',
@@ -8040,9 +8153,9 @@ my %pictureProfile2010 = (
     #   2 1 2 0  for A77V
     #   0 1 2 0  for A99V
     #   1 1 3 0  for ILCA-68/77M2/99M2
-    #   0 0 0 0  for NEX and ILCE-3000/3500
+    #   0 0 0 0  for NEX and ILCE-3000/3500, also seen for SLT/ILCA with non-AF lens
     #   1 0 0 0  for ILCE-5000/5100/6000/7/7M2/7R/7S/QX1
-    #   6 0 0 0  for ILCE-7RM2/7SM2
+    #   6 0 0 0  for ILCE-6300/6500/7RM2/7SM2/9
     #   0 2 0 0  for NEX/ILCE with LA-EA2/EA4 Phase-AF adapter
     #   2 0 0 0  seen for a few NEX-5N images
     #   2 2 0 0  seen for a few NEX-5N/7 images with LA-EA2 adapter
@@ -8864,7 +8977,7 @@ my %pictureProfile2010 = (
     0x782c => 'WB_RGBLevels3200K', #IB
     0x782d => 'WB_RGBLevels2500K', #IB
     0x787f => 'WhiteLevel', #IB (divide by 4)
-    0x797d => 'LightFalloffParams', #forum7640
+    0x797d => 'VignettingCorrParams', #forum7640
     0x7980 => 'ChromaticAberrationCorrParams', #forum6509 (Sony A7 ARW)
     0x7982 => 'DistortionCorrParams', #forum6509 (Sony A7 ARW)
 );

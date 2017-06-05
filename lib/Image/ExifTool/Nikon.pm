@@ -59,7 +59,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.33';
+$VERSION = '3.34';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -108,6 +108,7 @@ sub GetAFPointGrid($$;$);
     '0F 58 50 50 14 14 05 00' => 'AF Nikkor 50mm f/1.8 N',
     '10 48 8E 8E 30 30 08 00' => 'AF Nikkor 300mm f/4 IF-ED',
     '11 48 44 5C 24 24 08 00' => 'AF Zoom-Nikkor 35-70mm f/2.8',
+    '11 48 44 5C 24 24 15 00' => 'AF Zoom-Nikkor 35-70mm f/2.8', #Jakob Dettner
     '12 48 5C 81 30 3C 09 00' => 'AF Nikkor 70-210mm f/4-5.6',
     '13 42 37 50 2A 34 0B 00' => 'AF Zoom-Nikkor 24-50mm f/3.3-4.5',
     '14 48 60 80 24 24 0B 00' => 'AF Zoom-Nikkor 80-200mm f/2.8 ED',

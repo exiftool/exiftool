@@ -24,17 +24,9 @@ specification.</p>
 <td class=c>no</td>
 <td><span class=s><span class=n>(duration of a single animation iteration)</span></span></td></tr>
 <tr>
-<td>ExtensionAnimation</td>
+<td>Extensions</td>
 <td class=c>-</td>
-<td>--&gt; <a href='GIF.html#Animate'>GIF Animate Tags</a></td></tr>
-<tr class=b>
-<td>ExtensionICC</td>
-<td class=c>-</td>
-<td>--&gt; <a href='ICC_Profile.html'>ICC_Profile Tags</a></td></tr>
-<tr>
-<td>ExtensionXMP</td>
-<td class=c>-</td>
-<td>--&gt; <a href='XMP.html'>XMP Tags</a></td></tr>
+<td>--&gt; <a href='GIF.html#Extensions'>GIF Extensions Tags</a></td></tr>
 <tr class=b>
 <td>FrameCount</td>
 <td class=c>no</td>
@@ -53,7 +45,80 @@ specification.</p>
 <td><span class=s><span class=n>(text displayed in image)</span></span></td></tr>
 </table></td></tr></table></blockquote>
 
-<h2><a name='Animate'>GIF Animate Tags</a></h2>
+<h2><a name='Extensions'>GIF Extensions Tags</a></h2>
+<p>Tags extracted from GIF89a application extensions.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'ICCRGBG1/012'</td>
+<td>ICC_Profile</td>
+<td class=c>yes</td>
+<td>--&gt; <a href='ICC_Profile.html'>ICC_Profile Tags</a></td></tr>
+<tr class=b>
+<td>'MIDICTRL/Jon'</td>
+<td>MIDIControl</td>
+<td class=c>-</td>
+<td>--&gt; <a href='GIF.html#MIDIControl'>GIF MIDIControl Tags</a></td></tr>
+<tr>
+<td>'MIDISONG/Dm7'</td>
+<td>MIDISong</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'NETSCAPE/2.0'</td>
+<td>Animation</td>
+<td class=c>-</td>
+<td>--&gt; <a href='GIF.html#Animation'>GIF Animation Tags</a></td></tr>
+<tr>
+<td>'XMP Data/XMP'</td>
+<td>XMP</td>
+<td class=c>yes</td>
+<td>--&gt; <a href='XMP.html'>XMP Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='MIDIControl'>GIF MIDIControl Tags</a></h2>
+<p>Information extracted from the MIDI control block extension.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>MIDIControlVersion</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='1 = 0x1'>1</td>
+<td>SequenceNumber</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='2 = 0x2'>2</td>
+<td>MelodicPolyphony</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='3 = 0x3'>3</td>
+<td>PercussivePolyphony</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='4 = 0x4'>4</td>
+<td>ChannelUsage</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='6 = 0x6'>6</td>
+<td>DelayTime</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Animation'>GIF Animation Tags</a></h2>
 <p>Information extracted from the &quot;NETSCAPE2.0&quot; animation extension.</p>
 <blockquote>
 <table class=frame><tr><td>
@@ -61,7 +126,7 @@ specification.</p>
 <tr class=h><th>Index1</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
-<td class=r title='2 = 0x2'>2</td>
+<td class=r title='1 = 0x1'>1</td>
 <td>AnimationIterations</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
@@ -110,7 +175,7 @@ specification.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Oct 28, 2011</i>
+<br><i>Last revised May 30, 2017</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

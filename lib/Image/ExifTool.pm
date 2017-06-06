@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '10.55';
+$VERSION = '10.56';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -1511,7 +1511,7 @@ my %systemTagsNotes = (
             files.  The local system timezone is assumed if the date/time value does not
             contain a timezone.  May be deleted to delete associated GPS tags.  A group
             name of 'EXIF' or 'XMP' may be specified to write or delete only EXIF or XMP
-            GPS tags.  The Geotag tag must be assigned before this tag
+            GPS tags
         },
         DelCheck => q{
             require Image::ExifTool::Geotag;
@@ -1534,10 +1534,9 @@ my %systemTagsNotes = (
             this write-only tag specifies a time difference to add to Geotime for
             synchronization with the GPS clock.  For example, set this to "-12" if the
             camera clock is 12 seconds faster than GPS time.  Input format is
-            "[+-][[[DD ]HH:]MM:]SS[.ss]".  Must be set before Geotime to be effective.
-            Additional features allow calculation of time differences and time drifts,
-            and extraction of synchronization times from image files. See the
-            L<geotagging documentation|../geotag.html> for details
+            "[+-][[[DD ]HH:]MM:]SS[.ss]".  Additional features allow calculation of time
+            differences and time drifts, and extraction of synchronization times from
+            image files.  See the L<geotagging documentation|../geotag.html> for details
         },
         ValueConvInv => q{
             require Image::ExifTool::Geotag;

@@ -64,10 +64,6 @@ must be <a href="#Orient">user-defined</a>.</i></blockquote>
 write-only <a href="TagNames/Extra.html">Extra tags</a>:
 <code>Geotag</code>, <code>Geosync</code> and <code>Geotime</code>.</p>
 
-<blockquote class=lt><i>Note: When writing these tags, order is important. If
-<code>Geotime</code> is written, it must be done after both <code>Geotag</code>
-and <code>Geosync</code>.</i></blockquote>
-
 <a name="geotag"></a>
 <h4>Geotag</h4>
 
@@ -111,12 +107,10 @@ file name.</i></blockquote>
 <h4>Geosync</h4>
 
 <p>The <code>Geosync</code> tag is needed only when the image timestamps are not
-properly synchronized with GPS time, and must be set before <code>Geotime</code>
-to be effective (or before <code>Geotag</code> if <code>Geotime</code> is not
-specified).  The value written to the <code>Geosync</code> tag may take a
-number of different forms, but the basic format is that of a simple time
-difference which is added to <code>Geotime</code> before interpolating the GPS
-position in the track log.  This time difference may be of the form "SS",
+properly synchronized with GPS time.  The value written to <code>Geosync</code>
+may take a number of different forms, but the basic format is that of a simple
+time difference which is added to <code>Geotime</code> before interpolating the
+GPS position in the track log.  This time difference may be of the form "SS",
 "MM:SS", "HH:MM:SS" or "DD HH:MM:SS" (where SS=seconds, MM=minutes, HH=hours and
 DD=days), and a leading "+" or "-" may be added for positive or negative
 differences (negative if the camera clock was ahead of GPS time).  Fractional
@@ -215,8 +209,11 @@ tags.</p>
 lines illustrating various aspects of the geotagging feature.</p>
 
 <blockquote class=lt><i>Programmers:  Note that <code>Geotime</code> must always
-be specified when geotagging via the API -- the default value of
-<code>DateTimeOriginal#</code> is implemented by the application.</i>
+be specified when geotagging via the API (the default value of
+<code>DateTimeOriginal#</code> is implemented by the application).  Also,
+<code>Geotime</code> must be set after both <code>Geotag</code> and
+<code>Geosync</code> (the exiftool application reorders the assignments to
+ensure this).</i>
 </blockquote>
 
 <a name="Examples"></a>
@@ -236,16 +233,12 @@ slower than the GPS clock:</p>
 
 <pre>exiftool -geotag track.log -geosync=+25 dir</pre>
 
-<p>Geotag an image with the GPS position for a specific time.  (Note that the
-<code>Geotag</code> tag must be assigned before <code>Geotime</code> for the GPS
-data to be available when <code>Geotime</code> is set):</p>
+<p>Geotag an image with the GPS position for a specific time:</p>
 
 <pre>exiftool -geotag t.log -geotime="2009:04:02 13:41:12-05:00" a.jpg</pre>
 
 <p>Geotag all images in directory "dir" with XMP tags instead of EXIF tags,
-based on the image <code>CreateDate</code>.  (In this case, the order of the
-arguments doesn't matter because tags with values copied from other tags are
-always set after constant values):</p>
+based on the image <code>CreateDate</code>:</p>
 
 <pre>exiftool -geotag log.gpx "-xmp:geotime&lt;createdate" dir</pre>
 

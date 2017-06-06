@@ -7,6 +7,12 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.55. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+June 6, 2017 - Version 10.56
+
+  - Removed ordering constraints between Geotag/Geosync and Geotime assignments
+    on the command line
+  - Removed debugging print statement left in photoshop_paths.config
+
 June 5, 2017 - Version 10.55 (production release)
 
   - Added support for GIF multimedia extensions

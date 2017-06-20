@@ -85,7 +85,7 @@ sub ProcessSerialData($$$);
 sub ProcessFilters($$$);
 sub SwapWords($);
 
-$VERSION = '3.75';
+$VERSION = '3.76';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -430,7 +430,7 @@ $VERSION = '3.75';
     750 => 'Canon EF 35mm f/1.4L II USM', #42
     751 => 'Canon EF 16-35mm f/2.8L III USM', #42
     752 => 'Canon EF 24-105mm f/4L IS II USM', #42
-    # (STM lenses seem to start with 0x10xx)
+    # (STM lenses - 0x10xx)
     4142 => 'Canon EF-S 18-135mm f/3.5-5.6 IS STM',
     4143 => 'Canon EF-M 18-55mm f/3.5-5.6 IS STM or Tamron Lens',
     4143.1 => 'Tamron 18-200mm F/3.5-6.3 Di III VC', #42
@@ -448,8 +448,11 @@ $VERSION = '3.75';
     4156 => 'Canon EF 50mm f/1.8 STM', #42
     4157 => 'Canon EF-M 18-150mm 1:3.5-6.3 IS STM', #42
     4158 => 'Canon EF-S 18-55mm f/4-5.6 IS STM', #PH
+    4160 => 'Canon EF-S 35mm f/2.8 Macro IS STM', #42
+    # (Nano USM lenses - 0x90xx)
     36910 => 'Canon EF 70-300mm f/4-5.6 IS II USM', #42
     36912 => 'Canon EF-S 18-135mm f/3.5-5.6 IS USM', #42
+    # (CN-E lenses - 0xf0xx)
     61494 => 'Canon CN-E 85mm T1.3 L F', #PH
     65535 => 'n/a',
 );
@@ -686,6 +689,9 @@ $VERSION = '3.75';
     0x4060000 => 'PowerShot SX620 HS',
     0x4070000 => 'EOS M6',
     0x4100000 => 'PowerShot G9 X Mark II',
+    0x4150000 => 'PowerShot ELPH 185 / IXUS 185 / IXY 200', 
+    0x4160000 => 'PowerShot SX430 IS',
+    0x4170000 => 'PowerShot SX730 HS',
     0x6040000 => 'PowerShot S100 / Digital IXUS / IXY Digital',
 
 # (see http://cweb.canon.jp/e-support/faq/answer/digitalcamera/10447-1.html for PowerShot/IXUS/IXY names)
@@ -7628,6 +7634,7 @@ my %ciMaxFocal = (
             0 => 'Disable',
             1 => 'Adjust all by the same amount',
             2 => 'Adjust by lens',
+          # 3 - seen this for EOS 77D, which doesn't have an AF Micro Adjust feature - PH
         },
     },
     2 => {

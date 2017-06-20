@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '10.56';
+$VERSION = '10.57';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -1452,6 +1452,7 @@ my %systemTagsNotes = (
             higher
         },
     },
+    # Validate (added from Validate.pm)
     Now => {
         Groups => { 0 => 'ExifTool', 1 => 'ExifTool', 2 => 'Time' },
         Notes => q{
@@ -2215,6 +2216,7 @@ sub ExtractInfo($;@)
         $raf->Read($buff, 1024) or $buff = '';
         $raf->Seek($pos, 0) or $seekErr = 1;
         until ($seekErr) {
+            my $unkHeader;
             $type = shift @fileTypeList;
             if ($type) {
                 # do quick test for this file type to avoid loading module unnecessarily
@@ -2232,7 +2234,8 @@ sub ExtractInfo($;@)
                 my $skip = pos($buff) - length($1);
                 $dirInfo{Base} = $pos + $skip;
                 $raf->Seek($pos + $skip, 0) or $seekErr = 1, last;
-                $self->Warn("Skipped unknown $skip byte header");
+                $self->Warn("Processing $type-like data after unknown $skip-byte header");
+                $unkHeader = 1 unless $$self{DOC_NUM};
             }
             # save file type in member variable
             $$self{FILE_TYPE} = $type;
@@ -2266,8 +2269,15 @@ sub ExtractInfo($;@)
 
             pop @{$$self{PATH}};
 
-            last if $result;    # all done if successful
-
+            if ($result) {  # all done if successful
+                if ($unkHeader) {
+                    $self->DeleteTag('FileType');
+                    $self->DeleteTag('FileTypeExtension');
+                    $self->DeleteTag('MIMEType');
+                    $self->VPrint(0,"Reset file type due to unknown header\n");
+                }
+                last;
+            }
             # seek back to try again from the same position in the file
             $raf->Seek($pos, 0) or $seekErr = 1, last;
         }

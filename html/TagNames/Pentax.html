@@ -542,9 +542,11 @@ different from other models)</span>
 approximate Light Value.  May not be valid for some models, eg. Optio S)</span></span></td></tr>
 <tr>
 <td title='0x0016 = 22'>0x0016</td>
-<td>ExposureCompensation</td>
-<td class=c>int16u</td>
-<td>&nbsp;</td></tr>
+<td>ExposureCompensation
+  <br>ExposureCompensation</td>
+<td class=c>int16u<br>int16u[2]</td>
+<td><span class=s><span class=n>(some models write two values here.  The second value is meaning of the
+second value is not yet known)</span></span></td></tr>
 <tr class=b>
 <td title='0x0017 = 23'>0x0017</td>
 <td>MeteringMode</td>
@@ -2214,8 +2216,10 @@ released, including time for focusing.  Not valid for some models)</span></span>
   <br>5 = On but Disabled
   <br>6 = On (Video)
   <br>7 = On (AA simulation off)
+  <br>8 = Off (AA simulation type 1) (8)
   <br>12 = Off (AA simulation type 1)
   <br>15 = On (AA simulation type 1)
+  <br>16 = Off (AA simulation type 2) (16)
   <br>20 = Off (AA simulation type 2)
   <br>23 = On (AA simulation type 2)</td></tr></table>
 </td></tr>
@@ -4863,7 +4867,7 @@ stored as ASCII text in a format very similar to some HP models.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised May 30, 2017</i>
+<br><i>Last revised Jun 20, 2017</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

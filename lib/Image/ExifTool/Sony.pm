@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.61';
+$VERSION = '2.62';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -654,7 +654,7 @@ my %meterInfo2 = (
             $val = substr($val,0x20) if length($val) > 0x20;
 #            return \$val if $val =~ s/^.(\xd8\xff\xdb)/\xff$1/s;
             return \$val if $val =~ s/^.(\xd8\xff[\xdb\xe1])/\xff$1/s;
-            $$self{PreviewError} = 1 unless $val eq 'none';
+            $$self{PreviewError} = 1 unless $val eq 'none' or $val eq '';
             return undef;
         },
         # must construct 0x20-byte header which contains length, width and height

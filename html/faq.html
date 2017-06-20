@@ -1508,6 +1508,13 @@ and will often catch more problems when writing, but it does not attempt to do a
 full validation.  There are other packages that are designed to do validation
 like this, for example, <a href="http://jhove.sourceforge.net">JHOVE</a>.</blockquote>
 
+<blockquote><b>Update:</b> ExifTool now has an experimental <code>-validate</code>
+option.  The following command invokes the validation feature and shows all
+associated Error and Warning messages:
+
+<pre>exiftool -validate -error -warning -a test.jpg</pre>
+</blockquote>
+
 <a name="Q26"></a>
 <p>26. <b>"How do I import information from a database?"</b></p>
 
@@ -1591,7 +1598,7 @@ proper technique for shifting a date/time value when copying:
 </blockquote>
 
 <hr>
-<i>Last revised Mar 31, 2017</i>
+<i>Last revised Jun 7, 2017</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

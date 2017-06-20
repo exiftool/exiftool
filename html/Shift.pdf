@@ -2,7 +2,7 @@
 %ту╧╙
 2 0 obj
 <<
-/Length 3771
+/Length 3997
 >>
 stream
 BT
@@ -54,22 +54,114 @@ BT
 T*
 (       values.)Tj
 0 -2.2 TD
-(D)Tj
+(M)Tj
 0 0 TD
-(DE)Tj
+(ME)Tj
 0.6 0 TD
 (ET)Tj
 0.6 0 TD
-(TA)Tj
+(TH)Tj
 0.6 0 TD
-(AI)Tj
+(HO)Tj
 0.6 0 TD
-(IL)Tj
+(OD)Tj
 0.6 0 TD
-(LS)Tj
+(DS)Tj
 0.6 0 TD
 (S)Tj
 -3.6 -1.1 TD
+(   S)Tj
+1.8 0 TD
+(Sh)Tj
+0.6 0 TD
+(hi)Tj
+0.6 0 TD
+(if)Tj
+0.6 0 TD
+(ft)Tj
+0.6 0 TD
+(tT)Tj
+0.6 0 TD
+(Ti)Tj
+0.6 0 TD
+(im)Tj
+0.6 0 TD
+(me)Tj
+0.6 0 TD
+(e)Tj
+-6.6 -1.1 TD
+(       Shift date/time value)Tj
+0 -2.2 TD
+(           use Image::ExifTool;)Tj
+0 -1.1 TD
+(           $err = Image::ExifTool::ShiftTime\($dateTime, $shift\);)Tj
+0 -2.2 TD
+(       Inputs:)Tj
+0 -1.1 TD
+(           0\) Date/time string in EXIF format \(eg. "2016:01:30 11:45:00"\).)Tj
+0 -2.2 TD
+(           1\) Shift string \(see below\) with optional leading sign for shift)Tj
+0 -1.1 TD
+(           direction.)Tj
+0 -2.2 TD
+(           2\) [optional] Direction of shift \(-1 or +1\), or 0 or undef to use)Tj
+0 -1.1 TD
+(           the sign from the shift string.)Tj
+0 -2.2 TD
+(           3\) [optional] Reference to time-shift hash -- filled in by first)Tj
+0 -1.1 TD
+(           call to S)Tj
+11.4 0 TD
+(Sh)Tj
+0.6 0 TD
+(hi)Tj
+0.6 0 TD
+(if)Tj
+0.6 0 TD
+(ft)Tj
+0.6 0 TD
+(tT)Tj
+0.6 0 TD
+(Ti)Tj
+0.6 0 TD
+(im)Tj
+0.6 0 TD
+(me)Tj
+0.6 0 TD
+(e, and used in subsequent calls to shift date/time)Tj
+-16.2 -1.1 TD
+(           values by the same relative amount \(see "TRICKY" section below\).)Tj
+0 -2.2 TD
+(       Return value:)Tj
+0 -1.1 TD
+(           Error string, or undef on success and the input date/time string is)Tj
+T*
+(           shifted by the specified amount.)Tj
+0 -2.2 TD
+(S)Tj
+0 0 TD
+(SH)Tj
+0.6 0 TD
+(HI)Tj
+0.6 0 TD
+(IF)Tj
+0.6 0 TD
+(FT)Tj
+0.6 0 TD
+(T S)Tj
+1.2 0 TD
+(ST)Tj
+0.6 0 TD
+(TR)Tj
+0.6 0 TD
+(RI)Tj
+0.6 0 TD
+(IN)Tj
+0.6 0 TD
+(NG)Tj
+0.6 0 TD
+(G)Tj
+-6.6 -1.1 TD
 (       Time shifts are applied to standard EXIF-formatted date/time values)Tj
 T*
 (       \(eg.  "2005:03:14 18:55:00"\).  Date-only and time-only values may also)Tj
@@ -82,29 +174,29 @@ T*
 0 -2.2 TD
 (       Date-only values are shifted using the following formats:)Tj
 T*
-(           ТY:M:DТ     - shift date by ТYТ years, ТMТ months and ТDТ days)Tj
+(           'Y:M:D'     - shift date by 'Y' years, 'M' months and 'D' days)Tj
 0 -1.1 TD
-(           ТM:DТ       - shift months and days only)Tj
+(           'M:D'       - shift months and days only)Tj
 T*
-(           ТDТ         - shift specified number of days)Tj
+(           'D'         - shift specified number of days)Tj
 0 -2.2 TD
 (       Time-only values are shifted using the following formats:)Tj
 T*
-(           Тh:m:sТ     - shift time by ТhТ hours, ТmТ minutes and ТsТ seconds)Tj
+(           'h:m:s'     - shift time by 'h' hours, 'm' minutes and 's' seconds)Tj
 0 -1.1 TD
-(           Тh:mТ       - shift hours and minutes only)Tj
+(           'h:m'       - shift hours and minutes only)Tj
 T*
-(           ТhТ         - shift specified number of hours)Tj
+(           'h'         - shift specified number of hours)Tj
 0 -2.2 TD
 (       Timezone shifts are specified in the following formats:)Tj
 T*
-(           Т+h:mТ      - shift timezone by ТhТ hours and ТmТ minutes)Tj
+(           '+h:m'      - shift timezone by 'h' hours and 'm' minutes)Tj
 0 -1.1 TD
-(           Т-h:mТ      - negative shift of timezone hours and minutes)Tj
+(           '-h:m'      - negative shift of timezone hours and minutes)Tj
 T*
-(           Т+hТ        - shift timezone hours only)Tj
+(           '+h'        - shift timezone hours only)Tj
 T*
-(           Т-hТ        - negative shift of timezone hours only)Tj
+(           '-h'        - negative shift of timezone hours only)Tj
 0 -2.2 TD
 (       A valid shift value consists of one or two arguments, separated by a)Tj
 0 -1.1 TD
@@ -114,41 +206,7 @@ T*
 T*
 (       applied to a date-only value.  For example:)Tj
 0 -2.2 TD
-(           Т1Т         - shift by 1 hour if applied to a time or date/time)Tj
-0 -1.1 TD
-(                         value, or by one day if applied to a date value)Tj
-T*
-(           Т2:0Т       - shift 2 hours \(time, date/time\), or 2 months \(date\))Tj
-T*
-(           Т5:0:0Т     - shift 5 hours \(time, date/time\), or 5 years \(date\))Tj
-T*
-(           Т0:0:1Т     - shift 1 s \(time, date/time\), or 1 day \(date\))Tj
-0 -2.2 TD
-(       If two arguments are given, the date shift is first, followed by the)Tj
-0 -1.1 TD
-(       time shift:)Tj
-0 -2.2 TD
-(           Т3:0:0 0Т         - shift date by 3 years)Tj
-0 -1.1 TD
-(           Т0 15:30Т         - shift time by 15 hours and 30 minutes)Tj
-T*
-(           Т1:0:0 0:0:0+5:0Т - shift date by 1 year and timezone by 5 hours)Tj
-0 -2.2 TD
-(       A date shift is simply ignored if applied to a time value or visa)Tj
-0 -1.1 TD
-(       versa.)Tj
-0 -2.2 TD
-(       Numbers specified in shift fields may contain a decimal point:)Tj
-T*
-(           Т1.5Т       - 1 hour 30 minutes \(time, date/time\), or 1 day \(date\))Tj
-0 -1.1 TD
-(           Т2.5 0Т     - 2 days 12 hours \(date/time\), 12 hours \(time\) or)Tj
-T*
-(                         2 days \(date\))Tj
-0 -2.2 TD
-(       And to save typing, a zero is assumed for any missing numbers:)Tj
-T*
-(           Т1::Т       - shift by 1 hour \(time, date/time\) or 1 year \(date\))Tj
+(           '1'         - shift by 1 hour if applied to a time or date/time)Tj
 ET
 endstream
 endobj
@@ -165,7 +223,7 @@ endobj
 endobj
 8 0 obj
 <<
-/Length 4407
+/Length 4138
 >>
 stream
 BT
@@ -175,13 +233,47 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(           Т26:: 0Т    - shift date by 26 years)Tj
+(                         value, or by one day if applied to a date value)Tj
 0 -1.1 TD
-(           Т+:30       - shift timezone by 30 minutes)Tj
+(           '2:0'       - shift 2 hours \(time, date/time\), or 2 months \(date\))Tj
+T*
+(           '5:0:0'     - shift 5 hours \(time, date/time\), or 5 years \(date\))Tj
+T*
+(           '0:0:1'     - shift 1 s \(time, date/time\), or 1 day \(date\))Tj
+0 -2.2 TD
+(       If two arguments are given, the date shift is first, followed by the)Tj
+0 -1.1 TD
+(       time shift:)Tj
+0 -2.2 TD
+(           '3:0:0 0'         - shift date by 3 years)Tj
+0 -1.1 TD
+(           '0 15:30'         - shift time by 15 hours and 30 minutes)Tj
+T*
+(           '1:0:0 0:0:0+5:0' - shift date by 1 year and timezone by 5 hours)Tj
+0 -2.2 TD
+(       A date shift is simply ignored if applied to a time value or visa)Tj
+0 -1.1 TD
+(       versa.)Tj
+0 -2.2 TD
+(       Numbers specified in shift fields may contain a decimal point:)Tj
+T*
+(           '1.5'       - 1 hour 30 minutes \(time, date/time\), or 1 day \(date\))Tj
+0 -1.1 TD
+(           '2.5 0'     - 2 days 12 hours \(date/time\), 12 hours \(time\) or)Tj
+T*
+(                         2 days \(date\))Tj
+0 -2.2 TD
+(       And to save typing, a zero is assumed for any missing numbers:)Tj
+T*
+(           '1::'       - shift by 1 hour \(time, date/time\) or 1 year \(date\))Tj
+0 -1.1 TD
+(           '26:: 0'    - shift date by 26 years)Tj
+T*
+(           '+:30       - shift timezone by 30 minutes)Tj
 0 -2.2 TD
 (       Below are some specific examples applied to real date and/or time)Tj
 0 -1.1 TD
-(       values \(ТDirТ is the applied shift direction: Т+Т is positive, Т-Т is)Tj
+(       values \('Dir' is the applied shift direction: '+' is positive, '-' is)Tj
 T*
 (       negative\):)Tj
 0 -2.2 TD
@@ -189,31 +281,31 @@ T*
 0 -1.1 TD
 (           ---------------------  -------  ---  ---------------------)Tj
 T*
-(           Т20:30:00Т             Т5Т       +   Т01:30:00Т)Tj
+(           '20:30:00'             '5'       +   '01:30:00')Tj
 T*
-(           Т2005:01:27Т           Т5Т       +   Т2005:02:01Т)Tj
+(           '2005:01:27'           '5'       +   '2005:02:01')Tj
 T*
-(           Т2005:01:27 20:30:00Т  Т5Т       +   Т2005:01:28 01:30:00Т)Tj
+(           '2005:01:27 20:30:00'  '5'       +   '2005:01:28 01:30:00')Tj
 T*
-(           Т11:54:00Т             Т2.5 0Т   -   Т23:54:00Т)Tj
+(           '11:54:00'             '2.5 0'   -   '23:54:00')Tj
 T*
-(           Т2005:11:02Т           Т2.5 0Т   -   Т2005:10:31Т)Tj
+(           '2005:11:02'           '2.5 0'   -   '2005:10:31')Tj
 T*
-(           Т2005:11:02 11:54:00Т  Т2.5 0Т   -   Т2005:10:30 23:54:00Т)Tj
+(           '2005:11:02 11:54:00'  '2.5 0'   -   '2005:10:30 23:54:00')Tj
 T*
-(           Т2004:02:28 08:00:00Т  Т1 1.3Т   +   Т2004:02:29 09:18:00Т)Tj
+(           '2004:02:28 08:00:00'  '1 1.3'   +   '2004:02:29 09:18:00')Tj
 T*
-(           Т07:00:00Т             Т-5Т      +   Т07:00:00Т)Tj
+(           '07:00:00'             '-5'      +   '07:00:00')Tj
 T*
-(           Т07:00:00+01:00Т       Т-5Т      +   Т07:00:00-04:00Т)Tj
+(           '07:00:00+01:00'       '-5'      +   '07:00:00-04:00')Tj
 T*
-(           Т07:00:00ZТ            Т+2:30Т   -   Т07:00:00-02:30Т)Tj
+(           '07:00:00Z'            '+2:30'   -   '07:00:00-02:30')Tj
 T*
-(           Т1970:01:01Т           Т35::Т    +   Т2005:01:01Т)Tj
+(           '1970:01:01'           '35::'    +   '2005:01:01')Tj
 T*
-(           Т2005:01:01Т           Т400Т     +   Т2006:02:05Т)Tj
+(           '2005:01:01'           '400'     +   '2006:02:05')Tj
 T*
-(           Т10:00:00.00Т          Т::1.33Т  -   Т09:59:58.67Т)Tj
+(           '10:00:00.00'          '::1.33'  -   '09:59:58.67')Tj
 0 -2.2 TD
 (N)Tj
 0 0 TD
@@ -233,9 +325,9 @@ T*
 T*
 (       will not change, and only the numbers in the string will be modified.)Tj
 T*
-(       The only exception to this rule is that a ТZТ timezone is changed to)Tj
+(       The only exception to this rule is that a 'Z' timezone is changed to)Tj
 T*
-(       Т+00:00Т notation if a timezone shift is applied.  A timezone will not)Tj
+(       '+00:00' notation if a timezone shift is applied.  A timezone will not)Tj
 T*
 (       be added to the date/time string.)Tj
 0 -2.2 TD
@@ -270,18 +362,43 @@ T*
 (       366 days, depending on the starting date.)Tj
 0 -2.2 TD
 (       The inconsistency is handled by shifting the first tag found with the)Tj
-0 -1.1 TD
+ET
+endstream
+endobj
+9 0 obj
+<<
+/ProcSet [/PDF /Text ]
+/Font <<
+/TT2 4 0 R
+>>
+/ExtGState <<
+/GS1 5 0 R
+>>
+>>
+endobj
+11 0 obj
+<<
+/Length 1621
+>>
+stream
+BT
+/TT2 1 Tf
+10 0 0 10 43 755 Tm
+0 g
+/GS1 gs
+0 Tc
+0 Tw
 (       actual specified shift, then calculating the equivalent time difference)Tj
-T*
+0 -1.1 TD
 (       in seconds for this shift and applying this difference to subsequent)Tj
 T*
 (       tags in a batch conversion.  So if it works as designed, the behaviour)Tj
 T*
 (       should be both intuitive and mathematically correct, and the user)Tj
 T*
-(       shouldnТt have to worry about details such as this \(in keeping with)Tj
+(       shouldn't have to worry about details such as this \(in keeping with)Tj
 T*
-(       PerlТs "do the right thing" philosophy\).)Tj
+(       Perl's "do the right thing" philosophy\).)Tj
 0 -2.2 TD
 (B)Tj
 0 0 TD
@@ -311,7 +428,7 @@ T*
 0.6 0 TD
 (R)Tj
 -3 -1.1 TD
-(       Copyright 2003-2014, Phil Harvey \(phil at owl.phy.queensu.ca\))Tj
+(       Copyright 2003-2017, Phil Harvey \(phil at owl.phy.queensu.ca\))Tj
 0 -2.2 TD
 (       This library is free software; you can redistribute it and/or modify it)Tj
 0 -1.1 TD
@@ -365,11 +482,11 @@ T*
 0.6 0 TD
 (l\(3pm\))Tj
 -12.6 -4.4 TD
-(perl v5.12.4                      2014-09-12                          SHIFT\(1\))Tj
+(perl v5.18.2                      2017-01-16                          SHIFT\(1\))Tj
 ET
 endstream
 endobj
-9 0 obj
+12 0 obj
 <<
 /ProcSet [/PDF /Text ]
 /Font <<
@@ -394,7 +511,7 @@ endobj
 /TR2 /Default
 >>
 endobj
-10 0 obj
+13 0 obj
 <<
 /Type /FontDescriptor
 /Ascent 753
@@ -415,17 +532,17 @@ endobj
 /Subtype /TrueType
 /FirstChar 32
 /LastChar 146
-/Widths [600 0 600 0 0 0 0 0 600 600 0 600 600 600 600 600 
-600 600 600 600 600 600 600 600 600 600 600 600 0 0 0 0 
-0 600 600 600 600 600 600 600 600 600 0 600 600 600 600 600 
-600 0 600 600 600 600 600 0 600 600 600 0 0 0 0 600 
-0 600 600 600 600 600 600 600 600 600 0 600 600 600 600 600 
+/Widths [600 0 600 0 600 0 0 600 600 600 0 600 600 600 600 600
+600 600 600 600 600 600 600 600 600 600 600 600 0 600 0 0
+0 600 600 600 600 600 600 600 600 600 0 600 600 600 600 600
+600 0 600 600 600 600 600 0 600 600 600 600 0 600 0 600
+600 600 600 600 600 600 600 600 600 600 0 600 600 600 600 600 
 600 600 600 600 600 600 600 600 600 600 600 0 0 0 0 0 
 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
 0 0 600 ]
 /Encoding /WinAnsiEncoding
 /BaseFont /Courier
-/FontDescriptor 10 0 R
+/FontDescriptor 13 0 R
 >>
 endobj
 1 0 obj
@@ -444,62 +561,73 @@ endobj
 /Contents 8 0 R
 >>
 endobj
-11 0 obj
+10 0 obj
+<<
+/Type /Page
+/Parent 6 0 R
+/Resources 12 0 R
+/Contents 11 0 R
+>>
+endobj
+14 0 obj
 <<
 /S /D
 >>
 endobj
-12 0 obj
+15 0 obj
 <<
-/Nums [0 11 0 R ]
+/Nums [0 14 0 R ]
 >>
 endobj
 6 0 obj
 <<
 /Type /Pages
-/Kids [1 0 R 7 0 R]
-/Count 2
+/Kids [1 0 R 7 0 R 10 0 R]
+/Count 3
 /MediaBox [0 0 612 792]
 >>
 endobj
-13 0 obj
+16 0 obj
 <<
-/CreationDate (D:20140919130023-04'00')
-/ModDate (D:20140919130023-04'00')
+/CreationDate (D:20170620082933-04'00')
+/ModDate (D:20170620082933-04'00')
 /Producer (Apple pstopdf)
 >>
 endobj
-14 0 obj
+17 0 obj
 <<
 /Type /Catalog
 /Pages 6 0 R
-/PageLabels 12 0 R
+/PageLabels 15 0 R
 >>
 endobj
 xref
-0 15
+0 18
 0000000000 65535 f 
-0000009358 00000 n 
+0000011093 00000 n 
 0000000016 00000 n 
-0000003839 00000 n 
-0000008819 00000 n 
-0000008488 00000 n 
-0000009586 00000 n 
-0000009438 00000 n 
-0000003934 00000 n 
-0000008393 00000 n 
-0000008628 00000 n 
-0000009518 00000 n 
-0000009546 00000 n 
-0000009673 00000 n 
-0000009796 00000 n 
+0000004065 00000 n 
+0000010546 00000 n 
+0000010215 00000 n 
+0000011404 00000 n 
+0000011173 00000 n 
+0000004160 00000 n 
+0000008350 00000 n 
+0000011253 00000 n 
+0000008445 00000 n 
+0000010119 00000 n 
+0000010355 00000 n 
+0000011336 00000 n 
+0000011364 00000 n 
+0000011498 00000 n 
+0000011621 00000 n 
 trailer
 <<
-/Size 15
-/Root 14 0 R
-/Info 13 0 R
-/ID [<89c7ae2a00904fff454d9722c9f7743d><89c7ae2a00904fff454d9722c9f7743d>]
+/Size 18
+/Root 17 0 R
+/Info 16 0 R
+/ID [<ba14be07a69a5af0cf16cf3a12afbaff><ba14be07a69a5af0cf16cf3a12afbaff>]
 >>
 startxref
-9865
+11690
 %%EOF

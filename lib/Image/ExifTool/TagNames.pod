@@ -367,14 +367,14 @@ official EXIF 2.31 specification.
   0x0147   CleanFaxData              -          no
   0x0148   ConsecutiveBadFaxLines    -          no
   0x014a   SubIFD                    -          EXIF
-           A100DataOffset            -          no
+           A100DataOffset            IFD0       no
   0x014c   InkSet                    IFD0       int16u
   0x014d   InkNames                  -          no
   0x014e   NumberofInks              -          no
   0x0150   DotRange                  -          no
   0x0151   TargetPrinter             IFD0       string
   0x0152   ExtraSamples              -          no
-  0x0153   SampleFormat              -          no
+  0x0153   SampleFormat              SubIFD     no
   0x0154   SMinSampleValue           -          no
   0x0155   SMaxSampleValue           -          no
   0x0156   TransferRange             -          no
@@ -762,8 +762,8 @@ official EXIF 2.31 specification.
   0xc613   DNGBackwardVersion        IFD0       int8u[4]!
   0xc614   UniqueCameraModel         IFD0       string
   0xc615   LocalizedCameraModel      IFD0       string
-  0xc616   CFAPlaneColor             -          no
-  0xc617   CFALayout                 -          no
+  0xc616   CFAPlaneColor             SubIFD     no
+  0xc617   CFALayout                 SubIFD     no
   0xc618   LinearizationTable        SubIFD     int16u[n]!
   0xc619   BlackLevelRepeatDim       SubIFD     int16u[2]!
   0xc61a   BlackLevel                SubIFD     rational64u[n]!
@@ -818,7 +818,7 @@ official EXIF 2.31 specification.
   0xc6d3   PanasonicTitle2           IFD0       undef
   0xc6f3   CameraCalibrationSig      IFD0       string!
   0xc6f4   ProfileCalibrationSig     IFD0       string!
-  0xc6f5   ProfileIFD                -          EXIF
+  0xc6f5   ProfileIFD                IFD0       EXIF
   0xc6f6   AsShotProfileName         IFD0       string!
   0xc6f7   NoiseReductionApplied     SubIFD     rational64u!
   0xc6f8   ProfileName               IFD0       string!
@@ -12786,6 +12786,7 @@ These tags are used in Pentax/Asahi cameras.
   0x0014   ISO                                  int16u
   0x0015   LightReading                         int16u
   0x0016   ExposureCompensation                 int16u
+           ExposureCompensation                 int16u[2]
   0x0017   MeteringMode                         int16u
   0x0018   AutoBracketing                       int16u[n]
   0x0019   WhiteBalance                         int16u
@@ -20099,6 +20100,7 @@ ImageMagick.
   ------                  --------              --------
   'Artist'                Artist                string
   'Author'                Author                string
+  'Collection'            Collection            string
   'Comment'               Comment               string
   'Copyright'             Copyright             string
   'Creation Time'         CreationTime          string

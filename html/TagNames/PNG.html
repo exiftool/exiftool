@@ -57,7 +57,7 @@ this data as additional PNG chunks.</p>
 <td class=c>-</td>
 <td>--&gt; <a href='EXIF.html'>EXIF Tags</a>
   <br><span class='n s'>(proposed but not yet registered.  This is where ExifTool will create new
-EXIF without the Compress option)</span></td></tr>
+EXIF)</span></td></tr>
 <tr class=b>
 <td>'fRAc'</td>
 <td>FractalParameters</td>
@@ -184,8 +184,7 @@ the EXIF convention, but is the inverse of the stored encoding gamma)</span></sp
 <td>zxIf</td>
 <td class=c>-</td>
 <td>--&gt; <a href='EXIF.html'>EXIF Tags</a>
-  <br><span class='n s'>(proposed but not yet registered.  This is where ExifTool will create new
-EXIF with the Compress option)</span></td></tr>
+  <br><span class='n s'>(a once-proposed chunk for compressed EXIF)</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='ImageHeader'>PNG ImageHeader Tags</a></h2>
@@ -344,125 +343,130 @@ ImageMagick.</p>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td>'Collection'</td>
+<td>Collection</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>'Comment'</td>
 <td>Comment</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'Copyright'</td>
 <td>Copyright</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'Creation Time'</td>
 <td>CreationTime</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'Description'</td>
 <td>Description</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'Disclaimer'</td>
 <td>Disclaimer</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'Document'</td>
 <td>Document</td>
 <td class=c>string</td>
 <td><span class=s><span class=n>(unregistered)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>'Label'</td>
 <td>Label</td>
 <td class=c>string</td>
 <td><span class=s><span class=n>(unregistered)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>'Make'</td>
 <td>Make</td>
 <td class=c>string</td>
 <td><span class=s><span class=n>(unregistered)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>'Model'</td>
 <td>Model</td>
 <td class=c>string</td>
 <td><span class=s><span class=n>(unregistered)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>'Raw profile type 8bim'</td>
 <td>Photoshop_Profile</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Photoshop.html'>Photoshop Tags</a>
   <br><span class='n s'>(unregistered)</span></td></tr>
-<tr>
+<tr class=b>
 <td>'Raw profile type APP1'</td>
 <td>APP1_Profile</td>
 <td class=c>-</td>
 <td>--&gt; <a href='EXIF.html'>EXIF Tags</a>
   <br>--&gt; <a href='XMP.html'>XMP Tags</a>
   <br><span class='n s'>(unregistered)</span></td></tr>
-<tr class=b>
+<tr>
 <td>'Raw profile type exif'</td>
 <td>EXIF_Profile</td>
 <td class=c>-</td>
 <td>--&gt; <a href='EXIF.html'>EXIF Tags</a>
   <br><span class='n s'>(unregistered)</span></td></tr>
-<tr>
+<tr class=b>
 <td>'Raw profile type icc'</td>
 <td>ICC_Profile</td>
 <td class=c>-</td>
 <td>--&gt; <a href='ICC_Profile.html'>ICC_Profile Tags</a>
   <br><span class='n s'>(unregistered)</span></td></tr>
-<tr class=b>
+<tr>
 <td>'Raw profile type icm'</td>
 <td>ICC_Profile</td>
 <td class=c>-</td>
 <td>--&gt; <a href='ICC_Profile.html'>ICC_Profile Tags</a>
   <br><span class='n s'>(unregistered)</span></td></tr>
-<tr>
+<tr class=b>
 <td>'Raw profile type iptc'</td>
 <td>IPTC_Profile</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Photoshop.html'>Photoshop Tags</a>
   <br><span class='n s'>(unregistered.  May be either IPTC IIM or Photoshop IRB format.  This is
 where ExifTool will add new IPTC, inside a Photoshop IRB container)</span></td></tr>
-<tr class=b>
+<tr>
 <td>'Raw profile type xmp'</td>
 <td>XMP_Profile</td>
 <td class=c>-</td>
 <td>--&gt; <a href='XMP.html'>XMP Tags</a>
   <br><span class='n s'>(unregistered)</span></td></tr>
-<tr>
+<tr class=b>
 <td>'Software'</td>
 <td>Software</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'Source'</td>
 <td>Source</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'TimeStamp'</td>
 <td>TimeStamp</td>
 <td class=c>string</td>
 <td><span class=s><span class=n>(unregistered)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>'Title'</td>
 <td>Title</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'URL'</td>
 <td>URL</td>
 <td class=c>string</td>
 <td><span class=s><span class=n>(unregistered)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>'Warning'</td>
 <td>PNGWarning</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'XML:com.adobe.xmp'</td>
 <td>XMP</td>
 <td class=c>-</td>
@@ -470,12 +474,12 @@ where ExifTool will add new IPTC, inside a Photoshop IRB container)</span></td><
   <br><span class='n s'>(unregistered, but this is the location according to the June 2002 or later
 XMP specification, and is where ExifTool will add a new XMP chunk if the
 image didn't already contain XMP)</span></td></tr>
-<tr class=b>
+<tr>
 <td>'create-date'</td>
 <td>CreateDate</td>
 <td class=c>string</td>
 <td><span class=s><span class=n>(unregistered)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>'modify-date'</td>
 <td>ModDate</td>
 <td class=c>string</td>
@@ -572,7 +576,7 @@ when any of these tags is written, and may only be deleted as a group.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Apr 5, 2017</i>
+<br><i>Last revised Jun 15, 2017</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

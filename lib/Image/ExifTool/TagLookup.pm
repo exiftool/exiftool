@@ -1251,6 +1251,7 @@ my %tagLookup = (
 	'cmwhitebalancegraypoint' => { 269 => 0x2010 },
 	'codec' => { 152 => 'Codec' },
 	'codedcharacterset' => { 118 => 0x5a },
+	'collection' => { 274 => 'Collection' },
 	'collectionname' => { 153 => [\'Collections','CollectionsCollectionName'] },
 	'collections' => { 153 => 'Collections', 414 => 'collections' },
 	'collectionuri' => { 153 => [\'Collections','CollectionsCollectionURI'] },

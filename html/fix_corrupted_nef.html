@@ -28,10 +28,14 @@ or older versions of <b>ViewNX 2</b> (and probably Capture NX 2) may result
 in <b>corrupted NEF</b> images that can no longer be opened.</p>
 
 <p>This utility <b>repairs these corrupted NEF images</b> for the D4, Df,
-D600, D610, D800, D800E, D3200, D5200 and D7100.<sup>&dagger;</sup></p>
+D600, D610, D750, D800, D800E, D810, D3200, D5200, D5300, D5500, D7100
+and D7200.</p>
 
-<p>It <b>does <u>not</u> repair</b> images corrupted by memory card problems
-or disk errors.</p>
+<p>It <b><u>DOES NOT REPAIR</u></b> images corrupted by <b>memory card
+problems</b>, <b>disk errors</b>, or <b>other software</b>.
+<i class=lt>[<b>Nikon NX-D</b> has also been known to corrupt images (possibly
+related to changing the file byte ordering!), but these problems are
+<b><u>not</u> fixed by this utility</b>.]</i></p>
 
 <blockquote class=warn><b class=red>Warning!</b> If you modify the corrupted
 images with any other software before fixing them with this utility, then the
@@ -44,21 +48,18 @@ use View NX2 to geotag the images after downloading.)</blockquote>
 <p><a href="http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,4220.msg20951.html#new">See this thread
 in the ExifTool forum</a> if you have any questions or comments.</p>
 
-<p class=lt>[Note that Nikon doesn't learn from their mistakes, and a similar problem
-happened 2 years ago with an older version of Nikon Transfer and the D5000 --
-<a href="http://geekswithblogs.net/felipe/archive/2010/07/12/140879.aspx">read here</a>.
-The moral is: Don't use Nikon Transfer <b>or any other utility that modifies the file</b>
-to download your precious images!]</p>
+<p><i class=lt>[Note that Nikon doesn't learn from their mistakes, and a similar problem
+happened 2 years earlier with an older version of Nikon Transfer and the D5000
+(<a href="http://geekswithblogs.net/felipe/archive/2010/07/12/140879.aspx">read here</a>),
+and the new Nikon NX-D software has other corruption issues.  The moral is:
+Don't use Nikon Transfer <b>or any other utility that modifies the file</b> to
+download your precious images!]</i></p>
 
 <p>It is very sad that this Nikon software bug penalizes only loyal Nikon owners
 (since it affects only people who had an older copy of the Nikon software from a
 previous camera), yet Nikon customer support provides no help other than
 suggesting that you contact your memory card manufacturer to see if the original
 images can be restored.</p>
-
-<p><sup>&dagger;</sup> <span class="sm lt">Currently only FX-format NEF images
-are supported for the D4, but support for DX images may be added if there is a
-demand.  Both FX and DX formats are supported for the Df, D600, D610 and D800.</span></p>
 
 <hr><a name="win"></a><h2>Windows Users</h2>
 
@@ -151,6 +152,16 @@ donation, this can be done from <a href="http://owl.phy.queensu.ca/~phil/exiftoo
 <p> &nbsp; &nbsp; - Phil Harvey</p>
 
 <hr><h3>Revisions</h3>
+<p><b>2016-09-14 - Version 3.0</b> - Added support for D5300 images</p>
+<p><b>2016-08-04 - Version 2.9</b> - Added support for D500 DX and 1.3x images</p>
+<p><b>2015-09-25 - Version 2.8</b> - Added support for D7200 images</p>
+<p><b>2015-08-31 - Version 2.7</b> - Added support for D5500 images</p>
+<p><b>2015-08-13 - Version 2.6</b> - Added support for other D810 image sizes</p>
+<p><b>2015-08-11 - Version 2.5</b> - Added support for D810 FX and DX images</p>
+<p><b>2014-11-15 - Version 2.4</b> - Added support for D750 FX, DX and 1.2x images
+                                     and improved recognition of corrupted images</p>
+<p><b>2014-10-19 - Version 2.3</b> - Added support for D4 1.2x and 5:4 crops</p>
+<p><b>2014-10-10 - Version 2.2</b> - Added support for D4 DX images</p>
 <p><b>2014-09-02 - Version 2.1</b> - Added support for Df FX and DX images</p>
 <p><b>2014-05-17 - Version 2.0</b> - Added support for D610 images</p>
 <p><b>2013-08-01 - Version 1.9</b> - Added support for D600 movie-cropped images</p>

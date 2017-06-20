@@ -288,13 +288,14 @@ sub AddChunks($$;@)
         );
         if ($dir eq 'IFD0') {
             my $chunk = $stdCase{exif};
-            if ($et->Options('Compress')) {
-                if (eval { require Compress::Zlib }) {
-                    $chunk = $stdCase{zxif};
-                } else {
-                    $et->Warn("Creating uncompressed $stdCase{exif} chunk (Compress::Zlib not available)");
-                }
-            }
+            # (zxIf was not adopted)
+            #if ($et->Options('Compress')) {
+            #    if (eval { require Compress::Zlib }) {
+            #        $chunk = $stdCase{zxif};
+            #    } else {
+            #        $et->Warn("Creating uncompressed $stdCase{exif} chunk (Compress::Zlib not available)");
+            #    }
+            #}
             $et->VPrint(0, "Creating $chunk chunk:\n");
             $$et{TIFF_TYPE} = 'APP1';
             $tagTablePtr = Image::ExifTool::GetTagTable('Image::ExifTool::Exif::Main');

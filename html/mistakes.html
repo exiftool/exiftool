@@ -24,7 +24,7 @@ ol.index    { margin: 0; padding: 0 0 0 2em }
 <h1 class='up'>Common Mistakes when using ExifTool</h1>
 
 <a name="M1"></a>
-<h3>1. Missing Duplicate tags</h3>
+<h3>1. Missing Duplicate Tags</h3>
 <blockquote>By default, ExifTool will suppress duplicate tags in the output.
 Often this is desireable but sometimes one can be fooled into thinking
 that information doesn't exist when it is just hidden by another tag
@@ -39,7 +39,7 @@ To avoid this problem, use the <code>-a</code> option.
 <h3>2. Over-use of Wildcards in File Names (eg. "<code>*.*</code>")</h3>
 <blockquote>It is often preferable to specify a directory name (eg. "<code>.</code>") instead
 of using wildcards (eg. "<code>*.*</code>") for a number of reasons:
-<ol>
+<ol type='a'>
 <li>"<code>*.*</code>" will process any file with a "." in the name.  This includes files
 that ExifTool should not normally process (like the "_original" backup files for
 example).  By specifying a directory name instead, ExifTool will process only
@@ -50,7 +50,7 @@ in the name. This may be unexpected.</li>
 <li>The <code>-r</code> option (to recursively process sub-directories) is only
 effective when a directory name is specified, so it doesn't work when
 "<code>*.*</code>" is specified (unless the first-level directories have a "."
-in the name, as mentioned in point 2 above).</li>
+in the name, as mentioned in point b above).</li>
 <li>Arguments like "<code>*.jpg</code>" are a problem on systems with
 case-sensitive file names (like OS X and Linux) because JPG images with
 uppercase extensions will be missed.  It is better to avoid this problem and use
@@ -60,17 +60,19 @@ because this technique is case-insensitive.</li>
 expands wildcards (eg. Mac and Linux) because a malicious arrangement of file
 names could potentially have unwanted effects since they may be interpreted as
 ExifTool options (see <a href="index.html#security">Security Issues</a>).</li>
+<li>Wildcards can't yet be used to match files with Unicode characters in their
+names on Windows systems.</li>
 </ol>
 </blockquote>
 
 <a name="M3"></a>
 <h3>3. Over-scripting</h3>
 
-<blockquote>Often users write scripts to do some specific batch processing when
-exiftool already has the ability to do this without a script or with a greatly
-simplified script.  This includes the ability to recursively scan
-sub-directories for a specific file extension (case insensitive), rename files
-from metadata values, and move files to different directories.
+<blockquote>Often users write shell scripts to do some specific batch processing
+when the exiftool application already has the ability to do this either without
+scripting or with a greatly simplified script.  This includes the ability to
+recursively scan sub-directories for a specific file extension (case insensitive),
+rename files from metadata values, and move files to different directories.
 </blockquote>
 
 <blockquote>For example, this Unix script (from
@@ -89,7 +91,7 @@ can be replaced with this single command (ExifTool 7.97 or later):
 </blockquote>
 
 <a name="M4"></a>
-<h3>4. Writing/Copying Multiple tags</h3>
+<h3>4. Writing/Copying Multiple Tags</h3>
 <blockquote>Any number of tags may be specified on a single command line, but
 often people execute a separate command to write or copy each tag, which is very
 inefficient.  Combining all of the tag assignments into a single command avoids
@@ -106,21 +108,37 @@ arguments.</blockquote>
 
 <blockquote>The syntax to redirect tags when copying is <code>"-DSTTAG&lt;SRCTAG"</code>,
 but the syntax also allows a string containing tag names (prefixed by <code>$</code>)
-to be used in place of <code>SRCTAG</code>.  Two common mistakes when using this
+to be used in place of <code>SRCTAG</code>.  Three <b>common mistakes</b> when using this
 syntax are:
-<ol>
+<ol type='a'>
 <li>Adding a leading "<code>-</code>" before the <code>SRCTAG</code>. (eg.
-<code>-EXIF:Artist&lt;-XMP:Creator</code>) This is <b>wrong</b>, and the tag will
-not be copied.  (It should have been <code>-EXIF:Artist&lt;XMP:Creator</code>.)</li>
+<code>"-EXIF:Artist&lt;-XMP:Creator"</code>) This is <b>wrong</b>, and the tag will
+not be copied.  (It should be <code>"-EXIF:Artist&lt;XMP:Creator"</code>.)</li>
 <li>Adding a leading "<code>$</code>" when copying a simple tag. (eg.
 <code>"-comment&lt;$filename"</code>). This is not necessary and it is less
 efficient for ExifTool to process the source string than it is to copy the tag
-directly.</li>
+directly.  Also, values of list-type and shortcut tags are concatenated in the
+string rather than being copied individually, and wildcards are not allowed.
+Another difference is that a minor warning is generated if a tag doesn't exist
+when interpolating its value in a string (with "<code>$</code>"), but isn't when
+copying the tag directly.</li>
+<li>Using "<code>=</code>" instead of "<code>&lt;</code>" to copy a tag, or
+using "<code>&lt;</code>" instead of "<code>=</code>" to assign a value.
+<table class=box><tr><td>"<code>&lt;</code>" is used for copying, in which case the
+source operand is interpreted as either
+<ol type='i'>
+<li>a tag name (if the operand does not contain a "<code>$</code>" symbol), or</li>
+<li>a string containing tag names prefixed by "<code>$</code>" symbols (if the operand contains a "<code>$</code>" symbol).</li>
+</ol>
+"<code>=</code>" is used to assign a simple tag value, and the source operand is
+a string that is written directly to the destination tag.<br>
+(And the combination "<code>&lt;=</code>" is used to assign a tag value from the contents of a file.)<br>
+</td></tr></table></li>
 </ol>
 </blockquote>
 
 <hr>
-<i>Last revised May 24, 2014</i>
+<i>Last revised Jun. 17, 2017</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

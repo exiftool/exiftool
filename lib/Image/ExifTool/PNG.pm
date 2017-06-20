@@ -26,7 +26,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD %stdCase);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.41';
+$VERSION = '1.42';
 
 sub ProcessPNG_tEXt($$$);
 sub ProcessPNG_iTXt($$$);
@@ -260,7 +260,7 @@ $Image::ExifTool::PNG::colorType = -1;
         Name => $stdCase{exif},
         Notes => q{
             proposed but not yet registered.  This is where ExifTool will create new
-            EXIF without the Compress option
+            EXIF
         },
         SubDirectory => {
             TagTable => 'Image::ExifTool::Exif::Main',
@@ -271,10 +271,7 @@ $Image::ExifTool::PNG::colorType = -1;
     # zXIf
     $stdCase{zxif} => {
         Name => $stdCase{zxif},
-        Notes => q{
-            proposed but not yet registered.  This is where ExifTool will create new
-            EXIF with the Compress option
-        },
+        Notes => 'a once-proposed chunk for compressed EXIF',
         SubDirectory => {
             TagTable => 'Image::ExifTool::Exif::Main',
             DirName => 'EXIF', # (to write as a block)
@@ -460,6 +457,7 @@ my %unreg = ( Notes => 'unregistered' );
     Warning     => { Name => 'PNGWarning', },
     Source      => { },
     Comment     => { },
+    Collection  => { }, # (PNG extensions, 2004)
 #
 # The following tags are not part of the original PNG specification,
 # but are written by ImageMagick and other software
@@ -526,6 +524,7 @@ my %unreg = ( Notes => 'unregistered' );
    'Raw profile type exif' => {
         Name => 'EXIF_Profile',
         %unreg,
+        NonStandard => 1,
         SubDirectory => {
             TagTable => 'Image::ExifTool::Exif::Main',
             ProcessProc => \&ProcessProfile,
@@ -1118,7 +1117,9 @@ sub ProcessPNG_eXIf($$$)
         return FoundPNG($et, $tagTablePtr, $$tagInfo{TagID}, \$buf, 2, $outBuff);
     } elsif (not $outBuff) {
         return $et->ProcessTIFF($dirInfo);
-    } elsif ($del and ($et->Options('Compress') xor lc($tag) eq 'zxif')) {
+    # (zxIf was not adopted)
+    #} elsif ($del and ($et->Options('Compress') xor lc($tag) eq 'zxif')) {
+    } elsif ($del and lc($tag) eq 'zxif') {
         $et->VPrint(0, "  Deleting $tag chunk");
         $$outBuff = '';
         ++$$et{CHANGED};

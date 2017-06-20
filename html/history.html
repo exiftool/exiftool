@@ -17,6 +17,24 @@ considered development releases, and are not uploaded to <a href="http://search.
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v10.57'><b>June 20, 2017 - Version 10.57</b></a>
+<ul>
+<li>Added a new Canon LensType (thanks Norbert Wasser)
+<li>Added write support for PNG Collection tag
+<li>Added a few new CanonModelID values
+<li>Added some new Pentax ShakeReduction values
+<li>Removed ability to create PNG zxIf chunks
+<li>Documented -progress:%b feature (added in 10.26)
+<li>No longer report FileType, FileTypeExtension or MIMEType for JPEG/TIFF
+    images with an unknown header
+<li>Relaxed case requirement for "SourceFile" header in CSV and JSON import
+<li>Fixed decoding of Pentax ExposureCompensation for newer Ricoh models
+<li>Fixed some incorrect "Wrong IFD" messages with experimental -validate
+    feature
+<li>Fixed a couple of Sony/Minolta lens names
+<li>Fixed "Error reading PreviewImage" warning for some Sony models
+</ul>
+
 <a name='v10.56'><b>June 6, 2017 - Version 10.56</b></a>
 <ul>
 <li>Removed ordering constraints between Geotag/Geosync and Geotime assignments
@@ -238,6 +256,7 @@ considered development releases, and are not uploaded to <a href="http://search.
 <ul>
 <li>Added Perl version and Unicode settings to -ver -v output
 <li>Added a new Sony LensType2 value
+<li>Added a new Canon LensType (thanks Norbert Wasser)
 <li>More improvements to sample time_zone.config file (thanks Hayo Baan)
 <li>Fixed problem with MWG date/time tags introduced in version 10.34
 <li>Fixed problem setting the value of a tag from a binary file when the

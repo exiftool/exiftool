@@ -4,6 +4,7 @@
 # Description:  DJI Phantom maker notes tags
 #
 # Revisions:    2016-07-25 - P. Harvey Created
+#               2017-06-23 - PH Added XMP tags
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::DJI;
@@ -11,8 +12,9 @@ package Image::ExifTool::DJI;
 use strict;
 use vars qw($VERSION);
 use Image::ExifTool::Exif;
+use Image::ExifTool::XMP;
 
-$VERSION = '1.00';
+$VERSION = '1.01';
 
 my %convFloat2 = (
     PrintConv => 'sprintf("%+.2f", $val)',
@@ -39,6 +41,23 @@ my %convFloat2 = (
     0x09 => { Name => 'CameraPitch',Writable => 'float', %convFloat2 },
     0x0a => { Name => 'CameraYaw',  Writable => 'float', %convFloat2 },
     0x0b => { Name => 'CameraRoll', Writable => 'float', %convFloat2 },
+);
+
+%Image::ExifTool::DJI::XMP = (
+    %Image::ExifTool::XMP::xmpTableDefaults,
+    GROUPS => { 0 => 'XMP', 1 => 'XMP-drone-dji', 2 => 'Image' },
+    NAMESPACE => 'drone-dji',
+    TABLE_DESC => 'XMP DJI',
+    VARS => { NO_ID => 1 },
+    NOTES => 'XMP tags used by DJI for images from drones.',
+    AbsoluteAltitude  => { Writable => 'real' },
+    RelativeAltitude  => { Writable => 'real' },
+    GimbalRollDegree  => { Writable => 'real' },
+    GimbalYawDegree   => { Writable => 'real' },
+    GimbalPitchDegree => { Writable => 'real' },
+    FlightRollDegree  => { Writable => 'real' },
+    FlightYawDegree   => { Writable => 'real' },
+    FlightPitchDegree => { Writable => 'real' },
 );
 
 __END__

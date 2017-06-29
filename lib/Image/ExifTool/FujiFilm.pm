@@ -17,6 +17,7 @@
 #               8) http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,5223.0.html
 #               9) Zilvinas Brobliauskas private communication
 #               10) Albert Shan private communication
+#               11) http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,8377.0.html
 #               IB) Iliah Borg private communication (LibRaw)
 #               JD) Jens Duttke private communication
 #------------------------------------------------------------------------------
@@ -28,7 +29,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.58';
+$VERSION = '1.59';
 
 sub ProcessFujiDir($$$);
 sub ProcessFaceRec($$$);
@@ -296,7 +297,7 @@ my %faceCategories = (
         Flags => 'PrintHex',
         Writable => 'int16u',
         PrintConv => {
-            0x0 => 'Auto',
+            0x0 => 'Auto', # (or 'SR+' if SceneRecognition present, ref 11)
             0x1 => 'Portrait',
             0x2 => 'Landscape',
             0x3 => 'Macro', #JD
@@ -546,7 +547,7 @@ my %faceCategories = (
     },
     # 0x1408 - values: '0100', 'S100', 'VQ10'
     # 0x1409 - values: same as 0x1408
-    # 0x140a - values: 0, 1, 3, 5, 7
+    # 0x140a - values: 0, 1, 3, 5, 7 (bit 2=red-eye detection, ref 11)
     0x140b => { #6
         Name => 'AutoDynamicRange',
         Writable => 'int16u',
@@ -567,6 +568,18 @@ my %faceCategories = (
             1 => 'On (mode 1, continuous)',
             2 => 'On (mode 2, shooting only)',
         }],
+    },
+    0x1425 => { # if present and 0x1031 PictureMode is zero, then PictureMode is SR+, not Auto (ref 11)
+        Name => 'SceneRecognition',
+        Writable => 'int16u',
+        PrintHex => 1,
+        PrintConv => {
+            0 => 'Unrecognized',
+            0x100 => 'Portrait Image',
+            0x200 => 'Landscape Image',
+            0x300 => 'Night Scene',
+            0x400 => 'Macro',
+        },
     },
     0x1431 => { #forum6109
         Name => 'Rating',
@@ -615,6 +628,30 @@ my %faceCategories = (
         Notes => q{
             left, top, right and bottom coordinates in full-sized image for each face
             detected
+        },
+    },
+    0x4200 => { #11
+        Name => 'NumFaceElements',
+        Writable => 'int16u',
+    },
+    0x4201 => { #11
+        Name => 'FaceElementTypes',
+        Writable => 'int8u',
+        Count => -1,
+        PrintConv => [{
+            1 => 'Face',
+            2 => 'Left Eye',
+            3 => 'Right Eye',
+        },'REPEAT'],
+    },
+    # 0x4202 int8u[-1] - number of cooredinates in each rectangle? (ref 11)
+    0x4203 => { #11
+        Name => 'FaceElementPositions',
+        Writable => 'int16u',
+        Count => -1,
+        Notes => q{
+            left, top, right and bottom coordinates in full-sized image for each face
+            element
         },
     },
     # 0x4101-0x4105 - exist only if face detection active

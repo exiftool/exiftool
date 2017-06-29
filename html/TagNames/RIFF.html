@@ -151,16 +151,31 @@ sub-documents, but the Duration is calculated for the full video.</p>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>'ds64'</td>
+<td>DataSize64</td>
+<td class=c>-</td>
+<td>--&gt; <a href='RIFF.html#DS64'>RIFF DS64 Tags</a></td></tr>
+<tr>
 <td>'fact'</td>
 <td>NumberOfSamples</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'fmt '</td>
 <td>AudioFormat</td>
 <td class=c>-</td>
 <td>--&gt; <a href='RIFF.html#AudioFormat'>RIFF AudioFormat Tags</a></td></tr>
+<tr>
+<td>'labl'</td>
+<td>Label</td>
+<td class=c>-</td>
+<td>--&gt; <a href='RIFF.html#Label'>RIFF Label Tags</a></td></tr>
 <tr class=b>
+<td>'list'</td>
+<td>ListType</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>'olym'</td>
 <td>Olym</td>
 <td class=c>-</td>
@@ -1374,9 +1389,52 @@ container specification.</p>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='DS64'>RIFF DS64 Tags</a></h2>
+<p>64-bit data sizes for MBWF/RF64 files.  See
+<a href="https://tech.ebu.ch/docs/tech/tech3306-2009.pdf">https://tech.ebu.ch/docs/tech/tech3306-2009.pdf</a> for the specification.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index8</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>RIFFSize64</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='1 = 0x1'>1</td>
+<td>DataSize64</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='2 = 0x2'>2</td>
+<td>NumberOfSamples64</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Label'>RIFF Label Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index4</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>LabelID</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='1 = 0x1'>1</td>
+<td>LabelText</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jul 11, 2016</i>
+<br><i>Last revised Jun 29, 2017</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

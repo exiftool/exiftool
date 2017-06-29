@@ -4,6 +4,7 @@
 # Description:  Read RIFF/AVI/WAV meta information
 #
 # Revisions:    09/14/2005 - P. Harvey Created
+#               06/28/2017 - PH Added MBWF/RF64 support
 #
 # References:   1) http://www.exif.org/Exif2-2.PDF
 #               2) http://www.vlsi.fi/datasheets/vs1011.pdf
@@ -19,6 +20,7 @@
 #              12) http://abcavi.kibi.ru/infotags.htm
 #              13) http://tech.ebu.ch/docs/tech/tech3285.pdf
 #              14) https://developers.google.com/speed/webp/docs/riff_container
+#              15) https://tech.ebu.ch/docs/tech/tech3306-2009.pdf
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::RIFF;
@@ -27,7 +29,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.43';
+$VERSION = '1.44';
 
 sub ConvertTimecode($);
 
@@ -344,6 +346,15 @@ my %code2charset = (
         Name => 'BroadcastExtension',
         SubDirectory => { TagTable => 'Image::ExifTool::RIFF::BroadcastExt' },
     },
+    ds64 => { #15
+        Name => 'DataSize64',
+        SubDirectory => { TagTable => 'Image::ExifTool::RIFF::DS64' },
+    },
+    list => 'ListType',  #15
+    labl => { #15
+        Name => 'Label',
+        SubDirectory => { TagTable => 'Image::ExifTool::RIFF::Label' },
+    },
     LIST_INFO => {
         Name => 'Info',
         SubDirectory => { TagTable => 'Image::ExifTool::RIFF::Info' },
@@ -576,6 +587,43 @@ my %code2charset = (
     602 => {
         Name => 'CodingHistory',
         Format => 'string[$size-602]',
+    },
+);
+
+# 64-bit chunk sizes (ref 15)
+%Image::ExifTool::RIFF::DS64 = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 2 => 'Audio' },
+    FORMAT => 'int64u',
+    NOTES => q{
+        64-bit data sizes for MBWF/RF64 files.  See
+        L<https://tech.ebu.ch/docs/tech/tech3306-2009.pdf> for the specification.
+    },
+    0 => {
+        Name => 'RIFFSize64',
+        PrintConv => \&Image::ExifTool::ConvertFileSize,
+    },
+    1 => {
+        Name => 'DataSize64',
+        DataMember => 'DataSize64',
+        RawConv => '$$self{DataSize64} = $val',
+        PrintConv => \&Image::ExifTool::ConvertFileSize,
+    },
+    2 => 'NumberOfSamples64',
+    # (after this comes a table of size overrides for chunk
+    #  types other than 'data', but since these are currently
+    #  very unlikely, support for these is not yet implemented)
+);
+
+# cue point labels (ref 15)
+%Image::ExifTool::RIFF::Label = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 2 => 'Audio' },
+    FORMAT => 'int32u',
+    0 => 'LabelID',
+    1 => {
+        Name => 'LabelText',
+        Format => 'string[$size-4]',
     },
 );
 
@@ -1446,14 +1494,15 @@ sub ProcessRIFF($$)
 {
     my ($et, $dirInfo) = @_;
     my $raf = $$dirInfo{RAF};
-    my ($buff, $buf2, $type, $mime, $err);
+    my ($buff, $buf2, $type, $mime, $err, $rf64);
     my $verbose = $et->Options('Verbose');
     my $unknown = $et->Options('Unknown');
 
     # verify this is a valid RIFF file
     return 0 unless $raf->Read($buff, 12) == 12;
-    if ($buff =~ /^RIFF....(.{4})/s) {
-        $type = $riffType{$1};
+    if ($buff =~ /^(RIFF|RF64)....(.{4})/s) {
+        $type = $riffType{$2};
+        $rf64 = 1 if $1 eq 'RF64';
     } else {
         # minimal support for a few obscure lossless audio formats...
         return 0 unless $buff =~ /^(LA0[234]|OFR |LPAC|wvpk)/ and $raf->Read($buf2, 1024);
@@ -1463,6 +1512,7 @@ sub ProcessRIFF($$)
     }
     $mime = $riffMimeType{$type} if $type;
     $et->SetFileType($type, $mime);
+    $$et{VALUE}{FileType} .= ' (RF64)' if $rf64;
     $$et{RIFFStreamType} = '';    # initialize stream type
     SetByteOrder('II');
     my $tagTablePtr = GetTagTable('Image::ExifTool::RIFF::Main');
@@ -1484,6 +1534,8 @@ sub ProcessRIFF($$)
             $pos += 4;
             $tag .= "_$buff";
             $len -= 4;  # already read 4 bytes (the LIST type)
+        } elsif ($tag eq 'data' and $len == 0xffffffff and $$et{DataSize64}) {
+            $len = $$et{DataSize64};
         }
         $et->VPrint(0, "RIFF '$tag' chunk ($len bytes of data):\n");
         if ($len <= 0) {
@@ -1524,6 +1576,10 @@ sub ProcessRIFF($$)
             # extract information from remaining file as an embedded file
             $$et{DOC_NUM} = ++$$et{DOC_COUNT}
         } else {
+            if ($len > 0x7fffffff and not $et->Options('LargeFileSupport')) {
+                $et->Warn("Stopped parsing at large $tag chunk (LargeFileSupport not set)");
+                last;
+            }
             $raf->Seek($len2, 1) or $err=1, last;
         }
         $pos += $len2;
@@ -1575,6 +1631,8 @@ under the same terms as Perl itself.
 =item L<http://wiki.multimedia.cx/index.php?title=TwoCC>
 
 =item L<https://developers.google.com/speed/webp/docs/riff_container>
+
+=item L<https://tech.ebu.ch/docs/tech/tech3306-2009.pdf>
 
 =back
 

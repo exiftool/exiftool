@@ -48,7 +48,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.03';
+$VERSION = '3.04';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -141,6 +141,7 @@ my %xmpNS = (
     MPReg     => 'http://ns.microsoft.com/photo/1.2/t/Region#',
     lr        => 'http://ns.adobe.com/lightroom/1.0/',
     DICOM     => 'http://ns.adobe.com/DICOM/',
+   'drone-dji'=> 'http://www.dji.com/drone-dji/1.0/',
     svg       => 'http://www.w3.org/2000/svg',
     et        => 'http://ns.exiftool.ca/1.0/',
 #
@@ -738,6 +739,10 @@ my %sRetouchArea = (
     getty => {
         Name => 'getty',
         SubDirectory => { TagTable => 'Image::ExifTool::XMP::GettyImages' },
+    },
+   'drone-dji' => {
+        Name => 'drone-dji',
+        SubDirectory => { TagTable => 'Image::ExifTool::DJI::XMP' },
     },
 );
 

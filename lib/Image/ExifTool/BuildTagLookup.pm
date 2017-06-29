@@ -34,7 +34,7 @@ use Image::ExifTool::Nikon;
 use Image::ExifTool::Validate;
 use Image::ExifTool::MacOS;
 
-$VERSION = '3.08';
+$VERSION = '3.09';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -501,7 +501,9 @@ must be subsequently re-linearized if this is required.
 
 2) All metadata edits are reversible.  While this would normally be
 considered an advantage, it is a potential security problem because old
-information is never actually deleted from the file.
+information is never actually deleted from the file.  (However, after
+running ExifTool the old information may be removed permanently using the
+"qpdf" utility with this command: "qpdf --linearize in.pdf out.pdf".)
 },
     DNG => q{
 The main DNG tags are found in the EXIF table.  The tables below define only
@@ -1004,10 +1006,16 @@ TagID:  foreach $tagID (@keys) {
                     my (@printConvList, @indexList, $index, $valueConvHash);
                     if (ref $printConv eq 'ARRAY') {
                         for ($index=0; $index<@$printConv; ++$index) {
-                            next if ref $$printConv[$index] ne 'HASH';
-                            next unless %{$$printConv[$index]};
-                            push @printConvList, $$printConv[$index];
-                            push @indexList, $index;
+                            if (ref $$printConv[$index] eq 'HASH') {
+                                next unless %{$$printConv[$index]};
+                                push @printConvList, $$printConv[$index];
+                                push @indexList, $index;
+                            } elsif ($$printConv[$index] and $$printConv[$index] eq 'REPEAT' and $index) {
+                                push @printConvList, $$printConv[$index-1];
+                                push @indexList, 'N';
+                            } else {
+                                next;
+                            }
                             # collapse values with identical PrintConv's
                             if (@printConvList >= 2 and $printConvList[-1] eq $printConvList[-2]) {
                                 if (ref $indexList[-2]) {
@@ -1034,11 +1042,11 @@ TagID:  foreach $tagID (@keys) {
                                 # collapse consecutive number ranges
                                 my ($i, @i, $rngStart);
                                 for ($i=0; $i<@$idx; ++$i) {
-                                    if ($i < @$idx - 1 and $$idx[$i+1] == $$idx[$i] + 1) {
-                                        $rngStart = $i unless defined $rngStart;
+                                    if ($i < @$idx - 1 and ($$idx[$i+1] eq 'N' or $$idx[$i+1] == $$idx[$i] + 1)) {
+                                        $rngStart = $$idx[$i] unless defined $rngStart;
                                         next;
                                     }
-                                    push @i, defined($rngStart) ? "$rngStart-$i" : $i;
+                                    push @i, (defined($rngStart) ? "$rngStart-" : '') . $$idx[$i];
                                 }
                                 ($idx = join ', ', @i) =~ s/(.*),/$1 and/;
                             } elsif (not $$tagInfo{Relist}) {

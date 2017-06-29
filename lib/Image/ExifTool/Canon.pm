@@ -85,7 +85,7 @@ sub ProcessSerialData($$$);
 sub ProcessFilters($$$);
 sub SwapWords($);
 
-$VERSION = '3.76';
+$VERSION = '3.77';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -335,6 +335,7 @@ $VERSION = '3.76';
     183.3 => 'Sigma 180mm f/2.8 EX DG OS HSM APO Macro', #IB
     183.4 => 'Sigma 150-600mm f/5-6.3 DG OS HSM | C', #47
     183.5 => 'Sigma 150-600mm f/5-6.3 DG OS HSM | S', #forum7109 (Sports 014)
+    183.6 => 'Sigma 100-400mm f/5-6.3 DG OS HSM', #PH ("| C" ?)
     184 => 'Canon EF 400mm f/2.8L + 2x', #15
     185 => 'Canon EF 600mm f/4L IS', #32
     186 => 'Canon EF 70-200mm f/4L', #9
@@ -347,7 +348,8 @@ $VERSION = '3.76';
     194 => 'Canon EF 80-200mm f/4.5-5.6 USM', #32
     195 => 'Canon EF 35-105mm f/4.5-5.6 USM', #32
     196 => 'Canon EF 75-300mm f/4-5.6 USM', #15/32
-    197 => 'Canon EF 75-300mm f/4-5.6 IS USM',
+    197 => 'Canon EF 75-300mm f/4-5.6 IS USM or Sigma Lens',
+    197.1 => 'Sigma 18-300mm f/3.5-6.3 DC Macro OS HS', #50
     198 => 'Canon EF 50mm f/1.4 USM or Zeiss Lens',
     198.1 => 'Zeiss Otus 55mm f/1.4 ZE', #JR (seen only on Sony camera)
     198.2 => 'Zeiss Otus 85mm f/1.4 ZE', #JR (NC)
@@ -423,7 +425,8 @@ $VERSION = '3.76';
     505 => 'Canon EF 35mm f/2 IS USM', #PH
     506 => 'Canon EF 400mm f/4 DO IS II USM', #42
     507 => 'Canon EF 16-35mm f/4L IS USM', #42
-    508 => 'Canon EF 11-24mm f/4L USM', #PH
+    508 => 'Canon EF 11-24mm f/4L USM or Tamron Lens', #PH
+    508.1 => 'Tamron 10-24mm f/3.5-4.5 Di II VC HLD', #PH (B023)
     747 => 'Canon EF 100-400mm f/4.5-5.6L IS II USM or Tamron Lens', #JR
     747.1 => 'Tamron SP 150-600mm F5-6.3 Di VC USD G2', #50
     748 => 'Canon EF 100-400mm f/4.5-5.6L IS II USM + 1.4x', #JR (1.4x Mk III)
@@ -784,7 +787,9 @@ $VERSION = '3.76';
     0x80000401 => 'EOS 5DS R',
     0x80000404 => 'EOS Rebel T6 / 1300D / Kiss X80',
     0x80000405 => 'EOS Rebel T7i / 800D / Kiss X9i',
+    0x80000406 => 'EOS 6D Mark II', #IB/42
     0x80000408 => 'EOS 77D / 9000D',
+    0x80000417 => 'EOS Rebel SL2 / 200D / Kiss X9', #IB/42
 );
 
 my %canonQuality = (
@@ -7444,7 +7449,7 @@ my %ciMaxFocal = (
             12 => '12 (5DS/5DSR)',
             13 => '13 (80D)', #PH
             14 => '14 (1300D)', #IB
-            15 => '15 (77D/800D)', #IB
+            15 => '15 (6DmkII/77D/200D/800D)', #IB
         },
     },
     0x3f => { Name => 'WB_RGGBLevelsAsShot',     Format => 'int16s[4]' },

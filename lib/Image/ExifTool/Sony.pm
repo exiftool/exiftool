@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.62';
+$VERSION = '2.63';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -99,7 +99,7 @@ my %sonyLensTypes2 = (
     32817 => 'Sony FE PZ 28-135mm F4 G OSS',#JR # VX?
 
     32819 => 'Sony FE 100mm F2.8 STF GM OSS',   #JR (appears to use 33076 when switched to macro mode)
-
+    32820 => 'Sony E PZ 18-110mm F4 G OSS', #JR
     32821 => 'Sony FE 24-70mm F2.8 GM', #JR/IB
     32822 => 'Sony FE 50mm F1.4 ZA', #JR
     32823 => 'Sony FE 85mm F1.4 GM', #JR/IB
@@ -154,7 +154,8 @@ my %sonyLensTypes2 = (
     # 504xx => 'Sigma 24mm F1.4 DG HSM | A 015 + MC-11',
     # 504xx => 'Sigma 30mm F1.4 DC HSM | A 013 + MC-11',
 
-    51505 => 'Samyang AF 14mm F2.8 FE', #forum3833
+    51505 => 'Samyang AF 14mm F2.8 FE or Samyang AF 35mm F2.8 FE', #forum3833
+    51505.1 => 'Samyang AF 35mm F2.8 FE', #PH
 );
 
 # ExposureProgram values (ref PH, mainly decoded from A200)
@@ -8092,6 +8093,7 @@ my %pictureProfile2010 = (
     },
     0x000d => {
         Name => 'LensE-mountVersion',
+        Condition => '$$self{LensMount} != 0',
         Format => 'int16u',
         PrintConv => 'sprintf("%x.%.2x",$val>>8,$val&0xff)',
         PrintConvInv => 'my @a=split(/\./,$val);(hex($a[0])<<8)|hex($a[1])',
@@ -8116,6 +8118,7 @@ my %pictureProfile2010 = (
     },
     0x0015 => {
         Name => 'LensFirmwareVersion',
+        Condition => '$$self{LensMount} != 0',
         Format => 'int8u',
         PrintConv => 'sprintf("Ver.%.2x",$val)',
         PrintConvInv => '$val=~/Ver\.//; hex($val)',

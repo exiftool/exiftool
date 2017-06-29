@@ -17,6 +17,21 @@ considered development releases, and are not uploaded to <a href="http://search.
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v10.58'><b>June 29, 2017 - Version 10.58</b></a>
+<ul>
+<li>Added read support for RIFF-format MBWF/RF64 files
+<li>Added write support for dji-drone XMP tags
+<li>Added a new Canon LensType (thanks Steve Bates)
+<li>Added a few new Sony/Minolta LensType values (thanks Jos Roost)
+<li>Added a new Canon LensType
+<li>Added a couple of new CanonModelID values (thanks LibRaw and Norbert Wasser)
+<li>Decode some new FujiFilm tags (thanks Chris Schucker)
+<li>Enhanced FileSize print conversion to show in "GB" for large files
+<li>Fixed "outside of string in unpack" errors when reading some corrupted
+    EXE/ICC files
+<li>Fixed problem extracting GIF MIDISong metadata
+</ul>
+
 <a name='v10.57'><b>June 20, 2017 - Version 10.57</b></a>
 <ul>
 <li>Added a new Canon LensType (thanks Norbert Wasser)
@@ -31,7 +46,7 @@ considered development releases, and are not uploaded to <a href="http://search.
 <li>Fixed decoding of Pentax ExposureCompensation for newer Ricoh models
 <li>Fixed some incorrect "Wrong IFD" messages with experimental -validate
     feature
-<li>Fixed a couple of Sony/Minolta lens names
+<li>Fixed a couple of Sony/Minolta lens names (thanks Jos Roost)
 <li>Fixed "Error reading PreviewImage" warning for some Sony models
 </ul>
 

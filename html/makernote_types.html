@@ -13,7 +13,7 @@ table td.c { text-align: center }
 </style>
 </head>
 <body><h2 class=top>Makernote Types</h2>
-<p>The table below lists the makernote types for JPEG images from 6591
+<p>The table below lists the makernote types for JPEG images from 6592
 unique camera models by 96 different manufacturers.  Also listed in the
 table is the byte order for Exif-style makernotes ('MM' is big-endian, 'II'
 is little-endian), and the first 20 bytes of the makernote data in
@@ -185,8 +185,8 @@ ASCII and hexadecimal.</p>
  <td class=c>MM</td><td class=h>Apple iOS...MM......</td><td class=h>41 70 70 6c 65 20 69 4f 53 00 00 01 4d 4d 00 06 00 01 00 09</td></tr>
 <tr><td>iPhone 5s</td><td><a href='TagNames/Apple.html'>Apple</a></td>
  <td class=c>MM</td><td class=h>Apple iOS...MM......</td><td class=h>41 70 70 6c 65 20 69 4f 53 00 00 01 4d 4d 00 08 00 01 00 09</td></tr>
-<tr><td>iPhone 6</td><td><a href='TagNames/Apple.html'>Apple</a></td>
- <td class=c>-</td><td class=h>Apple iOS...MM......</td><td class=h>41 70 70 6c 65 20 69 4f 53 00 00 01 4d 4d 00 09 00 01 00 09</td></tr>
+<tr><td>iPhone 6</td><td>?</td>
+ <td class=c>-</td><td class=h>.{.&quot;.e.f.f.e.c.t.s.&quot;</td><td class=h>00 7b 00 22 00 65 00 66 00 66 00 65 00 63 00 74 00 73 00 22</td></tr>
 <tr><td>iPhone 6 Plus</td><td><a href='TagNames/Apple.html'>Apple</a></td>
  <td class=c>MM</td><td class=h>Apple iOS...MM......</td><td class=h>41 70 70 6c 65 20 69 4f 53 00 00 01 4d 4d 00 0d 00 01 00 09</td></tr>
 <tr><td>iPhone 6s</td><td><a href='TagNames/Apple.html'>Apple</a></td>
@@ -4165,8 +4165,8 @@ ASCII and hexadecimal.</p>
  <td class=c>-</td><td class=h>&nbsp;</td><td class=h>&nbsp;</td></tr>
 <tr><td>SCL-L04</td><td>?</td>
  <td class=c>-</td><td class=h>..............</td><td class=h>00 d0 00 00 16 99 00 00 00 00 00 00 00 bc</td></tr>
-<tr><td>VKY-L09</td><td>?</td>
- <td class=c>-</td><td class=h>####......3.........</td><td class=h>23 23 23 23 0a 00 00 00 8a c5 33 01 00 04 01 00 00 00 00 00</td></tr>
+<tr><td>VKY-L09</td><td>UnknownText</td>
+ <td class=c>-</td><td class=h>Auto.</td><td class=h>41 75 74 6f 00</td></tr>
 <tr><th colspan=5><a name='ImpressCam'>ImpressCam</a></th></tr>
 <tr><td>C630</td><td>?</td>
  <td class=c>-</td><td class=h>.....,f.............</td><td class=h>0b 9d 88 00 df 2c 66 00 0a 01 00 01 14 00 01 00 01 00 01 00</td></tr>
@@ -8546,8 +8546,8 @@ ASCII and hexadecimal.</p>
  <td class=c>-</td><td class=h>PRAKTICA</td><td class=h>50 52 41 4b 54 49 43 41</td></tr>
 <tr><td>LM 6105</td><td>PreviewImage</td>
  <td class=c>-</td><td class=h>....................</td><td class=h>ff d8 ff db 00 84 00 03 02 02 02 02 02 03 02 02 02 03 03 03</td></tr>
-<tr><td>LM 6403</td><td>?</td>
- <td class=c>-</td><td class=h>....................</td><td class=h>00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00</td></tr>
+<tr><td>LM 6403</td><td>UnknownText</td>
+ <td class=c>-</td><td class=h>PE023 CE080 R500 G23</td><td class=h>50 45 30 32 33 20 43 45 30 38 30 20 52 35 30 30 20 47 32 33</td></tr>
 <tr><td>LM 7303</td><td><a href='TagNames/HP.html#Type4'>HP4</a></td>
  <td class=c>II</td><td class=h>IIII..8...P......a..</td><td class=h>49 49 49 49 04 00 38 06 00 00 50 00 1c 00 01 00 a8 61 00 00</td></tr>
 <tr><td>LM 8003</td><td>UnknownText</td>
@@ -10295,6 +10295,8 @@ ASCII and hexadecimal.</p>
 <tr><td>SM-G900V</td><td><a href='TagNames/Samsung.html#Type2'>Samsung2</a></td>
  <td class=c>II</td><td class=h>..........0100......</td><td class=h>07 00 01 00 07 00 04 00 00 00 30 31 30 30 02 00 04 00 01 00</td></tr>
 <tr><td>SM-G920F</td><td>-</td>
+ <td class=c>-</td><td class=h>&nbsp;</td><td class=h>&nbsp;</td></tr>
+<tr><td>SM-G925F</td><td>-</td>
  <td class=c>-</td><td class=h>&nbsp;</td><td class=h>&nbsp;</td></tr>
 <tr><td>SM-G928F</td><td><a href='TagNames/Unknown.html'>Unknown</a></td>
  <td class=c>II</td><td class=h>..........0100......</td><td class=h>07 00 01 00 07 00 04 00 00 00 30 31 30 30 02 00 04 00 01 00</td></tr>
@@ -13299,7 +13301,7 @@ ASCII and hexadecimal.</p>
  <td class=c>-</td><td class=h>&nbsp;</td><td class=h>&nbsp;</td></tr>
 <tr><td>Z970</td><td>-</td>
  <td class=c>-</td><td class=h>&nbsp;</td><td class=h>&nbsp;</td></tr>
-</table><hr><i>Last revised Jun 16, 2017</i>
+</table><hr><i>Last revised Jun 21, 2017</i>
 <p class='lf'><a href='index.html'>&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

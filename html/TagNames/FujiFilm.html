@@ -445,47 +445,75 @@ necessarily correspond to the camera body number -- this needs to be checked)</s
   <br>1 = On (mode 1, continuous)
   <br>2 = On (mode 2, shooting only)</span></td></tr>
 <tr class=b>
+<td title='0x1425 = 5157'>0x1425</td>
+<td>SceneRecognition</td>
+<td class=c>int16u</td>
+<td><span class=s>0x0 = Unrecognized
+  <br>0x100 = Portrait Image
+  <br>0x200 = Landscape Image
+  <br>0x300 = Night Scene
+  <br>0x400 = Macro</span></td></tr>
+<tr>
 <td title='0x1431 = 5169'>0x1431</td>
 <td>Rating</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x1436 = 5174'>0x1436</td>
 <td>ImageGeneration</td>
 <td class=c>int16u</td>
 <td><span class=s>0 = Original Image
   <br>1 = Re-developed from RAW</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x1438 = 5176'>0x1438</td>
 <td>ImageCount</td>
 <td class=c>int16u</td>
 <td><span class=s><span class=n>(may reset to 0 when new firmware is installed)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x3820 = 14368'>0x3820</td>
 <td>FrameRate</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x3821 = 14369'>0x3821</td>
 <td>FrameWidth</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x3822 = 14370'>0x3822</td>
 <td>FrameHeight</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x4100 = 16640'>0x4100</td>
 <td>FacesDetected</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x4103 = 16643'>0x4103</td>
 <td>FacePositions</td>
 <td class=c>int16u[n]</td>
 <td><span class=s><span class=n>(left, top, right and bottom coordinates in full-sized image for each face
 detected)</span></span></td></tr>
+<tr>
+<td title='0x4200 = 16896'>0x4200</td>
+<td>NumFaceElements</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x4201 = 16897'>0x4201</td>
+<td>FaceElementTypes</td>
+<td class=c>int8u[n]</td>
+<td><span class=s>[Values 0-N]
+  <br>1 = Face
+  <br>2 = Left Eye
+  <br>3 = Right Eye</span></td></tr>
+<tr>
+<td title='0x4203 = 16899'>0x4203</td>
+<td>FaceElementPositions</td>
+<td class=c>int16u[n]</td>
+<td><span class=s><span class=n>(left, top, right and bottom coordinates in full-sized image for each face
+element)</span></span></td></tr>
 <tr class=b>
 <td title='0x4282 = 17026'>0x4282</td>
 <td>FaceRecInfo</td>
@@ -885,7 +913,7 @@ RAF-format information.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised May 10, 2017</i>
+<br><i>Last revised Jun 27, 2017</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

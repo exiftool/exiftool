@@ -7,6 +7,20 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.55. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+June 29, 2017 - Version 10.58
+
+  - Added read support for RIFF-format MBWF/RF64 files
+  - Added write support for dji-drone XMP tags
+  - Added a new Canon LensType (thanks Steve Bates)
+  - Added a few new Sony/Minolta LensType values (thanks Jos Roost)
+  - Added a new Canon LensType
+  - Added a couple of new CanonModelID values (thanks LibRaw and Norbert Wasser)
+  - Decode some new FujiFilm tags (thanks Chris Schucker)
+  - Enhanced FileSize print conversion to show in "GB" for large files
+  - Fixed "outside of string in unpack" errors when reading some corrupted
+    EXE/ICC files
+  - Fixed problem extracting GIF MIDISong metadata
+
 June 20, 2017 - Version 10.57
 
   - Added a new Canon LensType (thanks Norbert Wasser)
@@ -21,7 +35,7 @@ June 20, 2017 - Version 10.57
   - Fixed decoding of Pentax ExposureCompensation for newer Ricoh models
   - Fixed some incorrect "Wrong IFD" messages with experimental -validate
     feature
-  - Fixed a couple of Sony/Minolta lens names
+  - Fixed a couple of Sony/Minolta lens names (thanks Jos Roost)
   - Fixed "Error reading PreviewImage" warning for some Sony models
 
 June 6, 2017 - Version 10.56

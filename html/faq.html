@@ -1135,7 +1135,8 @@ keywords, use "<code>+&lt;</code>" or "<code>-&lt;</code>".
 </blockquote>
 
 <a name="Q18"></a>
-<p>18. <b>"Special characters don't display properly in my Windows console"</b></p>
+<p>18a. <b>"Special characters don't display properly in my Windows console"</b>, or
+<br>18b. <b>"I'm having problems with special characters on the Windows command line"</b></p>
 
 <blockquote>The Windows cmd.exe console uses an MS-DOS encoding by default
 (cp437 or something similar, depending on your region).  The exiftool
@@ -1168,16 +1169,19 @@ change the code page for exiftool when launched via the Windows GUI.  If anyone
 can figure out how to do this, please let me know.)
 </blockquote>
 
-<blockquote>On some Windows systems, using UTF&#8209;8 doesn't seem to work. In
-this case, a Windows character set may be the best alternative:  For instance,
-for Windows Latin1 (cp1252) type "<code>chcp 1252</code>" in the console to
-switch to cp1252, then run exiftool with "<code>-charset cp1252</code>" (or
-<code>-L</code>).  This same technique can be used for other supported Windows
-code pages.</blockquote>
+<blockquote>Note that Windows will <b>recode arguments on the command
+line</b> from the current console code page to the system code page, so the
+ExifTool <code>-charset</code> should be set to the system code page for
+command-line arguments.  However, this technique may yield unexpected results
+since not all characters may be represented using the system code page.  To get
+around this limitation, arguments may be read from an ExifTool argument file
+using the <code>-@</code> option.  UTF&#8209;8 encoding is recommended for the
+argument file, and with this you would also set <code>-charset filename=utf8</code>
+if using special characters in filename arguments within the file.</blockquote>
 
-<blockquote>A final alternative is to bypass the command-line encoding problems
-totally by extracting/writing to/from a separate text file, and using a UTF&#8209;8
-aware text editor to view/edit the text.  For example:
+<blockquote>Another way to bypass the console/command-line encoding problems for
+individual tag values is to extract/write to/from a separate text file and use a
+UTF&#8209;8 aware text editor to view/edit the text.  For example:
 
 <pre><span class=blk># extracting...</span>
 exiftool image.jpg &gt; out.txt

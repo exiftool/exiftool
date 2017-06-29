@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags);
 
-$VERSION = '10.57';
+$VERSION = '10.58';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -509,7 +509,6 @@ my %fileTypeExt = (
 my %fileDescription = (
     DICOM => 'Digital Imaging and Communications in Medicine',
     XML   => 'Extensible Markup Language',
-    'DJVU (multi-page)' => 'DjVu multi-page image',
     'Win32 EXE' => 'Windows 32-bit Executable',
     'Win32 DLL' => 'Windows 32-bit Dynamic Link Library',
     'Win64 EXE' => 'Windows 64-bit Executable',
@@ -834,7 +833,7 @@ my %moduleName = (
     RAR  => 'Rar!\x1a\x07\0',
     RAW  => '(.{25}ARECOYK|II|MM)',
     Real => '(\.RMF|\.ra\xfd|pnm://|rtsp://|http://)',
-    RIFF => '(RIFF|LA0[234]|OFR |LPAC|wvpk)', # RIFF plus other variants
+    RIFF => '(RIFF|LA0[234]|OFR |LPAC|wvpk|RF64)', # RIFF plus other variants
     RSRC => '(....)?\0\0\x01\0',
     RTF  => '[\n\r]*\\{[\n\r]*\\\\rtf',
     RWZ  => 'rawzor',
@@ -1097,9 +1096,10 @@ my %systemTagsNotes = (
     FileCreateDate => {
         Description => 'File Creation Date/Time',
         Notes => q{
-            the filesystem creation date/time.  Windows only.  Requires Win32API::File
-            and Win32::API for writing.  See L<MDItemFSCreationDate|MacOS.html#MDItem>
-            for the Mac OS X equivalent
+            the filesystem creation date/time.  Windows only.  This tag is writable and
+            is preserved by default when writing if Win32API::File and Win32::API are
+            available.  See L<MDItemFSCreationDate|MacOS.html#MDItem> for the Mac OS X
+            equivalent
         },
         Groups => { 1 => 'System', 2 => 'Time' },
         Writable => 1,
@@ -2797,7 +2797,14 @@ sub GetValue($$;$)
                 last;
             }
             $val = $$vals[$i];
-            $conv = $$convList[$i] if $convList;
+            if ($convList) {
+                my $nextConv = $$convList[$i];
+                if ($nextConv and $nextConv eq 'REPEAT') {
+                    undef $convList;
+                } else {
+                    $conv = $nextConv;
+                }
+            }
         }
         # return undefined now if no value
         return () unless defined $value;
@@ -3232,15 +3239,23 @@ sub GetFileType(;$$)
         }
         return @types;
     }
-    my $fileType;
+    my ($fileType, $subType);
     my $fileExt = GetFileExtension($file);
-    $fileExt = uc($file) unless $fileExt;
+    unless ($fileExt) {
+        if ($file =~ s/ \((.*)\)$//) {
+            $subType = $1;
+            $fileExt = GetFileExtension($file);
+        }
+        $fileExt = uc($file) unless $fileExt;
+    }
     $fileExt and $fileType = $fileTypeLookup{$fileExt}; # look up the file type
     $fileType = $fileTypeLookup{$fileType} while $fileType and not ref $fileType;
     # return description if specified
     # (allow input $file to be a FileType for this purpose)
     if ($desc) {
-        return $fileType ? $$fileType[1] : $fileDescription{$file};
+        $desc = $fileType ? $$fileType[1] : $fileDescription{$file};
+        $desc .= ", $subType" if $subType;
+        return $desc;
     } elsif ($fileType and (not defined $desc or $desc ne '0')) {
         # return only supported file types
         my $mod = $moduleName{$$fileType[0]};
@@ -5129,7 +5144,9 @@ sub ConvertFileSize($)
     $val < 10240 and return sprintf('%.1f kB', $val / 1024);
     $val < 2097152 and return sprintf('%.0f kB', $val / 1024);
     $val < 10485760 and return sprintf('%.1f MB', $val / 1048576);
-    return sprintf('%.0f MB', $val / 1048576);
+    $val < 2147483648 and return sprintf('%.0f MB', $val / 1048576);
+    $val < 10737418240 and return sprintf('%.1f GB', $val / 1073741824);
+    return sprintf('%.0f GB', $val / 1073741824);
 }
 
 #------------------------------------------------------------------------------

@@ -20,7 +20,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.13';
+$VERSION = '1.14';
 
 # road map of directory locations in GIF images
 my %gifMap = (
@@ -461,7 +461,7 @@ Block:
                     Write($outfile, "\0") or $err = 1;  # write null terminator
                 }
             } elsif (not $outfile) {
-                $et->HandleTag($tagTablePtr, $tag, $dat);
+                $et->HandleTag($extTable, $tag, $dat);
             }
             next;
 

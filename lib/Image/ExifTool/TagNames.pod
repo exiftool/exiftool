@@ -1085,6 +1085,41 @@ IPTC group only in the standard location.
   ------   --------                             --------
   [no tags known]
 
+=head2 DJI Tags
+
+This table lists tags found in the maker notes of images from some DJI
+Phantom drones.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  0x0001   Make                                 string
+  0x0003   SpeedX                               float
+  0x0004   SpeedY                               float
+  0x0005   SpeedZ                               float
+  0x0006   Pitch                                float
+  0x0007   Yaw                                  float
+  0x0008   Roll                                 float
+  0x0009   CameraPitch                          float
+  0x000a   CameraYaw                            float
+  0x000b   CameraRoll                           float
+
+=head3 DJI XMP Tags
+
+XMP tags used by DJI for images from drones.
+
+These tags belong to the ExifTool XMP-drone-dji family 1 group.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  AbsoluteAltitude                              real
+  FlightPitchDegree                             real
+  FlightRollDegree                              real
+  FlightYawDegree                               real
+  GimbalPitchDegree                             real
+  GimbalRollDegree                              real
+  GimbalYawDegree                               real
+  RelativeAltitude                              real
+
 =head2 XMP Tags
 
 XMP stands for "Extensible Metadata Platform", an XML/RDF-based metadata
@@ -1180,6 +1215,7 @@ L<http://www.adobe.com/devnet/xmp/> for the official XMP specification.
   dex                                           XMP dex
   DICOM                                         XMP DICOM
   digiKam                                       XMP digiKam
+  drone-dji                                     DJI XMP
   dwc                                           DarwinCore
   exif                                          XMP exif
   exifEX                                        XMP exifEX
@@ -8094,6 +8130,7 @@ Tags extracted from FLIR Public image Format (FPF) files.
   0x1407   MaxApertureAtMaxFocal                rational64s
   0x140b   AutoDynamicRange                     int16u
   0x1422   ImageStabilization                   int16u[3]
+  0x1425   SceneRecognition                     int16u
   0x1431   Rating                               int32u
   0x1436   ImageGeneration                      int16u
   0x1438   ImageCount                           int16u
@@ -8102,6 +8139,9 @@ Tags extracted from FLIR Public image Format (FPF) files.
   0x3822   FrameHeight                          int16u
   0x4100   FacesDetected                        int16u
   0x4103   FacePositions                        int16u[n]
+  0x4200   NumFaceElements                      int16u
+  0x4201   FaceElementTypes                     int8u[n]
+  0x4203   FaceElementPositions                 int16u[n]
   0x4282   FaceRecInfo                          FujiFilm FaceRecInfo
   0x8000   FileSource                           string
   0x8002   OrderNumber                          int32u
@@ -8216,24 +8256,6 @@ This information is found in MOV videos from some FujiFilm cameras.
      46    ExposureTime                         no
      50    FNumber                              no
      58    ExposureCompensation                 no
-
-=head2 DJI Tags
-
-This table lists tags found in the maker notes of images from some DJI
-Phantom drones.
-
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  0x0001   Make                                 string
-  0x0003   SpeedX                               float
-  0x0004   SpeedY                               float
-  0x0005   SpeedZ                               float
-  0x0006   Pitch                                float
-  0x0007   Yaw                                  float
-  0x0008   Roll                                 float
-  0x0009   CameraPitch                          float
-  0x000a   CameraYaw                            float
-  0x000b   CameraRoll                           float
 
 =head2 GE Tags
 
@@ -20755,7 +20777,9 @@ must be subsequently re-linearized if this is required.
 
 2) All metadata edits are reversible.  While this would normally be
 considered an advantage, it is a potential security problem because old
-information is never actually deleted from the file.
+information is never actually deleted from the file.  (However, after
+running ExifTool the old information may be removed permanently using the
+"qpdf" utility with this command: "qpdf --linearize in.pdf out.pdf".)
 
   Tag ID               Tag Name                 Writable
   ------               --------                 --------
@@ -25178,8 +25202,11 @@ sub-documents, but the Duration is calculated for the full video.
   'afsp'               Afsp                     no
   'bext'               BroadcastExtension       RIFF BroadcastExt
   'cue '               CuePoints                no
+  'ds64'               DataSize64               RIFF DS64
   'fact'               NumberOfSamples          no
   'fmt '               AudioFormat              RIFF AudioFormat
+  'labl'               Label                    RIFF Label
+  'list'               ListType                 no
   'olym'               Olym                     Olympus WAV
 
 =head3 RIFF ALPH Tags
@@ -25463,6 +25490,24 @@ L<http://tech.ebu.ch/docs/tech/tech3285.pdf>).
     338    TimeReference                        no
     346    BWFVersion                           no
     602    CodingHistory                        no
+
+=head3 RIFF DS64 Tags
+
+64-bit data sizes for MBWF/RF64 files.  See
+L<https://tech.ebu.ch/docs/tech/tech3306-2009.pdf> for the specification.
+
+  Index8   Tag Name                             Writable
+  ------   --------                             --------
+      0    RIFFSize64                           no
+      1    DataSize64                           no
+      2    NumberOfSamples64                    no
+
+=head3 RIFF Label Tags
+
+  Index4   Tag Name                             Writable
+  ------   --------                             --------
+      0    LabelID                              no
+      1    LabelText                            no
 
 =head2 AIFF Tags
 

@@ -21,7 +21,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.13';
+$VERSION = '1.14';
 
 sub ProcessPEResources($$);
 sub ProcessPEVersion($$);
@@ -1171,7 +1171,7 @@ sub ProcessEXE($$)
                         DataPos => $raf->Tell() - $size,
                         DataLen => $size,
                         DirStart => 4,
-                        DirLen => $size,
+                        DirLen => $size - 4,
                     );
                     $et->ProcessDirectory(\%dirInfo, $tagTablePtr);
                     # process data dictionary

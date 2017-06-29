@@ -49,7 +49,7 @@ use vars qw($VERSION %minoltaLensTypes %minoltaTeleconverters %minoltaColorMode
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.51';
+$VERSION = '2.52';
 
 # Full list of product codes for Sony-compatible Minolta lenses
 # (ref http://www.kb.sony.com/selfservice/documentLink.do?externalId=C1000570)
@@ -563,50 +563,56 @@ $VERSION = '2.51';
    '65535.29' => 'Sony FE 28mm F2',                 #JR (32816 - SEL28F20)
    '65535.30' => 'Sony FE PZ 28-135mm F4 G OSS',    #JR (32817 - SELP28135G)
    '65535.31' => 'Sony FE 100mm F2.8 STF GM OSS',   #JR (32819 - SEL100F28GM, uses 33076 when set to 0.57m - 1.0m range)
-   '65535.32' => 'Sony FE 24-70mm F2.8 GM',         #JR (32821 - SEL2470GM)
-   '65535.33' => 'Sony FE 50mm F1.4 ZA',            #JR (32822 - SEL50F14Z)
-   '65535.34' => 'Sony FE 85mm F1.4 GM',            #JR (32823 - SEL85F14GM)
-   '65535.35' => 'Sony FE 50mm F1.8',               #JR (32824 - SEL50F18F with trailing "F" as compared to 32790)
-   '65535.36' => 'Sony FE 21mm F2.8 (SEL28F20 + SEL075UWC)', #JR (32826 - SEL28F20 + SEL075UWC Ultra-wide converter)
-   '65535.37' => 'Sony FE 16mm F3.5 Fisheye (SEL28F20 + SEL057FEC)', #JR (32827 - SEL28F20 + SEL057FEC Fisheye converter)
-   '65535.38' => 'Sony FE 70-300mm F4.5-5.6 G OSS', #JR (32828 - SEL70300G)
-   '65535.39' => 'Sony FE 100-400mm F4.5-5.6 GM OSS', #JR (32829 - SEL100400GM)
-   '65535.40' => 'Sony FE 70-200mm F2.8 GM OSS',    #JR (32830 - SEL70200GM)
-   '65535.41' => 'Sony FE 16-35mm F2.8 GM',         #JR (32831 - SEL1635GM)
-   '65535.42' => 'Sony FE 70-200mm F2.8 GM OSS + 1.4X Teleconverter', #JR (33072 - SEL70200GM + SEL14TC)
-   '65535.43' => 'Sony FE 70-200mm F2.8 GM OSS + 2X Teleconverter', #JR (33073 - SEL70200GM + SEL20TC)
+   '65535.32' => 'Sony E PZ 18-110mm F4 G OSS',     #JR (32820 - SELP18110G)
+   '65535.33' => 'Sony FE 24-70mm F2.8 GM',         #JR (32821 - SEL2470GM)
+   '65535.34' => 'Sony FE 50mm F1.4 ZA',            #JR (32822 - SEL50F14Z)
+   '65535.35' => 'Sony FE 85mm F1.4 GM',            #JR (32823 - SEL85F14GM)
+   '65535.36' => 'Sony FE 50mm F1.8',               #JR (32824 - SEL50F18F with trailing "F" as compared to 32790)
+   '65535.37' => 'Sony FE 21mm F2.8 (SEL28F20 + SEL075UWC)', #JR (32826 - SEL28F20 + SEL075UWC Ultra-wide converter)
+   '65535.38' => 'Sony FE 16mm F3.5 Fisheye (SEL28F20 + SEL057FEC)', #JR (32827 - SEL28F20 + SEL057FEC Fisheye converter)
+   '65535.39' => 'Sony FE 70-300mm F4.5-5.6 G OSS', #JR (32828 - SEL70300G)
+   '65535.40' => 'Sony FE 100-400mm F4.5-5.6 GM OSS', #JR (32829 - SEL100400GM)
+   '65535.41' => 'Sony FE 70-200mm F2.8 GM OSS',    #JR (32830 - SEL70200GM)
+   '65535.42' => 'Sony FE 16-35mm F2.8 GM',         #JR (32831 - SEL1635GM)
+   '65535.43' => 'Sony FE 70-200mm F2.8 GM OSS + 1.4X Teleconverter', #JR (33072 - SEL70200GM + SEL14TC)
+   '65535.44' => 'Sony FE 70-200mm F2.8 GM OSS + 2X Teleconverter', #JR (33073 - SEL70200GM + SEL20TC)
 #
 # 3rd party E lenses
 #
-   '65535.44' => 'Samyang AF 50mm F1.4 FE',         #JR (32789)
-   '65535.45' => 'Samyang AF 14mm F2.8 FE',         #JR (32790 and 51505)
-   '65535.46' => 'Sigma 19mm F2.8 [EX] DN',         #JR (0)
-   '65535.47' => 'Sigma 30mm F2.8 [EX] DN',         #JR (0)
-   '65535.48' => 'Sigma 60mm F2.8 DN',              #JR (0)
-   '65535.49' => 'Sigma 30mm F1.4 DC DN | C 016',   #IB (50480)
-   '65535.50' => 'Tamron 18-200mm F3.5-6.3 Di III VC', #JR (0 - Model B011)
-   '65535.51' => 'Tokina Firin 20mm F2 FE MF',      #JR (0)
-   '65535.52' => 'Zeiss Touit 12mm F2.8',           #JR (49201 or 0)
-   '65535.53' => 'Zeiss Touit 32mm F1.8',           #JR (49202 or 0)
-   '65535.54' => 'Zeiss Touit 50mm F2.8 Macro',     #JR (49203 or 0)
-   '65535.55' => 'Zeiss Batis 25mm F2',             #JR (49216)
-   '65535.56' => 'Zeiss Batis 85mm F1.8',           #JR (49217)
-   '65535.57' => 'Zeiss Batis 18mm F2.8',           #IB (49218)
-   '65535.58' => 'Zeiss Batis 135mm F2.8',          #IB (49219)
-   '65535.59' => 'Zeiss Loxia 50mm F2',             #JR (49232 or 0)
-   '65535.60' => 'Zeiss Loxia 35mm F2',             #JR (49233 or 0)
-   '65535.61' => 'Zeiss Loxia 21mm F2.8',           #JR (49234)
-   '65535.62' => 'Zeiss Loxia 85mm F2.4',           #JR (49235)
+   '65535.45' => 'Samyang AF 50mm F1.4 FE',         #JR (32789)
+   '65535.46' => 'Samyang AF 14mm F2.8 FE',         #JR (32790 and 51505)
+   '65535.47' => 'Samyang AF 35mm F2.8 FE',         #PH (51505)
+   '65535.48' => 'Sigma 19mm F2.8 [EX] DN',         #JR (0)
+   '65535.49' => 'Sigma 30mm F2.8 [EX] DN',         #JR (0)
+   '65535.50' => 'Sigma 60mm F2.8 DN',              #JR (0)
+   '65535.51' => 'Sigma 30mm F1.4 DC DN | C 016',   #IB (50480)
+   '65535.52' => 'Tamron 18-200mm F3.5-6.3 Di III VC', #JR (0 - Model B011)
+   '65535.53' => 'Tokina Firin 20mm F2 FE MF',      #JR (0)
+   '65535.54' => 'Voigtlander SUPER WIDE-HELIAR 15mm F4.5 III', #JR (50992)
+   '65535.55' => 'Voigtlander HELIAR-HYPER WIDE 10mm F5.6',     #IB (50993)
+   '65535.56' => 'Voigtlander ULTRA WIDE-HELIAR 12mm F5.6 III', #IB (50994)
+   '65535.57' => 'Voigtlander NOKTON 40mm F1.2',                #JR (50996)
+   '65535.58' => 'Zeiss Touit 12mm F2.8',           #JR (49201 or 0)
+   '65535.59' => 'Zeiss Touit 32mm F1.8',           #JR (49202 or 0)
+   '65535.60' => 'Zeiss Touit 50mm F2.8 Macro',     #JR (49203 or 0)
+   '65535.61' => 'Zeiss Batis 25mm F2',             #JR (49216)
+   '65535.62' => 'Zeiss Batis 85mm F1.8',           #JR (49217)
+   '65535.63' => 'Zeiss Batis 18mm F2.8',           #IB (49218)
+   '65535.64' => 'Zeiss Batis 135mm F2.8',          #IB (49219)
+   '65535.65' => 'Zeiss Loxia 50mm F2',             #JR (49232 or 0)
+   '65535.66' => 'Zeiss Loxia 35mm F2',             #JR (49233 or 0)
+   '65535.67' => 'Zeiss Loxia 21mm F2.8',           #JR (49234)
+   '65535.68' => 'Zeiss Loxia 85mm F2.4',           #JR (49235)
 #
 # other lenses
 #
-   '65535.63' => 'Arax MC 35mm F2.8 Tilt+Shift', #JD
-   '65535.64' => 'Arax MC 80mm F2.8 Tilt+Shift', #JD
-   '65535.65' => 'Zenitar MF 16mm F2.8 Fisheye M42', #JD
-   '65535.66' => 'Samyang 500mm Mirror F8.0', #19
-   '65535.67' => 'Pentacon Auto 135mm F2.8', #19
-   '65535.68' => 'Pentacon Auto 29mm F2.8', #19
-   '65535.69' => 'Helios 44-2 58mm F2.0', #19
+   '65535.69' => 'Arax MC 35mm F2.8 Tilt+Shift', #JD
+   '65535.70' => 'Arax MC 80mm F2.8 Tilt+Shift', #JD
+   '65535.71' => 'Zenitar MF 16mm F2.8 Fisheye M42', #JD
+   '65535.72' => 'Samyang 500mm Mirror F8.0', #19
+   '65535.73' => 'Pentacon Auto 135mm F2.8', #19
+   '65535.74' => 'Pentacon Auto 29mm F2.8', #19
+   '65535.75' => 'Helios 44-2 58mm F2.0', #19
 );
 
 %minoltaTeleconverters = (

@@ -13615,6 +13615,7 @@ Pentax-specific RIFF tags found in AVI videos.
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
   'hymn'   MakerNotes                           Pentax
+  'mknt'   MakerNotes                           Pentax
 
 =head2 PhaseOne Tags
 
@@ -20031,7 +20032,7 @@ this data as additional PNG chunks.
   'bKGD'             BackgroundColor            no
   'cHRM'             PrimaryChromaticities      PNG PrimaryChromaticities
   'dSIG'             DigitalSignature           no
-  'exIf'             exIf                       EXIF
+  'eXIf'             eXIf                       EXIF
   'fRAc'             FractalParameters          no
   'gAMA'             Gamma                      no
   'gIFg'             GIFGraphicControlExtension no
@@ -21577,6 +21578,7 @@ read APE metadata from MP3 and MPC files.
   ------               --------                 --------
   'Album'              Album                    no
   'Artist'             Artist                   no
+  'DURATION'           Duration                 no
   'Genre'              Genre                    no
   'Title'              Title                    no
   'Tool Name'          ToolName                 no
@@ -25194,6 +25196,7 @@ sub-documents, but the Duration is calculated for the full video.
   'LIST_hdrl'          Hdrl                     RIFF Hdrl
   'LIST_hydt'          PentaxData               Pentax AVI
   'LIST_ncdt'          NikonData                Nikon AVI
+  'LIST_pntx'          PentaxData2              Pentax AVI
   'VP8 '               VP8Bitstream             RIFF VP8
   'VP8L'               VP8L                     RIFF VP8L
   'VP8X'               VP8X                     RIFF VP8X

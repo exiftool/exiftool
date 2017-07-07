@@ -17,13 +17,31 @@ considered development releases, and are not uploaded to <a href="http://search.
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v10.59'><b>July 7, 2017 - Version 10.59</b></a>
+<ul>
+<li>Added a new Canon LensType (thanks LibRaw)
+<li>Added a new Nikon LensID
+<li>Added "wrong extension" warning to experimental -validate feature
+<li>Decode Pentax maker notes in Q-S1 AVI videos
+<li>Updated iptc2exif.args and exif2iptc.args to support new EXIF OffsetTime
+    tags (thanks Herb)
+<li>Patched potential problem with "Use of uninitialized value $pos" error when
+    importing malformed JSON data
+<li>Patched to runtime warning due to invalid Nikon ShutterCount value
+<li>Raise an error if -b is used with the -csv option
+<li>Changed PNG exIf chunk name to eXIf
+<li>Fixed bug introduced in 10.26 which could cause hang when %C is used in an
+    output file name
+<li>Fixed MWG:DateTimeOriginal and MWG:CreateDate to return XMP when EXIF and
+    IPTC don't exist
+</ul>
+
 <a name='v10.58'><b>June 29, 2017 - Version 10.58</b></a>
 <ul>
 <li>Added read support for RIFF-format MBWF/RF64 files
 <li>Added write support for dji-drone XMP tags
 <li>Added a new Canon LensType (thanks Steve Bates)
 <li>Added a few new Sony/Minolta LensType values (thanks Jos Roost)
-<li>Added a new Canon LensType
 <li>Added a couple of new CanonModelID values (thanks LibRaw and Norbert Wasser)
 <li>Decode some new FujiFilm tags (thanks Chris Schucker)
 <li>Enhanced FileSize print conversion to show in "GB" for large files

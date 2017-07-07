@@ -85,7 +85,7 @@ sub ProcessSerialData($$$);
 sub ProcessFilters($$$);
 sub SwapWords($);
 
-$VERSION = '3.77';
+$VERSION = '3.78';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -416,7 +416,8 @@ $VERSION = '3.77';
     493 => 'Canon EF 500mm f/4L IS II USM or EF 24-105mm f4L IS USM', #PH
     493.1 => 'Canon EF 24-105mm f/4L IS USM', #PH (should recheck this)
     494 => 'Canon EF 600mm f/4.0L IS II USM', #PH
-    495 => 'Canon EF 24-70mm f/2.8L II USM', #PH
+    495 => 'Canon EF 24-70mm f/2.8L II USM or Sigma Lens', #PH
+    495.1 => 'Sigma 24-70mm F2.8 DG OS HSM | A', #IB (017)
     496 => 'Canon EF 200-400mm f/4L IS USM', #PH
     499 => 'Canon EF 200-400mm f/4L IS USM + 1.4x', #50
     502 => 'Canon EF 28mm f/2.8 IS USM', #PH

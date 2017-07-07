@@ -16,7 +16,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::XMP;
 
-$VERSION = '1.19';
+$VERSION = '1.20';
 
 sub RecoverTruncatedIPTC($$$);
 sub ListToString($);
@@ -130,7 +130,11 @@ my $mwgLoaded;  # flag set if we alreaded Load()ed the MWG tags
         },
         # must check for validity in RawConv to avoid hiding a same-named tag,
         # but IPTC dates use a ValueConv so we need to derive the value there
-        RawConv => '(defined $val[0] or defined $val[1] or defined $val[3]) ? $val : undef',
+        RawConv => q{
+            (defined $val[0] or defined $val[1] or defined $val[3] or
+            (defined $val[4] and (not defined $val[5] or not defined $val[6]
+            or $val[5] eq $val[6]))) ? $val : undef
+        },
         ValueConv => q{
             return $val[0] if defined $val[0] and $val[0] !~ /^[: ]*$/;
             return $val[1] if defined $val[1] and $val[1] !~ /^[: ]*$/;
@@ -166,7 +170,11 @@ my $mwgLoaded;  # flag set if we alreaded Load()ed the MWG tags
             5 => 'CurrentIPTCDigest',
             6 => 'IPTCDigest',
         },
-        RawConv => '(defined $val[0] or defined $val[1] or defined $val[3]) ? $val : undef',
+        RawConv => q{
+            (defined $val[0] or defined $val[1] or defined $val[3] or
+            (defined $val[4] and (not defined $val[5] or not defined $val[6]
+            or $val[5] eq $val[6]))) ? $val : undef
+        },
         ValueConv => q{
             return $val[0] if defined $val[0] and $val[0] !~ /^[: ]*$/;
             return $val[1] if defined $val[1] and $val[1] !~ /^[: ]*$/;

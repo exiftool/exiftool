@@ -5753,6 +5753,15 @@ my %binaryDataAttrs = (
             ByteOrder => 'BigEndian',
         },
     },
+    mknt => { # (Q-S1)
+        Name => 'MakerNotes',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Pentax::Main',
+            Start => 10,
+            Base => '$start',
+            ByteOrder => 'Unknown',
+        },
+    },
 );
 
 # Pentax metadata in S1 AVI maker notes (PH)

@@ -32,6 +32,11 @@ $VERSION = '1.05';
     Title   => { },
     Track   => { },
     Year    => { },
+    DURATION => {
+        Name => 'Duration',
+        ValueConv => '$val += 4294967296 if $val < 0 and $val >= -2147483648; $val * 1e-7',
+        PrintConv => 'ConvertDuration($val)',
+    },
     'Tool Version' => { Name => 'ToolVersion' },
     'Tool Name'    => { Name => 'ToolName' },
 );

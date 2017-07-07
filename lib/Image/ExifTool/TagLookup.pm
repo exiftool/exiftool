@@ -7942,6 +7942,7 @@ my %tagExists = (
 	'pefversion' => 1,
 	'pentax' => 1,
 	'pentaxdata' => 1,
+	'pentaxdata2' => 1,
 	'pentaxjunk' => 1,
 	'pentaxjunk2' => 1,
 	'pentaxpent' => 1,

@@ -11,7 +11,7 @@ package Image::ExifTool::Validate;
 use strict;
 use vars qw($VERSION %exifSpec);
 
-$VERSION = '1.02';
+$VERSION = '1.03';
 
 use Image::ExifTool qw(:Utils);
 use Image::ExifTool::Exif;
@@ -282,6 +282,20 @@ sub FinishValidate($$)
                     $name = $tagInfo ? $$tagInfo{Name} : '<unknown>';
                 }
                 $et->Warn(sprintf('%s %s tag 0x%.4x %s', $result, $grp, $tag, $name));
+            }
+        }
+    }
+    # validate file extension
+    if ($$et{FILENAME} ne '') {
+        my $fileExt = ($$et{FILENAME} =~ /^.*\.([^.]+)$/s) ? uc($1) : '';
+        my $extFileType = Image::ExifTool::GetFileType($fileExt);
+        if ($extFileType and $extFileType ne $fileType) {
+            my $normExt = $$et{VALUE}{FileTypeExtension};
+            if ($normExt and $normExt ne $fileExt) {
+                my $lkup = $Image::ExifTool::fileTypeLookup{$fileExt};
+                if (ref $lkup or $lkup ne $normExt) {
+                    $et->Warn("File has wrong extension (should be $normExt, not $fileExt)");
+                }
             }
         }
     }

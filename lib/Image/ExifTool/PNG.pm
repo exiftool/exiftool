@@ -26,7 +26,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD %stdCase);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.42';
+$VERSION = '1.43';
 
 sub ProcessPNG_tEXt($$$);
 sub ProcessPNG_iTXt($$$);
@@ -41,7 +41,7 @@ sub GetLangInfo($$);
 sub BuildTextChunk($$$$$);
 
 # translate lower-case to actual case used for eXIf/zXIf chunks
-%stdCase = ( 'zxif' => 'zxIf', exif => 'exIf' );
+%stdCase = ( 'zxif' => 'zxIf', exif => 'eXIf' );
 
 my $noCompressLib;
 

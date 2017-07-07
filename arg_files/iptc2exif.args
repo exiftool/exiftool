@@ -8,6 +8,7 @@
 # Requires:     ExifTool version 7.98 or later
 #
 # Revisions:    2011/09/13 - P. Harvey Created
+#               2017/07/06 - PH Set new EXIF OffsetTime tags
 #
 # Notes:        These arguments will not delete existing EXIF tags which are
 #               missing from the IPTC.  The EXIF tags should be deleted
@@ -18,4 +19,6 @@
 -EXIF:ImageDescription < IPTC:Caption-Abstract
 -EXIF:DateTimeOriginal < Composite:DateTimeCreated
 -EXIF:CreateDate < Composite:DigitalCreationDateTime
+-EXIF:OffsetTimeOriginal < IPTC:TimeCreated
+-EXIF:OffsetTimeDigitized < IPTC:DigitalCreationTime
 # end

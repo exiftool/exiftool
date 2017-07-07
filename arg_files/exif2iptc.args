@@ -8,6 +8,7 @@
 # Requires:     ExifTool version 6.51 or later
 #
 # Revisions:    2011/09/13 - P. Harvey Created
+#               2017/07/06 - PH Set time zone from new EXIF OffsetTime tags
 #
 # Notes:     1) IPTC requires a timezone but EXIF does not support one, so
 #               the local timezone is assumed when writing the IPTC times
@@ -23,6 +24,8 @@
 # appropriate date or time part out of the EXIF date/time value
 -IPTC:DateCreated < EXIF:DateTimeOriginal
 -IPTC:TimeCreated < EXIF:DateTimeOriginal
+-IPTC:TimeCreated < Composite:SubSecDateTimeOriginal
 -IPTC:DigitalCreationDate < EXIF:CreateDate
 -IPTC:DigitalCreationTime < EXIF:CreateDate
+-IPTC:DigitalCreationTime < Composite:SubSecCreateDate
 # end

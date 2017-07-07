@@ -12,7 +12,7 @@ require Exporter;
 
 use vars qw($VERSION @ISA @EXPORT_OK);
 
-$VERSION = '1.07';
+$VERSION = '1.08';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(ReadCSV ReadJSON);
 
@@ -139,6 +139,9 @@ sub ReadJSONObject($;$)
         $pos = 0;
     }
 Tok: for (;;) {
+        # (didn't spend the time to understand how $pos could be undef, but
+        #  put a test here to be safe because one user reported this problem)
+        last unless defined $pos;
         if ($pos >= length $$buffPt or $readMore) {
             # read another 64kB and add to unparsed data
             my $offset = length($$buffPt) - $pos;

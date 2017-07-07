@@ -59,7 +59,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.34';
+$VERSION = '3.36';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -639,6 +639,8 @@ sub GetAFPointGrid($$;$);
     '03 43 5C 81 35 35 02 00' => 'Soligor AF C/D Zoom UMCS 70-210mm 1:4.5',
     '12 4A 5C 81 31 3D 09 00' => 'Soligor AF C/D Auto Zoom+Macro 70-210mm 1:4-5.6 UMCS',
     '12 36 69 97 35 42 09 00' => 'Soligor AF Zoom 100-400mm 1:4.5-6.7 MC',
+#
+    'BF 4E 26 26 1E 1E 01 04' => 'Irix 15mm f/2.4 Firefly', #forum3833
 #
     '00 00 00 00 00 00 00 01' => 'Manual Lens No CPU',
 #
@@ -7861,10 +7863,15 @@ sub ProcessNikonEncrypted($$$)
     $et or return 1;    # allow dummy access
     my $serial = $$et{NikonSerialKey};
     my $count = $$et{NikonCountKey};
-    unless (defined $serial and defined $count) {
+    unless (defined $serial and defined $count and $serial =~ /^\d+$/ and $count =~ /^\d+$/) {
         if (defined $serial or defined $count) {
-            my $missing = defined $serial ? 'ShutterCount' : 'SerialNumber';
-            $et->Warn("Can't decrypt Nikon information (no $missing key)");
+            my $msg;
+            if (defined $serial and defined $count) {
+                $msg = $serial =~ /^\d+$/ ? 'invalid ShutterCount' : 'invalid SerialNumber';
+            } else {
+                $msg = defined $serial ? 'no ShutterCount' : 'no SerialNumber';
+            }
+            $et->Warn("Can't decrypt Nikon information ($msg key)");
         }
         delete $$et{NikonSerialKey};
         delete $$et{NikonCountKey};

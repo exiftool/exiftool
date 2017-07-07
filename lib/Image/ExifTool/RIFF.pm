@@ -29,7 +29,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.44';
+$VERSION = '1.45';
 
 sub ConvertTimecode($);
 
@@ -381,6 +381,13 @@ my %code2charset = (
     },
     LIST_hydt => { #PH (Pentax metadata)
         Name => 'PentaxData',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Pentax::AVI',
+            ProcessProc => \&Image::ExifTool::RIFF::ProcessChunks,
+        },
+    },
+    LIST_pntx => { #Andras Salamon (Q-S1 AVI)
+        Name => 'PentaxData2',
         SubDirectory => {
             TagTable => 'Image::ExifTool::Pentax::AVI',
             ProcessProc => \&Image::ExifTool::RIFF::ProcessChunks,

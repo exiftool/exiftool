@@ -2505,6 +2505,9 @@ sub ProcessCanonCustom2($$$)
         $pos = $recEnd;
     }
     if ($pos != $end) {
+        # Note: a firmware bug in the EOS M5 and M6 stores an incorrect
+        # size for the 2nd CanonCustom2 record, so this message is expected
+        # for these models...
         $et->Warn('Possibly corrupted CanonCustom2 data');
         return 0;
     }

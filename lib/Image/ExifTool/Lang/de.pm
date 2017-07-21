@@ -11,7 +11,7 @@ package Image::ExifTool::Lang::de;
 use strict;
 use vars qw($VERSION);
 
-$VERSION = '1.32';
+$VERSION = '1.33';
 
 %Image::ExifTool::Lang::de::Translate = (
    'AEAperture' => 'AE-Blende',
@@ -1094,7 +1094,7 @@ $VERSION = '1.32';
     },
    'Artist' => 'Künstler',
    'ArtworkCreator' => 'Artwork Ersteller',
-   'AsShotICCProfile' => 'Aufnahme ICC-Profil',
+   'AsShotICCProfile' => 'Aufnahme Farbprofil',
    'AsShotNeutral' => 'Aufnahme Neutral',
    'AsShotPreProfileMatrix' => 'Aufnahme Pre Profil Matrix',
    'AsShotProfileName' => 'Aufnahme Pre Profilname',
@@ -2334,7 +2334,7 @@ $VERSION = '1.32';
    'Country' => 'Land',
    'Country-PrimaryLocationCode' => 'ISO-Ländercode',
    'Country-PrimaryLocationName' => 'Land',
-   'CountryCode' => 'Länderkennzeichen',
+   'CountryCode' => 'ISO-Ländercode',
    'Coverage' => 'Anwendungsbereich',
    'CreateDate' => 'Digitalisierungsdatum/-uhrzeit',
    'CreationDate' => 'Aufnahmedatum',
@@ -2376,8 +2376,8 @@ $VERSION = '1.32';
    'CreatorContactInfo' => 'Ersteller Kontaktinfo',
    'CreatorCountry' => 'Ersteller - Land',
    'CreatorPostalCode' => 'Ersteller - PLZ',
-   'CreatorRegion' => 'Ersteller - Staat/Provinz',
-   'CreatorTool' => 'Erzeugertool',
+   'CreatorRegion' => 'Ersteller - Bundesland/Kanton',
+   'CreatorTool' => 'Erstellertool',
    'CreatorWorkEmail' => 'Ersteller - E-Mail',
    'CreatorWorkTelephone' => 'Ersteller - Telefon',
    'CreatorWorkURL' => 'Ersteller - Webseite(n)',
@@ -3651,7 +3651,7 @@ $VERSION = '1.32';
    'FirmwareVersion' => 'Firmware-Version',
    'FixtureIdentifier' => 'Kennzeichnung',
    'Flash' => {
-      Description => 'Blitz',
+      Description => 'Blitzmodus',
       PrintConv => {
         'Auto, Did not fire' => 'Blitz wurde nicht ausgelöst, Automodus',
         'Auto, Did not fire, Red-eye reduction' => 'Blitz wurde nicht ausgelöst, Rote-Augen-Reduzierung',
@@ -4277,9 +4277,9 @@ $VERSION = '1.32';
     },
    'GEImageSize' => 'GE Bildgröße',
    'GIFVersion' => 'GIF-Version',
-   'GPSAltitude' => 'Höhe',
+   'GPSAltitude' => 'GPS Höhe',
    'GPSAltitudeRef' => {
-      Description => 'Bezugshöhe',
+      Description => 'GPS-Höhe Bezug',
       PrintConv => {
         'Above Sea Level' => 'Höhe über Normal-Null (Meeresspiegel)',
         'Below Sea Level' => 'Höhe unter Normal-Null (Meeresspiegel)',
@@ -4288,7 +4288,7 @@ $VERSION = '1.32';
    'GPSAreaInformation' => 'Name des GPS-Gebietes',
    'GPSDOP' => 'Messgenauigkeit',
    'GPSDateStamp' => 'GPS Datum',
-   'GPSDateTime' => 'GPS-Zeit (Atomuhr)',
+   'GPSDateTime' => 'GPS Zeitstempel',
    'GPSDestBearing' => 'Motivrichtung',
    'GPSDestBearingRef' => {
       Description => 'Referenz für Motivrichtung',
@@ -4297,9 +4297,9 @@ $VERSION = '1.32';
         'True North' => 'Geographische Ausrichtung',
       },
     },
-   'GPSDestDistance' => 'Distanz zum Ziel',
+   'GPSDestDistance' => 'GPS Zielentfernung',
    'GPSDestDistanceRef' => {
-      Description => 'Reference for distance to destination',
+      Description => 'GPS-Zielentfernung Maßeinheit',
       PrintConv => {
         'Kilometers' => 'Kilometer',
         'Miles' => 'Meilen',
@@ -4323,7 +4323,7 @@ $VERSION = '1.32';
       },
     },
    'GPSDifferential' => {
-      Description => 'GPS-Differentialkorrektur',
+      Description => 'GPS Differentialkorrektur',
       PrintConv => {
         'Differential Corrected' => 'Differentialkorrektur angewandt',
         'No Correction' => 'Messung ohne Differentialkorrektur',
@@ -4356,7 +4356,7 @@ $VERSION = '1.32';
     },
    'GPSMapDatum' => 'Geodätisches Datum',
    'GPSMeasureMode' => {
-      Description => 'GPS-Messverfahren',
+      Description => 'GPS Messverfahren',
       PrintConv => {
         '2-D' => '2-Dimensionale Messung',
         '2-Dimensional' => '2-Dimensionale Messung',
@@ -4378,13 +4378,13 @@ $VERSION = '1.32';
       },
     },
    'GPSStatus' => {
-      Description => 'GPS-Empfänger-Status',
+      Description => 'GPS-Empfänger Status',
       PrintConv => {
         'Measurement Active' => 'Messung aktiv',
         'Measurement Void' => 'Messung ungültig',
       },
     },
-   'GPSTimeStamp' => 'GPS-Zeit (Atomuhr)',
+   'GPSTimeStamp' => 'GPS-Zeit UTC',
    'GPSTrack' => 'Bewegungsrichtung',
    'GPSTrackRef' => {
       Description => 'Referenz für Bewegungsrichtung',
@@ -4468,7 +4468,7 @@ $VERSION = '1.32';
     },
    'Headline' => 'Überschrift',
    'HeightResolution' => 'Vertikale Bildauflösung',
-   'HierarchicalSubject' => 'Hierarchische Schlüsselworte',
+   'HierarchicalSubject' => 'Hierarchische Schlüsselwörter',
    'HighISONoiseReduction' => {
       Description => 'Rauschunterdrückung bei hoher Empfindlichkeit',
       PrintConv => {
@@ -4536,7 +4536,7 @@ $VERSION = '1.32';
    'HuffmanTable' => 'Huffman Tabelle',
    'HyperfocalDistance' => 'Hyperfokale Entfernung',
    'ICCProfile' => 'ICC-Profil',
-   'ICCProfileName' => 'Name des ICC-Profils',
+   'ICCProfileName' => 'ICC-Profil Name',
    'ICC_Profile' => 'ICC-Profil',
    'ID3Size' => 'ID3 Datenlänge',
    'IDCCreativeStyle' => {
@@ -4862,7 +4862,7 @@ $VERSION = '1.32';
       },
     },
    'Instructions' => 'Anweisungen',
-   'IntellectualGenre' => 'Genre',
+   'IntellectualGenre' => 'Intellektuelles Genre',
    'IntelligentAuto' => {
       PrintConv => {
         'Advanced' => 'Erweitert',
@@ -4954,7 +4954,7 @@ $VERSION = '1.32';
    'InternalName' => 'Interner Name',
    'InternalSerialNumber' => 'Interne Seriennummer',
    'InteropIndex' => {
-      Description => 'Interoperabilitäts-Identifikation',
+      Description => 'Interoperabilität Identifikation',
       PrintConv => {
         'R03 - DCF option file (Adobe RGB)' => 'R03: DCF Option-Format (Adobe RGB)',
         'R98 - DCF basic file (sRGB)' => 'R98: DCF Basic-Format (sRGB)',
@@ -4998,14 +4998,14 @@ $VERSION = '1.32';
     },
    'JPEGSize' => 'JPEG Größe',
    'JPEGTables' => 'JPEG Tabellen',
-   'JobID' => 'Job-ID',
+   'JobID' => 'Job-Kennung',
    'JpgFromRaw' => 'Jpg From Raw Bild',
    'JpgFromRawLength' => 'Jpg From Raw Datenlänge',
    'JpgFromRawStart' => 'Jpg From Raw Datenposition',
    'JpgRecordedPixels' => 'JPEG-Auflösung',
    'Key' => 'Schlüssel',
    'Keyword' => 'Schlüsselwort',
-   'Keywords' => 'Schlüsselwort',
+   'Keywords' => 'Schlüsselwörter',
    'KodakImageHeight' => 'Kodak-Bildhöhe',
    'KodakImageWidth' => 'Kodak-Bildbreite',
    'LC1' => 'Objektiv-Wert',
@@ -5054,7 +5054,7 @@ $VERSION = '1.32';
         'On' => 'Ein',
       },
     },
-   'Label' => 'Bezeichnung',
+   'Label' => 'Beschriftung',
    'Landmark' => 'Sehenswürdigkeit',
    'Language' => 'Sprache',
    'LanguageCode' => {
@@ -6051,7 +6051,7 @@ $VERSION = '1.32';
    'OriginalTHMFileType' => 'Original THM Dateityp',
    'OriginalTHMImage' => 'Original THM Bild',
    'OriginalTHMResource' => 'Original THM Basisdaten',
-   'OriginalTransmissionReference' => 'Jobkennung',
+   'OriginalTransmissionReference' => 'Anbietervermerk Verweis',
    'OriginatingProgram' => 'Erstellungsprogramm',
    'OtherImage' => 'Other Image Vorschaubild',
    'OtherImageLength' => 'OtherImage Datenlänge',
@@ -6511,7 +6511,7 @@ $VERSION = '1.32';
    'ProcessingInfo' => 'Verarbeitungsinformationen',
    'ProcessingSoftware' => 'Verarbeitungssoftware',
    'Producer' => 'Produzent',
-   'ProducerKeywords' => 'Hersteller Schlüsselwort',
+   'ProducerKeywords' => 'Hersteller Schlüsselwörter',
    'Producers' => 'Produzent',
    'ProductID' => 'Produkt-ID',
    'ProductionCode' => 'Herstellungskennzeichen',
@@ -6533,8 +6533,8 @@ $VERSION = '1.32';
    'ProfileCopyright' => 'Urheberrechtsvermerk',
    'ProfileCreator' => 'Profilersteller',
    'ProfileDateTime' => 'Profil-Erstellungszeit',
-   'ProfileDescription' => 'Profil-Beschreibung',
-   'ProfileDescriptionML' => 'Profil-Beschreibung ML',
+   'ProfileDescription' => 'Farbprofil Name',
+   'ProfileDescriptionML' => 'Farbprofil Name mehrsprachig',
    'ProfileFileSignature' => 'Profil-Datei-Signatur',
    'ProfileID' => 'Profile-ID',
    'ProfileSequenceDesc' => 'Profilsequenz-Beschreibung',
@@ -7722,9 +7722,9 @@ $VERSION = '1.32';
         'Monochrome' => 'Monochrom',
       },
     },
-   'Subject' => 'Thema',
+   'Subject' => 'Themen/Schlüsselwörter',
    'SubjectArea' => 'Hauptobjektposition',
-   'SubjectCode' => 'Themencode',
+   'SubjectCode' => 'IPTC Themencode',
    'SubjectDistance' => 'Objektentfernung',
    'SubjectDistanceRange' => {
       Description => 'Objektdistanzbereich',
@@ -8092,7 +8092,7 @@ $VERSION = '1.32';
         'Rotate 90 CW' => '90° im Uhrzeigersinn',
       },
     },
-   'TransmissionReference' => 'Übertragungsbezug',
+   'TransmissionReference' => 'Anbietervermerk',
    'Trapped' => {
       PrintConv => {
         'Unknown' => 'Unbekannt',
@@ -8198,7 +8198,7 @@ $VERSION = '1.32';
         'Enable' => 'Möglich',
       },
     },
-   'UsageTerms' => 'Verwendungsvorschriften',
+   'UsageTerms' => 'Nutzungsbedingungen',
    'UserComment' => 'Benutzerkommentar',
    'UserDef1PictureStyle' => {
       Description => 'Bildstil Benutzerdefiniert 1',
@@ -8632,7 +8632,7 @@ $VERSION = '1.32';
    'XMP' => 'XMP Metadaten',
    'XPAuthor' => 'XP Autor',
    'XPComment' => 'XP Kommentar',
-   'XPKeywords' => 'XP Schlüsselwort',
+   'XPKeywords' => 'XP Schlüsselwörter',
    'XPSubject' => 'XP Thema',
    'XPTitle' => 'XP Titel',
    'XResolution' => 'Horizontale Bildauflösung',

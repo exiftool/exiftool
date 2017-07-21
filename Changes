@@ -7,6 +7,17 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.55. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+July 21, 2017 - Version 10.60
+
+  - Added two new Sony/Minolta LensTypes (thanks Jos Roost)
+  - Added a new Pentax LensType (thanks Dieter Pearcey)
+  - Added new Composite UniquePathPoints tag to photoshop_paths.config
+  - Extract raw-data JFIF/JFXX thumbnails as ThumbnailTIFF
+  - Improved Sony LensSpec conversion
+  - Updated German translations (thanks Herbert Kauer)
+  - Set family 1 group name of JFXX ThumbnailImage to JFXX instead of JFIF
+  - Fixed problem with %C no longer incrementing properly
+
 July 7, 2017 - Version 10.59
 
   - Added a new Canon LensType (thanks LibRaw)
@@ -17,7 +28,7 @@ July 7, 2017 - Version 10.59
     tags (thanks Herb)
   - Patched potential problem with "Use of uninitialized value $pos" error when
     importing malformed JSON data
-  - Patched to runtime warning due to invalid Nikon ShutterCount value
+  - Patched to avoid runtime warning due to invalid Nikon ShutterCount value
   - Raise an error if -b is used with the -csv option
   - Changed PNG exIf chunk name to eXIf
   - Fixed bug introduced in 10.26 which could cause hang when %C is used in an

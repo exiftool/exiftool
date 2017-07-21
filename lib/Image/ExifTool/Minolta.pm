@@ -49,7 +49,7 @@ use vars qw($VERSION %minoltaLensTypes %minoltaTeleconverters %minoltaColorMode
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.52';
+$VERSION = '2.53';
 
 # Full list of product codes for Sony-compatible Minolta lenses
 # (ref http://www.kb.sony.com/selfservice/documentLink.do?externalId=C1000570)
@@ -576,43 +576,45 @@ $VERSION = '2.52';
    '65535.42' => 'Sony FE 16-35mm F2.8 GM',         #JR (32831 - SEL1635GM)
    '65535.43' => 'Sony FE 70-200mm F2.8 GM OSS + 1.4X Teleconverter', #JR (33072 - SEL70200GM + SEL14TC)
    '65535.44' => 'Sony FE 70-200mm F2.8 GM OSS + 2X Teleconverter', #JR (33073 - SEL70200GM + SEL20TC)
+   '65535.45' => 'Sony FE 100-400mm F4.5-5.6 GM OSS + 1.4X Teleconverter', #JR (33077 - SEL100400GM + SEL14TC)
+   '65535.46' => 'Sony FE 100-400mm F4.5-5.6 GM OSS + 2X Teleconverter', #JR (33078 - SEL100400GM + SEL20TC)
 #
 # 3rd party E lenses
 #
-   '65535.45' => 'Samyang AF 50mm F1.4 FE',         #JR (32789)
-   '65535.46' => 'Samyang AF 14mm F2.8 FE',         #JR (32790 and 51505)
-   '65535.47' => 'Samyang AF 35mm F2.8 FE',         #PH (51505)
-   '65535.48' => 'Sigma 19mm F2.8 [EX] DN',         #JR (0)
-   '65535.49' => 'Sigma 30mm F2.8 [EX] DN',         #JR (0)
-   '65535.50' => 'Sigma 60mm F2.8 DN',              #JR (0)
-   '65535.51' => 'Sigma 30mm F1.4 DC DN | C 016',   #IB (50480)
-   '65535.52' => 'Tamron 18-200mm F3.5-6.3 Di III VC', #JR (0 - Model B011)
-   '65535.53' => 'Tokina Firin 20mm F2 FE MF',      #JR (0)
-   '65535.54' => 'Voigtlander SUPER WIDE-HELIAR 15mm F4.5 III', #JR (50992)
-   '65535.55' => 'Voigtlander HELIAR-HYPER WIDE 10mm F5.6',     #IB (50993)
-   '65535.56' => 'Voigtlander ULTRA WIDE-HELIAR 12mm F5.6 III', #IB (50994)
-   '65535.57' => 'Voigtlander NOKTON 40mm F1.2',                #JR (50996)
-   '65535.58' => 'Zeiss Touit 12mm F2.8',           #JR (49201 or 0)
-   '65535.59' => 'Zeiss Touit 32mm F1.8',           #JR (49202 or 0)
-   '65535.60' => 'Zeiss Touit 50mm F2.8 Macro',     #JR (49203 or 0)
-   '65535.61' => 'Zeiss Batis 25mm F2',             #JR (49216)
-   '65535.62' => 'Zeiss Batis 85mm F1.8',           #JR (49217)
-   '65535.63' => 'Zeiss Batis 18mm F2.8',           #IB (49218)
-   '65535.64' => 'Zeiss Batis 135mm F2.8',          #IB (49219)
-   '65535.65' => 'Zeiss Loxia 50mm F2',             #JR (49232 or 0)
-   '65535.66' => 'Zeiss Loxia 35mm F2',             #JR (49233 or 0)
-   '65535.67' => 'Zeiss Loxia 21mm F2.8',           #JR (49234)
-   '65535.68' => 'Zeiss Loxia 85mm F2.4',           #JR (49235)
+   '65535.47' => 'Samyang AF 50mm F1.4 FE',         #JR (32789)
+   '65535.48' => 'Samyang AF 14mm F2.8 FE',         #JR (32790 and 51505)
+   '65535.49' => 'Samyang AF 35mm F2.8 FE',         #PH (51505)
+   '65535.50' => 'Sigma 19mm F2.8 [EX] DN',         #JR (0)
+   '65535.51' => 'Sigma 30mm F2.8 [EX] DN',         #JR (0)
+   '65535.52' => 'Sigma 60mm F2.8 DN',              #JR (0)
+   '65535.53' => 'Sigma 30mm F1.4 DC DN | C 016',   #IB (50480)
+   '65535.54' => 'Tamron 18-200mm F3.5-6.3 Di III VC', #JR (0 - Model B011)
+   '65535.55' => 'Tokina Firin 20mm F2 FE MF',      #JR (0)
+   '65535.56' => 'Voigtlander SUPER WIDE-HELIAR 15mm F4.5 III', #JR (50992)
+   '65535.57' => 'Voigtlander HELIAR-HYPER WIDE 10mm F5.6',     #IB (50993)
+   '65535.58' => 'Voigtlander ULTRA WIDE-HELIAR 12mm F5.6 III', #IB (50994)
+   '65535.59' => 'Voigtlander NOKTON 40mm F1.2',                #JR (50996)
+   '65535.60' => 'Zeiss Touit 12mm F2.8',           #JR (49201 or 0)
+   '65535.61' => 'Zeiss Touit 32mm F1.8',           #JR (49202 or 0)
+   '65535.62' => 'Zeiss Touit 50mm F2.8 Macro',     #JR (49203 or 0)
+   '65535.63' => 'Zeiss Batis 25mm F2',             #JR (49216)
+   '65535.64' => 'Zeiss Batis 85mm F1.8',           #JR (49217)
+   '65535.65' => 'Zeiss Batis 18mm F2.8',           #IB (49218)
+   '65535.66' => 'Zeiss Batis 135mm F2.8',          #IB (49219)
+   '65535.67' => 'Zeiss Loxia 50mm F2',             #JR (49232 or 0)
+   '65535.68' => 'Zeiss Loxia 35mm F2',             #JR (49233 or 0)
+   '65535.69' => 'Zeiss Loxia 21mm F2.8',           #JR (49234)
+   '65535.70' => 'Zeiss Loxia 85mm F2.4',           #JR (49235)
 #
 # other lenses
 #
-   '65535.69' => 'Arax MC 35mm F2.8 Tilt+Shift', #JD
-   '65535.70' => 'Arax MC 80mm F2.8 Tilt+Shift', #JD
-   '65535.71' => 'Zenitar MF 16mm F2.8 Fisheye M42', #JD
-   '65535.72' => 'Samyang 500mm Mirror F8.0', #19
-   '65535.73' => 'Pentacon Auto 135mm F2.8', #19
-   '65535.74' => 'Pentacon Auto 29mm F2.8', #19
-   '65535.75' => 'Helios 44-2 58mm F2.0', #19
+   '65535.71' => 'Arax MC 35mm F2.8 Tilt+Shift', #JD
+   '65535.72' => 'Arax MC 80mm F2.8 Tilt+Shift', #JD
+   '65535.73' => 'Zenitar MF 16mm F2.8 Fisheye M42', #JD
+   '65535.74' => 'Samyang 500mm Mirror F8.0', #19
+   '65535.75' => 'Pentacon Auto 135mm F2.8', #19
+   '65535.76' => 'Pentacon Auto 29mm F2.8', #19
+   '65535.77' => 'Helios 44-2 58mm F2.0', #19
 );
 
 %minoltaTeleconverters = (
@@ -2719,7 +2721,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
             return \ "Binary data 7404 bytes" unless $et->Options('Binary');
             my @dat = unpack('n*', $val);  # for Big-endian
             # TIFF header for a 16-bit RGB 10dpi 40x30 image
-            $val = Image::ExifTool::Sony::MakeTiffHeader(40,30,3,16,10);
+            $val = Image::ExifTool::MakeTiffHeader(40,30,3,16,10);
             # re-order data to RGB pixels
             my ($i, @val);
             for ($i=0; $i<40*30; ++$i) {

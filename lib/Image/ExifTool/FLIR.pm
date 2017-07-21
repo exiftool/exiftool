@@ -1222,8 +1222,7 @@ sub GetImageType($$$)
     } elsif (length $val != $w * $h * 2) {
         $et->Warn("Unrecognized FLIR $tag data format");
     } elsif (GetByteOrder() eq 'II') {
-        require Image::ExifTool::Sony;
-        $val = Image::ExifTool::Sony::MakeTiffHeader($w,$h,1,16) . $val;
+        $val = Image::ExifTool::MakeTiffHeader($w,$h,1,16) . $val;
         $type = 'TIFF';
     } else {
         $et->Warn("Don't yet support big-endian TIFF $tag");

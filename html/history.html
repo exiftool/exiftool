@@ -17,6 +17,18 @@ considered development releases, and are not uploaded to <a href="http://search.
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v10.60'><b>July 21, 2017 - Version 10.60</b></a>
+<ul>
+<li>Added two new Sony/Minolta LensTypes (thanks Jos Roost)
+<li>Added a new Pentax LensType (thanks Dieter Pearcey)
+<li>Added new Composite UniquePathPoints tag to photoshop_paths.config
+<li>Extract raw-data JFIF/JFXX thumbnails as ThumbnailTIFF
+<li>Improved Sony LensSpec conversion
+<li>Updated German translations (thanks Herbert Kauer)
+<li>Set family 1 group name of JFXX ThumbnailImage to JFXX instead of JFIF
+<li>Fixed problem with %C no longer incrementing properly
+</ul>
+
 <a name='v10.59'><b>July 7, 2017 - Version 10.59</b></a>
 <ul>
 <li>Added a new Canon LensType (thanks LibRaw)
@@ -27,7 +39,7 @@ considered development releases, and are not uploaded to <a href="http://search.
     tags (thanks Herb)
 <li>Patched potential problem with "Use of uninitialized value $pos" error when
     importing malformed JSON data
-<li>Patched to runtime warning due to invalid Nikon ShutterCount value
+<li>Patched to avoid runtime warning due to invalid Nikon ShutterCount value
 <li>Raise an error if -b is used with the -csv option
 <li>Changed PNG exIf chunk name to eXIf
 <li>Fixed bug introduced in 10.26 which could cause hang when %C is used in an

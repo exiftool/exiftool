@@ -293,6 +293,11 @@ The EXIF meta information is organized into different Image File Directories
 ExifTool family 1 group names.  When writing EXIF information, the default
 B<Group> listed below is used unless another group is specified.
 
+Mandatory tags (indicated by a colon after the B<Writable> type) may be
+added automatically with default values when creating a new IFD, and the IFD
+is removed automatically when deleting tags if only default-valued mandatory
+tags remain.
+
 The table below lists all EXIF tags.  Also listed are TIFF, DNG, HDP and
 other tags which are not part of the EXIF specification, but may co-exist
 with EXIF tags in some images.  Tags which are part of the EXIF 2.31
@@ -16519,12 +16524,17 @@ specification.
       2    ResolutionUnit                       int8u:
       3    XResolution                          int16u:
       5    YResolution                          int16u:
+      7    ThumbnailWidth                       no
+      8    ThumbnailHeight                      no
+      9    ThumbnailTIFF                        no
 
 =head3 JFIF Extension Tags
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
   0x0010   ThumbnailImage                       no
+  0x0011   ThumbnailTIFF                        no
+  0x0013   ThumbnailTIFF                        no
 
 =head2 FlashPix Tags
 

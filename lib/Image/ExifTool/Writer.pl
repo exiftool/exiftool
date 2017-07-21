@@ -4279,6 +4279,58 @@ sub NewGUID()
 }
 
 #------------------------------------------------------------------------------
+# Make TIFF header for raw data
+# Inputs: 0) width, 1) height, 2) num colour components, 3) bits, 4) resolution
+#         5) color-map data for palette-color image (8 or 16 bit)
+# Returns: TIFF header
+# Notes: Multi-byte data must be little-endian
+sub MakeTiffHeader($$$$;$$)
+{
+    my ($w, $h, $cols, $bits, $res, $cmap) = @_;
+    $res or $res = 72;
+    my $saveOrder = GetByteOrder();
+    SetByteOrder('II');
+    if (not $cmap) {
+        $cmap = '';
+    } elsif (length $cmap == 3 * 2**$bits) {
+        # convert to short
+        $cmap = pack 'v*', map { $_ | ($_<<8) } unpack 'C*', $cmap;
+    } elsif (length $cmap != 6 * 2**$bits) {
+        $cmap = '';
+    }
+    my $cmo = $cmap ? 12 : 0;   # offset due to ColorMap IFD entry
+    my $hdr =
+    "\x49\x49\x2a\0\x08\0\0\0\x0e\0" .                  # 0x00 14 menu entries:
+    "\xfe\x00\x04\0\x01\0\0\0\x00\0\0\0" .              # 0x0a SubfileType = 0
+    "\x00\x01\x04\0\x01\0\0\0" . Set32u($w) .           # 0x16 ImageWidth
+    "\x01\x01\x04\0\x01\0\0\0" . Set32u($h) .           # 0x22 ImageHeight
+    "\x02\x01\x03\0" . Set32u($cols) .                  # 0x2e BitsPerSample
+     Set32u($cols == 1 ? $bits : 0xb6 + $cmo) .
+    "\x03\x01\x03\0\x01\0\0\0\x01\0\0\0" .              # 0x3a Compression = 1
+    "\x06\x01\x03\0\x01\0\0\0" .                        # 0x46 PhotometricInterpretation
+     Set32u($cmap ? 3 : $cols == 1 ? 1 : 2) .
+    "\x11\x01\x04\0\x01\0\0\0" .                        # 0x52 StripOffsets
+     Set32u(0xcc + $cmo + length($cmap)) .
+    "\x15\x01\x03\0\x01\0\0\0" . Set32u($cols) .        # 0x5e SamplesPerPixel
+    "\x16\x01\x04\0\x01\0\0\0" . Set32u($h) .           # 0x6a RowsPerStrip
+    "\x17\x01\x04\0\x01\0\0\0" .                        # 0x76 StripByteCounts
+     Set32u($w * $h * $cols * int(($bits+7)/8)) .
+    "\x1a\x01\x05\0\x01\0\0\0" . Set32u(0xbc + $cmo) .  # 0x82 XResolution
+    "\x1b\x01\x05\0\x01\0\0\0" . Set32u(0xc4 + $cmo) .  # 0x8e YResolution
+    "\x1c\x01\x03\0\x01\0\0\0\x01\0\0\0" .              # 0x9a PlanarConfiguration = 1
+    "\x28\x01\x03\0\x01\0\0\0\x02\0\0\0" .              # 0xa6 ResolutionUnit = 2
+    ($cmap ?                                            # 0xb2 ColorMap [optional]
+    "\x40\x01\x03\0" . Set32u(3 * 2**$bits) . "\xd8\0\0\0" : '') .
+    "\0\0\0\0" .                                        # 0xb2+$cmo (no IFD1)
+    (Set16u($bits) x 3) .                               # 0xb6+$cmo BitsPerSample value
+    Set32u($res) . "\x01\0\0\0" .                       # 0xbc+$cmo XResolution = 72
+    Set32u($res) . "\x01\0\0\0" .                       # 0xc4+$cmo YResolution = 72
+    $cmap;                                              # 0xcc or 0xd8 (cmap and data go here)
+    SetByteOrder($saveOrder);
+    return $hdr;
+}
+
+#------------------------------------------------------------------------------
 # Return current time in EXIF format
 # Inputs: 0) flag to include timezone (0 to disable, undef or 1 to include)
 # Returns: time string

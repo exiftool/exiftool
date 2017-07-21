@@ -5093,6 +5093,7 @@ sub ExifTime($)
 #------------------------------------------------------------------------------
 # Generate TIFF file from scratch (in current byte order)
 # Inputs: 0) hash of IFD entries (TagID => Value; multiple values space-delimited)
+#         1) raw image data reference
 # Returns: TIFF image data, or undef on error
 sub GenerateTIFF($$)
 {

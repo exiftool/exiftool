@@ -144,6 +144,7 @@ $VERSION = '3.78';
     # 27 => 'Carl Zeiss Distagon T* 28mm f/2 ZF', #PH (must be with an adapter, because the ZF version is a Nikon mount)
     # 27 => 'EMF adapter for Canon EOS digital cameras', #50 (reports MaxFocalLength of 65535)
     # 27 => optix adapter
+    # 27 => Venus Optics Laowa 12mm f2.8 Zero-D or 105mm f2 (T3.2) Smooth Trans Focus (ref IB)
     28 => 'Canon EF 80-200mm f/4.5-5.6 or Tamron Lens', #32
     28.1 => 'Tamron SP AF 28-105mm f/2.8 LD Aspherical IF', #15
     28.2 => 'Tamron SP AF 28-75mm f/2.8 XR Di LD Aspherical [IF] Macro', #4

@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup);
 
-$VERSION = '10.59';
+$VERSION = '10.60';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -110,6 +110,7 @@ sub CopyBlock($$$);
 sub CopyFileAttrs($$$);
 sub TimeNow(;$);
 sub NewGUID();
+sub MakeTiffHeader($$$$;$$);
 
 # other subroutine definitions
 sub EncodeFileName($$;$);
@@ -1635,13 +1636,64 @@ my %systemTagsNotes = (
         RawConv => '$$self{JFIFYResolution} = $val',
         Mandatory => 1,
     },
+    7 => {
+        Name => 'ThumbnailWidth',
+        RawConv => '$val ? $$self{JFIFThumbnailWidth} = $val : undef',
+    },
+    8 => {
+        Name => 'ThumbnailHeight',
+        RawConv => '$val ? $$self{JFIFThumbnailHeight} = $val : undef',
+    },
+    9 => {
+        Name => 'ThumbnailTIFF',
+        Groups => { 2 => 'Preview' },
+        Format => 'undef[3*($val{7}||0)*($val{8}||0)]',
+        Notes => 'raw RGB thumbnail data, extracted as a TIFF image',
+        RawConv => 'length($val) ? $val : undef',
+        ValueConv => sub {
+            my ($val, $et) = @_;
+            my $len = length $val;
+            return \ "Binary data $len bytes" unless $et->Options('Binary');
+            my $img = MakeTiffHeader($$et{JFIFThumbnailWidth},$$et{JFIFThumbnailHeight},3,8) . $val;
+            return \$img;
+        },
+    },
 );
 %Image::ExifTool::JFIF::Extension = (
-    GROUPS => { 0 => 'JFIF', 1 => 'JFIF', 2 => 'Image' },
+    GROUPS => { 0 => 'JFIF', 1 => 'JFXX', 2 => 'Image' },
     0x10 => {
         Name => 'ThumbnailImage',
         Groups => { 2 => 'Preview' },
+        Notes => 'JPEG-format thumbnail image',
         RawConv => '$self->ValidateImage(\$val,$tag)',
+    },
+    0x11 => { # (untested)
+        Name => 'ThumbnailTIFF',
+        Groups => { 2 => 'Preview' },
+        Notes => 'raw palette-color thumbnail data, extracted as a TIFF image',
+        RawConv => '(length $val > 770 and $val !~ /^\0\0/) ? $val : undef',
+        ValueConv => sub {
+            my ($val, $et) = @_;
+            my $len = length $val;
+            return \ "Binary data $len bytes" unless $et->Options('Binary');
+            my ($w, $h) = unpack('CC', $val);
+            my $img = MakeTiffHeader($w,$h,1,8,undef,substr($val,2,768)) . substr($val,770);
+            return \$img;
+        },
+    },
+    0x13 => {
+        Name => 'ThumbnailTIFF',
+        Groups => { 2 => 'Preview' },
+        Notes => 'raw RGB thumbnail data, extracted as a TIFF image',
+        RawConv => '(length $val > 2 and $val !~ /^\0\0/) ? $val : undef',
+        ValueConv => sub {
+            my ($val, $et) = @_;
+            my $len = length $val;
+            return \ "Binary data $len bytes" unless $et->Options('Binary');
+            my ($w, $h) = unpack('CC', $val);
+            my $img = MakeTiffHeader($w,$h,3,8) . substr($val,2);
+            return \$img;
+        },
     },
 );
 
@@ -5732,10 +5784,11 @@ sub ProcessJPEG($$)
                 SetByteOrder('MM');
                 my $tagTablePtr = GetTagTable('Image::ExifTool::JFIF::Main');
                 $self->ProcessDirectory(\%dirInfo, $tagTablePtr);
-            } elsif ($$segDataPt =~ /^JFXX\0\x10/) {
+            } elsif ($$segDataPt =~ /^JFXX\0(\x10|\x11|\x13)/) {
+                my $tag = ord $1;
                 $dumpType = 'JFXX';
                 my $tagTablePtr = GetTagTable('Image::ExifTool::JFIF::Extension');
-                my $tagInfo = $self->GetTagInfo($tagTablePtr, 0x10);
+                my $tagInfo = $self->GetTagInfo($tagTablePtr, $tag);
                 $self->FoundTag($tagInfo, substr($$segDataPt, 6));
             } elsif ($$segDataPt =~ /^(II|MM).{4}HEAPJPGM/s) {
                 next if $fast and $fast > 1;    # skip processing for very fast

@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.63';
+$VERSION = '2.64';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -45,7 +45,6 @@ sub ConvLensSpec($);
 sub ConvInvLensSpec($);
 sub PrintLensSpec($);
 sub PrintInvLensSpec($;$$);
-sub MakeTiffHeader($$$$;$);
 
 # (%sonyLensTypes is filled in based on Minolta LensType's)
 
@@ -58,6 +57,7 @@ my %sonyLensTypes2 = (
     2 => 'Sony LA-EA2 Adapter',
     3 => 'Sony LA-EA3 Adapter', #(NC) ILCE-7 image with A-mount lens, but also has 0x940e 2nd byte=2
     6 => 'Sony LA-EA4 Adapter', #(NC) ILCE-7R image with A-mount lens and having phase-detect info blocks in 0x940e AFInfo
+  # 27 => Venus Optics Laowa 12mm f2.8 Zero-D or 105mm f2 (T3.2) Smooth Trans Focus (ref IB)
     44 => 'Metabones Canon EF Smart Adapter', #JR
     78 => 'Metabones Canon EF Smart Adapter Mark III or Other Adapter', #PH/JR (also Mark IV, Fotodiox and Viltrox)
     234 => 'Metabones Canon EF Smart Adapter Mark IV', #JR
@@ -117,6 +117,8 @@ my %sonyLensTypes2 = (
     33072 => 'Sony FE 70-200mm F2.8 GM OSS + 1.4X Teleconverter', #JR
     33073 => 'Sony FE 70-200mm F2.8 GM OSS + 2X Teleconverter', #JR
     33076 => 'Sony FE 100mm F2.8 STF GM OSS (macro mode)', #JR (with macro switching ring set to "0.57m - 1.0m")
+    33077 => 'Sony FE 100-400mm F4.5-5.6 GM OSS + 1.4X Teleconverter', #JR
+    33078 => 'Sony FE 100-400mm F4.5-5.6 GM OSS + 2X Teleconverter', #JR
 
     49201 => 'Zeiss Touit 12mm F2.8', #JR (lens firmware Ver.02)
     49202 => 'Zeiss Touit 32mm F1.8', #JR (lens firmware Ver.02)
@@ -2715,7 +2717,7 @@ my %meterInfo2 = (
             return \ "Binary data 7404 bytes" unless $et->Options('Binary');
             my @dat = unpack('n*', $val);
             # TIFF header for a 16-bit RGB 10dpi 40x30 image
-            $val = MakeTiffHeader(40,30,3,16,10);
+            $val = Image::ExifTool::MakeTiffHeader(40,30,3,16,10);
             # re-order data to RGB pixels
             my ($i, @val);
             for ($i=0; $i<40*30; ++$i) {
@@ -2775,7 +2777,7 @@ my %meterInfo2 = (
             return \ "Binary data 7404 bytes" unless $et->Options('Binary');
             my @dat = unpack('v*', $val);
             # TIFF header for a 16-bit RGB 10dpi 40x30 image
-            $val = MakeTiffHeader(40,30,3,16,10);
+            $val = Image::ExifTool::MakeTiffHeader(40,30,3,16,10);
             # re-order data to RGB pixels
             my ($i, @val);
             for ($i=0; $i<40*30; ++$i) {
@@ -8467,7 +8469,7 @@ my %pictureProfile2010 = (
             return \ "Binary data 2640 bytes" unless $et->Options('Binary');
             my @dat = unpack('v*', $val);
             # TIFF header for a 16-bit RGB 10dpi 44x30 image
-            $val = MakeTiffHeader(44,30,3,16,10);
+            $val = Image::ExifTool::MakeTiffHeader(44,30,3,16,10);
             # re-order data to RGB pixels - use same value for R, G and B
             my ($i, @val);
             for ($i=0; $i<44*30; ++$i) {
@@ -9268,44 +9270,6 @@ sub ProcessSonyPIC($$$)
 }
 
 #------------------------------------------------------------------------------
-# Make TIFF header for raw data
-# Inputs: 0) width, 1) height, 2) num colour components, 3) bits, 4) resolution
-# Returns: TIFF header
-# Notes: Multi-byte data must be little-endian
-sub MakeTiffHeader($$$$;$)
-{
-    my ($w, $h, $cols, $bits, $res) = @_;
-    $res or $res = 72;
-    my $saveOrder = GetByteOrder();
-    SetByteOrder('II');
-    my $hdr =
-    "\x49\x49\x2a\0\x08\0\0\0\x0e\0" .          # 0x00 14 menu entries:
-    "\xfe\x00\x04\0\x01\0\0\0\x00\0\0\0" .      # 0x0a SubfileType = 0
-    "\x00\x01\x04\0\x01\0\0\0" . Set32u($w) .   # 0x16 ImageWidth
-    "\x01\x01\x04\0\x01\0\0\0" . Set32u($h) .   # 0x22 ImageHeight
-    "\x02\x01\x03\0" . Set32u($cols) .          # 0x2e BitsPerSample
-    Set32u($cols == 1 ? $bits : 0xb6) .
-    "\x03\x01\x03\0\x01\0\0\0\x01\0\0\0" .      # 0x3a Compression = 1
-    "\x06\x01\x03\0\x01\0\0\0" .                # 0x46 PhotometricInterpretation
-    Set32u($cols == 1 ? 1 : 2) .
-    "\x11\x01\x04\0\x01\0\0\0\xcc\0\0\0" .      # 0x52 StripOffsets = 0xcc
-    "\x15\x01\x03\0\x01\0\0\0" . Set32u($cols) .# 0x5e SamplesPerPixel
-    "\x16\x01\x04\0\x01\0\0\0" . Set32u($h) .   # 0x6a RowsPerStrip
-    "\x17\x01\x04\0\x01\0\0\0" .                # 0x76 StripByteCounts
-    Set32u($w * $h * $cols * int(($bits+7)/8)) .
-    "\x1a\x01\x05\0\x01\0\0\0\xbc\0\0\0" .      # 0x82 XResolution
-    "\x1b\x01\x05\0\x01\0\0\0\xc4\0\0\0" .      # 0x8e YResolution
-    "\x1c\x01\x03\0\x01\0\0\0\x01\0\0\0" .      # 0x9a PlanarConfiguration = 1
-    "\x28\x01\x03\0\x01\0\0\0\x02\0\0\0" .      # 0xa6 ResolutionUnit = 2
-    "\0\0\0\0" .                                # 0xb2 (no IFD1)
-    (Set16u($bits) x 3) .                       # 0xb6 BitsPerSample value
-    Set32u($res) . "\x01\0\0\0" .               # 0xbc XResolution = 72
-    Set32u($res) . "\x01\0\0\0";                # 0xc4 YResolution = 72
-    SetByteOrder($saveOrder);                   # 0xcc (data goes here)
-    return $hdr;
-}
-
-#------------------------------------------------------------------------------
 # LensSpec value conversions
 # Inputs: 0) value
 # Returns: converted value
@@ -9316,6 +9280,7 @@ sub ConvLensSpec($)
     return \$val unless length($val) == 8;
     my @a = unpack("H2H4H4H2H2H2",$val);
     $a[1] += 0;  $a[2] += 0;    # remove leading zeros from focal lengths
+    s/([a-f])/hex($1)/e foreach @a[3,4]; # convert hex digits (ie. "b0" = f11)
     $a[3] /= 10; $a[4] /= 10;   # divide f-numbers by 10
     return join ' ', @a;
 }
@@ -9325,6 +9290,7 @@ sub ConvInvLensSpec($)
     my @a=split(" ", $val);
     return $val unless @a == 6;
     $a[3] *= 10; $a[4] *= 10;   # f-numbers are multiplied by 10
+    s/^(\d{2})0$/sprintf('%x0',$1)/e foreach @a[3,4];
     $_ = hex foreach @a;        # convert from hex
     return pack 'CnnCCC', @a;
 }

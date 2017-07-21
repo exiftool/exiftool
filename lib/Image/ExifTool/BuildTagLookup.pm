@@ -34,7 +34,7 @@ use Image::ExifTool::Nikon;
 use Image::ExifTool::Validate;
 use Image::ExifTool::MacOS;
 
-$VERSION = '3.09';
+$VERSION = '3.10';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -239,6 +239,11 @@ The EXIF meta information is organized into different Image File Directories
 (IFD's) within an image.  The names of these IFD's correspond to the
 ExifTool family 1 group names.  When writing EXIF information, the default
 B<Group> listed below is used unless another group is specified.
+
+Mandatory tags (indicated by a colon after the B<Writable> type) may be
+added automatically with default values when creating a new IFD, and the IFD
+is removed automatically when deleting tags if only default-valued mandatory
+tags remain.
 
 The table below lists all EXIF tags.  Also listed are TIFF, DNG, HDP and
 other tags which are not part of the EXIF specification, but may co-exist

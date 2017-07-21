@@ -39,6 +39,21 @@ specification.
 <td>YResolution</td>
 <td class=c title=' : = Mandatory'>int16u:</td>
 <td>&nbsp;</td></tr>
+<tr>
+<td class=r title='7 = 0x7'>7</td>
+<td>ThumbnailWidth</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='8 = 0x8'>8</td>
+<td>ThumbnailHeight</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='9 = 0x9'>9</td>
+<td>ThumbnailTIFF</td>
+<td class=c>no</td>
+<td><span class=s><span class=n>(raw RGB thumbnail data, extracted as a TIFF image)</span></span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='Extension'>JFIF Extension Tags</a></h2>
@@ -51,12 +66,22 @@ specification.
 <td title='0x0010 = 16'>0x0010</td>
 <td>ThumbnailImage</td>
 <td class=c>no</td>
-<td>&nbsp;</td></tr>
+<td><span class=s><span class=n>(JPEG-format thumbnail image)</span></span></td></tr>
+<tr class=b>
+<td title='0x0011 = 17'>0x0011</td>
+<td>ThumbnailTIFF</td>
+<td class=c>no</td>
+<td><span class=s><span class=n>(raw palette-color thumbnail data, extracted as a TIFF image)</span></span></td></tr>
+<tr>
+<td title='0x0013 = 19'>0x0013</td>
+<td>ThumbnailTIFF</td>
+<td class=c>no</td>
+<td><span class=s><span class=n>(raw RGB thumbnail data, extracted as a TIFF image)</span></span></td></tr>
 </table></td></tr></table></blockquote>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Feb 19, 2016</i>
+<br><i>Last revised Jul 19, 2017</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

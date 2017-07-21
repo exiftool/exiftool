@@ -18,6 +18,11 @@ TIFF-based RAW images, and even some AVI and MOV videos.</p>
 ExifTool family 1 group names.  When writing EXIF information, the default
 <b>Group</b> listed below is used unless another group is specified.</p>
 
+<p>Mandatory tags (indicated by a colon after the <b>Writable</b> type) may be
+added automatically with default values when creating a new IFD, and the IFD
+is removed automatically when deleting tags if only default-valued mandatory
+tags remain.</p>
+
 <p>The table below lists all EXIF tags.  Also listed are TIFF, DNG, HDP and
 other tags which are not part of the EXIF specification, but may co-exist
 with EXIF tags in some images.  Tags which are part of the EXIF 2.31
@@ -3487,7 +3492,7 @@ these unless they already exist in the file)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jun 15, 2017</i>
+<br><i>Last revised Jul 19, 2017</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

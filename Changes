@@ -7,6 +7,19 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.55. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Aug. 18, 2017 - Version 10.61
+
+  - Added a new Canon LensType (thanks LibRaw)
+  - Added a number of new Sigma, Nikon and Sony lenses (thanks Jos Roost)
+  - Added a new Nikon LensID (thanks Yang You)
+  - Decode a number of new Sony tags (thanks Jos Roost)
+  - Decode Panasonic FocusDistance (thanks David Ellsworth)
+  - Updated to the IPTC video metadata 1.1 specification
+  - Restore the ability to delete JpgFromRaw from RAW images (broken in 10.38)
+  - Fixed problem decoding maker notes from Pentax K-70 AVI videos
+  - Fixed problem conditionally replacing a tag if the value to be deleted was
+    taken from another tag while the new value was assigned directly
+
 July 21, 2017 - Version 10.60
 
   - Added two new Sony/Minolta LensTypes (thanks Jos Roost)

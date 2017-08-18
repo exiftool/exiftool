@@ -85,7 +85,7 @@ sub ProcessSerialData($$$);
 sub ProcessFilters($$$);
 sub SwapWords($);
 
-$VERSION = '3.78';
+$VERSION = '3.79';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -413,6 +413,7 @@ $VERSION = '3.78';
     490 => 'Canon EF 8-15mm f/4L Fisheye USM', #Klaus Reinfeld (PH added "Fisheye")
     491 => 'Canon EF 300mm f/2.8L IS II USM or Tamron Lens', #42
     491.1 => 'Tamron SP 70-200mm F/2.8 Di VC USD G2 (A025)', #IB
+    491.2 => 'Tamron 18-400mm F/3.5-6.3 Di II VC HLD (B028)', #IB
     492 => 'Canon EF 400mm f/2.8L IS II USM', #PH
     493 => 'Canon EF 500mm f/4L IS II USM or EF 24-105mm f4L IS USM', #PH
     493.1 => 'Canon EF 24-105mm f/4L IS USM', #PH (should recheck this)

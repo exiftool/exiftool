@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.64';
+$VERSION = '2.65';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -53,7 +53,7 @@ sub PrintInvLensSpec($;$$);
 my %sonyLensTypes2 = (
     Notes => 'Lens type numbers for Sony E-mount lenses used by NEX models.',
     0 => 'Unknown E-mount lens or other lens',
-    1 => 'Sony LA-EA1 Adapter',
+    1 => 'Sony LA-EA1 or Sigma MC-11 Adapter', # MC-11 with not-supported lenses
     2 => 'Sony LA-EA2 Adapter',
     3 => 'Sony LA-EA3 Adapter', #(NC) ILCE-7 image with A-mount lens, but also has 0x940e 2nd byte=2
     6 => 'Sony LA-EA4 Adapter', #(NC) ILCE-7R image with A-mount lens and having phase-detect info blocks in 0x940e AFInfo
@@ -112,7 +112,7 @@ my %sonyLensTypes2 = (
     32830 => 'Sony FE 70-200mm F2.8 GM OSS', #JR
     32831 => 'Sony FE 16-35mm F2.8 GM', #JR
 
-    33002 => 'Sigma 85mm F1.4 DG HSM | A 016 (+ Metabones Ver.50)', #PH/JR
+    33002 => 'Sigma 85mm F1.4 DG HSM | A (+ Metabones Ver.50)', #PH/JR (016)
 
     33072 => 'Sony FE 70-200mm F2.8 GM OSS + 1.4X Teleconverter', #JR
     33073 => 'Sony FE 70-200mm F2.8 GM OSS + 2X Teleconverter', #JR
@@ -132,29 +132,30 @@ my %sonyLensTypes2 = (
     49234 => 'Zeiss Loxia 21mm F2.8', #PH
     49235 => 'Zeiss Loxia 85mm F2.4', #JR
 
-    50480 => 'Sigma 30mm F1.4 DC DN | C 016', #IB/JR
-    50481 => 'Sigma 50mm F1.4 DG HSM | A 014 + MC-11', #JR
-    50482 => 'Sigma 18-300mm F3.5-6.3 DC MACRO OS HSM | C 014 + MC-11', #JR
-    50483 => 'Sigma 18-35mm F1.8 DC HSM | A 013 + MC-11', #JR
-    50484 => 'Sigma 24-35mm F2 DG HSM | A 015 + MC-11', #JR
-    50486 => 'Sigma 150-600mm F5-6.3 DG OS HSM | C 015 + MC-11', #JR
-    50487 => 'Sigma 20mm F1.4 DG HSM | A 015 + MC-11', #JR
-    50488 => 'Sigma 35mm F1.4 DG HSM | A 012 + MC-11', #JR
-    50489 => 'Sigma 150-600mm F5-6.3 DG OS HSM | S 014 + MC-11', #JR
-    50490 => 'Sigma 120-300mm F2.8 DG OS HSM | S 013 + MC-11', #JR
-    50492 => 'Sigma 24-105mm F4 DG OS HSM | A 013 + MC-11', #JR
-    50493 => 'Sigma 17-70mm F2.8-4 DC MACRO OS HSM | C 013 + MC-11', #JR
-    50495 => 'Sigma 50-100mm F1.8 DC HSM | A 016 + MC-11', #JR
+    50480 => 'Sigma 30mm F1.4 DC DN | C', #IB/JR (016)
+    50481 => 'Sigma 50mm F1.4 DG HSM | A + MC-11', #JR (014)
+    50482 => 'Sigma 18-300mm F3.5-6.3 DC MACRO OS HSM | C + MC-11', #JR (014)
+    50483 => 'Sigma 18-35mm F1.8 DC HSM | A + MC-11', #JR (013)
+    50484 => 'Sigma 24-35mm F2 DG HSM | A + MC-11', #JR (015)
+    50486 => 'Sigma 150-600mm F5-6.3 DG OS HSM | C + MC-11', #JR (015)
+    50487 => 'Sigma 20mm F1.4 DG HSM | A + MC-11', #JR (015)
+    50488 => 'Sigma 35mm F1.4 DG HSM | A + MC-11', #JR (012)
+    50489 => 'Sigma 150-600mm F5-6.3 DG OS HSM | S + MC-11', #JR (014)
+    50490 => 'Sigma 120-300mm F2.8 DG OS HSM | S + MC-11', #JR (013)
+    50492 => 'Sigma 24-105mm F4 DG OS HSM | A + MC-11', #JR (013)
+    50493 => 'Sigma 17-70mm F2.8-4 DC MACRO OS HSM | C + MC-11', #JR (013)
+    50495 => 'Sigma 50-100mm F1.8 DC HSM | A + MC-11', #JR (016)
 
     50992 => 'Voigtlander SUPER WIDE-HELIAR 15mm F4.5 III', #JR
     50993 => 'Voigtlander HELIAR-HYPER WIDE 10mm F5.6', #IB
     50994 => 'Voigtlander ULTRA WIDE-HELIAR 12mm F5.6 III', #IB
+    50995 => 'Voigtlander MACRO APO-LANTHAR 65mm F2 Aspherical', #JR
     50996 => 'Voigtlander NOKTON 40mm F1.2 Aspherical', #JR
 
     # lenses listed in the Sigma MC-11 list, but not yet seen:
-    # 504xx => 'Sigma 18-200mm F3.5-6.3 DC MACRO OS HSM | C 014 + MC-11',
-    # 504xx => 'Sigma 24mm F1.4 DG HSM | A 015 + MC-11',
-    # 504xx => 'Sigma 30mm F1.4 DC HSM | A 013 + MC-11',
+    # 504xx => 'Sigma 18-200mm F3.5-6.3 DC MACRO OS HSM | C + MC-11', # (014)
+    # 504xx => 'Sigma 24mm F1.4 DG HSM | A + MC-11', # (015)
+    # 504xx => 'Sigma 30mm F1.4 DC HSM | A + MC-11', # (013)
 
     51505 => 'Samyang AF 14mm F2.8 FE or Samyang AF 35mm F2.8 FE', #forum3833
     51505.1 => 'Samyang AF 35mm F2.8 FE', #PH
@@ -398,6 +399,24 @@ my %afPoints79_940e = (
                                    40=>'I5 Vertical', 39=>'I6 Vertical', 38=>'I7 Vertical',
 
                                                       94=>'E6 Center F2.8',
+);
+
+# ILCA-99M2 has dedicated 79 point Phase Detection AF sensor with similar layout as ILCA-68 and ILCA-77M2.
+# ILCA-99M2 has also 399 Focal Plane Phase-Detection AF Points in 19 rows of 21 points, same as ILCE-7RM2.
+# Of these 399 points, 323 points are selectable: 19 rows of 17 points (2 left-most and right-most columns not selectable).
+# The 79 Focal Plane points that overlap with the 79 points of the dedicated sensor provide for Hybrid Phase AF Points.
+# Tag 0x201e gives value 162 for the Center AF point, and 162 is exactly the center of 323 points...
+# The below table lists the selectable AF points that correspond to the 79 points of the dedicated sensor. (ref JR)
+my %afPoints99M2 = (
+                                                                           93=>'A5 (93)',   94=>'A6 (94)',   95=>'A7 (95)',
+                    106=>'B2 (106)', 107=>'B3 (107)', 108=>'B4 (108)',    110=>'B5 (110)', 111=>'B6 (111)', 112=>'B7 (112)',    114=>'B8 (114)', 115=>'B9 (115)', 116=>'B10 (116)',
+   122=>'C1 (122)', 123=>'C2 (123)', 124=>'C3 (124)', 125=>'C4 (125)',    127=>'C5 (127)', 128=>'C6 (128)', 129=>'C7 (129)',    131=>'C8 (131)', 132=>'C9 (132)', 133=>'C10 (133)', 134=>'C11 (134)',
+   139=>'D1 (139)', 140=>'D2 (140)', 141=>'D3 (141)', 142=>'D4 (142)',    144=>'D5 (144)', 145=>'D6 (145)', 146=>'D7 (146)',    148=>'D8 (148)', 149=>'D9 (149)', 150=>'D10 (150)', 151=>'D11 (151)',
+   156=>'E1 (156)', 157=>'E2 (157)', 158=>'E3 (158)', 159=>'E4 (159)',    161=>'E5 (161)', 162=>'E6 (162)', 163=>'E7 (163)',    165=>'E8 (165)', 166=>'E9 (166)', 167=>'E10 (167)', 168=>'E11 (168)',
+   173=>'F1 (173)', 174=>'F2 (174)', 175=>'F3 (175)', 176=>'F4 (176)',    178=>'F5 (178)', 179=>'F6 (179)', 180=>'F7 (180)',    182=>'F8 (182)', 183=>'F9 (183)', 184=>'F10 (184)', 185=>'F11 (185)',
+   190=>'G1 (190)', 191=>'G2 (191)', 192=>'G3 (192)', 193=>'G4 (193)',    195=>'G5 (195)', 196=>'G6 (196)', 197=>'G7 (197)',    199=>'G8 (199)', 200=>'G9 (200)', 201=>'G10 (201)', 202=>'G11 (202)',
+                    208=>'H2 (208)', 209=>'H3 (209)', 210=>'H4 (210)',    212=>'H5 (212)', 213=>'H6 (213)', 214=>'H7 (214)',    216=>'H8 (216)', 217=>'H9 (217)', 218=>'H10 (218)',
+                                                                          229=>'I5 (229)', 230=>'I6 (230)', 231=>'I7 (231)',
 );
 
 my %binaryDataAttrs = (
@@ -843,7 +862,7 @@ my %meterInfo2 = (
         #   a3 c3 - NEX-6, DSC-HX300, HX50V
         #   a4 c3 - NEX-3N/5R/5T, ILCE-3000/3500
         # unknown offsets or values for DSC-TX20/TX55/WX30
-        # unknown offsets or values for DSC-HX60V/HX400V/QX10/QX30/QX100/RX10/RX100M2/RX100M3/WX220/WX350,
+        # unknown offsets or values for DSC-HX60V/HX350/HX400V/QX10/QX30/QX100/RX10/RX100M2/RX100M3/WX220/WX350,
         #                               ILCA-68/77M2, ILCE-5000/5100/6000/7/7M2/7R/7S/QX1
         # unknown offsets or values for DSC-HX90V/RX1RM2/RX10M2/RX10M3/RX100M4/RX100M5/WX500, ILCE-6300/6500/7RM2/7SM2, ILCA-99M2
         # unknown offsets or values for ILCE-9
@@ -879,7 +898,7 @@ my %meterInfo2 = (
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag2010f' },
     },{
         Name => 'Tag2010g', # ?
-        Condition => '$$self{Model} =~ /^(DSC-(QX30|RX10|RX100M3|HX60V|HX400V|WX220|WX350)|ILCE-(7(R|S|M2)?|[56]000|5100|QX1)|ILCA-(68|77M2))\b/',
+        Condition => '$$self{Model} =~ /^(DSC-(QX30|RX10|RX100M3|HX60V|HX350|HX400V|WX220|WX350)|ILCE-(7(R|S|M2)?|[56]000|5100|QX1)|ILCA-(68|77M2))\b/',
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag2010g' },
     },{
         Name => 'Tag2010h', # ?
@@ -949,6 +968,14 @@ my %meterInfo2 = (
     # 0x2018 - something with external flash: seen 1 only when 0x2017 = 2
     # 0x2019 - 0 or 1 (seen 1 for ILCA-77M2, ILCE-7M2/7RM2)
     # 0x201a - 0 or 1
+    0x201a => { #JR
+        Name => 'ElectronicFrontCurtainShutter',
+        Writable => 'int32u',
+        PrintConv => {
+            0 => 'Off',
+            1 => 'On',
+        },
+    },
     0x201b => { #PH
         # FocusMode for SLT/HV/ILCA and NEX/ILCE; doesn't seem to apply to DSC models (always 0)
         Name => 'FocusMode',
@@ -968,8 +995,7 @@ my %meterInfo2 = (
         # AFAreaModeSetting for SLT/HV/ILCA and NEX/ILCE; doesn't seem to apply to DSC models (always 0)
         # all DSLR/SLT/HV         Wide  Zone Spot   Local
         # all NEX and ILCE-3000   Multi      Center FlexibleSpot
-        # ILCE-7 and newer        Wide  Zone Center FlexibleSpot
-        # ILCA-77M2 and newer     Wide  Zone Center FlexibleSpot
+        # all ILCE and ILCA       Wide  Zone Center FlexibleSpot  ExpandedFlexibleSpot
         # (actual AFAreaMode used may be different as camera can override this under certain conditions)
         {
             Name => 'AFAreaModeSetting',
@@ -986,9 +1012,11 @@ my %meterInfo2 = (
             Name => 'AFAreaModeSetting',
             Condition => '$$self{Model} =~ /^(NEX-|ILCE-)/',
             Notes => 'NEX and ILCE models',
+            RawConv => '$$self{AFAreaILCE} = $val',
+            DataMember => 'AFAreaILCE',
             Writable => 'int8u',
             PrintConv => {
-                0 => 'Multi', # all NEX and ILCE-3000/3500; all other ILCE use the name 'Wide'
+                0 => 'Wide', # all NEX and ILCE-3000/3500 use the name 'Multi'
                 1 => 'Center',
                 3 => 'Flexible Spot',
                 4 => 'Flexible Spot (LA-EA4)', # seen for ILCE-7RM2 with LA-EA4
@@ -1000,6 +1028,8 @@ my %meterInfo2 = (
             Name => 'AFAreaModeSetting',
             Condition => '$$self{Model} =~ /^ILCA-/',
             Notes => 'ILCA models',
+            RawConv => '$$self{AFAreaILCA} = $val',
+            DataMember => 'AFAreaILCA',
             Writable => 'int8u',
             PrintConv => {
                 0 => 'Wide',
@@ -1024,13 +1054,16 @@ my %meterInfo2 = (
         },
     },
     0x201e => [{ #PH (A99)
-        # AFPointSelected for SLT/HV/ILCA, non-zero only when AFAreaMode = 'Local' or 'Zone'
-        # AFZoneSelected for NEX/ILCE, non-zero only when AFAreaMode = 'Zone',
-        #      but also with Expanded Flexible Spot for ILCE-7RM2/7SM2 ...
+        # Selected AF Point for SLT/HV/ILCA or ILCE with LA-EA2/EA4
+        # Selected AF Zone for NEX/ILCE/ILCA when AFAreaMode = 'Zone',
+        #      but also with Expanded Flexible Spot for ILCE-7RM2/7SM2/9 ...
         # doesn't seem to apply to DSC models (always 0)
         Name => 'AFPointSelected',
-        Condition => '$$self{Model} =~ /^(SLT-|HV)/',
-        Notes => 'SLT models',
+        Condition => q{
+            ($$self{Model} =~ /^(SLT-|HV)/) or ($$self{Model} =~ /^ILCE-/ and
+            defined $$self{AFAreaILCE} and  $$self{AFAreaILCE} == 4)
+        },
+        Notes => 'SLT models or ILCE with LA-EA2/EA4',
         Writable => 'int8u',
         PrintConvColumns => 2,
         PrintConv => {
@@ -1057,12 +1090,12 @@ my %meterInfo2 = (
         },
     },{
         Name => 'AFPointSelected',
-        Condition => '$$self{Model} =~ /^ILCA-(68|77M2)/',
+        Condition => '$$self{Model} =~ /^ILCA-(68|77M2)/ and defined $$self{AFAreaILCA} and $$self{AFAreaILCA} != 8',
         Notes => 'ILCA-68 and ILCA-77M2',
         Writable => 'int8u',
         ValueConv => '$val - 1', # to get the same numbers as from the BITMASK in 0x2020
         ValueConvInv => '$val + 1',
-        PrintConvColumns => 3,
+        PrintConvColumns => 5,
         PrintConv => {
             -1 => 'Auto',
             %afPoints79,
@@ -1070,31 +1103,55 @@ my %meterInfo2 = (
         },
     },{
         Name => 'AFPointSelected',
-        Condition => '$$self{Model} =~ /^ILCA-99M2/',
-        Notes => 'ILCA-99M2, appears to indicate the number of the selectable Focal Plane AF Point',
+        Condition => '($$self{Model} =~ /^ILCA-99M2/ and defined $$self{AFAreaILCA} and $$self{AFAreaILCA} != 8)',
+        Notes => 'ILCA-99M2 when AFAreaModeSetting is not Zone',
+        # (appears to indicate the number of the selectable Focal Plane AF Point)
         Writable => 'int8u',
+        PrintConvColumns => 4,
         PrintConv => {
-            0 => 'Auto',
-            162 => '162 = E6 (Center)',
-            OTHER => sub { shift }, # pass other values straight through
+            0 => 'Auto',                # seen for AFAreaModeSetting = Center, Wide
+            %afPoints99M2,              # for selected AFPoints corresponding to the 79 dedicated AF points
+            162 => 'E6 (162, Center)',  # add " (Center)" to central point
+            OTHER => sub { shift },     # pass other values straight through
         },
     },{
-        Name => 'AFZoneSelected', # each Zone has 3x3 AF Areas --> 9 positions within 5x5 total Contrast AF Areas
+        Name => 'AFPointSelected',
+        Condition => '($$self{Model} =~ /^ILCA-/ and defined $$self{AFAreaILCA} and $$self{AFAreaILCA} == 8)',
+        Notes => 'ICLA models when AFAreaModeSetting is set to Zone',
+        # ILCA-68 and 77M2 have 9 Zones: numbers/locations verified for ILCA-77M2
+        # ILCA-99M2 has 15 Zones in Hybrid-AF and 9 Zones in dedicated Phase AF Area, so may not be valid for ILCA-99M2...
+        Writable => 'int8u',
+        PrintConv => {
+            0 => 'n/a',
+            1 => 'Top Left Zone',
+            2 => 'Top Zone',
+            3 => 'Top Right Zone',
+            4 => 'Left Zone',
+            5 => 'Center Zone',
+            6 => 'Right Zone',
+            7 => 'Bottom Left Zone',
+            8 => 'Bottom Zone',
+            9 => 'Bottom Right Zone',
+          #14 => ' ??? ', # seen for ILCA-99M2
+        },
+    },{
+        Name => 'AFPointSelected',
         # non-zero only when AFAreaMode is 'Zone', and 'Expanded-Flexible-Spot' for ILCE-6300/7RM2/7SM2
+        # each Zone has 3x3 AF Areas --> 9 positions within 5x5 total Contrast AF Areas
         Condition => '$$self{Model} =~ /^(NEX-|ILCE-)/',
         Notes => 'NEX and ILCE models',
         Writable => 'int8u',
         PrintConv => {
             0 => 'n/a',
-            1 => 'Center',
-            2 => 'Top',
-            3 => 'Right',
-            4 => 'Left',
-            5 => 'Bottom',
-            6 => 'Bottom Right',
-            7 => 'Bottom Left',
-            8 => 'Top Left',
-            9 => 'Top Right',
+            1 => 'Center Zone',
+            2 => 'Top Zone',
+            3 => 'Right Zone',
+            4 => 'Left Zone',
+            5 => 'Bottom Zone',
+            6 => 'Bottom Right Zone',
+            7 => 'Bottom Left Zone',
+            8 => 'Top Left Zone',
+            9 => 'Top Right Zone',
         },
     }],
     # 0x201f - 0 0 0 0 for SLT and DSC; 4 values for NEX/ILCE with 4th value always 0:
@@ -1107,7 +1164,6 @@ my %meterInfo2 = (
         Notes => 'SLT models, or NEX/ILCE with A-mount lenses',
         BitsPerWord => 8,
         BitsTotal => 80,
-        Notes => 'SLT models only',
         PrintConvColumns => 2,
         PrintConv => {
             0 => '(none)',
@@ -1135,16 +1191,27 @@ my %meterInfo2 = (
         },
     },{
         Name => 'AFPointsUsed',
-        Condition => '$$self{Model} =~ /^ILCA-/',
+        Condition => '$$self{Model} =~ /^ILCA-(68|77M2)/',
         Notes => 'ILCA models',
         BitsPerWord => 8,
         BitsTotal => 80,
+        PrintConvColumns => 4,
         PrintConv => {
             0 => '(none)',
             BITMASK => { %afPoints79 },
         },
     }],
     # 0x2021 - 0 for DSC; 0, 1 or 2 for SLT/ILCA and NEX/ILCE: 1=Face, 2=object-tracking ?
+    0x2021 => { #JR
+        Name => 'AFTracking',
+        Condition => '$$self{Model} !~ /^DSC-/', # (doesn't seem to apply to DSC-models)
+        Writable => 'int8u',
+        PrintConv => {
+            0 => 'Off',
+            1 => 'Face tracking',
+            2 => 'Lock On AF',
+        },
+    },
     # 0x2022 - 13 bytes (104 bits) for SLT-A58/A99V, NEX-3N/5R/5T/6/VG30E/VG900, ILCE-3000/3500/5000/7/7R
     #          26 bytes (208 bits) for ILCA-77M2, ILCE-5100/6000/7M2/7S/QX1 (7M2 has 117, 5100/6000 have 179 PhaseAFPoints)
     #          52 bytes (416 bits) for ILCE-7RM2 (which has 399 PhaseAFPoints) and ILCE-7SM2
@@ -1172,7 +1239,14 @@ my %meterInfo2 = (
             BITMASK => { },
         },
     }],
-    # 0x2023 - 0
+    0x2023 => { #JR
+        Name => 'MultiFrameNREffect',
+        Writable => 'int32u',
+        PrintConv => {
+            0 => 'Normal',
+            1 => 'High', # seen this only for ILCA-77M2 MFNR-12 images
+        },
+    },
     # 0x2024 - 96 byte data block, very similar to 0x3000 ShotInfo, seen in Xperia Z5
     # 0x2025 - n1 n2 0 0         DSC-RX100M3/RX100M4/RX10M2/HX90V/WX500, ILCA-77M2, ILCE-5100/7M2/7RM2/7S/QX1
     #          seen n1=0,2,4,5,7 and n2=0,1,3, very often: 7 3 0 0
@@ -1297,7 +1371,7 @@ my %meterInfo2 = (
     # 0x0a (e) for SLT-A37/A57/A65V/A77V/A99V, NEX-F3/5N/5R/5T/6/7/VG20E, DSC-RX100/RX1/RX1R/HX10V/HX20V/HX30V/HX200V/TX200V/TX300V/TX66/WX50/WX100/WX150, Lunar/Stellar/HV
     # 0x0c (e) for ILCE-3000/3500, NEX-3N, SLT-A58, DSC-HX50V/HX300/RX100M2/TX30/WX60/WX80/WX200/WX300, DSC-QX10/QX100
     # 0xd0 (e) H90, W650, W690: tag9400 decoding appears not valid/different
-    # 0x23 (e) for DSC-RX10/HX60V/HX400V/WX220/WX350, ILCE-7/7R/5000/6000, ILCA-68/77M2
+    # 0x23 (e) for DSC-RX10/HX60V/HX350/HX400V/WX220/WX350, ILCE-7/7R/5000/6000, ILCA-68/77M2
     # 0x24 (e) for ILCA-99M2,ILCE-5100/6300/6500/7M2/7RM2/7S/7SM2/QX1, DSC-HX90V/QX30/RX100M3/RX100M4/RX100M5/RX10M2/RX10M3/RX1RM2/WX500
     # 0x26 (e) for ILCE-9
     # first byte decoded: 40, 204, 202, 27, 58, 62, 48 respectively
@@ -1349,24 +1423,24 @@ my %meterInfo2 = (
         #   43 00 66 0e    0x0a1b    (n)  ILCE-7/7R v0.xx/v1.00/v1.01, ILCE-5000, DSC-RX10
         #   43 10 66 0e    0x0a1b    (n)  ILCE-7/7R v1.02/v1.10
         #   43 30 6c 0e    0x0a1b    (n)  ILCE-7/7R v1.20-v3.20
-        #   44 00 9c 0e    0x0a39    (o)  ILCE-6000 v1.00/v1.10, DSC-HX60V/HX400V/WX220/WX350 (also DSC-QX30 samples from sony.net)
+        #   44 00 9c 0e    0x0a39    (o)  ILCE-6000 v1.00/v1.10, DSC-HX60V/HX350/HX400V/WX220/WX350 (also DSC-QX30 samples from sony.net)
         #   44 10 a2 0e    0x0a39    (o)  ILCE-6000 v1.20/v1.21
         #   44 20 a2 0e    0x0a39    (o)  ILCE-6000 v2.00-v3.20
         #   49 00 b0 0e    0x0a3b    (p)  ILCA-68 v1.00, ILCA-77M2 V1.00/v1.01/v2.00 (also DSC-RX100M3 samples from sony.net)
         #   4a 00 b3 0e    0x0a3d    (q)  ILCE-7S v1.00, ILCE-5100 v1.00/v1.10, ILCE-QX1, DSC-QX30/RX100M3
         #   4a 20 b9 0e    0x0a3d    (q)  ILCE-7S v1.20-v3.10
         #   4e 10 d0 0e    0x0a5a    (r)  ILCE-7M2 v1.00/v1.10
-        #   4e 30 d6 0e    0x0a5a    (r)  ILCE-7M2 v1.20-v3.30
+        #   4e 30 d6 0e    0x0a5a    (r)  ILCE-7M2 v1.20-v4.00
         #   5a 00 14 0f    0x0a85    (s)  DSC-HX90V/WX500
         #   5d 00 56 0f    0x0ac7    (t)  DSC-RX10M2/RX100M4, ILCE-7RM2/7SM2 v1.00-v2.20 (also DSC-RX1RM2 samples from Sony)
-        #   5d 1d 58 0f    0x0ac7    (t)  ILCE-7RM2 v3.00-v3.30
+        #   5d 1d 58 0f    0x0ac7    (t)  ILCE-7RM2 v3.00-v4.00
         #   5d 1e 57 0f    0x0ac7    (t)  DSC-RX1RM2 v1.00
         #   5d 10 56 0f    0x0ac7    (t)  ILCE-6300 v1.00 (samples from Sony)
         #   5d 20 58 0f    0x0ac7    (t)  ILCE-6300 v1.00/v1.10
         #   5e 00 56 0f    0x0ac7    (t)  DSC-RX10M3 v1.00
         #   64 00 a8 0f    0x0b15    (u)  DSC-RX100M5 v1.00
         #   67 00 f9 0f    0x0b66    (v)  ILCA-99M2 v1.00, ILCE-6500 v1.00
-        #   7c 00 fe 0f    0x0adb    (w)  ILCE-9 v0.01/v1.00
+        #   7c 00 fe 0f    0x0adb    (w)  ILCE-9 v0.01/v1.00/v1.01
         #
         # 0x0004 - (RX100: 0 or 1. subsequent data valid only if 1 - PH)
         # 0x0007 => {
@@ -1397,13 +1471,17 @@ my %meterInfo2 = (
         #   0x13      0x01     ILCE-5000/7/7R, DSC-RX10, but also seen:
         #     0x12      0x01     for ILCE-7/7R and DSC-RX10 samples from Sony.net ...
         #     0x15      0x01     for a few ILCE-7/7R ...
-        #   0x14      0x01     ILCE-6000, DSC-HX60V/HX400V/WX220/WX350
+        #   0x14      0x01     ILCE-6000, DSC-HX60V/HX350/HX400V/WX220/WX350
         #   0x17      0x01     ILCE-7S/7M2/5100/QX1, DSC-QX30/RX100M3
         #   0x19      0x01     DSC-HX90V/RX1RM2/RX10M2/RX100M4/WX500, ILCE-6300/7RM2/7SM2
         #   0x1a      0x01     DSC-RX10M3/RX100M5, ILCE-6500
+        #   0x1c      0x01     ILCE-9
         #   var       var      SLT-A58/A99V, HV, ILCA-68/77M2/99M2
-        # only valid when first byte 0x0f, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x17, 0x19, 0x1a (enciphered 0x8a, 0x70, 0xb6, 0x69, 0x88, 0x20, 0x30, 0xd7, 0xbb, 0x92)
-        Condition => '$$self{DoubleCipher} ? $$valPt =~ /^[\x7e\x46\x1d\x18\x3a\x95\x24\x26\xd6]\x01/ : $$valPt =~ /^[\x8a\x70\xb6\x69\x88\x20\x30\xd7\xbb\x92]\x01/',
+        # only valid when first byte 0x0f, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x17, 0x19, 0x1a, 0x1c (enciphered 0x8a, 0x70, 0xb6, 0x69, 0x88, 0x20, 0x30, 0xd7, 0xbb, 0x92, 0x28)
+#        Condition => '$$self{DoubleCipher} ? $$valPt =~ /^[\x7e\x46\x1d\x18\x3a\x95\x24\x26\xd6]\x01/ : $$valPt =~ /^[\x8a\x70\xb6\x69\x88\x20\x30\xd7\xbb\x92\x28]\x01/',
+# alternative simpler Condition:
+# not valid for SLT/HV/ILCA models, and not valid for first byte 0x0e or 0xff (enciphered 0x05 or 0xff)
+        Condition => '$$self{Model} !~ /^(SLT-|HV|ILCA-)/ and $$valPt !~ /^[\x05\xff]/',
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag9402' },
     },{
         Name => 'Sony_0x9402',
@@ -1419,7 +1497,7 @@ my %meterInfo2 = (
     #  9  0   38  2  2     SLT-A37/A57/A99V, NEX-5R/5T/6/F3/VG30E/VG900, DSC-RX1/RX1R/RX100, Stellar
     # 12  0    8  2  2     SLT-A58, NEX-3N, ILCE-3000/3500, DSC-HX300/HX50V/WX60/WX80/WX300/TX30...
     # 13  0    9  2  2     DSC-QX10/QX100/RX100M2
-    # 15  0   35  2  2     ILCA-68/77M2, ILCE-5000/5100/6000/7/7R/7S/7M2/QX1, DSC-HX400V/HX60V/QX30/RX10/RX100M3/WX220/WX350
+    # 15  0   35  2  2     ILCA-68/77M2, ILCE-5000/5100/6000/7/7R/7S/7M2/QX1, DSC-HX60V/HX350/HX400V/QX30/RX10/RX100M3/WX220/WX350
     # 16  0   85  2  2     DSC-HX90V/WX500
     # 17  0  232  1  2     DSC-RX1RM2/RX10M2/RX10M3/RX100M4/RX100M5, ILCE-6300/6500/7RM2/7SM2/9, ILCA-99M2
     # other values for Panorama images and several other models
@@ -1434,6 +1512,11 @@ my %meterInfo2 = (
         Condition => '$$valPt =~ /^[\xe7\xea\xcd\x8a\x70]..\x08/',
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag9404b' },
     },{
+        Name => 'Tag9404c',
+        # first byte must be 17 and 4th byte must be 1 (deciphered)
+        Condition => '$$valPt =~ /^\xb6..\x01/',
+        SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag9404c' },
+    },{
         Name => 'Sony_0x9404',
         %unknownCipherData,
     }],
@@ -1443,7 +1526,7 @@ my %meterInfo2 = (
     #   3   0  (0x1b =  27   0 enc.) SLT, NEX, ILCE-3000/3500, DSC-RX100/RX1 + other DSC of same generation, also QX10 and QX100
     #   4   0  (0x40 =  64   0 enc.) DSC-RX1R
     #   5   0  (0x7d = 125   0 enc.) DSC-RX100M2
-    # 136 var  (0x3a =  58 var enc.) ILCE-7/7R/5000/6000, DSC-HX400V/HX60V/RX10/WX220/WX350
+    # 136 var  (0x3a =  58 var enc.) ILCE-7/7R/5000/6000, DSC-HX60V/HX350/HX400V/RX10/WX220/WX350
     # 137 var  (0xb3 = 179 var enc.) ILCA-68/77M2, DSC-RX100M3 - appears to go with 136
     # 138 var  (0x7e = 126 var enc.) ILCE-7S/5100/QX1, DSC-QX30   - appears to go with 136
     # 139 var  (0x9a = 154 var enc.) ILCE-7M2
@@ -5592,7 +5675,7 @@ my %releaseMode2010 = (
         # 3 => 'Remote Commander', (NC) (seen this when other ReleaseMode and ReleaseMode2 are 'Normal' - PH, A77)
         4 => 'Continuous - Burst', # seen for DSC-WX500 with burst of 10 shots
         5 => 'Continuous - Speed/Advance Priority',
-        # 6 => '???', # seen for ILCE-6300
+        6 => 'Normal - Self-timer', # seen for ILCE-6300/6500/9, ILCA-99M2
     },
 );
 my %selfTimer2010 = (
@@ -6224,7 +6307,7 @@ my %pictureProfile2010 = (
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     FORMAT => 'int8u',
     NOTES => q{
-        Valid for DSC-HX400V/HX60V/QX30/RX10/RX100M3/WX220/WX350,
+        Valid for DSC-HX60V/HX350/HX400V/QX30/RX10/RX100M3/WX220/WX350,
         ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-68/77M2.
     },
     WRITABLE => 1,
@@ -7385,7 +7468,7 @@ my %pictureProfile2010 = (
     FORMAT => 'int8u',
     WRITABLE => 1,
     NOTES => q{
-        Valid for DSC-HX400V/HX60V/HX90V/QX30/RX1RM2/RX10/RX10M2/RX10M3/RX100M3/
+        Valid for DSC-HX60V/HX90V/HX350/HX400V/QX30/RX1RM2/RX10/RX10M2/RX10M3/RX100M3/
         RX100M4/RX100M5/WX220/WX350/WX500, ILCE-7/7R/7S/7M2/7RM2/7SM2/5000/5100/
         6000/6300/6500/QX1, ILCA-68/77M2/99M2.
     },
@@ -7413,6 +7496,7 @@ my %pictureProfile2010 = (
             6 => '6 shots',
             9 => '9 shots', # ILCE-7RM2 9-shot bracketing
             10 => '10 shots',
+            12 => '12 shots', # ILCA-77M2 12-shot MFNR-mode
             100 => 'Continuous - iSweep Panorama',
             200 => 'Continuous - Sweep Panorama',
         },
@@ -7601,6 +7685,8 @@ my %pictureProfile2010 = (
     WRITABLE => 1,
     FIRST_ENTRY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
+    0x000b => { %exposureProgram2010 },
+    0x000d => { Name => 'IntelligentAuto', PrintConv => { 0 => 'Off', 1 => 'On'} },
     0x0019 => {
         Name => 'LensZoomPosition',
         Format => 'int16u',
@@ -7610,6 +7696,7 @@ my %pictureProfile2010 = (
     },
 );
 
+# Tag9404 (ref JR)
 %Image::ExifTool::Sony::Tag9404b= (
     PROCESS_PROC => \&ProcessEnciphered,
     WRITE_PROC => \&WriteEnciphered,
@@ -7618,6 +7705,8 @@ my %pictureProfile2010 = (
     WRITABLE => 1,
     FIRST_ENTRY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
+    0x000c => { %exposureProgram2010 },
+    0x000e => { Name => 'IntelligentAuto', PrintConv => { 0 => 'Off', 1 => 'On'} },
     0x001e => {
         Name => 'LensZoomPosition',
         Format => 'int16u',
@@ -7630,6 +7719,19 @@ my %pictureProfile2010 = (
         Name => 'FocusPosition2',
         Condition => '$$self{Model} =~ /^(SLT-|HV|ILCA-)/',
     },
+);
+
+# Tag9404 (ref JR)
+%Image::ExifTool::Sony::Tag9404c= (
+    PROCESS_PROC => \&ProcessEnciphered,
+    WRITE_PROC => \&WriteEnciphered,
+    CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
+    FORMAT => 'int8u',
+    WRITABLE => 1,
+    FIRST_ENTRY => 0,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
+    0x000b => { %exposureProgram2010 },
+    0x000d => { Name => 'IntelligentAuto', PrintConv => { 0 => 'Off', 1 => 'On'} },
 );
 
 # Tag9405 (ref JR)
@@ -7722,7 +7824,7 @@ my %pictureProfile2010 = (
     DATAMEMBER => [ 0x005e ],
     GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
     NOTES => q{
-        Valid for DSC-HX400V/HX60V/QX30/RX10/RX10M2/RX10M3/RX100M3/RX100M4/RX100M5/
+        Valid for DSC-HX60V/HX350/HX400V/QX30/RX10/RX10M2/RX10M3/RX100M3/RX100M4/RX100M5/
         WX220/WX350, ILCE-7/7M2/7R/7RM2/7S/7SM2/5000/5100/6000/6300/6500/QX1,
         ILCA-68/77M2/99M2.
     },
@@ -7945,8 +8047,9 @@ my %pictureProfile2010 = (
     WRITABLE => 1,
     FIRST_ENTRY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
-#    0x0000: 1 for A37, A57, A65, A77, NEX-5N, 7, F3, VG20
-#            2 for A58/99V, NEX-3N/5R/5T/6/VG30/VG900, ILCE-3000/7/7R/5000/6000
+#    0x0000: 1 for SLT-A37/A57/A65/A77, NEX-5N/7/F3/VG20
+#            2 for SLT-A58/99V, NEX-3N/5R/5T/6/VG30/VG900, ILCA-68/77M2, ILCE-3000/3500/7/7M2/7R/7S/5000/6000
+#            3 for ILCA-99M2, ILCE-6300/6500/7RM2/7SM2/9
 #    0x0001+0x0002: Int16u, seen 580 - 770: similar to "BatteryUnknown" ??
 #    0x0005: int8u, seen 73 - 117: maybe Fahrenheit? Higher than "AmbientTemperature", but same trend.
     0x0005 => {
@@ -7956,7 +8059,7 @@ my %pictureProfile2010 = (
         PrintConv => 'sprintf("%.1f C",$val)',
         PrintConvInv => '$val=~s/\s*C//; $val',
     },
-    # 0x0006: usually 0, seen non-zero values only for A99V and ILCE-7/7R: BatteryLevel Grip ?
+    # 0x0006: usually 0, seen non-zero values only for SLT-A99V, ILCA-77M2/99M2 and ILCE-7/7R/7RM2/9: BatteryLevel Grip ?
     0x0006 => {
         Name => 'BatteryLevelGrip1',
         Condition => '$$valPt !~ /^\x00/', # only valid when not 0
@@ -8081,16 +8184,16 @@ my %pictureProfile2010 = (
         Format => 'int16u',
         PrintConv => 'sprintf("%x.%.2x",$val>>8,$val&0xff)',
         PrintConvInv => 'my @a=split(/\./,$val);(hex($a[0])<<8)|hex($a[1])',
-        # camera Firmware versions:
-        # 1.00 - 1.04: seen in CameraSettings3 0x03f3 for NEX-3/5/5C/C3/VG10E
+        # E-mount versions seen for various cameras / camera-firmware versions:
+        # -   : info not present in CameraSettings3 for NEX-3/5/5C/C3/VG10E
         # 1.14: NEX-5N/5R/6/7/F3/VG20E/VG30E/VG900 v1.00, NEX-5N v1.01, NEX-3N v0.90
         # 1.20: NEX-3N v1.00, NEX-6 v1.01, NEX-7 v1.02, ILCE-3000 v1.00, ILCE-3500 v1.01
         # 1.30: NEX-5T v1.00, NEX-6 v1.02/v1.03, NEX-7 v1.03
         # 1.31: ILCE-7/7R v0.95/v1.00/v1.01, ILCE-5000
         # 1.40: ILCE-7/7R v1.02/v1.10, ILCE-7S v1.00, ILCE-6000 v1.00/v1.10, ILCE-5100/QX1
-        # 1.50: ILCE-7/7R/7S v1.20-v3.20, ILCE-7M2 v1.00-v3.10, ILCE-7RM2 v1.00-v3.00, ILCE-7SM2 v1.00-v2.10,
+        # 1.50: ILCE-7/7R/7S v1.20-v3.20, ILCE-7M2 v1.00-v4.00, ILCE-7RM2 v1.00-v3.00, ILCE-7SM2 v1.00-v2.10,
         #       ILCE-6000 v1.20-v3.20
-        # 1.60: ILCE-6300 v1.00-v1.10, ILCE-6500 v1.00, ILCE-7RM2 v3.05-v3.30
+        # 1.60: ILCE-6300 v1.00-v1.10, ILCE-6500 v1.00, ILCE-7RM2 v3.05-v4.00
         # 1.70: ILCE-9
     },
     0x000d => {
@@ -8099,7 +8202,7 @@ my %pictureProfile2010 = (
         Format => 'int16u',
         PrintConv => 'sprintf("%x.%.2x",$val>>8,$val&0xff)',
         PrintConvInv => 'my @a=split(/\./,$val);(hex($a[0])<<8)|hex($a[1])',
-        # lens models:
+        # E-mount versions seen for various lens models:
         # 0.00: Unknown lenses/adapters
         # 1.00: SEL18200LE, Sigma DN, Tamron Di III, Zeiss Touit
         # 1.07: (Ver.01) original E-lenses (SEL16F28, SEL18200, SEL1855, SEL24F18Z, SEL30M35, SEL50F18, SEL55210) and LA-EA1
@@ -8114,9 +8217,9 @@ my %pictureProfile2010 = (
         # 1.41: SELP18105G Ver.02
         # 1.50: SEL28F20, SEL90M28G, Zeiss Batis 18mm/25mm/85mm/135mm, Zeiss Loxia 21mm, Zeiss Loxia 35mm/50mm Ver.02,
         #       Tokina Firin 20mm
-        # 1.60: SEL1224G, SEL1635GM, SEL2470GM, SEL50F14Z, SEL50F18F, SEL50M28, SEL70200GM, SEL70300G, SEL85F14GM, SEL85F18,
-        #       SEL100F28GM, SEL100400GM, Sigma 30mm F1.4 DC DN, Sigma MC-11, Samyang AF 14mm/50mm, Voigtlander 15mm
-        # 1.70: LA-EA3 Ver.02, Voigtlander 10mm/12mm/40mm, Zeiss Loxia 85mm
+        # 1.60: SEL1224G, SEL1635GM, SELP18110G, SEL2470GM, SEL50F14Z, SEL50F18F, SEL50M28, SEL70200GM, SEL70300G, SEL85F14GM,
+        #       SEL85F18, SEL100F28GM, SEL100400GM, Sigma 30mm F1.4 DC DN, Sigma MC-11, Samyang AF 14mm/50mm, Voigtlander 15mm
+        # 1.70: LA-EA3 Ver.02, Samyang AF 35mm, Voigtlander 10mm/12mm/40mm, Zeiss Loxia 85mm
     },
     0x0015 => {
         Name => 'LensFirmwareVersion',

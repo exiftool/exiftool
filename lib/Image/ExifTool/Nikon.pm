@@ -59,7 +59,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.36';
+$VERSION = '3.37';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -279,6 +279,7 @@ sub GetAFPointGrid($$;$);
     'A6 48 8E 8E 24 24 A8 0E' => 'AF-S VR Nikkor 300mm f/2.8G IF-ED II',
     'A7 4B 62 62 2C 2C A9 0E' => 'AF-S DX Micro Nikkor 85mm f/3.5G ED VR',
     'A8 48 80 98 30 30 AA 0E' => 'AF-S VR Zoom-Nikkor 200-400mm f/4G IF-ED II', #http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,3218.msg15495.html#msg15495
+    'A8 38 18 30 34 3C D3 8E' => 'AF-P DX Nikkor 10-20mm f/4.5-5.6G VR', #Yang You pvt communication
     'A9 54 80 80 18 18 AB 0E' => 'AF-S Nikkor 200mm f/2G ED VR II',
     'AA 3C 37 6E 30 30 AC 0E' => 'AF-S Nikkor 24-120mm f/4G ED VR',
     'AC 38 53 8E 34 3C AE 0E' => 'AF-S DX VR Nikkor 55-300mm f/4.5-5.6G ED',
@@ -311,7 +312,7 @@ sub GetAFPointGrid($$;$);
     'AD 48 28 60 24 30 C8 0E' => 'AF-S DX Nikkor 16-80mm f/2.8-4E ED VR', #PH
     'AE 3C 80 A0 3C 3C C9 4E' => 'AF-S Nikkor 200-500mm f/5.6E ED VR', #PH
     'AE 3C 80 A0 3C 3C C9 0E' => 'AF-S Nikkor 200-500mm f/5.6E ED VR',
-    'A0 40 2D 53 2C 3C CA 8E' => 'AF-P DX Nikkor 18-55mm f/3.5-5.6G', #Yang You private communication
+    'A0 40 2D 53 2C 3C CA 8E' => 'AF-P DX Nikkor 18-55mm f/3.5-5.6G', #Yang You pvt communication
     'A0 40 2D 53 2C 3C CA 0E' => 'AF-P DX Nikkor 18-55mm f/3.5-5.6G VR', #PH
     'AF 4C 37 37 14 14 CC 06' => 'AF-S Nikkor 24mm f/1.8G ED', #IB
     'A5 54 6A 6A 0C 0C D0 46' => 'AF-S Nikkor 105mm f/1.4E ED', #IB
@@ -470,6 +471,7 @@ sub GetAFPointGrid($$;$);
     '77 44 60 98 34 3C 7B 0E' => 'Sigma 80-400mm f4.5-5.6 APO DG D OS',
     '48 48 68 8E 30 30 4B 02' => 'Sigma APO 100-300mm F4 EX IF HSM',
     'F3 48 68 8E 30 30 4B 02' => 'Sigma APO 100-300mm F4 EX IF HSM',
+    'C3 34 68 98 38 40 4B 4E' => 'Sigma 100-400mm F5-6.3 DG OS HSM | C', #JR (017)
     '48 54 6F 8E 24 24 4B 02' => 'Sigma APO 120-300mm F2.8 EX DG HSM',
     '7A 54 6E 8E 24 24 4B 02' => 'Sigma APO 120-300mm F2.8 EX DG HSM',
     'FA 54 6E 8E 24 24 4B 02' => 'Sigma APO 120-300mm F2.8 EX DG HSM', #http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,2787.0.html

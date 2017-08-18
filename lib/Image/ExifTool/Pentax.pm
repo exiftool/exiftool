@@ -58,7 +58,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::HP;
 
-$VERSION = '3.18';
+$VERSION = '3.19';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -5751,7 +5751,7 @@ my %binaryDataAttrs = (
             TagTable => 'Image::ExifTool::Pentax::Main',
             Start => 10,
             Base => '$start',
-            ByteOrder => 'BigEndian',
+            ByteOrder => 'Unknown', # K-70 is little-endian, K-x is big-endian
         },
     },
     mknt => { # (Q-S1)

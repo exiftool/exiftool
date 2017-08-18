@@ -5178,121 +5178,188 @@ These tags belong to the ExifTool XMP-iptcExt family 1 group.</p>
 <td class=c title=' _ = Flattened'>string_</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>Snapshot</td>
+<td class=c title=' + = List'>struct+</td>
+<td>--&gt; <a href='XMP.html#LinkedImage'>LinkedImage Struct</a>
+  <br><span class='n s'>(called SnapshotLink by the spec)</span></td></tr>
+<tr>
+<td>SnapshotFormat</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(SnapshotLinkFormat)</span></span></td></tr>
+<tr class=b>
+<td>SnapshotHeightPixels</td>
+<td class=c title=' _ = Flattened
+ + = List'>integer_+</td>
+<td><span class=s><span class=n>(SnapshotLinkHeightPixels)</span></span></td></tr>
+<tr>
+<td>SnapshotImageRole</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(SnapshotLinkImageRole)</span></span></td></tr>
+<tr class=b>
+<td>SnapshotLink</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(SnapshotLinkLink)</span></span></td></tr>
+<tr>
+<td>SnapshotLinkQualifier</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(SnapshotLinkLinkQualifier)</span></span></td></tr>
+<tr class=b>
+<td>SnapshotUsedVideoFrame</td>
+<td class=c title=' _ = Flattened
+ + = List'>struct_+</td>
+<td>--&gt; <a href='XMP.html#Timecode'>Timecode Struct</a>
+  <br><span class='n s'>(SnapshotLinkUsedVideoFrame)</span></td></tr>
+<tr>
+<td>SnapshotUsedVideoFrameTimeFormat</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(SnapshotLinkUsedVideoFrameTimeFormat)</span></span><table class=cols><tr>
+  <td>&#39;23976Timecode&#39; = 23.976 fps
+  <br>&#39;24Timecode&#39; = 24 fps
+  <br>&#39;25Timecode&#39; = 25 fps
+  <br>&#39;2997DropTimecode&#39; = 29.97 fps (drop)
+  <br>&#39;2997NonDropTimecode&#39; = 29.97 fps (non-drop)
+  <br>&#39;30Timecode&#39; = 30 fps
+  <br>&#39;50Timecode&#39; = 50 fps
+  <br>&#39;5994DropTimecode&#39; = 59.94 fps (drop)
+  <br>&#39;5994NonDropTimecode&#39; = 59.94 fps (non-drop)
+  <br>&#39;60Timecode&#39; = 60 fps</td></tr></table>
+</td></tr>
+<tr class=b>
+<td>SnapshotUsedVideoFrameTimeValue</td>
+<td class=c title=' _ = Flattened
+ + = List'>string_+</td>
+<td><span class=s><span class=n>(SnapshotLinkUsedVideoFrameTimeValue)</span></span></td></tr>
+<tr>
+<td>SnapshotUsedVideoFrameValue</td>
+<td class=c title=' _ = Flattened
+ + = List'>integer_+</td>
+<td><span class=s><span class=n>(SnapshotLinkUsedVideoFrameValue)</span></span></td></tr>
+<tr class=b>
+<td>SnapshotWidthPixels</td>
+<td class=c title=' _ = Flattened
+ + = List'>integer_+</td>
+<td><span class=s><span class=n>(SnapshotLinkWidthPixels)</span></span></td></tr>
+<tr>
 <td>StorylineIdentifier</td>
 <td class=c title=' + = List'>string+</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>StreamReady</td>
 <td class=c>string</td>
 <td><span class=s>&#39;false&#39; = False
   <br>&#39;true&#39; = True
   <br>&#39;unknown&#39; = Unknown</span></td></tr>
-<tr class=b>
+<tr>
 <td>StylePeriod</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>SupplyChainSource</td>
 <td class=c title=' + = List'>struct+</td>
 <td>--&gt; <a href='XMP.html#Entity'>Entity Struct</a></td></tr>
-<tr class=b>
+<tr>
 <td>SupplyChainSourceIdentifier</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>SupplyChainSourceName</td>
 <td class=c title=' _ = Flattened
  + = List'>lang-alt_+</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>TemporalCoverage</td>
 <td class=c>struct</td>
 <td>--&gt; <a href='XMP.html#TemporalCoverage'>TemporalCoverage Struct</a></td></tr>
-<tr>
+<tr class=b>
 <td>TemporalCoverageFrom</td>
 <td class=c title=' _ = Flattened'>date_</td>
 <td><span class=s><span class=n>(TemporalCoverageTempCoverageFrom)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>TemporalCoverageTo</td>
 <td class=c title=' _ = Flattened'>date_</td>
 <td><span class=s><span class=n>(TemporalCoverageTempCoverageTo)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>Transcript</td>
 <td class=c>lang-alt</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>TranscriptLink</td>
 <td class=c title=' + = List'>struct+</td>
 <td>--&gt; <a href='XMP.html#QualifiedLink'>QualifiedLink Struct</a></td></tr>
-<tr>
+<tr class=b>
 <td>TranscriptLinkLink</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>TranscriptLinkLinkQualifier</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>VideoBitrate</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>VideoBitrateMode</td>
 <td class=c>string</td>
 <td><span class=s>&#39;fixed&#39; = Fixed
   <br>&#39;variable&#39; = Variable</span></td></tr>
-<tr>
+<tr class=b>
 <td>VideoDisplayAspectRatio</td>
 <td class=c>rational</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>VideoEncodingProfile</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>VideoShotType</td>
 <td class=c title=' + = List'>struct+</td>
 <td>--&gt; <a href='XMP.html#Entity'>Entity Struct</a></td></tr>
-<tr class=b>
+<tr>
 <td>VideoShotTypeIdentifier</td>
 <td class=c title=' _ = Flattened
  + = List'>string_+</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>VideoShotTypeName</td>
 <td class=c title=' _ = Flattened
  + = List'>lang-alt_+</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>VideoStreamsCount</td>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>VisualColor</td>
 <td class=c>string</td>
 <td><span class=s><span class=n>(called VisualColour by the spec)</span>
   <br>&#39;bw-monochrome&#39; = Monochrome
   <br>&#39;colour&#39; = Color</span></td></tr>
-<tr class=b>
+<tr>
 <td>WorkflowTag</td>
 <td class=c>struct</td>
 <td>--&gt; <a href='XMP.html#CVTermDetails'>CVTermDetails Struct</a></td></tr>
-<tr>
+<tr class=b>
 <td>WorkflowTagCvId</td>
 <td class=c title=' _ = Flattened'>string_</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>WorkflowTagCvTermId</td>
 <td class=c title=' _ = Flattened'>string_</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>WorkflowTagCvTermName</td>
 <td class=c title=' _ = Flattened'>lang-alt_</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>WorkflowTagCvTermRefinedAbout</td>
 <td class=c title=' _ = Flattened'>string_</td>
 <td>&nbsp;</td></tr>
@@ -5747,6 +5814,62 @@ These tags belong to the ExifTool XMP-iptcExt family 1 group.</p>
 <tr class=b>
 <td>Name</td>
 <td class=c>string</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='LinkedImage'>XMP LinkedImage Struct</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Field Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>HeightPixels</td>
+<td class=c>integer</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>ImageRole</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Link</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>LinkQualifier</td>
+<td class=c title=' + = List'>string+</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>UsedVideoFrame</td>
+<td class=c>Timecode</td>
+<td>--&gt; <a href='XMP.html#Timecode'>Timecode Struct</a></td></tr>
+<tr class=b>
+<td>WidthPixels</td>
+<td class=c>integer</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Format</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Timecode'>XMP Timecode Struct</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Field Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>TimeFormat</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>TimeValue</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Value</td>
+<td class=c>integer</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -8360,26 +8483,6 @@ These tags belong to the ExifTool XMP-xmp family 1 group.</p>
 </td></tr>
 </table></td></tr></table></blockquote>
 
-<h2><a name='Timecode'>XMP Timecode Struct</a></h2>
-<blockquote>
-<table class=frame><tr><td>
-<table class=inner cellspacing=1>
-<tr class=h><th>Field Name</th>
-<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
-<tr>
-<td>TimeFormat</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>TimeValue</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>Value</td>
-<td class=c>integer</td>
-<td>&nbsp;</td></tr>
-</table></td></tr></table></blockquote>
-
 <h2><a name='BeatSpliceStretch'>XMP BeatSpliceStretch Struct</a></h2>
 <blockquote>
 <table class=frame><tr><td>
@@ -10203,7 +10306,7 @@ These tags belong to the ExifTool XMP-svg family 1 group.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jun 23, 2017</i>
+<br><i>Last revised Aug 17, 2017</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

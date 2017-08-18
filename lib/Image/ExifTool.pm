@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup);
 
-$VERSION = '10.60';
+$VERSION = '10.61';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -173,6 +173,8 @@ $defaultLang = 'en';    # default language
 # recognized file types, in the order we test unknown files
 # Notes: 1) There is no need to test for like types separately here
 # 2) Put types with weak file signatures at end of list to avoid false matches
+# 3) PLIST must be in this list for the binary PLIST format, although it may
+#    cause a file to be checked twice for XML
 @fileTypes = qw(JPEG CRW DR4 TIFF GIF MRW RAF X3F JP2 PNG MIE MIFF PS PDF PSD XMP
                 BMP BPG PPM RIFF AIFF ASF MOV MPEG Real SWF PSP FLV OGG FLAC APE
                 MPC MKV MXF DV PMP IND PGF ICC ITC FLIR FLIF FPF LFP HTML VRD
@@ -1661,6 +1663,7 @@ my %systemTagsNotes = (
 );
 %Image::ExifTool::JFIF::Extension = (
     GROUPS => { 0 => 'JFIF', 1 => 'JFXX', 2 => 'Image' },
+    NOTES => 'Thumbnail images extracted from the JFXX segment.',
     0x10 => {
         Name => 'ThumbnailImage',
         Groups => { 2 => 'Preview' },
@@ -7167,7 +7170,17 @@ sub HandleTag($$$$;%)
                 RAF      => $parms{RAF},
             );
             my $oldOrder = GetByteOrder();
-            SetByteOrder($$subdir{ByteOrder}) if $$subdir{ByteOrder};
+            if ($$subdir{ByteOrder}) {
+                if ($$subdir{ByteOrder} eq 'Unknown') {
+                    if ($subdirStart + 2 <= $subdirLen) {
+                        # attempt to determine the byte ordering of an IFD-style subdirectory
+                        my $num = Get16u($dataPt, $subdirStart);
+                        ToggleByteOrder if $num & 0xff00 and ($num>>8) > ($num&0xff);
+                    }
+                } else {
+                    SetByteOrder($$subdir{ByteOrder});
+                }
+            }
             my $subTablePtr = GetTagTable($$subdir{TagTable}) || $tagTablePtr;
             $self->ProcessDirectory(\%dirInfo, $subTablePtr, $$subdir{ProcessProc} || $parms{ProcessProc});
             SetByteOrder($oldOrder);

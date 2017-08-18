@@ -48,7 +48,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.04';
+$VERSION = '3.05';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -3610,6 +3610,8 @@ sub ProcessXMP($$;$)
                             $isSVG = 1;
                         } elsif ($1 eq 'plist') {
                             $type = 'PLIST';
+                        } elsif ($1 eq 'REDXIF') {
+                            $type = 'RMD';
                         } else {
                             return 0;
                         }

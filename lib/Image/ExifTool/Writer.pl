@@ -268,7 +268,7 @@ my %ignorePrintConv = map { $_ => 1 } qw(OTHER BITMASK Notes);
 #           WriteGroup - group name where information is being written (correct case)
 #           WantGroup - group name as specified in call to function (case insensitive)
 #           Next - pointer to next new value hash (if more than one)
-#           NoReplace - set for List-type tag if value was created with Replace=0
+#           NoReplace - set if value was created with Replace=0
 #           AddBefore - number of list items added by a subsequent Replace=0 call
 #           IsNVH - Flag indicating this is a new value hash
 #           Shift - shift value
@@ -900,7 +900,7 @@ TAG: foreach $tagInfo (@matchingTags) {
             my $nvHash = $self->GetNewValueHash($tagInfo, $writeGroup, 'create', $options{ProtectSaved});
             # ignore new values protected with ProtectSaved
             $nvHash or ++$numSet, next; # (increment $numSet to avoid warning)
-            $$nvHash{NoReplace} = 1 if $$tagInfo{List} and not $options{Replace};
+            $$nvHash{NoReplace} = 1 unless $options{Replace};
             $$nvHash{WantGroup} = $wantGroup;
             $$nvHash{EditOnly} = 1 if $editOnly;
             # save maker note information if writing maker notes

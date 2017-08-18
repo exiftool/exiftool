@@ -74,9 +74,9 @@ span.sup        { font-size: 0.8em; font-weight: normal; position: relative; top
 </div>
 
 <blockquote><table class='dl lg'><tr><td><b>
-<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-10.60.tar.gz/download">
-Download        Version 10.60</a> (4.1 MB) -
-<a href="history.html">July 21, 2017</a></b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-10.61.tar.gz/download">
+Download        Version 10.61</a> (4.1 MB) -
+<a href="history.html">Aug. 18, 2017</a></b></td></tr></table></blockquote>
 
 <p><b>ExifTool is a platform-independent <a href="ExifTool.html">Perl
 library</a> plus a <a href="exiftool_pod.html">command-line application</a> for
@@ -127,8 +127,8 @@ distribution above.)</i></p>
 
 <blockquote><table class='dl lg'><tr><td><b>
 <a name="alone">Windows Executable:</a>
-<a href="http://sourceforge.net/projects/exiftool/files/exiftool-10.60.zip/download">
-         exiftool-10.60.zip</a> (5.8 MB)</b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/exiftool-10.61.zip/download">
+         exiftool-10.61.zip</a> (5.8 MB)</b></td></tr></table></blockquote>
 
 <p><b>The stand-alone Windows executable</b> does not require Perl. Just
 download and un-zip the archive then double-click on
@@ -140,7 +140,7 @@ of Windows.</p>
 <blockquote><table class='dl lg'><tr><td><b>
 Mac OS X Package:
 <a href="http://sourceforge.net/projects/exiftool/files/ExifTool-9.70.dmg/download">
-         ExifTool-10.60.dmg</a> (2.6 MB)</b></td></tr></table></blockquote>
+         ExifTool-10.61.dmg</a> (2.6 MB)</b></td></tr></table></blockquote>
 
 <p><b>The OS X package</b> installs the ExifTool command-line application and
 libraries in /usr/local/bin. After installing, type "<code>exiftool</code>" in
@@ -201,7 +201,7 @@ for the SHA1 and MD5 checksums to verify these distribution packages</a>.</li>
     <a href="TagNames/MXF.html">MXF</a> information</li>
 <li>Processes entire directory trees</li>
 <li>Creates text output file for each image file</li>
-<li>Creates binary-format metadata-only (MIE) files for metadata backup</li>
+<li>Creates binary-format metadata-only (MIE, EXV) files for metadata backup</li>
 <li>Automatically backs up original image when writing</li>
 <li>Organizes output into groups</li>
 <li>Conditionally processes files based on value of any meta information</li>
@@ -305,7 +305,7 @@ for each file format.</p>
 <tr><td>EPUB</td><td>R</td><td>Electronic Publication (ZIP/XML-based)</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R XML <a href="TagNames/ZIP.html">ZIP</a></td></tr>
 <tr><td>ERF</td><td>R/W</td><td>Epson RAW Format (<a href="TagNames/EXIF.html">TIFF</a>-based)</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/W <a href="TagNames/Olympus.html">Olympus</a></td></tr>
 <tr><td><a href="TagNames/EXE.html">EXE, DLL</a></td><td>R</td><td>DOS/Windows executable and library files</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/EXE.html">EXE</a></td></tr>
-<tr><td><a href="TagNames/EXIF.html">EXIF</a></td><td>R/W/C</td><td>Exchangable Image File Format metadata (<a href="TagNames/EXIF.html">TIFF</a>-based)</td><td>R/W/C</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+<tr><td><a href="TagNames/EXIF.html">EXIF</a></td><td>R/W/C</td><td>Exchangeable Image File Format metadata (<a href="TagNames/EXIF.html">TIFF</a>-based)</td><td>R/W/C</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
 <tr><td><a href="TagNames/OpenEXR.html">EXR</a></td><td>R</td><td>Open EXR (Extended Range)</td><td>-</td><td>-</td><td>-</td><td>-</td><td>R <a href="TagNames/OpenEXR.html">OpenEXR</a></td></tr>
 <tr><td>EXV</td><td>R/W/C</td><td>Exiv2 metadata file (<a href="TagNames/JPEG.html">JPEG</a>-based)</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td>R/W/C</td><td><a href="#JPEG">Supported JPEG Meta Information</a></td></tr>
 <tr><td>F4A, F4B, F4P, F4V</td><td>R/W</td><td>Adobe Flash Player 9+ Audio/Video (<a href="TagNames/QuickTime.html">QuickTime</a>-based)</td><td>R/W<span class=sup>3</span></td><td>R/W<span class=sup>3</span></td><td>R/W/C</td><td>-</td><td>R/W <a href="TagNames/QuickTime.html">QuickTime</a><span class=sup>4</span></td></tr>
@@ -753,15 +753,15 @@ SigmaRaw, Stim, Theora, Torrent, VCard, Vorbis, XML, XMP, ZIP
 </td></tr>
 <tr><td><b>1&nbsp;(Specific&nbsp;Location)</b></td>
 <td class=sm>AC3, AFCP, AIFF, APE, ASF, AVI1, Adobe, AdobeCM, AdobeDNG, Apple, Audible,
-CIFF, Canon, CanonCustom, CanonRaw, CanonVRD, Casio, Chapter#, Composite,
-DICOM, DJI, DNG, DV, DjVu, DjVu-Meta, Ducky, EPPIM, EXE, EXIF, ExifIFD,
-ExifTool, FLAC, FLIR, File, Flash, FlashPix, Font, FotoStation, FujiFilm,
-FujiIFD, GE, GIF, GIMP, GPS, GeoTiff, GlobParamIFD, GraphConv, H264, HP,
-HTC, HTML, HTML-dc, HTML-ncc, HTML-office, HTML-prod, HTML-vw96, HTTP-equiv,
-ICC-chrm, ICC-clrt, ICC-header, ICC-meas, ICC-meta, ICC-view, ICC_Profile,
-ICC_Profile#, ID3, ID3v1, ID3v1_Enh, ID3v2_2, ID3v2_3, ID3v2_4, IFD0, IFD1,
-IPTC, IPTC#, ISO, ITC, InteropIFD, JFIF, JFXX, JPEG, JPEG-HDR, JVC,
-Jpeg2000, KDC_IFD, Kodak, KodakBordersIFD, KodakEffectsIFD, KodakIFD,
+CIFF, CameraIFD, Canon, CanonCustom, CanonRaw, CanonVRD, Casio, Chapter#,
+Composite, DICOM, DJI, DNG, DV, DjVu, DjVu-Meta, Ducky, EPPIM, EXE, EXIF,
+ExifIFD, ExifTool, FLAC, FLIR, File, Flash, FlashPix, Font, FotoStation,
+FujiFilm, FujiIFD, GE, GIF, GIMP, GPS, GeoTiff, GlobParamIFD, GraphConv,
+H264, HP, HTC, HTML, HTML-dc, HTML-ncc, HTML-office, HTML-prod, HTML-vw96,
+HTTP-equiv, ICC-chrm, ICC-clrt, ICC-header, ICC-meas, ICC-meta, ICC-view,
+ICC_Profile, ICC_Profile#, ID3, ID3v1, ID3v1_Enh, ID3v2_2, ID3v2_3, ID3v2_4,
+IFD0, IFD1, IPTC, IPTC#, ISO, ITC, InteropIFD, JFIF, JFXX, JPEG, JPEG-HDR,
+JVC, Jpeg2000, KDC_IFD, Kodak, KodakBordersIFD, KodakEffectsIFD, KodakIFD,
 KyoceraRaw, LNK, Leaf, LeafSubIFD, Leica, Lytro, M2TS, MAC, MIE-Audio,
 MIE-Camera, MIE-Canon, MIE-Doc, MIE-Extender, MIE-Flash, MIE-GPS, MIE-Geo,
 MIE-Image, MIE-Lens, MIE-Main, MIE-MakerNotes, MIE-Meta, MIE-Orient,

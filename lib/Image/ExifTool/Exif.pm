@@ -53,7 +53,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '3.92';
+$VERSION = '3.93';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -1866,6 +1866,7 @@ my %sampleFormat = (
             Start => '$val',
         },
     },
+  # 0x89ab - seen "11 100 130 16 0 0 0 0" in IFD0 of TIFF image from IR scanner (forum8470)
     0x9000 => {
         Name => 'ExifVersion',
         Writable => 'undef',
@@ -4242,7 +4243,9 @@ my %subSecConv = (
         Writable => 1,
         WriteGroup => 'All',
         WriteCheck => '$self->CheckImage(\$val)',
-        # (don't allow this to be deleted -- no DelCheck)
+        # Note: ExifTool 10.38 had disabled the ability to delete this -- why?
+        # --> added the DelCheck in 10.61 to re-enable this
+        DelCheck => '$val = ""; return undef', # can't delete, so set to empty string
         WriteAlso => {
             JpgFromRawStart  => 'defined $val ? 0xfeedfeed : undef',
             JpgFromRawLength => 'defined $val ? 0xfeedfeed : undef',
@@ -5398,7 +5401,9 @@ sub ProcessExif($$$)
     $$et{Compression} = $$et{SubfileType} = '';
 
     # loop through all entries in an EXIF directory (IFD)
-    my ($index, $valEnd, $offList, $offHash);
+    my ($index, $valEnd, $offList, $offHash, $mapFmt);
+    $mapFmt = $$tagTablePtr{VARS}{MAP_FORMAT} if $$tagTablePtr{VARS};
+
     my ($warnCount, $lastID) = (0, -1);
     for ($index=0; $index<$numEntries; ++$index) {
         if ($warnCount > 10) {
@@ -5409,16 +5414,20 @@ sub ProcessExif($$$)
         my $format = Get16u($dataPt, $entry+2);
         my $count = Get32u($dataPt, $entry+4);
         if ($format < 1 or $format > 13) {
-            $et->HDump($entry+$dataPos+$base,12,"[invalid IFD entry]",
-                       "Bad format type: $format", 1);
-            # warn unless the IFD was just padded with zeros
-            if ($format or $validate) {
-                $et->Warn("Bad format ($format) for $name entry $index", $inMakerNotes);
-                ++$warnCount;
+            if ($mapFmt and $$mapFmt{$format}) {
+                $format = $$mapFmt{$format};
+            } else {
+                $et->HDump($entry+$dataPos+$base,12,"[invalid IFD entry]",
+                           "Bad format type: $format", 1);
+                # warn unless the IFD was just padded with zeros
+                if ($format or $validate) {
+                    $et->Warn("Bad format ($format) for $name entry $index", $inMakerNotes);
+                    ++$warnCount;
+                }
+                # assume corrupted IFD if this is our first entry (except Sony ILCE-7M2 firmware 1.21)
+                return 0 unless $index or $$et{Model} eq 'ILCE-7M2';
+                next;
             }
-            # assume corrupted IFD if this is our first entry (except Sony ILCE-7M2 firmware 1.21)
-            return 0 unless $index or $$et{Model} eq 'ILCE-7M2';
-            next;
         }
         my $formatStr = $formatName[$format];   # get name of this format
         my $valueDataPt = $dataPt;
@@ -5856,7 +5865,7 @@ sub ProcessExif($$$)
                         last;
                     } elsif ($subdirStart + 2 <= $subdirDataLen) {
                         # attempt to determine the byte ordering by checking
-                        # at the number of directory entries.  This is an int16u
+                        # the number of directory entries.  This is an int16u
                         # that should be a reasonable value.
                         my $num = Get16u($subdirDataPt, $subdirStart);
                         if ($num & 0xff00 and ($num>>8) > ($num&0xff)) {

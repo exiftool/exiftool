@@ -13,12 +13,12 @@
 <body>
 <h2 class='up'>Writing "FileName" and "Directory" tags</h2>
 
-<p>By writing the <b>FileName</b> and/or <b>Directory</b> tags, ExifTool can be
-used to rename and/or move images into directories according to any information
-contained in the image.  This is a powerful feature when combined with the
-<code>-tagsFromFile</code> ability to copy the values from other tags.  The most
-common use of this feature is to organize images by date/time, but any other tag
-value may also be used.</p>
+<p>By writing the <b>FileName</b> and/or <b>Directory</b> pseudo tags, ExifTool
+can be used to rename and/or move images into directories according to any
+information contained in the image.  This is a powerful feature when combined
+with the <code>-tagsFromFile</code> ability to copy the values from other tags. 
+The most common use of this feature is to organize images by date/time, but any
+other tag value may also be used.</p>
 
 <p>Writing the <b>Directory</b> tag moves a file to a specified directory.  The
 directory is created if it doesn't already exist.</p>
@@ -80,6 +80,10 @@ specification.  (See <a href="#ex5">example 5</a> below.  Also see
 be valid (ie. in the form "<code>YYYY:mm:dd HH:MM:SS</code>"), otherwise the
 date formatting will fail and the file will not be renamed or moved (but this may
 be changed via the <a href="ExifTool.html#StrictDate">API StrictDate option</a>).
+
+<p>Also note that the <code>-d</code> formatting applies to date/time tags used
+in <code>-if</code> conditions unless the print conversion is disabled by adding
+a <code>#</code> suffix to the tag name.</p>
 
 <p>In a Windows batch file, all <code>%</code> characters must be escaped as
 <code>%%</code>.  This can result in extreme format codes like
@@ -160,7 +164,7 @@ exiftool '-filename&lt;%f_$imagesize.%e' dir
 </code></td></tr></table>
 <blockquote>
 This example uses an expression to add the image size to the name of all images
-in directory '<code>dir</code>'. For example, this would remame a 640x480 image
+in directory '<code>dir</code>'. For example, this would rename a 640x480 image
 called '<code>image.jpg</code>' to '<code>image_640x480.jpg</code>'. (Note that
 the single quotes are necessary in Unix shells due to the '<code>$</code>'
 symbol, but double quotes must be used instead when running in a Windows cmd shell.)
@@ -198,7 +202,7 @@ values of other tags may not be used with the <code>-o</code> option.)
 exiftool -r -d %Y/%m/%d/image_%H%M%S.%%e "-filename&lt;filemodifydate" DIR
 </code></td></tr></table>
 <blockquote>
-Recusively rename all images in '<code>DIR</code>' and any contained
+Recursively rename all images in '<code>DIR</code>' and any contained
 subdirectories to the form '<code>image_HHMMSS.EXT</code>' (where
 '<code>ext</code>' is the original file extension), and move them into a new
 directory hierarchy based on date of file modification, with path names like
@@ -275,7 +279,7 @@ directory with the next highest priority is used.  Also note that if
 interpret the last part as a file name. (eg. '<code>-o images/test</code>'
 specifies the '<code>images</code>' directory unless the
 '<code>images/test</code>' directory already exists, while '<code>-o
-images/test/</code>' unabiguously specifies the '<code>images/test</code>'
+images/test/</code>' unambiguously specifies the '<code>images/test</code>'
 directory.)
 </blockquote>
 
@@ -284,7 +288,7 @@ directory.)
 exiftool -d %Y/%m "-directory&lt;filemodifydate" "-directory&lt;createdate" "-directory&lt;datetimeoriginal" .
 </code></td></tr></table>
 <blockquote>Move image files from the current directory (<code>.</code>) into a
-directory hierarcy based on year/month.  In this command the Directory tag is
+directory hierarchy based on year/month.  In this command the Directory tag is
 set from multiple other date/time tags.  ExifTool evaluates the command-line
 arguments left to right, and latter assignments to the same tag override earlier
 ones, so the Directory for each image is ultimately set by the rightmost copy

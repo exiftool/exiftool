@@ -410,7 +410,7 @@ individual tags contained in the block. For all block types except EXIF, the
 metadata is copied byte-for-byte from the original image.  With EXIF however,
 the metadata may be restructured to ensure that it is self-contained.  Also note
 that EXIF may not be written as a block to TIFF-based file formats.  Beware that
-<b>any existing metadata</b> of this type in the distination file <b>will be
+<b>any existing metadata</b> of this type in the destination file <b>will be
 overwritten</b> by the new block.
 
 <pre><span class='blk'># copy EXIF as a block between same-named JPG files in different directories</span>
@@ -900,8 +900,11 @@ valid.  The numbers represent degrees, (and optionally) minutes and
 seconds.</blockquote>
 
 <blockquote>For EXIF GPS coordinates, the reference direction is specified
-separately with the EXIF:GPSLatitudeRef or EXIF:GPSLongitudeRef
-tag.</blockquote>
+separately with the EXIF:GPSLatitudeRef or EXIF:GPSLongitudeRef tag. 
+GPSLatitudeRef may be written with a string ending in "<code>N</code>" or
+"<code>S</code>", or with a signed coordinate value, positive for the northern
+hemisphere or negative for the south.  GPSLongitudeRef accepts similar values,
+but for E and W.</blockquote>
 
 <blockquote>For XMP GPS coordinates, the reference direction is specified within
 the XMP:GPSLatitude or XMP:GPSLongitude value, with west longitudes and south
@@ -926,7 +929,7 @@ coordinate styles to the proper format for the specific tag used.
 
 <blockquote>When reading, ExifTool reports coordinates in the format
 <pre>DDD deg MM' SS.SS"</pre>
-where <code>DDD</code> is degress, <code>MM</code> is minutes, and <code>SS.SS</code>
+where <code>DDD</code> is degrees, <code>MM</code> is minutes, and <code>SS.SS</code>
 is seconds.  The <code>-n</code> option may be used to change this to decimal
 degrees, or any arbitrary format may be specified with the <code>-c</code> option.
 See the <a href="exiftool_pod.html">application documentation</a> for details.

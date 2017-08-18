@@ -20,7 +20,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.10';
+$VERSION = '1.11';
 
 sub ProcessJpgFromRaw($$$);
 sub WriteJpgFromRaw($$$);
@@ -223,6 +223,14 @@ my %wbTypeInfo = (
         SubDirectory => { TagTable => 'Image::ExifTool::PanasonicRaw::DistortionInfo' },
     },
     # 0x11b - chromatic aberration correction (ref 3)
+    0x120 => {
+        Name => 'CameraIFD',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::PanasonicRaw::CameraIFD',
+            Base => '$start',
+            ProcessProc => \&Image::ExifTool::ProcessTIFF,
+        },
+    },
     0x2bc => { # PH Extension!!
         Name => 'ApplicationNotes', # (writable directory!)
         Writable => 'int8u',
@@ -377,6 +385,21 @@ my %wbTypeInfo = (
     },
     # 13 - seen 0x0000,0x01f9-0x02b2
     # 14,15 - checksums
+);
+
+# Panasonic RW2 camera IFD written by GH5 (ref PH)
+# (doesn't seem to be valid for the GF7 or GM5 -- encrypted?)
+%Image::ExifTool::PanasonicRaw::CameraIFD = (
+    GROUPS => { 0 => 'PanasonicRaw', 1 => 'CameraIFD', 2 => 'Camera'},
+    # (don't know what format codes 0x101 and 0x102 are for, so just
+    #  map them into 4 = int32u for now)
+    VARS => { MAP_FORMAT => { 0x101 => 4, 0x102 => 4 } },
+    0x1101 => { #forum8484 (Metabones EF-M43-BT2 adapter with Canon lenses)
+        Name => 'FocusDistance',
+        Writable => 'int16u',
+        ValueConv => '$val / 200',
+        PrintConv => '$val > 65534.5/200 ? "inf" : "$val m"',
+    },
 );
 
 # PanasonicRaw composite tags

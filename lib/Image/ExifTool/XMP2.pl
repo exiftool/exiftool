@@ -24,360 +24,6 @@ use Image::ExifTool qw(:Utils);
 use Image::ExifTool::XMP;
 
 #------------------------------------------------------------------------------
-# IPTC Extensions version 1.3 (+ proposed video extensions)
-
-# IPTC Extension 1.0 structures
-my %sLocationDetails = (
-    STRUCT_NAME => 'LocationDetails',
-    NAMESPACE   => 'Iptc4xmpExt',
-    GROUPS      => { 2 => 'Location' },
-    Identifier  => { List => 'Bag', Namespace => 'xmp' },
-    City        => { },
-    CountryCode => { },
-    CountryName => { },
-    ProvinceState => { },
-    Sublocation => { },
-    WorldRegion => { },
-    LocationId  => { List => 'Bag' },
-    LocationName => { Writable => 'lang-alt' },
-    GPSLatitude  => { Namespace => 'exif', %latConv },
-    GPSLongitude => { Namespace => 'exif', %longConv },
-    GPSAltitude => {
-        Namespace => 'exif',
-        Writable => 'rational',
-        PrintConv => '$val =~ /^(inf|undef)$/ ? $val : "$val m"',
-        PrintConvInv => '$val=~s/\s*m$//;$val',
-    },
-);
-my %sCVTermDetails = (
-    STRUCT_NAME => 'CVTermDetails',
-    NAMESPACE   => 'Iptc4xmpExt',
-    CvTermId    => { },
-    CvTermName  => { Writable => 'lang-alt' },
-    CvId        => { },
-    CvTermRefinedAbout => { },
-);
-
-# IPTC video extensions
-my %sPublicationEvent = (
-    STRUCT_NAME => 'PublicationEvent',
-    NAMESPACE   => 'Iptc4xmpExt',
-    Date        => { Groups => { 2 => 'Time' }, %dateTimeInfo },
-    Name        => { },
-    Identifier  => { },
-);
-my %sEntity = (
-    STRUCT_NAME => 'Entity',
-    NAMESPACE   => 'Iptc4xmpExt',
-    Identifier  => { List => 'Bag', Namespace => 'xmp' },
-    Name        => { Writable => 'lang-alt' },
-);
-my %sEntityWithRole = (
-    STRUCT_NAME => 'EntityWithRole',
-    NAMESPACE   => 'Iptc4xmpExt',
-    Identifier  => { List => 'Bag', Namespace => 'xmp' },
-    Name        => { Writable => 'lang-alt' },
-    Role        => { List => 'Bag' },
-);
-my %sFrameSize = (
-    STRUCT_NAME => 'FrameSize',
-    NAMESPACE   => 'Iptc4xmpExt',
-    WidthPixels  => { Writable => 'integer' },
-    HeightPixels => { Writable => 'integer' },
-);
-my %sRating = (
-    STRUCT_NAME => 'Rating',
-    NAMESPACE   => 'Iptc4xmpExt',
-    RatingValue         => { FlatName => 'Value' },
-    RatingSourceLink    => { FlatName => 'SourceLink' },
-    RatingScaleMinValue => { FlatName => 'ScaleMinValue' },
-    RatingScaleMaxValue => { FlatName => 'ScaleMaxValue' },
-    RatingValueLogoLink => { FlatName => 'ValueLogoLink' },
-    RatingRegion => {
-        FlatName => 'RatingRegion',
-        Struct => \%sLocationDetails,
-        List => 'Bag',
-    },
-);
-my %sEpisode = (
-    STRUCT_NAME => 'EpisodeOrSeason',
-    NAMESPACE   => 'Iptc4xmpExt',
-    Name        => { },
-    Number      => { },
-    Identifier  => { },
-);
-my %sSeries = (
-    STRUCT_NAME => 'Series',
-    NAMESPACE   => 'Iptc4xmpExt',
-    Name        => { },
-    Identifier  => { },
-);
-my %sTemporalCoverage = (
-    STRUCT_NAME => 'TemporalCoverage',
-    NAMESPACE   => 'Iptc4xmpExt',
-    tempCoverageFrom => { FlatName => 'From', %dateTimeInfo, Groups => { 2 => 'Time' } },
-    tempCoverageTo   => { FlatName => 'To',   %dateTimeInfo, Groups => { 2 => 'Time' } },
-);
-my %sQualifiedLink = (
-    STRUCT_NAME => 'QualifiedLink',
-    NAMESPACE   => 'Iptc4xmpExt',
-    Link        => { },
-    LinkQualifier => { },
-);
-my %sTextRegion = (
-    STRUCT_NAME => 'TextRegion',
-    NAMESPACE   => 'Iptc4xmpExt',
-    RegionText  => { },
-    Region      => { Struct => \%Image::ExifTool::XMP::sArea },
-);
-
-# IPTC Extension namespace properties (Iptc4xmpExt) (ref 4)
-%Image::ExifTool::XMP::iptcExt = (
-    %xmpTableDefaults,
-    GROUPS => { 1 => 'XMP-iptcExt', 2 => 'Author' },
-    NAMESPACE   => 'Iptc4xmpExt',
-    TABLE_DESC => 'XMP IPTC Extension',
-    NOTES => q{
-        IPTC Extension namespace tags.  The actual namespace prefix is
-        "Iptc4xmpExt", but ExifTool shortens this for the family 1 group name. (see
-        L<http://www.iptc.org/IPTC4XMP/>)
-    },
-    AboutCvTerm => {
-        Struct => \%sCVTermDetails,
-        List => 'Bag',
-    },
-    AboutCvTermCvId                 => { Flat => 1, Name => 'AboutCvTermCvId' },
-    AboutCvTermCvTermId             => { Flat => 1, Name => 'AboutCvTermId' },
-    AboutCvTermCvTermName           => { Flat => 1, Name => 'AboutCvTermName' },
-    AboutCvTermCvTermRefinedAbout   => { Flat => 1, Name => 'AboutCvTermRefinedAbout' },
-    AddlModelInfo   => { Name => 'AdditionalModelInformation' },
-    ArtworkOrObject => {
-        Struct => {
-            STRUCT_NAME => 'ArtworkOrObjectDetails',
-            NAMESPACE   => 'Iptc4xmpExt',
-            AOCopyrightNotice => { },
-            AOCreator    => { List => 'Seq' },
-            AODateCreated=> { Groups => { 2 => 'Time' }, %dateTimeInfo },
-            AOSource     => { },
-            AOSourceInvNo=> { },
-            AOTitle      => { Writable => 'lang-alt' },
-            AOCurrentCopyrightOwnerName => { },
-            AOCurrentCopyrightOwnerId   => { },
-            AOCurrentLicensorName       => { },
-            AOCurrentLicensorId         => { },
-            AOCreatorId                 => { List => 'Seq' },
-            AOCircaDateCreated          => { Groups => { 2 => 'Time' } },
-            AOStylePeriod               => { List => 'Bag' },
-            AOSourceInvURL              => { },
-            AOContentDescription        => { Writable => 'lang-alt' },
-            AOContributionDescription   => { Writable => 'lang-alt' },
-            AOPhysicalDescription       => { Writable => 'lang-alt' },
-        },
-        List => 'Bag',
-    },
-    ArtworkOrObjectAOCopyrightNotice           => { Flat => 1, Name => 'ArtworkCopyrightNotice' },
-    ArtworkOrObjectAOCreator                   => { Flat => 1, Name => 'ArtworkCreator' },
-    ArtworkOrObjectAODateCreated               => { Flat => 1, Name => 'ArtworkDateCreated' },
-    ArtworkOrObjectAOSource                    => { Flat => 1, Name => 'ArtworkSource' },
-    ArtworkOrObjectAOSourceInvNo               => { Flat => 1, Name => 'ArtworkSourceInventoryNo' },
-    ArtworkOrObjectAOTitle                     => { Flat => 1, Name => 'ArtworkTitle' },
-    ArtworkOrObjectAOCurrentCopyrightOwnerName => { Flat => 1, Name => 'ArtworkCopyrightOwnerName' },
-    ArtworkOrObjectAOCurrentCopyrightOwnerId   => { Flat => 1, Name => 'ArtworkCopyrightOwnerID' },
-    ArtworkOrObjectAOCurrentLicensorName       => { Flat => 1, Name => 'ArtworkLicensorName' },
-    ArtworkOrObjectAOCurrentLicensorId         => { Flat => 1, Name => 'ArtworkLicensorID' },
-    ArtworkOrObjectAOCreatorId                 => { Flat => 1, Name => 'ArtworkCreatorID' },
-    ArtworkOrObjectAOCircaDateCreated          => { Flat => 1, Name => 'ArtworkCircaDateCreated' },
-    ArtworkOrObjectAOStylePeriod               => { Flat => 1, Name => 'ArtworkStylePeriod' },
-    ArtworkOrObjectAOSourceInvURL              => { Flat => 1, Name => 'ArtworkSourceInvURL' },
-    ArtworkOrObjectAOContentDescription        => { Flat => 1, Name => 'ArtworkContentDescription' },
-    ArtworkOrObjectAOContributionDescription   => { Flat => 1, Name => 'ArtworkContributionDescription' },
-    ArtworkOrObjectAOPhysicalDescription       => { Flat => 1, Name => 'ArtworkPhysicalDescription' },
-    CVterm => {
-        Name => 'ControlledVocabularyTerm',
-        List => 'Bag',
-        Notes => 'deprecated by version 1.2',
-    },
-    DigImageGUID            => { Name => 'DigitalImageGUID' },
-    DigitalSourcefileType   => {
-        Name => 'DigitalSourceFileType',
-        Notes => 'now deprecated -- replaced by DigitalSourceType',
-    },
-    DigitalSourceType       => { Name => 'DigitalSourceType' },
-    EmbdEncRightsExpr => {
-        Struct => {
-            STRUCT_NAME => 'EEREDetails',
-            NAMESPACE   => 'Iptc4xmpExt',
-            EncRightsExpr       => { },
-            RightsExprEncType   => { },
-            RightsExprLangId    => { },
-        },
-        List => 'Bag',
-    },
-    EmbdEncRightsExprEncRightsExpr      => { Flat => 1, Name => 'EmbeddedEncodedRightsExpr' },
-    EmbdEncRightsExprRightsExprEncType  => { Flat => 1, Name => 'EmbeddedEncodedRightsExprType' },
-    EmbdEncRightsExprRightsExprLangId   => { Flat => 1, Name => 'EmbeddedEncodedRightsExprLangID' },
-    Event       => { Writable => 'lang-alt' },
-    IptcLastEdited => {
-        Name => 'IPTCLastEdited',
-        Groups => { 2 => 'Time' },
-        %dateTimeInfo,
-    },
-    LinkedEncRightsExpr => {
-        Struct => {
-            STRUCT_NAME => 'LEREDetails',
-            NAMESPACE   => 'Iptc4xmpExt',
-            LinkedRightsExpr    => { },
-            RightsExprEncType   => { },
-            RightsExprLangId    => { },
-        },
-        List => 'Bag',
-    },
-    LinkedEncRightsExprLinkedRightsExpr  => { Flat => 1, Name => 'LinkedEncodedRightsExpr' },
-    LinkedEncRightsExprRightsExprEncType => { Flat => 1, Name => 'LinkedEncodedRightsExprType' },
-    LinkedEncRightsExprRightsExprLangId  => { Flat => 1, Name => 'LinkedEncodedRightsExprLangID' },
-    LocationCreated => {
-        Struct => \%sLocationDetails,
-        Groups => { 2 => 'Location' },
-        List => 'Bag',
-    },
-    LocationShown => {
-        Struct => \%sLocationDetails,
-        Groups => { 2 => 'Location' },
-        List => 'Bag',
-    },
-    MaxAvailHeight          => { Writable => 'integer' },
-    MaxAvailWidth           => { Writable => 'integer' },
-    ModelAge                => { List => 'Bag', Writable => 'integer' },
-    OrganisationInImageCode => { List => 'Bag' },
-    OrganisationInImageName => { List => 'Bag' },
-    PersonInImage           => { List => 'Bag' },
-    PersonInImageWDetails => {
-        Struct => {
-            STRUCT_NAME => 'PersonDetails',
-            NAMESPACE   => 'Iptc4xmpExt',
-            PersonId    => { List => 'Bag' },
-            PersonName  => { Writable => 'lang-alt' },
-            PersonCharacteristic => {
-                Struct  => \%sCVTermDetails,
-                List    => 'Bag',
-            },
-            PersonDescription => { Writable => 'lang-alt' },
-        },
-        List => 'Bag',
-    },
-    PersonInImageWDetailsPersonId                               => { Flat => 1, Name => 'PersonInImageId' },
-    PersonInImageWDetailsPersonName                             => { Flat => 1, Name => 'PersonInImageName' },
-    PersonInImageWDetailsPersonCharacteristic                   => { Flat => 1, Name => 'PersonInImageCharacteristic' },
-    PersonInImageWDetailsPersonCharacteristicCvId               => { Flat => 1, Name => 'PersonInImageCvTermCvId' },
-    PersonInImageWDetailsPersonCharacteristicCvTermId           => { Flat => 1, Name => 'PersonInImageCvTermId' },
-    PersonInImageWDetailsPersonCharacteristicCvTermName         => { Flat => 1, Name => 'PersonInImageCvTermName' },
-    PersonInImageWDetailsPersonCharacteristicCvTermRefinedAbout => { Flat => 1, Name => 'PersonInImageCvTermRefinedAbout' },
-    PersonInImageWDetailsPersonDescription                      => { Flat => 1, Name => 'PersonInImageDescription' },
-    ProductInImage => {
-        Struct => {
-            STRUCT_NAME => 'ProductDetails',
-            NAMESPACE   => 'Iptc4xmpExt',
-            ProductName => { Writable => 'lang-alt' },
-            ProductGTIN => { },
-            ProductDescription => { Writable => 'lang-alt' },
-        },
-        List => 'Bag',
-    },
-    ProductInImageProductName        => { Flat => 1, Name => 'ProductInImageName' },
-    ProductInImageProductGTIN        => { Flat => 1, Name => 'ProductInImageGTIN' },
-    ProductInImageProductDescription => { Flat => 1, Name => 'ProductInImageDescription' },
-    RegistryId => {
-        Name => 'RegistryID',
-        Struct => {
-            STRUCT_NAME => 'RegistryEntryDetails',
-            NAMESPACE   => 'Iptc4xmpExt',
-            RegItemId   => { },
-            RegOrgId    => { },
-            RegEntryRole=> { }, # (new in 1.3)
-        },
-        List => 'Bag',
-    },
-    RegistryIdRegItemId => { Flat => 1, Name => 'RegistryItemID' },
-    RegistryIdRegOrgId  => { Flat => 1, Name => 'RegistryOrganisationID' },
-    RegistryIdRegEntryRole => { Flat => 1, Name => 'RegistryEntryRole' },
-
-    # new Extension 1.3 properties
-    Genre           => { Groups => { 2 => 'Image' }, List => 'Bag', Struct => \%sCVTermDetails },
-
-    # new video properties (Oct 2016, ref Michael Steidl)
-    # (see http://www.iptc.org/std/videometadatahub/recommendation/IPTC-VideoMetadataHub-props-Rec_1.0.html)
-    CircaDateCreated=> { Groups => { 2 => 'Time' } },
-    Episode         => { Groups => { 2 => 'Video' }, Struct => \%sEpisode },
-    ExternalMetadataLink => { Groups => { 2 => 'Other' }, List => 'Bag' },
-    FeedIdentifier  => { Groups => { 2 => 'Video' } },
-    PublicationEvent=> { Groups => { 2 => 'Video' }, List => 'Bag', Struct => \%sPublicationEvent },
-    Rating          => {
-        Groups => { 2 => 'Other' },
-        Struct  => \%sRating,
-        List    => 'Bag',
-    },
-    ReleaseReady    => { Groups => { 2 => 'Other' }, Writable => 'boolean' },
-    Season          => { Groups => { 2 => 'Video' }, Struct => \%sEpisode },
-    Series          => { Groups => { 2 => 'Video' }, Struct => \%sSeries },
-    StorylineIdentifier => { Groups => { 2 => 'Video' }, List => 'Bag' },
-    StylePeriod     => { Groups => { 2 => 'Video' } },
-    TemporalCoverage=> { Groups => { 2 => 'Video' }, Struct => \%sTemporalCoverage },
-    WorkflowTag     => { Groups => { 2 => 'Video' }, Struct => \%sCVTermDetails },
-    DataOnScreen    => { Groups => { 2 => 'Video' }, List => 'Bag', Struct => \%sTextRegion },
-    Dopesheet       => { Groups => { 2 => 'Video' }, Writable => 'lang-alt' },
-    DopesheetLink   => { Groups => { 2 => 'Video' }, List => 'Bag', Struct => \%sQualifiedLink },
-    Headline        => { Groups => { 2 => 'Video' }, Writable => 'lang-alt', Avoid => 1 },
-    PersonHeard     => { Groups => { 2 => 'Audio' }, List => 'Bag', Struct => \%sEntity },
-    VideoShotType   => { Groups => { 2 => 'Video' }, List => 'Bag', Struct => \%sEntity },
-    EventExt        => { Groups => { 2 => 'Video' }, List => 'Bag', Struct => \%sEntity, Name => 'ShownEvent' },
-    Transcript      => { Groups => { 2 => 'Video' }, Writable => 'lang-alt' },
-    TranscriptLink  => { Groups => { 2 => 'Video' }, List => 'Bag', Struct => \%sQualifiedLink },
-    VisualColour    => {
-        Name => 'VisualColor',
-        Groups => { 2 => 'Video' },
-        PrintConv => {
-            'bw-monochrome' => 'Monochrome',
-            'colour'        => 'Color',
-        },
-    },
-    Contributor     => { List => 'Bag', Struct => \%sEntityWithRole },
-    CopyrightYear   => { Groups => { 2 => 'Time' },  Writable => 'integer' },
-    Creator         => { List => 'Bag', Struct => \%sEntityWithRole },
-    SupplyChainSource => { Groups => { 2 => 'Other' }, List => 'Bag', Struct => \%sEntity },
-    audioBitRate    => { Groups => { 2 => 'Audio' }, Writable => 'integer', Name => 'AudioBitrate' },
-    audioBitRateMode=> {
-        Name => 'AudioBitrateMode',
-        Groups => { 2 => 'Audio' },
-        PrintConv => {
-            fixed => 'Fixed',
-            variable => 'Variable',
-        },
-    },
-    audioChannelCount       => { Groups => { 2 => 'Audio' }, Writable => 'integer' },
-    videoDisplayAspectRatio => { Groups => { 2 => 'Audio' }, Writable => 'rational' },
-    ContainerFormat         => { Groups => { 2 => 'Video' }, Struct => \%sEntity },
-    StreamReady => {
-        Groups => { 2 => 'Video' },
-        PrintConv => {
-            true => 'True',
-            false => 'False',
-            unknown => 'Unknown',
-        },
-    },
-    videoBitRate     => { Groups => { 2 => 'Video' }, Writable => 'integer', Name => 'VideoBitrate' },
-    videoBitRateMode => {
-        Name => 'VideoBitrateMode',
-        Groups => { 2 => 'Video' },
-        PrintConv => {
-            fixed => 'Fixed',
-            variable => 'Variable',
-        },
-    },
-    videoEncodingProfile => { Groups => { 2 => 'Video' } },
-    videoStreamsCount    => { Groups => { 2 => 'Video' }, Writable => 'integer' },
-);
-
-#------------------------------------------------------------------------------
 
 # xmpDM structure definitions
 my %sCuePointParam = (
@@ -655,6 +301,374 @@ my %sTimecode = (
             'Other' => 'Other',
         },
     },
+);
+
+#------------------------------------------------------------------------------
+# IPTC Extensions version 1.3 (+ proposed video extensions)
+
+# IPTC Extension 1.0 structures
+my %sLocationDetails = (
+    STRUCT_NAME => 'LocationDetails',
+    NAMESPACE   => 'Iptc4xmpExt',
+    GROUPS      => { 2 => 'Location' },
+    Identifier  => { List => 'Bag', Namespace => 'xmp' },
+    City        => { },
+    CountryCode => { },
+    CountryName => { },
+    ProvinceState => { },
+    Sublocation => { },
+    WorldRegion => { },
+    LocationId  => { List => 'Bag' },
+    LocationName => { Writable => 'lang-alt' },
+    GPSLatitude  => { Namespace => 'exif', %latConv },
+    GPSLongitude => { Namespace => 'exif', %longConv },
+    GPSAltitude => {
+        Namespace => 'exif',
+        Writable => 'rational',
+        PrintConv => '$val =~ /^(inf|undef)$/ ? $val : "$val m"',
+        PrintConvInv => '$val=~s/\s*m$//;$val',
+    },
+);
+my %sCVTermDetails = (
+    STRUCT_NAME => 'CVTermDetails',
+    NAMESPACE   => 'Iptc4xmpExt',
+    CvTermId    => { },
+    CvTermName  => { Writable => 'lang-alt' },
+    CvId        => { },
+    CvTermRefinedAbout => { },
+);
+
+# IPTC video extensions
+my %sPublicationEvent = (
+    STRUCT_NAME => 'PublicationEvent',
+    NAMESPACE   => 'Iptc4xmpExt',
+    Date        => { Groups => { 2 => 'Time' }, %dateTimeInfo },
+    Name        => { },
+    Identifier  => { },
+);
+my %sEntity = (
+    STRUCT_NAME => 'Entity',
+    NAMESPACE   => 'Iptc4xmpExt',
+    Identifier  => { List => 'Bag', Namespace => 'xmp' },
+    Name        => { Writable => 'lang-alt' },
+);
+my %sEntityWithRole = (
+    STRUCT_NAME => 'EntityWithRole',
+    NAMESPACE   => 'Iptc4xmpExt',
+    Identifier  => { List => 'Bag', Namespace => 'xmp' },
+    Name        => { Writable => 'lang-alt' },
+    Role        => { List => 'Bag' },
+);
+my %sFrameSize = (
+    STRUCT_NAME => 'FrameSize',
+    NAMESPACE   => 'Iptc4xmpExt',
+    WidthPixels  => { Writable => 'integer' },
+    HeightPixels => { Writable => 'integer' },
+);
+my %sRating = (
+    STRUCT_NAME => 'Rating',
+    NAMESPACE   => 'Iptc4xmpExt',
+    RatingValue         => { FlatName => 'Value' },
+    RatingSourceLink    => { FlatName => 'SourceLink' },
+    RatingScaleMinValue => { FlatName => 'ScaleMinValue' },
+    RatingScaleMaxValue => { FlatName => 'ScaleMaxValue' },
+    RatingValueLogoLink => { FlatName => 'ValueLogoLink' },
+    RatingRegion => {
+        FlatName => 'RatingRegion',
+        Struct => \%sLocationDetails,
+        List => 'Bag',
+    },
+);
+my %sEpisode = (
+    STRUCT_NAME => 'EpisodeOrSeason',
+    NAMESPACE   => 'Iptc4xmpExt',
+    Name        => { },
+    Number      => { },
+    Identifier  => { },
+);
+my %sSeries = (
+    STRUCT_NAME => 'Series',
+    NAMESPACE   => 'Iptc4xmpExt',
+    Name        => { },
+    Identifier  => { },
+);
+my %sTemporalCoverage = (
+    STRUCT_NAME => 'TemporalCoverage',
+    NAMESPACE   => 'Iptc4xmpExt',
+    tempCoverageFrom => { FlatName => 'From', %dateTimeInfo, Groups => { 2 => 'Time' } },
+    tempCoverageTo   => { FlatName => 'To',   %dateTimeInfo, Groups => { 2 => 'Time' } },
+);
+my %sQualifiedLink = (
+    STRUCT_NAME => 'QualifiedLink',
+    NAMESPACE   => 'Iptc4xmpExt',
+    Link        => { },
+    LinkQualifier => { },
+);
+my %sTextRegion = (
+    STRUCT_NAME => 'TextRegion',
+    NAMESPACE   => 'Iptc4xmpExt',
+    RegionText  => { },
+    Region      => { Struct => \%Image::ExifTool::XMP::sArea },
+);
+my %sLinkedImage = (
+    STRUCT_NAME => 'LinkedImage',
+    NAMESPACE   => 'Iptc4xmpExt',
+    Link        => { },
+    LinkQualifier => { List => 'Bag' },
+    ImageRole   => { },
+   'format'     => { Namespace => 'dc' },
+    WidthPixels => { Writable => 'integer' },
+    HeightPixels=> { Writable => 'integer' },
+    UsedVideoFrame => { Struct => \%sTimecode },
+);
+
+# IPTC Extension namespace properties (Iptc4xmpExt) (ref 4)
+%Image::ExifTool::XMP::iptcExt = (
+    %xmpTableDefaults,
+    GROUPS => { 1 => 'XMP-iptcExt', 2 => 'Author' },
+    NAMESPACE   => 'Iptc4xmpExt',
+    TABLE_DESC => 'XMP IPTC Extension',
+    NOTES => q{
+        IPTC Extension namespace tags.  The actual namespace prefix is
+        "Iptc4xmpExt", but ExifTool shortens this for the family 1 group name. (see
+        L<http://www.iptc.org/IPTC4XMP/>)
+    },
+    AboutCvTerm => {
+        Struct => \%sCVTermDetails,
+        List => 'Bag',
+    },
+    AboutCvTermCvId                 => { Flat => 1, Name => 'AboutCvTermCvId' },
+    AboutCvTermCvTermId             => { Flat => 1, Name => 'AboutCvTermId' },
+    AboutCvTermCvTermName           => { Flat => 1, Name => 'AboutCvTermName' },
+    AboutCvTermCvTermRefinedAbout   => { Flat => 1, Name => 'AboutCvTermRefinedAbout' },
+    AddlModelInfo   => { Name => 'AdditionalModelInformation' },
+    ArtworkOrObject => {
+        Struct => {
+            STRUCT_NAME => 'ArtworkOrObjectDetails',
+            NAMESPACE   => 'Iptc4xmpExt',
+            AOCopyrightNotice => { },
+            AOCreator    => { List => 'Seq' },
+            AODateCreated=> { Groups => { 2 => 'Time' }, %dateTimeInfo },
+            AOSource     => { },
+            AOSourceInvNo=> { },
+            AOTitle      => { Writable => 'lang-alt' },
+            AOCurrentCopyrightOwnerName => { },
+            AOCurrentCopyrightOwnerId   => { },
+            AOCurrentLicensorName       => { },
+            AOCurrentLicensorId         => { },
+            AOCreatorId                 => { List => 'Seq' },
+            AOCircaDateCreated          => { Groups => { 2 => 'Time' } },
+            AOStylePeriod               => { List => 'Bag' },
+            AOSourceInvURL              => { },
+            AOContentDescription        => { Writable => 'lang-alt' },
+            AOContributionDescription   => { Writable => 'lang-alt' },
+            AOPhysicalDescription       => { Writable => 'lang-alt' },
+        },
+        List => 'Bag',
+    },
+    ArtworkOrObjectAOCopyrightNotice           => { Flat => 1, Name => 'ArtworkCopyrightNotice' },
+    ArtworkOrObjectAOCreator                   => { Flat => 1, Name => 'ArtworkCreator' },
+    ArtworkOrObjectAODateCreated               => { Flat => 1, Name => 'ArtworkDateCreated' },
+    ArtworkOrObjectAOSource                    => { Flat => 1, Name => 'ArtworkSource' },
+    ArtworkOrObjectAOSourceInvNo               => { Flat => 1, Name => 'ArtworkSourceInventoryNo' },
+    ArtworkOrObjectAOTitle                     => { Flat => 1, Name => 'ArtworkTitle' },
+    ArtworkOrObjectAOCurrentCopyrightOwnerName => { Flat => 1, Name => 'ArtworkCopyrightOwnerName' },
+    ArtworkOrObjectAOCurrentCopyrightOwnerId   => { Flat => 1, Name => 'ArtworkCopyrightOwnerID' },
+    ArtworkOrObjectAOCurrentLicensorName       => { Flat => 1, Name => 'ArtworkLicensorName' },
+    ArtworkOrObjectAOCurrentLicensorId         => { Flat => 1, Name => 'ArtworkLicensorID' },
+    ArtworkOrObjectAOCreatorId                 => { Flat => 1, Name => 'ArtworkCreatorID' },
+    ArtworkOrObjectAOCircaDateCreated          => { Flat => 1, Name => 'ArtworkCircaDateCreated' },
+    ArtworkOrObjectAOStylePeriod               => { Flat => 1, Name => 'ArtworkStylePeriod' },
+    ArtworkOrObjectAOSourceInvURL              => { Flat => 1, Name => 'ArtworkSourceInvURL' },
+    ArtworkOrObjectAOContentDescription        => { Flat => 1, Name => 'ArtworkContentDescription' },
+    ArtworkOrObjectAOContributionDescription   => { Flat => 1, Name => 'ArtworkContributionDescription' },
+    ArtworkOrObjectAOPhysicalDescription       => { Flat => 1, Name => 'ArtworkPhysicalDescription' },
+    CVterm => {
+        Name => 'ControlledVocabularyTerm',
+        List => 'Bag',
+        Notes => 'deprecated by version 1.2',
+    },
+    DigImageGUID            => { Name => 'DigitalImageGUID' },
+    DigitalSourcefileType   => {
+        Name => 'DigitalSourceFileType',
+        Notes => 'now deprecated -- replaced by DigitalSourceType',
+    },
+    DigitalSourceType       => { Name => 'DigitalSourceType' },
+    EmbdEncRightsExpr => {
+        Struct => {
+            STRUCT_NAME => 'EEREDetails',
+            NAMESPACE   => 'Iptc4xmpExt',
+            EncRightsExpr       => { },
+            RightsExprEncType   => { },
+            RightsExprLangId    => { },
+        },
+        List => 'Bag',
+    },
+    EmbdEncRightsExprEncRightsExpr      => { Flat => 1, Name => 'EmbeddedEncodedRightsExpr' },
+    EmbdEncRightsExprRightsExprEncType  => { Flat => 1, Name => 'EmbeddedEncodedRightsExprType' },
+    EmbdEncRightsExprRightsExprLangId   => { Flat => 1, Name => 'EmbeddedEncodedRightsExprLangID' },
+    Event       => { Writable => 'lang-alt' },
+    IptcLastEdited => {
+        Name => 'IPTCLastEdited',
+        Groups => { 2 => 'Time' },
+        %dateTimeInfo,
+    },
+    LinkedEncRightsExpr => {
+        Struct => {
+            STRUCT_NAME => 'LEREDetails',
+            NAMESPACE   => 'Iptc4xmpExt',
+            LinkedRightsExpr    => { },
+            RightsExprEncType   => { },
+            RightsExprLangId    => { },
+        },
+        List => 'Bag',
+    },
+    LinkedEncRightsExprLinkedRightsExpr  => { Flat => 1, Name => 'LinkedEncodedRightsExpr' },
+    LinkedEncRightsExprRightsExprEncType => { Flat => 1, Name => 'LinkedEncodedRightsExprType' },
+    LinkedEncRightsExprRightsExprLangId  => { Flat => 1, Name => 'LinkedEncodedRightsExprLangID' },
+    LocationCreated => {
+        Struct => \%sLocationDetails,
+        Groups => { 2 => 'Location' },
+        List => 'Bag',
+    },
+    LocationShown => {
+        Struct => \%sLocationDetails,
+        Groups => { 2 => 'Location' },
+        List => 'Bag',
+    },
+    MaxAvailHeight          => { Writable => 'integer' },
+    MaxAvailWidth           => { Writable => 'integer' },
+    ModelAge                => { List => 'Bag', Writable => 'integer' },
+    OrganisationInImageCode => { List => 'Bag' },
+    OrganisationInImageName => { List => 'Bag' },
+    PersonInImage           => { List => 'Bag' },
+    PersonInImageWDetails => {
+        Struct => {
+            STRUCT_NAME => 'PersonDetails',
+            NAMESPACE   => 'Iptc4xmpExt',
+            PersonId    => { List => 'Bag' },
+            PersonName  => { Writable => 'lang-alt' },
+            PersonCharacteristic => {
+                Struct  => \%sCVTermDetails,
+                List    => 'Bag',
+            },
+            PersonDescription => { Writable => 'lang-alt' },
+        },
+        List => 'Bag',
+    },
+    PersonInImageWDetailsPersonId                               => { Flat => 1, Name => 'PersonInImageId' },
+    PersonInImageWDetailsPersonName                             => { Flat => 1, Name => 'PersonInImageName' },
+    PersonInImageWDetailsPersonCharacteristic                   => { Flat => 1, Name => 'PersonInImageCharacteristic' },
+    PersonInImageWDetailsPersonCharacteristicCvId               => { Flat => 1, Name => 'PersonInImageCvTermCvId' },
+    PersonInImageWDetailsPersonCharacteristicCvTermId           => { Flat => 1, Name => 'PersonInImageCvTermId' },
+    PersonInImageWDetailsPersonCharacteristicCvTermName         => { Flat => 1, Name => 'PersonInImageCvTermName' },
+    PersonInImageWDetailsPersonCharacteristicCvTermRefinedAbout => { Flat => 1, Name => 'PersonInImageCvTermRefinedAbout' },
+    PersonInImageWDetailsPersonDescription                      => { Flat => 1, Name => 'PersonInImageDescription' },
+    ProductInImage => {
+        Struct => {
+            STRUCT_NAME => 'ProductDetails',
+            NAMESPACE   => 'Iptc4xmpExt',
+            ProductName => { Writable => 'lang-alt' },
+            ProductGTIN => { },
+            ProductDescription => { Writable => 'lang-alt' },
+        },
+        List => 'Bag',
+    },
+    ProductInImageProductName        => { Flat => 1, Name => 'ProductInImageName' },
+    ProductInImageProductGTIN        => { Flat => 1, Name => 'ProductInImageGTIN' },
+    ProductInImageProductDescription => { Flat => 1, Name => 'ProductInImageDescription' },
+    RegistryId => {
+        Name => 'RegistryID',
+        Struct => {
+            STRUCT_NAME => 'RegistryEntryDetails',
+            NAMESPACE   => 'Iptc4xmpExt',
+            RegItemId   => { },
+            RegOrgId    => { },
+            RegEntryRole=> { }, # (new in 1.3)
+        },
+        List => 'Bag',
+    },
+    RegistryIdRegItemId => { Flat => 1, Name => 'RegistryItemID' },
+    RegistryIdRegOrgId  => { Flat => 1, Name => 'RegistryOrganisationID' },
+    RegistryIdRegEntryRole => { Flat => 1, Name => 'RegistryEntryRole' },
+
+    # new Extension 1.3 properties
+    Genre           => { Groups => { 2 => 'Image' }, List => 'Bag', Struct => \%sCVTermDetails },
+
+    # new video properties (Oct 2016, ref Michael Steidl)
+    # (see http://www.iptc.org/std/videometadatahub/recommendation/IPTC-VideoMetadataHub-props-Rec_1.0.html)
+    CircaDateCreated=> { Groups => { 2 => 'Time' } },
+    Episode         => { Groups => { 2 => 'Video' }, Struct => \%sEpisode },
+    ExternalMetadataLink => { Groups => { 2 => 'Other' }, List => 'Bag' },
+    FeedIdentifier  => { Groups => { 2 => 'Video' } },
+    PublicationEvent=> { Groups => { 2 => 'Video' }, List => 'Bag', Struct => \%sPublicationEvent },
+    Rating          => {
+        Groups => { 2 => 'Other' },
+        Struct  => \%sRating,
+        List    => 'Bag',
+    },
+    ReleaseReady    => { Groups => { 2 => 'Other' }, Writable => 'boolean' },
+    Season          => { Groups => { 2 => 'Video' }, Struct => \%sEpisode },
+    Series          => { Groups => { 2 => 'Video' }, Struct => \%sSeries },
+    StorylineIdentifier => { Groups => { 2 => 'Video' }, List => 'Bag' },
+    StylePeriod     => { Groups => { 2 => 'Video' } },
+    TemporalCoverage=> { Groups => { 2 => 'Video' }, Struct => \%sTemporalCoverage },
+    WorkflowTag     => { Groups => { 2 => 'Video' }, Struct => \%sCVTermDetails },
+    DataOnScreen    => { Groups => { 2 => 'Video' }, List => 'Bag', Struct => \%sTextRegion },
+    Dopesheet       => { Groups => { 2 => 'Video' }, Writable => 'lang-alt' },
+    DopesheetLink   => { Groups => { 2 => 'Video' }, List => 'Bag', Struct => \%sQualifiedLink },
+    Headline        => { Groups => { 2 => 'Video' }, Writable => 'lang-alt', Avoid => 1 },
+    PersonHeard     => { Groups => { 2 => 'Audio' }, List => 'Bag', Struct => \%sEntity },
+    VideoShotType   => { Groups => { 2 => 'Video' }, List => 'Bag', Struct => \%sEntity },
+    EventExt        => { Groups => { 2 => 'Video' }, List => 'Bag', Struct => \%sEntity, Name => 'ShownEvent' },
+    Transcript      => { Groups => { 2 => 'Video' }, Writable => 'lang-alt' },
+    TranscriptLink  => { Groups => { 2 => 'Video' }, List => 'Bag', Struct => \%sQualifiedLink },
+    VisualColour    => {
+        Name => 'VisualColor',
+        Groups => { 2 => 'Video' },
+        PrintConv => {
+            'bw-monochrome' => 'Monochrome',
+            'colour'        => 'Color',
+        },
+    },
+    Contributor     => { List => 'Bag', Struct => \%sEntityWithRole },
+    CopyrightYear   => { Groups => { 2 => 'Time' },  Writable => 'integer' },
+    Creator         => { List => 'Bag', Struct => \%sEntityWithRole },
+    SupplyChainSource => { Groups => { 2 => 'Other' }, List => 'Bag', Struct => \%sEntity },
+    audioBitRate    => { Groups => { 2 => 'Audio' }, Writable => 'integer', Name => 'AudioBitrate' },
+    audioBitRateMode=> {
+        Name => 'AudioBitrateMode',
+        Groups => { 2 => 'Audio' },
+        PrintConv => {
+            fixed => 'Fixed',
+            variable => 'Variable',
+        },
+    },
+    audioChannelCount       => { Groups => { 2 => 'Audio' }, Writable => 'integer' },
+    videoDisplayAspectRatio => { Groups => { 2 => 'Audio' }, Writable => 'rational' },
+    ContainerFormat         => { Groups => { 2 => 'Video' }, Struct => \%sEntity },
+    StreamReady => {
+        Groups => { 2 => 'Video' },
+        PrintConv => {
+            true => 'True',
+            false => 'False',
+            unknown => 'Unknown',
+        },
+    },
+    videoBitRate     => { Groups => { 2 => 'Video' }, Writable => 'integer', Name => 'VideoBitrate' },
+    videoBitRateMode => {
+        Name => 'VideoBitrateMode',
+        Groups => { 2 => 'Video' },
+        PrintConv => {
+            fixed => 'Fixed',
+            variable => 'Variable',
+        },
+    },
+    videoEncodingProfile => { Groups => { 2 => 'Video' } },
+    videoStreamsCount    => { Groups => { 2 => 'Video' }, Writable => 'integer' },
+    # new IPTC video metadata 1.1 properties
+    # (ref https://www.iptc.org/std/videometadatahub/recommendation/IPTC-VideoMetadataHub-props-Rec_1.1.html)
+    SnapshotLink => { Groups => { 2 => 'Image' }, List => 'Bag', Struct => \%sLinkedImage, Name => 'Snapshot' },
 );
 
 #------------------------------------------------------------------------------

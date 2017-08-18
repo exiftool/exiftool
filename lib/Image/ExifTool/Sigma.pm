@@ -19,7 +19,7 @@ use strict;
 use vars qw($VERSION %sigmaLensTypes);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.23';
+$VERSION = '1.24';
 
 # sigma LensType lookup (ref IB)
 %sigmaLensTypes = (
@@ -74,6 +74,7 @@ $VERSION = '1.23';
     0x169 => 'Sigma 18-50mm F2.8 EX DC', #PH (NC)
     0x183 => 'Sigma 500mm F4.5 EX HSM APO',
     0x184 => 'Sigma 500mm F4.5 EX DG HSM APO',
+    0x185 => 'Sigma 500mm F4 DG OS HSM | S', #JR (NC; based on product number) (016)
     0x194 => 'Sigma 300mm F2.8 EX HSM APO',
     0x195 => 'Sigma 300mm F2.8 EX DG HSM APO',
     0x200 => 'Sigma 12-24mm F4.5-5.6 EX DG ASP HSM',
@@ -81,7 +82,9 @@ $VERSION = '1.23';
     0x202 => 'Sigma 10-20mm F3.5 EX DC HSM',
     0x203 => 'Sigma 8-16mm F4.5-5.6 DC HSM',
     0x204 => 'Sigma 12-24mm F4.5-5.6 DG HSM II',
+    0x205 => 'Sigma 12-24mm F4 DG HSM | A', #JR (NC; based on product number) (016)
     0x210 => 'Sigma 18-35mm F1.8 DC HSM | A',
+    0x240 => 'Sigma 135mm F1.8 DG HSM | A', #JR (NC; based on product number) (017)
     0x256 => 'Sigma 105mm F2.8 EX Macro',
     0x257 => 'Sigma 105mm F2.8 EX DG Macro',
     0x258 => 'Sigma 105mm F2.8 EX DG OS HSM Macro',
@@ -92,6 +95,7 @@ $VERSION = '1.23';
     0x310 => 'Sigma 50mm F1.4 EX DG HSM',
     0x311 => 'Sigma 50mm F1.4 DG HSM | A',
     0x320 => 'Sigma 85mm F1.4 EX DG HSM',
+    0x321 => 'Sigma 85mm F1.4 DG HSM | A', #JR (NC; based on product number) (016)
     0x330 => 'Sigma 30mm F2.8 EX DN',
     0x340 => 'Sigma 35mm F1.4 DG HSM',
     0x345 => 'Sigma 50mm F2.8 EX Macro',
@@ -103,6 +107,7 @@ $VERSION = '1.23';
     0x412 => 'Sigma 20mm F1.4 DG HSM | A',
     0x432 => 'Sigma 24mm F1.8 EX DG ASP Macro',
     0x440 => 'Sigma 28mm F1.8 EX DG ASP Macro',
+    0x450 => 'Sigma 14mm F1.8 DH HSM | A', #JR (NC; based on product number) (017)
     0x461 => 'Sigma 14mm F2.8 EX ASP HSM',
     0x475 => 'Sigma 15mm F2.8 EX Diagonal FishEye',
     0x476 => 'Sigma 15mm F2.8 EX DG Diagonal Fisheye',
@@ -132,6 +137,7 @@ $VERSION = '1.23';
     0x569 => 'Sigma 70-200 F2.8 EX DG HSM APO Macro',
     0x571 => 'Sigma 24-70mm F2.8 IF EX DG HSM',
     0x572 => 'Sigma 70-300mm F4-5.6 DG OS',
+    0x576 => 'Sigma 24-70mm F2.8 DG OS HSM | A', #JR (NC; based on product number) (017)
     0x579 => 'Sigma 70-200mm F2.8 EX DG HSM APO Macro', # (also II version)
     0x580 => 'Sigma 18-50mm F2.8 EX DC',
     0x581 => 'Sigma 18-50mm F2.8 EX DC Macro', #PH (SD1)
@@ -161,12 +167,14 @@ $VERSION = '1.23';
     0x690 => 'Sigma 50-150mm F2.8 EX DC HSM APO',
     0x691 => 'Sigma 50-150mm F2.8 EX DC APO HSM II',
     0x692 => 'Sigma APO 50-150mm F2.8 EX DC OS HSM',
+    0x693 => 'Sigma 50-100mm F1.8 DC HSM | A', #JR (NC; based on product number) (016)
     0x709 => 'Sigma 28-135mm F3.8-5.6 IF ASP Macro',
     0x723 => 'Sigma 135-400mm F4.5-5.6 ASP APO',
     0x725 => 'Sigma 80-400mm F4.5-5.6 EX OS',
     0x726 => 'Sigma 80-400mm F4.5-5.6 EX DG OS APO',
     0x727 => 'Sigma 135-400mm F4.5-5.6 DG ASP APO',
     0x728 => 'Sigma 120-400mm F4.5-5.6 DG APO OS HSM',
+    0x729 => 'Sigma 100-400mm F5-6.3 DG OS HSM | C', #JR (017)
     0x733 => 'Sigma 170-500mm F5-6.3 ASP APO',
     0x734 => 'Sigma 170-500mm F5-6.3 DG ASP APO',
     0x735 => 'Sigma 50-500mm F4-6.3 EX RF HSM APO',

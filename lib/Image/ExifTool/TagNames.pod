@@ -2642,6 +2642,17 @@ These tags belong to the ExifTool XMP-iptcExt family 1 group.
   Series                                        Series Struct
   SeriesIdentifier                              string_
   SeriesName                                    string_
+  Snapshot                                      LinkedImage Struct+
+  SnapshotFormat                                string_+
+  SnapshotHeightPixels                          integer_+
+  SnapshotImageRole                             string_+
+  SnapshotLink                                  string_+
+  SnapshotLinkQualifier                         string_+
+  SnapshotUsedVideoFrame                        Timecode Struct_+
+  SnapshotUsedVideoFrameTimeFormat              string_+
+  SnapshotUsedVideoFrameTimeValue               string_+
+  SnapshotUsedVideoFrameValue                   integer_+
+  SnapshotWidthPixels                           integer_+
   StorylineIdentifier                           string+
   StreamReady                                   string
   StylePeriod                                   string
@@ -2833,6 +2844,26 @@ These tags belong to the ExifTool XMP-iptcExt family 1 group.
   ----------                                    --------
   Identifier                                    string
   Name                                          string
+
+=head3 XMP LinkedImage Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  HeightPixels                                  integer
+  ImageRole                                     string
+  Link                                          string
+  LinkQualifier                                 string+
+  UsedVideoFrame                                Timecode Struct
+  WidthPixels                                   integer
+  Format                                        string
+
+=head3 XMP Timecode Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  TimeFormat                                    string
+  TimeValue                                     string
+  Value                                         integer
 
 =head3 XMP TemporalCoverage Struct
 
@@ -3593,14 +3624,6 @@ These tags belong to the ExifTool XMP-xmpDM family 1 group.
   VideoModDate                                  date
   VideoPixelAspectRatio                         rational
   VideoPixelDepth                               string
-
-=head3 XMP Timecode Struct
-
-  Field Name                                    Writable
-  ----------                                    --------
-  TimeFormat                                    string
-  TimeValue                                     string
-  Value                                         integer
 
 =head3 XMP BeatSpliceStretch Struct
 
@@ -14282,13 +14305,15 @@ MakerNotes.
   0x2014   WBShiftAB_GM                         int32s[2]
   0x2016   AutoPortraitFramed                   int16u
   0x2017   FlashAction                          int32u
+  0x201a   ElectronicFrontCurtainShutter        int32u
   0x201b   FocusMode                            int8u
   0x201c   AFAreaModeSetting                    int8u
   0x201d   FlexibleSpotPosition                 int16u[2]
   0x201e   AFPointSelected                      int8u
-           AFZoneSelected                       int8u
   0x2020   AFPointsUsed                         no
+  0x2021   AFTracking                           int8u
   0x2022   FocalPlaneAFPointsUsed               no
+  0x2023   MultiFrameNREffect                   int32u
   0x2026   WBShiftAB_GM_Precise                 int32s[2]~
   0x2027   FocusLocation                        int16u[4]
   0x2028   VariableLowPassFilter                int16u[2]
@@ -14306,6 +14331,7 @@ MakerNotes.
   0x9403   Tag9403                              Sony Tag9403
   0x9404   Tag9404a                             Sony Tag9404a
            Tag9404b                             Sony Tag9404b
+           Tag9404c                             Sony Tag9404c
   0x9405   Tag9405a                             Sony Tag9405a
            Tag9405b                             Sony Tag9405b
   0x9406   Tag9406                              Sony Tag9406
@@ -15095,7 +15121,7 @@ Valid for DSC-RX100M2, DSC-QX10/QX100.
 
 =head3 Sony Tag2010g Tags
 
-Valid for DSC-HX400V/HX60V/QX30/RX10/RX100M3/WX220/WX350,
+Valid for DSC-HX60V/HX350/HX400V/QX30/RX10/RX100M3/WX220/WX350,
 ILCE-7/7R/7S/7M2/5000/5100/6000/QX1, ILCA-68/77M2.
 
   Tag ID   Tag Name                             Writable
@@ -15370,7 +15396,7 @@ DSC-HX50V, DSC-QX10/QX100.
 
 =head3 Sony Tag9400c Tags
 
-Valid for DSC-HX400V/HX60V/HX90V/QX30/RX1RM2/RX10/RX10M2/RX10M3/RX100M3/
+Valid for DSC-HX60V/HX90V/HX350/HX400V/QX30/RX1RM2/RX10/RX10M2/RX10M3/RX100M3/
 RX100M4/RX100M5/WX220/WX350/WX500, ILCE-7/7R/7S/7M2/7RM2/7SM2/5000/5100/
 6000/6300/6500/QX1, ILCA-68/77M2/99M2.
 
@@ -15407,14 +15433,25 @@ RX100M4/RX100M5/WX220/WX350/WX500, ILCE-7/7R/7S/7M2/7RM2/7SM2/5000/5100/
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
+  0x000b   ExposureProgram                      int8u
+  0x000d   IntelligentAuto                      int8u
   0x0019   LensZoomPosition                     int16u
 
 =head3 Sony Tag9404b Tags
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
+  0x000c   ExposureProgram                      int8u
+  0x000e   IntelligentAuto                      int8u
   0x001e   LensZoomPosition                     int16u
   0x0020   FocusPosition2                       int8u
+
+=head3 Sony Tag9404c Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  0x000b   ExposureProgram                      int8u
+  0x000d   IntelligentAuto                      int8u
 
 =head3 Sony Tag9405a Tags
 
@@ -15434,7 +15471,7 @@ Valid for SLT, NEX, ILCE-3000/3500 and several DSC models.
 
 =head3 Sony Tag9405b Tags
 
-Valid for DSC-HX400V/HX60V/QX30/RX10/RX10M2/RX10M3/RX100M3/RX100M4/RX100M5/
+Valid for DSC-HX60V/HX350/HX400V/QX30/RX10/RX10M2/RX10M3/RX100M3/RX100M4/RX100M5/
 WX220/WX350, ILCE-7/7M2/7R/7RM2/7S/7SM2/5000/5100/6000/6300/6500/QX1,
 ILCA-68/77M2/99M2.
 
@@ -16310,6 +16347,7 @@ These tags are found in IFD0 of Panasonic/Leica RAW, RW2 and RWL images.
   0x0117   StripByteCounts                      no
   0x0118   RawDataOffset                        no
   0x0119   DistortionInfo                       PanasonicRaw DistortionInfo
+  0x0120   CameraIFD                            PanasonicRaw CameraIFD
   0x02bc   ApplicationNotes                     XMP
   0x83bb   IPTC-NAA                             IPTC
   0x8769   ExifOffset                           EXIF
@@ -16369,6 +16407,12 @@ Lens distortion correction information.
   0x0009   DistortionParam09                    int16s
   0x000b   DistortionParam11                    int16s
   0x000c   DistortionN?                         int16s
+
+=head3 PanasonicRaw CameraIFD Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  0x1101   FocusDistance                        no
 
 =head2 SigmaRaw Tags
 
@@ -16529,6 +16573,8 @@ specification.
       9    ThumbnailTIFF                        no
 
 =head3 JFIF Extension Tags
+
+Thumbnail images extracted from the JFXX segment.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------

@@ -7,6 +7,21 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.55. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Sept. 28, 2017 - Version 10.62
+
+  - Added preliminary support for HEIC/HEIF images
+  - Added support for Google depthmap metadata (XMP-GDepth)
+  - Added some new Sony/Minolta lenses (thanks LibRaw and Jos Roost)
+  - Added a new CanonModelID (thanks Norbert Wasser)
+  - Added a new Nikon LensID (thanks Michael Tapes)
+  - Decode a new Sony tag (thanks Jos Roost)
+  - Decode some new Nikon tags (thanks Warren Hatch)
+  - Decode maker notes from Leica TL2
+  - Enhanced ID3 -v2 output to show frame flags
+  - Fixed problem decoding Nikon D810 camera tilt angles
+  - Fixed problem where SphericalVideoXML metadata was deleted when writing XMP
+    to a QuickTime-format file containing this information
+
 Aug. 18, 2017 - Version 10.61
 
   - Added a new Canon LensType (thanks LibRaw)

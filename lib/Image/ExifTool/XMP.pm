@@ -48,7 +48,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.05';
+$VERSION = '3.06';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -172,6 +172,7 @@ my %xmpNS = (
     GImage    => 'http://ns.google.com/photos/1.0/image/',
     GPano     => 'http://ns.google.com/photos/1.0/panorama/',
     GSpherical=> 'http://ns.google.com/videos/1.0/spherical/',
+    GDepth    => 'http://ns.google.com/photos/1.0/depthmap/',
     dwc       => 'http://rs.tdwg.org/dwc/index.htm',
     GettyImagesGIFT => 'http://xmp.gettyimages.com/gift/1.0/',
 );
@@ -731,6 +732,10 @@ my %sRetouchArea = (
     GSpherical => {
         Name => 'GSpherical',
         SubDirectory => { TagTable => 'Image::ExifTool::XMP::GSpherical' },
+    },
+    GDepth => {
+        Name => 'GDepth',
+        SubDirectory => { TagTable => 'Image::ExifTool::XMP::GDepth' },
     },
     dwc => {
         Name => 'dwc',
@@ -2042,9 +2047,8 @@ my %sPantryItem = (
         PrintConv => \&Image::ExifTool::Exif::PrintLensInfo,
         PrintConvInv => \&Image::ExifTool::Exif::ConvertLensInfo,
         Notes => q{
-            called LensSpecification by the spec.  Unfortunately the EXIF 2.3 for XMP
-            specification defined this new tag instead of using the existing
-            XMP-aux:LensInfo
+            unfortunately the EXIF 2.3 for XMP specification defined this new tag
+            instead of using the existing XMP-aux:LensInfo
         },
     },
     LensMake            => { },

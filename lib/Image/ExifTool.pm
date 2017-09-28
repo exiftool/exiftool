@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup);
 
-$VERSION = '10.61';
+$VERSION = '10.62';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -295,6 +295,8 @@ my %createTypes = map { $_ => 1 } qw(XMP ICC MIE VRD DR4 EXIF EXV);
     GZIP => ['GZIP', 'GNU ZIP compressed archive'],
     HDP  => ['TIFF', 'Windows HD Photo'],
     HDR  => ['HDR',  'Radiance RGBE High Dynamic Range'],
+    HEIC => ['MOV',  'High Efficiency File Format still image'],
+    HEIF => ['MOV',  'High Efficiency File Format'],
     HTM  =>  'HTML',
     HTML => ['HTML', 'HyperText Markup Language'],
     ICAL =>  'ICS',
@@ -5925,7 +5927,7 @@ sub ProcessJPEG($$)
             } else {
                 # Hmmm.  Could be XMP, let's see
                 my $processed;
-                if ($$segDataPt =~ /^http/ or $$segDataPt =~ /^XMP\0/ or $$segDataPt =~ /<exif:/) {
+                if ($$segDataPt =~ /^(http|XMP\0)/ or $$segDataPt =~ /<(exif:|\?xpacket)/) {
                     $dumpType = 'XMP';
                     # also try to parse XMP with a non-standard header
                     # (note: this non-standard XMP is ignored when writing)

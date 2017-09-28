@@ -21,7 +21,7 @@ sub ProcessKodakPatch($$$);
 sub WriteUnknownOrPreview($$$);
 sub FixLeicaBase($$;$);
 
-$VERSION = '1.99';
+$VERSION = '2.00';
 
 my $debug;          # set to 1 to enable debugging code
 
@@ -608,7 +608,7 @@ my $debug;          # set to 1 to enable debugging code
         # (T (Typ 701) starts with "LEICA\0\0x6", Make is "LEICA CAMERA AG")
         # (X (Typ 113) starts with "LEICA\0\0x7", Make is "LEICA CAMERA AG")
         # (X-U (Typ 113) starts with "LEICA\0\x10\0", Make is "LEICA CAMERA AG")
-        Condition => '$$valPt =~ /^LEICA\0[\x01\x04\x05\x06\x07\x10]\0/',
+        Condition => '$$valPt =~ /^LEICA\0[\x01\x04\x05\x06\x07\x10\x1a]\0/',
         SubDirectory => {
             TagTable => 'Image::ExifTool::Panasonic::Leica5',
             Start => '$valuePtr + 8',

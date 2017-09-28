@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.65';
+$VERSION = '2.66';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -1313,13 +1313,23 @@ my %meterInfo2 = (
         PrintConv => {
             0x100 => 'Multi-segment',
             0x200 => 'Center-weighted average',
-          # 0x300 => 'Spot',        # not yet seen; 768/769 being std/large is educated guess
-            0x301 => 'Spot (large)',# seen for ILCA-99M2 with Exif indicating "Spot"
-            0x400 => 'Average',     # (NC) seen for ILCA-99M2 with Exif indicating "Average"
-            0x500 => 'Highlight',   # (NC) seen for ILCA-99M2 with Exif indicating "Other"
+          # 0x300 => 'Spot',            # not yet seen
+            # (there is one other setting that might also be encoded here:
+            # the Spot Metering Point can be set to "Center", to meter in the
+            # center of the image, or to "Focus Point Link", to meter at the focus point.
+            # This could also be the meaning of 0x301 and 0x302 - JR)
+            0x301 => 'Spot (Standard)', # (NC) seen for ILCA-99M2 with Exif indicating "Spot"
+            0x302 => 'Spot (Large)',    # (NC) seen for ILCE-9 with Exif indicating "Spot"
+            0x400 => 'Average',         # (NC) seen for ILCA-99M2 with Exif indicating "Average"
+            0x500 => 'Highlight',       # (NC) seen for ILCA-99M2 with Exif indicating "Other"
         },
     },
-    # 0x202d - rational64s - 0/6  first seen for ILCA-99M2, ILCE-6500, DSC-RX100M5
+    0x202d => { #JR first seen for ILCA-99M2, ILCE-6500, DSC-RX100M5
+        Name => 'ExposureStandardAdjustment', # (NC)
+        Writable => 'rational64s',
+        PrintConv => '$val ? sprintf("%+.1f",$val) : 0',
+        PrintConvInv => '$val',
+    },
     0x3000 => {
         Name => 'ShotInfo',
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::ShotInfo' },

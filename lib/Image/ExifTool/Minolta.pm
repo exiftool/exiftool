@@ -49,7 +49,7 @@ use vars qw($VERSION %minoltaLensTypes %minoltaTeleconverters %minoltaColorMode
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.54';
+$VERSION = '2.55';
 
 # Full list of product codes for Sony-compatible Minolta lenses
 # (ref http://www.kb.sony.com/selfservice/documentLink.do?externalId=C1000570)
@@ -334,19 +334,25 @@ $VERSION = '2.54';
     128.8 => 'Sigma 70-200mm F2.8 II EX DG APO MACRO HSM', #24
     128.9 => 'Sigma 10mm F2.8 EX DC HSM Fisheye', #Florian Knorn
     # (yes, '128.10'.  My condolences to typed languages that use this database - PH)
-   '128.10' => 'Sigma 50mm F1.4 EX DG HSM', #Florian Knorn
+   '128.10' => 'Sigma 50mm F1.4 EX DG HSM', #Florian Knorn (Model A104, ref IB)
    '128.11' => 'Sigma 85mm F1.4 EX DG HSM', #27
    '128.12' => 'Sigma 24-70mm F2.8 IF EX DG HSM', #27
    '128.13' => 'Sigma 18-250mm F3.5-6.3 DC OS HSM', #27
    '128.14' => 'Sigma 17-50mm F2.8 EX DC HSM', #Exiv2
-   '128.15' => 'Sigma 17-70mm F2.8-4 DC Macro HSM', #JR
+   '128.15' => 'Sigma 17-70mm F2.8-4 DC Macro HSM', #JR (OS Model C013, ref IB)
    '128.16' => 'Sigma 150mm F2.8 EX DG OS HSM APO Macro', #Marcus Holland-Moritz
    '128.17' => 'Sigma 150-500mm F5-6.3 APO DG OS HSM', #IB
    '128.18' => 'Tamron AF 28-105mm F4-5.6 [IF]', #IB (Model 179D)
    '128.19' => 'Sigma 35mm F1.4 DG HSM', #JR
-   '128.20' => 'Sigma 18-35mm F1.8 DC HSM', #JR
+   '128.20' => 'Sigma 18-35mm F1.8 DC HSM', #JR (Model A013, ref IB)
    '128.21' => 'Sigma 50-500mm F4.5-6.3 APO DG OS HSM', #JR
    '128.22' => 'Sigma 24-105mm F4 DG HSM | A', #JR (013)
+   '128.23' => 'Sigma 30mm F1.4', #IB
+   '128.24' => 'Sigma 35mm F1.4 DG HSM | A', #IB/JR (012)
+   '128.25' => 'Sigma 105mm F2.8 EX DG OS HSM Macro', #IB
+   '128.26' => 'Sigma 180mm F2.8 EX DG OS HSM APO Macro', #IB
+   '128.27' => 'Sigma 18-300mm F3.5-6.3 DC Macro HSM | C', #IB/JR (014)
+   '128.28' => 'Sigma 18-50mm F2.8-4.5 DC HSM', #IB
     129 => 'Tamron Lens (129)',
     129.1 => 'Tamron 200-400mm F5.6 LD', #12 (LD ref 23)
     129.2 => 'Tamron 70-300mm F4-5.6 LD', #12

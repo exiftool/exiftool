@@ -34,7 +34,7 @@ use Image::ExifTool::Nikon;
 use Image::ExifTool::Validate;
 use Image::ExifTool::MacOS;
 
-$VERSION = '3.10';
+$VERSION = '3.11';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -941,12 +941,14 @@ TagID:  foreach $tagID (@keys) {
                     # remove leading/trailing spaces on each line
                     $note =~ s/(^[ \t]+|[ \t]+$)//mg;
                     push @values, "($note)";
-                } elsif ($isXMP and lc $tagID ne lc $name) {
+                }
+                if ($isXMP and lc $tagID ne lc $name) {
                     # add note about different XMP Tag ID
-                    if ($$tagInfo{RootTagInfo}) {
-                        push @values, "($tagID)";
+                    my $note = $$tagInfo{RootTagInfo} ? $tagID : "called $tagID by the spec";
+                    if ($$tagInfo{Notes}) {
+                        $values[-1] =~ s/^\(/($note; /;
                     } else {
-                        push @values,"(called $tagID by the spec)";
+                        push @values, "($note)";
                     }
                 }
                 my $writeGroup;
@@ -1385,6 +1387,15 @@ TagID:  foreach $tagID (@keys) {
                 }
             }
             $writable .= '+' if $$tagInfo{List};
+            push @vals, "($$tagInfo{Notes})" if $$tagInfo{Notes};
+            # handle PrintConv lookups in Structure elements
+            my $printConv = $$tagInfo{PrintConv};
+            if (ref $printConv eq 'HASH') {
+                foreach (sort keys %$printConv) {
+                    next if /^(OTHER|BITMASK)$/;
+                    push @vals, "$_ = $$printConv{$_}";
+                }
+            }
             push @$info, [
                 $tag,
                 [ $$tagInfo{Name} || ucfirst($tag) ],

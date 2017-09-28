@@ -62,7 +62,7 @@ this formatting for GPS coordinates and date/time values.</li></ol>
 machine-readable value suitable for use in calculations, typically converted to
 standard units (eg. degrees, meters, or seconds).  For date/time values the
 standard EXIF date/time format is used ("YYYY:mm:dd HH:MM:SS" plus decimal
-seconds and time zone of they exist).  For tags which are a closed choice of
+seconds and time zone if they exist).  For tags which are a closed choice of
 string, this is the stored value of the string.  The ValueConv value is
 returned for all tags when the <code>-n</code> option is used, or for individual
 tags by suffixing the tag name with a <code>#</code> character.</li></ol>
@@ -72,7 +72,7 @@ applied to the binary data from the file.  Most tags have no separate "ValueConv
 conversion, so for these tags the "Raw" value is the same as the "ValueConv"
 value.  This value may be seen by using the <code>-v</code> option.</li></ol>
 
-<ol start=0><li>The "<b>Binary</b>" value is actual binary data stored in the
+<ol start=0><li>The "<b>Binary</b>" value is the actual binary data stored in the
 file.  This data is displayed in hexadecimal form with the <code>-v3</code>
 option, or by using the <code>-htmlDump</code> feature.  Note that this value is
 not related to the <code>-b</code> (<code>-binary</code>) option, which actually

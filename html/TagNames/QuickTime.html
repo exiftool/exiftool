@@ -232,11 +232,14 @@ roll, yaw, speed, altitude)</span></span></td></tr>
   <br>&#39;dv3b&#39; = DMB MAF, extending dv3a, with 3GPP timed text, DID, TVA, REL, IPMP
   <br>&#39;dvr1&#39; = DVB (.DVB) over RTP
   <br>&#39;dvt1&#39; = DVB (.DVB) over MPEG-2 Transport Stream
+  <br>&#39;heic&#39; = High Efficiency Image File Format HEVC image (.HEIC)
+  <br>&#39;hevc&#39; = High Efficiency Image File Format HEVC sequence (.HEIC)
   <br>&#39;isc2&#39; = ISMACryp 2.0 Encrypted File
   <br>&#39;iso2&#39; = MP4 Base Media v2 [ISO 14496-12:2005]
   <br>&#39;isom&#39; = MP4  Base Media v1 [IS0 14496-12:2003]
   <br>&#39;jpm &#39; = JPEG 2000 Compound Image (.JPM) [ISO 15444-6]
   <br>&#39;jpx &#39; = JPEG 2000 with extensions (.JPX) [ISO 15444-2]
+  <br>&#39;mif1&#39; = High Efficiency Image File Format image (.HEIF)
   <br>&#39;mj2s&#39; = Motion JPEG 2000 [ISO 15444-3] Simple Profile
   <br>&#39;mjp2&#39; = Motion JPEG 2000 [ISO 15444-3] General Profile
   <br>&#39;mmp4&#39; = MPEG-4/3GPP Mobile Profile (.MP4/3GP) (for NTT)
@@ -245,6 +248,7 @@ roll, yaw, speed, altitude)</span></span></td></tr>
   <br>&#39;mp42&#39; = MP4 v2 [ISO 14496-14]
   <br>&#39;mp71&#39; = MP4 w/ MPEG-7 Metadata [per ISO 14496-12]
   <br>&#39;mqt &#39; = Sony / Mobile QuickTime (.MQV) US Patent 7,477,830 (Sony Corp)
+  <br>&#39;msf1&#39; = High Efficiency Image File Format sequence (.HEIF)
   <br>&#39;odcf&#39; = OMA DCF DRM Format 2.0 (OMA-TS-DRM-DCF-V2_0-20060303-A)
   <br>&#39;opf2&#39; = OMA PDCF DRM Format 2.1 (OMA-TS-DRM-DCF-V2_1-20070724-C)
   <br>&#39;opx2&#39; = OMA PDCF DRM + XBS extensions (OMA-TS-DRM_XBS-V1_0-20070529-C)
@@ -293,14 +297,15 @@ roll, yaw, speed, altitude)</span></span></td></tr>
 <td>--&gt; <a href='QuickTime.html#Handler'>QuickTime Handler Tags</a></td></tr>
 <tr>
 <td>'iinf'</td>
-<td>ItemInformation?</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
+<td>ItemInformation</td>
+<td class=c>-</td>
+<td>--&gt; <a href='QuickTime.html#ItemInfo'>QuickTime ItemInfo Tags</a>
+  <br>--&gt; <a href='QuickTime.html#ItemInfo'>QuickTime ItemInfo Tags</a></td></tr>
 <tr class=b>
 <td>'iloc'</td>
-<td>ItemLocation?</td>
+<td>ItemLocation</td>
 <td class=c>no</td>
-<td>&nbsp;</td></tr>
+<td><span class=s><span class=n>(parsed, but not extracted as a tag)</span></span></td></tr>
 <tr>
 <td>'ilst'</td>
 <td>ItemList</td>
@@ -316,6 +321,16 @@ roll, yaw, speed, altitude)</span></span></td></tr>
 <td>ItemProtection?</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
+<tr class=b>
+<td>'iprp'</td>
+<td>ItemProperties</td>
+<td class=c>-</td>
+<td>--&gt; <a href='QuickTime.html#ItemProp'>QuickTime ItemProp Tags</a></td></tr>
+<tr>
+<td>'iref'</td>
+<td>ItemReference</td>
+<td class=c>-</td>
+<td>--&gt; <a href='QuickTime.html#ItemRef'>QuickTime ItemRef Tags</a></td></tr>
 <tr class=b>
 <td>'keys'</td>
 <td>Keys</td>
@@ -359,9 +374,10 @@ roll, yaw, speed, altitude)</span></span></td></tr>
   <br>&#39;mdta&#39; = Metadata Tags
   <br>&#39;meta&#39; = NRT Metadata
   <br>&#39;mjsm&#39; = MPEG-J
-  <br>&#39;nrtm&#39; = Non-Real Time Metadata</td><td>&nbsp;&nbsp;</td>
-  <td>&#39;ocsm&#39; = Object Content
-  <br>&#39;odsm&#39; = Object Descriptor
+  <br>&#39;nrtm&#39; = Non-Real Time Metadata
+  <br>&#39;ocsm&#39; = Object Content</td><td>&nbsp;&nbsp;</td>
+  <td>&#39;odsm&#39; = Object Descriptor
+  <br>&#39;pict&#39; = Picture
   <br>&#39;priv&#39; = Private
   <br>&#39;sdsm&#39; = Scene Description
   <br>&#39;soun&#39; = Audio Track
@@ -410,6 +426,19 @@ roll, yaw, speed, altitude)</span></span></td></tr>
 <td class=b>'niko'</td><td class=b>= Nikon</td>
 <td>&nbsp;</td><td>&nbsp;</td>
 </tr></table></td></tr></table></blockquote>
+
+<h2><a name='ItemInfo'>QuickTime ItemInfo Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'infe'</td>
+<td>ItemInfoEntry</td>
+<td class=c>no</td>
+<td><span class=s><span class=n>(parsed, but not extracted as a tag)</span></span></td></tr>
+</table></td></tr></table></blockquote>
 
 <h2><a name='ItemList'>QuickTime ItemList Tags</a></h2>
 <p>As well as these tags, the &#39;mdta&#39; handler uses numerical tag ID&#39;s which are
@@ -3509,6 +3538,37 @@ defined in this table.</p>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='ItemProp'>QuickTime ItemProp Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'ipco'</td>
+<td>ItemPropertyContainer</td>
+<td class=c>-</td>
+<td>--&gt; <a href='QuickTime.html#ItemPropCont'>QuickTime ItemPropCont Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ItemPropCont'>QuickTime ItemPropCont Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr><td colspan=4 class=c><i>[no tags known]</i></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ItemRef'>QuickTime ItemRef Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr><td colspan=4 class=c><i>[no tags known]</i></td></tr>
+</table></td></tr></table></blockquote>
+
 <h2><a name='Keys'>QuickTime Keys Tags</a></h2>
 <p>This directory contains a list of key names which are used to decode
 ItemList tags written by the &quot;mdta&quot; handler.  The prefix of
@@ -4940,16 +5000,21 @@ https://github.com/google/spatial-media/blob/master/docs/spherical-video-v2-rfc.
 <tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
+<td>'cdsc'</td>
+<td>ContentDescribes</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>'chap'</td>
 <td>ChapterListTrackID</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'mpod'</td>
 <td>ElementaryStreamTrack</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'tmcd'</td>
 <td>TimeCode</td>
 <td class=c>no</td>
@@ -6246,7 +6311,7 @@ multi-language user data tags found, even if they don&#39;t exist in this table.
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Mar 6, 2017</i>
+<br><i>Last revised Sep 28, 2017</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

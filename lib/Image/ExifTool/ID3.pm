@@ -16,7 +16,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.47';
+$VERSION = '1.48';
 
 sub ProcessID3v2($$$);
 sub ProcessPrivate($$$);
@@ -1093,7 +1093,7 @@ sub ProcessID3v2($$$)
             }
         }
         # decode v2.3 and v2.4 flags
-        my %flags;
+        my (%flags, %extra);
         if ($flags) {
             if ($vers < 0x0400) {
                 # version 2.3 flags
@@ -1155,13 +1155,16 @@ sub ProcessID3v2($$$)
             $dataLen == length($val) or $et->Warn("Wrong length for $id frame"), next;
         }
         unless ($tagInfo) {
-            $verbose and $et->VerboseInfo($id, $tagInfo,
+            next unless $verbose;
+            %flags and $extra{Extra} = ', Flags=' . join(',', sort keys %flags);
+            $et->VerboseInfo($id, $tagInfo,
                 Table   => $tagTablePtr,
                 Value   => $val,
                 DataPt  => $dataPt,
                 DataPos => $$dirInfo{DataPos},
                 Size    => $len,
                 Start   => $offset,
+                %extra
             );
             next;
         }
@@ -1308,12 +1311,14 @@ sub ProcessID3v2($$$)
         if ($lang and $lang =~ /^[a-z]{3}$/i and $lang ne 'eng') {
             $tagInfo = Image::ExifTool::GetLangInfo($tagInfo, lc $lang);
         }
+        %flags and $extra{Extra} = ', Flags=' . join(',', sort keys %flags);
         $et->HandleTag($tagTablePtr, $id, $val,
             TagInfo => $tagInfo,
             DataPt  => $dataPt,
             DataPos => $$dirInfo{DataPos},
             Size    => $len,
             Start   => $offset,
+            %extra
         );
     }
 }

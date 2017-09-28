@@ -2291,6 +2291,30 @@ firmware 1.02f.</p>
   <br>0x10 = Rotate 270 CW
   <br>0x20 = Rotate 90 CW
   <br>0x30 = Rotate 180</span></td></tr>
+<tr>
+<td class=r title='15272 = 0x3ba8'>15272</td>
+<td>RollAngle</td>
+<td class=c>fixed32u</td>
+<td><span class=s><span class=n>(converted to degrees of clockwise camera roll)</span></span></td></tr>
+<tr class=b>
+<td class=r title='15276 = 0x3bac'>15276</td>
+<td>PitchAngle</td>
+<td class=c>fixed32u</td>
+<td><span class=s><span class=n>(converted to degrees of upward camera tilt)</span></span></td></tr>
+<tr>
+<td class=r title='15280 = 0x3bb0'>15280</td>
+<td>YawAngle</td>
+<td class=c>fixed32u</td>
+<td><span class=s><span class=n>(the camera yaw angle when shooting in portrait orientation)</span></span></td></tr>
+<tr class=b>
+<td class=r title='15730 = 0x3d72'>15730</td>
+<td>Rotation</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x30]
+  <br>0x0 = Horizontal
+  <br>0x10 = Rotate 270 CW
+  <br>0x20 = Rotate 90 CW
+  <br>0x30 = Rotate 180</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='ShotInfoD5000'>Nikon ShotInfoD5000 Tags</a></h2>
@@ -2993,7 +3017,10 @@ firmware 1.01b.</p>
 <td>PhotoShootingMenuBankImageArea</td>
 <td class=c>int8u</td>
 <td><span class=s>[Mask 0x07]
+  <br>0x0 = FX (36x24)
   <br>0x1 = DX (24x16)
+  <br>0x2 = 5:4 (30x24)
+  <br>0x3 = 1.2x (30x20)
   <br>0x4 = 1.3x (18x12)</span></td></tr>
 <tr>
 <td class=r title='3819 = 0xeeb'>3819</td>
@@ -3002,6 +3029,53 @@ firmware 1.01b.</p>
 <td class=c>-<br>-</td>
 <td>--&gt; <a href='NikonCustom.html#SettingsD5'>NikonCustom SettingsD5 Tags</a>
   <br>--&gt; <a href='NikonCustom.html#SettingsD500'>NikonCustom SettingsD500 Tags</a></td></tr>
+<tr class=b>
+<td class=r title='11264 = 0x2c00'>11264</td>
+<td>RollAngle</td>
+<td class=c>fixed32u</td>
+<td><span class=s><span class=n>(converted to degrees of clockwise camera roll)</span></span></td></tr>
+<tr>
+<td class=r title='11268 = 0x2c04'>11268</td>
+<td>PitchAngle</td>
+<td class=c>fixed32u</td>
+<td><span class=s><span class=n>(converted to degrees of upward camera tilt)</span></span></td></tr>
+<tr class=b>
+<td class=r title='11272 = 0x2c08'>11272</td>
+<td>YawAngle</td>
+<td class=c>fixed32u</td>
+<td><span class=s><span class=n>(the camera yaw angle when shooting in portrait orientation)</span></span></td></tr>
+<tr>
+<td class=r title='11300 = 0x2c24'>11300</td>
+<td>RollAngle</td>
+<td class=c>fixed32u</td>
+<td><span class=s><span class=n>(converted to degrees of clockwise camera roll)</span></span></td></tr>
+<tr class=b>
+<td class=r title='11304 = 0x2c28'>11304</td>
+<td>PitchAngle</td>
+<td class=c>fixed32u</td>
+<td><span class=s><span class=n>(converted to degrees of upward camera tilt)</span></span></td></tr>
+<tr>
+<td class=r title='11308 = 0x2c2c'>11308</td>
+<td>YawAngle</td>
+<td class=c>fixed32u</td>
+<td><span class=s><span class=n>(the camera yaw angle when shooting in portrait orientation)</span></span></td></tr>
+<tr class=b>
+<td class=r title='11442 = 0x2cb2'>11442</td>
+<td>ExtendedPhotoShootingBanks</td>
+<td class=c>int8u</td>
+<td><span class=s>[Mask 0x01]
+  <br>0x0 = On
+  <br>0x1 = Off</span></td></tr>
+<tr>
+<td class=r title='11938 = 0x2ea2'>11938</td>
+<td>Rotation</td>
+<td class=c>int8u</td>
+<td><span class=s><span class=n>(D500 firmware 1.1x)</span>
+  <br>[Mask 0x30]
+  <br>0x0 = Horizontal
+  <br>0x10 = Rotate 270 CW
+  <br>0x20 = Rotate 90 CW
+  <br>0x30 = Rotate 180</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='ShotInfoD610'>Nikon ShotInfoD610 Tags</a></h2>
@@ -4015,6 +4089,8 @@ D5200, D7000.</p>
   <br>13 = Group Area
   <br>14 = Dynamic Area (25 points)
   <br>15 = Dynamic Area (72 points)
+  <br>16 = Group Area (HL)
+  <br>17 = Group Area (VL)
   <br>128 = Single
   <br>129 = Auto (41 points)
   <br>130 = Subject Tracking (41 points)
@@ -4530,6 +4606,204 @@ point is E9)</span></span></td></tr>
 <td>&nbsp;</td></tr>
 <tr>
 <td class=r title='28 = 0x1c'>28</td>
+<td>ContrastDetectAFInFocus</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = No
+  <br>1 = Yes</span></td></tr>
+<tr class=b>
+<td class=r title='68 = 0x44'>68</td>
+<td>PrimaryAFPoint</td>
+<td class=c>int8u</td>
+<td><table class=cols><tr>
+  <td>0 = (none)
+  <br>1 = E9 (Center)
+  <br>2 = D9
+  <br>3 = C9
+  <br>4 = B9
+  <br>5 = A9
+  <br>6 = F9
+  <br>7 = G9
+  <br>8 = H9
+  <br>9 = I9
+  <br>10 = E10
+  <br>11 = D10
+  <br>12 = C10
+  <br>13 = B10
+  <br>14 = A10
+  <br>15 = F10
+  <br>16 = G10
+  <br>17 = H10
+  <br>18 = I10
+  <br>19 = E11
+  <br>20 = D11
+  <br>21 = C11
+  <br>22 = B11
+  <br>23 = A11
+  <br>24 = F11
+  <br>25 = G11
+  <br>26 = H11
+  <br>27 = I11
+  <br>28 = E8
+  <br>29 = D8
+  <br>30 = C8</td><td>&nbsp;&nbsp;</td>
+  <td>31 = B8
+  <br>32 = A8
+  <br>33 = F8
+  <br>34 = G8
+  <br>35 = H8
+  <br>36 = I8
+  <br>37 = E7
+  <br>38 = D7
+  <br>39 = C7
+  <br>40 = B7
+  <br>41 = A7
+  <br>42 = F7
+  <br>43 = G7
+  <br>44 = H7
+  <br>45 = I7
+  <br>46 = E12
+  <br>47 = D12
+  <br>48 = C12
+  <br>49 = B12
+  <br>50 = A12
+  <br>51 = F12
+  <br>52 = G12
+  <br>53 = H12
+  <br>54 = I12
+  <br>55 = E13
+  <br>56 = D13
+  <br>57 = C13
+  <br>58 = B13
+  <br>59 = A13
+  <br>60 = F13
+  <br>61 = G13</td><td>&nbsp;&nbsp;</td>
+  <td>62 = H13
+  <br>63 = I13
+  <br>64 = E14
+  <br>65 = D14
+  <br>66 = C14
+  <br>67 = B14
+  <br>68 = A14
+  <br>69 = F14
+  <br>70 = G14
+  <br>71 = H14
+  <br>72 = I14
+  <br>73 = E15
+  <br>74 = D15
+  <br>75 = C15
+  <br>76 = B15
+  <br>77 = A15
+  <br>78 = F15
+  <br>79 = G15
+  <br>80 = H15
+  <br>81 = I15
+  <br>82 = E16
+  <br>83 = D16
+  <br>84 = C16
+  <br>85 = B16
+  <br>86 = A16
+  <br>87 = F16
+  <br>88 = G16
+  <br>89 = H16
+  <br>90 = I16
+  <br>91 = E17
+  <br>92 = D17</td><td>&nbsp;&nbsp;</td>
+  <td>93 = C17
+  <br>94 = B17
+  <br>95 = A17
+  <br>96 = F17
+  <br>97 = G17
+  <br>98 = H17
+  <br>99 = I17
+  <br>100 = E6
+  <br>101 = D6
+  <br>102 = C6
+  <br>103 = B6
+  <br>104 = A6
+  <br>105 = F6
+  <br>106 = G6
+  <br>107 = H6
+  <br>108 = I6
+  <br>109 = E5
+  <br>110 = D5
+  <br>111 = C5
+  <br>112 = B5
+  <br>113 = A5
+  <br>114 = F5
+  <br>115 = G5
+  <br>116 = H5
+  <br>117 = I5
+  <br>118 = E4
+  <br>119 = D4
+  <br>120 = C4
+  <br>121 = B4
+  <br>122 = A4
+  <br>123 = F4</td><td>&nbsp;&nbsp;</td>
+  <td>124 = G4
+  <br>125 = H4
+  <br>126 = I4
+  <br>127 = E3
+  <br>128 = D3
+  <br>129 = C3
+  <br>130 = B3
+  <br>131 = A3
+  <br>132 = F3
+  <br>133 = G3
+  <br>134 = H3
+  <br>135 = I3
+  <br>136 = E2
+  <br>137 = D2
+  <br>138 = C2
+  <br>139 = B2
+  <br>140 = A2
+  <br>141 = F2
+  <br>142 = G2
+  <br>143 = H2
+  <br>144 = I2
+  <br>145 = E1
+  <br>146 = D1
+  <br>147 = C1
+  <br>148 = B1
+  <br>149 = A1
+  <br>150 = F1
+  <br>151 = G1
+  <br>152 = H1
+  <br>153 = I1</td></tr></table>
+<span class=s><span class=n>(future models?...)</span>
+  <br>0 = (none)
+  <br>1 = Center</span></td></tr>
+<tr>
+<td class=r title='70 = 0x46'>70</td>
+<td>AFImageWidth</td>
+<td class=c>int16u</td>
+<td><span class=s><span class=n>(this and the following tags are valid only for contrast-detect AF)</span></span></td></tr>
+<tr class=b>
+<td class=r title='72 = 0x48'>72</td>
+<td>AFImageHeight</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='74 = 0x4a'>74</td>
+<td>AFAreaXPosition</td>
+<td class=c>int16u</td>
+<td><span class=s><span class=n>(center of AF area in AFImage coordinates)</span></span></td></tr>
+<tr class=b>
+<td class=r title='76 = 0x4c'>76</td>
+<td>AFAreaYPosition</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='78 = 0x4e'>78</td>
+<td>AFAreaWidth</td>
+<td class=c>int16u</td>
+<td><span class=s><span class=n>(size of AF area in AFImage coordinates)</span></span></td></tr>
+<tr class=b>
+<td class=r title='80 = 0x50'>80</td>
+<td>AFAreaHeight</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='82 = 0x52'>82</td>
 <td>ContrastDetectAFInFocus</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = No
@@ -5877,6 +6151,7 @@ ExifTool to choose in these cases (see the
 </tr><tr><td>'92 48 24 37 24 24 94 06'</td><td>= AF-S Zoom-Nikkor 14-24mm f/2.8G ED</td>
 </tr><tr><td>'93 48 37 5C 24 24 95 06'</td><td>= AF-S Zoom-Nikkor 24-70mm f/2.8G ED</td>
 </tr><tr><td>'94 40 2D 53 2C 3C 96 06'</td><td>= AF-S DX Zoom-Nikkor 18-55mm f/3.5-5.6G ED II</td>
+</tr><tr><td>'94 48 7C 7C 24 24 4B 0E'</td><td>= Sigma 180mm F2.8 APO Macro EX DG OS</td>
 </tr><tr><td>'95 00 37 37 2C 2C 97 06'</td><td>= PC-E Nikkor 24mm f/3.5D ED</td>
 </tr><tr><td>'95 4C 37 37 2C 2C 97 02'</td><td>= PC-E Nikkor 24mm f/3.5D ED</td>
 </tr><tr><td>'96 38 1F 37 34 3C 4B 06'</td><td>= Sigma 12-24mm F4.5-5.6 II DG HSM</td>
@@ -6016,7 +6291,7 @@ ExifTool to choose in these cases (see the
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Aug 18, 2017</i>
+<br><i>Last revised Sep 19, 2017</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

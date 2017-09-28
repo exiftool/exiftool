@@ -23,6 +23,7 @@ my %mp4Map = (
 my %dirMap = (
     MOV => \%movMap,
     MP4 => \%mp4Map,
+    HEIC => { },    # can't currently write XMP to HEIC files
 );
 
 #------------------------------------------------------------------------------
@@ -135,7 +136,7 @@ sub WriteQuickTime($$$)
                 undef $tagInfo;
             }
         }
-        if ($tagInfo) {
+        if ($tagInfo and (not defined $$tagInfo{Writable} or $$tagInfo{Writable})) {
             # read the atom data
             $raf->Read($buff, $size) == $size or $et->Error("Error reading $tag data"), last;
             my $subdir = $$tagInfo{SubDirectory};
@@ -310,7 +311,7 @@ sub WriteMOV($$)
         $buff !~ /^(....)+(qt  )/s)
     {
         # file is MP4 format if 'ftyp' exists without 'qt  ' as a compatible brand
-        $ftype = 'MP4';
+        $ftype = $buff =~ /^(heic|mif1|msf1|heix|hevc|hevx)/ ? 'HEIC' : 'MP4';
     } else {
         $ftype = 'MOV';
     }

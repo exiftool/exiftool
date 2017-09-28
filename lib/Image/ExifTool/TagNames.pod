@@ -1228,6 +1228,7 @@ L<http://www.adobe.com/devnet/xmp/> for the official XMP specification.
   extensis                                      XMP extensis
   fpv                                           XMP fpv
   GAudio                                        XMP GAudio
+  GDepth                                        XMP GDepth
   getty                                         XMP GettyImages
   GImage                                        XMP GImage
   GPano                                         XMP GPano
@@ -2261,6 +2262,31 @@ These tags belong to the ExifTool XMP-GAudio family 1 group.
   --------                                      --------
   AudioData                                     string
   AudioMimeType                                 string
+
+=head3 XMP GDepth Tags
+
+Google depthmap information. See
+L<https://developers.google.com/depthmap-metadata/> for the specification.
+
+
+These tags belong to the ExifTool XMP-GDepth family 1 group.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  Confidence                                    string/
+  ConfidenceMime                                string/
+  Data                                          string/
+  Far                                           real/
+  Format                                        string/
+  ImageHeight                                   real/
+  ImageWidth                                    real/
+  Manufacturer                                  string/
+  MeasureType                                   string/
+  Mime                                          string/
+  Model                                         string/
+  Near                                          real/
+  Software                                      string/
+  Units                                         string/
 
 =head3 XMP GettyImages Tags
 
@@ -10081,6 +10107,10 @@ These tags are extracted from encrypted data in images from the D810.
   14072    PitchAngle                           fixed32u
   14076    YawAngle                             fixed32u
   14526    Rotation                             int8u & 0x30
+  15272    RollAngle                            fixed32u
+  15276    PitchAngle                           fixed32u
+  15280    YawAngle                             fixed32u
+  15730    Rotation                             int8u & 0x30
 
 =head3 Nikon ShotInfoD5000 Tags
 
@@ -10185,6 +10215,14 @@ These tags are extracted from encrypted data in images from the D5 and D500.
   3716.1    PhotoShootingMenuBankImageArea       int8u & 0x07
    3819    CustomSettingsD5                     NikonCustom SettingsD5
            CustomSettingsD500                   NikonCustom SettingsD500
+  11264    RollAngle                            fixed32u
+  11268    PitchAngle                           fixed32u
+  11272    YawAngle                             fixed32u
+  11300    RollAngle                            fixed32u
+  11304    PitchAngle                           fixed32u
+  11308    YawAngle                             fixed32u
+  11442    ExtendedPhotoShootingBanks           int8u & 0x01
+  11938    Rotation                             int8u & 0x30
 
 =head3 Nikon ShotInfoD610 Tags
 
@@ -10472,6 +10510,14 @@ These tags are written by Nikon DSLR's which have the live view feature.
      24    AFAreaWidth                          int16u
      26    AFAreaHeight                         int16u
      28    ContrastDetectAFInFocus              int8u
+     68    PrimaryAFPoint                       int8u
+     70    AFImageWidth                         int16u
+     72    AFImageHeight                        int16u
+     74    AFAreaXPosition                      int16u
+     76    AFAreaYPosition                      int16u
+     78    AFAreaWidth                          int16u
+     80    AFAreaHeight                         int16u
+     82    ContrastDetectAFInFocus              int8u
 
 =head3 Nikon FileInfo Tags
 
@@ -14320,6 +14366,7 @@ MakerNotes.
   0x2029   RAWFileType                          int16u
   0x202a   Tag202a                              Sony Tag202a
   0x202c   MeteringMode2                        int16u
+  0x202d   ExposureStandardAdjustment           rational64s
   0x3000   ShotInfo                             Sony ShotInfo
   0x900b   Tag900b                              Sony Tag900b
   0x9050   Tag9050a                             Sony Tag9050a
@@ -22011,11 +22058,14 @@ Tags written by some HTC camera phones.
   'dinf'   DataInformation?                     no
   'free'   Free?                                no
   'hdlr'   Handler                              QuickTime Handler
-  'iinf'   ItemInformation?                     no
-  'iloc'   ItemLocation?                        no
+  'iinf'   ItemInformation                      QuickTime ItemInfo
+                                                QuickTime ItemInfo
+  'iloc'   ItemLocation                         no
   'ilst'   ItemList                             QuickTime ItemList
   'ipmc'   IPMPControl?                         no
   'ipro'   ItemProtection?                      no
+  'iprp'   ItemProperties                       QuickTime ItemProp
+  'iref'   ItemReference                        QuickTime ItemRef
   'keys'   Keys                                 QuickTime Keys
   'pitm'   PrimaryItemReference?                no
   'xml '   XML                                  XMP XML
@@ -22028,6 +22078,12 @@ Tags written by some HTC camera phones.
       8    HandlerType                          no
      12    HandlerVendorID                      no
      24    HandlerDescription                   no
+
+=head3 QuickTime ItemInfo Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  'infe'   ItemInfoEntry                        no
 
 =head3 QuickTime ItemList Tags
 
@@ -22166,6 +22222,24 @@ defined in this table.
   'vbrq'   AudioVBRQuality                      no
   'vers'   AudioEncodingParamsVersion           no
   'vpk?'   AudioHasVariablePacketByteSizes      no
+
+=head3 QuickTime ItemProp Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  'ipco'   ItemPropertyContainer                QuickTime ItemPropCont
+
+=head3 QuickTime ItemPropCont Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  [no tags known]
+
+=head3 QuickTime ItemRef Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  [no tags known]
 
 =head3 QuickTime Keys Tags
 
@@ -22600,6 +22674,7 @@ MP4 video media header.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
+  'cdsc'   ContentDescribes                     no
   'chap'   ChapterListTrackID                   no
   'mpod'   ElementaryStreamTrack                no
   'tmcd'   TimeCode                             no

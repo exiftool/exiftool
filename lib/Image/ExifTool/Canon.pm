@@ -85,7 +85,7 @@ sub ProcessSerialData($$$);
 sub ProcessFilters($$$);
 sub SwapWords($);
 
-$VERSION = '3.79';
+$VERSION = '3.80';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -685,6 +685,7 @@ $VERSION = '3.79';
     0x3940000 => 'EOS M5', #IB
     0x3950000 => 'PowerShot G5 X',
     0x3970000 => 'PowerShot G7 X Mark II',
+    0x3980000 => 'EOS M100', #42
     0x3990000 => 'PowerShot ELPH 360 HS / IXUS 285 HS / IXY 650',
     0x4010000 => 'PowerShot SX540 HS',
     0x4020000 => 'PowerShot SX420 IS',

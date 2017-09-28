@@ -72,7 +72,7 @@ my %sTimecode = (
         },
     },
     timeValue   => { },
-    value       => { Writable => 'integer' },
+    value       => { Writable => 'integer', Notes => 'only in XMP 2008 spec; an error?' },
 );
 
 # XMP Dynamic Media namespace properties (xmpDM)
@@ -1617,6 +1617,52 @@ my %sSubVersion = (
     CroppedAreaImageHeightPixels=> { Avoid => 1, Writable => 'integer' },
     CroppedAreaLeftPixels       => { Avoid => 1, Writable => 'integer' },
     CroppedAreaTopPixels        => { Avoid => 1, Writable => 'integer' },
+);
+
+# Google depthmap information (ref https://developers.google.com/depthmap-metadata/reference)
+%Image::ExifTool::XMP::GDepth = (
+    GROUPS      => { 0 => 'XMP', 1 => 'XMP-GDepth', 2 => 'Image' },
+    NAMESPACE   => { 'GDepth' => 'http://ns.google.com/photos/1.0/depthmap/' },
+    NOTES       => q{
+        Google depthmap information. See
+        L<https://developers.google.com/depthmap-metadata/> for the specification.
+    },
+    WRITABLE    => 'string', # (default to string-type tags)
+    PRIORITY    => 0,
+    Format => {
+        Avoid => 1,
+        PrintConv => {
+            RangeInverse => 'RangeInverse',
+            RangeLinear  => 'RangeLinear',
+        },
+    },
+    Near        => { Avoid => 1, Writable => 'real' },
+    Far         => { Avoid => 1, Writable => 'real' },
+    Mime        => { Avoid => 1 },
+    Data => {
+        Avoid => 1,
+        ValueConv => 'Image::ExifTool::XMP::DecodeBase64($val)',
+        ValueConvInv => 'Image::ExifTool::XMP::EncodeBase64($val)',
+    },
+    Units       => { Avoid => 1 },
+    MeasureType => {
+        Avoid => 1,
+        PrintConv => {
+            OpticalAxis => 'OpticalAxis',
+            OpticalRay  => 'OpticalRay',
+        },
+    },
+    ConfidenceMime  => { Avoid => 1 },
+    Confidence => {
+        Avoid => 1,
+        ValueConv => 'Image::ExifTool::XMP::DecodeBase64($val)',
+        ValueConvInv => 'Image::ExifTool::XMP::EncodeBase64($val)',
+    },
+    Manufacturer=> { Avoid => 1 },
+    Model       => { Avoid => 1 },
+    Software    => { Avoid => 1 },
+    ImageWidth  => { Avoid => 1, Writable => 'real' },
+    ImageHeight => { Avoid => 1, Writable => 'real' },
 );
 
 # Getty Images namespace (ref PH)

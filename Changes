@@ -7,6 +7,17 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.55. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Oct. 4, 2017 - Version 10.63
+
+  - Added a number of new Canon LensTypes (thanks Norbert Wasser for some)
+  - Added a new CanonModelID
+  - Added a new Olympus CameraType
+  - Decode MD5Signature in FLAC StreamInfo (thanks Tim Eliseo)
+  - Improved decoding of HEIC/HEIF metadata
+  - Removed useless write support for QuickTime date/time tags in HEIC/HEIF
+    images
+  - Fixed "Incorrect XMP stream length" problem when writing some INDD files
+
 Sept. 28, 2017 - Version 10.62
 
   - Added preliminary support for HEIC/HEIF images

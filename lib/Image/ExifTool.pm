@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup);
 
-$VERSION = '10.62';
+$VERSION = '10.63';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -192,6 +192,7 @@ my %writeTypes; # lookup for writable file types (hash filled if required)
     TIFF => [ qw(3FR DCR K25 KDC SRF) ],
     XMP  => [ 'SVG' ],
     JP2  => [ 'J2C', 'JPC' ],
+    MOV  => [ 'HEIC', 'HEIF' ],
 );
 
 # file types that we can create from scratch
@@ -295,8 +296,8 @@ my %createTypes = map { $_ => 1 } qw(XMP ICC MIE VRD DR4 EXIF EXV);
     GZIP => ['GZIP', 'GNU ZIP compressed archive'],
     HDP  => ['TIFF', 'Windows HD Photo'],
     HDR  => ['HDR',  'Radiance RGBE High Dynamic Range'],
-    HEIC => ['MOV',  'High Efficiency File Format still image'],
-    HEIF => ['MOV',  'High Efficiency File Format'],
+    HEIC => ['MOV',  'High Efficiency Image Format still image'],
+    HEIF => ['MOV',  'High Efficiency Image Format'],
     HTM  =>  'HTML',
     HTML => ['HTML', 'HyperText Markup Language'],
     ICAL =>  'ICS',
@@ -7204,7 +7205,7 @@ sub HandleTag($$$$;%)
 #         2) data value (or reference to require hash if Composite)
 #         3) optional family 0 group, 4) optional family 1 group
 # Returns: tag key or undef if no value
-sub FoundTag($$$)
+sub FoundTag($$$;@)
 {
     local $_;
     my ($self, $tagInfo, $value, @grps) = @_;

@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.93
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.63
 [File, System, Image] FileName - File Name: FLAC.flac
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 282 bytes
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2006:11:13 15:12:26-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:18 07:17:35-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:03:07 15:31:09-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2017:10:04 07:16:35-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2017:09:28 14:05:47-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: FLAC
 [File, File, Image] FileTypeExtension - File Type Extension: flac
@@ -17,6 +17,7 @@
 [FLAC, FLAC, Audio] Bit100-102 - Channels: 2
 [FLAC, FLAC, Audio] Bit103-107 - Bits Per Sample: 8
 [FLAC, FLAC, Audio] Bit108-143 - Total Samples: 0
+[FLAC, FLAC, Audio] Bit144-271 - MD5 Signature: d41d8cd98f00b204e9800998ecf8427e
 [Vorbis, Vorbis, Audio] vendor - Vendor: reference libFLAC 1.1.2 20050205
 [Vorbis, Vorbis, Audio] REPLAYGAIN_TRACK_PEAK - Replay Gain Track Peak: 0.00000000
 [Vorbis, Vorbis, Audio] REPLAYGAIN_TRACK_GAIN - Replay Gain Track Gain: -24601.00 dB

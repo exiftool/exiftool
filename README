@@ -36,8 +36,8 @@ supported by ExifTool (r = read, w = write, c = create):
   COS   r     | GZ    r     | MOI   r     | PICT  r     | VSD   r
   CR2   r/w   | HDP   r/w   | MOS   r/w   | PMP   r     | WAV   r
   CRW   r/w   | HDR   r     | MOV   r/w   | PNG   r/w   | WDP   r/w
-  CS1   r/w   | HEIC  r/w   | MP3   r     | PPM   r/w   | WEBP  r
-  DCM   r     | HEIF  r/w   | MP4   r/w   | PPT   r     | WEBM  r
+  CS1   r/w   | HEIC  r     | MP3   r     | PPM   r/w   | WEBP  r
+  DCM   r     | HEIF  r     | MP4   r/w   | PPT   r     | WEBM  r
   DCP   r/w   | HTML  r     | MPC   r     | PPTX  r     | WMA   r
   DCR   r     | ICC   r/w/c | MPG   r     | PS    r/w   | WMV   r
   DFONT r     | ICS   r     | MPO   r/w   | PSB   r/w   | WV    r
@@ -102,8 +102,8 @@ your home directory, then you would type the following commands in a
 terminal window to extract and run ExifTool:
 
   cd ~/Desktop
-  gzip -dc Image-ExifTool-10.62.tar.gz | tar -xf -
-  cd Image-ExifTool-10.62
+  gzip -dc Image-ExifTool-10.63.tar.gz | tar -xf -
+  cd Image-ExifTool-10.63
   ./exiftool t/images/ExifTool.jpg
 
 Note:  These commands extract meta information from one of the test images. 

@@ -14,7 +14,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.07';
+$VERSION = '1.08';
 
 sub ProcessBitStream($$$);
 
@@ -62,6 +62,11 @@ sub ProcessBitStream($$$);
         ValueConv => '$val + 1',
     },
     'Bit108-143' => 'TotalSamples',
+    'Bit144-271' => { #Tim Eliseo
+        Name => 'MD5Signature',
+        Format => 'undef',
+        ValueConv => 'unpack("H*",$val)',
+    },
 );
 
 %Image::ExifTool::FLAC::Picture = (
@@ -158,46 +163,51 @@ sub ProcessBitStream($$$)
         my ($i1, $i2) = (int($b1 / 8), int($b2 / 8)); # start/end byte numbers
         my ($f1, $f2) = ($b1 % 8, $b2 % 8); # start/end bit numbers within each byte
         last if $i2 >= $dirLen;
-        my $val = 0;
-        my ($i, $mask, $extra);
-        $extra = ', Mask=0x' if $verbose and ($f1 != 0 or $f2 != 7);
-        if ($byteOrder eq 'MM') {
-            # loop from high byte to low byte
-            for ($i=$i1; $i<=$i2; ++$i) {
-                $mask = 0xff;
-                if ($i == $i1 and $f1) {
-                    # mask off high bits in first word (0 is high bit)
-                    foreach ((8-$f1) .. 7) { $mask ^= (1 << $_) }
+        my ($val, $extra);
+        # if Format is unspecified, convert the specified number of bits to an unsigned integer,
+        # otherwise allow HandleTag to convert whole bytes the normal way (via undefined $val)
+        if (ref $$tagTablePtr{$tag} ne 'HASH' or not $$tagTablePtr{$tag}{Format}) {
+            my ($i, $mask);
+            $val = 0;
+            $extra = ', Mask=0x' if $verbose and ($f1 != 0 or $f2 != 7);
+            if ($byteOrder eq 'MM') {
+                # loop from high byte to low byte
+                for ($i=$i1; $i<=$i2; ++$i) {
+                    $mask = 0xff;
+                    if ($i == $i1 and $f1) {
+                        # mask off high bits in first word (0 is high bit)
+                        foreach ((8-$f1) .. 7) { $mask ^= (1 << $_) }
+                    }
+                    if ($i == $i2 and $f2 < 7) {
+                        # mask off low bits in last word (7 is low bit)
+                        foreach (0 .. (6-$f2)) { $mask ^= (1 << $_) }
+                    }
+                    $val = $val * 256 + ($mask & Get8u($dataPt, $i + $dirStart));
+                    $extra .= sprintf('%.2x', $mask) if $extra;
                 }
-                if ($i == $i2 and $f2 < 7) {
-                    # mask off low bits in last word (7 is low bit)
-                    foreach (0 .. (6-$f2)) { $mask ^= (1 << $_) }
+            } else {
+                # (FLAC is big-endian, but support little-endian bit streams
+                #  so this routine can be used by other modules)
+                # loop from high byte to low byte
+                for ($i=$i2; $i>=$i1; --$i) {
+                    $mask = 0xff;
+                    if ($i == $i1 and $f1) {
+                        # mask off low bits in first word (0 is low bit)
+                        foreach (0 .. ($f1-1)) { $mask ^= (1 << $_) }
+                    }
+                    if ($i == $i2 and $f2 < 7) {
+                        # mask off high bits in last word (7 is high bit)
+                        foreach (($f2+1) .. 7) { $mask ^= (1 << $_) }
+                    }
+                    $val = $val * 256 + ($mask & Get8u($dataPt, $i + $dirStart));
+                    $extra .= sprintf('%.2x', $mask) if $extra;
                 }
-                $val = $val * 256 + ($mask & Get8u($dataPt, $i + $dirStart));
-                $extra .= sprintf('%.2x', $mask) if $extra;
             }
-        } else {
-            # (FLAC is big-endian, but support little-endian bit streams
-            #  so this routine can be used by other modules)
-            # loop from high byte to low byte
-            for ($i=$i2; $i>=$i1; --$i) {
-                $mask = 0xff;
-                if ($i == $i1 and $f1) {
-                    # mask off low bits in first word (0 is low bit)
-                    foreach (0 .. ($f1-1)) { $mask ^= (1 << $_) }
-                }
-                if ($i == $i2 and $f2 < 7) {
-                    # mask off high bits in last word (7 is high bit)
-                    foreach (($f2+1) .. 7) { $mask ^= (1 << $_) }
-                }
-                $val = $val * 256 + ($mask & Get8u($dataPt, $i + $dirStart));
-                $extra .= sprintf('%.2x', $mask) if $extra;
+            # shift word down until low bit is in position 0
+            until ($mask & 0x01) {
+                $val /= 2;
+                $mask >>= 1;
             }
-        }
-        # shift word down until low bit is in position 0
-        until ($mask & 0x01) {
-            $val /= 2;
-            $mask >>= 1;
         }
         $et->HandleTag($tagTablePtr, $tag, $val,
             DataPt  => $dataPt,

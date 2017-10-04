@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.23
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.63
 [File, System, Image] FileName - File Name: FLAC.ogg
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 151 bytes
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2006:11:13 16:10:54-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2016:07:14 09:09:45-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2016:07:07 12:43:28-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2017:10:03 13:59:05-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2017:09:28 14:05:47-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: OGG
 [File, File, Image] FileTypeExtension - File Type Extension: ogg
@@ -17,4 +17,5 @@
 [FLAC, FLAC, Audio] Bit100-102 - Channels: 2
 [FLAC, FLAC, Audio] Bit103-107 - Bits Per Sample: 8
 [FLAC, FLAC, Audio] Bit108-143 - Total Samples: 0
+[FLAC, FLAC, Audio] Bit144-271 - MD5 Signature: 00000000000000000000000000000000
 [Vorbis, Vorbis, Audio] vendor - Vendor: reference libFLAC 1.1.2 20050205

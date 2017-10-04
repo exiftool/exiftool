@@ -311,7 +311,12 @@ sub WriteMOV($$)
         $buff !~ /^(....)+(qt  )/s)
     {
         # file is MP4 format if 'ftyp' exists without 'qt  ' as a compatible brand
-        $ftype = $buff =~ /^(heic|mif1|msf1|heix|hevc|hevx)/ ? 'HEIC' : 'MP4';
+        if ($buff =~ /^(heic|mif1|msf1|heix|hevc|hevx)/) {
+            $ftype = 'HEIC';
+            $et->Error("Can't currently write HEIC/HEIF files");
+        } else {
+            $ftype = 'MP4';
+        }
     } else {
         $ftype = 'MOV';
     }

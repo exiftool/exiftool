@@ -232,14 +232,14 @@ roll, yaw, speed, altitude)</span></span></td></tr>
   <br>&#39;dv3b&#39; = DMB MAF, extending dv3a, with 3GPP timed text, DID, TVA, REL, IPMP
   <br>&#39;dvr1&#39; = DVB (.DVB) over RTP
   <br>&#39;dvt1&#39; = DVB (.DVB) over MPEG-2 Transport Stream
-  <br>&#39;heic&#39; = High Efficiency Image File Format HEVC image (.HEIC)
-  <br>&#39;hevc&#39; = High Efficiency Image File Format HEVC sequence (.HEIC)
+  <br>&#39;heic&#39; = High Efficiency Image Format HEVC still image (.HEIC)
+  <br>&#39;hevc&#39; = High Efficiency Image Format HEVC sequence (.HEICS)
   <br>&#39;isc2&#39; = ISMACryp 2.0 Encrypted File
   <br>&#39;iso2&#39; = MP4 Base Media v2 [ISO 14496-12:2005]
   <br>&#39;isom&#39; = MP4  Base Media v1 [IS0 14496-12:2003]
   <br>&#39;jpm &#39; = JPEG 2000 Compound Image (.JPM) [ISO 15444-6]
   <br>&#39;jpx &#39; = JPEG 2000 with extensions (.JPX) [ISO 15444-2]
-  <br>&#39;mif1&#39; = High Efficiency Image File Format image (.HEIF)
+  <br>&#39;mif1&#39; = High Efficiency Image Format still image (.HEIF)
   <br>&#39;mj2s&#39; = Motion JPEG 2000 [ISO 15444-3] Simple Profile
   <br>&#39;mjp2&#39; = Motion JPEG 2000 [ISO 15444-3] General Profile
   <br>&#39;mmp4&#39; = MPEG-4/3GPP Mobile Profile (.MP4/3GP) (for NTT)
@@ -248,7 +248,7 @@ roll, yaw, speed, altitude)</span></span></td></tr>
   <br>&#39;mp42&#39; = MP4 v2 [ISO 14496-14]
   <br>&#39;mp71&#39; = MP4 w/ MPEG-7 Metadata [per ISO 14496-12]
   <br>&#39;mqt &#39; = Sony / Mobile QuickTime (.MQV) US Patent 7,477,830 (Sony Corp)
-  <br>&#39;msf1&#39; = High Efficiency Image File Format sequence (.HEIF)
+  <br>&#39;msf1&#39; = High Efficiency Image Format sequence (.HEIFS)
   <br>&#39;odcf&#39; = OMA DCF DRM Format 2.0 (OMA-TS-DRM-DCF-V2_0-20060303-A)
   <br>&#39;opf2&#39; = OMA PDCF DRM Format 2.1 (OMA-TS-DRM-DCF-V2_1-20070724-C)
   <br>&#39;opx2&#39; = OMA PDCF DRM + XBS extensions (OMA-TS-DRM_XBS-V1_0-20070529-C)
@@ -338,7 +338,7 @@ roll, yaw, speed, altitude)</span></span></td></tr>
 <td>--&gt; <a href='QuickTime.html#Keys'>QuickTime Keys Tags</a></td></tr>
 <tr>
 <td>'pitm'</td>
-<td>PrimaryItemReference?</td>
+<td>PrimaryItemReference</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
@@ -3549,6 +3549,11 @@ defined in this table.</p>
 <td>ItemPropertyContainer</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#ItemPropCont'>QuickTime ItemPropCont Tags</a></td></tr>
+<tr class=b>
+<td>'ipma'</td>
+<td>ItemPropertyAssociation</td>
+<td class=c>no</td>
+<td><span class=s><span class=n>(parsed, but not extracted as a tag)</span></span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='ItemPropCont'>QuickTime ItemPropCont Tags</a></h2>
@@ -3557,7 +3562,51 @@ defined in this table.</p>
 <table class=inner cellspacing=1>
 <tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
-<tr><td colspan=4 class=c><i>[no tags known]</i></td></tr>
+<tr>
+<td>'auxC'</td>
+<td>AuxiliaryImageType</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'clap'</td>
+<td>CleanAperture</td>
+<td class=c>no</td>
+<td><span class=s><span class=n>(4 numbers: width, height, left and top)</span></span></td></tr>
+<tr>
+<td>'colr'</td>
+<td>ICC_Profile</td>
+<td class=c>-</td>
+<td>--&gt; <a href='ICC_Profile.html'>ICC_Profile Tags</a></td></tr>
+<tr class=b>
+<td>'hvcC'</td>
+<td>HEVCConfiguration?</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'irot'</td>
+<td>Rotation</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'ispe'</td>
+<td>ImageSpatialExtent</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'pasp'</td>
+<td>PixelAspectRatio</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'pixi'</td>
+<td>ImagePixelDepth</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'rloc'</td>
+<td>RelativeLocation</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='ItemRef'>QuickTime ItemRef Tags</a></h2>
@@ -3566,7 +3615,11 @@ defined in this table.</p>
 <table class=inner cellspacing=1>
 <tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
-<tr><td colspan=4 class=c><i>[no tags known]</i></td></tr>
+<tr>
+<td>'cdsc'</td>
+<td>ContentDescribes</td>
+<td class=c>no</td>
+<td><span class=s><span class=n>(parsed, but not extracted as a tag)</span></span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='Keys'>QuickTime Keys Tags</a></h2>
@@ -6311,7 +6364,7 @@ multi-language user data tags found, even if they don&#39;t exist in this table.
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Sep 28, 2017</i>
+<br><i>Last revised Oct 4, 2017</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

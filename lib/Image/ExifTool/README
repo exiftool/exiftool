@@ -224,6 +224,9 @@ is an explanation of the meaning of each special key:
 
     MAP_FORMAT    Lookup to map unknown format numbers (eg. Panasonic CameraIFD)
 
+    START_INDEX   [QuickTime tables only] Initial index for indices shown in
+                  Verbose output.  Indices are not show otherwise.
+
   DATAMEMBER : BinaryData tables only.  A reference to a list of sorted tag ID's
   which must be extracted as data members when writing.  Must also list "var_"
   format tags and tags with Hook so offsets are properly calculated if the table

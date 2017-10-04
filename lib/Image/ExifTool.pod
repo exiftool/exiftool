@@ -87,8 +87,8 @@ supported by ExifTool (r = read, w = write, c = create):
   COS   r     | GZ    r     | MOI   r     | PICT  r     | VSD   r
   CR2   r/w   | HDP   r/w   | MOS   r/w   | PMP   r     | WAV   r
   CRW   r/w   | HDR   r     | MOV   r/w   | PNG   r/w   | WDP   r/w
-  CS1   r/w   | HEIC  r/w   | MP3   r     | PPM   r/w   | WEBP  r
-  DCM   r     | HEIF  r/w   | MP4   r/w   | PPT   r     | WEBM  r
+  CS1   r/w   | HEIC  r     | MP3   r     | PPM   r/w   | WEBP  r
+  DCM   r     | HEIF  r     | MP4   r/w   | PPT   r     | WEBM  r
   DCP   r/w   | HTML  r     | MPC   r     | PPTX  r     | WMA   r
   DCR   r     | ICC   r/w/c | MPG   r     | PS    r/w   | WMV   r
   DFONT r     | ICS   r     | MPO   r/w   | PSB   r/w   | WV    r
@@ -673,8 +673,8 @@ number of acquired satellites is less than this.  Default is undef.
 
 Time shift to apply to all extracted date/time PrintConv values.  Does not
 affect ValueConv values.  Value is a date/time shift string (see
-L<Image::ExifTool::Shift.pl|Image::ExifTool::Shift.pl>), with a leading '-'
-for negative shifts.  Default is undef.
+L<Image::ExifTool::Shift(3pm)|Image::ExifTool::Shift.pl>), with a leading
+'-' for negative shifts.  Default is undef.
 
 =item Group#
 
@@ -1473,7 +1473,7 @@ tags with numerical values may be shifted.  Undefined for no shift, 1 for a
 positive shift, or -1 for a negative shift.  A value of 0 causes a positive
 shift to be applied if the tag is shiftable and AddValue is set, or a
 negative shift for date/time tags only if DelValue is set. Default is undef.
-See L<Image::ExifTool::Shift.pl|Image::ExifTool::Shift.pl> for more
+See L<Image::ExifTool::Shift(3pm)|Image::ExifTool::Shift.pl> for more
 information.
 
 =item Type
@@ -2584,7 +2584,7 @@ people who have contributed to this project.
 L<exiftool(1)|exiftool>,
 L<Image::ExifTool::TagNames(3pm)|Image::ExifTool::TagNames>,
 L<Image::ExifTool::Shortcuts(3pm)|Image::ExifTool::Shortcuts>,
-L<Image::ExifTool::Shift.pl|Image::ExifTool::Shift.pl>,
+L<Image::ExifTool::Shift(3pm)|Image::ExifTool::Shift.pl>,
 L<Image::Info(3pm)|Image::Info>,
 L<Image::MetaData::JPEG(3pm)|Image::MetaData::JPEG>
 

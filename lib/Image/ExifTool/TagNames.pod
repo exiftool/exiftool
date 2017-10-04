@@ -21533,6 +21533,7 @@ FLAC is big-endian, so bit 0 is the high-order bit in this table.
   'Bit100-102'         Channels                 no
   'Bit103-107'         BitsPerSample            no
   'Bit108-143'         TotalSamples             no
+  'Bit144-271'         MD5Signature             no
 
 =head3 FLAC Picture Tags
 
@@ -22067,7 +22068,7 @@ Tags written by some HTC camera phones.
   'iprp'   ItemProperties                       QuickTime ItemProp
   'iref'   ItemReference                        QuickTime ItemRef
   'keys'   Keys                                 QuickTime Keys
-  'pitm'   PrimaryItemReference?                no
+  'pitm'   PrimaryItemReference                 no
   'xml '   XML                                  XMP XML
 
 =head3 QuickTime Handler Tags
@@ -22228,18 +22229,27 @@ defined in this table.
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
   'ipco'   ItemPropertyContainer                QuickTime ItemPropCont
+  'ipma'   ItemPropertyAssociation              no
 
 =head3 QuickTime ItemPropCont Tags
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
-  [no tags known]
+  'auxC'   AuxiliaryImageType                   no
+  'clap'   CleanAperture                        no
+  'colr'   ICC_Profile                          ICC_Profile
+  'hvcC'   HEVCConfiguration?                   no
+  'irot'   Rotation                             no
+  'ispe'   ImageSpatialExtent                   no
+  'pasp'   PixelAspectRatio                     no
+  'pixi'   ImagePixelDepth                      no
+  'rloc'   RelativeLocation                     no
 
 =head3 QuickTime ItemRef Tags
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
-  [no tags known]
+  'cdsc'   ContentDescribes                     no
 
 =head3 QuickTime Keys Tags
 

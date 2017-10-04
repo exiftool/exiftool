@@ -39,7 +39,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::APP12;
 
-$VERSION = '2.49';
+$VERSION = '2.50';
 
 sub PrintLensInfo($$$);
 
@@ -401,6 +401,7 @@ my %olympusCameraTypes = (
     S0061 => 'PEN-F', #forum7005
     S0065 => 'E-PL8',
     S0067 => 'E-M1MarkII',
+    S0068 => 'E-M10MarkIII',
     SR45 => 'D220',
     SR55 => 'D320L',
     SR83 => 'D340L',

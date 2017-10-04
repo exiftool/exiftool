@@ -334,7 +334,7 @@ $VERSION = '2.55';
     128.8 => 'Sigma 70-200mm F2.8 II EX DG APO MACRO HSM', #24
     128.9 => 'Sigma 10mm F2.8 EX DC HSM Fisheye', #Florian Knorn
     # (yes, '128.10'.  My condolences to typed languages that use this database - PH)
-   '128.10' => 'Sigma 50mm F1.4 EX DG HSM', #Florian Knorn (Model A104, ref IB)
+   '128.10' => 'Sigma 50mm F1.4 EX DG HSM', #Florian Knorn (Model A014, ref IB)
    '128.11' => 'Sigma 85mm F1.4 EX DG HSM', #27
    '128.12' => 'Sigma 24-70mm F2.8 IF EX DG HSM', #27
    '128.13' => 'Sigma 18-250mm F3.5-6.3 DC OS HSM', #27

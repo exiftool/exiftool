@@ -14,7 +14,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.04';
+$VERSION = '1.05';
 
 # map for writing metadata to InDesign files (currently only write XMP)
 my %indMap = (
@@ -145,14 +145,18 @@ sub ProcessIND($$)
                     Parent  => 'IND',
                     NoDelete => 1, # do not allow this to be deleted when writing
                 );
+                # validate xmp data length (should be same as length in header - 4)
+                my $xmpLen = unpack($streamInt32u, $lenWord);
+                unless ($xmpLen == $len) {
+                    if ($xmpLen < $len) {
+                        $dirInfo{DirLen} = $xmpLen;
+                    } else {
+                        $err = 'Truncated XMP stream (missing ' . ($xmpLen - $len) . ' bytes)';
+                    }
+                }
                 my $tagTablePtr = GetTagTable('Image::ExifTool::XMP::Main');
                 if ($outfile) {
-                    # validate xmp data length (should be same as length in header - 4)
-                    my $xmpLen = unpack($streamInt32u, $lenWord);
-                    unless ($xmpLen == $len) {
-                        $err = "Incorrect XMP stream length ($xmpLen should be $len)";
-                        last;
-                    }
+                    last if $err;
                     # make sure that XMP is writable
                     my $classID = Get32u(\$hdr, 20);
                     $classID & 0x40000000 or $err = 'XMP stream is not writable', last;

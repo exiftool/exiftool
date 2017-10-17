@@ -42,7 +42,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.04';
+$VERSION = '2.05';
 
 sub FixWrongFormat($);
 sub ProcessMOV($$;$);
@@ -652,6 +652,7 @@ my %graphicsMode = (
             0 => 'Monoscopic',
             1 => 'Stereoscopic Top-Bottom',
             2 => 'Stereoscopic Left-Right',
+            3 => 'Stereoscopic Stereo-Custom', # (provisional in spec as of 2017-10-10)
         },
     },
     sv3d => {
@@ -695,6 +696,7 @@ my %graphicsMode = (
         Name => 'EquirectangularProj',
         SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::equi' },
     },
+    # mshp - MeshProjection (P.I.T.A. to decode, for not much reward, see ref)
 );
 
 # 'prhd' atom information (ref https://github.com/google/spatial-media/blob/master/docs/spherical-video-v2-rfc.md)

@@ -7,6 +7,20 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.55. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Oct. 17, 2017 - Version 10.64
+
+  - Added some new non-standard CustomRendered values
+  - Added a new Nikon LensID
+  - Added a new SonyModelID
+  - Added a new CanonModelID (thanks LibRaw)
+  - Enhanced shift feature to be able to shift some no-so-simple numerical
+    values (eg. GPSLatitude) with -TAG+=VALUE syntax
+  - Decode FrameRate from FLIR SEQ files (thanks Sebastian Hani)
+  - Fixed problem with possible malformed UTF-8 when writing IPTC values that
+    require truncation
+  - Fixed incorrect Writable type for XMP-GSPherical:TimeStamp
+  - Fixed incorrect family 2 group name for Nikon HDRInfo tags
+
 Oct. 4, 2017 - Version 10.63
 
   - Added a number of new Canon LensTypes (thanks Norbert Wasser for some)
@@ -41,7 +55,7 @@ Aug. 18, 2017 - Version 10.61
   - Decode a number of new Sony tags (thanks Jos Roost)
   - Decode Panasonic FocusDistance (thanks David Ellsworth)
   - Updated to the IPTC video metadata 1.1 specification
-  - Restore the ability to delete JpgFromRaw from RAW images (broken in 10.38)
+  - Restored the ability to delete JpgFromRaw from RAW images (broken in 10.38)
   - Fixed problem decoding maker notes from Pentax K-70 AVI videos
   - Fixed problem conditionally replacing a tag if the value to be deleted was
     taken from another tag while the new value was assigned directly

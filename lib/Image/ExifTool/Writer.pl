@@ -1619,7 +1619,7 @@ sub CountNewValues($)
 # Save new values for subsequent restore
 # Inputs: 0) ExifTool object reference
 # Returns: Number of times new values have been saved
-# Notes: increments Save flag each time routine is called
+# Notes: increments SAVE_COUNT flag each time routine is called
 sub SaveNewValues($)
 {
     my $self = shift;
@@ -3223,8 +3223,27 @@ sub IsOverwriting($$;$)
         my $shiftType = $$tagInfo{Shift};
         unless ($shiftType and $shiftType eq 'Time') {
             unless (IsFloat($val)) {
-                $self->Warn("Can't shift $$tagInfo{Name} (not a number)");
-                return 0;
+                # do the ValueConv to try to get a number
+                my $conv = $$tagInfo{ValueConv};
+                if (defined $conv) {
+                    local $SIG{'__WARN__'} = \&SetWarning;
+                    undef $evalWarning;
+                    if (ref $conv eq 'CODE') {
+                        $val = &$conv($val, $self);
+                    } elsif (not ref $conv) {
+                        #### eval ValueConv ($val, $self)
+                        $val = eval $conv;
+                        $@ and $evalWarning = $@;
+                    }
+                    if ($evalWarning) {
+                        $self->Warn("ValueConv $$tagInfo{Name}: " . CleanWarning());
+                        return 0;
+                    }
+                }
+                unless (IsFloat($val)) {
+                    $self->Warn("Can't shift $$tagInfo{Name} (not a number)");
+                    return 0;
+                }
             }
             $shiftType = 'Number';  # allow any number to be shifted
         }

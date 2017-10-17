@@ -127,7 +127,7 @@ sub CheckIPTC($$$)
                 $len = $minlen;
             }
         }
-        if (defined $minlen) {
+        if (defined $minlen and $fmt ne 'string') { # (must truncate strings later, after recoding)
             $maxlen or $maxlen = $minlen;
             if ($len < $minlen) {
                 unless ($$et{OPTIONS}{IgnoreMinorErrors}) {
@@ -184,6 +184,26 @@ sub FormatIPTC($$$$$;$)
             }
         } elsif ($$xlatPtr and $rec < 7 and $$valPtr =~ /[\x80-\xff]/) {
             TranslateCodedString($et, $valPtr, $xlatPtr, $read);
+        }
+        # must check length now (after any string recoding)
+        if (not $read and $format =~ /^string\[(\d+),?(\d*)\]$/) {
+            my ($minlen, $maxlen) = ($1, $2);
+            my $len = length $$valPtr;
+            $maxlen or $maxlen = $minlen;
+            if ($len < $minlen) {
+                if ($et->Warn("String to short for IPTC:$$tagInfo{Name} (padded)", 2)) {
+                    $$valPtr .= ' ' x ($minlen - $len);
+                }
+            } elsif ($len > $maxlen) {
+                if ($et->Warn("IPTC:$$tagInfo{Name} exceeds length limit (truncated)", 2)) {
+                    $$valPtr = substr($$valPtr, 0, $maxlen);
+                    # make sure UTF-8 is still valid
+                    if (($$xlatPtr || $et->Options('Charset')) eq 'UTF8') {
+                        require Image::ExifTool::XMP;
+                        Image::ExifTool::XMP::FixUTF8($valPtr,'.');
+                    }
+                }
+            }
         }
     }
 }

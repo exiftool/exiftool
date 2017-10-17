@@ -13,6 +13,193 @@
 <p><b>Note:</b> This page gives the history of older exiftool versions.  See
 <a href="history.html">history.html</a> for the recent history.</p>
 
+<a name='v10.49'><b>Apr. 10, 2017 - Version 10.49</b></a>
+<ul>
+<li>Added "DateFmt" utility function for use in advanced formatting expressions
+<li>Added a new Sony/Minolta LensType (thanks LibRaw)
+<li>Decode a new Panasonic tag
+<li>Fixed problem decoding Sony VariableLowPassFilter values (thanks Jos Roost)
+<li>Fixed problem setting XMP:About when creating new XMP in a file
+<li>Fixed an incorect Pentax DriveMode value (thanks Andras Salamon)
+<li>API Changes
+    <ul>
+    <li>Allow access to the advanced formatting expression via a new ExifTool
+        "FMT_EXPR" member variable
+    </ul>
+</ul>
+
+<a name='v10.48'><b>Apr. 3, 2017 - Version 10.48</b></a>
+<ul>
+<li>Added some new FujiFlashMode values (thanks Albert Shan)
+<li>Added a new Sony LensType (thanks Jos Roost)
+<li>Added a new Canon LensType (thanks LibRaw)
+<li>Added a new CanonModelID and minor changes to some others (thanks Dmitry)
+<li>Decode two Pentax tags and added a number of new values for other Pentax
+    tags (thanks Andras Salamon)
+<li>Decode a new Sony tag (thanks Jos Roost)
+<li>Improvements to the experimental Validate feature
+<li>Fixed problem which could cause hang when reading bad PPT documents
+</ul>
+
+<a name='v10.47'><b>Mar. 20, 2017 - Version 10.47</b></a>
+<ul>
+<li>Added read support for JSON-format files
+<li>Added two new Sony/Minolta lenses (thanks Jos Roost)
+<li>Added a number of new Pentax tag values
+<li>Decode a new Canon CR2 tag (thanks Ed Hannon)
+<li>Decode WB information for Canon 800D (thanks LibRaw)
+<li>Improved config_files/photoshop_paths.config to indicate start of paths
+<li>Attempt to validate new file names in Windows before renaming images
+<li>Experimental Validate feature no longer warns about Windows XP tags
+<li>Fixed problem extracting layer information from very large PSD/PSB files
+</ul>
+
+<a name='v10.46'><b>Mar. 8, 2017 - Version 10.46</b></a>
+<ul>
+<li>Moved Mac System tags from the Extra table into a new <a href="TagNames/MacOS.html">MacOS group</a> and added
+    ability to extract them by requesting the MacOS group
+<li>Updated QuickTime GenreID list (thanks Fran&ccedil;ois Bonzon)
+<li>Fixed "Invalid xref" problem when reading some PDF files
+<li>Fixed error in Minolta lens list (thanks Jos Roost)
+<li>Fixed minor problem with -U option generating Unknown tags for some known
+    bytes in variable-sized strings
+<li>API Changes:
+    <ul>
+    <li>Enhanced RequestTags option to allow groups to be requested
+    </ul>
+</ul>
+
+<a name='v10.45'><b>Mar. 2, 2017 - Version 10.45</b></a>
+<ul>
+<li>Added ability to write a number of Mac OS X system tags (including the file
+    creation date!)
+<li>Added ability to extract OS X extended attributes ("XAttr" tags)
+<li>API Changes:
+    <ul>
+    <li>Added XAttrTags option
+    <li>Enhanced RequestAll option
+    </ul>
+</ul>
+
+<a name='v10.44'><b>Feb. 24, 2017 - Version 10.44</b></a>
+<ul>
+<li>Added a few new CanonModelID values and a new Canon LensType
+<li>Added two new Nikon lenses (thanks Rolf Probst)
+<li>Added a few new Sony/Minolta lenses (thanks Jos Roost)
+<li>Added two new Sony MeteringMode values (thanks Jos Roost)
+<li>Improved verbose dump of Photoshop Layer information
+<li>Patched to allow "FileName encoding not specified" warnings to be avoided by
+    setting -charset filename=""
+<li>Fixed problem in photoshop_paths.config printing some paths
+</ul>
+
+<a name='v10.43'><b>Feb. 16, 2017 - Version 10.43</b></a>
+<ul>
+<li>Restrict writing of EXIF:FlashEnergy to a single value as per EXIF spec
+<li>Reverted format change of Sony ImageCount tag
+<li>Changed PNG new eXIF/zXIF chunk names to "exIf" and "zxIf" until the
+    proposed chunks are accepted (of course, while maintaining backward
+    compatibility for reading/updating the other chunks)
+<li>Lowered priority of XMP-pdf:Keywords so it doesn't take precedence over
+    PDF:Keywords when the Duplicates option is not used
+<li>Improved config_files/convert_regions.config to handle the case where the
+    RegionInfoMP is missing a Rectangle
+</ul>
+
+<a name='v10.42'><b>Feb. 10, 2017 - Version 10.42</b></a>
+<ul>
+<li>Added ability to read/write PNG eXIF and zXIF chunks, and made these the
+    place where new EXIF is created in PNG images (zXIF if the -z option is
+    used, or eXIF otherwise)
+<li>Added ability to copy Photoshop OriginPathInfo with photoshop_paths.config
+<li>Made FileUserID and FileGroupID writable
+<li>Changed format for a Sony ImageCount tag
+<li>Improvements to experimental Validate feature
+<li>Fixed incorrect XMP swf namespace URI
+<li>Fixed problem using new -p section feature when combined with -w or -ee
+<li>Fixed formatting problem in -listx output when -lang option was used
+<li>Fixed problem where UserComment wasn't removed if found in IFD0 when writing
+    it to the correct IFD
+</ul>
+
+<a name='v10.41'><b>Feb. 1, 2017 - Version 10.41</b></a>
+<ul>
+<li>Added an experimental metadata validation feature (invoked either by
+    requesting the new <a href="TagNames/Extra.html">Extra</a> Validate tag or by setting the <a href="ExifTool.html#Validate">API Validate option</a>)
+<li>Added support for PSDT file extension
+<li>Added age.config to the distribution
+<li>Added a new Sony lens (thanks Jos Roost)
+<li>Added a new PentaxModelID (thanks Louis Granboulan)
+<li>Enhanced -p option to allow files to be grouped in sections
+<li>Made makernote offset warning minor
+<li>Relaxed parsing of NMEA GGA sentence so comma after the geoid units is now
+    optional
+<li>Patched problem extracting value of an unsafe binary tag with the -b option
+    when specified using -TAG# instead of -TAG with -n
+<li>API Changes:
+    <ul>
+    <li>Added experimental Validate option
+    </ul>
+</ul>
+
+<a name='v10.40'><b>Jan. 14, 2017 - Version 10.40</b></a> <span class=grn>(production release)</span>
+<ul>
+<li>Fixed tests that were failing on some platforms
+</ul>
+
+<a name='v10.39'><b>Jan. 13, 2017 - Version 10.39</b></a>
+<ul>
+<li>Added Perl version and Unicode settings to -ver -v output
+<li>Added a new Sony LensType2 value
+<li>Added a new Canon LensType (thanks Norbert Wasser)
+<li>More improvements to sample time_zone.config file (thanks Hayo Baan)
+<li>Fixed problem with MWG date/time tags introduced in version 10.34
+<li>Fixed problem setting the value of a tag from a binary file when the
+    PERL_UNICODE environment or the perl -C option is used to force UTF-8
+    treatment of @ARGV elements
+</ul>
+
+<a name='v10.38'><b>Jan. 5, 2017 - Version 10.38</b></a>
+<ul>
+<li>Added a couple of new XMP-ics tags
+<li>Added a new Nikon LensID (thanks Ken Cochran)
+<li>Decode a couple more PhaseOne tags
+<li>Increased priority of Sony 0x0115 WhiteBalance when reading
+<li>Range check QuickTime date/time values when writing
+<li>Apply CharsetPhotoshop setting to decoding of Photoshop LayerNames
+<li>Improved identification of Nikon NRW images
+<li>Minor improvements to verbose dump of FLIR information
+<li>Improvements to sample time_zone.config file (thanks Hayo Baan)
+<li>Removed trailing null in -b output for GPSDateStamp
+<li>Changed "TAG is not supported" warning when writing to "TAG is not defined"
+<li>Changed groups of Composite Preview/Thumbnail/JpgFromRaw/etc images to match
+    the tags from which they are derived
+<li>Changed description of Composite Nikon LensSpec tag to match the tag name
+<li>Fixed problems reading/writing PreviewImage from some DNG files
+</ul>
+
+<a name='v10.37'><b>Dec. 19, 2016 - Version 10.37</b></a>
+<ul>
+<li>Decode more information from BMP V4 and V5 images
+<li>Added a few new FujiFlashMode values (thanks Albert Shan)
+<li>Changed -geotime default to use unconverted value of DateTimeOriginal
+<li>Changed a couple of Sony Voigtlander LensType strings (thanks Jos Roost)
+<li>Warn about invalid tag names used on the command line
+<li>Generate default-language version of QuickTime tags even if the same-named
+    tag already exists in another group
+<li>Fixed bug reading some Photoshop layer information
+<li>Fixed problems in sample config file time_zone.config (thanks Hayo Baan)
+</ul>
+
+<a name='v10.36'><b>Nov. 24, 2016 - Version 10.36</b></a> <span class=grn>(production release)</span>
+<ul>
+<li>Added 3D Studio MAX files to the list of supported file types
+<li>Decode more Sony tags (thanks Jos Roost)
+<li>Decode a couple more FlashPix tags
+<li>Minor changes to some of the new IPTC Extension tags
+<li>Fixed problem reading some FlashPix (Windows Compound Binary Format) files
+</ul>
+
 <a name='v10.35'><b>Nov. 21, 2016 - Version 10.35</b></a>
 <ul>
 <li>Fixed bug in Windows version introduced in 10.32 which could cause ExifTool

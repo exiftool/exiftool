@@ -104,7 +104,7 @@ my $testfile;
     $exifTool->SetNewValue(Category => 'IPTC test');
     $exifTool->SetNewValue(Description => 'New description');
     $exifTool->SetNewValue(TimeCodes => '02:53:49:07 2009-11-19T12:38:35:21-03:00');
-    writeInfo($exifTool, 't/images/Canon.jpg', $testfile1);
+    writeInfo($exifTool, 't/images/Canon.jpg', $testfile1, undef, 1);
     my $info = $exifTool->ImageInfo($testfile1);
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";

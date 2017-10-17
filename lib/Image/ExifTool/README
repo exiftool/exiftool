@@ -14,13 +14,13 @@ the binary data block (floating point IDs allow multiple tags for the same
 offset, with the integer part being used for the offset).  The corresponding
 hash value provides information about the tag (explained later).
 
-Twenty-five special keys (TABLE_NAME, SHORT_NAME, PROCESS_PROC, WRITE_PROC,
+Twenty-six special keys (TABLE_NAME, SHORT_NAME, PROCESS_PROC, WRITE_PROC,
 CHECK_PROC, GROUPS, FORMAT, FIRST_ENTRY, TAG_PREFIX, PRINT_CONV, WRITABLE,
 TABLE_DESC, NOTES, IS_OFFSET, IS_SUBDIR, EXTRACT_UNKNOWN, NAMESPACE, PREFERRED,
-SRC_TABLE, PRIORITY, WRITE_GROUP, LANG_INFO, VARS, DATAMEMBER and SET_GROUP1)
-are used to provide additional information about a table.  The special keys have
-names that are all capitalized to avoid possible conflicts with tag keys.  Below
-is an explanation of the meaning of each special key:
+SRC_TABLE, PRIORITY, AVOID, WRITE_GROUP, LANG_INFO, VARS, DATAMEMBER and
+SET_GROUP1) are used to provide additional information about a table.  The
+special keys have names that are all capitalized to avoid possible conflicts
+with tag keys.  Below is an explanation of the meaning of each special key:
 
   TABLE_NAME : Name of this table (set automatically by GetTagTable()).
 
@@ -176,6 +176,8 @@ is an explanation of the meaning of each special key:
   tag table so the appropriate module can be loaded as required.
 
   PRIORITY : Default Priority for all tags in this table.
+
+  AVOID : Flag set to Avoid writing all tags in this table.
 
   WRITE_GROUP : Default WriteGroup for all tags in the table.
 

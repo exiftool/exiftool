@@ -34,7 +34,7 @@ use Image::ExifTool::Nikon;
 use Image::ExifTool::Validate;
 use Image::ExifTool::MacOS;
 
-$VERSION = '3.11';
+$VERSION = '3.12';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -372,12 +372,12 @@ This specification dictates a length for ASCII (C<string> or C<digits>) and
 binary (C<undef>) values.  These lengths are given in square brackets after
 the B<Writable> format name.  For tags where a range of lengths is allowed,
 the minimum and maximum lengths are separated by a comma within the
-brackets.  IPTC strings are not null terminated.  When writing, ExifTool
-issues a minor warning and truncates the value if it is longer than allowed
-by the IPTC specification.  Minor errors may be ignored with the
-IgnoreMinorErrors (-m) option, allowing longer values to be written, but
-beware that values like this may cause problems for some other IPTC readers.
-ExifTool will happily read IPTC values of any length.
+brackets.  When writing, ExifTool issues a minor warning and truncates the
+value if it is longer than allowed by the IPTC specification.  Minor errors
+may be ignored with the IgnoreMinorErrors (-m) option, allowing longer
+values to be written, but beware that values like this may cause problems
+for some other IPTC readers. ExifTool will happily read IPTC values of any
+length.
 
 Separate IPTC date and time tags may be written with a combined date/time
 value and ExifTool automagically takes the appropriate part of the date/time

@@ -14,7 +14,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.08';
+$VERSION = '1.09';
 
 my %noYes = ( 0 => 'No', 1 => 'Yes' );
 
@@ -659,6 +659,7 @@ my %noYes = ( 0 => 'No', 1 => 'Yes' );
             0 => 'Rectangular',
             1 => 'Equirectangular',
             2 => 'Cubemap',
+            3 => 'Mesh',
         },
     },
     0x7672 => [{

@@ -902,12 +902,12 @@ This specification dictates a length for ASCII (C<string> or C<digits>) and
 binary (C<undef>) values.  These lengths are given in square brackets after
 the B<Writable> format name.  For tags where a range of lengths is allowed,
 the minimum and maximum lengths are separated by a comma within the
-brackets.  IPTC strings are not null terminated.  When writing, ExifTool
-issues a minor warning and truncates the value if it is longer than allowed
-by the IPTC specification.  Minor errors may be ignored with the
-IgnoreMinorErrors (-m) option, allowing longer values to be written, but
-beware that values like this may cause problems for some other IPTC readers.
-ExifTool will happily read IPTC values of any length.
+brackets.  When writing, ExifTool issues a minor warning and truncates the
+value if it is longer than allowed by the IPTC specification.  Minor errors
+may be ignored with the IgnoreMinorErrors (-m) option, allowing longer
+values to be written, but beware that values like this may cause problems
+for some other IPTC readers. ExifTool will happily read IPTC values of any
+length.
 
 Separate IPTC date and time tags may be written with a combined date/time
 value and ExifTool automagically takes the appropriate part of the date/time
@@ -1324,7 +1324,7 @@ These tags belong to the ExifTool XMP-acdsee family 1 group.
   Categories                                    string/
   Collections                                   string/
   DateTime                                      date/
-  DPP                                           lang-alt
+  DPP                                           lang-alt/
   EditStatus                                    string/
   FixtureIdentifier                             string/
   Keywords                                      string/+
@@ -1332,10 +1332,10 @@ These tags belong to the ExifTool XMP-acdsee family 1 group.
   ObjectCycle                                   string/
   OriginatingProgram                            string/
   Rating                                        real/
-  Rawrppused                                    boolean
+  Rawrppused                                    boolean/
   ReleaseDate                                   string/
   ReleaseTime                                   string/
-  RPP                                           lang-alt
+  RPP                                           lang-alt/
   Snapshots                                     string/+
   Tagged                                        boolean/
 
@@ -2393,7 +2393,7 @@ These tags belong to the ExifTool XMP-GSpherical family 1 group.
   StereoMode                                    string/
   Stitched                                      boolean/
   StitchingSoftware                             string/
-  TimeStamp                                     date/
+  TimeStamp                                     integer/
 
 =head3 XMP ics Tags
 
@@ -7856,6 +7856,7 @@ for details.
     900    DateTimeOriginal                     no
     912    FocusStepCount                       no
    1116    FocusDistance                        no
+   1124    FrameRate                            no
 
 =head3 FLIR MeasInfo Tags
 

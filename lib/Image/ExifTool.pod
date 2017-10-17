@@ -2387,8 +2387,8 @@ Win32API::File is available.
 
 The encodings used to store strings in the various metadata formats.  These
 encodings may be changed for certain types of metadata via the
-L</CharsetEXIF>, L</CharsetID3>, L</CharsetIPTC>, L</CharsetPhotoshop> and
-L</CharsetQuickTime> options.
+L</CharsetEXIF>, L</CharsetID3>, L</CharsetIPTC>, L</CharsetPhotoshop>,
+L</CharsetQuickTime> and L</CharsetRIFF> options.
 
 =back
 

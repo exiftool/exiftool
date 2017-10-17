@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.66';
+$VERSION = '2.67';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -1728,6 +1728,7 @@ my %meterInfo2 = (
             357 => 'ILCE-6300', #IB
             358 => 'ILCE-9', #JR
             360 => 'ILCE-6500', #JR
+            364 => 'DSC-RX0', #PH
         },
     },
     0xb020 => { #2

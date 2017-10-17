@@ -28,8 +28,8 @@ li.c { margin-top: 0 }
 
 <p>ExifTool has the ability to read and write XMP structures through the use of
 either <b>structured or flattened tags</b>.  The ability to write via structured
-input was added in ExifTool version 8.44; older versions wrote using flattened
-tags only.</p>
+input was added in ExifTool version 8.44; older versions accepted only flattened
+tags as input.</p>
 
 <p>To illustrate the concept of a flattened tag, the <code>XMP-exif:Flash</code>
 structure contains <code>Fired</code> and <code>Mode</code> fields (among
@@ -133,7 +133,7 @@ case, the HierarchicalKeywords and top-level KeywordInfo structures would be
 created if they didn't already exist.)</p>
 
 <p>The <b>order of structure fields is not significant</b>, so they may be read
-in a different order then written, unlike arrays which maintain the same order. 
+in a different order than written, unlike arrays which maintain the same order. 
 To give a predictable output, fields in structured information are <b>sorted in
 alphabetical order</b> of field name by ExifTool when reading and writing.</p>
 

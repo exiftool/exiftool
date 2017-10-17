@@ -53,7 +53,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '3.93';
+$VERSION = '3.94';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -2438,11 +2438,17 @@ my %sampleFormat = (
     0xa401 => {
         Name => 'CustomRendered',
         Writable => 'int16u',
+        Notes => 'only 0 and 1 are standard EXIF',
         PrintConv => {
             0 => 'Normal',
             1 => 'Custom',
-            # 4 - Apple iPhone5c horizontal orientation
-            # 6 - Apple iPhone5c panorama
+            # 2 - also seen (Apple iOS)
+            3 => 'HDR',      # non-standard (Apple iOS)
+            # 4 - also seen (Apple iOS) - normal image from iOS Camera app (ref http://regex.info/blog/lightroom-goodies/metadata-presets)
+            6 => 'Panorama', # non-standard (Apple iOS, horizontal or vertical)
+            # 7 - also seen (Apple iOS)
+            8 => 'Portrait', # non-standard (Apple iOS, blurred background)
+            # 9 - also seen (Apple iOS) (HDR Portrait?)
         },
     },
     0xa402 => {

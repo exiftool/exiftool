@@ -24,7 +24,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '1.15';
+$VERSION = '1.16';
 
 sub ProcessFLIR($$;$);
 sub ProcessFLIRText($$$);
@@ -461,6 +461,7 @@ my %float8g = ( Format => 'float', PrintConv => 'sprintf("%.8g",$val)' );
     0x390 => { Name => 'FocusStepCount', Format => 'int16u' },
     0x45c => { Name => 'FocusDistance',  Format => 'float', PrintConv => 'sprintf("%.1f m",$val)' },
     # 0x43c - string: either "Live" or the file name
+    0x464 => { Name => 'FrameRate',  Format => 'int16u' }, #SebastianHani
 );
 
 # FLIR measurement tools record (ref 6)

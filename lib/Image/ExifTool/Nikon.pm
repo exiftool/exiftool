@@ -59,7 +59,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.38';
+$VERSION = '3.39';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -446,7 +446,7 @@ sub GetAFPointGrid($$;$);
     '26 40 3C 8E 2C 40 1C 02' => 'Sigma 28-300mm F3.5-6.3 Macro',
     '02 3B 44 61 30 3D 02 00' => 'Sigma 35-80mm F4-5.6',
     '02 40 44 73 2B 36 02 00' => 'Sigma 35-135mm F3.5-4.5 a',
-    'CC 4C 50 68 14 14 4B 06' => 'Sigma 50-100mm F1.8 DC HSM | A', #forum3833
+    'CC 4C 50 68 14 14 4B 06' => 'Sigma 50-100mm F1.8 DC HSM | A', #30
     '7A 47 50 76 24 24 4B 06' => 'Sigma 50-150mm F2.8 EX APO DC HSM',
     'FD 47 50 76 24 24 4B 06' => 'Sigma 50-150mm F2.8 EX APO DC HSM II',
     '98 48 50 76 24 24 4B 0E' => 'Sigma 50-150mm F2.8 EX APO DC OS HSM', #30
@@ -549,6 +549,7 @@ sub GetAFPointGrid($$;$);
     '00 48 5C 8E 30 3C 00 06' => 'Tamron AF 70-300mm f/4-5.6 Di LD Macro 1:2 (A17NII)', #JD
     'F1 47 5C 8E 30 3C DF 0E' => 'Tamron SP 70-300mm f/4-5.6 Di VC USD (A005)',
     'EB 40 76 A6 38 40 DF 0E' => 'Tamron SP AF 150-600mm f/5-6.3 VC USD (A011)',
+    'E3 40 76 A6 38 40 DF 4E' => 'Tamron SP 150-600mm f/5-6.3 Di VC USD G2', #30
     '20 3C 80 98 3D 3D 1E 02' => 'Tamron AF 200-400mm f/5.6 LD IF (75D)',
     '00 3E 80 A0 38 3F 00 02' => 'Tamron SP AF 200-500mm f/5-6.3 Di LD (IF) (A08)',
     '00 3F 80 A0 38 3F 00 02' => 'Tamron SP AF 200-500mm f/5-6.3 Di (A08)',
@@ -643,7 +644,7 @@ sub GetAFPointGrid($$;$);
     '12 4A 5C 81 31 3D 09 00' => 'Soligor AF C/D Auto Zoom+Macro 70-210mm 1:4-5.6 UMCS',
     '12 36 69 97 35 42 09 00' => 'Soligor AF Zoom 100-400mm 1:4.5-6.7 MC',
 #
-    'BF 4E 26 26 1E 1E 01 04' => 'Irix 15mm f/2.4 Firefly', #forum3833
+    'BF 4E 26 26 1E 1E 01 04' => 'Irix 15mm f/2.4 Firefly', #30
 #
     '00 00 00 00 00 00 00 01' => 'Manual Lens No CPU',
 #
@@ -6883,7 +6884,7 @@ my %nikonFocalConversions = (
 # HDR information (ref 32)
 %Image::ExifTool::Nikon::HDRInfo = (
     %binaryDataAttrs,
-    GROUPS => { 0 => 'MakerNotes', 2 => 'Location' },
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
     0 => {
         Name => 'HDRInfoVersion',
         Format => 'string[4]',

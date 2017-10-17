@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.38
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.64
 [File, System, Image] FileName - File Name: FLIR.jpg
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 7.2 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2013:04:02 13:11:16-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2016:12:30 10:42:02-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:03:07 15:31:09-05:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2013:04:02 10:46:04-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2017:10:11 12:59:50-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2017:10:04 12:12:33-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: JPEG
 [File, File, Image] FileTypeExtension - File Type Extension: jpg
@@ -107,6 +107,7 @@
 [APP1, FLIR, Time] 900 - Date/Time Original: 2012:02:11 14:17:08.253+01:00
 [APP1, FLIR, Camera] 912 - Focus Step Count: 0
 [APP1, FLIR, Camera] 1116 - Focus Distance: 2.0 m
+[APP1, FLIR, Camera] 1124 - Frame Rate: 9
 [APP1, FLIR, Image] 1 - Raw Thermal Image Width: 120
 [APP1, FLIR, Image] 2 - Raw Thermal Image Height: 120
 [APP1, FLIR, Image] 16 - Raw Thermal Image Type: PNG

@@ -48,7 +48,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.06';
+$VERSION = '3.07';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -2402,12 +2402,13 @@ sub IsUTF8($)
 }
 
 #------------------------------------------------------------------------------
-# Fix malformed UTF8 (by replacing bad bytes with '?')
-# Inputs: 0) string reference
+# Fix malformed UTF8 (by replacing bad bytes with specified character)
+# Inputs: 0) string reference, 1) string to replace each bad byte,
+#         may be '' to delete bad bytes, or undef to use '?'
 # Returns: true if string was fixed, and updates string
-sub FixUTF8($)
+sub FixUTF8($;$)
 {
-    my $strPt = shift;
+    my ($strPt, $bad) = @_;
     my $fixed;
     pos($$strPt) = 0; # start at beginning of string
     for (;;) {
@@ -2419,9 +2420,11 @@ sub FixUTF8($)
             my $n = $ch < 0xe0 ? 1 : ($ch < 0xf0 ? 2 : 3);
             next if $$strPt =~ /\G[\x80-\xbf]{$n}/g;
         }
-        # replace bad character with '?'
-        substr($$strPt, $pos-1, 1) = '?';
-        pos($$strPt) = $fixed = $pos;
+        # replace bad character
+        $bad = '?' unless defined $bad;
+        substr($$strPt, $pos-1, 1) = $bad;
+        pos($$strPt) = $pos-1 + length $bad;
+        $fixed = 1;
     }
     return $fixed;
 }

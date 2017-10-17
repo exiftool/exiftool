@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup);
 
-$VERSION = '10.63';
+$VERSION = '10.64';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -901,7 +901,8 @@ my %allGroupsExifTool = ( 0 => 'ExifTool', 1 => 'ExifTool', 2 => 'ExifTool' );
     GROUPS           FORMAT      FIRST_ENTRY   TAG_PREFIX  PRINT_CONV
     WRITABLE         TABLE_DESC  NOTES         IS_OFFSET   IS_SUBDIR
     EXTRACT_UNKNOWN  NAMESPACE   PREFERRED     SRC_TABLE   PRIORITY
-    WRITE_GROUP      LANG_INFO   VARS          DATAMEMBER  SET_GROUP1
+    AVOID            WRITE_GROUP LANG_INFO     VARS        DATAMEMBER
+    SET_GROUP1
 );
 
 # headers for various segment types
@@ -4377,6 +4378,7 @@ sub ExpandFlags($)
 sub SetupTagTable($)
 {
     my $tagTablePtr = shift;
+    my $avoid = $$tagTablePtr{AVOID};
     my ($tagID, $tagInfo);
     foreach $tagID (TagTableKeys($tagTablePtr)) {
         my @infoArray = GetTagInfoList($tagTablePtr,$tagID);
@@ -4386,6 +4388,7 @@ sub SetupTagTable($)
             $$tagInfo{TagID} = $tagID;
             $$tagInfo{Name} or $$tagInfo{Name} = MakeTagName($tagID);
             $$tagInfo{Flags} and ExpandFlags($tagInfo);
+            $$tagInfo{Avoid} = $avoid if defined $avoid;
         }
         next unless @infoArray > 1;
         # add an "Index" member to each tagInfo in a list

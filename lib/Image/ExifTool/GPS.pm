@@ -386,7 +386,7 @@ my %coordConv = (
         ValueConv => q{
             my $alt = $val[0];
             $alt = $val[2] unless defined $alt;
-            return undef unless defined $alt;
+            return undef unless defined $alt and IsFloat($alt);
             return ($val[1] || $val[3]) ? -$alt : $alt;
         },
         PrintConv => q{

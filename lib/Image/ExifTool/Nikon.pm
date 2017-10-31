@@ -59,7 +59,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.39';
+$VERSION = '3.40';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -293,6 +293,7 @@ sub GetAFPointGrid($$;$);
     'B4 40 37 62 2C 34 B6 0E' => 'AF-S VR Zoom-Nikkor 24-85mm f/3.5-4.5G IF-ED', #30
     'B5 4C 3C 3C 14 14 B7 06' => 'AF-S Nikkor 28mm f/1.8G', #30
     'B6 3C B0 B0 3C 3C B8 0E' => 'AF-S VR Nikkor 800mm f/5.6E FL ED',
+    'B6 3C B0 B0 3C 3C B8 4E' => 'AF-S VR Nikkor 800mm f/5.6E FL ED', #PH
     'B7 44 60 98 34 3C B9 0E' => 'AF-S Nikkor 80-400mm f/4.5-5.6G ED VR',
     'B8 40 2D 44 2C 34 BA 06' => 'AF-S Nikkor 18-35mm f/3.5-4.5G ED',
     'A0 40 2D 74 2C 3C BB 0E' => 'AF-S DX Nikkor 18-140mm f/3.5-5.6G ED VR', #PH
@@ -1228,6 +1229,10 @@ my %binaryDataAttrs = (
         Count => 4,
         # (may need to divide by 4 for some images, eg. D3300/D5300, 12 bit - ref IB)
     },
+    0x004f => { #IB (D850)
+        Name => 'ColorTemperatureAuto',
+        Writable => 'int16u',
+    },
     0x0080 => { Name => 'ImageAdjustment',  Writable => 'string' },
     0x0081 => { Name => 'ToneComp',         Writable => 'string' }, #2
     0x0082 => { Name => 'AuxiliaryLens',    Writable => 'string' },
@@ -1506,7 +1511,21 @@ my %binaryDataAttrs = (
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ShotInfoD810',
                 DecryptStart => 4,
-                DecryptLen => 0x3d72,
+                DecryptLen => 0x36f4 + 12,
+                DecryptMore => 'Get32u(\$data, 0x84) + 12',
+                ByteOrder => 'LittleEndian',
+            },
+        },
+        { #28 (D850 firmware 1.00b)
+            Condition => '$$valPt =~ /^0243/',
+            Name => 'ShotInfoD850',
+            SubDirectory => {
+                TagTable => 'Image::ExifTool::Nikon::ShotInfoD850',
+                DecryptStart => 4,
+                # initially only decrypt enough to extract CustomSettingsOffset
+                DecryptLen => 0x58,
+                # then decrypt through to the end of the custom settings
+                DecryptMore => 'Get32u(\$data, 0x58) + 90 + 4',
                 ByteOrder => 'LittleEndian',
             },
         },
@@ -1579,11 +1598,8 @@ my %binaryDataAttrs = (
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ShotInfoD500',
                 DecryptStart => 4,
-                # initially only decrypt enough to extract CustomSettingsOffset
-                #DecryptLen => 0x58,
-                # then decrypt through to the end of the custom settings
-                #DecryptMore => 'Get32u(\$data, 0x58) + 90 + 4',
-                DecryptLen => 0x2ae6,
+                DecryptLen => 0x2c24 + 12,
+                DecryptMore => 'Get32u(\$data, 0xa0) + 12',
                 ByteOrder => 'LittleEndian',
             },
         },
@@ -1593,11 +1609,8 @@ my %binaryDataAttrs = (
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Nikon::ShotInfoD500',
                 DecryptStart => 4,
-                # initially only decrypt enough to extract CustomSettingsOffset
-                #DecryptLen => 0x58,
-                # then decrypt through to the end of the custom settings
-                #DecryptMore => 'Get32u(\$data, 0x58) + 90 + 4',
-                DecryptLen => 0x2ae6,
+                DecryptLen => 0x2cb2 + 4,
+                DecryptMore => 'Get32u(\$data, 0xa0) + 12',
                 ByteOrder => 'LittleEndian',
             },
         },
@@ -4985,7 +4998,8 @@ my %nikonFocalConversions = (
     WRITE_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     VARS => { ID_LABEL => 'Index' },
-    DATAMEMBER => [ 0x04, 0x10, 0x14, 0x2c, 0x50, 0x58, 0xb0, 0x07b0, 0x086c, 0x0e7c, 0x0eea ],
+    DATAMEMBER => [ 0x04, 0x10, 0x14, 0x2c, 0x50, 0x58, 0xa0, 0xb0,
+                    0x07b0, 0x086c, 0x0e7c, 0x0eea, 0x2c23 ],
     IS_SUBDIR => [ 0x0eeb ],
     WRITABLE => 1,
     FIRST_ENTRY => 0,
@@ -5037,6 +5051,13 @@ my %nikonFocalConversions = (
         Format => 'int32u',
         Writable => 0,
         RawConv => '$$self{CustomSettingsOffset} = $val || 0x10000000; $val', # (ignore if 0)
+    },
+    0xa0 => {
+        Name => 'OrientationOffset',
+        DataMember => 'OrientationOffset',
+        Format => 'int32u',
+        Writable => 0,
+        RawConv => '$$self{OrientationOffset} = $val || 0x10000000; $val', # (ignore if 0)
     },
 #
 # Tag ID's below are the offsets for a D500 JPEG image, but these offsets change
@@ -5392,43 +5413,16 @@ my %nikonFocalConversions = (
 #           195 => 'Shutter Button',
 #       },
 #   },
-    0x2c00 => { 
+### 0x2c24 - OrientationInfo start (D5 firmware 1.10b)
+    0x2c23 => {
+        Name => 'Hook6',
+        Hidden => 1,
+        RawConv => 'undef',
+        # account for variable location of OrientationInfo data
+        Hook => '$varSize = $$self{OrientationOffset} - 0x2c24',
+    },
+    0x2c24 => {
         Name => 'RollAngle',
-        Condition => '$$self{Model} =~ /\bD5\b/ and $$self{FirmwareVersion} gt "1.1"',
-        Notes => 'D5 firmware 1.1 or later',
-        Format => 'fixed32u',
-        Notes => 'converted to degrees of clockwise camera roll',
-        ValueConv => '$val <= 180 ? $val : $val - 360',
-        ValueConvInv => '$val >= 0 ? $val : $val + 360',
-        PrintConv => 'sprintf("%.1f", $val)',
-        PrintConvInv => '$val',
-    },
-    0x2c04 => {
-        Name => 'PitchAngle',
-        Condition => '$$self{Model} =~ /\bD5\b/ and $$self{FirmwareVersion} gt "1.1"',
-        Notes => 'D5 firmware 1.1 or later',
-        Format => 'fixed32u',
-        Notes => 'converted to degrees of upward camera tilt',
-        ValueConv => '$val <= 180 ? $val : $val - 360',
-        ValueConvInv => '$val >= 0 ? $val : $val + 360',
-        PrintConv => 'sprintf("%.1f", $val)',
-        PrintConvInv => '$val',
-    },
-    0x2c08 => {
-        Name => 'YawAngle',
-        Condition => '$$self{Model} =~ /\bD5\b/ and $$self{FirmwareVersion} gt "1.1"',
-        Notes => 'D5 firmware 1.1 or later',
-        Format => 'fixed32u',
-        Notes => 'the camera yaw angle when shooting in portrait orientation',
-        ValueConv => '$val <= 180 ? $val : $val - 360',
-        ValueConvInv => '$val >= 0 ? $val : $val + 360',
-        PrintConv => 'sprintf("%.1f", $val)',
-        PrintConvInv => '$val',
-    },
-    0x2c24 => { 
-        Name => 'RollAngle',
-        Condition => '$$self{Model} =~ /\bD500\b/ and $$self{FirmwareVersion} =~ /^1\.1/',
-        Notes => 'D500 firmware 1.1x',
         Format => 'fixed32u',
         Notes => 'converted to degrees of clockwise camera roll',
         ValueConv => '$val <= 180 ? $val : $val - 360',
@@ -5438,8 +5432,6 @@ my %nikonFocalConversions = (
     },
     0x2c28 => {
         Name => 'PitchAngle',
-        Condition => '$$self{Model} =~ /\bD500\b/ and $$self{FirmwareVersion} =~ /^1\.1/',
-        Notes => 'D500 firmware 1.1x',
         Format => 'fixed32u',
         Notes => 'converted to degrees of upward camera tilt',
         ValueConv => '$val <= 180 ? $val : $val - 360',
@@ -5449,8 +5441,6 @@ my %nikonFocalConversions = (
     },
     0x2c2c => {
         Name => 'YawAngle',
-        Condition => '$$self{Model} =~ /\bD500\b/ and $$self{FirmwareVersion} =~ /^1\.1/',
-        Notes => 'D500 firmware 1.1x',
         Format => 'fixed32u',
         Notes => 'the camera yaw angle when shooting in portrait orientation',
         ValueConv => '$val <= 180 ? $val : $val - 360',
@@ -5458,27 +5448,30 @@ my %nikonFocalConversions = (
         PrintConv => 'sprintf("%.1f", $val)',
         PrintConvInv => '$val',
     },
-    0x2cb2 => {
-        Name => 'ExtendedPhotoShootingBanks',
-        Mask => 0x01,
-        PrintConv => {
-            0x00 => 'On',
-            0x01 => 'Off',
-        },
-    },
-    0x2ea2 => {
-        Name => 'Rotation',
-        Condition => '$$self{Model} =~ /\bD500\b/ and $$self{FirmwareVersion} =~ /^1.1/',
-        Notes => 'D500 firmware 1.1x',
-        Mask => 0x30,
-        PrintConv => {
-            0x00 => 'Horizontal',
-            0x10 => 'Rotate 270 CW',
-            0x20 => 'Rotate 90 CW',
-            0x30 => 'Rotate 180',
-        },
-    },
-    # note: DecryptLen currently set to 0x2ae6
+    # note: DecryptLen currently set to OrientationOffset + 12
+
+    # (not sure about how this moves around)
+    #0x2cb2 => {
+    #    Name => 'ExtendedPhotoShootingBanks',
+    #    Mask => 0x01,
+    #    PrintConv => {
+    #        0x00 => 'On',
+    #        0x01 => 'Off',
+    #    },
+    #},
+    # don't decode this because it is duplicate information and moves around with firmware versions
+    #0x2ea2 => {
+    #    Name => 'Rotation',
+    #    Condition => '$$self{Model} =~ /\bD500\b/ and $$self{FirmwareVersion} =~ /^1.1/',
+    #    Notes => 'D500 firmware 1.1x',
+    #    Mask => 0x30,
+    #    PrintConv => {
+    #        0x00 => 'Horizontal',
+    #        0x10 => 'Rotate 270 CW',
+    #        0x20 => 'Rotate 90 CW',
+    #        0x30 => 'Rotate 180',
+    #    },
+    #},
 );
 # shot information for the D610 firmware 1.00 (encrypted) - ref PH
 %Image::ExifTool::Nikon::ShotInfoD610 = (
@@ -5517,7 +5510,7 @@ my %nikonFocalConversions = (
     WRITE_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     VARS => { ID_LABEL => 'Index' },
-    DATAMEMBER => [ 0x04, 0x40, 0x175e ],
+    DATAMEMBER => [ 0x04, 0x24, 0x40, 0x84, 0x01d0, 0x175e, 0x185d ],
     IS_SUBDIR => [ 0x18ab ],
     WRITABLE => 1,
     FIRST_ENTRY => 0,
@@ -5537,12 +5530,26 @@ my %nikonFocalConversions = (
     },
     # 0x0c - number of entries in offset table (= 0x21)
     # 0x10 - int32u[val 0x0c]: offset table
+    0x24 => {
+        Name => 'BracketingOffset',
+        DataMember => 'BracketingOffset',
+        Format => 'int32u',
+        Writable => 0,
+        RawConv => '$$self{BracketingOffset} = $val',
+    },
     0x40 => {
         Name => 'CustomSettingsOffset', # (relative offset from start of ShotInfo data)
         DataMember => 'CustomSettingsOffset',
         Format => 'int32u',
         Writable => 0,
         RawConv => '$$self{CustomSettingsOffset} = $val',
+    },
+    0x84 => {
+        Name => 'OrientationOffset',
+        DataMember => 'OrientationOffset',
+        Format => 'int32u',
+        Writable => 0,
+        RawConv => '$$self{OrientationOffset} = $val',
     },
     0x01d0 => {
         Name => 'SecondarySlotFunction',
@@ -5551,7 +5558,8 @@ my %nikonFocalConversions = (
             0x00 => 'Overflow',
             0x02 => 'Backup',
             0x03 => 'NEF Primary + JPG Secondary',
-            },
+        },
+        Hook => '$varSize = $$self{BracketingOffset} - 0x1747',
     },
     0x1756 => {
         Name => 'AEBracketingSteps',
@@ -5716,6 +5724,7 @@ my %nikonFocalConversions = (
     0x185d => {
         Name => 'ISOAutoHiLimit',
         Mask => 0xff,
+        Hook => '$varSize = $$self{OrientationOffset} - 0x36f4',
         PrintConv => {
             0x24 => 'ISO 200',
             0x26 => 'ISO 250',
@@ -5762,8 +5771,6 @@ my %nikonFocalConversions = (
     },
     0x36f4 => {
         Name => 'RollAngle',
-        Condition => '$$self{FirmwareVersion} =~ /^1\.0/',
-        Notes => 'firmware 1.0',
         Format => 'fixed32u',
         Notes => 'converted to degrees of clockwise camera roll',
         ValueConv => '$val <= 180 ? $val : $val - 360',
@@ -5773,8 +5780,6 @@ my %nikonFocalConversions = (
     },
     0x36f8 => {
         Name => 'PitchAngle',
-        Condition => '$$self{FirmwareVersion} =~ /^1\.0/',
-        Notes => 'firmware 1.0',
         Format => 'fixed32u',
         Notes => 'converted to degrees of upward camera tilt',
         ValueConv => '$val <= 180 ? $val : $val - 360',
@@ -5784,8 +5789,6 @@ my %nikonFocalConversions = (
     },
     0x36fc => {
         Name => 'YawAngle',
-        Condition => '$$self{FirmwareVersion} =~ /^1\.0/',
-        Notes => 'firmware 1.0',
         Format => 'fixed32u',
         Notes => 'the camera yaw angle when shooting in portrait orientation',
         ValueConv => '$val <= 180 ? $val : $val - 360',
@@ -5793,64 +5796,92 @@ my %nikonFocalConversions = (
         PrintConv => 'sprintf("%.1f", $val)',
         PrintConvInv => '$val',
     },
-    0x38be => {
-        Name => 'Rotation',
-        Condition => '$$self{FirmwareVersion} =~ /^1.0/',
-        Mask => 0x30,
-        PrintConv => {
-            0x00 => 'Horizontal',
-            0x10 => 'Rotate 270 CW',
-            0x20 => 'Rotate 90 CW',
-            0x30 => 'Rotate 180',
-        },
-    },
-    0x3ba8 => {
-        Name => 'RollAngle',
-        Condition => '$$self{FirmwareVersion} =~ /^1\.1/',
-        Notes => 'firmware 1.1',
-        Format => 'fixed32u',
-        Notes => 'converted to degrees of clockwise camera roll',
-        ValueConv => '$val <= 180 ? $val : $val - 360',
-        ValueConvInv => '$val >= 0 ? $val : $val + 360',
-        PrintConv => 'sprintf("%.1f", $val)',
-        PrintConvInv => '$val',
-    },
-    0x3bac => {
-        Name => 'PitchAngle',
-        Condition => '$$self{FirmwareVersion} =~ /^1\.1/',
-        Notes => 'firmware 1.1',
-        Format => 'fixed32u',
-        Notes => 'converted to degrees of upward camera tilt',
-        ValueConv => '$val <= 180 ? $val : $val - 360',
-        ValueConvInv => '$val >= 0 ? $val : $val + 360',
-        PrintConv => 'sprintf("%.1f", $val)',
-        PrintConvInv => '$val',
-    },
-    0x3bb0 => {
-        Name => 'YawAngle',
-        Condition => '$$self{FirmwareVersion} =~ /^1\.1/',
-        Notes => 'firmware 1.1',
-        Format => 'fixed32u',
-        Notes => 'the camera yaw angle when shooting in portrait orientation',
-        ValueConv => '$val <= 180 ? $val : $val - 360',
-        ValueConvInv => '$val >= 0 ? $val : $val + 360',
-        PrintConv => 'sprintf("%.1f", $val)',
-        PrintConvInv => '$val',
-    },
-    0x3d72 => {
-        Name => 'Rotation',
-        Condition => '$$self{FirmwareVersion} =~ /^1.1/',
-        Mask => 0x30,
-        PrintConv => {
-            0x00 => 'Horizontal',
-            0x10 => 'Rotate 270 CW',
-            0x20 => 'Rotate 90 CW',
-            0x30 => 'Rotate 180',
-        },
-    },
-    # note: DecryptLen currently set to 0x3d76
+    # note: DecryptLen currently set to OrientationOffset + 12
+
+    # (moves around too much and doesn't fit cleanly in the offset table)
+    #0x38be => {
+    #    Name => 'Rotation',
+    #    Condition => '$$self{FirmwareVersion} =~ /^1.0/',
+    #    Mask => 0x30,
+    #    PrintConv => {
+    #        0x00 => 'Horizontal',
+    #        0x10 => 'Rotate 270 CW',
+    #        0x20 => 'Rotate 90 CW',
+    #        0x30 => 'Rotate 180',
+    #    },
+    #},
 );
 
+# shot information for the D850 firmware 1.00b (encrypted) - ref 28
+%Image::ExifTool::Nikon::ShotInfoD850 = (
+    PROCESS_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+    WRITE_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+    CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
+    VARS => { ID_LABEL => 'Index' },
+    DATAMEMBER => [ 0x04, 0x58, 0x0fbf ],
+    IS_SUBDIR => [ 0x1038 ],
+    WRITABLE => 1,
+    FIRST_ENTRY => 0,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    NOTES => 'These tags are extracted from encrypted data in images from the D850.',
+    0x00 => {
+        Name => 'ShotInfoVersion',
+        Format => 'string[4]',
+        Writable => 0,
+    },
+    0x04 => {
+        Name => 'FirmwareVersion',
+        DataMember => 'FirmwareVersion',
+        Format => 'string[5]',
+        Writable => 0,
+        RawConv => '$$self{FirmwareVersion} = $val',
+    },
+    0x58 => {
+        Name => 'CustomSettingsOffset', # (relative offset from start of ShotInfo data)
+        DataMember => 'CustomSettingsOffset',
+        Format => 'int32u',
+        Writable => 0,
+        RawConv => '$$self{CustomSettingsOffset} = $val',
+    },
+    0x0791 => {
+        Name => 'PhotoShootingMenuBankImageArea',
+        Mask => 0x07,
+        PrintConv => {
+            0 => 'FX (36x24)',
+            1 => 'DX (24x16)',
+            2 => '5:4 (30x24)',
+            3 => '1.2x (30x20)',
+            4 => '1:1 (24x24)',
+        },
+    },
+    0x0fbd => {
+        Name => 'PhotoShootingMenuBank',
+        Mask => 0x03,
+        PrintConv => {
+            0 => 'A',
+            1 => 'B',
+            2 => 'C',
+            3 => 'D',
+        },
+    },
+    0x0fbf => {
+        Name => 'PrimarySlot',
+        Mask => 0x80,
+        PrintConv => {
+            0x00 => 'XQD Card',
+            0x80 => 'SD Card',
+        },
+        Hook => '$varSize = $$self{CustomSettingsOffset} - 0x1038',
+    },
+    0x1038 => {
+        Name => 'CustomSettingsD850',
+        Format => 'undef[90]',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::NikonCustom::SettingsD850',
+        },
+    },
+    # note: DecryptLen currently set to 94 bytes after CustomSettingsOffset
+);
 # shot information for the D4 firmware 1.00g (ref PH)
 %Image::ExifTool::Nikon::ShotInfoD4 = (
     PROCESS_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
@@ -8144,7 +8175,8 @@ sub ProcessNikonEncrypted($$$)
         $et->VerboseDir("Decrypted $$tagInfo{Name}");
         $et->VerboseDump(\$data,
             Prefix  => $$et{INDENT} . '  ',
-            DataPos => $dirStart + $$dirInfo{DataPos} + ($$dirInfo{Base} || 0),
+            # (remove this because it is useful to have decrypted offsets start at 0)
+            #DataPos => $dirStart + $$dirInfo{DataPos} + ($$dirInfo{Base} || 0),
         );
     }
     # process the decrypted information

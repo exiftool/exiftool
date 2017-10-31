@@ -1739,7 +1739,7 @@ hours, 2. If present, the time zone offset of ModifyDate)</span></span></td></tr
 <td>SensingMethod</td>
 <td class=c>no</td>
 <td class=c>-</td>
-<td><span class=s><span class=n>(values 1 and 6 are not standard EXIF)</span></span><table class=cols><tr>
+<td><table class=cols><tr>
   <td>1 = Monochrome area
   <br>2 = One-chip color area
   <br>3 = Two-chip color area
@@ -2244,7 +2244,8 @@ indicated by &quot;Uncalibrated&quot; with an InteropIndex of &quot;R03&quot;.  
 <td><u>CustomRendered</u></td>
 <td class=c>int16u</td>
 <td class=c>ExifIFD</td>
-<td><span class=s><span class=n>(only 0 and 1 are standard EXIF)</span>
+<td><span class=s><span class=n>(only 0 and 1 are standard EXIF, but other values are used by Apple iOS
+devices)</span>
   <br>0 = Normal
   <br>1 = Custom
   <br>3 = HDR
@@ -3496,7 +3497,7 @@ these unless they already exist in the file)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Oct 6, 2017</i>
+<br><i>Last revised Oct 19, 2017</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

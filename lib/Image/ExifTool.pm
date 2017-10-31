@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup);
 
-$VERSION = '10.64';
+$VERSION = '10.65';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -877,6 +877,8 @@ my %processType = map { $_ => 1 } qw(JPEG TIFF XMP AIFF EXE Font PS Real VCard);
     baltic      => 'Baltic',      cp1257  => 'Baltic',
     vietnam     => 'Vietnam',     cp1258  => 'Vietnam',
     thai        => 'Thai',        cp874   => 'Thai',
+    doslatinus  => 'DOSLatinUS',  cp437   => 'DOSLatinUS',
+    doslatin1   => 'DOSLatin1',   cp850   => 'DOSLatin1',
     macroman    => 'MacRoman',    cp10000 => 'MacRoman', mac => 'MacRoman', roman => 'MacRoman',
     maclatin2   => 'MacLatin2',   cp10029 => 'MacLatin2',
     maccyrillic => 'MacCyrillic', cp10007 => 'MacCyrillic',
@@ -1549,6 +1551,19 @@ my %systemTagsNotes = (
         ValueConvInv => q{
             require Image::ExifTool::Geotag;
             return Image::ExifTool::Geotag::ConvertGeosync($self, $val);
+        },
+    },
+    ForceWrite => {
+        Groups => { 0 => '*', 1 => '*', 2 => '*' },
+        Writable => 1,
+        WriteOnly => 1,
+        Notes => q{
+            write-only tag used to force EXIF, IPTC and/or XMP in a file to be
+            rewritten.  May be set to "EXIF", "IPTC" or "XMP" to force the corresponding
+            metadata type to be rewritten, "FixBase" to cause EXIF to be rewritten only if
+            the MakerNotes offset base was fixed, or "All" to rewrite all of these metadata
+            types.  Values are case insensitive, and multiple values may be separated with
+            commas, eg. C<-ForceWrite=exif,xmp>
         },
     },
 );
@@ -3400,6 +3415,7 @@ sub Init($)
     $$self{DUPL_TAG}   = { };       # last-used index for duplicate-tag keys
     $$self{WARNED_ONCE}= { };       # WarnOnce() warnings already issued
     $$self{WRITTEN}    = { };       # list of tags written (selected tags only)
+    $$self{FORCE_WRITE}= { };       # ForceWrite lookup (set from ForceWrite tag)
     $$self{PATH}       = [ ];       # current subdirectory path in file when reading
     $$self{NUM_FOUND}  = 0;         # total number of tags found (incl. duplicates)
     $$self{CHANGED}    = 0;         # number of tags changed (writer only)
@@ -3855,7 +3871,7 @@ sub SetFoundTags($)
     my $fileOrder = $$self{FILE_ORDER};
     my @groupOptions = sort grep /^Group/, keys %$options;
     my $doDups = $duplicates || $exclude || @groupOptions;
-    my ($tag, $rtnTags, @byValue, @wildTags);
+    my ($tag, $rtnTags, @byValue, @wildTags, %byValue, %wildTags, $i);
 
     # only return requested tags if specified
     if (@$reqTags) {
@@ -3935,10 +3951,14 @@ sub SetFoundTags($)
                 # bogus file order entry to avoid warning if sorting in file order
                 $$self{FILE_ORDER}{$matches[0]} = 9999;
             }
-            # save indices of tags extracted by value
-            push @byValue, scalar(@$rtnTags) .. (scalar(@$rtnTags)+scalar(@matches)-1) if $byValue;
-            # save indices of wildcard tags
-            push @wildTags, scalar(@$rtnTags) .. (scalar(@$rtnTags)+scalar(@matches)-1) if $allTag;
+            # save tags extracted by value
+            if ($byValue) {
+                $byValue{$_} = 1 foreach @matches;
+            }
+            # save wildcard tags
+            if ($allTag) {
+                $wildTags{$_} = 1 foreach @matches;
+            }
             push @$rtnTags, @matches;
         }
     } else {
@@ -4067,8 +4087,18 @@ GR_TAG: foreach $tag (@$rtnTags) {
     }
     $$self{FOUND_TAGS} = $rtnTags;      # save found tags
 
-    # return reference to found tag keys (and list of indices of tags to extract by value)
-    return wantarray ? ($rtnTags, \@byValue, \@wildTags) : $rtnTags;
+    return $rtnTags unless wantarray;
+
+    # generate list of indices of by-value and wildcard tags
+    if (%byValue or %wildTags) {
+        for ($i=0; $i<@$rtnTags; ++$i) {
+            push @byValue, $i if $byValue{$$rtnTags[$i]};
+            push @wildTags, $i if $wildTags{$$rtnTags[$i]};
+        }
+    }
+
+    # return reference to found tag keys and list of indices of tags to extract by value
+    return ($rtnTags, \@byValue, \@wildTags);
 }
 
 #------------------------------------------------------------------------------
@@ -7745,12 +7775,17 @@ sub ProcessBinaryData($$$)
         }
         # hook to allow format, etc to be set dynamically
         if (defined $$tagInfo{Hook}) {
+            my $oldVarSize = $varSize;
             #### eval Hook ($format, $varSize, $size)
             eval $$tagInfo{Hook};
             # save variable size data if required for writing (in case changed by Hook)
             if ($$dirInfo{VarFormatData}) {
                 $#{$$dirInfo{VarFormatData}} -= 1 if $wasVar; # remove previous entry for this tag
                 push @{$$dirInfo{VarFormatData}}, [ $index, $varSize, $format ];
+            } elsif ($varSize != $oldVarSize and $verbose > 2) {
+                my ($tmp, $sign) = ($varSize, '+');
+                $tmp < 0 and $tmp = -$tmp, $sign = '-';
+                $self->VPrint(2, sprintf("$$self{INDENT}\[offsets adjusted by ${sign}0x%.4x after 0x%.4x $$tagInfo{Name}]\n", $tmp, $index));
             }
         }
         if ($unknown > 1) {

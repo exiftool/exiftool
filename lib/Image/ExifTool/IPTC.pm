@@ -1074,7 +1074,7 @@ sub ProcessIPTC($$$)
                 $et->FoundTag('CurrentIPTCDigest', $md5);
             }
         } else {
-            if (($Image::ExifTool::MWG::strict or $et->Options('Validate')) and 
+            if (($Image::ExifTool::MWG::strict or $et->Options('Validate')) and
                 $$et{FILE_TYPE} =~ /^(JPEG|TIFF|PSD)$/)
             {
                 if ($Image::ExifTool::MWG::strict) {

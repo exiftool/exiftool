@@ -981,7 +981,7 @@ sub ProcessProfile($$$)
         }
     } elsif ($buff =~ /^(MM\0\x2a|II\x2a\0)/) {
         # TIFF information
-        return 1 if $outBuff and not $$editDirs{IFD0};  
+        return 1 if $outBuff and not $$editDirs{IFD0};
         if ($outBuff) {
             # delete non-standard EXIF if recreating from scratch
             if ($$et{DEL_GROUP}{EXIF} or $$et{DEL_GROUP}{IFD0}) {

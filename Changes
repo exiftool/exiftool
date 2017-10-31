@@ -7,18 +7,36 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.55. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Oct. 31, 2017 - Version 10.65
+
+  - Added support for DOSLatinUS (cp437) and DOSLatin1 (cp850) character sets
+  - Added Extra ForceWrite tag for forcing metadata in a file to be rewritten
+  - Added write support for RAF images from some newer FujiFilm models
+  - Added a new SonyModelID, Sony LensType and Olympus LensTypes (thanks LibRaw)
+  - Added a new Pentax LensType
+  - Added a new Nikon LensID
+  - Decode more Sony tags for new models (thanks Jos Roost)
+  - Decode Nikon D850 ShotInfo tags and custom settings (thanks Warren Hatch)
+  - Decode Nikon D850 ColorTemperatureAuto (thanks LibRaw)
+  - Decode Photoshop LayerModifyDates and LayerIDs
+  - Improved decoding of Nikon D5/D500/D810 ShotInfo tags
+  - Allow advanced formatting expressions to return a list reference
+  - Fixed problem in Composite:GPSAltitude when derived from an "undef" altitude
+  - Fixed bug which could result in runtime warning when excluding some tags
+    from being extracted
+
 Oct. 17, 2017 - Version 10.64
 
-  - Added some new non-standard CustomRendered values
   - Added a new Nikon LensID
   - Added a new SonyModelID
   - Added a new CanonModelID (thanks LibRaw)
-  - Enhanced shift feature to be able to shift some no-so-simple numerical
-    values (eg. GPSLatitude) with -TAG+=VALUE syntax
+  - Added some new non-standard CustomRendered values
   - Decode FrameRate from FLIR SEQ files (thanks Sebastian Hani)
+  - Enhanced shift feature to be able to shift some not-so-simple numerical
+    values (eg. GPSLatitude) with -TAG+=VALUE syntax
   - Fixed problem with possible malformed UTF-8 when writing IPTC values that
     require truncation
-  - Fixed incorrect Writable type for XMP-GSPherical:TimeStamp
+  - Fixed incorrect Writable type for XMP-GSpherical:TimeStamp
   - Fixed incorrect family 2 group name for Nikon HDRInfo tags
 
 Oct. 4, 2017 - Version 10.63

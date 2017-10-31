@@ -28,7 +28,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD $iptcDigestInfo);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.55';
+$VERSION = '1.56';
 
 sub ProcessPhotoshop($$$);
 sub WritePhotoshop($$$);
@@ -543,11 +543,32 @@ my %unicodeString = (
         Name => 'LayerUnicodeNames',
         List => 1,
         RawConv => q{
-            return "" if length($val) < 4;
+            return '' if length($val) < 4;
             my $len = Get32u(\$val, 0);
             return $self->Decode(substr($val, 4, $len * 2), 'UCS2');
         },
     },
+    lyid => {
+        Name => 'LayerIDs',
+        Description => 'Layer IDs',
+        Format => 'int32u',
+        List => 1,
+        Unknown => 1,
+    },
+    shmd => { # layer metadata (undocumented structure)
+        # (for now, only extract layerTime.  May also contain "layerXMP" --
+        #  it would be nice to decode this but I need a sample)
+        Name => 'LayerModifyDates',
+        Groups => { 2 => 'Time' },
+        List => 1,
+        RawConv => q{
+            return '' unless $val =~ /layerTimedoub(.{8})/s;
+            my $tmp = $1;
+            return GetDouble(\$tmp, 0);
+        },
+        ValueConv => 'length $val ? ConvertUnixTime($val,1) : ""',
+        PrintConv => 'length $val ? $self->ConvertDateTime($val) : ""',
+    }
 );
 
 # image data
@@ -698,7 +719,7 @@ sub ProcessLayers($$$)
                 $et->HandleTag($tagTablePtr, $tag, '');
                 ++$count{$tag};
             }
-            $et->HandleTag($tagTablePtr, $tag, $data, %dinfo);
+            $et->HandleTag($tagTablePtr, $tag, undef, %dinfo);
             ++$count{$tag};
             $pos += $n; # step to start of next structure
         }

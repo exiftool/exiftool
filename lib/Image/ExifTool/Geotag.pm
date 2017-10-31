@@ -1076,7 +1076,7 @@ Category:       foreach $category (qw{pos track alt orient}) {
 # Returns: geosync hash:
 #           Offset = Offset in seconds for latest synchronization (GPS - image time)
 #           Points = hash of all sync offsets keyed by image times in seconds
-#           Times = sorted list of image synchronization times (keys in Points hash) 
+#           Times = sorted list of image synchronization times (keys in Points hash)
 # Notes: calling this routine with more than one geosync'd file causes time drift
 #        correction to be implemented
 sub ConvertGeosync($$)

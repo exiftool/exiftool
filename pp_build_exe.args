@@ -71,6 +71,8 @@
 -M Image::ExifTool::Charset::Arabic
 -M Image::ExifTool::Charset::Baltic
 -M Image::ExifTool::Charset::Cyrillic
+-M Image::ExifTool::Charset::DOSLatin1
+-M Image::ExifTool::Charset::DOSLatinUS
 -M Image::ExifTool::Charset::Greek
 -M Image::ExifTool::Charset::Hebrew
 -M Image::ExifTool::Charset::JIS

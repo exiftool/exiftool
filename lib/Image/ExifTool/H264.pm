@@ -521,6 +521,8 @@ my $parsePictureTiming; # flag to enable parsing of picture timing information (
     #       0x0345 - Panasonic HC-V7272
     #       0x0414 - Panasonic AG-AF100
     #       0x0591 - various Panasonic DMC models
+    #       0x0802 - Panasonic DMC-TZ60 with GPS information off
+    #       0x0803 - Panasonic DMC-TZ60 with GPS information on
     #       0x3001 - various Sony DSC, HDR, NEX and SLT models
     #       0x3003 - various Sony DSC models
     #       0x3100 - various Sony DSC, ILCE, NEX and SLT models

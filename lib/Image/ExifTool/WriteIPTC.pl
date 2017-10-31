@@ -690,6 +690,8 @@ sub WriteIPTC($$$)
         }
         last;
     }
+    # set changed if ForceWrite tag was set to "IPTC"
+    ++$$et{CHANGED} if defined $newData and length $newData and $$et{FORCE_WRITE}{IPTC};
     return $newData;
 }
 

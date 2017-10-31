@@ -17,18 +17,37 @@ considered development releases, and are not uploaded to <a href="http://search.
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v10.65'><b>Oct. 31, 2017 - Version 10.65</b></a>
+<ul>
+<li>Added support for DOSLatinUS (cp437) and DOSLatin1 (cp850) character sets
+<li>Added Extra ForceWrite tag for forcing metadata in a file to be rewritten
+<li>Added write support for RAF images from some newer FujiFilm models
+<li>Added a new SonyModelID, Sony LensType and Olympus LensTypes (thanks LibRaw)
+<li>Added a new Pentax LensType
+<li>Added a new Nikon LensID
+<li>Decode more Sony tags for new models (thanks Jos Roost)
+<li>Decode Nikon D850 ShotInfo tags and custom settings (thanks Warren Hatch)
+<li>Decode Nikon D850 ColorTemperatureAuto (thanks LibRaw)
+<li>Decode Photoshop LayerModifyDates and LayerIDs
+<li>Improved decoding of Nikon D5/D500/D810 ShotInfo tags
+<li>Allow advanced formatting expressions to return a list reference
+<li>Fixed problem in Composite:GPSAltitude when derived from an "undef" altitude
+<li>Fixed bug which could result in runtime warning when excluding some tags
+    from being extracted
+</ul>
+
 <a name='v10.64'><b>Oct. 17, 2017 - Version 10.64</b></a>
 <ul>
-<li>Added some new non-standard CustomRendered values
 <li>Added a new Nikon LensID
 <li>Added a new SonyModelID
 <li>Added a new CanonModelID (thanks LibRaw)
-<li>Enhanced shift feature to be able to shift some no-so-simple numerical
-    values (eg. GPSLatitude) with -TAG+=VALUE syntax
+<li>Added some new non-standard CustomRendered values
 <li>Decode FrameRate from FLIR SEQ files (thanks Sebastian H&auml;ni)
+<li>Enhanced shift feature to be able to shift some not-so-simple numerical
+    values (eg. GPSLatitude) with -TAG+=VALUE syntax
 <li>Fixed problem with possible malformed UTF-8 when writing IPTC values that
     require truncation
-<li>Fixed incorrect Writable type for XMP-GSPherical:TimeStamp
+<li>Fixed incorrect Writable type for XMP-GSpherical:TimeStamp
 <li>Fixed incorrect family 2 group name for Nikon HDRInfo tags
 </ul>
 

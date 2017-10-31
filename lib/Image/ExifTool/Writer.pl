@@ -2820,7 +2820,7 @@ sub InsertTagValues($$$;$)
         }
         # allow trailing '#' to indicate ValueConv value
         $type = 'ValueConv' if $line =~ s/^#//;
-        # (and undocumented feature to allow '@' to evaluate values separately, but only in braces)
+        # (undocumented feature to allow '@' to evaluate values separately, but only in braces)
         if ($bra and $line =~ s/^\@(#)?//) {
             $asList = 1;
             $type = 'ValueConv' if $1;
@@ -2933,7 +2933,7 @@ sub InsertTagValues($$$;$)
                 #### eval advanced formatting expression ($_, $self, @val, $advFmtSelf)
                 eval $expr;
                 $@ and $evalWarning = $@;
-                $val = $_;
+                $val = ref $_ eq 'ARRAY' ? join($$self{OPTIONS}{ListSep}, @$_): $_;
             }
             if ($evalWarning) {
                 my $str = CleanWarning() . " for '$var'";
@@ -3240,7 +3240,7 @@ sub IsOverwriting($$;$)
                         return 0;
                     }
                 }
-                unless (IsFloat($val)) {
+                unless (defined $val and IsFloat($val)) {
                     $self->Warn("Can't shift $$tagInfo{Name} (not a number)");
                     return 0;
                 }
@@ -3577,11 +3577,13 @@ sub GetLangInfo($$)
 
 #------------------------------------------------------------------------------
 # initialize ADD_DIRS and EDIT_DIRS hashes for all directories that need
-# need to be created or will have tags changed in them
+# to be created or will have tags changed in them
 # Inputs: 0) ExifTool object reference, 1) file type string (or map hash ref)
 #         2) preferred family 0 group name for creating tags
-# Notes: The ADD_DIRS and EDIT_DIRS keys are the directory names, and the values
-#        are the names of the parent directories (undefined for a top-level directory)
+# Notes:
+# - the ADD_DIRS and EDIT_DIRS keys are the directory names, and the values
+#   are the names of the parent directories (undefined for a top-level directory)
+# - also initializes FORCE_WRITE lookup
 sub InitWriteDirs($$;$)
 {
     my ($self, $fileType, $preferredGroup) = @_;
@@ -3624,6 +3626,19 @@ sub InitWriteDirs($$;$)
                 $dirName = 'MIE' . ($1 || '');
             }
             my @dirNames;
+            # allow a group name of '*' to force writing EXIF/IPTC/XMP (ForceWrite tag)
+            if ($dirName eq '*' and $$nvHash{Value}) {
+                my $val = $$nvHash{Value}[0];
+                if ($val) {
+                    foreach (qw(EXIF IPTC XMP FixBase)) {
+                        next unless $val =~ /\b($_|All)\b/i;
+                        push @dirNames, $_;
+                        push @dirNames, 'EXIF' if $_ eq 'FixBase';
+                        $$self{FORCE_WRITE}{$_} = 1;
+                    }
+                }
+                $dirName = shift @dirNames;
+            }
             while ($dirName) {
                 my $parent = $$fileDirs{$dirName};
                 if (ref $parent) {
@@ -5527,7 +5542,6 @@ sub WriteJPEG($$)
         # rewrite this segment only if we are changing a tag which is contained in its
         # directory (or deleting '*', in which case we need to identify the segment type)
         while (exists $$editDirs{$markerName} or $$delGroup{'*'}) {
-            my $oldChanged = $$self{CHANGED};
             if ($marker == 0xe0) {              # APP0 (JFIF, CIFF)
                 if ($$segDataPt =~ /^JFIF\0/) {
                     $segType = 'JFIF';
@@ -5606,7 +5620,6 @@ sub WriteJPEG($$)
                         $$segDataPt = $exifAPP1hdr . $buff;
                     } else {
                         last Marker unless $self->Options('IgnoreMinorErrors');
-                        $$self{CHANGED} = $oldChanged; # nothing changed
                     }
                     # switch to buffered output if required
                     if (($$self{PREVIEW_INFO} or $$self{LeicaTrailer}) and not $oldOutfile) {
@@ -5724,7 +5737,6 @@ sub WriteJPEG($$)
                             $$segDataPt = '';   # delete the XMP
                         }
                     } else {
-                        $$self{CHANGED} = $oldChanged;
                         $verbose and print $out "    [XMP rewritten with no changes]\n";
                         if ($doneDir{XMP} > 1) {
                             # re-write original multi-segment XMP
@@ -5848,7 +5860,6 @@ sub WriteJPEG($$)
                         $$segDataPt = substr($$segDataPt,0,6) . $buff;
                     } else {
                         last Marker unless $self->Options('IgnoreMinorErrors');
-                        $$self{CHANGED} = $oldChanged; # nothing changed
                     }
                     # delete segment if IFD contains no entries
                     $del = 1 unless length($$segDataPt) > 6;
@@ -5880,8 +5891,6 @@ sub WriteJPEG($$)
                         # add header to new segment unless empty
                         $newData = 'Ducky' . $newData if length $newData;
                         $segDataPt = \$newData;
-                    } else {
-                        $$self{CHANGED} = $oldChanged;
                     }
                     $del = 1 unless length $$segDataPt;
                 }
@@ -5921,8 +5930,6 @@ sub WriteJPEG($$)
                     if (defined $newData) {
                         undef $$segDataPt;  # free the old buffer
                         $segDataPt = \$newData;
-                    } else {
-                        $$self{CHANGED} = $oldChanged;
                     }
                     length $$segDataPt or $del = 1, last;
                     # write as multi-segment

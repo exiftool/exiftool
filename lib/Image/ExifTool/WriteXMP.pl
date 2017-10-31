@@ -688,6 +688,12 @@ sub WriteXMP($$;$)
         }
         delete $$et{XMP_ERROR};
         delete $$et{XMP_ABOUT};
+
+        # call InitWriteDirs to initialize FORCE_WRITE flags if necessary
+        $et->InitWriteDirs({}, 'XMP') if $xmpFile and $et->GetNewValue('ForceWrite');
+        # set changed if we are ForceWrite tag was set to "XMP"
+        ++$changed if $$et{FORCE_WRITE}{XMP};
+
     } elsif (defined $about) {
         $et->VerboseValue('+ XMP-rdf:About', $about);
         $about = EscapeXML($about); # must escape for XML
@@ -1116,6 +1122,7 @@ sub WriteXMP($$;$)
     my $maxDataLen = $$dirInfo{MaxDataLen};
     # get DataPt again because it may have been set by ProcessXMP
     $dataPt = $$dirInfo{DataPt};
+
     # return now if we didn't change anything
     unless ($changed or ($maxDataLen and $dataPt and defined $$dataPt and
         length($$dataPt) > $maxDataLen))

@@ -459,6 +459,8 @@ below, case is not significant:
   Baltic       cp1257           Windows Baltic
   Vietnam      cp1258           Windows Vietnamese
   Thai         cp874            Windows Thai
+  DOSLatinUS   cp437            DOS Latin US
+  DOSLatin1    cp850            DOS Latin1
   MacRoman     cp10000, Roman   Macintosh Roman
   MacLatin2    cp10029          Macintosh Latin2 (Central Europe)
   MacCyrillic  cp10007          Macintosh Cyrillic

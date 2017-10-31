@@ -53,7 +53,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '3.94';
+$VERSION = '3.95';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -2115,14 +2115,14 @@ my %sampleFormat = (
     0x9217 => { #12
         Name => 'SensingMethod',
         Groups => { 2 => 'Camera' },
-        Notes => 'values 1 and 6 are not standard EXIF',
         PrintConv => {
-            1 => 'Monochrome area', #12 (not standard EXIF)
+            # (values 1 and 6 are not used by corresponding EXIF tag 0xa217)
+            1 => 'Monochrome area',
             2 => 'One-chip color area',
             3 => 'Two-chip color area',
             4 => 'Three-chip color area',
             5 => 'Color sequential area',
-            6 => 'Monochrome linear', #12 (not standard EXIF)
+            6 => 'Monochrome linear',
             7 => 'Trilinear',
             8 => 'Color sequential linear',
         },
@@ -2438,7 +2438,10 @@ my %sampleFormat = (
     0xa401 => {
         Name => 'CustomRendered',
         Writable => 'int16u',
-        Notes => 'only 0 and 1 are standard EXIF',
+        Notes => q{
+            only 0 and 1 are standard EXIF, but other values are used by Apple iOS
+            devices
+        },
         PrintConv => {
             0 => 'Normal',
             1 => 'Custom',

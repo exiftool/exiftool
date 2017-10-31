@@ -563,6 +563,8 @@ sub WriteExif($$$)
             # update local variables from fixed values
             $base = $$dirInfo{Base};
             $dataPos = $$dirInfo{DataPos};
+            # changed if ForceWrite tag was was set to "FixBase"
+            ++$$et{CHANGED} if $$et{FORCE_WRITE}{FixBase};
         }
 
         # initialize variables to handle mandatory tags
@@ -2450,6 +2452,9 @@ NoOverwrite:            next if $isNew > 0;
     # return empty string if no entries in directory
     # (could be up to 10 bytes and still be empty)
     $newData = '' if defined $newData and length($newData) < 12;
+
+    # set changed if ForceWrite tag was set to "EXIF"
+    ++$$et{CHANGED} if defined $newData and length $newData and $$et{FORCE_WRITE}{EXIF};
 
     return $newData;    # return our directory data
 }

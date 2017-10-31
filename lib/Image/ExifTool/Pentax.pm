@@ -58,7 +58,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::HP;
 
-$VERSION = '3.19';
+$VERSION = '3.20';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -178,7 +178,8 @@ sub DecodeAFPoints($$$$;$);
     '4 2' => 'smc PENTAX-FA 80-320mm F4.5-5.6',
     '4 3' => 'smc PENTAX-FA 43mm F1.9 Limited',
     '4 6' => 'smc PENTAX-FA 35-80mm F4-5.6',
-    '4 10' => 'Irix 15mm F2.4', #forum3833
+    '4 9' => 'Irix 11mm F4 Firefly', #27
+    '4 10' => 'Irix 15mm F2.4', #27
     '4 12' => 'smc PENTAX-FA 50mm F1.4', #17
     '4 15' => 'smc PENTAX-FA 28-105mm F4-5.6 [IF]',
     '4 16' => 'Tamron AF 80-210mm F4-5.6 (178D)', #13
@@ -1925,13 +1926,16 @@ my %binaryDataAttrs = (
             1 => 'Remote Control (3 s delay)', #19
             2 => 'Remote Control', #19
             4 => 'Remote Continuous Shooting', # (K-5)
-            10 => 'Composite Average', #31
-            11 => 'Composite Additive', #31
-            12 => 'Composite Bright', #31
         },{
             0x00 => 'Single Exposure',
             0x01 => 'Multiple Exposure',
+            0x02 => 'Composite Average', #31
+            0x03 => 'Composite Additive', #31
+            0x04 => 'Composite Bright', #31
             0x08 => 'Interval Shooting', #31
+            0x0a => 'Interval Composite Average', #31
+            0x0b => 'Interval Composite Additive', #31
+            0x0c => 'Interval Composite Bright', #31
             0x0f => 'Interval Movie', #PH (K-01)
             0x10 => 'HDR', #PH (645D)
             0x20 => 'HDR Strong 1', #PH (NC) (K-5)

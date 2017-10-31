@@ -207,6 +207,8 @@ lib/Image/ExifTool/Charset.pm
 lib/Image/ExifTool/Charset/Arabic.pm
 lib/Image/ExifTool/Charset/Baltic.pm
 lib/Image/ExifTool/Charset/Cyrillic.pm
+lib/Image/ExifTool/Charset/DOSLatin1.pm
+lib/Image/ExifTool/Charset/DOSLatinUS.pm
 lib/Image/ExifTool/Charset/Greek.pm
 lib/Image/ExifTool/Charset/Hebrew.pm
 lib/Image/ExifTool/Charset/JIS.pm

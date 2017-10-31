@@ -13,7 +13,7 @@ table td.c { text-align: center }
 </style>
 </head>
 <body><h2 class=top>Makernote Types</h2>
-<p>The table below lists the makernote types for JPEG images from 6617
+<p>The table below lists the makernote types for JPEG images from 6624
 unique camera models by 96 different manufacturers.  Also listed in the
 table is the byte order for Exif-style makernotes ('MM' is big-endian, 'II'
 is little-endian), and the first 20 bytes of the makernote data in
@@ -185,8 +185,8 @@ ASCII and hexadecimal.</p>
  <td class=c>MM</td><td class=h>Apple iOS...MM......</td><td class=h>41 70 70 6c 65 20 69 4f 53 00 00 01 4d 4d 00 06 00 01 00 09</td></tr>
 <tr><td>iPhone 5s</td><td><a href='TagNames/Apple.html'>Apple</a></td>
  <td class=c>MM</td><td class=h>Apple iOS...MM......</td><td class=h>41 70 70 6c 65 20 69 4f 53 00 00 01 4d 4d 00 08 00 01 00 09</td></tr>
-<tr><td>iPhone 6</td><td><a href='TagNames/Apple.html'>Apple</a></td>
- <td class=c>-</td><td class=h>Apple iOS...MM......</td><td class=h>41 70 70 6c 65 20 69 4f 53 00 00 01 4d 4d 00 09 00 01 00 09</td></tr>
+<tr><td>iPhone 6</td><td>?</td>
+ <td class=c>-</td><td class=h>.{.&quot;.e.f.f.e.c.t.s.&quot;</td><td class=h>00 7b 00 22 00 65 00 66 00 66 00 65 00 63 00 74 00 73 00 22</td></tr>
 <tr><td>iPhone 6 Plus</td><td><a href='TagNames/Apple.html'>Apple</a></td>
  <td class=c>MM</td><td class=h>Apple iOS...MM......</td><td class=h>41 70 70 6c 65 20 69 4f 53 00 00 01 4d 4d 00 0d 00 01 00 09</td></tr>
 <tr><td>iPhone 6s</td><td><a href='TagNames/Apple.html'>Apple</a></td>
@@ -199,6 +199,8 @@ ASCII and hexadecimal.</p>
  <td class=c>MM</td><td class=h>Apple iOS...MM......</td><td class=h>41 70 70 6c 65 20 69 4f 53 00 00 01 4d 4d 00 0c 00 01 00 09</td></tr>
 <tr><td>iPhone 8</td><td><a href='TagNames/Apple.html'>Apple</a></td>
  <td class=c>MM</td><td class=h>Apple iOS...MM......</td><td class=h>41 70 70 6c 65 20 69 4f 53 00 00 01 4d 4d 00 11 00 01 00 09</td></tr>
+<tr><td>iPhone 8 Plus</td><td><a href='TagNames/Apple.html'>Apple</a></td>
+ <td class=c>MM</td><td class=h>Apple iOS...MM......</td><td class=h>41 70 70 6c 65 20 69 4f 53 00 00 01 4d 4d 00 10 00 01 00 09</td></tr>
 <tr><td>iPhone SE</td><td><a href='TagNames/Apple.html'>Apple</a></td>
  <td class=c>MM</td><td class=h>Apple iOS...MM......</td><td class=h>41 70 70 6c 65 20 69 4f 53 00 00 01 4d 4d 00 0b 00 01 00 09</td></tr>
 <tr><td>iPod Touch 4</td><td>-</td>
@@ -1567,6 +1569,8 @@ ASCII and hexadecimal.</p>
  <td class=c>II</td><td class=h>......0...Z.........</td><td class=h>1c 00 01 00 03 00 30 00 00 00 5a 04 00 00 03 00 03 00 04 00</td></tr>
 <tr><td>PowerShot G1 X Mark II</td><td><a href='TagNames/Canon.html'>Canon</a></td>
  <td class=c>II</td><td class=h>......2.............</td><td class=h>1f 00 01 00 03 00 32 00 00 00 12 05 00 00 03 00 03 00 04 00</td></tr>
+<tr><td>PowerShot G1 X Mark III</td><td><a href='TagNames/Canon.html'>Canon</a></td>
+ <td class=c>II</td><td class=h>0.....2...&amp;.........</td><td class=h>30 00 01 00 03 00 32 00 00 00 26 06 00 00 03 00 03 00 04 00</td></tr>
 <tr><td>PowerShot G2</td><td><a href='TagNames/Canon.html'>Canon</a></td>
  <td class=c>II</td><td class=h>......(.............</td><td class=h>0c 00 01 00 03 00 28 00 00 00 1c 04 00 00 02 00 03 00 04 00</td></tr>
 <tr><td>PowerShot G3</td><td><a href='TagNames/Canon.html'>Canon</a></td>
@@ -2545,8 +2549,8 @@ ASCII and hexadecimal.</p>
 <tr><th colspan=5><a name='DXG'>DXG</a></th></tr>
 <tr><td>DCS711</td><td><a href='TagNames/Unknown.html'>Unknown</a></td>
  <td class=c>II</td><td class=h>DXG &nbsp;... .....I(....</td><td class=h>44 58 47 20 20 00 01 00 20 00 00 01 07 00 49 28 00 00 00 12</td></tr>
-<tr><td>DSC</td><td>?</td>
- <td class=c>-</td><td class=h>....................</td><td class=h>00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00</td></tr>
+<tr><td>DSC</td><td>UnknownText</td>
+ <td class=c>-</td><td class=h>PE015 MS280 R422 G25</td><td class=h>50 45 30 31 35 20 4d 53 32 38 30 20 52 34 32 32 20 47 32 35</td></tr>
 <tr><td>DSC502</td><td>-</td>
  <td class=c>-</td><td class=h>&nbsp;</td><td class=h>&nbsp;</td></tr>
 <tr><td>DSC608</td><td>-</td>
@@ -3552,14 +3556,22 @@ ASCII and hexadecimal.</p>
  <td class=c>-</td><td class=h>....................</td><td class=h>0a 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00</td></tr>
 <tr><td>Hero</td><td>?</td>
  <td class=c>-</td><td class=h>..... ..............</td><td class=h>0a 00 03 b0 00 20 00 00 00 00 00 00 00 00 00 00 00 00 00 00</td></tr>
+<tr><td>Hero+</td><td>?</td>
+ <td class=c>-</td><td class=h>..........LAB5080500</td><td class=h>0d 00 03 e0 00 10 00 00 01 b0 4c 41 42 35 30 38 30 35 30 30</td></tr>
+<tr><td>Hero+ LCD</td><td>?</td>
+ <td class=c>-</td><td class=h>..........LAB5061900</td><td class=h>0a 00 00 e0 01 10 00 00 00 10 4c 41 42 35 30 36 31 39 30 30</td></tr>
 <tr><td>Hero3 Black Edition</td><td>?</td>
  <td class=c>-</td><td class=h>....................</td><td class=h>00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00</td></tr>
 <tr><td>Hero3 Silver Edition</td><td>?</td>
  <td class=c>-</td><td class=h>....................</td><td class=h>0d 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00</td></tr>
 <tr><td>Hero3+ Black Edition</td><td>?</td>
  <td class=c>-</td><td class=h>......... ..........</td><td class=h>0d 00 03 e0 00 10 00 00 00 20 00 00 00 00 00 00 00 00 00 00</td></tr>
+<tr><td>Hero3+ Silver Edition</td><td>?</td>
+ <td class=c>-</td><td class=h>....................</td><td class=h>0d 00 00 e0 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00</td></tr>
 <tr><td>Hero4 Black</td><td>?</td>
  <td class=c>-</td><td class=h>.......G..LAT5061600</td><td class=h>0d 00 01 00 00 00 80 47 00 00 4c 41 54 35 30 36 31 36 30 30</td></tr>
+<tr><td>Hero4 Session</td><td>?</td>
+ <td class=c>-</td><td class=h>...`.....PNAC5061400</td><td class=h>0a 00 03 60 00 10 00 00 05 50 4e 41 43 35 30 36 31 34 30 30</td></tr>
 <tr><td>Hero4 Silver</td><td>?</td>
  <td class=c>-</td><td class=h>.......G..LAT4082700</td><td class=h>0d 00 01 00 00 00 80 47 00 00 4c 41 54 34 30 38 32 37 30 30</td></tr>
 <tr><td>Hero5 Black</td><td>?</td>
@@ -4179,10 +4191,12 @@ ASCII and hexadecimal.</p>
 <tr><td>myTouch 4G</td><td>-</td>
  <td class=c>-</td><td class=h>&nbsp;</td><td class=h>&nbsp;</td></tr>
 <tr><th colspan=5><a name='Huawei'>Huawei</a></th></tr>
+<tr><td>BLA-L29</td><td>?</td>
+ <td class=c>-</td><td class=h>#*#*20170822183700,1</td><td class=h>23 2a 23 2a 32 30 31 37 30 38 32 32 31 38 33 37 30 30 2c 31</td></tr>
 <tr><td>CRR-L09</td><td>?</td>
  <td class=c>-</td><td class=h>d...............F...</td><td class=h>64 01 00 00 1f 0a 04 00 00 ff 00 00 02 00 00 00 46 10 00 00</td></tr>
 <tr><td>EVA-L09</td><td>?</td>
- <td class=c>-</td><td class=h>....</td><td class=h>04 00 00 00</td></tr>
+ <td class=c>-</td><td class=h>#*#*201509301026..-.</td><td class=h>23 2a 23 2a 32 30 31 35 30 39 33 30 31 30 32 36 00 0c 2d 00</td></tr>
 <tr><td>GRA-L09</td><td>?</td>
  <td class=c>-</td><td class=h>....................</td><td class=h>ba 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00</td></tr>
 <tr><td>IDEOS X5</td><td>-</td>
@@ -8586,8 +8600,8 @@ ASCII and hexadecimal.</p>
  <td class=c>-</td><td class=h>PRAKTICA</td><td class=h>50 52 41 4b 54 49 43 41</td></tr>
 <tr><td>LM 6105</td><td>PreviewImage</td>
  <td class=c>-</td><td class=h>....................</td><td class=h>ff d8 ff db 00 84 00 03 02 02 02 02 02 03 02 02 02 03 03 03</td></tr>
-<tr><td>LM 6403</td><td>?</td>
- <td class=c>-</td><td class=h>....................</td><td class=h>00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00</td></tr>
+<tr><td>LM 6403</td><td>UnknownText</td>
+ <td class=c>-</td><td class=h>PE023 CE080 R500 G23</td><td class=h>50 45 30 32 33 20 43 45 30 38 30 20 52 35 30 30 20 47 32 33</td></tr>
 <tr><td>LM 7303</td><td><a href='TagNames/HP.html#Type4'>HP4</a></td>
  <td class=c>II</td><td class=h>IIII..8...P......a..</td><td class=h>49 49 49 49 04 00 38 06 00 00 50 00 1c 00 01 00 a8 61 00 00</td></tr>
 <tr><td>LM 8003</td><td>UnknownText</td>
@@ -10849,7 +10863,7 @@ ASCII and hexadecimal.</p>
  <td class=c>II</td><td class=h>610...67.90123456789</td><td class=h>36 31 30 01 00 00 36 37 01 39 30 31 32 33 34 35 36 37 38 39</td></tr>
 <tr><td>VPC-MZ3</td><td><a href='TagNames/Sanyo.html'>Sanyo</a></td>
  <td class=c>II</td><td class=h>SANYO... .........4.</td><td class=h>53 41 4e 59 4f 00 01 00 20 00 ff 00 03 00 01 00 00 00 34 04</td></tr>
-<tr><td>VPC-MZ3EX</td><td><a href='TagNames/Unknown.html'>Sanyo</a></td>
+<tr><td>VPC-MZ3EX</td><td><a href='TagNames/Sanyo.html'>Sanyo</a></td>
  <td class=c>II</td><td class=h>SANYO... .........4.</td><td class=h>53 41 4e 59 4f 00 01 00 20 00 ff 00 03 00 01 00 00 00 34 04</td></tr>
 <tr><td>VPC-MZ3GX</td><td>-</td>
  <td class=c>-</td><td class=h>&nbsp;</td><td class=h>&nbsp;</td></tr>
@@ -13351,7 +13365,7 @@ ASCII and hexadecimal.</p>
  <td class=c>-</td><td class=h>&nbsp;</td><td class=h>&nbsp;</td></tr>
 <tr><td>Z970</td><td>-</td>
  <td class=c>-</td><td class=h>&nbsp;</td><td class=h>&nbsp;</td></tr>
-</table><hr><i>Last revised Oct 16, 2017</i>
+</table><hr><i>Last revised Oct 19, 2017</i>
 <p class='lf'><a href='index.html'>&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

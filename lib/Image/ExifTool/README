@@ -124,7 +124,7 @@ with tag keys.  Below is an explanation of the meaning of each special key:
     real        - floating point value as a string
     string      - unformatted string
     struct      - structure
-    
+
   FIRST_ENTRY : Specifies the index for the first tag entry in a binary table.
   This value is only used if the Unknown option is set to 2 or higher, and
   allows the binary data to be scanned for unknown tag entries.
@@ -502,7 +502,7 @@ numerical.
                   'WritePseudo' - flag indicating that this is a writable pseudo
                   tag.  If set, this tag may be written without actually writing
                   to the file (eg. FileName, FileModifyDate).
- 
+
                   'WrongBase' - ['IsOffset' tags only] An expression using $self
                   that is evaluated to generate a base shift for 'IsOffset' tags
                   which use a different base than the rest of the tags.
@@ -743,7 +743,7 @@ numerical.
                   "ValueConv" and the Protected option has bit 0x02 set to allow
                   writing of Protected tags that aren't directly writable.  The
                   AddValue, DelValue, Shift and Replace options from the parent
-                  tag are also defined, but no other options are set by default. 
+                  tag are also defined, but no other options are set by default.
                   Previous new values of WriteAlso tags have already been
                   removed prior to the eval if the Replace option was used for
                   the parent tag.  If an empty warning is issued ("\n"), the

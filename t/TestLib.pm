@@ -314,8 +314,12 @@ sub check($$$;$$$)
     # get a list of found tags
     my @tags;
     if ($exifTool) {
-        # sort tags by group to make it a bit prettier
-        @tags = $exifTool->GetTagList($info, 'Group0');
+        if ($$exifTool{NO_SORT}) {
+            @tags = $exifTool->GetFoundTags();
+        } else {
+            # sort tags by group to make it a bit prettier
+            @tags = $exifTool->GetTagList($info, 'Group0');
+        }
     } else {
         @tags = sort keys %$info;
     }

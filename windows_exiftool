@@ -12,7 +12,7 @@
 use strict;
 require 5.004;
 
-my $version = '10.65';
+my $version = '10.66';
 
 # add our 'lib' directory to the include list BEFORE 'use Image::ExifTool'
 my $exeDir;
@@ -532,7 +532,7 @@ if (not $preserveTime and $^O eq 'MSWin32') {
 for (;;) {
 
   # execute the command now if no more arguments or -execute is used
-  if (not @ARGV or $ARGV[0] =~ /^-execute(\d*)$/i) {
+  if (not @ARGV or $ARGV[0] =~ /^(-|\xe2\x88\x92)execute(\d*)$/i) {
     if (@ARGV) {
         $executeID = $1;        # save -execute number for "{ready}" response
         $helped = 1;            # don't show help if we used -execute
@@ -965,7 +965,7 @@ for (;;) {
     (/^l$/ or $a eq 'long') and --$outFormat, next;
     (/^L$/ or $a eq 'latin') and $utf8 = 0, $mt->Options(Charset => 'Latin'), next;
     if ($a eq 'lang') {
-        $langOpt = (@ARGV and $ARGV[0] !~ /^-/) ? shift : undef;
+        $langOpt = (@ARGV and $ARGV[0] !~ /^(-|\xe2\x88\x92)/) ? shift : undef;
         if ($langOpt) {
             # make lower case and use underline as a separator (eg. 'en_ca')
             $langOpt =~ tr/-A-Z/_a-z/;
@@ -4175,7 +4175,7 @@ OPTIONS
       -b          (-binary)            Output metadata in binary format
       -c FMT      (-coordFormat)       Set format for GPS coordinates
       -charset [[TYPE=]CHARSET]        Specify encoding for special characters
-      -csv[=CSVFILE]                   Export/import tags in CSV format
+      -csv[[+]=CSVFILE]                Export/import tags in CSV format
       -d FMT      (-dateFormat)        Set format for date/time values
       -D          (-decimal)           Show tag ID numbers in decimal
       -E, -ex     (-escape(HTML|XML))  Escape values for HTML (-E) or XML (-ex)
@@ -4185,7 +4185,7 @@ OPTIONS
       -h          (-htmlFormat)        Use HMTL formatting for output
       -H          (-hex)               Show tag ID numbers in hexadecimal
       -htmlDump[OFFSET]                Generate HTML-format binary dump
-      -j[=JSONFILE] (-json)            Export/import tags in JSON format
+      -j[[+]=JSONFILE] (-json)         Export/import tags in JSON format
       -l          (-long)              Use long 2-line output format
       -L          (-latin)             Use Windows Latin1 encoding
       -lang [LANG]                     Set current language
@@ -4338,12 +4338,12 @@ OPTIONS
          "-GROUP:All=", see note 4 below). Note that not all groups are
          deletable, and that the JPEG APP14 "Adobe" group is not removed by
          default with "-All=" because it may affect the appearance of the
-         image. However, this will remove color space information, so the
-         colors may be affected (but this may be avoided by copying back the
-         tags defined by the ColorSpaceTags shortcut). Use the -listd option
-         for a complete list of deletable groups, and see note 5 below
-         regarding the "APP" groups. Also, within an image some groups may
-         be contained within others, and these groups are removed if the
+         image. However, color space information is removed, so the colors
+         may be affected (but this may be avoided by copying back the tags
+         defined by the ColorSpaceTags shortcut). Use the -listd option for
+         a complete list of deletable groups, and see note 5 below regarding
+         the "APP" groups. Also, within an image some groups may be
+         contained within others, and these groups are removed if the
          containing group is deleted:
 
            JPEG Image:
@@ -4669,7 +4669,7 @@ OPTIONS
          Image::ExifTool Options for more details about the -charset
          settings.
 
-    -csv[=*CSVFILE*]
+    -csv[[+]=*CSVFILE*]
          Export information in CSV format, or import information if
          *CSVFILE* is specified. When importing, the CSV file must be in
          exactly the same format as the exported file. The first row of the
@@ -4695,10 +4695,10 @@ OPTIONS
          file (or to the MissingTagValue if this API option was used).
          Multiple databases may be imported in a single command.
 
-         When exporting a CSV file, the -g or -G option to add group names
-         to the tag headings. If the -a option is used to allow duplicate
-         tag names, the duplicate tags are only included in the CSV output
-         if the column headings are unique. Adding the -G4 option ensures a
+         When exporting a CSV file, the -g or -G option adds group names to
+         the tag headings. If the -a option is used to allow duplicate tag
+         names, the duplicate tags are only included in the CSV output if
+         the column headings are unique. Adding the -G4 option ensures a
          unique column heading for each tag. When exporting specific tags,
          the CSV columns are arranged in the same order as the specified
          tags provided the column headings exactly match the specified tag
@@ -4791,7 +4791,7 @@ OPTIONS
          dumped, but the -u option can be used to give a raw hex dump of
          other file formats.
 
-    -j[=*JSONFILE*] (-json)
+    -j[[+]=*JSONFILE*] (-json)
          Use JSON (JavaScript Object Notation) formatting for console
          output, or import JSON file if *JSONFILE* is specified. This option
          may be combined with -g to organize the output into objects by
@@ -4932,7 +4932,7 @@ OPTIONS
 
          produces output like this:
 
-             -- Generated by ExifTool 10.65 --
+             -- Generated by ExifTool 10.66 --
              File: a.jpg - 2003:10:31 15:44:19
              (f/5.6, 1/60s, ISO 100)
              File: b.jpg - 2006:05:23 11:57:38

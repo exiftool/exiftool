@@ -74,9 +74,9 @@ span.sup        { font-size: 0.8em; font-weight: normal; position: relative; top
 </div>
 
 <blockquote><table class='dl lg'><tr><td><b>
-<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-10.65.tar.gz/download">
-Download        Version 10.65</a> (4.1 MB) -
-<a href="history.html">Oct. 31, 2017</a></b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-10.66.tar.gz/download">
+Download        Version 10.66</a> (4.1 MB) -
+<a href="history.html">Nov. 14, 2017</a></b></td></tr></table></blockquote>
 
 <p><b>ExifTool is a platform-independent <a href="ExifTool.html">Perl
 library</a> plus a <a href="exiftool_pod.html">command-line application</a> for
@@ -127,8 +127,8 @@ distribution above.)</i></p>
 
 <blockquote><table class='dl lg'><tr><td><b>
 <a name="alone">Windows Executable:</a>
-<a href="http://sourceforge.net/projects/exiftool/files/exiftool-10.65.zip/download">
-         exiftool-10.65.zip</a> (5.9 MB)</b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/exiftool-10.66.zip/download">
+         exiftool-10.66.zip</a> (5.9 MB)</b></td></tr></table></blockquote>
 
 <p><b>The stand-alone Windows executable</b> does not require Perl. Just
 download and un-zip the archive then double-click on
@@ -140,7 +140,7 @@ of Windows.</p>
 <blockquote><table class='dl lg'><tr><td><b>
 Mac OS X Package:
 <a href="http://sourceforge.net/projects/exiftool/files/ExifTool-9.70.dmg/download">
-         ExifTool-10.65.dmg</a> (2.6 MB)</b></td></tr></table></blockquote>
+         ExifTool-10.66.dmg</a> (2.6 MB)</b></td></tr></table></blockquote>
 
 <p><b>The OS X package</b> installs the ExifTool command-line application and
 libraries in /usr/local/bin. After installing, type "<code>exiftool</code>" in
@@ -906,7 +906,8 @@ by default) and trailers are removed which effectively removes all metadata, but
 for other formats the results are less complete:
 <ul>
 <li>JPEG - APP segments (except <a href="TagNames/JPEG.html#Adobe">Adobe APP14</a>) and trailers are removed.</li>
-<li>TIFF - XMP, IPTC, ICC_Profile and the ExifIFD are removed, but some EXIF may remain in IFD0.</li>
+<li>TIFF - XMP, IPTC, ICC_Profile and the ExifIFD are removed, but some EXIF may remain in IFD0. (The CommonIFD0
+  <a href="#shortcut">Shortcut tag</a> is provided to simplify removal of common metadata tags from IFD0.)</li>
 <li>PNG - Only XMP, EXIF, ICC_Profile and native PNG textual data chunks are removed.</li>
 <li>PDF - The original metadata is never actually removed.</li>
 <li>PS - Only XMP and some native PostScript tags may be deleted.</li>
@@ -995,7 +996,7 @@ exiftool "-DateTimeOriginal+=5:10:2 10:48:0" <i>DIR</i>
 or time tag can be shifted, and multiple tags may be written with a single
 command line.  Commonly, in JPEG images, the DateTimeOriginal, CreateDate and
 ModifyDate values must all be changed.  For convenience, a
-<a href="#shortcut">shortcut</a> tag called <b>AllDates</b> has been defined to
+<a href="#shortcut">Shortcut tag</a> called <b>AllDates</b> has been defined to
 represent these three tags.  So, for example, if you forgot to set your camera
 clock back 1 hour at the end of daylight savings time in the fall, you can fix
 the images with:</p>

@@ -4388,11 +4388,11 @@ sub TimeNow(;$)
 #         3) flag to allow date-only (YYYY, YYYY:mm or YYYY:mm:dd) or time without seconds
 # Returns: formatted date/time string (or undef and issues warning on error)
 # Notes: currently accepts different separators, but doesn't use DateFormat yet
-my $hasStrptime; # flag for strptime available
+my $strptimeLib; # strptime library name if available
 sub InverseDateTime($$;$$)
 {
     my ($self, $val, $tzFlag, $dateOnly) = @_;
-    my ($rtnVal, $tz, $noStrptime);
+    my ($rtnVal, $tz);
     # strip off timezone first if it exists
     if ($val =~ s/([+-])(\d{1,2}):?(\d{2})\s*$//i) {
         $tz = sprintf("$1%.2d:$3", $2);
@@ -4406,27 +4406,37 @@ sub InverseDateTime($$;$$)
     my $fmt = $$self{OPTIONS}{DateFormat};
     # only convert date if a format was specified and the date is recognizable
     if ($fmt) {
-        unless (defined $hasStrptime) {
+        unless (defined $strptimeLib) {
             if (eval { require POSIX::strptime }) {
-                $hasStrptime = 1;
+                $strptimeLib = 'POSIX::strptime';
             } elsif (eval { require Time::Piece }) {
-                $hasStrptime = 2;
+                $strptimeLib = 'Time::Piece';
+                # (call use_locale() to convert localized date/time,
+                #  only available in Time::Piece 1.32 and later)
+                eval { Time::Piece->use_locale() };
             } else {
-                $hasStrptime = 0;
+                $strptimeLib = '';
             }
         }
-        if ($hasStrptime) {
-            my @a;
-            if ($hasStrptime == 1) {
-                @a = POSIX::strptime($val, $fmt);
+        my ($lib, $wrn, @a);
+TryLib: for ($lib=$strptimeLib; ; $lib='') {
+            if (not $lib) {
+                last unless $$self{OPTIONS}{StrictDate};
+                warn $wrn || "Install POSIX::strptime or Time::Piece for inverse date/time conversions\n";
+                return undef;
+            } elsif ($lib eq 'POSIX::strptime') {
+                @a = eval { POSIX::strptime($val, $fmt) };
             } else {
-                @a = Time::Piece::_strptime($val, $fmt);
+                @a = eval {
+                    my $t = Time::Piece->strptime($val, $fmt);
+                    return ($t->sec, $t->min, $t->hour, $t->mday, $t->_mon, $t->_year);
+                };
             }
             if (defined $a[5] and length $a[5]) {
                 $a[5] += 1900; # add 1900 to year
             } else {
-                warn "Invalid date/time (no year)\n";
-                return undef;
+                $wrn = "Invalid date/time (no year) using $lib\n";
+                next;
             }
             ++$a[4] if defined $a[4] and length $a[4];  # add 1 to month
             my $i;
@@ -4435,17 +4445,15 @@ sub InverseDateTime($$;$$)
                     if ($i < 2 or $dateOnly) { # (allow missing minutes/seconds)
                         $a[$i] = '  ';
                     } else {
-                        warn("Incomplete date/time specification\n");
-                        return undef;
+                        $wrn = "Incomplete date/time specification using $lib\n";
+                        next TryLib;
                     }
                 } elsif (length($a[$i]) < 2) {
                     $$a[$i] = "0$a[$i]";# pad to 2 digits if necessary
                 }
             }
             $val = join(':', @a[5,4,3]) . ' ' . join(':', @a[2,1,0]);
-        } elsif ($$self{OPTIONS}{StrictDate}) {
-            warn "Install POSIX::strptime to do inverse date/time conversions\n";
-            return undef;
+            last;
         }
     }
     if ($val =~ /(\d{4})/g) {           # get YYYY
@@ -5144,29 +5152,35 @@ sub WriteJPEG($$)
         while ($markerName ne 'SOI') {
             if (exists $$addDirs{JFIF} and not defined $doneDir{JFIF}) {
                 $doneDir{JFIF} = 1;
-                if ($verbose) {
-                    print $out "Creating APP0:\n";
-                    print $out "  Creating JFIF with default values\n";
-                }
-                my $jfif = "\x01\x02\x01\0\x48\0\x48\0\0";
-                SetByteOrder('MM');
-                my $tagTablePtr = GetTagTable('Image::ExifTool::JFIF::Main');
-                my %dirInfo = (
-                    DataPt   => \$jfif,
-                    DirStart => 0,
-                    DirLen   => length $jfif,
-                    Parent   => 'JFIF',
-                );
-                # must temporarily remove JFIF from DEL_GROUP so we can
-                # delete JFIF and add it back again in a single step
-                my $delJFIF = $$delGroup{JFIF};
-                delete $$delGroup{JFIF};
-                $$path[$pn] = 'JFIF';
-                my $newData = $self->WriteDirectory(\%dirInfo, $tagTablePtr);
-                $$delGroup{JFIF} = $delJFIF if defined $delJFIF;
-                if (defined $newData and length $newData) {
-                    my $app0hdr = "\xff\xe0" . pack('n', length($newData) + 7);
-                    Write($outfile,$app0hdr,"JFIF\0",$newData) or $err = 1;
+                if (defined $doneDir{Adobe}) {
+                    # JFIF overrides Adobe APP14 colour components, so don't allow this
+                    # (ref https://docs.oracle.com/javase/8/docs/api/javax/imageio/metadata/doc-files/jpeg_metadata.html)
+                    $self->Warn('Not creating JFIF in JPEG with Adobe APP14');
+                } else {
+                    if ($verbose) {
+                        print $out "Creating APP0:\n";
+                        print $out "  Creating JFIF with default values\n";
+                    }
+                    my $jfif = "\x01\x02\x01\0\x48\0\x48\0\0";
+                    SetByteOrder('MM');
+                    my $tagTablePtr = GetTagTable('Image::ExifTool::JFIF::Main');
+                    my %dirInfo = (
+                        DataPt   => \$jfif,
+                        DirStart => 0,
+                        DirLen   => length $jfif,
+                        Parent   => 'JFIF',
+                    );
+                    # must temporarily remove JFIF from DEL_GROUP so we can
+                    # delete JFIF and add it back again in a single step
+                    my $delJFIF = $$delGroup{JFIF};
+                    delete $$delGroup{JFIF};
+                    $$path[$pn] = 'JFIF';
+                    my $newData = $self->WriteDirectory(\%dirInfo, $tagTablePtr);
+                    $$delGroup{JFIF} = $delJFIF if defined $delJFIF;
+                    if (defined $newData and length $newData) {
+                        my $app0hdr = "\xff\xe0" . pack('n', length($newData) + 7);
+                        Write($outfile,$app0hdr,"JFIF\0",$newData) or $err = 1;
+                    }
                 }
             }
             # don't create anything before APP0 or APP1 EXIF (containing IFD0)

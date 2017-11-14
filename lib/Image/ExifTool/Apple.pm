@@ -24,7 +24,7 @@ $VERSION = '1.03';
     WRITABLE => 1,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
     NOTES => 'Tags extracted from the maker notes of iPhone images.',
-    # 0x0001 - int32s: seen 0,1,2,3,4
+    # 0x0001 - int32s: seen 0,1,2,3,4,9
     # 0x0002 - binary plist with a single data object of size 512 bytes (iPhone5s)
     0x0003 => {
         Name => 'RunTime', # (includes time plugged in, but not when suspended, ref 1)
@@ -67,7 +67,7 @@ $VERSION = '1.03';
         Notes => 'unique ID for all images in a burst',
     },
     # 0x000c - rational64s[2]: eg) "0.1640625 0.19921875"
-    # 0x000d - int32s: 0,1,6,20,40
+    # 0x000d - int32s: 0,1,6,20,24,32,40
     # 0x000e - int32s: 0,1,4,12 (Orienation? 0=landscape? 4=portrait? ref 1)
     # 0x000f - int32s: 2,3
     # 0x0010 - int32s: 1
@@ -77,6 +77,11 @@ $VERSION = '1.03';
         Name => 'ImageUniqueID',
         Writable => 'string',
     },
+    # 0x0016 - string[29]: "AXZ6pMTOh2L+acSh4Kg630XCScoO\0"
+    # 0x0017 - int32s: 0,8192
+    # 0x0019 - int32s: 0,2,128
+    # 0x001a - string[6]: "q825s\0"
+    # 0x001f - int32s: 0
 );
 
 # PLIST-format CMTime structure (ref PH)

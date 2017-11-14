@@ -563,7 +563,7 @@ different when copying tags with L</SetNewValuesFromFile>.
 Format for printing date/time values.  See C<strftime> in the L<POSIX>
 package for details about the format string.  If date can not be converted,
 value is left unchanged unless the StrictDate option is set.  Timezones are
-ignored. The inverse conversion (ie. when calling L</SetNewValue>) is
+ignored.  The inverse conversion (ie. when calling L</SetNewValue>) is
 performed only if POSIX::strptime or Time::Piece is installed.  The default
 setting of undef causes date/time values to remain in standard EXIF format
 (similar to a DateFormat of "%Y:%m:%d %H:%M:%S").
@@ -858,9 +858,13 @@ Secondary sort order used for tags within each group when Sort is 'Group':
 Flag to return undefined value for any date which can't be converted when
 the DateFormat option is used.  Default is undef.
 
-  undef - Same as 0 for reading, 1 for copying
+  undef - Same as 0 for reading/writing, or 1 for copying
     0   - Return date/time value unchanged if it can't be converted
     1   - Return undef if date/time value can't be converted
+
+When set to 1 while writing a PrintConv date/time value, the value is
+written only if POSIX::strptime or Time::Piece is available and can
+successfully convert the value.
 
 =item Struct
 

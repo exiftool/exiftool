@@ -59,7 +59,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.40';
+$VERSION = '3.41';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -1196,7 +1196,6 @@ my %binaryDataAttrs = (
         Name => 'DistortInfo',
         SubDirectory => {
             TagTable => 'Image::ExifTool::Nikon::DistortInfo',
-            ByteOrder => 'BigEndian', #(NC)
         },
     },
     0x002c => { #29 (D7000)
@@ -1959,7 +1958,10 @@ my %binaryDataAttrs = (
         Condition => '$$valPt =~ /^0100/',
         SubDirectory => {
             TagTable => 'Image::ExifTool::Nikon::MultiExposure',
-            ByteOrder => 'BigEndian',
+            # Note: this endianness varies with model, but Nikon software may change
+            # metadata endianness (although it is unknown how it affects this record),
+            # so for now don't specify ByteOrder although it may be wrong if the
+            # file is rewritten by Nikon software --> see comments for FileInfo
         },
     },{
         Name => 'MultiExposure',
@@ -2784,6 +2786,7 @@ my %binaryDataAttrs = (
 %Image::ExifTool::Nikon::DistortInfo = (
     %binaryDataAttrs,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    # NOTE: Must set ByteOrder in SubDirectory if any multi-byte integer tags added
     0 => {
         Name => 'DistortionVersion',
         Format => 'undef[4]',
@@ -6916,6 +6919,7 @@ my %nikonFocalConversions = (
 %Image::ExifTool::Nikon::HDRInfo = (
     %binaryDataAttrs,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
+    # NOTE: Must set ByteOrder in SubDirectory if any multi-byte integer tags added
     0 => {
         Name => 'HDRInfoVersion',
         Format => 'string[4]',
@@ -7592,7 +7596,7 @@ my %nikonFocalConversions = (
         Name => 'ISOInfo',
         SubDirectory => {
             TagTable => 'Image::ExifTool::Nikon::ISOInfo',
-            ByteOrder => 'BigEndian',
+            ByteOrder => 'BigEndian', # (BigEndian even for D810, which is a little-endian camera)
         },
     },
     0x200002c => {

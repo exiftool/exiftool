@@ -277,11 +277,14 @@ my $testnum = 1;
     }
 }
 
-# test 26: Test reading with wildcards
+# test 26: Test wildcards using '#' suffix with duplicate PrintConv tags and exclusions
 {
     ++$testnum;
     my $exifTool = new Image::ExifTool;
-    my $info = $exifTool->ImageInfo('t/images/Canon.jpg', 'E*');
+    # (hack to avoid sorting in TestLib.pm because order of duplicate tags would be indeterminate)
+    $$exifTool{NO_SORT} = 1;
+    my $info = $exifTool->ImageInfo('t/images/Canon.jpg', 'encodingprocess', 'E*#', 'exposureMode',
+                                    '-ExifVersion');
     print 'not ' unless check($exifTool, $info, $testname, $testnum);
     print "ok $testnum\n";
 }

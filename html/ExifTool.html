@@ -769,9 +769,11 @@ distribution for examples.</p>
     <tr><td valign=top align=right><b>Descr</b>&nbsp;=</td><td>Sort by tag description (with current Lang setting)</td></tr>
     </table></td><td align=center>'File'</td></tr>
 <tr id="StrictDate"><td>StrictDate</td><td>Flag to return undefined value for any date which can't be
-    converted when the DateFormat option is used.</td>
+    converted when the DateFormat option is used.  When set to 1 while writing a
+    PrintConv date/time value, the value is written only if POSIX::strptime or
+    Time::Piece is available and can successfully convert the value.</td>
     <td><table class=clear>
-    <tr><td valign=top align=right><b>undef</b>&nbsp;=</td><td>Same as 0 for reading and 1 for copying</td></tr>
+    <tr><td valign=top align=right><b>undef</b>&nbsp;=</td><td>Same as 0 for reading/writing or 1 for copying</td></tr>
     <tr><td valign=top align=right><b>0</b>&nbsp;=</td><td>Return bad date/time values unchanged</td></tr>
     <tr><td valign=top align=right><b>1</b>&nbsp;=</td><td>Return undef if date/time value can't be converted</td></tr>
     </table></td><td align=center>undef</td></tr>

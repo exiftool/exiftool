@@ -11,7 +11,7 @@ package Image::ExifTool::Validate;
 use strict;
 use vars qw($VERSION %exifSpec);
 
-$VERSION = '1.03';
+$VERSION = '1.04';
 
 use Image::ExifTool qw(:Utils);
 use Image::ExifTool::Exif;
@@ -120,7 +120,10 @@ my %validateInfo = (
             my @rtn;
             push @rtn, sprintf('%d Error%s', $val[0], $val[0] == 1 ? '' : 's') if $val[0];
             push @rtn, sprintf('%d Warning%s', $val[1], $val[1] == 1 ? '' : 's') if $val[1];
-            $rtn[-1] .= sprintf(' (%s minor)', $val[1] == $val[2] ? 'all' : $val[2]) if $val[2];
+            if ($val[2]) {
+                my $str = ($val[1] == $val[2] ? ($val[1] == 1 ? '' : 'all ') : "$val[2] ");
+                $rtn[-1] .= " (${str}minor)";
+            }
             return join(' and ', @rtn);
         },
     },

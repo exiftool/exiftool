@@ -11,7 +11,7 @@ package Image::ExifTool::Lang::en_ca;
 use strict;
 use vars qw($VERSION);
 
-$VERSION = '1.11';
+$VERSION = '1.12';
 
 %Image::ExifTool::Lang::en_ca::Translate = (
    'AboveColor' => 'Above Colour',
@@ -34,6 +34,13 @@ $VERSION = '1.11';
    'AllColorFlatField1' => 'All Colour Flat Field 1',
    'AllColorFlatField2' => 'All Colour Flat Field 2',
    'AllColorFlatField3' => 'All Colour Flat Field 3',
+   'Alpha' => {
+      PrintConv => {
+        'Alpha Exists (W color component)' => 'Alpha Exists (W colour component)',
+        'Alpha Exists (color not premultiplied)' => 'Alpha Exists (colour not premultiplied)',
+        'Alpha Exists (color premultiplied)' => 'Alpha Exists (colour premultiplied)',
+      },
+    },
    'AlternateDuotoneColors' => 'Alternate Duotone Colours',
    'AlternateSpotColors' => 'Alternate Spot Colours',
    'ArtFilter' => {
@@ -50,16 +57,22 @@ $VERSION = '1.11';
     },
    'ArtFilterEffect' => {
       PrintConv => {
+        'Green Color Filter' => 'Green Colour Filter',
+        'No Color Filter' => 'No Colour Filter',
+        'Orange Color Filter' => 'Orange Colour Filter',
         'Pale & Light Color' => 'Pale & Light Colour',
         'Pale & Light Color II' => 'Pale & Light Colour II',
         'Partial Color' => 'Partial Colour',
         'Partial Color II' => 'Partial Colour II',
         'Partial Color III' => 'Partial Colour III',
+        'Red Color Filter' => 'Red Colour Filter',
         'Watercolor' => 'Watercolour',
         'Watercolor I' => 'Watercolour I',
         'Watercolor II' => 'Watercolour II',
+        'Yellow Color Filter' => 'Yellow Colour Filter',
       },
     },
+   'AutoAFPointColorTracking' => 'Auto AF Point Colour Tracking',
    'BackgroundColor' => 'Background Colour',
    'BackgroundColorIndicator' => {
       Description => 'Background Colour Indicator',
@@ -96,6 +109,7 @@ $VERSION = '1.11';
    'CameraColorCalibration13' => 'Camera Colour Calibration 13',
    'CameraColorCalibration14' => 'Camera Colour Calibration 14',
    'CameraColorCalibration15' => 'Camera Colour Calibration 15',
+   'CameraRawColorTone' => 'Camera Raw Colour Tone',
    'CanonColorInfo1' => 'Canon Colour Info 1',
    'CanonColorInfo2' => 'Canon Colour Info 2',
    'ChromaticityColorant' => 'Chromaticity Colourant',
@@ -138,6 +152,7 @@ $VERSION = '1.11';
    'ColorComponents' => 'Colour Components',
    'ColorControl' => 'Colour Control',
    'ColorCorrection' => 'Colour Correction',
+   'ColorCreatorEffect' => 'Colour Creator Effect',
    'ColorDataVersion' => 'Colour Data Version',
    'ColorDescriptor' => 'Colour Descriptor',
    'ColorEffect' => 'Colour Effect',
@@ -184,6 +199,7 @@ $VERSION = '1.11';
    'ColorPlanes' => 'Colour Planes',
    'ColorPrimaries' => 'Colour Primaries',
    'ColorProfile' => 'Colour Profile',
+   'ColorProfileSettings' => 'Colour Profile Settings',
    'ColorRangeLevels' => 'Colour Range Levels',
    'ColorRepresentation' => 'Colour Representation',
    'ColorReproduction' => 'Colour Reproduction',
@@ -197,7 +213,10 @@ $VERSION = '1.11';
    'ColorSpace' => {
       Description => 'Colour Space',
       PrintConv => {
+        'Embedded Color Profile' => 'Embedded Colour Profile',
+        'Linked Color Profile' => 'Linked Colour Profile',
         'No color space specified' => 'No colour space specified',
+        'Windows Color Space' => 'Windows Colour Space',
       },
     },
    'ColorSpaceData' => 'Colour Space Data',
@@ -264,6 +283,7 @@ $VERSION = '1.11';
    'ColorTempUnknown9' => 'Colour Temp Unknown 9',
    'ColorTemperature' => 'Colour Temperature',
    'ColorTemperatureAdj' => 'Colour Temperature Adj',
+   'ColorTemperatureAuto' => 'Colour Temperature Auto',
    'ColorTemperatureBG' => 'Colour Temperature BG',
    'ColorTemperatureCustom' => 'Colour Temperature Custom',
    'ColorTemperatureRG' => 'Colour Temperature RG',
@@ -308,6 +328,7 @@ $VERSION = '1.11';
    'ColorantBlue' => 'Colourant Blue',
    'ColorantCount' => 'Colourant Count',
    'ColorantCyan' => 'Colourant Cyan',
+   'ColorantGray' => 'Colourant Gray',
    'ColorantGreen' => 'Colourant Green',
    'ColorantL' => 'Colourant L',
    'ColorantMagenta' => 'Colourant Magenta',
@@ -358,6 +379,8 @@ $VERSION = '1.11';
         'Color Filter' => 'Colour Filter',
         'Extract Color' => 'Extract Colour',
         'Invert Color' => 'Invert Colour',
+        'Replace Color' => 'Replace Colour',
+        'Unicolor Bold' => 'Unicolour Bold',
         'Water Color' => 'Water Colour',
       },
     },
@@ -589,6 +612,7 @@ $VERSION = '1.11';
         'Color reversal' => 'Colour reversal',
       },
     },
+   'IndexedColorTableCount' => 'Indexed Colour Table Count',
    'InterchangeColorSpace' => 'Interchange Colour Space',
    'Isotherm1Color' => 'Isotherm 1 Colour',
    'Isotherm2Color' => 'Isotherm 2 Colour',
@@ -600,7 +624,17 @@ $VERSION = '1.11';
    'LargePaletteColorLookupTableUID' => 'Large Palette Colour Lookup Table UID',
    'LargeRedPaletteColorTableData' => 'Large Red Palette Colour Table Data',
    'LargeRedPaletteColorTableDescr' => 'Large Red Palette Colour Table Descr',
+   'LayerBlendModes' => {
+      PrintConv => {
+        'Color' => 'Colour',
+        'Color Burn' => 'Colour Burn',
+        'Color Dodge' => 'Colour Dodge',
+        'Darker Color' => 'Darker Colour',
+        'Lighter Color' => 'Lighter Colour',
+      },
+    },
    'MDColorTable' => 'MD Colour Table',
+   'MDItemColorSpace' => 'MD Item Colour Space',
    'MagicFilter' => {
       PrintConv => {
         'Pale & Light Color' => 'Pale & Light Colour',
@@ -624,6 +658,7 @@ $VERSION = '1.11';
    'MattColor' => 'Matt Colour',
    'MediaColor' => 'Media Colour',
    'ModifiedColorTemp' => 'Modified Colour Temp',
+   'MonochromeColor' => 'Monochrome Colour',
    'MyColorMode' => {
       Description => 'My Colour Mode',
       PrintConv => {
@@ -672,6 +707,14 @@ $VERSION = '1.11';
       },
     },
    'PictureIndexedColors' => 'Picture Indexed Colours',
+   'PictureMode' => {
+      PrintConv => {
+        'Color Creator' => 'Colour Creator',
+        'Color Profile 1' => 'Colour Profile 1',
+        'Color Profile 2' => 'Colour Profile 2',
+        'Color Profile 3' => 'Colour Profile 3',
+      },
+    },
    'PictureType' => {
       PrintConv => {
         'Bright(ly) Colored Fish' => 'Bright(ly) Coloured Fish',
@@ -732,6 +775,7 @@ $VERSION = '1.11';
    'ReflectionPrintOutputColorimetry' => 'Reflection Print Output Colourimetry',
    'RenderingIntent' => {
       PrintConv => {
+        'Absolute Colorimetric (LCS_GM_ABS_COLORIMETRIC)' => 'Absolute Colourimetric (LCS_GM_ABS_COLORIMETRIC)',
         'ICC-Absolute Colorimetric' => 'ICC-Absolute Colourimetric',
         'Media-Relative Colorimetric' => 'Media-Relative Colourimetric',
       },
@@ -786,6 +830,7 @@ $VERSION = '1.11';
       },
     },
    'ShutterPresentationColorCIELabVal' => 'Shutter Presentation Colour CIE Lab Val',
+   'SmartAlbumColor' => 'Smart Album Colour',
    'SpecialEffectsOpticalFilter' => {
       PrintConv => {
         'Colored' => 'Coloured',
@@ -800,6 +845,22 @@ $VERSION = '1.11';
       },
     },
    'SubimageColor' => 'Subimage Colour',
+   'SwatchColorantA' => 'Swatch Colourant A',
+   'SwatchColorantB' => 'Swatch Colourant B',
+   'SwatchColorantBlack' => 'Swatch Colourant Black',
+   'SwatchColorantBlue' => 'Swatch Colourant Blue',
+   'SwatchColorantCyan' => 'Swatch Colourant Cyan',
+   'SwatchColorantGray' => 'Swatch Colourant Gray',
+   'SwatchColorantGreen' => 'Swatch Colourant Green',
+   'SwatchColorantL' => 'Swatch Colourant L',
+   'SwatchColorantMagenta' => 'Swatch Colourant Magenta',
+   'SwatchColorantMode' => 'Swatch Colourant Mode',
+   'SwatchColorantRed' => 'Swatch Colourant Red',
+   'SwatchColorantSwatchName' => 'Swatch Colourant Swatch Name',
+   'SwatchColorantTint' => 'Swatch Colourant Tint',
+   'SwatchColorantType' => 'Swatch Colourant Type',
+   'SwatchColorantYellow' => 'Swatch Colourant Yellow',
+   'SwatchGroupsColorants' => 'Swatch Groups Colourants',
    'TestTarget' => {
       PrintConv => {
         'Color Chart' => 'Colour Chart',
@@ -836,6 +897,7 @@ $VERSION = '1.11';
    'VideoAlphaPremultipleColorBlack' => 'Video Alpha Premultiple Colour Black',
    'VideoAlphaPremultipleColorBlue' => 'Video Alpha Premultiple Colour Blue',
    'VideoAlphaPremultipleColorCyan' => 'Video Alpha Premultiple Colour Cyan',
+   'VideoAlphaPremultipleColorGray' => 'Video Alpha Premultiple Colour Gray',
    'VideoAlphaPremultipleColorGreen' => 'Video Alpha Premultiple Colour Green',
    'VideoAlphaPremultipleColorL' => 'Video Alpha Premultiple Colour L',
    'VideoAlphaPremultipleColorMagenta' => 'Video Alpha Premultiple Colour Magenta',

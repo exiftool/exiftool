@@ -326,7 +326,7 @@ sub DecodeAFPoints($$$$;$);
     '8 30' => 'Sigma 17-70mm F2.8-4 DC Macro HSM | C', #27
     '8 31' => 'Sigma 18-35mm F1.8 DC HSM', #27
     '8 32' => 'Sigma 30mm F1.4 DC HSM | A', #27
-    '8 33' => 'Sigma 18-200mm F3.5-6.3 DC MACRO HSM', #DieterPearcey (C014)
+    '8 33' => 'Sigma 18-200mm F3.5-6.3 DC Macro HSM', #DieterPearcey (C014)
     '8 34' => 'Sigma 18-300mm F3.5-6.3 DC Macro HSM', #NJ
     '8 59' => 'HD PENTAX-D FA 150-450mm F4.5-5.6 ED DC AW', #29
     '8 60' => 'HD PENTAX-D FA* 70-200mm F2.8 ED DC AW', #29

@@ -636,7 +636,7 @@ my $testOK;
                                     'icc_profile', 'canonvrd');
     $testfile = "t/${testname}_${testnum}_failed.jpg";
     unlink $testfile;
-    writeInfo($exifTool, 't/images/ExifTool.jpg', $testfile);
+    writeInfo($exifTool, 't/images/ExifTool.jpg', $testfile, undef, 1);
     $exifTool->Options(Composite => 0);
     my $info = $exifTool->ImageInfo($testfile);
     if (check($exifTool, $info, $testname, $testnum)) {

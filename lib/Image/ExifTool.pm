@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup);
 
-$VERSION = '10.65';
+$VERSION = '10.66';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -3855,6 +3855,37 @@ sub GroupMatches($$$)
 }
 
 #------------------------------------------------------------------------------
+# Remove specified tags from returned tag list, updating indices in other lists
+# Inputs: 0) tag list ref, 1) index list ref, 2) index list ref, 3) hash ref,
+#         4) true to include tags from hash instead of excluding
+# Returns: nothing, but updates input lists
+sub RemoveTagsFromList($$$$;$)
+{
+    local $_;
+    my ($tags, $list1, $list2, $exclude, $inv) = @_;
+    my @filteredTags;
+
+    if (@$list1 or @$list2) {
+        while (@$tags) {
+            my $tag = pop @$tags;
+            my $i = @$tags;
+            if ($$exclude{$tag} xor $inv) {
+                # remove index of excluded tag from each list
+                @$list1 = map { $_ < $i ? $_ : $_ == $i ? () : $_ - 1 } @$list1;
+                @$list2 = map { $_ < $i ? $_ : $_ == $i ? () : $_ - 1 } @$list2;
+            } else {
+                unshift @filteredTags, $tag;
+            }
+        }
+    } else {
+        foreach (@$tags) {
+            push @filteredTags, $_ unless $$exclude{$_} xor $inv;
+        }
+    }
+    $_[0] = \@filteredTags;     # update tag list
+}
+
+#------------------------------------------------------------------------------
 # Set list of found tags from previously requested tags
 # Inputs: 0) ExifTool object reference
 # Returns: 0) Reference to list of found tag keys (in order of requested tags)
@@ -3871,7 +3902,7 @@ sub SetFoundTags($)
     my $fileOrder = $$self{FILE_ORDER};
     my @groupOptions = sort grep /^Group/, keys %$options;
     my $doDups = $duplicates || $exclude || @groupOptions;
-    my ($tag, $rtnTags, @byValue, @wildTags, %byValue, %wildTags, $i);
+    my ($tag, $rtnTags, @byValue, @wildTags);
 
     # only return requested tags if specified
     if (@$reqTags) {
@@ -3951,14 +3982,10 @@ sub SetFoundTags($)
                 # bogus file order entry to avoid warning if sorting in file order
                 $$self{FILE_ORDER}{$matches[0]} = 9999;
             }
-            # save tags extracted by value
-            if ($byValue) {
-                $byValue{$_} = 1 foreach @matches;
-            }
-            # save wildcard tags
-            if ($allTag) {
-                $wildTags{$_} = 1 foreach @matches;
-            }
+            # save indices of tags extracted by value
+            push @byValue, scalar(@$rtnTags) .. (scalar(@$rtnTags)+scalar(@matches)-1) if $byValue;
+            # save indices of wildcard tags
+            push @wildTags, scalar(@$rtnTags) .. (scalar(@$rtnTags)+scalar(@matches)-1) if $allTag;
             push @$rtnTags, @matches;
         }
     } else {
@@ -4003,10 +4030,9 @@ sub SetFoundTags($)
                 $exclude{$_} = 1 foreach @matches;
             }
             if (%exclude) {
-                my @filteredTags;
-                $exclude{$_} or push @filteredTags, $_ foreach @$rtnTags;
-                $rtnTags = \@filteredTags;      # use new filtered tag list
-                last unless @filteredTags;      # all done if nothing left
+                # remove excluded tags from return list(s)
+                RemoveTagsFromList($rtnTags, \@byValue, \@wildTags, \%exclude);
+                last unless @$rtnTags;      # all done if nothing left
             }
             last if $duplicates and not @groupOptions;
         }
@@ -4055,50 +4081,33 @@ GR_TAG: foreach $tag (@$rtnTags) {
                 $wantTag = $wanted;
             }
             next unless $wantTag;
-            if ($duplicates) {
-                push @tags, $tag;
-            } else {
-                my $tagName = GetTagName($tag);
-                my $bestTag = $bestTag{$tagName};
-                if (defined $bestTag) {
-                    next if $wantTag > $keepTags{$bestTag};
-                    if ($wantTag == $keepTags{$bestTag}) {
-                        # want two tags with the same name -- keep the latest one
-                        if ($tag =~ / \((\d+)\)$/) {
-                            my $tagNum = $1;
-                            next if $bestTag !~ / \((\d+)\)$/ or $1 > $tagNum;
-                        }
+            $duplicates and $keepTags{$tag} = 1, next;
+            # determine which tag we want to keep
+            my $tagName = GetTagName($tag);
+            my $bestTag = $bestTag{$tagName};
+            if (defined $bestTag) {
+                next if $wantTag > $keepTags{$bestTag};
+                if ($wantTag == $keepTags{$bestTag}) {
+                    # want two tags with the same name -- keep the latest one
+                    if ($tag =~ / \((\d+)\)$/) {
+                        my $tagNum = $1;
+                        next if $bestTag !~ / \((\d+)\)$/ or $1 > $tagNum;
                     }
-                    # this tag is better, so delete old best tag
-                    delete $keepTags{$bestTag};
                 }
-                $keepTags{$tag} = $wantTag;     # keep this tag (for now...)
-                $bestTag{$tagName} = $tag;      # this is our current best tag
+                # this tag is better, so delete old best tag
+                delete $keepTags{$bestTag};
             }
+            $keepTags{$tag} = $wantTag;     # keep this tag (for now...)
+            $bestTag{$tagName} = $tag;      # this is our current best tag
         }
-        unless ($duplicates) {
-            # construct new tag list with no duplicates, preserving order
-            foreach $tag (@$rtnTags) {
-                push @tags, $tag if $keepTags{$tag};
-            }
-        }
-        $rtnTags = \@tags;
+        # include only tags we want to keep in return lists
+        RemoveTagsFromList($rtnTags, \@byValue, \@wildTags, \%keepTags, 1);
         last;
     }
     $$self{FOUND_TAGS} = $rtnTags;      # save found tags
 
-    return $rtnTags unless wantarray;
-
-    # generate list of indices of by-value and wildcard tags
-    if (%byValue or %wildTags) {
-        for ($i=0; $i<@$rtnTags; ++$i) {
-            push @byValue, $i if $byValue{$$rtnTags[$i]};
-            push @wildTags, $i if $wildTags{$$rtnTags[$i]};
-        }
-    }
-
-    # return reference to found tag keys and list of indices of tags to extract by value
-    return ($rtnTags, \@byValue, \@wildTags);
+    # return reference to found tag keys (and list of indices of tags to extract by value)
+    return wantarray ? ($rtnTags, \@byValue, \@wildTags) : $rtnTags;
 }
 
 #------------------------------------------------------------------------------

@@ -7,6 +7,20 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.55. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Nov. 14, 2017 - Version 10.66
+
+  - Added a new Canon LensType (thanks Norbert Wasser)
+  - Updated en-ca and en-gb language translations
+  - Minor format change to experimental Validate feature return value
+  - Prevent JFIF from being added to a JPEG containing Adobe APP14
+  - Changed a number of Canon LensType strings to add "USM" to L model names
+  - Patched for compatibility with Time::Piece version 1.29_04 and later, and
+    improved error handling when writing formatted date/time values
+  - Fixed bug in Composite MWG CreateDate and DateTimeOriginal tags which could
+    cause existing tags to be hidden when not using the -a option
+  - Fixed problem using '#' suffix not properly fixed in 10.65
+  - Fixed problem decoding Nikon D810 MultiExposure tags
+
 Oct. 31, 2017 - Version 10.65
 
   - Added support for DOSLatinUS (cp437) and DOSLatin1 (cp850) character sets

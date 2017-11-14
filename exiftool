@@ -12,7 +12,7 @@
 use strict;
 require 5.004;
 
-my $version = '10.65';
+my $version = '10.66';
 
 # add our 'lib' directory to the include list BEFORE 'use Image::ExifTool'
 my $exeDir;
@@ -510,7 +510,7 @@ if (not $preserveTime and $^O eq 'MSWin32') {
 for (;;) {
 
   # execute the command now if no more arguments or -execute is used
-  if (not @ARGV or $ARGV[0] =~ /^-execute(\d*)$/i) {
+  if (not @ARGV or $ARGV[0] =~ /^(-|\xe2\x88\x92)execute(\d*)$/i) {
     if (@ARGV) {
         $executeID = $1;        # save -execute number for "{ready}" response
         $helped = 1;            # don't show help if we used -execute
@@ -943,7 +943,7 @@ for (;;) {
     (/^l$/ or $a eq 'long') and --$outFormat, next;
     (/^L$/ or $a eq 'latin') and $utf8 = 0, $mt->Options(Charset => 'Latin'), next;
     if ($a eq 'lang') {
-        $langOpt = (@ARGV and $ARGV[0] !~ /^-/) ? shift : undef;
+        $langOpt = (@ARGV and $ARGV[0] !~ /^(-|\xe2\x88\x92)/) ? shift : undef;
         if ($langOpt) {
             # make lower case and use underline as a separator (eg. 'en_ca')
             $langOpt =~ tr/-A-Z/_a-z/;
@@ -4160,7 +4160,7 @@ L<Input-output text formatting|/Input-output text formatting>
   -b          (-binary)            Output metadata in binary format
   -c FMT      (-coordFormat)       Set format for GPS coordinates
   -charset [[TYPE=]CHARSET]        Specify encoding for special characters
-  -csv[=CSVFILE]                   Export/import tags in CSV format
+  -csv[[+]=CSVFILE]                Export/import tags in CSV format
   -d FMT      (-dateFormat)        Set format for date/time values
   -D          (-decimal)           Show tag ID numbers in decimal
   -E, -ex     (-escape(HTML|XML))  Escape values for HTML (-E) or XML (-ex)
@@ -4170,7 +4170,7 @@ L<Input-output text formatting|/Input-output text formatting>
   -h          (-htmlFormat)        Use HMTL formatting for output
   -H          (-hex)               Show tag ID numbers in hexadecimal
   -htmlDump[OFFSET]                Generate HTML-format binary dump
-  -j[=JSONFILE] (-json)            Export/import tags in JSON format
+  -j[[+]=JSONFILE] (-json)         Export/import tags in JSON format
   -l          (-long)              Use long 2-line output format
   -L          (-latin)             Use Windows Latin1 encoding
   -lang [LANG]                     Set current language
@@ -4321,11 +4321,11 @@ value to multiple tags.  When specified with wildcards, "unsafe" tags are
 not written.  A tag name of C<All> is equivalent to C<*> (except that it
 doesn't require quoting, while arguments with wildcards do on systems with
 shell globbing), and is often used when deleting all metadata (ie. C<-All=>)
-or an entire group (eg. C<-GROUP:All=>, see note 4 below).  Note that not
+or an entire group (eg. C<-XMP-dc:All=>, see note 4 below).  Note that not
 all groups are deletable, and that the JPEG APP14 "Adobe" group is not
 removed by default with C<-All=> because it may affect the appearance of the
-image.  However, this will remove color space information, so the colors may
-be affected (but this may be avoided by copying back the tags defined by the
+image.  However, color space information is removed, so the colors may be
+affected (but this may be avoided by copying back the tags defined by the
 ColorSpaceTags shortcut).  Use the B<-listd> option for a complete list of
 deletable groups, and see note 5 below regarding the "APP" groups.  Also,
 within an image some groups may be contained within others, and these groups
@@ -4428,7 +4428,7 @@ B<-w> option for I<FMT> string examples.
 A powerful redirection feature allows a destination tag to be specified for
 each copied tag.  With this feature, information may be written to a tag
 with a different name or group.  This is done using
-E<quot>'-I<DSTTAG>E<lt>I<SRCTAG>'E<quot> or 
+E<quot>'-I<DSTTAG>E<lt>I<SRCTAG>'E<quot> or
 E<quot>'-I<SRCTAG>E<gt>I<DSTTAG>'E<quot> on the command line after
 B<-tagsFromFile>, and causes the value of I<SRCTAG> to be copied from
 I<SRCFILE> and written to I<DSTTAG> in I<FILE>.  Note that this argument
@@ -4650,7 +4650,7 @@ information about coded character sets, and the
 L<Image::ExifTool Options|Image::ExifTool/Options> for more details about
 the B<-charset> settings.
 
-=item B<-csv>[=I<CSVFILE>]
+=item B<-csv>[[+]=I<CSVFILE>]
 
 Export information in CSV format, or import information if I<CSVFILE> is
 specified.  When importing, the CSV file must be in exactly the same format
@@ -4675,14 +4675,14 @@ option and set the value to "-" in the CSV file (or to the MissingTagValue
 if this API option was used).  Multiple databases may be imported in a
 single command.
 
-When exporting a CSV file, the B<-g> or B<-G> option to add group names to
-the tag headings.  If the B<-a> option is used to allow duplicate tag names,
-the duplicate tags are only included in the CSV output if the column
-headings are unique.  Adding the B<-G4> option ensures a unique column
-heading for each tag.  When exporting specific tags, the CSV columns are
-arranged in the same order as the specified tags provided the column
-headings exactly match the specified tag names, otherwise the columns are
-sorted in alphabetical order.
+When exporting a CSV file, the B<-g> or B<-G> option adds group names to the
+tag headings.  If the B<-a> option is used to allow duplicate tag names, the
+duplicate tags are only included in the CSV output if the column headings
+are unique.  Adding the B<-G4> option ensures a unique column heading for
+each tag.  When exporting specific tags, the CSV columns are arranged in the
+same order as the specified tags provided the column headings exactly match
+the specified tag names, otherwise the columns are sorted in alphabetical
+order.
 
 When importing from a CSV file, only files specified on the command line are
 processed.  Any extra entries in the CSV file are ignored.
@@ -4775,7 +4775,7 @@ B<-htmlDump0> for absolute offsets.  Currently only EXIF/TIFF and JPEG
 information is dumped, but the -u option can be used to give a raw hex dump
 of other file formats.
 
-=item B<-j>[=I<JSONFILE>] (B<-json>)
+=item B<-j>[[+]=I<JSONFILE>] (B<-json>)
 
 Use JSON (JavaScript Object Notation) formatting for console output, or
 import JSON file if I<JSONFILE> is specified.  This option may be combined
@@ -4914,7 +4914,7 @@ with this command:
 
 produces output like this:
 
-    -- Generated by ExifTool 10.65 --
+    -- Generated by ExifTool 10.66 --
     File: a.jpg - 2003:10:31 15:44:19
     (f/5.6, 1/60s, ISO 100)
     File: b.jpg - 2006:05:23 11:57:38

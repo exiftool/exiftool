@@ -1188,6 +1188,7 @@ sub SetNewValuesFromFile($$;@)
         StrictDate      => defined $$options{StrictDate} ? $$options{StrictDate} : 1,
         Struct          => $structOpt,
         SystemTags      => $$options{SystemTags},
+        TimeZone        => $$options{TimeZone},
         Unknown         => $$options{Unknown},
         UserParam       => $$options{UserParam},
         Validate        => $$options{Validate},

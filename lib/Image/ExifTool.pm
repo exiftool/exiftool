@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup);
 
-$VERSION = '10.66';
+$VERSION = '10.67';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -1967,6 +1967,9 @@ sub Options($$;@)
                 $$self{BOTH} = { };
             } elsif ($param eq 'GlobalTimeShift') {
                 delete $$self{GLOBAL_TIME_OFFSET};  # reset our calculated offset
+            } elsif ($param eq 'TimeZone' and defined $newVal and length $newVal) {
+                $ENV{TZ} = $newVal;
+                eval { require POSIX; POSIX::tzset() };
             }
             $$options{$param} = $newVal;
         }
@@ -2048,6 +2051,7 @@ sub ClearOptions($)
         Struct      => undef,   # return structures as hash references
         SystemTags  => undef,   # extract additional File System tags
         TextOut     => \*STDOUT,# file for Verbose/HtmlDump output
+        TimeZone    => undef,   # local time zone
         Unknown     => 0,       # flag to get values of unknown tags (0-2)
         UserParam   => { },     # user parameters for InsertTagValues()
         Validate    => undef,   # perform additional validation

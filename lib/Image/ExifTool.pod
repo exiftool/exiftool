@@ -889,6 +889,12 @@ FileDeviceID, FileBlockSize and FileBlockCount.
 Output file reference for Verbose and HtmlDump options.  Default is
 \*STDOUT.
 
+=item TimeZone
+
+Time zone for local date/time values.  May be set to any valid TZ string.
+Uses the system time zone if not specified.  Default is undef.  (Note that
+this option may not work in Windows.)
+
 =item Unknown
 
 Flag to get the values of unknown tags.  If set to 1, unknown tags are

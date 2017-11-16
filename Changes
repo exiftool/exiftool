@@ -7,6 +7,13 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.55. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Nov. 16, 2017 - Version 10.67
+
+  - Fixed problem introduced in 10.66 with -execute not returning the command
+    number in the "{ready}" message when -stay_open was used
+  - API Changes:
+      - Added TimeZone option
+
 Nov. 14, 2017 - Version 10.66
 
   - Added a new Canon LensType (thanks Norbert Wasser)

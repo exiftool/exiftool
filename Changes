@@ -7,6 +7,16 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.55. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Dec. 5, 2017 - Version 10.68
+
+  - Added a new Sony LensType (thanks Jos Roost)
+  - Added a new Nikon LensID
+  - Added ability to set tag values and API options to an empty string using
+    "^=" on the command line
+  - Decode more tags from some newer Leica models
+  - Decode a new Apple tag
+  - Fixed indeterminate order of extracted XMP structures
+
 Nov. 16, 2017 - Version 10.67
 
   - Fixed problem introduced in 10.66 with -execute not returning the command

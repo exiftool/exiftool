@@ -760,9 +760,9 @@ L<Image::ExifTool::TagNames/MacOS MDItem Tags> for more information).
 
 =item MissingTagValue
 
-Value for missing tags in expressions evaluated by L</SetNewValuesFromFile>.
-If not set, a minor error is issued for missing values, or the value is set
-to '' if L</IgnoreMinorErrors> is set.  Default is undef.
+Value for missing tags in tag name expressions.  If not set, a minor error
+is issued for missing values, or the value is set to '' if
+L</IgnoreMinorErrors> is set.  Default is undef.
 
 =item NoPDFList
 
@@ -892,8 +892,9 @@ Output file reference for Verbose and HtmlDump options.  Default is
 =item TimeZone
 
 Time zone for local date/time values.  May be set to any valid TZ string.
-Uses the system time zone if not specified.  Default is undef.  (Note that
-this option may not work in Windows.)
+Uses the system time zone if not specified.  Default is undef.  (Requires
+POSIX::tzset, which may not be available in Windows.  A work-around in
+Windows is to C<set TZ=E<lt>zoneE<gt>> before running ExifTool.)
 
 =item Unknown
 
@@ -909,6 +910,7 @@ are:
 
   PARAM         - Get parameter
   PARAM=        - Clear parameter
+  PARAM^=       - Set parameter to empty string
   PARAM=VALUE   - Set parameter
   <hash ref>    - Set entire UserParam hash lookup
   undef         - Clear all user parameters

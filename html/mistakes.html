@@ -86,7 +86,7 @@ mv -i $PIC $(dirname $PIC)/$DATE.jpg
 done
 </pre>
 
-can be replaced with this single command (ExifTool 7.97 or later):
+may be replaced with this single command:
 <pre>exiftool -d %Y%m%d "-filename&lt;datetimeoriginal" "-filemodifydate&lt;datetimeoriginal#" -ext jpg .</pre>
 </blockquote>
 

@@ -13,7 +13,7 @@ table td.c { text-align: center }
 </style>
 </head>
 <body><h2 class=top>Makernote Types</h2>
-<p>The table below lists the makernote types for JPEG images from 6627
+<p>The table below lists the makernote types for JPEG images from 6631
 unique camera models by 96 different manufacturers.  Also listed in the
 table is the byte order for Exif-style makernotes ('MM' is big-endian, 'II'
 is little-endian), and the first 20 bytes of the makernote data in
@@ -185,8 +185,8 @@ ASCII and hexadecimal.</p>
  <td class=c>MM</td><td class=h>Apple iOS...MM......</td><td class=h>41 70 70 6c 65 20 69 4f 53 00 00 01 4d 4d 00 06 00 01 00 09</td></tr>
 <tr><td>iPhone 5s</td><td><a href='TagNames/Apple.html'>Apple</a></td>
  <td class=c>MM</td><td class=h>Apple iOS...MM......</td><td class=h>41 70 70 6c 65 20 69 4f 53 00 00 01 4d 4d 00 08 00 01 00 09</td></tr>
-<tr><td>iPhone 6</td><td>?</td>
- <td class=c>-</td><td class=h>.{.&quot;.e.f.f.e.c.t.s.&quot;</td><td class=h>00 7b 00 22 00 65 00 66 00 66 00 65 00 63 00 74 00 73 00 22</td></tr>
+<tr><td>iPhone 6</td><td><a href='TagNames/Apple.html'>Apple</a></td>
+ <td class=c>-</td><td class=h>Apple iOS...MM......</td><td class=h>41 70 70 6c 65 20 69 4f 53 00 00 01 4d 4d 00 09 00 01 00 09</td></tr>
 <tr><td>iPhone 6 Plus</td><td><a href='TagNames/Apple.html'>Apple</a></td>
  <td class=c>MM</td><td class=h>Apple iOS...MM......</td><td class=h>41 70 70 6c 65 20 69 4f 53 00 00 01 4d 4d 00 0d 00 01 00 09</td></tr>
 <tr><td>iPhone 6s</td><td><a href='TagNames/Apple.html'>Apple</a></td>
@@ -2395,6 +2395,10 @@ ASCII and hexadecimal.</p>
  <td class=c>II</td><td class=h>..........DJI.......</td><td class=h>0b 00 01 00 02 00 04 00 00 00 44 4a 49 00 02 00 01 00 04 00</td></tr>
 <tr><td>FC330</td><td><a href='TagNames/DJI.html'>DJI</a></td>
  <td class=c>II</td><td class=h>..........DJI.......</td><td class=h>0b 00 01 00 02 00 04 00 00 00 44 4a 49 00 02 00 01 00 04 00</td></tr>
+<tr><td>FC1102</td><td><a href='TagNames/DJI.html'>DJI</a></td>
+ <td class=c>II</td><td class=h>..........DJI.......</td><td class=h>0b 00 01 00 02 00 04 00 00 00 44 4a 49 00 02 00 01 00 04 00</td></tr>
+<tr><td>FC6310</td><td><a href='TagNames/DJI.html'>DJI</a></td>
+ <td class=c>II</td><td class=h>!.........DJI.......</td><td class=h>21 00 01 00 02 00 04 00 00 00 44 4a 49 00 02 00 01 00 04 00</td></tr>
 <tr><td>FLIR</td><td>-</td>
  <td class=c>-</td><td class=h>&nbsp;</td><td class=h>&nbsp;</td></tr>
 <tr><td>PHANTOM VISION FC200</td><td>?</td>
@@ -3549,6 +3553,8 @@ ASCII and hexadecimal.</p>
  <td class=c>-</td><td class=h>&nbsp;</td><td class=h>&nbsp;</td></tr>
 <tr><td>Pixel</td><td>?</td>
  <td class=c>-</td><td class=h>HDRP..d5m^p.,..M.d.(</td><td class=h>48 44 52 50 02 ef 64 35 6d 5e 70 1e 2c ea e3 4d b7 64 88 28</td></tr>
+<tr><td>Pixel 2 XL</td><td>-</td>
+ <td class=c>-</td><td class=h>&nbsp;</td><td class=h>&nbsp;</td></tr>
 <tr><td>Pixel XL</td><td>?</td>
  <td class=c>-</td><td class=h>HDRP..d5m^p.,..M...(</td><td class=h>48 44 52 50 02 ef 64 35 6d 5e 70 1e 2c ea e3 4d b7 d6 94 28</td></tr>
 <tr><th colspan=5><a name='GoPro'>GoPro</a></th></tr>
@@ -4193,14 +4199,14 @@ ASCII and hexadecimal.</p>
 <tr><td>myTouch 4G</td><td>-</td>
  <td class=c>-</td><td class=h>&nbsp;</td><td class=h>&nbsp;</td></tr>
 <tr><th colspan=5><a name='Huawei'>Huawei</a></th></tr>
-<tr><td>BLA-L29</td><td>UnknownText</td>
- <td class=c>-</td><td class=h>Auto.</td><td class=h>41 75 74 6f 00</td></tr>
+<tr><td>BLA-L29</td><td>?</td>
+ <td class=c>-</td><td class=h>####......3.........</td><td class=h>23 23 23 23 0a 00 00 00 1a c7 33 01 00 04 01 00 00 00 00 00</td></tr>
 <tr><td>CRR-L09</td><td>UnknownText</td>
  <td class=c>-</td><td class=h>Auto.</td><td class=h>41 75 74 6f 00</td></tr>
-<tr><td>EVA-L09</td><td>UnknownText</td>
- <td class=c>-</td><td class=h>Auto.</td><td class=h>41 75 74 6f 00</td></tr>
+<tr><td>EVA-L09</td><td>?</td>
+ <td class=c>-</td><td class=h>#*#*201509301026..-.</td><td class=h>23 2a 23 2a 32 30 31 35 30 39 33 30 31 30 32 36 00 0c 2d 00</td></tr>
 <tr><td>GRA-L09</td><td>?</td>
- <td class=c>-</td><td class=h>....................</td><td class=h>c7 01 00 00 1f 0a 04 00 00 ff 00 00 01 00 00 00 e9 11 00 00</td></tr>
+ <td class=c>-</td><td class=h>....................</td><td class=h>ba 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00</td></tr>
 <tr><td>IDEOS X5</td><td>-</td>
  <td class=c>-</td><td class=h>&nbsp;</td><td class=h>&nbsp;</td></tr>
 <tr><td>Ideos</td><td>-</td>
@@ -4211,8 +4217,8 @@ ASCII and hexadecimal.</p>
  <td class=c>-</td><td class=h>..............</td><td class=h>00 d0 00 00 16 99 00 00 00 00 00 00 00 bc</td></tr>
 <tr><td>STF-L09</td><td>?</td>
  <td class=c>-</td><td class=h>####....A.3.........</td><td class=h>23 23 23 23 0a 00 00 00 41 c6 33 01 00 00 01 00 00 00 00 00</td></tr>
-<tr><td>VKY-L09</td><td>?</td>
- <td class=c>-</td><td class=h>####......3.........</td><td class=h>23 23 23 23 0a 00 00 00 8a c5 33 01 00 04 01 00 00 00 00 00</td></tr>
+<tr><td>VKY-L09</td><td>UnknownText</td>
+ <td class=c>-</td><td class=h>Auto.</td><td class=h>41 75 74 6f 00</td></tr>
 <tr><th colspan=5><a name='ImpressCam'>ImpressCam</a></th></tr>
 <tr><td>C630</td><td>?</td>
  <td class=c>-</td><td class=h>.....,f.............</td><td class=h>0b 9d 88 00 df 2c 66 00 0a 01 00 01 14 00 01 00 01 00 01 00</td></tr>
@@ -7636,6 +7642,8 @@ ASCII and hexadecimal.</p>
  <td class=c>II</td><td class=h>Panasonic...........</td><td class=h>50 61 6e 61 73 6f 6e 69 63 00 00 00 9b 00 01 00 03 00 01 00</td></tr>
 <tr><td>DC-FZ82</td><td><a href='TagNames/Panasonic.html'>Panasonic</a></td>
  <td class=c>II</td><td class=h>Panasonic...........</td><td class=h>50 61 6e 61 73 6f 6e 69 63 00 00 00 9b 00 01 00 03 00 01 00</td></tr>
+<tr><td>DC-G9</td><td><a href='TagNames/Panasonic.html'>Panasonic</a></td>
+ <td class=c>II</td><td class=h>Panasonic...........</td><td class=h>50 61 6e 61 73 6f 6e 69 63 00 00 00 a6 00 01 00 03 00 01 00</td></tr>
 <tr><td>DC-GH5</td><td><a href='TagNames/Panasonic.html'>Panasonic</a></td>
  <td class=c>II</td><td class=h>Panasonic...........</td><td class=h>50 61 6e 61 73 6f 6e 69 63 00 00 00 a4 00 01 00 03 00 01 00</td></tr>
 <tr><td>DC-GX800</td><td><a href='TagNames/Panasonic.html'>Panasonic</a></td>
@@ -10865,7 +10873,7 @@ ASCII and hexadecimal.</p>
  <td class=c>II</td><td class=h>610...67.90123456789</td><td class=h>36 31 30 01 00 00 36 37 01 39 30 31 32 33 34 35 36 37 38 39</td></tr>
 <tr><td>VPC-MZ3</td><td><a href='TagNames/Sanyo.html'>Sanyo</a></td>
  <td class=c>II</td><td class=h>SANYO... .........4.</td><td class=h>53 41 4e 59 4f 00 01 00 20 00 ff 00 03 00 01 00 00 00 34 04</td></tr>
-<tr><td>VPC-MZ3EX</td><td><a href='TagNames/Unknown.html'>Sanyo</a></td>
+<tr><td>VPC-MZ3EX</td><td><a href='TagNames/Sanyo.html'>Sanyo</a></td>
  <td class=c>II</td><td class=h>SANYO... .........4.</td><td class=h>53 41 4e 59 4f 00 01 00 20 00 ff 00 03 00 01 00 00 00 34 04</td></tr>
 <tr><td>VPC-MZ3GX</td><td>-</td>
  <td class=c>-</td><td class=h>&nbsp;</td><td class=h>&nbsp;</td></tr>
@@ -13371,7 +13379,7 @@ ASCII and hexadecimal.</p>
  <td class=c>-</td><td class=h>&nbsp;</td><td class=h>&nbsp;</td></tr>
 <tr><td>Z970</td><td>-</td>
  <td class=c>-</td><td class=h>&nbsp;</td><td class=h>&nbsp;</td></tr>
-</table><hr><i>Last revised Nov 3, 2017</i>
+</table><hr><i>Last revised Nov 20, 2017</i>
 <p class='lf'><a href='index.html'>&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

@@ -4796,6 +4796,7 @@ Tags extracted from the maker notes of iPhone images.
   0x0008   AccelerationVector                   rational64s[3]
   0x000a   HDRImageType                         int32s
   0x000b   BurstUUID                            string
+  0x0011   ContentIdentifier                    string
   0x0015   ImageUniqueID                        string
 
 =head3 Apple RunTime Tags
@@ -12897,6 +12898,7 @@ This information is written by the X1, X2, X VARIO and T.
   0x0410   ShotInfo                             Panasonic ShotInfo
   0x0412   FilmMode                             string
   0x0413   WB_RGBLevels                         rational64u[3]
+  0x0500   InternalSerialNumber                 undef
 
 =head3 Panasonic ShotInfo Tags
 

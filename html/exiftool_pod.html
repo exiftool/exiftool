@@ -160,7 +160,7 @@
 <p><a href="#Tag-operations">Tag operations</a></p>
 
 <pre><code>  -TAG or --TAG                    Extract or exclude specified tag
-  -TAG[+-]=[VALUE]                 Write new value for tag
+  -TAG[+-^]=[VALUE]                Write new value for tag
   -TAG[+-]&lt;=DATFILE                Write tag value from contents of file
   -TAG[+-]&lt;SRCTAG                  Copy tag value (see -tagsFromFile)
 
@@ -250,14 +250,14 @@
 
 <p><a href="#Advanced-options">Advanced options</a></p>
 
-<pre><code>  -api OPT[=VAL]                   Set ExifTool API option
+<pre><code>  -api OPT[[^]=[VAL]]              Set ExifTool API option
   -common_args                     Define common arguments
   -config CFGFILE                  Specify configuration file name
   -echo[NUM] TEXT                  Echo text to stdout or stderr
   -execute[NUM]                    Execute multiple commands on one line
   -srcfile FMT                     Process a different source file
   -stay_open FLAG                  Keep reading -@ argfile even after EOF
-  -userParam PARAM[=VAL]           Set user parameter (API UserParam opt)</code></pre>
+  -userParam PARAM[[^]=[VAL]]      Set user parameter (API UserParam opt)</code></pre>
 
 <h2 id="Option-Details">Option Details</h2>
 
@@ -285,10 +285,10 @@
 <p>Exclude specified tag from extracted information. Same as the <b>-x</b> option. Group names and wildcards are permitted as described above for <b>-TAG</b>. Once excluded from the output, a tag may not be re-included by a subsequent option. May also be used following a <b>-tagsFromFile</b> option to exclude tags from being copied (when redirecting to another tag, it is the source tag that should be excluded), or to exclude groups from being deleted when deleting all information (eg. <code>-all= --exif:all</code> deletes all but EXIF information). But note that this will not exclude individual tags from a group delete (unless a family 2 group is specified, see note 4 below). Instead, individual tags may be recovered using the <b>-tagsFromFile</b> option (eg. <code>-all= -tagsfromfile @ -artist</code>).</p>
 
 </dd>
-<dt id="TAG---VALUE"><b>-</b><i>TAG</i>[+-]<b>=</b>[<i>VALUE</i>]</dt>
+<dt id="TAG---VALUE"><b>-</b><i>TAG</i>[+-^]<b>=</b>[<i>VALUE</i>]</dt>
 <dd>
 
-<p>Write a new value for the specified tag (eg. <code>-comment=wow</code>), or delete the tag if no <i>VALUE</i> is given (eg. <code>-comment=</code>). <code>+=</code> and <code>-=</code> are used to add or remove existing entries from a list, or to shift date/time values (see <a>Image::ExifTool::Shift.pl</a> and note 6 below for more details). <code>+=</code> may also be used to increment numerical values (or decrement if <i>VALUE</i> is negative), and <code>-=</code> may be used to conditionally delete or replace a tag (see <a href="#WRITING-EXAMPLES">&quot;WRITING EXAMPLES&quot;</a> for examples).</p>
+<p>Write a new value for the specified tag (eg. <code>-comment=wow</code>), or delete the tag if no <i>VALUE</i> is given (eg. <code>-comment=</code>). <code>+=</code> and <code>-=</code> are used to add or remove existing entries from a list, or to shift date/time values (see <a>Image::ExifTool::Shift.pl</a> and note 6 below for more details). <code>+=</code> may also be used to increment numerical values (or decrement if <i>VALUE</i> is negative), and <code>-=</code> may be used to conditionally delete or replace a tag (see <a href="#WRITING-EXAMPLES">&quot;WRITING EXAMPLES&quot;</a> for examples). <code>^=</code> is used to write an empty string instead of deleting the tag when no <i>VALUE</i> is given, but otherwise it is equivalent to <code>=</code>.</p>
 
 <p><i>TAG</i> may contain one or more leading family 0, 1 or 2 group names, prefixed by optional family numbers, and separated colons. If no group name is specified, the tag is created in the preferred group, and updated in any other location where a same-named tag already exists. The preferred group is the first group in the following list where <i>TAG</i> is valid: 1) EXIF, 2) IPTC, 3) XMP.</p>
 
@@ -482,7 +482,7 @@
     # update metadata for all images in a directory from CSV file
     exiftool -csv=a.csv dir</code></pre>
 
-<p>Empty values are ignored when importing. Also, FileName and Directory columns are ignored if they exist (ie. ExifTool will not attempt to write these tags with a CSV import). To force a tag to be deleted, use the <b>-f</b> option and set the value to &quot;-&quot; in the CSV file (or to the MissingTagValue if this API option was used). Multiple databases may be imported in a single command.</p>
+<p>Empty values are ignored when importing (unless the <b>-f</b> option is used and the API MissingTagValue is set to an empty string, in which case the tag is deleted). Also, FileName and Directory columns are ignored if they exist (ie. ExifTool will not attempt to write these tags with a CSV import). To force a tag to be deleted, use the <b>-f</b> option and set the value to &quot;-&quot; in the CSV file (or to the MissingTagValue if this API option was used). Multiple databases may be imported in a single command.</p>
 
 <p>When exporting a CSV file, the <b>-g</b> or <b>-G</b> option adds group names to the tag headings. If the <b>-a</b> option is used to allow duplicate tag names, the duplicate tags are only included in the CSV output if the column headings are unique. Adding the <b>-G4</b> option ensures a unique column heading for each tag. When exporting specific tags, the CSV columns are arranged in the same order as the specified tags provided the column headings exactly match the specified tag names, otherwise the columns are sorted in alphabetical order.</p>
 
@@ -498,7 +498,7 @@
 <dt id="d-FMT--dateFormat"><b>-d</b> <i>FMT</i> (<b>-dateFormat</b>)</dt>
 <dd>
 
-<p>Set the format for date/time tag values. The specifics of the <i>FMT</i> syntax are system dependent -- consult the <code>strftime</code> man page on your system for details. The default format is equivalent to &quot;%Y:%m:%d %H:%M:%S&quot;. This option has no effect on date-only or time-only tags and ignores timezone information if present. Only one <b>-d</b> option may be used per command. Requires POSIX::strptime or Time::Piece for the inversion conversion when writing.</p>
+<p>Set the format for date/time tag values. The <i>FMT</i> string may contain formatting codes beginning with a percent character (<code>%</code>) to represent the various components of a date/time value. The specifics of the <i>FMT</i> syntax are system dependent -- consult the <code>strftime</code> man page on your system for details. The default format is equivalent to &quot;%Y:%m:%d %H:%M:%S&quot;. This option has no effect on date-only or time-only tags and ignores timezone information if present. Only one <b>-d</b> option may be used per command. Requires POSIX::strptime or Time::Piece for the inversion conversion when writing.</p>
 
 </dd>
 <dt id="D--decimal"><b>-D</b> (<b>-decimal</b>)</dt>
@@ -629,7 +629,7 @@
 
 <p>produces output like this:</p>
 
-<pre><code>    -- Generated by ExifTool 10.67 --
+<pre><code>    -- Generated by ExifTool 10.68 --
     File: a.jpg - 2003:10:31 15:44:19
     (f/5.6, 1/60s, ISO 100)
     File: b.jpg - 2006:05:23 11:57:38
@@ -859,6 +859,8 @@
     exiftool -ext &quot;*&quot; --ext . DIR     # all but those with no ext</code></pre>
 
 <p>Using this option has two main advantages over specifying <code>*.<i>EXT</i></code> on the command line: 1) It applies to files in subdirectories when combined with the <b>-r</b> option. 2) The <b>-ext</b> option is case-insensitive, which is useful when processing files on case-sensitive filesystems.</p>
+
+<p>Note that all files specified on the command line will be processed regardless of extension unless the <b>-ext</b> option is used.</p>
 
 </dd>
 <dt id="F-OFFSET--fixBase"><b>-F</b>[<i>OFFSET</i>] (<b>-fixBase</b>)</dt>
@@ -1163,10 +1165,10 @@
 
 <dl>
 
-<dt id="api-OPT-VAL"><b>-api</b> <i>OPT[=VAL]</i></dt>
+<dt id="api-OPT-VAL"><b>-api</b> <i>OPT[[^]=[VAL]]</i></dt>
 <dd>
 
-<p>Set ExifTool API option. <i>OPT</i> is an API option name. The option value is set to 1 if <i>=VAL</i> is omitted, or undef if just <i>VAL</i> is omitted. An option may not be set to an empty string (&quot;&quot;) via the command line, but the config file may be used to accomplish this if necessary. See <a>Image::ExifTool Options</a> for a list of available API options. This overrides API options set via the config file.</p>
+<p>Set ExifTool API option. <i>OPT</i> is an API option name. The option value is set to 1 if <i>=VAL</i> is omitted. If <i>VAL</i> is omitted, the option value is set to undef if <code>=</code> is used, or an empty string with <code>^=</code>. See <a>Image::ExifTool Options</a> for a list of available API options. This overrides API options set via the config file.</p>
 
 </dd>
 <dt id="common_args"><b>-common_args</b></dt>
@@ -1234,10 +1236,10 @@
 <p>Note: When writing arguments to a disk file there is a delay of up to 0.01 seconds after writing <code>-execute\n</code> before exiftool starts processing the command. This delay may be avoided by sending a CONT signal to the exiftool process immediately after writing <code>-execute\n</code>. (There is no associated delay when writing arguments via a pipe with <code>-@ -</code>, so the signal is not necessary when using this technique.)</p>
 
 </dd>
-<dt id="userParam-PARAM-VAL"><b>-userParam</b> <i>PARAM[=VAL]</i></dt>
+<dt id="userParam-PARAM-VAL"><b>-userParam</b> <i>PARAM[[^]=[VAL]]</i></dt>
 <dd>
 
-<p>Set user parameter. <i>PARAM</i> is an arbitrary user parameter name. This is an interface to the API UserParam option (see the <a>Image::ExifTool Options</a> documentation), and provides a method to access user-defined parameters from inside tag name expressions (as if it were any other tag, see example below), and from PrintConv/ValueConv logic (via the ExifTool Options function). Similar to the <b>-api</b> option, the parameter value is set to 1 if <i>=VAL</i> is omitted, or undef if just <i>VAL</i> is omitted.</p>
+<p>Set user parameter. <i>PARAM</i> is an arbitrary user parameter name. This is an interface to the API UserParam option (see the <a>Image::ExifTool Options</a> documentation), and provides a method to access user-defined parameters from inside tag name expressions (as if it were any other tag, see example below), and from PrintConv/ValueConv logic (via the ExifTool Options function). Similar to the <b>-api</b> option, the parameter value is set to 1 if <i>=VAL</i> is omitted, undef if just <i>VAL</i> is omitted and <code>=</code> is used, or an empty string if <i>VAL</i> is omitted and <code>^=</code> is used.</p>
 
 <pre><code>    exiftool -p &#39;$test from $filename&#39; -userparam test=Hello FILE</code></pre>
 

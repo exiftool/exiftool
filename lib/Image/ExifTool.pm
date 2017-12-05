@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup);
 
-$VERSION = '10.67';
+$VERSION = '10.68';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -1909,17 +1909,19 @@ sub Options($$;@)
                 $$options{$param} = \%newParams;
                 next;
             }
+            my $force;
             # set/reset single UserParam parameter
             if ($newVal =~ /(.*?)=(.*)/s) {
                 $param = lc $1;
                 $newVal = $2;
+                $force = 1 if $param =~ s/\^$//;
             } else {
                 $param = lc $newVal;
                 undef $newVal;
             }
             $oldVal = $$options{UserParam}{$param};
             if (defined $newVal) {
-                if (length $newVal) {
+                if (length $newVal or $force) {
                     $$options{UserParam}{$param} = $newVal;
                 } else {
                     delete $$options{UserParam}{$param};

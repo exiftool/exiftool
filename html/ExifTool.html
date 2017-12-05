@@ -694,10 +694,9 @@ distribution for examples.</p>
     metadata item tags (see the "mdls" man page and the
     <a href="TagNames/MacOS.html#MDItem">MacOS MDItem Tags documentation</a> for more information).</td>
     <td align=center>0 or 1</td><td align=center>undef</td></tr>
-<tr id="MissingTagValue"><td>MissingTagValue</td><td>Value for missing tags in
-    expressions evaluated by <a href="#SetNewValuesFromFile">SetNewValuesFromFile</a>.
-    If not set, a minor error is issued for missing values, or the value
-    is set to '' if IgnoreMinorErrors is set.</td>
+<tr id="MissingTagValue"><td>MissingTagValue</td><td>Value for missing tags interpolated
+    in tag name expressions. If not set, a minor error is issued for missing values,
+    or the value is set to '' if IgnoreMinorErrors is set.</td>
     <td align=center>Any string, or undef</td><td align=center>undef</td></tr>
 <tr id="NoPDFList"><td>NoPDFList</td><td>Flag to avoid splitting PDF list-type tag
     values into separate items.</td>
@@ -796,8 +795,9 @@ distribution for examples.</p>
     <td align=center>0 or 1</td><td align=center>undef</td></tr>
 <tr id="TextOut"><td>TextOut</td><td>Output file for Verbose and HtmlDump options.</td>
     <td align=center>File reference</td><td align=center>\*STDOUT</td></tr>
-<tr id="TimeZone"><td>TimeZone</td><td>Time zone for local date/time values.  (Note that
-    this option may not work in Windows.)</td>
+<tr id="TimeZone"><td>TimeZone</td><td>Time zone for local date/time values.  (Requires POSIX::tzset,
+    which may not be available in Windows. A work-around in Windows is to
+    <code>set TZ=&lt;zone&gt;</code> before running ExifTool.)</td>
     <td>Any valid TZ string, or undef to use the system time zone</td><td align=center>undef</td></tr>
 <tr id="Unknown"><td>Unknown</td><td>Control extraction of unknown tags.</td>
     <td><table class=clear>
@@ -816,7 +816,8 @@ distribution for examples.</p>
 </td>
     <td><table class=clear>
     <tr><td valign=top><i>PARAM</i></td><td valign=top>-</td><td>Get parameter</td></tr>
-    <tr><td valign=top><i>PARAM=</i></td><td valign=top>-</td><td>Clear parameter</td></tr></table>
+    <tr><td valign=top><i>PARAM=</i></td><td valign=top>-</td><td>Clear parameter</td></tr>
+    <tr><td valign=top><i>PARAM^=</i></td><td valign=top>-</td><td>Set parameter to empty string</td></tr></table>
     <table class=clear>
     <tr><td valign=top><i>PARAM=VALUE</i></td><td valign=top>-</td><td>Set parameter</td></tr>
     </table><table class=clear>

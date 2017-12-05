@@ -843,10 +843,12 @@ or double quotes instead on Windows):
 </pre>
 
 With the <code>-f</code> option, the value of any missing tag is printed as a
-dash.  Without this option, missing tags generate a minor warning and the
-line in the <code>-p</code> output is not printed.  The <code>-m</code> option
-may be used to ignore minor warnings, which causes these lines to be printed
-with an empty value for missing tags.</blockquote>
+dash (or the value of the
+<a href="ExifTool.html#MissingTagValue">API MissingTagValue option</a>, if set).
+Without this option, missing tags generate a minor warning and the line in the
+<code>-p</code> output is not printed.  The <code>-m</code> option may be used
+to ignore minor warnings, which causes these lines to be printed with an empty
+value for missing tags.</blockquote>
 
 <blockquote>
 See the <code>-p</code> option in the <a href="exiftool_pod.html">application
@@ -1000,7 +1002,7 @@ example:
 
 Using <code>-m</code> will downgrade the minor error to a warning, allowing the
 file to be written, but <u>some MakerNote information may be lost when ignoring
-certain types of errors like this</u>. </blockquote>
+errors like this</u>. </blockquote>
 
 <a name="Q16"></a>
 <p>16. <b>"Why doesn't ExifTool rename my AVI files?"</b></p>
@@ -1010,16 +1012,22 @@ types</u><span class='sm'><sup>&dagger;</sup></span> when <u>any
 tag</u><span class='sm'><sup>&Dagger;</sup></span> is being written and a
 directory name is specified on the command line.  To force exiftool to process
 other files, they must either be listed on the command line by name, or be
-specified using the <code>-ext</code> option, something like this:
+specified using the <code>-ext</code> or <code>-ext+</code> option, something
+like this:
 
-<pre>exiftool -ext AVI -ext JPG -d pics/%Y/%m "-directory&lt;dateTimeOriginal" DIR
+<pre><span class=blk># process AVI files in addition to other writable file types</span>
+exiftool -ext+ AVI -d pics/%Y/%m "-directory&lt;dateTimeOriginal" DIR
+
+<span class=blk># process only AVI and JPG files</span>
+exiftool -ext AVI -ext JPG -d pics/%Y/%m "-directory&lt;dateTimeOriginal" DIR
 </pre>
 
-When a single <code>-ext</code> option is used, only files of the specified type
-are processed.  However, multiple <code>-ext</code> options may be used in the
-same command (as in the example above) to process any number of different file
-types, or <code>-ext "*"</code> may be used to process files with any extension
-(or none at all).
+When <code>-ext</code> is used, only files with the specified extension(s) are
+processed, however <code>-ext+</code> may be used to add to the list of normally
+processed files (as in the first example above).  Multiple <code>-ext</code> or
+<code>-ext+</code> options may be used in the same command (as in the second
+example above) to process any number of different file types, or
+<code>-ext "*"</code> may be used to process files with any extension (or none at all).
 </blockquote>
 
 <blockquote class='sm'><sup>&dagger;</sup> <span class=lt>The
@@ -1567,9 +1575,12 @@ in the database.</blockquote>
 
 <blockquote>Tag names may be prefixed by a group name to write to a specific
 group (using the same format as when <code>-G</code> or <code>-G1</code> is
-added to the export command).  Tags with empty values are ignored.  To delete a
-tag, set the tag value to "-" and use the <code>-f</code> option when
-importing.</blockquote>
+added to the export command).  To delete a tag, set the tag value to "-" (or the
+MissingTagValue if this API option was used) and use the <code>-f</code> option
+when importing.  Tags with an empty value are ignored in a CSV import, or set to
+an empty string in a JSON import (unless <code>-f</code> is used and the API
+MissingTagValue option is set to an empty string, in which case the tag is
+deleted).  </blockquote>
 
 <blockquote>See the <code>-csv</code> or <code>-j</code> option in the
 <a href="exiftool_pod.html#input_output_text_formatting">application documentation</a>
@@ -1610,7 +1621,7 @@ proper technique for shifting a date/time value when copying:
 </blockquote>
 
 <hr>
-<i>Last revised Oct 5, 2017</i>
+<i>Last revised Nov 22, 2017</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

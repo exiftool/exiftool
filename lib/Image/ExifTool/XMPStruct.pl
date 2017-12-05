@@ -618,7 +618,7 @@ sub RestoreStruct($;$)
 {
     local $_;
     my ($et, $keepFlat) = @_;
-    my ($key, %structs, %var, %lists, $si, %listKeys);
+    my ($key, %structs, %var, %lists, $si, %listKeys, @siList);
     my $ex = $$et{TAG_EXTRA};
     my $valueHash = $$et{VALUE};
     my $tagExtra = $$et{TAG_EXTRA};
@@ -801,9 +801,10 @@ sub RestoreStruct($;$)
     foreach $si (keys %lists) {
         defined $_ or $_ = '' foreach @{$lists{$si}};
     }
-    # save new structure tags
-    foreach $si (keys %structs) {
-        next unless $var{$si};  # already handled regular lists
+    # make a list of all new structures we generated
+    $var{$_} and push @siList, $_ foreach keys %structs;
+    # save new structures in the same order they were read from file
+    foreach $si (sort { $var{$a}[1] <=> $var{$b}[1] } @siList) {
         $key = $et->FoundTag($var{$si}[0], '');
         $$valueHash{$key} = $structs{$si};
         $$et{FILE_ORDER}{$key} = $var{$si}[1];

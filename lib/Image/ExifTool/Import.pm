@@ -79,7 +79,8 @@ sub ReadCSV($$;$)
         if (@tags) {
             # save values for each tag
             for ($i=0; $i<@vals and $i<@tags; ++$i) {
-                next unless length $vals[$i];   # ignore empty entries
+                # ignore empty entries unless missingValue is empty too
+                next unless length $vals[$i] or defined $missingValue and $missingValue eq '';
                 # delete tag (set value to undef) if value is same as missing tag
                 $fileInfo{$tags[$i]} =
                     (defined $missingValue and $vals[$i] eq $missingValue) ? undef : $vals[$i];

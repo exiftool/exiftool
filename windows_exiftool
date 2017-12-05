@@ -12,7 +12,7 @@
 use strict;
 require 5.004;
 
-my $version = '10.67';
+my $version = '10.68';
 
 # add our 'lib' directory to the include list BEFORE 'use Image::ExifTool'
 my $exeDir;
@@ -569,6 +569,13 @@ for (;;) {
             require Image::ExifTool::MWG;
             Image::ExifTool::MWG::Load();
         }
+        # update necessary variables for 2nd pass
+        if (defined $forcePrint) {
+            unless (defined $mt->Options('MissingTagValue')) {
+                $mt->Options(MissingTagValue => '-');
+            }
+            $forcePrint = $mt->Options('MissingTagValue');
+        }
     }
     if (@nextPass) {
         # process arguments which were deferred to the next pass
@@ -736,9 +743,9 @@ for (;;) {
         my $opt = shift;
         defined $opt or Error("Expected OPT[=VAL] argument for -api option\n"), $badCmd=1, next;
         my $val = ($opt =~ s/=(.*)//s) ? $1 : 1;
-        $mt->Options($opt => (length($val) ? $val : undef));
-        # update $forcePrint in case MissingTagValue was changed
-        $forcePrint = $mt->Options('MissingTagValue') if defined $forcePrint;
+        # empty string means an undefined value unless ^= is used
+        $val = undef unless $opt =~ s/\^$// or length $val;
+        $mt->Options($opt => $val);
         next;
     }
     /^arg(s|format)$/i and $argFormat = 1, next;
@@ -842,11 +849,7 @@ for (;;) {
         next;
     }
     if (/^f$/ or $a eq 'forceprint') {
-        $forcePrint = $mt->Options('MissingTagValue');
-        unless (defined $forcePrint) {
-            $forcePrint = '-';
-            $mt->Options(MissingTagValue => '-');
-        }
+        $forcePrint = 1;
         next;
     }
     if (/^F([-+]?\d*)$/ or /^fixbase([-+]?\d*)$/i) {
@@ -1105,12 +1108,7 @@ for (;;) {
     }
     /^t(ab)?$/  and $tabFormat = 1, next;
     if (/^T$/ or $a eq 'table') {
-        $tabFormat = 1; $outFormat+=2; ++$quiet;
-        $forcePrint = $mt->Options('MissingTagValue');
-        unless (defined $forcePrint) {
-            $forcePrint = '-';
-            $mt->Options(MissingTagValue => '-');
-        }
+        $tabFormat = $forcePrint = 1; $outFormat+=2; ++$quiet;
         next;
     }
     if (/^(u)(nknown(2)?)?$/i) {
@@ -1476,7 +1474,7 @@ if (@newValues) {
         /(.*?)=(.*)/s or next;
         my ($tag, $newVal) = ($1, $2);
         $tag =~ s/\ball\b/\*/ig;    # replace 'all' with '*' in tag names
-        $newVal eq '' and undef $newVal;    # undefined to delete tag
+        $newVal eq '' and undef $newVal unless $tag =~ s/\^([-+]*)$/$1/;  # undefined to delete tag
         if ($tag =~ /^(All)?TagsFromFile$/i) {
             defined $newVal or Error("Need file name for -tagsFromFile\n"), next Command;
             ++$isWriting;
@@ -4162,7 +4160,7 @@ OPTIONS
     Tag operations
 
       -TAG or --TAG                    Extract or exclude specified tag
-      -TAG[+-]=[VALUE]                 Write new value for tag
+      -TAG[+-^]=[VALUE]                Write new value for tag
       -TAG[+-]<=DATFILE                Write tag value from contents of file
       -TAG[+-]<SRCTAG                  Copy tag value (see -tagsFromFile)
 
@@ -4252,14 +4250,14 @@ OPTIONS
 
     Advanced options
 
-      -api OPT[=VAL]                   Set ExifTool API option
+      -api OPT[[^]=[VAL]]              Set ExifTool API option
       -common_args                     Define common arguments
       -config CFGFILE                  Specify configuration file name
       -echo[NUM] TEXT                  Echo text to stdout or stderr
       -execute[NUM]                    Execute multiple commands on one line
       -srcfile FMT                     Process a different source file
       -stay_open FLAG                  Keep reading -@ argfile even after EOF
-      -userParam PARAM[=VAL]           Set user parameter (API UserParam opt)
+      -userParam PARAM[[^]=[VAL]]      Set user parameter (API UserParam opt)
 
   Option Details
    Tag operations
@@ -4312,7 +4310,7 @@ OPTIONS
          4 below). Instead, individual tags may be recovered using the
          -tagsFromFile option (eg. "-all= -tagsfromfile @ -artist").
 
-    -*TAG*[+-]=[*VALUE*]
+    -*TAG*[+-^]=[*VALUE*]
          Write a new value for the specified tag (eg. "-comment=wow"), or
          delete the tag if no *VALUE* is given (eg. "-comment="). "+=" and
          "-=" are used to add or remove existing entries from a list, or to
@@ -4320,7 +4318,9 @@ OPTIONS
          below for more details). "+=" may also be used to increment
          numerical values (or decrement if *VALUE* is negative), and "-="
          may be used to conditionally delete or replace a tag (see "WRITING
-         EXAMPLES" for examples).
+         EXAMPLES" for examples). "^=" is used to write an empty string
+         instead of deleting the tag when no *VALUE* is given, but otherwise
+         it is equivalent to "=".
 
          *TAG* may contain one or more leading family 0, 1 or 2 group names,
          prefixed by optional family numbers, and separated colons. If no
@@ -4335,7 +4335,7 @@ OPTIONS
          "*" (except that it doesn't require quoting, while arguments with
          wildcards do on systems with shell globbing), and is often used
          when deleting all metadata (ie. "-All=") or an entire group (eg.
-         "-GROUP:All=", see note 4 below). Note that not all groups are
+         "-XMP-dc:All=", see note 4 below). Note that not all groups are
          deletable, and that the JPEG APP14 "Adobe" group is not removed by
          default with "-All=" because it may affect the appearance of the
          image. However, color space information is removed, so the colors
@@ -4688,12 +4688,14 @@ OPTIONS
              # update metadata for all images in a directory from CSV file
              exiftool -csv=a.csv dir
 
-         Empty values are ignored when importing. Also, FileName and
-         Directory columns are ignored if they exist (ie. ExifTool will not
-         attempt to write these tags with a CSV import). To force a tag to
-         be deleted, use the -f option and set the value to "-" in the CSV
-         file (or to the MissingTagValue if this API option was used).
-         Multiple databases may be imported in a single command.
+         Empty values are ignored when importing (unless the -f option is
+         used and the API MissingTagValue is set to an empty string, in
+         which case the tag is deleted). Also, FileName and Directory
+         columns are ignored if they exist (ie. ExifTool will not attempt to
+         write these tags with a CSV import). To force a tag to be deleted,
+         use the -f option and set the value to "-" in the CSV file (or to
+         the MissingTagValue if this API option was used). Multiple
+         databases may be imported in a single command.
 
          When exporting a CSV file, the -g or -G option adds group names to
          the tag headings. If the -a option is used to allow duplicate tag
@@ -4723,13 +4725,16 @@ OPTIONS
          option incompatible with the -w option.
 
     -d *FMT* (-dateFormat)
-         Set the format for date/time tag values. The specifics of the *FMT*
-         syntax are system dependent -- consult the "strftime" man page on
-         your system for details. The default format is equivalent to
-         "%Y:%m:%d %H:%M:%S". This option has no effect on date-only or
-         time-only tags and ignores timezone information if present. Only
-         one -d option may be used per command. Requires POSIX::strptime or
-         Time::Piece for the inversion conversion when writing.
+         Set the format for date/time tag values. The *FMT* string may
+         contain formatting codes beginning with a percent character ("%")
+         to represent the various components of a date/time value. The
+         specifics of the *FMT* syntax are system dependent -- consult the
+         "strftime" man page on your system for details. The default format
+         is equivalent to "%Y:%m:%d %H:%M:%S". This option has no effect on
+         date-only or time-only tags and ignores timezone information if
+         present. Only one -d option may be used per command. Requires
+         POSIX::strptime or Time::Piece for the inversion conversion when
+         writing.
 
     -D (-decimal)
          Show tag ID number in decimal when extracting information.
@@ -4932,7 +4937,7 @@ OPTIONS
 
          produces output like this:
 
-             -- Generated by ExifTool 10.67 --
+             -- Generated by ExifTool 10.68 --
              File: a.jpg - 2003:10:31 15:44:19
              (f/5.6, 1/60s, ISO 100)
              File: b.jpg - 2006:05:23 11:57:38
@@ -5283,6 +5288,9 @@ OPTIONS
          combined with the -r option. 2) The -ext option is
          case-insensitive, which is useful when processing files on
          case-sensitive filesystems.
+
+         Note that all files specified on the command line will be processed
+         regardless of extension unless the -ext option is used.
 
     -F[*OFFSET*] (-fixBase)
          Fix the base for maker notes offsets. A common problem with some
@@ -5749,12 +5757,11 @@ OPTIONS
     improve performance in multi-pass processing by reducing the overhead
     required to load exiftool for each invocation.
 
-    -api *OPT[=VAL]*
+    -api *OPT[[^]=[VAL]]*
          Set ExifTool API option. *OPT* is an API option name. The option
-         value is set to 1 if *=VAL* is omitted, or undef if just *VAL* is
-         omitted. An option may not be set to an empty string ("") via the
-         command line, but the config file may be used to accomplish this if
-         necessary. See Image::ExifTool Options for a list of available API
+         value is set to 1 if *=VAL* is omitted. If *VAL* is omitted, the
+         option value is set to undef if "=" is used, or an empty string
+         with "^=". See Image::ExifTool Options for a list of available API
          options. This overrides API options set via the config file.
 
     -common_args
@@ -5865,7 +5872,7 @@ OPTIONS
          via a pipe with "-@ -", so the signal is not necessary when using
          this technique.)
 
-    -userParam *PARAM[=VAL]*
+    -userParam *PARAM[[^]=[VAL]]*
          Set user parameter. *PARAM* is an arbitrary user parameter name.
          This is an interface to the API UserParam option (see the
          Image::ExifTool Options documentation), and provides a method to
@@ -5873,7 +5880,8 @@ OPTIONS
          if it were any other tag, see example below), and from
          PrintConv/ValueConv logic (via the ExifTool Options function).
          Similar to the -api option, the parameter value is set to 1 if
-         *=VAL* is omitted, or undef if just *VAL* is omitted.
+         *=VAL* is omitted, undef if just *VAL* is omitted and "=" is used,
+         or an empty string if *VAL* is omitted and "^=" is used.
 
              exiftool -p "$test from $filename" -userparam test=Hello FILE
 

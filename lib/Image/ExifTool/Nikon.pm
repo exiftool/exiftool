@@ -59,7 +59,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.41';
+$VERSION = '3.42';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -646,6 +646,7 @@ sub GetAFPointGrid($$;$);
     '12 36 69 97 35 42 09 00' => 'Soligor AF Zoom 100-400mm 1:4.5-6.7 MC',
 #
     'BF 4E 26 26 1E 1E 01 04' => 'Irix 15mm f/2.4 Firefly', #30
+    'BF 3C 1B 1B 30 30 01 04' => 'Irix 11mm f/4 Firefly', #30
 #
     '00 00 00 00 00 00 00 01' => 'Manual Lens No CPU',
 #

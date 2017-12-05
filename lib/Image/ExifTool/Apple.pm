@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use Image::ExifTool::Exif;
 use Image::ExifTool::PLIST;
 
-$VERSION = '1.03';
+$VERSION = '1.04';
 
 # Apple iPhone metadata (ref PH)
 %Image::ExifTool::Apple::Main = (
@@ -71,7 +71,10 @@ $VERSION = '1.03';
     # 0x000e - int32s: 0,1,4,12 (Orienation? 0=landscape? 4=portrait? ref 1)
     # 0x000f - int32s: 2,3
     # 0x0010 - int32s: 1
-    # 0x0011 - string[37]: some type of UID, eg. "FFCBAC24-E547-4BBC-AF47-38B1A3D845E3\0" (iPhone 6s, iOS 6.1)
+    0x0011 => {
+        Name => 'ContentIdentifier', #forum8750
+        Writable => 'string',
+    },
     # 0x0014 - int32s: 1,2,3,4,5 (iPhone 6s, iOS 6.1)
     0x0015 => {
         Name => 'ImageUniqueID',

@@ -28,7 +28,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD $iptcDigestInfo);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.56';
+$VERSION = '1.57';
 
 sub ProcessPhotoshop($$$);
 sub WritePhotoshop($$$);
@@ -745,6 +745,20 @@ sub ProcessPhotoshop($$$)
     my $verbose = $et->Options('Verbose');
     my $success = 0;
 
+    # ignore non-standard XMP while in strict MWG compatibility mode
+    if (($Image::ExifTool::MWG::strict or $et->Options('Validate')) and
+        $$et{FILE_TYPE} =~ /^(JPEG|TIFF|PSD)$/)
+    {
+        my $path = $et->MetadataPath();
+        unless ($path =~ /^(JPEG-APP13-Photoshop|TIFF-IFD0-Photoshop|PSD)$/) {
+            if ($Image::ExifTool::MWG::strict) {
+                $et->Warn("Ignored non-standard Photoshop at $path");
+                return 1;
+            } else {
+                $et->Warn("Non-standard Photoshop at $path", 1);
+            }
+        }
+    }
     SetByteOrder('MM');     # Photoshop is always big-endian
     $verbose and $et->VerboseDir('Photoshop', 0, $$dirInfo{DirLen});
 

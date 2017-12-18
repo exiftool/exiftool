@@ -24,7 +24,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:Public);
 
-$VERSION = '1.51';
+$VERSION = '1.52';
 
 sub JITTER() { return 2 }       # maximum time jitter
 
@@ -469,7 +469,7 @@ DoneFix:    $isDate = 1;
             # status: L=low alarm, M=low warning, N=normal, O=high warning
             #         P=high alarm, C=tuning analog circuit
             # (ignore this information on any alarm status)
-            /^\$PTNTHPR,(-?[\d.]+),[MNO],(-?[\d.]+),[MNO],(-?[\d.]+),[MNO],/ or next;
+            /^\$PTNTHPR,(-?[\d.]+),[MNO],(-?[\d.]+),[MNO],(-?[\d.]+),[MNO]/ or next;
             @fix{qw(dir pitch roll)} = ($1,$2,$3);
 
         } else {

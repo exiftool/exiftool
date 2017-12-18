@@ -1649,6 +1649,7 @@ my %sampleFormat = (
     0x8649 => { #19
         Name => 'PhotoshopSettings',
         Format => 'binary',
+        WriteGroup => 'IFD0', # (only for Validate)
         SubDirectory => {
             DirName => 'Photoshop',
             TagTable => 'Image::ExifTool::Photoshop::Main',

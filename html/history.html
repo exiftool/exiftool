@@ -17,12 +17,23 @@ considered development releases, and are not uploaded to <a href="http://search.
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v10.69'><b>Dec. 18, 2017 - Version 10.69</b></a>
+<ul>
+<li>Added "OK" UserParam for use in -if conditions
+<li>Allow writing an empty JPEG Comment
+<li>Check for proper location of Photoshop metadata with -validate or -use mwg
+<li>Exit status now set to 1 if command was aborted due to invalid arguments
+<li>Improved "Not a valid TIFF" error message to be more specific about the file
+    type for TIFF-based formats
+<li>Fixed problem parsing Honeywell PTNTHPR NMEA sentences from some GPS devices
+</ul>
+
 <a name='v10.68'><b>Dec. 5, 2017 - Version 10.68</b></a>
 <ul>
-<li>Added a new Sony LensType (thanks Jos Roost)
-<li>Added a new Nikon LensID
 <li>Added ability to set tag values and API options to an empty string using
     "^=" on the command line
+<li>Added a new Sony LensType (thanks Jos Roost)
+<li>Added a new Nikon LensID
 <li>Decode more tags from some newer Leica models
 <li>Decode a new Apple tag
 <li>Fixed indeterminate order of extracted XMP structures

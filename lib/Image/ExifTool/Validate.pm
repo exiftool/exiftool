@@ -11,7 +11,7 @@ package Image::ExifTool::Validate;
 use strict;
 use vars qw($VERSION %exifSpec);
 
-$VERSION = '1.04';
+$VERSION = '1.05';
 
 use Image::ExifTool qw(:Utils);
 use Image::ExifTool::Exif;
@@ -81,9 +81,9 @@ my %stdFormat = (
         0x116 => 'int(16|32)u', 0x140 => 'int16u',      0x156 => 'int16u',      0x828d => 'int16u',
         0x117 => 'int(16|32)u', 0x141 => 'int16u',      0x15b => 'undef',       0x828e => 'int8u',
         0x118 => 'int16u',      0x142 => 'int(16|32)u', 0x200 => 'int16u',      0x83bb => 'int32u',
-        0x119 => 'int16u',      0x143 => 'int(16|32)u', 0x201 => 'int32u',      0x8773 => 'undef',
-        0x11d => 'string',      0x144 => 'int32u',      0x202 => 'int32u',      0xc4a5 => 'undef',
-        0x11e => 'rational64u', 0x145 => 'int(16|32)u', 0x203 => 'int16u',
+        0x119 => 'int16u',      0x143 => 'int(16|32)u', 0x201 => 'int32u',      0x8649 => 'int8u',
+        0x11d => 'string',      0x144 => 'int32u',      0x202 => 'int32u',      0x8773 => 'undef',
+        0x11e => 'rational64u', 0x145 => 'int(16|32)u', 0x203 => 'int16u',      0xc4a5 => 'undef',
         # Windows Explorer tags:
         0x9c9b => 'int8u',      0x9c9d => 'int8u',      0x9c9f => 'int8u',
         0x9c9c => 'int8u',      0x9c9e => 'int8u',
@@ -206,7 +206,7 @@ my %validate = (
     TIFF => {
         IFD0 => {
             0x103 => q{
-                not defined $val or $val =~ /^(1|6|32773)$/ or
+                not defined $val or $val =~ /^(1|5|6|32773)$/ or
                     ($val == 2 and (not defined $val{0x102} or $val{0x102} == 1));
             },  # Compression
             0x106 => '$val =~ /^[0123]$/',  # PhotometricInterpretation

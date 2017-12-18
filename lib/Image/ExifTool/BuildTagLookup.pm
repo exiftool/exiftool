@@ -200,8 +200,10 @@ explicitly (ie. not when wildcards or "all" are used), and care should be
 taken when editing them manually since they may affect the way an image is
 rendered.  An asterisk (C<*>) indicates a I<Protected> tag which is not
 writable directly, but is written automatically by ExifTool (often when a
-corresponding Composite or Extra tag is written). A colon (C<:>) indicates a
-I<Mandatory> tag which may be added automatically when writing.
+corresponding L<Composite|Image::ExifTool::TagNames/Composite Tags> or
+L<Extra|Image::ExifTool::TagNames/Extra Tags> tag is written). A colon
+(C<:>) indicates a I<Mandatory> tag which may be added automatically when
+writing.
 
 The HTML version of these tables also lists possible B<Values> for
 discrete-valued tags, as well as B<Notes> for some tags.  The B<Values> are

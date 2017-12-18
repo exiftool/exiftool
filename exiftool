@@ -12,7 +12,7 @@
 use strict;
 require 5.004;
 
-my $version = '10.68';
+my $version = '10.69';
 
 # add our 'lib' directory to the include list BEFORE 'use Image::ExifTool'
 my $exeDir;
@@ -133,6 +133,7 @@ my $doUnzip;        # flag to extract info from .gz and .bz2 files
 my $escapeHTML;     # flag to escape printed values for html
 my $evalWarning;    # warning from eval
 my $executeID;      # -execute ID number
+my $failCondition;  # flag to fail -if condition
 my $fileHeader;     # header to print to output file (or console, once)
 my $fileTrailer;    # trailer for output file
 my $filtered;       # flag indicating file was filtered by name
@@ -163,6 +164,7 @@ my $quiet;          # flag to disable printing of informational messages / warni
 my $rafStdin;       # File::RandomAccess for stdin (if necessary to rewind)
 my $recurse;        # recurse into subdirectories (2=also hidden directories)
 my $rtnVal;         # command return value (0=success)
+my $rtnValPrev;     # previous command return value (0=success)
 my $saveCount;      # count the number of times we will/did call SaveNewValues()
 my $scanWritable;   # flag to process only writable file types
 my $sectHeader;     # current section header for -p option
@@ -193,6 +195,7 @@ my $xml;            # flag for XML-formatted output
 # 3 = waiting for -@ to switch to a new STAYOPEN argfile
 my $stayOpen = 0;
 
+my $rtnValApp = 0;  # app return value (0=success)
 my $curTitle = '';  # current window title
 
 # lookup for O/S names which may use a backslash as a directory separator
@@ -241,7 +244,7 @@ my %optArgs = (
         '-textout' => 1, '-textout!' => 1, '-textout+' => 1, '-textout+!' => 1, '-textout!+' => 1,
          '-tagout' => 1,  '-tagout!' => 1,  '-tagout+' => 1,  '-tagout+!' => 1,  '-tagout!+' => 1,
     '-wext' => 1,
-    '-wm' => 1,
+    '-wm' => 1, '-writemode' => 1,
     '-x' => 1, '-exclude' => 1,
     '-X' => 0,
 );
@@ -340,6 +343,10 @@ Command: for (;;) {
 $rafStdin->Close() if $rafStdin;
 undef $rafStdin;
 
+# save or previous return codes
+$rtnValPrev = $rtnVal;
+$rtnValApp = $rtnVal if $rtnVal;
+
 # exit Command loop now if we are all done processing commands
 last unless @ARGV or not defined $rtnVal or $stayOpen >= 2 or @commonArgs;
 
@@ -364,11 +371,9 @@ if ($stayOpen >= 2) {
     }
 }
 
-$rtnVal = 0 unless defined $rtnVal;
-
 # initialize necessary static file-scope variables
 # (not done: @commonArgs, @moreArgs, $critical, $binaryStdout, $helped,
-#  $interrupted, $mt, $pause, $rtnVal, $stayOpen, $stayOpenBuff, $stayOpenFile)
+#  $interrupted, $mt, $pause, $rtnValApp, $rtnValPrev, $stayOpen, $stayOpenBuff, $stayOpenFile)
 undef @csvFiles;
 undef @csvTags;
 undef @delFiles;
@@ -408,6 +413,7 @@ undef $doUnzip;
 undef $escapeHTML;
 undef $evalWarning;
 undef $executeID;
+undef $failCondition;
 undef $fileHeader;
 undef $filtered;
 undef $fixLen;
@@ -460,6 +466,7 @@ $outFormat = 0;
 $overwriteOrig = 0;
 $progStr = '';
 $quiet = 0;
+$rtnVal = 0;
 $saveCount = 0;
 $sectTrailer = '';
 $seqFileNum = 0;
@@ -514,11 +521,13 @@ for (;;) {
     if (@ARGV) {
         $executeID = $2;        # save -execute number for "{ready}" response
         $helped = 1;            # don't show help if we used -execute
-        $badCmd and shift, next Command;
+        $badCmd and shift, $rtnVal=1, next Command;
     } elsif ($stayOpen >= 2) {
         ReadStayOpen(\@ARGV);   # read more arguments from -stay_open file
         next;
     } elsif ($badCmd) {
+        undef @commonArgs;      # all done.  Flush common arguments
+        $rtnVal = 1;
         next Command;
     }
     if ($pass == 0) {
@@ -898,6 +907,8 @@ for (;;) {
     if ($a eq 'if') {
         my $cond = shift;
         defined $cond or Error("Expecting expression for -if option\n"), $badCmd=1, next;
+        # prevent processing file unnecessarily for simple case of failed '$ok' or 'not $ok'
+        $cond =~ /^\s*(not\s*)\$ok\s*$/i and ($1 xor $rtnValPrev) and $failCondition=1;
         # add to list of requested tags
         push @requestTags, $cond =~ /\$\{?((?:[-\w]+:)*[-\w?*]+)/g;
         if (defined $condition) {
@@ -1243,6 +1254,9 @@ for (;;) {
     }
   }
 }
+
+# set "OK" UserParam based on result of last command
+$mt->Options(UserParam => 'OK=' . (not $rtnValPrev));
 
 # set verbose output to STDERR if output could be to console
 $vout = \*STDERR if $srcStdin and ($isWriting or @newValues);
@@ -1759,7 +1773,7 @@ Cleanup();
 
 close STAYOPEN if $stayOpen >= 2;
 
-Exit $rtnVal;   # all done
+Exit $rtnValApp;    # all done
 
 
 #------------------------------------------------------------------------------
@@ -1820,30 +1834,34 @@ sub GetImageInfo($$)
             ++$countBad;
             return;
         }
-        # catch run time errors as well as compile errors
-        undef $evalWarning;
-        local $SIG{'__WARN__'} = sub { $evalWarning = $_[0] };
+        my $result;
 
-        my %info;
-        # extract information and build expression for evaluation
-        my $opts = { Duplicates => 1, RequestTags => \@requestTags, Verbose => 0, HtmlDump => 0 };
-        # return all tags but explicitly mention tags on command line so
-        # requested images will generate the appropriate warnings
-        @foundTags = ('*', @tags) if @tags;
-        $info = $et->ImageInfo(Infile($pipe,$isWriting), \@foundTags, $opts);
-        my $cond = $et->InsertTagValues(\@foundTags, $condition, \%info);
+        unless ($failCondition) {
+            # catch run time errors as well as compile errors
+            undef $evalWarning;
+            local $SIG{'__WARN__'} = sub { $evalWarning = $_[0] };
 
-        #### eval "-if" condition (%info)
-        my $result = eval $cond;
+            my %info;
+            # extract information and build expression for evaluation
+            my $opts = { Duplicates => 1, RequestTags => \@requestTags, Verbose => 0, HtmlDump => 0 };
+            # return all tags but explicitly mention tags on command line so
+            # requested images will generate the appropriate warnings
+            @foundTags = ('*', @tags) if @tags;
+            $info = $et->ImageInfo(Infile($pipe,$isWriting), \@foundTags, $opts);
+            my $cond = $et->InsertTagValues(\@foundTags, $condition, \%info);
 
-        $@ and $evalWarning = $@;
-        if ($evalWarning) {
-            # fail condition if warning is issued
-            undef $result;
-            if ($verbose) {
-                chomp $evalWarning;
-                $evalWarning =~ s/ at \(eval .*//s;
-                Warn "Condition: $evalWarning - $file\n";
+            #### eval "-if" condition (%info)
+            $result = eval $cond;
+
+            $@ and $evalWarning = $@;
+            if ($evalWarning) {
+                # fail condition if warning is issued
+                undef $result;
+                if ($verbose) {
+                    chomp $evalWarning;
+                    $evalWarning =~ s/ at \(eval .*//s;
+                    Warn "Condition: $evalWarning - $file\n";
+                }
             }
         }
         unless ($result) {
@@ -4519,7 +4537,8 @@ names containing wildcards.  When copying directly, the values of each
 matching source tag are copied individually to the destination tag (as if
 they were separate assignments).  However, when interpolated inside a
 string, list items and the values of shortcut tags are concatenated (with a
-separator set by the B<-sep> option), and wildcards are not allowed.
+separator set by the B<-sep> option), and wildcards are not allowed.  Also,
+UserParam variables are available only when interpolated in a string.
 
 =item B<-x> I<TAG> (B<-exclude>)
 
@@ -4917,7 +4936,7 @@ with this command:
 
 produces output like this:
 
-    -- Generated by ExifTool 10.68 --
+    -- Generated by ExifTool 10.69 --
     File: a.jpg - 2003:10:31 15:44:19
     (f/5.6, 1/60s, ISO 100)
     File: b.jpg - 2006:05:23 11:57:38
@@ -5378,6 +5397,10 @@ the associated NEF:
 the values of duplicate tags are accessible only by specifying a group name
 (such as a family 4 instance number, eg. C<$Copy1:TAG>, C<$Copy2:TAG>, etc).
 
+6) A special "OK" UserParam is available to test the success of the previous
+command when B<-execute> was used, and may be used like any other tag in the
+condition (ie. "$OK").
+
 =item B<-m> (B<-ignoreMinorErrors>)
 
 Ignore minor errors and warnings.  This enables writing to files with minor
@@ -5478,10 +5501,11 @@ If followed by a colon (ie. B<-progress:>), the console window title is set
 according to the specified I<TITLE> string.  If no I<TITLE> is given, a
 default I<TITLE> string of "ExifTool %p%%" is assumed.  In the string, %f
 represents the file name, %p is the progress as a percent, %r is the
-progress as a ratio, %[##]b is a progress bar of width ## (default 20), and
-%% is a % character.  May be combined with the normal B<-progress> option to
-also show the progress count in console messages.  (Note:  For this feature
-to function correctly on Mac/Linux, stderr must go to the console.)
+progress as a ratio, %##b is a progress bar of width "##" (20 characters if
+"##" is omitted), and %% is a % character.  May be combined with the normal
+B<-progress> option to also show the progress count in console messages. 
+(Note: For this feature to function correctly on Mac/Linux, stderr must go
+to the console.)
 
 =item B<-q> (B<-quiet>)
 
@@ -5496,8 +5520,8 @@ Recursively process files in subdirectories.  Only meaningful if I<FILE> is
 a directory name.  Subdirectories with names beginning with "." are not
 processed unless "." is added to the option name (ie. B<-r.> or
 B<-recurse.>).  By default, exiftool will also follow symbolic links to
-directories if supported by the system, but this may be disabled with C<-i
-SYMLINKS> (see the B<-i> option for details).
+directories if supported by the system, but this may be disabled with
+C<-i SYMLINKS> (see the B<-i> option for details).
 
 =item B<-scanForXMP>
 
@@ -5522,8 +5546,7 @@ binary data blocks.  This is the same as two B<-u> options.
 =item B<-wm> I<MODE> (B<-writeMode>)
 
 Set mode for writing/creating tags.  I<MODE> is a string of one or more
-characters from the list below.  Write mode is C<wcg> unless otherwise
-specified.
+characters from the list below.  The default write mode is C<wcg>.
 
     w - Write existing tags
     c - Create new tags
@@ -6368,10 +6391,9 @@ the image (with the inverse command) later in a workflow.
 This command performs exactly the same task as the command above, except
 that the B<-o> option will not write to an output file that already exists.
 
-=item exiftool -if '$jpgfromraw' -b -jpgfromraw -w %d%f_%ue.jpg -execute
--if '$previewimage' -b -previewimage -w %d%f_%ue.jpg -execute
--tagsfromfile @ -srcfile %d%f_%ue.jpg -overwrite_original
--common_args --ext jpg DIR
+=item exiftool -b -jpgfromraw -w %d%f_%ue.jpg -execute -b -previewimage -w
+%d%f_%ue.jpg -execute -tagsfromfile @ -srcfile %d%f_%ue.jpg
+-overwrite_original -common_args --ext jpg DIR
 
 [Advanced] Extract JpgFromRaw or PreviewImage from all but JPG files in DIR,
 saving them with file names like C<image_EXT.jpg>, then add all meta

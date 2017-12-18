@@ -1593,8 +1593,8 @@ GNV_TagInfo:    foreach $tagInfo (@tagInfoList) {
 #------------------------------------------------------------------------------
 # Return the total number of new values set
 # Inputs: 0) ExifTool object reference
-# Returns: Scalar context) Number of new values that have been set
-#          List context) Number of new values, number of "pseudo" values
+# Returns: Scalar context) Number of new values that have been set (incl pseudo)
+#          List context) Number of new values (incl pseudo), number of "pseudo" values
 # ("pseudo" values are those which don't require rewriting the file to change)
 sub CountNewValues($)
 {
@@ -1602,13 +1602,14 @@ sub CountNewValues($)
     my $newVal = $$self{NEW_VALUE};
     my ($num, $pseudo) = (0, 0);
     if ($newVal) {
-        $num += scalar keys %$newVal;
-        # don't count "fake" tags (only in Extra table)
+        $num = scalar keys %$newVal;
         my $nv;
         foreach $nv (values %$newVal) {
             my $tagInfo = $$nv{TagInfo};
-            --$num if $$tagInfo{WriteNothing};
-            ++$pseudo if $$tagInfo{WritePseudo};
+            # don't count tags that don't write anything
+            $$tagInfo{WriteNothing} and --$num, next;
+            # count the number of pseudo tags included
+            $$tagInfo{WritePseudo} and ++$pseudo;
         }
     }
     $num += scalar keys %{$$self{DEL_GROUP}};
@@ -2224,6 +2225,7 @@ sub WriteInfo($$;$$)
                     $err = 'Writing this type of RAW file is not supported';
                 } else {
                     if ($wrongType) {
+                        $fileType = $tiffType if $fileType eq 'TIFF';
                         $err = "Not a valid $fileType";
                         # do a quick check to see what this file looks like
                         foreach $type (@fileTypes) {
@@ -4907,6 +4909,7 @@ sub AddNewTrailers($;@)
 # Inputs: 0) file or scalar reference, 1) segment marker
 #         2) segment header, 3) segment data ref, 4) segment type
 # Returns: number of segments written, or 0 on error
+# Notes: Writes a single empty segment if data is empty
 sub WriteMultiSegment($$$$;$)
 {
     my ($outfile, $marker, $header, $dataPt, $type) = @_;
@@ -4917,10 +4920,10 @@ sub WriteMultiSegment($$$$;$)
     my $maxLen = $maxSegmentLen - length($header);
     $maxLen -= 2 if $type eq 'ICC'; # leave room for segment counters
     my $num = int(($len + $maxLen - 1) / $maxLen);  # number of segments to write
-    my $n;
+    my $n = 0;
     # write data, splitting into multiple segments if necessary
     # (each segment gets its own header)
-    for ($n=0; $n<$len; $n+=$maxLen) {
+    for (;;) {
         ++$count;
         my $size = $len - $n;
         $size > $maxLen and $size = $maxLen;
@@ -4933,6 +4936,7 @@ sub WriteMultiSegment($$$$;$)
         # write the new segment with appropriate header
         my $segHdr = $hdr . pack('n', $size + 2);
         Write($outfile, $segHdr, $header, $buff) or return 0;
+        last if $n+=$maxLen >= $len;
     }
     return $count;
 }
@@ -5321,7 +5325,7 @@ sub WriteJPEG($$)
                 $doneDir{COM} = 1;
                 next if $$delGroup{File} and $$delGroup{File} != 2;
                 my $newComment = $self->GetNewValue('Comment');
-                if (defined $newComment and length($newComment)) {
+                if (defined $newComment) {
                     if ($verbose) {
                         print $out "Creating COM:\n";
                         $self->VerboseValue('+ Comment', $newComment);
@@ -5980,7 +5984,7 @@ sub WriteJPEG($$)
                     }
                 }
                 $self->VerboseValue('- Comment', $$segDataPt);
-                if (defined $newComment and length $newComment) {
+                if (defined $newComment) {
                     # write out the comments
                     $self->VerboseValue('+ Comment', $newComment);
                     WriteMultiSegment($outfile, 0xfe, '', \$newComment) or $err = 1;

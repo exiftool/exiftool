@@ -497,7 +497,8 @@ numerical.
 
                   'WriteNothing' - flag indicating that nothing is actually
                   written when this tag is set.  It is a fake writable tag that
-                  isn't actually written (eg. Geotag).
+                  isn't actually written (eg. Geotag).  Used to avoid processing
+                  a file unnecessarily if nothing will actually be written.
 
                   'WritePseudo' - flag indicating that this is a writable pseudo
                   tag.  If set, this tag may be written without actually writing

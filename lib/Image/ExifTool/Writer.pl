@@ -4936,7 +4936,7 @@ sub WriteMultiSegment($$$$;$)
         # write the new segment with appropriate header
         my $segHdr = $hdr . pack('n', $size + 2);
         Write($outfile, $segHdr, $header, $buff) or return 0;
-        last if $n+=$maxLen >= $len;
+        last if ($n+=$maxLen) >= $len;
     }
     return $count;
 }

@@ -642,6 +642,14 @@ numerical.
                   MakerNotes tags are permanent.)  If not specified, an attempt
                   is made to convert an empty string for the raw value.
 
+  Validate      : Scalar expression used to validate the raw value of a tag when
+                  the Validate option is set.  The expression may access $val
+                  (the Raw tag value), $tag (the tag key) and $self (the current
+                  ExifTool object), and should return a warning if any problem
+                  is found, or false if OK.  The evaluation is performed in the
+                  Image::ExifTool::Validate package namespace, so functions of
+                  this package need not be prefixed by the package name.
+
   Relist        : [Only if ValueConv or PrintConv is a list ref] Reference to a
                   list of original value indices used to reorganize values. Each
                   entry in the list may be a scalar index, or a reference to a
@@ -953,11 +961,11 @@ numerical.
                   is specified).
 
      Validate   : If given, specifies Perl expression which is used to validate
-                  the subdirectory data.  The following variables may be used in
-                  the expression: $val (value of the tag), $dirData (reference
-                  to directory data), $subdirStart (offset to subdirectory
-                  start) and $size (size of subdirectory).  Returns true if
-                  subirectory is valid.
+                  the subdirectory data (regardless of Validate option setting).
+                  The following variables may be used in the expression: $val
+                  (value of the tag), $dirData (reference to directory data),
+                  $subdirStart (offset to subdirectory start) and $size (size of
+                  subdirectory).  Returns true if subirectory is valid.
 
      ProcessProc: If given, specifies processing procedure used to decode this
                   subdirectory data.  This overrides the default procedure

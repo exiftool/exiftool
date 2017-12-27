@@ -7,12 +7,22 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.55. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Dec. 27, 2017 - Version 10.70
+
+  - Search application directory for -config file
+  - Improved robustness of JSON import
+  - Enhancements to experimental Validate feature
+  - Fixed bug introduced in 10.69 which could result in hang when writing
+    multi-segment JPEG metadata
+
 Dec. 18, 2017 - Version 10.69
 
   - Added "OK" UserParam for use in -if conditions
   - Allow writing an empty JPEG Comment
   - Check for proper location of Photoshop metadata with -validate or -use mwg
   - Exit status now set to 1 if command was aborted due to invalid arguments
+  - Translate "UTF8" to appropriate escape sequence when writing
+    IPTC:CodedCharacterSet with the -n option
   - Improved "Not a valid TIFF" error message to be more specific about the file
     type for TIFF-based formats
   - Fixed problem parsing Honeywell PTNTHPR NMEA sentences from some GPS devices
@@ -134,7 +144,7 @@ July 7, 2017 - Version 10.59
 
   - Added a new Canon LensType (thanks LibRaw)
   - Added a new Nikon LensID
-  - Added "wrong extension" warning to experimental -validate feature
+  - Added "wrong extension" warning to experimental Validate feature
   - Decode Pentax maker notes in Q-S1 AVI videos
   - Updated iptc2exif.args and exif2iptc.args to support new EXIF OffsetTime
     tags (thanks Herb)
@@ -173,8 +183,7 @@ June 20, 2017 - Version 10.57
     images with an unknown header
   - Relaxed case requirement for "SourceFile" header in CSV and JSON import
   - Fixed decoding of Pentax ExposureCompensation for newer Ricoh models
-  - Fixed some incorrect "Wrong IFD" messages with experimental -validate
-    feature
+  - Fixed some incorrect "Wrong IFD" messages with experimental Validate feature
   - Fixed a couple of Sony/Minolta lens names (thanks Jos Roost)
   - Fixed "Error reading PreviewImage" warning for some Sony models
 
@@ -205,7 +214,7 @@ May 26, 2017 - Version 10.54
   - Added a two new Sony lenses and decode more ILCE-9 tags (thanks Jos Roost)
   - Added new values to some Pentax tags (thanks Andras Salamon)
   - Added a new Canon LensType
-  - Added an additional checks to the experimental -validate feature
+  - Added an additional checks to the experimental Validate feature
   - Improved user-defined FileTypes feature to provide more flexibility
   - Enhanced -ext option to allow specific files extensions to be processed
     along with supported files

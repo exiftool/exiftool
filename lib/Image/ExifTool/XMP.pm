@@ -203,6 +203,7 @@ my %uri2ns;
     # NOTE: Do NOT put "Groups" here because Groups hash must not be common!
     Writable => 'date',
     Shift => 'Time',
+    Validate => 'ValidateXMPDate($val)',
     PrintConv => '$self->ConvertDateTime($val)',
     PrintConvInv => '$self->InverseDateTime($val,undef,1)',
 );

@@ -3,7 +3,7 @@
 #
 # Description:  Additional metadata validation
 #
-# Revisions:    2017/01/18 - P. Harvey Created
+# Created:      2017/01/18 - P. Harvey
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::Validate;
@@ -11,7 +11,7 @@ package Image::ExifTool::Validate;
 use strict;
 use vars qw($VERSION %exifSpec);
 
-$VERSION = '1.05';
+$VERSION = '1.06';
 
 use Image::ExifTool qw(:Utils);
 use Image::ExifTool::Exif;
@@ -132,8 +132,101 @@ my %validateInfo = (
 # generate lookup for any IFD
 my %stdFormatAnyIFD = map { %{$stdFormat{$_}} } keys %stdFormat;
 
+# validity ranges for constrained date/time fields
+my @validDateField = (
+    [ 'Month',   1, 12 ],
+    [ 'Day',     1, 31 ],
+    [ 'Hour',    0, 23 ],
+    [ 'Minutes', 0, 59 ],
+    [ 'Seconds', 0, 59 ],
+    [ 'TZhr',    0, 14 ],
+    [ 'TZmin',   0, 59 ],
+);
+
 # add "Validate" tag to Extra table
 AddTagToTable(\%Image::ExifTool::Extra, Validate => \%validateInfo, 1);
+
+#------------------------------------------------------------------------------
+# Validate the raw value of a tag
+# Inputs: 0) ExifTool ref, 1) tag key, 2) raw tag value
+# Returns: nothing, but issues a minor Warning if a problem was detected
+sub ValidateRaw($$$)
+{
+    my ($self, $tag, $val) = @_;
+    my $tagInfo = $$self{TAG_INFO}{$tag};
+
+    # evaluate Validate code if specified
+    if ($$tagInfo{Validate}) {
+        local $SIG{'__WARN__'} = \&Image::ExifTool::SetWarning;
+        undef $Image::ExifTool::evalWarning;
+        #### eval Validate ($self, $val, $tagInfo)
+        my $wrn = eval $$tagInfo{Validate};
+        my $err = $Image::ExifTool::evalWarning || $@;
+        if ($wrn or $err) {
+            my $name = $$tagInfo{Table}{GROUPS}{0} . ':' . Image::ExifTool::GetTagName($tag);
+            $self->Warn("Validate $name: $err", 1) if $err;
+            $self->Warn("$wrn for $name", 1) if $wrn;
+        }
+    }
+    # check for unknown values in PrintConv lookup (except MakerNotes tags)
+    if (ref $$tagInfo{PrintConv} eq 'HASH' and $$tagInfo{Table}{GROUPS}{0} ne 'MakerNotes') {
+        my $prt = $self->GetValue($tag, 'PrintConv');
+        if ($prt and $prt =~ /^Unknown \(/) {
+            my $name = $$tagInfo{Table}{GROUPS}{0} . ':' . Image::ExifTool::GetTagName($tag);
+            $self->Warn("Unknown value for $name", 1);
+        }
+    }
+}
+
+#------------------------------------------------------------------------------
+# Validate raw EXIF date/time value
+# Inputs: 0) date/time value
+# Returns: error string
+sub ValidateExifDate($)
+{
+    my $val = shift;
+    if ($val =~ /^\d{4}:(\d{2}):(\d{2}) (\d{2}):(\d{2}):(\d{2})$/) {
+        my @a = ($1,$2,$3,$4,$5);
+        my ($i, @bad);
+        for ($i=0; $i<@a; ++$i) {
+            next if $a[$i] eq '  ' or ($a[$i] >= $validDateField[$i][1] and $a[$i] <= $validDateField[$i][2]);
+            push @bad, $validDateField[$i][0];
+        }
+        return join('+', @bad) . ' out of range' if @bad;
+    # the EXIF specification allows blank fields or an entire blank value
+    } elsif ($val ne '    :  :     :  :  ' and $val ne '                   ') {
+        return 'Invalid date/time format';
+    }
+    return undef;   # OK!
+}
+
+#------------------------------------------------------------------------------
+# Validate EXIF-reformatted XMP date/time value
+# Inputs: 0) date/time value
+# Returns: error string
+sub ValidateXMPDate($)
+{
+    my $val = shift;
+    if ($val =~ /^\d{4}$/ or
+        $val =~ /^\d{4}:(\d{2})$/ or
+        $val =~ /^\d{4}:(\d{2}):(\d{2})$/ or
+        $val =~ /^\d{4}:(\d{2}):(\d{2}) (\d{2}):(\d{2})()(Z|[-+](\d{2}):(\d{2}))?$/ or
+        $val =~ /^\d{4}:(\d{2}):(\d{2}) (\d{2}):(\d{2}):(\d{2})(Z|[-+](\d{2}):(\d{2}))?$/ or
+        $val =~ /^\d{4}:(\d{2}):(\d{2}) (\d{2}):(\d{2}):(\d{2})\.?\d*(Z|[-+](\d{2}):(\d{2}))?$/)
+    {
+        my @a = ($1,$2,$3,$4,$5,$7,$8);
+        my ($i, @bad);
+        for ($i=0; $i<@a; ++$i) {
+            last unless defined $a[$i];
+            next if $a[$i] eq '' or ($a[$i] >= $validDateField[$i][1] and $a[$i] <= $validDateField[$i][2]);
+            push @bad, $validDateField[$i][0];
+        }
+        return join('+', @bad) . ' out of range' if @bad;
+    } else {
+        return 'Invalid date/time format';
+    }
+    return undef;   # OK!
+}
 
 #------------------------------------------------------------------------------
 # Validate EXIF tag

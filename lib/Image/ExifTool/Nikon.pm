@@ -2975,14 +2975,17 @@ my %binaryDataAttrs = (
             4 => 'On (73-point)', #PH (1J1[128/129],1J2[128/129/135],1J3/1S1/1V2[128/129/131],1V1[129],AW1[129/131])
             5 => 'On (5)', #PH (1S2[128/129], 1J4/1V3[129])
             6 => 'On (105-point)', #PH (1J4/1V3[128/130])
-            7 => 'On (153-point)', #PH (D5/D500)
+            7 => 'On (153-point)', #PH (D5/D500/D850)
         },
     },
     7 => [
         { #PH/JD
             Name => 'PrimaryAFPoint',
             Condition => '$$self{PhaseDetectAF} < 2',
-            Notes => 'models with 51-point AF: D3, D3S, D3X, D300, D300S, D700 and D800',
+            Notes => q{
+                models with 51-point AF -- 5 rows (A-E) and 11 columns (1-11): D3, D3S, D3X,
+                D4, D4S, D300, D300S, D700, D800, D800e and D810
+            },
             PrintConvColumns => 5,
             PrintConv => {
                 0 => '(none)',
@@ -3074,7 +3077,8 @@ my %binaryDataAttrs = (
             Name => 'PrimaryAFPoint',
             Condition => '$$self{PhaseDetectAF} == 7 and $$self{AFInfo2Version} eq "0100"',
             Notes => q{
-                Nikon models with 153-point AF -- 9 rows (A-I) and 17 columns (1-17)
+                Nikon models with 153-point AF -- 9 rows (A-I) and 17 columns (1-17): D5,
+                D500 and D850
             },
             PrintConvColumns => 5,
             PrintConv => {

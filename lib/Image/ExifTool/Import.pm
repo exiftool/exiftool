@@ -12,7 +12,7 @@ require Exporter;
 
 use vars qw($VERSION @ISA @EXPORT_OK);
 
-$VERSION = '1.08';
+$VERSION = '1.09';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(ReadCSV ReadJSON);
 
@@ -123,7 +123,8 @@ sub ToUTF8($)
 
 #------------------------------------------------------------------------------
 # Read JSON object from file
-# Inputs: 0) RAF reference or undef, 1) optional file buffer reference
+# Inputs: 0) RAF reference or undef, 1) optional scalar reference for data
+#            to read before reading from file (ie. the file read buffer)
 # Returns: JSON object (scalar, hash ref, or array ref), or undef on EOF or
 #          empty object or array (and sets $$buffPt to empty string on EOF)
 # Notes: position in buffer is significant
@@ -134,6 +135,7 @@ sub ReadJSONObject($;$)
     my ($pos, $readMore, $rtnVal, $tok, $key, $didBOM);
     if ($buffPt) {
         $pos = pos $$buffPt;
+        $pos = pos($$buffPt) = 0 unless defined $pos;
     } else {
         my $buff = '';
         $buffPt = \$buff;
@@ -144,6 +146,7 @@ Tok: for (;;) {
         #  put a test here to be safe because one user reported this problem)
         last unless defined $pos;
         if ($pos >= length $$buffPt or $readMore) {
+            last unless defined $raf;
             # read another 64kB and add to unparsed data
             my $offset = length($$buffPt) - $pos;
             if ($offset) {

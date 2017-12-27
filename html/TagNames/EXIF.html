@@ -62,7 +62,8 @@ official EXIF 2.31 specification.
 <td>SubfileType</td>
 <td class=c title=' ! = Unsafe'>int32u!</td>
 <td class=c>IFD0</td>
-<td><span class=s>0x0 = Full-resolution Image
+<td><span class=s><span class=n>(called NewSubfileType by the TIFF specification)</span>
+  <br>0x0 = Full-resolution Image
   <br>0x1 = Reduced-resolution image
   <br>0x2 = Single page of multi-page image
   <br>0x3 = Single page of multi-page reduced-resolution image
@@ -82,7 +83,8 @@ official EXIF 2.31 specification.
 <td>OldSubfileType</td>
 <td class=c title=' ! = Unsafe'>int16u!</td>
 <td class=c>IFD0</td>
-<td><span class=s>1 = Full-resolution image
+<td><span class=s><span class=n>(called SubfileType by the TIFF specification)</span>
+  <br>1 = Full-resolution image
   <br>2 = Reduced-resolution image
   <br>3 = Single page of multi-page image</span></td></tr>
 <tr class=b>
@@ -3497,7 +3499,7 @@ these unless they already exist in the file)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Dec 14, 2017</i>
+<br><i>Last revised Dec 27, 2017</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

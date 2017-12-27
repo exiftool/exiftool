@@ -17,12 +17,23 @@ considered development releases, and are not uploaded to <a href="http://search.
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v10.70'><b>Dec. 27, 2017 - Version 10.70</b></a>
+<ul>
+<li>Search application directory for -config file
+<li>Improved robustness of JSON import
+<li>Enhancements to experimental Validate feature
+<li>Fixed bug introduced in 10.69 which could result in hang when writing
+    multi-segment JPEG metadata
+</ul>
+
 <a name='v10.69'><b>Dec. 18, 2017 - Version 10.69</b></a>
 <ul>
 <li>Added "OK" UserParam for use in -if conditions
 <li>Allow writing an empty JPEG Comment
 <li>Check for proper location of Photoshop metadata with -validate or -use mwg
 <li>Exit status now set to 1 if command was aborted due to invalid arguments
+<li>Translate "UTF8" to appropriate escape sequence when writing
+    IPTC:CodedCharacterSet with the -n option
 <li>Improved "Not a valid TIFF" error message to be more specific about the file
     type for TIFF-based formats
 <li>Fixed problem parsing Honeywell PTNTHPR NMEA sentences from some GPS devices
@@ -156,7 +167,7 @@ considered development releases, and are not uploaded to <a href="http://search.
 <ul>
 <li>Added a new Canon LensType (thanks LibRaw)
 <li>Added a new Nikon LensID
-<li>Added "wrong extension" warning to experimental -validate feature
+<li>Added "wrong extension" warning to experimental Validate feature
 <li>Decode Pentax maker notes in Q-S1 AVI videos
 <li>Updated iptc2exif.args and exif2iptc.args to support new EXIF OffsetTime
     tags (thanks Herb)
@@ -197,8 +208,7 @@ considered development releases, and are not uploaded to <a href="http://search.
     images with an unknown header
 <li>Relaxed case requirement for "SourceFile" header in CSV and JSON import
 <li>Fixed decoding of Pentax ExposureCompensation for newer Ricoh models
-<li>Fixed some incorrect "Wrong IFD" messages with experimental -validate
-    feature
+<li>Fixed some incorrect "Wrong IFD" messages with experimental Validate feature
 <li>Fixed a couple of Sony/Minolta lens names (thanks Jos Roost)
 <li>Fixed "Error reading PreviewImage" warning for some Sony models
 </ul>
@@ -232,7 +242,7 @@ considered development releases, and are not uploaded to <a href="http://search.
 <li>Added a two new Sony lenses and decode more ILCE-9 tags (thanks Jos Roost)
 <li>Added new values to some Pentax tags (thanks Andras Salamon)
 <li>Added a new Canon LensType
-<li>Added an additional checks to the experimental -validate feature
+<li>Added an additional checks to the experimental Validate feature
 <li>Improved user-defined FileTypes feature to provide more flexibility
 <li>Enhanced -ext option to allow specific files extensions to be processed
     along with supported files

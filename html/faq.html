@@ -1448,10 +1448,11 @@ the DateTimeOriginal tag exists in the image.</blockquote>
 <a name="Q24"></a>
 <p>24. <b>"When I write a file the date/time gets reset to today's date"</b></p>
 
-<blockquote>There is sometimes confusion between date/time values stored in the
-metadata of the file itself and date/time values stored in the filesystem (ie.
-in the disk directory information).  A command like this may be used to extract
-all date/time information with an indication of where it is stored:
+<blockquote>You should be aware of the difference between date/time values
+stored in the metadata of the file itself and date/time values stored in the
+filesystem (ie. in the disk directory information).  A command like this may be
+used to extract all date/time information with an indication of where it is
+stored:
 
 <pre>exiftool -time:all -a -G0:1 -s c:\images\test.jpg</pre>
 
@@ -1465,9 +1466,9 @@ and should give an output something like this:
 [EXIF:ExifIFD]  CreateDate                      : 2003:10:31 15:44:19</pre>
 
 The <code>-G0:1</code> option causes the family 0 and 1 group names to be
-reported in square brackets for each tag.  Tags labelled "File:System" are
-"pseudo" tags stored in the filesystem, while the others are "real" tags stored
-in the metadata of the file.</blockquote>
+reported in square brackets for each tag.  Tags labelled "<b>File:System</b>"
+are "<b>pseudo</b>" tags stored in the filesystem, while the others are real
+tags stored in the metadata of the file.</blockquote>
 
 <blockquote>ExifTool's <b>default behaviour is to set all filesystem times to
 the current date/time when any "real" tag is written</b>, but the
@@ -1621,7 +1622,7 @@ proper technique for shifting a date/time value when copying:
 </blockquote>
 
 <hr>
-<i>Last revised Nov 22, 2017</i>
+<i>Last revised Dec 22, 2017</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

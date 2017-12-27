@@ -15,7 +15,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD %iptcCharset);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.54';
+$VERSION = '1.55';
 
 %iptcCharset = (
     "\x1b%G"  => 'UTF8',
@@ -228,6 +228,7 @@ my %fileFormat = (
         },
         Protected => 1,
         Format => 'string[0,32]',
+        ValueConvInv => '$val =~ /^UTF-?8$/i ? "\x1b%G" : $val',
         # convert ISO 2022 escape sequences to a more readable format
         PrintConv => \&PrintCodedCharset,
         PrintConvInv => \&PrintInvCodedCharset,

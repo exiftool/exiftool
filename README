@@ -102,8 +102,8 @@ your home directory, then you would type the following commands in a
 terminal window to extract and run ExifTool:
 
   cd ~/Desktop
-  gzip -dc Image-ExifTool-10.70.tar.gz | tar -xf -
-  cd Image-ExifTool-10.70
+  gzip -dc Image-ExifTool-10.71.tar.gz | tar -xf -
+  cd Image-ExifTool-10.71
   ./exiftool t/images/ExifTool.jpg
 
 Note:  These commands extract meta information from one of the test images. 
@@ -157,7 +157,7 @@ for calculating digest values and providing other features listed below:
 
 COPYRIGHT AND LICENSE
 
-Copyright 2003-2017, Phil Harvey
+Copyright 2003-2018, Phil Harvey
 
 This is free software; you can redistribute it and/or modify it under the
 same terms as Perl itself.

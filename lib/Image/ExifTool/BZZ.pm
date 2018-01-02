@@ -445,7 +445,7 @@ compression ability).
 
 =head1 AUTHOR
 
-Copyright 2003-2017, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2018, Phil Harvey (phil at owl.phy.queensu.ca)
 Copyright 2002, Leon Bottou and Yann Le Cun
 Copyright 2001, AT&T
 Copyright 1999-2001, LizardTech Inc.

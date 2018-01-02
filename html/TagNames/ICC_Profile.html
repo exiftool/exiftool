@@ -290,81 +290,86 @@ specification.</p>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td>'psd3'</td>
+<td>PostScript2CRD3</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>'pseq'</td>
 <td>ProfileSequenceDesc</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'psid'</td>
 <td>ProfileSequenceIdentifier</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'psvm'</td>
 <td>PS2CRDVMSize</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'rTRC'</td>
 <td>RedTRC</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'rXYZ'</td>
 <td>RedMatrixColumn</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'resp'</td>
 <td>OutputResponse</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'rhoc'</td>
 <td>ReflectionHardcopyOrigColorimetry</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'rig0'</td>
 <td>PerceptualRenderingIntentGamut</td>
 <td class=c>no</td>
 <td><span class=s>&#39;prmg&#39; = Perceptual Reference Medium Gamut</span></td></tr>
-<tr>
+<tr class=b>
 <td>'rig2'</td>
 <td>SaturationRenderingIntentGamut</td>
 <td class=c>no</td>
 <td><span class=s>&#39;prmg&#39; = Perceptual Reference Medium Gamut</span></td></tr>
-<tr class=b>
+<tr>
 <td>'rpoc'</td>
 <td>ReflectionPrintOutputColorimetry</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'sape'</td>
 <td>SceneAppearanceEstimates</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'scoe'</td>
 <td>SceneColorimetryEstimates</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'scrd'</td>
 <td>ScreeningDesc</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'scrn'</td>
 <td>Screening</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'targ'</td>
 <td>CharTarget</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'tech'</td>
 <td>Technology</td>
 <td class=c>no</td>
@@ -396,22 +401,22 @@ specification.</p>
   <br>&#39;vidc&#39; = Video Camera
   <br>&#39;vidm&#39; = Video Monitor</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td>'vcgt'</td>
 <td>VideoCardGamma</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'view'</td>
 <td>ViewingConditions</td>
 <td class=c>-</td>
 <td>--&gt; <a href='ICC_Profile.html#ViewingConditions'>ICC_Profile ViewingConditions Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'vued'</td>
 <td>ViewingCondDesc</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'wtpt'</td>
 <td>MediaWhitePoint</td>
 <td class=c>no</td>
@@ -428,7 +433,7 @@ specification.</p>
 <td class=r title='4 = 0x4'>4</td>
 <td>ProfileCMMType</td>
 <td class=c>no</td>
-<td>&nbsp;</td></tr>
+<td>--&gt; <a href='ICC_Profile.html#CMMType'>ICC_Profile CMMType Values</a></td></tr>
 <tr class=b>
 <td class=r title='8 = 0x8'>8</td>
 <td>ProfileVersion</td>
@@ -519,6 +524,279 @@ specification.</p>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
+
+<h2><a name='CMMType'>ICC_Profile CMMType Values</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class='inner sep' cellspacing=1>
+<tr class=h><th>Value</th><th>CMMType</th></tr>
+<tr><td>'4d2p'</td><td>= Erdt Systems GmbH &amp; Co KG</td>
+</tr><tr><td>'AAMA'</td><td>= Aamazing Technologies, Inc.</td>
+</tr><tr><td>'ACER'</td><td>= Acer Peripherals</td>
+</tr><tr><td>'ACLT'</td><td>= Acolyte Color Research</td>
+</tr><tr><td>'ACTI'</td><td>= Actix Sytems, Inc.</td>
+</tr><tr><td>'ADAR'</td><td>= Adara Technology, Inc.</td>
+</tr><tr><td>'ADBE'</td><td>= Adobe Systems Inc.</td>
+</tr><tr><td>'ADI '</td><td>= ADI Systems, Inc.</td>
+</tr><tr><td>'AGFA'</td><td>= Agfa Graphics N.V.</td>
+</tr><tr><td>'ALMD'</td><td>= Alps Electric USA, Inc.</td>
+</tr><tr><td>'ALPS'</td><td>= Alps Electric USA, Inc.</td>
+</tr><tr><td>'ALWN'</td><td>= Alwan Color Expertise</td>
+</tr><tr><td>'AMTI'</td><td>= Amiable Technologies, Inc.</td>
+</tr><tr><td>'AOC '</td><td>= AOC International (U.S.A), Ltd.</td>
+</tr><tr><td>'APAG'</td><td>= Apago</td>
+</tr><tr><td>'APPL'</td><td>= Apple Computer, Inc.</td>
+</tr><tr><td>'AST '</td><td>= AST</td>
+</tr><tr><td>'AT&amp;T'</td><td>= AT&amp;T Computer Systems</td>
+</tr><tr><td>'BAEL'</td><td>= BARBIERI electronic</td>
+</tr><tr><td>'BRCO'</td><td>= Barco NV</td>
+</tr><tr><td>'BRKP'</td><td>= Breakpoint Pty Limited</td>
+</tr><tr><td>'BROT'</td><td>= Brother Industries, LTD</td>
+</tr><tr><td>'BULL'</td><td>= Bull</td>
+</tr><tr><td>'BUS '</td><td>= Bus Computer Systems</td>
+</tr><tr><td>'C-IT'</td><td>= C-Itoh</td>
+</tr><tr><td>'CAMR'</td><td>= Intel Corporation</td>
+</tr><tr><td>'CANO'</td><td>= Canon, Inc. (Canon Development Americas, Inc.)</td>
+</tr><tr><td>'CARR'</td><td>= Carroll Touch</td>
+</tr><tr><td>'CASI'</td><td>= Casio Computer Co., Ltd.</td>
+</tr><tr><td>'CBUS'</td><td>= Colorbus PL</td>
+</tr><tr><td>'CEL '</td><td>= Crossfield</td>
+</tr><tr><td>'CELx'</td><td>= Crossfield</td>
+</tr><tr><td>'CGS '</td><td>= CGS Publishing Technologies International GmbH</td>
+</tr><tr><td>'CHM '</td><td>= Rochester Robotics</td>
+</tr><tr><td>'CIGL'</td><td>= Colour Imaging Group, London</td>
+</tr><tr><td>'CITI'</td><td>= Citizen</td>
+</tr><tr><td>'CL00'</td><td>= Candela, Ltd.</td>
+</tr><tr><td>'CLIQ'</td><td>= Color IQ</td>
+</tr><tr><td>'CMCO'</td><td>= Chromaco, Inc.</td>
+</tr><tr><td>'CMiX'</td><td>= CHROMiX</td>
+</tr><tr><td>'COLO'</td><td>= Colorgraphic Communications Corporation</td>
+</tr><tr><td>'COMP'</td><td>= COMPAQ Computer Corporation</td>
+</tr><tr><td>'COMp'</td><td>= Compeq USA/Focus Technology</td>
+</tr><tr><td>'CONR'</td><td>= Conrac Display Products</td>
+</tr><tr><td>'CORD'</td><td>= Cordata Technologies, Inc.</td>
+</tr><tr><td>'CPQ '</td><td>= Compaq Computer Corporation</td>
+</tr><tr><td>'CPRO'</td><td>= ColorPro</td>
+</tr><tr><td>'CRN '</td><td>= Cornerstone</td>
+</tr><tr><td>'CTX '</td><td>= CTX International, Inc.</td>
+</tr><tr><td>'CVIS'</td><td>= ColorVision</td>
+</tr><tr><td>'CWC '</td><td>= Fujitsu Laboratories, Ltd.</td>
+</tr><tr><td>'DARI'</td><td>= Darius Technology, Ltd.</td>
+</tr><tr><td>'DATA'</td><td>= Dataproducts</td>
+</tr><tr><td>'DCP '</td><td>= Dry Creek Photo</td>
+</tr><tr><td>'DCRC'</td><td>= Digital Contents Resource Center, Chung-Ang University</td>
+</tr><tr><td>'DELL'</td><td>= Dell Computer Corporation</td>
+</tr><tr><td>'DIC '</td><td>= Dainippon Ink and Chemicals</td>
+</tr><tr><td>'DICO'</td><td>= Diconix</td>
+</tr><tr><td>'DIGI'</td><td>= Digital</td>
+</tr><tr><td>'DL&amp;C'</td><td>= Digital Light &amp; Color</td>
+</tr><tr><td>'DPLG'</td><td>= Doppelganger, LLC</td>
+</tr><tr><td>'DS  '</td><td>= Dainippon Screen</td>
+</tr><tr><td>'DSOL'</td><td>= DOOSOL</td>
+</tr><tr><td>'DUPN'</td><td>= DuPont</td>
+</tr><tr><td>'EPSO'</td><td>= Epson</td>
+</tr><tr><td>'ESKO'</td><td>= Esko-Graphics</td>
+</tr><tr><td>'ETRI'</td><td>= Electronics and Telecommunications Research Institute</td>
+</tr><tr><td>'EVER'</td><td>= Everex Systems, Inc.</td>
+</tr><tr><td>'EXAC'</td><td>= ExactCODE GmbH</td>
+</tr><tr><td>'Eizo'</td><td>= EIZO NANAO CORPORATION</td>
+</tr><tr><td>'FALC'</td><td>= Falco Data Products, Inc.</td>
+</tr><tr><td>'FF  '</td><td>= Fuji Photo Film Co.,LTD</td>
+</tr><tr><td>'FFEI'</td><td>= FujiFilm Electronic Imaging, Ltd.</td>
+</tr><tr><td>'FNRD'</td><td>= fnord software</td>
+</tr><tr><td>'FORA'</td><td>= Fora, Inc.</td>
+</tr><tr><td>'FORE'</td><td>= Forefront Technology Corporation</td>
+</tr><tr><td>'FP  '</td><td>= Fujitsu</td>
+</tr><tr><td>'FPA '</td><td>= WayTech Development, Inc.</td>
+</tr><tr><td>'FUJI'</td><td>= Fujitsu</td>
+</tr><tr><td>'FX  '</td><td>= Fuji Xerox Co., Ltd.</td>
+</tr><tr><td>'GCC '</td><td>= GCC Technologies, Inc.</td>
+</tr><tr><td>'GGSL'</td><td>= Global Graphics Software Limited</td>
+</tr><tr><td>'GMB '</td><td>= Gretagmacbeth</td>
+</tr><tr><td>'GMG '</td><td>= GMG GmbH &amp; Co. KG</td>
+</tr><tr><td>'GOLD'</td><td>= GoldStar Technology, Inc.</td>
+</tr><tr><td>'GPRT'</td><td>= Giantprint Pty Ltd</td>
+</tr><tr><td>'GTMB'</td><td>= Gretagmacbeth</td>
+</tr><tr><td>'GVC '</td><td>= WayTech Development, Inc.</td>
+</tr><tr><td>'GW2K'</td><td>= Sony Corporation</td>
+</tr><tr><td>'HCI '</td><td>= HCI</td>
+</tr><tr><td>'HDM '</td><td>= Heidelberger Druckmaschinen AG</td>
+</tr><tr><td>'HERM'</td><td>= Hermes</td>
+</tr><tr><td>'HITA'</td><td>= Hitachi America, Ltd.</td>
+</tr><tr><td>'HP  '</td><td>= Hewlett-Packard</td>
+</tr><tr><td>'HTC '</td><td>= Hitachi, Ltd.</td>
+</tr><tr><td>'HiTi'</td><td>= HiTi Digital, Inc.</td>
+</tr><tr><td>'IBM '</td><td>= IBM Corporation</td>
+</tr><tr><td>'IDNT'</td><td>= Scitex Corporation, Ltd.</td>
+</tr><tr><td>'IEC '</td><td>= Hewlett-Packard</td>
+</tr><tr><td>'IIYA'</td><td>= Iiyama North America, Inc.</td>
+</tr><tr><td>'IKEG'</td><td>= Ikegami Electronics, Inc.</td>
+</tr><tr><td>'IMAG'</td><td>= Image Systems Corporation</td>
+</tr><tr><td>'IMI '</td><td>= Ingram Micro, Inc.</td>
+</tr><tr><td>'INTC'</td><td>= Intel Corporation</td>
+</tr><tr><td>'INTL'</td><td>= N/A (INTL)</td>
+</tr><tr><td>'INTR'</td><td>= Intra Electronics USA, Inc.</td>
+</tr><tr><td>'IOCO'</td><td>= Iocomm International Technology Corporation</td>
+</tr><tr><td>'IPS '</td><td>= InfoPrint Solutions Company</td>
+</tr><tr><td>'IRIS'</td><td>= Scitex Corporation, Ltd.</td>
+</tr><tr><td>'ISL '</td><td>= Ichikawa Soft Laboratory</td>
+</tr><tr><td>'ITNL'</td><td>= N/A (ITNL)</td>
+</tr><tr><td>'IVM '</td><td>= IVM</td>
+</tr><tr><td>'IWAT'</td><td>= Iwatsu Electric Co., Ltd.</td>
+</tr><tr><td>'Idnt'</td><td>= Scitex Corporation, Ltd.</td>
+</tr><tr><td>'Inca'</td><td>= Inca Digital Printers Ltd.</td>
+</tr><tr><td>'Iris'</td><td>= Scitex Corporation, Ltd.</td>
+</tr><tr><td>'JSFT'</td><td>= Jetsoft Development</td>
+</tr><tr><td>'JVC '</td><td>= JVC Information Products Co.</td>
+</tr><tr><td>'KART'</td><td>= Scitex Corporation, Ltd.</td>
+</tr><tr><td>'KFC '</td><td>= KFC Computek Components Corporation</td>
+</tr><tr><td>'KLH '</td><td>= KLH Computers</td>
+</tr><tr><td>'KMHD'</td><td>= Konica Minolta Holdings, Inc.</td>
+</tr><tr><td>'KNCA'</td><td>= Konica Corporation</td>
+</tr><tr><td>'KODA'</td><td>= Kodak</td>
+</tr><tr><td>'KYOC'</td><td>= Kyocera</td>
+</tr><tr><td>'Kart'</td><td>= Scitex Corporation, Ltd.</td>
+</tr><tr><td>'LCAG'</td><td>= Leica Camera AG</td>
+</tr><tr><td>'LCCD'</td><td>= Leeds Colour</td>
+</tr><tr><td>'LDAK'</td><td>= Left Dakota</td>
+</tr><tr><td>'LEAD'</td><td>= Leading Technology, Inc.</td>
+</tr><tr><td>'LEXM'</td><td>= Lexmark International, Inc.</td>
+</tr><tr><td>'LINK'</td><td>= Link Computer, Inc.</td>
+</tr><tr><td>'LINO'</td><td>= Linotronic</td>
+</tr><tr><td>'LITE'</td><td>= Lite-On, Inc.</td>
+</tr><tr><td>'Lino'</td><td>= Linotronic</td>
+</tr><tr><td>'MAGC'</td><td>= Mag Computronic (USA) Inc.</td>
+</tr><tr><td>'MAGI'</td><td>= MAG Innovision, Inc.</td>
+</tr><tr><td>'MANN'</td><td>= Mannesmann</td>
+</tr><tr><td>'MICN'</td><td>= Micron Technology, Inc.</td>
+</tr><tr><td>'MICR'</td><td>= Microtek</td>
+</tr><tr><td>'MICV'</td><td>= Microvitec, Inc.</td>
+</tr><tr><td>'MINO'</td><td>= Minolta</td>
+</tr><tr><td>'MITS'</td><td>= Mitsubishi Electronics America, Inc.</td>
+</tr><tr><td>'MITs'</td><td>= Mitsuba Corporation</td>
+</tr><tr><td>'MNLT'</td><td>= Minolta</td>
+</tr><tr><td>'MODG'</td><td>= Modgraph, Inc.</td>
+</tr><tr><td>'MONI'</td><td>= Monitronix, Inc.</td>
+</tr><tr><td>'MONS'</td><td>= Monaco Systems Inc.</td>
+</tr><tr><td>'MORS'</td><td>= Morse Technology, Inc.</td>
+</tr><tr><td>'MOTI'</td><td>= Motive Systems</td>
+</tr><tr><td>'MSFT'</td><td>= Microsoft Corporation</td>
+</tr><tr><td>'MUTO'</td><td>= MUTOH INDUSTRIES LTD.</td>
+</tr><tr><td>'Mits'</td><td>= Mitsubishi Electric Corporation Kyoto Works</td>
+</tr><tr><td>'NANA'</td><td>= NANAO USA Corporation</td>
+</tr><tr><td>'NEC '</td><td>= NEC Corporation</td>
+</tr><tr><td>'NEXP'</td><td>= NexPress Solutions LLC</td>
+</tr><tr><td>'NISS'</td><td>= Nissei Sangyo America, Ltd.</td>
+</tr><tr><td>'NKON'</td><td>= Nikon Corporation</td>
+</tr><tr><td>'NONE'</td><td>= none</td>
+</tr><tr><td>'OCE '</td><td>= Oce Technologies B.V.</td>
+</tr><tr><td>'OCEC'</td><td>= OceColor</td>
+</tr><tr><td>'OKI '</td><td>= Oki</td>
+</tr><tr><td>'OKID'</td><td>= Okidata</td>
+</tr><tr><td>'OKIP'</td><td>= Okidata</td>
+</tr><tr><td>'OLIV'</td><td>= Olivetti</td>
+</tr><tr><td>'OLYM'</td><td>= OLYMPUS OPTICAL CO., LTD</td>
+</tr><tr><td>'ONYX'</td><td>= Onyx Graphics</td>
+</tr><tr><td>'OPTI'</td><td>= Optiquest</td>
+</tr><tr><td>'PACK'</td><td>= Packard Bell</td>
+</tr><tr><td>'PANA'</td><td>= Matsushita Electric Industrial Co., Ltd.</td>
+</tr><tr><td>'PANT'</td><td>= Pantone, Inc.</td>
+</tr><tr><td>'PBN '</td><td>= Packard Bell</td>
+</tr><tr><td>'PFU '</td><td>= PFU Limited</td>
+</tr><tr><td>'PHIL'</td><td>= Philips Consumer Electronics Co.</td>
+</tr><tr><td>'PNTX'</td><td>= HOYA Corporation PENTAX Imaging Systems Division</td>
+</tr><tr><td>'POne'</td><td>= Phase One A/S</td>
+</tr><tr><td>'PREM'</td><td>= Premier Computer Innovations</td>
+</tr><tr><td>'PRIN'</td><td>= Princeton Graphic Systems</td>
+</tr><tr><td>'PRIP'</td><td>= Princeton Publishing Labs</td>
+</tr><tr><td>'QLUX'</td><td>= Hong Kong</td>
+</tr><tr><td>'QMS '</td><td>= QMS, Inc.</td>
+</tr><tr><td>'QPCD'</td><td>= QPcard AB</td>
+</tr><tr><td>'QUAD'</td><td>= QuadLaser</td>
+</tr><tr><td>'QUME'</td><td>= Qume Corporation</td>
+</tr><tr><td>'RADI'</td><td>= Radius, Inc.</td>
+</tr><tr><td>'RDDx'</td><td>= Integrated Color Solutions, Inc.</td>
+</tr><tr><td>'RDG '</td><td>= Roland DG Corporation</td>
+</tr><tr><td>'REDM'</td><td>= REDMS Group, Inc.</td>
+</tr><tr><td>'RELI'</td><td>= Relisys</td>
+</tr><tr><td>'RGMS'</td><td>= Rolf Gierling Multitools</td>
+</tr><tr><td>'RICO'</td><td>= Ricoh Corporation</td>
+</tr><tr><td>'RNLD'</td><td>= Edmund Ronald</td>
+</tr><tr><td>'ROYA'</td><td>= Royal</td>
+</tr><tr><td>'RPC '</td><td>= Ricoh Printing Systems,Ltd.</td>
+</tr><tr><td>'RTL '</td><td>= Royal Information Electronics Co., Ltd.</td>
+</tr><tr><td>'SAMP'</td><td>= Sampo Corporation of America</td>
+</tr><tr><td>'SAMS'</td><td>= Samsung, Inc.</td>
+</tr><tr><td>'SANT'</td><td>= Jaime Santana Pomares</td>
+</tr><tr><td>'SCIT'</td><td>= Scitex Corporation, Ltd.</td>
+</tr><tr><td>'SCRN'</td><td>= Dainippon Screen</td>
+</tr><tr><td>'SDP '</td><td>= Scitex Corporation, Ltd.</td>
+</tr><tr><td>'SEC '</td><td>= SAMSUNG ELECTRONICS CO.,LTD</td>
+</tr><tr><td>'SEIK'</td><td>= Seiko Instruments U.S.A., Inc.</td>
+</tr><tr><td>'SEIk'</td><td>= Seikosha</td>
+</tr><tr><td>'SGUY'</td><td>= ScanGuy.com</td>
+</tr><tr><td>'SHAR'</td><td>= Sharp Laboratories</td>
+</tr><tr><td>'SICC'</td><td>= International Color Consortium</td>
+</tr><tr><td>'SONY'</td><td>= SONY Corporation</td>
+</tr><tr><td>'SPCL'</td><td>= SpectraCal</td>
+</tr><tr><td>'STAR'</td><td>= Star</td>
+</tr><tr><td>'STC '</td><td>= Sampo Technology Corporation</td>
+</tr><tr><td>'Scit'</td><td>= Scitex Corporation, Ltd.</td>
+</tr><tr><td>'Sdp '</td><td>= Scitex Corporation, Ltd.</td>
+</tr><tr><td>'Sony'</td><td>= Sony Corporation</td>
+</tr><tr><td>'TALO'</td><td>= Talon Technology Corporation</td>
+</tr><tr><td>'TAND'</td><td>= Tandy</td>
+</tr><tr><td>'TATU'</td><td>= Tatung Co. of America, Inc.</td>
+</tr><tr><td>'TAXA'</td><td>= TAXAN America, Inc.</td>
+</tr><tr><td>'TDS '</td><td>= Tokyo Denshi Sekei K.K.</td>
+</tr><tr><td>'TECO'</td><td>= TECO Information Systems, Inc.</td>
+</tr><tr><td>'TEGR'</td><td>= Tegra</td>
+</tr><tr><td>'TEKT'</td><td>= Tektronix, Inc.</td>
+</tr><tr><td>'TI  '</td><td>= Texas Instruments</td>
+</tr><tr><td>'TMKR'</td><td>= TypeMaker Ltd.</td>
+</tr><tr><td>'TOSB'</td><td>= TOSHIBA corp.</td>
+</tr><tr><td>'TOSH'</td><td>= Toshiba, Inc.</td>
+</tr><tr><td>'TOTK'</td><td>= TOTOKU ELECTRIC Co., LTD</td>
+</tr><tr><td>'TRIU'</td><td>= Triumph</td>
+</tr><tr><td>'TSBT'</td><td>= TOSHIBA TEC CORPORATION</td>
+</tr><tr><td>'TTX '</td><td>= TTX Computer Products, Inc.</td>
+</tr><tr><td>'TVM '</td><td>= TVM Professional Monitor Corporation</td>
+</tr><tr><td>'TW  '</td><td>= TW Casper Corporation</td>
+</tr><tr><td>'ULSX'</td><td>= Ulead Systems</td>
+</tr><tr><td>'UNIS'</td><td>= Unisys</td>
+</tr><tr><td>'UTZF'</td><td>= Utz Fehlau &amp; Sohn</td>
+</tr><tr><td>'VARI'</td><td>= Varityper</td>
+</tr><tr><td>'VIEW'</td><td>= Viewsonic</td>
+</tr><tr><td>'VISL'</td><td>= Visual communication</td>
+</tr><tr><td>'VIVO'</td><td>= Vivo Mobile Communication Co., Ltd</td>
+</tr><tr><td>'WANG'</td><td>= Wang</td>
+</tr><tr><td>'WLBR'</td><td>= Wilbur Imaging</td>
+</tr><tr><td>'WTG2'</td><td>= Ware To Go</td>
+</tr><tr><td>'WYSE'</td><td>= WYSE Technology</td>
+</tr><tr><td>'XERX'</td><td>= Xerox Corporation</td>
+</tr><tr><td>'XRIT'</td><td>= X-Rite</td>
+</tr><tr><td>'Z123'</td><td>= Lavanya&#39;s test Company</td>
+</tr><tr><td>'ZRAN'</td><td>= Zoran Corporation</td>
+</tr><tr><td>'Zebr'</td><td>= Zebra Technologies Inc</td>
+</tr><tr><td>'bICC'</td><td>= basICColor GmbH</td>
+</tr><tr><td>'berg'</td><td>= bergdesign incorporated</td>
+</tr><tr><td>'ceyd'</td><td>= Integrated Color Solutions, Inc.</td>
+</tr><tr><td>'clsp'</td><td>= MacDermid ColorSpan, Inc.</td>
+</tr><tr><td>'ds  '</td><td>= Dainippon Screen</td>
+</tr><tr><td>'dupn'</td><td>= DuPont</td>
+</tr><tr><td>'ffei'</td><td>= FujiFilm Electronic Imaging, Ltd.</td>
+</tr><tr><td>'flux'</td><td>= FluxData Corporation</td>
+</tr><tr><td>'iris'</td><td>= Scitex Corporation, Ltd.</td>
+</tr><tr><td>'kart'</td><td>= Scitex Corporation, Ltd.</td>
+</tr><tr><td>'ob4d'</td><td>= Erdt Systems GmbH &amp; Co KG</td>
+</tr><tr><td>'obic'</td><td>= Medigraph GmbH</td>
+</tr><tr><td>'quby'</td><td>= Qubyx Sarl</td>
+</tr><tr><td>'scit'</td><td>= Scitex Corporation, Ltd.</td>
+</tr><tr><td>'scrn'</td><td>= Dainippon Screen</td>
+</tr><tr><td>'sdp '</td><td>= Scitex Corporation, Ltd.</td>
+</tr><tr><td>'siwi'</td><td>= SIWI GRAFIKA CORPORATION</td>
+</tr><tr><td>'yxym'</td><td>= YxyMaster GmbH</td>
+</tr></table></td></tr></table></blockquote>
 
 <h2><a name='Chromaticity'>ICC_Profile Chromaticity Tags</a></h2>
 <blockquote>
@@ -705,7 +983,7 @@ Metadata tags that exist.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jun 20, 2014</i>
+<br><i>Last revised Jan 2, 2018</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

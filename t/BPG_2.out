@@ -1,11 +1,11 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.22
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.71
 [ExifTool, ExifTool, ExifTool] Warning - Warning: [minor] Ignored extra byte at start of EXIF extension
 [File, System, Image] FileName - File Name: BPG.bpg
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 1863 bytes
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2016:07:07 11:08:36-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2016:07:07 11:09:11-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2016:07:07 11:08:36-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2016:07:07 11:21:11-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2017:12:30 11:02:33-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2017:12:27 12:00:59-05:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: BPG
 [File, File, Image] FileTypeExtension - File Type Extension: bpg
@@ -54,7 +54,7 @@
 [XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 10.22
 [XMP, XMP-exif, Image] ComponentsConfiguration - Components Configuration: Y, Cb, Cr, -
 [XMP, XMP-tiff, Image] YCbCrPositioning - Y Cb Cr Positioning: Centered
-[ICC_Profile, ICC-header, Image] 4 - Profile CMM Type: ADBE
+[ICC_Profile, ICC-header, Image] 4 - Profile CMM Type: Adobe Systems Inc.
 [ICC_Profile, ICC-header, Image] 8 - Profile Version: 2.1.0
 [ICC_Profile, ICC-header, Image] 12 - Profile Class: Display Device Profile
 [ICC_Profile, ICC-header, Image] 16 - Color Space Data: RGB 

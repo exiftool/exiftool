@@ -4499,6 +4499,7 @@ specification.
   'psd0'   PostScript2CRD0                      no
   'psd1'   PostScript2CRD1                      no
   'psd2'   PostScript2CRD2                      no
+  'psd3'   PostScript2CRD3                      no
   'pseq'   ProfileSequenceDesc                  no
   'psid'   ProfileSequenceIdentifier            no
   'psvm'   PS2CRDVMSize                         no
@@ -9667,6 +9668,7 @@ DiMAGE X and Xt.
   0x002c   UnknownInfo                          Nikon UnknownInfo
   0x0032   UnknownInfo2                         Nikon UnknownInfo2
   0x0035   HDRInfo                              Nikon HDRInfo
+  0x0037   MechanicalShutterCount               int32u
   0x0039   LocationInfo                         Nikon LocationInfo
   0x003d   BlackLevel                           int16u[4]
   0x004f   ColorTemperatureAuto                 int16u
@@ -31278,7 +31280,7 @@ L<Image::ExifTool::BuildTagLookup|Image::ExifTool::BuildTagLookup>.
 
 =head1 AUTHOR
 
-Copyright 2003-2017, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2018, Phil Harvey (phil at owl.phy.queensu.ca)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

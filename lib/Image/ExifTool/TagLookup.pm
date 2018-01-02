@@ -3378,6 +3378,7 @@ my %tagLookup = (
 	'measurementunit' => { 109 => [\'MeasurementOrFact','MeasurementOrFactMeasurementUnit'] },
 	'measurementvalue' => { 109 => [\'MeasurementOrFact','MeasurementOrFactMeasurementValue'] },
 	'measuretype' => { 412 => 'MeasureType' },
+	'mechanicalshuttercount' => { 201 => 0x37 },
 	'mediaconstraints' => { 274 => 'MediaConstraints' },
 	'mediacreatedate' => { 336 => 0x1 },
 	'mediaeventiddate' => { 416 => 'MediaEventIdDate' },
@@ -8111,6 +8112,7 @@ my %tagExists = (
 	'postscript2crd0' => 1,
 	'postscript2crd1' => 1,
 	'postscript2crd2' => 1,
+	'postscript2crd3' => 1,
 	'postscript2csa' => 1,
 	'postscriptfont' => 1,
 	'postscriptfontname' => 1,
@@ -9688,7 +9690,7 @@ Provides a fast, case insensitive lookup for tag names.
 
 =head1 AUTHOR
 
-Copyright 2003-2017, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2018, Phil Harvey (phil at owl.phy.queensu.ca)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

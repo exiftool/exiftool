@@ -3281,6 +3281,14 @@ sub ParseXMPElement($$$;$$$$)
                             # use the new namespace prefix
                             $$xlatNS{$ns} = $newNS;
                             $attr = 'xmlns:' . $newNS;
+                            # must go through previous attributes and change prefixes if necessary
+                            foreach (@attrs) {
+                                next unless /(.*?):/ and $1 eq $ns and $1 ne $newNS;
+                                my $newAttr = $newNS . substr($_, length($ns));
+                                $attrs{$newAttr} = $attrs{$_};
+                                delete $attrs{$_};
+                                $_ = $newAttr;
+                            }
                         } else {
                             delete $$xlatNS{$ns};
                         }
@@ -3901,7 +3909,7 @@ information.
 
 =head1 AUTHOR
 
-Copyright 2003-2017, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2018, Phil Harvey (phil at owl.phy.queensu.ca)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

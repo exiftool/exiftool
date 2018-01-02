@@ -59,7 +59,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.42';
+$VERSION = '3.43';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -1218,7 +1218,10 @@ my %binaryDataAttrs = (
         Name => 'HDRInfo',
         SubDirectory => { TagTable => 'Image::ExifTool::Nikon::HDRInfo' },
     },
-    # 0x0037 - int32u (1V models only): an image count maybe? - PH
+    0x0037 => { #XavierJubier
+        Name => 'MechanicalShutterCount',
+        Writable => 'int32u',
+    },
     0x0039 => {
         Name => 'LocationInfo',
         SubDirectory => { TagTable => 'Image::ExifTool::Nikon::LocationInfo' },
@@ -1918,8 +1921,10 @@ my %binaryDataAttrs = (
         PrintConv => '$val == 4294965247 ? "n/a" : $val',
         PrintConvInv => '$val eq "n/a" ? 4294965247 : $val',
         Notes => q{
-            this value is used as a key to decrypt other information -- writing this tag
-            causes the other information to be re-encrypted with the new key
+            includes both mechanical and electronic shutter activations for models with
+            this feature.  This value is used as a key to decrypt other information, and
+            writing this tag causes the other information to be re-encrypted with the
+            new key
         },
     },
     0x00a8 => [#JD
@@ -8386,7 +8391,7 @@ Nikon maker notes in EXIF information.
 
 =head1 AUTHOR
 
-Copyright 2003-2017, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2018, Phil Harvey (phil at owl.phy.queensu.ca)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

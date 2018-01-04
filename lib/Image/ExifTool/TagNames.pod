@@ -22450,6 +22450,7 @@ ItemList tags written by the "mdta" handler.  The prefix of
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
   'cmov'   CompressedMovie                      QuickTime CMovie
+  'gps '   GPSDataList?                         no
   'htka'   HTCTrack                             QuickTime Track
   'iods'   InitialObjectDescriptor?             no
   'meta'   Meta                                 QuickTime Meta
@@ -22700,6 +22701,7 @@ Child atoms found in "sinf" and/or "pinf" atoms.
      20    YResolution                          no
      25    CompressorName                       no
      41    BitDepth                             no
+  'avcC'   AVCConfiguration?                    no
   'btrt'   BitrateInfo                          QuickTime Bitrate
   'clap'   CleanAperture                        QuickTime CleanAperture
   'colr'   ColorRepresentation                  no
@@ -23154,6 +23156,69 @@ Tags used in QTIF QuickTime Image Files.
   'idat'   ImageData                            no
   'idsc'   ImageDescription                     QuickTime ImageDesc
   'iicc'   ICC_Profile                          ICC_Profile
+
+=head3 QuickTime Stream Tags
+
+Tags extracted from QuickTime movie data when the ExtractEmbedded option is
+used.
+
+  Tag ID               Tag Name                 Writable
+  ------               --------                 --------
+  'Accelerometer'      Accelerometer            no
+  'GPSAltitude'        GPSAltitude              no
+  'GPSAltitudeRef'     GPSAltitudeRef           no
+  'GPSDateTime'        GPSDateTime              no
+  'GPSLatitude'        GPSLatitude              no
+  'GPSLongitude'       GPSLongitude             no
+  'GPSSpeed'           GPSSpeed                 no
+  'GPSSpeedRef'        GPSSpeedRef              no
+  'GPSTrack'           GPSTrack                 no
+  'GPSTrackRef'        GPSTrackRef              no
+  'Text'               Text                     no
+  'TimeCode'           TimeCode                 no
+
+=head3 QuickTime GoPro Tags
+
+Tags extracted from compatible GoPro MP4 videos when the ExtractEmbedded
+option is used.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  'ACCL'   Accelerometer                        no
+  'DEVC'   Device                               no
+  'DVID'   DeviceID?                            no
+  'DVNM'   Model                                no
+  'EMPT'   Empty?                               no
+  'FCNM'   FaceNumbers                          no
+  'GPS5'   GPSInfo                              QuickTime GoProGPS
+  'GPSF'   GPSMeasureMode                       no
+  'GPSP'   GPSHPositioningError                 no
+  'GPSU'   GPSDateTime                          no
+  'GYRO'   Gyroscope                            no
+  'ISOE'   ISOSpeeds                            no
+  'ISOG'   ImageSensorGain                      no
+  'RMRK'   Comments                             no
+  'SCAL'   ScaleFactor?                         no
+  'SHUT'   ExposureTimes                        no
+  'SIUN'   SIUnits                              no
+  'STNM'   StreamName?                          no
+  'STRM'   NestedSignalStream                   no
+  'TMPC'   CameraTemperature                    no
+  'TSMP'   TotalSamples?                        no
+  'TYPE'   StructureType?                       no
+  'UNIT'   Units                                no
+  'WBAL'   ColorTemperatures                    no
+  'WRGB'   WhiteBalanceRGB                      no
+
+=head3 QuickTime GoProGPS Tags
+
+  Index4   Tag Name                             Writable
+  ------   --------                             --------
+      0    GPSLatitude                          no
+      1    GPSLongitude                         no
+      2    GPSAltitude                          no
+      3    GPSSpeed                             no
+      4    GPSSpeed3D                           no
 
 =head2 PLIST Tags
 

@@ -11,6 +11,7 @@
 # Revisions:    2010/02/05 - P. Harvey created
 #               2013/02/05 - PH Fixed camera icon to work with new Google Earth
 #               2017/02/02 - PH Organize into folders based on file directory
+#               2018/01/03 - PH Added IF to be sure position exists
 #
 # Notes:     1) All input files must contain GPSLatitude and GPSLongitude.
 #            2) For Google Earth to be able to find the images, the input
@@ -38,6 +39,7 @@
 #[SECT]    <Folder>
 #[SECT]      <name>$directory</name>
 #[SECT]      <open>0</open>
+#[IF]$gpslatitude $gpslongitude
 #[BODY]      <Placemark>
 #[BODY]        <description><![CDATA[<br/><table><tr><td>
 #[BODY]        <img src='$directory/$filename'

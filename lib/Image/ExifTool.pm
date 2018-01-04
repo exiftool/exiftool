@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup);
 
-$VERSION = '10.71';
+$VERSION = '10.72';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -74,7 +74,7 @@ sub GetNewGroups($);
 sub GetDeleteGroups();
 sub AddUserDefinedTags($%);
 # non-public routines below
-sub InsertTagValues($$$;$);
+sub InsertTagValues($$$;$$);
 sub IsWritable($);
 sub GetNewFileName($$);
 sub LoadAllTables();
@@ -136,11 +136,12 @@ sub ReadValue($$$$$;$);
     FujiFilm::RAF FujiFilm::IFD Samsung::Trailer Sony::SRF2 Sony::SR2SubIFD
     Sony::PMP ITC ID3 FLAC Ogg Vorbis APE APE::NewHeader APE::OldHeader Audible
     MPC MPEG::Audio MPEG::Video MPEG::Xing M2TS QuickTime QuickTime::ImageFile
-    Matroska MOI MXF DV Flash Flash::FLV Real::Media Real::Audio Real::Metafile
-    RIFF AIFF ASF DICOM MIE JSON HTML XMP::SVG Palm Palm::MOBI Palm::EXTH
-    Torrent EXE EXE::PEVersion EXE::PEString EXE::MachO EXE::PEF EXE::ELF
-    EXE::AR EXE::CHM LNK Font VCard VCard::VCalendar RSRC Rawzor ZIP ZIP::GZIP
-    ZIP::RAR RTF OOXML iWork ISO FLIR::AFF FLIR::FPF MacOS::MDItem MacOS::XAttr
+    QuickTime::Stream QuickTime::GoPro Matroska MOI MXF DV Flash Flash::FLV
+    Real::Media Real::Audio Real::Metafile RIFF AIFF ASF DICOM MIE JSON HTML
+    XMP::SVG Palm Palm::MOBI Palm::EXTH Torrent EXE EXE::PEVersion
+    EXE::PEString EXE::MachO EXE::PEF EXE::ELF EXE::AR EXE::CHM LNK Font
+    VCard VCard::VCalendar RSRC Rawzor ZIP ZIP::GZIP ZIP::RAR RTF OOXML
+    iWork ISO FLIR::AFF FLIR::FPF MacOS::MDItem MacOS::XAttr
 );
 
 # alphabetical list of current Lang modules
@@ -6827,9 +6828,13 @@ sub GetTagTable($)
             if ($tableName =~ /(.*)::/) {
                 my $module = $1;
                 if (eval "require $module") {
-                    # load additional XMP modules if required
-                    if (not %$tableName and $module eq 'Image::ExifTool::XMP') {
-                        require 'Image/ExifTool/XMP2.pl';
+                    # load additional modules if required
+                    if (not %$tableName) {
+                        if ($module eq 'Image::ExifTool::XMP') {
+                            require 'Image/ExifTool/XMP2.pl';
+                        } elsif ($tableName eq 'Image::ExifTool::QuickTime::Stream') {
+                            require 'Image/ExifTool/QuickTimeStream.pl';
+                        }
                     }
                 } else {
                     $@ and warn $@;

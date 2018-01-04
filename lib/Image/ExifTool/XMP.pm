@@ -48,7 +48,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.07';
+$VERSION = '3.08';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -3138,6 +3138,7 @@ NoLoop:
 # Returns: Number of contained XMP elements
 sub ParseXMPElement($$$;$$$$)
 {
+    local $_;
     my ($et, $tagTablePtr, $dataPt, $start, $end, $propListPt, $blankInfo) = @_;
     my ($count, $nItems) = (0, 0);
     my $isWriting = $$et{XMP_CAPTURE};

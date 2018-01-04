@@ -9,6 +9,7 @@
 # Requires:     ExifTool version 8.10 or later
 #
 # Revisons:     2010/03/13 - Peter Grimm created
+#               2018/01/03 - PH Added IF to be sure position exists
 #
 # Notes:     1) All input files must contain GPSLatitude and GPSLongitude.
 #            2) The -fileOrder option may be used to control the order of the
@@ -20,6 +21,7 @@
 #[HEAD] xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 #[HEAD] xmlns="http://www.topografix.com/GPX/1/1"
 #[HEAD] xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+#[IF]$gpslatitude $gpslongitude
 #[BODY]<wpt lat="$gpslatitude#" lon="$gpslongitude#">
 #[BODY]  <ele>$gpsaltitude#</ele>
 #[BODY]  <time>$gpsdatetime</time>

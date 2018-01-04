@@ -25,7 +25,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '1.14';
+$VERSION = '1.15';
 
 sub ProcessSEI($$);
 
@@ -710,7 +710,8 @@ sub DecodeScalingMatrices($)
 
 #------------------------------------------------------------------------------
 # Parse H.264 sequence parameter set RBSP (ref 1)
-# Inputs) 0) ExifTool ref, 1) tag table ref, 2) data ref
+# Inputs: 0) ExifTool ref, 1) tag table ref, 2) data ref
+# Notes: All this just to get the image size!
 sub ParseSeqParamSet($$$)
 {
     my ($et, $tagTablePtr, $dataPt) = @_;
@@ -832,7 +833,9 @@ sub ParseSeqParamSet($$$)
 
 #------------------------------------------------------------------------------
 # Parse H.264 picture timing SEI message (payload type 1) (ref 1)
-# Inputs) 0) ExifTool ref, 1) data ref
+# Inputs: 0) ExifTool ref, 1) data ref
+# Notes: this routine is for test purposes only, and not called unless the
+#        $parsePictureTiming flag is set
 sub ParsePictureTiming($$)
 {
     my ($et, $dataPt) = @_;
@@ -889,6 +892,26 @@ sub ParsePictureTiming($$)
 # Process H.264 Supplementary Enhancement Information (ref 1/PH)
 # Inputs: 0) Exiftool ref, 1) dirInfo ref, 2) tag table ref
 # Returns: 1 if we processed payload type 5
+# Payload types:
+#   0 - buffer period
+#   1 - pic timing
+#   2 - pan scan rect
+#   3 - filler payload
+#   4 - user data registered itu t t35
+#   5 - user data unregistered
+#   6 - recovery point
+#   7 - dec ref pic marking repetition
+#   8 - spare pic
+#   9 - sene info
+#  10 - sub seq info
+#  11 - sub seq layer characteristics
+#  12 - sub seq characteristics
+#  13 - full frame freeze
+#  14 - full frame freeze release
+#  15 - full frame snapshot
+#  16 - progressive refinement segment start
+#  17 - progressive refinement segment end
+#  18 - motion constrained slice group set
 sub ProcessSEI($$)
 {
     my ($et, $dirInfo) = @_;
@@ -915,6 +938,7 @@ sub ProcessSEI($$)
             last unless $t == 255;
         }
         return 0 if $pos + $size > $end;
+        $et->VPrint(1,"    (SEI type $type)\n");
         if ($type == 1) {                   # picture timing information
             if ($parsePictureTiming) {
                 my $buff = substr($$dataPt, $pos, $size);

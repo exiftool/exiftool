@@ -516,6 +516,7 @@ one or more geotagged images:</p>
 # Requires:     ExifTool version 8.10 or later
 #
 # Revisions:    2010/02/05 - P. Harvey created
+#               2018/01/03 - PH Added IF to be sure position exists
 #
 # Notes:     1) All input files must contain GPSLatitude and GPSLongitude.
 #            2) The -fileOrder option may be used to control the order of the
@@ -530,6 +531,7 @@ one or more geotagged images:</p>
 #[HEAD]&lt;trk&gt;
 #[HEAD]&lt;number&gt;1&lt;/number&gt;
 #[HEAD]&lt;trkseg&gt;
+#[IF]$gpslatitude $gpslongitude
 #[BODY]&lt;trkpt lat="$gpslatitude#" lon="$gpslongitude#"&gt;
 #[BODY]  &lt;ele&gt;$gpsaltitude#&lt;/ele&gt;
 #[BODY]  &lt;time&gt;$gpsdatetime&lt;/time&gt;
@@ -598,6 +600,7 @@ in ExifTool 10.41 to divide the placemarks into folders based on directory name:
 # Revisions:    2010/02/05 - P. Harvey created
 #               2013/02/05 - PH Fixed camera icon to work with new Google Earth
 #               2017/02/02 - PH Organize into folders based on file directory
+#               2018/01/03 - PH Added IF to be sure position exists
 #
 # Notes:     1) All input files must contain GPSLatitude and GPSLongitude.
 #            2) For Google Earth to be able to find the images, the input
@@ -625,6 +628,7 @@ in ExifTool 10.41 to divide the placemarks into folders based on directory name:
 #[SECT]    &lt;Folder&gt;
 #[SECT]      &lt;name&gt;$directory&lt;/name&gt;
 #[SECT]      &lt;open&gt;0&lt;/open&gt;
+#[IF]$gpslatitude $gpslongitude
 #[BODY]      &lt;Placemark&gt;
 #[BODY]        &lt;description&gt;&lt;![CDATA[&lt;br/&gt;&lt;table&gt;&lt;tr&gt;&lt;td&gt;
 #[BODY]        &lt;img src='$directory/$filename'
@@ -650,7 +654,7 @@ forum post</a> for more useful tips about creating KML files.</p>
 
 <hr>
 <i>Created Apr. 2, 2009</i><br>
-<i>Last revised Jun. 6, 2017</i>
+<i>Last revised Jan. 3, 2018</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

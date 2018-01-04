@@ -24,7 +24,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:Public);
 
-$VERSION = '1.52';
+$VERSION = '1.53';
 
 sub JITTER() { return 2 }       # maximum time jitter
 
@@ -237,7 +237,13 @@ sub LoadTrackLog($$;$)
                     my $tag = $xmlTag{lc $2};
                     if ($tag) {
                         $$fix{$tag} = $4;
-                        $$has{orient} = 1 if $isOrient{$tag};
+                        if ($isOrient{$tag}) {
+                            $$has{orient} = 1;
+                        } elsif ($tag eq 'alt') {
+                            # validate altitude
+                            undef $$fix{alt} if defined $$fix{alt} and $$fix{alt} !~ /^[+-]?\d+\.?\d*/;
+                            $$has{alt} = 1 if $$fix{alt};   # set "has altitude" flag if appropriate
+                        }
                     }
                 }
                 # loop through XML elements
@@ -270,7 +276,13 @@ sub LoadTrackLog($$;$)
                                 @$fix{'lon','lat','alt'} = split ',', $1;
                             } else {
                                 $$fix{$tag} = $1;
-                                $$has{orient} = 1 if $isOrient{$tag};
+                                if ($isOrient{$tag}) {
+                                    $$has{orient} = 1;
+                                } elsif ($tag eq 'alt') {
+                                    # validate altitude
+                                    undef $$fix{alt} if defined $$fix{alt} and $$fix{alt} !~ /^[+-]?\d+\.?\d*/;
+                                    $$has{alt} = 1 if $$fix{alt};   # set "has altitude" flag if appropriate
+                                }
                             }
                         }
                         next;
@@ -287,11 +299,8 @@ sub LoadTrackLog($$;$)
                         $e1 or $et->VPrint(0, "Timestamp format error in $from\n"), $e1 = 1;
                         next;
                     }
-                    # validate altitude
-                    undef $$fix{alt} if defined $$fix{alt} and $$fix{alt} !~ /^[+-]?\d+\.?\d*/;
                     $isDate = 1;
                     $canCut= 1 if defined $$fix{pdop} or defined $$fix{hdop} or defined $$fix{nsats};
-                    $$has{alt} = 1 if $$fix{alt};   # set "has altitude" flag if appropriate
                     # generate extra fixes assuming an equally spaced track
                     if ($$fix{begin}) {
                         my $begin = GetTime($$fix{begin});

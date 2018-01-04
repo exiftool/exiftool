@@ -2792,6 +2792,7 @@ Conv: for (;;) {
 #              'Error'   - issue minor error on missing tag (and return undef)
 #              'Warn'    - issue minor warning on missing tag (and return undef)
 #               Hash ref - hash for return of tag/value pairs
+#         4) document group name if extracting from a specific document
 # Returns: string with embedded tag values (or '$info{TAGNAME}' entries with Hash ref option)
 # Notes:
 # - tag names are not case sensitive and may end with '#' for ValueConv value
@@ -2800,10 +2801,10 @@ Conv: for (;;) {
 # - advanced feature allows Perl expressions inside braces (eg. '${model;tr/ //d}')
 # - an error/warning in an advanced expression ("${TAG;EXPR}") generates an error
 #   if option set to 'Error', or a warning otherwise
-sub InsertTagValues($$$;$)
+sub InsertTagValues($$$;$$)
 {
     local $_;
-    my ($self, $foundTags, $line, $opt) = @_;
+    my ($self, $foundTags, $line, $opt, $docGrp) = @_;
     my $rtnStr = '';
     while ($line =~ s/(.*?)\$(\{\s*)?([-\w]*\w|\$|\/)//s) {
         my ($pre, $bra, $var) = ($1, $2, $3);
@@ -2823,7 +2824,7 @@ sub InsertTagValues($$$;$)
         }
         # allow trailing '#' to indicate ValueConv value
         $type = 'ValueConv' if $line =~ s/^#//;
-        # (undocumented feature to allow '@' to evaluate values separately, but only in braces)
+        # (undocumented feature to allow '@' to evaluate list values separately, but only in braces)
         if ($bra and $line =~ s/^\@(#)?//) {
             $asList = 1;
             $type = 'ValueConv' if $1;
@@ -2844,6 +2845,8 @@ sub InsertTagValues($$$;$)
             # use default Windows filename filter if expression is empty
             $expr = 'tr(/\\\\?*:|"<>\\0)()d' unless length $expr;
         }
+        # add document number to tag if specified
+        $var = $docGrp . ':' . $var if $docGrp and $var !~ /^(main|doc\d+):/i;
         push @tags, $var;
         ExpandShortcuts(\@tags);
         @tags or $rtnStr .= $pre, next;

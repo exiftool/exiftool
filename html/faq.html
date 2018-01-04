@@ -1377,8 +1377,8 @@ processing pass to read tags from the file.)
 
 <blockquote>When writing, tag assignments on the command line are queued and
 applied together as each target file is processed.  In general, assignments
-later on the command line override earlier assignments, but there are
-exceptions:
+later on the command line override earlier assignments (ie. they are evaluated
+left-to-right), but there are exceptions:
 <ol><li>When writing list-type tags (eg. <code>-keywords=one</code>), new values
 are accumulated rather than overriding earlier assignments.<br>&nbsp;</li>
 <li>When copying values to list-type tags (eg.
@@ -1622,7 +1622,7 @@ proper technique for shifting a date/time value when copying:
 </blockquote>
 
 <hr>
-<i>Last revised Dec 22, 2017</i>
+<i>Last revised Jan 2, 2018</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

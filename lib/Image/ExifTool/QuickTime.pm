@@ -42,7 +42,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.05';
+$VERSION = '2.06';
 
 sub FixWrongFormat($);
 sub ProcessMOV($$;$);
@@ -294,6 +294,15 @@ my %graphicsMode = (
     0x101 => 'White Alpha',
     0x102 => 'Pre-multiplied Black Alpha',
     0x110 => 'Component Alpha',
+);
+
+# boxes for the various handler types that we want to save when ExtractEmbedded is enabled
+my %eeBox = (
+  # (nothing useful found yet in video stream)
+  # vide => { stco => 1, co64 => 1, stsz => 1, stz2 => 1, avcC => 1 },
+    text => { stco => 1, co64 => 1, stsz => 1, stz2 => 1 },
+    meta => { stco => 1, co64 => 1, stsz => 1, stz2 => 1 },
+    ''   => { 'gps ' => 1 }, # (no handler -- top level box)
 );
 
 # QuickTime atoms
@@ -632,7 +641,12 @@ my %graphicsMode = (
         Name => 'CleanAperture',
         SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::CleanAperture' },
     },
-    # avcC - AVC configuration (ref http://thompsonng.blogspot.ca/2010/11/mp4-file-format-part-2.html)
+    avcC => {
+        # (see http://thompsonng.blogspot.ca/2010/11/mp4-file-format-part-2.html)
+        Name => 'AVCConfiguration',
+        Unknown => 1,
+        Binary => 1,
+    },
     # hvcC - HEVC configuration
     # svcC - 7 bytes: 00 00 00 00 ff e0 00
     # esds - elementary stream descriptor
@@ -829,6 +843,11 @@ my %graphicsMode = (
     htka => { # (written by HTC One M8 in slow-motion 1280x720 video - PH)
         Name => 'HTCTrack',
         SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::Track' },
+    },
+   'gps ' => {  # GPS data written by Novatek cameras
+        Name => 'GPSDataList',
+        Unknown => 1,
+        Binary => 1,
     },
     # prfl - Profile (ref 12)
     # clip - clipping --> contains crgn (clip region) (ref 12)
@@ -5803,6 +5822,7 @@ my %graphicsMode = (
         # (sometimes this is a Pascal string, and sometimes it is a C string)
         RawConv => q{
             $val=substr($val,1,ord($1)) if $val=~/^([\0-\x1f])/ and ord($1)<length($val);
+            ($$self{HandlerDesc} = $val) =~ s/\s+$//;
             length $val ? $val : undef;
         },
     },
@@ -6698,11 +6718,16 @@ sub ProcessMOV($$;$)
     my $verbose = $et->Options('Verbose');
     my $dataPos = $$dirInfo{Base} || 0;
     my $charsetQuickTime = $et->Options('CharsetQuickTime');
-    my ($buff, $tag, $size, $track, $isUserData, %triplet, $doDefaultLang, $index);
+    my ($buff, $tag, $size, $track, $isUserData, %triplet, $doDefaultLang, $index, $ee);
 
     my $topLevel = not $$et{InQuickTime};
     $$et{InQuickTime} = 1;
+    $$et{HandlerType} = $$et{HandlerDesc} = '' unless defined $$et{HandlerType};
 
+    if ($et->Options('ExtractEmbedded')) {
+        $ee = 1;
+        require 'Image/ExifTool/QuickTimeStream.pl';
+    }
     unless (defined $$et{KeyCount}) {
         $$et{KeyCount} = 0;     # initialize ItemList key directory count
         $doDefaultLang = 1;     # flag to generate default language tags
@@ -6805,6 +6830,12 @@ sub ProcessMOV($$;$)
             }
         }
         my $tagInfo = $et->GetTagInfo($tagTablePtr, $tag);
+        # set flag to store additional information for ExtractEmbedded option
+        my $eeTag;
+        if ($ee and $eeBox{$$et{HandlerType}} and $eeBox{$$et{HandlerType}}{$tag}) {
+            $tagInfo or $tagInfo = $$tagTablePtr{$tag}; # extract even if Unknown
+            $tagInfo and $eeTag = 1;
+        }
         # allow numerical tag ID's
         unless ($tagInfo) {
             my $id = $$et{KeyCount} . '.' . unpack('N', $tag);
@@ -6844,7 +6875,7 @@ sub ProcessMOV($$;$)
         my $ignore;
         if ($size > 0x2000000) {    # start to get worried above 32 MB
             $ignore = 1;
-            if ($tagInfo and not $$tagInfo{Unknown}) {
+            if ($tagInfo and not $$tagInfo{Unknown} and not $eeTag) {
                 my $t = $tag;
                 $t =~ s/([\x00-\x1f\x7f-\xff])/'x'.unpack('H*',$1)/eg;
                 if ($size > 0x8000000) {
@@ -6895,6 +6926,9 @@ ItemID:         foreach $id (keys %$items) {
                 $et->Warn("Truncated '$tag' data (missing $missing bytes)");
                 last;
             }
+            # extract metadata from stream if ExtractEmbedded option is enabled
+            ParseTag($et, $tag, \$val, $$et{HandlerType}, $$et{HandlerDesc}) if $eeTag;
+
             # use value to get tag info if necessary
             $tagInfo or $tagInfo = $et->GetTagInfo($tagTablePtr, $tag, \$val);
             my $hasData = ($$dirInfo{HasData} and $val =~ /\0...data\0/s);
@@ -6988,6 +7022,14 @@ ItemID:         foreach $id (keys %$items) {
                         } else {
                             $et->ProcessDirectory(\%dirInfo, $subTable, $proc);
                         }
+                    }
+                    # reset HandlerType when exiting MediaInfo box
+                    if ($tag eq 'minf') {
+                        $$et{HandlerType} = $$et{HanderDesc} = '';
+                        # make sure we don't extract embedded with sizes from one
+                        # MediaInfo box and offsets from another
+                        delete $$et{eeStart};
+                        delete $$et{eeSize};
                     }
                     $$et{SET_GROUP1} = $oldGroup1;
                     SetByteOrder('MM');
@@ -7188,7 +7230,10 @@ QTLang: foreach $tag (@{$$et{QTLang}}) {
         }
         delete $$et{QTLang};
     }
-    HandleItemInfo($et, $raf) if $topLevel;
+    if ($topLevel) {
+        HandleItemInfo($et, $raf);
+        ExtractEmbedded($et, $raf) if $ee;
+    }
     return 1;
 }
 

@@ -23202,7 +23202,7 @@ option is used.
   'SHUT'   ExposureTimes                        no
   'SIUN'   SIUnits                              no
   'STNM'   StreamName?                          no
-  'STRM'   NestedSignalStream                   no
+  'STRM'   NestedSignalStream?                  no
   'TMPC'   CameraTemperature                    no
   'TSMP'   TotalSamples?                        no
   'TYPE'   StructureType?                       no

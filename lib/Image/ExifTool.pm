@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup);
 
-$VERSION = '10.72';
+$VERSION = '10.73';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -293,6 +293,7 @@ my %createTypes = map { $_ => 1 } qw(XMP ICC MIE VRD DR4 EXIF EXV);
     FPF  => ['FPF',  'FLIR Public image Format'],
     FPX  => ['FPX',  'FlashPix'],
     GIF  => ['GIF',  'Compuserve Graphics Interchange Format'],
+    GPR  => ['TIFF', 'GoPro RAW'],
     GZ   =>  'GZIP',
     GZIP => ['GZIP', 'GNU ZIP compressed archive'],
     HDP  => ['TIFF', 'Windows HD Photo'],
@@ -572,6 +573,7 @@ my %fileDescription = (
     Font => 'application/x-font-type1', # covers PFA, PFB and PFM (not sure about PFM)
     FPX  => 'image/vnd.fpx',
     GIF  => 'image/gif',
+    GPR  => 'image/x-gopro-gpr',
     GZIP => 'application/x-gzip',
     HDP  => 'image/vnd.ms-photo',
     HDR  => 'image/vnd.radiance',
@@ -6639,7 +6641,7 @@ sub DoProcessTIFF($$;$)
            }
         }
         # update FileType if necessary now that we know more about the file
-        if ($$self{DNGVersion} and $$self{VALUE}{FileType} ne 'DNG') {
+        if ($$self{DNGVersion} and $$self{VALUE}{FileType} !~ /^(DNG|GPR)$/) {
             # override whatever FileType we set since we now know it is DNG
             $self->OverrideFileType($$self{TIFF_TYPE} = 'DNG');
         }

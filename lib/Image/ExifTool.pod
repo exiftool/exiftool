@@ -65,43 +65,43 @@ supported by ExifTool (r = read, w = write, c = create):
 
   File Types
   ------------+-------------+-------------+-------------+------------
-  3FR   r     | DVB   r/w   | JSON  r     | OFR   r     | RTF   r
-  3G2   r/w   | DYLIB r     | K25   r     | OGG   r     | RW2   r/w
-  3GP   r/w   | EIP   r     | KDC   r     | OGV   r     | RWL   r/w
-  A     r     | EPS   r/w   | KEY   r     | OPUS  r     | RWZ   r
-  AA    r     | EPUB  r     | LA    r     | ORF   r/w   | RM    r
-  AAX   r/w   | ERF   r/w   | LFP   r     | OTF   r     | SEQ   r
-  ACR   r     | EXE   r     | LNK   r     | PAC   r     | SO    r
-  AFM   r     | EXIF  r/w/c | M2TS  r     | PAGES r     | SR2   r/w
-  AI    r/w   | EXR   r     | M4A/V r/w   | PBM   r/w   | SRF   r
-  AIFF  r     | EXV   r/w/c | MAX   r     | PCD   r     | SRW   r/w
-  APE   r     | F4A/V r/w   | MEF   r/w   | PDB   r     | SVG   r
-  ARW   r/w   | FFF   r/w   | MIE   r/w/c | PDF   r/w   | SWF   r
-  ASF   r     | FLA   r     | MIFF  r     | PEF   r/w   | THM   r/w
-  AVI   r     | FLAC  r     | MKA   r     | PFA   r     | TIFF  r/w
-  AZW   r     | FLIF  r/w   | MKS   r     | PFB   r     | TORRENT r
-  BMP   r     | FLV   r     | MKV   r     | PFM   r     | TTC   r
-  BPG   r     | FPF   r     | MNG   r/w   | PGF   r     | TTF   r
-  BTF   r     | FPX   r     | MOBI  r     | PGM   r/w   | VCF   r
-  CHM   r     | GIF   r/w   | MODD  r     | PLIST r     | VRD   r/w/c
-  COS   r     | GZ    r     | MOI   r     | PICT  r     | VSD   r
-  CR2   r/w   | HDP   r/w   | MOS   r/w   | PMP   r     | WAV   r
-  CRW   r/w   | HDR   r     | MOV   r/w   | PNG   r/w   | WDP   r/w
-  CS1   r/w   | HEIC  r     | MP3   r     | PPM   r/w   | WEBP  r
-  DCM   r     | HEIF  r     | MP4   r/w   | PPT   r     | WEBM  r
-  DCP   r/w   | HTML  r     | MPC   r     | PPTX  r     | WMA   r
-  DCR   r     | ICC   r/w/c | MPG   r     | PS    r/w   | WMV   r
-  DFONT r     | ICS   r     | MPO   r/w   | PSB   r/w   | WV    r
-  DIVX  r     | IDML  r     | MQV   r/w   | PSD   r/w   | X3F   r/w
-  DJVU  r     | IIQ   r/w   | MRW   r/w   | PSP   r     | XCF   r
-  DLL   r     | IND   r/w   | MXF   r     | QTIF  r/w   | XLS   r
-  DNG   r/w   | INX   r     | NEF   r/w   | RA    r     | XLSX  r
-  DOC   r     | ISO   r     | NRW   r/w   | RAF   r/w   | XMP   r/w/c
-  DOCX  r     | ITC   r     | NUMBERS r   | RAM   r     | ZIP   r
-  DPX   r     | J2C   r     | O     r     | RAR   r     |
-  DR4   r/w/c | JNG   r/w   | ODP   r     | RAW   r/w   |
-  DSS   r     | JP2   r/w   | ODS   r     | RIFF  r     |
-  DV    r     | JPEG  r/w   | ODT   r     | RSRC  r     |
+  3FR   r     | DVB   r/w   | JPEG  r/w   | ODT   r     | RSRC  r
+  3G2   r/w   | DYLIB r     | JSON  r     | OFR   r     | RTF   r
+  3GP   r/w   | EIP   r     | K25   r     | OGG   r     | RW2   r/w
+  A     r     | EPS   r/w   | KDC   r     | OGV   r     | RWL   r/w
+  AA    r     | EPUB  r     | KEY   r     | OPUS  r     | RWZ   r
+  AAX   r/w   | ERF   r/w   | LA    r     | ORF   r/w   | RM    r
+  ACR   r     | EXE   r     | LFP   r     | OTF   r     | SEQ   r
+  AFM   r     | EXIF  r/w/c | LNK   r     | PAC   r     | SO    r
+  AI    r/w   | EXR   r     | M2TS  r     | PAGES r     | SR2   r/w
+  AIFF  r     | EXV   r/w/c | M4A/V r/w   | PBM   r/w   | SRF   r
+  APE   r     | F4A/V r/w   | MAX   r     | PCD   r     | SRW   r/w
+  ARW   r/w   | FFF   r/w   | MEF   r/w   | PDB   r     | SVG   r
+  ASF   r     | FLA   r     | MIE   r/w/c | PDF   r/w   | SWF   r
+  AVI   r     | FLAC  r     | MIFF  r     | PEF   r/w   | THM   r/w
+  AZW   r     | FLIF  r/w   | MKA   r     | PFA   r     | TIFF  r/w
+  BMP   r     | FLV   r     | MKS   r     | PFB   r     | TORRENT r
+  BPG   r     | FPF   r     | MKV   r     | PFM   r     | TTC   r
+  BTF   r     | FPX   r     | MNG   r/w   | PGF   r     | TTF   r
+  CHM   r     | GIF   r/w   | MOBI  r     | PGM   r/w   | VCF   r
+  COS   r     | GPR   r/w   | MODD  r     | PLIST r     | VRD   r/w/c
+  CR2   r/w   | GZ    r     | MOI   r     | PICT  r     | VSD   r
+  CRW   r/w   | HDP   r/w   | MOS   r/w   | PMP   r     | WAV   r
+  CS1   r/w   | HDR   r     | MOV   r/w   | PNG   r/w   | WDP   r/w
+  DCM   r     | HEIC  r     | MP3   r     | PPM   r/w   | WEBP  r
+  DCP   r/w   | HEIF  r     | MP4   r/w   | PPT   r     | WEBM  r
+  DCR   r     | HTML  r     | MPC   r     | PPTX  r     | WMA   r
+  DFONT r     | ICC   r/w/c | MPG   r     | PS    r/w   | WMV   r
+  DIVX  r     | ICS   r     | MPO   r/w   | PSB   r/w   | WV    r
+  DJVU  r     | IDML  r     | MQV   r/w   | PSD   r/w   | X3F   r/w
+  DLL   r     | IIQ   r/w   | MRW   r/w   | PSP   r     | XCF   r
+  DNG   r/w   | IND   r/w   | MXF   r     | QTIF  r/w   | XLS   r
+  DOC   r     | INX   r     | NEF   r/w   | RA    r     | XLSX  r
+  DOCX  r     | ISO   r     | NRW   r/w   | RAF   r/w   | XMP   r/w/c
+  DPX   r     | ITC   r     | NUMBERS r   | RAM   r     | ZIP   r
+  DR4   r/w/c | J2C   r     | O     r     | RAR   r     |
+  DSS   r     | JNG   r/w   | ODP   r     | RAW   r/w   |
+  DV    r     | JP2   r/w   | ODS   r     | RIFF  r     |
 
   Meta Information
   ----------------------+----------------------+---------------------
@@ -2176,31 +2176,31 @@ AC3, AFCP, AIFF, APE, ASF, AVI1, Adobe, AdobeCM, AdobeDNG, Apple, Audible,
 CIFF, CameraIFD, Canon, CanonCustom, CanonRaw, CanonVRD, Casio, Chapter#,
 Composite, DICOM, DJI, DNG, DV, DjVu, DjVu-Meta, Ducky, EPPIM, EXE, EXIF,
 ExifIFD, ExifTool, FLAC, FLIR, File, Flash, FlashPix, Font, FotoStation,
-FujiFilm, FujiIFD, GE, GIF, GIMP, GPS, GeoTiff, GlobParamIFD, GraphConv,
-H264, HP, HTC, HTML, HTML-dc, HTML-ncc, HTML-office, HTML-prod, HTML-vw96,
-HTTP-equiv, ICC-chrm, ICC-clrt, ICC-header, ICC-meas, ICC-meta, ICC-view,
-ICC_Profile, ICC_Profile#, ID3, ID3v1, ID3v1_Enh, ID3v2_2, ID3v2_3, ID3v2_4,
-IFD0, IFD1, IPTC, IPTC#, ISO, ITC, InteropIFD, JFIF, JFXX, JPEG, JPEG-HDR,
-JVC, Jpeg2000, KDC_IFD, Kodak, KodakBordersIFD, KodakEffectsIFD, KodakIFD,
-KyoceraRaw, LNK, Leaf, LeafSubIFD, Leica, Lytro, M2TS, MAC, MIE-Audio,
-MIE-Camera, MIE-Canon, MIE-Doc, MIE-Extender, MIE-Flash, MIE-GPS, MIE-Geo,
-MIE-Image, MIE-Lens, MIE-Main, MIE-MakerNotes, MIE-Meta, MIE-Orient,
-MIE-Preview, MIE-Thumbnail, MIE-UTM, MIE-Unknown, MIE-Video, MIFF, MNG,
-MOBI, MOI, MPC, MPEG, MPF0, MPImage, MXF, MacOS, MakerNotes, MakerUnknown,
-Matroska, MediaJukebox, MetaIFD, Microsoft, Minolta, MinoltaRaw, Motorola,
-NITF, Nikon, NikonCapture, NikonCustom, NikonScan, Nintendo, Ocad, Ogg,
-Olympus, OpenEXR, Opus, PDF, PICT, PNG, PNG-pHYs, PSP, Palm, Panasonic,
-PanasonicRaw, Pentax, PhaseOne, PhotoCD, PhotoMechanic, Photoshop,
-PictureInfo, PostScript, PreviewIFD, PrintIM, ProfileIFD, Qualcomm,
-QuickTime, RAF, RAF2, RIFF, RMETA, RSRC, RTF, Radiance, Rawzor, Real,
-Real-CONT, Real-MDPR, Real-PROP, Real-RA3, Real-RA4, Real-RA5, Real-RJMD,
-Reconyx, Ricoh, SPIFF, SR2, SR2DataIFD, SR2SubIFD, SRF#, SVG, Samsung,
-Sanyo, Scalado, Sigma, SigmaRaw, Sony, SonyIDC, Stim, SubIFD, System,
-Theora, Torrent, Track#, VCalendar, VCard, Version0, Vorbis, XML, XMP,
-XMP-DICOM, XMP-GAudio, XMP-GImage, XMP-GPano, XMP-GSpherical, XMP-MP,
-XMP-MP1, XMP-PixelLive, XMP-aas, XMP-acdsee, XMP-album, XMP-apple-fi,
-XMP-aux, XMP-cc, XMP-cell, XMP-creatorAtom, XMP-crs, XMP-dc, XMP-dex,
-XMP-digiKam, XMP-drone-dji, XMP-dwc, XMP-exif, XMP-exifEX,
+FujiFilm, FujiIFD, GE, GIF, GIMP, GPS, GeoTiff, GlobParamIFD, GoPro,
+GraphConv, H264, HP, HTC, HTML, HTML-dc, HTML-ncc, HTML-office, HTML-prod,
+HTML-vw96, HTTP-equiv, ICC-chrm, ICC-clrt, ICC-header, ICC-meas, ICC-meta,
+ICC-view, ICC_Profile, ICC_Profile#, ID3, ID3v1, ID3v1_Enh, ID3v2_2,
+ID3v2_3, ID3v2_4, IFD0, IFD1, IPTC, IPTC#, ISO, ITC, InteropIFD, JFIF, JFXX,
+JPEG, JPEG-HDR, JVC, Jpeg2000, KDC_IFD, Kodak, KodakBordersIFD,
+KodakEffectsIFD, KodakIFD, KyoceraRaw, LNK, Leaf, LeafSubIFD, Leica, Lytro,
+M2TS, MAC, MIE-Audio, MIE-Camera, MIE-Canon, MIE-Doc, MIE-Extender,
+MIE-Flash, MIE-GPS, MIE-Geo, MIE-Image, MIE-Lens, MIE-Main, MIE-MakerNotes,
+MIE-Meta, MIE-Orient, MIE-Preview, MIE-Thumbnail, MIE-UTM, MIE-Unknown,
+MIE-Video, MIFF, MNG, MOBI, MOI, MPC, MPEG, MPF0, MPImage, MXF, MacOS,
+MakerNotes, MakerUnknown, Matroska, MediaJukebox, MetaIFD, Microsoft,
+Minolta, MinoltaRaw, Motorola, NITF, Nikon, NikonCapture, NikonCustom,
+NikonScan, Nintendo, Ocad, Ogg, Olympus, OpenEXR, Opus, PDF, PICT, PNG,
+PNG-pHYs, PSP, Palm, Panasonic, PanasonicRaw, Pentax, PhaseOne, PhotoCD,
+PhotoMechanic, Photoshop, PictureInfo, PostScript, PreviewIFD, PrintIM,
+ProfileIFD, Qualcomm, QuickTime, RAF, RAF2, RIFF, RMETA, RSRC, RTF,
+Radiance, Rawzor, Real, Real-CONT, Real-MDPR, Real-PROP, Real-RA3, Real-RA4,
+Real-RA5, Real-RJMD, Reconyx, Ricoh, SPIFF, SR2, SR2DataIFD, SR2SubIFD,
+SRF#, SVG, Samsung, Sanyo, Scalado, Sigma, SigmaRaw, Sony, SonyIDC, Stim,
+SubIFD, System, Theora, Torrent, Track#, VCalendar, VCard, Version0, Vorbis,
+XML, XMP, XMP-DICOM, XMP-GAudio, XMP-GImage, XMP-GPano, XMP-GSpherical,
+XMP-MP, XMP-MP1, XMP-PixelLive, XMP-aas, XMP-acdsee, XMP-album,
+XMP-apple-fi, XMP-aux, XMP-cc, XMP-cell, XMP-creatorAtom, XMP-crs, XMP-dc,
+XMP-dex, XMP-digiKam, XMP-drone-dji, XMP-dwc, XMP-exif, XMP-exifEX,
 XMP-expressionmedia, XMP-extensis, XMP-fpv, XMP-getty, XMP-ics,
 XMP-iptcCore, XMP-iptcExt, XMP-lr, XMP-mediapro, XMP-microsoft,
 XMP-mwg-coll, XMP-mwg-kw, XMP-mwg-rs, XMP-pdf, XMP-pdfx, XMP-photomech,

@@ -7,11 +7,17 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.55. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Jan. 5, 2018 - Version 10.73
+
+  - Added read/write support for GoPro RAW (GPR) files
+  - Added a new Sony/Minolta lens (thanks Sylvain)
+  - Improved conversions for GPS tags extracted from video streams
+
 Jan. 4, 2018 - Version 10.72
 
-  - Extract streamed GPS position and other streamed metadata from MP4 videos
-    when the -ee option is used
   - Added IF feature to -p option
+  - Decode streamed GPS position and other streamed metadata from MP4 videos
+    when the -ee option is used
   - Fixed problem geotagging GPSAltitude from some GPX files
 
 Jan. 2, 2018 - Version 10.71

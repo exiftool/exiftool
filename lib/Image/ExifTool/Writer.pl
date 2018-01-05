@@ -2791,6 +2791,7 @@ Conv: for (;;) {
 #               undef    - set missing tags to ''
 #              'Error'   - issue minor error on missing tag (and return undef)
 #              'Warn'    - issue minor warning on missing tag (and return undef)
+#              'Silent'  - just return undef on missing tag (no errors/warnings)
 #               Hash ref - hash for return of tag/value pairs
 #         4) document group name if extracting from a specific document
 # Returns: string with embedded tag values (or '$info{TAGNAME}' entries with Hash ref option)
@@ -2845,8 +2846,8 @@ sub InsertTagValues($$$;$$)
             # use default Windows filename filter if expression is empty
             $expr = 'tr(/\\\\?*:|"<>\\0)()d' unless length $expr;
         }
-        # add document number to tag if specified
-        $var = $docGrp . ':' . $var if $docGrp and $var !~ /^(main|doc\d+):/i;
+        # add document number to tag if specified and it doesn't already exist
+        $var = $docGrp . ':' . $var if $docGrp and $var !~ /\b(main|doc\d+):/i;
         push @tags, $var;
         ExpandShortcuts(\@tags);
         @tags or $rtnStr .= $pre, next;
@@ -2943,7 +2944,13 @@ sub InsertTagValues($$$;$$)
             }
             if ($evalWarning) {
                 my $str = CleanWarning() . " for '$var'";
-                ($opt and $opt eq 'Error') ? $self->Error($str) : $self->Warn($str);
+                if ($opt) {
+                    if ($opt eq 'Error') {
+                        $self->Error($str);
+                    } elsif ($opt ne 'Silent') {
+                        $self->Warn($str);
+                    }
+                }
             }
             undef $advFmtSelf;
             $didExpr = 1;   # set flag indicating an expression was evaluated
@@ -2954,7 +2961,7 @@ sub InsertTagValues($$$;$$)
                 my $msg = $didExpr ? "Advanced formatting expression returned undef for '$var'" :
                                      "Tag '$var' not defined";
                 no strict 'refs';
-                $opt and &$opt($self, $msg, 2) and return $$self{FMT_EXPR} = undef;
+                $opt and ($opt eq 'Silent' or &$opt($self, $msg, 2)) and return $$self{FMT_EXPR} = undef;
                 $val = '';
             }
         }

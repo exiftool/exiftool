@@ -11,17 +11,18 @@
 # Revisions:    2010/02/05 - P. Harvey created
 #               2013/02/05 - PH Fixed camera icon to work with new Google Earth
 #               2017/02/02 - PH Organize into folders based on file directory
-#               2018/01/03 - PH Added IF to be sure position exists
+#               2018/01/04 - PH Added IF to be sure position exists
 #
-# Notes:     1) All input files must contain GPSLatitude and GPSLongitude.
-#            2) For Google Earth to be able to find the images, the input
+# Notes:     1) Input files must contain GPSLatitude and GPSLongitude.
+#            2) Add the -ee option to extract the full track from video files.
+#            3) For Google Earth to be able to find the images, the input
 #               images must be specified using relative paths, and "out.kml"
 #               must stay in the same directory as where the command was run.
-#            3) Google Earth is picky about the case of the image file extension,
+#            4) Google Earth is picky about the case of the image file extension,
 #               and may not be able to display the image if an upper-case
 #               extension is used.
-#            4) The -fileOrder option may be used to control the order of the
-#               generated placemarks.
+#            5) The -fileOrder option may be used to control the order of the
+#               generated placemarks when processing multiple files.
 #------------------------------------------------------------------------------
 #[HEAD]<?xml version="1.0" encoding="UTF-8"?>
 #[HEAD]<kml xmlns="http://earth.google.com/kml/2.0">
@@ -39,7 +40,7 @@
 #[SECT]    <Folder>
 #[SECT]      <name>$directory</name>
 #[SECT]      <open>0</open>
-#[IF]$gpslatitude $gpslongitude
+#[IF]  $gpslatitude $gpslongitude
 #[BODY]      <Placemark>
 #[BODY]        <description><![CDATA[<br/><table><tr><td>
 #[BODY]        <img src='$directory/$filename'

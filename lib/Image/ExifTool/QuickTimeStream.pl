@@ -12,62 +12,25 @@ package Image::ExifTool::QuickTime;
 
 use strict;
 
+# tags extracted from various QuickTime data streams
 %Image::ExifTool::QuickTime::Stream = (
-    GROUPS => { 2 => 'Video' },
+    GROUPS => { 2 => 'Location' },
     NOTES => q{
         Tags extracted from QuickTime movie data when the ExtractEmbedded option is
         used.
     },
-    GPSLatitude => {
-        Groups    => { 2 => 'Location' },
-        PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")',
-    },
-    GPSLongitude => {
-        Groups    => { 2 => 'Location' },
-        PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "E")',
-    },
-    GPSAltitude => {
-        Groups    => { 2 => 'Location' },
-        PrintConv => '"$val m"',
-    },
-    GPSAltitudeRef => {
-        Groups    => { 2 => 'Location' },
-        PrintConv => {
-            0 => 'Above Sea Level',
-            1 => 'Below Sea Level',
-        },
-    },
-    GPSSpeed => {
-        Groups    => { 2 => 'Location' },
-    },
-    GPSSpeedRef => {
-        Groups    => { 2 => 'Location' },
-        PrintConv => {
-            K => 'km/h',
-            M => 'mph',
-            N => 'knots',
-        },
-    },
-    GPSTrack => {
-        Groups    => { 2 => 'Location' },
-    },
-    GPSTrackRef => {
-        Groups    => { 2 => 'Location' },
-        PrintConv => {
-            M => 'Magnetic North',
-            T => 'True North',
-        },
-    },
-    GPSDateTime => { Groups => { 2 => 'Time' } },
-    TimeCode    => { Groups => { 2 => 'Time' } },
-    Accelerometer => {
-        Notes => 'right/up/backward acceleration in units of g',
-        Groups => { 2 => 'Location' },
-    },
-    Text => {
-        Notes => 'text captions extracted from some videos when -ee is used',
-        Binary => 1,
-    },
+    GPSLatitude  => { PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")' },
+    GPSLongitude => { PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "E")' },
+    GPSAltitude  => { PrintConv => '(sprintf("%.4f", $val) + 0) . " m"' }, # round to 4 decimals
+    GPSAltitudeRef=>{ PrintConv => { 0 => 'Above Sea Level', 1 => 'Below Sea Level' } },
+    GPSSpeed     => { PrintConv => 'sprintf("%.4f", $val) + 0' },   # round to 4 decimals
+    GPSSpeedRef  => { PrintConv => { K => 'km/h', M => 'mph', N => 'knots' } },
+    GPSTrack     => { PrintConv => 'sprintf("%.4f", $val) + 0' },    # round to 4 decimals
+    GPSTrackRef  => { PrintConv => { M => 'Magnetic North', T => 'True North' } },
+    GPSDateTime  => { PrintConv => '$self->ConvertDateTime($val)', Groups => { 2 => 'Time' } },
+    Accelerometer=> { Notes => 'right/up/backward acceleration in units of g' },
+    TimeCode     => { Groups => { 2 => 'Time' } },
+    Text         => { Groups => { 2 => 'Other' } },
 );
 
 # GoPro META tags (ref 1)
@@ -77,7 +40,7 @@ use strict;
         Tags extracted from compatible GoPro MP4 videos when the ExtractEmbedded
         option is used.
     },
-    ACCL => { # accelerometer reading x/y/z
+    ACCL => {
         Name => 'Accelerometer',
         ValueConv => q{
             my @a = split ' ', $val;
@@ -88,32 +51,35 @@ use strict;
     },
     DEVC => 'Device',
     DVID => { Name => 'DeviceID', Unknown => 1 }, # possibly hard-coded to 0x1
-    DVNM => { # device name, string "Camera"
+    DVNM => {
         Name => 'Model',
         Description => 'Camera Model Name',
     },
-    EMPT => { Name => 'Empty', Unknown => 1 }, # empty packet
-    GPS5 => { # GPS data (lat, lon, alt, speed, 3d speed)
+    EMPT => { Name => 'Empty', Unknown => 1 },
+    GPS5 => {
         Name => 'GPSInfo',
         SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::GoProGPS' },
     },
-    GPSF => { # GPS fix (none, 2d, 3d)
+    GPSF => {
         Name => 'GPSMeasureMode',
         PrintConv => {
             2 => '2-Dimensional Measurement',
             3 => '3-Dimensional Measurement',
         },
     },
-    GPSP => { # GPS positional accuracy in cm
+    GPSP => {
         Name => 'GPSHPositioningError',
         Description => 'GPS Horizontal Positioning Error',
-        ValueConv => '$val / 100', # convert to m
+        ValueConv => '$val / 100', # convert from cm to m
     },
-    GPSU => { # GPS acquired timestamp; potentially different than "camera time"
+    GPSU => {
         Name => 'GPSDateTime',
         Groups => { 2 => 'Time' },
+        # (HERO5 writes this in 'c' format, HERO6 writes 'U')
+        ValueConv => '$val =~ s/^(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/20$1:$2:$3 $4:$5:/; $val',
+        PrintConv => '$self->ConvertDateTime($val)',
     },
-    GYRO => { # gryroscope reading x/y/z
+    GYRO => {
         Name => 'Gyroscope',
         ValueConv => q{
             my @a = split ' ', $val;
@@ -122,22 +88,28 @@ use strict;
             return \ join ' ', @a;
         },
     },
-    SCAL => { # scale factor, a multiplier for subsequent data
+    SCAL => { # scale factor for subsequent data
         Name => 'ScaleFactor',
         Unknown => 1,   # (not very useful to user)
     },
-    SIUN => { # SI units; strings (m/s2, rad/s)
+    SIUN => { # SI units (m/s2, rad/s)
         Name => 'SIUnits',
+        ValueConv => '$self->Decode($val, "Latin")',
     },
-    STRM => 'NestedSignalStream',
-    STNM => { Name => 'StreamName', Unknown => 1 },
-    TMPC => { # temperature
+    STRM => { Name => 'NestedSignalStream', Unknown => 1 },
+    STNM => {
+        Name => 'StreamName',
+        Unknown => 1,
+        ValueConv => '$self->Decode($val, "Latin")',
+    },
+    TMPC => {
         Name => 'CameraTemperature',
         PrintConv => '"$val C"',
     },
     TSMP => { Name => 'TotalSamples', Unknown => 1 },
-    UNIT => { # alternative units; strings (deg, m, m/s));  
+    UNIT => { # alternative units (deg, m, m/s));  
         Name => 'Units',
+        ValueConv => '$self->Decode($val, "Latin")',
     },
     SHUT => {
         Name => 'ExposureTimes',
@@ -149,7 +121,10 @@ use strict;
     },
     ISOG => 'ImageSensorGain',
     TYPE => { Name => 'StructureType', Unknown => 1 },
-    RMRK => 'Comments',
+    RMRK => {
+        Name => 'Comments',
+        ValueConv => '$self->Decode($val, "Latin")',
+    },
     WRGB => { #PH
         Name => 'WhiteBalanceRGB',
         Binary => 1,
@@ -193,7 +168,7 @@ use strict;
 );
 
 #------------------------------------------------------------------------------
-# Process GoPro metadata
+# Process GoPro MET data
 # Inputs: 0) ExifTool ref, 1) data ref
 my %goProFmt = ( # format codes
     0x62 => 'int8s',    # 'b'
@@ -233,13 +208,18 @@ sub ProcessGoProMET($$)
         next if $len == 0;  # skip empty tags (for now)
         my $format = $goProFmt{$fmt} || 'undef';
         $format = 'undef' if $tag eq 'GPS5';   # don't reformat GPSInfo
-        my $val = ReadValue($dataPt, $pos, $format, undef, $len);
-        # save scaling factor
-        if ($tag eq 'SCAL') {
-            $$et{ScaleFactor} = [ split ' ', $val ] if $tag eq 'SCAL';
-        } elsif ($fmt == 0x55) { # date
-            $val =~ s/^(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/20$1:$2:$3 $4:$5:/;
+        my ($val, @val);
+        if ($format eq 'undef' and $count > 1 and $size > 1) {
+            my ($i, @val);
+            for ($i=0; $i<$count; ++$i) {
+                push @val, substr($$dataPt, $pos + $size * $i, $size);
+            }
+            $val = join ' ', @val;
+        } else {
+            $val = ReadValue($dataPt, $pos, $format, undef, $len);
         }
+        # save scaling factor
+        $$et{ScaleFactor} = [ split ' ', $val ] if $tag eq 'SCAL';
         $pos += (($len + 3) & 0xfffffffc);  # round up to even 4-byte boundary
         if (not $$tagTablePtr{$tag} and $unk) {
             AddTagToTable($tagTablePtr, $tag, { Name => Image::ExifTool::MakeTagName("Unknown_$tag") });
@@ -268,7 +248,10 @@ sub ProcessSamples($$$$)
     }
     # loop through all samples
     for ($i=0; $i<@$start and $i<@$size; ++$i) {
+
+        # read the sample data
         next unless $raf->Seek($$start[$i], 0) and $raf->Read($buff, $$size[$i]) == $$size[$i];
+
         if ($type eq 'vide' and defined $hdrLen) {
             next if length($buff) <= $hdrLen;
             # scan through all NAL units and send them to ParseH264Video()
@@ -288,6 +271,7 @@ sub ProcessSamples($$$$)
             HexDump(\$buff, undef, %parms);
         }
         if ($type eq 'text') {
+
             $$et{DOC_NUM} = ++$$et{DOC_COUNT};
             unless ($buff =~ /^\$BEGIN/) {
                 $et->HandleTag($tagTablePtr, Text => $buff);
@@ -313,19 +297,25 @@ sub ProcessSamples($$$$)
                     $et->HandleTag($tagTablePtr, Accelerometer => "$1 $2 $3");
                 } elsif ($tag eq 'TIME' and $dat =~ /^:(\d+)/) {
                     $et->HandleTag($tagTablePtr, TimeCode => $1 / 100000);
-                } elsif ($tag ne 'BEGIN' and $tag ne 'END') {
+                } elsif ($tag eq 'BEGIN') {
+                    $et->HandleTag($tagTablePtr, Text => $dat) if length $dat;
+                } elsif ($tag ne 'END') {
                     $et->HandleTag($tagTablePtr, Text => "\$$tag$dat");
                 }
             }
+
         } elsif ($type eq 'meta' and $desc eq 'GoPro MET') {
+
             $$et{DOC_NUM} = ++$$et{DOC_COUNT};
             ProcessGoProMET($et, \$buff);
+
         } elsif ($type eq 'gps ') {
+
             # decode Novatek GPS data (ref 2)
             next unless $buff =~ /^....freeGPS /s and length $buff >= 92;
             my ($hr,$min,$sec,$yr,$mon,$day,$active,$latRef,$lonRef) = unpack('x48V6a1a1a1', $buff);
-            my ($lat,$lon,$spd) = unpack('f3', pack('L3', unpack('x76V3', $buff)));
             next unless $active eq 'A'; # ignore bad GPS fixes
+            my ($lat,$lon,$spd,$trk) = unpack('f*', pack('L*', unpack('x76V4', $buff)));
             $$et{DOC_NUM} = ++$$et{DOC_COUNT};
             # lat/long are in DDDmm.mmmm format
             my $deg = int($lat / 100);
@@ -336,6 +326,8 @@ sub ProcessSamples($$$$)
             $et->HandleTag($tagTablePtr, GPSLongitude => $lon);
             $et->HandleTag($tagTablePtr, GPSSpeed => $spd);
             $et->HandleTag($tagTablePtr, GPSSpeedRef => 'N');
+            $et->HandleTag($tagTablePtr, GPSTrack => $trk); #PH (NC, could be GPSImageDirection)
+            $et->HandleTag($tagTablePtr, GPSTrackRef => 'T');
             $yr += $yr >= 70 ? 1900 : 2000;
             $et->HandleTag($tagTablePtr, GPSDateTime =>
                 sprintf('%.4d:%.2d:%.2d %.2d:%.2d:%.2d',$yr,$mon,$day,$hr,$min,$sec));

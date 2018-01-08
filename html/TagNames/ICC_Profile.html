@@ -433,7 +433,7 @@ specification.</p>
 <td class=r title='4 = 0x4'>4</td>
 <td>ProfileCMMType</td>
 <td class=c>no</td>
-<td>--&gt; <a href='ICC_Profile.html#CMMType'>ICC_Profile CMMType Values</a></td></tr>
+<td>--&gt; <a href='ICC_Profile.html#ManuSig'>ICC_Profile ManuSig Values</a></td></tr>
 <tr class=b>
 <td class=r title='8 = 0x8'>8</td>
 <td>ProfileVersion</td>
@@ -489,7 +489,7 @@ specification.</p>
 <td class=r title='48 = 0x30'>48</td>
 <td>DeviceManufacturer</td>
 <td class=c>no</td>
-<td>&nbsp;</td></tr>
+<td>--&gt; <a href='ICC_Profile.html#ManuSig'>ICC_Profile ManuSig Values</a></td></tr>
 <tr>
 <td class=r title='52 = 0x34'>52</td>
 <td>DeviceModel</td>
@@ -517,7 +517,7 @@ specification.</p>
 <td class=r title='80 = 0x50'>80</td>
 <td>ProfileCreator</td>
 <td class=c>no</td>
-<td>&nbsp;</td></tr>
+<td>--&gt; <a href='ICC_Profile.html#ManuSig'>ICC_Profile ManuSig Values</a></td></tr>
 <tr class=b>
 <td class=r title='84 = 0x54'>84</td>
 <td>ProfileID</td>
@@ -525,12 +525,13 @@ specification.</p>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
-<h2><a name='CMMType'>ICC_Profile CMMType Values</a></h2>
+<h2><a name='ManuSig'>ICC_Profile ManuSig Values</a></h2>
 <blockquote>
 <table class=frame><tr><td>
 <table class='inner sep' cellspacing=1>
-<tr class=h><th>Value</th><th>CMMType</th></tr>
-<tr><td>'4d2p'</td><td>= Erdt Systems GmbH &amp; Co KG</td>
+<tr class=h><th>Value</th><th>ManuSig</th></tr>
+<tr><td>''</td><td>= </td>
+</tr><tr><td>'4d2p'</td><td>= Erdt Systems GmbH &amp; Co KG</td>
 </tr><tr><td>'AAMA'</td><td>= Aamazing Technologies, Inc.</td>
 </tr><tr><td>'ACER'</td><td>= Acer Peripherals</td>
 </tr><tr><td>'ACLT'</td><td>= Acolyte Color Research</td>
@@ -545,7 +546,7 @@ specification.</p>
 </tr><tr><td>'AMTI'</td><td>= Amiable Technologies, Inc.</td>
 </tr><tr><td>'AOC '</td><td>= AOC International (U.S.A), Ltd.</td>
 </tr><tr><td>'APAG'</td><td>= Apago</td>
-</tr><tr><td>'APPL'</td><td>= Apple Computer, Inc.</td>
+</tr><tr><td>'APPL'</td><td>= Apple Computer Inc.</td>
 </tr><tr><td>'AST '</td><td>= AST</td>
 </tr><tr><td>'AT&amp;T'</td><td>= AT&amp;T Computer Systems</td>
 </tr><tr><td>'BAEL'</td><td>= BARBIERI electronic</td>
@@ -615,6 +616,7 @@ specification.</p>
 </tr><tr><td>'GMB '</td><td>= Gretagmacbeth</td>
 </tr><tr><td>'GMG '</td><td>= GMG GmbH &amp; Co. KG</td>
 </tr><tr><td>'GOLD'</td><td>= GoldStar Technology, Inc.</td>
+</tr><tr><td>'GOOG'</td><td>= Google</td>
 </tr><tr><td>'GPRT'</td><td>= Giantprint Pty Ltd</td>
 </tr><tr><td>'GTMB'</td><td>= Gretagmacbeth</td>
 </tr><tr><td>'GVC '</td><td>= WayTech Development, Inc.</td>
@@ -646,6 +648,7 @@ specification.</p>
 </tr><tr><td>'Idnt'</td><td>= Scitex Corporation, Ltd.</td>
 </tr><tr><td>'Inca'</td><td>= Inca Digital Printers Ltd.</td>
 </tr><tr><td>'Iris'</td><td>= Scitex Corporation, Ltd.</td>
+</tr><tr><td>'JPEG'</td><td>= Joint Photographic Experts Group</td>
 </tr><tr><td>'JSFT'</td><td>= Jetsoft Development</td>
 </tr><tr><td>'JVC '</td><td>= JVC Information Products Co.</td>
 </tr><tr><td>'KART'</td><td>= Scitex Corporation, Ltd.</td>
@@ -664,6 +667,7 @@ specification.</p>
 </tr><tr><td>'LINK'</td><td>= Link Computer, Inc.</td>
 </tr><tr><td>'LINO'</td><td>= Linotronic</td>
 </tr><tr><td>'LITE'</td><td>= Lite-On, Inc.</td>
+</tr><tr><td>'Leaf'</td><td>= Leaf</td>
 </tr><tr><td>'Lino'</td><td>= Linotronic</td>
 </tr><tr><td>'MAGC'</td><td>= Mag Computronic (USA) Inc.</td>
 </tr><tr><td>'MAGI'</td><td>= MAG Innovision, Inc.</td>
@@ -778,6 +782,7 @@ specification.</p>
 </tr><tr><td>'Z123'</td><td>= Lavanya&#39;s test Company</td>
 </tr><tr><td>'ZRAN'</td><td>= Zoran Corporation</td>
 </tr><tr><td>'Zebr'</td><td>= Zebra Technologies Inc</td>
+</tr><tr><td>'appl'</td><td>= Apple Computer Inc.</td>
 </tr><tr><td>'bICC'</td><td>= basICColor GmbH</td>
 </tr><tr><td>'berg'</td><td>= bergdesign incorporated</td>
 </tr><tr><td>'ceyd'</td><td>= Integrated Color Solutions, Inc.</td>
@@ -788,6 +793,8 @@ specification.</p>
 </tr><tr><td>'flux'</td><td>= FluxData Corporation</td>
 </tr><tr><td>'iris'</td><td>= Scitex Corporation, Ltd.</td>
 </tr><tr><td>'kart'</td><td>= Scitex Corporation, Ltd.</td>
+</tr><tr><td>'lino'</td><td>= Linotronic</td>
+</tr><tr><td>'none'</td><td>= none</td>
 </tr><tr><td>'ob4d'</td><td>= Erdt Systems GmbH &amp; Co KG</td>
 </tr><tr><td>'obic'</td><td>= Medigraph GmbH</td>
 </tr><tr><td>'quby'</td><td>= Qubyx Sarl</td>
@@ -983,7 +990,7 @@ Metadata tags that exist.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jan 2, 2018</i>
+<br><i>Last revised Jan 8, 2018</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

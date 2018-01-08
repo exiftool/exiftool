@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup);
 
-$VERSION = '10.73';
+$VERSION = '10.74';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -7412,8 +7412,12 @@ sub FoundTag($$$;@)
         $$self{LIST_TAGS}{$tagInfo} = $tag;
     }
 
-    # validate tag if requested
-    Image::ExifTool::Validate::ValidateRaw($self, $tag, $value) if $$options{Validate};
+    # validate tag if requested (but only for simple values -- could result
+    # in infinite recursion if called for a Composite tag (HASH ref value)
+    # because FoundTag is called in the middle of building Composite tags
+    if ($$options{Validate} and not ref $value) {
+        Image::ExifTool::Validate::ValidateRaw($self, $tag, $value);
+    }
 
     return $tag;
 }

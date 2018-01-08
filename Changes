@@ -7,6 +7,15 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.55. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Jan. 8, 2018 - Version 10.74
+
+  - Added a new Sony/Minolta lens (thanks Jos Roost)
+  - Added print conversion for ICC_Profile DeviceManufacturer and ProfileCreator
+  - Added informational warning when the ExtractEmbedded option may be useful
+  - Improvements to experimental validate feature for RAW files
+  - Fixed bug in experimental Validate feature that could cause out-of-memory
+    error when combined with "-use mwg" feature.
+
 Jan. 5, 2018 - Version 10.73
 
   - Added read/write support for GoPro RAW (GPR) files

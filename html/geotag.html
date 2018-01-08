@@ -493,11 +493,12 @@ in the same timezone.</blockquote>
 <a name="Inverse"></a>
 <h2>Inverse Geotagging</h2>
 
-<p>The <code>-p</code> option may be used to output files in any number of formats.
-This section gives examples for creating GPX and KML output files from a set of
-geotagged images, or from a geotagged video file.  (But note that the
-<code>-ee</code> option must be added to the commands below to extract the full
-track from a video file.)</p>
+<p>ExifTool also has the ability to <b>create a GPS track file from a series of
+geotagged images</b>. The <code>-p</code> option may be used to output files in
+any number of formats. This section gives examples for creating GPX and KML
+output files from a set of geotagged images, or from a geotagged video file.
+(But note that the <code>-ee</code> option must be added to the commands below
+to extract the full track from a video file.)</p>
 
 <a name="GPX"></a>
 <h4>Creating a GPX track log</h4>
@@ -510,12 +511,13 @@ one or more geotagged images:</p>
 #
 # Description:  Example ExifTool print format file for generating GPX track log
 #
-# Usage:        exiftool -p gpx.fmt -d %Y-%m-%dT%H:%M:%SZ FILE [...] > out.gpx
+# Usage:        exiftool -p gpx.fmt FILE [...] > out.gpx
 #
-# Requires:     ExifTool version 8.10 or later
+# Requires:     ExifTool version 10.49 or later
 #
 # Revisions:    2010/02/05 - P. Harvey created
 #               2018/01/03 - PH Added IF to be sure position exists
+#               2018/01/06 - PH Use DateFmt function instead of -d option
 #
 # Notes:     1) Input files must contain GPSLatitude and GPSLongitude.
 #            2) Add the -ee option to extract the full track from video files.
@@ -534,7 +536,7 @@ one or more geotagged images:</p>
 #[IF]  $gpslatitude $gpslongitude
 #[BODY]&lt;trkpt lat="$gpslatitude#" lon="$gpslongitude#"&gt;
 #[BODY]  &lt;ele&gt;$gpsaltitude#&lt;/ele&gt;
-#[BODY]  &lt;time&gt;$gpsdatetime&lt;/time&gt;
+#[BODY]  &lt;time&gt;${gpsdatetime#;DateFmt("%Y-%m-%dT%H:%M:%SZ")}&lt;/time&gt;
 #[BODY]&lt;/trkpt&gt;
 #[TAIL]&lt;/trkseg&gt;
 #[TAIL]&lt;/trk&gt;
@@ -555,7 +557,7 @@ used to force processing of files in a particular order.  For example, the
 following command processes files in order of increasing <code>GPSDateTime</code>:
 </p>
 
-<pre>exiftool -fileOrder gpsdatetime -p gpx.fmt -d %Y-%m-%dT%H:%M:%SZ /Users/Phil/Pictures > out.gpx
+<pre>exiftool -fileOrder gpsdatetime -p gpx.fmt /Users/Phil/Pictures > out.gpx
 </pre>
 
 <p>Since no directory was specified for <code>gpx.fmt</code>, this file must
@@ -570,7 +572,7 @@ GPS information are processed.  For example, the following command creates
 <code>GPSDateTime</code> information in directory "<code>pics</code>" and its
 sub-directories:</p>
 
-<pre>exiftool -r -if '$gpsdatetime' -fileOrder gpsdatetime -p gpx.fmt -d %Y-%m-%dT%H:%M:%SZ pics > out.gpx
+<pre>exiftool -r -if '$gpsdatetime' -fileOrder gpsdatetime -p gpx.fmt pics > out.gpx
 </pre>
 
 <p>Note:  In Windows, double quotes (<code>"</code>) must be used instead of
@@ -655,7 +657,7 @@ forum post</a> for more useful tips about creating KML files.</p>
 
 <hr>
 <i>Created Apr. 2, 2009</i><br>
-<i>Last revised Jan. 4, 2018</i>
+<i>Last revised Jan. 6, 2018</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

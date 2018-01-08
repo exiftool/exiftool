@@ -42,7 +42,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.06';
+$VERSION = '2.07';
 
 sub FixWrongFormat($);
 sub ProcessMOV($$;$);
@@ -6781,6 +6781,7 @@ sub ProcessMOV($$;$)
     }
     $index = $$tagTablePtr{VARS}{START_INDEX} if $$tagTablePtr{VARS};
     for (;;) {
+        my ($eeTag, $ignore);
         if ($size < 8) {
             if ($size == 0) {
                 if ($dataPt) {
@@ -6831,10 +6832,13 @@ sub ProcessMOV($$;$)
         }
         my $tagInfo = $et->GetTagInfo($tagTablePtr, $tag);
         # set flag to store additional information for ExtractEmbedded option
-        my $eeTag;
-        if ($ee and $eeBox{$$et{HandlerType}} and $eeBox{$$et{HandlerType}}{$tag}) {
-            $tagInfo or $tagInfo = $$tagTablePtr{$tag}; # extract even if Unknown
-            $tagInfo and $eeTag = 1;
+        if ($eeBox{$$et{HandlerType}} and $eeBox{$$et{HandlerType}}{$tag}) {
+            if ($ee) {
+                $tagInfo or $tagInfo = $$tagTablePtr{$tag}; # extract even if Unknown
+                $tagInfo and $eeTag = 1;
+            } elsif (not $$et{OPTIONS}{Validate}) {
+                $et->WarnOnce('The ExtractEmbedded option may find more tags in the movie data',1);
+            }
         }
         # allow numerical tag ID's
         unless ($tagInfo) {
@@ -6872,7 +6876,6 @@ sub ProcessMOV($$;$)
             $et->HandleTag($tagTablePtr, "$tag-offset", $raf->Tell()) if $$tagTablePtr{"$tag-offset"};
         }
         # load values only if associated with a tag (or verbose) and not too big
-        my $ignore;
         if ($size > 0x2000000) {    # start to get worried above 32 MB
             $ignore = 1;
             if ($tagInfo and not $$tagInfo{Unknown} and not $eeTag) {

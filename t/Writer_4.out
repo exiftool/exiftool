@@ -1,4 +1,4 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.71
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.74
 [File, System, Image] FileSize - File Size: 7.6 kB
 [File, File, Image] FileType - File Type: TIFF
 [File, File, Image] FileTypeExtension - File Type Extension: tif
@@ -25,7 +25,7 @@
 [EXIF, IFD0, Image] 305 - Software: GraphicConverter
 [EXIF, IFD0, Time] 306 - Modify Date: 2004:02:20 08:07:49
 [EXIF, IFD0, Image] 317 - Predictor: None
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 10.71
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 10.74
 [XMP, XMP-photoshop, Image] SupplementalCategories - Supplemental Categories: new XMP info
 [IPTC, IPTC, Other] 0 - Application Record Version: 2
 [IPTC, IPTC, Other] 120 - Caption-Abstract: The picture caption
@@ -53,12 +53,12 @@
 [ICC_Profile, ICC-header, Image] 36 - Profile File Signature: acsp
 [ICC_Profile, ICC-header, Image] 40 - Primary Platform: Microsoft Corporation
 [ICC_Profile, ICC-header, Image] 44 - CMM Flags: Not Embedded, Independent
-[ICC_Profile, ICC-header, Image] 48 - Device Manufacturer: IEC 
+[ICC_Profile, ICC-header, Image] 48 - Device Manufacturer: Hewlett-Packard
 [ICC_Profile, ICC-header, Image] 52 - Device Model: sRGB
 [ICC_Profile, ICC-header, Image] 56 - Device Attributes: Reflective, Glossy, Positive, Color
 [ICC_Profile, ICC-header, Image] 64 - Rendering Intent: Perceptual
 [ICC_Profile, ICC-header, Image] 68 - Connection Space Illuminant: 0.9642 1 0.82491
-[ICC_Profile, ICC-header, Image] 80 - Profile Creator: HP  
+[ICC_Profile, ICC-header, Image] 80 - Profile Creator: Hewlett-Packard
 [ICC_Profile, ICC-header, Image] 84 - Profile ID: 0
 [ICC_Profile, ICC_Profile, Image] cprt - Profile Copyright: Copyright (c) 1998 Hewlett-Packard Company
 [ICC_Profile, ICC_Profile, Image] desc - Profile Description: sRGB IEC61966-2.1

@@ -799,10 +799,10 @@ official EXIF 2.31 specification.
   0xc631   ChromaBlurRadius          SubIFD     rational64u!
   0xc632   AntiAliasStrength         SubIFD     rational64u!
   0xc633   ShadowScale               IFD0       rational64u!
-  0xc634   SR2Private                -          Sony SR2Private
+  0xc634   SR2Private                IFD0       Sony SR2Private
            DNGAdobeData              IFD0       DNG AdobeData
-           MakerNotePentax           -          Pentax
-           MakerNotePentax5          -          Pentax
+           MakerNotePentax           IFD0       Pentax
+           MakerNotePentax5          IFD0       Pentax
            DNGPrivateData            IFD0       undef!
   0xc635   MakerNoteSafety           IFD0       int16u
   0xc640   RawImageSegmentation      -          no
@@ -820,7 +820,7 @@ official EXIF 2.31 specification.
   0xc691   CurrentICCProfile         IFD0       ICC_Profile
   0xc692   CurrentPreProfileMatrix   IFD0       rational64s[n]!
   0xc6bf   ColorimetricReference     IFD0       int16u!
-  0xc6c5   SRawType                  -          no
+  0xc6c5   SRawType                  IFD0       no
   0xc6d2   PanasonicTitle            IFD0       undef
   0xc6d3   PanasonicTitle2           IFD0       undef
   0xc6f3   CameraCalibrationSig      IFD0       string!

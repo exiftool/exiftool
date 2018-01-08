@@ -4,12 +4,13 @@
 # Description:  Example ExifTool print format file to generate GPX waypoints
 #               with pictures
 #
-# Usage:        exiftool -p gpx_wpt.fmt -d %Y-%m-%dT%H:%M:%SZ FILE [...] > out.gpx
+# Usage:        exiftool -p gpx_wpt.fmt FILE [...] > out.gpx
 #
-# Requires:     ExifTool version 8.10 or later
+# Requires:     ExifTool version 10.49 or later
 #
 # Revisons:     2010/03/13 - Peter Grimm created
 #               2018/01/04 - PH Added IF to be sure position exists
+#               2018/01/06 - PH Use DateFmt function instead of -d option
 #
 # Notes:     1) Input files must contain GPSLatitude and GPSLongitude.
 #            2) Add the -ee option to extract the full track from video files.
@@ -25,7 +26,7 @@
 #[IF]  $gpslatitude $gpslongitude
 #[BODY]<wpt lat="$gpslatitude#" lon="$gpslongitude#">
 #[BODY]  <ele>$gpsaltitude#</ele>
-#[BODY]  <time>$gpsdatetime</time>
+#[BODY]  <time>${gpsdatetime#;DateFmt("%Y-%m-%dT%H:%M:%SZ")}</time>
 #[BODY]  <name>$filename</name>
 #[BODY]  <link href="$directory/$filename"/>
 #[BODY]  <sym>Scenic Area</sym>

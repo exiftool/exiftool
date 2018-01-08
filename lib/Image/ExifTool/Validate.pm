@@ -11,7 +11,7 @@ package Image::ExifTool::Validate;
 use strict;
 use vars qw($VERSION %exifSpec);
 
-$VERSION = '1.06';
+$VERSION = '1.07';
 
 use Image::ExifTool qw(:Utils);
 use Image::ExifTool::Exif;
@@ -19,6 +19,7 @@ use Image::ExifTool::Exif;
 # EXIF table tag ID's which are part of the EXIF 2.31 specification
 # (also used by BuildTagLookup to add underlines in HTML version of EXIF Tag Table)
 %exifSpec = (
+    0x1 => 1,
     0x100 => 1,  0x8298 => 1,  0x9207 => 1,  0xa217 => 1,
     0x101 => 1,  0x829a => 1,  0x9208 => 1,  0xa300 => 1,
     0x102 => 1,  0x829d => 1,  0x9209 => 1,  0xa301 => 1,
@@ -50,6 +51,19 @@ use Image::ExifTool::Exif;
     0x214 => 1,  0x9206 => 1,  0xa215 => 1,
 );
 
+# tags standard in various RAW file formats
+my %otherSpec = (
+    CR2 => { 0xc5d8 => 1, 0xc5d9 => 1, 0xc5e0 => 1, 0xc640 => 1, 0xc6dc => 1, 0xc6dd => 1 },
+    NEF => { 0x9216 => 1, 0x9217 => 1 },
+    DNG => { 0x882a => 1, 0x9211 => 1, 0x9216 => 1 },
+    ARW => { 0x7000 => 1, 0x7001 => 1, 0x7010 => 1, 0x7011 => 1, 0x7020 => 1, 
+             0x7031 => 1, 0x7032 => 1, 0x7034 => 1, 0x7035 => 1, 0x7036 => 1, 0x7037 => 1,
+             0x7310 => 1, 0x7313 => 1, 0x7316 => 1, 0x74c7 => 1, 0x74c8 => 1, 0xa500 => 1 },
+    RW2 => { All => 1 },    # ignore all unknown tags in RW2
+    RAF => { All => 1} ,    # (temporary)
+    SRW => { 0xa010 => 1, 0xa011 => 1, 0xa101 => 1, 0xa102 => 1 },
+);
+
 # standard format for tags (not necessary for exifSpec tags where Writable is defined)
 my %stdFormat = (
     ExifIFD => {
@@ -62,9 +76,6 @@ my %stdFormat = (
         0x1000 => 'string',
         0x1001 => 'int(16|32)u',
         0x1002 => 'int(16|32)u',
-    },
-    GPS => {
-        All  => '', # all defined GPS tags are standard
     },
     IFD => {
         # TIFF, EXIF, XMP, IPTC, ICC_Profile and PrintIM standard tags:
@@ -168,11 +179,13 @@ sub ValidateRaw($$$)
             $self->Warn("$wrn for $name", 1) if $wrn;
         }
     }
-    # check for unknown values in PrintConv lookup (except MakerNotes tags)
-    if (ref $$tagInfo{PrintConv} eq 'HASH' and $$tagInfo{Table}{GROUPS}{0} ne 'MakerNotes') {
+    # check for unknown values in PrintConv lookup for all standard EXIF tags
+    if (ref $$tagInfo{PrintConv} eq 'HASH' and $$tagInfo{Table} eq \%Image::ExifTool::Exif::Main and
+        $exifSpec{$$tagInfo{TagID}})
+    {
         my $prt = $self->GetValue($tag, 'PrintConv');
         if ($prt and $prt =~ /^Unknown \(/) {
-            my $name = $$tagInfo{Table}{GROUPS}{0} . ':' . Image::ExifTool::GetTagName($tag);
+            my $name = $$self{DIR_NAME} . ':' . Image::ExifTool::GetTagName($tag);
             $self->Warn("Unknown value for $name", 1);
         }
     }
@@ -239,6 +252,10 @@ sub ValidateExif($$$$$$$$)
 
     $et->WarnOnce("Entries in $ifd are out of order") if $tag <= $lastTag;
 
+    # (get tagInfo for unknown tags if Unknown option not used)
+    if (not defined $tagInfo and $$tagTablePtr{$tag} and ref $$tagTablePtr{$tag} eq 'HASH') {
+        $tagInfo = $$tagTablePtr{$tag}; 
+    }
     if (defined $tagInfo) {
         my $ti = $tagInfo || $$tagTablePtr{$tag};
         $ti = $$ti[-1] if ref $ti eq 'ARRAY';
@@ -249,7 +266,8 @@ sub ValidateExif($$$$$$$$)
         {
             my $wgp = $$ti{WriteGroup} || $$tagTablePtr{WRITE_GROUP};
             if ($wgp and $wgp ne $ifd and $wgp ne 'All' and not $$ti{OffsetPair} and
-                ($ifd =~ /^(Sub|Profile)?IFD\d*$/ xor $wgp =~ /^(Sub)?IFD\d*$/))
+                ($ifd =~ /^(Sub|Profile)?IFD\d*$/ xor $wgp =~ /^(Sub)?IFD\d*$/) and
+                ($$ti{Writable} or $$ti{WriteGroup}) and $ifd !~ /^SRF\d+$/)
             {
                 $et->Warn(sprintf('Wrong IFD for 0x%.4x %s (should be %s not %s)', $tag, $$ti{Name}, $wgp, $ifd));
             }
@@ -258,19 +276,25 @@ sub ValidateExif($$$$$$$$)
                 $et->Warn(sprintf('Non-standard format (%s) for %s 0x%.4x %s', $formatStr, $ifd, $tag, $$ti{Name}))
             }
         } elsif ($stdFormatAnyIFD{$tag}) {
-            my $wgp = $$ti{WriteGroup} || $$tagTablePtr{WRITE_GROUP};
-            if ($wgp) {
-                $et->Warn(sprintf('Wrong IFD for 0x%.4x %s (should be %s not %s)', $tag, $$ti{Name}, $wgp, $ifd));
-            } else {
-                $et->Warn(sprintf('Wrong IFD for 0x%.4x %s (found in %s)', $tag, $$ti{Name}, $ifd));
+            if ($$ti{Writable} || $$ti{WriteGroup}) {
+                my $wgp = $$ti{WriteGroup} || $$tagTablePtr{WRITE_GROUP};
+                if ($wgp and $wgp ne $ifd) {
+                    $et->Warn(sprintf('Wrong IFD for 0x%.4x %s (should be %s not %s)', $tag, $$ti{Name}, $wgp, $ifd));
+                }
             }
-        } else {
-            $et->Warn(sprintf('Non-standard %s tag 0x%.4x %s', $ifd, $tag, $$ti{Name}), 1);
+        } elsif (not $otherSpec{$$et{VALUE}{FileType}} or
+            (not $otherSpec{$$et{VALUE}{FileType}}{$tag} and not $otherSpec{$$et{VALUE}{FileType}}{All}))
+        {
+            if ($tagTablePtr eq \%Image::ExifTool::Exif::Main or $$tagInfo{Unknown}) {
+                $et->Warn(sprintf('Non-standard %s tag 0x%.4x %s', $ifd, $tag, $$ti{Name}), 1);
+            }
         }
         if ($$ti{Count} and $$ti{Count} > 0 and $count != $$ti{Count}) {
             $et->Warn(sprintf('Non-standard count (%d) for %s tag 0x%.4x %s', $count, $ifd, $tag, $$ti{Name}));
         }
-    } else {
+    } elsif (not $otherSpec{$$et{VALUE}{FileType}} or
+        (not $otherSpec{$$et{VALUE}{FileType}}{$tag} and not $otherSpec{$$et{VALUE}{FileType}}{All}))
+    {
         $et->Warn(sprintf('Unknown %s tag 0x%.4x', $ifd, $tag), 1);
     }
 }

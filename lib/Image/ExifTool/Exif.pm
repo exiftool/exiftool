@@ -53,7 +53,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '3.97';
+$VERSION = '3.98';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -3071,6 +3071,7 @@ my %sampleFormat = (
             # - Adobe Camera Raw 5.3 gives an error
             # - Apple Preview 10.5.8 gets the wrong white balance
             FixFormat => 'int8u', # (stupid Sony)
+            WriteGroup => 'IFD0', # (for Validate)
             SubDirectory => {
                 DirName => 'SR2Private',
                 TagTable => 'Image::ExifTool::Sony::SR2Private',
@@ -3098,6 +3099,7 @@ my %sampleFormat = (
             Name => 'MakerNotePentax',
             MakerNotes => 1,    # (causes "MakerNotes header" to be identified in HtmlDump output)
             Binary => 1,
+            WriteGroup => 'IFD0', # (for Validate)
             # Note: Don't make this block-writable for a few reasons:
             # 1) It would be dangerous (possibly confusing Pentax software)
             # 2) It is a different format from the JPEG version of MakerNotePentax
@@ -3118,6 +3120,7 @@ my %sampleFormat = (
             Name => 'MakerNotePentax5',
             MakerNotes => 1,
             Binary => 1,
+            WriteGroup => 'IFD0', # (for Validate)
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Pentax::Main',
                 Start => '$valuePtr + 10',
@@ -3267,7 +3270,7 @@ my %sampleFormat = (
         WriteGroup => 'IFD0',
         Protected => 1,
     },
-    0xc6c5 => { Name => 'SRawType', Description => 'SRaw Type' }, #exifprobe (CR2 proprietary)
+    0xc6c5 => { Name => 'SRawType', Description => 'SRaw Type', WriteGroup => 'IFD0' }, #exifprobe (CR2 proprietary)
     0xc6d2 => { #JD (Panasonic DMC-TZ5)
         # this text is UTF-8 encoded (hooray!) - PH (TZ5)
         Name => 'PanasonicTitle',
@@ -3294,6 +3297,7 @@ my %sampleFormat = (
         ValueConvInv => '$self->Encode($val,"UTF8")',
     },
     # 0xc6dc - int32u[4]: found in CR2 images (PH, 7DmkIII)
+    # 0xc6dd - int16u[256]: found in CR2 images (PH, 5DmkIV)
     0xc6f3 => {
         Name => 'CameraCalibrationSig',
         WriteGroup => 'IFD0',
@@ -5477,7 +5481,9 @@ sub ProcessExif($$$)
             $valuePtr = Get32u($dataPt, $valuePtr);
             if ($validate and not $inMakerNotes) {
                 $et->Warn(sprintf('Odd offset for %s tag 0x%.4x', $name, $tagID), 1) if $valuePtr & 0x01;
-                if ($valuePtr < 8 || $valuePtr + $size > ($$et{VALUE}{FileSize} || length($$dataPt))) {
+                if ($valuePtr < 8 || ($valuePtr + $size > length($$dataPt) and
+                                      $valuePtr + $size > $$et{VALUE}{FileSize}))
+                {
                     $et->Warn(sprintf("Invalid offset for %s tag 0x%.4x", $name, $tagID));
                     ++$warnCount;
                     next;

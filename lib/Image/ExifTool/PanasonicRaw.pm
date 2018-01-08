@@ -20,7 +20,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.11';
+$VERSION = '1.12';
 
 sub ProcessJpgFromRaw($$$);
 sub WriteJpgFromRaw($$$);
@@ -546,7 +546,7 @@ sub WriteJpgFromRaw($$$)
     my ($et, $dirInfo, $tagTablePtr) = @_;
     my $dataPt = $$dirInfo{DataPt};
     my $byteOrder = GetByteOrder();
-    my $fileType = $$et{FILE_TYPE};   # RAW, RW2 or RWL
+    my $fileType = $$et{TIFF_TYPE};   # RAW, RW2 or RWL
     my $dirStart = $$dirInfo{DirStart};
     if ($dirStart) { # DirStart is non-zero in DNG-converted RW2/RWL
         my $dirLen = $$dirInfo{DirLen} | length($$dataPt) - $dirStart;
@@ -587,7 +587,7 @@ sub ProcessJpgFromRaw($$$)
     my ($et, $dirInfo, $tagTablePtr) = @_;
     my $dataPt = $$dirInfo{DataPt};
     my $byteOrder = GetByteOrder();
-    my $fileType = $$et{FILE_TYPE};   # RAW, RW2 or RWL
+    my $fileType = $$et{TIFF_TYPE};   # RAW, RW2 or RWL
     my $tagInfo = $$dirInfo{TagInfo};
     my $verbose = $et->Options('Verbose');
     my ($indent, $out);

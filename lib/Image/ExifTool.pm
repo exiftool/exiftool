@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup);
 
-$VERSION = '10.74';
+$VERSION = '10.75';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -136,12 +136,12 @@ sub ReadValue($$$$$;$);
     FujiFilm::RAF FujiFilm::IFD Samsung::Trailer Sony::SRF2 Sony::SR2SubIFD
     Sony::PMP ITC ID3 FLAC Ogg Vorbis APE APE::NewHeader APE::OldHeader Audible
     MPC MPEG::Audio MPEG::Video MPEG::Xing M2TS QuickTime QuickTime::ImageFile
-    QuickTime::Stream QuickTime::GoPro Matroska MOI MXF DV Flash Flash::FLV
-    Real::Media Real::Audio Real::Metafile RIFF AIFF ASF DICOM MIE JSON HTML
-    XMP::SVG Palm Palm::MOBI Palm::EXTH Torrent EXE EXE::PEVersion
-    EXE::PEString EXE::MachO EXE::PEF EXE::ELF EXE::AR EXE::CHM LNK Font
-    VCard VCard::VCalendar RSRC Rawzor ZIP ZIP::GZIP ZIP::RAR RTF OOXML
-    iWork ISO FLIR::AFF FLIR::FPF MacOS::MDItem MacOS::XAttr
+    QuickTime::Stream Matroska MOI MXF DV Flash Flash::FLV Real::Media
+    Real::Audio Real::Metafile RIFF AIFF ASF DICOM MIE JSON HTML XMP::SVG Palm
+    Palm::MOBI Palm::EXTH Torrent EXE EXE::PEVersion EXE::PEString EXE::MachO
+    EXE::PEF EXE::ELF EXE::AR EXE::CHM LNK Font VCard VCard::VCalendar RSRC
+    Rawzor ZIP ZIP::GZIP ZIP::RAR RTF OOXML iWork ISO FLIR::AFF FLIR::FPF
+    MacOS::MDItem MacOS::XAttr
 );
 
 # alphabetical list of current Lang modules
@@ -2298,8 +2298,9 @@ sub ExtractInfo($;@)
         my %dirInfo = ( RAF => $raf, Base => $pos );
         # loop through list of file types to test
         my ($buff, $seekErr);
-        # read first 1024 bytes of file for testing
-        $raf->Read($buff, 1024) or $buff = '';
+        # read start of file for testing
+        my $testLen = 1024;
+        $raf->Read($buff, $testLen) or $buff = '';
         $raf->Seek($pos, 0) or $seekErr = 1;
         until ($seekErr) {
             my $unkHeader;
@@ -2384,7 +2385,15 @@ sub ExtractInfo($;@)
             my $fileType = GetFileType($realname);
             my $err;
             if (not $fileType) {
-                $err = 'Unknown file type';
+                if (not length $buff) {
+                    $err = 'File is empty';
+                } elsif ($buff =~ /[\x01-\xff]/) {
+                    $err = 'Unknown file type';
+                } elsif (length $buff == $testLen) {
+                    $err = 'File header is all binary zeros';
+                } else {
+                    $err = 'File is all binary zeros';
+                }
             } elsif ($fileType eq 'RAW') {
                 $err = 'Unsupported RAW file type';
             } else {
@@ -7131,7 +7140,7 @@ sub AddTagToTable($$;$$)
 # Handle simple extraction of new tag information
 # Inputs: 0) ExifTool object ref, 1) tag table reference, 2) tagID, 3) value,
 #         4-N) parameters hash: Index, DataPt, DataPos, Base, Start, Size, Parent,
-#              TagInfo, ProcessProc, RAF
+#              TagInfo, ProcessProc, RAF, Format
 # Returns: tag key or undef if tag not found
 # Notes: if value is not defined, it is extracted from DataPt using TagInfo
 #        Format and Count if provided

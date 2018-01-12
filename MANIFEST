@@ -69,6 +69,7 @@ html/TagNames/GIF.html
 html/TagNames/GIMP.html
 html/TagNames/GPS.html
 html/TagNames/GeoTiff.html
+html/TagNames/GoPro.html
 html/TagNames/H264.html
 html/TagNames/HP.html
 html/TagNames/HTML.html
@@ -260,6 +261,7 @@ lib/Image/ExifTool/GIMP.pm
 lib/Image/ExifTool/GPS.pm
 lib/Image/ExifTool/GeoTiff.pm
 lib/Image/ExifTool/Geotag.pm
+lib/Image/ExifTool/GoPro.pm
 lib/Image/ExifTool/H264.pm
 lib/Image/ExifTool/HP.pm
 lib/Image/ExifTool/HTML.pm

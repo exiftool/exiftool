@@ -17,14 +17,29 @@ considered development releases, and are not uploaded to <a href="http://search.
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v10.75'><b>Jan. 12, 2018 - Version 10.75</b></a>
+<ul>
+<li>Added another Sony/Minolta lens (thanks Jos Roost)
+<li>Decode more QuickTime tags
+<li>Decode a number of new tags from GoPro Hero6 MP4 videos
+<li>Enhanded "Unknown file type" error to indicate if "File is empty" or "File
+    header is all binary zeros"
+<li>Improved decoding of some Sony tags (thanks Jos Roost)
+<li>Improved decoding of QuickTime timed metadata
+<li>Marked ArtworkCircaDateCreated as "Unsafe" for writing to avoid it being
+    added when attempting to shift all date/time tags
+<li>Fixed bug which could cause runtime error when reading some old Sony maker
+    notes (thanks Tamas Lovag)
+</ul>
+
 <a name='v10.74'><b>Jan. 8, 2018 - Version 10.74</b></a>
 <ul>
 <li>Added a new Sony/Minolta lens (thanks Jos Roost)
 <li>Added print conversion for ICC_Profile DeviceManufacturer and ProfileCreator
 <li>Added informational warning when the ExtractEmbedded option may be useful
-<li>Improvements to experimental validate feature for RAW files
+<li>Improved experimental validate feature for RAW files
 <li>Fixed bug in experimental Validate feature that could cause out-of-memory
-    error when combined with "-use mwg" feature.
+    error when combined with "-use mwg"
 </ul>
 
 <a name='v10.73'><b>Jan. 5, 2018 - Version 10.73</b></a>

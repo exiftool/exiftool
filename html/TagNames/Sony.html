@@ -1495,6 +1495,7 @@ adapter is used.</p>
 </tr><tr><td>2561.7</td><td>= Tokina AF 730 II 75-300mm F4.5-5.6</td>
 </tr><tr><td>2561.8</td><td>= Sigma 800mm F5.6 APO</td>
 </tr><tr><td>2561.9</td><td>= Sigma AF 400mm F5.6 APO Macro</td>
+</tr><tr><td>2561.10</td><td>= Sigma 1000mm F8 APO</td>
 </tr><tr><td>2562</td><td>= Minolta AF 50mm F1.4 [New]</td>
 </tr><tr><td>2563</td><td>= Minolta AF 300mm F2.8 APO or Sigma Lens</td>
 </tr><tr><td>2563.1</td><td>= Sigma AF 50-500mm F4-6.3 EX DG APO</td>
@@ -1701,6 +1702,7 @@ adapter is used.</p>
 </tr><tr><td>25611.7</td><td>= Tokina AF 730 II 75-300mm F4.5-5.6</td>
 </tr><tr><td>25611.8</td><td>= Sigma 800mm F5.6 APO</td>
 </tr><tr><td>25611.9</td><td>= Sigma AF 400mm F5.6 APO Macro</td>
+</tr><tr><td>25611.10</td><td>= Sigma 1000mm F8 APO</td>
 </tr><tr><td>25621</td><td>= Minolta AF 50mm F1.4 [New]</td>
 </tr><tr><td>25631</td><td>= Minolta AF 300mm F2.8 APO or Sigma Lens</td>
 </tr><tr><td>25631.1</td><td>= Sigma AF 50-500mm F4-6.3 EX DG APO</td>
@@ -4777,9 +4779,9 @@ multi-frame noise reduction)</span></span></td></tr>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td class=r title='1012 = 0x3f4'>1012</td>
+<td class=r title='1011 = 0x3f3'>1011</td>
 <td>LensFirmwareVersion</td>
-<td class=c>int8u</td>
+<td class=c title=' ~ = Writable only with -n'>int16u~</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='1015 = 0x3f7'>1015</td>
@@ -7739,12 +7741,12 @@ substitution cipher, but the deciphered values are listed below.</p>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
 <td title='0x0000 = 0'>0x0000</td>
-<td>MaxAperture</td>
+<td>SonyMaxAperture</td>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x0001 = 1'>0x0001</td>
-<td>MinAperture</td>
+<td>SonyMinAperture</td>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -7873,12 +7875,12 @@ models)</span></span></td></tr>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
 <td title='0x0000 = 0'>0x0000</td>
-<td>MaxAperture</td>
+<td>SonyMaxAperture</td>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x0001 = 1'>0x0001</td>
-<td>MinAperture</td>
+<td>SonyMinAperture</td>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -8747,9 +8749,9 @@ RX100M4/RX100M5/WX220/WX350, ILCE-7/7M2/7R/7RM2/7S/7SM2/9/5000/5100/6000/
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td title='0x0015 = 21'>0x0015</td>
+<td title='0x0014 = 20'>0x0014</td>
 <td>LensFirmwareVersion</td>
-<td class=c>int8u</td>
+<td class=c title=' ~ = Writable only with -n'>int16u~</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -11051,7 +11053,7 @@ the JPEG image from a PMP file)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jan 8, 2018</i>
+<br><i>Last revised Jan 12, 2018</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

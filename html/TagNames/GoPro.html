@@ -1,0 +1,254 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>GoPro Tags</title>
+<link rel=stylesheet type='text/css' href='style.css' title='Style'>
+</head>
+<body>
+<h2 class=top><a name='GPMF'>GoPro GPMF Tags</a></h2>
+<p>Tags extracted from the GPMF box of GoPro MP4 videos.  Many more tags exist,
+but are currently unknown and extracted only with the -u option.  Please let
+me know if you discover the meaning of any of these unknown tags.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'AUDO'</td>
+<td>AudioSetting</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'CASN'</td>
+<td>CameraSerialNumber</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'FMWR'</td>
+<td>FirmwareVersion</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'MINF'</td>
+<td>Model</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'PIMN'</td>
+<td>AutoISOMin</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'PIMX'</td>
+<td>AutoISOMax</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='MET'>GoPro MET Tags</a></h2>
+<p>Tags extracted from the MP4 &quot;GoPro MET&quot; timed metadata when the ExtractEmbedded
+option is used.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'ACCL'</td>
+<td>Accelerometer</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'DEVC'</td>
+<td>DeviceContainer</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'DVID'</td>
+<td>DeviceID?</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'DVNM'</td>
+<td>DeviceName</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'EMPT'</td>
+<td>Empty?</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'FCNM'</td>
+<td>FaceNumbers</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'GPS5'</td>
+<td>GPSInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='GoPro.html#GPS5'>GoPro GPS5 Tags</a></td></tr>
+<tr class=b>
+<td>'GPSF'</td>
+<td>GPSMeasureMode</td>
+<td class=c>no</td>
+<td><span class=s>2 = 2-Dimensional Measurement
+  <br>3 = 3-Dimensional Measurement</span></td></tr>
+<tr>
+<td>'GPSP'</td>
+<td>GPSHPositioningError</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'GPSU'</td>
+<td>GPSDateTime</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'GYRO'</td>
+<td>Gyroscope</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'ISOE'</td>
+<td>ISOSpeeds</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'ISOG'</td>
+<td>ImageSensorGain</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'RMRK'</td>
+<td>Comments</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'SCAL'</td>
+<td>ScaleFactor?</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'SHUT'</td>
+<td>ExposureTimes</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'SIUN'</td>
+<td>SIUnits</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'STNM'</td>
+<td>StreamName?</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'STRM'</td>
+<td>NestedSignalStream?</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TMPC'</td>
+<td>CameraTemperature</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'TSMP'</td>
+<td>TotalSamples?</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'TYPE'</td>
+<td>StructureType?</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'UNIT'</td>
+<td>Units</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'WBAL'</td>
+<td>ColorTemperatures</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'WRGB'</td>
+<td>WhiteBalanceRGB</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='GPS5'>GoPro GPS5 Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index4</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>GPSLatitude</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='1 = 0x1'>1</td>
+<td>GPSLongitude</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='2 = 0x2'>2</td>
+<td>GPSAltitude</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='3 = 0x3'>3</td>
+<td>GPSSpeed</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='4 = 0x4'>4</td>
+<td>GPSSpeed3D</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='SOS'>GoPro SOS Tags</a></h2>
+<p>Tags extracted from the MP4 &quot;GoPro SOS&quot; timed metadata when the ExtractEmbedded
+option is used.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='8 = 0x8'>8</td>
+<td>FirmwareVersion</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='23 = 0x17'>23</td>
+<td>SerialNumber</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='87 = 0x57'>87</td>
+<td>OtherSerialNumber</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='102 = 0x66'>102</td>
+<td>Model</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<hr>
+(This document generated automatically by Image::ExifTool::BuildTagLookup)
+<br><i>Last revised Jan 12, 2018</i>
+<p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
+</body>
+</html>

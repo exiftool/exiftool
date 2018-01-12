@@ -457,7 +457,7 @@ my %sLinkedImage = (
             AOCurrentLicensorName       => { },
             AOCurrentLicensorId         => { },
             AOCreatorId                 => { List => 'Seq' },
-            AOCircaDateCreated          => { Groups => { 2 => 'Time' } },
+            AOCircaDateCreated          => { Groups => { 2 => 'Time' }, Protected => 1 },
             AOStylePeriod               => { List => 'Bag' },
             AOSourceInvURL              => { },
             AOContentDescription        => { Writable => 'lang-alt' },

@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.70';
+$VERSION = '2.71';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -5238,21 +5238,13 @@ my %faceInfo = (
         PrintConv => 'sprintf("%x.%.2x",$val>>8,$val&0xff)',
         PrintConvInv => 'my @a=split(/\./,$val);(hex($a[0])<<8)|hex($a[1])',
     },
-    # maybe this wasn't right (ref JR)
-    #0x03f3 => {
-    #    Name => 'CameraE-mountVersion',
-    #    Format => 'int16u',
-    #    Condition => '($$self{Model} =~ /^NEX-/)',
-    #    PrintConv => 'sprintf("%x.%.2x",$val>>8,$val&0xff)',
-    #    PrintConvInv => 'my @a=split(/\./,$val);(hex($a[0])<<8)|hex($a[1])',
-    #    # seen values 1.00, 1.01, 1.02, 1.03 and 1.04 for NEX-3/5/5C/C3/VG10/VG10E with various Firmware versions.
-    #},
-    0x03f4 => { #JR (NC)
+    # 0x03f3 - this is probably LensFirmwareVersion and not CameraE-MountVersion (ref JR, Sept.2015)
+    # 0x03f3 and 0x03f4 change together and behave similarly to Tag940c 0x0014 and 0x0015 - see comments there.
+    0x03f3 => {
         Name => 'LensFirmwareVersion',
-        Format => 'int8u',
+        Format => 'int16u',
         Condition => '($$self{Model} =~ /^NEX-/)',
-        PrintConv => 'sprintf("Ver.%.2x",$val)',
-        PrintConvInv => '$val=~s/^Ver\.//; hex($val)',
+        PrintConv => 'sprintf("Ver.%.2x.%.3d",$val>>8,$val&0xff)',
     },
     0x3f7 => { #JR
         Name => 'LensType2',
@@ -6909,7 +6901,7 @@ my %pictureProfile2010 = (
     },
     0x0000 => {
         Condition => '$$self{Model} !~ /^(NEX-|Lunar|ILCE-)/',
-        Name => 'MaxAperture', # (at current focal length)
+        Name => 'SonyMaxAperture', # (at current focal length)
         # seen values from 17 - 48
         ValueConv => '2 ** (($val/8 - 1.06) / 2)',
         ValueConvInv => 'int((log($val) * 2 / log(2) + 1) * 8 + 0.5)',
@@ -6918,7 +6910,7 @@ my %pictureProfile2010 = (
     },
     0x0001 => {
         Condition => '$$self{Model} !~ /^(NEX-|Lunar|ILCE-)/',
-        Name => 'MinAperture', # (at current focal length)
+        Name => 'SonyMinAperture', # (at current focal length)
         # seen values from 80 - 95
         ValueConv => '2 ** (($val/8 - 1.06) / 2)',
         ValueConvInv => 'int((log($val) * 2 / log(2) + 1) * 8 + 0.5)',
@@ -7166,7 +7158,7 @@ my %pictureProfile2010 = (
     GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
     0x0000 => {
         Condition => '$$self{Model} =~ /^(ILCA-)/',
-        Name => 'MaxAperture', # (at current focal length)
+        Name => 'SonyMaxAperture', # (at current focal length)
         # seen values from 17 - 48
         ValueConv => '2 ** (($val/8 - 1.06) / 2)',
         ValueConvInv => 'int((log($val) * 2 / log(2) + 1) * 8 + 0.5)',
@@ -7175,7 +7167,7 @@ my %pictureProfile2010 = (
     },
     0x0001 => {
         Condition => '$$self{Model} =~ /^(ILCA-)/',
-        Name => 'MinAperture', # (at current focal length)
+        Name => 'SonyMinAperture', # (at current focal length)
         # seen values from 80 - 95
         ValueConv => '2 ** (($val/8 - 1.06) / 2)',
         ValueConvInv => 'int((log($val) * 2 / log(2) + 1) * 8 + 0.5)',
@@ -8309,22 +8301,20 @@ my %pictureProfile2010 = (
         #       Voigtlander 15mm
         # 1.70: LA-EA3 Ver.02, Samyang AF 35mm, Voigtlander 10mm/12mm/40mm/65mm, Zeiss Loxia 85mm
     },
-    0x0015 => {
+    # 0x0014 and 0x0015: change together: LensFirmwareVersion
+    #    0x0015 as 2-digit hex matches known firmware versions of Sony lenses and Metabones adapters,
+    #    0x0014 as 3-digit decimal: not confirmed sub-versions
+    #    Some versions as seen with this decoding:
+    #       00.nnn for several pre-production Sony E-mount lenses
+    #       01.000 - 01.009 for various Sony E-mount lenses
+    #       02.nnn, 03.nnn for various Sony E-mount lenses for which a Ver.02 or Ver.03 update is available
+    #       16.001 for Metabones Speed Booster
+    #       19/22/24/30/32/41.001 etc. for Metabones Canon EF Smart adapters
+    0x0014 => {
         Name => 'LensFirmwareVersion',
         Condition => '$$self{LensMount} != 0',
-        Format => 'int8u',
-        PrintConv => 'sprintf("Ver.%.2x",$val)',
-        PrintConvInv => '$val=~/Ver\.//; hex($val)',
-        # 0x00: Sony Ver.00
-        # 0x01: Sony Ver.01
-        # 0x02: Sony Ver.02
-        # 0x16: Metabones V0.16
-        # 0x19: Metabones V0.19
-        # 0x22: Metabones V0.22
-        # 0x24: Metabones V0.24
-        # 0x30: Metabones V0.30
-        # 0x32: Metabones V0.32
-        # 0x41: Metabones V0.41 (ILCE-7RM2 with Metabones Smart IV)
+        Format => 'int16u',
+        PrintConv => 'sprintf("Ver.%.2x.%.3d",$val>>8,$val&0xff)',
     },
     # 0x0016 - 0x003f: non-0 data present when: 0x0001>0 AND 0x0008=4(E-mount) AND 0x000f<255
 );
@@ -9426,7 +9416,7 @@ sub ProcessSonyPIC($$$)
     if ($len >= 26) {
         my $count = Get16u($dataPt, $start + 12);
         if ($count > 256) {
-            SwapByteOrder();
+            ToggleByteOrder();
             $count = Get16u($dataPt, $start + 12);
         }
         if ($count and $count < 256) {

@@ -5,12 +5,42 @@
 #
 # Revisions:    2018-01-03 - P. Harvey Created
 #
-# References:   1) https://github.com/stilldavid/gopro-utils
-#               2) http://sergei.nz/files/nvtk_mp42gpx.py
+# References:   2) http://sergei.nz/files/nvtk_mp42gpx.py
 #------------------------------------------------------------------------------
 package Image::ExifTool::QuickTime;
 
 use strict;
+
+# QuickTime data types that have ExifTool equivalents
+# (ref https://developer.apple.com/library/content/documentation/QuickTime/QTFF/Metadata/Metadata.html#//apple_ref/doc/uid/TP40000939-CH1-SW35)
+my %qtFmt = (
+    0 => 'undef',
+    1 => 'string', # (UTF-8)
+    # 2 - UTF-16
+    # 3 - shift-JIS
+    # 4 - UTF-8 sort
+    # 5 - UTF-16 sort
+    # 13 - JPEG image
+    # 14 - PNG image
+    # 21 - signed integer (1,2,3 or 4 bytes)
+    # 22 - unsigned integer (1,2,3 or 4 bytes)
+    23 => 'float',
+    24 => 'double',
+    # 27 - BMP image
+    # 28 - QuickTime atom
+    65 => 'int8s',
+    66 => 'int16s',
+    67 => 'int32s',
+    # 70 - float[2] x,y
+    # 71 - float[2] width,height
+    # 72 - float[4] x,y,width,height
+    74 => 'int64s',
+    75 => 'int8u',
+    76 => 'int16u',
+    77 => 'int32u',
+    78 => 'int64u',
+    # 79 - float[9] transform matrix
+);
 
 # tags extracted from various QuickTime data streams
 %Image::ExifTool::QuickTime::Stream = (
@@ -29,220 +59,205 @@ use strict;
     GPSTrackRef  => { PrintConv => { M => 'Magnetic North', T => 'True North' } },
     GPSDateTime  => { PrintConv => '$self->ConvertDateTime($val)', Groups => { 2 => 'Time' } },
     Accelerometer=> { Notes => 'right/up/backward acceleration in units of g' },
-    TimeCode     => { Groups => { 2 => 'Time' } },
     Text         => { Groups => { 2 => 'Other' } },
-);
-
-# GoPro META tags (ref 1)
-%Image::ExifTool::QuickTime::GoPro = (
-    GROUPS => { 1 => 'GoPro', 2 => 'Video' },
-    NOTES => q{
-        Tags extracted from compatible GoPro MP4 videos when the ExtractEmbedded
-        option is used.
+    TimeCode     => { Groups => { 2 => 'Other' } },
+    SampleTime   => { Groups => { 2 => 'Other' }, Notes => 'sample decoding time' },
+    SampleDuration=>{ Groups => { 2 => 'Other' } },
+#
+# streamed metadata decoded based on HandlerDescription
+#
+    'GoPro MET' => {
+        Name => 'GoProMET',
+        SubDirectory => { TagTable => 'Image::ExifTool::GoPro::MET' },
     },
-    ACCL => {
-        Name => 'Accelerometer',
-        ValueConv => q{
-            my @a = split ' ', $val;
-            my $scl = $$self{ScaleFactor} ? $$self{ScaleFactor}[0] : 1;
-            $_ /= $scl foreach @a;
-            return \ join ' ', @a;
-        },
+    'GoPro SOS' => {
+        Name => 'GoProSOS',
+        Condition => '$$valPt =~ /^GPRO/',
+        # (other types of "GoPro SOS" blocks aren't yet parsed: /^GP\x00/ and /^GP\x04/)
+        SubDirectory => { TagTable => 'Image::ExifTool::GoPro::SOS' },
     },
-    DEVC => 'Device',
-    DVID => { Name => 'DeviceID', Unknown => 1 }, # possibly hard-coded to 0x1
-    DVNM => {
-        Name => 'Model',
-        Description => 'Camera Model Name',
-    },
-    EMPT => { Name => 'Empty', Unknown => 1 },
-    GPS5 => {
-        Name => 'GPSInfo',
-        SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::GoProGPS' },
-    },
-    GPSF => {
-        Name => 'GPSMeasureMode',
-        PrintConv => {
-            2 => '2-Dimensional Measurement',
-            3 => '3-Dimensional Measurement',
-        },
-    },
-    GPSP => {
-        Name => 'GPSHPositioningError',
-        Description => 'GPS Horizontal Positioning Error',
-        ValueConv => '$val / 100', # convert from cm to m
-    },
-    GPSU => {
-        Name => 'GPSDateTime',
-        Groups => { 2 => 'Time' },
-        # (HERO5 writes this in 'c' format, HERO6 writes 'U')
-        ValueConv => '$val =~ s/^(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/20$1:$2:$3 $4:$5:/; $val',
-        PrintConv => '$self->ConvertDateTime($val)',
-    },
-    GYRO => {
-        Name => 'Gyroscope',
-        ValueConv => q{
-            my @a = split ' ', $val;
-            my $scl = $$self{ScaleFactor} ? $$self{ScaleFactor}[0] : 1;
-            $_ /= $scl foreach @a;
-            return \ join ' ', @a;
-        },
-    },
-    SCAL => { # scale factor for subsequent data
-        Name => 'ScaleFactor',
-        Unknown => 1,   # (not very useful to user)
-    },
-    SIUN => { # SI units (m/s2, rad/s)
-        Name => 'SIUnits',
-        ValueConv => '$self->Decode($val, "Latin")',
-    },
-    STRM => { Name => 'NestedSignalStream', Unknown => 1 },
-    STNM => {
-        Name => 'StreamName',
-        Unknown => 1,
-        ValueConv => '$self->Decode($val, "Latin")',
-    },
-    TMPC => {
-        Name => 'CameraTemperature',
-        PrintConv => '"$val C"',
-    },
-    TSMP => { Name => 'TotalSamples', Unknown => 1 },
-    UNIT => { # alternative units (deg, m, m/s));  
-        Name => 'Units',
-        ValueConv => '$self->Decode($val, "Latin")',
-    },
-    SHUT => {
-        Name => 'ExposureTimes',
-        PrintConv => q{
-            my @a = split ' ', $val;
-            $_ = Image::ExifTool::Exif::PrintExposureTime($_) foreach @a;
-            return join ' ', @a;
-        },
-    },
-    ISOG => 'ImageSensorGain',
-    TYPE => { Name => 'StructureType', Unknown => 1 },
-    RMRK => {
-        Name => 'Comments',
-        ValueConv => '$self->Decode($val, "Latin")',
-    },
-    WRGB => { #PH
-        Name => 'WhiteBalanceRGB',
-        Binary => 1,
-    },
-    WBAL => 'ColorTemperatures', #PH
-    FCNM => 'FaceNumbers', #PH
-    ISOE => 'ISOSpeeds', #PH
-  # ALLD => 'AutoLowLightDuration', #PH
-  # TICK => ?
-  # FACE => 'FaceDetected', #PH (need sample for testing)
-);
-
-# GoPro GPS tags (ref 1)
-%Image::ExifTool::QuickTime::GoProGPS = (
-    GROUPS => { 1 => 'GoPro', 2 => 'Location' },
-    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
-    FORMAT => 'int32s',
-    0 => {
-        Name => 'GPSLatitude',
-        ValueConv => '$val / ($$self{ScaleFactor} ? $$self{ScaleFactor}[0] : 1)',
-        PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")',
-    },
-    1 => {
-        Name => 'GPSLongitude',
-        ValueConv => '$val / ($$self{ScaleFactor} ? $$self{ScaleFactor}[1] : 1)',
-        PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "E")',
-    },
-    2 => {
-        Name => 'GPSAltitude',
-        ValueConv => '$val / ($$self{ScaleFactor} ? $$self{ScaleFactor}[2] : 1)',
-        PrintConv => '"$val m"',
-    },
-    3 => {
-        Name => 'GPSSpeed',
-        ValueConv => '$val / ($$self{ScaleFactor} ? $$self{ScaleFactor}[3] : 1)',
-    },
-    4 => {
-        Name => 'GPSSpeed3D',
-        ValueConv => '$val / ($$self{ScaleFactor} ? $$self{ScaleFactor}[4] : 1)',
-    },
+    # also seen:
+    # 'Timed Metadata Media Handler' (Sony ILCE-7S mp4; minutes:seconds at byte 22/23)
 );
 
 #------------------------------------------------------------------------------
-# Process GoPro MET data
-# Inputs: 0) ExifTool ref, 1) data ref
-my %goProFmt = ( # format codes
-    0x62 => 'int8s',    # 'b'
-    0x42 => 'int8u',    # 'B'
-    0x63 => 'undef',    # 'c' (character)
-    0x73 => 'int16s',   # 's'
-    0x53 => 'int16u',   # 'S'
-    0x6c => 'int32s',   # 'l'
-    0x4c => 'int32u',   # 'L'
-    0x66 => 'float',    # 'f'
-    0x64 => 'double',   # 'd'
-  # 0x46 => 'undef[4]', # 'F' (4-char ID)
-  # 0x47 => 'undef[16]',# 'G' (uuid)
-    0x6a => 'int64s',   # 'j'
-    0x4a => 'int64u',   # 'J'
-    0x71 => 'fixed32s', # 'q'
-  # 0x51 => 'fixed64s', # 'Q'
-  # 0x55 => 'date',     # 'U' 16-byte
-    0x3f => 'undef',    # '?' (complex structure)
-);
-sub ProcessGoProMET($$)
+# Save information from keys in OtherSampleDesc directory for processing timed metadata
+# Inputs: 0) ExifTool object ref, 1) dirInfo ref, 2) tag table ref
+# Returns: 1 on success
+# (ref "Timed Metadata Media" here:
+#  https://developer.apple.com/library/content/documentation/QuickTime/QTFF/QTFFChap3/qtff3.html)
+sub SaveMetaKeys($$$)
 {
-    my ($et, $dataPt) = @_;
-    my $dataLen = length $$dataPt;
-    my $unk = ($et->Options('Unknown') || $et->Options('Verbose'));
+    local $_;
+    my ($et, $dirInfo, $tagTablePtr) = @_;
+    my $dataPt = $$dirInfo{DataPt};
+    my $dirLen = length $$dataPt;
+    return 0 unless $dirLen > 8;
     my $pos = 0;
+    my $verbose = $$et{OPTIONS}{Verbose};
+    my $oldIndent = $$et{INDENT};
+    my $ee = $$et{ee};
+    $ee or $ee = $$et{ee} = { };
 
-    my $tagTablePtr = GetTagTable('Image::ExifTool::QuickTime::GoPro');
+    $verbose and $et->VerboseDir($$dirInfo{DirName}, undef, $dirLen);
 
-    while ($pos + 8 <= $dataLen) {
-        my $tag = substr($$dataPt, $pos, 4);
-        my ($fmt,$size,$count) = unpack("x${pos}x4CCn", $$dataPt);
+    # loop through metadata key table
+    while ($pos + 8 < $dirLen) {
+        my $size = Get32u($dataPt, $pos);
+        my $id = substr($$dataPt, $pos+4, 4);
+        my $end = $pos + $size;
+        $end = $dirLen if $end > $dirLen;
         $pos += 8;
-        next if $fmt == 0;
-        my $len = $size * $count;
-        last if $pos + $len > $dataLen;
-        next if $len == 0;  # skip empty tags (for now)
-        my $format = $goProFmt{$fmt} || 'undef';
-        $format = 'undef' if $tag eq 'GPS5';   # don't reformat GPSInfo
-        my ($val, @val);
-        if ($format eq 'undef' and $count > 1 and $size > 1) {
-            my ($i, @val);
-            for ($i=0; $i<$count; ++$i) {
-                push @val, substr($$dataPt, $pos + $size * $i, $size);
+        my ($tagID, $format, $pid);
+        if ($verbose) {
+            $pid = PrintableTagID($id,1);
+            $et->VPrint(0,"$oldIndent+ [Metdata Key entry, Local ID=$pid, $size bytes]\n");
+            $$et{INDENT} .= '| ';
+        }
+
+        while ($pos + 4 < $end) {
+            my $len = unpack("x${pos}N", $$dataPt);
+            last if $len < 8 or $pos + $len > $end;
+            my $tag = substr($$dataPt, $pos + 4, 4);
+            $pos += 8;  $len -= 8;
+            my $val = substr($$dataPt, $pos, $len);
+            $pos += $len;
+            my $str;
+            if ($tag eq 'keyd') {
+                ($tagID = $val) =~ s/^(mdta|fiel)com\.apple\.quicktime\.//;
+                $tagID = "Tag_$val" unless $tagID;
+                ($str = $val) =~ s/(.{4})/$1 / if $verbose;
+            } elsif ($tag eq 'dtyp') {
+                next if length $val < 4;
+                if (length $val >= 4) {
+                    my $ns = unpack('N', $val);
+                    if ($ns == 0) {
+                        length $val >= 8 or $et->Warn('Short dtyp data'), next;
+                        $str = unpack('x4N',$val);
+                        $format = $qtFmt{$str} || 'undef';
+                    } elsif ($ns == 1) {
+                        $str = substr($val, 4);
+                        $format = 'undef';
+                    } else {
+                        $format = 'undef';
+                    }
+                    $str .= " ($format)" if $verbose and defined $str;
+                }
             }
-            $val = join ' ', @val;
-        } else {
-            $val = ReadValue($dataPt, $pos, $format, undef, $len);
+            if ($verbose > 1) {
+                if (defined $str) {
+                    $str =~ tr/\x00-\x1f\x7f-\xff/./;
+                    $str = " = $str";
+                } else {
+                    $str = '';
+                }
+                $et->VPrint(1, $$et{INDENT}."- Tag '".PrintableTagID($tag)."' ($len bytes)$str\n");
+                HexDump(\$val, undef, Prefix => $$et{INDENT}) if $verbose > 2;
+            }
         }
-        # save scaling factor
-        $$et{ScaleFactor} = [ split ' ', $val ] if $tag eq 'SCAL';
-        $pos += (($len + 3) & 0xfffffffc);  # round up to even 4-byte boundary
-        if (not $$tagTablePtr{$tag} and $unk) {
-            AddTagToTable($tagTablePtr, $tag, { Name => Image::ExifTool::MakeTagName("Unknown_$tag") });
+        if (defined $tagID and defined $format) {
+            if ($verbose) {
+                my $t2 = PrintableTagID($tagID);
+                $et->VPrint(0,"$$et{INDENT}Added Local ID $pid = $t2 ($format)\n");
+            }
+            $$ee{'keys'}{$id} = { TagID => $tagID, Format => $format };
         }
-        $et->HandleTag($tagTablePtr, $tag, $val);
+        $$et{INDENT} = $oldIndent;
     }
+    return 1;
+}
+
+#------------------------------------------------------------------------------
+# We found some tags for this sample, so set document number and save timing information
+# Inputs: 0) ExifTool ref, 1) tag table ref, 2) sample time, 3) sample duration
+sub FoundSomething($$$$)
+{
+    my ($et, $tagTablePtr, $time, $dur) = @_;
+    $$et{DOC_NUM} = ++$$et{DOC_COUNT};
+    $et->HandleTag($tagTablePtr, SampleTime => $time) if defined $time;
+    $et->HandleTag($tagTablePtr, SampleDuration => $dur) if defined $dur;
 }
 
 #------------------------------------------------------------------------------
 # Exract embedded metadata from media samples
-# Inputs: 0) ExifTool ref, 1) tag table ptr, 2) RAF ref, 3) embedded info
-sub ProcessSamples($$$$)
+# Inputs: 0) ExifTool ref
+# Notes: Also accesses ExifTool RAF*, SET_GROUP1, HandlerType, HandlerDesc,
+#        ee*, and avcC elements (* = must exist)
+sub ProcessSamples($)
 {
-    my ($et, $tagTablePtr, $raf, $eeInfo) = @_;
-    my ($start, $size, $type, $desc) = @$eeInfo{qw(start size type desc)};
-    my ($i, $pos, $buff, %parms, $hdrLen, $hdrFmt);
+    my $et = shift;
+    my ($raf, $ee) = @$et{qw(RAF ee)};
+    my ($i, $buff, $pos, %parms, $hdrLen, $hdrFmt, @time, @dur);
+
+    return unless $ee;
+    delete $$et{ee};    # use only once
+    my ($start, $size) = @$ee{qw(start size)};
+#
+# determine sample start offsets from chunk offsets (stco) and sample-to-chunk table (stsc),
+# and sample time/duration from time-to-sample (stts)
+#
+    unless ($start and $size) {
+        return unless $size;
+        my ($stco, $stsc, $stts) = @$ee{qw(stco stsc stts)};
+        return unless $stco and $stsc and @$stsc;
+        $start = [ ];
+        my ($nextChunk, $iChunk) = (0, 1);
+        my ($chunkStart, $startChunk, $samplesPerChunk, $descIdx, $timeCount, $timeDelta, $time);
+        if ($stts and @$stts > 1) {
+            $time = 0;
+            $timeCount = shift @$stts;
+            $timeDelta = shift @$stts;
+        }
+        my $ts = $$et{MediaTS} || 1;
+        foreach $chunkStart (@$stco) {
+            if ($iChunk >= $nextChunk and @$stsc) {
+                ($startChunk, $samplesPerChunk, $descIdx) = @{shift @$stsc};
+                $nextChunk = $$stsc[0][0] if @$stsc;
+            }
+            @$size < @$start + $samplesPerChunk and $et->WarnOnce('Sample size error'), return;
+            my $sampleStart = $chunkStart;
+            for ($i=0; ; ) {
+                push @$start, $sampleStart;
+                if (defined $time) {
+                    until ($timeCount) {
+                        if (@$stts < 2) {
+                            undef $time;
+                            last;
+                        }
+                        $timeCount = shift @$stts;
+                        $timeDelta = shift @$stts;
+                    }
+                    push @time, $time / $ts;
+                    push @dur, $timeDelta / $ts;
+                    $time += $timeDelta;
+                    --$timeCount;
+                }
+                # (eventually should use the description indices: $descIdx)
+                last if ++$i >= $samplesPerChunk;
+                $sampleStart += $$size[$#$start];
+            }
+            ++$iChunk;
+        }
+        @$start == @$size or $et->WarnOnce('Incorrect sample start/size count'), return;
+    }
+#
+# extract and parse the sample data
+#
+    my $tagTablePtr = GetTagTable('Image::ExifTool::QuickTime::Stream');
     my $verbose = $et->Options('Verbose');
+    my $type = $$et{HandlerType} || '';
+    my $desc = $$et{HandlerDesc} || '';
+    my $tell = $raf->Tell();
+
+    $et->VPrint(0,"---- Extract Embedded ----\n");
+    my $oldIndent = $$et{INDENT};
+    $$et{INDENT} = '';
 
     $parms{MaxLen} = $verbose == 3 ? 96 : 2048 if $verbose < 5;
 
     # get required information from avcC box if parsing video data
-    if ($type eq 'vide' and $$eeInfo{avcC}) {
-        $hdrLen = (Get8u(\$$eeInfo{avcC}, 4) & 0x03) + 1;
+    if ($type eq 'vide' and $$ee{avcC}) {
+        $hdrLen = (Get8u(\$$ee{avcC}, 4) & 0x03) + 1;
         $hdrFmt = ($hdrLen == 4 ? 'N' : $hdrLen == 2 ? 'n' : 'C');
         require Image::ExifTool::H264;
     }
@@ -250,7 +265,8 @@ sub ProcessSamples($$$$)
     for ($i=0; $i<@$start and $i<@$size; ++$i) {
 
         # read the sample data
-        next unless $raf->Seek($$start[$i], 0) and $raf->Read($buff, $$size[$i]) == $$size[$i];
+        my $size = $$size[$i];
+        next unless $raf->Seek($$start[$i], 0) and $raf->Read($buff, $size) == $size;
 
         if ($type eq 'vide' and defined $hdrLen) {
             next if length($buff) <= $hdrLen;
@@ -265,15 +281,22 @@ sub ProcessSamples($$$$)
             }
             next;
         }
-        if ($verbose > 2) {
-            $et->VPrint(2, "Type='$type' Desc='$desc', Sample ".($i+1).' of '.scalar(@$start)."\n");
+        if ($verbose > 1) {
+            my $hdr = $$et{SET_GROUP1} ? "$$et{SET_GROUP1} Type='$type' Desc='$desc'" : "Type='$type'";
+            $et->VPrint(1, "${hdr}, Sample ".($i+1).' of '.scalar(@$start)." ($size bytes)\n");
             $parms{Addr} = $$start[$i];
-            HexDump(\$buff, undef, %parms);
+            HexDump(\$buff, undef, %parms) if $verbose > 2;
         }
         if ($type eq 'text') {
 
-            $$et{DOC_NUM} = ++$$et{DOC_COUNT};
+            FoundSomething($et, $tagTablePtr, $time[$i], $dur[$i]);
             unless ($buff =~ /^\$BEGIN/) {
+                # cameras such as the CanonPowerShotN100 store ASCII time codes with a
+                # leading 2-byte integer giving the length of the string
+                if ($size >= 2 and unpack('n',$buff) == $size - 2) {
+                    next if $size == 2;
+                    $buff = substr($buff,2);
+                }
                 $et->HandleTag($tagTablePtr, Text => $buff);
                 next;
             }
@@ -296,7 +319,7 @@ sub ProcessSamples($$$$)
                 } elsif ($tag eq 'BEGINGSENSOR' and $dat =~ /^:([-+]\d+\.\d+):([-+]\d+\.\d+):([-+]\d+\.\d+)/) {
                     $et->HandleTag($tagTablePtr, Accelerometer => "$1 $2 $3");
                 } elsif ($tag eq 'TIME' and $dat =~ /^:(\d+)/) {
-                    $et->HandleTag($tagTablePtr, TimeCode => $1 / 100000);
+                    $et->HandleTag($tagTablePtr, TimeCode => $1 / ($$et{MediaTS} || 1));
                 } elsif ($tag eq 'BEGIN') {
                     $et->HandleTag($tagTablePtr, Text => $dat) if length $dat;
                 } elsif ($tag ne 'END') {
@@ -304,10 +327,51 @@ sub ProcessSamples($$$$)
                 }
             }
 
-        } elsif ($type eq 'meta' and $desc eq 'GoPro MET') {
+        } elsif ($type eq 'meta') {
 
-            $$et{DOC_NUM} = ++$$et{DOC_COUNT};
-            ProcessGoProMET($et, \$buff);
+            if ($$ee{'keys'}) {
+
+                FoundSomething($et, $tagTablePtr, $time[$i], $dur[$i]);
+                # parse using information from 'keys' table (eg. Apple iPhone7+ hevc 'Core Media Data Handler')
+                my $keysTable = GetTagTable('Image::ExifTool::QuickTime::Keys');
+                my $pos = 0;
+                while ($pos + 8 < length $buff) {
+                    my $len = Get32u(\$buff, $pos);
+                    my $id = substr($buff, $pos+4, 4);
+                    last if $pos + $len > length $buff;
+                    my $info = $$ee{'keys'}{$id};
+                    if ($info) {
+                        my $val = substr($buff, $pos+8, $len);
+                        my $tag = $$info{TagID};
+                        unless ($$keysTable{$tag}) {
+                            next unless $tag =~ /^[-\w.]+$/;
+                            # create info for tags with reasonable id's
+                            my $name = $tag;
+                            $name =~ s/[-.](.)/\U$1/g;
+                            AddTagToTable($keysTable, $tag, {
+                                Name   => ucfirst($name),
+                                Format => $$info{Format},
+                            });
+                        }
+                        $et->HandleTag($keysTable, $tag, undef,
+                            DataPt => \$buff,
+                            Start  => 8,
+                            Size   => $len-8,
+                        );
+                    }
+                    $pos += 8 + $len;
+                }
+
+            } elsif ($$tagTablePtr{$desc}) {
+                my $tagInfo = $et->GetTagInfo($tagTablePtr, $desc, \$buff);
+                if ($tagInfo) {
+                    FoundSomething($et, $tagTablePtr, $time[$i], $dur[$i]);
+                    $et->HandleTag($tagTablePtr, $desc, undef,
+                        DataPt => \$buff,
+                        TagInfo => $tagInfo,
+                    );
+                }
+            }
 
         } elsif ($type eq 'gps ') {
 
@@ -316,7 +380,7 @@ sub ProcessSamples($$$$)
             my ($hr,$min,$sec,$yr,$mon,$day,$active,$latRef,$lonRef) = unpack('x48V6a1a1a1', $buff);
             next unless $active eq 'A'; # ignore bad GPS fixes
             my ($lat,$lon,$spd,$trk) = unpack('f*', pack('L*', unpack('x76V4', $buff)));
-            $$et{DOC_NUM} = ++$$et{DOC_COUNT};
+            FoundSomething($et, $tagTablePtr, $time[$i], $dur[$i]);
             # lat/long are in DDDmm.mmmm format
             my $deg = int($lat / 100);
             $lat = $deg + (($lat - $deg * 100) / 60) * ($latRef eq 'S' ? -1 : 1);
@@ -333,44 +397,28 @@ sub ProcessSamples($$$$)
                 sprintf('%.4d:%.2d:%.2d %.2d:%.2d:%.2d',$yr,$mon,$day,$hr,$min,$sec));
         }
     }
+    $et->VPrint(0,"--------------------------\n");
+
+    # clean up
+    $raf->Seek($tell, 0); # restore original file position
+    $$et{INDENT} = $oldIndent;
     $$et{DOC_NUM} = 0;
+    $$et{HandlerType} = $$et{HanderDesc} = '';
 }
 
 #------------------------------------------------------------------------------
-# Extract embedded information from movie data
-# Inputs: 0) ExifTool ref, 1) RAF ref
-sub ExtractEmbedded($$)
-{
-    local $_;
-    my ($et, $raf) = @_;
-    if ($$et{eeInfo}) {
-        $et->VPrint(0,"Extract Embedded:\n");
-        my $tagTablePtr = GetTagTable('Image::ExifTool::QuickTime::Stream');
-        ProcessSamples($et, $tagTablePtr, $raf, $_) foreach @{$$et{eeInfo}};
-        delete $$et{eeInfo};
-    }
-}
-
-#------------------------------------------------------------------------------
-# Save details about embedded information
-# Inputs: 0) ExifTool ref, 1) tag name, 2) data ref, 3) handler type,
-#         4) handler description
-sub ParseTag($$$$$)
+# Extract embedded information referenced from a track
+# Inputs: 0) ExifTool ref, 1) tag name, 2) data ref
+sub ParseTag($$$)
 {
     local $_;
     my ($et, $tag, $dataPt, $type, $desc) = @_;
-    my ($i, $start, $size);
     my $dataLen = length $$dataPt;
 
-    if ($tag eq 'stco' or $tag eq 'co64' and $dataLen > 8) {
-        my $num = unpack('x4N', $$dataPt);
-        $start = $$et{eeStart} = [ ];
-        $size = $$et{eeSize};
-        @$start = ReadValue($dataPt, 8, $tag eq 'stco' ? 'int32u' : 'int64u', $num, $dataLen-8);
-    } elsif ($tag eq 'stsz' or $tag eq 'sts2' and $dataLen > 12) {
+    if ($tag eq 'stsz' or $tag eq 'stz2' and $dataLen > 12) {
+        # read the sample sizes
         my ($sz, $num) = unpack('x4N2', $$dataPt);
-        $start = $$et{eeStart};
-        $size = $$et{eeSize} = [ ];
+        my $size = $$et{ee}{size} = [ ];
         if ($tag eq 'stsz') {
             if ($sz == 0) {
                 @$size = ReadValue($dataPt, 12, 'int32u', $num, $dataLen-12);
@@ -380,7 +428,7 @@ sub ParseTag($$$$$)
         } else {
             $sz &= 0xff;
             if ($sz == 4) {
-                my @tmp = ReadValue($dataPt, 12, "int8u", int(($num+1)/2), $dataLen-12);
+                my @tmp = ReadValue($dataPt, 12, 'int8u', int(($num+1)/2), $dataLen-12);
                 foreach (@tmp) {
                     push @$size, $_ >> 4;
                     push @$size, $_ & 0xff;
@@ -389,34 +437,44 @@ sub ParseTag($$$$$)
                 @$size = ReadValue($dataPt, 12, "int${sz}u", $num, $dataLen-12);
             }
         }
+    } elsif ($tag eq 'stco' or $tag eq 'co64' and $dataLen > 8) {
+        # read the chunk offsets
+        my $num = unpack('x4N', $$dataPt);
+        my $stco = $$et{ee}{stco} = [ ];
+        @$stco = ReadValue($dataPt, 8, $tag eq 'stco' ? 'int32u' : 'int64u', $num, $dataLen-8);
+    } elsif ($tag eq 'stsc' and $dataLen > 8) {
+        # read the sample-to-chunk box
+        my $num = unpack('x4N', $$dataPt);
+        if ($dataLen >= 8 + $num * 12) {
+            my ($i, @stsc);
+            for ($i=0; $i<$num; ++$i) {
+                # list of (first-chunk, samples-per-chunk, sample-description-index)
+                push @stsc, [ unpack('x'.(8+$i*12).'N3', $$dataPt) ];
+            }
+            $$et{ee}{stsc} = \@stsc;
+        }
+    } elsif ($tag eq 'stts' and $dataLen > 8) {
+        # read the time-to-sample box
+        my $num = unpack('x4N', $$dataPt);
+        if ($dataLen >= 8 + $num * 8) {
+            $$et{ee}{stts} = [ unpack('x8N'.($num*2), $$dataPt) ];
+        }
     } elsif ($tag eq 'avcC') {
-        $$et{avcC} = $$dataPt if $dataLen >= 7;  # (minimum length is 7)
+        # read the AVC compressor configuration
+        $$et{ee}{avcC} = $$dataPt if $dataLen >= 7;  # (minimum length is 7)
     } elsif ($tag eq 'gps ' and $dataLen > 8) {
         # decode Novatek 'gps ' box (ref 2)
         my $num = Get32u($dataPt, 4);
         $num = int(($dataLen - 8) / 8) if $num * 8 + 8 > $dataLen;
-        $start = $$et{eeStart} = [ ];
-        $size = $$et{eeSize} = [ ];
+        my $start = $$et{ee}{start} = [ ];
+        my $size = $$et{ee}{size} = [ ];
+        my $i;
         for ($i=0; $i<$num; $i+=2) {
             push @$start, Get32u($dataPt, 8 + $i * 8);
             push @$size, Get32u($dataPt, 12 + $i * 8);
         }
-        $type = $tag;  # fake type
-    }
-    if ($start and $size) {
-        # save details now that we have both sample sizes and offsets
-        my $eeInfo = $$et{eeInfo};
-        $eeInfo or $eeInfo = $$et{eeInfo} = [ ];
-        push @$eeInfo, {
-            type  => $type,
-            desc  => $desc,
-            start => $start,
-            size  => $size,
-            avcC  => $$et{avcC},
-        };
-        delete $$et{eeStart};
-        delete $$et{eeSize};
-        delete $$et{avcC};
+        $$et{HandlerType} = $tag;   # fake handler type
+        ProcessSamples($et);        # we have all we need to process sample data now
     }
 }
 
@@ -458,7 +516,7 @@ under the same terms as Perl itself.
 
 L<Image::ExifTool::QuickTime(3pm)|Image::ExifTool::QuickTime>,
 L<Image::ExifTool::TagNames/QuickTime Stream Tags>,
-L<Image::ExifTool::TagNames/QuickTime GoPro Tags>,
+L<Image::ExifTool::TagNames/GoPro MET Tags>,
 L<Image::ExifTool(3pm)|Image::ExifTool>
 
 =cut

@@ -49,7 +49,7 @@ use vars qw($VERSION %minoltaLensTypes %minoltaTeleconverters %minoltaColorMode
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.58';
+$VERSION = '2.59';
 
 # Full list of product codes for Sony-compatible Minolta lenses
 # (ref http://www.kb.sony.com/selfservice/documentLink.do?externalId=C1000570)
@@ -433,6 +433,7 @@ $VERSION = '2.58';
     25611.7 => 'Tokina AF 730 II 75-300mm F4.5-5.6', #JD
     25611.8 => 'Sigma 800mm F5.6 APO', #http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,3472.0.html
     25611.9 => 'Sigma AF 400mm F5.6 APO Macro', #27
+   '25611.10' => 'Sigma 1000mm F8 APO', #JR
     25621 => 'Minolta AF 50mm F1.4 [New]', # original and New, not Sony (ref 13/18)
     25631 => 'Minolta AF 300mm F2.8 APO or Sigma Lens', # changed G to APO (ref 13)
     25631.1 => 'Sigma AF 50-500mm F4-6.3 EX DG APO', #JD

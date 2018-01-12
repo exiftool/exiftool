@@ -2512,7 +2512,7 @@ These tags belong to the ExifTool XMP-iptcExt family 1 group.
   AboutCvTermRefinedAbout                       string_+
   AdditionalModelInformation                    string
   ArtworkOrObject                               ArtworkOrObjectDetails Struct+
-  ArtworkCircaDateCreated                       string_+
+  ArtworkCircaDateCreated                       string!_+
   ArtworkContentDescription                     lang-alt_+
   ArtworkContributionDescription                lang-alt_+
   ArtworkCopyrightNotice                        string_+
@@ -14993,7 +14993,7 @@ A560, A580, NEX-3, NEX-5, NEX-C3 and NEX-VG10E.
     788    ImageNumber                          int16u & 0x3fff
     790    FolderNumber                         int16u & 0x3ff
    1008    LensE-mountVersion                   int16u
-   1012    LensFirmwareVersion                  int8u
+   1011    LensFirmwareVersion                  int16u~
    1015    LensType2                            int16u
    1024    ImageNumber                          int16u & 0x3fff
    1026    FolderNumber                         int16u & 0x3ff
@@ -15493,8 +15493,8 @@ substitution cipher, but the deciphered values are listed below.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
-  0x0000   MaxAperture                          int8u
-  0x0001   MinAperture                          int8u
+  0x0000   SonyMaxAperture                      int8u
+  0x0001   SonyMinAperture                      int8u
   0x0031   FlashStatus                          int8u
   0x0032   ImageCount                           int32u
   0x003a   SonyExposureTime                     int16u
@@ -15522,8 +15522,8 @@ Valid from July 2015 for ILCE-6300/6500/7RM2/7RM3/7SM2/9, ILCA-99M2.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
-  0x0000   MaxAperture                          int8u
-  0x0001   MinAperture                          int8u
+  0x0000   SonyMaxAperture                      int8u
+  0x0001   SonyMinAperture                      int8u
   0x0039   FlashStatus                          int8u
   0x003a   ImageCount                           int32u
   0x0046   SonyExposureTime                     int16u
@@ -15727,7 +15727,7 @@ NEX and ILCE models only.
   0x0009   LensType3                            int16u
   0x000b   CameraE-mountVersion                 int16u
   0x000d   LensE-mountVersion                   int16u
-  0x0015   LensFirmwareVersion                  int8u
+  0x0014   LensFirmwareVersion                  int16u~
 
 =head3 Sony AFInfo Tags
 
@@ -22228,7 +22228,7 @@ Tags written by some HTC camera phones.
 
 =head3 QuickTime ItemList Tags
 
-As well as these tags, the 'mdta' handler uses numerical tag ID's which are
+As well as these tags, the "mdta" handler uses numerical tag ID's which are
 added dynamically to this table after processing the Meta Keys information.
 
   Tag ID       Tag Name                         Writable
@@ -22608,6 +22608,7 @@ MP4 sample table box.
   'stsd'   AudioSampleDesc                      QuickTime AudioSampleDesc
            VideoSampleDesc                      QuickTime ImageDesc
            HintSampleDesc                       QuickTime HintSampleDesc
+           MetaSampleDesc                       QuickTime MetaSampleDesc
            OtherSampleDesc                      QuickTime OtherSampleDesc
   'stsh'   ShadowSyncSampleTable?               no
   'stss'   SyncSampleTable?                     no
@@ -22629,10 +22630,46 @@ atoms.
      24    AudioChannels                        no
      26    AudioBitsPerSample                   no
      32    AudioSampleRate                      no
+  'chan'   AudioChannelLayout                   QuickTime ChannelLayout
   'damr'   DecodeConfig                         QuickTime DecodeConfig
   'pinf'   PurchaseInfo                         QuickTime ProtectionInfo
   'sinf'   ProtectionInfo                       QuickTime ProtectionInfo
   'wave'   Wave                                 QuickTime Wave
+
+=head3 QuickTime ChannelLayout Tags
+
+Audio channel layout.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      4    LayoutFlags                          no
+      6    AudioChannels                        no
+      8    AudioChannelTypes                    no
+     12    NumChannelDescriptions               no
+     16    Channel1Label                        no
+     20    Channel1Flags                        no
+     24    Channel1Coordinates                  no
+     36    Channel2Label                        no
+     40    Channel2Flags                        no
+     44    Channel2Coordinates                  no
+     56    Channel3Label                        no
+     60    Channel3Flags                        no
+     64    Channel3Coordinates                  no
+     76    Channel4Label                        no
+     80    Channel4Flags                        no
+     84    Channel4Coordinates                  no
+     96    Channel5Label                        no
+    100    Channel5Flags                        no
+    104    Channel5Coordinates                  no
+    116    Channel6Label                        no
+    120    Channel6Flags                        no
+    124    Channel6Coordinates                  no
+    136    Channel7Label                        no
+    140    Channel7Flags                        no
+    144    Channel7Coordinates                  no
+    156    Channel8Label                        no
+    160    Channel8Flags                        no
+    164    Channel8Coordinates                  no
 
 =head3 QuickTime DecodeConfig Tags
 
@@ -22783,6 +22820,16 @@ MP4 hint sample description.
   'tims'   RTPTimeScale                         no
   'tsro'   TimestampRandomOffset                no
 
+=head3 QuickTime MetaSampleDesc Tags
+
+MP4 metadata sample description.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  0x0004   MetaFormat                           no
+  'btrt'   BitrateInfo                          QuickTime Bitrate
+  'keys'   Keys                                 QuickTime Keys
+
 =head3 QuickTime OtherSampleDesc Tags
 
   Tag ID   Tag Name                             Writable
@@ -22851,6 +22898,7 @@ multi-language user data tags found, even if they don't exist in this table.
   'DcMD'       KodakDcMD                        Kodak DcMD
   'FFMV'       FujiFilmFFMV                     FujiFilm FFMV
   'FIRM'       FirmwareVersion                  no
+  'GPMF'       GoProMF                          GoPro GPMF
   'GoPr'       GoProType                        no
   'INFO'       SamsungINFO                      Samsung INFO
   'LEIC'       LeicaLEIC                        Panasonic PANA
@@ -23174,51 +23222,12 @@ used.
   'GPSSpeedRef'        GPSSpeedRef              no
   'GPSTrack'           GPSTrack                 no
   'GPSTrackRef'        GPSTrackRef              no
+  'GoPro MET'          GoProMET                 GoPro MET
+  'GoPro SOS'          GoProSOS                 GoPro SOS
+  'SampleDuration'     SampleDuration           no
+  'SampleTime'         SampleTime               no
   'Text'               Text                     no
   'TimeCode'           TimeCode                 no
-
-=head3 QuickTime GoPro Tags
-
-Tags extracted from compatible GoPro MP4 videos when the ExtractEmbedded
-option is used.
-
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  'ACCL'   Accelerometer                        no
-  'DEVC'   Device                               no
-  'DVID'   DeviceID?                            no
-  'DVNM'   Model                                no
-  'EMPT'   Empty?                               no
-  'FCNM'   FaceNumbers                          no
-  'GPS5'   GPSInfo                              QuickTime GoProGPS
-  'GPSF'   GPSMeasureMode                       no
-  'GPSP'   GPSHPositioningError                 no
-  'GPSU'   GPSDateTime                          no
-  'GYRO'   Gyroscope                            no
-  'ISOE'   ISOSpeeds                            no
-  'ISOG'   ImageSensorGain                      no
-  'RMRK'   Comments                             no
-  'SCAL'   ScaleFactor?                         no
-  'SHUT'   ExposureTimes                        no
-  'SIUN'   SIUnits                              no
-  'STNM'   StreamName?                          no
-  'STRM'   NestedSignalStream?                  no
-  'TMPC'   CameraTemperature                    no
-  'TSMP'   TotalSamples?                        no
-  'TYPE'   StructureType?                       no
-  'UNIT'   Units                                no
-  'WBAL'   ColorTemperatures                    no
-  'WRGB'   WhiteBalanceRGB                      no
-
-=head3 QuickTime GoProGPS Tags
-
-  Index4   Tag Name                             Writable
-  ------   --------                             --------
-      0    GPSLatitude                          no
-      1    GPSLongitude                         no
-      2    GPSAltitude                          no
-      3    GPSSpeed                             no
-      4    GPSSpeed3D                           no
 
 =head2 PLIST Tags
 
@@ -23245,6 +23254,78 @@ either "XML" or "PLIST" depending on whether the format is XML or binary.
   'producers//name'            Producers        no+
   'screenwriters//name'        Screenwriters    no+
   'studio//name'               Studio           no+
+
+=head2 GoPro Tags
+
+=head3 GoPro GPMF Tags
+
+Tags extracted from the GPMF box of GoPro MP4 videos.  Many more tags exist,
+but are currently unknown and extracted only with the -u option.  Please let
+me know if you discover the meaning of any of these unknown tags.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  'AUDO'   AudioSetting                         no
+  'CASN'   CameraSerialNumber                   no
+  'FMWR'   FirmwareVersion                      no
+  'MINF'   Model                                no
+  'PIMN'   AutoISOMin                           no
+  'PIMX'   AutoISOMax                           no
+
+=head3 GoPro MET Tags
+
+Tags extracted from the MP4 "GoPro MET" timed metadata when the ExtractEmbedded
+option is used.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  'ACCL'   Accelerometer                        no
+  'DEVC'   DeviceContainer                      no
+  'DVID'   DeviceID?                            no
+  'DVNM'   DeviceName                           no
+  'EMPT'   Empty?                               no
+  'FCNM'   FaceNumbers                          no
+  'GPS5'   GPSInfo                              GoPro GPS5
+  'GPSF'   GPSMeasureMode                       no
+  'GPSP'   GPSHPositioningError                 no
+  'GPSU'   GPSDateTime                          no
+  'GYRO'   Gyroscope                            no
+  'ISOE'   ISOSpeeds                            no
+  'ISOG'   ImageSensorGain                      no
+  'RMRK'   Comments                             no
+  'SCAL'   ScaleFactor?                         no
+  'SHUT'   ExposureTimes                        no
+  'SIUN'   SIUnits                              no
+  'STNM'   StreamName?                          no
+  'STRM'   NestedSignalStream?                  no
+  'TMPC'   CameraTemperature                    no
+  'TSMP'   TotalSamples?                        no
+  'TYPE'   StructureType?                       no
+  'UNIT'   Units                                no
+  'WBAL'   ColorTemperatures                    no
+  'WRGB'   WhiteBalanceRGB                      no
+
+=head3 GoPro GPS5 Tags
+
+  Index4   Tag Name                             Writable
+  ------   --------                             --------
+      0    GPSLatitude                          no
+      1    GPSLongitude                         no
+      2    GPSAltitude                          no
+      3    GPSSpeed                             no
+      4    GPSSpeed3D                           no
+
+=head3 GoPro SOS Tags
+
+Tags extracted from the MP4 "GoPro SOS" timed metadata when the ExtractEmbedded
+option is used.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      8    FirmwareVersion                      no
+     23    SerialNumber                         no
+     87    OtherSerialNumber                    no
+    102    Model                                no
 
 =head2 Matroska Tags
 

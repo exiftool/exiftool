@@ -47,8 +47,10 @@ $VERSION = '2.07';
 sub FixWrongFormat($);
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
+sub ProcessMetaKeys($$$);
 sub ProcessMetaData($$$);
 sub ProcessEncodingParams($$$);
+sub ProcessSampleDesc($$$);
 sub ProcessHybrid($$$);
 sub ProcessRights($$$);
 sub ParseItemLocation($$);
@@ -296,12 +298,79 @@ my %graphicsMode = (
     0x110 => 'Component Alpha',
 );
 
+my %channelLabel = (
+    0xFFFFFFFF => 'Unknown',
+    0 => 'Unused',
+    100 => 'UseCoordinates',
+    1 => 'Left',
+    2 => 'Right',
+    3 => 'Center',
+    4 => 'LFEScreen',
+    5 => 'LeftSurround',
+    6 => 'RightSurround',
+    7 => 'LeftCenter',
+    8 => 'RightCenter',
+    9 => 'CenterSurround',
+    10 => 'LeftSurroundDirect',
+    11 => 'RightSurroundDirect',
+    12 => 'TopCenterSurround',
+    13 => 'VerticalHeightLeft',
+    14 => 'VerticalHeightCenter',
+    15 => 'VerticalHeightRight',
+    16 => 'TopBackLeft',
+    17 => 'TopBackCenter',
+    18 => 'TopBackRight',
+    33 => 'RearSurroundLeft',
+    34 => 'RearSurroundRight',
+    35 => 'LeftWide',
+    36 => 'RightWide',
+    37 => 'LFE2',
+    38 => 'LeftTotal',
+    39 => 'RightTotal',
+    40 => 'HearingImpaired',
+    41 => 'Narration',
+    42 => 'Mono',
+    43 => 'DialogCentricMix',
+    44 => 'CenterSurroundDirect',
+    45 => 'Haptic',
+    200 => 'Ambisonic_W',
+    201 => 'Ambisonic_X',
+    202 => 'Ambisonic_Y',
+    203 => 'Ambisonic_Z',
+    204 => 'MS_Mid',
+    205 => 'MS_Side',
+    206 => 'XY_X',
+    207 => 'XY_Y',
+    301 => 'HeadphonesLeft',
+    302 => 'HeadphonesRight',
+    304 => 'ClickTrack',
+    305 => 'ForeignLanguage',
+    400 => 'Discrete',
+    0x10000 => 'Discrete_0',
+    0x10001 => 'Discrete_1',
+    0x10002 => 'Discrete_2',
+    0x10003 => 'Discrete_3',
+    0x10004 => 'Discrete_4',
+    0x10005 => 'Discrete_5',
+    0x10006 => 'Discrete_6',
+    0x10007 => 'Discrete_7',
+    0x10008 => 'Discrete_8',
+    0x10009 => 'Discrete_9',
+    0x1000a => 'Discrete_10',
+    0x1000b => 'Discrete_11',
+    0x1000c => 'Discrete_12',
+    0x1000d => 'Discrete_13',
+    0x1000e => 'Discrete_14',
+    0x1000f => 'Discrete_15',
+    0x1ffff => 'Discrete_65535',
+);
+
 # boxes for the various handler types that we want to save when ExtractEmbedded is enabled
 my %eeBox = (
   # (nothing useful found yet in video stream)
-  # vide => { stco => 1, co64 => 1, stsz => 1, stz2 => 1, avcC => 1 },
-    text => { stco => 1, co64 => 1, stsz => 1, stz2 => 1 },
-    meta => { stco => 1, co64 => 1, stsz => 1, stz2 => 1 },
+  # vide => { stco => 1, co64 => 1, stsz => 1, stz2 => 1, stsc => 1, stts => 1, avcC => 1 },
+    text => { stco => 1, co64 => 1, stsz => 1, stz2 => 1, stsc => 1, stts => 1 },
+    meta => { stco => 1, co64 => 1, stsz => 1, stz2 => 1, stsc => 1, stts => 1 },
     ''   => { 'gps ' => 1 }, # (no handler -- top level box)
 );
 
@@ -1546,6 +1615,13 @@ my %eeBox = (
     # SETT? 12 bytes (Hero4)
     # MUID? 32 bytes (Hero4, starts with serial number hash)
     # HMMT? 404 bytes (Hero4, all zero)
+    # BCID? 26 bytes (Hero5, all zero)
+    # GUMI? 16 bytes (Hero5)
+    GPMF => {
+        Name => 'GoProMF',
+        SubDirectory => { TagTable => 'Image::ExifTool::GoPro::GPMF' },
+    },
+    # GPMF? 25600 bytes (Hero6, very interesting stuff in here)
     # free (all zero)
     # --- HTC ----
     htcb => {
@@ -2197,7 +2273,7 @@ my %eeBox = (
     PROCESS_PROC => \&ProcessMOV,
     GROUPS => { 2 => 'Audio' },
     NOTES => q{
-        As well as these tags, the 'mdta' handler uses numerical tag ID's which are
+        As well as these tags, the "mdta" handler uses numerical tag ID's which are
         added dynamically to this table after processing the Meta Keys information.
     },
     # in this table, binary 1 and 2-byte "data"-type tags are interpreted as
@@ -4947,6 +5023,13 @@ my %eeBox = (
     'rating.user'  => 'UserRating', # (Canon ELPH 510 HS)
     'collection.user' => 'UserCollection', #22
     'Encoded_With' => 'EncodedWith',
+    # seen in timed metadata (mebx), and added dynamically via SaveMetaKeys() (ref PH):
+    # (fiel)com.apple.quicktime.detected-face.bounds (dtyp=80, ?)
+    # (mdta)com.apple.quicktime.detected-face (dtyp='com.apple.quicktime.detected-face')
+    # (fiel)com.apple.quicktime.detected-face.roll-angle (dtyp=23, float)
+    # (fiel)com.apple.quicktime.detected-face.face-id (dtyp=77, int32u)
+    # (fiel)com.apple.quicktime.detected-face.yaw-angle (dtyp=23, float)
+    # (mdta)com.apple.quicktime.video-orientation (dtyp=66, int16s)
 );
 
 # iTunes info ('----') atoms
@@ -5027,7 +5110,7 @@ my %eeBox = (
     PROCESS_PROC => \&ProcessEncodingParams,
     GROUPS => { 2 => 'Audio' },
     # (I have commented out the ones that don't have integer values because they
-    #  probably don't appear, and definitly wouldn't work with current decoding - PH)
+    #  probably don't appear, and definitely wouldn't work with current decoding - PH)
 
     # global codec properties
     #'lnam' => 'AudioCodecName',
@@ -5327,27 +5410,34 @@ my %eeBox = (
             Condition => '$$self{HandlerType} and $$self{HandlerType} eq "soun"',
             SubDirectory => {
                 TagTable => 'Image::ExifTool::QuickTime::AudioSampleDesc',
-                Start => 8, # skip version number and count
+                ProcessProc => \&ProcessSampleDesc,
             },
         },{
             Name => 'VideoSampleDesc',
             Condition => '$$self{HandlerType} and $$self{HandlerType} eq "vide"',
             SubDirectory => {
                 TagTable => 'Image::ExifTool::QuickTime::ImageDesc',
-                Start => 8, # skip version number and count
+                ProcessProc => \&ProcessSampleDesc,
             },
         },{
             Name => 'HintSampleDesc',
             Condition => '$$self{HandlerType} and $$self{HandlerType} eq "hint"',
             SubDirectory => {
                 TagTable => 'Image::ExifTool::QuickTime::HintSampleDesc',
-                Start => 8, # skip version number and count
+                ProcessProc => \&ProcessSampleDesc,
+            },
+        },{
+            Name => 'MetaSampleDesc',
+            Condition => '$$self{HandlerType} and $$self{HandlerType} eq "meta"',
+            SubDirectory => {
+                TagTable => 'Image::ExifTool::QuickTime::MetaSampleDesc',
+                ProcessProc => \&ProcessSampleDesc,
             },
         },{
             Name => 'OtherSampleDesc',
             SubDirectory => {
                 TagTable => 'Image::ExifTool::QuickTime::OtherSampleDesc',
-                Start => 8, # skip version number and count
+                ProcessProc => \&ProcessSampleDesc,
             },
         },
         # (Note: "alis" HandlerType handled by the parent audio or video handler)
@@ -5499,6 +5589,10 @@ my %eeBox = (
         Name => 'Wave',
         SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::Wave' },
     },
+    chan => {
+        Name => 'AudioChannelLayout',
+        SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::ChannelLayout' },
+    }
     # alac - 28 bytes
     # adrm - AAX DRM atom? 148 bytes
     # aabd - AAX unknown 17kB (contains 'aavd' strings)
@@ -5540,6 +5634,298 @@ my %eeBox = (
     PROCESS_PROC => \&ProcessMOV,
     frma => 'PurchaseFileFormat',
     # "ms\0\x11" - 20 bytes
+);
+
+# audio channel layout (ref CoreAudioTypes.h)
+%Image::ExifTool::QuickTime::ChannelLayout = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 2 => 'Audio' },
+    DATAMEMBER => [ 0, 8 ],
+    NOTES => 'Audio channel layout.',
+    # 0 - version and flags
+    4 => {
+        Name => 'LayoutFlags',
+        Format => 'int16u',
+        RawConv => '$$self{LayoutFlags} = $val',
+        PrintConvColumns => 2,
+        PrintConv => {
+            0 => 'UseDescriptions',
+            1 => 'UseBitmap',
+            100 => 'Mono',
+            101 => 'Stereo',
+            102 => 'StereoHeadphones',
+            100 => 'Mono',
+            101 => 'Stereo',
+            102 => 'StereoHeadphones',
+            103 => 'MatrixStereo',
+            104 => 'MidSide',
+            105 => 'XY',
+            106 => 'Binaural',
+            107 => 'Ambisonic_B_Format',
+            108 => 'Quadraphonic',
+            109 => 'Pentagonal',
+            110 => 'Hexagonal',
+            111 => 'Octagonal',
+            112 => 'Cube',
+            113 => 'MPEG_3_0_A',
+            114 => 'MPEG_3_0_B',
+            115 => 'MPEG_4_0_A',
+            116 => 'MPEG_4_0_B',
+            117 => 'MPEG_5_0_A',
+            118 => 'MPEG_5_0_B',
+            119 => 'MPEG_5_0_C',
+            120 => 'MPEG_5_0_D',
+            121 => 'MPEG_5_1_A',
+            122 => 'MPEG_5_1_B',
+            123 => 'MPEG_5_1_C',
+            124 => 'MPEG_5_1_D',
+            125 => 'MPEG_6_1_A',
+            126 => 'MPEG_7_1_A',
+            127 => 'MPEG_7_1_B',
+            128 => 'MPEG_7_1_C',
+            129 => 'Emagic_Default_7_1',
+            130 => 'SMPTE_DTV',
+            131 => 'ITU_2_1',
+            132 => 'ITU_2_2',
+            133 => 'DVD_4',
+            134 => 'DVD_5',
+            135 => 'DVD_6',
+            136 => 'DVD_10',
+            137 => 'DVD_11',
+            138 => 'DVD_18',
+            139 => 'AudioUnit_6_0',
+            140 => 'AudioUnit_7_0',
+            141 => 'AAC_6_0',
+            142 => 'AAC_6_1',
+            143 => 'AAC_7_0',
+            144 => 'AAC_Octagonal',
+            145 => 'TMH_10_2_std',
+            146 => 'TMH_10_2_full',
+            147 => 'DiscreteInOrder',
+            148 => 'AudioUnit_7_0_Front',
+            149 => 'AC3_1_0_1',
+            150 => 'AC3_3_0',
+            151 => 'AC3_3_1',
+            152 => 'AC3_3_0_1',
+            153 => 'AC3_2_1_1',
+            154 => 'AC3_3_1_1',
+            155 => 'EAC_6_0_A',
+            156 => 'EAC_7_0_A',
+            157 => 'EAC3_6_1_A',
+            158 => 'EAC3_6_1_B',
+            159 => 'EAC3_6_1_C',
+            160 => 'EAC3_7_1_A',
+            161 => 'EAC3_7_1_B',
+            162 => 'EAC3_7_1_C',
+            163 => 'EAC3_7_1_D',
+            164 => 'EAC3_7_1_E',
+            165 => 'EAC3_7_1_F',
+            166 => 'EAC3_7_1_G',
+            167 => 'EAC3_7_1_H',
+            168 => 'DTS_3_1',
+            169 => 'DTS_4_1',
+            170 => 'DTS_6_0_A',
+            171 => 'DTS_6_0_B',
+            172 => 'DTS_6_0_C',
+            173 => 'DTS_6_1_A',
+            174 => 'DTS_6_1_B',
+            175 => 'DTS_6_1_C',
+            176 => 'DTS_7_0',
+            177 => 'DTS_7_1',
+            178 => 'DTS_8_0_A',
+            179 => 'DTS_8_0_B',
+            180 => 'DTS_8_1_A',
+            181 => 'DTS_8_1_B',
+            182 => 'DTS_6_1_D',
+            183 => 'AAC_7_1_B',
+            0xffff => 'Unknown',
+        },
+    },
+    6  => {
+        Name => 'AudioChannels',
+        Condition => '$$self{LayoutFlags} != 0 and $$self{LayoutFlags} != 1',
+        Format => 'int16u',
+    },
+    8 => {
+        Name => 'AudioChannelTypes',
+        Condition => '$$self{LayoutFlags} == 1',
+        Format => 'int32u',
+        PrintConv => { BITMASK => {
+            0 => 'Left',
+            1 => 'Right',
+            2 => 'Center',
+            3 => 'LFEScreen',
+            4 => 'LeftSurround',
+            5 => 'RightSurround',
+            6 => 'LeftCenter',
+            7 => 'RightCenter',
+            8 => 'CenterSurround',
+            9 => 'LeftSurroundDirect',
+            10 => 'RightSurroundDirect',
+            11 => 'TopCenterSurround',
+            12 => 'VerticalHeightLeft',
+            13 => 'VerticalHeightCenter',
+            14 => 'VerticalHeightRight',
+            15 => 'TopBackLeft',
+            16 => 'TopBackCenter',
+            17 => 'TopBackRight',
+        }},
+    },
+    12  => {
+        Name => 'NumChannelDescriptions',
+        Condition => '$$self{LayoutFlags} == 1',
+        Format => 'int32u',
+        RawConv => '$$self{NumChannelDescriptions} = $val',
+    },
+    16 => {
+        Name => 'Channel1Label',
+        Condition => '$$self{LayoutFlags} == 1 and $$self{NumChannelDescriptions} > 0',
+        Format => 'int32u',
+        SeparateTable => 'ChannelLabel',
+        PrintConv => \%channelLabel,
+    },
+    20 => {
+        Name => 'Channel1Flags',
+        Condition => '$$self{LayoutFlags} == 1 and $$self{NumChannelDescriptions} > 0',
+        Format => 'int32u',
+        PrintConv => { BITMASK => { 0 => 'Rectangular', 1 => 'Spherical', 2 => 'Meters' }},
+    },
+    24 => {
+        Name => 'Channel1Coordinates',
+        Condition => '$$self{LayoutFlags} == 1 and $$self{NumChannelDescriptions} > 0',
+        Notes => q{
+            3 numbers:  for rectangular coordinates left/right, back/front, down/up; for
+            spherical coordinates left/right degrees, down/up degrees, distance
+        },
+        Format => 'float[3]',
+    },
+    36 => {
+        Name => 'Channel2Label',
+        Condition => '$$self{LayoutFlags} == 1 and $$self{NumChannelDescriptions} > 1',
+        Format => 'int32u',
+        SeparateTable => 'ChannelLabel',
+        PrintConv => \%channelLabel,
+    },
+    40 => {
+        Name => 'Channel2Flags',
+        Condition => '$$self{LayoutFlags} == 1 and $$self{NumChannelDescriptions} > 1',
+        Format => 'int32u',
+        PrintConv => { BITMASK => { 0 => 'Rectangular', 1 => 'Spherical', 2 => 'Meters' }},
+    },
+    44 => {
+        Name => 'Channel2Coordinates',
+        Condition => '$$self{LayoutFlags} == 1 and $$self{NumChannelDescriptions} > 1',
+        Format => 'float[3]',
+    },
+    56 => {
+        Name => 'Channel3Label',
+        Condition => '$$self{LayoutFlags} == 1 and $$self{NumChannelDescriptions} > 2',
+        Format => 'int32u',
+        SeparateTable => 'ChannelLabel',
+        PrintConv => \%channelLabel,
+    },
+    60 => {
+        Name => 'Channel3Flags',
+        Condition => '$$self{LayoutFlags} == 1 and $$self{NumChannelDescriptions} > 2',
+        Format => 'int32u',
+        PrintConv => { BITMASK => { 0 => 'Rectangular', 1 => 'Spherical', 2 => 'Meters' }},
+    },
+    64 => {
+        Name => 'Channel3Coordinates',
+        Condition => '$$self{LayoutFlags} == 1 and $$self{NumChannelDescriptions} > 2',
+        Format => 'float[3]',
+    },
+    76 => {
+        Name => 'Channel4Label',
+        Condition => '$$self{LayoutFlags} == 1 and $$self{NumChannelDescriptions} > 3',
+        Format => 'int32u',
+        SeparateTable => 'ChannelLabel',
+        PrintConv => \%channelLabel,
+    },
+    80 => {
+        Name => 'Channel4Flags',
+        Condition => '$$self{LayoutFlags} == 1 and $$self{NumChannelDescriptions} > 3',
+        Format => 'int32u',
+        PrintConv => { BITMASK => { 0 => 'Rectangular', 1 => 'Spherical', 2 => 'Meters' }},
+    },
+    84 => {
+        Name => 'Channel4Coordinates',
+        Condition => '$$self{LayoutFlags} == 1 and $$self{NumChannelDescriptions} > 3',
+        Format => 'float[3]',
+    },
+    96 => {
+        Name => 'Channel5Label',
+        Condition => '$$self{LayoutFlags} == 1 and $$self{NumChannelDescriptions} > 4',
+        Format => 'int32u',
+        SeparateTable => 'ChannelLabel',
+        PrintConv => \%channelLabel,
+    },
+    100 => {
+        Name => 'Channel5Flags',
+        Condition => '$$self{LayoutFlags} == 1 and $$self{NumChannelDescriptions} > 4',
+        Format => 'int32u',
+        PrintConv => { BITMASK => { 0 => 'Rectangular', 1 => 'Spherical', 2 => 'Meters' }},
+    },
+    104 => {
+        Name => 'Channel5Coordinates',
+        Condition => '$$self{LayoutFlags} == 1 and $$self{NumChannelDescriptions} > 4',
+        Format => 'float[3]',
+    },
+    116 => {
+        Name => 'Channel6Label',
+        Condition => '$$self{LayoutFlags} == 1 and $$self{NumChannelDescriptions} > 5',
+        Format => 'int32u',
+        SeparateTable => 'ChannelLabel',
+        PrintConv => \%channelLabel,
+    },
+    120 => {
+        Name => 'Channel6Flags',
+        Condition => '$$self{LayoutFlags} == 1 and $$self{NumChannelDescriptions} > 5',
+        Format => 'int32u',
+        PrintConv => { BITMASK => { 0 => 'Rectangular', 1 => 'Spherical', 2 => 'Meters' }},
+    },
+    124 => {
+        Name => 'Channel6Coordinates',
+        Condition => '$$self{LayoutFlags} == 1 and $$self{NumChannelDescriptions} > 5',
+        Format => 'float[3]',
+    },
+    136 => {
+        Name => 'Channel7Label',
+        Condition => '$$self{LayoutFlags} == 1 and $$self{NumChannelDescriptions} > 6',
+        Format => 'int32u',
+        SeparateTable => 'ChannelLabel',
+        PrintConv => \%channelLabel,
+    },
+    140 => {
+        Name => 'Channel7Flags',
+        Condition => '$$self{LayoutFlags} == 1 and $$self{NumChannelDescriptions} > 6',
+        Format => 'int32u',
+        PrintConv => { BITMASK => { 0 => 'Rectangular', 1 => 'Spherical', 2 => 'Meters' }},
+    },
+    144 => {
+        Name => 'Channel7Coordinates',
+        Condition => '$$self{LayoutFlags} == 1 and $$self{NumChannelDescriptions} > 6',
+        Format => 'float[3]',
+    },
+    156 => {
+        Name => 'Channel8Label',
+        Condition => '$$self{LayoutFlags} == 1 and $$self{NumChannelDescriptions} > 7',
+        Format => 'int32u',
+        SeparateTable => 'ChannelLabel',
+        PrintConv => \%channelLabel,
+    },
+    160 => {
+        Name => 'Channel8Flags',
+        Condition => '$$self{LayoutFlags} == 1 and $$self{NumChannelDescriptions} > 7',
+        Format => 'int32u',
+        PrintConv => { BITMASK => { 0 => 'Rectangular', 1 => 'Spherical', 2 => 'Meters' }},
+    },
+    164 => {
+        Name => 'Channel8Coordinates',
+        Condition => '$$self{LayoutFlags} == 1 and $$self{NumChannelDescriptions} > 7',
+        Format => 'float[3]',
+    },
+    # (arbitrarily decode only first 8 channels)
 );
 
 # scheme type atom
@@ -5625,6 +6011,34 @@ my %eeBox = (
     tims => { Name => 'RTPTimeScale',               Format => 'int32u' },
     tsro => { Name => 'TimestampRandomOffset',      Format => 'int32u' },
     snro => { Name => 'SequenceNumberRandomOffset', Format => 'int32u' },
+);
+
+# MP4 metadata sample description box
+%Image::ExifTool::QuickTime::MetaSampleDesc = (
+    PROCESS_PROC => \&ProcessHybrid,
+    NOTES => 'MP4 metadata sample description.',
+    4 => { Name => 'MetaFormat', Format => 'undef[4]' },
+#
+# Observed offsets for child atoms of various MetaFormat types:
+#
+#   MetaFormat   Offset  Child atoms
+#   -----------  ------  ----------------
+#   mebx         24      keys,btrt,lidp,lidl
+#   fdsc         -       -
+#   gpmd         -       -
+#   rtmd         -       -
+#
+   'keys' => { #PH (iPhone7+ hevc)
+        Name => 'Keys',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::QuickTime::Keys',
+            ProcessProc => \&ProcessMetaKeys,
+        },
+    },
+    btrt => {
+        Name => 'BitrateInfo',
+        SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::Bitrate' },
+    },
 );
 
 # MP4 generic sample description box
@@ -6196,6 +6610,21 @@ sub GetString($$)
     return $str;
 }
 
+#------------------------------------------------------------------------------
+# Get a printable version of the tag ID
+# Inputs: 0) tag ID, 1) Flag: 1=print as 4- or 8-digit hex value if necessary
+# Returns: Printable tag ID
+sub PrintableTagID($;$)
+{
+    my $tag = $_[0];
+    my $n = ($tag =~ s/([\x00-\x1f\x7f-\xff])/'x'.unpack('H*',$1)/eg);
+    if ($n > 2 and $_[1]) {
+        $tag = '0x' . unpack('H8', $_[0]);
+        $tag =~ s/^0x0000/0x/;
+    }
+    return $tag;
+}
+
 #==============================================================================
 # The following ParseXxx routines parse various boxes to extract this
 # information about embedded items in a $$et{ItemInfo} hash, keyed by item ID:
@@ -6524,6 +6953,34 @@ sub ProcessMetaData($$$)
 }
 
 #------------------------------------------------------------------------------
+# Process sample description table
+# Inputs: 0) ExifTool object ref, 1) dirInfo ref, 2) tag table ref
+# Returns: 1 on success
+# (ref https://developer.apple.com/library/content/documentation/QuickTime/QTFF/QTFFChap2/qtff2.html#//apple_ref/doc/uid/TP40000939-CH204-25691)
+sub ProcessSampleDesc($$$)
+{
+    my ($et, $dirInfo, $tagTablePtr) = @_;
+    my $dataPt = $$dirInfo{DataPt};
+    my $pos = $$dirInfo{DirStart} || 0;
+    my $dirLen = $$dirInfo{DirLen} || (length($$dataPt) - $pos);
+    return 0 if $pos + 8 > $dirLen;
+
+    my $num = Get32u($dataPt, 4);   # get number of sample descriptions in table
+    $pos += 8;
+    my $i;
+    for ($i=0; $i<$num; ++$i) {     # loop through sample descriptions
+        last if $pos + 16 > $dirLen;
+        my $size = Get32u($dataPt, $pos);
+        last if $pos + $size > $dirLen;
+        $$dirInfo{DirStart} = $pos;
+        $$dirInfo{DirLen} = $size;
+        ProcessHybrid($et, $dirInfo, $tagTablePtr);
+        $pos += $size;
+    }
+    return 1;
+}
+
+#------------------------------------------------------------------------------
 # Process hybrid binary data + QuickTime container (ref PH)
 # Inputs: 0) ExifTool object ref, 1) dirInfo ref, 2) tag table ref
 # Returns: 1 on success
@@ -6532,23 +6989,25 @@ sub ProcessHybrid($$$)
     my ($et, $dirInfo, $tagTablePtr) = @_;
     # brute-force search for child atoms after first 8 bytes of binary data
     my $dataPt = $$dirInfo{DataPt};
-    my $pos = ($$dirInfo{DirStart} || 0) + 8;
-    my $len = length($$dataPt);
+    my $dirStart = $$dirInfo{DirStart} || 0;
+    my $dirLen = $$dirInfo{DirLen} || length($$dataPt) - $dirStart;
+    my $end = $dirStart + $dirLen;
+    my $pos = $dirStart + 8;   # skip length/version
     my $try = $pos;
     my $childPos;
 
-    while ($pos <= $len - 8) {
+    while ($pos <= $end - 8) {
         my $tag = substr($$dataPt, $try+4, 4);
         # look only for well-behaved tag ID's
         $tag =~ /[^\w ]/ and $try = ++$pos, next;
         my $size = Get32u($dataPt, $try);
-        if ($size + $try == $len) {
+        if ($size + $try == $end) {
             # the atom ends exactly at the end of the parent -- this must be it
             $childPos = $pos;
             $$dirInfo{DirLen} = $pos;   # the binary data ends at the first child atom
             last;
         }
-        if ($size < 8 or $size + $try > $len - 8) {
+        if ($size < 8 or $size + $try > $end - 8) {
             $try = ++$pos;  # fail.  try next position
         } else {
             $try += $size;  # could be another atom following this
@@ -6560,7 +7019,7 @@ sub ProcessHybrid($$$)
     # process child atoms if found
     if ($childPos) {
         $$dirInfo{DirStart} = $childPos;
-        $$dirInfo{DirLen} = $len - $childPos;
+        $$dirInfo{DirLen} = $end - $childPos;
         ProcessMOV($et, $dirInfo, $tagTablePtr);
     }
     return 1;
@@ -6576,7 +7035,7 @@ sub ProcessRights($$$)
     my $dataPt = $$dirInfo{DataPt};
     my $dataPos = $$dirInfo{Base};
     my $dirLen = length $$dataPt;
-    my $unknown = $$et{OPTIONS}{Unkown} || $$et{OPTIONS}{Verbose};
+    my $unknown = $$et{OPTIONS}{Unknown} || $$et{OPTIONS}{Verbose};
     my $pos;
     $et->VerboseDir('righ', $dirLen / 8);
     for ($pos = 0; $pos + 8 <= $dirLen; $pos += 8) {
@@ -6586,8 +7045,7 @@ sub ProcessRights($$$)
         my $tagInfo = $et->GetTagInfo($tagTablePtr, $tag);
         unless ($tagInfo) {
             next unless $unknown;
-            my $name = $tag;
-            $name =~ s/([\x00-\x1f\x7f-\xff])/'x'.unpack('H*',$1)/eg;
+            my $name = PrintableTagID($tag);
             $tagInfo = {
                 Name => "Unknown_$name",
                 Description => "Unknown $name",
@@ -6707,6 +7165,18 @@ sub ProcessKeys($$$)
 }
 
 #------------------------------------------------------------------------------
+# Process keys in MetaSampleDesc directory
+# Inputs: 0) ExifTool object ref, 1) dirInfo ref, 2) tag table ref
+# Returns: 1 on success
+sub ProcessMetaKeys($$$)
+{
+    my ($et, $dirInfo, $tagTablePtr) = @_;
+    # save this information to decode timed metadata samples when ExtractEmbedded is used
+    SaveMetaKeys($et, $dirInfo, $tagTablePtr) if $$et{OPTIONS}{ExtractEmbedded};
+    return 1;
+}
+
+#------------------------------------------------------------------------------
 # Process a QuickTime atom
 # Inputs: 0) ExifTool object ref, 1) dirInfo ref, 2) optional tag table ref
 # Returns: 1 on success
@@ -6718,14 +7188,15 @@ sub ProcessMOV($$;$)
     my $verbose = $et->Options('Verbose');
     my $dataPos = $$dirInfo{Base} || 0;
     my $charsetQuickTime = $et->Options('CharsetQuickTime');
-    my ($buff, $tag, $size, $track, $isUserData, %triplet, $doDefaultLang, $index, $ee);
+    my ($buff, $tag, $size, $track, $isUserData, %triplet, $doDefaultLang, $index, $ee, $unkOpt);
 
     my $topLevel = not $$et{InQuickTime};
     $$et{InQuickTime} = 1;
     $$et{HandlerType} = $$et{HandlerDesc} = '' unless defined $$et{HandlerType};
 
-    if ($et->Options('ExtractEmbedded')) {
+    if ($$et{OPTIONS}{ExtractEmbedded}) {
         $ee = 1;
+        $unkOpt = $$et{OPTIONS}{Unknown};
         require 'Image/ExifTool/QuickTimeStream.pl';
     }
     unless (defined $$et{KeyCount}) {
@@ -6792,7 +7263,7 @@ sub ProcessMOV($$;$)
                     my $str = $$dirInfo{DirName} . ' with ' . ($raf->Tell() - $pos) . ' bytes';
                     $et->VPrint(0,"$$et{INDENT}\[Terminator found in $str remaining]");
                 } else {
-                    $tag = sprintf("0x%.8x",Get32u(\$tag,0)) if $tag =~ /[\x00-\x1f\x7f-\xff]/;
+                    $tag = PrintableTagID($tag);
                     $et->VPrint(0,"$$et{INDENT}Tag '$tag' extends to end of file");
                 }
                 last;
@@ -6830,16 +7301,19 @@ sub ProcessMOV($$;$)
                 AddTagToTable($tagTablePtr, $tag, \%newInfo);
             }
         }
-        my $tagInfo = $et->GetTagInfo($tagTablePtr, $tag);
         # set flag to store additional information for ExtractEmbedded option
         if ($eeBox{$$et{HandlerType}} and $eeBox{$$et{HandlerType}}{$tag}) {
             if ($ee) {
-                $tagInfo or $tagInfo = $$tagTablePtr{$tag}; # extract even if Unknown
-                $tagInfo and $eeTag = 1;
+                $eeTag = 1;
+                $$et{OPTIONS}{Unknown} = 1; # temporarily enable "Unknown" option
             } elsif (not $$et{OPTIONS}{Validate}) {
                 $et->WarnOnce('The ExtractEmbedded option may find more tags in the movie data',1);
             }
         }
+        my $tagInfo = $et->GetTagInfo($tagTablePtr, $tag);
+
+        $$et{OPTIONS}{Unknown} = $unkOpt if $eeTag;     # restore Unknown option
+
         # allow numerical tag ID's
         unless ($tagInfo) {
             my $id = $$et{KeyCount} . '.' . unpack('N', $tag);
@@ -6852,10 +7326,7 @@ sub ProcessMOV($$;$)
         if (not defined $tagInfo and ($$et{OPTIONS}{Unknown} or
             $verbose or $tag =~ /^\xa9/))
         {
-            my $name = $tag;
-            my $n = ($name =~ s/([\x00-\x1f\x7f-\xff])/'x'.unpack('H*',$1)/eg);
-            # print in hex if tag is numerical
-            $name = sprintf('0x%.4x',unpack('N',$tag)) if $n > 2;
+            my $name = PrintableTagID($tag,1);
             if ($name =~ /^xa9(.*)/) {
                 $tagInfo = {
                     Name => "UserData_$1",
@@ -6879,8 +7350,7 @@ sub ProcessMOV($$;$)
         if ($size > 0x2000000) {    # start to get worried above 32 MB
             $ignore = 1;
             if ($tagInfo and not $$tagInfo{Unknown} and not $eeTag) {
-                my $t = $tag;
-                $t =~ s/([\x00-\x1f\x7f-\xff])/'x'.unpack('H*',$1)/eg;
+                my $t = PrintableTagID($tag);
                 if ($size > 0x8000000) {
                     $et->Warn("Skipping '$t' atom > 128 MB", 1);
                 } else {
@@ -6929,9 +7399,6 @@ ItemID:         foreach $id (keys %$items) {
                 $et->Warn("Truncated '$tag' data (missing $missing bytes)");
                 last;
             }
-            # extract metadata from stream if ExtractEmbedded option is enabled
-            ParseTag($et, $tag, \$val, $$et{HandlerType}, $$et{HandlerDesc}) if $eeTag;
-
             # use value to get tag info if necessary
             $tagInfo or $tagInfo = $et->GetTagInfo($tagTablePtr, $tag, \$val);
             my $hasData = ($$dirInfo{HasData} and $val =~ /\0...data\0/s);
@@ -6949,6 +7416,13 @@ ItemID:         foreach $id (keys %$items) {
                     Index   => $index,
                 );
             }
+            # extract metadata from stream if ExtractEmbedded option is enabled
+            if ($eeTag) {
+                ParseTag($et, $tag, \$val);
+                # forget this tag if we generated it only for ExtractEmbedded
+                undef $tagInfo if $tagInfo and $$tagInfo{Unknown} and not $unkOpt;
+            }
+
             # handle iTunesInfo mean/name/data triplets
             if ($tagInfo and $$tagInfo{Triplet}) {
                 if ($tag eq 'data' and $triplet{mean} and $triplet{name}) {
@@ -7026,18 +7500,18 @@ ItemID:         foreach $id (keys %$items) {
                             $et->ProcessDirectory(\%dirInfo, $subTable, $proc);
                         }
                     }
-                    # reset HandlerType when exiting MediaInfo box
-                    if ($tag eq 'minf') {
-                        $$et{HandlerType} = $$et{HanderDesc} = '';
-                        # make sure we don't extract embedded with sizes from one
-                        # MediaInfo box and offsets from another
-                        delete $$et{eeStart};
-                        delete $$et{eeSize};
+                    if ($tag eq 'stbl') {
+                        # process sample data when exiting SampleTable box if extracting embedded
+                        ProcessSamples($et) if $ee;
+                    } elsif ($tag eq 'minf') {
+                        $$et{HandlerType} = ''; # reset handler type at end of media info box
                     }
                     $$et{SET_GROUP1} = $oldGroup1;
                     SetByteOrder('MM');
-                    # handle metadata now if iwe just processed the 'meta' box
-                    HandleItemInfo($et, $raf) if $tag eq 'meta';
+                    if ($tag eq 'meta') {
+                        # handle metadata now if we just processed the 'meta' box
+                        HandleItemInfo($et, $raf) if $tag eq 'meta';
+                    }
                 } elsif ($hasData) {
                     # handle atoms containing 'data' tags
                     # (currently ignore contained atoms: 'itif', 'name', etc.)
@@ -7233,10 +7707,7 @@ QTLang: foreach $tag (@{$$et{QTLang}}) {
         }
         delete $$et{QTLang};
     }
-    if ($topLevel) {
-        HandleItemInfo($et, $raf);
-        ExtractEmbedded($et, $raf) if $ee;
-    }
+    HandleItemInfo($et, $raf) if $topLevel;
     return 1;
 }
 

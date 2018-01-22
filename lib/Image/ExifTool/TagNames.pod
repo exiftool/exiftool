@@ -1232,6 +1232,7 @@ L<http://www.adobe.com/devnet/xmp/> for the official XMP specification.
   GAudio                                        XMP GAudio
   GDepth                                        XMP GDepth
   getty                                         XMP GettyImages
+  GFocus                                        XMP GFocus
   GImage                                        XMP GImage
   GPano                                         XMP GPano
   GSpherical                                    XMP GSpherical
@@ -2321,6 +2322,19 @@ These tags belong to the ExifTool XMP-getty family 1 group.
   RoutingExclusions                             string+
   SecondaryFTP                                  string+
   TimeShot                                      string
+
+=head3 XMP GFocus Tags
+
+Focus information found in Google depthmap images.
+
+These tags belong to the ExifTool XMP-GFocus family 1 group.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  BlurAtInfinity                                real
+  FocalDistance                                 real
+  FocalPointX                                   real
+  FocalPointY                                   real
 
 =head3 XMP GImage Tags
 
@@ -16065,6 +16079,15 @@ the DSC-F1.
     112    FocalLength                          no
     118    Flash                                no
 
+=head3 Sony rtmd Tags
+
+These tags are extracted from the 'rtmd' timed metadata of MP4 videos from
+some models when the ExtractEmbedded option is used.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+    228    DateTime                             no
+
 =head2 SonyIDC Tags
 
 Tags written by the Sony Image Data Converter utility in ARW images.
@@ -22443,6 +22466,7 @@ ItemList tags written by the "mdta" handler.  The prefix of
   'software'                   Software         no
   'title'                      Title            no
   'version'                    Version          no
+  'video-orientation'          VideoOrientation no
   'year'                       Year             no
 
 =head3 QuickTime Movie Tags
@@ -22898,7 +22922,7 @@ multi-language user data tags found, even if they don't exist in this table.
   'DcMD'       KodakDcMD                        Kodak DcMD
   'FFMV'       FujiFilmFFMV                     FujiFilm FFMV
   'FIRM'       FirmwareVersion                  no
-  'GPMF'       GoProMF                          GoPro GPMF
+  'GPMF'       GoProGPMF                        GoPro GPMF
   'GoPr'       GoProType                        no
   'INFO'       SamsungINFO                      Samsung INFO
   'LEIC'       LeicaLEIC                        Panasonic PANA
@@ -23222,12 +23246,14 @@ used.
   'GPSSpeedRef'        GPSSpeedRef              no
   'GPSTrack'           GPSTrack                 no
   'GPSTrackRef'        GPSTrackRef              no
-  'GoPro MET'          GoProMET                 GoPro MET
-  'GoPro SOS'          GoProSOS                 GoPro SOS
   'SampleDuration'     SampleDuration           no
   'SampleTime'         SampleTime               no
   'Text'               Text                     no
   'TimeCode'           TimeCode                 no
+  'fdsc'               GoPro_fdsc               GoPro fdsc
+  'gpmd'               GoPro_gpmd               GoPro GPMF
+  'mebx'               QuickTime_mebx           QuickTime Stream
+  'rtmd'               Sony_rtmd                Sony rtmd
 
 =head2 PLIST Tags
 
@@ -23259,32 +23285,33 @@ either "XML" or "PLIST" depending on whether the format is XML or binary.
 
 =head3 GoPro GPMF Tags
 
-Tags extracted from the GPMF box of GoPro MP4 videos.  Many more tags exist,
-but are currently unknown and extracted only with the -u option.  Please let
-me know if you discover the meaning of any of these unknown tags.
-
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  'AUDO'   AudioSetting                         no
-  'CASN'   CameraSerialNumber                   no
-  'FMWR'   FirmwareVersion                      no
-  'MINF'   Model                                no
-  'PIMN'   AutoISOMin                           no
-  'PIMX'   AutoISOMax                           no
-
-=head3 GoPro MET Tags
-
-Tags extracted from the MP4 "GoPro MET" timed metadata when the ExtractEmbedded
-option is used.
+Tags extracted from the GPMF box of GoPro MP4 videos, and from the "gpmd"
+timed metadata if the ExtractEmbedded option is enabled.  Many more tags
+exist, but are currently unknown and extracted only with the -u option.
+Please let me know if you discover the meaning of any of these unknown tags.
+See L<https://github.com/gopro/gpmf-parser> for details about this format.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
   'ACCL'   Accelerometer                        no
-  'DEVC'   DeviceContainer                      no
+  'ATTD'   Attitude                             no
+  'ATTR'   AttitudeTarget                       no
+  'AUDO'   AudioSetting                         no
+  'BPOS'   Controller?                          no
+  'CASN'   CameraSerialNumber                   no
+  'CSEN'   CoyoteSense                          no
+  'CYTS'   CoyoteStatus                         no
+  'DEVC'   DeviceContainer                      GoPro GPMF
   'DVID'   DeviceID?                            no
   'DVNM'   DeviceName                           no
   'EMPT'   Empty?                               no
+  'ESCS'   EscapeStatus?                        no
+  'FACE'   FaceDetected                         no
   'FCNM'   FaceNumbers                          no
+  'FMWR'   FirmwareVersion                      no
+  'FWVS'   OtherFirmware                        no
+  'GLPI'   GPSPos                               GoPro GLPI
+  'GPRI'   GPSRaw?                              GoPro GPRI
   'GPS5'   GPSInfo                              GoPro GPS5
   'GPSF'   GPSMeasureMode                       no
   'GPSP'   GPSHPositioningError                 no
@@ -23292,32 +23319,83 @@ option is used.
   'GYRO'   Gyroscope                            no
   'ISOE'   ISOSpeeds                            no
   'ISOG'   ImageSensorGain                      no
+  'KBAT'   BatteryStatus                        GoPro KBAT
+  'LNED'   LocalPositionNED                     no
+  'MAGN'   Magnetometer                         no
+  'MINF'   Model                                no
+  'PIMN'   AutoISOMin                           no
+  'PIMX'   AutoISOMax                           no
   'RMRK'   Comments                             no
   'SCAL'   ScaleFactor?                         no
+  'SCPR'   ScaledPressure                       no
   'SHUT'   ExposureTimes                        no
-  'SIUN'   SIUnits                              no
+  'SIMU'   ScaledIMU                            no
+  'SIUN'   SIUnits?                             no
+  'STMP'   TimeStamp                            no
   'STNM'   StreamName?                          no
-  'STRM'   NestedSignalStream?                  no
+  'STRM'   NestedSignalStream                   GoPro GPMF
+  'SYST'   SystemTime                           no
   'TMPC'   CameraTemperature                    no
   'TSMP'   TotalSamples?                        no
   'TYPE'   StructureType?                       no
-  'UNIT'   Units                                no
+  'UNIT'   Units?                               no
+  'VFRH'   VisualFlightRulesHUD                 no
   'WBAL'   ColorTemperatures                    no
   'WRGB'   WhiteBalanceRGB                      no
 
+=head3 GoPro GLPI Tags
+
+   Index   Tag Name                             Writable
+   -----   --------                             --------
+      0    GPSDateTime                          no
+      1    GPSLatitude                          no
+      2    GPSLongitude                         no
+      3    GPSAltitude                          no
+      5    GPSSpeedX                            no
+      6    GPSSpeedY                            no
+      7    GPSSpeedZ                            no
+      8    GPSTrack                             no
+
+=head3 GoPro GPRI Tags
+
+   Index   Tag Name                             Writable
+   -----   --------                             --------
+      0    GPSDateTimeRaw                       no
+      1    GPSLatitudeRaw                       no
+      2    GPSLongitudeRaw                      no
+      3    GPSAltitudeRaw                       no
+      6    GPSSpeedRaw                          no
+      7    GPSTrackRaw                          no
+
 =head3 GoPro GPS5 Tags
 
-  Index4   Tag Name                             Writable
-  ------   --------                             --------
+   Index   Tag Name                             Writable
+   -----   --------                             --------
       0    GPSLatitude                          no
       1    GPSLongitude                         no
       2    GPSAltitude                          no
       3    GPSSpeed                             no
       4    GPSSpeed3D                           no
 
-=head3 GoPro SOS Tags
+=head3 GoPro KBAT Tags
 
-Tags extracted from the MP4 "GoPro SOS" timed metadata when the ExtractEmbedded
+Battery status information found in GoPro Karma videos.
+
+   Index   Tag Name                             Writable
+   -----   --------                             --------
+      0    BatteryCurrent                       no
+      1    BatteryCapacity                      no
+      3    BatteryTemperature                   no
+      4    BatteryVoltage1                      no
+      5    BatteryVoltage2                      no
+      6    BatteryVoltage3                      no
+      7    BatteryVoltage4                      no
+      8    BatteryTime                          no
+     14    BatteryLevel                         no
+
+=head3 GoPro fdsc Tags
+
+Tags extracted from the MP4 "fdsc" timed metadata when the ExtractEmbedded
 option is used.
 
   Index1   Tag Name                             Writable
@@ -26244,7 +26322,7 @@ formatting of this table.
      16    FileLength                           no
      24    CreationDate                         no
      32    DataPackets                          no
-     40    PlayDuration                         no
+     40    Duration                             no
      48    SendDuration                         no
      56    Preroll                              no
      64    Flags                                no

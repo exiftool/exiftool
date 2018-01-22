@@ -3893,6 +3893,13 @@ sub Get64u($$)
     my $lo = Get32u($dataPt, $pos + 4 - $pt);
     return $hi * 4294967296 + $lo;
 }
+sub GetFixed64s($$)
+{
+    my ($dataPt, $pos) = @_;
+    my $val = Get64s($dataPt, $pos) / 4294967296;
+    # remove insignificant digits
+    return int($val * 1e10 + ($val>0 ? 0.5 : -0.5)) / 1e10;
+}
 # Decode extended 80-bit float used by Apple SANE and Intel 8087
 # (note: different than the IEEE standard 80-bit float)
 sub GetExtended($$)
@@ -4021,8 +4028,10 @@ sub VerboseInfo($$$%)
         $line .= ' (SubDirectory) -->';
     } else {
         my $maxLen = 90 - length($line);
-        if (defined $parms{Value}) {
-            $line .= ' = ' . $self->Printable($parms{Value}, $maxLen);
+        my $val = $parms{Value};
+        if (defined $val) {
+            $val = '[' . join(',',@$val) . ']' if ref $val eq 'ARRAY';
+            $line .= ' = ' . $self->Printable($val, $maxLen);
         } elsif ($dataPt) {
             my $start = $parms{Start} || 0;
             $line .= ' = ' . $self->Printable(substr($$dataPt,$start,$size), $maxLen);

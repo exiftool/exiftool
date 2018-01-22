@@ -488,11 +488,12 @@ distribution for examples.</p>
     metadata (eg. AVI and WAV files).  The default value of 0 assumes 'Latin' encoding unless otherwise
     specified by the RIFF CSET chunk.  Set to undef to pass through strings without recoding.</td>
     <td align=center><i>(see <a href="#Charset">Charset</a> option)</i><br>or 0 or undef</td><td align=center>0</td></tr>
-<tr id="Compact"><td>Compact</td><td>Flag to write compact output.  The XMP specification suggests
-    that the data be padded with blanks to allow in-place editing.  With this
-    flag set the 2kB of padding is not written.  Note that this only effects
-    embedded XMP since padding is never written for stand-alone XMP files.</td>
-    <td align=center>0 or 1</td><td align=center>undef</td></tr>
+<tr id="Compact"><td>Compact</td><td>Option to write compact XMP output.  The XMP specification suggests that the
+    data be padded with blanks to allow in-place editing. With this flag set to 1, the 2 kB of padding
+    is not written.  Note that this only effects embedded XMP since padding is never written for
+    stand-alone XMP files.  When set to 2, spaces to indent XMP for readability are also dropped.
+    Also see the <a href="#XMPShorthand">XMPShorthand</a> option for reducing the size of XMP.</td>
+    <td align=center>0, 1 or 2</td><td align=center>undef</td></tr>
 <tr id="Composite"><td>Composite</td><td>Flag to generate Composite tags when extracting information.</td>
     <td align=center>0 or 1</td><td align=center>1</td></tr>
 <tr id="Compress"><td>Compress</td><td>Flag to write new values in compressed format if possible.
@@ -852,6 +853,9 @@ distribution for examples.</p>
     for unknown XMP tags with values that look like rational numbers or dates.</td>
     <td align=center>0 or 1</td>
     <td align=center>1</td></tr>
+<tr id="XMPShorthand"><td>XMPShorthand</td><td>Flag set to write XMP in shorthand format.</td>
+    <td align=center>0 or 1</td>
+    <td align=center>undef</td></tr>
 </table></blockquote>
 
 <blockquote><table><tr><td valign=top><sup>&dagger;</sup></td><td>The level of
@@ -1976,12 +1980,12 @@ the specific IFD).
 <td>AFCP, AIFF, APE, APP0, APP1, APP11, APP12, APP13, APP14, APP15, APP4, APP5,
 APP6, APP8, ASF, Audible, CanonVRD, Composite, DICOM, DNG, DV, DjVu, Ducky,
 EXE, EXIF, ExifTool, FLAC, FLIR, File, Flash, FlashPix, Font, FotoStation,
-GIF, GIMP, GeoTiff, H264, HTML, ICC_Profile, ID3, IPTC, ISO, ITC, JFIF,
-JPEG, Jpeg2000, LNK, Leaf, Lytro, M2TS, MIE, MIFF, MNG, MOI, MPC, MPEG, MPF,
-MXF, MakerNotes, Matroska, Meta, Ogg, OpenEXR, Opus, PDF, PICT, PLIST, PNG,
-PSP, Palm, PanasonicRaw, PhotoCD, PhotoMechanic, Photoshop, PostScript,
-PrintIM, QuickTime, RAF, RIFF, RSRC, RTF, Radiance, Rawzor, Real, SVG,
-SigmaRaw, Stim, Theora, Torrent, VCard, Vorbis, XML, XMP, ZIP
+GIF, GIMP, GeoTiff, GoPro, H264, HTML, ICC_Profile, ID3, IPTC, ISO, ITC,
+JFIF, JPEG, Jpeg2000, LNK, Leaf, Lytro, M2TS, MIE, MIFF, MNG, MOI, MPC,
+MPEG, MPF, MXF, MakerNotes, Matroska, Meta, Ogg, OpenEXR, Opus, PDF, PICT,
+PLIST, PNG, PSP, Palm, PanasonicRaw, PhotoCD, PhotoMechanic, Photoshop,
+PostScript, PrintIM, QuickTime, RAF, RIFF, RSRC, RTF, Radiance, Rawzor,
+Real, SVG, SigmaRaw, Stim, Theora, Torrent, VCard, Vorbis, XML, XMP, ZIP
 </td></tr>
 <tr><td><b>1&nbsp;(Specific&nbsp;Location)</b></td>
 <td>AC3, AFCP, AIFF, APE, ASF, AVI1, Adobe, AdobeCM, AdobeDNG, Apple, Audible,

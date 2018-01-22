@@ -498,7 +498,7 @@ applications may use local encoding instead.  Default is 'Latin'.
 
 Fallback internal IPTC character set to assume if IPTC information contains
 no CodedCharacterSet tag.  Possible values are the same as the L</Charset>
-option. Default is 'Latin'.
+option.  Default is 'Latin'.
 
 Note that this option affects some types of information when reading/writing
 the file and other types when getting/setting tag values, so it must be
@@ -523,11 +523,12 @@ without recoding.  Default is 0.
 
 =item Compact
 
-Flag to write compact output.  Default is undef.  The XMP specification
-suggests that the data be padded with blanks to allow in-place editing. 
-With this flag set the 2kB of padding is not written.  Note that this only
-effects embedded XMP since padding is never written for stand-alone XMP
-files.
+Option to write compact XMP output.  The XMP specification suggests that the
+data be padded with blanks to allow in-place editing. With this flag set to
+1, the 2 kB of padding is not written.  Note that this only effects embedded
+XMP since padding is never written for stand-alone XMP files.  When set to
+2, spaces to indent XMP for readability are also dropped.  Default is undef.
+Also see the XMPShorthand option for reducing the size of XMP.
 
 =item Composite
 
@@ -959,6 +960,10 @@ and L<Image::ExifTool::TagNames/MacOS XAttr Tags> for more information).
 
 Flag to enable automatic conversion for unknown XMP tags with values that
 look like rational numbers or dates.  Default is 1.
+
+=item XMPShorthand
+
+Flag set to write xmp in shorthand format.  Default is undef.
 
 =back
 
@@ -2163,12 +2168,12 @@ Here is a complete list of groups for each of these families:
 AFCP, AIFF, APE, APP0, APP1, APP11, APP12, APP13, APP14, APP15, APP4, APP5,
 APP6, APP8, ASF, Audible, CanonVRD, Composite, DICOM, DNG, DV, DjVu, Ducky,
 EXE, EXIF, ExifTool, FLAC, FLIR, File, Flash, FlashPix, Font, FotoStation,
-GIF, GIMP, GeoTiff, H264, HTML, ICC_Profile, ID3, IPTC, ISO, ITC, JFIF,
-JPEG, Jpeg2000, LNK, Leaf, Lytro, M2TS, MIE, MIFF, MNG, MOI, MPC, MPEG, MPF,
-MXF, MakerNotes, Matroska, Meta, Ogg, OpenEXR, Opus, PDF, PICT, PLIST, PNG,
-PSP, Palm, PanasonicRaw, PhotoCD, PhotoMechanic, Photoshop, PostScript,
-PrintIM, QuickTime, RAF, RIFF, RSRC, RTF, Radiance, Rawzor, Real, SVG,
-SigmaRaw, Stim, Theora, Torrent, VCard, Vorbis, XML, XMP, ZIP
+GIF, GIMP, GeoTiff, GoPro, H264, HTML, ICC_Profile, ID3, IPTC, ISO, ITC,
+JFIF, JPEG, Jpeg2000, LNK, Leaf, Lytro, M2TS, MIE, MIFF, MNG, MOI, MPC,
+MPEG, MPF, MXF, MakerNotes, Matroska, Meta, Ogg, OpenEXR, Opus, PDF, PICT,
+PLIST, PNG, PSP, Palm, PanasonicRaw, PhotoCD, PhotoMechanic, Photoshop,
+PostScript, PrintIM, QuickTime, RAF, RIFF, RSRC, RTF, Radiance, Rawzor,
+Real, SVG, SigmaRaw, Stim, Theora, Torrent, VCard, Vorbis, XML, XMP, ZIP
 
 =item Family 1 (Specific Location):
 

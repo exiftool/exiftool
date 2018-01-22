@@ -1,5 +1,5 @@
 <?xpacket begin='﻿' id='W5M0MpCehiHzreSzNTczkc9d'?>
-<x:xmpmeta xmlns:x='adobe:ns:meta/' x:xmptk='Image::ExifTool 8.44'>
+<x:xmpmeta xmlns:x='adobe:ns:meta/' x:xmptk='Image::ExifTool 10.76'>
 <rdf:RDF xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'>
 
  <rdf:Description rdf:about=''
@@ -34,18 +34,20 @@
  </rdf:Description>
 
  <rdf:Description rdf:about=''
-  xmlns:photoshop='http://ns.adobe.com/photoshop/1.0/'>
-  <photoshop:AuthorsPosition>My Position</photoshop:AuthorsPosition>
-  <photoshop:CaptionWriter>I wrote it</photoshop:CaptionWriter>
-  <photoshop:Category>1</photoshop:Category>
-  <photoshop:City>Kingston</photoshop:City>
-  <photoshop:Country>Canada</photoshop:Country>
-  <photoshop:Credit>My Credit</photoshop:Credit>
-  <photoshop:DateCreated>2004-02-26</photoshop:DateCreated>
-  <photoshop:Headline>No headline</photoshop:Headline>
-  <photoshop:Instructions>What instructions</photoshop:Instructions>
-  <photoshop:Source>I&#39;m the source</photoshop:Source>
-  <photoshop:State>Ont</photoshop:State>
+  xmlns:photoshop='http://ns.adobe.com/photoshop/1.0/'
+  photoshop:AuthorsPosition='My Position'
+  photoshop:CaptionWriter='I wrote it'
+  photoshop:Category='1'
+  photoshop:City='Kingston'
+  photoshop:Country='Canada'
+  photoshop:Credit='My Credit'
+  photoshop:DateCreated='2004-02-26'
+  photoshop:Headline='No headline'
+  photoshop:Instructions='What instructions'
+  photoshop:Source='I&#39;m the source'
+  photoshop:State='Ont'
+  photoshop:TransmissionReference='What is a transmission reference?'
+  photoshop:Urgency='8'>
   <photoshop:SupplementalCategories>
    <rdf:Bag>
     <rdf:li>amazing</rdf:li>
@@ -53,38 +55,32 @@
     <rdf:li>utilities</rdf:li>
    </rdf:Bag>
   </photoshop:SupplementalCategories>
-  <photoshop:TransmissionReference>What is a transmission reference?</photoshop:TransmissionReference>
-  <photoshop:Urgency>8</photoshop:Urgency>
  </rdf:Description>
 
  <rdf:Description rdf:about=''
-  xmlns:xmp='http://ns.adobe.com/xap/1.0/'>
-  <xmp:CreateDate>2001-05-19T18:36:41</xmp:CreateDate>
-  <xmp:ModifyDate>2004-02-26T09:36:46</xmp:ModifyDate>
- </rdf:Description>
+  xmlns:xmp='http://ns.adobe.com/xap/1.0/'
+  xmp:CreateDate='2001-05-19T18:36:41'
+  xmp:ModifyDate='2004-02-26T09:36:46'/>
 
  <rdf:Description rdf:about=''
   xmlns:stJob='http://ns.adobe.com/xap/1.0/sType/Job#'
   xmlns:xmpBJ='http://ns.adobe.com/xap/1.0/bj/'>
   <xmpBJ:JobRef>
    <rdf:Bag>
-    <rdf:li rdf:parseType='Resource'>
-     <stJob:name>My Job</stJob:name>
-    </rdf:li>
+    <rdf:li
+     stJob:name='My Job'/>
    </rdf:Bag>
   </xmpBJ:JobRef>
  </rdf:Description>
 
  <rdf:Description rdf:about=''
-  xmlns:xmpMM='http://ns.adobe.com/xap/1.0/mm/'>
-  <xmpMM:DocumentID>adobe:docid:photoshop:4cc7b857-69d0-11d8-8ac4-bb59c92f0d9a</xmpMM:DocumentID>
- </rdf:Description>
+  xmlns:xmpMM='http://ns.adobe.com/xap/1.0/mm/'
+  xmpMM:DocumentID='adobe:docid:photoshop:4cc7b857-69d0-11d8-8ac4-bb59c92f0d9a'/>
 
  <rdf:Description rdf:about=''
-  xmlns:xmpRights='http://ns.adobe.com/xap/1.0/rights/'>
-  <xmpRights:Marked>False</xmpRights:Marked>
-  <xmpRights:WebStatement>http://owl.phy.queensu.ca/~phil/exiftool/</xmpRights:WebStatement>
- </rdf:Description>
+  xmlns:xmpRights='http://ns.adobe.com/xap/1.0/rights/'
+  xmpRights:Marked='False'
+  xmpRights:WebStatement='http://owl.phy.queensu.ca/~phil/exiftool/'/>
 </rdf:RDF>
 </x:xmpmeta>
 <?xpacket end='w'?>

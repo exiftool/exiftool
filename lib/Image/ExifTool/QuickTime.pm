@@ -42,7 +42,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.07';
+$VERSION = '2.08';
 
 sub FixWrongFormat($);
 sub ProcessMOV($$;$);
@@ -1618,10 +1618,9 @@ my %eeBox = (
     # BCID? 26 bytes (Hero5, all zero)
     # GUMI? 16 bytes (Hero5)
     GPMF => {
-        Name => 'GoProMF',
+        Name => 'GoProGPMF',
         SubDirectory => { TagTable => 'Image::ExifTool::GoPro::GPMF' },
     },
-    # GPMF? 25600 bytes (Hero6, very interesting stuff in here)
     # free (all zero)
     # --- HTC ----
     htcb => {
@@ -5030,6 +5029,7 @@ my %eeBox = (
     # (fiel)com.apple.quicktime.detected-face.face-id (dtyp=77, int32u)
     # (fiel)com.apple.quicktime.detected-face.yaw-angle (dtyp=23, float)
     # (mdta)com.apple.quicktime.video-orientation (dtyp=66, int16s)
+    'video-orientation' => 'VideoOrientation',
 );
 
 # iTunes info ('----') atoms
@@ -6017,7 +6017,11 @@ my %eeBox = (
 %Image::ExifTool::QuickTime::MetaSampleDesc = (
     PROCESS_PROC => \&ProcessHybrid,
     NOTES => 'MP4 metadata sample description.',
-    4 => { Name => 'MetaFormat', Format => 'undef[4]' },
+    4 => {
+        Name => 'MetaFormat',
+        Format => 'undef[4]',
+        RawConv => '$$self{MetaFormat} = $val',
+    },
 #
 # Observed offsets for child atoms of various MetaFormat types:
 #
@@ -6236,7 +6240,6 @@ my %eeBox = (
         # (sometimes this is a Pascal string, and sometimes it is a C string)
         RawConv => q{
             $val=substr($val,1,ord($1)) if $val=~/^([\0-\x1f])/ and ord($1)<length($val);
-            ($$self{HandlerDesc} = $val) =~ s/\s+$//;
             length $val ? $val : undef;
         },
     },
@@ -7192,7 +7195,7 @@ sub ProcessMOV($$;$)
 
     my $topLevel = not $$et{InQuickTime};
     $$et{InQuickTime} = 1;
-    $$et{HandlerType} = $$et{HandlerDesc} = '' unless defined $$et{HandlerType};
+    $$et{HandlerType} = $$et{MetaFormat} = '' unless defined $$et{HandlerType};
 
     if ($$et{OPTIONS}{ExtractEmbedded}) {
         $ee = 1;

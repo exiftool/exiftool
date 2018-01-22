@@ -344,10 +344,11 @@ my $testnum = 1;
     print "ok $testnum\n";
 }
 
-# test 30: Test mass copy with deletion of specific XMP family 1 groups
+# test 30: Test mass copy with deletion of specific XMP family 1 groups in shorthand format
 {
     ++$testnum;
     my $exifTool = new Image::ExifTool;
+    $exifTool->Options(XMPShorthand => 1);
     my $testfile = "t/${testname}_${testnum}_failed.out";
     unlink $testfile;
     $exifTool->SetNewValuesFromFile('t/images/XMP.jpg');

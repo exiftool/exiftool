@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.71';
+$VERSION = '2.72';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -9315,6 +9315,27 @@ my %pictureProfile2010 = (
         Name => 'Flash',
         Groups => { 2 => 'Camera' },
         PrintConv => { 0 => 'No Flash', 1 => 'Fired' },
+    },
+);
+
+# tags found in 'rtmd' timed metadata (ref PH, ILCE-7S MP4)
+%Image::ExifTool::Sony::rtmd = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 2 => 'Camera' },
+    FIRST_ENTRY => 0,
+    NOTES => q{
+        These tags are extracted from the 'rtmd' timed metadata of MP4 videos from
+        some models when the ExtractEmbedded option is used.
+    },
+    # 0x0e = int8u some minutes
+    # 0x0f = int8u some seconds
+    # 0x11 = int8u frame number? (0-25)
+    0xe4 => {
+        Name => 'DateTime',
+        Groups => { 2 => 'Time' },
+        Format => 'undef[7]',
+        ValueConv => 'my @a=unpack("H4H2H2H2H2H2",$val); "$a[0]:$a[1]:$a[2] $a[3]:$a[4]:$a[5]"',
+        PrintConv => '$self->ConvertDateTime($val)',
     },
 );
 

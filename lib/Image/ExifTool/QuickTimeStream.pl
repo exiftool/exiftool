@@ -1,15 +1,18 @@
 #------------------------------------------------------------------------------
 # File:         QuickTimeStream.pl
 #
-# Description:  Extract embedded information from QuickTime video data
+# Description:  Extract embedded information from QuickTime movie data
 #
 # Revisions:    2018-01-03 - P. Harvey Created
 #
-# References:   2) http://sergei.nz/files/nvtk_mp42gpx.py
+# References:   1) https://developer.apple.com/library/content/documentation/QuickTime/QTFF/QTFFChap3/qtff3.html#//apple_ref/doc/uid/TP40000939-CH205-SW130
+#               2) http://sergei.nz/files/nvtk_mp42gpx.py
 #------------------------------------------------------------------------------
 package Image::ExifTool::QuickTime;
 
 use strict;
+
+sub ProcessMebx($$$);
 
 # QuickTime data types that have ExifTool equivalents
 # (ref https://developer.apple.com/library/content/documentation/QuickTime/QTFF/Metadata/Metadata.html#//apple_ref/doc/uid/TP40000939-CH1-SW35)
@@ -64,20 +67,29 @@ my %qtFmt = (
     SampleTime   => { Groups => { 2 => 'Other' }, Notes => 'sample decoding time' },
     SampleDuration=>{ Groups => { 2 => 'Other' } },
 #
-# streamed metadata decoded based on HandlerDescription
+# timed metadata decoded based on MetaFormat (format of 'meta' sample description)
 #
-    'GoPro MET' => {
-        Name => 'GoProMET',
-        SubDirectory => { TagTable => 'Image::ExifTool::GoPro::MET' },
+    mebx => {
+        Name => 'QuickTime_mebx',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::QuickTime::Stream',
+            ProcessProc => \&ProcessMebx,
+        },
     },
-    'GoPro SOS' => {
-        Name => 'GoProSOS',
+    gpmd => {
+        Name => 'GoPro_gpmd',
+        SubDirectory => { TagTable => 'Image::ExifTool::GoPro::GPMF' },
+    },
+    fdsc => {
+        Name => 'GoPro_fdsc',
         Condition => '$$valPt =~ /^GPRO/',
-        # (other types of "GoPro SOS" blocks aren't yet parsed: /^GP\x00/ and /^GP\x04/)
-        SubDirectory => { TagTable => 'Image::ExifTool::GoPro::SOS' },
+        # (other types of "fdsc" samples aren't yet parsed: /^GP\x00/ and /^GP\x04/)
+        SubDirectory => { TagTable => 'Image::ExifTool::GoPro::fdsc' },
     },
-    # also seen:
-    # 'Timed Metadata Media Handler' (Sony ILCE-7S mp4; minutes:seconds at byte 22/23)
+    rtmd => {
+        Name => 'Sony_rtmd',
+        SubDirectory => { TagTable => 'Image::ExifTool::Sony::rtmd' },
+    }
 );
 
 #------------------------------------------------------------------------------
@@ -181,13 +193,13 @@ sub FoundSomething($$$$)
 #------------------------------------------------------------------------------
 # Exract embedded metadata from media samples
 # Inputs: 0) ExifTool ref
-# Notes: Also accesses ExifTool RAF*, SET_GROUP1, HandlerType, HandlerDesc,
+# Notes: Also accesses ExifTool RAF*, SET_GROUP1, HandlerType, MetaFormat,
 #        ee*, and avcC elements (* = must exist)
 sub ProcessSamples($)
 {
     my $et = shift;
     my ($raf, $ee) = @$et{qw(RAF ee)};
-    my ($i, $buff, $pos, %parms, $hdrLen, $hdrFmt, @time, @dur);
+    my ($i, $buff, $pos, %parms, $hdrLen, $hdrFmt, @time, @dur, $oldIndent);
 
     return unless $ee;
     delete $$et{ee};    # use only once
@@ -246,15 +258,15 @@ sub ProcessSamples($)
     my $tagTablePtr = GetTagTable('Image::ExifTool::QuickTime::Stream');
     my $verbose = $et->Options('Verbose');
     my $type = $$et{HandlerType} || '';
-    my $desc = $$et{HandlerDesc} || '';
+    my $metaFormat = $$et{MetaFormat} || '';
     my $tell = $raf->Tell();
 
-    $et->VPrint(0,"---- Extract Embedded ----\n");
-    my $oldIndent = $$et{INDENT};
-    $$et{INDENT} = '';
-
-    $parms{MaxLen} = $verbose == 3 ? 96 : 2048 if $verbose < 5;
-
+    if ($verbose) {
+        $et->VPrint(0,"---- Extract Embedded ----\n");
+        $oldIndent = $$et{INDENT};
+        $$et{INDENT} = '';
+        $parms{MaxLen} = $verbose == 3 ? 96 : 2048 if $verbose < 5;
+    }
     # get required information from avcC box if parsing video data
     if ($type eq 'vide' and $$ee{avcC}) {
         $hdrLen = (Get8u(\$$ee{avcC}, 4) & 0x03) + 1;
@@ -282,7 +294,7 @@ sub ProcessSamples($)
             next;
         }
         if ($verbose > 1) {
-            my $hdr = $$et{SET_GROUP1} ? "$$et{SET_GROUP1} Type='$type' Desc='$desc'" : "Type='$type'";
+            my $hdr = $$et{SET_GROUP1} ? "$$et{SET_GROUP1} Type='$type' Format='$metaFormat'" : "Type='$type'";
             $et->VPrint(1, "${hdr}, Sample ".($i+1).' of '.scalar(@$start)." ($size bytes)\n");
             $parms{Addr} = $$start[$i];
             HexDump(\$buff, undef, %parms) if $verbose > 2;
@@ -329,48 +341,20 @@ sub ProcessSamples($)
 
         } elsif ($type eq 'meta') {
 
-            if ($$ee{'keys'}) {
-
-                FoundSomething($et, $tagTablePtr, $time[$i], $dur[$i]);
-                # parse using information from 'keys' table (eg. Apple iPhone7+ hevc 'Core Media Data Handler')
-                my $keysTable = GetTagTable('Image::ExifTool::QuickTime::Keys');
-                my $pos = 0;
-                while ($pos + 8 < length $buff) {
-                    my $len = Get32u(\$buff, $pos);
-                    my $id = substr($buff, $pos+4, 4);
-                    last if $pos + $len > length $buff;
-                    my $info = $$ee{'keys'}{$id};
-                    if ($info) {
-                        my $val = substr($buff, $pos+8, $len);
-                        my $tag = $$info{TagID};
-                        unless ($$keysTable{$tag}) {
-                            next unless $tag =~ /^[-\w.]+$/;
-                            # create info for tags with reasonable id's
-                            my $name = $tag;
-                            $name =~ s/[-.](.)/\U$1/g;
-                            AddTagToTable($keysTable, $tag, {
-                                Name   => ucfirst($name),
-                                Format => $$info{Format},
-                            });
-                        }
-                        $et->HandleTag($keysTable, $tag, undef,
-                            DataPt => \$buff,
-                            Start  => 8,
-                            Size   => $len-8,
-                        );
-                    }
-                    $pos += 8 + $len;
-                }
-
-            } elsif ($$tagTablePtr{$desc}) {
-                my $tagInfo = $et->GetTagInfo($tagTablePtr, $desc, \$buff);
+            if ($$tagTablePtr{$metaFormat}) {
+                my $tagInfo = $et->GetTagInfo($tagTablePtr, $metaFormat, \$buff);
                 if ($tagInfo) {
                     FoundSomething($et, $tagTablePtr, $time[$i], $dur[$i]);
-                    $et->HandleTag($tagTablePtr, $desc, undef,
-                        DataPt => \$buff,
+                    $$et{ee} = $ee; # need ee information for 'keys'
+                    $et->HandleTag($tagTablePtr, $metaFormat, undef,
+                        DataPt  => \$buff,
+                        Base    => $$start[$i],
                         TagInfo => $tagInfo,
                     );
+                    delete $$et{ee};
                 }
+            } elsif ($verbose) {
+                $et->VPrint(0, "Unknown meta format ($metaFormat)");
             }
 
         } elsif ($type eq 'gps ') {
@@ -397,11 +381,12 @@ sub ProcessSamples($)
                 sprintf('%.4d:%.2d:%.2d %.2d:%.2d:%.2d',$yr,$mon,$day,$hr,$min,$sec));
         }
     }
-    $et->VPrint(0,"--------------------------\n");
-
+    if ($verbose) {
+        $$et{INDENT} = $oldIndent;
+        $et->VPrint(0,"--------------------------\n");
+    }
     # clean up
     $raf->Seek($tell, 0); # restore original file position
-    $$et{INDENT} = $oldIndent;
     $$et{DOC_NUM} = 0;
     $$et{HandlerType} = $$et{HanderDesc} = '';
 }
@@ -412,7 +397,7 @@ sub ProcessSamples($)
 sub ParseTag($$$)
 {
     local $_;
-    my ($et, $tag, $dataPt, $type, $desc) = @_;
+    my ($et, $tag, $dataPt) = @_;
     my $dataLen = length $$dataPt;
 
     if ($tag eq 'stsz' or $tag eq 'stz2' and $dataLen > 12) {
@@ -478,13 +463,53 @@ sub ParseTag($$$)
     }
 }
 
+#------------------------------------------------------------------------------
+# Process QuickTime 'mebx' timed metadata
+# Inputs: 0) ExifTool object ref, 1) dirInfo ref, 2) tag table ref
+# Returns: 1 on success
+sub ProcessMebx($$$)
+{
+    my ($et, $dirInfo, $tagTablePtr) = @_;
+    my $ee = $$et{ee} or return 0;
+    return 0 unless $$ee{'keys'};
+    my $dataPt = $$dirInfo{DataPt};
+
+    # parse using information from 'keys' table (eg. Apple iPhone7+ hevc 'Core Media Data Handler')
+    my $keysTable = GetTagTable('Image::ExifTool::QuickTime::Keys');
+    my $pos = 0;
+    while ($pos + 8 < length $$dataPt) {
+        my $len = Get32u($dataPt, $pos);
+        last if $len < 8 or $pos + $len > length $$dataPt;
+        my $id = substr($$dataPt, $pos+4, 4);
+        my $info = $$ee{'keys'}{$id};
+        if ($info) {
+            my $tag = $$info{TagID};
+            unless ($$keysTable{$tag}) {
+                next unless $tag =~ /^[-\w.]+$/;
+                # create info for tags with reasonable id's
+                my $name = $tag;
+                $name =~ s/[-.](.)/\U$1/g;
+                AddTagToTable($keysTable, $tag, { Name => ucfirst($name) });
+            }
+            my $val = ReadValue($dataPt, $pos+8, $$info{Format}, undef, $len-8);
+            $et->HandleTag($keysTable, $tag, $val,
+                DataPt => $dataPt,
+                Start  => $pos + 8,
+                Size   => $len - 8,
+            );
+        }
+        $pos += 8 + $len;
+    }
+    return 1;
+}
+
 1;  # end
 
 __END__
 
 =head1 NAME
 
-Image::ExifTool::QuickTime - Extract embedded information from video data
+Image::ExifTool::QuickTime - Extract embedded information from movie data
 
 =head1 SYNOPSIS
 
@@ -493,7 +518,7 @@ These routines are autoloaded by Image::ExifTool::QuickTime.
 =head1 DESCRIPTION
 
 This file contains routines used by Image::ExifTool to extract embedded
-information like GPS tracks from QuickTime and MP4 videos.
+information like GPS tracks from MOV and MP4 movie data.
 
 =head1 AUTHOR
 
@@ -506,7 +531,7 @@ under the same terms as Perl itself.
 
 =over 4
 
-=item L<https://github.com/stilldavid/gopro-utils>
+=item Lhttps://developer.apple.com/library/content/documentation/QuickTime/QTFF/QTFFChap3/qtff3.html#//apple_ref/doc/uid/TP40000939-CH205-SW130>
 
 =item L<http://sergei.nz/files/nvtk_mp42gpx.py>
 
@@ -516,7 +541,8 @@ under the same terms as Perl itself.
 
 L<Image::ExifTool::QuickTime(3pm)|Image::ExifTool::QuickTime>,
 L<Image::ExifTool::TagNames/QuickTime Stream Tags>,
-L<Image::ExifTool::TagNames/GoPro MET Tags>,
+L<Image::ExifTool::TagNames/GoPro GPMF Tags>,
+L<Image::ExifTool::TagNames/Sony rtmd Tags>,
 L<Image::ExifTool(3pm)|Image::ExifTool>
 
 =cut

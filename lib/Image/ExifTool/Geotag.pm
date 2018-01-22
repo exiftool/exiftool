@@ -24,7 +24,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:Public);
 
-$VERSION = '1.53';
+$VERSION = '1.54';
 
 sub JITTER() { return 2 }       # maximum time jitter
 
@@ -838,7 +838,8 @@ sub SetGeoValues($$;$)
         $time += $fs if $fs and $fs ne '.';
 
         # bring UTC time back to Jan. 1 if no date is given
-        $time %= $secPerDay if $noDate;
+        # (don't use '%' operator here because it drops fractional seconds)
+        $time -= int($time / $secPerDay) * $secPerDay if $noDate;
 
         # apply time synchronization if available
         my $sync = ApplySyncCorr($et, $time);

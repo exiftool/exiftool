@@ -1671,6 +1671,18 @@ my %sSubVersion = (
     ImageHeight => { Writable => 'real' },
 );
 
+# Google focus namespace
+%Image::ExifTool::XMP::GFocus = (
+    %xmpTableDefaults,
+    GROUPS => { 1 => 'XMP-GFocus', 2 => 'Image' },
+    NAMESPACE => 'GFocus',
+    NOTES => 'Focus information found in Google depthmap images.',
+    BlurAtInfinity  => { Writable => 'real' },
+    FocalDistance   => { Writable => 'real' },
+    FocalPointX     => { Writable => 'real' },
+    FocalPointY     => { Writable => 'real' },
+);
+
 # Getty Images namespace (ref PH)
 %Image::ExifTool::XMP::GettyImages = (
     %xmpTableDefaults,

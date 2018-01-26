@@ -363,7 +363,7 @@ Record: for ($rec=0; ; ++$rec) {
                 $pos += 2 + $len;
                 # first string of a typed object is the object name
                 if ($getName) {
-                    $et->VPrint(1,"  | (object name '$tag')\n");
+                    $et->VPrint(1,"  | (object name '${tag}')\n");
                     undef $getName;
                     next; # (ignore name for now)
                 }
@@ -454,7 +454,7 @@ Record: for ($rec=0; ; ++$rec) {
             } else {
                 # give verbose indication if we ignore a lone value
                 my $t = $amfType[$type] || sprintf('type 0x%x',$type);
-                $et->VPrint(1, "  | (ignored lone $t value '$val')\n");
+                $et->VPrint(1, "  | (ignored lone $t value '${val}')\n");
             }
         }
     }

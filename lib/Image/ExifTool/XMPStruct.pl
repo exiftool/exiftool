@@ -83,7 +83,7 @@ sub InflateStruct($;$)
                 ($part = $$obj) =~ s/^\s*//s;
                 $part =~ s/[\x0d\x0a].*//s;
                 $part = substr($part,0,27) . '...' if length($part) > 30;
-                $warn = "Invalid structure field at '$part'";
+                $warn = "Invalid structure field at '${part}'";
             } else {
                 $warn = 'Missing closing brace for structure';
             }
@@ -223,7 +223,7 @@ Key:
                     $tagInfo = $ti;
                     $g1 = $grps[1];
                 }
-                $tagInfo or $warn =  "'$tag' is not a writable XMP tag", next Key;
+                $tagInfo or $warn =  "'${tag}' is not a writable XMP tag", next Key;
                 GetPropertyPath($tagInfo);  # make sure property path is generated for this tag
                 $tag = $$tagInfo{Name};
                 $tag = "$g1:$tag" if $grp;
@@ -264,7 +264,7 @@ Key:
                     last; # write this lang-alt field
                 }
             }
-            $warn = "'$tag' is not a field of $strName";
+            $warn = "'${tag}' is not a field of $strName";
             next Key;
         }
         if (ref $$struct{$key} eq 'HASH') {

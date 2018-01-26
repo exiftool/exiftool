@@ -160,7 +160,7 @@ my %mdDateInfo = (
         # ref https://opensource.apple.com/source/CarbonHeaders/CarbonHeaders-9A581/Finder.h
         ValueConv => q{
             my @a = unpack('a4a4n3x10nx2N', $$val);
-            tr/\0//d, $_="'$_'" foreach @a[0,1];
+            tr/\0//d, $_="'${_}'" foreach @a[0,1];
             return "@a";
         },
         PrintConv => q{
@@ -260,10 +260,10 @@ sub SetMacOSTags($$$)
         }
         if ($tag eq 'MDItemFSCreationDate') {
             ($f = $file) =~ s/'/'\\''/g;
-            $cmd = "setfile -d '$val' '$f'";
+            $cmd = "setfile -d '${val}' '${f}'";
         } elsif ($tag eq 'XAttrQuarantine') {
             ($f = $file) =~ s/'/'\\''/g;
-            $cmd = "xattr -d com.apple.quarantine '$f'";
+            $cmd = "xattr -d com.apple.quarantine '${f}'";
             $silentErr = 256;   # (will get this error if attribute doesn't exist)
         } else {
             ($f = $file) =~ s/(["\\])/\\$1/g;   # escape necessary characters

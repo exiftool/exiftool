@@ -502,7 +502,7 @@ sub ProcessHTML($$)
                     $name =~ s/\s(.)/\U$1/g;     # capitalize all words in tag name
                     $name =~ tr/-_a-zA-Z0-9//dc; # remove illegal characters (also hex code wide chars)
                     AddTagToTable($table, $tag, { Name => $name });
-                    $et->VPrint(0, "  [adding $tag '$name']\n");
+                    $et->VPrint(0, "  [adding $tag '${name}']\n");
                 }
                 $val = $et->Decode($val, $$et{HTMLCharset}) if $$et{HTMLCharset};
                 $et->HandleTag($table, $tag, UnescapeXML($val));
@@ -518,7 +518,7 @@ sub ProcessHTML($$)
             my $info = { Name => $name, Groups => { 0 => 'HTML' } };
             $info->{Groups}->{1} = ($grp eq 'http-equiv' ? 'HTTP-equiv' : "HTML-$grp") if $grp;
             AddTagToTable($table, $tag, $info);
-            $et->VPrint(0, "  [adding $tag '$tagName']\n");
+            $et->VPrint(0, "  [adding $tag '${tagName}']\n");
         }
         # recode if necessary
         $val = $et->Decode($val, $$et{HTMLCharset}) if $$et{HTMLCharset};

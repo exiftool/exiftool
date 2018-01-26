@@ -64,8 +64,8 @@ my %qtFmt = (
     Accelerometer=> { Notes => 'right/up/backward acceleration in units of g' },
     Text         => { Groups => { 2 => 'Other' } },
     TimeCode     => { Groups => { 2 => 'Other' } },
-    SampleTime   => { Groups => { 2 => 'Other' }, Notes => 'sample decoding time' },
-    SampleDuration=>{ Groups => { 2 => 'Other' } },
+    SampleTime   => { Groups => { 2 => 'Other' }, PrintConv => 'ConvertDuration($val)', Notes => 'sample decoding time' },
+    SampleDuration=>{ Groups => { 2 => 'Other' }, PrintConv => 'ConvertDuration($val)' },
 #
 # timed metadata decoded based on MetaFormat (format of 'meta' sample description)
 #
@@ -294,7 +294,7 @@ sub ProcessSamples($)
             next;
         }
         if ($verbose > 1) {
-            my $hdr = $$et{SET_GROUP1} ? "$$et{SET_GROUP1} Type='$type' Format='$metaFormat'" : "Type='$type'";
+            my $hdr = $$et{SET_GROUP1} ? "$$et{SET_GROUP1} Type='${type}' Format='${metaFormat}'" : "Type='${type}'";
             $et->VPrint(1, "${hdr}, Sample ".($i+1).' of '.scalar(@$start)." ($size bytes)\n");
             $parms{Addr} = $$start[$i];
             HexDump(\$buff, undef, %parms) if $verbose > 2;
@@ -303,8 +303,11 @@ sub ProcessSamples($)
 
             FoundSomething($et, $tagTablePtr, $time[$i], $dur[$i]);
             unless ($buff =~ /^\$BEGIN/) {
+                # remove ending "encd" box if it exists
+                $buff =~ s/\0\0\0\x0cencd\0\0\x01\0$// and $size -= 12;
                 # cameras such as the CanonPowerShotN100 store ASCII time codes with a
                 # leading 2-byte integer giving the length of the string
+                # (and chapter names start with a 2-byte integer too)
                 if ($size >= 2 and unpack('n',$buff) == $size - 2) {
                     next if $size == 2;
                     $buff = substr($buff,2);
@@ -475,6 +478,7 @@ sub ProcessMebx($$$)
     my $dataPt = $$dirInfo{DataPt};
 
     # parse using information from 'keys' table (eg. Apple iPhone7+ hevc 'Core Media Data Handler')
+    $et->VerboseDir('mebx', undef, length $$dataPt);
     my $keysTable = GetTagTable('Image::ExifTool::QuickTime::Keys');
     my $pos = 0;
     while ($pos + 8 < length $$dataPt) {

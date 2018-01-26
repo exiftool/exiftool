@@ -17,6 +17,19 @@ considered development releases, and are not uploaded to <a href="http://search.
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v10.77'><b>Jan. 26, 2018 - Version 10.77</b></a>
+<ul>
+<li>Added read support for Redcode R3D RAW videos
+<li>Enhanced -sep option to specify separator and terminator for binary output
+<li>Removed null terminator from JSON output of ICC_Profile:CharTarget
+<li>Improved error messages to help diagnosing some types of corrupted files
+<li>Return an exit status of 2 instead of 1 if all files fail the -if condition
+<li>Fixed decoding of QuickTime chapter names
+<li>Fixed incorrect MimeType for RMD files
+<li>Fixed problem where exit status of 1 was returned when writing with a -if
+    condition if any of the files failed the condition
+</ul>
+
 <a name='v10.76'><b>Jan. 22, 2018 - Version 10.76</b></a>
 <ul>
 <li>Added ability to write shorthand XMP with the -z option
@@ -29,7 +42,7 @@ considered development releases, and are not uploaded to <a href="http://search.
 <li>API Changes:
     <ul>
     <li>Added XMPShorthand option
-    <li>Enhanced Compact option to allow setting of 2 to avoid XMP indentation
+    <li>Enhanced Compact option so a setting of 2 avoids XMP indentation
     </ul>
 </ul>
 

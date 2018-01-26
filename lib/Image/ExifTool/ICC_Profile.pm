@@ -24,7 +24,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.33';
+$VERSION = '1.34';
 
 sub ProcessICC($$);
 sub ProcessICC_Profile($$$);
@@ -362,7 +362,7 @@ my %manuSig = ( #6
     },
     targ => {
         Name => 'CharTarget',
-        ValueConv => 'length $val > 128 ? \$val : $val',
+        ValueConv => '$val=~s/\0.*//; length $val > 128 ? \$val : $val',
     },
     chad => 'ChromaticAdaptation',
     chrm => {
@@ -1179,7 +1179,7 @@ sub ProcessICC_Profile($$$)
                         DataPt => $dataPt,
                         Size   => $strLen,
                         Start  => $valuePtr + $strPos,
-                        Format => "type '$fmt'",
+                        Format => "type '${fmt}'",
                     );
                 }
                 $et->Warn("Corrupted $$tagInfo{Name} data") if $i < $count;
@@ -1196,7 +1196,7 @@ sub ProcessICC_Profile($$$)
             DataPt => $dataPt,
             Size   => $size,
             Start  => $valuePtr,
-            Format => "type '$fmt'",
+            Format => "type '${fmt}'",
         );
         if ($subdir) {
             my $name = $$tagInfo{Name};

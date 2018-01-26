@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup);
 
-$VERSION = '10.76';
+$VERSION = '10.77';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -138,11 +138,11 @@ sub ReadValue($$$$$;$);
     Sony::PMP ITC ID3 FLAC Ogg Vorbis APE APE::NewHeader APE::OldHeader Audible
     MPC MPEG::Audio MPEG::Video MPEG::Xing M2TS QuickTime QuickTime::ImageFile
     QuickTime::Stream Matroska MOI MXF DV Flash Flash::FLV Real::Media
-    Real::Audio Real::Metafile RIFF AIFF ASF DICOM MIE JSON HTML XMP::SVG Palm
-    Palm::MOBI Palm::EXTH Torrent EXE EXE::PEVersion EXE::PEString EXE::MachO
-    EXE::PEF EXE::ELF EXE::AR EXE::CHM LNK Font VCard VCard::VCalendar RSRC
-    Rawzor ZIP ZIP::GZIP ZIP::RAR RTF OOXML iWork ISO FLIR::AFF FLIR::FPF
-    MacOS::MDItem MacOS::XAttr
+    Real::Audio Real::Metafile Red RIFF AIFF ASF DICOM MIE JSON HTML XMP::SVG
+    Palm Palm::MOBI Palm::EXTH Torrent EXE EXE::PEVersion EXE::PEString
+    EXE::MachO EXE::PEF EXE::ELF EXE::AR EXE::CHM LNK Font VCard
+    VCard::VCalendar RSRC Rawzor ZIP ZIP::GZIP ZIP::RAR RTF OOXML iWork ISO
+    FLIR::AFF FLIR::FPF MacOS::MDItem MacOS::XAttr
 );
 
 # alphabetical list of current Lang modules
@@ -182,7 +182,7 @@ $defaultLang = 'en';    # default language
                 MPC MKV MXF DV PMP IND PGF ICC ITC FLIR FLIF FPF LFP HTML VRD
                 RTF XCF DSS QTIF FPX PICT ZIP GZIP PLIST RAR BZ2 TAR RWZ EXE EXR
                 HDR CHM LNK WMF AVC DEX DPX RAW Font RSRC M2TS PHP Torrent VCard
-                AA PDB MOI ISO JSON MP3 DICOM PCD);
+                R3D AA PDB MOI ISO JSON MP3 DICOM PCD);
 
 # file types that we can write (edit)
 my @writeTypes = qw(JPEG TIFF GIF CRW MRW ORF RAF RAW PNG MIE PSD XMP PPM EPS
@@ -438,6 +438,7 @@ my %createTypes = map { $_ => 1 } qw(XMP ICC MIE VRD DR4 EXIF EXV);
     QT   =>  'MOV',
     QTI  =>  'QTIF',
     QTIF => ['QTIF', 'QuickTime Image File'],
+    R3D  => ['R3D',  'Redcode RAW Video'],
     RA   => ['Real', 'Real Audio'],
     RAF  => ['RAF',  'FujiFilm RAW Format'],
     RAM  => ['Real', 'Real Audio Metafile'],
@@ -658,6 +659,7 @@ my %fileDescription = (
     PSD  => 'application/vnd.adobe.photoshop',
     PSP  => 'image/x-paintshoppro', #(NC)
     QTIF => 'image/x-quicktime',
+    R3D  => 'video/x-red-r3d', #PH (invented)
     RA   => 'audio/x-pn-realaudio',
     RAF  => 'image/x-fujifilm-raf',
     RAM  => 'audio/x-pn-realaudio',
@@ -749,6 +751,7 @@ my %moduleName = (
     PS   => 'PostScript',
     PSD  => 'Photoshop',
     QTIF => 'QuickTime',
+    R3D  => 'Red',
     RAF  => 'FujiFilm',
     RAR  => 'ZIP',
     RAW  => 'KyoceraRaw',
@@ -839,6 +842,7 @@ my %moduleName = (
     PSD  => '8BPS\0[\x01\x02]',
     PSP  => 'Paint Shop Pro Image File\x0a\x1a\0{5}',
     QTIF => '.{4}(idsc|idat|iicc)',
+    R3D  => '\0\0..RED(1|2)',
     RAF  => 'FUJIFILM',
     RAR  => 'Rar!\x1a\x07\0',
     RAW  => '(.{25}ARECOYK|II|MM)',
@@ -2369,6 +2373,54 @@ sub ExtractInfo($;@)
             # seek back to try again from the same position in the file
             $raf->Seek($pos, 0) or $seekErr = 1, last;
         }
+        if (not defined $type and not $$self{DOC_NUM}) {
+            # if we were given a single image with a known type there
+            # must be a format error since we couldn't read it, otherwise
+            # it is likely we don't support images of this type
+            my $fileType = GetFileType($realname) || '';
+            my $err;
+            if (not length $buff) {
+                $err = 'File is empty';
+            } else {
+                my $ch = substr($buff, 0, 1);
+                if (length $buff < 16 or $buff =~ /[^\Q$ch\E]/) {
+                    if ($fileType eq 'RAW') {
+                        $err = 'Unsupported RAW file type';
+                    } elsif ($fileType) {
+                        $err = 'File format error';
+                    } else {
+                        $err = 'Unknown file type';
+                    }
+                } else {
+                    # provide some insight into the content of some corrupted files
+                    if ($$self{OPTIONS}{FastScan}) {
+                        $err = 'File header is all';
+                    } else {
+                        my $num = length $buff;
+                        for (;;) {
+                            $raf->Read($buff, 65536) or undef($num), last;
+                            $buff =~ /[^\Q$ch\E]/g and $num += pos($buff) - 1, last;
+                            $num += length($buff);
+                        }
+                        if ($num) {
+                            $err = 'First ' . ConvertFileSize($num) . ' of file is';
+                        } else {
+                            $err = 'Entire file is';
+                        }
+                    }
+                    if ($ch eq "\0") {
+                        $err .= ' binary zeros';
+                    } elsif ($ch eq ' ') {
+                        $err .= ' ASCII spaces';
+                    } elsif ($ch =~ /[a-zA-Z0-9]/) {
+                        $err .= " ASCII '${ch}' characters";
+                    } else {
+                        $err .= sprintf(" binary 0x%.2x's", ord $ch);
+                    }
+                }
+            }
+            $self->Error($err);
+        }
         if ($seekErr) {
             $self->Error('Error seeking in file');
         } elsif ($self->Options('ScanForXMP') and (not defined $type or
@@ -2378,29 +2430,6 @@ sub ExtractInfo($;@)
             $raf->Seek($pos, 0);
             require Image::ExifTool::XMP;
             Image::ExifTool::XMP::ScanForXMP($self, $raf) and $type = '';
-        }
-        if (not defined $type and not $$self{DOC_NUM}) {
-            # if we were given a single image with a known type there
-            # must be a format error since we couldn't read it, otherwise
-            # it is likely we don't support images of this type
-            my $fileType = GetFileType($realname);
-            my $err;
-            if (not $fileType) {
-                if (not length $buff) {
-                    $err = 'File is empty';
-                } elsif ($buff =~ /[\x01-\xff]/) {
-                    $err = 'Unknown file type';
-                } elsif (length $buff == $testLen) {
-                    $err = 'File header is all binary zeros';
-                } else {
-                    $err = 'File is all binary zeros';
-                }
-            } elsif ($fileType eq 'RAW') {
-                $err = 'Unsupported RAW file type';
-            } else {
-                $err = 'File format error';
-            }
-            $self->Error($err);
         }
         # extract binary EXIF data block only if requested
         if (defined $$self{EXIF_DATA} and length $$self{EXIF_DATA} > 16 and
@@ -3676,7 +3705,7 @@ sub GetFileTime($$)
     # open file by name if necessary
     unless (ref $file) {
         local *FH;
-        $self->Open(\*FH, $file) or $self->Warn("GetFileTime error for '$file'"), return ();
+        $self->Open(\*FH, $file) or $self->Warn("GetFileTime error for '${file}'"), return ();
         $file = *FH;  # (not \*FH, so *FH will be kept open until $file goes out of scope)
     }
     # on Windows, try to work around incorrect file times when daylight saving time is in effect
@@ -3938,7 +3967,7 @@ sub SetFoundTags($)
                 if ($group =~ /^(\*|all)$/i) {
                     $allGrp = 1;
                 } elsif ($group !~ /^[-\w:]*$/) {
-                    $self->Warn("Invalid group name '$group'");
+                    $self->Warn("Invalid group name '${group}'");
                     $group = 'invalid';
                 }
             } else {
@@ -3974,7 +4003,7 @@ sub SetFoundTags($)
                 ($matches[0]) = grep /^$tag$/i, keys %$tagHash;
                 defined $matches[0] or undef @matches;
             } else {
-                $self->Warn("Invalid tag name '$tag'");
+                $self->Warn("Invalid tag name '${tag}'");
             }
             if (defined $group and not $allGrp) {
                 # keep only specified group
@@ -4032,7 +4061,7 @@ sub SetFoundTags($)
                     if ($group =~ /^(\*|all)$/i) {
                         undef $group;
                     } elsif ($group !~ /^[-\w:]*$/) {
-                        $self->Warn("Invalid group name '$group'");
+                        $self->Warn("Invalid group name '${group}'");
                         $group = 'invalid';
                     }
                 } else {
@@ -7352,10 +7381,11 @@ sub FoundTag($$$;@)
 # take tag with highest priority
 #
         # promote existing 0-priority tag so it takes precedence over a new 0-tag
-        # (unless old tag was a sub-document and new tag isn't)
+        # (unless old tag was a sub-document and new tag isn't.  Also, never override
+        #  a Warning tag because they may be added by ValueConv, which could be confusing)
         my $oldPriority = $$self{PRIORITY}{$tag};
         unless ($oldPriority) {
-            if ($$self{DOC_NUM} or not $$self{TAG_EXTRA}{$tag} or
+            if ($$self{DOC_NUM} or not $$self{TAG_EXTRA}{$tag} or $tag eq 'Warning' or
                                    not $$self{TAG_EXTRA}{$tag}{G3})
             {
                 $oldPriority = 1;
@@ -7586,11 +7616,12 @@ sub VerboseDump($$;%)
 {
     my $self = shift;
     my $dataPt = shift;
-    if ($$self{OPTIONS}{Verbose} and $$self{OPTIONS}{Verbose} > 2) {
+    my $verbose = $$self{OPTIONS}{Verbose};
+    if ($verbose and $verbose > 2) {
         my %parms = (
             Prefix => $$self{INDENT},
             Out    => $$self{OPTIONS}{TextOut},
-            MaxLen => $$self{OPTIONS}{Verbose} < 4 ? 96 : undef,
+            MaxLen => $verbose < 4 ? 96 : $verbose < 5 ? 2048 : undef,
         );
         HexDump($dataPt, undef, %parms, @_);
     }

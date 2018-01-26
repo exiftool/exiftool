@@ -147,7 +147,7 @@ sub LoadTrackLog($$;$)
             $raf = new File::RandomAccess(\*EXIFTOOL_TRKFILE);
             unless ($raf->Read($_, 256)) {
                 close EXIFTOOL_TRKFILE;
-                return "Empty track file '$val'";
+                return "Empty track file '${val}'";
             }
             # look for XML or GPX header (might as well allow UTF-8 BOM)
             if (/^(\xef\xbb\xbf)?<(\?xml|gpx)[\s>]/) {
@@ -157,17 +157,17 @@ sub LoadTrackLog($$;$)
                 $/ = $1;
             } else {
                 close EXIFTOOL_TRKFILE;
-                return "Invalid track file '$val'";
+                return "Invalid track file '${val}'";
             }
             $raf->Seek(0,0);
-            $from = "file '$val'";
+            $from = "file '${val}'";
         } elsif ($val eq 'DATETIMEONLY') {
             $$geotag{DateTimeOnly} = 1;
             $$geotag{IsDate} = 1;
             $et->VPrint(0, 'Geotagging date/time only');
             return $geotag;
         } else {
-            return "Error opening GPS file '$val'";
+            return "Error opening GPS file '${val}'";
         }
     }
     unless ($from) {
@@ -684,11 +684,7 @@ sub ApplySyncCorr($$)
             my ($i0, $i1) = (0, scalar(@$syncTimes) - 1);
             while ($i1 > $i0 + 1) {
                 my $pt = int(($i0 + $i1) / 2);
-                if ($time < $$syncTimes[$pt]) {
-                    $i1 = $pt;
-                } else {
-                    $i0 = $pt;
-                }
+                ($time < $$syncTimes[$pt] ? $i1 : $i0) = $pt;
             }
             my ($t0, $t1) = ($$syncTimes[$i0], $$syncTimes[$i1]);
             # interpolate/extrapolate to account for linear camera clock drift
@@ -887,11 +883,7 @@ sub SetGeoValues($$;$)
             my ($i0, $i1) = (0, scalar(@$times) - 1);
             while ($i1 > $i0 + 1) {
                 my $pt = int(($i0 + $i1) / 2);
-                if ($time < $$times[$pt]) {
-                    $i1 = $pt;
-                } else {
-                    $i0 = $pt;
-                }
+                ($time < $$times[$pt] ? $i1 : $i0) = $pt;
             }
             # do linear interpolation for position
             my $t0 = $$times[$i0];
@@ -1097,11 +1089,7 @@ sub ConvertGeosync($$)
 
     if ($val =~ /(.*?)\@(.*)/) {
         $gpsTime = $1;
-        if (-f $2) {
-            $syncFile = $2;
-        } else {
-            $imgTime = $2;
-        }
+        (-f $2 ? $syncFile : $imgTime) = $2;
     # (take care because "-f '1:30'" crashes ActivePerl 5.10)
     } elsif ($val !~ /^\d/ or $val !~ /:/) {
         $syncFile = $val if -f $val;
@@ -1124,11 +1112,11 @@ sub ConvertGeosync($$)
             foreach $tag (@timeTags) {
                 if ($$info{$tag}) {
                     $imgTime = $$info{$tag};
-                    $et->VPrint(2, "Geosyncing with $tag from '$syncFile'\n");
+                    $et->VPrint(2, "Geosyncing with $tag from '${syncFile}'\n");
                     last;
                 }
             }
-            $imgTime or warn("No image timestamp in '$syncFile'\n"), return undef;
+            $imgTime or warn("No image timestamp in '${syncFile}'\n"), return undef;
         }
         # add date to date-less timestamps
         my ($imgDateTime, $gpsDateTime, $noDate);
@@ -1153,9 +1141,9 @@ sub ConvertGeosync($$)
         }
         # calculate Unix seconds since the epoch
         my $imgSecs = Image::ExifTool::GetUnixTime($imgDateTime, 1);
-        defined $imgSecs or warn("Invalid image time '$imgTime'\n"), return undef;
+        defined $imgSecs or warn("Invalid image time '${imgTime}'\n"), return undef;
         my $gpsSecs = Image::ExifTool::GetUnixTime($gpsDateTime, 1);
-        defined $gpsSecs or warn("Invalid GPS time '$gpsTime'\n"), return undef;
+        defined $gpsSecs or warn("Invalid GPS time '${gpsTime}'\n"), return undef;
         # add fractional seconds
         $gpsSecs += $1 if $gpsTime =~ /(\.\d+)/;
         $imgSecs += $1 if $imgTime =~ /(\.\d+)/;

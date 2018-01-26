@@ -2591,7 +2591,7 @@ sub ProcessPrimer($$$)
         next unless $verbose;
         my $indx = $i . ')';
         $indx .= ' ' if length($indx) < 3;
-        $et->VPrint(0, sprintf("  | $indx 0x%.4x => '$global'\n", $local));
+        $et->VPrint(0, sprintf("  | $indx 0x%.4x => '${global}'\n", $local));
     }
     return 1;
 }

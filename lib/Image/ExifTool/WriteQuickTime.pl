@@ -215,9 +215,9 @@ sub WriteQuickTime($$$)
                     # so hold this atom and write it out later
                     if ($len) {
                         push @hold, Set32u($len+8), $tag, $newData;
-                        $et->VPrint(0,"  Moving '$tag' atom to after 'mdat'");
+                        $et->VPrint(0,"  Moving '${tag}' atom to after 'mdat'");
                     } else {
-                        $et->VPrint(0,"  Freeing '$tag' atom (and zeroing data)");
+                        $et->VPrint(0,"  Freeing '${tag}' atom (and zeroing data)");
                     }
                     # write a 'free' atom here to keep 'mdat' at the same offset
                     substr($hdr, 4, 4) = 'free';

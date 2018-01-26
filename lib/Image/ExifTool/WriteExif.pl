@@ -85,7 +85,7 @@ sub GetCFAPattern($)
         foreach (@cols) {
             tr/ \]\[//d;    # remove remaining brackets and any spaces
             my $c = $cfaLookup{lc($_)};
-            defined $c or warn("Unknown color '$_'\n"), return undef;
+            defined $c or warn("Unknown color '${_}'\n"), return undef;
             push @a, $c;
         }
     }

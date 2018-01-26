@@ -7,6 +7,18 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.55. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Jan. 26, 2018 - Version 10.77
+
+  - Added read support for Redcode R3D RAW videos
+  - Enhanced -sep option to specify separator and terminator for binary output
+  - Removed null terminator from JSON output of ICC_Profile:CharTarget
+  - Improved error messages to help diagnosing some types of corrupted files
+  - Return an exit status of 2 instead of 1 if all files fail the -if condition
+  - Fixed decoding of QuickTime chapter names
+  - Fixed incorrect MimeType for RMD files
+  - Fixed problem where exit status of 1 was returned when writing with a -if
+    condition if any of the files failed the condition
+
 Jan. 22, 2018 - Version 10.76
 
   - Added ability to write shorthand XMP with the -z option
@@ -18,7 +30,7 @@ Jan. 22, 2018 - Version 10.76
   - Fixed runtime warning when reading XMP with an empty structure in a list
   - API Changes:
       - Added XMPShorthand option
-      - Enhanced Compact option to allow setting of 2 to avoid XMP indentation
+      - Enhanced Compact option so a setting of 2 avoids XMP indentation
 
 Jan. 12, 2018 - Version 10.75
 

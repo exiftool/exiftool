@@ -927,7 +927,7 @@ sub ExtractObject($$;$$)
         }
         if ($$dict{$tag}) {
             # duplicate dictionary entries are not allowed
-            $et->Warn("Duplicate '$tag' entry in dictionary (ignored)");
+            $et->Warn("Duplicate '${tag}' entry in dictionary (ignored)");
         } else {
             # save the entry
             push @tags, $tag;

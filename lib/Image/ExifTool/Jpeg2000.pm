@@ -644,7 +644,7 @@ sub ProcessJpeg2000Box($$$)
                     }
                 } elsif ($verbose) {
                     my $msg = sprintf("offset 0x%.4x to end of file", $dataPos + $base + $pos);
-                    $et->VPrint(0, "$$et{INDENT}- Tag '$boxID' ($msg)\n");
+                    $et->VPrint(0, "$$et{INDENT}- Tag '${boxID}' ($msg)\n");
                 }
                 last;   # (ignore the rest of the file when reading)
             }

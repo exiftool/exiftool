@@ -1081,7 +1081,7 @@ sub ProcessID3v2($$$)
             my $otherTable = $otherTable{$tagTablePtr};
             $tagInfo = $et->GetTagInfo($otherTable, $id) if $otherTable;
             if ($tagInfo) {
-                $et->WarnOnce("Frame '$id' is not valid for this ID3 version", 1);
+                $et->WarnOnce("Frame '${id}' is not valid for this ID3 version", 1);
             } else {
                 next unless $verbose or $et->Options('Unknown');
                 $id =~ tr/-A-Za-z0-9_//dc;

@@ -396,7 +396,7 @@ sub ProcessOTF($$)
         my $offset = Get32u(\$tbl, $pos + 8);
         my $size   = Get32u(\$tbl, $pos + 12);
         unless ($raf->Seek($offset+$base, 0) and $raf->Read($buff, $size) == $size) {
-            $et->Warn("Error reading '$tag' data");
+            $et->Warn("Error reading '${tag}' data");
             next;
         }
         if ($verbose) {

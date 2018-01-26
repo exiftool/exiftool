@@ -48,7 +48,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.09';
+$VERSION = '3.10';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -2486,6 +2486,7 @@ sub GetXMPTagID($;$$)
         my ($ns, $nm) = ($prop =~ /(.*?):(.*)/) ? ($1, $2) : ('', $prop);
         if ($ignoreNamespace{$ns} or $ignoreProp{$prop}) {
             # special case: don't ignore rdf numbered items
+            # (not technically allowed in XMP, but used in RDF/XML)
             unless ($prop =~ /^rdf:(_\d+)$/) {
                 # save list index if necessary for structures
                 if ($structProps and @$structProps and $prop =~ /^rdf:li (\d+)$/) {
@@ -2550,7 +2551,7 @@ sub RegisterNamespace($)
         while (@ns) {
             $ns = pop @ns;
             if ($nsURI{$ns} and $nsURI{$ns} ne $$nsRef{$ns}) {
-                warn "User-defined namespace prefix '$ns' conflicts with existing namespace\n";
+                warn "User-defined namespace prefix '${ns}' conflicts with existing namespace\n";
             }
             $nsURI{$ns} = $$nsRef{$ns};
             $uri2ns{$$nsRef{$ns}} = $ns;
@@ -3456,7 +3457,7 @@ sub ParseXMPElement($$$;$$$$)
             {
                 # (no value since we found more properties within this one)
                 # set an error on any ignored attributes here, because they will be lost
-                $$et{XMP_ERROR} = "Can't handle XMP attribute '$ignored'" if $ignored;
+                $$et{XMP_ERROR} = "Can't handle XMP attribute '${ignored}'" if $ignored;
             } elsif (not $shorthand or $valEnd != $valStart) {
                 $val = substr($$dataPt, $valStart, $valEnd - $valStart);
                 # remove comments and whitespace from rdf:Description only
@@ -3578,7 +3579,7 @@ sub ProcessXMP($$;$)
         pos($$dataPt) = $dirStart;
         $double = $1 if $$dataPt =~ /\G((\0\0)?\xfe\xff|\xff\xfe(\0\0)?|\xef\xbb\xbf)\0*<\0*\?\0*x\0*p\0*a\0*c\0*k\0*e\0*t/g;
     } else {
-        my ($type, $buf2, $buf3);
+        my ($type, $mime, $buf2, $buf3);
         # read information from XMP file
         my $raf = $$dirInfo{RAF} or return 0;
         $raf->Read($buff, 256) or return 0;
@@ -3634,6 +3635,7 @@ sub ProcessXMP($$;$)
                             $type = 'PLIST';
                         } elsif ($1 eq 'REDXIF') {
                             $type = 'RMD';
+                            $mime = 'application/xml';
                         } else {
                             return 0;
                         }
@@ -3682,7 +3684,7 @@ sub ProcessXMP($$;$)
                 $type = $ext if $ext and $ext eq 'COS'; # recognize COS by extension
             }
         }
-        $et->SetFileType($type);
+        $et->SetFileType($type, $mime);
 
         my $fast = $et->Options('FastScan');
         return 1 if $fast and $fast == 3;

@@ -577,7 +577,7 @@ numerical.
                   with Composite tags where the converted values of the source
                   tags are needed), set the Priority to 0 to avoid taking
                   priority over a valid tag.  If ValueConv is not specified, the
-                  Raw value is not converted. Composite tags which Require or
+                  Raw value is not converted.  Composite tags which Require or
                   Desire other tags may access the ValueConv, PrintConv and Raw
                   values of these tags through the elements of the @val, @prt
                   and @raw lists respectively (only if there was no RawConv or

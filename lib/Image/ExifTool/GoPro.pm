@@ -23,7 +23,7 @@ sub ScaleValues($$);
 sub AddUnits($$$);
 sub ConvertSystemTime($$);
 
-# GoPro data types that have ExifTool equivalents (ref 2)
+# GoPro data types that have ExifTool equivalents (ref 1)
 my %goProFmt = ( # format codes
   # 0x00 - container (subdirectory)
     0x62 => 'int8s',    # 'b'
@@ -485,11 +485,7 @@ sub ConvertSystemTime($$)
     # perform binary search to find this system time value
     while ($j - $i > 1) {
         my $t = int(($i + $j) / 2);
-        if ($val < $$s[$t][0]) {
-            $j = $t;
-        } else {
-            $i = $t;
-        }
+        ($val < $$s[$t][0] ? $j : $i) = $t;
     }
     if ($i == $j or $$s[$j][0] == $$s[$i][0]) {
         $val = $$s[$i][1];
@@ -627,11 +623,7 @@ sub ProcessGoPro($$$)
         unless ($tagInfo) {
             next unless $unknown;
             my $name = Image::ExifTool::QuickTime::PrintableTagID($tag);
-            $tagInfo = {
-                Name => "Unknown_$name",
-                Description => "Unknown $name",
-                Unknown => 1,
-            };
+            $tagInfo = { Name => "Unknown_$name", Description => "Unknown $name", Unknown => 1 };
             $$tagInfo{SubDirectory} = { TagTable => 'Image::ExifTool::GoPro::GPMF' } if not $fmt;
             AddTagToTable($tagTablePtr, $tag, $tagInfo);
         }

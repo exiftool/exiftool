@@ -819,7 +819,7 @@ TagID:  foreach $tagID (@keys) {
                     # single-character subdirectory names are allowed
                     (not $$tagInfo{SubDirectory} or $name !~ /^[_A-Za-z]$/))
                 {
-                    warn "Warning: Invalid tag name $short '$name'\n";
+                    warn "Warning: Invalid tag name $short '${name}'\n";
                 }
                 # validate list type
                 if ($$tagInfo{List} and $$tagInfo{List} !~ /^(1|Alt|Bag|Seq|array|string)$/) {
@@ -1114,7 +1114,7 @@ TagID:  foreach $tagID (@keys) {
                                     if ($index =~ s/([\x00-\x1f\x80-\xff])/sprintf("\\x%.2x",ord $1)/eg) {
                                         $index = qq{"$index"};
                                     } else {
-                                        $index = qq{'$index'};
+                                        $index = qq{'${index}'};
                                     }
                                 }
                                 push @values, "$index = " . $$printConv{$_};
@@ -1337,7 +1337,7 @@ TagID:  foreach $tagID (@keys) {
                     next if $tagID eq 'jP\x1a\x1a'; # ignore abnormal JP2 signature tag
                     $tagIDstr = qq{"$tagID"};
                 } else {
-                    $tagIDstr = "'$tagID'";
+                    $tagIDstr = "'${tagID}'";
                 }
             }
             my $len = length $tagIDstr;
@@ -1459,7 +1459,7 @@ sub WriteTagLookup($$)
     my $num = 0;
     foreach $tableName (@tableNames) {
         if ($$tableWritable{$tableName}) {
-            print OUTFILE "\t'$tableName',\n";
+            print OUTFILE "\t'${tableName}',\n";
             $wrNum{$count} = $num++;
         }
         $count++;
@@ -1472,11 +1472,11 @@ sub WriteTagLookup($$)
     foreach $tag (qw{filename directory}) {
         next unless $$tagLookup{$tag};
         my $n = scalar keys %{$$tagLookup{$tag}};
-        warn "Warning: $n writable '$tag' tags!\n" if $n > 1;
+        warn "Warning: $n writable '${tag}' tags!\n" if $n > 1;
     }
     print OUTFILE ");\n\n# lookup for all writable tags\nmy \%tagLookup = (\n";
     foreach $tag (sort keys %$tagLookup) {
-        print OUTFILE "\t'$tag' => { ";
+        print OUTFILE "\t'${tag}' => { ";
         my @tableNums = sort { $a <=> $b } keys %{$$tagLookup{$tag}};
         my (@entries, $tableNum);
         foreach $tableNum (@tableNums) {
@@ -1498,12 +1498,12 @@ sub WriteTagLookup($$)
                 }
                 # reference to root structure ID must come first in lookup
                 # (so we can generate the flattened tags just before we need them)
-                unshift @tagIDs, "\\'$rootID'" if $rootID;
+                unshift @tagIDs, "\\'${rootID}'" if $rootID;
                 $entry = '[' . join(',', @tagIDs) . ']';
             } elsif ($tagID =~ /^\d+$/) {
                 $entry = sprintf('0x%x',$tagID);
             } else {
-                $entry = "'$tagID'";
+                $entry = "'${tagID}'";
             }
             my $wrNum = $wrNum{$tableNum};
             push @entries, "$wrNum => $entry";
@@ -1518,7 +1518,7 @@ sub WriteTagLookup($$)
     print OUTFILE "my \%tagExists = (\n";
     foreach $tag (sort keys %$tagExists) {
         next if $$tagLookup{$tag};
-        print OUTFILE "\t'$tag' => 1,\n";
+        print OUTFILE "\t'${tag}' => 1,\n";
     }
 #
 # write module lookup for writable composite tags
@@ -1527,7 +1527,7 @@ sub WriteTagLookup($$)
     print OUTFILE ");\n\n# module names for writable Composite tags\n";
     print OUTFILE "my \%compositeModules = (\n";
     foreach (sort keys %$compositeModules) {
-        print OUTFILE "\t'$_' => '$$compositeModules{$_}',\n";
+        print OUTFILE "\t'${_}' => '$$compositeModules{$_}',\n";
     }
     print OUTFILE ");\n\n";
 #
@@ -1851,7 +1851,7 @@ sub OpenHtmlFile($;$$)
             $top = " class=top";
         }
     }
-    $head = "<a name='$url'>$head</a>" if $url;
+    $head = "<a name='${url}'>$head</a>" if $url;
     print HTMLFILE "<h2$top>$head</h2>\n" or return 0;
     print HTMLFILE '<p>',Doc2Html($docs{$category}),"</p>\n" if $docs{$category};
     $createdFiles{$htmlFile} = 1;
@@ -2003,7 +2003,7 @@ sub WriteTagNames($$)
         $short = $$shortName{$tableName};
         $short = $tableName unless $short;
         $url = "$short.html";
-        print HTMLFILE "<a href='$url'>$short</a>";
+        print HTMLFILE "<a href='${url}'>$short</a>";
         ++$count;
     }
     print HTMLFILE "\n</td></tr></table></td></tr></table></blockquote>\n";
@@ -2472,7 +2472,7 @@ sub WriteTagNames($$)
                         }
                         $url = (shift @names) . '.html';
                         @names and $url .= '#' . join '_', @names;
-                        push @values, "--&gt; <a href='$url'>$_$suffix</a>";
+                        push @values, "--&gt; <a href='${url}'>$_$suffix</a>";
                     }
                     # put small note last
                     $smallNote and push @values, shift @values;

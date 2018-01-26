@@ -139,6 +139,7 @@ html/TagNames/Radiance.html
 html/TagNames/Rawzor.html
 html/TagNames/Real.html
 html/TagNames/Reconyx.html
+html/TagNames/Red.html
 html/TagNames/Ricoh.html
 html/TagNames/Samsung.html
 html/TagNames/Sanyo.html
@@ -356,6 +357,7 @@ lib/Image/ExifTool/Radiance.pm
 lib/Image/ExifTool/Rawzor.pm
 lib/Image/ExifTool/Real.pm
 lib/Image/ExifTool/Reconyx.pm
+lib/Image/ExifTool/Red.pm
 lib/Image/ExifTool/Ricoh.pm
 lib/Image/ExifTool/Samsung.pm
 lib/Image/ExifTool/Sanyo.pm
@@ -730,6 +732,8 @@ t/Real.t
 t/Real_2.out
 t/Real_3.out
 t/Real_4.out
+t/Red.t
+t/Red_2.out
 t/Ricoh.t
 t/Ricoh_2.out
 t/Ricoh_3.out
@@ -985,6 +989,7 @@ t/images/Radiance.hdr
 t/images/Real.ra
 t/images/Real.ram
 t/images/Real.rm
+t/images/Red.r3d
 t/images/Ricoh.jpg
 t/images/Ricoh2.jpg
 t/images/Sanyo.jpg

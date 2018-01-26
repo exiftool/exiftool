@@ -1079,7 +1079,7 @@ sub ProcessProfile($$$)
     } else {
         my $profName = $profileType;
         $profName =~ tr/\x00-\x1f\x7f-\xff/./;
-        $et->Warn("Unknown raw profile '$profName'");
+        $et->Warn("Unknown raw profile '${profName}'");
     }
     if ($outBuff and defined $$outBuff and length $$outBuff) {
         if ($$et{CHANGED} != $oldChanged) {

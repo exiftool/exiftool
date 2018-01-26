@@ -1482,7 +1482,7 @@ sub ProcessFPXR($$$)
             my $name = Image::ExifTool::Decode(undef, $1, 'UCS2', 'II', 'Latin');
             if ($verbose) {
                 my $psize = ($size == 0xffffffff) ? 'storage' : "$size bytes";
-                $et->VPrint(0,"  |  $entry) Name: '$name' [$psize]\n");
+                $et->VPrint(0,"  |  $entry) Name: '${name}' [$psize]\n");
             }
             # remove directory specification
             $name =~ s{.*/}{}s;

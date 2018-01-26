@@ -535,10 +535,10 @@ sub SetNewValue($;$$%)
         unless ($listOnly) {
             if (not TagExists($tag)) {
                 my $pre = $wantGroup ? $wantGroup . ':' : '';
-                $err = "Tag '$pre$origTag' is not defined";
+                $err = "Tag '$pre${origTag}' is not defined";
                 $err .= ' or has a bad language code' if $origTag =~ /-/;
             } elsif ($langCode) {
-                $err = "Tag '$tag' does not support alternate languages";
+                $err = "Tag '${tag}' does not support alternate languages";
             } elsif ($wantGroup) {
                 $err = "Sorry, $wantGroup:$origTag doesn't exist or isn't writable";
             } else {
@@ -931,7 +931,7 @@ TAG: foreach $tagInfo (@matchingTags) {
                                 require 'Image/ExifTool/XMPStruct.pl';
                                 $_ = Image::ExifTool::XMP::SerializeStruct($_);
                             }
-                            print $out "$verb $wgrp1:$tag$fromList if value is '$_'\n";
+                            print $out "$verb $wgrp1:$tag$fromList if value is '${_}'\n";
                         }
                     }
                 }
@@ -1075,12 +1075,12 @@ WriteAlso:
         } elsif (not $listOnly) {
             if ($origTag =~ /[?*]/) {
                 if ($noCreate) {
-                    $err = "No tags matching 'pre$origTag' will be created";
+                    $err = "No tags matching 'pre${origTag}' will be created";
                     $verbose = 0;   # (already printed)
                 } elsif ($foundMatch) {
-                    $err = "Sorry, no writable tags matching '$pre$origTag'";
+                    $err = "Sorry, no writable tags matching '$pre${origTag}'";
                 } else {
-                    $err = "No matching tags for '$pre$origTag'";
+                    $err = "No matching tags for '$pre${origTag}'";
                 }
             } elsif ($noCreate) {
                 $err = "Not creating $pre$tag";
@@ -1088,7 +1088,7 @@ WriteAlso:
             } elsif ($foundMatch) {
                 $err = "Sorry, $pre$tag is not writable";
             } else {
-                $err = "Tag '$pre$tag' is not defined";
+                $err = "Tag '$pre${tag}' is not defined";
             }
         }
         if ($err) {
@@ -1298,8 +1298,8 @@ sub SetNewValuesFromFile($$;@)
                 }
             }
             # validate tag name(s)
-            $$opts{EXPR} or ValidTagName($tag) or $self->Warn("Invalid tag name '$tag'"), next;
-            ValidTagName($dstTag) or $self->Warn("Invalid tag name '$dstTag'"), next;
+            $$opts{EXPR} or ValidTagName($tag) or $self->Warn("Invalid tag name '${tag}'"), next;
+            ValidTagName($dstTag) or $self->Warn("Invalid tag name '${dstTag}'"), next;
             # translate '+' and '-' to appropriate SetNewValue option
             if ($opt) {
                 $$opts{{ '+' => 'AddValue', '-' => 'DelValue' }->{$opt}} = 1;
@@ -1801,7 +1801,7 @@ sub SetFileName($$;$$)
             return -1;
         }
         if ($newName =~ /([. ])$/) {
-            $self->Warn("New file name not recommended for Windows (ends with '$1')", 2) and return -1;
+            $self->Warn("New file name not recommended for Windows (ends with '${1}')", 2) and return -1;
         }
         if (length $newName > 259 and $newName !~ /\?/) {
             $self->Warn('New file name not recommended for Windows (exceeds 260 chars)', 2) and return -1;
@@ -1814,7 +1814,7 @@ sub SetFileName($$;$$)
     # don't replace existing file
     if ($self->Exists($newName)) {
         if ($file ne $newName or $opt eq 'Link') {
-            $self->Warn("File '$newName' already exists");
+            $self->Warn("File '${newName}' already exists");
             return -1;
         } else {
             $self->Warn('File name is unchanged');
@@ -1823,21 +1823,21 @@ sub SetFileName($$;$$)
     }
     if ($opt eq 'Test') {
         my $out = $$self{OPTIONS}{TextOut};
-        print $out "'$file' --> '$newName'\n";
+        print $out "'${file}' --> '${newName}'\n";
         return 1;
     }
     # create directory for new file if necessary
     my $result;
     if (($result = $self->CreateDirectory($newName)) != 0) {
         if ($result < 0) {
-            $self->Warn("Error creating directory for '$newName'");
+            $self->Warn("Error creating directory for '${newName}'");
             return -1;
         }
-        $self->VPrint(0, "Created directory for '$newName'");
+        $self->VPrint(0, "Created directory for '${newName}'");
     }
     if ($opt eq 'Link') {
         unless (link $file, $newName) {
-            $self->Warn("Error creating link '$newName'");
+            $self->Warn("Error creating link '${newName}'");
             return -1;
         }
         ++$$self{CHANGED};
@@ -1849,12 +1849,12 @@ sub SetFileName($$;$$)
         local (*EXIFTOOL_SFN_IN, *EXIFTOOL_SFN_OUT);
         # renaming didn't work, so copy the file instead
         unless ($self->Open(\*EXIFTOOL_SFN_IN, $file)) {
-            $self->Warn("Error opening '$file'");
+            $self->Warn("Error opening '${file}'");
             return -1;
         }
         unless ($self->Open(\*EXIFTOOL_SFN_OUT, $newName, '>')) {
             close EXIFTOOL_SFN_IN;
-            $self->Warn("Error creating '$newName'");
+            $self->Warn("Error creating '${newName}'");
             return -1;
         }
         binmode EXIFTOOL_SFN_IN;
@@ -1867,7 +1867,7 @@ sub SetFileName($$;$$)
         close EXIFTOOL_SFN_IN;
         if ($err) {
             $self->Unlink($newName);    # erase bad output file
-            $self->Warn("Error writing '$newName'");
+            $self->Warn("Error writing '${newName}'");
             return -1;
         }
         # preserve modification time
@@ -2943,7 +2943,7 @@ sub InsertTagValues($$$;$$)
                 $val = ref $_ eq 'ARRAY' ? join($$self{OPTIONS}{ListSep}, @$_): $_;
             }
             if ($evalWarning) {
-                my $str = CleanWarning() . " for '$var'";
+                my $str = CleanWarning() . " for '${var}'";
                 if ($opt) {
                     if ($opt eq 'Error') {
                         $self->Error($str);
@@ -2958,8 +2958,8 @@ sub InsertTagValues($$$;$$)
         unless (defined $val or ref $opt) {
             $val = $$self{OPTIONS}{MissingTagValue};
             unless (defined $val) {
-                my $msg = $didExpr ? "Advanced formatting expression returned undef for '$var'" :
-                                     "Tag '$var' not defined";
+                my $msg = $didExpr ? "Advanced formatting expression returned undef for '${var}'" :
+                                     "Tag '${var}' not defined";
                 no strict 'refs';
                 $opt and ($opt eq 'Silent' or &$opt($self, $msg, 2)) and return $$self{FMT_EXPR} = undef;
                 $val = '';
@@ -2973,7 +2973,7 @@ sub InsertTagValues($$$;$$)
                 ++$i while exists $$opt{"$var.expr$i"};
                 $var .= '.expr' . $i;
             }
-            $rtnStr .= "$pre\$info{'$var'}";
+            $rtnStr .= "$pre\$info{'${var}'}";
             $$opt{$var} = $val;
         } else {
             $rtnStr .= "$pre$val";
@@ -4048,7 +4048,7 @@ sub VerboseInfo($$$%)
             $line .= $hexID;
         } else {
             $tagID =~ s/([\0-\x1f\x7f-\xff])/sprintf('\\x%.2x',ord $1)/ge;
-            $line .= "'$tagID'";
+            $line .= "'${tagID}'";
         }
         $line .= $parms{Extra} if defined $parms{Extra};
         my $format = $parms{Format};
@@ -4239,7 +4239,7 @@ sub VerboseValue($$$;$)
     $xtra or $xtra = '';
     my $maxLen = 81 - length($str) - length($xtra);
     $val = $self->Printable($val, $maxLen);
-    print $out "    $str = '$val'$xtra\n";
+    print $out "    $str = '${val}'$xtra\n";
 }
 
 #------------------------------------------------------------------------------
@@ -4535,7 +4535,7 @@ sub SetPreferredByteOrder($)
                     $self->GetNewValue('ExifByteOrder') ||
                     $$self{MAKER_NOTE_BYTE_ORDER} || 'MM';
     unless (SetByteOrder($byteOrder)) {
-        warn "Invalid byte order '$byteOrder'\n" if $self->Options('Verbose');
+        warn "Invalid byte order '${byteOrder}'\n" if $self->Options('Verbose');
         $byteOrder = $$self{MAKER_NOTE_BYTE_ORDER} || 'MM';
         SetByteOrder($byteOrder);
     }
@@ -4809,7 +4809,7 @@ sub EncodeBits($$;$$)
                     } else {
                         # don't return error string unless more than one value
                         return undef unless @vals > 1 and wantarray;
-                        return (undef, "no match for '$val'");
+                        return (undef, "no match for '${val}'");
                     }
                 }
             } else {

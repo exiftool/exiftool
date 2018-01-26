@@ -7267,7 +7267,7 @@ sub ProcessMOV($$;$)
                     $et->VPrint(0,"$$et{INDENT}\[Terminator found in $str remaining]");
                 } else {
                     $tag = PrintableTagID($tag);
-                    $et->VPrint(0,"$$et{INDENT}Tag '$tag' extends to end of file");
+                    $et->VPrint(0,"$$et{INDENT}Tag '${tag}' extends to end of file");
                 }
                 last;
             }
@@ -7355,9 +7355,9 @@ sub ProcessMOV($$;$)
             if ($tagInfo and not $$tagInfo{Unknown} and not $eeTag) {
                 my $t = PrintableTagID($tag);
                 if ($size > 0x8000000) {
-                    $et->Warn("Skipping '$t' atom > 128 MB", 1);
+                    $et->Warn("Skipping '${t}' atom > 128 MB", 1);
                 } else {
-                    $et->Warn("Skipping '$t' atom > 32 MB", 2) or $ignore = 0;
+                    $et->Warn("Skipping '${t}' atom > 32 MB", 2) or $ignore = 0;
                 }
             }
         }
@@ -7399,7 +7399,7 @@ ItemID:         foreach $id (keys %$items) {
             my $val;
             my $missing = $size - $raf->Read($val, $size);
             if ($missing) {
-                $et->Warn("Truncated '$tag' data (missing $missing bytes)");
+                $et->Warn("Truncated '${tag}' data (missing $missing bytes)");
                 last;
             }
             # use value to get tag info if necessary
@@ -7601,7 +7601,7 @@ ItemID:         foreach $id (keys %$items) {
                             Size    => $len,
                             Format  => $format,
                             Index   => $index,
-                            Extra   => sprintf(", Type='$type', Flags=0x%x",$flags)
+                            Extra   => sprintf(", Type='${type}', Flags=0x%x",$flags)
                         ) if $verbose;
                         $et->FoundTag($langInfo, $value) if defined $value;
                         $pos += $len;
@@ -7684,7 +7684,7 @@ ItemID:         foreach $id (keys %$items) {
                 Size  => $size,
                 Extra => sprintf(' at offset 0x%.4x', $raf->Tell()),
             ) if $verbose;
-            $raf->Seek($size, 1) or $et->Warn("Truncated '$tag' data"), last;
+            $raf->Seek($size, 1) or $et->Warn("Truncated '${tag}' data"), last;
         }
         $raf->Read($buff, 8) == 8 or last;
         $dataPos += $size + 8;

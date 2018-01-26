@@ -40,7 +40,7 @@ sub ReadCSV($$;$)
         $raf = new File::RandomAccess($file);
         $file = 'CSV file';
     } else {
-        open CSVFILE, $file or return "Error opening CSV file '$file'";
+        open CSVFILE, $file or return "Error opening CSV file '${file}'";
         binmode CSVFILE;
         $openedFile = 1;
         $raf = new File::RandomAccess(\*CSVFILE);
@@ -96,7 +96,7 @@ sub ReadCSV($$;$)
                 # terminate at first blank tag name (eg. extra comma at end of line)
                 last unless length $_;
                 @tags or s/^\xef\xbb\xbf//; # remove UTF-8 BOM if it exists
-                /^[-\w]+(:[-\w+]+)?#?$/ or $err = "Invalid tag name '$_'", last;
+                /^[-\w]+(:[-\w+]+)?#?$/ or $err = "Invalid tag name '${_}'", last;
                 push(@tags, $_);
             }
             last if $err;
@@ -254,7 +254,7 @@ sub ReadJSON($$;$$)
         $raf = new File::RandomAccess($file);
         $file = 'JSON file';
     } else {
-        open JSONFILE, $file or return "Error opening JSON file '$file'";
+        open JSONFILE, $file or return "Error opening JSON file '${file}'";
         binmode JSONFILE;
         $openedFile = 1;
         $raf = new File::RandomAccess(\*JSONFILE);
@@ -262,7 +262,7 @@ sub ReadJSON($$;$$)
     my $obj = ReadJSONObject($raf);
     close JSONFILE if $openedFile;
     unless (ref $obj eq 'ARRAY') {
-        ref $obj eq 'HASH' or return "Format error in JSON file '$file'";
+        ref $obj eq 'HASH' or return "Format error in JSON file '${file}'";
         $obj = [ $obj ];
     }
     my ($info, $found);
@@ -284,7 +284,7 @@ sub ReadJSON($$;$$)
         $$database{$$info{SourceFile}} = $info;
         $found = 1;
     }
-    return $found ? undef : "No valid JSON objects in '$file'";
+    return $found ? undef : "No valid JSON objects in '${file}'";
 }
 
 

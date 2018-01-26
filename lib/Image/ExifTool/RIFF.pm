@@ -1544,7 +1544,7 @@ sub ProcessRIFF($$)
         } elsif ($tag eq 'data' and $len == 0xffffffff and $$et{DataSize64}) {
             $len = $$et{DataSize64};
         }
-        $et->VPrint(0, "RIFF '$tag' chunk ($len bytes of data):\n");
+        $et->VPrint(0, "RIFF '${tag}' chunk ($len bytes of data):\n");
         if ($len <= 0) {
             if ($len < 0) {
                 $et->Warn('Invalid chunk length');

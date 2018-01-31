@@ -19,7 +19,7 @@ $VERSION = '1.13';
 
 sub ProcessMPImageList($$$);
 
-# Tags found in MPF APP2 segment in JPEG images
+# Tags found in APP2 MPF segment in JPEG images
 %Image::ExifTool::MPF::Main = (
     GROUPS => { 0 => 'MPF', 1 => 'MPF0', 2 => 'Image'},
     NOTES => q{

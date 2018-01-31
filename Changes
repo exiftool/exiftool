@@ -7,6 +7,16 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.55. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Jan. 31, 2018 - Version 10.78
+
+  - Added a few new values for some Olympus tags (thanks John)
+  - Decode GoPro APP6 metadata in JPEG images and more GoPro MP4 tags
+  - Decode more Red tags, and improved decoding of others
+  - Decode face detection information from timed metadata with the -ee option
+  - Fixed problem writing shorthand XMP containing CDATA sections
+  - Fixed problem copying XMP-acdsee:Snapshots
+  - Fixed decoding of a few Panasonic RAW tags (thanks Klaus Homeister)
+
 Jan. 26, 2018 - Version 10.77
 
   - Added read support for Redcode R3D RAW videos

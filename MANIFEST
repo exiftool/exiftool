@@ -548,6 +548,8 @@ t/Geotag_6.out
 t/Geotag_7.out
 t/Geotag_8.out
 t/Geotag_9.out
+t/GoPro.t
+t/GoPro_2.out
 t/HTML.t
 t/HTML_2.out
 t/IPTC.t
@@ -921,6 +923,7 @@ t/images/Geotag.log
 t/images/Geotag.xml
 t/images/Geotag2.log
 t/images/Geotag3.log
+t/images/GoPro.jpg
 t/images/HTML.html
 t/images/ICC_Profile.icc
 t/images/IPTC.jpg

@@ -1327,7 +1327,7 @@ This module is loaded automatically by Image::ExifTool when required.
 =head1 DESCRIPTION
 
 This module contains definitions required by Image::ExifTool to read
-information from the Qualcomm APP7 segment in JPEG images.
+information from the APP7 Qualcomm segment in JPEG images.
 
 =head1 AUTHOR
 

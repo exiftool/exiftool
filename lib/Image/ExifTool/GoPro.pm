@@ -14,8 +14,9 @@ package Image::ExifTool::GoPro;
 use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
+use Image::ExifTool::QuickTime;
 
-$VERSION = '1.01';
+$VERSION = '1.02';
 
 sub ProcessGoPro($$$);
 sub ProcessString($$$);
@@ -64,18 +65,19 @@ my %addUnits = (
     PROCESS_PROC => \&ProcessGoPro,
     GROUPS => { 2 => 'Camera' },
     NOTES => q{
-        Tags extracted from the GPMF box of GoPro MP4 videos, and from the "gpmd"
-        timed metadata if the ExtractEmbedded option is enabled.  Many more tags
-        exist, but are currently unknown and extracted only with the -u option. 
-        Please let me know if you discover the meaning of any of these unknown tags.
-        See L<https://github.com/gopro/gpmf-parser> for details about this format.
+        Tags extracted from the GPMF box of GoPro MP4 videos, the APP6 "GoPro" segment
+        of JPEG files, and from the "gpmd" timed metadata if the ExtractEmbedded option
+        is enabled.  Many more tags exist, but are currently unknown and extracted only
+        with the -u option. Please let me know if you discover the meaning of any of
+        these unknown tags. See L<https://github.com/gopro/gpmf-parser> for details
+        about this format.
     },
     ACCL => { #2 (gpmd)
         Name => 'Accelerometer',
         Notes => 'accelerator readings in m/s',
         Binary => 1,
     },
-  # ALLD (gpmd) AutoLowLightDuration (ref 1)
+    ALLD => 'AutoLowLightDuration', #1 (gpmd) (untested)
   # APTO (GPMF) - seen: 'RAW' (fmt c)
     ATTD => { #PH (Karma)
         Name => 'Attitude',
@@ -91,8 +93,7 @@ my %addUnits = (
         # SCAL=1000 1 1 1 1
         Binary => 1,
     },
-  # AUDO (GPMF) - seen: 'WIND' (fmt c)
-    AUDO => 'AudioSetting', #PH
+    AUDO => 'AudioSetting', #PH (GPMF - seen: 'WIND', fmt c)
   # AUPT (GPMF) - seen: 'N' (fmt c)
     BPOS => { #PH (Karma)
         Name => 'Controller',
@@ -104,10 +105,9 @@ my %addUnits = (
     },
   # BRID (GPMF) - seen: 0 (fmt B)
   # BROD (GPMF) - seen: 'ASK' (fmt c)
-  # CASN (GPMF) - seen: 'C3221324545448' (fmt c)
-    CASN => 'CameraSerialNumber', #PH
+    CASN => 'CameraSerialNumber', #PH (GPMF - seen: 'C3221324545448', fmt c)
   # CINF (GPMF) - seen: 0x67376be7709bc8876a8baf3940908618 (fmt B)
-  # CMOD (GPMF) - seen: 12 (fmt B)
+  # CMOD (GPMF) - seen: 12,13,17 [13 time-laps video, 17 JPEG] (fmt B)
     CYTS => { #PH (Karma)
         Name => 'CoyoteStatus',
         # UNIT=s,,,,,rad,rad,rad,,
@@ -122,8 +122,7 @@ my %addUnits = (
         # SCAL=1000 1 1 1 1 1 1 1 1 1 1
         Binary => 1,
     },
-  # DEVC (GPMF) - DeviceContainer (fmt \0)
-    DEVC => { #PH (gpmd)
+    DEVC => { #PH (gpmd,GPMF, fmt \0)
         Name => 'DeviceContainer',
         SubDirectory => { TagTable => 'Image::ExifTool::GoPro::GPMF' },
     },
@@ -132,9 +131,12 @@ my %addUnits = (
   # DVNM (GPMF) seen: 'Video Global Settings' (fmt c), 'Highlights' (fmt c)
   # DVNM (gpmd) seen: 'Camera' (Hero5), 'Hero6 Black' (Hero6), 'GoPro Karma v1.0' (Karma)
     DVNM => 'DeviceName', #PH
-  # DZOM (GPMF) - seen: 'Y' (fmt c) DigitalZoom?
-  # DZST (GPMF) - seen: 0 (fmt L)
-  # EISA (GPMF) - seen: 'Y' (fmt c)
+    DZOM => { #PH (GPMF - seen: 'Y', fmt c)
+        Name => 'DigitalZoom',
+        PrintConv => { N => 'No', Y => 'Yes' },
+    },
+  # DZST (GPMF) - seen: 0 (fmt L) (something to do with digital zoom maybe?)
+  # EISA (GPMF) - seen: 'Y','N' [N was for a time-lapse video] (fmt c)
   # EISE (GPMF) - seen: 'Y' (fmt c)
     EMPT => { Name => 'Empty', Unknown => 1 }, #2 (gpmd)
     ESCS => { #PH (Karma)
@@ -148,10 +150,8 @@ my %addUnits = (
   # EXPT (GPMF) - seen: '' (fmt c)
     FACE => 'FaceDetected', #PH (gpmd)
     FCNM => 'FaceNumbers', #PH (gpmd) (faces counted per frame, ref 1)
-  # FMWR (GPMF) - seen: HD6.01.01.51.00 (fmt c)
-    FMWR => { Name => 'FirmwareVersion' }, #PH
-  # FWVS (gpmd) seen: '1.1.11.0' (Karma)
-    FWVS => { Name => 'OtherFirmware' }, #PH (NC)
+    FMWR => 'FirmwareVersion', #PH (GPMF - seen: HD6.01.01.51.00, fmt c)
+    FWVS => 'OtherFirmware', #PH (NC) (gpmd - seen: '1.1.11.0', Karma)
     GLPI => { #PH (gpmd, Karma)
         Name => 'GPSPos',
         # UNIT=s,deg,deg,m,m,m/s,m/s,m/s,deg
@@ -199,6 +199,7 @@ my %addUnits = (
         Notes => 'gyroscope readings in rad/s',
         Binary => 1,
     },
+  # HFLG (APP6) - seen: 0
     ISOE => 'ISOSpeeds', #PH (gpmd)
     ISOG => { #2 (gpmd)
         Name => 'ImageSensorGain',
@@ -221,31 +222,43 @@ my %addUnits = (
         Binary => 1,
     },
     MAGN => 'Magnetometer', #1 (gpmd) (units of uT)
-  # MINF (GPMF) - seen: HERO6 Black (fmt c)
-    MINF => { #PH
+    MINF => { #PH (GPMF - seen: HERO6 Black, fmt c)
         Name => 'Model',
         Groups => { 2 => 'Camera' },
         Description => 'Camera Model Name',
     },
-  # MTYP (GPMF) - seen: 0 (fmt B)
+  # MTYP (GPMF) - seen: 0,1,11 [1 for time-lapse video, 11 for JPEG] (fmt B)
   # MUID (GPMF) - seen: 3882563431 2278071152 967805802 411471936 0 0 0 0 (fmt L)
-  # OREN (GPMF) - seen: 'U' (fmt c)
-  # PIMN (GPMF) - seen: 100 (fmt L)
-    PIMN => { Name => 'AutoISOMin' }, #PH
-  # PIMX (GPMF) - seen: 1600 (fmt L)
-    PIMX => { Name => 'AutoISOMax' }, #PH
-  # PRTN (GPMF) - seen: 'N' (fmt c)
-  # PTCL (GPMF) - seen: 'GOPRO' (fmt c)
-  # PTEV (GPMF) - seen: '0.0' (fmt c)
-  # PTSH (GPMF) - seen: 'HIGH' (fmt c)
-  # PTWB (GPMF) - seen: 'AUTO' (fmt c)
-  # RATE (GPMF) - seen: '0_5SEC' (fmt c)
-  # RMRK (GPMF) - seen: 'struct: Time (ms), in (ms), out (ms), Location XYZ (deg,deg,m), Type, Confidence (%) Score' (fmt c)
+    OREN => { #PH (GPMF - seen: 'U', fmt c)
+        Name => 'AutoRotation',
+        PrintConv => {
+            U => 'Up',
+            D => 'Down', # (NC)
+            A => 'Auto', # (NC)
+        },
+    },
+    # (most of the "P" tags are ProTune settings - PH)
+    PHDR => 'HDRSetting', #PH (APP6 - seen: 0)
+    PIMN => 'AutoISOMin', #PH (GPMF - seen: 100, fmt L)
+    PIMX => 'AutoISOMax', #PH (GPMF - seen: 1600, fmt L)
+  # PRAW (APP6) - seen: 0
+    PRES => 'PhotoResolution', #PH (APP6 - seen: '12MP_W')
+    PRTN => { #PH (GPMF - seen: 'N', fmt c)
+        Name => 'ProTune',
+        PrintConv => {
+            N => 'Off',
+            Y => 'On', # (NC)
+        },
+    },
+    PTCL => 'ColorMode', #PH (GPMF - seen: 'GOPRO', fmt c' APP6: 'FLAT')
+    PTEV => 'ExposureCompensation', #PH (GPMF - seen: '0.0', fmt c)
+    PTSH => 'Sharpness', #PH (GPMF - seen: 'HIGH', fmt c)
+    PTWB => 'WhiteBalance', #PH (GPMF - seen: 'AUTO', fmt c)
+    RATE => 'Rate', #PH (GPMF - seen: '0_5SEC', fmt c; APP6 - seen: '4_1SEC')
     RMRK => { #2 (gpmd)
         Name => 'Comments',
         ValueConv => '$self->Decode($val, "Latin")',
     },
-  # SCAL (GPMF) - seen: 1 1 1 10000000 10000000 1 1 1 1 (fmt l)
     SCAL => { #2 (gpmd) scale factor for subsequent data
         Name => 'ScaleFactor',
         Unknown => 1,
@@ -272,8 +285,7 @@ my %addUnits = (
         # SCAL=1000 1000 1000 1000 1000 1000 1000 1000 1000 1000
         %addUnits,
     },
-  # SIUN (gpmd) - seen : 'm/s2','rad/s'
-    SIUN => { #2
+    SIUN => { #2 (gpmd - seen : 'm/s2','rad/s')
         Name => 'SIUnits',
         Unknown => 1,
         ValueConv => '$self->Decode($val, "Latin")',
@@ -283,8 +295,7 @@ my %addUnits = (
         Name => 'TimeStamp',
         ValueConv => '$val / 1e6',
     },
-  # STRM (GPMF) - NestedSignalStream (fmt \0)
-    STRM => { #2 (gpmd)
+    STRM => { #2 (gpmd,GPMF, fmt \0)
         Name => 'NestedSignalStream',
         SubDirectory => { TagTable => 'Image::ExifTool::GoPro::GPMF' },
     },
@@ -316,16 +327,21 @@ my %addUnits = (
     },
   # TOCK => { Name => 'OutTime', Unknown => 1, ValueConv => '$val/1000' }, #1 (gpmd)
     TSMP => { Name => 'TotalSamples', Unknown => 1 }, #2 (gpmd)
-  # TYPE (GPMF) - seen: 'LLLllfFff', etc (fmt c)
-    TYPE => { Name => 'StructureType', Unknown => 1 }, #2 (gpmd)
-  # UNIT (gpmd) - seen 'A,Ah,J,degC,V,V,V,V,s,%,,,,,%' (Karma)
+    TYPE => { Name => 'StructureType', Unknown => 1 }, #2 (gpmd,GPMF - eg 'LLLllfFff', fmt c)
     UNIT => { #2 (gpmd) alternative units
         Name => 'Units',
         Unknown => 1,
         ValueConv => '$self->Decode($val, "Latin")',
     },
-  # VFOV (GPMF) - seen: 'W' (fmt c)
-  # VLTA (GPMF) - seen: 78 ('N') (fmt B)
+    VFOV => { #PH (GPMF - seen: 'W', fmt c)
+        Name => 'FieldOfView',
+        PrintConv => {
+            W => 'Wide',
+            S => 'Super View', # (NC, not seen)
+            L => 'Linear', # (NC, not seen)
+        },
+    },
+  # VLTA (GPMF) - seen: 78 ('N') (fmt B -- wrong format?)
     VFRH => { #PH (Karma)
         Name => 'VisualFlightRulesHUD',
         BinaryData => 1,
@@ -464,7 +480,7 @@ my %addUnits = (
         Format => 'string[16]',
     },
     # ...
-    # after this there is lots of interesting values also found in the GPMF box,
+    # after this there are lots of interesting values also found in the GPMF box,
     # but this block is lacking tag ID's and any directory structure, so the
     # value offsets are therefore presumably firmware dependent :(
 );
@@ -564,7 +580,7 @@ sub ProcessString($$$)
 }
 
 #------------------------------------------------------------------------------
-# Process GoPro metadata (gpmd samples or GPMF box) (ref PH/1/2)
+# Process GoPro metadata (gpmd samples, GPMF box, or APP6) (ref PH/1/2)
 # Inputs: 0) ExifTool object ref, 1) dirInfo ref, 2) tag table ref
 # Returns: 1 on success
 sub ProcessGoPro($$$)
@@ -579,8 +595,13 @@ sub ProcessGoPro($$$)
     my ($size, $type, $unit, $scal, $setGroup0);
 
     $et->VerboseDir($$dirInfo{DirName} || 'GPMF', undef, $dirEnd-$pos) if $verbose;
-    # set group0 to "QuickTime" unless group1 is being changed (to Track#)
-    $setGroup0 = $$et{SET_GROUP0} = 'QuickTime' unless $$et{SET_GROUP1} or $pos;
+    if ($pos) {
+        my $parent = $$dirInfo{Parent};
+        $setGroup0 = $$et{SET_GROUP0} = 'APP6' if $parent and $parent eq 'APP6';
+    } else {
+        # set group0 to "QuickTime" unless group1 is being changed (to Track#)
+        $setGroup0 = $$et{SET_GROUP0} = 'QuickTime' unless $$et{SET_GROUP1};
+    }
 
     for (; $pos+8<=$dirEnd; $pos+=($size+3)&0xfffffffc) {
         my ($tag,$fmt,$len,$count) = unpack("x${pos}a4CCn", $$dataPt);
@@ -623,7 +644,7 @@ sub ProcessGoPro($$$)
         unless ($tagInfo) {
             next unless $unknown;
             my $name = Image::ExifTool::QuickTime::PrintableTagID($tag);
-            $tagInfo = { Name => "Unknown_$name", Description => "Unknown $name", Unknown => 1 };
+            $tagInfo = { Name => "GoPro_$name", Description => "GoPro $name", Unknown => 1 };
             $$tagInfo{SubDirectory} = { TagTable => 'Image::ExifTool::GoPro::GPMF' } if not $fmt;
             AddTagToTable($tagTablePtr, $tag, $tagInfo);
         }

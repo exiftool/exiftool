@@ -116,6 +116,7 @@ This table lists information extracted by ExifTool from JPEG images.
   'APP6'       EPPIM                            JPEG EPPIM
                NITF                             JPEG NITF
                HP_TDHD                          HP TDHD
+               GoPro                            GoPro GPMF
   'APP7'       Pentax                           Pentax
                Qualcomm                         Qualcomm
   'APP8'       SPIFF                            JPEG SPIFF
@@ -209,7 +210,7 @@ specification.
 
 =head3 JPEG MediaJukebox Tags
 
-Tags found in the XML metadata of the "Media Jukebox" APP9 segment.
+Tags found in the XML metadata of the APP9 "Media Jukebox" segment.
 
   Tag Name                                      Writable
   --------                                      --------
@@ -240,7 +241,7 @@ Information extracted from APP11 of a JPEG-HDR image.
 
 =head3 JPEG AdobeCM Tags
 
-The "Adobe_CM" APP13 segment presumably contains color management
+The APP13 "Adobe_CM" segment presumably contains color management
 information, but the meaning of the data is currently unknown.  If anyone
 has an idea about what this means, please let me know.
 
@@ -250,7 +251,7 @@ has an idea about what this means, please let me know.
 
 =head3 JPEG Adobe Tags
 
-The "Adobe" APP14 segment stores image encoding information for DCT filters.
+The APP14 "Adobe" segment stores image encoding information for DCT filters.
 This segment may be copied or deleted as a block using the Extra "Adobe"
 tag, but note that it is not deleted by default when deleting all metadata
 because it may affect the appearance of the image.
@@ -7750,7 +7751,7 @@ imaging cameras by FLIR Systems Inc.
 
 =head3 FLIR FFF Tags
 
-Information extracted from FLIR FFF images and the FLIR APP1 segment of JPEG
+Information extracted from FLIR FFF images and the APP1 FLIR segment of JPEG
 images.  These tags may also be extracted from the first frame of an FLIR
 SEQ file.
 
@@ -16524,9 +16525,10 @@ These tags are found in IFD0 of Panasonic/Leica RAW, RW2 and RWL images.
   0x0005   SensorLeftBorder                     no
   0x0006   SensorBottomBorder                   no
   0x0007   SensorRightBorder                    no
-  0x0008   BlackLevel1                          int16u
-  0x0009   BlackLevel2                          int16u
-  0x000a   BlackLevel3                          int16u
+  0x0008   SamplesPerPixel                      int16u!
+  0x0009   CFAPattern                           int16u!
+  0x000a   BitsPerSample                        int16u!
+  0x000b   Compression                          int16u!
   0x000e   LinearityLimitRed                    int16u
   0x000f   LinearityLimitGreen                  int16u
   0x0010   LinearityLimitBlue                   int16u
@@ -17213,6 +17215,143 @@ L<http://www.scalado.com/>.)
   'QUAL'   PreviewQuality                       no
   'SPMO'   DataLength?                          no
   'WDTH'   PreviewImageWidth                    no
+
+=head2 GoPro Tags
+
+=head3 GoPro GPMF Tags
+
+Tags extracted from the GPMF box of GoPro MP4 videos, the APP6 "GoPro" segment
+of JPEG files, and from the "gpmd" timed metadata if the ExtractEmbedded option
+is enabled.  Many more tags exist, but are currently unknown and extracted only
+with the -u option. Please let me know if you discover the meaning of any of
+these unknown tags. See L<https://github.com/gopro/gpmf-parser> for details
+about this format.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  'ACCL'   Accelerometer                        no
+  'ALLD'   AutoLowLightDuration                 no
+  'ATTD'   Attitude                             no
+  'ATTR'   AttitudeTarget                       no
+  'AUDO'   AudioSetting                         no
+  'BPOS'   Controller?                          no
+  'CASN'   CameraSerialNumber                   no
+  'CSEN'   CoyoteSense                          no
+  'CYTS'   CoyoteStatus                         no
+  'DEVC'   DeviceContainer                      GoPro GPMF
+  'DVID'   DeviceID?                            no
+  'DVNM'   DeviceName                           no
+  'DZOM'   DigitalZoom                          no
+  'EMPT'   Empty?                               no
+  'ESCS'   EscapeStatus?                        no
+  'FACE'   FaceDetected                         no
+  'FCNM'   FaceNumbers                          no
+  'FMWR'   FirmwareVersion                      no
+  'FWVS'   OtherFirmware                        no
+  'GLPI'   GPSPos                               GoPro GLPI
+  'GPRI'   GPSRaw?                              GoPro GPRI
+  'GPS5'   GPSInfo                              GoPro GPS5
+  'GPSF'   GPSMeasureMode                       no
+  'GPSP'   GPSHPositioningError                 no
+  'GPSU'   GPSDateTime                          no
+  'GYRO'   Gyroscope                            no
+  'ISOE'   ISOSpeeds                            no
+  'ISOG'   ImageSensorGain                      no
+  'KBAT'   BatteryStatus                        GoPro KBAT
+  'LNED'   LocalPositionNED                     no
+  'MAGN'   Magnetometer                         no
+  'MINF'   Model                                no
+  'OREN'   AutoRotation                         no
+  'PHDR'   HDRSetting                           no
+  'PIMN'   AutoISOMin                           no
+  'PIMX'   AutoISOMax                           no
+  'PRES'   PhotoResolution                      no
+  'PRTN'   ProTune                              no
+  'PTCL'   ColorMode                            no
+  'PTEV'   ExposureCompensation                 no
+  'PTSH'   Sharpness                            no
+  'PTWB'   WhiteBalance                         no
+  'RATE'   Rate                                 no
+  'RMRK'   Comments                             no
+  'SCAL'   ScaleFactor?                         no
+  'SCPR'   ScaledPressure                       no
+  'SHUT'   ExposureTimes                        no
+  'SIMU'   ScaledIMU                            no
+  'SIUN'   SIUnits?                             no
+  'STMP'   TimeStamp                            no
+  'STNM'   StreamName?                          no
+  'STRM'   NestedSignalStream                   GoPro GPMF
+  'SYST'   SystemTime                           no
+  'TMPC'   CameraTemperature                    no
+  'TSMP'   TotalSamples?                        no
+  'TYPE'   StructureType?                       no
+  'UNIT'   Units?                               no
+  'VFOV'   FieldOfView                          no
+  'VFRH'   VisualFlightRulesHUD                 no
+  'WBAL'   ColorTemperatures                    no
+  'WRGB'   WhiteBalanceRGB                      no
+
+=head3 GoPro GLPI Tags
+
+   Index   Tag Name                             Writable
+   -----   --------                             --------
+      0    GPSDateTime                          no
+      1    GPSLatitude                          no
+      2    GPSLongitude                         no
+      3    GPSAltitude                          no
+      5    GPSSpeedX                            no
+      6    GPSSpeedY                            no
+      7    GPSSpeedZ                            no
+      8    GPSTrack                             no
+
+=head3 GoPro GPRI Tags
+
+   Index   Tag Name                             Writable
+   -----   --------                             --------
+      0    GPSDateTimeRaw                       no
+      1    GPSLatitudeRaw                       no
+      2    GPSLongitudeRaw                      no
+      3    GPSAltitudeRaw                       no
+      6    GPSSpeedRaw                          no
+      7    GPSTrackRaw                          no
+
+=head3 GoPro GPS5 Tags
+
+   Index   Tag Name                             Writable
+   -----   --------                             --------
+      0    GPSLatitude                          no
+      1    GPSLongitude                         no
+      2    GPSAltitude                          no
+      3    GPSSpeed                             no
+      4    GPSSpeed3D                           no
+
+=head3 GoPro KBAT Tags
+
+Battery status information found in GoPro Karma videos.
+
+   Index   Tag Name                             Writable
+   -----   --------                             --------
+      0    BatteryCurrent                       no
+      1    BatteryCapacity                      no
+      3    BatteryTemperature                   no
+      4    BatteryVoltage1                      no
+      5    BatteryVoltage2                      no
+      6    BatteryVoltage3                      no
+      7    BatteryVoltage4                      no
+      8    BatteryTime                          no
+     14    BatteryLevel                         no
+
+=head3 GoPro fdsc Tags
+
+Tags extracted from the MP4 "fdsc" timed metadata when the ExtractEmbedded
+option is used.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      8    FirmwareVersion                      no
+     23    SerialNumber                         no
+     87    OtherSerialNumber                    no
+    102    Model                                no
 
 =head2 Qualcomm Tags
 
@@ -22420,54 +22559,73 @@ This directory contains a list of key names which are used to decode
 ItemList tags written by the "mdta" handler.  The prefix of
 "com.apple.quicktime." has been removed from all TagID's below.
 
-  Tag ID                       Tag Name         Writable
-  ------                       --------         --------
-  'Encoded_With'               EncodedWith      no
-  'album'                      Album            no
-  'artist'                     Artist           no
-  'artwork'                    Artwork          no
-  'author'                     Author           no
+  Tag ID                  Tag Name              Writable
+  ------                  --------              --------
+  'Encoded_With'          EncodedWith           no
+  'album'                 Album                 no
+  'artist'                Artist                no
+  'artwork'               Artwork               no
+  'author'                Author                no
   'camera.framereadouttimeinmicroseconds'
-                               FrameReadoutTime no
-  'camera.identifier'          CameraIdentifier no
-  'collection.user'            UserCollection   no
-  'comment'                    Comment          no
-  'copyright'                  Copyright        no
-  'creationdate'               CreationDate     no
-  'description'                Description      no
-  'direction.facing'           CameraDirection  no
-  'direction.motion'           CameraMotion     no
-  'director'                   Director         no
-  'genre'                      Genre            no
-  'information'                Information      no
-  'keywords'                   Keywords         no
-  'location.ISO6709'           GPSCoordinates   no
-  'location.body'              LocationBody     no
-  'location.date'              LocationDate     no
-  'location.name'              LocationName     no
-  'location.note'              LocationNote     no
-  'location.role'              LocationRole     no
-  'make'                       Make             no
-  'model'                      Model            no
+                          FrameReadoutTime      no
+  'camera.identifier'     CameraIdentifier      no
+  'collection.user'       UserCollection        no
+  'comment'               Comment               no
+  'copyright'             Copyright             no
+  'creationdate'          CreationDate          no
+  'description'           Description           no
+  'detected-face'         FaceInfo              QuickTime FaceInfo
+  'detected-face.bounds'  DetectedFaceBounds    no
+  'detected-face.face-id' DetectedFaceID        no
+  'detected-face.roll-angle'
+                          DetectedFaceRollAngle no
+  'detected-face.yaw-angle'
+                          DetectedFaceYawAngle  no
+  'direction.facing'      CameraDirection       no
+  'direction.motion'      CameraMotion          no
+  'director'              Director              no
+  'genre'                 Genre                 no
+  'information'           Information           no
+  'keywords'              Keywords              no
+  'location.ISO6709'      GPSCoordinates        no
+  'location.body'         LocationBody          no
+  'location.date'         LocationDate          no
+  'location.name'         LocationName          no
+  'location.note'         LocationNote          no
+  'location.role'         LocationRole          no
+  'make'                  Make                  no
+  'model'                 Model                 no
   'player.movie.audio.balance' Balance          no
-  'player.movie.audio.bass'    Bass             no
-  'player.movie.audio.gain'    AudioGain        no
-  'player.movie.audio.mute'    Mute             no
+  'player.movie.audio.bass' Bass                no
+  'player.movie.audio.gain' AudioGain           no
+  'player.movie.audio.mute' Mute                no
   'player.movie.audio.pitchshift' PitchShift    no
-  'player.movie.audio.treble'  Trebel           no
+  'player.movie.audio.treble' Trebel            no
   'player.movie.visual.brightness' Brightness   no
-  'player.movie.visual.color'  Color            no
+  'player.movie.visual.color' Color             no
   'player.movie.visual.contrast' Contrast       no
-  'player.movie.visual.tint'   Tint             no
-  'player.version'             PlayerVersion    no
-  'producer'                   Producer         no
-  'publisher'                  Publisher        no
-  'rating.user'                UserRating       no
-  'software'                   Software         no
-  'title'                      Title            no
-  'version'                    Version          no
-  'video-orientation'          VideoOrientation no
-  'year'                       Year             no
+  'player.movie.visual.tint' Tint               no
+  'player.version'        PlayerVersion         no
+  'producer'              Producer              no
+  'publisher'             Publisher             no
+  'rating.user'           UserRating            no
+  'software'              Software              no
+  'title'                 Title                 no
+  'version'               Version               no
+  'video-orientation'     VideoOrientation      no
+  'year'                  Year                  no
+
+=head3 QuickTime FaceInfo Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  'crec'   FaceRec                              QuickTime FaceRec
+
+=head3 QuickTime FaceRec Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  'cits'   FaceItem                             QuickTime Keys
 
 =head3 QuickTime Movie Tags
 
@@ -23252,7 +23410,7 @@ used.
   'TimeCode'           TimeCode                 no
   'fdsc'               GoPro_fdsc               GoPro fdsc
   'gpmd'               GoPro_gpmd               GoPro GPMF
-  'mebx'               QuickTime_mebx           QuickTime Stream
+  'mebx'               QuickTime_mebx           QuickTime Keys
   'rtmd'               Sony_rtmd                Sony rtmd
 
 =head2 PLIST Tags
@@ -23280,130 +23438,6 @@ either "XML" or "PLIST" depending on whether the format is XML or binary.
   'producers//name'            Producers        no+
   'screenwriters//name'        Screenwriters    no+
   'studio//name'               Studio           no+
-
-=head2 GoPro Tags
-
-=head3 GoPro GPMF Tags
-
-Tags extracted from the GPMF box of GoPro MP4 videos, and from the "gpmd"
-timed metadata if the ExtractEmbedded option is enabled.  Many more tags
-exist, but are currently unknown and extracted only with the -u option.
-Please let me know if you discover the meaning of any of these unknown tags.
-See L<https://github.com/gopro/gpmf-parser> for details about this format.
-
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  'ACCL'   Accelerometer                        no
-  'ATTD'   Attitude                             no
-  'ATTR'   AttitudeTarget                       no
-  'AUDO'   AudioSetting                         no
-  'BPOS'   Controller?                          no
-  'CASN'   CameraSerialNumber                   no
-  'CSEN'   CoyoteSense                          no
-  'CYTS'   CoyoteStatus                         no
-  'DEVC'   DeviceContainer                      GoPro GPMF
-  'DVID'   DeviceID?                            no
-  'DVNM'   DeviceName                           no
-  'EMPT'   Empty?                               no
-  'ESCS'   EscapeStatus?                        no
-  'FACE'   FaceDetected                         no
-  'FCNM'   FaceNumbers                          no
-  'FMWR'   FirmwareVersion                      no
-  'FWVS'   OtherFirmware                        no
-  'GLPI'   GPSPos                               GoPro GLPI
-  'GPRI'   GPSRaw?                              GoPro GPRI
-  'GPS5'   GPSInfo                              GoPro GPS5
-  'GPSF'   GPSMeasureMode                       no
-  'GPSP'   GPSHPositioningError                 no
-  'GPSU'   GPSDateTime                          no
-  'GYRO'   Gyroscope                            no
-  'ISOE'   ISOSpeeds                            no
-  'ISOG'   ImageSensorGain                      no
-  'KBAT'   BatteryStatus                        GoPro KBAT
-  'LNED'   LocalPositionNED                     no
-  'MAGN'   Magnetometer                         no
-  'MINF'   Model                                no
-  'PIMN'   AutoISOMin                           no
-  'PIMX'   AutoISOMax                           no
-  'RMRK'   Comments                             no
-  'SCAL'   ScaleFactor?                         no
-  'SCPR'   ScaledPressure                       no
-  'SHUT'   ExposureTimes                        no
-  'SIMU'   ScaledIMU                            no
-  'SIUN'   SIUnits?                             no
-  'STMP'   TimeStamp                            no
-  'STNM'   StreamName?                          no
-  'STRM'   NestedSignalStream                   GoPro GPMF
-  'SYST'   SystemTime                           no
-  'TMPC'   CameraTemperature                    no
-  'TSMP'   TotalSamples?                        no
-  'TYPE'   StructureType?                       no
-  'UNIT'   Units?                               no
-  'VFRH'   VisualFlightRulesHUD                 no
-  'WBAL'   ColorTemperatures                    no
-  'WRGB'   WhiteBalanceRGB                      no
-
-=head3 GoPro GLPI Tags
-
-   Index   Tag Name                             Writable
-   -----   --------                             --------
-      0    GPSDateTime                          no
-      1    GPSLatitude                          no
-      2    GPSLongitude                         no
-      3    GPSAltitude                          no
-      5    GPSSpeedX                            no
-      6    GPSSpeedY                            no
-      7    GPSSpeedZ                            no
-      8    GPSTrack                             no
-
-=head3 GoPro GPRI Tags
-
-   Index   Tag Name                             Writable
-   -----   --------                             --------
-      0    GPSDateTimeRaw                       no
-      1    GPSLatitudeRaw                       no
-      2    GPSLongitudeRaw                      no
-      3    GPSAltitudeRaw                       no
-      6    GPSSpeedRaw                          no
-      7    GPSTrackRaw                          no
-
-=head3 GoPro GPS5 Tags
-
-   Index   Tag Name                             Writable
-   -----   --------                             --------
-      0    GPSLatitude                          no
-      1    GPSLongitude                         no
-      2    GPSAltitude                          no
-      3    GPSSpeed                             no
-      4    GPSSpeed3D                           no
-
-=head3 GoPro KBAT Tags
-
-Battery status information found in GoPro Karma videos.
-
-   Index   Tag Name                             Writable
-   -----   --------                             --------
-      0    BatteryCurrent                       no
-      1    BatteryCapacity                      no
-      3    BatteryTemperature                   no
-      4    BatteryVoltage1                      no
-      5    BatteryVoltage2                      no
-      6    BatteryVoltage3                      no
-      7    BatteryVoltage4                      no
-      8    BatteryTime                          no
-     14    BatteryLevel                         no
-
-=head3 GoPro fdsc Tags
-
-Tags extracted from the MP4 "fdsc" timed metadata when the ExtractEmbedded
-option is used.
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-      8    FirmwareVersion                      no
-     23    SerialNumber                         no
-     87    OtherSerialNumber                    no
-    102    Model                                no
 
 =head2 Matroska Tags
 
@@ -25675,7 +25709,7 @@ Tags extracted from Redcode R3D video files.
   'RED1'   Red1Header                           Red RED1
   'RED2'   Red2Header                           Red RED2
   0x1000   StartEdgeCode                        no
-  0x1001   StartTimeCode                        no
+  0x1001   StartTimecode                        no
   0x1002   OtherDate1                           no
   0x1003   OtherDate2                           no
   0x1004   OtherDate3                           no
@@ -25683,10 +25717,11 @@ Tags extracted from Redcode R3D video files.
   0x1006   SerialNumber                         no
   0x1019   CameraType                           no
   0x101a   ReelNumber                           no
+  0x101b   Take                                 no
   0x1023   DateCreated                          no
   0x1024   TimeCreated                          no
   0x1025   FirmwareVersion                      no
-  0x1029   ReelDateTime                         no
+  0x1029   ReelTimecode                         no
   0x102a   StorageType                          no
   0x1030   StorageFormatDate                    no
   0x1031   StorageFormatTime                    no
@@ -25699,13 +25734,19 @@ Tags extracted from Redcode R3D video files.
   0x106f   LensNumber                           no
   0x1070   LensModel                            no
   0x1071   Model                                no
-  0x107c   Copyright                            no
+  0x107c   CameraOperator                       no
   0x1086   VideoFormat                          no
   0x1096   Filter                               no
   0x10a0   Brain                                no
   0x10a1   Sensor                               no
-  0x2066   FrameRate                            no
+  0x200d   ColorTemperature                     no
+  0x204b   RGBCurves                            no
+  0x2066   OriginalFrameRate                    no
   0x4037   CropArea                             no
+  0x403b   ISO                                  no
+  0x406a   FNumber                              no
+  0x406b   FocalLength                          no
+  0x606c   FocusDistance                        no
 
 =head3 Red RED1 Tags
 
@@ -25728,7 +25769,7 @@ Redcode version 2 header.
       7    RedcodeVersion                       no
      76    ImageWidth                           no
      80    ImageHeight                          no
-     86    TimeScale                            no
+     86    FrameRate                            no
 
 =head2 RIFF Tags
 
@@ -30611,12 +30652,16 @@ higher.
   MDItemAperture                                no
   MDItemAuthors                                 no
   MDItemBitsPerSample                           no
+  MDItemCity                                    no
   MDItemColorSpace                              no
   MDItemComment                                 no
   MDItemContentCreationDate                     no
   MDItemContentModificationDate                 no
   MDItemContentType                             no
   MDItemContentTypeTree                         no
+  MDItemContributors                            no
+  MDItemCopyright                               no
+  MDItemCountry                                 no
   MDItemCreator                                 no
   MDItemDateAdded                               no
   MDItemDescription                             no
@@ -30678,10 +30723,12 @@ higher.
   MDItemResolutionWidthDPI                      no
   MDItemSecurityMethod                          no
   MDItemSpeed                                   no
+  MDItemStateOrProvince                         no
   MDItemTimestamp                               no
   MDItemTitle                                   no
   MDItemUseCount                                no
   MDItemUsedDates                               no
+  MDItemUserTags                                no
   MDItemVersion                                 no
   MDItemWhereFroms                              no
   MDItemWhiteBalance                            no

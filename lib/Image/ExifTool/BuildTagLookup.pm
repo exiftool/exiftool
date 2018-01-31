@@ -34,7 +34,7 @@ use Image::ExifTool::Nikon;
 use Image::ExifTool::Validate;
 use Image::ExifTool::MacOS;
 
-$VERSION = '3.13';
+$VERSION = '3.14';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -99,6 +99,7 @@ my %tweakOrder = (
    'MWG::Regions' => 'MWG::Composite',
    'MWG::Keywords' => 'MWG::Regions',
    'MWG::Collections' => 'MWG::Keywords',
+   'GoPro::fdsc' => 'GoPro::KBAT',
 );
 
 # list of all recognized Format strings

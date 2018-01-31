@@ -12,7 +12,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 10.77 --                                     1)Tj
+(                           -- Image::ExifTool 10.78 --                                     1)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (EXIFTOOL\(1\)           User Contributed Perl Documentation          EXIFTOOL\(1\))Tj
@@ -179,7 +179,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 10.77 --                                     2)Tj
+(                           -- Image::ExifTool 10.78 --                                     2)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (         AIFF  r     | EXV   r/w/c | M4A/V r/w   | PBM   r/w   | SR2   r/w)Tj
@@ -354,7 +354,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 10.77 --                                     3)Tj
+(                           -- Image::ExifTool 10.78 --                                     3)Tj
 /TT4 1 Tf
 0 -2.7333 TD
 (           BEGIN { $Image::ExifTool::configFile = '' })Tj
@@ -593,7 +593,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 10.77 --                                     4)Tj
+(                           -- Image::ExifTool 10.78 --                                     4)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (           or a SCALAR reference \(a reference to the image in memory\).  Other)Tj
@@ -736,7 +736,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 10.77 --                                     5)Tj
+(                           -- Image::ExifTool 10.78 --                                     5)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (               the file after "ImageInfo" returns.])Tj
@@ -877,7 +877,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 10.77 --                                     6)Tj
+(                           -- Image::ExifTool 10.78 --                                     6)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (                       print "---- $group ----\\n";)Tj
@@ -1060,7 +1060,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 10.77 --                                     7)Tj
+(                           -- Image::ExifTool 10.78 --                                     7)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (       Inputs:)Tj
@@ -1201,7 +1201,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 10.77 --                                     8)Tj
+(                           -- Image::ExifTool 10.78 --                                     8)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (               recommendation.  Default is undef.)Tj
@@ -1338,7 +1338,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 10.77 --                                     9)Tj
+(                           -- Image::ExifTool 10.78 --                                     9)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (               instead.  For example, the following table gives the output for)Tj
@@ -1477,7 +1477,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 10.77 --                                    10)Tj
+(                           -- Image::ExifTool 10.78 --                                    10)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (               the end of a JPEG image to check for an AFCP, CanonVRD,)Tj
@@ -1620,7 +1620,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 10.77 --                                    11)Tj
+(                           -- Image::ExifTool 10.78 --                                    11)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (               date/time shift string \(see _)Tj
@@ -1805,7 +1805,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 10.77 --                                    12)Tj
+(                           -- Image::ExifTool 10.78 --                                    12)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (               ValueConv values.  Default is undef.)Tj
@@ -1946,7 +1946,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 10.77 --                                    13)Tj
+(                           -- Image::ExifTool 10.78 --                                    13)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (               enforces a time zero of 1904 as per the QuickTime)Tj
@@ -2083,7 +2083,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 10.77 --                                    14)Tj
+(                           -- Image::ExifTool 10.78 --                                    14)Tj
 /TT4 1 Tf
 0 -2.7333 TD
 (                 undef - \(default\) Same as 0 for reading, 2 for copying)Tj
@@ -2230,7 +2230,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 10.77 --                                    15)Tj
+(                           -- Image::ExifTool 10.78 --                                    15)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (               respectively.)Tj
@@ -2403,7 +2403,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 10.77 --                                    16)Tj
+(                           -- Image::ExifTool 10.78 --                                    16)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (           tag set\).)Tj
@@ -2560,7 +2560,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 10.77 --                                    17)Tj
+(                           -- Image::ExifTool 10.78 --                                    17)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (           object is also allowed as a source, but in this case the)Tj
@@ -2707,7 +2707,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 10.77 --                                    18)Tj
+(                           -- Image::ExifTool 10.78 --                                    18)Tj
 /TT4 1 Tf
 0 -2.7333 TD
 (           3\) [optional] Secondary sort order \('File', 'Tag' or 'Descr'\))Tj
@@ -2906,7 +2906,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 10.77 --                                    19)Tj
+(                           -- Image::ExifTool 10.78 --                                    19)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (       "GetValue" always returns the list itself.)Tj
@@ -3061,7 +3061,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 10.77 --                                    20)Tj
+(                           -- Image::ExifTool 10.78 --                                    20)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (       to set the values of many tags before using "WriteInfo" to write the)Tj
@@ -3188,7 +3188,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 10.77 --                                    21)Tj
+(                           -- Image::ExifTool 10.78 --                                    21)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (           # write structured information as a serialized string)Tj
@@ -3327,7 +3327,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 10.77 --                                    22)Tj
+(                           -- Image::ExifTool 10.78 --                                    22)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (               specified, tag is written to highest priority group as)Tj
@@ -3510,7 +3510,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 10.77 --                                    23)Tj
+(                           -- Image::ExifTool 10.78 --                                    23)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (           deleted by specifying it explicitly, either by group \(with)Tj
@@ -3695,7 +3695,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 10.77 --                                    24)Tj
+(                           -- Image::ExifTool 10.78 --                                    24)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (           $exifTool->SetNewValuesFromFile\($file, 'gps*'\);)Tj
@@ -3838,7 +3838,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 10.77 --                                    25)Tj
+(                           -- Image::ExifTool 10.78 --                                    25)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (           '+>' or '->' \(or '+<' or '-<'\) are used.)Tj
@@ -4017,7 +4017,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 10.77 --                                    26)Tj
+(                           -- Image::ExifTool 10.78 --                                    26)Tj
 /TT4 1 Tf
 0 -2.7333 TD
 (   R)Tj
@@ -4228,7 +4228,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 10.77 --                                    27)Tj
+(                           -- Image::ExifTool 10.78 --                                    27)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (           file, or 'Test' to test renaming feature by printing the old and)Tj
@@ -4445,7 +4445,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 10.77 --                                    28)Tj
+(                           -- Image::ExifTool 10.78 --                                    28)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (       Get description for specified tag.  This function will always return a)Tj
@@ -4590,7 +4590,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 10.77 --                                    29)Tj
+(                           -- Image::ExifTool 10.78 --                                    29)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (           give information about the specific ICC_Profile tag from which)Tj
@@ -4773,7 +4773,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 10.77 --                                    30)Tj
+(                           -- Image::ExifTool 10.78 --                                    30)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (           closed before "ImageInfo" returns.  Here the Composite option may)Tj
@@ -5094,7 +5094,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 10.77 --                                    31)Tj
+(                           -- Image::ExifTool 10.78 --                                    31)Tj
 /TT4 1 Tf
 0 -2.7333 TD
 (       Inputs:)Tj
@@ -5241,7 +5241,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 10.77 --                                    32)Tj
+(                           -- Image::ExifTool 10.78 --                                    32)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (           Preview, Printing, Time, Unknown, Video)Tj
@@ -5486,7 +5486,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 10.77 --                                    33)Tj
+(                           -- Image::ExifTool 10.78 --                                    33)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (       Can the specified file be written?)Tj
@@ -5737,7 +5737,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 10.77 --                                    34)Tj
+(                           -- Image::ExifTool 10.78 --                                    34)Tj
 /TT4 1 Tf
 0 -2.7333 TD
 (       External Character Sets:)Tj
@@ -5928,7 +5928,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 10.77 --                                    35)Tj
+(                           -- Image::ExifTool 10.78 --                                    35)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (   I)Tj
@@ -6083,7 +6083,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 10.77 --                                    36)Tj
+(                           -- Image::ExifTool 10.78 --                                    36)Tj
 /TT4 1 Tf
 0 -2.7333 TD
 (   J)Tj
@@ -6334,7 +6334,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 10.77 --                                    37)Tj
+(                           -- Image::ExifTool 10.78 --                                    37)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (A)Tj
@@ -7073,8 +7073,8 @@ endobj
 endobj
 124 0 obj
 <<
-/CreationDate (D:20180126123804-05'00')
-/ModDate (D:20180126123804-05'00')
+/CreationDate (D:20180131093558-05'00')
+/ModDate (D:20180131093558-05'00')
 /Producer (Apple pstopdf)
 >>
 endobj
@@ -7218,7 +7218,7 @@ trailer
 /Size 126
 /Root 125 0 R
 /Info 124 0 R
-/ID [<21c3320d87d000bd9e3842b4ae2367b1><21c3320d87d000bd9e3842b4ae2367b1>]
+/ID [<ea59a5e1f856897033facd603b6db713><ea59a5e1f856897033facd603b6db713>]
 >>
 startxref
 165181

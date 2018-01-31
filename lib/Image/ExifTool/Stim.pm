@@ -15,7 +15,7 @@ use vars qw($VERSION);
 
 $VERSION = '1.01';
 
-# Tags found in Stim APP3 segment in JPEG images
+# Tags found in APP3 Stim segment in JPEG images
 %Image::ExifTool::Stim::Main = (
     GROUPS => { 0 => 'Stim', 1 => 'Stim', 2 => 'Image'},
     NOTES => q{

@@ -97,7 +97,7 @@ my %float8g = ( Format => 'float', PrintConv => 'sprintf("%.8g",$val)' );
     PROCESS_PROC => \&ProcessFLIR,
     VARS => { ALPHA_FIRST => 1 },
     NOTES => q{
-        Information extracted from FLIR FFF images and the FLIR APP1 segment of JPEG
+        Information extracted from FLIR FFF images and the APP1 FLIR segment of JPEG
         images.  These tags may also be extracted from the first frame of an FLIR
         SEQ file.
     },

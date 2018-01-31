@@ -1315,7 +1315,6 @@ sub WriteXMP($$;$)
             # set resFlag to 0 to indicate base description when XMPShorthand enabled
             $resFlag[0] = 0 if $useShorthand;
         }
-        # loop over all values for this new property
         my ($val, $attrs) = @{$capture{$path}};
         $debug and print "$path = $val\n";
         # open new properties if necessary
@@ -1354,7 +1353,8 @@ sub WriteXMP($$;$)
         unless ($dummy or ($val eq '' and $prop2 =~ /:~dummy~$/)) {
             $prop2 =~ s/ .*//;      # remove list index if it exists
             my $pad = $noPad ? '' : ' ' x (scalar(@curPropList) + 1);
-            if (defined $resFlag[$#curPropList] and not %$attrs) {
+            # (can't write as shortcut if it has attributes or CDATA)
+            if (defined $resFlag[$#curPropList] and not %$attrs and $val !~ /<!\[CDATA\[/) {
                 $short[-1] .= "\n$pad$prop2='${val}'";
             } else {
                 $long[-1] .= "$pad<$prop2";

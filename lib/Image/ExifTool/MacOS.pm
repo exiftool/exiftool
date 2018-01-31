@@ -11,7 +11,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.02';
+$VERSION = '1.03';
 
 sub MDItemLocalTime($);
 
@@ -71,12 +71,16 @@ my %mdDateInfo = (
     MDItemAperture                => { Groups => { 2 => 'Camera' } },
     MDItemAuthors                 => { Groups => { 2 => 'Author' } },
     MDItemBitsPerSample           => { Groups => { 2 => 'Image' } },
+    MDItemCity                    => { Groups => { 2 => 'Location' } },
     MDItemColorSpace              => { Groups => { 2 => 'Image' } },
     MDItemComment                 => { },
     MDItemContentCreationDate     => { Groups => { 2 => 'Time' }, %mdDateInfo },
     MDItemContentModificationDate => { Groups => { 2 => 'Time' }, %mdDateInfo },
     MDItemContentType             => { },
     MDItemContentTypeTree         => { },
+    MDItemContributors            => { },
+    MDItemCopyright               => { Groups => { 2 => 'Author' } },
+    MDItemCountry                 => { Groups => { 2 => 'Location' } },
     MDItemCreator                 => { Groups => { 2 => 'Document' } },
     MDItemDateAdded               => { Groups => { 2 => 'Time' }, %mdDateInfo },
     MDItemDescription             => { },
@@ -135,10 +139,12 @@ my %mdDateInfo = (
     MDItemResolutionWidthDPI      => { Groups => { 2 => 'Image' } },
     MDItemSecurityMethod          => { },
     MDItemSpeed                   => { Groups => { 2 => 'Location' } },
+    MDItemStateOrProvince         => { Groups => { 2 => 'Location' } },
     MDItemTimestamp               => { Groups => { 2 => 'Time' } }, # (time only)
     MDItemTitle                   => { },
     MDItemUseCount                => { },
     MDItemUsedDates               => { Groups => { 2 => 'Time' }, %mdDateInfo },
+    MDItemUserTags                => { },
     MDItemVersion                 => { },
     MDItemWhereFroms              => { },
     MDItemWhiteBalance            => { Groups => { 2 => 'Image' } },

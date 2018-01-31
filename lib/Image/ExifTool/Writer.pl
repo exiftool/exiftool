@@ -316,6 +316,7 @@ sub SetNewValue($;$$%)
                 $listOnly = $options{ListOnly} = 0;
             } else {
                 $value = $$value[0];
+                $value = $$value if ref $value eq 'SCALAR'; # (handle single scalar ref in a list)
             }
         } elsif (ref $value eq 'SCALAR') {
             $value = $$value;
@@ -2505,6 +2506,7 @@ sub GetAllGroups($)
             }
         }
     }
+    delete $allGroups{'*'};     # (not a real group)
     return sort keys %allGroups;
 }
 
@@ -5239,7 +5241,7 @@ sub WriteJPEG($$)
                         Write($outfile,$app1hdr,$exifAPP1hdr,$buff) or $err = 1;
                     } else {
                         delete $$self{PREVIEW_INFO};
-                        $self->Warn("EXIF APP1 segment too large! ($size bytes)");
+                        $self->Warn("APP1 EXIF segment too large! ($size bytes)");
                     }
                 }
             }
@@ -5316,7 +5318,7 @@ sub WriteJPEG($$)
                         my $app12hdr = "\xff\xec" . pack('n', $size + 2);
                         Write($outfile, $app12hdr, 'Ducky', $buff) or $err = 1;
                     } else {
-                        $self->Warn("Ducky APP12 segment too large! ($size bytes)");
+                        $self->Warn("APP12 Ducky segment too large! ($size bytes)");
                     }
                 }
             }
@@ -5334,7 +5336,7 @@ sub WriteJPEG($$)
                         Write($outfile, $app14hdr, $buff) or $err = 1;
                         ++$$self{CHANGED};
                     } else {
-                        $self->Warn("Adobe APP14 segment too large! ($size bytes)");
+                        $self->Warn("APP14 Adobe segment too large! ($size bytes)");
                     }
                 }
             }

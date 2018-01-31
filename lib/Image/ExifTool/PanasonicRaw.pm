@@ -9,6 +9,7 @@
 # References:   1) CPAN forum post by 'hardloaf' (http://www.cpanforum.com/threads/2183)
 #               2) http://www.cybercom.net/~dcoffin/dcraw/
 #               3) http://syscall.eu/#pana
+#               4) Klaus Homeister private communication
 #              IB) Iliah Borg private communication (LibRaw)
 #              JD) Jens Duttke private communication (TZ3,FZ30,FZ50)
 #------------------------------------------------------------------------------
@@ -20,7 +21,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.12';
+$VERSION = '1.13';
 
 sub ProcessJpgFromRaw($$$);
 sub WriteJpgFromRaw($$$);
@@ -68,17 +69,31 @@ my %wbTypeInfo = (
     # 0x08: 1
     # 0x09: 1,3,4
     # 0x0a: 12
-    0x08 => { #IB
-        Name => 'BlackLevel1',
+    # (IB gave 0x08-0x0a as BlackLevel tags, but Klaus' decoding makes more sense)
+    0x08 => { Name => 'SamplesPerPixel', Writable => 'int16u', Protected => 1 }, #4
+    0x09 => { #4
+        Name => 'CFAPattern',
         Writable => 'int16u',
-        Notes => q{
-            summing BlackLevel1+2+3 values gives the common bias that must be added to
-            the BlackLevelRed/Green/Blue tags below
+        Protected => 1,
+        PrintConv => {
+            0 => 'n/a',
+            1 => '[Red,Green][Green,Blue]', # (CM-1, FZ70)
+            2 => '[Green,Red][Blue,Green]', # (LX-7)
+            3 => '[Green,Blue][Red,Green]', # (ZS100, FZ2500, FZ1000, ...)
+            4 => '[Blue,Green][Green,Red]', # (LC-100, G-7, V-LUX1, ...)
         },
     },
-    0x09 => { Name => 'BlackLevel2', Writable => 'int16u' }, #IB
-    0x0a => { Name => 'BlackLevel3', Writable => 'int16u' }, #IB
-    # 0x0b: 0x860c,0x880a,0x880c
+    0x0a => { Name => 'BitsPerSample', Writable => 'int16u', Protected => 1 }, #4
+    0x0b => { #4
+        Name => 'Compression',
+        Writable => 'int16u',
+        Protected => 1,
+        PrintConv => {
+            34316 => 'Panasonic RAW 1', # (most models - RAW/RW2/RWL)
+            34826 => 'Panasonic RAW 2', # (DIGILUX 2 - RAW)
+            34828 => 'Panasonic RAW 3', # (D-LUX2,D-LUX3,FZ30,LX1 - RAW)
+        },
+    },
     # 0x0c: 2 (only Leica Digilux 2)
     # 0x0d: 0,1
     # 0x0e,0x0f,0x10: 4095

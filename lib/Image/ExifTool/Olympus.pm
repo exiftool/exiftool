@@ -39,7 +39,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::APP12;
 
-$VERSION = '2.51';
+$VERSION = '2.52';
 
 sub PrintLensInfo($$$);
 
@@ -2416,6 +2416,8 @@ my %indexInfo = (
                     1 => 'WB',
                     2 => 'FL',
                     3 => 'MF',
+                    4 => 'ISO', #forum8906
+                    5 => 'AE Auto', #forum8906
                     6 => 'Focus', #PH
                 }) . ' Bracketing';
                 $a =~ s/, /+/g;
@@ -2477,6 +2479,8 @@ my %indexInfo = (
         Count => 2,
         PrintConv => {
             '0 0' => 'No',
+            '5 4' => 'HDR1', #forum8906
+            '6 4' => 'HDR2', #forum8906
             #'8 8' - seen this for the E-M1mkII
             '9 8' => 'Focus-stacked (8 images)',
         },

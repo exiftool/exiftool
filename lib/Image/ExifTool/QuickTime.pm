@@ -42,7 +42,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.08';
+$VERSION = '2.09';
 
 sub FixWrongFormat($);
 sub ProcessMOV($$;$);
@@ -53,6 +53,7 @@ sub ProcessEncodingParams($$$);
 sub ProcessSampleDesc($$$);
 sub ProcessHybrid($$$);
 sub ProcessRights($$$);
+sub ProcessMebx($$$); # (in QuickTimeStream.pl)
 sub ParseItemLocation($$);
 sub ParseItemInfoEntry($$);
 sub ParseItemPropAssoc($$);
@@ -4927,6 +4928,31 @@ my %eeBox = (
     # ausr - 30 bytes (User Alias?)
 );
 
+# tag decoded from timed face records
+%Image::ExifTool::QuickTime::FaceInfo = (
+    PROCESS_PROC => \&ProcessMOV,
+    GROUPS => { 2 => 'Video' },
+    crec => {
+        Name => 'FaceRec',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::QuickTime::FaceRec',
+        },
+    },
+);
+
+# tag decoded from timed face records
+%Image::ExifTool::QuickTime::FaceRec = (
+    PROCESS_PROC => \&ProcessMOV,
+    GROUPS => { 2 => 'Video' },
+    cits => {
+        Name => 'FaceItem',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::QuickTime::Keys',
+            ProcessProc => \&ProcessMebx,
+        },
+    },
+);
+
 # item list keys (ref PH)
 %Image::ExifTool::QuickTime::Keys = (
     PROCESS_PROC => \&Image::ExifTool::QuickTime::ProcessKeys,
@@ -5022,14 +5048,30 @@ my %eeBox = (
     'rating.user'  => 'UserRating', # (Canon ELPH 510 HS)
     'collection.user' => 'UserCollection', #22
     'Encoded_With' => 'EncodedWith',
-    # seen in timed metadata (mebx), and added dynamically via SaveMetaKeys() (ref PH):
-    # (fiel)com.apple.quicktime.detected-face.bounds (dtyp=80, ?)
-    # (mdta)com.apple.quicktime.detected-face (dtyp='com.apple.quicktime.detected-face')
-    # (fiel)com.apple.quicktime.detected-face.roll-angle (dtyp=23, float)
-    # (fiel)com.apple.quicktime.detected-face.face-id (dtyp=77, int32u)
-    # (fiel)com.apple.quicktime.detected-face.yaw-angle (dtyp=23, float)
+#
+# seen in timed metadata (mebx), and added dynamically via SaveMetaKeys() (ref PH):
+#
     # (mdta)com.apple.quicktime.video-orientation (dtyp=66, int16s)
     'video-orientation' => 'VideoOrientation',
+    # (mdta)com.apple.quicktime.detected-face (dtyp='com.apple.quicktime.detected-face')
+    'detected-face' => {
+        Name => 'FaceInfo',
+        SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::FaceInfo' },
+    },
+    # ---- detected-face fields ----
+    # --> back here after a round trip through FaceInfo -> FaceRec -> FaceItem
+    # (fiel)com.apple.quicktime.detected-face.bounds (dtyp=80, float[8])
+    'detected-face.bounds' => {
+        Name => 'DetectedFaceBounds',
+        # round to a reasonable number of decimal places
+        PrintConv => 'my @a=split " ",$val;$_=int($_*1e6+.5)/1e6 foreach @a;join " ",@a',
+    },
+    # (fiel)com.apple.quicktime.detected-face.face-id (dtyp=77, int32u)
+    'detected-face.face-id'    => 'DetectedFaceID',
+    # (fiel)com.apple.quicktime.detected-face.roll-angle (dtyp=23, float)
+    'detected-face.roll-angle' => 'DetectedFaceRollAngle',
+    # (fiel)com.apple.quicktime.detected-face.yaw-angle (dtyp=23, float)
+    'detected-face.yaw-angle'  => 'DetectedFaceYawAngle',
 );
 
 # iTunes info ('----') atoms
@@ -6376,11 +6418,17 @@ Image::ExifTool::AddCompositeTags('Image::ExifTool::QuickTime');
 
 
 #------------------------------------------------------------------------------
-# AutoLoad our writer routines when necessary
+# AutoLoad our routines when necessary
 #
 sub AUTOLOAD
 {
-    return Image::ExifTool::DoAutoLoad($AUTOLOAD, @_);
+    if ($AUTOLOAD eq 'Image::ExifTool::QuickTime::ProcessMebx') {
+        require 'Image/ExifTool/QuickTimeStream.pl';
+        no strict 'refs';
+        return &$AUTOLOAD(@_);
+    } else {
+        return Image::ExifTool::DoAutoLoad($AUTOLOAD, @_);
+    }
 }
 
 #------------------------------------------------------------------------------
@@ -7191,7 +7239,8 @@ sub ProcessMOV($$;$)
     my $verbose = $et->Options('Verbose');
     my $dataPos = $$dirInfo{Base} || 0;
     my $charsetQuickTime = $et->Options('CharsetQuickTime');
-    my ($buff, $tag, $size, $track, $isUserData, %triplet, $doDefaultLang, $index, $ee, $unkOpt);
+    my ($buff, $tag, $size, $track, $isUserData, %triplet, $doDefaultLang, $index);
+    my ($dirEnd, $ee, $unkOpt);
 
     my $topLevel = not $$et{InQuickTime};
     $$et{InQuickTime} = 1;
@@ -7207,7 +7256,10 @@ sub ProcessMOV($$;$)
         $doDefaultLang = 1;     # flag to generate default language tags
     }
     # more convenient to package data as a RandomAccess file
-    $raf or $raf = new File::RandomAccess($dataPt);
+    unless ($raf) {
+        $raf = new File::RandomAccess($dataPt);
+        $dirEnd = $dataPos + $$dirInfo{DirLen} + ($$dirInfo{DirStart} || 0) if $$dirInfo{DirLen};
+    }
     # skip leading bytes if necessary
     if ($$dirInfo{DirStart}) {
         $raf->Seek($$dirInfo{DirStart}, 1) or return 0;
@@ -7686,8 +7738,9 @@ ItemID:         foreach $id (keys %$items) {
             ) if $verbose;
             $raf->Seek($size, 1) or $et->Warn("Truncated '${tag}' data"), last;
         }
+        $dataPos += $size + 8;  # point to start of next atom data
+        last if $dirEnd and $dataPos >= $dirEnd; # (note: ignores last value if 0 bytes)
         $raf->Read($buff, 8) == 8 or last;
-        $dataPos += $size + 8;
         ($size, $tag) = unpack('Na4', $buff);
         ++$index if defined $index;
     }

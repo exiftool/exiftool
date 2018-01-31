@@ -123,6 +123,10 @@ sub ProcessJPEG_HDR($$$);
         Name => 'HP_TDHD', # (written by R837)
         Condition => '$$valPt =~ /^TDHD\x01\0\0\0/',
         SubDirectory => { TagTable => 'Image::ExifTool::HP::TDHD' },
+      }, {
+        Name => 'GoPro',
+        Condition => '$$valPt =~ /^GoPro\0/',
+        SubDirectory => { TagTable => 'Image::ExifTool::GoPro::GPMF' },
     }],
     APP7 => [{
         Name => 'Pentax',
@@ -249,7 +253,7 @@ sub ProcessJPEG_HDR($$$);
     },
 );
 
-# SPIFF APP8 segment.  Refs:
+# APP8 SPIFF segment.  Refs:
 # 1) http://www.fileformat.info/format/spiff/
 # 2) http://www.jpeg.org/public/spiff.pdf
 %Image::ExifTool::JPEG::SPIFF = (
@@ -336,11 +340,11 @@ sub ProcessJPEG_HDR($$$);
     },
 );
 
-# Media Jukebox APP9 segment (ref PH)
+# APP9 Media Jukebox segment (ref PH)
 %Image::ExifTool::JPEG::MediaJukebox = (
     GROUPS => { 0 => 'XML', 1 => 'MediaJukebox', 2 => 'Image' },
     VARS => { NO_ID => 1 },
-    NOTES => 'Tags found in the XML metadata of the "Media Jukebox" APP9 segment.',
+    NOTES => 'Tags found in the XML metadata of the APP9 "Media Jukebox" segment.',
     Date => {
         Groups => { 2 => 'Time' },
         # convert from days since Dec 30, 1899 to seconds since Jan 1, 1970
@@ -383,7 +387,7 @@ sub ProcessJPEG_HDR($$$);
     PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
     GROUPS => { 0 => 'APP13', 1 => 'AdobeCM', 2 => 'Image' },
     NOTES => q{
-        The "Adobe_CM" APP13 segment presumably contains color management
+        The APP13 "Adobe_CM" segment presumably contains color management
         information, but the meaning of the data is currently unknown.  If anyone
         has an idea about what this means, please let me know.
     },
@@ -398,7 +402,7 @@ sub ProcessJPEG_HDR($$$);
     PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
     GROUPS => { 0 => 'APP14', 1 => 'Adobe', 2 => 'Image' },
     NOTES => q{
-        The "Adobe" APP14 segment stores image encoding information for DCT filters.
+        The APP14 "Adobe" segment stores image encoding information for DCT filters.
         This segment may be copied or deleted as a block using the Extra "Adobe"
         tag, but note that it is not deleted by default when deleting all metadata
         because it may affect the appearance of the image.
@@ -439,7 +443,7 @@ sub ProcessJPEG_HDR($$$);
     'Q' => 'Quality',
 );
 
-# AVI1 APP0 segment (ref http://www.schnarff.com/file-formats/bmp/BMPDIB.TXT)
+# APP0 AVI1 segment (ref http://www.schnarff.com/file-formats/bmp/BMPDIB.TXT)
 %Image::ExifTool::JPEG::AVI1 = (
     PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
     GROUPS => { 0 => 'APP0', 1 => 'AVI1', 2 => 'Image' },
@@ -455,7 +459,7 @@ sub ProcessJPEG_HDR($$$);
     },
 );
 
-# Ocad APP0 segment (ref PH)
+# APP0 Ocad segment (ref PH)
 %Image::ExifTool::JPEG::Ocad = (
     PROCESS_PROC => \&ProcessOcad,
     GROUPS => { 0 => 'APP0', 1 => 'Ocad', 2 => 'Image' },
@@ -471,7 +475,7 @@ sub ProcessJPEG_HDR($$$);
     }
 );
 
-# NITF APP6 segment (National Imagery Transmission Format)
+# APP6 NITF segment (National Imagery Transmission Format)
 # ref http://www.gwg.nga.mil/ntb/baseline/docs/n010697/bwcguide25aug98.pdf
 %Image::ExifTool::JPEG::NITF = (
     PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,

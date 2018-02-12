@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup);
 
-$VERSION = '10.78';
+$VERSION = '10.79';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -109,7 +109,7 @@ sub UnpackUTF8($);
 sub SetPreferredByteOrder($);
 sub CopyBlock($$$);
 sub CopyFileAttrs($$$);
-sub TimeNow(;$);
+sub TimeNow($;$);
 sub NewGUID();
 sub MakeTiffHeader($$$$;$$);
 
@@ -2143,7 +2143,7 @@ sub ExtractInfo($;@)
 
         # return our version number
         $self->FoundTag('ExifToolVersion', "$VERSION$RELEASE");
-        $self->FoundTag('Now', TimeNow()) if $$req{now} or $reqAll;
+        $self->FoundTag('Now', $self->TimeNow()) if $$req{now} or $reqAll;
         $self->FoundTag('NewGUID', NewGUID()) if $$req{newguid} or $reqAll;
         # generate sequence number if necessary
         $self->FoundTag('FileSequence', $$self{FILE_SEQUENCE}) if $$req{filesequence} or $reqAll;

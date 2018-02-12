@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::XMP;
 
-$VERSION = '1.19';
+$VERSION = '1.20';
 
 sub ProcessXtra($$$);
 
@@ -94,6 +94,7 @@ sub ProcessXtra($$$);
     },
     CreatorAppId             => { Name => 'CreatorAppID' },
     CreatorOpenWithUIOptions => { },
+    ItemSubType              => { },
 );
 
 # Microsoft Photo 1.1 schema properties (MP1 - written as 'prefix0' by MSPhoto) (ref PH)

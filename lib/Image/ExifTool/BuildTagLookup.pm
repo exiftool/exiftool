@@ -34,7 +34,7 @@ use Image::ExifTool::Nikon;
 use Image::ExifTool::Validate;
 use Image::ExifTool::MacOS;
 
-$VERSION = '3.14';
+$VERSION = '3.15';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -500,9 +500,10 @@ password-protected PDF files.
 
 ExifTool may be used to write native PDF and XMP metadata to PDF files. It
 uses an incremental update technique that has the advantages of being both
-fast and reversible.  The original PDF can be easily recovered by deleting
-the C<PDF-update> pseudo-group (with C<-PDF-update:all=> on the command
-line).  However, there are two main disadvantages to this technique:
+fast and reversible.  If ExifTool was used to modify a PDF file, the
+original may be recovered by deleting the C<PDF-update> pseudo-group (with
+C<-PDF-update:all=> on the command line).  However, there are two main
+disadvantages to this technique:
 
 1) A linearized PDF file is no longer linearized after the update, so it
 must be subsequently re-linearized if this is required.

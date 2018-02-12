@@ -7,6 +7,15 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.55. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Feb. 11, 2018 - Version 10.79
+
+  - Added a new Olympus CameraType (thanks LibRaw)
+  - Added a new XMP-microsoft tag (thanks Jos&eacute; Oliver-Didier)
+  - Decode a new GoPro QuickTime tag
+  - Convert nulls IPTC:DocumentHistory to newlines
+  - Removed all null terminators from JSON and PHP output
+  - Fixed writing of GPSDateStamp and GPSTimeStamp to be able to set to "now"
+
 Jan. 31, 2018 - Version 10.78
 
   - Added a few new values for some Olympus tags (thanks John)

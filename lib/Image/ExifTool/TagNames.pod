@@ -19124,6 +19124,7 @@ These tags belong to the ExifTool XMP-microsoft family 1 group.
   DateAcquired                                  date
   FlashManufacturer                             string
   FlashModel                                    string
+  ItemSubType                                   string
   LastKeywordIPTC                               string+
   LastKeywordXMP                                string+
   LensManufacturer                              string
@@ -21174,9 +21175,10 @@ password-protected PDF files.
 
 ExifTool may be used to write native PDF and XMP metadata to PDF files. It
 uses an incremental update technique that has the advantages of being both
-fast and reversible.  The original PDF can be easily recovered by deleting
-the C<PDF-update> pseudo-group (with C<-PDF-update:all=> on the command
-line).  However, there are two main disadvantages to this technique:
+fast and reversible.  If ExifTool was used to modify a PDF file, the
+original may be recovered by deleting the C<PDF-update> pseudo-group (with
+C<-PDF-update:all=> on the command line).  However, there are two main
+disadvantages to this technique:
 
 1) A linearized PDF file is no longer linearized after the update, so it
 must be subsequently re-linearized if this is required.
@@ -23080,6 +23082,7 @@ multi-language user data tags found, even if they don't exist in this table.
   'DcMD'       KodakDcMD                        Kodak DcMD
   'FFMV'       FujiFilmFFMV                     FujiFilm FFMV
   'FIRM'       FirmwareVersion                  no
+  "FOV\0"      FieldOfView                      no
   'GPMF'       GoProGPMF                        GoPro GPMF
   'GoPr'       GoProType                        no
   'INFO'       SamsungINFO                      Samsung INFO

@@ -4390,17 +4390,26 @@ sub MakeTiffHeader($$$$;$$)
 
 #------------------------------------------------------------------------------
 # Return current time in EXIF format
-# Inputs: 0) flag to include timezone (0 to disable, undef or 1 to include)
+# Inputs: 0) ExifTool ref, 1) flag to include timezone (0 to disable, undef or 1 to include)
 # Returns: time string
-sub TimeNow(;$)
+# - a consistent value is returned for each processed file
+sub TimeNow($;$)
 {
-    my $tzFlag = shift;
-    my $time = time();
-    my @tm = localtime $time;
-    my $tz = ($tzFlag or not defined $tzFlag) ? TimeZoneString(\@tm, $time) : '';
-    return sprintf("%4d:%.2d:%.2d %.2d:%.2d:%.2d%s",
-                   $tm[5]+1900, $tm[4]+1, $tm[3],
-                   $tm[2], $tm[1], $tm[0], $tz);
+    my ($self, $tzFlag) = @_;
+    my $timeNow;
+    if ($$self{Now}) {
+        $timeNow = $$self{Now}[0];
+    } else {
+        my $time = time();
+        my @tm = localtime $time;
+        my $tz = TimeZoneString(\@tm, $time);
+        $timeNow = sprintf("%4d:%.2d:%.2d %.2d:%.2d:%.2d",
+                    $tm[5]+1900, $tm[4]+1, $tm[3],
+                    $tm[2], $tm[1], $tm[0]);
+        $$self{Now} = [ $timeNow, $tz ];
+    }
+    $timeNow .= $$self{Now}[1] if $tzFlag or not defined $tzFlag;
+    return $timeNow;
 }
 
 #------------------------------------------------------------------------------
@@ -4425,7 +4434,7 @@ sub InverseDateTime($$;$$)
     } else {
         $tz = '';
         # allow special value of 'now'
-        return TimeNow($tzFlag) if lc($val) eq 'now';
+        return $self->TimeNow($tzFlag) if lc($val) eq 'now';
     }
     my $fmt = $$self{OPTIONS}{DateFormat};
     # only convert date if a format was specified and the date is recognizable

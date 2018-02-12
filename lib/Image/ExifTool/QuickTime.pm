@@ -42,7 +42,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.09';
+$VERSION = '2.10';
 
 sub FixWrongFormat($);
 sub ProcessMOV($$;$);
@@ -1618,6 +1618,7 @@ my %eeBox = (
     # HMMT? 404 bytes (Hero4, all zero)
     # BCID? 26 bytes (Hero5, all zero)
     # GUMI? 16 bytes (Hero5)
+   "FOV\0" => 'FieldOfView', #forum8938 (Hero2) seen: "Wide"
     GPMF => {
         Name => 'GoProGPMF',
         SubDirectory => { TagTable => 'Image::ExifTool::GoPro::GPMF' },
@@ -4956,7 +4957,7 @@ my %eeBox = (
 # item list keys (ref PH)
 %Image::ExifTool::QuickTime::Keys = (
     PROCESS_PROC => \&Image::ExifTool::QuickTime::ProcessKeys,
-    VARS => { LONG_TAGS => 1 },
+    VARS => { LONG_TAGS => 3 },
     NOTES => q{
         This directory contains a list of key names which are used to decode
         ItemList tags written by the "mdta" handler.  The prefix of

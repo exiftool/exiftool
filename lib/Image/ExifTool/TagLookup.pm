@@ -2859,6 +2859,7 @@ my %tagLookup = (
 	'issueteaser' => { 441 => 'issueTeaser' },
 	'issuetype' => { 441 => 'issueType' },
 	'istranslationof' => { 441 => 'isTranslationOf' },
+	'itemsubtype' => { 162 => 'ItemSubType' },
 	'jobid' => { 118 => 0xb8 },
 	'jobname' => { 433 => 'JobName' },
 	'jobref' => { 450 => 'JobRef' },

@@ -266,12 +266,12 @@ sub IptcTime($)
 
 #------------------------------------------------------------------------------
 # Inverse print conversion for IPTC date or time value
-# Inputs: 0) IPTC date or 'now'
+# Inputs: 0) ExifTool ref, 1) IPTC date or 'now'
 # Returns: IPTC date
-sub InverseDateOrTime($)
+sub InverseDateOrTime($$)
 {
-    my $val = shift;
-    return Image::ExifTool::TimeNow() if lc($val) eq 'now';
+    my ($et, $val) = @_;
+    return $et->TimeNow() if lc($val) eq 'now';
     return $val;
 }
 

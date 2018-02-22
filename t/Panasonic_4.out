@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.78
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.80
 [File, System, Image] FileName - File Name: Panasonic.rw2
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 12 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2009:03:25 12:10:29-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2018:01:29 07:41:21-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2018:01:26 12:40:08-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2018:02:15 12:54:35-05:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2018:02:15 12:54:35-05:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: RW2
 [File, File, Image] FileTypeExtension - File Type Extension: rw2
@@ -41,6 +41,7 @@
 [EXIF, IFD0, Image] 36 - WB Red Level: 570
 [EXIF, IFD0, Image] 37 - WB Green Level: 263
 [EXIF, IFD0, Image] 38 - WB Blue Level: 438
+[EXIF, IFD0, Image] 45 - Raw Format: 4
 [EXIF, IFD0, Camera] 271 - Make: Panasonic
 [EXIF, IFD0, Camera] 272 - Camera Model Name: DMC-LX3
 [EXIF, IFD0, Image] 274 - Orientation: Horizontal (normal)

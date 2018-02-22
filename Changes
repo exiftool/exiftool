@@ -4,8 +4,28 @@ ExifTool Version History
 
 RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 
-Note: The most recent production release is Version 10.55. (Other versions are
+Note: The most recent production release is Version 10.80. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
+
+Feb. 22, 2018 - Version 10.80 (production release)
+
+  - Decode a new PanasonicRaw tag (thanks LibRaw)
+  - Extract ImageWidth/Height for main image of HEIC file
+  - Added preliminary read/write support for Reconyx UltraFire maker notes
+  - Added a new Sony/Minolta lens (thanks Jos Roost)
+  - Internal changes:
+      - Changed TimeNow() make ExifTool object optional
+
+Feb. 11, 2018 - Version 10.79
+
+  - Added a new Olympus CameraType (thanks LibRaw)
+  - Added a new XMP-microsoft tag (thanks Jos&eacute; Oliver-Didier)
+  - Decode a new GoPro QuickTime tag
+  - Convert nulls IPTC:DocumentHistory to newlines
+  - Removed all null terminators from JSON and PHP output
+  - Fixed writing of GPSDateStamp and GPSTimeStamp to be able to set to "now"
+  - Internal changes:
+      - Changed TimeNow() to require ExifTool object as first argument
 
 Jan. 31, 2018 - Version 10.78
 

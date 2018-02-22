@@ -21,9 +21,10 @@ password-protected PDF files.</p>
 
 <p>ExifTool may be used to write native PDF and XMP metadata to PDF files. It
 uses an incremental update technique that has the advantages of being both
-fast and reversible.  The original PDF can be easily recovered by deleting
-the <code>PDF-update</code> pseudo-group (with <code>-PDF-update:all=</code> on the command
-line).  However, there are two main disadvantages to this technique:</p>
+fast and reversible.  If ExifTool was used to modify a PDF file, the
+original may be recovered by deleting the <code>PDF-update</code> pseudo-group (with
+<code>-PDF-update:all=</code> on the command line).  However, there are two main
+disadvantages to this technique:</p>
 
 <p>1) A linearized PDF file is no longer linearized after the update, so it
 must be subsequently re-linearized if this is required.</p>
@@ -741,7 +742,7 @@ false)</span>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jun 27, 2017</i>
+<br><i>Last revised Feb 7, 2018</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

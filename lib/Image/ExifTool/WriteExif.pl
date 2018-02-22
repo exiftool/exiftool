@@ -1324,6 +1324,7 @@ NoOverwrite:            next if $isNew > 0;
                             $subdirInfo{EntryBased} = $$sub{EntryBased};
                             $subdirInfo{NoFixBase} = 1 if defined $$sub{Base};
                             $subdirInfo{AutoFix} = $$sub{AutoFix};
+                            SetByteOrder($$sub{ByteOrder}) if $$sub{ByteOrder};
                         }
                         # get the proper tag table for these maker notes
                         if ($oldInfo and $$oldInfo{SubDirectory}) {

@@ -21,7 +21,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.13';
+$VERSION = '1.14';
 
 sub ProcessJpgFromRaw($$$);
 sub WriteJpgFromRaw($$$);
@@ -162,7 +162,17 @@ my %wbTypeInfo = (
         SubDirectory => { TagTable => 'Image::ExifTool::PanasonicRaw::WBInfo2' },
     },
     # 0x27,0x29,0x2a,0x2b,0x2c: [binary data]
-    # 0x2d: 2,3
+    0x2d => { #IB
+        Name => 'RawFormat',
+        Writable => 'int16u',
+        Protected => 1,
+        # 2 - RAW DMC-FZ8/FZ18
+        # 3 - RAW DMC-L10
+        # 4 - RW2 for most other models, including G9 normal resolution and YUNEEC CGO4
+        #     (must add 15 to black levels for RawFormat == 4)
+        # 5 - RW2 DC-GH5s and G9 HiRes
+        # missing - DMC-LX1/FZ30/FZ50/L1/LX1/LX2
+    },
     0x2e => { #JD
         Name => 'JpgFromRaw', # (writable directory!)
         Groups => { 2 => 'Preview' },

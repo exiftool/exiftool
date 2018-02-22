@@ -6,6 +6,7 @@
 # Revisions:    2011-01-11 - P. Harvey Created
 #
 # References:   1) RCNX_MN10.pdf (courtesy of Reconyx Inc.)
+#               2) ultrafire_makernote.pdf (courtesy of Reconyx Inc.)
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::Reconyx;
@@ -13,7 +14,17 @@ package Image::ExifTool::Reconyx;
 use strict;
 use vars qw($VERSION);
 
-$VERSION = '1.04';
+$VERSION = '1.05';
+
+# info for Type2 version tags
+my %versionInfo = (
+    Format => 'undef[7]',
+    ValueConv => 'sprintf("V%.2x.%.2x %.4x:%.2x:%.2x Rev.%s", unpack("CCvCCa", $val))',
+    ValueConvInv => q{
+        my @v = $val =~ /^V([0-9a-f]+)\.([0-9a-f]+) (\d{4}):(\d{2}):(\d{2})\s*Rev\.(\w)/i or return undef;
+        pack('CCvCCa', map(hex, @v[0..4]), $v[5]);
+    },
+);
 
 # maker notes for Reconyx Hyperfire cameras (ref PH)
 %Image::ExifTool::Reconyx::Main = (
@@ -140,10 +151,7 @@ $VERSION = '1.04';
     0x27 => 'Saturation', #1
     0x28 => {
         Name => 'InfraredIlluminator',
-        PrintConv => {
-            0 => 'Off',
-            1 => 'On',
-        },
+        PrintConv => { 0 => 'Off', 1 => 'On' },
     },
     0x29 => 'MotionSensitivity', #1
     0x2a => { #1
@@ -159,6 +167,125 @@ $VERSION = '1.04';
     },
 );
 
+# maker notes for Reconyx UltraFire cameras (ref PH)
+%Image::ExifTool::Reconyx::Type2 = (
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    WRITE_PROC => \&Image::ExifTool::WriteBinaryData,
+    CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
+    TAG_PREFIX => 'Reconyx',
+    WRITABLE => 1,
+    FIRST_ENTRY => 0,
+    NOTES => 'Tags extracted from models such as the UltraFire.',
+  # 0x0a - int32u makernote ID 0x00020000 #2
+  # 0x0e - int16u makernote size #2
+  # 0x12 - int32u public structure ID 0x07f100001 #2
+  # 0x16 - int16u public structure size #2 (0x5d = start of public ID to end of UserLabel)
+    0x18 => { Name => 'FirmwareVersion',   %versionInfo },
+    0x1f => { Name => 'Micro1Version',     %versionInfo }, #2
+    0x26 => { Name => 'BootLoaderVersion', %versionInfo }, #2
+    0x2d => { Name => 'Micro2Version',     %versionInfo }, #2
+    0x34 => {
+        Name => 'TriggerMode',
+        Format => 'undef[1]',
+        PrintConv => {
+            M => 'Motion Detection',
+            T => 'Time Lapse',
+            P => 'Point and Shoot', #2
+        },
+    },
+    0x35 => {
+        Name => 'Sequence',
+        Format => 'int8u[2]',
+        PrintConv => '$val =~ s/ / of /; $val',
+        PrintConvInv => 'join(" ", $val=~/\d+/g)',
+    },
+    0x37 => { #2
+        Name => 'EventNumber',
+        Format => 'int32u',
+    },
+    0x3b => {
+        Name => 'DateTimeOriginal',
+        Description => 'Date/Time Original',
+        Format => 'int8u[7]',
+        Groups => { 2 => 'Time' },
+        Priority => 0, # (not as reliable as EXIF)
+        Shift => 'Time',
+        ValueConv => q{
+            my @a = split ' ', $val;
+            $a[5] += pop(@a) * 256;
+            sprintf('%.4d:%.2d:%.2d %.2d:%.2d:%.2d', reverse @a);
+        },
+        ValueConvInv => q{
+            my @a = ($val =~ /\d+/g);
+            return undef unless @a >= 6;
+            unshift @a, ($a[0] >> 8);
+            $a[1] -= $a[0] * 256;
+            join ' ', @a[6,5,4,3,2,1,0];
+        },
+        PrintConv => '$self->ConvertDateTime($val)',
+        PrintConvInv => '$self->InverseDateTime($val)',
+    },
+    0x42 => { #2
+        Name => 'DayOfWeek',
+        Groups => { 2 => 'Time' },
+        PrintConv => {
+            0 => 'Sunday',
+            1 => 'Monday',
+            2 => 'Tuesday',
+            3 => 'Wednesday',
+            4 => 'Thursday',
+            5 => 'Friday',
+            6 => 'Saturday',
+        },
+    },
+    0x43 => {
+        Name => 'MoonPhase',
+        Groups => { 2 => 'Time' },
+        PrintConv => {
+            0 => 'New',
+            1 => 'New Crescent',
+            2 => 'First Quarter',
+            3 => 'Waxing Gibbous',
+            4 => 'Full',
+            5 => 'Waning Gibbous',
+            6 => 'Last Quarter',
+            7 => 'Old Crescent',
+        },
+    },
+    0x44 => {
+        Name => 'AmbientTemperatureFahrenheit',
+        Format => 'int16s',
+        PrintConv => '"$val F"',
+        PrintConvInv => '$val=~/(-?\d+)/ ? $1 : $val',
+    },
+    0x46 => {
+        Name => 'AmbientTemperature',
+        Format => 'int16s',
+        PrintConv => '"$val C"',
+        PrintConvInv => '$val=~/(-?\d+)/ ? $1 : $val',
+    },
+    0x48 => {
+        Name => 'Illumination',
+        PrintConv => { 0 => 'Off', 1 => 'On' },
+    },
+    0x49 => {
+        Name => 'BatteryVoltage',
+        Format => 'int16u',
+        ValueConv => '$val / 1000',
+        ValueConvInv => '$val * 1000',
+        PrintConv => '"$val V"',
+        PrintConvInv => '$val=~s/ ?V$//; $val',
+    },
+    0x4b => {
+        Name => 'SerialNumber',
+        Format => 'string[15]',
+    },
+    0x5a => {
+        Name => 'UserLabel',
+        Format => 'string[21]',
+    },
+);
 
 __END__
 
@@ -173,7 +300,7 @@ This module is loaded automatically by Image::ExifTool when required.
 =head1 DESCRIPTION
 
 This module contains definitions required by Image::ExifTool to interpret
-maker notes in Reconyx cameras.
+maker notes in images from Reconyx cameras.
 
 =head1 AUTHOR
 

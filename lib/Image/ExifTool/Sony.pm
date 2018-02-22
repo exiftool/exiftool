@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.72';
+$VERSION = '2.73';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -134,6 +134,7 @@ my %sonyLensTypes2 = (
     49233 => 'Zeiss Loxia 35mm F2', #JR (lens firmware Ver.02)
     49234 => 'Zeiss Loxia 21mm F2.8', #PH
     49235 => 'Zeiss Loxia 85mm F2.4', #JR
+    49236 => 'Zeiss Loxia 25mm F2.4', #JR
 
     50480 => 'Sigma 30mm F1.4 DC DN | C', #IB/JR (016)
     50481 => 'Sigma 50mm F1.4 DG HSM | A + MC-11', #JR (014)
@@ -1345,6 +1346,7 @@ my %meterInfo2b = (
         PrintConv => '$val ? sprintf("%+.1f",$val) : 0',
         PrintConvInv => '$val',
     },
+    # 0x2031 - new for ILCE-9 v2.00 (possible serial number?)
     0x3000 => {
         Name => 'ShotInfo',
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::ShotInfo' },

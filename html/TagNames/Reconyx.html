@@ -124,9 +124,118 @@ cameras such as the HC500, HC600 and PC900.</p>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='Type2'>Reconyx Type2 Tags</a></h2>
+<p>Tags extracted from models such as the UltraFire.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='24 = 0x18'>24</td>
+<td>FirmwareVersion</td>
+<td class=c>undef[7]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='31 = 0x1f'>31</td>
+<td>Micro1Version</td>
+<td class=c>undef[7]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='38 = 0x26'>38</td>
+<td>BootLoaderVersion</td>
+<td class=c>undef[7]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='45 = 0x2d'>45</td>
+<td>Micro2Version</td>
+<td class=c>undef[7]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='52 = 0x34'>52</td>
+<td>TriggerMode</td>
+<td class=c>undef[1]</td>
+<td><span class=s>&#39;M&#39; = Motion Detection
+  <br>&#39;P&#39; = Point and Shoot
+  <br>&#39;T&#39; = Time Lapse</span></td></tr>
+<tr class=b>
+<td class=r title='53 = 0x35'>53</td>
+<td>Sequence</td>
+<td class=c>int8u[2]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='55 = 0x37'>55</td>
+<td>EventNumber</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='59 = 0x3b'>59</td>
+<td>DateTimeOriginal</td>
+<td class=c>int8u[7]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='66 = 0x42'>66</td>
+<td>DayOfWeek</td>
+<td class=c>int8u</td>
+<td><table class=cols><tr>
+  <td>0 = Sunday
+  <br>1 = Monday
+  <br>2 = Tuesday
+  <br>3 = Wednesday</td><td>&nbsp;&nbsp;</td>
+  <td>4 = Thursday
+  <br>5 = Friday
+  <br>6 = Saturday</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='67 = 0x43'>67</td>
+<td>MoonPhase</td>
+<td class=c>int8u</td>
+<td><table class=cols><tr>
+  <td>0 = New
+  <br>1 = New Crescent
+  <br>2 = First Quarter
+  <br>3 = Waxing Gibbous</td><td>&nbsp;&nbsp;</td>
+  <td>4 = Full
+  <br>5 = Waning Gibbous
+  <br>6 = Last Quarter
+  <br>7 = Old Crescent</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='68 = 0x44'>68</td>
+<td>AmbientTemperatureFahrenheit</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='70 = 0x46'>70</td>
+<td>AmbientTemperature</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='72 = 0x48'>72</td>
+<td>Illumination</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr class=b>
+<td class=r title='73 = 0x49'>73</td>
+<td>BatteryVoltage</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='75 = 0x4b'>75</td>
+<td>SerialNumber</td>
+<td class=c>string[15]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='90 = 0x5a'>90</td>
+<td>UserLabel</td>
+<td class=c>string[21]</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Oct 21, 2011</i>
+<br><i>Last revised Feb 20, 2018</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

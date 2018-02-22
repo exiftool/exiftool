@@ -12,7 +12,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.47';
+$VERSION = '1.48';
 
 my %coordConv = (
     ValueConv    => 'Image::ExifTool::GPS::ToDegrees($val)',
@@ -133,7 +133,8 @@ my %coordConv = (
         # pull time out of any format date/time string
         # (converting to UTC if a timezone is given)
         PrintConvInv => sub {
-            my $v = shift;
+            my ($v, $et) = @_;
+            $v = $et->TimeNow() if lc($v) eq 'now';
             my @tz;
             if ($v =~ s/([-+])(.*)//s) {    # remove timezone
                 my $s = $1 eq '-' ? 1 : -1; # opposite sign to convert back to UTC
@@ -314,6 +315,7 @@ my %coordConv = (
         # (and adjust to UTC if this is a full date/time/timezone value)
         PrintConvInv => q{
             my $secs;
+            $val = $self->TimeNow() if lc($val) eq 'now';
             if ($val =~ /[-+]/ and ($secs = Image::ExifTool::GetUnixTime($val, 1))) {
                 $val = Image::ExifTool::ConvertUnixTime($secs);
             }

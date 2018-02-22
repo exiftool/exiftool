@@ -11,21 +11,47 @@
 
 <p>RSS feed: <a href="http://owl.phy.queensu.ca/~phil/exiftool/rss.xml">http://owl.phy.queensu.ca/~phil/exiftool/rss.xml</a></p>
 
-<p><b>Note:</b> The most recent production release is <a href="Image-ExifTool-10.55.tar.gz">Version 10.55</a>. (Other versions are
+<p><b>Note:</b> The most recent production release is <a href="Image-ExifTool-10.80.tar.gz">Version 10.80</a>. (Other versions are
 considered development releases, and are not uploaded to <a href="http://search.cpan.org/dist/Image-ExifTool/">CPAN</a>.)</p>
 
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v10.80'><b>Feb. 22, 2018 - Version 10.80</b></a> <span class=grn>(production release)</span>
+<ul>
+<li>Decode a new PanasonicRaw tag (thanks LibRaw)
+<li>Extract ImageWidth/Height for main image of HEIC file
+<li>Added preliminary read/write support for Reconyx UltraFire maker notes
+<li>Added a new Sony/Minolta lens (thanks Jos Roost)
+<li>Internal changes:
+    <ul>
+    <li>Changed TimeNow() make ExifTool object optional
+    </ul>
+</ul>
+
+<a name='v10.79'><b>Feb. 11, 2018 - Version 10.79</b></a>
+<ul>
+<li>Added a new Olympus CameraType (thanks LibRaw)
+<li>Added a new XMP-microsoft tag (thanks Jos&eacute; Oliver-Didier)
+<li>Decode a new GoPro QuickTime tag
+<li>Convert nulls IPTC:DocumentHistory to newlines
+<li>Removed all null terminators from JSON and PHP output
+<li>Fixed writing of GPSDateStamp and GPSTimeStamp to be able to set to "now"
+<li>Internal changes:
+    <ul>
+    <li>Changed TimeNow() to require ExifTool object as first argument
+    </ul>
+</ul>
+
 <a name='v10.78'><b>Jan. 31, 2018 - Version 10.78</b></a>
 <ul>
 <li>Added a few new values for some Olympus tags (thanks John)
-<li>Decode GoPro APP6 metadata in JPEG images and more GoPro MP4 tags
-<li>Decode more Red tags, and improved decoding of others
+<li>Decode <a href="TagNames/GoPro.html">GoPro APP6 metadata</a> in JPEG images and more GoPro MP4 tags
+<li>Decode more <a href="TagNames/Red.html">Red tags</a>, and improved decoding of others
 <li>Decode face detection information from timed metadata with the -ee option
 <li>Fixed problem writing shorthand XMP containing CDATA sections
 <li>Fixed problem copying XMP-acdsee:Snapshots
-<li>Fixed decoding of a few Panasonic RAW tags (thanks Klaus Homeister)
+<li>Fixed decoding of a few <a href="TagNames/PanasonicRaw.html">Panasonic RAW tags</a> (thanks Klaus Homeister)
 </ul>
 
 <a name='v10.77'><b>Jan. 26, 2018 - Version 10.77</b></a>
@@ -44,7 +70,7 @@ considered development releases, and are not uploaded to <a href="http://search.
 <a name='v10.76'><b>Jan. 22, 2018 - Version 10.76</b></a>
 <ul>
 <li>Added ability to write shorthand XMP with the -z option
-<li>Added write support for Google XMP GFocus tags
+<li>Added write support for <a href="TagNames/XMP.html#GFocus">Google XMP GFocus tags</a>
 <li>Improved decoding of GoPro timed metadata
 <li>Renamed ASF PlayDuration to Duration
 <li>Fixed problem where fractional seconds were ignored when geotagging from an
@@ -60,12 +86,12 @@ considered development releases, and are not uploaded to <a href="http://search.
 <a name='v10.75'><b>Jan. 12, 2018 - Version 10.75</b></a>
 <ul>
 <li>Added another Sony/Minolta lens (thanks Jos Roost)
-<li>Decode more QuickTime tags
+<li>Decode more <a href="TagNames/QuickTime.html">QuickTime tags</a>
 <li>Decode a number of new tags from GoPro Hero6 MP4 videos
 <li>Enhanded "Unknown file type" error to indicate if "File is empty" or "File
     header is all binary zeros"
 <li>Improved decoding of some Sony tags (thanks Jos Roost)
-<li>Improved decoding of QuickTime timed metadata
+<li>Improved decoding of <a href="TagNames/QuickTime.html#Stream">QuickTime timed metadata</a>
 <li>Marked ArtworkCircaDateCreated as "Unsafe" for writing to avoid it being
     added when attempting to shift all date/time tags
 <li>Fixed bug which could cause runtime error when reading some old Sony maker
@@ -92,7 +118,7 @@ considered development releases, and are not uploaded to <a href="http://search.
 <a name='v10.72'><b>Jan. 4, 2018 - Version 10.72</b></a>
 <ul>
 <li>Added IF feature to -p option
-<li>Decode streamed GPS position and other streamed metadata from MP4 videos
+<li>Decode streamed GPS position and other <a href="TagNames/QuickTime.html#Stream">streamed metadata</a> from MP4 videos
     when the -ee option is used
 <li>Fixed problem geotagging GPSAltitude from some GPX files
 </ul>

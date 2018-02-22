@@ -650,6 +650,7 @@ official EXIF 2.31 specification.
            MakerNotePentax6          ExifIFD    Pentax S1
            MakerNotePhaseOne         ExifIFD    PhaseOne
            MakerNoteReconyx          ExifIFD    Reconyx
+           MakerNoteReconyx2         ExifIFD    Reconyx Type2
            MakerNoteRicoh            ExifIFD    Ricoh
            MakerNoteRicoh2           ExifIFD    Ricoh Type2
            MakerNoteRicohText        ExifIFD    Ricoh Text
@@ -13904,6 +13905,29 @@ cameras such as the HC500, HC600 and PC900.
      42    BatteryVoltage                       int16u
      43    UserLabel                            string[22]
 
+=head3 Reconyx Type2 Tags
+
+Tags extracted from models such as the UltraFire.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+     24    FirmwareVersion                      undef[7]
+     31    Micro1Version                        undef[7]
+     38    BootLoaderVersion                    undef[7]
+     45    Micro2Version                        undef[7]
+     52    TriggerMode                          undef[1]
+     53    Sequence                             int8u[2]
+     55    EventNumber                          int32u
+     59    DateTimeOriginal                     int8u[7]
+     66    DayOfWeek                            int8u
+     67    MoonPhase                            int8u
+     68    AmbientTemperatureFahrenheit         int16s
+     70    AmbientTemperature                   int16s
+     72    Illumination                         int8u
+     73    BatteryVoltage                       int16u
+     75    SerialNumber                         string[15]
+     90    UserLabel                            string[21]
+
 =head2 Sanyo Tags
 
   Tag ID   Tag Name                             Writable
@@ -16237,6 +16261,7 @@ still proprietary) Adobe format.
            MakerNotePentax6                     Pentax S1
            MakerNotePhaseOne                    PhaseOne
            MakerNoteReconyx                     Reconyx
+           MakerNoteReconyx2                    Reconyx Type2
            MakerNoteRicoh                       Ricoh
            MakerNoteRicoh2                      Ricoh Type2
            MakerNoteRicohText                   Ricoh Text
@@ -16546,6 +16571,7 @@ These tags are found in IFD0 of Panasonic/Leica RAW, RW2 and RWL images.
   0x0025   WBGreenLevel                         int16u
   0x0026   WBBlueLevel                          int16u
   0x0027   WBInfo2                              PanasonicRaw WBInfo2
+  0x002d   RawFormat                            int16u!
   0x002e   JpgFromRaw                           JPEG
   0x002f   CropTop                              int16u
   0x0030   CropLeft                             int16u
@@ -19124,6 +19150,7 @@ These tags belong to the ExifTool XMP-microsoft family 1 group.
   DateAcquired                                  date
   FlashManufacturer                             string
   FlashModel                                    string
+  ItemSubType                                   string
   LastKeywordIPTC                               string+
   LastKeywordXMP                                string+
   LensManufacturer                              string
@@ -21174,9 +21201,10 @@ password-protected PDF files.
 
 ExifTool may be used to write native PDF and XMP metadata to PDF files. It
 uses an incremental update technique that has the advantages of being both
-fast and reversible.  The original PDF can be easily recovered by deleting
-the C<PDF-update> pseudo-group (with C<-PDF-update:all=> on the command
-line).  However, there are two main disadvantages to this technique:
+fast and reversible.  If ExifTool was used to modify a PDF file, the
+original may be recovered by deleting the C<PDF-update> pseudo-group (with
+C<-PDF-update:all=> on the command line).  However, there are two main
+disadvantages to this technique:
 
 1) A linearized PDF file is no longer linearized after the update, so it
 must be subsequently re-linearized if this is required.
@@ -23080,6 +23108,7 @@ multi-language user data tags found, even if they don't exist in this table.
   'DcMD'       KodakDcMD                        Kodak DcMD
   'FFMV'       FujiFilmFFMV                     FujiFilm FFMV
   'FIRM'       FirmwareVersion                  no
+  "FOV\0"      FieldOfView                      no
   'GPMF'       GoProGPMF                        GoPro GPMF
   'GoPr'       GoProType                        no
   'INFO'       SamsungINFO                      Samsung INFO
@@ -31301,6 +31330,7 @@ for more details.
                        MakerNotePentax6
                        MakerNotePhaseOne
                        MakerNoteReconyx
+                       MakerNoteReconyx2
                        MakerNoteRicoh
                        MakerNoteRicoh2
                        MakerNoteRicohText

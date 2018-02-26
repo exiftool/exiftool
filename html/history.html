@@ -17,12 +17,26 @@ considered development releases, and are not uploaded to <a href="http://search.
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v10.81'><b>Feb. 26, 2018 - Version 10.81</b></a>
+<ul>
+<li>Added new values for a few Panasonic tags (thanks Bernd-Michael Kemper)
+<li>Added a new Canon, Olympus and Sony LensTypes (thanks LibRaw)
+<li>Added a new PanasonicRaw Compression type (thanks LibRaw)
+<li>Added definitions for a number of new MacOS tags
+<li>Decode CameraInfo for Canon 5DmkIII firmware 1.3.5
+<li>Removed INX from list of writable files (-listwf option output)
+<li>Fixed problem introduced in version 10.16 that could cause a "Can't create"
+    error when using the -o option to write certain types of files
+<li>Fixed problem introduced in version 10.34 resulting in a "Can't delete all
+    meta information" error when writing .PS files
+</ul>
+
 <a name='v10.80'><b>Feb. 22, 2018 - Version 10.80</b></a> <span class=grn>(production release)</span>
 <ul>
-<li>Decode a new PanasonicRaw tag (thanks LibRaw)
-<li>Extract ImageWidth/Height for main image of HEIC file
 <li>Added preliminary read/write support for Reconyx UltraFire maker notes
 <li>Added a new Sony/Minolta lens (thanks Jos Roost)
+<li>Decode a new PanasonicRaw tag (thanks LibRaw)
+<li>Extract ImageWidth/Height for main image of HEIC file
 <li>Internal changes:
     <ul>
     <li>Changed TimeNow() make ExifTool object optional

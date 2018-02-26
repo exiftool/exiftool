@@ -85,7 +85,7 @@ sub ProcessSerialData($$$);
 sub ProcessFilters($$$);
 sub SwapWords($);
 
-$VERSION = '3.83';
+$VERSION = '3.84';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -204,6 +204,7 @@ $VERSION = '3.83';
     82 => 'Canon TS-E 135mm f/4L Macro', #42
     94 => 'Canon TS-E 17mm f/4L', #42
     95 => 'Canon TS-E 24mm f/3.5L II', #43
+    103 => 'Samyang AF 14mm f/2.8 EF', #IB
     124 => 'Canon MP-E 65mm f/2.8 1-5x Macro Photo', #9
     125 => 'Canon TS-E 24mm f/3.5L',
     126 => 'Canon TS-E 45mm f/2.8', #15
@@ -415,8 +416,9 @@ $VERSION = '3.83';
     489 => 'Canon EF 70-300mm f/4-5.6L IS USM', #Gerald Kapounek
     490 => 'Canon EF 8-15mm f/4L Fisheye USM', #Klaus Reinfeld (PH added "Fisheye")
     491 => 'Canon EF 300mm f/2.8L IS II USM or Tamron Lens', #42
-    491.1 => 'Tamron SP 70-200mm F/2.8 Di VC USD G2 (A025)', #IB
-    491.2 => 'Tamron 18-400mm F/3.5-6.3 Di II VC HLD (B028)', #IB
+    491.1 => 'Tamron SP 70-200mm f/2.8 Di VC USD G2 (A025)', #IB
+    491.2 => 'Tamron 18-400mm f/3.5-6.3 Di II VC HLD (B028)', #IB
+    491.3 => 'Tamron 100-400mm f/4.5-6.3 Di VC USD (A035)', #IB
     492 => 'Canon EF 400mm f/2.8L IS II USM', #PH
     493 => 'Canon EF 500mm f/4L IS II USM or EF 24-105mm f4L IS USM', #PH
     493.1 => 'Canon EF 24-105mm f/4L IS USM', #PH (should recheck this)
@@ -434,7 +436,7 @@ $VERSION = '3.83';
     508 => 'Canon EF 11-24mm f/4L USM or Tamron Lens', #PH
     508.1 => 'Tamron 10-24mm f/3.5-4.5 Di II VC HLD', #PH (B023)
     747 => 'Canon EF 100-400mm f/4.5-5.6L IS II USM or Tamron Lens', #JR
-    747.1 => 'Tamron SP 150-600mm F5-6.3 Di VC USD G2', #50
+    747.1 => 'Tamron SP 150-600mm f/5-6.3 Di VC USD G2', #50
     748 => 'Canon EF 100-400mm f/4.5-5.6L IS II USM + 1.4x', #JR (1.4x Mk III)
     750 => 'Canon EF 35mm f/1.4L II USM', #42
     751 => 'Canon EF 16-35mm f/2.8L III USM', #42
@@ -443,7 +445,7 @@ $VERSION = '3.83';
     # (STM lenses - 0x10xx)
     4142 => 'Canon EF-S 18-135mm f/3.5-5.6 IS STM',
     4143 => 'Canon EF-M 18-55mm f/3.5-5.6 IS STM or Tamron Lens',
-    4143.1 => 'Tamron 18-200mm F/3.5-6.3 Di III VC', #42
+    4143.1 => 'Tamron 18-200mm f/3.5-6.3 Di III VC', #42
     4144 => 'Canon EF 40mm f/2.8 STM', #50
     4145 => 'Canon EF-M 22mm f/2 STM', #34
     4146 => 'Canon EF-S 18-55mm f/3.5-5.6 IS STM', #PH
@@ -3742,7 +3744,7 @@ my %ciMaxFocal = (
         Name => 'FirmwareVersionLookAhead',
         Hidden => 1,
         # look ahead to check location of FirmwareVersion string
-        Format => 'undef[0x248]',
+        Format => 'undef[0x24d]',
         RawConv => q{
             my $t = substr($val, 0x22c, 6); # 1 = firmware 4.5.4/4.5.6
             $t =~ /^\d+\.\d+\.\d+/ and $$self{CanonFirm} = 1, return undef;
@@ -3752,6 +3754,8 @@ my %ciMaxFocal = (
             $t =~ /^\d+\.\d+\.\d+/ and $$self{CanonFirm} = 3, return undef;
             $t = substr($val, 0x242, 6);    # 4 = firmware 1.2.1
             $t =~ /^\d+\.\d+\.\d+/ and $$self{CanonFirm} = 4, return undef;
+            $t = substr($val, 0x247, 6);    # 5 = firmware 1.3.5
+            $t =~ /^\d+\.\d+\.\d+/ and $$self{CanonFirm} = 5, return undef;
             $self->Warn('Unrecognized CameraInfo5DmkIII firmware version');
             $$self{CanonFirm} = 0;
             return undef;   # not a real tag
@@ -3769,7 +3773,7 @@ my %ciMaxFocal = (
         Hook => q{
             $varSize -= 3 if $$self{CanonFirm} == 1;
             $varSize -= 2 if $$self{CanonFirm} == 2;
-            $varSize += 6 if $$self{CanonFirm} == 4;
+            $varSize += 6 if $$self{CanonFirm} >= 4;
         },
     },
     0x7d => {
@@ -3787,7 +3791,10 @@ my %ciMaxFocal = (
     0x8e => {
         Name => 'FocusDistanceLower',
         %focusDistanceByteSwap,
-        Hook => '$varSize -= 4 if $$self{CanonFirm} < 3',
+        Hook => q{
+            $varSize -= 4 if $$self{CanonFirm} < 3;
+            $varSize += 5 if $$self{CanonFirm} > 4;
+        },
     },
     0xbc => {
         Name => 'WhiteBalance',

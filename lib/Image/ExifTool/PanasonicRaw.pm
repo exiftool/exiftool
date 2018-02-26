@@ -21,7 +21,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.14';
+$VERSION = '1.15';
 
 sub ProcessJpgFromRaw($$$);
 sub WriteJpgFromRaw($$$);
@@ -92,6 +92,7 @@ my %wbTypeInfo = (
             34316 => 'Panasonic RAW 1', # (most models - RAW/RW2/RWL)
             34826 => 'Panasonic RAW 2', # (DIGILUX 2 - RAW)
             34828 => 'Panasonic RAW 3', # (D-LUX2,D-LUX3,FZ30,LX1 - RAW)
+            34830 => 'Panasonic RAW 4', #IB (Leica DIGILUX 3, Panasonic DMC-L1)
         },
     },
     # 0x0c: 2 (only Leica Digilux 2)

@@ -110,7 +110,7 @@ my %writableType = (
     PDF => [ undef,         'WritePDF' ],
     PNG =>   undef,
     PPM =>   undef,
-    PS  =>   'PostScript',
+    PS  => [ 'PostScript',  'WritePS'  ],
     PSD =>   'Photoshop',
     RAF => [ 'FujiFilm',    'WriteRAF' ],
     VRD =>   'CanonVRD',
@@ -2255,8 +2255,13 @@ sub WriteInfo($$;$$)
     # don't return success code if any error occurred
     if ($rtnVal > 0) {
         if ($outType and $type and $outType ne $type) {
-            $self->Error("Can't create $outType file from $type");
-        } elsif (not Tell($outRef) and not $$self{VALUE}{Error}) {
+            my @types = GetFileType($outType);
+            unless (grep /^$type$/, @types) {
+                $self->Error("Can't create $outType file from $type");
+                $rtnVal = 0;
+            }
+        }
+        if ($rtnVal > 0 and not Tell($outRef) and not $$self{VALUE}{Error}) {
             # don't write a file with zero length
             if (defined $hdr and length $hdr) {
                 $type = '<unk>' unless defined $type;

@@ -30675,16 +30675,27 @@ higher.
 
   Tag Name                                      Writable
   --------                                      --------
+  AppleMailDateReceived                         no
+  AppleMailFlagged                              no
+  AppleMailMessageID                            no
+  AppleMailPriority                             no
+  AppleMailRead                                 no
+  AppleMailRepliedTo                            no
+  MDItemAccountHandles                          no
+  MDItemAccountIdentifier                       no
   MDItemAcquisitionMake                         no
   MDItemAcquisitionModel                        no
   MDItemAltitude                                no
   MDItemAperture                                no
+  MDItemAuthorEmailAddresses                    no
   MDItemAuthors                                 no
   MDItemBitsPerSample                           no
+  MDItemBundleIdentifier                        no
   MDItemCity                                    no
   MDItemColorSpace                              no
   MDItemComment                                 no
   MDItemContentCreationDate                     no
+  MDItemContentCreationDate_Ranking             no
   MDItemContentModificationDate                 no
   MDItemContentType                             no
   MDItemContentTypeTree                         no
@@ -30693,11 +30704,13 @@ higher.
   MDItemCountry                                 no
   MDItemCreator                                 no
   MDItemDateAdded                               no
+  MDItemDateAdded_Ranking                       no
   MDItemDescription                             no
   MDItemDisplayName                             no
   MDItemDownloadedDate                          no
   MDItemEXIFGPSVersion                          no
   MDItemEXIFVersion                             no
+  MDItemEmailConversationID                     no
   MDItemEncodingApplications                    no
   MDItemExposureMode                            no
   MDItemExposureProgram                         no
@@ -30726,13 +30739,20 @@ higher.
   MDItemGPSTrack                                no
   MDItemHasAlphaChannel                         no
   MDItemISOSpeed                                no
+  MDItemIdentifier                              no
   MDItemImageDirection                          no
+  MDItemInterestingDate_Ranking                 no
+  MDItemIsApplicationManaged                    no
+  MDItemIsExistingThread                        no
+  MDItemIsLikelyJunk                            no
   MDItemKeywords                                no
   MDItemKind                                    no
   MDItemLastUsedDate                            no
   MDItemLatitude                                no
   MDItemLogicalSize                             no
   MDItemLongitude                               no
+  MDItemMailDateReceived_Ranking                no
+  MDItemMailboxes                               no
   MDItemNumberOfPages                           no
   MDItemOrientation                             no
   MDItemOriginApplicationIdentifier             no
@@ -30746,13 +30766,16 @@ higher.
   MDItemPixelCount                              no
   MDItemPixelHeight                             no
   MDItemPixelWidth                              no
+  MDItemPrimaryRecipientEmailAddresses          no
   MDItemProfileName                             no
+  MDItemRecipients                              no
   MDItemRedEyeOnOff                             no
   MDItemResolutionHeightDPI                     no
   MDItemResolutionWidthDPI                      no
   MDItemSecurityMethod                          no
   MDItemSpeed                                   no
   MDItemStateOrProvince                         no
+  MDItemSubject                                 no
   MDItemTimestamp                               no
   MDItemTitle                                   no
   MDItemUseCount                                no

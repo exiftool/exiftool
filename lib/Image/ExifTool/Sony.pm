@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.73';
+$VERSION = '2.74';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -164,6 +164,7 @@ my %sonyLensTypes2 = (
 
     51505 => 'Samyang AF 14mm F2.8 FE or Samyang AF 35mm F2.8 FE', #forum3833
     51505.1 => 'Samyang AF 35mm F2.8 FE', #PH
+    51507 => 'Samyang AF 35mm F1.4', #IB
 );
 
 # ExposureProgram values (ref PH, mainly decoded from A200)

@@ -11,7 +11,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.03';
+$VERSION = '1.04';
 
 sub MDItemLocalTime($);
 
@@ -20,7 +20,7 @@ my %mdDateInfo = (
     PrintConv => '$self->ConvertDateTime($val)',
 );
 
-# "mdls" tags
+# "mdls" tags (ref PH)
 %Image::ExifTool::MacOS::MDItem = (
     WRITE_PROC => \&Image::ExifTool::DummyWriteProc,
     VARS => { NO_ID => 1 },
@@ -148,6 +148,30 @@ my %mdDateInfo = (
     MDItemVersion                 => { },
     MDItemWhereFroms              => { },
     MDItemWhiteBalance            => { Groups => { 2 => 'Image' } },
+    # tags used by Apple Mail on .emlx files
+    com_apple_mail_dateReceived   => { Name => 'AppleMailDateReceived', Groups => { 2 => 'Time' }, %mdDateInfo },
+    com_apple_mail_flagged        => { Name => 'AppleMailFlagged' },
+    com_apple_mail_messageID      => { Name => 'AppleMailMessageID' },
+    com_apple_mail_priority       => { Name => 'AppleMailPriority' },
+    com_apple_mail_read           => { Name => 'AppleMailRead' },
+    com_apple_mail_repliedTo      => { Name => 'AppleMailRepliedTo' },
+    MDItemAccountHandles          => { },
+    MDItemAccountIdentifier       => { },
+    MDItemAuthorEmailAddresses    => { },
+    MDItemBundleIdentifier        => { },
+    MDItemContentCreationDate_Ranking=>{Groups=> { 2 => 'Time' }, %mdDateInfo },
+    MDItemDateAdded_Ranking       => { Groups => { 2 => 'Time' }, %mdDateInfo },
+    MDItemEmailConversationID     => { },
+    MDItemIdentifier              => { },
+    MDItemInterestingDate_Ranking => { Groups => { 2 => 'Time' }, %mdDateInfo },
+    MDItemIsApplicationManaged    => { },
+    MDItemIsExistingThread        => { },
+    MDItemIsLikelyJunk            => { },
+    MDItemMailboxes               => { },
+    MDItemMailDateReceived_Ranking=> { Groups => { 2 => 'Time' }, %mdDateInfo },
+    MDItemPrimaryRecipientEmailAddresses => { },
+    MDItemRecipients              => { },
+    MDItemSubject                 => { },
 );
 
 # "xattr" tags
@@ -309,7 +333,7 @@ sub ExtractMDItemTags($$)
 {
     local $_;
     my ($et, $file) = @_;
-    my ($fn, $tag, $val);
+    my ($fn, $tag, $val, $tmp);
 
     ($fn = $file) =~ s/([`"\$\\])/\\$1/g;   # escape necessary characters
     $et->VPrint(0, '(running mdls)');
@@ -352,7 +376,10 @@ sub ExtractMDItemTags($$)
                 ValueConv => \&MDItemLocalTime,
                 PrintConv => '$self->ConvertDateTime($val)',
             ) if /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/;
-            $tagInfo{Name} = Image::ExifTool::MakeTagName($tag);
+            # change tags like "com_apple_mail_xxx" to "AppleMailXxx"
+            ($tmp = $tag) =~ s/^com_//; # remove leading "com_"
+            $tmp =~ s/_([a-z])/\u$1/g;  # use CamelCase
+            $tagInfo{Name} = Image::ExifTool::MakeTagName($tmp);
             $tagInfo{List} = 1 if ref $val eq 'ARRAY';
             $tagInfo{Groups}{2} = 'Audio' if $tag =~ /Audio/;
             $tagInfo{Groups}{2} = 'Author' if $tag =~ /(Copyright|Author)/;

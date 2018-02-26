@@ -7,12 +7,25 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.80. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Feb. 26, 2018 - Version 10.81
+
+  - Added new values for a few Panasonic tags (thanks Bernd-Michael Kemper)
+  - Added a new Canon, Olympus and Sony LensTypes (thanks LibRaw)
+  - Added a new PanasonicRaw Compression type (thanks LibRaw)
+  - Added definitions for a number of new MacOS tags
+  - Decode CameraInfo for Canon 5DmkIII firmware 1.3.5
+  - Removed INX from list of writable files (-listwf option output)
+  - Fixed problem introduced in version 10.16 that could cause a "Can't create"
+    error when using the -o option to write certain types of files
+  - Fixed problem introduced in version 10.34 resulting in a "Can't delete all
+    meta information" error when writing .PS files
+
 Feb. 22, 2018 - Version 10.80 (production release)
 
-  - Decode a new PanasonicRaw tag (thanks LibRaw)
-  - Extract ImageWidth/Height for main image of HEIC file
   - Added preliminary read/write support for Reconyx UltraFire maker notes
   - Added a new Sony/Minolta lens (thanks Jos Roost)
+  - Decode a new PanasonicRaw tag (thanks LibRaw)
+  - Extract ImageWidth/Height for main image of HEIC file
   - Internal changes:
       - Changed TimeNow() make ExifTool object optional
 

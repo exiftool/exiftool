@@ -29,7 +29,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.45';
+$VERSION = '1.46';
 
 sub ConvertTimecode($);
 
@@ -864,7 +864,7 @@ my %code2charset = (
 %Image::ExifTool::RIFF::CSET = (
     PROCESS_PROC => \&Image::ExifTool::RIFF::ProcessBinaryData,
     GROUPS => { 2 => 'Other' },
-    Format => 'int16u',
+    FORMAT => 'int16u',
     0 => {
         Name => 'CodePage',
         RawConv => '$$self{CodePage} = $val',

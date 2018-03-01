@@ -31,7 +31,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.14';
+$VERSION = '1.15';
 
 # program map table "stream_type" lookup (ref 6/1)
 my %streamType = (
@@ -275,9 +275,7 @@ sub ParsePID($$$$$)
     if ($verbose > 1) {
         my $out = $et->Options('TextOut');
         printf $out "Parsing stream 0x%.4x (%s)\n", $pid, $pidName;
-        my %parms = ( Out => $out );
-        $parms{MaxLen} = 96 if $verbose < 4;
-        HexDump($dataPt, undef, %parms) if $verbose > 2;
+        $et->VerboseDump($dataPt);
     }
     my $more = 0;
     if ($type == 0x01 or $type == 0x02) {
@@ -408,8 +406,7 @@ sub ProcessM2TS($$)
         if ($verbose > 1) {
             print  $out "Transport packet $i:\n";
             ++$i;
-            HexDump(\$buff, $pLen, Addr => $i * $pLen, Out => $out,
-                Start => $pos - $prePos) if $verbose > 2;
+            $et->VerboseDump(\$buff, Len => $pLen, Addr => $i * $pLen, Start => $pos - $prePos);
             my $str = $pidName{$pid} ? " ($pidName{$pid})" : '';
             printf $out "  Timecode:   0x%.4x\n", Get32u(\$buff, $pos - $prePos) if $pLen == 192;
             printf $out "  Packet ID:  0x%.4x$str\n", $pid;

@@ -665,7 +665,7 @@ sub CloseProperty($$$$)
 #         2) [optional] tag table reference
 # Returns: with tag table: new XMP data (may be empty if no XMP data) or undef on error
 #          without tag table: 1 on success, 0 if not valid XMP file, -1 on write error
-# Notes: May set dirInfo InPlace flag to rewrite with specified DirLen
+# Notes: May set dirInfo InPlace flag to rewrite with specified DirLen (=2 to allow larger)
 #        May set dirInfo ReadOnly flag to write as read-only XMP ('r' mode and no padding)
 #        May set dirInfo Compact flag to force compact (drops 2kB of padding)
 #        May set dirInfo MaxDataLen to limit output data length -- this causes ExtendedXMP
@@ -1399,11 +1399,14 @@ sub WriteXMP($$;$)
     # packet trailer, with a newline every 100 characters)
     unless ($$et{XMP_NO_XPACKET}) {
         my $pad = (' ' x 100) . "\n";
-        if ($$dirInfo{InPlace}) {
+        # get current XMP length without padding
+        my $len = length($long[-2]) + length($pktCloseW);
+        if ($$dirInfo{InPlace} and not ($$dirInfo{InPlace} == 2 and $len > $dirLen)) {
             # pad to specified DirLen
-            my $len = length($long[-2]) + length($pktCloseW);
             if ($len > $dirLen) {
-                $et->Warn('Not enough room to edit XMP in place');
+                my $str = 'Not enough room to edit XMP in place';
+                $str .= '. Try XMPShorthand option' unless $$et{OPTIONS}{XMPShorthand};
+                $et->Warn($str);
                 return undef;
             }
             my $num = int(($dirLen - $len) / length($pad));

@@ -14,7 +14,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.05';
+$VERSION = '1.06';
 
 # map for writing metadata to InDesign files (currently only write XMP)
 my %indMap = (
@@ -106,10 +106,8 @@ sub ProcessIND($$)
             printf $out "Contiguous object at offset 0x%x (%d bytes):\n", $raf->Tell(), $len;
             if ($verbose > 2) {
                 my $len2 = $len < 1024000 ? $len : 1024000;
-                my %parms = (Addr => $raf->Tell());
-                $parms{MaxLen} = $verbose > 3 ? 1024 : 96 if $verbose < 5;
                 $raf->Seek(-$raf->Read($buff, $len2), 1) or $err = 1;
-                HexDump(\$buff, undef, %parms);
+                $et->VerboseDump(\$buff, Addr => $raf->Tell());
             }
         }
         # check for XMP if stream data is long enough

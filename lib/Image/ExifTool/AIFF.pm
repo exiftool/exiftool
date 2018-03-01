@@ -18,7 +18,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::ID3;
 
-$VERSION = '1.07';
+$VERSION = '1.08';
 
 # information for time/date-based tags (time zero is Jan 1, 1904)
 my %timeInfo = (
@@ -235,7 +235,7 @@ sub ProcessAIFF($$)
             );
         } elsif ($verbose > 2 and $len2 < 1024000) {
             $raf->Read($buff, $len2) == $len2 or $err = 1, last;
-            HexDump(\$buff, undef, MaxLen => 512);
+            $et->VerboseDump(\$buff);
         } else {
             $raf->Seek($len2, 1) or $err=1, last;
         }

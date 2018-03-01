@@ -17,6 +17,18 @@ considered development releases, and are not uploaded to <a href="http://search.
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v10.82'><b>Mar. 1, 2018 - Version 10.82</b></a>
+<ul>
+<li>Added support for Canon's new CR3 raw file format
+<li>Added a few new CanonModelID/SonyModelID values (thanks LibRaw)
+<li>Added support for the Sony ILCE-7M3 (thanks Jos Roost)
+<li>Extract timed GPS information from Insta360 MP4 videos with the -ee option
+<li>Write XMP before idat in MOV/MP4/CR3 files if possible
+<li>Fixed "'x' outside of string" runtime error when reading some Sony images
+<li>Fixed problem with some hex dumps going to the console when -v3 was combined
+    with the -w option
+</ul>
+
 <a name='v10.81'><b>Feb. 26, 2018 - Version 10.81</b></a>
 <ul>
 <li>Added new values for a few Panasonic tags (thanks Bernd-Michael Kemper)
@@ -363,67 +375,6 @@ considered development releases, and are not uploaded to <a href="http://search.
 <li>Changed description of a couple of AVI Model tags to match EXIF
 <li>Patched tests to avoid failures with Perl 5.25.11 due to missing "." in @INC
 <li>Fixed an incorrect warning from the experimental Validate feature
-</ul>
-
-<a name='v10.54'><b>May 26, 2017 - Version 10.54</b></a>
-<ul>
-<li>Added support for Google XMP GImage and GAudio tags
-<li>Added a new Olympus CameraType (thanks LibRaw)
-<li>Added a two new Sony lenses and decode more ILCE-9 tags (thanks Jos Roost)
-<li>Added new values to some Pentax tags (thanks Andras Salamon)
-<li>Added a new Canon LensType
-<li>Added an additional checks to the experimental Validate feature
-<li>Improved user-defined FileTypes feature to provide more flexibility
-<li>Enhanced -ext option to allow specific files extensions to be processed
-    along with supported files
-<li>API Changes:
-    <ul>
-    <li>Added ListJoin option to replace List and ListSep options
-    </ul>
-</ul>
-
-<a name='v10.53'><b>May 17, 2017 - Version 10.53</b></a>
-<ul>
-<li>Added support for "MeSa" Photoshop IRB resource
-<li>Made XMP-GSpherical tags writable
-<li>Improved German translations (thanks Jobi)
-</ul>
-
-<a name='v10.52'><b>May 12, 2017 - Version 10.52</b></a>
-<ul>
-<li>Added some new values to a number of FujiFilm tags and changed some others
-    (thanks Albert Shan)
-<li>Decode a number of new Sony tags for the ILCE-9 (thanks Jos Roost)
-<li>Made SonyISO writable
-<li>Changed behaviour of advanced formatting expression for Shortcut tags so it
-    now applies to the combined value rather than individual constituent values
-<li>Minor changes to some Pentax print conversions
-<li>Fixed problem using new NoDups utility with Shortcut tags
-</ul>
-
-<a name='v10.51'><b>May 2, 2017 - Version 10.51</b></a>
-<ul>
-<li>Added "NoDups" utility function for use in advanced formatting expressions
-<li>Added a new Pentax LensType (thanks JohnK)
-<li>Added some new Pentax DriveMode values (thanks Andras Salamon)
-<li>Enhanced -ver option to report Perl include directories with -v2
-<li>Improved warning message when advanced formatting expression returns undef
-<li>Minor change to a few FujiFilm print conversion strings (thanks Albert Shan)
-<li>Changed behaviour when interpolating Shortcut tags in a string (the values
-    are now separated according to the -sep option setting instead of simply
-    being concatenated)
-<li>Patched to allow file times to be set on systems where futimes is not
-    available
-</ul>
-
-<a name='v10.50'><b>Apr. 20, 2017 - Version 10.50</b></a> <span class=grn>(production release)</span>
-<ul>
-<li>Decode a new Pentax tag (thanks Andras Salamon)
-<li>Improved decoding of Olympus DriveMode (thanks Herbert Kauer)
-<li>Improved handling of errors from utime when setting file times
-<li>Fixed potential hang problem when reading corrupted QuickTime metadata
-<li>Fixed problem deleting duplicate EXIF tags when writing other tags at the
-    same time
 </ul>
 
 <a name='ancient' href="ancient_history.html"><b>History of older versions</b> (back to 1.00) --></a><br><br>

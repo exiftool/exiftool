@@ -67,28 +67,71 @@ my %qtFmt = (
     SampleDuration=>{ Groups => { 2 => 'Other' }, PrintConv => 'ConvertDuration($val)' },
 #
 # timed metadata decoded based on MetaFormat (format of 'meta' sample description)
+# [or HandlerType if specified]
 #
     mebx => {
-        Name => 'QuickTime_mebx',
+        Name => 'mebx',
         SubDirectory => {
             TagTable => 'Image::ExifTool::QuickTime::Keys',
             ProcessProc => \&ProcessMebx,
         },
     },
     gpmd => {
-        Name => 'GoPro_gpmd',
+        Name => 'gpmd',
         SubDirectory => { TagTable => 'Image::ExifTool::GoPro::GPMF' },
     },
     fdsc => {
-        Name => 'GoPro_fdsc',
+        Name => 'fdsc',
         Condition => '$$valPt =~ /^GPRO/',
         # (other types of "fdsc" samples aren't yet parsed: /^GP\x00/ and /^GP\x04/)
         SubDirectory => { TagTable => 'Image::ExifTool::GoPro::fdsc' },
     },
     rtmd => {
-        Name => 'Sony_rtmd',
+        Name => 'rtmd',
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::rtmd' },
     },
+    CTMD => { # (Canon Timed MetaData)
+        Name => 'CTMD',
+        SubDirectory => { TagTable => 'Image::ExifTool::Canon::CTMD' },
+    },
+    camm => { # (written by Insta360) - [HandlerType, not MetaFormat]
+        Name => 'camm6',
+        Condition => '$$valPt =~ /^\0\0\x06\0/',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::QuickTime::camm6',
+            ByteOrder => 'Little-Endian',
+        },
+    },
+);
+
+# tags found in 'camm' type 6 timed metadata (ref PH, Insta360)
+%Image::ExifTool::QuickTime::camm6 = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 2 => 'Location' },
+    FIRST_ENTRY => 0,
+    NOTES => q{
+        These tags are extracted from record type 6 of the 'camm' timed metadata of
+        MP4 videos from the Insta360.
+    },
+  # 0x0c - int32u, seen: 3 (GPSMeasureMode?)
+    0x10 => {
+        Name => 'GPSLatitude',
+        Format => 'double',
+        ValueConv => 'Image::ExifTool::GPS::ToDegrees($val, 1)',
+        PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")',
+    },
+    0x18 => {
+        Name => 'GPSLongitude',
+        Format => 'double',
+        ValueConv => 'Image::ExifTool::GPS::ToDegrees($val, 1)',
+        PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "E")',
+    },
+    0x20 => {
+        Name => 'GPSAltitude',
+        Format => 'float',
+        PrintConv => '$_ = sprintf("%.3f", $val); s/\.?0+$//; "$_ m"',
+    },
+  # 0x30 - float (GPSSpeed?)
 );
 
 #------------------------------------------------------------------------------
@@ -163,7 +206,7 @@ sub SaveMetaKeys($$$)
                     $str = '';
                 }
                 $et->VPrint(1, $$et{INDENT}."- Tag '".PrintableTagID($tag)."' ($len bytes)$str\n");
-                HexDump(\$val, undef, Prefix => $$et{INDENT}) if $verbose > 2;
+                $et->VerboseDump(\$val);
             }
         }
         if (defined $tagID and defined $format) {
@@ -198,7 +241,7 @@ sub ProcessSamples($)
 {
     my $et = shift;
     my ($raf, $ee) = @$et{qw(RAF ee)};
-    my ($i, $buff, $pos, %parms, $hdrLen, $hdrFmt, @time, @dur, $oldIndent);
+    my ($i, $buff, $pos, $hdrLen, $hdrFmt, @time, @dur, $oldIndent);
 
     return unless $ee;
     delete $$et{ee};    # use only once
@@ -264,7 +307,6 @@ sub ProcessSamples($)
         $et->VPrint(0,"---- Extract Embedded ----\n");
         $oldIndent = $$et{INDENT};
         $$et{INDENT} = '';
-        $parms{MaxLen} = $verbose == 3 ? 96 : 2048 if $verbose < 5;
     }
     # get required information from avcC box if parsing video data
     if ($type eq 'vide' and $$ee{avcC}) {
@@ -295,8 +337,7 @@ sub ProcessSamples($)
         if ($verbose > 1) {
             my $hdr = $$et{SET_GROUP1} ? "$$et{SET_GROUP1} Type='${type}' Format='${metaFormat}'" : "Type='${type}'";
             $et->VPrint(1, "${hdr}, Sample ".($i+1).' of '.scalar(@$start)." ($size bytes)\n");
-            $parms{Addr} = $$start[$i];
-            HexDump(\$buff, undef, %parms) if $verbose > 2;
+            $et->VerboseDump(\$buff, Addr => $$start[$i]);
         }
         if ($type eq 'text') {
 
@@ -381,6 +422,18 @@ sub ProcessSamples($)
             $yr += $yr >= 70 ? 1900 : 2000;
             $et->HandleTag($tagTablePtr, GPSDateTime =>
                 sprintf('%.4d:%.2d:%.2d %.2d:%.2d:%.2d',$yr,$mon,$day,$hr,$min,$sec));
+
+        } elsif ($$tagTablePtr{$type}) {
+
+            my $tagInfo = $et->GetTagInfo($tagTablePtr, $type, \$buff);
+            if ($tagInfo) {
+                FoundSomething($et, $tagTablePtr, $time[$i], $dur[$i]);
+                $et->HandleTag($tagTablePtr, $type, undef,
+                    DataPt  => \$buff,
+                    Base    => $$start[$i],
+                    TagInfo => $tagInfo,
+                );
+            }
         }
     }
     if ($verbose) {

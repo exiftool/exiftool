@@ -166,6 +166,7 @@ sub WriteQuickTime($$$)
                     HasData  => $$subdir{HasData},  # necessary?
                     Multi    => $$subdir{Multi},    # necessary?
                     OutFile  => $outfile,
+                    InPlace  => 2, # (to write fixed-length XMP if possible)
                 );
                 # pass the header pointer if necessary (for EXIF IFD's
                 # where the Base offset is at the end of the header)

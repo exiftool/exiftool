@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup);
 
-$VERSION = '10.81';
+$VERSION = '10.82';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -91,7 +91,6 @@ sub HexDump($;$%);
 sub DumpTrailer($$);
 sub DumpUnknownTrailer($$);
 sub VerboseInfo($$$%);
-sub VerboseDir($$;$$);
 sub VerboseValue($$$;$);
 sub VPrint($$@);
 sub Rationalize($;$);
@@ -238,6 +237,7 @@ my %createTypes = map { $_ => 1 } qw(XMP ICC MIE VRD DR4 EXIF EXV);
     CIFF => ['CRW',  'Camera Image File Format'],
     COS  => ['COS',  'Capture One Settings'],
     CR2  => ['TIFF', 'Canon RAW 2 format'],
+    CR3  => ['MOV',  'Canon RAW 3 format'],
     CRW  => ['CRW',  'Canon RAW format'],
     CS1  => ['PSD',  'Sinar CaptureShop 1-Shot RAW'],
     DC3  =>  'DICM',
@@ -3300,7 +3300,25 @@ COMPOSITE_TAG:
                     delete $notBuilt{$tag}; # tag can't be built anyway
                 }
                 last unless $subDoc;
-                $doc = 1;   # continue to process the 1st sub-document
+                # don't process sub-documents if there is no chance to build this tag
+                # (can be very time-consuming if there are many docs)
+                if (%$require) {
+                    foreach (keys %$require) {
+                        my $reqTag = $$require{$_};
+                        $reqTag =~ s/.*://;
+                        next COMPOSITE_TAG unless defined $$rawValue{$reqTag};
+                    }
+                    $doc = 1;   # go ahead and process the 1st sub-document
+                } else {
+                    my @try = ref $$tagInfo{SubDoc} ? @{$$tagInfo{SubDoc}} : keys %$desire;
+                    # at least one of the specified desire tags must exist
+                    foreach (@try) {
+                        my $desTag = $$desire{$_} or next;
+                        $desTag =~ s/.*://;
+                        defined $$rawValue{$desTag} and $doc = 1, last;
+                    }
+                    last unless $doc;
+                }
             }
         }
         last unless @deferredTags;
@@ -6977,7 +6995,7 @@ sub ProcessDirectory($$$;$)
         # directories don't overlap if the length is zero
         ($$dirInfo{DirLen} or not defined $$dirInfo{DirLen}))
     {
-        my $addr = $$dirInfo{DirStart} + $$dirInfo{DataPos} + ($$dirInfo{Base}||0);
+        my $addr = $$dirInfo{DirStart} + $$dirInfo{DataPos} + ($$dirInfo{Base}||0) + $$self{BASE};
         if ($$self{PROCESSED}{$addr}) {
             $self->Warn("$dirName pointer references previous $$self{PROCESSED}{$addr} directory");
             # patch for bug in Windows phone 7.5 O/S that writes incorrect InteropIFD pointer
@@ -7614,6 +7632,26 @@ sub VPrint($$@)
         print $out @_;
         print $out "\n" unless $_[-1] =~ /\n$/;
     }
+}
+
+#------------------------------------------------------------------------------
+# Print verbose directory information
+# Inputs: 0) ExifTool object reference, 1) directory name or dirInfo ref
+#         2) number of entries in directory (or 0 if unknown)
+#         3) optional size of directory in bytes
+sub VerboseDir($$;$$)
+{
+    my ($self, $name, $entries, $size) = @_;
+    return unless $$self{OPTIONS}{Verbose};
+    if (ref $name eq 'HASH') {
+        $size = $$name{DirLen} unless $size;
+        $name = $$name{Name} || $$name{DirName};
+    }
+    my $indent = substr($$self{INDENT}, 0, -2);
+    my $out = $$self{OPTIONS}{TextOut};
+    my $str = $entries ? " with $entries entries" : '';
+    $str .= ", $size bytes" if $size;
+    print $out "$indent+ [$name directory$str]\n";
 }
 
 #------------------------------------------------------------------------------

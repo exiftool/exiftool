@@ -14,27 +14,28 @@ supported by ExifTool (r = read, w = write, c = create):
 
   File Types
   ------------+-------------+-------------+-------------+------------
-  3FR   r     | DVB   r/w   | JPEG  r/w   | ODT   r     | RIFF  r
-  3G2   r/w   | DYLIB r     | JSON  r     | OFR   r     | RSRC  r
-  3GP   r/w   | EIP   r     | K25   r     | OGG   r     | RTF   r
-  A     r     | EPS   r/w   | KDC   r     | OGV   r     | RW2   r/w
-  AA    r     | EPUB  r     | KEY   r     | OPUS  r     | RWL   r/w
-  AAX   r/w   | ERF   r/w   | LA    r     | ORF   r/w   | RWZ   r
-  ACR   r     | EXE   r     | LFP   r     | OTF   r     | RM    r
-  AFM   r     | EXIF  r/w/c | LNK   r     | PAC   r     | SEQ   r
-  AI    r/w   | EXR   r     | M2TS  r     | PAGES r     | SO    r
-  AIFF  r     | EXV   r/w/c | M4A/V r/w   | PBM   r/w   | SR2   r/w
-  APE   r     | F4A/V r/w   | MAX   r     | PCD   r     | SRF   r
-  ARW   r/w   | FFF   r/w   | MEF   r/w   | PDB   r     | SRW   r/w
-  ASF   r     | FLA   r     | MIE   r/w/c | PDF   r/w   | SVG   r
-  AVI   r     | FLAC  r     | MIFF  r     | PEF   r/w   | SWF   r
-  AZW   r     | FLIF  r/w   | MKA   r     | PFA   r     | THM   r/w
-  BMP   r     | FLV   r     | MKS   r     | PFB   r     | TIFF  r/w
-  BPG   r     | FPF   r     | MKV   r     | PFM   r     | TORRENT r
-  BTF   r     | FPX   r     | MNG   r/w   | PGF   r     | TTC   r
-  CHM   r     | GIF   r/w   | MOBI  r     | PGM   r/w   | TTF   r
-  COS   r     | GPR   r/w   | MODD  r     | PLIST r     | VCF   r
-  CR2   r/w   | GZ    r     | MOI   r     | PICT  r     | VRD   r/w/c
+  3FR   r     | DV    r     | JP2   r/w   | ODS   r     | RAW   r/w
+  3G2   r/w   | DVB   r/w   | JPEG  r/w   | ODT   r     | RIFF  r
+  3GP   r/w   | DYLIB r     | JSON  r     | OFR   r     | RSRC  r
+  A     r     | EIP   r     | K25   r     | OGG   r     | RTF   r
+  AA    r     | EPS   r/w   | KDC   r     | OGV   r     | RW2   r/w
+  AAX   r/w   | EPUB  r     | KEY   r     | OPUS  r     | RWL   r/w
+  ACR   r     | ERF   r/w   | LA    r     | ORF   r/w   | RWZ   r
+  AFM   r     | EXE   r     | LFP   r     | OTF   r     | RM    r
+  AI    r/w   | EXIF  r/w/c | LNK   r     | PAC   r     | SEQ   r
+  AIFF  r     | EXR   r     | M2TS  r     | PAGES r     | SO    r
+  APE   r     | EXV   r/w/c | M4A/V r/w   | PBM   r/w   | SR2   r/w
+  ARW   r/w   | F4A/V r/w   | MAX   r     | PCD   r     | SRF   r
+  ASF   r     | FFF   r/w   | MEF   r/w   | PDB   r     | SRW   r/w
+  AVI   r     | FLA   r     | MIE   r/w/c | PDF   r/w   | SVG   r
+  AZW   r     | FLAC  r     | MIFF  r     | PEF   r/w   | SWF   r
+  BMP   r     | FLIF  r/w   | MKA   r     | PFA   r     | THM   r/w
+  BPG   r     | FLV   r     | MKS   r     | PFB   r     | TIFF  r/w
+  BTF   r     | FPF   r     | MKV   r     | PFM   r     | TORRENT r
+  CHM   r     | FPX   r     | MNG   r/w   | PGF   r     | TTC   r
+  COS   r     | GIF   r/w   | MOBI  r     | PGM   r/w   | TTF   r
+  CR2   r/w   | GPR   r/w   | MODD  r     | PLIST r     | VCF   r
+  CR3   r/w   | GZ    r     | MOI   r     | PICT  r     | VRD   r/w/c
   CRW   r/w   | HDP   r/w   | MOS   r/w   | PMP   r     | VSD   r
   CS1   r/w   | HDR   r     | MOV   r/w   | PNG   r/w   | WAV   r
   DCM   r     | HEIC  r     | MP3   r     | PPM   r/w   | WDP   r/w
@@ -50,7 +51,6 @@ supported by ExifTool (r = read, w = write, c = create):
   DPX   r     | ITC   r     | NUMBERS r   | RAF   r/w   | XMP   r/w/c
   DR4   r/w/c | J2C   r     | O     r     | RAM   r     | ZIP   r
   DSS   r     | JNG   r/w   | ODP   r     | RAR   r     |
-  DV    r     | JP2   r/w   | ODS   r     | RAW   r/w   |
 
   Meta Information
   ----------------------+----------------------+---------------------
@@ -102,8 +102,8 @@ your home directory, then you would type the following commands in a
 terminal window to extract and run ExifTool:
 
   cd ~/Desktop
-  gzip -dc Image-ExifTool-10.81.tar.gz | tar -xf -
-  cd Image-ExifTool-10.81
+  gzip -dc Image-ExifTool-10.82.tar.gz | tar -xf -
+  cd Image-ExifTool-10.82
   ./exiftool t/images/ExifTool.jpg
 
 Note:  These commands extract meta information from one of the test images. 

@@ -131,8 +131,9 @@ roll, yaw, speed, altitude)</span></span></td></tr>
 <td>XMP
   <br>UUID-PROF
   <br>UUID-Flip
+  <br>PreviewImage
   <br>UUID-Unknown?</td>
-<td class=c>-<br>-<br>-<br>no</td>
+<td class=c>-<br>-<br>-<br>no<br>no</td>
 <td>--&gt; <a href='XMP.html'>XMP Tags</a>
   <br>--&gt; <a href='QuickTime.html#Profile'>QuickTime Profile Tags</a>
   <br>--&gt; <a href='QuickTime.html#Flip'>QuickTime Flip Tags</a></td></tr>
@@ -213,6 +214,7 @@ roll, yaw, speed, altitude)</span></span></td></tr>
   <br>&#39;aax &#39; = Audible Enhanced Audiobook (.AAX)
   <br>&#39;avc1&#39; = MP4 Base w/ AVC ext [ISO 14496-12:2005]
   <br>&#39;caqv&#39; = Casio Digital Camera
+  <br>&#39;crx &#39; = Canon Raw (.CR3)
   <br>&#39;da0a&#39; = DMB MAF w/ MPEG Layer II aud, MOT slides, DLS, JPG/PNG/MNG images
   <br>&#39;da0b&#39; = DMB MAF, extending DA0A, with 3GPP timed text, DID, TVA, REL, IPMP
   <br>&#39;da1a&#39; = DMB MAF audio with ER-BSAC audio, JPG/PNG/MNG images
@@ -366,6 +368,7 @@ roll, yaw, speed, altitude)</span></span></td></tr>
 <td class=c>no</td>
 <td><table class=cols><tr>
   <td>&#39;alis&#39; = Alias Data
+  <br>&#39;camm&#39; = Camera Metadata
   <br>&#39;crsm&#39; = Clock Reference
   <br>&#39;hint&#39; = Hint Track
   <br>&#39;ipsm&#39; = IPMP
@@ -374,9 +377,9 @@ roll, yaw, speed, altitude)</span></span></td></tr>
   <br>&#39;mdta&#39; = Metadata Tags
   <br>&#39;meta&#39; = NRT Metadata
   <br>&#39;mjsm&#39; = MPEG-J
-  <br>&#39;nrtm&#39; = Non-Real Time Metadata
-  <br>&#39;ocsm&#39; = Object Content</td><td>&nbsp;&nbsp;</td>
-  <td>&#39;odsm&#39; = Object Descriptor
+  <br>&#39;nrtm&#39; = Non-Real Time Metadata</td><td>&nbsp;&nbsp;</td>
+  <td>&#39;ocsm&#39; = Object Content
+  <br>&#39;odsm&#39; = Object Descriptor
   <br>&#39;pict&#39; = Picture
   <br>&#39;priv&#39; = Private
   <br>&#39;sdsm&#39; = Scene Description
@@ -5095,43 +5098,48 @@ spherical coordinates left/right degrees, down/up degrees, distance)</span></spa
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td>'CDI1'</td>
+<td>CDI1</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Canon.html#CDI1'>Canon CDI1 Tags</a></td></tr>
+<tr class=b>
 <td>'avcC'</td>
 <td>AVCConfiguration?</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'btrt'</td>
 <td>BitrateInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#Bitrate'>QuickTime Bitrate Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'clap'</td>
 <td>CleanAperture</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#CleanAperture'>QuickTime CleanAperture Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'colr'</td>
 <td>ColorRepresentation</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'fiel'</td>
 <td>VideoFieldOrder</td>
 <td class=c>no</td>
 <td><span class=s>[Value 0]
   <br>1 = Progressive
   <br>2 = 2:1 Interlaced</span></td></tr>
-<tr class=b>
+<tr>
 <td>'gama'</td>
 <td>Gamma</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'pasp'</td>
 <td>PixelAspectRatio</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'st3d'</td>
 <td>Stereoscopic3D</td>
 <td class=c>no</td>
@@ -5139,7 +5147,7 @@ spherical coordinates left/right degrees, down/up degrees, distance)</span></spa
   <br>1 = Stereoscopic Top-Bottom
   <br>2 = Stereoscopic Left-Right
   <br>3 = Stereoscopic Stereo-Custom</span></td></tr>
-<tr>
+<tr class=b>
 <td>'sv3d'</td>
 <td>SphericalVideo</td>
 <td class=c>-</td>
@@ -6830,99 +6838,134 @@ used.</p>
 <td class=c>no</td>
 <td><span class=s><span class=n>(right/up/backward acceleration in units of g)</span></span></td></tr>
 <tr class=b>
+<td>'CTMD'</td>
+<td>CTMD</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Canon.html#CTMD'>Canon CTMD Tags</a></td></tr>
+<tr>
 <td>'GPSAltitude'</td>
 <td>GPSAltitude</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'GPSAltitudeRef'</td>
 <td>GPSAltitudeRef</td>
 <td class=c>no</td>
 <td><span class=s>0 = Above Sea Level
   <br>1 = Below Sea Level</span></td></tr>
-<tr class=b>
+<tr>
 <td>'GPSDateTime'</td>
 <td>GPSDateTime</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'GPSLatitude'</td>
 <td>GPSLatitude</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'GPSLongitude'</td>
 <td>GPSLongitude</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'GPSSpeed'</td>
 <td>GPSSpeed</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'GPSSpeedRef'</td>
 <td>GPSSpeedRef</td>
 <td class=c>no</td>
 <td><span class=s>&#39;K&#39; = km/h
   <br>&#39;M&#39; = mph
   <br>&#39;N&#39; = knots</span></td></tr>
-<tr>
+<tr class=b>
 <td>'GPSTrack'</td>
 <td>GPSTrack</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'GPSTrackRef'</td>
 <td>GPSTrackRef</td>
 <td class=c>no</td>
 <td><span class=s>&#39;M&#39; = Magnetic North
   <br>&#39;T&#39; = True North</span></td></tr>
-<tr>
+<tr class=b>
 <td>'SampleDuration'</td>
 <td>SampleDuration</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'SampleTime'</td>
 <td>SampleTime</td>
 <td class=c>no</td>
 <td><span class=s><span class=n>(sample decoding time)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>'Text'</td>
 <td>Text</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'TimeCode'</td>
 <td>TimeCode</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
+<tr class=b>
+<td>'camm'</td>
+<td>camm6</td>
+<td class=c>-</td>
+<td>--&gt; <a href='QuickTime.html#camm6'>QuickTime camm6 Tags</a></td></tr>
 <tr>
 <td>'fdsc'</td>
-<td>GoPro_fdsc</td>
+<td>fdsc</td>
 <td class=c>-</td>
 <td>--&gt; <a href='GoPro.html#fdsc'>GoPro fdsc Tags</a></td></tr>
 <tr class=b>
 <td>'gpmd'</td>
-<td>GoPro_gpmd</td>
+<td>gpmd</td>
 <td class=c>-</td>
 <td>--&gt; <a href='GoPro.html#GPMF'>GoPro GPMF Tags</a></td></tr>
 <tr>
 <td>'mebx'</td>
-<td>QuickTime_mebx</td>
+<td>mebx</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#Keys'>QuickTime Keys Tags</a></td></tr>
 <tr class=b>
 <td>'rtmd'</td>
-<td>Sony_rtmd</td>
+<td>rtmd</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Sony.html#rtmd'>Sony rtmd Tags</a></td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='camm6'>QuickTime camm6 Tags</a></h2>
+<p>These tags are extracted from record type 6 of the &#39;camm&#39; timed metadata of
+MP4 videos from the Insta360.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='16 = 0x10'>16</td>
+<td>GPSLatitude</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='24 = 0x18'>24</td>
+<td>GPSLongitude</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='32 = 0x20'>32</td>
+<td>GPSAltitude</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Feb 7, 2018</i>
+<br><i>Last revised Mar 1, 2018</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

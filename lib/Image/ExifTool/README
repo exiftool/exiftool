@@ -483,7 +483,9 @@ numerical.
                   this, 'Main:' and 'Doc#:' prefixes are added to all Require'd
                   and Desire'd tag names which don't already start with 'Main:'
                   or 'Doc#:', and the Composite tag is built once for each of
-                  the main document and all sub-documents.
+                  the main document and all sub-documents.  May be a reference
+                  to a list of indices for Desire'd tags, one of which must
+                  exist to generate this tag for sub-documents.
 
                   'SubIFD' - used in writing to determine that the tag specifies
                   an offset to a sub-IFD.  When this flag is set, the Group1

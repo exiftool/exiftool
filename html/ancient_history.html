@@ -13,6 +13,67 @@
 <p><b>Note:</b> This page gives the history of older exiftool versions.  See
 <a href="history.html">history.html</a> for the recent history.</p>
 
+<a name='v10.54'><b>May 26, 2017 - Version 10.54</b></a>
+<ul>
+<li>Added support for Google XMP GImage and GAudio tags
+<li>Added a new Olympus CameraType (thanks LibRaw)
+<li>Added a two new Sony lenses and decode more ILCE-9 tags (thanks Jos Roost)
+<li>Added new values to some Pentax tags (thanks Andras Salamon)
+<li>Added a new Canon LensType
+<li>Added an additional checks to the experimental Validate feature
+<li>Improved user-defined FileTypes feature to provide more flexibility
+<li>Enhanced -ext option to allow specific files extensions to be processed
+    along with supported files
+<li>API Changes:
+    <ul>
+    <li>Added ListJoin option to replace List and ListSep options
+    </ul>
+</ul>
+
+<a name='v10.53'><b>May 17, 2017 - Version 10.53</b></a>
+<ul>
+<li>Added support for "MeSa" Photoshop IRB resource
+<li>Made XMP-GSpherical tags writable
+<li>Improved German translations (thanks Jobi)
+</ul>
+
+<a name='v10.52'><b>May 12, 2017 - Version 10.52</b></a>
+<ul>
+<li>Added some new values to a number of FujiFilm tags and changed some others
+    (thanks Albert Shan)
+<li>Decode a number of new Sony tags for the ILCE-9 (thanks Jos Roost)
+<li>Made SonyISO writable
+<li>Changed behaviour of advanced formatting expression for Shortcut tags so it
+    now applies to the combined value rather than individual constituent values
+<li>Minor changes to some Pentax print conversions
+<li>Fixed problem using new NoDups utility with Shortcut tags
+</ul>
+
+<a name='v10.51'><b>May 2, 2017 - Version 10.51</b></a>
+<ul>
+<li>Added "NoDups" utility function for use in advanced formatting expressions
+<li>Added a new Pentax LensType (thanks JohnK)
+<li>Added some new Pentax DriveMode values (thanks Andras Salamon)
+<li>Enhanced -ver option to report Perl include directories with -v2
+<li>Improved warning message when advanced formatting expression returns undef
+<li>Minor change to a few FujiFilm print conversion strings (thanks Albert Shan)
+<li>Changed behaviour when interpolating Shortcut tags in a string (the values
+    are now separated according to the -sep option setting instead of simply
+    being concatenated)
+<li>Patched to allow file times to be set on systems where futimes is not
+    available
+</ul>
+
+<a name='v10.50'><b>Apr. 20, 2017 - Version 10.50</b></a> <span class=grn>(production release)</span>
+<ul>
+<li>Decode a new Pentax tag (thanks Andras Salamon)
+<li>Improved decoding of Olympus DriveMode (thanks Herbert Kauer)
+<li>Improved handling of errors from utime when setting file times
+<li>Fixed potential hang problem when reading corrupted QuickTime metadata
+<li>Fixed problem deleting duplicate EXIF tags when writing other tags at the
+    same time
+</ul>
+
 <a name='v10.49'><b>Apr. 10, 2017 - Version 10.49</b></a>
 <ul>
 <li>Added "DateFmt" utility function for use in advanced formatting expressions

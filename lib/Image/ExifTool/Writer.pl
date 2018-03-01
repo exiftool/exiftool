@@ -92,7 +92,7 @@ my %dirMap = (
     EXIF => \%exifMap,
 );
 
-# module names and processing functions for each writable file type
+# module names and write functions for each writable file type
 # (defaults to "$type" and "Process$type" if not defined)
 # - types that are handled specially will not appear in this list
 my %writableType = (
@@ -4212,26 +4212,6 @@ sub LastInList($)
         $element = $$element{Next};
     }
     return $element;
-}
-
-#------------------------------------------------------------------------------
-# Print verbose directory information
-# Inputs: 0) ExifTool object reference, 1) directory name or dirInfo ref
-#         2) number of entries in directory (or 0 if unknown)
-#         3) optional size of directory in bytes
-sub VerboseDir($$;$$)
-{
-    my ($self, $name, $entries, $size) = @_;
-    return unless $$self{OPTIONS}{Verbose};
-    if (ref $name eq 'HASH') {
-        $size = $$name{DirLen} unless $size;
-        $name = $$name{Name} || $$name{DirName};
-    }
-    my $indent = substr($$self{INDENT}, 0, -2);
-    my $out = $$self{OPTIONS}{TextOut};
-    my $str = $entries ? " with $entries entries" : '';
-    $str .= ", $size bytes" if $size;
-    print $out "$indent+ [$name directory$str]\n";
 }
 
 #------------------------------------------------------------------------------

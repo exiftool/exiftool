@@ -424,8 +424,9 @@
   <br>ColorData6
   <br>ColorData7
   <br>ColorData8
+  <br>ColorData9
   <br>ColorDataUnknown</td>
-<td class=c>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-</td>
+<td class=c>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-</td>
 <td>--&gt; <a href='Canon.html#ColorData1'>Canon ColorData1 Tags</a>
   <br>--&gt; <a href='Canon.html#ColorData2'>Canon ColorData2 Tags</a>
   <br>--&gt; <a href='Canon.html#ColorData3'>Canon ColorData3 Tags</a>
@@ -434,6 +435,7 @@
   <br>--&gt; <a href='Canon.html#ColorData6'>Canon ColorData6 Tags</a>
   <br>--&gt; <a href='Canon.html#ColorData7'>Canon ColorData7 Tags</a>
   <br>--&gt; <a href='Canon.html#ColorData8'>Canon ColorData8 Tags</a>
+  <br>--&gt; <a href='Canon.html#ColorData9'>Canon ColorData9 Tags</a>
   <br>--&gt; <a href='Canon.html#ColorDataUnknown'>Canon ColorDataUnknown Tags</a></td></tr>
 <tr>
 <td title='0x4002 = 16386'>0x4002</td>
@@ -528,7 +530,8 @@
 <table class=frame><tr><td>
 <table class='inner sep' cellspacing=1>
 <tr class=h><th>Value</th><th>CanonModelID</th></tr>
-<tr><td class=r>0x1010000</td><td>= PowerShot A30</td>
+<tr><td class=r>0x412</td><td>= EOS M50</td>
+</tr><tr><td class=r>0x1010000</td><td>= PowerShot A30</td>
 </tr><tr><td class=r>0x1040000</td><td>= PowerShot S300 / Digital IXUS 300 / IXY Digital 300</td>
 </tr><tr><td class=r>0x1060000</td><td>= PowerShot A20</td>
 </tr><tr><td class=r>0x1080000</td><td>= PowerShot A10</td>
@@ -848,6 +851,8 @@
 </tr><tr><td class=r>0x80000406</td><td>= EOS 6D Mark II</td>
 </tr><tr><td class=r>0x80000408</td><td>= EOS 77D / 9000D</td>
 </tr><tr><td class=r>0x80000417</td><td>= EOS Rebel SL2 / 200D / Kiss X9</td>
+</tr><tr><td class=r>0x80000422</td><td>= EOS Rebel T100 / 4000D / 3000D</td>
+</tr><tr><td class=r>0x80000432</td><td>= EOS Rebel T7 / 2000D / Kiss X90</td>
 </tr></table></td></tr></table></blockquote>
 
 <h2><a name='PictureStyle'>Canon PictureStyle Values</a></h2>
@@ -966,13 +971,14 @@
 <td><table class=cols><tr>
   <td>1 = JPEG
   <br>2 = CRW+THM
-  <br>3 = AVI+THM</td><td>&nbsp;&nbsp;</td>
-  <td>4 = TIF
-  <br>5 = TIF+JPEG
-  <br>6 = CR2</td><td>&nbsp;&nbsp;</td>
-  <td>7 = CR2+JPEG
-  <br>9 = MOV
-  <br>10 = MP4</td></tr></table>
+  <br>3 = AVI+THM
+  <br>4 = TIF</td><td>&nbsp;&nbsp;</td>
+  <td>5 = TIF+JPEG
+  <br>6 = CR2
+  <br>7 = CR2+JPEG
+  <br>9 = MOV</td><td>&nbsp;&nbsp;</td>
+  <td>10 = MP4
+  <br>13 = CR3</td></tr></table>
 </td></tr>
 <tr class=b>
 <td class=r title='10 = 0xa'>10</td>
@@ -8457,7 +8463,6 @@ option is used.</p>
 </table></td></tr></table></blockquote>
 
 <h2><a name='ColorData8'>Canon ColorData8 Tags</a></h2>
-<p>These tags are used by the EOS 5DS, 5DS R, 80D and 1300D.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -8469,7 +8474,7 @@ option is used.</p>
 <td class=c>int16s</td>
 <td><span class=s>12 = 12 (5DS/5DSR)
   <br>13 = 13 (80D)
-  <br>14 = 14 (1300D)
+  <br>14 = 14 (1300D/2000D/4000D)
   <br>15 = 15 (6DmkII/77D/200D/800D)</span></td></tr>
 <tr class=b>
 <td class=r title='63 = 0x3f'>63</td>
@@ -8922,6 +8927,409 @@ option is used.</p>
 <td>LinearityUpperMargin</td>
 <td class=c>int16u</td>
 <td><span class=s><span class=n>(5DS, 5DS R, 77D, 80D and 800D)</span></span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ColorData9'>Canon ColorData9 Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index2</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>ColorDataVersion</td>
+<td class=c>int16s</td>
+<td><span class=s>16 = 16 (M50)</span></td></tr>
+<tr class=b>
+<td class=r title='71 = 0x47'>71</td>
+<td>WB_RGGBLevelsAsShot</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='75 = 0x4b'>75</td>
+<td>ColorTempAsShot</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='76 = 0x4c'>76</td>
+<td>WB_RGGBLevelsAuto</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='80 = 0x50'>80</td>
+<td>ColorTempAuto</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='81 = 0x51'>81</td>
+<td>WB_RGGBLevelsMeasured</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='85 = 0x55'>85</td>
+<td>ColorTempMeasured</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='86 = 0x56'>86</td>
+<td>WB_RGGBLevelsUnknown?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='90 = 0x5a'>90</td>
+<td>ColorTempUnknown?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='91 = 0x5b'>91</td>
+<td>WB_RGGBLevelsUnknown2?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='95 = 0x5f'>95</td>
+<td>ColorTempUnknown2?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='96 = 0x60'>96</td>
+<td>WB_RGGBLevelsUnknown3?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='100 = 0x64'>100</td>
+<td>ColorTempUnknown3?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='101 = 0x65'>101</td>
+<td>WB_RGGBLevelsUnknown4?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='105 = 0x69'>105</td>
+<td>ColorTempUnknown4?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='106 = 0x6a'>106</td>
+<td>WB_RGGBLevelsUnknown5?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='110 = 0x6e'>110</td>
+<td>ColorTempUnknown5?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='111 = 0x6f'>111</td>
+<td>WB_RGGBLevelsUnknown6?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='115 = 0x73'>115</td>
+<td>ColorTempUnknown6?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='116 = 0x74'>116</td>
+<td>WB_RGGBLevelsUnknown7?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='120 = 0x78'>120</td>
+<td>ColorTempUnknown7?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='121 = 0x79'>121</td>
+<td>WB_RGGBLevelsUnknown8?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='125 = 0x7d'>125</td>
+<td>ColorTempUnknown8?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='126 = 0x7e'>126</td>
+<td>WB_RGGBLevelsUnknown9?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='130 = 0x82'>130</td>
+<td>ColorTempUnknown9?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='131 = 0x83'>131</td>
+<td>WB_RGGBLevelsUnknown10?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='135 = 0x87'>135</td>
+<td>ColorTempUnknown10?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='136 = 0x88'>136</td>
+<td>WB_RGGBLevelsDaylight</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='140 = 0x8c'>140</td>
+<td>ColorTempDaylight</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='141 = 0x8d'>141</td>
+<td>WB_RGGBLevelsShade</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='145 = 0x91'>145</td>
+<td>ColorTempShade</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='146 = 0x92'>146</td>
+<td>WB_RGGBLevelsCloudy</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='150 = 0x96'>150</td>
+<td>ColorTempCloudy</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='151 = 0x97'>151</td>
+<td>WB_RGGBLevelsTungsten</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='155 = 0x9b'>155</td>
+<td>ColorTempTungsten</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='156 = 0x9c'>156</td>
+<td>WB_RGGBLevelsFluorescent</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='160 = 0xa0'>160</td>
+<td>ColorTempFluorescent</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='161 = 0xa1'>161</td>
+<td>WB_RGGBLevelsKelvin</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='165 = 0xa5'>165</td>
+<td>ColorTempKelvin</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='166 = 0xa6'>166</td>
+<td>WB_RGGBLevelsFlash</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='170 = 0xaa'>170</td>
+<td>ColorTempFlash</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='171 = 0xab'>171</td>
+<td>WB_RGGBLevelsUnknown11?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='175 = 0xaf'>175</td>
+<td>ColorTempUnknown11?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='176 = 0xb0'>176</td>
+<td>WB_RGGBLevelsUnknown12?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='180 = 0xb4'>180</td>
+<td>ColorTempUnknown12?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='181 = 0xb5'>181</td>
+<td>WB_RGGBLevelsUnknown13?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='185 = 0xb9'>185</td>
+<td>ColorTempUnknown13?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='186 = 0xba'>186</td>
+<td>WB_RGGBLevelsUnknown14?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='190 = 0xbe'>190</td>
+<td>ColorTempUnknown14?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='191 = 0xbf'>191</td>
+<td>WB_RGGBLevelsUnknown15?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='195 = 0xc3'>195</td>
+<td>ColorTempUnknown15?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='196 = 0xc4'>196</td>
+<td>WB_RGGBLevelsUnknown16?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='200 = 0xc8'>200</td>
+<td>ColorTempUnknown16?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='201 = 0xc9'>201</td>
+<td>WB_RGGBLevelsUnknown17?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='205 = 0xcd'>205</td>
+<td>ColorTempUnknown17?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='206 = 0xce'>206</td>
+<td>WB_RGGBLevelsUnknown18?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='210 = 0xd2'>210</td>
+<td>ColorTempUnknown18?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='211 = 0xd3'>211</td>
+<td>WB_RGGBLevelsUnknown19?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='215 = 0xd7'>215</td>
+<td>ColorTempUnknown19?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='216 = 0xd8'>216</td>
+<td>WB_RGGBLevelsUnknown20?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='220 = 0xdc'>220</td>
+<td>ColorTempUnknown20?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='221 = 0xdd'>221</td>
+<td>WB_RGGBLevelsUnknown21?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='225 = 0xe1'>225</td>
+<td>ColorTempUnknown21?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='226 = 0xe2'>226</td>
+<td>WB_RGGBLevelsUnknown22?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='230 = 0xe6'>230</td>
+<td>ColorTempUnknown22?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='231 = 0xe7'>231</td>
+<td>WB_RGGBLevelsUnknown23?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='235 = 0xeb'>235</td>
+<td>ColorTempUnknown23?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='236 = 0xec'>236</td>
+<td>WB_RGGBLevelsUnknown24?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='240 = 0xf0'>240</td>
+<td>ColorTempUnknown24?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='241 = 0xf1'>241</td>
+<td>WB_RGGBLevelsUnknown25?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='245 = 0xf5'>245</td>
+<td>ColorTempUnknown25?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='246 = 0xf6'>246</td>
+<td>WB_RGGBLevelsUnknown26?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='250 = 0xfa'>250</td>
+<td>ColorTempUnknown26?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='251 = 0xfb'>251</td>
+<td>WB_RGGBLevelsUnknown27?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='255 = 0xff'>255</td>
+<td>ColorTempUnknown27?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='256 = 0x100'>256</td>
+<td>WB_RGGBLevelsUnknown28?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='260 = 0x104'>260</td>
+<td>ColorTempUnknown28?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='261 = 0x105'>261</td>
+<td>WB_RGGBLevelsUnknown29?</td>
+<td class=c>int16s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='265 = 0x109'>265</td>
+<td>ColorTempUnknown29?</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='ColorDataUnknown'>Canon ColorDataUnknown Tags</a></h2>
@@ -9394,6 +9802,15 @@ to the one printed on the lens)</span></span></td></tr>
   <br>2 = Auto</span></td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='CDI1'>Canon CDI1 Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr><td colspan=4 class=c><i>[no tags known]</i></td></tr>
+</table></td></tr></table></blockquote>
+
 <h2><a name='CNOP'>Canon CNOP Tags</a></h2>
 <blockquote>
 <table class=frame><tr><td>
@@ -9427,15 +9844,63 @@ SX280.</p>
 <tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
+<td>'CCTP'</td>
+<td>CanonCCTP</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Canon.html#CCTP'>Canon CCTP Tags</a></td></tr>
+<tr class=b>
+<td>'CMT1'</td>
+<td>CMT1</td>
+<td class=c>-</td>
+<td>--&gt; <a href='EXIF.html'>EXIF Tags</a></td></tr>
+<tr>
+<td>'CMT2'</td>
+<td>CMT2</td>
+<td class=c>-</td>
+<td>--&gt; <a href='EXIF.html'>EXIF Tags</a></td></tr>
+<tr class=b>
+<td>'CMT3'</td>
+<td>CMT3</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Canon.html'>Canon Tags</a></td></tr>
+<tr>
+<td>'CMT4'</td>
+<td>CMT4</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Canon.html#UnknownIFD'>Canon UnknownIFD Tags</a></td></tr>
+<tr class=b>
 <td>'CNCV'</td>
 <td>CompressorVersion</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'CNTH'</td>
 <td>CanonCNTH</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Canon.html#CNTH'>Canon CNTH Tags</a></td></tr>
+<tr class=b>
+<td>'THMB'</td>
+<td>ThumbnailImage</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='CCTP'>Canon CCTP Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr><td colspan=4 class=c><i>[no tags known]</i></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='UnknownIFD'>Canon UnknownIFD Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr><td colspan=4 class=c><i>[no tags known]</i></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='Skip'>Canon Skip Tags</a></h2>
@@ -9452,12 +9917,34 @@ SX280.</p>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='CTMD'>Canon CTMD Tags</a></h2>
+<p>Canon Timed MetaData tags found in CR3 images.  The ExtractEmbedded option
+is automatically applied when reading CR3 files to be able to extract this
+information.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td title='0x8769 = 34665'>0x8769</td>
+<td>ExifInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='EXIF.html'>EXIF Tags</a></td></tr>
+<tr class=b>
+<td title='0x927c = 37500'>0x927c</td>
+<td>MakerNoteCanon</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Canon.html'>Canon Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
 <h2><a name='CameraModelID'>Canon CameraModelID Values</a></h2>
 <blockquote>
 <table class=frame><tr><td>
 <table class='inner sep' cellspacing=1>
 <tr class=h><th>Value</th><th>CameraModelID</th></tr>
-<tr><td class=r>0x1010000</td><td>= PowerShot A30</td>
+<tr><td class=r>0x412</td><td>= EOS M50</td>
+</tr><tr><td class=r>0x1010000</td><td>= PowerShot A30</td>
 </tr><tr><td class=r>0x1040000</td><td>= PowerShot S300 / Digital IXUS 300 / IXY Digital 300</td>
 </tr><tr><td class=r>0x1060000</td><td>= PowerShot A20</td>
 </tr><tr><td class=r>0x1080000</td><td>= PowerShot A10</td>
@@ -9777,11 +10264,13 @@ SX280.</p>
 </tr><tr><td class=r>0x80000406</td><td>= EOS 6D Mark II</td>
 </tr><tr><td class=r>0x80000408</td><td>= EOS 77D / 9000D</td>
 </tr><tr><td class=r>0x80000417</td><td>= EOS Rebel SL2 / 200D / Kiss X9</td>
+</tr><tr><td class=r>0x80000422</td><td>= EOS Rebel T100 / 4000D / 3000D</td>
+</tr><tr><td class=r>0x80000432</td><td>= EOS Rebel T7 / 2000D / Kiss X90</td>
 </tr></table></td></tr></table></blockquote>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Feb 26, 2018</i>
+<br><i>Last revised Feb 28, 2018</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

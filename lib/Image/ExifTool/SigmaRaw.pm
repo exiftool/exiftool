@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Sigma;
 
-$VERSION = '1.25';
+$VERSION = '1.26';
 
 sub ProcessX3FHeader($$$);
 sub ProcessX3FDirectory($$$);
@@ -300,12 +300,7 @@ sub ProcessX3FHeader($$$)
         my $verbose = $et->Options('Verbose');
         if ($verbose) {
             $et->VerboseDir('X3F HeaderExt', 32);
-            HexDump($dataPt, undef,
-                MaxLen => $verbose > 3 ? 1024 : 96,
-                Out    => $et->Options('TextOut'),
-                Prefix => $$et{INDENT},
-                Start  => $hdrLen,
-            ) if $verbose > 2;
+            $et->VerboseDump($dataPt, Start => $hdrLen);
         }
         $tagTablePtr = GetTagTable('Image::ExifTool::SigmaRaw::HeaderExt');
         my @tags = unpack("x${hdrLen}C32", $$dataPt);

@@ -1615,10 +1615,10 @@ the existing DateTimeOriginal is shifted back by two hours:
 <pre>exiftool "-datetimeoriginal&lt;filemodifydate" -datetimeoriginal-=2 image.jpg <span class=blk>(WRONG!)</span>
 </pre>
 
-The <code>-globalTimeShift</code> option was created to fill this void -- it
-shifts all date/time tags by the specified amount when reading or copying,
-allowing a shifted date/time value to be copied to another tag.  So this is the
-proper technique for shifting a date/time value when copying:
+The <code>-globalTimeShift</code> option fills this niche -- it shifts all
+date/time tags by the specified amount when reading or copying, allowing a
+shifted date/time value to be copied to another tag.  So this is the proper
+technique for shifting a date/time value when copying:
 
 <pre>exiftool "-datetimeoriginal&lt;filemodifydate" -globaltimeshift -2 image.jpg</pre>
 </blockquote>

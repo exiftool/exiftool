@@ -16,7 +16,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.48';
+$VERSION = '1.49';
 
 sub ProcessID3v2($$$);
 sub ProcessPrivate($$$);
@@ -1037,8 +1037,8 @@ sub ProcessID3v2($$$)
     my $verbose = $et->Options('Verbose');
     my $len;    # frame data length
 
-    $verbose and $et->VerboseDir($tagTablePtr->{GROUPS}->{1}, 0, $size);
-    Image::ExifTool::HexDump($dataPt, $size, Start => $offset) if $verbose > 2;
+    $et->VerboseDir($tagTablePtr->{GROUPS}->{1}, 0, $size);
+    $et->VerboseDump($dataPt, Len => $size, Start => $offset);
 
     for (;;$offset+=$len) {
         my ($id, $flags, $hi);

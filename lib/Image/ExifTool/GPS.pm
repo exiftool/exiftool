@@ -376,7 +376,7 @@ my %coordConv = (
         PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "E")',
     },
     GPSAltitude => {
-        SubDoc => 1,    # generate for all sub-documents
+        SubDoc => [1,3], # generate for sub-documents if Desire 1 or 3 has a chance to exist
         Desire => {
             0 => 'GPS:GPSAltitude',
             1 => 'GPS:GPSAltitudeRef',

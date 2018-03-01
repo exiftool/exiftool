@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Import;
 
-$VERSION = '1.02';
+$VERSION = '1.03';
 
 sub ExtractTags($$$);
 
@@ -135,16 +135,12 @@ sub ProcessLFP($$)
     my ($et, $dirInfo) = @_;
     my $raf = $$dirInfo{RAF};
     my $verbose = $et->Options('Verbose');
-    my ($buff, $id, %dumpParms);
+    my ($buff, $id);
 
     # validate the Lytro file header
     return 0 unless $raf->Read($buff, 16) == 16 and $buff =~ /^\x89LFP\x0d\x0a\x1a\x0a/;
     $et->SetFileType();   # set the FileType tag
     SetByteOrder('MM');
-    if ($verbose > 2) {
-        %dumpParms = ( Out => $$et{OPTIONS}{TextOut} );
-        $dumpParms{MaxLen} = 128 if $verbose < 4;
-    }
     my $tagTablePtr = GetTagTable('Image::ExifTool::Lytro::Main');
     while ($raf->Read($buff, 16) == 16) {
         $buff =~ /^\x89LF/ or $et->Warn('LFP format error'), last;
@@ -159,7 +155,7 @@ sub ProcessLFP($$)
             $raf->Seek($size, 1) or $et->Warn('Seek error in LFP file'), last;
         } else {
             $raf->Read($buff,$size) == $size or $et->Warn('Truncated LFP data'), last;
-            HexDump(\$buff, undef, %dumpParms, Addr=>$raf->Tell()-$size) if $verbose > 2;
+            $et->VerboseDump(\$buff, Addr=>$raf->Tell()-$size);
             if ($buff =~ /^\{\s+"/) { # JSON metadata?
                 pos($buff) = 0;
                 $et->HandleTag($tagTablePtr, 'JSONMetadata', $buff);

@@ -21,7 +21,7 @@ use vars qw($VERSION $AUTOLOAD $lastFetched);
 use Image::ExifTool qw(:DataAccess :Utils);
 require Exporter;
 
-$VERSION = '1.43';
+$VERSION = '1.44';
 
 sub FetchObject($$$$);
 sub ExtractObject($$;$$);
@@ -2052,9 +2052,7 @@ sub ProcessDict($$$$;$$)
         DecodeStream($et, $dict) or last;
         if ($verbose > 2) {
             $et->VPrint(2,"$$et{INDENT}$$et{DIR_NAME} stream data\n");
-            my %parms = ( Prefix => $$et{INDENT} );
-            $parms{MaxLen} = $verbose > 3 ? 1024 : 96 if $verbose < 5;
-            HexDump(\$$dict{_stream}, undef, %parms);
+            $et->VerboseDump(\$$dict{_stream});
         }
         # extract information from stream
         my %dirInfo = (

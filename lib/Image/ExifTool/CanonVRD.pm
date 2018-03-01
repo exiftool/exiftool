@@ -22,7 +22,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Canon;
 
-$VERSION = '1.28';
+$VERSION = '1.29';
 
 sub ProcessCanonVRD($$;$);
 sub WriteCanonVRD($$;$);
@@ -1542,16 +1542,7 @@ sub ProcessEditData($$$)
         if ($verbose > 1 and not $outfile) {
             printf $out "$$et{INDENT}CanonVRD Edit record ($recLen bytes at offset 0x%x)\n",
                    $pos + $dataPos;
-            if ($recNum and $verbose > 2) {
-                my %parms = (
-                    Start  => $pos,
-                    Addr   => $pos + $dataPos,
-                    Out    => $out,
-                    Prefix => $$et{INDENT},
-                );
-                $parms{MaxLen} = $verbose == 3 ? 96 : 2048 if $verbose < 5;
-                HexDump($dataPt, $recLen, %parms);
-            }
+            $et->VerboseDump($dataPt, Len => $recLen, Start => $pos, Addr => $pos + $dataPos) if $recNum;
         }
 
         # our edit information is the 0th record, so don't process the others
@@ -2125,16 +2116,7 @@ sub ProcessCanonVRD($$;$)
         if ($verbose > 1 and not $outfile) {
             printf $out "  CanonVRD block 0x%.8x ($blockLen bytes at offset 0x%x)\n",
                 $blockType, $pos + $$dirInfo{DataPos};
-            if ($verbose > 2) {
-                my %parms = (
-                    Start  => $pos,
-                    Addr   => $pos + $$dirInfo{DataPos},
-                    Out    => $out,
-                    Prefix => $$et{INDENT},
-                );
-                $parms{MaxLen} = $verbose == 3 ? 96 : 2048 if $verbose < 5;
-                HexDump($dataPt, $blockLen, %parms);
-            }
+            $et->VerboseDump($dataPt, Len => $blockLen, Start => $pos, Addr => $pos + $$dirInfo{DataPos});
         }
         my $tagInfo = $$tagTablePtr{$blockType};
         unless ($tagInfo) {

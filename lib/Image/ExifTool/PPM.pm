@@ -16,7 +16,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.08';
+$VERSION = '1.09';
 
 #------------------------------------------------------------------------------
 # Read or write information in a PPM/PGM/PBM image
@@ -114,7 +114,7 @@ sub ProcessPPM($$)
 #
     if ($verbose > 2) {
         print $out "$type header ($len bytes):\n";
-        HexDump(\$buff, $len, Out => $out);
+        $et->VerboseDump(\$buff, Len => $len);
     }
     my $tag;
     foreach $tag (qw{Comment ImageWidth ImageHeight MaxVal}) {

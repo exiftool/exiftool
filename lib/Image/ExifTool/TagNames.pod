@@ -4945,6 +4945,7 @@ boot, not including standby time.
            ColorData6                           Canon ColorData6
            ColorData7                           Canon ColorData7
            ColorData8                           Canon ColorData8
+           ColorData9                           Canon ColorData9
            ColorDataUnknown                     Canon ColorDataUnknown
   0x4002   CRWParam?                            no
   0x4003   ColorInfo                            Canon ColorInfo
@@ -6567,8 +6568,6 @@ These tags are used by the EOS 1DX, 5DmkIII, 6D, 100D, 650D, 700D, M and 7DmkII.
 
 =head3 Canon ColorData8 Tags
 
-These tags are used by the EOS 5DS, 5DS R, 80D and 1300D.
-
   Index2   Tag Name                             Writable
   ------   --------                             --------
       0    ColorDataVersion                     int16s
@@ -6662,6 +6661,90 @@ These tags are used by the EOS 5DS, 5DS R, 80D and 1300D.
     782    NormalWhiteLevel                     int16u
     783    SpecularWhiteLevel                   int16u
     784    LinearityUpperMargin                 int16u
+
+=head3 Canon ColorData9 Tags
+
+  Index2   Tag Name                             Writable
+  ------   --------                             --------
+      0    ColorDataVersion                     int16s
+     71    WB_RGGBLevelsAsShot                  int16s[4]
+     75    ColorTempAsShot                      int16s
+     76    WB_RGGBLevelsAuto                    int16s[4]
+     80    ColorTempAuto                        int16s
+     81    WB_RGGBLevelsMeasured                int16s[4]
+     85    ColorTempMeasured                    int16s
+     86    WB_RGGBLevelsUnknown?                int16s[4]
+     90    ColorTempUnknown?                    int16s
+     91    WB_RGGBLevelsUnknown2?               int16s[4]
+     95    ColorTempUnknown2?                   int16s
+     96    WB_RGGBLevelsUnknown3?               int16s[4]
+    100    ColorTempUnknown3?                   int16s
+    101    WB_RGGBLevelsUnknown4?               int16s[4]
+    105    ColorTempUnknown4?                   int16s
+    106    WB_RGGBLevelsUnknown5?               int16s[4]
+    110    ColorTempUnknown5?                   int16s
+    111    WB_RGGBLevelsUnknown6?               int16s[4]
+    115    ColorTempUnknown6?                   int16s
+    116    WB_RGGBLevelsUnknown7?               int16s[4]
+    120    ColorTempUnknown7?                   int16s
+    121    WB_RGGBLevelsUnknown8?               int16s[4]
+    125    ColorTempUnknown8?                   int16s
+    126    WB_RGGBLevelsUnknown9?               int16s[4]
+    130    ColorTempUnknown9?                   int16s
+    131    WB_RGGBLevelsUnknown10?              int16s[4]
+    135    ColorTempUnknown10?                  int16s
+    136    WB_RGGBLevelsDaylight                int16s[4]
+    140    ColorTempDaylight                    int16s
+    141    WB_RGGBLevelsShade                   int16s[4]
+    145    ColorTempShade                       int16s
+    146    WB_RGGBLevelsCloudy                  int16s[4]
+    150    ColorTempCloudy                      int16s
+    151    WB_RGGBLevelsTungsten                int16s[4]
+    155    ColorTempTungsten                    int16s
+    156    WB_RGGBLevelsFluorescent             int16s[4]
+    160    ColorTempFluorescent                 int16s
+    161    WB_RGGBLevelsKelvin                  int16s[4]
+    165    ColorTempKelvin                      int16s
+    166    WB_RGGBLevelsFlash                   int16s[4]
+    170    ColorTempFlash                       int16s
+    171    WB_RGGBLevelsUnknown11?              int16s[4]
+    175    ColorTempUnknown11?                  int16s
+    176    WB_RGGBLevelsUnknown12?              int16s[4]
+    180    ColorTempUnknown12?                  int16s
+    181    WB_RGGBLevelsUnknown13?              int16s[4]
+    185    ColorTempUnknown13?                  int16s
+    186    WB_RGGBLevelsUnknown14?              int16s[4]
+    190    ColorTempUnknown14?                  int16s
+    191    WB_RGGBLevelsUnknown15?              int16s[4]
+    195    ColorTempUnknown15?                  int16s
+    196    WB_RGGBLevelsUnknown16?              int16s[4]
+    200    ColorTempUnknown16?                  int16s
+    201    WB_RGGBLevelsUnknown17?              int16s[4]
+    205    ColorTempUnknown17?                  int16s
+    206    WB_RGGBLevelsUnknown18?              int16s[4]
+    210    ColorTempUnknown18?                  int16s
+    211    WB_RGGBLevelsUnknown19?              int16s[4]
+    215    ColorTempUnknown19?                  int16s
+    216    WB_RGGBLevelsUnknown20?              int16s[4]
+    220    ColorTempUnknown20?                  int16s
+    221    WB_RGGBLevelsUnknown21?              int16s[4]
+    225    ColorTempUnknown21?                  int16s
+    226    WB_RGGBLevelsUnknown22?              int16s[4]
+    230    ColorTempUnknown22?                  int16s
+    231    WB_RGGBLevelsUnknown23?              int16s[4]
+    235    ColorTempUnknown23?                  int16s
+    236    WB_RGGBLevelsUnknown24?              int16s[4]
+    240    ColorTempUnknown24?                  int16s
+    241    WB_RGGBLevelsUnknown25?              int16s[4]
+    245    ColorTempUnknown25?                  int16s
+    246    WB_RGGBLevelsUnknown26?              int16s[4]
+    250    ColorTempUnknown26?                  int16s
+    251    WB_RGGBLevelsUnknown27?              int16s[4]
+    255    ColorTempUnknown27?                  int16s
+    256    WB_RGGBLevelsUnknown28?              int16s[4]
+    260    ColorTempUnknown28?                  int16s
+    261    WB_RGGBLevelsUnknown29?              int16s[4]
+    265    ColorTempUnknown29?                  int16s
 
 =head3 Canon ColorDataUnknown Tags
 
@@ -6793,6 +6876,12 @@ Information about creative filter settings.
      18    AFStatusViewfinder                   int32s
      19    InitialAFPointInServo                int32s
 
+=head3 Canon CDI1 Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  [no tags known]
+
 =head3 Canon CNOP Tags
 
   Tag ID   Tag Name                             Writable
@@ -6815,8 +6904,26 @@ SX280.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
+  'CCTP'   CanonCCTP                            Canon CCTP
+  'CMT1'   CMT1                                 EXIF
+  'CMT2'   CMT2                                 EXIF
+  'CMT3'   CMT3                                 Canon
+  'CMT4'   CMT4                                 Canon UnknownIFD
   'CNCV'   CompressorVersion                    no
   'CNTH'   CanonCNTH                            Canon CNTH
+  'THMB'   ThumbnailImage                       no
+
+=head3 Canon CCTP Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  [no tags known]
+
+=head3 Canon UnknownIFD Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  [no tags known]
 
 =head3 Canon Skip Tags
 
@@ -6825,6 +6932,17 @@ Information found in the "skip" atom of Canon MOV videos.
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
   'CNDB'   Unknown_CNDB?                        no
+
+=head3 Canon CTMD Tags
+
+Canon Timed MetaData tags found in CR3 images.  The ExtractEmbedded option
+is automatically applied when reading CR3 files to be able to extract this
+information.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  0x8769   ExifInfo                             EXIF
+  0x927c   MakerNoteCanon                       Canon
 
 =head2 CanonCustom Tags
 
@@ -15398,7 +15516,7 @@ ILCE-6300/6500/7RM2/7SM2, ILCA-99M2.
 
 =head3 Sony Tag2010i Tags
 
-Valid for ILCE-7RM3/9, DSC-RX10M4.
+Valid for ILCE-7M3/7RM3/9, DSC-RX10M4.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
@@ -15557,7 +15675,7 @@ substitution cipher, but the deciphered values are listed below.
 
 =head3 Sony Tag9050b Tags
 
-Valid from July 2015 for ILCE-6300/6500/7RM2/7RM3/7SM2/9, ILCA-99M2.
+Valid from July 2015 for ILCE-6300/6500/7M3/7RM2/7RM3/7SM2/9, ILCA-99M2.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
@@ -15623,8 +15741,8 @@ DSC-HX50V, DSC-QX10/QX100.
 =head3 Sony Tag9400c Tags
 
 Valid for DSC-HX60V/HX90V/HX350/HX400V/QX30/RX0/RX1RM2/RX10/RX10M2/RX10M3/
-RX10M4/RX100M3/RX100M4/RX100M5/WX220/WX350/WX500, ILCE-7/7R/7S/7M2/7RM2/
-7RM3/7SM2/9/5000/5100/6000/6300/6500/QX1, ILCA-68/77M2/99M2.
+RX10M4/RX100M3/RX100M4/RX100M5/WX220/WX350/WX500, ILCE-7/7R/7S/7M2/7M3/
+7RM2/7RM3/7SM2/9/5000/5100/6000/6300/6500/QX1, ILCA-68/77M2/99M2.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
@@ -15697,9 +15815,9 @@ Valid for SLT, NEX, ILCE-3000/3500 and several DSC models.
 
 =head3 Sony Tag9405b Tags
 
-Valid for DSC-HX60V/HX350/HX400V/QX30/RX0/RX10/RX10M2/RX10M3/RX10M4/RX100M3/
-RX100M4/RX100M5/WX220/WX350, ILCE-7/7M2/7R/7RM2/7S/7SM2/9/5000/5100/6000/
-6300/6500/QX1, ILCA-68/77M2/99M2.
+Valid for DSC-HX60V/HX350/HX400V/QX30/RX0/RX10/RX10M2/RX10M3/RX10M4/
+RX100M3/RX100M4/RX100M5/WX220/WX350, ILCE-7/7M2/7M3/7R/7RM2/7S/7SM2/9/
+5000/5100/6000/6300/6500/QX1, ILCA-68/77M2/99M2.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
@@ -22362,6 +22480,7 @@ for the official specification.
   'uuid'               XMP                      XMP
                        UUID-PROF                QuickTime Profile
                        UUID-Flip                QuickTime Flip
+                       PreviewImage             no
                        UUID-Unknown?            no
   'wide'               Wide?                    no
 
@@ -22948,6 +23067,7 @@ Child atoms found in "sinf" and/or "pinf" atoms.
      20    YResolution                          no
      25    CompressorName                       no
      41    BitDepth                             no
+  'CDI1'   CDI1                                 Canon CDI1
   'avcC'   AVCConfiguration?                    no
   'btrt'   BitrateInfo                          QuickTime Bitrate
   'clap'   CleanAperture                        QuickTime CleanAperture
@@ -23424,6 +23544,7 @@ used.
   Tag ID               Tag Name                 Writable
   ------               --------                 --------
   'Accelerometer'      Accelerometer            no
+  'CTMD'               CTMD                     Canon CTMD
   'GPSAltitude'        GPSAltitude              no
   'GPSAltitudeRef'     GPSAltitudeRef           no
   'GPSDateTime'        GPSDateTime              no
@@ -23437,10 +23558,22 @@ used.
   'SampleTime'         SampleTime               no
   'Text'               Text                     no
   'TimeCode'           TimeCode                 no
-  'fdsc'               GoPro_fdsc               GoPro fdsc
-  'gpmd'               GoPro_gpmd               GoPro GPMF
-  'mebx'               QuickTime_mebx           QuickTime Keys
-  'rtmd'               Sony_rtmd                Sony rtmd
+  'camm'               camm6                    QuickTime camm6
+  'fdsc'               fdsc                     GoPro fdsc
+  'gpmd'               gpmd                     GoPro GPMF
+  'mebx'               mebx                     QuickTime Keys
+  'rtmd'               rtmd                     Sony rtmd
+
+=head3 QuickTime camm6 Tags
+
+These tags are extracted from record type 6 of the 'camm' timed metadata of
+MP4 videos from the Insta360.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+     16    GPSLatitude                          no
+     24    GPSLongitude                         no
+     32    GPSAltitude                          no
 
 =head2 PLIST Tags
 
@@ -25886,7 +26019,6 @@ WebP animation frame chunk.
   0x0001   CountryCode                          no
   0x0002   LanguageCode                         no
   0x0003   Dialect                              no
-  'Format' int16u                               no
 
 =head3 RIFF Info Tags
 

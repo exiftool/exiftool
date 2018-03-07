@@ -17,12 +17,25 @@ considered development releases, and are not uploaded to <a href="http://search.
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v10.83'><b>Mar. 7, 2018 - Version 10.83</b></a>
+<ul>
+<li>Added read support for Sketch design files
+<li>Added Light LRI files to the list of recognized file types
+<li>Added a new Canon LensType (thanks LibRaw)
+<li>Decode a couple of new Sony tags (thanks Jos Roost)
+<li>Extract JpgFromRaw image from CR3 files
+<li>Improved warning message when attempting to write a tag in a specific group
+    that isn't writable
+<li>Changed group name of JSON tags from "File" to "JSON"
+<li>Fixed some incorrect offsets in -v3 output for CR3 images
+</ul>
+
 <a name='v10.82'><b>Mar. 1, 2018 - Version 10.82</b></a>
 <ul>
 <li>Added support for Canon's new CR3 raw file format
 <li>Added a few new CanonModelID/SonyModelID values (thanks LibRaw)
 <li>Added support for the Sony ILCE-7M3 (thanks Jos Roost)
-<li>Extract timed GPS information from Insta360 MP4 videos with the -ee option
+<li>Decode timed GPS information from Insta360 MP4 videos with the -ee option
 <li>Write XMP before idat in MOV/MP4/CR3 files if possible
 <li>Fixed "'x' outside of string" runtime error when reading some Sony images
 <li>Fixed problem with some hex dumps going to the console when -v3 was combined
@@ -48,7 +61,7 @@ considered development releases, and are not uploaded to <a href="http://search.
 <li>Added preliminary read/write support for Reconyx UltraFire maker notes
 <li>Added a new Sony/Minolta lens (thanks Jos Roost)
 <li>Decode a new PanasonicRaw tag (thanks LibRaw)
-<li>Extract ImageWidth/Height for main image of HEIC file
+<li>Extract ImageWidth/Height for main image of an HEIC file
 <li>Internal changes:
     <ul>
     <li>Changed TimeNow() make ExifTool object optional

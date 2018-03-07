@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup);
 
-$VERSION = '10.82';
+$VERSION = '10.83';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -181,7 +181,7 @@ $defaultLang = 'en';    # default language
                 MPC MKV MXF DV PMP IND PGF ICC ITC FLIR FLIF FPF LFP HTML VRD
                 RTF XCF DSS QTIF FPX PICT ZIP GZIP PLIST RAR BZ2 TAR RWZ EXE EXR
                 HDR CHM LNK WMF AVC DEX DPX RAW Font RSRC M2TS PHP Torrent VCard
-                R3D AA PDB MOI ISO JSON MP3 DICOM PCD);
+                LRI R3D AA PDB MOI ISO JSON MP3 DICOM PCD);
 
 # file types that we can write (edit)
 my @writeTypes = qw(JPEG TIFF GIF CRW MRW ORF RAF RAW PNG MIE PSD XMP PPM EPS
@@ -337,6 +337,7 @@ my %createTypes = map { $_ => 1 } qw(XMP ICC MIE VRD DR4 EXIF EXV);
     LFP  => ['LFP',  'Lytro Light Field Picture'],
     LFR  =>  'LFP', # (Light Field RAW)
     LNK  => ['LNK',  'Windows shortcut'],
+    LRI  => ['LRI',  'Light RAW'],
     M2T  =>  'M2TS',
     M2TS => ['M2TS', 'MPEG-2 Transport Stream'],
     M2V  => ['MPEG', 'MPEG-2 Video'],
@@ -456,6 +457,7 @@ my %createTypes = map { $_ => 1 } qw(XMP ICC MIE VRD DR4 EXIF EXV);
     RWL  => ['TIFF', 'Leica RAW'],
     RWZ  => ['RWZ',  'Rawzor compressed image'],
     SEQ  => ['FLIR', 'FLIR image Sequence'],
+    SKETCH => ['ZIP', 'Sketch design file'],
     SO   => ['EXE',  'Shared Object file'],
     SR2  => ['TIFF', 'Sony RAW Format 2'],
     SRF  => ['TIFF', 'Sony RAW Format'],
@@ -599,6 +601,7 @@ my %fileDescription = (
     KDC  => 'image/x-kodak-kdc',
     LFP  => 'image/x-lytro-lfp', #PH (NC)
     LNK  => 'application/octet-stream',
+    LRI  => 'image/x-light-lri',
     MAX  => 'application/x-3ds',
     M2T  => 'video/mpeg',
     M2TS => 'video/m2ts',
@@ -674,6 +677,7 @@ my %fileDescription = (
     RW2  => 'image/x-panasonic-rw2',
     RWL  => 'image/x-leica-rwl',
     RWZ  => 'image/x-rawzor', #(duplicated in Rawzor.pm)
+    SKETCH => 'application/sketch',
     SR2  => 'image/x-sony-sr2',
     SRF  => 'image/x-sony-srf',
     SRW  => 'image/x-samsung-srw',
@@ -738,6 +742,7 @@ my %moduleName = (
     JP2  => 'Jpeg2000',
     JPEG => '',
     LFP  => 'Lytro',
+    LRI  => 0,
     MOV  => 'QuickTime',
     MKV  => 'Matroska',
     MP3  => 'ID3',
@@ -815,6 +820,7 @@ my %moduleName = (
     JSON => '\s*(\[\s*)?\{\s*"[^"]+"\s*:',
     LFP  => '\x89LFP\x0d\x0a\x1a\x0a',
     LNK  => '.{4}\x01\x14\x02\0{5}\xc0\0{6}\x46',
+    LRI  => 'LELR \0',
     M2TS => '(....)?\x47',
     MIE  => '~[\x10\x18]\x04.0MIE',
     MIFF => 'id=ImageMagick',

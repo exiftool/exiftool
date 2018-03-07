@@ -1088,6 +1088,8 @@ WriteAlso:
                 $verbose = 0;   # (already printed)
             } elsif ($foundMatch) {
                 $err = "Sorry, $pre$tag is not writable";
+            } elsif ($wantGroup and @matchingTags) {
+                $err = "Sorry, $pre$tag doesn't exist or isn't writable";
             } else {
                 $err = "Tag '$pre${tag}' is not defined";
             }

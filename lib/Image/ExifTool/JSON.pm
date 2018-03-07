@@ -14,12 +14,12 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Import;
 
-$VERSION = '1.00';
+$VERSION = '1.01';
 
 sub ProcessTag($$$$%);
 
 %Image::ExifTool::JSON::Main = (
-    GROUPS => { 0 => 'File', 1 => 'File', 2 => 'Other' },
+    GROUPS => { 0 => 'JSON', 1 => 'JSON', 2 => 'Other' },
     NOTES => q{
         No JSON tags have been pre-defined, but ExifTool will read any existing
         tags from basic JSON-formatted files.

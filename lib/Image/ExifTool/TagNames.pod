@@ -14638,6 +14638,8 @@ MakerNotes.
   0x202a   Tag202a                              Sony Tag202a
   0x202c   MeteringMode2                        int16u
   0x202d   ExposureStandardAdjustment           rational64s
+  0x202e   Quality                              int16u[2]
+  0x202f   PixelShiftInfo                       undef
   0x3000   ShotInfo                             Sony ShotInfo
   0x900b   Tag900b                              Sony Tag900b
   0x9050   Tag9050a                             Sony Tag9050a
@@ -23068,6 +23070,7 @@ Child atoms found in "sinf" and/or "pinf" atoms.
      25    CompressorName                       no
      41    BitDepth                             no
   'CDI1'   CDI1                                 Canon CDI1
+  'JPEG'   JPEGInfo?                            no
   'avcC'   AVCConfiguration?                    no
   'btrt'   BitrateInfo                          QuickTime Bitrate
   'clap'   CleanAperture                        QuickTime CleanAperture
@@ -23538,8 +23541,8 @@ Tags used in QTIF QuickTime Image Files.
 
 =head3 QuickTime Stream Tags
 
-Tags extracted from QuickTime movie data when the ExtractEmbedded option is
-used.
+Timed metadata extracted from QuickTime movie data when the ExtractEmbedded
+option is used.
 
   Tag ID               Tag Name                 Writable
   ------               --------                 --------
@@ -23554,6 +23557,7 @@ used.
   'GPSSpeedRef'        GPSSpeedRef              no
   'GPSTrack'           GPSTrack                 no
   'GPSTrackRef'        GPSTrackRef              no
+  'JPEG'               JpgFromRaw               no
   'SampleDuration'     SampleDuration           no
   'SampleTime'         SampleTime               no
   'Text'               Text                     no
@@ -30570,10 +30574,10 @@ The following tags are extracted from ZIP archives.  ExifTool also extracts
 additional meta information from compressed documents inside some ZIP-based
 files such Office Open XML (DOCX, PPTX and XLSX), Open Document (ODB, ODC,
 ODF, ODG, ODI, ODP, ODS and ODT), iWork (KEY, PAGES, NUMBERS), Capture One
-Enhanced Image Package (EIP), Adobe InDesign Markup Language (IDML), and
-Electronic Publication (EPUB).  The ExifTool family 3 groups may be used to
-organize ZIP tags by embedded document number (ie. the exiftool C<-g3>
-option).
+Enhanced Image Package (EIP), Adobe InDesign Markup Language (IDML),
+Electronic Publication (EPUB), and Sketch design files (SKETCH).  The
+ExifTool family 3 groups may be used to organize ZIP tags by embedded
+document number (ie. the exiftool C<-g3> option).
 
   Index2   Tag Name                             Writable
   ------   --------                             --------

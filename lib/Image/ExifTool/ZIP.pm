@@ -19,7 +19,7 @@ use strict;
 use vars qw($VERSION $warnString);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.18';
+$VERSION = '1.19';
 
 sub WarnProc($) { $warnString = $_[0]; }
 
@@ -47,10 +47,10 @@ my %openDocType = (
         additional meta information from compressed documents inside some ZIP-based
         files such Office Open XML (DOCX, PPTX and XLSX), Open Document (ODB, ODC,
         ODF, ODG, ODI, ODP, ODS and ODT), iWork (KEY, PAGES, NUMBERS), Capture One
-        Enhanced Image Package (EIP), Adobe InDesign Markup Language (IDML), and
-        Electronic Publication (EPUB).  The ExifTool family 3 groups may be used to
-        organize ZIP tags by embedded document number (ie. the exiftool C<-g3>
-        option).
+        Enhanced Image Package (EIP), Adobe InDesign Markup Language (IDML),
+        Electronic Publication (EPUB), and Sketch design files (SKETCH).  The
+        ExifTool family 3 groups may be used to organize ZIP tags by embedded
+        document number (ie. the exiftool C<-g3> option).
     },
     2 => 'ZipRequiredVersion',
     3 => {
@@ -553,9 +553,28 @@ sub ProcessZIP($$)
         @members = $zip->members();
         $docNum = 0;
         my $member;
+        # special files to extract
+        my %extract = (
+            'meta.json' => 1,
+            'previews/preview.png' => 'PreviewPNG',
+        );
         foreach $member (@members) {
             $$et{DOC_NUM} = ++$docNum;
             HandleMember($et, $member, $tagTablePtr);
+            my $file = $member->fileName();
+            # extract things from Sketch files
+            if ($extract{$file}) {
+                ($buff, $status) = $zip->contents($member);
+                $status and $et->Warn("Error extracting $file"), next;
+                if ($file eq 'meta.json') {
+                    $et->ExtractInfo(\$buff, { ReEntry => 1 });
+                    if ($$et{VALUE}{App} and $$et{VALUE}{App} =~ /sketch/i) {
+                        $et->OverrideFileType('SKETCH');
+                    }
+                } else {
+                    $et->FoundTag($extract{$file} => $buff);
+                }
+            }
         }
         last;
     }
@@ -635,8 +654,8 @@ This module contains definitions required by Image::ExifTool to extract meta
 information from ZIP, GZIP and RAR archives.  This includes ZIP-based file
 types like Office Open XML (DOCX, PPTX and XLSX), Open Document (ODB, ODC,
 ODF, ODG, ODI, ODP, ODS and ODT), iWork (KEY, PAGES, NUMBERS), Capture One
-Enhanced Image Package (EIP), Adobe InDesign Markup Language (IDML), and
-Electronic Publication (EPUB).
+Enhanced Image Package (EIP), Adobe InDesign Markup Language (IDML),
+Electronic Publication (EPUB), and Sketch design files (SKETCH).
 
 =head1 AUTHOR
 

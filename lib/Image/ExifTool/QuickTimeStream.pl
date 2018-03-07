@@ -48,8 +48,8 @@ my %qtFmt = (
 %Image::ExifTool::QuickTime::Stream = (
     GROUPS => { 2 => 'Location' },
     NOTES => q{
-        Tags extracted from QuickTime movie data when the ExtractEmbedded option is
-        used.
+        Timed metadata extracted from QuickTime movie data when the ExtractEmbedded
+        option is used.
     },
     GPSLatitude  => { PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")' },
     GPSLongitude => { PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "E")' },
@@ -67,7 +67,7 @@ my %qtFmt = (
     SampleDuration=>{ Groups => { 2 => 'Other' }, PrintConv => 'ConvertDuration($val)' },
 #
 # timed metadata decoded based on MetaFormat (format of 'meta' sample description)
-# [or HandlerType if specified]
+# [or HandlerType, or specific 'vide' type if specified]
 #
     mebx => {
         Name => 'mebx',
@@ -101,6 +101,11 @@ my %qtFmt = (
             TagTable => 'Image::ExifTool::QuickTime::camm6',
             ByteOrder => 'Little-Endian',
         },
+    },
+    JPEG => { # (in CR3 images) - [vide HandlerType with JPEG in SampleDescription, not MetaFormat]
+        Name => 'JpgFromRaw',
+        Groups => { 2 => 'Preview' },
+        RawConv => '$self->ValidateImage(\$val,$tag)',
     },
 );
 
@@ -245,6 +250,15 @@ sub ProcessSamples($)
 
     return unless $ee;
     delete $$et{ee};    # use only once
+
+    # only process specific types of video streams
+    my $type = $$et{HandlerType} || '';
+    if ($type eq 'vide') {
+        if    ($$ee{avcC}) { $type = 'avcC' }
+        elsif ($$ee{JPEG}) { $type = 'JPEG' }
+        else { return }
+    }
+
     my ($start, $size) = @$ee{qw(start size)};
 #
 # determine sample start offsets from chunk offsets (stco) and sample-to-chunk table (stsc),
@@ -299,7 +313,6 @@ sub ProcessSamples($)
 #
     my $tagTablePtr = GetTagTable('Image::ExifTool::QuickTime::Stream');
     my $verbose = $et->Options('Verbose');
-    my $type = $$et{HandlerType} || '';
     my $metaFormat = $$et{MetaFormat} || '';
     my $tell = $raf->Tell();
 
@@ -309,7 +322,7 @@ sub ProcessSamples($)
         $$et{INDENT} = '';
     }
     # get required information from avcC box if parsing video data
-    if ($type eq 'vide' and $$ee{avcC}) {
+    if ($type eq 'avcC') {
         $hdrLen = (Get8u(\$$ee{avcC}, 4) & 0x03) + 1;
         $hdrFmt = ($hdrLen == 4 ? 'N' : $hdrLen == 2 ? 'n' : 'C');
         require Image::ExifTool::H264;
@@ -321,7 +334,7 @@ sub ProcessSamples($)
         my $size = $$size[$i];
         next unless $raf->Seek($$start[$i], 0) and $raf->Read($buff, $size) == $size;
 
-        if ($type eq 'vide' and defined $hdrLen) {
+        if ($type eq 'avcC') {
             next if length($buff) <= $hdrLen;
             # scan through all NAL units and send them to ParseH264Video()
             for ($pos=0; ; ) {
@@ -502,6 +515,8 @@ sub ParseTag($$$)
     } elsif ($tag eq 'avcC') {
         # read the AVC compressor configuration
         $$et{ee}{avcC} = $$dataPt if $dataLen >= 7;  # (minimum length is 7)
+    } elsif ($tag eq 'JPEG') {
+        $$et{ee}{JPEG} = $$dataPt;
     } elsif ($tag eq 'gps ' and $dataLen > 8) {
         # decode Novatek 'gps ' box (ref 2)
         my $num = Get32u($dataPt, 4);

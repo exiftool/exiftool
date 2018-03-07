@@ -86,7 +86,7 @@ sub ProcessFilters($$$);
 sub ProcessCTMD($$$);
 sub SwapWords($);
 
-$VERSION = '3.85';
+$VERSION = '3.86';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -412,6 +412,7 @@ $VERSION = '3.85';
     254 => 'Canon EF 100mm f/2.8L Macro IS USM', #42
     255 => 'Sigma 24-105mm f/4 DG OS HSM | A or Other Sigma Lens', #50
     255.1 => 'Sigma 180mm f/2.8 EX DG OS HSM APO Macro', #50
+    368 => 'Sigma 14-24mm f/2.8 DG HSM | A', #IB (A018)
     # Note: LensType 488 (0x1e8) is reported as 232 (0xe8) in 7D CameraSettings
     488 => 'Canon EF-S 15-85mm f/3.5-5.6 IS USM', #PH
     489 => 'Canon EF 70-300mm f/4-5.6L IS USM', #Gerald Kapounek
@@ -477,7 +478,6 @@ $VERSION = '3.85';
 
 # Canon model ID numbers (PH)
 %canonModelID = (
-    0x412 => 'EOS M50', # (in CR3)
     0x1010000 => 'PowerShot A30',
     0x1040000 => 'PowerShot S300 / Digital IXUS 300 / IXY Digital 300',
     0x1060000 => 'PowerShot A20',
@@ -709,6 +709,7 @@ $VERSION = '3.85';
     0x4060000 => 'PowerShot SX620 HS',
     0x4070000 => 'EOS M6',
     0x4100000 => 'PowerShot G9 X Mark II',
+    0x412     => 'EOS M50', # (yes, no "0000")
     0x4150000 => 'PowerShot ELPH 185 / IXUS 185 / IXY 200',
     0x4160000 => 'PowerShot SX430 IS',
     0x4170000 => 'PowerShot SX730 HS',
@@ -9040,7 +9041,7 @@ sub ProcessCTMD($$$)
         $pos + $size > $dirLen and $et->Warn('Truncated CTMD record'), last;
         if ($verbose) {
             $et->VerboseDir("CTMD type $type", undef, $size - 6);
-            $et->VerboseDump($dataPt, Len => $size - 6, Start => $pos + 6);
+            $et->VerboseDump($dataPt, Len=>$size-6, Start=>$pos+6, DataPos=>$$dirInfo{Base});
         }
         # what is the meaning of the next 6 bytes of these records?:
         #   type 1 - 00 00 00 01 00 00
@@ -9059,14 +9060,13 @@ sub ProcessCTMD($$$)
                 my $tag = Get32u($dataPt, $off + 4);
                 $len < 8 and $et->Warn('Bad CTMD structure length'), last;
                 $off + $len > $pos + $size and $et->Warn('Truncated CTMD structure'), last;
-                $$et{BASE} = $$dirInfo{Base} + $off + 8;
                 $et->HandleTag($tagTablePtr, $tag, undef,
-                    DataPt => $dataPt,
-                    Base   => $$dirInfo{Base},
-                    Start  => $off + 8,
-                    Size   => $len - 8,
+                    DataPt  => $dataPt,
+                    Base    => $$dirInfo{Base} + $off + 8, # base for TIFF pointers
+                    DataPos => -($off + 8), # (relative to Base)
+                    Start   => $off + 8,
+                    Size    => $len - 8,
                 );
-                $$et{BASE} = 0;
                 $off += $len;
             }
         }

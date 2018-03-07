@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.75';
+$VERSION = '2.76';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -1347,6 +1347,55 @@ my %meterInfo2b = (
         Writable => 'rational64s',
         PrintConv => '$val ? sprintf("%+.1f",$val) : 0',
         PrintConvInv => '$val',
+    },
+    0x202e => { #JR (7RM3)
+        Name => 'Quality',
+        Writable => 'int16u',
+        Count => 2,
+        PrintConv => {
+            '0 0' => 'n/a',
+            '0 1' => 'Standard JPEG',
+            '0 2' => 'Fine JPEG',
+            '0 3' => 'Extra Fine JPEG',
+            '1 0' => 'RAW',
+            '1 1' => 'RAW + Standard JPEG',
+            '1 2' => 'RAW + Fine JPEG',
+            '1 3' => 'RAW + Extra Fine JPEG',
+        },
+    },
+    0x202f => { #JR (7RM3)
+        Name => 'PixelShiftInfo',
+        Writable => 'undef',
+        # 6 bytes, all 0 for non-PixelShift images
+        # first 4 bytes: GroupID, read as int32u
+        #    the ID displayed by Sony ImageDataConverter appears to be based on the lower 22 bits:
+        #    5 bits, 5 bits, 6 bits, 6 bits
+        # last 2 bytes: ShotNumber: (1 4) to (4 4) are the 4 source images,
+        #                           (0 4) is combined "PixelShifted" image
+        RawConv => q{
+            my ($a,$b,$c) = (Get32u(\$val,0), Get8u(\$val,4), Get8u(\$val,5));
+            sprintf("%.2d%.2d%.2d%.2d %d %d 0x%x",($a>>17)&0x1f,($a>>12)&0x1f,($a>>6)&0x3f,$a&0x3f,$b,$c,$a>>22);
+        },
+        RawConvInv => q{
+            my ($a,$b,$c,$d) = split ' ', $val;
+            my @a = $a =~ /../g;
+            return undef unless @a == 4;
+            return Set32u((hex($d)<<22) | ($a[0]<<17) | ($a[1]<<12) | ($a[2]<<6) | $a[3]) . chr($b) . chr($c);
+        },
+        PrintConv => {
+            '00000000 0 0 0x0' => 'n/a',
+            OTHER => sub {
+                my ($val, $inv) = @_;
+                if ($inv) {
+                    $val =~ s{Composed}{Shot 0/4}i;
+                    $val =~ s{^(?:Group)?\s*(\d+)[, ]+(?:Shot\s*)?(\d+)[/ ](\d+)\s*\(?(\w+)\)?}{$1 $2 $3 $4}i or return undef;
+                } else {
+                    $val =~ s{(\d+) (\d+) (\d+) (\w+)}{Group $1, Shot $2/$3 ($4)} or return undef;
+                    $val =~ s{Shot\s*0+/0*4\b}{Composed}i;
+                }
+                return $val;
+            },
+        },
     },
     # 0x2031 - new for ILCE-9 v2.00 (possible serial number?)
     0x3000 => {

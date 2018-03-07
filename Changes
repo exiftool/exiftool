@@ -7,12 +7,24 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.80. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Mar. 7, 2018 - Version 10.83
+
+  - Added read support for Sketch design files
+  - Added Light LRI files to the list of recognized file types
+  - Added a new Canon LensType (thanks LibRaw)
+  - Decode a couple of new Sony tags (thanks Jos Roost)
+  - Extract JpgFromRaw image from CR3 files
+  - Improved warning message when attempting to write a tag in a specific group
+    that isn't writable
+  - Changed group name of JSON tags from "File" to "JSON"
+  - Fixed some incorrect offsets in -v3 output for CR3 images
+
 Mar. 1, 2018 - Version 10.82
 
   - Added support for Canon's new CR3 raw file format
   - Added a few new CanonModelID/SonyModelID values (thanks LibRaw)
   - Added support for the Sony ILCE-7M3 (thanks Jos Roost)
-  - Extract timed GPS information from Insta360 MP4 videos with the -ee option
+  - Decode timed GPS information from Insta360 MP4 videos with the -ee option
   - Write XMP before idat in MOV/MP4/CR3 files if possible
   - Fixed "'x' outside of string" runtime error when reading some Sony images
   - Fixed problem with some hex dumps going to the console when -v3 was combined
@@ -36,7 +48,7 @@ Feb. 22, 2018 - Version 10.80 (production release)
   - Added preliminary read/write support for Reconyx UltraFire maker notes
   - Added a new Sony/Minolta lens (thanks Jos Roost)
   - Decode a new PanasonicRaw tag (thanks LibRaw)
-  - Extract ImageWidth/Height for main image of HEIC file
+  - Extract ImageWidth/Height for main image of an HEIC file
   - Internal changes:
       - Changed TimeNow() make ExifTool object optional
 

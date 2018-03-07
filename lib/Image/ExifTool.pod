@@ -74,34 +74,34 @@ supported by ExifTool (r = read, w = write, c = create):
   ACR   r     | ERF   r/w   | LA    r     | ORF   r/w   | RWZ   r
   AFM   r     | EXE   r     | LFP   r     | OTF   r     | RM    r
   AI    r/w   | EXIF  r/w/c | LNK   r     | PAC   r     | SEQ   r
-  AIFF  r     | EXR   r     | M2TS  r     | PAGES r     | SO    r
-  APE   r     | EXV   r/w/c | M4A/V r/w   | PBM   r/w   | SR2   r/w
-  ARW   r/w   | F4A/V r/w   | MAX   r     | PCD   r     | SRF   r
-  ASF   r     | FFF   r/w   | MEF   r/w   | PDB   r     | SRW   r/w
-  AVI   r     | FLA   r     | MIE   r/w/c | PDF   r/w   | SVG   r
-  AZW   r     | FLAC  r     | MIFF  r     | PEF   r/w   | SWF   r
-  BMP   r     | FLIF  r/w   | MKA   r     | PFA   r     | THM   r/w
-  BPG   r     | FLV   r     | MKS   r     | PFB   r     | TIFF  r/w
-  BTF   r     | FPF   r     | MKV   r     | PFM   r     | TORRENT r
-  CHM   r     | FPX   r     | MNG   r/w   | PGF   r     | TTC   r
-  COS   r     | GIF   r/w   | MOBI  r     | PGM   r/w   | TTF   r
-  CR2   r/w   | GPR   r/w   | MODD  r     | PLIST r     | VCF   r
-  CR3   r/w   | GZ    r     | MOI   r     | PICT  r     | VRD   r/w/c
-  CRW   r/w   | HDP   r/w   | MOS   r/w   | PMP   r     | VSD   r
-  CS1   r/w   | HDR   r     | MOV   r/w   | PNG   r/w   | WAV   r
-  DCM   r     | HEIC  r     | MP3   r     | PPM   r/w   | WDP   r/w
-  DCP   r/w   | HEIF  r     | MP4   r/w   | PPT   r     | WEBP  r
-  DCR   r     | HTML  r     | MPC   r     | PPTX  r     | WEBM  r
-  DFONT r     | ICC   r/w/c | MPG   r     | PS    r/w   | WMA   r
-  DIVX  r     | ICS   r     | MPO   r/w   | PSB   r/w   | WMV   r
-  DJVU  r     | IDML  r     | MQV   r/w   | PSD   r/w   | WV    r
-  DLL   r     | IIQ   r/w   | MRW   r/w   | PSP   r     | X3F   r/w
-  DNG   r/w   | IND   r/w   | MXF   r     | QTIF  r/w   | XCF   r
-  DOC   r     | INX   r     | NEF   r/w   | R3D   r     | XLS   r
-  DOCX  r     | ISO   r     | NRW   r/w   | RA    r     | XLSX  r
-  DPX   r     | ITC   r     | NUMBERS r   | RAF   r/w   | XMP   r/w/c
-  DR4   r/w/c | J2C   r     | O     r     | RAM   r     | ZIP   r
-  DSS   r     | JNG   r/w   | ODP   r     | RAR   r     |
+  AIFF  r     | EXR   r     | M2TS  r     | PAGES r     | SKETCH r
+  APE   r     | EXV   r/w/c | M4A/V r/w   | PBM   r/w   | SO    r
+  ARW   r/w   | F4A/V r/w   | MAX   r     | PCD   r     | SR2   r/w
+  ASF   r     | FFF   r/w   | MEF   r/w   | PDB   r     | SRF   r
+  AVI   r     | FLA   r     | MIE   r/w/c | PDF   r/w   | SRW   r/w
+  AZW   r     | FLAC  r     | MIFF  r     | PEF   r/w   | SVG   r
+  BMP   r     | FLIF  r/w   | MKA   r     | PFA   r     | SWF   r
+  BPG   r     | FLV   r     | MKS   r     | PFB   r     | THM   r/w
+  BTF   r     | FPF   r     | MKV   r     | PFM   r     | TIFF  r/w
+  CHM   r     | FPX   r     | MNG   r/w   | PGF   r     | TORRENT r
+  COS   r     | GIF   r/w   | MOBI  r     | PGM   r/w   | TTC   r
+  CR2   r/w   | GPR   r/w   | MODD  r     | PLIST r     | TTF   r
+  CR3   r/w   | GZ    r     | MOI   r     | PICT  r     | VCF   r
+  CRW   r/w   | HDP   r/w   | MOS   r/w   | PMP   r     | VRD   r/w/c
+  CS1   r/w   | HDR   r     | MOV   r/w   | PNG   r/w   | VSD   r
+  DCM   r     | HEIC  r     | MP3   r     | PPM   r/w   | WAV   r
+  DCP   r/w   | HEIF  r     | MP4   r/w   | PPT   r     | WDP   r/w
+  DCR   r     | HTML  r     | MPC   r     | PPTX  r     | WEBP  r
+  DFONT r     | ICC   r/w/c | MPG   r     | PS    r/w   | WEBM  r
+  DIVX  r     | ICS   r     | MPO   r/w   | PSB   r/w   | WMA   r
+  DJVU  r     | IDML  r     | MQV   r/w   | PSD   r/w   | WMV   r
+  DLL   r     | IIQ   r/w   | MRW   r/w   | PSP   r     | WV    r
+  DNG   r/w   | IND   r/w   | MXF   r     | QTIF  r/w   | X3F   r/w
+  DOC   r     | INX   r     | NEF   r/w   | R3D   r     | XCF   r
+  DOCX  r     | ISO   r     | NRW   r/w   | RA    r     | XLS   r
+  DPX   r     | ITC   r     | NUMBERS r   | RAF   r/w   | XLSX  r
+  DR4   r/w/c | J2C   r     | O     r     | RAM   r     | XMP   r/w/c
+  DSS   r     | JNG   r/w   | ODP   r     | RAR   r     | ZIP   r
 
   Meta Information
   ----------------------+----------------------+---------------------
@@ -2169,12 +2169,12 @@ AFCP, AIFF, APE, APP0, APP1, APP11, APP12, APP13, APP14, APP15, APP4, APP5,
 APP6, APP8, ASF, Audible, CanonVRD, Composite, DICOM, DNG, DV, DjVu, Ducky,
 EXE, EXIF, ExifTool, FLAC, FLIR, File, Flash, FlashPix, Font, FotoStation,
 GIF, GIMP, GeoTiff, GoPro, H264, HTML, ICC_Profile, ID3, IPTC, ISO, ITC,
-JFIF, JPEG, Jpeg2000, LNK, Leaf, Lytro, M2TS, MIE, MIFF, MNG, MOI, MPC,
-MPEG, MPF, MXF, MakerNotes, Matroska, Meta, Ogg, OpenEXR, Opus, PDF, PICT,
-PLIST, PNG, PSP, Palm, PanasonicRaw, PhotoCD, PhotoMechanic, Photoshop,
-PostScript, PrintIM, QuickTime, RAF, RIFF, RSRC, RTF, Radiance, Rawzor,
-Real, Red, SVG, SigmaRaw, Stim, Theora, Torrent, VCard, Vorbis, XML, XMP,
-ZIP
+JFIF, JPEG, JSON, Jpeg2000, LNK, Leaf, Lytro, M2TS, MIE, MIFF, MNG, MOI,
+MPC, MPEG, MPF, MXF, MakerNotes, Matroska, Meta, Ogg, OpenEXR, Opus, PDF,
+PICT, PLIST, PNG, PSP, Palm, PanasonicRaw, PhotoCD, PhotoMechanic,
+Photoshop, PostScript, PrintIM, QuickTime, RAF, RIFF, RSRC, RTF, Radiance,
+Rawzor, Real, Red, SVG, SigmaRaw, Stim, Theora, Torrent, VCard, Vorbis, XML,
+XMP, ZIP
 
 =item Family 1 (Specific Location):
 
@@ -2187,7 +2187,7 @@ GraphConv, H264, HP, HTC, HTML, HTML-dc, HTML-ncc, HTML-office, HTML-prod,
 HTML-vw96, HTTP-equiv, ICC-chrm, ICC-clrt, ICC-header, ICC-meas, ICC-meta,
 ICC-view, ICC_Profile, ICC_Profile#, ID3, ID3v1, ID3v1_Enh, ID3v2_2,
 ID3v2_3, ID3v2_4, IFD0, IFD1, IPTC, IPTC#, ISO, ITC, InteropIFD, JFIF, JFXX,
-JPEG, JPEG-HDR, JVC, Jpeg2000, KDC_IFD, Kodak, KodakBordersIFD,
+JPEG, JPEG-HDR, JSON, JVC, Jpeg2000, KDC_IFD, Kodak, KodakBordersIFD,
 KodakEffectsIFD, KodakIFD, KyoceraRaw, LNK, Leaf, LeafSubIFD, Leica, Lytro,
 M2TS, MAC, MIE-Audio, MIE-Camera, MIE-Canon, MIE-Doc, MIE-Extender,
 MIE-Flash, MIE-GPS, MIE-Geo, MIE-Image, MIE-Lens, MIE-Main, MIE-MakerNotes,

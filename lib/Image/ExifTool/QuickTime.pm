@@ -42,7 +42,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.12';
+$VERSION = '2.13';
 
 sub FixWrongFormat($);
 sub ProcessMOV($$;$);
@@ -378,8 +378,8 @@ my %eeStd = ( stco => 1, co64 => 1, stsz => 1, stz2 => 1, stsc => 1, stts => 1 )
 
 # boxes for the various handler types that we want to save when ExtractEmbedded is enabled
 my %eeBox = (
-  # (nothing useful found yet in video stream)
-  # vide => { %eeStd, avcC => 1 },
+    # (note: vide is only processed if specific atoms exist in the VideoSampleDesc)
+    vide => { %eeStd, JPEG => 1 }, # (add avcC to parse H264 stream)
     text => { %eeStd },
     meta => { %eeStd },
     camm => { %eeStd }, # (Insta360)
@@ -732,6 +732,12 @@ my %eeBox = (
     avcC => {
         # (see http://thompsonng.blogspot.ca/2010/11/mp4-file-format-part-2.html)
         Name => 'AVCConfiguration',
+        Unknown => 1,
+        Binary => 1,
+    },
+    JPEG => { # (found in CR3 images; used as a flag to identify JpgFromRaw 'vide' stream)
+        Name => 'JPEGInfo',
+        # (4 bytes all zero)
         Unknown => 1,
         Binary => 1,
     },
@@ -7401,11 +7407,12 @@ sub ProcessMOV($$;$)
             }
         }
         # set flag to store additional information for ExtractEmbedded option
-        if ($eeBox{$$et{HandlerType}} and $eeBox{$$et{HandlerType}}{$tag}) {
+        my $handlerType = $$et{HandlerType};
+        if ($eeBox{$handlerType} and $eeBox{$handlerType}{$tag}) {
             if ($ee) {
                 $eeTag = 1;
                 $$et{OPTIONS}{Unknown} = 1; # temporarily enable "Unknown" option
-            } elsif (not $$et{OPTIONS}{Validate}) {
+            } elsif ($handlerType ne 'vide' and not $$et{OPTIONS}{Validate}) {
                 $et->WarnOnce('The ExtractEmbedded option may find more tags in the movie data',1);
             }
         }

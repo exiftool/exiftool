@@ -446,6 +446,11 @@ sub ToDMS($$;$$)
     my ($et, $val, $doPrintConv, $ref) = @_;
     my ($fmt, @fmt, $num, $sign);
 
+    unless (length $val) {
+        # don't convert an empty value
+        return $val if $doPrintConv and $doPrintConv eq 1;  # avoid hiding existing tag when extracting
+        return undef; # avoid writing empty value
+    }
     if ($ref) {
         if ($val < 0) {
             $val = -$val;
@@ -513,7 +518,8 @@ sub ToDegrees($;$)
     my ($val, $doSign) = @_;
     # extract decimal or floating point values out of any other garbage
     my ($d, $m, $s) = ($val =~ /((?:[+-]?)(?=\d|\.\d)\d*(?:\.\d*)?(?:[Ee][+-]\d+)?)/g);
-    my $deg = ($d || 0) + (($m || 0) + ($s || 0)/60) / 60;
+    return '' unless defined $d;
+    my $deg = $d + (($m || 0) + ($s || 0)/60) / 60;
     # make negative if S or W coordinate
     $deg = -$deg if $doSign ? $val =~ /[^A-Z](S|W)$/i : $deg < 0;
     return $deg;

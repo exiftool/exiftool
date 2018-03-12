@@ -14640,6 +14640,7 @@ MakerNotes.
   0x202d   ExposureStandardAdjustment           rational64s
   0x202e   Quality                              int16u[2]
   0x202f   PixelShiftInfo                       undef
+  0x2031   SerialNumber                         string
   0x3000   ShotInfo                             Sony ShotInfo
   0x900b   Tag900b                              Sony Tag900b
   0x9050   Tag9050a                             Sony Tag9050a

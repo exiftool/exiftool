@@ -7816,8 +7816,10 @@ QTLang: foreach $tag (@{$$et{QTLang}}) {
         }
         delete $$et{QTLang};
     }
-    # finally, process our item information
-    HandleItemInfo($et, $raf) if $topLevel;
+    if ($topLevel) {
+        HandleItemInfo($et, $raf);  # process our item information
+        ScanMovieData($et) if $ee;  # brute force scan for metadata embedded in movie data
+    }
     # restore any changed options
     $et->Options($_ => $saveOptions{$_}) foreach keys %saveOptions;
     return 1;

@@ -4520,7 +4520,7 @@ my %tagLookup = (
 	'sequenceshotinterval' => { 355 => 0x224 },
 	'sequencetotalnumber' => { 442 => 'sequenceTotalNumber' },
 	'sequentialshot' => { 355 => 0x20e },
-	'serialnumber' => { 58 => 0xc, 89 => 0x180b, 111 => [0xa431,0xfde9], 124 => 0xfa04, 126 => 0xfa00, 128 => 0xc354, 129 => 0xfa19, 138 => 0x0, 141 => 'SerialNumber', 202 => [0xa0,0x1d], 266 => 0x101, 270 => [0x404,0x101a], 282 => 0x303, 288 => 0x3103, 320 => 0x229, 329 => 0x102, 330 => 0x407, 341 => 0x15, 342 => 0x4b, 346 => 0x5, 356 => 0x2, 425 => 'SerialNumber', 434 => 'BodySerialNumber' },
+	'serialnumber' => { 58 => 0xc, 89 => 0x180b, 111 => [0xa431,0xfde9], 124 => 0xfa04, 126 => 0xfa00, 128 => 0xc354, 129 => 0xfa19, 138 => 0x0, 141 => 'SerialNumber', 202 => [0xa0,0x1d], 266 => 0x101, 270 => [0x404,0x101a], 282 => 0x303, 288 => 0x3103, 320 => 0x229, 329 => 0x102, 330 => 0x407, 341 => 0x15, 342 => 0x4b, 346 => 0x5, 356 => 0x2, 376 => 0x2031, 425 => 'SerialNumber', 434 => 'BodySerialNumber' },
 	'serialnumberformat' => { 58 => 0x15, 89 => 0x183b },
 	'series' => { 439 => 'Series' },
 	'seriesdatetime' => { 411 => 'SeriesDateTime' },

@@ -8181,7 +8181,8 @@ my %filterConv = (
             Start => '12',
         },
     },
-    # CTBO - 84 bytes (CR3 files)
+    # CTBO - (CR3 files) int32u. entry count N, N x (int32u. index, int64u. offset, int64u. size)
+    #        index 1=XMP, 2=PRVW, 3=mdat
     CMT1 => { # IFD0 (CR3 files)
         SubDirectory => {
             TagTable => 'Image::ExifTool::Exif::Main',
@@ -8218,10 +8219,10 @@ my %filterConv = (
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
 );
 
-# Canon CCTP atoms (ref PH)
+# Canon CCTP atoms (ref PH, CR3 files)
 %Image::ExifTool::Canon::CCTP = (
     GROUPS => { 0 => 'MakerNotes', 1 => 'Canon', 2 => 'Video' },
-    # CCDT - 12 bytes
+    # CCDT - int32u[3]: 0. 0, 1. decoder type?, 2. 0, 3. index
 );
 
 # 'CDI1' atom information (ref PH, CR3 files)

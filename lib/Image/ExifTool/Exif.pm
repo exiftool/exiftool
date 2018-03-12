@@ -4430,7 +4430,7 @@ my %subSecConv = (
             0 => 'GPSLatitude',
             1 => 'GPSLongitude',
         },
-        ValueConv => '"$val[0] $val[1]"',
+        ValueConv => 'length($val[0]) or length($val[1]) ? "$val[0] $val[1]" : undef',
         PrintConv => '"$prt[0], $prt[1]"',
     },
     LensID => {

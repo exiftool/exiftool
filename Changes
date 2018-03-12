@@ -7,6 +7,14 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.80. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Mar. 12, 2018 - Version 10.84
+
+  - Decode GPS from MOV videos of more dashcam models with -ee option
+  - Decode a new Sony tag (thanks Jos Roost)
+  - Convert GPS speeds extracted from MOV videos with the -ee option to km/h
+  - Avoid converting empty GPS coordinates to 0.000000
+  - Fixed some bugs extracting Novatek GPS from MP4 videos
+
 Mar. 7, 2018 - Version 10.83
 
   - Added read support for Sketch design files
@@ -45,7 +53,7 @@ Feb. 26, 2018 - Version 10.81
 
 Feb. 22, 2018 - Version 10.80 (production release)
 
-  - Added preliminary read/write support for Reconyx UltraFire maker notes
+  - Added read/write support for Reconyx UltraFire maker notes
   - Added a new Sony/Minolta lens (thanks Jos Roost)
   - Decode a new PanasonicRaw tag (thanks LibRaw)
   - Extract ImageWidth/Height for main image of an HEIC file

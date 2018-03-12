@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.76';
+$VERSION = '2.77';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -1397,7 +1397,12 @@ my %meterInfo2b = (
             },
         },
     },
-    # 0x2031 - new for ILCE-9 v2.00 (possible serial number?)
+    0x2031 => { #JR (new for ILCE-9 v2.00)
+        Name => 'SerialNumber',
+        Writable => 'string',
+        ValueConv => '$val=~s/(\d{2})(\d{2})(\d{2})(\d{2})/$4$3$2$1/; $val=~s/^0//; $val', # (NC)
+        ValueConvInv => '$val="0$val" if length($val)==7; $val=~s/(\d{2})(\d{2})(\d{2})(\d{2})/$4$3$2$1/; $val',
+    },
     0x3000 => {
         Name => 'ShotInfo',
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::ShotInfo' },

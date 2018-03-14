@@ -86,7 +86,7 @@ sub ProcessFilters($$$);
 sub ProcessCTMD($$$);
 sub SwapWords($);
 
-$VERSION = '3.86';
+$VERSION = '3.87';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -7632,6 +7632,7 @@ my %ciMaxFocal = (
     FIRST_ENTRY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     DATAMEMBER => [ 0 ],
+    IS_SUBDIR => [ 0x10a ],
     0x00 => {
         Name => 'ColorDataVersion',
         DataMember => 'ColorDataVersion',
@@ -7718,6 +7719,31 @@ my %ciMaxFocal = (
     0x104=> { Name => 'ColorTempUnknown28', Unknown => 1 },
     0x105=> { Name => 'WB_RGGBLevelsUnknown29',  Format => 'int16s[4]', Unknown => 1 }, 
     0x109=> { Name => 'ColorTempUnknown29', Unknown => 1 }, 
+    0x10a => { #IB
+        Name => 'ColorCalib',
+        Format => 'undef[120]',
+        Unknown => 1,
+        SubDirectory => { TagTable => 'Image::ExifTool::Canon::ColorCalib' }
+    },
+    0x149 => { #IB
+        Name => 'PerChannelBlackLevel',
+        Format => 'int16u[4]',
+        Notes => '1300D',
+    },
+    # 0x318 - PerChannelBlackLevel again (ref IB)
+    0x31c => { #IB
+        Name => 'NormalWhiteLevel',
+        Format => 'int16u',
+        RawConv => '$val || undef',
+    },
+    0x31d => { #IB
+        Name => 'SpecularWhiteLevel',
+        Format => 'int16u',
+    },
+    0x31e => { #IB
+        Name => 'LinearityUpperMargin',
+        Format => 'int16u',
+    },
 );
 
 # Unknown color data (MakerNotes tag 0x4001)

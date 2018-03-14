@@ -7,6 +7,17 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.80. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Mar. 14, 2018 - Version 10.85
+
+  - Decode GPSTrack from MOV videos of more dashcam models
+  - Decode a few new CanonVRD tags for DPP 4.8.20
+  - Decode a new Sony tag (thanks Jos Roost)
+  - Decode a few more Canon tags (thanks LibRaw)
+  - Improved processing speed when using the -ee option on some video files
+  - Fixed incorrect names for a couple of CanonVRD HSL tags
+  - Fixed problem where UTF-8 validation missed some invalid sequences
+  - Fixed bug introduced in 10.84 with GPSPosition when -n option is used
+
 Mar. 12, 2018 - Version 10.84
 
   - Decode GPS from MOV videos of more dashcam models with -ee option

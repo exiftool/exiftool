@@ -53,7 +53,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '3.98';
+$VERSION = '3.99';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -4430,7 +4430,8 @@ my %subSecConv = (
             0 => 'GPSLatitude',
             1 => 'GPSLongitude',
         },
-        ValueConv => 'length($val[0]) or length($val[1]) ? "$val[0] $val[1]" : undef',
+        Priority => 0,
+        ValueConv => '(length($val[0]) or length($val[1])) ? "$val[0] $val[1]" : undef',
         PrintConv => '"$prt[0], $prt[1]"',
     },
     LensID => {

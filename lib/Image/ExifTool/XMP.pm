@@ -48,7 +48,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.10';
+$VERSION = '3.11';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -2401,7 +2401,17 @@ sub IsUTF8($)
             # were required in the UTF-8 character
             $rtnVal = 2;
         }
-        return -1 unless $$strPt =~ /\G[\x80-\xbf]{$n}/g;
+        return -1 unless $$strPt =~ /\G([\x80-\xbf]{$n})/g;
+        # the following is ref https://www.cl.cam.ac.uk/%7Emgk25/ucs/utf8_check.c
+        if ($n == 2) {
+            return -1 if ($ch == 0xe0 and (ord($1) & 0xe0) == 0x80) or
+                         ($ch == 0xed and (ord($1) & 0xe0) == 0xa0) or
+                         ($ch == 0xef and ord($1) == 0xbf and
+                            (ord(substr $1, 1) & 0xfe) == 0xbe);
+        } else {
+            return -1 if ($ch == 0xf0 and (ord($1) & 0xf0) == 0x80) or
+                         ($ch == 0xf4 and ord($1) > 0x8f) or $ch > 0xf4;
+        }
         last unless $$strPt =~ /([\x80-\xff])/g;
     }
     return $rtnVal;
@@ -2424,7 +2434,18 @@ sub FixUTF8($;$)
         # (see comments in IsUTF8() above)
         if ($ch >= 0xc2 and $ch < 0xf8) {
             my $n = $ch < 0xe0 ? 1 : ($ch < 0xf0 ? 2 : 3);
-            next if $$strPt =~ /\G[\x80-\xbf]{$n}/g;
+            if ($$strPt =~ /\G([\x80-\xbf]{$n})/g) {
+                next if $n == 1;
+                if ($n == 2) {
+                    next unless ($ch == 0xe0 and (ord($1) & 0xe0) == 0x80) or
+                                ($ch == 0xed and (ord($1) & 0xe0) == 0xa0) or
+                                ($ch == 0xef and ord($1) == 0xbf and
+                                    (ord(substr $1, 1) & 0xfe) == 0xbe);
+                } else {
+                    next unless ($ch == 0xf0 and (ord($1) & 0xf0) == 0x80) or
+                                ($ch == 0xf4 and ord($1) > 0x8f) or $ch > 0xf4;
+                }
+            }
         }
         # replace bad character
         $bad = '?' unless defined $bad;

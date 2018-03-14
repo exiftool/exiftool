@@ -427,6 +427,7 @@ sub ProcessSamples($)
 
             # decode Novatek GPS data (ref 2)
             next unless $buff =~ /^....freeGPS /s and length $buff >= 92;
+            # (see comments in ScanMovieData() for structure details)
             my ($hr,$min,$sec,$yr,$mon,$day,$stat,$latRef,$lonRef,$lat,$lon,$spd,$trk) =
                 unpack('x48V6a1a1a1x1V4', $buff);
             # ignore invalid fixes
@@ -591,7 +592,7 @@ sub ProcessMebx($$$)
 }
 
 #------------------------------------------------------------------------------
-# Scan movie data for metadata if not found already
+# Scan movie data for "freeGPS" metadata if not found already (ref PH)
 # Inputs: 0) ExifTool ref
 sub ScanMovieData($)
 {
@@ -600,25 +601,27 @@ sub ScanMovieData($)
     my $raf = $$et{RAF} or return;
     my $dataPos = $$et{VALUE}{MovieDataOffset} or return;
     my $dataLen = $$et{VALUE}{MovieDataSize} or return;
-    my $dataEnd = $dataPos + $dataLen;
     $raf->Seek($dataPos, 0) or return;
-    my $buf2 = '';
-    my $recentRecPos = 0;
     my @then = (0) x 6;
-    my ($tagTablePtr, $oldByteOrder, $verbose);
+    my ($pos, $recentRecPos, $buf2) = (0, 0, '');
+    my ($tagTablePtr, $oldByteOrder, $verbose, $buff);
 
-    # loop 'mdat' movie data looking for GPS information
+    # loop through 'mdat' movie data looking for GPS information
     for (;;) {
-        last if $dataPos + $gpsBlockSize > $dataEnd;
-        my $buff;
+        last if $pos + $gpsBlockSize > $dataLen;
         last unless $raf->Read($buff, $gpsBlockSize);
         $buff = $buf2 . $buff if length $buf2;
         last if length $buff < $gpsBlockSize;
         # look for "freeGPS " block
+        # (always found on an absolute 0x8000-byte boundary in all of
+        #  my samples, but allow for any alignment when searching)
         if ($buff !~ /\0\0\x80\0freeGPS /g) {
-            $buf2 = substr($buff, -16, 16);
-            $dataPos += length($buff) - 16;
-            next;
+            $buf2 = substr($buff,-12);
+            $pos += length($buff)-12;
+            # in all of my samples the first freeGPS block is within 2 MB of the start
+            # of the mdat, so limit the scan to the first 20 MB to be fast and safe
+            next if $tagTablePtr or $pos < 20e6;
+            last;
         } elsif (not $tagTablePtr) {
             # initialize variables for extracting metadata from this block
             $tagTablePtr = GetTagTable('Image::ExifTool::QuickTime::Stream');
@@ -637,9 +640,9 @@ sub ScanMovieData($)
         }
         if ($verbose) {
             $et->VerboseDir('GPS', undef, $gpsBlockSize);
-            $et->VerboseDump(\$buff, Start => $gpsPos, DataPos => $dataPos);
+            $et->VerboseDump(\$buff, Start => $gpsPos, DataPos => $pos + $dataPos);
         }
-        # Loop through records in the ATC-type GPS block until we find the most recent one(s).
+        # Loop through records in the ATC-type GPS block until we find the most recent.
         # If we have alread found one, then we only need to check the first record
         # (in case the buffer wrapped around), and the record after the position of
         # the last record we found, because the others will be old.  Odd, but this
@@ -649,13 +652,16 @@ sub ScanMovieData($)
         # the possibility of missing blocks and multiple new records in a single
         # block, but I have never seen this.  Note that there may be some earlier
         # GPS records at the end of the first block that we will miss decoding, but
-        # these should (I believe) be before the start of the video. - PH
+        # these should (I believe) be before the start of the video
         my ($recPos, $lastRecPos, $foundNew);
-REC:    for ($recPos = 0x30; $recPos + 52 < $gpsBlockSize; $recPos += 52) {
+ATCRec: for ($recPos = 0x30; $recPos + 52 < $gpsBlockSize; $recPos += 52) {
 
-            # identify one GPS record type using "ATC" string
+            # identify one type of GPS record using "ATC" string
             unless (substr($buff, $recPos + $gpsPos + 0x15, 3) eq 'ATC') {
-                # check for another GPS record type in this format:
+                my ($yr, $mon, $day, $hr, $min, $sec);
+                my ($lat, $latRef, $lon, $lonRef, $spd, $trk);
+                # check for other known GPS record types
+                # Type 2:
                 # 0x30 - int32u hour
                 # 0x34 - int32u minute
                 # 0x38 - int32u second
@@ -665,26 +671,18 @@ REC:    for ($recPos = 0x30; $recPos + 52 < $gpsBlockSize; $recPos += 52) {
                 # 0x50 - double longitude (DDMM.MMMMMM)
                 # 0x58 - int32u longitude ref ('E' or 'W')
                 # 0x60 - double speed (knots)
-                # 0x68 - double direction (deg)
+                # 0x68 - double heading (deg)
                 # 0x70 - int32u year - 2000
                 # 0x74 - int32u month
                 # 0x78 - int32u day
-                my ($yr, $mon, $day, $hr, $min, $sec);
-                my ($lat, $latRef, $lon, $lonRef, $spd, $trk, $stat);
-                ($hr,$min,$sec,$stat,$yr,$mon,$day) = unpack('x'.($gpsPos+0x30).'V4x48V3', $buff);
-                if ($stat==0x41 and $mon>=0 and $mon<=12 and
-                            $day>=1 and $day<=31 and $hr<25 and $min<60 and $sec<60)
-                {
-                    $yr += 2000 if $yr < 2000;
+                if ($buff =~ /^.{$gpsPos}.{60}A\0.{10}([NS])\0.{14}([EW])\0/s) {
+                    ($latRef, $lonRef) = ($1, $2);
+                    ($hr,$min,$sec,$yr,$mon,$day) = unpack('x'.($gpsPos+0x30).'V3x52V3', $buff);
                     $lat = GetDouble(\$buff, $gpsPos + 0x40);
                     $lon = GetDouble(\$buff, $gpsPos + 0x50);
-                    $spd = GetDouble(\$buff, $gpsPos + 0x60); # (knots)
+                    $spd = GetDouble(\$buff, $gpsPos + 0x60);
                     $trk = GetDouble(\$buff, $gpsPos + 0x68);
-                    $latRef = substr($buff, $gpsPos + 0x48, 1);
-                    $lonRef = substr($buff, $gpsPos + 0x58, 1);
-                    goto FoundGPS;
-                }
-                # also look for Novatek GPS (in case it wasn't decoded via 'gps ' atom)
+                # Type 3 (Novatek GPS): (in case it wasn't decoded via 'gps ' atom)
                 # 0x30 - int32u hour
                 # 0x34 - int32u minute
                 # 0x38 - int32u second
@@ -698,16 +696,20 @@ REC:    for ($recPos = 0x30; $recPos + 52 < $gpsBlockSize; $recPos += 52) {
                 # 0x4c - float  latitude  (DDMM.MMMMMM)
                 # 0x50 - float  longitude (DDMM.MMMMMM)
                 # 0x54 - float  speed (knots)
-                # 0x58 - float  direction (deg)
-                ($hr,$min,$sec,$yr,$mon,$day,$stat,$latRef,$lonRef,$lat,$lon,$spd,$trk) =
-                    unpack('x'.($gpsPos+0x30).'V6a1a1a1x1V4', $buff);
-                if ($stat eq 'A' and ($latRef eq 'N' or $latRef eq 'S') and ($lonRef eq 'E' or $lonRef eq 'W')) {
-                    ($lat,$lon,$spd,$trk) = unpack 'f*', pack 'L*', $lat, $lon, $spd, $trk;
-                    $yr += $yr >= 70 ? 1900 : 2000;
+                # 0x58 - float  heading (deg)
+                } elsif ($buff =~ /^.{$gpsPos}.{72}A([NS])([EW])/s) {
+                    ($latRef, $lonRef) = ($1, $2);
+                    ($hr,$min,$sec,$yr,$mon,$day) = unpack('x'.($gpsPos+0x30).'V6', $buff);
+                    $lat = GetFloat(\$buff, $gpsPos + 0x4c);
+                    $lon = GetFloat(\$buff, $gpsPos + 0x50);
+                    $spd = GetFloat(\$buff, $gpsPos + 0x54);
+                    $trk = GetFloat(\$buff, $gpsPos + 0x58);
                 } else {
-                    last;
+                    last;   # not a recognized or valid freeGPS block
                 }
-FoundGPS:       $$et{DOC_NUM} = ++$$et{DOC_COUNT};
+                last if $mon < 1 or $mon > 12;  # quick sanity check
+                $$et{DOC_NUM} = ++$$et{DOC_COUNT};
+                $yr += 2000 if $yr < 2000;
                 my $time = sprintf('%.4d:%.2d:%.2d %.2d:%.2d:%.2dZ', $yr, $mon, $day, $hr, $min, $sec);
                 # convert from DDMM.MMMMMM to DD.DDDDDD format
                 my $deg = int($lat / 100);
@@ -737,39 +739,39 @@ FoundGPS:       $$et{DOC_NUM} = ++$$et{DOC_COUNT};
             for ($i=0; $i<@dateMax; ++$i) {
                 next if $now[$i] <= $dateMax[$i];
                 $et->WarnOnce('Invalid GPS date/time');
-                next REC;   # ignore this record
+                next ATCRec;    # ignore this record
             }
             # look for next record in temporal sequence
             foreach $i (3..5, 0..2) {
                 if ($now[$i] < $then[$i]) {
-                    last REC if $foundNew;
+                    last ATCRec if $foundNew;
                     last;
                 }
                 next if $now[$i] == $then[$i];
                 # we found a more recent record -- extract it and remember its location
                 if ($verbose) {
                     $et->VPrint(2, "  Encrypted GPS record:\n");
-                    $et->VerboseDump(\$a, DataPos => $dataPos + $gpsPos + $recPos);
+                    $et->VerboseDump(\$a, DataPos => $pos + $dataPos + $gpsPos + $recPos);
                     $et->VPrint(0, "  Decrypted GPS record:\n");
                     $et->VerboseDump(\$b);
-                    my @v = unpack 'H8VVC4V!CA3V!CA3Vv!vV!vCCCCH4', $b;
+                    my @v = unpack 'H8VVC4V!CA3V!CA3VvvV!vCCCCH4', $b;
                     $et->VPrint(1, "  Unpacked: @v\n");
                     # values unpacked above:
                     #  0) 0x00 4 bytes - bytes 1 and 2 increment like counters
-                    #  1) 0x04 4 bytes - int32u?  Unknown
-                    #  2) 0x08 4 bytes - int32u?  Some sort of counter?
+                    #  1) 0x04 4 bytes - int32u? Unknown
+                    #  2) 0x08 4 bytes - int32u? Some sort of counter?
                     #  3) 0x0c 1 byte  - seen values of 0,1,2 - GPS status maybe?
                     #  4) 0x0d 1 byte  - hour minus 1
-                    #  5) 0x0e 1 byte  - minutes
-                    #  6) 0x0f 1 byte  - seconds
+                    #  5) 0x0e 1 byte  - minute
+                    #  6) 0x0f 1 byte  - second
                     #  7) 0x10 4 bytes - int32s latitude * 1e7
                     #  8) 0x14 1 byte  - always 0 (used for decryption)
                     #  9) 0x15 3 bytes - always "ATC"
                     # 10) 0x18 4 bytes - int32s longitude * 1e7
                     # 11) 0x1c 1 byte  - always 0 (used for decryption)
                     # 12) 0x1d 3 bytes - always "001"
-                    # 13) 0x20 4 bytes - int32s speed in m/s * 100
-                    # 14) 0x24 2 bytes - int16s? elevation in m * 1000 ??
+                    # 13) 0x20 4 bytes - int32s speed * 100 (m/s)
+                    # 14) 0x24 2 bytes - int16u heading * 100 (-180 to 180 deg)
                     # 15) 0x26 2 bytes - always zero
                     # 16) 0x28 4 bytes - int32s something * 1000 ?
                     # 17) 0x2c 2 bytes - int16u year
@@ -781,12 +783,16 @@ FoundGPS:       $$et{DOC_NUM} = ++$$et{DOC_COUNT};
                 }
                 @then = @now;
                 $$et{DOC_NUM} = ++$$et{DOC_COUNT};
+                my $trk = Get16s(\$b, 0x24) / 100;
+                $trk += 360 if $trk < 0;
                 my $time = sprintf('%.4d:%.2d:%.2d %.2d:%.2d:%.2dZ', @now[3..5, 0..2]);
                 $et->HandleTag($tagTablePtr, GPSDateTime  => $time);
                 $et->HandleTag($tagTablePtr, GPSLatitude  => Get32s(\$b, 0x10) / 1e7);
                 $et->HandleTag($tagTablePtr, GPSLongitude => Get32s(\$b, 0x18) / 1e7);
                 $et->HandleTag($tagTablePtr, GPSSpeed     => Get32s(\$b, 0x20) / 100 * $mpsToKph);
                 $et->HandleTag($tagTablePtr, GPSSpeedRef  => 'K');
+                $et->HandleTag($tagTablePtr, GPSTrack     => $trk);
+                $et->HandleTag($tagTablePtr, GPSTrackRef  => 'T');
                 $lastRecPos = $recPos;
                 $foundNew = 1;
                 # don't skip to location of previous recent record in ring buffer
@@ -798,7 +804,7 @@ FoundGPS:       $$et{DOC_NUM} = ++$$et{DOC_COUNT};
             $recPos = $recentRecPos if $recentRecPos and $recPos < $recentRecPos;
         }
         $recentRecPos = $lastRecPos;
-        $dataPos += $gpsPos + $gpsBlockSize;
+        $pos += $gpsPos + $gpsBlockSize;
         $buf2 = substr($buff, $gpsPos + $gpsBlockSize);
     }
     if ($tagTablePtr) {

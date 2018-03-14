@@ -6745,6 +6745,11 @@ These tags are used by the EOS 1DX, 5DmkIII, 6D, 100D, 650D, 700D, M and 7DmkII.
     260    ColorTempUnknown28?                  int16s
     261    WB_RGGBLevelsUnknown29?              int16s[4]
     265    ColorTempUnknown29?                  int16s
+    266    ColorCalib?                          Canon ColorCalib
+    329    PerChannelBlackLevel                 int16u[4]
+    796    NormalWhiteLevel                     int16u
+    797    SpecularWhiteLevel                   int16u
+    798    LinearityUpperMargin                 int16u
 
 =head3 Canon ColorDataUnknown Tags
 
@@ -7615,6 +7620,8 @@ below by a decimal appended to the tag ID (.0, .1 or .2).
   0x20500.0    AutoLightingOptimizerOn          yes
   0x20600      LuminanceNoiseReduction          yes
   0x20601      ChrominanceNoiseReduction        yes
+  0x20670      ColorMoireReduction              yes
+  0x20670.0    ColorMoireReductionOn            yes
   0x20701      ShootingDistance                 yes
   0x20702      PeripheralIllumination           yes
   0x20702.0    PeripheralIlluminationOn         yes
@@ -7628,13 +7635,14 @@ below by a decimal appended to the tag ID (.0, .1 or .2).
   0x20707      ChromaticAberrationRed           yes
   0x20708      ChromaticAberrationBlue          yes
   0x20709      DistortionEffect                 yes
+  0x2070b      DiffractionCorrectionOn          yes
   0x20900      ColorHue                         yes
   0x20901      SaturationAdj                    yes
   0x20910      RedHSL                           yes
   0x20911      OrangeHSL                        yes
-  0x20912      GreenHSL                         yes
-  0x20913      AquaHSL                          yes
-  0x20914      BlueHSL                          yes
+  0x20912      YellowHSL                        yes
+  0x20913      GreenHSL                         yes
+  0x20914      AquaHSL                          yes
   0x20915      BlueHSL                          yes
   0x20916      PurpleHSL                        yes
   0x20917      MagentaHSL                       yes
@@ -14636,6 +14644,7 @@ MakerNotes.
   0x2028   VariableLowPassFilter                int16u[2]
   0x2029   RAWFileType                          int16u
   0x202a   Tag202a                              Sony Tag202a
+  0x202b   PrioritySetInAWB                     int8u
   0x202c   MeteringMode2                        int16u
   0x202d   ExposureStandardAdjustment           rational64s
   0x202e   Quality                              int16u[2]

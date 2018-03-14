@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.77';
+$VERSION = '2.78';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -1323,7 +1323,15 @@ my %meterInfo2b = (
         Condition => '$$valPt =~ /^\x01/',
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag202a' },
     },
-    # 0x202b - int8u  -  0, 1, 2    seen for ILCA-99M2, ILCE-6500/9, DSC-RX100M5
+    0x202b => { #JR (ILCA-99M2, ILCE-6500/7M3/7RM3/9, DSC-RX10M4/RX100M5 and newer)
+        Name => 'PrioritySetInAWB',
+        Writable => 'int8u',
+        PrintConv => {
+            0 => 'Standard',
+            1 => 'Ambience',
+            2 => 'White',
+        },
+    },
     0x202c => { #JR
         Name => 'MeteringMode2',
         Writable => 'int16u',

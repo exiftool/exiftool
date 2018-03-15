@@ -8,13 +8,15 @@
 <body>
 <h2 class=top>QuickTime Tags</h2>
 <p>The QuickTime format is used for many different types of audio, video and
-image files (most commonly, MOV and MP4 videos).  Exiftool extracts standard
-meta information a variety of audio, video and image parameters, as well as
-proprietary information written by many camera models.  Tags with a question
-mark after their name are not extracted unless the Unknown option is set.</p>
+image files (most notably, MOV/MP4 videos and HEIC/CR3 images).  Exiftool
+extracts standard meta information a variety of audio, video and image
+parameters, as well as proprietary information written by many camera
+models.  Tags with a question mark after their name are not extracted unless
+the Unknown option is set.</p>
 
-<p>ExifTool has the ability to write/create XMP, and edit some date/time tags
-in QuickTime-format files.</p>
+<p>ExifTool currently has a very limited ability to write metadata in
+QuickTime-format videos.  It can edit/create/delete any XMP tags, but may
+only be used to edit certain date/time tags in native QuickTime metadata.</p>
 
 <p>According to the specification, many QuickTime date/time tags should be
 stored as UTC.  Unfortunately, digital cameras often store local time values
@@ -5633,36 +5635,41 @@ multi-language user data tags found, even if they don&#39;t exist in this table.
 <td><span class=s>1 = Normal
   <br>2 = Palindromic</span></td></tr>
 <tr>
+<td>'Lvlm'</td>
+<td>LevelMeter?</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>'MMA0'</td>
 <td>MinoltaMMA0</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Minolta.html#MMA'>Minolta MMA Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'MMA1'</td>
 <td>MinoltaMMA1</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Minolta.html#MMA'>Minolta MMA Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'MVTG'</td>
 <td>FujiFilmMVTG</td>
 <td class=c>-</td>
 <td>--&gt; <a href='EXIF.html'>EXIF Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'NCDT'</td>
 <td>NikonNCDT</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Nikon.html#NCDT'>Nikon NCDT Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'PANA'</td>
 <td>PanasonicPANA</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Panasonic.html#PANA'>Panasonic PANA Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'PENT'</td>
 <td>PentaxPENT</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Pentax.html#PENT'>Pentax PENT Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'PXMN'</td>
 <td>MakerNotePentax5b
   <br>MakerNotePentax5c
@@ -5670,29 +5677,34 @@ multi-language user data tags found, even if they don&#39;t exist in this table.
 <td class=c>-<br>-<br>no</td>
 <td>--&gt; <a href='Pentax.html'>Pentax Tags</a>
   <br>--&gt; <a href='Pentax.html'>Pentax Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'PXTH'</td>
 <td>PentaxPreview</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Pentax.html#PXTH'>Pentax PXTH Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'QVMI'</td>
 <td>CasioQVMI</td>
 <td class=c>-</td>
 <td>--&gt; <a href='EXIF.html'>EXIF Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'RMKN'</td>
 <td>RicohRMKN</td>
 <td class=c>-</td>
 <td>--&gt; <a href='EXIF.html'>EXIF Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'RTHU'</td>
 <td>PreviewImage</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'SDLN'</td>
 <td>PlayMode</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'SNum'</td>
+<td>SerialNumber</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -5746,153 +5758,173 @@ multi-language user data tags found, even if they don&#39;t exist in this table.
 <td class=c>-</td>
 <td>--&gt; <a href='Microsoft.html#Xtra'>Microsoft Xtra Tags</a></td></tr>
 <tr class=b>
+<td>'_cx_'</td>
+<td>CX?</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'_cy_'</td>
+<td>CY?</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'_yaw'</td>
+<td>Yaw</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>'albm'</td>
 <td>Album</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'albr'</td>
 <td>AlbumArtist</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'angl'</td>
 <td>CameraAngle</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'apmd'</td>
 <td>ApertureMode</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'auth'</td>
 <td>Author</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'ccid'</td>
 <td>ContentID</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'cdis'</td>
 <td>ContentDistributorID</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'chpl'</td>
 <td>ChapterList</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'clfn'</td>
 <td>ClipFileName</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'clid'</td>
 <td>ClipID</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'clsf'</td>
 <td>Classification</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'cmid'</td>
 <td>CameraID</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'cmnm'</td>
 <td>Model</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'coll'</td>
 <td>CollectionName</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'cprt'</td>
 <td>Copyright</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'cver'</td>
 <td>CodeVersion</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'cvru'</td>
 <td>CoverURI</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'date'</td>
 <td>DateTimeOriginal</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'dscp'</td>
 <td>Description</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'gnre'</td>
 <td>Genre</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'hinf'</td>
 <td>HintTrackInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#HintTrackInfo'>QuickTime HintTrackInfo Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'hinv'</td>
 <td>HintVersion</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'hnti'</td>
 <td>HintInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#HintInfo'>QuickTime HintInfo Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'htcb'</td>
 <td>HTCBinary</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#HTCBinary'>QuickTime HTCBinary Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'icnu'</td>
 <td>IconURI</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'infu'</td>
 <td>InfoURL</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'kgtt'</td>
 <td>TrackType</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'kywd'</td>
 <td>Keywords</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'loci'</td>
 <td>LocationInformation</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'lrcu'</td>
 <td>LyricsURI</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'lvlm'</td>
+<td>LevelMeter?</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
@@ -5921,13 +5953,33 @@ multi-language user data tags found, even if they don&#39;t exist in this table.
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td>'pose'</td>
+<td>pose</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Kodak.html#pose'>Kodak pose Tags</a></td></tr>
+<tr class=b>
+<td>'ptch'</td>
+<td>Pitch</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>'ptv '</td>
 <td>PrintToVideo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#Video'>QuickTime Video Tags</a></td></tr>
 <tr class=b>
+<td>'rads'</td>
+<td>Rads?</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>'reel'</td>
 <td>ReelName</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'roll'</td>
+<td>Roll</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -6848,16 +6900,15 @@ option is used.</p>
 <td class=c>-</td>
 <td>--&gt; <a href='Canon.html#CTMD'>Canon CTMD Tags</a></td></tr>
 <tr>
+<td>'FrameNumber'</td>
+<td>FrameNumber</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>'GPSAltitude'</td>
 <td>GPSAltitude</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
-<td>'GPSAltitudeRef'</td>
-<td>GPSAltitudeRef</td>
-<td class=c>no</td>
-<td><span class=s>0 = Above Sea Level
-  <br>1 = Below Sea Level</span></td></tr>
 <tr>
 <td>'GPSDateTime'</td>
 <td>GPSDateTime</td>
@@ -6975,7 +7026,7 @@ MP4 videos from the Insta360.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Mar 5, 2018</i>
+<br><i>Last revised Mar 15, 2018</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

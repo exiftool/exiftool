@@ -6399,7 +6399,7 @@ These tags are used by the 1DmkIII, 1DSmkIII, 1DmkIV, 5DmkII, 7D, 40D, 50D,
 
 =head3 Canon ColorData5 Tags
 
-These tags are used by the PowerShot G10.
+These tags are used by the PowerShot G10 and other models.
 
   Index2   Tag Name                             Writable
   ------   --------                             --------
@@ -6910,21 +6910,15 @@ SX280.
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
   'CCTP'   CanonCCTP                            Canon CCTP
-  'CMT1'   CMT1                                 EXIF
-  'CMT2'   CMT2                                 EXIF
-  'CMT3'   CMT3                                 Canon
-  'CMT4'   CMT4                                 Canon UnknownIFD
+  'CMT1'   IFD0                                 EXIF
+  'CMT2'   ExifIFD                              EXIF
+  'CMT3'   MakerNoteCanon                       Canon
+  'CMT4'   GPSInfo                              GPS
   'CNCV'   CompressorVersion                    no
   'CNTH'   CanonCNTH                            Canon CNTH
   'THMB'   ThumbnailImage                       no
 
 =head3 Canon CCTP Tags
-
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  [no tags known]
-
-=head3 Canon UnknownIFD Tags
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
@@ -6946,7 +6940,7 @@ information.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
-  0x8769   ExifInfo                             EXIF
+  0x8769   ExifIFD                              EXIF
   0x927c   MakerNoteCanon                       Canon
 
 =head2 CanonCustom Tags
@@ -8928,11 +8922,19 @@ on my nerves.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
+  0x0104   FirmwareVersion                      no
   0x0203   PictureEffect                        no
   0x0207   KodakModel                           no
   0x0300   KodakMake                            no
   0x0308   LensSerialNumber                     no
   0x0309   LensModel                            no
+  0x030d   LevelMeter?                          no
+  0x0311   Pitch                                no
+  0x0312   Yaw                                  no
+  0x0313   Roll                                 no
+  0x0314   CX?                                  no
+  0x0315   CY?                                  no
+  0x0316   Rads?                                no
 
 =head3 Kodak Unknown Tags
 
@@ -9096,6 +9098,16 @@ such as the P880.
      82    FNumber                              no
      90    ExposureCompensation                 no
     112    FocalLength                          no
+
+=head3 Kodak pose Tags
+
+Streamed orientation information from the PixPro 4KVR360, extracted as
+sub-documents when the Duplicates option is used.
+
+  Tag ID               Tag Name                 Writable
+  ------               --------                 --------
+  'Accelerometer'      Accelerometer            no
+  'AngularVelocity'    AngularVelocity          no
 
 =head2 Leaf Tags
 
@@ -15537,6 +15549,7 @@ Valid for ILCE-7M3/7RM3/9, DSC-RX10M4.
   0x0204   ReleaseMode3                         int8u
   0x0208   ReleaseMode2                         int8u
   0x0210   SelfTimer                            int8u
+  0x0211   FlashMode                            int8u
   0x0217   StopsAboveBaseISO                    int16u
   0x0219   BrightnessValue                      int16u
   0x021b   DynamicRangeOptimizer                int8u
@@ -22447,13 +22460,15 @@ Frame rate information stored by some Canon video cameras.
 =head2 QuickTime Tags
 
 The QuickTime format is used for many different types of audio, video and
-image files (most commonly, MOV and MP4 videos).  Exiftool extracts standard
-meta information a variety of audio, video and image parameters, as well as
-proprietary information written by many camera models.  Tags with a question
-mark after their name are not extracted unless the Unknown option is set.
+image files (most notably, MOV/MP4 videos and HEIC/CR3 images).  Exiftool
+extracts standard meta information a variety of audio, video and image
+parameters, as well as proprietary information written by many camera
+models.  Tags with a question mark after their name are not extracted unless
+the Unknown option is set.
 
-ExifTool has the ability to write/create XMP, and edit some date/time tags
-in QuickTime-format files.
+ExifTool currently has a very limited ability to write metadata in
+QuickTime-format videos.  It can edit/create/delete any XMP tags, but may
+only be used to edit certain date/time tags in native QuickTime metadata.
 
 According to the specification, many QuickTime date/time tags should be
 stored as UTC.  Unfortunately, digital cameras often store local time values
@@ -23248,6 +23263,7 @@ multi-language user data tags found, even if they don't exist in this table.
   'LEIC'       LeicaLEIC                        Panasonic PANA
   'LENS'       LensSerialNumber                 no
   'LOOP'       LoopStyle                        no
+  'Lvlm'       LevelMeter?                      no
   'MMA0'       MinoltaMMA0                      Minolta MMA
   'MMA1'       MinoltaMMA1                      Minolta MMA
   'MVTG'       FujiFilmMVTG                     EXIF
@@ -23262,6 +23278,7 @@ multi-language user data tags found, even if they don't exist in this table.
   'RMKN'       RicohRMKN                        EXIF
   'RTHU'       PreviewImage                     no
   'SDLN'       PlayMode                         no
+  'SNum'       SerialNumber                     no
   'SelO'       PlaySelection                    no
   'TAGS'       FujiFilmTags                     FujiFilm MOV
                KodakTags                        Kodak MOV
@@ -23280,6 +23297,9 @@ multi-language user data tags found, even if they don't exist in this table.
   'WLOC'       WindowLocation                   no
   'XMP_'       XMP                              XMP
   'Xtra'       MicrosoftXtra                    Microsoft Xtra
+  '_cx_'       CX?                              no
+  '_cy_'       CY?                              no
+  '_yaw'       Yaw                              no
   'albm'       Album                            no
   'albr'       AlbumArtist                      no
   'angl'       CameraAngle                      no
@@ -23310,13 +23330,18 @@ multi-language user data tags found, even if they don't exist in this table.
   'kywd'       Keywords                         no
   'loci'       LocationInformation              no
   'lrcu'       LyricsURI                        no
+  'lvlm'       LevelMeter?                      no
   'manu'       Make                             no
   'meta'       Meta                             QuickTime Meta
   'modl'       Model                            no
   'name'       Name                             no
   'perf'       Performer                        no
+  'pose'       pose                             Kodak pose
+  'ptch'       Pitch                            no
   'ptv '       PrintToVideo                     QuickTime Video
+  'rads'       Rads?                            no
   'reel'       ReelName                         no
+  'roll'       Roll                             no
   'rtng'       Rating                           no
   'scen'       Scene                            no
   'scrn'       OlympusPreview                   Olympus scrn
@@ -23558,8 +23583,8 @@ option is used.
   ------               --------                 --------
   'Accelerometer'      Accelerometer            no
   'CTMD'               CTMD                     Canon CTMD
+  'FrameNumber'        FrameNumber              no
   'GPSAltitude'        GPSAltitude              no
-  'GPSAltitudeRef'     GPSAltitudeRef           no
   'GPSDateTime'        GPSDateTime              no
   'GPSLatitude'        GPSLatitude              no
   'GPSLongitude'       GPSLongitude             no
@@ -25983,6 +26008,8 @@ sub-documents, but the Duration is calculated for the full video.
   'LIST_hydt'          PentaxData               Pentax AVI
   'LIST_ncdt'          NikonData                Nikon AVI
   'LIST_pntx'          PentaxData2              Pentax AVI
+  'SGLT'               BikeBroAccel             QuickTime Stream
+  'SLLT'               BikeBroLocation          QuickTime Stream
   'VP8 '               VP8Bitstream             RIFF VP8
   'VP8L'               VP8L                     RIFF VP8L
   'VP8X'               VP8X                     RIFF VP8X

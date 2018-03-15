@@ -294,7 +294,7 @@ sub ParsePID($$$$$)
         if ($$et{OPTIONS}{ExtractEmbedded}) {
             $more = 1;
         } elsif (not $$et{OPTIONS}{Validate}) {
-            $et->WarnOnce('The ExtractEmbedded option may find more tags in the video data',1);
+            $et->WarnOnce('The ExtractEmbedded option may find more tags in the video data',3);
         }
     } elsif ($type == 0x81 or $type == 0x87 or $type == 0x91) {
         # AC-3 audio

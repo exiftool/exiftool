@@ -29,9 +29,11 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.46';
+$VERSION = '1.47';
 
 sub ConvertTimecode($);
+sub ProcessSGLT($$$);
+sub ProcessSLLT($$$);
 
 # recognized RIFF variants
 my %riffType = (
@@ -517,6 +519,20 @@ my %code2charset = (
     ALPH => { #14 (WebP alpha)
         Name => 'ALPH',
         SubDirectory => { TagTable => 'Image::ExifTool::RIFF::ALPH' },
+    },
+    SGLT => { #PH (BikeBro)
+        Name => 'BikeBroAccel',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::QuickTime::Stream',
+            ProcessProc => \&ProcessSGLT,
+        },
+    },
+    SLLT => { #PH (BikeBro)
+        Name => 'BikeBroLocation',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::QuickTime::Stream',
+            ProcessProc => \&ProcessSLLT,
+        },
     },
 );
 
@@ -1490,6 +1506,76 @@ sub ProcessChunks($$$)
         ++$len if $len & 0x01;  # must account for padding if odd number of bytes
         $start += $len;
     }
+    return 1;
+}
+
+#------------------------------------------------------------------------------
+# Process BikeBro SGLT chunk (accelerometer data) (ref PH)
+# Inputs: 0) ExifTool ref, 1) dirInfo ref, 2) tag table ref
+# Returns: 1 on success
+sub ProcessSGLT($$$)
+{
+    my ($et, $dirInfo, $tagTablePtr) = @_;
+    my $dataPt = $$dirInfo{DataPt};
+    my $dataLen = length $$dataPt;
+    my $ee = $et->Options('ExtractEmbedded');
+    my $pos;
+    # example accelerometer record:
+    # 0           1  2  3           4  5           6  7
+    # 00 00 00 24 02 00 00 01 17 04 00 00 00 00 00 00 00 00 9b 02
+    # frame------ ?? Xs X---------- Ys Y---------- Zs Z----------
+    SetByteOrder('MM');
+    for ($pos=0; $pos<=$dataLen-20; $pos+=20) {
+        $$et{DOC_NUM} = ++$$et{DOC_COUNT};
+        my $buff = substr($$dataPt, $pos);
+        my @a = unpack('NCCNCNCN', $buff);
+        my @acc = ($a[3]*($a[2]?-1:1)/1e5, $a[5]*($a[4]?-1:1)/1e5, $a[7]*($a[6]?-1:1)/1e5);
+        $et->HandleTag($tagTablePtr, FrameNumber   => $a[0]);
+        $et->HandleTag($tagTablePtr, Accelerometer => "@acc");
+        unless ($ee) {
+            $et->Warn('Use ExtractEmbedded option to extract all accelerometer data', 3);
+            last;
+        }
+    }
+    $$et{DOC_NUM} = 0;
+    return 0;
+}
+
+#------------------------------------------------------------------------------
+# Process BikeBro SLLT chunk (GPS information) (ref PH)
+# Inputs: 0) ExifTool ref, 1) dirInfo ref, 2) tag table ref
+# Returns: 1 on success
+sub ProcessSLLT($$$)
+{
+    my ($et, $dirInfo, $tagTablePtr) = @_;
+    my $dataPt = $$dirInfo{DataPt};
+    my $dataLen = length $$dataPt;
+    my $ee = $et->Options('ExtractEmbedded');
+    my $pos;
+    # example GPS record:
+    # 0           1  2     3           4     5           6     7     8  9  10 11    12 13 14 15
+    # 00 00 00 17 01 00 00 03 fa 21 ec 00 35 01 6e c0 06 00 08 00 62 10 0b 1b 07 e2 03 0e 57 4e
+    # frame------ ?? lonDD lonDDDDDDDD latDD latDDDDDDDD alt-- spd-- hr mn sc yr--- mn dy EW NS
+    SetByteOrder('MM');
+    for ($pos=0; $pos<=$dataLen-30; $pos+=30) {
+        $$et{DOC_NUM} = ++$$et{DOC_COUNT};
+        my $buff = substr($$dataPt, $pos);
+        my @a = unpack('NCnNnNnnCCCnCCaa', $buff);
+        # - is $a[1] perhaps GPSStatus? (only seen 1, or perhaps record type 1=GPS, 2=acc?)
+        my $time = sprintf('%.4d:%.2d:%.2d %.2d:%.2d:%.2dZ', @a[11..13, 8..10]);
+        $et->HandleTag($tagTablePtr, FrameNumber  => $a[0]);
+        $et->HandleTag($tagTablePtr, GPSDateTime  => $time);
+        $et->HandleTag($tagTablePtr, GPSLatitude  => ($a[4] + $a[5]/1e8) * ($a[15] eq 'S' ? -1 : 1));
+        $et->HandleTag($tagTablePtr, GPSLongitude => ($a[2] + $a[3]/1e8) * ($a[14] eq 'W' ? -1 : 1));
+        $et->HandleTag($tagTablePtr, GPSSpeed     => $a[7]);
+        $et->HandleTag($tagTablePtr, GPSSpeedRef  => 'K');
+        $et->HandleTag($tagTablePtr, GPSAltitude  => $a[6]);
+        unless ($ee) {
+            $et->Warn('Use ExtractEmbedded option to extract timed GPS', 3);
+            last;
+        }
+    }
+    $$et{DOC_NUM} = 0;
     return 1;
 }
 

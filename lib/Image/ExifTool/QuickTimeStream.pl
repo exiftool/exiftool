@@ -7,6 +7,7 @@
 #
 # References:   1) https://developer.apple.com/library/content/documentation/QuickTime/QTFF/QTFFChap3/qtff3.html#//apple_ref/doc/uid/TP40000939-CH205-SW130
 #               2) http://sergei.nz/files/nvtk_mp42gpx.py
+#               3) https://forum.flitsservice.nl/dashcam-info/dod-ls460w-gps-data-uit-mov-bestand-lezen-t87926.html
 #------------------------------------------------------------------------------
 package Image::ExifTool::QuickTime;
 
@@ -64,7 +65,6 @@ my $mpsToKph   = 3.6;   # m/s   --> km/h
     GPSLatitude  => { PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")' },
     GPSLongitude => { PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "E")' },
     GPSAltitude  => { PrintConv => '(sprintf("%.4f", $val) + 0) . " m"' }, # round to 4 decimals
-    GPSAltitudeRef=>{ PrintConv => { 0 => 'Above Sea Level', 1 => 'Below Sea Level' } },
     GPSSpeed     => { PrintConv => 'sprintf("%.4f", $val) + 0' },   # round to 4 decimals
     GPSSpeedRef  => { PrintConv => { K => 'km/h', M => 'mph', N => 'knots' } },
     GPSTrack     => { PrintConv => 'sprintf("%.4f", $val) + 0' },    # round to 4 decimals
@@ -73,6 +73,7 @@ my $mpsToKph   = 3.6;   # m/s   --> km/h
     Accelerometer=> { Notes => 'right/up/backward acceleration in units of g' },
     Text         => { Groups => { 2 => 'Other' } },
     TimeCode     => { Groups => { 2 => 'Other' } },
+    FrameNumber  => { Groups => { 2 => 'Other' } },
     SampleTime   => { Groups => { 2 => 'Other' }, PrintConv => 'ConvertDuration($val)', Notes => 'sample decoding time' },
     SampleDuration=>{ Groups => { 2 => 'Other' }, PrintConv => 'ConvertDuration($val)' },
 #
@@ -427,7 +428,7 @@ sub ProcessSamples($)
 
             # decode Novatek GPS data (ref 2)
             next unless $buff =~ /^....freeGPS /s and length $buff >= 92;
-            # (see comments in ScanMovieData() for structure details)
+            # (see comments in ScanMovieData() below for structure details)
             my ($hr,$min,$sec,$yr,$mon,$day,$stat,$latRef,$lonRef,$lat,$lon,$spd,$trk) =
                 unpack('x48V6a1a1a1x1V4', $buff);
             # ignore invalid fixes
@@ -661,7 +662,7 @@ ATCRec: for ($recPos = 0x30; $recPos + 52 < $gpsBlockSize; $recPos += 52) {
                 my ($yr, $mon, $day, $hr, $min, $sec);
                 my ($lat, $latRef, $lon, $lonRef, $spd, $trk);
                 # check for other known GPS record types
-                # Type 2:
+                # Type 2 (ref PH):
                 # 0x30 - int32u hour
                 # 0x34 - int32u minute
                 # 0x38 - int32u second
@@ -682,7 +683,7 @@ ATCRec: for ($recPos = 0x30; $recPos + 52 < $gpsBlockSize; $recPos += 52) {
                     $lon = GetDouble(\$buff, $gpsPos + 0x50);
                     $spd = GetDouble(\$buff, $gpsPos + 0x60);
                     $trk = GetDouble(\$buff, $gpsPos + 0x68);
-                # Type 3 (Novatek GPS): (in case it wasn't decoded via 'gps ' atom)
+                # Type 3 (Novatek GPS, ref 2): (in case it wasn't decoded via 'gps ' atom)
                 # 0x30 - int32u hour
                 # 0x34 - int32u minute
                 # 0x38 - int32u second
@@ -741,7 +742,7 @@ ATCRec: for ($recPos = 0x30; $recPos + 52 < $gpsBlockSize; $recPos += 52) {
                 $et->WarnOnce('Invalid GPS date/time');
                 next ATCRec;    # ignore this record
             }
-            # look for next record in temporal sequence
+            # look for next ATC record in temporal sequence
             foreach $i (3..5, 0..2) {
                 if ($now[$i] < $then[$i]) {
                     last ATCRec if $foundNew;
@@ -756,10 +757,10 @@ ATCRec: for ($recPos = 0x30; $recPos + 52 < $gpsBlockSize; $recPos += 52) {
                     $et->VerboseDump(\$b);
                     my @v = unpack 'H8VVC4V!CA3V!CA3VvvV!vCCCCH4', $b;
                     $et->VPrint(1, "  Unpacked: @v\n");
-                    # values unpacked above:
-                    #  0) 0x00 4 bytes - bytes 1 and 2 increment like counters
-                    #  1) 0x04 4 bytes - int32u? Unknown
-                    #  2) 0x08 4 bytes - int32u? Some sort of counter?
+                    # values unpacked above (ref PH):
+                    #  0) 0x00 4 bytes - byte 0=1, 1=counts to 255, 2=record index, 3=0 (ref 3)
+                    #  1) 0x04 4 bytes - int32u: bits 0-4=day, 5-8=mon, 9-19=year (ref 3)
+                    #  2) 0x08 4 bytes - int32u: bits 0-5=sec, 6-11=min, 12-16=hour (ref 3)
                     #  3) 0x0c 1 byte  - seen values of 0,1,2 - GPS status maybe?
                     #  4) 0x0d 1 byte  - hour minus 1
                     #  5) 0x0e 1 byte  - minute
@@ -773,7 +774,7 @@ ATCRec: for ($recPos = 0x30; $recPos + 52 < $gpsBlockSize; $recPos += 52) {
                     # 13) 0x20 4 bytes - int32s speed * 100 (m/s)
                     # 14) 0x24 2 bytes - int16u heading * 100 (-180 to 180 deg)
                     # 15) 0x26 2 bytes - always zero
-                    # 16) 0x28 4 bytes - int32s something * 1000 ?
+                    # 16) 0x28 4 bytes - int32s altitude * 1000 (ref 3)
                     # 17) 0x2c 2 bytes - int16u year
                     # 18) 0x2e 1 byte  - month
                     # 19) 0x2f 1 byte  - day
@@ -793,6 +794,7 @@ ATCRec: for ($recPos = 0x30; $recPos + 52 < $gpsBlockSize; $recPos += 52) {
                 $et->HandleTag($tagTablePtr, GPSSpeedRef  => 'K');
                 $et->HandleTag($tagTablePtr, GPSTrack     => $trk);
                 $et->HandleTag($tagTablePtr, GPSTrackRef  => 'T');
+                $et->HandleTag($tagTablePtr, GPSAltitude  => Get32s(\$b, 0x28) / 1000);
                 $lastRecPos = $recPos;
                 $foundNew = 1;
                 # don't skip to location of previous recent record in ring buffer
@@ -846,6 +848,8 @@ under the same terms as Perl itself.
 =item Lhttps://developer.apple.com/library/content/documentation/QuickTime/QTFF/QTFFChap3/qtff3.html#//apple_ref/doc/uid/TP40000939-CH205-SW130>
 
 =item L<http://sergei.nz/files/nvtk_mp42gpx.py>
+
+=item L<https://forum.flitsservice.nl/dashcam-info/dod-ls460w-gps-data-uit-mov-bestand-lezen-t87926.html>
 
 =back
 

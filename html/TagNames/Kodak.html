@@ -1339,30 +1339,70 @@ on my nerves.</p>
 <tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
+<td title='0x0104 = 260'>0x0104</td>
+<td>FirmwareVersion</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td title='0x0203 = 515'>0x0203</td>
 <td>PictureEffect</td>
 <td class=c>no</td>
 <td><span class=s>0 = None
   <br>3 = Monochrome
   <br>9 = Kodachrome</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0207 = 519'>0x0207</td>
 <td>KodakModel</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x0300 = 768'>0x0300</td>
 <td>KodakMake</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x0308 = 776'>0x0308</td>
 <td>LensSerialNumber</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x0309 = 777'>0x0309</td>
 <td>LensModel</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x030d = 781'>0x030d</td>
+<td>LevelMeter?</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0311 = 785'>0x0311</td>
+<td>Pitch</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0312 = 786'>0x0312</td>
+<td>Yaw</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0313 = 787'>0x0313</td>
+<td>Roll</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0314 = 788'>0x0314</td>
+<td>CX?</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0315 = 789'>0x0315</td>
+<td>CY?</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0316 = 790'>0x0316</td>
+<td>Rads?</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
@@ -1883,9 +1923,29 @@ such as the P880.</p>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='pose'>Kodak pose Tags</a></h2>
+<p>Streamed orientation information from the PixPro 4KVR360, extracted as
+sub-documents when the Duplicates option is used.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'Accelerometer'</td>
+<td>Accelerometer</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'AngularVelocity'</td>
+<td>AngularVelocity</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Dec 23, 2014</i>
+<br><i>Last revised Mar 14, 2018</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

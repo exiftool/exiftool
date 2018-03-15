@@ -335,7 +335,8 @@ toward magenta)</span></span></td></tr>
 <td class=c>int32u</td>
 <td><span class=s>0 = Did not fire
   <br>1 = Flash Fired
-  <br>2 = External Flash Fired</span></td></tr>
+  <br>2 = External Flash Fired
+  <br>3 = Wireless Controlled Flash Fired</span></td></tr>
 <tr class=b>
 <td title='0x201a = 8218'>0x201a</td>
 <td>ElectronicFrontCurtainShutter</td>
@@ -570,7 +571,7 @@ Spot)</span></span></td></tr>
   <br>229 = I5 (229)
   <br>230 = I6 (230)
   <br>231 = I7 (231)</td></tr></table>
-<span class=s><span class=n>(ICLA models when AFAreaModeSetting is set to Zone)</span></span><table class=cols><tr>
+<span class=s><span class=n>(ILCA models when AFAreaModeSetting is set to Zone)</span></span><table class=cols><tr>
   <td>0 = n/a
   <br>1 = Top Left Zone
   <br>2 = Top Zone
@@ -7217,16 +7218,28 @@ ILCE-6300/6500/7RM2/7SM2, ILCA-99M2.</p>
   <br>1 = Self-timer 5 or 10 s
   <br>2 = Self-timer 2 s</span></td></tr>
 <tr class=b>
+<td title='0x0211 = 529'>0x0211</td>
+<td>FlashMode</td>
+<td class=c>int8u</td>
+<td><table class=cols><tr>
+  <td>0 = Autoflash
+  <br>1 = Fill-flash
+  <br>2 = Flash Off</td><td>&nbsp;&nbsp;</td>
+  <td>3 = Slow Sync
+  <br>4 = Rear Sync
+  <br>6 = Wireless</td></tr></table>
+</td></tr>
+<tr>
 <td title='0x0217 = 535'>0x0217</td>
 <td>StopsAboveBaseISO</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x0219 = 537'>0x0219</td>
 <td>BrightnessValue</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x021b = 539'>0x021b</td>
 <td>DynamicRangeOptimizer</td>
 <td class=c>int8u</td>
@@ -7240,7 +7253,7 @@ ILCE-6300/6500/7RM2/7SM2, ILCA-99M2.</p>
   <br>7 = Lv5
   <br>8 = n/a</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td title='0x021f = 543'>0x021f</td>
 <td>HDRSetting</td>
 <td class=c>int8u</td>
@@ -7254,12 +7267,12 @@ ILCE-6300/6500/7RM2/7SM2, ILCA-99M2.</p>
   <br>11 = HDR 5 EV
   <br>13 = HDR 6 EV</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td title='0x0223 = 547'>0x0223</td>
 <td>ExposureCompensation</td>
 <td class=c>int16s</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x0237 = 567'>0x0237</td>
 <td>PictureProfile</td>
 <td class=c>int8u</td>
@@ -7283,7 +7296,7 @@ ILCE-6300/6500/7RM2/7SM2, ILCA-99M2.</p>
   <br>28 = Gamma S-Log2 (PP7)
   <br>29 = Gamma ITU709(800%)</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td title='0x0238 = 568'>0x0238</td>
 <td>PictureProfile</td>
 <td class=c>int8u</td>
@@ -7307,19 +7320,19 @@ ILCE-6300/6500/7RM2/7SM2, ILCA-99M2.</p>
   <br>28 = Gamma S-Log2 (PP7)
   <br>29 = Gamma ITU709(800%)</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td title='0x023c = 572'>0x023c</td>
 <td>PictureEffect2</td>
 <td class=c>int8u</td>
 <td>--&gt; <a href='Sony.html#PictureEffect2'>Sony PictureEffect2 Values</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0247 = 583'>0x0247</td>
 <td>Quality2</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = JPEG
   <br>1 = RAW
   <br>2 = RAW + JPEG</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x024b = 587'>0x024b</td>
 <td>MeteringMode</td>
 <td class=c>int8u</td>
@@ -7328,77 +7341,77 @@ ILCE-6300/6500/7RM2/7SM2, ILCA-99M2.</p>
   <br>3 = Spot
   <br>4 = Average
   <br>5 = Highlight</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x024c = 588'>0x024c</td>
 <td>ExposureProgram</td>
 <td class=c>int8u</td>
 <td>--&gt; <a href='Sony.html#ExposureProgram3'>Sony ExposureProgram3 Values</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0252 = 594'>0x0252</td>
 <td>WB_RGBLevels</td>
 <td class=c>int16u[3]</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x030a = 778'>0x030a</td>
 <td>FocalLength</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x030c = 780'>0x030c</td>
 <td>MinFocalLength</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x030e = 782'>0x030e</td>
 <td>MaxFocalLength</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x0320 = 800'>0x0320</td>
 <td>SonyISO</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x036d = 877'>0x036d</td>
 <td>MeterInfo?</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Sony.html#MeterInfo9'>Sony MeterInfo9 Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0x17d0 = 6096'>0x17d0</td>
 <td>DistortionCorrParams</td>
 <td class=c>int16s[16]</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x17f1 = 6129'>0x17f1</td>
 <td>LensFormat</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Unknown
   <br>1 = APS-C
   <br>2 = Full-frame</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x17f2 = 6130'>0x17f2</td>
 <td>LensMount</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Unknown
   <br>1 = A-mount
   <br>2 = E-mount</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x17f3 = 6131'>0x17f3</td>
 <td>LensType2</td>
 <td class=c>int16u</td>
 <td>--&gt; <a href='Sony.html#LensType2'>Sony LensType2 Values</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0x17f6 = 6134'>0x17f6</td>
 <td>LensType</td>
 <td class=c>int16u</td>
 <td>--&gt; <a href='Sony.html#LensType'>Sony LensType Values</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x17f8 = 6136'>0x17f8</td>
 <td>DistortionCorrParamsPresent</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = No
   <br>1 = Yes</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x17f9 = 6137'>0x17f9</td>
 <td>DistortionCorrParamsNumber</td>
 <td class=c>int8u</td>
@@ -11106,7 +11119,7 @@ some models when the ExtractEmbedded option is used.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Mar 13, 2018</i>
+<br><i>Last revised Mar 14, 2018</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

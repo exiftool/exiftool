@@ -24,10 +24,11 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.42';
+$VERSION = '1.43';
 
 sub ProcessKodakIFD($$$);
 sub ProcessKodakText($$$);
+sub ProcessPose($$$);
 sub WriteKodakIFD($$$);
 
 # Kodak type 1 maker notes (ref 1)
@@ -857,6 +858,8 @@ sub WriteKodakIFD($$$);
         writable because the inconsistency of Kodak maker notes is beginning to get
         on my nerves.
     },
+    # (these are related to the Kodak QuickTime UserData tags)
+    0x0104 => 'FirmwareVersion',
     0x0203 => {
         Name => 'PictureEffect',
         PrintConv => {
@@ -870,6 +873,13 @@ sub WriteKodakIFD($$$);
     0x0300 => 'KodakMake',
     0x0308 => 'LensSerialNumber',
     0x0309 => 'LensModel',
+    0x030d => { Name => 'LevelMeter', Unknown => 1 }, # (guess)
+    0x0311 => 'Pitch', # Units??
+    0x0312 => 'Yaw',   # Units??
+    0x0313 => 'Roll',  # Units??
+    0x0314 => { Name => 'CX',   Unknown => 1 },
+    0x0315 => { Name => 'CY',   Unknown => 1 },
+    0x0316 => { Name => 'Rads', Unknown => 1 },
 );
 
 # Kodak SubIFD0 tags (ref PH)
@@ -1882,6 +1892,18 @@ my %sceneModeUsed = (
     },
 );
 
+# acceleration information extracted from 'pose' atom of MP4 videos (ref PH, PixPro 4KVR360)
+%Image::ExifTool::Kodak::pose = (
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Video' },
+    PROCESS_PROC => \&ProcessPose,
+    NOTES => q{
+        Streamed orientation information from the PixPro 4KVR360, extracted as
+        sub-documents when the Duplicates option is used.
+    },
+    Accelerometer => { }, # up, back, left?  units of g
+    AngularVelocity => { } # left, up, ccw?  units?
+);
+
 # Kodak composite tags
 %Image::ExifTool::Kodak::Composite = (
     GROUPS => { 2 => 'Camera' },
@@ -1933,6 +1955,52 @@ my %sceneModeUsed = (
 
 # add our composite tags
 Image::ExifTool::AddCompositeTags('Image::ExifTool::Kodak');
+
+#------------------------------------------------------------------------------
+# Process Kodak accelerometer data (ref PH)
+# Inputs: 0) ExifTool ref, 1) dirInfo ref, 2) tag table ref
+# Returns: 1 on success
+sub ProcessPose($$$)
+{
+    my ($et, $dirInfo, $tagTablePtr) = @_;
+    my $dataPt = $$dirInfo{DataPt};
+    my $dirLen = length $$dataPt;
+    my $ee = $et->Options('ExtractEmbedded');
+    my ($i, $pos);
+
+    return 0 if $dirLen < 0x14;
+    my $num = Get32u($dataPt, 0x10);
+    return 0 if $dirLen < 0x14 + $num * 24;
+
+    $et->VerboseDir('Kodak pose', undef, $dirLen);
+
+    $$et{DOC_NUM} = 0;
+    for ($i=0, $pos=0x14; $i<$num; ++$i, $pos+=24) {
+        $et->HandleTag($tagTablePtr, AngularVelocity =>
+            Image::ExifTool::GetRational64s($dataPt, $pos) . ' ' .
+            Image::ExifTool::GetRational64s($dataPt, $pos + 8) . ' ' .
+            Image::ExifTool::GetRational64s($dataPt, $pos + 16));
+        $ee or $pos += $num * 24, last;
+        ++$$et{DOC_NUM};
+    }
+    $$et{DOC_NUM} = 0;
+
+    return 1 if $dirLen < $pos + 0x10;
+    $num = Get32u($dataPt, $pos + 0x0c);
+    return 1 if $dirLen < $pos + 0x10 + $num * 24;
+
+    for ($i=0, $pos+=0x10; $i<$num; ++$i, $pos+=24) {
+        $et->HandleTag($tagTablePtr, Accelerometer =>
+            Image::ExifTool::GetRational64s($dataPt, $pos) . ' ' .
+            Image::ExifTool::GetRational64s($dataPt, $pos + 8) . ' ' .
+            Image::ExifTool::GetRational64s($dataPt, $pos + 16));
+        $ee or $pos += $num * 24, last;
+        ++$$et{DOC_NUM};
+    }
+    $$et{DOC_NUM} = 0;
+    $ee or $et->Warn('Use the ExtractEmbedded option to extract all accelerometer data',3);
+    return 1;
+}
 
 #------------------------------------------------------------------------------
 # Calculate RGB levels from associated tags (ref 3)

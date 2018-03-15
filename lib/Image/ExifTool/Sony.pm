@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.78';
+$VERSION = '2.79';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -980,7 +980,7 @@ my %meterInfo2b = (
             0 => 'Did not fire',
             1 => 'Flash Fired',
             2 => 'External Flash Fired',
-           #3 => 'External Flash Fired, Return not detected', #???? seen for one ILCE-7M3 image
+            3 => 'Wireless Controlled Flash Fired', # (NC) seen for ILCE-9 and ILCE-7M3 images
         },
     },
     # 0x2018 - something with external flash: seen 1 only when 0x2017 = 2
@@ -1135,7 +1135,7 @@ my %meterInfo2b = (
     },{
         Name => 'AFPointSelected',
         Condition => '($$self{Model} =~ /^ILCA-/ and defined $$self{AFAreaILCA} and $$self{AFAreaILCA} == 8)',
-        Notes => 'ICLA models when AFAreaModeSetting is set to Zone',
+        Notes => 'ILCA models when AFAreaModeSetting is set to Zone',
         # ILCA-68 and 77M2 have 9 Zones: numbers/locations verified for ILCA-77M2
         # ILCA-99M2 has 15 Zones in Hybrid-AF and 9 Zones in dedicated Phase AF Area, so may not be valid for ILCA-99M2...
         Writable => 'int8u',
@@ -1339,15 +1339,10 @@ my %meterInfo2b = (
         PrintConv => {
             0x100 => 'Multi-segment',
             0x200 => 'Center-weighted average',
-          # 0x300 => 'Spot',            # not yet seen
-            # (there is one other setting that might also be encoded here:
-            # the Spot Metering Point can be set to "Center", to meter in the
-            # center of the image, or to "Focus Point Link", to meter at the focus point.
-            # This could also be the meaning of 0x301 and 0x302 - JR)
-            0x301 => 'Spot (Standard)', # (NC) seen for ILCA-99M2 with Exif indicating "Spot"
-            0x302 => 'Spot (Large)',    # (NC) seen for ILCE-9 with Exif indicating "Spot"
-            0x400 => 'Average',         # (NC) seen for ILCA-99M2 with Exif indicating "Average"
-            0x500 => 'Highlight',       # (NC) seen for ILCA-99M2 with Exif indicating "Other"
+            0x301 => 'Spot (Standard)',
+            0x302 => 'Spot (Large)',
+            0x400 => 'Average',
+            0x500 => 'Highlight',
         },
     },
     0x202d => { #JR first seen for ILCA-99M2, ILCE-6500, DSC-RX100M5
@@ -5872,8 +5867,8 @@ my %meteringMode2010 = (
         0 => 'Multi-segment',
         2 => 'Center-weighted average',
         3 => 'Spot',
-        4 => 'Average', # (NC) seen for ILCA-99M2 with Exif indicating "Average"
-        5 => 'Highlight', # (NC) seen for ILCA-99M2 with Exif indicating "Other"
+        4 => 'Average',
+        5 => 'Highlight',
     },
 );
 my %flashMode2010 = (
@@ -6672,7 +6667,7 @@ my %pictureProfile2010 = (
     0x0204 => { %releaseMode2010 },
     0x0208 => { %releaseMode2 },
     0x0210 => { %selfTimerB2010 },
-#    0x0211 => { %flashMode2010 }, #nc
+    0x0211 => { %flashMode2010 },
     0x0217 => { %gain2010 },
     0x0219 => { %brightnessValue2010 },
     0x021b => { %dynamicRangeOptimizer2010 },

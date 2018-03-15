@@ -7,6 +7,15 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.80. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Mar. 15, 2018 - Version 10.86
+
+  - Decode GPS position and accelerometer data from BikeBro AVI videos
+  - Decode a new Sony tag and add a new value to another tag (thanks Jos Roost)
+  - Decode GPSAltitude from some videos with the -ee option
+  - Decode some new tags from Kodak PixPro 4KVR360 JPEG images and MP4 videos
+  - Decode GPS information from CR3 files
+  - Fixed unnecessary warnings when Validate option used on CR3 images
+
 Mar. 14, 2018 - Version 10.85
 
   - Decode GPSTrack from MOV videos of more dashcam models

@@ -1451,7 +1451,7 @@ sub DecryptInit($$$)
     }
     if ("$ver.$rev" >= 5.6) {
         # apologize for poor performance (AES is a pure Perl implementation)
-        $et->Warn('Decryption is very slow for encryption V5.6 or higher', 1);
+        $et->Warn('Decryption is very slow for encryption V5.6 or higher', 3);
     }
     $et->HandleTag($tagTablePtr, 'P', $$encrypt{P});
 

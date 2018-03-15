@@ -7202,7 +7202,7 @@ my %ciMaxFocal = (
 # Color data (MakerNotes tag 0x4001, count=5120) (ref PH)
 %Image::ExifTool::Canon::ColorData5 = (
     %binaryDataAttrs,
-    NOTES => 'These tags are used by the PowerShot G10.',
+    NOTES => 'These tags are used by the PowerShot G10 and other models.',
     FORMAT => 'int16s',
     FIRST_ENTRY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
@@ -8209,27 +8209,31 @@ my %filterConv = (
     },
     # CTBO - (CR3 files) int32u. entry count N, N x (int32u. index, int64u. offset, int64u. size)
     #        index 1=XMP, 2=PRVW, 3=mdat
-    CMT1 => { # IFD0 (CR3 files)
+    CMT1 => { # (CR3 files)
+        Name => 'IFD0',
         SubDirectory => {
             TagTable => 'Image::ExifTool::Exif::Main',
             ProcessProc => \&Image::ExifTool::ProcessTIFF,
         },
     },
-    CMT2 => { # ExifIFD (CR3 files)
+    CMT2 => { # (CR3 files)
+        Name => 'ExifIFD',
         SubDirectory => {
             TagTable => 'Image::ExifTool::Exif::Main',
             ProcessProc => \&Image::ExifTool::ProcessTIFF,
         },
     },
-    CMT3 => { # MakerNotes IFD (CR3 files)
+    CMT3 => { # (CR3 files)
+        Name => 'MakerNoteCanon',
         SubDirectory => {
             TagTable => 'Image::ExifTool::Canon::Main',
             ProcessProc => \&Image::ExifTool::ProcessTIFF,
         },
     },
-    CMT4 => { # Unknown IFD (CR3 files)
+    CMT4 => { # (CR3 files)
+        Name => 'GPSInfo',
         SubDirectory => {
-            TagTable => 'Image::ExifTool::Canon::UnknownIFD',
+            TagTable => 'Image::ExifTool::GPS::Main',
             ProcessProc => \&Image::ExifTool::ProcessTIFF,
         },
     },
@@ -8267,7 +8271,7 @@ my %filterConv = (
         information.
     },
     0x8769 => {
-        Name => 'ExifInfo',
+        Name => 'ExifIFD',
         SubDirectory => {
             TagTable => 'Image::ExifTool::Exif::Main',
             ProcessProc => \&Image::ExifTool::ProcessTIFF,

@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup);
 
-$VERSION = '10.85';
+$VERSION = '10.86';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -4227,13 +4227,15 @@ sub AUTOLOAD
 #------------------------------------------------------------------------------
 # Add warning tag
 # Inputs: 0) ExifTool object reference, 1) warning message
-#         2) true if minor (2 if behaviour changes when warning is ignored)
+#         2) true if minor (2 if behaviour changes when warning is ignored,
+#            or 3 if warning shouldn't be issued when Validate option is used)
 # Returns: true if warning tag was added
 sub Warn($$;$)
 {
     my ($self, $str, $ignorable) = @_;
     if ($ignorable) {
         return 0 if $$self{OPTIONS}{IgnoreMinorErrors};
+        return 0 if $ignorable eq '3' and $$self{OPTIONS}{Validate};
         $str = $ignorable eq '2' ? "[Minor] $str" : "[minor] $str";
     }
     $self->FoundTag('Warning', $str);
@@ -6655,7 +6657,8 @@ sub DoProcessTIFF($$;$)
         # don't process file if FastScan == 3
         return 1 if not $outfile and $$self{OPTIONS}{FastScan} and $$self{OPTIONS}{FastScan} == 3;
     }
-    my $ifdName = 'IFD0';
+    # (accomodate CR3 images which have a TIFF directory with ExifIFD at the top level)
+    my $ifdName = ($$dirInfo{DirName} and $$dirInfo{DirName} eq 'ExifIFD') ? 'ExifIFD' : 'IFD0';
     if (not $tagTablePtr or $$tagTablePtr{GROUPS}{0} eq 'EXIF') {
         $self->FoundTag('ExifByteOrder', $byteOrder) unless $outfile;
     } else {

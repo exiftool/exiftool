@@ -42,7 +42,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.13';
+$VERSION = '2.14';
 
 sub FixWrongFormat($);
 sub ProcessMOV($$;$);
@@ -393,13 +393,15 @@ my %eeBox = (
     GROUPS => { 2 => 'Video' },
     NOTES => q{
         The QuickTime format is used for many different types of audio, video and
-        image files (most commonly, MOV and MP4 videos).  Exiftool extracts standard
-        meta information a variety of audio, video and image parameters, as well as
-        proprietary information written by many camera models.  Tags with a question
-        mark after their name are not extracted unless the Unknown option is set.
-
-        ExifTool has the ability to write/create XMP, and edit some date/time tags
-        in QuickTime-format files.
+        image files (most notably, MOV/MP4 videos and HEIC/CR3 images).  Exiftool
+        extracts standard meta information a variety of audio, video and image
+        parameters, as well as proprietary information written by many camera
+        models.  Tags with a question mark after their name are not extracted unless
+        the Unknown option is set.
+        
+        ExifTool currently has a very limited ability to write metadata in
+        QuickTime-format videos.  It can edit/create/delete any XMP tags, but may
+        only be used to edit certain date/time tags in native QuickTime metadata.
 
         According to the specification, many QuickTime date/time tags should be
         stored as UTC.  Unfortunately, digital cameras often store local time values
@@ -1668,19 +1670,35 @@ my %eeBox = (
         Name => 'KodakDcMD',
         SubDirectory => { TagTable => 'Image::ExifTool::Kodak::DcMD' },
     },
+    SNum => { Name => 'SerialNumber', Groups => { 2 => 'Camera' } },
+    ptch => { Name => 'Pitch', Format => 'rational64s' }, # Units??
+    _yaw => { Name => 'Yaw',   Format => 'rational64s' }, # Units??
+    roll => { Name => 'Roll',  Format => 'rational64s' }, # Units??
+    _cx_ => { Name => 'CX',    Format => 'rational64s', Unknown => 1 },
+    _cy_ => { Name => 'CY',    Format => 'rational64s', Unknown => 1 },
+    rads => { Name => 'Rads',  Format => 'rational64s', Unknown => 1 },
+    lvlm => { Name => 'LevelMeter', Format => 'rational64s', Unknown => 1 }, # (guess)
+    Lvlm => { Name => 'LevelMeter', Format => 'rational64s', Unknown => 1 }, # (guess)
+    pose => { Name => 'pose', SubDirectory => { TagTable => 'Image::ExifTool::Kodak::pose' } },
     # AMBA => Ambarella AVC atom (unknown data written by Kodak Playsport video cam)
-    # tmlp - 1 byte: 0 (PixPro SP360)
+    # tmlp - 1 byte: 0 (PixPro SP360/4KVR360)
     # pivi - 72 bytes (PixPro SP360)
     # pive - 12 bytes (PixPro SP360)
-    # m ev - 2 bytes: 0 0 (PixPro SP360)
-    # m wb - 4 bytes: 0 0 0 0 (PixPro SP360)
-    # mclr - 4 bytes: 0 0 0 0 (PixPro SP360)
-    # mmtr - 4 bytes: 6 0 0 0 (PixPro SP360)
+    # loop - 4 bytes: 0 0 0 0 (PixPro 4KVR360)
+    # m cm - 2 bytes: 0 0 (PixPro 4KVR360)
+    # m ev - 2 bytes: 0 0 (PixPro SP360/4KVR360) (exposure comp?)
+    # m vr - 2 bytes: 0 1 (PixPro 4KVR360) (virtual reality?)
+    # m wb - 4 bytes: 0 0 0 0 (PixPro SP360/4KVR360) (white balance?)
+    # mclr - 4 bytes: 0 0 0 0 (PixPro SP360/4KVR360)
+    # mmtr - 4 bytes: 0,6 0 0 0 (PixPro SP360/4KVR360)
     # mflr - 4 bytes: 0 0 0 0 (PixPro SP360)
     # lvlm - 24 bytes (PixPro SP360)
+    # Lvlm - 24 bytes (PixPro 4KVR360)
     # ufdm - 4 bytes: 0 0 0 1 (PixPro SP360)
-    # mtdt - 1 byte: 0 (PixPro SP360)
+    # mtdt - 1 byte: 0 (PixPro SP360/4KVR360)
     # gdta - 75240 bytes (PixPro SP360)
+    # EIS1 - 4 bytes: 03 07 00 00 (PixPro 4KVR360)
+    # EIS2 - 4 bytes: 04 97 00 00 (PixPro 4KVR360)
     # ---- LG ----
     adzc => { Name => 'Unknown_adzc', Unknown => 1, Hidden => 1, %langText }, # "false\0/","true\0/"
     adze => { Name => 'Unknown_adze', Unknown => 1, Hidden => 1, %langText }, # "false\0/"
@@ -7413,7 +7431,7 @@ sub ProcessMOV($$;$)
                 $eeTag = 1;
                 $$et{OPTIONS}{Unknown} = 1; # temporarily enable "Unknown" option
             } elsif ($handlerType ne 'vide' and not $$et{OPTIONS}{Validate}) {
-                $et->WarnOnce('The ExtractEmbedded option may find more tags in the movie data',1);
+                $et->WarnOnce('The ExtractEmbedded option may find more tags in the movie data',3);
             }
         }
         my $tagInfo = $et->GetTagInfo($tagTablePtr, $tag);

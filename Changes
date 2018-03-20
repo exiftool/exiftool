@@ -7,13 +7,22 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.80. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Mar. 20, 2018 - Version 10.87
+
+  - Added a new FujiFilm ShutterType value (thanks Albert Shan)
+  - Decode more timed metadata from CR3 images
+  - Decode Samsung DualShot depth map
+  - Decode a new Canon tag
+  - Improved decoding of some Canon color information (thanks LibRaw)
+  - Fixed print conversion of ID3v2 Genre values with multiple genres
+
 Mar. 15, 2018 - Version 10.86
 
-  - Decode GPS position and accelerometer data from BikeBro AVI videos
+  - Decode timed GPS and accelerometer data from BikeBro AVI videos
   - Decode a new Sony tag and add a new value to another tag (thanks Jos Roost)
   - Decode GPSAltitude from some videos with the -ee option
   - Decode some new tags from Kodak PixPro 4KVR360 JPEG images and MP4 videos
-  - Decode GPS information from CR3 files
+  - Decode GPS information from CR3 images
   - Fixed unnecessary warnings when Validate option used on CR3 images
 
 Mar. 14, 2018 - Version 10.85
@@ -41,7 +50,7 @@ Mar. 7, 2018 - Version 10.83
   - Added Light LRI files to the list of recognized file types
   - Added a new Canon LensType (thanks LibRaw)
   - Decode a couple of new Sony tags (thanks Jos Roost)
-  - Extract JpgFromRaw image from CR3 files
+  - Extract JpgFromRaw image from CR3 images
   - Improved warning message when attempting to write a tag in a specific group
     that isn't writable
   - Changed group name of JSON tags from "File" to "JSON"

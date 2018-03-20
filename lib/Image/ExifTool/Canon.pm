@@ -84,9 +84,10 @@ sub WriteCanon($$$);
 sub ProcessSerialData($$$);
 sub ProcessFilters($$$);
 sub ProcessCTMD($$$);
+sub ProcessTimedExif($$$);
 sub SwapWords($);
 
-$VERSION = '3.87';
+$VERSION = '3.88';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -709,7 +710,7 @@ $VERSION = '3.87';
     0x4060000 => 'PowerShot SX620 HS',
     0x4070000 => 'EOS M6',
     0x4100000 => 'PowerShot G9 X Mark II',
-    0x412     => 'EOS M50', # (yes, no "0000")
+    0x412     => 'EOS M50 / Kiss M', # (yes, no "0000")
     0x4150000 => 'PowerShot ELPH 185 / IXUS 185 / IXY 200',
     0x4160000 => 'PowerShot SX430 IS',
     0x4170000 => 'PowerShot SX730 HS',
@@ -794,7 +795,7 @@ $VERSION = '3.87';
     0x80000324 => 'EOS-1D C', #(NC)
     0x80000325 => 'EOS 70D',
     0x80000326 => 'EOS Rebel T5i / 700D / Kiss X7i',
-    0x80000327 => 'EOS Rebel T5 / 1200D / Kiss X70',
+    0x80000327 => 'EOS Rebel T5 / 1200D / Kiss X70 / Hi',
     0x80000328 => 'EOS-1D X MARK II', #42
     0x80000331 => 'EOS M',
     0x80000350 => 'EOS 80D', #42
@@ -811,7 +812,7 @@ $VERSION = '3.87';
     0x80000408 => 'EOS 77D / 9000D',
     0x80000417 => 'EOS Rebel SL2 / 200D / Kiss X9', #IB/42
     0x80000422 => 'EOS Rebel T100 / 4000D / 3000D', #IB (3000D in China; Kiss? - PH)
-    0x80000432 => 'EOS Rebel T7 / 2000D / Kiss X90', #IB
+    0x80000432 => 'EOS Rebel T7 / 2000D / 1500D / Kiss X90', #IB
 );
 
 my %canonQuality = (
@@ -1492,6 +1493,13 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
             Validate => 'Image::ExifTool::Canon::Validate($dirData,$subdirStart,$size)',
             TagTable => 'Image::ExifTool::Canon::TimeInfo',
         },
+    },
+    0x38 => { #PH
+        Name => 'BatteryType',
+        Writable => 'undef',
+        Condition => '$count == 76',
+        RawConv => '$val=~/^.{4}([^\0]+)/s ? $1 : undef',
+        RawConvInv => 'substr("\x4c\0\0\0".$val.("\0"x72), 0, 76)',
     },
     0x3c => { #PH (G1XmkII)
         Name => 'AFInfo3',
@@ -7164,6 +7172,60 @@ my %ciMaxFocal = (
     0x72 => { Name => 'ColorTempUnknown13', Unknown => 1 },
 );
 
+# color coefficients (ref PH/IB)
+%Image::ExifTool::Canon::ColorCoefs2 = (
+    %binaryDataAttrs,
+    FORMAT => 'int16s',
+    FIRST_ENTRY => 0,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    0x00 => { Name => 'WB_RGGBLevelsAsShot',      Format => 'int16s[4]' },
+    0x07 => 'ColorTempAsShot',
+    0x08 => { Name => 'WB_RGGBLevelsAuto',        Format => 'int16s[4]' },
+    0x0f => 'ColorTempAuto',
+    0x10 => { Name => 'WB_RGGBLevelsMeasured',    Format => 'int16s[4]' },
+    0x17 => 'ColorTempMeasured',
+    0x18 => { Name => 'WB_RGGBLevelsUnknown',     Format => 'int16s[4]', Unknown => 1 },
+    0x1f => { Name => 'ColorTempUnknown', Unknown => 1 },
+    0x20 => { Name => 'WB_RGGBLevelsDaylight',    Format => 'int16s[4]' },
+    0x27 => 'ColorTempDaylight',
+    0x28 => { Name => 'WB_RGGBLevelsShade',       Format => 'int16s[4]' },
+    0x2f => 'ColorTempShade',
+    0x30 => { Name => 'WB_RGGBLevelsCloudy',      Format => 'int16s[4]' },
+    0x37 => 'ColorTempCloudy',
+    0x38 => { Name => 'WB_RGGBLevelsTungsten',    Format => 'int16s[4]' },
+    0x3f => 'ColorTempTungsten',
+    0x40 => { Name => 'WB_RGGBLevelsFluorescent',Format => 'int16s[4]' },
+    0x47 => 'ColorTempFluorescent',
+    0x48 => { Name => 'WB_RGGBLevelsKelvin',     Format => 'int16s[4]' },
+    0x4f => 'ColorTempKelvin',
+    0x50 => { Name => 'WB_RGGBLevelsFlash',      Format => 'int16s[4]' },
+    0x57 => 'ColorTempFlash',
+    0x58 => { Name => 'WB_RGGBLevelsUnknown2',   Format => 'int16s[4]', Unknown => 1 },
+    0x5f => { Name => 'ColorTempUnknown2', Unknown => 1 },
+    0x60 => { Name => 'WB_RGGBLevelsUnknown3',   Format => 'int16s[4]', Unknown => 1 },
+    0x67 => { Name => 'ColorTempUnknown3', Unknown => 1 },
+    0x68 => { Name => 'WB_RGGBLevelsUnknown4',   Format => 'int16s[4]', Unknown => 1 },
+    0x6f => { Name => 'ColorTempUnknown4', Unknown => 1 },
+    0x70 => { Name => 'WB_RGGBLevelsUnknown5',   Format => 'int16s[4]', Unknown => 1 },
+    0x77 => { Name => 'ColorTempUnknown5', Unknown => 1 },
+    0x78 => { Name => 'WB_RGGBLevelsUnknown6',   Format => 'int16s[4]', Unknown => 1 },
+    0x7f => { Name => 'ColorTempUnknown6', Unknown => 1 },
+    0x80 => { Name => 'WB_RGGBLevelsUnknown7',   Format => 'int16s[4]', Unknown => 1 },
+    0x87 => { Name => 'ColorTempUnknown7', Unknown => 1 },
+    0x88 => { Name => 'WB_RGGBLevelsUnknown8',   Format => 'int16s[4]', Unknown => 1 },
+    0x8f => { Name => 'ColorTempUnknown8', Unknown => 1 },
+    0x90 => { Name => 'WB_RGGBLevelsUnknown9',   Format => 'int16s[4]', Unknown => 1 },
+    0x97 => { Name => 'ColorTempUnknown9', Unknown => 1 },
+    0x98 => { Name => 'WB_RGGBLevelsUnknown10',  Format => 'int16s[4]', Unknown => 1 },
+    0x9f => { Name => 'ColorTempUnknown10', Unknown => 1 },
+    0xa0 => { Name => 'WB_RGGBLevelsUnknown11',  Format => 'int16s[4]', Unknown => 1 },
+    0xa7 => { Name => 'ColorTempUnknown11', Unknown => 1 },
+    0xa8 => { Name => 'WB_RGGBLevelsUnknown12',  Format => 'int16s[4]', Unknown => 1 },
+    0xaf => { Name => 'ColorTempUnknown12', Unknown => 1 },
+    0xb0 => { Name => 'WB_RGGBLevelsUnknown13',  Format => 'int16s[4]', Unknown => 1 },
+    0xb7 => { Name => 'ColorTempUnknown13', Unknown => 1 },
+);
+
 # color calibration (ref 37)
 %Image::ExifTool::Canon::ColorCalib = (
     %binaryDataAttrs,
@@ -7199,37 +7261,83 @@ my %ciMaxFocal = (
     0x38 => { Name => 'CameraColorCalibration15', %cameraColorCalibration },
 );
 
-# Color data (MakerNotes tag 0x4001, count=5120) (ref PH)
-%Image::ExifTool::Canon::ColorData5 = (
+# color calibration2
+%Image::ExifTool::Canon::ColorCalib2 = (
     %binaryDataAttrs,
-    NOTES => 'These tags are used by the PowerShot G10 and other models.',
     FORMAT => 'int16s',
     FIRST_ENTRY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
-    IS_SUBDIR => [ 0x47 ],
-    # 0x00 - oddly, this isn't ColorDataVersion (probably should have been version 8)
-    0x47 => {
+    NOTES => 'B, C, A, D, Temperature.',
+    0x00 => { Name => 'CameraColorCalibration01', %cameraColorCalibration2 },
+    0x05 => { Name => 'CameraColorCalibration02', %cameraColorCalibration2 },
+    0x0a => { Name => 'CameraColorCalibration03', %cameraColorCalibration2 },
+    0x0f => { Name => 'CameraColorCalibration04', %cameraColorCalibration2 },
+    0x14 => { Name => 'CameraColorCalibration05', %cameraColorCalibration2 },
+    0x19 => { Name => 'CameraColorCalibration06', %cameraColorCalibration2 },
+    0x1e => { Name => 'CameraColorCalibration07', %cameraColorCalibration2 },
+    0x23 => { Name => 'CameraColorCalibration08', %cameraColorCalibration2 },
+    0x28 => { Name => 'CameraColorCalibration09', %cameraColorCalibration2 },
+    0x2d => { Name => 'CameraColorCalibration10', %cameraColorCalibration2 },
+    0x32 => { Name => 'CameraColorCalibration11', %cameraColorCalibration2 },
+    0x37 => { Name => 'CameraColorCalibration12', %cameraColorCalibration2 },
+    0x3c => { Name => 'CameraColorCalibration13', %cameraColorCalibration2 },
+    0x41 => { Name => 'CameraColorCalibration14', %cameraColorCalibration2 },
+    0x46 => { Name => 'CameraColorCalibration15', %cameraColorCalibration2 },
+);
+
+# Color data (MakerNotes tag 0x4001, count=5120) (ref PH)
+%Image::ExifTool::Canon::ColorData5 = (
+    %binaryDataAttrs,
+    NOTES => 'These tags are used by many EOS M and PowerShot models.',
+    FORMAT => 'int16s',
+    FIRST_ENTRY => 0,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    DATAMEMBER => [ 0x00 ],
+    IS_SUBDIR => [ 0x47, 0xba, 0xff ],
+    0x00 => {
+        Name => 'ColorDataVersion',
+        DataMember => 'ColorDataVersion',
+        RawConv => '$$self{ColorDataVersion} = $val',
+        PrintConv => {
+            -3 => '-3 (M10/M3)', # (and PowerShot G1X/G1XmkII/G10/G11/G12/G15/G16/G3X/G5X/G7X/G9X/S100/S110/S120/S90/S95/SX1IS/SX50HS/SX60HS)
+            -4 => '-4 (M100/M5/M6)', # (and PowerShot G1XmkIII/G7XmkII/G9XmkII)
+        },
+    },
+    0x47 => [{
         Name => 'ColorCoefs',
+        Condition => '$$self{ColorDataVersion} == -3',
         Format => 'undef[230]', # ColorTempUnknown13 is last entry
         SubDirectory => { TagTable => 'Image::ExifTool::Canon::ColorCoefs' }
+    },{
+        Name => 'ColorCoefs2',
+        Condition => '$$self{ColorDataVersion} == -4',
+        Format => 'undef[368]',
+        SubDirectory => { TagTable => 'Image::ExifTool::Canon::ColorCoefs2' }
+    }],
+    0xba => {
+        Name => 'ColorCalib2',
+        Condition => '$$self{ColorDataVersion} == -3',
+        Format => 'undef[150]',
+        Unknown => 1,
+        SubDirectory => { TagTable => 'Image::ExifTool::Canon::ColorCalib2' }
     },
-    0xba => { Name => 'CameraColorCalibration01', %cameraColorCalibration2,
-              Notes => 'B, C, A, D, Temperature' },
-    0xbf => { Name => 'CameraColorCalibration02', %cameraColorCalibration2 },
-    0xc4 => { Name => 'CameraColorCalibration03', %cameraColorCalibration2 },
-    0xc9 => { Name => 'CameraColorCalibration04', %cameraColorCalibration2 },
-    0xce => { Name => 'CameraColorCalibration05', %cameraColorCalibration2 },
-    0xd3 => { Name => 'CameraColorCalibration06', %cameraColorCalibration2 },
-    0xd8 => { Name => 'CameraColorCalibration07', %cameraColorCalibration2 },
-    0xdd => { Name => 'CameraColorCalibration08', %cameraColorCalibration2 },
-    0xe2 => { Name => 'CameraColorCalibration09', %cameraColorCalibration2 },
-    0xe7 => { Name => 'CameraColorCalibration10', %cameraColorCalibration2 },
-    0xec => { Name => 'CameraColorCalibration11', %cameraColorCalibration2 },
-    0xf1 => { Name => 'CameraColorCalibration12', %cameraColorCalibration2 },
-    0xf6 => { Name => 'CameraColorCalibration13', %cameraColorCalibration2 },
-    0xfb => { Name => 'CameraColorCalibration14', %cameraColorCalibration2 },
-    0x100=> { Name => 'CameraColorCalibration15', %cameraColorCalibration2 },
-    0x108=> { Name => 'PerChannelBlackLevel', Format => 'int16s[4]' }, #IB
+    0xff => {
+        Name => 'ColorCalib2',
+        Condition => '$$self{ColorDataVersion} == -4',
+        Format => 'undef[150]',
+        Unknown => 1,
+        SubDirectory => { TagTable => 'Image::ExifTool::Canon::ColorCalib2' }
+    },
+    0x108=> { #IB
+        Name => 'PerChannelBlackLevel',
+        Condition => '$$self{ColorDataVersion} == -3',
+        Format => 'int16s[4]',
+    },
+    0x14d=> { #IB
+        Name => 'PerChannelBlackLevel',
+        Condition => '$$self{ColorDataVersion} == -4',
+        Format => 'int16s[4]',
+    },
 );
 
 # Color data (MakerNotes tag 0x4001, count=1273|1275) (ref PH)
@@ -7717,8 +7825,8 @@ my %ciMaxFocal = (
     0xff => { Name => 'ColorTempUnknown27', Unknown => 1 },
     0x100=> { Name => 'WB_RGGBLevelsUnknown28',  Format => 'int16s[4]', Unknown => 1 },
     0x104=> { Name => 'ColorTempUnknown28', Unknown => 1 },
-    0x105=> { Name => 'WB_RGGBLevelsUnknown29',  Format => 'int16s[4]', Unknown => 1 }, 
-    0x109=> { Name => 'ColorTempUnknown29', Unknown => 1 }, 
+    0x105=> { Name => 'WB_RGGBLevelsUnknown29',  Format => 'int16s[4]', Unknown => 1 },
+    0x109=> { Name => 'ColorTempUnknown29', Unknown => 1 },
     0x10a => { #IB
         Name => 'ColorCalib',
         Format => 'undef[120]',
@@ -8192,7 +8300,7 @@ my %filterConv = (
     GROUPS => { 0 => 'MakerNotes', 1 => 'Canon', 2 => 'Video' },
     NOTES => q{
         Tags extracted from the uuid atom of MP4 videos from cameras such as the
-        SX280.
+        SX280, and CR3 images from cameras such as the EOS M50.
     },
     CNCV => 'CompressorVersion',
     # CNDM - 4 bytes - 0xff,0xd8,0xff,0xd9
@@ -8207,7 +8315,7 @@ my %filterConv = (
             Start => '12',
         },
     },
-    # CTBO - (CR3 files) int32u. entry count N, N x (int32u. index, int64u. offset, int64u. size)
+    # CTBO - (CR3 files) int32u entry count N, N x (int32u index, int64u offset, int64u size)
     #        index 1=XMP, 2=PRVW, 3=mdat
     CMT1 => { # (CR3 files)
         Name => 'IFD0',
@@ -8263,13 +8371,50 @@ my %filterConv = (
 
 # Canon Timed MetaData (ref PH, CR3 files)
 %Image::ExifTool::Canon::CTMD = (
-    GROUPS => { 0 => 'QuickTime', 1 => 'Canon', 2 => 'Image' },
+    GROUPS => { 0 => 'MakerNotes', 1 => 'Canon', 2 => 'Image' },
     PROCESS_PROC => \&ProcessCTMD,
     NOTES => q{
         Canon Timed MetaData tags found in CR3 images.  The ExtractEmbedded option
         is automatically applied when reading CR3 files to be able to extract this
         information.
     },
+    1 => {
+        Name => 'TimeStamp',
+        Groups => { 2 => 'Time' },
+        RawConv => q{
+            my $fmt = GetByteOrder() eq 'MM' ? 'x2nCCCCCC' : 'x2vCCCCCC';
+            sprintf('%.4d:%.2d:%.2d %.2d:%.2d:%.2d.%.2d', unpack($fmt, $val));
+        },
+        PrintConv => '$self->ConvertDateTime($val)',
+    },
+  # 3 - 4 bytes, seen: ff ff ff ff
+    4 => {
+        Name => 'FocalInfo',
+        SubDirectory => { TagTable => 'Image::ExifTool::Canon::FocalInfo' },
+    },
+    5 => {
+        Name => 'ExposureInfo',
+        SubDirectory => { TagTable => 'Image::ExifTool::Canon::ExposureInfo' },
+    },
+    7 => {
+        Name => 'TimedExif7',
+        SubDirectory => { TagTable => 'Image::ExifTool::Canon::TimedExif' },
+    },
+    8 => {
+        Name => 'TimedExif8',
+        SubDirectory => { TagTable => 'Image::ExifTool::Canon::TimedExif' },
+    },
+    9 => {
+        Name => 'TimedExif9',
+        SubDirectory => { TagTable => 'Image::ExifTool::Canon::TimedExif' },
+    },
+);
+
+# Canon Timed MetaData (ref PH, CR3 files)
+%Image::ExifTool::Canon::TimedExif = (
+    GROUPS => { 0 => 'MakerNotes', 1 => 'Canon', 2 => 'Image' },
+    PROCESS_PROC => \&ProcessTimedExif,
+    NOTES => 'Timed EXIF-format metadata found in CR3 images.',
     0x8769 => {
         Name => 'ExifIFD',
         SubDirectory => {
@@ -8286,7 +8431,41 @@ my %filterConv = (
     },
 );
 
-# Canon CNTH atoms (ref PH)
+# timed focal length information (ref PH, CR3 files)
+%Image::ExifTool::Canon::FocalInfo = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 0 => 'MakerNotes', 1 => 'Canon', 2 => 'Image' },
+    FORMAT => 'int32u',
+    FIRST_ENTRY => 0,
+    0 => {
+        Name => 'FocalLength',
+        Format => 'rational32u',
+        PrintConv => 'sprintf("%.1f mm",$val)',
+    },
+);
+
+# timed exposure information (ref PH, CR3 files)
+%Image::ExifTool::Canon::ExposureInfo = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 0 => 'MakerNotes', 1 => 'Canon', 2 => 'Image' },
+    FORMAT => 'int32u',
+    FIRST_ENTRY => 0,
+    0 => {
+        Name => 'FNumber',
+        Format => 'rational32u',
+        PrintConv => 'Image::ExifTool::Exif::PrintFNumber($val)',
+    },
+    1 => {
+        Name => 'ExposureTime',
+        Format => 'rational32u',
+        PrintConv => 'Image::ExifTool::Exif::PrintExposureTime($val)',
+    },
+    2 => {
+        Name => 'ISO',
+        Format => 'int32u',
+    },
+);
+
 %Image::ExifTool::Canon::CNTH = (
     GROUPS => { 0 => 'MakerNotes', 1 => 'Canon', 2 => 'Video' },
     NOTES => q{
@@ -9055,6 +9234,36 @@ sub CanonEvInv($)
 }
 
 #------------------------------------------------------------------------------
+# Process CTMD EXIF information
+# Inputs: 0) ExifTool object ref, 1) dirInfo ref, 2) tag table ref
+# Returns: 1 on success
+sub ProcessTimedExif($$$)
+{
+    my ($et, $dirInfo, $tagTablePtr) = @_;
+    my $dataPt = $$dirInfo{DataPt};
+    my $pos = $$dirInfo{DirStart} || 0;
+    my $dirLen = $$dirInfo{DirLen} || (length($$dataPt) - $pos);
+    my $dirEnd = $pos + $dirLen;
+    $et->VerboseDir('TimedExif', undef, $dirLen);
+    # loop through TIFF-format EXIF/MakerNote records
+    while ($pos + 8 < $dirEnd) {
+        my $len = Get32u($dataPt, $pos);
+        my $tag = Get32u($dataPt, $pos + 4);
+        $len < 8 and $et->Warn('Short TimedExif record'), last;
+        $pos + $len > $dirEnd and $et->Warn('Truncated TimedExif record'), last;
+        $et->HandleTag($tagTablePtr, $tag, undef,
+            DataPt  => $dataPt,
+            Base    => $$dirInfo{Base} + $pos + 8, # base for TIFF pointers
+            DataPos => -($pos + 8), # (relative to Base)
+            Start   => $pos + 8,
+            Size    => $len - 8,
+        );
+        $pos += $len;
+    }
+    return 1;
+}
+
+#------------------------------------------------------------------------------
 # Process Canon Timed MetaData (ref PH)
 # Inputs: 0) ExifTool object ref, 1) dirInfo ref, 2) tag table ref
 # Returns: 1 on success
@@ -9069,37 +9278,26 @@ sub ProcessCTMD($$$)
     while ($pos + 6 < $dirLen) {
         my $size = Get32u($dataPt, $pos);
         my $type = Get16u($dataPt, $pos + 4);
-        $pos + $size > $dirLen and $et->Warn('Truncated CTMD record'), last;
-        if ($verbose) {
-            $et->VerboseDir("CTMD type $type", undef, $size - 6);
-            $et->VerboseDump($dataPt, Len=>$size-6, Start=>$pos+6, DataPos=>$$dirInfo{Base});
-        }
         # what is the meaning of the next 6 bytes of these records?:
-        #   type 1 - 00 00 00 01 00 00
+        #   type 1 - 00 00 00 01 00 00 - TimeStamp
         #   type 3 - 00 00 00 01 00 00
-        #   type 4 - 00 00 00 01 ff ff
+        #   type 4 - 00 00 00 01 ff ff - ExposureTime
         #   type 5 - 00 00 00 01 ff ff
-        #   type 7 - 01 01 00 01 ff ff
-        #   type 8 - 01 01 00 01 ff ff
-        #   type 9 - 01 01 00 01 ff ff
-        # for now, just parse types 7, 8 and 9 (EXIF and MakerNote metadata)
-        # (could the first 2 bytes above be used to decide which types to parse?)
-        if ($type == 7 or $type == 8 or $type == 9) {
-            my $off = $pos + 12;    # skip the 12-byte record header
-            while ($off + 8 < $pos + $size) {
-                my $len = Get32u($dataPt, $off);
-                my $tag = Get32u($dataPt, $off + 4);
-                $len < 8 and $et->Warn('Bad CTMD structure length'), last;
-                $off + $len > $pos + $size and $et->Warn('Truncated CTMD structure'), last;
-                $et->HandleTag($tagTablePtr, $tag, undef,
-                    DataPt  => $dataPt,
-                    Base    => $$dirInfo{Base} + $off + 8, # base for TIFF pointers
-                    DataPos => -($off + 8), # (relative to Base)
-                    Start   => $off + 8,
-                    Size    => $len - 8,
-                );
-                $off += $len;
-            }
+        #   type 7 - 01 01 00 01 ff ff - EXIF + MakerNotes
+        #   type 8 - 01 01 00 01 ff ff - MakerNotes
+        #   type 9 - 01 01 00 01 ff ff - MakerNotes
+        $size < 12 and $et->Warn('Short CTMD record'), last;
+        $pos + $size > $dirLen and $et->Warn('Truncated CTMD record'), last;
+        $et->VerboseDir("CTMD type $type", undef, $size - 12);
+        if ($$tagTablePtr{$type}) {
+            $et->HandleTag($tagTablePtr, $type, undef,
+                DataPt  => $dataPt,
+                Base    => $$dirInfo{Base},
+                Start   => $pos + 12,
+                Size    => $size - 12,
+            );
+        } elsif ($verbose) {
+            $et->VerboseDump($dataPt, Len=>$size-12, Start=>$pos+12, DataPos=>$$dirInfo{Base});
         }
         $pos += $size;
     }

@@ -2,7 +2,7 @@
 # After "make install" it should work as "perl t/CanonRaw.t".
 
 BEGIN {
-    $| = 1; print "1..7\n"; $Image::ExifTool::configFile = '';
+    $| = 1; print "1..8\n"; $Image::ExifTool::configFile = '';
     require './t/TestLib.pm'; t::TestLib->import();
 }
 END {print "not ok 1\n" unless $loaded;}
@@ -134,6 +134,15 @@ my $testnum = 1;
     } else {
         print "ok $testnum # skip Requires Time::Local\n";
     }
+}
+
+# test 8: Extract information from a CR3 image
+{
+    ++$testnum;
+    my $exifTool = new Image::ExifTool;
+    my $info = $exifTool->ImageInfo('t/images/CanonRaw.cr3');
+    print 'not ' unless check($exifTool, $info, $testname, $testnum);
+    print "ok $testnum\n";
 }
 
 # end

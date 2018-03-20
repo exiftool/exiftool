@@ -4906,6 +4906,7 @@ boot, not including standby time.
   0x0028   ImageUniqueID                        int8u
   0x002f   FaceDetect3                          Canon FaceDetect3
   0x0035   TimeInfo                             Canon TimeInfo
+  0x0038   BatteryType                          undef
   0x003c   AFInfo3                              Canon AFInfo2
   0x0081   RawDataOffset                        no
   0x0083   OriginalDecisionDataOffset           int32u*
@@ -6399,27 +6400,90 @@ These tags are used by the 1DmkIII, 1DSmkIII, 1DmkIV, 5DmkII, 7D, 40D, 50D,
 
 =head3 Canon ColorData5 Tags
 
-These tags are used by the PowerShot G10 and other models.
+These tags are used by many EOS M and PowerShot models.
 
   Index2   Tag Name                             Writable
   ------   --------                             --------
+      0    ColorDataVersion                     int16s
      71    ColorCoefs                           Canon ColorCoefs
-    186    CameraColorCalibration01?            int16s[5]
-    191    CameraColorCalibration02?            int16s[5]
-    196    CameraColorCalibration03?            int16s[5]
-    201    CameraColorCalibration04?            int16s[5]
-    206    CameraColorCalibration05?            int16s[5]
-    211    CameraColorCalibration06?            int16s[5]
-    216    CameraColorCalibration07?            int16s[5]
-    221    CameraColorCalibration08?            int16s[5]
-    226    CameraColorCalibration09?            int16s[5]
-    231    CameraColorCalibration10?            int16s[5]
-    236    CameraColorCalibration11?            int16s[5]
-    241    CameraColorCalibration12?            int16s[5]
-    246    CameraColorCalibration13?            int16s[5]
-    251    CameraColorCalibration14?            int16s[5]
-    256    CameraColorCalibration15?            int16s[5]
+           ColorCoefs2                          Canon ColorCoefs2
+    186    ColorCalib2?                         Canon ColorCalib2
+    255    ColorCalib2?                         Canon ColorCalib2
     264    PerChannelBlackLevel                 int16s[4]
+    333    PerChannelBlackLevel                 int16s[4]
+
+=head3 Canon ColorCoefs2 Tags
+
+  Index2   Tag Name                             Writable
+  ------   --------                             --------
+      0    WB_RGGBLevelsAsShot                  int16s[4]
+      7    ColorTempAsShot                      int16s
+      8    WB_RGGBLevelsAuto                    int16s[4]
+     15    ColorTempAuto                        int16s
+     16    WB_RGGBLevelsMeasured                int16s[4]
+     23    ColorTempMeasured                    int16s
+     24    WB_RGGBLevelsUnknown?                int16s[4]
+     31    ColorTempUnknown?                    int16s
+     32    WB_RGGBLevelsDaylight                int16s[4]
+     39    ColorTempDaylight                    int16s
+     40    WB_RGGBLevelsShade                   int16s[4]
+     47    ColorTempShade                       int16s
+     48    WB_RGGBLevelsCloudy                  int16s[4]
+     55    ColorTempCloudy                      int16s
+     56    WB_RGGBLevelsTungsten                int16s[4]
+     63    ColorTempTungsten                    int16s
+     64    WB_RGGBLevelsFluorescent             int16s[4]
+     71    ColorTempFluorescent                 int16s
+     72    WB_RGGBLevelsKelvin                  int16s[4]
+     79    ColorTempKelvin                      int16s
+     80    WB_RGGBLevelsFlash                   int16s[4]
+     87    ColorTempFlash                       int16s
+     88    WB_RGGBLevelsUnknown2?               int16s[4]
+     95    ColorTempUnknown2?                   int16s
+     96    WB_RGGBLevelsUnknown3?               int16s[4]
+    103    ColorTempUnknown3?                   int16s
+    104    WB_RGGBLevelsUnknown4?               int16s[4]
+    111    ColorTempUnknown4?                   int16s
+    112    WB_RGGBLevelsUnknown5?               int16s[4]
+    119    ColorTempUnknown5?                   int16s
+    120    WB_RGGBLevelsUnknown6?               int16s[4]
+    127    ColorTempUnknown6?                   int16s
+    128    WB_RGGBLevelsUnknown7?               int16s[4]
+    135    ColorTempUnknown7?                   int16s
+    136    WB_RGGBLevelsUnknown8?               int16s[4]
+    143    ColorTempUnknown8?                   int16s
+    144    WB_RGGBLevelsUnknown9?               int16s[4]
+    151    ColorTempUnknown9?                   int16s
+    152    WB_RGGBLevelsUnknown10?              int16s[4]
+    159    ColorTempUnknown10?                  int16s
+    160    WB_RGGBLevelsUnknown11?              int16s[4]
+    167    ColorTempUnknown11?                  int16s
+    168    WB_RGGBLevelsUnknown12?              int16s[4]
+    175    ColorTempUnknown12?                  int16s
+    176    WB_RGGBLevelsUnknown13?              int16s[4]
+    183    ColorTempUnknown13?                  int16s
+
+=head3 Canon ColorCalib2 Tags
+
+B, C, A, D, Temperature.
+
+  Index2   Tag Name                             Writable
+  ------   --------                             --------
+      0    CameraColorCalibration01?            int16s[5]
+      5    CameraColorCalibration02?            int16s[5]
+     10    CameraColorCalibration03?            int16s[5]
+     15    CameraColorCalibration04?            int16s[5]
+     20    CameraColorCalibration05?            int16s[5]
+     25    CameraColorCalibration06?            int16s[5]
+     30    CameraColorCalibration07?            int16s[5]
+     35    CameraColorCalibration08?            int16s[5]
+     40    CameraColorCalibration09?            int16s[5]
+     45    CameraColorCalibration10?            int16s[5]
+     50    CameraColorCalibration11?            int16s[5]
+     55    CameraColorCalibration12?            int16s[5]
+     60    CameraColorCalibration13?            int16s[5]
+     65    CameraColorCalibration14?            int16s[5]
+     70    CameraColorCalibration15?            int16s[5]
 
 =head3 Canon ColorData6 Tags
 
@@ -6905,7 +6969,7 @@ cameras such as the PowerShot S95.
 =head3 Canon uuid Tags
 
 Tags extracted from the uuid atom of MP4 videos from cameras such as the
-SX280.
+SX280, and CR3 images from cameras such as the EOS M50.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
@@ -6937,6 +7001,33 @@ Information found in the "skip" atom of Canon MOV videos.
 Canon Timed MetaData tags found in CR3 images.  The ExtractEmbedded option
 is automatically applied when reading CR3 files to be able to extract this
 information.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  0x0001   TimeStamp                            no
+  0x0004   FocalInfo                            Canon FocalInfo
+  0x0005   ExposureInfo                         Canon ExposureInfo
+  0x0007   TimedExif7                           Canon TimedExif
+  0x0008   TimedExif8                           Canon TimedExif
+  0x0009   TimedExif9                           Canon TimedExif
+
+=head3 Canon FocalInfo Tags
+
+  Index4   Tag Name                             Writable
+  ------   --------                             --------
+      0    FocalLength                          no
+
+=head3 Canon ExposureInfo Tags
+
+  Index4   Tag Name                             Writable
+  ------   --------                             --------
+      0    FNumber                              no
+      1    ExposureTime                         no
+      2    ISO                                  no
+
+=head3 Canon TimedExif Tags
+
+Timed EXIF-format metadata found in CR3 images.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
@@ -14256,6 +14347,9 @@ as the Galaxy S4 and Tab S.
 
   Tag Name                                      Writable
   --------                                      --------
+  DepthMapData                                  no
+  DepthMapName                                  no
+  DualShotInfo                                  Samsung DualShotInfo
   EmbeddedAudioFile                             no
   EmbeddedAudioFileName                         no
   EmbeddedImage                                 no
@@ -14263,6 +14357,13 @@ as the Galaxy S4 and Tab S.
   EmbeddedVideoFile                             no
   EmbeddedVideoType                             no
   TimeStamp                                     no
+
+=head3 Samsung DualShotInfo Tags
+
+  Index4   Tag Name                             Writable
+  ------   --------                             --------
+      9    DepthMapWidth                        no
+     10    DepthMapHeight                       no
 
 =head3 Samsung sec Tags
 
@@ -23576,8 +23677,8 @@ Tags used in QTIF QuickTime Image Files.
 
 =head3 QuickTime Stream Tags
 
-Timed metadata extracted from QuickTime movie data when the ExtractEmbedded
-option is used.
+Timed metadata extracted from QuickTime movie data and BikeBro AVI videos
+when the ExtractEmbedded option is used.
 
   Tag ID               Tag Name                 Writable
   ------               --------                 --------
@@ -26009,7 +26110,7 @@ sub-documents, but the Duration is calculated for the full video.
   'LIST_ncdt'          NikonData                Nikon AVI
   'LIST_pntx'          PentaxData2              Pentax AVI
   'SGLT'               BikeBroAccel             QuickTime Stream
-  'SLLT'               BikeBroLocation          QuickTime Stream
+  'SLLT'               BikeBroGPS               QuickTime Stream
   'VP8 '               VP8Bitstream             RIFF VP8
   'VP8L'               VP8L                     RIFF VP8L
   'VP8X'               VP8X                     RIFF VP8X
@@ -31113,6 +31214,9 @@ values, may created via the ExifTool configuration file.
                        ID3:Year
                        ID3:Date
                        ID3:Time
+  DepthMapTiff         DepthMapData             no
+                       DepthMapWidth
+                       DepthMapHeight
   DigitalCreationDateTime IPTC:DigitalCreationDate no
                        IPTC:DigitalCreationTime
   DigitalZoom          Canon:ZoomSourceWidth    no

@@ -29,7 +29,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.60';
+$VERSION = '1.61';
 
 sub ProcessFujiDir($$$);
 sub ProcessFaceRec($$$);
@@ -395,6 +395,7 @@ my %faceCategories = (
         PrintConv => {
             0 => 'Mechanical',
             1 => 'Electronic',
+            3 => 'Electronic Front Curtain', #10
         },
     },
     0x1100 => {

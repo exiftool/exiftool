@@ -2866,6 +2866,8 @@ sub InsertTagValues($$$;$$)
         for (;;) {
             my $tag = shift @tags;
             my $lcTag = lc $tag;
+            # temporarily reset ListJoin option if evaluating list values separately
+            my $oldListJoin = $self->Options(ListJoin => undef) if $asList;
             if ($lcTag eq 'all') {
                 $val = 1;   # always some tag available
             } elsif (defined $$self{OPTIONS}{UserParam}{$lcTag}) {
@@ -2904,6 +2906,7 @@ sub InsertTagValues($$$;$$)
                     }
                 }
             }
+            $self->Options(ListJoin => $oldListJoin) if $asList;
             if (ref $val eq 'ARRAY') {
                 push @val, @$val;
                 undef $val;

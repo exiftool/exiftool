@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup);
 
-$VERSION = '10.87';
+$VERSION = '10.88';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -74,7 +74,7 @@ sub GetNewGroups($);
 sub GetDeleteGroups();
 sub AddUserDefinedTags($%);
 # non-public routines below
-sub InsertTagValues($$$;$$);
+sub InsertTagValues($$$;$$$);
 sub IsWritable($);
 sub GetNewFileName($$);
 sub LoadAllTables();
@@ -3194,24 +3194,19 @@ sub BuildCompositeTags($)
     my $self = shift;
 
     $$self{BuildingComposite} = 1;
-    # first, add user-defined Composite tags if necessary
-    if (%UserDefined and $UserDefined{'Image::ExifTool::Composite'}) {
-        AddCompositeTags($UserDefined{'Image::ExifTool::Composite'}, 1);
-        delete $UserDefined{'Image::ExifTool::Composite'};
-    }
-    my @tagList = sort keys %Image::ExifTool::Composite;
-    my %tagsUsed;
-
+    
+    my $compTable = GetTagTable('Image::ExifTool::Composite');
+    my @tagList = sort keys %$compTable;
     my $rawValue = $$self{VALUE};
+    my (%tagsUsed, %cache);
+
     for (;;) {
-        my %notBuilt;
+        my (%notBuilt, $tag, @deferredTags);
         $notBuilt{$_} = 1 foreach @tagList;
-        my @deferredTags;
-        my $tag;
 COMPOSITE_TAG:
         foreach $tag (@tagList) {
             next if $specialTags{$tag};
-            my $tagInfo = $self->GetTagInfo(\%Image::ExifTool::Composite, $tag);
+            my $tagInfo = $self->GetTagInfo($compTable, $tag);
             next unless $tagInfo;
             # put required tags into array and make sure they all exist
             my $subDoc = ($$tagInfo{SubDoc} and $$self{DOC_COUNT});
@@ -3219,7 +3214,7 @@ COMPOSITE_TAG:
             my $desire  = $$tagInfo{Desire}  || { };
             my $inhibit = $$tagInfo{Inhibit} || { };
             # loop through sub-documents if necessary
-            my $doc;
+            my $docNum = 0;
             for (;;) {
                 my (%tagKey, $found, $index);
                 # save Require'd and Desire'd tag values in list
@@ -3230,13 +3225,40 @@ COMPOSITE_TAG:
                         $found = 1 if $index == 0;
                         last;
                     }
-                    # add family 3 group if generating Composite tags for sub-documents
-                    # (unless tag already begins with family 3 group name)
-                    if ($subDoc and $reqTag !~ /^(Main|Doc\d+):/) {
-                        $reqTag = ($doc ? "Doc$doc:" : 'Main:') . $reqTag;
-                    }
-                    # allow tag group to be specified
-                    if ($reqTag =~ /^(.*):(.+)/) {
+                    if ($subDoc) {
+                        # handle SubDoc tags specially to cache tag keys for faster
+                        # processing when there are a large number of sub-documents
+                        # - get document number from the tag groups if specified,
+                        #   otherwise we are looping through all documents for this tag
+                        my $doc = $reqTag =~ s/\b(Main|Doc(\d+)):// ? ($2 || 0) : $docNum;
+                        # make fast lookup for keys of this tag with specified groups other than doc group
+                        # (similar to code in InsertTagValues(), but this is case-sensitive)
+                        my $cacheTag = $cache{$reqTag};
+                        unless ($cacheTag) {
+                            $cacheTag = $cache{$reqTag} = [ ];
+                            my $reqGroup;
+                            $reqTag =~ s/^(.*):// and $reqGroup = $1;
+                            my ($i, @keys);
+                            my $key = $reqTag;
+                            my $last = ($$self{DUPL_TAG}{$reqTag} || 0);
+                            for ($i=0;;) {
+                                push @keys, $key if defined $$rawValue{$key};
+                                last if ++$i > $last;
+                                $key = "$reqTag ($i)";
+                            }
+                            @keys = $self->GroupMatches($reqGroup, \@keys) if defined $reqGroup;
+                            if (@keys) {
+                                my $ex = $$self{TAG_EXTRA};
+                                # loop through tags in order so a more recently extracted tag
+                                # takes precedence, but move the priority tag (ie. no index)
+                                # to the end of the list so it will win over the others
+                                push @keys, shift @keys if @keys > 1 and $keys[0] !~ /\)$/;
+                                $$cacheTag[$$ex{$_} ? $$ex{$_}{G3} || 0 : 0] = $_ foreach @keys;
+                            }
+                        }
+                        # (set $reqTag to a bogus key if not found)
+                        $reqTag = $$cacheTag[$doc] || "Doc${doc}:$reqTag";
+                    } elsif ($reqTag =~ /^(.*):(.+)/) {
                         my ($reqGroup, $name) = ($1, $2);
                         if ($reqGroup eq 'Composite' and $notBuilt{$name}) {
                             push @deferredTags, $tag;
@@ -3273,13 +3295,13 @@ COMPOSITE_TAG:
                     }
                     $tagKey{$index} = $reqTag;
                 }
-                if ($doc) {
+                if ($docNum) {
                     if ($found) {
-                        $$self{DOC_NUM} = $doc;
+                        $$self{DOC_NUM} = $docNum;
                         $self->FoundTag($tagInfo, \%tagKey);
                         delete $$self{DOC_NUM};
                     }
-                    next if ++$doc <= $$self{DOC_COUNT};
+                    next if ++$docNum <= $$self{DOC_COUNT};
                     last;
                 } elsif ($found) {
                     delete $notBuilt{$tag}; # this tag is OK to build now
@@ -3288,7 +3310,7 @@ COMPOSITE_TAG:
                         # only tag keys with same name as a Composite tag
                         # can be replaced (also eliminates keys with
                         # instance numbers which can't be replaced either)
-                        next unless $Image::ExifTool::Composite{$tagKey{$_}};
+                        next unless $$compTable{$tagKey{$_}};
                         my $keyRef = \$tagKey{$_};
                         $tagsUsed{$$keyRef} or $tagsUsed{$$keyRef} = [ ];
                         push @{$tagsUsed{$$keyRef}}, $keyRef;
@@ -3314,16 +3336,16 @@ COMPOSITE_TAG:
                         $reqTag =~ s/.*://;
                         next COMPOSITE_TAG unless defined $$rawValue{$reqTag};
                     }
-                    $doc = 1;   # go ahead and process the 1st sub-document
+                    $docNum = 1;   # go ahead and process the 1st sub-document
                 } else {
                     my @try = ref $$tagInfo{SubDoc} ? @{$$tagInfo{SubDoc}} : keys %$desire;
                     # at least one of the specified desire tags must exist
                     foreach (@try) {
                         my $desTag = $$desire{$_} or next;
                         $desTag =~ s/.*://;
-                        defined $$rawValue{$desTag} and $doc = 1, last;
+                        defined $$rawValue{$desTag} and $docNum = 1, last;
                     }
-                    last unless $doc;
+                    last unless $docNum;
                 }
             }
         }
@@ -6962,9 +6984,7 @@ sub GetTagTable($)
         # set up the new table
         SetupTagTable($table);
         # add any user-defined tags (except Composite tags, which are handled specially)
-        if (%UserDefined and $UserDefined{$tableName} and
-            $tableName ne 'Image::ExifTool::Composite')
-        {
+        if (%UserDefined and $UserDefined{$tableName} and $table ne \%Image::ExifTool::Composite) {
             my $tagID;
             foreach $tagID (TagTableKeys($UserDefined{$tableName})) {
                 next if $specialTags{$tagID};
@@ -6976,6 +6996,13 @@ sub GetTagTable($)
         push @tableOrder, $tableName;
         # insert newly loaded table into list
         $allTables{$tableName} = $table;
+    }
+    # must check each time to add UserDefined Composite tags because the Composite table
+    # may be loaded before the UserDefined tags are available
+    if ($table eq \%Image::ExifTool::Composite and %UserDefined and $UserDefined{$tableName}) {
+        my $userComp = $UserDefined{$tableName};
+        delete $UserDefined{$tableName};    # (must delete first to avoid infinite recursion)
+        AddCompositeTags($userComp, 1);
     }
     return $table;
 }

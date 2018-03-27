@@ -31,7 +31,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.79';
+$VERSION = '2.80';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -9183,6 +9183,7 @@ my %pictureProfile2010 = (
     0x7302 => 'WB_GRBGLevelsAuto', #IB (R1)
     0x7303 => 'WB_GRBGLevels', #1 (R1 "as shot", ref IB)
     0x7310 => 'BlackLevel', #IB (divide by 4)
+    0x7312 => 'WB_RGGBLevelsAuto', #IB
     0x7313 => 'WB_RGGBLevels', #6
     0x7480 => 'WB_RGBLevelsDaylight', #IB (R1)
     0x7481 => 'WB_RGBLevelsCloudy', #IB (R1)

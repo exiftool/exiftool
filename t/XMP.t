@@ -2,7 +2,7 @@
 # After "make install" it should work as "perl t/XMP.t".
 
 BEGIN {
-    $| = 1; print "1..45\n"; $Image::ExifTool::configFile = '';
+    $| = 1; print "1..46\n"; $Image::ExifTool::configFile = '';
     require './t/TestLib.pm'; t::TestLib->import();
 }
 END {print "not ok 1\n" unless $loaded;}
@@ -566,6 +566,26 @@ my $testnum = 1;
     $exifTool->SetNewValue('xmp:flash' => '{}');
     $exifTool->WriteInfo(undef, $testfile);
     print 'not ' unless testCompare("t/XMP_$testnum.out",$testfile,$testnum);
+    print "ok $testnum\n";
+}
+
+# test 46: Test the advanced-formatting '@' feature on an XMP:Subject list
+{
+    ++$testnum;
+    my $exifTool = new Image::ExifTool;
+    $exifTool->Options(ListSplit => ', ');
+    my $cpy = 'subject<${subject@;/^Test/ ? $_=undef : s/Tool$//}';
+    $exifTool->SetNewValuesFromFile('t/images/XMP.jpg', $cpy);
+    $testfile = "t/${testname}_${testnum}_failed.xmp";
+    unlink $testfile;
+    writeInfo($exifTool, undef, $testfile);
+    $exifTool->Options(ListSep => ' // ');
+    my $info = $exifTool->ImageInfo($testfile, 'Subject');
+    if (check($exifTool, $info, $testname, $testnum)) {
+        unlink $testfile;
+    } else {
+        print 'not ';
+    }
     print "ok $testnum\n";
 }
 

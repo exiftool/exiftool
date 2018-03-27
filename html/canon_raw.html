@@ -17,10 +17,12 @@ table.norm th.lt { background: #eee }
 Camera Image File Format (CIFF).  The original Canon CIFF specification can be
 downloaded from <a href="http://xyrion.org/ciff/">http://xyrion.org/ciff/</a>
 (which I finally discovered after writing this document!).  Note that Canon uses
-two different RAW formats, and newer models produce CR2 instead of CRW files. 
-The CR2 files use a TIFF-based format, which is different than the CRW CIFF
-format documented here.  (See <a href="http://lclevy.free.fr/cr2/">this page</a>
-for details about the CR2 format.)</p>
+two different RAW formats, and newer models produce CR2 or CR3 instead of CRW
+files. CR2 files use a TIFF-based format, and CR3 files use a QuickTime-based
+format, which are different than the CRW CIFF format documented here.  (See
+<a href="http://lclevy.free.fr/cr2/">this page</a> for details about the CR2
+format, and <a href="https://github.com/lclevy/canon_cr3">this page</a> for
+details about the CR3 format.)</p>
 
 <h3>Comments about the CRW Format</h3>
 
@@ -347,21 +349,22 @@ remain constant for all camera models.</p>
 </table></blockquote>
 
 <h3>Revisions</h3>
-<p>Sept. 20, 2010 - Added note about XMP support in the VRD data</p>
+<p>Mar. 21, 2018 - Added mention of the CR3 file format</p>
+<p>Sep. 20, 2010 - Added note about XMP support in the VRD data</p>
 <p>Feb. 12, 2009 - Moved a couple of entries in the TagID table that were in
 the wrong section</p>
 <p>Feb. 4, 2008 - Added a number of unknown TagID's, decode some tags in the
 WhiteSample and DecoderTable data blocks, and fix incorrect SubDir for
 SerialNumber tag</p>
 <p>Nov. 16, 2007 - Added a number of unknown blocks</p>
-<p>Sept. 12, 2007 - Change name of CanonPictureInfo record to CanonAFInfo</p>
+<p>Sep. 12, 2007 - Change name of CanonPictureInfo record to CanonAFInfo</p>
 <p>Nov. 28, 2006 - Highlight the possibility of <b>OtherData</b> existing in the
 directory block</p>
 <hr>
 Please e-mail me if you find any errors or omissions in this document.  My
 address is phil at owl.phy.queensu.ca - Thanks!
 <p class='lf'><i>Created Jan. 28, 2005</i>
-<br><i>Last revised Sept. 20, 2010</i></p>
+<br><i>Last revised Mar. 21, 2018</i></p>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

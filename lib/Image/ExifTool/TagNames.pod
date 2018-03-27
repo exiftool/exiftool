@@ -3093,7 +3093,7 @@ These tags belong to the ExifTool XMP-prism family 1 group.
 
   Tag Name                                      Writable
   --------                                      --------
-  AcedemicField                                 string/
+  AcademicField                                 string/
   AggregateIssueNumber                          integer/
   AggregationType                               string/+
   AlternateTitle                                prismAlternateTitle Struct+
@@ -7007,9 +7007,9 @@ information.
   0x0001   TimeStamp                            no
   0x0004   FocalInfo                            Canon FocalInfo
   0x0005   ExposureInfo                         Canon ExposureInfo
-  0x0007   TimedExif7                           Canon TimedExif
-  0x0008   TimedExif8                           Canon TimedExif
-  0x0009   TimedExif9                           Canon TimedExif
+  0x0007   ExifInfo7                            Canon ExifInfo
+  0x0008   ExifInfo8                            Canon ExifInfo
+  0x0009   ExifInfo9                            Canon ExifInfo
 
 =head3 Canon FocalInfo Tags
 
@@ -7025,9 +7025,7 @@ information.
       1    ExposureTime                         no
       2    ISO                                  no
 
-=head3 Canon TimedExif Tags
-
-Timed EXIF-format metadata found in CR3 images.
+=head3 Canon ExifInfo Tags
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
@@ -16288,6 +16286,7 @@ Tags in the encrypted SR2SubIFD
   0x7302   WB_GRBGLevelsAuto                    no
   0x7303   WB_GRBGLevels                        no
   0x7310   BlackLevel                           no
+  0x7312   WB_RGGBLevelsAuto                    no
   0x7313   WB_RGGBLevels                        no
   0x7480   WB_RGBLevelsDaylight                 no
   0x7481   WB_RGBLevelsCloudy                   no

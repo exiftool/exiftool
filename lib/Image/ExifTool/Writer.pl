@@ -2803,6 +2803,7 @@ Conv: for (;;) {
 #              'Silent'  - just return undef on missing tag (no errors/warnings)
 #               Hash ref - hash for return of tag/value pairs
 #         4) document group name if extracting from a specific document
+#         5) hash ref to cache tag keys for subsequent calls in document loop
 # Returns: string with embedded tag values (or '$info{TAGNAME}' entries with Hash ref option)
 # Notes:
 # - tag names are not case sensitive and may end with '#' for ValueConv value
@@ -2811,11 +2812,17 @@ Conv: for (;;) {
 # - advanced feature allows Perl expressions inside braces (eg. '${model;tr/ //d}')
 # - an error/warning in an advanced expression ("${TAG;EXPR}") generates an error
 #   if option set to 'Error', or a warning otherwise
-sub InsertTagValues($$$;$$)
+sub InsertTagValues($$$;$$$)
 {
     local $_;
-    my ($self, $foundTags, $line, $opt, $docGrp) = @_;
+    my ($self, $foundTags, $line, $opt, $docGrp, $cache) = @_;
     my $rtnStr = '';
+    my $docNum;
+    if ($docGrp) {
+        $docNum = $docGrp =~ /(\d+)$/ ? $1 : 0;
+    } else {
+        undef $cache;   # no cache if no document groups
+    }
     while ($line =~ s/(.*?)\$(\{\s*)?([-\w]*\w|\$|\/)//s) {
         my ($pre, $bra, $var) = ($1, $2, $3);
         my (@tags, $val, $tg, @val, $type, $expr, $didExpr, $level, $asList);
@@ -2855,8 +2862,6 @@ sub InsertTagValues($$$;$$)
             # use default Windows filename filter if expression is empty
             $expr = 'tr(/\\\\?*:|"<>\\0)()d' unless length $expr;
         }
-        # add document number to tag if specified and it doesn't already exist
-        $var = $docGrp . ':' . $var if $docGrp and $var !~ /\b(main|doc\d+):/i;
         push @tags, $var;
         ExpandShortcuts(\@tags);
         @tags or $rtnStr .= $pre, next;
@@ -2864,45 +2869,78 @@ sub InsertTagValues($$$;$$)
         $$self{FMT_EXPR} = $expr;
 
         for (;;) {
-            my $tag = shift @tags;
-            my $lcTag = lc $tag;
             # temporarily reset ListJoin option if evaluating list values separately
             my $oldListJoin = $self->Options(ListJoin => undef) if $asList;
-            if ($lcTag eq 'all') {
-                $val = 1;   # always some tag available
-            } elsif (defined $$self{OPTIONS}{UserParam}{$lcTag}) {
-                $val = $$self{OPTIONS}{UserParam}{$lcTag};
-            } elsif ($tag =~ /(.*):(.+)/) {
+            my $tag = shift @tags;
+            my $lcTag = lc $tag;
+            if ($cache and $lcTag !~ /(^|:)all$/) {
+                # remove group from tag name (but not lower-case version)
                 my $group;
-                ($group, $tag) = ($1, $2);
-                if (lc $tag eq 'all') {
-                    # see if any tag from the specified group exists
-                    my $match = $self->GroupMatches($group, $foundTags);
-                    $val = $match ? 1 : 0;
-                } else {
-                    # find the specified tag
+                $tag =~ s/^(.*):// and $group = $1;
+                # cache tag keys to speed processing for a large number of sub-documents
+                # (similar to code in BuildCompositeTags(), but this is case-insensitive)
+                my $cacheTag = $$cache{$lcTag};
+                unless ($cacheTag) {
+                    $cacheTag = $$cache{$lcTag} = [ ];
+                    # find all matching keys, organize into groups, and store in cache
+                    my $ex = $$self{TAG_EXTRA};
                     my @matches = grep /^$tag(\s|$)/i, @$foundTags;
-                    @matches = $self->GroupMatches($group, \@matches);
-                    foreach $tg (@matches) {
-                        if (defined $val and $tg =~ / \((\d+)\)$/) {
-                            # take the most recently extracted tag
-                            my $tagNum = $1;
-                            next if $tag !~ / \((\d+)\)$/ or $1 > $tagNum;
+                    @matches = $self->GroupMatches($group, \@matches) if defined $group;
+                    foreach (@matches) {
+                        my $doc = $$ex{$_} ? $$ex{$_}{G3} || 0 : 0;
+                        if (defined $$cacheTag[$doc]) {
+                            next unless $$cacheTag[$doc] =~ / \((\d+)\)$/;
+                            my $cur = $1;
+                            # keep the most recently extracted tag
+                            next if / \((\d+)\)$/ and $1 < $cur;
                         }
-                        $val = $self->GetValue($tg, $type);
-                        $tag = $tg;
-                        last unless $tag =~ / /;    # all done if we got our best match
+                        $$cacheTag[$doc] = $_;
                     }
                 }
+                my $doc = $lcTag =~ /\b(main|doc(\d+)):/ ? ($2 || 0) : $docNum;
+                $val = $self->GetValue($$cacheTag[$doc], $type) if $$cacheTag[$doc];
             } else {
-                # get the tag value
-                $val = $self->GetValue($tag, $type);
-                unless (defined $val) {
-                    # check for tag name with different case
-                    ($tg) = grep /^$tag$/i, @$foundTags;
-                    if (defined $tg) {
-                        $val = $self->GetValue($tg, $type);
-                        $tag = $tg;
+                # add document number to tag if specified and it doesn't already exist
+                if ($docGrp and $lcTag !~ /\b(main|doc\d+):/) {
+                    $tag = $docGrp . ':' . $tag;
+                    $lcTag = lc $tag;
+                }
+                if ($lcTag eq 'all') {
+                    $val = 1;   # always some tag available
+                } elsif (defined $$self{OPTIONS}{UserParam}{$lcTag}) {
+                    $val = $$self{OPTIONS}{UserParam}{$lcTag};
+                } elsif ($tag =~ /(.*):(.+)/) {
+                    my $group;
+                    ($group, $tag) = ($1, $2);
+                    if (lc $tag eq 'all') {
+                        # see if any tag from the specified group exists
+                        my $match = $self->GroupMatches($group, $foundTags);
+                        $val = $match ? 1 : 0;
+                    } else {
+                        # find the specified tag
+                        my @matches = grep /^$tag(\s|$)/i, @$foundTags;
+                        @matches = $self->GroupMatches($group, \@matches);
+                        foreach $tg (@matches) {
+                            if (defined $val and $tg =~ / \((\d+)\)$/) {
+                                # take the most recently extracted tag
+                                my $tagNum = $1;
+                                next if $tag !~ / \((\d+)\)$/ or $1 > $tagNum;
+                            }
+                            $val = $self->GetValue($tg, $type);
+                            $tag = $tg;
+                            last unless $tag =~ / /;    # all done if we got our best match
+                        }
+                    }
+                } else {
+                    # get the tag value
+                    $val = $self->GetValue($tag, $type);
+                    unless (defined $val) {
+                        # check for tag name with different case
+                        ($tg) = grep /^$tag$/i, @$foundTags;
+                        if (defined $tg) {
+                            $val = $self->GetValue($tg, $type);
+                            $tag = $tg;
+                        }
                     }
                 }
             }
@@ -2955,7 +2993,8 @@ sub InsertTagValues($$$;$$)
                 $val = ref $_ eq 'ARRAY' ? join($$self{OPTIONS}{ListSep}, @$_): $_;
             }
             if ($evalWarning) {
-                my $str = CleanWarning() . " for '${var}'";
+                my $g3 = ($docGrp and $var !~ /\b(main|doc\d+):/i) ? $docGrp . ':' : '';
+                my $str = CleanWarning() . " for '$g3${var}'";
                 if ($opt) {
                     if ($opt eq 'Error') {
                         $self->Error($str);
@@ -2970,8 +3009,9 @@ sub InsertTagValues($$$;$$)
         unless (defined $val or ref $opt) {
             $val = $$self{OPTIONS}{MissingTagValue};
             unless (defined $val) {
-                my $msg = $didExpr ? "Advanced formatting expression returned undef for '${var}'" :
-                                     "Tag '${var}' not defined";
+                my $g3 = ($docGrp and $var !~ /\b(main|doc\d+):/i) ? $docGrp . ':' : '';
+                my $msg = $didExpr ? "Advanced formatting expression returned undef for '$g3${var}'" :
+                                     "Tag '$g3${var}' not defined";
                 no strict 'refs';
                 $opt and ($opt eq 'Silent' or &$opt($self, $msg, 2)) and return $$self{FMT_EXPR} = undef;
                 $val = '';

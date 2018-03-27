@@ -18,6 +18,7 @@ arg_files/xmp2pdf.args
 config_files/age.config
 config_files/bibble.config
 config_files/convert_regions.config
+config_files/dji.config
 config_files/example.config
 config_files/fotoware.config
 config_files/gps2utm.config
@@ -849,6 +850,7 @@ t/XMP_42.out
 t/XMP_43.out
 t/XMP_44.out
 t/XMP_45.out
+t/XMP_46.out
 t/XMP_5.out
 t/XMP_6.out
 t/XMP_7.out

@@ -7,6 +7,19 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.80. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Mar. 27, 2018 - Version 10.88
+
+  - Added example config file (dji.config) to generate Composite GPS and other
+    tags from Text metadata embedded in DJI drone videos
+  - Added a new PentaxModelID
+  - Documented new advanced-formatting "@" feature which has existed since
+    version 10.53 but not fully functional until 10.87
+  - Decode a new Sony tag (thanks LibRaw)
+  - User-defined Composite tags now show up in the -list output
+  - Improved speed for generating Composite SubDoc tags with -ee option
+  - Fixed problem creating writable UserDefined Composite tags
+  - Fixed an incorrect PRISM tag name
+
 Mar. 20, 2018 - Version 10.87
 
   - Added a new FujiFilm ShutterType value (thanks Albert Shan)

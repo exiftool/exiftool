@@ -706,7 +706,7 @@ my %prismPublicationDate = (
         Publishing Requirements for Industry Standard Metadata 3.0 namespace
         tags.  (see L<http://www.prismstandard.org/>)
     },
-    acedemicField   => { }, # (3.0)
+    academicField   => { }, # (3.0)
     aggregateIssueNumber => { Writable => 'integer' }, # (3.0)
     aggregationType => { List => 'Bag' },
     alternateTitle  => {

@@ -84,10 +84,10 @@ sub WriteCanon($$$);
 sub ProcessSerialData($$$);
 sub ProcessFilters($$$);
 sub ProcessCTMD($$$);
-sub ProcessTimedExif($$$);
+sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '3.88';
+$VERSION = '3.89';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -8397,24 +8397,23 @@ my %filterConv = (
         SubDirectory => { TagTable => 'Image::ExifTool::Canon::ExposureInfo' },
     },
     7 => {
-        Name => 'TimedExif7',
-        SubDirectory => { TagTable => 'Image::ExifTool::Canon::TimedExif' },
+        Name => 'ExifInfo7',
+        SubDirectory => { TagTable => 'Image::ExifTool::Canon::ExifInfo' },
     },
     8 => {
-        Name => 'TimedExif8',
-        SubDirectory => { TagTable => 'Image::ExifTool::Canon::TimedExif' },
+        Name => 'ExifInfo8',
+        SubDirectory => { TagTable => 'Image::ExifTool::Canon::ExifInfo' },
     },
     9 => {
-        Name => 'TimedExif9',
-        SubDirectory => { TagTable => 'Image::ExifTool::Canon::TimedExif' },
+        Name => 'ExifInfo9',
+        SubDirectory => { TagTable => 'Image::ExifTool::Canon::ExifInfo' },
     },
 );
 
 # Canon Timed MetaData (ref PH, CR3 files)
-%Image::ExifTool::Canon::TimedExif = (
+%Image::ExifTool::Canon::ExifInfo = (
     GROUPS => { 0 => 'MakerNotes', 1 => 'Canon', 2 => 'Image' },
-    PROCESS_PROC => \&ProcessTimedExif,
-    NOTES => 'Timed EXIF-format metadata found in CR3 images.',
+    PROCESS_PROC => \&ProcessExifInfo,
     0x8769 => {
         Name => 'ExifIFD',
         SubDirectory => {
@@ -9237,20 +9236,20 @@ sub CanonEvInv($)
 # Process CTMD EXIF information
 # Inputs: 0) ExifTool object ref, 1) dirInfo ref, 2) tag table ref
 # Returns: 1 on success
-sub ProcessTimedExif($$$)
+sub ProcessExifInfo($$$)
 {
     my ($et, $dirInfo, $tagTablePtr) = @_;
     my $dataPt = $$dirInfo{DataPt};
     my $pos = $$dirInfo{DirStart} || 0;
     my $dirLen = $$dirInfo{DirLen} || (length($$dataPt) - $pos);
     my $dirEnd = $pos + $dirLen;
-    $et->VerboseDir('TimedExif', undef, $dirLen);
+    $et->VerboseDir('ExifInfo', undef, $dirLen);
     # loop through TIFF-format EXIF/MakerNote records
     while ($pos + 8 < $dirEnd) {
         my $len = Get32u($dataPt, $pos);
         my $tag = Get32u($dataPt, $pos + 4);
-        $len < 8 and $et->Warn('Short TimedExif record'), last;
-        $pos + $len > $dirEnd and $et->Warn('Truncated TimedExif record'), last;
+        $len < 8 and $et->Warn('Short ExifInfo record'), last;
+        $pos + $len > $dirEnd and $et->Warn('Truncated ExifInfo record'), last;
         $et->HandleTag($tagTablePtr, $tag, undef,
             DataPt  => $dataPt,
             Base    => $$dirInfo{Base} + $pos + 8, # base for TIFF pointers
@@ -9280,10 +9279,10 @@ sub ProcessCTMD($$$)
         my $type = Get16u($dataPt, $pos + 4);
         # what is the meaning of the next 6 bytes of these records?:
         #   type 1 - 00 00 00 01 00 00 - TimeStamp
-        #   type 3 - 00 00 00 01 00 00
-        #   type 4 - 00 00 00 01 ff ff - ExposureTime
-        #   type 5 - 00 00 00 01 ff ff
-        #   type 7 - 01 01 00 01 ff ff - EXIF + MakerNotes
+        #   type 3 - 00 00 00 01 00 00 - ?
+        #   type 4 - 00 00 00 01 ff ff - FocalInfo
+        #   type 5 - 00 00 00 01 ff ff - ExposureInfo
+        #   type 7 - 01 01 00 01 ff ff - ExifIFD + MakerNotes
         #   type 8 - 01 01 00 01 ff ff - MakerNotes
         #   type 9 - 01 01 00 01 ff ff - MakerNotes
         $size < 12 and $et->Warn('Short CTMD record'), last;

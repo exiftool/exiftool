@@ -1471,8 +1471,10 @@ in a specified file.</p>
  <a href="#MissingTagValue">MissingTagValue</a> option.  The tag value may be
  modified via changes to the default input variable (<code>$_</code>) in a Perl
  expression placed inside the braces and after a semicolon following the tag
- name (see the last example below).  Braces within the expression must be
- balanced.<br>&nbsp;<br>
+ name (see the last example below).  A <code>@</code> may be added after the tag
+ name (before the semicolon) to make the expression act on individual list items
+ instead of the concatenated string for list-type tags.  Braces within the
+ expression must be balanced.<br>&nbsp;<br>
  Multiple options hash references may be passed to set different options for
  different tags.  Options apply to subsequent tags in the argument list.
 </td></tr>

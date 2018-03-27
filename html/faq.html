@@ -904,14 +904,14 @@ with ExifTool is "lossless" as far as the image is concerned</b>.</blockquote>
 <blockquote>ExifTool is very flexible in the formats allowed for entering GPS
 coordinates.  Any string containing between 1 and 3 floating point numbers is
 valid.  The numbers represent degrees, (and optionally) minutes and
-seconds.</blockquote>
+seconds with any number of decimal places.</blockquote>
 
 <blockquote>For EXIF GPS coordinates, the reference direction is specified
 separately with the EXIF:GPSLatitudeRef or EXIF:GPSLongitudeRef tag. 
 GPSLatitudeRef may be written with a string ending in "<code>N</code>" or
 "<code>S</code>", or with a signed coordinate value, positive for the northern
 hemisphere or negative for the south.  GPSLongitudeRef accepts similar values,
-but for E and W.</blockquote>
+but for E (positive) and W (negative).</blockquote>
 
 <blockquote>For XMP GPS coordinates, the reference direction is specified within
 the XMP:GPSLatitude or XMP:GPSLongitude value, with west longitudes and south
@@ -1056,8 +1056,8 @@ any previously existing keywords:
 <pre>exiftool -keywords=one -keywords=two -keywords=three DIR
 </pre>
 
-List items are assigned separately, NOT all together, because this would
-represent a single keyword:
+List items are assigned separately as above, NOT all together, because this
+would represent a single keyword:
 
 <pre>exiftool -keywords="one, two, three" test.jpg  <span class=blk>(WRONG!)</span>
 </pre>
@@ -1124,18 +1124,32 @@ an image:
 <pre>exiftool -keywords-=one -keywords+=one -keywords-=two -keywords+=two DIR
 </pre>
 
-When copying list tags using the <code>-tagsFromFile</code> option, items are
-copied individually to form proper lists.  However, there is a complication when
-copying multiple tags to a single list tag:  Here, any assignment to a tag
-overrides earlier assignments to the same tag in the command.  For instance,
-this command
+When <b>copying list tags</b> using the <code>-tagsFromFile</code> feature,
+items are copied individually to form proper lists if the tag is copied directly
+(note that <code>-tagsFromFile @</code> is implied by the "<code>&lt;</code>"
+operation in this and the following commands, causing tags to be copied from the
+original file):
 
-<pre>exiftool "-keywords&lt;filename" "-keywords&lt;comment" DIR
+<pre>exiftool "-keywords&lt;subject" DIR</pre>
+
+However, this is not the case if the tag is interpolated within a format string
+(ie. has a leading "<code>$</code>" symbol), like this
+
+<pre>exiftool "-keywords&lt;$subject" DIR  <span class=blk>(WRONG!)</span></pre>
+
+but here the <code>-sep</code> option may be used to split the list back into
+separate items:
+
+<pre>exiftool "-keywords&lt;$subject" -sep "//" DIR</pre>
+
+Note there is a complication when <b>copying multiple tags to a single list</b>
+tag:  Here, any assignment to a tag overrides earlier assignments to the same
+tag in the command.  For instance, this command:
+
+<pre>exiftool "-keywords&lt;filename" "-keywords&lt;comment" DIR  <span class=blk>(WRONG!)</span>
 </pre>
 
-writes only the value from the Comment tag.  (Note that <code>-tagsFromFile @</code>
-is implied by the "<code>&lt;</code>" operation in this command, causing tags to
-be copied from the original file.)  This may seem strange, but it prevents
+writes only the value from the Comment tag.  This may seem strange, but it prevents
 duplicate items from being added to a list when copying a group of tags from a
 file containing duplicate information.  Alternatively, the
 <code>-addTagsFromFile</code> option may be used to accumulate items when
@@ -1612,7 +1626,7 @@ tag value without running a second command.  For example, this is <b>wrong</b>
 because the copy operation is superseded by the shift, and the result is that
 the existing DateTimeOriginal is shifted back by two hours:
 
-<pre>exiftool "-datetimeoriginal&lt;filemodifydate" -datetimeoriginal-=2 image.jpg <span class=blk>(WRONG!)</span>
+<pre>exiftool "-datetimeoriginal&lt;filemodifydate" -datetimeoriginal-=2 image.jpg  <span class=blk>(WRONG!)</span>
 </pre>
 
 The <code>-globalTimeShift</code> option fills this niche -- it shifts all
@@ -1624,7 +1638,7 @@ technique for shifting a date/time value when copying:
 </blockquote>
 
 <hr>
-<i>Last revised Feb 20, 2018</i>
+<i>Last revised Mar 26, 2018</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

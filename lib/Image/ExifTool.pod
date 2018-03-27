@@ -1626,13 +1626,15 @@ of this feature allows the tag value to be set from a string containing tag
 names with leading '$' symbols (eg. 'CommentE<lt>the file is $filename'). 
 Braces '{}' may be used around the tag name to separate it from subsequent
 text, and a '$$' is used to to represent a '$' symbol.  The behaviour for
-missing tags in expressions is defined by the L</MissingTagValue> option. 
+missing tags in expressions is defined by the L</MissingTagValue> option.
 The tag value may be modified via changes to the default input variable ($_)
 in a Perl expression placed inside the braces and after a semicolon
-following the tag name (see the last example above).  Braces within the
-expression must be balanced.  Multiple options hash references may be passed
-to set different options for different tags.  Options apply to subsequent
-tags in the argument list.
+following the tag name (see the last example above).  A '@' may be added
+after the tag name (before the semicolon) to make the expression act on
+individual list items instead of the concatenated string for list-type tags.
+Braces within the expression must be balanced. Multiple options hash
+references may be passed to set different options for different tags. 
+Options apply to subsequent tags in the argument list.
 
 By default, this routine will commute information between same-named tags in
 different groups, allowing information to be translated between images with

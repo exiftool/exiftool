@@ -42,9 +42,8 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.14';
+$VERSION = '2.15';
 
-sub FixWrongFormat($);
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
 sub ProcessMetaKeys($$$);
@@ -57,6 +56,8 @@ sub ProcessMebx($$$); # (in QuickTimeStream.pl)
 sub ParseItemLocation($$);
 sub ParseItemInfoEntry($$);
 sub ParseItemPropAssoc($$);
+sub FixWrongFormat($);
+sub GetMatrixStructure($$);
 sub ConvertISO6709($);
 sub ConvertChapterList($);
 sub PrintChapter($);
@@ -401,7 +402,8 @@ my %eeBox = (
         
         ExifTool currently has a very limited ability to write metadata in
         QuickTime-format videos.  It can edit/create/delete any XMP tags, but may
-        only be used to edit certain date/time tags in native QuickTime metadata.
+        only be used to edit certain date/time tags and the video orientation in
+        native QuickTime metadata.
 
         According to the specification, many QuickTime date/time tags should be
         stored as UTC.  Unfortunately, digital cameras often store local time values
@@ -1095,7 +1097,7 @@ my %eeBox = (
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     GROUPS => { 1 => 'Track#', 2 => 'Video' },
     FORMAT => 'int32u',
-    DATAMEMBER => [ 0, 1, 2, 5 ],
+    DATAMEMBER => [ 0, 1, 2, 5, 7 ],
     0 => {
         Name => 'TrackHeaderVersion',
         Format => 'int8u',
@@ -1129,6 +1131,12 @@ my %eeBox = (
         # this is int64u if TrackHeaderVersion == 1 (ref 13)
         Hook => '$$self{TrackHeaderVersion} and $format = "int64u", $varSize += 4',
     },
+    7 => { # (used only for writing MatrixStructure)
+        Name => 'ImageSizeLookahead',
+        Hidden => 1,
+        Format => 'int32u[14]',
+        RawConv => '$$self{ImageSizeLookahead} = $val; undef',
+    },
     8 => {
         Name => 'TrackLayer',
         Format => 'int16u',
@@ -1144,10 +1152,20 @@ my %eeBox = (
     10 => {
         Name => 'MatrixStructure',
         Format => 'fixed32s[9]',
+        Notes => 'writable for the video track via the Composite Rotation tag',
+        Writable => 1,
+        Permanent => 1,
+        # only set rotation if image size is non-zero
+        RawConvInv => \&GetMatrixStructure,
         # (the right column is fixed 2.30 instead of 16.16)
         ValueConv => q{
             my @a = split ' ',$val;
             $_ /= 0x4000 foreach @a[2,5,8];
+            return "@a";
+        },
+        ValueConvInv => q{
+            my @a = split ' ',$val;
+            $_ *= 0x4000 foreach @a[2,5,8];
             return "@a";
         },
     },
@@ -4935,16 +4953,17 @@ my %eeBox = (
         Name => 'MediaType',
         PrintConvColumns => 2,
         PrintConv => { #(http://weblog.xanga.com/gryphondwb/615474010/iphone-ringtones---what-did-itunes-741-really-do.html)
-            0 => 'Movie',
+            0 => 'Movie (old)', #forum9059 (was Movie)
             1 => 'Normal (Music)',
             2 => 'Audiobook',
             5 => 'Whacked Bookmark',
             6 => 'Music Video',
-            9 => 'Short Film',
+            9 => 'Movie', #forum9059 (was Short Film)
             10 => 'TV Show',
             11 => 'Booklet',
             14 => 'Ringtone',
             21 => 'Podcast', #15
+            23 => 'iTunes U', #forum9059
         },
     },
     rate => 'RatingPercent', #PH
@@ -6380,11 +6399,20 @@ my %eeBox = (
 %Image::ExifTool::QuickTime::Composite = (
     GROUPS => { 2 => 'Video' },
     Rotation => {
+        Notes => q{
+            writing this tag updates QuickTime MatrixStructure for all tracks with a
+            non-zero image size
+        },
         Require => {
             0 => 'QuickTime:MatrixStructure',
             1 => 'QuickTime:HandlerType',
         },
+        Writable => 1,
+        WriteAlso => {
+            MatrixStructure => 'Image::ExifTool::QuickTime::GetRotationMatrix($val)',
+        },
         ValueConv => 'Image::ExifTool::QuickTime::CalcRotation($self)',
+        ValueConvInv => '$val',
     },
     AvgBitrate => {
         Priority => 0,  # let QuickTime::AvgBitrate take priority
@@ -6498,6 +6526,35 @@ sub AUTOLOAD
 }
 
 #------------------------------------------------------------------------------
+# Get rotation matrix
+# Inputs: 0) angle in degrees
+# Returns: 9-element rotation matrix as a string (with 0 x/y offsets)
+sub GetRotationMatrix($)
+{
+    my $ang = 3.1415926536 * shift() / 180;
+    my $cos = cos $ang;
+    my $sin = sin $ang;
+    my $msn = -$sin;
+    return "$cos $sin 0 $msn $cos 0 0 0 1";
+}
+
+#------------------------------------------------------------------------------
+# Get rotation angle from a matrix
+# Inputs: 0) rotation matrix as a string
+# Return: positive rotation angle in degrees rounded to 3 decimal points,
+#         or undef on error
+sub GetRotationAngle($)
+{
+    my $rotMatrix = shift;
+    my @a = split ' ', $rotMatrix;
+    return undef if $a[0]==0 and $a[1]==0;
+    # calculate the rotation angle (assume uniform rotation)
+    my $angle = atan2($a[1], $a[0]) * 180 / 3.14159;
+    $angle += 360 if $angle < 0;
+    return int($angle * 1000 + 0.5) / 1000;
+}
+
+#------------------------------------------------------------------------------
 # Calculate rotation of video track
 # Inputs: 0) ExifTool object ref
 # Returns: rotation angle or undef
@@ -6522,14 +6579,38 @@ sub CalcRotation($)
         my $tag = "MatrixStructure$idx";
         last unless $$value{$tag};
         next unless $et->GetGroup($tag, 1) eq $track;
-        my @a = split ' ', $$value{$tag};
-        return undef unless $a[0] or $a[1];
-        # calculate the rotation angle (assume uniform rotation)
-        my $angle = atan2($a[1], $a[0]) * 180 / 3.14159;
-        $angle += 360 if $angle < 0;
-        return int($angle * 1000 + 0.5) / 1000;
+        return GetRotationAngle($$value{$tag});
     }
     return undef;
+}
+
+#------------------------------------------------------------------------------
+# Get MatrixStructure for a given rotation angle
+# Inputs: 0) rotation angle (deg), 1) ExifTool ref
+# Returns: matrix structure as a string, or undef if it can't be rotated
+# - requires ImageSizeLookahead to determine the video image size, and doesn't
+#   rotate matrix unless image size is valid
+sub GetMatrixStructure($$)
+{
+    my ($val, $et) = @_;
+    my @a = split ' ', $val;
+    # pass straight through if it already has an offset
+    return $val unless $a[6] == 0 and $a[7] == 0;
+    my @s = split ' ', $$et{ImageSizeLookahead};
+    my ($w, $h) = @s[12,13];
+    return undef unless $w and $h;  # don't rotate 0-sized track
+    $_ = Image::ExifTool::QuickTime::FixWrongFormat($_) foreach $w,$h;
+    # apply necessary offsets for the standard rotations
+    my $angle = GetRotationAngle($val);
+    return undef unless defined $angle;
+    if ($angle == 90) {
+        @a[6,7] = ($h, 0);
+    } elsif ($angle == 180) {
+        @a[6,7] = ($w, $h);
+    } elsif ($angle == 270) {
+        @a[6,7] = (0, $w);
+    }
+    return "@a";
 }
 
 #------------------------------------------------------------------------------
@@ -6556,10 +6637,7 @@ sub FixWrongFormat($)
 {
     my $val = shift;
     return undef unless $val;
-    if ($val & 0xffff0000) {
-        $val = unpack('n',pack('N',$val));
-    }
-    return $val;
+    return $val & 0xfff00000 ? unpack('n',pack('N',$val)) : $val;
 }
 
 #------------------------------------------------------------------------------

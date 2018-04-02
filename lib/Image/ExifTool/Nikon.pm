@@ -59,7 +59,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.43';
+$VERSION = '3.44';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -719,6 +719,19 @@ my %flashGNDistance = (
     18 => '2.5 m',  255 => 'n/a',
 );
 
+# flash color filter values (ref 28)
+my %flashColorFilter = (
+    0x00 => 'None',
+    1 => 'FL-GL1 or SZ-2FL Fluorescent', # (green) (SZ model ref PH)
+    2 => 'FL-GL2',
+    9 => 'TN-A1 or SZ-2TN Incandescent', # (orange) (SZ model ref PH)
+    10 => 'TN-A2',
+    65 => 'Red',
+    66 => 'Blue',
+    67 => 'Yellow',
+    68 => 'Amber',
+);
+
 # flash control mode values (ref JD)
 my %flashControlMode = (
     0x00 => 'Off',
@@ -1206,6 +1219,7 @@ my %binaryDataAttrs = (
             ByteOrder => 'BigEndian', #(NC)
         },
     },
+    # 0x2d - "512 0 0","512 3 10","512 1 14",...
     0x0032 => { #PH
         Name => 'UnknownInfo2',
         SubDirectory => {
@@ -1945,6 +1959,11 @@ my %binaryDataAttrs = (
             SubDirectory => { TagTable => 'Image::ExifTool::Nikon::FlashInfo0103' },
         },
         {
+            Name => 'FlashInfo0106', # (Df, D610, D3300, D5300, D7100, Coolpix A)
+            Condition => '$$valPt =~ /^0106/',
+            SubDirectory => { TagTable => 'Image::ExifTool::Nikon::FlashInfo0106' },
+        },
+        {
             Name => 'FlashInfo0107', # (0107 for D4S/D750/D810/D5500/D7200, 0108 for D5/D500/D3400)
             Condition => '$$valPt =~ /^010[78]/',
             SubDirectory => { TagTable => 'Image::ExifTool::Nikon::FlashInfo0107' },
@@ -2076,7 +2095,7 @@ my %binaryDataAttrs = (
         Name => 'BarometerInfo',
         SubDirectory => {
             TagTable => 'Image::ExifTool::Nikon::BarometerInfo',
-            ByteOrder => 'LittleEndian',
+            # (little-endian in II EXIF, big-endian in MOV)
         },
     },
     0x0e00 => {
@@ -6670,17 +6689,8 @@ my %nikonFocalConversions = (
     },
     16 => { #28
         Name => 'FlashColorFilter',
-        PrintConv => {
-            0x00 => 'None',
-            1 => 'FL-GL1',
-            2 => 'FL-GL2',
-            9 => 'TN-A1',
-            10 => 'TN-A2',
-            65 => 'Red',
-            66 => 'Blue',
-            67 => 'Yellow',
-            68 => 'Amber',
-        },
+        SeparateTable => 1,
+        PrintConv => \%flashColorFilter,
     },
     17.1 => {
         Name => 'FlashGroupAControlMode',
@@ -6711,7 +6721,7 @@ my %nikonFocalConversions = (
         PrintConv => \%flashControlMode,
         SeparateTable => 'FlashControlMode',
     },
-    19 => [
+    0x13 => [
         {
             Name => 'FlashGroupAOutput',
             Condition => '$$self{FlashGroupAControlMode} >= 0x06',
@@ -6729,7 +6739,7 @@ my %nikonFocalConversions = (
             PrintConvInv => '$val',
         },
     ],
-    20 => [
+    0x14 => [
         {
             Name => 'FlashGroupBOutput',
             Condition => '$$self{FlashGroupBControlMode} >= 0x60',
@@ -6747,7 +6757,7 @@ my %nikonFocalConversions = (
             PrintConvInv => '$val',
         },
     ],
-    21 => [ #PH
+    0x15 => [ #PH
         {
             Name => 'FlashGroupCOutput',
             Condition => '$$self{FlashGroupCControlMode} >= 0x06',
@@ -6798,15 +6808,205 @@ my %nikonFocalConversions = (
     # 0x2b - related to flash power (PH, D800, 96=full,62=1/4,2=1/128)
 );
 
+# Flash information for the D7100 (ref PH)
+# (this is VERY similar to FlashInfo0107, but there are a few differences that
+#  would need to be resolved if these two definitions were to be combined)
+%Image::ExifTool::Nikon::FlashInfo0106 = (
+    %binaryDataAttrs,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    DATAMEMBER => [ 9.2, 17.1, 18.1, 18.2 ],
+    NOTES => 'These tags are used by the Df, D610, D3300, D5300, D7100 and Coolpix A.',
+    # NOTE: Must set ByteOrder in SubDirectory if any multi-byte integer tags added
+    0 => {
+        Name => 'FlashInfoVersion',
+        Format => 'string[4]',
+        Writable => 0,
+    },
+    4 => {
+        Name => 'FlashSource',
+        PrintConv => {
+            0 => 'None',
+            1 => 'External',
+            2 => 'Internal',
+        },
+    },
+    6 => {
+        Format => 'int8u[2]',
+        Name => 'ExternalFlashFirmware',
+        SeparateTable => 'FlashFirmware',
+        PrintConv => \%flashFirmware,
+    },
+    8 => {
+        Name => 'ExternalFlashFlags',
+        PrintConv => { BITMASK => {
+            0 => 'Fired',
+            2 => 'Bounce Flash',
+            4 => 'Wide Flash Adapter',
+            5 => 'Dome Diffuser', # (NC, not true for the SB-910 anyway)
+          # 7 - ? (set for SB-910 when an advanced option is used, eg. diff pattern)
+        }},
+    },
+    9.1 => { # (NC)
+        Name => 'FlashCommanderMode',
+        Mask => 0x80,
+        PrintConv => {
+            0x00 => 'Off',
+            0x80 => 'On',
+        },
+    },
+    9.2 => {
+        Name => 'FlashControlMode',
+        Mask => 0x7f,
+        DataMember => 'FlashControlMode',
+        RawConv => '$$self{FlashControlMode} = $val',
+        PrintConv => \%flashControlMode,
+        SeparateTable => 'FlashControlMode',
+    },
+  # 10 - similar to 0x27 but zero sometimes when I don't think it should be
+    12 => {
+        Name => 'FlashFocalLength',
+        Notes => 'only valid if flash pattern is "Standard Illumination"',
+        RawConv => '($val and $val != 255) ? $val : undef',
+        PrintConv => '"$val mm"',
+        PrintConvInv => '$val=~/(\d+)/; $1 || 0',
+    },
+    13 => {
+        Name => 'RepeatingFlashRate',
+        RawConv => '($val and $val != 255) ? $val : undef',
+        PrintConv => '"$val Hz"',
+        PrintConvInv => '$val=~/(\d+)/; $1 || 0',
+    },
+    14 => {
+        Name => 'RepeatingFlashCount',
+        RawConv => '($val and $val != 255) ? $val : undef',
+    },
+    15 => { # (NC)
+        Name => 'FlashGNDistance',
+        SeparateTable => 1,
+        PrintConv => \%flashGNDistance,
+    },
+    16 => {
+        Name => 'FlashColorFilter',
+        SeparateTable => 1,
+        PrintConv => \%flashColorFilter,
+    },
+    17.1 => {
+        Name => 'FlashGroupAControlMode',
+        Mask => 0x0f,
+        DataMember => 'FlashGroupAControlMode',
+        RawConv => '$$self{FlashGroupAControlMode} = $val',
+        PrintConv => \%flashControlMode,
+        SeparateTable => 'FlashControlMode',
+    },
+    18.1 => {
+        Name => 'FlashGroupBControlMode',
+        Mask => 0xf0,
+        DataMember => 'FlashGroupBControlMode',
+        RawConv => '$$self{FlashGroupBControlMode} = $val',
+        ValueConv => '$val >> 4',
+        ValueConvInv => '$val << 4',
+        PrintConv => \%flashControlMode,
+        SeparateTable => 'FlashControlMode',
+    },
+    18.2 => {
+        Name => 'FlashGroupCControlMode',
+        Mask => 0x0f,
+        DataMember => 'FlashGroupCControlMode',
+        RawConv => '$$self{FlashGroupCControlMode} = $val',
+        PrintConv => \%flashControlMode,
+        SeparateTable => 'FlashControlMode',
+    },
+  # 0x13 - same as 0x28 but not zero when flash group A is Off
+  # 0x14 - same as 0x29 but not zero when flash group B is Off
+  # 0x15 - same as 0x2a but not zero when flash group B is Off
+  # 0x1a - changes with illumination pattern (0=normal,1=narrow,2=wide), but other values seen
+  # 0x26 - changes when diffuser is used
+    0x27 => [
+        {
+            Name => 'FlashOutput',
+            Condition => '$$self{FlashControlMode} >= 0x06',
+            ValueConv => '2 ** (-$val/6)',
+            ValueConvInv => '$val>0 ? -6*log($val)/log(2) : 0',
+            PrintConv => '$val>0.99 ? "Full" : sprintf("%.0f%%",$val*100)',
+            PrintConvInv => '$val=~/(\d+)/ ? $1/100 : 1',
+        },
+        {
+            Name => 'FlashCompensation',
+            Format => 'int8s',
+            Priority => 0,
+            ValueConv => '-$val/6',
+            ValueConvInv => '-6 * $val',
+            PrintConv => 'Image::ExifTool::Exif::PrintFraction($val)',
+            PrintConvInv => 'Image::ExifTool::Exif::ConvertFraction($val)',
+        },
+    ],
+    0x28 => [
+        {
+            Name => 'FlashGroupAOutput',
+            Condition => '$$self{FlashGroupAControlMode} >= 0x06',
+            ValueConv => '2 ** (-$val/6)',
+            ValueConvInv => '$val>0 ? -6*log($val)/log(2) : 0',
+            PrintConv => '$val>0.99 ? "Full" : sprintf("%.0f%%",$val*100)',
+            PrintConvInv => '$val=~/(\d+)/ ? $1/100 : 1',
+        },
+        {
+            Name => 'FlashGroupACompensation',
+            Format => 'int8s',
+            ValueConv => '-$val/6',
+            ValueConvInv => '-6 * $val',
+            PrintConv => '$val ? sprintf("%+.1f",$val) : 0',
+            PrintConvInv => '$val',
+        },
+    ],
+    0x29 => [
+        {
+            Name => 'FlashGroupBOutput',
+            Condition => '$$self{FlashGroupBControlMode} >= 0x60',
+            ValueConv => '2 ** (-$val/6)',
+            ValueConvInv => '$val>0 ? -6*log($val)/log(2) : 0',
+            PrintConv => '$val>0.99 ? "Full" : sprintf("%.0f%%",$val*100)',
+            PrintConvInv => '$val=~/(\d+)/ ? $1/100 : 1',
+        },
+        {
+            Name => 'FlashGroupBCompensation',
+            Format => 'int8s',
+            ValueConv => '-$val/6',
+            ValueConvInv => '-6 * $val',
+            PrintConv => '$val ? sprintf("%+.1f",$val) : 0',
+            PrintConvInv => '$val',
+        },
+    ],
+    0x2a => [
+        {
+            Name => 'FlashGroupCOutput',
+            Condition => '$$self{FlashGroupCControlMode} >= 0x06',
+            ValueConv => '2 ** (-$val/6)',
+            ValueConvInv => '$val>0 ? -6*log($val)/log(2) : 0',
+            PrintConv => '$val>0.99 ? "Full" : sprintf("%.0f%%",$val*100)',
+            PrintConvInv => '$val=~/(\d+)/ ? $1/100 : 1',
+        },
+        {
+            Name => 'FlashGroupCCompensation',
+            Format => 'int8s',
+            ValueConv => '-$val/6',
+            ValueConvInv => '-6 * $val',
+            PrintConv => '$val ? sprintf("%+.1f",$val) : 0',
+            PrintConvInv => '$val',
+        },
+    ],
+);
+
 # Flash information for the D4S/D750/D810/D5500/D7200 (0107)
-# and D5/D500/D3400 (0108) (ref 28)
+# and D5/D500/D850/D3400 (0108) (ref 28)
 %Image::ExifTool::Nikon::FlashInfo0107 = (
     %binaryDataAttrs,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    DATAMEMBER => [ 17.1, 18.1, 18.2 ],
     NOTES => q{
         These tags are used by the D4S, D750, D810, D5500, D7200 (FlashInfoVersion
-        0107) and the D5, D500 and D3400 (FlashInfoVersion 0108).
+        0107) and the D5, D500, D850 and D3400 (FlashInfoVersion 0108).
     },
+    # NOTE: Must set ByteOrder in SubDirectory if any multi-byte integer tags added
     0 => {
         Name => 'FlashInfoVersion',
         Format => 'string[4]',
@@ -6885,7 +7085,91 @@ my %nikonFocalConversions = (
         SeparateTable => 1,
         PrintConv => \%flashGNDistance,
     },
-    # 24 or 25 may indicate flash illumination pattern (Standard, Center-weighted, Even)
+    17.1 => { #PH
+        Name => 'FlashGroupAControlMode',
+        Mask => 0x0f,
+        Notes => 'note: group A tags may apply to the built-in flash settings for some models',
+        DataMember => 'FlashGroupAControlMode',
+        RawConv => '$$self{FlashGroupAControlMode} = $val',
+        PrintConv => \%flashControlMode,
+        SeparateTable => 'FlashControlMode',
+    },
+    18.1 => { #PH
+        Name => 'FlashGroupBControlMode',
+        Mask => 0xf0,
+        Notes => 'note: group B tags may apply to group A settings for some models',
+        DataMember => 'FlashGroupBControlMode',
+        RawConv => '$$self{FlashGroupBControlMode} = $val',
+        ValueConv => '$val >> 4',
+        ValueConvInv => '$val << 4',
+        PrintConv => \%flashControlMode,
+        SeparateTable => 'FlashControlMode',
+    },
+    18.2 => { #PH
+        Name => 'FlashGroupCControlMode',
+        Mask => 0x0f,
+        Notes => 'note: group C tags may apply to group B settings for some models',
+        DataMember => 'FlashGroupCControlMode',
+        RawConv => '$$self{FlashGroupCControlMode} = $val',
+        PrintConv => \%flashControlMode,
+        SeparateTable => 'FlashControlMode',
+    },
+    # 0x13 - very similar to 0x28
+    # 0x18 or 0x19 may indicate flash illumination pattern (Standard, Center-weighted, Even)
+    0x28 => [ #PH
+        {
+            Name => 'FlashGroupAOutput',
+            Condition => '$$self{FlashGroupAControlMode} >= 0x06',
+            ValueConv => '2 ** (-$val/6)',
+            ValueConvInv => '$val>0 ? -6*log($val)/log(2) : 0',
+            PrintConv => '$val>0.99 ? "Full" : sprintf("%.0f%%",$val*100)',
+            PrintConvInv => '$val=~/(\d+)/ ? $1/100 : 1',
+        },
+        {
+            Name => 'FlashGroupACompensation',
+            Format => 'int8s',
+            ValueConv => '-$val/6',
+            ValueConvInv => '-6 * $val',
+            PrintConv => '$val ? sprintf("%+.1f",$val) : 0',
+            PrintConvInv => '$val',
+        },
+    ],
+    0x29 => [ #PH
+        {
+            Name => 'FlashGroupBOutput',
+            Condition => '$$self{FlashGroupBControlMode} >= 0x60',
+            ValueConv => '2 ** (-$val/6)',
+            ValueConvInv => '$val>0 ? -6*log($val)/log(2) : 0',
+            PrintConv => '$val>0.99 ? "Full" : sprintf("%.0f%%",$val*100)',
+            PrintConvInv => '$val=~/(\d+)/ ? $1/100 : 1',
+        },
+        {
+            Name => 'FlashGroupBCompensation',
+            Format => 'int8s',
+            ValueConv => '-$val/6',
+            ValueConvInv => '-6 * $val',
+            PrintConv => '$val ? sprintf("%+.1f",$val) : 0',
+            PrintConvInv => '$val',
+        },
+    ],
+    0x2a => [ #PH
+        {
+            Name => 'FlashGroupCOutput',
+            Condition => '$$self{FlashGroupCControlMode} >= 0x06',
+            ValueConv => '2 ** (-$val/6)',
+            ValueConvInv => '$val>0 ? -6*log($val)/log(2) : 0',
+            PrintConv => '$val>0.99 ? "Full" : sprintf("%.0f%%",$val*100)',
+            PrintConvInv => '$val=~/(\d+)/ ? $1/100 : 1',
+        },
+        {
+            Name => 'FlashGroupCCompensation',
+            Format => 'int8s',
+            ValueConv => '-$val/6',
+            ValueConvInv => '-6 * $val',
+            PrintConv => '$val ? sprintf("%+.1f",$val) : 0',
+            PrintConvInv => '$val',
+        },
+    ],
 );
 
 # Unknown Flash information
@@ -7387,7 +7671,7 @@ my %nikonFocalConversions = (
         Groups => { 2 => 'Audio' },
     },
     # 0x101 - int16u[4]: "160 120 1280 720"
-    # 0x102 - int16u[8]
+    # 0x102 - int16u[8]: "640 360 0 0 0 0 0 0"
     # 0x1001 - int16s: 0
     0x1002 => {
         Name => 'NikonDateTime', #?
@@ -7674,6 +7958,16 @@ my %nikonFocalConversions = (
             SubDirectory => { TagTable => 'Image::ExifTool::Nikon::FlashInfo0103' },
         },
         {
+            Name => 'FlashInfo0106', # (0106 for D7100)
+            Condition => '$$valPt =~ /^0106/',
+            SubDirectory => { TagTable => 'Image::ExifTool::Nikon::FlashInfo0106' },
+        },
+        {
+            Name => 'FlashInfo0107', # (0107 for D4S/D750/D810/D5500/D7200, 0108 for D5/D500/D3400)
+            Condition => '$$valPt =~ /^010[78]/',
+            SubDirectory => { TagTable => 'Image::ExifTool::Nikon::FlashInfo0107' },
+        },
+        {
             Name => 'FlashInfoUnknown',
             SubDirectory => { TagTable => 'Image::ExifTool::Nikon::FlashInfoUnknown' },
         },
@@ -7697,6 +7991,13 @@ my %nikonFocalConversions = (
         SubDirectory => { TagTable => 'Image::ExifTool::Nikon::AFInfo2' },
     },
     # 0x20000c0 - undef[8]
+    0x20000c3 => {
+        Name => 'BarometerInfo',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Nikon::BarometerInfo',
+            # (little-endian in II EXIF, big-endian in MOV)
+        },
+    },
 );
 
 # Nikon composite tags

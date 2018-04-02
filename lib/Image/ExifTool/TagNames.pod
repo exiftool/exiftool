@@ -9991,6 +9991,7 @@ DiMAGE X and Xt.
   0x00a8   FlashInfo0100                        Nikon FlashInfo0100
            FlashInfo0102                        Nikon FlashInfo0102
            FlashInfo0103                        Nikon FlashInfo0103
+           FlashInfo0106                        Nikon FlashInfo0106
            FlashInfo0107                        Nikon FlashInfo0107
            FlashInfoUnknown                     Nikon FlashInfoUnknown
   0x00a9   ImageOptimization                    string
@@ -10710,10 +10711,39 @@ D5200, D7000.
      29    FlashExposureComp3                   int8s
      39    FlashExposureComp4                   int8s
 
+=head3 Nikon FlashInfo0106 Tags
+
+These tags are used by the Df, D610, D3300, D5300, D7100 and Coolpix A.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    FlashInfoVersion                     no
+      4    FlashSource                          int8u
+      6    ExternalFlashFirmware                int8u[2]
+      8    ExternalFlashFlags                   int8u
+    9.1    FlashCommanderMode                   int8u & 0x80
+    9.2    FlashControlMode                     int8u & 0x7f
+     12    FlashFocalLength                     int8u
+     13    RepeatingFlashRate                   int8u
+     14    RepeatingFlashCount                  int8u
+     15    FlashGNDistance                      int8u
+     16    FlashColorFilter                     int8u
+   17.1    FlashGroupAControlMode               int8u & 0x0f
+   18.1    FlashGroupBControlMode               int8u & 0xf0
+   18.2    FlashGroupCControlMode               int8u & 0x0f
+     39    FlashOutput                          int8u
+           FlashCompensation                    int8s
+     40    FlashGroupAOutput                    int8u
+           FlashGroupACompensation              int8s
+     41    FlashGroupBOutput                    int8u
+           FlashGroupBCompensation              int8s
+     42    FlashGroupCOutput                    int8u
+           FlashGroupCCompensation              int8s
+
 =head3 Nikon FlashInfo0107 Tags
 
 These tags are used by the D4S, D750, D810, D5500, D7200 (FlashInfoVersion
-0107) and the D5, D500 and D3400 (FlashInfoVersion 0108).
+0107) and the D5, D500, D850 and D3400 (FlashInfoVersion 0108).
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
@@ -10728,6 +10758,15 @@ These tags are used by the D4S, D750, D810, D5500, D7200 (FlashInfoVersion
      13    RepeatingFlashRate                   int8u
      14    RepeatingFlashCount                  int8u
      15    FlashGNDistance                      int8u
+   17.1    FlashGroupAControlMode               int8u & 0x0f
+   18.1    FlashGroupBControlMode               int8u & 0xf0
+   18.2    FlashGroupCControlMode               int8u & 0x0f
+     40    FlashGroupAOutput                    int8u
+           FlashGroupACompensation              int8s
+     41    FlashGroupBOutput                    int8u
+           FlashGroupBCompensation              int8s
+     42    FlashGroupCOutput                    int8u
+           FlashGroupCCompensation              int8s
 
 =head3 Nikon FlashInfoUnknown Tags
 
@@ -10953,10 +10992,13 @@ videos from some Nikon cameras.
   0x20000a8    FlashInfo0100                    Nikon FlashInfo0100
                FlashInfo0102                    Nikon FlashInfo0102
                FlashInfo0103                    Nikon FlashInfo0103
+               FlashInfo0106                    Nikon FlashInfo0106
+               FlashInfo0107                    Nikon FlashInfo0107
                FlashInfoUnknown                 Nikon FlashInfoUnknown
   0x20000ab    VariProgram                      string
   0x20000b1    HighISONoiseReduction            int16u
   0x20000b7    AFInfo2                          Nikon AFInfo2
+  0x20000c3    BarometerInfo                    Nikon BarometerInfo
 
 =head3 Nikon MOV Tags
 
@@ -22568,7 +22610,8 @@ the Unknown option is set.
 
 ExifTool currently has a very limited ability to write metadata in
 QuickTime-format videos.  It can edit/create/delete any XMP tags, but may
-only be used to edit certain date/time tags in native QuickTime metadata.
+only be used to edit certain date/time tags and the video orientation in
+native QuickTime metadata.
 
 According to the specification, many QuickTime date/time tags should be
 stored as UTC.  Unfortunately, digital cameras often store local time values
@@ -23323,7 +23366,7 @@ MP4 video media header.
       5    TrackDuration                        no
       8    TrackLayer                           no
       9    TrackVolume                          no
-     10    MatrixStructure                      no
+     10    MatrixStructure                      fixed32s[9]
      19    ImageWidth                           no
      20    ImageHeight                          no
 
@@ -31381,7 +31424,7 @@ values, may created via the ExifTool configuration file.
                        FlashBits
   RicohPitch           Ricoh:Accelerometer      no
   RicohRoll            Ricoh:Accelerometer      no
-  Rotation             QuickTime:MatrixStructure no
+  Rotation             QuickTime:MatrixStructure yes
                        QuickTime:HandlerType
   RunTimeSincePowerUp  Apple:RunTimeValue       no
                        Apple:RunTimeScale

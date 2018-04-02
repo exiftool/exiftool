@@ -16,7 +16,8 @@ the Unknown option is set.</p>
 
 <p>ExifTool currently has a very limited ability to write metadata in
 QuickTime-format videos.  It can edit/create/delete any XMP tags, but may
-only be used to edit certain date/time tags in native QuickTime metadata.</p>
+only be used to edit certain date/time tags and the video orientation in
+native QuickTime metadata.</p>
 
 <p>According to the specification, many QuickTime date/time tags should be
 stored as UTC.  Unfortunately, digital cameras often store local time values
@@ -742,16 +743,17 @@ added dynamically to this table after processing the Meta Keys information.</p>
 <td>MediaType</td>
 <td class=c>no</td>
 <td><table class=cols><tr>
-  <td>0 = Movie
+  <td>0 = Movie (old)
   <br>1 = Normal (Music)
   <br>2 = Audiobook
   <br>5 = Whacked Bookmark
-  <br>6 = Music Video</td><td>&nbsp;&nbsp;</td>
-  <td>9 = Short Film
-  <br>10 = TV Show
+  <br>6 = Music Video
+  <br>9 = Movie</td><td>&nbsp;&nbsp;</td>
+  <td>10 = TV Show
   <br>11 = Booklet
   <br>14 = Ringtone
-  <br>21 = Podcast</td></tr></table>
+  <br>21 = Podcast
+  <br>23 = iTunes U</td></tr></table>
 </td></tr>
 <tr>
 <td>'titl'</td>
@@ -5491,8 +5493,8 @@ https://github.com/google/spatial-media/blob/master/docs/spherical-video-v2-rfc.
 <tr class=b>
 <td class=r title='10 = 0xa'>10</td>
 <td>MatrixStructure</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
+<td class=c>fixed32s[9]</td>
+<td><span class=s><span class=n>(writable for the video track via the Composite Rotation tag)</span></span></td></tr>
 <tr>
 <td class=r title='19 = 0x13'>19</td>
 <td>ImageWidth</td>
@@ -7026,7 +7028,7 @@ MP4 videos from the Insta360.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Mar 16, 2018</i>
+<br><i>Last revised Mar 29, 2018</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

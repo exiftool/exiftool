@@ -18,6 +18,7 @@
 #               11) Mike Battilana private communication
 #               13) http://www.mi-fo.de/forum/index.php?showtopic=33239
 #                   http://www.dyxum.com/dforum/the-alpha-shutter-count-tool_topic97489_page4.html
+#               14) Albert Shan private communication (A7M3)
 #               IB) Iliah Borg private communication (LibRaw)
 #               JD) Jens Duttke private communication
 #               JR) Jos Roost private communication
@@ -31,7 +32,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.80';
+$VERSION = '2.81';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -5904,7 +5905,7 @@ my %pictureProfile2010 = (
         8 => 'Vivid', # SceneMode or CreativeStyle =  Vivid, Autumn, Sunset or Landscape
         9 => 'Real',
         10 => 'Gamma Movie (PP1)',
-        22 => 'Gamma ITU709 (PP3)',
+        22 => 'Gamma ITU709 (PP3)', # (also PP4 for A7M3, ref 14)
         23 => 'ColorTone ITU709 (PP4)', # seen for HDR-CX130E
         24 => 'Gamma Cine1 (PP5)',
         25 => 'Gamma Cine2 (PP6)',
@@ -5912,6 +5913,8 @@ my %pictureProfile2010 = (
         27 => 'Gamma Cine4',
         28 => 'Gamma S-Log2 (PP7)',
         29 => 'Gamma ITU709(800%)',
+        31 => 'Gamma S-Log3 (PP8)', #14 (also PP9? bug in A7M3?)
+        33 => 'HLG2 (PP10)', #14
     },
 );
 

@@ -7,6 +7,14 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.80. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Apr. 2, 2018 - Version 10.89
+
+  - Added ability to rotate MP4/MOV videos by writing Rotation angle
+  - Added two new Sony PictureProfile values (thanks Albert Shan)
+  - Decode more Nikon tags
+
+Updated some values of the QuickTime MediaType tag
+
 Mar. 27, 2018 - Version 10.88
 
   - Added example config file (dji.config) to generate Composite GPS and other

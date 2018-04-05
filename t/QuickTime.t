@@ -2,7 +2,7 @@
 # After "make install" it should work as "perl t/QuickTime.t".
 
 BEGIN {
-    $| = 1; print "1..5\n"; $Image::ExifTool::configFile = '';
+    $| = 1; print "1..6\n"; $Image::ExifTool::configFile = '';
     require './t/TestLib.pm'; t::TestLib->import();
 }
 END {print "not ok 1\n" unless $loaded;}
@@ -42,7 +42,7 @@ my $testnum = 1;
             print "ok $testnum # skip Requires Time::Local\n";
             next;
         }
-        my $testfile = "t/${testname}_$testnum.failed";
+        my $testfile = "t/${testname}_${testnum}_failed.$ext";
         unlink $testfile;
         my $rtnVal = $exifTool->WriteInfo("t/images/QuickTime.$ext", $testfile);
         my $info = $exifTool->ImageInfo($testfile, 'title', 'time:all');
@@ -53,6 +53,23 @@ my $testnum = 1;
         }
         print "ok $testnum\n";
     }
+}
+
+# test 6: Write video rotation
+{
+    ++$testnum;
+    my $exifTool = new Image::ExifTool;
+    $exifTool->SetNewValue('Rotation' => '270');
+    my $testfile = "t/${testname}_${testnum}_failed.mov";
+    unlink $testfile;
+    my $rtnVal = $exifTool->WriteInfo('t/images/QuickTime.mov', $testfile);
+    my $info = $exifTool->ImageInfo($testfile, 'Rotation', 'MatrixStructure');
+    if (check($exifTool, $info, $testname, $testnum)) {
+        unlink $testfile;
+    } else {
+        print 'not ';
+    }
+    print "ok $testnum\n";
 }
 
 

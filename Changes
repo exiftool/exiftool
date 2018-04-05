@@ -7,13 +7,18 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.80. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Apr. 5, 2018 - Version 10.90
+
+  - Improved decoding of Sony PictureProfile (thanks Jos Roost)
+  - Fixed problem introduced in 10.61 with order of command-line operations when
+    mixing copied values with assigned values
+
 Apr. 2, 2018 - Version 10.89
 
   - Added ability to rotate MP4/MOV videos by writing Rotation angle
   - Added two new Sony PictureProfile values (thanks Albert Shan)
   - Decode more Nikon tags
-
-Updated some values of the QuickTime MediaType tag
+  - Updated some values of the QuickTime MediaType tag
 
 Mar. 27, 2018 - Version 10.88
 

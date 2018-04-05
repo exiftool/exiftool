@@ -32,7 +32,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.81';
+$VERSION = '2.82';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -5895,26 +5895,26 @@ my %pictureProfile2010 = (
     # 10 and higher: Seen for ILCE-7S/7M2 and newer, having a PictureProfile setting, also some DSC/HDR models.
     #                Although intended for video, when set these profiles are also applied to (JPG) still images.
     PrintConv => {
-        0 => 'Standard/Neutral - Gamma Still (PP2)', # CreativeStyle = Standard or Neutral
-        1 => 'Portrait',
-        3 => 'Night View/Portrait',
-        4 => 'B&W/Sepia',
-        5 => 'Clear',
-        6 => 'Deep',
-        7 => 'Light',
-        8 => 'Vivid', # SceneMode or CreativeStyle =  Vivid, Autumn, Sunset or Landscape
-        9 => 'Real',
+        0 => 'Gamma Still - Standard/Neutral (PP2)', # CreativeStyle = Standard or Neutral
+        1 => 'Gamma Still - Portrait',
+       #2 - seen for DSC-HX90
+        3 => 'Gamma Still - Night View/Portrait',
+        4 => 'Gamma Still - B&W/Sepia',
+        5 => 'Gamma Still - Clear',
+        6 => 'Gamma Still - Deep',
+        7 => 'Gamma Still - Light',
+        8 => 'Gamma Still - Vivid', # SceneMode or CreativeStyle =  Vivid, Autumn, Sunset or Landscape
+        9 => 'Gamma Still - Real',
         10 => 'Gamma Movie (PP1)',
-        22 => 'Gamma ITU709 (PP3)', # (also PP4 for A7M3, ref 14)
-        23 => 'ColorTone ITU709 (PP4)', # seen for HDR-CX130E
+        22 => 'Gamma ITU709 (PP3 or PP4)', # (also PP4 for A7M3, ref 14)
         24 => 'Gamma Cine1 (PP5)',
         25 => 'Gamma Cine2 (PP6)',
         26 => 'Gamma Cine3',
         27 => 'Gamma Cine4',
         28 => 'Gamma S-Log2 (PP7)',
-        29 => 'Gamma ITU709(800%)',
-        31 => 'Gamma S-Log3 (PP8)', #14 (also PP9? bug in A7M3?)
-        33 => 'HLG2 (PP10)', #14
+        29 => 'Gamma ITU709 (800%)',
+        31 => 'Gamma S-Log3 (PP8 or PP9)', #14
+        33 => 'Gamma HLG2 (PP10)', #14
     },
 );
 

@@ -17,6 +17,21 @@ considered development releases, and are not uploaded to <a href="http://search.
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v10.91'><b>Apr. 9, 2018 - Version 10.91</b></a>
+<ul>
+<li>Added read/write support for MacOS FileCreateDate (writing this is the same
+    as MDItemFSCreationDate, but reading uses a different mechanism which
+    doesn't have the delayed-update issue of MDItemFSCreationDate)
+<li>Added ability to write MacOS MDItemUserTags (requires "tag" utility)
+<li>Decode a new Sony tag (thanks LibRaw)
+<li>Properly un-escape quotes in extracted MacOS MDItem values
+<li>Fixed another subtle order-of-operations anomaly
+<li>API Changes:
+    <ul>
+    <li>Enhanced GetValue() to accept a tag name with group prefix(es)
+    </ul>
+</ul>
+
 <a name='v10.90'><b>Apr. 5, 2018 - Version 10.90</b></a>
 <ul>
 <li>Improved decoding of Sony PictureProfile (thanks Jos Roost)

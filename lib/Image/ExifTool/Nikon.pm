@@ -1047,9 +1047,11 @@ my %binaryDataAttrs = (
         },
         { #PH
             Name => 'NRWData',
-            Condition => '$$valPt =~ /^NRW/', # starts with "NRW 0100"
+            Condition => '$$valPt =~ /^NRW/', # starts with "NRW 0100" or "NRW 0101"
             Notes => 'large unknown block in NRW images, not copied to JPEG images',
             # 'Drop' because not found in JPEG images (too large for APP1 anyway)
+            # (WB_RGGBLevelsAsShot are int32u[4] at offset 0x0614 in this block for version
+            #  0100 or 0x0038 for 0101. R/B levels must be multiplied by 2 - ref IB)
             Flags => [ 'Unknown', 'Binary', 'Drop' ],
         },
     ],

@@ -7,6 +7,18 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.80. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Apr. 9, 2018 - Version 10.91
+
+  - Added read/write support for MacOS FileCreateDate (writing this is the same
+    as MDItemFSCreationDate, but reading uses a different mechanism which
+    doesn't have the delayed-update issue of MDItemFSCreationDate)
+  - Added ability to write MacOS MDItemUserTags (requires "tag" utility)
+  - Decode a new Sony tag (thanks LibRaw)
+  - Properly un-escape quotes in extracted MacOS MDItem values
+  - Fixed another subtle order-of-operations anomaly
+  - API Changes:
+      - Enhanced GetValue() to accept a tag name with group prefix(es)
+
 Apr. 5, 2018 - Version 10.90
 
   - Improved decoding of Sony PictureProfile (thanks Jos Roost)

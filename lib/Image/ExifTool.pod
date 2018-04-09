@@ -303,10 +303,10 @@ as arguments to L</ImageInfo> take precedence over L</Options> settings.
 =item Return Values:
 
 L</ImageInfo> returns a reference to a hash of tag key/value pairs.  The tag
-keys are identifiers, which are similar to the tag names but may have an
+keys are identifiers -- essentially case-sensitive tag names with an
 appended instance number if multiple tags with the same name were extracted
 from the image.  Many of the ExifTool functions require a tag key as an
-argument. Use L</GetTagName [static]> to get the tag name for a given tag
+argument.  Use L</GetTagName [static]> to get the tag name for a given tag
 key.  Note that the case of the tag names may not be the same as requested.
 Here is a simple example to print out the information returned by
 L</ImageInfo>:
@@ -814,8 +814,8 @@ QuickTime specification.
 Flag to request all tags to be extracted.  This causes some tags to be
 generated which normally would not be unless specifically requested (by
 passing the tag name to L</ImageInfo> or L</ExtractInfo>).  May be set to 2
-or 3 to enable generation of some additional tags mentioned in the tag name
-documentation.  Default is undef.
+or 3 to enable generation of some additional tags as mentioned in the tag
+name documentation.  Default is undef.
 
 =item RequestTags
 
@@ -1231,11 +1231,12 @@ Note that this list will be empty if tags were not specifically requested
 
 Get the value of a specified tag.  The returned value is either the
 human-readable (PrintConv) value, the converted machine-readable (ValueConv)
-value, or the original raw (Raw) value.  If the value type is not specified,
-the PrintConv value is returned if the PrintConv option is set, otherwise
-the ValueConv value is returned.  The PrintConv values are same as the
-values returned by L</ImageInfo> and L</GetInfo> in the tag/value hash
-unless the PrintConv option is disabled.
+value, the original raw (Raw) value, or the original rational (Rational)
+value for rational formats.  If the value type is not specified, the
+PrintConv value is returned if the PrintConv option is set, otherwise the
+ValueConv value is returned.  The PrintConv values are same as the values
+returned by L</ImageInfo> and L</GetInfo> in the tag/value hash unless the
+PrintConv option is disabled.
 
 Tags which represent lists of multiple values (as may happen with 'Keywords'
 for example) are handled specially.  In scalar context, the returned
@@ -1280,7 +1281,7 @@ StrictDate.
 
 0) ExifTool object reference
 
-1) Tag key
+1) Tag key, or case-sensitive tag name with optional group prefix(es)
 
 2) [optional] Value type: 'PrintConv', 'ValueConv', 'Both', 'Raw' or
 'Rational'

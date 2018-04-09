@@ -444,6 +444,7 @@ official EXIF 2.31 specification.
   0x4748   StitchInfo                -          Microsoft Stitch
   0x4749   RatingPercent             IFD0       int16u/
   0x7000   SonyRawFileType           -          no
+  0x7010   SonyToneCurve             -          no
   0x7032   VignettingCorrParams      SubIFD     int16s[17]!
   0x7035   ChromaticAberrationCorrParams SubIFD int16s[33]!
   0x7037   DistortionCorrParams      SubIFD     int16s[17]!
@@ -31096,7 +31097,7 @@ higher.
   MDItemTitle                                   no
   MDItemUseCount                                no
   MDItemUsedDates                               no
-  MDItemUserTags                                no
+  MDItemUserTags                                yes!+
   MDItemVersion                                 no
   MDItemWhereFroms                              no
   MDItemWhiteBalance                            no

@@ -168,10 +168,11 @@ option is set)</span></span></td></tr>
 <td>FileCreateDate</td>
 <td class=c title=' ! = Unsafe'>yes!</td>
 <td class=c>System</td>
-<td><span class=s><span class=n>(the filesystem creation date/time.  Windows only.  This tag is writable and
-is preserved by default when writing if Win32API::File and Win32::API are
-available.  See <a href="MacOS.html#MDItem">MDItemFSCreationDate</a> for the Mac OS X
-equivalent)</span></span></td></tr>
+<td><span class=s><span class=n>(the filesystem creation date/time.  Windows/Mac only.  In Windows, the file
+creation date/time is preserved by default when writing if Win32API::File
+and Win32::API are available.  On Mac, this tag is extracted only if it or
+the MacOS group is specifically requested or the RequestAll API option is
+set to 2 or higher.  Requires &quot;setfile&quot; for writing on Mac)</span></span></td></tr>
 <tr>
 <td>FileDeviceID</td>
 <td class=c>no</td>
@@ -480,7 +481,7 @@ into multiple blocks.  This tag is generated only if specifically requested)</sp
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Feb 20, 2018</i>
+<br><i>Last revised Apr 6, 2018</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

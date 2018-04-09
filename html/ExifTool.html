@@ -304,12 +304,12 @@ take precedence over <a href="#Options">Options</a> settings.
 <p><b>Return Value:</b></p>
 
 <p><a href="#ImageInfo">ImageInfo</a> returns a reference to a hash of tag
-key/value pairs.  The tag keys are identifiers, which are similar to the tag
-names but may have an appended instance number if multiple tags with the same
-name were extracted from the image.  Many of the ExifTool functions require a
-tag key as an argument.  Use <a href="#GetTagName">GetTagName</a> to get the tag
-name for a given tag key.  Note that the case of the tag names may not be the
-same as requested.</p>
+key/value pairs.  The tag keys are identifiers -- essentially case-sensitive tag
+names with an appended instance number if multiple tags with the same name were
+extracted from the image.  Many of the ExifTool functions require a tag key as
+an argument.  Use <a href="#GetTagName">GetTagName</a> to get the tag name for a
+given tag key.  Note that the case of the tag names may not be the same as
+requested.</p>
 
 <p>Values of the returned hash are usually simple scalars, but a scalar
 reference is used to indicate binary data and an array reference may be used to
@@ -738,7 +738,7 @@ distribution for examples.</p>
     This causes some tags to be generated which normally would not be unless specifically
     requested (by passing the tag name to <a href="#ImageInfo">ImageInfo</a> or
     <a href="#ExtractInfo">ExtractInfo</a>).  May be set to 2 or 3 to enable generation
-    of some additional tags mentioned in the tag name documentation.</td>
+    of some additional tags as mentioned in the tag name documentation.</td>
     <td align=center>0, 1, 2 or 3</td><td align=center>undef</td></tr>
 <tr id="RequestTags"><td>RequestTags</td><td>List of additional tag and/or group names
     to request in the next call to <a href="#ExtractInfo">ExtractInfo</a>. This option is
@@ -1122,11 +1122,12 @@ my @requestedTags = $exifTool-&gt;<b>GetRequestedTags</b>();
 <hr><h2><a name="GetValue">GetValue</a></h2>
 <p>Get the value of a specified tag.  The returned value is either the
 human-readable (PrintConv) value, the converted machine-readable (ValueConv)
-value, or the original raw (Raw) value.  If the value type is not specified,
-the PrintConv value is returned if the PrintConv option is set, otherwise the
-ValueConv value is returned.  The PrintConv values are the same as the values
-returned by <a href="#ImageInfo">ImageInfo</a> and <a href="#GetInfo">GetInfo</a>
-in the tag/value hash unless the PrintConv option is disabled.</p>
+value, the original raw (Raw) value, or the original rational (Rational) value
+for rational formats.  If the value type is not specified, the PrintConv value
+is returned if the PrintConv option is set, otherwise the ValueConv value is
+returned.  The PrintConv values are the same as the values returned by
+<a href="#ImageInfo">ImageInfo</a> and <a href="#GetInfo">GetInfo</a> in the
+tag/value hash unless the PrintConv option is disabled.</p>
 <p>Tags which represent lists of multiple values (as may happen with
 '<code>Keywords</code>' for example) are handled specially.  In scalar context,
 the returned PrintConv value for these tags is either a string of values or
@@ -1140,7 +1141,7 @@ instead.</p>
 <blockquote><table class='norm'>
 <tr><td><b>Prototype</b></td><td>GetValue($$;$)</td></tr>
 <tr><td valign=top><b>Inputs</b></td><td><b>0)</b> ExifTool object reference
-    <br><b>1)</b> Tag key
+    <br><b>1)</b> Tag key, or case-sensitive tag name with optional group prefix(es)
     <br><b>2)</b> [<i>optional</i>] Value type, 'PrintConv', 'ValueConv', 'Both',
     'Raw' or 'Rational'
     <br>&nbsp;<br>The default value type is 'PrintConv' if the PrintConv option

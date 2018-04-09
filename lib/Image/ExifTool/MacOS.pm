@@ -11,7 +11,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.04';
+$VERSION = '1.06';
 
 sub MDItemLocalTime($);
 
@@ -49,19 +49,14 @@ my %mdDateInfo = (
         DelCheck => q{"Can't delete"},
         Protected => 1, # (all writable pseudo tags must be protected)
         Shift => 'Time', # (but not supported yet)
-        Notes => 'file creation date. Requires "setfile" for writing',
+        Notes => q{
+            file creation date.  Requires "setfile" for writing.  Note that when
+            reading, it may take a few seconds after writing a file before this value
+            reflects the change.  However, FileCreateDate is updated immediately
+        },
         Groups => { 2 => 'Time' },
         ValueConv => \&MDItemLocalTime,
-        ValueConvInv => sub {
-            my $val = shift;
-            # convert to local time if value has a time zone
-            if ($val =~ /[-+Z]/) {
-                my $time = Image::ExifTool::GetUnixTime($val, 1);
-                $val = Image::ExifTool::ConvertUnixTime($time, 1) if $time;
-            }
-            $val =~ s{(\d{4}):(\d{2}):(\d{2})}{$2/$3/$1};   # reformat for setfile
-            return $val;
-        },
+        ValueConvInv => '$val',
         PrintConv => '$self->ConvertDateTime($val)',
         PrintConvInv => '$self->InverseDateTime($val)',
     },
@@ -144,7 +139,17 @@ my %mdDateInfo = (
     MDItemTitle                   => { },
     MDItemUseCount                => { },
     MDItemUsedDates               => { Groups => { 2 => 'Time' }, %mdDateInfo },
-    MDItemUserTags                => { },
+    MDItemUserTags                => {
+        List => 1,
+        Writable => 1,
+        WritePseudo => 1,
+        Protected => 1, # (all writable pseudo tags must be protected)
+        Notes => q{
+            requires "tag" utility for writing -- install with "brew install tag".  Note
+            that user tags may not contain a comma, and that duplicate user tags will
+            not be written
+        },
+    },
     MDItemVersion                 => { },
     MDItemWhereFroms              => { },
     MDItemWhiteBalance            => { Groups => { 2 => 'Image' } },
@@ -279,24 +284,58 @@ sub SetMacOSTags($$$)
     my $tag;
 
     foreach $tag (@$setTags) {
-        my ($nvHash, $f, $v, $attr, $cmd, $silentErr);
+        my ($nvHash, $f, $v, $attr, $cmd, $err, $silentErr);
         my $val = $et->GetNewValue($tag, \$nvHash);
         next unless $nvHash;
-        my $overwrite = $et->IsOverwriting($nvHash) or next;
-        if ($overwrite < 0) {
-            my $operation = $$nvHash{Shift} ? 'Shifting' : 'Conditional replacement';
-            $et->Warn("$operation of $tag not yet supported");
-            next;
+        my $overwrite = $et->IsOverwriting($nvHash);
+        unless ($$nvHash{TagInfo}{List}) {
+            next unless $overwrite;
+            if ($overwrite < 0) {
+                my $operation = $$nvHash{Shift} ? 'Shifting' : 'Conditional replacement';
+                $et->Warn("$operation of $tag not yet supported");
+                next;
+            }
         }
-        if ($tag eq 'MDItemFSCreationDate') {
+        if ($tag eq 'MDItemFSCreationDate' or $tag eq 'FileCreateDate') {
             ($f = $file) =~ s/'/'\\''/g;
+            # convert to local time if value has a time zone
+            if ($val =~ /[-+Z]/) {
+                my $time = Image::ExifTool::GetUnixTime($val, 1);
+                $val = Image::ExifTool::ConvertUnixTime($time, 1) if $time;
+            }
+            $val =~ s{(\d{4}):(\d{2}):(\d{2})}{$2/$3/$1};   # reformat for setfile
             $cmd = "setfile -d '${val}' '${f}'";
+        } elsif ($tag eq 'MDItemUserTags') {
+            # (tested with "tag" version 0.9.0)
+            ($f = $file) =~ s/'/'\\''/g;
+            my @vals = $et->GetNewValue($nvHash);
+            if ($overwrite < 0 and @{$$nvHash{DelValue}}) {
+                # delete specified tags
+                my @dels = @{$$nvHash{DelValue}};
+                s/'/'\\''/g foreach @dels;
+                my $del = join ',', @dels;
+                $err = system "tag -r '${del}' '${f}'>/dev/null 2>&1";
+                unless ($err) {
+                    $et->VerboseValue("- $tag", $del);
+                    $result = 1;
+                    undef $err if @vals;    # more to do if there are tags to add
+                }
+            }
+            unless (defined $err) {
+                # add new tags, or overwrite or delete existing tags
+                s/'/'\\''/g foreach @vals;
+                my $opt = $overwrite > 0 ? '-s' : '-a';
+                $val = @vals ? join(',', @vals) : '';
+                $cmd = "tag $opt '${val}' '${f}'";
+                $et->VPrint(1,"    - $tag = (all)\n") if $overwrite > 0;
+                undef $val if $val eq '';
+            }
         } elsif ($tag eq 'XAttrQuarantine') {
             ($f = $file) =~ s/'/'\\''/g;
             $cmd = "xattr -d com.apple.quarantine '${f}'";
             $silentErr = 256;   # (will get this error if attribute doesn't exist)
         } else {
-            ($f = $file) =~ s/(["\\])/\\$1/g;   # escape necessary characters
+            ($f = $file) =~ s/(["\\])/\\$1/g;   # escape necessary characters for script
             $f =~ s/'/'"'"'/g;
             if ($tag eq 'MDItemFinderComment') {
                 # (write finder comment using osascript instead of xattr
@@ -313,9 +352,11 @@ sub SetMacOSTags($$$)
             $cmd = qq(osascript -e 'set fp to POSIX file "$f" as alias' -e \\
                 'tell application "Finder" to set $attr of file fp to "$v"');
         }
-        my $err = system $cmd . '>/dev/null 2>&1';  # (pipe all output to /dev/null)
+        if (defined $cmd) {
+            $err = system $cmd . '>/dev/null 2>&1'; # (pipe all output to /dev/null)
+        }
         if (not $err) {
-            $et->VerboseValue("+ $tag", $val);
+            $et->VerboseValue("+ $tag", $val) if defined $val;
             $result = 1;
         } elsif (not $silentErr or $err != $silentErr) {
             $cmd =~ s/ .*//s;
@@ -363,6 +404,7 @@ sub ExtractMDItemTags($$)
             s/,$//;             # remove trailing comma
             $_ = '' if $_ eq '(null)';
             s/^"// and s/"$//;  # remove quotes if they exist
+            s/\\"/"/g;          # un-escape quotes
             $_ = $et->Decode($_, 'UTF8');
             push @$val, $_;
             next;
@@ -466,6 +508,27 @@ sub ExtractXAttrTags($$)
     }
     $warn and $et->Warn(qq{Error $warn parsing "xattr" output});
     $$et{INDENT} =~ s/\| $//;
+}
+
+#------------------------------------------------------------------------------
+# Extract MacOS file creation date/time
+# Inputs: 0) ExifTool object ref, 1) file name
+sub GetFileCreateDate($$)
+{
+    local $_;
+    my ($et, $file) = @_;
+    my ($fn, $tag, $val, $tmp);
+
+    ($fn = $file) =~ s/([`"\$\\])/\\$1/g;   # escape necessary characters
+    $et->VPrint(0, '(running stat)');
+    my $time = `stat -f '%SB' -t '%Y:%m:%d %H:%M:%S%z' "$fn" 2> /dev/null`;
+    if ($? or not $time or $time !~ s/([-+]\d{2})(\d{2})\s*$/$1:$2/) {
+        $et->Warn('Error running "stat" to extract FileCreateDate');
+        return;
+    }
+    $$et{SET_GROUP1} = 'MacOS';
+    $et->FoundTag(FileCreateDate => $time);
+    delete $$et{SET_GROUP1};
 }
 
 1;  # end

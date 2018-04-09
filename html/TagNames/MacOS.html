@@ -201,7 +201,9 @@ higher.</p>
 <tr>
 <td>MDItemFSCreationDate</td>
 <td class=c title=' ! = Unsafe'>yes!</td>
-<td><span class=s><span class=n>(file creation date. Requires &quot;setfile&quot; for writing)</span></span></td></tr>
+<td><span class=s><span class=n>(file creation date.  Requires &quot;setfile&quot; for writing.  Note that when
+reading, it may take a few seconds after writing a file before this value
+reflects the change.  However, FileCreateDate is updated immediately)</span></span></td></tr>
 <tr class=b>
 <td>MDItemFSCreatorCode</td>
 <td class=c>no</td>
@@ -452,8 +454,11 @@ higher.</p>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>MDItemUserTags</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
+<td class=c title=' ! = Unsafe
+ + = List'>yes!+</td>
+<td><span class=s><span class=n>(requires &quot;tag&quot; utility for writing -- install with &quot;brew install tag&quot;.  Note
+that user tags may not contain a comma, and that duplicate user tags will
+not be written)</span></span></td></tr>
 <tr>
 <td>MDItemVersion</td>
 <td class=c>no</td>
@@ -510,7 +515,7 @@ deleted when writing)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Feb 23, 2018</i>
+<br><i>Last revised Apr 9, 2018</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

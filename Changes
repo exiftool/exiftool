@@ -7,6 +7,11 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.80. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Apr. 10, 2018 - Version 10.92
+
+  - Decode GPS from videos of more camera models
+  - Tolerate white space before header in PDF files
+
 Apr. 9, 2018 - Version 10.91
 
   - Added read/write support for MacOS FileCreateDate (writing this is the same

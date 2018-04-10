@@ -23737,6 +23737,9 @@ when the ExtractEmbedded option is used.
   'GPSTrack'           GPSTrack                 no
   'GPSTrackRef'        GPSTrackRef              no
   'JPEG'               JpgFromRaw               no
+  'RVMI'               RVMI_g                   QuickTime RVMI_g
+                       RVMI_s                   QuickTime RVMI_s
+  'RawGSensor'         RawGSensor               no
   'SampleDuration'     SampleDuration           no
   'SampleTime'         SampleTime               no
   'Text'               Text                     no
@@ -23746,6 +23749,21 @@ when the ExtractEmbedded option is used.
   'gpmd'               gpmd                     GoPro GPMF
   'mebx'               mebx                     QuickTime Keys
   'rtmd'               rtmd                     Sony rtmd
+
+=head3 QuickTime RVMI_g Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      4    GPSLatitude                          no
+      8    GPSLongitude                         no
+     16    GPSSpeed                             no
+     18    GPSTrack                             no
+
+=head3 QuickTime RVMI_s Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      4    GSensor                              no
 
 =head3 QuickTime camm6 Tags
 

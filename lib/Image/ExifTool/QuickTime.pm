@@ -42,7 +42,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.15';
+$VERSION = '2.16';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -383,6 +383,7 @@ my %eeBox = (
     vide => { %eeStd, JPEG => 1 }, # (add avcC to parse H264 stream)
     text => { %eeStd },
     meta => { %eeStd },
+    data => { %eeStd },
     camm => { %eeStd }, # (Insta360)
     ''   => { 'gps ' => 1 }, # (no handler -- top level box)
 );
@@ -6174,7 +6175,11 @@ my %eeBox = (
 # MP4 generic sample description box
 %Image::ExifTool::QuickTime::OtherSampleDesc = (
     PROCESS_PROC => \&ProcessHybrid,
-    4 => { Name => 'OtherFormat', Format => 'undef[4]' },
+    4 => {
+        Name => 'OtherFormat',
+        Format => 'undef[4]',
+        RawConv => '$$self{MetaFormat} = $val', # (yes, use MetaFormat for this too)
+    },
 #
 # Observed offsets for child atoms of various OtherFormat types:
 #
@@ -6184,6 +6189,7 @@ my %eeBox = (
 #   mp4a         36      esds
 #   mp4s         16      esds
 #   tmcd         34      name
+#   data         -       -
 #
     ftab => { Name => 'FontTable',  Format => 'undef', ValueConv => 'substr($val, 5)' },
 );
@@ -7164,7 +7170,7 @@ sub ProcessSampleDesc($$$)
     $pos += 8;
     my $i;
     for ($i=0; $i<$num; ++$i) {     # loop through sample descriptions
-        last if $pos + 16 > $dirLen;
+        last if $pos + 8 > $dirLen;
         my $size = Get32u($dataPt, $pos);
         last if $pos + $size > $dirLen;
         $$dirInfo{DirStart} = $pos;

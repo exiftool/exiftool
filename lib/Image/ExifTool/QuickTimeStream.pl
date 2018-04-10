@@ -71,13 +71,17 @@ my $mpsToKph   = 3.6;   # m/s   --> km/h
     GPSTrackRef  => { PrintConv => { M => 'Magnetic North', T => 'True North' } },
     GPSDateTime  => { PrintConv => '$self->ConvertDateTime($val)', Groups => { 2 => 'Time' } },
     Accelerometer=> { Notes => 'right/up/backward acceleration in units of g' },
+    RawGSensor    => {
+        # (same as GSensor, but offset by some unknown value)
+        ValueConv => 'my @a=split " ",$val; $_/=1000 foreach @a; "@a"',
+    },
     Text         => { Groups => { 2 => 'Other' } },
     TimeCode     => { Groups => { 2 => 'Video' } },
     FrameNumber  => { Groups => { 2 => 'Video' } },
     SampleTime   => { Groups => { 2 => 'Video' }, PrintConv => 'ConvertDuration($val)', Notes => 'sample decoding time' },
     SampleDuration=>{ Groups => { 2 => 'Video' }, PrintConv => 'ConvertDuration($val)' },
 #
-# timed metadata decoded based on MetaFormat (format of 'meta' sample description)
+# timed metadata decoded based on MetaFormat (format of 'meta' or 'data' sample description)
 # [or HandlerType, or specific 'vide' type if specified]
 #
     mebx => {
@@ -105,6 +109,22 @@ my $mpsToKph   = 3.6;   # m/s   --> km/h
         Name => 'CTMD',
         SubDirectory => { TagTable => 'Image::ExifTool::Canon::CTMD' },
     },
+    RVMI => [{ # data "OtherFormat" written by E-PRANCE B47FS editing app
+        Name => 'RVMI_g',
+        Condition => '$$valPt =~ /^gReV/',  # GPS data
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::QuickTime::RVMI_g',
+            ByteOrder => 'Little-endian',
+        },
+    },{
+        Name => 'RVMI_s',
+        Condition => '$$valPt =~ /^sReV/',  # sensor data?
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::QuickTime::RVMI_s',
+            ByteOrder => 'Little-endian',
+        },
+    # (there is also "tReV" data that hasn't been decoded yet)
+    }],
     camm => { # (written by Insta360) - [HandlerType, not MetaFormat]
         Name => 'camm6',
         Condition => '$$valPt =~ /^\0\0\x06\0/',
@@ -148,6 +168,48 @@ my $mpsToKph   = 3.6;   # m/s   --> km/h
         PrintConv => '$_ = sprintf("%.3f", $val); s/\.?0+$//; "$_ m"',
     },
   # 0x30 - float (GPSSpeed?)
+);
+
+# tags found in 'RVMI' 'gReV' timed metadata (ref PH)
+%Image::ExifTool::QuickTime::RVMI_g = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 2 => 'Location' },
+    FIRST_ENTRY => 0,
+    4 => {
+        Name => 'GPSLatitude',
+        Format => 'int32s',
+        ValueConv => 'Image::ExifTool::GPS::ToDegrees($val/1e6, 1)',
+        PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")',
+    },
+    8 => {
+        Name => 'GPSLongitude',
+        Format => 'int32s',
+        ValueConv => 'Image::ExifTool::GPS::ToDegrees($val/1e6, 1)',
+        PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "E")',
+    },
+    # 12 - int32s: space for altitude? (always zero in my sample)
+    16 => {
+        Name => 'GPSSpeed', # km/h
+        Format => 'int16s',
+        ValueConv => '$val / 10',
+    },
+    18 => {
+        Name => 'GPSTrack',
+        Format => 'int16u',
+        ValueConv => '$val * 2',
+    },
+);
+
+# tags found in 'RVMI' 'sReV' timed metadata (ref PH)
+%Image::ExifTool::QuickTime::RVMI_s = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 2 => 'Location' },
+    FIRST_ENTRY => 0,
+    4 => {
+        Name => 'GSensor',
+        Format => 'int16s[3]', # X Y Z
+        ValueConv => 'my @a=split " ",$val; $_/=1000 foreach @a; "@a"',
+    },
 );
 
 #------------------------------------------------------------------------------
@@ -376,8 +438,23 @@ sub ProcessSamples($)
                     next if $size == 2;
                     $buff = substr($buff,2);
                 }
-                $et->HandleTag($tagTbl, Text => $buff);
-                next;
+                my $val;
+                # check for encrypted GPS text as written by E-PRANCE B47FS camera
+                if ($buff =~ /^\0/ and $buff =~ /\x0a$/ and length($buff) > 5) {
+                    # decode simple ASCII difference cipher,
+                    # based on known value of 4th-last char = '*'
+                    my $dif = ord('*') - ord(substr($buff, -4, 1));
+                    my $tmp = pack 'C*',map { $_=($_+$dif)&0xff } unpack 'C*',substr $buff,1,-1;
+                    if ($tmp =~ /^(.*?)(\$GPRMC.*)/s) {
+                        ($val, $buff) = ($1, $2);
+                        $val =~ tr/\t/ /;
+                        $et->HandleTag($tagTbl, RawGSensor => $val) if length $val;
+                    }
+                }
+                unless (defined $val) {
+                    $et->HandleTag($tagTbl, Text => $buff); # just store any other text
+                    next;
+                }
             }
             while ($buff =~ /\$(\w+)([^\$]*)/g) {
                 my ($tag, $dat) = ($1, $2);
@@ -406,7 +483,7 @@ sub ProcessSamples($)
                 }
             }
 
-        } elsif ($type eq 'meta') {
+        } elsif ($type eq 'meta' or $type eq 'data') {
 
             if ($$tagTbl{$metaFormat}) {
                 my $tagInfo = $et->GetTagInfo($tagTbl, $metaFormat, \$buff);

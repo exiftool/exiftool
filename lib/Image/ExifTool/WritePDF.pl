@@ -284,8 +284,9 @@ sub WritePDF($$)
 
     # make sure this is a PDF file
     my $pos = $raf->Tell();
-    $raf->Read($buff, 10) >= 8 or return 0;
-    $buff =~ /^%PDF-(\d+\.\d+)/ or return 0;
+    $raf->Read($buff, 1024) >= 8 or return 0;
+    $buff =~ /^(\s*)%PDF-(\d+\.\d+)/ or return 0;
+    $$et{PDFBase} = length $1;
     $raf->Seek($pos, 0);
 
     # create a new ExifTool object and use it to read PDF and XMP information
@@ -331,13 +332,13 @@ sub WritePDF($$)
     if ($buff =~ /$endComment(\d+)\s+(startxref\s+\d+\s+%%EOF\s+)?$/s) {
         $prevUpdate = $1;
         # rewrite the file up to the original EOF
-        Image::ExifTool::CopyBlock($raf, $outfile, $prevUpdate) or $rtn = -1;
+        Image::ExifTool::CopyBlock($raf, $outfile, $prevUpdate + $$et{PDFBase}) or $rtn = -1;
         # verify that we are now at the start of an ExifTool update
         unless ($raf->Read($buff, length $beginComment) and $buff eq $beginComment) {
             $et->Error('Previous ExifTool update is corrupted');
             return $rtn;
         }
-        $raf->Seek($prevUpdate, 0) or $rtn = -1;
+        $raf->Seek($prevUpdate+$$et{PDFBase}, 0) or $rtn = -1;
         if ($$et{DEL_GROUP}{'PDF-update'}) {
             $et->VPrint(0, "  Reverted previous ExifTool updates\n");
             ++$$et{CHANGED};
@@ -570,7 +571,7 @@ sub WritePDF($$)
 #
     if ($$et{CHANGED}) {
         # remember position of original EOF
-        my $oldEOF = Tell($outfile);
+        my $oldEOF = Tell($outfile) - $$et{PDFBase};
         Write($outfile, $beginComment) or $rtn = -1;
 
         # write new objects
@@ -584,7 +585,7 @@ sub WritePDF($$)
                 next;
             }
             # create new entry for xref table
-            $newXRef{$id} = [ Tell($outfile) + length($/), $gen, 'n' ];
+            $newXRef{$id} = [ Tell($outfile) - $$et{PDFBase} + length($/), $gen, 'n' ];
             $keyExt = "$id $gen obj";  # (must set for stream encryption)
             Write($outfile, $/, $keyExt) or $rtn = -1;
             WriteObject($outfile, $newObj{$objRef}) or $rtn = -1;
@@ -645,13 +646,13 @@ sub WritePDF($$)
         }
 
         # remember position of xref table in file (we will write this next)
-        my $startxref = Tell($outfile) + length($/);
+        my $startxref = Tell($outfile) - $$et{PDFBase} + length($/);
 
         # must write xref as a stream in xref-stream-only files
         if ($$mainDict{Type} and $$mainDict{Type} eq '/XRef') {
 
             # create entry for the xref stream object itself
-            $newXRef{$nextObject++} = [ Tell($outfile) + length($/), 0, 'n' ];
+            $newXRef{$nextObject++} = [ Tell($outfile) - $$et{PDFBase} + length($/), 0, 'n' ];
             $$mainDict{Size} = $nextObject;
             # create xref stream and Index entry
             $$mainDict{W} = [ 1, 4, 2 ];    # int8u, int32u, int16u ('CNn')
@@ -711,7 +712,7 @@ sub WritePDF($$)
     } elsif ($prevUpdate) {
 
         # nothing new changed, so copy over previous incremental update
-        $raf->Seek($prevUpdate, 0) or $rtn = -1;
+        $raf->Seek($prevUpdate+$$et{PDFBase}, 0) or $rtn = -1;
         while ($raf->Read($buff, 65536)) {
             Write($outfile, $buff) or $rtn = -1;
         }

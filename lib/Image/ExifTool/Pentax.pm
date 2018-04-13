@@ -58,7 +58,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::HP;
 
-$VERSION = '3.21';
+$VERSION = '3.22';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -947,6 +947,7 @@ my %binaryDataAttrs = (
             4 => 'RAW', #5
             5 => 'Premium', #PH (K20D)
             7 => 'RAW (pixel shift enabled)', #forum6536 (K-3 II)
+            8 => 'Dynamic Pixel Shift', #IB
             65535 => 'n/a', #PH (Q MOV video)
         },
     },

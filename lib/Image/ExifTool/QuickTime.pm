@@ -578,6 +578,10 @@ my %eeBox = (
             return \$str;
         },
     },
+    udat => { #PH (GPS NMEA-format log written by Datakam Player software)
+        Name => 'GPSLog',
+        Binary => 1,    # (actually ASCII, but very lengthy)
+    },
     # meta - proprietary XML information written by some Flip cameras - PH
 );
 

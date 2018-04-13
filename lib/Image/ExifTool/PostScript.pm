@@ -16,7 +16,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.41';
+$VERSION = '1.42';
 
 sub WritePS($$);
 sub ProcessPS($$;$);
@@ -97,6 +97,31 @@ sub ProcessPS($$;$);
             Extracted with document metadata when ExtractEmbedded option is used
         },
     },
+    # AI metadata (most with a single leading '%')
+    AI9_ColorModel => {
+        Name => 'AIColorModel',
+        PrintConv => {
+            1 => 'sRGB',
+            2 => 'CMYK',
+        },
+    },
+    AI3_ColorUsage       => { Name => 'AIColorUsage' },
+    AI5_RulerUnits       => {
+        Name => 'AIRulerUnits',
+        PrintConv => {
+            0 => 'Inches',
+            1 => 'Millimeters',
+            2 => 'Points',
+            3 => 'Picas',
+            4 => 'Centimeters',
+            6 => 'Pixels',
+        },
+    },
+    AI5_TargetResolution => { Name => 'AITargetResolution' },
+    AI5_NumLayers        => { Name => 'AINumLayers' },
+    AI5_FileFormat       => { Name => 'AIFileFormat' },
+    AI8_CreatorVersion   => { Name => 'AICreatorVersion' }, # (double leading '%')
+    AI12_BuildNumber     => { Name => 'AIBuildNumber' },
 );
 
 # composite tags
@@ -543,8 +568,8 @@ sub ProcessPS($$;$)
             next unless $data =~ m{<\?xpacket end=.(w|r).\?>($/|$)};
         } elsif ($data =~ /^%%?(\w+): ?(.*)/s and $$tagTablePtr{$1}) {
             my ($tag, $val) = ($1, $2);
-            # only allow 'ImageData' to have single leading '%'
-            next unless $data =~ /^%%/ or $1 eq 'ImageData';
+            # only allow 'ImageData' and AI tags to have single leading '%'
+            next unless $data =~ /^%(%|AI\d+_)/ or $tag eq 'ImageData';
             # decode comment string (reading continuation lines if necessary)
             $val = DecodeComment($val, $raf, \@lines);
             $et->HandleTag($tagTablePtr, $tag, $val);

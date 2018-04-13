@@ -87,7 +87,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '3.89';
+$VERSION = '3.90';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -822,6 +822,7 @@ my %canonQuality = (
     3 => 'Fine',
     4 => 'RAW',
     5 => 'Superfine',
+    7 => 'CRAW', #42
     130 => 'Normal Movie', #22
     131 => 'Movie (2)', #PH (7DmkII 1920x1080)
 );
@@ -8350,7 +8351,11 @@ my %filterConv = (
         Groups => { 2 => 'Preview' },
         RawConv => 'substr($val, 16)',
         Binary => 1,
-    }
+    },
+    CNOP => { #PH (M50)
+        Name => 'CanonCNOP',
+        SubDirectory => { TagTable => 'Image::ExifTool::Canon::CNOP' },
+    },
 );
 
 %Image::ExifTool::Canon::UnknownIFD = (
@@ -8489,7 +8494,7 @@ my %filterConv = (
 # Canon CNOP atoms (ref PH)
 %Image::ExifTool::Canon::CNOP = (
     GROUPS => { 0 => 'MakerNotes', 1 => 'Canon', 2 => 'Video' },
-    # CNFB - 52 bytes (7DmkII)
+    # CNFB - 52 bytes (7DmkII,M50)
 );
 
 # 'skip' atom of Canon MOV videos (ref PH)

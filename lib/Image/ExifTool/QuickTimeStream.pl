@@ -59,9 +59,10 @@ my $mpsToKph   = 3.6;   # m/s   --> km/h
 %Image::ExifTool::QuickTime::Stream = (
     GROUPS => { 2 => 'Location' },
     NOTES => q{
-        Timed metadata extracted from QuickTime movie data and BikeBro AVI videos
-        when the ExtractEmbedded option is used.
+        Timed metadata extracted from QuickTime movie data and some AVI videos when
+        the ExtractEmbedded option is used.
     },
+    VARS => { NO_ID => 1 },
     GPSLatitude  => { PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")' },
     GPSLongitude => { PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "E")' },
     GPSAltitude  => { PrintConv => '(sprintf("%.4f", $val) + 0) . " m"' }, # round to 4 decimals
@@ -109,18 +110,18 @@ my $mpsToKph   = 3.6;   # m/s   --> km/h
         Name => 'CTMD',
         SubDirectory => { TagTable => 'Image::ExifTool::Canon::CTMD' },
     },
-    RVMI => [{ # data "OtherFormat" written by E-PRANCE B47FS editing app
-        Name => 'RVMI_g',
+    RVMI => [{ # data "OtherFormat" written by unknown software
+        Name => 'RVMI_gReV',
         Condition => '$$valPt =~ /^gReV/',  # GPS data
         SubDirectory => {
-            TagTable => 'Image::ExifTool::QuickTime::RVMI_g',
+            TagTable => 'Image::ExifTool::QuickTime::RVMI_gReV',
             ByteOrder => 'Little-endian',
         },
     },{
-        Name => 'RVMI_s',
-        Condition => '$$valPt =~ /^sReV/',  # sensor data?
+        Name => 'RVMI_sReV',
+        Condition => '$$valPt =~ /^sReV/',  # sensor data
         SubDirectory => {
-            TagTable => 'Image::ExifTool::QuickTime::RVMI_s',
+            TagTable => 'Image::ExifTool::QuickTime::RVMI_sReV',
             ByteOrder => 'Little-endian',
         },
     # (there is also "tReV" data that hasn't been decoded yet)
@@ -146,8 +147,8 @@ my $mpsToKph   = 3.6;   # m/s   --> km/h
     GROUPS => { 2 => 'Location' },
     FIRST_ENTRY => 0,
     NOTES => q{
-        These tags are extracted from record type 6 of the 'camm' timed metadata of
-        MP4 videos from the Insta360.
+        Tags extracted from record type 6 of the 'camm' timed metadata of MP4 videos
+        from cameras such as the Insta360.
     },
   # 0x0c - int32u, seen: 3 (GPSMeasureMode?)
     0x10 => {
@@ -171,10 +172,13 @@ my $mpsToKph   = 3.6;   # m/s   --> km/h
 );
 
 # tags found in 'RVMI' 'gReV' timed metadata (ref PH)
-%Image::ExifTool::QuickTime::RVMI_g = (
+%Image::ExifTool::QuickTime::RVMI_gReV = (
     PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
     GROUPS => { 2 => 'Location' },
     FIRST_ENTRY => 0,
+    NOTES => q{
+        GPS information extracted from the RVMI box of MOV videos.
+    },
     4 => {
         Name => 'GPSLatitude',
         Format => 'int32s',
@@ -201,10 +205,13 @@ my $mpsToKph   = 3.6;   # m/s   --> km/h
 );
 
 # tags found in 'RVMI' 'sReV' timed metadata (ref PH)
-%Image::ExifTool::QuickTime::RVMI_s = (
+%Image::ExifTool::QuickTime::RVMI_sReV = (
     PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
     GROUPS => { 2 => 'Location' },
     FIRST_ENTRY => 0,
+    NOTES => q{
+        G-sensor information extracted from the RVMI box of MOV videos.
+    },
     4 => {
         Name => 'GSensor',
         Format => 'int16s[3]', # X Y Z
@@ -445,7 +452,7 @@ sub ProcessSamples($)
                     # based on known value of 4th-last char = '*'
                     my $dif = ord('*') - ord(substr($buff, -4, 1));
                     my $tmp = pack 'C*',map { $_=($_+$dif)&0xff } unpack 'C*',substr $buff,1,-1;
-                    if ($tmp =~ /^(.*?)(\$GPRMC.*)/s) {
+                    if ($tmp =~ /^(.*?)(\$[A-Z]{2}RMC.*)/s) {
                         ($val, $buff) = ($1, $2);
                         $val =~ tr/\t/ /;
                         $et->HandleTag($tagTbl, RawGSensor => $val) if length $val;
@@ -458,7 +465,7 @@ sub ProcessSamples($)
             }
             while ($buff =~ /\$(\w+)([^\$]*)/g) {
                 my ($tag, $dat) = ($1, $2);
-                if ($tag eq 'GPRMC' and $dat =~ /^,(\d{2})(\d{2})(\d+(\.\d*)?),A?,(\d*?)(\d{1,2}\.\d+),([NS]),(\d*?)(\d{1,2}\.\d+),([EW]),(\d*\.?\d*),(\d*\.?\d*),(\d{2})(\d{2})(\d+)/) {
+                if ($tag =~ /^[A-Z]{2}RMC$/ and $dat =~ /^,(\d{2})(\d{2})(\d+(\.\d*)?),A?,(\d*?)(\d{1,2}\.\d+),([NS]),(\d*?)(\d{1,2}\.\d+),([EW]),(\d*\.?\d*),(\d*\.?\d*),(\d{2})(\d{2})(\d+)/) {
                     $et->HandleTag($tagTbl, GPSLatitude  => (($5 || 0) + $6/60) * ($7 eq 'N' ? 1 : -1));
                     $et->HandleTag($tagTbl, GPSLongitude => (($8 || 0) + $9/60) * ($10 eq 'E' ? 1 : -1));
                     if (length $11) {

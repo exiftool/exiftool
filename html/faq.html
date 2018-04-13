@@ -701,7 +701,7 @@ capital "<code>T</code>").</li>
 <li>Set either the <b>HOME</b> or the <b>EXIFTOOL_HOME</b> environment variable
 to the name of the directory where you put your "<code>.ExifTool_config</code>"
 file.</li>
-<li>Put the config file in the same directory as the exiftool script.  (Also, be
+<li>Put the config file in the same directory as the exiftool app.  (Also, be
 sure the config filename starts with a dot!  See the note above for help
 renaming the config file.)</li>
 <li>If you can't get the config file to load automatically, you can try loading
@@ -1003,7 +1003,19 @@ example:
 
 Using <code>-m</code> will downgrade the minor error to a warning, allowing the
 file to be written, but <u>some MakerNote information may be lost when ignoring
-errors like this</u>. </blockquote>
+errors like this</u>.</blockquote>
+
+<blockquote>You may also get one of these warnings when reading or writing a
+file containing unknown maker notes:
+
+<pre>Warning: [minor] Unrecognized MakerNotes
+Warning: [minor] Maker notes could not be parsed</pre>
+
+These warnings indicate that ExifTool didn't recognize the maker notes in a
+file, so it couldn't extract any information from them when reading, or had to
+copy the maker notes as a block when writing.  If the maker notes contain
+absolute offsets then this could result in corrupted makernote information when
+writing, but this is very unlikely.</blockquote>
 
 <a name="Q16"></a>
 <p>16. <b>"Why doesn't ExifTool rename my AVI files?"</b></p>
@@ -1638,7 +1650,7 @@ technique for shifting a date/time value when copying:
 </blockquote>
 
 <hr>
-<i>Last revised Mar 26, 2018</i>
+<i>Last revised Apr 12, 2018</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

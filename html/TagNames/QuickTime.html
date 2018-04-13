@@ -125,11 +125,16 @@ roll, yaw, speed, altitude)</span></span></td></tr>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>'udat'</td>
+<td>GPSLog</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>'udta'</td>
 <td>UserData</td>
 <td class=c>-</td>
 <td>--&gt; <a href='FLIR.html#UserData'>FLIR UserData Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'uuid'</td>
 <td>XMP
   <br>UUID-PROF
@@ -140,7 +145,7 @@ roll, yaw, speed, altitude)</span></span></td></tr>
 <td>--&gt; <a href='XMP.html'>XMP Tags</a>
   <br>--&gt; <a href='QuickTime.html#Profile'>QuickTime Profile Tags</a>
   <br>--&gt; <a href='QuickTime.html#Flip'>QuickTime Flip Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'wide'</td>
 <td>Wide?</td>
 <td class=c>no</td>
@@ -6884,136 +6889,114 @@ multi-language user data tags found, even if they don&#39;t exist in this table.
 </table></td></tr></table></blockquote>
 
 <h2><a name='Stream'>QuickTime Stream Tags</a></h2>
-<p>Timed metadata extracted from QuickTime movie data and BikeBro AVI videos
-when the ExtractEmbedded option is used.</p>
+<p>Timed metadata extracted from QuickTime movie data and some AVI videos when
+the ExtractEmbedded option is used.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
-<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<tr class=h><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
-<td>'Accelerometer'</td>
 <td>Accelerometer</td>
 <td class=c>no</td>
 <td><span class=s><span class=n>(right/up/backward acceleration in units of g)</span></span></td></tr>
 <tr class=b>
-<td>'CTMD'</td>
 <td>CTMD</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Canon.html#CTMD'>Canon CTMD Tags</a></td></tr>
 <tr>
-<td>'FrameNumber'</td>
 <td>FrameNumber</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
-<td>'GPSAltitude'</td>
 <td>GPSAltitude</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td>'GPSDateTime'</td>
 <td>GPSDateTime</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
-<td>'GPSLatitude'</td>
 <td>GPSLatitude</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td>'GPSLongitude'</td>
 <td>GPSLongitude</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
-<td>'GPSSpeed'</td>
 <td>GPSSpeed</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td>'GPSSpeedRef'</td>
 <td>GPSSpeedRef</td>
 <td class=c>no</td>
 <td><span class=s>&#39;K&#39; = km/h
   <br>&#39;M&#39; = mph
   <br>&#39;N&#39; = knots</span></td></tr>
 <tr class=b>
-<td>'GPSTrack'</td>
 <td>GPSTrack</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td>'GPSTrackRef'</td>
 <td>GPSTrackRef</td>
 <td class=c>no</td>
 <td><span class=s>&#39;M&#39; = Magnetic North
   <br>&#39;T&#39; = True North</span></td></tr>
 <tr class=b>
-<td>'JPEG'</td>
 <td>JpgFromRaw</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td>'RVMI'</td>
-<td>RVMI_g
-  <br>RVMI_s</td>
+<td>RVMI_gReV
+  <br>RVMI_sReV</td>
 <td class=c>-<br>-</td>
-<td>--&gt; <a href='QuickTime.html#RVMI_g'>QuickTime RVMI_g Tags</a>
-  <br>--&gt; <a href='QuickTime.html#RVMI_s'>QuickTime RVMI_s Tags</a></td></tr>
+<td>--&gt; <a href='QuickTime.html#RVMI_gReV'>QuickTime RVMI_gReV Tags</a>
+  <br>--&gt; <a href='QuickTime.html#RVMI_sReV'>QuickTime RVMI_sReV Tags</a></td></tr>
 <tr class=b>
-<td>'RawGSensor'</td>
 <td>RawGSensor</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td>'SampleDuration'</td>
 <td>SampleDuration</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
-<td>'SampleTime'</td>
 <td>SampleTime</td>
 <td class=c>no</td>
 <td><span class=s><span class=n>(sample decoding time)</span></span></td></tr>
 <tr>
-<td>'Text'</td>
 <td>Text</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
-<td>'TimeCode'</td>
 <td>TimeCode</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td>'camm'</td>
 <td>camm6</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#camm6'>QuickTime camm6 Tags</a></td></tr>
 <tr class=b>
-<td>'fdsc'</td>
 <td>fdsc</td>
 <td class=c>-</td>
 <td>--&gt; <a href='GoPro.html#fdsc'>GoPro fdsc Tags</a></td></tr>
 <tr>
-<td>'gpmd'</td>
 <td>gpmd</td>
 <td class=c>-</td>
 <td>--&gt; <a href='GoPro.html#GPMF'>GoPro GPMF Tags</a></td></tr>
 <tr class=b>
-<td>'mebx'</td>
 <td>mebx</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#Keys'>QuickTime Keys Tags</a></td></tr>
 <tr>
-<td>'rtmd'</td>
 <td>rtmd</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Sony.html#rtmd'>Sony rtmd Tags</a></td></tr>
 </table></td></tr></table></blockquote>
 
-<h2><a name='RVMI_g'>QuickTime RVMI_g Tags</a></h2>
+<h2><a name='RVMI_gReV'>QuickTime RVMI_gReV Tags</a></h2>
+<p>GPS information extracted from the RVMI box of MOV videos.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -7041,7 +7024,8 @@ when the ExtractEmbedded option is used.</p>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
-<h2><a name='RVMI_s'>QuickTime RVMI_s Tags</a></h2>
+<h2><a name='RVMI_sReV'>QuickTime RVMI_sReV Tags</a></h2>
+<p>G-sensor information extracted from the RVMI box of MOV videos.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -7055,8 +7039,8 @@ when the ExtractEmbedded option is used.</p>
 </table></td></tr></table></blockquote>
 
 <h2><a name='camm6'>QuickTime camm6 Tags</a></h2>
-<p>These tags are extracted from record type 6 of the &#39;camm&#39; timed metadata of
-MP4 videos from the Insta360.</p>
+<p>Tags extracted from record type 6 of the &#39;camm&#39; timed metadata of MP4 videos
+from cameras such as the Insta360.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -7081,7 +7065,7 @@ MP4 videos from the Insta360.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Apr 10, 2018</i>
+<br><i>Last revised Apr 13, 2018</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

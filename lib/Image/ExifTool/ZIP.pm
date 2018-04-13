@@ -19,7 +19,7 @@ use strict;
 use vars qw($VERSION $warnString);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.19';
+$VERSION = '1.20';
 
 sub WarnProc($) { $warnString = $_[0]; }
 
@@ -92,7 +92,7 @@ my %openDocType = (
                 ($val >> 16) & 0x1f, # day
                 ($val >> 11) & 0x1f, # hour
                 ($val >> 5)  & 0x3f, # minute
-                 $val        & 0x1f  # second
+                ($val        & 0x1f) * 2  # second
             );
         },
         PrintConv => '$self->ConvertDateTime($val)',
@@ -210,7 +210,7 @@ my %openDocType = (
                 ($val >> 16) & 0x1f, # day
                 ($val >> 11) & 0x1f, # hour
                 ($val >> 5)  & 0x3f, # minute
-                 $val        & 0x1f  # second
+                ($val        & 0x1f) * 2  # second
             );
         },
         PrintConv => '$self->ConvertDateTime($val)',

@@ -445,8 +445,11 @@ official EXIF 2.31 specification.
   0x4749   RatingPercent             IFD0       int16u/
   0x7000   SonyRawFileType           -          no
   0x7010   SonyToneCurve             -          no
+  0x7031   VignettingCorrection      SubIFD     int16s!
   0x7032   VignettingCorrParams      SubIFD     int16s[17]!
+  0x7034   ChromaticAberrationCorrection SubIFD int16s!
   0x7035   ChromaticAberrationCorrParams SubIFD int16s[33]!
+  0x7036   DistortionCorrection      SubIFD     int16s!
   0x7037   DistortionCorrParams      SubIFD     int16s[17]!
   0x800d   ImageID                   -          no
   0x80a3   WangTag1                  -          no
@@ -6980,6 +6983,7 @@ SX280, and CR3 images from cameras such as the EOS M50.
   'CMT3'   MakerNoteCanon                       Canon
   'CMT4'   GPSInfo                              GPS
   'CNCV'   CompressorVersion                    no
+  'CNOP'   CanonCNOP                            Canon CNOP
   'CNTH'   CanonCNTH                            Canon CNTH
   'THMB'   ThumbnailImage                       no
 
@@ -20047,6 +20051,9 @@ these tags, units may be added in brackets immediately following the value
 (eg. C<55(mi/h)>).  If no units are specified, the default units are
 written.
 
+4) ExifTool writes compressed metadata to MIE files if the Compress (-z)
+option is used and Compress::Zlib is available.
+
 See L<http://owl.phy.queensu.ca/~phil/exiftool/MIE1.1-20070121.pdf> for the
 official MIE specification.
 
@@ -21749,28 +21756,36 @@ Additional document permissions imposed by digital signatures.
 
 =head2 PostScript Tags
 
-  Tag ID               Tag Name                 Writable
-  ------               --------                 --------
-  'Author'             Author                   string
-  'BeginDocument'      EmbeddedFile             PostScript
-  'BeginICCProfile'    ICC_Profile              ICC_Profile
-  'BeginPhotoshop'     PhotoshopData            Photoshop
-  'BoundingBox'        BoundingBox              no
-  'Copyright'          Copyright                string
-  'CreationDate'       CreateDate               string
-  'Creator'            Creator                  string
-  'EmbeddedFileName'   EmbeddedFileName         no
-  'For'                For                      string
-  'ImageData'          ImageData                no
-  'Keywords'           Keywords                 string
-  'ModDate'            ModifyDate               string
-  'Pages'              Pages                    no
-  'Routing'            Routing                  string
-  'Subject'            Subject                  string
-  'TIFFPreview'        TIFFPreview              no
-  'Title'              Title                    string
-  'Version'            Version                  string
-  'begin_xml_packet'   XMP                      XMP
+  Tag ID                 Tag Name               Writable
+  ------                 --------               --------
+  'AI12_BuildNumber'     AIBuildNumber          no
+  'AI3_ColorUsage'       AIColorUsage           no
+  'AI5_FileFormat'       AIFileFormat           no
+  'AI5_NumLayers'        AINumLayers            no
+  'AI5_RulerUnits'       AIRulerUnits           no
+  'AI5_TargetResolution' AITargetResolution     no
+  'AI8_CreatorVersion'   AICreatorVersion       no
+  'AI9_ColorModel'       AIColorModel           no
+  'Author'               Author                 string
+  'BeginDocument'        EmbeddedFile           PostScript
+  'BeginICCProfile'      ICC_Profile            ICC_Profile
+  'BeginPhotoshop'       PhotoshopData          Photoshop
+  'BoundingBox'          BoundingBox            no
+  'Copyright'            Copyright              string
+  'CreationDate'         CreateDate             string
+  'Creator'              Creator                string
+  'EmbeddedFileName'     EmbeddedFileName       no
+  'For'                  For                    string
+  'ImageData'            ImageData              no
+  'Keywords'             Keywords               string
+  'ModDate'              ModifyDate             string
+  'Pages'                Pages                  no
+  'Routing'              Routing                string
+  'Subject'              Subject                string
+  'TIFFPreview'          TIFFPreview            no
+  'Title'                Title                  string
+  'Version'              Version                string
+  'begin_xml_packet'     XMP                    XMP
 
 =head2 ID3 Tags
 
@@ -22647,6 +22662,7 @@ for the official specification.
   'skip'               CanonSkip                Canon Skip
                        Skip?                    no
   'thum'               ThumbnailImage           no
+  'udat'               GPSLog                   no
   'udta'               UserData                 FLIR UserData
   'uuid'               XMP                      XMP
                        UUID-PROF                QuickTime Profile
@@ -23720,37 +23736,39 @@ Tags used in QTIF QuickTime Image Files.
 
 =head3 QuickTime Stream Tags
 
-Timed metadata extracted from QuickTime movie data and BikeBro AVI videos
-when the ExtractEmbedded option is used.
+Timed metadata extracted from QuickTime movie data and some AVI videos when
+the ExtractEmbedded option is used.
 
-  Tag ID               Tag Name                 Writable
-  ------               --------                 --------
-  'Accelerometer'      Accelerometer            no
-  'CTMD'               CTMD                     Canon CTMD
-  'FrameNumber'        FrameNumber              no
-  'GPSAltitude'        GPSAltitude              no
-  'GPSDateTime'        GPSDateTime              no
-  'GPSLatitude'        GPSLatitude              no
-  'GPSLongitude'       GPSLongitude             no
-  'GPSSpeed'           GPSSpeed                 no
-  'GPSSpeedRef'        GPSSpeedRef              no
-  'GPSTrack'           GPSTrack                 no
-  'GPSTrackRef'        GPSTrackRef              no
-  'JPEG'               JpgFromRaw               no
-  'RVMI'               RVMI_g                   QuickTime RVMI_g
-                       RVMI_s                   QuickTime RVMI_s
-  'RawGSensor'         RawGSensor               no
-  'SampleDuration'     SampleDuration           no
-  'SampleTime'         SampleTime               no
-  'Text'               Text                     no
-  'TimeCode'           TimeCode                 no
-  'camm'               camm6                    QuickTime camm6
-  'fdsc'               fdsc                     GoPro fdsc
-  'gpmd'               gpmd                     GoPro GPMF
-  'mebx'               mebx                     QuickTime Keys
-  'rtmd'               rtmd                     Sony rtmd
+  Tag Name                                      Writable
+  --------                                      --------
+  Accelerometer                                 no
+  CTMD                                          Canon CTMD
+  FrameNumber                                   no
+  GPSAltitude                                   no
+  GPSDateTime                                   no
+  GPSLatitude                                   no
+  GPSLongitude                                  no
+  GPSSpeed                                      no
+  GPSSpeedRef                                   no
+  GPSTrack                                      no
+  GPSTrackRef                                   no
+  JpgFromRaw                                    no
+  RVMI_gReV                                     QuickTime RVMI_gReV
+  RVMI_sReV                                     QuickTime RVMI_sReV
+  RawGSensor                                    no
+  SampleDuration                                no
+  SampleTime                                    no
+  Text                                          no
+  TimeCode                                      no
+  camm6                                         QuickTime camm6
+  fdsc                                          GoPro fdsc
+  gpmd                                          GoPro GPMF
+  mebx                                          QuickTime Keys
+  rtmd                                          Sony rtmd
 
-=head3 QuickTime RVMI_g Tags
+=head3 QuickTime RVMI_gReV Tags
+
+GPS information extracted from the RVMI box of MOV videos.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
@@ -23759,7 +23777,9 @@ when the ExtractEmbedded option is used.
      16    GPSSpeed                             no
      18    GPSTrack                             no
 
-=head3 QuickTime RVMI_s Tags
+=head3 QuickTime RVMI_sReV Tags
+
+G-sensor information extracted from the RVMI box of MOV videos.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
@@ -23767,8 +23787,8 @@ when the ExtractEmbedded option is used.
 
 =head3 QuickTime camm6 Tags
 
-These tags are extracted from record type 6 of the 'camm' timed metadata of
-MP4 videos from the Insta360.
+Tags extracted from record type 6 of the 'camm' timed metadata of MP4 videos
+from cameras such as the Insta360.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------

@@ -21,7 +21,7 @@ use vars qw($VERSION $AUTOLOAD $lastFetched);
 use Image::ExifTool qw(:DataAccess :Utils);
 require Exporter;
 
-$VERSION = '1.45';
+$VERSION = '1.46';
 
 sub FetchObject($$$$);
 sub ExtractObject($$;$$);
@@ -2086,7 +2086,7 @@ sub ReadPDF($$)
     # (linearization dictionary must be in the first 1024 bytes of the file)
     $raf->Read($buff, 1024) >= 8 or return 0;
     $buff =~ /^(\s*)%PDF-(\d+\.\d+)/ or return 0;
-    $$et{PDFBase} = length $1;
+    $$et{PDFBase} = length $1 and $et->Warn('PDF header is not at start of file',1);
     $pdfVer = $2;
     $et->SetFileType();   # set the FileType tag
     $et->Warn("May not be able to read a PDF version $pdfVer file") if $pdfVer >= 2.0;

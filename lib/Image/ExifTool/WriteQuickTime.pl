@@ -207,8 +207,8 @@ sub WriteQuickTime($$$)
                 my $len = length $newData;
                 $len > 0x7ffffff7 and $et->Error("$tag to large to write"), last;
                 if ($len == $size or $dataPt or $foundMDAT) {
-                    # write the updated directory now
-                    Write($outfile, Set32u($len+8), $tag, $newData) or $rtnVal = 0, last;
+                    # write the updated directory now (unless length is zero)
+                    Write($outfile, Set32u($len+8), $tag, $newData) or $rtnVal = 0, last if $len;
                     next;
                 } else {
                     # bad things happen if 'mdat' atom is moved (eg. Adobe Bridge crashes --

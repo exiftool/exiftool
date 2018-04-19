@@ -12,7 +12,7 @@
 use strict;
 require 5.004;
 
-my $version = '10.93';
+my $version = '10.94';
 
 # add our 'lib' directory to the include list BEFORE 'use Image::ExifTool'
 my $exeDir;
@@ -4122,43 +4122,44 @@ supported by ExifTool (r = read, w = write, c = create):
 
   File Types
   ------------+-------------+-------------+-------------+------------
-  3FR   r     | DV    r     | JP2   r/w   | ODS   r     | RAW   r/w
-  3G2   r/w   | DVB   r/w   | JPEG  r/w   | ODT   r     | RIFF  r
-  3GP   r/w   | DYLIB r     | JSON  r     | OFR   r     | RSRC  r
-  A     r     | EIP   r     | K25   r     | OGG   r     | RTF   r
-  AA    r     | EPS   r/w   | KDC   r     | OGV   r     | RW2   r/w
-  AAX   r/w   | EPUB  r     | KEY   r     | OPUS  r     | RWL   r/w
-  ACR   r     | ERF   r/w   | LA    r     | ORF   r/w   | RWZ   r
-  AFM   r     | EXE   r     | LFP   r     | OTF   r     | RM    r
-  AI    r/w   | EXIF  r/w/c | LNK   r     | PAC   r     | SEQ   r
-  AIFF  r     | EXR   r     | M2TS  r     | PAGES r     | SKETCH r
-  APE   r     | EXV   r/w/c | M4A/V r/w   | PBM   r/w   | SO    r
-  ARW   r/w   | F4A/V r/w   | MAX   r     | PCD   r     | SR2   r/w
-  ASF   r     | FFF   r/w   | MEF   r/w   | PDB   r     | SRF   r
-  AVI   r     | FLA   r     | MIE   r/w/c | PDF   r/w   | SRW   r/w
-  AZW   r     | FLAC  r     | MIFF  r     | PEF   r/w   | SVG   r
-  BMP   r     | FLIF  r/w   | MKA   r     | PFA   r     | SWF   r
-  BPG   r     | FLV   r     | MKS   r     | PFB   r     | THM   r/w
-  BTF   r     | FPF   r     | MKV   r     | PFM   r     | TIFF  r/w
-  CHM   r     | FPX   r     | MNG   r/w   | PGF   r     | TORRENT r
-  COS   r     | GIF   r/w   | MOBI  r     | PGM   r/w   | TTC   r
-  CR2   r/w   | GPR   r/w   | MODD  r     | PLIST r     | TTF   r
-  CR3   r/w   | GZ    r     | MOI   r     | PICT  r     | VCF   r
-  CRW   r/w   | HDP   r/w   | MOS   r/w   | PMP   r     | VRD   r/w/c
-  CS1   r/w   | HDR   r     | MOV   r/w   | PNG   r/w   | VSD   r
-  DCM   r     | HEIC  r     | MP3   r     | PPM   r/w   | WAV   r
-  DCP   r/w   | HEIF  r     | MP4   r/w   | PPT   r     | WDP   r/w
-  DCR   r     | HTML  r     | MPC   r     | PPTX  r     | WEBP  r
-  DFONT r     | ICC   r/w/c | MPG   r     | PS    r/w   | WEBM  r
-  DIVX  r     | ICS   r     | MPO   r/w   | PSB   r/w   | WMA   r
-  DJVU  r     | IDML  r     | MQV   r/w   | PSD   r/w   | WMV   r
-  DLL   r     | IIQ   r/w   | MRW   r/w   | PSP   r     | WV    r
-  DNG   r/w   | IND   r/w   | MXF   r     | QTIF  r/w   | X3F   r/w
-  DOC   r     | INX   r     | NEF   r/w   | R3D   r     | XCF   r
-  DOCX  r     | ISO   r     | NRW   r/w   | RA    r     | XLS   r
-  DPX   r     | ITC   r     | NUMBERS r   | RAF   r/w   | XLSX  r
-  DR4   r/w/c | J2C   r     | O     r     | RAM   r     | XMP   r/w/c
-  DSS   r     | JNG   r/w   | ODP   r     | RAR   r     | ZIP   r
+  3FR   r     | DV    r     | JPEG  r/w   | OFR   r     | RTF   r
+  3G2   r/w   | DVB   r/w   | JSON  r     | OGG   r     | RW2   r/w
+  3GP   r/w   | DYLIB r     | K25   r     | OGV   r     | RWL   r/w
+  A     r     | EIP   r     | KDC   r     | OPUS  r     | RWZ   r
+  AA    r     | EPS   r/w   | KEY   r     | ORF   r/w   | RM    r
+  AAX   r/w   | EPUB  r     | LA    r     | OTF   r     | SEQ   r
+  ACR   r     | ERF   r/w   | LFP   r     | PAC   r     | SKETCH r
+  AFM   r     | EXE   r     | LNK   r     | PAGES r     | SO    r
+  AI    r/w   | EXIF  r/w/c | M2TS  r     | PBM   r/w   | SR2   r/w
+  AIFF  r     | EXR   r     | M4A/V r/w   | PCD   r     | SRF   r
+  APE   r     | EXV   r/w/c | MAX   r     | PDB   r     | SRW   r/w
+  ARW   r/w   | F4A/V r/w   | MEF   r/w   | PDF   r/w   | SVG   r
+  ASF   r     | FFF   r/w   | MIE   r/w/c | PEF   r/w   | SWF   r
+  AVI   r     | FLA   r     | MIFF  r     | PFA   r     | THM   r/w
+  AZW   r     | FLAC  r     | MKA   r     | PFB   r     | TIFF  r/w
+  BMP   r     | FLIF  r/w   | MKS   r     | PFM   r     | TORRENT r
+  BPG   r     | FLV   r     | MKV   r     | PGF   r     | TTC   r
+  BTF   r     | FPF   r     | MNG   r/w   | PGM   r/w   | TTF   r
+  CHM   r     | FPX   r     | MOBI  r     | PLIST r     | VCF   r
+  COS   r     | GIF   r/w   | MODD  r     | PICT  r     | VRD   r/w/c
+  CR2   r/w   | GPR   r/w   | MOI   r     | PMP   r     | VSD   r
+  CR3   r/w   | GZ    r     | MOS   r/w   | PNG   r/w   | WAV   r
+  CRM   r/w   | HDP   r/w   | MOV   r/w   | PPM   r/w   | WDP   r/w
+  CRW   r/w   | HDR   r     | MP3   r     | PPT   r     | WEBP  r
+  CS1   r/w   | HEIC  r     | MP4   r/w   | PPTX  r     | WEBM  r
+  DCM   r     | HEIF  r     | MPC   r     | PS    r/w   | WMA   r
+  DCP   r/w   | HTML  r     | MPG   r     | PSB   r/w   | WMV   r
+  DCR   r     | ICC   r/w/c | MPO   r/w   | PSD   r/w   | WV    r
+  DFONT r     | ICS   r     | MQV   r/w   | PSP   r     | X3F   r/w
+  DIVX  r     | IDML  r     | MRW   r/w   | QTIF  r/w   | XCF   r
+  DJVU  r     | IIQ   r/w   | MXF   r     | R3D   r     | XLS   r
+  DLL   r     | IND   r/w   | NEF   r/w   | RA    r     | XLSX  r
+  DNG   r/w   | INX   r     | NRW   r/w   | RAF   r/w   | XMP   r/w/c
+  DOC   r     | ISO   r     | NUMBERS r   | RAM   r     | ZIP   r
+  DOCX  r     | ITC   r     | O     r     | RAR   r     |
+  DPX   r     | J2C   r     | ODP   r     | RAW   r/w   |
+  DR4   r/w/c | JNG   r/w   | ODS   r     | RIFF  r     |
+  DSS   r     | JP2   r/w   | ODT   r     | RSRC  r     |
 
   Meta Information
   ----------------------+----------------------+---------------------
@@ -4973,7 +4974,7 @@ with this command:
 
 produces output like this:
 
-    -- Generated by ExifTool 10.93 --
+    -- Generated by ExifTool 10.94 --
     File: a.jpg - 2003:10:31 15:44:19
     (f/5.6, 1/60s, ISO 100)
     File: b.jpg - 2006:05:23 11:57:38

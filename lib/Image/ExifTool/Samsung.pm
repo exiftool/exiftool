@@ -22,7 +22,7 @@ use vars qw($VERSION %samsungLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.39';
+$VERSION = '1.40';
 
 sub WriteSTMN($$$);
 sub ProcessINFO($$$);
@@ -387,7 +387,12 @@ my %formatMinMax = (
         Groups => { 2 => 'Camera' },
         Writable => 'string',
     },
-    # 0xa002 - string[30]: '0' or 'DY049P000000' (ref PH) (BodySerialNumber?)
+    0xa002 => { #PH/IB
+        Name => 'SerialNumber',
+        Condition => '$$valPt =~ /^\w{5}/', # should be at least 5 characters long
+        Groups => { 2 => 'Camera' },
+        Writable => 'string',
+    },
     0xa003 => { #1 (SRW images only)
         Name => 'LensType',
         Groups => { 2 => 'Camera' },

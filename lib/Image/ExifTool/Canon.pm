@@ -87,7 +87,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '3.90';
+$VERSION = '3.91';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -750,6 +750,7 @@ $VERSION = '3.90';
     0x4007dca0 => 'EOS C300',
     0x4007dda9 => 'HF G25', # (LEGRIA)
     0x4007dfb4 => 'XC10',
+    0x4007e1c3 => 'EOS C200',
 
     # NOTE: some pre-production models may have a model name of
     # "Canon EOS Kxxx", where "xxx" is the last 3 digits of the model ID below.
@@ -845,6 +846,7 @@ my %canonImageSize = (
     130 => 'Small Movie', #22
     137 => '1280x720 Movie', #PH (S95 24fps; D60 50fps)
     142 => '1920x1080 Movie', #PH (D60 25fps)
+    143 => '4096x2160 Movie', #PH (C200)
 );
 my %canonWhiteBalance = (
     # -1='Click", -2='Pasted' ?? - PH
@@ -1992,6 +1994,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
             7 => 'CR2+JPEG', # (S30)
             9 => 'MOV', # (S95 MOV)
             10 => 'MP4', # (SX280 MP4)
+            11 => 'CRM', #PH (C200 CRM)
             13 => 'CR3', #PH (NC)
         },
     },
@@ -8303,7 +8306,11 @@ my %filterConv = (
         Tags extracted from the uuid atom of MP4 videos from cameras such as the
         SX280, and CR3 images from cameras such as the EOS M50.
     },
-    CNCV => 'CompressorVersion',
+    CNCV => {
+        Name => 'CompressorVersion',
+        # use this to recognize the specific type of Canon RAW (CR3 or CRM)
+        RawConv => '$self->OverrideFileType($1) if $val =~ /^Canon(\w{3})/i; $val',
+    },
     # CNDM - 4 bytes - 0xff,0xd8,0xff,0xd9
     CNTH => {
         Name => 'CanonCNTH',
@@ -8413,6 +8420,8 @@ my %filterConv = (
         Name => 'ExifInfo9',
         SubDirectory => { TagTable => 'Image::ExifTool::Canon::ExifInfo' },
     },
+  # 10 - 60 bytes: all zeros with a pair of 0xff's at offset 0x02 (C200 CRM)
+  # 11 - 612 bytes: all zero with pairs of 0xff's at offset 0x6e and 0x116 (C200 CRM)
 );
 
 # Canon Timed MetaData (ref PH, CR3 files)
@@ -8467,6 +8476,7 @@ my %filterConv = (
     2 => {
         Name => 'ISO',
         Format => 'int32u',
+        ValueConv => '$val & 0x7fffffff',   # (not sure what high bit indicates)
     },
 );
 
@@ -8495,6 +8505,8 @@ my %filterConv = (
 %Image::ExifTool::Canon::CNOP = (
     GROUPS => { 0 => 'MakerNotes', 1 => 'Canon', 2 => 'Video' },
     # CNFB - 52 bytes (7DmkII,M50)
+    # CNMI - 4 bytes: "0x20000001" (C200)
+    # CNCM - 48 bytes: original file name in bytes 24-31 (C200)
 );
 
 # 'skip' atom of Canon MOV videos (ref PH)
@@ -9245,16 +9257,17 @@ sub ProcessExifInfo($$$)
 {
     my ($et, $dirInfo, $tagTablePtr) = @_;
     my $dataPt = $$dirInfo{DataPt};
-    my $pos = $$dirInfo{DirStart} || 0;
-    my $dirLen = $$dirInfo{DirLen} || (length($$dataPt) - $pos);
-    my $dirEnd = $pos + $dirLen;
-    $et->VerboseDir('ExifInfo', undef, $dirLen);
+    my $start = $$dirInfo{DirStart} || 0;
+    my $dirLen = $$dirInfo{DirLen} || (length($$dataPt) - $start);
+    my $dirEnd = $start + $dirLen;
     # loop through TIFF-format EXIF/MakerNote records
-    while ($pos + 8 < $dirEnd) {
-        my $len = Get32u($dataPt, $pos);
-        my $tag = Get32u($dataPt, $pos + 4);
-        $len < 8 and $et->Warn('Short ExifInfo record'), last;
-        $pos + $len > $dirEnd and $et->Warn('Truncated ExifInfo record'), last;
+    my ($pos, $len, $tag);
+    for ($pos = $start; $pos + 8 < $dirEnd; $pos += $len) {
+        $len = Get32u($dataPt, $pos);
+        $tag = Get32u($dataPt, $pos + 4);
+        # test size/tag for valid ExifInfo (not EXIF in CRM files)
+        last if $len < 8 or $pos + $len > $dirEnd or not $$tagTablePtr{$tag};
+        $et->VerboseDir('ExifInfo', undef, $dirLen) if $pos == $start;
         $et->HandleTag($tagTablePtr, $tag, undef,
             DataPt  => $dataPt,
             Base    => $$dirInfo{Base} + $pos + 8, # base for TIFF pointers
@@ -9262,7 +9275,6 @@ sub ProcessExifInfo($$$)
             Start   => $pos + 8,
             Size    => $len - 8,
         );
-        $pos += $len;
     }
     return 1;
 }
@@ -9283,16 +9295,25 @@ sub ProcessCTMD($$$)
         my $size = Get32u($dataPt, $pos);
         my $type = Get16u($dataPt, $pos + 4);
         # what is the meaning of the next 6 bytes of these records?:
-        #   type 1 - 00 00 00 01 00 00 - TimeStamp
-        #   type 3 - 00 00 00 01 00 00 - ?
+        #   type 1 - 00 00 00 01 zz zz - TimeStamp; zz=00(CR3),ff(CRM)
+        #   type 3 - 00 00 00 01 zz zz - ? "ff ff ff ff"; zz=00(CR3),ff(CRM)
         #   type 4 - 00 00 00 01 ff ff - FocalInfo
         #   type 5 - 00 00 00 01 ff ff - ExposureInfo
-        #   type 7 - 01 01 00 01 ff ff - ExifIFD + MakerNotes
-        #   type 8 - 01 01 00 01 ff ff - MakerNotes
-        #   type 9 - 01 01 00 01 ff ff - MakerNotes
+        #   type 6 - 00 04 00 01 ff ff - ? "03 04 00 80 e0 15 ff ff" (CRM) [0x15e0 = ColorTemperature?]
+        #   type 7 - xx yy 00 01 ff ff - ExifIFD + MakerNotes; xx=01(CR3),00(CRM) yy=01(CR3),04(CRM);
+        #   type 8 - 01 yy 00 01 ff ff - MakerNotes; yy=01(CR3),04(CRM)
+        #   type 9 - 01 yy 00 01 ff ff - MakerNotes; yy=01(CR3),00(CRM)
+        #   type 10- 01 00 00 01 ff ff - ? (CRM)
+        #   type 11- 01 00 00 01 ff ff - ? (CRM)
+        # --> maybe yy is 01 for ExifInfo?
         $size < 12 and $et->Warn('Short CTMD record'), last;
         $pos + $size > $dirLen and $et->Warn('Truncated CTMD record'), last;
         $et->VerboseDir("CTMD type $type", undef, $size - 12);
+        $verbose > 2 and HexDump($dataPt, 6,
+            Start  => $pos + 6,
+            Addr   => $$dirInfo{Base} + $pos + 6,
+            Prefix => $$et{INDENT},
+        );
         if ($$tagTablePtr{$type}) {
             $et->HandleTag($tagTablePtr, $type, undef,
                 DataPt  => $dataPt,

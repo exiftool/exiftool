@@ -811,9 +811,9 @@ distribution for examples.</p>
     Useful to allow external input into tag name expressions and ValueConv logic.
     <i>PARAM</i> is the user-defined parameter name (case insensitive). These parameters
     may be accessed in tag name expressions by prefixing the parameter name with a dollar
-    sign, just like normal tags. If called without no additional arguments,
-    <code>Options('UserParam')</code> returns a reference to the hash of all user
-    parameters (with lower-case names).
+    sign just like normal tags, or via the API by calling <code>Options('UserParam','PARAM')</code>.
+    If called without no additional arguments, <code>Options('UserParam')</code> returns
+    a reference to the hash of all user parameters (with lower-case names).
 </td>
     <td><table class=clear>
     <tr><td valign=top><i>PARAM</i></td><td valign=top>-</td><td>Get parameter</td></tr>
@@ -2055,27 +2055,26 @@ Preview, Printing, Time, Unknown, Video
 alphabetical order.
 </td></tr>
 </table></blockquote>
-<p>Below is a current list of deletable group names.  All names in this list
-are either family 0 or family 1 group names, with the exception of
-'<code>Trailer</code>' which allows all trailers in JPEG and TIFF-format images
-to be deleted at once, including unknown trailers.  To schedule a group for
-deletion, call <a href="#SetNewValue">SetNewValue</a> with an undefined value
-and a tag name like '<code>Trailer:*</code>'.</p>
+<p>Below is a current list of deletable group names.</p>
 <blockquote>AFCP, APP0, APP1, APP10, APP11, APP12, APP13, APP14, APP15, APP2, APP3,
 APP4, APP5, APP6, APP7, APP8, APP9, Adobe, Audio, Author, CIFF, Camera,
-CanonVRD, Copyright, Document, Ducky, EXIF, ExifIFD, ExifTool, File,
-FlashPix, FotoStation, GPS, GlobParamIFD, ICC_Profile, IFD0, IFD1, IPTC,
-Image, InteropIFD, JFIF, Jpeg2000, Location, MIE, MPF, MakerNotes, Meta,
-MetaIFD, NikonCapture, Other, PDF, PDF-update, PNG, PNG-pHYs, PhotoMechanic,
-Photoshop, PrintIM, Printing, RMETA, RSRC, SubIFD, Time, Trailer, Video,
-XML, XML-*, XMP, XMP-*</blockquote>
-<p>Note that the JPEG "APP" groups are special, and are used only to delete
-application segments which are not associated with another deletable group.  For
-example, deleting '<code>APP14:*</code>' will delete other APP14 segments, but
-not the APP14 "Adobe" segment.  Also note that deleting a family 0 or 1 group
-will delete the entire corresponding block of metadata, but deleting a family 2
-group (eg. Audio, Author, Camera, etc.) deletes the individual tags belonging
-to that category.</p>
+CanonVRD, Document, Ducky, EXIF, ExifIFD, ExifTool, File, FlashPix,
+FotoStation, GPS, GlobParamIFD, ICC_Profile, IFD0, IFD1, IPTC, Image,
+InteropIFD, JFIF, Jpeg2000, Location, MIE, MPF, MakerNotes, Meta, MetaIFD,
+NikonCapture, Other, PDF, PDF-update, PNG, PNG-pHYs, PhotoMechanic,
+Photoshop, Preview, PrintIM, Printing, RMETA, RSRC, SubIFD, Time, Trailer,
+Video, XML, XML-*, XMP, XMP-*</blockquote>
+<p>To schedule a group for deletion, call <a href="#SetNewValue">SetNewValue</a>
+with a tag name like '<code>EXIF:*</code>' and an undefined tag value.</p>
+<p>Deleting a family 0 or 1 group will delete the entire corresponding block of
+metadata, but deleting a family 2 group (eg. Audio, Author, Camera, etc.)
+deletes the individual tags belonging to that category.</p>
+<p>The '<code>Trailer</code>' group allows all trailers in JPEG and TIFF-format
+images to be deleted at once, including unknown trailers.  Note that the JPEG
+"APP" groups are special, and are used only to delete application segments which
+are not associated with another deletable group.  For example, deleting
+'<code>APP14:*</code>' will delete other APP14 segments, but not the APP14
+"Adobe" segment.</p>
 <p><b>Example:</b></p>
 <blockquote><table class='box'><tr><td><pre>
 my @delGroups = Image::ExifTool::<b>GetDelGroups</b>();
@@ -2088,8 +2087,9 @@ my @delGroups = Image::ExifTool::<b>GetDelGroups</b>();
 <tr><td valign=top><b>Inputs</b></td>
 <td><b>0)</b> [<i>optional</i>] File name or extension
 <br><b>1)</b> [<i>optional</i>] Flag to return a description instead of a type.
-Set to 0 to return type for recognized but unsupported files (otherwise the
-return value for unsupported files is undef).
+Default is undef.  Set to 0 to also return return types of recognized but
+unsupported files (otherwise undef is returned for unsupported files), or 1 to
+return file descriptions.
 </td></tr>
 <tr><td valign=top><b>Returns</b></td><td>A string, based on the file extension, which
 indicates the basic format of the file.  Note that some files may be based on
@@ -2141,7 +2141,7 @@ my $creatable = Image::ExifTool::<b>CanCreate</b>($filename);
 the usual technique of creating user-defined tags via the
 %Image::ExifTool::UserDefined hash (see the
 <a href="config.html">sample config file</a>), because it allows tags to be added
-after the tag table has been initialized.</p>
+after a tag table has been initialized.</p>
 <blockquote><table class='norm'>
 <tr><td><b>Prototype</b></td><td>AddUserDefinedTags($%)</td></tr>
 <tr><td valign=top><b>Inputs</b></td><td><b>0)</b> Destination tag table name

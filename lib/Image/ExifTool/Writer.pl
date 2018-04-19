@@ -3257,6 +3257,7 @@ PAT:    foreach $pattern (@patterns) {
 # Returns: >0 - tag should be overwritten
 #          =0 - the tag should be preserved
 #          <0 - not sure, we need the value to know
+# Notes: $$nvHash{Value} is updated with the new value when shifting a value
 sub IsOverwriting($$;$)
 {
     my ($self, $nvHash, $val) = @_;

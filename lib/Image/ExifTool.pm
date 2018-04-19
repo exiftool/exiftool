@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup);
 
-$VERSION = '10.93';
+$VERSION = '10.94';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -238,6 +238,7 @@ my %createTypes = map { $_ => 1 } qw(XMP ICC MIE VRD DR4 EXIF EXV);
     COS  => ['COS',  'Capture One Settings'],
     CR2  => ['TIFF', 'Canon RAW 2 format'],
     CR3  => ['MOV',  'Canon RAW 3 format'],
+    CRM  => ['MOV',  'Canon RAW Movie'],
     CRW  => ['CRW',  'Canon RAW format'],
     CS1  => ['PSD',  'Sinar CaptureShop 1-Shot RAW'],
     DC3  =>  'DICM',
@@ -546,6 +547,8 @@ my %fileDescription = (
    'Canon 1D RAW' => 'image/x-raw', # (uses .TIF file extension)
     CHM  => 'application/x-chm',
     CR2  => 'image/x-canon-cr2',
+    CR3  => 'image/x-canon-cr3',
+    CRM  => 'video/x-canon-crm',
     CRW  => 'image/x-canon-crw',
     DCR  => 'image/x-kodak-dcr',
     DEX  => 'application/octet-stream',

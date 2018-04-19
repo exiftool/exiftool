@@ -87,7 +87,7 @@ my %mimeLookup = (
     HEIC => 'image/heic',
     HEVC => 'image/heic-sequence',
     HEIF => 'image/heif',
-    CR3  => 'image/x-canon-cr3',
+    CRX  => 'video/x-canon-crx',    # (will get overridden)
 );
 
 # look up file type from ftyp atom type, with MIME type in comment if known
@@ -186,7 +186,7 @@ my %ftypLookup = (
     'hevc' => 'High Efficiency Image Format HEVC sequence (.HEICS)', # image/heic-sequence
     'mif1' => 'High Efficiency Image Format still image (.HEIF)', # image/heif
     'msf1' => 'High Efficiency Image Format sequence (.HEIFS)', # image/heif-sequence
-    'crx ' => 'Canon Raw (.CR3)', #PH
+    'crx ' => 'Canon Raw (.CRX)', #PH (CR3 or CRM; use Canon CompressorVersion to decide)
 );
 
 # information for time/date-based tags (time zero is Jan 1, 1904)
@@ -7449,8 +7449,8 @@ sub ProcessMOV($$;$)
             }
             $fileType or $fileType = 'MP4'; # default to MP4
             $et->SetFileType($fileType, $mimeLookup{$fileType} || 'video/mp4');
-            # temporarily set ExtractEmbedded option for CR3 files
-            $saveOptions{ExtractEmbedded} = $et->Options(ExtractEmbedded => 1) if $fileType eq 'CR3';
+            # temporarily set ExtractEmbedded option for CRX files
+            $saveOptions{ExtractEmbedded} = $et->Options(ExtractEmbedded => 1) if $fileType eq 'CRX';
         } else {
             $et->SetFileType();       # MOV
         }

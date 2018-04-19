@@ -1691,14 +1691,14 @@ my %shootingMode = (
         Notes => 'unknown 320kB block, not copied to JPEG images',
         Flags => [ 'Unknown', 'Binary', 'Drop' ],
     },
-    # 0x302 - same value as 4 unknown bytes at the end of JPEG or after the DNG TIFF header
+    # 0x302 - same value as 4 unknown bytes at the end of JPEG or after the DNG TIFF header (ImageID, ref IB)
     0x303 => {
         Name => 'LensType',
         Writable => 'string',
         ValueConv => '$val=~s/ +$//; $val', # trim trailing spaces
         ValueConvInv => '$val',
     },
-    # 0x340 - same as 0x302
+    # 0x340 - same as 0x302 (ImageID, ref IB)
 );
 
 # Leica type9 maker notes (ref PH) (S)

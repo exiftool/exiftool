@@ -14328,6 +14328,7 @@ Tags found in the EXIF-format maker notes of newer Samsung models.
   0x0120   FaceRecognition                      int32u
   0x0123   FaceName                             string
   0xa001   FirmwareName                         string
+  0xa002   SerialNumber                         string
   0xa003   LensType                             int16u[n]
   0xa004   LensFirmware                         string
   0xa005   InternalLensSerialNumber             string

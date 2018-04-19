@@ -65,43 +65,44 @@ supported by ExifTool (r = read, w = write, c = create):
 
   File Types
   ------------+-------------+-------------+-------------+------------
-  3FR   r     | DV    r     | JP2   r/w   | ODS   r     | RAW   r/w
-  3G2   r/w   | DVB   r/w   | JPEG  r/w   | ODT   r     | RIFF  r
-  3GP   r/w   | DYLIB r     | JSON  r     | OFR   r     | RSRC  r
-  A     r     | EIP   r     | K25   r     | OGG   r     | RTF   r
-  AA    r     | EPS   r/w   | KDC   r     | OGV   r     | RW2   r/w
-  AAX   r/w   | EPUB  r     | KEY   r     | OPUS  r     | RWL   r/w
-  ACR   r     | ERF   r/w   | LA    r     | ORF   r/w   | RWZ   r
-  AFM   r     | EXE   r     | LFP   r     | OTF   r     | RM    r
-  AI    r/w   | EXIF  r/w/c | LNK   r     | PAC   r     | SEQ   r
-  AIFF  r     | EXR   r     | M2TS  r     | PAGES r     | SKETCH r
-  APE   r     | EXV   r/w/c | M4A/V r/w   | PBM   r/w   | SO    r
-  ARW   r/w   | F4A/V r/w   | MAX   r     | PCD   r     | SR2   r/w
-  ASF   r     | FFF   r/w   | MEF   r/w   | PDB   r     | SRF   r
-  AVI   r     | FLA   r     | MIE   r/w/c | PDF   r/w   | SRW   r/w
-  AZW   r     | FLAC  r     | MIFF  r     | PEF   r/w   | SVG   r
-  BMP   r     | FLIF  r/w   | MKA   r     | PFA   r     | SWF   r
-  BPG   r     | FLV   r     | MKS   r     | PFB   r     | THM   r/w
-  BTF   r     | FPF   r     | MKV   r     | PFM   r     | TIFF  r/w
-  CHM   r     | FPX   r     | MNG   r/w   | PGF   r     | TORRENT r
-  COS   r     | GIF   r/w   | MOBI  r     | PGM   r/w   | TTC   r
-  CR2   r/w   | GPR   r/w   | MODD  r     | PLIST r     | TTF   r
-  CR3   r/w   | GZ    r     | MOI   r     | PICT  r     | VCF   r
-  CRW   r/w   | HDP   r/w   | MOS   r/w   | PMP   r     | VRD   r/w/c
-  CS1   r/w   | HDR   r     | MOV   r/w   | PNG   r/w   | VSD   r
-  DCM   r     | HEIC  r     | MP3   r     | PPM   r/w   | WAV   r
-  DCP   r/w   | HEIF  r     | MP4   r/w   | PPT   r     | WDP   r/w
-  DCR   r     | HTML  r     | MPC   r     | PPTX  r     | WEBP  r
-  DFONT r     | ICC   r/w/c | MPG   r     | PS    r/w   | WEBM  r
-  DIVX  r     | ICS   r     | MPO   r/w   | PSB   r/w   | WMA   r
-  DJVU  r     | IDML  r     | MQV   r/w   | PSD   r/w   | WMV   r
-  DLL   r     | IIQ   r/w   | MRW   r/w   | PSP   r     | WV    r
-  DNG   r/w   | IND   r/w   | MXF   r     | QTIF  r/w   | X3F   r/w
-  DOC   r     | INX   r     | NEF   r/w   | R3D   r     | XCF   r
-  DOCX  r     | ISO   r     | NRW   r/w   | RA    r     | XLS   r
-  DPX   r     | ITC   r     | NUMBERS r   | RAF   r/w   | XLSX  r
-  DR4   r/w/c | J2C   r     | O     r     | RAM   r     | XMP   r/w/c
-  DSS   r     | JNG   r/w   | ODP   r     | RAR   r     | ZIP   r
+  3FR   r     | DV    r     | JPEG  r/w   | OFR   r     | RTF   r
+  3G2   r/w   | DVB   r/w   | JSON  r     | OGG   r     | RW2   r/w
+  3GP   r/w   | DYLIB r     | K25   r     | OGV   r     | RWL   r/w
+  A     r     | EIP   r     | KDC   r     | OPUS  r     | RWZ   r
+  AA    r     | EPS   r/w   | KEY   r     | ORF   r/w   | RM    r
+  AAX   r/w   | EPUB  r     | LA    r     | OTF   r     | SEQ   r
+  ACR   r     | ERF   r/w   | LFP   r     | PAC   r     | SKETCH r
+  AFM   r     | EXE   r     | LNK   r     | PAGES r     | SO    r
+  AI    r/w   | EXIF  r/w/c | M2TS  r     | PBM   r/w   | SR2   r/w
+  AIFF  r     | EXR   r     | M4A/V r/w   | PCD   r     | SRF   r
+  APE   r     | EXV   r/w/c | MAX   r     | PDB   r     | SRW   r/w
+  ARW   r/w   | F4A/V r/w   | MEF   r/w   | PDF   r/w   | SVG   r
+  ASF   r     | FFF   r/w   | MIE   r/w/c | PEF   r/w   | SWF   r
+  AVI   r     | FLA   r     | MIFF  r     | PFA   r     | THM   r/w
+  AZW   r     | FLAC  r     | MKA   r     | PFB   r     | TIFF  r/w
+  BMP   r     | FLIF  r/w   | MKS   r     | PFM   r     | TORRENT r
+  BPG   r     | FLV   r     | MKV   r     | PGF   r     | TTC   r
+  BTF   r     | FPF   r     | MNG   r/w   | PGM   r/w   | TTF   r
+  CHM   r     | FPX   r     | MOBI  r     | PLIST r     | VCF   r
+  COS   r     | GIF   r/w   | MODD  r     | PICT  r     | VRD   r/w/c
+  CR2   r/w   | GPR   r/w   | MOI   r     | PMP   r     | VSD   r
+  CR3   r/w   | GZ    r     | MOS   r/w   | PNG   r/w   | WAV   r
+  CRM   r/w   | HDP   r/w   | MOV   r/w   | PPM   r/w   | WDP   r/w
+  CRW   r/w   | HDR   r     | MP3   r     | PPT   r     | WEBP  r
+  CS1   r/w   | HEIC  r     | MP4   r/w   | PPTX  r     | WEBM  r
+  DCM   r     | HEIF  r     | MPC   r     | PS    r/w   | WMA   r
+  DCP   r/w   | HTML  r     | MPG   r     | PSB   r/w   | WMV   r
+  DCR   r     | ICC   r/w/c | MPO   r/w   | PSD   r/w   | WV    r
+  DFONT r     | ICS   r     | MQV   r/w   | PSP   r     | X3F   r/w
+  DIVX  r     | IDML  r     | MRW   r/w   | QTIF  r/w   | XCF   r
+  DJVU  r     | IIQ   r/w   | MXF   r     | R3D   r     | XLS   r
+  DLL   r     | IND   r/w   | NEF   r/w   | RA    r     | XLSX  r
+  DNG   r/w   | INX   r     | NRW   r/w   | RAF   r/w   | XMP   r/w/c
+  DOC   r     | ISO   r     | NUMBERS r   | RAM   r     | ZIP   r
+  DOCX  r     | ITC   r     | O     r     | RAR   r     |
+  DPX   r     | J2C   r     | ODP   r     | RAW   r/w   |
+  DR4   r/w/c | JNG   r/w   | ODS   r     | RIFF  r     |
+  DSS   r     | JP2   r/w   | ODT   r     | RSRC  r     |
 
   Meta Information
   ----------------------+----------------------+---------------------
@@ -919,9 +920,10 @@ are:
 Where I<PARAM> is the user-defined parameter name (case insensitive).
 
 User-defined parameters may be accessed in tag name expressions by prefixing
-the parameter name with a dollar sign, just like normal tags.  If called
-without no additional arguments, C<Options('UserParam')> returns a reference
-to the hash of all user parameters (with lower-case names).
+the parameter name with a dollar sign just like normal tags, or via the API
+by calling C<Options('UserParam','PARAM')>.  If called without no additional
+arguments, C<Options('UserParam')> returns a reference to the hash of all
+user parameters (with lower-case names).
 
 =item Validate
 
@@ -2250,22 +2252,27 @@ A list of deletable group names in alphabetical order.  The current list of
 deletable group names is:
 
 AFCP, APP0, APP1, APP10, APP11, APP12, APP13, APP14, APP15, APP2, APP3,
-APP4, APP5, APP6, APP7, APP8, APP9, Adobe, CIFF, CanonVRD, Ducky, EXIF,
-ExifIFD, File, FlashPix, FotoStation, GPS, GlobParamIFD, ICC_Profile, IFD0,
-IFD1, IPTC, InteropIFD, JFIF, Jpeg2000, MIE, MPF, MakerNotes, Meta, MetaIFD,
-NikonCapture, PDF, PDF-update, PNG, PhotoMechanic, Photoshop, PrintIM,
-RMETA, RSRC, SubIFD, Trailer, XML, XML-*, XMP, XMP-*
+APP4, APP5, APP6, APP7, APP8, APP9, Adobe, Audio, Author, CIFF, Camera,
+CanonVRD, Document, Ducky, EXIF, ExifIFD, ExifTool, File, FlashPix,
+FotoStation, GPS, GlobParamIFD, ICC_Profile, IFD0, IFD1, IPTC, Image,
+InteropIFD, JFIF, Jpeg2000, Location, MIE, MPF, MakerNotes, Meta, MetaIFD,
+NikonCapture, Other, PDF, PDF-update, PNG, PNG-pHYs, PhotoMechanic,
+Photoshop, Preview, PrintIM, Printing, RMETA, RSRC, SubIFD, Time, Trailer,
+Video, XML, XML-*, XMP, XMP-*
 
-All names in this list are either family 0 or family 1 group names, with the
-exception of 'Trailer' which allows all trailers in JPEG and TIFF-format
-images to be deleted at once, including unknown trailers.  To schedule a
-group for deletion, call L</SetNewValue> with an undefined value and a tag
-name like 'Trailer:*'.
+To schedule a group for deletion, call L</SetNewValue> with a tag name like
+'EXIF:*' and an undefined tag value.
 
-Note that the JPEG "APP" groups are special, and are used only to delete
-application segments which are not associated with another deletable group. 
-For example, deleting 'APP14:*' will delete other APP14 segments, but not
-the APP14 "Adobe" segment.
+Deleting a family 0 or 1 group will delete the entire corresponding block of
+metadata, but deleting a family 2 group (eg. Audio, Author, Camera, etc.)
+deletes the individual tags belonging to that category.
+
+The 'Trailer' group allows all trailers in JPEG and TIFF-format images to be
+deleted at once, including unknown trailers.  Note that the JPEG "APP"
+groups are special, and are used only to delete application segments which
+are not associated with another deletable group. For example, deleting
+'APP14:*' will delete other APP14 segments, but not the APP14 "Adobe"
+segment.
 
 =back
 
@@ -2282,9 +2289,10 @@ Get type of file given file name.
 
 0) [optional] File name (or just an extension)
 
-1) [optional] Flag to return a description instead of a type.  Set to 0 to
-return type for recognized but unsupported files (otherwise the return value
-for unsupported files is undef).
+1) [optional] Flag to return a description instead of a type.  Default is
+undef.  Set to 0 to also return types of recognized but unsupported files
+(otherwise the return value for unsupported files is undef), or 1 to return
+descriptions.
 
 =item Return Value:
 
@@ -2344,8 +2352,8 @@ files.
 Add user-defined tags to an existing tag table at run time.  This differs
 from the usual technique of creating user-defined tags via the
 %Image::ExifTool::UserDefined hash (see the ExifTool_config file in the
-Image::ExifTool distribution) because it allows tags to be added after the
-tag table has been initialized.
+Image::ExifTool distribution) because it allows tags to be added after a tag
+table has been initialized.
 
     use Image::ExifTool ':Public';
     my %tags = (

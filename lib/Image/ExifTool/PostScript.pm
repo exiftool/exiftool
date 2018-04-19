@@ -16,7 +16,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.42';
+$VERSION = '1.43';
 
 sub WritePS($$);
 sub ProcessPS($$;$);
@@ -101,7 +101,7 @@ sub ProcessPS($$;$);
     AI9_ColorModel => {
         Name => 'AIColorModel',
         PrintConv => {
-            1 => 'sRGB',
+            1 => 'RGB',
             2 => 'CMYK',
         },
     },

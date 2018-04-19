@@ -52,7 +52,7 @@ my %mdDateInfo = (
         Notes => q{
             file creation date.  Requires "setfile" for writing.  Note that when
             reading, it may take a few seconds after writing a file before this value
-            reflects the change.  However, FileCreateDate is updated immediately
+            reflects the change.  However, L<FileCreateDate|Extra.html> is updated immediately
         },
         Groups => { 2 => 'Time' },
         ValueConv => \&MDItemLocalTime,

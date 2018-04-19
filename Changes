@@ -7,9 +7,17 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.80. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Apr. 19, 2018 - Version 10.94
+
+  - Added read/write support for Canon CRM files
+  - Added a new Sony LensType (thanks Jos Roost)
+  - Added a new CanonModelID
+  - Decode a new Samsung tag (thanks LibRaw)
+  - Fixed AIColorModel conversion
+
 Apr. 13, 2018 - Version 10.93
 
-  - Added a new CanonQuality value (thanks Norbert Wasser)
+  - Added a new Canon Quality value (thanks Norbert Wasser)
   - Added a new Pentax Quality value (thanks LibRaw)
   - Decode some new Sony ARW tags (thanks Jos Roost)
   - Decode some AI-specific tags from PDF and PostScript files
@@ -17,7 +25,7 @@ Apr. 13, 2018 - Version 10.93
   - Enhanced -geotag option to support NMEA from GLONASS and other systems
   - Fixed bug decoding seconds of ZIP file timestamps (thanks Lars Wallenborn)
 
-Apr. 10, 2018 - Version 10.92
+Apr. 19, 2018 - Version 10.92
 
   - Decode GPS from videos of more camera models
   - Tolerate white space before header in PDF files

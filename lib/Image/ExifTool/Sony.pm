@@ -32,7 +32,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.82';
+$VERSION = '2.83';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -157,6 +157,7 @@ my %sonyLensTypes2 = (
     50994 => 'Voigtlander ULTRA WIDE-HELIAR 12mm F5.6 III', #IB
     50995 => 'Voigtlander MACRO APO-LANTHAR 65mm F2 Aspherical', #JR
     50996 => 'Voigtlander NOKTON 40mm F1.2 Aspherical', #JR
+    50997 => 'Voigtlander NOKTON classic 35mm F1.4', #JR
 
     # lenses listed in the Sigma MC-11 list, but not yet seen:
     # 504xx => 'Sigma 18-200mm F3.5-6.3 DC MACRO OS HSM | C + MC-11', # (014)

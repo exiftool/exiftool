@@ -161,8 +161,8 @@ string.  The following two techniques are equivalent:</p>
 <p>By default, tags are <b>copied as structures</b>, but flattened tag names
 may still be copied by specifying them explicitly. <span class=lt>(Flattened
 tags are treated as "unsafe" for copying so they are not copied by default
-unless the Struct feature is disabled.)</span> Copying as structures allows the
-hierarchy of complex structures to be preserved.</p>
+unless the Struct feature is disabled; see below.)</span> Copying as structures
+allows the hierarchy of complex structures to be preserved.</p>
 
 <blockquote><table class='box'><tr><td>
 <pre># this copies all XMP information as structures
@@ -337,7 +337,7 @@ added after the last field in a structure.</li>
 demonstration purposes and to improve readability.  Also, optional commas have
 been added after the last field of each structure.  (Note that a comma may NOT
 be added after the last item in a list because this would be interpreted as an
-additional list item of a zero-length string.)</p>
+additional list item consisting of a zero-length string.)</p>
 
 <a name='Examples'></a>
 <h2>Examples</h2>

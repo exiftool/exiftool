@@ -28,7 +28,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD $iptcDigestInfo);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.57';
+$VERSION = '1.58';
 
 sub ProcessPhotoshop($$$);
 sub WritePhotoshop($$$);
@@ -644,16 +644,24 @@ sub ProcessLayers($$$)
 
     # read the layer information header
     my $n = $psiz * 2 + 2;
-    my $dataPos = $raf->Tell();
     $raf->Read($data, $n) == $n or return 0;
-    my %dinfo = ( DataPt => \$data, DataPos => $dataPos );
     my $tot = $psb ? Get64u(\$data, 0) : Get32u(\$data, 0); # length of layer and mask info
-    my $len = $psb ? Get64u(\$data, $psiz) : Get32u(\$data, $psiz); # length of layer info section
-    my $num = Get16s(\$data, $psiz * 2);
+    my $end = $raf->Tell() - $psiz - 2 + $tot;
+    $data = substr $data, $psiz;
+    my $len = $psb ? Get64u(\$data, 0) : Get32u(\$data, 0); # length of layer info section
+    my $num = Get16s(\$data, $psiz);
+    # check for Lr16 block if layers length is 0 (ref https://forums.adobe.com/thread/1540914)
+    if ($len == 0 and $num == 0 and $raf->Read($data,10) == 10 and
+        $data =~/^..8BIMLr16/s and $raf->Read($data, $psiz+2) == $psiz+2)
+    {
+        $len = $psb ? Get64u(\$data, 0) : Get32u(\$data, 0);
+        $num = Get16s(\$data, $psiz);
+    }
+    my $dataPos = $raf->Tell();
+    my %dinfo = ( DataPt => \$data, DataPos => $dataPos - length($data) );
     $num = -$num if $num < 0;       # (first channel is transparency data if negative)
-    $et->HandleTag($tagTablePtr, '_xcnt', $num, Start => $psiz*2, Size => 2, %dinfo); # LayerCount
+    $et->HandleTag($tagTablePtr, '_xcnt', $num, Start => $psiz, Size => 2, %dinfo); # LayerCount
     $et->VerboseDir('Layers', $num, $len);
-    $dataPos += $n; # point to start of layer information section
     my $oldIndent = $$et{INDENT};
     $$et{INDENT} .= '| ';
 
@@ -727,7 +735,7 @@ sub ProcessLayers($$$)
     }
     $$et{INDENT} = $oldIndent;
     # seek to the end of this section
-    return 0 unless $raf->Seek($dataPos - 2 - $psiz + $tot, 0);
+    return 0 unless $raf->Seek($end, 0);
     return 1;   # success!
 }
 

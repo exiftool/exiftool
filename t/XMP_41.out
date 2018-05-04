@@ -1,18 +1,19 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.93
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.95
 [File, System, Image] FileName - File Name: XMP_41_failed.xmp
 [File, System, Image] Directory - Directory: t
-[File, System, Image] FileSize - File Size: 9.8 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2015:04:18 07:17:55-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:18 07:17:55-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:04:18 07:17:55-04:00
+[File, System, Image] FileSize - File Size: 13 kB
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2018:05:04 08:16:33-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2018:05:04 08:16:33-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2018:05:04 08:16:33-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: XMP
 [File, File, Image] FileTypeExtension - File Type Extension: xmp
 [File, File, Image] MIMEType - MIME Type: application/rdf+xml
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 9.93
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 10.95
 [XMP, XMP-dwc, Time] EventDay - Event Day: 2013
 [XMP, XMP-dwc, Time] EventEarliestDate - Event Earliest Date: 2013
 [XMP, XMP-dwc, Time] EventEndDayOfYear - Event End Day Of Year: 2013
+[XMP, XMP-dwc, Time] EventEventDate - Event Date: 2013
 [XMP, XMP-dwc, Other] EventEventID - Event ID: 2013
 [XMP, XMP-dwc, Other] EventEventRemarks - Event Remarks: 2013
 [XMP, XMP-dwc, Time] EventEventTime - Event Time: 2013
@@ -21,11 +22,15 @@
 [XMP, XMP-dwc, Other] EventHabitat - Event Habitat: 2013
 [XMP, XMP-dwc, Time] EventLatestDate - Event Latest Date: 2013
 [XMP, XMP-dwc, Time] EventMonth - Event Month: 2013
+[XMP, XMP-dwc, Other] EventParentEventID - Event Parent Event ID: 2013
+[XMP, XMP-dwc, Other] EventSampleSizeUnit - Event Sample Size Unit: 2013
+[XMP, XMP-dwc, Other] EventSampleSizeValue - Event Sample Size Value: 2013
 [XMP, XMP-dwc, Other] EventSamplingEffort - Event Sampling Effort: 2013
 [XMP, XMP-dwc, Other] EventSamplingProtocol - Event Sampling Protocol: 2013
 [XMP, XMP-dwc, Time] EventStartDayOfYear - Event Start Day Of Year: 2013
 [XMP, XMP-dwc, Time] EventVerbatimEventDate - Event Verbatim Event Date: 2013
 [XMP, XMP-dwc, Time] EventYear - Event Year: 2013
+[XMP, XMP-dwc, Other] FossilSpecimenMaterialSampleID - Fossil Specimen Material Sample ID: 2013
 [XMP, XMP-dwc, Other] GeologicalContextBed - Geological Context Bed: 2013
 [XMP, XMP-dwc, Other] GeologicalContextEarliestAgeOrLowestStage - Earliest Age Or Lowest Stage: 2013
 [XMP, XMP-dwc, Other] GeologicalContextEarliestEonOrLowestEonothem - Earliest Eon Or Lowest Eonothem: 2013
@@ -44,6 +49,26 @@
 [XMP, XMP-dwc, Other] GeologicalContextLithostratigraphicTerms - Lithostratigraphic Terms: 2013
 [XMP, XMP-dwc, Other] GeologicalContextLowestBiostratigraphicZone - Lowest Biostratigraphic Zone: 2013
 [XMP, XMP-dwc, Other] GeologicalContextMember - Geological Context Member: 2013
+[XMP, XMP-dwc, Time] HumanObservationDay - Human Observation Day: 2013
+[XMP, XMP-dwc, Time] HumanObservationEarliestDate - Human Observation Earliest Date: 2013
+[XMP, XMP-dwc, Time] HumanObservationEndDayOfYear - Human Observation End Day Of Year: 2013
+[XMP, XMP-dwc, Time] HumanObservationEventDate - Human Observation Event Date: 2013
+[XMP, XMP-dwc, Other] HumanObservationEventID - Human Observation Event ID: 2013
+[XMP, XMP-dwc, Other] HumanObservationEventRemarks - Human Observation Event Remarks: 2013
+[XMP, XMP-dwc, Time] HumanObservationEventTime - Human Observation Event Time: 2013
+[XMP, XMP-dwc, Other] HumanObservationFieldNotes - Human Observation Field Notes: 2013
+[XMP, XMP-dwc, Other] HumanObservationFieldNumber - Human Observation Field Number: 2013
+[XMP, XMP-dwc, Other] HumanObservationHabitat - Human Observation Habitat: 2013
+[XMP, XMP-dwc, Time] HumanObservationLatestDate - Human Observation Latest Date: 2013
+[XMP, XMP-dwc, Time] HumanObservationMonth - Human Observation Month: 2013
+[XMP, XMP-dwc, Other] HumanObservationParentEventID - Human Observation Parent Event ID: 2013
+[XMP, XMP-dwc, Other] HumanObservationSampleSizeUnit - Human Observation Sample Size Unit: 2013
+[XMP, XMP-dwc, Other] HumanObservationSampleSizeValue - Human Observation Sample Size Value: 2013
+[XMP, XMP-dwc, Other] HumanObservationSamplingEffort - Human Observation Sampling Effort: 2013
+[XMP, XMP-dwc, Other] HumanObservationSamplingProtocol - Human Observation Sampling Protocol: 2013
+[XMP, XMP-dwc, Time] HumanObservationStartDayOfYear - Human Observation Start Day Of Year: 2013
+[XMP, XMP-dwc, Time] HumanObservationVerbatimEventDate - Human Observation Verbatim Event Date: 2013
+[XMP, XMP-dwc, Time] HumanObservationYear - Human Observation Year: 2013
 [XMP, XMP-dwc, Time] IdentificationDateIdentified - Date Identified: 2013
 [XMP, XMP-dwc, Other] IdentificationIdentificationID - Identification ID: 2013
 [XMP, XMP-dwc, Other] IdentificationIdentificationQualifier - Identification Qualifier: 2013
@@ -52,6 +77,28 @@
 [XMP, XMP-dwc, Other] IdentificationIdentificationVerificationStatus - Identification Verification Status: 2013
 [XMP, XMP-dwc, Other] IdentificationIdentifiedBy - Identified By: 2013
 [XMP, XMP-dwc, Other] IdentificationTypeStatus - Type Status: 2013
+[XMP, XMP-dwc, Other] LivingSpecimenMaterialSampleID - Living Specimen Material Sample ID: 2013
+[XMP, XMP-dwc, Time] MachineObservationDay - Machine Observation Day: 2013
+[XMP, XMP-dwc, Time] MachineObservationEarliestDate - Machine Observation Earliest Date: 2013
+[XMP, XMP-dwc, Time] MachineObservationEndDayOfYear - Machine Observation End Day Of Year: 2013
+[XMP, XMP-dwc, Time] MachineObservationEventDate - Machine Observation Event Date: 2013
+[XMP, XMP-dwc, Other] MachineObservationEventID - Machine Observation Event ID: 2013
+[XMP, XMP-dwc, Other] MachineObservationEventRemarks - Machine Observation Event Remarks: 2013
+[XMP, XMP-dwc, Time] MachineObservationEventTime - Machine Observation Event Time: 2013
+[XMP, XMP-dwc, Other] MachineObservationFieldNotes - Machine Observation Field Notes: 2013
+[XMP, XMP-dwc, Other] MachineObservationFieldNumber - Machine Observation Field Number: 2013
+[XMP, XMP-dwc, Other] MachineObservationHabitat - Machine Observation Habitat: 2013
+[XMP, XMP-dwc, Time] MachineObservationLatestDate - Machine Observation Latest Date: 2013
+[XMP, XMP-dwc, Time] MachineObservationMonth - Machine Observation Month: 2013
+[XMP, XMP-dwc, Other] MachineObservationParentEventID - Machine Observation Parent Event ID: 2013
+[XMP, XMP-dwc, Other] MachineObservationSampleSizeUnit - Machine Observation Sample Size Unit: 2013
+[XMP, XMP-dwc, Other] MachineObservationSampleSizeValue - Machine Observation Sample Size Value: 2013
+[XMP, XMP-dwc, Other] MachineObservationSamplingEffort - Machine Observation Sampling Effort: 2013
+[XMP, XMP-dwc, Other] MachineObservationSamplingProtocol - Machine Observation Sampling Protocol: 2013
+[XMP, XMP-dwc, Time] MachineObservationStartDayOfYear - Machine Observation Start Day Of Year: 2013
+[XMP, XMP-dwc, Time] MachineObservationVerbatimEventDate - Machine Observation Verbatim Event Date: 2013
+[XMP, XMP-dwc, Time] MachineObservationYear - Machine Observation Year: 2013
+[XMP, XMP-dwc, Other] MaterialSampleMaterialSampleID - Material Sample ID: 2013
 [XMP, XMP-dwc, Other] MeasurementOrFactMeasurementAccuracy - Measurement Accuracy: 2013
 [XMP, XMP-dwc, Other] MeasurementOrFactMeasurementDeterminedBy - Measurement Determined By: 2013
 [XMP, XMP-dwc, Time] MeasurementOrFactMeasurementDeterminedDate - Measurement Determined Date: 2013
@@ -77,6 +124,8 @@
 [XMP, XMP-dwc, Other] OccurrenceOccurrenceID - Occurrence ID: 2013
 [XMP, XMP-dwc, Other] OccurrenceOccurrenceRemarks - Occurrence Remarks: 2013
 [XMP, XMP-dwc, Other] OccurrenceOccurrenceStatus - Occurrence Status: 2013
+[XMP, XMP-dwc, Other] OccurrenceOrganismQuantity - Occurrence Organism Quantity: 2013
+[XMP, XMP-dwc, Other] OccurrenceOrganismQuantityType - Occurrence Organism Quantity Type: 2013
 [XMP, XMP-dwc, Other] OccurrenceOtherCatalogNumbers - Occurrence Other Catalog Numbers: 2013
 [XMP, XMP-dwc, Other] OccurrencePreparations - Occurrence Preparations: 2013
 [XMP, XMP-dwc, Other] OccurrencePreviousIdentifications - Occurrence Previous Identifications: 2013
@@ -84,6 +133,14 @@
 [XMP, XMP-dwc, Other] OccurrenceRecordedBy - Occurrence Recorded By: 2013
 [XMP, XMP-dwc, Other] OccurrenceReproductiveCondition - Occurrence Reproductive Condition: 2013
 [XMP, XMP-dwc, Other] OccurrenceSex - Occurrence Sex: 2013
+[XMP, XMP-dwc, Other] OrganismAssociatedOccurrences - Organism Associated Occurrences: 2013
+[XMP, XMP-dwc, Other] OrganismAssociatedOrganisms - Organism Associated Organisms: 2013
+[XMP, XMP-dwc, Other] OrganismOrganismID - Organism ID: 2013
+[XMP, XMP-dwc, Other] OrganismOrganismName - Organism Name: 2013
+[XMP, XMP-dwc, Other] OrganismOrganismRemarks - Organism Remarks: 2013
+[XMP, XMP-dwc, Other] OrganismOrganismScope - Organism Scope: 2013
+[XMP, XMP-dwc, Other] OrganismPreviousIdentifications - Organism Previous Identifications: 2013
+[XMP, XMP-dwc, Other] PreservedSpecimenMaterialSampleID - Preserved Specimen Material Sample ID: 2013
 [XMP, XMP-dwc, Other] RecordBasisOfRecord - Record Basis Of Record: 2013
 [XMP, XMP-dwc, Other] RecordCollectionCode - Record Collection Code: 2013
 [XMP, XMP-dwc, Other] RecordCollectionID - Record Collection ID: 2013

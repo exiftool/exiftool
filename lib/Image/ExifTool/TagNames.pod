@@ -13012,7 +13012,7 @@ These tags are used in Panasonic/Leica cameras.
   0x004c   PanasonicImageHeight                 int32u
   0x004d   AFPointPosition                      rational64u[2]
   0x004e   FaceDetInfo                          Panasonic FaceDetInfo
-  0x0051   LensType                             string
+  0x0051   LensModel                            string
   0x0052   LensSerialNumber                     string
   0x0053   AccessoryType                        string
   0x0054   AccessorySerialNumber                string
@@ -13128,7 +13128,14 @@ These tags are used by the Leica R8 and R9 digital backs.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
+  0x000b   SerialInfo                           Panasonic SerialInfo
   0x000d   WB_RGBLevels                         int16u[3]
+
+=head3 Panasonic SerialInfo Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      4    SerialNumber                         no
 
 =head3 Panasonic Leica4 Tags
 
@@ -13186,13 +13193,22 @@ This information is written by the X1, X2, X VARIO and T.
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
   0x0303   LensModel                            string
+  0x0305   SerialNumber                         int32u
   0x0407   OriginalFileName                     string
   0x0408   OriginalDirectory                    string
+  0x040a   FocusInfo                            Panasonic FocusInfo
   0x040d   ExposureMode                         int8u[4]
   0x0410   ShotInfo                             Panasonic ShotInfo
   0x0412   FilmMode                             string
   0x0413   WB_RGBLevels                         rational64u[3]
   0x0500   InternalSerialNumber                 undef
+
+=head3 Panasonic FocusInfo Tags
+
+  Index2   Tag Name                             Writable
+  ------   --------                             --------
+      0    FocusDistance                        int16u
+      1    FocalLength                          int16u
 
 =head3 Panasonic ShotInfo Tags
 
@@ -13209,7 +13225,12 @@ images.
   ------   --------                             --------
   0x0300   PreviewImage                         undef
   0x0301   UnknownBlock?                        no
-  0x0303   LensType                             string
+  0x0303   LensModel                            string
+  0x0304   FocusDistance                        int32u
+  0x0311   ExternalSensorBrightnessValue        rational64s
+  0x0312   MeasuredLV                           rational64s
+  0x0320   FirmwareVersion                      int8u[4]
+  0x0321   LensSerialNumber                     int32u
 
 =head3 Panasonic Leica9 Tags
 
@@ -13217,7 +13238,9 @@ This information is written by the Leica S (Typ 007).
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
-  [no tags known]
+  0x0304   FocusDistance                        int32u
+  0x0311   ExternalSensorBrightnessValue        rational64s
+  0x0312   MeasuredLV                           rational64s
 
 =head3 Panasonic Type2 Tags
 
@@ -14320,6 +14343,7 @@ Tags found in the EXIF-format maker notes of newer Samsung models.
   0x0030   LocalLocationName                    string
   0x0031   LocationName                         string
   0x0035   PreviewIFD                           Nikon PreviewIFD
+                                                Nikon PreviewIFD
   0x0040   RawDataByteOrder                     yes
   0x0041   WhiteBalanceSetup                    int32u
   0x0043   CameraTemperature                    rational64s
@@ -18998,6 +19022,7 @@ These tags belong to the ExifTool XMP-dwc family 1 group.
   EventDay                                      integer_
   EventEarliestDate                             date_
   EventEndDayOfYear                             integer_
+  EventDate                                     date_
   EventID                                       string_
   EventRemarks                                  lang-alt_
   EventTime                                     date_
@@ -19006,11 +19031,16 @@ These tags belong to the ExifTool XMP-dwc family 1 group.
   EventHabitat                                  string_
   EventLatestDate                               date_
   EventMonth                                    integer_
+  EventParentEventID                            string_
+  EventSampleSizeUnit                           string_
+  EventSampleSizeValue                          string_
   EventSamplingEffort                           string_
   EventSamplingProtocol                         string_
   EventStartDayOfYear                           integer_
   EventVerbatimEventDate                        string_
   EventYear                                     integer_
+  FossilSpecimen                                DarwinCore MaterialSample Struct
+  FossilSpecimenMaterialSampleID                string_
   GeologicalContext                             DarwinCore GeologicalContext Struct
   GeologicalContextBed                          string_
   EarliestAgeOrLowestStage                      string_
@@ -19030,6 +19060,27 @@ These tags belong to the ExifTool XMP-dwc family 1 group.
   LithostratigraphicTerms                       string_
   LowestBiostratigraphicZone                    string_
   GeologicalContextMember                       string_
+  HumanObservation                              DarwinCore Event Struct
+  HumanObservationDay                           integer_
+  HumanObservationEarliestDate                  date_
+  HumanObservationEndDayOfYear                  integer_
+  HumanObservationEventDate                     date_
+  HumanObservationEventID                       string_
+  HumanObservationEventRemarks                  lang-alt_
+  HumanObservationEventTime                     date_
+  HumanObservationFieldNotes                    string_
+  HumanObservationFieldNumber                   string_
+  HumanObservationHabitat                       string_
+  HumanObservationLatestDate                    date_
+  HumanObservationMonth                         integer_
+  HumanObservationParentEventID                 string_
+  HumanObservationSampleSizeUnit                string_
+  HumanObservationSampleSizeValue               string_
+  HumanObservationSamplingEffort                string_
+  HumanObservationSamplingProtocol              string_
+  HumanObservationStartDayOfYear                integer_
+  HumanObservationVerbatimEventDate             string_
+  HumanObservationYear                          integer_
   Identification                                DarwinCore Identification Struct
   DateIdentified                                date_
   IdentificationID                              string_
@@ -19039,6 +19090,31 @@ These tags belong to the ExifTool XMP-dwc family 1 group.
   IdentificationVerificationStatus              string_
   IdentifiedBy                                  string_
   TypeStatus                                    string_
+  LivingSpecimen                                DarwinCore MaterialSample Struct
+  LivingSpecimenMaterialSampleID                string_
+  MachineObservation                            DarwinCore Event Struct
+  MachineObservationDay                         integer_
+  MachineObservationEarliestDate                date_
+  MachineObservationEndDayOfYear                integer_
+  MachineObservationEventDate                   date_
+  MachineObservationEventID                     string_
+  MachineObservationEventRemarks                lang-alt_
+  MachineObservationEventTime                   date_
+  MachineObservationFieldNotes                  string_
+  MachineObservationFieldNumber                 string_
+  MachineObservationHabitat                     string_
+  MachineObservationLatestDate                  date_
+  MachineObservationMonth                       integer_
+  MachineObservationParentEventID               string_
+  MachineObservationSampleSizeUnit              string_
+  MachineObservationSampleSizeValue             string_
+  MachineObservationSamplingEffort              string_
+  MachineObservationSamplingProtocol            string_
+  MachineObservationStartDayOfYear              integer_
+  MachineObservationVerbatimEventDate           string_
+  MachineObservationYear                        integer_
+  MaterialSample                                DarwinCore MaterialSample Struct
+  MaterialSampleID                              string_
   MeasurementOrFact                             DarwinCore MeasurementOrFact Struct
   MeasurementAccuracy                           string_
   MeasurementDeterminedBy                       string_
@@ -19066,6 +19142,8 @@ These tags belong to the ExifTool XMP-dwc family 1 group.
   OccurrenceID                                  string_
   OccurrenceRemarks                             string_
   OccurrenceStatus                              string_
+  OccurrenceOrganismQuantity                    string_
+  OccurrenceOrganismQuantityType                string_
   OccurrenceOtherCatalogNumbers                 string_
   OccurrencePreparations                        string_
   OccurrencePreviousIdentifications             string_
@@ -19073,6 +19151,16 @@ These tags belong to the ExifTool XMP-dwc family 1 group.
   OccurrenceRecordNumber                        string_
   OccurrenceReproductiveCondition               string_
   OccurrenceSex                                 string_
+  Organism                                      DarwinCore Organism Struct
+  OrganismAssociatedOccurrences                 string_
+  OrganismAssociatedOrganisms                   string_
+  OrganismID                                    string_
+  OrganismName                                  string_
+  OrganismRemarks                               string_
+  OrganismScope                                 string_
+  OrganismPreviousIdentifications               string_
+  PreservedSpecimen                             DarwinCore MaterialSample Struct
+  PreservedSpecimenMaterialSampleID             string_
   Record                                        DarwinCore Record Struct
   RecordBasisOfRecord                           string_
   RecordCollectionCode                          string_
@@ -19184,6 +19272,7 @@ These tags belong to the ExifTool XMP-dwc family 1 group.
   Day                                           integer
   EarliestDate                                  date
   EndDayOfYear                                  integer
+  EventDate                                     date
   EventID                                       string
   EventRemarks                                  lang-alt
   EventTime                                     date
@@ -19192,11 +19281,20 @@ These tags belong to the ExifTool XMP-dwc family 1 group.
   Habitat                                       string
   LatestDate                                    date
   Month                                         integer
+  ParentEventID                                 string
+  SampleSizeUnit                                string
+  SampleSizeValue                               string
   SamplingEffort                                string
   SamplingProtocol                              string
   StartDayOfYear                                integer
   VerbatimEventDate                             string
   Year                                          integer
+
+=head3 DarwinCore MaterialSample Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  MaterialSampleID                              string
 
 =head3 DarwinCore GeologicalContext Struct
 
@@ -19268,6 +19366,8 @@ These tags belong to the ExifTool XMP-dwc family 1 group.
   OccurrenceID                                  string
   OccurrenceRemarks                             string
   OccurrenceStatus                              string
+  OrganismQuantity                              string
+  OrganismQuantityType                          string
   OtherCatalogNumbers                           string
   Preparations                                  string
   PreviousIdentifications                       string
@@ -19275,6 +19375,18 @@ These tags belong to the ExifTool XMP-dwc family 1 group.
   RecordedBy                                    string
   ReproductiveCondition                         string
   Sex                                           string
+
+=head3 DarwinCore Organism Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  AssociatedOccurrences                         string
+  AssociatedOrganisms                           string
+  OrganismID                                    string
+  OrganismName                                  string
+  OrganismRemarks                               string
+  OrganismScope                                 string
+  PreviousIdentifications                       string
 
 =head3 DarwinCore Record Struct
 

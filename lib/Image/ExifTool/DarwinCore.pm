@@ -6,6 +6,7 @@
 # Revisions:    2013-01-28 - P. Harvey Created
 #
 # References:   1) http://rs.tdwg.org/dwc/index.htm
+#               2) http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,4442.0/all.html
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::DarwinCore;
@@ -14,7 +15,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool::XMP;
 
-$VERSION = '1.01';
+$VERSION = '1.02';
 
 my %dateTimeInfo = (
     # NOTE: Do NOT put "Groups" here because Groups hash must not be common!
@@ -22,6 +23,37 @@ my %dateTimeInfo = (
     Shift => 'Time',
     PrintConv => '$self->ConvertDateTime($val)',
     PrintConvInv => '$self->InverseDateTime($val,undef,1)',
+);
+
+my %materialSample = (
+    STRUCT_NAME => 'DarwinCore MaterialSample',
+    NAMESPACE => 'dwc',
+    materialSampleID            => { },
+);
+
+my %event = (
+    STRUCT_NAME => 'DarwinCore Event',
+    NAMESPACE => 'dwc',
+    day                 => { Writable => 'integer', Groups => { 2 => 'Time' } },
+    earliestDate        => { %dateTimeInfo, Groups => { 2 => 'Time' } },
+    endDayOfYear        => { Writable => 'integer', Groups => { 2 => 'Time' } },
+    eventDate           => { %dateTimeInfo, Groups => { 2 => 'Time' } },
+    eventID             => { },
+    eventRemarks        => { Writable => 'lang-alt' },
+    eventTime           => { %dateTimeInfo, Groups => { 2 => 'Time' } },
+    fieldNotes          => { },
+    fieldNumber         => { },
+    habitat             => { },
+    latestDate          => { %dateTimeInfo, Groups => { 2 => 'Time' } },
+    month               => { Writable => 'integer', Groups => { 2 => 'Time' } },
+    parentEventID       => { },
+    samplingEffort      => { },
+    samplingProtocol    => { },
+    sampleSizeValue     => { },
+    sampleSizeUnit      => { },
+    startDayOfYear      => { Writable => 'integer', Groups => { 2 => 'Time' } },
+    verbatimEventDate   => { Groups => { 2 => 'Time' } },
+    year                => { Writable => 'integer', Groups => { 2 => 'Time' } },
 );
 
 # Darwin Core tags
@@ -36,31 +68,14 @@ my %dateTimeInfo = (
     Event => {
         Name => 'DCEvent',  # (avoid conflict with XMP-iptcExt:Event)
         FlatName => 'Event',
-        Struct => {
-            STRUCT_NAME => 'DarwinCore Event',
-            NAMESPACE => 'dwc',
-            day                 => { Writable => 'integer', Groups => { 2 => 'Time' } },
-            earliestDate        => { %dateTimeInfo, Groups => { 2 => 'Time' } },
-            endDayOfYear        => { Writable => 'integer', Groups => { 2 => 'Time' } },
-            eventID             => { },
-            eventRemarks        => { Writable => 'lang-alt' },
-            eventTime           => { %dateTimeInfo, Groups => { 2 => 'Time' } },
-            fieldNotes          => { },
-            fieldNumber         => { },
-            habitat             => { },
-            latestDate          => { %dateTimeInfo, Groups => { 2 => 'Time' } },
-            month               => { Writable => 'integer', Groups => { 2 => 'Time' } },
-            samplingEffort      => { },
-            samplingProtocol    => { },
-            startDayOfYear      => { Writable => 'integer', Groups => { 2 => 'Time' } },
-            verbatimEventDate   => { Groups => { 2 => 'Time' } },
-            year                => { Writable => 'integer', Groups => { 2 => 'Time' } },
-        },
+        Struct => \%event,
     },
     # tweak a few of the flattened tag names
+    EventEventDate    => { Name => 'EventDate',     Flat => 1 },
     EventEventID      => { Name => 'EventID',       Flat => 1 },
     EventEventRemarks => { Name => 'EventRemarks',  Flat => 1 },
     EventEventTime    => { Name => 'EventTime',     Flat => 1 },
+    FossilSpecimen    => { Struct => \%materialSample },
     GeologicalContext => {
         FlatName => '', # ('GeologicalContext' is too long)
         Struct => {
@@ -90,6 +105,7 @@ my %dateTimeInfo = (
     GeologicalContextFormation  => { Name => 'GeologicalContextFormation',  Flat => 1 },
     GeologicalContextGroup      => { Name => 'GeologicalContextGroup',      Flat => 1 },
     GeologicalContextMember     => { Name => 'GeologicalContextMember',     Flat => 1 },
+    HumanObservation => { Struct => \%event },
     Identification => {
         FlatName => '', # ('Identification' is redundant)
         Struct => {
@@ -105,6 +121,10 @@ my %dateTimeInfo = (
             typeStatus                  => { },
         },
     },
+    LivingSpecimen      => { Struct => \%materialSample },
+    MachineObservation  => { Struct => \%event },
+    MaterialSample      => { Struct => \%materialSample },
+    MaterialSampleMaterialSampleID => { Name => 'MaterialSampleID', Flat => 1 },
     MeasurementOrFact => {
         FlatName => '', # ('MeasurementOrFact' is redundant and too long)
         Struct => {
@@ -141,6 +161,8 @@ my %dateTimeInfo = (
             occurrenceID                => { },
             occurrenceRemarks           => { },
             occurrenceStatus            => { },
+            organismQuantity            => { },
+            organismQuantityType        => { },
             otherCatalogNumbers         => { },
             preparations                => { },
             previousIdentifications     => { },
@@ -150,10 +172,28 @@ my %dateTimeInfo = (
             sex                         => { },
         },
     },
-    OccurrenceOccurrenceRemarks => { Name => 'OccurrenceRemarks', Flat => 1 },
     OccurrenceOccurrenceDetails => { Name => 'OccurrenceDetails', Flat => 1 },
     OccurrenceOccurrenceID      => { Name => 'OccurrenceID',      Flat => 1 },
+    OccurrenceOccurrenceRemarks => { Name => 'OccurrenceRemarks', Flat => 1 },
     OccurrenceOccurrenceStatus  => { Name => 'OccurrenceStatus',  Flat => 1 },
+    Organism => {
+        Struct => {
+            STRUCT_NAME => 'DarwinCore Organism',
+            NAMESPACE => 'dwc',
+            associatedOccurrences       => { },
+            associatedOrganisms         => { },
+            organismID                  => { },
+            organismName                => { },
+            organismRemarks             => { },
+            organismScope               => { },
+            previousIdentifications     => { },
+        },
+    },
+    OrganismOrganismID      => { Name => 'OrganismID',      Flat => 1 },
+    OrganismOrganismName    => { Name => 'OrganismName',    Flat => 1 },
+    OrganismOrganismRemarks => { Name => 'OrganismRemarks', Flat => 1 },
+    OrganismOrganismScope   => { Name => 'OrganismScope',   Flat => 1 },
+    PreservedSpecimen       => { Struct => \%materialSample },
     Record => {
         Struct => {
             STRUCT_NAME => 'DarwinCore Record',

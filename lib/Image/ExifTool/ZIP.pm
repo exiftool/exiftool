@@ -375,7 +375,7 @@ sub ProcessZIP($$)
     my $raf = $$dirInfo{RAF};
     my ($buff, $buf2, $zip, $docNum);
 
-    return 0 unless $raf->Read($buff, 30) and $buff =~ /^PK\x03\x04/;
+    return 0 unless $raf->Read($buff, 30) == 30 and $buff =~ /^PK\x03\x04/;
 
     my $tagTablePtr = GetTagTable('Image::ExifTool::ZIP::Main');
 

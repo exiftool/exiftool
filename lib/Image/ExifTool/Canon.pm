@@ -9294,26 +9294,26 @@ sub ProcessCTMD($$$)
     while ($pos + 6 < $dirLen) {
         my $size = Get32u($dataPt, $pos);
         my $type = Get16u($dataPt, $pos + 4);
-        # what is the meaning of the next 6 bytes of these records?:
-        #   type 1 - 00 00 00 01 zz zz - TimeStamp; zz=00(CR3),ff(CRM)
-        #   type 3 - 00 00 00 01 zz zz - ? "ff ff ff ff"; zz=00(CR3),ff(CRM)
-        #   type 4 - 00 00 00 01 ff ff - FocalInfo
-        #   type 5 - 00 00 00 01 ff ff - ExposureInfo
-        #   type 6 - 00 04 00 01 ff ff - ? "03 04 00 80 e0 15 ff ff" (CRM) [0x15e0 = ColorTemperature?]
-        #   type 7 - xx yy 00 01 ff ff - ExifIFD + MakerNotes; xx=01(CR3),00(CRM) yy=01(CR3),04(CRM);
-        #   type 8 - 01 yy 00 01 ff ff - MakerNotes; yy=01(CR3),04(CRM)
-        #   type 9 - 01 yy 00 01 ff ff - MakerNotes; yy=01(CR3),00(CRM)
-        #   type 10- 01 00 00 01 ff ff - ? (CRM)
-        #   type 11- 01 00 00 01 ff ff - ? (CRM)
-        # --> maybe yy is 01 for ExifInfo?
+        # what is the meaning of the 6-byte header of these records?:
+        #  type 1 - 00 00 00 01 zz zz - TimeStamp(CR3/CRM); zz=00(CR3),ff(CRM)
+        #  type 3 - 00 00 00 01 zz zz - ? "ff ff ff ff"; zz=00(CR3),ff(CRM)
+        #  type 4 - 00 00 00 01 ff ff - FocalInfo(CR3/CRM)
+        #  type 5 - 00 00 00 01 ff ff - ExposureInfo(CR3/CRM)
+        #  type 6 - 00 04 00 01 ff ff - ? "03 04 00 80 e0 15 ff ff"(CRM) [0x15e0 = ColorTemperature?]
+        #  type 7 - xx yy 00 01 ff ff - ExifIFD + MakerNotes(CR3), ?(CRM); xxyy=0101(CR3),0004(CRM)
+        #  type 8 - 01 yy 00 01 ff ff - MakerNotes(CR3), ?(CRM); yy=01(CR3),04(CRM)
+        #  type 9 - 01 yy 00 01 ff ff - MakerNotes(CR3), ?(CRM); yy=01(CR3),00(CRM)
+        #  type 10- 01 00 00 01 ff ff - ? (CRM)
+        #  type 11- 01 00 00 01 ff ff - ? (CRM)
+        # --> maybe yy == 01 for ExifInfo?
         $size < 12 and $et->Warn('Short CTMD record'), last;
         $pos + $size > $dirLen and $et->Warn('Truncated CTMD record'), last;
-        $et->VerboseDir("CTMD type $type", undef, $size - 12);
-        $verbose > 2 and HexDump($dataPt, 6,
+        $et->VerboseDir("CTMD type $type", undef, $size - 6);
+        HexDump($dataPt, 6,     # dump 6-byte header
             Start  => $pos + 6,
             Addr   => $$dirInfo{Base} + $pos + 6,
             Prefix => $$et{INDENT},
-        );
+        ) if $verbose > 2;
         if ($$tagTablePtr{$type}) {
             $et->HandleTag($tagTablePtr, $type, undef,
                 DataPt  => $dataPt,

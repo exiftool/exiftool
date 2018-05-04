@@ -22,7 +22,7 @@ use vars qw($VERSION %samsungLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.40';
+$VERSION = '1.41';
 
 sub WriteSTMN($$$);
 sub ProcessINFO($$$);
@@ -300,9 +300,9 @@ my %formatMinMax = (
     # 0x0032 - string (GPSInfo03)
     # 0x0033 - string (GPSInfo04)
     # 0x0034 - string (GPSInfo05)
-    0x0035 => {
+    0x0035 => [{
         Name => 'PreviewIFD',
-        Condition => '$$self{TIFF_TYPE} eq "SRW"', # (not an IFD in JPEG images)
+        Condition => '$$self{TIFF_TYPE} eq "SRW" and $$self{Model} ne "EK-GN120"', # (not an IFD in JPEG images)
         Groups => { 1 => 'PreviewIFD' },
         Flags => 'SubIFD',
         SubDirectory => {
@@ -310,7 +310,17 @@ my %formatMinMax = (
             ByteOrder => 'Unknown',
             Start => '$val',
         },
-    },
+    },{
+        Name => 'PreviewIFD',
+        Condition => '$$self{TIFF_TYPE} eq "SRW"', # (not an IFD in JPEG images)
+        Groups => { 1 => 'PreviewIFD' },
+        Flags => 'SubIFD',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Nikon::PreviewIFD',
+            ByteOrder => 'Unknown',
+            Start => '$val - 36',
+        },
+    }],
     # 0x003a - int16u[2] (SmartLensInfo?)
     # 0x003b - int16u[2] (PhotoStyleSelectInfo?)
     # 0x003c - int16u (SmartRange?)
@@ -502,13 +512,12 @@ my %formatMinMax = (
         RawConv    => 'Image::ExifTool::Samsung::Crypt($self,$val,$tagInfo,-1)',
         RawConvInv => 'Image::ExifTool::Samsung::Crypt($self,$val,$tagInfo,1)',
     },
-    #this doesn't seem correct
-    #0xa025 => { #PH/1 (PostAEGain?)
-    #    Name => 'ColorTemperatureAuto',
-    #    Writable => 'int32u',
-    #    RawConv    => 'Image::ExifTool::Samsung::Crypt($self,$val,$tagInfo,6)',
-    #    RawConvInv => 'Image::ExifTool::Samsung::Crypt($self,$val,$tagInfo,-6)',
-    #},
+    0xa025 => { # (PostAEGain?)
+        Name => 'DigitalGain', #IB
+        Writable => 'int32u',
+        RawConv    => 'Image::ExifTool::Samsung::Crypt($self,$val,$tagInfo,6)',
+        RawConvInv => 'Image::ExifTool::Samsung::Crypt($self,$val,$tagInfo,-6)',
+    },
     0xa025 => { #IB
         Name => 'HighlightLinearityLimit',
         Writable => 'int32u',

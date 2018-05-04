@@ -521,7 +521,7 @@ L10 and LC80)</span></span><table class=cols><tr>
 <td>--&gt; <a href='Panasonic.html#FaceDetInfo'>Panasonic FaceDetInfo Tags</a></td></tr>
 <tr>
 <td title='0x0051 = 81'>0x0051</td>
-<td>LensType</td>
+<td>LensModel</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
@@ -1209,9 +1209,27 @@ on the M9, or the focal length of some multi-focal lenses.</p>
 <tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
+<td title='0x000b = 11'>0x000b</td>
+<td>SerialInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Panasonic.html#SerialInfo'>Panasonic SerialInfo Tags</a></td></tr>
+<tr class=b>
 <td title='0x000d = 13'>0x000d</td>
 <td>WB_RGBLevels</td>
 <td class=c>int16u[3]</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='SerialInfo'>Panasonic SerialInfo Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='4 = 0x4'>4</td>
+<td>SerialNumber</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -1424,15 +1442,25 @@ on the M9, or the focal length of some multi-focal lenses.</p>
 <td class=c>string</td>
 <td><span class=s><span class=n>(Leica T only)</span></span></td></tr>
 <tr class=b>
+<td title='0x0305 = 773'>0x0305</td>
+<td>SerialNumber</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td title='0x0407 = 1031'>0x0407</td>
 <td>OriginalFileName</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x0408 = 1032'>0x0408</td>
 <td>OriginalDirectory</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
+<tr>
+<td title='0x040a = 1034'>0x040a</td>
+<td>FocusInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Panasonic.html#FocusInfo'>Panasonic FocusInfo Tags</a></td></tr>
 <tr class=b>
 <td title='0x040d = 1037'>0x040d</td>
 <td>ExposureMode</td>
@@ -1461,6 +1489,24 @@ on the M9, or the focal length of some multi-focal lenses.</p>
 <td title='0x0500 = 1280'>0x0500</td>
 <td>InternalSerialNumber</td>
 <td class=c>undef</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='FocusInfo'>Panasonic FocusInfo Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index2</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>FocusDistance</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='1 = 0x1'>1</td>
+<td>FocalLength</td>
+<td class=c>int16u</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -1497,9 +1543,34 @@ images.</p>
 <td><span class=s><span class=n>(unknown 320kB block, not copied to JPEG images)</span></span></td></tr>
 <tr>
 <td title='0x0303 = 771'>0x0303</td>
-<td>LensType</td>
+<td>LensModel</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0304 = 772'>0x0304</td>
+<td>FocusDistance</td>
+<td class=c>int32u</td>
+<td><span class=s><span class=n>(focus distance in mm for most models, but cm for others)</span></span></td></tr>
+<tr>
+<td title='0x0311 = 785'>0x0311</td>
+<td>ExternalSensorBrightnessValue</td>
+<td class=c>rational64s</td>
+<td><span class=s><span class=n>(Leica S only)</span></span></td></tr>
+<tr class=b>
+<td title='0x0312 = 786'>0x0312</td>
+<td>MeasuredLV</td>
+<td class=c>rational64s</td>
+<td><span class=s><span class=n>(Leica S only)</span></span></td></tr>
+<tr>
+<td title='0x0320 = 800'>0x0320</td>
+<td>FirmwareVersion</td>
+<td class=c>int8u[4]</td>
+<td><span class=s><span class=n>(Leica S only)</span></span></td></tr>
+<tr class=b>
+<td title='0x0321 = 801'>0x0321</td>
+<td>LensSerialNumber</td>
+<td class=c>int32u</td>
+<td><span class=s><span class=n>(Leica S only)</span></span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='Leica9'>Panasonic Leica9 Tags</a></h2>
@@ -1509,7 +1580,21 @@ images.</p>
 <table class=inner cellspacing=1>
 <tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
-<tr><td colspan=4 class=c><i>[no tags known]</i></td></tr>
+<tr>
+<td title='0x0304 = 772'>0x0304</td>
+<td>FocusDistance</td>
+<td class=c>int32u</td>
+<td><span class=s><span class=n>(focus distance in mm for most models, but cm for others)</span></span></td></tr>
+<tr class=b>
+<td title='0x0311 = 785'>0x0311</td>
+<td>ExternalSensorBrightnessValue</td>
+<td class=c>rational64s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0312 = 786'>0x0312</td>
+<td>MeasuredLV</td>
+<td class=c>rational64s</td>
+<td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='Type2'>Panasonic Type2 Tags</a></h2>
@@ -1711,7 +1796,7 @@ various Panasonic and Leica models.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Feb 26, 2018</i>
+<br><i>Last revised May 4, 2018</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

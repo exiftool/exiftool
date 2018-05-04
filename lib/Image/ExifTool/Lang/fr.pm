@@ -11,7 +11,7 @@ package Image::ExifTool::Lang::fr;
 use strict;
 use vars qw($VERSION);
 
-$VERSION = '1.31';
+$VERSION = '1.32';
 
 %Image::ExifTool::Lang::fr::Translate = (
    'AEAperture' => 'Ouverture AE',
@@ -2108,7 +2108,7 @@ $VERSION = '1.31';
    'GPSAreaInformation' => 'Nom de la zone GPS',
    'GPSDOP' => 'Précision de mesure',
    'GPSDateStamp' => 'Date GPS',
-   'GPSDateTime' => 'Heure GPS (horloge atomique)',
+   'GPSDateTime' => 'Date/heure GPS (horloge atomique)',
    'GPSDestBearing' => 'Orientation de la destination',
    'GPSDestBearingRef' => {
       Description => 'Référence de l\'orientation de la destination',

@@ -565,6 +565,9 @@ sub WriteExif($$$)
             $dataPos = $$dirInfo{DataPos};
             # changed if ForceWrite tag was was set to "FixBase"
             ++$$et{CHANGED} if $$et{FORCE_WRITE}{FixBase};
+            if ($$et{TIFF_TYPE} eq 'SRW' and $$et{Make} eq 'SAMSUNG' and $$et{Model} eq 'EK-GN120') {
+                $et->Error("EK-GN120 SRW files are too buggy to write");
+            }
         }
 
         # initialize variables to handle mandatory tags

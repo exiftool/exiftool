@@ -264,9 +264,15 @@ that the NX100 uses the same base for both, so this is certainly a firmware bug
 for the NX200. <i>[2012-06-21: This problem now also affects the EX1, NX20 and
 WB2000] [2013-07-25: Add the NX2000 to this list]</i>)</p>
 
+<p><a name="GN120">2018-04-30: The Samsung EK-GN120</a> has many
+problems in the makernote offsets. Most of the offsets are based on the start of
+the maker notes, but the PreviewIFD is offset is wrong by 36 bytes, and some
+offsets in the PreviewIFD are based on the start of the maker notes while others
+are absolute.  What a mess!</p>
+
 <hr>
 <i>Created Mar. 25, 2005</i>
-<br><i>Last revised Sept. 4, 2015</i>
+<br><i>Last revised Apr. 30, 2018</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

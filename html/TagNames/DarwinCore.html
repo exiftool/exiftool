@@ -215,36 +215,52 @@ These tags belong to the ExifTool XMP-dwc family 1 group.</p>
 <td class=c title=' _ = Flattened'>integer_</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>EventDate</td>
+<td class=c title=' _ = Flattened'>date_</td>
+<td><span class=s><span class=n>(EventEventDate)</span></span></td></tr>
+<tr>
 <td>EventID</td>
 <td class=c title=' _ = Flattened'>string_</td>
 <td><span class=s><span class=n>(EventEventID)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>EventRemarks</td>
 <td class=c title=' _ = Flattened'>lang-alt_</td>
 <td><span class=s><span class=n>(EventEventRemarks)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>EventTime</td>
 <td class=c title=' _ = Flattened'>date_</td>
 <td><span class=s><span class=n>(EventEventTime)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>EventFieldNotes</td>
 <td class=c title=' _ = Flattened'>string_</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>EventFieldNumber</td>
 <td class=c title=' _ = Flattened'>string_</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>EventHabitat</td>
 <td class=c title=' _ = Flattened'>string_</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>EventLatestDate</td>
 <td class=c title=' _ = Flattened'>date_</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>EventMonth</td>
 <td class=c title=' _ = Flattened'>integer_</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>EventParentEventID</td>
+<td class=c title=' _ = Flattened'>string_</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>EventSampleSizeUnit</td>
+<td class=c title=' _ = Flattened'>string_</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>EventSampleSizeValue</td>
+<td class=c title=' _ = Flattened'>string_</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>EventSamplingEffort</td>
@@ -265,6 +281,14 @@ These tags belong to the ExifTool XMP-dwc family 1 group.</p>
 <tr class=b>
 <td>EventYear</td>
 <td class=c title=' _ = Flattened'>integer_</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>FossilSpecimen</td>
+<td class=c>struct</td>
+<td>--&gt; <a href='DarwinCore.html#MaterialSample'>DarwinCore MaterialSample Struct</a></td></tr>
+<tr class=b>
+<td>FossilSpecimenMaterialSampleID</td>
+<td class=c title=' _ = Flattened'>string_</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>GeologicalContext</td>
@@ -343,41 +367,225 @@ These tags belong to the ExifTool XMP-dwc family 1 group.</p>
 <td class=c title=' _ = Flattened'>string_</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>HumanObservation</td>
+<td class=c>struct</td>
+<td>--&gt; <a href='DarwinCore.html#Event'>DarwinCore Event Struct</a></td></tr>
+<tr>
+<td>HumanObservationDay</td>
+<td class=c title=' _ = Flattened'>integer_</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>HumanObservationEarliestDate</td>
+<td class=c title=' _ = Flattened'>date_</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>HumanObservationEndDayOfYear</td>
+<td class=c title=' _ = Flattened'>integer_</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>HumanObservationEventDate</td>
+<td class=c title=' _ = Flattened'>date_</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>HumanObservationEventID</td>
+<td class=c title=' _ = Flattened'>string_</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>HumanObservationEventRemarks</td>
+<td class=c title=' _ = Flattened'>lang-alt_</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>HumanObservationEventTime</td>
+<td class=c title=' _ = Flattened'>date_</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>HumanObservationFieldNotes</td>
+<td class=c title=' _ = Flattened'>string_</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>HumanObservationFieldNumber</td>
+<td class=c title=' _ = Flattened'>string_</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>HumanObservationHabitat</td>
+<td class=c title=' _ = Flattened'>string_</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>HumanObservationLatestDate</td>
+<td class=c title=' _ = Flattened'>date_</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>HumanObservationMonth</td>
+<td class=c title=' _ = Flattened'>integer_</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>HumanObservationParentEventID</td>
+<td class=c title=' _ = Flattened'>string_</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>HumanObservationSampleSizeUnit</td>
+<td class=c title=' _ = Flattened'>string_</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>HumanObservationSampleSizeValue</td>
+<td class=c title=' _ = Flattened'>string_</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>HumanObservationSamplingEffort</td>
+<td class=c title=' _ = Flattened'>string_</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>HumanObservationSamplingProtocol</td>
+<td class=c title=' _ = Flattened'>string_</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>HumanObservationStartDayOfYear</td>
+<td class=c title=' _ = Flattened'>integer_</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>HumanObservationVerbatimEventDate</td>
+<td class=c title=' _ = Flattened'>string_</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>HumanObservationYear</td>
+<td class=c title=' _ = Flattened'>integer_</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>Identification</td>
 <td class=c>struct</td>
 <td>--&gt; <a href='DarwinCore.html#Identification'>DarwinCore Identification Struct</a></td></tr>
-<tr>
+<tr class=b>
 <td>DateIdentified</td>
 <td class=c title=' _ = Flattened'>date_</td>
 <td><span class=s><span class=n>(IdentificationDateIdentified)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>IdentificationID</td>
 <td class=c title=' _ = Flattened'>string_</td>
 <td><span class=s><span class=n>(IdentificationIdentificationID)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>IdentificationQualifier</td>
 <td class=c title=' _ = Flattened'>string_</td>
 <td><span class=s><span class=n>(IdentificationIdentificationQualifier)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>IdentificationReferences</td>
 <td class=c title=' _ = Flattened'>string_</td>
 <td><span class=s><span class=n>(IdentificationIdentificationReferences)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>IdentificationRemarks</td>
 <td class=c title=' _ = Flattened'>string_</td>
 <td><span class=s><span class=n>(IdentificationIdentificationRemarks)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>IdentificationVerificationStatus</td>
 <td class=c title=' _ = Flattened'>string_</td>
 <td><span class=s><span class=n>(IdentificationIdentificationVerificationStatus)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>IdentifiedBy</td>
 <td class=c title=' _ = Flattened'>string_</td>
 <td><span class=s><span class=n>(IdentificationIdentifiedBy)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>TypeStatus</td>
 <td class=c title=' _ = Flattened'>string_</td>
 <td><span class=s><span class=n>(IdentificationTypeStatus)</span></span></td></tr>
+<tr class=b>
+<td>LivingSpecimen</td>
+<td class=c>struct</td>
+<td>--&gt; <a href='DarwinCore.html#MaterialSample'>DarwinCore MaterialSample Struct</a></td></tr>
+<tr>
+<td>LivingSpecimenMaterialSampleID</td>
+<td class=c title=' _ = Flattened'>string_</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>MachineObservation</td>
+<td class=c>struct</td>
+<td>--&gt; <a href='DarwinCore.html#Event'>DarwinCore Event Struct</a></td></tr>
+<tr>
+<td>MachineObservationDay</td>
+<td class=c title=' _ = Flattened'>integer_</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>MachineObservationEarliestDate</td>
+<td class=c title=' _ = Flattened'>date_</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>MachineObservationEndDayOfYear</td>
+<td class=c title=' _ = Flattened'>integer_</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>MachineObservationEventDate</td>
+<td class=c title=' _ = Flattened'>date_</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>MachineObservationEventID</td>
+<td class=c title=' _ = Flattened'>string_</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>MachineObservationEventRemarks</td>
+<td class=c title=' _ = Flattened'>lang-alt_</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>MachineObservationEventTime</td>
+<td class=c title=' _ = Flattened'>date_</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>MachineObservationFieldNotes</td>
+<td class=c title=' _ = Flattened'>string_</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>MachineObservationFieldNumber</td>
+<td class=c title=' _ = Flattened'>string_</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>MachineObservationHabitat</td>
+<td class=c title=' _ = Flattened'>string_</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>MachineObservationLatestDate</td>
+<td class=c title=' _ = Flattened'>date_</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>MachineObservationMonth</td>
+<td class=c title=' _ = Flattened'>integer_</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>MachineObservationParentEventID</td>
+<td class=c title=' _ = Flattened'>string_</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>MachineObservationSampleSizeUnit</td>
+<td class=c title=' _ = Flattened'>string_</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>MachineObservationSampleSizeValue</td>
+<td class=c title=' _ = Flattened'>string_</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>MachineObservationSamplingEffort</td>
+<td class=c title=' _ = Flattened'>string_</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>MachineObservationSamplingProtocol</td>
+<td class=c title=' _ = Flattened'>string_</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>MachineObservationStartDayOfYear</td>
+<td class=c title=' _ = Flattened'>integer_</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>MachineObservationVerbatimEventDate</td>
+<td class=c title=' _ = Flattened'>string_</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>MachineObservationYear</td>
+<td class=c title=' _ = Flattened'>integer_</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>MaterialSample</td>
+<td class=c>struct</td>
+<td>--&gt; <a href='DarwinCore.html#MaterialSample'>DarwinCore MaterialSample Struct</a></td></tr>
+<tr class=b>
+<td>MaterialSampleID</td>
+<td class=c title=' _ = Flattened'>string_</td>
+<td><span class=s><span class=n>(MaterialSampleMaterialSampleID)</span></span></td></tr>
 <tr>
 <td>MeasurementOrFact</td>
 <td class=c>struct</td>
@@ -487,6 +695,14 @@ These tags belong to the ExifTool XMP-dwc family 1 group.</p>
 <td class=c title=' _ = Flattened'>string_</td>
 <td><span class=s><span class=n>(OccurrenceOccurrenceStatus)</span></span></td></tr>
 <tr class=b>
+<td>OccurrenceOrganismQuantity</td>
+<td class=c title=' _ = Flattened'>string_</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>OccurrenceOrganismQuantityType</td>
+<td class=c title=' _ = Flattened'>string_</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>OccurrenceOtherCatalogNumbers</td>
 <td class=c title=' _ = Flattened'>string_</td>
 <td>&nbsp;</td></tr>
@@ -512,6 +728,46 @@ These tags belong to the ExifTool XMP-dwc family 1 group.</p>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>OccurrenceSex</td>
+<td class=c title=' _ = Flattened'>string_</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>Organism</td>
+<td class=c>struct</td>
+<td>--&gt; <a href='DarwinCore.html#Organism'>DarwinCore Organism Struct</a></td></tr>
+<tr class=b>
+<td>OrganismAssociatedOccurrences</td>
+<td class=c title=' _ = Flattened'>string_</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>OrganismAssociatedOrganisms</td>
+<td class=c title=' _ = Flattened'>string_</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>OrganismID</td>
+<td class=c title=' _ = Flattened'>string_</td>
+<td><span class=s><span class=n>(OrganismOrganismID)</span></span></td></tr>
+<tr>
+<td>OrganismName</td>
+<td class=c title=' _ = Flattened'>string_</td>
+<td><span class=s><span class=n>(OrganismOrganismName)</span></span></td></tr>
+<tr class=b>
+<td>OrganismRemarks</td>
+<td class=c title=' _ = Flattened'>string_</td>
+<td><span class=s><span class=n>(OrganismOrganismRemarks)</span></span></td></tr>
+<tr>
+<td>OrganismScope</td>
+<td class=c title=' _ = Flattened'>string_</td>
+<td><span class=s><span class=n>(OrganismOrganismScope)</span></span></td></tr>
+<tr class=b>
+<td>OrganismPreviousIdentifications</td>
+<td class=c title=' _ = Flattened'>string_</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>PreservedSpecimen</td>
+<td class=c>struct</td>
+<td>--&gt; <a href='DarwinCore.html#MaterialSample'>DarwinCore MaterialSample Struct</a></td></tr>
+<tr class=b>
+<td>PreservedSpecimenMaterialSampleID</td>
 <td class=c title=' _ = Flattened'>string_</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -935,36 +1191,52 @@ These tags belong to the ExifTool XMP-dwc family 1 group.</p>
 <td class=c>integer</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>EventDate</td>
+<td class=c>date</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>EventID</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>EventRemarks</td>
 <td class=c>lang-alt</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>EventTime</td>
 <td class=c>date</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>FieldNotes</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>FieldNumber</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>Habitat</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>LatestDate</td>
 <td class=c>date</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>Month</td>
 <td class=c>integer</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>ParentEventID</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>SampleSizeUnit</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>SampleSizeValue</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>SamplingEffort</td>
@@ -985,6 +1257,18 @@ These tags belong to the ExifTool XMP-dwc family 1 group.</p>
 <tr class=b>
 <td>Year</td>
 <td class=c>integer</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='MaterialSample'>DarwinCore MaterialSample Struct</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Field Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>MaterialSampleID</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -1223,6 +1507,14 @@ These tags belong to the ExifTool XMP-dwc family 1 group.</p>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td>OrganismQuantity</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>OrganismQuantityType</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>OtherCatalogNumbers</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
@@ -1248,6 +1540,42 @@ These tags belong to the ExifTool XMP-dwc family 1 group.</p>
 <td>&nbsp;</td></tr>
 <tr>
 <td>Sex</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Organism'>DarwinCore Organism Struct</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Field Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>AssociatedOccurrences</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>AssociatedOrganisms</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>OrganismID</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>OrganismName</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>OrganismRemarks</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>OrganismScope</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>PreviousIdentifications</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
@@ -1482,7 +1810,7 @@ These tags belong to the ExifTool XMP-dwc family 1 group.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Sep 14, 2016</i>
+<br><i>Last revised May 4, 2018</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

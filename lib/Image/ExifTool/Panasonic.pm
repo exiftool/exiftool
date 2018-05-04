@@ -33,7 +33,7 @@ use vars qw($VERSION %leicaLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.94';
+$VERSION = '1.95';
 
 sub ProcessLeicaLEIC($$$);
 sub WhiteBalanceConv($;$$);
@@ -853,7 +853,7 @@ my %shootingMode = (
     },
     # 0x4f,0x50 - int16u: 0
     0x51 => {
-        Name => 'LensType',
+        Name => 'LensModel',
         Writable => 'string',
         ValueConv => '$val=~s/ +$//; $val', # trim trailing spaces
         ValueConvInv => '$val',
@@ -1359,11 +1359,27 @@ my %shootingMode = (
     GROUPS => { 0 => 'MakerNotes', 1 => 'Leica', 2 => 'Camera' },
     WRITABLE => 1,
     NOTES => 'These tags are used by the Leica R8 and R9 digital backs.',
+    0x0b => { #IB
+        Name => 'SerialInfo',
+        SubDirectory => { TagTable => 'Image::ExifTool::Panasonic::SerialInfo' },
+    },
     0x0d => {
         Name => 'WB_RGBLevels',
         Writable => 'int16u',
         Count => 3,
     },
+);
+
+# Leica serial number info (ref IB)
+%Image::ExifTool::Panasonic::SerialInfo = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 0 => 'MakerNotes', 1 => 'Leica', 2 => 'Camera' },
+    TAG_PREFIX => 'Leica_SerialInfo',
+    FIRST_ENTRY => 0,
+    4 => {
+        Name => 'SerialNumber',
+        Format => 'string[8]',
+    }
 );
 
 # Leica type4 maker notes (ref PH) (M9)
@@ -1609,9 +1625,17 @@ my %shootingMode = (
         Notes => 'Leica T only',
         Writable => 'string',
     },
+    0x0305 => { #IB
+        Name => 'SerialNumber',
+        Writable => 'int32u',
+    },
     # 0x0406 - saturation or sharpness
     0x0407 => { Name => 'OriginalFileName', Writable => 'string' },
     0x0408 => { Name => 'OriginalDirectory',Writable => 'string' },
+    0x040a => { #IB
+        Name => 'FocusInfo',
+        SubDirectory => { TagTable => 'Image::ExifTool::Panasonic::FocusInfo' },
+    },
     # 0x040b - related to white balance
     0x040d => {
         Name => 'ExposureMode',
@@ -1661,6 +1685,34 @@ my %shootingMode = (
     },
 );
 
+# Leica type5 FocusInfo (ref IB)
+%Image::ExifTool::Panasonic::FocusInfo = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    WRITE_PROC => \&Image::ExifTool::WriteBinaryData,
+    CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
+    GROUPS => { 0 => 'MakerNotes', 1 => 'Leica', 2 => 'Camera' },
+    TAG_PREFIX => 'Leica_FocusInfo',
+    FIRST_ENTRY => 0,
+    WRITABLE => 1,
+    FORMAT => 'int16u',
+    0 => {
+        Name => 'FocusDistance',
+        ValueConv => '$val / 1000',
+        ValueConvInv => '$val * 1000',
+        PrintConv => '$val < 65535 ? "$val m" : "inf"',
+        PrintConvInv => '$val =~ s/ ?m$//; IsFloat($val) ? $val : 65535',
+    },
+    1 => {
+        Name => 'FocalLength',
+        Priority => 0,
+        RawConv => '$val ? $val : undef',
+        ValueConv => '$val / 1000',
+        ValueConvInv => '$val * 1000',
+        PrintConv => 'sprintf("%.1f mm",$val)',
+        PrintConvInv => '$val=~s/\s*mm$//;$val',
+    },
+);
+
 # Leica type6 maker notes (ref PH) (S2)
 %Image::ExifTool::Panasonic::Leica6 = (
     WRITE_PROC => \&Image::ExifTool::Exif::WriteExif,
@@ -1693,20 +1745,81 @@ my %shootingMode = (
     },
     # 0x302 - same value as 4 unknown bytes at the end of JPEG or after the DNG TIFF header (ImageID, ref IB)
     0x303 => {
-        Name => 'LensType',
+        Name => 'LensModel',
         Writable => 'string',
         ValueConv => '$val=~s/ +$//; $val', # trim trailing spaces
         ValueConvInv => '$val',
     },
+    0x304 => { #IB
+        Name => 'FocusDistance',
+        Notes => 'focus distance in mm for most models, but cm for others',
+        Writable => 'int32u',
+    },
+    0x311 => {
+        Name => 'ExternalSensorBrightnessValue', 
+        Condition => '$$self{Model} =~ /Typ 006/',
+        Notes => 'Leica S only',
+        Format => 'rational64s', # (may be incorrectly unsigned in JPEG images)
+        Writable => 'rational64s',
+        PrintConv => 'sprintf("%.2f", $val)',
+        PrintConvInv => '$val',
+    },
+    0x312 => {
+        Name => 'MeasuredLV',
+        Condition => '$$self{Model} =~ /Typ 006/',
+        Notes => 'Leica S only',
+        Format => 'rational64s', # (may be incorrectly unsigned in JPEG images)
+        Writable => 'rational64s',
+        PrintConv => 'sprintf("%.2f", $val)',
+        PrintConvInv => '$val',
+    },
+    0x320 => {
+        Name => 'FirmwareVersion',
+        Condition => '$$self{Model} =~ /Typ 006/',
+        Notes => 'Leica S only',
+        Writable => 'int8u',
+        Count => 4,
+        PrintConv => '$val=~tr/ /./; $val',
+        PrintConvInv => '$val=~tr/./ /; $val',
+    },
+    0x321 => { #IB
+        Name => 'LensSerialNumber',
+        Condition => '$$self{Model} =~ /Typ 006/',
+        Notes => 'Leica S only',
+        Writable => 'int32u',
+        PrintConv => 'sprintf("%.10d",$val)',
+        PrintConvInv => '$val',
+    },
+    # 0x321 - SerialNumber for Leica S? (ref IB)
     # 0x340 - same as 0x302 (ImageID, ref IB)
 );
 
-# Leica type9 maker notes (ref PH) (S)
+# Leica type9 maker notes (ref IB) (S)
 %Image::ExifTool::Panasonic::Leica9 = (
     WRITE_PROC => \&Image::ExifTool::Exif::WriteExif,
     CHECK_PROC => \&Image::ExifTool::Exif::CheckExif,
     GROUPS => { 0 => 'MakerNotes', 1 => 'Leica', 2 => 'Camera' },
     NOTES => 'This information is written by the Leica S (Typ 007).',
+    0x304 => {
+        Name => 'FocusDistance',
+        Notes => 'focus distance in mm for most models, but cm for others',
+        Writable => 'int32u',
+    },
+    0x311 => {
+        Name => 'ExternalSensorBrightnessValue',
+        Format => 'rational64s', # (may be incorrectly unsigned in JPEG images)
+        Writable => 'rational64s',
+        PrintConv => 'sprintf("%.2f", $val)',
+        PrintConvInv => '$val',
+    },
+    0x312 => {
+        Name => 'MeasuredLV',
+        Format => 'rational64s', # (may be incorrectly unsigned in JPEG images)
+        Writable => 'rational64s',
+        PrintConv => 'sprintf("%.2f", $val)',
+        PrintConvInv => '$val',
+    },
+    # 0x340 - ImageUniqueID
 );
 
 # Type 2 tags (ref PH)

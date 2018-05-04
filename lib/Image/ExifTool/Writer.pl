@@ -5107,13 +5107,14 @@ sub WriteJPEG($$)
             $marker = ord($ch);
             last unless $marker == 0xff;
         }
-        # SOS signifies end of meta information
-        if ($marker == 0xda) {
-            push(@dirOrder, 'SOS');
-            $dirCount{SOS} = 1;
+        my $dirName;
+        # stop pre-scan at SOS (end of meta information) or EOI (end of image)
+        if ($marker == 0xda or $marker == 0xd9) {
+            $dirName = $jpegMarker{$marker};
+            push(@dirOrder, $dirName);
+            $dirCount{$dirName} = 1;
             last;
         }
-        my $dirName;
         # handle SOF markers: SOF0-SOF15, except DHT(0xc4), JPGA(0xc8) and DAC(0xcc)
         if (($marker & 0xf0) == 0xc0 and ($marker == 0xc0 or $marker & 0x03)) {
             last unless $raf->Seek(7, 1);
@@ -5167,8 +5168,6 @@ sub WriteJPEG($$)
     unless ($marker and $marker == 0xda) {
         $isEXV or $self->Error('Corrupted JPEG image'), return 1;
         $marker and $marker ne 0xd9 and $self->Error('Corrupted EXV file'), return 1;
-        push @dirOrder, 'EOI';
-        $dirCount{EOI} = 1;
     }
     $raf->Seek($pos, 0) or $self->Error('Seek error'), return 1;
 #
@@ -5194,6 +5193,8 @@ sub WriteJPEG($$)
             } elsif ($creatingEXV) {
                 # create EXV from scratch
                 $marker = 0xd9; # EOI
+                push @dirOrder, 'EOI';
+                $dirCount{EOI} = 1;
                 last;
             } else {
                 $self->Error('Format error');
@@ -5599,7 +5600,7 @@ sub WriteJPEG($$)
             last;   # all done parsing file
 
         } elsif ($marker==0xd9 and $isEXV) {
-            # write EXV EOI
+            # write EXV EOI (any trailer will be lost)
             Write($outfile, "\xff\xd9") or $err = 1;
             $rtnVal = 1;
             last;

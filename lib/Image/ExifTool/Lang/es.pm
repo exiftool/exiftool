@@ -11,7 +11,7 @@ package Image::ExifTool::Lang::es;
 use strict;
 use vars qw($VERSION);
 
-$VERSION = '1.14';
+$VERSION = '1.15';
 
 %Image::ExifTool::Lang::es::Translate = (
    'AEAperture' => 'Aperture AE',
@@ -979,6 +979,7 @@ $VERSION = '1.14';
         'Off' => 'Desactivado',
       },
     },
+   'DateTimeDigitized' => 'Fecha y Hora Digital',
    'DateTimeOriginal' => 'Fecha y Hora de Datos Original',
    'DaylightSavings' => {
       PrintConv => {
@@ -1402,8 +1403,8 @@ $VERSION = '1.14';
    'FaxRecvParams' => 'Parámetros Recepción Fax',
    'FaxRecvTime' => 'Hora Recepción Fax',
    'FaxSubAddress' => 'Subdirección Fax',
-   'FileAccessDate' => 'Fecha y hora de Acceso',
-   'FileCreateDate' => 'Fecha y hora de Creación',
+   'FileAccessDate' => 'Fecha y Hora de Acceso',
+   'FileCreateDate' => 'Fecha y Hora de Creación',
    'FileFormat' => 'Formato Archivo',
    'FileLength' => 'Tamaño Archivo',
    'FileModifyDate' => 'Fecha Actualización',
@@ -1738,6 +1739,7 @@ $VERSION = '1.14';
    'GPSAreaInformation' => 'Nombre de Zona GPS',
    'GPSDOP' => 'Precisión Medición',
    'GPSDateStamp' => 'Fecha GPS',
+   'GPSDateTime' => 'Fecha y Hora GPS',
    'GPSDestBearing' => 'Orientación de Destino',
    'GPSDestBearingRef' => {
       Description => 'Referencia para Orientación de Destino',

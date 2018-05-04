@@ -2589,7 +2589,7 @@ my %binaryDataAttrs = (
     },
     # 0x0202: int16u[4]: all 0's in all my samples
     0x0203 => { #JD (not really sure what these mean)
-        Name => 'ColorMatrixA',
+        Name => 'ColorMatrixA', # (camera RGB to sRGB matrix, *ist D, ref IB)
         Writable => 'int16s',
         Count => 9,
         ValueConv => 'join(" ",map({ $_/8192 } split(" ",$val)))',
@@ -2598,7 +2598,7 @@ my %binaryDataAttrs = (
         PrintConvInv => '"$val"',
     },
     0x0204 => { #JD
-        Name => 'ColorMatrixB',
+        Name => 'ColorMatrixB', # (camera RGB to Adobe RGB matrix, *ist D, ref IB)
         Writable => 'int16s',
         Count => 9,
         ValueConv => 'join(" ",map({ $_/8192 } split(" ",$val)))',

@@ -21,7 +21,7 @@ sub ProcessKodakPatch($$$);
 sub WriteUnknownOrPreview($$$);
 sub FixLeicaBase($$;$);
 
-$VERSION = '2.01';
+$VERSION = '2.02';
 
 my $debug;          # set to 1 to enable debugging code
 
@@ -656,7 +656,7 @@ my $debug;          # set to 1 to enable debugging code
     {
         Name => 'MakerNoteLeica8', # used by the Q (Type 116)
         # (Q (Typ 116) starts with "LEICA\0\x08\0", Make is "LEICA CAMERA AG")
-        # (SL (Typ 601) starts with "LEICA\0\x09\0", Make is "LEICA CAMERA AG")
+        # (SL (Typ 601) and CL start with "LEICA\0\x09\0", Make is "LEICA CAMERA AG")
         Condition => '$$valPt =~ /^LEICA\0[\x08\x09]\0/',
         SubDirectory => {
             TagTable => 'Image::ExifTool::Panasonic::Leica5',
@@ -665,8 +665,8 @@ my $debug;          # set to 1 to enable debugging code
         },
     },
     {
-        Name => 'MakerNoteLeica9', # used by the M9/M-Monochrom
-        # (M9 and M Monochrom start with "LEICA0\x03\0")
+        Name => 'MakerNoteLeica9', # used by the M10/S
+        # (M10 and S start with "LEICA0\x02\0")
         Condition => '$$self{Make} =~ /^Leica Camera AG/ and $$valPt =~ /^LEICA\0\x02\0/',
         SubDirectory => {
             TagTable => 'Image::ExifTool::Panasonic::Leica9',
@@ -1095,6 +1095,8 @@ sub GetMakerNoteOffset($)
         } else {
             push @offsets, 0;
         }
+    } elsif ($$et{TIFF_TYPE} eq 'SRW' and $make eq 'SAMSUNG' and $model eq 'EK-GN120') {
+        push @offsets, 40;  # patch to read most of the maker notes, but breaks PreviewIFD
     } elsif ($make eq 'FUJIFILM') {
         # some models have offset of 6, so allow that too (A345,A350,A360,A370)
         push @offsets, 4, 6;

@@ -7,6 +7,20 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.80. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+May 4, 2018 - Version 10.95
+
+  - Added new Nikon LensID's (thanks Warren Hatch, LibRaw and Jami Bradley)
+  - Added a new Sony LensType (thanks Jos Roost)
+  - Decode a new Samsung tag (thanks LibRaw)
+  - Decode Photoshop Lr16 layer information
+  - Decode more Leica tags (thanks LibRaw)
+  - Updated DarwinCore tags to current specification
+  - Improved validation of JPEG files
+  - Disabled writing of buggy Samsung EK-GN120 SRW files
+  - Fixed conversion for Nikon D850 ExposureDelayMode (thanks Jami Bradley)
+  - Fixed "x outside string" error when reading a truncated zip file
+  - Fixed "uninitialized value" error when writing a corrupted JPEG image
+
 Apr. 19, 2018 - Version 10.94
 
   - Added read/write support for Canon CRM files

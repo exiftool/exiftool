@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup);
 
-$VERSION = '10.94';
+$VERSION = '10.95';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -176,12 +176,12 @@ $defaultLang = 'en';    # default language
 # 2) Put types with weak file signatures at end of list to avoid false matches
 # 3) PLIST must be in this list for the binary PLIST format, although it may
 #    cause a file to be checked twice for XML
-@fileTypes = qw(JPEG CRW DR4 TIFF GIF MRW RAF X3F JP2 PNG MIE MIFF PS PDF PSD XMP
-                BMP BPG PPM RIFF AIFF ASF MOV MPEG Real SWF PSP FLV OGG FLAC APE
-                MPC MKV MXF DV PMP IND PGF ICC ITC FLIR FLIF FPF LFP HTML VRD
-                RTF XCF DSS QTIF FPX PICT ZIP GZIP PLIST RAR BZ2 TAR RWZ EXE EXR
-                HDR CHM LNK WMF AVC DEX DPX RAW Font RSRC M2TS PHP Torrent VCard
-                LRI R3D AA PDB MOI ISO JSON MP3 DICOM PCD);
+@fileTypes = qw(JPEG EXV CRW DR4 TIFF GIF MRW RAF X3F JP2 PNG MIE MIFF PS PDF
+                PSD XMP BMP BPG PPM RIFF AIFF ASF MOV MPEG Real SWF PSP FLV OGG
+                FLAC APE MPC MKV MXF DV PMP IND PGF ICC ITC FLIR FLIF FPF LFP
+                HTML VRD RTF XCF DSS QTIF FPX PICT ZIP GZIP PLIST RAR BZ2 TAR
+                RWZ EXE EXR HDR CHM LNK WMF AVC DEX DPX RAW Font RSRC M2TS PHP
+                Torrent VCard LRI R3D AA PDB MOI ISO JSON MP3 DICOM PCD);
 
 # file types that we can write (edit)
 my @writeTypes = qw(JPEG TIFF GIF CRW MRW ORF RAF RAW PNG MIE PSD XMP PPM EPS
@@ -819,7 +819,7 @@ my %moduleName = (
   # ISO  =>  signature is at byte 32768
     ITC  => '.{4}itch',
     JP2  => '(\0\0\0\x0cjP(  |\x1a\x1a)\x0d\x0a\x87\x0a|\xff\x4f\xff\x51\0)',
-    JPEG => '\xff(\xd8\xff|\x01Exiv2)', # (includes EXV so we don't have to add EXV to @fileTypes)
+    JPEG => '\xff\xd8\xff',
     JSON => '\s*(\[\s*)?\{\s*"[^"]+"\s*:',
     LFP  => '\x89LFP\x0d\x0a\x1a\x0a',
     LNK  => '.{4}\x01\x14\x02\0{5}\xc0\0{6}\x46',
@@ -5668,7 +5668,7 @@ sub ProcessJPEG($$)
     my $raf = $$dirInfo{RAF};
     my $htmlDump = $$self{HTML_DUMP};
     my %dumpParms = ( Out => $out );
-    my ($success, $wantTrailer, $trailInfo, $type);
+    my ($success, $wantTrailer, $trailInfo, $foundSOS);
     my (@iccChunk, $iccChunkCount, $iccChunksTotal, @flirChunk, $flirCount, $flirTotal);
     my ($preview, $scalado, @dqt, $subSampling, $dumpEnd, %extendedXMP);
 
@@ -5676,10 +5676,10 @@ sub ProcessJPEG($$)
     return 0 unless $raf->Read($s, 2) == 2 and $s =~ /^\xff[\xd8\x4f\x01]/;
     if ($s eq "\xff\x01") {
         return 0 unless $raf->Read($s, 5) == 5 and $s eq 'Exiv2';
-        $type = 'EXV';
+        $$self{FILE_TYPE} = 'EXV';
     }
     if (not $$self{VALUE}{FileType} or ($$self{DOC_NUM} and $$self{OPTIONS}{ExtractEmbedded})) {
-        $self->SetFileType($type);          # set FileType tag
+        $self->SetFileType();               # set FileType tag
         return 1 if $fast and $fast == 3;   # don't process file when FastScan == 3
         $$self{LOW_PRIORITY_DIR}{IFD1} = 1; # lower priority of IFD1 tags
     }
@@ -5801,7 +5801,11 @@ sub ProcessJPEG($$)
                 $self->HDump($pos-2, 2, 'JPEG EOI', undef);
                 $dumpEnd = 0;
             }
-            $success = 1;
+            if ($foundSOS or $$self{FILE_TYPE} eq 'EXV') {
+                $success = 1;
+            } else {
+                $self->Warn('Missing JPEG SOS');
+            }
             # we are here because we are looking for trailer information
             if ($wantTrailer) {
                 my $start = $$self{PreviewImageStart};
@@ -5866,6 +5870,7 @@ sub ProcessJPEG($$)
             last;       # all done parsing file
         } elsif ($marker == 0xda) {         # SOS
             pop @$path;
+            $foundSOS = 1;
             # all done with meta information unless we have a trailer
             $verbose and print $out "JPEG SOS\n";
             unless ($fast) {

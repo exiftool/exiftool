@@ -7,6 +7,16 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.80. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+May 9, 2018 - Version 10.96
+
+  - Added a new Sony LensType (thanks Jos Roost)
+  - Added a few new Panasonic lenses (thanks LibRaw)
+  - Added Composite tags for GPSDestLatitudeRef and GPSDestLongitudeRef
+  - Decode maker notes from Kodak PixPro AZ901
+  - Extract Preview images from iWork files
+  - Improved identification of Apple iWork files
+  - Fixed arg_files to handle GPS destination reference directions
+
 May 4, 2018 - Version 10.95
 
   - Added new Nikon LensID's (thanks Warren Hatch, LibRaw and Jami Bradley)

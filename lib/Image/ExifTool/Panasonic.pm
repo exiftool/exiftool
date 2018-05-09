@@ -14,6 +14,7 @@
 #               9) http://forums.dpreview.com/forums/read.asp?forum=1033&message=22756430
 #              10) http://bretteville.com/pdfs/M8Metadata_v2.pdf
 #              11) http://www.digital-leica.com/lens_codes/index.html
+#                  (now https://www.l-camera-forum.com/leica-news/leica-lens-codes/)
 #              12) Joerg - http://www.cpanforum.com/threads/11602 (LX3 firmware 2.0)
 #              13) Michael Byczkowski private communication (Leica M9)
 #              14) Carl Bretteville private communication (M9)
@@ -33,7 +34,7 @@ use vars qw($VERSION %leicaLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.95';
+$VERSION = '1.96';
 
 sub ProcessLeicaLEIC($$$);
 sub WhiteBalanceConv($;$$);
@@ -78,6 +79,8 @@ sub WhiteBalanceConv($;$$);
     7 => 'Summicron-M 90mm f/2 (II)',       # 11136/11137
     9 => 'Elmarit-M 135mm f/2.8 (I/II)',    # 11829
     '9 0' => 'Apo-Telyt-M 135mm f/3.4',     # 11889
+    11 => 'Summaron-M 28mm f/5.6',          # ? (ref IB)
+    12 => 'Thambar-M 90mm f/2.2',           # ? (ref IB)
     16 => 'Tri-Elmar-M 16-18-21mm f/4 ASPH.',# 11626
     '16 1' => 'Tri-Elmar-M 16-18-21mm f/4 ASPH. (at 16mm)',
     '16 2' => 'Tri-Elmar-M 16-18-21mm f/4 ASPH. (at 18mm)',
@@ -121,6 +124,7 @@ sub WhiteBalanceConv($;$$);
     52 => 'Super-Elmar-M 18mm f/3.8 ASPH.', # ? (ref PH/11)
     '53 2' => 'Apo-Telyt-M 135mm f/3.4', #16
     '53 3' => 'Apo-Summicron-M 50mm f/2 (VI)', #LR
+    58 => 'Noctilux-M 75mm f/1.25 ASPH.',   # ? (ref IB)
 );
 
 # M9 frame selector bits for each lens
@@ -853,7 +857,7 @@ my %shootingMode = (
     },
     # 0x4f,0x50 - int16u: 0
     0x51 => {
-        Name => 'LensModel',
+        Name => 'LensType',
         Writable => 'string',
         ValueConv => '$val=~s/ +$//; $val', # trim trailing spaces
         ValueConvInv => '$val',
@@ -1620,7 +1624,7 @@ my %shootingMode = (
     PRIORITY => 0,
     NOTES => 'This information is written by the X1, X2, X VARIO and T.',
     0x0303 => {
-        Name => 'LensModel',
+        Name => 'LensType',
         Condition => '$format eq "string"',
         Notes => 'Leica T only',
         Writable => 'string',
@@ -1745,7 +1749,7 @@ my %shootingMode = (
     },
     # 0x302 - same value as 4 unknown bytes at the end of JPEG or after the DNG TIFF header (ImageID, ref IB)
     0x303 => {
-        Name => 'LensModel',
+        Name => 'LensType',
         Writable => 'string',
         ValueConv => '$val=~s/ +$//; $val', # trim trailing spaces
         ValueConvInv => '$val',

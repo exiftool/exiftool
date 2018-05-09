@@ -521,7 +521,7 @@ L10 and LC80)</span></span><table class=cols><tr>
 <td>--&gt; <a href='Panasonic.html#FaceDetInfo'>Panasonic FaceDetInfo Tags</a></td></tr>
 <tr>
 <td title='0x0051 = 81'>0x0051</td>
-<td>LensModel</td>
+<td>LensType</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
@@ -1146,25 +1146,29 @@ on the M9, or the focal length of some multi-focal lenses.</p>
 <table class='inner sep' cellspacing=1>
 <tr class=h><th>Value</th><th>LensType</th><th>Value</th><th>LensType</th></tr>
 <tr><td>1</td><td>= Elmarit-M 21mm f/2.8</td>
-<td class=b>43</td><td class=b>= Summarit-M 35mm f/2.5</td>
+<td class=b>42</td><td class=b>= Tri-Elmar-M 28-35-50mm f/4 ASPH.</td>
 </tr><tr><td>3</td><td>= Elmarit-M 28mm f/2.8 (III)</td>
-<td class=b>44</td><td class=b>= Summarit-M 50mm f/2.5</td>
+<td class=b>43</td><td class=b>= Summarit-M 35mm f/2.5</td>
 </tr><tr><td>4</td><td>= Tele-Elmarit-M 90mm f/2.8 (II)</td>
-<td class=b>45</td><td class=b>= Summarit-M 75mm f/2.5</td>
+<td class=b>44</td><td class=b>= Summarit-M 50mm f/2.5</td>
 </tr><tr><td>5</td><td>= Summilux-M 50mm f/1.4 (II)</td>
-<td class=b>46</td><td class=b>= Summarit-M 90mm f/2.5</td>
+<td class=b>45</td><td class=b>= Summarit-M 75mm f/2.5</td>
 </tr><tr><td>6</td><td>= Summicron-M 35mm f/2 (IV)</td>
-<td class=b>47</td><td class=b>= Summilux-M 21mm f/1.4 ASPH.</td>
+<td class=b>46</td><td class=b>= Summarit-M 90mm f/2.5</td>
 </tr><tr><td>7</td><td>= Summicron-M 90mm f/2 (II)</td>
-<td class=b>48</td><td class=b>= Summilux-M 24mm f/1.4 ASPH.</td>
+<td class=b>47</td><td class=b>= Summilux-M 21mm f/1.4 ASPH.</td>
 </tr><tr><td>9</td><td>= Elmarit-M 135mm f/2.8 (I/II)</td>
+<td class=b>48</td><td class=b>= Summilux-M 24mm f/1.4 ASPH.</td>
+</tr><tr><td>11</td><td>= Summaron-M 28mm f/5.6</td>
 <td class=b>49</td><td class=b>= Noctilux-M 50mm f/0.95 ASPH.</td>
-</tr><tr><td>16</td><td>= Tri-Elmar-M 16-18-21mm f/4 ASPH.</td>
+</tr><tr><td>12</td><td>= Thambar-M 90mm f/2.2</td>
 <td class=b>50</td><td class=b>= Elmar-M 24mm f/3.8 ASPH.</td>
-</tr><tr><td>23</td><td>= Summicron-M 50mm f/2 (III)</td>
+</tr><tr><td>16</td><td>= Tri-Elmar-M 16-18-21mm f/4 ASPH.</td>
 <td class=b>51</td><td class=b>= Super-Elmar-M 21mm f/3.4 Asph</td>
-</tr><tr><td>24</td><td>= Elmarit-M 21mm f/2.8 ASPH.</td>
+</tr><tr><td>23</td><td>= Summicron-M 50mm f/2 (III)</td>
 <td class=b>52</td><td class=b>= Super-Elmar-M 18mm f/3.8 ASPH.</td>
+</tr><tr><td>24</td><td>= Elmarit-M 21mm f/2.8 ASPH.</td>
+<td class=b>58</td><td class=b>= Noctilux-M 75mm f/1.25 ASPH.</td>
 </tr><tr><td>25</td><td>= Elmarit-M 24mm f/2.8 ASPH.</td>
 <td class=b>'0 0'</td><td class=b>= Uncoded lens</td>
 </tr><tr><td>26</td><td>= Summicron-M 28mm f/2 ASPH.</td>
@@ -1197,8 +1201,6 @@ on the M9, or the focal length of some multi-focal lenses.</p>
 <td class=b>'53 2'</td><td class=b>= Apo-Telyt-M 135mm f/3.4</td>
 </tr><tr><td>40</td><td>= Macro-Adapter M</td>
 <td class=b>'53 3'</td><td class=b>= Apo-Summicron-M 50mm f/2 (VI)</td>
-</tr><tr><td>42</td><td>= Tri-Elmar-M 28-35-50mm f/4 ASPH.</td>
-<td class=b>&nbsp;</td><td class=b>&nbsp;</td>
 </tr></table></td></tr></table></blockquote>
 
 <h2><a name='Leica3'>Panasonic Leica3 Tags</a></h2>
@@ -1438,7 +1440,7 @@ on the M9, or the focal length of some multi-focal lenses.</p>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
 <td title='0x0303 = 771'>0x0303</td>
-<td>LensModel</td>
+<td>LensType</td>
 <td class=c>string</td>
 <td><span class=s><span class=n>(Leica T only)</span></span></td></tr>
 <tr class=b>
@@ -1543,7 +1545,7 @@ images.</p>
 <td><span class=s><span class=n>(unknown 320kB block, not copied to JPEG images)</span></span></td></tr>
 <tr>
 <td title='0x0303 = 771'>0x0303</td>
-<td>LensModel</td>
+<td>LensType</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
@@ -1796,7 +1798,7 @@ various Panasonic and Leica models.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised May 4, 2018</i>
+<br><i>Last revised May 9, 2018</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

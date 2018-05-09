@@ -49,7 +49,7 @@ use vars qw($VERSION %minoltaLensTypes %minoltaTeleconverters %minoltaColorMode
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.62';
+$VERSION = '2.63';
 
 # Full list of product codes for Sony-compatible Minolta lenses
 # (ref http://www.kb.sony.com/selfservice/documentLink.do?externalId=C1000570)
@@ -601,35 +601,36 @@ $VERSION = '2.62';
    '65535.56' => 'Sigma 30mm F1.4 DC DN | C',       #IB (50480) (016)
    '65535.57' => 'Sigma 16mm F1.4 DC DN | C',       #JR (50503) (017)
    '65535.58' => 'Tamron 18-200mm F3.5-6.3 Di III VC', #JR (0 - Model B011)
-   '65535.59' => 'Tokina Firin 20mm F2 FE MF',      #JR (0)
-   '65535.60' => 'Voigtlander SUPER WIDE-HELIAR 15mm F4.5 III', #JR (50992)
-   '65535.61' => 'Voigtlander HELIAR-HYPER WIDE 10mm F5.6',     #IB (50993)
-   '65535.62' => 'Voigtlander ULTRA WIDE-HELIAR 12mm F5.6 III', #IB (50994)
-   '65535.63' => 'Voigtlander MACRO APO-LANTHAR 65mm F2 Aspherical', #JR (50995)
-   '65535.64' => 'Voigtlander NOKTON 40mm F1.2 Aspherical', #JR (50996)
-   '65535.65' => 'Voigtlander NOKTON classic 35mm F1.4', #JR (50997)
-   '65535.66' => 'Zeiss Touit 12mm F2.8',           #JR (49201 or 0)
-   '65535.67' => 'Zeiss Touit 32mm F1.8',           #JR (49202 or 0)
-   '65535.68' => 'Zeiss Touit 50mm F2.8 Macro',     #JR (49203 or 0)
-   '65535.69' => 'Zeiss Batis 25mm F2',             #JR (49216)
-   '65535.70' => 'Zeiss Batis 85mm F1.8',           #JR (49217)
-   '65535.71' => 'Zeiss Batis 18mm F2.8',           #IB (49218)
-   '65535.72' => 'Zeiss Batis 135mm F2.8',          #IB (49219)
-   '65535.73' => 'Zeiss Loxia 50mm F2',             #JR (49232 or 0)
-   '65535.74' => 'Zeiss Loxia 35mm F2',             #JR (49233 or 0)
-   '65535.75' => 'Zeiss Loxia 21mm F2.8',           #JR (49234)
-   '65535.76' => 'Zeiss Loxia 85mm F2.4',           #JR (49235)
-   '65535.77' => 'Zeiss Loxia 25mm F2.4',           #JR (49236)
+   '65535.59' => 'Tamron 28-75mm F2.8 Di III RXD',  #JR (49457 - Model A036)
+   '65535.60' => 'Tokina Firin 20mm F2 FE MF',      #JR (0)
+   '65535.61' => 'Voigtlander SUPER WIDE-HELIAR 15mm F4.5 III', #JR (50992)
+   '65535.62' => 'Voigtlander HELIAR-HYPER WIDE 10mm F5.6',     #IB (50993)
+   '65535.63' => 'Voigtlander ULTRA WIDE-HELIAR 12mm F5.6 III', #IB (50994)
+   '65535.64' => 'Voigtlander MACRO APO-LANTHAR 65mm F2 Aspherical', #JR (50995)
+   '65535.65' => 'Voigtlander NOKTON 40mm F1.2 Aspherical', #JR (50996)
+   '65535.66' => 'Voigtlander NOKTON classic 35mm F1.4', #JR (50997)
+   '65535.67' => 'Zeiss Touit 12mm F2.8',           #JR (49201 or 0)
+   '65535.68' => 'Zeiss Touit 32mm F1.8',           #JR (49202 or 0)
+   '65535.69' => 'Zeiss Touit 50mm F2.8 Macro',     #JR (49203 or 0)
+   '65535.70' => 'Zeiss Batis 25mm F2',             #JR (49216)
+   '65535.71' => 'Zeiss Batis 85mm F1.8',           #JR (49217)
+   '65535.72' => 'Zeiss Batis 18mm F2.8',           #IB (49218)
+   '65535.73' => 'Zeiss Batis 135mm F2.8',          #IB (49219)
+   '65535.74' => 'Zeiss Loxia 50mm F2',             #JR (49232 or 0)
+   '65535.75' => 'Zeiss Loxia 35mm F2',             #JR (49233 or 0)
+   '65535.76' => 'Zeiss Loxia 21mm F2.8',           #JR (49234)
+   '65535.77' => 'Zeiss Loxia 85mm F2.4',           #JR (49235)
+   '65535.78' => 'Zeiss Loxia 25mm F2.4',           #JR (49236)
 #
 # other lenses
 #
-   '65535.78' => 'Arax MC 35mm F2.8 Tilt+Shift', #JD
-   '65535.79' => 'Arax MC 80mm F2.8 Tilt+Shift', #JD
-   '65535.80' => 'Zenitar MF 16mm F2.8 Fisheye M42', #JD
-   '65535.81' => 'Samyang 500mm Mirror F8.0', #19
-   '65535.82' => 'Pentacon Auto 135mm F2.8', #19
-   '65535.83' => 'Pentacon Auto 29mm F2.8', #19
-   '65535.84' => 'Helios 44-2 58mm F2.0', #19
+   '65535.79' => 'Arax MC 35mm F2.8 Tilt+Shift', #JD
+   '65535.80' => 'Arax MC 80mm F2.8 Tilt+Shift', #JD
+   '65535.81' => 'Zenitar MF 16mm F2.8 Fisheye M42', #JD
+   '65535.82' => 'Samyang 500mm Mirror F8.0', #19
+   '65535.83' => 'Pentacon Auto 135mm F2.8', #19
+   '65535.84' => 'Pentacon Auto 29mm F2.8', #19
+   '65535.85' => 'Helios 44-2 58mm F2.0', #19
 );
 
 %minoltaTeleconverters = (

@@ -48,7 +48,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.11';
+$VERSION = '3.12';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -2209,10 +2209,7 @@ my %sPantryItem = (
             $val[0] =~ /^.*([NS])/;
             return $1;
         },
-        PrintConv => {
-            N => 'North',
-            S => 'South',
-        },
+        PrintConv => { N => 'North', S => 'South' },
     },
     GPSLongitudeRef => {
         Require => 'XMP:GPSLongitude',
@@ -2221,10 +2218,25 @@ my %sPantryItem = (
             $val[0] =~ /^.*([EW])/;
             return $1;
         },
-        PrintConv => {
-            E => 'East',
-            W => 'West',
+        PrintConv => { E => 'East', W => 'West' },
+    },
+    GPSDestLatitudeRef => {
+        Require => 'XMP:GPSDestLatitude',
+        ValueConv => q{
+            IsFloat($val[0]) and return $val[0] < 0 ? "S" : "N";
+            $val[0] =~ /^.*([NS])/;
+            return $1;
         },
+        PrintConv => { N => 'North', S => 'South' },
+    },
+    GPSDestLongitudeRef => {
+        Require => 'XMP:GPSDestLongitude',
+        ValueConv => q{
+            IsFloat($val[0]) and return $val[0] < 0 ? "W" : "E";
+            $val[0] =~ /^.*([EW])/;
+            return $1;
+        },
+        PrintConv => { E => 'East', W => 'West' },
     },
     LensID => {
         Notes => 'attempt to convert numerical XMP-aux:LensID stored by Adobe applications',

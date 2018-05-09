@@ -12,7 +12,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.48';
+$VERSION = '1.49';
 
 my %coordConv = (
     ValueConv    => 'Image::ExifTool::GPS::ToDegrees($val)',
@@ -231,10 +231,7 @@ my %coordConv = (
         Writable => 'string',
         Notes => 'tags 0x0013-0x001a used for subject location according to MWG 2.0',
         Count => 2,
-        PrintConv => {
-            N => 'North',
-            S => 'South',
-        },
+        PrintConv => { N => 'North', S => 'South' },
     },
     0x0014 => {
         Name => 'GPSDestLatitude',
@@ -246,10 +243,7 @@ my %coordConv = (
         Name => 'GPSDestLongitudeRef',
         Writable => 'string',
         Count => 2,
-        PrintConv => {
-            E => 'East',
-            W => 'West',
-        },
+        PrintConv => { E => 'East', W => 'West' },
     },
     0x0016 => {
         Name => 'GPSDestLongitude',
@@ -395,6 +389,23 @@ my %coordConv = (
             $val = int($val * 10) / 10;
             return ($val =~ s/^-// ? "$val m Below" : "$val m Above") . " Sea Level";
         },
+    },
+    GPSDestLatitude => {
+        Require => {
+            0 => 'GPS:GPSDestLatitude',
+            1 => 'GPS:GPSDestLatitudeRef',
+        },
+        ValueConv => '$val[1] =~ /^S/i ? -$val[0] : $val[0]',
+        PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")',
+    },
+    GPSDestLongitude => {
+        SubDoc => 1,    # generate for all sub-documents
+        Require => {
+            0 => 'GPS:GPSDestLongitude',
+            1 => 'GPS:GPSDestLongitudeRef',
+        },
+        ValueConv => '$val[1] =~ /^W/i ? -$val[0] : $val[0]',
+        PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "E")',
     },
 );
 

@@ -5,13 +5,14 @@
 #
 # Usage:        exiftool -tagsFromFile SRCFILE -@ xmp2exif.args DSTFILE
 #
-# Requires:     ExifTool version 10.28 or later
+# Requires:     ExifTool version 10.96 or later
 #
 # Revisions:    2009/01/20 - P. Harvey Created
 #               2011/06/22 - PH Copy flash information via Composite:Flash
 #               2013/06/12 - PH Additions for the Exif 2.3 for XMP spec
 #               2015/01/12 - PH Avoid copying from non-standard namespaces
 #               2016/09/26 - PH Write Composite SubSec tags
+#               2018/05/07 - PH Added support for GPSDestXxxRef tags
 #
 # References:   http://www.metadataworkinggroup.org/specs/
 #
@@ -41,6 +42,8 @@
 # generate GPS tags which have been combined into other XMP tags
 -GPS:GPSLatitudeRef < Composite:GPSLatitudeRef
 -GPS:GPSLongitudeRef < Composite:GPSLongitudeRef
+-GPS:GPSDestLatitudeRef < Composite:GPSDestLatitudeRef
+-GPS:GPSDestLongitudeRef < Composite:GPSDestLongitudeRef
 -GPS:GPSDatestamp < XMP-exif:GPSDateTime
 -GPS:GPSTimestamp < XMP-exif:GPSDateTime
 # end

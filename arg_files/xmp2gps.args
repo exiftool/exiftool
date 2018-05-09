@@ -5,9 +5,10 @@
 #
 # Usage:        exiftool -tagsFromFile SRCFILE -@ xmp2gps.args DSTFILE
 #
-# Requires:     ExifTool version 6.75 or later
+# Requires:     ExifTool version 10.96 or later
 #
 # Revisions:    2009/01/09 - P. Harvey Created
+#               2018/05/07 - PH Handle GPSDestLatitude/LongitudeRef tags
 #
 # Notes:     1) Most of the GPS tags are copied by the first argument, but
 #               the coordinate references and date/time values are stored
@@ -23,6 +24,8 @@
 -GPS:all < XMP-exif:all
 -GPS:GPSLatitudeRef < Composite:GPSLatitudeRef
 -GPS:GPSLongitudeRef < Composite:GPSLongitudeRef
+-GPS:GPSDestLatitudeRef < Composite:GPSDestLatitudeRef
+-GPS:GPSDestLongitudeRef < Composite:GPSDestLongitudeRef
 -GPS:GPSDateStamp < XMP-exif:GPSDateTime
 -GPS:GPSTimeStamp < XMP-exif:GPSDateTime
 # end

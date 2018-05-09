@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup);
 
-$VERSION = '10.95';
+$VERSION = '10.96';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -602,6 +602,7 @@ my %fileDescription = (
     JSON => 'application/json',
     K25  => 'image/x-kodak-k25',
     KDC  => 'image/x-kodak-kdc',
+    KEY  => 'application/x-iwork-keynote-sffkey',
     LFP  => 'image/x-lytro-lfp', #PH (NC)
     LNK  => 'application/octet-stream',
     LRI  => 'image/x-light-lri',
@@ -626,6 +627,7 @@ my %fileDescription = (
     MXF  => 'application/mxf',
     NEF  => 'image/x-nikon-nef',
     NRW  => 'image/x-nikon-nrw',
+    NUMBERS => 'application/x-iwork-numbers-sffnumbers',
     ODB  => 'application/vnd.oasis.opendocument.database',
     ODC  => 'application/vnd.oasis.opendocument.chart',
     ODF  => 'application/vnd.oasis.opendocument.formula',
@@ -639,6 +641,7 @@ my %fileDescription = (
     EXR  => 'image/x-exr',
     ORF  => 'image/x-olympus-orf',
     OTF  => 'application/x-font-otf',
+    PAGES=> 'application/x-iwork-pages-sffpages',
     PBM  => 'image/x-portable-bitmap',
     PCD  => 'image/x-photo-cd',
     PDB  => 'application/vnd.palm',
@@ -1402,6 +1405,16 @@ my %systemTagsNotes = (
         # accept either scalar or scalar reference
         RawConv => '$self->ValidateImage(ref $val ? $val : \$val, $tag)',
     },
+    ThumbnailImage => {
+        Groups => { 2 => 'Preview' },
+        Notes => 'JPEG-format embedded thumbnail image',
+        RawConv => '$self->ValidateImage(ref $val ? $val : \$val, $tag)',
+    },
+    OtherImage => {
+        Groups => { 2 => 'Preview' },
+        Notes => 'other JPEG-format embedded image',
+        RawConv => '$self->ValidateImage(ref $val ? $val : \$val, $tag)',
+    },
     PreviewPNG => {
         Groups => { 2 => 'Preview' },
         Notes => 'PNG-format embedded preview image',
@@ -1415,6 +1428,11 @@ my %systemTagsNotes = (
     PreviewTIFF => {
         Groups => { 2 => 'Preview' },
         Notes => 'TIFF-format embedded preview image',
+        Binary => 1,
+    },
+    PreviewPDF => {
+        Groups => { 2 => 'Preview' },
+        Notes => 'PDF-format embedded preview image',
         Binary => 1,
     },
     ExifByteOrder => {

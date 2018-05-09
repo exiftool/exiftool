@@ -32,7 +32,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.84';
+$VERSION = '2.85';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -136,6 +136,8 @@ my %sonyLensTypes2 = (
     49234 => 'Zeiss Loxia 21mm F2.8', #PH
     49235 => 'Zeiss Loxia 85mm F2.4', #JR
     49236 => 'Zeiss Loxia 25mm F2.4', #JR
+
+    49457 => 'Tamron 28-75mm F2.8 Di III RXD', #JR (Model A036)
 
     50480 => 'Sigma 30mm F1.4 DC DN | C', #IB/JR (016)
     50481 => 'Sigma 50mm F1.4 DG HSM | A + MC-11', #JR (014)

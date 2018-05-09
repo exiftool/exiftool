@@ -624,6 +624,7 @@ official EXIF 2.31 specification.
            MakerNoteKodak9           ExifIFD    Kodak Type9
            MakerNoteKodak10          ExifIFD    Kodak Type10
            MakerNoteKodak11          ExifIFD    Kodak Type11
+           MakerNoteKodak12          ExifIFD    Kodak Type11
            MakerNoteKodakUnknown     ExifIFD    Kodak Unknown
            MakerNoteKyocera          ExifIFD    Unknown
            MakerNoteMinolta          ExifIFD    Minolta
@@ -13012,7 +13013,7 @@ These tags are used in Panasonic/Leica cameras.
   0x004c   PanasonicImageHeight                 int32u
   0x004d   AFPointPosition                      rational64u[2]
   0x004e   FaceDetInfo                          Panasonic FaceDetInfo
-  0x0051   LensModel                            string
+  0x0051   LensType                             string
   0x0052   LensSerialNumber                     string
   0x0053   AccessoryType                        string
   0x0054   AccessorySerialNumber                string
@@ -13192,7 +13193,7 @@ This information is written by the X1, X2, X VARIO and T.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
-  0x0303   LensModel                            string
+  0x0303   LensType                             string
   0x0305   SerialNumber                         int32u
   0x0407   OriginalFileName                     string
   0x0408   OriginalDirectory                    string
@@ -13225,7 +13226,7 @@ images.
   ------   --------                             --------
   0x0300   PreviewImage                         undef
   0x0301   UnknownBlock?                        no
-  0x0303   LensModel                            string
+  0x0303   LensType                             string
   0x0304   FocusDistance                        int32u
   0x0311   ExternalSensorBrightnessValue        rational64s
   0x0312   MeasuredLV                           rational64s
@@ -16546,6 +16547,7 @@ still proprietary) Adobe format.
            MakerNoteKodak9                      Kodak Type9
            MakerNoteKodak10                     Kodak Type10
            MakerNoteKodak11                     Kodak Type11
+           MakerNoteKodak12                     Kodak Type11
            MakerNoteKodakUnknown                Kodak Unknown
            MakerNoteKyocera                     Unknown
            MakerNoteMinolta                     Minolta
@@ -31332,7 +31334,9 @@ FileName.
   MaxVal                     File               no
   NewGUID                    ExifTool           no
   Now                        ExifTool           no
+  OtherImage                 File               no
   PreviewImage               File               yes
+  PreviewPDF                 File               no
   PreviewPNG                 File               no
   PreviewTIFF                File               no
   PreviewWMF                 File               no
@@ -31340,6 +31344,7 @@ FileName.
   RAFVersion                 File               no
   ResourceForkSize           System             no
   TestName                   -                  yes!
+  ThumbnailImage             File               no
   Validate                   ExifTool           no
   Warning                    ExifTool           no
   XMP                        XMP                yes!
@@ -31474,6 +31479,12 @@ values, may created via the ExifTool configuration file.
   GPSAltitudeRef       QuickTime:LocationInformation no
   GPSDateTime          GPS:GPSDateStamp         no
                        GPS:GPSTimeStamp
+  GPSDestLatitude      GPS:GPSDestLatitude      no
+                       GPS:GPSDestLatitudeRef
+  GPSDestLatitudeRef   XMP:GPSDestLatitude      no
+  GPSDestLongitude     GPS:GPSDestLongitude     no
+                       GPS:GPSDestLongitudeRef
+  GPSDestLongitudeRef  XMP:GPSDestLongitude     no
   GPSLatitude          GPS:GPSLatitude          no
                        GPS:GPSLatitudeRef
   GPSLatitude          QuickTime:GPSCoordinates no
@@ -31793,6 +31804,7 @@ for more details.
                        MakerNoteKodak9
                        MakerNoteKodak10
                        MakerNoteKodak11
+                       MakerNoteKodak12
                        MakerNoteKodakUnknown
                        MakerNoteKyocera
                        MakerNoteMinolta

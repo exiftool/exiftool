@@ -126,12 +126,14 @@ foreach (split /\n/, `grep "'Sony E " lib/Image/ExifTool/Sony.pm`) {
     # (commented out lenses in Sony.pm are OK)
     # next if /^\s*#/;
     next unless /'([^']+)',/;
-    if (not $lens{$1}) {
-        Warn("Missing lens in Sony.pm: $1\n");
-    } elsif ($lens{$1} == 2) {
-        Warn("Duplicate lens in Sony.pm: $1\n");
+    my $lens = $1;
+    $lens =~ s/ or .*//;
+    if (not $lens{$lens}) {
+        Warn("Missing lens in Sony.pm: $lens\n");
+    } elsif ($lens{$lens} == 2) {
+        Warn("Duplicate lens in Sony.pm: $lens\n");
     } else {
-        $lens{$1} = 2;
+        $lens{$lens} = 2;
     }
 }
 foreach (sort keys %lens) {

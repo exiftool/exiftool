@@ -21,7 +21,7 @@ sub ProcessKodakPatch($$$);
 sub WriteUnknownOrPreview($$$);
 sub FixLeicaBase($$;$);
 
-$VERSION = '2.03';
+$VERSION = '2.04';
 
 my $debug;          # set to 1 to enable debugging code
 
@@ -694,7 +694,7 @@ my $debug;          # set to 1 to enable debugging code
     {
         Name => 'MakerNotePanasonic',
         # (starts with "Panasonic\0")
-        Condition => '$$valPt=~/^Panasonic/',
+        Condition => '$$valPt=~/^Panasonic/ and $$self{Model} ne "DC-FT7"',
         SubDirectory => {
             TagTable => 'Image::ExifTool::Panasonic::Main',
             Start => '$valuePtr + 12',
@@ -708,6 +708,17 @@ my $debug;          # set to 1 to enable debugging code
         SubDirectory => {
             TagTable => 'Image::ExifTool::Panasonic::Type2',
             ByteOrder => 'LittleEndian',
+        },
+    },
+    {
+        Name => 'MakerNotePanasonic3', # (DC-FT7)
+        # (starts with "Panasonic\0")
+        Condition => '$$valPt=~/^Panasonic/',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Panasonic::Main',
+            Start => '$valuePtr + 12',
+            Base => 12, # crazy!
+            ByteOrder => 'Unknown',
         },
     },
     {

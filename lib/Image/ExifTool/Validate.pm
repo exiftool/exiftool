@@ -4,6 +4,12 @@
 # Description:  Additional metadata validation
 #
 # Created:      2017/01/18 - P. Harvey
+#
+# Notes:        My apologies for the convoluted logic contained herein, but it
+#               is done this way to retro-fit the Validate feature into the
+#               existing ExifTool code while avoiding the possibility of
+#               introducing potential bugs or slowing down processing when the
+#               Validate feature is not used.
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::Validate;
@@ -11,7 +17,7 @@ package Image::ExifTool::Validate;
 use strict;
 use vars qw($VERSION %exifSpec);
 
-$VERSION = '1.07';
+$VERSION = '1.08';
 
 use Image::ExifTool qw(:Utils);
 use Image::ExifTool::Exif;
@@ -56,7 +62,7 @@ my %otherSpec = (
     CR2 => { 0xc5d8 => 1, 0xc5d9 => 1, 0xc5e0 => 1, 0xc640 => 1, 0xc6dc => 1, 0xc6dd => 1 },
     NEF => { 0x9216 => 1, 0x9217 => 1 },
     DNG => { 0x882a => 1, 0x9211 => 1, 0x9216 => 1 },
-    ARW => { 0x7000 => 1, 0x7001 => 1, 0x7010 => 1, 0x7011 => 1, 0x7020 => 1, 
+    ARW => { 0x7000 => 1, 0x7001 => 1, 0x7010 => 1, 0x7011 => 1, 0x7020 => 1,
              0x7031 => 1, 0x7032 => 1, 0x7034 => 1, 0x7035 => 1, 0x7036 => 1, 0x7037 => 1,
              0x7310 => 1, 0x7313 => 1, 0x7316 => 1, 0x74c7 => 1, 0x74c8 => 1, 0xa500 => 1 },
     RW2 => { All => 1 },    # ignore all unknown tags in RW2
@@ -98,6 +104,9 @@ my %stdFormat = (
         # Windows Explorer tags:
         0x9c9b => 'int8u',      0x9c9d => 'int8u',      0x9c9f => 'int8u',
         0x9c9c => 'int8u',      0x9c9e => 'int8u',
+        # GeoTiff tags:
+        0x830e => 'double',     0x8482 => 'double',     0x87af => 'int16u',     0x87b1 => 'string',
+        0x8480 => 'double',     0x85d8 => 'double',     0x87b0 => 'double',
         # DNG tags:
         0xc615 => '(string|int8u)',              0xc6d3 => '',
         0xc61a => '(int16u|int32u|rational64u)', 0xc6f4 => '(string|int8u)',
@@ -115,14 +124,121 @@ my %stdFormat = (
     },
 );
 
+# generate lookup for any IFD
+my %stdFormatAnyIFD = map { %{$stdFormat{$_}} } keys %stdFormat;
+
+# tag values to validate based on file type (from EXIF specification)
+# - validation code may access $val and %val, and returns 1 on success,
+#   or error message otherwise ('' for a generic message)
+# - entry is undef if tag must not exist (same as 'not defined $val' in code)
+my %validValue = (
+    JPEG => {
+        IFD0 => {
+            0x100 => undef,     # ImageWidth
+            0x101 => undef,     # ImageLength
+            0x102 => undef,     # BitsPerSample
+            0x103 => undef,     # Compression
+            0x106 => undef,     # PhotometricInterpretation
+            0x111 => undef,     # StripOffsets
+            0x115 => undef,     # SamplesPerPixel
+            0x116 => undef,     # RowsPerStrip
+            0x117 => undef,     # StripByteCounts
+            0x11a => 'defined $val',        # XResolution
+            0x11b => 'defined $val',        # YResolution
+            0x11c => undef,     # PlanarConfiguration
+            0x128 => '$val =~ /^[123]$/',   # ResolutionUnit
+            0x201 => undef,     # JPEGInterchangeFormat
+            0x202 => undef,     # JPEGInterchangeFormatLength
+            0x212 => undef,     # YCbCrSubSampling
+            0x213 => '$val =~ /^[12]$/',    # YCbCrPositioning
+        },
+        ExifIFD => {
+            0x9000 => 'defined $val',       # ExifVersion
+            0x9101 => 'defined $val',       # ComponentsConfiguration
+            0xa000 => 'defined $val',       # FlashpixVersion
+            0xa001 => '$val == 1 or $val == 0xffff',    # ColorSpace
+            0xa002 => 'defined $val',       # PixelXDimension
+            0xa003 => 'defined $val',       # PixelYDimension
+        },
+        GPS => {
+            0x0000 => 'defined $val',       # GPSVersionID
+        },
+    },
+    TIFF => {
+        IFD0 => {
+            0x100 => 'defined $val',        # ImageWidth
+            0x101 => 'defined $val',        # ImageLength
+            0x102 => 'defined $val',        # BitsPerSample
+            0x103 => q{
+                not defined $val or $val =~ /^(1|5|6|32773)$/ or
+                    ($val == 2 and (not defined $val{0x102} or $val{0x102} == 1));
+            },  # Compression
+            0x106 => '$val =~ /^[0123]$/',  # PhotometricInterpretation
+            0x111 => 'defined $val',        # StripOffsets
+            # SamplesPerPixel
+            0x115 => q{
+                my $pi = $val{0x106} || 0;
+                my $xtra = ($val{0x152} ? scalar(split ' ', $val{0x152}) : 0);
+                if ($pi == 2 or $pi == 6) {
+                    return $val == 3 + $xtra;
+                } elsif ($pi == 5) {
+                    return $val == 4 + $xtra;
+                } else {
+                    return 1;
+                }
+            },
+            0x116 => 'defined $val',        # RowsPerStrip
+            0x117 => 'defined $val',        # StripByteCounts
+            0x11a => 'defined $val',        # XResolution
+            0x11b => 'defined $val',        # YResolution
+            0x128 => '$val =~ /^[123]$/',   # ResolutionUnit
+            # ColorMap (must be palette image with correct number of colors)
+            0x140 => q{
+                return '' if defined $val{0x106} and $val{0x106} == 3 xor defined $val;
+                return 1 if not defined $val or length($val) == 6 * 2 ** ($val{0x102} || 0);
+                return 'Invalid count for';
+            },
+            0x201 => undef,     # JPEGInterchangeFormat
+            0x202 => undef,     # JPEGInterchangeFormatLength
+        },
+        ExifIFD => {
+            0x9000 => 'defined $val',       # ExifVersion
+            0x9101 => undef,                # ComponentsConfiguration
+            0x9102 => undef,                # CompressedBitsPerPixel
+            0xa000 => 'defined $val',       # FlashpixVersion
+            0xa001 => '$val == 1 or $val == 0xffff',    # ColorSpace
+            0xa002 => undef,                # PixelXDimension
+            0xa003 => undef,                # PixelYDimension
+        },
+        InteropIFD => {
+            0x0001 => undef,                # InteropIndex
+            # (entire InteropIFD is not allowed in TIFF)
+        },
+        GPS => {
+            0x0000 => 'defined $val',       # GPSVersionID
+        },
+    },
+);
+
+# validity ranges for constrained date/time fields
+my @validDateField = (
+    [ 'Month',   1, 12 ],
+    [ 'Day',     1, 31 ],
+    [ 'Hour',    0, 23 ],
+    [ 'Minutes', 0, 59 ],
+    [ 'Seconds', 0, 59 ],
+    [ 'TZhr',    0, 14 ],
+    [ 'TZmin',   0, 59 ],
+);
+
 # "Validate" tag information
 my %validateInfo = (
     Groups => { 0 => 'ExifTool', 1 => 'ExifTool', 2 => 'ExifTool' },
     Notes => q{
-        [experimental] generated only if specifically requested.  Requesting this
-        tag automatically enables the L<API Validate option|../ExifTool.html#Validate>,
-        imposing additional validation checks when extracting metadata.  Returns the
-        number of errors, warnings and minor warnings encountered
+        generated only if specifically requested.  Requesting this tag automatically
+        enables the L<API Validate option|../ExifTool.html#Validate>, imposing
+        additional validation checks when extracting metadata.  Returns the number
+        of errors, warnings and minor warnings encountered
     },
     PrintConv => {
         '0 0 0' => 'OK',
@@ -138,20 +254,6 @@ my %validateInfo = (
             return join(' and ', @rtn);
         },
     },
-);
-
-# generate lookup for any IFD
-my %stdFormatAnyIFD = map { %{$stdFormat{$_}} } keys %stdFormat;
-
-# validity ranges for constrained date/time fields
-my @validDateField = (
-    [ 'Month',   1, 12 ],
-    [ 'Day',     1, 31 ],
-    [ 'Hour',    0, 23 ],
-    [ 'Minutes', 0, 59 ],
-    [ 'Seconds', 0, 59 ],
-    [ 'TZhr',    0, 14 ],
-    [ 'TZmin',   0, 59 ],
 );
 
 # add "Validate" tag to Extra table
@@ -180,8 +282,8 @@ sub ValidateRaw($$$)
         }
     }
     # check for unknown values in PrintConv lookup for all standard EXIF tags
-    if (ref $$tagInfo{PrintConv} eq 'HASH' and $$tagInfo{Table} eq \%Image::ExifTool::Exif::Main and
-        $exifSpec{$$tagInfo{TagID}})
+    if (ref $$tagInfo{PrintConv} eq 'HASH' and ($$tagInfo{Table}{SHORT_NAME} eq 'GPS::Main' or
+        ($$tagInfo{Table} eq \%Image::ExifTool::Exif::Main and $exifSpec{$$tagInfo{TagID}})))
     {
         my $prt = $self->GetValue($tag, 'PrintConv');
         if ($prt and $prt =~ /^Unknown \(/) {
@@ -254,7 +356,7 @@ sub ValidateExif($$$$$$$$)
 
     # (get tagInfo for unknown tags if Unknown option not used)
     if (not defined $tagInfo and $$tagTablePtr{$tag} and ref $$tagTablePtr{$tag} eq 'HASH') {
-        $tagInfo = $$tagTablePtr{$tag}; 
+        $tagInfo = $$tagTablePtr{$tag};
     }
     if (defined $tagInfo) {
         my $ti = $tagInfo || $$tagTablePtr{$tag};
@@ -262,7 +364,8 @@ sub ValidateExif($$$$$$$$)
         my $stdFmt = $stdFormat{$ifd} || $stdFormat{IFD};
         if (defined $$stdFmt{All} or ($tagTablePtr eq \%Image::ExifTool::Exif::Main and
             ($exifSpec{$tag} or $$stdFmt{$tag} or
-            ($tag >= 0xc612 and $tag <= 0xc7b5 and not defined $$stdFmt{$tag})))) # (DNG tags)
+            ($tag >= 0xc612 and $tag <= 0xc7b5 and not defined $$stdFmt{$tag}))) or # (DNG tags)
+            $$tagTablePtr{SHORT_NAME} eq 'GPS::Main')
         {
             my $wgp = $$ti{WriteGroup} || $$tagTablePtr{WRITE_GROUP};
             if ($wgp and $wgp ne $ifd and $wgp ne 'All' and not $$ti{OffsetPair} and
@@ -272,7 +375,9 @@ sub ValidateExif($$$$$$$$)
                 $et->Warn(sprintf('Wrong IFD for 0x%.4x %s (should be %s not %s)', $tag, $$ti{Name}, $wgp, $ifd));
             }
             my $fmt = $$stdFmt{$tag} || $$ti{Writable};
-            if ($fmt and $formatStr !~ /^$fmt$/) {
+            if ($fmt and $formatStr !~ /^$fmt$/ and (not $tagInfo or
+                not $$tagInfo{IsOffset} or $Image::ExifTool::Exif::intFormat{$formatStr}))
+            {
                 $et->Warn(sprintf('Non-standard format (%s) for %s 0x%.4x %s', $formatStr, $ifd, $tag, $$ti{Name}))
             }
         } elsif ($stdFormatAnyIFD{$tag}) {
@@ -290,7 +395,7 @@ sub ValidateExif($$$$$$$$)
             }
         }
         if ($$ti{Count} and $$ti{Count} > 0 and $count != $$ti{Count}) {
-            $et->Warn(sprintf('Non-standard count (%d) for %s tag 0x%.4x %s', $count, $ifd, $tag, $$ti{Name}));
+            $et->Warn(sprintf('Non-standard count (%d) for %s 0x%.4x %s', $count, $ifd, $tag, $$ti{Name}));
         }
     } elsif (not $otherSpec{$$et{VALUE}{FileType}} or
         (not $otherSpec{$$et{VALUE}{FileType}}{$tag} and not $otherSpec{$$et{VALUE}{FileType}}{All}))
@@ -300,61 +405,54 @@ sub ValidateExif($$$$$$$$)
 }
 
 #------------------------------------------------------------------------------
-# Generate Validate tag
-# Inputs: 0) ExifTool ref
-sub MakeValidateTag($)
+# Validate image data offsets/sizes
+# Inputs: 0) ExifTool ref, 1) offset info hash ref (arrays of tagInfo/value pairs, keyed by tagID)
+#         2) directory name, 3) optional flag for minor warning
+sub ValidateOffsetInfo($$$;$)
 {
-    my $et = shift;
-    my (@num, $key);
-    push @num, $$et{VALUE}{Error}   ? ($$et{DUPL_TAG}{Error}   || 0) + 1 : 0,
-               $$et{VALUE}{Warning} ? ($$et{DUPL_TAG}{Warning} || 0) + 1 : 0, 0;
-    for ($key = 'Warning'; ; ) {
-        ++$num[2] if $$et{VALUE}{$key} and $$et{VALUE}{$key} =~ /^\[minor\]/i;
-        $key = $et->NextTagKey($key) or last;
-    }
-    $et->FoundTag(Validate => "@num");
-}
+    my ($et, $offsetInfo, $dirName, $minor) = @_;
 
-# validation code for each image type
-# FileType->Group1->Validation code
-# - validation code may access $val and %val, and returns 1 on success,
-#   or error message otherwise ('' for a generic message)
-my %validate = (
-    TIFF => {
-        IFD0 => {
-            0x103 => q{
-                not defined $val or $val =~ /^(1|5|6|32773)$/ or
-                    ($val == 2 and (not defined $val{0x102} or $val{0x102} == 1));
-            },  # Compression
-            0x106 => '$val =~ /^[0123]$/',  # PhotometricInterpretation
-            0x100 => 'defined $val',        # ImageWidth
-            0x101 => 'defined $val',        # ImageLength
-            0x111 => 'defined $val',        # StripOffsets
-            0x117 => 'defined $val',        # StripByteCounts
-            0x11a => 'defined $val',        # XResolution
-            0x11b => 'defined $val',        # YResolution
-            0x128 => 'not defined $val or $val =~ /^[123]$/',   # ResolutionUnit
-            # ColorMap (must be palette image with correct number of colors)
-            0x140 => q{
-                return '' if defined $val{0x106} and $val{0x106} == 3 xor defined $val;
-                return 1 if not defined $val or scalar(split ' ', $val) == 3 * 2 ** ($val{0x102} || 0);
-                return 'Invalid count for';
-            },
-            # SamplesPerPixel
-            0x115 => q{
-                my $pi = $val{0x106} || 0;
-                my $xtra = ($val{0x152} ? scalar(split ' ', $val{0x152}) : 0);
-                if ($pi == 2 or $pi == 6) {
-                    return $val == 3 + $xtra;
-                } elsif ($pi == 5) {
-                    return $val == 4 + $xtra;
-                } else {
-                    return 1;
-                }
-            },
-        },
-    },
-);
+    my $fileSize = $$et{VALUE}{FileSize} or return;
+
+    # (don't test RWZ files and some other file types)
+    return if $$et{DontValidateImageData};
+    # (Minolta A200 uses wrong byte order for these)
+    return if $$et{TIFF_TYPE} eq 'MRW' and $dirName eq 'IFD0' and $$et{Model} =~ /^DiMAGE A200/;
+    # (don't test 3FR, RWL or RW2 files)
+    return if $$et{TIFF_TYPE} =~ /^(3FR|RWL|RW2)$/;
+
+    while (%$offsetInfo) {
+        my ($id1) = sort keys %$offsetInfo;
+        my $offsets = $$offsetInfo{$id1};
+        delete $$offsetInfo{$id1};
+        my $id2 = $$offsets[0]{OffsetPair};
+        unless (defined $id2 and $$offsetInfo{$id2}) {
+            my $corr = $$offsets[0]{IsOffset} ? 'size' : 'offset';
+            $et->Warn("$dirName:$$offsets[0]{Name} is missing the corresponding $corr tag") unless $minor;
+            next;
+        }
+        my $sizes = $$offsetInfo{$id2};
+        delete $$offsetInfo{$id2};
+        ($sizes, $offsets) = ($offsets, $sizes) if $$sizes[0]{IsOffset};
+        my @offsets = split ' ', $$offsets[1];
+        my @sizes = split ' ', $$sizes[1];
+        if (@sizes != @offsets) {
+            $et->Warn("Wrong number of values in $dirName:$$offsets[0]{Name}", $minor);
+            next;
+        }
+        while (@offsets) {
+            my $start = pop @offsets;
+            my $end = $start + pop @sizes;
+            next unless $end > $fileSize;
+            if ($start >= $fileSize) {
+                $et->Warn("$dirName:$$offsets[0]{Name} is past end of file", $minor);
+            } else {
+                $et->Warn("$dirName:$$offsets[0]{Name}+$$sizes[0]{Name} runs past end of file", $minor);
+            }
+            last;
+        }
+    }
+}
 
 #------------------------------------------------------------------------------
 # Finish Validating tags
@@ -366,12 +464,13 @@ sub FinishValidate($$)
     my $fileType = $$et{FILE_TYPE};
     $fileType = $$et{TIFF_TYPE} if $fileType eq 'TIFF';
 
-    if ($validate{$fileType}) {
+    if ($validValue{$fileType}) {
         my ($grp, $tag, %val);
         local $SIG{'__WARN__'} = \&Image::ExifTool::SetWarning;
-        foreach $grp (sort keys %{$validate{$fileType}}) {
+        foreach $grp (sort keys %{$validValue{$fileType}}) {
+            next unless $$et{FOUND_DIR}{$grp};
             # get all tags in this group
-            my ($key, %val, %info);
+            my ($key, %val, %info, $minor);
             foreach $key (keys %{$$et{VALUE}}) {
                 next unless $et->GetGroup($key, 1) eq $grp;
                 # fill in %val lookup with values based on tag ID
@@ -381,27 +480,38 @@ sub FinishValidate($$)
                 $info{$tag} = $$et{TAG_INFO}{$key};
             }
             # make quick lookup for values based on tag ID
-            my $validateTags = $validate{$fileType}{$grp};
-            foreach $tag (sort { $a <=> $b } keys %$validateTags) {
+            my $validValue = $validValue{$fileType}{$grp};
+            foreach $tag (sort { $a <=> $b } keys %$validValue) {
                 my $val = $val{$tag};
-                #### eval ($val, %val)
-                my $result = eval $$validateTags{$tag};
-                if (not defined $result) {
-                    $result = 'Internal error validating';
-                } elsif ($result eq '') {
-                    $result = defined $val ? 'Invalid value for' : 'Missing required';
-                } elsif ($result eq '1') {
-                    next;
+                my ($pre, $post);
+                if (defined $$validValue{$tag}) {
+                    #### eval ($val, %val)
+                    my $result = eval $$validValue{$tag};
+                    if (not defined $result) {
+                        $pre = 'Internal error validating';
+                    } elsif ($result eq '') {
+                        $pre = defined $val ? 'Invalid value for' : "Missing required $fileType";
+                    } else {
+                        next if $result == '1';
+                        $pre = $result;
+                    }
+                } else {
+                    next unless defined $val;
+                    $post = "is not allowed in $fileType image";
+                    $minor = 1;
                 }
                 my $name;
                 if ($info{$tag}) {
                     $name = $info{$tag}{Name};
                 } else {
-                    my $tagInfo = $Image::ExifTool::Exif::Main{$tag};
+                    my $table = 'Image::ExifTool::'.($grp eq 'GPS' ? 'GPS' : 'Exif').'::Main';
+                    my $tagInfo = GetTagTable($table)->{$tag};
                     $tagInfo = $$tagInfo[0] if ref $tagInfo eq 'ARRAY';
                     $name = $tagInfo ? $$tagInfo{Name} : '<unknown>';
                 }
-                $et->Warn(sprintf('%s %s tag 0x%.4x %s', $result, $grp, $tag, $name));
+                $pre ? ($pre .= ' ') : ($pre = '');
+                $post ? ($post = ' '.$post) : ($post = '');
+                $et->Warn(sprintf('%s%s tag 0x%.4x %s%s', $pre, $grp, $tag, $name, $post), $minor);
             }
         }
     }
@@ -419,7 +529,17 @@ sub FinishValidate($$)
             }
         }
     }
-    MakeValidateTag($et) if $mkTag;
+    # generate Validate tag if necessary
+    if ($mkTag) {
+        my (@num, $key);
+        push @num, $$et{VALUE}{Error}   ? ($$et{DUPL_TAG}{Error}   || 0) + 1 : 0,
+                   $$et{VALUE}{Warning} ? ($$et{DUPL_TAG}{Warning} || 0) + 1 : 0, 0;
+        for ($key = 'Warning'; ; ) {
+            ++$num[2] if $$et{VALUE}{$key} and $$et{VALUE}{$key} =~ /^\[minor\]/i;
+            $key = $et->NextTagKey($key) or last;
+        }
+        $et->FoundTag(Validate => "@num");
+    }
 }
 
 1;  # end

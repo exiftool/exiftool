@@ -797,14 +797,44 @@ edit versions, otherwise this is extracted as a binary data block)</span>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
 <td class=r title='624 = 0x270'>624</td>
-<td>RedBalance</td>
-<td class=c title=' ! = Unsafe'>int16u!</td>
+<td>WB_RBLevels</td>
+<td class=c title=' ! = Unsafe'>int16u[2]!</td>
+<td><span class=s><span class=n>(as shot)</span></span></td></tr>
+<tr class=b>
+<td class=r title='626 = 0x272'>626</td>
+<td>WB_RBLevelsAuto</td>
+<td class=c title=' ! = Unsafe'>int16u[2]!</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='628 = 0x274'>628</td>
+<td>WB_RBLevelsDaylight</td>
+<td class=c title=' ! = Unsafe'>int16u[14]!</td>
+<td><span class=s><span class=n>(red/blue levels for 0,+3,+2,+1,-1,-2,-3)</span></span></td></tr>
+<tr class=b>
+<td class=r title='642 = 0x282'>642</td>
+<td>WB_RBLevelsIncandescent</td>
+<td class=c title=' ! = Unsafe'>int16u[14]!</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='656 = 0x290'>656</td>
+<td>WB_RBLevelsFluorescent</td>
+<td class=c title=' ! = Unsafe'>int16u[6]!</td>
+<td><span class=s><span class=n>(red/blue levels for fluorescent W,N,D)</span></span></td></tr>
+<tr class=b>
+<td class=r title='662 = 0x296'>662</td>
+<td>WB_RBLevelsCloudy</td>
+<td class=c title=' ! = Unsafe'>int16u[14]!</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='676 = 0x2a4'>676</td>
+<td>WB_RBLevelsFlash</td>
+<td class=c title=' ! = Unsafe'>int16u[14]!</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
-<td class=r title='625 = 0x271'>625</td>
-<td>BlueBalance</td>
-<td class=c title=' ! = Unsafe'>int16u!</td>
-<td>&nbsp;</td></tr>
+<td class=r title='690 = 0x2b2'>690</td>
+<td>WB_RBLevelsShade</td>
+<td class=c title=' ! = Unsafe'>int16u[14]!</td>
+<td><span class=s><span class=n>(not valid for E8700)</span></span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='VRInfo'>Nikon VRInfo Tags</a></h2>
@@ -6489,7 +6519,7 @@ ExifTool to choose in these cases (see the
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Apr 30, 2018</i>
+<br><i>Last revised May 15, 2018</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

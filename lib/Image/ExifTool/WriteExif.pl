@@ -1129,8 +1129,7 @@ NoWrite:            next if $isNew > 0;
                                 $$newInfo{Name} ne 'PreviewImage')
                             {
                                 my $name = $$newInfo{MakerNotes} ? 'MakerNotes' : $$newInfo{Name};
-                                $et->Warn("$name too large to write in JPEG segment");
-                                goto NoOverwrite; # GOTO!
+                                $et->Warn("Writing large value for $name",1);
                             }
                             # re-code if necessary
                             if ($strEnc and $newFormName eq 'string') {
@@ -1264,9 +1263,6 @@ NoOverwrite:            next if $isNew > 0;
                             if ($dataTag eq 'PreviewImage') {
                                 # must set DEL_PREVIEW flag now if preview fit into IFD
                                 $$et{DEL_PREVIEW} = 1 if $len <= 4;
-                            } elsif ($$et{FILE_TYPE} eq 'JPEG' and $len > 60000) {
-                                delete $offsetData{$dataTag};
-                                $err = "$dataTag not written (too large for JPEG segment)";
                             }
                         } else {
                             $err = "$dataTag not found";

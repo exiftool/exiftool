@@ -965,7 +965,7 @@ my %eeBox = (
     # prfl - Profile (ref 12)
     # clip - clipping --> contains crgn (clip region) (ref 12)
     # mvex - movie extends --> contains mehd (movie extends header), trex (track extends) (ref 14)
-    # ICAT - 4 bytes: "6350" (Nikon CoolPix S6900)
+    # ICAT - 4 bytes: "6350" (Nikon CoolPix S6900), "6500" (Panasonic FT7)
 );
 
 # movie header data block

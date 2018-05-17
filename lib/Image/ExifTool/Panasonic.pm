@@ -34,7 +34,7 @@ use vars qw($VERSION %leicaLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.96';
+$VERSION = '1.97';
 
 sub ProcessLeicaLEIC($$$);
 sub WhiteBalanceConv($;$$);
@@ -1997,6 +1997,17 @@ my %shootingMode = (
         Groups => { 2 => 'Camera' },
         Format => 'string[16]',
         RawConv => '$$self{Model} = $val',
+    },
+    0x10 => { # (DC-FT7)
+        Name => 'JPEG-likeData',
+        # looks like a JPEG preview, but not a well-formed JPEG file
+        Condition => '$$valPt =~ /^\xff\xd8\xff\xe1..Exif\0\0/s',
+        Format => 'undef[$size-0x10]',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Exif::Main',
+            ProcessProc => \&Image::ExifTool::ProcessTIFF,
+            Start => 12,
+        },
     },
     0x16 => {
         Name => 'Model',

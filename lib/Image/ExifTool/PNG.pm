@@ -12,6 +12,7 @@
 #               3) http://www.libpng.org/pub/mng/
 #               4) http://www.libpng.org/pub/png/spec/register/
 #               5) ftp://ftp.simplesystems.org/pub/png/documents/pngext-1.4.0-pdg.html
+#               6) ftp://ftp.simplesystems.org/pub/png/documents/pngext-1.5.0.html
 #
 # Notes:        Writing meta information in PNG images is a pain in the butt
 #               for a number of reasons:  One biggie is that you have to
@@ -257,7 +258,7 @@ $Image::ExifTool::PNG::colorType = -1;
             TagTable => 'Image::ExifTool::PNG::AnimationControl',
         },
     },
-    # eXIf
+    # eXIf (ref 6)
     $stdCase{exif} => {
         Name => $stdCase{exif},
         Notes => 'this is where ExifTool will create new EXIF',

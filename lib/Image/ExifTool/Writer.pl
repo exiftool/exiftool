@@ -537,9 +537,14 @@ sub SetNewValue($;$$%)
         }
         unless ($listOnly) {
             if (not TagExists($tag)) {
-                my $pre = $wantGroup ? $wantGroup . ':' : '';
-                $err = "Tag '$pre${origTag}' is not defined";
-                $err .= ' or has a bad language code' if $origTag =~ /-/;
+                if ($tag =~ /^[-\w*?]+$/) {
+                    my $pre = $wantGroup ? $wantGroup . ':' : '';
+                    $err = "Tag '$pre${origTag}' is not defined";
+                    $err .= ' or has a bad language code' if $origTag =~ /-/;
+                } else {
+                    $err = "Invalid tag name '${tag}'";
+                    $err .= " (remove the leading '\$')" if $tag =~ /^\$/;
+                }
             } elsif ($langCode) {
                 $err = "Tag '${tag}' does not support alternate languages";
             } elsif ($wantGroup) {
@@ -4998,8 +5003,15 @@ sub WriteMultiSegment($$$$;$)
     for (;;) {
         ++$count;
         my $size = $len - $n;
-        $size > $maxLen and $size = $maxLen;
+        if ($size > $maxLen) {
+            $size = $maxLen;
+            # avoid starting an Extended EXIF segment with a valid TIFF header
+            # (because we would interpret that as a separate EXIF segment)
+            --$size if $type eq 'EXIF' and $n+$maxLen <= $len-4 and
+                substr($$dataPt, $n+$maxLen, 4) =~ /^(MM\0\x2a|II\x2a\0)/;
+        }
         my $buff = substr($$dataPt,$n,$size);
+        $n += $size;
         $size += length($header);
         if ($type eq 'ICC') {
             $buff = pack('CC', $count, $num) . $buff;
@@ -5008,7 +5020,7 @@ sub WriteMultiSegment($$$$;$)
         # write the new segment with appropriate header
         my $segHdr = $hdr . pack('n', $size + 2);
         Write($outfile, $segHdr, $header, $buff) or return 0;
-        last if ($n+=$maxLen) >= $len;
+        last if $n >= $len;
     }
     return $count;
 }
@@ -5137,7 +5149,16 @@ sub WriteJPEG($$)
                     $s =~ /^JFXX\0\x10/     and $dirName = 'JFXX';
                     $s =~ /^(II|MM).{4}HEAPJPGM/s and $dirName = 'CIFF';
                 } elsif ($marker == 0xe1) {
-                    $s =~ /^(.{0,4})$exifAPP1hdr/s and $dirName = 'IFD0';
+                    if ($s =~ /^(.{0,4})$exifAPP1hdr(.{1,4})/is) {
+                        $dirName = 'IFD0';
+                        my ($junk, $bytes) = ($1, $2);
+                        # support multi-segment EXIF
+                        if (@dirOrder and $dirOrder[-1] =~ /^(IFD0|ExtendedEXIF)$/ and
+                            not length $junk and $bytes !~ /^(MM\0\x2a|II\x2a\0)/)
+                        {
+                            $dirName = 'ExtendedEXIF';
+                        }
+                    }
                     $s =~ /^$xmpAPP1hdr/    and $dirName = 'XMP';
                     $s =~ /^$xmpExtAPP1hdr/ and $dirName = 'XMP';
                 } elsif ($marker == 0xe2) {
@@ -5173,7 +5194,7 @@ sub WriteJPEG($$)
 #
 # re-write the image
 #
-    my ($combinedSegData, $segPos, %extendedXMP);
+    my ($combinedSegData, $segPos, $firstSegPos, %extendedXMP);
     my (@iccChunk, $iccChunkCount, $iccChunksTotal);
     # read through each segment in the JPEG file
     Marker: for (;;) {
@@ -5277,24 +5298,20 @@ sub WriteJPEG($$)
                 $$path[$pn] = 'APP1';
                 my $buff = $self->WriteDirectory(\%dirInfo, $tagTablePtr, \&WriteTIFF);
                 if (defined $buff and length $buff) {
-                    my $size = length($buff) + length($exifAPP1hdr);
-                    if ($size <= $maxSegmentLen) {
-                        # switch to buffered output if required
-                        if (($$self{PREVIEW_INFO} or $$self{LeicaTrailer}) and not $oldOutfile) {
-                            $writeBuffer = '';
-                            $oldOutfile = $outfile;
-                            $outfile = \$writeBuffer;
-                            # account for segment, EXIF and TIFF headers
-                            $$self{PREVIEW_INFO}{Fixup}{Start} += 18 if $$self{PREVIEW_INFO};
-                            $$self{LeicaTrailer}{Fixup}{Start} += 18 if $$self{LeicaTrailer};
-                        }
-                        # write the new segment with appropriate header
-                        my $app1hdr = "\xff\xe1" . pack('n', $size + 2);
-                        Write($outfile,$app1hdr,$exifAPP1hdr,$buff) or $err = 1;
-                    } else {
-                        delete $$self{PREVIEW_INFO};
-                        $self->Warn("APP1 EXIF segment too large! ($size bytes)");
+                    if (length($buff) + length($exifAPP1hdr) > $maxSegmentLen) {
+                        $self->Warn('Creating multi-segment EXIF',1);
                     }
+                    # switch to buffered output if required
+                    if (($$self{PREVIEW_INFO} or $$self{LeicaTrailer}) and not $oldOutfile) {
+                        $writeBuffer = '';
+                        $oldOutfile = $outfile;
+                        $outfile = \$writeBuffer;
+                        # account for segment, EXIF and TIFF headers
+                        $$self{PREVIEW_INFO}{Fixup}{Start} += 18 if $$self{PREVIEW_INFO};
+                        $$self{LeicaTrailer}{Fixup}{Start} += 18 if $$self{LeicaTrailer};
+                    }
+                    WriteMultiSegment($outfile, 0xe1, $exifAPP1hdr, \$buff, 'EXIF') or $err = 1;
+                    ++$$self{CHANGED};
                 }
             }
             # APP13 Photoshop segment next
@@ -5686,7 +5703,24 @@ sub WriteJPEG($$)
                         $self->Error('Incorrect EXIF segment identifier',1);
                     }
                     $segType = 'EXIF';
-                    $doneDir{IFD0} and $self->Warn('Multiple APP1 EXIF segments');
+                    # add this data to the combined data if it exists
+                    if (defined $combinedSegData) {
+                        $combinedSegData .= substr($$segDataPt,$hdrLen);
+                        $segDataPt = \$combinedSegData;
+                        $segPos = $firstSegPos;
+                        $length = length $combinedSegData;  # update length
+                    }
+                    # peek ahead to see if the next segment is extended EXIF
+                    if ($dirOrder[0] eq 'ExtendedEXIF') {
+                        # initialize combined data if necessary
+                        unless (defined $combinedSegData) {
+                            $combinedSegData = $$segDataPt;
+                            $firstSegPos = $segPos;
+                            $self->Warn('File contains multi-segment EXIF',1);
+                        }
+                        next Marker;    # get the next segment to combine
+                    }
+                    $doneDir{IFD0} and $self->Warn('Multiple APP1 EXIF records');
                     $doneDir{IFD0} = 1;
                     last unless $$editDirs{IFD0};
                     # check del groups now so we can change byte order in one step
@@ -5708,8 +5742,8 @@ sub WriteJPEG($$)
                     my $tagTablePtr = GetTagTable('Image::ExifTool::Exif::Main');
                     my $buff = $self->WriteDirectory(\%dirInfo, $tagTablePtr, \&WriteTIFF);
                     if (defined $buff) {
-                        # update segment with new data
-                        $$segDataPt = $exifAPP1hdr . $buff;
+                        undef $$segDataPt;  # free the old buffer
+                        $segDataPt = \$buff;
                     } else {
                         last Marker unless $self->Options('IgnoreMinorErrors');
                     }
@@ -5723,7 +5757,15 @@ sub WriteJPEG($$)
                         $$self{LeicaTrailer}{Fixup}{Start} += 18 if $$self{LeicaTrailer};
                     }
                     # delete segment if IFD contains no entries
-                    $del = 1 unless length($$segDataPt) > length($exifAPP1hdr);
+                    length $$segDataPt or $del = 1, last;
+                    if (length($$segDataPt) + length($exifAPP1hdr) > $maxSegmentLen) {
+                        $self->Warn('Writing multi-segment EXIF',1);
+                    }
+                    # write as multi-segment
+                    WriteMultiSegment($outfile, $marker, $exifAPP1hdr, $segDataPt, 'EXIF') or $err = 1;
+                    undef $combinedSegData;
+                    undef $$segDataPt;
+                    next Marker;
                 # check for XMP data
                 } elsif ($$segDataPt =~ /^($xmpAPP1hdr|$xmpExtAPP1hdr)/) {
                     $segType = 'XMP';

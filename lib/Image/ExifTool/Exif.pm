@@ -40,6 +40,7 @@
 #              27) Gregg Lee private communication
 #              28) http://wwwimages.adobe.com/www.adobe.com/content/dam/Adobe/en/devnet/cinemadng/pdfs/CinemaDNG_Format_Specification_v1_1.pdf
 #              29) http://www.libtiff.org
+#              30) http://geotiff.maptools.org/spec/geotiffhome.html
 #              IB) Iliah Borg private communication (LibRaw)
 #              JD) Jens Duttke private communication
 #------------------------------------------------------------------------------
@@ -1577,7 +1578,7 @@ my %sampleFormat = (
     0x82aa => 'MDPrepDate', #3
     0x82ab => 'MDPrepTime', #3
     0x82ac => 'MDFileUnits', #3
-    0x830e => 'PixelScale',
+    0x830e => 'PixelScale', #30
     0x8335 => 'AdventScale', #20
     0x8336 => 'AdventRevision', #20
     0x835c => 'UIC1Tag', #23
@@ -1604,9 +1605,9 @@ my %sampleFormat = (
     },
     0x847e => 'IntergraphPacketData', #3
     0x847f => 'IntergraphFlagRegisters', #3
-    0x8480 => 'IntergraphMatrix',
+    0x8480 => 'IntergraphMatrix', #30
     0x8481 => 'INGRReserved', #20
-    0x8482 => {
+    0x8482 => { #30
         Name => 'ModelTiePoint',
         Groups => { 2 => 'Location' },
     },
@@ -1671,7 +1672,7 @@ my %sampleFormat = (
     },
     0x85b8 => 'PixelMagicJBIGOptions', #20
     0x85d7 => 'JPLCartoIFD', #exifprobe (NC)
-    0x85d8 => {
+    0x85d8 => { #30
         Name => 'ModelTransform',
         Groups => { 2 => 'Location' },
     },
@@ -1750,7 +1751,7 @@ my %sampleFormat = (
     },
     0x8782 => 'T88Options', #20
     0x87ac => 'ImageLayer',
-    0x87af => {
+    0x87af => { #30
         Name => 'GeoTiffDirectory',
         Format => 'undef',
         Binary => 1,
@@ -1772,7 +1773,7 @@ my %sampleFormat = (
             return pack('v*',unpack('n*',$val));
         },
     },
-    0x87b0 => {
+    0x87b0 => { #30
         Name => 'GeoTiffDoubleParams',
         Format => 'undef',
         Binary => 1,
@@ -1790,7 +1791,7 @@ my %sampleFormat = (
             return pack('V*',unpack('N*',$val));
         },
     },
-    0x87b1 => {
+    0x87b1 => { #30
         Name => 'GeoTiffAsciiParams',
         Writable => 'string',
         WriteGroup => 'IFD0',
@@ -5330,7 +5331,7 @@ sub ProcessExif($$$)
     my $validate = $et->Options('Validate');
     my $htmlDump = $$et{HTML_DUMP};
     my $success = 1;
-    my ($tagKey, $dirSize, $makerAddr, $strEnc);
+    my ($tagKey, $dirSize, $makerAddr, $strEnc, %offsetInfo);
     my $inMakerNotes = $$tagTablePtr{GROUPS}{0} eq 'MakerNotes';
 
     # set encoding to assume for strings
@@ -5733,7 +5734,8 @@ sub ProcessExif($$$)
             }
             # verify that offset-type values are integral
             if (($$tagInfo{IsOffset} or $$tagInfo{SubIFD}) and not $intFormat{$formatStr}) {
-                $et->Warn("Wrong format ($formatStr) for $name $$tagInfo{Name}");
+                $et->Warn(sprintf('Wrong format (%s) for %s 0x%.4x %s',$formatStr,$name,$tagID,$$tagInfo{Name}));
+                $offsetInfo{$tagID} = [ $tagInfo, '' ] if $validate;
                 next unless $verbose;
                 $wrongFormat = 1;
             }
@@ -6108,6 +6110,9 @@ sub ProcessExif($$$)
             }
             $val = join(' ', @vals);
         }
+        if ($validate and $$tagInfo{OffsetPair}) {
+            $offsetInfo{$tagID} = [ $tagInfo, $val ];
+        }
         # save the value of this tag
         $tagKey = $et->FoundTag($tagInfo, $val);
         if (defined $tagKey) {
@@ -6116,6 +6121,11 @@ sub ProcessExif($$$)
             # save original components of rational numbers (used when copying)
             $$et{RATIONAL}{$tagKey} = $rational if defined $rational;
         }
+    }
+
+    # validate image data offsets
+    if ($validate and %offsetInfo) {
+        Image::ExifTool::Validate::ValidateOffsetInfo($et, \%offsetInfo, $$dirInfo{DirName}, $inMakerNotes)
     }
 
     # scan for subsequent IFD's if specified
@@ -6212,6 +6222,8 @@ under the same terms as Perl itself.
 =item L<http://tools.ietf.org/html/draft-ietf-fax-tiff-fx-extension1-01>
 
 =item L<http://wwwimages.adobe.com/www.adobe.com/content/dam/Adobe/en/devnet/cinemadng/pdfs/CinemaDNG_Format_Specification_v1_1.pdf>
+
+=item L<http://geotiff.maptools.org/spec/geotiffhome.html>
 
 =back
 

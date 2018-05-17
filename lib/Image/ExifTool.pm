@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup);
 
-$VERSION = '10.96';
+$VERSION = '10.97';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -2481,6 +2481,7 @@ sub ExtractInfo($;@)
                 $pos = ($$self{FIRST_EXIF_POS} || 0) unless defined $pos;
                 my $dataPt = defined $$self{EXIF_DATA} ? \$$self{EXIF_DATA} : undef;
                 undef $dataPt if defined $$self{EXIF_POS} and $pos != $$self{EXIF_POS};
+                undef $dataPt if $$self{ExtendedEXIF}; # can't use EXIF block if not contiguous
                 my $success = $$self{HTML_DUMP}->Print($raf, $dataPt, $pos,
                     $$options{TextOut}, $$options{HtmlDump},
                     $$self{FILENAME} ? "HTML Dump ($$self{FILENAME})" : 'HTML Dump');
@@ -3549,6 +3550,7 @@ sub Init($)
     $$self{WARNED_ONCE}= { };       # WarnOnce() warnings already issued
     $$self{WRITTEN}    = { };       # list of tags written (selected tags only)
     $$self{FORCE_WRITE}= { };       # ForceWrite lookup (set from ForceWrite tag)
+    $$self{FOUND_DIR}  = { };       # hash of directory names found in file
     $$self{PATH}       = [ ];       # current subdirectory path in file when reading
     $$self{NUM_FOUND}  = 0;         # total number of tags found (incl. duplicates)
     $$self{CHANGED}    = 0;         # number of tags changed (writer only)
@@ -5459,11 +5461,26 @@ sub InverseFileName($$)
 sub HDump($$$$;$$)
 {
     my $self = shift;
-    if ($$self{HTML_DUMP}) {
-        my $pos = shift;
-        $pos += $$self{BASE} if $$self{BASE};
-        $$self{HTML_DUMP}->Add($pos, @_);
+    $$self{HTML_DUMP} or return;
+    my ($pos, $len, $com, $tip, $flg) = @_;
+    $pos += $$self{BASE} if $$self{BASE};
+    # skip structural data blocks which have been removed from the middle of this dump
+    # (SkipData list contains ordered [start,end+1] offsets to skip)
+    if ($$self{SkipData}) {
+        my $end = $pos + $len;
+        my $skip;
+        foreach $skip (@{$$self{SkipData}}) {
+            $end <= $$skip[0] and last;
+            $pos >= $$skip[1] and $pos += $$skip[1] - $$skip[0], next;
+            if ($pos != $$skip[0]) {
+                $$self{HTML_DUMP}->Add($pos, $$skip[0]-$pos, $com, $tip, $flg);
+                $len -= $$skip[0] - $pos;
+                $tip = 'SAME';
+            }
+            $pos = $$skip[1];
+        }
     }
+    $$self{HTML_DUMP}->Add($pos, $len, $com, $tip, $flg);
 }
 
 #------------------------------------------------------------------------------
@@ -5715,7 +5732,7 @@ sub ProcessJPEG($$)
     # set input record separator to 0xff (the JPEG marker) to make reading quicker
     local $/ = "\xff";
 
-    my ($nextMarker, $nextSegDataPt, $nextSegPos, $combinedSegData);
+    my ($nextMarker, $nextSegDataPt, $nextSegPos, $combinedSegData, $firstSegPos, @skipData);
 
     # read file until we reach an end of image (EOI) or start of scan (SOS)
     Marker: for (;;) {
@@ -6011,12 +6028,38 @@ sub ProcessJPEG($$)
                 } elsif ($$segDataPt !~ /^Exif\0/) {
                     $self->Warn('Incorrect EXIF segment identifier',1);
                 }
-                DirStart(\%dirInfo, $hdrLen, $hdrLen);
                 if ($htmlDump) {
                     $self->HDump($segPos-4, 4, 'APP1 header', "Data size: $length bytes");
                     $self->HDump($segPos, $hdrLen, 'Exif header', 'APP1 data type: Exif');
                     $dumpEnd = $segPos + $length;
                 }
+                my $dataPt = $segDataPt;
+                if (defined $combinedSegData) {
+                    push @skipData, [ $segPos-4, $segPos+$hdrLen ];
+                    $combinedSegData .= substr($$segDataPt,$hdrLen);
+                    undef $$segDataPt;
+                    $dataPt = \$combinedSegData;
+                    $segPos = $firstSegPos;
+                }
+                # peek ahead to see if the next segment is extended EXIF
+                if ($nextMarker == $marker and
+                    $$nextSegDataPt =~ /^$exifAPP1hdr(?!(MM\0\x2a|II\x2a\0))/)
+                {
+                    # initialize combined data if necessary
+                    unless (defined $combinedSegData) {
+                        $combinedSegData = $$segDataPt;
+                        undef $$segDataPt;
+                        $firstSegPos = $segPos;
+                        $self->Warn('File contains multi-segment EXIF',1);
+                        $$self{ExtendedEXIF} = 1;
+                    }
+                    next;
+                }
+                $dirInfo{DataPt} = $dataPt;
+                $dirInfo{DataPos} = $segPos;
+                $dirInfo{DataLen} = $dirInfo{DirLen} = length $$dataPt;
+                DirStart(\%dirInfo, $hdrLen, $hdrLen);
+                $$self{SkipData} = \@skipData if @skipData;
                 # extract the EXIF information (it is in standard TIFF format)
                 $self->ProcessTIFF(\%dirInfo);
                 # avoid looking for preview unless necessary because it really slows
@@ -6038,6 +6081,12 @@ sub ProcessJPEG($$)
                     $$self{PreviewImageLength} = $plen;
                     $wantTrailer = 1;
                 }
+                if (@skipData) {
+                    undef @skipData;
+                    delete $$self{SkipData};
+                }
+                undef $$dataPt;
+                next;
             } elsif ($$segDataPt =~ /^$xmpExtAPP1hdr/) {
                 # off len -- extended XMP header (75 bytes total):
                 #   0  35 bytes - signature
@@ -7067,6 +7116,7 @@ sub ProcessDirectory($$$;$)
         $dirName = $$tagTablePtr{GROUPS}{1} if $dirName =~ /^APP\d+$/; # (use specific APP name)
         $$dirInfo{DirName} = $dirName;
     }
+    
     # guard against cyclical recursion into the same directory
     if (defined $$dirInfo{DirStart} and defined $$dirInfo{DataPos} and
         # directories don't overlap if the length is zero
@@ -7086,6 +7136,7 @@ sub ProcessDirectory($$$;$)
     $$self{INDENT} .= '| ';
     $$self{DIR_NAME} = $dirName;
     push @{$$self{PATH}}, $dirName;
+    $$self{FOUND_DIR}{$dirName} = 1;
 
     # process the directory
     my $rtnVal = &$proc($self, $dirInfo, $tagTablePtr);

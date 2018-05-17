@@ -7,6 +7,16 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.80. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+May 17, 2018 - Version 10.97 - "Multi-segment EXIF"
+
+  - Added read/write support for multi-segment EXIF in JPEG images
+  - Added a number of new Canon LensType values (thanks LibRaw)
+  - Added support for Panasonic DC-FT7 makernotes and metadata in MP4 videos
+  - Decode a number of new Nikon WB tags (thanks LibRaw)
+  - Improved warning message when attempting to write to an invalid tag name
+  - Enhanced Validate feature to perform more tests on TIFF and JPEG images
+    [The Validate feature is no longer considered experimental]
+
 May 9, 2018 - Version 10.96
 
   - Added a new Sony LensType (thanks Jos Roost)

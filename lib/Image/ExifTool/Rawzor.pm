@@ -14,7 +14,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.04';
+$VERSION = '1.05';
 
 # currently support this version Rawzor images
 my $implementedRawzorVersion = 199; # (up to version 1.99)
@@ -104,6 +104,7 @@ sub ProcessRWZ($$)
     }
     my $metaSize = Get32u(\$buff, 36);
     if ($metaSize) {
+        $$et{DontValidateImageData} = 1;
         # validate the metadata header and read the compressed metadata
         my $end0 = Get64u(\$buff, 0);
         my $pos1 = Get64u(\$buff, 8);

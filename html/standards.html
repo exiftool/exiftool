@@ -125,6 +125,8 @@ were added in the Exif 2.31 specification.]</i></li>
 used to indicate an unknown or infinite value. This is completely unnecessary
 and not supported by many applications because it requires extra tag-specific
 logic to be implemented.</li>
+<li>The total size of EXIF metadata in JPEG images is limited to 65527 bytes
+or less.</li>
 </ol>
 
 <p><b>Simple solutions:</b></p>
@@ -157,6 +159,10 @@ a zoom lens, or over the entire zoom range.</li>
 modern digital cameras.</li>
 <li>Use a rational value of 1/0 to indicate infinity, and 0/0 to indicate an
 unknown/undefined value.</li>
+<li>Allow EXIF to span multiple JPEG segments.  Multiple consecutive EXIF
+segments are simply concatenated into a single data block when reading. 
+<i>[Apparently Adobe has been doing this for years<a class=ref href="#ref11">[11]</a>,
+and this ability was added to ExifTool in version 10.97.]</i></li>
 </ol>
 
 <a name="PhotoInfo"></a>
@@ -232,6 +238,11 @@ could easily be implemented.</p>
 technique is already used for the extended JPEG2000 codestream MCT, MCC and MIC
 marker segments.</p>
 
+<p><b>Another solution:</b> <i>[implemented in ExifTool 10.97]</i></p>
+
+<p>We can work around this limitation for EXIF metadata by allowing it to span
+multiple segments using the same technique as for Photoshop APP13 metadata.</p>
+
 <a name="MPF"></a>
 <h3>Multi-Picture Format (MPF) <a class=ref href="#ref9">[9]</a></h3>
 
@@ -285,10 +296,11 @@ so the URL's referenced here are now broken.]</i></p>
 <li><a name="ref8" href="http://www.jpeg.org/public/jfif.pdf">http://www.jpeg.org/public/jfif.pdf</a></li>
 <li><a name="ref9" href="http://www.cipa.jp/english/hyoujunka/kikaku/pdf/DC-X007-KEY_E.pdf">http://www.cipa.jp/english/hyoujunka/kikaku/pdf/DC-X007-KEY_E.pdf</a></li>
 <li><a name="ref10" href="http://www.cipa.jp/english/hyoujunka/kikaku/cipa_e_kikaku_list.html">http://www.cipa.jp/english/hyoujunka/kikaku/cipa_e_kikaku_list.html</a></li>
+<li id="ref11">XMP Specification part 3 November 2014, p. 13</li>
 </ol>
 <hr>
 <i>Created Sep 17, 2009</i><br>
-<i>Last revised Feb 17, 2017</i>
+<i>Last revised May 16, 2018</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

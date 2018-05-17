@@ -927,8 +927,8 @@ user parameters (with lower-case names).
 
 =item Validate
 
-[Experimental] Flag to perform extra validation checks when reading, causing
-extra warnings to be generated if problems are found.  Default is undef.
+Flag to perform extra validation checks when reading, causing extra warnings
+to be generated if problems are found.  Default is undef.
 
 =item Verbose
 

@@ -59,7 +59,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.45';
+$VERSION = '3.46';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -3472,21 +3472,54 @@ my %binaryDataAttrs = (
     # 5 = 1
 );
 
-# ref 4
+# ref IB
 %Image::ExifTool::Nikon::ColorBalanceA = (
     %binaryDataAttrs,
     FORMAT => 'int16u',
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
-    624 => {
-        Name => 'RedBalance',
-        ValueConv => '$val / 256',
-        ValueConvInv => '$val * 256',
+    624 => { #4
+        Name => 'WB_RBLevels',
+        Notes => 'as shot', #IB
+        Format => 'int16u[2]',
         Protected => 1,
     },
-    625 => {
-        Name => 'BlueBalance',
-        ValueConv => '$val / 256',
-        ValueConvInv => '$val * 256',
+    626 => {
+        Name => 'WB_RBLevelsAuto',
+        Format => 'int16u[2]',
+        Protected => 1,
+    },
+    628 => {
+        Name => 'WB_RBLevelsDaylight',
+        Notes => 'red/blue levels for 0,+3,+2,+1,-1,-2,-3',
+        Format => 'int16u[14]',
+        Protected => 1,
+    },
+    642 => {
+        Name => 'WB_RBLevelsIncandescent',
+        Format => 'int16u[14]',
+        Protected => 1,
+    },
+    656 => {
+        Name => 'WB_RBLevelsFluorescent',
+        Format => 'int16u[6]',
+        Notes => 'red/blue levels for fluorescent W,N,D',
+        Protected => 1,
+    },
+    662 => {
+        Name => 'WB_RBLevelsCloudy',
+        Format => 'int16u[14]',
+        Protected => 1,
+    },
+    676 => {
+        Name => 'WB_RBLevelsFlash',
+        Format => 'int16u[14]',
+        Protected => 1,
+    },
+    690 => {
+        Name => 'WB_RBLevelsShade',
+        Condition => '$$self{Model} ne "E8700"',
+        Notes => 'not valid for E8700',
+        Format => 'int16u[14]',
         Protected => 1,
     },
 );

@@ -647,6 +647,7 @@ official EXIF 2.31 specification.
            MakerNoteLeica9           ExifIFD    Panasonic Leica9
            MakerNotePanasonic        ExifIFD    Panasonic
            MakerNotePanasonic2       ExifIFD    Panasonic Type2
+           MakerNotePanasonic3       ExifIFD    Panasonic
            MakerNotePentax           ExifIFD    Pentax
            MakerNotePentax2          ExifIFD    Pentax Type2
            MakerNotePentax3          ExifIFD    Casio Type2
@@ -10045,8 +10046,14 @@ DiMAGE X and Xt.
 
   Index2   Tag Name                             Writable
   ------   --------                             --------
-    624    RedBalance                           int16u!
-    625    BlueBalance                          int16u!
+    624    WB_RBLevels                          int16u[2]!
+    626    WB_RBLevelsAuto                      int16u[2]!
+    628    WB_RBLevelsDaylight                  int16u[14]!
+    642    WB_RBLevelsIncandescent              int16u[14]!
+    656    WB_RBLevelsFluorescent               int16u[6]!
+    662    WB_RBLevelsCloudy                    int16u[14]!
+    676    WB_RBLevelsFlash                     int16u[14]!
+    690    WB_RBLevelsShade                     int16u[14]!
 
 =head3 Nikon VRInfo Tags
 
@@ -13264,6 +13271,7 @@ various Panasonic and Leica models.
       0    Make                                 no
       4    Model                                no
      12    Model                                no
+     16    JPEG-likeData                        EXIF
      22    Model                                no
      52    Version1                             no
      62    Version2                             no
@@ -16570,6 +16578,7 @@ still proprietary) Adobe format.
            MakerNoteLeica9                      Panasonic Leica9
            MakerNotePanasonic                   Panasonic
            MakerNotePanasonic2                  Panasonic Type2
+           MakerNotePanasonic3                  Panasonic
            MakerNotePentax                      Pentax
            MakerNotePentax2                     Pentax Type2
            MakerNotePentax3                     Casio Type2
@@ -31828,6 +31837,7 @@ for more details.
                        MakerNoteLeica9
                        MakerNotePanasonic
                        MakerNotePanasonic2
+                       MakerNotePanasonic3
                        MakerNotePentax
                        MakerNotePentax2
                        MakerNotePentax3

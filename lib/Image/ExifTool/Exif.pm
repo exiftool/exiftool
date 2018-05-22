@@ -5358,8 +5358,8 @@ sub ProcessExif($$$)
     $dirName eq 'EXIF' and $dirName = $$dirInfo{DirName} = 'IFD0';
     $$dirInfo{Multi} = 1 if $dirName =~ /^(IFD0|SubIFD)$/ and not defined $$dirInfo{Multi};
     # get a more descriptive name for MakerNote sub-directories
-    my $name = $$dirInfo{Name};
-    $name = $dirName unless $name and $inMakerNotes and $name !~ /^MakerNote/;
+    my $dir = $$dirInfo{Name};
+    $dir = $dirName unless $dir and $inMakerNotes and $dir !~ /^MakerNote/;
 
     my ($numEntries, $dirEnd);
     if ($dirStart >= 0 and $dirStart <= $dataLen-2) {
@@ -5371,7 +5371,7 @@ sub ProcessExif($$$)
             if (($verbose > 0 or $validate) and not $$dirInfo{SubIFD}) {
                 my $short = $dirSize - $dirLen;
                 $$et{INDENT} =~ s/..$//; # keep indent the same
-                $et->Warn("Short directory size for $name (missing $short bytes)");
+                $et->Warn("Short directory size for $dir (missing $short bytes)");
                 $$et{INDENT} .= '| ';
             }
             undef $dirSize if $dirEnd > $dataLen; # read from file if necessary
@@ -5403,7 +5403,7 @@ sub ProcessExif($$$)
             }
         }
         unless ($success) {
-            $et->Warn("Bad $name directory");
+            $et->Warn("Bad $dir directory");
             return 0;
         }
         $numEntries = Get16u($dataPt, $dirStart);
@@ -5414,7 +5414,7 @@ sub ProcessExif($$$)
     my $bytesFromEnd = $dataLen - $dirEnd;
     if ($bytesFromEnd < 4) {
         unless ($bytesFromEnd==2 or $bytesFromEnd==0) {
-            $et->Warn("Illegal $name directory size ($numEntries entries)");
+            $et->Warn("Illegal $dir directory size ($numEntries entries)");
             return 0;
         }
     }
@@ -5428,7 +5428,7 @@ sub ProcessExif($$$)
         }
     }
     if ($htmlDump) {
-        my $longName = $name eq 'MakerNotes' ? ($$dirInfo{Name} || $name) : $name;
+        my $longName = $dir eq 'MakerNotes' ? ($$dirInfo{Name} || $dir) : $dir;
         if (defined $makerAddr) {
             my $hdrLen = $dirStart + $dataPos + $base - $makerAddr;
             $et->HDump($makerAddr, $hdrLen, "MakerNotes header", $longName) if $hdrLen > 0;
@@ -5439,7 +5439,7 @@ sub ProcessExif($$$)
         }
         my $tip;
         if ($bytesFromEnd >= 4) {
-            my $nxt = ($name =~ /^(.*?)(\d+)$/) ? $1 . ($2 + 1) : 'Next IFD';
+            my $nxt = ($dir =~ /^(.*?)(\d+)$/) ? $1 . ($2 + 1) : 'Next IFD';
             $tip = sprintf("$nxt offset: 0x%.4x", Get32u($dataPt, $dirEnd));
         }
         $et->HDump($dirEnd + $dataPos + $base, 4, "Next IFD", $tip, 0);
@@ -5469,7 +5469,7 @@ sub ProcessExif($$$)
     my ($warnCount, $lastID) = (0, -1);
     for ($index=0; $index<$numEntries; ++$index) {
         if ($warnCount > 10) {
-            $et->Warn("Too many warnings -- $name parsing aborted", 2) and return 0;
+            $et->Warn("Too many warnings -- $dir parsing aborted", 2) and return 0;
         }
         my $entry = $dirStart + 2 + 12 * $index;
         my $tagID = Get16u($dataPt, $entry);
@@ -5483,7 +5483,7 @@ sub ProcessExif($$$)
                            "Bad format type: $format", 1);
                 # warn unless the IFD was just padded with zeros
                 if ($format or $validate) {
-                    $et->Warn("Bad format ($format) for $name entry $index", $inMakerNotes);
+                    $et->Warn("Bad format ($format) for $dir entry $index", $inMakerNotes);
                     ++$warnCount;
                 }
                 # assume corrupted IFD if this is our first entry (except Sony ILCE-7M2 firmware 1.21)
@@ -5510,27 +5510,27 @@ sub ProcessExif($$$)
             }
         }
         $validate and not $inMakerNotes and Image::ExifTool::Validate::ValidateExif(
-            $et, $tagTablePtr, $tagID, $tagInfo, $lastID, $name, $count, $formatStr);
+            $et, $tagTablePtr, $tagID, $tagInfo, $lastID, $dir, $count, $formatStr);
         my $size = $count * $formatSize[$format];
         my $readSize = $size;
         if ($size > 4) {
             if ($size > 0x7fffffff) {
-                $et->Warn(sprintf("Invalid size (%u) for %s tag 0x%.4x", $size, $name, $tagID), $inMakerNotes);
+                $et->Warn(sprintf("Invalid size (%u) for %s tag 0x%.4x", $size, $dir, $tagID), $inMakerNotes);
                 ++$warnCount;
                 next;
             }
             $valuePtr = Get32u($dataPt, $valuePtr);
             if ($validate and not $inMakerNotes) {
-                $et->Warn(sprintf('Odd offset for %s tag 0x%.4x', $name, $tagID), 1) if $valuePtr & 0x01;
+                $et->Warn(sprintf('Odd offset for %s tag 0x%.4x', $dir, $tagID), 1) if $valuePtr & 0x01;
                 if ($valuePtr < 8 || ($valuePtr + $size > length($$dataPt) and
                                       $valuePtr + $size > $$et{VALUE}{FileSize}))
                 {
-                    $et->Warn(sprintf("Invalid offset for %s tag 0x%.4x", $name, $tagID));
+                    $et->Warn(sprintf("Invalid offset for %s tag 0x%.4x", $dir, $tagID));
                     ++$warnCount;
                     next;
                 }
                 if ($valuePtr + $size > $dirStart + $dataPos and $valuePtr < $dirEnd + $dataPos + 4) {
-                    $et->Warn(sprintf("Value for %s tag 0x%.4x overlaps IFD", $name, $tagID));
+                    $et->Warn(sprintf("Value for %s tag 0x%.4x overlaps IFD", $dir, $tagID));
                 }
             }
             # fix valuePtr if necessary
@@ -5591,7 +5591,7 @@ sub ProcessExif($$$)
                             ($raf->Seek($base + $valuePtr + $dataPos,0) and
                              $raf->Read($buff,$size) == $size))
                     {
-                        $et->Warn("Error reading value for $name entry $index", $inMakerNotes);
+                        $et->Warn("Error reading value for $dir entry $index", $inMakerNotes);
                         return 0 unless $inMakerNotes or $htmlDump;
                         ++$warnCount;
                         $buff = '' unless defined $buff;
@@ -5646,7 +5646,7 @@ sub ProcessExif($$$)
                             };
                         }
                     } else {
-                        $et->Warn("Bad offset for $name $tagStr", $inMakerNotes);
+                        $et->Warn("Bad offset for $dir $tagStr", $inMakerNotes);
                         ++$warnCount;
                     }
                     unless (defined $buff) {
@@ -5661,7 +5661,7 @@ sub ProcessExif($$$)
             # warn about suspect offsets if they didn't already cause another warning
             if (defined $suspect and $suspect == $warnCount) {
                 my $tagStr = $tagInfo ? $$tagInfo{Name} : sprintf('tag 0x%.4x', $tagID);
-                if ($et->Warn("Suspicious $name offset for $tagStr", $inMakerNotes)) {
+                if ($et->Warn("Suspicious $dir offset for $tagStr", $inMakerNotes)) {
                     ++$warnCount;
                     next unless $verbose;
                 }
@@ -5734,8 +5734,11 @@ sub ProcessExif($$$)
             }
             # verify that offset-type values are integral
             if (($$tagInfo{IsOffset} or $$tagInfo{SubIFD}) and not $intFormat{$formatStr}) {
-                $et->Warn(sprintf('Wrong format (%s) for %s 0x%.4x %s',$formatStr,$name,$tagID,$$tagInfo{Name}));
-                $offsetInfo{$tagID} = [ $tagInfo, '' ] if $validate;
+                $et->Warn(sprintf('Wrong format (%s) for %s 0x%.4x %s',$formatStr,$dir,$tagID,$$tagInfo{Name}));
+                if ($validate) {
+                    $$et{WrongFormat}{"$dir:$$tagInfo{Name}"} = 1;
+                    $offsetInfo{$tagID} = [ $tagInfo, '' ];
+                }
                 next unless $verbose;
                 $wrongFormat = 1;
             }
@@ -5773,7 +5776,7 @@ sub ProcessExif($$$)
                 } else {
                     $tagName = sprintf("Tag 0x%.4x",$tagID);
                 }
-                my $dname = sprintf("${name}-%.2d", $index);
+                my $dname = sprintf("${dir}-%.2d", $index);
                 # build our tool tip
                 $size < 0 and $size = $count * $formatSize[$format];
                 my $fstr = "$formatName[$format]\[$count]";

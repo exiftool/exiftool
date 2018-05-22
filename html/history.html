@@ -17,6 +17,18 @@ considered development releases, and are not uploaded to <a href="http://search.
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v10.98'><b>May 22, 2018 - Version 10.98</b></a>
+<ul>
+<li>Added additional Validate checks for JPEG thumbnail tags
+<li>Added a new Canon LensType (thanks LibRaw)
+<li>Decode a number of new Nikon ColorBalance tags (thanks LibRaw)
+<li>Disable extraction of Nikon D850 PhotoShootingMenuBank from NEF images
+    (apparently not valid in this type of file)
+<li>Fixed problem with writable user-defined Composite tags introduced in 10.16
+<li>Fixed unnecessary Validate warning about missing GPSVersionID
+<li>Fixed incorrect "wrong IFD" Validate warnings in CR3 images
+</ul>
+
 <a name='v10.97'><b>May 17, 2018 - Version 10.97</b> - "Multi-segment EXIF"</a>
 <ul>
 <li>Added read/write support for multi-segment EXIF in JPEG images

@@ -17,7 +17,7 @@ package Image::ExifTool::Validate;
 use strict;
 use vars qw($VERSION %exifSpec);
 
-$VERSION = '1.08';
+$VERSION = '1.09';
 
 use Image::ExifTool qw(:Utils);
 use Image::ExifTool::Exif;
@@ -66,11 +66,17 @@ my %otherSpec = (
              0x7031 => 1, 0x7032 => 1, 0x7034 => 1, 0x7035 => 1, 0x7036 => 1, 0x7037 => 1,
              0x7310 => 1, 0x7313 => 1, 0x7316 => 1, 0x74c7 => 1, 0x74c8 => 1, 0xa500 => 1 },
     RW2 => { All => 1 },    # ignore all unknown tags in RW2
-    RAF => { All => 1} ,    # (temporary)
+    RWL => { All => 1 },
+    RAF => { All => 1 },    # (temporary)
+    DCR => { All => 1 },
+    KDC => { All => 1 },
+    JXR => { All => 1 },
     SRW => { 0xa010 => 1, 0xa011 => 1, 0xa101 => 1, 0xa102 => 1 },
+    NRW => { 0x9216 => 1, 0x9217 => 1 },
+    X3F => { 0xa500 => 1 },
 );
 
-# standard format for tags (not necessary for exifSpec tags where Writable is defined)
+# standard format for tags (not necessary for exifSpec or GPS tags where Writable is defined)
 my %stdFormat = (
     ExifIFD => {
         0xa002 => 'int(16|32)u',
@@ -152,6 +158,24 @@ my %validValue = (
             0x212 => undef,     # YCbCrSubSampling
             0x213 => '$val =~ /^[12]$/',    # YCbCrPositioning
         },
+        IFD1 => {
+            0x100 => undef,     # ImageWidth
+            0x101 => undef,     # ImageLength
+            0x102 => undef,     # BitsPerSample
+            0x103 => '$val == 6',     # Compression
+            0x106 => undef,     # PhotometricInterpretation
+            0x111 => undef,     # StripOffsets
+            0x115 => undef,     # SamplesPerPixel
+            0x116 => undef,     # RowsPerStrip
+            0x117 => undef,     # StripByteCounts
+            0x11a => 'defined $val',        # XResolution
+            0x11b => 'defined $val',        # YResolution
+            0x11c => undef,     # PlanarConfiguration
+            0x128 => '$val =~ /^[123]$/',   # ResolutionUnit
+            0x201 => 'defined $val',        # JPEGInterchangeFormat
+            0x202 => 'defined $val',        # JPEGInterchangeFormatLength
+            0x212 => undef,     # YCbCrSubSampling
+        },
         ExifIFD => {
             0x9000 => 'defined $val',       # ExifVersion
             0x9101 => 'defined $val',       # ComponentsConfiguration
@@ -159,9 +183,6 @@ my %validValue = (
             0xa001 => '$val == 1 or $val == 0xffff',    # ColorSpace
             0xa002 => 'defined $val',       # PixelXDimension
             0xa003 => 'defined $val',       # PixelYDimension
-        },
-        GPS => {
-            0x0000 => 'defined $val',       # GPSVersionID
         },
     },
     TIFF => {
@@ -212,10 +233,6 @@ my %validValue = (
         },
         InteropIFD => {
             0x0001 => undef,                # InteropIndex
-            # (entire InteropIFD is not allowed in TIFF)
-        },
-        GPS => {
-            0x0000 => 'defined $val',       # GPSVersionID
         },
     },
 );
@@ -427,8 +444,10 @@ sub ValidateOffsetInfo($$$;$)
         delete $$offsetInfo{$id1};
         my $id2 = $$offsets[0]{OffsetPair};
         unless (defined $id2 and $$offsetInfo{$id2}) {
-            my $corr = $$offsets[0]{IsOffset} ? 'size' : 'offset';
-            $et->Warn("$dirName:$$offsets[0]{Name} is missing the corresponding $corr tag") unless $minor;
+            unless ($$offsets[0]{NotRealPair} or (defined $id2 and $id2 == -1)) {
+                my $corr = $$offsets[0]{IsOffset} ? 'size' : 'offset';
+                $et->Warn("$dirName:$$offsets[0]{Name} is missing the corresponding $corr tag") unless $minor;
+            }
             next;
         }
         my $sizes = $$offsetInfo{$id2};
@@ -437,15 +456,22 @@ sub ValidateOffsetInfo($$$;$)
         my @offsets = split ' ', $$offsets[1];
         my @sizes = split ' ', $$sizes[1];
         if (@sizes != @offsets) {
-            $et->Warn("Wrong number of values in $dirName:$$offsets[0]{Name}", $minor);
+            $et->Warn(sprintf('Wrong number of values in %s 0x%.4x %s',
+                              $dirName, $$offsets[0]{TagID}, $$offsets[0]{Name}), $minor);
             next;
         }
         while (@offsets) {
             my $start = pop @offsets;
             my $end = $start + pop @sizes;
+            $et->WarnOnce("$dirName:$$offsets[0]{Name} is zero", $minor) if $start == 0;
+            $et->WarnOnce("$dirName:$$sizes[0]{Name} is zero", $minor) if $start == $end;
             next unless $end > $fileSize;
             if ($start >= $fileSize) {
-                $et->Warn("$dirName:$$offsets[0]{Name} is past end of file", $minor);
+                if ($start == 0xffffffff) {
+                    $et->Warn("$dirName:$$offsets[0]{Name} is invalid (0xffffffff)", $minor);
+                } else {
+                    $et->Warn("$dirName:$$offsets[0]{Name} is past end of file", $minor);
+                }
             } else {
                 $et->Warn("$dirName:$$offsets[0]{Name}+$$sizes[0]{Name} runs past end of file", $minor);
             }
@@ -497,7 +523,7 @@ sub FinishValidate($$)
                     }
                 } else {
                     next unless defined $val;
-                    $post = "is not allowed in $fileType image";
+                    $post = "is not allowed in $fileType";
                     $minor = 1;
                 }
                 my $name;
@@ -509,6 +535,7 @@ sub FinishValidate($$)
                     $tagInfo = $$tagInfo[0] if ref $tagInfo eq 'ARRAY';
                     $name = $tagInfo ? $$tagInfo{Name} : '<unknown>';
                 }
+                next if $$et{WrongFormat} and $$et{WrongFormat}{"$grp:$name"};
                 $pre ? ($pre .= ' ') : ($pre = '');
                 $post ? ($post = ' '.$post) : ($post = '');
                 $et->Warn(sprintf('%s%s tag 0x%.4x %s%s', $pre, $grp, $tag, $name, $post), $minor);

@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup);
 
-$VERSION = '10.97';
+$VERSION = '10.98';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -6770,7 +6770,7 @@ sub DoProcessTIFF($$;$)
         return 1 if not $outfile and $$self{OPTIONS}{FastScan} and $$self{OPTIONS}{FastScan} == 3;
     }
     # (accomodate CR3 images which have a TIFF directory with ExifIFD at the top level)
-    my $ifdName = ($$dirInfo{DirName} and $$dirInfo{DirName} eq 'ExifIFD') ? 'ExifIFD' : 'IFD0';
+    my $ifdName = ($$dirInfo{DirName} and $$dirInfo{DirName} =~ /^(ExifIFD|GPS)$/) ? $1 : 'IFD0';
     if (not $tagTablePtr or $$tagTablePtr{GROUPS}{0} eq 'EXIF') {
         $self->FoundTag('ExifByteOrder', $byteOrder) unless $outfile;
     } else {
@@ -7089,10 +7089,14 @@ sub GetTagTable($)
     }
     # must check each time to add UserDefined Composite tags because the Composite table
     # may be loaded before the UserDefined tags are available
-    if ($table eq \%Image::ExifTool::Composite and %UserDefined and $UserDefined{$tableName}) {
+    if ($table eq \%Image::ExifTool::Composite and not $$table{VARS}{LOADED_USERDEFINED} and
+        %UserDefined and $UserDefined{$tableName})
+    {
         my $userComp = $UserDefined{$tableName};
-        delete $UserDefined{$tableName};    # (must delete first to avoid infinite recursion)
+        delete $UserDefined{$tableName};        # (must delete first to avoid infinite recursion)
         AddCompositeTags($userComp, 1);
+        $UserDefined{$tableName} = $userComp;   # (add back again for adding writable tags later)
+        $$table{VARS}{LOADED_USERDEFINED} = 1;  # set flag to avoid doing this again
     }
     return $table;
 }

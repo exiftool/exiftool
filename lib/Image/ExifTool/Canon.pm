@@ -87,7 +87,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '3.92';
+$VERSION = '3.93';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -464,6 +464,7 @@ $VERSION = '3.92';
     751 => 'Canon EF 16-35mm f/2.8L III USM', #42
     752 => 'Canon EF 24-105mm f/4L IS II USM', #42
     753 => 'Canon EF 85mm f/1.4L IS USM', #42
+    1136 => 'Sigma 24-70mm f/2.8 DG OS HSM | Art 017', #IB
     # (STM lenses - 0x10xx)
     4142 => 'Canon EF-S 18-135mm f/3.5-5.6 IS STM',
     4143 => 'Canon EF-M 18-55mm f/3.5-5.6 IS STM or Tamron Lens',
@@ -8370,6 +8371,7 @@ my %filterConv = (
         SubDirectory => {
             TagTable => 'Image::ExifTool::GPS::Main',
             ProcessProc => \&Image::ExifTool::ProcessTIFF,
+            DirName => 'GPS',
         },
     },
     THMB => {

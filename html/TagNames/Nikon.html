@@ -106,10 +106,11 @@ flash bracketing.)</span></span></td></tr>
 <tr>
 <td title='0x0014 = 20'>0x0014</td>
 <td>ColorBalanceA
-  <br>NRWData?</td>
-<td class=c>-<br>yes</td>
+  <br>NRWData</td>
+<td class=c>-<br>-</td>
 <td>--&gt; <a href='Nikon.html#ColorBalanceA'>Nikon ColorBalanceA Tags</a>
-  <br><span class=n>(large unknown block in NRW images, not copied to JPEG images)</span></td></tr>
+  <br>--&gt; <a href='Nikon.html#ColorBalanceB'>Nikon ColorBalanceB Tags</a>
+  <br>--&gt; <a href='Nikon.html#ColorBalanceC'>Nikon ColorBalanceC Tags</a></td></tr>
 <tr class=b>
 <td title='0x0016 = 22'>0x0016</td>
 <td>ImageBoundary</td>
@@ -835,6 +836,129 @@ edit versions, otherwise this is extracted as a binary data block)</span>
 <td>WB_RBLevelsShade</td>
 <td class=c title=' ! = Unsafe'>int16u[14]!</td>
 <td><span class=s><span class=n>(not valid for E8700)</span></span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ColorBalanceB'>Nikon ColorBalanceB Tags</a></h2>
+<p>Color balance tags used by the P6000.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='4 = 0x4'>4</td>
+<td>ColorBalanceVersion</td>
+<td class=c>undef[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='5096 = 0x13e8'>5096</td>
+<td>WB_RGGBLevels</td>
+<td class=c title=' ! = Unsafe'>int32u[4]!</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='5112 = 0x13f8'>5112</td>
+<td>WB_RGGBLevelsDaylight</td>
+<td class=c title=' ! = Unsafe'>int32u[4]!</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='5128 = 0x1408'>5128</td>
+<td>WB_RGGBLevelsCloudy</td>
+<td class=c title=' ! = Unsafe'>int32u[4]!</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='5160 = 0x1428'>5160</td>
+<td>WB_RGGBLevelsTungsten</td>
+<td class=c title=' ! = Unsafe'>int32u[4]!</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='5176 = 0x1438'>5176</td>
+<td>WB_RGGBLevelsFluorescentW</td>
+<td class=c title=' ! = Unsafe'>int32u[4]!</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='5192 = 0x1448'>5192</td>
+<td>WB_RGGBLevelsFlash</td>
+<td class=c title=' ! = Unsafe'>int32u[4]!</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='5224 = 0x1468'>5224</td>
+<td>WB_RGGBLevelsCustom</td>
+<td class=c title=' ! = Unsafe'>int32u[4]!</td>
+<td><span class=s><span class=n>(all zero if preset WB not used)</span></span></td></tr>
+<tr>
+<td class=r title='5240 = 0x1478'>5240</td>
+<td>WB_RGGBLevelsAuto</td>
+<td class=c title=' ! = Unsafe'>int32u[4]!</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='ColorBalanceC'>Nikon ColorBalanceC Tags</a></h2>
+<p>Color balance tags used by the P7000, P7100 and B700.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='4 = 0x4'>4</td>
+<td>ColorBalanceVersion</td>
+<td class=c>undef[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='56 = 0x38'>56</td>
+<td>WB_RGGBLevels</td>
+<td class=c title=' ! = Unsafe'>int32u[4]!</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='76 = 0x4c'>76</td>
+<td>WB_RGGBLevelsDaylight</td>
+<td class=c title=' ! = Unsafe'>int32u[4]!</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='96 = 0x60'>96</td>
+<td>WB_RGGBLevelsCloudy</td>
+<td class=c title=' ! = Unsafe'>int32u[4]!</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='116 = 0x74'>116</td>
+<td>WB_RGGBLevelsShade</td>
+<td class=c title=' ! = Unsafe'>int32u[4]!</td>
+<td><span class=s><span class=n>(valid only for some models)</span></span></td></tr>
+<tr class=b>
+<td class=r title='136 = 0x88'>136</td>
+<td>WB_RGGBLevelsTungsten</td>
+<td class=c title=' ! = Unsafe'>int32u[4]!</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='156 = 0x9c'>156</td>
+<td>WB_RGGBLevelsFluorescentW</td>
+<td class=c title=' ! = Unsafe'>int32u[4]!</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='176 = 0xb0'>176</td>
+<td>WB_RGGBLevelsFluorescentN</td>
+<td class=c title=' ! = Unsafe'>int32u[4]!</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='196 = 0xc4'>196</td>
+<td>WB_RGGBLevelsFluorescentD</td>
+<td class=c title=' ! = Unsafe'>int32u[4]!</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='216 = 0xd8'>216</td>
+<td>WB_RGGBLevelsHTMercury</td>
+<td class=c title=' ! = Unsafe'>int32u[4]!</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='256 = 0x100'>256</td>
+<td>WB_RGGBLevelsCustom</td>
+<td class=c title=' ! = Unsafe'>int32u[4]!</td>
+<td><span class=s><span class=n>(all zero if preset WB not used)</span></span></td></tr>
+<tr class=b>
+<td class=r title='276 = 0x114'>276</td>
+<td>WB_RGGBLevelsAuto</td>
+<td class=c title=' ! = Unsafe'>int32u[4]!</td>
+<td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='VRInfo'>Nikon VRInfo Tags</a></h2>
@@ -2376,7 +2500,8 @@ firmware 1.02f.</p>
 <td class=r title='4029 = 0xfbd'>4029</td>
 <td>PhotoShootingMenuBank</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x03]
+<td><span class=s><span class=n>(valid for JPEG images only)</span>
+  <br>[Mask 0x03]
   <br>0x0 = A
   <br>0x1 = B
   <br>0x2 = C
@@ -3236,7 +3361,7 @@ only valid for specific models.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
-<tr class=h><th>Index2</th><th>Tag Name</th>
+<tr class=h><th>Index1</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
 <td class=r title='0 = 0x0'>0</td>
@@ -6519,7 +6644,7 @@ ExifTool to choose in these cases (see the
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised May 15, 2018</i>
+<br><i>Last revised May 22, 2018</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

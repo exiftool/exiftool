@@ -9895,7 +9895,8 @@ DiMAGE X and Xt.
   0x0012   FlashExposureComp                    undef[4]
   0x0013   ISOSetting                           int16u[2]
   0x0014   ColorBalanceA                        Nikon ColorBalanceA
-           NRWData?                             yes
+           NRWData                              Nikon ColorBalanceB
+                                                Nikon ColorBalanceC
   0x0016   ImageBoundary                        int16u[4]
   0x0017   ExternalFlashExposureComp            undef[4]
   0x0018   FlashExposureBracketValue            undef[4]
@@ -10054,6 +10055,41 @@ DiMAGE X and Xt.
     662    WB_RBLevelsCloudy                    int16u[14]!
     676    WB_RBLevelsFlash                     int16u[14]!
     690    WB_RBLevelsShade                     int16u[14]!
+
+=head3 Nikon ColorBalanceB Tags
+
+Color balance tags used by the P6000.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      4    ColorBalanceVersion                  undef[4]
+   5096    WB_RGGBLevels                        int32u[4]!
+   5112    WB_RGGBLevelsDaylight                int32u[4]!
+   5128    WB_RGGBLevelsCloudy                  int32u[4]!
+   5160    WB_RGGBLevelsTungsten                int32u[4]!
+   5176    WB_RGGBLevelsFluorescentW            int32u[4]!
+   5192    WB_RGGBLevelsFlash                   int32u[4]!
+   5224    WB_RGGBLevelsCustom                  int32u[4]!
+   5240    WB_RGGBLevelsAuto                    int32u[4]!
+
+=head3 Nikon ColorBalanceC Tags
+
+Color balance tags used by the P7000, P7100 and B700.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      4    ColorBalanceVersion                  undef[4]
+     56    WB_RGGBLevels                        int32u[4]!
+     76    WB_RGGBLevelsDaylight                int32u[4]!
+     96    WB_RGGBLevelsCloudy                  int32u[4]!
+    116    WB_RGGBLevelsShade                   int32u[4]!
+    136    WB_RGGBLevelsTungsten                int32u[4]!
+    156    WB_RGGBLevelsFluorescentW            int32u[4]!
+    176    WB_RGGBLevelsFluorescentN            int32u[4]!
+    196    WB_RGGBLevelsFluorescentD            int32u[4]!
+    216    WB_RGGBLevelsHTMercury               int32u[4]!
+    256    WB_RGGBLevelsCustom                  int32u[4]!
+    276    WB_RGGBLevelsAuto                    int32u[4]!
 
 =head3 Nikon VRInfo Tags
 
@@ -10529,7 +10565,7 @@ only valid for specific models.
 
 =head3 Nikon ColorBalance1 Tags
 
-  Index2   Tag Name                             Writable
+  Index1   Tag Name                             Writable
   ------   --------                             --------
       0    WB_RBGGLevels                        int16u[4]!
 

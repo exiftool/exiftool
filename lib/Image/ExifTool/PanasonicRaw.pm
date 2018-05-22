@@ -21,7 +21,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.15';
+$VERSION = '1.16';
 
 sub ProcessJpgFromRaw($$$);
 sub WriteJpgFromRaw($$$);
@@ -243,6 +243,7 @@ my %wbTypeInfo = (
         IsOffset => '$$et{TIFF_TYPE} =~ /^(RW2|RWL)$/', # (invalid in DNG-converted files)
         PanasonicHack => 1,
         OffsetPair => 0x117, # (use StripByteCounts as the offset pair)
+        NotRealPair => 1,    # (to avoid Validate warning)
     },
     0x119 => {
         Name => 'DistortionInfo',

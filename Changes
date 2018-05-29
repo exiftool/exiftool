@@ -7,6 +7,14 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 10.80. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+May 29, 2018 - Version 10.99
+
+  - Decode layer information from Photoshop ImageSourceData in TIFF images
+  - Updated to the IPTC video metadata 1.2 specification
+  - Patched DateFmt() utility function to apply GlobalTimeShift if used
+  - Improved error message when trying to write a file with a wrong extension
+  - Fixed unnecessary warning when setting FileCreateDate in Windows
+
 May 22, 2018 - Version 10.98
 
   - Added additional Validate checks for JPEG thumbnail tags

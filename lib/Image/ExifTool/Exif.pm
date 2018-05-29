@@ -54,7 +54,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.00';
+$VERSION = '4.01';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -2234,10 +2234,10 @@ my %sampleFormat = (
         Binary => 1, # (just in case -- don't know what format this is)
     },
     0x935c => { #3/19
-        Name => 'ImageSourceData',
+        Name => 'ImageSourceData', # (writable directory!)
         Writable => 'undef',
         WriteGroup => 'IFD0',
-        Protected => 1,
+        SubDirectory => { TagTable => 'Image::ExifTool::Photoshop::DocumentData' },
         Binary => 1,
         Protected => 1, # (because this can be hundreds of megabytes)
     },

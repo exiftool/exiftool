@@ -604,47 +604,22 @@ synchronized with the IPTC)</span></span></td></tr>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
-<h2><a name='Header'>Photoshop Header Tags</a></h2>
-<p>This information is found in the PSD file header.</p>
+<h2><a name='DocumentData'>Photoshop DocumentData Tags</a></h2>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
-<tr class=h><th>Index2</th><th>Tag Name</th>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
-<td class=r title='6 = 0x6'>6</td>
-<td>NumChannels</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
+<td>'Layr'</td>
+<td>Layers</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Photoshop.html#Layers'>Photoshop Layers Tags</a></td></tr>
 <tr class=b>
-<td class=r title='7 = 0x7'>7</td>
-<td>ImageHeight</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td class=r title='9 = 0x9'>9</td>
-<td>ImageWidth</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td class=r title='11 = 0xb'>11</td>
-<td>BitDepth</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td class=r title='12 = 0xc'>12</td>
-<td>ColorMode</td>
-<td class=c>no</td>
-<td><table class=cols><tr>
-  <td>0 = Bitmap
-  <br>1 = Grayscale
-  <br>2 = Indexed
-  <br>3 = RGB</td><td>&nbsp;&nbsp;</td>
-  <td>4 = CMYK
-  <br>7 = Multichannel
-  <br>8 = Duotone
-  <br>9 = Lab</td></tr></table>
-</td></tr>
+<td>'Lr16'</td>
+<td>Layers</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Photoshop.html#Layers'>Photoshop Layers Tags</a></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='Layers'>Photoshop Layers Tags</a></h2>
@@ -725,6 +700,49 @@ synchronized with the IPTC)</span></span></td></tr>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='Header'>Photoshop Header Tags</a></h2>
+<p>This information is found in the PSD file header.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index2</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='6 = 0x6'>6</td>
+<td>NumChannels</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='7 = 0x7'>7</td>
+<td>ImageHeight</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='9 = 0x9'>9</td>
+<td>ImageWidth</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='11 = 0xb'>11</td>
+<td>BitDepth</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='12 = 0xc'>12</td>
+<td>ColorMode</td>
+<td class=c>no</td>
+<td><table class=cols><tr>
+  <td>0 = Bitmap
+  <br>1 = Grayscale
+  <br>2 = Indexed
+  <br>3 = RGB</td><td>&nbsp;&nbsp;</td>
+  <td>4 = CMYK
+  <br>7 = Multichannel
+  <br>8 = Duotone
+  <br>9 = Lab</td></tr></table>
+</td></tr>
+</table></td></tr></table></blockquote>
+
 <h2><a name='ImageData'>Photoshop ImageData Tags</a></h2>
 <blockquote>
 <table class=frame><tr><td>
@@ -743,7 +761,7 @@ synchronized with the IPTC)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Oct 26, 2017</i>
+<br><i>Last revised May 29, 2018</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

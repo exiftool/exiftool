@@ -359,12 +359,13 @@ my %sEntityWithRole = (
     Name        => { Writable => 'lang-alt' },
     Role        => { List => 'Bag' },
 );
-my %sFrameSize = (
-    STRUCT_NAME => 'FrameSize',
-    NAMESPACE   => 'Iptc4xmpExt',
-    WidthPixels  => { Writable => 'integer' },
-    HeightPixels => { Writable => 'integer' },
-);
+# (no longer used)
+#my %sFrameSize = (
+#    STRUCT_NAME => 'FrameSize',
+#    NAMESPACE   => 'Iptc4xmpExt',
+#    WidthPixels  => { Writable => 'integer' },
+#    HeightPixels => { Writable => 'integer' },
+#);
 my %sRating = (
     STRUCT_NAME => 'Rating',
     NAMESPACE   => 'Iptc4xmpExt',
@@ -669,6 +670,21 @@ my %sLinkedImage = (
     # new IPTC video metadata 1.1 properties
     # (ref https://www.iptc.org/std/videometadatahub/recommendation/IPTC-VideoMetadataHub-props-Rec_1.1.html)
     SnapshotLink => { Groups => { 2 => 'Image' }, List => 'Bag', Struct => \%sLinkedImage, Name => 'Snapshot' },
+    # new IPTC video metadata 1.2 properties
+    # (ref http://www.iptc.org/std/videometadatahub/recommendation/IPTC-VideoMetadataHub-props-Rec_1.2.html)
+    RecDevice => {
+        Struct => {
+            STRUCT_NAME => 'Device',
+            NAMESPACE   => 'Iptc4xmpExt',
+            Manufacturer        => { },
+            ModelName           => { },
+            SerialNumber        => { },
+            AttLensDescription  => { },
+            OwnersDeviceId      => { },
+        },
+    },
+    PlanningRef         => { List => 'Bag', Struct => \%sEntityWithRole },
+    audioBitsPerSample  => { Writable => 'integer' },
 );
 
 #------------------------------------------------------------------------------

@@ -1933,12 +1933,16 @@ sub SetSystemTags($$)
         my $nvHash;
         my $val = $self->GetNewValue($tag, \$nvHash);
         next unless $nvHash;
-        $^O eq 'darwin' or $self->WarnOnce('Can only set MDItem tags on OS X'), last;
-        ref $file and $self->Warn('Setting MDItem tags requires a file name'), last;
-        require Image::ExifTool::MacOS;
-        my $res = Image::ExifTool::MacOS::SetMacOSTags($self, $file, \@writableMacOSTags);
-        $result = $res if $res == 1 or not $result;
-        last;
+        if ($^O eq 'darwin') {
+            ref $file and $self->Warn('Setting MDItem tags requires a file name'), last;
+            require Image::ExifTool::MacOS;
+            my $res = Image::ExifTool::MacOS::SetMacOSTags($self, $file, \@writableMacOSTags);
+            $result = $res if $res == 1 or not $result;
+            last;
+        } elsif ($tag ne 'FileCreateDate') {
+            $self->WarnOnce('Can only set MDItem tags on OS X');
+            last;
+        }
     }
     return $result;
 }
@@ -1956,7 +1960,7 @@ sub WriteInfo($$;$$)
     local ($_, *EXIFTOOL_FILE2, *EXIFTOOL_OUTFILE);
     my ($self, $infile, $outfile, $outType) = @_;
     my (@fileTypeList, $fileType, $tiffType, $hdr, $seekErr, $type, $tmpfile, $hardLink, $testName);
-    my ($inRef, $outRef, $closeIn, $closeOut, $outPos, $outBuff, $eraseIn, $raf);
+    my ($inRef, $outRef, $closeIn, $closeOut, $outPos, $outBuff, $eraseIn, $raf, $fileExt);
     my $oldRaf = $$self{RAF};
     my $rtnVal = 0;
 
@@ -2057,6 +2061,7 @@ sub WriteInfo($$;$$)
         # write to a temporary file if no output file given
         $outfile = $tmpfile = "${infile}_exiftool_tmp" unless defined $outfile;
         if ($self->Open(\*EXIFTOOL_FILE2, $infile)) {
+            $fileExt = GetFileExtension($infile);
             $fileType = GetFileType($infile);
             @fileTypeList = GetFileType($infile);
             $tiffType = $$self{FILE_EXT} = GetFileExtension($infile);
@@ -2237,8 +2242,8 @@ sub WriteInfo($$;$$)
                     $err = 'Writing this type of RAW file is not supported';
                 } else {
                     if ($wrongType) {
-                        $fileType = $tiffType if $fileType eq 'TIFF';
-                        $err = "Not a valid $fileType";
+                        my $type = $fileExt || ($fileType eq 'TIFF' ? $tiffType : $fileType);
+                        $err = "Not a valid $type";
                         # do a quick check to see what this file looks like
                         foreach $type (@fileTypes) {
                             next unless $magicNumber{$type};
@@ -3050,8 +3055,14 @@ sub InsertTagValues($$$;$$$)
 sub DateFmt($)
 {
     my $et = bless { OPTIONS => { DateFormat => shift, StrictDate => 1 } };
+    my $shift;
+    if ($advFmtSelf and defined($shift = $$advFmtSelf{OPTIONS}{GlobalTimeShift})) {
+        $$et{OPTIONS}{GlobalTimeShift} = $shift;
+        $$et{GLOBAL_TIME_OFFSET} = $$advFmtSelf{GLOBAL_TIME_OFFSET};
+    }
     $_ = $et->ConvertDateTime($_);
     defined $_ or warn "Error converting date/time\n";
+    $$advFmtSelf{GLOBAL_TIME_OFFSET} = $$et{GLOBAL_TIME_OFFSET} if $shift;
 }
 
 #------------------------------------------------------------------------------

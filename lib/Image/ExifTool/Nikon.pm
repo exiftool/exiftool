@@ -3589,6 +3589,7 @@ my %nrwLevels = (
 # ref 4
 %Image::ExifTool::Nikon::ColorBalance1 = (
     %binaryDataAttrs,
+    FORMAT => 'int16u',
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     0 => {
         Name => 'WB_RBGGLevels',

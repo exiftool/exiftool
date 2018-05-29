@@ -400,7 +400,7 @@ numerical.
                   if the preview must be stored inside the maker notes.
 
                   'Mandatory' - set for mandatory tags.  Used only by TagInfoXML
-                  and documentation purposes.  Mandatory tags may be added
+                  and for documentation purposes.  Mandatory tags may be added
                   automatically by ExifTool.
 
                   'NestedHtmlDump' - flag set if value for this tag is also

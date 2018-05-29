@@ -267,6 +267,7 @@ sub SetPropertyPath($$;$$$$)
             SetPropertyPath($tagTablePtr, $$tagInfo{RootTagInfo}{TagID});
             return if $$tagInfo{PropertyPath};
             warn "Internal Error: Didn't set path from root for $tagID\n";
+            warn "(Is the Struct NAMESPACE defined?)\n";
         }
     }
     my $ns = $$tagInfo{Namespace} || $$table{NAMESPACE};

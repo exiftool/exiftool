@@ -11,11 +11,21 @@
 
 <p>RSS feed: <a href="http://owl.phy.queensu.ca/~phil/exiftool/rss.xml">http://owl.phy.queensu.ca/~phil/exiftool/rss.xml</a></p>
 
-<p><b>Note:</b> The most recent production release is <a href="Image-ExifTool-10.80.tar.gz">Version 10.80</a>. (Other versions are
-considered development releases, and are not uploaded to <a href="http://search.cpan.org/dist/Image-ExifTool/">CPAN</a>.)</p>
+<p><b>Note:</b> The most recent production release is <a href="Image-ExifTool-11.00.tar.gz">Version 11.00</a>. (Other versions are
+considered development releases, and are not uploaded to <a href="https://metacpan.org/release/Image-ExifTool">CPAN</a>.)</p>
 
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
+
+<a name='v11.00'><b>June 7, 2018 - Version 11.00</b></a> <span class=grn>(production release)</span>
+<ul>
+<li>Added read support for WTV and DVR-MS videos
+<li>Added print conversions for some ASF date/time tags
+<li>Added a new SonyModelID (thanks LibRaw)
+<li>Decode a new PanasonicRaw tag (thanks Klaus Homeister)
+<li>Decode some new Sony RX100 VI tags (thanks LibRaw and Jos Roost)
+<li>Made Padding and OffsetSchema tags "unsafe" so they aren't copied by default
+</ul>
 
 <a name='v10.99'><b>May 29, 2018 - Version 10.99</b></a>
 <ul>
@@ -300,7 +310,7 @@ considered development releases, and are not uploaded to <a href="http://search.
     header is all binary zeros"
 <li>Improved decoding of some Sony tags (thanks Jos Roost)
 <li>Improved decoding of <a href="TagNames/QuickTime.html#Stream">QuickTime timed metadata</a>
-<li>Marked ArtworkCircaDateCreated as "Unsafe" for writing to avoid it being
+<li>Marked ArtworkCircaDateCreated as "unsafe" for writing to avoid it being
     added when attempting to shift all date/time tags
 <li>Fixed bug which could cause runtime error when reading some old Sony maker
     notes (thanks Tamas Lovag)

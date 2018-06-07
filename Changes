@@ -4,8 +4,17 @@ ExifTool Version History
 
 RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 
-Note: The most recent production release is Version 10.80. (Other versions are
+Note: The most recent production release is Version 11.00. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
+
+June 7, 2018 - Version 11.00 (production release)
+
+  - Added read support for WTV and DVR-MS videos
+  - Added print conversions for some ASF date/time tags
+  - Added a new SonyModelID (thanks LibRaw)
+  - Decode a new PanasonicRaw tag (thanks Klaus Homeister)
+  - Decode some new Sony RX100 VI tags (thanks LibRaw and Jos Roost)
+  - Made Padding and OffsetSchema tags "unsafe" so they aren't copied by default
 
 May 29, 2018 - Version 10.99
 
@@ -258,7 +267,7 @@ Jan. 12, 2018 - Version 10.75
     header is all binary zeros"
   - Improved decoding of some Sony tags (thanks Jos Roost)
   - Improved decoding of QuickTime timed metadata
-  - Marked ArtworkCircaDateCreated as "Unsafe" for writing to avoid it being
+  - Marked ArtworkCircaDateCreated as "unsafe" for writing to avoid it being
     added when attempting to shift all date/time tags
   - Fixed bug which could cause runtime error when reading some old Sony maker
     notes (thanks Tamas Lovag)
@@ -838,7 +847,7 @@ Sept. 15, 2016 - Version 10.26
   - Added two new Canon LensType's (thanks Norbert Wasser)
   - Decode a number of Nikon D610 custom settings (thanks Tor)
   - Removed a questionable Samsung tag
-  - Marked TestName tag as "Unsafe" for writing
+  - Marked TestName tag as "unsafe" for writing
   - Enhanced -progress option with ability to set console window title
   - Changed behaviour of %C to increment for each processed file as documented
     (was incrementing for each output file created)
@@ -4465,7 +4474,7 @@ Feb. 26, 2009 - Version 7.70
   - Added xml:lang attribute to -X output (when used with -t, -H or -D) to
     identify alternate language entries for XMP lang-alt tags
   - Decode Canon ImageUniqueID and added a new EasyMode value
-  - Created "Unsafe" shortcut used when rebuilding JPEG EXIF metadata from
+  - Created "unsafe" shortcut used when rebuilding JPEG EXIF metadata from
     scratch
   - Changed Olympus lens "pre-release" designation to "release 1"
   - Changed exiftool to continue after encountering "Error opening directory"

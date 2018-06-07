@@ -17,7 +17,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::RIFF;
 
-$VERSION = '1.24';
+$VERSION = '1.25';
 
 sub ProcessASF($$;$);
 sub ProcessContentDescription($$$);
@@ -154,6 +154,9 @@ my %advancedContentEncryption = (
     3 => 'CopyrightURL',
 );
 
+# Note: Many of these tags are similar to those in Image::ExifTool::Microsoft::Xtra
+#       and Image::ExifTool::WTV::Metadata
+# (tags in this table may have a leading "WM/" removed)
 %Image::ExifTool::ASF::ExtendedDescr = (
     PROCESS_PROC => \&ProcessExtendedContentDescription,
     GROUPS => { 2 => 'Video' },
@@ -238,7 +241,7 @@ my %advancedContentEncryption = (
     DVDID => {},
     EncodedBy => {},
     EncodingSettings => {},
-    EncodingTime => { Groups => { 2 => 'Time' } },
+    EncodingTime => { Groups => { 2 => 'Time' }, PrintConv => '$self->ConvertDateTime($val)' },
     Genre => {},
     GenreID => {},
     InitialKey => {},
@@ -260,7 +263,11 @@ my %advancedContentEncryption = (
     MediaIsSubtitled => {},
     MediaIsTape => {},
     MediaNetworkAffiliation => {},
-    MediaOriginalBroadcastDateTime => { Groups => { 2 => 'Time' } },
+    MediaOriginalBroadcastDateTime => {
+        Groups => { 2 => 'Time' },
+        ValueConv => '$val=~tr/-T/: /; $val',
+        PrintConv => '$self->ConvertDateTime($val)',
+    },
     MediaOriginalChannel => {},
     MediaStationCallSign => {},
     MediaStationName => {},
@@ -270,7 +277,11 @@ my %advancedContentEncryption = (
     OriginalArtist => {},
     OriginalFilename => 'OriginalFileName',
     OriginalLyricist => {},
-    OriginalReleaseTime => { Groups => { 2 => 'Time' } },
+    OriginalReleaseTime => {
+        Groups => { 2 => 'Time' },
+        ValueConv => '$val=~tr/-T/: /; $val',
+        PrintConv => '$self->ConvertDateTime($val)',
+    },
     OriginalReleaseYear => { Groups => { 2 => 'Time' } },
     ParentalRating => {},
     ParentalRatingReason => {},

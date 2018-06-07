@@ -28,7 +28,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD $iptcDigestInfo);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.59';
+$VERSION = '1.60';
 
 sub ProcessPhotoshop($$$);
 sub WritePhotoshop($$$);
@@ -486,7 +486,13 @@ my %unicodeString = (
     # tags extracted from layer information
     # (tag ID's are for convenience only)
     _xcnt => { Name => 'LayerCount', Format => 'int16u' },
-    _xrct => { Name => 'LayerRectangles', List => 1, Format => 'int32u', Count => 4 },
+    _xrct => {
+        Name => 'LayerRectangles',
+        Format => 'int32u',
+        Count => 4,
+        List => 1,
+        Notes => 'top left bottom right',
+    },
     _xnam => { Name => 'LayerNames',
         Format => 'string',
         List => 1,

@@ -32,12 +32,13 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.85';
+$VERSION = '2.86';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
 sub ProcessSonyPIC($$$);
 sub ProcessMoreInfo($$$);
+sub Process_rtmd($$$);
 sub Decipher($;$);
 sub ProcessEnciphered($$$);
 sub WriteEnciphered($$$);
@@ -468,6 +469,8 @@ my %meterInfo2b = (
     PrintConv => 'sprintf("%3d %4d %6d" . " %3d %4d %6d" x 10, split(" ",$val))',
 );
 
+my %hidUnk = ( Hidden => 1, Unknown => 1 );
+
 # Sony maker notes tags (some elements in common with %Image::ExifTool::Minolta::Main)
 %Image::ExifTool::Sony::Main = (
     WRITE_PROC => \&Image::ExifTool::Exif::WriteExif,
@@ -887,7 +890,7 @@ my %meterInfo2b = (
         # unknown offsets or values for DSC-HX60V/HX350/HX400V/QX10/QX30/QX100/RX10/RX100M2/RX100M3/WX220/WX350,
         #                               ILCA-68/77M2, ILCE-5000/5100/6000/7/7M2/7R/7S/QX1
         # unknown offsets or values for DSC-HX90V/RX0/RX1RM2/RX10M2/RX10M3/RX100M4/RX100M5/WX500, ILCE-6300/6500/7RM2/7SM2, ILCA-99M2
-        # unknown offsets or values for ILCE-7M3/7RM3/9, DSC-RX10M4
+        # unknown offsets or values for ILCE-7M3/7RM3/9, DSC-RX10M4/RX100M6
     {
         Name => 'Tag2010a', # ad
         Condition => '$$self{Model} =~ /^NEX-5N$/',
@@ -928,7 +931,7 @@ my %meterInfo2b = (
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag2010h' },
     },{
         Name => 'Tag2010i', # ?
-        Condition => '$$self{Model} =~ /^(ILCE-(7M3|7RM3|9)|DSC-RX10M4)\b/',
+        Condition => '$$self{Model} =~ /^(ILCE-(7M3|7RM3|9)|DSC-(RX10M4|RX100M6))\b/',
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag2010i' },
     },{
         Name => 'Tag_0x2010',
@@ -1356,7 +1359,7 @@ my %meterInfo2b = (
         PrintConv => '$val ? sprintf("%+.1f",$val) : 0',
         PrintConvInv => '$val',
     },
-    0x202e => { #JR (7RM3)
+    0x202e => { #JR (ILCE-7M3/7RM3 and newer)
         Name => 'Quality',
         Writable => 'int16u',
         Count => 2,
@@ -1371,7 +1374,7 @@ my %meterInfo2b = (
             '1 3' => 'RAW + Extra Fine JPEG',
         },
     },
-    0x202f => { #JR (7RM3)
+    0x202f => { #JR (ILCE-7RM3)
         Name => 'PixelShiftInfo',
         Writable => 'undef',
         # 6 bytes, all 0 for non-PixelShift images
@@ -1464,7 +1467,7 @@ my %meterInfo2b = (
     # 0xd0 (e) H90, W650, W690: tag9400 decoding appears not valid/different
     # 0x23 (e) for DSC-RX10/HX60V/HX350/HX400V/WX220/WX350, ILCE-7/7R/5000/6000, ILCA-68/77M2
     # 0x24 (e) for ILCA-99M2,ILCE-5100/6300/6500/7M2/7RM2/7S/7SM2/QX1, DSC-HX90V/QX30/RX0/RX100M3/RX100M4/RX100M5/RX10M2/RX10M3/RX1RM2/WX500
-    # 0x26 (e) for ILCE-7M3/7RM3/9, DSC-RX10M4
+    # 0x26 (e) for ILCE-7M3/7RM3/9, DSC-RX10M4/RX100M6
     # first byte decoded: 40, 204, 202, 27, 58, 62, 48, 215 respectively
     {
         Name => 'Tag9400a',
@@ -1570,7 +1573,7 @@ my %meterInfo2b = (
         #   0x1a      0x01     DSC-RX0/RX10M3/RX100M5, ILCE-6500
         #   0x1c      0x01     ILCE-9
         #   0x1d      0x01     DSC-RX10M4
-        #   0x1e      0x01     ILCE-7M3/7RM3
+        #   0x1e      0x01     ILCE-7M3/7RM3, DSC-RX100M6
         #   var       var      SLT-A58/A99V, HV, ILCA-68/77M2/99M2
         # only valid when first byte 0x0f, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x17, 0x19, 0x1a, 0x1c (enciphered 0x8a, 0x70, 0xb6, 0x69, 0x88, 0x20, 0x30, 0xd7, 0xbb, 0x92, 0x28)
 #        Condition => '$$self{DoubleCipher} ? $$valPt =~ /^[\x7e\x46\x1d\x18\x3a\x95\x24\x26\xd6]\x01/ : $$valPt =~ /^[\x8a\x70\xb6\x69\x88\x20\x30\xd7\xbb\x92\x28]\x01/',
@@ -1594,7 +1597,7 @@ my %meterInfo2b = (
     # 13  0    9  2  2     DSC-QX10/QX100/RX100M2
     # 15  0   35  2  2     ILCA-68/77M2, ILCE-5000/5100/6000/7/7R/7S/7M2/QX1, DSC-HX60V/HX350/HX400V/QX30/RX10/RX100M3/WX220/WX350
     # 16  0   85  2  2     DSC-HX90V/WX500
-    # 17  0  232  1  2     DSC-RX0/RX1RM2/RX10M2/RX10M3/RX10M4/RX100M4/RX100M5, ILCE-6300/6500/7M3/7RM2/7RM3/7SM2/9, ILCA-99M2
+    # 17  0  232  1  2     DSC-RX0/RX1RM2/RX10M2/RX10M3/RX10M4/RX100M4/RX100M5/RX100M6, ILCE-6300/6500/7M3/7RM2/7RM3/7SM2/9, ILCA-99M2
     # other values for Panorama images and several other models
     0x9404 => [{
         Name => 'Tag9404a',
@@ -1628,7 +1631,7 @@ my %meterInfo2b = (
     # 142 var  (0x25 =  37 var enc.) DSC-HX90V/RX1RM2/RX10M2/RX10M3/RX100M4/WX500, ILCE-6300/7RM2/7SM2
     # 144 var  (0xe1 = 225 var enc.) DSC-RX100M5
     # 145 var  (0x76 = 118 var enc.) ILCA-99M2, ILCE-6500, DSC-RX0
-    # 163 var  (0x8b = 139 var enc.) ILCE-7M3/7RM3/9, DSC-RX10M4
+    # 163 var  (0x8b = 139 var enc.) ILCE-7M3/7RM3/9, DSC-RX10M4/RX100M6
     0x9405 => [{
         Name => 'Tag9405a',
         # first byte must be 0x1b or 0x40 or 0x7d
@@ -1817,6 +1820,7 @@ my %meterInfo2b = (
             363 => 'ILCE-7M3', #JR/IB
             364 => 'DSC-RX0', #PH
             365 => 'DSC-RX10M4', #JR
+            366 => 'DSC-RX100M6', #IB
         },
     },
     0xb020 => { #2
@@ -6006,7 +6010,7 @@ my %pictureProfile2010 = (
     0x1163 => { %pictureProfile2010 },
     0x1167 => { %pictureEffect2010 },
     0x1174 => { %quality2010 },
-    0x1178 => { %meteringMode2010 },     #1154
+    0x1178 => { %meteringMode2010 },
     0x1179 => { %exposureProgram2010 },
     0x1180 => { Name => 'WB_RGBLevels', Format => 'int16u[3]' },
     0x1218 => {
@@ -6663,7 +6667,7 @@ my %pictureProfile2010 = (
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     FORMAT => 'int8u',
     NOTES => q{
-        Valid for ILCE-7M3/7RM3/9, DSC-RX10M4.
+        Valid for ILCE-7M3/7RM3/9, DSC-RX10M4/RX100M6.
     },
     WRITABLE => 1,
     FIRST_ENTRY => 0,
@@ -7618,14 +7622,14 @@ my %pictureProfile2010 = (
     WRITABLE => 1,
     NOTES => q{
         Valid for DSC-HX60V/HX90V/HX350/HX400V/QX30/RX0/RX1RM2/RX10/RX10M2/RX10M3/
-        RX10M4/RX100M3/RX100M4/RX100M5/WX220/WX350/WX500, ILCE-7/7R/7S/7M2/7M3/
-        7RM2/7RM3/7SM2/9/5000/5100/6000/6300/6500/QX1, ILCA-68/77M2/99M2.
+        RX10M4/RX100M3/RX100M4/RX100M5/RX100M6/WX220/WX350/WX500, ILCE-7/7R/7S/
+        7M2/7M3/7RM2/7RM3/7SM2/9/5000/5100/6000/6300/6500/QX1, ILCA-68/77M2/99M2.
     },
     FIRST_ENTRY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
     0x0009 => { %releaseMode2 },
     0x000a => [{
-        Condition => '$$self{Model} =~ /^(ILCE-(7M3|7RM3|9)|DSC-RX10M4)\b/',
+        Condition => '$$self{Model} =~ /^(ILCE-(7M3|7RM3|9)|DSC-(RX10M4|RX100M6))\b/',
         Name => 'ShotNumberSincePowerUp',
         Format => 'int8u',
     },{
@@ -7974,8 +7978,8 @@ my %pictureProfile2010 = (
     GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
     NOTES => q{
         Valid for DSC-HX60V/HX350/HX400V/QX30/RX0/RX10/RX10M2/RX10M3/RX10M4/
-        RX100M3/RX100M4/RX100M5/WX220/WX350, ILCE-7/7M2/7M3/7R/7RM2/7S/7SM2/9/
-        5000/5100/6000/6300/6500/QX1, ILCA-68/77M2/99M2.
+        RX100M3/RX100M4/RX100M5/RX100M6/WX220/WX350, ILCE-7/7M2/7M3/7R/7RM2/
+        7S/7SM2/9/5000/5100/6000/6300/6500/QX1, ILCA-68/77M2/99M2.
     },
     0x0004 => {
         Name => 'SonyISO',
@@ -8128,7 +8132,7 @@ my %pictureProfile2010 = (
     },
     0x0342 => {
         Name => 'LensZoomPosition',
-        Condition => '$$self{Model} !~ /^(ILCA-|ILCE-(7RM2|7M3|7RM3|7SM2|6500|9)|DSC-(HX90V|RX0|RX10M2|RX10M3|RX10M4|RX100M4|RX100M5|WX500))/',
+        Condition => '$$self{Model} !~ /^(ILCA-|ILCE-(7RM2|7M3|7RM3|7SM2|6500|9)|DSC-(HX90V|RX0|RX10M2|RX10M3|RX10M4|RX100M4|RX100M5|RX100M6|WX500))/',
         Format => 'int16u',
         PrintConv => 'sprintf("%.0f%%",$val/10.24)',
         PrintConvInv => '$val=~s/ ?%$//; $val * 10.24',
@@ -8309,7 +8313,7 @@ my %pictureProfile2010 = (
         Name => 'LensMount2', # ? maybe some other meaning ? (A-mount adapter-only images give 0)
         RawConv => '$$self{LensMount} = $val',
         PrintConv => {
-            0 => 'Unknown',
+            0 => 'Unknown',     # LA-EA3 with non-SSM/SAM lens will often give this, not 1 or 5
             1 => 'A-mount (1)',
             4 => 'E-mount',
             5 => 'A-mount (5)',
@@ -8342,7 +8346,7 @@ my %pictureProfile2010 = (
         # 1.40: ILCE-7/7R v1.02/v1.10, ILCE-7S v1.00, ILCE-6000 v1.00/v1.10, ILCE-5100/QX1
         # 1.50: ILCE-7/7R/7S v1.20-v3.20, ILCE-7M2 v1.00-v4.00, ILCE-7RM2 v1.00-v3.00, ILCE-7SM2 v1.00-v2.10,
         #       ILCE-6000 v1.20-v3.20
-        # 1.60: ILCE-6300 v1.00-v1.10, ILCE-6500 v1.00, ILCE-7RM2 v3.05-v4.00
+        # 1.60: ILCE-6300/6500, ILCE-7RM2 v3.05-v4.00
         # 1.70: ILCE-7M3/7RM3/9
     },
     0x000d => {
@@ -8369,7 +8373,7 @@ my %pictureProfile2010 = (
         # 1.60: SEL1224G, SEL1635GM, SELP18110G, SEL18135, SEL2470GM, SEL24105G, SEL50F14Z, SEL50F18F, SEL50M28, SEL70200GM,
         #       SEL70300G, SEL85F14GM, SEL85F18, SEL100F28GM, SEL100400GM, Sigma 30mm F1.4 DC DN, Sigma MC-11,
         #       Samyang AF 14mm/50mm, Voigtlander 15mm, Sigma 16mm F1.4 DC DN
-        # 1.70: LA-EA3 Ver.02, Samyang AF 35mm, Voigtlander 10mm/12mm/40mm/65mm, Zeiss Loxia 25mm/85mm
+        # 1.70: LA-EA3 Ver.02, Samyang AF 35mm, Tamron 28-75mm, Voigtlander 10mm/12mm/40mm/65mm, Zeiss Loxia 25mm/85mm
     },
     # 0x0014 and 0x0015: change together: LensFirmwareVersion
     #    0x0015 as 2-digit hex matches known firmware versions of Sony lenses and Metabones adapters,
@@ -9389,23 +9393,41 @@ my %pictureProfile2010 = (
     },
 );
 
-# tags found in 'rtmd' timed metadata (ref PH, ILCE-7S MP4)
+# tags found in 'rtmd' timed metadata in ILCE-7S/DSC-RX100M6 MP4 videos (ref PH)
 %Image::ExifTool::Sony::rtmd = (
-    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
-    GROUPS => { 2 => 'Camera' },
-    FIRST_ENTRY => 0,
+    PROCESS_PROC => \&Process_rtmd,
+    GROUPS => { 2 => 'Video' },
     NOTES => q{
         These tags are extracted from the 'rtmd' timed metadata of MP4 videos from
         some models when the ExtractEmbedded option is used.
     },
-    # 0x0e = int8u some minutes
-    # 0x0f = int8u some seconds
-    # 0x11 = int8u frame number? (0-25)
-    0xe4 => {
+  # 0x060e - 16 bytes starting with 0x060e2b340253 (fake tag ID - comes before 0x8300 container)
+    0x060e => { Name => 'Sony_rtmd_0x060e', Format => 'int8u',  %hidUnk },
+  # 0x32xx - 16 bytes starting with 0x060e2b340401
+    0x3210 => { Name => 'Sony_rtmd_0x3210', Format => 'int8u',  %hidUnk },
+    0x3219 => { Name => 'Sony_rtmd_0x3219', Format => 'int8u',  %hidUnk },
+    0x321a => { Name => 'Sony_rtmd_0x321a', Format => 'int8u',  %hidUnk },
+    0x8000 => { Name => 'Sony_rtmd_0x8000', Format => 'int16u', %hidUnk },
+    0x8001 => { Name => 'Sony_rtmd_0x8001', Format => 'int16u', %hidUnk },
+  # 0x8100 - 16 bytes starting with 0x060e2b340401
+    0x8100 => { Name => 'Sony_rtmd_0x8100', Format => 'int8u',  %hidUnk },
+    0x8101 => { Name => 'Sony_rtmd_0x8101', Format => 'int8u',  %hidUnk }, # seen: 0,1
+    0x8109 => { Name => 'Sony_rtmd_0x8109', Format => 'int32u', %hidUnk }, # seen: "1 50"
+    0x810a => { Name => 'Sony_rtmd_0x810a', Format => 'int16u', %hidUnk }, # seen: 0
+    0x810b => { Name => 'Sony_rtmd_0x810b', Format => 'int16u', %hidUnk }, # seen: 100
+    0x810c => { Name => 'Sony_rtmd_0x810c', Format => 'int16u', %hidUnk }, # seen: 100
+    0x810d => { Name => 'Sony_rtmd_0x810d', Format => 'int8u',  %hidUnk }, # seen: 1
+  # 0x8300 - container for other tags in this format
+    0xe000 => { Name => 'Sony_rtmd_0xe000', Format => 'int8u',  %hidUnk }, # (16 bytes)
+    0xe300 => { Name => 'Sony_rtmd_0xe300', Format => 'int8u',  %hidUnk }, # seen: 0,1
+    0xe301 => { Name => 'Sony_rtmd_0xe301', Format => 'int32u', %hidUnk }, # seen: 100
+    0xe302 => { Name => 'Sony_rtmd_0xe302', Format => 'int8u',  %hidUnk }, # seen: 1
+    0xe303 => { Name => 'Sony_rtmd_0xe303', Format => 'int8u',  %hidUnk }, # seen: 255
+    0xe304 => {
         Name => 'DateTime',
         Groups => { 2 => 'Time' },
-        Format => 'undef[7]',
-        ValueConv => 'my @a=unpack("H4H2H2H2H2H2",$val); "$a[0]:$a[1]:$a[2] $a[3]:$a[4]:$a[5]"',
+        Format => 'undef',
+        ValueConv => 'my @a=unpack("x1H4H2H2H2H2H2",$val); "$a[0]:$a[1]:$a[2] $a[3]:$a[4]:$a[5]"',
         PrintConv => '$self->ConvertDateTime($val)',
     },
 );
@@ -10029,6 +10051,45 @@ sub WriteEnciphered($$$)
     }
     return $data;
 }
+
+#------------------------------------------------------------------------------
+# Process "rtmd" timed metadata embedded in Sony MP4 videos (ref PH)
+# Inputs: 0) ExifTool object ref, 1) dirInfo ref, 2) tag table ref
+# Returns: 1 on success
+sub Process_rtmd($$$)
+{
+    my ($et, $dirInfo, $tagTablePtr) = @_;
+    my $dataPt = $$dirInfo{DataPt};
+    my $dataPos = ($$dirInfo{DataPos} || 0) + ($$dirInfo{Base} || 0);
+    my $end = length $$dataPt;
+    return 0 if $end < 2;
+    $et->VerboseDir('Sony rtmd', undef, $end);
+    # Note:  The 0x1c-byte header contains some as-yet unextracted information:
+    #  offset 0x0e: int8u some minutes
+    #         0x0f: int8u some seconds
+    #         0x11: int8u frame number? (0-24 or 0-25)
+    my $pos = Get16u($dataPt, 0);   # get header length (= 0x1c)
+    while ($pos + 4 < $end) {
+        my $tag = Get16u($dataPt, $pos);
+        last if $tag == 0;
+        my $len = Get16u($dataPt, $pos+2);
+        if ($tag == 0x060e) {
+            $len = 0x10;    # (unknown 16 bytes starting with 0x060e2b340253)
+        } else {
+            $pos += 4;      # skip tag id/size
+            next if $tag == 0x8300; # descend into contents of 0x8300 (container)
+        }
+        last if $pos + $len > $end;
+        $et->HandleTag($tagTablePtr, $tag, undef,
+            DataPt  => $dataPt,
+            DataPos => $dataPos,
+            Start   => $pos,
+            Size    => $len,
+        );
+        $pos += $len;       # step to next tag
+    }
+    return 1;
+};
 
 #------------------------------------------------------------------------------
 # Process SRF maker notes

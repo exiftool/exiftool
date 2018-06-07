@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.80
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.00
 [File, System, Image] FileName - File Name: Panasonic_5_failed.rw2
 [File, System, Image] Directory - Directory: t
 [File, System, Image] FileSize - File Size: 14 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2018:02:20 07:42:18-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2018:02:20 07:42:18-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2018:02:20 07:42:18-05:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2018:06:05 12:17:41-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2018:06:05 12:17:41-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2018:06:05 12:17:41-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: RW2
 [File, File, Image] FileTypeExtension - File Type Extension: rw2
@@ -37,7 +37,7 @@
 [EXIF, IFD0, Image] 24 - High ISO Multiplier Red: 0
 [EXIF, IFD0, Image] 25 - High ISO Multiplier Green: 0
 [EXIF, IFD0, Image] 26 - High ISO Multiplier Blue: 0
-[EXIF, IFD0, Image] 27 - Panasonic Raw 0x001b: .d...»...ê....
+[EXIF, IFD0, Image] 27 - Noise Reduction Params: 3 100 1 1 1 200 2 2 2 400 4 4 4
 [EXIF, IFD0, Image] 28 - Black Level Red: 0
 [EXIF, IFD0, Image] 29 - Black Level Green: 0
 [EXIF, IFD0, Image] 30 - Black Level Blue: 0
@@ -223,7 +223,7 @@
 [PrintIM, PrintIM, Printing] 256 - Print IM 0x0100: 0x00000005
 [PrintIM, PrintIM, Printing] 257 - Print IM 0x0101: 0x00000001
 [PrintIM, PrintIM, Printing] 272 - Print IM 0x0110: 0x00000080
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 10.80
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.00
 [XMP, XMP-dc, Image] title - Title: new title
 [IPTC, IPTC, Other] 25 - Keywords: a keyword
 [IPTC, IPTC, Other] 0 - Application Record Version: 4

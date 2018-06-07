@@ -156,6 +156,7 @@ html/TagNames/Torrent.html
 html/TagNames/Unknown.html
 html/TagNames/VCard.html
 html/TagNames/Vorbis.html
+html/TagNames/WTV.html
 html/TagNames/XMP.html
 html/TagNames/ZIP.html
 html/TagNames/iWork.html
@@ -379,6 +380,7 @@ lib/Image/ExifTool/Unknown.pm
 lib/Image/ExifTool/VCard.pm
 lib/Image/ExifTool/Validate.pm
 lib/Image/ExifTool/Vorbis.pm
+lib/Image/ExifTool/WTV.pm
 lib/Image/ExifTool/WriteCanonRaw.pl
 lib/Image/ExifTool/WriteExif.pl
 lib/Image/ExifTool/WriteIPTC.pl
@@ -766,6 +768,8 @@ t/VCard_2.out
 t/VCard_3.out
 t/Vorbis.t
 t/Vorbis_2.out
+t/WTV.t
+t/WTV_2.out
 t/Writer.t
 t/Writer_10.out
 t/Writer_11.out
@@ -1011,6 +1015,7 @@ t/images/Unknown.jpg
 t/images/VCard.ics
 t/images/VCard.vcf
 t/images/Vorbis.ogg
+t/images/WTV.wtv
 t/images/Writer.jpg
 t/images/XMP.inx
 t/images/XMP.jpg

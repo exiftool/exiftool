@@ -95,7 +95,7 @@ with tag keys.  Below is an explanation of the meaning of each special key:
     extended    - 80-bit extended floating float
     ifd         - Unsigned 32-bit integer sub-IFD pointer (EXIF 'IFD')
     ifd64       - Unsigned 64-bit integer sub-IFD pointer (BigTIFF 'IFD8')
-    string      - Series of 8-bit ASCII characters        (EXIF 'ASCII')
+    string      - Series of 8-bit characters              (EXIF 'ASCII')
     undef       - Undefined-format binary data            (EXIF 'UNDEFINED')
     binary      - Binary data (same as 'undef')
 

@@ -54,7 +54,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.01';
+$VERSION = '4.02';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -3793,6 +3793,7 @@ my %sampleFormat = (
     0xea1c => { #13
         Name => 'Padding',
         Binary => 1,
+        Protected => 1,
         Writable => 'undef',
         # must start with 0x1c 0xea by the WM Photo specification
         # (not sure what should happen if padding is only 1 byte)
@@ -3802,6 +3803,7 @@ my %sampleFormat = (
     0xea1d => {
         Name => 'OffsetSchema',
         Notes => "Microsoft's ill-conceived maker note offset difference",
+        Protected => 1,
         Writable => 'int32s',
         # From the Microsoft documentation:
         #

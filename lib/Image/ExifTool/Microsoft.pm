@@ -192,7 +192,8 @@ my %sRegions = (
 
 # Xtra tags written in MP4 files written by Microsoft Windows Media Player
 # (ref http://msdn.microsoft.com/en-us/library/windows/desktop/dd562330(v=VS.85).aspx)
-# Note: These tags are closely related to Image::ExifTool::ASF::ExtendedDescr
+# Note: These tags are closely related to tags in Image::ExifTool::ASF::ExtendedDescr
+#       and Image::ExifTool::WTV::Metadata
 %Image::ExifTool::Microsoft::Xtra = (
     PROCESS_PROC => \&ProcessXtra,
     GROUPS => { 0 => 'QuickTime', 2 => 'Video' },

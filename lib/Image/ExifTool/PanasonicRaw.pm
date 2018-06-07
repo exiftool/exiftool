@@ -6,7 +6,7 @@
 # Revisions:    2009/03/24 - P. Harvey Created
 #               2009/05/12 - PH Added RWL file type (same format as RW2)
 #
-# References:   1) CPAN forum post by 'hardloaf' (http://www.cpanforum.com/threads/2183)
+# References:   1) http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,1542.0.html
 #               2) http://www.cybercom.net/~dcoffin/dcraw/
 #               3) http://syscall.eu/#pana
 #               4) Klaus Homeister private communication
@@ -21,7 +21,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.16';
+$VERSION = '1.17';
 
 sub ProcessJpgFromRaw($$$);
 sub WriteJpgFromRaw($$$);
@@ -266,6 +266,18 @@ my %wbTypeInfo = (
         SubDirectory => {
             DirName => 'XMP',
             TagTable => 'Image::ExifTool::XMP::Main',
+        },
+    },
+    0x001b => { #forum9250
+        Name => 'NoiseReductionParams',
+        Writable => 'undef',
+        Format => 'int16u',
+        Count => -1,
+        Flags => 'Protected',
+        Notes => q{
+            the camera's default noise reduction setup.  The first number is the number
+            of entries, then for each entry there are 4 numbers: an ISO speed, and
+            noise-reduction strengths the R, G and B channels
         },
     },
     0x83bb => { # PH Extension!!

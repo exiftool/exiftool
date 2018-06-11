@@ -13,6 +13,119 @@
 <p><b>Note:</b> This page gives the history of older exiftool versions.  See
 <a href="history.html">history.html</a> for the recent history.</p>
 
+<a name='v10.79'><b>Feb. 11, 2018 - Version 10.79</b></a>
+<ul>
+<li>Added a new Olympus CameraType (thanks LibRaw)
+<li>Added a new XMP-microsoft tag (thanks Jos&eacute; Oliver-Didier)
+<li>Decode a new GoPro QuickTime tag
+<li>Convert nulls IPTC:DocumentHistory to newlines
+<li>Removed all null terminators from JSON and PHP output
+<li>Fixed writing of GPSDateStamp and GPSTimeStamp to be able to set to "now"
+<li>Internal changes:
+    <ul>
+    <li>Changed TimeNow() to require ExifTool object as first argument
+    </ul>
+</ul>
+
+<a name='v10.78'><b>Jan. 31, 2018 - Version 10.78</b></a>
+<ul>
+<li>Added a few new values for some Olympus tags (thanks John)
+<li>Decode <a href="TagNames/GoPro.html">GoPro APP6 metadata</a> in JPEG images and more GoPro MP4 tags
+<li>Decode more <a href="TagNames/Red.html">Red tags</a>, and improved decoding of others
+<li>Decode face detection information from timed metadata with the -ee option
+<li>Fixed problem writing shorthand XMP containing CDATA sections
+<li>Fixed problem copying XMP-acdsee:Snapshots
+<li>Fixed decoding of a few <a href="TagNames/PanasonicRaw.html">Panasonic RAW tags</a> (thanks Klaus Homeister)
+</ul>
+
+<a name='v10.77'><b>Jan. 26, 2018 - Version 10.77</b></a>
+<ul>
+<li>Added read support for Redcode R3D RAW videos
+<li>Enhanced -sep option to specify separator and terminator for binary output
+<li>Removed null terminator from JSON output of ICC_Profile:CharTarget
+<li>Improved error messages to help diagnosing some types of corrupted files
+<li>Return an exit status of 2 instead of 1 if all files fail the -if condition
+<li>Fixed decoding of QuickTime chapter names
+<li>Fixed incorrect MimeType for RMD files
+<li>Fixed problem where exit status of 1 was returned when writing with a -if
+    condition if any of the files failed the condition
+</ul>
+
+<a name='v10.76'><b>Jan. 22, 2018 - Version 10.76</b></a>
+<ul>
+<li>Added ability to write shorthand XMP with the -z option
+<li>Added write support for <a href="TagNames/XMP.html#GFocus">Google XMP GFocus tags</a>
+<li>Improved decoding of GoPro timed metadata
+<li>Renamed ASF PlayDuration to Duration
+<li>Fixed problem where fractional seconds were ignored when geotagging from an
+    NMEA track log with no date stamps
+<li>Fixed runtime warning when reading XMP with an empty structure in a list
+<li>API Changes:
+    <ul>
+    <li>Added XMPShorthand option
+    <li>Enhanced Compact option so a setting of 2 avoids XMP indentation
+    </ul>
+</ul>
+
+<a name='v10.75'><b>Jan. 12, 2018 - Version 10.75</b></a>
+<ul>
+<li>Added another Sony/Minolta lens (thanks Jos Roost)
+<li>Decode more <a href="TagNames/QuickTime.html">QuickTime tags</a>
+<li>Decode a number of new tags from GoPro Hero6 MP4 videos
+<li>Enhanded "Unknown file type" error to indicate if "File is empty" or "File
+    header is all binary zeros"
+<li>Improved decoding of some Sony tags (thanks Jos Roost)
+<li>Improved decoding of <a href="TagNames/QuickTime.html#Stream">QuickTime timed metadata</a>
+<li>Marked ArtworkCircaDateCreated as "unsafe" for writing to avoid it being
+    added when attempting to shift all date/time tags
+<li>Fixed bug which could cause runtime error when reading some old Sony maker
+    notes (thanks Tamas Lovag)
+</ul>
+
+<a name='v10.74'><b>Jan. 8, 2018 - Version 10.74</b></a>
+<ul>
+<li>Added a new Sony/Minolta lens (thanks Jos Roost)
+<li>Added print conversion for ICC_Profile DeviceManufacturer and ProfileCreator
+<li>Added informational warning when the ExtractEmbedded option may be useful
+<li>Improved experimental validate feature for RAW files
+<li>Fixed bug in experimental Validate feature that could cause out-of-memory
+    error when combined with "-use mwg"
+</ul>
+
+<a name='v10.73'><b>Jan. 5, 2018 - Version 10.73</b></a>
+<ul>
+<li>Added read/write support for GoPro RAW (GPR) files
+<li>Added a new Sony/Minolta lens (thanks Sylvain)
+<li>Improved conversions for GPS tags extracted from video streams
+</ul>
+
+<a name='v10.72'><b>Jan. 4, 2018 - Version 10.72</b></a>
+<ul>
+<li>Added IF feature to -p option
+<li>Decode streamed GPS position and other <a href="TagNames/QuickTime.html#Stream">streamed metadata</a> from MP4 videos
+    when the -ee option is used
+<li>Fixed problem geotagging GPSAltitude from some GPX files
+</ul>
+
+<a name='v10.71'><b>Jan. 2, 2018 - Version 10.71</b></a>
+<ul>
+<li>Decode some more ICC_Profile tags (thanks Eef Vreeland)
+<li>Decode MechanicalShutterCount for Nikon D850 (thanks Xavier Jubier)
+<li>Convert PNG:CreationTime values to/from standard date format
+<li>Fixed problem loading default config file from application directory
+<li>Fixed problem reading XMP where a namespace is defined after an attribute
+    which uses the namespace
+</ul>
+
+<a name='v10.70'><b>Dec. 27, 2017 - Version 10.70</b></a>
+<ul>
+<li>Search application directory for -config file
+<li>Improved robustness of JSON import
+<li>Enhancements to experimental Validate feature
+<li>Fixed bug introduced in 10.69 which could result in hang when writing
+    multi-segment JPEG metadata
+</ul>
+
 <a name='v10.69'><b>Dec. 18, 2017 - Version 10.69</b></a>
 <ul>
 <li>Added "OK" UserParam for use in -if conditions

@@ -21,7 +21,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.17';
+$VERSION = '1.18';
 
 sub ProcessJpgFromRaw($$$);
 sub WriteJpgFromRaw($$$);
@@ -438,6 +438,17 @@ my %wbTypeInfo = (
         Writable => 'int16u',
         ValueConv => '$val / 200',
         PrintConv => '$val > 65534.5/200 ? "inf" : "$val m"',
+    },
+    0x1203 => { #4
+        Name => 'FocalLengthIn35mmFormat',
+        Writable => 'int16u',
+        PrintConv => '"$val mm"',
+        PrintConvInv => '$val=~s/\s*mm$//;$val',
+    },
+    0x3501 => { #4
+        Name => 'Orientation',
+        Writable => 'int8u',
+        PrintConv => \%Image::ExifTool::Exif::orientation,
     },
 );
 

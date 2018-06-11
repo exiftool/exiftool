@@ -237,7 +237,7 @@ $Image::ExifTool::PNG::colorType = -1;
     tXMP => {
         Name => 'XMP',
         Notes => 'obsolete location specified by a September 2001 XMP draft',
-        NonStandard => 1,
+        NonStandard => 'XMP',
         SubDirectory => { TagTable => 'Image::ExifTool::XMP::Main' },
     },
     vpAg => { # private imagemagick chunk
@@ -272,6 +272,7 @@ $Image::ExifTool::PNG::colorType = -1;
     $stdCase{zxif} => {
         Name => $stdCase{zxif},
         Notes => 'a once-proposed chunk for compressed EXIF',
+        NonStandard => 'EXIF',
         SubDirectory => {
             TagTable => 'Image::ExifTool::Exif::Main',
             DirName => 'EXIF', # (to write as a block)
@@ -511,7 +512,7 @@ my %unreg = ( Notes => 'unregistered' );
             # (No condition because this is just for BuildTagLookup)
             Name => 'APP1_Profile',
             %unreg,
-            NonStandard => 1,
+            NonStandard => 'EXIF',
             SubDirectory => {
                 TagTable => 'Image::ExifTool::Exif::Main',
                 ProcessProc => \&ProcessProfile,
@@ -519,7 +520,7 @@ my %unreg = ( Notes => 'unregistered' );
         },
         {
             Name => 'APP1_Profile',
-            NonStandard => 1,
+            NonStandard => 'XMP',
             SubDirectory => {
                 TagTable => 'Image::ExifTool::XMP::Main',
                 ProcessProc => \&ProcessProfile,
@@ -529,7 +530,7 @@ my %unreg = ( Notes => 'unregistered' );
    'Raw profile type exif' => {
         Name => 'EXIF_Profile',
         %unreg,
-        NonStandard => 1,
+        NonStandard => 'EXIF',
         SubDirectory => {
             TagTable => 'Image::ExifTool::Exif::Main',
             ProcessProc => \&ProcessProfile,
@@ -565,7 +566,7 @@ my %unreg = ( Notes => 'unregistered' );
    'Raw profile type xmp' => {
         Name => 'XMP_Profile',
         %unreg,
-        NonStandard => 1,
+        NonStandard => 'XMP',
         SubDirectory => {
             TagTable => 'Image::ExifTool::XMP::Main',
             ProcessProc => \&ProcessProfile,
@@ -721,7 +722,7 @@ sub FoundPNG($$$$;$$$$)
     my ($et, $tagTablePtr, $tag, $val, $compressed, $outBuff, $enc, $lang) = @_;
     return 0 unless defined $val;
     my $verbose = $et->Options('Verbose');
-    my $id = $tag;  # generate tag ID which include language code
+    my $id = $tag;  # generate tag ID which includes language code
     if ($lang) {
         # case of language code must be normalized since they are case insensitive
         $lang = StandardLangCase($lang);
@@ -782,6 +783,9 @@ sub FoundPNG($$$$;$$$$)
         my $tagName = $$tagInfo{Name};
         my $processed;
         if ($$tagInfo{SubDirectory}) {
+            if ($$et{OPTIONS}{Validate} and $$tagInfo{NonStandard}) {
+                $et->Warn("Non-standard $$tagInfo{NonStandard} in PNG $tag chunk", 1);
+            }
             my $subdir = $$tagInfo{SubDirectory};
             my $dirName = $$subdir{DirName} || $tagName;
             if (not $compressed) {

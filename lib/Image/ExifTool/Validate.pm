@@ -17,7 +17,7 @@ package Image::ExifTool::Validate;
 use strict;
 use vars qw($VERSION %exifSpec);
 
-$VERSION = '1.09';
+$VERSION = '1.10';
 
 use Image::ExifTool qw(:Utils);
 use Image::ExifTool::Exif;
@@ -255,7 +255,8 @@ my %validateInfo = (
         generated only if specifically requested.  Requesting this tag automatically
         enables the L<API Validate option|../ExifTool.html#Validate>, imposing
         additional validation checks when extracting metadata.  Returns the number
-        of errors, warnings and minor warnings encountered
+        of errors, warnings and minor warnings encountered.  Note that the Validate
+        feature focuses mainly on validation of TIFF/EXIF metadata and files
     },
     PrintConv => {
         '0 0 0' => 'OK',

@@ -87,7 +87,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '3.93';
+$VERSION = '3.94';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -438,6 +438,7 @@ $VERSION = '3.93';
     491.3 => 'Tamron 100-400mm f/4.5-6.3 Di VC USD (A035)', #IB
     491.4 => 'Tamron 70-210mm F/4 Di VC USD (A034)', #IB
     491.5 => 'Tamron 70-210mm F/4 Di VC USD (A034) + 1.4x', #IB
+    491.6 => 'Tamron SP 24-70mm F/2.8 Di VC USD G2 (A032)',
     492 => 'Canon EF 400mm f/2.8L IS II USM', #PH
     493 => 'Canon EF 500mm f/4L IS II USM or EF 24-105mm f4L IS USM', #PH
     493.1 => 'Canon EF 24-105mm f/4L IS USM', #PH (should recheck this)

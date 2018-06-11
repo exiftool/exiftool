@@ -47,7 +47,7 @@ sub IsCurPath($$)
 sub WriteQuickTime($$$)
 {
     my ($et, $dirInfo, $tagTablePtr) = @_;
-    my ($foundMDAT, @hold, $track);
+    my ($foundMDAT, $lengthChanged, @hold, $track);
     my $outfile = $$dirInfo{OutFile} or return 0;
     my $raf = $$dirInfo{RAF};
     my $dataPt = $$dirInfo{DataPt};
@@ -114,7 +114,10 @@ sub WriteQuickTime($$$)
         }
 
         # set flag if we have passed the 'mdat' atom
-        $foundMDAT = 1 if $tag eq 'mdat';
+        if ($tag eq 'mdat') {
+            $et->Error("Can't add tags. Multiple 'mdat' blocks!") if $foundMDAT and $lengthChanged;
+            $foundMDAT = 1;
+        }
 
         # rewrite this atom
         my $tagInfo = $et->GetTagInfo($tagTablePtr, $tag);
@@ -207,9 +210,12 @@ sub WriteQuickTime($$$)
                 my $len = length $newData;
                 $len > 0x7ffffff7 and $et->Error("$tag to large to write"), last;
                 if ($len == $size or $dataPt or $foundMDAT) {
-                    # write the updated directory now (unless length is zero)
-                    Write($outfile, Set32u($len+8), $tag, $newData) or $rtnVal = 0, last if $len;
-                    next;
+                    # write the updated directory now (unless length is zero, or it is needed as padding)
+                    if ($len or not $foundMDAT) {
+                        Write($outfile, Set32u($len+8), $tag, $newData) or $rtnVal = 0, last;
+                        $lengthChanged = 1 if $len != $size;
+                        next;
+                    }
                 } else {
                     # bad things happen if 'mdat' atom is moved (eg. Adobe Bridge crashes --
                     # there must be some absolute offsets somewhere that point into mdat),
@@ -270,6 +276,7 @@ sub WriteQuickTime($$$)
                 }
                 my $newHdr = Set32u(8+length($newData)+length($uuid)) . $tag . $uuid;
                 Write($outfile, $newHdr, $newData) or $rtnVal = 0;
+                $lengthChanged = 1;
             }
             delete $$addDirs{$subName}; # add only once (must delete _after_ call to WriteDirectory())
         }

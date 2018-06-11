@@ -17009,6 +17009,8 @@ Lens distortion correction information.
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
   0x1101   FocusDistance                        no
+  0x1203   FocalLengthIn35mmFormat              int16u
+  0x3501   Orientation                          int8u
 
 =head2 SigmaRaw Tags
 

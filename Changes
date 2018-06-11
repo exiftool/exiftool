@@ -4,8 +4,17 @@ ExifTool Version History
 
 RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 
-Note: The most recent production release is Version 11.00. (Other versions are
+Note: The most recent production release is Version 11.01. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
+
+June 11, 2018 - Version 11.01 (production release)
+
+  - Added a new ProfileCMMType (thanks Neal Krawetz)
+  - Added a Validate warning about non-standard EXIF or XMP in PNG images
+  - Added a new Canon LensType
+  - Decode a couple more PanasonicRaw tags (thanks Klaus Homeister)
+  - Patched to avoid adding tags to QuickTime videos with multiple 'mdat' atoms
+    --> avoids potential corruption of these videos!
 
 June 7, 2018 - Version 11.00 (production release)
 

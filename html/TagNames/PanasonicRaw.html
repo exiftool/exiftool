@@ -498,13 +498,55 @@ noise-reduction strengths the R, G and B channels)</span></span></td></tr>
 <tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
-<td title='0x1101 = 4353'>0x1101</td>
-<td>FocusDistance</td>
-<td class=c>no</td>
+<td title='0x1100 = 4352'>0x1100</td>
+<td>FocusStepNear</td>
+<td class=c>int16s</td>
 <td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1101 = 4353'>0x1101</td>
+<td>FocusStepCount</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x1200 = 4608'>0x1200</td>
+<td>LensAttached</td>
+<td class=c>int32u</td>
+<td><span class=s><span class=n>(many CameraIFD tags are invalid if there is no lens attached)</span>
+  <br>0 = No
+  <br>1 = Yes</span></td></tr>
 <tr class=b>
 <td title='0x1203 = 4611'>0x1203</td>
 <td>FocalLengthIn35mmFormat</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x3200 = 12800'>0x3200</td>
+<td>WB_CFA0_LevelDaylight</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x3201 = 12801'>0x3201</td>
+<td>WB_CFA1_LevelDaylight</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x3202 = 12802'>0x3202</td>
+<td>WB_CFA2_LevelDaylight</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x3203 = 12803'>0x3203</td>
+<td>WB_CFA3_LevelDaylight</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x3420 = 13344'>0x3420</td>
+<td>WB_RedLevelAuto</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x3421 = 13345'>0x3421</td>
+<td>WB_BlueLevelAuto</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -525,7 +567,7 @@ noise-reduction strengths the R, G and B channels)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jun 11, 2018</i>
+<br><i>Last revised Jun 13, 2018</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

@@ -32,7 +32,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.86';
+$VERSION = '2.87';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -888,7 +888,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
         #   a4 c3 - NEX-3N/5R/5T, ILCE-3000/3500
         # unknown offsets or values for DSC-TX20/TX55/WX30
         # unknown offsets or values for DSC-HX60V/HX350/HX400V/QX10/QX30/QX100/RX10/RX100M2/RX100M3/WX220/WX350,
-        #                               ILCA-68/77M2, ILCE-5000/5100/6000/7/7M2/7R/7S/QX1
+        #                               ILCA-68/77M2, ILCE-5000/5100/6000/7/7M2/7R/7S/QX1, Stellar2, Lusso
         # unknown offsets or values for DSC-HX90V/RX0/RX1RM2/RX10M2/RX10M3/RX100M4/RX100M5/WX500, ILCE-6300/6500/7RM2/7SM2, ILCA-99M2
         # unknown offsets or values for ILCE-7M3/7RM3/9, DSC-RX10M4/RX100M6
     {
@@ -1513,7 +1513,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
         #   33 41 0d 0e    0x09d7    (k)  DSC-RX1, DSC-RX1R
         #   38 00 32 0e    0x09fc    (l)  SLT-A58, ILCE-3000/3500, NEX-3N, DSC-HX300/HX50V/WX200/WX300/WX60/WX80/TX30
         #   3a 10 3a 0e    0x0a01    (m)  DSC-QX10/QX100
-        #   3a 20 47 0e    0x0a01    (m)  DSC-RX100M2
+        #   3a 20 47 0e    0x0a01    (m)  DSC-RX100M2, 
         #   43 00 66 0e    0x0a1b    (n)  ILCE-7/7R v0.xx/v1.00/v1.01, ILCE-5000, DSC-RX10
         #   43 10 66 0e    0x0a1b    (n)  ILCE-7/7R v1.02/v1.10
         #   43 30 6c 0e    0x0a1b    (n)  ILCE-7/7R v1.20-v3.20
@@ -1735,7 +1735,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
             '3 1 0 0' => 'ARW 2.1',
             '3 2 0 0' => 'ARW 2.2', #PH (NEX-5)
             '3 3 0 0' => 'ARW 2.3', #PH (SLT-A65,SLT-A77)
-            '3 3 1 0' => 'ARW 2.3.1', #PH/JR (DSC-RX1R/RX100M2)
+            '3 3 1 0' => 'ARW 2.3.1', #PH/JR (DSC-RX1R/RX100M2/Stellar2)
             '3 3 2 0' => 'ARW 2.3.2', #JR (DSC-RX1RM2,ILCE-7SM2 - support for uncompressed 14-bit RAW)
             '3 3 3 0' => 'ARW 2.3.3', #JR (ILCE-9)
             # what about cRAW images?
@@ -8139,7 +8139,7 @@ my %pictureProfile2010 = (
     },
     0x034a => {
         Name => 'VignettingCorrParams',
-        Condition => '$$self{Model} =~ /^(ILCA-(68|77M2)|ILCE-(5000|5100|6000|7|7R|7S|QX1))\b/',
+        Condition => '$$self{Model} =~ /^(ILCA-(68|77M2)|ILCE-(5000|5100|6000|7|7R|7S|QX1)|Lusso)\b/',
         Format => 'int16s[16]',
     },
     0x0350 => {
@@ -8166,7 +8166,7 @@ my %pictureProfile2010 = (
     },
     0x037c => {
         Name => 'ChromaticAberrationCorrParams',
-        Condition => '$$self{Model} =~ /^(ILCA-(68|77M2)|ILCE-(5000|5100|6000|7|7R|7S|QX1))\b/',
+        Condition => '$$self{Model} =~ /^(ILCA-(68|77M2)|ILCE-(5000|5100|6000|7|7R|7S|QX1)|Lusso)\b/',
         Format => 'int16s[32]',
     },
     0x0384 => {
@@ -8230,7 +8230,7 @@ my %pictureProfile2010 = (
     #         but ILCE-7/7R with grip can have max 2, and as all ILCE-7/7R samples give >100 values, exclude...
     0x0008 => {
         Name => 'BatteryLevelGrip2',
-        Condition => '$$valPt !~ /^[\x00\xff]/ and $$self{Model} !~ /^(ILCE-(7|7R))$/', # only when not 0 or 255 and not for ILCE-7/7R
+        Condition => '$$valPt !~ /^[\x00\xff]/ and $$self{Model} !~ /^(ILCE-(7|7R)|Lusso)$/', # only when not 0 or 255 and not for ILCE-7/7R
         PrintConv => '"$val%"',
         PrintConvInv => '$val=~s/\s*\%//; $val',
     },

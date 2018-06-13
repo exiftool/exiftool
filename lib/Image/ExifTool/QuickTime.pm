@@ -42,7 +42,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.16';
+$VERSION = '2.17';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -391,7 +391,7 @@ my %eeBox = (
 # QuickTime atoms
 %Image::ExifTool::QuickTime::Main = (
     PROCESS_PROC => \&ProcessMOV,
-    WRITE_PROC => \&WriteQuickTime,
+    WRITE_PROC => \&WriteQuickTime, # (only needs to be defined for directories to process when writing)
     GROUPS => { 2 => 'Video' },
     NOTES => q{
         The QuickTime format is used for many different types of audio, video and
@@ -474,6 +474,12 @@ my %eeBox = (
         Name => 'Movie',
         SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::Movie' },
     },
+    moof => {
+        Name => 'MovieFragment',
+        SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::MovieFragment' },
+    },
+    # mfra - movie fragment random access: contains tfra (track fragment random access), and
+    #           mfro (movie fragment random access offset) (ref 5)
     mdat => { Name => 'MovieData', Unknown => 1, Binary => 1 },
     'mdat-size' => {
         Name => 'MovieDataSize',
@@ -968,6 +974,37 @@ my %eeBox = (
     # ICAT - 4 bytes: "6350" (Nikon CoolPix S6900), "6500" (Panasonic FT7)
 );
 
+# (ref CFFMediaFormat-2_1.pdf)
+%Image::ExifTool::QuickTime::MovieFragment = (
+    PROCESS_PROC => \&ProcessMOV,
+    WRITE_PROC => \&WriteQuickTime,
+    GROUPS => { 2 => 'Video' },
+    # mfhd - movie fragment header
+    traf => {
+        Name => 'TrackFragment',
+        SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::TrackFragment' },
+    },
+);
+
+# (ref CFFMediaFormat-2_1.pdf)
+%Image::ExifTool::QuickTime::TrackFragment = (
+    PROCESS_PROC => \&ProcessMOV,
+    WRITE_PROC => \&WriteQuickTime,
+    GROUPS => { 2 => 'Video' },
+    # tfhd - track fragment header
+    # edts - edits --> contains elst (edit list) (ref PH)
+    # tfdt - track fragment base media decode time
+    # trik - trick play box
+    # trun - track fragment run box
+    # avcn - AVC NAL unit storage box
+    # secn - sample encryption box
+    # saio - sample auxiliary information offsets box
+    # sbgp - sample to group box
+    # sgpd - sample group description box
+    # sdtp - independent and disposable samples (ref 5)
+    # subs - sub-sample information (ref 5)
+);
+
 # movie header data block
 %Image::ExifTool::QuickTime::MovieHeader = (
     PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
@@ -1272,6 +1309,7 @@ my %eeBox = (
     "\xa9gpt" => 'CameraPitch', #PH
     "\xa9gyw" => 'CameraYaw', #PH
     "\xa9grl" => 'CameraRoll', #PH
+    "\xa9enc" => 'EncoderID', #PH (forum9271)
     # and the following entries don't have the proper 4-byte header for \xa9 tags:
     "\xa9dji" => { Name => 'UserData_dji', Format => 'undef', Binary => 1, Unknown => 1, Hidden => 1 },
     "\xa9res" => { Name => 'UserData_res', Format => 'undef', Binary => 1, Unknown => 1, Hidden => 1 },
@@ -1683,6 +1721,8 @@ my %eeBox = (
         SubDirectory => { TagTable => 'Image::ExifTool::GoPro::GPMF' },
     },
     # free (all zero)
+    "\xa9TSC" => 'StartTimeScale', # (Hero6)
+    "\xa9TSZ" => 'StartTimeSampleSize', # (Hero6)
     # --- HTC ----
     htcb => {
         Name => 'HTCBinary',
@@ -5458,6 +5498,7 @@ my %eeBox = (
 # MP4 media information box (ref 5)
 %Image::ExifTool::QuickTime::MediaInfo = (
     PROCESS_PROC => \&ProcessMOV,
+    WRITE_PROC => \&WriteQuickTime,
     GROUPS => { 1 => 'Track#', 2 => 'Video' },
     NOTES => 'MP4 media info box.',
     vmhd => {
@@ -5532,6 +5573,7 @@ my %eeBox = (
 # MP4 sample table box (ref 5)
 %Image::ExifTool::QuickTime::SampleTable = (
     PROCESS_PROC => \&ProcessMOV,
+    WRITE_PROC => \&WriteQuickTime,
     GROUPS => { 2 => 'Video' },
     NOTES => 'MP4 sample table box.',
     stsd => [

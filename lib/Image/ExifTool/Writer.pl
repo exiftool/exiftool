@@ -5294,7 +5294,7 @@ sub WriteJPEG($$)
                 }
             }
             # don't create anything before APP0 or APP1 EXIF (containing IFD0)
-            last if $markerName eq 'APP0' or $dirCount{IFD0};
+            last if $markerName eq 'APP0' or $dirCount{IFD0} or $dirCount{ExtendedEXIF};
             # EXIF information must come immediately after APP0
             if (exists $$addDirs{IFD0} and not defined $doneDir{IFD0}) {
                 $doneDir{IFD0} = 1;
@@ -5321,7 +5321,14 @@ sub WriteJPEG($$)
                         $$self{PREVIEW_INFO}{Fixup}{Start} += 18 if $$self{PREVIEW_INFO};
                         $$self{LeicaTrailer}{Fixup}{Start} += 18 if $$self{LeicaTrailer};
                     }
-                    WriteMultiSegment($outfile, 0xe1, $exifAPP1hdr, \$buff, 'EXIF') or $err = 1;
+                    # write as multi-segment
+                    my $n = WriteMultiSegment($outfile, 0xe1, $exifAPP1hdr, \$buff, 'EXIF');
+                    if (not $n) {
+                        $err = 1;
+                    } elsif ($n > 1 and $oldOutfile) {
+                        # (punt on this because updating the pointers would be a real pain)
+                        $self->Error("Can't write multi-segment EXIF with external pointers");
+                    }
                     ++$$self{CHANGED};
                 }
             }
@@ -5714,6 +5721,7 @@ sub WriteJPEG($$)
                         $self->Error('Incorrect EXIF segment identifier',1);
                     }
                     $segType = 'EXIF';
+                    last unless $$editDirs{IFD0};
                     # add this data to the combined data if it exists
                     if (defined $combinedSegData) {
                         $combinedSegData .= substr($$segDataPt,$hdrLen);
@@ -5733,7 +5741,6 @@ sub WriteJPEG($$)
                     }
                     $doneDir{IFD0} and $self->Warn('Multiple APP1 EXIF records');
                     $doneDir{IFD0} = 1;
-                    last unless $$editDirs{IFD0};
                     # check del groups now so we can change byte order in one step
                     if ($$delGroup{IFD0} or $$delGroup{EXIF}) {
                         delete $doneDir{IFD0};  # delete so we will create a new one
@@ -5758,6 +5765,11 @@ sub WriteJPEG($$)
                     } else {
                         last Marker unless $self->Options('IgnoreMinorErrors');
                     }
+                    # delete segment if IFD contains no entries
+                    length $$segDataPt or $del = 1, last;
+                    if (length($$segDataPt) + length($exifAPP1hdr) > $maxSegmentLen) {
+                        $self->Warn('Writing multi-segment EXIF',1);
+                    }
                     # switch to buffered output if required
                     if (($$self{PREVIEW_INFO} or $$self{LeicaTrailer}) and not $oldOutfile) {
                         $writeBuffer = '';
@@ -5767,13 +5779,14 @@ sub WriteJPEG($$)
                         $$self{PREVIEW_INFO}{Fixup}{Start} += 18 if $$self{PREVIEW_INFO};
                         $$self{LeicaTrailer}{Fixup}{Start} += 18 if $$self{LeicaTrailer};
                     }
-                    # delete segment if IFD contains no entries
-                    length $$segDataPt or $del = 1, last;
-                    if (length($$segDataPt) + length($exifAPP1hdr) > $maxSegmentLen) {
-                        $self->Warn('Writing multi-segment EXIF',1);
-                    }
                     # write as multi-segment
-                    WriteMultiSegment($outfile, $marker, $exifAPP1hdr, $segDataPt, 'EXIF') or $err = 1;
+                    my $n = WriteMultiSegment($outfile, $marker, $exifAPP1hdr, $segDataPt, 'EXIF');
+                    if (not $n) {
+                        $err = 1;
+                    } elsif ($n > 1 and $oldOutfile) {
+                        # (punt on this because updating the pointers would be a real pain)
+                        $self->Error("Can't write multi-segment EXIF with external pointers");
+                    }
                     undef $combinedSegData;
                     undef $$segDataPt;
                     next Marker;

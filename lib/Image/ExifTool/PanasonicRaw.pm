@@ -21,7 +21,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.18';
+$VERSION = '1.19';
 
 sub ProcessJpgFromRaw($$$);
 sub WriteJpgFromRaw($$$);
@@ -433,17 +433,50 @@ my %wbTypeInfo = (
     # (don't know what format codes 0x101 and 0x102 are for, so just
     #  map them into 4 = int32u for now)
     VARS => { MAP_FORMAT => { 0x101 => 4, 0x102 => 4 } },
-    0x1101 => { #forum8484 (Metabones EF-M43-BT2 adapter with Canon lenses)
-        Name => 'FocusDistance',
-        Writable => 'int16u',
-        ValueConv => '$val / 200',
-        PrintConv => '$val > 65534.5/200 ? "inf" : "$val m"',
+    0x1100 => { #forum9274
+        Name => 'FocusStepNear',
+        Writable => 'int16s',
+    },
+    0x1101 => { #forum9274 (was forum8484)
+        Name => 'FocusStepCount',
+        Writable => 'int16s',
+    },
+    0x1200 => { #forum9278
+        Name => 'LensAttached',
+        Notes => 'many CameraIFD tags are invalid if there is no lens attached',
+        Writable => 'int32u',
+        PrintConv => { 0 => 'No', 1 => 'Yes' },
     },
     0x1203 => { #4
         Name => 'FocalLengthIn35mmFormat',
         Writable => 'int16u',
         PrintConv => '"$val mm"',
         PrintConvInv => '$val=~s/\s*mm$//;$val',
+    },
+    0x3200 => { #forum9275
+        Name => 'WB_CFA0_LevelDaylight',
+        Writable => 'int16u',
+    },
+    0x3201 => { #forum9275
+        Name => 'WB_CFA1_LevelDaylight',
+        Writable => 'int16u',
+    },
+    0x3202 => { #forum9275
+        Name => 'WB_CFA2_LevelDaylight',
+        Writable => 'int16u',
+    },
+    0x3203 => { #forum9275
+        Name => 'WB_CFA3_LevelDaylight',
+        Writable => 'int16u',
+    },
+    # 0x3204-0x3207 - user multipliers * 1024 ? (ref forum9275)
+    0x3420 => { #forum9276
+        Name => 'WB_RedLevelAuto',
+        Writable => 'int16u',
+    },
+    0x3421 => { #forum9276
+        Name => 'WB_BlueLevelAuto',
+        Writable => 'int16u',
     },
     0x3501 => { #4
         Name => 'Orientation',

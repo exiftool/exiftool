@@ -21,7 +21,7 @@ sub ProcessKodakPatch($$$);
 sub WriteUnknownOrPreview($$$);
 sub FixLeicaBase($$;$);
 
-$VERSION = '2.04';
+$VERSION = '2.05';
 
 my $debug;          # set to 1 to enable debugging code
 
@@ -991,6 +991,10 @@ my $debug;          # set to 1 to enable debugging code
     {
         Name => 'MakerNoteSony5', # used in SR2 and ARW images
         Condition => '$$self{Make}=~/^SONY/ and $$valPt!~/^\x01\x00/',
+        Condition => q{
+            ($$self{Make}=~/^SONY/ or ($$self{Make}=~/^HASSELBLAD/ and
+            $$self{Model}=~/^(HV|Stellar|Lusso|Lunar)/)) and $$valPt!~/^\x01\x00/
+        },
         SubDirectory => {
             TagTable => 'Image::ExifTool::Sony::Main',
             Start => '$valuePtr',

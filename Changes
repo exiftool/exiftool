@@ -7,6 +7,17 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 11.01. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+June 13, 2018 - Version 11.02
+
+  - Added support for a different format of Apple iWorks files
+  - Added undocumented FixCorruptedMOV API option to allow fixing MOV videos
+    with multiple 'mdat' atoms which were corrupted by ExifTool
+  - Decode more QuickTime tags
+  - Decode more PanasonicRaw tags (thanks Klaus Homeister)
+  - Improved decoding of makernotes in ARW images from Hasselblad cameras
+    (thanks LibRaw)
+  - Fixed some problems writing multi-segment EXIF in JPEG images
+
 June 11, 2018 - Version 11.01 (production release)
 
   - Added a new ProfileCMMType (thanks Neal Krawetz)

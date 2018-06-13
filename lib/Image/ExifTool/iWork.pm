@@ -14,7 +14,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::XMP;
 use Image::ExifTool::ZIP;
 
-$VERSION = '1.04';
+$VERSION = '1.05';
 
 # test for recognized iWork document extensions and outer XML elements
 my %iWorkType = (
@@ -131,6 +131,12 @@ sub Process_iWork($$)
                     $type = $iWorkType{$1} if $iWorkType{$1};
                 }
             }
+        } else {
+            @members = $zip->membersMatching('(?i)^.*\.(pages|numbers|key)/Index.*');
+            if (@members) {
+                my $tmp = $members[0]->fileName();
+                $type = $iWorkType{uc $1} if $tmp =~ /\.(pages|numbers|key)/i;
+            }
         }
         $type or $type = 'ZIP';     # assume ZIP by default
     }
@@ -148,8 +154,8 @@ sub Process_iWork($$)
         $$et{DOC_NUM} = ++$docNum;
         Image::ExifTool::ZIP::HandleMember($et, $member);
 
-        # process only the index XML and JPEG thumbnail files
-        next unless $file =~ m{^(index\.(xml|apxl)|QuickLook/Thumbnail\.jpg)$}i;
+        # process only the index XML and JPEG thumbnail/preview files
+        next unless $file =~ m{^(index\.(xml|apxl)|QuickLook/Thumbnail\.jpg|[^/]+/preview.jpg)$}i;
         # get the file contents if necessary
         # (CAREFUL! $buff MUST be local since we hand off a value ref to PreviewImage)
         my ($buff, $buffPt);

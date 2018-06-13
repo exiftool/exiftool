@@ -19,7 +19,7 @@ use strict;
 use vars qw($VERSION $warnString);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.21';
+$VERSION = '1.22';
 
 sub WarnProc($) { $warnString = $_[0]; }
 
@@ -467,7 +467,7 @@ sub ProcessZIP($$)
         }
 
         # check for an iWork file
-        @members = $zip->membersMatching('^(index\.(xml|apxl)|QuickLook/Thumbnail\.jpg)$');
+        @members = $zip->membersMatching('(?i)^(index\.(xml|apxl)|QuickLook/Thumbnail\.jpg|[^/]+\.(pages|numbers|key)/Index.(zip|xml|apxl))$');
         if (@members) {
             require Image::ExifTool::iWork;
             Image::ExifTool::iWork::Process_iWork($et, $dirInfo);

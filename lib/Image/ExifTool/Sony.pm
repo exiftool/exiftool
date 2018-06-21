@@ -7752,7 +7752,7 @@ my %pictureProfile2010 = (
     # 0x24, 0x26: factor 10 for NEX and ILCE, factor 100 for DSC
     # 0x24, 0x26, 0x28, 0x2a: inconsistent for A-mount lenses on NEX/ILCE: some correct, some 0, some incorrect ...
     # 0x28 - not valid for DSC-[HTW]X models, or DSC-RX100
-#    0x24 => { # same values as Exif FocalLength
+#    0x24 => { # same values as Exif FocalLength (but have seen FocalLength for previous shot, ref IB, RX100M5)
 #        Name => 'FocalLength',
 #        Format => 'int16u',
 #        RawConv => '$val || undef',

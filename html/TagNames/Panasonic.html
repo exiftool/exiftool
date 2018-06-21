@@ -44,12 +44,14 @@ reference number and not the actual firmware version)</span></span></td></tr>
   <br>2 = Daylight
   <br>3 = Cloudy
   <br>4 = Incandescent
-  <br>5 = Manual</td><td>&nbsp;&nbsp;</td>
-  <td>8 = Flash
-  <br>10 = Black &amp; White
-  <br>11 = Manual
+  <br>5 = Manual
+  <br>8 = Flash</td><td>&nbsp;&nbsp;</td>
+  <td>10 = Black &amp; White
+  <br>11 = Manual 2
   <br>12 = Shade
-  <br>13 = Kelvin</td></tr></table>
+  <br>13 = Kelvin
+  <br>14 = Manual 3
+  <br>15 = Manual 4</td></tr></table>
 </td></tr>
 <tr class=b>
 <td title='0x0007 = 7'>0x0007</td>
@@ -95,10 +97,11 @@ reference number and not the actual firmware version)</span></span></td></tr>
 <td><table class=cols><tr>
   <td>2 = On, Mode 1
   <br>3 = Off
-  <br>4 = On, Mode 2</td><td>&nbsp;&nbsp;</td>
-  <td>5 = Panning
-  <br>6 = On, Mode 3
-  <br>9 = Dual IS</td></tr></table>
+  <br>4 = On, Mode 2
+  <br>5 = Panning</td><td>&nbsp;&nbsp;</td>
+  <td>6 = On, Mode 3
+  <br>9 = Dual IS
+  <br>11 = Dual2 IS</td></tr></table>
 </td></tr>
 <tr>
 <td title='0x001c = 28'>0x001c</td>
@@ -771,16 +774,22 @@ L10 and LC80)</span></span><table class=cols><tr>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td title='0x00bc = 188'>0x00bc</td>
+<td>DiffractionCorrection</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Off
+  <br>1 = Auto</span></td></tr>
+<tr class=b>
 <td title='0x0e00 = 3584'>0x0e00</td>
 <td>PrintIM</td>
 <td class=c>-</td>
 <td>--&gt; <a href='PrintIM.html'>PrintIM Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x8000 = 32768'>0x8000</td>
 <td>MakerNoteVersion</td>
 <td class=c>undef</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x8001 = 32769'>0x8001</td>
 <td>SceneMode</td>
 <td class=c>int16u</td>
@@ -866,45 +875,45 @@ L10 and LC80)</span></span><table class=cols><tr>
   <br>89 = Monochrome
   <br>90 = Creative Control</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td title='0x8004 = 32772'>0x8004</td>
 <td>WBRedLevel</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x8005 = 32773'>0x8005</td>
 <td>WBGreenLevel</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x8006 = 32774'>0x8006</td>
 <td>WBBlueLevel</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x8007 = 32775'>0x8007</td>
 <td>FlashFired</td>
 <td class=c>int16u</td>
 <td><span class=s>1 = No
   <br>2 = Yes</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x8008 = 32776'>0x8008</td>
 <td>TextStamp</td>
 <td class=c>int16u</td>
 <td><span class=s>1 = Off
   <br>2 = On</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x8009 = 32777'>0x8009</td>
 <td>TextStamp</td>
 <td class=c>int16u</td>
 <td><span class=s>1 = Off
   <br>2 = On</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x8010 = 32784'>0x8010</td>
 <td>BabyAge</td>
 <td class=c>string</td>
 <td><span class=s><span class=n>(or pet age)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x8012 = 32786'>0x8012</td>
 <td>Transform</td>
 <td class=c>undef[4]</td>
@@ -1803,7 +1812,7 @@ various Panasonic and Leica models.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised May 16, 2018</i>
+<br><i>Last revised Jun 21, 2018</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

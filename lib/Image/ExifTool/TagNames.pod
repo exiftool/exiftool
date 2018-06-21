@@ -2044,7 +2044,7 @@ These tags belong to the ExifTool XMP-digiKam family 1 group.
 =head3 XMP exif Tags
 
 EXIF namespace for EXIF tags.  See
-L<http://www.cipa.jp/std/documents/e/DC-010-2012_E.pdf> for the
+L<http://www.cipa.jp/std/documents/e/DC-010-2017_E.pdf> for the
 specification.
 
 These tags belong to the ExifTool XMP-exif family 1 group.
@@ -2189,16 +2189,19 @@ These tags belong to the ExifTool XMP-exif family 1 group.
 
 =head3 XMP exifEX Tags
 
-EXIF tags added by the EXIF 2.3 for XMP specification (see
-L<http://www.cipa.jp/std/documents/e/DC-010-2012_E.pdf>).
+EXIF tags added by the EXIF 2.31 for XMP specification (see
+L<http://www.cipa.jp/std/documents/e/DC-010-2017_E.pdf>).
 
 These tags belong to the ExifTool XMP-exifEX family 1 group.
 
   Tag Name                                      Writable
   --------                                      --------
+  Acceleration                                  rational
   SerialNumber                                  string
+  CameraElevationAngle                          rational
   OwnerName                                     string
   Gamma                                         rational
+  Humidity                                      rational
   InteropIndex                                  string
   ISOSpeed                                      integer
   ISOSpeedLatitudeyyy                           integer
@@ -2208,9 +2211,12 @@ These tags belong to the ExifTool XMP-exifEX family 1 group.
   LensSerialNumber                              string
   LensInfo                                      rational+
   PhotographicSensitivity                       integer
+  Pressure                                      rational
   RecommendedExposureIndex                      integer
   SensitivityType                               integer
   StandardOutputSensitivity                     integer
+  AmbientTemperature                            rational
+  WaterDepth                                    rational
 
 =head3 XMP ExpressionMedia Tags
 
@@ -3373,7 +3379,7 @@ These tags belong to the ExifTool XMP-swf family 1 group.
 =head3 XMP tiff Tags
 
 EXIF namespace for TIFF tags.  See
-L<http://www.cipa.jp/std/documents/e/DC-010-2012_E.pdf> for the
+L<http://www.cipa.jp/std/documents/e/DC-010-2017_E.pdf> for the
 specification.
 
 These tags belong to the ExifTool XMP-tiff family 1 group.
@@ -13091,6 +13097,7 @@ These tags are used in Panasonic/Leica cameras.
   0x00a3   ClearRetouchValue                    rational64u
   0x00ab   TouchAE                              int16u
   0x00af   TimeStamp                            string
+  0x00bc   DiffractionCorrection                int16u
   0x0e00   PrintIM                              PrintIM
   0x8000   MakerNoteVersion                     undef
   0x8001   SceneMode                            int16u
@@ -16944,6 +16951,7 @@ These tags are found in IFD0 of Panasonic/Leica RAW, RW2 and RWL images.
   0x0118   RawDataOffset                        no
   0x0119   DistortionInfo                       PanasonicRaw DistortionInfo
   0x0120   CameraIFD                            PanasonicRaw CameraIFD
+  0x0121   Multishot                            int32u
   0x02bc   ApplicationNotes                     XMP
   0x83bb   IPTC-NAA                             IPTC
   0x8769   ExifOffset                           EXIF

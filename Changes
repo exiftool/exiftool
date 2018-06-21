@@ -7,6 +7,12 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 11.01. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+June 21, 2018 - Version 11.03
+
+  - Added support for new Exif 2.31 for XMP tags
+  - Added support for another FujiFilm X-T1 firmware version
+  - Decode more Panasonic tags (thanks Klaus Homeister)
+
 June 13, 2018 - Version 11.02
 
   - Added support for a different format of Apple iWorks files

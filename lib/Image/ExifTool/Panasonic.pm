@@ -34,7 +34,7 @@ use vars qw($VERSION %leicaLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.97';
+$VERSION = '1.98';
 
 sub ProcessLeicaLEIC($$$);
 sub WhiteBalanceConv($;$$);
@@ -304,9 +304,12 @@ my %shootingMode = (
             5 => 'Manual',
             8 => 'Flash',
             10 => 'Black & White', #3 (Leica)
-            11 => 'Manual', #PH (FZ8)
+            11 => 'Manual 2', #PH (FZ8)
             12 => 'Shade', #PH (FS7)
             13 => 'Kelvin', #PeterK (NC)
+            14 => 'Manual 3', #forum9296
+            15 => 'Manual 4', #forum9296
+            # also seen 18,26 (forum9296)
         },
     },
     0x07 => {
@@ -369,7 +372,8 @@ my %shootingMode = (
             5 => 'Panning', #18
             # GF1 also has a "Mode 3" - PH
             6 => 'On, Mode 3', #PH (GX7, sensor shift?)
-            9 => 'Dual IS',  #20
+            9 => 'Dual IS', #20
+            11 => 'Dual2 IS', #forum9298
         },
     },
     0x1c => {
@@ -1177,6 +1181,11 @@ my %shootingMode = (
         Shift => 'Time',
         PrintConv => '$self->ConvertDateTime($val)',
         PrintConvInv => '$self->InverseDateTime($val)',
+    },
+    0xbc => { #forum9282
+        Name => 'DiffractionCorrection',
+        Writable => 'int16u',
+        PrintConv => { 0 => 'Off', 1 => 'Auto' },
     },
     0x0e00 => {
         Name => 'PrintIM',

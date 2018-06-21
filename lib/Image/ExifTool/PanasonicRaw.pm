@@ -21,7 +21,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.19';
+$VERSION = '1.20';
 
 sub ProcessJpgFromRaw($$$);
 sub WriteJpgFromRaw($$$);
@@ -258,6 +258,15 @@ my %wbTypeInfo = (
             ProcessProc => \&Image::ExifTool::ProcessTIFF,
         },
     },
+    0x121 => { #forum9295
+        Name => 'Multishot',
+        Writable => 'int32u',
+        PrintConv => {
+            0 => 'Off',
+            65536 => 'Pixel Shift',
+        },
+    },
+    # 0x122 - int32u: RAWDataOffset for the GH5s/GX9, or pointer to end of raw data for G9 (forum9295)
     0x2bc => { # PH Extension!!
         Name => 'ApplicationNotes', # (writable directory!)
         Writable => 'int8u',
@@ -441,6 +450,7 @@ my %wbTypeInfo = (
         Name => 'FocusStepCount',
         Writable => 'int16s',
     },
+    # 0x1104 - set when camera shoots on lowest possible Extended-ISO (forum9290)
     0x1200 => { #forum9278
         Name => 'LensAttached',
         Notes => 'many CameraIFD tags are invalid if there is no lens attached',
@@ -453,6 +463,9 @@ my %wbTypeInfo = (
         PrintConv => '"$val mm"',
         PrintConvInv => '$val=~s/\s*mm$//;$val',
     },
+    # 0x140b - scaled overall black level? (ref forum9281)
+    # 0x1411 - scaled black level per channel difference (ref forum9281)
+    # 0x2009 - scaled black level per channel (ref forum9281)
     0x3200 => { #forum9275
         Name => 'WB_CFA0_LevelDaylight',
         Writable => 'int16u',
@@ -470,6 +483,9 @@ my %wbTypeInfo = (
         Writable => 'int16u',
     },
     # 0x3204-0x3207 - user multipliers * 1024 ? (ref forum9275)
+    # 0x320a - scaled maximum value of raw data (scaling = 4x) (ref forum9281)
+    # 0x3209 - gamma (x256) (ref forum9281)
+    # 0x3300 - WhiteBalance (0=auto, ref forum9296)
     0x3420 => { #forum9276
         Name => 'WB_RedLevelAuto',
         Writable => 'int16u',

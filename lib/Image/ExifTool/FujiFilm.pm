@@ -29,7 +29,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.61';
+$VERSION = '1.62';
 
 sub ProcessFujiDir($$$);
 sub ProcessFaceRec($$$);
@@ -56,6 +56,8 @@ my %testedRAF = (
     '0269' => 'S9500 Ver1.02',
     '0271' => 'S3Pro Ver2.71', # UV/IR model?
     '0300' => 'X-E2',
+   # 0400  - expect to see this for X-T1
+    '0540' => 'X-T1 Ver5.40',
     '0712' => 'S5000 Ver3.00',
     '0716' => 'S5000 Ver3.00', # (yes, 2 RAF versions with the same Software version)
     '0Dgi' => 'X-A10 Ver1.01 and X-A3 Ver1.02', # (yes, non-digits in the firmware number)

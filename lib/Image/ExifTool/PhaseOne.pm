@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.04';
+$VERSION = '1.05';
 
 sub WritePhaseOne($$$);
 sub ProcessPhaseOne($$$);
@@ -85,6 +85,7 @@ my @formatName = ( undef, 'string', 'int16s', undef, 'int32s' );
         Binary => 1,
         PutFirst => 1,
         Writable => 0,
+        Drop => 1, # don't copy to other file types
     },
     0x0110 => { #1
         Name => 'SensorCalibration',
@@ -434,7 +435,7 @@ sub WritePhaseOne($$$)
 
     # nothing to do if we aren't changing any PhaseOne tags
     my $newTags = $et->GetNewTagInfoHash($tagTablePtr);
-    return undef unless %$newTags;
+    return undef unless %$newTags or $$et{DropTags};
 
     my $dataPt = $$dirInfo{DataPt};
     my $dataPos = $$dirInfo{DataPos} || 0;
@@ -502,7 +503,8 @@ sub WritePhaseOne($$$)
             $valuePtr += $dirStart;
         }
         my $value = substr($$dataPt, $valuePtr, $size);
-        my $tagInfo = $$newTags{$tagID} || $et->GetTagInfo($tagTablePtr, $tagID);
+        my $tagInfo = $$newTags{$tagID} || $$tagTablePtr{$tagID};
+        $tagInfo = $et->GetTagInfo($tagTablePtr, $tagID) if $tagInfo and ref($tagInfo) ne 'HASH';
         if ($$newTags{$tagID}) {
             $formatStr = $$tagInfo{Format} if $$tagInfo{Format};
             my $count = int($size / Image::ExifTool::FormatSize($formatStr));
@@ -533,6 +535,10 @@ sub WritePhaseOne($$$)
                 $value = $newValue;
                 $size = length $newValue;
             }
+        } elsif ($$et{DropTags} and (($tagInfo and $$tagInfo{Drop}) or $size > 8192)) {
+            # decrease the number of entries in the directory
+            Set32u(Get32u(\$dirBuff, 0) - 1, \$dirBuff, 0);
+            next;   # drop this tag
         }
         # add the tagID, possibly format size, and size to this directory entry
         $dirBuff .= substr($$dataPt, $entry, $entrySize - 8) . Set32u($size);
@@ -571,7 +577,7 @@ sub ProcessPhaseOne($$$)
 {
     my ($et, $dirInfo, $tagTablePtr) = @_;
     my $dataPt = $$dirInfo{DataPt};
-    my $dataPos = $$dirInfo{DataPos} || 0;
+    my $dataPos = ($$dirInfo{DataPos} || 0) + ($$dirInfo{Base} || 0);
     my $dirStart = $$dirInfo{DirStart} || 0;
     my $dirLen = $$dirInfo{DirLen} || $$dirInfo{DataLen} - $dirStart;
     my $binary = $et->Options('Binary');

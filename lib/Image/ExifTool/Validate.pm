@@ -428,6 +428,7 @@ sub ValidateExif($$$$$$$$)
 #         2) directory name, 3) optional flag for minor warning
 sub ValidateOffsetInfo($$$;$)
 {
+    local $_;
     my ($et, $offsetInfo, $dirName, $minor) = @_;
 
     my $fileSize = $$et{VALUE}{FileSize} or return;
@@ -439,10 +440,14 @@ sub ValidateOffsetInfo($$$;$)
     # (don't test 3FR, RWL or RW2 files)
     return if $$et{TIFF_TYPE} =~ /^(3FR|RWL|RW2)$/;
 
+    Image::ExifTool::Exif::ValidateImageData($et, $offsetInfo, $dirName);
+
+    # loop through all offsets
     while (%$offsetInfo) {
         my ($id1) = sort keys %$offsetInfo;
         my $offsets = $$offsetInfo{$id1};
         delete $$offsetInfo{$id1};
+        next unless ref $offsets eq 'ARRAY';
         my $id2 = $$offsets[0]{OffsetPair};
         unless (defined $id2 and $$offsetInfo{$id2}) {
             unless ($$offsets[0]{NotRealPair} or (defined $id2 and $id2 == -1)) {

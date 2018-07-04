@@ -49,7 +49,7 @@ use vars qw($VERSION %minoltaLensTypes %minoltaTeleconverters %minoltaColorMode
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.63';
+$VERSION = '2.64';
 
 # Full list of product codes for Sony-compatible Minolta lenses
 # (ref http://www.kb.sony.com/selfservice/documentLink.do?externalId=C1000570)
@@ -514,6 +514,7 @@ $VERSION = '2.63';
     # - this is the base to which the Canon LensType is added
     30464 => 'Metabones Canon EF Speed Booster', #Metabones (to this, add Canon LensType)
     45671 => 'Tokina 70-210mm F4-5.6', #22
+    45701 => 'Tamron AF 35-135mm F3.5-4.5', #IB (model 40d)
     45711 => 'Vivitar 70-210mm F4.5-5.6', #IB
     45741 => '2x Teleconverter or Tamron or Tokina Lens', #18
     45741.1 => 'Tamron SP AF 90mm F2.5', #JD

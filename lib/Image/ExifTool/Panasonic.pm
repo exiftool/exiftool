@@ -34,7 +34,7 @@ use vars qw($VERSION %leicaLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.98';
+$VERSION = '1.99';
 
 sub ProcessLeicaLEIC($$$);
 sub WhiteBalanceConv($;$$);
@@ -1164,6 +1164,7 @@ my %shootingMode = (
             2 => 'Hybrid', #PH (GM1, 1st curtain electronic, 2nd curtain mechanical)
         },
     },
+    # 0xa0 - undef[32]: AWB gains and black levels (ref forum9303)
     0xa3 => { #18
         Name => 'ClearRetouchValue',
         Writable => 'rational64u',
@@ -2468,7 +2469,7 @@ sub ProcessLeicaTrailer($;$)
             $dirInfo{DirLen} += 8;
             $$et{MAKER_NOTE_BYTE_ORDER} = GetByteOrder();
             # rebuild maker notes (creates $$et{MAKER_NOTE_FIXUP})
-            my $val = Image::ExifTool::Exif::RebuildMakerNotes($et, $tagTablePtr, \%dirInfo);
+            my $val = Image::ExifTool::Exif::RebuildMakerNotes($et, \%dirInfo, $tagTablePtr);
             unless (defined $val) {
                 $et->Warn('Error rebuilding maker notes (may be corrupt)') if $len > 4;
                 $val = $buff,

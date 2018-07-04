@@ -19,7 +19,7 @@ use strict;
 use vars qw($VERSION $warnString);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.22';
+$VERSION = '1.23';
 
 sub WarnProc($) { $warnString = $_[0]; }
 
@@ -491,8 +491,9 @@ sub ProcessZIP($$)
                     ($buff, $status) = $zip->contents($meta);
                     unless ($status) {
                         my %dirInfo = (
-                            DataPt => \$buff,
-                            DirLen => length $buff,
+                            DirName => 'XML',
+                            DataPt  => \$buff,
+                            DirLen  => length $buff,
                             DataLen => length $buff,
                         );
                         # (avoid structure warnings when copying from XML)

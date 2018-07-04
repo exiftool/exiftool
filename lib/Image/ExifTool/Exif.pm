@@ -50,11 +50,11 @@ package Image::ExifTool::Exif;
 use strict;
 use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
             %lightSource %flash %compression %photometricInterpretation %orientation
-            %subfileType);
+            %subfileType %saveForValidate);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.02';
+$VERSION = '4.03';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -62,6 +62,7 @@ sub CheckExif($$$);
 sub RebuildMakerNotes($$$);
 sub EncodeExifText($$);
 sub ValidateIFD($;$);
+sub ValidateImageData($$$;$);
 sub ProcessTiffIFD($$$);
 sub PrintParameter($$$);
 sub GetOffList($$$$$);
@@ -312,6 +313,15 @@ my %sampleFormat = (
     4 => 'Undefined',
     5 => 'Complex int',     # complex integer (ref 3)
     6 => 'Complex float',   # complex IEEE floating point (ref 3)
+);
+
+# save the values of these tags for additional validation checks
+%saveForValidate = (
+    0x100 => 1, # ImageWidth
+    0x101 => 1, # ImageHeight
+    0x102 => 1, # BitsPerSample
+    0x103 => 1, # Compression
+    0x115 => 1, # SamplesPerPixel
 );
 
 # main EXIF tag table
@@ -2239,7 +2249,8 @@ my %sampleFormat = (
         WriteGroup => 'IFD0',
         SubDirectory => { TagTable => 'Image::ExifTool::Photoshop::DocumentData' },
         Binary => 1,
-        Protected => 1, # (because this can be hundreds of megabytes)
+        Protected => 1,     # (because this can be hundreds of megabytes)
+        ReadFromRAF => 1,   # don't load into memory when reading
     },
     0x9400 => {
         Name => 'AmbientTemperature',
@@ -5335,14 +5346,14 @@ sub ProcessExif($$$)
     my $success = 1;
     my ($tagKey, $dirSize, $makerAddr, $strEnc, %offsetInfo);
     my $inMakerNotes = $$tagTablePtr{GROUPS}{0} eq 'MakerNotes';
+    my $isExif = ($tagTablePtr eq \%Image::ExifTool::Exif::Main);
 
     # set encoding to assume for strings
     $strEnc = $et->Options('CharsetEXIF') if $$tagTablePtr{GROUPS}{0} eq 'EXIF';
 
     # ignore non-standard EXIF while in strict MWG compatibility mode
     if (($validate or $Image::ExifTool::MWG::strict) and $dirName eq 'IFD0' and
-        $tagTablePtr eq \%Image::ExifTool::Exif::Main and
-        $$et{FILE_TYPE} =~ /^(JPEG|TIFF|PSD)$/)
+        $isExif and $$et{FILE_TYPE} =~ /^(JPEG|TIFF|PSD)$/)
     {
         my $path = $et->MetadataPath();
         unless ($path =~ /^(JPEG-APP1-IFD0|TIFF-IFD0|PSD-EXIFInfo-IFD0)$/) {
@@ -5561,13 +5572,12 @@ sub ProcessExif($$$)
                 my $buff;
                 if ($raf) {
                     # avoid loading large binary data unless necessary
-                    # (eg. ImageSourceData -- layers in Photoshop TIFF image)
                     while ($size > BINARY_DATA_LIMIT) {
                         if ($tagInfo) {
                             # make large unknown blocks binary data
                             $$tagInfo{Binary} = 1 if $$tagInfo{Unknown};
                             last unless $$tagInfo{Binary};      # must read non-binary data
-                            last if $$tagInfo{SubDirectory};    # must read SubDirectory data
+                            last if $$tagInfo{SubDirectory};
                             my $lcTag = lc($$tagInfo{Name});
                             if ($$et{OPTIONS}{Binary} and
                                 not $$et{EXCL_TAG_LOOKUP}{$lcTag})
@@ -5589,16 +5599,30 @@ sub ProcessExif($$$)
                         last;
                     }
                     # read from file if necessary
-                    unless (defined $buff or
-                            ($raf->Seek($base + $valuePtr + $dataPos,0) and
-                             $raf->Read($buff,$size) == $size))
-                    {
-                        $et->Warn("Error reading value for $dir entry $index", $inMakerNotes);
-                        return 0 unless $inMakerNotes or $htmlDump;
-                        ++$warnCount;
-                        $buff = '' unless defined $buff;
-                        $readSize = length $buff;
-                        $bad = 1;
+                    unless (defined $buff) {
+                        my $wrn;
+                        my $readFromRAF = ($tagInfo and $$tagInfo{ReadFromRAF});
+                        if (not $raf->Seek($base + $valuePtr + $dataPos, 0)) {
+                            $wrn = "Invalid offset for $dir entry $index";
+                        } elsif ($readFromRAF and $size > BINARY_DATA_LIMIT and
+                            not $$et{REQ_TAG_LOOKUP}{lc $$tagInfo{Name}})
+                        {
+                            $buff = "$$tagInfo{Name} data $size bytes";
+                            $readSize = length $buff;
+                        } elsif ($raf->Read($buff,$size) != $size) {
+                            $wrn = "Error reading value for $dir entry $index";
+                        } elsif ($readFromRAF) {
+                            # seek back to the start of the value
+                            $raf->Seek($base + $valuePtr + $dataPos, 0);
+                        }
+                        if ($wrn) {
+                            $et->Warn($wrn, $inMakerNotes);
+                            return 0 unless $inMakerNotes or $htmlDump;
+                            ++$warnCount;
+                            $buff = '' unless defined $buff;
+                            $readSize = length $buff;
+                            $bad = 1;
+                        }
                     }
                     $valueDataLen = length $buff;
                     $valueDataPt = \$buff;
@@ -5673,7 +5697,7 @@ sub ProcessExif($$$)
         $formatStr = 'int8u' if $format == 7 and $count == 1;
 
         my ($val, $subdir, $wrongFormat);
-        if ($tagID > 0xf000 and $tagTablePtr eq \%Image::ExifTool::Exif::Main) {
+        if ($tagID > 0xf000 and $isExif) {
             my $oldInfo = $$tagTablePtr{$tagID};
             if ((not $oldInfo or (ref $oldInfo eq 'HASH' and $$oldInfo{Condition} and
                 not $$oldInfo{PSRaw})) and not $bad)
@@ -5845,7 +5869,12 @@ sub ProcessExif($$$)
                 }
             } else {
                 if ($tagID <= $lastID and not $inMakerNotes) {
-                    $et->Warn(sprintf('Tag ID 0x%.4x out of sequence in %s', $tagID, $dirName));
+                    my $str = $tagInfo ? ' '.$$tagInfo{Name} : '';
+                    if ($tagID == $lastID) {
+                        $et->Warn(sprintf('Duplicate tag 0x%.4x%s in %s', $tagID, $str, $dirName));
+                    } else {
+                        $et->Warn(sprintf('Tag ID 0x%.4x%s out of sequence in %s', $tagID, $str, $dirName));
+                    }
                 }
                 $lastID = $tagID;
                 if ($verbose > 0) {
@@ -6066,8 +6095,8 @@ sub ProcessExif($$$)
                 if ($doMaker and $doMaker eq '2') {
                     # extract maker notes without rebuilding (no fixup information)
                     delete $$et{MAKER_NOTE_FIXUP};
-                } elsif (not $$tagInfo{NotIFD}) {
-                    # this is a pain, but we must rebuild EXIF-typemaker notes to
+                } elsif (not $$tagInfo{NotIFD} or $$tagInfo{IsPhaseOne}) {
+                    # this is a pain, but we must rebuild EXIF-type maker notes to
                     # include all the value data if data was outside the maker notes
                     my %makerDirInfo = (
                         Name       => $tagStr,
@@ -6083,9 +6112,16 @@ sub ProcessExif($$$)
                         FixOffsets => $$subdir{FixOffsets},
                         TagInfo    => $tagInfo,
                     );
-                    $makerDirInfo{FixBase} = 1 if $$subdir{FixBase};
-                    # rebuild maker notes (creates $$et{MAKER_NOTE_FIXUP})
-                    my $val2 = RebuildMakerNotes($et, $newTagTable, \%makerDirInfo);
+                    my $val2;
+                    if ($$tagInfo{IsPhaseOne}) {
+                        $$et{DropTags} = 1;
+                        $val2 = Image::ExifTool::PhaseOne::WritePhaseOne($et, \%makerDirInfo, $newTagTable);
+                        delete $$et{DropTags};
+                    } else {
+                        $makerDirInfo{FixBase} = 1 if $$subdir{FixBase};
+                        # rebuild maker notes (creates $$et{MAKER_NOTE_FIXUP})
+                        $val2 = RebuildMakerNotes($et, \%makerDirInfo, $newTagTable);
+                    }
                     if (defined $val2) {
                         $val = $val2;
                     } elsif ($size > 4) {
@@ -6115,8 +6151,12 @@ sub ProcessExif($$$)
             }
             $val = join(' ', @vals);
         }
-        if ($validate and $$tagInfo{OffsetPair}) {
-            $offsetInfo{$tagID} = [ $tagInfo, $val ];
+        if ($validate) {
+            if ($$tagInfo{OffsetPair}) {
+                $offsetInfo{$tagID} = [ $tagInfo, $val ];
+            } elsif ($saveForValidate{$tagID} and $isExif) {
+                $offsetInfo{$tagID} = $val;
+            }
         }
         # save the value of this tag
         $tagKey = $et->FoundTag($tagInfo, $val);
@@ -6128,7 +6168,7 @@ sub ProcessExif($$$)
         }
     }
 
-    # validate image data offsets
+    # validate image data offsets for this IFD
     if ($validate and %offsetInfo) {
         Image::ExifTool::Validate::ValidateOffsetInfo($et, \%offsetInfo, $$dirInfo{DirName}, $inMakerNotes)
     }

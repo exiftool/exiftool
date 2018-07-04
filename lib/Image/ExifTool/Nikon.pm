@@ -59,7 +59,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.46';
+$VERSION = '3.47';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -430,6 +430,7 @@ sub GetAFPointGrid($$;$);
     '67 54 37 5C 24 24 1C 02' => 'Sigma 24-70mm F2.8 EX DG Macro',
     'E9 54 37 5C 24 24 1C 02' => 'Sigma 24-70mm F2.8 EX DG Macro',
     '26 40 37 5C 2C 3C 1C 02' => 'Sigma 24-70mm F3.5-5.6 Aspherical HF',
+    'C9 48 37 5C 24 24 4B 4E' => 'Sigma 24-70mm F2.8 DG OS HSM | A', #30
     '8A 3C 37 6A 30 30 4B 0E' => 'Sigma 24-105mm F4 DG OS HSM', #IB
     '26 54 37 73 24 34 1C 02' => 'Sigma 24-135mm F2.8-4.5',
     '02 46 3C 5C 25 25 02 00' => 'Sigma 28-70mm F2.8',

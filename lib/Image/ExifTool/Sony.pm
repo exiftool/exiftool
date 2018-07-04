@@ -32,7 +32,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.87';
+$VERSION = '2.88';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -114,6 +114,7 @@ my %sonyLensTypes2 = (
     32829 => 'Sony FE 100-400mm F4.5-5.6 GM OSS', #JR
     32830 => 'Sony FE 70-200mm F2.8 GM OSS', #JR
     32831 => 'Sony FE 16-35mm F2.8 GM', #JR
+    32848 => 'Sony FE 400mm F2.8 GM OSS', #IB
     32849 => 'Sony E 18-135mm F3.5-5.6 OSS', #JR
 
   # (comment this out so LensID will report the LensModel, which is more useful)
@@ -124,6 +125,7 @@ my %sonyLensTypes2 = (
     33076 => 'Sony FE 100mm F2.8 STF GM OSS (macro mode)', #JR (with macro switching ring set to "0.57m - 1.0m")
     33077 => 'Sony FE 100-400mm F4.5-5.6 GM OSS + 1.4X Teleconverter', #JR
     33078 => 'Sony FE 100-400mm F4.5-5.6 GM OSS + 2X Teleconverter', #JR
+    33079 => 'Sony FE 400mm F2.8 GM OSS + 1.4X Teleconverter', #IB
 
     49201 => 'Zeiss Touit 12mm F2.8', #JR (lens firmware Ver.02)
     49202 => 'Zeiss Touit 32mm F1.8', #JR (lens firmware Ver.02)

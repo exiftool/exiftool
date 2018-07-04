@@ -90,12 +90,20 @@ my $testnum = 1;
 # test 8: Test writing Nikon Capture information in NEF image
 {
     ++$testnum;
-    my @writeInfo = (
-        ['PhotoEffects' => 'Off'],
-        ['Caption-abstract' => 'A new caption'],
-        ['VignetteControlIntensity' => '70'],
-    );
-    print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum, 't/images/Nikon.nef', 1);
+    my $exifTool = new Image::ExifTool;
+    $exifTool->Options(IgnoreMinorErrors => 1);
+    $exifTool->SetNewValue('PhotoEffects' => 'Off');
+    $exifTool->SetNewValue('Caption-abstract' => 'A new caption');
+    $exifTool->SetNewValue('VignetteControlIntensity' => '70');
+    my $testfile = "t/${testname}_${testnum}_failed.nef";
+    unlink $testfile;
+    $exifTool->WriteInfo('t/images/Nikon.nef', $testfile);
+    my $info = $exifTool->ImageInfo($testfile, qw(PhotoEffects Caption-abstract VignetteControlIntensity));
+    if (check($exifTool, $info, $testname, $testnum)) {
+        unlink $testfile;
+    } else {
+        print 'not ';
+    }
     print "ok $testnum\n";
 }
 

@@ -130,11 +130,11 @@ sub EncodeExifText($$)
 #------------------------------------------------------------------------------
 # rebuild maker notes to properly contain all value data
 # (some manufacturers put value data outside maker notes!!)
-# Inputs: 0) ExifTool object ref, 1) tag table ref, 2) dirInfo ref
+# Inputs: 0) ExifTool object ref, 1) dirInfo ref, 2) tag table ref
 # Returns: new maker note data (and creates MAKER_NOTE_FIXUP), or undef on error
 sub RebuildMakerNotes($$$)
 {
-    my ($et, $tagTablePtr, $dirInfo) = @_;
+    my ($et, $dirInfo, $tagTablePtr) = @_;
     my $dirStart = $$dirInfo{DirStart};
     my $dirLen = $$dirInfo{DirLen};
     my $dataPt = $$dirInfo{DataPt};
@@ -178,7 +178,7 @@ sub RebuildMakerNotes($$$)
         # set GENERATE_PREVIEW_INFO flag so PREVIEW_INFO will be generated
         $$newTool{GENERATE_PREVIEW_INFO} = 1;
         # drop any large tags
-        $$newTool{DROP_TAGS} = 1;
+        $$newTool{DropTags} = 1;
         # initialize other necessary data members
         $$newTool{FILE_TYPE} = $$et{FILE_TYPE};
         $$newTool{TIFF_TYPE} = $$et{TIFF_TYPE};
@@ -343,6 +343,64 @@ sub UpdateTiffEnd($$)
 }
 
 #------------------------------------------------------------------------------
+# Validate image data size
+# Inputs: 0) ExifTool ref, 1) validate info hash ref, 2) flag to issue error
+# - issues warning or error if problems found
+sub ValidateImageData($$$;$)
+{
+    local $_;
+    my ($et, $vInfo, $dirName, $errFlag) = @_;
+
+    # determine the expected size of the image data for an uncompressed image
+    # (0x102 BitsPerSample, 0x103 Compression and 0x115 SamplesPerPixel
+    #  all default to a value of 1 if they don't exist)
+    if ((not defined $$vInfo{0x103} or $$vInfo{0x103} eq '1') and
+        $$vInfo{0x100} and $$vInfo{0x101} and ($$vInfo{0x117} or $$vInfo{0x145}))
+    {
+        my $samplesPerPix = $$vInfo{0x115} || 1;
+        my @bitsPerSample = $$vInfo{0x102} ? split(' ',$$vInfo{0x102}) : (1) x $samplesPerPix;
+        my $byteCountInfo = $$vInfo{0x117} || $$vInfo{0x145};
+        my $byteCounts = $$byteCountInfo[1];
+        my $totalBytes = 0;
+        $totalBytes += $_ foreach split ' ', $byteCounts;
+        my $minor;
+        $minor = 1 if $$et{DOC_NUM} or $$et{FILE_TYPE} ne 'TIFF';
+        unless (@bitsPerSample == $samplesPerPix) {
+            # (just a warning for this problem)
+            my $s = $samplesPerPix eq '1' ? '' : 's';
+            $et->Warn("$dirName BitsPerSample should have $samplesPerPix value$s", $minor);
+            push @bitsPerSample, $bitsPerSample[0] while @bitsPerSample < $samplesPerPix;
+            foreach (@bitsPerSample) {
+                $et->WarnOnce("$dirName BitsPerSample values are different", $minor) if $_ ne $bitsPerSample[0];
+                $et->WarnOnce("Invalid $dirName BitsPerSample value", $minor) if $_ < 1 or $_ > 32;
+            }
+        }
+        my $bitsPerPixel = 0;
+        $bitsPerPixel += $_ foreach @bitsPerSample;
+        my $expectedBytes = int(($$vInfo{0x100} * $$vInfo{0x101} * $bitsPerPixel + 7) / 8);
+        if ($expectedBytes != $totalBytes) {
+            my ($adj, $minor);
+            if ($expectedBytes > $totalBytes) {
+                $adj = 'Under'; # undersized is a bigger problem because we may lose data
+                $minor = 0 unless $errFlag;
+            } else {
+                $adj = 'Over';
+                $minor = 1;
+            }
+            my $msg = "${adj}sized $dirName $$byteCountInfo[0]{Name} ($totalBytes bytes, but expected $expectedBytes)";
+            if (not defined $minor) {
+                # this is a serious error if we are writing the file and there
+                # is a chance that we may not copy all of the image data
+                # (but make it minor to allow the file to be written anyway)
+                $et->Error($msg, 1);
+            } else {
+                $et->Warn($msg, $minor);
+            }
+        }
+    }
+}
+
+#------------------------------------------------------------------------------
 # Handle error while writing EXIF
 # Inputs: 0) ExifTool ref, 1) error string, 2) tag table ref
 # Returns: undef on fatal error, or '' if minor error is ignored
@@ -451,7 +509,7 @@ sub WriteExif($$$)
     my $verbose = $et->Options('Verbose');
     my $out = $et->Options('TextOut');
     my ($nextIfdPos, %offsetData, $inMakerNotes);
-    my (@offsetInfo, %xDelete, $strEnc);
+    my (@offsetInfo, %validateInfo, %xDelete, $strEnc);
     my $deleteAll = 0;
     my $newData = '';   # initialize buffer to receive new directory data
     my @imageData;      # image data blocks to copy later if requested
@@ -714,7 +772,7 @@ Entry:  for (;;) {
                             #### eval FixOffsets ($valuePtr, $valEnd, $size, $tagID, $wFlag)
                             eval $$dirInfo{FixOffsets};
                             unless (defined $valuePtr) {
-                                unless ($$et{DROP_TAGS}) {
+                                unless ($$et{DropTags}) {
                                     my $tagStr = $oldInfo ? $$oldInfo{Name} : sprintf("tag 0x%.4x",$oldID);
                                     return undef if $et->Error("Bad $name offset for $tagStr", $inMakerNotes);
                                 }
@@ -880,7 +938,7 @@ Entry:  for (;;) {
                             $et->Error("Invalid format ($oldFormName) for $name $$oldInfo{Name}", $inMakerNotes);
                             ++$index;  $oldID = $newID;  next;  # drop this tag
                         }
-                        if ($$oldInfo{Drop} and $$et{DROP_TAGS} and
+                        if ($$oldInfo{Drop} and $$et{DropTags} and
                             ($$oldInfo{Drop} == 1 or $$oldInfo{Drop} < $oldSize))
                         {
                             ++$index;  $oldID = $newID;  next;  # drop this tag
@@ -1742,6 +1800,7 @@ NoOverwrite:            next if $isNew > 0;
                             SetByteOrder($$newInfo{ByteOrder}) if $$newInfo{ByteOrder};
                             @vals = ReadValue(\$oldValue, 0, $readFormName, $readCount, $oldSize);
                             SetByteOrder($oldOrder);
+                            $validateInfo{$newID} = [$newInfo, join(' ',@vals)] unless $$newInfo{IsOffset};
                         }
                         # only support int32 pointers (for now)
                         if ($formatSize[$newFormat] != 4 and $$newInfo{IsOffset}) {
@@ -1803,6 +1862,10 @@ NoOverwrite:            next if $isNew > 0;
             my $offsetVal;
             # set proper count
             $newCount = int(($newSize + $fsize - 1) / $fsize) unless $oldInfo and $$oldInfo{FixedSize};
+            if ($saveForValidate{$newID} and $tagTablePtr eq \%Image::ExifTool::Exif::Main) {
+                my @vals = ReadValue(\$newValue, 0, $newFormName, $newCount, $newSize);
+                $validateInfo{$newID} = join ' ',@vals;
+            }
             if ($newSize > 4) {
                 # zero-pad to an even number of bytes (required by EXIF standard)
                 # and make sure we are a multiple of the format size
@@ -1876,6 +1939,10 @@ NoOverwrite:            next if $isNew > 0;
                 undef $deleteAll;
                 undef $allMandatory;
             }
+        }
+        if (%validateInfo) {
+            ValidateImageData($et, \%validateInfo, $dirName, 1);
+            undef %validateInfo;
         }
         if ($ignoreCount) {
             my $y = $ignoreCount > 1 ? 'ies' : 'y';

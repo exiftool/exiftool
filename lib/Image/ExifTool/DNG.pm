@@ -17,7 +17,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::MakerNotes;
 use Image::ExifTool::CanonRaw;
 
-$VERSION = '1.22';
+$VERSION = '1.23';
 
 sub ProcessOriginalRaw($$$);
 sub ProcessAdobeData($$$);
@@ -764,7 +764,7 @@ sub ProcessAdobeMakN($$$)
                 $subdirInfo{DirStart} = $dirStart;
                 $subdirInfo{DirLen}   = $dirLen;
                 # rebuild the maker notes to identify all offsets that require fixing up
-                $val = Image::ExifTool::Exif::RebuildMakerNotes($et, $subTable, \%subdirInfo);
+                $val = Image::ExifTool::Exif::RebuildMakerNotes($et, \%subdirInfo, $subTable);
                 if (not defined $val and $dirLen > 4) {
                     $et->Warn('Error rebuilding maker notes (may be corrupt)');
                 }

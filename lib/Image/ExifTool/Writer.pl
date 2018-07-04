@@ -4147,7 +4147,7 @@ sub VerboseInfo($$$%)
     }
 
     # Level 3: do hex dump of value
-    if ($verbose > 2 and $parms{DataPt}) {
+    if ($verbose > 2 and $parms{DataPt} and (not $tagInfo or not $$tagInfo{ReadFromRAF})) {
         $parms{Out} = $out;
         $parms{Prefix} = $indent;
         # limit dump length if Verbose < 5

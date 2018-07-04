@@ -28,7 +28,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD $iptcDigestInfo);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.60';
+$VERSION = '1.61';
 
 sub ProcessPhotoshop($$$);
 sub WritePhotoshop($$$);
@@ -683,10 +683,10 @@ sub ProcessLayersAndMask($$$)
         }
     }
     $len += 2;  # include layer count with layer info section
-    $raf->Seek(-2, 1) and $raf->Read($data, $len) == $len or return 0;
+    $raf->Seek(-2, 1) or return 0;
     my %dinfo = (
-        DataPt  => \$data,
-        DataPos => $raf->Tell() - $len,
+        RAF => $raf,
+        DirLen => $len,
     );
     $$et{IsPSB} = $psb; # set PSB flag
     ProcessLayers($et, \%dinfo, $tagTablePtr);
@@ -704,14 +704,16 @@ sub ProcessLayers($$$)
 {
     local $_;
     my ($et, $dirInfo, $tagTablePtr) = @_;
-    my ($i, $n, %count);
-    my $dataPt = $$dirInfo{DataPt};
-    my $pos = $$dirInfo{DirStart} || 0;
-    my $dirLen = $$dirInfo{DirLen} || (length($$dataPt) - $pos);
+    my ($i, $n, %count, $buff, $buf2);
+    my $raf = $$dirInfo{RAF};
+    my $dirLen = $$dirInfo{DirLen};
+    my $verbose = $$et{OPTIONS}{Verbose};
+    my %dinfo = ( DataPt => \$buff, Base => $raf->Tell() );
+    my $pos = 0;
     return 0 if $dirLen < 2;
-    my $num = Get16s($dataPt, $pos);
+    $raf->Read($buff, 2) == 2 or return 0;
+    my $num = Get16s(\$buff, 0);
     $num = -$num if $num < 0;       # (first channel is transparency data if negative)
-    my %dinfo = ( DataPt => $dataPt, DataPos => $$dirInfo{DataPos} );
     $et->VerboseDir('Layers', $num, $dirLen);
     $et->HandleTag($tagTablePtr, '_xcnt', $num, Start => $pos, Size => 2, %dinfo); # LayerCount
     my $oldIndent = $$et{INDENT};
@@ -723,30 +725,43 @@ sub ProcessLayers($$$)
     for ($i=0; $i<$num; ++$i) {
         $et->VPrint(0, $oldIndent.'+ [Layer '.($i+1)." of $num]\n");
         last if $pos + 18 > $dirLen;
+        $raf->Read($buff, 18) == 18 or last;
+        $dinfo{DataPos} = $pos;
         # save the layer rectangle
-        $et->HandleTag($tagTablePtr, '_xrct', undef, Start => $pos, Size => 16, %dinfo);
-        my $numChannels = Get16u($dataPt, $pos + 16);
-        $pos += 18 + (2 + $psiz) * $numChannels;    # skip the channel information
+        $et->HandleTag($tagTablePtr, '_xrct', undef, Start => 0, Size => 16, %dinfo);
+        my $numChannels = Get16u(\$buff, 16);
+        $n = (2 + $psiz) * $numChannels;    # size of channel information
+        $raf->Seek($n, 1) or last;
+        $pos += 18 + $n;
         last if $pos + 20 > $dirLen;
-        my $sig = substr($$dataPt, $pos, 4);
+        $raf->Read($buff, 20) == 20 or last;
+        $dinfo{DataPos} = $pos;
+        my $sig = substr($buff, 0, 4);
         $sig =~ /^(8BIM|MIB8)$/ or last;    # verify signature
-        $et->HandleTag($tagTablePtr, '_xbnd', undef, Start => $pos+4, Size => 4, %dinfo);
-        $et->HandleTag($tagTablePtr, '_xopc', undef, Start => $pos+8, Size => 1, %dinfo);
-        my $nxt = $pos + 16 + Get32u($dataPt, $pos+12);
-        $n = Get32u($dataPt, $pos+16);  # get size of layer mask data
+        $et->HandleTag($tagTablePtr, '_xbnd', undef, Start => 4, Size => 4, %dinfo);
+        $et->HandleTag($tagTablePtr, '_xopc', undef, Start => 8, Size => 1, %dinfo);
+        my $nxt = $pos + 16 + Get32u(\$buff, 12);
+        $n = Get32u(\$buff, 16);        # get size of layer mask data
         $pos += 20 + $n;                # skip layer mask data
         last if $pos + 4 > $dirLen;
-        $n = Get32u($dataPt, $pos);     # get size of layer blending ranges
+        $raf->Seek($n, 1) and $raf->Read($buff, 4) == 4 or last;
+        $n = Get32u(\$buff, 0);         # get size of layer blending ranges
         $pos += 4 + $n;                 # skip layer blending ranges data
         last if $pos + 1 > $dirLen;
-        $n = Get8u($dataPt, $pos);      # get length of layer name
+        $raf->Seek($n, 1) and $raf->Read($buff, 1) == 1 or last;
+        $n = Get8u(\$buff, 0);          # get length of layer name
         last if $pos + 1 + $n > $dirLen;
-        $et->HandleTag($tagTablePtr, '_xnam', undef, Start => $pos+1, Size => $n, %dinfo);
+        $raf->Read($buff, $n) == $n or last;
+        $dinfo{DataPos} = $pos + 1;
+        $et->HandleTag($tagTablePtr, '_xnam', undef, Start => 0, Size => $n, %dinfo);
+        my $frag = ($n + 1) & 0x3;
+        $raf->Seek(4 - $frag, 1) or last if $frag;
         $n = ($n + 4) & 0xfffffffc;     # +1 for length byte then pad to multiple of 4 bytes
         $pos += $n;
         # process additional layer info
         while ($pos + 12 <= $nxt) {
-            my $dat = substr($$dataPt, $pos, 8);
+            $raf->Read($buff, 12) == 12 or last;
+            my $dat = substr($buff, 0, 8);
             $dat = pack 'N*', unpack 'V*', $dat if GetByteOrder() eq 'II';
             my $sig = substr($dat, 0, 4);
             last unless $sig eq '8BIM' or $sig eq '8B64';   # verify signature
@@ -756,22 +771,35 @@ sub ProcessLayers($$$)
             # be the case, but it is not mentioned in the Photoshop file format specification)
             if ($psb and $tag =~ /^(LMsk|Lr16|Lr32|Layr|Mt16|Mt32|Mtrn|Alph|FMsk|lnk2|FEid|FXid|PxSD)$/) {
                 last if $pos + 16 > $nxt;
-                $n = Get64u($dataPt, $pos+8);
+                $raf->Read($buf2, 4) == 4 or last;
+                $buff .= $buf2;
+                $n = Get64u(\$buff, 8);
                 $pos += 4;
             } else {
-                $n = Get32u($dataPt, $pos+8);
+                $n = Get32u(\$buff, 8);
             }
             $pos += 12;
             last if $pos + $n > $nxt;
-            # pad with empty entries if necessary to keep the same index for each item in the layer
-            $count{$tag} = 0 unless defined $count{$tag};
-            while ($count{$tag} < $i) {
-                $et->HandleTag($tagTablePtr, $tag, '');
+            $frag = $n & 0x3;
+            if ($$tagTablePtr{$tag} or $verbose) {
+                # pad with empty entries if necessary to keep the same index for each item in the layer
+                $count{$tag} = 0 unless defined $count{$tag};
+                $raf->Read($buff, $n) == $n or last;
+                $dinfo{DataPos} = $pos;
+                while ($count{$tag} < $i) {
+                    $et->HandleTag($tagTablePtr, $tag, '');
+                    ++$count{$tag};
+                }
+                $et->HandleTag($tagTablePtr, $tag, undef, Start => 0, Size => $n, %dinfo);
                 ++$count{$tag};
+                if ($frag) {
+                    $raf->Seek(4 - $frag, 1) or last;
+                    $n += 4 - $frag;    # pad to multiple of 4 bytes (PH NC)
+                }
+            } else {
+                $n += 4 - $frag if $frag;
+                $raf->Seek($n, 1) or last;
             }
-            $et->HandleTag($tagTablePtr, $tag, undef, Start => $pos, Size => $n, %dinfo);
-            ++$count{$tag};
-            $n += (4 - ($n & 3)) & 3;   # pad to multiple of 4 bytes (PH NC)
             $pos += $n; # step to start of next structure
         }
         $pos = $nxt;
@@ -787,35 +815,57 @@ sub ProcessLayers($$$)
 sub ProcessDocumentData($$$)
 {
     my ($et, $dirInfo, $tagTablePtr) = @_;
-    my $dataPt = $$dirInfo{DataPt};
-    return 0 unless $$dataPt =~ /^Adobe Photoshop Document Data (Block|V0002)\0(8BIM|8B64|MIB8|46B8)/;
-    SetByteOrder(($2 eq '8BIM' or $2 eq '8B64') ? 'MM' : 'II');
+    my $verbose = $$et{OPTIONS}{Verbose};
+    my $raf = $$dirInfo{RAF};
+    my $dirLen = $$dirInfo{DirLen};
+    my $pos = 36;   # length of header
+    my $buff;
+    return 0 unless $raf->Read($buff, $pos) == $pos;
+    return 0 unless $buff =~ /^Adobe Photoshop Document Data (Block|V0002)\0/;
     my $psb = ($1 eq 'V0002');
-    my ($pos, $end) = (36, length $$dataPt);
-    my %dinfo = ( DataPt => $dataPt, DataPos => $$dirInfo{DataPos} );
-    my $n;
-    $et->VerboseDir('Photoshop Document Data', undef, $end);
+    my %dinfo = ( DataPt => \$buff );
+    my ($n, $setOrder);
+    $et->VerboseDir('Photoshop Document Data', undef, $dirLen);
     $$et{IsPSB} = $psb; # set PSB flag (needed when handling Layers directory)
-    while ($pos + 12 <= $end) {
-        my $dat = substr($$dataPt, $pos, 8);
-        $dat = pack 'N*', unpack 'V*', $dat if GetByteOrder() eq 'II';
-        my $sig = substr($dat, 0, 4);
+    while ($pos + 12 <= $dirLen) {
+        $raf->Read($buff, 8) == 8 or last;
+        # set byte order according to byte order of first signature
+        SetByteOrder($buff =~ /^(8BIM|8B64)/ ? 'MM' : 'II') if $pos == 36;
+        $buff = pack 'N*', unpack 'V*', $buff if GetByteOrder() eq 'II';
+        my $sig = substr($buff, 0, 4);
         last unless $sig eq '8BIM' or $sig eq '8B64';   # verify signature
-        my $tag = substr($dat, 4, 4);
+        my $tag = substr($buff, 4, 4);
         if ($psb and $tag =~ /^(LMsk|Lr16|Lr32|Layr|Mt16|Mt32|Mtrn|Alph|FMsk|lnk2|FEid|FXid|PxSD)$/) {
-            last if $pos + 16 > $end;
-            $n = Get64u($dataPt, $pos+8);
+            last if $pos + 16 > $dirLen;
+            $raf->Read($buff, 8) == 8 or last;
+            $n = Get64u(\$buff, 0);
             $pos += 4;
         } else {
-            $n = Get32u($dataPt, $pos+8);
+            $raf->Read($buff, 4) == 4 or last;
+            $n = Get32u(\$buff, 0);
         }
         $pos += 12;
-        last if $pos + $n > $end;
-        $dinfo{Start} = $pos;
-        $dinfo{Size} = $n;
-        $et->HandleTag($tagTablePtr, $tag, undef, %dinfo);
-        $n += (4 - ($n & 3)) & 3;   # pad to multiple of 4 bytes (necessary)
-        $pos += $n; # step to start of next structure
+        last if $pos + $n > $dirLen;
+        my $pad = (4 - ($n & 3)) & 3;   # number of padding bytes
+        my $tagInfo = $$tagTablePtr{$tag};
+        if ($tagInfo or $verbose) {
+            if ($tagInfo and $$tagInfo{SubDirectory}) {
+                my $fpos = $raf->Tell() + $n + $pad;
+                my $subTable = GetTagTable($$tagInfo{SubDirectory}{TagTable});
+                $et->ProcessDirectory({ RAF => $raf, DirLen => $n }, $subTable);
+                $raf->Seek($fpos, 0) or last;
+            } else {
+                $dinfo{DataPos} = $raf->Tell();
+                $dinfo{Start} = 0;
+                $dinfo{Size} = $n;
+                $raf->Read($buff, $n) == $n or last;
+                $et->HandleTag($tagTablePtr, $tag, undef, %dinfo);
+                $raf->Seek($pad, 1) or last;
+            }
+        } else {
+            $raf->Seek($n + $pad, 1) or last;
+        }
+        $pos += $n + $pad;              # step to start of next structure
     }
     return 1;
 }

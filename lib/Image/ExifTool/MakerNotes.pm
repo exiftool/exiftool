@@ -21,7 +21,7 @@ sub ProcessKodakPatch($$$);
 sub WriteUnknownOrPreview($$$);
 sub FixLeicaBase($$;$);
 
-$VERSION = '2.05';
+$VERSION = '2.06';
 
 my $debug;          # set to 1 to enable debugging code
 
@@ -809,8 +809,9 @@ my $debug;          # set to 1 to enable debugging code
             return 1;
         },
         NotIFD => 1,
+        IsPhaseOne => 1,    # flag to rebuild these differently
         SubDirectory => { TagTable => 'Image::ExifTool::PhaseOne::Main' },
-        PutFirst => 1, # place immediately after TIFF header
+        PutFirst => 1,      # place immediately after TIFF header
     },
     {
         Name => 'MakerNoteReconyx',

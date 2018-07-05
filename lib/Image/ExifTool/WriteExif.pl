@@ -837,7 +837,8 @@ Entry:  for (;;) {
                                 }
                             }
                             if ($oldSize > BINARY_DATA_LIMIT and $$origDirInfo{ImageData} and
-                                (not defined $oldInfo or ($oldInfo and not $$oldInfo{SubDirectory})))
+                                (not defined $oldInfo or ($oldInfo and
+                                (not $$oldInfo{SubDirectory} or $$oldInfo{ReadFromRAF}))))
                             {
                                 # copy huge data blocks later instead of loading into memory
                                 $oldValue = ''; # dummy empty value
@@ -1508,7 +1509,8 @@ NoOverwrite:            next if $isNew > 0;
                 # process existing subdirectory unless we are overwriting it entirely
                 } elsif ($$newInfo{SubDirectory} and $isNew <= 0 and not $isOverwriting
                     # don't edit directory if Writable is set to 0
-                    and (not defined $$newInfo{Writable} or $$newInfo{Writable}))
+                    and (not defined $$newInfo{Writable} or $$newInfo{Writable}) and
+                    not $$newInfo{ReadFromRAF})
                 {
 
                     my $subdir = $$newInfo{SubDirectory};

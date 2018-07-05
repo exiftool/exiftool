@@ -59,7 +59,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.47';
+$VERSION = '3.48';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -273,16 +273,14 @@ sub GetAFPointGrid($$;$);
     'A1 40 18 37 2C 34 A3 06' => 'AF-S DX Nikkor 10-24mm f/3.5-4.5G ED',
     'A2 48 5C 80 24 24 A4 0E' => 'AF-S Nikkor 70-200mm f/2.8G ED VR II',
     'A3 3C 29 44 30 30 A5 0E' => 'AF-S Nikkor 16-35mm f/4G ED VR',
-    'A4 48 5C 80 24 24 CF 0E' => 'AF-S Nikkor 70-200mm f/2.8E FL ED VR',
     'A4 54 37 37 0C 0C A6 06' => 'AF-S Nikkor 24mm f/1.4G ED',
     'A5 40 3C 8E 2C 3C A7 0E' => 'AF-S Nikkor 28-300mm f/3.5-5.6G ED VR',
-    'A6 48 8E 8E 24 24 A8 0E' => 'AF-S VR Nikkor 300mm f/2.8G IF-ED II',
+    'A6 48 8E 8E 24 24 A8 0E' => 'AF-S Nikkor 300mm f/2.8G IF-ED VR II',
     'A7 4B 62 62 2C 2C A9 0E' => 'AF-S DX Micro Nikkor 85mm f/3.5G ED VR',
-    'A8 48 80 98 30 30 AA 0E' => 'AF-S VR Zoom-Nikkor 200-400mm f/4G IF-ED II', #http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,3218.msg15495.html#msg15495
-    'A8 38 18 30 34 3C D3 8E' => 'AF-P DX Nikkor 10-20mm f/4.5-5.6G VR', #Yang You pvt communication
+    'A8 48 80 98 30 30 AA 0E' => 'AF-S Zoom-Nikkor 200-400mm f/4G IF-ED VR II', #http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,3218.msg15495.html#msg15495
     'A9 54 80 80 18 18 AB 0E' => 'AF-S Nikkor 200mm f/2G ED VR II',
     'AA 3C 37 6E 30 30 AC 0E' => 'AF-S Nikkor 24-120mm f/4G ED VR',
-    'AC 38 53 8E 34 3C AE 0E' => 'AF-S DX VR Nikkor 55-300mm f/4.5-5.6G ED',
+    'AC 38 53 8E 34 3C AE 0E' => 'AF-S DX Nikkor 55-300mm f/4.5-5.6G ED VR',
     'AD 3C 2D 8E 2C 3C AF 0E' => 'AF-S DX Nikkor 18-300mm f/3.5-5.6G ED VR',
     'AE 54 62 62 0C 0C B0 06' => 'AF-S Nikkor 85mm f/1.4G',
     'AF 54 44 44 0C 0C B1 06' => 'AF-S Nikkor 35mm f/1.4G',
@@ -290,7 +288,7 @@ sub GetAFPointGrid($$;$);
     'B1 48 48 48 24 24 B3 06' => 'AF-S DX Micro Nikkor 40mm f/2.8G', #27
     'B2 48 5C 80 30 30 B4 0E' => 'AF-S Nikkor 70-200mm f/4G ED VR', #35
     'B3 4C 62 62 14 14 B5 06' => 'AF-S Nikkor 85mm f/1.8G',
-    'B4 40 37 62 2C 34 B6 0E' => 'AF-S VR Zoom-Nikkor 24-85mm f/3.5-4.5G IF-ED', #30
+    'B4 40 37 62 2C 34 B6 0E' => 'AF-S Zoom-Nikkor 24-85mm f/3.5-4.5G IF-ED VR', #30
     'B5 4C 3C 3C 14 14 B7 06' => 'AF-S Nikkor 28mm f/1.8G', #30
     'B6 3C B0 B0 3C 3C B8 0E' => 'AF-S VR Nikkor 800mm f/5.6E FL ED',
     'B6 3C B0 B0 3C 3C B8 4E' => 'AF-S VR Nikkor 800mm f/5.6E FL ED', #PH
@@ -307,6 +305,7 @@ sub GetAFPointGrid($$;$);
     'A8 48 8E 8E 30 30 C3 0E' => 'AF-S Nikkor 300mm f/4E PF ED VR', #30
     'A9 4C 31 31 14 14 C4 06' => 'AF-S Nikkor 20mm f/1.8G ED', #30
     'AA 48 37 5C 24 24 C5 4E' => 'AF-S Nikkor 24-70mm f/2.8E ED VR',
+    'AA 48 37 5C 24 24 C5 0E' => 'AF-S Nikkor 24-70mm f/2.8E ED VR',
     'AB 3C A0 A0 30 30 C6 4E' => 'AF-S Nikkor 500mm f/4E FL ED VR',
     'AC 3C A6 A6 30 30 C7 4E' => 'AF-S Nikkor 600mm f/4E FL ED VR', #PH
     'AD 48 28 60 24 30 C8 4E' => 'AF-S DX Nikkor 16-80mm f/2.8-4E ED VR',
@@ -316,10 +315,24 @@ sub GetAFPointGrid($$;$);
     'A0 40 2D 53 2C 3C CA 8E' => 'AF-P DX Nikkor 18-55mm f/3.5-5.6G', #Yang You pvt communication
     'A0 40 2D 53 2C 3C CA 0E' => 'AF-P DX Nikkor 18-55mm f/3.5-5.6G VR', #PH
     'AF 4C 37 37 14 14 CC 06' => 'AF-S Nikkor 24mm f/1.8G ED', #IB
+    'A3 38 5C 8E 34 40 CE 8E' => 'AF-P DX Nikkor 70-300mm f/4.5-6.3G ED VR',
+    'A3 38 5C 8E 34 40 CE 0E' => 'AF-P DX Nikkor 70-300mm f/4.5-6.3G ED',
+    'A4 48 5C 80 24 24 CF 4E' => 'AF-S Nikkor 70-200mm f/2.8E FL ED VR',
+    'A4 48 5C 80 24 24 CF 0E' => 'AF-S Nikkor 70-200mm f/2.8E FL ED VR',
     'A5 54 6A 6A 0C 0C D0 46' => 'AF-S Nikkor 105mm f/1.4E ED', #IB
     'A5 54 6A 6A 0C 0C D0 06' => 'AF-S Nikkor 105mm f/1.4E ED', #IB
+    'A6 48 2F 2F 30 30 D1 46' => 'PC Nikkor 19mm f/4E ED',
+    'A6 48 2F 2F 30 30 D1 06' => 'PC Nikkor 19mm f/4E ED',
+    'A7 40 11 26 2C 34 D2 46' => 'AF-S Fisheye Nikkor 8-15mm f/3.5-4.5E ED',
+    'A7 40 11 26 2C 34 D2 06' => 'AF-S Fisheye Nikkor 8-15mm f/3.5-4.5E ED',
+    'A8 38 18 30 34 3C D3 8E' => 'AF-P DX Nikkor 10-20mm f/4.5-5.6G VR', #Yang You pvt communication
+    'A8 38 18 30 34 3C D3 0E' => 'AF-P DX Nikkor 10-20mm f/4.5-5.6G VR',
     'A9 48 7C 98 30 30 D4 4E' => 'AF-S Nikkor 180-400mm f/4E TC1.4 FL ED VR', #IB
     'AA 48 88 A4 3C 3C D5 4E' => 'AF-S Nikkor 180-400mm f/4E TC1.4 FL ED VR + 1.4x TC', #IB
+    'AB 44 5C 8E 34 3C D6 CE' => 'AF-P Nikkor 70-300mm f/4.5-5.6E ED VR',
+    'AB 44 5C 8E 34 3C D6 0E' => 'AF-P Nikkor 70-300mm f/4.5-5.6E ED VR',
+    'AC 54 3C 3C 0C 0C D7 46' => 'AF-S Nikkor 28mm f/1.4E ED',
+    'AC 54 3C 3C 0C 0C D7 06' => 'AF-S Nikkor 28mm f/1.4E ED',
     '01 00 00 00 00 00 02 00' => 'TC-16A',
     '01 00 00 00 00 00 08 00' => 'TC-16A',
     '00 00 00 00 00 00 F1 0C' => 'TC-14E [II] or Sigma APO Tele Converter 1.4x EX DG or Kenko Teleplus PRO 300 DG 1.4x',
@@ -334,6 +347,7 @@ sub GetAFPointGrid($$;$);
     '26 48 27 27 24 24 1C 02' => 'Sigma 15mm F2.8 EX Diagonal Fisheye',
     'EA 48 27 27 24 24 1C 02' => 'Sigma 15mm F2.8 EX Diagonal Fisheye', #30
     '26 58 31 31 14 14 1C 02' => 'Sigma 20mm F1.8 EX DG Aspherical RF',
+    '79 54 31 31 0C 0C 4B 06' => 'Sigma 20mm F1.4 DG HSM | A', #Rolf Probst
     '26 58 37 37 14 14 1C 02' => 'Sigma 24mm F1.8 EX DG Aspherical Macro',
     'E1 58 37 37 14 14 1C 02' => 'Sigma 24mm F1.8 EX DG Aspherical Macro',
     '02 46 37 37 25 25 02 00' => 'Sigma 24mm F2.8 Super Wide II Macro',
@@ -343,7 +357,6 @@ sub GetAFPointGrid($$;$);
     '91 54 44 44 0C 0C 4B 06' => 'Sigma 35mm F1.4 DG HSM', #30
     'DE 54 50 50 0C 0C 4B 06' => 'Sigma 50mm F1.4 EX DG HSM',
     '88 54 50 50 0C 0C 4B 06' => 'Sigma 50mm F1.4 DG HSM | A',
-    '79 54 31 31 0C 0C 4B 06' => 'Sigma 20mm F1.4 DG HSM | A', #Rolf Probst
     '02 48 50 50 24 24 02 00' => 'Sigma Macro 50mm F2.8', #http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,4027.0.html
     '32 54 50 50 24 24 35 02' => 'Sigma Macro 50mm F2.8 EX DG',
     'E3 54 50 50 24 24 35 02' => 'Sigma Macro 50mm F2.8 EX DG', #http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,3215.0.html
@@ -359,6 +372,7 @@ sub GetAFPointGrid($$;$);
     '99 48 76 76 24 24 4B 0E' => 'Sigma APO Macro 150mm F2.8 EX DG OS HSM', #(Christian Hesse)
     '48 4C 7C 7C 2C 2C 4B 02' => 'Sigma APO Macro 180mm F3.5 EX DG HSM',
     '48 4C 7D 7D 2C 2C 4B 02' => 'Sigma APO Macro 180mm F3.5 EX DG HSM',
+    '94 48 7C 7C 24 24 4B 0E' => 'Sigma APO Macro 180mm F2.8 EX DG OS HSM', #MichaelTapes (HSM from ref 8)
     '48 54 8E 8E 24 24 4B 02' => 'Sigma APO 300mm F2.8 EX DG HSM',
     'FB 54 8E 8E 24 24 4B 02' => 'Sigma APO 300mm F2.8 EX DG HSM', #26
     '26 48 8E 8E 30 30 1C 02' => 'Sigma APO Tele Macro 300mm F4',
@@ -476,17 +490,17 @@ sub GetAFPointGrid($$;$);
     '77 44 60 98 34 3C 7B 0E' => 'Sigma 80-400mm f4.5-5.6 APO DG D OS',
     '48 48 68 8E 30 30 4B 02' => 'Sigma APO 100-300mm F4 EX IF HSM',
     'F3 48 68 8E 30 30 4B 02' => 'Sigma APO 100-300mm F4 EX IF HSM',
-    'C3 34 68 98 38 40 4B 4E' => 'Sigma 100-400mm F5-6.3 DG OS HSM | C', #JR (017)
     '48 54 6F 8E 24 24 4B 02' => 'Sigma APO 120-300mm F2.8 EX DG HSM',
     '7A 54 6E 8E 24 24 4B 02' => 'Sigma APO 120-300mm F2.8 EX DG HSM',
     'FA 54 6E 8E 24 24 4B 02' => 'Sigma APO 120-300mm F2.8 EX DG HSM', #http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,2787.0.html
     'CF 38 6E 98 34 3C 4B 0E' => 'Sigma APO 120-400mm F4.5-5.6 DG OS HSM',
+    'C3 34 68 98 38 40 4B 4E' => 'Sigma 100-400mm F5-6.3 DG OS HSM | C', #JR (017)
+    '8D 48 6E 8E 24 24 4B 0E' => 'Sigma 120-300mm F2.8 DG OS HSM Sports',
     '26 44 73 98 34 3C 1C 02' => 'Sigma 135-400mm F4.5-5.6 APO Aspherical',
     'CE 34 76 A0 38 40 4B 0E' => 'Sigma 150-500mm F5-6.3 DG OS APO HSM', #JD
     '81 34 76 A6 38 40 4B 0E' => 'Sigma 150-600mm F5-6.3 DG OS HSM | S', #Jaap Voets
     '82 34 76 A6 38 40 4B 0E' => 'Sigma 150-600mm F5-6.3 DG OS HSM | C',
     '26 40 7B A0 34 40 1C 02' => 'Sigma APO 170-500mm F5-6.3 Aspherical RF',
-    '94 48 7C 7C 24 24 4B 0E' => 'Sigma 180mm F2.8 APO Macro EX DG OS', #MichaelTapes
     'A7 49 80 A0 24 24 4B 06' => 'Sigma APO 200-500mm F2.8 EX DG',
     '48 3C 8E B0 3C 3C 4B 02' => 'Sigma APO 300-800mm F5.6 EX DG HSM',
 #
@@ -524,6 +538,7 @@ sub GetAFPointGrid($$;$);
     '00 40 2D 88 2C 40 00 06' => 'Tamron AF 18-250mm f/3.5-6.3 Di II LD Aspherical (IF) Macro (A18NII)', #JD
     'F5 40 2C 8A 2C 40 40 0E' => 'Tamron AF 18-270mm f/3.5-6.3 Di II VC LD Aspherical (IF) Macro (B003)',
     'F0 3F 2D 8A 2C 40 DF 0E' => 'Tamron AF 18-270mm f/3.5-6.3 Di II VC PZD (B008)',
+    'E0 40 2D 98 2C 41 DF 4E' => 'Tamron AF 18-400mm f/3.5-6.3 Di II VC HLD (B028)',
     '07 40 2F 44 2C 34 03 02' => 'Tamron AF 19-35mm f/3.5-4.5 (A10)',
     '07 40 30 45 2D 35 03 02' => 'Tamron AF 19-35mm f/3.5-4.5 (A10)',
     '00 49 30 48 22 2B 00 02' => 'Tamron SP AF 20-40mm f/2.7-3.5 (166D)',
@@ -635,13 +650,20 @@ sub GetAFPointGrid($$;$);
 #
     '00 54 56 56 30 30 00 00' => 'Coastal Optical Systems 60mm 1:4 UV-VIS-IR Macro Apo',
 #
+    'BF 4E 26 26 1E 1E 01 04' => 'Irix 15mm f/2.4 Firefly', #30
+    'BF 3C 1B 1B 30 30 01 04' => 'Irix 11mm f/4 Firefly', #30
+#
     '4A 40 11 11 2C 0C 4D 02' => 'Samyang 8mm f/3.5 Fish-Eye CS',
+    '4A 48 24 24 24 0C 4D 02.1' => 'Samyang 10mm f/2.8 ED AS NCS CS',
     '4A 48 1E 1E 24 0C 4D 02' => 'Samyang 12mm f/2.8 ED AS NCS Fish-Eye', #Jurgen Sahlberg
-    '4A 48 24 24 24 0C 4D 02' => 'Samyang AE 14mm f/2.8 ED AS IF UMC', #http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,3150.0.html
+    '4A 48 24 24 24 0C 4D 02.2' => 'Samyang AE 14mm f/2.8 ED AS IF UMC', #http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,3150.0.html
+    '4A 4C 24 24 1E 6C 4D 06' => 'Samyang 14mm f/2.4 Premium',
     '4A 54 29 29 18 0C 4D 02' => 'Samyang 16mm f/2.0 ED AS UMC CS', #Jon Bloom (by email)
     '4A 60 36 36 0C 0C 4D 02' => 'Samyang 24mm f/1.4 ED AS UMC',
     '4A 60 44 44 0C 0C 4D 02' => 'Samyang 35mm f/1.4 AS UMC',
     '4A 60 62 62 0C 0C 4D 02' => 'Samyang AE 85mm f/1.4 AS IF UMC', #http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,2888.0.html
+#
+    '9A 4C 50 50 14 14 9C 06' => 'Yongnuo YN50mm F1.8N',
 #
     '02 40 44 5C 2C 34 02 00' => 'Exakta AF 35-70mm 1:3.5-4.5 MC',
 #
@@ -649,9 +671,6 @@ sub GetAFPointGrid($$;$);
     '03 43 5C 81 35 35 02 00' => 'Soligor AF C/D Zoom UMCS 70-210mm 1:4.5',
     '12 4A 5C 81 31 3D 09 00' => 'Soligor AF C/D Auto Zoom+Macro 70-210mm 1:4-5.6 UMCS',
     '12 36 69 97 35 42 09 00' => 'Soligor AF Zoom 100-400mm 1:4.5-6.7 MC',
-#
-    'BF 4E 26 26 1E 1E 01 04' => 'Irix 15mm f/2.4 Firefly', #30
-    'BF 3C 1B 1B 30 30 01 04' => 'Irix 11mm f/4 Firefly', #30
 #
     '00 00 00 00 00 00 00 01' => 'Manual Lens No CPU',
 #

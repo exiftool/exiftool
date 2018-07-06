@@ -7,9 +7,13 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 11.01. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+July 6, 2018 - Version 11.06
+
+  - Fixed "undefined value" bug when reading ImageSourceData from a JPEG file
+
 July 5, 2018 - Version 11.05
 
-  - Added a number of new Nikon LensID's
+  - Added a number of new Nikon LensID's (thanks Robert Rottmerhusen)
   - Fixed out-of-memory problem when writing some large TIFF images in Windows
 
 July 4, 2018 - Version 11.04

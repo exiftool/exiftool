@@ -28,7 +28,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD $iptcDigestInfo);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.61';
+$VERSION = '1.62';
 
 sub ProcessPhotoshop($$$);
 sub WritePhotoshop($$$);
@@ -820,12 +820,25 @@ sub ProcessDocumentData($$$)
     my $dirLen = $$dirInfo{DirLen};
     my $pos = 36;   # length of header
     my $buff;
-    return 0 unless $raf->Read($buff, $pos) == $pos;
-    return 0 unless $buff =~ /^Adobe Photoshop Document Data (Block|V0002)\0/;
+
+    $et->VerboseDir('Photoshop Document Data', undef, $dirLen);
+    unless ($raf) {
+        my $dataPt = $$dirInfo{DataPt};
+        my $start = $$dirInfo{DirStart} || 0;
+        $raf = new File::RandomAccess($dataPt);
+        $raf->Seek($start, 0) if $start;
+        $dirLen = length $$dataPt - $start unless defined $dirLen;
+        $et->VerboseDump($dataPt, Start => $start, Len => $dirLen, Base => $$dirInfo{Base});
+    }
+    unless ($raf->Read($buff, $pos) == $pos and
+            $buff =~ /^Adobe Photoshop Document Data (Block|V0002)\0/)
+    {
+        $et->Warn('Invalid Photoshop Document Data');
+        return 0;
+    }
     my $psb = ($1 eq 'V0002');
     my %dinfo = ( DataPt => \$buff );
     my ($n, $setOrder);
-    $et->VerboseDir('Photoshop Document Data', undef, $dirLen);
     $$et{IsPSB} = $psb; # set PSB flag (needed when handling Layers directory)
     while ($pos + 12 <= $dirLen) {
         $raf->Read($buff, 8) == 8 or last;

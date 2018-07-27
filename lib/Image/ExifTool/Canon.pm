@@ -87,7 +87,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '3.94';
+$VERSION = '3.95';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -424,10 +424,12 @@ $VERSION = '3.94';
     251 => 'Canon EF 70-200mm f/2.8L IS II USM',
     252 => 'Canon EF 70-200mm f/2.8L IS II USM + 1.4x', #50 (1.4x Mk II)
     253 => 'Canon EF 70-200mm f/2.8L IS II USM + 2x', #PH (NC)
+    # 253.1 => 'Tamron SP 70-200mm f/2.8 Di VC USD G2 (A025) + 2x', #forum9367
     254 => 'Canon EF 100mm f/2.8L Macro IS USM', #42
     255 => 'Sigma 24-105mm f/4 DG OS HSM | A or Other Sigma Lens', #50
     255.1 => 'Sigma 180mm f/2.8 EX DG OS HSM APO Macro', #50
-    368 => 'Sigma 14-24mm f/2.8 DG HSM | A', #IB (A018)
+    368 => 'Sigma 14-24mm f/2.8 DG HSM | A or other Sigma Lens', #IB (A018)
+    368.1 => 'Sigma 20mm f/1.4 DG HSM | A', #50 (newer firmware)
     # Note: LensType 488 (0x1e8) is reported as 232 (0xe8) in 7D CameraSettings
     488 => 'Canon EF-S 15-85mm f/3.5-5.6 IS USM', #PH
     489 => 'Canon EF 70-300mm f/4-5.6L IS USM', #Gerald Kapounek
@@ -436,9 +438,9 @@ $VERSION = '3.94';
     491.1 => 'Tamron SP 70-200mm f/2.8 Di VC USD G2 (A025)', #IB
     491.2 => 'Tamron 18-400mm f/3.5-6.3 Di II VC HLD (B028)', #IB
     491.3 => 'Tamron 100-400mm f/4.5-6.3 Di VC USD (A035)', #IB
-    491.4 => 'Tamron 70-210mm F/4 Di VC USD (A034)', #IB
-    491.5 => 'Tamron 70-210mm F/4 Di VC USD (A034) + 1.4x', #IB
-    491.6 => 'Tamron SP 24-70mm F/2.8 Di VC USD G2 (A032)',
+    491.4 => 'Tamron 70-210mm f/4 Di VC USD (A034)', #IB
+    491.5 => 'Tamron 70-210mm f/4 Di VC USD (A034) + 1.4x', #IB
+    491.6 => 'Tamron SP 24-70mm f/2.8 Di VC USD G2 (A032)',
     492 => 'Canon EF 400mm f/2.8L IS II USM', #PH
     493 => 'Canon EF 500mm f/4L IS II USM or EF 24-105mm f4L IS USM', #PH
     493.1 => 'Canon EF 24-105mm f/4L IS USM', #PH (should recheck this)

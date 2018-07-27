@@ -22,7 +22,7 @@ use vars qw($VERSION %samsungLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.41';
+$VERSION = '1.42';
 
 sub WriteSTMN($$$);
 sub ProcessINFO($$$);
@@ -939,10 +939,14 @@ my %formatMinMax = (
     # stuff written with "Sound & Shot" feature
     '0x0100-name' => 'EmbeddedAudioFileName',
     '0x0100' => { Name => 'EmbeddedAudioFile', Binary => 1 },
+    '0x0201-name' => 'InteractivePanoramaName',
+    '0x0201' => { Name => 'InteractivePanoramaVideo', Groups => { 2 => 'Video' }, Binary => 1 },
    # 0x0800-name - seen 'SoundShot_Meta_Info'
    # 0x0800 - (contains only already-extracted sound shot name)
    # 0x0830-name - seen '1165724808.pre'
    # 0x0830 - unknown (164004 bytes)
+   # 0x08d0-name - seen 'Interactive_Panorama_Info'
+   # 0x08d0 - unknown (7984 bytes)
    # 0x09e0-name - seen 'Burst_Shot_Info'
    # 0x09e0 - seen '489489125'
    # 0x0a01-name - seen 'Image_UTC_Data'
@@ -952,10 +956,12 @@ my %formatMinMax = (
         ValueConv => 'ConvertUnixTime($val / 1e3, 1)',
         PrintConv => '$self->ConvertDateTime($val)',
     },
+    '0x0a20-name' => 'FlipPhotoName', # ("FlipPhoto_002")
+    '0x0a20' => { Name => 'FlipPhotoImage', Groups => { 2 => 'Preview' }, Binary => 1 },
     '0x0a30-name' => 'EmbeddedVideoType', # ("MotionPhoto_Data")
     '0x0a30' => { Name => 'EmbeddedVideoFile', Binary => 1 }, #forum7161
    # 0x0aa1-name - seen 'MCC_Data'
-   # 0x0aa1 - seen '234'
+   # 0x0aa1 - seen '234','222'
     '0x0ab1-name' => 'DepthMapName', # seen 'DualShot_DepthMap_1' (SM-N950U)
     '0x0ab1' => { Name => 'DepthMapData', Binary => 1 },
    # 0x0ab3-name - seen 'DualShot_Extra_Info' (SM-N950U)

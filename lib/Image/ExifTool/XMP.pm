@@ -49,7 +49,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.14';
+$VERSION = '3.15';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -3620,7 +3620,7 @@ sub ProcessXMP($$;$)
         }
         if ($nonStd) {
             $et->Warn("Non-standard XMP at $path", 1);
-        } else {
+        } elsif (not $$dirInfo{IsExtended}) {
             $et->Warn("Duplicate XMP at $path") if $$et{DIR_COUNT}{XMP};
             $$et{DIR_COUNT}{XMP} = ($$et{DIR_COUNT}{XMP} || 0) + 1; # count standard XMP
         }

@@ -41,6 +41,7 @@
 #              28) http://wwwimages.adobe.com/www.adobe.com/content/dam/Adobe/en/devnet/cinemadng/pdfs/CinemaDNG_Format_Specification_v1_1.pdf
 #              29) http://www.libtiff.org
 #              30) http://geotiff.maptools.org/spec/geotiffhome.html
+#              31) https://android.googlesource.com/platform/external/dng_sdk/+/refs/heads/master/source/dng_tag_codes.h
 #              IB) Iliah Borg private communication (LibRaw)
 #              JD) Jens Duttke private communication
 #------------------------------------------------------------------------------
@@ -54,7 +55,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.03';
+$VERSION = '4.04';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -3793,7 +3794,17 @@ my %sampleFormat = (
         WriteGroup => 'IFD0',
         Protected => 1,
     },
-    # 0xc7aa - undocumented DNG tag written by LR4 (int32u[1] - val=256, related to fast load data?)
+    # 0xc7a9 - CacheBlob (ref 31)
+    0xc7aa => { #31 undocumented DNG tag written by LR4 (val=256, related to fast load data?)
+        Name => 'CacheVersion',
+        Writable => 'int32u',
+        WriteGroup => 'SubIFD2',
+        Format => 'int8u',
+        Count => 4,
+        Protected => 1,
+        PrintConv => '$val =~ tr/ /./; $val',
+        PrintConvInv => '$val =~ tr/./ /; $val',
+    },
     0xc7b5 => { # DNG 1.4
         Name => 'DefaultUserCrop',
         Writable => 'rational64u',
@@ -6014,7 +6025,7 @@ sub ProcessExif($$$)
                                 $msg .= " (directory end is $end but EXIF size is only $subdirDataLen)";
                             }
                         }
-                        $et->Warn($msg);
+                        $et->Warn($msg, $inMakerNotes);
                         last;
                     }
                 }

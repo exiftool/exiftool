@@ -17,7 +17,7 @@ package Image::ExifTool::Validate;
 use strict;
 use vars qw($VERSION %exifSpec);
 
-$VERSION = '1.10';
+$VERSION = '1.11';
 
 use Image::ExifTool qw(:Utils);
 use Image::ExifTool::Exif;
@@ -412,8 +412,20 @@ sub ValidateExif($$$$$$$$)
                 $et->Warn(sprintf('Non-standard %s tag 0x%.4x %s', $ifd, $tag, $$ti{Name}), 1);
             }
         }
-        if ($$ti{Count} and $$ti{Count} > 0 and $count != $$ti{Count}) {
-            $et->Warn(sprintf('Non-standard count (%d) for %s 0x%.4x %s', $count, $ifd, $tag, $$ti{Name}));
+        # change expected count from read Format to Writable size
+        my $tiCount = $$ti{Count};
+        if ($tiCount) {
+            if ($$ti{Format} and $$ti{Writable} and
+                $Image::ExifTool::Exif::formatNumber{$$ti{Format}} and
+                $Image::ExifTool::Exif::formatNumber{$$ti{Writable}})
+            {
+                my $s1 = $Image::ExifTool::Exif::formatSize[$Image::ExifTool::Exif::formatNumber{$$ti{Format}}];
+                my $s2 = $Image::ExifTool::Exif::formatSize[$Image::ExifTool::Exif::formatNumber{$$ti{Writable}}];
+                $tiCount = int($tiCount * $s1 / $s2);
+            }
+            if ($tiCount > 0 and $count != $tiCount) {
+                $et->Warn(sprintf('Non-standard count (%d) for %s 0x%.4x %s', $count, $ifd, $tag, $$ti{Name}));
+            }
         }
     } elsif (not $otherSpec{$$et{VALUE}{FileType}} or
         (not $otherSpec{$$et{VALUE}{FileType}}{$tag} and not $otherSpec{$$et{VALUE}{FileType}}{All}))

@@ -21,7 +21,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.20';
+$VERSION = '1.21';
 
 sub ProcessJpgFromRaw($$$);
 sub WriteJpgFromRaw($$$);
@@ -249,7 +249,13 @@ my %wbTypeInfo = (
         Name => 'DistortionInfo',
         SubDirectory => { TagTable => 'Image::ExifTool::PanasonicRaw::DistortionInfo' },
     },
-    # 0x11b - chromatic aberration correction (ref 3)
+    # 0x11b - chromatic aberration correction (ref 3) (also see forum9366)
+    0x11c => { #forum9373
+        Name => 'Gamma',
+        Writable => 'int16u',
+        ValueConv => '$val / 256',
+        ValueConvInv => 'int($val * 256 + 0.5)',
+    },
     0x120 => {
         Name => 'CameraIFD',
         SubDirectory => {
@@ -462,6 +468,11 @@ my %wbTypeInfo = (
         Writable => 'int16u',
         PrintConv => '"$val mm"',
         PrintConvInv => '$val=~s/\s*mm$//;$val',
+    },
+    0x1305 => { #forum9384
+        Name => 'HighISOMode',
+        Writable => 'int16u',
+        PrintConv => { 1 => 'On', 2 => 'Off' },
     },
     # 0x140b - scaled overall black level? (ref forum9281)
     # 0x1411 - scaled black level per channel difference (ref forum9281)

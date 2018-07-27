@@ -7,6 +7,17 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 11.01. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+July 27, 2018 - Version 11.07
+
+  - Added "#[CSTR]" feature to -@ argfile
+  - Added some new Sony LensType values (thanks Jos Roost)
+  - Decode more tags from Samsung trailer
+  - Decode an undocumented DNG tag
+  - Decode some new Panasonic tags (thanks Klaus Homeister)
+  - Made MakerNote "Bad SubDirectory start" warnings minor
+  - Improved/fixed a few Validate warnings
+  - Fixed NoDups() function to work with special characters as list separators
+
 July 6, 2018 - Version 11.06
 
   - Fixed "undefined value" bug when reading ImageSourceData from a JPEG file

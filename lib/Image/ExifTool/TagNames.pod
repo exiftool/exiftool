@@ -87,7 +87,8 @@ ExifTool.  A big thanks to everyone who has helped with this so far!)>
 
 =head2 JPEG Tags
 
-This table lists information extracted by ExifTool from JPEG images.
+This table lists information extracted by ExifTool from JPEG images. See
+L<https://www.w3.org/Graphics/JPEG/jfif3.pdf> for the JPEG specification.
 
   Tag ID       Tag Name                         Writable
   ------       --------                         --------
@@ -875,6 +876,7 @@ official EXIF 2.31 specification.
   0xc7a6   DefaultBlackRender        IFD0       int32u!
   0xc7a7   NewRawImageDigest         IFD0       int8u[16]!
   0xc7a8   RawToPreviewGain          IFD0       double!
+  0xc7aa   CacheVersion              SubIFD2    int32u!
   0xc7b5   DefaultUserCrop           SubIFD     rational64u[4]!
   0xea1c   Padding                   ExifIFD    undef!
   0xea1d   OffsetSchema              ExifIFD    int32s!
@@ -13047,6 +13049,7 @@ These tags are used in Panasonic/Leica cameras.
   0x0040   Saturation                           int16u
   0x0041   Sharpness                            int16u
   0x0042   FilmMode                             int16u
+  0x0043   JPEGQuality                          int16u
   0x0044   ColorTempKelvin                      int16u
   0x0045   BracketSettings                      int16u
   0x0046   WBShiftAB                            int16u
@@ -13095,10 +13098,13 @@ These tags are used in Panasonic/Leica cameras.
   0x009e   HDR                                  int16u
   0x009f   ShutterType                          int16u
   0x00a3   ClearRetouchValue                    rational64u
+  0x00a7   OutputLUT                            yes
   0x00ab   TouchAE                              int16u
+  0x00ad   HighlightShadow                      int16u[2]
   0x00af   TimeStamp                            string
   0x00bc   DiffractionCorrection                int16u
   0x0e00   PrintIM                              PrintIM
+  0x2003   TimeInfo                             Panasonic TimeInfo
   0x8000   MakerNoteVersion                     undef
   0x8001   SceneMode                            int16u
   0x8004   WBRedLevel                           int16u
@@ -13141,6 +13147,12 @@ user-supplied set of known faces.
     100    RecognizedFace3Name                  string[20]
     120    RecognizedFace3Position              int16u[4]
     128    RecognizedFace3Age                   string[20]
+
+=head3 Panasonic TimeInfo Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    PanasonicDateTime                    undef[8]
 
 =head3 Panasonic Leica2 Tags
 
@@ -13224,7 +13236,7 @@ This information is written by the M9.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
-     22    LensType                             int32u[0.25]
+     22    LensType                             int32u
 
 =head3 Panasonic Data2 Tags
 
@@ -14473,6 +14485,10 @@ as the Galaxy S4 and Tab S.
   EmbeddedImageName                             no
   EmbeddedVideoFile                             no
   EmbeddedVideoType                             no
+  FlipPhotoImage                                no
+  FlipPhotoName                                 no
+  InteractivePanoramaName                       no
+  InteractivePanoramaVideo                      no
   TimeStamp                                     no
 
 =head3 Samsung DualShotInfo Tags
@@ -16950,6 +16966,7 @@ These tags are found in IFD0 of Panasonic/Leica RAW, RW2 and RWL images.
   0x0117   StripByteCounts                      no
   0x0118   RawDataOffset                        no
   0x0119   DistortionInfo                       PanasonicRaw DistortionInfo
+  0x011c   Gamma                                int16u
   0x0120   CameraIFD                            PanasonicRaw CameraIFD
   0x0121   Multishot                            int32u
   0x02bc   ApplicationNotes                     XMP
@@ -17020,6 +17037,7 @@ Lens distortion correction information.
   0x1101   FocusStepCount                       int16s
   0x1200   LensAttached                         int32u
   0x1203   FocalLengthIn35mmFormat              int16u
+  0x1305   HighISOMode                          int16u
   0x3200   WB_CFA0_LevelDaylight                int16u
   0x3201   WB_CFA1_LevelDaylight                int16u
   0x3202   WB_CFA2_LevelDaylight                int16u

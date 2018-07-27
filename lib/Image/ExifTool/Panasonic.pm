@@ -24,6 +24,7 @@
 #              18) Thomas Modes private communication (G6)
 #              19) http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,5533.0.html
 #              20) Bernd-Michael Kemper private communication (DMC-GX80/85)
+#              21) Klaus Homeister forum post
 #              JD) Jens Duttke private communication (TZ3,FZ30,FZ50)
 #------------------------------------------------------------------------------
 
@@ -34,7 +35,7 @@ use vars qw($VERSION %leicaLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.99';
+$VERSION = '2.00';
 
 sub ProcessLeicaLEIC($$$);
 sub WhiteBalanceConv($;$$);
@@ -264,13 +265,14 @@ my %shootingMode = (
     0x01 => {
         Name => 'ImageQuality',
         Writable => 'int16u',
+        Notes => 'quality of the main image, which may be in a different file',
         PrintConv => {
             1 => 'TIFF', #PH (FZ20)
             2 => 'High',
             3 => 'Normal',
             # 5 - seen this for 1920x1080, 30fps SZ7 video - PH
             6 => 'Very High', #3 (Leica)
-            7 => 'Raw', #3 (Leica)
+            7 => 'RAW', #3 (Leica)
             9 => 'Motion Picture', #PH (LZ6)
             11 => 'Full HD Movie', #PH (V-LUX)
             12 => '4k Movie', #PH (V-LUX)
@@ -784,7 +786,17 @@ my %shootingMode = (
             # 12 => 'Multi Film'? (in the GH1 specs)
         },
     },
-    # 0x43 - int16u: 2,3
+    0x43 => { #forum9369
+        Name => 'JPEGQuality',
+        Writable => 'int16u',
+        PrintConv => {
+            0 => 'n/a (Movie)',
+            2 => 'High',
+            3 => 'Standard',
+            6 => 'Very High',
+            255 => 'n/a (RAW only)',
+        },
+    },
     0x44 => {
         Name => 'ColorTempKelvin',
         Format => 'int16u',
@@ -884,7 +896,7 @@ my %shootingMode = (
         ValueConv => '$val=~s/ +$//; $val', # trim trailing spaces
         ValueConvInv => '$val',
     },
-    # 0x55 - int16u: 1
+    # 0x55 - int16u: 1 (see forum9372)
     # 0x57 - int16u: 0
     0x59 => { #PH (FS7)
         Name => 'Transform',
@@ -1170,12 +1182,26 @@ my %shootingMode = (
         Writable => 'rational64u',
         # undef if ClearRetouch is off, 0 if it is on
     },
+    0xa7 => { #forum9374 (conversion table for 14- to 16-bit mapping)
+        Name => 'OutputLUT',
+        Binary => 1,
+        Notes => q{
+            2-column by 432-row binary lookup table of unsigned short values for
+            converting to 16-bit output (1st column) from 14 bits (2nd column) with
+            camera contrast
+        },
+    },
     0xab => { #18
         Name => 'TouchAE',
         Writable => 'int16u',
         PrintConv => { 0 => 'Off', 1 => 'On' },
     },
-    0xaf => { #PH
+    0xad => { #forum9360
+        Name => 'HighlightShadow',
+        Writable => 'int16u',
+        Count => 2,
+    },
+    0xaf => { #PH (is this in UTC maybe? -- sometimes different time zone other times)
         Name => 'TimeStamp',
         Writable => 'string',
         Groups => { 2 => 'Time' },
@@ -1192,9 +1218,11 @@ my %shootingMode = (
         Name => 'PrintIM',
         Description => 'Print Image Matching',
         Writable => 0,
-        SubDirectory => {
-            TagTable => 'Image::ExifTool::PrintIM::Main',
-        },
+        SubDirectory => { TagTable => 'Image::ExifTool::PrintIM::Main' },
+    },
+    0x2003 => { #21
+        Name => 'TimeInfo',
+        SubDirectory => { TagTable => 'Image::ExifTool::Panasonic::TimeInfo' },
     },
     0x8000 => { #PH
         Name => 'MakerNoteVersion',
@@ -1599,6 +1627,35 @@ my %shootingMode = (
     # 0x3903 - larger binary data block
 );
 
+# time stamp information (ref 21)
+%Image::ExifTool::Panasonic::TimeInfo = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    WRITE_PROC => \&Image::ExifTool::WriteBinaryData,
+    CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
+    GROUPS => { 0 => 'MakerNotes', 1 => 'Panasonic', 2 => 'Image' },
+    FIRST_ENTRY => 0,
+    WRITABLE => 1,
+    0 => {
+        Name => 'PanasonicDateTime',
+        Groups => { 2 => 'Time' },
+        Shift => 'Time',
+        Format => 'undef[8]',
+        RawConv => '$val =~ /^\0/ ? undef : $val',
+        ValueConv => 'sprintf("%s:%s:%s %s:%s:%s.%s", unpack "H4H2H2H2H2H2H2", $val)',
+        ValueConvInv => q{
+            $val =~ s/[-+].*//;     # remove time zone
+            $val =~ tr/0-9//dc;     # remove non-digits
+            $val = pack("H*",$val);
+            $val .= "\0" while length $val < 8;
+            return $val;
+        },
+        PrintConv => '$self->ConvertDateTime($val)',
+        PrintConvInv => '$self->InverseDateTime($val)',
+    },
+    # 8 - 8 bytes usually 8 x 0xff (spot for another date/time?)
+    # 16 - 4 bytes (only set when PanasonicDateTime is valid, sub-seconds maybe? ref 21)
+);
+
 %Image::ExifTool::Panasonic::Data1 = (
     PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
     WRITE_PROC => \&Image::ExifTool::WriteBinaryData,
@@ -1609,7 +1666,7 @@ my %shootingMode = (
     FIRST_ENTRY => 0,
     0x0016 => {
         Name => 'LensType',
-        Writable => 'int32u',
+        Format => 'int32u',
         Priority => 0,
         SeparateTable => 1,
         ValueConv => '($val >> 2) . " " . ($val & 0x3)',
@@ -1639,6 +1696,10 @@ my %shootingMode = (
         Notes => 'Leica T only',
         Writable => 'string',
     },
+    # 0x0304 - int8u[1]: may be M-lens ID for Leica SL, mounted through "M-adapter L" (ref IB)
+    #          --> int8u[4] for some models (maybe not lens ID for these?) - PH
+    #          (see http://us.leica-camera.com/Photography/Leica-APS-C/Lenses-for-Leica-TL/L-Adapters/M-Adapter-L)
+    #          58 = 'Leica Noctilux-M 75mm F1.25 ASPH (Typ 601) on Leica SL
     0x0305 => { #IB
         Name => 'SerialNumber',
         Writable => 'int32u',

@@ -3073,7 +3073,7 @@ sub NoDups
 {
     my %seen;
     my $sep = $advFmtSelf ? $$advFmtSelf{OPTIONS}{ListSep} : ', ';
-    my $new = join $sep, grep { !$seen{$_}++ } split /$sep/, $_;
+    my $new = join $sep, grep { !$seen{$_}++ } split /\Q$sep\E/, $_;
     $_ = ($_[0] and $new eq $_) ? undef : $new;
 }
 

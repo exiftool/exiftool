@@ -11,14 +11,17 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.25';
+$VERSION = '1.26';
 
 sub ProcessOcad($$$);
 sub ProcessJPEG_HDR($$$);
 
 # (this main JPEG table is for documentation purposes only)
 %Image::ExifTool::JPEG::Main = (
-    NOTES => 'This table lists information extracted by ExifTool from JPEG images.',
+    NOTES => q{
+        This table lists information extracted by ExifTool from JPEG images. See
+        L<https://www.w3.org/Graphics/JPEG/jfif3.pdf> for the JPEG specification.
+    },
     APP0 => [{
         Name => 'JFIF',
         Condition => '$$valPt =~ /^JFIF\0/',

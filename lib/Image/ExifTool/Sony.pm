@@ -32,7 +32,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.88';
+$VERSION = '2.90';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -77,7 +77,8 @@ my %sonyLensTypes2 = (
     32791 => 'Sony E 16-70mm F4 ZA OSS',        # VX9107
     32792 => 'Sony E 10-18mm F4 OSS',           # VX9108
     32793 => 'Sony E PZ 16-50mm F3.5-5.6 OSS',  # VX9109
-    32794 => 'Sony FE 35mm F2.8 ZA',            # VX9110
+    32794 => 'Sony FE 35mm F2.8 ZA or Samyang AF 24mm F2.8 FE', # VX9110
+    32794.1 => 'Samyang AF 24mm F2.8 FE', #JR
     32795 => 'Sony FE 24-70mm F4 ZA OSS',       # VX9111
     32796 => 'Sony FE 85mm F1.8', #JR
     32797 => 'Sony E 18-200mm F3.5-6.3 OSS LE', # VX9113
@@ -126,6 +127,7 @@ my %sonyLensTypes2 = (
     33077 => 'Sony FE 100-400mm F4.5-5.6 GM OSS + 1.4X Teleconverter', #JR
     33078 => 'Sony FE 100-400mm F4.5-5.6 GM OSS + 2X Teleconverter', #JR
     33079 => 'Sony FE 400mm F2.8 GM OSS + 1.4X Teleconverter', #IB
+    33080 => 'Sony FE 400mm F2.8 GM OSS + 2x Teleconverter', #JR
 
     49201 => 'Zeiss Touit 12mm F2.8', #JR (lens firmware Ver.02)
     49202 => 'Zeiss Touit 32mm F1.8', #JR (lens firmware Ver.02)
@@ -155,8 +157,10 @@ my %sonyLensTypes2 = (
     50492 => 'Sigma 24-105mm F4 DG OS HSM | A + MC-11', #JR (013)
     50493 => 'Sigma 17-70mm F2.8-4 DC MACRO OS HSM | C + MC-11', #JR (013)
     50495 => 'Sigma 50-100mm F1.8 DC HSM | A + MC-11', #JR (016)
+    50499 => 'Sigma 85mm F1.4 DG HSM | A', #JR
     50501 => 'Sigma 100-400mm F5-6.3 DG OS HSM | C + MC-11', #JR (017)
     50503 => 'Sigma 16mm F1.4 DC DN | C', #JR (017)
+    50513 => 'Sigma 70mm F2.8 DG MACRO | A', #JR (018)
 
     50992 => 'Voigtlander SUPER WIDE-HELIAR 15mm F4.5 III', #JR
     50993 => 'Voigtlander HELIAR-HYPER WIDE 10mm F5.6', #IB
@@ -1415,6 +1419,8 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
         Writable => 'string',
         ValueConv => '$val=~s/(\d{2})(\d{2})(\d{2})(\d{2})/$4$3$2$1/; $val=~s/^0//; $val', # (NC)
         ValueConvInv => '$val="0$val" if length($val)==7; $val=~s/(\d{2})(\d{2})(\d{2})(\d{2})/$4$3$2$1/; $val',
+        PrintConv => 'sprintf("%.8d",$val)',
+        PrintConvInv => '$val',
     },
     0x3000 => {
         Name => 'ShotInfo',

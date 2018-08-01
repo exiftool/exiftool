@@ -14478,6 +14478,8 @@ as the Galaxy S4 and Tab S.
   --------                                      --------
   DepthMapData                                  no
   DepthMapName                                  no
+  DualCameraImage                               no
+  DualCameraImageName                           no
   DualShotInfo                                  Samsung DualShotInfo
   EmbeddedAudioFile                             no
   EmbeddedAudioFileName                         no
@@ -14485,10 +14487,8 @@ as the Galaxy S4 and Tab S.
   EmbeddedImageName                             no
   EmbeddedVideoFile                             no
   EmbeddedVideoType                             no
-  FlipPhotoImage                                no
-  FlipPhotoName                                 no
-  InteractivePanoramaName                       no
-  InteractivePanoramaVideo                      no
+  SurroundShotVideo                             no
+  SurroundShotVideoName                         no
   TimeStamp                                     no
 
 =head3 Samsung DualShotInfo Tags
@@ -17033,8 +17033,10 @@ Lens distortion correction information.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
+  0x1001   MultishotOn                          int32u
   0x1100   FocusStepNear                        int16s
   0x1101   FocusStepCount                       int16s
+  0x1105   ZoomPosition                         int32u
   0x1200   LensAttached                         int32u
   0x1203   FocalLengthIn35mmFormat              int16u
   0x1305   HighISOMode                          int16u
@@ -17255,6 +17257,7 @@ specification.
   'Preview'                        PreviewImage no
   'Property'                       PreviewInfo  FlashPix PreviewInfo
   'Subimage 0000 Header'           SubimageHdr  FlashPix SubimageHdr
+  'WordDocument'                   WordDocument FlashPix WordDocument
 
 =head3 FlashPix CompObj Tags
 
@@ -17523,6 +17526,26 @@ Preview information written by some FujiFilm models.
       4    SubimageTileWidth                    no
       5    SubimageTileHeight                   no
       6    NumChannels                          no
+
+=head3 FlashPix WordDocument Tags
+
+Tags extracted from the Microsoft Word document stream.
+
+  Index2   Tag Name                             Writable
+  ------   --------                             --------
+      0    Identification                       no
+      3    LanguageCode                         no
+      5    DocFlags                             no
+    9.1    System                               no
+    9.2    Word97                               no
+
+=head3 FlashPix DocTable Tags
+
+Tags extracted from the Microsoft Word document table.
+
+  Tag ID               Tag Name                 Writable
+  ------               --------                 --------
+  'LastSavedBy'        LastSavedBy              no
 
 =head2 MPF Tags
 
@@ -30606,6 +30629,7 @@ DLL libraries.
   ------   --------                             --------
       0    MachineType                          no
       2    TimeStamp                            no
+      9    ImageFileCharacteristics             no
      10    PEType                               no
      11    LinkerVersion                        no
      12    CodeSize                             no

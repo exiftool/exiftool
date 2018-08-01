@@ -21,7 +21,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.21';
+$VERSION = '1.22';
 
 sub ProcessJpgFromRaw($$$);
 sub WriteJpgFromRaw($$$);
@@ -253,7 +253,7 @@ my %wbTypeInfo = (
     0x11c => { #forum9373
         Name => 'Gamma',
         Writable => 'int16u',
-        ValueConv => '$val / 256',
+        ValueConv => '$val / ($val >= 1024 ? 1024 : ($val >= 256 ? 256 : 100))',
         ValueConvInv => 'int($val * 256 + 0.5)',
     },
     0x120 => {
@@ -448,6 +448,11 @@ my %wbTypeInfo = (
     # (don't know what format codes 0x101 and 0x102 are for, so just
     #  map them into 4 = int32u for now)
     VARS => { MAP_FORMAT => { 0x101 => 4, 0x102 => 4 } },
+    0x1001 => { #forum9388
+        Name => 'MultishotOn',
+        Writable => 'int32u',
+        PrintConv => { 0 => 'No', 1 => 'Yes' },
+    },
     0x1100 => { #forum9274
         Name => 'FocusStepNear',
         Writable => 'int16s',
@@ -457,12 +462,18 @@ my %wbTypeInfo = (
         Writable => 'int16s',
     },
     # 0x1104 - set when camera shoots on lowest possible Extended-ISO (forum9290)
+    0x1105 => { #forum9392
+        Name => 'ZoomPosition',
+        Notes => 'in the range 0-255 for most cameras',
+        Writable => 'int32u',
+    },
     0x1200 => { #forum9278
         Name => 'LensAttached',
         Notes => 'many CameraIFD tags are invalid if there is no lens attached',
         Writable => 'int32u',
         PrintConv => { 0 => 'No', 1 => 'Yes' },
     },
+    # 1201 - LensStyle? ref forum9394
     0x1203 => { #4
         Name => 'FocalLengthIn35mmFormat',
         Writable => 'int16u',
@@ -472,6 +483,7 @@ my %wbTypeInfo = (
     0x1305 => { #forum9384
         Name => 'HighISOMode',
         Writable => 'int16u',
+        RawConv => '$val || undef',
         PrintConv => { 1 => 'On', 2 => 'Off' },
     },
     # 0x140b - scaled overall black level? (ref forum9281)

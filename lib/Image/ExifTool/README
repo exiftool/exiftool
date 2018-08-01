@@ -562,7 +562,7 @@ numerical.
                   key.  The subroutine takes 2 arguments: the Raw value and a
                   reference to the current ExifTool object.  The advanced
                   formatting expression (if any) may be accessed via the
-                  ExifTool "FMT_EXPR" member variable. The expression or
+                  ExifTool "FMT_EXPR" member variable.  The expression or
                   subroutine is evaluated if and when the tag value is requested
                   (ie. only after all extraction is complete), so if necessary
                   at this time the values of all other tags are available via

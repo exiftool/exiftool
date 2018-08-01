@@ -125,6 +125,11 @@ specification.</p>
 <td>SubimageHdr</td>
 <td class=c>-</td>
 <td>--&gt; <a href='FlashPix.html#SubimageHdr'>FlashPix SubimageHdr Tags</a></td></tr>
+<tr class=b>
+<td>'WordDocument'</td>
+<td>WordDocument</td>
+<td class=c>-</td>
+<td>--&gt; <a href='FlashPix.html#WordDocument'>FlashPix WordDocument Tags</a></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='CompObj'>FlashPix CompObj Tags</a></h2>
@@ -1467,9 +1472,136 @@ property tables, even though they are only listed in the SummaryInfo table.</p>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='WordDocument'>FlashPix WordDocument Tags</a></h2>
+<p>Tags extracted from the Microsoft Word document stream.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index2</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>Identification</td>
+<td class=c>no</td>
+<td><span class=s>0x626a = Word 98 Mac
+  <br>0x6a62 = MS Word 97
+  <br>0xa5dc = Word 6.0/7.0
+  <br>0xa5ec = Word 8.0</span></td></tr>
+<tr class=b>
+<td class=r title='3 = 0x3'>3</td>
+<td>LanguageCode</td>
+<td class=c>no</td>
+<td><table class=cols><tr>
+  <td>0x400 = None
+  <br>0x401 = Arabic
+  <br>0x402 = Bulgarian
+  <br>0x403 = Catalan
+  <br>0x404 = Traditional Chinese
+  <br>0x405 = Czech
+  <br>0x406 = Danish
+  <br>0x407 = German
+  <br>0x408 = Greek
+  <br>0x409 = English (US)
+  <br>0x40a = Spanish (Castilian)
+  <br>0x40b = Finnish
+  <br>0x40c = French
+  <br>0x40d = Hebrew
+  <br>0x40e = Hungarian
+  <br>0x40f = Icelandic
+  <br>0x410 = Italian
+  <br>0x411 = Japanese
+  <br>0x412 = Korean
+  <br>0x413 = Dutch
+  <br>0x414 = Norwegian (Bokmal)
+  <br>0x415 = Polish
+  <br>0x416 = Portuguese (Brazilian)
+  <br>0x417 = Rhaeto-Romanic
+  <br>0x418 = Romanian
+  <br>0x419 = Russian
+  <br>0x41a = Croato-Serbian (Latin)
+  <br>0x41b = Slovak
+  <br>0x41c = Albanian
+  <br>0x41d = Swedish
+  <br>0x41e = Thai
+  <br>0x41f = Turkish
+  <br>0x420 = Urdu
+  <br>0x421 = Bahasa
+  <br>0x422 = Ukrainian
+  <br>0x423 = Byelorussian
+  <br>0x424 = Slovenian
+  <br>0x425 = Estonian
+  <br>0x426 = Latvian
+  <br>0x427 = Lithuanian
+  <br>0x429 = Farsi
+  <br>0x42d = Basque
+  <br>0x42f = Macedonian
+  <br>0x436 = Afrikaans
+  <br>0x43e = Malaysian
+  <br>0x804 = Simplified Chinese
+  <br>0x807 = German (Swiss)
+  <br>0x809 = English (British)
+  <br>0x80a = Spanish (Mexican)
+  <br>0x80c = French (Belgian)
+  <br>0x810 = Italian (Swiss)
+  <br>0x813 = Dutch (Belgian)
+  <br>0x814 = Norwegian (Nynorsk)
+  <br>0x816 = Portuguese
+  <br>0x81a = Serbo-Croatian (Cyrillic)
+  <br>0xc09 = English (Australian)
+  <br>0xc0c = French (Canadian)
+  <br>0x100c = French (Swiss)</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='5 = 0x5'>5</td>
+<td>DocFlags</td>
+<td class=c>no</td>
+<td><span class=s>[Mask 0xff0f]</span><table class=cols><tr>
+  <td>Bit 0 = Template
+  <br>Bit 1 = AutoText only
+  <br>Bit 2 = Complex
+  <br>Bit 3 = Has picture
+  <br>Bit 8 = Encrypted
+  <br>Bit 9 = 1Table</td><td>&nbsp;&nbsp;</td>
+  <td>Bit 10 = Read only
+  <br>Bit 11 = Passworded
+  <br>Bit 12 = ExtChar
+  <br>Bit 13 = Load override
+  <br>Bit 14 = Far east
+  <br>Bit 15 = Obfuscated</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='9 = 0x9'>9.1</td>
+<td>System</td>
+<td class=c>no</td>
+<td><span class=s>[Mask 0x01]
+  <br>0x0 = Windows
+  <br>0x1 = Macintosh</span></td></tr>
+<tr>
+<td class=r title='9 = 0x9'>9.2</td>
+<td>Word97</td>
+<td class=c>no</td>
+<td><span class=s>[Mask 0x10]
+  <br>0x0 = No
+  <br>0x10 = Yes</span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='DocTable'>FlashPix DocTable Tags</a></h2>
+<p>Tags extracted from the Microsoft Word document table.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'LastSavedBy'</td>
+<td>LastSavedBy</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Nov 22, 2016</i>
+<br><i>Last revised Jul 31, 2018</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

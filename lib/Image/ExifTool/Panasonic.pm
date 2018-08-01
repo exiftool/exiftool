@@ -1669,7 +1669,7 @@ my %shootingMode = (
         Format => 'int32u',
         Priority => 0,
         SeparateTable => 1,
-        ValueConv => '($val >> 2) . " " . ($val & 0x3)',
+        ValueConv => '(($val >> 2) & 0xffff) . " " . ($val & 0x3)',
         ValueConvInv => \&LensTypeConvInv,
         PrintConv => \%leicaLensTypes,
     },

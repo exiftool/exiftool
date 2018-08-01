@@ -18,7 +18,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.05';
+$VERSION = '1.06';
 
 sub ParseAnt($);
 sub ProcessAnt($$$);
@@ -227,6 +227,8 @@ Tok: for (;;) {
                 last unless $tok =~ /(\\+)$/ and length($1) & 0x01;
                 $tok .= '"';    # quote is part of the string
             }
+            # must protect unescaped "$" and "@" symbols, and "\" at end of string
+            $tok =~ s{\\(.)|([\$\@]|\\$)}{'\\'.($2 || $1)}sge;
             # convert C escape sequences (allowed in quoted text)
             $tok = eval qq{"$tok"};
         } else {                # key name

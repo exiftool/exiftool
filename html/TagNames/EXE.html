@@ -55,52 +55,74 @@ DLL libraries.</p>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td class=r title='9 = 0x9'>9</td>
+<td>ImageFileCharacteristics</td>
+<td class=c>no</td>
+<td><table class=cols><tr>
+  <td>Bit 0 = No relocs
+  <br>Bit 1 = Executable
+  <br>Bit 2 = No line numbers
+  <br>Bit 3 = No symbols
+  <br>Bit 4 = Aggressive working-set trim
+  <br>Bit 5 = Large address aware
+  <br>Bit 7 = Bytes reversed lo
+  <br>Bit 8 = 32-bit
+  <br>Bit 9 = No debug
+  <br>Bit 10 = Removable run from swap
+  <br>Bit 11 = Net run from swap
+  <br>Bit 12 = System file
+  <br>Bit 13 = DLL
+  <br>Bit 14 = Uniprocessor only
+  <br>Bit 15 = Bytes reversed hi</td></tr></table>
+</td></tr>
+<tr class=b>
 <td class=r title='10 = 0xa'>10</td>
 <td>PEType</td>
 <td class=c>no</td>
-<td><span class=s>0x10b = PE32
+<td><span class=s>0x107 = ROM Image
+  <br>0x10b = PE32
   <br>0x20b = PE32+</span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='11 = 0xb'>11</td>
 <td>LinkerVersion</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='12 = 0xc'>12</td>
 <td>CodeSize</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='14 = 0xe'>14</td>
 <td>InitializedDataSize</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='16 = 0x10'>16</td>
 <td>UninitializedDataSize</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='18 = 0x12'>18</td>
 <td>EntryPoint</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='30 = 0x1e'>30</td>
 <td>OSVersion</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='32 = 0x20'>32</td>
 <td>ImageVersion</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='34 = 0x22'>34</td>
 <td>SubsystemVersion</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='44 = 0x2c'>44</td>
 <td>Subsystem</td>
 <td class=c>no</td>
@@ -735,7 +757,7 @@ libraries.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Apr 14, 2016</i>
+<br><i>Last revised Jul 30, 2018</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

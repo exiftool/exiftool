@@ -1397,6 +1397,11 @@ processing pass to read tags from the file, but most of this delay may be
 avoided with the <code>-fast3</code> option.)
 <pre>exiftool '-comment&lt;line 1$/line 2' image.jpg
 </pre></li>
+<li>Use the "<code>#[CSTR]</code>" feature to allow C-style escape sequences in
+a <code>-@</code> argfile.  For example, this command:
+<pre>exiftool -@ test.args image.jpg</pre>
+with this "test.args" file:
+<pre>#[CSTR]-comment=line 1\nline 2</pre></li>
 </ol>
 </blockquote>
 
@@ -1651,7 +1656,7 @@ technique for shifting a date/time value when copying:
 </blockquote>
 
 <hr>
-<i>Last revised May 16, 2018</i>
+<i>Last revised July 27, 2018</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

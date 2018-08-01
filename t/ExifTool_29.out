@@ -127,7 +127,7 @@
 [MakerNotes, Qualcomm, Camera] asf5_exposure_index_2 - ASF5 Exposure Index 2: ###
 [MakerNotes, Qualcomm, Camera] asf5_max_exposure_index - ASF5 Max Exposure Index: ###
 [MakerNotes, Samsung, Other] 0x0100-name - Embedded Audio File Name: SoundShot_###
-[MakerNotes, Samsung, Other] 0x0100 - Embedded Audio File: (Binary data 16 bytes)
+[MakerNotes, Samsung, Audio] 0x0100 - Embedded Audio File: (Binary data 16 bytes)
 [APP0, AVI1, Image] 0 - Interleaved Field: Not_Interleaved
 [XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool_#.##
 [XMP, XMP-rdf, Document] about - About: uuid:#####b##-####-fa##-####-#f#ed##cd##d

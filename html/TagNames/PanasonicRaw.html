@@ -509,15 +509,26 @@ noise-reduction strengths the R, G and B channels)</span></span></td></tr>
 <tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
+<td title='0x1001 = 4097'>0x1001</td>
+<td>MultishotOn</td>
+<td class=c>int32u</td>
+<td><span class=s>0 = No
+  <br>1 = Yes</span></td></tr>
+<tr class=b>
 <td title='0x1100 = 4352'>0x1100</td>
 <td>FocusStepNear</td>
 <td class=c>int16s</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x1101 = 4353'>0x1101</td>
 <td>FocusStepCount</td>
 <td class=c>int16s</td>
 <td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1105 = 4357'>0x1105</td>
+<td>ZoomPosition</td>
+<td class=c>int32u</td>
+<td><span class=s><span class=n>(in the range 0-255 for most cameras)</span></span></td></tr>
 <tr>
 <td title='0x1200 = 4608'>0x1200</td>
 <td>LensAttached</td>
@@ -584,7 +595,7 @@ noise-reduction strengths the R, G and B channels)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jul 26, 2018</i>
+<br><i>Last revised Jul 31, 2018</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

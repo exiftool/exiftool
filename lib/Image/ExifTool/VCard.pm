@@ -17,7 +17,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.04';
+$VERSION = '1.05';
 
 my %unescapeVCard = ( '\\'=>'\\', ','=>',', 'n'=>"\n", 'N'=>"\n" );
 
@@ -193,14 +193,13 @@ sub DecodeVCardText($$;$)
             $val =~ s/=([0-9a-f]{2})/chr(hex($1))/ige;
         }
         $val = $et->Decode($val, 'UTF8');   # convert from UTF-8
-        # split into separate items if it contains an unescaped comma
-        my $list = $val =~ s/(^|[^\\])((\\\\)*),/$1$2\0/g;
+        # convert unescaped commas to nulls to separate list items
+        $val =~ s/(\\.)|(,)/$1 || "\0"/sge;
         # unescape necessary characters in value
         $val =~ s/\\(.)/$unescapeVCard{$1}||$1/sge;
-        if ($list) {
-            my @vals = split /\0/, $val;
-            $val = \@vals;
-        }
+        # split into list if necessary
+        my @vals = split /\0/, $val;
+        $val = \@vals if @vals > 1;
     }
     return $val;
 }

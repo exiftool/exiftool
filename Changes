@@ -7,6 +7,16 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 11.01. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Aug. 1, 2018 - Version 11.08
+
+  - Decode more from Microsoft Word documents, including LastSavedBy tags
+  - Decode image file characteristics from Windows EXE files
+  - Decode more PanasonicRaw tags (thanks Klaus Homeister)
+  - Changed names of new Samsung trailer tags
+  - Improved identification of 64-bit Windows EXE files
+  - Fixed potential problems converting C-style escaped strings
+  - Fixed new "#[CSTR]" feature to work with -stay_open option
+
 July 27, 2018 - Version 11.07
 
   - Added "#[CSTR]" feature to -@ argfile
@@ -14,8 +24,8 @@ July 27, 2018 - Version 11.07
   - Decode more tags from Samsung trailer
   - Decode an undocumented DNG tag
   - Decode some new Panasonic tags (thanks Klaus Homeister)
-  - Made MakerNote "Bad SubDirectory start" warnings minor
   - Improved/fixed a few Validate warnings
+  - Made MakerNote "Bad SubDirectory start" warnings minor
   - Fixed NoDups() function to work with special characters as list separators
 
 July 6, 2018 - Version 11.06

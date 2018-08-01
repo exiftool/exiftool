@@ -933,14 +933,12 @@ my %formatMinMax = (
         features (such as "Sound & Shot" or "Shot & More") from Samsung models such
         as the Galaxy S4 and Tab S.
     },
-    # stuff written with "Shot & More" feature
-    '0x0001-name' => 'EmbeddedImageName',
+    '0x0001-name' => 'EmbeddedImageName', # ("DualShot_1","DualShot_2")
     '0x0001' => { Name => 'EmbeddedImage', Groups => { 2 => 'Preview' }, Binary => 1 },
-    # stuff written with "Sound & Shot" feature
-    '0x0100-name' => 'EmbeddedAudioFileName',
-    '0x0100' => { Name => 'EmbeddedAudioFile', Binary => 1 },
-    '0x0201-name' => 'InteractivePanoramaName',
-    '0x0201' => { Name => 'InteractivePanoramaVideo', Groups => { 2 => 'Video' }, Binary => 1 },
+    '0x0100-name' => 'EmbeddedAudioFileName', # ("SoundShot_000")
+    '0x0100' => { Name => 'EmbeddedAudioFile', Groups => { 2 => 'Audio' }, Binary => 1 },
+    '0x0201-name' => 'SurroundShotVideoName', # ("Interactive_Panorama_000")
+    '0x0201' => { Name => 'SurroundShotVideo', Groups => { 2 => 'Video' }, Binary => 1 },
    # 0x0800-name - seen 'SoundShot_Meta_Info'
    # 0x0800 - (contains only already-extracted sound shot name)
    # 0x0830-name - seen '1165724808.pre'
@@ -956,10 +954,10 @@ my %formatMinMax = (
         ValueConv => 'ConvertUnixTime($val / 1e3, 1)',
         PrintConv => '$self->ConvertDateTime($val)',
     },
-    '0x0a20-name' => 'FlipPhotoName', # ("FlipPhoto_002")
-    '0x0a20' => { Name => 'FlipPhotoImage', Groups => { 2 => 'Preview' }, Binary => 1 },
+    '0x0a20-name' => 'DualCameraImageName', # ("FlipPhoto_002")
+    '0x0a20' => { Name => 'DualCameraImage', Groups => { 2 => 'Preview' }, Binary => 1 },
     '0x0a30-name' => 'EmbeddedVideoType', # ("MotionPhoto_Data")
-    '0x0a30' => { Name => 'EmbeddedVideoFile', Binary => 1 }, #forum7161
+    '0x0a30' => { Name => 'EmbeddedVideoFile', Groups => { 2 => 'Video' }, Binary => 1 }, #forum7161
    # 0x0aa1-name - seen 'MCC_Data'
    # 0x0aa1 - seen '234','222'
     '0x0ab1-name' => 'DepthMapName', # seen 'DualShot_DepthMap_1' (SM-N950U)

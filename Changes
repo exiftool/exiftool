@@ -7,13 +7,20 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 11.01. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Aug. 13, 2018 - Version 11.09
+
+  - Added new Pentax and Canon LensType values
+  - Decode Google Camera Motion metadata from MP4 videos
+  - Decode more PanasonicRaw tags (thanks Klaus Homeister)
+  - Removed warning when multiple Word document LastSavedBy tags exist and the
+    Duplicates option wasn't enabled (added Note in tag name docs instead)
+
 Aug. 1, 2018 - Version 11.08
 
-  - Decode more from Microsoft Word documents, including LastSavedBy tags
+  - Decode more tags from Microsoft Word documents, including LastSavedBy
   - Decode image file characteristics from Windows EXE files
   - Decode more PanasonicRaw tags (thanks Klaus Homeister)
   - Changed names of new Samsung trailer tags
-  - Improved identification of 64-bit Windows EXE files
   - Fixed potential problems converting C-style escaped strings
   - Fixed new "#[CSTR]" feature to work with -stay_open option
 
@@ -343,7 +350,7 @@ Jan. 8, 2018 - Version 10.74
   - Added a new Sony/Minolta lens (thanks Jos Roost)
   - Added print conversion for ICC_Profile DeviceManufacturer and ProfileCreator
   - Added informational warning when the ExtractEmbedded option may be useful
-  - Improved experimental validate feature for RAW files
+  - Improved experimental Validate feature for RAW files
   - Fixed bug in experimental Validate feature that could cause out-of-memory
     error when combined with "-use mwg"
 

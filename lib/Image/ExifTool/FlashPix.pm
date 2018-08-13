@@ -20,7 +20,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::ASF;   # for GetGUID()
 
-$VERSION = '1.31';
+$VERSION = '1.33';
 
 sub ProcessFPX($$);
 sub ProcessFPXR($$$);
@@ -1175,7 +1175,11 @@ my %fpxFileType = (
 %Image::ExifTool::FlashPix::DocTable = (
     GROUPS => { 2 => 'Document' },
     NOTES => 'Tags extracted from the Microsoft Word document table.',
-    LastSavedBy => { },
+    VARS => { NO_ID => 1 },
+    LastSavedBy => {
+        Groups => { 2 => 'Author' },
+        Notes => 'enable Duplicates option to extract history of up to 10 entries',
+    },
 );
 
 # FujiFilm "Property" information (ref PH)
@@ -1412,35 +1416,32 @@ sub ProcessContents($$$)
 
 #------------------------------------------------------------------------------
 # Extract last-saved-by names (ref 5)
-# Inputs: 0) ExifTool object ref, 1) data ref, 2) tag table ref
+# Inputs: 0) ExifTool object ref, 1) dirInfo ref, 2) tag table ref
 # Returns: 1 on success
 sub ProcessLastSavedBy($$$)
 {
-    my ($et, $dataPt, $tagTablePtr) = @_;
-    my $dirLen = length $$dataPt;
-    return 0 unless $dirLen > 6;
-	my $num = unpack('v', substr($$dataPt, 2, 2));
-	my $pos = 6;
-	my ($len, $str, $i);
-	for ($i=0; $i<$num/2; ++$i) {
-	    last if $pos + 2 > $dirLen;
-		$len = unpack('v', substr($$dataPt, $pos, 2));
+    my ($et, $dirInfo, $tagTablePtr) = @_;
+    my $dataPt = $$dirInfo{DataPt};
+    my $pos = $$dirInfo{DirStart};
+    my $end = $$dirInfo{DirLen} + $pos;
+    return 0 if $pos + 6 > $end;
+	my $num = Get16u($dataPt, $pos+2);
+	$pos += 6;
+	while ($num >= 2) {
+	    last if $pos + 2 > $end;
+		my $len = Get16u($dataPt, $pos);
 		$pos += 2;
-	    last if $pos + $len * 2 > $dirLen;
-		$str = substr($$dataPt, $pos, $len*2);
-		my $author = $et->Decode($str, 'UCS2');
-		$pos += $len*2;
-	    last if $pos + 2 > $dirLen;
-		$len = unpack('v', substr($$dataPt, $pos, 2));
-		$pos += 2;
-	    last if $pos + $len * 2 > $dirLen;
-		$str = substr($$dataPt, $pos, $len*2);
-		my $path = $et->Decode($str, 'UCS2');
-		$et->HandleTag($tagTablePtr, LastSavedBy => "$author ($path)");
+	    last if $pos + $len * 2 > $end;
+		my $author = $et->Decode(substr($$dataPt, $pos, $len*2), 'UCS2');
 		$pos += $len * 2;
-	}
-	if ($num > 2 and not $et->Options('Duplicates')) {
-	    $et->Warn('Use Duplicates option to extract LastSavedBy history', 1);
+	    last if $pos + 2 > $end;
+		$len = Get16u($dataPt, $pos);
+		$pos += 2;
+	    last if $pos + $len * 2 > $end;
+		my $path = $et->Decode(substr($$dataPt, $pos, $len*2), 'UCS2');
+		$pos += $len * 2;
+		$et->HandleTag($tagTablePtr, LastSavedBy => "$author ($path)");
+		$num -= 2;
 	}
     return 1;
 }
@@ -2101,13 +2102,17 @@ sub ProcessFPX($$)
     }
     # process Word document table
     if (defined $$et{DocFlags} and defined $$et{LastSavedByInfo}) {
-        my $buff = $$et{DocFlags} & 0x200 ? $$et{Table1} : $$et{Table2};
+        my $buff = $$et{DocFlags} & 0x200 ? $$et{Table1} : $$et{Table0};
         if ($buff) {
             my $tbl = GetTagTable('Image::ExifTool::FlashPix::DocTable');
             my ($pos, $len) = split ' ', $$et{LastSavedByInfo};
             if ($pos + $len < length $buff) {
-                my $tmp = substr($buff, $pos, $len);
-                ProcessLastSavedBy($et, \$tmp, $tbl);
+                my %dirInfo = (
+                    DataPt   => \$buff,
+                    DirStart => $pos,
+                    DirLen   => $len,
+                );
+                ProcessLastSavedBy($et, \%dirInfo, $tbl);
             }
         }
     }

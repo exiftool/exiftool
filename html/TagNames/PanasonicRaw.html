@@ -568,16 +568,21 @@ noise-reduction strengths the R, G and B channels)</span></span></td></tr>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td title='0x3300 = 13056'>0x3300</td>
+<td>WhiteBalanceSet</td>
+<td class=c>int8u</td>
+<td>--&gt; <a href='PanasonicRaw.html#WhiteBalance'>PanasonicRaw WhiteBalance Values</a></td></tr>
+<tr>
 <td title='0x3420 = 13344'>0x3420</td>
 <td>WB_RedLevelAuto</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x3421 = 13345'>0x3421</td>
 <td>WB_BlueLevelAuto</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x3501 = 13569'>0x3501</td>
 <td>Orientation</td>
 <td class=c>int8u</td>
@@ -591,11 +596,38 @@ noise-reduction strengths the R, G and B channels)</span></span></td></tr>
   <br>7 = Mirror horizontal and rotate 90 CW
   <br>8 = Rotate 270 CW</td></tr></table>
 </td></tr>
+<tr class=b>
+<td title='0x3600 = 13824'>0x3600</td>
+<td>WhiteBalanceDetected</td>
+<td class=c>int8u</td>
+<td>--&gt; <a href='PanasonicRaw.html#WhiteBalance'>PanasonicRaw WhiteBalance Values</a></td></tr>
 </table></td></tr></table></blockquote>
+
+<h2><a name='WhiteBalance'>PanasonicRaw WhiteBalance Values</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class='inner sep' cellspacing=1>
+<tr class=h><th>Value</th><th>WhiteBalance</th><th>Value</th><th>WhiteBalance</th><th>Value</th><th>WhiteBalance</th></tr>
+<tr><td class=r>0</td><td>= Auto</td>
+<td class='r b'>5</td><td class=b>= Flash</td>
+<td class=r>10</td><td>= Custom#3</td>
+</tr><tr><td class=r>1</td><td>= Daylight</td>
+<td class='r b'>6</td><td class=b>= n/a</td>
+<td class=r>11</td><td>= Custom#4</td>
+</tr><tr><td class=r>2</td><td>= Cloudy</td>
+<td class='r b'>7</td><td class=b>= n/a</td>
+<td class=r>12</td><td>= Shade</td>
+</tr><tr><td class=r>3</td><td>= Tungsten</td>
+<td class='r b'>8</td><td class=b>= Custom#1</td>
+<td class=r>13</td><td>= Kelvin</td>
+</tr><tr><td class=r>4</td><td>= n/a</td>
+<td class='r b'>9</td><td class=b>= Custom#2</td>
+<td class=r>16</td><td>= AWBc</td>
+</tr></table></td></tr></table></blockquote>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jul 31, 2018</i>
+<br><i>Last revised Aug 2, 2018</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

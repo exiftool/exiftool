@@ -17044,9 +17044,11 @@ Lens distortion correction information.
   0x3201   WB_CFA1_LevelDaylight                int16u
   0x3202   WB_CFA2_LevelDaylight                int16u
   0x3203   WB_CFA3_LevelDaylight                int16u
+  0x3300   WhiteBalanceSet                      int8u
   0x3420   WB_RedLevelAuto                      int16u
   0x3421   WB_BlueLevelAuto                     int16u
   0x3501   Orientation                          int8u
+  0x3600   WhiteBalanceDetected                 int8u
 
 =head2 SigmaRaw Tags
 
@@ -17543,9 +17545,9 @@ Tags extracted from the Microsoft Word document stream.
 
 Tags extracted from the Microsoft Word document table.
 
-  Tag ID               Tag Name                 Writable
-  ------               --------                 --------
-  'LastSavedBy'        LastSavedBy              no
+  Tag Name                                      Writable
+  --------                                      --------
+  LastSavedBy                                   no
 
 =head2 MPF Tags
 
@@ -23986,7 +23988,14 @@ the ExtractEmbedded option is used.
   SampleTime                                    no
   Text                                          no
   TimeCode                                      no
+  camm0                                         QuickTime camm0
+  camm1                                         QuickTime camm1
+  camm2                                         QuickTime camm2
+  camm3                                         QuickTime camm3
+  camm4                                         QuickTime camm4
+  camm5                                         QuickTime camm5
   camm6                                         QuickTime camm6
+  camm7                                         QuickTime camm7
   fdsc                                          GoPro fdsc
   gpmd                                          GoPro GPMF
   mebx                                          QuickTime Keys
@@ -24011,16 +24020,71 @@ G-sensor information extracted from the RVMI box of MOV videos.
   ------   --------                             --------
       4    GSensor                              no
 
-=head3 QuickTime camm6 Tags
+=head3 QuickTime camm0 Tags
 
-Tags extracted from record type 6 of the 'camm' timed metadata of MP4 videos
-from cameras such as the Insta360.
+The camm0 through camm7 tables define the Camera Motion Metadata extracted
+from MP4 videos.  See
+L<https://developers.google.com/streetview/publish/camm-spec> for the
+specification.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
+      4    AngleAxis                            no
+
+=head3 QuickTime camm1 Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      4    PixelExposureTime                    no
+      8    RollingShutterSkewTime               no
+
+=head3 QuickTime camm2 Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      4    AngularVelocity                      no
+
+=head3 QuickTime camm3 Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      4    Acceleration                         no
+
+=head3 QuickTime camm4 Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      4    Position                             no
+
+=head3 QuickTime camm5 Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      4    GPSLatitude                          no
+     12    GPSLongitude                         no
+     20    GPSAltitude                          no
+
+=head3 QuickTime camm6 Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      4    GPSDateTime                          no
+     12    GPSMeasureMode                       no
      16    GPSLatitude                          no
      24    GPSLongitude                         no
      32    GPSAltitude                          no
+     36    GPSHorizontalAccuracy                no
+     40    GPSVerticalAccuracy                  no
+     44    GPSVelocityEast                      no
+     48    GPSVelocityNorth                     no
+     52    GPSVelocityUp                        no
+     56    GPSSpeedAccuracy                     no
+
+=head3 QuickTime camm7 Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      4    MagneticField                        no
 
 =head2 PLIST Tags
 

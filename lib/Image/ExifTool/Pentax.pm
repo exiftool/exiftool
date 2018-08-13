@@ -58,7 +58,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::HP;
 
-$VERSION = '3.22';
+$VERSION = '3.23';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -333,6 +333,7 @@ sub DecodeAFPoints($$$$;$);
     '8 61' => 'HD PENTAX-D FA 28-105mm F3.5-5.6 ED DC WR', #PH
     '8 62' => 'HD PENTAX-D FA 24-70mm F2.8 ED SDM WR', #PH
     '8 63' => 'HD PENTAX-D FA 15-30mm F2.8 ED SDM WR', #PH
+    '8 64' => 'HD PENTAX-D FA* 50mm F1.4 SDM AW', #27
     '8 197' => 'HD PENTAX-DA 55-300mm F4.5-6.3 ED PLM WR RE', #29
     '8 198' => 'smc PENTAX-DA L 18-50mm F4-5.6 DC WR RE', #29
     '8 199' => 'HD PENTAX-DA 18-50mm F4-5.6 DC WR RE', #29

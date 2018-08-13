@@ -8,6 +8,7 @@
 # References:   1) https://developer.apple.com/library/content/documentation/QuickTime/QTFF/QTFFChap3/qtff3.html#//apple_ref/doc/uid/TP40000939-CH205-SW130
 #               2) http://sergei.nz/files/nvtk_mp42gpx.py
 #               3) https://forum.flitsservice.nl/dashcam-info/dod-ls460w-gps-data-uit-mov-bestand-lezen-t87926.html
+#               4) https://developers.google.com/streetview/publish/camm-spec
 #------------------------------------------------------------------------------
 package Image::ExifTool::QuickTime;
 
@@ -126,14 +127,63 @@ my $mpsToKph   = 3.6;   # m/s   --> km/h
         },
     # (there is also "tReV" data that hasn't been decoded yet)
     }],
-    camm => { # (written by Insta360) - [HandlerType, not MetaFormat]
+    camm => [{
+        Name => 'camm0',
+        Condition => '$$valPt =~ /^\0\0\0\0/',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::QuickTime::camm0',
+            ByteOrder => 'Little-Endian',
+        },
+    },{
+        Name => 'camm1',
+        Condition => '$$valPt =~ /^\0\0\x01\0/',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::QuickTime::camm1',
+            ByteOrder => 'Little-Endian',
+        },
+    },{ # (written by Insta360) - [HandlerType, not MetaFormat]
+        Name => 'camm2',
+        Condition => '$$valPt =~ /^\0\0\x02\0/',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::QuickTime::camm2',
+            ByteOrder => 'Little-Endian',
+        },
+    },{
+        Name => 'camm3',
+        Condition => '$$valPt =~ /^\0\0\x03\0/',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::QuickTime::camm3',
+            ByteOrder => 'Little-Endian',
+        },
+    },{
+        Name => 'camm4',
+        Condition => '$$valPt =~ /^\0\0\x04\0/',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::QuickTime::camm4',
+            ByteOrder => 'Little-Endian',
+        },
+    },{
+        Name => 'camm5',
+        Condition => '$$valPt =~ /^\0\0\x05\0/',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::QuickTime::camm5',
+            ByteOrder => 'Little-Endian',
+        },
+    },{
         Name => 'camm6',
         Condition => '$$valPt =~ /^\0\0\x06\0/',
         SubDirectory => {
             TagTable => 'Image::ExifTool::QuickTime::camm6',
             ByteOrder => 'Little-Endian',
         },
-    },
+    },{
+        Name => 'camm7',
+        Condition => '$$valPt =~ /^\0\0\x07\0/',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::QuickTime::camm7',
+            ByteOrder => 'Little-Endian',
+        },
+    },],
     JPEG => { # (in CR3 images) - [vide HandlerType with JPEG in SampleDescription, not MetaFormat]
         Name => 'JpgFromRaw',
         Groups => { 2 => 'Preview' },
@@ -141,16 +191,133 @@ my $mpsToKph   = 3.6;   # m/s   --> km/h
     },
 );
 
-# tags found in 'camm' type 6 timed metadata (ref PH, Insta360)
-%Image::ExifTool::QuickTime::camm6 = (
+# tags found in 'camm' type 0 timed metadata (ref 4)
+%Image::ExifTool::QuickTime::camm0 = (
     PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
     GROUPS => { 2 => 'Location' },
     FIRST_ENTRY => 0,
     NOTES => q{
-        Tags extracted from record type 6 of the 'camm' timed metadata of MP4 videos
-        from cameras such as the Insta360.
+        The camm0 through camm7 tables define the Camera Motion Metadata extracted
+        from MP4 videos.  See
+        L<https://developers.google.com/streetview/publish/camm-spec> for the
+        specification.
     },
-  # 0x0c - int32u, seen: 3 (GPSMeasureMode?)
+    4 => {
+        Name => 'AngleAxis',
+        Notes => 'angle axis orientation in radians',
+        Format => 'float[3]',
+    },
+);
+
+# tags found in 'camm' type 1 timed metadata (ref 4)
+%Image::ExifTool::QuickTime::camm1 = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 2 => 'Camera' },
+    FIRST_ENTRY => 0,
+    4 => {
+        Name => 'PixelExposureTime',
+        Format => 'int32s',
+        ValueConv => '$val * 1e-9',
+        PrintConv => 'sprintf("%.4g ms", $val * 1000)',
+    },
+    8 => {
+        Name => 'RollingShutterSkewTime',
+        Format => 'int32s',
+        ValueConv => '$val * 1e-9',
+        PrintConv => 'sprintf("%.4g ms", $val * 1000)',
+    },
+);
+
+# tags found in 'camm' type 2 timed metadata (ref PH, Insta360Pro)
+%Image::ExifTool::QuickTime::camm2 = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 2 => 'Location' },
+    FIRST_ENTRY => 0,
+    4 => {
+        Name => 'AngularVelocity',
+        Notes => 'gyro angular velocity about X, Y and Z axes in rad/s',
+        Format => 'float[3]',
+    },
+);
+
+# tags found in 'camm' type 3 timed metadata (ref PH, Insta360Pro)
+%Image::ExifTool::QuickTime::camm3 = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 2 => 'Location' },
+    FIRST_ENTRY => 0,
+    4 => {
+        Name => 'Acceleration',
+        Notes => 'acceleration in the X, Y and Z directions in m/s^2',
+        Format => 'float[3]',
+    },
+);
+
+# tags found in 'camm' type 4 timed metadata (ref 4)
+%Image::ExifTool::QuickTime::camm4 = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 2 => 'Location' },
+    FIRST_ENTRY => 0,
+    4 => {
+        Name => 'Position',
+        Format => 'float[3]',
+    },
+);
+
+# tags found in 'camm' type 5 timed metadata (ref 4)
+%Image::ExifTool::QuickTime::camm5 = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 2 => 'Location' },
+    FIRST_ENTRY => 0,
+    4 => {
+        Name => 'GPSLatitude',
+        Format => 'double',
+        ValueConv => 'Image::ExifTool::GPS::ToDegrees($val, 1)',
+        PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "N")',
+    },
+    12 => {
+        Name => 'GPSLongitude',
+        Format => 'double',
+        ValueConv => 'Image::ExifTool::GPS::ToDegrees($val, 1)',
+        PrintConv => 'Image::ExifTool::GPS::ToDMS($self, $val, 1, "E")',
+    },
+    20 => {
+        Name => 'GPSAltitude',
+        Format => 'double',
+        PrintConv => '$_ = sprintf("%.6f", $val); s/\.?0+$//; "$_ m"',
+    },
+);
+
+# tags found in 'camm' type 6 timed metadata (ref PH/4, Insta360)
+%Image::ExifTool::QuickTime::camm6 = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 2 => 'Location' },
+    FIRST_ENTRY => 0,
+    0x04 => {
+        Name => 'GPSDateTime',
+        Groups => { 2 => 'Time' },
+        Format => 'double',
+        ValueConv => q{
+            my $str = ConvertUnixTime($val);
+            my $frac = $val - int($val);
+            if ($frac != 0) {
+                $frac = sprintf('%.6f', $frac);
+                $frac =~ s/^0//;
+                $frac =~ s/0+$//;
+                $str .= $frac;
+            }
+            return $str . 'Z';
+        },
+        PrintConv => '$self->ConvertDateTime($val)',
+    },
+    0x0c => {
+        Name => 'GPSMeasureMode',
+        Format => 'int32u',
+        PrintConv => {
+            0 => 'No Measurement',
+            2 => '2-Dimensional Measurement',
+            3 => '3-Dimensional Measurement',
+        },
+    },
     0x10 => {
         Name => 'GPSLatitude',
         Format => 'double',
@@ -168,7 +335,24 @@ my $mpsToKph   = 3.6;   # m/s   --> km/h
         Format => 'float',
         PrintConv => '$_ = sprintf("%.3f", $val); s/\.?0+$//; "$_ m"',
     },
-  # 0x30 - float (GPSSpeed?)
+    0x24 => { Name => 'GPSHorizontalAccuracy', Format => 'float', Notes => 'metres' },
+    0x28 => { Name => 'GPSVerticalAccuracy',   Format => 'float' },
+    0x2c => { Name => 'GPSVelocityEast',       Format => 'float', Notes => 'm/s' },
+    0x30 => { Name => 'GPSVelocityNorth',      Format => 'float' },
+    0x34 => { Name => 'GPSVelocityUp',         Format => 'float' },
+    0x38 => { Name => 'GPSSpeedAccuracy',      Format => 'float' },
+);
+
+# tags found in 'camm' type 7 timed metadata (ref 4)
+%Image::ExifTool::QuickTime::camm7 = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 2 => 'Location' },
+    FIRST_ENTRY => 0,
+    4 => {
+        Name => 'MagneticField',
+        Format => 'float[3]',
+        Notes => 'microtesla',
+    },
 );
 
 # tags found in 'RVMI' 'gReV' timed metadata (ref PH)

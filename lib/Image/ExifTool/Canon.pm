@@ -87,7 +87,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '3.95';
+$VERSION = '3.96';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -405,7 +405,8 @@ $VERSION = '3.95';
     238 => 'Canon EF 70-300mm f/4-5.6 IS USM', #15 (and version II? ref 42)
     239 => 'Canon EF 85mm f/1.2L II USM or Rokinon Lens', #15
     239.1 => 'Rokinon SP 85mm f/1.2', #IB
-    240 => 'Canon EF-S 17-55mm f/2.8 IS USM', #15
+    240 => 'Canon EF-S 17-55mm f/2.8 IS USM or Sigma Lens', #15
+    240.1 => 'Sigma 17-50mm f/2.8 EX DC OS HSM', #https://github.com/Exiv2/exiv2/issues/397
     241 => 'Canon EF 50mm f/1.2L USM', #15
     242 => 'Canon EF 70-200mm f/4L IS USM', #PH
     243 => 'Canon EF 70-200mm f/4L IS USM + 1.4x', #15

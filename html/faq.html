@@ -825,8 +825,8 @@ arbitrary output format.  For example, the following format file
 (let's call it "<code>my.fmt</code>") may be used to emulate a CSV-formatted
 output:
 
-<pre>#[HEAD]FileName, Aperture, ISO
-$filename, $aperture, $iso
+<pre>#[HEAD]FileName,Aperture,ISO
+$filename,$aperture,$iso
 </pre>
 
 with a command like this:
@@ -839,7 +839,7 @@ of a file name.  The following command has the same effect as above except that
 the row of headings is not printed (Note: Use single quotes as below on Mac/Linux,
 or double quotes instead on Windows):
 
-<pre>exiftool -f -r -p '$filename, $aperture, $iso' t/images &gt; out.csv
+<pre>exiftool -f -r -p '$filename,$aperture,$iso' t/images &gt; out.csv
 </pre>
 
 With the <code>-f</code> option, the value of any missing tag is printed as a
@@ -1556,19 +1556,15 @@ exiftool -alldates+=1 "-filemodifydate&lt;datetimeoriginal" c:\images
 <a name="Q25"></a>
 <p>25. <b>"Can ExifTool be used as an image validator?"</b></p>
 
-<blockquote>ExifTool is <u>not</u> designed as an image validator.  It does issue
-warnings about some of the more important problems in the metadata when reading,
-and will often catch more problems when writing, but it does not attempt to do a
-full validation.  There are other packages that are designed to do validation
-like this, for example, <a href="http://jhove.sourceforge.net">JHOVE</a>.</blockquote>
+<blockquote>ExifTool is not designed as an image validator but it does have a
+<code>-validate</code> option which enables extra validation checks, mainly for
+JPEG and TIFF-format images (officially released in version 10.97, May 2018).
+Here is an example command to apply these validation checks to a JPEG image:
 
-<blockquote><b>Feb 2017 Update:</b> ExifTool now has a <code>-validate</code>
-option which implements a number of validation tests when reading images.  The
-following command invokes the validation feature and shows all associated Error
-and Warning messages:
+<pre>exiftool -validate -warning -error -a test.jpg</pre>
 
-<pre>exiftool -validate -error -warning -a test.jpg</pre>
-</blockquote>
+Note that there are other packages that are designed specifically for file
+validation, for example: <a href="https://github.com/openpreserve/jhove">JHOVE</a>.</blockquote>
 
 <a name="Q26"></a>
 <p>26. <b>"How do I import information from a database?"</b></p>
@@ -1656,7 +1652,7 @@ technique for shifting a date/time value when copying:
 </blockquote>
 
 <hr>
-<i>Last revised July 27, 2018</i>
+<i>Last revised Aug. 8, 2018</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

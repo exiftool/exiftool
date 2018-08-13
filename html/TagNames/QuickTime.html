@@ -7016,9 +7016,23 @@ the ExtractEmbedded option is used.</p>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td>camm6</td>
-<td class=c>-</td>
-<td>--&gt; <a href='QuickTime.html#camm6'>QuickTime camm6 Tags</a></td></tr>
+<td>camm0
+  <br>camm1
+  <br>camm2
+  <br>camm3
+  <br>camm4
+  <br>camm5
+  <br>camm6
+  <br>camm7</td>
+<td class=c>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-</td>
+<td>--&gt; <a href='QuickTime.html#camm0'>QuickTime camm0 Tags</a>
+  <br>--&gt; <a href='QuickTime.html#camm1'>QuickTime camm1 Tags</a>
+  <br>--&gt; <a href='QuickTime.html#camm2'>QuickTime camm2 Tags</a>
+  <br>--&gt; <a href='QuickTime.html#camm3'>QuickTime camm3 Tags</a>
+  <br>--&gt; <a href='QuickTime.html#camm4'>QuickTime camm4 Tags</a>
+  <br>--&gt; <a href='QuickTime.html#camm5'>QuickTime camm5 Tags</a>
+  <br>--&gt; <a href='QuickTime.html#camm6'>QuickTime camm6 Tags</a>
+  <br>--&gt; <a href='QuickTime.html#camm7'>QuickTime camm7 Tags</a></td></tr>
 <tr class=b>
 <td>fdsc</td>
 <td class=c>-</td>
@@ -7080,14 +7094,121 @@ the ExtractEmbedded option is used.</p>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
-<h2><a name='camm6'>QuickTime camm6 Tags</a></h2>
-<p>Tags extracted from record type 6 of the &#39;camm&#39; timed metadata of MP4 videos
-from cameras such as the Insta360.</p>
+<h2><a name='camm0'>QuickTime camm0 Tags</a></h2>
+<p>The camm0 through camm7 tables define the Camera Motion Metadata extracted
+from MP4 videos.  See
+<a href="https://developers.google.com/streetview/publish/camm-spec">https://developers.google.com/streetview/publish/camm-spec</a> for the
+specification.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
 <tr class=h><th>Index1</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='4 = 0x4'>4</td>
+<td>AngleAxis</td>
+<td class=c>no</td>
+<td><span class=s><span class=n>(angle axis orientation in radians)</span></span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='camm1'>QuickTime camm1 Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='4 = 0x4'>4</td>
+<td>PixelExposureTime</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='8 = 0x8'>8</td>
+<td>RollingShutterSkewTime</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='camm2'>QuickTime camm2 Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='4 = 0x4'>4</td>
+<td>AngularVelocity</td>
+<td class=c>no</td>
+<td><span class=s><span class=n>(gyro angular velocity about X, Y and Z axes in rad/s)</span></span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='camm3'>QuickTime camm3 Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='4 = 0x4'>4</td>
+<td>Acceleration</td>
+<td class=c>no</td>
+<td><span class=s><span class=n>(acceleration in the X, Y and Z directions in m/s^2)</span></span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='camm4'>QuickTime camm4 Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='4 = 0x4'>4</td>
+<td>Position</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='camm5'>QuickTime camm5 Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='4 = 0x4'>4</td>
+<td>GPSLatitude</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='12 = 0xc'>12</td>
+<td>GPSLongitude</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='20 = 0x14'>20</td>
+<td>GPSAltitude</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='camm6'>QuickTime camm6 Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='4 = 0x4'>4</td>
+<td>GPSDateTime</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='12 = 0xc'>12</td>
+<td>GPSMeasureMode</td>
+<td class=c>no</td>
+<td><span class=s>0 = No Measurement
+  <br>2 = 2-Dimensional Measurement
+  <br>3 = 3-Dimensional Measurement</span></td></tr>
 <tr>
 <td class=r title='16 = 0x10'>16</td>
 <td>GPSLatitude</td>
@@ -7103,11 +7224,54 @@ from cameras such as the Insta360.</p>
 <td>GPSAltitude</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='36 = 0x24'>36</td>
+<td>GPSHorizontalAccuracy</td>
+<td class=c>no</td>
+<td><span class=s><span class=n>(metres)</span></span></td></tr>
+<tr>
+<td class=r title='40 = 0x28'>40</td>
+<td>GPSVerticalAccuracy</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='44 = 0x2c'>44</td>
+<td>GPSVelocityEast</td>
+<td class=c>no</td>
+<td><span class=s><span class=n>(m/s)</span></span></td></tr>
+<tr>
+<td class=r title='48 = 0x30'>48</td>
+<td>GPSVelocityNorth</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='52 = 0x34'>52</td>
+<td>GPSVelocityUp</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='56 = 0x38'>56</td>
+<td>GPSSpeedAccuracy</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='camm7'>QuickTime camm7 Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='4 = 0x4'>4</td>
+<td>MagneticField</td>
+<td class=c>no</td>
+<td><span class=s><span class=n>(microtesla)</span></span></td></tr>
 </table></td></tr></table></blockquote>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jun 13, 2018</i>
+<br><i>Last revised Aug 13, 2018</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

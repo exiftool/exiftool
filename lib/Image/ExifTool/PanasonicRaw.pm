@@ -48,6 +48,24 @@ my %wbTypeInfo = (
     SeparateTable => 'EXIF LightSource',
 );
 
+my %panasonicWhiteBalance = ( #forum9396
+    0 => 'Auto',
+    1 => 'Daylight',
+    2 => 'Cloudy',
+    3 => 'Tungsten',
+    4 => 'n/a',
+    5 => 'Flash',
+    6 => 'n/a',
+    7 => 'n/a',
+    8 => 'Custom#1',
+    9 => 'Custom#2',
+    10 => 'Custom#3',
+    11 => 'Custom#4',
+    12 => 'Shade',
+    13 => 'Kelvin',
+    16 => 'AWBc', # GH5 and G9 (Makernotes WB==19)
+);
+
 # Tags found in Panasonic RAW/RW2/RWL images (ref PH)
 %Image::ExifTool::PanasonicRaw::Main = (
     GROUPS => { 0 => 'EXIF', 1 => 'IFD0', 2 => 'Image'},
@@ -508,7 +526,12 @@ my %wbTypeInfo = (
     # 0x3204-0x3207 - user multipliers * 1024 ? (ref forum9275)
     # 0x320a - scaled maximum value of raw data (scaling = 4x) (ref forum9281)
     # 0x3209 - gamma (x256) (ref forum9281)
-    # 0x3300 - WhiteBalance (0=auto, ref forum9296)
+    0x3300 => { #forum9296/9396
+        Name => 'WhiteBalanceSet',
+        Writable => 'int8u',
+        PrintConv => \%panasonicWhiteBalance,
+        SeparateTable => 'WhiteBalance',
+    },
     0x3420 => { #forum9276
         Name => 'WB_RedLevelAuto',
         Writable => 'int16u',
@@ -521,6 +544,12 @@ my %wbTypeInfo = (
         Name => 'Orientation',
         Writable => 'int8u',
         PrintConv => \%Image::ExifTool::Exif::orientation,
+    },
+    0x3600 => { #forum9396
+        Name => 'WhiteBalanceDetected',
+        Writable => 'int8u',
+        PrintConv => \%panasonicWhiteBalance,
+        SeparateTable => 'WhiteBalance',
     },
 );
 

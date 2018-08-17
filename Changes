@@ -7,6 +7,19 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 11.01. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Aug. 17, 2018 - Version 11.10
+
+  - Added support for Canon 1DX firmware 2.1.0
+  - Added a new Canon LensType (thanks LibRaw)
+  - Added a new Nikon LensID (thanks LibRaw)
+  - Added a new CanonModelID
+  - Decode more tags for newer Sony DSC models (thanks Jos Roost)
+  - Decode some new SonyIDC tags (thanks Jos Roost)
+  - Decode a number of new Panasonic tags (thanks Klaus Homeister)
+  - Improved validation of XMP namespaces
+  - Changed "File not found" messages to "Error: File not found"
+  - Fixed problem editing tags in Canon DR4 directory
+
 Aug. 13, 2018 - Version 11.09
 
   - Added new Pentax and Canon LensType values

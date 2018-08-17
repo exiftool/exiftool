@@ -417,7 +417,8 @@ L10 and LC80)</span></span><table class=cols><tr>
 <td title='0x003c = 60'>0x003c</td>
 <td>ProgramISO</td>
 <td class=c>int16u</td>
-<td><span class=s>65534 = Intelligent ISO
+<td><span class=s>-1 = n/a
+  <br>65534 = Intelligent ISO
   <br>65535 = n/a</span></td></tr>
 <tr>
 <td title='0x003d = 61'>0x003d</td>
@@ -795,27 +796,49 @@ camera contrast)</span></span></td></tr>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td title='0x00b4 = 180'>0x00b4</td>
+<td>MultiExposure</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = n/a
+  <br>1 = Off
+  <br>2 = On</span></td></tr>
+<tr>
+<td title='0x00b9 = 185'>0x00b9</td>
+<td>RedEyeRemoval</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr class=b>
+<td title='0x00bb = 187'>0x00bb</td>
+<td>VideoBurstMode</td>
+<td class=c>int32u</td>
+<td><span class=s>0x1 = Off
+  <br>0x4 = Post Focus
+  <br>0x18 = 4K Burst
+  <br>0x28 = 4K Burst (Start/Stop)
+  <br>0x48 = 4K Pre-burst</span></td></tr>
+<tr>
 <td title='0x00bc = 188'>0x00bc</td>
 <td>DiffractionCorrection</td>
 <td class=c>int16u</td>
 <td><span class=s>0 = Off
   <br>1 = Auto</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0e00 = 3584'>0x0e00</td>
 <td>PrintIM</td>
 <td class=c>-</td>
 <td>--&gt; <a href='PrintIM.html'>PrintIM Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x2003 = 8195'>0x2003</td>
 <td>TimeInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Panasonic.html#TimeInfo'>Panasonic TimeInfo Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0x8000 = 32768'>0x8000</td>
 <td>MakerNoteVersion</td>
 <td class=c>undef</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x8001 = 32769'>0x8001</td>
 <td>SceneMode</td>
 <td class=c>int16u</td>
@@ -901,45 +924,58 @@ camera contrast)</span></span></td></tr>
   <br>89 = Monochrome
   <br>90 = Creative Control</td></tr></table>
 </td></tr>
+<tr class=b>
+<td title='0x8002 = 32770'>0x8002</td>
+<td>HighlightWarning</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Disabled
+  <br>1 = No
+  <br>2 = Yes</span></td></tr>
 <tr>
+<td title='0x8003 = 32771'>0x8003</td>
+<td>DarkFocusEnvironment</td>
+<td class=c>int16u</td>
+<td><span class=s>1 = No
+  <br>2 = Yes</span></td></tr>
+<tr class=b>
 <td title='0x8004 = 32772'>0x8004</td>
 <td>WBRedLevel</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x8005 = 32773'>0x8005</td>
 <td>WBGreenLevel</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x8006 = 32774'>0x8006</td>
 <td>WBBlueLevel</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x8007 = 32775'>0x8007</td>
 <td>FlashFired</td>
 <td class=c>int16u</td>
-<td><span class=s>1 = No
-  <br>2 = Yes</span></td></tr>
-<tr>
+<td><span class=s>0 = Yes
+  <br>1 = No</span></td></tr>
+<tr class=b>
 <td title='0x8008 = 32776'>0x8008</td>
 <td>TextStamp</td>
 <td class=c>int16u</td>
 <td><span class=s>1 = Off
   <br>2 = On</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x8009 = 32777'>0x8009</td>
 <td>TextStamp</td>
 <td class=c>int16u</td>
 <td><span class=s>1 = Off
   <br>2 = On</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x8010 = 32784'>0x8010</td>
 <td>BabyAge</td>
 <td class=c>string</td>
 <td><span class=s><span class=n>(or pet age)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x8012 = 32786'>0x8012</td>
 <td>Transform</td>
 <td class=c>undef[4]</td>
@@ -1064,6 +1100,11 @@ user-supplied set of known faces.</p>
 <td class=r title='0 = 0x0'>0</td>
 <td>PanasonicDateTime</td>
 <td class=c>undef[8]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='16 = 0x10'>16</td>
+<td>TimeLapseShotNumber</td>
+<td class=c>int32u</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -1851,7 +1892,7 @@ various Panasonic and Leica models.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jul 26, 2018</i>
+<br><i>Last revised Aug 16, 2018</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

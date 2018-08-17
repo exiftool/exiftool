@@ -21,7 +21,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.22';
+$VERSION = '1.23';
 
 sub ProcessJpgFromRaw($$$);
 sub WriteJpgFromRaw($$$);
@@ -478,6 +478,11 @@ my %panasonicWhiteBalance = ( #forum9396
     0x1101 => { #forum9274 (was forum8484)
         Name => 'FocusStepCount',
         Writable => 'int16s',
+    },
+    0x1102 => { #forum9417
+        Name => 'FlashFired',
+        Writable => 'int32u',
+        PrintConv => { 0 => 'No', 1 => 'Yes' },
     },
     # 0x1104 - set when camera shoots on lowest possible Extended-ISO (forum9290)
     0x1105 => { #forum9392

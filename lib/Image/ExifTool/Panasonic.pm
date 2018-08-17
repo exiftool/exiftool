@@ -35,7 +35,7 @@ use vars qw($VERSION %leicaLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.00';
+$VERSION = '2.01';
 
 sub ProcessLeicaLEIC($$$);
 sub WhiteBalanceConv($;$$);
@@ -733,11 +733,12 @@ my %shootingMode = (
     },
     0x3c => { #PH
         Name => 'ProgramISO', # (maybe should rename this ISOSetting?)
-        Writable => 'int16u',
+        Writable => 'int16u', # (new models store a long here)
         PrintConv => {
             OTHER => sub { shift },
             65534 => 'Intelligent ISO', #PH (FS7)
             65535 => 'n/a',
+            -1 => 'n/a',
         },
     },
     0x3d => { #PH
@@ -1209,6 +1210,28 @@ my %shootingMode = (
         PrintConv => '$self->ConvertDateTime($val)',
         PrintConvInv => '$self->InverseDateTime($val)',
     },
+    0xb4 => { #forum9429
+        Name => 'MultiExposure',
+        Writable => 'int16u',
+        PrintConv => { 0 => 'n/a', 1 => 'Off', 2 => 'On' },
+    },
+    0xb9 => { #forum9425
+        Name => 'RedEyeRemoval',
+        Writable => 'int16u',
+        PrintConv => { 0 => 'Off', 1 => 'On' },
+    },
+    0xbb => { #forum9282
+        Name => 'VideoBurstMode',
+        Writable => 'int32u',
+        PrintHex => 1,
+        PrintConv => {
+            0x01 => 'Off',
+            0x04 => 'Post Focus',
+            0x18 => '4K Burst',
+            0x28 => '4K Burst (Start/Stop)',
+            0x48 => '4K Pre-burst',
+        },
+    },
     0xbc => { #forum9282
         Name => 'DiffractionCorrection',
         Writable => 'int16u',
@@ -1237,9 +1260,16 @@ my %shootingMode = (
             %shootingMode,
         },
     },
-    # 0x8002 - values: 1,2 related to focus? (PH/JD)
-    #          1 for HDR modes, 2 for Portrait (ref 12)
-    # 0x8003 - values: 1,2 related to focus? (PH/JD)
+    0x8002 => { #21
+        Name => 'HighlightWarning',
+        Writable => 'int16u',
+        PrintConv => { 0 => 'Disabled', 1 => 'No', 2 => 'Yes' },
+    },
+    0x8003 => { #21
+        Name => 'DarkFocusEnvironment',
+        Writable => 'int16u',
+        PrintConv => { 1 => 'No', 2 => 'Yes' },
+    },
     0x8004 => { #PH/JD
         Name => 'WBRedLevel',
         Writable => 'int16u',
@@ -1255,7 +1285,7 @@ my %shootingMode = (
     0x8007 => { #PH
         Name => 'FlashFired',
         Writable => 'int16u',
-        PrintConv => { 1 => 'No', 2 => 'Yes' },
+        PrintConv => { 0 => 'Yes', 1 => 'No' },
     },
     0x8008 => { #PH (TZ5/FS7)
         # (tags 0x3b, 0x3e, 0x8008 and 0x8009 have the same values in all my samples - PH)
@@ -1653,7 +1683,10 @@ my %shootingMode = (
         PrintConvInv => '$self->InverseDateTime($val)',
     },
     # 8 - 8 bytes usually 8 x 0xff (spot for another date/time?)
-    # 16 - 4 bytes (only set when PanasonicDateTime is valid, sub-seconds maybe? ref 21)
+    16 => {
+        Name => 'TimeLapseShotNumber',
+        Format => 'int32u',
+    },
 );
 
 %Image::ExifTool::Panasonic::Data1 = (

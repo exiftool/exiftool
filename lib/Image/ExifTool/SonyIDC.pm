@@ -13,7 +13,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.06';
+$VERSION = '1.07';
 
 # Sony IDC tags (ref PH)
 %Image::ExifTool::SonyIDC::Main = (
@@ -92,7 +92,12 @@ $VERSION = '1.06';
     0x8015 => { Name => 'ColorCorrection',      Writable => 'int32s' },
     0x8016 => { Name => 'SaturationAdj',        Writable => 'int32s' },
     0x8017 => { Name => 'ContrastAdj',          Writable => 'int32s' },
-    0x8018 => { Name => 'BrightnessAdj',        Writable => 'int32s' },
+    0x8018 => {
+        Name => 'BrightnessAdj',
+        Writable => 'int32s',
+        PrintConv => 'sprintf("%.2f", $val/300)',
+        PrintConvInv => '$val * 300',
+    },
     0x8019 => { Name => 'HueAdj',               Writable => 'int32s' },
     0x801a => { Name => 'SharpnessAdj',         Writable => 'int32s' },
     0x801b => { Name => 'SharpnessOvershoot',   Writable => 'int32s' },
@@ -152,6 +157,7 @@ $VERSION = '1.06';
     0x8030 => { Name => 'PeripheralIllumCentralRadius', Writable => 'int32s' },
     0x8031 => { Name => 'PeripheralIllumCentralValue',  Writable => 'int32s' },
     0x8032 => { Name => 'PeripheralIllumPeriphValue',   Writable => 'int32s' },
+    0x8040 => { Name => 'DistortionCompensation',       Writable => 'int32s', PrintConv => { 1 => 'On', 2 => 'Off' } },
     0x9000 => {
         Name => 'ToneCurveBrightnessX',
         Writable => 'int16u',
@@ -192,6 +198,41 @@ $VERSION = '1.06';
         Writable => 'int16u',
         Count => -1,
     },
+    0x900d => {
+        Name => 'ChromaticAberrationCorrection', # "Magnification Chromatic Aberration"
+        Writable => 'int32s',
+        PrintConv => { 1 => 'On', 2 => 'Off' },
+    },
+    0x900e => {
+        Name => 'InclinationCorrection',
+        Writable => 'int32u',
+        PrintConv => { 0 => 'Off', 1 => 'On' },
+    },
+    0x900f => {
+        Name => 'InclinationAngle',
+        Writable => 'int32s',
+        PrintConv => 'sprintf("%.1f deg", $val/1000)',
+        PrintConvInv => 'ToFloat($val) * 1000',
+    },
+    0x9010 => {
+        Name => 'Cropping',
+        Writable => 'int32u',
+        PrintConv => { 0 => 'Off', 1 => 'On' },
+    },
+    0x9011 => {
+        Name => 'CropArea',
+        Writable => 'int32u',
+        Count => 4,
+    },
+    0x9012 => {
+        Name => 'PreviewImageSize',
+        Writable => 'int32u',
+        Count => 2,
+    },
+    0x9017 => { Name => 'WhitesAdj',        Writable => 'int32s' },
+    0x9018 => { Name => 'BlacksAdj',        Writable => 'int32s' },
+    0x9019 => { Name => 'HighlightsAdj',    Writable => 'int32s' },
+    0x901a => { Name => 'ShadowsAdj',       Writable => 'int32s' },
     0xd000 => { Name => 'CurrentVersion',   Writable => 'int32u' },
     0xd001 => {
         Name => 'VersionIFD',

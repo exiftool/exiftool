@@ -197,8 +197,8 @@ my $mpsToKph   = 3.6;   # m/s   --> km/h
     GROUPS => { 2 => 'Location' },
     FIRST_ENTRY => 0,
     NOTES => q{
-        The camm0 through camm7 tables define the Camera Motion Metadata extracted
-        from MP4 videos.  See
+        The camm0 through camm7 tables define tags extracted from the Google Street
+        View Camera Motion Metadata of MP4 videos.  See
         L<https://developers.google.com/streetview/publish/camm-spec> for the
         specification.
     },

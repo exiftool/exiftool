@@ -17,7 +17,7 @@ package Image::ExifTool::Validate;
 use strict;
 use vars qw($VERSION %exifSpec);
 
-$VERSION = '1.11';
+$VERSION = '1.12';
 
 use Image::ExifTool qw(:Utils);
 use Image::ExifTool::Exif;
@@ -517,6 +517,7 @@ sub FinishValidate($$)
             my ($key, %val, %info, $minor);
             foreach $key (keys %{$$et{VALUE}}) {
                 next unless $et->GetGroup($key, 1) eq $grp;
+                next if $$et{TAG_EXTRA}{$key} and $$et{TAG_EXTRA}{$key}{G3}; # ignore sub-documents
                 # fill in %val lookup with values based on tag ID
                 my $tag = $$et{TAG_INFO}{$key}{TagID};
                 $val{$tag} = $$et{VALUE}{$key};

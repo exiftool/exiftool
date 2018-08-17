@@ -32,7 +32,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.90';
+$VERSION = '2.91';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -896,7 +896,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
         # unknown offsets or values for DSC-HX60V/HX350/HX400V/QX10/QX30/QX100/RX10/RX100M2/RX100M3/WX220/WX350,
         #                               ILCA-68/77M2, ILCE-5000/5100/6000/7/7M2/7R/7S/QX1, Stellar2, Lusso
         # unknown offsets or values for DSC-HX90V/RX0/RX1RM2/RX10M2/RX10M3/RX100M4/RX100M5/WX500, ILCE-6300/6500/7RM2/7SM2, ILCA-99M2
-        # unknown offsets or values for ILCE-7M3/7RM3/9, DSC-RX10M4/RX100M6
+        # unknown offsets or values for ILCE-7M3/7RM3/9, DSC-RX10M4/RX100M6/RX100M5A
     {
         Name => 'Tag2010a', # ad
         Condition => '$$self{Model} =~ /^NEX-5N$/',
@@ -937,7 +937,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag2010h' },
     },{
         Name => 'Tag2010i', # ?
-        Condition => '$$self{Model} =~ /^(ILCE-(7M3|7RM3|9)|DSC-(RX10M4|RX100M6))\b/',
+        Condition => '$$self{Model} =~ /^(ILCE-(7M3|7RM3|9)|DSC-(RX10M4|RX100M6|RX100M5A))\b/',
         SubDirectory => { TagTable => 'Image::ExifTool::Sony::Tag2010i' },
     },{
         Name => 'Tag_0x2010',
@@ -1010,8 +1010,9 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
     },
     0x201b => { #PH
         # FocusMode for SLT/HV/ILCA and NEX/ILCE; doesn't seem to apply to DSC models (always 0)
+        #    from 2018: at least DSC-RX10M4 and RX100M6 also use this tag
         Name => 'FocusMode',
-        Condition => '$$self{Model} !~ /^DSC-/',
+        Condition => '($$self{Model} !~ /^DSC-/) or ($$self{Model} =~ /^DSC-(RX10M4|RX100M6|RX100M5A)/)',
         Writable => 'int8u',
         Priority => 0,
         PrintConv => {
@@ -1025,6 +1026,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
     },
     0x201c => [ #JR
         # AFAreaModeSetting for SLT/HV/ILCA and NEX/ILCE; doesn't seem to apply to DSC models (always 0)
+        #    from 2018: at least DSC-RX10M4 and RX100M6 also use this tag
         # all DSLR/SLT/HV         Wide  Zone Spot   Local
         # all NEX and ILCE-3000   Multi      Center FlexibleSpot
         # all ILCE and ILCA       Wide  Zone Center FlexibleSpot  ExpandedFlexibleSpot
@@ -1042,8 +1044,8 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
             },
         },{
             Name => 'AFAreaModeSetting',
-            Condition => '$$self{Model} =~ /^(NEX-|ILCE-)/',
-            Notes => 'NEX and ILCE models',
+            Condition => '$$self{Model} =~ /^(NEX-|ILCE-|DSC-(RX10M4|RX100M6|RX100M5A))/',
+            Notes => 'NEX, ILCE and some DSC models',
             RawConv => '$$self{AFAreaILCE} = $val',
             DataMember => 'AFAreaILCE',
             Writable => 'int8u',
@@ -1074,10 +1076,11 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
     ],
     0x201d => { #JR
         # Flexible Spot position for NEX/ILCE, non-zero only when AFAreaMode='Flexible Spot'
+        #    from 2018: at least DSC-RX10M4 and RX100M6 also use this tag
         # observed values in range (0 0) to (640 480), with center (320 240) often seen
         # for NEX-5R/6, positions appear to be in an 11x9 grid
         Name => 'FlexibleSpotPosition',
-        Condition => '$$self{Model} =~ /^(NEX-|ILCE-)/',
+        Condition => '$$self{Model} =~ /^(NEX-|ILCE-|DSC-(RX10M4|RX100M6|RX100M5A))/',
         Writable => 'int16u',
         Count => 2,
         Notes => q{
@@ -1234,9 +1237,10 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
         },
     }],
     # 0x2021 - 0 for DSC; 0, 1 or 2 for SLT/ILCA and NEX/ILCE: 1=Face, 2=object-tracking ?
+    #    from 2018: at least DSC-RX10M4 and RX100M6 also use this tag
     0x2021 => { #JR
         Name => 'AFTracking',
-        Condition => '$$self{Model} !~ /^DSC-/', # (doesn't seem to apply to DSC-models)
+        Condition => '($$self{Model} !~ /^DSC-/) or ($$self{Model} =~ /^DSC-(RX10M4|RX100M6|RX100M5A)/)',
         Writable => 'int8u',
         PrintConv => {
             0 => 'Off',
@@ -1755,6 +1759,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
         Writable => 'int16u',
         PrintConvColumns => 2,
         PrintConv => {
+            0 => 'DSC-HX80', #PH
             2 => 'DSC-R1',
             256 => 'DSLR-A100',
             257 => 'DSLR-A900',
@@ -1829,6 +1834,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
             364 => 'DSC-RX0', #PH
             365 => 'DSC-RX10M4', #JR
             366 => 'DSC-RX100M6', #IB
+            369 => 'DSC-RX100M5A', #JR
         },
     },
     0xb020 => { #2
@@ -6675,7 +6681,7 @@ my %pictureProfile2010 = (
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     FORMAT => 'int8u',
     NOTES => q{
-        Valid for ILCE-7M3/7RM3/9, DSC-RX10M4/RX100M6.
+        Valid for ILCE-7M3/7RM3/9, DSC-RX10M4/RX100M6/RX100M5A.
     },
     WRITABLE => 1,
     FIRST_ENTRY => 0,
@@ -7637,7 +7643,7 @@ my %pictureProfile2010 = (
     GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
     0x0009 => { %releaseMode2 },
     0x000a => [{
-        Condition => '$$self{Model} =~ /^(ILCE-(7M3|7RM3|9)|DSC-(RX10M4|RX100M6))\b/',
+        Condition => '$$self{Model} =~ /^(ILCE-(7M3|7RM3|9)|DSC-(RX10M4|RX100M6|RX100M5A))\b/',
         Name => 'ShotNumberSincePowerUp',
         Format => 'int8u',
     },{

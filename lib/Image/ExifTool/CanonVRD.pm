@@ -23,7 +23,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Canon;
 
-$VERSION = '1.31';
+$VERSION = '1.32';
 
 sub ProcessCanonVRD($$;$);
 sub WriteCanonVRD($$;$);
@@ -1521,6 +1521,7 @@ sub ProcessEditData($$$)
         # make a copy for editing in place
         my $buff = substr($$dataPt, $pos, $dirLen);
         $dataPt = $$dirInfo{DataPt} = \$buff;
+        $dataPos += $pos;
         $pos = $$dirInfo{DirStart} = 0;
     }
     my $dirEnd = $pos + $dirLen;

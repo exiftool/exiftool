@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.07
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.10
 [File, System, Image] FileName - File Name: Panasonic_5_failed.rw2
 [File, System, Image] Directory - Directory: t
 [File, System, Image] FileSize - File Size: 14 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2018:07:25 11:35:24-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2018:07:25 11:35:24-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2018:07:25 11:35:24-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2018:08:16 13:54:08-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2018:08:16 13:54:08-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2018:08:16 13:54:08-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: RW2
 [File, File, Image] FileTypeExtension - File Type Extension: rw2
@@ -199,8 +199,8 @@
 [MakerNotes, Panasonic, Camera] 94 - Panasonic 0x005e: .
 [MakerNotes, Panasonic, Camera] 32768 - Maker Note Version: 0130
 [MakerNotes, Panasonic, Camera] 32769 - Scene Mode: Off
-[MakerNotes, Panasonic, Camera] 32770 - Panasonic 0x8002: 2
-[MakerNotes, Panasonic, Camera] 32771 - Panasonic 0x8003: 1
+[MakerNotes, Panasonic, Camera] 32770 - Highlight Warning: Yes
+[MakerNotes, Panasonic, Camera] 32771 - Dark Focus Environment: No
 [MakerNotes, Panasonic, Camera] 32772 - WB Red Level: 2283
 [MakerNotes, Panasonic, Camera] 32773 - WB Green Level: 1054
 [MakerNotes, Panasonic, Camera] 32774 - WB Blue Level: 1752
@@ -223,7 +223,7 @@
 [PrintIM, PrintIM, Printing] 256 - Print IM 0x0100: 0x00000005
 [PrintIM, PrintIM, Printing] 257 - Print IM 0x0101: 0x00000001
 [PrintIM, PrintIM, Printing] 272 - Print IM 0x0110: 0x00000080
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.07
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.10
 [XMP, XMP-dc, Image] title - Title: new title
 [IPTC, IPTC, Other] 25 - Keywords: a keyword
 [IPTC, IPTC, Other] 0 - Application Record Version: 4

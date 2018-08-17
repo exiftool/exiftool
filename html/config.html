@@ -268,7 +268,11 @@
         <span class=com># the "Struct" entry defines the structure fields</span>
         Struct =&gt; {
             <span class=com># optional namespace prefix and URI for structure fields
-            # (required only if different than NAMESPACE above)</span>
+            # (required only if different than NAMESPACE above)
+            # --> multiple entries may exist in this namespace lookup,
+            # with the last one alphabetically being the default for
+            # the fields, but each field may have a "Namespace"
+            # element to specify which prefix to use</span>
             NAMESPACE =&gt; { 'test' =&gt; 'http://x.y.z/test/' },
             <span class=com># optional structure name (used for warning messages only)</span>
             STRUCT_NAME =&gt; 'MyStruct',

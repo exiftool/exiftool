@@ -13102,11 +13102,16 @@ These tags are used in Panasonic/Leica cameras.
   0x00ab   TouchAE                              int16u
   0x00ad   HighlightShadow                      int16u[2]
   0x00af   TimeStamp                            string
+  0x00b4   MultiExposure                        int16u
+  0x00b9   RedEyeRemoval                        int16u
+  0x00bb   VideoBurstMode                       int32u
   0x00bc   DiffractionCorrection                int16u
   0x0e00   PrintIM                              PrintIM
   0x2003   TimeInfo                             Panasonic TimeInfo
   0x8000   MakerNoteVersion                     undef
   0x8001   SceneMode                            int16u
+  0x8002   HighlightWarning                     int16u
+  0x8003   DarkFocusEnvironment                 int16u
   0x8004   WBRedLevel                           int16u
   0x8005   WBGreenLevel                         int16u
   0x8006   WBBlueLevel                          int16u
@@ -13153,6 +13158,7 @@ user-supplied set of known faces.
   Index1   Tag Name                             Writable
   ------   --------                             --------
       0    PanasonicDateTime                    undef[8]
+     16    TimeLapseShotNumber                  int32u
 
 =head3 Panasonic Leica2 Tags
 
@@ -15774,7 +15780,7 @@ ILCE-6300/6500/7RM2/7SM2, ILCA-99M2.
 
 =head3 Sony Tag2010i Tags
 
-Valid for ILCE-7M3/7RM3/9, DSC-RX10M4/RX100M6.
+Valid for ILCE-7M3/7RM3/9, DSC-RX10M4/RX100M6/RX100M5A.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
@@ -16526,6 +16532,7 @@ Tags written by the Sony Image Data Converter utility in ARW images.
   0x8030   PeripheralIllumCentralRadius         int32s
   0x8031   PeripheralIllumCentralValue          int32s
   0x8032   PeripheralIllumPeriphValue           int32s
+  0x8040   DistortionCompensation               int32s
   0x9000   ToneCurveBrightnessX                 int16u[n]
   0x9001   ToneCurveRedX                        int16u[n]
   0x9002   ToneCurveGreenX                      int16u[n]
@@ -16534,6 +16541,16 @@ Tags written by the Sony Image Data Converter utility in ARW images.
   0x9005   ToneCurveRedY                        int16u[n]
   0x9006   ToneCurveGreenY                      int16u[n]
   0x9007   ToneCurveBlueY                       int16u[n]
+  0x900d   ChromaticAberrationCorrection        int32s
+  0x900e   InclinationCorrection                int32u
+  0x900f   InclinationAngle                     int32s
+  0x9010   Cropping                             int32u
+  0x9011   CropArea                             int32u[4]
+  0x9012   PreviewImageSize                     int32u[2]
+  0x9017   WhitesAdj                            int32s
+  0x9018   BlacksAdj                            int32s
+  0x9019   HighlightsAdj                        int32s
+  0x901a   ShadowsAdj                           int32s
   0xd000   CurrentVersion                       int32u
   0xd001   VersionIFD                           SonyIDC
   0xd100   VersionCreateDate                    string
@@ -17036,6 +17053,7 @@ Lens distortion correction information.
   0x1001   MultishotOn                          int32u
   0x1100   FocusStepNear                        int16s
   0x1101   FocusStepCount                       int16s
+  0x1102   FlashFired                           int32u
   0x1105   ZoomPosition                         int32u
   0x1200   LensAttached                         int32u
   0x1203   FocalLengthIn35mmFormat              int16u
@@ -24022,8 +24040,8 @@ G-sensor information extracted from the RVMI box of MOV videos.
 
 =head3 QuickTime camm0 Tags
 
-The camm0 through camm7 tables define the Camera Motion Metadata extracted
-from MP4 videos.  See
+The camm0 through camm7 tables define tags extracted from the Google Street
+View Camera Motion Metadata of MP4 videos.  See
 L<https://developers.google.com/streetview/publish/camm-spec> for the
 specification.
 

@@ -197,62 +197,121 @@
 <td class=c>int32s</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td title='0x8040 = 32832'>0x8040</td>
+<td>DistortionCompensation</td>
+<td class=c>int32s</td>
+<td><span class=s>1 = On
+  <br>2 = Off</span></td></tr>
+<tr>
 <td title='0x9000 = 36864'>0x9000</td>
 <td>ToneCurveBrightnessX</td>
 <td class=c>int16u[n]</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x9001 = 36865'>0x9001</td>
 <td>ToneCurveRedX</td>
 <td class=c>int16u[n]</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x9002 = 36866'>0x9002</td>
 <td>ToneCurveGreenX</td>
 <td class=c>int16u[n]</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x9003 = 36867'>0x9003</td>
 <td>ToneCurveBlueX</td>
 <td class=c>int16u[n]</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x9004 = 36868'>0x9004</td>
 <td>ToneCurveBrightnessY</td>
 <td class=c>int16u[n]</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x9005 = 36869'>0x9005</td>
 <td>ToneCurveRedY</td>
 <td class=c>int16u[n]</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x9006 = 36870'>0x9006</td>
 <td>ToneCurveGreenY</td>
 <td class=c>int16u[n]</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x9007 = 36871'>0x9007</td>
 <td>ToneCurveBlueY</td>
 <td class=c>int16u[n]</td>
 <td>&nbsp;</td></tr>
+<tr>
+<td title='0x900d = 36877'>0x900d</td>
+<td>ChromaticAberrationCorrection</td>
+<td class=c>int32s</td>
+<td><span class=s>1 = On
+  <br>2 = Off</span></td></tr>
 <tr class=b>
+<td title='0x900e = 36878'>0x900e</td>
+<td>InclinationCorrection</td>
+<td class=c>int32u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr>
+<td title='0x900f = 36879'>0x900f</td>
+<td>InclinationAngle</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x9010 = 36880'>0x9010</td>
+<td>Cropping</td>
+<td class=c>int32u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
+<tr>
+<td title='0x9011 = 36881'>0x9011</td>
+<td>CropArea</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x9012 = 36882'>0x9012</td>
+<td>PreviewImageSize</td>
+<td class=c>int32u[2]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x9017 = 36887'>0x9017</td>
+<td>WhitesAdj</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x9018 = 36888'>0x9018</td>
+<td>BlacksAdj</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x9019 = 36889'>0x9019</td>
+<td>HighlightsAdj</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x901a = 36890'>0x901a</td>
+<td>ShadowsAdj</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td title='0xd000 = 53248'>0xd000</td>
 <td>CurrentVersion</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xd001 = 53249'>0xd001</td>
 <td>VersionIFD</td>
 <td class=c>-</td>
 <td>--&gt; <a href='SonyIDC.html'>SonyIDC Tags</a>
   <br><span class='n s'>(there is one VersionIFD for each entry in the "Version Stack")</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0xd100 = 53504'>0xd100</td>
 <td>VersionCreateDate</td>
 <td class=c>string</td>
 <td><span class=s><span class=n>(date/time when this entry was created in the &quot;Version Stack&quot;)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td title='0xd101 = 53505'>0xd101</td>
 <td>VersionModifyDate</td>
 <td class=c>string</td>
@@ -261,7 +320,7 @@
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jan 8, 2010</i>
+<br><i>Last revised Aug 16, 2018</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

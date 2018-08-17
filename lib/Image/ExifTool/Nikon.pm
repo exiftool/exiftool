@@ -59,7 +59,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.48';
+$VERSION = '3.49';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -344,6 +344,7 @@ sub GetAFPointGrid($$;$);
     'DC 48 19 19 24 24 4B 06' => 'Sigma 10mm F2.8 EX DC HSM Fisheye',
     '02 3F 24 24 2C 2C 02 00' => 'Sigma 14mm F3.5',
     '48 48 24 24 24 24 4B 02' => 'Sigma 14mm F2.8 EX Aspherical HSM',
+    'C2 4C 24 24 14 14 4B 06' => 'Sigma 14mm F1.8 DG HSM | A', #IB
     '26 48 27 27 24 24 1C 02' => 'Sigma 15mm F2.8 EX Diagonal Fisheye',
     'EA 48 27 27 24 24 1C 02' => 'Sigma 15mm F2.8 EX Diagonal Fisheye', #30
     '26 58 31 31 14 14 1C 02' => 'Sigma 20mm F1.8 EX DG Aspherical RF',

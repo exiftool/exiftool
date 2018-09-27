@@ -4,9 +4,10 @@
 # Description:  Read meta information from GIMP XCF images
 #
 # Revisions:    2010/10/05 - P. Harvey Created
+#               2018/08/21 - PH Updated to current XCF specification (v013)
 #
 # References:   1) GIMP source code
-#               2) http://svn.gnome.org/viewvc/gimp/trunk/devel-docs/xcf.txt?view=markup
+#               2) https://gitlab.gnome.org/GNOME/gimp/blob/master/devel-docs/xcf.txt
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::GIMP;
@@ -15,7 +16,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.02';
+$VERSION = '1.03';
 
 sub ProcessParasites($$$);
 
@@ -28,6 +29,9 @@ sub ProcessParasites($$$);
         XCF (eXperimental Computing Facilty) images.
     },
     header => { SubDirectory => { TagTable => 'Image::ExifTool::GIMP::Header' } },
+    # recognized properties
+    # 1 - ColorMap
+    # 17 - SamplePoints? (doc says 17 is also "PROP_SAMPLE_POINTS"??)
     17 => {
         Name => 'Compression',
         Format => 'int8u',
@@ -38,14 +42,32 @@ sub ProcessParasites($$$);
             3 => 'Fractal',
         },
     },
+    # 18 - Guides
     19 => {
         Name => 'Resolution',
         SubDirectory => { TagTable => 'Image::ExifTool::GIMP::Resolution' },
+    },
+    20 => {
+        Name => 'Tattoo',
+        Format => 'int32u',
     },
     21 => {
         Name => 'Parasites',
         SubDirectory => { TagTable => 'Image::ExifTool::GIMP::Parasite' },
     },
+    22 => {
+        Name => 'Units',
+        Format => 'int32u',
+        PrintConv => {
+            1 => 'Inches',
+            2 => 'mm',
+            3 => 'Points',
+            4 => 'Picas',
+        },
+    },
+    # 23 Paths
+    # 24 UserUnit
+    # 25 Vectors
 );
 
 # information extracted from the XCF file header (ref 2)
@@ -55,10 +77,13 @@ sub ProcessParasites($$$);
     9 => {
         Name => 'XCFVersion',
         Format => 'string[5]',
+        DataMember => 'XCFVersion',
+        RawConv => '$$self{XCFVersion} = $val',
         PrintConv => {
             'file' => '0',
             'v001' => '1',
             'v002' => '2',
+            OTHER => sub { my $val = shift; $val =~ s/^v0*//; return $val },
         },
     },
     14 => { Name => 'ImageWidth',  Format => 'int32u' },
@@ -72,6 +97,7 @@ sub ProcessParasites($$$);
             2 => 'Indexed Color',
         },
     },
+    # 26 - [XCF 4 or later] Precision
 );
 
 # XCF resolution data (property type 19) (ref 2)
@@ -126,6 +152,13 @@ sub ProcessParasites($$$);
             Start => 10, # starts after "GIMP_XMP_1" header
         },
     },
+    'gimp-image-metadata' => {
+        Name => 'XML',
+        SubDirectory => { TagTable => 'Image::ExifTool::XMP::XML' },
+    },
+    # Seen, but not yet decoded:
+    #  gimp-image-grid
+    #  jpeg-settings
 );
 
 #------------------------------------------------------------------------------
@@ -193,6 +226,9 @@ sub ProcessXCF($$)
     # process the XCF header
     $et->HandleTag($tagTablePtr, 'header', $buff);
 
+    # skip over precision for XCV version 4 or later
+    $raf->Seek(4, 1) if $$et{XCFVersion} =~ /^v0*(\d+)/ and $1 >= 4;
+     
     # loop through image properties
     for (;;) {
         $raf->Read($buff, 8) == 8 or last;

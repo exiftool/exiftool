@@ -12,7 +12,7 @@
 use strict;
 require 5.004;
 
-my $version = '11.10';
+my $version = '11.11';
 
 # add our 'lib' directory to the include list BEFORE 'use Image::ExifTool'
 my $exeDir;
@@ -2280,9 +2280,6 @@ TAG:    foreach $tag (@foundTags) {
             if ($xml) {
                 # RDF/XML output format
                 my $tok = "$group:$tagName";
-                # manually un-do CR/LF conversion in Windows because output
-                # is in text mode, which will re-convert newlines to CR/LF
-                $isCRLF and $val =~ s/\x0d\x0a/\x0a/g;
                 if ($outFormat > 0) {
                     if ($structOpt and ref $val) {
                         $val = Image::ExifTool::XMP::SerializeStruct($val);
@@ -2295,6 +2292,9 @@ TAG:    foreach $tag (@foundTags) {
                         CleanXML(\$val);
                     }
                     unless ($noDups{$tok}) {
+                        # manually un-do CR/LF conversion in Windows because output
+                        # is in text mode, which will re-convert newlines to CR/LF
+                        $isCRLF and $val =~ s/\x0d\x0a/\x0a/g;
                         print $fp "\n $tok='${val}'";
                         # XML does not allow duplicate attributes
                         $noDups{$tok} = 1;
@@ -2323,6 +2323,9 @@ TAG:    foreach $tag (@foundTags) {
                 my $lastVal = $val;
                 for ($valNum=0; $valNum<2; ++$valNum) {
                     $val = FormatXML($val, $ind, $group);
+                    # manually un-do CR/LF conversion in Windows because output
+                    # is in text mode, which will re-convert newlines to CR/LF
+                    $isCRLF and $val =~ s/\x0d\x0a/\x0a/g;
                     if ($outFormat >= 0) {
                         # normal output format (note: this will give
                         # non-standard RDF/XML if there are any attributes)
@@ -2973,11 +2976,12 @@ sub DoHardLink($$$$)
         }
     }
     if (defined $testName) {
-        $testName = NextUnusedFilename($testName, undef, 1);
+        $testName = NextUnusedFilename($testName, $src, 1);
         if ($usedFileName{$testName}) {
             $et->Warn("File '${testName}' would exist");
-        } elsif ($et->SetFileName($src, $testName, 'Test') == 1) {
+        } elsif ($et->SetFileName($src, $testName, 'Test', $usedFileName{$testName}) == 1) {
             $usedFileName{$testName} = 1;
+            $usedFileName{$src} = 0;
         }
     }
 }
@@ -3662,6 +3666,10 @@ sub SuggestedExtension($$$)
         $ext = 'txt';
     } elsif ($$valPt =~ /^BM/) {
         $ext = 'bmp';
+    } elsif ($$valPt =~ /^CANON OPTIONAL DATA\0/) {
+        $ext = 'vrd';
+    } elsif ($$valPt =~ /^IIII\x04\0\x04\0/) {
+        $ext = 'dr4';
     } else {
         $ext = 'dat';
     }
@@ -3809,8 +3817,12 @@ sub NextUnusedFilename($;$$)
         }
         $filename .= substr($fmt, $pos); # add rest of file name
         # return now with filename unless file exists
-        return $filename unless $mt->Exists($filename) or $usedFileName{$filename};
-        return $filename if defined $okfile and $filename eq $okfile;
+        return $filename unless ($mt->Exists($filename) and not defined $usedFileName{$filename}) or $usedFileName{$filename};
+        if (defined $okfile) {
+            return $filename if $filename eq $okfile;
+            my ($fn, $ok) = (AbsPath($filename), AbsPath($okfile));
+            return $okfile if defined $fn and defined $ok and $fn eq $ok;
+        }
         ++$copy;
         ++$alpha;
     }
@@ -4162,17 +4174,19 @@ DESCRIPTION
 
       File Types
       ------------+-------------+-------------+-------------+------------
-      3FR   r     | DV    r     | JP2   r/w   | ODT   r     | RSRC  r
-      3G2   r/w   | DVB   r/w   | JPEG  r/w   | OFR   r     | RTF   r
-      3GP   r/w   | DVR-MS r    | JSON  r     | OGG   r     | RW2   r/w
-      A     r     | DYLIB r     | K25   r     | OGV   r     | RWL   r/w
-      AA    r     | EIP   r     | KDC   r     | OPUS  r     | RWZ   r
-      AAX   r/w   | EPS   r/w   | KEY   r     | ORF   r/w   | RM    r
-      ACR   r     | EPUB  r     | LA    r     | OTF   r     | SEQ   r
-      AFM   r     | ERF   r/w   | LFP   r     | PAC   r     | SKETCH r
-      AI    r/w   | EXE   r     | LNK   r     | PAGES r     | SO    r
-      AIFF  r     | EXIF  r/w/c | M2TS  r     | PBM   r/w   | SR2   r/w
-      APE   r     | EXR   r     | M4A/V r/w   | PCD   r     | SRF   r
+      3FR   r     | DR4   r/w/c | J2C   r     | ODP   r     | RAW   r/w
+      3G2   r/w   | DSS   r     | JNG   r/w   | ODS   r     | RIFF  r
+      3GP   r/w   | DV    r     | JP2   r/w   | ODT   r     | RSRC  r
+      A     r     | DVB   r/w   | JPEG  r/w   | OFR   r     | RTF   r
+      AA    r     | DVR-MS r    | JSON  r     | OGG   r     | RW2   r/w
+      AAE   r     | DYLIB r     | K25   r     | OGV   r     | RWL   r/w
+      AAX   r/w   | EIP   r     | KDC   r     | OPUS  r     | RWZ   r
+      ACR   r     | EPS   r/w   | KEY   r     | ORF   r/w   | RM    r
+      AFM   r     | EPUB  r     | LA    r     | OTF   r     | SEQ   r
+      AI    r/w   | ERF   r/w   | LFP   r     | PAC   r     | SKETCH r
+      AIFF  r     | EXE   r     | LNK   r     | PAGES r     | SO    r
+      APE   r     | EXIF  r/w/c | M2TS  r     | PBM   r/w   | SR2   r/w
+      ARQ   r/w   | EXR   r     | M4A/V r/w   | PCD   r     | SRF   r
       ARW   r/w   | EXV   r/w/c | MAX   r     | PDB   r     | SRW   r/w
       ASF   r     | F4A/V r/w   | MEF   r/w   | PDF   r/w   | SVG   r
       AVI   r     | FFF   r/w   | MIE   r/w/c | PEF   r/w   | SWF   r
@@ -4198,8 +4212,6 @@ DESCRIPTION
       DOC   r     | INX   r     | NRW   r/w   | RAF   r/w   | XLSX  r
       DOCX  r     | ISO   r     | NUMBERS r   | RAM   r     | XMP   r/w/c
       DPX   r     | ITC   r     | O     r     | RAR   r     | ZIP   r
-      DR4   r/w/c | J2C   r     | ODP   r     | RAW   r/w   |
-      DSS   r     | JNG   r/w   | ODS   r     | RIFF  r     |
 
       Meta Information
       ----------------------+----------------------+---------------------
@@ -4885,17 +4897,18 @@ OPTIONS
          -struct option (this also causes all list-type XMP tags to be
          output as JSON arrays, otherwise single-item lists would be output
          as simple strings). The -a option is implied if the -g or -G
-         options are used, otherwise it is ignored and duplicate tags are
-         suppressed. Adding the -D or -H option changes tag values to JSON
-         objects with "val" and "id" fields, and adding -l adds a "desc"
-         field, and a "num" field if the numerical value is different from
-         the converted "val". The -b option may be added to output binary
-         data, encoded in base64 if necessary (indicated by "base64:" as the
-         first 7 bytes of the value), and -t may be added to include tag
-         table information (see -t for details). The JSON output is UTF-8
-         regardless of any -L or -charset option setting, but the UTF-8
-         validation is disabled if a character set other than UTF-8 is
-         specified.
+         options are used, otherwise it is ignored and tags with identical
+         JSON names are suppressed. (-g4 may be used to ensure that all tags
+         have unique JSON names.) Adding the -D or -H option changes tag
+         values to JSON objects with "val" and "id" fields, and adding -l
+         adds a "desc" field, and a "num" field if the numerical value is
+         different from the converted "val". The -b option may be added to
+         output binary data, encoded in base64 if necessary (indicated by
+         "base64:" as the first 7 bytes of the value), and -t may be added
+         to include tag table information (see -t for details). The JSON
+         output is UTF-8 regardless of any -L or -charset option setting,
+         but the UTF-8 validation is disabled if a character set other than
+         UTF-8 is specified.
 
          If *JSONFILE* is specified, the file is imported and the tag
          definitions from the file are used to set tag values on a per-file
@@ -5004,7 +5017,7 @@ OPTIONS
          header (eg. files are grouped by directory if "#[SECT]" contains
          $directory). Lines beginning with "#[BODY]" and lines not beginning
          with "#" are output for each processed file. Lines beginning with
-         "#[IF]" are not output, but the BODY lines are skipped if any tag
+         "#[IF]" are not output, but all BODY lines are skipped if any tag
          on an IF line doesn't exist. Other lines beginning with "#" are
          ignored. For example, this format file:
 
@@ -5020,7 +5033,7 @@ OPTIONS
 
          produces output like this:
 
-             -- Generated by ExifTool 11.10 --
+             -- Generated by ExifTool 11.11 --
              File: a.jpg - 2003:10:31 15:44:19
              (f/5.6, 1/60s, ISO 100)
              File: b.jpg - 2006:05:23 11:57:38
@@ -5119,9 +5132,9 @@ OPTIONS
          database import). May be combined with -s to print tag names
          instead of descriptions, or -S to print tag values only,
          tab-delimited on a single line. The -t option may be combined with
-         -j, -php or -X to add tag table information (table "name", decimal
-         tag "id", and "index" for cases where multiple conditional tags
-         exist with the same ID).
+         -j, -php or -X to add tag table information ("table", tag "id", and
+         "index" for cases where multiple conditional tags exist with the
+         same ID).
 
     -T (-table)
          Output tag values in table form. Equivalent to -t -S -q -f.

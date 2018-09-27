@@ -1477,10 +1477,10 @@ property tables, even though they are only listed in the SummaryInfo table.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
-<tr class=h><th>Index2</th><th>Tag Name</th>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
-<td class=r title='0 = 0x0'>0</td>
+<td title='0x0000 = 0'>0x0000</td>
 <td>Identification</td>
 <td class=c>no</td>
 <td><span class=s>0x626a = Word 98 Mac
@@ -1488,7 +1488,7 @@ property tables, even though they are only listed in the SummaryInfo table.</p>
   <br>0xa5dc = Word 6.0/7.0
   <br>0xa5ec = Word 8.0</span></td></tr>
 <tr class=b>
-<td class=r title='3 = 0x3'>3</td>
+<td title='0x0003 = 3'>0x0003</td>
 <td>LanguageCode</td>
 <td class=c>no</td>
 <td><table class=cols><tr>
@@ -1552,7 +1552,7 @@ property tables, even though they are only listed in the SummaryInfo table.</p>
   <br>0x100c = French (Swiss)</td></tr></table>
 </td></tr>
 <tr>
-<td class=r title='5 = 0x5'>5</td>
+<td title='0x0005 = 5'>0x0005</td>
 <td>DocFlags</td>
 <td class=c>no</td>
 <td><span class=s>[Mask 0xff0f]</span><table class=cols><tr>
@@ -1593,14 +1593,85 @@ property tables, even though they are only listed in the SummaryInfo table.</p>
 <tr class=h><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
+<td>CommentBy</td>
+<td class=c>no</td>
+<td><span class=s><span class=n>(enable Duplicates option to extract all entries)</span></span></td></tr>
+<tr class=b>
+<td>DOP</td>
+<td class=c>-</td>
+<td>--&gt; <a href='FlashPix.html#DOP'>FlashPix DOP Tags</a></td></tr>
+<tr>
 <td>LastSavedBy</td>
 <td class=c>no</td>
 <td><span class=s><span class=n>(enable Duplicates option to extract history of up to 10 entries)</span></span></td></tr>
+<tr class=b>
+<td>ModifyDate</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='DOP'>FlashPix DOP Tags</a></h2>
+<p>Microsoft office document properties.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='20 = 0x14'>20</td>
+<td>CreateDate</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='24 = 0x18'>24</td>
+<td>ModifyDate</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='28 = 0x1c'>28</td>
+<td>LastPrinted</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='32 = 0x20'>32</td>
+<td>RevisionNumber</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='34 = 0x22'>34</td>
+<td>TotalEditTime</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='38 = 0x26'>38</td>
+<td>Words</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='42 = 0x2a'>42</td>
+<td>Characters</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='46 = 0x2e'>46</td>
+<td>Pages</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='48 = 0x30'>48</td>
+<td>Paragraphs</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='56 = 0x38'>56</td>
+<td>Lines</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Aug 1, 2018</i>
+<br><i>Last revised Sep 27, 2018</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

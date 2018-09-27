@@ -236,39 +236,59 @@ from some older Kodak models such as the DC50, DC120, DCS760C, DCS Pro 14N,
 <tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
+<td title='0x0000 = 0'>0x0000</td>
+<td>KodakVersion</td>
+<td class=c>int8u[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td title='0x0001 = 1'>0x0001</td>
 <td>UnknownEV?</td>
 <td class=c>rational64u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x0003 = 3'>0x0003</td>
 <td>ExposureValue</td>
 <td class=c>rational64u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x03e9 = 1001'>0x03e9</td>
 <td>OriginalFileName</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
+<tr>
+<td title='0x03ea = 1002'>0x03ea</td>
+<td>KodakTag</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x03eb = 1003'>0x03eb</td>
 <td>SensorLeftBorder</td>
-<td class=c>no</td>
+<td class=c>int16u</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x03ec = 1004'>0x03ec</td>
 <td>SensorTopBorder</td>
-<td class=c>no</td>
+<td class=c>int16u</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x03ed = 1005'>0x03ed</td>
 <td>SensorImageWidth</td>
-<td class=c>no</td>
+<td class=c>int16u</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x03ee = 1006'>0x03ee</td>
 <td>SensorImageHeight</td>
-<td class=c>no</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x03ef = 1007'>0x03ef</td>
+<td>BlackLevelTop</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x03f0 = 1008'>0x03f0</td>
+<td>BlackLevelBottom</td>
+<td class=c>int16u</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x03f1 = 1009'>0x03f1</td>
@@ -276,39 +296,531 @@ from some older Kodak models such as the DC50, DC120, DCS760C, DCS Pro 14N,
 <td class=c>-</td>
 <td>--&gt; <a href='Kodak.html#TextualInfo'>Kodak TextualInfo Tags</a></td></tr>
 <tr>
+<td title='0x03f2 = 1010'>0x03f2</td>
+<td>FlashMode?</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x03f3 = 1011'>0x03f3</td>
+<td>FlashCompensation</td>
+<td class=c>rational64s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x03f4 = 1012'>0x03f4</td>
+<td>WindMode?</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x03f5 = 1013'>0x03f5</td>
+<td>FocusMode?</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x03f8 = 1016'>0x03f8</td>
+<td>MinAperture</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x03f9 = 1017'>0x03f9</td>
+<td>MaxAperture</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x03fa = 1018'>0x03fa</td>
+<td>WhiteBalanceMode?</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x03fb = 1019'>0x03fb</td>
+<td>WhiteBalanceDetected?</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td title='0x03fc = 1020'>0x03fc</td>
 <td>WhiteBalance</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x03fd = 1021'>0x03fd</td>
-<td>Processing</td>
-<td class=c>-</td>
+<td>Processing
+  <br>ProcessingParameters</td>
+<td class=c>-<br>no</td>
 <td>--&gt; <a href='Kodak.html#Processing'>Kodak Processing Tags</a></td></tr>
 <tr>
+<td title='0x03fe = 1022'>0x03fe</td>
+<td>ImageAbsoluteX</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x03ff = 1023'>0x03ff</td>
+<td>ImageAbsoluteY</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0400 = 1024'>0x0400</td>
+<td>ApplicationKeyString</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td title='0x0401 = 1025'>0x0401</td>
 <td>Time</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
+<tr>
+<td title='0x0402 = 1026'>0x0402</td>
+<td>GPSString</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
 <tr class=b>
-<td title='0x0406 = 1030'>0x0406</td>
-<td>CameraTemperature</td>
-<td class=c>rational64s</td>
+<td title='0x0403 = 1027'>0x0403</td>
+<td>EventLogCapture?</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td title='0x0404 = 1028'>0x0404</td>
+<td>ComponentTable?</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0405 = 1029'>0x0405</td>
+<td>CustomIlluminant?</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0406 = 1030'>0x0406</td>
+<td>CameraTemperature
+  <br>CameraTemperature</td>
+<td class=c>rational64s<br>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td title='0x0407 = 1031'>0x0407</td>
 <td>AdapterVoltage</td>
 <td class=c>rational64u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x0408 = 1032'>0x0408</td>
 <td>BatteryVoltage</td>
 <td class=c>rational64u</td>
 <td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0409 = 1033'>0x0409</td>
+<td>DacVoltages</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x040a = 1034'>0x040a</td>
+<td>IlluminantDetectorData?</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x040b = 1035'>0x040b</td>
+<td>PixelClockFrequency</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x040c = 1036'>0x040c</td>
+<td>CenterPixel</td>
+<td class=c>int16u[3]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x040d = 1037'>0x040d</td>
+<td>BurstCount</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x040e = 1038'>0x040e</td>
+<td>BlackLevelRough</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x040f = 1039'>0x040f</td>
+<td>OffsetMapHorizontal?</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0410 = 1040'>0x0410</td>
+<td>OffsetMapVertical?</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0411 = 1041'>0x0411</td>
+<td>Histogram?</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0412 = 1042'>0x0412</td>
+<td>VerticalClockOverlaps</td>
+<td class=c>int16u[2]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0413 = 1043'>0x0413</td>
+<td>SensorTemperature</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
 <tr>
 <td title='0x0414 = 1044'>0x0414</td>
-<td>NCDFileInfo</td>
+<td>XilinxVersion</td>
 <td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0415 = 1045'>0x0415</td>
+<td>FirmwareVersion</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0416 = 1046'>0x0416</td>
+<td>BlackLevelRoughAfter</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0417 = 1047'>0x0417</td>
+<td>BrightRowsTop</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0418 = 1048'>0x0418</td>
+<td>EventLogProcess</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0419 = 1049'>0x0419</td>
+<td>DacVoltagesFlush</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x041a = 1050'>0x041a</td>
+<td>FlashUsed</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x041b = 1051'>0x041b</td>
+<td>FlashType</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x041c = 1052'>0x041c</td>
+<td>SelfTimer</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x041d = 1053'>0x041d</td>
+<td>AFMode</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x041e = 1054'>0x041e</td>
+<td>LensType</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x041f = 1055'>0x041f</td>
+<td>ImageCropX</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0420 = 1056'>0x0420</td>
+<td>ImageCropY</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0421 = 1057'>0x0421</td>
+<td>AdjustedTbnImageWidth</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0422 = 1058'>0x0422</td>
+<td>AdjustedTbnImageHeight</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0423 = 1059'>0x0423</td>
+<td>IntegrationTime</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0424 = 1060'>0x0424</td>
+<td>BracketingMode</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0425 = 1061'>0x0425</td>
+<td>BracketingStep</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0426 = 1062'>0x0426</td>
+<td>BracketingCounter</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x042e = 1070'>0x042e</td>
+<td>HuffmanTableLength</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x042f = 1071'>0x042f</td>
+<td>HuffmanTableValue</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0438 = 1080'>0x0438</td>
+<td>MainBoardVersion</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0439 = 1081'>0x0439</td>
+<td>ImagerBoardVersion</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x044c = 1100'>0x044c</td>
+<td>FocusEdgeMap</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x05e6 = 1510'>0x05e6</td>
+<td>IdleTiming</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x05e7 = 1511'>0x05e7</td>
+<td>FlushTiming</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x05e8 = 1512'>0x05e8</td>
+<td>IntegrateTiming</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x05e9 = 1513'>0x05e9</td>
+<td>RegisterReadTiming</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x05ea = 1514'>0x05ea</td>
+<td>FirstLineTransferTiming</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x05eb = 1515'>0x05eb</td>
+<td>ShiftTiming</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x05ec = 1516'>0x05ec</td>
+<td>NormalLineTransferTiming</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x05ed = 1517'>0x05ed</td>
+<td>TestTransferTiming</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x05fa = 1530'>0x05fa</td>
+<td>MinimumFlushRows</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x05fd = 1533'>0x05fd</td>
+<td>ImagerPowerOnDelayMsec</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x05fe = 1534'>0x05fe</td>
+<td>ImagerInitialTimingCode</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x05ff = 1535'>0x05ff</td>
+<td>ImagerLogicProgram</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0600 = 1536'>0x0600</td>
+<td>ImagerBiasSettlingDelayMsec</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0604 = 1540'>0x0604</td>
+<td>IdleSequence</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0605 = 1541'>0x0605</td>
+<td>FirstFlushSequence</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0606 = 1542'>0x0606</td>
+<td>FinalFlushSequence</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0607 = 1543'>0x0607</td>
+<td>SampleBlackSequence</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0608 = 1544'>0x0608</td>
+<td>TransferSequence</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x060e = 1550'>0x060e</td>
+<td>DacCountsPerVolt</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x060f = 1551'>0x060f</td>
+<td>BlackDacChannel</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0610 = 1552'>0x0610</td>
+<td>BlackAdCountsPerDacVolt</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0611 = 1553'>0x0611</td>
+<td>BlackTarget</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0612 = 1554'>0x0612</td>
+<td>BlackDacSettlingMsec</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x07d0 = 2000'>0x07d0</td>
+<td>StandardMatrixDaylight</td>
+<td class=c>rational64s[9]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x07d1 = 2001'>0x07d1</td>
+<td>StandardMatrixTungsten</td>
+<td class=c>rational64s[9]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x07d2 = 2002'>0x07d2</td>
+<td>StandardMatrixFluorescent</td>
+<td class=c>rational64s[9]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x07d3 = 2003'>0x07d3</td>
+<td>StandardMatrixFlash</td>
+<td class=c>rational64s[9]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x07d4 = 2004'>0x07d4</td>
+<td>StandardMatrixCustom</td>
+<td class=c>rational64s[9]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x07da = 2010'>0x07da</td>
+<td>DeviantMatrixDaylight</td>
+<td class=c>rational64s[9]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x07db = 2011'>0x07db</td>
+<td>DeviantMatrixTungsten</td>
+<td class=c>rational64s[9]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x07dc = 2012'>0x07dc</td>
+<td>DeviantMatrixFluorescent</td>
+<td class=c>rational64s[9]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x07dd = 2013'>0x07dd</td>
+<td>DeviantMatrixFlash</td>
+<td class=c>rational64s[9]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x07de = 2014'>0x07de</td>
+<td>DeviantMatrixCustom</td>
+<td class=c>rational64s[9]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x07e4 = 2020'>0x07e4</td>
+<td>UniqueMatrixDaylight</td>
+<td class=c>rational64s[9]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x07e5 = 2021'>0x07e5</td>
+<td>UniqueMatrixTungsten</td>
+<td class=c>rational64s[9]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x07e6 = 2022'>0x07e6</td>
+<td>UniqueMatrixFluorescent</td>
+<td class=c>rational64s[9]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x07e7 = 2023'>0x07e7</td>
+<td>UniqueMatrixFlash</td>
+<td class=c>rational64s[9]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x07e8 = 2024'>0x07e8</td>
+<td>UniqueMatrixCustom</td>
+<td class=c>rational64s[9]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x07e9 = 2025'>0x07e9</td>
+<td>UniqueMatrixAuto</td>
+<td class=c>rational64s[9]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0834 = 2100'>0x0834</td>
+<td>StandardWhiteDaylight</td>
+<td class=c>rational64s[3]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0835 = 2101'>0x0835</td>
+<td>StandardWhiteTungsten</td>
+<td class=c>rational64s[3]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0836 = 2102'>0x0836</td>
+<td>StandardWhiteFluorescent</td>
+<td class=c>rational64s[3]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0837 = 2103'>0x0837</td>
+<td>StandardWhiteFlash</td>
+<td class=c>rational64s[3]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0838 = 2104'>0x0838</td>
+<td>StandardWhiteCustom</td>
+<td class=c>rational64s[3]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x083e = 2110'>0x083e</td>
+<td>DeviantWhiteDaylight</td>
+<td class=c>rational64s[3]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x083f = 2111'>0x083f</td>
+<td>DeviantWhiteTungsten</td>
+<td class=c>rational64s[3]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0840 = 2112'>0x0840</td>
+<td>DeviantWhiteFluorescent</td>
+<td class=c>rational64s[3]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0841 = 2113'>0x0841</td>
+<td>DeviantWhiteFlash</td>
+<td class=c>rational64s[3]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0842 = 2114'>0x0842</td>
+<td>DeviantWhiteCustom</td>
+<td class=c>rational64s[3]</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x0846 = 2118'>0x0846</td>
@@ -316,84 +828,1594 @@ from some older Kodak models such as the DC50, DC120, DCS760C, DCS Pro 14N,
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td title='0x0847 = 2119'>0x0847</td>
+<td>WB_RGBLevelsAsShot</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td title='0x0848 = 2120'>0x0848</td>
 <td>WB_RGBLevelsDaylight</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x0849 = 2121'>0x0849</td>
 <td>WB_RGBLevelsTungsten</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x084a = 2122'>0x084a</td>
 <td>WB_RGBLevelsFluorescent</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x084b = 2123'>0x084b</td>
 <td>WB_RGBLevelsFlash</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x084c = 2124'>0x084c</td>
 <td>WB_RGBLevelsCustom</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x084d = 2125'>0x084d</td>
 <td>WB_RGBLevelsAuto</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x0852 = 2130'>0x0852</td>
-<td>WB_RGBMul0</td>
-<td class=c>no</td>
+<td>WB_RGBMulDaylight</td>
+<td class=c>rational64u[3]</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x0853 = 2131'>0x0853</td>
-<td>WB_RGBMul1</td>
-<td class=c>no</td>
+<td>WB_RGBMulTungsten</td>
+<td class=c>rational64u[3]</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x0854 = 2132'>0x0854</td>
-<td>WB_RGBMul2</td>
-<td class=c>no</td>
+<td>WB_RGBMulFluorescent</td>
+<td class=c>rational64u[3]</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x0855 = 2133'>0x0855</td>
-<td>WB_RGBMul3</td>
-<td class=c>no</td>
+<td>WB_RGBMulFlash</td>
+<td class=c>rational64u[3]</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x085c = 2140'>0x085c</td>
-<td>WB_RGBCoeffs0</td>
+<td>WB_RGBCoeffsDaylight</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x085d = 2141'>0x085d</td>
-<td>WB_RGBCoeffs1</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td title='0x085e = 2142'>0x085e</td>
-<td>WB_RGBCoeffs2</td>
+<td>WB_RGBCoeffsTungsten</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
-<td title='0x085f = 2143'>0x085f</td>
-<td>WB_RGBCoeffs3</td>
+<td title='0x085e = 2142'>0x085e</td>
+<td>WB_RGBCoeffsFluorescent</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td title='0x085f = 2143'>0x085f</td>
+<td>WB_RGBCoeffsFlash</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0898 = 2200'>0x0898</td>
+<td>ExposureGainDaylight</td>
+<td class=c>rational64s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0899 = 2201'>0x0899</td>
+<td>ExposureGainTungsten</td>
+<td class=c>rational64s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x089a = 2202'>0x089a</td>
+<td>ExposureGainFluorescent</td>
+<td class=c>rational64s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x089b = 2203'>0x089b</td>
+<td>ExposureGainFlash</td>
+<td class=c>rational64s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x089c = 2204'>0x089c</td>
+<td>ExposureGainCustom</td>
+<td class=c>rational64s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x089d = 2205'>0x089d</td>
+<td>AnalogISOTable</td>
+<td class=c>rational64u[3]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x089e = 2206'>0x089e</td>
+<td>AnalogCaptureISO</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x089f = 2207'>0x089f</td>
+<td>ISOCalibrationGain</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x08a0 = 2208'>0x08a0</td>
+<td>ISOCalibrationGainTable</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x08a1 = 2209'>0x08a1</td>
+<td>ExposureHeadroomFactor</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x08ab = 2219'>0x08ab</td>
+<td>LinearitySplineTags</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x08fc = 2300'>0x08fc</td>
+<td>MonitorMatrix</td>
+<td class=c>rational64s[9]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x08fd = 2301'>0x08fd</td>
+<td>TonScaleTable</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x08fe = 2302'>0x08fe</td>
+<td>Gamma</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x08ff = 2303'>0x08ff</td>
+<td>LogLinTable</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0900 = 2304'>0x0900</td>
+<td>LinLogTable</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0901 = 2305'>0x0901</td>
+<td>GammaTable</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0902 = 2306'>0x0902</td>
+<td>LogScale</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td title='0x0903 = 2307'>0x0903</td>
 <td>BaseISO</td>
 <td class=c>rational64u</td>
 <td>&nbsp;</td></tr>
+<tr>
+<td title='0x0904 = 2308'>0x0904</td>
+<td>LinLogCoring</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
 <tr class=b>
+<td title='0x0905 = 2309'>0x0905</td>
+<td>PatternGainConversionTable</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0906 = 2310'>0x0906</td>
+<td>DefectCount</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0907 = 2311'>0x0907</td>
+<td>DefectList</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0908 = 2312'>0x0908</td>
+<td>DefectListPacked</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0909 = 2313'>0x0909</td>
+<td>ImageSpace</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x090a = 2314'>0x090a</td>
+<td>ThumbnailCompressionTable</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x090b = 2315'>0x090b</td>
+<td>ThumbnailExpansionTable</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x090c = 2316'>0x090c</td>
+<td>ImageCompressionTable</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x090d = 2317'>0x090d</td>
+<td>ImageExpansionTable</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x090e = 2318'>0x090e</td>
+<td>EighteenPercentPoint</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x090f = 2319'>0x090f</td>
+<td>DefectIsoCode</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0910 = 2320'>0x0910</td>
+<td>BaseISODaylight</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0911 = 2321'>0x0911</td>
+<td>BaseISOTungsten</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0912 = 2322'>0x0912</td>
+<td>BaseISOFluorescent</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0913 = 2323'>0x0913</td>
+<td>BaseISOFlash</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x091a = 2330'>0x091a</td>
+<td>MatrixSelectThreshold</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x091b = 2331'>0x091b</td>
+<td>MatrixSelectK</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x091c = 2332'>0x091c</td>
+<td>IlluminantDetectTable</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x091d = 2333'>0x091d</td>
+<td>RGTable</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x091e = 2334'>0x091e</td>
+<td>MatrixSelectThreshold1</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x091f = 2335'>0x091f</td>
+<td>MatrixSelectThreshold2</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0924 = 2340'>0x0924</td>
+<td>PortraitMatrix</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0925 = 2341'>0x0925</td>
+<td>PortraitToneScaleTable</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x092e = 2350'>0x092e</td>
+<td>EnableSharpening</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x092f = 2351'>0x092f</td>
+<td>SharpeningKernel</td>
+<td class=c>int16s[25]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0930 = 2352'>0x0930</td>
+<td>EdgeMapSlope</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0931 = 2353'>0x0931</td>
+<td>EdgeMapX1</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0932 = 2354'>0x0932</td>
+<td>EdgeMapX2</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0933 = 2355'>0x0933</td>
+<td>KernelDenominators</td>
+<td class=c>int16u[3]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0934 = 2356'>0x0934</td>
+<td>EdgeMapX3</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0935 = 2357'>0x0935</td>
+<td>EdgeMapX4</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0936 = 2358'>0x0936</td>
+<td>SharpenForThumbnail</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0937 = 2359'>0x0937</td>
+<td>EdgeSpline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0938 = 2360'>0x0938</td>
+<td>DownSampleBy2Hor</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0939 = 2361'>0x0939</td>
+<td>DownSampleBy2Ver</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x093a = 2362'>0x093a</td>
+<td>DownSampleBy4Hor</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x093b = 2363'>0x093b</td>
+<td>DownSampleBy4Ver</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x093c = 2364'>0x093c</td>
+<td>DownSampleBy3Hor</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x093d = 2365'>0x093d</td>
+<td>DownSampleBy3Ver</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x093e = 2366'>0x093e</td>
+<td>DownSampleBy6Hor</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x093f = 2367'>0x093f</td>
+<td>DownSampleBy6Ver</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0940 = 2368'>0x0940</td>
+<td>DownSampleBy2Hor3MPdcr</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0941 = 2369'>0x0941</td>
+<td>DownSampleBy2Ver3MPdcr</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0942 = 2370'>0x0942</td>
+<td>ThumbnailResizeRatio</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0943 = 2371'>0x0943</td>
+<td>AtCaptureUserCrop</td>
+<td class=c>int32u[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0944 = 2372'>0x0944</td>
+<td>ImageResolution</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0945 = 2373'>0x0945</td>
+<td>ImageResolutionJpg</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x094c = 2380'>0x094c</td>
+<td>USMParametersLow</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x094d = 2381'>0x094d</td>
+<td>USMParametersMed</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x094e = 2382'>0x094e</td>
+<td>USMParametersHigh</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x094f = 2383'>0x094f</td>
+<td>USMParametersHost</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0950 = 2384'>0x0950</td>
+<td>EdgeSplineLow</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0951 = 2385'>0x0951</td>
+<td>EdgeSplineMed</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0952 = 2386'>0x0952</td>
+<td>EdgeSplineHigh</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0953 = 2387'>0x0953</td>
+<td>USMParametersHost6MP</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0954 = 2388'>0x0954</td>
+<td>USMParametersHost3MP</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0960 = 2400'>0x0960</td>
+<td>PatternImagerWidth</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0961 = 2401'>0x0961</td>
+<td>PatternImagerHeight</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0962 = 2402'>0x0962</td>
+<td>PatternAreaWidth</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0963 = 2403'>0x0963</td>
+<td>PatternAreaHeight</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0964 = 2404'>0x0964</td>
+<td>PatternCorrectionGains</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0965 = 2405'>0x0965</td>
+<td>PatternCorrectionOffsets</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0966 = 2406'>0x0966</td>
+<td>PatternX</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0967 = 2407'>0x0967</td>
+<td>PatternY</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0968 = 2408'>0x0968</td>
+<td>PatternCorrectionFactors</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0969 = 2409'>0x0969</td>
+<td>PatternCorrectionFactorScale</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x096a = 2410'>0x096a</td>
+<td>PatternCropRows1</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x096b = 2411'>0x096b</td>
+<td>PatternCropRows2</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x096c = 2412'>0x096c</td>
+<td>PatternCropCols1</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x096d = 2413'>0x096d</td>
+<td>PatternCropCols2</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x096e = 2414'>0x096e</td>
+<td>PixelCorrectionGains</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x096f = 2415'>0x096f</td>
+<td>StitchRows</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0970 = 2416'>0x0970</td>
+<td>StitchColumns</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0971 = 2417'>0x0971</td>
+<td>PixelCorrectionScale</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0972 = 2418'>0x0972</td>
+<td>PixelCorrectionOffset</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0988 = 2440'>0x0988</td>
+<td>LensTableIndex</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0992 = 2450'>0x0992</td>
+<td>DiffTileGains602832</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0993 = 2451'>0x0993</td>
+<td>DiffTileGains24t852822</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x099c = 2460'>0x099c</td>
+<td>TileGainDeterminationTable</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x099d = 2461'>0x099d</td>
+<td>NemoBlurKernel</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x099e = 2462'>0x099e</td>
+<td>NemoTileSize</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x099f = 2463'>0x099f</td>
+<td>NemoGainFactors</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x09a0 = 2464'>0x09a0</td>
+<td>NemoDarkLimit</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x09a1 = 2465'>0x09a1</td>
+<td>NemoHighlight12Limit</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x09c4 = 2500'>0x09c4</td>
+<td>ImagerFileProductionLevel</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x09c5 = 2501'>0x09c5</td>
+<td>ImagerFileDateCreated</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x09c6 = 2502'>0x09c6</td>
+<td>CalibrationVersion</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x09c7 = 2503'>0x09c7</td>
+<td>ImagerFileTagsVersionStandard</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x09c8 = 2504'>0x09c8</td>
+<td>IFCameraModel</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x09c9 = 2505'>0x09c9</td>
+<td>CalibrationHistory</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x09ca = 2506'>0x09ca</td>
+<td>CalibrationLog</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td title='0x09ce = 2510'>0x09ce</td>
 <td>SensorSerialNumber</td>
 <td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x09f6 = 2550'>0x09f6</td>
+<td>DefectConcealArtCorrectThres</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x09f7 = 2551'>0x09f7</td>
+<td>SglColDCACThres1</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x09f8 = 2552'>0x09f8</td>
+<td>SglColDCACThres2</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x09f9 = 2553'>0x09f9</td>
+<td>SglColDCACTHres3</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0a01 = 2561'>0x0a01</td>
+<td>DblColDCACThres1</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0a02 = 2562'>0x0a02</td>
+<td>DblColDCACThres2</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0a0a = 2570'>0x0a0a</td>
+<td>DefectConcealThresTable</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0a28 = 2600'>0x0a28</td>
+<td>MonoUniqueMatrix</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0a29 = 2601'>0x0a29</td>
+<td>MonoMonitorMatrix</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0a2a = 2602'>0x0a2a</td>
+<td>MonoToneScaleTable</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0a5a = 2650'>0x0a5a</td>
+<td>OmenInitialScaling</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0a5b = 2651'>0x0a5b</td>
+<td>OmenInitialRows</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0a5c = 2652'>0x0a5c</td>
+<td>OmenInitialColumns</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0a5d = 2653'>0x0a5d</td>
+<td>OmenInitialIPFStrength</td>
+<td class=c>int32s[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0a5e = 2654'>0x0a5e</td>
+<td>OmenEarlyStrength</td>
+<td class=c>int32s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0a5f = 2655'>0x0a5f</td>
+<td>OmenAutoStrength</td>
+<td class=c>int32s[4]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0a60 = 2656'>0x0a60</td>
+<td>OmenAtCaptureStrength</td>
+<td class=c>int32s[4]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0a61 = 2657'>0x0a61</td>
+<td>OmenAtCaptureMode</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0a62 = 2658'>0x0a62</td>
+<td>OmenFocalLengthLimit</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0a64 = 2660'>0x0a64</td>
+<td>OmenSurfaceIndex</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0a65 = 2661'>0x0a65</td>
+<td>OmenPercentToRationalLimitsRed</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0a66 = 2662'>0x0a66</td>
+<td>OmenPercentToRationalLimitsGoR</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0a67 = 2663'>0x0a67</td>
+<td>OmenPercentToRationalLimitsBlue</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0a68 = 2664'>0x0a68</td>
+<td>OmenPercentToRationalLimitsGoB</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0a6e = 2670'>0x0a6e</td>
+<td>OmenEarlyGoBSurface</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0a6f = 2671'>0x0a6f</td>
+<td>OmenEarlyGoBRows</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0a70 = 2672'>0x0a70</td>
+<td>OmenEarlyGoBColumns</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0a73 = 2675'>0x0a73</td>
+<td>OmenSmoothingKernel</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0a74 = 2676'>0x0a74</td>
+<td>OmenGradientOffset</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0a75 = 2677'>0x0a75</td>
+<td>OmenGradientKernel</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0a76 = 2678'>0x0a76</td>
+<td>OmenGradientKernelTaps</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0a77 = 2679'>0x0a77</td>
+<td>OmenRatioClipFactors</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0a78 = 2680'>0x0a78</td>
+<td>OmenRatioExclusionFactors</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0a79 = 2681'>0x0a79</td>
+<td>OmenGradientExclusionLimits</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0a7a = 2682'>0x0a7a</td>
+<td>OmenROICoordinates</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0a7b = 2683'>0x0a7b</td>
+<td>OmenROICoefficients</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0a7c = 2684'>0x0a7c</td>
+<td>OmenRangeWeighting</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0a7d = 2685'>0x0a7d</td>
+<td>OmenMeanToStrength</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0bb8 = 3000'>0x0bb8</td>
+<td>FactoryWhiteGainsDaylight</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0bb9 = 3001'>0x0bb9</td>
+<td>FactoryWhiteOffsetsDaylight</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0bba = 3002'>0x0bba</td>
+<td>DacGainsCoarse</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0bbb = 3003'>0x0bbb</td>
+<td>DacGainsFine</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0bbc = 3004'>0x0bbc</td>
+<td>DigitalExposureGains</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0bbd = 3005'>0x0bbd</td>
+<td>DigitalExposureBiases</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0bbe = 3006'>0x0bbe</td>
+<td>BlackClamp</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0bbf = 3007'>0x0bbf</td>
+<td>ChannelCoarseGainAdjust</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0bc0 = 3008'>0x0bc0</td>
+<td>BlackClampOffset</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0bf4 = 3060'>0x0bf4</td>
+<td>DMPixelThresholdFactor</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0bf5 = 3061'>0x0bf5</td>
+<td>DMWindowThresholdFactor</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0bf6 = 3062'>0x0bf6</td>
+<td>DMTrimFraction</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0bf7 = 3063'>0x0bf7</td>
+<td>DMSmoothRejThresh</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0bf8 = 3064'>0x0bf8</td>
+<td>DMFillRejThresh</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0bf9 = 3065'>0x0bf9</td>
+<td>VMWsize</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0bfa = 3066'>0x0bfa</td>
+<td>DMErodeRadius</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0bfb = 3067'>0x0bfb</td>
+<td>DMNumPatches</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0bfc = 3068'>0x0bfc</td>
+<td>DMNoiseScale</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0bfe = 3070'>0x0bfe</td>
+<td>BrightDefectThreshold</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0bff = 3071'>0x0bff</td>
+<td>BrightDefectIntegrationMS</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c00 = 3072'>0x0c00</td>
+<td>BrightDefectIsoCode</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c03 = 3075'>0x0c03</td>
+<td>TopDarkRow1</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c04 = 3076'>0x0c04</td>
+<td>TopDarkRow2</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c05 = 3077'>0x0c05</td>
+<td>BottomDarkRow1</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c06 = 3078'>0x0c06</td>
+<td>BottomDarkRow2</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c07 = 3079'>0x0c07</td>
+<td>LeftDarkCol1</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c08 = 3080'>0x0c08</td>
+<td>LeftDarkCol2</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c09 = 3081'>0x0c09</td>
+<td>RightDarkCol1</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c0a = 3082'>0x0c0a</td>
+<td>RightDarkCol2</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c0b = 3083'>0x0c0b</td>
+<td>HMPixThresh</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c0c = 3084'>0x0c0c</td>
+<td>HMColThresh</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c0d = 3085'>0x0c0d</td>
+<td>HMWsize</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c0e = 3086'>0x0c0e</td>
+<td>HMColRejThresh</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c0f = 3087'>0x0c0f</td>
+<td>VMPixThresh</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c10 = 3088'>0x0c10</td>
+<td>VMColThresh</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c11 = 3089'>0x0c11</td>
+<td>VMNbands</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c12 = 3090'>0x0c12</td>
+<td>VMColDropThresh</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c13 = 3091'>0x0c13</td>
+<td>VMPatchResLimit</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c14 = 3092'>0x0c14</td>
+<td>MapScale</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c1c = 3100'>0x0c1c</td>
+<td>Klut</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c1d = 3101'>0x0c1d</td>
+<td>RimNonlinearity</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c1e = 3102'>0x0c1e</td>
+<td>InverseRimNonlinearity</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c1f = 3103'>0x0c1f</td>
+<td>RembrandtToneScale</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c20 = 3104'>0x0c20</td>
+<td>RimToNifColorTransform</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c21 = 3105'>0x0c21</td>
+<td>RimToNifScaleFactor</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c22 = 3106'>0x0c22</td>
+<td>NifNonlinearity</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c23 = 3107'>0x0c23</td>
+<td>SBALogTransform</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c24 = 3108'>0x0c24</td>
+<td>InverseSBALogTransform</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c25 = 3109'>0x0c25</td>
+<td>SBABlack</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c26 = 3110'>0x0c26</td>
+<td>SBAGray</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c27 = 3111'>0x0c27</td>
+<td>SBAWhite</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c28 = 3112'>0x0c28</td>
+<td>GaussianWeights</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c29 = 3113'>0x0c29</td>
+<td>SfsBoundary</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c2a = 3114'>0x0c2a</td>
+<td>CoringTableBest</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c2b = 3115'>0x0c2b</td>
+<td>CoringTableBetter</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c2c = 3116'>0x0c2c</td>
+<td>CoringTableGood</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c2d = 3117'>0x0c2d</td>
+<td>ExposureReferenceGain</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c2e = 3118'>0x0c2e</td>
+<td>ExposureReferenceOffset</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c2f = 3119'>0x0c2f</td>
+<td>SBARedBalanceLut</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c30 = 3120'>0x0c30</td>
+<td>SBAGreenBalanceLut</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c31 = 3121'>0x0c31</td>
+<td>SBABlueBalanceLut</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c32 = 3122'>0x0c32</td>
+<td>SBANeutralBAL</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c33 = 3123'>0x0c33</td>
+<td>SBAGreenMagentaBAL</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c34 = 3124'>0x0c34</td>
+<td>SBAIlluminantBAL</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c35 = 3125'>0x0c35</td>
+<td>SBAAnalysisComplete</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c36 = 3126'>0x0c36</td>
+<td>JPEGQTableBest</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c37 = 3127'>0x0c37</td>
+<td>JPEGQTableBetter</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c38 = 3128'>0x0c38</td>
+<td>JPEGQTableGood</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c39 = 3129'>0x0c39</td>
+<td>RembrandtPortraitToneScale</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c3a = 3130'>0x0c3a</td>
+<td>RembrandtConsumerToneScale</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c3b = 3131'>0x0c3b</td>
+<td>CFAGreenThreshold1</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c3c = 3132'>0x0c3c</td>
+<td>CFAGreenThreshold2</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c3d = 3133'>0x0c3d</td>
+<td>QTableLarge50Pct</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c3e = 3134'>0x0c3e</td>
+<td>QTableLarge67Pct</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c3f = 3135'>0x0c3f</td>
+<td>QTableLarge100Pct</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c40 = 3136'>0x0c40</td>
+<td>QTableMedium50Pct</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c41 = 3137'>0x0c41</td>
+<td>QTableMedium67Pct</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c42 = 3138'>0x0c42</td>
+<td>QTableMedium100Pct</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c43 = 3139'>0x0c43</td>
+<td>QTableSmall50Pct</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c44 = 3140'>0x0c44</td>
+<td>QTableSmall67Pct</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c45 = 3141'>0x0c45</td>
+<td>QTableSmall100Pct</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c46 = 3142'>0x0c46</td>
+<td>SBAHighGray</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c47 = 3143'>0x0c47</td>
+<td>SBALowGray</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c48 = 3144'>0x0c48</td>
+<td>CaptureLook</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c49 = 3145'>0x0c49</td>
+<td>SBAIllOffset</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c4a = 3146'>0x0c4a</td>
+<td>SBAGmOffset</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c4b = 3147'>0x0c4b</td>
+<td>NifNonlinearity12Bit</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c4c = 3148'>0x0c4c</td>
+<td>SharpeningOn</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c4d = 3149'>0x0c4d</td>
+<td>NifNonlinearity16Bit</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c4e = 3150'>0x0c4e</td>
+<td>RawHistogram</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c4f = 3151'>0x0c4f</td>
+<td>RawCFAComponentAverages</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c50 = 3152'>0x0c50</td>
+<td>DisableFlagsPresent</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c51 = 3153'>0x0c51</td>
+<td>DelayCols</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c52 = 3154'>0x0c52</td>
+<td>DummyColsLeft</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c53 = 3155'>0x0c53</td>
+<td>TrashColsRight</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c54 = 3156'>0x0c54</td>
+<td>BlackColsRight</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c55 = 3157'>0x0c55</td>
+<td>DummyColsRight</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c56 = 3158'>0x0c56</td>
+<td>OverClockColsRight</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c57 = 3159'>0x0c57</td>
+<td>UnusedBlackRowsTopOut</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c58 = 3160'>0x0c58</td>
+<td>TrashRowsBottom</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c59 = 3161'>0x0c59</td>
+<td>BlackRowsBottom</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c5a = 3162'>0x0c5a</td>
+<td>OverClockRowsBottom</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c5b = 3163'>0x0c5b</td>
+<td>BlackColsLeft</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c5c = 3164'>0x0c5c</td>
+<td>BlackRowsTop</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c5d = 3165'>0x0c5d</td>
+<td>PartialActiveColsLeft</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c5e = 3166'>0x0c5e</td>
+<td>PartialActiveColsRight</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c5f = 3167'>0x0c5f</td>
+<td>PartialActiveRowsTop</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c60 = 3168'>0x0c60</td>
+<td>PartialActiveRowsBottom</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c61 = 3169'>0x0c61</td>
+<td>ProcessBorderColsLeft</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c62 = 3170'>0x0c62</td>
+<td>ProcessBorderColsRight</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c63 = 3171'>0x0c63</td>
+<td>ProcessBorderRowsTop</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c64 = 3172'>0x0c64</td>
+<td>ProcessBorderRowsBottom</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c65 = 3173'>0x0c65</td>
+<td>ActiveCols</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c66 = 3174'>0x0c66</td>
+<td>ActiveRows</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c67 = 3175'>0x0c67</td>
+<td>FirstLines</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c68 = 3176'>0x0c68</td>
+<td>UnusedBlackRowsTopIn</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c69 = 3177'>0x0c69</td>
+<td>UnusedBlackRowsBottomIn</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c6a = 3178'>0x0c6a</td>
+<td>UnusedBlackRowsBottomOut</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c6b = 3179'>0x0c6b</td>
+<td>UnusedBlackColsLeftOut</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c6c = 3180'>0x0c6c</td>
+<td>UnusedBlackColsLeftIn</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c6d = 3181'>0x0c6d</td>
+<td>UnusedBlackColsRightIn</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c6e = 3182'>0x0c6e</td>
+<td>UnusedBlackColsRightOut</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c6f = 3183'>0x0c6f</td>
+<td>CFAOffsetRows</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c70 = 3184'>0x0c70</td>
+<td>ShiftCols</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c71 = 3185'>0x0c71</td>
+<td>CFAOffsetCols</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c76 = 3190'>0x0c76</td>
+<td>DarkMapScale</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c77 = 3191'>0x0c77</td>
+<td>HMapHandling</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c78 = 3192'>0x0c78</td>
+<td>VMapHandling</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c79 = 3193'>0x0c79</td>
+<td>DarkThreshold</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c7a = 3194'>0x0c7a</td>
+<td>DMDitherMatrix</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c7b = 3195'>0x0c7b</td>
+<td>DMDitherMatrixWidth</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c7c = 3196'>0x0c7c</td>
+<td>DMDitherMatrixHeight</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c7d = 3197'>0x0c7d</td>
+<td>MaxPixelValueThreshold</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c7e = 3198'>0x0c7e</td>
+<td>HoleFillDeltaThreshold</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c7f = 3199'>0x0c7f</td>
+<td>DarkPedestal</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c80 = 3200'>0x0c80</td>
+<td>ImageProcessingFileTagsVersionNumber</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c81 = 3201'>0x0c81</td>
+<td>ImageProcessingFileDateCreated</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c82 = 3202'>0x0c82</td>
+<td>DoublingMicrovolts</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c83 = 3203'>0x0c83</td>
+<td>DarkFrameShortExposure</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c84 = 3204'>0x0c84</td>
+<td>DarkFrameLongExposure</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c85 = 3205'>0x0c85</td>
+<td>DarkFrameCountFactor</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c88 = 3208'>0x0c88</td>
+<td>HoleFillDarkDeltaThreshold</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c89 = 3209'>0x0c89</td>
+<td>FarkleWhiteThreshold</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c8a = 3210'>0x0c8a</td>
+<td>ColumnResetOffsets</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c8b = 3211'>0x0c8b</td>
+<td>ColumnGainFactors</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c8c = 3212'>0x0c8c</td>
+<td>Channel0LagKernel</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c8d = 3213'>0x0c8d</td>
+<td>Channel1LagKernel</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c8e = 3214'>0x0c8e</td>
+<td>Channel2LagKernel</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c8f = 3215'>0x0c8f</td>
+<td>Channel3LagKernel</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c90 = 3216'>0x0c90</td>
+<td>BluegrassTable</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0c91 = 3217'>0x0c91</td>
+<td>BluegrassScale1</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0c92 = 3218'>0x0c92</td>
+<td>BluegrassScale2</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0ce4 = 3300'>0x0ce4</td>
+<td>FinishedFileProcessingRequest</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0ce5 = 3301'>0x0ce5</td>
@@ -401,9 +2423,1315 @@ from some older Kodak models such as the DC50, DC120, DCS760C, DCS Pro 14N,
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td title='0x0ce6 = 3302'>0x0ce6</td>
+<td>HostSoftwareExportVersion</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0ce7 = 3303'>0x0ce7</td>
+<td>HostSoftwareRendering</td>
+<td class=c>int32u</td>
+<td><span class=s>0 = Normal (sRGB)
+  <br>1 = Linear (camera RGB)
+  <br>2 = Pro Photo RGB
+  <br>3 = Unknown
+  <br>4 = Other Profile</span></td></tr>
+<tr class=b>
+<td title='0x0dac = 3500'>0x0dac</td>
+<td>DCS3XXProcessingInfoIFD</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0dad = 3501'>0x0dad</td>
+<td>DCS3XXProcessingInfo</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0dae = 3502'>0x0dae</td>
+<td>IPAVersion</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0db6 = 3510'>0x0db6</td>
+<td>FinishIPAVersion</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0db7 = 3511'>0x0db7</td>
+<td>FinishIPFVersion</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0db8 = 3512'>0x0db8</td>
+<td>FinishFileType</td>
+<td class=c>int32u</td>
+<td><span class=s>0 = JPEG Best
+  <br>1 = JPEG Better
+  <br>2 = JPEG Good
+  <br>3 = TIFF RGB</span></td></tr>
+<tr class=b>
+<td title='0x0db9 = 3513'>0x0db9</td>
+<td>FinishResolution</td>
+<td class=c>int32u</td>
+<td><span class=s>0 = 100%
+  <br>1 = 67%
+  <br>2 = 50%
+  <br>3 = 25%</span></td></tr>
+<tr>
+<td title='0x0dba = 3514'>0x0dba</td>
+<td>FinishNoise</td>
+<td class=c>int32u</td>
+<td><span class=s>0 = Normal
+  <br>1 = Strong
+  <br>2 = Low</span></td></tr>
+<tr class=b>
+<td title='0x0dbb = 3515'>0x0dbb</td>
+<td>FinishSharpening</td>
+<td class=c>int32u</td>
+<td><span class=s>0 = None
+  <br>1 = High
+  <br>2 = Medium
+  <br>3 = Low</span></td></tr>
+<tr>
+<td title='0x0dbc = 3516'>0x0dbc</td>
+<td>FinishLook</td>
+<td class=c>int32u</td>
+<td><table class=cols><tr>
+  <td>0 = Product
+  <br>1 = Portrait
+  <br>2 = Product Reduced
+  <br>3 = Portrait Reduced
+  <br>4 = Monochrome Product
+  <br>5 = Monochrome Portrait
+  <br>6 = Wedding
+  <br>7 = Event
+  <br>8 = Product Hi Color
+  <br>9 = Portrait Hi Color
+  <br>10 = Product Hi Color Hold
+  <br>11 = Portrait Hi Color Hold
+  <br>13 = DCS BW Normal
+  <br>14 = DCS BW Wratten 8
+  <br>15 = DCS BW Wratten 25
+  <br>16 = DCS Sepia 1
+  <br>17 = DCS Sepia 2</td></tr></table>
+</td></tr>
+<tr class=b>
+<td title='0x0dbd = 3517'>0x0dbd</td>
+<td>FinishExposure</td>
+<td class=c>int32u</td>
+<td><span class=s>0 = Yes
+  <br>1 = No</span></td></tr>
+<tr>
+<td title='0x0e0b = 3595'>0x0e0b</td>
+<td>SigmaScalingFactorLowRes</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e0c = 3596'>0x0e0c</td>
+<td>SigmaScalingFactorCamera</td>
+<td class=c>rational64u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e0d = 3597'>0x0e0d</td>
+<td>SigmaImpulseParameters</td>
+<td class=c>int16u[n]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e0e = 3598'>0x0e0e</td>
+<td>SigmaNoiseThreshTableV2</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e0f = 3599'>0x0e0f</td>
+<td>SigmaSizeTable</td>
+<td class=c>int16u[n]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e10 = 3600'>0x0e10</td>
+<td>DacGainsCoarseAdjPreIF41</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e11 = 3601'>0x0e11</td>
+<td>SigmaNoiseFilterCalTableV1</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e12 = 3602'>0x0e12</td>
+<td>SigmaNoiseFilterTableV1</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e13 = 3603'>0x0e13</td>
+<td>Lin12ToKlut8</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e14 = 3604'>0x0e14</td>
+<td>SigmaNoiseFilterTableV1Version</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e15 = 3605'>0x0e15</td>
+<td>Lin12ToKlut12</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e16 = 3606'>0x0e16</td>
+<td>Klut12ToLin12</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e17 = 3607'>0x0e17</td>
+<td>NifNonlinearity12To16</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e18 = 3608'>0x0e18</td>
+<td>SBALog12Transform</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e19 = 3609'>0x0e19</td>
+<td>InverseSBALog12Transform</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e1a = 3610'>0x0e1a</td>
+<td>ToneScale0</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e1b = 3611'>0x0e1b</td>
+<td>ToneScale1</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e1c = 3612'>0x0e1c</td>
+<td>ToneScale2</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e1d = 3613'>0x0e1d</td>
+<td>ToneScale3</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e1e = 3614'>0x0e1e</td>
+<td>ToneScale4</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e1f = 3615'>0x0e1f</td>
+<td>ToneScale5</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e20 = 3616'>0x0e20</td>
+<td>ToneScale6</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e21 = 3617'>0x0e21</td>
+<td>ToneScale7</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e22 = 3618'>0x0e22</td>
+<td>ToneScale8</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e23 = 3619'>0x0e23</td>
+<td>ToneScale9</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e24 = 3620'>0x0e24</td>
+<td>DayMat0</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e25 = 3621'>0x0e25</td>
+<td>DayMat1</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e26 = 3622'>0x0e26</td>
+<td>DayMat2</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e27 = 3623'>0x0e27</td>
+<td>DayMat3</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e28 = 3624'>0x0e28</td>
+<td>DayMat4</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e29 = 3625'>0x0e29</td>
+<td>DayMat5</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e2a = 3626'>0x0e2a</td>
+<td>DayMat6</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e2b = 3627'>0x0e2b</td>
+<td>DayMat7</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e2c = 3628'>0x0e2c</td>
+<td>DayMat8</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e2d = 3629'>0x0e2d</td>
+<td>DayMat9</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e2e = 3630'>0x0e2e</td>
+<td>TungMat0</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e2f = 3631'>0x0e2f</td>
+<td>TungMat1</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e30 = 3632'>0x0e30</td>
+<td>TungMat2</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e31 = 3633'>0x0e31</td>
+<td>TungMat3</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e32 = 3634'>0x0e32</td>
+<td>TungMat4</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e33 = 3635'>0x0e33</td>
+<td>TungMat5</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e34 = 3636'>0x0e34</td>
+<td>TungMat6</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e35 = 3637'>0x0e35</td>
+<td>TungMat7</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e36 = 3638'>0x0e36</td>
+<td>TungMat8</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e37 = 3639'>0x0e37</td>
+<td>TungMat9</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e38 = 3640'>0x0e38</td>
+<td>FluorMat0</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e39 = 3641'>0x0e39</td>
+<td>FluorMat1</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e3a = 3642'>0x0e3a</td>
+<td>FluorMat2</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e3b = 3643'>0x0e3b</td>
+<td>FluorMat3</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e3c = 3644'>0x0e3c</td>
+<td>FluorMat4</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e3d = 3645'>0x0e3d</td>
+<td>FluorMat5</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e3e = 3646'>0x0e3e</td>
+<td>FluorMat6</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e3f = 3647'>0x0e3f</td>
+<td>FluorMat7</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e40 = 3648'>0x0e40</td>
+<td>FluorMat8</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e41 = 3649'>0x0e41</td>
+<td>FluorMat9</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e42 = 3650'>0x0e42</td>
+<td>FlashMat0</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e43 = 3651'>0x0e43</td>
+<td>FlashMat1</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e44 = 3652'>0x0e44</td>
+<td>FlashMat2</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e45 = 3653'>0x0e45</td>
+<td>FlashMat3</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e46 = 3654'>0x0e46</td>
+<td>FlashMat4</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e47 = 3655'>0x0e47</td>
+<td>FlashMat5</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e48 = 3656'>0x0e48</td>
+<td>FlashMat6</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e49 = 3657'>0x0e49</td>
+<td>FlashMat7</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e4a = 3658'>0x0e4a</td>
+<td>FlashMat8</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e4b = 3659'>0x0e4b</td>
+<td>FlashMat9</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td title='0x0e4c = 3660'>0x0e4c</td>
 <td>KodakLook</td>
 <td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e4d = 3661'>0x0e4d</td>
+<td>IPFCameraModel</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e4e = 3662'>0x0e4e</td>
+<td>AH2GreenInterpolationThreshold</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e4f = 3663'>0x0e4f</td>
+<td>ResamplingKernelDenominators067</td>
+<td class=c>int16u[3]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e50 = 3664'>0x0e50</td>
+<td>ResamplingKernelDenominators050</td>
+<td class=c>int16u[3]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e51 = 3665'>0x0e51</td>
+<td>ResamplingKernelDenominators100</td>
+<td class=c>int16u[3]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e56 = 3670'>0x0e56</td>
+<td>LookMat0</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e57 = 3671'>0x0e57</td>
+<td>LookMat1</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e58 = 3672'>0x0e58</td>
+<td>LookMat2</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e59 = 3673'>0x0e59</td>
+<td>LookMat3</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e5a = 3674'>0x0e5a</td>
+<td>LookMat4</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e5b = 3675'>0x0e5b</td>
+<td>LookMat5</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e5c = 3676'>0x0e5c</td>
+<td>LookMat6</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e5d = 3677'>0x0e5d</td>
+<td>LookMat7</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e5e = 3678'>0x0e5e</td>
+<td>LookMat8</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e5f = 3679'>0x0e5f</td>
+<td>LookMat9</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e60 = 3680'>0x0e60</td>
+<td>CFAInterpolationAlgorithm</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = AH2
+  <br>1 = Karnak</span></td></tr>
+<tr>
+<td title='0x0e61 = 3681'>0x0e61</td>
+<td>CFAInterpolationMetric</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Linear12
+  <br>1 = KLUT12</span></td></tr>
+<tr class=b>
+<td title='0x0e62 = 3682'>0x0e62</td>
+<td>CFAZipperFixThreshold</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e63 = 3683'>0x0e63</td>
+<td>NoiseReductionParametersKhufuRGB</td>
+<td class=c>int16u[9]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e64 = 3684'>0x0e64</td>
+<td>NoiseReductionParametersKhufu6MP</td>
+<td class=c>int16u[9]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e65 = 3685'>0x0e65</td>
+<td>NoiseReductionParametersKhufu3MP</td>
+<td class=c>int16u[9]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e6a = 3690'>0x0e6a</td>
+<td>ChromaNoiseHighFThresh</td>
+<td class=c>int32u[2]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e6b = 3691'>0x0e6b</td>
+<td>ChromaNoiseLowFThresh</td>
+<td class=c>int32u[2]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e6c = 3692'>0x0e6c</td>
+<td>ChromaNoiseEdgeMapThresh</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e6d = 3693'>0x0e6d</td>
+<td>ChromaNoiseColorSpace</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e6e = 3694'>0x0e6e</td>
+<td>EnableChromaNoiseReduction</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e6f = 3695'>0x0e6f</td>
+<td>NoiseReductionParametersHostRGB</td>
+<td class=c>int16u[9]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e70 = 3696'>0x0e70</td>
+<td>NoiseReductionParametersHost6MP</td>
+<td class=c>int16u[9]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e71 = 3697'>0x0e71</td>
+<td>NoiseReductionParametersHost3MP</td>
+<td class=c>int16u[9]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e72 = 3698'>0x0e72</td>
+<td>NoiseReductionParametersCamera</td>
+<td class=c>int16u[6]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e73 = 3699'>0x0e73</td>
+<td>NoiseReductionParametersAtCapture</td>
+<td class=c>int16u[6]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e74 = 3700'>0x0e74</td>
+<td>LCDMatrix</td>
+<td class=c>rational64s[9]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e75 = 3701'>0x0e75</td>
+<td>LCDMatrixChickFix</td>
+<td class=c>rational64s[9]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e76 = 3702'>0x0e76</td>
+<td>LCDMatrixMarvin</td>
+<td class=c>rational64s[9]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e7c = 3708'>0x0e7c</td>
+<td>LCDGammaTableChickFix</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e7d = 3709'>0x0e7d</td>
+<td>LCDGammaTableMarvin</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e7e = 3710'>0x0e7e</td>
+<td>LCDGammaTable</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e7f = 3711'>0x0e7f</td>
+<td>LCDSharpeningF1</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e80 = 3712'>0x0e80</td>
+<td>LCDSharpeningF2</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e81 = 3713'>0x0e81</td>
+<td>LCDSharpeningF3</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e82 = 3714'>0x0e82</td>
+<td>LCDSharpeningF4</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e83 = 3715'>0x0e83</td>
+<td>LCDEdgeMapX1</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e84 = 3716'>0x0e84</td>
+<td>LCDEdgeMapX2</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e85 = 3717'>0x0e85</td>
+<td>LCDEdgeMapX3</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e86 = 3718'>0x0e86</td>
+<td>LCDEdgeMapX4</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e87 = 3719'>0x0e87</td>
+<td>LCDEdgeMapSlope</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e88 = 3720'>0x0e88</td>
+<td>YCrCbMatrix</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e89 = 3721'>0x0e89</td>
+<td>LCDEdgeSpline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e92 = 3730'>0x0e92</td>
+<td>Fac18Per</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e93 = 3731'>0x0e93</td>
+<td>Fac170Per</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e94 = 3732'>0x0e94</td>
+<td>Fac100Per</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e9b = 3739'>0x0e9b</td>
+<td>ExtraTickLocations</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e9c = 3740'>0x0e9c</td>
+<td>RGBtoeV0</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e9d = 3741'>0x0e9d</td>
+<td>RGBtoeV1</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0e9e = 3742'>0x0e9e</td>
+<td>RGBtoeV2</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0e9f = 3743'>0x0e9f</td>
+<td>RGBtoeV3</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0ea0 = 3744'>0x0ea0</td>
+<td>RGBtoeV4</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0ea1 = 3745'>0x0ea1</td>
+<td>RGBtoeV5</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0ea2 = 3746'>0x0ea2</td>
+<td>RGBtoeV6</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0ea3 = 3747'>0x0ea3</td>
+<td>RGBtoeV7</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0ea4 = 3748'>0x0ea4</td>
+<td>RGBtoeV8</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0ea5 = 3749'>0x0ea5</td>
+<td>RGBtoeV9</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0ea6 = 3750'>0x0ea6</td>
+<td>LCDHistLUT0</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0ea7 = 3751'>0x0ea7</td>
+<td>LCDHistLUT1</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0ea8 = 3752'>0x0ea8</td>
+<td>LCDHistLUT2</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0ea9 = 3753'>0x0ea9</td>
+<td>LCDHistLUT3</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0eaa = 3754'>0x0eaa</td>
+<td>LCDHistLUT4</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0eab = 3755'>0x0eab</td>
+<td>LCDHistLUT5</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0eac = 3756'>0x0eac</td>
+<td>LCDHistLUT6</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0ead = 3757'>0x0ead</td>
+<td>LCDHistLUT7</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0eae = 3758'>0x0eae</td>
+<td>LCDHistLUT8</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0eaf = 3759'>0x0eaf</td>
+<td>LCDHistLUT9</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0eb0 = 3760'>0x0eb0</td>
+<td>LCDLinearClipValue</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0ece = 3790'>0x0ece</td>
+<td>LCDStepYvalues</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0ecf = 3791'>0x0ecf</td>
+<td>LCDStepYvaluesChickFix</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0ed0 = 3792'>0x0ed0</td>
+<td>LCDStepYvaluesMarvin</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0ed8 = 3800'>0x0ed8</td>
+<td>InterpolationCoefficients</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0ed9 = 3801'>0x0ed9</td>
+<td>InterpolationCoefficients6MP</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0eda = 3802'>0x0eda</td>
+<td>InterpolationCoefficients3MP</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0f00 = 3840'>0x0f00</td>
+<td>NoiseReductionParametersHostNormal</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0f01 = 3841'>0x0f01</td>
+<td>NoiseReductionParametersHostStrong</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0f02 = 3842'>0x0f02</td>
+<td>NoiseReductionParametersHostLow</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0f0a = 3850'>0x0f0a</td>
+<td>MariahTextureThreshold</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0f0b = 3851'>0x0f0b</td>
+<td>MariahMapLoThreshold</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0f0c = 3852'>0x0f0c</td>
+<td>MariahMapHiThreshold</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0f0d = 3853'>0x0f0d</td>
+<td>MariahChromaBlurSize</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0f0e = 3854'>0x0f0e</td>
+<td>MariahSigmaThreshold</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0f0f = 3855'>0x0f0f</td>
+<td>MariahThresholds</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0f10 = 3856'>0x0f10</td>
+<td>MariahThresholdsNormal</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0f11 = 3857'>0x0f11</td>
+<td>MariahThresholdsStrong</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0f12 = 3858'>0x0f12</td>
+<td>MariahThresholdsLow</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0f14 = 3860'>0x0f14</td>
+<td>KhufuLinearRedMixingCoefficient</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0f15 = 3861'>0x0f15</td>
+<td>KhufuLinearGreenMixingCoefficient</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0f16 = 3862'>0x0f16</td>
+<td>KhufuLinearBlueMixingCoefficient</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0f17 = 3863'>0x0f17</td>
+<td>KhufuUSpaceC2MixingCoefficient</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0f18 = 3864'>0x0f18</td>
+<td>KhufuSigmaGaussianWeights</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0f19 = 3865'>0x0f19</td>
+<td>KhufuSigmaScalingFactors6MP</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0f1a = 3866'>0x0f1a</td>
+<td>KhufuSigmaScalingFactors3MP</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0f1b = 3867'>0x0f1b</td>
+<td>KhufuSigmaScalingFactors14MP</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0f32 = 3890'>0x0f32</td>
+<td>KhufuI0Thresholds</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0f33 = 3891'>0x0f33</td>
+<td>KhufuI1Thresholds</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0f34 = 3892'>0x0f34</td>
+<td>KhufuI2Thresholds</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0f35 = 3893'>0x0f35</td>
+<td>KhufuI3Thresholds</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0f36 = 3894'>0x0f36</td>
+<td>KhufuI4Thresholds</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0f37 = 3895'>0x0f37</td>
+<td>KhufuI5Thresholds</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0f3c = 3900'>0x0f3c</td>
+<td>CondadoDayBVThresh</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0f3d = 3901'>0x0f3d</td>
+<td>CondadoNeuRange</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0f3e = 3902'>0x0f3e</td>
+<td>CondadoBVFactor</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0f3f = 3903'>0x0f3f</td>
+<td>CondadoIllFactor</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0f40 = 3904'>0x0f40</td>
+<td>CondadoTunThresh</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0f41 = 3905'>0x0f41</td>
+<td>CondadoFluThresh</td>
+<td class=c>int16s</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0f42 = 3906'>0x0f42</td>
+<td>CondadoDayOffsets</td>
+<td class=c>int16s[2]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0f43 = 3907'>0x0f43</td>
+<td>CondadoTunOffsets</td>
+<td class=c>int16s[2]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0f44 = 3908'>0x0f44</td>
+<td>CondadoFluOffsets</td>
+<td class=c>int16s[2]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0f5a = 3930'>0x0f5a</td>
+<td>ERIMMToCRGB0Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0f5b = 3931'>0x0f5b</td>
+<td>ERIMMToCRGB1Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0f5c = 3932'>0x0f5c</td>
+<td>ERIMMToCRGB2Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0f5d = 3933'>0x0f5d</td>
+<td>ERIMMToCRGB3Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0f5e = 3934'>0x0f5e</td>
+<td>ERIMMToCRGB4Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0f5f = 3935'>0x0f5f</td>
+<td>ERIMMToCRGB5Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0f60 = 3936'>0x0f60</td>
+<td>ERIMMToCRGB6Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0f61 = 3937'>0x0f61</td>
+<td>ERIMMToCRGB7Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0f62 = 3938'>0x0f62</td>
+<td>ERIMMToCRGB8Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0f63 = 3939'>0x0f63</td>
+<td>ERIMMToCRGB9Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0f64 = 3940'>0x0f64</td>
+<td>CRGBToERIMM0Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0f65 = 3941'>0x0f65</td>
+<td>CRGBToERIMM1Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0f66 = 3942'>0x0f66</td>
+<td>CRGBToERIMM2Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0f67 = 3943'>0x0f67</td>
+<td>CRGBToERIMM3Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0f68 = 3944'>0x0f68</td>
+<td>CRGBToERIMM4Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0f69 = 3945'>0x0f69</td>
+<td>CRGBToERIMM5Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0f6a = 3946'>0x0f6a</td>
+<td>CRGBToERIMM6Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0f6b = 3947'>0x0f6b</td>
+<td>CRGBToERIMM7Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0f6c = 3948'>0x0f6c</td>
+<td>CRGBToERIMM8Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0f6d = 3949'>0x0f6d</td>
+<td>CRGBToERIMM9Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0f6e = 3950'>0x0f6e</td>
+<td>ERIMMNonLinearitySpline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0f6f = 3951'>0x0f6f</td>
+<td>Delta12To8Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0f70 = 3952'>0x0f70</td>
+<td>Delta8To12Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0f71 = 3953'>0x0f71</td>
+<td>InverseMonitorMatrix</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0f72 = 3954'>0x0f72</td>
+<td>NifNonlinearityExt</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0f73 = 3955'>0x0f73</td>
+<td>InvNifNonLinearity</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0f74 = 3956'>0x0f74</td>
+<td>RIMM13ToERIMM12Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0f78 = 3960'>0x0f78</td>
+<td>ToneScale0Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0f79 = 3961'>0x0f79</td>
+<td>ToneScale1Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0f7a = 3962'>0x0f7a</td>
+<td>ToneScale2Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0f7b = 3963'>0x0f7b</td>
+<td>ToneScale3Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0f7c = 3964'>0x0f7c</td>
+<td>ToneScale4Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0f7d = 3965'>0x0f7d</td>
+<td>ToneScale5Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0f7e = 3966'>0x0f7e</td>
+<td>ToneScale6Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0f7f = 3967'>0x0f7f</td>
+<td>ToneScale7Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0f80 = 3968'>0x0f80</td>
+<td>ToneScale8Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0f81 = 3969'>0x0f81</td>
+<td>ToneScale9Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0f82 = 3970'>0x0f82</td>
+<td>ERIMMToneScale0Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0f83 = 3971'>0x0f83</td>
+<td>ERIMMToneScale1Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0f84 = 3972'>0x0f84</td>
+<td>ERIMMToneScale2Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0f85 = 3973'>0x0f85</td>
+<td>ERIMMToneScale3Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0f86 = 3974'>0x0f86</td>
+<td>ERIMMToneScale4Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0f87 = 3975'>0x0f87</td>
+<td>ERIMMToneScale5Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0f88 = 3976'>0x0f88</td>
+<td>ERIMMToneScale6Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0f89 = 3977'>0x0f89</td>
+<td>ERIMMToneScale7Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0f8a = 3978'>0x0f8a</td>
+<td>ERIMMToneScale8Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0f8b = 3979'>0x0f8b</td>
+<td>ERIMMToneScale9Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0f8c = 3980'>0x0f8c</td>
+<td>RIMMToCRGB0Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0f8d = 3981'>0x0f8d</td>
+<td>RIMMToCRGB1Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0f8e = 3982'>0x0f8e</td>
+<td>RIMMToCRGB2Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0f8f = 3983'>0x0f8f</td>
+<td>RIMMToCRGB3Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0f90 = 3984'>0x0f90</td>
+<td>RIMMToCRGB4Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0f91 = 3985'>0x0f91</td>
+<td>RIMMToCRGB5Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0f92 = 3986'>0x0f92</td>
+<td>RIMMToCRGB6Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0f93 = 3987'>0x0f93</td>
+<td>RIMMToCRGB7Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0f94 = 3988'>0x0f94</td>
+<td>RIMMToCRGB8Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0f95 = 3989'>0x0f95</td>
+<td>RIMMToCRGB9Spline</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0fa0 = 4000'>0x0fa0</td>
+<td>QTableLarge25Pct</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x0fa1 = 4001'>0x0fa1</td>
+<td>QTableMedium25Pct</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x0fa2 = 4002'>0x0fa2</td>
+<td>QTableSmall25Pct</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x1130 = 4400'>0x1130</td>
+<td>NoiseReductionKernel</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1388 = 5000'>0x1388</td>
+<td>UserMetaData</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x1389 = 5001'>0x1389</td>
@@ -421,14 +3749,454 @@ from some older Kodak models such as the DC50, DC120, DCS760C, DCS Pro 14N,
 <td class=c>undef</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
-<td title='0x1391 = 5009'>0x1391</td>
-<td>ToneCurveFileName</td>
+<td title='0x1390 = 5008'>0x1390</td>
+<td>SourceProfilePrefix</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td title='0x1391 = 5009'>0x1391</td>
+<td>ToneCurveProfileName</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1392 = 5010'>0x1392</td>
+<td>InputProfile</td>
+<td class=c>-</td>
+<td>--&gt; <a href='ICC_Profile.html'>ICC_Profile Tags</a></td></tr>
+<tr>
+<td title='0x1393 = 5011'>0x1393</td>
+<td>ProcessParametersV2</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1394 = 5012'>0x1394</td>
+<td>ReservedBlob2</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x1395 = 5013'>0x1395</td>
+<td>ReservedBlob3</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1396 = 5014'>0x1396</td>
+<td>ReservedBlob4</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x1397 = 5015'>0x1397</td>
+<td>ReservedBlob5</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1398 = 5016'>0x1398</td>
+<td>ReservedBlob6</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x1399 = 5017'>0x1399</td>
+<td>ReservedBlob7</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x139a = 5018'>0x139a</td>
+<td>ReservedBlob8</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x139b = 5019'>0x139b</td>
+<td>ReservedBlob9</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1770 = 6000'>0x1770</td>
+<td>ScriptVersion</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x177a = 6010'>0x177a</td>
+<td>ImagerTimingData</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td title='0x1784 = 6020'>0x1784</td>
 <td>ISO</td>
 <td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x17a2 = 6050'>0x17a2</td>
+<td>Scav11Cols</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x17a3 = 6051'>0x17a3</td>
+<td>Scav12Cols</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x17a4 = 6052'>0x17a4</td>
+<td>Scav21Cols</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x17a5 = 6053'>0x17a5</td>
+<td>Scav22Cols</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x17a6 = 6054'>0x17a6</td>
+<td>ActiveCTEMonitor1Cols</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x17a7 = 6055'>0x17a7</td>
+<td>ActiveCTEMonitor2Cols</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x17a8 = 6056'>0x17a8</td>
+<td>ActiveCTEMonitorRows</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x17a9 = 6057'>0x17a9</td>
+<td>ActiveBuf1Cols</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x17aa = 6058'>0x17aa</td>
+<td>ActiveBuf2Cols</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x17ab = 6059'>0x17ab</td>
+<td>ActiveBuf1Rows</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x17ac = 6060'>0x17ac</td>
+<td>ActiveBuf2Rows</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x17c0 = 6080'>0x17c0</td>
+<td>HRNoiseLines</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x17c1 = 6081'>0x17c1</td>
+<td>RNoiseLines</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x17c2 = 6082'>0x17c2</td>
+<td>ANoiseLines</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x17d4 = 6100'>0x17d4</td>
+<td>ImagerCols</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x17de = 6110'>0x17de</td>
+<td>ImagerRows</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x17e8 = 6120'>0x17e8</td>
+<td>PartialActiveCols1</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x17f2 = 6130'>0x17f2</td>
+<td>PartialActiveCols2</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x17fc = 6140'>0x17fc</td>
+<td>PartialActiveRows1</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1806 = 6150'>0x1806</td>
+<td>PartialActiveRows2</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x1810 = 6160'>0x1810</td>
+<td>ElectricalBlackColumns</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x181a = 6170'>0x181a</td>
+<td>ResetBlackSegRows</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x1838 = 6200'>0x1838</td>
+<td>CaptureWidthNormal</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1839 = 6201'>0x1839</td>
+<td>CaptureHeightNormal</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x183a = 6202'>0x183a</td>
+<td>CaptureWidthResetBlackSegNormal</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x183b = 6203'>0x183b</td>
+<td>CaptureHeightResetBlackSegNormal</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x183c = 6204'>0x183c</td>
+<td>DarkRefOffsetNormal</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1842 = 6210'>0x1842</td>
+<td>CaptureWidthTest</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x1843 = 6211'>0x1843</td>
+<td>CaptureHeightTest</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1844 = 6212'>0x1844</td>
+<td>CaptureWidthResetBlackSegTest</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x1845 = 6213'>0x1845</td>
+<td>CaptureHeightResetBlackSegTest</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1846 = 6214'>0x1846</td>
+<td>DarkRefOffsetTest</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x184c = 6220'>0x184c</td>
+<td>ImageSegmentStartLine</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x184d = 6221'>0x184d</td>
+<td>ImageSegmentLines</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x184e = 6222'>0x184e</td>
+<td>SkipLineTime</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1860 = 6240'>0x1860</td>
+<td>FastResetLineTime</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x186a = 6250'>0x186a</td>
+<td>NormalLineTime</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1874 = 6260'>0x1874</td>
+<td>MinIntegrationRows</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x187e = 6270'>0x187e</td>
+<td>PreReadFastResetCount</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1888 = 6280'>0x1888</td>
+<td>TransferTimeNormal</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x1889 = 6281'>0x1889</td>
+<td>TransferTimeTest</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x188a = 6282'>0x188a</td>
+<td>QuietTime</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x189c = 6300'>0x189c</td>
+<td>OverClockCols</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x18a6 = 6310'>0x18a6</td>
+<td>H2ResetBlackPixels</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x18b0 = 6320'>0x18b0</td>
+<td>H3ResetBlackPixels</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x18ba = 6330'>0x18ba</td>
+<td>BlackAcquireRows</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x18c4 = 6340'>0x18c4</td>
+<td>OverClockRows</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x18ce = 6350'>0x18ce</td>
+<td>H3ResetBlackColumns</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x18d8 = 6360'>0x18d8</td>
+<td>DarkBlackSegRows</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1900 = 6400'>0x1900</td>
+<td>CrossbarEnable</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x1901 = 6401'>0x1901</td>
+<td>FifoenOnePixelDelay</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1902 = 6402'>0x1902</td>
+<td>ReadoutTypeRequested</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x1903 = 6403'>0x1903</td>
+<td>ReadoutTypeActual</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x190a = 6410'>0x190a</td>
+<td>OffsetDacValue</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x1914 = 6420'>0x1914</td>
+<td>TempAmpGainX100</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x191e = 6430'>0x191e</td>
+<td>VarrayDacNominalValues</td>
+<td class=c>int32u[3]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x1928 = 6440'>0x1928</td>
+<td>VddimDacNominalValues</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1964 = 6500'>0x1964</td>
+<td>C14Configuration</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x196e = 6510'>0x196e</td>
+<td>TDA1Offset</td>
+<td class=c>int32u[3]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x196f = 6511'>0x196f</td>
+<td>TDA1Bandwidth</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x1970 = 6512'>0x1970</td>
+<td>TDA1Gain</td>
+<td class=c>int32u[3]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1971 = 6513'>0x1971</td>
+<td>TDA1EdgePolarity</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x1978 = 6520'>0x1978</td>
+<td>TDA2Offset</td>
+<td class=c>int32u[3]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1979 = 6521'>0x1979</td>
+<td>TDA2Bandwidth</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x197a = 6522'>0x197a</td>
+<td>TDA2Gain</td>
+<td class=c>int32u[3]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x197b = 6523'>0x197b</td>
+<td>TDA2EdgePolarity</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x1982 = 6530'>0x1982</td>
+<td>TDA3Offset</td>
+<td class=c>int32u[3]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1983 = 6531'>0x1983</td>
+<td>TDA3Bandwidth</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x1984 = 6532'>0x1984</td>
+<td>TDA3Gain</td>
+<td class=c>int32u[3]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1985 = 6533'>0x1985</td>
+<td>TDA3EdgePolarity</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x198c = 6540'>0x198c</td>
+<td>TDA4Offset</td>
+<td class=c>int32u[3]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x198d = 6541'>0x198d</td>
+<td>TDA4Bandwidth</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x198e = 6542'>0x198e</td>
+<td>TDA4Gain</td>
+<td class=c>int32u[3]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x198f = 6543'>0x198f</td>
+<td>TDA4EdgePolarity</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0xfde8 = 65000'>0xfde8</td>
+<td>ComLenBlkSize</td>
+<td class=c>int16u</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -1729,6 +5497,16 @@ models such as the P880 and Z1015IS.</p>
 <td>ThumbnailImage</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
+<tr>
+<td>'tima'</td>
+<td>Duration</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'ver '</td>
+<td>KodakVersion</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='Free'>Kodak Free Tags</a></h2>
@@ -1945,7 +5723,7 @@ sub-documents when the Duplicates option is used.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Mar 14, 2018</i>
+<br><i>Last revised Sep 25, 2018</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

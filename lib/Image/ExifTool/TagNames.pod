@@ -812,7 +812,7 @@ official EXIF 2.31 specification.
            DNGAdobeData              IFD0       DNG AdobeData
            MakerNotePentax           IFD0       Pentax
            MakerNotePentax5          IFD0       Pentax
-           DNGPrivateData            IFD0       undef!
+           DNGPrivateData            IFD0       int8u!
   0xc635   MakerNoteSafety           IFD0       int16u
   0xc640   RawImageSegmentation      -          no
   0xc65a   CalibrationIlluminant1    IFD0       int16u!
@@ -8700,45 +8700,793 @@ from some older Kodak models such as the DC50, DC120, DCS760C, DCS Pro 14N,
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
+  0x0000   KodakVersion                         int8u[4]
   0x0001   UnknownEV?                           rational64u
   0x0003   ExposureValue                        rational64u
   0x03e9   OriginalFileName                     string
-  0x03eb   SensorLeftBorder                     no
-  0x03ec   SensorTopBorder                      no
-  0x03ed   SensorImageWidth                     no
-  0x03ee   SensorImageHeight                    no
+  0x03ea   KodakTag                             int32u
+  0x03eb   SensorLeftBorder                     int16u
+  0x03ec   SensorTopBorder                      int16u
+  0x03ed   SensorImageWidth                     int16u
+  0x03ee   SensorImageHeight                    int16u
+  0x03ef   BlackLevelTop                        int16u
+  0x03f0   BlackLevelBottom                     int16u
   0x03f1   TextualInfo                          Kodak TextualInfo
+  0x03f2   FlashMode?                           int16u
+  0x03f3   FlashCompensation                    rational64s
+  0x03f4   WindMode?                            int16u
+  0x03f5   FocusMode?                           int16u
+  0x03f8   MinAperture                          rational64u
+  0x03f9   MaxAperture                          rational64u
+  0x03fa   WhiteBalanceMode?                    int16u
+  0x03fb   WhiteBalanceDetected?                int16u
   0x03fc   WhiteBalance                         int16u
   0x03fd   Processing                           Kodak Processing
+           ProcessingParameters                 no
+  0x03fe   ImageAbsoluteX                       int16s
+  0x03ff   ImageAbsoluteY                       int16s
+  0x0400   ApplicationKeyString                 string
   0x0401   Time                                 string
+  0x0402   GPSString                            string
+  0x0403   EventLogCapture?                     no
+  0x0404   ComponentTable?                      no
+  0x0405   CustomIlluminant?                    int16u
   0x0406   CameraTemperature                    rational64s
+           CameraTemperature                    no
   0x0407   AdapterVoltage                       rational64u
   0x0408   BatteryVoltage                       rational64u
-  0x0414   NCDFileInfo                          string
+  0x0409   DacVoltages                          no
+  0x040a   IlluminantDetectorData?              no
+  0x040b   PixelClockFrequency                  int32u
+  0x040c   CenterPixel                          int16u[3]
+  0x040d   BurstCount                           int16u
+  0x040e   BlackLevelRough                      int16u
+  0x040f   OffsetMapHorizontal?                 no
+  0x0410   OffsetMapVertical?                   no
+  0x0411   Histogram?                           no
+  0x0412   VerticalClockOverlaps                int16u[2]
+  0x0413   SensorTemperature                    no
+  0x0414   XilinxVersion                        string
+  0x0415   FirmwareVersion                      int32u
+  0x0416   BlackLevelRoughAfter                 int16u
+  0x0417   BrightRowsTop                        no
+  0x0418   EventLogProcess                      no
+  0x0419   DacVoltagesFlush                     no
+  0x041a   FlashUsed                            no
+  0x041b   FlashType                            no
+  0x041c   SelfTimer                            no
+  0x041d   AFMode                               no
+  0x041e   LensType                             no
+  0x041f   ImageCropX                           int16s
+  0x0420   ImageCropY                           int16s
+  0x0421   AdjustedTbnImageWidth                no
+  0x0422   AdjustedTbnImageHeight               no
+  0x0423   IntegrationTime                      int32u
+  0x0424   BracketingMode                       no
+  0x0425   BracketingStep                       no
+  0x0426   BracketingCounter                    no
+  0x042e   HuffmanTableLength                   no
+  0x042f   HuffmanTableValue                    no
+  0x0438   MainBoardVersion                     int32u
+  0x0439   ImagerBoardVersion                   int32u
+  0x044c   FocusEdgeMap                         no
+  0x05e6   IdleTiming                           no
+  0x05e7   FlushTiming                          no
+  0x05e8   IntegrateTiming                      no
+  0x05e9   RegisterReadTiming                   no
+  0x05ea   FirstLineTransferTiming              no
+  0x05eb   ShiftTiming                          no
+  0x05ec   NormalLineTransferTiming             no
+  0x05ed   TestTransferTiming                   no
+  0x05fa   MinimumFlushRows                     no
+  0x05fd   ImagerPowerOnDelayMsec               int32u
+  0x05fe   ImagerInitialTimingCode              no
+  0x05ff   ImagerLogicProgram                   no
+  0x0600   ImagerBiasSettlingDelayMsec          int32u
+  0x0604   IdleSequence                         no
+  0x0605   FirstFlushSequence                   no
+  0x0606   FinalFlushSequence                   no
+  0x0607   SampleBlackSequence                  no
+  0x0608   TransferSequence                     no
+  0x060e   DacCountsPerVolt                     no
+  0x060f   BlackDacChannel                      no
+  0x0610   BlackAdCountsPerDacVolt              no
+  0x0611   BlackTarget                          no
+  0x0612   BlackDacSettlingMsec                 no
+  0x07d0   StandardMatrixDaylight               rational64s[9]
+  0x07d1   StandardMatrixTungsten               rational64s[9]
+  0x07d2   StandardMatrixFluorescent            rational64s[9]
+  0x07d3   StandardMatrixFlash                  rational64s[9]
+  0x07d4   StandardMatrixCustom                 rational64s[9]
+  0x07da   DeviantMatrixDaylight                rational64s[9]
+  0x07db   DeviantMatrixTungsten                rational64s[9]
+  0x07dc   DeviantMatrixFluorescent             rational64s[9]
+  0x07dd   DeviantMatrixFlash                   rational64s[9]
+  0x07de   DeviantMatrixCustom                  rational64s[9]
+  0x07e4   UniqueMatrixDaylight                 rational64s[9]
+  0x07e5   UniqueMatrixTungsten                 rational64s[9]
+  0x07e6   UniqueMatrixFluorescent              rational64s[9]
+  0x07e7   UniqueMatrixFlash                    rational64s[9]
+  0x07e8   UniqueMatrixCustom                   rational64s[9]
+  0x07e9   UniqueMatrixAuto                     rational64s[9]
+  0x0834   StandardWhiteDaylight                rational64s[3]
+  0x0835   StandardWhiteTungsten                rational64s[3]
+  0x0836   StandardWhiteFluorescent             rational64s[3]
+  0x0837   StandardWhiteFlash                   rational64s[3]
+  0x0838   StandardWhiteCustom                  rational64s[3]
+  0x083e   DeviantWhiteDaylight                 rational64s[3]
+  0x083f   DeviantWhiteTungsten                 rational64s[3]
+  0x0840   DeviantWhiteFluorescent              rational64s[3]
+  0x0841   DeviantWhiteFlash                    rational64s[3]
+  0x0842   DeviantWhiteCustom                   rational64s[3]
   0x0846   ColorTemperature                     int16u
+  0x0847   WB_RGBLevelsAsShot                   no
   0x0848   WB_RGBLevelsDaylight                 no
   0x0849   WB_RGBLevelsTungsten                 no
   0x084a   WB_RGBLevelsFluorescent              no
   0x084b   WB_RGBLevelsFlash                    no
   0x084c   WB_RGBLevelsCustom                   no
   0x084d   WB_RGBLevelsAuto                     no
-  0x0852   WB_RGBMul0                           no
-  0x0853   WB_RGBMul1                           no
-  0x0854   WB_RGBMul2                           no
-  0x0855   WB_RGBMul3                           no
-  0x085c   WB_RGBCoeffs0                        no
-  0x085d   WB_RGBCoeffs1                        no
-  0x085e   WB_RGBCoeffs2                        no
-  0x085f   WB_RGBCoeffs3                        no
+  0x0852   WB_RGBMulDaylight                    rational64u[3]
+  0x0853   WB_RGBMulTungsten                    rational64u[3]
+  0x0854   WB_RGBMulFluorescent                 rational64u[3]
+  0x0855   WB_RGBMulFlash                       rational64u[3]
+  0x085c   WB_RGBCoeffsDaylight                 no
+  0x085d   WB_RGBCoeffsTungsten                 no
+  0x085e   WB_RGBCoeffsFluorescent              no
+  0x085f   WB_RGBCoeffsFlash                    no
+  0x0898   ExposureGainDaylight                 rational64s
+  0x0899   ExposureGainTungsten                 rational64s
+  0x089a   ExposureGainFluorescent              rational64s
+  0x089b   ExposureGainFlash                    rational64s
+  0x089c   ExposureGainCustom                   rational64s
+  0x089d   AnalogISOTable                       rational64u[3]
+  0x089e   AnalogCaptureISO                     int32u
+  0x089f   ISOCalibrationGain                   rational64u
+  0x08a0   ISOCalibrationGainTable              no
+  0x08a1   ExposureHeadroomFactor               no
+  0x08ab   LinearitySplineTags                  no
+  0x08fc   MonitorMatrix                        rational64s[9]
+  0x08fd   TonScaleTable                        no
+  0x08fe   Gamma                                rational64u
+  0x08ff   LogLinTable                          no
+  0x0900   LinLogTable                          no
+  0x0901   GammaTable                           no
+  0x0902   LogScale                             rational64u
   0x0903   BaseISO                              rational64u
+  0x0904   LinLogCoring                         int16u
+  0x0905   PatternGainConversionTable           no
+  0x0906   DefectCount                          no
+  0x0907   DefectList                           no
+  0x0908   DefectListPacked                     no
+  0x0909   ImageSpace                           int16u
+  0x090a   ThumbnailCompressionTable            no
+  0x090b   ThumbnailExpansionTable              no
+  0x090c   ImageCompressionTable                no
+  0x090d   ImageExpansionTable                  no
+  0x090e   EighteenPercentPoint                 no
+  0x090f   DefectIsoCode                        int16u
+  0x0910   BaseISODaylight                      rational64u
+  0x0911   BaseISOTungsten                      rational64u
+  0x0912   BaseISOFluorescent                   rational64u
+  0x0913   BaseISOFlash                         rational64u
+  0x091a   MatrixSelectThreshold                int16s
+  0x091b   MatrixSelectK                        rational64u
+  0x091c   IlluminantDetectTable                no
+  0x091d   RGTable                              no
+  0x091e   MatrixSelectThreshold1               int16s
+  0x091f   MatrixSelectThreshold2               int16s
+  0x0924   PortraitMatrix                       no
+  0x0925   PortraitToneScaleTable               no
+  0x092e   EnableSharpening                     int16u
+  0x092f   SharpeningKernel                     int16s[25]
+  0x0930   EdgeMapSlope                         int16u
+  0x0931   EdgeMapX1                            int16u
+  0x0932   EdgeMapX2                            int16u
+  0x0933   KernelDenominators                   int16u[3]
+  0x0934   EdgeMapX3                            int16u
+  0x0935   EdgeMapX4                            int16u
+  0x0936   SharpenForThumbnail                  no
+  0x0937   EdgeSpline                           no
+  0x0938   DownSampleBy2Hor                     no
+  0x0939   DownSampleBy2Ver                     no
+  0x093a   DownSampleBy4Hor                     no
+  0x093b   DownSampleBy4Ver                     no
+  0x093c   DownSampleBy3Hor                     no
+  0x093d   DownSampleBy3Ver                     no
+  0x093e   DownSampleBy6Hor                     no
+  0x093f   DownSampleBy6Ver                     no
+  0x0940   DownSampleBy2Hor3MPdcr               no
+  0x0941   DownSampleBy2Ver3MPdcr               no
+  0x0942   ThumbnailResizeRatio                 no
+  0x0943   AtCaptureUserCrop                    int32u[4]
+  0x0944   ImageResolution                      int32u
+  0x0945   ImageResolutionJpg                   int32u
+  0x094c   USMParametersLow                     no
+  0x094d   USMParametersMed                     no
+  0x094e   USMParametersHigh                    no
+  0x094f   USMParametersHost                    no
+  0x0950   EdgeSplineLow                        no
+  0x0951   EdgeSplineMed                        no
+  0x0952   EdgeSplineHigh                       no
+  0x0953   USMParametersHost6MP                 no
+  0x0954   USMParametersHost3MP                 no
+  0x0960   PatternImagerWidth                   int16u
+  0x0961   PatternImagerHeight                  int16u
+  0x0962   PatternAreaWidth                     int16u
+  0x0963   PatternAreaHeight                    int16u
+  0x0964   PatternCorrectionGains               no
+  0x0965   PatternCorrectionOffsets             no
+  0x0966   PatternX                             int16u
+  0x0967   PatternY                             int16u
+  0x0968   PatternCorrectionFactors             no
+  0x0969   PatternCorrectionFactorScale         int16u
+  0x096a   PatternCropRows1                     int16u
+  0x096b   PatternCropRows2                     int16u
+  0x096c   PatternCropCols1                     int16u
+  0x096d   PatternCropCols2                     int16u
+  0x096e   PixelCorrectionGains                 no
+  0x096f   StitchRows                           no
+  0x0970   StitchColumns                        no
+  0x0971   PixelCorrectionScale                 int16u
+  0x0972   PixelCorrectionOffset                int16u
+  0x0988   LensTableIndex                       no
+  0x0992   DiffTileGains602832                  no
+  0x0993   DiffTileGains24t852822               no
+  0x099c   TileGainDeterminationTable           no
+  0x099d   NemoBlurKernel                       no
+  0x099e   NemoTileSize                         no
+  0x099f   NemoGainFactors                      no
+  0x09a0   NemoDarkLimit                        no
+  0x09a1   NemoHighlight12Limit                 no
+  0x09c4   ImagerFileProductionLevel            int16u
+  0x09c5   ImagerFileDateCreated                int32u
+  0x09c6   CalibrationVersion                   string
+  0x09c7   ImagerFileTagsVersionStandard        int16u
+  0x09c8   IFCameraModel                        string
+  0x09c9   CalibrationHistory                   string
+  0x09ca   CalibrationLog                       no
   0x09ce   SensorSerialNumber                   string
+  0x09f6   DefectConcealArtCorrectThres         no
+  0x09f7   SglColDCACThres1                     no
+  0x09f8   SglColDCACThres2                     no
+  0x09f9   SglColDCACTHres3                     no
+  0x0a01   DblColDCACThres1                     no
+  0x0a02   DblColDCACThres2                     no
+  0x0a0a   DefectConcealThresTable              no
+  0x0a28   MonoUniqueMatrix                     no
+  0x0a29   MonoMonitorMatrix                    no
+  0x0a2a   MonoToneScaleTable                   no
+  0x0a5a   OmenInitialScaling                   no
+  0x0a5b   OmenInitialRows                      no
+  0x0a5c   OmenInitialColumns                   no
+  0x0a5d   OmenInitialIPFStrength               int32s[4]
+  0x0a5e   OmenEarlyStrength                    int32s[4]
+  0x0a5f   OmenAutoStrength                     int32s[4]
+  0x0a60   OmenAtCaptureStrength                int32s[4]
+  0x0a61   OmenAtCaptureMode                    no
+  0x0a62   OmenFocalLengthLimit                 int16s
+  0x0a64   OmenSurfaceIndex                     int16s
+  0x0a65   OmenPercentToRationalLimitsRed       no
+  0x0a66   OmenPercentToRationalLimitsGoR       no
+  0x0a67   OmenPercentToRationalLimitsBlue      no
+  0x0a68   OmenPercentToRationalLimitsGoB       no
+  0x0a6e   OmenEarlyGoBSurface                  no
+  0x0a6f   OmenEarlyGoBRows                     no
+  0x0a70   OmenEarlyGoBColumns                  no
+  0x0a73   OmenSmoothingKernel                  no
+  0x0a74   OmenGradientOffset                   no
+  0x0a75   OmenGradientKernel                   no
+  0x0a76   OmenGradientKernelTaps               no
+  0x0a77   OmenRatioClipFactors                 no
+  0x0a78   OmenRatioExclusionFactors            no
+  0x0a79   OmenGradientExclusionLimits          no
+  0x0a7a   OmenROICoordinates                   no
+  0x0a7b   OmenROICoefficients                  no
+  0x0a7c   OmenRangeWeighting                   no
+  0x0a7d   OmenMeanToStrength                   no
+  0x0bb8   FactoryWhiteGainsDaylight            no
+  0x0bb9   FactoryWhiteOffsetsDaylight          no
+  0x0bba   DacGainsCoarse                       no
+  0x0bbb   DacGainsFine                         no
+  0x0bbc   DigitalExposureGains                 no
+  0x0bbd   DigitalExposureBiases                no
+  0x0bbe   BlackClamp                           no
+  0x0bbf   ChannelCoarseGainAdjust              no
+  0x0bc0   BlackClampOffset                     no
+  0x0bf4   DMPixelThresholdFactor               no
+  0x0bf5   DMWindowThresholdFactor              no
+  0x0bf6   DMTrimFraction                       no
+  0x0bf7   DMSmoothRejThresh                    no
+  0x0bf8   DMFillRejThresh                      no
+  0x0bf9   VMWsize                              no
+  0x0bfa   DMErodeRadius                        no
+  0x0bfb   DMNumPatches                         no
+  0x0bfc   DMNoiseScale                         no
+  0x0bfe   BrightDefectThreshold                no
+  0x0bff   BrightDefectIntegrationMS            no
+  0x0c00   BrightDefectIsoCode                  no
+  0x0c03   TopDarkRow1                          no
+  0x0c04   TopDarkRow2                          no
+  0x0c05   BottomDarkRow1                       no
+  0x0c06   BottomDarkRow2                       no
+  0x0c07   LeftDarkCol1                         no
+  0x0c08   LeftDarkCol2                         no
+  0x0c09   RightDarkCol1                        no
+  0x0c0a   RightDarkCol2                        no
+  0x0c0b   HMPixThresh                          no
+  0x0c0c   HMColThresh                          no
+  0x0c0d   HMWsize                              no
+  0x0c0e   HMColRejThresh                       no
+  0x0c0f   VMPixThresh                          no
+  0x0c10   VMColThresh                          no
+  0x0c11   VMNbands                             no
+  0x0c12   VMColDropThresh                      no
+  0x0c13   VMPatchResLimit                      no
+  0x0c14   MapScale                             no
+  0x0c1c   Klut                                 no
+  0x0c1d   RimNonlinearity                      no
+  0x0c1e   InverseRimNonlinearity               no
+  0x0c1f   RembrandtToneScale                   no
+  0x0c20   RimToNifColorTransform               no
+  0x0c21   RimToNifScaleFactor                  no
+  0x0c22   NifNonlinearity                      no
+  0x0c23   SBALogTransform                      no
+  0x0c24   InverseSBALogTransform               no
+  0x0c25   SBABlack                             int16u
+  0x0c26   SBAGray                              int16u
+  0x0c27   SBAWhite                             int16u
+  0x0c28   GaussianWeights                      no
+  0x0c29   SfsBoundary                          no
+  0x0c2a   CoringTableBest                      no
+  0x0c2b   CoringTableBetter                    no
+  0x0c2c   CoringTableGood                      no
+  0x0c2d   ExposureReferenceGain                no
+  0x0c2e   ExposureReferenceOffset              no
+  0x0c2f   SBARedBalanceLut                     no
+  0x0c30   SBAGreenBalanceLut                   no
+  0x0c31   SBABlueBalanceLut                    no
+  0x0c32   SBANeutralBAL                        int32s
+  0x0c33   SBAGreenMagentaBAL                   int32s
+  0x0c34   SBAIlluminantBAL                     int32s
+  0x0c35   SBAAnalysisComplete                  int8u
+  0x0c36   JPEGQTableBest                       no
+  0x0c37   JPEGQTableBetter                     no
+  0x0c38   JPEGQTableGood                       no
+  0x0c39   RembrandtPortraitToneScale           no
+  0x0c3a   RembrandtConsumerToneScale           no
+  0x0c3b   CFAGreenThreshold1                   no
+  0x0c3c   CFAGreenThreshold2                   no
+  0x0c3d   QTableLarge50Pct                     no
+  0x0c3e   QTableLarge67Pct                     no
+  0x0c3f   QTableLarge100Pct                    no
+  0x0c40   QTableMedium50Pct                    no
+  0x0c41   QTableMedium67Pct                    no
+  0x0c42   QTableMedium100Pct                   no
+  0x0c43   QTableSmall50Pct                     no
+  0x0c44   QTableSmall67Pct                     no
+  0x0c45   QTableSmall100Pct                    no
+  0x0c46   SBAHighGray                          int16u
+  0x0c47   SBALowGray                           int16u
+  0x0c48   CaptureLook                          int16u
+  0x0c49   SBAIllOffset                         int16s
+  0x0c4a   SBAGmOffset                          int16s
+  0x0c4b   NifNonlinearity12Bit                 no
+  0x0c4c   SharpeningOn                         no
+  0x0c4d   NifNonlinearity16Bit                 no
+  0x0c4e   RawHistogram                         no
+  0x0c4f   RawCFAComponentAverages              no
+  0x0c50   DisableFlagsPresent                  no
+  0x0c51   DelayCols                            no
+  0x0c52   DummyColsLeft                        no
+  0x0c53   TrashColsRight                       no
+  0x0c54   BlackColsRight                       no
+  0x0c55   DummyColsRight                       no
+  0x0c56   OverClockColsRight                   no
+  0x0c57   UnusedBlackRowsTopOut                no
+  0x0c58   TrashRowsBottom                      no
+  0x0c59   BlackRowsBottom                      no
+  0x0c5a   OverClockRowsBottom                  no
+  0x0c5b   BlackColsLeft                        no
+  0x0c5c   BlackRowsTop                         no
+  0x0c5d   PartialActiveColsLeft                no
+  0x0c5e   PartialActiveColsRight               no
+  0x0c5f   PartialActiveRowsTop                 no
+  0x0c60   PartialActiveRowsBottom              no
+  0x0c61   ProcessBorderColsLeft                int16u
+  0x0c62   ProcessBorderColsRight               int16u
+  0x0c63   ProcessBorderRowsTop                 int16u
+  0x0c64   ProcessBorderRowsBottom              int16u
+  0x0c65   ActiveCols                           no
+  0x0c66   ActiveRows                           no
+  0x0c67   FirstLines                           no
+  0x0c68   UnusedBlackRowsTopIn                 no
+  0x0c69   UnusedBlackRowsBottomIn              no
+  0x0c6a   UnusedBlackRowsBottomOut             no
+  0x0c6b   UnusedBlackColsLeftOut               no
+  0x0c6c   UnusedBlackColsLeftIn                no
+  0x0c6d   UnusedBlackColsRightIn               no
+  0x0c6e   UnusedBlackColsRightOut              no
+  0x0c6f   CFAOffsetRows                        int32u
+  0x0c70   ShiftCols                            int16s
+  0x0c71   CFAOffsetCols                        int32u
+  0x0c76   DarkMapScale                         no
+  0x0c77   HMapHandling                         no
+  0x0c78   VMapHandling                         no
+  0x0c79   DarkThreshold                        no
+  0x0c7a   DMDitherMatrix                       int16u
+  0x0c7b   DMDitherMatrixWidth                  int16u
+  0x0c7c   DMDitherMatrixHeight                 int16u
+  0x0c7d   MaxPixelValueThreshold               int16u
+  0x0c7e   HoleFillDeltaThreshold               int16u
+  0x0c7f   DarkPedestal                         int16u
+  0x0c80   ImageProcessingFileTagsVersionNumber int16u
+  0x0c81   ImageProcessingFileDateCreated       string
+  0x0c82   DoublingMicrovolts                   int32s
+  0x0c83   DarkFrameShortExposure               int32u
+  0x0c84   DarkFrameLongExposure                int32u
+  0x0c85   DarkFrameCountFactor                 rational64u
+  0x0c88   HoleFillDarkDeltaThreshold           int16u
+  0x0c89   FarkleWhiteThreshold                 no
+  0x0c8a   ColumnResetOffsets                   no
+  0x0c8b   ColumnGainFactors                    no
+  0x0c8c   Channel0LagKernel                    no
+  0x0c8d   Channel1LagKernel                    no
+  0x0c8e   Channel2LagKernel                    no
+  0x0c8f   Channel3LagKernel                    no
+  0x0c90   BluegrassTable                       no
+  0x0c91   BluegrassScale1                      no
+  0x0c92   BluegrassScale2                      no
+  0x0ce4   FinishedFileProcessingRequest        no
   0x0ce5   FirmwareVersion                      string
+  0x0ce6   HostSoftwareExportVersion            no
+  0x0ce7   HostSoftwareRendering                int32u
+  0x0dac   DCS3XXProcessingInfoIFD              no
+  0x0dad   DCS3XXProcessingInfo                 no
+  0x0dae   IPAVersion                           int32u
+  0x0db6   FinishIPAVersion                     no
+  0x0db7   FinishIPFVersion                     no
+  0x0db8   FinishFileType                       int32u
+  0x0db9   FinishResolution                     int32u
+  0x0dba   FinishNoise                          int32u
+  0x0dbb   FinishSharpening                     int32u
+  0x0dbc   FinishLook                           int32u
+  0x0dbd   FinishExposure                       int32u
+  0x0e0b   SigmaScalingFactorLowRes             rational64u
+  0x0e0c   SigmaScalingFactorCamera             rational64u
+  0x0e0d   SigmaImpulseParameters               int16u[n]
+  0x0e0e   SigmaNoiseThreshTableV2              no
+  0x0e0f   SigmaSizeTable                       int16u[n]
+  0x0e10   DacGainsCoarseAdjPreIF41             no
+  0x0e11   SigmaNoiseFilterCalTableV1           no
+  0x0e12   SigmaNoiseFilterTableV1              no
+  0x0e13   Lin12ToKlut8                         no
+  0x0e14   SigmaNoiseFilterTableV1Version       no
+  0x0e15   Lin12ToKlut12                        no
+  0x0e16   Klut12ToLin12                        no
+  0x0e17   NifNonlinearity12To16                no
+  0x0e18   SBALog12Transform                    no
+  0x0e19   InverseSBALog12Transform             no
+  0x0e1a   ToneScale0                           no
+  0x0e1b   ToneScale1                           no
+  0x0e1c   ToneScale2                           no
+  0x0e1d   ToneScale3                           no
+  0x0e1e   ToneScale4                           no
+  0x0e1f   ToneScale5                           no
+  0x0e20   ToneScale6                           no
+  0x0e21   ToneScale7                           no
+  0x0e22   ToneScale8                           no
+  0x0e23   ToneScale9                           no
+  0x0e24   DayMat0                              no
+  0x0e25   DayMat1                              no
+  0x0e26   DayMat2                              no
+  0x0e27   DayMat3                              no
+  0x0e28   DayMat4                              no
+  0x0e29   DayMat5                              no
+  0x0e2a   DayMat6                              no
+  0x0e2b   DayMat7                              no
+  0x0e2c   DayMat8                              no
+  0x0e2d   DayMat9                              no
+  0x0e2e   TungMat0                             no
+  0x0e2f   TungMat1                             no
+  0x0e30   TungMat2                             no
+  0x0e31   TungMat3                             no
+  0x0e32   TungMat4                             no
+  0x0e33   TungMat5                             no
+  0x0e34   TungMat6                             no
+  0x0e35   TungMat7                             no
+  0x0e36   TungMat8                             no
+  0x0e37   TungMat9                             no
+  0x0e38   FluorMat0                            no
+  0x0e39   FluorMat1                            no
+  0x0e3a   FluorMat2                            no
+  0x0e3b   FluorMat3                            no
+  0x0e3c   FluorMat4                            no
+  0x0e3d   FluorMat5                            no
+  0x0e3e   FluorMat6                            no
+  0x0e3f   FluorMat7                            no
+  0x0e40   FluorMat8                            no
+  0x0e41   FluorMat9                            no
+  0x0e42   FlashMat0                            no
+  0x0e43   FlashMat1                            no
+  0x0e44   FlashMat2                            no
+  0x0e45   FlashMat3                            no
+  0x0e46   FlashMat4                            no
+  0x0e47   FlashMat5                            no
+  0x0e48   FlashMat6                            no
+  0x0e49   FlashMat7                            no
+  0x0e4a   FlashMat8                            no
+  0x0e4b   FlashMat9                            no
   0x0e4c   KodakLook                            string
+  0x0e4d   IPFCameraModel                       string
+  0x0e4e   AH2GreenInterpolationThreshold       int16u
+  0x0e4f   ResamplingKernelDenominators067      int16u[3]
+  0x0e50   ResamplingKernelDenominators050      int16u[3]
+  0x0e51   ResamplingKernelDenominators100      int16u[3]
+  0x0e56   LookMat0                             no
+  0x0e57   LookMat1                             no
+  0x0e58   LookMat2                             no
+  0x0e59   LookMat3                             no
+  0x0e5a   LookMat4                             no
+  0x0e5b   LookMat5                             no
+  0x0e5c   LookMat6                             no
+  0x0e5d   LookMat7                             no
+  0x0e5e   LookMat8                             no
+  0x0e5f   LookMat9                             no
+  0x0e60   CFAInterpolationAlgorithm            int16u
+  0x0e61   CFAInterpolationMetric               int16u
+  0x0e62   CFAZipperFixThreshold                int16u
+  0x0e63   NoiseReductionParametersKhufuRGB     int16u[9]
+  0x0e64   NoiseReductionParametersKhufu6MP     int16u[9]
+  0x0e65   NoiseReductionParametersKhufu3MP     int16u[9]
+  0x0e6a   ChromaNoiseHighFThresh               int32u[2]
+  0x0e6b   ChromaNoiseLowFThresh                int32u[2]
+  0x0e6c   ChromaNoiseEdgeMapThresh             int32u
+  0x0e6d   ChromaNoiseColorSpace                int32u
+  0x0e6e   EnableChromaNoiseReduction           int16u
+  0x0e6f   NoiseReductionParametersHostRGB      int16u[9]
+  0x0e70   NoiseReductionParametersHost6MP      int16u[9]
+  0x0e71   NoiseReductionParametersHost3MP      int16u[9]
+  0x0e72   NoiseReductionParametersCamera       int16u[6]
+  0x0e73   NoiseReductionParametersAtCapture    int16u[6]
+  0x0e74   LCDMatrix                            rational64s[9]
+  0x0e75   LCDMatrixChickFix                    rational64s[9]
+  0x0e76   LCDMatrixMarvin                      rational64s[9]
+  0x0e7c   LCDGammaTableChickFix                no
+  0x0e7d   LCDGammaTableMarvin                  no
+  0x0e7e   LCDGammaTable                        no
+  0x0e7f   LCDSharpeningF1                      no
+  0x0e80   LCDSharpeningF2                      no
+  0x0e81   LCDSharpeningF3                      no
+  0x0e82   LCDSharpeningF4                      no
+  0x0e83   LCDEdgeMapX1                         no
+  0x0e84   LCDEdgeMapX2                         no
+  0x0e85   LCDEdgeMapX3                         no
+  0x0e86   LCDEdgeMapX4                         no
+  0x0e87   LCDEdgeMapSlope                      no
+  0x0e88   YCrCbMatrix                          no
+  0x0e89   LCDEdgeSpline                        no
+  0x0e92   Fac18Per                             int16u
+  0x0e93   Fac170Per                            int16u
+  0x0e94   Fac100Per                            int16u
+  0x0e9b   ExtraTickLocations                   no
+  0x0e9c   RGBtoeV0                             no
+  0x0e9d   RGBtoeV1                             no
+  0x0e9e   RGBtoeV2                             no
+  0x0e9f   RGBtoeV3                             no
+  0x0ea0   RGBtoeV4                             no
+  0x0ea1   RGBtoeV5                             no
+  0x0ea2   RGBtoeV6                             no
+  0x0ea3   RGBtoeV7                             no
+  0x0ea4   RGBtoeV8                             no
+  0x0ea5   RGBtoeV9                             no
+  0x0ea6   LCDHistLUT0                          no
+  0x0ea7   LCDHistLUT1                          no
+  0x0ea8   LCDHistLUT2                          no
+  0x0ea9   LCDHistLUT3                          no
+  0x0eaa   LCDHistLUT4                          no
+  0x0eab   LCDHistLUT5                          no
+  0x0eac   LCDHistLUT6                          no
+  0x0ead   LCDHistLUT7                          no
+  0x0eae   LCDHistLUT8                          no
+  0x0eaf   LCDHistLUT9                          no
+  0x0eb0   LCDLinearClipValue                   no
+  0x0ece   LCDStepYvalues                       no
+  0x0ecf   LCDStepYvaluesChickFix               no
+  0x0ed0   LCDStepYvaluesMarvin                 no
+  0x0ed8   InterpolationCoefficients            no
+  0x0ed9   InterpolationCoefficients6MP         no
+  0x0eda   InterpolationCoefficients3MP         no
+  0x0f00   NoiseReductionParametersHostNormal   no
+  0x0f01   NoiseReductionParametersHostStrong   no
+  0x0f02   NoiseReductionParametersHostLow      no
+  0x0f0a   MariahTextureThreshold               int16u
+  0x0f0b   MariahMapLoThreshold                 int16u
+  0x0f0c   MariahMapHiThreshold                 int16u
+  0x0f0d   MariahChromaBlurSize                 int16u
+  0x0f0e   MariahSigmaThreshold                 int16u
+  0x0f0f   MariahThresholds                     no
+  0x0f10   MariahThresholdsNormal               no
+  0x0f11   MariahThresholdsStrong               no
+  0x0f12   MariahThresholdsLow                  no
+  0x0f14   KhufuLinearRedMixingCoefficient      no
+  0x0f15   KhufuLinearGreenMixingCoefficient    no
+  0x0f16   KhufuLinearBlueMixingCoefficient     no
+  0x0f17   KhufuUSpaceC2MixingCoefficient       no
+  0x0f18   KhufuSigmaGaussianWeights            no
+  0x0f19   KhufuSigmaScalingFactors6MP          no
+  0x0f1a   KhufuSigmaScalingFactors3MP          no
+  0x0f1b   KhufuSigmaScalingFactors14MP         no
+  0x0f32   KhufuI0Thresholds                    no
+  0x0f33   KhufuI1Thresholds                    no
+  0x0f34   KhufuI2Thresholds                    no
+  0x0f35   KhufuI3Thresholds                    no
+  0x0f36   KhufuI4Thresholds                    no
+  0x0f37   KhufuI5Thresholds                    no
+  0x0f3c   CondadoDayBVThresh                   int16u
+  0x0f3d   CondadoNeuRange                      int16u
+  0x0f3e   CondadoBVFactor                      int16s
+  0x0f3f   CondadoIllFactor                     int16s
+  0x0f40   CondadoTunThresh                     int16s
+  0x0f41   CondadoFluThresh                     int16s
+  0x0f42   CondadoDayOffsets                    int16s[2]
+  0x0f43   CondadoTunOffsets                    int16s[2]
+  0x0f44   CondadoFluOffsets                    int16s[2]
+  0x0f5a   ERIMMToCRGB0Spline                   no
+  0x0f5b   ERIMMToCRGB1Spline                   no
+  0x0f5c   ERIMMToCRGB2Spline                   no
+  0x0f5d   ERIMMToCRGB3Spline                   no
+  0x0f5e   ERIMMToCRGB4Spline                   no
+  0x0f5f   ERIMMToCRGB5Spline                   no
+  0x0f60   ERIMMToCRGB6Spline                   no
+  0x0f61   ERIMMToCRGB7Spline                   no
+  0x0f62   ERIMMToCRGB8Spline                   no
+  0x0f63   ERIMMToCRGB9Spline                   no
+  0x0f64   CRGBToERIMM0Spline                   no
+  0x0f65   CRGBToERIMM1Spline                   no
+  0x0f66   CRGBToERIMM2Spline                   no
+  0x0f67   CRGBToERIMM3Spline                   no
+  0x0f68   CRGBToERIMM4Spline                   no
+  0x0f69   CRGBToERIMM5Spline                   no
+  0x0f6a   CRGBToERIMM6Spline                   no
+  0x0f6b   CRGBToERIMM7Spline                   no
+  0x0f6c   CRGBToERIMM8Spline                   no
+  0x0f6d   CRGBToERIMM9Spline                   no
+  0x0f6e   ERIMMNonLinearitySpline              no
+  0x0f6f   Delta12To8Spline                     no
+  0x0f70   Delta8To12Spline                     no
+  0x0f71   InverseMonitorMatrix                 no
+  0x0f72   NifNonlinearityExt                   no
+  0x0f73   InvNifNonLinearity                   no
+  0x0f74   RIMM13ToERIMM12Spline                no
+  0x0f78   ToneScale0Spline                     no
+  0x0f79   ToneScale1Spline                     no
+  0x0f7a   ToneScale2Spline                     no
+  0x0f7b   ToneScale3Spline                     no
+  0x0f7c   ToneScale4Spline                     no
+  0x0f7d   ToneScale5Spline                     no
+  0x0f7e   ToneScale6Spline                     no
+  0x0f7f   ToneScale7Spline                     no
+  0x0f80   ToneScale8Spline                     no
+  0x0f81   ToneScale9Spline                     no
+  0x0f82   ERIMMToneScale0Spline                no
+  0x0f83   ERIMMToneScale1Spline                no
+  0x0f84   ERIMMToneScale2Spline                no
+  0x0f85   ERIMMToneScale3Spline                no
+  0x0f86   ERIMMToneScale4Spline                no
+  0x0f87   ERIMMToneScale5Spline                no
+  0x0f88   ERIMMToneScale6Spline                no
+  0x0f89   ERIMMToneScale7Spline                no
+  0x0f8a   ERIMMToneScale8Spline                no
+  0x0f8b   ERIMMToneScale9Spline                no
+  0x0f8c   RIMMToCRGB0Spline                    no
+  0x0f8d   RIMMToCRGB1Spline                    no
+  0x0f8e   RIMMToCRGB2Spline                    no
+  0x0f8f   RIMMToCRGB3Spline                    no
+  0x0f90   RIMMToCRGB4Spline                    no
+  0x0f91   RIMMToCRGB5Spline                    no
+  0x0f92   RIMMToCRGB6Spline                    no
+  0x0f93   RIMMToCRGB7Spline                    no
+  0x0f94   RIMMToCRGB8Spline                    no
+  0x0f95   RIMMToCRGB9Spline                    no
+  0x0fa0   QTableLarge25Pct                     no
+  0x0fa1   QTableMedium25Pct                    no
+  0x0fa2   QTableSmall25Pct                     no
+  0x1130   NoiseReductionKernel                 no
+  0x1388   UserMetaData                         no
   0x1389   InputProfile                         undef
   0x138a   KodakLookProfile                     undef
   0x138b   OutputProfile                        undef
-  0x1391   ToneCurveFileName                    string
+  0x1390   SourceProfilePrefix                  string
+  0x1391   ToneCurveProfileName                 string
+  0x1392   InputProfile                         ICC_Profile
+  0x1393   ProcessParametersV2                  no
+  0x1394   ReservedBlob2                        no
+  0x1395   ReservedBlob3                        no
+  0x1396   ReservedBlob4                        no
+  0x1397   ReservedBlob5                        no
+  0x1398   ReservedBlob6                        no
+  0x1399   ReservedBlob7                        no
+  0x139a   ReservedBlob8                        no
+  0x139b   ReservedBlob9                        no
+  0x1770   ScriptVersion                        int32u
+  0x177a   ImagerTimingData                     no
   0x1784   ISO                                  int32u
+  0x17a2   Scav11Cols                           no
+  0x17a3   Scav12Cols                           no
+  0x17a4   Scav21Cols                           no
+  0x17a5   Scav22Cols                           no
+  0x17a6   ActiveCTEMonitor1Cols                no
+  0x17a7   ActiveCTEMonitor2Cols                no
+  0x17a8   ActiveCTEMonitorRows                 no
+  0x17a9   ActiveBuf1Cols                       no
+  0x17aa   ActiveBuf2Cols                       no
+  0x17ab   ActiveBuf1Rows                       no
+  0x17ac   ActiveBuf2Rows                       no
+  0x17c0   HRNoiseLines                         no
+  0x17c1   RNoiseLines                          no
+  0x17c2   ANoiseLines                          no
+  0x17d4   ImagerCols                           int16u
+  0x17de   ImagerRows                           int16u
+  0x17e8   PartialActiveCols1                   int32u
+  0x17f2   PartialActiveCols2                   int32u
+  0x17fc   PartialActiveRows1                   int32u
+  0x1806   PartialActiveRows2                   int32u
+  0x1810   ElectricalBlackColumns               int32u
+  0x181a   ResetBlackSegRows                    int32u
+  0x1838   CaptureWidthNormal                   int32u
+  0x1839   CaptureHeightNormal                  int32u
+  0x183a   CaptureWidthResetBlackSegNormal      no
+  0x183b   CaptureHeightResetBlackSegNormal     no
+  0x183c   DarkRefOffsetNormal                  no
+  0x1842   CaptureWidthTest                     int32u
+  0x1843   CaptureHeightTest                    no
+  0x1844   CaptureWidthResetBlackSegTest        no
+  0x1845   CaptureHeightResetBlackSegTest       no
+  0x1846   DarkRefOffsetTest                    no
+  0x184c   ImageSegmentStartLine                int32u
+  0x184d   ImageSegmentLines                    int32u
+  0x184e   SkipLineTime                         int32u
+  0x1860   FastResetLineTime                    int32u
+  0x186a   NormalLineTime                       int32u
+  0x1874   MinIntegrationRows                   int32u
+  0x187e   PreReadFastResetCount                int32u
+  0x1888   TransferTimeNormal                   int32u
+  0x1889   TransferTimeTest                     int32u
+  0x188a   QuietTime                            int32u
+  0x189c   OverClockCols                        int16u
+  0x18a6   H2ResetBlackPixels                   int32u
+  0x18b0   H3ResetBlackPixels                   int32u
+  0x18ba   BlackAcquireRows                     int32u
+  0x18c4   OverClockRows                        int16u
+  0x18ce   H3ResetBlackColumns                  int32u
+  0x18d8   DarkBlackSegRows                     int32u
+  0x1900   CrossbarEnable                       no
+  0x1901   FifoenOnePixelDelay                  int32u
+  0x1902   ReadoutTypeRequested                 int32u
+  0x1903   ReadoutTypeActual                    int32u
+  0x190a   OffsetDacValue                       int32u
+  0x1914   TempAmpGainX100                      int32u
+  0x191e   VarrayDacNominalValues               int32u[3]
+  0x1928   VddimDacNominalValues                no
+  0x1964   C14Configuration                     int32u
+  0x196e   TDA1Offset                           int32u[3]
+  0x196f   TDA1Bandwidth                        int32u
+  0x1970   TDA1Gain                             int32u[3]
+  0x1971   TDA1EdgePolarity                     int32u
+  0x1978   TDA2Offset                           int32u[3]
+  0x1979   TDA2Bandwidth                        int32u
+  0x197a   TDA2Gain                             int32u[3]
+  0x197b   TDA2EdgePolarity                     int32u
+  0x1982   TDA3Offset                           int32u[3]
+  0x1983   TDA3Bandwidth                        int32u
+  0x1984   TDA3Gain                             int32u[3]
+  0x1985   TDA3EdgePolarity                     int32u
+  0x198c   TDA4Offset                           int32u[3]
+  0x198d   TDA4Bandwidth                        int32u
+  0x198e   TDA4Gain                             int32u[3]
+  0x198f   TDA4EdgePolarity                     int32u
+  0xfde8   ComLenBlkSize                        int16u
 
 =head3 Kodak TextualInfo Tags
 
@@ -9130,6 +9878,8 @@ Information stored in the "frea" atom of Kodak PixPro SP360 MP4 videos.
   ------   --------                             --------
   'scra'   PreviewImage                         no
   'thma'   ThumbnailImage                       no
+  'tima'   Duration                             no
+  'ver '   KodakVersion                         no
 
 =head3 Kodak Free Tags
 
@@ -10077,11 +10827,12 @@ Color balance tags used by the P6000.
 
 =head3 Nikon ColorBalanceC Tags
 
-Color balance tags used by the P7000, P7100 and B700.
+Color balance tags used by the P1000, P7000, P7100 and B700.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
       4    ColorBalanceVersion                  undef[4]
+     32    BlackLevel                           int16u
      56    WB_RGGBLevels                        int32u[4]!
      76    WB_RGGBLevelsDaylight                int32u[4]!
      96    WB_RGGBLevelsCloudy                  int32u[4]!
@@ -10996,6 +11747,7 @@ videos from some Nikon cameras.
   0x0012       DateTimeOriginal                 no
   0x0013       FrameCount                       no
   0x0016       FrameRate                        no
+  0x0019       TimeZone                         no
   0x0022       FrameWidth                       no
   0x0023       FrameHeight                      no
   0x0032       AudioChannels                    no
@@ -11009,7 +11761,11 @@ videos from some Nikon cameras.
   0x1109204    ExposureCompensation             no
   0x1109207    MeteringMode                     no
   0x110920a    FocalLength                      no
+  0x110a431    SerialNumber                     no
+  0x110a432    LensInfo                         no
+  0x110a433    LensMake                         no
   0x110a434    LensModel                        no
+  0x110a435    LensSerialNumber                 no
   0x1200000    GPSVersionID                     no
   0x1200001    GPSLatitudeRef                   no
   0x1200002    GPSLatitude                      no
@@ -11035,12 +11791,20 @@ videos from some Nikon cameras.
                                                 Nikon PictureControl2
   0x2000024    WorldTime                        Nikon WorldTime
   0x2000025    ISOInfo                          Nikon ISOInfo
+  0x200002a    VignetteControl                  int16u
   0x200002c    UnknownInfo                      Nikon UnknownInfo
-  0x2000032    UnknownInfo2                     Nikon UnknownInfo
+  0x2000032    UnknownInfo2                     Nikon UnknownInfo2
   0x2000039    LocationInfo                     Nikon LocationInfo
   0x2000083    LensType                         no
   0x2000084    Lens                             no
   0x2000087    FlashMode                        int8u
+  0x2000098    LensData0100                     Nikon LensData00
+               LensData0101                     Nikon LensData01
+               LensData0201                     Nikon LensData01
+               LensData0204                     Nikon LensData0204
+               LensData0400                     Nikon LensData0400
+               LensDataUnknown                  Nikon LensDataUnknown
+  0x20000a7    ShutterCount                     no
   0x20000a8    FlashInfo0100                    Nikon FlashInfo0100
                FlashInfo0102                    Nikon FlashInfo0102
                FlashInfo0103                    Nikon FlashInfo0103
@@ -13078,6 +13842,7 @@ These tags are used in Panasonic/Leica cameras.
   0x006d   City                                 undef
   0x006f   Landmark                             undef
   0x0070   IntelligentResolution                int8u
+  0x0076   HDRShot                              int16u
   0x0077   BurstSpeed                           int16u
   0x0079   IntelligentD-Range                   int16u
   0x007c   ClearRetouch                         int16u
@@ -13085,12 +13850,14 @@ These tags are used in Panasonic/Leica cameras.
   0x0086   ManometerPressure                    int16u
   0x0089   PhotoStyle                           int16u
   0x008a   ShadingCompensation                  int16u
+  0x008b   WBShiftIntelligentAuto               int16u
   0x008c   AccelerometerZ                       int16u
   0x008d   AccelerometerX                       int16u
   0x008e   AccelerometerY                       int16u
   0x008f   CameraOrientation                    int8u
   0x0090   RollAngle                            int16u
   0x0091   PitchAngle                           int16u
+  0x0092   WBShiftCreativeControl               int8u
   0x0093   SweepPanoramaDirection               int8u
   0x0094   SweepPanoramaFieldOfView             int16u
   0x0096   TimerRecording                       int8u
@@ -13115,7 +13882,6 @@ These tags are used in Panasonic/Leica cameras.
   0x8004   WBRedLevel                           int16u
   0x8005   WBGreenLevel                         int16u
   0x8006   WBBlueLevel                          int16u
-  0x8007   FlashFired                           int16u
   0x8008   TextStamp                            int16u
   0x8009   TextStamp                            int16u
   0x8010   BabyAge                              string
@@ -16547,6 +17313,8 @@ Tags written by the Sony Image Data Converter utility in ARW images.
   0x9010   Cropping                             int32u
   0x9011   CropArea                             int32u[4]
   0x9012   PreviewImageSize                     int32u[2]
+  0x9013   PxShiftPeriphEdgeNR                  int32s
+  0x9014   PxShiftPeriphEdgeNRValue             int32s
   0x9017   WhitesAdj                            int32s
   0x9018   BlacksAdj                            int32s
   0x9019   HighlightsAdj                        int32s
@@ -17551,11 +18319,11 @@ Preview information written by some FujiFilm models.
 
 Tags extracted from the Microsoft Word document stream.
 
-  Index2   Tag Name                             Writable
+  Tag ID   Tag Name                             Writable
   ------   --------                             --------
-      0    Identification                       no
-      3    LanguageCode                         no
-      5    DocFlags                             no
+  0x0000   Identification                       no
+  0x0003   LanguageCode                         no
+  0x0005   DocFlags                             no
     9.1    System                               no
     9.2    Word97                               no
 
@@ -17565,7 +18333,27 @@ Tags extracted from the Microsoft Word document table.
 
   Tag Name                                      Writable
   --------                                      --------
+  CommentBy                                     no
+  DOP                                           FlashPix DOP
   LastSavedBy                                   no
+  ModifyDate                                    no
+
+=head3 FlashPix DOP Tags
+
+Microsoft office document properties.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+     20    CreateDate                           no
+     24    ModifyDate                           no
+     28    LastPrinted                          no
+     32    RevisionNumber                       no
+     34    TotalEditTime                        no
+     38    Words                                no
+     42    Characters                           no
+     46    Pages                                no
+     48    Paragraphs                           no
+     56    Lines                                no
 
 =head2 MPF Tags
 
@@ -20223,7 +21011,9 @@ XCF (eXperimental Computing Facilty) images.
   'header' Header                               GIMP Header
   0x0011   Compression                          no
   0x0013   Resolution                           GIMP Resolution
+  0x0014   Tattoo                               no
   0x0015   Parasites                            GIMP Parasite
+  0x0016   Units                                no
 
 =head3 GIMP Header Tags
 
@@ -20243,15 +21033,16 @@ XCF (eXperimental Computing Facilty) images.
 
 =head3 GIMP Parasite Tags
 
-  Tag ID               Tag Name                 Writable
-  ------               --------                 --------
-  'exif-data'          ExifData                 EXIF
-  'gimp-comment'       Comment                  no
-  'gimp-metadata'      XMP                      XMP
-  'icc-profile'        ICC_Profile              ICC_Profile
-  'icc-profile-name'   ICCProfileName           no
-  'iptc-data'          IPTCData                 IPTC
-  'jpeg-exif-data'     JPEGExifData             EXIF
+  Tag ID                Tag Name                Writable
+  ------                --------                --------
+  'exif-data'           ExifData                EXIF
+  'gimp-comment'        Comment                 no
+  'gimp-image-metadata' XML                     XMP XML
+  'gimp-metadata'       XMP                     XMP
+  'icc-profile'         ICC_Profile             ICC_Profile
+  'icc-profile-name'    ICCProfileName          no
+  'iptc-data'           IPTCData                IPTC
+  'jpeg-exif-data'      JPEGExifData            EXIF
 
 =head2 MIE Tags
 
@@ -23290,6 +24081,7 @@ MP4 data reference box.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
+  "url\0"  URL                                  no
   'url '   URL                                  no
   'urn '   URN                                  no
 
@@ -24006,6 +24798,7 @@ the ExtractEmbedded option is used.
   SampleTime                                    no
   Text                                          no
   TimeCode                                      no
+  UserLabel                                     no
   camm0                                         QuickTime camm0
   camm1                                         QuickTime camm1
   camm2                                         QuickTime camm2
@@ -24018,6 +24811,7 @@ the ExtractEmbedded option is used.
   gpmd                                          GoPro GPMF
   mebx                                          QuickTime Keys
   rtmd                                          Sony rtmd
+  tx3g                                          QuickTime tx3g
 
 =head3 QuickTime RVMI_gReV Tags
 
@@ -24103,6 +24897,22 @@ specification.
   Index1   Tag Name                             Writable
   ------   --------                             --------
       4    MagneticField                        no
+
+=head3 QuickTime tx3g Tags
+
+Tags extracted from the tx3g sbtl timed metadata of Yuneec drones.
+
+  Tag ID       Tag Name                         Writable
+  ------       --------                         --------
+  'Alt'        GPSAltitude                      no
+  'GimPitch'   GimbalPitch                      no
+  'GimRoll'    GimbalRoll                       no
+  'GimYaw'     GimbalYaw                        no
+  'Lat'        GPSLatitude                      no
+  'Lon'        GPSLongitude                     no
+  'Pitch'      Pitch                            no
+  'Roll'       Roll                             no
+  'Yaw'        Yaw                              no
 
 =head2 PLIST Tags
 

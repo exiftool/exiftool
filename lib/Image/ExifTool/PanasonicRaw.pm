@@ -511,7 +511,29 @@ my %panasonicWhiteBalance = ( #forum9396
     },
     # 0x140b - scaled overall black level? (ref forum9281)
     # 0x1411 - scaled black level per channel difference (ref forum9281)
+    # 0x2000 - WB tungsten=3, daylight=4 (ref forum9467)
     # 0x2009 - scaled black level per channel (ref forum9281)
+    # 0x3000-0x310b - red/blue balances * 1024 (ref forum9467)
+    #  0x3000 modifiedTungsten-Red (-2?)
+    #  0x3001 modifiedTungsten-Blue (-2?)
+    #  0x3002 modifiedDaylight-Red (-2?)
+    #  0x3003 modifiedDaylight-Blue (-2?)
+    #  0x3004 modifiedTungsten-Red (-1?)
+    #  0x3005 modifiedTungsten-Blue (-1?)
+    #  0x3006 modifiedDaylight-Red (-1?)
+    #  0x3007 modifiedDaylight-Blue (-1?)
+    #  0x3100 DefaultTungsten-Red
+    #  0x3101 DefaultTungsten-Blue
+    #  0x3102 DefaultDaylight-Red
+    #  0x3103 DefaultDaylight-Blue
+    #  0x3104 modifiedTungsten-Red (+1?)
+    #  0x3105 modifiedTungsten-Blue (+1?)
+    #  0x3106 modifiedDaylight-Red (+1?)
+    #  0x3107 modifiedDaylight-Blue (+1?)
+    #  0x3108 modifiedTungsten-Red (+2?)
+    #  0x3109 modifiedTungsten-Blue (+2?)
+    #  0x310a modifiedDaylight-Red (+2?)
+    #  0x310b modifiedDaylight-Blue (+2?)
     0x3200 => { #forum9275
         Name => 'WB_CFA0_LevelDaylight',
         Writable => 'int16u',

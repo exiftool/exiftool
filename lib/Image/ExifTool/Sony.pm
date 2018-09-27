@@ -88,6 +88,7 @@ my %sonyLensTypes2 = (
     32801 => 'Sony FE 12-24mm F4 G', #JR
     32802 => 'Sony FE 90mm F2.8 Macro G OSS',   # VX?
     32803 => 'Sony E 18-50mm F4-5.6',
+    32804 => 'Sony FE 24mm F1.4 GM', #IB
     32805 => 'Sony FE 24-105mm F4 G OSS', #IB   # VX9121
 
     32807 => 'Sony E PZ 18-200mm F3.5-6.3 OSS', # VX9123

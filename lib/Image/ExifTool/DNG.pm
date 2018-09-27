@@ -662,6 +662,7 @@ sub ProcessAdobeIFD($$$)
 # Inputs: 0) ExifTool object ref, 1) dirInfo ref, 2) tag table ref
 # Returns: 1 on success, otherwise returns 0 and sets a Warning
 # Notes: data has 6 byte header (2 for byte order and 4 for original offset)
+#        --> or 18 bytes for DNG converted from JPG by Adobe Camera Raw!
 sub ProcessAdobeMakN($$$)
 {
     my ($et, $dirInfo, $tagTablePtr) = @_;
@@ -677,8 +678,14 @@ sub ProcessAdobeMakN($$$)
 
     $et->VerboseDir($dirInfo) unless $outfile;
     my $dataPos = $$dirInfo{DataPos};
-    my $dirStart = $start + 6;  # pointer to maker note directory
-    my $dirLen = $len - 6;
+    my $hdrLen = 6;
+
+    # hack for extra 12 bytes in MakN header of JPEG converted to DNG by Adobe Camera Raw
+    # (4 bytes "00 00 00 01" followed by 8 unknown bytes)
+    $hdrLen += 12 if $len >= 18 and substr($$dataPt, $start+6, 4) eq "\0\0\0\x01";
+
+    my $dirStart = $start + $hdrLen;    # pointer to maker note directory
+    my $dirLen = $len - $hdrLen;
 
     my $hdr = substr($$dataPt, $dirStart, $dirLen < 48 ? $dirLen : 48);
     my $tagInfo = $et->GetTagInfo($tagTablePtr, 'MakN', \$hdr);
@@ -707,7 +714,7 @@ sub ProcessAdobeMakN($$$)
         return 0;
     }
     if ($et->Options('HtmlDump')) {
-        $et->HDump($dataPos + $start, 6, 'Adobe MakN data');
+        $et->HDump($dataPos + $start, $hdrLen, 'Adobe MakN data');
         $et->HDump($dataPos + $dirStart, $loc, "$$tagInfo{Name} header") if $loc;
     }
 
@@ -746,8 +753,8 @@ sub ProcessAdobeMakN($$$)
         $loc = 0 if $subdirInfo{BlockWrite};
         $fixup->{Shift} += $loc;    # adjust for makernotes header
         $fixup->ApplyFixup(\$buff); # fix up pointer offsets
-        # get copy of original Adobe header (6) and makernotes header ($loc)
-        my $header = substr($$dataPt, $start, 6 + $loc);
+        # get copy of original Adobe header (6 or 18) and makernotes header ($loc)
+        my $header = substr($$dataPt, $start, $hdrLen + $loc);
         # add Adobe and makernotes headers to new directory
         $$outfile = $header . $buff;
     } else {

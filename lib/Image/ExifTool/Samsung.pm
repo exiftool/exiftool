@@ -22,7 +22,7 @@ use vars qw($VERSION %samsungLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.42';
+$VERSION = '1.43';
 
 sub WriteSTMN($$$);
 sub ProcessINFO($$$);
@@ -940,13 +940,16 @@ my %formatMinMax = (
     '0x0201-name' => 'SurroundShotVideoName', # ("Interactive_Panorama_000")
     '0x0201' => { Name => 'SurroundShotVideo', Groups => { 2 => 'Video' }, Binary => 1 },
    # 0x0800-name - seen 'SoundShot_Meta_Info'
-   # 0x0800 - (contains only already-extracted sound shot name)
+   # 0x0800 - unknown (29 bytes) (contains already-extracted EmbeddedAudioFileName)
    # 0x0830-name - seen '1165724808.pre'
    # 0x0830 - unknown (164004 bytes)
    # 0x08d0-name - seen 'Interactive_Panorama_Info'
    # 0x08d0 - unknown (7984 bytes)
+   # 0x08e0-name - seen 'Panorama_Shot_Info'
+   # 0x08e0 - string, seen 'PanoramaShot'
+   # 0x08e1-name - seen 'Motion_Panorama_Info'
    # 0x09e0-name - seen 'Burst_Shot_Info'
-   # 0x09e0 - seen '489489125'
+   # 0x09e0 - string, seen '489489125'
    # 0x0a01-name - seen 'Image_UTC_Data'
     '0x0a01' => { #forum7161
         Name => 'TimeStamp',
@@ -1215,6 +1218,8 @@ SamBlock:
                     Binary      => 1,
                 );
                 AddTagToTable($tagTablePtr, $tag, \%tagInfo);
+            }
+            unless ($$tagTablePtr{"$tag-name"}) {
                 my %tagInfo2 = (
                     Name        => "SamsungTrailer_${tag}Name",
                     Description => "Samsung Trailer $tag Name",

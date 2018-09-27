@@ -35,7 +35,7 @@ use vars qw($VERSION %leicaLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.01';
+$VERSION = '2.02';
 
 sub ProcessLeicaLEIC($$$);
 sub WhiteBalanceConv($;$$);
@@ -1023,6 +1023,11 @@ my %shootingMode = (
     },
     # 0x72,0x73,0x74,0x75,0x77,0x78: 0
     # 0x76: 0, (3 for G6 with HDR on, ref 18)
+    0x76 => { #18/21
+        Name => 'HDRShot',
+        Writable => 'int16u',
+        PrintConv => { 0 => 'Off', 3 => 'On' },
+    },
     0x79 => { #PH (GH2)
         Name => 'IntelligentD-Range',
         Writable => 'int16u',
@@ -1081,6 +1086,12 @@ my %shootingMode = (
             1 => 'On'
         }
     },
+    0x8b => { #21
+        Name => 'WBShiftIntelligentAuto',
+        Writable => 'int16u',
+        Format => 'int16s',
+        Notes => 'value is -9 for blue to +9 for amber.  Valid for Intelligent-Auto modes',
+    },
     0x8c => {
         Name => 'AccelerometerZ',
         Writable => 'int16u',
@@ -1126,6 +1137,12 @@ my %shootingMode = (
         Notes => 'converted to degrees of upward camera tilt',
         ValueConv => '-$val / 10',
         ValueConvInv => '-$val * 10',
+    },
+    0x92 => { #21 (forum9453)
+        Name => 'WBShiftCreativeControl',
+        Writable => 'int8u',
+        Format => 'int8s',
+        Notes => 'WB shift or style strength.  Valid for Creative-Control modes',
     },
     0x93 => { #18
         Name => 'SweepPanoramaDirection',
@@ -1230,6 +1247,7 @@ my %shootingMode = (
             0x18 => '4K Burst',
             0x28 => '4K Burst (Start/Stop)',
             0x48 => '4K Pre-burst',
+            0x108 => 'Loop Recording',
         },
     },
     0xbc => { #forum9282
@@ -1282,11 +1300,11 @@ my %shootingMode = (
         Name => 'WBBlueLevel',
         Writable => 'int16u',
     },
-    0x8007 => { #PH
-        Name => 'FlashFired',
-        Writable => 'int16u',
-        PrintConv => { 0 => 'Yes', 1 => 'No' },
-    },
+    #0x8007 => { #PH - questionable [disabled because it conflicts with EXIF in too many samples]
+    #    Name => 'FlashFired',
+    #    Writable => 'int16u',
+    #    PrintConv => { 0 => 'Yes', 1 => 'No' },
+    #},
     0x8008 => { #PH (TZ5/FS7)
         # (tags 0x3b, 0x3e, 0x8008 and 0x8009 have the same values in all my samples - PH)
         Name => 'TextStamp',

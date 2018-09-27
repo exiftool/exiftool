@@ -87,7 +87,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '3.97';
+$VERSION = '3.98';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -431,6 +431,7 @@ $VERSION = '3.97';
     255.1 => 'Sigma 180mm f/2.8 EX DG OS HSM APO Macro', #50
     368 => 'Sigma 14-24mm f/2.8 DG HSM | A or other Sigma Lens', #IB (A018)
     368.1 => 'Sigma 20mm f/1.4 DG HSM | A', #50 (newer firmware)
+    368.2 => 'Sigma 50mm f/1.4 DG HSM | A', #50
     # Note: LensType 488 (0x1e8) is reported as 232 (0xe8) in 7D CameraSettings
     488 => 'Canon EF-S 15-85mm f/3.5-5.6 IS USM', #PH
     489 => 'Canon EF 70-300mm f/4-5.6L IS USM', #Gerald Kapounek
@@ -469,6 +470,9 @@ $VERSION = '3.97';
     752 => 'Canon EF 24-105mm f/4L IS II USM', #42
     753 => 'Canon EF 85mm f/1.4L IS USM', #42
     754 => 'Canon EF 70-200mm f/4L IS II USM', #IB
+    757 => 'Canon EF 400mm f/2.8L IS III USM', #IB
+    758 => 'Canon EF 600mm f/4L IS III USM', #IB
+
     1136 => 'Sigma 24-70mm f/2.8 DG OS HSM | Art 017', #IB
     # (STM lenses - 0x10xx)
     4142 => 'Canon EF-S 18-135mm f/3.5-5.6 IS STM',
@@ -499,6 +503,10 @@ $VERSION = '3.97';
     61494 => 'Canon CN-E 85mm T1.3 L F', #PH
     61495 => 'Canon CN-E 135mm T2.2 L F', #PH
     61496 => 'Canon CN-E 35mm T1.5 L F', #PH
+    61182 => 'Canon RF 35mm F1.8 Macro IS STM or other Canon RF Lens', #IB
+    61182.1 => 'Canon RF 50mm F1.2 L USM', #IB
+    61182.2 => 'Canon RF 24-105mm F4 L IS USM', #IB
+    61182.3 => 'Canon RF 28-70mm F2 L USM', #IB
     65535 => 'n/a',
 );
 
@@ -839,6 +847,7 @@ $VERSION = '3.97';
     0x80000408 => 'EOS 77D / 9000D',
     0x80000417 => 'EOS Rebel SL2 / 200D / Kiss X9', #IB/42
     0x80000422 => 'EOS Rebel T100 / 4000D / 3000D', #IB (3000D in China; Kiss? - PH)
+    0x80000424 => 'EOR R', #IB
     0x80000432 => 'EOS Rebel T7 / 2000D / 1500D / Kiss X90', #IB
 );
 

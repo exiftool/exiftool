@@ -390,11 +390,12 @@ roll, yaw, speed, altitude)</span></span></td></tr>
   <br>&#39;mdta&#39; = Metadata Tags
   <br>&#39;meta&#39; = NRT Metadata
   <br>&#39;mjsm&#39; = MPEG-J
-  <br>&#39;nrtm&#39; = Non-Real Time Metadata</td><td>&nbsp;&nbsp;</td>
-  <td>&#39;ocsm&#39; = Object Content
-  <br>&#39;odsm&#39; = Object Descriptor
+  <br>&#39;nrtm&#39; = Non-Real Time Metadata
+  <br>&#39;ocsm&#39; = Object Content</td><td>&nbsp;&nbsp;</td>
+  <td>&#39;odsm&#39; = Object Descriptor
   <br>&#39;pict&#39; = Picture
   <br>&#39;priv&#39; = Private
+  <br>&#39;psmd&#39; = Panasonic Static Metadata
   <br>&#39;sdsm&#39; = Scene Description
   <br>&#39;soun&#39; = Audio Track
   <br>&#39;subp&#39; = Subpicture
@@ -4199,11 +4200,16 @@ ItemList tags written by the &quot;mdta&quot; handler.  The prefix of
 <tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
-<td>'url '</td>
+<td>"url\0"</td>
 <td>URL</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>'url '</td>
+<td>URL</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>'urn '</td>
 <td>URN</td>
 <td class=c>no</td>
@@ -7016,6 +7022,10 @@ the ExtractEmbedded option is used.</p>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td>UserLabel</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>camm0
   <br>camm1
   <br>camm2
@@ -7033,22 +7043,26 @@ the ExtractEmbedded option is used.</p>
   <br>--&gt; <a href='QuickTime.html#camm5'>QuickTime camm5 Tags</a>
   <br>--&gt; <a href='QuickTime.html#camm6'>QuickTime camm6 Tags</a>
   <br>--&gt; <a href='QuickTime.html#camm7'>QuickTime camm7 Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>fdsc</td>
 <td class=c>-</td>
 <td>--&gt; <a href='GoPro.html#fdsc'>GoPro fdsc Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>gpmd</td>
 <td class=c>-</td>
 <td>--&gt; <a href='GoPro.html#GPMF'>GoPro GPMF Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>mebx</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#Keys'>QuickTime Keys Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>rtmd</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Sony.html#rtmd'>Sony rtmd Tags</a></td></tr>
+<tr>
+<td>tx3g</td>
+<td class=c>-</td>
+<td>--&gt; <a href='QuickTime.html#tx3g'>QuickTime tx3g Tags</a></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='RVMI_gReV'>QuickTime RVMI_gReV Tags</a></h2>
@@ -7269,9 +7283,63 @@ specification.</p>
 <td><span class=s><span class=n>(microtesla)</span></span></td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='tx3g'>QuickTime tx3g Tags</a></h2>
+<p>Tags extracted from the tx3g sbtl timed metadata of Yuneec drones.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'Alt'</td>
+<td>GPSAltitude</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'GimPitch'</td>
+<td>GimbalPitch</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'GimRoll'</td>
+<td>GimbalRoll</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'GimYaw'</td>
+<td>GimbalYaw</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Lat'</td>
+<td>GPSLatitude</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Lon'</td>
+<td>GPSLongitude</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Pitch'</td>
+<td>Pitch</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'Roll'</td>
+<td>Roll</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'Yaw'</td>
+<td>Yaw</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Aug 13, 2018</i>
+<br><i>Last revised Sep 25, 2018</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

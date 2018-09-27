@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.71
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.11
 [File, System, Image] FileName - File Name: GIMP.xcf
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 2.3 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2010:10:07 13:50:09-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2017:12:30 11:02:33-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2017:12:27 12:00:59-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2018:08:20 13:01:08-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2018:08:17 10:55:40-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: XCF
 [File, File, Image] FileTypeExtension - File Type Extension: xcf
@@ -17,6 +17,8 @@
 [GIMP, GIMP, Image] 17 - Compression: RLE Encoding
 [GIMP, GIMP, Image] 0 - X Resolution: 72
 [GIMP, GIMP, Image] 1 - Y Resolution: 72
+[GIMP, GIMP, Image] 20 - Tattoo: 2
+[GIMP, GIMP, Image] 22 - Units: Inches
 [XMP, XMP-dc, Author] creator - Creator: Phil Harvey
 [XMP, XMP-dc, Image] description - Description: ExifTool XCF test
 [XMP, XMP-dc, Author] rights - Rights: Free for all

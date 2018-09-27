@@ -893,7 +893,7 @@ edit versions, otherwise this is extracted as a binary data block)</span>
 </table></td></tr></table></blockquote>
 
 <h2><a name='ColorBalanceC'>Nikon ColorBalanceC Tags</a></h2>
-<p>Color balance tags used by the P7000, P7100 and B700.</p>
+<p>Color balance tags used by the P1000, P7000, P7100 and B700.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -905,56 +905,61 @@ edit versions, otherwise this is extracted as a binary data block)</span>
 <td class=c>undef[4]</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td class=r title='32 = 0x20'>32</td>
+<td>BlackLevel</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td class=r title='56 = 0x38'>56</td>
 <td>WB_RGGBLevels</td>
 <td class=c title=' ! = Unsafe'>int32u[4]!</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='76 = 0x4c'>76</td>
 <td>WB_RGGBLevelsDaylight</td>
 <td class=c title=' ! = Unsafe'>int32u[4]!</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='96 = 0x60'>96</td>
 <td>WB_RGGBLevelsCloudy</td>
 <td class=c title=' ! = Unsafe'>int32u[4]!</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='116 = 0x74'>116</td>
 <td>WB_RGGBLevelsShade</td>
 <td class=c title=' ! = Unsafe'>int32u[4]!</td>
 <td><span class=s><span class=n>(valid only for some models)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='136 = 0x88'>136</td>
 <td>WB_RGGBLevelsTungsten</td>
 <td class=c title=' ! = Unsafe'>int32u[4]!</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='156 = 0x9c'>156</td>
 <td>WB_RGGBLevelsFluorescentW</td>
 <td class=c title=' ! = Unsafe'>int32u[4]!</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='176 = 0xb0'>176</td>
 <td>WB_RGGBLevelsFluorescentN</td>
 <td class=c title=' ! = Unsafe'>int32u[4]!</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='196 = 0xc4'>196</td>
 <td>WB_RGGBLevelsFluorescentD</td>
 <td class=c title=' ! = Unsafe'>int32u[4]!</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='216 = 0xd8'>216</td>
 <td>WB_RGGBLevelsHTMercury</td>
 <td class=c title=' ! = Unsafe'>int32u[4]!</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='256 = 0x100'>256</td>
 <td>WB_RGGBLevelsCustom</td>
 <td class=c title=' ! = Unsafe'>int32u[4]!</td>
 <td><span class=s><span class=n>(all zero if preset WB not used)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td class=r title='276 = 0x114'>276</td>
 <td>WB_RGGBLevelsAuto</td>
 <td class=c title=' ! = Unsafe'>int32u[4]!</td>
@@ -5525,52 +5530,57 @@ videos from some Nikon cameras.</p>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td title='0x0019 = 25'>0x0019</td>
+<td>TimeZone</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td title='0x0022 = 34'>0x0022</td>
 <td>FrameWidth</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x0023 = 35'>0x0023</td>
 <td>FrameHeight</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x0032 = 50'>0x0032</td>
 <td>AudioChannels</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x0033 = 51'>0x0033</td>
 <td>AudioBitsPerSample</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x0034 = 52'>0x0034</td>
 <td>AudioSampleRate</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x1002 = 4098'>0x1002</td>
 <td>NikonDateTime</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x1013 = 4115'>0x1013</td>
 <td>ElectronicVR</td>
 <td class=c>no</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x110829a = 17859226'>0x110829a</td>
 <td>ExposureTime</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x110829d = 17859229'>0x110829d</td>
 <td>FNumber</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x1108822 = 17860642'>0x1108822</td>
 <td>ExposureProgram</td>
 <td class=c>no</td>
@@ -5585,12 +5595,12 @@ videos from some Nikon cameras.</p>
   <br>7 = Portrait
   <br>8 = Landscape</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td title='0x1109204 = 17863172'>0x1109204</td>
 <td>ExposureCompensation</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x1109207 = 17863175'>0x1109207</td>
 <td>MeteringMode</td>
 <td class=c>no</td>
@@ -5604,9 +5614,24 @@ videos from some Nikon cameras.</p>
   <br>6 = Partial
   <br>255 = Other</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td title='0x110920a = 17863178'>0x110920a</td>
 <td>FocalLength</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x110a431 = 17867825'>0x110a431</td>
+<td>SerialNumber</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td title='0x110a432 = 17867826'>0x110a432</td>
+<td>LensInfo</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x110a433 = 17867827'>0x110a433</td>
+<td>LensMake</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -5615,111 +5640,116 @@ videos from some Nikon cameras.</p>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td title='0x110a435 = 17867829'>0x110a435</td>
+<td>LensSerialNumber</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td title='0x1200000 = 18874368'>0x1200000</td>
 <td>GPSVersionID</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x1200001 = 18874369'>0x1200001</td>
 <td>GPSLatitudeRef</td>
 <td class=c>no</td>
 <td><span class=s>&#39;N&#39; = North
   <br>&#39;S&#39; = South</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x1200002 = 18874370'>0x1200002</td>
 <td>GPSLatitude</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x1200003 = 18874371'>0x1200003</td>
 <td>GPSLongitudeRef</td>
 <td class=c>no</td>
 <td><span class=s>&#39;E&#39; = East
   <br>&#39;W&#39; = West</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x1200004 = 18874372'>0x1200004</td>
 <td>GPSLongitude</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x1200005 = 18874373'>0x1200005</td>
 <td>GPSAltitudeRef</td>
 <td class=c>no</td>
 <td><span class=s>0 = Above Sea Level
   <br>1 = Below Sea Level</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x1200006 = 18874374'>0x1200006</td>
 <td>GPSAltitude</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x1200007 = 18874375'>0x1200007</td>
 <td>GPSTimeStamp</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x1200008 = 18874376'>0x1200008</td>
 <td>GPSSatellites</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x1200010 = 18874384'>0x1200010</td>
 <td>GPSImgDirectionRef</td>
 <td class=c>no</td>
 <td><span class=s>&#39;M&#39; = Magnetic North
   <br>&#39;T&#39; = True North</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x1200011 = 18874385'>0x1200011</td>
 <td>GPSImgDirection</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x1200012 = 18874386'>0x1200012</td>
 <td>GPSMapDatum</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x120001d = 18874397'>0x120001d</td>
 <td>GPSDateStamp</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x2000001 = 33554433'>0x2000001</td>
 <td>MakerNoteVersion</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x2000005 = 33554437'>0x2000005</td>
 <td>WhiteBalance</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x2000007 = 33554439'>0x2000007</td>
 <td>FocusMode</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x200000b = 33554443'>0x200000b</td>
 <td>WhiteBalanceFineTune</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x200001b = 33554459'>0x200001b</td>
 <td>CropHiSpeed</td>
 <td class=c title=' ~ = Writable only with -n'>int16u[7]~</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x200001e = 33554462'>0x200001e</td>
 <td>ColorSpace</td>
 <td class=c>no</td>
 <td><span class=s>1 = sRGB
   <br>2 = Adobe RGB</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x200001f = 33554463'>0x200001f</td>
 <td>VRInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Nikon.html#VRInfo'>Nikon VRInfo Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x2000022 = 33554466'>0x2000022</td>
 <td>ActiveD-Lighting</td>
 <td class=c>int16u</td>
@@ -5735,22 +5765,30 @@ videos from some Nikon cameras.</p>
   <br>11 = Extra High 4
   <br>65535 = Auto</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td title='0x2000023 = 33554467'>0x2000023</td>
 <td>PictureControlData</td>
-<td class=c>-</td>
+<td class=c title=' ! = Unsafe'>undef!</td>
 <td>--&gt; <a href='Nikon.html#PictureControl'>Nikon PictureControl Tags</a>
   <br>--&gt; <a href='Nikon.html#PictureControl2'>Nikon PictureControl2 Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x2000024 = 33554468'>0x2000024</td>
 <td>WorldTime</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Nikon.html#WorldTime'>Nikon WorldTime Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0x2000025 = 33554469'>0x2000025</td>
 <td>ISOInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Nikon.html#ISOInfo'>Nikon ISOInfo Tags</a></td></tr>
+<tr>
+<td title='0x200002a = 33554474'>0x200002a</td>
+<td>VignetteControl</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Off
+  <br>1 = Low
+  <br>3 = Normal
+  <br>5 = High</span></td></tr>
 <tr class=b>
 <td title='0x200002c = 33554476'>0x200002c</td>
 <td>UnknownInfo</td>
@@ -5760,7 +5798,7 @@ videos from some Nikon cameras.</p>
 <td title='0x2000032 = 33554482'>0x2000032</td>
 <td>UnknownInfo2</td>
 <td class=c>-</td>
-<td>--&gt; <a href='Nikon.html#UnknownInfo'>Nikon UnknownInfo Tags</a></td></tr>
+<td>--&gt; <a href='Nikon.html#UnknownInfo2'>Nikon UnknownInfo2 Tags</a></td></tr>
 <tr class=b>
 <td title='0x2000039 = 33554489'>0x2000039</td>
 <td>LocationInfo</td>
@@ -5791,6 +5829,26 @@ videos from some Nikon cameras.</p>
   <br>8 = Fired, Commander Mode
   <br>9 = Fired, TTL Mode</td></tr></table>
 </td></tr>
+<tr class=b>
+<td title='0x2000098 = 33554584'>0x2000098</td>
+<td>LensData0100
+  <br>LensData0101
+  <br>LensData0201
+  <br>LensData0204
+  <br>LensData0400
+  <br>LensDataUnknown</td>
+<td class=c>-<br>-<br>-<br>-<br>-<br>-</td>
+<td>--&gt; <a href='Nikon.html#LensData00'>Nikon LensData00 Tags</a>
+  <br>--&gt; <a href='Nikon.html#LensData01'>Nikon LensData01 Tags</a>
+  <br>--&gt; <a href='Nikon.html#LensData01'>Nikon LensData01 Tags</a>
+  <br>--&gt; <a href='Nikon.html#LensData0204'>Nikon LensData0204 Tags</a>
+  <br>--&gt; <a href='Nikon.html#LensData0400'>Nikon LensData0400 Tags</a>
+  <br>--&gt; <a href='Nikon.html#LensDataUnknown'>Nikon LensDataUnknown Tags</a></td></tr>
+<tr>
+<td title='0x20000a7 = 33554599'>0x20000a7</td>
+<td>ShutterCount</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x20000a8 = 33554600'>0x20000a8</td>
 <td>FlashInfo0100
@@ -6446,7 +6504,7 @@ ExifTool to choose in these cases (see the
 </tr><tr><td>'74 40 37 62 2C 34 78 06'</td><td>= AF-S Zoom-Nikkor 24-85mm f/3.5-4.5G IF-ED</td>
 </tr><tr><td>'75 40 3C 68 2C 3C 79 06'</td><td>= AF Zoom-Nikkor 28-100mm f/3.5-5.6G</td>
 </tr><tr><td>'76 58 50 50 14 14 7A 02'</td><td>= AF Nikkor 50mm f/1.8D</td>
-</tr><tr><td>'77 44 60 98 34 3C 7B 0E'</td><td>= Sigma 80-400mm f4.5-5.6 APO DG D OS</td>
+</tr><tr><td>'77 44 60 98 34 3C 7B 0E'</td><td>= Sigma 80-400mm F4.5-5.6 APO DG D OS</td>
 </tr><tr><td>'77 44 61 98 34 3C 7B 0E'</td><td>= Sigma 80-400mm F4.5-5.6 EX OS</td>
 </tr><tr><td>'77 48 5C 80 24 24 7B 0E'</td><td>= AF-S VR Zoom-Nikkor 70-200mm f/2.8G IF-ED</td>
 </tr><tr><td>'78 40 37 6E 2C 3C 7C 0E'</td><td>= AF-S VR Zoom-Nikkor 24-120mm f/3.5-5.6G IF-ED</td>
@@ -6564,12 +6622,14 @@ ExifTool to choose in these cases (see the
 </tr><tr><td>'A8 48 80 98 30 30 AA 0E'</td><td>= AF-S Zoom-Nikkor 200-400mm f/4G IF-ED VR II</td>
 </tr><tr><td>'A8 48 8E 8E 30 30 C3 0E'</td><td>= AF-S Nikkor 300mm f/4E PF ED VR</td>
 </tr><tr><td>'A8 48 8E 8E 30 30 C3 4E'</td><td>= AF-S Nikkor 300mm f/4E PF ED VR</td>
+</tr><tr><td>'A9 48 7C 98 30 30 D4 0E'</td><td>= AF-S Nikkor 180-400mm f/4E TC1.4 FL ED VR</td>
 </tr><tr><td>'A9 48 7C 98 30 30 D4 4E'</td><td>= AF-S Nikkor 180-400mm f/4E TC1.4 FL ED VR</td>
 </tr><tr><td>'A9 4C 31 31 14 14 C4 06'</td><td>= AF-S Nikkor 20mm f/1.8G ED</td>
 </tr><tr><td>'A9 54 80 80 18 18 AB 0E'</td><td>= AF-S Nikkor 200mm f/2G ED VR II</td>
 </tr><tr><td>'AA 3C 37 6E 30 30 AC 0E'</td><td>= AF-S Nikkor 24-120mm f/4G ED VR</td>
 </tr><tr><td>'AA 48 37 5C 24 24 C5 0E'</td><td>= AF-S Nikkor 24-70mm f/2.8E ED VR</td>
 </tr><tr><td>'AA 48 37 5C 24 24 C5 4E'</td><td>= AF-S Nikkor 24-70mm f/2.8E ED VR</td>
+</tr><tr><td>'AA 48 88 A4 3C 3C D5 0E'</td><td>= AF-S Nikkor 180-400mm f/4E TC1.4 FL ED VR + 1.4x TC</td>
 </tr><tr><td>'AA 48 88 A4 3C 3C D5 4E'</td><td>= AF-S Nikkor 180-400mm f/4E TC1.4 FL ED VR + 1.4x TC</td>
 </tr><tr><td>'AB 3C A0 A0 30 30 C6 4E'</td><td>= AF-S Nikkor 500mm f/4E FL ED VR</td>
 </tr><tr><td>'AB 44 5C 8E 34 3C D6 0E'</td><td>= AF-P Nikkor 70-300mm f/4.5-5.6E ED VR</td>
@@ -6579,6 +6639,8 @@ ExifTool to choose in these cases (see the
 </tr><tr><td>'AC 54 3C 3C 0C 0C D7 06'</td><td>= AF-S Nikkor 28mm f/1.4E ED</td>
 </tr><tr><td>'AC 54 3C 3C 0C 0C D7 46'</td><td>= AF-S Nikkor 28mm f/1.4E ED</td>
 </tr><tr><td>'AD 3C 2D 8E 2C 3C AF 0E'</td><td>= AF-S DX Nikkor 18-300mm f/3.5-5.6G ED VR</td>
+</tr><tr><td>'AD 3C A0 A0 3C 3C D8 0E'</td><td>= AF-S Nikkor 500mm f/5.6E PF ED VR</td>
+</tr><tr><td>'AD 3C A0 A0 3C 3C D8 4E'</td><td>= AF-S Nikkor 500mm f/5.6E PF ED VR</td>
 </tr><tr><td>'AD 48 28 60 24 30 C8 0E'</td><td>= AF-S DX Nikkor 16-80mm f/2.8-4E ED VR</td>
 </tr><tr><td>'AD 48 28 60 24 30 C8 4E'</td><td>= AF-S DX Nikkor 16-80mm f/2.8-4E ED VR</td>
 </tr><tr><td>'AE 3C 80 A0 3C 3C C9 0E'</td><td>= AF-S Nikkor 200-500mm f/5.6E ED VR</td>
@@ -6612,6 +6674,7 @@ ExifTool to choose in these cases (see the
 </tr><tr><td>'DE 54 50 50 0C 0C 4B 06'</td><td>= Sigma 50mm F1.4 EX DG HSM</td>
 </tr><tr><td>'E0 3C 5C 8E 30 3C 4B 06'</td><td>= Sigma 70-300mm F4-5.6 APO DG Macro HSM</td>
 </tr><tr><td>'E0 40 2D 98 2C 41 DF 4E'</td><td>= Tamron AF 18-400mm f/3.5-6.3 Di II VC HLD (B028)</td>
+</tr><tr><td>'E1 40 19 36 2C 35 DF 4E'</td><td>= Tamron 10-24mm F/3.5-4.5 Di II VC HLD (B023)</td>
 </tr><tr><td>'E1 58 37 37 14 14 1C 02'</td><td>= Sigma 24mm F1.8 EX DG Aspherical Macro</td>
 </tr><tr><td>'E3 40 76 A6 38 40 DF 4E'</td><td>= Tamron SP 150-600mm f/5-6.3 Di VC USD G2</td>
 </tr><tr><td>'E3 54 50 50 24 24 35 02'</td><td>= Sigma Macro 50mm F2.8 EX DG</td>
@@ -6664,7 +6727,7 @@ ExifTool to choose in these cases (see the
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Aug 17, 2018</i>
+<br><i>Last revised Sep 20, 2018</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

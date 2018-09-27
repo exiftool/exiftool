@@ -4,8 +4,35 @@ ExifTool Version History
 
 RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 
-Note: The most recent production release is Version 11.01. (Other versions are
+Note: The most recent production release is Version 11.11. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
+
+Sept. 27, 2018 - Version 11.11 (production release)
+
+  - Added ARQ to the list of supported file types
+  - Added support for GIMP XCF version 4 and later
+  - Added a new QuickTime HandlerType value
+  - Added read support for Apple AAE files
+  - Added a new CanonModelID and some new Canon LensType values (thanks LibRaw)
+  - Added a number of new Nikon LensID values (thanks Robert Rottmerhusen)
+  - Added a new Sony/Minolta LensType (thanks LibRaw)
+  - Decode more Sony IDC tags (thanks Jos Roost)
+  - Decode some new Panasonic tags (thanks Klaus Homeister)
+  - Decode more tags from Nikon MOV videos
+  - Decode a new Nikon tag (thanks LibRaw)
+  - Decode a large number of new Kodak tags (thanks Jim McGarvey)
+  - Decode streaming GPS from videos of more dashcam and drone models
+  - Decode more tags from Microsoft Word DOC files
+  - Updated arg_files/iptcCore.args for IPTC Extension version 1.4
+  - Patched to read corrupted MakN data written by buggy Adobe Camera Raw
+  - Downgraded "Undersized StripByteCounts" error for some RAW file types
+  - Fixed incorrect decoding of embedded GPS in Rexing V1P dashcam videos
+  - Fixed incorrect format for DNGPrivateData
+  - Fixed potential error when deleting maker notes from some images
+  - Fixed problem decoding Apple PLIST information from some files
+  - Fixed bug in Windows with CR/LF sequences in list values of the -X output
+  - Fixed some inconsistencies in detecting file name conflicts when writing the
+    TestName tag
 
 Aug. 17, 2018 - Version 11.10
 

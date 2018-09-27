@@ -59,7 +59,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.49';
+$VERSION = '3.50';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -328,11 +328,15 @@ sub GetAFPointGrid($$;$);
     'A8 38 18 30 34 3C D3 8E' => 'AF-P DX Nikkor 10-20mm f/4.5-5.6G VR', #Yang You pvt communication
     'A8 38 18 30 34 3C D3 0E' => 'AF-P DX Nikkor 10-20mm f/4.5-5.6G VR',
     'A9 48 7C 98 30 30 D4 4E' => 'AF-S Nikkor 180-400mm f/4E TC1.4 FL ED VR', #IB
+    'A9 48 7C 98 30 30 D4 0E' => 'AF-S Nikkor 180-400mm f/4E TC1.4 FL ED VR',
     'AA 48 88 A4 3C 3C D5 4E' => 'AF-S Nikkor 180-400mm f/4E TC1.4 FL ED VR + 1.4x TC', #IB
+    'AA 48 88 A4 3C 3C D5 0E' => 'AF-S Nikkor 180-400mm f/4E TC1.4 FL ED VR + 1.4x TC',
     'AB 44 5C 8E 34 3C D6 CE' => 'AF-P Nikkor 70-300mm f/4.5-5.6E ED VR',
     'AB 44 5C 8E 34 3C D6 0E' => 'AF-P Nikkor 70-300mm f/4.5-5.6E ED VR',
     'AC 54 3C 3C 0C 0C D7 46' => 'AF-S Nikkor 28mm f/1.4E ED',
     'AC 54 3C 3C 0C 0C D7 06' => 'AF-S Nikkor 28mm f/1.4E ED',
+    'AD 3C A0 A0 3C 3C D8 0E' => 'AF-S Nikkor 500mm f/5.6E PF ED VR',
+    'AD 3C A0 A0 3C 3C D8 4E' => 'AF-S Nikkor 500mm f/5.6E PF ED VR',
     '01 00 00 00 00 00 02 00' => 'TC-16A',
     '01 00 00 00 00 00 08 00' => 'TC-16A',
     '00 00 00 00 00 00 F1 0C' => 'TC-14E [II] or Sigma APO Tele Converter 1.4x EX DG or Kenko Teleplus PRO 300 DG 1.4x',
@@ -342,9 +346,9 @@ sub GetAFPointGrid($$;$);
     '26 48 11 11 30 30 1C 02' => 'Sigma 8mm F4 EX Circular Fisheye',
     '79 40 11 11 2C 2C 1C 06' => 'Sigma 8mm F3.5 EX Circular Fisheye', #JD
     'DC 48 19 19 24 24 4B 06' => 'Sigma 10mm F2.8 EX DC HSM Fisheye',
-    '02 3F 24 24 2C 2C 02 00' => 'Sigma 14mm F3.5',
-    '48 48 24 24 24 24 4B 02' => 'Sigma 14mm F2.8 EX Aspherical HSM',
     'C2 4C 24 24 14 14 4B 06' => 'Sigma 14mm F1.8 DG HSM | A', #IB
+    '48 48 24 24 24 24 4B 02' => 'Sigma 14mm F2.8 EX Aspherical HSM',
+    '02 3F 24 24 2C 2C 02 00' => 'Sigma 14mm F3.5',
     '26 48 27 27 24 24 1C 02' => 'Sigma 15mm F2.8 EX Diagonal Fisheye',
     'EA 48 27 27 24 24 1C 02' => 'Sigma 15mm F2.8 EX Diagonal Fisheye', #30
     '26 58 31 31 14 14 1C 02' => 'Sigma 20mm F1.8 EX DG Aspherical RF',
@@ -441,11 +445,11 @@ sub GetAFPointGrid($$;$);
     '26 48 37 56 24 24 1C 02' => 'Sigma 24-60mm F2.8 EX DG',
     'B6 48 37 56 24 24 1C 02' => 'Sigma 24-60mm F2.8 EX DG',
     'A6 48 37 5C 24 24 4B 06' => 'Sigma 24-70mm F2.8 IF EX DG HSM', #JD
+    'C9 48 37 5C 24 24 4B 4E' => 'Sigma 24-70mm F2.8 DG OS HSM | A', #30
     '26 54 37 5C 24 24 1C 02' => 'Sigma 24-70mm F2.8 EX DG Macro',
     '67 54 37 5C 24 24 1C 02' => 'Sigma 24-70mm F2.8 EX DG Macro',
     'E9 54 37 5C 24 24 1C 02' => 'Sigma 24-70mm F2.8 EX DG Macro',
     '26 40 37 5C 2C 3C 1C 02' => 'Sigma 24-70mm F3.5-5.6 Aspherical HF',
-    'C9 48 37 5C 24 24 4B 4E' => 'Sigma 24-70mm F2.8 DG OS HSM | A', #30
     '8A 3C 37 6A 30 30 4B 0E' => 'Sigma 24-105mm F4 DG OS HSM', #IB
     '26 54 37 73 24 34 1C 02' => 'Sigma 24-135mm F2.8-4.5',
     '02 46 3C 5C 25 25 02 00' => 'Sigma 28-70mm F2.8',
@@ -488,7 +492,7 @@ sub GetAFPointGrid($$;$);
     '02 37 5E 8E 35 3D 02 00' => 'Sigma 75-300mm F4.5-5.6 APO',
     '02 3A 5E 8E 32 3D 02 00' => 'Sigma 75-300mm F4.0-5.6',
     '77 44 61 98 34 3C 7B 0E' => 'Sigma 80-400mm F4.5-5.6 EX OS',
-    '77 44 60 98 34 3C 7B 0E' => 'Sigma 80-400mm f4.5-5.6 APO DG D OS',
+    '77 44 60 98 34 3C 7B 0E' => 'Sigma 80-400mm F4.5-5.6 APO DG D OS',
     '48 48 68 8E 30 30 4B 02' => 'Sigma APO 100-300mm F4 EX IF HSM',
     'F3 48 68 8E 30 30 4B 02' => 'Sigma APO 100-300mm F4 EX IF HSM',
     '48 54 6F 8E 24 24 4B 02' => 'Sigma APO 120-300mm F2.8 EX DG HSM',
@@ -520,6 +524,7 @@ sub GetAFPointGrid($$;$);
     '00 4C 7C 7C 2C 2C 00 02' => 'Tamron SP AF 180mm f/3.5 Di Model (B01)',
     '21 56 8E 8E 24 24 14 00' => 'Tamron SP AF 300mm f/2.8 LD-IF (60E)',
     '27 54 8E 8E 24 24 1D 02' => 'Tamron SP AF 300mm f/2.8 LD-IF (360E)',
+    'E1 40 19 36 2C 35 DF 4E' => 'Tamron 10-24mm F/3.5-4.5 Di II VC HLD (B023)',
     'F6 3F 18 37 2C 34 84 06' => 'Tamron SP AF 10-24mm f/3.5-4.5 Di II LD Aspherical (IF) (B001)',
     'F6 3F 18 37 2C 34 DF 06' => 'Tamron SP AF 10-24mm f/3.5-4.5 Di II LD Aspherical (IF) (B001)', #30
     '00 36 1C 2D 34 3C 00 06' => 'Tamron SP AF 11-18mm f/4.5-5.6 Di II LD Aspherical (IF) (A13)',
@@ -3583,12 +3588,13 @@ my %nrwLevels = (
     %binaryDataAttrs,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     DATAMEMBER => [ 4 ],
-    NOTES => 'Color balance tags used by the P7000, P7100 and B700.',
+    NOTES => 'Color balance tags used by the P1000, P7000, P7100 and B700.',
     0x0004 => {
         Name => 'ColorBalanceVersion',
         Format => 'undef[4]',
         RawConv => '$$self{ColorBalanceVersion} = $val',
     },
+    0x0020 => { Name => 'BlackLevel', Format => 'int16u' },
     0x0038 => { Name => 'WB_RGGBLevels',            %nrwLevels },
     0x004c => { Name => 'WB_RGGBLevelsDaylight',    %nrwLevels },
     0x0060 => { Name => 'WB_RGGBLevelsCloudy',      %nrwLevels },
@@ -7771,6 +7777,10 @@ my %nikonFocalConversions = (
     },
     # 0x17 - rational62u: same value as FrameRate
     # 0x18 - int16u: 1, 2
+    0x19 => {
+        Name => 'TimeZone',
+        Groups => { 2 => 'Time' },
+    },
     # 0x21 - int16u: 1, 2
     0x22 => {
         Name => 'FrameWidth',
@@ -7794,8 +7804,8 @@ my %nikonFocalConversions = (
         Name => 'AudioSampleRate',
         Groups => { 2 => 'Audio' },
     },
-    # 0x101 - int16u[4]: "160 120 1280 720"
-    # 0x102 - int16u[8]: "640 360 0 0 0 0 0 0"
+    # 0x101 - int16u[4]: "160 120 1280 720", "160 120 3840 2160"
+    # 0x102 - int16u[8]: "640 360 0 0 0 0 0 0", "640 360 1920 1080 0 0 0 0"
     # 0x1001 - int16s: 0
     0x1002 => {
         Name => 'NikonDateTime', #?
@@ -7808,6 +7818,7 @@ my %nikonFocalConversions = (
         Name => 'ElectronicVR',
         PrintConv => \%offOn,
     },
+    # 0x1014 - int16u: 1
     # 0x1021 - int32u[32]: all zeros
 #
 # 0x110**** tags correspond to 0x**** tags in Exif::Main
@@ -7856,7 +7867,14 @@ my %nikonFocalConversions = (
         Name => 'FocalLength',
         PrintConv => 'sprintf("%.1f mm",$val)',
     },
+    0x110a431 => 'SerialNumber',
+    0x110a432 => {
+        Name => 'LensInfo',
+        PrintConv => \&Image::ExifTool::Exif::PrintLensInfo,
+    },
+    0x110a433 => 'LensMake',
     0x110a434 => 'LensModel',
+    0x110a435 => 'LensSerialNumber',
 #
 # 0x120**** tags correspond to 0x**** tags in GPS::Main
 #
@@ -7948,6 +7966,8 @@ my %nikonFocalConversions = (
     },
 #
 # 0x200**** tags correspond to 0x**** tags in Nikon::Main
+# (must be duplicated here so tagInfo "Table" entry will point to correct table.
+#  Also there would be a problem with the PRINT_CONV from the Main table)
 #
     0x2000001 => {
         Name => 'MakerNoteVersion',
@@ -7995,13 +8015,17 @@ my %nikonFocalConversions = (
         },
     },
     0x2000023 => [
-        {
-            Name => 'PictureControlData',
+        { #PH (D300, but also found in D3,D3S,D3X,D90,D300S,D700,D3000,D5000)
             Condition => '$$valPt =~ /^01/',
+            Name => 'PictureControlData',
+            Writable => 'undef',
+            Permanent => 0,
             Flags => [ 'Binary', 'Protected' ],
             SubDirectory => { TagTable => 'Image::ExifTool::Nikon::PictureControl' },
-        },{
+        },{ #28
             Name => 'PictureControlData',
+            Writable => 'undef',
+            Permanent => 0,
             Flags => [ 'Binary', 'Protected' ],
             SubDirectory => { TagTable => 'Image::ExifTool::Nikon::PictureControl2' },
         },
@@ -8017,6 +8041,16 @@ my %nikonFocalConversions = (
             ByteOrder => 'BigEndian', # (BigEndian even for D810, which is a little-endian camera)
         },
     },
+    0x200002a => { #23 (this tag added with D3 firmware 1.10 -- also written by Nikon utilities)
+        Name => 'VignetteControl',
+        Writable => 'int16u',
+        PrintConv => {
+            0 => 'Off',
+            1 => 'Low',
+            3 => 'Normal',
+            5 => 'High',
+        },
+    },
     0x200002c => {
         Name => 'UnknownInfo',
         SubDirectory => { TagTable => 'Image::ExifTool::Nikon::UnknownInfo' },
@@ -8024,7 +8058,7 @@ my %nikonFocalConversions = (
     # 0x200002d - int16u[3]: "512 0 0"
     0x2000032 => {
         Name => 'UnknownInfo2',
-        SubDirectory => { TagTable => 'Image::ExifTool::Nikon::UnknownInfo' },
+        SubDirectory => { TagTable => 'Image::ExifTool::Nikon::UnknownInfo2' },
     },
     0x2000039 => {
         Name => 'LocationInfo',
@@ -8063,6 +8097,62 @@ my %nikonFocalConversions = (
             8 => 'Fired, Commander Mode',
             9 => 'Fired, TTL Mode',
         },
+    },
+    0x2000098 => [
+        { #8
+            Condition => '$$valPt =~ /^0100/', # D100, D1X - PH
+            Name => 'LensData0100',
+            SubDirectory => { TagTable => 'Image::ExifTool::Nikon::LensData00' },
+        },
+        { #8
+            Condition => '$$valPt =~ /^0101/', # D70, D70s - PH
+            Name => 'LensData0101',
+            SubDirectory => { TagTable => 'Image::ExifTool::Nikon::LensData01' },
+        },
+        # note: this information is encrypted if the version is 02xx
+        { #8
+            # 0201 - D200, D2Hs, D2X and D2Xs
+            # 0202 - D40, D40X and D80
+            # 0203 - D300
+            Condition => '$$valPt =~ /^020[1-3]/',
+            Name => 'LensData0201',
+            SubDirectory => {
+                TagTable => 'Image::ExifTool::Nikon::LensData01',
+                ProcessProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+                WriteProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+                DecryptStart => 4,
+            },
+        },
+        { #PH
+            Condition => '$$valPt =~ /^0204/', # D90, D7000
+            Name => 'LensData0204',
+            SubDirectory => {
+                TagTable => 'Image::ExifTool::Nikon::LensData0204',
+                ProcessProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+                WriteProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+                DecryptStart => 4,
+            },
+        },
+        {
+            Condition => '$$valPt =~ /^0400/', # 1J1, 1V1
+            Name => 'LensData0400',
+            SubDirectory => {
+                TagTable => 'Image::ExifTool::Nikon::LensData0400',
+                ProcessProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+                WriteProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
+                DecryptStart => 4,
+            },
+        },
+        {   # (1J1/1V1=0400)
+            Name => 'LensDataUnknown',
+            SubDirectory => {
+                TagTable => 'Image::ExifTool::Nikon::LensDataUnknown',
+            },
+        },
+    ],
+    0x20000a7 => { # Number of shots taken by camera so far (ref 2)
+        Name => 'ShutterCount',
+        PrintConv => '$val == 4294965247 ? "n/a" : $val',
     },
     0x20000a8 => [
         {

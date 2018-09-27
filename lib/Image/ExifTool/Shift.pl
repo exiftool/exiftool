@@ -558,7 +558,7 @@ And to save typing, a zero is assumed for any missing numbers:
 
     '1::'       - shift by 1 hour (time, date/time) or 1 year (date)
     '26:: 0'    - shift date by 26 years
-    '+:30       - shift timezone by 30 minutes
+    '+:30'      - shift timezone by 30 minutes
 
 Below are some specific examples applied to real date and/or time values
 ('Dir' is the applied shift direction: '+' is positive, '-' is negative):

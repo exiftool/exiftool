@@ -99,17 +99,19 @@
 
 <pre><code>  File Types
   ------------+-------------+-------------+-------------+------------
-  3FR   r     | DV    r     | JP2   r/w   | ODT   r     | RSRC  r
-  3G2   r/w   | DVB   r/w   | JPEG  r/w   | OFR   r     | RTF   r
-  3GP   r/w   | DVR-MS r    | JSON  r     | OGG   r     | RW2   r/w
-  A     r     | DYLIB r     | K25   r     | OGV   r     | RWL   r/w
-  AA    r     | EIP   r     | KDC   r     | OPUS  r     | RWZ   r
-  AAX   r/w   | EPS   r/w   | KEY   r     | ORF   r/w   | RM    r
-  ACR   r     | EPUB  r     | LA    r     | OTF   r     | SEQ   r
-  AFM   r     | ERF   r/w   | LFP   r     | PAC   r     | SKETCH r
-  AI    r/w   | EXE   r     | LNK   r     | PAGES r     | SO    r
-  AIFF  r     | EXIF  r/w/c | M2TS  r     | PBM   r/w   | SR2   r/w
-  APE   r     | EXR   r     | M4A/V r/w   | PCD   r     | SRF   r
+  3FR   r     | DR4   r/w/c | J2C   r     | ODP   r     | RAW   r/w
+  3G2   r/w   | DSS   r     | JNG   r/w   | ODS   r     | RIFF  r
+  3GP   r/w   | DV    r     | JP2   r/w   | ODT   r     | RSRC  r
+  A     r     | DVB   r/w   | JPEG  r/w   | OFR   r     | RTF   r
+  AA    r     | DVR-MS r    | JSON  r     | OGG   r     | RW2   r/w
+  AAE   r     | DYLIB r     | K25   r     | OGV   r     | RWL   r/w
+  AAX   r/w   | EIP   r     | KDC   r     | OPUS  r     | RWZ   r
+  ACR   r     | EPS   r/w   | KEY   r     | ORF   r/w   | RM    r
+  AFM   r     | EPUB  r     | LA    r     | OTF   r     | SEQ   r
+  AI    r/w   | ERF   r/w   | LFP   r     | PAC   r     | SKETCH r
+  AIFF  r     | EXE   r     | LNK   r     | PAGES r     | SO    r
+  APE   r     | EXIF  r/w/c | M2TS  r     | PBM   r/w   | SR2   r/w
+  ARQ   r/w   | EXR   r     | M4A/V r/w   | PCD   r     | SRF   r
   ARW   r/w   | EXV   r/w/c | MAX   r     | PDB   r     | SRW   r/w
   ASF   r     | F4A/V r/w   | MEF   r/w   | PDF   r/w   | SVG   r
   AVI   r     | FFF   r/w   | MIE   r/w/c | PEF   r/w   | SWF   r
@@ -135,8 +137,6 @@
   DOC   r     | INX   r     | NRW   r/w   | RAF   r/w   | XLSX  r
   DOCX  r     | ISO   r     | NUMBERS r   | RAM   r     | XMP   r/w/c
   DPX   r     | ITC   r     | O     r     | RAR   r     | ZIP   r
-  DR4   r/w/c | J2C   r     | ODP   r     | RAW   r/w   |
-  DSS   r     | JNG   r/w   | ODS   r     | RIFF  r     |
 
   Meta Information
   ----------------------+----------------------+---------------------
@@ -557,7 +557,7 @@
 <dt id="j-JSONFILE--json"><b>-j</b>[[+]=<i>JSONFILE</i>] (<b>-json</b>)</dt>
 <dd>
 
-<p>Use JSON (JavaScript Object Notation) formatting for console output, or import JSON file if <i>JSONFILE</i> is specified. This option may be combined with <b>-g</b> to organize the output into objects by group, or <b>-G</b> to add group names to each tag. List-type tags with multiple items are output as JSON arrays unless <b>-sep</b> is used. By default XMP structures are flattened into individual tags in the JSON output, but the original structure may be preserved with the <b>-struct</b> option (this also causes all list-type XMP tags to be output as JSON arrays, otherwise single-item lists would be output as simple strings). The <b>-a</b> option is implied if the <b>-g</b> or <b>-G</b> options are used, otherwise it is ignored and duplicate tags are suppressed. Adding the <b>-D</b> or <b>-H</b> option changes tag values to JSON objects with &quot;val&quot; and &quot;id&quot; fields, and adding <b>-l</b> adds a &quot;desc&quot; field, and a &quot;num&quot; field if the numerical value is different from the converted &quot;val&quot;. The <b>-b</b> option may be added to output binary data, encoded in base64 if necessary (indicated by &quot;base64:&quot; as the first 7 bytes of the value), and <b>-t</b> may be added to include tag table information (see <b>-t</b> for details). The JSON output is UTF-8 regardless of any <b>-L</b> or <b>-charset</b> option setting, but the UTF-8 validation is disabled if a character set other than UTF-8 is specified.</p>
+<p>Use JSON (JavaScript Object Notation) formatting for console output, or import JSON file if <i>JSONFILE</i> is specified. This option may be combined with <b>-g</b> to organize the output into objects by group, or <b>-G</b> to add group names to each tag. List-type tags with multiple items are output as JSON arrays unless <b>-sep</b> is used. By default XMP structures are flattened into individual tags in the JSON output, but the original structure may be preserved with the <b>-struct</b> option (this also causes all list-type XMP tags to be output as JSON arrays, otherwise single-item lists would be output as simple strings). The <b>-a</b> option is implied if the <b>-g</b> or <b>-G</b> options are used, otherwise it is ignored and tags with identical JSON names are suppressed. (<b>-g4</b> may be used to ensure that all tags have unique JSON names.) Adding the <b>-D</b> or <b>-H</b> option changes tag values to JSON objects with &quot;val&quot; and &quot;id&quot; fields, and adding <b>-l</b> adds a &quot;desc&quot; field, and a &quot;num&quot; field if the numerical value is different from the converted &quot;val&quot;. The <b>-b</b> option may be added to output binary data, encoded in base64 if necessary (indicated by &quot;base64:&quot; as the first 7 bytes of the value), and <b>-t</b> may be added to include tag table information (see <b>-t</b> for details). The JSON output is UTF-8 regardless of any <b>-L</b> or <b>-charset</b> option setting, but the UTF-8 validation is disabled if a character set other than UTF-8 is specified.</p>
 
 <p>If <i>JSONFILE</i> is specified, the file is imported and the tag definitions from the file are used to set tag values on a per-file basis. The special &quot;SourceFile&quot; entry in each JSON object associates the information with a specific target file. An object with a missing SourceFile or a SourceFile of &quot;*&quot; defines default tags for all target files which are combined with any tags specified for the specific SourceFile processed. The imported JSON file must have the same format as the exported JSON files with the exception that the <b>-g</b> option is not compatible with the import file format (use <b>-G</b> instead). Additionally, tag names in the input JSON file may be suffixed with a <code>#</code> to disable print conversion.</p>
 
@@ -622,7 +622,7 @@
 
 <p>Print output in the format specified by the given file or string. The argument is interpreted as a string unless a file of that name exists, in which case the string is loaded from the contents of the file. Tag names in the format file or string begin with a <code>$</code> symbol and may contain a leading group names and/or a trailing <code>#</code>. Case is not significant. Braces <code>{}</code> may be used around the tag name to separate it from subsequent text. Use <code>$$</code> to represent a <code>$</code> symbol, and <code>$/</code> for a newline.</p>
 
-<p>Multiple <b>-p</b> options may be used, each contributing a line (or more) of text to the output. Lines beginning with <code>#[HEAD]</code> and <code>#[TAIL]</code> are output before the first processed file and after the last processed file respectively. Lines beginning with <code>#[SECT]</code> and <code>#[ENDS]</code> are output around each section of files. A section is defined as a group of consecutive files with the same section header (eg. files are grouped by directory if <code>#[SECT]</code> contains <code>$directory</code>). Lines beginning with <code>#[BODY]</code> and lines not beginning with <code>#</code> are output for each processed file. Lines beginning with <code>#[IF]</code> are not output, but the BODY lines are skipped if any tag on an IF line doesn&#39;t exist. Other lines beginning with <code>#</code> are ignored. For example, this format file:</p>
+<p>Multiple <b>-p</b> options may be used, each contributing a line (or more) of text to the output. Lines beginning with <code>#[HEAD]</code> and <code>#[TAIL]</code> are output before the first processed file and after the last processed file respectively. Lines beginning with <code>#[SECT]</code> and <code>#[ENDS]</code> are output around each section of files. A section is defined as a group of consecutive files with the same section header (eg. files are grouped by directory if <code>#[SECT]</code> contains <code>$directory</code>). Lines beginning with <code>#[BODY]</code> and lines not beginning with <code>#</code> are output for each processed file. Lines beginning with <code>#[IF]</code> are not output, but all BODY lines are skipped if any tag on an IF line doesn&#39;t exist. Other lines beginning with <code>#</code> are ignored. For example, this format file:</p>
 
 <pre><code>    # this is a comment line
     #[HEAD]-- Generated by ExifTool $exifToolVersion --
@@ -636,7 +636,7 @@
 
 <p>produces output like this:</p>
 
-<pre><code>    -- Generated by ExifTool 11.10 --
+<pre><code>    -- Generated by ExifTool 11.11 --
     File: a.jpg - 2003:10:31 15:44:19
     (f/5.6, 1/60s, ISO 100)
     File: b.jpg - 2006:05:23 11:57:38
@@ -706,7 +706,7 @@
 <dt id="t--tab"><b>-t</b> (<b>-tab</b>)</dt>
 <dd>
 
-<p>Output a tab-delimited list of description/values (useful for database import). May be combined with <b>-s</b> to print tag names instead of descriptions, or <b>-S</b> to print tag values only, tab-delimited on a single line. The <b>-t</b> option may be combined with <b>-j</b>, <b>-php</b> or <b>-X</b> to add tag table information (table <code>name</code>, decimal tag <code>id</code>, and <code>index</code> for cases where multiple conditional tags exist with the same ID).</p>
+<p>Output a tab-delimited list of description/values (useful for database import). May be combined with <b>-s</b> to print tag names instead of descriptions, or <b>-S</b> to print tag values only, tab-delimited on a single line. The <b>-t</b> option may be combined with <b>-j</b>, <b>-php</b> or <b>-X</b> to add tag table information (<code>table</code>, tag <code>id</code>, and <code>index</code> for cases where multiple conditional tags exist with the same ID).</p>
 
 </dd>
 <dt id="T--table"><b>-T</b> (<b>-table</b>)</dt>

@@ -10,6 +10,7 @@
 #               3) http://search.cpan.org/~jdb/libwin32/
 #               4) http://msdn.microsoft.com/en-us/library/aa380374.aspx
 #               5) http://www.cpan.org/modules/by-authors/id/H/HC/HCARVEY/File-MSWord-0.1.zip
+#               6) https://msdn.microsoft.com/en-us/library/cc313153(v=office.12).aspx
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::FlashPix;
@@ -20,7 +21,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::ASF;   # for GetGUID()
 
-$VERSION = '1.33';
+$VERSION = '1.34';
 
 sub ProcessFPX($$);
 sub ProcessFPXR($$$);
@@ -28,7 +29,12 @@ sub ProcessProperties($$$);
 sub ReadFPXValue($$$$$;$$);
 sub ProcessHyperlinks($$);
 sub ProcessContents($$$);
+sub ProcessWordDocument($$$);
+sub ProcessDocumentTable($);
+sub ProcessCommentBy($$$);
+sub ProcessLastSavedBy($$$);
 sub SetDocNum($$;$$$);
+sub ConvertDTTM($);
 
 # sector type constants
 sub HDR_SIZE           () { 512; }
@@ -433,13 +439,13 @@ my %fpxFileType = (
     # save these tables until after the WordDocument was processed
     '0Table' => {
         Name => 'Table0',
-        Hidden => 1,
-        RawConv => '$$self{Table0} = $val; undef',
+        Hidden => 1, # (used only as temporary storage until table is processed)
+        Binary => 1,
     },
     '1Table' => {
         Name => 'Table1',
-        Hidden => 1,
-        RawConv => '$$self{Table1} = $val; undef',
+        Hidden => 1, # (used only as temporary storage until table is processed)
+        Binary => 1,
     },
     Preview => {
         Name => 'PreviewImage',
@@ -1047,9 +1053,9 @@ my %fpxFileType = (
     },
 );
 
-# decode Word document header (ref [MS-DOC].pdf)
+# decode Word document FIB header (ref [MS-DOC].pdf)
 %Image::ExifTool::FlashPix::WordDocument = (
-    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    PROCESS_PROC => \&ProcessWordDocument,
     GROUPS => { 2 => 'Other' },
     FORMAT => 'int16u',
     NOTES => 'Tags extracted from the Microsoft Word document stream.',
@@ -1163,23 +1169,100 @@ my %fpxFileType = (
             0x0010 => 'Yes',
         },
     },
-    (0x2d2 / 2) => { #5
-        Name => 'LastSavedByInfo',
-        Format => 'int32u[2]', # offset and size of last-saved-by block
-        Hidden => 1,
-        RawConv => '$$self{LastSavedByInfo} = $val; undef',
-    },
 );
 
 # tags decoded from Word document table
 %Image::ExifTool::FlashPix::DocTable = (
-    GROUPS => { 2 => 'Document' },
+    GROUPS => { 1 => 'MS-DOC', 2 => 'Document' },
     NOTES => 'Tags extracted from the Microsoft Word document table.',
     VARS => { NO_ID => 1 },
+    CommentBy => {
+        Groups => { 2 => 'Author' },
+        Notes => 'enable Duplicates option to extract all entries',
+    },
     LastSavedBy => {
         Groups => { 2 => 'Author' },
         Notes => 'enable Duplicates option to extract history of up to 10 entries',
     },
+    DOP => { SubDirectory => { TagTable => 'Image::ExifTool::FlashPix::DOP' } },
+    ModifyDate => {
+        Groups => { 2 => 'Time' },
+        Format => 'int64u',
+        RawConv => q{
+            $val = $val * 1e-7 - 11644473600;   # convert to seconds since 1970
+            return $val > 0 ? $val : undef;
+        },
+        ValueConv => 'ConvertUnixTime($val)',
+        PrintConv => '$self->ConvertDateTime($val)',
+    },
+#
+# tags below are used internally in intermediate steps to extract the tags above
+#
+    TableOffsets => { Hidden => 1 }, # stores offsets to extract data from document table
+    CommentByBlock => {   # entire block of CommentBy entries
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::FlashPix::DocTable',
+            ProcessProc => \&ProcessCommentBy,
+        },
+        Hidden => 1,
+    },
+    LastSavedByBlock => {   # entire block of LastSavedBy entries
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::FlashPix::DocTable',
+            ProcessProc => \&ProcessLastSavedBy,
+        },
+        Hidden => 1,
+    },
+);
+
+# Microsoft Office Document Properties (ref [MS-DOC].pdf)
+%Image::ExifTool::FlashPix::DOP = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 1 => 'MS-DOC', 2 => 'Document' },
+    NOTES => 'Microsoft office document properties.',
+    20 => {
+        Name => 'CreateDate',
+        Format => 'int32u',
+        Groups => { 2 => 'Time' },
+        Priority => 0,
+        RawConv => \&ConvertDTTM,
+        PrintConv => '$self->ConvertDateTime($val)',
+    },
+    24 => {
+        Name => 'ModifyDate',
+        Format => 'int32u',
+        Groups => { 2 => 'Time' },
+        Priority => 0,
+        RawConv => \&ConvertDTTM,
+        PrintConv => '$self->ConvertDateTime($val)',
+    },
+    28 => {
+        Name => 'LastPrinted',
+        Format => 'int32u',
+        Groups => { 2 => 'Time' },
+        RawConv => \&ConvertDTTM,
+        PrintConv => '$self->ConvertDateTime($val)',
+    },
+    32 => { Name => 'RevisionNumber', Format => 'int16u' },
+    34 => {
+        Name => 'TotalEditTime',
+        Format => 'int32u',
+        PrintConv => 'ConvertTimeSpan($val,60)',
+    },
+    # (according to the MS-DOC specification, the following are accurate only if
+    # flag 'X' is set, and flag 'u' specifies whether the main or subdoc tags are
+    # used, but in my tests it seems that both are filled in with reasonable values,
+    # so just extract the main counts and ignore the subdoc counts for now - PH)
+    38 => { Name => 'Words',      Format => 'int32u' },
+    42 => { Name => 'Characters', Format => 'int32u' },
+    46 => { Name => 'Pages',      Format => 'int16u' },
+    48 => { Name => 'Paragraphs', Format => 'int32u' },
+    56 => { Name => 'Lines',      Format => 'int32u' },
+    #60 => { Name => 'WordsWithSubdocs',      Format => 'int32u' },
+    #64 => { Name => 'CharactersWithSubdocs', Format => 'int32u' },
+    #68 => { Name => 'PagesWithSubdocs',      Format => 'int16u' },
+    #70 => { Name => 'ParagraphsWithSubdocs', Format => 'int32u' },
+    #74 => { Name => 'LinesWithSubdocs',      Format => 'int32u' },
 );
 
 # FujiFilm "Property" information (ref PH)
@@ -1222,6 +1305,22 @@ my %fpxFileType = (
 
 # add our composite tags
 Image::ExifTool::AddCompositeTags('Image::ExifTool::FlashPix');
+
+#------------------------------------------------------------------------------
+# Convert Microsoft DTTM structure to date/time
+# Inputs: 0) DTTM value
+# Returns: EXIF-format date/time string ("0000:00:00 00:00:00" for zero date/time)
+sub ConvertDTTM($)
+{
+    my $val = shift;
+    my $yr  = ($val >> 20) & 0x1ff;
+    my $mon = ($val >> 16) & 0x0f;
+    my $day = ($val >> 11) & 0x1f;
+    my $hr  = ($val >> 6)  & 0x1f;
+    my $min = ($val & 0x3f);
+    $yr += 1900 if $val;
+    return sprintf("%.4d:%.2d:%.2d %.2d:%.2d:00%s",$yr,$mon,$day,$hr,$min,$val ? 'Z' : '');
+}
 
 #------------------------------------------------------------------------------
 # Process hyperlinks from PID_HYPERLINKS array
@@ -1415,6 +1514,142 @@ sub ProcessContents($$$)
 }
 
 #------------------------------------------------------------------------------
+# Process WordDocument stream of MSWord doc file (ref 6)
+# Inputs: 0) ExifTool object ref, 1) dirInfo ref, 2) tag table ref
+# Returns: 1 on success
+sub ProcessWordDocument($$$)
+{
+    my ($et, $dirInfo, $tagTablePtr) = @_;
+    $et->ProcessBinaryData($dirInfo, $tagTablePtr);
+    my $dataPt = $$dirInfo{DataPt} or return 0;
+    my $dirLen = length $$dataPt;
+    my $pos = 32;
+    return 0 if $pos + 2 > $dirLen;
+    my $n = Get16u($dataPt, $pos);  # read csw
+    $pos += 2 + $n * 2;             # skip fibRgW
+    return 0 if $pos + 2 > $dirLen;
+    $n = Get16u($dataPt, $pos);     # read cslw
+    $pos += 2 + $n * 4;             # skip fibRgLw
+    return 0 if $pos + 2 > $dirLen;
+    $n = Get16u($dataPt, $pos);     # read cbRgFcLcb
+    $pos += 2;  # point to start of fibRgFcLcbBlob
+    return 0 if $pos + $n * 8 > $dirLen;
+    my ($off, @tableOffsets);
+    # save necessary entries for later processing of document table
+    # (DOP, CommentBy, LastSavedBy)
+    foreach $off (0xf8, 0x120, 0x238) {
+        last if $off + 8 > $n * 8;
+        push @tableOffsets, Get32u($dataPt, $pos + $off);
+        push @tableOffsets, Get32u($dataPt, $pos + $off + 4);
+    }
+    my $tbl = GetTagTable('Image::ExifTool::FlashPix::DocTable');
+    # extract ModifyDate if it exists
+    $et->HandleTag($tbl, 'ModifyDate', undef,
+        DataPt => $dataPt,
+        Start  => $pos + 0x2b8,
+        Size   => 8,
+    );
+    $et->HandleTag($tbl, TableOffsets => \@tableOffsets);   # save for later
+    # $pos += $n * 8;                 # skip fibRgFcLcbBlob
+    # return 0 if $pos + 2 > $dirLen;
+    # $n = Get16u($dataPt, $pos);     # read cswNew
+    # return 0 if $pos + 2 + $n * 2 > $dirLen;
+    # my $nFib = Get16u($dataPt, 2 + ($n ? $pos : 0));
+    # $pos += 2 + $n * 2;             # skip fibRgCswNew
+    return 1;
+}
+
+#------------------------------------------------------------------------------
+# Process Microsoft Word Document Table
+# Inputs: 0) ExifTool object ref
+sub ProcessDocumentTable($)
+{
+    my $et = shift;
+    my $value = $$et{VALUE};
+    my $extra = $$et{TAG_EXTRA};
+    my ($i, $j, $tag);
+    # loop through TableOffsets for each sub-document
+    for ($i=0; ; ++$i) {
+        my $key = 'TableOffsets' . ($i ? " ($i)" : '');
+        my $offsets = $$value{$key};
+        last unless defined $offsets;
+        my $doc = $$extra{$key}{G3} if $$extra{$key};
+        $doc = '' unless $doc;
+        # get DocFlags for this sub-document
+        my ($docFlags, $docTable);
+        for ($j=0; ; ++$j) {
+            my $key = 'DocFlags' . ($j ? " ($j)" : '');
+            last unless defined $$value{$key};
+            my $tmp = $$extra{$key}{G3} if $$extra{$key};
+            $tmp = '' unless $tmp;
+            if ($tmp eq $doc) {
+                $docFlags = $$value{$key};
+                last;
+            }
+        }
+        next unless defined $docFlags;
+        $tag = $docFlags & 0x200 ? 'Table1' : 'Table0';
+        # get table for this sub-document
+        for ($j=0; ; ++$j) {
+            my $key = $tag . ($j ? " ($j)" : '');
+            last unless defined $$value{$key};
+            my $tmp = $$extra{$key}{G3} if $$extra{$key};
+            $tmp = '' unless $tmp;
+            if ($tmp eq $doc) {
+                $docTable = \$$value{$key};
+                last;
+            }
+        }
+        next unless defined $docTable;
+        # extract DOP and LastSavedBy information from document table
+        $$et{DOC_NUM} = $doc;   # use same document number
+        my $tagTablePtr = GetTagTable('Image::ExifTool::FlashPix::DocTable');
+        foreach $tag (qw(DOP CommentByBlock LastSavedByBlock)) {
+            last unless @$offsets;
+            my $off = shift @$offsets;
+            my $len = shift @$offsets;
+            next unless $len and $off + $len <= length $$docTable;
+            $et->HandleTag($tagTablePtr, $tag, undef,
+                DataPt => $docTable,
+                Start  => $off,
+                Size   => $len,
+            );
+        }
+        delete $$et{DOC_NUM};
+    }
+    # delete intermediate tags
+    foreach $tag (qw(TableOffsets Table0 Table1)) {
+        for ($i=0; ; ++$i) {
+            my $key = $tag . ($i ? " ($i)" : '');
+            last unless defined $$value{$key};
+            $et->DeleteTag($key);
+        }
+    }
+}
+
+#------------------------------------------------------------------------------
+# Extract names of comment authors (ref 6)
+# Inputs: 0) ExifTool object ref, 1) dirInfo ref, 2) tag table ref
+# Returns: 1 on success
+sub ProcessCommentBy($$$)
+{
+    my ($et, $dirInfo, $tagTablePtr) = @_;
+    my $dataPt = $$dirInfo{DataPt};
+    my $pos = $$dirInfo{DirStart};
+    my $end = $$dirInfo{DirLen} + $pos;
+    $et->VerboseDir($$dirInfo{DirName});
+	while ($pos + 2 < $end) {
+		my $len = Get16u($dataPt, $pos);
+		$pos += 2;
+	    last if $pos + $len * 2 > $end;
+		my $author = $et->Decode(substr($$dataPt, $pos, $len*2), 'UCS2');
+		$pos += $len * 2;
+		$et->HandleTag($tagTablePtr, CommentBy => $author);
+	}
+    return 1;
+}
+
+#------------------------------------------------------------------------------
 # Extract last-saved-by names (ref 5)
 # Inputs: 0) ExifTool object ref, 1) dirInfo ref, 2) tag table ref
 # Returns: 1 on success
@@ -1425,6 +1660,7 @@ sub ProcessLastSavedBy($$$)
     my $pos = $$dirInfo{DirStart};
     my $end = $$dirInfo{DirLen} + $pos;
     return 0 if $pos + 6 > $end;
+    $et->VerboseDir($$dirInfo{DirName});
 	my $num = Get16u($dataPt, $pos+2);
 	$pos += 6;
 	while ($num >= 2) {
@@ -2101,21 +2337,8 @@ sub ProcessFPX($$)
         }
     }
     # process Word document table
-    if (defined $$et{DocFlags} and defined $$et{LastSavedByInfo}) {
-        my $buff = $$et{DocFlags} & 0x200 ? $$et{Table1} : $$et{Table0};
-        if ($buff) {
-            my $tbl = GetTagTable('Image::ExifTool::FlashPix::DocTable');
-            my ($pos, $len) = split ' ', $$et{LastSavedByInfo};
-            if ($pos + $len < length $buff) {
-                my %dirInfo = (
-                    DataPt   => \$buff,
-                    DirStart => $pos,
-                    DirLen   => $len,
-                );
-                ProcessLastSavedBy($et, \%dirInfo, $tbl);
-            }
-        }
-    }
+    ProcessDocumentTable($et);
+
     return 1;
 }
 

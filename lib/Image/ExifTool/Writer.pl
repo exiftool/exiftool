@@ -1762,12 +1762,13 @@ sub SetFileModifyDate($$;$$$)
 #         2) new name (or undef to build from FileName and Directory tags)
 #         3) option: 'Link' to create link instead of renaming file
 #                    'Test' to only print new file name
+#         4) 0 to indicate that a file will no longer exist (used for 'Test' only)
 # Returns: 1=name changed OK, 0=nothing changed, -1=error changing name
 #          (and increments CHANGED flag if filename changed)
 # Notes: Will not overwrite existing file.  Creates directories as necessary.
-sub SetFileName($$;$$)
+sub SetFileName($$;$$$)
 {
-    my ($self, $file, $newName, $opt) = @_;
+    my ($self, $file, $newName, $opt, $usedFlag) = @_;
     my ($nvHash, $doName, $doDir);
 
     $opt or $opt = '';
@@ -1824,7 +1825,7 @@ sub SetFileName($$;$$)
     # protect against empty file name
     length $newName or $self->Warn('New file name is empty'), return -1;
     # don't replace existing file
-    if ($self->Exists($newName)) {
+    if ($self->Exists($newName) and (not defined $usedFlag or $usedFlag)) {
         if ($file ne $newName or $opt eq 'Link') {
             $self->Warn("File '${newName}' already exists");
             return -1;

@@ -55,7 +55,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.04';
+$VERSION = '4.05';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -250,6 +250,7 @@ sub BINARY_DATA_LIMIT { return 10 * 1024 * 1024; }
     32803 => 'Color Filter Array', #2
     32844 => 'Pixar LogL', #3
     32845 => 'Pixar LogLuv', #3
+    32892 => 'Sequential Color Filter', #JR (Sony ARQ)
     34892 => 'Linear Raw', #2
 );
 
@@ -2648,7 +2649,7 @@ my %sampleFormat = (
         Writable => 'rational64u',
         Count => 4,
         # convert to the form "12-20mm f/3.8-4.5" or "50mm f/1.4"
-        PrintConv => \&Image::ExifTool::Exif::PrintLensInfo,
+        PrintConv => \&PrintLensInfo,
         PrintConvInv => \&ConvertLensInfo,
     },
     0xa433 => { Name => 'LensMake',         Writable => 'string' }, #24
@@ -3138,7 +3139,7 @@ my %sampleFormat = (
             WriteGroup => 'IFD0',
             NestedHtmlDump => 1,
             SubDirectory => { TagTable => 'Image::ExifTool::DNG::AdobeData' },
-            Format => 'undef',  # written incorrectly as int8u (change to undef for speed)
+            Format => 'undef',  # but written as int8u (change to undef for speed)
         },
         {
             # Pentax/Samsung models that write AOC maker notes in JPG images:
@@ -3162,7 +3163,7 @@ my %sampleFormat = (
                 Base => '$start - 10',
                 ByteOrder => 'Unknown', # easier to do this than read byteorder word
             },
-            Format => 'undef',  # written incorrectly as int8u (change to undef for speed)
+            Format => 'undef',  # but written as int8u (change to undef for speed)
         },
         {
             # must duplicate the above tag with a different name for more recent
@@ -3185,7 +3186,7 @@ my %sampleFormat = (
             Name => 'DNGPrivateData',
             Flags => [ 'Binary', 'Protected' ],
             Format => 'undef',
-            Writable => 'undef',
+            Writable => 'int8u',
             WriteGroup => 'IFD0',
         },
     ],

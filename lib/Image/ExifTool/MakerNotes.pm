@@ -38,9 +38,9 @@ my $debug;          # set to 1 to enable debugging code
         Condition => '$$valPt =~ /^Apple iOS\0/',
         SubDirectory => {
             TagTable => 'Image::ExifTool::Apple::Main',
-            ByteOrder => 'Unknown',
             Start => '$valuePtr + 14',
             Base => '$start - 14',
+            ByteOrder => 'Unknown',
         },
     },
     {

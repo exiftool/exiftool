@@ -11,11 +11,39 @@
 
 <p>RSS feed: <a href="http://owl.phy.queensu.ca/~phil/exiftool/rss.xml">http://owl.phy.queensu.ca/~phil/exiftool/rss.xml</a></p>
 
-<p><b>Note:</b> The most recent production release is <a href="Image-ExifTool-11.01.tar.gz">Version 11.01</a>. (Other versions are
+<p><b>Note:</b> The most recent production release is <a href="Image-ExifTool-11.11.tar.gz">Version 11.11</a>. (Other versions are
 considered development releases, and are not uploaded to <a href="https://metacpan.org/release/Image-ExifTool">CPAN</a>.)</p>
 
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
+
+<a name='v11.11'><b>Sept. 27, 2018 - Version 11.11</b></a> <span class=grn>(production release)</span>
+<ul>
+<li>Added ARQ to the list of supported file types
+<li>Added support for GIMP XCF version 4 and later
+<li>Added a new QuickTime HandlerType value
+<li>Added read support for Apple AAE files
+<li>Added a new CanonModelID and some new Canon LensType values (thanks LibRaw)
+<li>Added a number of new Nikon LensID values (thanks Robert Rottmerhusen)
+<li>Added a new Sony/Minolta LensType (thanks LibRaw)
+<li>Decode more Sony IDC tags (thanks Jos Roost)
+<li>Decode some new Panasonic tags (thanks Klaus Homeister)
+<li>Decode more tags from Nikon MOV videos
+<li>Decode a new Nikon tag (thanks LibRaw)
+<li>Decode a large number of new Kodak tags (thanks Jim McGarvey)
+<li>Decode streaming GPS from videos of more dashcam and drone models
+<li>Decode more tags from Microsoft Word DOC files
+<li>Updated arg_files/iptcCore.args for IPTC Extension version 1.4
+<li>Patched to read corrupted MakN data written by buggy Adobe Camera Raw
+<li>Downgraded "Undersized StripByteCounts" error for some RAW file types
+<li>Fixed incorrect decoding of embedded GPS in Rexing V1P dashcam videos
+<li>Fixed incorrect format for DNGPrivateData
+<li>Fixed potential error when deleting maker notes from some images
+<li>Fixed problem decoding Apple PLIST information from some files
+<li>Fixed bug in Windows with CR/LF sequences in list values of the -X output
+<li>Fixed some inconsistencies in detecting file name conflicts when writing the
+    TestName tag
+</ul>
 
 <a name='v11.10'><b>Aug. 17, 2018 - Version 11.10</b></a>
 <ul>

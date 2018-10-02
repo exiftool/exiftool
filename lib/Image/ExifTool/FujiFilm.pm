@@ -36,8 +36,8 @@ sub ProcessFaceRec($$$);
 
 # the following RAF version numbers have been tested for writing:
 my %testedRAF = (
-    '0100' => 'E550, E900, F770, S5600, S6000fd, S6500fd, HS10/HS11, HS30, S200EXR, X100, XF1, X-Pro1, X-S1, XQ2 Ver1.00',
-    '0101' => 'X-E1, X20 Ver1.01',
+    '0100' => 'E550, E900, F770, S5600, S6000fd, S6500fd, HS10/HS11, HS30, S200EXR, X100, XF1, X-Pro1, X-S1, XQ2 Ver1.00, X-T100, GFX 50R, XF10',
+    '0101' => 'X-E1, X20 Ver1.01, X-T3',
     '0102' => 'S100FS, X10 Ver1.02',
     '0103' => 'IS Pro Ver1.03',
     '0104' => 'S5Pro Ver1.04',

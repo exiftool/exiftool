@@ -87,7 +87,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '3.98';
+$VERSION = '3.99';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -750,6 +750,7 @@ $VERSION = '3.98';
     0x4180000 => 'PowerShot G1 X Mark III', #IB
     0x6040000 => 'PowerShot S100 / Digital IXUS / IXY Digital',
     0x801     => 'PowerShot SX740 HS',
+    0x805     => 'PowerShot SX70 HS',
 
 # (see http://cweb.canon.jp/e-support/faq/answer/digitalcamera/10447-1.html for PowerShot/IXUS/IXY names)
 

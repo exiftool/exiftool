@@ -34,7 +34,7 @@ use Image::ExifTool::Nikon;
 use Image::ExifTool::Validate;
 use Image::ExifTool::MacOS;
 
-$VERSION = '3.16';
+$VERSION = '3.17';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -2237,6 +2237,11 @@ sub WriteTagNames($$)
             } elsif ($tagIDstr =~ /^-?\d+(\.\d+)?$/) {
                 $w = $wID - 3;
                 $idStr = sprintf "  %${w}g    ", $tagIDstr;
+                my $tooLong = length($idStr) - 6 - $w;
+                if ($tooLong) {
+                    $tooLong = 3 if $tooLong > 3;
+                    $idStr = substr($idStr, 0, -$tooLong);
+                }
                 $align = " class=r";
             } else {
                 $tagIDstr =~ s/^'$prefix/'/ if $prefix;
@@ -2311,7 +2316,7 @@ sub WriteTagNames($$)
                 # add Mask to Writable column in POD doc
                 $wrStr .= " & $1" if $mask =~ /(0x[\da-f]+)/;
             }
-            printf PODFILE "%s%-${wTag2}s", $idStr, $tag;
+            my $pod = sprintf "%s%-${wTag2}s", $idStr, $tag;
             my $tGrp = $wGrp;
             if ($id and length($tag) > $wTag2) {
                 my $madeRoom;
@@ -2328,14 +2333,20 @@ sub WriteTagNames($$)
                 }
                 warn "Warning: Pushed $tag\n" unless $madeRoom;
             }
-            printf PODFILE " %-${tGrp}s", shift(@wGrp) || '-' if $showGrp;
+            $pod .= sprintf " %-${tGrp}s", shift(@wGrp) || '-' if $showGrp;
             if ($composite) {
                 @reqs = @$require;
                 $w = $wReq; # Keep writable column in line
                 length($tag) > $wTag2 and $w -= length($tag) - $wTag2;
-                printf PODFILE " %-${w}s", shift(@reqs) || '';
+                $pod .= sprintf " %-${w}s", shift(@reqs) || '';
             }
-            print PODFILE " $wrStr\n";
+            $pod .= " $wrStr";
+            # limit line length to 82 characters (even if it means messing up column alignment)
+            if (length $pod > 82 and $pod !~ /\n/) {
+                my $remove = length($pod) - 82;
+                $pod =~ s/(\w)\s{$remove}/$1/;
+            }
+            print PODFILE $pod, "\n";
             my $numTags = scalar @$tagNames;
             my $n = 0;
             while (@tags or @reqs or @vals) {

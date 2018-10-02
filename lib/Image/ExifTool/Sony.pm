@@ -32,7 +32,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.91';
+$VERSION = '2.92';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -128,7 +128,7 @@ my %sonyLensTypes2 = (
     33077 => 'Sony FE 100-400mm F4.5-5.6 GM OSS + 1.4X Teleconverter', #JR
     33078 => 'Sony FE 100-400mm F4.5-5.6 GM OSS + 2X Teleconverter', #JR
     33079 => 'Sony FE 400mm F2.8 GM OSS + 1.4X Teleconverter', #IB
-    33080 => 'Sony FE 400mm F2.8 GM OSS + 2x Teleconverter', #JR
+    33080 => 'Sony FE 400mm F2.8 GM OSS + 2X Teleconverter', #JR
 
     49201 => 'Zeiss Touit 12mm F2.8', #JR (lens firmware Ver.02)
     49202 => 'Zeiss Touit 32mm F1.8', #JR (lens firmware Ver.02)
@@ -137,6 +137,7 @@ my %sonyLensTypes2 = (
     49217 => 'Zeiss Batis 85mm F1.8', #JR
     49218 => 'Zeiss Batis 18mm F2.8', #IB
     49219 => 'Zeiss Batis 135mm F2.8', #IB
+    49220 => 'Zeiss Batis 40mm F2 CF', #IB
     49232 => 'Zeiss Loxia 50mm F2', #JR (lens firmware Ver.02)
     49233 => 'Zeiss Loxia 35mm F2', #JR (lens firmware Ver.02)
     49234 => 'Zeiss Loxia 21mm F2.8', #PH
@@ -158,7 +159,7 @@ my %sonyLensTypes2 = (
     50492 => 'Sigma 24-105mm F4 DG OS HSM | A + MC-11', #JR (013)
     50493 => 'Sigma 17-70mm F2.8-4 DC MACRO OS HSM | C + MC-11', #JR (013)
     50495 => 'Sigma 50-100mm F1.8 DC HSM | A + MC-11', #JR (016)
-    50499 => 'Sigma 85mm F1.4 DG HSM | A', #JR
+    50499 => 'Sigma 85mm F1.4 DG HSM | A', #JR (018)
     50501 => 'Sigma 100-400mm F5-6.3 DG OS HSM | C + MC-11', #JR (017)
     50503 => 'Sigma 16mm F1.4 DC DN | C', #JR (017)
     50513 => 'Sigma 70mm F2.8 DG MACRO | A', #JR (018)
@@ -9120,6 +9121,9 @@ my %pictureProfile2010 = (
     0x00c3 => 'WBRedCloudy', #IB
     0x00c4 => 'WBGreenCloudy', #IB
     0x00c5 => 'WBBlueCloudy', #IB
+    0x00c6 => 'WBRedFluorescent', #IB
+    0x00c7 => 'WBGreenFluorescent', #IB
+    0x00c8 => 'WBBlueFluorescent', #IB
     0x00c9 => 'WBRedTungsten', #IB
     0x00ca => 'WBGreenTungsten', #IB
     0x00cb => 'WBBlueTungsten', #IB

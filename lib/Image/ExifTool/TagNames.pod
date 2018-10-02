@@ -11281,7 +11281,7 @@ These tags are extracted from encrypted data in images from the D5 and D500.
    3713    ISOAutoShutterTime                   int8u & 0x3f
    3714    ISOAutoHiLimit                       int8u & 0xff
    3716    FlickerReduction                     int8u & 0x20
-  3716.1    PhotoShootingMenuBankImageArea       int8u & 0x07
+  3716.1   PhotoShootingMenuBankImageArea       int8u & 0x07
    3819    CustomSettingsD5                     NikonCustom SettingsD5
            CustomSettingsD500                   NikonCustom SettingsD500
   11300    RollAngle                            fixed32u
@@ -17158,6 +17158,9 @@ These tags are found in the SRF2 through SRF5 IFD's.
   0x00c3   WBRedCloudy                          no
   0x00c4   WBGreenCloudy                        no
   0x00c5   WBBlueCloudy                         no
+  0x00c6   WBRedFluorescent                     no
+  0x00c7   WBGreenFluorescent                   no
+  0x00c8   WBBlueFluorescent                    no
   0x00c9   WBRedTungsten                        no
   0x00ca   WBGreenTungsten                      no
   0x00cb   WBBlueTungsten                       no
@@ -19950,7 +19953,7 @@ These tags belong to the ExifTool XMP-dwc family 1 group.
   EventYear                                     integer_
   FossilSpecimen                                DarwinCore MaterialSample Struct
   FossilSpecimenMaterialSampleID                string_
-  GeologicalContext                             DarwinCore GeologicalContext Struct
+  GeologicalContext                            DarwinCore GeologicalContext Struct
   GeologicalContextBed                          string_
   EarliestAgeOrLowestStage                      string_
   EarliestEonOrLowestEonothem                   string_
@@ -20024,7 +20027,7 @@ These tags belong to the ExifTool XMP-dwc family 1 group.
   MachineObservationYear                        integer_
   MaterialSample                                DarwinCore MaterialSample Struct
   MaterialSampleID                              string_
-  MeasurementOrFact                             DarwinCore MeasurementOrFact Struct
+  MeasurementOrFact                            DarwinCore MeasurementOrFact Struct
   MeasurementAccuracy                           string_
   MeasurementDeterminedBy                       string_
   MeasurementDeterminedDate                     date_
@@ -20082,7 +20085,7 @@ These tags belong to the ExifTool XMP-dwc family 1 group.
   RecordInstitutionCode                         string_
   RecordInstitutionID                           string_
   RecordOwnerInstitutionCode                    string_
-  ResourceRelationship                          DarwinCore ResourceRelationship Struct
+  ResourceRelationship                      DarwinCore ResourceRelationship Struct
   RelatedResourceID                             string_
   RelationshipAccordingTo                       string_
   RelationshipEstablishedDate                   date_
@@ -22474,9 +22477,9 @@ Tags extracted from Kodak Photo CD Image Pac (PCD) files.
     331    CopyrightStatus                      no
     332    CopyrightFileName                    no
    1538    Orientation                          no
-  1538.1    ImageWidth                           no
-  1538.2    ImageHeight                          no
-  1538.3    CompressionClass                     no
+  1538.1   ImageWidth                           no
+  1538.2   ImageHeight                          no
+  1538.3   CompressionClass                     no
 
 =head2 Radiance Tags
 
@@ -24320,8 +24323,9 @@ Child atoms found in "sinf" and/or "pinf" atoms.
 
 =head3 QuickTime sv3d Tags
 
-Tags defined by the Spherical Video V2 specification (see
-https://github.com/google/spatial-media/blob/master/docs/spherical-video-v2-rfc.md).
+Tags defined by the Spherical Video V2 specification.  See
+L<https://github.com/google/spatial-media/blob/master/docs/spherical-video-v2-rfc.md>
+for the specification.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
@@ -24781,13 +24785,17 @@ the ExtractEmbedded option is used.
   --------                                      --------
   Accelerometer                                 no
   CTMD                                          Canon CTMD
+  CameraDateTime                                no
   FrameNumber                                   no
   GPSAltitude                                   no
+  GPSDOP                                        no
   GPSDateTime                                   no
   GPSLatitude                                   no
   GPSLongitude                                  no
+  GPSSatellites                                 no
   GPSSpeed                                      no
   GPSSpeedRef                                   no
+  GPSTimeStamp                                  no
   GPSTrack                                      no
   GPSTrackRef                                   no
   JpgFromRaw                                    no

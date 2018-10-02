@@ -801,8 +801,9 @@ my %eeBox = (
     PROCESS_PROC => \&ProcessMOV,
     GROUPS => { 2 => 'Video' },
     NOTES => q{
-        Tags defined by the Spherical Video V2 specification (see
-        https://github.com/google/spatial-media/blob/master/docs/spherical-video-v2-rfc.md).
+        Tags defined by the Spherical Video V2 specification.  See
+        L<https://github.com/google/spatial-media/blob/master/docs/spherical-video-v2-rfc.md>
+        for the specification.
     },
     svhd => {
         Name => 'MetadataSource',
@@ -965,7 +966,7 @@ my %eeBox = (
         Name => 'HTCTrack',
         SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::Track' },
     },
-   'gps ' => {  # GPS data written by Novatek cameras
+   'gps ' => {  # GPS data written by Novatek cameras (parsed in QuickTimeStream.pl)
         Name => 'GPSDataList',
         Unknown => 1,
         Binary => 1,

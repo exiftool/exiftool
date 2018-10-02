@@ -7,6 +7,15 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 11.11. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Oct. 2, 2018 - Version 11.12
+
+  - Added a new Sony/Minolta LensType (thanks LibRaw and Jos Roost)
+  - Added a new Nikon LensID
+  - Decode a few new Sony SRF2 tags (thanks LibRaw)
+  - Decode GPS from NextBase 512GW dashcam MOV videos
+  - Validate MS-DOC FIB before extracting contained tags
+  - Fixed bug extracting GPSSpeed for some dashcam models
+
 Sept. 27, 2018 - Version 11.11 (production release)
 
   - Added ARQ to the list of supported file types
@@ -20,7 +29,7 @@ Sept. 27, 2018 - Version 11.11 (production release)
   - Decode some new Panasonic tags (thanks Klaus Homeister)
   - Decode more tags from Nikon MOV videos
   - Decode a new Nikon tag (thanks LibRaw)
-  - Decode a large number of new Kodak tags (thanks Jim McGarvey)
+  - Decode a large number of new Kodak IFD tags (thanks Jim McGarvey)
   - Decode streaming GPS from videos of more dashcam and drone models
   - Decode more tags from Microsoft Word DOC files
   - Updated arg_files/iptcCore.args for IPTC Extension version 1.4

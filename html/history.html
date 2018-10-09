@@ -17,6 +17,25 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v11.13'><b>Oct. 9, 2018 - Version 11.13</b></a>
+<ul>
+<li>Decode GPS from NextBase 512G dashcam MOV videos (different than 512GW)
+<li>Added a new Canon LensType (thanks LibRaw)
+<li>Minor improvements to verbose dump of streaming GPS metadata
+<li>Reverted change of version 10.71 which resulted in Windows not recognizing
+    PNG CreationTime as written by ExifTool (add this feature to the StrictDate
+    API option instead)
+<li>Improved decoding of Nikon CropHiSpeed (thanks LibRaw)
+<li>Improved -fast option to reduce memory usage when reading JPG, PNG,
+    QuickTime-based and RIFF-based files via a sequential stream
+<li>Fixed DOF calculation to use ApproximateFocusDistance if available
+<li>API Changes:
+    <ul>
+    <li>Enhanced StrictDate option to reformat PNG CreateTime according to PNG
+        specification
+    </ul>
+</ul>
+
 <a name='v11.12'><b>Oct. 2, 2018 - Version 11.12</b></a>
 <ul>
 <li>Added a new Sony/Minolta LensType (thanks LibRaw and Jos Roost)

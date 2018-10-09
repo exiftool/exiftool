@@ -617,12 +617,13 @@ this option set to 1, ExifTool will not scan to the end of a JPEG image to
 check for an AFCP, CanonVRD, FotoStation, PhotoMechanic, MIE or PreviewImage
 trailer.  This also stops the parsing after the first comment in GIF images,
 and at the audio/video data with RIFF-format files (AVI, WAV, etc), so any
-trailing metadata (eg. XMP written by some utilities) may be missed.  When
-combined with the ScanForXMP option, prevents scanning for XMP in recognized
-file types.  With a value of 2, ExifTool will also avoid extracting any EXIF
-MakerNote information.  When set to 3, the file is not actually parsed, and
-only an initial guess at FileType and some pseudo tags are returned. 
-Default is undef.
+trailing metadata (eg. XMP written by some utilities) may be missed.  Also
+disables input buffering for some types of files to reduce memory usage when
+reading from a non-seekable stream.  When combined with the ScanForXMP
+option, prevents scanning for XMP in recognized file types.  With a value of
+2, ExifTool will also avoid extracting any EXIF MakerNote information.  When
+set to 3, the file is not actually parsed, and only an initial guess at
+FileType and some pseudo tags are returned.  Default is undef.
 
 =item Filter
 
@@ -805,10 +806,10 @@ Flag set to assume that QuickTime date/time values are stored as UTC,
 causing conversion to local time when they are extracted and from local time
 when written.  According to the QuickTime specification date/time values
 should be UTC, but many digital cameras store local time instead (presumably
-because they don't know the time zone), so the default is undef.  This
-option also disables the autodetection of incorrect time-zero offsets in
-QuickTime date/time values, and enforces a time zero of 1904 as per the
-QuickTime specification.
+because they don't know the time zone), so the default is to not convert
+these times.  This option also disables the autodetection of incorrect
+time-zero offsets in QuickTime date/time values, and enforces a time zero of
+1904 as per the QuickTime specification.
 
 =item RequestAll
 
@@ -864,9 +865,14 @@ the DateFormat option is used.  Default is undef.
     0   - Return date/time value unchanged if it can't be converted
     1   - Return undef if date/time value can't be converted
 
-When set to 1 while writing a PrintConv date/time value, the value is
-written only if POSIX::strptime or Time::Piece is available and can
-successfully convert the value.
+When set to 1 while writing a PrintConv date/time value with the DateFormat
+option set, the value is written only if POSIX::strptime or Time::Piece is
+available and can successfully convert the value.
+
+For PNG CreationTime, this option has the additional effect of causing the
+date/time to be reformatted according to PNG 1.2 recommendation (RFC-1123)
+when writing, and a warning to be issued for any non-standard value when
+reading.
 
 =item Struct
 

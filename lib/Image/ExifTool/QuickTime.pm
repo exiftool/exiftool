@@ -42,7 +42,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.18';
+$VERSION = '2.19';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -7513,6 +7513,8 @@ sub ProcessMOV($$;$)
         SetByteOrder('MM');
         $$et{PRIORITY_DIR} = 'XMP';   # have XMP take priority
     }
+    $$raf{NoBuffer} = 1 if $et->Options('FastScan'); # disable buffering in FastScan mode
+
     if ($$et{OPTIONS}{ExtractEmbedded}) {
         $ee = 1;
         $unkOpt = $$et{OPTIONS}{Unknown};

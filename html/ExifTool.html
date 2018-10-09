@@ -564,11 +564,13 @@ distribution for examples.</p>
     PhotoMechanic, MIE or PreviewImage trailer.  This also stops the parsing
     after the first comment in GIF images, and at the audio/video data with
     RIFF-format files (AVI, WAV, etc), so any trailing metadata (eg. XMP written
-    by some utilities) may be missed.  When combined with the ScanForXMP option,
-    prevents scanning for XMP in recognized file types.  With a value of 2,
-    ExifTool will also avoid extracting any EXIF MakerNote information. When set
-    to 3, the file is not actually parsed, and only an initial guess at FileType
-    and some pseudo tags are returned. </td>
+    by some utilities) may be missed.  Also disables input buffering for some
+    types of files to reduce memory usage when reading from a non-seekable
+    stream.  When combined with the ScanForXMP option, prevents scanning for XMP
+    in recognized file types.  With a value of 2, ExifTool will also avoid
+    extracting any EXIF MakerNote information. When set to 3, the file is not
+    actually parsed, and only an initial guess at FileType and some pseudo tags
+    are returned.</td>
     <td align=center>0, 1, 2 or 3</td><td align=center>undef</td></tr>
 <tr id="Filter"><td>Filter</td>
     <td>Perl expression used to filter all returned tag values.  Applies to
@@ -672,7 +674,7 @@ distribution for examples.</p>
     <td align=center>An integer, or undef</td><td align=center>undef</td></tr>
 <tr id="ListJoin"><td>ListJoin</td><td>Separator used to join the PrintConv value of
     multi-item List-type tags into a single string.  If not defined, multi-item lists
-    are returned as a list reference.  Does not affect ValueConv values. </td>
+    are returned as a list reference.  Does not affect ValueConv values.</td>
     <td align=center>Any string, or undef</td><td align=center>', '</td></tr>
 <!-- deprecated in ExifTool 10.54; use "ListJoin" instead
 <tr id="ListSep"><td>ListSep</td><td>Separator string used to join lists of PrintConv values when
@@ -729,9 +731,9 @@ distribution for examples.</p>
     extracted and from local time when written. According to the QuickTime
     specification date/time values should be UTC, but many digital cameras store
     local time instead (presumably because they don't know the time zone), so
-    the default is undef.  This option also disables the autodetection of
-    incorrect time-zero offsets in QuickTime date/time values, and enforces a
-    time zero of 1904 as per the QuickTime specification.</td>
+    the default is to not convert these times.  This option also disables the
+    autodetection of incorrect time-zero offsets in QuickTime date/time values,
+    and enforces a time zero of 1904 as per the QuickTime specification.</td>
     <td align=center>0 or 1</td>
     <td align=center>undef</td></tr>
 <tr id="RequestAll"><td>RequestAll</td><td>Flag to request all tags to be extracted.
@@ -770,8 +772,12 @@ distribution for examples.</p>
     </table></td><td align=center>'File'</td></tr>
 <tr id="StrictDate"><td>StrictDate</td><td>Flag to return undefined value for any date which can't be
     converted when the DateFormat option is used.  When set to 1 while writing a
-    PrintConv date/time value, the value is written only if POSIX::strptime or
-    Time::Piece is available and can successfully convert the value.</td>
+    PrintConv date/time value with the DateFormat option set, the value is
+    written only if POSIX::strptime or Time::Piece is available and can
+    successfully convert the value. For PNG CreationTime, this option has the
+    additional effect of causing the date/time to be reformatted according to
+    PNG 1.2 recommendation (RFC-1123) when writing, and a warning to be issued
+    for any non-standard value when reading.</td>
     <td><table class=clear>
     <tr><td valign=top align=right><b>undef</b>&nbsp;=</td><td>Same as 0 for reading/writing or 1 for copying</td></tr>
     <tr><td valign=top align=right><b>0</b>&nbsp;=</td><td>Return bad date/time values unchanged</td></tr>

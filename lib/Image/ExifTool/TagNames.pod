@@ -10655,7 +10655,7 @@ DiMAGE X and Xt.
   0x0018   FlashExposureBracketValue            undef[4]
   0x0019   ExposureBracketValue                 rational64s
   0x001a   ImageProcessing                      string
-  0x001b   CropHiSpeed                          int16u[7]~
+  0x001b   CropHiSpeed                          int16u[7]
   0x001c   ExposureTuning                       undef[3]
   0x001d   SerialNumber                         string!
   0x001e   ColorSpace                           int16u
@@ -11783,7 +11783,7 @@ videos from some Nikon cameras.
   0x2000005    WhiteBalance                     no
   0x2000007    FocusMode                        string
   0x200000b    WhiteBalanceFineTune             no
-  0x200001b    CropHiSpeed                      int16u[7]~
+  0x200001b    CropHiSpeed                      int16u[7]
   0x200001e    ColorSpace                       no
   0x200001f    VRInfo                           Nikon VRInfo
   0x2000022    ActiveD-Lighting                 int16u

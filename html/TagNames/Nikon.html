@@ -139,8 +139,19 @@ flash bracketing.)</span></span></td></tr>
 <tr>
 <td title='0x001b = 27'>0x001b</td>
 <td>CropHiSpeed</td>
-<td class=c title=' ~ = Writable only with -n'>int16u[7]~</td>
-<td>&nbsp;</td></tr>
+<td class=c>int16u[7]</td>
+<td><table class=cols><tr>
+  <td>0 = Off
+  <br>1 = 1.3x Crop
+  <br>2 = DX Crop
+  <br>3 = 5:4 Crop
+  <br>4 = 3:2 Crop</td><td>&nbsp;&nbsp;</td>
+  <td>6 = 16:9 Crop
+  <br>9 = DX Movie Crop
+  <br>11 = FX Uncropped
+  <br>12 = DX Uncropped
+  <br>17 = 1:1 Crop</td></tr></table>
+</td></tr>
 <tr class=b>
 <td title='0x001c = 28'>0x001c</td>
 <td>ExposureTuning</td>
@@ -5736,8 +5747,19 @@ videos from some Nikon cameras.</p>
 <tr class=b>
 <td title='0x200001b = 33554459'>0x200001b</td>
 <td>CropHiSpeed</td>
-<td class=c title=' ~ = Writable only with -n'>int16u[7]~</td>
-<td>&nbsp;</td></tr>
+<td class=c>int16u[7]</td>
+<td><table class=cols><tr>
+  <td>0 = Off
+  <br>1 = 1.3x Crop
+  <br>2 = DX Crop
+  <br>3 = 5:4 Crop
+  <br>4 = 3:2 Crop</td><td>&nbsp;&nbsp;</td>
+  <td>6 = 16:9 Crop
+  <br>9 = DX Movie Crop
+  <br>11 = FX Uncropped
+  <br>12 = DX Uncropped
+  <br>17 = 1:1 Crop</td></tr></table>
+</td></tr>
 <tr>
 <td title='0x200001e = 33554462'>0x200001e</td>
 <td>ColorSpace</td>
@@ -6728,7 +6750,7 @@ ExifTool to choose in these cases (see the
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Oct 1, 2018</i>
+<br><i>Last revised Oct 9, 2018</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

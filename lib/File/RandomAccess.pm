@@ -16,6 +16,7 @@
 #               11/26/2008 - P. Harvey Fixed bug in ReadLine when reading from a
 #                            scalar with a multi-character newline
 #               01/24/2009 - PH Protect against reading too much at once
+#               10/04/2018 - PH Added NoBuffer option
 #
 # Notes:        Calls the normal file i/o routines unless SeekTest() fails, in
 #               which case the file is buffered in memory to allow random access.
@@ -36,13 +37,14 @@ require 5.002;
 require Exporter;
 
 use vars qw($VERSION @ISA @EXPORT_OK);
-$VERSION = '1.10';
+$VERSION = '1.11';
 @ISA = qw(Exporter);
 
 sub Read($$$);
 
 # constants
 my $CHUNK_SIZE = 8192;  # size of chunks to read from file (must be power of 2)
+my $SKIP_SIZE = 65536;  # size to skip when fast-forwarding over sequential data
 my $SLURP_CHUNKS = 16;  # read this many chunks at a time when slurping
 
 #------------------------------------------------------------------------------
@@ -60,6 +62,7 @@ sub new($$;$)
         # string i/o
         $self = {
             BUFF_PT => $filePt,
+            BASE => 0,
             POS => 0,
             LEN => length($$filePt),
             TESTED => -1,
@@ -71,8 +74,9 @@ sub new($$;$)
         $self = {
             FILE_PT => $filePt, # file pointer
             BUFF_PT => \$buff,  # reference to file data
-            POS => 0,           # current position in file
-            LEN => 0,           # data length
+            BASE => 0,          # location of start of buffer in file
+            POS => 0,           # current position in buffer
+            LEN => 0,           # length of data in buffer
             TESTED => 0,        # 0=untested, 1=passed, -1=failed (requires buffering)
         };
         bless $self, $class;
@@ -118,7 +122,7 @@ sub Tell($)
     my $self = shift;
     my $rtnVal;
     if ($self->{TESTED} < 0) {
-        $rtnVal = $self->{POS};
+        $rtnVal = $self->{POS} + $self->{BASE};
     } else {
         $rtnVal = tell($self->{FILE_PT});
     }
@@ -141,9 +145,11 @@ sub Seek($$;$)
     if ($self->{TESTED} < 0) {
         my $newPos;
         if ($whence == 0) {
-            $newPos = $num;                 # from start of file
+            $newPos = $num - $self->{BASE}; # from start of file
         } elsif ($whence == 1) {
             $newPos = $num + $self->{POS};  # relative to current position
+        } elsif ($self->{NoBuffer} and $self->{FILE_PT}) {
+            $newPos = -1;   # (can't seek relative to end if no buffering)
         } else {
             $self->Slurp();                 # read whole file into buffer
             $newPos = $num + $self->{LEN};  # relative to end of file
@@ -192,6 +198,8 @@ sub Read($$$)
     }
     # read through our buffer if necessary
     if ($self->{TESTED} < 0) {
+        # purge old data before reading in NoBuffer mode
+        $self->Purge() or return 0 if $self->{NoBuffer};
         my $buff;
         my $newPos = $self->{POS} + $len;
         # number of bytes to read from file
@@ -244,6 +252,7 @@ sub ReadLine($$)
 
     if ($self->{TESTED} < 0) {
         my ($num, $buff);
+        $self->Purge() or return 0 if $self->{NoBuffer};
         my $pos = $self->{POS};
         if ($fp) {
             # make sure we have some data after the current position
@@ -311,9 +320,39 @@ sub Slurp($)
     }
 }
 
+#------------------------------------------------------------------------------
+# Purge internal buffer [internal use only]
+# Inputs: 0) reference to RandomAccess object
+# Returns: 1 on success, or 0 if current buffer position is negative
+# Notes: This is called only in NoBuffer mode
+sub Purge($)
+{
+    my $self = shift;
+    return 1 unless $self->{FILE_PT};
+    return 0 if $self->{POS} < 0;   # error if we can't read from here
+    if ($self->{POS} > $CHUNK_SIZE) {
+        my $purge = $self->{POS} - ($self->{POS} % $CHUNK_SIZE);
+        if ($purge >= $self->{LEN}) {
+            # read up to current position in 64k chunks, discarding as we go
+            while ($self->{POS} > $self->{LEN}) {
+                $self->{BASE} += $self->{LEN};
+                $self->{POS} -= $self->{LEN};
+                ${$self->{BUFF_PT}} = '';
+                $self->{LEN} = read($self->{FILE_PT}, ${$self->{BUFF_PT}}, $SKIP_SIZE);
+                last if $self->{LEN} < $SKIP_SIZE;
+            }
+        } elsif ($purge > 0) {
+            ${$self->{BUFF_PT}} = substr ${$self->{BUFF_PT}}, $purge;
+            $self->{BASE} += $purge;
+            $self->{POS} -= $purge;
+            $self->{LEN} -= $purge;
+        }
+    }
+    return 1;
+}
 
 #------------------------------------------------------------------------------
-# set binary mode
+# Set binary mode
 # Inputs: 0) reference to RandomAccess object
 sub BinMode($)
 {
@@ -322,7 +361,7 @@ sub BinMode($)
 }
 
 #------------------------------------------------------------------------------
-# close the file and free the buffer
+# Close the file and free the buffer
 # Inputs: 0) reference to RandomAccess object
 sub Close($)
 {
@@ -370,6 +409,7 @@ sub Close($)
     # reset the buffer
     my $emptyBuff = '';
     $self->{BUFF_PT} = \$emptyBuff;
+    $self->{BASE} = 0;
     $self->{LEN} = 0;
     $self->{POS} = 0;
 }

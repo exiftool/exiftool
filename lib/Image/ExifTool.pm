@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup);
 
-$VERSION = '11.12';
+$VERSION = '11.13';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -5726,6 +5726,8 @@ sub ProcessJPEG($$)
         return 1 if $fast and $fast == 3;   # don't process file when FastScan == 3
         $$self{LOW_PRIORITY_DIR}{IFD1} = 1; # lower priority of IFD1 tags
     }
+    $$raf{NoBuffer} = 1 if $self->Options('FastScan'); # disable buffering in FastScan mode
+
     $dumpParms{MaxLen} = 128 if $verbose < 4;
     if ($htmlDump) {
         $dumpEnd = $raf->Tell();

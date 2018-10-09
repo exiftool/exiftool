@@ -59,7 +59,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.51';
+$VERSION = '3.52';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -930,6 +930,27 @@ my %afPoints153 = (
     31 => 'B8',  62 => 'H13', 93 => 'C17', 124 => 'G4',
 );
 
+my %cropHiSpeed = ( #IB
+    0 => 'Off',
+    1 => '1.3x Crop', # (1.3x Crop, Large)
+    2 => 'DX Crop',
+    3 => '5:4 Crop',
+    4 => '3:2 Crop',
+    6 => '16:9 Crop',
+    9 => 'DX Movie Crop', # (DX during movie recording, Large)
+    11 => 'FX Uncropped',
+    12 => 'DX Uncropped',
+    17 => '1:1 Crop',
+    OTHER => sub {
+        my ($val, $inv, $conv) = @_;
+        return undef if $inv;
+        my @a = split ' ', $val;
+        return "Unknown ($val)" unless @a == 7;
+        $a[0] = $$conv{$a[0]} || "Unknown ($a[0])";
+        return "$a[0] ($a[1]x$a[2] cropped to $a[3]x$a[4] at pixel $a[5],$a[6])";
+    },
+);
+
 my %offOn = ( 0 => 'Off', 1 => 'On' );
 
 # common attributes for writable BinaryData directories
@@ -1138,12 +1159,7 @@ my %binaryDataAttrs = (
         Name => 'CropHiSpeed',
         Writable => 'int16u',
         Count => 7,
-        PrintConv => q{
-            my @a = split ' ', $val;
-            return "Unknown ($val)" unless @a == 7;
-            $a[0] = $a[0] ? "On" : "Off";
-            return "$a[0] ($a[1]x$a[2] cropped to $a[3]x$a[4] at pixel $a[5],$a[6])";
-        }
+        PrintConv => \%cropHiSpeed,
     },
     0x001c => { #28 (D3 "the application of CSb6 to the selected metering mode")
         Name => 'ExposureTuning',
@@ -7981,12 +7997,7 @@ my %nikonFocalConversions = (
         Name => 'CropHiSpeed',
         Writable => 'int16u',
         Count => 7,
-        PrintConv => q{
-            my @a = split ' ', $val;
-            return "Unknown ($val)" unless @a == 7;
-            $a[0] = $a[0] ? "On" : "Off";
-            return "$a[0] ($a[1]x$a[2] cropped to $a[3]x$a[4] at pixel $a[5],$a[6])";
-        }
+        PrintConv => \%cropHiSpeed,
     },
     0x200001e => {
         Name => 'ColorSpace',

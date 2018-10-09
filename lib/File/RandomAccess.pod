@@ -215,6 +215,25 @@ Nothing.
 
 =back
 
+=head1 OPTIONS
+
+=over 4
+
+=item B<NoBuffer>
+
+Avoid buffering sequential files.
+
+    $raf->{NoBuffer} = 1;
+
+When this option is set, old data is purged from the internal buffer before
+a read operation on a sequential file.  In this mode, memory requirements
+may be significantly reduced when reading sequential files, but seeking
+backward is limited to within the size of the internal buffer (which will be
+at least as large as the last returned data block), and seeking relative to
+the end of file is not allowed.
+
+=back
+
 =head1 AUTHOR
 
 Copyright 2003-2018 Phil Harvey (phil at owl.phy.queensu.ca)

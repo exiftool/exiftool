@@ -29,7 +29,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.48';
+$VERSION = '1.49';
 
 sub ConvertTimecode($);
 sub ProcessSGLT($$$);
@@ -1607,6 +1607,7 @@ sub ProcessRIFF($$)
         $buff .= $buf2;
         return 0 unless $buff =~ /WAVE(.{4})?fmt /sg and $raf->Seek(pos($buff) - 4, 0);
     }
+    $$raf{NoBuffer} = 1 if $et->Options('FastScan'); # disable buffering in FastScan mode
     $mime = $riffMimeType{$type} if $type;
     $et->SetFileType($type, $mime);
     $$et{VALUE}{FileType} .= ' (RF64)' if $rf64;

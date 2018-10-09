@@ -27,7 +27,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD %stdCase);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.45';
+$VERSION = '1.46';
 
 sub ProcessPNG_tEXt($$$);
 sub ProcessPNG_iTXt($$$);
@@ -452,7 +452,7 @@ my %unreg = ( Notes => 'unregistered' );
         Groups => { 2 => 'Time' },
         Shift => 'Time',
         Notes => 'stored in RFC-1123 format and converted to/from EXIF format by ExifTool',
-        ValueConv => \&ConvertPNGDate,
+        RawConv => \&ConvertPNGDate,
         ValueConvInv => \&InversePNGDate,
         PrintConv => '$self->ConvertDateTime($val)',
         PrintConvInv => '$self->InverseDateTime($val,undef,1)',
@@ -651,22 +651,25 @@ my %tzConv = (
 );
 sub ConvertPNGDate($$)
 {
-    my $val = shift;
-    # standard format is like "Mon, 1 Jan 2018 12:10:22 EST"
-    if ($val =~ /(\d+)\s*(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s*(\d+)\s+(\d+):(\d{2})(:\d{2})?\s*(\S*)/i) {
+    my ($val, $et) = @_;
+    # standard format is like "Mon, 1 Jan 2018 12:10:22 EST" (RFC-1123 section 5.2.14)
+    while ($val =~ /(\d+)\s*(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s*(\d+)\s+(\d+):(\d{2})(:\d{2})?\s*(\S*)/i) {
         my ($day,$mon,$yr,$hr,$min,$sec,$tz) = ($1,$2,$3,$4,$5,$6,$7);
         $yr += $yr > 70 ? 1900 : 2000 if $yr < 100;     # boost year to 4 digits if necessary
         $mon = $monthNum{ucfirst lc $mon} or return $val;
         if (not $tz) {
             $tz = '';
-        } elsif ($tzConv{$tz}) {
-            $tz = $tzConv{$tz};
+        } elsif ($tzConv{uc $tz}) {
+            $tz = $tzConv{uc $tz};
         } elsif ($tz =~ /^([-+]\d+):?(\d{2})/) {
             $tz = $1 . ':' . $2;
         } else {
-            return $val;    # (non-standard date)
+            last;       # (non-standard date)
         }
-        $val = sprintf("%.4d:%.2d:%.2d %.2d:%.2d%s%s",$yr,$mon,$day,$hr,$min,$sec||':00',$tz);
+        return sprintf("%.4d:%.2d:%.2d %.2d:%.2d%s%s",$yr,$mon,$day,$hr,$min,$sec||':00',$tz);
+    }
+    if (($et->Options('StrictDate') and not $$et{TAGS_FROM_FILE}) or $et->Options('Validate')) {
+        $et->Warn('Non standard PNG date/time format', 1);
     }
     return $val;
 }
@@ -678,19 +681,24 @@ sub ConvertPNGDate($$)
 sub InversePNGDate($$)
 {
     my ($val, $et) = @_;
-    my $err;
-    if ($val =~ /^(\d{4}):(\d{2}):(\d{2}) (\d{2})(:\d{2})(:\d{2})?(?:\.\d*)?\s*(\S*)/) {
-        my ($yr,$mon,$day,$hr,$min,$sec,$tz) = ($1,$2,$3,$4,$5,$6,$7);
-        $sec or $sec = '';
-        my %monName = map { $monthNum{$_} => $_ } keys %monthNum;
-        $mon = $monName{$mon + 0} or $err = 1;
-        $tz =~ /^(Z|[-+]\d{2}:?\d{2})/ or $err = 1 if length $tz;
-        $tz =~ tr/://d;
-        $val = "$day $mon $yr $hr$min$sec $tz" unless $err;
-    }
-    if ($err and $et->Options('StrictDate')) {
-        warn "Invalid date/time (use YYYY:mm:dd HH:MM:SS[.ss][+/-HH:MM|Z])\n";
-        undef $val;
+    if ($et->Options('StrictDate')) {
+        my $err;
+        if ($val =~ /^(\d{4}):(\d{2}):(\d{2}) (\d{2})(:\d{2})(:\d{2})?(?:\.\d*)?\s*(\S*)/) {
+            my ($yr,$mon,$day,$hr,$min,$sec,$tz) = ($1,$2,$3,$4,$5,$6,$7);
+            $sec or $sec = '';
+            my %monName = map { $monthNum{$_} => $_ } keys %monthNum;
+            $mon = $monName{$mon + 0} or $err = 1;
+            if (length $tz) {
+                $tz =~ /^(Z|[-+]\d{2}:?\d{2})/ or $err = 1;
+                $tz =~ tr/://d;
+                $tz = ' ' . $tz;
+            }
+            $val = "$day $mon $yr $hr$min$sec$tz" unless $err;
+        }
+        if ($err) {
+            warn "Invalid date/time (use YYYY:mm:dd HH:MM:SS[.ss][+/-HH:MM|Z])\n";
+            undef $val;
+        }
     }
     return $val;
 }
@@ -1230,6 +1238,8 @@ sub ProcessPNG($$)
 
     # check to be sure this is a valid PNG/MNG/JNG image
     return 0 unless $raf->Read($sig,8) == 8 and $pngLookup{$sig};
+
+    $$raf{NoBuffer} = 1 if $et->Options('FastScan'); # disable buffering in FastScan mode
 
     my $earlyXMP = $et->Options('PNGEarlyXMP');
     if ($outfile) {

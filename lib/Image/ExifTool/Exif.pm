@@ -55,7 +55,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.05';
+$VERSION = '4.06';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -4149,7 +4149,7 @@ my %subSecConv = (
             3 => 'FocusDistance',   # focus distance in metres (0 is infinity)
             4 => 'SubjectDistance',
             5 => 'ObjectDistance',
-            6 => 'ApproximateFocusDistance ',
+            6 => 'ApproximateFocusDistance',
             7 => 'FocusDistanceLower',
             8 => 'FocusDistanceUpper',
         },

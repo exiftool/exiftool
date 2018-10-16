@@ -869,10 +869,11 @@ When set to 1 while writing a PrintConv date/time value with the DateFormat
 option set, the value is written only if POSIX::strptime or Time::Piece is
 available and can successfully convert the value.
 
-For PNG CreationTime, this option has the additional effect of causing the
-date/time to be reformatted according to PNG 1.2 recommendation (RFC-1123)
-when writing, and a warning to be issued for any non-standard value when
-reading.
+For PNG CreationTime, a setting of 1 has the additional effect of causing
+the date/time to be reformatted according to PNG 1.2 recommendation
+(RFC-1123) when writing, and a warning to be issued for any non-standard
+value when reading (but note that Windows may not recognize PNG date/time
+values in standard format).
 
 =item Struct
 

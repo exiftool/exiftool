@@ -2,10 +2,10 @@ ExifTool by Phil Harvey (phil at owl.phy.queensu.ca)
 ----------------------------------------------------------------------------
 
 ExifTool is a customizable set of Perl modules plus a full-featured
-application for reading and writing meta information in a wide variety of
-files, including the maker note information of many digital cameras by
-various manufacturers such as Canon, Casio, DJI, FLIR, FujiFilm, GE, HP,
-JVC/Victor, Kodak, Leaf, Minolta/Konica-Minolta, Nikon, Nintendo,
+command-line application for reading and writing meta information in a wide
+variety of files, including the maker note information of many digital
+cameras by various manufacturers such as Canon, Casio, DJI, FLIR, FujiFilm,
+GE, HP, JVC/Victor, Kodak, Leaf, Minolta/Konica-Minolta, Nikon, Nintendo,
 Olympus/Epson, Panasonic/Leica, Pentax/Asahi, Phase One, Reconyx, Ricoh,
 Samsung, Sanyo, Sigma/Foveon and Sony.
 
@@ -103,8 +103,8 @@ your home directory, then you would type the following commands in a
 terminal window to extract and run ExifTool:
 
   cd ~/Desktop
-  gzip -dc Image-ExifTool-11.13.tar.gz | tar -xf -
-  cd Image-ExifTool-11.13
+  gzip -dc Image-ExifTool-11.14.tar.gz | tar -xf -
+  cd Image-ExifTool-11.14
   ./exiftool t/images/ExifTool.jpg
 
 Note:  These commands extract meta information from one of the test images. 

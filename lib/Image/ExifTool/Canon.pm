@@ -87,7 +87,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.00';
+$VERSION = '4.01';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -1873,8 +1873,8 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
         Name => 'VignettingCorrUnknown2',
         Condition => '$$valPt !~ /^\0\0\0\0/',
         SubDirectory => {
-            # (the size word is at byte 4 for version 3 of this structure)
-            Validate => 'Image::ExifTool::Canon::Validate($dirData,$subdirStart+4,$size)',
+            # (the size word is at byte 4 for version 3 of this structure, but not always!)
+            # Validate => 'Image::ExifTool::Canon::Validate($dirData,$subdirStart+4,$size)',
             TagTable => 'Image::ExifTool::Canon::VignettingCorrUnknown',
         },
     }],
@@ -2032,7 +2032,8 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
             9 => 'MOV', # (S95 MOV)
             10 => 'MP4', # (SX280 MP4)
             11 => 'CRM', #PH (C200 CRM)
-            13 => 'CR3', #PH (NC)
+            12 => 'CR3', #PH (EOS R)
+            13 => 'CR3+JPEG', #PH (EOS R)
         },
     },
     10 => {

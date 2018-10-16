@@ -1400,15 +1400,17 @@ well as newer tags and values added by later models.</p>
   <br>4 = Center-weighted average</span></td></tr>
 <tr class=b>
 <td title='0x010c = 268'>0x010c</td>
-<td>ShutterSpeedRange</td>
-<td class=c>int32s[3]</td>
+<td>ShutterSpeedRange
+  <br>ShutterSpeedRange</td>
+<td class=c>int32s[3]<br>int32s[4]</td>
 <td><span class=s>[Value 0]
   <br>0 = Disable
   <br>1 = Enable</span></td></tr>
 <tr>
 <td title='0x010d = 269'>0x010d</td>
-<td>ApertureRange</td>
-<td class=c>int32s[3]</td>
+<td>ApertureRange
+  <br>ApertureRange</td>
+<td class=c>int32s[3]<br>int32s[4]</td>
 <td><span class=s>[Value 0]
   <br>0 = Disable
   <br>1 = Enable</span></td></tr>
@@ -1464,7 +1466,26 @@ well as newer tags and values added by later models.</p>
 <td class=c>int32s</td>
 <td><span class=s>0 = Disable
   <br>1 = ISO Speed
-  <br>2 = Shutter Speed</span></td></tr>
+  <br>2 = Shutter Speed
+  <br><span class=n>(EOS R)</span>
+  <br>0 = Disable
+  <br>1 = ISO Speed
+  <br>2 = ISO Speed/Shutter Speed
+  <br>3 = Shutter Speed</span></td></tr>
+<tr>
+<td title='0x0113 = 275'>0x0113</td>
+<td>ExposureCompAutoCancel</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = Enable
+  <br>1 = Disable</span></td></tr>
+<tr class=b>
+<td title='0x0114 = 276'>0x0114</td>
+<td>AELockMeterModeAfterFocus</td>
+<td class=c>int32s</td>
+<td><span class=s>Bit 0 = Evaluative
+  <br>Bit 1 = Partial
+  <br>Bit 2 = Spot
+  <br>Bit 3 = Center-weighted</span></td></tr>
 <tr>
 <td title='0x0201 = 513'>0x0201</td>
 <td>LongExposureNoiseReduction</td>
@@ -2043,6 +2064,29 @@ well as newer tags and values added by later models.</p>
 <td><span class=s>0 = Disable
   <br>1 = Enable</span></td></tr>
 <tr>
+<td title='0x0712 = 1810'>0x0712</td>
+<td>ControlRingRotation</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = Normal
+  <br>1 = Reversed</span></td></tr>
+<tr class=b>
+<td title='0x0713 = 1811'>0x0713</td>
+<td>FocusRingRotation</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = Normal
+  <br>1 = Reversed</span></td></tr>
+<tr>
+<td title='0x0714 = 1812'>0x0714</td>
+<td>RFLensMFFocusRingSensitivity</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = Varies With Rotation Speed
+  <br>1 = Linked To Rotation Angle</span></td></tr>
+<tr class=b>
+<td title='0x0715 = 1813'>0x0715</td>
+<td>CustomizeDials</td>
+<td class=c>int32s</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td title='0x080b = 2059'>0x080b</td>
 <td>FocusingScreen</td>
 <td class=c>int32s</td>
@@ -2131,11 +2175,17 @@ well as newer tags and values added by later models.</p>
 <td class=c>int32s</td>
 <td><span class=s>0 = Enable
   <br>1 = Disable</span></td></tr>
+<tr>
+<td title='0x0815 = 2069'>0x0815</td>
+<td>AddIPTCInformation</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = Disable
+  <br>1 = Enable</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Mar 4, 2016</i>
+<br><i>Last revised Oct 11, 2018</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

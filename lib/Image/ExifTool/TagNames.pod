@@ -7319,12 +7319,16 @@ well as newer tags and values added by later models.
   0x010a   UsableMeteringModes                  int32s[2]
   0x010b   ExposureModeInManual                 int32s
   0x010c   ShutterSpeedRange                    int32s[3]
+           ShutterSpeedRange                    int32s[4]
   0x010d   ApertureRange                        int32s[3]
+           ApertureRange                        int32s[4]
   0x010e   ApplyShootingMeteringMode            int32s[8]
   0x010f   FlashSyncSpeedAv                     int32s
   0x0110   AEMicroadjustment                    int32s[3]
   0x0111   FEMicroadjustment                    int32s[3]
   0x0112   SameExposureForNewAperture           int32s
+  0x0113   ExposureCompAutoCancel               int32s
+  0x0114   AELockMeterModeAfterFocus            int32s
   0x0201   LongExposureNoiseReduction           int32s
   0x0202   HighISONoiseReduction                int32s
   0x0203   HighlightTonePriority                int32s
@@ -7392,6 +7396,10 @@ well as newer tags and values added by later models.
   0x070f   MultiFunctionLock                    int32s
   0x0710   TrashButtonFunction                  int32s
   0x0711   ShutterReleaseWithoutLens            int32s
+  0x0712   ControlRingRotation                  int32s
+  0x0713   FocusRingRotation                    int32s
+  0x0714   RFLensMFFocusRingSensitivity         int32s
+  0x0715   CustomizeDials                       int32s
   0x080b   FocusingScreen                       int32s
   0x080c   TimerLength                          int32s[4]
   0x080d   ShortReleaseTimeLag                  int32s
@@ -7402,6 +7410,7 @@ well as newer tags and values added by later models.
   0x0812   MemoAudioQuality                     int32s
   0x0813   DefaultEraseOption                   int32s
   0x0814   RetractLensOnPowerOff                int32s
+  0x0815   AddIPTCInformation                   int32s
 
 =head2 CanonVRD Tags
 

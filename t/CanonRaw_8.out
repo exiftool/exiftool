@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.94
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.14
 [File, System, Image] FileName - File Name: CanonRaw.cr3
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 51 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2018:03:19 13:47:34-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2018:04:18 11:52:17-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2018:04:13 10:49:45-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2018:10:15 13:55:47-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2018:10:09 12:23:38-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: CR3
 [File, File, Image] FileTypeExtension - File Type Extension: cr3
@@ -140,7 +140,7 @@
 [MakerNotes, Canon, Camera] 4 - Canon Flash Mode: Off
 [MakerNotes, Canon, Camera] 5 - Continuous Drive: Single
 [MakerNotes, Canon, Camera] 7 - Focus Mode: AF + MF
-[MakerNotes, Canon, Camera] 9 - Record Mode: CR3
+[MakerNotes, Canon, Camera] 9 - Record Mode: CR3+JPEG
 [MakerNotes, Canon, Camera] 10 - Canon Image Size: Large
 [MakerNotes, Canon, Camera] 11 - Easy Mode: Manual
 [MakerNotes, Canon, Camera] 12 - Digital Zoom: None
@@ -300,7 +300,7 @@
 [MakerNotes, Track4, Camera] 4 - Canon Flash Mode: Off
 [MakerNotes, Track4, Camera] 5 - Continuous Drive: Single
 [MakerNotes, Track4, Camera] 7 - Focus Mode: AF + MF
-[MakerNotes, Track4, Camera] 9 - Record Mode: CR3
+[MakerNotes, Track4, Camera] 9 - Record Mode: CR3+JPEG
 [MakerNotes, Track4, Camera] 10 - Canon Image Size: Large
 [MakerNotes, Track4, Camera] 11 - Easy Mode: Manual
 [MakerNotes, Track4, Camera] 12 - Digital Zoom: None

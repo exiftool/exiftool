@@ -19,7 +19,7 @@ use Image::ExifTool qw(:DataAccess);
 use Image::ExifTool::Canon;
 use Image::ExifTool::Exif;
 
-$VERSION = '1.54';
+$VERSION = '1.55';
 
 sub ProcessCanonCustom($$$);
 sub ProcessCanonCustom2($$$);
@@ -1360,8 +1360,9 @@ my %convPFn = ( PrintConv => \&ConvertPfn, PrintConvInv => \&ConvertPfnInv );
             4 => 'Center-weighted average',
         },
     },
-    0x010c => {
+    0x010c => [{
         Name => 'ShutterSpeedRange',
+        Condition => '$count == 3',
         Count => 3,
         ValueConv => [
             undef,
@@ -1383,9 +1384,38 @@ my %convPFn = ( PrintConv => \&ConvertPfn, PrintConvInv => \&ConvertPfnInv );
             '$val=~m{([\d./]+)} ? eval $1 : 0',
             '$val=~m{([\d./]+)} ? eval $1 : 0',
         ],
-    },
-    0x010d => {
+    },{ # (EOS R)
+        Name => 'ShutterSpeedRange',
+        Condition => '$count == 4',
+        Count => 4,
+        ValueConv => [ # (NC)
+            'exp(-$val/(1600*log(2)))',
+            'exp(-$val/(1600*log(2)))',
+            'exp(-$val/(1600*log(2)))',
+            'exp(-$val/(1600*log(2)))',
+        ],
+        ValueConvInv => [
+            'int(-log($val)*1600*log(2) + 0.5)',
+            'int(-log($val)*1600*log(2) + 0.5)',
+            'int(-log($val)*1600*log(2) + 0.5)',
+            'int(-log($val)*1600*log(2) + 0.5)',
+        ],
+        PrintConv => [ # (NC)
+            '"Manual: Hi " . Image::ExifTool::Exif::PrintExposureTime($val)',
+            '"Lo " . Image::ExifTool::Exif::PrintExposureTime($val)',
+            '"Auto: Hi " . Image::ExifTool::Exif::PrintExposureTime($val)',
+            '"Lo " . Image::ExifTool::Exif::PrintExposureTime($val)',
+        ],
+        PrintConvInv => [
+            '$val=~m{([\d./]+)} ? eval $1 : 0',
+            '$val=~m{([\d./]+)} ? eval $1 : 0',
+            '$val=~m{([\d./]+)} ? eval $1 : 0',
+            '$val=~m{([\d./]+)} ? eval $1 : 0',
+        ],
+    }],
+    0x010d => [{
         Name => 'ApertureRange',
+        Condition => '$count == 3',
         Count => 3,
         ValueConv => [
             undef,
@@ -1407,7 +1437,35 @@ my %convPFn = ( PrintConv => \&ConvertPfn, PrintConvInv => \&ConvertPfnInv );
             '$val=~/([\d.]+)/ ? $1 : 0',
             '$val=~/([\d.]+)/ ? $1 : 0',
         ],
-    },
+    },{ # (EOS R)
+        Name => 'ApertureRange',
+        Condition => '$count == 4',
+        Count => 4,
+        ValueConv => [ # (NC)
+            'exp($val/2400)',
+            'exp($val/2400)',
+            'exp($val/2400)',
+            'exp($val/2400)',
+        ],
+        ValueConvInv => [
+            'int(log($val)*2400) + 0.5)',
+            'int(log($val)*2400) + 0.5)',
+            'int(log($val)*2400) + 0.5)',
+            'int(log($val)*2400) + 0.5)',
+        ],
+        PrintConv => [ # (NC)
+            'sprintf("Manual: Closed %.2g",$val)',
+            'sprintf("Open %.2g",$val)',
+            'sprintf("Auto: Closed %.2g",$val)',
+            'sprintf("Open %.2g",$val)',
+        ],
+        PrintConvInv => [
+            '$val=~/([\d.]+)/ ? $1 : 0',
+            '$val=~/([\d.]+)/ ? $1 : 0',
+            '$val=~/([\d.]+)/ ? $1 : 0',
+            '$val=~/([\d.]+)/ ? $1 : 0',
+        ],
+    }],
     0x010e => {
         Name => 'ApplyShootingMeteringMode',
         Count => 8,
@@ -1481,13 +1539,36 @@ my %convPFn = ( PrintConv => \&ConvertPfn, PrintConvInv => \&ConvertPfnInv );
         Count => 3,
         PrintConv => [ \%disableEnable ],
     },
-    0x0112 => { # (5DS)
+    0x0112 => [{ # (5DS)
         Name => 'SameExposureForNewAperture',
         PrintConv => {
             0 => 'Disable',
             1 => 'ISO Speed',
             2 => 'Shutter Speed',
         },
+    },{ # (EOS R)
+        Name => 'SameExposureForNewAperture',
+        Notes => 'EOS R',
+        PrintConv => {
+            0 => 'Disable',
+            1 => 'ISO Speed',
+            2 => 'ISO Speed/Shutter Speed',
+            3 => 'Shutter Speed',
+        },
+    }],
+    0x0113 => { # (200D)
+        Name => 'ExposureCompAutoCancel',
+        PrintConv => \%enableDisable,
+    },
+    0x0114 => { # (R)
+        Name => 'AELockMeterModeAfterFocus',
+        # metering modes where AE lock after focus applies:
+        PrintConv => { BITMASK => { # (NC)
+            0 => 'Evaluative',
+            1 => 'Partial',
+            2 => 'Spot',
+            3 => 'Center-weighted',
+        }},
     },
     #### 2a) Image
     0x0201 => {
@@ -2258,16 +2339,41 @@ my %convPFn = ( PrintConv => \&ConvertPfn, PrintConvInv => \&ConvertPfnInv );
             }},
         ],
     },
-    0x710 => { # (M)
+    0x0710 => { # (M)
         Name => 'TrashButtonFunction',
         PrintConv => {
             0 => 'Normal (set center AF point)',
             1 => 'Depth-of-field preview',
         },
     },
-    0x711 => { # (M)
+    0x0711 => { # (M)
         Name => 'ShutterReleaseWithoutLens',
         PrintConv => \%disableEnable,
+    },
+    0x0712 => { # (R)
+        Name => 'ControlRingRotation',
+        PrintConv => {
+            0 => 'Normal',
+            1 => 'Reversed',
+        },
+    },
+    0x0713 => { # (R)
+        Name => 'FocusRingRotation',
+        PrintConv => {
+            0 => 'Normal',
+            1 => 'Reversed',
+        },
+    },
+    0x0714 => { # (R)
+        Name => 'RFLensMFFocusRingSensitivity',
+        PrintConv => {
+            0 => 'Varies With Rotation Speed',
+            1 => 'Linked To Rotation Angle',
+        },
+    },
+    0x0715 => { # (R)
+        Name => 'CustomizeDials', # (NC, may be CustomizeM-FnBar)
+        # (too much stuff to decode)
     },
     #### 4b) Others
     0x080b => [
@@ -2397,6 +2503,10 @@ my %convPFn = ( PrintConv => \&ConvertPfn, PrintConvInv => \&ConvertPfnInv );
     0x0814 => { # (5DS)
         Name => 'RetractLensOnPowerOff',
         PrintConv => \%enableDisable,
+    },
+    0x0815 => { # (R)
+        Name => 'AddIPTCInformation',
+        PrintConv => \%disableEnable,
     },
 );
 

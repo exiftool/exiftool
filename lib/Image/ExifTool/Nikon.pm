@@ -59,7 +59,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.52';
+$VERSION = '3.53';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -1732,8 +1732,11 @@ my %binaryDataAttrs = (
             2 => 'Uncompressed', #JD - D100 (even though TIFF compression is set!)
             3 => 'Lossless',
             4 => 'Lossy (type 2)',
+            5 => 'Striped packed 12 bits', #IB
             6 => 'Uncompressed (reduced to 12 bit)', #IB
+            7 => 'Unpacked 12 bits', #IB (padded to 16)
             8 => 'Small', #IB
+            9 => 'Packed 12 bits', #IB (2 pixels in 3 bytes)
         },
     },
     0x0094 => { Name => 'Saturation',       Writable => 'int16s' },

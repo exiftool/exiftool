@@ -859,7 +859,7 @@ sub ProcessFreeGPS($$$)
         return 0 unless $stat eq 'A' and ($latRef eq 'N' or $latRef eq 'S') and
                                          ($lonRef eq 'E' or $lonRef eq 'W');
         ($lat,$lon,$spd,$trk) = unpack 'f*', pack 'L*', $lat, $lon, $spd, $trk;
-        $yr += $yr >= 70 ? 1900 : 2000;
+        $yr += 2000 if $yr < 2000;
         $spd *= $knotsToKph;    # convert speed to km/h
         # ($trk is not confirmed; may be GPSImageDirection, ref PH)
     }
@@ -1091,6 +1091,7 @@ ATCRec: for ($recPos = 0x30; $recPos + 52 < $gpsBlockSize; $recPos += 52) {
             $alt = GetFloat($dataPt, 0x58) / 1000; # (NC)
         } else {
             # Type 3 (ref 2)
+            # (no sample with this format)
             $lat = GetFloat($dataPt, 0x4c);
             $lon = GetFloat($dataPt, 0x50);
             $spd = GetFloat($dataPt, 0x54) * $knotsToKph;

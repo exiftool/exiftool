@@ -1,6 +1,6 @@
 Summary: perl module for image data extraction
 Name: perl-Image-ExifTool
-Version: 11.13
+Version: 11.14
 Release: 1
 License: Artistic/GPL
 Group: Development/Libraries/Perl
@@ -10,12 +10,12 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 
 %description
 ExifTool is a customizable set of Perl modules plus a full-featured
-application for reading and writing meta information in a wide variety of
-files, including the maker note information of many digital cameras by
-various manufacturers such as Canon, Casio, DJI, FLIR, FujiFilm, GE, GoPro,
-HP, JVC/Victor, Kodak, Leaf, Minolta/Konica-Minolta, Nikon, Nintendo,
-Olympus/Epson, Panasonic/Leica, Pentax/Asahi, Phase One, Reconyx, Ricoh,
-Samsung, Sanyo, Sigma/Foveon and Sony.
+command-line application for reading and writing meta information in a wide
+variety of files, including the maker note information of many digital
+cameras by various manufacturers such as Canon, Casio, DJI, FLIR, FujiFilm,
+GE, GoPro, HP, JVC/Victor, Kodak, Leaf, Minolta/Konica-Minolta, Nikon,
+Nintendo, Olympus/Epson, Panasonic/Leica, Pentax/Asahi, Phase One, Reconyx,
+Ricoh, Samsung, Sanyo, Sigma/Foveon and Sony.
 
 Below is a list of file types and meta information formats currently
 supported by ExifTool (r = read, w = write, c = create):

@@ -18,19 +18,19 @@ Graphics) images.  See <a href="http://bellard.org/bpg/">http://bellard.org/bpg/
 <td class=r title='4 = 0x4'>4</td>
 <td>PixelFormat</td>
 <td class=c>no</td>
-<td><span class=s>[Mask 0xe000]</span><table class=cols><tr>
-  <td>0x0 = Grayscale
-  <br>0x2000 = 4:2:0 (chroma at 0.5, 0.5)
-  <br>0x4000 = 4:2:2 (chroma at 0.5, 0)
-  <br>0x6000 = 4:4:4
-  <br>0x8000 = 4:2:0 (chroma at 0, 0.5)
-  <br>0xa000 = 4:2:2 (chroma at 0, 0)</td></tr></table>
+<td><span class=s>[val &gt;&gt; 13 &amp; 0x7]</span><table class=cols><tr>
+  <td>0 = Grayscale
+  <br>1 = 4:2:0 (chroma at 0.5, 0.5)
+  <br>2 = 4:2:2 (chroma at 0.5, 0)
+  <br>3 = 4:4:4
+  <br>4 = 4:2:0 (chroma at 0, 0.5)
+  <br>5 = 4:2:2 (chroma at 0, 0)</td></tr></table>
 </td></tr>
 <tr class=b>
 <td class=r title='4 = 0x4'>4.1</td>
 <td>Alpha</td>
 <td class=c>no</td>
-<td><span class=s>[Mask 0x1004]
+<td><span class=s>[val &amp; 0x1004]
   <br>0x0 = No Alpha Plane
   <br>0x4 = Alpha Exists (W color component)
   <br>0x1000 = Alpha Exists (color not premultiplied)
@@ -39,24 +39,24 @@ Graphics) images.  See <a href="http://bellard.org/bpg/">http://bellard.org/bpg/
 <td class=r title='4 = 0x4'>4.2</td>
 <td>BitDepth</td>
 <td class=c>no</td>
-<td><span class=s>[Mask 0xf00]</span></td></tr>
+<td><span class=s>[val &gt;&gt; 8 &amp; 0xf]</span></td></tr>
 <tr class=b>
 <td class=r title='4 = 0x4'>4.3</td>
 <td>ColorSpace</td>
 <td class=c>no</td>
-<td><span class=s>[Mask 0xf0]</span><table class=cols><tr>
-  <td>0x0 = YCbCr (BT 601)
-  <br>0x10 = RGB
-  <br>0x20 = YCgCo
-  <br>0x30 = YCbCr (BT 709)
-  <br>0x40 = YCbCr (BT 2020)
-  <br>0x50 = BT 2020 Constant Luminance</td></tr></table>
+<td><span class=s>[val &gt;&gt; 4 &amp; 0xf]</span><table class=cols><tr>
+  <td>0 = YCbCr (BT 601)
+  <br>1 = RGB
+  <br>2 = YCgCo
+  <br>3 = YCbCr (BT 709)
+  <br>4 = YCbCr (BT 2020)
+  <br>5 = BT 2020 Constant Luminance</td></tr></table>
 </td></tr>
 <tr>
 <td class=r title='4 = 0x4'>4.4</td>
 <td>Flags</td>
 <td class=c>no</td>
-<td><span class=s>[Mask 0x0b]
+<td><span class=s>[val &amp; 0xb]
   <br>Bit 0 = Animation
   <br>Bit 1 = Limited Range
   <br>Bit 3 = Extension Present</span></td></tr>
@@ -112,7 +112,7 @@ Graphics) images.  See <a href="http://bellard.org/bpg/">http://bellard.org/bpg/
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jul 7, 2016</i>
+<br><i>Last revised Oct 24, 2018</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

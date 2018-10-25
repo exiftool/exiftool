@@ -1581,9 +1581,9 @@ FaceDetectFrameSize)</span></span></td></tr>
 <td class=r title='586 = 0x24a'>586.1</td>
 <td>VibrationReduction</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x08]
-  <br>0x0 = Off
-  <br>0x8 = On</span></td></tr>
+<td><span class=s>[val &gt;&gt; 3 &amp; 0x1]
+  <br>0 = Off
+  <br>1 = On</span></td></tr>
 <tr class=b>
 <td class=r title='729 = 0x2d9'>729</td>
 <td>CustomSettingsD40</td>
@@ -1612,45 +1612,45 @@ FaceDetectFrameSize)</span></span></td></tr>
 <td class=r title='590 = 0x24e'>590.1</td>
 <td>Rotation</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x07]
-  <br>0x0 = Horizontal
-  <br>0x1 = Rotate 270 CW
-  <br>0x2 = Rotate 90 CW
-  <br>0x3 = Rotate 180</span></td></tr>
+<td><span class=s>[val &amp; 0x7]
+  <br>0 = Horizontal
+  <br>1 = Rotate 270 CW
+  <br>2 = Rotate 90 CW
+  <br>3 = Rotate 180</span></td></tr>
 <tr class=b>
 <td class=r title='590 = 0x24e'>590.2</td>
 <td>VibrationReduction</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x18]
-  <br>0x0 = Off
-  <br>0x18 = On</span></td></tr>
+<td><span class=s>[val &gt;&gt; 3 &amp; 0x3]
+  <br>0 = Off
+  <br>3 = On</span></td></tr>
 <tr>
 <td class=r title='590 = 0x24e'>590.3</td>
 <td>FlashFired</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0xe0]
-  <br>Bit 6 = Internal
-  <br>Bit 7 = External</span></td></tr>
+<td><span class=s>[val &gt;&gt; 5 &amp; 0x7]
+  <br>Bit 1 = Internal
+  <br>Bit 2 = External</span></td></tr>
 <tr class=b>
 <td class=r title='708 = 0x2c4'>708</td>
 <td>NikonImageSize</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0xf0]
-  <br>0x0 = Large (10.0 M)
-  <br>0x10 = Medium (5.6 M)
-  <br>0x20 = Small (2.5 M)</span></td></tr>
+<td><span class=s>[val &gt;&gt; 4 &amp; 0xf]
+  <br>0 = Large (10.0 M)
+  <br>1 = Medium (5.6 M)
+  <br>2 = Small (2.5 M)</span></td></tr>
 <tr>
 <td class=r title='708 = 0x2c4'>708.1</td>
 <td>ImageQuality</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x0f]</span><table class=cols><tr>
-  <td>0x0 = NEF (RAW)
-  <br>0x1 = JPEG Fine
-  <br>0x2 = JPEG Normal
-  <br>0x3 = JPEG Basic
-  <br>0x4 = NEF (RAW) + JPEG Fine
-  <br>0x5 = NEF (RAW) + JPEG Normal
-  <br>0x6 = NEF (RAW) + JPEG Basic</td></tr></table>
+<td><span class=s>[val &amp; 0xf]</span><table class=cols><tr>
+  <td>0 = NEF (RAW)
+  <br>1 = JPEG Fine
+  <br>2 = JPEG Normal
+  <br>3 = JPEG Basic
+  <br>4 = NEF (RAW) + JPEG Fine
+  <br>5 = NEF (RAW) + JPEG Normal
+  <br>6 = NEF (RAW) + JPEG Basic</td></tr></table>
 </td></tr>
 <tr class=b>
 <td class=r title='748 = 0x2ec'>748</td>
@@ -1721,23 +1721,23 @@ firmware 1.00 and earlier.</p>
 <td class=r title='723 = 0x2d3'>723.1</td>
 <td>NikonImageSize</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x18]
-  <br>0x0 = Large
-  <br>0x8 = Medium
-  <br>0x10 = Small</span></td></tr>
+<td><span class=s>[val &gt;&gt; 3 &amp; 0x3]
+  <br>0 = Large
+  <br>1 = Medium
+  <br>2 = Small</span></td></tr>
 <tr>
 <td class=r title='723 = 0x2d3'>723.2</td>
 <td>ImageQuality</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x07]</span><table class=cols><tr>
-  <td>0x0 = NEF (RAW) + JPEG Fine
-  <br>0x1 = NEF (RAW) + JPEG Norm
-  <br>0x2 = NEF (RAW) + JPEG Basic
-  <br>0x3 = NEF (RAW)
-  <br>0x4 = TIF (RGB)
-  <br>0x5 = JPEG Fine
-  <br>0x6 = JPEG Normal
-  <br>0x7 = JPEG Basic</td></tr></table>
+<td><span class=s>[val &amp; 0x7]</span><table class=cols><tr>
+  <td>0 = NEF (RAW) + JPEG Fine
+  <br>1 = NEF (RAW) + JPEG Norm
+  <br>2 = NEF (RAW) + JPEG Basic
+  <br>3 = NEF (RAW)
+  <br>4 = TIF (RGB)
+  <br>5 = JPEG Fine
+  <br>6 = JPEG Normal
+  <br>7 = JPEG Basic</td></tr></table>
 </td></tr>
 <tr class=b>
 <td class=r title='769 = 0x301'>769</td>
@@ -1795,23 +1795,23 @@ firmware 1.10, 2.00, 2.01 and 2.02.</p>
 <td class=r title='732 = 0x2dc'>732.1</td>
 <td>NikonImageSize</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x18]
-  <br>0x0 = Large
-  <br>0x8 = Medium
-  <br>0x10 = Small</span></td></tr>
+<td><span class=s>[val &gt;&gt; 3 &amp; 0x3]
+  <br>0 = Large
+  <br>1 = Medium
+  <br>2 = Small</span></td></tr>
 <tr>
 <td class=r title='732 = 0x2dc'>732.2</td>
 <td>ImageQuality</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x07]</span><table class=cols><tr>
-  <td>0x0 = NEF (RAW) + JPEG Fine
-  <br>0x1 = NEF (RAW) + JPEG Norm
-  <br>0x2 = NEF (RAW) + JPEG Basic
-  <br>0x3 = NEF (RAW)
-  <br>0x4 = TIF (RGB)
-  <br>0x5 = JPEG Fine
-  <br>0x6 = JPEG Normal
-  <br>0x7 = JPEG Basic</td></tr></table>
+<td><span class=s>[val &amp; 0x7]</span><table class=cols><tr>
+  <td>0 = NEF (RAW) + JPEG Fine
+  <br>1 = NEF (RAW) + JPEG Norm
+  <br>2 = NEF (RAW) + JPEG Basic
+  <br>3 = NEF (RAW)
+  <br>4 = TIF (RGB)
+  <br>5 = JPEG Fine
+  <br>6 = JPEG Normal
+  <br>7 = JPEG Basic</td></tr></table>
 </td></tr>
 <tr class=b>
 <td class=r title='778 = 0x30a'>778</td>
@@ -2269,15 +2269,15 @@ firmware 1.02f.</p>
 <td class=r title='464 = 0x1d0'>464</td>
 <td>SecondarySlotFunction</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x03]
-  <br>0x0 = Overflow
-  <br>0x2 = Backup
-  <br>0x3 = NEF Primary + JPG Secondary</span></td></tr>
+<td><span class=s>[val &amp; 0x3]
+  <br>0 = Overflow
+  <br>2 = Backup
+  <br>3 = NEF Primary + JPG Secondary</span></td></tr>
 <tr>
 <td class=r title='5974 = 0x1756'>5974</td>
 <td>AEBracketingSteps</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0xff]</span><table class=cols><tr>
+<td><span class=s>[val &amp; 0xff]</span><table class=cols><tr>
   <td>0x0 = AE Bracketing Disabled
   <br>0x20 = AE Bracketing Disabled
   <br>0x30 = AE Bracketing Disabled
@@ -2332,7 +2332,7 @@ firmware 1.02f.</p>
 <td class=r title='5975 = 0x1757'>5975</td>
 <td>WBBracketingSteps</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0xff]</span><table class=cols><tr>
+<td><span class=s>[val &amp; 0xff]</span><table class=cols><tr>
   <td>0x0 = WB Bracketing Disabled
   <br>0x1 = b3F 1
   <br>0x2 = A3F 1
@@ -2365,59 +2365,59 @@ firmware 1.02f.</p>
 <td class=r title='5982 = 0x175e'>5982</td>
 <td>D810MeteringMode</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x03]
-  <br>0x0 = Matrix
-  <br>0x1 = Center
-  <br>0x2 = Spot
-  <br>0x3 = Highlight</span></td></tr>
+<td><span class=s>[val &amp; 0x3]
+  <br>0 = Matrix
+  <br>1 = Center
+  <br>2 = Spot
+  <br>3 = Highlight</span></td></tr>
 <tr class=b>
 <td class=r title='6236 = 0x185c'>6236</td>
 <td>ISOAutoShutterTime</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x3f]</span><table class=cols><tr>
-  <td>0x0 = 1/4000 s
-  <br>0x1 = 1/3200 s
-  <br>0x2 = 1/2500 s
-  <br>0x3 = 1/2000 s
-  <br>0x4 = 1/1600 s
-  <br>0x5 = 1/1250 s
-  <br>0x6 = 1/1000 s
-  <br>0x7 = 1/800 s
-  <br>0x8 = 1/640 s
-  <br>0x9 = 1/500 s
-  <br>0xa = 1/400 s
-  <br>0xb = 1/320 s
-  <br>0xc = 1/250 s
-  <br>0xd = 1/200 s
-  <br>0xe = 1/160 s
-  <br>0xf = 1/125 s
-  <br>0x10 = 1/100 s
-  <br>0x11 = 1/80 s
-  <br>0x12 = 1/60 s</td><td>&nbsp;&nbsp;</td>
-  <td>0x13 = 1/50 s
-  <br>0x14 = 1/40 s
-  <br>0x15 = 1/30 s
-  <br>0x16 = 1/15 s
-  <br>0x17 = 1/8 s
-  <br>0x18 = 1/4 s
-  <br>0x19 = 1/2 s
-  <br>0x1a = 1 s
-  <br>0x1b = 2 s
-  <br>0x1c = 4 s
-  <br>0x1d = 8 s
-  <br>0x1e = 15 s
-  <br>0x1f = 30 s
-  <br>0x20 = Auto (Slowest)
-  <br>0x21 = Auto (Slower)
-  <br>0x22 = Auto
-  <br>0x23 = Auto (Faster)
-  <br>0x24 = Auto (Fastest)</td></tr></table>
+<td><span class=s>[val &amp; 0x3f]</span><table class=cols><tr>
+  <td>0 = 1/4000 s
+  <br>1 = 1/3200 s
+  <br>2 = 1/2500 s
+  <br>3 = 1/2000 s
+  <br>4 = 1/1600 s
+  <br>5 = 1/1250 s
+  <br>6 = 1/1000 s
+  <br>7 = 1/800 s
+  <br>8 = 1/640 s
+  <br>9 = 1/500 s
+  <br>10 = 1/400 s
+  <br>11 = 1/320 s
+  <br>12 = 1/250 s
+  <br>13 = 1/200 s
+  <br>14 = 1/160 s
+  <br>15 = 1/125 s
+  <br>16 = 1/100 s
+  <br>17 = 1/80 s
+  <br>18 = 1/60 s</td><td>&nbsp;&nbsp;</td>
+  <td>19 = 1/50 s
+  <br>20 = 1/40 s
+  <br>21 = 1/30 s
+  <br>22 = 1/15 s
+  <br>23 = 1/8 s
+  <br>24 = 1/4 s
+  <br>25 = 1/2 s
+  <br>26 = 1 s
+  <br>27 = 2 s
+  <br>28 = 4 s
+  <br>29 = 8 s
+  <br>30 = 15 s
+  <br>31 = 30 s
+  <br>32 = Auto (Slowest)
+  <br>33 = Auto (Slower)
+  <br>34 = Auto
+  <br>35 = Auto (Faster)
+  <br>36 = Auto (Fastest)</td></tr></table>
 </td></tr>
 <tr>
 <td class=r title='6237 = 0x185d'>6237</td>
 <td>ISOAutoHiLimit</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0xff]</span><table class=cols><tr>
+<td><span class=s>[val &amp; 0xff]</span><table class=cols><tr>
   <td>0x24 = ISO 200
   <br>0x26 = ISO 250
   <br>0x27 = ISO 280
@@ -2509,29 +2509,29 @@ firmware 1.02f.</p>
 <td class=r title='1937 = 0x791'>1937</td>
 <td>PhotoShootingMenuBankImageArea</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x07]
-  <br>0x0 = FX (36x24)
-  <br>0x1 = DX (24x16)
-  <br>0x2 = 5:4 (30x24)
-  <br>0x3 = 1.2x (30x20)
-  <br>0x4 = 1:1 (24x24)</span></td></tr>
+<td><span class=s>[val &amp; 0x7]
+  <br>0 = FX (36x24)
+  <br>1 = DX (24x16)
+  <br>2 = 5:4 (30x24)
+  <br>3 = 1.2x (30x20)
+  <br>4 = 1:1 (24x24)</span></td></tr>
 <tr>
 <td class=r title='4029 = 0xfbd'>4029</td>
 <td>PhotoShootingMenuBank</td>
 <td class=c>int8u</td>
 <td><span class=s><span class=n>(valid for JPEG images only)</span>
-  <br>[Mask 0x03]
-  <br>0x0 = A
-  <br>0x1 = B
-  <br>0x2 = C
-  <br>0x3 = D</span></td></tr>
+  <br>[val &amp; 0x3]
+  <br>0 = A
+  <br>1 = B
+  <br>2 = C
+  <br>3 = D</span></td></tr>
 <tr class=b>
 <td class=r title='4031 = 0xfbf'>4031</td>
 <td>PrimarySlot</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x80]
-  <br>0x0 = XQD Card
-  <br>0x80 = SD Card</span></td></tr>
+<td><span class=s>[val &gt;&gt; 7 &amp; 0x1]
+  <br>0 = XQD Card
+  <br>1 = SD Card</span></td></tr>
 <tr>
 <td class=r title='4152 = 0x1038'>4152</td>
 <td>CustomSettingsD850</td>
@@ -2705,15 +2705,15 @@ firmware 1.01b.</p>
 <td class=r title='464 = 0x1d0'>464</td>
 <td>SecondarySlotFunction</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x03]
-  <br>0x0 = Overflow
-  <br>0x2 = Backup
-  <br>0x3 = NEF Primary + JPG Secondary</span></td></tr>
+<td><span class=s>[val &amp; 0x3]
+  <br>0 = Overflow
+  <br>2 = Backup
+  <br>3 = NEF Primary + JPG Secondary</span></td></tr>
 <tr class=b>
 <td class=r title='5964 = 0x174c'>5964</td>
 <td>AEBracketingSteps</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0xff]</span><table class=cols><tr>
+<td><span class=s>[val &amp; 0xff]</span><table class=cols><tr>
   <td>0x0 = AE Bracketing Disabled
   <br>0x20 = AE Bracketing Disabled
   <br>0x30 = AE Bracketing Disabled
@@ -2768,7 +2768,7 @@ firmware 1.01b.</p>
 <td class=r title='5965 = 0x174d'>5965</td>
 <td>WBBracketingSteps</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0xff]</span><table class=cols><tr>
+<td><span class=s>[val &amp; 0xff]</span><table class=cols><tr>
   <td>0x0 = WB Bracketing Disabled
   <br>0x1 = b3F 1
   <br>0x2 = A3F 1
@@ -2801,13 +2801,13 @@ firmware 1.01b.</p>
 <td class=r title='6221 = 0x184d'>6221</td>
 <td>ReleaseMode</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0xff]</span><table class=cols><tr>
-  <td>0x0 = Single Frame
-  <br>0x1 = Continuous High Speed
-  <br>0x3 = Continuous Low Speed
-  <br>0x4 = Timer
-  <br>0x20 = Mirror-Up
-  <br>0x40 = Quiet</td></tr></table>
+<td><span class=s>[val &amp; 0xff]</span><table class=cols><tr>
+  <td>0 = Single Frame
+  <br>1 = Continuous High Speed
+  <br>3 = Continuous Low Speed
+  <br>4 = Timer
+  <br>32 = Mirror-Up
+  <br>64 = Quiet</td></tr></table>
 </td></tr>
 <tr>
 <td class=r title='6301 = 0x189d'>6301</td>
@@ -2819,58 +2819,58 @@ firmware 1.01b.</p>
 <td class=r title='6338 = 0x18c2'>6338</td>
 <td>MultiSelectorLiveViewMode</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0xc0]
-  <br>0x0 = Reset
-  <br>0x40 = Zoom
-  <br>0xc0 = None</span></td></tr>
+<td><span class=s>[val &gt;&gt; 6 &amp; 0x3]
+  <br>0 = Reset
+  <br>1 = Zoom
+  <br>3 = None</span></td></tr>
 <tr>
 <td class=r title='6378 = 0x18ea'>6378</td>
 <td>ISOAutoShutterTime</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x3f]</span><table class=cols><tr>
-  <td>0x0 = 1/4000 s
-  <br>0x1 = 1/3200 s
-  <br>0x2 = 1/2500 s
-  <br>0x3 = 1/2000 s
-  <br>0x4 = 1/1600 s
-  <br>0x5 = 1/1250 s
-  <br>0x6 = 1/1000 s
-  <br>0x7 = 1/800 s
-  <br>0x8 = 1/640 s
-  <br>0x9 = 1/500 s
-  <br>0xa = 1/400 s
-  <br>0xb = 1/320 s
-  <br>0xc = 1/250 s
-  <br>0xd = 1/200 s
-  <br>0xe = 1/160 s
-  <br>0xf = 1/125 s
-  <br>0x10 = 1/100 s
-  <br>0x11 = 1/80 s
-  <br>0x12 = 1/60 s</td><td>&nbsp;&nbsp;</td>
-  <td>0x13 = 1/50 s
-  <br>0x14 = 1/40 s
-  <br>0x15 = 1/30 s
-  <br>0x16 = 1/15 s
-  <br>0x17 = 1/8 s
-  <br>0x18 = 1/4 s
-  <br>0x19 = 1/2 s
-  <br>0x1a = 1 s
-  <br>0x1b = 2 s
-  <br>0x1c = 4 s
-  <br>0x1d = 8 s
-  <br>0x1e = 15 s
-  <br>0x1f = 30 s
-  <br>0x20 = Auto (Slowest)
-  <br>0x21 = Auto (Slower)
-  <br>0x22 = Auto
-  <br>0x23 = Auto (Faster)
-  <br>0x24 = Auto (Fastest)</td></tr></table>
+<td><span class=s>[val &amp; 0x3f]</span><table class=cols><tr>
+  <td>0 = 1/4000 s
+  <br>1 = 1/3200 s
+  <br>2 = 1/2500 s
+  <br>3 = 1/2000 s
+  <br>4 = 1/1600 s
+  <br>5 = 1/1250 s
+  <br>6 = 1/1000 s
+  <br>7 = 1/800 s
+  <br>8 = 1/640 s
+  <br>9 = 1/500 s
+  <br>10 = 1/400 s
+  <br>11 = 1/320 s
+  <br>12 = 1/250 s
+  <br>13 = 1/200 s
+  <br>14 = 1/160 s
+  <br>15 = 1/125 s
+  <br>16 = 1/100 s
+  <br>17 = 1/80 s
+  <br>18 = 1/60 s</td><td>&nbsp;&nbsp;</td>
+  <td>19 = 1/50 s
+  <br>20 = 1/40 s
+  <br>21 = 1/30 s
+  <br>22 = 1/15 s
+  <br>23 = 1/8 s
+  <br>24 = 1/4 s
+  <br>25 = 1/2 s
+  <br>26 = 1 s
+  <br>27 = 2 s
+  <br>28 = 4 s
+  <br>29 = 8 s
+  <br>30 = 15 s
+  <br>31 = 30 s
+  <br>32 = Auto (Slowest)
+  <br>33 = Auto (Slower)
+  <br>34 = Auto
+  <br>35 = Auto (Faster)
+  <br>36 = Auto (Fastest)</td></tr></table>
 </td></tr>
 <tr class=b>
 <td class=r title='6379 = 0x18eb'>6379</td>
 <td>ISOAutoHiLimit</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0xff]</span><table class=cols><tr>
+<td><span class=s>[val &amp; 0xff]</span><table class=cols><tr>
   <td>0x24 = ISO 200
   <br>0x26 = ISO 250
   <br>0x27 = ISO 280
@@ -2938,11 +2938,11 @@ firmware 1.01b.</p>
 <td class=r title='13971 = 0x3693'>13971</td>
 <td>Rotation</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x30]
-  <br>0x0 = Horizontal
-  <br>0x10 = Rotate 270 CW
-  <br>0x20 = Rotate 90 CW
-  <br>0x30 = Rotate 180</span></td></tr>
+<td><span class=s>[val &gt;&gt; 4 &amp; 0x3]
+  <br>0 = Horizontal
+  <br>1 = Rotate 270 CW
+  <br>2 = Rotate 90 CW
+  <br>3 = Rotate 180</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='ShotInfoD500'>Nikon ShotInfoD500 Tags</a></h2>
@@ -2996,30 +2996,30 @@ firmware 1.01b.</p>
 <td class=r title='202 = 0xca'>202</td>
 <td>Rotation</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x03]
-  <br>0x0 = Horizontal
-  <br>0x1 = Rotate 270 CW
-  <br>0x2 = Rotate 90 CW
-  <br>0x3 = Rotate 180</span></td></tr>
+<td><span class=s>[val &amp; 0x3]
+  <br>0 = Horizontal
+  <br>1 = Rotate 270 CW
+  <br>2 = Rotate 90 CW
+  <br>3 = Rotate 180</span></td></tr>
 <tr class=b>
 <td class=r title='1506 = 0x5e2'>1506</td>
 <td>FlickerReductionIndicator</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x01]
-  <br>0x0 = On
-  <br>0x1 = Off</span></td></tr>
+<td><span class=s>[val &amp; 0x1]
+  <br>0 = On
+  <br>1 = Off</span></td></tr>
 <tr>
 <td class=r title='2004 = 0x7d4'>2004</td>
 <td>JPGCompression</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x01]
-  <br>0x0 = Size Priority
-  <br>0x1 = Optimal Quality</span></td></tr>
+<td><span class=s>[val &amp; 0x1]
+  <br>0 = Size Priority
+  <br>1 = Optimal Quality</span></td></tr>
 <tr class=b>
 <td class=r title='2171 = 0x87b'>2171</td>
 <td>AEBracketingSteps</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0xff]</span><table class=cols><tr>
+<td><span class=s>[val &amp; 0xff]</span><table class=cols><tr>
   <td>0x0 = AE Bracketing Disabled
   <br>0x20 = AE Bracketing Disabled
   <br>0x30 = AE Bracketing Disabled
@@ -3074,7 +3074,7 @@ firmware 1.01b.</p>
 <td class=r title='2172 = 0x87c'>2172</td>
 <td>WBBracketingSteps</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0xff]</span><table class=cols><tr>
+<td><span class=s>[val &amp; 0xff]</span><table class=cols><tr>
   <td>0x0 = WB Bracketing Disabled
   <br>0x1 = b3F 1
   <br>0x2 = A3F 1
@@ -3107,89 +3107,89 @@ firmware 1.01b.</p>
 <td class=r title='2179 = 0x883'>2179</td>
 <td>ADLBracketingStep</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0xf0]</span><table class=cols><tr>
-  <td>0x0 = Off
-  <br>0x10 = Low
-  <br>0x20 = Normal</td><td>&nbsp;&nbsp;</td>
-  <td>0x30 = High
-  <br>0x40 = Extra High
-  <br>0x80 = Auto</td></tr></table>
+<td><span class=s>[val &gt;&gt; 4 &amp; 0xf]</span><table class=cols><tr>
+  <td>0 = Off
+  <br>1 = Low
+  <br>2 = Normal</td><td>&nbsp;&nbsp;</td>
+  <td>3 = High
+  <br>4 = Extra High
+  <br>8 = Auto</td></tr></table>
 </td></tr>
 <tr>
 <td class=r title='2180 = 0x884'>2180</td>
 <td>ADLBracketingType</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x0f]
-  <br>0x0 = Off
-  <br>0x1 = 2 Shots
-  <br>0x2 = 3 Shots
-  <br>0x3 = 4 Shots
-  <br>0x4 = 5 Shots</span></td></tr>
+<td><span class=s>[val &amp; 0xf]
+  <br>0 = Off
+  <br>1 = 2 Shots
+  <br>2 = 3 Shots
+  <br>3 = 4 Shots
+  <br>4 = 5 Shots</span></td></tr>
 <tr class=b>
 <td class=r title='3709 = 0xe7d'>3709</td>
 <td>PhotoShootingMenuBank</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x03]
-  <br>0x0 = A
-  <br>0x1 = B
-  <br>0x2 = C
-  <br>0x3 = D</span></td></tr>
+<td><span class=s>[val &amp; 0x3]
+  <br>0 = A
+  <br>1 = B
+  <br>2 = C
+  <br>3 = D</span></td></tr>
 <tr>
 <td class=r title='3711 = 0xe7f'>3711</td>
 <td>PrimarySlot</td>
 <td class=c>int8u</td>
 <td><span class=s><span class=n>(D500 only)</span>
-  <br>[Mask 0x80]
-  <br>0x0 = XQD Card
-  <br>0x80 = SD Card</span></td></tr>
+  <br>[val &gt;&gt; 7 &amp; 0x1]
+  <br>0 = XQD Card
+  <br>1 = SD Card</span></td></tr>
 <tr class=b>
 <td class=r title='3713 = 0xe81'>3713</td>
 <td>ISOAutoShutterTime</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x3f]</span><table class=cols><tr>
-  <td>0x0 = 1/4000 s
-  <br>0x1 = 1/3200 s
-  <br>0x2 = 1/2500 s
-  <br>0x3 = 1/2000 s
-  <br>0x4 = 1/1600 s
-  <br>0x5 = 1/1250 s
-  <br>0x6 = 1/1000 s
-  <br>0x7 = 1/800 s
-  <br>0x8 = 1/640 s
-  <br>0x9 = 1/500 s
-  <br>0xa = 1/400 s
-  <br>0xb = 1/320 s
-  <br>0xc = 1/250 s
-  <br>0xd = 1/200 s
-  <br>0xe = 1/160 s
-  <br>0xf = 1/125 s
-  <br>0x10 = 1/100 s
-  <br>0x11 = 1/80 s
-  <br>0x12 = 1/60 s</td><td>&nbsp;&nbsp;</td>
-  <td>0x13 = 1/50 s
-  <br>0x14 = 1/40 s
-  <br>0x15 = 1/30 s
-  <br>0x16 = 1/15 s
-  <br>0x17 = 1/8 s
-  <br>0x18 = 1/4 s
-  <br>0x19 = 1/2 s
-  <br>0x1a = 1 s
-  <br>0x1b = 2 s
-  <br>0x1c = 4 s
-  <br>0x1d = 8 s
-  <br>0x1e = 15 s
-  <br>0x1f = 30 s
-  <br>0x20 = Auto (Slowest)
-  <br>0x21 = Auto (Slower)
-  <br>0x22 = Auto
-  <br>0x23 = Auto (Faster)
-  <br>0x24 = Auto (Fastest)</td></tr></table>
+<td><span class=s>[val &amp; 0x3f]</span><table class=cols><tr>
+  <td>0 = 1/4000 s
+  <br>1 = 1/3200 s
+  <br>2 = 1/2500 s
+  <br>3 = 1/2000 s
+  <br>4 = 1/1600 s
+  <br>5 = 1/1250 s
+  <br>6 = 1/1000 s
+  <br>7 = 1/800 s
+  <br>8 = 1/640 s
+  <br>9 = 1/500 s
+  <br>10 = 1/400 s
+  <br>11 = 1/320 s
+  <br>12 = 1/250 s
+  <br>13 = 1/200 s
+  <br>14 = 1/160 s
+  <br>15 = 1/125 s
+  <br>16 = 1/100 s
+  <br>17 = 1/80 s
+  <br>18 = 1/60 s</td><td>&nbsp;&nbsp;</td>
+  <td>19 = 1/50 s
+  <br>20 = 1/40 s
+  <br>21 = 1/30 s
+  <br>22 = 1/15 s
+  <br>23 = 1/8 s
+  <br>24 = 1/4 s
+  <br>25 = 1/2 s
+  <br>26 = 1 s
+  <br>27 = 2 s
+  <br>28 = 4 s
+  <br>29 = 8 s
+  <br>30 = 15 s
+  <br>31 = 30 s
+  <br>32 = Auto (Slowest)
+  <br>33 = Auto (Slower)
+  <br>34 = Auto
+  <br>35 = Auto (Faster)
+  <br>36 = Auto (Fastest)</td></tr></table>
 </td></tr>
 <tr>
 <td class=r title='3714 = 0xe82'>3714</td>
 <td>ISOAutoHiLimit</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0xff]</span><table class=cols><tr>
+<td><span class=s>[val &amp; 0xff]</span><table class=cols><tr>
   <td>0x24 = ISO 200
   <br>0x26 = ISO 250
   <br>0x27 = ISO 280
@@ -3236,19 +3236,19 @@ firmware 1.01b.</p>
 <td class=r title='3716 = 0xe84'>3716</td>
 <td>FlickerReduction</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x20]
-  <br>0x0 = Enable
-  <br>0x20 = Disable</span></td></tr>
+<td><span class=s>[val &gt;&gt; 5 &amp; 0x1]
+  <br>0 = Enable
+  <br>1 = Disable</span></td></tr>
 <tr>
 <td class=r title='3716 = 0xe84'>3716.1</td>
 <td>PhotoShootingMenuBankImageArea</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x07]
-  <br>0x0 = FX (36x24)
-  <br>0x1 = DX (24x16)
-  <br>0x2 = 5:4 (30x24)
-  <br>0x3 = 1.2x (30x20)
-  <br>0x4 = 1.3x (18x12)</span></td></tr>
+<td><span class=s>[val &amp; 0x7]
+  <br>0 = FX (36x24)
+  <br>1 = DX (24x16)
+  <br>2 = 5:4 (30x24)
+  <br>3 = 1.2x (30x20)
+  <br>4 = 1.3x (18x12)</span></td></tr>
 <tr class=b>
 <td class=r title='3819 = 0xeeb'>3819</td>
 <td>CustomSettingsD5
@@ -3723,14 +3723,14 @@ D200.</p>
 <td class=r title='9 = 0x9'>9.1</td>
 <td>FlashCommanderMode</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x80]
-  <br>0x0 = Off
-  <br>0x80 = On</span></td></tr>
+<td><span class=s>[val &gt;&gt; 7 &amp; 0x1]
+  <br>0 = Off
+  <br>1 = On</span></td></tr>
 <tr class=b>
 <td class=r title='9 = 0x9'>9.2</td>
 <td>FlashControlMode</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x7f]</span>
+<td><span class=s>[val & 0x7f]</span>
   <br>--&gt; <a href='Nikon.html#FlashControlMode'>Nikon FlashControlMode Values</a></td></tr>
 <tr>
 <td class=r title='10 = 0xa'>10</td>
@@ -3762,13 +3762,13 @@ D200.</p>
 <td class=r title='15 = 0xf'>15</td>
 <td>FlashGroupAControlMode</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x0f]</span>
+<td><span class=s>[val & 0xf]</span>
   <br>--&gt; <a href='Nikon.html#FlashControlMode'>Nikon FlashControlMode Values</a></td></tr>
 <tr>
 <td class=r title='16 = 0x10'>16</td>
 <td>FlashGroupBControlMode</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x0f]</span>
+<td><span class=s>[val & 0xf]</span>
   <br>--&gt; <a href='Nikon.html#FlashControlMode'>Nikon FlashControlMode Values</a></td></tr>
 <tr class=b>
 <td class=r title='17 = 0x11'>17</td>
@@ -3810,14 +3810,14 @@ D200.</p>
 <table class=frame><tr><td>
 <table class='inner sep' cellspacing=1>
 <tr class=h><th>Value</th><th>FlashControlMode</th><th>Value</th><th>FlashControlMode</th><th>Value</th><th>FlashControlMode</th></tr>
-<tr><td class=r>0x0</td><td>= Off</td>
-<td class='r b'>0x3</td><td class=b>= Auto Aperture</td>
-<td class=r>0x6</td><td>= Manual</td>
-</tr><tr><td class=r>0x1</td><td>= iTTL-BL</td>
-<td class='r b'>0x4</td><td class=b>= Automatic</td>
-<td class=r>0x7</td><td>= Repeating Flash</td>
-</tr><tr><td class=r>0x2</td><td>= iTTL</td>
-<td class='r b'>0x5</td><td class=b>= GN (distance priority)</td>
+<tr><td class=r>0</td><td>= Off</td>
+<td class='r b'>3</td><td class=b>= Auto Aperture</td>
+<td class=r>6</td><td>= Manual</td>
+</tr><tr><td class=r>1</td><td>= iTTL-BL</td>
+<td class='r b'>4</td><td class=b>= Automatic</td>
+<td class=r>7</td><td>= Repeating Flash</td>
+</tr><tr><td class=r>2</td><td>= iTTL</td>
+<td class='r b'>5</td><td class=b>= GN (distance priority)</td>
 <td class=r>&nbsp;</td><td>&nbsp;</td>
 </tr></table></td></tr></table></blockquote>
 
@@ -3904,14 +3904,14 @@ D200.</p>
 <td class=r title='9 = 0x9'>9.1</td>
 <td>FlashCommanderMode</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x80]
-  <br>0x0 = Off
-  <br>0x80 = On</span></td></tr>
+<td><span class=s>[val &gt;&gt; 7 &amp; 0x1]
+  <br>0 = Off
+  <br>1 = On</span></td></tr>
 <tr class=b>
 <td class=r title='9 = 0x9'>9.2</td>
 <td>FlashControlMode</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x7f]</span>
+<td><span class=s>[val & 0x7f]</span>
   <br>--&gt; <a href='Nikon.html#FlashControlMode'>Nikon FlashControlMode Values</a></td></tr>
 <tr>
 <td class=r title='10 = 0xa'>10</td>
@@ -3943,21 +3943,21 @@ D200.</p>
 <td class=r title='16 = 0x10'>16.1</td>
 <td>FlashGroupAControlMode</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x0f]</span>
+<td><span class=s>[val & 0xf]</span>
   <br>--&gt; <a href='Nikon.html#FlashControlMode'>Nikon FlashControlMode Values</a>
   <br><span class='n s'>(note: group A tags may apply to the built-in flash settings for some models)</span></td></tr>
 <tr>
 <td class=r title='17 = 0x11'>17.1</td>
 <td>FlashGroupBControlMode</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0xf0]</span>
+<td><span class=s>[val >> 4 & 0xf]</span>
   <br>--&gt; <a href='Nikon.html#FlashControlMode'>Nikon FlashControlMode Values</a>
   <br><span class='n s'>(note: group B tags may apply to group A settings for some models)</span></td></tr>
 <tr class=b>
 <td class=r title='17 = 0x11'>17.2</td>
 <td>FlashGroupCControlMode</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x0f]</span>
+<td><span class=s>[val & 0xf]</span>
   <br>--&gt; <a href='Nikon.html#FlashControlMode'>Nikon FlashControlMode Values</a>
   <br><span class='n s'>(note: group C tags may apply to group B settings for some models)</span></td></tr>
 <tr>
@@ -4018,14 +4018,14 @@ D5200, D7000.</p>
 <td class=r title='9 = 0x9'>9.1</td>
 <td>FlashCommanderMode</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x80]
-  <br>0x0 = Off
-  <br>0x80 = On</span></td></tr>
+<td><span class=s>[val &gt;&gt; 7 &amp; 0x1]
+  <br>0 = Off
+  <br>1 = On</span></td></tr>
 <tr class=b>
 <td class=r title='9 = 0x9'>9.2</td>
 <td>FlashControlMode</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x7f]</span>
+<td><span class=s>[val & 0x7f]</span>
   <br>--&gt; <a href='Nikon.html#FlashControlMode'>Nikon FlashControlMode Values</a></td></tr>
 <tr>
 <td class=r title='10 = 0xa'>10</td>
@@ -4062,21 +4062,21 @@ D5200, D7000.</p>
 <td class=r title='17 = 0x11'>17.1</td>
 <td>FlashGroupAControlMode</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x0f]</span>
+<td><span class=s>[val & 0xf]</span>
   <br>--&gt; <a href='Nikon.html#FlashControlMode'>Nikon FlashControlMode Values</a>
   <br><span class='n s'>(note: group A tags may apply to the built-in flash settings for some models)</span></td></tr>
 <tr class=b>
 <td class=r title='18 = 0x12'>18.1</td>
 <td>FlashGroupBControlMode</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0xf0]</span>
+<td><span class=s>[val >> 4 & 0xf]</span>
   <br>--&gt; <a href='Nikon.html#FlashControlMode'>Nikon FlashControlMode Values</a>
   <br><span class='n s'>(note: group B tags may apply to group A settings for some models)</span></td></tr>
 <tr>
 <td class=r title='18 = 0x12'>18.2</td>
 <td>FlashGroupCControlMode</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x0f]</span>
+<td><span class=s>[val & 0xf]</span>
   <br>--&gt; <a href='Nikon.html#FlashControlMode'>Nikon FlashControlMode Values</a>
   <br><span class='n s'>(note: group C tags may apply to group B settings for some models)</span></td></tr>
 <tr class=b>
@@ -4166,14 +4166,14 @@ D5200, D7000.</p>
 <td class=r title='9 = 0x9'>9.1</td>
 <td>FlashCommanderMode</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x80]
-  <br>0x0 = Off
-  <br>0x80 = On</span></td></tr>
+<td><span class=s>[val &gt;&gt; 7 &amp; 0x1]
+  <br>0 = Off
+  <br>1 = On</span></td></tr>
 <tr class=b>
 <td class=r title='9 = 0x9'>9.2</td>
 <td>FlashControlMode</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x7f]</span>
+<td><span class=s>[val & 0x7f]</span>
   <br>--&gt; <a href='Nikon.html#FlashControlMode'>Nikon FlashControlMode Values</a></td></tr>
 <tr>
 <td class=r title='12 = 0xc'>12</td>
@@ -4204,19 +4204,19 @@ D5200, D7000.</p>
 <td class=r title='17 = 0x11'>17.1</td>
 <td>FlashGroupAControlMode</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x0f]</span>
+<td><span class=s>[val & 0xf]</span>
   <br>--&gt; <a href='Nikon.html#FlashControlMode'>Nikon FlashControlMode Values</a></td></tr>
 <tr>
 <td class=r title='18 = 0x12'>18.1</td>
 <td>FlashGroupBControlMode</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0xf0]</span>
+<td><span class=s>[val >> 4 & 0xf]</span>
   <br>--&gt; <a href='Nikon.html#FlashControlMode'>Nikon FlashControlMode Values</a></td></tr>
 <tr class=b>
 <td class=r title='18 = 0x12'>18.2</td>
 <td>FlashGroupCControlMode</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x0f]</span>
+<td><span class=s>[val & 0xf]</span>
   <br>--&gt; <a href='Nikon.html#FlashControlMode'>Nikon FlashControlMode Values</a></td></tr>
 <tr>
 <td class=r title='39 = 0x27'>39</td>
@@ -4274,24 +4274,24 @@ D5200, D7000.</p>
 <td>ExternalFlashZoomOverride</td>
 <td class=c>int8u</td>
 <td><span class=s><span class=n>(indicates that the user has overridden the flash zoom distance)</span>
-  <br>[Mask 0x80]
-  <br>0x0 = No
-  <br>0x80 = Yes</span></td></tr>
+  <br>[val &gt;&gt; 7 &amp; 0x1]
+  <br>0 = No
+  <br>1 = Yes</span></td></tr>
 <tr>
 <td class=r title='8 = 0x8'>8.2</td>
 <td>ExternalFlashStatus</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x01]
-  <br>0x0 = Flash Not Attached
-  <br>0x1 = Flash Attached</span></td></tr>
+<td><span class=s>[val &amp; 0x1]
+  <br>0 = Flash Not Attached
+  <br>1 = Flash Attached</span></td></tr>
 <tr class=b>
 <td class=r title='9 = 0x9'>9.1</td>
 <td>ExternalFlashReadyState</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x07]
-  <br>0x0 = n/a
-  <br>0x1 = Ready
-  <br>0x6 = Not Ready</span></td></tr>
+<td><span class=s>[val &amp; 0x7]
+  <br>0 = n/a
+  <br>1 = Ready
+  <br>6 = Not Ready</span></td></tr>
 <tr>
 <td class=r title='10 = 0xa'>10</td>
 <td>FlashCompensation</td>
@@ -4321,21 +4321,21 @@ D5200, D7000.</p>
 <td class=r title='17 = 0x11'>17.1</td>
 <td>FlashGroupAControlMode</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x0f]</span>
+<td><span class=s>[val & 0xf]</span>
   <br>--&gt; <a href='Nikon.html#FlashControlMode'>Nikon FlashControlMode Values</a>
   <br><span class='n s'>(note: group A tags may apply to the built-in flash settings for some models)</span></td></tr>
 <tr>
 <td class=r title='18 = 0x12'>18.1</td>
 <td>FlashGroupBControlMode</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0xf0]</span>
+<td><span class=s>[val >> 4 & 0xf]</span>
   <br>--&gt; <a href='Nikon.html#FlashControlMode'>Nikon FlashControlMode Values</a>
   <br><span class='n s'>(note: group B tags may apply to group A settings for some models)</span></td></tr>
 <tr class=b>
 <td class=r title='18 = 0x12'>18.2</td>
 <td>FlashGroupCControlMode</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x0f]</span>
+<td><span class=s>[val & 0xf]</span>
   <br>--&gt; <a href='Nikon.html#FlashControlMode'>Nikon FlashControlMode Values</a>
   <br><span class='n s'>(note: group C tags may apply to group B settings for some models)</span></td></tr>
 <tr>
@@ -6686,6 +6686,7 @@ ExifTool to choose in these cases (see the
 </tr><tr><td>'B8 40 2D 44 2C 34 BA 06'</td><td>= AF-S Nikkor 18-35mm f/3.5-4.5G ED</td>
 </tr><tr><td>'BF 3C 1B 1B 30 30 01 04'</td><td>= Irix 11mm f/4 Firefly</td>
 </tr><tr><td>'BF 4E 26 26 1E 1E 01 04'</td><td>= Irix 15mm f/2.4 Firefly</td>
+</tr><tr><td>'C1 48 24 37 24 24 4B 46'</td><td>= Sigma 14-24mm F2.8 DG HSM | A</td>
 </tr><tr><td>'C2 4C 24 24 14 14 4B 06'</td><td>= Sigma 14mm F1.8 DG HSM | A</td>
 </tr><tr><td>'C3 34 68 98 38 40 4B 4E'</td><td>= Sigma 100-400mm F5-6.3 DG OS HSM | C</td>
 </tr><tr><td>'C8 54 62 62 0C 0C 4B 46'</td><td>= Sigma 85mm F1.4 DG HSM | A</td>
@@ -6753,7 +6754,7 @@ ExifTool to choose in these cases (see the
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Oct 15, 2018</i>
+<br><i>Last revised Oct 24, 2018</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;  # (for Composite:ImageSize)
 
-$VERSION = '1.01';
+$VERSION = '1.02';
 
 sub ProcessExtData($$$);
 
@@ -411,22 +411,22 @@ sub ProcessExtData($$$);
     1538.1 => {
         Name => 'ImageWidth',
         Mask => 0x0c,
-        # 0x00=Base (768x512), 0x04=4Base (1536x1024), 0x08=16Base (3072x2048)
-        ValueConv => '($$self{Orient} & 0x01 ? 512 : 768) * (($val || 2) / 2)',
+        # 0=Base (768x512), 1=4Base (1536x1024), 2=16Base (3072x2048)
+        ValueConv => '($$self{Orient} & 0x01 ? 512 : 768) * ($val * 2 || 1)',
     },
     1538.2 => {
         Name => 'ImageHeight',
         Mask => 0x0c,
-        ValueConv => '($$self{Orient} & 0x01 ? 768 : 512) * (($val || 2) / 2)',
+        ValueConv => '($$self{Orient} & 0x01 ? 768 : 512) * ($val * 2 || 1)',
     },
     1538.3 => {
         Name => 'CompressionClass',
         Mask => 0x60,
         PrintConv => {
-            0x00 => 'Class 1 - 35mm film; Pictoral hard copy',
-            0x20 => 'Class 2 - Large format film',
-            0x40 => 'Class 3 - Text and graphics, high resolution',
-            0x60 => 'Class 4 - Text and graphics, high dynamic range',
+            0 => 'Class 1 - 35mm film; Pictoral hard copy',
+            1 => 'Class 2 - Large format film',
+            2 => 'Class 3 - Text and graphics, high resolution',
+            3 => 'Class 4 - Text and graphics, high dynamic range',
         },
     },
     #1544 => 'InterleaveRatio',

@@ -6515,7 +6515,7 @@ sub WriteBinaryData($$$)
     my @varInfo = @varOffsets;
     my $tagInfo;
     $dataPt = \$newData;
-    foreach $tagInfo ($self->GetNewTagInfoList($tagTablePtr)) {
+    foreach $tagInfo (sort { $$a{TagID} <=> $$b{TagID} } $self->GetNewTagInfoList($tagTablePtr)) {
         my $tagID = $$tagInfo{TagID};
         # evaluate conditional tags now if necessary
         if (ref $$tagTablePtr{$tagID} eq 'ARRAY' or $$tagInfo{Condition}) {
@@ -6557,7 +6557,7 @@ sub WriteBinaryData($$$)
         next unless defined $newVal;    # can't delete from a binary table
         # only write masked bits if specified
         my $mask = $$tagInfo{Mask};
-        $newVal = ($newVal & $mask) | ($val & ~$mask) if defined $mask;
+        $newVal = (($newVal << $$tagInfo{BitShift}) & $mask) | ($val & ~$mask) if $mask;
         # set the size
         if ($$tagInfo{DataTag} and not $$tagInfo{IsOffset}) {
             warn 'Internal error' unless $newVal == 0xfeedfeed;

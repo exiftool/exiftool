@@ -35,7 +35,7 @@ use vars qw($VERSION %leicaLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.02';
+$VERSION = '2.03';
 
 sub ProcessLeicaLEIC($$$);
 sub WhiteBalanceConv($;$$);
@@ -482,9 +482,12 @@ my %shootingMode = (
             $val -= $h * 3600;
             my $m = int($val / 60);
             $val -= $m * 60;
-            my $s = int($val);
-            my $f = 100 * ($val - int($val));
-            return sprintf("%s%.2d:%.2d:%.2d.%.2d",$str,$h,$m,$s,$f);
+            my $ss = sprintf('%05.2f', $val);
+            if ($ss >= 60) {
+                $ss = '00.00';
+                ++$m >= 60 and $m -= 60, ++$h;
+            }
+            return sprintf("%s%.2d:%.2d:%s",$str,$h,$m,$ss);
         },
         PrintConvInv => sub {
             my $val = shift;

@@ -25,7 +25,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '1.16';
+$VERSION = '1.17';
 
 sub ProcessSEI($$);
 
@@ -433,24 +433,24 @@ my $parsePictureTiming; # flag to enable parsing of picture timing information (
     1.1 => {
         Name => 'ExposureProgram',
         Mask => 0xf0,
-        ValueConv => '$val == 0xf0 ? undef : $val',
+        ValueConv => '$val == 15 ? undef : $val',
         PrintConv => {
-            0x00 => 'Program AE',
-            0x10 => 'Gain', #?
-            0x20 => 'Shutter speed priority AE',
-            0x30 => 'Aperture-priority AE',
-            0x40 => 'Manual',
+            0 => 'Program AE',
+            1 => 'Gain', #?
+            2 => 'Shutter speed priority AE',
+            3 => 'Aperture-priority AE',
+            4 => 'Manual',
         },
     },
     2.1 => {
         Name => 'WhiteBalance',
         Mask => 0xe0,
-        ValueConv => '$val == 0xe0 ? undef : $val',
+        ValueConv => '$val == 7 ? undef : $val',
         PrintConv => {
-            0x00 => 'Auto',
-            0x20 => 'Hold',
-            0x40 => '1-Push',
-            0x60 => 'Daylight',
+            0 => 'Auto',
+            1 => 'Hold',
+            2 => '1-Push',
+            3 => 'Daylight',
         },
     },
     3 => {

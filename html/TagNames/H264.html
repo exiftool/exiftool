@@ -276,26 +276,26 @@ which case subsequent occurrences are extracted as sub-documents).</p>
 <td class=r title='1 = 0x1'>1</td>
 <td>Gain</td>
 <td class=c>no</td>
-<td><span class=s>[Mask 0x0f]</span></td></tr>
+<td><span class=s>[val &amp; 0xf]</span></td></tr>
 <tr>
 <td class=r title='1 = 0x1'>1.1</td>
 <td>ExposureProgram</td>
 <td class=c>no</td>
-<td><span class=s>[Mask 0xf0]
-  <br>0x0 = Program AE
-  <br>0x10 = Gain
-  <br>0x20 = Shutter speed priority AE
-  <br>0x30 = Aperture-priority AE
-  <br>0x40 = Manual</span></td></tr>
+<td><span class=s>[val &gt;&gt; 4 &amp; 0xf]
+  <br>0 = Program AE
+  <br>1 = Gain
+  <br>2 = Shutter speed priority AE
+  <br>3 = Aperture-priority AE
+  <br>4 = Manual</span></td></tr>
 <tr class=b>
 <td class=r title='2 = 0x2'>2.1</td>
 <td>WhiteBalance</td>
 <td class=c>no</td>
-<td><span class=s>[Mask 0xe0]
-  <br>0x0 = Auto
-  <br>0x20 = Hold
-  <br>0x40 = 1-Push
-  <br>0x60 = Daylight</span></td></tr>
+<td><span class=s>[val &gt;&gt; 5 &amp; 0x7]
+  <br>0 = Auto
+  <br>1 = Hold
+  <br>2 = 1-Push
+  <br>3 = Daylight</span></td></tr>
 <tr>
 <td class=r title='3 = 0x3'>3</td>
 <td>Focus</td>
@@ -329,7 +329,7 @@ which case subsequent occurrences are extracted as sub-documents).</p>
 <td class=r title='1 = 0x1'>1.1</td>
 <td>ExposureTime</td>
 <td class=c>no</td>
-<td><span class=s>[Mask 0x7fff]</span></td></tr>
+<td><span class=s>[val &amp; 0x7fff]</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='MakeModel'>H264 MakeModel Tags</a></h2>
@@ -387,7 +387,7 @@ which case subsequent occurrences are extracted as sub-documents).</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised May 15, 2013</i>
+<br><i>Last revised Oct 24, 2018</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

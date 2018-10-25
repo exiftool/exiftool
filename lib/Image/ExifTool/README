@@ -426,9 +426,13 @@ numerical.
                   MakerNotes tags are permanent unless otherwise specified.
 
                   'PrintHex' - specifies that unknown PrintConv values should
-                  be printed in hex (eg. 'Unknown (0x01)').  Also causes
+                  be printed in hex (eg. 'Unknown (0x1)').  Also causes
                   numerical tag values to be printed in hex in the HTML tag name
-                  documentation.
+                  documentation, padded to the number of digits given by the
+                  PrintHex value.
+
+                  'PrintSort' - causes PrintConv values to be sorted by value
+                  rather than key in the HTML tag name documentation.
 
                   'PrintString' - flag set to force PrintConv values to be
                   printed as strings in the documentation.
@@ -665,9 +669,13 @@ numerical.
   Mask          : [BinaryData tags only] Bitmask for this value.  (Multiple tags
                   may have the same index by using floating point indices.  An
                   unknown tag will only be generated for a certain TagID if
-                  there is no integral TagID for that tag.)  The Mask is applied
-                  before evaluating RawConv.  When Mask is used, PrintHex=1 is
-                  implied unless otherwise defined.
+                  there is no integral TagID for that tag.)  The Mask and
+                  BitShift are applied before evaluating RawConv.
+
+  BitShift      : [Mask tags only] Bit shift for Mask-ed values.  If not
+                  specified, set to the number of trailing bits in the Mask.
+                  When reading, the value is shifted by this number of bits
+                  after the Mask is applied.
 
   Condition     : If given, specifies scalar which is evaluated as a Perl
                   expression at extraction time to decide whether the tag is

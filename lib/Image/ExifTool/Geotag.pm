@@ -24,7 +24,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:Public);
 
-$VERSION = '1.55';
+$VERSION = '1.56';
 
 sub JITTER() { return 2 }       # maximum time jitter
 
@@ -80,6 +80,16 @@ my %fixInfoKeys = (
 );
 
 my %isOrient = ( dir => 1, pitch => 1, roll => 1 ); # test for orientation key
+
+# conversion factors for GPSSpeed
+my %speedConv = (
+    'K' => 1.852,       # km/h per knot
+    'M' => 1.150779448, # mph per knot
+    'k' => 'K',         # (allow lower case)
+    'm' => 'M',
+    'km/h' => 'K',      # (allow other formats)
+    'mph' => 'M',
+);
 
 my $secPerDay = 24 * 3600;      # a useful constant
 
@@ -1024,8 +1034,18 @@ Category:       foreach $category (qw{pos track alt orient}) {
             }
             @r = $et->SetNewValue(GPSTrack => $$tFix{track}, %opts);
             @r = $et->SetNewValue(GPSTrackRef => (defined $$tFix{track} ? 'T' : undef), %opts);
-            @r = $et->SetNewValue(GPSSpeed => $$tFix{speed}, %opts);
-            @r = $et->SetNewValue(GPSSpeedRef => (defined $$tFix{speed} ? 'N' : undef), %opts);
+            my ($spd, $ref);
+            if (defined($spd = $$tFix{speed})) {
+                $ref = $$et{OPTIONS}{GeoSpeedRef};
+                if ($ref and defined $speedConv{$ref}) {
+                    $ref = $speedConv{$ref} if $speedConv{$speedConv{$ref}};
+                    $spd *= $speedConv{$ref};
+                } else {
+                    $ref = 'N';     # knots by default
+                }
+            }
+            @r = $et->SetNewValue(GPSSpeed => $spd, %opts);
+            @r = $et->SetNewValue(GPSSpeedRef => $ref, %opts);
         }
         if ($$has{orient}) {
             my $tFix = $fix;

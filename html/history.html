@@ -17,6 +17,29 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v11.15'><b>Oct. 25, 2018 - Version 11.15</b></a>
+<ul>
+<li>Added a couple of new Canon LensType values (thanks LibRaw and SmugMug)
+<li>Added a new Nikon LensID
+<li>Added definitions for a few more VCard tags
+<li>Added a new FujiFilm ShutterType value
+<li>Decode some new FujiFilm tags (thanks Richard Butler)
+<li>Store XMP GPS coordinates with two extra digits of precision and trim
+    trailing zeros
+<li>Improved technique for handling rounding errors in times and GPS seconds
+<li>Removed "Undersized IFD0 StripByteCounts" minor warning when writing ORF
+    files since this is a "feature" of most Olympus models
+<li>Warn about undefined EXIF values with -validate option
+<li>Changed the way Mask-ed values are decoded (do bit shift automatically)
+<li>Changed FujiFilm HighISONoiseReduction tag to just "NoiseReduction", and
+    avoid extracting historic NoiseReduction tag if value is "n/a"
+<li>Fixed potential problem reading GeoTiff tags with multiple SHORT values
+<li>API Changes:
+    <ul>
+    <li>Added GeoSpeedRef option
+    </ul>
+</ul>
+
 <a name='v11.14'><b>Oct. 16, 2018 - Version 11.14</b></a>
 <ul>
 <li>Added more TIFF Compression values

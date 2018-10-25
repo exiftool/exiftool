@@ -18,6 +18,7 @@
 #               9) Zilvinas Brobliauskas private communication
 #               10) Albert Shan private communication
 #               11) http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,8377.0.html
+#               12) http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,9607.0.html
 #               IB) Iliah Borg private communication (LibRaw)
 #               JD) Jens Duttke private communication
 #------------------------------------------------------------------------------
@@ -29,7 +30,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.62';
+$VERSION = '1.63';
 
 sub ProcessFujiDir($$$);
 sub ProcessFaceRec($$$);
@@ -211,6 +212,7 @@ my %faceCategories = (
         Name => 'NoiseReduction',
         Flags => 'PrintHex',
         Writable => 'int16u',
+        RawConv => '$val == 0x100 ? undef : $val',
         PrintConv => {
             0x40 => 'Low',
             0x80 => 'Normal',
@@ -218,7 +220,7 @@ my %faceCategories = (
         },
     },
     0x100e => { #PH (X100)
-        Name => 'HighISONoiseReduction',
+        Name => 'NoiseReduction',
         Flags => 'PrintHex',
         Writable => 'int16u',
         PrintConv => {
@@ -283,6 +285,18 @@ my %faceCategories = (
             256 => 'Zone',
             512 => 'Wide/Tracking',
         },
+    },
+    0x102b => {
+        Name => 'PrioritySettings',
+        SubDirectory => { TagTable => 'Image::ExifTool::FujiFilm::PrioritySettings' },
+    },
+    0x102d => {
+        Name => 'FocusSettings',
+        SubDirectory => { TagTable => 'Image::ExifTool::FujiFilm::FocusSettings' },
+    },
+    0x102e => {
+        Name => 'AFCSettings',
+        SubDirectory => { TagTable => 'Image::ExifTool::FujiFilm::AFCSettings' },
     },
     0x1023 => { #2
         Name => 'FocusPixel',
@@ -391,27 +405,73 @@ my %faceCategories = (
         ValueConv => '$val / 8',
         ValueConvInv => '$val * 8',
     },
+    0x1045 => { #12
+        Name => 'LensModulationOptimizer',
+        Writable => 'int32u',
+        PrintConv => { 0 => 'Off', 1 => 'On' },
+    },
+    0x1047 => { #12
+        Name => 'GrainEffect',
+        Writable => 'int32s',
+        PrintConv => {
+            0 => 'Off',
+            32 => 'Weak',
+            64 => 'Strong',
+        },
+    },
+    0x1048 => { #12
+        Name => 'ColorChromeEffect',
+        Writable => 'int32s',
+        PrintConv => {
+            0 => 'Off',
+            32 => 'Weak',
+            64 => 'Strong',
+        },
+    },
+    0x1049 => { #12
+        Name => 'BWAdjustment',
+        Notes => 'positive values are warm, negative values are cool',
+        Format => 'int8s',
+        PrintConv => '$val > 0 ? "+$val" : $val',
+        PrintConvInv => '$val + 0',
+    },
     0x1050 => { #forum6109
         Name => 'ShutterType',
         Writable => 'int16u',
         PrintConv => {
             0 => 'Mechanical',
             1 => 'Electronic',
+            2 => 'Electronic (long-exposure noise reduction unavailable)', #12
             3 => 'Electronic Front Curtain', #10
         },
     },
-    0x1100 => {
+    0x1100 => [{
         Name => 'AutoBracketing',
+        Condition => '$$self{Model} eq "X-T3"',
+        Notes => 'X-T3 only',
+        Writable => 'int16u',
+        PrintConv => {
+            0 => 'Off',
+            1 => 'On',
+            2 => 'Pre-shot', #12 (Electronic Shutter and Continuous High drive mode only)
+        },
+    },{
+        Name => 'AutoBracketing',
+        Notes => 'other models',
         Writable => 'int16u',
         PrintConv => {
             0 => 'Off',
             1 => 'On',
             2 => 'No flash & flash', #3
         },
-    },
+    }],
     0x1101 => {
         Name => 'SequenceNumber',
         Writable => 'int16u',
+    },
+    0x1103 => {
+        Name => 'DriveSettings',
+        SubDirectory => { TagTable => 'Image::ExifTool::FujiFilm::DriveSettings' },
     },
     # (0x1150-0x1152 exist only for Pro Low-light and Pro Focus PictureModes)
     # 0x1150 - Pro Low-light - val=1; Pro Focus - val=2 (ref 7)
@@ -516,6 +576,7 @@ my %faceCategories = (
             0x500 => 'Pro Neg. Std', #PH (X-Pro1)
             0x501 => 'Pro Neg. Hi', #PH (X-Pro1)
             0x600 => 'Classic Chrome', #forum6109
+            0x700 => 'Eterna', #12
         },
     },
     0x1402 => { #2
@@ -608,6 +669,30 @@ my %faceCategories = (
         ValueConv => '$val & 0x7fff',
         ValueConvInv => '$val | 0x8000',
     },
+    0x1443 => { #12 (X-T3)
+        Name => 'DRangePriority',
+        Writable => 'int16u',
+        PrintConv => { 0 => 'Auto', 1 => 'Fixed' },
+    },
+    0x1444 => { #12 (X-T3, only exists if DRangePriority is 'Auto')
+        Name => 'DRangePriorityAuto',
+        Writable => 'int16u',
+        PrintConv => { 1 => 'Weak', 2 => 'Strong' },
+    },
+    0x1445 => { #12 (X-T3, only exists if DRangePriority is 'Fixed')
+        Name => 'DRangePriorityFixed',
+        Writable => 'int16u',
+        PrintConv => { 1 => 'Weak', 2 => 'Strong' },
+    },
+    0x1446 => { #12
+        Name => 'FlickerReduction',
+        Writable => 'int32u',
+        PrintConv => q{
+            my $on = ((($val >> 12) & 0xff) == 3) ? 'On' : 'Off';
+            return sprintf('%s (0x%.4x)', $on, $val);
+        },
+        PrintConvInv => '$val=~/(0x[0-9a-f]+)/i; hex $1',
+    },
     0x3820 => { #PH (HS20EXR MOV)
         Name => 'FrameRate',
         Writable => 'int16u',
@@ -688,6 +773,164 @@ my %faceCategories = (
         Notes => 'only found in MPImage2 of .MPO images',
     },
     # 0xb212 - also found in MPIMage2 images - PH
+);
+
+# Focus Priority settings, tag 0x102b (X-T3, ref forum 9607)
+%Image::ExifTool::FujiFilm::PrioritySettings = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    WRITE_PROC => \&Image::ExifTool::WriteBinaryData,
+    CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    FORMAT => 'int16u',
+    WRITABLE => 1,
+    0.1 => {
+        Name => 'AF-SPriority',
+        Mask => 0x000f,
+        PrintConv => {
+            1 => 'Release',
+            2 => 'Focus',
+        },
+    },
+    0.2 => {
+        Name => 'AF-CPriority',
+        Mask => 0x00f0,
+        PrintConv => {
+            1 => 'Release',
+            2 => 'Focus',
+        },
+    },
+);
+
+# Focus settings, tag 0x102d (X-T3, ref forum 9607)
+%Image::ExifTool::FujiFilm::FocusSettings = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    WRITE_PROC => \&Image::ExifTool::WriteBinaryData,
+    CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    FORMAT => 'int32u',
+    WRITABLE => 1,
+    0.1 => {
+        Name => 'FocusMode2',
+        Mask => 0x000000ff,
+        PrintConv => {
+            0 => 'AF-M',
+            1 => 'AF-S',
+            2 => 'AF-C',
+        },
+    },
+    0.2 => {
+        Name => 'AFAreaMode',
+        Mask => 0x0f00,
+        PrintConv => {
+            0 => 'Single Point',
+            1 => 'Zone',
+            2 => 'Wide/Tracking',
+        },
+    },
+    0.3 => {
+        Name => 'AFAreaPointSize',
+        Mask => 0xf000,
+        PrintConv => {
+            0 => 'n/a',
+            OTHER => sub {
+                my ($val, $inv) = @_;
+                return "$val x $val" unless $inv;
+                $val =~ s/ ?x.*//;
+                return $val;
+            },
+        },
+    },
+    0.4 => {
+        Name => 'AFAreaZoneSize',
+        Mask => 0xf0000,
+        PrintConv => {
+            0 => 'n/a',
+            OTHER => sub {
+                my ($val, $inv) = @_;
+                return "$val x $val" unless $inv;
+                $val =~ s/ ?x.*//;
+                return $val;
+            },
+        },
+    },
+);
+
+# AF-C settings, tag 0x102e (ref forum 9607)
+%Image::ExifTool::FujiFilm::AFCSettings = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    WRITE_PROC => \&Image::ExifTool::WriteBinaryData,
+    CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    FORMAT => 'int32u',
+    WRITABLE => 1,
+    0 => {
+        Name => 'AF-CSetting',
+        PrintHex => 3,
+        PrintSort => 1, # sort PrintConv by value
+        # decode in-camera preset values (X-T3)
+        PrintConv => {
+            0x102 => 'Set 1 (multi-purpose)',              # (2,0,Auto)
+            0x203 => 'Set 2 (ignore obstacles)',           # (3,0,Center)
+            0x122 => 'Set 3 (accelerating subject)',       # (2,2,Auto)
+            0x010 => 'Set 4 (suddenly appearing subject)', # (0,1,Front)
+            0x123 => 'Set 5 (erratic motion)',             # (3,2,Auto)
+            OTHER => sub {
+                my ($val, $inv) = @_;
+                return $val =~ /(0x\w+)/ ? hex $1 : undef if $inv;
+                return sprintf 'Set 6 (custom 0x%.3x)', $val;
+            },
+        },
+    },
+    0.1 => {
+        Name => 'AF-CTrackingSensitivity',
+        Mask => 0x000f, # (values 0-4)
+    },
+    0.2 => {
+        Name => 'AF-CSpeedTrackingSensitivity',
+        Mask => 0x00f0,
+        # (values 0-2)
+    },
+    0.3 => {
+        Name => 'AF-CZoneAreaSwitching',
+        Mask => 0x0f00,
+        PrintConv => {
+            0 => 'Front',
+            1 => 'Auto',
+            2 => 'Center',
+        },
+    },
+);
+
+# DriveMode settings, tag 0x1103 (X-T3, ref forum 9607)
+%Image::ExifTool::FujiFilm::DriveSettings = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    WRITE_PROC => \&Image::ExifTool::WriteBinaryData,
+    CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    FORMAT => 'int32u',
+    WRITABLE => 1,
+    0.1 => {
+        Name => 'DriveMode',
+        Mask => 0x000000ff,
+        PrintConv => {
+            0 => 'Single',
+            1 => 'Continuous Low',
+            2 => 'Continuous High',
+        },
+    },
+    0.2 => {
+        Name => 'DriveSpeed',
+        Mask => 0xff000000,
+        PrintConv => {
+            0 => 'n/a',
+            OTHER => sub {
+                my ($val, $inv) = @_;
+                return "$val fps" unless $inv;
+                $val =~ s/ ?fps$//;
+                return $val;
+            },
+        },
+    },
 );
 
 # Face recognition information from FinePix F550EXR (ref PH)

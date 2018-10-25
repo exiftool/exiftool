@@ -58,7 +58,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::HP;
 
-$VERSION = '3.23';
+$VERSION = '3.24';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -793,6 +793,8 @@ my %kelvinWB = (
         (53190 - $a[0]) . ' ' . $a[1] . ' ' . int($a[2]*8192+0.5) . ' ' . int($a[3]*8192+0.5);
     },
 );
+
+my %noYes = ( 0 => 'No', 1 => 'Yes' );
 
 # common attributes for writable BinaryData directories
 my %binaryDataAttrs = (
@@ -3102,25 +3104,19 @@ my %binaryDataAttrs = (
         Name => 'WorldTimeLocation',
         Mask => 0x01,
         PrintConv => {
-            0x00 => 'Hometown',
-            0x01 => 'Destination',
+            0 => 'Hometown',
+            1 => 'Destination',
         },
     },
     0.2 => {
         Name => 'HometownDST',
         Mask => 0x02,
-        PrintConv => {
-            0x00 => 'No',
-            0x02 => 'Yes',
-        },
+        PrintConv => \%noYes,
     },
     0.3 => {
         Name => 'DestinationDST',
         Mask => 0x04,
-        PrintConv => {
-            0x00 => 'No',
-            0x04 => 'Yes',
-        },
+        PrintConv => \%noYes,
     },
     2 => {
         Name => 'HometownCity',
@@ -3198,8 +3194,8 @@ my %binaryDataAttrs = (
         Name => 'EVSteps',
         Mask => 0x20,
         PrintConv => {
-            0x00 => '1/2 EV Steps',
-            0x20 => '1/3 EV Steps',
+            0 => '1/2 EV Steps',
+            1 => '1/3 EV Steps',
         },
     },
     1.3 => { # (this bit is set for movies with the K-5 - PH)
@@ -3207,8 +3203,8 @@ my %binaryDataAttrs = (
         # always set even when not in Program AE mode
         Mask => 0x40,
         PrintConv => {
-            0x00 => 'Tv or Av',
-            0x40 => 'P Shift',
+            0 => 'Tv or Av',
+            1 => 'P Shift',
         },
     },
     1.4 => { # (K10D, K-5)
@@ -3216,16 +3212,14 @@ my %binaryDataAttrs = (
         # always set even Aperture Ring is in A mode
         Mask => 0x80,
         PrintConv => {
-            0x00 => 'Prohibited',
-            0x80 => 'Permitted',
+            0 => 'Prohibited',
+            1 => 'Permitted',
         },
     },
     2 => {
         Name => 'FlashOptions',
         Notes => 'the camera flash options settings, set even if the flash is off',
         Mask => 0xf0,
-        ValueConv => '$val>>4',
-        ValueConvInv => '$val<<4',
         # Note: These tags correlate with the FlashMode and InternalFlashMode values,
         # and match what is displayed by the Pentax software
         PrintConv => {
@@ -3256,11 +3250,11 @@ my %binaryDataAttrs = (
         Name => 'AFPointMode',
         Mask => 0xf0,
         PrintConv => {
-            0x00 => 'Auto',
+            0 => 'Auto',
             BITMASK => {
-                4 => 'Select',
-                5 => 'Fixed Center',
-                # have seen bit 6 set in pre-production images (firmware 0.20) - PH
+                0 => 'Select',
+                1 => 'Fixed Center',
+                # have seen bit 2 set in pre-production images (firmware 0.20) - PH
             },
         },
     },
@@ -3358,20 +3352,20 @@ my %binaryDataAttrs = (
         # tag 0x0019 reports Flash if the Flash was used.
         PrintConv => {
             0 => 'Auto',
-            16 => 'Daylight',
-            32 => 'Shade',
-            48 => 'Cloudy',
-            64 => 'Daylight Fluorescent',
-            80 => 'Day White Fluorescent',
-            96 => 'White Fluorescent',
-            112 => 'Tungsten',
-            128 => 'Flash',
-            144 => 'Manual',
+            1 => 'Daylight',
+            2 => 'Shade',
+            3 => 'Cloudy',
+            4 => 'Daylight Fluorescent',
+            5 => 'Day White Fluorescent',
+            6 => 'White Fluorescent',
+            7 => 'Tungsten',
+            8 => 'Flash',
+            9 => 'Manual',
             # The three Set Color Temperature settings refer to the 3 preset settings which
             # can be saved in the menu (see page 123 of the K10D manual)
-            192 => 'Set Color Temperature 1',
-            208 => 'Set Color Temperature 2',
-            224 => 'Set Color Temperature 3',
+            12 => 'Set Color Temperature 1',
+            13 => 'Set Color Temperature 2',
+            14 => 'Set Color Temperature 3',
         },
     },
     10.1 => {
@@ -3424,10 +3418,7 @@ my %binaryDataAttrs = (
         Condition => '$$self{Model} =~ /K-5\b/',
         Notes => 'K-5 only',
         Mask => 0x01,
-        PrintConv => {
-            0x00 => 'Off',
-            0x01 => 'On',
-        },
+        PrintConv => { 0 => 'Off', 1 => 'On' },
     },
     14.3 => { #PH (K-5)
         Name => 'SensitivitySteps',
@@ -3435,8 +3426,8 @@ my %binaryDataAttrs = (
         Notes => 'K-5 only',
         Mask => 0x02,
         PrintConv => {
-            0x00 => '1 EV Steps',
-            0x02 => 'As EV Steps',
+            0 => '1 EV Steps',
+            1 => 'As EV Steps',
         },
     },
     14.4 => { #PH (K-5)
@@ -3444,10 +3435,7 @@ my %binaryDataAttrs = (
         Condition => '$$self{Model} =~ /K-5\b/',
         Notes => 'K-5 only',
         Mask => 0x04,
-        PrintConv => {
-            0x00 => 'Off',
-            0x04 => 'On',
-        },
+        PrintConv => { 0 => 'Off', 1 => 'On' },
     },
     # 14.5 Mask 0x80 - changes for K-5
     16 => {
@@ -3462,15 +3450,15 @@ my %binaryDataAttrs = (
         # isn't selected) - ref 19
         # (these tags relate closely to InternalFlashMode values - PH)
         PrintConv => {
-            0x00 => 'Normal', # (this value never occurs in Green Mode) - ref 19
-            0x10 => 'Red-eye reduction', # (this value never occurs in Green Mode) - ref 19
-            0x20 => 'Auto',  # (this value only occurs in Green Mode) - ref 19
-            0x30 => 'Auto, Red-eye reduction', # (this value only occurs in Green Mode) - ref 19
-            0x50 => 'Wireless (Master)',
-            0x60 => 'Wireless (Control)',
-            0x80 => 'Slow-sync',
-            0x90 => 'Slow-sync, Red-eye reduction',
-            0xa0 => 'Trailing-curtain Sync'
+            0 => 'Normal', # (this value never occurs in Green Mode) - ref 19
+            1 => 'Red-eye reduction', # (this value never occurs in Green Mode) - ref 19
+            2 => 'Auto',  # (this value only occurs in Green Mode) - ref 19
+            3 => 'Auto, Red-eye reduction', # (this value only occurs in Green Mode) - ref 19
+            5 => 'Wireless (Master)',
+            6 => 'Wireless (Control)',
+            8 => 'Slow-sync',
+            9 => 'Slow-sync, Red-eye reduction',
+            10 => 'Trailing-curtain Sync'
         },
     },
     16.1 => {
@@ -3495,10 +3483,7 @@ my %binaryDataAttrs = (
             Remote or Self-timer, and Internal/ExternalFlashMode is not "On, Wireless"
         },
         Mask => 0x80,
-        PrintConv => {
-            0x00 => 'No',
-            0x80 => 'Yes',
-        },
+        PrintConv => \%noYes,
     },
     17.2 => {
         Name => 'Rotation',
@@ -3506,10 +3491,10 @@ my %binaryDataAttrs = (
         Notes => 'K10D only',
         Mask => 0x60,
         PrintConv => {
-            0x00 => 'Horizontal (normal)',
-            0x20 => 'Rotate 180',
-            0x40 => 'Rotate 90 CW',
-            0x60 => 'Rotate 270 CW',
+            0 => 'Horizontal (normal)',
+            1 => 'Rotate 180',
+            2 => 'Rotate 90 CW',
+            3 => 'Rotate 270 CW',
         },
     },
     # Bit 0x08 is set on 3 of my 3000 shots to (All 3 were Shutter Priority
@@ -3520,8 +3505,8 @@ my %binaryDataAttrs = (
         Notes => 'K10D only',
         Mask => 0x04,
         PrintConv => {
-            0x00 => 'Manual',
-            0x04 => 'Auto',
+            0 => 'Manual',
+            1 => 'Auto',
         },
     },
     17.4 => {
@@ -3530,8 +3515,8 @@ my %binaryDataAttrs = (
         Notes => 'K10D only',
         Mask => 0x02,
         PrintConv => {
-            0x00 => '1 EV Steps',
-            0x02 => 'As EV Steps',
+            0 => '1 EV Steps',
+            1 => 'As EV Steps',
         },
     },
     # 17 Mask 0x08 - changed when changing Auto ISO range (K-5)
@@ -3753,15 +3738,15 @@ my %binaryDataAttrs = (
         Notes => 'K7 and Kx',
         Mask => 0xf0,
         PrintConv => {
-            0x00 => 'Standard',
-            0x10 => 'Daylight',
-            0x20 => 'Shade',
-            0x30 => 'Cloudy',
-            0x40 => 'Daylight Fluorescent',
-            0x50 => 'Day White Fluorescent',
-            0x60 => 'White Fluorescent',
-            0x70 => 'Tungsten',
-            0x80 => 'Unknown', #31 (or not set due to inadequate lighting)
+            0 => 'Standard',
+            1 => 'Daylight',
+            2 => 'Shade',
+            3 => 'Cloudy',
+            4 => 'Daylight Fluorescent',
+            5 => 'Day White Fluorescent',
+            6 => 'White Fluorescent',
+            7 => 'Tungsten',
+            8 => 'Unknown', #31 (or not set due to inadequate lighting)
         },
     },
     13.1 => { #30
@@ -4197,10 +4182,7 @@ my %binaryDataAttrs = (
         Condition => 'not $$self{NewLensData}',
         Notes => 'not valid for the K-r, K-5 or K-5II', #29
         Mask => 0x01,
-        PrintConv => {
-            0 => 'On',
-            1 => 'Off',
-        },
+        PrintConv => { 0 => 'On', 1 => 'Off' },
     },
     0.2 => { #JD
         Name => 'MinAperture',
@@ -4208,10 +4190,10 @@ my %binaryDataAttrs = (
         Notes => 'not valid for the K-r, K-5 or K-5II', #29
         Mask => 0x06,
         PrintConv => {
-            0x00 => 22,
-            0x02 => 32,
-            0x04 => 45,
-            0x06 => 16,
+            0 => 22,
+            1 => 32,
+            2 => 45,
+            3 => 16,
         },
     },
     0.3 => { #JD
@@ -4219,8 +4201,8 @@ my %binaryDataAttrs = (
         Condition => 'not $$self{NewLensData}',
         Notes => 'not valid for the K-r, K-5 or K-5II', #29
         Mask => 0x70,
-        ValueConv => '5 + (($val >> 4) ^ 0x07) / 2',
-        ValueConvInv => '((($val - 5) * 2) ^ 0x07) << 4',
+        ValueConv => '5 + ($val ^ 0x07) / 2',
+        ValueConvInv => '(($val - 5) * 2) ^ 0x07',
     },
     # 1-16 look like Lens Codes LC0-LC15, ref patent 5617173 and 5999753 [+notes by PH]
     1 => { # LC0 = lens kind + version data
@@ -4237,32 +4219,32 @@ my %binaryDataAttrs = (
         Notes => 'minimum focus distance for the lens',
         Mask => 0xf8,
         PrintConv => {
-            0x00 => '0.13-0.19 m',  # (plus K or M lenses)
-            0x08 => '0.20-0.24 m',
-            0x10 => '0.25-0.28 m',
-            0x18 => '0.28-0.30 m',
-            0x20 => '0.35-0.38 m',
-            0x28 => '0.40-0.45 m',
-            0x30 => '0.49-0.50 m',  # (plus many Sigma lenses)
-            0x38 => '0.6 m',        #PH (NC)
-            0x40 => '0.7 m',        # (plus Sigma 55-200)
-            0x48 => '0.8-0.9 m',    #PH (NC) Tokina 28-70/2.6-2.8
-            0x50 => '1.0 m',        # (plus Sigma 70 macro)
-            0x58 => '1.1-1.2 m',
-            0x60 => '1.4-1.5 m',
-            0x68 => '1.5 m',        # Sigma 70-300/4-5.6 macro
-            0x70 => '2.0 m',
-            0x78 => '2.0-2.1 m',    #PH (NC)
-            0x80 => '2.1 m',        # Sigma 135-400 APO & DG: 2.0-2.2m
-            0x88 => '2.2-2.9 m',    #PH (NC)
-            0x90 => '3.0 m',        # Sigma 50-500 : 1.0-3.0m depending on the focal length
-                                   ## 50mm, 100mm => 1.0m
-                                   ## 200mm       => 1.1m
-                                   ## 300mm       => 1.5m
-                                   ## 400mm       => 2.2m
-                                   ## 500mm       => 3.0m
-            0x98 => '4-5 m',        #PH (NC)
-            0xa0 => '5.6 m',        # Pentax DA 560
+            0 => '0.13-0.19 m', # (plus K or M lenses)
+            1 => '0.20-0.24 m',
+            2 => '0.25-0.28 m',
+            3 => '0.28-0.30 m',
+            4 => '0.35-0.38 m',
+            5 => '0.40-0.45 m',
+            6 => '0.49-0.50 m', # (plus many Sigma lenses)
+            7 => '0.6 m',       #PH (NC)
+            8 => '0.7 m',       # (plus Sigma 55-200)
+            9 => '0.8-0.9 m',   #PH (NC) Tokina 28-70/2.6-2.8
+            10 => '1.0 m',      # (plus Sigma 70 macro)
+            11 => '1.1-1.2 m',
+            12 => '1.4-1.5 m',
+            13 => '1.5 m',      # Sigma 70-300/4-5.6 macro
+            14 => '2.0 m',
+            15 => '2.0-2.1 m',  #PH (NC)
+            16 => '2.1 m',      # Sigma 135-400 APO & DG: 2.0-2.2m
+            17 => '2.2-2.9 m',  #PH (NC)
+            18 => '3.0 m',      # Sigma 50-500 : 1.0-3.0m depending on the focal length
+                                 ## 50mm, 100mm => 1.0m
+                                 ## 200mm       => 1.1m
+                                 ## 300mm       => 1.5m
+                                 ## 400mm       => 2.2m
+                                 ## 500mm       => 3.0m
+            19 => '4-5 m',      #PH (NC)
+            20 => '5.6 m',      # Pentax DA 560
             # To check: Sigma 120-400 OS: MFD 1.5m
             # To check: Sigma 150-500 OS: MFD 2.2m
             # To check: Sigma 50-500 has MFD 50-180cm
@@ -4324,8 +4306,8 @@ my %binaryDataAttrs = (
     10 => { # LC9 = nominal AVmin/AVmax data (open/closed aperture values)
         Name => 'NominalMaxAperture',
         Mask => 0xf0,
-        ValueConv => '2**(($val>>4)/4)', #JD
-        ValueConvInv => '4*log($val)/log(2) << 4',
+        ValueConv => '2**($val/4)', #JD
+        ValueConvInv => '4*log($val)/log(2)',
         PrintConv => 'sprintf("%.1f", $val)',
         PrintConvInv => '$val',
     },
@@ -4586,10 +4568,10 @@ my %binaryDataAttrs = (
             Notes => '*istD, K100D, K200D, K10D and K20D',
             Mask => 0xf0,
             PrintConv => { #19
-                 0x10 => 'Empty or Missing',
-                 0x20 => 'Almost Empty',
-                 0x30 => 'Running Low',
-                 0x40 => 'Full',
+                 1 => 'Empty or Missing',
+                 2 => 'Almost Empty',
+                 3 => 'Running Low',
+                 4 => 'Full',
             },
         },{
             Name => 'BodyBatteryState',
@@ -4597,18 +4579,16 @@ my %binaryDataAttrs = (
             Notes => 'other models except the K110D, K2000 and K-m',
             Mask => 0xf0,
             PrintConv => {
-                 0x10 => 'Empty or Missing',
-                 0x20 => 'Almost Empty',
-                 0x30 => 'Running Low',
-                 0x40 => 'Close to Full',
-                 0x50 => 'Full',
+                 1 => 'Empty or Missing',
+                 2 => 'Almost Empty',
+                 3 => 'Running Low',
+                 4 => 'Close to Full',
+                 5 => 'Full',
             },
         },{
             Name => 'BodyBatteryState',
             Notes => 'decoding unknown for other models',
             Mask => 0xf0,
-            ValueConv => '$val >> 4',
-            ValueConvInv => '$val << 4',
         },
     ],
     1.2 => [
@@ -4618,10 +4598,10 @@ my %binaryDataAttrs = (
             Notes => 'K10D and K20D',
             Mask => 0x0f,
             PrintConv => { #19
-                 0x01 => 'Empty or Missing',
-                 0x02 => 'Almost Empty',
-                 0x03 => 'Running Low',
-                 0x04 => 'Full',
+                 1 => 'Empty or Missing',
+                 2 => 'Almost Empty',
+                 3 => 'Running Low',
+                 4 => 'Full',
             },
         },{
             Name => 'GripBatteryState',
@@ -5334,10 +5314,10 @@ my %binaryDataAttrs = (
         Name => 'CompositionAdjust',
         Mask => 0xf0,
         PrintConv => {
-            0x00 => 'Off',
-            0x20 => 'Composition Adjust',
-            0xa0 => 'Composition Adjust + Horizon Correction',
-            0xc0 => 'Horizon Correction',
+            0 => 'Off',
+            2 => 'Composition Adjust',
+            10 => 'Composition Adjust + Horizon Correction',
+            12 => 'Horizon Correction',
         },
     },
     1 => {

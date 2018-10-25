@@ -2281,23 +2281,23 @@ with positive Y downwards)</span></span></td></tr>
 <td class=r title='0 = 0x0'>0.1</td>
 <td>WorldTimeLocation</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x01]
-  <br>0x0 = Hometown
-  <br>0x1 = Destination</span></td></tr>
+<td><span class=s>[val &amp; 0x1]
+  <br>0 = Hometown
+  <br>1 = Destination</span></td></tr>
 <tr class=b>
 <td class=r title='0 = 0x0'>0.2</td>
 <td>HometownDST</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x02]
-  <br>0x0 = No
-  <br>0x2 = Yes</span></td></tr>
+<td><span class=s>[val &gt;&gt; 1 &amp; 0x1]
+  <br>0 = No
+  <br>1 = Yes</span></td></tr>
 <tr>
 <td class=r title='0 = 0x0'>0.3</td>
 <td>DestinationDST</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x04]
-  <br>0x0 = No
-  <br>0x4 = Yes</span></td></tr>
+<td><span class=s>[val &gt;&gt; 2 &amp; 0x1]
+  <br>0 = No
+  <br>1 = Yes</span></td></tr>
 <tr class=b>
 <td class=r title='2 = 0x2'>2</td>
 <td>HometownCity</td>
@@ -2375,54 +2375,54 @@ with positive Y downwards)</span></span></td></tr>
 <td class=r title='1 = 0x1'>1.1</td>
 <td>ProgramLine</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x03]
-  <br>0x0 = Normal
-  <br>0x1 = Hi Speed
-  <br>0x2 = Depth
-  <br>0x3 = MTF</span></td></tr>
+<td><span class=s>[val &amp; 0x3]
+  <br>0 = Normal
+  <br>1 = Hi Speed
+  <br>2 = Depth
+  <br>3 = MTF</span></td></tr>
 <tr>
 <td class=r title='1 = 0x1'>1.2</td>
 <td>EVSteps</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x20]
-  <br>0x0 = 1/2 EV Steps
-  <br>0x20 = 1/3 EV Steps</span></td></tr>
+<td><span class=s>[val &gt;&gt; 5 &amp; 0x1]
+  <br>0 = 1/2 EV Steps
+  <br>1 = 1/3 EV Steps</span></td></tr>
 <tr class=b>
 <td class=r title='1 = 0x1'>1.3</td>
 <td>E-DialInProgram</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x40]
-  <br>0x0 = Tv or Av
-  <br>0x40 = P Shift</span></td></tr>
+<td><span class=s>[val &gt;&gt; 6 &amp; 0x1]
+  <br>0 = Tv or Av
+  <br>1 = P Shift</span></td></tr>
 <tr>
 <td class=r title='1 = 0x1'>1.4</td>
 <td>ApertureRingUse</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x80]
-  <br>0x0 = Prohibited
-  <br>0x80 = Permitted</span></td></tr>
+<td><span class=s>[val &gt;&gt; 7 &amp; 0x1]
+  <br>0 = Prohibited
+  <br>1 = Permitted</span></td></tr>
 <tr class=b>
 <td class=r title='2 = 0x2'>2</td>
 <td>FlashOptions</td>
 <td class=c>int8u</td>
 <td><span class=s><span class=n>(the camera flash options settings, set even if the flash is off)</span>
-  <br>[Mask 0xf0]</span><table class=cols><tr>
-  <td>0x0 = Normal
-  <br>0x1 = Red-eye reduction
-  <br>0x2 = Auto
-  <br>0x3 = Auto, Red-eye reduction
-  <br>0x5 = Wireless (Master)
-  <br>0x6 = Wireless (Control)
-  <br>0x8 = Slow-sync
-  <br>0x9 = Slow-sync, Red-eye reduction
-  <br>0xa = Trailing-curtain Sync</td></tr></table>
+  <br>[val &gt;&gt; 4 &amp; 0xf]</span><table class=cols><tr>
+  <td>0 = Normal
+  <br>1 = Red-eye reduction
+  <br>2 = Auto
+  <br>3 = Auto, Red-eye reduction
+  <br>5 = Wireless (Master)
+  <br>6 = Wireless (Control)
+  <br>8 = Slow-sync
+  <br>9 = Slow-sync, Red-eye reduction
+  <br>10 = Trailing-curtain Sync</td></tr></table>
 </td></tr>
 <tr>
 <td class=r title='2 = 0x2'>2.1</td>
 <td>MeteringMode2</td>
 <td class=c>int8u</td>
 <td><span class=s><span class=n>(may not be valid for some models, eg. *ist D)</span>
-  <br>[Mask 0x0f]
+  <br>[val &amp; 0xf]
   <br>0x0 = Multi-segment
   <br>Bit 0 = Center-weighted average
   <br>Bit 1 = Spot</span></td></tr>
@@ -2430,19 +2430,19 @@ with positive Y downwards)</span></span></td></tr>
 <td class=r title='3 = 0x3'>3</td>
 <td>AFPointMode</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0xf0]
+<td><span class=s>[val &gt;&gt; 4 &amp; 0xf]
   <br>0x0 = Auto
-  <br>Bit 4 = Select
-  <br>Bit 5 = Fixed Center</span></td></tr>
+  <br>Bit 0 = Select
+  <br>Bit 1 = Fixed Center</span></td></tr>
 <tr>
 <td class=r title='3 = 0x3'>3.1</td>
 <td>FocusMode2</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x0f]
-  <br>0x0 = Manual
-  <br>0x1 = AF-S
-  <br>0x2 = AF-C
-  <br>0x3 = AF-A</span></td></tr>
+<td><span class=s>[val &amp; 0xf]
+  <br>0 = Manual
+  <br>1 = AF-S
+  <br>2 = AF-C
+  <br>3 = AF-A</span></td></tr>
 <tr class=b>
 <td class=r title='4 = 0x4'>4</td>
 <td>AFPointSelected2</td>
@@ -2516,28 +2516,28 @@ with positive Y downwards)</span></span></td></tr>
 <td class=r title='10 = 0xa'>10</td>
 <td>WhiteBalanceSet</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0xf0]</span><table class=cols><tr>
-  <td>0x0 = Auto
-  <br>0x10 = Daylight
-  <br>0x20 = Shade
-  <br>0x30 = Cloudy
-  <br>0x40 = Daylight Fluorescent
-  <br>0x50 = Day White Fluorescent
-  <br>0x60 = White Fluorescent
-  <br>0x70 = Tungsten
-  <br>0x80 = Flash
-  <br>0x90 = Manual
-  <br>0xc0 = Set Color Temperature 1
-  <br>0xd0 = Set Color Temperature 2
-  <br>0xe0 = Set Color Temperature 3</td></tr></table>
+<td><span class=s>[val &gt;&gt; 4 &amp; 0xf]</span><table class=cols><tr>
+  <td>0 = Auto
+  <br>1 = Daylight
+  <br>2 = Shade
+  <br>3 = Cloudy
+  <br>4 = Daylight Fluorescent
+  <br>5 = Day White Fluorescent
+  <br>6 = White Fluorescent
+  <br>7 = Tungsten
+  <br>8 = Flash
+  <br>9 = Manual
+  <br>12 = Set Color Temperature 1
+  <br>13 = Set Color Temperature 2
+  <br>14 = Set Color Temperature 3</td></tr></table>
 </td></tr>
 <tr class=b>
 <td class=r title='10 = 0xa'>10.1</td>
 <td>MultipleExposureSet</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x0f]
-  <br>0x0 = Off
-  <br>0x1 = On</span></td></tr>
+<td><span class=s>[val &amp; 0xf]
+  <br>0 = Off
+  <br>1 = On</span></td></tr>
 <tr>
 <td class=r title='13 = 0xd'>13</td>
 <td>RawAndJpgRecording</td>
@@ -2564,56 +2564,56 @@ with positive Y downwards)</span></span></td></tr>
 <td>JpgRecordedPixels</td>
 <td class=c>int8u</td>
 <td><span class=s><span class=n>(K10D only)</span>
-  <br>[Mask 0x03]
-  <br>0x0 = 10 MP
-  <br>0x1 = 6 MP
-  <br>0x2 = 2 MP</span></td></tr>
+  <br>[val &amp; 0x3]
+  <br>0 = 10 MP
+  <br>1 = 6 MP
+  <br>2 = 2 MP</span></td></tr>
 <tr>
 <td class=r title='14 = 0xe'>14.2</td>
 <td>LinkAEToAFPoint</td>
 <td class=c>int8u</td>
 <td><span class=s><span class=n>(K-5 only)</span>
-  <br>[Mask 0x01]
-  <br>0x0 = Off
-  <br>0x1 = On</span></td></tr>
+  <br>[val &amp; 0x1]
+  <br>0 = Off
+  <br>1 = On</span></td></tr>
 <tr class=b>
 <td class=r title='14 = 0xe'>14.3</td>
 <td>SensitivitySteps</td>
 <td class=c>int8u</td>
 <td><span class=s><span class=n>(K-5 only)</span>
-  <br>[Mask 0x02]
-  <br>0x0 = 1 EV Steps
-  <br>0x2 = As EV Steps</span></td></tr>
+  <br>[val &gt;&gt; 1 &amp; 0x1]
+  <br>0 = 1 EV Steps
+  <br>1 = As EV Steps</span></td></tr>
 <tr>
 <td class=r title='14 = 0xe'>14.4</td>
 <td>ISOAuto</td>
 <td class=c>int8u</td>
 <td><span class=s><span class=n>(K-5 only)</span>
-  <br>[Mask 0x04]
-  <br>0x0 = Off
-  <br>0x4 = On</span></td></tr>
+  <br>[val &gt;&gt; 2 &amp; 0x1]
+  <br>0 = Off
+  <br>1 = On</span></td></tr>
 <tr class=b>
 <td class=r title='16 = 0x10'>16</td>
 <td>FlashOptions2</td>
 <td class=c>int8u</td>
 <td><span class=s><span class=n>(K10D only; set even if the flash is off)</span>
-  <br>[Mask 0xf0]</span><table class=cols><tr>
-  <td>0x0 = Normal
-  <br>0x10 = Red-eye reduction
-  <br>0x20 = Auto
-  <br>0x30 = Auto, Red-eye reduction
-  <br>0x50 = Wireless (Master)
-  <br>0x60 = Wireless (Control)
-  <br>0x80 = Slow-sync
-  <br>0x90 = Slow-sync, Red-eye reduction
-  <br>0xa0 = Trailing-curtain Sync</td></tr></table>
+  <br>[val &gt;&gt; 4 &amp; 0xf]</span><table class=cols><tr>
+  <td>0 = Normal
+  <br>1 = Red-eye reduction
+  <br>2 = Auto
+  <br>3 = Auto, Red-eye reduction
+  <br>5 = Wireless (Master)
+  <br>6 = Wireless (Control)
+  <br>8 = Slow-sync
+  <br>9 = Slow-sync, Red-eye reduction
+  <br>10 = Trailing-curtain Sync</td></tr></table>
 </td></tr>
 <tr>
 <td class=r title='16 = 0x10'>16.1</td>
 <td>MeteringMode3</td>
 <td class=c>int8u</td>
 <td><span class=s><span class=n>(K10D only)</span>
-  <br>[Mask 0x0f]
+  <br>[val &amp; 0xf]
   <br>0x0 = Multi-segment
   <br>Bit 0 = Center-weighted average
   <br>Bit 1 = Spot</span></td></tr>
@@ -2623,35 +2623,35 @@ with positive Y downwards)</span></span></td></tr>
 <td class=c>int8u</td>
 <td><span class=s><span class=n>(K10D only; SR is active only when ShakeReduction is On, DriveMode is not
 Remote or Self-timer, and Internal/ExternalFlashMode is not &quot;On, Wireless&quot;)</span>
-  <br>[Mask 0x80]
-  <br>0x0 = No
-  <br>0x80 = Yes</span></td></tr>
+  <br>[val &gt;&gt; 7 &amp; 0x1]
+  <br>0 = No
+  <br>1 = Yes</span></td></tr>
 <tr>
 <td class=r title='17 = 0x11'>17.2</td>
 <td>Rotation</td>
 <td class=c>int8u</td>
 <td><span class=s><span class=n>(K10D only)</span>
-  <br>[Mask 0x60]
-  <br>0x0 = Horizontal (normal)
-  <br>0x20 = Rotate 180
-  <br>0x40 = Rotate 90 CW
-  <br>0x60 = Rotate 270 CW</span></td></tr>
+  <br>[val &gt;&gt; 5 &amp; 0x3]
+  <br>0 = Horizontal (normal)
+  <br>1 = Rotate 180
+  <br>2 = Rotate 90 CW
+  <br>3 = Rotate 270 CW</span></td></tr>
 <tr class=b>
 <td class=r title='17 = 0x11'>17.3</td>
 <td>ISOSetting</td>
 <td class=c>int8u</td>
 <td><span class=s><span class=n>(K10D only)</span>
-  <br>[Mask 0x04]
-  <br>0x0 = Manual
-  <br>0x4 = Auto</span></td></tr>
+  <br>[val &gt;&gt; 2 &amp; 0x1]
+  <br>0 = Manual
+  <br>1 = Auto</span></td></tr>
 <tr>
 <td class=r title='17 = 0x11'>17.4</td>
 <td>SensitivitySteps</td>
 <td class=c>int8u</td>
 <td><span class=s><span class=n>(K10D only)</span>
-  <br>[Mask 0x02]
-  <br>0x0 = 1 EV Steps
-  <br>0x2 = As EV Steps</span></td></tr>
+  <br>[val &gt;&gt; 1 &amp; 0x1]
+  <br>0 = 1 EV Steps
+  <br>1 = As EV Steps</span></td></tr>
 <tr class=b>
 <td class=r title='18 = 0x12'>18</td>
 <td>TvExposureTimeSetting</td>
@@ -2799,23 +2799,23 @@ but it varies slightly by lens)</span></span></td></tr>
 <td>AEWhiteBalance</td>
 <td class=c>int8u</td>
 <td><span class=s><span class=n>(K7 and Kx)</span>
-  <br>[Mask 0xf0]</span><table class=cols><tr>
-  <td>0x0 = Standard
-  <br>0x10 = Daylight
-  <br>0x20 = Shade
-  <br>0x30 = Cloudy
-  <br>0x40 = Daylight Fluorescent
-  <br>0x50 = Day White Fluorescent
-  <br>0x60 = White Fluorescent
-  <br>0x70 = Tungsten
-  <br>0x80 = Unknown</td></tr></table>
+  <br>[val &gt;&gt; 4 &amp; 0xf]</span><table class=cols><tr>
+  <td>0 = Standard
+  <br>1 = Daylight
+  <br>2 = Shade
+  <br>3 = Cloudy
+  <br>4 = Daylight Fluorescent
+  <br>5 = Day White Fluorescent
+  <br>6 = White Fluorescent
+  <br>7 = Tungsten
+  <br>8 = Unknown</td></tr></table>
 </td></tr>
 <tr>
 <td class=r title='13 = 0xd'>13.1</td>
 <td>AEMeteringMode2</td>
 <td class=c>int8u</td>
 <td><span class=s><span class=n>(K7 and Kx, override for an incompatible metering mode setting)</span>
-  <br>[Mask 0x0f]
+  <br>[val &amp; 0xf]
   <br>0x0 = Multi-segment
   <br>Bit 0 = Center-weighted average
   <br>Bit 1 = Spot</span></td></tr>
@@ -3031,25 +3031,25 @@ gymnastics to decode them into useful values.</p>
 <td>AutoAperture</td>
 <td class=c>int8u</td>
 <td><span class=s><span class=n>(not valid for the K-r, K-5 or K-5II)</span>
-  <br>[Mask 0x01]
-  <br>0x0 = On
-  <br>0x1 = Off</span></td></tr>
+  <br>[val &amp; 0x1]
+  <br>0 = On
+  <br>1 = Off</span></td></tr>
 <tr class=b>
 <td class=r title='0 = 0x0'>0.2</td>
 <td>MinAperture</td>
 <td class=c>int8u</td>
 <td><span class=s><span class=n>(not valid for the K-r, K-5 or K-5II)</span>
-  <br>[Mask 0x06]
-  <br>0x0 = 22
-  <br>0x2 = 32
-  <br>0x4 = 45
-  <br>0x6 = 16</span></td></tr>
+  <br>[val &gt;&gt; 1 &amp; 0x3]
+  <br>0 = 22
+  <br>1 = 32
+  <br>2 = 45
+  <br>3 = 16</span></td></tr>
 <tr>
 <td class=r title='0 = 0x0'>0.3</td>
 <td>LensFStops</td>
 <td class=c>int8u</td>
 <td><span class=s><span class=n>(not valid for the K-r, K-5 or K-5II)</span>
-  <br>[Mask 0x70]</span></td></tr>
+  <br>[val &gt;&gt; 4 &amp; 0x7]</span></td></tr>
 <tr class=b>
 <td class=r title='1 = 0x1'>1</td>
 <td>LensKind?</td>
@@ -3065,42 +3065,42 @@ gymnastics to decode them into useful values.</p>
 <td>MinFocusDistance</td>
 <td class=c>int8u</td>
 <td><span class=s><span class=n>(minimum focus distance for the lens)</span>
-  <br>[Mask 0xf8]</span><table class=cols><tr>
-  <td>0x0 = 0.13-0.19 m
-  <br>0x8 = 0.20-0.24 m
-  <br>0x10 = 0.25-0.28 m
-  <br>0x18 = 0.28-0.30 m
-  <br>0x20 = 0.35-0.38 m
-  <br>0x28 = 0.40-0.45 m
-  <br>0x30 = 0.49-0.50 m
-  <br>0x38 = 0.6 m
-  <br>0x40 = 0.7 m
-  <br>0x48 = 0.8-0.9 m
-  <br>0x50 = 1.0 m</td><td>&nbsp;&nbsp;</td>
-  <td>0x58 = 1.1-1.2 m
-  <br>0x60 = 1.4-1.5 m
-  <br>0x68 = 1.5 m
-  <br>0x70 = 2.0 m
-  <br>0x78 = 2.0-2.1 m
-  <br>0x80 = 2.1 m
-  <br>0x88 = 2.2-2.9 m
-  <br>0x90 = 3.0 m
-  <br>0x98 = 4-5 m
-  <br>0xa0 = 5.6 m</td></tr></table>
+  <br>[val &gt;&gt; 3 &amp; 0x1f]</span><table class=cols><tr>
+  <td>0 = 0.13-0.19 m
+  <br>1 = 0.20-0.24 m
+  <br>2 = 0.25-0.28 m
+  <br>3 = 0.28-0.30 m
+  <br>4 = 0.35-0.38 m
+  <br>5 = 0.40-0.45 m
+  <br>6 = 0.49-0.50 m
+  <br>7 = 0.6 m
+  <br>8 = 0.7 m
+  <br>9 = 0.8-0.9 m
+  <br>10 = 1.0 m</td><td>&nbsp;&nbsp;</td>
+  <td>11 = 1.1-1.2 m
+  <br>12 = 1.4-1.5 m
+  <br>13 = 1.5 m
+  <br>14 = 2.0 m
+  <br>15 = 2.0-2.1 m
+  <br>16 = 2.1 m
+  <br>17 = 2.2-2.9 m
+  <br>18 = 3.0 m
+  <br>19 = 4-5 m
+  <br>20 = 5.6 m</td></tr></table>
 </td></tr>
 <tr>
 <td class=r title='3 = 0x3'>3.1</td>
 <td>FocusRangeIndex</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x07]</span><table class=cols><tr>
-  <td>0x0 = 5
-  <br>0x1 = 4
-  <br>0x2 = 6 (far)
-  <br>0x3 = 7 (very far)</td><td>&nbsp;&nbsp;</td>
-  <td>0x4 = 2
-  <br>0x5 = 3
-  <br>0x6 = 1 (close)
-  <br>0x7 = 0 (very close)</td></tr></table>
+<td><span class=s>[val &amp; 0x7]</span><table class=cols><tr>
+  <td>0 = 5
+  <br>1 = 4
+  <br>2 = 6 (far)
+  <br>3 = 7 (very far)</td><td>&nbsp;&nbsp;</td>
+  <td>4 = 2
+  <br>5 = 3
+  <br>6 = 1 (close)
+  <br>7 = 0 (very close)</td></tr></table>
 </td></tr>
 <tr class=b>
 <td class=r title='4 = 0x4'>4</td>
@@ -3137,12 +3137,12 @@ gymnastics to decode them into useful values.</p>
 <td class=r title='10 = 0xa'>10</td>
 <td>NominalMaxAperture</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0xf0]</span></td></tr>
+<td><span class=s>[val &gt;&gt; 4 &amp; 0xf]</span></td></tr>
 <tr>
 <td class=r title='10 = 0xa'>10.1</td>
 <td>NominalMinAperture</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x0f]</span></td></tr>
+<td><span class=s>[val &amp; 0xf]</span></td></tr>
 <tr class=b>
 <td class=r title='11 = 0xb'>11</td>
 <td>LC10?</td>
@@ -3163,7 +3163,7 @@ gymnastics to decode them into useful values.</p>
 <td>MaxAperture</td>
 <td class=c>int8u</td>
 <td><span class=s><span class=n>(effective wide open aperture for current focal length)</span>
-  <br>[Mask 0x7f]</span></td></tr>
+  <br>[val &amp; 0x7f]</span></td></tr>
 <tr class=b>
 <td class=r title='15 = 0xf'>15</td>
 <td>LC14?</td>
@@ -3325,7 +3325,7 @@ gymnastics to decode them into useful values.</p>
 <td>ExternalFlashGuideNumber</td>
 <td class=c>int8u</td>
 <td><span class=s><span class=n>(val = 2**(raw/16 + 4), with a few exceptions)</span>
-  <br>[Mask 0x1f]</span></td></tr>
+  <br>[val &amp; 0x1f]</span></td></tr>
 <tr class=b>
 <td class=r title='25 = 0x19'>25</td>
 <td>ExternalFlashExposureComp</td>
@@ -3401,42 +3401,42 @@ serviced)</span></span></td></tr>
 <td class=r title='0 = 0x0'>0.1</td>
 <td>PowerSource</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x0f]
-  <br>0x2 = Body Battery
-  <br>0x3 = Grip Battery
-  <br>0x4 = External Power Supply</span></td></tr>
+<td><span class=s>[val &amp; 0xf]
+  <br>2 = Body Battery
+  <br>3 = Grip Battery
+  <br>4 = External Power Supply</span></td></tr>
 <tr class=b>
 <td class=r title='1 = 0x1'>1.1</td>
 <td>BodyBatteryState</td>
 <td class=c>int8u</td>
 <td><span class=s><span class=n>(*istD, K100D, K200D, K10D and K20D)</span>
-  <br>[Mask 0xf0]
-  <br>0x10 = Empty or Missing
-  <br>0x20 = Almost Empty
-  <br>0x30 = Running Low
-  <br>0x40 = Full
+  <br>[val &gt;&gt; 4 &amp; 0xf]
+  <br>1 = Empty or Missing
+  <br>2 = Almost Empty
+  <br>3 = Running Low
+  <br>4 = Full
   <br><span class=n>(other models except the K110D, K2000 and K-m)</span>
-  <br>[Mask 0xf0]
-  <br>0x10 = Empty or Missing
-  <br>0x20 = Almost Empty
-  <br>0x30 = Running Low
-  <br>0x40 = Close to Full
-  <br>0x50 = Full
+  <br>[val &gt;&gt; 4 &amp; 0xf]
+  <br>1 = Empty or Missing
+  <br>2 = Almost Empty
+  <br>3 = Running Low
+  <br>4 = Close to Full
+  <br>5 = Full
   <br><span class=n>(decoding unknown for other models)</span>
-  <br>[Mask 0xf0]</span></td></tr>
+  <br>[val &gt;&gt; 4 &amp; 0xf]</span></td></tr>
 <tr>
 <td class=r title='1 = 0x1'>1.2</td>
 <td>GripBatteryState
   <br>GripBatteryState?</td>
 <td class=c>int8u<br>int8u</td>
 <td><span class=s><span class=n>(K10D and K20D)</span>
-  <br>[Mask 0x0f]
-  <br>0x1 = Empty or Missing
-  <br>0x2 = Almost Empty
-  <br>0x3 = Running Low
-  <br>0x4 = Full
+  <br>[val &amp; 0xf]
+  <br>1 = Empty or Missing
+  <br>2 = Almost Empty
+  <br>3 = Running Low
+  <br>4 = Full
   <br><span class=n>(decoding unknown for other models)</span>
-  <br>[Mask 0x0f]</span></td></tr>
+  <br>[val &amp; 0xf]</span></td></tr>
 <tr class=b>
 <td class=r title='2 = 0x2'>2</td>
 <td>BodyBatteryADNoLoad
@@ -4226,7 +4226,7 @@ valid for other models.</p>
 <td class=r title='0 = 0x0'>0</td>
 <td>LevelOrientation</td>
 <td class=c>int8s</td>
-<td><span class=s>[Mask 0x0f]</span><table class=cols><tr>
+<td><span class=s>[val &amp; 0xf]</span><table class=cols><tr>
   <td>1 = Horizontal (normal)
   <br>2 = Rotate 180
   <br>3 = Rotate 90 CW
@@ -4242,11 +4242,11 @@ valid for other models.</p>
 <td class=r title='0 = 0x0'>0.1</td>
 <td>CompositionAdjust</td>
 <td class=c>int8s</td>
-<td><span class=s>[Mask 0xf0]
-  <br>0x0 = Off
-  <br>0x20 = Composition Adjust
-  <br>0xa0 = Composition Adjust + Horizon Correction
-  <br>0xc0 = Horizon Correction</span></td></tr>
+<td><span class=s>[val &gt;&gt; 4 &amp; 0xf]
+  <br>0 = Off
+  <br>2 = Composition Adjust
+  <br>10 = Composition Adjust + Horizon Correction
+  <br>12 = Horizon Correction</span></td></tr>
 <tr>
 <td class=r title='1 = 0x1'>1</td>
 <td>RollAngle</td>
@@ -4879,7 +4879,7 @@ stored as ASCII text in a format very similar to some HP models.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Aug 7, 2018</i>
+<br><i>Last revised Oct 24, 2018</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

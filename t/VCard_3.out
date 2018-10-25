@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.94
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.15
 [File, System, Image] FileName - File Name: VCard.ics
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 2.2 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2015:05:03 12:36:08-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:05:03 12:53:14-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:05:03 12:36:08-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2015:05:04 08:20:34-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2018:10:22 11:14:34-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2018:10:16 12:24:17-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: ICS
 [File, File, Image] FileTypeExtension - File Type Extension: ics
@@ -12,9 +12,9 @@
 [VCard, VCalendar, Document] Calscale - Calendar Scale: GREGORIAN
 [VCard, VCalendar, Document] Version - VCalendar Version: 2.0
 [VCard, VCalendar, Document] Method - Method: PUBLISH
-[VCard, VCalendar, Document] X-wr-calname - Wr-calname: Calendar
-[VCard, VCalendar, Document] X-wr-timezone - Wr-timezone: America/Toronto
-[VCard, VCalendar, Document] X-apple-calendar-color - Apple-calendar-color: #CC73E1
+[VCard, VCalendar, Document] X-wr-calname - Calendar Name: Calendar
+[VCard, VCalendar, Time] X-wr-timezone - Time Zone 2: America/Toronto
+[VCard, VCalendar, Document] X-apple-calendar-color - Calendar Color: #CC73E1
 [VCard, Timezone1, Time] Tzid - Timezone ID: Canada/Eastern
 [VCard, Timezone1, Time] DaylightTzoffsetfrom - Daylight Timezone Offset From: -0500
 [VCard, Timezone1, Time] DaylightRrule - Daylight Recurrence Rule: FREQ=YEARLY;BYMONTH=3;BYDAY=2SU
@@ -53,17 +53,17 @@
 [VCard, Event1, Time] Dtstamp - Date Time Stamp: 2015:04:20 15:55:18Z
 [VCard, Event1, Location] Location - Location: 261
 [VCard, Event1, Document] Sequence - Sequence Number: 0
-[VCard, Event1, Document] Alarm1X-wr-alarmuid - Alarm 1 Wr-alarmuid: C41775A2-C98F-456C-BB8F-8E6FB15A554F
+[VCard, Event1, Document] Alarm1X-wr-alarmuid - Alarm 1 Alarm UID: C41775A2-C98F-456C-BB8F-8E6FB15A554F
 [VCard, Event1, Document] Alarm1Uid - Alarm 1 UID: C41775A2-C98F-456C-BB8F-8E6FB15A554F
 [VCard, Event1, Document] Alarm1Trigger - Alarm 1 Trigger: -PT5M
 [VCard, Event1, Document] Alarm1Attach - Alarm 1 Attachment: Basso
-[VCard, Event1, Document] Alarm1X-apple-local-default-alarm - Alarm 1 Apple-local-default-alarm: TRUE
+[VCard, Event1, Document] Alarm1X-apple-local-default-alarm - Alarm 1 Local Default Alarm: TRUE
 [VCard, Event1, Document] Alarm1Action - Alarm 1 Action: AUDIO
-[VCard, Event1, Document] Alarm1X-apple-default-alarm - Alarm 1 Apple-default-alarm: TRUE
-[VCard, Event1, Document] Alarm2X-wr-alarmuid - Alarm 2 Wr-alarmuid: 70894F68-E6F8-4C00-A737-73D4CDCF0525
+[VCard, Event1, Document] Alarm1X-apple-default-alarm - Alarm 1 Default Alarm: TRUE
+[VCard, Event1, Document] Alarm2X-wr-alarmuid - Alarm 2 Alarm UID: 70894F68-E6F8-4C00-A737-73D4CDCF0525
 [VCard, Event1, Document] Alarm2Uid - Alarm 2 UID: 70894F68-E6F8-4C00-A737-73D4CDCF0525
 [VCard, Event1, Document] Alarm2Trigger - Alarm 2 Trigger: -PT5M
-[VCard, Event1, Document] Alarm2X-apple-default-alarm - Alarm 2 Apple-default-alarm: TRUE
+[VCard, Event1, Document] Alarm2X-apple-default-alarm - Alarm 2 Default Alarm: TRUE
 [VCard, Event1, Document] Alarm2Attach - Alarm 2 Attachment: Basso
 [VCard, Event1, Document] Alarm2Action - Alarm 2 Action: AUDIO
 [VCard, Event2, Time] Created - Date Created: 2012:08:07 15:27:46Z
@@ -79,10 +79,10 @@
 [VCard, Event2, Document] Sequence - Sequence Number: 0
 [VCard, Event2, Document] Recurrence-id - Recurrence ID: 20131125T123000
 [VCard, Event2, Time] Recurrence-idTzid - Recurrence ID Timezone ID: Canada/Eastern
-[VCard, Event2, Document] Alarm1X-wr-alarmuid - Alarm 1 Wr-alarmuid: C514D9BB-BDB3-4A5F-B580-9287459DA35C
+[VCard, Event2, Document] Alarm1X-wr-alarmuid - Alarm 1 Alarm UID: C514D9BB-BDB3-4A5F-B580-9287459DA35C
 [VCard, Event2, Document] Alarm1Uid - Alarm 1 UID: C514D9BB-BDB3-4A5F-B580-9287459DA35C
 [VCard, Event2, Document] Alarm1Trigger - Alarm 1 Trigger: -PT5M
 [VCard, Event2, Document] Alarm1Attach - Alarm 1 Attachment: Basso
-[VCard, Event2, Document] Alarm1X-apple-local-default-alarm - Alarm 1 Apple-local-default-alarm: TRUE
+[VCard, Event2, Document] Alarm1X-apple-local-default-alarm - Alarm 1 Local Default Alarm: TRUE
 [VCard, Event2, Document] Alarm1Action - Alarm 1 Action: AUDIO
-[VCard, Event2, Document] Alarm1X-apple-default-alarm - Alarm 1 Apple-default-alarm: TRUE
+[VCard, Event2, Document] Alarm1X-apple-default-alarm - Alarm 1 Default Alarm: TRUE

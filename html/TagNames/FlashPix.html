@@ -1555,7 +1555,7 @@ property tables, even though they are only listed in the SummaryInfo table.</p>
 <td title='0x0005 = 5'>0x0005</td>
 <td>DocFlags</td>
 <td class=c>no</td>
-<td><span class=s>[Mask 0xff0f]</span><table class=cols><tr>
+<td><span class=s>[val &amp; 0xff0f]</span><table class=cols><tr>
   <td>Bit 0 = Template
   <br>Bit 1 = AutoText only
   <br>Bit 2 = Complex
@@ -1573,16 +1573,16 @@ property tables, even though they are only listed in the SummaryInfo table.</p>
 <td class=r title='9 = 0x9'>9.1</td>
 <td>System</td>
 <td class=c>no</td>
-<td><span class=s>[Mask 0x01]
-  <br>0x0 = Windows
-  <br>0x1 = Macintosh</span></td></tr>
+<td><span class=s>[val &amp; 0x1]
+  <br>0 = Windows
+  <br>1 = Macintosh</span></td></tr>
 <tr>
 <td class=r title='9 = 0x9'>9.2</td>
 <td>Word97</td>
 <td class=c>no</td>
-<td><span class=s>[Mask 0x10]
-  <br>0x0 = No
-  <br>0x10 = Yes</span></td></tr>
+<td><span class=s>[val &gt;&gt; 4 &amp; 0x1]
+  <br>0 = No
+  <br>1 = Yes</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='DocTable'>FlashPix DocTable Tags</a></h2>
@@ -1671,7 +1671,7 @@ property tables, even though they are only listed in the SummaryInfo table.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Sep 27, 2018</i>
+<br><i>Last revised Oct 24, 2018</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

@@ -87,7 +87,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.01';
+$VERSION = '4.02';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -359,7 +359,8 @@ $VERSION = '4.01';
     188 => 'Canon EF 70-200mm f/4L USM + 2x', #PH
     189 => 'Canon EF 70-200mm f/4L USM + 2.8x', #32
     190 => 'Canon EF 100mm f/2.8 Macro USM', # (+USM ref 42)
-    191 => 'Canon EF 400mm f/4 DO IS', #9
+    191 => 'Canon EF 400mm f/4 DO IS or Sigma Lens', #9
+    191.1 => 'Sigma 500mm f/4 DG OS HSM', #AndrewSheih
     193 => 'Canon EF 35-80mm f/4-5.6 USM', #32
     194 => 'Canon EF 80-200mm f/4.5-5.6 USM', #32
     195 => 'Canon EF 35-105mm f/4.5-5.6 USM', #32
@@ -433,6 +434,7 @@ $VERSION = '4.01';
     368.1 => 'Sigma 20mm f/1.4 DG HSM | A', #50 (newer firmware)
     368.2 => 'Sigma 50mm f/1.4 DG HSM | A', #50
     368.3 => 'Sigma 40mm f/1.4 DG HSM | A', #IB (018)
+    368.4 => 'Sigma 60-600mm f/4.5-6.3 DG OS HSM | S', #IB (018)
     # Note: LensType 488 (0x1e8) is reported as 232 (0xe8) in 7D CameraSettings
     488 => 'Canon EF-S 15-85mm f/3.5-5.6 IS USM', #PH
     489 => 'Canon EF 70-300mm f/4-5.6L IS USM', #Gerald Kapounek

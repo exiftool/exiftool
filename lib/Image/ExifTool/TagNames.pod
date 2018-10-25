@@ -8399,13 +8399,16 @@ Tags extracted from FLIR Public image Format (FPF) files.
   0x1006   Contrast                             int16u
   0x100a   WhiteBalanceFineTune                 int32s[2]
   0x100b   NoiseReduction                       int16u
-  0x100e   HighISONoiseReduction                int16u
+  0x100e   NoiseReduction                       int16u
   0x1010   FujiFlashMode                        int16u
   0x1011   FlashExposureComp                    rational64s
   0x1020   Macro                                int16u
   0x1021   FocusMode                            int16u
   0x1022   AFMode                               int16u
   0x1023   FocusPixel                           int16u[2]
+  0x102b   PrioritySettings                     FujiFilm PrioritySettings
+  0x102d   FocusSettings                        FujiFilm FocusSettings
+  0x102e   AFCSettings                          FujiFilm AFCSettings
   0x1030   SlowSync                             int16u
   0x1031   PictureMode                          int16u
   0x1032   ExposureCount                        int16u
@@ -8414,9 +8417,14 @@ Tags extracted from FLIR Public image Format (FPF) files.
   0x1040   ShadowTone                           int32s
   0x1041   HighlightTone                        int32s
   0x1044   DigitalZoom                          int32u
+  0x1045   LensModulationOptimizer              int32u
+  0x1047   GrainEffect                          int32s
+  0x1048   ColorChromeEffect                    int32s
+  0x1049   BWAdjustment                         int8s
   0x1050   ShutterType                          int16u
   0x1100   AutoBracketing                       int16u
   0x1101   SequenceNumber                       int16u
+  0x1103   DriveSettings                        FujiFilm DriveSettings
   0x1153   PanoramaAngle                        int16u
   0x1154   PanoramaDirection                    int16u
   0x1201   AdvancedFilter                       int32u
@@ -8439,6 +8447,10 @@ Tags extracted from FLIR Public image Format (FPF) files.
   0x1431   Rating                               int32u
   0x1436   ImageGeneration                      int16u
   0x1438   ImageCount                           int16u
+  0x1443   DRangePriority                       int16u
+  0x1444   DRangePriorityAuto                   int16u
+  0x1445   DRangePriorityFixed                  int16u
+  0x1446   FlickerReduction                     int32u
   0x3820   FrameRate                            int16u
   0x3821   FrameWidth                           int16u
   0x3822   FrameHeight                          int16u
@@ -8452,6 +8464,38 @@ Tags extracted from FLIR Public image Format (FPF) files.
   0x8002   OrderNumber                          int32u
   0x8003   FrameNumber                          int16u
   0xb211   Parallax                             rational64s
+
+=head3 FujiFilm PrioritySettings Tags
+
+  Index2   Tag Name                             Writable
+  ------   --------                             --------
+    0.1    AF-SPriority                         int16u & 0x0f
+    0.2    AF-CPriority                         int16u & 0xf0
+
+=head3 FujiFilm FocusSettings Tags
+
+  Index4   Tag Name                             Writable
+  ------   --------                             --------
+    0.1    FocusMode2                           int32u & 0xff
+    0.2    AFAreaMode                           int32u & 0xf00
+    0.3    AFAreaPointSize                      int32u & 0xf000
+    0.4    AFAreaZoneSize                       int32u & 0xf0000
+
+=head3 FujiFilm AFCSettings Tags
+
+  Index4   Tag Name                             Writable
+  ------   --------                             --------
+      0    AF-CSetting                          int32u
+    0.1    AF-CTrackingSensitivity              int32u & 0x0f
+    0.2    AF-CSpeedTrackingSensitivity         int32u & 0xf0
+    0.3    AF-CZoneAreaSwitching                int32u & 0xf00
+
+=head3 FujiFilm DriveSettings Tags
+
+  Index4   Tag Name                             Writable
+  ------   --------                             --------
+    0.1    DriveMode                            int32u & 0xff
+    0.2    DriveSpeed                           int32u & 0xff000000
 
 =head3 FujiFilm FaceRecInfo Tags
 
@@ -31925,55 +31969,79 @@ names, and embedded components (eg. Alarm) are added as a prefix to the tag
 name.  See L<http://tools.ietf.org/html/rfc5545> for the official iCalendar
 2.0 specification.
 
-  Tag ID               Tag Name                 Writable
-  ------               --------                 --------
-  'Acknowledged'       Acknowledged             no
-  'Action'             Action                   no
-  'Attach'             Attachment               no
-  'Attendee'           Attendee                 no
-  'Calscale'           CalendarScale            no
-  'Categories'         Categories               no
-  'Class'              Classification           no
-  'Comment'            Comment                  no
-  'Completed'          DateTimeCompleted        no
-  'Contact'            Contact                  no
-  'Created'            DateCreated              no
-  'Description'        Description              no
-  'Dtend'              DateTimeEnd              no
-  'Dtstamp'            DateTimeStamp            no
-  'Dtstart'            DateTimeStart            no
-  'Due'                DateTimeDue              no
-  'Duration'           Duration                 no
-  'Exdate'             ExceptionDateTimes       no
-  'Freebusy'           FreeBusyTime             no
-  'Geo'                Geolocation              no
-  'Last-modified'      ModifyDate               no
-  'Location'           Location                 no
-  'Method'             Method                   no
-  'Organizer'          Organizer                no
-  'Percent-complete'   PercentComplete          no
-  'Priority'           Priority                 no
-  'Prodid'             Software                 no
-  'Rdate'              RecurrenceDateTimes      no
-  'Recurrence-id'      RecurrenceID             no
-  'Related-to'         RelatedTo                no
-  'Repeat'             Repeat                   no
-  'Request-status'     RequestStatus            no
-  'Resources'          Resources                no
-  'Rrule'              RecurrenceRule           no
-  'Sequence'           SequenceNumber           no
-  'Status'             Status                   no
-  'Summary'            Summary                  no
-  'Transp'             TimeTransparency         no
-  'Trigger'            Trigger                  no
-  'Tzid'               TimezoneID               no
-  'Tzname'             TimezoneName             no
-  'Tzoffsetfrom'       TimezoneOffsetFrom       no
-  'Tzoffsetto'         TimezoneOffsetTo         no
-  'Tzurl'              TimeZoneURL              no
-  'Uid'                UID                      no
-  'Url'                URL                      no
-  'Version'            VCalendarVersion         no
+  Tag ID                Tag Name                Writable
+  ------                --------                --------
+  'Acknowledged'        Acknowledged            no
+  'Action'              Action                  no
+  'Attach'              Attachment              no
+  'Attendee'            Attendee                no
+  'Calscale'            CalendarScale           no
+  'Categories'          Categories              no
+  'Class'               Classification          no
+  'Comment'             Comment                 no
+  'Completed'           DateTimeCompleted       no
+  'Contact'             Contact                 no
+  'Created'             DateCreated             no
+  'Description'         Description             no
+  'Dtend'               DateTimeEnd             no
+  'Dtstamp'             DateTimeStamp           no
+  'Dtstart'             DateTimeStart           no
+  'Due'                 DateTimeDue             no
+  'Duration'            Duration                no
+  'Exdate'              ExceptionDateTimes      no
+  'Freebusy'            FreeBusyTime            no
+  'Geo'                 Geolocation             no
+  'Last-modified'       ModifyDate              no
+  'Location'            Location                no
+  'Method'              Method                  no
+  'Organizer'           Organizer               no
+  'Percent-complete'    PercentComplete         no
+  'Priority'            Priority                no
+  'Prodid'              Software                no
+  'Rdate'               RecurrenceDateTimes     no
+  'Recurrence-id'       RecurrenceID            no
+  'Related-to'          RelatedTo               no
+  'Repeat'              Repeat                  no
+  'Request-status'      RequestStatus           no
+  'Resources'           Resources               no
+  'Rrule'               RecurrenceRule          no
+  'Sequence'            SequenceNumber          no
+  'Status'              Status                  no
+  'Summary'             Summary                 no
+  'Transp'              TimeTransparency        no
+  'Trigger'             Trigger                 no
+  'Tzid'                TimezoneID              no
+  'Tzname'              TimezoneName            no
+  'Tzoffsetfrom'        TimezoneOffsetFrom      no
+  'Tzoffsetto'          TimezoneOffsetTo        no
+  'Tzurl'               TimeZoneURL             no
+  'Uid'                 UID                     no
+  'Url'                 URL                     no
+  'Version'             VCalendarVersion        no
+  'X-apple-calendar-color' CalendarColor        no
+  'X-apple-default-alarm' DefaultAlarm          no
+  'X-apple-local-default-alarm'
+                        LocalDefaultAlarm       no
+  'X-microsoft-cdo-alldayevent' AllDayEvent     no
+  'X-microsoft-cdo-appt-sequence'
+                        AppointmentSequence     no
+  'X-microsoft-cdo-busystatus' BusyStatus       no
+  'X-microsoft-cdo-importance' Importance       no
+  'X-microsoft-cdo-insttype' InstanceType       no
+  'X-microsoft-cdo-intendedstatus'
+                        IntendedBusyStatus      no
+  'X-microsoft-cdo-ownerapptid'
+                        OwnerAppointmentID      no
+  'X-microsoft-disallow-counter'
+                        DisallowCounterProposal no
+  'X-microsoft-donotforwardmeeting'
+                        DoNotForwardMeeting     no
+  'X-microsoft-locations' MeetingLocations      no
+  'X-wr-alarmuid'       AlarmUID                no
+  'X-wr-caldesc'        CalendarDescription     no
+  'X-wr-calname'        CalendarName            no
+  'X-wr-relcalid'       CalendarID              no
+  'X-wr-timezone'       TimeZone2               no
 
 =head2 RSRC Tags
 

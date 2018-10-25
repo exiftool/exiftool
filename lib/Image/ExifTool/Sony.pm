@@ -32,7 +32,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.92';
+$VERSION = '2.93';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -2440,8 +2440,8 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
         Condition => '$$self{Model} =~ /^DSLR-A(850|900)\b/',
         Mask => 0x80,
         PrintConv => {
-            0x00 => 'Off',
-            0x80 => 'On',
+            0 => 'Off',
+            1 => 'On',
         },
     },
     305.1 => { # (0x131)
@@ -3813,6 +3813,7 @@ my %faceInfo = (
     0x04 => { #7/JR
         Name => 'DriveMode',
         Mask => 0xff, # (not sure what upper byte is for)
+        PrintHex => 1,
         PrintConv => {
             0x01 => 'Single Frame',
             0x02 => 'Continuous High', # A700/A900; not on A850
@@ -4656,13 +4657,13 @@ my %faceInfo = (
         Name => 'DriveMode',
         Mask => 0xff, # (not sure what upper byte is for)
         PrintConv => { # (values confirmed for specified models - PH)
-            0x01 => 'Single Frame', # (A230,A330,A380)
-            0x02 => 'Continuous High', #PH (A230,A330)
-            0x04 => 'Self-timer 10 sec', # (A230)
-            0x05 => 'Self-timer 2 sec, Mirror Lock-up', # (A230,A290,A330,A380,390)
-            0x07 => 'Continuous Bracketing', # (A230 val=0x1107, A330 val=0x1307 [0.7 EV])
-            0x0a => 'Remote Commander', # (A230)
-            0x0b => 'Continuous Self-timer', # (A230 val=0x800b [5 shots], A330 val=0x400b [3 shots])
+            1 => 'Single Frame', # (A230,A330,A380)
+            2 => 'Continuous High', #PH (A230,A330)
+            4 => 'Self-timer 10 sec', # (A230)
+            5 => 'Self-timer 2 sec, Mirror Lock-up', # (A230,A290,A330,A380,390)
+            7 => 'Continuous Bracketing', # (A230 val=0x1107, A330 val=0x1307 [0.7 EV])
+            10 => 'Remote Commander', # (A230)
+            11 => 'Continuous Self-timer', # (A230 val=0x800b [5 shots], A330 val=0x400b [3 shots])
         },
     },
     0x7f => { #JR
@@ -5200,8 +5201,6 @@ my %faceInfo = (
         Condition => '$$self{Model} !~ /^DSLR-(A450|A500|A550)$/',
         Format => 'int32u',
         Mask => 0x00ffc000,
-        ValueConv => '$val >> 14',
-        ValueConvInv => '$val << 14',
         PrintConv => 'sprintf("%.3d",$val)',
         PrintConvInv => '$val',
     },
@@ -5617,10 +5616,10 @@ my %faceInfo = (
         Condition => '$$self{Model} =~ /^(NEX-(3|5|5C|C3|VG10|VG10E))\b/',
         Mask => 0xc0, # (don't know what other bits mean)
         PrintConv => {
-            0x00 =>  'Horizontal (normal)',
-            0x40 =>  'Rotate 90 CW',
-            0x80 =>  'Rotate 270 CW',
-            0xc0 =>  'Rotate 180', #(NC)
+            0 =>  'Horizontal (normal)',
+            1 =>  'Rotate 90 CW',
+            2 =>  'Rotate 270 CW',
+            3 =>  'Rotate 180', #(NC)
         },
 
     }],
@@ -5630,10 +5629,10 @@ my %faceInfo = (
         Condition => '$$self{Model} !~ /^(NEX-(3|5|5C|C3|VG10|VG10E))\b/',
         Mask => 0x30, # (don't know what other bits mean)
         PrintConv => {
-            0x00 =>  'Horizontal (normal)',
-            0x10 =>  'Rotate 90 CW',
-            0x20 =>  'Rotate 270 CW',
-            0x30 =>  'Rotate 180',
+            0 =>  'Horizontal (normal)',
+            1 =>  'Rotate 90 CW',
+            2 =>  'Rotate 270 CW',
+            3 =>  'Rotate 180',
         },
     },
     # 0x0019:

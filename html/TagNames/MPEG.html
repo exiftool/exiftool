@@ -206,15 +206,15 @@ in the file.
 <td class=r title='9 = 0x9'>9</td>
 <td>LameMethod</td>
 <td class=c>no</td>
-<td><span class=s>[Mask 0x0f]</span><table class=cols><tr>
-  <td>0x1 = CBR
-  <br>0x2 = ABR
-  <br>0x3 = VBR (old/rh)
-  <br>0x4 = VBR (new/mtrh)</td><td>&nbsp;&nbsp;</td>
-  <td>0x5 = VBR (old/rh)
-  <br>0x6 = VBR
-  <br>0x8 = CBR (2-pass)
-  <br>0x9 = ABR (2-pass)</td></tr></table>
+<td><span class=s>[val &amp; 0xf]</span><table class=cols><tr>
+  <td>1 = CBR
+  <br>2 = ABR
+  <br>3 = VBR (old/rh)
+  <br>4 = VBR (new/mtrh)</td><td>&nbsp;&nbsp;</td>
+  <td>5 = VBR (old/rh)
+  <br>6 = VBR
+  <br>8 = CBR (2-pass)
+  <br>9 = ABR (2-pass)</td></tr></table>
 </td></tr>
 <tr class=b>
 <td class=r title='10 = 0xa'>10</td>
@@ -230,20 +230,20 @@ in the file.
 <td class=r title='24 = 0x18'>24</td>
 <td>LameStereoMode</td>
 <td class=c>no</td>
-<td><span class=s>[Mask 0x1c]</span><table class=cols><tr>
-  <td>0x0 = Mono
-  <br>0x1 = Stereo
-  <br>0x2 = Dual Channels
-  <br>0x3 = Joint Stereo
-  <br>0x4 = Forced Joint Stereo
-  <br>0x6 = Auto
-  <br>0x7 = Intensity Stereo</td></tr></table>
+<td><span class=s>[val &gt;&gt; 2 &amp; 0x7]</span><table class=cols><tr>
+  <td>0 = Mono
+  <br>1 = Stereo
+  <br>2 = Dual Channels
+  <br>3 = Joint Stereo</td><td>&nbsp;&nbsp;</td>
+  <td>4 = Forced Joint Stereo
+  <br>6 = Auto
+  <br>7 = Intensity Stereo</td></tr></table>
 </td></tr>
 </table></td></tr></table></blockquote>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Mar 13, 2017</i>
+<br><i>Last revised Oct 24, 2018</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

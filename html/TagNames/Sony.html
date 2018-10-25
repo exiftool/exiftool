@@ -2202,15 +2202,15 @@ adapter is used.</p>
 <td class=r title='305 = 0x131'>305</td>
 <td>AFMicroAdjMode</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x80]
-  <br>0x0 = Off
-  <br>0x80 = On</span></td></tr>
+<td><span class=s>[val &gt;&gt; 7 &amp; 0x1]
+  <br>0 = Off
+  <br>1 = On</span></td></tr>
 <tr>
 <td class=r title='305 = 0x131'>305.1</td>
 <td>AFMicroAdjRegisteredLenses</td>
 <td class=c>int8u</td>
 <td><span class=s><span class=n>(number of registered lenses with a non-zero AFMicroAdjValue)</span>
-  <br>[Mask 0x7f]</span></td></tr>
+  <br>[val &amp; 0x7f]</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='CameraInfo2'>Sony CameraInfo2 Tags</a></h2>
@@ -3617,7 +3617,7 @@ increasing Y downwards)</span></span></td></tr>
 <td class=r title='4 = 0x4'>4</td>
 <td>DriveMode</td>
 <td class=c>int16u</td>
-<td><span class=s>[Mask 0xff]</span><table class=cols><tr>
+<td><span class=s>[val &amp; 0xff]</span><table class=cols><tr>
   <td>0x1 = Single Frame
   <br>0x2 = Continuous High
   <br>0x4 = Self-timer 10 sec
@@ -4014,12 +4014,12 @@ increasing Y downwards)</span></span></td></tr>
 <td class=r title='154 = 0x9a'>154</td>
 <td>FolderNumber</td>
 <td class=c>int16u</td>
-<td><span class=s>[Mask 0x3ff]</span></td></tr>
+<td><span class=s>[val &amp; 0x3ff]</span></td></tr>
 <tr>
 <td class=r title='155 = 0x9b'>155</td>
 <td>ImageNumber</td>
 <td class=c>int16u</td>
-<td><span class=s>[Mask 0x3fff]</span></td></tr>
+<td><span class=s>[val &amp; 0x3fff]</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='CameraSettings2'>Sony CameraSettings2 Tags</a></h2>
@@ -4345,14 +4345,14 @@ increasing Y downwards)</span></span></td></tr>
 <td class=r title='126 = 0x7e'>126</td>
 <td>DriveMode</td>
 <td class=c>int16u</td>
-<td><span class=s>[Mask 0xff]</span><table class=cols><tr>
-  <td>0x1 = Single Frame
-  <br>0x2 = Continuous High
-  <br>0x4 = Self-timer 10 sec
-  <br>0x5 = Self-timer 2 sec, Mirror Lock-up
-  <br>0x7 = Continuous Bracketing
-  <br>0xa = Remote Commander
-  <br>0xb = Continuous Self-timer</td></tr></table>
+<td><span class=s>[val &amp; 0xff]</span><table class=cols><tr>
+  <td>1 = Single Frame
+  <br>2 = Continuous High
+  <br>4 = Self-timer 10 sec
+  <br>5 = Self-timer 2 sec, Mirror Lock-up
+  <br>7 = Continuous Bracketing
+  <br>10 = Remote Commander
+  <br>11 = Continuous Self-timer</td></tr></table>
 </td></tr>
 <tr class=b>
 <td class=r title='127 = 0x7f'>127</td>
@@ -4754,12 +4754,12 @@ A560, A580, NEX-3, NEX-5, NEX-C3 and NEX-VG10E.</p>
 <td class=r title='276 = 0x114'>276</td>
 <td>FolderNumber</td>
 <td class=c>int32u</td>
-<td><span class=s>[Mask 0xffc000]</span></td></tr>
+<td><span class=s>[val &gt;&gt; 14 &amp; 0x3ff]</span></td></tr>
 <tr class=b>
 <td class=r title='276 = 0x114'>276.1</td>
 <td>ImageNumber</td>
 <td class=c>int32u</td>
-<td><span class=s>[Mask 0x3fff]</span></td></tr>
+<td><span class=s>[val &amp; 0x3fff]</span></td></tr>
 <tr>
 <td class=r title='512 = 0x200'>512</td>
 <td>ShotNumberSincePowerUp2</td>
@@ -4828,13 +4828,13 @@ multi-frame noise reduction)</span></span></td></tr>
 <td>ImageNumber</td>
 <td class=c>int16u</td>
 <td><span class=s><span class=n>(A450, A500 and A550)</span>
-  <br>[Mask 0x3fff]</span></td></tr>
+  <br>[val &amp; 0x3fff]</span></td></tr>
 <tr>
 <td class=r title='790 = 0x316'>790</td>
 <td>FolderNumber</td>
 <td class=c>int16u</td>
 <td><span class=s><span class=n>(A450, A500 and A550)</span>
-  <br>[Mask 0x3ff]</span></td></tr>
+  <br>[val &amp; 0x3ff]</span></td></tr>
 <tr class=b>
 <td class=r title='1008 = 0x3f0'>1008</td>
 <td>LensE-mountVersion</td>
@@ -4855,13 +4855,13 @@ multi-frame noise reduction)</span></span></td></tr>
 <td>ImageNumber</td>
 <td class=c>int16u</td>
 <td><span class=s><span class=n>(A450, A500 and A550)</span>
-  <br>[Mask 0x3fff]</span></td></tr>
+  <br>[val &amp; 0x3fff]</span></td></tr>
 <tr class=b>
 <td class=r title='1026 = 0x402'>1026</td>
 <td>FolderNumber</td>
 <td class=c>int16u</td>
 <td><span class=s><span class=n>(A450, A500 and A550)</span>
-  <br>[Mask 0x3ff]</span></td></tr>
+  <br>[val &amp; 0x3ff]</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='LensType2'>Sony LensType2 Values</a></h2>
@@ -5129,20 +5129,20 @@ A580 and NEX-3/5/C3/VG10.</p>
   <br>245 = MemoryStick in use, SD slot empty
   <br>252 = SD card in use, MemoryStick present
   <br>254 = SD card in use, MemoryStick slot empty
-  <br>[Mask 0xc0]
-  <br>0x0 = Horizontal (normal)
-  <br>0x40 = Rotate 90 CW
-  <br>0x80 = Rotate 270 CW
-  <br>0xc0 = Rotate 180</span></td></tr>
+  <br>[val &gt;&gt; 6 &amp; 0x3]
+  <br>0 = Horizontal (normal)
+  <br>1 = Rotate 90 CW
+  <br>2 = Rotate 270 CW
+  <br>3 = Rotate 180</span></td></tr>
 <tr>
 <td class=r title='24 = 0x18'>24</td>
 <td>CameraOrientation</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x30]
-  <br>0x0 = Horizontal (normal)
-  <br>0x10 = Rotate 90 CW
-  <br>0x20 = Rotate 270 CW
-  <br>0x30 = Rotate 180</span></td></tr>
+<td><span class=s>[val &gt;&gt; 4 &amp; 0x3]
+  <br>0 = Horizontal (normal)
+  <br>1 = Rotate 90 CW
+  <br>2 = Rotate 270 CW
+  <br>3 = Rotate 180</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='Panorama'>Sony Panorama Tags</a></h2>
@@ -8368,12 +8368,12 @@ RX10M4/RX100M3/RX100M4/RX100M5/RX100M6/WX220/WX350/WX500, ILCE-7/7R/7S/
 <td title='0x0016 = 22'>0x0016</td>
 <td>FocusMode</td>
 <td class=c>int8u</td>
-<td><span class=s>[Mask 0x7f]
-  <br>0x0 = Manual
-  <br>0x2 = AF-S
-  <br>0x3 = AF-C
-  <br>0x4 = AF-A
-  <br>0x6 = DMF</span></td></tr>
+<td><span class=s>[val &amp; 0x7f]
+  <br>0 = Manual
+  <br>2 = AF-S
+  <br>3 = AF-C
+  <br>4 = AF-A
+  <br>6 = DMF</span></td></tr>
 <tr>
 <td title='0x0017 = 23'>0x0017</td>
 <td>AFAreaMode</td>
@@ -11193,7 +11193,7 @@ some models when the ExtractEmbedded option is used.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Oct 1, 2018</i>
+<br><i>Last revised Oct 24, 2018</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

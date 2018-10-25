@@ -153,19 +153,19 @@ specification.</p>
 <td class=r title='4 = 0x4'>4.1</td>
 <td>HasColorMap</td>
 <td class=c>no</td>
-<td><span class=s>[Mask 0x80]
-  <br>0x0 = No
-  <br>0x80 = Yes</span></td></tr>
+<td><span class=s>[val &gt;&gt; 7 &amp; 0x1]
+  <br>0 = No
+  <br>1 = Yes</span></td></tr>
 <tr class=b>
 <td class=r title='4 = 0x4'>4.2</td>
 <td>ColorResolutionDepth</td>
 <td class=c>no</td>
-<td><span class=s>[Mask 0x70]</span></td></tr>
+<td><span class=s>[val &gt;&gt; 4 &amp; 0x7]</span></td></tr>
 <tr>
 <td class=r title='4 = 0x4'>4.3</td>
 <td>BitsPerPixel</td>
 <td class=c>no</td>
-<td><span class=s>[Mask 0x07]</span></td></tr>
+<td><span class=s>[val &amp; 0x7]</span></td></tr>
 <tr class=b>
 <td class=r title='5 = 0x5'>5</td>
 <td>BackgroundColor</td>
@@ -175,7 +175,7 @@ specification.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised May 30, 2017</i>
+<br><i>Last revised Oct 24, 2018</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

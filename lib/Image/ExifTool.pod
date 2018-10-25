@@ -295,9 +295,10 @@ still generated, but the tag value is undefined.
 
 =item HASH ref
 
-Reference to a hash containing the options settings.  See L</Options>
-documentation below for a list of available options.  Options specified
-as arguments to L</ImageInfo> take precedence over L</Options> settings.
+Reference to a hash containing the options settings valid for this call
+only.  See L</Options> documentation below for a list of available options. 
+Options specified as arguments to L</ImageInfo> take precedence over
+L</Options> settings.
 
 =back
 
@@ -673,6 +674,14 @@ ignored if the PDOP is greater than this.  Default is undef.
 
 Minimum number of satellites for geotagging.  GPS fixes are ignored if the
 number of acquired satellites is less than this.  Default is undef.
+
+=item GeoSpeedRef
+
+Reference units for writing GPSSpeed when geotagging:
+
+    'K', 'k' or 'km/h'  - km/h
+    'M', 'm' or 'mph'   - mph
+    <anything else>     - knots (default undef)
 
 =item GlobalTimeShift
 

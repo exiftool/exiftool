@@ -29,7 +29,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.49';
+$VERSION = '1.51';
 
 sub ConvertTimecode($);
 sub ProcessSGLT($$$);
@@ -1086,7 +1086,6 @@ my %code2charset = (
     0 => {
         Name => 'VP8Version',
         Mask => 0x0e,
-        ValueConv => '$val >> 1',
         PrintConv => {
             0 => '0 (bicubic reconstruction, normal loop)',
             1 => '1 (bilinear reconstruction, simple loop)',
@@ -1103,7 +1102,6 @@ my %code2charset = (
         Name => 'HorizontalScale',
         Format => 'int16u',
         Mask => 0xc000,
-        ValueConv => '$val >> 14',
     },
     8 => {
         Name => 'ImageHeight',
@@ -1114,7 +1112,6 @@ my %code2charset = (
         Name => 'VerticalScale',
         Format => 'int16u',
         Mask => 0xc000,
-        ValueConv => '$val >> 14',
     },
 );
 
@@ -1298,7 +1295,12 @@ sub ConvertTimecode($)
     $val -= $hr * 3600;
     my $min = int($val / 60);
     $val -= $min * 60;
-    return sprintf("%d:%.2d:%05.2f", $hr, $min, $val);
+    my $ss = sprintf('%05.2f', $val);
+    if ($ss >= 60) {    # handle round-off problems
+        $ss = '00.00';
+        ++$min >= 60 and $min -= 60, ++$hr;
+    }
+    return sprintf('%d:%.2d:%s', $hr, $min, $ss);
 }
 
 #------------------------------------------------------------------------------

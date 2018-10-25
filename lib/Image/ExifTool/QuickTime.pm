@@ -42,7 +42,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.19';
+$VERSION = '2.20';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -6775,7 +6775,12 @@ sub PrintChapter($)
     $dur -= $h * 3600;
     my $m = int($dur / 60);
     my $s = $dur - $m * 60;
-    return sprintf("[%d:%.2d:%06.3f] %s",$h,$m,$s,$title);
+    my $ss = sprintf('%06.3f', $s);
+    if ($ss >= 60) {
+        $ss = '00.000';
+        ++$m >= 60 and $m -= 60, ++$h;
+    }
+    return sprintf("[%d:%.2d:%s] %s",$h,$m,$ss,$title);
 }
 
 #------------------------------------------------------------------------------

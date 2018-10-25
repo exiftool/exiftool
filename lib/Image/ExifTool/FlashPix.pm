@@ -21,7 +21,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::ASF;   # for GetGUID()
 
-$VERSION = '1.35';
+$VERSION = '1.36';
 
 sub ProcessFPX($$);
 sub ProcessFPXR($$$);
@@ -1164,10 +1164,7 @@ my %fpxFileType = (
     9.2 => {
         Name => 'Word97',
         Mask => 0x0010,
-        PrintConv => {
-            0x0000 => 'No',
-            0x0010 => 'Yes',
-        },
+        PrintConv => { 0 => 'No', 1 => 'Yes' },
     },
 );
 

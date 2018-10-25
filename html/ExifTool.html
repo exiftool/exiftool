@@ -295,8 +295,8 @@ entries may not be in the same order as requested.)  If a requested tag doesn't
 exist, a tag key is still generated, but the tag value is undefined.
 
 </td></tr><tr><td valign=top><b>HASH&nbsp;ref</b></td><td>
-Reference to a hash containing the options settings.  See
-<a href="#Options">Options</a> documentation below for a list of available
+Reference to a hash containing the options settings valid for this call only.
+See <a href="#Options">Options</a> documentation below for a list of available
 options. Options specified as arguments to <a href="#ImageInfo">ImageInfo</a>
 take precedence over <a href="#Options">Options</a> settings.
 </td></tr></table></blockquote>
@@ -545,7 +545,7 @@ distribution for examples.</p>
     proper GUID).  This option should be set to 2 to emulate pre-9.96 behaviour
     and read all extended XMP.  It may also be set to a GUID to read a specific
     extended XMP, or 0 to ignore extended XMP entirely.</td>
-    <td><table class=clear>
+    <td align=center><table class=clear>
     <tr><td valign=top align=right><b>0</b>&nbsp;=</td><td>ignore extended XMP</td></tr>
     <tr><td valign=top align=right><b>1</b>&nbsp;=</td><td>valid GUID only</td></tr>
     <tr><td valign=top align=right><b>2</b>&nbsp;=</td><td>any GUID</td></tr>
@@ -618,6 +618,13 @@ distribution for examples.</p>
     GPS fixes are ignored if the number of acquired satellites is less than this.</td>
     <td align=center>A positive integer, or undef</td>
     <td align=center>undef</td></tr>
+<tr id="GeoSpeedRef"><td>GeoSpeedRef</td>
+    <td>Reference units for writing GPSSpeed when geotagging.</td>
+    <td align=center><table class=clear>
+    <tr><td valign=top align=right><b>K</b>,&nbsp;<b>k</b>&nbsp;or&nbsp;<b>km/h</b></td><td>=&nbsp;km/h</td></tr>
+    <tr><td valign=top align=right><b>M</b>,&nbsp;<b>m</b>&nbsp;or&nbsp;<b>mph</b></td><td>=&nbsp;mph</td></tr>
+    <tr><td valign=top align=right><i>(anything else)</i></td><td>=&nbsp;knots</td></tr>
+    </table></td><td align=center>undef</td></tr>
 <tr id="GlobalTimeShift"><td>GlobalTimeShift</td>
     <td>Time shift to apply to all extracted
     date/time PrintConv values.  Does not affect ValueConv values.</td>
@@ -633,7 +640,7 @@ distribution for examples.</p>
 <tr id="HtmlDump"><td>HtmlDump</td><td>Dump information in hex to a dynamic HTML web page.
     Option value sets a limit on the maximum block size.  Output file is
     specified by the TextOut option.</td>
-    <td><table class=clear>
+    <td align=center><table class=clear>
     <tr><td valign=top align=center><b>0</b>&nbsp;=</td><td>No HTML dump</td></tr>
     <tr><td valign=top align=center><b>1</b>&nbsp;=</td><td>1 KB size limit</td></tr>
     <tr><td valign=top align=center><b>2</b>&nbsp;=</td><td>16 KB size limit</td></tr>
@@ -641,7 +648,7 @@ distribution for examples.</p>
     </table></td><td align=center>0</td></tr>
 <tr id="HtmlDumpBase"><td>HtmlDumpBase</td><td>Base for HTML dump
     offsets.  If not defined, the EXIF/TIFF base offset is used.</td>
-    <td><table class=clear>
+    <td align=center><table class=clear>
     <tr><td valign=top align=right><b>0</b>&nbsp;=</td><td>Absolute offsets</td></tr>
     <tr><td valign=top align=right><i>non&#8209;zero</i>&nbsp;=</td><td>Relative offsets</td></tr>
     <tr><td valign=top align=right><b>undef</b>&nbsp;=</td><td>EXIF/TIFF offsets</td></tr>

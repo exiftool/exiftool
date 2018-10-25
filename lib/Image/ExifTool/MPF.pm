@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.13';
+$VERSION = '1.14';
 
 sub ProcessMPImageList($$$);
 
@@ -105,9 +105,9 @@ sub ProcessMPImageList($$$);
         Format => 'int32u',
         Mask => 0xf8000000,
         PrintConv => { BITMASK => {
-            29 => 'Representative image',
-            30 => 'Dependent child image',
-            31 => 'Dependent parent image',
+            2 => 'Representative image',
+            3 => 'Dependent child image',
+            4 => 'Dependent parent image',
         }},
     },
     0.2 => {

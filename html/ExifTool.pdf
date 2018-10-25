@@ -12,7 +12,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 11.14 --                                     1)Tj
+(                           -- Image::ExifTool 11.15 --                                     1)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (EXIFTOOL\(1\)           User Contributed Perl Documentation          EXIFTOOL\(1\))Tj
@@ -189,7 +189,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 11.14 --                                     2)Tj
+(                           -- Image::ExifTool 11.15 --                                     2)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (         ASF   r     | F4A/V r/w   | MEF   r/w   | PDF   r/w   | SVG   r)Tj
@@ -396,7 +396,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 11.14 --                                     3)Tj
+(                           -- Image::ExifTool 11.15 --                                     3)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (       All ExifTool features are accessed through the methods of the public)Tj
@@ -619,7 +619,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 11.14 --                                     4)Tj
+(                           -- Image::ExifTool 11.15 --                                     4)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (               argument if used.)Tj
@@ -760,7 +760,7 @@ endobj
 endobj
 18 0 obj
 <<
-/Length 4566
+/Length 4592
 >>
 stream
 BT
@@ -770,18 +770,18 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 11.14 --                                     5)Tj
+(                           -- Image::ExifTool 11.15 --                                     5)Tj
 /TT4 1 Tf
 0 -2.7333 TD
 (           HASH ref)Tj
 0 -1.1 TD
-(               Reference to a hash containing the options settings.  See)Tj
+(               Reference to a hash containing the options settings valid for)Tj
 T*
-(               "Options" documentation below for a list of available options.)Tj
+(               this call only.  See "Options" documentation below for a list)Tj
 T*
-(               Options specified as arguments to "ImageInfo" take precedence)Tj
+(               of available options.  Options specified as arguments to)Tj
 T*
-(               over "Options" settings.)Tj
+(               "ImageInfo" take precedence over "Options" settings.)Tj
 0 -2.2 TD
 (       Return Values:)Tj
 0 -1.1 TD
@@ -963,7 +963,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 11.14 --                                     6)Tj
+(                           -- Image::ExifTool 11.15 --                                     6)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (               ExifToolVersion - The ExifTool version number.)Tj
@@ -1108,7 +1108,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 11.14 --                                     7)Tj
+(                           -- Image::ExifTool 11.15 --                                     7)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (               Valid values are listed below, case is not significant:)Tj
@@ -1257,7 +1257,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 11.14 --                                     8)Tj
+(                           -- Image::ExifTool 11.15 --                                     8)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (               AVI and WAV files\).  The default value of 0 assumes "Latin")Tj
@@ -1406,7 +1406,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 11.14 --                                     9)Tj
+(                           -- Image::ExifTool 11.15 --                                     9)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (               may also be excluded by preceding their name with a '-' in the)Tj
@@ -1549,7 +1549,7 @@ endobj
 endobj
 33 0 obj
 <<
-/Length 4648
+/Length 4666
 >>
 stream
 BT
@@ -1559,7 +1559,7 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 11.14 --                                    10)Tj
+(                           -- Image::ExifTool 11.15 --                                    10)Tj
 /TT4 1 Tf
 0 -1.6333 TD
 (               Maximum extrapolation time in seconds for geotagging.)Tj
@@ -1593,6 +1593,16 @@ T*
 (               ignored if the number of acquired satellites is less than this.)Tj
 T*
 (               Default is undef.)Tj
+0 -2.2 TD
+(           GeoSpeedRef)Tj
+0 -1.1 TD
+(               Reference units for writing GPSSpeed when geotagging:)Tj
+0 -2.2 TD
+(                   'K', 'k' or 'km/h'  - km/h)Tj
+0 -1.1 TD
+(                   'M', 'm' or 'mph'   - mph)Tj
+T*
+(                   <anything else>     - knots \(default undef\))Tj
 0 -2.2 TD
 (           GlobalTimeShift)Tj
 0 -1.1 TD
@@ -1713,16 +1723,6 @@ T*
 (               module names \(eg. 'fr', 'zh_cn'\).  If the specified language)Tj
 T*
 (               isn't available, the option is not changed.  May be set to)Tj
-T*
-(               undef to select the built-in default language.  Default is)Tj
-T*
-(               'en'.)Tj
-0 -2.2 TD
-(           LargeFileSupport)Tj
-0 -1.1 TD
-(               Flag to indicate that 64-bit file offsets are supported on this)Tj
-T*
-(               system.  Default is undef.)Tj
 ET
 endstream
 endobj
@@ -1740,7 +1740,7 @@ endobj
 endobj
 36 0 obj
 <<
-/Length 4629
+/Length 4439
 >>
 stream
 BT
@@ -1750,9 +1750,19 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 11.14 --                                    11)Tj
+(                           -- Image::ExifTool 11.15 --                                    11)Tj
 /TT4 1 Tf
 0 -1.6333 TD
+(               undef to select the built-in default language.  Default is)Tj
+0 -1.1 TD
+(               'en'.)Tj
+0 -2.2 TD
+(           LargeFileSupport)Tj
+0 -1.1 TD
+(               Flag to indicate that 64-bit file offsets are supported on this)Tj
+T*
+(               system.  Default is undef.)Tj
+0 -2.2 TD
 (           ListItem)Tj
 0 -1.1 TD
 (               Return only a specific item from list-type values.  A value of)Tj
@@ -1860,18 +1870,6 @@ T*
 (               a minor error is issued when the extra XMP is encountered, and)Tj
 T*
 (               the file is not written.  Adding the "IgnoreMinorErrors" option)Tj
-T*
-(               causes the XMP after IDAT to be deleted, thus resolving the)Tj
-T*
-(               conflict \(at the expense of possible metadata loss\), and)Tj
-T*
-(               allowing the file to be written.  The PNGEarlyXMP option is)Tj
-T*
-(               applied automatically when deleting all XMP and writing new XMP)Tj
-T*
-(               back in one step.  When reading, this option causes a warning)Tj
-T*
-(               to be issued if standard XMP is found after the IDAT chunk.)Tj
 ET
 endstream
 endobj
@@ -1889,7 +1887,7 @@ endobj
 endobj
 41 0 obj
 <<
-/Length 4499
+/Length 4624
 >>
 stream
 BT
@@ -1899,9 +1897,21 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 11.14 --                                    12)Tj
+(                           -- Image::ExifTool 11.15 --                                    12)Tj
 /TT4 1 Tf
 0 -1.6333 TD
+(               causes the XMP after IDAT to be deleted, thus resolving the)Tj
+0 -1.1 TD
+(               conflict \(at the expense of possible metadata loss\), and)Tj
+T*
+(               allowing the file to be written.  The PNGEarlyXMP option is)Tj
+T*
+(               applied automatically when deleting all XMP and writing new XMP)Tj
+T*
+(               back in one step.  When reading, this option causes a warning)Tj
+T*
+(               to be issued if standard XMP is found after the IDAT chunk.)Tj
+0 -2.2 TD
 (           PrintConv)Tj
 0 -1.1 TD
 (               Flag to enable automatic print conversion.  Also enables)Tj
@@ -2009,16 +2019,6 @@ T*
 (               Flag to return undefined value for any date which can't be)Tj
 T*
 (               converted when the DateFormat option is used.  Default is)Tj
-T*
-(               undef.)Tj
-0 -2.2 TD
-(                 undef - Same as 0 for reading/writing, or 1 for copying)Tj
-0 -1.1 TD
-(                   0   - Return date/time value unchanged if it can't be converted)Tj
-T*
-(                   1   - Return undef if date/time value can't be converted)Tj
-0 -2.2 TD
-(               When set to 1 while writing a PrintConv date/time value with)Tj
 ET
 endstream
 endobj
@@ -2036,7 +2036,7 @@ endobj
 endobj
 44 0 obj
 <<
-/Length 4235
+/Length 4253
 >>
 stream
 BT
@@ -2046,11 +2046,21 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 11.14 --                                    13)Tj
+(                           -- Image::ExifTool 11.15 --                                    13)Tj
 /TT4 1 Tf
 0 -1.6333 TD
-(               the DateFormat option set, the value is written only if)Tj
+(               undef.)Tj
+0 -2.2 TD
+(                 undef - Same as 0 for reading/writing, or 1 for copying)Tj
 0 -1.1 TD
+(                   0   - Return date/time value unchanged if it can't be converted)Tj
+T*
+(                   1   - Return undef if date/time value can't be converted)Tj
+0 -2.2 TD
+(               When set to 1 while writing a PrintConv date/time value with)Tj
+0 -1.1 TD
+(               the DateFormat option set, the value is written only if)Tj
+T*
 (               POSIX::strptime or Time::Piece is available and can)Tj
 T*
 (               successfully convert the value.)Tj
@@ -2162,18 +2172,6 @@ T*
 (               User-defined parameters may be accessed in tag name expressions)Tj
 0 -1.1 TD
 (               by prefixing the parameter name with a dollar sign just like)Tj
-T*
-(               normal tags, or via the API by calling)Tj
-T*
-(               "Options\('UserParam','PARAM'\)".  If called without no)Tj
-T*
-(               additional arguments, "Options\('UserParam'\)" returns a)Tj
-T*
-(               reference to the hash of all user parameters \(with lower-case)Tj
-T*
-(               names\).)Tj
-0 -2.2 TD
-(           Validate)Tj
 ET
 endstream
 endobj
@@ -2191,7 +2189,7 @@ endobj
 endobj
 47 0 obj
 <<
-/Length 4067
+/Length 3981
 >>
 stream
 BT
@@ -2201,11 +2199,23 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 11.14 --                                    14)Tj
+(                           -- Image::ExifTool 11.15 --                                    14)Tj
 /TT4 1 Tf
 0 -1.6333 TD
-(               Flag to perform extra validation checks when reading, causing)Tj
+(               normal tags, or via the API by calling)Tj
 0 -1.1 TD
+(               "Options\('UserParam','PARAM'\)".  If called without no)Tj
+T*
+(               additional arguments, "Options\('UserParam'\)" returns a)Tj
+T*
+(               reference to the hash of all user parameters \(with lower-case)Tj
+T*
+(               names\).)Tj
+0 -2.2 TD
+(           Validate)Tj
+0 -1.1 TD
+(               Flag to perform extra validation checks when reading, causing)Tj
+T*
 (               extra warnings to be generated if problems are found.  Default)Tj
 T*
 (               is undef.)Tj
@@ -2345,18 +2355,6 @@ T*
 (       Inputs:)Tj
 0 -1.1 TD
 (           "ExtractInfo" takes exactly the same arguments as "ImageInfo".  The)Tj
-T*
-(           only difference is that a list of tag keys is not returned if an)Tj
-T*
-(           ARRAY reference is given.  The following options are effective in)Tj
-T*
-(           the call to "ExtractInfo":)Tj
-0 -2.2 TD
-(           Binary, Charset, CharsetEXIF, CharsetFileName, CharsetID3,)Tj
-0 -1.1 TD
-(           CharsetIPTC, CharsetPhotoshop, CharsetQuickTime, CharsetRIFF,)Tj
-T*
-(           Composite, ExtendedXMP, ExtractEmbedded, FastScan, FixBase,)Tj
 ET
 endstream
 endobj
@@ -2374,7 +2372,7 @@ endobj
 endobj
 50 0 obj
 <<
-/Length 4122
+/Length 4293
 >>
 stream
 BT
@@ -2384,11 +2382,23 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 11.14 --                                    15)Tj
+(                           -- Image::ExifTool 11.15 --                                    15)Tj
 /TT4 1 Tf
 0 -1.6333 TD
-(           HtmlDump, HtmlDumpBase, IgnoreMinorErrors, Lang, LargeFileSupport,)Tj
+(           only difference is that a list of tag keys is not returned if an)Tj
 0 -1.1 TD
+(           ARRAY reference is given.  The following options are effective in)Tj
+T*
+(           the call to "ExtractInfo":)Tj
+0 -2.2 TD
+(           Binary, Charset, CharsetEXIF, CharsetFileName, CharsetID3,)Tj
+0 -1.1 TD
+(           CharsetIPTC, CharsetPhotoshop, CharsetQuickTime, CharsetRIFF,)Tj
+T*
+(           Composite, ExtendedXMP, ExtractEmbedded, FastScan, FixBase,)Tj
+T*
+(           HtmlDump, HtmlDumpBase, IgnoreMinorErrors, Lang, LargeFileSupport,)Tj
+T*
 (           MakerNotes, MDItemTags, NoPDFList, Password, PNGEarlyXMP,)Tj
 T*
 (           QuickTimeUTC \(enforced 1904 time zero\), RequestAll, RequestTags,)Tj
@@ -2514,16 +2524,6 @@ T*
 (           $exifTool->WriteInfo\($srcfile, $dstfile\);)Tj
 0 -2.2 TD
 (           # create XMP data file from scratch)Tj
-0 -1.1 TD
-(           $exifTool->WriteInfo\(undef, $dstfile, 'XMP'\);)Tj
-0 -2.2 TD
-(           # overwrite file \(you do have backups, right?\))Tj
-0 -1.1 TD
-(           $exifTool->WriteInfo\($srcfile\);)Tj
-0 -2.2 TD
-(       Inputs:)Tj
-0 -1.1 TD
-(           0\) ExifTool object reference)Tj
 ET
 endstream
 endobj
@@ -2541,7 +2541,7 @@ endobj
 endobj
 53 0 obj
 <<
-/Length 4035
+/Length 4029
 >>
 stream
 BT
@@ -2551,9 +2551,19 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 11.14 --                                    16)Tj
+(                           -- Image::ExifTool 11.15 --                                    16)Tj
 /TT4 1 Tf
-0 -2.7333 TD
+0 -1.6333 TD
+(           $exifTool->WriteInfo\(undef, $dstfile, 'XMP'\);)Tj
+0 -2.2 TD
+(           # overwrite file \(you do have backups, right?\))Tj
+0 -1.1 TD
+(           $exifTool->WriteInfo\($srcfile\);)Tj
+0 -2.2 TD
+(       Inputs:)Tj
+0 -1.1 TD
+(           0\) ExifTool object reference)Tj
+0 -2.2 TD
 (           1\) Source file name, file reference, scalar reference, or undef to)Tj
 0 -1.1 TD
 (           create a file from scratch.  A reference to a File::RandomAccess)Tj
@@ -2669,14 +2679,6 @@ T*
 (       Inputs:)Tj
 0 -1.1 TD
 (           0\) ExifTool object reference)Tj
-0 -2.2 TD
-(           1\) [optional] Information hash reference or tag list reference)Tj
-T*
-(           2\) [optional] Sort order \('Input', 'File', 'Tag', 'Descr' or)Tj
-0 -1.1 TD
-(           'Group#'\))Tj
-0 -2.2 TD
-(           3\) [optional] Secondary sort order \('File', 'Tag' or 'Descr'\))Tj
 ET
 endstream
 endobj
@@ -2694,7 +2696,7 @@ endobj
 endobj
 56 0 obj
 <<
-/Length 4346
+/Length 4287
 >>
 stream
 BT
@@ -2704,9 +2706,17 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 11.14 --                                    17)Tj
+(                           -- Image::ExifTool 11.15 --                                    17)Tj
 /TT4 1 Tf
 0 -2.7333 TD
+(           1\) [optional] Information hash reference or tag list reference)Tj
+0 -2.2 TD
+(           2\) [optional] Sort order \('Input', 'File', 'Tag', 'Descr' or)Tj
+0 -1.1 TD
+(           'Group#'\))Tj
+0 -2.2 TD
+(           3\) [optional] Secondary sort order \('File', 'Tag' or 'Descr'\))Tj
+T*
 (           If the information hash or tag list reference is not provided, then)Tj
 0 -1.1 TD
 (           the list of found tags from the last call to "ImageInfo",)Tj
@@ -2874,16 +2884,6 @@ T*
 (       a list reference \(depending on the ListJoin option setting\), and the)Tj
 T*
 (       ValueConv value is always a list reference.  But in list context,)Tj
-T*
-(       "GetValue" always returns the list itself.)Tj
-0 -2.2 TD
-(       Note that "GetValue" requires a case-sensitive tag key as an argument.)Tj
-0 -1.1 TD
-(       To retrieve tag information based on a case-insensitive tag name \(with)Tj
-T*
-(       an optional group specifier\), use "GetInfo" instead.)Tj
-0 -2.2 TD
-(           # PrintConv example)Tj
 ET
 endstream
 endobj
@@ -2901,7 +2901,7 @@ endobj
 endobj
 59 0 obj
 <<
-/Length 3988
+/Length 4004
 >>
 stream
 BT
@@ -2911,11 +2911,21 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 11.14 --                                    18)Tj
+(                           -- Image::ExifTool 11.15 --                                    18)Tj
 /TT4 1 Tf
 0 -1.6333 TD
-(           my $val = $exifTool->GetValue\($tag\);)Tj
+(       "GetValue" always returns the list itself.)Tj
+0 -2.2 TD
+(       Note that "GetValue" requires a case-sensitive tag key as an argument.)Tj
 0 -1.1 TD
+(       To retrieve tag information based on a case-insensitive tag name \(with)Tj
+T*
+(       an optional group specifier\), use "GetInfo" instead.)Tj
+0 -2.2 TD
+(           # PrintConv example)Tj
+0 -1.1 TD
+(           my $val = $exifTool->GetValue\($tag\);)Tj
+T*
 (           if \(ref $val eq 'SCALAR'\) {)Tj
 T*
 (               print "$tag = \(unprintable value\)\\n";)Tj
@@ -3037,16 +3047,6 @@ T*
 (       new values to an image.)Tj
 0 -2.2 TD
 (       For list-type tags \(like Keywords\), either call repeatedly with the)Tj
-0 -1.1 TD
-(       same tag name for each value, or call with a reference to the list of)Tj
-T*
-(       values.)Tj
-0 -2.2 TD
-(           # set a new value for a tag \(errors go to STDERR\))Tj
-0 -1.1 TD
-(           $success = $exifTool->SetNewValue\($tag, $value\);)Tj
-0 -2.2 TD
-(           # set a new value and capture any error message)Tj
 ET
 endstream
 endobj
@@ -3064,7 +3064,7 @@ endobj
 endobj
 62 0 obj
 <<
-/Length 4156
+/Length 3896
 >>
 stream
 BT
@@ -3074,9 +3074,19 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 11.14 --                                    19)Tj
+(                           -- Image::ExifTool 11.15 --                                    19)Tj
 /TT4 1 Tf
 0 -1.6333 TD
+(       same tag name for each value, or call with a reference to the list of)Tj
+0 -1.1 TD
+(       values.)Tj
+0 -2.2 TD
+(           # set a new value for a tag \(errors go to STDERR\))Tj
+0 -1.1 TD
+(           $success = $exifTool->SetNewValue\($tag, $value\);)Tj
+0 -2.2 TD
+(           # set a new value and capture any error message)Tj
+0 -1.1 TD
 (           \($success, $errStr\) = $exifTool->SetNewValue\($tag, $value\);)Tj
 0 -2.2 TD
 (           # delete information for specified tag if it exists in image)Tj
@@ -3170,20 +3180,6 @@ T*
 (       Inputs:)Tj
 0 -1.1 TD
 (           0\) ExifTool object reference)Tj
-0 -2.2 TD
-(           1\) [optional] Tag key or tag name, or undef to clear all new)Tj
-0 -1.1 TD
-(           values.  The tag name may be prefixed by one or more family 0, 1 or)Tj
-T*
-(           2 group names with optional leading family numbers, separated by)Tj
-T*
-(           colons \(eg. 'EXIF:Artist', 'XMP:Time:*'\), which is equivalent to)Tj
-T*
-(           using a Group option argument.  Also, a '#' may be appended to the)Tj
-T*
-(           tag name \(eg. 'EXIF:Orientation#'\), with the same effect as setting)Tj
-T*
-(           Type to 'ValueConv'.  Wildcards \('*' and '?'\) may be used in the)Tj
 ET
 endstream
 endobj
@@ -3201,7 +3197,7 @@ endobj
 endobj
 65 0 obj
 <<
-/Length 4485
+/Length 4631
 >>
 stream
 BT
@@ -3211,11 +3207,25 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 11.14 --                                    20)Tj
+(                           -- Image::ExifTool 11.15 --                                    20)Tj
 /TT4 1 Tf
 0 -1.6333 TD
-(           tag name to assign multiple tags simultaneously.  A tag name of '*')Tj
+(           1\) [optional] Tag key or tag name, or undef to clear all new)Tj
 0 -1.1 TD
+(           values.  The tag name may be prefixed by one or more family 0, 1 or)Tj
+T*
+(           2 group names with optional leading family numbers, separated by)Tj
+T*
+(           colons \(eg. 'EXIF:Artist', 'XMP:Time:*'\), which is equivalent to)Tj
+T*
+(           using a Group option argument.  Also, a '#' may be appended to the)Tj
+T*
+(           tag name \(eg. 'EXIF:Orientation#'\), with the same effect as setting)Tj
+T*
+(           Type to 'ValueConv'.  Wildcards \('*' and '?'\) may be used in the)Tj
+T*
+(           tag name to assign multiple tags simultaneously.  A tag name of '*')Tj
+T*
 (           is special when deleting information, and will delete an entire)Tj
 T*
 (           group even if some individual tags in the group are not writable,)Tj
@@ -3319,18 +3329,6 @@ T*
 (           Protected)Tj
 0 -1.1 TD
 (               Bit mask for tag protection levels to write.  Bit 0x01 allows)Tj
-T*
-(               writing of 'unsafe' tags \(ie. tags not copied automatically via)Tj
-T*
-(               "SetNewValuesFromFile"\).  Bit 0x02 allows writing of)Tj
-T*
-(               'protected' tags, and should only be used internally by)Tj
-T*
-(               ExifTool.  See Image::ExifTool::TagNames, for a list of tag)Tj
-T*
-(               names indicating 'unsafe' and 'protected' tags.  Default is 0.)Tj
-0 -2.2 TD
-(           ProtectSaved)Tj
 ET
 endstream
 endobj
@@ -3348,7 +3346,7 @@ endobj
 endobj
 68 0 obj
 <<
-/Length 4658
+/Length 4802
 >>
 stream
 BT
@@ -3358,11 +3356,23 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 11.14 --                                    21)Tj
+(                           -- Image::ExifTool 11.15 --                                    21)Tj
 /TT4 1 Tf
 0 -1.6333 TD
-(               Avoid setting new values which were saved after the Nth call to)Tj
+(               writing of 'unsafe' tags \(ie. tags not copied automatically via)Tj
 0 -1.1 TD
+(               "SetNewValuesFromFile"\).  Bit 0x02 allows writing of)Tj
+T*
+(               'protected' tags, and should only be used internally by)Tj
+T*
+(               ExifTool.  See Image::ExifTool::TagNames, for a list of tag)Tj
+T*
+(               names indicating 'unsafe' and 'protected' tags.  Default is 0.)Tj
+0 -2.2 TD
+(           ProtectSaved)Tj
+0 -1.1 TD
+(               Avoid setting new values which were saved after the Nth call to)Tj
+T*
 (               "SaveNewValues".  Has no effect on unsaved values, or values)Tj
 T*
 (               saved before Nth call.  Option value is N.  Default is undef.)Tj
@@ -3528,16 +3538,6 @@ T*
 (           @rawVals = $exifTool->GetNewValue\($tag\);)Tj
 T*
 (       Inputs:)Tj
-0 -1.1 TD
-(           0\) ExifTool object reference)Tj
-0 -2.2 TD
-(           1\) Tag name \(case sensitive, may be prefixed by family 0 or 1 group)Tj
-0 -1.1 TD
-(           name\))Tj
-0 -2.2 TD
-(       Return Values:)Tj
-0 -1.1 TD
-(           List of new Raw tag values, or first value in list when called in)Tj
 ET
 endstream
 endobj
@@ -3555,7 +3555,7 @@ endobj
 endobj
 72 0 obj
 <<
-/Length 4811
+/Length 4512
 >>
 stream
 BT
@@ -3565,11 +3565,21 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 11.14 --                                    22)Tj
+(                           -- Image::ExifTool 11.15 --                                    22)Tj
 /TT4 1 Tf
 0 -1.6333 TD
-(           scalar context.  The list may be empty either if the tag isn't)Tj
+(           0\) ExifTool object reference)Tj
+0 -2.2 TD
+(           1\) Tag name \(case sensitive, may be prefixed by family 0 or 1 group)Tj
 0 -1.1 TD
+(           name\))Tj
+0 -2.2 TD
+(       Return Values:)Tj
+0 -1.1 TD
+(           List of new Raw tag values, or first value in list when called in)Tj
+T*
+(           scalar context.  The list may be empty either if the tag isn't)Tj
+T*
 (           being written, or if it is being deleted \(ie. if "SetNewValue" was)Tj
 T*
 (           called without a value\).)Tj
@@ -3705,20 +3715,6 @@ T*
 (           'DSTTAG<SRCTAG' \(or 'SRCTAG>DSTTAG'\) to be specified to copy)Tj
 T*
 (           information to a tag with a different name or a specified group.)Tj
-T*
-(           Both 'SRCTAG' and 'DSTTAG' may contain wildcards and/or be prefixed)Tj
-T*
-(           by a group name \(eg. 'fileModifyDate<modifyDate' or 'xmp:*<*'\),)Tj
-T*
-(           and/or suffixed by a '#' to disable print conversion.  Copied tags)Tj
-T*
-(           may also be added or deleted from a list with arguments of the form)Tj
-T*
-(           'DSTTAG+<SRCTAG' or 'DSTTAG-<SRCTAG'.  Tags are evaluated in order,)Tj
-T*
-(           so exclusions apply only to tags included earlier in the list.  An)Tj
-T*
-(           extension of this feature allows the tag value to be set from a)Tj
 ET
 endstream
 endobj
@@ -3736,7 +3732,7 @@ endobj
 endobj
 75 0 obj
 <<
-/Length 4404
+/Length 4593
 >>
 stream
 BT
@@ -3746,11 +3742,25 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 11.14 --                                    23)Tj
+(                           -- Image::ExifTool 11.15 --                                    23)Tj
 /TT4 1 Tf
 0 -1.6333 TD
-(           string containing tag names with leading '$' symbols \(eg.)Tj
+(           Both 'SRCTAG' and 'DSTTAG' may contain wildcards and/or be prefixed)Tj
 0 -1.1 TD
+(           by a group name \(eg. 'fileModifyDate<modifyDate' or 'xmp:*<*'\),)Tj
+T*
+(           and/or suffixed by a '#' to disable print conversion.  Copied tags)Tj
+T*
+(           may also be added or deleted from a list with arguments of the form)Tj
+T*
+(           'DSTTAG+<SRCTAG' or 'DSTTAG-<SRCTAG'.  Tags are evaluated in order,)Tj
+T*
+(           so exclusions apply only to tags included earlier in the list.  An)Tj
+T*
+(           extension of this feature allows the tag value to be set from a)Tj
+T*
+(           string containing tag names with leading '$' symbols \(eg.)Tj
+T*
 (           'Comment<the file is $filename'\).  Braces '{}' may be used around)Tj
 T*
 (           the tag name to separate it from subsequent text, and a '$$' is)Tj
@@ -3850,16 +3860,6 @@ T*
 (           specifying '*:*' for the tags to set.)Tj
 0 -2.2 TD
 (           The "Duplicates" option is always in effect for tags extracted from)Tj
-0 -1.1 TD
-(           the source file using this routine.)Tj
-0 -2.2 TD
-(           The "Struct" option is enabled by default for tags extracted by)Tj
-0 -1.1 TD
-(           this routine.  This allows the hierarchy of complex structures to)Tj
-T*
-(           be preserved when copying, but the Struct option may be set to 0 to)Tj
-T*
-(           override this behaviour and copy as flattened tags instead.)Tj
 ET
 endstream
 endobj
@@ -3877,7 +3877,7 @@ endobj
 endobj
 78 0 obj
 <<
-/Length 4398
+/Length 4383
 >>
 stream
 BT
@@ -3887,9 +3887,19 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 11.14 --                                    24)Tj
+(                           -- Image::ExifTool 11.15 --                                    24)Tj
 /TT4 1 Tf
 0 -1.6333 TD
+(           the source file using this routine.)Tj
+0 -2.2 TD
+(           The "Struct" option is enabled by default for tags extracted by)Tj
+0 -1.1 TD
+(           this routine.  This allows the hierarchy of complex structures to)Tj
+T*
+(           be preserved when copying, but the Struct option may be set to 0 to)Tj
+T*
+(           override this behaviour and copy as flattened tags instead.)Tj
+0 -2.2 TD
 (   C)Tj
 1.8 0 TD
 (Co)Tj
@@ -4101,18 +4111,6 @@ T*
 (       Return Value:)Tj
 0 -1.1 TD
 (           1 if the time was changed, 0 if nothing was done, or -1 if there)Tj
-T*
-(           was an error setting the time.)Tj
-0 -2.2 TD
-(       Notes:)Tj
-0 -1.1 TD
-(           Equivalent to, but more efficient than calling "WriteInfo" when)Tj
-T*
-(           only the FileModifyDate or FileCreateDate tag has been set.  If a)Tj
-T*
-(           timezone is not specified, local time is assumed.  When shifting,)Tj
-T*
-(           the time of the original file is used unless the optional base time)Tj
 ET
 endstream
 endobj
@@ -4130,7 +4128,7 @@ endobj
 endobj
 81 0 obj
 <<
-/Length 3951
+/Length 3979
 >>
 stream
 BT
@@ -4140,9 +4138,21 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 11.14 --                                    25)Tj
+(                           -- Image::ExifTool 11.15 --                                    25)Tj
 /TT4 1 Tf
 0 -1.6333 TD
+(           was an error setting the time.)Tj
+0 -2.2 TD
+(       Notes:)Tj
+0 -1.1 TD
+(           Equivalent to, but more efficient than calling "WriteInfo" when)Tj
+T*
+(           only the FileModifyDate or FileCreateDate tag has been set.  If a)Tj
+T*
+(           timezone is not specified, local time is assumed.  When shifting,)Tj
+T*
+(           the time of the original file is used unless the optional base time)Tj
+T*
 (           is specified.)Tj
 0 -2.2 TD
 (           The ability to write FileCreateDate is currently restricted to)Tj
@@ -4304,7 +4314,36 @@ T*
 (       Inputs:)Tj
 0 -1.1 TD
 (           0\) ExifTool object reference)Tj
-0 -2.2 TD
+ET
+endstream
+endobj
+82 0 obj
+<<
+/ProcSet [/PDF /Text ]
+/Font <<
+/TT2 4 0 R
+/TT4 5 0 R
+>>
+/ExtGState <<
+/GS1 6 0 R
+>>
+>>
+endobj
+84 0 obj
+<<
+/Length 3762
+>>
+stream
+BT
+/TT2 1 Tf
+10 0 0 10 29 806.3333 Tm
+0 g
+/GS1 gs
+0 Tc
+0 Tw
+(                           -- Image::ExifTool 11.15 --                                    26)Tj
+/TT4 1 Tf
+0 -2.7333 TD
 (       Return Values:)Tj
 0 -1.1 TD
 (           List of group names in order of write priority.  Highest priority)Tj
@@ -4330,38 +4369,9 @@ T*
 (D)Tj
 -6 -1.1 TD
 (       Get the ID for the specified tag.  The ID is the IFD tag number in EXIF)Tj
-ET
-endstream
-endobj
-82 0 obj
-<<
-/ProcSet [/PDF /Text ]
-/Font <<
-/TT2 4 0 R
-/TT4 5 0 R
->>
-/ExtGState <<
-/GS1 6 0 R
->>
->>
-endobj
-84 0 obj
-<<
-/Length 3734
->>
-stream
-BT
-/TT2 1 Tf
-10 0 0 10 29 806.3333 Tm
-0 g
-/GS1 gs
-0 Tc
-0 Tw
-(                           -- Image::ExifTool 11.14 --                                    26)Tj
-/TT4 1 Tf
-0 -1.6333 TD
+T*
 (       information, the property name in XMP information, or the data offset)Tj
-0 -1.1 TD
+T*
 (       in a binary data block.  For some tags, such as Composite tags where)Tj
 T*
 (       there is no ID, an empty string is returned.  In list context, also)Tj
@@ -4495,16 +4505,6 @@ T*
 (           separated by colons if the input group family contains a colon.)Tj
 T*
 (           The string is simplified to remove a leading 'Main:' and adjacent)Tj
-T*
-(           identical group names unless the family string begins with a colon.)Tj
-0 -2.2 TD
-(       Notes:)Tj
-0 -1.1 TD
-(           The group family numbers are currently available:)Tj
-0 -2.2 TD
-(               0\) Information Type         \(eg. EXIF, XMP, IPTC\))Tj
-0 -1.1 TD
-(               1\) Specific Location        \(eg. IFD0, XMP-dc\))Tj
 ET
 endstream
 endobj
@@ -4522,7 +4522,7 @@ endobj
 endobj
 87 0 obj
 <<
-/Length 4701
+/Length 4851
 >>
 stream
 BT
@@ -4532,11 +4532,21 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 11.14 --                                    27)Tj
+(                           -- Image::ExifTool 11.15 --                                    27)Tj
 /TT4 1 Tf
 0 -1.6333 TD
-(               2\) Category                 \(eg. Author, Time\))Tj
+(           identical group names unless the family string begins with a colon.)Tj
+0 -2.2 TD
+(       Notes:)Tj
 0 -1.1 TD
+(           The group family numbers are currently available:)Tj
+0 -2.2 TD
+(               0\) Information Type         \(eg. EXIF, XMP, IPTC\))Tj
+0 -1.1 TD
+(               1\) Specific Location        \(eg. IFD0, XMP-dc\))Tj
+T*
+(               2\) Category                 \(eg. Author, Time\))Tj
+T*
 (               3\) Document Number          \(eg. Main, Doc1, Doc3-2\))Tj
 T*
 (               4\) Instance Number          \(eg. Copy1, Copy2, Copy3...\))Tj
@@ -4690,16 +4700,6 @@ T*
 (       convenience tags which are derived from the values of other tags.  This)Tj
 T*
 (       routine is called automatically by "ImageInfo" and "ExtractInfo" if the)Tj
-T*
-(       Composite option is set.)Tj
-0 -2.2 TD
-(       Inputs:)Tj
-0 -1.1 TD
-(           0\) ExifTool object reference)Tj
-0 -2.2 TD
-(       Return Values:)Tj
-0 -1.1 TD
-(           \(none\))Tj
 ET
 endstream
 endobj
@@ -4717,7 +4717,7 @@ endobj
 endobj
 90 0 obj
 <<
-/Length 4678
+/Length 4471
 >>
 stream
 BT
@@ -4727,9 +4727,19 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 11.14 --                                    28)Tj
+(                           -- Image::ExifTool 11.15 --                                    28)Tj
 /TT4 1 Tf
-0 -2.7333 TD
+0 -1.6333 TD
+(       Composite option is set.)Tj
+0 -2.2 TD
+(       Inputs:)Tj
+0 -1.1 TD
+(           0\) ExifTool object reference)Tj
+0 -2.2 TD
+(       Return Values:)Tj
+0 -1.1 TD
+(           \(none\))Tj
+0 -2.2 TD
 (       Notes:)Tj
 0 -1.1 TD
 (           Tag values are calculated in alphabetical order unless a tag)Tj
@@ -4979,18 +4989,6 @@ T*
 (       Inputs:)Tj
 0 -1.1 TD
 (           0\) [optional] Group name, or string of group names separated by)Tj
-T*
-(           colons)Tj
-0 -2.2 TD
-(       Return Values:)Tj
-0 -1.1 TD
-(           A list of all writable tags in alphabetical order.  These are the)Tj
-T*
-(           tags for which values may be set through "SetNewValue".  If a group)Tj
-T*
-(           name is given, returns only writable tags in specified group\(s\).)Tj
-T*
-(           The group name is case insensitive, and any group in families 0-2)Tj
 ET
 endstream
 endobj
@@ -5008,7 +5006,7 @@ endobj
 endobj
 93 0 obj
 <<
-/Length 5297
+/Length 5254
 >>
 stream
 BT
@@ -5018,9 +5016,21 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 11.14 --                                    29)Tj
+(                           -- Image::ExifTool 11.15 --                                    29)Tj
 /TT4 1 Tf
 0 -1.6333 TD
+(           colons)Tj
+0 -2.2 TD
+(       Return Values:)Tj
+0 -1.1 TD
+(           A list of all writable tags in alphabetical order.  These are the)Tj
+T*
+(           tags for which values may be set through "SetNewValue".  If a group)Tj
+T*
+(           name is given, returns only writable tags in specified group\(s\).)Tj
+T*
+(           The group name is case insensitive, and any group in families 0-2)Tj
+T*
 (           may be used except for EXIF family 1 groups \(ie. the specific IFD\).)Tj
 0 -2.2 TD
 (   G)Tj
@@ -5172,18 +5182,6 @@ T*
 (           XMP-digiKam, XMP-drone-dji, XMP-dwc, XMP-exif, XMP-exifEX, XMP-)Tj
 T*
 (           expressionmedia, XMP-extensis, XMP-fpv, XMP-getty, XMP-ics, XMP-)Tj
-T*
-(           iptcCore, XMP-iptcExt, XMP-lr, XMP-mediapro, XMP-microsoft, XMP-)Tj
-T*
-(           mwg-coll, XMP-mwg-kw, XMP-mwg-rs, XMP-pdf, XMP-pdfx, XMP-photomech,)Tj
-T*
-(           XMP-photoshop, XMP-plus, XMP-pmi, XMP-prism, XMP-prl, XMP-prm, XMP-)Tj
-T*
-(           pur, XMP-rdf, XMP-swf, XMP-tiff, XMP-x, XMP-xmp, XMP-xmpBJ, XMP-)Tj
-T*
-(           xmpDM, XMP-xmpMM, XMP-xmpNote, XMP-xmpPLUS, XMP-xmpRights, XMP-)Tj
-T*
-(           xmpTPg, ZIP)Tj
 ET
 endstream
 endobj
@@ -5201,7 +5199,7 @@ endobj
 endobj
 96 0 obj
 <<
-/Length 4633
+/Length 4517
 >>
 stream
 BT
@@ -5211,9 +5209,21 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 11.14 --                                    30)Tj
+(                           -- Image::ExifTool 11.15 --                                    30)Tj
 /TT4 1 Tf
 0 -1.6333 TD
+(           iptcCore, XMP-iptcExt, XMP-lr, XMP-mediapro, XMP-microsoft, XMP-)Tj
+0 -1.1 TD
+(           mwg-coll, XMP-mwg-kw, XMP-mwg-rs, XMP-pdf, XMP-pdfx, XMP-photomech,)Tj
+T*
+(           XMP-photoshop, XMP-plus, XMP-pmi, XMP-prism, XMP-prl, XMP-prm, XMP-)Tj
+T*
+(           pur, XMP-rdf, XMP-swf, XMP-tiff, XMP-x, XMP-xmp, XMP-xmpBJ, XMP-)Tj
+T*
+(           xmpDM, XMP-xmpMM, XMP-xmpNote, XMP-xmpPLUS, XMP-xmpRights, XMP-)Tj
+T*
+(           xmpTPg, ZIP)Tj
+0 -2.2 TD
 (       Family 2 \(Category\):)Tj
 0 -1.1 TD
 (           Audio, Author, Camera, Document, ExifTool, Image, Location, Other,)Tj
@@ -5393,20 +5403,6 @@ T*
 (       Return Value:)Tj
 0 -1.1 TD
 (           A string, based on the file extension, which indicates the basic)Tj
-T*
-(           format of the file.  Note that some files may be based on other)Tj
-T*
-(           formats \(like many RAW image formats are based on TIFF\).  In list)Tj
-T*
-(           context, may return more than one file type if the file may be)Tj
-T*
-(           based on different formats.  Returns undef if files with this)Tj
-T*
-(           extension are not yet supported by ExifTool.  Returns a list of)Tj
-T*
-(           extensions for all supported file types if no input extension is)Tj
-T*
-(           specified \(or all recognized file types if the description flag is)Tj
 ET
 endstream
 endobj
@@ -5424,7 +5420,7 @@ endobj
 endobj
 99 0 obj
 <<
-/Length 4577
+/Length 4801
 >>
 stream
 BT
@@ -5434,11 +5430,25 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 11.14 --                                    31)Tj
+(                           -- Image::ExifTool 11.15 --                                    31)Tj
 /TT4 1 Tf
 0 -1.6333 TD
-(           set to 0\). Returns a more detailed description of the specific file)Tj
+(           format of the file.  Note that some files may be based on other)Tj
 0 -1.1 TD
+(           formats \(like many RAW image formats are based on TIFF\).  In list)Tj
+T*
+(           context, may return more than one file type if the file may be)Tj
+T*
+(           based on different formats.  Returns undef if files with this)Tj
+T*
+(           extension are not yet supported by ExifTool.  Returns a list of)Tj
+T*
+(           extensions for all supported file types if no input extension is)Tj
+T*
+(           specified \(or all recognized file types if the description flag is)Tj
+T*
+(           set to 0\). Returns a more detailed description of the specific file)Tj
+T*
 (           format when the description flag is set.)Tj
 0 -2.2 TD
 (   C)Tj
@@ -5686,16 +5696,6 @@ T*
 (       by default.  When writing, the inverse conversions are performed.)Tj
 T*
 (       Alternatively, special characters may be converted to/from HTML)Tj
-T*
-(       character entities with the "Escape" HTML option.)Tj
-0 -2.2 TD
-(       A distinction is made between the external character set visible via)Tj
-0 -1.1 TD
-(       the ExifTool API, and the internal character used to store text in the)Tj
-T*
-(       metadata of a file.  These character sets may be specified separately)Tj
-T*
-(       as follows:)Tj
 ET
 endstream
 endobj
@@ -5713,7 +5713,7 @@ endobj
 endobj
 103 0 obj
 <<
-/Length 5494
+/Length 5339
 >>
 stream
 BT
@@ -5723,9 +5723,19 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 11.14 --                                    32)Tj
+(                           -- Image::ExifTool 11.15 --                                    32)Tj
 /TT4 1 Tf
 0 -1.6333 TD
+(       character entities with the "Escape" HTML option.)Tj
+0 -2.2 TD
+(       A distinction is made between the external character set visible via)Tj
+0 -1.1 TD
+(       the ExifTool API, and the internal character used to store text in the)Tj
+T*
+(       metadata of a file.  These character sets may be specified separately)Tj
+T*
+(       as follows:)Tj
+0 -2.2 TD
 (       External Character Sets:)Tj
 0 -1.1 TD
 (           The encoding for tag values passed to/from ExifTool API functions)Tj
@@ -5887,7 +5897,36 @@ T*
 (       little-endian Unicode \(UCS-2\), and are read and written using the)Tj
 T*
 (       specified character set.)Tj
-0 -2.2 TD
+ET
+endstream
+endobj
+104 0 obj
+<<
+/ProcSet [/PDF /Text ]
+/Font <<
+/TT2 4 0 R
+/TT4 5 0 R
+>>
+/ExtGState <<
+/GS1 6 0 R
+>>
+>>
+endobj
+106 0 obj
+<<
+/Length 4566
+>>
+stream
+BT
+/TT2 1 Tf
+10 0 0 10 29 806.3333 Tm
+0 g
+/GS1 gs
+0 Tc
+0 Tw
+(                           -- Image::ExifTool 11.15 --                                    33)Tj
+/TT4 1 Tf
+0 -2.7333 TD
 (   I)Tj
 1.8 0 TD
 (IP)Tj
@@ -5907,38 +5946,9 @@ T*
 (       be stored as UTF-8, otherwise Windows Latin1 \(cp1252, 'Latin'\) coding)Tj
 T*
 (       is assumed by default, but this can be changed with the "CharsetIPTC")Tj
-ET
-endstream
-endobj
-104 0 obj
-<<
-/ProcSet [/PDF /Text ]
-/Font <<
-/TT2 4 0 R
-/TT4 5 0 R
->>
-/ExtGState <<
-/GS1 6 0 R
->>
->>
-endobj
-106 0 obj
-<<
-/Length 4560
->>
-stream
-BT
-/TT2 1 Tf
-10 0 0 10 29 806.3333 Tm
-0 g
-/GS1 gs
-0 Tc
-0 Tw
-(                           -- Image::ExifTool 11.14 --                                    33)Tj
-/TT4 1 Tf
-0 -1.6333 TD
+T*
 (       option.  When reading, these strings are converted to the character set)Tj
-0 -1.1 TD
+T*
 (       specified by the "Charset" option.  When writing, the inverse)Tj
 T*
 (       conversions are performed.  No conversion is done if the internal)Tj
@@ -6070,24 +6080,6 @@ T*
 (       The encoding for the JPEG Comment \(COM segment\) is not specified, so)Tj
 T*
 (       ExifTool reads/writes this text without conversion.)Tj
-0 -2.2 TD
-(   I)Tj
-1.8 0 TD
-(ID)Tj
-0.6 0 TD
-(D3)Tj
-0.6 0 TD
-(3)Tj
--3 -1.1 TD
-(       The ID3v1 specification officially supports only ISO 8859-1 encoding \(a)Tj
-T*
-(       subset of Windows Latin1\), although some applications may incorrectly)Tj
-T*
-(       use other character sets.  By default ExifTool converts ID3v1 text from)Tj
-T*
-(       Latin to the character set specified by the "Charset" option.  However,)Tj
-T*
-(       the internal ID3v1 charset may be specified with the "CharsetID3")Tj
 ET
 endstream
 endobj
@@ -6105,7 +6097,7 @@ endobj
 endobj
 109 0 obj
 <<
-/Length 6564
+/Length 5586
 >>
 stream
 BT
@@ -6115,11 +6107,29 @@ BT
 /GS1 gs
 0 Tc
 0 Tw
-(                           -- Image::ExifTool 11.14 --                                    34)Tj
+(                           -- Image::ExifTool 11.15 --                                    34)Tj
 /TT4 1 Tf
-0 -1.6333 TD
+0 -2.7333 TD
+(   I)Tj
+1.8 0 TD
+(ID)Tj
+0.6 0 TD
+(D3)Tj
+0.6 0 TD
+(3)Tj
+-3 -1.1 TD
+(       The ID3v1 specification officially supports only ISO 8859-1 encoding \(a)Tj
+T*
+(       subset of Windows Latin1\), although some applications may incorrectly)Tj
+T*
+(       use other character sets.  By default ExifTool converts ID3v1 text from)Tj
+T*
+(       Latin to the character set specified by the "Charset" option.  However,)Tj
+T*
+(       the internal ID3v1 charset may be specified with the "CharsetID3")Tj
+T*
 (       option.  The encoding for ID3v2 information is stored in the file, so)Tj
-0 -1.1 TD
+T*
 (       ExifTool converts ID3v2 text from this encoding to the character set)Tj
 T*
 (       specified by the "Charset" option. ExifTool does not currently write)Tj
@@ -6421,7 +6431,36 @@ T*
 (e_)Tj
 0.6 0 TD
 (s\(3pm\),)Tj
--26.4 -1.1 TD
+ET
+endstream
+endobj
+110 0 obj
+<<
+/ProcSet [/PDF /Text ]
+/Font <<
+/TT2 4 0 R
+/TT4 5 0 R
+>>
+/ExtGState <<
+/GS1 6 0 R
+>>
+>>
+endobj
+112 0 obj
+<<
+/Length 1631
+>>
+stream
+BT
+/TT2 1 Tf
+10 0 0 10 29 806.3333 Tm
+0 g
+/GS1 gs
+0 Tc
+0 Tw
+(                           -- Image::ExifTool 11.15 --                                    35)Tj
+/TT4 1 Tf
+0 -1.6333 TD
 (       _)Tj
 4.2 0 TD
 (I_)Tj
@@ -6586,11 +6625,11 @@ T*
 0.6 0 TD
 (G\(3pm\))Tj
 -27 -4.4 TD
-(perl v5.18.2                      2018-10-12                       EXIFTOOL\(1\))Tj
+(perl v5.18.2                      2018-10-22                       EXIFTOOL\(1\))Tj
 ET
 endstream
 endobj
-110 0 obj
+113 0 obj
 <<
 /ProcSet [/PDF /Text ]
 /Font <<
@@ -6616,7 +6655,7 @@ endobj
 /TR2 /Default
 >>
 endobj
-111 0 obj
+114 0 obj
 <<
 /Type /FontDescriptor
 /Ascent 753
@@ -6631,7 +6670,7 @@ endobj
 /StemH 84
 >>
 endobj
-112 0 obj
+115 0 obj
 <<
 /Type /FontDescriptor
 /Ascent 753
@@ -6660,7 +6699,7 @@ endobj
 0 0 0 0 0 0 0 0 600 ]
 /Encoding /WinAnsiEncoding
 /BaseFont /Courier-Bold
-/FontDescriptor 111 0 R
+/FontDescriptor 114 0 R
 >>
 endobj
 5 0 obj
@@ -6679,7 +6718,7 @@ endobj
 0 0 600 0 0 0 0 0 600 ]
 /Encoding /WinAnsiEncoding
 /BaseFont /Courier
-/FontDescriptor 112 0 R
+/FontDescriptor 115 0 R
 >>
 endobj
 1 0 obj
@@ -6954,14 +6993,22 @@ endobj
 /Contents 109 0 R
 >>
 endobj
-113 0 obj
+111 0 obj
+<<
+/Type /Page
+/Parent 101 0 R
+/Resources 113 0 R
+/Contents 112 0 R
+>>
+endobj
+116 0 obj
 <<
 /S /D
 >>
 endobj
-114 0 obj
+117 0 obj
 <<
-/Nums [0 113 0 R ]
+/Nums [0 116 0 R ]
 >>
 endobj
 7 0 obj
@@ -6991,8 +7038,8 @@ endobj
 101 0 obj
 <<
 /Type /Pages
-/Kids [98 0 R 102 0 R 105 0 R 108 0 R]
-/Count 4
+/Kids [98 0 R 102 0 R 105 0 R 108 0 R 111 0 R]
+/Count 5
 /Parent 38 0 R
 >>
 endobj
@@ -7000,150 +7047,153 @@ endobj
 <<
 /Type /Pages
 /Kids [7 0 R 39 0 R 70 0 R 101 0 R ]
-/Count 34
+/Count 35
 /MediaBox [0 0 595 842]
 >>
 endobj
-115 0 obj
+118 0 obj
 <<
-/CreationDate (D:20181016122311-04'00')
-/ModDate (D:20181016122311-04'00')
+/CreationDate (D:20181025083227-04'00')
+/ModDate (D:20181025083227-04'00')
 /Producer (Apple pstopdf)
 >>
 endobj
-116 0 obj
+119 0 obj
 <<
 /Type /Catalog
 /Pages 38 0 R
-/PageLabels 114 0 R
+/PageLabels 117 0 R
 >>
 endobj
 xref
-0 117
+0 120
 0000000000 65535 f 
-0000161868 00000 n 
+0000162536 00000 n 
 0000000016 00000 n 
 0000004114 00000 n 
-0000160869 00000 n 
-0000161270 00000 n 
-0000160334 00000 n 
-0000164794 00000 n 
-0000161948 00000 n 
+0000161537 00000 n 
+0000161938 00000 n 
+0000161002 00000 n 
+0000165550 00000 n 
+0000162616 00000 n 
 0000004220 00000 n 
 0000009519 00000 n 
-0000162029 00000 n 
+0000162697 00000 n 
 0000009626 00000 n 
 0000014418 00000 n 
-0000162112 00000 n 
+0000162780 00000 n 
 0000014525 00000 n 
 0000019433 00000 n 
-0000162195 00000 n 
+0000162863 00000 n 
 0000019540 00000 n 
-0000024159 00000 n 
-0000162278 00000 n 
-0000024266 00000 n 
-0000028205 00000 n 
-0000162361 00000 n 
-0000028312 00000 n 
-0000032941 00000 n 
-0000162444 00000 n 
-0000033048 00000 n 
-0000037589 00000 n 
-0000162527 00000 n 
-0000037696 00000 n 
-0000042550 00000 n 
-0000162610 00000 n 
-0000042657 00000 n 
-0000047358 00000 n 
-0000162693 00000 n 
-0000047465 00000 n 
-0000052147 00000 n 
-0000165304 00000 n 
-0000164929 00000 n 
-0000162777 00000 n 
-0000052254 00000 n 
-0000056806 00000 n 
-0000162861 00000 n 
-0000056913 00000 n 
-0000061201 00000 n 
-0000162945 00000 n 
-0000061308 00000 n 
-0000065428 00000 n 
+0000024185 00000 n 
+0000162946 00000 n 
+0000024292 00000 n 
+0000028231 00000 n 
 0000163029 00000 n 
-0000065535 00000 n 
-0000069710 00000 n 
-0000163113 00000 n 
-0000069817 00000 n 
-0000073905 00000 n 
-0000163197 00000 n 
-0000074012 00000 n 
-0000078411 00000 n 
-0000163281 00000 n 
-0000078518 00000 n 
-0000082559 00000 n 
-0000163365 00000 n 
-0000082666 00000 n 
-0000086875 00000 n 
-0000163449 00000 n 
-0000086982 00000 n 
-0000091520 00000 n 
-0000163533 00000 n 
-0000091627 00000 n 
-0000096338 00000 n 
-0000165067 00000 n 
-0000163617 00000 n 
-0000096445 00000 n 
-0000101309 00000 n 
-0000163701 00000 n 
-0000101416 00000 n 
-0000105873 00000 n 
-0000163785 00000 n 
-0000105980 00000 n 
-0000110431 00000 n 
-0000163869 00000 n 
-0000110538 00000 n 
-0000114542 00000 n 
-0000163953 00000 n 
-0000114649 00000 n 
-0000118436 00000 n 
-0000164037 00000 n 
-0000118543 00000 n 
-0000123297 00000 n 
-0000164121 00000 n 
-0000123404 00000 n 
-0000128135 00000 n 
-0000164205 00000 n 
-0000128242 00000 n 
-0000133592 00000 n 
-0000164289 00000 n 
-0000133699 00000 n 
-0000138385 00000 n 
-0000164373 00000 n 
-0000138492 00000 n 
-0000143122 00000 n 
-0000165205 00000 n 
-0000164459 00000 n 
-0000143230 00000 n 
-0000148778 00000 n 
-0000164547 00000 n 
-0000148886 00000 n 
-0000153500 00000 n 
-0000164635 00000 n 
-0000153608 00000 n 
-0000160226 00000 n 
-0000160474 00000 n 
-0000160677 00000 n 
-0000164723 00000 n 
-0000164752 00000 n 
-0000165410 00000 n 
-0000165534 00000 n 
+0000028338 00000 n 
+0000032967 00000 n 
+0000163112 00000 n 
+0000033074 00000 n 
+0000037615 00000 n 
+0000163195 00000 n 
+0000037722 00000 n 
+0000042576 00000 n 
+0000163278 00000 n 
+0000042683 00000 n 
+0000047402 00000 n 
+0000163361 00000 n 
+0000047509 00000 n 
+0000052001 00000 n 
+0000166068 00000 n 
+0000165685 00000 n 
+0000163445 00000 n 
+0000052108 00000 n 
+0000056785 00000 n 
+0000163529 00000 n 
+0000056892 00000 n 
+0000061198 00000 n 
+0000163613 00000 n 
+0000061305 00000 n 
+0000065339 00000 n 
+0000163697 00000 n 
+0000065446 00000 n 
+0000069792 00000 n 
+0000163781 00000 n 
+0000069899 00000 n 
+0000073981 00000 n 
+0000163865 00000 n 
+0000074088 00000 n 
+0000078428 00000 n 
+0000163949 00000 n 
+0000078535 00000 n 
+0000082592 00000 n 
+0000164033 00000 n 
+0000082699 00000 n 
+0000086648 00000 n 
+0000164117 00000 n 
+0000086755 00000 n 
+0000091439 00000 n 
+0000164201 00000 n 
+0000091546 00000 n 
+0000096401 00000 n 
+0000165823 00000 n 
+0000164285 00000 n 
+0000096508 00000 n 
+0000101073 00000 n 
+0000164369 00000 n 
+0000101180 00000 n 
+0000105826 00000 n 
+0000164453 00000 n 
+0000105933 00000 n 
+0000110369 00000 n 
+0000164537 00000 n 
+0000110476 00000 n 
+0000114508 00000 n 
+0000164621 00000 n 
+0000114615 00000 n 
+0000118430 00000 n 
+0000164705 00000 n 
+0000118537 00000 n 
+0000123441 00000 n 
+0000164789 00000 n 
+0000123548 00000 n 
+0000128072 00000 n 
+0000164873 00000 n 
+0000128179 00000 n 
+0000133486 00000 n 
+0000164957 00000 n 
+0000133593 00000 n 
+0000138163 00000 n 
+0000165041 00000 n 
+0000138270 00000 n 
+0000143124 00000 n 
+0000165961 00000 n 
+0000165127 00000 n 
+0000143232 00000 n 
+0000148625 00000 n 
+0000165215 00000 n 
+0000148733 00000 n 
+0000153353 00000 n 
+0000165303 00000 n 
+0000153461 00000 n 
+0000159101 00000 n 
+0000165391 00000 n 
+0000159209 00000 n 
+0000160894 00000 n 
+0000161142 00000 n 
+0000161345 00000 n 
+0000165479 00000 n 
+0000165508 00000 n 
+0000166174 00000 n 
+0000166298 00000 n 
 trailer
 <<
-/Size 117
-/Root 116 0 R
-/Info 115 0 R
-/ID [<32f9f4491207a3d668b87a955daa7465><32f9f4491207a3d668b87a955daa7465>]
+/Size 120
+/Root 119 0 R
+/Info 118 0 R
+/ID [<1379abae3adf1c3dc0e7cead20863f68><1379abae3adf1c3dc0e7cead20863f68>]
 >>
 startxref
-165606
+166370
 %%EOF

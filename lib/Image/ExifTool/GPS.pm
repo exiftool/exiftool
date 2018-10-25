@@ -12,7 +12,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.49';
+$VERSION = '1.50';
 
 my %coordConv = (
     ValueConv    => 'Image::ExifTool::GPS::ToDegrees($val)',
@@ -423,14 +423,14 @@ sub ConvertTimeStamp($)
     my $f = (($h || 0) * 60 + ($m || 0)) * 60 + ($s || 0);
     $h = int($f / 3600); $f -= $h * 3600;
     $m = int($f / 60);   $f -= $m * 60;
-    $s = int($f);        $f -= $s;
-    $f = int($f * 1000000000 + 0.5);
-    if ($f) {
-        ($f = sprintf(".%.9d", $f)) =~ s/0+$//;
+    my $ss = sprintf('%012.9f', $f);
+    if ($ss >= 60) {
+        $ss = '00';
+        ++$m >= 60 and $m -= 60, ++$h;
     } else {
-        $f = ''
+        $ss =~ s/\.?0+$//;  # trim trailing zeros + decimal
     }
-    return sprintf("%.2d:%.2d:%.2d%s",$h,$m,$s,$f);
+    return sprintf("%.2d:%.2d:%s",$h,$m,$ss);
 }
 
 #------------------------------------------------------------------------------
@@ -455,7 +455,7 @@ sub PrintTimeStamp($)
 sub ToDMS($$;$$)
 {
     my ($et, $val, $doPrintConv, $ref) = @_;
-    my ($fmt, @fmt, $num, $sign);
+    my ($fmt, @fmt, $num, $sign, $rtnVal);
 
     unless (length $val) {
         # don't convert an empty value
@@ -487,7 +487,7 @@ sub ToDMS($$;$$)
                 $fmt =~ s/%\+/%/g;  # don't know sign, so don't print it
             }
         } else {
-            $fmt = "%d,%.6f$ref";   # use XMP standard format
+            $fmt = "%d,%.8f$ref";   # use XMP format with 8 decimal minutes
         }
         # count (and capture) the format specifiers (max 3)
         while ($fmt =~ /(%(%|[^%]*?[diouxXDOUeEfFgGcs]))/g) {
@@ -516,7 +516,14 @@ sub ToDMS($$;$$)
             ($c[-2] += 1) >= 60 and $num > 2 and $c[-2] -= 60, $c[-3] += 1;
         }
     }
-    return $doPrintConv ? sprintf($fmt, @c) : "@c$ref";
+    if ($doPrintConv) {
+        $rtnVal = sprintf($fmt, @c);
+        # trim trailing zeros in XMP
+        $rtnVal =~ s/(\d)0+$ref$/$1$ref/ if $doPrintConv eq '2';
+    } else {
+        $rtnVal = "@c$ref";
+    }
+    return $rtnVal;
 }
 
 #------------------------------------------------------------------------------

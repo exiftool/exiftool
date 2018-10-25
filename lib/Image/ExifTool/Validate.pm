@@ -17,7 +17,7 @@ package Image::ExifTool::Validate;
 use strict;
 use vars qw($VERSION %exifSpec);
 
-$VERSION = '1.12';
+$VERSION = '1.13';
 
 use Image::ExifTool qw(:Utils);
 use Image::ExifTool::Exif;
@@ -285,6 +285,7 @@ sub ValidateRaw($$$)
 {
     my ($self, $tag, $val) = @_;
     my $tagInfo = $$self{TAG_INFO}{$tag};
+    my $wrn;
 
     # evaluate Validate code if specified
     if ($$tagInfo{Validate}) {
@@ -304,10 +305,12 @@ sub ValidateRaw($$$)
         ($$tagInfo{Table} eq \%Image::ExifTool::Exif::Main and $exifSpec{$$tagInfo{TagID}})))
     {
         my $prt = $self->GetValue($tag, 'PrintConv');
-        if ($prt and $prt =~ /^Unknown \(/) {
-            my $name = $$self{DIR_NAME} . ':' . Image::ExifTool::GetTagName($tag);
-            $self->Warn("Unknown value for $name", 1);
-        }
+        $wrn = 'Unknown value for' if $prt and $prt =~ /^Unknown \(/;
+    }
+    $wrn = 'Undefined value for' if $val eq 'undef';
+    if ($wrn) {
+        my $name = $$self{DIR_NAME} . ':' . Image::ExifTool::GetTagName($tag);
+        $self->Warn("$wrn $name", 1);
     }
 }
 

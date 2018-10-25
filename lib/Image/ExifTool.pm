@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup);
 
-$VERSION = '11.14';
+$VERSION = '11.15';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -2070,6 +2070,7 @@ sub ClearOptions($)
         GeoMaxHDOP  => undef,   # geotag maximum HDOP
         GeoMaxPDOP  => undef,   # geotag maximum PDOP
         GeoMinSats  => undef,   # geotag minimum satellites
+        GeoSpeedRef => undef,   # geotag GPSSpeedRef
         GlobalTimeShift => undef,   # apply time shift to all extracted date/time values
     #   Group#      => undef,   # return tags for specified groups in family #
         HtmlDump    => 0,       # HTML dump (0-3, higher # = bigger limit)
@@ -2939,9 +2940,8 @@ sub GetValue($$;$)
                                 $self->Warn("$convType $tag: " . CleanWarning()) if $evalWarning;
                             }
                             if (not defined $value) {
-                                if (($$tagInfo{PrintHex} or
-                                    ($$tagInfo{Mask} and not defined $$tagInfo{PrintHex}))
-                                    and $val and IsInt($val) and $convType eq 'PrintConv')
+                                if ($$tagInfo{PrintHex} and $val and IsInt($val) and
+                                    $convType eq 'PrintConv')
                                 {
                                     $val = sprintf('0x%x',$val);
                                 }
@@ -4573,6 +4573,12 @@ sub SetupTagTable($)
             $$tagInfo{Name} or $$tagInfo{Name} = MakeTagName($tagID);
             $$tagInfo{Flags} and ExpandFlags($tagInfo);
             $$tagInfo{Avoid} = $avoid if defined $avoid;
+            # calculate BitShift from Mask if necessary
+            if ($$tagInfo{Mask} and not defined $$tagInfo{BitShift}) {
+                my ($mask, $bitShift) = ($$tagInfo{Mask}, 0);
+                ++$bitShift until $mask & (1 << $bitShift);
+                $$tagInfo{BitShift} = $bitShift;
+            }
         }
         next unless @infoArray > 1;
         # add an "Index" member to each tagInfo in a list
@@ -5329,6 +5335,7 @@ sub TimeZoneString($;$)
     }
     my $sign = '+';
     $min < 0 and $sign = '-', $min = -$min;
+    $min = int($min + 0.5); # round off to nearest minute
     my $h = int($min / 60);
     return sprintf('%s%.2d:%.2d', $sign, $h, $min - $h * 60);
 }
@@ -5407,6 +5414,7 @@ sub ConvertDuration($)
     return '0 s' if $time == 0;
     my $sign = ($time > 0 ? '' : (($time = -$time), '-'));
     return sprintf("$sign%.2f s", $time) if $time < 30;
+    $time += 0.5;   # to round off to nearest second
     my $h = int($time / 3600);
     $time -= $h * 3600;
     my $m = int($time / 60);
@@ -8061,7 +8069,7 @@ sub ProcessBinaryData($$$)
         unless (defined $val and not $$tagInfo{SubDirectory}) {
             $val = ReadValue($dataPt, $entry+$offset, $format, $count, $more, \$rational);
             $mask = $$tagInfo{Mask};
-            $val &= $mask if $mask;
+            $val = ($val & $mask) >> $$tagInfo{BitShift} if $mask;
         }
         if ($verbose and not $$tagInfo{Hidden}) {
             if (not $$tagInfo{SubDirectory} or $$tagInfo{Format}) {

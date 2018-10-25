@@ -17,7 +17,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.05';
+$VERSION = '1.06';
 
 my %unescapeVCard = ( '\\'=>'\\', ','=>',', 'n'=>"\n", 'N'=>"\n" );
 
@@ -88,7 +88,10 @@ my %timeInfo = (
 
 %Image::ExifTool::VCard::VCalendar = (
     GROUPS => { 1 => 'VCalendar', 2 => 'Document' },
-    VARS => { NO_LOOKUP => 1 }, # omit tags from lookup
+    VARS => {
+        NO_LOOKUP => 1, # omit tags from lookup
+        LONG_TAGS => 6, # some X-microsoft tags have unavoidably long ID's
+    },
     NOTES => q{
         The VCard module is also used to process iCalendar ICS files since they use
         a format similar to vCard.  The following table lists standard iCalendar
@@ -149,6 +152,42 @@ my %timeInfo = (
     Sequence    => 'SequenceNumber',
     'Request-status' => 'RequestStatus',
     Acknowledged=> { Name => 'Acknowledged',        Groups => { 2 => 'Time' }, %timeInfo },
+#
+# Observed X-tags (not a comprehensive list):
+#
+    'X-apple-calendar-color'=> 'CalendarColor',
+    'X-apple-default-alarm' => 'DefaultAlarm',
+    'X-apple-local-default-alarm' => 'LocalDefaultAlarm',
+    'X-microsoft-cdo-appt-sequence'     => 'AppointmentSequence', 
+    'X-microsoft-cdo-ownerapptid'       => 'OwnerAppointmentID',
+    'X-microsoft-cdo-busystatus'        => 'BusyStatus',
+    'X-microsoft-cdo-intendedstatus'    => 'IntendedBusyStatus',
+    'X-microsoft-cdo-alldayevent'       => 'AllDayEvent',
+    'X-microsoft-cdo-importance' => {
+        Name => 'Importance',
+        PrintConv => {
+            0 => 'Low',
+            1 => 'Normal',
+            2 => 'High',
+        },
+    },
+    'X-microsoft-cdo-insttype' => {
+        Name => 'InstanceType',
+        PrintConv => {
+            0 => 'Non-recurring Appointment',
+            1 => 'Recurring Appointment',
+            2 => 'Single Instance of Recurring Appointment',
+            3 => 'Exception to Recurring Appointment',
+        },
+    },
+    'X-microsoft-donotforwardmeeting'   => 'DoNotForwardMeeting',
+    'X-microsoft-disallow-counter'      => 'DisallowCounterProposal',
+    'X-microsoft-locations' => { Name => 'MeetingLocations', Groups => { 2 => 'Location' } },
+    'X-wr-caldesc'          => 'CalendarDescription',
+    'X-wr-calname'          => 'CalendarName',
+    'X-wr-relcalid'         => 'CalendarID',
+    'X-wr-timezone'         => { Name => 'TimeZone2', Groups => { 2 => 'Time' } },
+    'X-wr-alarmuid'         => 'AlarmUID',
 );
 
 #------------------------------------------------------------------------------

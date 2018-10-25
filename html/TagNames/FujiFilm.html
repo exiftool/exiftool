@@ -132,7 +132,7 @@ necessarily correspond to the camera body number -- this needs to be checked)</s
   <br>0x100 = n/a</span></td></tr>
 <tr class=b>
 <td title='0x100e = 4110'>0x100e</td>
-<td>HighISONoiseReduction</td>
+<td>NoiseReduction</td>
 <td class=c>int16u</td>
 <td><table class=cols><tr>
   <td>0x0 = 0 (normal)
@@ -196,12 +196,27 @@ necessarily correspond to the camera body number -- this needs to be checked)</s
 <td class=c>int16u[2]</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td title='0x102b = 4139'>0x102b</td>
+<td>PrioritySettings</td>
+<td class=c>-</td>
+<td>--&gt; <a href='FujiFilm.html#PrioritySettings'>FujiFilm PrioritySettings Tags</a></td></tr>
+<tr class=b>
+<td title='0x102d = 4141'>0x102d</td>
+<td>FocusSettings</td>
+<td class=c>-</td>
+<td>--&gt; <a href='FujiFilm.html#FocusSettings'>FujiFilm FocusSettings Tags</a></td></tr>
+<tr>
+<td title='0x102e = 4142'>0x102e</td>
+<td>AFCSettings</td>
+<td class=c>-</td>
+<td>--&gt; <a href='FujiFilm.html#AFCSettings'>FujiFilm AFCSettings Tags</a></td></tr>
+<tr class=b>
 <td title='0x1030 = 4144'>0x1030</td>
 <td>SlowSync</td>
 <td class=c>int16u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x1031 = 4145'>0x1031</td>
 <td>PictureMode</td>
 <td class=c>int16u</td>
@@ -239,25 +254,25 @@ necessarily correspond to the camera body number -- this needs to be checked)</s
   <br>0x200 = Shutter speed priority AE
   <br>0x300 = Manual</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td title='0x1032 = 4146'>0x1032</td>
 <td>ExposureCount</td>
 <td class=c>int16u</td>
 <td><span class=s><span class=n>(number of exposures used for this image)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x1033 = 4147'>0x1033</td>
 <td>EXRAuto</td>
 <td class=c>int16u</td>
 <td><span class=s>0 = Auto
   <br>1 = Manual</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x1034 = 4148'>0x1034</td>
 <td>EXRMode</td>
 <td class=c>int16u</td>
 <td><span class=s>0x100 = HR (High Resolution)
   <br>0x200 = SN (Signal to Noise priority)
   <br>0x300 = DR (Dynamic Range priority)</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x1040 = 4160'>0x1040</td>
 <td>ShadowTone</td>
 <td class=c>int32s</td>
@@ -270,7 +285,7 @@ necessarily correspond to the camera body number -- this needs to be checked)</s
   <br>16 = -1 (medium soft)
   <br>32 = -2 (soft)</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td title='0x1041 = 4161'>0x1041</td>
 <td>HighlightTone</td>
 <td class=c>int32s</td>
@@ -283,30 +298,66 @@ necessarily correspond to the camera body number -- this needs to be checked)</s
   <br>16 = -1 (medium soft)
   <br>32 = -2 (soft)</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td title='0x1044 = 4164'>0x1044</td>
 <td>DigitalZoom</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
+<tr class=b>
+<td title='0x1045 = 4165'>0x1045</td>
+<td>LensModulationOptimizer</td>
+<td class=c>int32u</td>
+<td><span class=s>0 = Off
+  <br>1 = On</span></td></tr>
 <tr>
+<td title='0x1047 = 4167'>0x1047</td>
+<td>GrainEffect</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = Off
+  <br>32 = Weak
+  <br>64 = Strong</span></td></tr>
+<tr class=b>
+<td title='0x1048 = 4168'>0x1048</td>
+<td>ColorChromeEffect</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = Off
+  <br>32 = Weak
+  <br>64 = Strong</span></td></tr>
+<tr>
+<td title='0x1049 = 4169'>0x1049</td>
+<td>BWAdjustment</td>
+<td class=c>int8s</td>
+<td><span class=s><span class=n>(positive values are warm, negative values are cool)</span></span></td></tr>
+<tr class=b>
 <td title='0x1050 = 4176'>0x1050</td>
 <td>ShutterType</td>
 <td class=c>int16u</td>
 <td><span class=s>0 = Mechanical
   <br>1 = Electronic
+  <br>2 = Electronic (long-exposure noise reduction unavailable)
   <br>3 = Electronic Front Curtain</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x1100 = 4352'>0x1100</td>
 <td>AutoBracketing</td>
 <td class=c>int16u</td>
-<td><span class=s>0 = Off
+<td><span class=s><span class=n>(X-T3 only)</span>
+  <br>0 = Off
+  <br>1 = On
+  <br>2 = Pre-shot
+  <br><span class=n>(other models)</span>
+  <br>0 = Off
   <br>1 = On
   <br>2 = No flash &amp; flash</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x1101 = 4353'>0x1101</td>
 <td>SequenceNumber</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
+<tr>
+<td title='0x1103 = 4355'>0x1103</td>
+<td>DriveSettings</td>
+<td class=c>-</td>
+<td>--&gt; <a href='FujiFilm.html#DriveSettings'>FujiFilm DriveSettings Tags</a></td></tr>
 <tr class=b>
 <td title='0x1153 = 4435'>0x1153</td>
 <td>PanoramaAngle</td>
@@ -389,7 +440,8 @@ necessarily correspond to the camera body number -- this needs to be checked)</s
   <br>0x400 = F4/Velvia
   <br>0x500 = Pro Neg. Std
   <br>0x501 = Pro Neg. Hi
-  <br>0x600 = Classic Chrome</span></td></tr>
+  <br>0x600 = Classic Chrome
+  <br>0x700 = Eterna</span></td></tr>
 <tr class=b>
 <td title='0x1402 = 5122'>0x1402</td>
 <td>DynamicRangeSetting</td>
@@ -471,6 +523,29 @@ necessarily correspond to the camera body number -- this needs to be checked)</s
 <td class=c>int16u</td>
 <td><span class=s><span class=n>(may reset to 0 when new firmware is installed)</span></span></td></tr>
 <tr class=b>
+<td title='0x1443 = 5187'>0x1443</td>
+<td>DRangePriority</td>
+<td class=c>int16u</td>
+<td><span class=s>0 = Auto
+  <br>1 = Fixed</span></td></tr>
+<tr>
+<td title='0x1444 = 5188'>0x1444</td>
+<td>DRangePriorityAuto</td>
+<td class=c>int16u</td>
+<td><span class=s>1 = Weak
+  <br>2 = Strong</span></td></tr>
+<tr class=b>
+<td title='0x1445 = 5189'>0x1445</td>
+<td>DRangePriorityFixed</td>
+<td class=c>int16u</td>
+<td><span class=s>1 = Weak
+  <br>2 = Strong</span></td></tr>
+<tr>
+<td title='0x1446 = 5190'>0x1446</td>
+<td>FlickerReduction</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td title='0x3820 = 14368'>0x3820</td>
 <td>FrameRate</td>
 <td class=c>int16u</td>
@@ -540,6 +615,121 @@ element)</span></span></td></tr>
 <td>Parallax</td>
 <td class=c>rational64s</td>
 <td><span class=s><span class=n>(only found in MPImage2 of .MPO images)</span></span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='PrioritySettings'>FujiFilm PrioritySettings Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index2</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0.1</td>
+<td>AF-SPriority</td>
+<td class=c>int16u</td>
+<td><span class=s>[val &amp; 0xf]
+  <br>1 = Release
+  <br>2 = Focus</span></td></tr>
+<tr class=b>
+<td class=r title='0 = 0x0'>0.2</td>
+<td>AF-CPriority</td>
+<td class=c>int16u</td>
+<td><span class=s>[val &gt;&gt; 4 &amp; 0xf]
+  <br>1 = Release
+  <br>2 = Focus</span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='FocusSettings'>FujiFilm FocusSettings Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index4</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0.1</td>
+<td>FocusMode2</td>
+<td class=c>int32u</td>
+<td><span class=s>[val &amp; 0xff]
+  <br>0 = AF-M
+  <br>1 = AF-S
+  <br>2 = AF-C</span></td></tr>
+<tr class=b>
+<td class=r title='0 = 0x0'>0.2</td>
+<td>AFAreaMode</td>
+<td class=c>int32u</td>
+<td><span class=s>[val &gt;&gt; 8 &amp; 0xf]
+  <br>0 = Single Point
+  <br>1 = Zone
+  <br>2 = Wide/Tracking</span></td></tr>
+<tr>
+<td class=r title='0 = 0x0'>0.3</td>
+<td>AFAreaPointSize</td>
+<td class=c>int32u</td>
+<td><span class=s>[val &gt;&gt; 12 &amp; 0xf]
+  <br>0 = n/a</span></td></tr>
+<tr class=b>
+<td class=r title='0 = 0x0'>0.4</td>
+<td>AFAreaZoneSize</td>
+<td class=c>int32u</td>
+<td><span class=s>[val &gt;&gt; 16 &amp; 0xf]
+  <br>0 = n/a</span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='AFCSettings'>FujiFilm AFCSettings Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index4</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>AF-CSetting</td>
+<td class=c>int32u</td>
+<td><span class=s>0x102 = Set 1 (multi-purpose)
+  <br>0x203 = Set 2 (ignore obstacles)
+  <br>0x122 = Set 3 (accelerating subject)
+  <br>0x010 = Set 4 (suddenly appearing subject)
+  <br>0x123 = Set 5 (erratic motion)</span></td></tr>
+<tr class=b>
+<td class=r title='0 = 0x0'>0.1</td>
+<td>AF-CTrackingSensitivity</td>
+<td class=c>int32u</td>
+<td><span class=s>[val &amp; 0xf]</span></td></tr>
+<tr>
+<td class=r title='0 = 0x0'>0.2</td>
+<td>AF-CSpeedTrackingSensitivity</td>
+<td class=c>int32u</td>
+<td><span class=s>[val &gt;&gt; 4 &amp; 0xf]</span></td></tr>
+<tr class=b>
+<td class=r title='0 = 0x0'>0.3</td>
+<td>AF-CZoneAreaSwitching</td>
+<td class=c>int32u</td>
+<td><span class=s>[val &gt;&gt; 8 &amp; 0xf]
+  <br>0 = Front
+  <br>1 = Auto
+  <br>2 = Center</span></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='DriveSettings'>FujiFilm DriveSettings Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index4</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0.1</td>
+<td>DriveMode</td>
+<td class=c>int32u</td>
+<td><span class=s>[val &amp; 0xff]
+  <br>0 = Single
+  <br>1 = Continuous Low
+  <br>2 = Continuous High</span></td></tr>
+<tr class=b>
+<td class=r title='0 = 0x0'>0.2</td>
+<td>DriveSpeed</td>
+<td class=c>int32u</td>
+<td><span class=s>[val &gt;&gt; 24 &amp; 0xff]
+  <br>0 = n/a</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='FaceRecInfo'>FujiFilm FaceRecInfo Tags</a></h2>
@@ -914,7 +1104,7 @@ RAF-format information.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Mar 20, 2018</i>
+<br><i>Last revised Oct 25, 2018</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

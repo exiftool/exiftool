@@ -14,7 +14,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.00';
+$VERSION = '1.01';
 
 # BPG information
 %Image::ExifTool::BPG::Main = (
@@ -29,18 +29,20 @@ $VERSION = '1.00';
         Format => 'int16u',
         Mask => 0xe000,
         PrintConv => {
-            0x0000 => 'Grayscale',
-            0x2000 => '4:2:0 (chroma at 0.5, 0.5)',
-            0x4000 => '4:2:2 (chroma at 0.5, 0)',
-            0x6000 => '4:4:4',
-            0x8000 => '4:2:0 (chroma at 0, 0.5)',
-            0xa000 => '4:2:2 (chroma at 0, 0)',
+            0 => 'Grayscale',
+            1 => '4:2:0 (chroma at 0.5, 0.5)',
+            2 => '4:2:2 (chroma at 0.5, 0)',
+            3 => '4:4:4',
+            4 => '4:2:0 (chroma at 0, 0.5)',
+            5 => '4:2:2 (chroma at 0, 0)',
         },
     },
     4.1 => {
         Name => 'Alpha',
         Format => 'int16u',
         Mask => 0x1004,
+        BitShift => 0,
+        PrintHex => 1,
         PrintConv => {
             0x0000 => 'No Alpha Plane',
             0x1000 => 'Alpha Exists (color not premultiplied)',
@@ -52,19 +54,19 @@ $VERSION = '1.00';
         Name => 'BitDepth',
         Format => 'int16u',
         Mask => 0x0f00,
-        ValueConv => '($val >> 8) + 8',
+        ValueConv => '$val + 8',
     },
     4.3 => {
         Name => 'ColorSpace',
         Format => 'int16u',
         Mask => 0x00f0,
         PrintConv => {
-            0x0000 => 'YCbCr (BT 601)',
-            0x0010 => 'RGB',
-            0x0020 => 'YCgCo',
-            0x0030 => 'YCbCr (BT 709)',
-            0x0040 => 'YCbCr (BT 2020)',
-            0x0050 => 'BT 2020 Constant Luminance',
+            0 => 'YCbCr (BT 601)',
+            1 => 'RGB',
+            2 => 'YCgCo',
+            3 => 'YCbCr (BT 709)',
+            4 => 'YCbCr (BT 2020)',
+            5 => 'BT 2020 Constant Luminance',
         },
     },
     4.4 => {

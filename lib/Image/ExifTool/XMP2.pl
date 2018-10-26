@@ -1732,6 +1732,21 @@ my %sSubVersion = (
     TimeShot            => { },
 );
 
+# RED smartphone images (ref PH)
+%Image::ExifTool::XMP::LImage = (
+    %xmpTableDefaults,
+    GROUPS => { 1 => 'XMP-LImage', 2 => 'Image' },
+    NAMESPACE => 'LImage',
+    NOTES => 'Tags written by RED smartphones.',
+    MajorVersion => { },
+    MinorVersion => { },
+    RightAlbedo => {
+        Notes => 'Right stereoscopic image',
+        ValueConv => 'Image::ExifTool::XMP::DecodeBase64($val)',
+        ValueConvInv => 'Image::ExifTool::XMP::EncodeBase64($val)',
+    },
+);
+
 # SVG namespace properties (ref 9)
 %Image::ExifTool::XMP::SVG = (
     GROUPS => { 0 => 'SVG', 1 => 'SVG', 2 => 'Image' },

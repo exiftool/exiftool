@@ -7,9 +7,17 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 11.11. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Oct. 26, 2018 - Version 11.16
+
+  - Decode FLIR GPS information
+  - Decode 3D image from RED Hydrogen smartphone
+  - Minor improvements to decoding of new FujiFilm tags
+  - Fixed problem where writing Shortcut tags with the -E option would double
+    unescape the HTML entities
+
 Oct. 25, 2018 - Version 11.15
 
-  - Added a couple of new Canon LensType values (thanks LibRaw and SmugMug)
+  - Added a couple of new Canon LensType values (thanks LibRaw and Andrew Shieh)
   - Added a new Nikon LensID
   - Added definitions for a few more VCard tags
   - Added a new FujiFilm ShutterType value

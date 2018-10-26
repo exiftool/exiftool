@@ -441,7 +441,7 @@ my %faceCategories = (
         PrintConv => {
             0 => 'Mechanical',
             1 => 'Electronic',
-            2 => 'Electronic (long-exposure noise reduction unavailable)', #12
+            2 => 'Electronic (long shutter speed)', #12
             3 => 'Electronic Front Curtain', #10
         },
     },
@@ -832,12 +832,7 @@ my %faceCategories = (
         Mask => 0xf000,
         PrintConv => {
             0 => 'n/a',
-            OTHER => sub {
-                my ($val, $inv) = @_;
-                return "$val x $val" unless $inv;
-                $val =~ s/ ?x.*//;
-                return $val;
-            },
+            OTHER => sub { return $_[0] },
         },
     },
     0.4 => {

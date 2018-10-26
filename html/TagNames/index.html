@@ -148,9 +148,11 @@ The tables listed below give the names of all tags recognized by ExifTool.
 <b>Tag ID</b>, <b>Index#</b> or <b>Sequence</b> is given in the first column of each
 table.  A <b>Tag ID</b> is the computer-readable equivalent of a tag name, and
 is the identifier that is actually stored in the file.  <b>Index#</b> refers to
-the location of a value when found at a fixed position within a data block
+the offset of a value when found at a fixed position within a data block
 (<b>#</b> is the multiplier for calculating a byte offset: <b>1</b>, <b>2</b>, <b>4</b> or
-<b>8</b>). <b>Sequence</b> gives the order of values for a serial data stream.</p>
+<b>8</b>).  These offsets may have a decimal part which is used only to
+differentiate tags which have values stored at the same position.
+<b>Sequence</b> gives the order of values for a serial data stream.</p>
 
 <p>A <b>Tag Name</b> is the handle by which the information is accessed in
 ExifTool.  In some instances, more than one name may correspond to a single
@@ -219,7 +221,7 @@ ExifTool.  A big thanks to everyone who has helped with this so far!)</i>
 </p>
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Sep 21, 2018</i>
+<br><i>Last revised Oct 26, 2018</i>
 <p class=lf><a href='../index.html'>&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

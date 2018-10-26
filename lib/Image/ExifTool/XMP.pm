@@ -49,7 +49,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.16';
+$VERSION = '3.17';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -178,6 +178,7 @@ my %xmpNS = (
     GFocus    => 'http://ns.google.com/photos/1.0/focus/',
     dwc       => 'http://rs.tdwg.org/dwc/index.htm',
     GettyImagesGIFT => 'http://xmp.gettyimages.com/gift/1.0/',
+    LImage    => 'http://ns.leiainc.com/photos/1.0/image/',
 );
 
 # build reverse namespace lookup
@@ -756,6 +757,10 @@ my %sRetouchArea = (
    'drone-dji' => {
         Name => 'drone-dji',
         SubDirectory => { TagTable => 'Image::ExifTool::DJI::XMP' },
+    },
+    LImage => {
+        Name => 'LImage',
+        SubDirectory => { TagTable => 'Image::ExifTool::XMP::LImage' },
     },
 );
 

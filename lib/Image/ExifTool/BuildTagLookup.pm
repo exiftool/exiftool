@@ -163,9 +163,11 @@ The tables listed below give the names of all tags recognized by ExifTool.
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
 is the identifier that is actually stored in the file.  B<Index#> refers to
-the location of a value when found at a fixed position within a data block
+the offset of a value when found at a fixed position within a data block
 (B<#> is the multiplier for calculating a byte offset: B<1>, B<2>, B<4> or
-B<8>). B<Sequence> gives the order of values for a serial data stream.
+B<8>).  These offsets may have a decimal part which is used only to
+differentiate tags which have values stored at the same position.
+B<Sequence> gives the order of values for a serial data stream.
 
 A B<Tag Name> is the handle by which the information is accessed in
 ExifTool.  In some instances, more than one name may correspond to a single

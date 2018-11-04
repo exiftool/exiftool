@@ -30,7 +30,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.63';
+$VERSION = '1.64';
 
 sub ProcessFujiDir($$$);
 sub ProcessFaceRec($$$);
@@ -434,6 +434,15 @@ my %faceCategories = (
         Format => 'int8s',
         PrintConv => '$val > 0 ? "+$val" : $val',
         PrintConvInv => '$val + 0',
+    },
+    0x104d => { #forum9634
+        Name => 'CropMode',
+        Writable => 'int16u',
+        PrintConv => {
+            0 => 'n/a',
+            2 => 'Sports Finder Mode', # (mechanical shutter)
+            4 => 'Electronic Shutter 1.25x Crop', # (continuous high)
+        },
     },
     0x1050 => { #forum6109
         Name => 'ShutterType',

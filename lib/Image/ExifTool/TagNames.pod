@@ -19,8 +19,8 @@ is the identifier that is actually stored in the file.  B<Index#> refers to
 the offset of a value when found at a fixed position within a data block
 (B<#> is the multiplier for calculating a byte offset: B<1>, B<2>, B<4> or
 B<8>).  These offsets may have a decimal part which is used only to
-differentiate tags which have values stored at the same position.
-B<Sequence> gives the order of values for a serial data stream.
+differentiate tags with values stored at the same position.  B<Sequence>
+gives the order of values for a serial data stream.
 
 A B<Tag Name> is the handle by which the information is accessed in
 ExifTool.  In some instances, more than one name may correspond to a single
@@ -8448,6 +8448,7 @@ Tags extracted from FLIR Public image Format (FPF) files.
   0x1047   GrainEffect                          int32s
   0x1048   ColorChromeEffect                    int32s
   0x1049   BWAdjustment                         int8s
+  0x104d   CropMode                             int16u
   0x1050   ShutterType                          int16u
   0x1100   AutoBracketing                       int16u
   0x1101   SequenceNumber                       int16u
@@ -32345,7 +32346,9 @@ these tables may be changed without having to rewrite the file.
 MDItem tags are extracted using the "mdls" utility.  They are extracted if
 any "MDItem*" tag or the MacOS group is specifically requested, or by
 setting the MDItemTags API option to 1 or the RequestAll API option to 2 or
-higher.
+higher.  Note that these tags do not necessarily reflect the current
+metadata of a file -- it may take some time for the MacOS mdworker daemon to
+index the file after the metadata changes.
 
   Tag Name                                      Writable
   --------                                      --------

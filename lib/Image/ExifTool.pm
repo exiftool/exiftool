@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup);
 
-$VERSION = '11.16';
+$VERSION = '11.17';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -320,7 +320,7 @@ my %createTypes = map { $_ => 1 } qw(XMP ICC MIE VRD DR4 EXIF EXV);
     ISO  => ['ISO',  'ISO 9660 disk image'],
     ITC  => ['ITC',  'iTunes Cover Flow'],
     J2C  => ['JP2',  'JPEG 2000 codestream'],
-    J2K  =>  'JP2',
+    J2K  =>  'J2C',
     JNG  => ['PNG',  'JPG Network Graphics'],
     JP2  => ['JP2',  'JPEG 2000 file'],
     # JP4? - looks like a JPEG but the image data is different

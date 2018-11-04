@@ -1648,6 +1648,7 @@ my %tagLookup = (
 	'crophispeed' => { 211 => 0x1b },
 	'cropleft' => { 102 => 0x246, 117 => 0x6, 245 => 0x1e, 278 => 0x612, 282 => 0x612, 302 => 0x30, 343 => 0xd9, 442 => 'CropLeft' },
 	'cropleftmargin' => { 50 => 0x0 },
+	'cropmode' => { 121 => 0x104d },
 	'cropmode35mm' => { 358 => 0x1018 },
 	'croporiginalheight' => { 95 => 0xb },
 	'croporiginalwidth' => { 95 => 0xa },

@@ -59,7 +59,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.54';
+$VERSION = '3.55';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -1284,7 +1284,16 @@ my %binaryDataAttrs = (
             ByteOrder => 'BigEndian', #(NC)
         },
     },
-    # 0x0034 - Nikon 1 models only, values: 0,16,33
+    0x0034 => { #forum9646
+        Name => 'ShutterMode',
+        Writable => 'int16u',
+        PrintConv => {
+             0 => 'Mechanical',
+             16 => 'Electronic',
+           # 33 => ? seen for 1J2
+             48 => 'Electronic Front Curtain',
+        },
+    },
     0x0035 => { #32
         Name => 'HDRInfo',
         SubDirectory => { TagTable => 'Image::ExifTool::Nikon::HDRInfo' },

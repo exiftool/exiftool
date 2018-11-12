@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup);
 
-$VERSION = '11.16';
+$VERSION = '11.18';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -320,7 +320,7 @@ my %createTypes = map { $_ => 1 } qw(XMP ICC MIE VRD DR4 EXIF EXV);
     ISO  => ['ISO',  'ISO 9660 disk image'],
     ITC  => ['ITC',  'iTunes Cover Flow'],
     J2C  => ['JP2',  'JPEG 2000 codestream'],
-    J2K  =>  'JP2',
+    J2K  =>  'J2C',
     JNG  => ['PNG',  'JPG Network Graphics'],
     JP2  => ['JP2',  'JPEG 2000 file'],
     # JP4? - looks like a JPEG but the image data is different
@@ -5713,9 +5713,10 @@ sub ProcessJPEG($$)
     local $_;
     my ($self, $dirInfo) = @_;
     my ($ch, $s, $length);
-    my $verbose = $$self{OPTIONS}{Verbose};
-    my $out = $$self{OPTIONS}{TextOut};
-    my $fast = $$self{OPTIONS}{FastScan};
+    my $options = $$self{OPTIONS};
+    my $verbose = $$options{Verbose};
+    my $out = $$options{TextOut};
+    my $fast = $$options{FastScan};
     my $raf = $$dirInfo{RAF};
     my $htmlDump = $$self{HTML_DUMP};
     my %dumpParms = ( Out => $out );
@@ -5729,7 +5730,7 @@ sub ProcessJPEG($$)
         return 0 unless $raf->Read($s, 5) == 5 and $s eq 'Exiv2';
         $$self{FILE_TYPE} = 'EXV';
     }
-    if (not $$self{VALUE}{FileType} or ($$self{DOC_NUM} and $$self{OPTIONS}{ExtractEmbedded})) {
+    if (not $$self{VALUE}{FileType} or ($$self{DOC_NUM} and $$options{ExtractEmbedded})) {
         $self->SetFileType();               # set FileType tag
         return 1 if $fast and $fast == 3;   # don't process file when FastScan == 3
         $$self{LOW_PRIORITY_DIR}{IFD1} = 1; # lower priority of IFD1 tags
@@ -5954,7 +5955,7 @@ sub ProcessJPEG($$)
                 }
                 next if $trailInfo or $wantTrailer or $verbose > 2 or $htmlDump;
             }
-            next if $$self{OPTIONS}{Validate};  # (validate to EOI)
+            next if $$options{Validate};    # (validate to EOI)
             # nothing interesting to parse after start of scan (SOS)
             $success = 1;
             last;   # all done parsing file
@@ -5975,14 +5976,14 @@ sub ProcessJPEG($$)
             #  specifically requested.  The reason is that there is too much overhead involved
             #  in the calculation of this tag to make this worth the CPU time.)
             ($$self{REQ_TAG_LOOKUP}{jpegdigest} or $$self{REQ_TAG_LOOKUP}{jpegqualityestimate}
-            or ($$self{OPTIONS}{RequestAll} and $$self{OPTIONS}{RequestAll} > 2)))
+            or ($$options{RequestAll} and $$options{RequestAll} > 2)))
         {
             my $num = unpack('C',$$segDataPt) & 0x0f;   # get table index
             $dqt[$num] = $$segDataPt if $num < 4;       # save for MD5 calculation
         }
         # handle all other markers
         my $dumpType = '';
-        my ($desc, $tip);
+        my ($desc, $tip, $xtra);
         $length = length $$segDataPt;
         if ($verbose) {
             print $out "JPEG $markerName ($length bytes):\n";
@@ -6093,7 +6094,7 @@ sub ProcessJPEG($$)
                     $start + $plen > $$self{EXIF_POS} + length($$self{EXIF_DATA}) and
                     ($$self{REQ_TAG_LOOKUP}{previewimage} or
                     # (extracted normally, so check Binary option)
-                    ($$self{OPTIONS}{Binary} and not $$self{EXCL_TAG_LOOKUP}{previewimage})))
+                    ($$options{Binary} and not $$self{EXCL_TAG_LOOKUP}{previewimage})))
                 {
                     $$self{PreviewImageStart} = $start;
                     $$self{PreviewImageLength} = $plen;
@@ -6426,6 +6427,10 @@ sub ProcessJPEG($$)
                 $dumpType = 'PhotoStudio';
                 my $comment = $self->Decode(substr($$segDataPt,8), 'UCS2', 'MM');
                 $self->FoundTag('Comment', $comment);
+            } elsif ($$segDataPt =~ /^AROT\0/ and $length > 10) {
+                # iPhone "AROT" segment containing integrated intensity per 16 scan lines
+                # (with number of elements N = ImageHeight / 16 - 1, ref PH/NealKrawetz)
+                $xtra = 'segment (N=' . unpack('x6N', $$segDataPt) . ')';
             }
         } elsif ($marker == 0xeb) {         # APP11 (JPEG-HDR)
             if ($$segDataPt =~ /^HDR_RI /) {
@@ -6538,8 +6543,10 @@ sub ProcessJPEG($$)
             $desc = "[JPEG $markerName]";   # (other known JPEG segments)
         }
         if (defined $dumpType) {
-            if (not $dumpType and $$self{OPTIONS}{Unknown}) {
-                $self->Warn("Unknown $markerName segment", 1);
+            if (not $dumpType and ($$options{Unknown} or $$options{Validate})) {
+                my $str = ($$segDataPt =~ /^([\x20-\x7e]{1,16})\0/) ? " '$1'" : '';
+                $xtra = 'segment' unless $xtra;
+                $self->Warn("Unknown $markerName$str $xtra", 1);
             }
             if ($htmlDump) {
                 $desc or $desc = $markerName . ($dumpType ? " $dumpType" : '') . ' segment';
@@ -6555,7 +6562,7 @@ sub ProcessJPEG($$)
         # GUID indicated by the last main XMP segment
         my $goodGuid = $$self{VALUE}{HasExtendedXMP} || '';
         # GUID of the extended XMP that we will process ('2' for all)
-        my $readGuid = $$self{OPTIONS}{ExtendedXMP} || 0;
+        my $readGuid = $$options{ExtendedXMP} || 0;
         $readGuid = $goodGuid if $readGuid eq '1';
         foreach $guid (sort keys %extendedXMP) {
             next unless length $guid == 32;     # ignore other (internal) keys

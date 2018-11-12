@@ -694,6 +694,13 @@ sub ProcessSamples($)
                         $val =~ tr/\t/ /;
                         $et->HandleTag($tagTbl, RawGSensor => $val) if length $val;
                     }
+                } elsif ($buff =~ /^PNDM/ and length $buff >= 20) {
+                    # Garmin Dashcam format (actually binary, not text)
+                    $et->HandleTag($tagTbl, GPSLatitude  => Get32s(\$buff, 12) * 180/0x80000000);
+                    $et->HandleTag($tagTbl, GPSLongitude => Get32s(\$buff, 16) * 180/0x80000000);
+                    $et->HandleTag($tagTbl, GPSSpeed => Get16u(\$buff, 8));
+                    $et->HandleTag($tagTbl, GPSSpeedRef => 'M');
+                    next;
                 }
                 unless (defined $val) {
                     $et->HandleTag($tagTbl, Text => $buff); # just store any other text
@@ -842,7 +849,7 @@ sub ProcessFreeGPS($$$)
             # extract accelerometer readings if GPS was valid
             @acc = unpack('x68V3', $$dataPt);
             # change to signed integer and divide by 256
-            map { $_ = $_ - 4294967296 if $_ >= 2147483648; $_ /= 256 } @acc;
+            map { $_ = $_ - 4294967296 if $_ >= 0x80000000; $_ /= 256 } @acc;
         }
 
     } else {
@@ -1129,7 +1136,7 @@ ATCRec: for ($recPos = 0x30; $recPos + 52 < $gpsBlockSize; $recPos += 52) {
                     $day < 1 or $day > 31 or
                     $hr > 59 or $min > 59 or $sec > 600;
             # change lat/lon to signed integer and divide by 1e7
-            map { $_ = $_ - 4294967296 if $_ >= 2147483648; $_ /= 1e7 } $lat, $lon;
+            map { $_ = $_ - 4294967296 if $_ >= 0x80000000; $_ /= 1e7 } $lat, $lon;
             $trk -= 0x10000 if $trk >= 0x8000;  # make it signed
             $trk /= 100;
             $trk += 360 if $trk < 0;

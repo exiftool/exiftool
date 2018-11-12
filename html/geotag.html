@@ -113,8 +113,8 @@ time difference which is added to <code>Geotime</code> before interpolating the
 GPS position in the track log.  This time difference may be of the form "SS",
 "MM:SS", "HH:MM:SS" or "DD HH:MM:SS" (where SS=seconds, MM=minutes, HH=hours and
 DD=days), and a leading "+" or "-" may be added for positive or negative
-differences (negative if the camera clock was ahead of GPS time).  Fractional
-seconds are allowed (eg. "SS.ss").</p>
+differences (positive if the GPS time was ahead of the camera clock). 
+Fractional seconds are allowed (eg. "SS.ss").</p>
 
 <p>For example, "<code>-geosync=-1:20</code>" specifies that synchronization
 with GPS time is achieved by subtracting 1 minute and 20 seconds from the
@@ -219,7 +219,8 @@ ensure this).</i>
 <a name="Examples"></a>
 <h3>Examples</h3>
 
-<p>Geotag all images in the "c:\images" directory from position information in a
+<a name="E1"></a>
+<p>1. Geotag all images in the "c:\images" directory from position information in a
 GPS track log ("c:\gps logs\track.log").  Since the <code>Geotime</code> time is
 not specified, the value of <code>DateTimeOriginal#</code> is used.  Local
 system time is assumed unless <code>DateTimeOriginal#</code> contains a
@@ -227,22 +228,26 @@ timezone:</p>
 
 <pre>exiftool -geotag "c:\gps logs\track.log" c:\images</pre>
 
-<p>Geotag all images in directory "dir" from the GPS positions in "track.log"
+<a name="E2"></a>
+<p>2. Geotag all images in directory "dir" from the GPS positions in "track.log"
 (in the current directory), for a camera clock that was running 25 seconds
 slower than the GPS clock:</p>
 
 <pre>exiftool -geotag track.log -geosync=+25 dir</pre>
 
-<p>Geotag an image with the GPS position for a specific time:</p>
+<a name="E3"></a>
+<p>3. Geotag an image with the GPS position for a specific time:</p>
 
 <pre>exiftool -geotag t.log -geotime="2009:04:02 13:41:12-05:00" a.jpg</pre>
 
-<p>Geotag all images in directory "dir" with XMP tags instead of EXIF tags,
+<a name="E4"></a>
+<p>4. Geotag all images in directory "dir" with XMP tags instead of EXIF tags,
 based on the image <code>CreateDate</code>:</p>
 
 <pre>exiftool -geotag log.gpx "-xmp:geotime&lt;createdate" dir</pre>
 
-<p>Geotag images in "dir" using <code>CreateDate</code> with the specified
+<a name="E5"></a>
+<p>5. Geotag images in "dir" using <code>CreateDate</code> with the specified
 timezone.  If <code>CreateDate</code> already contained a timezone, then the
 timezone specified on the command line is ignored.  (Note that in Windows,
 double quotes (<code>"</code>) must be used instead of single quotes
@@ -251,42 +256,50 @@ commands):</p>
 
 <pre>exiftool -geotag a.log '-geotime&lt;${createdate}+01:00' dir</pre>
 
-<p>Geotag images for which the camera clock was set to UTC (+00:00), using
+<a name="E6"></a>
+<p>6. Geotag images for which the camera clock was set to UTC (+00:00), using
 the time from <code>DateTimeOriginal</code>:</p>
 
 <pre>exiftool -geotag trk.gpx '-geotime&lt;${DateTimeOriginal}+00:00' dir</pre>
 
-<p>Delete GPS tags which were added by the geotag feature. (Note that this does
+<a name="E7"></a>
+<p>7. Delete GPS tags which were added by the geotag feature. (Note that this does
 not remove all GPS tags -- to do this instead use <code>-gps:all=</code>):</p>
 
 <pre>exiftool -geotag= a.jpg</pre>
 
-<p>Delete XMP GPS tags which were added by the geotag feature:</p>
+<a name="E8"></a>
+<p>8. Delete XMP GPS tags which were added by the geotag feature:</p>
 
 <pre>exiftool -xmp:geotag= a.jpg</pre>
 
-<p>Geotag an image with XMP tags, using the time from
+<a name="E9"></a>
+<p>9. Geotag an image with XMP tags, using the time from
 <code>DateTimeOriginal</code>:</p>
 
 <pre>exiftool -xmp:geotag=track.log a.jpg</pre>
 
-<p>Combine multiple track logs and geotag an entire directory tree of
+<a name="E10"></a>
+<p>10. Combine multiple track logs and geotag an entire directory tree of
 images:</p>
 
 <pre>exiftool -geotag a.log -geotag b.log -r dir</pre>
 
-<p>Use wildcards to load multiple track files (the quotes are necessary for most
+<a name="E11"></a>
+<p>11. Use wildcards to load multiple track files (the quotes are necessary for most
 operating systems to prevent filename expansion):</p>
 
 <pre>exiftool -geotag "logs/*.log" dir</pre>
 
-<p>Geotag from a sub-second date/time value with a sub-second time synchronization
+<a name="E12"></a>
+<p>12. Geotag from a sub-second date/time value with a sub-second time synchronization
 (only possible if the EXIF sub-second time stamps are available):</p>
 
 <pre>exiftool -Geotag a.log -Geosync=+13.42 "-Geotime&lt;SubSecDateTimeOriginal" dir
 </pre>
 
-<p>Geotag images with a piecewise linear time drift correction using the GPS
+<a name="E13"></a>
+<p>13. Geotag images with a piecewise linear time drift correction using the GPS
 time synchronization from three already-geotagged images:</p>
 
 <pre>exiftool -geotag a.log -geosync=1.jpg -geosync=2.jpg -geosync=3.jpg dir

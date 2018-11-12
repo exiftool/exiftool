@@ -1742,6 +1742,7 @@ my %sSubVersion = (
     MinorVersion => { },
     RightAlbedo => {
         Notes => 'Right stereoscopic image',
+        Groups => { 2 => 'Preview' },
         ValueConv => 'Image::ExifTool::XMP::DecodeBase64($val)',
         ValueConvInv => 'Image::ExifTool::XMP::EncodeBase64($val)',
     },

@@ -7,9 +7,9 @@
 #
 # Notes:        My apologies for the convoluted logic contained herein, but it
 #               is done this way to retro-fit the Validate feature into the
-#               existing ExifTool code while avoiding the possibility of
-#               introducing potential bugs or slowing down processing when the
-#               Validate feature is not used.
+#               existing ExifTool code while reducing the possibility of
+#               introducing bugs or slowing down processing when this feature
+#               is not used.
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::Validate;

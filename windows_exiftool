@@ -12,7 +12,7 @@
 use strict;
 require 5.004;
 
-my $version = '11.16';
+my $version = '11.18';
 
 # add our 'lib' directory to the include list BEFORE 'use Image::ExifTool'
 my $exeDir;
@@ -138,6 +138,7 @@ my $escapeHTML;     # flag to escape printed values for html
 my $evalWarning;    # warning from eval
 my $executeID;      # -execute ID number
 my $failCondition;  # flag to fail -if condition
+my $fastCondition;  # flag for fast -if condition
 my $fileHeader;     # header to print to output file (or console, once)
 my $fileTrailer;    # trailer for output file
 my $filtered;       # flag indicating file was filtered by name
@@ -443,6 +444,7 @@ undef $escapeHTML;
 undef $evalWarning;
 undef $executeID;
 undef $failCondition;
+undef $fastCondition;
 undef $fileHeader;
 undef $filtered;
 undef $fixLen;
@@ -930,8 +932,9 @@ for (;;) {
         $ignore{$dir} = 1;
         next;
     }
-    if ($a eq 'if') {
+    if (/^if(\d*)$/i) {
         my $cond = shift;
+        $fastCondition = $1 if length $1;
         defined $cond or Error("Expecting expression for -if option\n"), $badCmd=1, next;
         # prevent processing file unnecessarily for simple case of failed '$ok' or 'not $ok'
         $cond =~ /^\s*(not\s*)\$ok\s*$/i and ($1 xor $rtnValPrev) and $failCondition=1;
@@ -1865,17 +1868,21 @@ sub GetImageInfo($$)
 
             my %info;
             # extract information and build expression for evaluation
-            my $opts = { Duplicates => 1, RequestTags => \@requestTags, Verbose => 0, HtmlDump => 0 };
+            my $opts = { Duplicates => 1, RequestTags => \@requestTags, Verbose => 0,
+                         HtmlDump => 0, FastScan => $fastCondition };
             # return all tags but explicitly mention tags on command line so
             # requested images will generate the appropriate warnings
             @foundTags = ('*', @tags) if @tags;
             $info = $et->ImageInfo(Infile($pipe,$isWriting), \@foundTags, $opts);
             my $cond = $et->InsertTagValues(\@foundTags, $condition, \%info);
+            {
+                package Image::ExifTool;
 
-            #### eval "-if" condition (%info)
-            $result = eval $cond;
+                #### eval "-if" condition (%info)
+                $result = eval $cond;
 
-            $@ and $evalWarning = $@;
+                $@ and $evalWarning = $@;
+            }
             if ($evalWarning) {
                 # fail condition if warning is issued
                 undef $result;
@@ -1893,7 +1900,7 @@ sub GetImageInfo($$)
         }
         # can't make use of $info if verbose because we must reprocess
         # the file anyway to generate the verbose output
-        undef $info if $verbose;
+        undef $info if $verbose or defined $fastCondition;
     }
     if (defined $deleteOrig) {
         print $vout "======== $file$progStr\n" if defined $verbose;
@@ -4301,7 +4308,7 @@ OPTIONS
       -fast[NUM]                       Increase speed for slow devices
       -fileOrder [-]TAG                Set file processing order
       -i DIR      (-ignore)            Ignore specified directory name
-      -if EXPR                         Conditionally process files
+      -if[NUM] EXPR                    Conditionally process files
       -m          (-ignoreMinorErrors) Ignore minor errors and warnings
       -o OUTFILE  (-out)               Set output file or directory name
       -overwrite_original              Overwrite original by renaming tmp file
@@ -4537,21 +4544,23 @@ OPTIONS
          A powerful redirection feature allows a destination tag to be
          specified for each copied tag. With this feature, information may
          be written to a tag with a different name or group. This is done
-         using "-*SRCTAG*<*DSTTAG*" or "-*DSTTAG*>*SRCTAG*" on the command
+         using "-*DSTTAG*<*SRCTAG*" or "-*SRCTAG*>*DSTTAG*" on the command
          line after -tagsFromFile, and causes the value of *SRCTAG* to be
-         copied from *SRCFILE* and written to *DSTTAG* in *FILE*. Note that
-         this argument must be quoted to prevent shell redirection, and
-         there is no "=" sign as when assigning new values. Source and/or
-         destination tags may be prefixed by a group name and/or suffixed by
-         "#". Wildcards are allowed in both the source and destination tag
-         names. A destination group and/or tag name of "All" or "*" writes
-         to the same family 1 group and/or tag name as the source. If no
+         copied from *SRCFILE* and written to *DSTTAG* in *FILE*. Has no
+         effect unless *SRCTAG* exists in *SRCFILE*. Note that this argument
+         must be quoted to prevent shell redirection, and there is no "="
+         sign as when assigning new values. Source and/or destination tags
+         may be prefixed by a group name and/or suffixed by "#". Wildcards
+         are allowed in both the source and destination tag names. A
+         destination group and/or tag name of "All" or "*" writes to the
+         same family 1 group and/or tag name as the source. If no
          destination group is specified, the information is written to the
          preferred group. Whitespace around the ">" or "<" is ignored. As a
          convenience, "-tagsFromFile @" is assumed for any redirected tags
          which are specified without a prior -tagsFromFile option. Copied
          tags may also be added or deleted from a list with arguments of the
-         form "-*SRCTAG*+<*DSTTAG*" or "-*SRCTAG*-<*DSTTAG*".
+         form "-*SRCTAG*+<*DSTTAG*" or "-*SRCTAG*-<*DSTTAG*" (but see Note 5
+         below).
 
          An extension of the redirection feature allows strings involving
          tag names to be used on the right hand side of the "<" symbol with
@@ -5034,7 +5043,7 @@ OPTIONS
 
          produces output like this:
 
-             -- Generated by ExifTool 11.16 --
+             -- Generated by ExifTool 11.18 --
              File: a.jpg - 2003:10:31 15:44:19
              (f/5.6, 1/60s, ISO 100)
              File: b.jpg - 2006:05:23 11:57:38
@@ -5464,7 +5473,7 @@ OPTIONS
          value of "SYMLINKS" (case sensitive) may be specified to ignore
          symbolic links when the -r option is used.
 
-    -if *EXPR*
+    -if[*NUM*] *EXPR*
          Specify a condition to be evaluated before processing each *FILE*.
          *EXPR* is a Perl-like logic expression containing tag names
          prefixed by "$" symbols. It is evaluated with the tags from each
@@ -5490,6 +5499,14 @@ OPTIONS
 
              # find images containing a specific keyword (case insensitive)
              exiftool -if "$keywords =~ /harvey/i" -filename dir
+
+         Adding *NUM* to the -if option causes a separate processing pass to
+         be executed for evaluating *EXPR* at a -fast level given by *NUM*
+         (see the -fast option documentation for details). Without *NUM*,
+         only one processing pass is done at the level specified by the
+         -fast option. For example, using -if3 is possible if *EXPR* uses
+         only pseudo system tags, and may significantly speed processing if
+         enough files fail the condition.
 
          Notes:
 
@@ -6143,7 +6160,12 @@ WRITING READ-ONLY FILES
 READING EXAMPLES
     exiftool -a -u -g1 a.jpg
          Print all meta information in an image, including duplicate and
-         unknown tags, sorted by group (for family 1).
+         unknown tags, sorted by group (for family 1). For performance
+         reasons, this command may not extract all available metadata.
+         (Metadata in embedded documents, metadata extracted by external
+         utilities, and metadata requiring excessive processing time may not
+         be extracted). Add "-ee" and "-api RequestAll=3" to the command to
+         extract absolutely everything available.
 
     exiftool -common dir
          Print common meta information for all images in "dir". "-common" is

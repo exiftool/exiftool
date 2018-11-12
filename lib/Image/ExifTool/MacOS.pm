@@ -11,7 +11,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.06';
+$VERSION = '1.07';
 
 sub MDItemLocalTime($);
 
@@ -29,7 +29,9 @@ my %mdDateInfo = (
         MDItem tags are extracted using the "mdls" utility.  They are extracted if
         any "MDItem*" tag or the MacOS group is specifically requested, or by
         setting the L<MDItemTags API option|../ExifTool.html#MDItemTags> to 1 or the L<RequestAll API option|../ExifTool.html#RequestAll> to 2 or
-        higher.
+        higher.  Note that these tags do not necessarily reflect the current
+        metadata of a file -- it may take some time for the MacOS mdworker daemon to
+        index the file after the metadata changes.
     },
     MDItemFinderComment => {
         Writable => 1,

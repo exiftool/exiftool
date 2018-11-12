@@ -49,7 +49,7 @@ use vars qw($VERSION %minoltaLensTypes %minoltaTeleconverters %minoltaColorMode
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.66';
+$VERSION = '2.67';
 
 # Full list of product codes for Sony-compatible Minolta lenses
 # (ref http://www.kb.sony.com/selfservice/documentLink.do?externalId=C1000570)
@@ -617,29 +617,30 @@ $VERSION = '2.66';
    '65535.71' => 'Voigtlander MACRO APO-LANTHAR 65mm F2 Aspherical', #JR (50995)
    '65535.72' => 'Voigtlander NOKTON 40mm F1.2 Aspherical',     #JR (50996)
    '65535.73' => 'Voigtlander NOKTON classic 35mm F1.4',        #JR (50997)
-   '65535.74' => 'Zeiss Touit 12mm F2.8',           #JR (49201 or 0)
-   '65535.75' => 'Zeiss Touit 32mm F1.8',           #JR (49202 or 0)
-   '65535.76' => 'Zeiss Touit 50mm F2.8 Macro',     #JR (49203 or 0)
-   '65535.77' => 'Zeiss Batis 25mm F2',             #JR (49216)
-   '65535.78' => 'Zeiss Batis 85mm F1.8',           #JR (49217)
-   '65535.79' => 'Zeiss Batis 18mm F2.8',           #IB (49218)
-   '65535.80' => 'Zeiss Batis 135mm F2.8',          #IB (49219)
-   '65535.81' => 'Zeiss Batis 40mm F2 CF',          #JR (49220)
-   '65535.82' => 'Zeiss Loxia 50mm F2',             #JR (49232 or 0)
-   '65535.83' => 'Zeiss Loxia 35mm F2',             #JR (49233 or 0)
-   '65535.84' => 'Zeiss Loxia 21mm F2.8',           #JR (49234)
-   '65535.85' => 'Zeiss Loxia 85mm F2.4',           #JR (49235)
-   '65535.86' => 'Zeiss Loxia 25mm F2.4',           #JR (49236)
+   '65535.74' => 'Voigtlander COLOR-SKOPAR 21mm F3.5 Aspherical', #IB (50999)
+   '65535.75' => 'Zeiss Touit 12mm F2.8',           #JR (49201 or 0)
+   '65535.76' => 'Zeiss Touit 32mm F1.8',           #JR (49202 or 0)
+   '65535.77' => 'Zeiss Touit 50mm F2.8 Macro',     #JR (49203 or 0)
+   '65535.78' => 'Zeiss Batis 25mm F2',             #JR (49216)
+   '65535.79' => 'Zeiss Batis 85mm F1.8',           #JR (49217)
+   '65535.80' => 'Zeiss Batis 18mm F2.8',           #IB (49218)
+   '65535.81' => 'Zeiss Batis 135mm F2.8',          #IB (49219)
+   '65535.82' => 'Zeiss Batis 40mm F2 CF',          #JR (49220)
+   '65535.83' => 'Zeiss Loxia 50mm F2',             #JR (49232 or 0)
+   '65535.84' => 'Zeiss Loxia 35mm F2',             #JR (49233 or 0)
+   '65535.85' => 'Zeiss Loxia 21mm F2.8',           #JR (49234)
+   '65535.86' => 'Zeiss Loxia 85mm F2.4',           #JR (49235)
+   '65535.87' => 'Zeiss Loxia 25mm F2.4',           #JR (49236)
 #
 # other lenses
 #
-   '65535.87' => 'Arax MC 35mm F2.8 Tilt+Shift', #JD
-   '65535.88' => 'Arax MC 80mm F2.8 Tilt+Shift', #JD
-   '65535.89' => 'Zenitar MF 16mm F2.8 Fisheye M42', #JD
-   '65535.90' => 'Samyang 500mm Mirror F8.0', #19
-   '65535.91' => 'Pentacon Auto 135mm F2.8', #19
-   '65535.92' => 'Pentacon Auto 29mm F2.8', #19
-   '65535.93' => 'Helios 44-2 58mm F2.0', #19
+   '65535.88' => 'Arax MC 35mm F2.8 Tilt+Shift', #JD
+   '65535.89' => 'Arax MC 80mm F2.8 Tilt+Shift', #JD
+   '65535.90' => 'Zenitar MF 16mm F2.8 Fisheye M42', #JD
+   '65535.91' => 'Samyang 500mm Mirror F8.0', #19
+   '65535.92' => 'Pentacon Auto 135mm F2.8', #19
+   '65535.93' => 'Pentacon Auto 29mm F2.8', #19
+   '65535.94' => 'Helios 44-2 58mm F2.0', #19
 );
 
 %minoltaTeleconverters = (

@@ -17,6 +17,23 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v11.18'><b>Nov. 12, 2018 - Version 11.18</b></a>
+<ul>
+<li>Decode a new Nikon tag (thanks Richard Butler)
+<li>Decode a new FujiFilm tag
+<li>Updated decoding of Sony maker notes for newer models (thanks Jos Roost)
+<li>Enhanced -if option to allow fast processing pass to evaluate the condition
+<li>Improved warning for unknown JPEG APP segment
+</ul>
+
+<a name='v11.17'><b>Nov. 4, 2018 - Version 11.17</b></a>
+<ul>
+<li>Added a new Canon LensType (thanks Norbert Wasser)
+<li>Added a new Sony/Minolta LensType and a new SonyModelID (thanks LibRaw)
+<li>Decode GPS from Garmin Dashcam videos
+<li>Changed type of J2C files from a JPEG 2000 image to a JPEG 2000 codestream
+</ul>
+
 <a name='v11.16'><b>Oct. 26, 2018 - Version 11.16</b></a>
 <ul>
 <li>Decode FLIR GPS information
@@ -45,7 +62,7 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <li>Fixed potential problem reading GeoTiff tags with multiple SHORT values
 <li>API Changes:
     <ul>
-    <li>Added GeoSpeedRef option
+    <li>Added <a href="ExifTool.html#GeoSpeedRef">GeoSpeedRef option</a>
     </ul>
 </ul>
 
@@ -75,7 +92,7 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <li>Fixed DOF calculation to use ApproximateFocusDistance if available
 <li>API Changes:
     <ul>
-    <li>Enhanced StrictDate option to reformat PNG CreateTime according to PNG
+    <li>Enhanced <a href="ExifTool.html#StrictDate">StrictDate option</a> to reformat PNG CreateTime according to PNG
         specification
     </ul>
 </ul>

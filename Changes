@@ -7,6 +7,21 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 11.11. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Nov. 12, 2018 - Version 11.18
+
+  - Decode a new Nikon tag (thanks Richard Butler)
+  - Decode a new FujiFilm tag
+  - Updated decoding of Sony maker notes for newer models (thanks Jos Roost)
+  - Enhanced -if option to allow fast processing pass to evaluate the condition
+  - Improved warning for unknown JPEG APP segment
+
+Nov. 4, 2018 - Version 11.17
+
+  - Added a new Canon LensType (thanks Norbert Wasser)
+  - Added a new Sony/Minolta LensType and a new SonyModelID (thanks LibRaw)
+  - Decode GPS from Garmin Dashcam videos
+  - Changed type of J2C files from a JPEG 2000 image to a JPEG 2000 codestream
+
 Oct. 26, 2018 - Version 11.16
 
   - Decode FLIR GPS information

@@ -704,9 +704,10 @@ distribution for examples.</p>
     metadata item tags (see the "mdls" man page and the
     <a href="TagNames/MacOS.html#MDItem">MacOS MDItem Tags documentation</a> for more information).</td>
     <td align=center>0 or 1</td><td align=center>undef</td></tr>
-<tr id="MissingTagValue"><td>MissingTagValue</td><td>Value for missing tags interpolated
-    in tag name expressions. If not set, a minor error is issued for missing values,
-    or the value is set to '' if IgnoreMinorErrors is set.</td>
+<tr id="MissingTagValue"><td>MissingTagValue</td><td>Value for missing tags
+    interpolated in tag name expressions (or tags where the advanced formatting
+    expression returns undef). If not set, a minor error is issued for missing
+    values, or the value is set to '' if IgnoreMinorErrors is set.</td>
     <td align=center>Any string, or undef</td><td align=center>undef</td></tr>
 <tr id="NoPDFList"><td>NoPDFList</td><td>Flag to avoid splitting PDF list-type tag
     values into separate items.</td>
@@ -1071,7 +1072,8 @@ and Warning tags.</p>
 <a href="#WriteInfo">WriteInfo</a>:</p>
 <blockquote>
 ByteOrder, Charset, CharsetEXIF, CharsetFileName, CharsetIPTC, Compact,
-Compress, FixBase, IgnoreMinorErrors, Password, PNGEarlyXMP and Verbose.
+Compress, FixBase, IgnoreMinorErrors, Password, PNGEarlyXMP, Verbose and
+XMPShorthand.
 </blockquote>
 
 <hr><h2><a name="GetTagList">GetTagList</a></h2>
@@ -1210,8 +1212,8 @@ my @keywords = $exifTool-&gt;<b>GetValue</b>('Keywords', 'ValueConv');
 called:</p>
 <blockquote>
 Charset, CoordFormat, DateFormat, Escape, Filter, GlobalTimeShift, Lang,
-ListItem, ListJoin, PrintConv, QuickTimeUTC (conversion to local time) and
-StrictDate.
+ListItem, ListJoin, PrintConv, QuickTimeUTC (conversion to local time),
+StrictDate and TimeZone.
 </blockquote>
 
 <hr><h2><a name="SetNewValue">SetNewValue</a></h2>
@@ -1423,7 +1425,7 @@ group (with '<code>Adobe:*</code>') or as a block (with '<code>Adobe</code>').</
 <a href="#SetNewValue">SetNewValue</a>:</p>
 <blockquote>
 Charset, DateFormat, Escape, IgnoreMinorErrors, Lang, ListJoin, ListSplit,
-PrintConv, QuickTimeUTC, StrictDate, Verbose and WriteMode.
+PrintConv, QuickTimeUTC, StrictDate, TimeZone, Verbose and WriteMode.
 </blockquote>
 
 <hr><h2><a name="GetNewValue">GetNewValue</a><a name="GetNewValues"></a></h2>

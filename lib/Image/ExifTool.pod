@@ -772,9 +772,10 @@ L<Image::ExifTool::TagNames/MacOS MDItem Tags> for more information).
 
 =item MissingTagValue
 
-Value for missing tags in tag name expressions.  If not set, a minor error
-is issued for missing values, or the value is set to '' if
-L</IgnoreMinorErrors> is set.  Default is undef.
+Value for missing tags in tag name expressions (or tags where the advanced
+formatting expression returns undef).  If not set, a minor error is issued
+for missing values, or the value is set to '' if L</IgnoreMinorErrors> is
+set.  Default is undef.
 
 =item NoPDFList
 
@@ -1163,7 +1164,8 @@ called with a source file name.
 The following ExifTool options are effective in the call to L</WriteInfo>:
 
 ByteOrder, Charset, CharsetEXIF, CharsetFileName, CharsetIPTC, Compact,
-Compress, FixBase, IgnoreMinorErrors, Password, PNGEarlyXMP and Verbose.
+Compress, FixBase, IgnoreMinorErrors, Password, PNGEarlyXMP, Verbose and
+XMPShorthand.
 
 =head2 GetTagList
 
@@ -1290,8 +1292,8 @@ optional group specifier), use L</GetInfo> instead.
 The following options are in effect when L</GetValue> is called:
 
 Charset, CoordFormat, DateFormat, Escape, Filter, GlobalTimeShift, Lang,
-ListItem, ListJoin, PrintConv, QuickTimeUTC (conversion to local time), and
-StrictDate.
+ListItem, ListJoin, PrintConv, QuickTimeUTC (conversion to local time),
+StrictDate and TimeZone.
 
 =over 4
 
@@ -1546,7 +1548,7 @@ explicitly, either by group (with 'Adobe:*') or as a block (with 'Adobe').
 The following ExifTool options are effective in the call to L</SetNewValue>:
 
 Charset, DateFormat, Escape, IgnoreMinorErrors, Lang, ListJoin, ListSplit,
-PrintConv, QuickTimeUTC, StrictDate, Verbose and WriteMode.
+PrintConv, QuickTimeUTC, StrictDate, TimeZone, Verbose and WriteMode.
 
 =head2 GetNewValue
 

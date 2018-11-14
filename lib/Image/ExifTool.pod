@@ -623,8 +623,10 @@ disables input buffering for some types of files to reduce memory usage when
 reading from a non-seekable stream.  When combined with the ScanForXMP
 option, prevents scanning for XMP in recognized file types.  With a value of
 2, ExifTool will also avoid extracting any EXIF MakerNote information.  When
-set to 3, the file is not actually parsed, and only an initial guess at
-FileType and some pseudo tags are returned.  Default is undef.
+set to 3, the file is not actually parsed to extract metadata, and the file
+header is read only to provide an educated guess at FileType.  When set to
+4, the file is not read at all, and FileType is determined based on the
+file's extension.  Default is undef.
 
 =item Filter
 

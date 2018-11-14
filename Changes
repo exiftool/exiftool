@@ -7,6 +7,14 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 11.11. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Nov. 14, 2018 - Version 11.19
+
+  - Added -fast4 option
+  - Enhanced -if option to allow arbitrary Perl expressions instead of just
+    logic expressions
+  - API Changes:
+      - Enhanced FastScan option to add a setting of 4
+
 Nov. 12, 2018 - Version 11.18
 
   - Decode a new Nikon tag (thanks Richard Butler)

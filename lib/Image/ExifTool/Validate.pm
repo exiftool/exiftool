@@ -17,7 +17,7 @@ package Image::ExifTool::Validate;
 use strict;
 use vars qw($VERSION %exifSpec);
 
-$VERSION = '1.13';
+$VERSION = '1.14';
 
 use Image::ExifTool qw(:Utils);
 use Image::ExifTool::Exif;
@@ -508,7 +508,7 @@ sub FinishValidate($$)
 {
     my ($et, $mkTag) = @_;
 
-    my $fileType = $$et{FILE_TYPE};
+    my $fileType = $$et{FILE_TYPE} || '';
     $fileType = $$et{TIFF_TYPE} if $fileType eq 'TIFF';
 
     if ($validValue{$fileType}) {
@@ -578,6 +578,9 @@ sub FinishValidate($$)
             }
         }
     }
+    # issue warning if FastScan option used
+    $et->Warn('Validation incomplete because FastScan option used') if $et->Options('FastScan');
+
     # generate Validate tag if necessary
     if ($mkTag) {
         my (@num, $key);

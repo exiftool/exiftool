@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup);
 
-$VERSION = '11.18';
+$VERSION = '11.19';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -2248,7 +2248,7 @@ sub ExtractInfo($;@)
         }
     }
 
-    if ($raf) {
+    while ($raf) {
         my (@stat, $fileSize);
         if ($reEntry) {
             # we already set these tags
@@ -2321,6 +2321,15 @@ sub ExtractInfo($;@)
         $recognizedExt = $ext if defined $ext and not defined $magicNumber{$ext} and
                                  defined $moduleName{$ext} and not $moduleName{$ext};
         my @fileTypeList = GetFileType($realname);
+        if ($fast and $fast >= 4) {
+            if (@fileTypeList) {
+                $type = shift @fileTypeList;
+                $self->SetFileType($$self{FILE_TYPE} = $type);
+            } else {
+                $self->Error('Unknown file type');
+            }
+            last;   # don't read the file
+        }
         if (@fileTypeList) {
             # add remaining types to end of list so we test them all
             my $pat = join '|', @fileTypeList;
@@ -2513,6 +2522,7 @@ sub ExtractInfo($;@)
                 }
             }
         }
+        last;   # (loop was a cheap "goto")
     }
 
     # generate Validate tag if requested

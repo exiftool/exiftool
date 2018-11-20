@@ -8548,7 +8548,7 @@ my %filterConv = (
 # Canon CNOP atoms (ref PH)
 %Image::ExifTool::Canon::CNOP = (
     GROUPS => { 0 => 'MakerNotes', 1 => 'Canon', 2 => 'Video' },
-    # CNFB - 52 bytes (7DmkII,M50)
+    # CNFB - 52 bytes (7DmkII,M50,C200)
     # CNMI - 4 bytes: "0x20000001" (C200)
     # CNCM - 48 bytes: original file name in bytes 24-31 (C200)
 );

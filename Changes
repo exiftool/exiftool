@@ -7,6 +7,13 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 11.11. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Nov. 20, 2018 - Version 11.20
+
+  - Added a new Panasonic WhiteBalance value
+  - Added a new Nikon LensID (thanks LibRaw)
+  - Decode streaming GPS from MOV videos for another dashcam model
+  - Improved -E option to support character sets other than UTF-8
+
 Nov. 14, 2018 - Version 11.19
 
   - Added -fast4 option

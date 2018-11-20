@@ -20,7 +20,7 @@ use Image::ExifTool::PostScript;
 use Image::ExifTool::XMP qw(EscapeXML UnescapeXML);
 require Exporter;
 
-$VERSION = '1.15';
+$VERSION = '1.16';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeHTML UnescapeHTML);
 
@@ -363,11 +363,11 @@ sub EscapeChar($)
 
 #------------------------------------------------------------------------------
 # Escape any special characters for HTML
-# Inputs: 0) UTF-8 string to be escaped
+# Inputs: 0) string to be escaped, 1) optional string encoding (default 'UTF8')
 # Returns: escaped string
-sub EscapeHTML($)
+sub EscapeHTML($;$)
 {
-    my $str = shift;
+    my ($str, $enc) = @_;
     # escape XML characters
     $str = EscapeXML($str);
     # escape other special characters if they exist
@@ -382,19 +382,26 @@ sub EscapeHTML($)
         }
         # suppress warnings
         local $SIG{'__WARN__'} = sub { 1 };
-        # escape any non-ascii characters for HTML
-        $str =~ s/([\xc2-\xf7][\x80-\xbf]+)/EscapeChar($1)/sge;
+        if ($enc and $enc ne 'UTF8') {
+            $str = Image::ExifTool::Decode(undef, $str, $enc, undef, 'UTF8');
+            $str =~ s/([\xc2-\xf7][\x80-\xbf]+)/EscapeChar($1)/sge;
+            $str = Image::ExifTool::Decode(undef, $str, 'UTF8', undef, $enc);
+        } else {
+            # escape any non-ascii characters for HTML
+            $str =~ s/([\xc2-\xf7][\x80-\xbf]+)/EscapeChar($1)/sge;
+        }
     }
     return $str;
 }
 
 #------------------------------------------------------------------------------
 # Unescape all HTML character references
-# Inputs: 0) string to be unescaped
+# Inputs: 0) string to be unescaped, 1) optional string encoding (default 'UTF8')
 # Returns: unescaped string
-sub UnescapeHTML($)
+sub UnescapeHTML($;$)
 {
-    return UnescapeXML(shift, \%entityNum);
+    my ($str, $enc) = @_;
+    return UnescapeXML($str, \%entityNum, $enc);
 }
 
 #------------------------------------------------------------------------------

@@ -12,7 +12,7 @@
 use strict;
 require 5.004;
 
-my $version = '11.19';
+my $version = '11.20';
 
 # add our 'lib' directory to the include list BEFORE 'use Image::ExifTool'
 my $exeDir;
@@ -107,6 +107,7 @@ my %utf8FileName;   # lookup for file names that are UTF-8 encoded
 my %warnedOnce;     # lookup for once-only warnings
 my %wext;           # -W extensions to write
 my $allGroup;       # show group name for all tags
+my $altEnc;         # alternate character encoding if not UTF-8
 my $argFormat;      # use exiftool argument-format output
 my $binaryOutput;   # flag for binary output (undef or 1, or 0 for binary XML/PHP)
 my $binaryStdout;   # flag set if we output binary to stdout
@@ -186,7 +187,6 @@ my $textOut;        # extension for text output file (or undef for no output)
 my $textOverwrite;  # flag to overwrite existing text output file (2=append, 3=over+append)
 my $tmpFile;        # temporary file to delete on exit
 my $tmpText;        # temporary text file
-my $utf8;           # flag set if we are using UTF-8 encoding
 my $validFile;      # flag indicating we processed a valid file
 my $verbose;        # verbose setting
 my $vout;           # verbose output file reference (\*STDOUT or \*STDERR)
@@ -232,7 +232,7 @@ my %optArgs = (
     '-geotag' => 1,
     '-globaltimeshift' => 1,
     '-i' => 1, '-ignore' => 1,
-    '-if' => 1,
+    '-if' => 1, '-if0' => 1, '-if1' => 1, '-if2' => 1, '-if3' => 1, '-if4' => 1,
     '-lang' => 0, # (optional arg; cannot begin with "-")
     '-listitem' => 1,
     '-o' => 1, '-out' => 1,
@@ -429,6 +429,7 @@ undef %utf8FileName;
 undef %warnedOnce;
 undef %wext;
 undef $allGroup;
+undef $altEnc;
 undef $argFormat;
 undef $binaryOutput;
 undef $binSep;
@@ -502,7 +503,6 @@ $saveCount = 0;
 $sectTrailer = '';
 $seqFileNum = 0;
 $tabFormat = 0;
-$utf8 = 1;
 $vout = \*STDOUT;
 $xml = 0;
 
@@ -781,7 +781,6 @@ for (;;) {
             $helped = 1;
         } elsif ($charset !~ s/^(\w+)=// or lc($1) eq 'exiftool') {
             $mt->Options(Charset => $charset);
-            $utf8 = ($mt->Options('Charset') eq 'UTF8');
         } else {
             # set internal encoding of specified metadata type
             my $type = { id3 => 'ID3', iptc => 'IPTC', exif => 'EXIF', filename => 'FileName',
@@ -980,7 +979,7 @@ for (;;) {
     }
     /^(k|pause)$/i and $pause = 1, next;
     (/^l$/ or $a eq 'long') and --$outFormat, next;
-    (/^L$/ or $a eq 'latin') and $utf8 = 0, $mt->Options(Charset => 'Latin'), next;
+    (/^L$/ or $a eq 'latin') and $mt->Options(Charset => 'Latin'), next;
     if ($a eq 'lang') {
         $langOpt = (@ARGV and $ARGV[0] !~ /^(-|\xe2\x88\x92)/) ? shift : undef;
         if ($langOpt) {
@@ -994,8 +993,8 @@ for (;;) {
         my $langs = "Available languages:\n";
         $langs .= "  $_ - $Image::ExifTool::langName{$_}\n" foreach @Image::ExifTool::langs;
         $langs =~ tr/_/-/;  # display dashes instead of underlines in language codes
-        $langs = $mt->Decode($langs, 'UTF8');
         $langs = Image::ExifTool::HTML::EscapeHTML($langs) if $escapeHTML;
+        $langs = $mt->Decode($langs, 'UTF8');
         $langOpt and Error("Invalid or unsupported language '${langOpt}'.\n$langs"), $badCmd=1, next;
         print $langs;
         $helped = 1;
@@ -1350,7 +1349,7 @@ if ($csv and $csv eq 'CSV' and not $isWriting and ($textOut or $binaryOutput)) {
 
 if ($escapeHTML or $json) {
     # must be UTF8 for HTML conversion and JSON output
-    $mt->Options(Charset => 'UTF8');
+    $mt->Options(Charset => 'UTF8') if $json;
     # use Escape option to do our HTML escaping unless XML output
     $mt->Options(Escape => 'HTML') if $escapeHTML and not $xml;
 } elsif ($escapeXML and not $xml) {
@@ -1630,8 +1629,12 @@ if ($outOpt) {
     $scanWritable = 1;
 }
 
+# initialize alternate encoding flag
+$altEnc = $mt->Options('Charset');
+undef $altEnc if $altEnc eq 'UTF8';
+
 # set flag to fix description lengths if necessary
-if ($utf8 and $mt->Options('Lang') ne 'en' and eval { require Encode }) {
+if (not $altEnc and $mt->Options('Lang') ne 'en' and eval { require Encode }) {
     # (note that Unicode::GCString is part of the Unicode::LineBreak package)
     $fixLen = eval { require Unicode::GCString } ? 2 : 1;
 }
@@ -2293,8 +2296,8 @@ TAG:    foreach $tag (@foundTags) {
                     }
                     if ($escapeHTML) {
                         $val =~ tr/\0-\x08\x0b\x0c\x0e-\x1f/./;
-                        Image::ExifTool::XMP::FixUTF8(\$val) if $utf8;
-                        $val = Image::ExifTool::HTML::EscapeHTML($val);
+                        Image::ExifTool::XMP::FixUTF8(\$val) unless $altEnc;
+                        $val = Image::ExifTool::HTML::EscapeHTML($val, $altEnc);
                     } else {
                         CleanXML(\$val);
                     }
@@ -3003,7 +3006,7 @@ sub CleanXML($)
     # translate control characters that are invalid in XML
     $$strPt =~ tr/\0-\x08\x0b\x0c\x0e-\x1f/./;
     # fix malformed UTF-8 characters
-    Image::ExifTool::XMP::FixUTF8($strPt) if $utf8;
+    Image::ExifTool::XMP::FixUTF8($strPt) unless $altEnc;
     # escape necessary characters for XML
     $$strPt = Image::ExifTool::XMP::EscapeXML($$strPt);
 }
@@ -3016,13 +3019,13 @@ sub EncodeXML($)
 {
     my $strPt = shift;
     if ($$strPt =~ /[\0-\x08\x0b\x0c\x0e-\x1f]/ or
-        ($utf8 and Image::ExifTool::XMP::IsUTF8($strPt) < 0))
+        (not $altEnc and Image::ExifTool::XMP::IsUTF8($strPt) < 0))
     {
         # encode binary data and non-UTF8 with special characters as base64
         $$strPt = Image::ExifTool::XMP::EncodeBase64($$strPt);
         return 'http://www.w3.org/2001/XMLSchema#base64Binary'; #ATV
     } elsif ($escapeHTML) {
-        $$strPt = Image::ExifTool::HTML::EscapeHTML($$strPt);
+        $$strPt = Image::ExifTool::HTML::EscapeHTML($$strPt, $altEnc);
     } else {
         $$strPt = Image::ExifTool::XMP::EscapeXML($$strPt);
     }
@@ -3088,7 +3091,7 @@ sub EscapeJSON($;$)
         # escape other control characters with \u
         $str =~ s/([\0-\x1f])/sprintf("\\u%.4X",ord $1)/sge;
         # JSON strings must be valid UTF8
-        Image::ExifTool::XMP::FixUTF8(\$str) if $utf8;
+        Image::ExifTool::XMP::FixUTF8(\$str) unless $altEnc;
     } else { # PHP
         # must escape "$" too for PHP
         $str =~ s/\$/\\\$/sg;
@@ -5043,7 +5046,7 @@ OPTIONS
 
          produces output like this:
 
-             -- Generated by ExifTool 11.19 --
+             -- Generated by ExifTool 11.20 --
              File: a.jpg - 2003:10:31 15:44:19
              (f/5.6, 1/60s, ISO 100)
              File: b.jpg - 2006:05:23 11:57:38

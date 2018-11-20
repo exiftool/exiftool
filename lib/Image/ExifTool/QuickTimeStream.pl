@@ -1339,7 +1339,7 @@ sub ScanMovieData($)
         # look for "freeGPS " block
         # (always found on an absolute 0x8000-byte boundary in all of
         #  my samples, but allow for any alignment when searching)
-        if ($buff !~ /\0\0\x80\0freeGPS /g) {
+        if ($buff !~ /\0..\0freeGPS /sg) { # (seen ".." = "\0\x80","\x01\0")
             $buf2 = substr($buff,-12);
             $pos += length($buff)-12;
             # in all of my samples the first freeGPS block is within 2 MB of the start
@@ -1359,8 +1359,9 @@ sub ScanMovieData($)
             $pos += pos($buff) - 12;
             $buff = substr($buff, pos($buff) - 12);
         }
-        # make sure we have the full 0x8000-byte freeGPS record
-        my $more = $gpsBlockSize - length($buff);
+        # make sure we have the full freeGPS record
+        my $len = unpack('N', $buff);
+        my $more = $len - length($buff);
         if ($more > 0) {
             last unless $raf->Read($buf2, $more) == $more;
             $buff .= $buf2;

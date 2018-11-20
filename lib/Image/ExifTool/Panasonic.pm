@@ -35,7 +35,7 @@ use vars qw($VERSION %leicaLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.03';
+$VERSION = '2.04';
 
 sub ProcessLeicaLEIC($$$);
 sub WhiteBalanceConv($;$$);
@@ -312,6 +312,7 @@ my %shootingMode = (
             14 => 'Manual 3', #forum9296
             15 => 'Manual 4', #forum9296
             # also seen 18,26 (forum9296)
+            19 => 'Auto (cool)', #PH (Leica C-Lux)
         },
     },
     0x07 => {
@@ -645,7 +646,7 @@ my %shootingMode = (
             2 => '10 s',
             3 => '2 s',
             4 => '10 s / 3 pictures', #17
-            # 258 - seen for FZ2500,TZ90 (PH)
+            # 258 - seen for FZ2500,TZ90,LeicaCLux (PH)
         },
     },
     # 0x2f - values: 1 (LZ6,FX10K)

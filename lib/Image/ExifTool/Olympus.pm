@@ -39,7 +39,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::APP12;
 
-$VERSION = '2.54';
+$VERSION = '2.55';
 
 sub PrintLensInfo($$$);
 
@@ -1697,6 +1697,7 @@ my %indexInfo = (
             7 => 'FL-36R', #11
             9 => 'FL-14', #11
             11 => 'FL-600R', #11
+            15 => 'FL-900R', #7
         },
     },
     0x1002 => { #6

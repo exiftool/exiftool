@@ -7,6 +7,17 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 11.11. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Dec. 7, 2018 - Version 11.21
+
+  - Added a new Sony/Minolta LensType (thanks Jos Roost)
+  - Added a new Olympus FlashModel (thanks Michael Meissner)
+  - Improved decoding of FujiFilm InternalSerialNumber (thanks LibRaw)
+  - Minor improvements to decoding of GPS from some dashcam videos
+  - Made XMP-getty:Personality a List-type tag
+  - Made it an error to use the -o option or write FileName or Directory tags
+    when using the TestName dry-run feature
+  - Fixed problem using -E with other character sets when writing
+
 Nov. 20, 2018 - Version 11.20
 
   - Added a new Panasonic WhiteBalance value

@@ -49,7 +49,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.18';
+$VERSION = '3.19';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -2394,11 +2394,7 @@ sub UnescapeChar($$;$)
         }
     }
     return chr($val) if $val < 0x80;   # simple ASCII
-    if ($] >= 5.006001) {
-        $val = return pack('C0U', $val);
-    } else {
-        $val = Image::ExifTool::PackUTF8($val);
-    }
+    $val = $] >= 5.006001 ? pack('C0U', $val) : Image::ExifTool::PackUTF8($val);
     $val = Image::ExifTool::Decode(undef, $val, 'UTF8', undef, $enc) if $enc and $enc ne 'UTF8';
     return $val;
 }

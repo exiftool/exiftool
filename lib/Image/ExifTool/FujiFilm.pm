@@ -30,7 +30,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.65';
+$VERSION = '1.66';
 
 sub ProcessFujiDir($$$);
 sub ProcessFaceRec($$$);
@@ -83,22 +83,34 @@ my %faceCategories = (
         Name => 'Version',
         Writable => 'undef',
     },
-    0x0010 => { #PH (how does this compare to actual serial number?)
+    0x0010 => { #PH/IB
         Name => 'InternalSerialNumber',
         Writable => 'string',
         Notes => q{
-            this number is unique, and contains the date of manufacture, but doesn't
-            necessarily correspond to the camera body number -- this needs to be checked
+            this number is unique for most models, and contains the camera model ID and
+            the date of manufacture
         },
         # eg)  "FPX20017035 592D31313034060427796060110384"
         # "FPX 20495643     592D313335310701318AD010110047" (F40fd)
-        #                               yymmdd
+        #                   HHHHHHHHHHHHyymmdd
+        #   HHHHHHHHHHHH = camera body number in hex
+        #   yymmdd       = date of manufacture
         PrintConv => q{
-            return $val unless $val=~/^(.*)(\d{2})(\d{2})(\d{2})(.{12})$/;
-            my $yr = $2 + ($2 < 70 ? 2000 : 1900);
-            return "$1 $yr:$3:$4 $5";
+            if ($val =~ /^(.*?\s*)([0-9a-fA-F]*)(\d{2})(\d{2})(\d{2})(.{12})\s*\0*$/s
+                and $4 >= 1 and $4 <= 12 and $5 >= 1 and $5 <= 31)
+            {
+                my $yr = $3 + ($3 < 70 ? 2000 : 1900);
+                my $sn = pack 'H*', $2;
+                return "$1$sn $yr:$4:$5 $6";
+            } else {
+                # handle a couple of models which use a slightly different format
+                $val =~ s/\b(592D(3[0-9])+)/pack("H*",$1).' '/e;
+            }
+            return $val;
         },
-        PrintConvInv => '$_=$val; s/ (19|20)(\d{2}):(\d{2}):(\d{2}) /$2$3$4/; $_',
+        # (this inverse conversion doesn't work in all cases, so it is best to write
+        #  the ValueConv value if an authentic internal serial number is required)
+        PrintConvInv => '$_=$val; s/(\S+) (19|20)(\d{2}):(\d{2}):(\d{2}) /unpack("H*",$1)."$3$4$5"/e; $_',
     },
     0x1000 => {
         Name => 'Quality',

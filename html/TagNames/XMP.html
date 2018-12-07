@@ -53,12 +53,13 @@ to preserve other existing languages (eg. &quot;XMP-dc:Description-x-default&quo
 When reading, &quot;x-default&quot; is not specified.</p>
 
 <p>The XMP tags are organized according to schema <b>Namespace</b> in the following
-tables.  In general, the ExifTool family 1 group names are derived from the
-namespace prefixes by adding a leading &quot;XMP-&quot; (eg. &quot;XMP-dc&quot;), but a few of
-the longer prefixes have been shortened for convenience (as mentioned in the
-documentation below).  The tags of any namespace may be deleted as a group
-by specifying the family 1 group name (eg. &quot;-XMP-dc:all=&quot; on the command
-line).  This includes namespaces which are not pre-defined by ExifTool.</p>
+tables.  The ExifTool family 1 group names are derived from the namespace
+prefixes by adding a leading &quot;XMP-&quot; (eg. &quot;XMP-dc&quot;).  A few of the longer
+prefixes have been shortened (as mentioned in the documentation below) to
+avoid excessively long ExifTool group names.  The tags of any namespace may
+be deleted as a group by specifying the family 1 group name (eg.
+&quot;-XMP-dc:all=&quot; on the command line).  This includes namespaces which are not
+pre-defined by ExifTool.</p>
 
 <p>In cases where a tag name exists in more than one namespace, less common
 namespaces are avoided when writing.  However, a specific namespace may be
@@ -3941,7 +3942,7 @@ group name.</p>
 <td>&nbsp;</td></tr>
 <tr>
 <td>Personality</td>
-<td class=c>string</td>
+<td class=c title=' + = List'>string+</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>PrimaryFTP</td>
@@ -10542,7 +10543,7 @@ XMP module for convenience.  (see <a href="http://www.w3.org/TR/SVG11/">http://w
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Oct 26, 2018</i>
+<br><i>Last revised Dec 7, 2018</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

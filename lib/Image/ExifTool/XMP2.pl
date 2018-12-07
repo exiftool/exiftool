@@ -1709,7 +1709,7 @@ my %sSubVersion = (
         prefix recorded in the file, but ExifTool shortens this for the family 1
         group name.
     },
-    Personality         => { },
+    Personality         => { List => 'Bag' },
     OriginalFilename    => { Name => 'OriginalFileName' },
     ParentMEID          => { },
     # the following from StarGeek

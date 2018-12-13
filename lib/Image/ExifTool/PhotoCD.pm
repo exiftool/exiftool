@@ -13,9 +13,8 @@ package Image::ExifTool::PhotoCD;
 use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
-use Image::ExifTool::Exif;  # (for Composite:ImageSize)
 
-$VERSION = '1.02';
+$VERSION = '1.03';
 
 sub ProcessExtData($$$);
 

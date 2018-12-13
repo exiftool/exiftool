@@ -880,6 +880,7 @@ official EXIF 2.31 specification.
   0xc7a8   RawToPreviewGain          IFD0       double!
   0xc7aa   CacheVersion              SubIFD2    int32u!
   0xc7b5   DefaultUserCrop           SubIFD     rational64u[4]!
+  0xc7d5   NikonNEFInfo              -          Nikon NEFInfo
   0xea1c   Padding                   ExifIFD    undef!
   0xea1d   OffsetSchema              ExifIFD    int32s!
   0xfde8   OwnerName                 ExifIFD    string/
@@ -10823,6 +10824,9 @@ DiMAGE X and Xt.
            LensData0201                         Nikon LensData01
            LensData0204                         Nikon LensData0204
            LensData0400                         Nikon LensData0400
+           LensData0402                         Nikon LensData0402
+           LensData0403                         Nikon LensData0403
+           LensData0800                         Nikon LensData0800
            LensDataUnknown                      Nikon LensDataUnknown
   0x0099   RawImageCenter                       int16u[2]
   0x009a   SensorPixelSize                      rational64u[2]
@@ -11496,12 +11500,54 @@ extracted.
 
 =head3 Nikon LensData0400 Tags
 
-Tags extracted from the encrypted lens data of Nikon 1 models.
+Tags extracted from the encrypted lens data of the Nikon 1J1/1V1/1J2.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
       0    LensDataVersion                      no
     394    LensModel                            string[64]
+
+=head3 Nikon LensData0402 Tags
+
+Tags extracted from the encrypted lens data of the Nikon 1J3/1S1/1V2.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    LensDataVersion                      no
+    395    LensModel                            string[64]
+
+=head3 Nikon LensData0403 Tags
+
+Tags extracted from the encrypted lens data of the Nikon 1J4/1J5.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    LensDataVersion                      no
+    684    LensModel                            string[64]
+
+=head3 Nikon LensData0800 Tags
+
+Tags found in the encrypted LensData from cameras such as the Z6 and Z7.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    LensDataVersion                      no
+      4    ExitPupilPosition                    int8u
+      5    AFAperture                           int8u
+      9    FocusPosition                        int8u
+     11    FocusDistance                        int8u
+     12    FocalLength                          int8u
+     13    LensIDNumber                         int8u
+     14    LensFStops                           int8u
+     15    MinFocalLength                       int8u
+     16    MaxFocalLength                       int8u
+     17    MaxApertureAtMinFocal                int8u
+     18    MaxApertureAtMaxFocal                int8u
+     19    MCUVersion                           int8u
+     20    EffectiveMaxAperture                 int8u
+     54    MaxAperture                          int16u
+     56    FNumber                              int16u
+     60    FocalLength                          int16u
 
 =head3 Nikon LensDataUnknown Tags
 
@@ -11796,6 +11842,15 @@ This information is written by the Nikon Scan software.
   0x000a   DigitalZoom                          yes
   0x000b   Converter                            yes
 
+=head3 Nikon NEFInfo Tags
+
+As-yet unknown information found in SubIFD1 tag 0xc7d5 of NEF images from
+cameras such as the Z6 and Z7, and NRW images from some Coolpix cameras.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  [no tags known]
+
 =head3 Nikon NCDT Tags
 
 Nikon-specific QuickTime tags found in the NCDT atom of MOV videos from
@@ -11887,6 +11942,9 @@ videos from some Nikon cameras.
                LensData0201                     Nikon LensData01
                LensData0204                     Nikon LensData0204
                LensData0400                     Nikon LensData0400
+               LensData0402                     Nikon LensData0402
+               LensData0403                     Nikon LensData0403
+               LensData0800                     Nikon LensData0800
                LensDataUnknown                  Nikon LensDataUnknown
   0x20000a7    ShutterCount                     no
   0x20000a8    FlashInfo0100                    Nikon FlashInfo0100
@@ -22468,6 +22526,28 @@ decode any tags found in the image.
   'signature'          Signature                no
   'units'              Units                    no
   'white-point'        WhitePoint               no
+
+=head2 PCX Tags
+
+Tags extracted from PC Paintbrush images.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    Manufacturer                         no
+      1    Software                             no
+      2    Encoding                             no
+      3    BitsPerPixel                         no
+      4    LeftMargin                           no
+      6    TopMargin                            no
+      8    ImageWidth                           no
+     10    ImageHeight                          no
+     12    XResolution                          no
+     14    YResolution                          no
+     65    ColorPlanes                          no
+     66    BytesPerLine                         no
+     68    ColorMode                            no
+     70    ScreenWidth                          no
+     72    ScreenHeight                         no
 
 =head2 PGF Tags
 

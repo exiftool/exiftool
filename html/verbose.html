@@ -14,7 +14,7 @@ pre { padding: 0; margin: 0px 2px }
 <h2 class='up'>ExifTool Verbose Option</h2>
 
 <p>With the Verbose option enabled, ExifTool prints a verbose log to the console as
-it extracts the meta information from a file.</p>
+it extracts the meta information from a file, or writes information to a file.</p>
 
 <p>The -v option of the exiftool application allows control of the Verbose
 setting.  A number between 0 and 5 may be specified with the -v option to set a
@@ -28,7 +28,8 @@ exiftool -v -v -v t/images/Canon.jpg
 exiftool -v3 t/images/Canon.jpg
 </pre></td></tr></table></blockquote>
 
-<p>Below are example outputs for different Verbose settings.</p>
+<p>Below are example outputs for different Verbose settings when extracting
+information.</p>
 
 <h3>Verbose = 1</h3>
 <p>Prints tag names and extracted values.  These are the raw values straight

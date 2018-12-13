@@ -32,7 +32,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.96';
+$VERSION = '2.97';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -162,6 +162,7 @@ my %sonyLensTypes2 = (
     50499 => 'Sigma 85mm F1.4 DG HSM | A', #JR (018)
     50501 => 'Sigma 100-400mm F5-6.3 DG OS HSM | C + MC-11', #JR (017)
     50503 => 'Sigma 16mm F1.4 DC DN | C', #JR (017)
+    50507 => 'Sigma 105mm F1.4 DG HSM | A', #IB (018)
     50508 => 'Sigma 56mm F1.4 DC DN | C', #JR (018)
     50513 => 'Sigma 70mm F2.8 DG MACRO | A', #JR (018)
 
@@ -171,6 +172,7 @@ my %sonyLensTypes2 = (
     50995 => 'Voigtlander MACRO APO-LANTHAR 65mm F2 Aspherical', #JR
     50996 => 'Voigtlander NOKTON 40mm F1.2 Aspherical', #JR
     50997 => 'Voigtlander NOKTON classic 35mm F1.4', #JR
+    50998 => 'Voigtlander MACRO APO-LANTHAR 110mm F2.5', #JR
     50999 => 'Voigtlander COLOR-SKOPAR 21mm F3.5 Aspherical', #IB
 
     # lenses listed in the Sigma MC-11 list, but not yet seen:

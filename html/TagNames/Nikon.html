@@ -489,13 +489,19 @@ causes the other information to be re-encrypted with the new key)</span></span><
   <br>LensData0201
   <br>LensData0204
   <br>LensData0400
+  <br>LensData0402
+  <br>LensData0403
+  <br>LensData0800
   <br>LensDataUnknown</td>
-<td class=c>-<br>-<br>-<br>-<br>-<br>-</td>
+<td class=c>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-</td>
 <td>--&gt; <a href='Nikon.html#LensData00'>Nikon LensData00 Tags</a>
   <br>--&gt; <a href='Nikon.html#LensData01'>Nikon LensData01 Tags</a>
   <br>--&gt; <a href='Nikon.html#LensData01'>Nikon LensData01 Tags</a>
   <br>--&gt; <a href='Nikon.html#LensData0204'>Nikon LensData0204 Tags</a>
   <br>--&gt; <a href='Nikon.html#LensData0400'>Nikon LensData0400 Tags</a>
+  <br>--&gt; <a href='Nikon.html#LensData0402'>Nikon LensData0402 Tags</a>
+  <br>--&gt; <a href='Nikon.html#LensData0403'>Nikon LensData0403 Tags</a>
+  <br>--&gt; <a href='Nikon.html#LensData0800'>Nikon LensData0800 Tags</a>
   <br>--&gt; <a href='Nikon.html#LensDataUnknown'>Nikon LensDataUnknown Tags</a></td></tr>
 <tr>
 <td title='0x0099 = 153'>0x0099</td>
@@ -3661,7 +3667,7 @@ extracted.</p>
 </table></td></tr></table></blockquote>
 
 <h2><a name='LensData0400'>Nikon LensData0400 Tags</a></h2>
-<p>Tags extracted from the encrypted lens data of Nikon 1 models.</p>
+<p>Tags extracted from the encrypted lens data of the Nikon 1J1/1V1/1J2.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -3676,6 +3682,138 @@ extracted.</p>
 <td class=r title='394 = 0x18a'>394</td>
 <td>LensModel</td>
 <td class=c>string[64]</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='LensData0402'>Nikon LensData0402 Tags</a></h2>
+<p>Tags extracted from the encrypted lens data of the Nikon 1J3/1S1/1V2.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>LensDataVersion</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='395 = 0x18b'>395</td>
+<td>LensModel</td>
+<td class=c>string[64]</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='LensData0403'>Nikon LensData0403 Tags</a></h2>
+<p>Tags extracted from the encrypted lens data of the Nikon 1J4/1J5.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>LensDataVersion</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='684 = 0x2ac'>684</td>
+<td>LensModel</td>
+<td class=c>string[64]</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='LensData0800'>Nikon LensData0800 Tags</a></h2>
+<p>Tags found in the encrypted LensData from cameras such as the Z6 and Z7.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>LensDataVersion</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='4 = 0x4'>4</td>
+<td>ExitPupilPosition</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='5 = 0x5'>5</td>
+<td>AFAperture</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='9 = 0x9'>9</td>
+<td>FocusPosition</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='11 = 0xb'>11</td>
+<td>FocusDistance</td>
+<td class=c>int8u</td>
+<td><span class=s><span class=n>(this focus distance is approximate, and not very accurate for some lenses)</span></span></td></tr>
+<tr class=b>
+<td class=r title='12 = 0xc'>12</td>
+<td>FocalLength</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='13 = 0xd'>13</td>
+<td>LensIDNumber</td>
+<td class=c>int8u</td>
+<td><span class=s><span class=n>(see LensID values below)</span></span></td></tr>
+<tr class=b>
+<td class=r title='14 = 0xe'>14</td>
+<td>LensFStops</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='15 = 0xf'>15</td>
+<td>MinFocalLength</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='16 = 0x10'>16</td>
+<td>MaxFocalLength</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='17 = 0x11'>17</td>
+<td>MaxApertureAtMinFocal</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='18 = 0x12'>18</td>
+<td>MaxApertureAtMaxFocal</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='19 = 0x13'>19</td>
+<td>MCUVersion</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='20 = 0x14'>20</td>
+<td>EffectiveMaxAperture</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='54 = 0x36'>54</td>
+<td>MaxAperture</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='56 = 0x38'>56</td>
+<td>FNumber</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='60 = 0x3c'>60</td>
+<td>FocalLength</td>
+<td class=c>int16u</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -5453,6 +5591,17 @@ point is E9)</span></span></td></tr>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='NEFInfo'>Nikon NEFInfo Tags</a></h2>
+<p>As-yet unknown information found in SubIFD1 tag 0xc7d5 of NEF images from
+cameras such as the Z6 and Z7, and NRW images from some Coolpix cameras.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr><td colspan=4 class=c><i>[no tags known]</i></td></tr>
+</table></td></tr></table></blockquote>
+
 <h2><a name='NCDT'>Nikon NCDT Tags</a></h2>
 <p>Nikon-specific QuickTime tags found in the NCDT atom of MOV videos from
 various Nikon models.</p>
@@ -5868,13 +6017,19 @@ videos from some Nikon cameras.</p>
   <br>LensData0201
   <br>LensData0204
   <br>LensData0400
+  <br>LensData0402
+  <br>LensData0403
+  <br>LensData0800
   <br>LensDataUnknown</td>
-<td class=c>-<br>-<br>-<br>-<br>-<br>-</td>
+<td class=c>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-</td>
 <td>--&gt; <a href='Nikon.html#LensData00'>Nikon LensData00 Tags</a>
   <br>--&gt; <a href='Nikon.html#LensData01'>Nikon LensData01 Tags</a>
   <br>--&gt; <a href='Nikon.html#LensData01'>Nikon LensData01 Tags</a>
   <br>--&gt; <a href='Nikon.html#LensData0204'>Nikon LensData0204 Tags</a>
   <br>--&gt; <a href='Nikon.html#LensData0400'>Nikon LensData0400 Tags</a>
+  <br>--&gt; <a href='Nikon.html#LensData0402'>Nikon LensData0402 Tags</a>
+  <br>--&gt; <a href='Nikon.html#LensData0403'>Nikon LensData0403 Tags</a>
+  <br>--&gt; <a href='Nikon.html#LensData0800'>Nikon LensData0800 Tags</a>
   <br>--&gt; <a href='Nikon.html#LensDataUnknown'>Nikon LensDataUnknown Tags</a></td></tr>
 <tr>
 <td title='0x20000a7 = 33554599'>0x20000a7</td>
@@ -6762,7 +6917,7 @@ ExifTool to choose in these cases (see the
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Nov 20, 2018</i>
+<br><i>Last revised Dec 12, 2018</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

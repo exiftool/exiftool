@@ -568,11 +568,10 @@ distribution for examples.</p>
     types of files to reduce memory usage when reading from a non-seekable
     stream.  When combined with the ScanForXMP option, prevents scanning for XMP
     in recognized file types.  With a value of 2, ExifTool will also avoid
-    extracting any EXIF MakerNote information.  When set to 3, the file is not
-    actually parsed to extract metadata -- pseudo System tags are generated and
-    the file header is read only to provide an educated guess at FileType.  When
-    set to 4, the file is not read at all, and FileType is determined based on
-    the file's extension.</td>
+    extracting any EXIF MakerNote information.  When set to 3 or 4, only pseudo
+    system tags and FileType are generated.  For 3, the file header is read to
+    provide an educated guess at FileType.  For 4, the file is not read at all
+    and FileType is determined based on the file's extension.</td>
     <td align=center>0, 1, 2, 3 or 4</td><td align=center>undef</td></tr>
 <tr id="Filter"><td>Filter</td>
     <td>Perl expression used to filter all returned tag values.  Applies to

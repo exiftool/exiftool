@@ -12,7 +12,7 @@
 use strict;
 require 5.004;
 
-my $version = '11.21';
+my $version = '11.22';
 
 # add our 'lib' directory to the include list BEFORE 'use Image::ExifTool'
 my $exeDir;
@@ -4172,44 +4172,45 @@ supported by ExifTool (r = read, w = write, c = create):
 
   File Types
   ------------+-------------+-------------+-------------+------------
-  3FR   r     | DR4   r/w/c | J2C   r     | ODP   r     | RAW   r/w
-  3G2   r/w   | DSS   r     | JNG   r/w   | ODS   r     | RIFF  r
-  3GP   r/w   | DV    r     | JP2   r/w   | ODT   r     | RSRC  r
-  A     r     | DVB   r/w   | JPEG  r/w   | OFR   r     | RTF   r
-  AA    r     | DVR-MS r    | JSON  r     | OGG   r     | RW2   r/w
-  AAE   r     | DYLIB r     | K25   r     | OGV   r     | RWL   r/w
-  AAX   r/w   | EIP   r     | KDC   r     | OPUS  r     | RWZ   r
-  ACR   r     | EPS   r/w   | KEY   r     | ORF   r/w   | RM    r
-  AFM   r     | EPUB  r     | LA    r     | OTF   r     | SEQ   r
-  AI    r/w   | ERF   r/w   | LFP   r     | PAC   r     | SKETCH r
-  AIFF  r     | EXE   r     | LNK   r     | PAGES r     | SO    r
-  APE   r     | EXIF  r/w/c | M2TS  r     | PBM   r/w   | SR2   r/w
-  ARQ   r/w   | EXR   r     | M4A/V r/w   | PCD   r     | SRF   r
-  ARW   r/w   | EXV   r/w/c | MAX   r     | PDB   r     | SRW   r/w
-  ASF   r     | F4A/V r/w   | MEF   r/w   | PDF   r/w   | SVG   r
-  AVI   r     | FFF   r/w   | MIE   r/w/c | PEF   r/w   | SWF   r
-  AZW   r     | FLA   r     | MIFF  r     | PFA   r     | THM   r/w
-  BMP   r     | FLAC  r     | MKA   r     | PFB   r     | TIFF  r/w
-  BPG   r     | FLIF  r/w   | MKS   r     | PFM   r     | TORRENT r
-  BTF   r     | FLV   r     | MKV   r     | PGF   r     | TTC   r
-  CHM   r     | FPF   r     | MNG   r/w   | PGM   r/w   | TTF   r
-  COS   r     | FPX   r     | MOBI  r     | PLIST r     | VCF   r
-  CR2   r/w   | GIF   r/w   | MODD  r     | PICT  r     | VRD   r/w/c
-  CR3   r/w   | GPR   r/w   | MOI   r     | PMP   r     | VSD   r
-  CRM   r/w   | GZ    r     | MOS   r/w   | PNG   r/w   | WAV   r
-  CRW   r/w   | HDP   r/w   | MOV   r/w   | PPM   r/w   | WDP   r/w
-  CS1   r/w   | HDR   r     | MP3   r     | PPT   r     | WEBP  r
-  DCM   r     | HEIC  r     | MP4   r/w   | PPTX  r     | WEBM  r
-  DCP   r/w   | HEIF  r     | MPC   r     | PS    r/w   | WMA   r
-  DCR   r     | HTML  r     | MPG   r     | PSB   r/w   | WMV   r
-  DFONT r     | ICC   r/w/c | MPO   r/w   | PSD   r/w   | WTV   r
-  DIVX  r     | ICS   r     | MQV   r/w   | PSP   r     | WV    r
-  DJVU  r     | IDML  r     | MRW   r/w   | QTIF  r/w   | X3F   r/w
-  DLL   r     | IIQ   r/w   | MXF   r     | R3D   r     | XCF   r
-  DNG   r/w   | IND   r/w   | NEF   r/w   | RA    r     | XLS   r
-  DOC   r     | INX   r     | NRW   r/w   | RAF   r/w   | XLSX  r
-  DOCX  r     | ISO   r     | NUMBERS r   | RAM   r     | XMP   r/w/c
-  DPX   r     | ITC   r     | O     r     | RAR   r     | ZIP   r
+  3FR   r     | DSS   r     | JP2   r/w   | OFR   r     | RTF   r
+  3G2   r/w   | DV    r     | JPEG  r/w   | OGG   r     | RW2   r/w
+  3GP   r/w   | DVB   r/w   | JSON  r     | OGV   r     | RWL   r/w
+  A     r     | DVR-MS r    | K25   r     | OPUS  r     | RWZ   r
+  AA    r     | DYLIB r     | KDC   r     | ORF   r/w   | RM    r
+  AAE   r     | EIP   r     | KEY   r     | OTF   r     | SEQ   r
+  AAX   r/w   | EPS   r/w   | LA    r     | PAC   r     | SKETCH r
+  ACR   r     | EPUB  r     | LFP   r     | PAGES r     | SO    r
+  AFM   r     | ERF   r/w   | LNK   r     | PBM   r/w   | SR2   r/w
+  AI    r/w   | EXE   r     | M2TS  r     | PCD   r     | SRF   r
+  AIFF  r     | EXIF  r/w/c | M4A/V r/w   | PCX   r     | SRW   r/w
+  APE   r     | EXR   r     | MAX   r     | PDB   r     | SVG   r
+  ARQ   r/w   | EXV   r/w/c | MEF   r/w   | PDF   r/w   | SWF   r
+  ARW   r/w   | F4A/V r/w   | MIE   r/w/c | PEF   r/w   | THM   r/w
+  ASF   r     | FFF   r/w   | MIFF  r     | PFA   r     | TIFF  r/w
+  AVI   r     | FLA   r     | MKA   r     | PFB   r     | TORRENT r
+  AZW   r     | FLAC  r     | MKS   r     | PFM   r     | TTC   r
+  BMP   r     | FLIF  r/w   | MKV   r     | PGF   r     | TTF   r
+  BPG   r     | FLV   r     | MNG   r/w   | PGM   r/w   | VCF   r
+  BTF   r     | FPF   r     | MOBI  r     | PLIST r     | VRD   r/w/c
+  CHM   r     | FPX   r     | MODD  r     | PICT  r     | VSD   r
+  COS   r     | GIF   r/w   | MOI   r     | PMP   r     | WAV   r
+  CR2   r/w   | GPR   r/w   | MOS   r/w   | PNG   r/w   | WDP   r/w
+  CR3   r/w   | GZ    r     | MOV   r/w   | PPM   r/w   | WEBP  r
+  CRM   r/w   | HDP   r/w   | MP3   r     | PPT   r     | WEBM  r
+  CRW   r/w   | HDR   r     | MP4   r/w   | PPTX  r     | WMA   r
+  CS1   r/w   | HEIC  r     | MPC   r     | PS    r/w   | WMV   r
+  DCM   r     | HEIF  r     | MPG   r     | PSB   r/w   | WTV   r
+  DCP   r/w   | HTML  r     | MPO   r/w   | PSD   r/w   | WV    r
+  DCR   r     | ICC   r/w/c | MQV   r/w   | PSP   r     | X3F   r/w
+  DFONT r     | ICS   r     | MRW   r/w   | QTIF  r/w   | XCF   r
+  DIVX  r     | IDML  r     | MXF   r     | R3D   r     | XLS   r
+  DJVU  r     | IIQ   r/w   | NEF   r/w   | RA    r     | XLSX  r
+  DLL   r     | IND   r/w   | NRW   r/w   | RAF   r/w   | XMP   r/w/c
+  DNG   r/w   | INX   r     | NUMBERS r   | RAM   r     | ZIP   r
+  DOC   r     | ISO   r     | O     r     | RAR   r     |
+  DOCX  r     | ITC   r     | ODP   r     | RAW   r/w   |
+  DPX   r     | J2C   r     | ODS   r     | RIFF  r     |
+  DR4   r/w/c | JNG   r/w   | ODT   r     | RSRC  r     |
 
   Meta Information
   ----------------------+----------------------+---------------------
@@ -5027,7 +5028,7 @@ with this command:
 
 produces output like this:
 
-    -- Generated by ExifTool 11.21 --
+    -- Generated by ExifTool 11.22 --
     File: a.jpg - 2003:10:31 15:44:19
     (f/5.6, 1/60s, ISO 100)
     File: b.jpg - 2006:05:23 11:57:38
@@ -5489,7 +5490,7 @@ conditions must be satisfied to process the file.  Returns an exit status of
 Adding I<NUM> to the B<-if> option causes a separate processing pass to be
 executed for evaluating I<EXPR> at a B<-fast> level given by I<NUM> (see the
 B<-fast> option documentation for details).  Without I<NUM>, only one
-processing pass is done at the level specified by the B<-fast> option. For
+processing pass is done at the level specified by the B<-fast> option.  For
 example, using B<-if4> is possible if I<EXPR> uses only pseudo System tags,
 and may significantly speed processing if enough files fail the condition.
 

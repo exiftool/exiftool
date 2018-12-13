@@ -87,7 +87,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.02';
+$VERSION = '4.03';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -1797,8 +1797,8 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
             Name => 'ColorData8',
             SubDirectory => { TagTable => 'Image::ExifTool::Canon::ColorData8' },
         },
-        {   # (int16u[1820]) - M50, ref PH
-            Condition => '$count == 1820',
+        {   # (int16u[1820]) - M50 (1820) ref PH, EOS R (1824) ref IB
+            Condition => '$count == 1820 or $count == 1824',
             Name => 'ColorData9',
             SubDirectory => { TagTable => 'Image::ExifTool::Canon::ColorData9' },
         },
@@ -7794,6 +7794,7 @@ my %ciMaxFocal = (
         RawConv => '$$self{ColorDataVersion} = $val',
         PrintConv => {
             16 => '16 (M50)',
+            17 => '17 (EOS R)',
         },
     },
     0x47 => { Name => 'WB_RGGBLevelsAsShot',     Format => 'int16s[4]' },

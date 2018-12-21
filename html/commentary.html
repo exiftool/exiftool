@@ -111,11 +111,13 @@ preview images larger than 64kB, but unfortunately this specification
 <a href="standards.html#MPF">has problems of its own</a>.]</i></p>
 
 <p>Aside:  The EXIF specification could have easily allowed the information
-to span multiple JPEG segments, which would have been smart, but still
-wouldn't have solved the problem entirely since it could result in a
-non-contiguous preview image (this would be a problem for cameras since they
-typically want to use this image for quick review of pictures, and
-re-mapping the image into a contiguous memory space would be costly).</p>
+to span multiple JPEG segments, which would have been smart, but still wouldn't
+have solved the problem entirely since it could result in a non-contiguous
+preview image (this would be a problem for cameras since they typically want to
+use this image for quick review of pictures, and re-mapping the image into a
+contiguous memory space would be costly). <i class=lt>[According to the November
+2014 XMP specification (part 3, page 13), Adobe allows multi-segment EXIF, and
+this is supported by ExifTool 10.97 and later.]</i></p>
 
 <a name='IPTC'></a>
 <h3>IPTC IIM</h3>
@@ -313,7 +315,7 @@ offers a number of other features:</p>
 
 <hr>
 <i>Created Nov. 15, 2005</i><br>
-<i>Last revised July 29, 2010</i>
+<i>Last revised Dec. 19, 2018</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

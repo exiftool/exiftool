@@ -150,56 +150,58 @@ my %processByMetaFormat = (
     }],
     camm => [{
         Name => 'camm0',
-        Condition => '$$valPt =~ /^\0\0\0\0/',
+        # (according to the spec. the first 2 bytes are reserved and should be zero,
+        # but I have a sample where these bytes are non-zero, so allow anything here)
+        Condition => '$$valPt =~ /^..\0\0/s',
         SubDirectory => {
             TagTable => 'Image::ExifTool::QuickTime::camm0',
             ByteOrder => 'Little-Endian',
         },
     },{
         Name => 'camm1',
-        Condition => '$$valPt =~ /^\0\0\x01\0/',
+        Condition => '$$valPt =~ /^..\x01\0/s',
         SubDirectory => {
             TagTable => 'Image::ExifTool::QuickTime::camm1',
             ByteOrder => 'Little-Endian',
         },
     },{ # (written by Insta360) - [HandlerType, not MetaFormat]
         Name => 'camm2',
-        Condition => '$$valPt =~ /^\0\0\x02\0/',
+        Condition => '$$valPt =~ /^..\x02\0/s',
         SubDirectory => {
             TagTable => 'Image::ExifTool::QuickTime::camm2',
             ByteOrder => 'Little-Endian',
         },
     },{
         Name => 'camm3',
-        Condition => '$$valPt =~ /^\0\0\x03\0/',
+        Condition => '$$valPt =~ /^..\x03\0/s',
         SubDirectory => {
             TagTable => 'Image::ExifTool::QuickTime::camm3',
             ByteOrder => 'Little-Endian',
         },
     },{
         Name => 'camm4',
-        Condition => '$$valPt =~ /^\0\0\x04\0/',
+        Condition => '$$valPt =~ /^..\x04\0/s',
         SubDirectory => {
             TagTable => 'Image::ExifTool::QuickTime::camm4',
             ByteOrder => 'Little-Endian',
         },
     },{
         Name => 'camm5',
-        Condition => '$$valPt =~ /^\0\0\x05\0/',
+        Condition => '$$valPt =~ /^..\x05\0/s',
         SubDirectory => {
             TagTable => 'Image::ExifTool::QuickTime::camm5',
             ByteOrder => 'Little-Endian',
         },
     },{
         Name => 'camm6',
-        Condition => '$$valPt =~ /^\0\0\x06\0/',
+        Condition => '$$valPt =~ /^..\x06\0/s',
         SubDirectory => {
             TagTable => 'Image::ExifTool::QuickTime::camm6',
             ByteOrder => 'Little-Endian',
         },
     },{
         Name => 'camm7',
-        Condition => '$$valPt =~ /^\0\0\x07\0/',
+        Condition => '$$valPt =~ /^..\x07\0/s',
         SubDirectory => {
             TagTable => 'Image::ExifTool::QuickTime::camm7',
             ByteOrder => 'Little-Endian',

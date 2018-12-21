@@ -7,6 +7,13 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 11.11. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Dec. 21, 2018 - Version 11.23
+
+  - Recognize DWG and DWF files
+  - Minor improvement to some -validate warnings
+  - Tolerate leading UTF-8 byte order mark (BOM) at start of JSON files
+  - Fixed problem recognizing some streaming camm metadata in QuickTime videos
+
 Dec. 13, 2018 - Version 11.22
 
   - Added read support for PC Paintbrush (PCX) files

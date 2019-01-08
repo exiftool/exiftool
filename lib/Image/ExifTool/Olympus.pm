@@ -39,7 +39,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::APP12;
 
-$VERSION = '2.55';
+$VERSION = '2.56';
 
 sub PrintLensInfo($$$);
 
@@ -1680,6 +1680,7 @@ my %indexInfo = (
             0 => 'None',
             2 => 'Simple E-System',
             3 => 'E-System',
+            4 => 'E-System (body powered)', #forum9740
         },
     },
     0x1001 => { #6
@@ -1697,6 +1698,7 @@ my %indexInfo = (
             7 => 'FL-36R', #11
             9 => 'FL-14', #11
             11 => 'FL-600R', #11
+            13 => 'FL-LM3', #forum9740
             15 => 'FL-900R', #7
         },
     },
@@ -3980,7 +3982,7 @@ Olympus or Epson maker notes in EXIF information.
 
 =head1 AUTHOR
 
-Copyright 2003-2018, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2019, Phil Harvey (phil at owl.phy.queensu.ca)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

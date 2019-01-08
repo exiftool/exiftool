@@ -31,7 +31,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.15';
+$VERSION = '1.16';
 
 # program map table "stream_type" lookup (ref 6/1)
 my %streamType = (
@@ -391,7 +391,7 @@ sub ProcessM2TS($$)
         my $prefix = unpack("x${pos}N", $buff); # (use unpack instead of Get32u for speed)
         # validate sync byte
         unless (($prefix & 0xff000000) == 0x47000000) {
-            $et->Warn('Synchronization error') unless defined $backScan;
+            $et->Warn('M2TS synchronization error') unless defined $backScan;
             last;
         }
       # my $transport_error_indicator    = $prefix & 0x00800000;
@@ -694,7 +694,7 @@ video.
 
 =head1 AUTHOR
 
-Copyright 2003-2018, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2019, Phil Harvey (phil at owl.phy.queensu.ca)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

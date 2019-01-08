@@ -11,7 +11,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.26';
+$VERSION = '1.27';
 
 sub ProcessOcad($$$);
 sub ProcessJPEG_HDR($$$);
@@ -110,6 +110,10 @@ sub ProcessJPEG_HDR($$$);
         Name => 'RMETA',
         Condition => '$$valPt =~ /^RMETA\0/',
         SubDirectory => { TagTable => 'Image::ExifTool::Ricoh::RMETA' },
+      }, {
+        Name => 'SamsungUniqueID',
+        Condition => '$$valPt =~ /ssuniqueid\0/',
+        SubDirectory => { TagTable => 'Image::ExifTool::Samsung::APP5' },
       }, {
         Name => 'PreviewImage', # (eg. BenQ DC E1050)
         Notes => 'continued from APP4',
@@ -598,7 +602,7 @@ segments are included in the Image::ExifTool module itself.
 
 =head1 AUTHOR
 
-Copyright 2003-2018, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2019, Phil Harvey (phil at owl.phy.queensu.ca)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

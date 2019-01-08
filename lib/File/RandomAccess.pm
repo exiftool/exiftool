@@ -25,7 +25,7 @@
 #
 #               May also be used for string i/o (just pass a scalar reference)
 #
-# Legal:        Copyright (c) 2003-2018 Phil Harvey (phil at owl.phy.queensu.ca)
+# Legal:        Copyright (c) 2003-2019 Phil Harvey (phil at owl.phy.queensu.ca)
 #               This library is free software; you can redistribute it and/or
 #               modify it under the same terms as Perl itself.
 #------------------------------------------------------------------------------

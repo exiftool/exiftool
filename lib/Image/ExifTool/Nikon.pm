@@ -59,7 +59,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.57';
+$VERSION = '3.58';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -578,6 +578,7 @@ sub GetAFPointGrid($$;$);
     '69 47 5C 8E 30 3C 00 02' => 'Tamron AF 70-300mm f/4-5.6 Di LD Macro 1:2 (A17N)',
     '00 48 5C 8E 30 3C 00 06' => 'Tamron AF 70-300mm f/4-5.6 Di LD Macro 1:2 (A17NII)', #JD
     'F1 47 5C 8E 30 3C DF 0E' => 'Tamron SP 70-300mm f/4-5.6 Di VC USD (A005)',
+    'CF 47 5C 8E 31 3D DF 0E' => 'Tamron SP 70-300mm f/4-5.6 Di VC USD (A030)', #forum9773
     'EB 40 76 A6 38 40 DF 0E' => 'Tamron SP AF 150-600mm f/5-6.3 VC USD (A011)',
     'E3 40 76 A6 38 40 DF 4E' => 'Tamron SP 150-600mm f/5-6.3 Di VC USD G2', #30
     '20 3C 80 98 3D 3D 1E 02' => 'Tamron AF 200-400mm f/5.6 LD IF (75D)',
@@ -1226,18 +1227,32 @@ my %binaryDataAttrs = (
     },
     0x0023 => [
         { #PH (D300, but also found in D3,D3S,D3X,D90,D300S,D700,D3000,D5000)
-            Condition => '$$valPt =~ /^01/',
             Name => 'PictureControlData',
+            Condition => '$$valPt =~ /^01/',
             Writable => 'undef',
             Permanent => 0,
             Flags => [ 'Binary', 'Protected' ],
             SubDirectory => { TagTable => 'Image::ExifTool::Nikon::PictureControl' },
         },{ #28
             Name => 'PictureControlData',
+            Condition => '$$valPt =~ /^02/',
             Writable => 'undef',
             Permanent => 0,
             Flags => [ 'Binary', 'Protected' ],
             SubDirectory => { TagTable => 'Image::ExifTool::Nikon::PictureControl2' },
+        },{
+            Name => 'PictureControlData',
+            Condition => '$$valPt =~ /^03/',
+            Writable => 'undef',
+            Permanent => 0,
+            Flags => [ 'Binary', 'Protected' ],
+            SubDirectory => { TagTable => 'Image::ExifTool::Nikon::PictureControl3' },
+        },{
+            Name => 'PictureControlData',
+            Writable => 'undef',
+            Permanent => 0,
+            Flags => [ 'Binary', 'Protected' ],
+            SubDirectory => { TagTable => 'Image::ExifTool::Nikon::PictureControlUnknown' },
         },
     ],
     0x0024 => { #JD
@@ -2402,9 +2417,10 @@ my %binaryDataAttrs = (
     6 => {
         Name => 'VRMode',
         PrintConv => {
-            0 => 'Normal',
-            # 1 - seen this for 1V1 - PH
+            0 => 'Normal', # (Z-7 gives this value for "off" - PH)
+            1 => 'On (1)', #PH (NC)
             2 => 'Active', # (1J1)
+            3 => 'Sport', #PH (Z-7)
         },
     },
     # 7 - values: 0, 1
@@ -2683,23 +2699,6 @@ my %binaryDataAttrs = (
         PrintConv => 'Image::ExifTool::Nikon::PrintPC($val)',
         PrintConvInv => 'Image::ExifTool::Nikon::PrintPCInv($val)',
     },
-    48 => { #21
-        Name => 'PictureControlAdjust',
-        PrintConv => {
-            0 => 'Default Settings',
-            1 => 'Quick Adjust',
-            2 => 'Full Control',
-        },
-    },
-    49 => {
-        Name => 'PictureControlQuickAdjust',
-        # settings: -2 to +2 (n/a for Neutral and Monochrome modes)
-        DelValue => 0xff,
-        ValueConv => '$val - 0x80',
-        ValueConvInv => '$val + 0x80',
-        PrintConv => 'Image::ExifTool::Nikon::PrintPC($val)',
-        PrintConvInv => 'Image::ExifTool::Nikon::PrintPCInv($val)',
-    },
     51 => {
         Name => 'Sharpness',
         DelValue => 0xff,
@@ -2762,7 +2761,7 @@ my %binaryDataAttrs = (
             0xff => 'n/a',
         },
     },
-     64 => {
+    64 => {
         Name => 'ToningEffect',
         # settings: B&W,Sepia,Cyanotype,Red,Yellow,Green,Blue-Green,Blue,
         #           Purple-Blue,Red-Purple (n/a for color modes)
@@ -2791,6 +2790,156 @@ my %binaryDataAttrs = (
         PrintConv => 'Image::ExifTool::Nikon::PrintPC($val,"None","%.2f",4)',
         PrintConvInv => 'Image::ExifTool::Nikon::PrintPCInv($val,4)',
 
+    },
+);
+
+# Picture Control information V3 (ref PH, Z-7)
+%Image::ExifTool::Nikon::PictureControl3 = (
+    %binaryDataAttrs,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    # NOTE: Must set ByteOrder in SubDirectory if any multi-byte integer tags added
+    0 => {
+        Name => 'PictureControlVersion',
+        Format => 'undef[4]',
+        Writable => 0,
+    },
+    8 => {
+        Name => 'PictureControlName',
+        Format => 'string[20]',
+        # make lower case with a leading capital for each word
+        PrintConv => \&FormatString,
+        PrintConvInv => 'uc($val)',
+    },
+    # 48 - looks like PictureControl2 byte 45
+    28 => {
+        Name => 'PictureControlBase',
+        Format => 'string[20]',
+        PrintConv => \&FormatString,
+        PrintConvInv => 'uc($val)',
+    },
+    54 => { # (NC)
+        Name => 'PictureControlAdjust',
+        PrintConv => {
+            0 => 'Default Settings',
+            1 => 'Quick Adjust',
+            2 => 'Full Control',
+        },
+    },
+    55 => { # (NC)
+        Name => 'PictureControlQuickAdjust',
+        DelValue => 0xff,
+        ValueConv => '$val - 0x80',
+        ValueConvInv => '$val + 0x80',
+        PrintConv => 'Image::ExifTool::Nikon::PrintPC($val)',
+        PrintConvInv => 'Image::ExifTool::Nikon::PrintPCInv($val)',
+    },
+    57 => {
+        Name => 'Sharpness',
+        DelValue => 0xff,
+        ValueConv => '$val - 0x80',
+        ValueConvInv => '$val + 0x80',
+        PrintConv => 'Image::ExifTool::Nikon::PrintPC($val,"None","%.2f",4)',
+        PrintConvInv => 'Image::ExifTool::Nikon::PrintPCInv($val,4)',
+    },
+    59 => {
+        Name => 'MidRangeSharpness',
+        DelValue => 0xff,
+        ValueConv => '$val - 0x80',
+        ValueConvInv => '$val + 0x80',
+        PrintConv => 'Image::ExifTool::Nikon::PrintPC($val,"None","%.2f",4)',
+        PrintConvInv => 'Image::ExifTool::Nikon::PrintPCInv($val,4)',
+    },
+    61 => {
+        Name => 'Clarity',
+        DelValue => 0xff,
+        ValueConv => '$val - 0x80',
+        ValueConvInv => '$val + 0x80',
+        PrintConv => 'Image::ExifTool::Nikon::PrintPC($val,"None","%.2f",4)',
+        PrintConvInv => 'Image::ExifTool::Nikon::PrintPCInv2($val,4)',
+    },
+    63 => {
+        Name => 'Contrast',
+        DelValue => 0xff,
+        ValueConv => '$val - 0x80',
+        ValueConvInv => '$val + 0x80',
+        PrintConv => 'Image::ExifTool::Nikon::PrintPC($val,"None","%.2f",4)',
+        PrintConvInv => 'Image::ExifTool::Nikon::PrintPCInv($val,4)',
+    },
+    65 => { #21
+        Name => 'Brightness',
+        ValueConv => '$val - 0x80',
+        ValueConvInv => '$val + 0x80',
+        PrintConv => 'Image::ExifTool::Nikon::PrintPC($val,undef,"%.2f",4)',
+        PrintConvInv => 'Image::ExifTool::Nikon::PrintPCInv($val,4)',
+    },
+    67 => {
+        Name => 'Saturation',
+        DelValue => 0xff,
+        ValueConv => '$val - 0x80',
+        ValueConvInv => '$val + 0x80',
+        PrintConv => 'Image::ExifTool::Nikon::PrintPC($val,"None","%.2f",4)',
+        PrintConvInv => 'Image::ExifTool::Nikon::PrintPCInv($val,4)',
+    },
+    69 => {
+        Name => 'Hue',
+        DelValue => 0xff,
+        ValueConv => '$val - 0x80',
+        ValueConvInv => '$val + 0x80',
+        PrintConv => 'Image::ExifTool::Nikon::PrintPC($val,"None","%.2f",4)',
+        PrintConvInv => 'Image::ExifTool::Nikon::PrintPCInv($val)',
+    },
+    71 => { # (NC)
+        Name => 'FilterEffect',
+        DelValue => 0xff,
+        PrintHex => 1,
+        PrintConv => {
+            0x80 => 'Off',
+            0x81 => 'Yellow',
+            0x82 => 'Orange',
+            0x83 => 'Red',
+            0x84 => 'Green',
+            0xff => 'n/a',
+        },
+    },
+    72 => { # (NC)
+        Name => 'ToningEffect',
+        DelValue => 0xff,
+        PrintHex => 1,
+        PrintConvColumns => 2,
+        PrintConv => {
+            0x80 => 'B&W',
+            0x81 => 'Sepia',
+            0x82 => 'Cyanotype',
+            0x83 => 'Red',
+            0x84 => 'Yellow',
+            0x85 => 'Green',
+            0x86 => 'Blue-green',
+            0x87 => 'Blue',
+            0x88 => 'Purple-blue',
+            0x89 => 'Red-purple',
+            0xff => 'n/a',
+        },
+    },
+    73 => { # (NC)
+        Name => 'ToningSaturation',
+        DelValue => 0xff,
+        ValueConv => '$val - 0x80',
+        ValueConvInv => '$val + 0x80',
+        PrintConv => 'Image::ExifTool::Nikon::PrintPC($val,"None","%.2f",4)',
+        PrintConvInv => 'Image::ExifTool::Nikon::PrintPCInv($val,4)',
+
+    },
+);
+
+# Unknown Picture Control information
+%Image::ExifTool::Nikon::PictureControlUnknown = (
+    %binaryDataAttrs,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    # NOTE: Must set ByteOrder in SubDirectory if any multi-byte integer tags added
+    0 => {
+        Name => 'PictureControlVersion',
+        Format => 'undef[4]',
+        Writable => 0,
     },
 );
 
@@ -3035,7 +3184,10 @@ my %binaryDataAttrs = (
     4 => { #PH
         Name => 'ContrastDetectAF',
         RawConv => '$$self{ContrastDetectAF} = $val',
-        PrintConv => \%offOn,
+        PrintConv => {
+            %offOn,
+            2 => 'On (2)', #PH (Z-7)
+        },
         Notes => 'this is Off for the hybrid AF used in Nikon 1 models',
     },
     5 => [
@@ -3068,6 +3220,11 @@ my %binaryDataAttrs = (
                 131 => 'Face Priority (41 points)', #PH (1J1,1J3,1S1,1V2,AW1)
                 # 134 - seen for 1V1[PhaseDetectAF=0] (PH)
                 # 135 - seen for 1J2[PhaseDetectAF=4] (PH)
+                192 => 'Pinpoint', #PH (NC)
+                193 => 'Single', #PH (NC)
+                195 => 'Wide (S)', #PH (NC)
+                196 => 'Wide (L)', #PH (NC)
+                197 => 'Auto', #PH (NC)
             },
         },
         { #PH (D3/D90/D5000)
@@ -3086,6 +3243,11 @@ my %binaryDataAttrs = (
                 129 => 'Auto (41 points)', #PH (NC)
                 130 => 'Subject Tracking (41 points)', #PH (NC)
                 131 => 'Face Priority (41 points)', #PH (NC)
+                192 => 'Pinpoint', #PH (Z-7)
+                193 => 'Single', #PH (Z-7)
+                195 => 'Wide (S)', #PH (Z-7)
+                196 => 'Wide (L)', #PH (Z-7)
+                197 => 'Auto', #PH (Z-7)
             },
         },
     ],
@@ -3103,6 +3265,7 @@ my %binaryDataAttrs = (
             5 => 'On (5)', #PH (1S2[128/129], 1J4/1V3[129])
             6 => 'On (105-point)', #PH (1J4/1V3[128/130])
             7 => 'On (153-point)', #PH (D5/D500/D850)
+            8 => 'On (8)', #PH (Z-7)
         },
     },
     7 => [
@@ -3388,6 +3551,24 @@ my %binaryDataAttrs = (
         PrintConv => { 0 => 'No', 1 => 'Yes' },
     },
     # 0x1d - always zero (with or without live view)
+    # 0x2e - related to AFAreaColumn: left->right=232,240,244,248,252,0,4,8,...,88 - PH (Z7)
+    0x2f => { #PH
+        Name => 'AFAreaColumn',
+        Condition => '$$self{ContrastDetectAF} == 2 and $$self{AFInfo2Version} =~ /^03/',
+        Notes => q{
+            column number of selected AF area in contrast-detect mode for models such as
+            the Z-7.  Range is 1-30
+        },
+    },
+    # 0x30 - related to AFAreaRow: top->bottom=160,...,192,...,224 - PH (Z7)
+    0x31 => { #PH
+        Name => 'AFAreaRow',
+        Condition => '$$self{ContrastDetectAF} == 2 and $$self{AFInfo2Version} =~ /^03/',
+        Notes => q{
+            row number of selected AF area in contrast-detect mode for models such as
+            the Z-7.  Range is 1-19
+        },
+    },
     0x44 => [
         {
             Name => 'PrimaryAFPoint',
@@ -3399,10 +3580,31 @@ my %binaryDataAttrs = (
                 1 => 'E9 (Center)',
             },
         },
+        { #PH
+            Name => 'PrimaryAFPoint',
+            Notes => 'D3500',
+            Condition => '$$self{PhaseDetectAF} == 2 and $$self{AFInfo2Version} eq "0101"',
+            PrintConvColumns => 2,
+            PrintConv => {
+                0 => '(none)',
+                1 => 'Center',
+                2 => 'Top',
+                3 => 'Bottom',
+                4 => 'Mid-left',
+                5 => 'Upper-left',
+                6 => 'Lower-left',
+                7 => 'Far Left',
+                8 => 'Mid-right',
+                9 => 'Upper-right',
+                10 => 'Lower-right',
+                11 => 'Far Right',
+            },
+        },
         {
             Name => 'PrimaryAFPoint',
             Condition => '$$self{AFInfo2Version} eq "0101"',
             Notes => 'future models?...',
+            Priority => 0,
             PrintConv => {
                 0 => '(none)',
                 1 => 'Center',
@@ -8248,18 +8450,32 @@ my %nikonFocalConversions = (
     },
     0x2000023 => [
         { #PH (D300, but also found in D3,D3S,D3X,D90,D300S,D700,D3000,D5000)
-            Condition => '$$valPt =~ /^01/',
             Name => 'PictureControlData',
+            Condition => '$$valPt =~ /^01/',
             Writable => 'undef',
             Permanent => 0,
             Flags => [ 'Binary', 'Protected' ],
             SubDirectory => { TagTable => 'Image::ExifTool::Nikon::PictureControl' },
         },{ #28
             Name => 'PictureControlData',
+            Condition => '$$valPt =~ /^02/',
             Writable => 'undef',
             Permanent => 0,
             Flags => [ 'Binary', 'Protected' ],
             SubDirectory => { TagTable => 'Image::ExifTool::Nikon::PictureControl2' },
+        },{
+            Name => 'PictureControlData',
+            Condition => '$$valPt =~ /^03/',
+            Writable => 'undef',
+            Permanent => 0,
+            Flags => [ 'Binary', 'Protected' ],
+            SubDirectory => { TagTable => 'Image::ExifTool::Nikon::PictureControl3' },
+        },{
+            Name => 'PictureControlData',
+            Writable => 'undef',
+            Permanent => 0,
+            Flags => [ 'Binary', 'Protected' ],
+            SubDirectory => { TagTable => 'Image::ExifTool::Nikon::PictureControlUnknown' },
         },
     ],
     0x2000024 => {
@@ -9183,7 +9399,7 @@ Nikon maker notes in EXIF information.
 
 =head1 AUTHOR
 
-Copyright 2003-2018, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2019, Phil Harvey (phil at owl.phy.queensu.ca)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

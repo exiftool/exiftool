@@ -49,7 +49,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.19';
+$VERSION = '3.20';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -3547,10 +3547,10 @@ sub ParseXMPElement($$$;$$$$)
                     if ($prop eq 'rdf:Description' and $val) {
                         $val =~ s/<!--.*?-->//g; $val =~ s/^\s+//; $val =~ s/\s+$//;
                     }
-                    # if element value is empty, take value from 'resource' attribute
-                    # (preferentially) or 'about' attribute (if no 'resource')
-                    if ($val eq '' and ($attrs =~ /\bresource=(['"])(.*?)\1/ or
-                                        $attrs =~ /\babout=(['"])(.*?)\1/))
+                    # if element value is empty, take value from RDF 'value' or 'resource' attribute
+                    # (preferentially) or 'about' attribute (if no 'value' or 'resource')
+                    if ($val eq '' and ($attrs =~ /\brdf:(?:value|resource)=(['"])(.*?)\1/ or
+                                        $attrs =~ /\brdf:about=(['"])(.*?)\1/))
                     {
                         $val = $2;
                         $wasEmpty = 1;
@@ -4015,7 +4015,7 @@ information.
 
 =head1 AUTHOR
 
-Copyright 2003-2018, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2019, Phil Harvey (phil at owl.phy.queensu.ca)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

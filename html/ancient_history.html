@@ -13,6 +13,112 @@
 <p><b>Note:</b> This page gives the history of older exiftool versions.  See
 <a href="history.html">history.html</a> for the recent history.</p>
 
+<a name='v11.10'><b>Aug. 17, 2018 - Version 11.10</b></a>
+<ul>
+<li>Added support for Canon 1DX firmware 2.1.0
+<li>Added a new Canon LensType (thanks LibRaw)
+<li>Added a new Nikon LensID (thanks LibRaw)
+<li>Added a new CanonModelID
+<li>Decode more tags for newer Sony DSC models (thanks Jos Roost)
+<li>Decode some new SonyIDC tags (thanks Jos Roost)
+<li>Decode a number of new Panasonic tags (thanks Klaus Homeister)
+<li>Improved validation of XMP namespaces
+<li>Changed "File not found" messages to "Error: File not found"
+<li>Fixed problem editing tags in Canon DR4 directory
+</ul>
+
+<a name='v11.09'><b>Aug. 13, 2018 - Version 11.09</b></a>
+<ul>
+<li>Added new Pentax and Canon LensType values
+<li>Decode Google Camera Motion metadata from MP4 videos
+<li>Decode more PanasonicRaw tags (thanks Klaus Homeister)
+<li>Removed warning when multiple Word document LastSavedBy tags exist and the
+    Duplicates option wasn't enabled (added Note in tag name docs instead)
+</ul>
+
+<a name='v11.08'><b>Aug. 1, 2018 - Version 11.08</b></a>
+<ul>
+<li>Decode more tags from Microsoft Word documents, including LastSavedBy
+<li>Decode image file characteristics from Windows EXE files
+<li>Decode more PanasonicRaw tags (thanks Klaus Homeister)
+<li>Changed names of new Samsung trailer tags
+<li>Fixed potential problems converting C-style escaped strings
+<li>Fixed new "#[CSTR]" feature to work with -stay_open option
+</ul>
+
+<a name='v11.07'><b>July 27, 2018 - Version 11.07</b></a>
+<ul>
+<li>Added "#[CSTR]" feature to -@ argfile
+<li>Added some new Sony LensType values (thanks Jos Roost)
+<li>Decode more tags from Samsung trailer
+<li>Decode an undocumented DNG tag
+<li>Decode some new Panasonic tags (thanks Klaus Homeister)
+<li>Improved/fixed a few Validate warnings
+<li>Made MakerNote "Bad SubDirectory start" warnings minor
+<li>Fixed NoDups() function to work with special characters as list separators
+</ul>
+
+<a name='v11.06'><b>July 6, 2018 - Version 11.06</b></a>
+<ul>
+<li>Fixed "undefined value" bug when reading ImageSourceData from a JPEG file
+</ul>
+
+<a name='v11.05'><b>July 5, 2018 - Version 11.05</b></a>
+<ul>
+<li>Added a number of new Nikon LensID's (thanks Robert Rottmerhusen)
+<li>Fixed out-of-memory problem when writing some large TIFF images in Windows
+</ul>
+
+<a name='v11.04'><b>July 4, 2018 - Version 11.04</b></a>
+<ul>
+<li>Added a check on TIFF image data size when writing or using Validate option
+<li>Added a few new Sony lenses (thanks LibRaw)
+<li>Added a new Nikon LensType
+<li>Improved validation of XMP with Validate option
+<li>Drop PhaseOne tags larger than 8 kB when copying PhaseOne maker notes to
+    another file
+<li>Fixed out-of-memory problem when reading some large TIFF images in Windows
+</ul>
+
+<a name='v11.03'><b>June 21, 2018 - Version 11.03</b></a>
+<ul>
+<li>Added support for new Exif 2.31 for XMP tags
+<li>Added support for another FujiFilm X-T1 firmware version
+<li>Decode more Panasonic tags (thanks Klaus Homeister)
+</ul>
+
+<a name='v11.02'><b>June 13, 2018 - Version 11.02</b></a>
+<ul>
+<li>Added support for a different format of Apple iWorks files
+<li>Added undocumented FixCorruptedMOV API option to allow fixing MOV videos
+    with multiple 'mdat' atoms which were corrupted by ExifTool
+<li>Decode more QuickTime tags
+<li>Decode more PanasonicRaw tags (thanks Klaus Homeister)
+<li>Improved decoding of makernotes in ARW images from Hasselblad cameras
+    (thanks LibRaw)
+<li>Fixed some problems writing multi-segment EXIF in JPEG images
+</ul>
+
+<a name='v11.01'><b>June 11, 2018 - Version 11.01</b></a> <span class=grn>(production release)</span>
+<ul>
+<li>Added a new ProfileCMMType (thanks Neal Krawetz)
+<li>Added a Validate warning about non-standard EXIF or XMP in PNG images
+<li>Added a new Canon LensType
+<li>Decode a couple more PanasonicRaw tags (thanks Klaus Homeister)
+<li>Patched to avoid adding tags to QuickTime videos with multiple 'mdat' atoms
+    --&gt; avoids potential corruption of these videos!
+</ul>
+
+<a name='v11.00'><b>June 7, 2018 - Version 11.00</b></a> <span class=grn>(production release)</span>
+<ul>
+<li>Added read support for WTV and DVR-MS videos
+<li>Added print conversions for some ASF date/time tags
+<li>Added a new SonyModelID (thanks LibRaw)
+<li>Decode a new PanasonicRaw tag (thanks Klaus Homeister)
+<li>Decode some new Sony RX100 VI tags (thanks LibRaw and Jos Roost)
+<li>Made Padding and OffsetSchema tags "unsafe" so they aren't copied by default
+</ul>
+
 <a name='v10.99'><b>May 29, 2018 - Version 10.99</b></a>
 <ul>
 <li>Decode layer information from Photoshop ImageSourceData in TIFF images

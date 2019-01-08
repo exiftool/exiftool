@@ -206,7 +206,9 @@ causes the other information to be re-encrypted with the new key)</span></span><
 <td>PictureControlData</td>
 <td class=c title=' ! = Unsafe'>undef!</td>
 <td>--&gt; <a href='Nikon.html#PictureControl'>Nikon PictureControl Tags</a>
-  <br>--&gt; <a href='Nikon.html#PictureControl2'>Nikon PictureControl2 Tags</a></td></tr>
+  <br>--&gt; <a href='Nikon.html#PictureControl2'>Nikon PictureControl2 Tags</a>
+  <br>--&gt; <a href='Nikon.html#PictureControl3'>Nikon PictureControl3 Tags</a>
+  <br>--&gt; <a href='Nikon.html#PictureControlUnknown'>Nikon PictureControlUnknown Tags</a></td></tr>
 <tr class=b>
 <td title='0x0024 = 36'>0x0024</td>
 <td>WorldTime</td>
@@ -1016,7 +1018,9 @@ edit versions, otherwise this is extracted as a binary data block)</span>
 <td>VRMode</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Normal
-  <br>2 = Active</span></td></tr>
+  <br>1 = On (1)
+  <br>2 = Active
+  <br>3 = Sport</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='FaceDetect'>Nikon FaceDetect Tags</a></h2>
@@ -1288,6 +1292,123 @@ FaceDetectFrameSize)</span></span></td></tr>
 <td class=r title='65 = 0x41'>65</td>
 <td>ToningSaturation</td>
 <td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='PictureControl3'>Nikon PictureControl3 Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>PictureControlVersion</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='8 = 0x8'>8</td>
+<td>PictureControlName</td>
+<td class=c>string[20]</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='28 = 0x1c'>28</td>
+<td>PictureControlBase</td>
+<td class=c>string[20]</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='54 = 0x36'>54</td>
+<td>PictureControlAdjust</td>
+<td class=c>int8u</td>
+<td><span class=s>0 = Default Settings
+  <br>1 = Quick Adjust
+  <br>2 = Full Control</span></td></tr>
+<tr>
+<td class=r title='55 = 0x37'>55</td>
+<td>PictureControlQuickAdjust</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='57 = 0x39'>57</td>
+<td>Sharpness</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='59 = 0x3b'>59</td>
+<td>MidRangeSharpness</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='61 = 0x3d'>61</td>
+<td>Clarity</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='63 = 0x3f'>63</td>
+<td>Contrast</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='65 = 0x41'>65</td>
+<td>Brightness</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='67 = 0x43'>67</td>
+<td>Saturation</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='69 = 0x45'>69</td>
+<td>Hue</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='71 = 0x47'>71</td>
+<td>FilterEffect</td>
+<td class=c>int8u</td>
+<td><table class=cols><tr>
+  <td>0x80 = Off
+  <br>0x81 = Yellow
+  <br>0x82 = Orange</td><td>&nbsp;&nbsp;</td>
+  <td>0x83 = Red
+  <br>0x84 = Green
+  <br>0xff = n/a</td></tr></table>
+</td></tr>
+<tr class=b>
+<td class=r title='72 = 0x48'>72</td>
+<td>ToningEffect</td>
+<td class=c>int8u</td>
+<td><table class=cols><tr>
+  <td>0x80 = B&amp;W
+  <br>0x81 = Sepia
+  <br>0x82 = Cyanotype
+  <br>0x83 = Red
+  <br>0x84 = Yellow
+  <br>0x85 = Green</td><td>&nbsp;&nbsp;</td>
+  <td>0x86 = Blue-green
+  <br>0x87 = Blue
+  <br>0x88 = Purple-blue
+  <br>0x89 = Red-purple
+  <br>0xff = n/a</td></tr></table>
+</td></tr>
+<tr>
+<td class=r title='73 = 0x49'>73</td>
+<td>ToningSaturation</td>
+<td class=c>int8u</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='PictureControlUnknown'>Nikon PictureControlUnknown Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index1</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>PictureControlVersion</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -4566,7 +4687,8 @@ D5200, D7000.</p>
 <td class=c>int8u</td>
 <td><span class=s><span class=n>(this is Off for the hybrid AF used in Nikon 1 models)</span>
   <br>0 = Off
-  <br>1 = On</span></td></tr>
+  <br>1 = On
+  <br>2 = On (2)</span></td></tr>
 <tr>
 <td class=r title='5 = 0x5'>5</td>
 <td>AFAreaMode</td>
@@ -4593,7 +4715,12 @@ D5200, D7000.</p>
   <br>128 = Single
   <br>129 = Auto (41 points)
   <br>130 = Subject Tracking (41 points)
-  <br>131 = Face Priority (41 points)</td></tr></table>
+  <br>131 = Face Priority (41 points)
+  <br>192 = Pinpoint
+  <br>193 = Single
+  <br>195 = Wide (S)
+  <br>196 = Wide (L)
+  <br>197 = Auto</td></tr></table>
 <span class=s><span class=n>(ContrastDetectAF On)</span></span><table class=cols><tr>
   <td>0 = Contrast-detect
   <br>1 = Contrast-detect (normal area)
@@ -4603,7 +4730,12 @@ D5200, D7000.</p>
   <br>128 = Single
   <br>129 = Auto (41 points)
   <br>130 = Subject Tracking (41 points)
-  <br>131 = Face Priority (41 points)</td></tr></table>
+  <br>131 = Face Priority (41 points)
+  <br>192 = Pinpoint
+  <br>193 = Single
+  <br>195 = Wide (S)
+  <br>196 = Wide (L)
+  <br>197 = Auto</td></tr></table>
 </td></tr>
 <tr class=b>
 <td class=r title='6 = 0x6'>6</td>
@@ -4613,11 +4745,12 @@ D5200, D7000.</p>
   <td>0 = Off
   <br>1 = On (51-point)
   <br>2 = On (11-point)
-  <br>3 = On (39-point)</td><td>&nbsp;&nbsp;</td>
-  <td>4 = On (73-point)
-  <br>5 = On (5)
+  <br>3 = On (39-point)
+  <br>4 = On (73-point)</td><td>&nbsp;&nbsp;</td>
+  <td>5 = On (5)
   <br>6 = On (105-point)
-  <br>7 = On (153-point)</td></tr></table>
+  <br>7 = On (153-point)
+  <br>8 = On (8)</td></tr></table>
 </td></tr>
 <tr>
 <td class=r title='7 = 0x7'>7</td>
@@ -5112,6 +5245,18 @@ point is E9)</span></span></td></tr>
 <td><span class=s>0 = No
   <br>1 = Yes</span></td></tr>
 <tr class=b>
+<td class=r title='47 = 0x2f'>47</td>
+<td>AFAreaColumn</td>
+<td class=c>int8u</td>
+<td><span class=s><span class=n>(column number of selected AF area in contrast-detect mode for models such as
+the Z-7.  Range is 1-30)</span></span></td></tr>
+<tr>
+<td class=r title='49 = 0x31'>49</td>
+<td>AFAreaRow</td>
+<td class=c>int8u</td>
+<td><span class=s><span class=n>(row number of selected AF area in contrast-detect mode for models such as
+the Z-7.  Range is 1-19)</span></span></td></tr>
+<tr class=b>
 <td class=r title='68 = 0x44'>68</td>
 <td>PrimaryAFPoint</td>
 <td class=c>int8u</td>
@@ -5270,6 +5415,19 @@ point is E9)</span></span></td></tr>
   <br>151 = G1
   <br>152 = H1
   <br>153 = I1</td></tr></table>
+<span class=s><span class=n>(D3500)</span></span><table class=cols><tr>
+  <td>0 = (none)
+  <br>1 = Center
+  <br>2 = Top
+  <br>3 = Bottom
+  <br>4 = Mid-left
+  <br>5 = Upper-left</td><td>&nbsp;&nbsp;</td>
+  <td>6 = Lower-left
+  <br>7 = Far Left
+  <br>8 = Mid-right
+  <br>9 = Upper-right
+  <br>10 = Lower-right
+  <br>11 = Far Right</td></tr></table>
 <span class=s><span class=n>(future models?...)</span>
   <br>0 = (none)
   <br>1 = Center</span></td></tr>
@@ -5951,7 +6109,9 @@ videos from some Nikon cameras.</p>
 <td>PictureControlData</td>
 <td class=c title=' ! = Unsafe'>undef!</td>
 <td>--&gt; <a href='Nikon.html#PictureControl'>Nikon PictureControl Tags</a>
-  <br>--&gt; <a href='Nikon.html#PictureControl2'>Nikon PictureControl2 Tags</a></td></tr>
+  <br>--&gt; <a href='Nikon.html#PictureControl2'>Nikon PictureControl2 Tags</a>
+  <br>--&gt; <a href='Nikon.html#PictureControl3'>Nikon PictureControl3 Tags</a>
+  <br>--&gt; <a href='Nikon.html#PictureControlUnknown'>Nikon PictureControlUnknown Tags</a></td></tr>
 <tr>
 <td title='0x2000024 = 33554468'>0x2000024</td>
 <td>WorldTime</td>
@@ -6859,6 +7019,7 @@ ExifTool to choose in these cases (see the
 </tr><tr><td>'CE 34 76 A0 38 40 4B 0E'</td><td>= Sigma 150-500mm F5-6.3 DG OS APO HSM</td>
 </tr><tr><td>'CE 47 37 5C 25 25 DF 4E'</td><td>= Tamron SP 24-70mm f/2.8 Di VC USD G2 (A032)</td>
 </tr><tr><td>'CF 38 6E 98 34 3C 4B 0E'</td><td>= Sigma APO 120-400mm F4.5-5.6 DG OS HSM</td>
+</tr><tr><td>'CF 47 5C 8E 31 3D DF 0E'</td><td>= Tamron SP 70-300mm f/4-5.6 Di VC USD (A030)</td>
 </tr><tr><td>'DC 48 19 19 24 24 4B 06'</td><td>= Sigma 10mm F2.8 EX DC HSM Fisheye</td>
 </tr><tr><td>'DE 54 50 50 0C 0C 4B 06'</td><td>= Sigma 50mm F1.4 EX DG HSM</td>
 </tr><tr><td>'E0 3C 5C 8E 30 3C 4B 06'</td><td>= Sigma 70-300mm F4-5.6 APO DG Macro HSM</td>
@@ -6917,7 +7078,7 @@ ExifTool to choose in these cases (see the
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Dec 12, 2018</i>
+<br><i>Last revised Jan 8, 2019</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

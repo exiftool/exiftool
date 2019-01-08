@@ -55,7 +55,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.08';
+$VERSION = '4.09';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -1600,7 +1600,11 @@ my %sampleFormat = (
     0x82aa => 'MDPrepDate', #3
     0x82ab => 'MDPrepTime', #3
     0x82ac => 'MDFileUnits', #3
-    0x830e => 'PixelScale', #30
+    0x830e => { #30
+        Name => 'PixelScale',
+        Writable => 'double',
+        Count => 3,
+    },
     0x8335 => 'AdventScale', #20
     0x8336 => 'AdventRevision', #20
     0x835c => 'UIC1Tag', #23
@@ -1627,11 +1631,17 @@ my %sampleFormat = (
     },
     0x847e => 'IntergraphPacketData', #3
     0x847f => 'IntergraphFlagRegisters', #3
-    0x8480 => 'IntergraphMatrix', #30
+    0x8480 => { #30 (obsolete)
+        Name => 'IntergraphMatrix',
+        Writable => 'double',
+        Count => -1,
+    },
     0x8481 => 'INGRReserved', #20
     0x8482 => { #30
         Name => 'ModelTiePoint',
         Groups => { 2 => 'Location' },
+        Writable => 'double',
+        Count => -1,
     },
     0x84e0 => 'Site', #9
     0x84e1 => 'ColorSequence', #9
@@ -1697,6 +1707,8 @@ my %sampleFormat = (
     0x85d8 => { #30
         Name => 'ModelTransform',
         Groups => { 2 => 'Location' },
+        Writable => 'double',
+        Count => 16,
     },
     0x8602 => { #16
         Name => 'WB_GRGBLevels',
@@ -6263,7 +6275,7 @@ EXIF and TIFF meta information.
 
 =head1 AUTHOR
 
-Copyright 2003-2018, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2019, Phil Harvey (phil at owl.phy.queensu.ca)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

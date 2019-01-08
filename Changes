@@ -7,6 +7,23 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 11.11. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Jan. 8, 2019 - Version 11.24
+
+  - Compatibility Notice: Changed the meaning of '-' and '+' modifiers for %C
+    formatting code (does not affect lower-case %c code)
+  - Decode a number of new Nikon tags (thanks Michael Tapes for samples)
+  - Added new Olympus FlashType and FlashModel values (thanks Per)
+  - Added a new Canon LensType
+  - Added a new Nikon LensID
+  - Made all GeoTIFF tags writable
+  - Handle XMP rdf:value when reading
+  - Improved warning when trying to read a file with a zero-length name
+  - Fixed decoding of PictureControl tags for Nikon Z-7
+  - Fixed problem writing date/time values with " DST" designator at end of
+    date/time string
+  - Fixed problem in Windows which could cause ExifTool to abort due to a
+    Win32::FindFile error if a file name contained surrogate Unicode characters
+
 Dec. 21, 2018 - Version 11.23
 
   - Recognize DWG and DWF files

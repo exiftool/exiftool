@@ -22,7 +22,7 @@ use vars qw($VERSION %samsungLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.43';
+$VERSION = '1.44';
 
 sub WriteSTMN($$$);
 sub ProcessINFO($$$);
@@ -924,6 +924,16 @@ my %formatMinMax = (
     4 => { Name => 'ThumbnailOffset', IsOffset => 1 },
 );
 
+# information extracted from "ssuniqueid\0" APP5 (ref PH)
+%Image::ExifTool::Samsung::APP5 = (
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    ssuniqueid => {
+        Name => 'UniqueID',
+        # 32 bytes - some sort of serial number?
+        ValueConv => 'unpack("H*",$val)',
+    },
+);
+
 # information extracted from Samsung trailer (ie. Samsung SM-T805 "Sound & Shot" JPEG) (ref PH)
 %Image::ExifTool::Samsung::Trailer = (
     GROUPS => { 0 => 'MakerNotes', 2 => 'Other' },
@@ -1305,7 +1315,7 @@ Samsung maker notes in EXIF information.
 
 =head1 AUTHOR
 
-Copyright 2003-2018, Phil Harvey (phil at owl.phy.queensu.ca)
+Copyright 2003-2019, Phil Harvey (phil at owl.phy.queensu.ca)
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

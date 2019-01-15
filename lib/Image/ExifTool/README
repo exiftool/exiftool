@@ -757,19 +757,20 @@ numerical.
                   tag is written.  The value is a hash reference.  The hash keys
                   are the names of the tags to write, and the values are
                   evaluated to obtain the ValueConv values of each tag (or undef
-                  to delete the tag).  In the eval, $val is the Raw value of the
-                  parent tag (which may be undef if the tag is being deleted,
-                  and should not be modified because it will affect subsequent
-                  WriteAlso tags), and the %opts hash may be accessed to modify
-                  SetNewValue options for each tag.  By default, Type is set to
-                  "ValueConv" and the Protected option has bit 0x02 set to allow
-                  writing of Protected tags that aren't directly writable.  The
-                  AddValue, DelValue, Shift and Replace options from the parent
-                  tag are also defined, but no other options are set by default.
-                  Previous new values of WriteAlso tags have already been
-                  removed prior to the eval if the Replace option was used for
-                  the parent tag.  If an empty warning is issued ("\n"), the
-                  target tag is not written and no error is reported.
+                  to delete the tag).  In the eval, $val is the new Raw value of
+                  the parent tag (which may be undef if the tag is being
+                  deleted, and should not be modified because it will affect
+                  subsequent WriteAlso tags), and the %opts hash may be accessed
+                  to modify SetNewValue options for each tag.  By default, Type
+                  is set to "ValueConv" and the Protected option has bit 0x02
+                  set to allow writing of Protected tags that aren't directly
+                  writable.  The AddValue, DelValue, Shift and Replace options
+                  from the parent tag are also defined, but no other options are
+                  set by default. Previous new values of WriteAlso tags have
+                  already been removed prior to the eval if the Replace option
+                  was used for the parent tag.  If an empty warning is issued
+                  ("\n"), the target tag is not written and no error is
+                  reported.
 
   WriteCheck    : If given, specifies a scalar which is evaluated as a Perl
                   expression for a one-time validatation the Raw value being

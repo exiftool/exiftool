@@ -21,7 +21,7 @@ sub ProcessKodakPatch($$$);
 sub WriteUnknownOrPreview($$$);
 sub FixLeicaBase($$;$);
 
-$VERSION = '2.06';
+$VERSION = '2.08';
 
 my $debug;          # set to 1 to enable debugging code
 
@@ -692,6 +692,15 @@ my $debug;          # set to 1 to enable debugging code
         },
     },
     {
+        Name => 'MakerNoteLeica10', # used by the D-Lux7
+        Condition => '$$valPt =~ /^LEICA CAMERA AG\0/',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Panasonic::Main',
+            Start => '$valuePtr + 18',
+            ByteOrder => 'Unknown',
+        },
+    },
+    {
         Name => 'MakerNotePanasonic',
         # (starts with "Panasonic\0")
         Condition => '$$valPt=~/^Panasonic/ and $$self{Model} ne "DC-FT7"',
@@ -891,9 +900,9 @@ my $debug;          # set to 1 to enable debugging code
     },
     {
         Name => 'MakerNoteSamsung2',
-        # Samsung EXIF-format maker notes
+        # Samsung EXIF-format maker notes (
         Condition => q{
-            $$self{Make} eq 'SAMSUNG' and ($$self{TIFF_TYPE} eq 'SRW' or
+            uc $$self{Make} eq 'SAMSUNG' and ($$self{TIFF_TYPE} eq 'SRW' or
             $$valPt=~/^(\0.\0\x01\0\x07\0{3}\x04|.\0\x01\0\x07\0\x04\0{3})0100/s)
         },
         SubDirectory => {

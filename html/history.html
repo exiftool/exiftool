@@ -17,6 +17,21 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v11.25'><b>Jan. 15, 2019 - Version 11.25</b></a>
+<ul>
+<li>Added a new Sony/Minolta LensType (thanks LibRaw)
+<li>Added a new Nikon LensID
+<li>Decode Leica D-Lux7 maker notes
+<li>Decode more Nikon AF tags for newer models
+<li>Decode Samsung Type2 maker notes with lower case Make
+<li>Decode another Sony tag (thanks Jos Roost)
+<li>Improved decoding of Nikon LensType
+<li>Improved time shift feature to fix some incorrectly formatted date/time
+    values
+<li>Renamed some Sony ImageCount tags to ShutterCount (thanks Jos Roost)
+<li>Fixed problem reading back metadata written to some odd PDF files
+</ul>
+
 <a name='v11.24'><b>Jan. 8, 2019 - Version 11.24</b></a>
 <ul>
 <li>Compatibility Notice: Changed the meaning of '-' and '+' modifiers for %C
@@ -25,7 +40,7 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <li>Added new Olympus FlashType and FlashModel values (thanks Per)
 <li>Added a new Canon LensType
 <li>Added a new Nikon LensID
-<li>Made all GeoTIFF tags writable
+<li>Made more GeoTIFF tags writable
 <li>Handle XMP rdf:value when reading
 <li>Improved warning when trying to read a file with a zero-length name
 <li>Fixed decoding of PictureControl tags for Nikon Z-7

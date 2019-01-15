@@ -649,6 +649,7 @@ official EXIF 2.31 specification.
            MakerNoteLeica7           ExifIFD    Panasonic Leica6
            MakerNoteLeica8           ExifIFD    Panasonic Leica5
            MakerNoteLeica9           ExifIFD    Panasonic Leica9
+           MakerNoteLeica10          ExifIFD    Panasonic
            MakerNotePanasonic        ExifIFD    Panasonic
            MakerNotePanasonic2       ExifIFD    Panasonic Type2
            MakerNotePanasonic3       ExifIFD    Panasonic
@@ -11763,6 +11764,7 @@ These tags are written by Nikon DSLR's which have the live view feature.
            AFPointsUsed                         undef[21]
            AFPointsUsed                         undef[29]
            AFPointsUsed                         undef[20]
+           AFPointsUsed                         undef[62]
            AFPointsUsed                         undef[7]
      16    AFImageWidth                         int16u
      18    AFImageHeight                        int16u
@@ -11771,8 +11773,12 @@ These tags are written by Nikon DSLR's which have the live view feature.
      24    AFAreaWidth                          int16u
      26    AFAreaHeight                         int16u
      28    ContrastDetectAFInFocus              int8u
-     47    AFAreaColumn                         int8u
-     49    AFAreaRow                            int8u
+     42    AFImageWidth                         int16u
+     44    AFImageHeight                        int16u
+     46    AFAreaXPosition                      int16u
+     48    AFAreaYPosition                      int16u
+     50    AFAreaWidth                          int16u
+     52    AFAreaHeight                         int16u
      68    PrimaryAFPoint                       int8u
      70    AFImageWidth                         int16u
      72    AFImageHeight                        int16u
@@ -16865,11 +16871,11 @@ substitution cipher, but the deciphered values are listed below.
   0x0000   SonyMaxAperture                      int8u
   0x0001   SonyMinAperture                      int8u
   0x0031   FlashStatus                          int8u
-  0x0032   ImageCount                           int32u
+  0x0032   ShutterCount                         int32u
   0x003a   SonyExposureTime                     int16u
   0x003c   SonyFNumber                          int16u
   0x003f   ReleaseMode2                         int8u
-  0x004c   ImageCount2                          int32u
+  0x004c   ShutterCount2                        int32u
   0x0051   SonyDateTime2                        undef[6]
   0x0067   ReleaseMode2                         int8u
   0x007c   InternalSerialNumber                 int8u[4]~
@@ -16881,9 +16887,9 @@ substitution cipher, but the deciphered values are listed below.
   0x010b   DistortionCorrParamsPresent          int8u
   0x0115   LensSpecFeatures                     undef[2]
   0x0116   LensSpecFeatures                     undef[2]
-  0x01a0   ImageCount3                          int32u
-  0x01aa   ImageCount3                          int32u
-  0x01bd   ImageCount3                          int32u
+  0x01a0   ShutterCount3                        int32u
+  0x01aa   ShutterCount3                        int32u
+  0x01bd   ShutterCount3                        int32u
 
 =head3 Sony Tag9050b Tags
 
@@ -16893,13 +16899,14 @@ Valid from July 2015 for ILCE-6300/6500/7M3/7RM2/7RM3/7SM2/9, ILCA-99M2.
   ------   --------                             --------
   0x0000   SonyMaxAperture                      int8u
   0x0001   SonyMinAperture                      int8u
+  0x002c   Shutter                              int8u
   0x0039   FlashStatus                          int8u
-  0x003a   ImageCount                           int32u
+  0x003a   ShutterCount                         int32u
   0x0046   SonyExposureTime                     int16u
   0x0048   SonyFNumber                          int16u
   0x004b   ReleaseMode2                         int8u
-  0x0052   ImageCount2                          int32u~
-  0x0058   ImageCount2                          int32u
+  0x0052   ShutterCount2                        int32u~
+  0x0058   ShutterCount2                        int32u
   0x0061   SonyTimeMinSec                       no
   0x0073   ReleaseMode2                         int8u
   0x0088   InternalSerialNumber                 int8u[6]~
@@ -16909,9 +16916,9 @@ Valid from July 2015 for ILCE-6300/6500/7M3/7RM2/7RM3/7SM2/9, ILCA-99M2.
   0x0109   LensType                             int16u
   0x010b   DistortionCorrParamsPresent          int8u
   0x0116   LensSpecFeatures                     undef[2]
-  0x019f   ImageCount3                          int32u
-  0x01cb   ImageCount3                          int32u
-  0x01cd   ImageCount3                          int32u
+  0x019f   ShutterCount3                        int32u
+  0x01cb   ShutterCount3                        int32u
+  0x01cd   ShutterCount3                        int32u
   0x021c   LensSpecFeatures                     undef[2]
   0x021e   LensSpecFeatures                     undef[2]
 
@@ -17600,6 +17607,7 @@ still proprietary) Adobe format.
            MakerNoteLeica7                      Panasonic Leica6
            MakerNoteLeica8                      Panasonic Leica5
            MakerNoteLeica9                      Panasonic Leica9
+           MakerNoteLeica10                     Panasonic
            MakerNotePanasonic                   Panasonic
            MakerNotePanasonic2                  Panasonic Type2
            MakerNotePanasonic3                  Panasonic
@@ -33156,6 +33164,7 @@ for more details.
                        MakerNoteLeica7
                        MakerNoteLeica8
                        MakerNoteLeica9
+                       MakerNoteLeica10
                        MakerNotePanasonic
                        MakerNotePanasonic2
                        MakerNotePanasonic3

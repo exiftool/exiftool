@@ -81,7 +81,13 @@ start of the individual IFD entry.</p>
 <p><a name="Kyocera"><b>Kyocera:</b></a> A number of models write all maker notes offsets relative
 to the start of the individual IFD entry.</p>
 
-<p><a name="Leica"><b>Leica:</b></a> The M8 and M9 write the EXIF ComponentsConfiguration value in
+<p><a name="Leica"><b>Leica:</b></a> Leica is hands-down the most inconsistent
+company when it comes to writing makernote information.  Various models use
+different signatures and different bases for the offsets for the maker notes. As
+well as this, they do a number of really peculiar things with in their
+metadata.</p>
+
+<p>The M8 and M9 write the EXIF ComponentsConfiguration value in
 ASCII instead of binary.  The M8 writes EXIF ExposureCompensation and
 ShutterSpeedValue incorrectly as a unsigned rationals when they should be
 signed.  This leads to crazy values like "+65536" for small negative exposure
@@ -272,7 +278,7 @@ are absolute.  What a mess!</p>
 
 <hr>
 <i>Created Mar. 25, 2005</i>
-<br><i>Last revised Apr. 30, 2018</i>
+<br><i>Last revised Jan. 11, 2019</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

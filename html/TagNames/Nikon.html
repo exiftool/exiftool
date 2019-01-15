@@ -296,7 +296,9 @@ causes the other information to be re-encrypted with the new key)</span></span><
 <td><span class=s>Bit 0 = MF
   <br>Bit 1 = D
   <br>Bit 2 = G
-  <br>Bit 3 = VR</span></td></tr>
+  <br>Bit 3 = VR
+  <br>Bit 4 = 1
+  <br>Bit 6 = E</span></td></tr>
 <tr class=b>
 <td title='0x0084 = 132'>0x0084</td>
 <td>Lens</td>
@@ -4733,9 +4735,12 @@ D5200, D7000.</p>
   <br>131 = Face Priority (41 points)
   <br>192 = Pinpoint
   <br>193 = Single
+  <br>194 = Dynamic
   <br>195 = Wide (S)
   <br>196 = Wide (L)
-  <br>197 = Auto</td></tr></table>
+  <br>197 = Auto
+  <br>198 = Auto (198)
+  <br>199 = Auto (focus lock)</td></tr></table>
 </td></tr>
 <tr class=b>
 <td class=r title='6 = 0x6'>6</td>
@@ -5167,7 +5172,10 @@ D500 and D850)</span></span><table class=cols><tr>
   <br>151 = G1
   <br>152 = H1
   <br>153 = I1</td></tr></table>
-<span class=s><span class=n>(future models?...)</span>
+<span class=s><span class=n>(Nikon models with 493-point AF -- 17 rows (A-Q) and 29 columns (1-29), I15
+at the center)</span>
+  <br>0 = (none)
+  <br><span class=n>(future models?...)</span>
   <br>0 = (none)
   <br>1 = Center</span></td></tr>
 <tr class=b>
@@ -5179,8 +5187,9 @@ D500 and D850)</span></span><table class=cols><tr>
   <br>AFPointsUsed
   <br>AFPointsUsed
   <br>AFPointsUsed
+  <br>AFPointsUsed
   <br>AFPointsUsed</td>
-<td class=c>undef[7]<br>undef[2]<br>undef[5]<br>undef[17]<br>undef[21]<br>undef[29]<br>undef[20]<br>undef[7]</td>
+<td class=c>undef[7]<br>undef[2]<br>undef[5]<br>undef[17]<br>undef[21]<br>undef[29]<br>undef[20]<br>undef[62]<br>undef[7]</td>
 <td><span class=s><span class=n>(models with 51-point AF -- 5 rows: A1-9, B1-11, C1-11, D1-11, E1-9.  Center
 point is C6)</span>
   <br><span class=n>(models with 11-point AF)</span></span><table class=cols><tr>
@@ -5207,7 +5216,9 @@ point is F8)</span>
   <br><span class=n>(models with 171-point AF -- 9 rows (B-J) and 19 columns (2-20).  Center
 point is F10)</span>
   <br><span class=n>(models with 153-point AF -- 9 rows (A-I) and 17 columns (1-17). Center
-point is E9)</span></span></td></tr>
+point is E9)</span>
+  <br><span class=n>(models with 493-point AF -- 17 rows (A-Q) and 29 columns (1-29). Center
+point is I15)</span></span></td></tr>
 <tr>
 <td class=r title='16 = 0x10'>16</td>
 <td>AFImageWidth</td>
@@ -5245,17 +5256,35 @@ point is E9)</span></span></td></tr>
 <td><span class=s>0 = No
   <br>1 = Yes</span></td></tr>
 <tr class=b>
-<td class=r title='47 = 0x2f'>47</td>
-<td>AFAreaColumn</td>
-<td class=c>int8u</td>
-<td><span class=s><span class=n>(column number of selected AF area in contrast-detect mode for models such as
-the Z-7.  Range is 1-30)</span></span></td></tr>
+<td class=r title='42 = 0x2a'>42</td>
+<td>AFImageWidth</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
 <tr>
-<td class=r title='49 = 0x31'>49</td>
-<td>AFAreaRow</td>
-<td class=c>int8u</td>
-<td><span class=s><span class=n>(row number of selected AF area in contrast-detect mode for models such as
-the Z-7.  Range is 1-19)</span></span></td></tr>
+<td class=r title='44 = 0x2c'>44</td>
+<td>AFImageHeight</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='46 = 0x2e'>46</td>
+<td>AFAreaXPosition</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='48 = 0x30'>48</td>
+<td>AFAreaYPosition</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='50 = 0x32'>50</td>
+<td>AFAreaWidth</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='52 = 0x34'>52</td>
+<td>AFAreaHeight</td>
+<td class=c>int16u</td>
+<td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='68 = 0x44'>68</td>
 <td>PrimaryAFPoint</td>
@@ -6938,6 +6967,7 @@ ExifTool to choose in these cases (see the
 </tr><tr><td>'A1 40 18 37 2C 34 A3 06'</td><td>= AF-S DX Nikkor 10-24mm f/3.5-4.5G ED</td>
 </tr><tr><td>'A1 41 19 31 2C 2C 4B 06'</td><td>= Sigma 10-20mm F3.5 EX DC HSM</td>
 </tr><tr><td>'A1 54 55 55 0C 0C BC 06'</td><td>= AF-S Nikkor 58mm f/1.4G</td>
+</tr><tr><td>'A2 38 5C 8E 34 40 CD 86'</td><td>= AF-P DX Nikkor 70-300mm f/4.5-6.3G VR</td>
 </tr><tr><td>'A2 40 2D 53 2C 3C BD 0E'</td><td>= AF-S DX Nikkor 18-55mm f/3.5-5.6G VR II</td>
 </tr><tr><td>'A2 48 5C 80 24 24 A4 0E'</td><td>= AF-S Nikkor 70-200mm f/2.8G ED VR II</td>
 </tr><tr><td>'A3 38 5C 8E 34 40 CE 0E'</td><td>= AF-P DX Nikkor 70-300mm f/4.5-6.3G ED</td>
@@ -7078,7 +7108,7 @@ ExifTool to choose in these cases (see the
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jan 8, 2019</i>
+<br><i>Last revised Jan 14, 2019</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

@@ -990,6 +990,7 @@ sub WriteXMP($$;$)
         my (%attrs, $deleted, $added, $existed);
         # delete existing entry if necessary
         if ($isStruct) {
+            # delete all structure (or pseudo-structure) elements
             require 'Image/ExifTool/XMPStruct.pl';
             ($deleted, $added, $existed) = DeleteStruct($et, \%capture, \$path, $nvHash, \$changed);
             next unless $deleted or $added or $et->IsOverwriting($nvHash);

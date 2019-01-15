@@ -21,7 +21,7 @@ use vars qw($VERSION $AUTOLOAD $lastFetched);
 use Image::ExifTool qw(:DataAccess :Utils);
 require Exporter;
 
-$VERSION = '1.46';
+$VERSION = '1.47';
 
 sub FetchObject($$$$);
 sub ExtractObject($$;$$);
@@ -2174,6 +2174,9 @@ XRef:
                     $raf->Read($buff, 20) == 20 or return -6;
                     $buff =~ /^\s*(\d{10}) (\d{5}) (f|n)/s or return -4;
                     my $num = $start + $i;
+                    # locate object to generate entry from stream if necessary
+                    # (must do this before we test $xref{$num})
+                    LocateAnyObject(\%xref, $num) if $xref{dicts};
                     # save offset for newest copy of all objects
                     # (or next object number for free objects)
                     unless (defined $xref{$num}) {

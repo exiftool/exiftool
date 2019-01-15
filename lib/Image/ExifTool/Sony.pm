@@ -32,7 +32,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.97';
+$VERSION = '2.98';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -147,13 +147,13 @@ my %sonyLensTypes2 = (
     49457 => 'Tamron 28-75mm F2.8 Di III RXD', #JR (Model A036)
 
     50480 => 'Sigma 30mm F1.4 DC DN | C', #IB/JR (016)
-    50481 => 'Sigma 50mm F1.4 DG HSM | A + MC-11', #JR (014)
+    50481 => 'Sigma 50mm F1.4 DG HSM | A', #JR (014 + MC-11 or 018)
     50482 => 'Sigma 18-300mm F3.5-6.3 DC MACRO OS HSM | C + MC-11', #JR (014)
     50483 => 'Sigma 18-35mm F1.8 DC HSM | A + MC-11', #JR (013)
     50484 => 'Sigma 24-35mm F2 DG HSM | A + MC-11', #JR (015)
     50486 => 'Sigma 150-600mm F5-6.3 DG OS HSM | C + MC-11', #JR (015)
     50487 => 'Sigma 20mm F1.4 DG HSM | A + MC-11', #JR (015)
-    50488 => 'Sigma 35mm F1.4 DG HSM | A + MC-11', #JR (012)
+    50488 => 'Sigma 35mm F1.4 DG HSM | A', #JR (012 + MC-11 or 018)
     50489 => 'Sigma 150-600mm F5-6.3 DG OS HSM | S + MC-11', #JR (014)
     50490 => 'Sigma 120-300mm F2.8 DG OS HSM | S + MC-11', #JR (013)
     50492 => 'Sigma 24-105mm F4 DG OS HSM | A + MC-11', #JR (013)
@@ -164,6 +164,7 @@ my %sonyLensTypes2 = (
     50503 => 'Sigma 16mm F1.4 DC DN | C', #JR (017)
     50507 => 'Sigma 105mm F1.4 DG HSM | A', #IB (018)
     50508 => 'Sigma 56mm F1.4 DC DN | C', #JR (018)
+    50512 => 'Sigma 70-200mm F2.8 DG OS HSM | S', #IB (018)
     50513 => 'Sigma 70mm F2.8 DG MACRO | A', #JR (018)
 
     50992 => 'Voigtlander SUPER WIDE-HELIAR 15mm F4.5 III', #JR
@@ -7020,6 +7021,7 @@ my %pictureProfile2010 = (
 #           appears to be difference between used FNumber and MaxAperture, 256 being +1 APEX or stop
 #           however, not always valid e.g. bracketing, Shutter-prio e.a.
 #           difference between 0x0002 and 0x0004 mostly 0.0, 0.1 or 0.2 stops.
+    # 0x0020 - int16u[3]: all 0's when Silent Shooting / Electronic Shutter (ILCE-7S only)
     0x0031 => { #JR
         Name => 'FlashStatus',
         RawConv => '$$self{FlashFired} = $val',
@@ -7034,7 +7036,7 @@ my %pictureProfile2010 = (
         },
     },
     0x0032 => { #13
-        Name => 'ImageCount',
+        Name => 'ShutterCount',
         # this seems to be valid for the A7R,A37,A57,A65,A77,A99,A99V and possibly the
         # NEX-5N/7.  For the A99V it is definitely more than 16 bits, but it wraps at
         # 65536 for the A7R.
@@ -7069,9 +7071,9 @@ my %pictureProfile2010 = (
 #                           e.g for SAL70400G2:  9   5   5  64  69  74  79  84  89  94  98 104 255 105  89  80
 #                           where 9 means 9 focal lengths: 64 ... 104,
 #                           corresponding to 70-400mm via FocalLength = 4.375*2**($val/16)
-# 0x004c, 0x0051:  E-Mount: ImageCount and dateTime
+# 0x004c, 0x0051:  E-Mount: ShutterCount and dateTime
     0x004c => { # only ILCE-7/7R/7S/7M2/5000/5100/6000/QX1 - but appears not valid when flash is used ...
-        Name => 'ImageCount2',
+        Name => 'ShutterCount2',
         Condition => '($$self{Model} =~ /^(ILCE-(7(R|S|M2)?|[56]000|5100|QX1))\b/) and (($$self{FlashFired} & 0x01) != 1)',
         Format => 'int32u',
         RawConv => '$val & 0x00ffffff',
@@ -7188,27 +7190,27 @@ my %pictureProfile2010 = (
 #    0x012d => {Name=>'LensType',Format=>'int16u',Condition =>'$$self{Model}=~/^(SLT-A(37|57|65|77)V?|Lunar|NEX-(F3|5N|7|VG20E))/'},
 #    0x012e => {Name=>'LensType',Format=>'int16u',Condition =>'$$self{Model}=~/^(SLT-A(58|99V?)|HV|ILCA-(68|77M2)|NEX-(3N|5R|5T|6|VG30E|VG900)|ILCE-(3000|3500|5000|5100|6000|7|7R|7S|7M2|QX1))/'},
 
-#    ImageCount3 = ImageCount   for SLT-A58, ILCE, ILCA, NEX-3N
-#                  ImageCount-1 for SLT-A37,A57,A65,A77,A99, NEX-F3,5N,5R,5T,6,7, sometimes 0
-#                  ImageCount-2 for NEX-VG, and often 0; "ImageCount-2" also seen on a few A99V images
-#    The offset for ImageCount3 changes with firmware version for the ILCE-7/7R/7S/7M2, so don't decode it for now:
+#    ShutterCount3 = ShutterCount   for SLT-A58, ILCE, ILCA, NEX-3N
+#                    ShutterCount-1 for SLT-A37,A57,A65,A77,A99, NEX-F3,5N,5R,5T,6,7, sometimes 0
+#                    ShutterCount-2 for NEX-VG, and often 0; "ShutterCount-2" also seen on a few A99V images
+#    The offset for ShutterCount3 changes with firmware version for the ILCE-7/7R/7S/7M2, so don't decode it for now:
 #                 ILCE-7M2/7S: 0x01a0 (firmware 1.0x, 1.1x), 0x01b6 (firmware 1.20, 1.21, 2.00)
 #                 ILCE-7/7R:   0x01aa (firmware 1.0x, 1.1x), 0x01c0 (firmware 1.20, 1.21, 2.00)
 #    Similarly for ILCE-6000 v2.00: 0x01aa --> 0x01c0: removed from 0x01aa
     0x01a0 => {
-        Name => 'ImageCount3',
+        Name => 'ShutterCount3',
         Format => 'int32u',
         RawConv => '$val == 0 ? undef : $val',
         Condition => '$$self{Model} =~ /^(ILCE-(5100|QX1)|ILCA-(68|77M2))/',
     },
     0x01aa => {
-        Name => 'ImageCount3',
+        Name => 'ShutterCount3',
         Format => 'int32u',
         RawConv => '$val == 0 ? undef : $val',
         Condition => '$$self{Model} =~ /^(SLT-A(58|99V?)|HV|NEX-(3N|5R|5T|6|VG900|VG30E)|ILCE-([35]000|3500))\b/',
     },
     0x01bd => {
-        Name => 'ImageCount3',
+        Name => 'ShutterCount3',
         Format => 'int32u',
         RawConv => '$val == 0 ? undef : $val',
         Condition => '$$self{Model} =~ /^(SLT-A(37|57|65|77)V?|Lunar|NEX-(F3|5N|7|VG20E))/',
@@ -7273,6 +7275,14 @@ my %pictureProfile2010 = (
         PrintConv => 'sprintf("%.0f",$val)',
         PrintConvInv => '$val',
     },
+    # 0x0026 - int16u[3]: all 0's when Silent Shooting / Electronic Shutter
+    0x002c => {
+        Name => 'Shutter',
+        PrintConv => {
+            0  => 'Silent / Electronic',
+            56 => 'Mechanical',
+        },
+    },
     0x0039 => {
         Name => 'FlashStatus',
         RawConv => '$$self{FlashFired} = $val',
@@ -7287,7 +7297,7 @@ my %pictureProfile2010 = (
         },
     },
     0x003a => {
-        Name => 'ImageCount',
+        Name => 'ShutterCount',
         # or "ShutterCount"? : number of shutter actuations, does not increase during Silent Shooting,
         # at least for ILCE-7RM2
         Format => 'int32u',
@@ -7315,7 +7325,7 @@ my %pictureProfile2010 = (
         %releaseMode2,
     },
     0x0052 => {
-        Name => 'ImageCount2',
+        Name => 'ShutterCount2',
         Condition => '(($$self{FlashFired} & 0x01) != 1) and ($$self{Model} =~ /^(ILCE-(7M3|7RM3))/)',
         Format => 'int32u',
         RawConv => '$val & 0x00ffffff',
@@ -7325,9 +7335,9 @@ my %pictureProfile2010 = (
 #                           e.g for SAL70400G2:  9   5   5  64  69  74  79  84  89  94  98 104 255 105  89  80
 #                           where 9 means 9 focal lengths: 64 ... 104,
 #                           corresponding to 70-400mm via FocalLength = 4.375*2**($val/16)
-# 0x0058, 0x0061:  E-Mount: ImageCount and dateTime
+# 0x0058, 0x0061:  E-Mount: ShutterCount and dateTime
     0x0058 => { # appears not valid when flash is used ... not for ILCA-99M2
-        Name => 'ImageCount2',
+        Name => 'ShutterCount2',
         Condition => '(($$self{FlashFired} & 0x01) != 1) and ($$self{Model} !~ /^(ILCA-99M2|ILCE-(7M3|7RM3))/)',
         Format => 'int32u',
         RawConv => '$val & 0x00ffffff',
@@ -7413,19 +7423,19 @@ my %pictureProfile2010 = (
 # tags becoming model- and/or firmware-dependent from here.
 #
     0x019f => {
-        Name => 'ImageCount3',
+        Name => 'ShutterCount3',
         Condition => '$$self{Model} =~ /^(ILCE-(7M3|7RM3|9))/',
         Format => 'int32u',
         RawConv => '$val == 0 ? undef : $val',
     },
     0x01cb => {
-        Name => 'ImageCount3',
+        Name => 'ShutterCount3',
         Condition => '$$self{Model} =~ /^(ILCE-(7RM2|7SM2))/',
         Format => 'int32u',
         RawConv => '$val == 0 ? undef : $val',
     },
     0x01cd => {
-        Name => 'ImageCount3',
+        Name => 'ShutterCount3',
         Condition => '$$self{Model} =~ /^(ILCE-(6300|6500)|ILCA-99M2)/',
         Format => 'int32u',
         RawConv => '$val == 0 ? undef : $val',

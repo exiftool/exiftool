@@ -13,9 +13,9 @@ use vars qw($VERSION);
 use Image::ExifTool;    # only for FinishTiffDump()
 use Image::ExifTool::HTML qw(EscapeHTML);
 
-$VERSION = '1.34';
+$VERSION = '1.35';
 
-sub DumpTable($$$;$$$$$);
+sub DumpTable($$$;$$$$$$);
 sub Open($$$;@);
 sub Write($@);
 
@@ -32,6 +32,7 @@ _END_PART_1_
 # Note: Don't change font-weight style because it can affect line height
 my $htmlHeader2 = <<_END_PART_2_;
 </title>
+<meta charset="utf-8"/>
 <style type="text/css">
 <!--
 /* character style ID's */
@@ -171,7 +172,9 @@ function high(e,on) {
     // un-highlight current objects
     if (hlist) {
       for (var i=0; i<hlist.length; ++i) {
-        hlist[i].style.background = 'transparent';
+        for (var j=0; j<hlist[i].length; ++j) {
+          hlist[i][j].style.background = 'transparent';
+        }
       }
       hlist = null;
     }
@@ -190,20 +193,26 @@ function high(e,on) {
         }
       }
       // highlight anchor elements with the same name
-      hlist = document.getElementsByName(targ.name);
+      hlist = new Array;
+      hlist.push(document.getElementsByName(targ.name));
+      // is this an IFD pointer?
+      var pos = targ.className.indexOf('Offset_');
+      if (pos > 0) {
+        // add elements from this IFD to the highlight list
+        hlist.push(document.getElementsByClassName(targ.className.substr(pos+7)));
+      }
       // use class name to highlight span elements if necessary
       for (var i=0; i<mspan.length; ++i) {
         if (mspan[i] != targ.name) continue;
         var slist = GetElementsByClass(targ.name, 'span');
         // add elements from hlist collection to our array
-        for (var j=0; j<hlist.length; ++j) {
-            slist[slist.length] = hlist[j];
-        }
-        hlist = slist;
+        hlist.push(slist);
         break;
       }
-      for (var j=0; j<hlist.length; ++j) {
-        hlist[j].style.background = '#ffcc99';
+      for (var i=0; i<hlist.length; ++i) {
+        for (var j=0; j<hlist[i].length; ++j) {
+          hlist[i][j].style.background = '#ffcc99';
+        }
       }
     }
   }
@@ -236,7 +245,7 @@ sub new
 # Add information to dump
 # Inputs: 0) HTML dump hash ref, 1) absolute offset in file, 2) data size,
 #         3) comment string, 4) tool tip (or SAME to use previous tip),
-#         5) bit flags (see below)
+#         5) bit flags (see below), 6) IFD name
 # Bits: 0x01 - print at start of line
 #       0x02 - print red address
 #       0x04 - maker notes data ('M'-class span)
@@ -244,9 +253,9 @@ sub new
 #       0x10 - allow double references
 #       0x100 - (reserved)
 # Notes: Block will be shown in 'unused' color if comment string begins with '['
-sub Add($$$$;$)
+sub Add($$$$;$$)
 {
-    my ($self, $start, $size, $msg, $tip, $flag) = @_;
+    my ($self, $start, $size, $msg, $tip, $flag, $ifd) = @_;
     my $block = $$self{Block};
     $$block{$start} or $$block{$start} = [ ];
     my $htip;
@@ -263,7 +272,7 @@ sub Add($$$$;$)
         $htip .= "<br>($size bytes)" unless $htip =~ /<br>Size:/;
         ++$self->{TipNum};
     }
-    push @{$$block{$start}}, [ $size, $msg, $htip, $flag, $self->{TipNum} ];
+    push @{$$block{$start}}, [ $size, $msg, $htip, $flag, $self->{TipNum}, $ifd ];
 }
 
 #------------------------------------------------------------------------------
@@ -351,7 +360,7 @@ sub Print($$;$$$$$)
         }
         my $parms;
         foreach $parms (@$parmList) {
-            my ($len, $msg, $tip, $flag, $tipNum) = @$parms;
+            my ($len, $msg, $tip, $flag, $tipNum, $ifd) = @$parms;
             next unless $len > 0;
             $flag = 0 unless defined $flag;
             # generate same name for all blocks indexed by this tooltip
@@ -367,8 +376,10 @@ sub Print($$;$$$$$)
                 ++$index;
             }
             if ($flag & 0x14) {
+                my $class = $flag & 0x04 ? "$name M" : $name;
+                $class .= " $ifd" if $ifd;
                 my %bkg = (
-                    Class => $flag & 0x04 ? "$name M" : $name,
+                    Class => $class,
                     Start => $start - $dataPos,
                     End   => $start - $dataPos + $len,
                 );
@@ -428,7 +439,7 @@ sub Print($$;$$$$$)
                 $flag |= 0x100 unless $flag & 0x01 or $nextFlag & 0x01;
             }
             $self->DumpTable($start-$dataPos, \$buff, $msg, $name,
-                             $flag, $len, $pos-$dataPos);
+                             $flag, $len, $pos-$dataPos, $ifd);
             undef $buff;
             $pos = $end if $pos < $end;
         }
@@ -558,10 +569,10 @@ sub Open($$$;@)
 # Dump a block of data in HTML table form
 # Inputs: 0) HtmlDump object ref, 1) data position, 2) block pointer,
 #         3) message, 4) object name, 5) flag, 6) full block length (actual
-#         data may be shorter), 7) data end position
-sub DumpTable($$$;$$$$$)
+#         data may be shorter), 7) data end position, 8) IFD name
+sub DumpTable($$$;$$$$$$)
 {
-    my ($self, $pos, $blockPt, $msg, $name, $flag, $len, $endPos) = @_;
+    my ($self, $pos, $blockPt, $msg, $name, $flag, $len, $endPos, $ifd) = @_;
     $len = length $$blockPt unless defined $len;
     $endPos = 0 unless $endPos;
     my ($f0, $dblRef, $id);
@@ -588,7 +599,8 @@ sub DumpTable($$$;$$$$$)
             }
             ++$id unless $dblRef;
         }
-        $name = "<a name=$name class=$id>";
+        my $class = $ifd ? "'$id $ifd'" : $id;
+        $name = "<a name=$name class=$class>";
         $msg and $msg = "$name$msg</a>";
     } else {
         $name = '';
@@ -653,7 +665,8 @@ sub DumpTable($$$;$$$$$)
         if ($dblRef and $p >= $endPos) {
             $dblRef = 0;
             ++$id;
-            $name =~ s/class=\w\b/class=$id/;
+            my $class = $ifd ? "'$id $ifd'" : $id;
+            $name =~ s/class=\w\b/class=$class/;
             $f0 = '';
             $self->Open('fgd', $f0, 0);
         }

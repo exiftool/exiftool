@@ -59,7 +59,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.59';
+$VERSION = '3.60';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -526,7 +526,7 @@ sub GetAFPointGrid($$;$);
     '00 4C 7C 7C 2C 2C 00 02' => 'Tamron SP AF 180mm f/3.5 Di Model (B01)',
     '21 56 8E 8E 24 24 14 00' => 'Tamron SP AF 300mm f/2.8 LD-IF (60E)',
     '27 54 8E 8E 24 24 1D 02' => 'Tamron SP AF 300mm f/2.8 LD-IF (360E)',
-    'E1 40 19 36 2C 35 DF 4E' => 'Tamron 10-24mm F/3.5-4.5 Di II VC HLD (B023)',
+    'E1 40 19 36 2C 35 DF 4E' => 'Tamron 10-24mm f/3.5-4.5 Di II VC HLD (B023)',
     'F6 3F 18 37 2C 34 84 06' => 'Tamron SP AF 10-24mm f/3.5-4.5 Di II LD Aspherical (IF) (B001)',
     'F6 3F 18 37 2C 34 DF 06' => 'Tamron SP AF 10-24mm f/3.5-4.5 Di II LD Aspherical (IF) (B001)', #30
     '00 36 1C 2D 34 3C 00 06' => 'Tamron SP AF 11-18mm f/4.5-5.6 Di II LD Aspherical (IF) (A13)',
@@ -534,6 +534,7 @@ sub GetAFPointGrid($$;$);
     'CA 48 27 3E 24 24 DF 4E' => 'Tamron SP 15-30mm f/2.8 Di VC USD G2 (A041)', #IB
     'EA 40 29 8E 2C 40 DF 0E' => 'Tamron AF 16-300mm f/3.5-6.3 Di II VC PZD (B016)',
     '07 46 2B 44 24 30 03 02' => 'Tamron SP AF 17-35mm f/2.8-4 Di LD Aspherical (IF) (A05)',
+    'CB 3C 2B 44 24 31 DF 46' => 'Tamron 17-35mm f/2.8-4 Di OSD (A037)', #IB
     '00 53 2B 50 24 24 00 06' => 'Tamron SP AF 17-50mm f/2.8 XR Di II LD Aspherical (IF) (A16)', #PH
     '00 54 2B 50 24 24 00 06' => 'Tamron SP AF 17-50mm f/2.8 XR Di II LD Aspherical (IF) (A16NII)',
     'FB 54 2B 50 24 24 84 06' => 'Tamron SP AF 17-50mm f/2.8 XR Di II LD Aspherical (IF) (A16NII)', #http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,3787.0.html
@@ -3396,6 +3397,7 @@ my %binaryDataAttrs = (
             },
             PrintConv => {
                 0 => '(none)',
+                246 => 'I15 (Center)',
                 OTHER => sub {
                     my ($val, $inv) = @_;
                     return GetAFPointGrid($val, 29, $inv);

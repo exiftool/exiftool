@@ -15862,6 +15862,7 @@ MakerNotes.
   0x9400   Tag9400a                             Sony Tag9400a
            Tag9400b                             Sony Tag9400b
            Tag9400c                             Sony Tag9400c
+  0x9401   Tag9401                              Sony Tag9401
   0x9402   Tag9402                              Sony Tag9402
   0x9403   Tag9403                              Sony Tag9403
   0x9404   Tag9404a                             Sony Tag9404a
@@ -16733,7 +16734,7 @@ ILCE-6300/6500/7RM2/7SM2, ILCA-99M2.
 
 =head3 Sony Tag2010i Tags
 
-Valid for ILCE-7M3/7RM3/9, DSC-RX10M4/RX100M6/RX100M5A/HX99.
+Valid for ILCE-6400/7M3/7RM3/9, DSC-RX10M4/RX100M6/RX100M5A/HX99.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
@@ -16893,7 +16894,8 @@ substitution cipher, but the deciphered values are listed below.
 
 =head3 Sony Tag9050b Tags
 
-Valid from July 2015 for ILCE-6300/6500/7M3/7RM2/7RM3/7SM2/9, ILCA-99M2.
+Valid from July 2015 for ILCE-6300/6400/6500/7M3/7RM2/7RM3/7SM2/9,
+ILCA-99M2.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
@@ -16905,9 +16907,12 @@ Valid from July 2015 for ILCE-6300/6500/7M3/7RM2/7RM3/7SM2/9, ILCA-99M2.
   0x0046   SonyExposureTime                     int16u
   0x0048   SonyFNumber                          int16u
   0x004b   ReleaseMode2                         int8u
+  0x0050   ShutterCount2                        int32u~
   0x0052   ShutterCount2                        int32u~
   0x0058   ShutterCount2                        int32u
   0x0061   SonyTimeMinSec                       no
+  0x006b   ReleaseMode2                         int8u
+  0x006d   ReleaseMode2                         int8u
   0x0073   ReleaseMode2                         int8u
   0x0088   InternalSerialNumber                 int8u[6]~
   0x0105   LensMount                            int8u
@@ -16961,8 +16966,8 @@ DSC-HX50V, DSC-QX10/QX100.
 
 Valid for DSC-HX60V/HX80/HX90V/HX99/HX350/HX400V/QX30/RX0/RX1RM2/RX10/
 RX10M2/RX10M3/RX10M4/RX100M3/RX100M4/RX100M5/RX100M5A/RX100M6/WX220/WX350/
-WX500, ILCE-7/7R/7S/7M2/7M3/7RM2/7RM3/7SM2/9/5000/5100/6000/6300/6500/QX1,
-ILCA-68/77M2/99M2.
+WX500, ILCE-7/7R/7S/7M2/7M3/7RM2/7RM3/7SM2/9/5000/5100/6000/6300/6400/6500/
+QX1, ILCA-68/77M2/99M2.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
@@ -16977,6 +16982,28 @@ ILCA-68/77M2/99M2.
   0x002a   Quality2                             int8u
   0x0047   SonyImageHeight                      int16u~
   0x0053   ModelReleaseYear                     int8u~
+
+=head3 Sony Tag9401 Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  0x059d   ISOInfo                              Sony ISOInfo
+  0x0634   ISOInfo                              Sony ISOInfo
+  0x0636   ISOInfo                              Sony ISOInfo
+  0x064c   ISOInfo                              Sony ISOInfo
+  0x0653   ISOInfo                              Sony ISOInfo
+  0x0678   ISOInfo                              Sony ISOInfo
+  0x06b8   ISOInfo                              Sony ISOInfo
+  0x06de   ISOInfo                              Sony ISOInfo
+  0x06e7   ISOInfo                              Sony ISOInfo
+
+=head3 Sony ISOInfo Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    ISOSetting                           int8u
+      2    ISOAutoMin                           int8u
+      4    ISOAutoMax                           int8u
 
 =head3 Sony Tag9402 Tags
 

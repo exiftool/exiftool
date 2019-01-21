@@ -456,8 +456,8 @@ numerical.
 
                   'PutFirst' - [EXIF only] flag to place this value before IFD0
                   when writing (ie. immediately after TIFF header).  Only used
-                  for main IFD's (IFD0, IFD1, etc) and IFD's where SubIFD flag
-                  is set to 2 (currently only ExifIFD).
+                  for values in main IFD's (IFD0, IFD1, etc) and IFD's where
+                  SubIFD flag is set to 2 (currently only ExifIFD).
 
                   'RawJoin' - [List tags only] Joins raw List-type tag values
                   into a single string with a space separator, allowing

@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup);
 
-$VERSION = '11.25';
+$VERSION = '11.26';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -5503,12 +5503,12 @@ sub InverseFileName($$)
 #------------------------------------------------------------------------------
 # Save information for HTML dump
 # Inputs: 0) ExifTool hash ref, 1) start offset, 2) data size
-#         3) comment string, 4) tool tip (or SAME), 5) flags
-sub HDump($$$$;$$)
+#         3) comment string, 4) tool tip (or SAME), 5) flags, 6) IFD name
+sub HDump($$$$;$$$)
 {
     my $self = shift;
     $$self{HTML_DUMP} or return;
-    my ($pos, $len, $com, $tip, $flg) = @_;
+    my ($pos, $len, $com, $tip, $flg, $ifd) = @_;
     $pos += $$self{BASE} if $$self{BASE};
     # skip structural data blocks which have been removed from the middle of this dump
     # (SkipData list contains ordered [start,end+1] offsets to skip)
@@ -5519,14 +5519,14 @@ sub HDump($$$$;$$)
             $end <= $$skip[0] and last;
             $pos >= $$skip[1] and $pos += $$skip[1] - $$skip[0], next;
             if ($pos != $$skip[0]) {
-                $$self{HTML_DUMP}->Add($pos, $$skip[0]-$pos, $com, $tip, $flg);
+                $$self{HTML_DUMP}->Add($pos, $$skip[0]-$pos, $com, $tip, $flg, $ifd);
                 $len -= $$skip[0] - $pos;
                 $tip = 'SAME';
             }
             $pos = $$skip[1];
         }
     }
-    $$self{HTML_DUMP}->Add($pos, $len, $com, $tip, $flg);
+    $$self{HTML_DUMP}->Add($pos, $len, $com, $tip, $flg, $ifd);
 }
 
 #------------------------------------------------------------------------------

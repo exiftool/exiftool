@@ -55,7 +55,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.09';
+$VERSION = '4.10';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -5504,14 +5504,16 @@ sub ProcessExif($$$)
         }
         unless ($$dirInfo{NoDumpEntryCount}) {
             $et->HDump($dirStart + $dataPos + $base, 2, "$longName entries",
-                       "Entry count: $numEntries");
+                       "Entry count: $numEntries", undef, $dirName);
         }
-        my $tip;
+        my ($tip, $nxt);
         if ($bytesFromEnd >= 4) {
-            my $nxt = ($dir =~ /^(.*?)(\d+)$/) ? $1 . ($2 + 1) : 'Next IFD';
+            $nxt = ($dir =~ /^(.*?)(\d+)$/) ? $1 . ($2 + 1) : 'Next IFD';
             $tip = sprintf("$nxt offset: 0x%.4x", Get32u($dataPt, $dirEnd));
+            $nxt = $nxt eq 'Next IFD' ? undef : " Offset_$nxt";
         }
-        $et->HDump($dirEnd + $dataPos + $base, 4, "Next IFD", $tip, 0);
+        $nxt = '' unless defined $nxt;
+        $et->HDump($dirEnd + $dataPos + $base, 4, "Next IFD", $tip, 0, "$dirName$nxt");
     }
 
     # patch for Canon EOS 40D firmware 1.0.4 bug (incorrect directory counts)
@@ -5908,7 +5910,11 @@ sub ProcessExif($$$)
                     }
                 }
                 $tip .= "Value: $tval";
-                $et->HDump($entry+$dataPos+$base, 12, "$dname $colName", $tip, 1);
+                my $id = $dirName;
+                if ($tagInfo and $$tagInfo{SubIFD} and $$tagInfo{Groups}{1}) {
+                    $id .= " Offset_$$tagInfo{Groups}{1}";
+                }
+                $et->HDump($entry+$dataPos+$base, 12, "$dname $colName", $tip, 1, $id);
                 next if $valueDataLen < 0;  # don't process bad pointer entry
                 if ($size > 4) {
                     my $exifDumpPos = $valuePtr + $valueDataPos + $base;

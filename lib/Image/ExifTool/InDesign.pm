@@ -14,7 +14,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.06';
+$VERSION = '1.07';
 
 # map for writing metadata to InDesign files (currently only write XMP)
 my %indMap = (
@@ -98,7 +98,8 @@ sub ProcessIND($$)
         $raf->Read($hdr, 32) or last;
         unless (length($hdr) == 32 and $hdr =~ /^\Q$objectHeaderGUID/) {
             # this must be null padding or we have an error
-            $hdr =~ /^\0+$/ or $err = 'Corrupt file or unsupported InDesign version';
+            # (have seen spaces instead, so allow this too)
+            $hdr =~ /^[\0 ]+$/ or $err = 'Corrupt file or unsupported InDesign version';
             last;
         }
         my $len = Get32u(\$hdr, 24);

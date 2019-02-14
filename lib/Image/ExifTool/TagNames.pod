@@ -1134,13 +1134,33 @@ These tags belong to the ExifTool XMP-drone-dji family 1 group.
   Tag Name                                      Writable
   --------                                      --------
   AbsoluteAltitude                              real
+  CalibratedFocalLength                         real
+  CalibratedOpticalCenterX                      real
+  CalibratedOpticalCenterY                      real
+  CamReverse                                    string
+  DewarpData                                    string
+  DewarpFlag                                    string
   FlightPitchDegree                             real
   FlightRollDegree                              real
+  FlightXSpeed                                  real
+  FlightYSpeed                                  real
   FlightYawDegree                               real
+  FlightZSpeed                                  real
+  GPSLatitude                                   real/
+  GPSLongitude                                  real/
+  GPSLongtitude                                 real
   GimbalPitchDegree                             real
+  GimbalReverse                                 string
   GimbalRollDegree                              real
   GimbalYawDegree                               real
+  Latitude                                      real
+  Longitude                                     real
   RelativeAltitude                              real
+  RtkFlag                                       string
+  RtkStdHgt                                     real
+  RtkStdLat                                     real
+  RtkStdLon                                     real
+  SelfData                                      string
 
 =head2 XMP Tags
 

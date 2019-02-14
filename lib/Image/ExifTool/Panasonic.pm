@@ -634,6 +634,7 @@ my %shootingMode = (
             2 => 'High (+1)',
             3 => 'Lowest (-2)', #JD
             4 => 'Highest (+2)', #JD
+            # 6 - seen for DC-S1/S1R (IB)
             # 65531 - seen for LX100/FZ2500 "NR1" test shots at imaging-resource (PH)
             #     0 - seen for FZ2500 "NR6D" test shots (PH)
         },

@@ -17,7 +17,7 @@ require Exporter;
 use vars qw($VERSION @ISA @EXPORT_OK);
 use Image::ExifTool qw(:Utils);
 
-$VERSION = '1.16';
+$VERSION = '1.17';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(FindTagInfo TagExists);
 
@@ -1111,6 +1111,9 @@ my %tagLookup = (
 	'bytecount' => { 461 => 'byteCount' },
 	'c14configuration' => { 131 => 0x1964 },
 	'cacheversion' => { 113 => 0xc7aa },
+	'calibratedfocallength' => { 110 => 'CalibratedFocalLength' },
+	'calibratedopticalcenterx' => { 110 => 'CalibratedOpticalCenterX' },
+	'calibratedopticalcentery' => { 110 => 'CalibratedOpticalCenterY' },
 	'calibration' => { 372 => [0x24,0x30] },
 	'calibrationhistory' => { 131 => 0x9c9 },
 	'calibrationilluminant1' => { 113 => 0xc65a },
@@ -1173,6 +1176,7 @@ my %tagLookup = (
 	'cameratype' => { 72 => 0x1a, 283 => 0x207 },
 	'cameratype2' => { 279 => 0x100 },
 	'camerayaw' => { 109 => 0xa },
+	'camreverse' => { 110 => 'CamReverse' },
 	'canondr4' => { 114 => 'CanonDR4' },
 	'canonexposuremode' => { 33 => 0x14 },
 	'canonfiledescription' => { 91 => 0x805 },
@@ -1911,6 +1915,8 @@ my %tagLookup = (
 	'devicesettingdescriptionrows' => { 451 => [\'DeviceSettingDescription','DeviceSettingDescriptionRows'] },
 	'devicesettingdescriptionsettings' => { 451 => [\'DeviceSettingDescription','DeviceSettingDescriptionSettings'] },
 	'devicetype' => { 369 => 0x2 },
+	'dewarpdata' => { 110 => 'DewarpData' },
+	'dewarpflag' => { 110 => 'DewarpFlag' },
 	'dialdirectiontvav' => { 78 => 0x706 },
 	'dietaryneeds' => { 463 => 'dietaryNeeds' },
 	'diffractioncorrection' => { 301 => 0xbc, 326 => 0x3 },
@@ -2466,7 +2472,10 @@ my %tagLookup = (
 	'flickerreductionindicator' => { 233 => 0x5e2 },
 	'flightpitchdegree' => { 110 => 'FlightPitchDegree' },
 	'flightrolldegree' => { 110 => 'FlightRollDegree' },
+	'flightxspeed' => { 110 => 'FlightXSpeed' },
 	'flightyawdegree' => { 110 => 'FlightYawDegree' },
+	'flightyspeed' => { 110 => 'FlightYSpeed' },
+	'flightzspeed' => { 110 => 'FlightZSpeed' },
 	'fliphorizontal' => { 254 => 0x76a43206 },
 	'fnumber' => { 6 => 0x3, 8 => 0x3, 10 => 0x3, 12 => 0x3, 13 => 0x3, 14 => 0x3, 15 => 0x3, 16 => 0x3, 17 => 0x3, 18 => 0x3, 19 => 0x3, 20 => 0x3, 21 => 0x3, 22 => 0x3, 23 => 0x3, 24 => 0x3, 25 => 0x3, 26 => 0x3, 27 => 0x3, 28 => 0x3, 29 => 0x5, 30 => 0x6, 72 => 0x15, 113 => 0x829d, 130 => 0xfd04, 133 => 0x1e, 135 => 0xfa23, 137 => 0xf103, 140 => 0x13, 142 => 0x3c, 145 => 0xc, 154 => 'FNumber', 171 => 0xa, 172 => 0x36, 173 => 0x47, 174 => 0x9, 177 => 0x49c7, 212 => 0x38, 336 => 0x13, 369 => 0xa019, 372 => [0x31,0x49], 380 => 0x1, 381 => 0x1, 398 => [0x20,0x22,0x26], 451 => 'FNumber' },
 	'focaldistance' => { 432 => 'FocalDistance' },
@@ -2619,6 +2628,7 @@ my %tagLookup = (
 	'geotime' => { 114 => 'Geotime' },
 	'giftftppriority' => { 436 => 'GIFTFtpPriority' },
 	'gimbalpitchdegree' => { 110 => 'GimbalPitchDegree' },
+	'gimbalreverse' => { 110 => 'GimbalReverse' },
 	'gimbalrolldegree' => { 110 => 'GimbalRollDegree' },
 	'gimbalyawdegree' => { 110 => 'GimbalYawDegree' },
 	'globalaltitude' => { 350 => 0x419 },
@@ -2643,10 +2653,11 @@ my %tagLookup = (
 	'gpshpositioningerror' => { 124 => 0x1f, 451 => 'GPSHPositioningError' },
 	'gpsimgdirection' => { 124 => 0x11, 451 => 'GPSImgDirection' },
 	'gpsimgdirectionref' => { 124 => 0x10, 451 => 'GPSImgDirectionRef' },
-	'gpslatitude' => { 124 => 0x2, 151 => 'Latitude', 451 => 'GPSLatitude' },
+	'gpslatitude' => { 110 => 'GpsLatitude', 124 => 0x2, 151 => 'Latitude', 451 => 'GPSLatitude' },
 	'gpslatituderef' => { 124 => 0x1 },
-	'gpslongitude' => { 124 => 0x4, 151 => 'Longitude', 451 => 'GPSLongitude' },
+	'gpslongitude' => { 110 => 'GpsLongitude', 124 => 0x4, 151 => 'Longitude', 451 => 'GPSLongitude' },
 	'gpslongituderef' => { 124 => 0x3 },
+	'gpslongtitude' => { 110 => 'GpsLongtitude' },
 	'gpsmapdatum' => { 124 => 0x12, 151 => 'Datum', 451 => 'GPSMapDatum' },
 	'gpsmeasuremode' => { 124 => 0xa, 151 => 'MeasureMode', 451 => 'GPSMeasureMode' },
 	'gpsprocessingmethod' => { 124 => 0x1b, 451 => 'GPSProcessingMethod' },
@@ -3160,6 +3171,7 @@ my %tagLookup = (
 	'latestepochorhighestseries' => { 112 => [\'GeologicalContext','GeologicalContextLatestEpochOrHighestSeries'] },
 	'latesteraorhighesterathem' => { 112 => [\'GeologicalContext','GeologicalContextLatestEraOrHighestErathem'] },
 	'latestperiodorhighestsystem' => { 112 => [\'GeologicalContext','GeologicalContextLatestPeriodOrHighestSystem'] },
+	'latitude' => { 110 => 'Latitude' },
 	'lc1' => { 327 => 0x2 },
 	'lc10' => { 327 => 0xb },
 	'lc11' => { 327 => 0xc },
@@ -3344,6 +3356,7 @@ my %tagLookup = (
 	'logscale' => { 131 => 0x902 },
 	'longexposurenoisereduction' => { 59 => 0x4, 78 => 0x201, 79 => 0x1, 80 => 0x2, 81 => 0x1, 82 => 0x1, 83 => 0x2, 84 => 0x1, 301 => 0x49, 380 => 0x2b, 381 => 0x25, 382 => 0x25, 393 => 0x2008, 398 => 0x11, 422 => 0x44 },
 	'longexposurenoisereduction2' => { 54 => 0x8 },
+	'longitude' => { 110 => 'Longitude' },
 	'loop' => { 471 => 'loop' },
 	'lowestbiostratigraphiczone' => { 112 => [\'GeologicalContext','GeologicalContextLowestBiostratigraphicZone'] },
 	'luminanceadjustmentaqua' => { 447 => 'LuminanceAdjustmentAqua' },
@@ -4760,6 +4773,10 @@ my %tagLookup = (
 	'routingnotes' => { 453 => 'RoutingNotes' },
 	'rowsperstrip' => { 113 => 0x116 },
 	'rpp' => { 441 => 'rpp' },
+	'rtkflag' => { 110 => 'RtkFlag' },
+	'rtkstdhgt' => { 110 => 'RtkStdHgt' },
+	'rtkstdlat' => { 110 => 'RtkStdLat' },
+	'rtkstdlon' => { 110 => 'RtkStdLon' },
 	'safetyshift' => { 78 => 0x108 },
 	'safetyshiftinavortv' => { 76 => 0x10, 77 => 0x10, 79 => 0xf, 80 => 0x10, 83 => 0x10 },
 	'sameexposurefornewaperture' => { 78 => 0x112 },
@@ -4831,6 +4848,7 @@ my %tagLookup = (
 	'selectableafpoint' => { 78 => 0x509 },
 	'selectafareaselectionmode' => { 2 => 0xc },
 	'selectafareaselectmode' => { 78 => 0x512 },
+	'selfdata' => { 110 => 'SelfData' },
 	'selftimer' => { 33 => 0x2, 301 => 0x2e, 371 => 0x214, 401 => 0x1134, 402 => 0x1134, 403 => 0x1110, 404 => 0x118c, 405 => 0x1168, 406 => 0x1020, 407 => 0x218, 408 => 0x218, 409 => 0x210 },
 	'selftimer2' => { 72 => 0x1d },
 	'selftimerinterval' => { 271 => '19.2' },
@@ -10825,7 +10843,7 @@ sub FindTagInfo($)
         }
     }
     while ($lookup) {
-        foreach $tableNum (keys %$lookup) {
+        foreach $tableNum (sort { $a <=> $b } keys %$lookup) {
             my $table = GetTagTable($tableList[$tableNum]);
             my $le = $$lookup{$tableNum};
             my ($tagID, $tagIDs);

@@ -89,7 +89,7 @@ my %processByMetaFormat = (
     GPSDOP       => { Description => 'GPS Dilution Of Precision' },
     CameraDateTime=>{ PrintConv => '$self->ConvertDateTime($val)', Groups => { 2 => 'Time' } },
     Accelerometer=> { Notes => 'right/up/backward acceleration in units of g' },
-    RawGSensor    => {
+    RawGSensor   => {
         # (same as GSensor, but offset by some unknown value)
         ValueConv => 'my @a=split " ",$val; $_/=1000 foreach @a; "@a"',
     },
@@ -206,7 +206,7 @@ my %processByMetaFormat = (
             TagTable => 'Image::ExifTool::QuickTime::camm7',
             ByteOrder => 'Little-Endian',
         },
-    },],
+    }],
     JPEG => { # (in CR3 images) - [vide HandlerType with JPEG in SampleDescription, not MetaFormat]
         Name => 'JpgFromRaw',
         Groups => { 2 => 'Preview' },
@@ -553,6 +553,40 @@ sub FoundSomething($$$$)
 }
 
 #------------------------------------------------------------------------------
+# Parse textual metadata
+# Inputs: 0) ExifTool ref, 1) tag table ref, 2) data ref
+sub ParseText($$$)
+{
+    my ($et, $tagTbl, $buffPt) = @_;
+    while ($$buffPt =~ /\$(\w+)([^\$]*)/g) {
+        my ($tag, $dat) = ($1, $2);
+        if ($tag =~ /^[A-Z]{2}RMC$/ and $dat =~ /^,(\d{2})(\d{2})(\d+(\.\d*)?),A?,(\d*?)(\d{1,2}\.\d+),([NS]),(\d*?)(\d{1,2}\.\d+),([EW]),(\d*\.?\d*),(\d*\.?\d*),(\d{2})(\d{2})(\d+)/) {
+            $et->HandleTag($tagTbl, GPSLatitude  => (($5 || 0) + $6/60) * ($7 eq 'N' ? 1 : -1));
+            $et->HandleTag($tagTbl, GPSLongitude => (($8 || 0) + $9/60) * ($10 eq 'E' ? 1 : -1));
+            if (length $11) {
+                $et->HandleTag($tagTbl, GPSSpeed => $11 * $knotsToKph);
+                $et->HandleTag($tagTbl, GPSSpeedRef => 'K');
+            }
+            if (length $12) {
+                $et->HandleTag($tagTbl, GPSTrack => $11);
+                $et->HandleTag($tagTbl, GPSTrackRef => 'T');
+            }
+            my $year = $15 + ($15 >= 70 ? 1900 : 2000);
+            my $str = sprintf('%.4d:%.2d:%.2d %.2d:%.2d:%.2dZ', $year, $14, $13, $1, $2, $3);
+            $et->HandleTag($tagTbl, GPSDateTime => $str);
+        } elsif ($tag eq 'BEGINGSENSOR' and $dat =~ /^:([-+]\d+\.\d+):([-+]\d+\.\d+):([-+]\d+\.\d+)/) {
+            $et->HandleTag($tagTbl, Accelerometer => "$1 $2 $3");
+        } elsif ($tag eq 'TIME' and $dat =~ /^:(\d+)/) {
+            $et->HandleTag($tagTbl, TimeCode => $1 / ($$et{MediaTS} || 1));
+        } elsif ($tag eq 'BEGIN') {
+            $et->HandleTag($tagTbl, Text => $dat) if length $dat;
+        } elsif ($tag ne 'END') {
+            $et->HandleTag($tagTbl, Text => "\$$tag$dat");
+        }
+    }
+}
+
+#------------------------------------------------------------------------------
 # Exract embedded metadata from media samples
 # Inputs: 0) ExifTool ref
 # Notes: Also accesses ExifTool RAF*, SET_GROUP1, HandlerType, MetaFormat,
@@ -709,32 +743,7 @@ sub ProcessSamples($)
                     next;
                 }
             }
-            while ($buff =~ /\$(\w+)([^\$]*)/g) {
-                my ($tag, $dat) = ($1, $2);
-                if ($tag =~ /^[A-Z]{2}RMC$/ and $dat =~ /^,(\d{2})(\d{2})(\d+(\.\d*)?),A?,(\d*?)(\d{1,2}\.\d+),([NS]),(\d*?)(\d{1,2}\.\d+),([EW]),(\d*\.?\d*),(\d*\.?\d*),(\d{2})(\d{2})(\d+)/) {
-                    $et->HandleTag($tagTbl, GPSLatitude  => (($5 || 0) + $6/60) * ($7 eq 'N' ? 1 : -1));
-                    $et->HandleTag($tagTbl, GPSLongitude => (($8 || 0) + $9/60) * ($10 eq 'E' ? 1 : -1));
-                    if (length $11) {
-                        $et->HandleTag($tagTbl, GPSSpeed => $11 * $knotsToKph);
-                        $et->HandleTag($tagTbl, GPSSpeedRef => 'K');
-                    }
-                    if (length $12) {
-                        $et->HandleTag($tagTbl, GPSTrack => $11);
-                        $et->HandleTag($tagTbl, GPSTrackRef => 'T');
-                    }
-                    my $year = $15 + ($15 >= 70 ? 1900 : 2000);
-                    my $str = sprintf('%.4d:%.2d:%.2d %.2d:%.2d:%.2dZ', $year, $14, $13, $1, $2, $3);
-                    $et->HandleTag($tagTbl, GPSDateTime => $str);
-                } elsif ($tag eq 'BEGINGSENSOR' and $dat =~ /^:([-+]\d+\.\d+):([-+]\d+\.\d+):([-+]\d+\.\d+)/) {
-                    $et->HandleTag($tagTbl, Accelerometer => "$1 $2 $3");
-                } elsif ($tag eq 'TIME' and $dat =~ /^:(\d+)/) {
-                    $et->HandleTag($tagTbl, TimeCode => $1 / ($$et{MediaTS} || 1));
-                } elsif ($tag eq 'BEGIN') {
-                    $et->HandleTag($tagTbl, Text => $dat) if length $dat;
-                } elsif ($tag ne 'END') {
-                    $et->HandleTag($tagTbl, Text => "\$$tag$dat");
-                }
-            }
+            ParseText($et, $tagTbl, \$buff);
 
         } elsif ($processByMetaFormat{$type}) {
 
@@ -749,6 +758,12 @@ sub ProcessSamples($)
                         TagInfo => $tagInfo,
                     );
                     delete $$et{ee};
+                } elsif ($metaFormat eq 'camm' and $buff =~ /^X/) {
+                    # seen 'camm' metadata in this format (X/Y/Z acceleration and G force? + GPRMC + ?)
+                    # "X0000.0000Y0000.0000Z0000.0000G0000.0000$GPRMC,000125,V,,,,,000.0,,280908,002.1,N*71~, 794021  \x0a"
+                    FoundSomething($et, $tagTbl, $time[$i], $dur[$i]);
+                    $et->HandleTag($tagTbl, Accelerometer => "$1 $2 $3 $4") if $buff =~ /X(.*?)Y(.*?)Z(.*?)G(.*?)\$/;
+                    ParseText($et, $tagTbl, \$buff);
                 }
             } elsif ($verbose) {
                 $et->VPrint(0, "Unknown meta format ($metaFormat)");

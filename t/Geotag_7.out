@@ -12,9 +12,11 @@ Loaded 10 points from IGC-format GPS track log file 't/images/Geotag.igc'
 Writing File:Geotag
   Geotime value:   2010:01:05 07:57:51.692 UTC (incl. Geosync offset of +266000428.692 sec)
 Writing MIE-GPS:GPSLatitude
+Writing XMP-drone-dji:GPSLatitude if tag exists
 Writing XMP-exif:GPSLatitude if tag exists
 Writing GPS:GPSLatitude
 Writing MIE-GPS:GPSLongitude
+Writing XMP-drone-dji:GPSLongitude if tag exists
 Writing XMP-exif:GPSLongitude if tag exists
 Writing GPS:GPSLongitude
 Writing MIE-GPS:GPSAltitude

@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup);
 
-$VERSION = '11.26';
+$VERSION = '11.27';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -76,6 +76,7 @@ sub AddUserDefinedTags($%);
 # non-public routines below
 sub InsertTagValues($$$;$$$);
 sub IsWritable($);
+sub IsSameFile($$$);
 sub GetNewFileName($$);
 sub LoadAllTables();
 sub GetNewTagInfoList($;$);
@@ -346,6 +347,7 @@ my %createTypes = map { $_ => 1 } qw(XMP ICC MIE VRD DR4 EXIF EXV);
     LFR  =>  'LFP', # (Light Field RAW)
     LNK  => ['LNK',  'Windows shortcut'],
     LRI  => ['LRI',  'Light RAW'],
+    LRV  => ['MOV',  'Low-Resolution Video'],
     M2T  =>  'M2TS',
     M2TS => ['M2TS', 'MPEG-2 Transport Stream'],
     M2V  => ['MPEG', 'MPEG-2 Video'],
@@ -474,7 +476,7 @@ my %createTypes = map { $_ => 1 } qw(XMP ICC MIE VRD DR4 EXIF EXV);
     SVG  => ['XMP',  'Scalable Vector Graphics'],
     SWF  => ['SWF',  'Shockwave Flash'],
     TAR  => ['TAR',  'TAR archive'],
-    THM  => ['JPEG', 'Canon Thumbnail'],
+    THM  => ['JPEG', 'Thumbnail'],
     THMX => [['ZIP','FPX'], 'Office Open XML Theme'],
     TIF  =>  'TIFF',
     TIFF => ['TIFF', 'Tagged Image File Format'],
@@ -7610,7 +7612,9 @@ sub FoundTag($$$;@)
             # increase 0-priority tags if this is the priority directory
             $priority = 1 if not $priority and $$self{DIR_NAME} and
                              $$self{DIR_NAME} eq $$self{PRIORITY_DIR};
-        } elsif ($$self{DIR_NAME} and $$self{LOW_PRIORITY_DIR}{$$self{DIR_NAME}}) {
+        } elsif ($$self{LOW_PRIORITY_DIR}{'*'} or
+            ($$self{DIR_NAME} and $$self{LOW_PRIORITY_DIR}{$$self{DIR_NAME}}))
+        {
             $priority = 0;  # default is 0 for a LOW_PRIORITY_DIR
         } else {
             $priority = 1;  # the normal default

@@ -55,7 +55,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.10';
+$VERSION = '4.11';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -5379,6 +5379,21 @@ sub TagName($;$)
 }
 
 #------------------------------------------------------------------------------
+# Get class name of next IFD offset for HtmlDump output
+# Inputs: 0) ExifTool ref, 1) current class ID
+# Returns: 0) new IFD offset name, 1) new class ID including "Offset_" for new offset
+#          2) new "Offset_" ID
+sub NextOffsetName($;$)
+{
+    my ($et, $id) = @_;
+    $$et{OffsetNum} = defined $$et{OffsetNum} ? $$et{OffsetNum} + 1 : 0;
+    my $offName = 'o' . $$et{OffsetNum};
+    my $sid = "Offset_$offName";
+    $id = (defined $id ? "$id " : '') . $sid;
+    return ($offName, $id, $sid);
+}
+
+#------------------------------------------------------------------------------
 # Process EXIF directory
 # Inputs: 0) ExifTool object reference
 #         1) Reference to directory information hash
@@ -5400,7 +5415,7 @@ sub ProcessExif($$$)
     my $validate = $et->Options('Validate');
     my $htmlDump = $$et{HTML_DUMP};
     my $success = 1;
-    my ($tagKey, $dirSize, $makerAddr, $strEnc, %offsetInfo);
+    my ($tagKey, $dirSize, $makerAddr, $strEnc, %offsetInfo, $offName, $nextOffName);
     my $inMakerNotes = $$tagTablePtr{GROUPS}{0} eq 'MakerNotes';
     my $isExif = ($tagTablePtr eq \%Image::ExifTool::Exif::Main);
 
@@ -5497,6 +5512,7 @@ sub ProcessExif($$$)
         }
     }
     if ($htmlDump) {
+        $offName = $$dirInfo{OffsetName};
         my $longName = $dir eq 'MakerNotes' ? ($$dirInfo{Name} || $dir) : $dir;
         if (defined $makerAddr) {
             my $hdrLen = $dirStart + $dataPos + $base - $makerAddr;
@@ -5504,16 +5520,17 @@ sub ProcessExif($$$)
         }
         unless ($$dirInfo{NoDumpEntryCount}) {
             $et->HDump($dirStart + $dataPos + $base, 2, "$longName entries",
-                       "Entry count: $numEntries", undef, $dirName);
+                       "Entry count: $numEntries", undef, $offName);
         }
-        my ($tip, $nxt);
+        my $tip;
+        my $id = $offName;
         if ($bytesFromEnd >= 4) {
-            $nxt = ($dir =~ /^(.*?)(\d+)$/) ? $1 . ($2 + 1) : 'Next IFD';
-            $tip = sprintf("$nxt offset: 0x%.4x", Get32u($dataPt, $dirEnd));
-            $nxt = $nxt eq 'Next IFD' ? undef : " Offset_$nxt";
+            my $nxt = ($dir =~ /^(.*?)(\d+)$/) ? $1 . ($2 + 1) : 'Next IFD';
+            my $off = Get32u($dataPt, $dirEnd);
+            $tip = sprintf("$nxt offset: 0x%.4x", $off);
+            ($nextOffName, $id) = NextOffsetName($et, $offName) if $off;
         }
-        $nxt = '' unless defined $nxt;
-        $et->HDump($dirEnd + $dataPos + $base, 4, "Next IFD", $tip, 0, "$dirName$nxt");
+        $et->HDump($dirEnd + $dataPos + $base, 4, "Next IFD", $tip, 0, $id);
     }
 
     # patch for Canon EOS 40D firmware 1.0.4 bug (incorrect directory counts)
@@ -5523,7 +5540,7 @@ sub ProcessExif($$$)
         my $fmt = Get16u($dataPt, $entry + 2);
         if ($fmt < 1 or $fmt > 13) {
             $et->HDump($entry+$dataPos+$base,12,"[invalid IFD entry]",
-                       "Bad format type: $fmt", 1);
+                       "Bad format type: $fmt", 1, $offName);
             # adjust the number of directory entries
             --$numEntries;
             $dirEnd -= 12;
@@ -5551,7 +5568,7 @@ sub ProcessExif($$$)
                 $format = $$mapFmt{$format};
             } else {
                 $et->HDump($entry+$dataPos+$base,12,"[invalid IFD entry]",
-                           "Bad format type: $format", 1);
+                           "Bad format type: $format", 1, $offName);
                 # warn unless the IFD was just padded with zeros
                 if ($format or $validate) {
                     $et->Warn("Bad format ($format) for $dir entry $index", $inMakerNotes);
@@ -5568,7 +5585,7 @@ sub ProcessExif($$$)
         my $valueDataLen = $dataLen;
         my $valuePtr = $entry + 8;      # pointer to value within $$dataPt
         my $tagInfo = $et->GetTagInfo($tagTablePtr, $tagID);
-        my ($origFormStr, $bad, $rational);
+        my ($origFormStr, $bad, $rational, $subOffName);
         # hack to patch incorrect count in Kodak SubIFD3 tags
         if ($count < 2 and ref $$tagTablePtr{$tagID} eq 'HASH' and $$tagTablePtr{$tagID}{FixCount}) {
             $offList or ($offList, $offHash) = GetOffList($dataPt, $dirStart, $dataPos,
@@ -5910,10 +5927,9 @@ sub ProcessExif($$$)
                     }
                 }
                 $tip .= "Value: $tval";
-                my $id = $dirName;
-                if ($tagInfo and $$tagInfo{SubIFD} and $$tagInfo{Groups}{1}) {
-                    $id .= " Offset_$$tagInfo{Groups}{1}";
-                }
+                my $id = $offName;
+                my $sid;
+                ($subOffName, $id, $sid) = NextOffsetName($et, $offName) if $tagInfo and $$tagInfo{SubIFD};
                 $et->HDump($entry+$dataPos+$base, 12, "$dname $colName", $tip, 1, $id);
                 next if $valueDataLen < 0;  # don't process bad pointer entry
                 if ($size > 4) {
@@ -5927,7 +5943,7 @@ sub ProcessExif($$$)
                         }
                     }
                     # add value data block (underlining maker notes data)
-                    $et->HDump($exifDumpPos,$size,"$tagName value",'SAME', $flag);
+                    $et->HDump($exifDumpPos,$size,"$tagName value",'SAME', $flag, $sid);
                 }
             } else {
                 if ($tagID <= $lastID and not $inMakerNotes) {
@@ -6102,6 +6118,7 @@ sub ProcessExif($$$)
                     TagInfo    => $tagInfo,
                     SubIFD     => $$tagInfo{SubIFD},
                     Subdir     => $subdir,
+                    OffsetName => $subOffName,
                 );
                 # (remember: some cameras incorrectly write maker notes in IFD0)
                 if ($$tagInfo{MakerNotes}) {
@@ -6248,6 +6265,7 @@ sub ProcessExif($$$)
             # increment IFD number
             my $ifdNum = $newDirInfo{DirName} =~ s/(\d+)$// ? $1 : 0;
             $newDirInfo{DirName} .= $ifdNum + 1;
+            $newDirInfo{OffsetName} = $nextOffName;
             # must validate SubIFD1 because the nextIFD pointer is invalid for some RAW formats
             if ($newDirInfo{DirName} ne 'SubIFD1' or ValidateIFD(\%newDirInfo)) {
                 $$et{INDENT} =~ s/..$//; # keep indent the same

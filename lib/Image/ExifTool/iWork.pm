@@ -14,7 +14,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::XMP;
 use Image::ExifTool::ZIP;
 
-$VERSION = '1.05';
+$VERSION = '1.06';
 
 # test for recognized iWork document extensions and outer XML elements
 my %iWorkType = (
@@ -155,7 +155,7 @@ sub Process_iWork($$)
         Image::ExifTool::ZIP::HandleMember($et, $member);
 
         # process only the index XML and JPEG thumbnail/preview files
-        next unless $file =~ m{^(index\.(xml|apxl)|QuickLook/Thumbnail\.jpg|[^/]+/preview.jpg)$}i;
+        next unless $file =~ m{^(index\.(xml|apxl)|QuickLook/Thumbnail\.jpg|[^/]+/preview(-micro|-web)?.jpg)$}i;
         # get the file contents if necessary
         # (CAREFUL! $buff MUST be local since we hand off a value ref to PreviewImage)
         my ($buff, $buffPt);
@@ -169,7 +169,8 @@ sub Process_iWork($$)
         }
         # extract JPEG as PreviewImage (should only be QuickLook/Thumbnail.jpg)
         if ($file =~ /\.jpg$/) {
-            $et->FoundTag('PreviewImage', $buffPt);
+            my $type = ($file =~ /preview-(\w+)/) ? ($1 eq 'web' ? 'Other' : 'Thumbnail') : 'Preview';
+            $et->FoundTag($type . 'Image', $buffPt);
             next;
         }
         # process "metadata" section of XML index file

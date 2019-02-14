@@ -13,7 +13,7 @@ use vars qw($VERSION);
 use Image::ExifTool;    # only for FinishTiffDump()
 use Image::ExifTool::HTML qw(EscapeHTML);
 
-$VERSION = '1.35';
+$VERSION = '1.36';
 
 sub DumpTable($$$;$$$$$$);
 sub Open($$$;@);
@@ -112,7 +112,6 @@ function GetElementsByClass(classname, tagname) {
       }
     }
   }
-  delete list;
   return found;
 }
 
@@ -198,15 +197,14 @@ function high(e,on) {
       // is this an IFD pointer?
       var pos = targ.className.indexOf('Offset_');
       if (pos > 0) {
-        // add elements from this IFD to the highlight list
+        // add elements from this IFD to our highlight list
         hlist.push(document.getElementsByClassName(targ.className.substr(pos+7)));
       }
       // use class name to highlight span elements if necessary
       for (var i=0; i<mspan.length; ++i) {
         if (mspan[i] != targ.name) continue;
-        var slist = GetElementsByClass(targ.name, 'span');
-        // add elements from hlist collection to our array
-        hlist.push(slist);
+        // add these span elements to our highlight list
+        hlist.push(GetElementsByClass(targ.name, 'span'));
         break;
       }
       for (var i=0; i<hlist.length; ++i) {

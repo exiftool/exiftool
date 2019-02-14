@@ -7,6 +7,24 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 11.11. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Feb. 14, 2019 - Version 11.27
+
+  - Added support for more XMP-dji-drone tags
+  - Added new Olympus CameraType and LensType values (thanks LibRaw)
+  - Added a new Canon LensType (thanks LibRaw)
+  - Added a new CanonModelID
+  - Decode yet another type of GPS from DashCam videos
+  - Allow FileName to be written when only case is changed on case-insensitive
+    filesystems
+  - Improved identification of some iWork file types
+  - Recognize the LRV file extension
+  - Changed Windows version to use the parent folder of PAR_GLOBAL_TEMP for the
+    temporary documentation file
+  - Don't raise an error if an INDD object list is terminated by spaces instead
+    of nulls
+  - Fixed some problems with new -htmldump IFD highlighting feature
+  - Fixed bug introduced in 11.24 with "-o -.EXT" feature
+
 Jan. 21, 2019 - Version 11.26
 
   - Added a new Nikon LensID (thanks LibRaw)

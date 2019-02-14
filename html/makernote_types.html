@@ -13,7 +13,7 @@ table td.c { text-align: center }
 </style>
 </head>
 <body><h2 class=top>Makernote Types</h2>
-<p>The table below lists the makernote types for JPEG images from 6706
+<p>The table below lists the makernote types for JPEG images from 6719
 unique camera models by 100 different manufacturers.  Also listed in the
 table is the byte order for Exif-style makernotes ('MM' is big-endian, 'II'
 is little-endian), and the first 20 bytes of the makernote data in
@@ -884,6 +884,8 @@ ASCII and hexadecimal.</p>
  <td class=c>II</td><td class=h>......2.............</td><td class=h>2e 00 01 00 03 00 32 00 00 00 10 06 00 00 03 00 03 00 04 00</td></tr>
 <tr><td>EOS R</td><td><a href='TagNames/Canon.html'>Canon</a></td>
  <td class=c>II</td><td class=h>2.....1.............</td><td class=h>32 00 01 00 03 00 31 00 00 00 10 06 00 00 02 00 03 00 04 00</td></tr>
+<tr><td>EOS RP</td><td><a href='TagNames/Canon.html'>Canon</a></td>
+ <td class=c>II</td><td class=h>3.....3.............</td><td class=h>33 00 01 00 03 00 33 00 00 00 1c 06 00 00 02 00 03 00 04 00</td></tr>
 <tr><td>EOS Rebel SL1</td><td><a href='TagNames/Canon.html'>Canon</a></td>
  <td class=c>II</td><td class=h>).....1.............</td><td class=h>29 00 01 00 03 00 31 00 00 00 80 05 00 00 02 00 03 00 04 00</td></tr>
 <tr><td>EOS Rebel SL2</td><td><a href='TagNames/Canon.html'>Canon</a></td>
@@ -3462,6 +3464,8 @@ ASCII and hexadecimal.</p>
  <td class=c>II</td><td class=h>FUJIFILM....5.......</td><td class=h>46 55 4a 49 46 49 4c 4d 0c 00 00 00 35 00 00 00 07 00 04 00</td></tr>
 <tr><td>X-T20</td><td><a href='TagNames/FujiFilm.html'>FujiFilm</a></td>
  <td class=c>II</td><td class=h>FUJIFILM....&lt;.......</td><td class=h>46 55 4a 49 46 49 4c 4d 0c 00 00 00 3c 00 00 00 07 00 04 00</td></tr>
+<tr><td>X-T30</td><td><a href='TagNames/FujiFilm.html'>FujiFilm</a></td>
+ <td class=c>II</td><td class=h>FUJIFILM....D.......</td><td class=h>46 55 4a 49 46 49 4c 4d 0c 00 00 00 44 00 00 00 07 00 04 00</td></tr>
 <tr><td>X-T100</td><td><a href='TagNames/FujiFilm.html'>FujiFilm</a></td>
  <td class=c>II</td><td class=h>FUJIFILM....3.......</td><td class=h>46 55 4a 49 46 49 4c 4d 0c 00 00 00 33 00 00 00 07 00 04 00</td></tr>
 <tr><td>X10</td><td><a href='TagNames/FujiFilm.html'>FujiFilm</a></td>
@@ -4259,6 +4263,8 @@ ASCII and hexadecimal.</p>
  <td class=c>II</td><td class=h>HUAWEI..II*.........</td><td class=h>48 55 41 57 45 49 00 00 49 49 2a 00 08 00 00 00 04 00 00 00</td></tr>
 <tr><td>COL-L29</td><td><a href='TagNames/Unknown.html'>Unknown</a></td>
  <td class=c>II</td><td class=h>HUAWEI..II*.........</td><td class=h>48 55 41 57 45 49 00 00 49 49 2a 00 08 00 00 00 04 00 00 00</td></tr>
+<tr><td>COR-L29</td><td><a href='TagNames/Unknown.html'>Unknown</a></td>
+ <td class=c>II</td><td class=h>HUAWEI..II*.........</td><td class=h>48 55 41 57 45 49 00 00 49 49 2a 00 08 00 00 00 04 00 00 00</td></tr>
 <tr><td>CRR-L09</td><td>?</td>
  <td class=c>-</td><td class=h>....................</td><td class=h>c5 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00</td></tr>
 <tr><td>EML-L09</td><td><a href='TagNames/Unknown.html'>Unknown</a></td>
@@ -4277,6 +4283,10 @@ ASCII and hexadecimal.</p>
  <td class=c>-</td><td class=h>#*#*201709272018++ *</td><td class=h>23 2a 23 2a 32 30 31 37 30 39 32 37 32 30 31 38 2b 2b 20 2a</td></tr>
 <tr><td>LYA-L29</td><td>-</td>
  <td class=c>-</td><td class=h>&nbsp;</td><td class=h>&nbsp;</td></tr>
+<tr><td>PCT-L29</td><td>?</td>
+ <td class=c>-</td><td class=h>####......3.........</td><td class=h>23 23 23 23 0a 00 00 00 ae c8 33 01 00 04 01 00 00 00 00 00</td></tr>
+<tr><td>POT-LX1</td><td>?</td>
+ <td class=c>-</td><td class=h>#*#*2018080315013&amp;17</td><td class=h>23 2a 23 2a 32 30 31 38 30 38 30 33 31 35 30 31 33 26 31 37</td></tr>
 <tr><td>SCL-L04</td><td>?</td>
  <td class=c>-</td><td class=h>..............</td><td class=h>00 d0 00 00 16 99 00 00 00 00 00 00 00 bc</td></tr>
 <tr><td>STF-L09</td><td>?</td>
@@ -5367,6 +5377,8 @@ ASCII and hexadecimal.</p>
  <td class=c>II</td><td class=h>LEICA...T...........</td><td class=h>4c 45 49 43 41 00 00 00 54 00 01 00 03 00 01 00 00 00 07 00</td></tr>
 <tr><td>D-LUX 6</td><td><a href='TagNames/Panasonic.html'>Leica</a></td>
  <td class=c>II</td><td class=h>LEICA...j...........</td><td class=h>4c 45 49 43 41 00 00 00 6a 00 01 00 03 00 01 00 00 00 02 00</td></tr>
+<tr><td>D-Lux 7</td><td><a href='TagNames/Panasonic.html'>Leica10</a></td>
+ <td class=c>II</td><td class=h>LEICA CAMERA AG.....</td><td class=h>4c 45 49 43 41 20 43 41 4d 45 52 41 20 41 47 00 00 00 9d 00</td></tr>
 <tr><td>Digilux</td><td>-</td>
  <td class=c>-</td><td class=h>&nbsp;</td><td class=h>&nbsp;</td></tr>
 <tr><td>Digilux 1</td><td><a href='TagNames/Panasonic.html'>Leica</a></td>
@@ -5393,6 +5405,8 @@ ASCII and hexadecimal.</p>
  <td class=c>II</td><td class=h>LEICA...............</td><td class=h>4c 45 49 43 41 00 00 00 12 00 00 03 03 00 01 00 00 00 01 00</td></tr>
 <tr><td>M9</td><td><a href='TagNames/Panasonic.html#Leica4'>Leica4</a></td>
  <td class=c>II</td><td class=h>LEICA0.....0......&gt;.</td><td class=h>4c 45 49 43 41 30 03 00 04 00 00 30 07 00 ea 00 00 00 3e 00</td></tr>
+<tr><td>M10-D</td><td><a href='TagNames/Panasonic.html#Leica9'>Leica9</a></td>
+ <td class=c>II</td><td class=h>LEICA.............|.</td><td class=h>4c 45 49 43 41 00 02 00 1c 00 04 03 04 00 01 00 00 00 7c 09</td></tr>
 <tr><td>M10-P</td><td><a href='TagNames/Panasonic.html#Leica9'>Leica9</a></td>
  <td class=c>II</td><td class=h>LEICA.............M.</td><td class=h>4c 45 49 43 41 00 02 00 1c 00 04 03 04 00 01 00 00 00 4d 03</td></tr>
 <tr><td>Q (Typ 116)</td><td><a href='TagNames/Panasonic.html#Leica5'>Leica8</a></td>
@@ -6235,6 +6249,8 @@ ASCII and hexadecimal.</p>
  <td class=c>II</td><td class=h>Nikon.....II*.....%.</td><td class=h>4e 69 6b 6f 6e 00 02 00 00 00 49 49 2a 00 08 00 00 00 25 00</td></tr>
 <tr><td>Coolpix A900</td><td><a href='TagNames/Nikon.html'>Nikon</a></td>
  <td class=c>II</td><td class=h>Nikon.....II*.....&#39;.</td><td class=h>4e 69 6b 6f 6e 00 02 00 00 00 49 49 2a 00 08 00 00 00 27 00</td></tr>
+<tr><td>Coolpix A1000</td><td><a href='TagNames/Nikon.html'>Nikon</a></td>
+ <td class=c>II</td><td class=h>Nikon.....II*.....(.</td><td class=h>4e 69 6b 6f 6e 00 02 00 00 00 49 49 2a 00 08 00 00 00 28 00</td></tr>
 <tr><td>Coolpix AW100</td><td><a href='TagNames/Nikon.html'>Nikon</a></td>
  <td class=c>II</td><td class=h>Nikon.....II*.....+.</td><td class=h>4e 69 6b 6f 6e 00 02 00 00 00 49 49 2a 00 08 00 00 00 2b 00</td></tr>
 <tr><td>Coolpix AW100s</td><td><a href='TagNames/Nikon.html'>Nikon</a></td>
@@ -7278,6 +7294,8 @@ ASCII and hexadecimal.</p>
  <td class=c>II</td><td class=h>OLYMPUS.II..........</td><td class=h>4f 4c 59 4d 50 55 53 00 49 49 03 00 07 00 00 02 04 00 03 00</td></tr>
 <tr><td>E-M1MarkII</td><td><a href='TagNames/Olympus.html'>Olympus2</a></td>
  <td class=c>II</td><td class=h>OLYMPUS.II..........</td><td class=h>4f 4c 59 4d 50 55 53 00 49 49 03 00 07 00 00 02 04 00 03 00</td></tr>
+<tr><td>E-M1X</td><td><a href='TagNames/Olympus.html'>Olympus2</a></td>
+ <td class=c>II</td><td class=h>OLYMPUS.II..........</td><td class=h>4f 4c 59 4d 50 55 53 00 49 49 03 00 07 00 00 02 04 00 03 00</td></tr>
 <tr><td>E-M5</td><td><a href='TagNames/Olympus.html'>Olympus2</a></td>
  <td class=c>II</td><td class=h>OLYMPUS.II..........</td><td class=h>4f 4c 59 4d 50 55 53 00 49 49 03 00 07 00 00 02 04 00 03 00</td></tr>
 <tr><td>E-M5MarkII</td><td><a href='TagNames/Olympus.html'>Olympus2</a></td>
@@ -7753,6 +7771,10 @@ ASCII and hexadecimal.</p>
  <td class=c>II</td><td class=h>Panasonic...........</td><td class=h>50 61 6e 61 73 6f 6e 69 63 00 00 00 9d 00 01 00 03 00 01 00</td></tr>
 <tr><td>DC-LX100M2</td><td><a href='TagNames/Panasonic.html'>Panasonic</a></td>
  <td class=c>II</td><td class=h>Panasonic...........</td><td class=h>50 61 6e 61 73 6f 6e 69 63 00 00 00 9d 00 01 00 03 00 01 00</td></tr>
+<tr><td>DC-S1</td><td><a href='TagNames/Panasonic.html'>Panasonic</a></td>
+ <td class=c>II</td><td class=h>Panasonic...........</td><td class=h>50 61 6e 61 73 6f 6e 69 63 00 00 00 ba 00 01 00 03 00 01 00</td></tr>
+<tr><td>DC-S1R</td><td><a href='TagNames/Panasonic.html'>Panasonic</a></td>
+ <td class=c>II</td><td class=h>Panasonic...........</td><td class=h>50 61 6e 61 73 6f 6e 69 63 00 00 00 ba 00 01 00 03 00 01 00</td></tr>
 <tr><td>DC-TZ90</td><td><a href='TagNames/Panasonic.html'>Panasonic</a></td>
  <td class=c>II</td><td class=h>Panasonic...........</td><td class=h>50 61 6e 61 73 6f 6e 69 63 00 00 00 9a 00 01 00 03 00 01 00</td></tr>
 <tr><td>DC-TZ200</td><td><a href='TagNames/Panasonic.html'>Panasonic</a></td>
@@ -9900,7 +9922,7 @@ ASCII and hexadecimal.</p>
  <td class=c>-</td><td class=h>&nbsp;</td><td class=h>&nbsp;</td></tr>
 <tr><td>GT-I9008</td><td>-</td>
  <td class=c>-</td><td class=h>&nbsp;</td><td class=h>&nbsp;</td></tr>
-<tr><td>GT-I9060I</td><td><a href='TagNames/Unknown.html'>Unknown</a></td>
+<tr><td>GT-I9060I</td><td><a href='TagNames/Samsung.html#Type2'>Samsung2</a></td>
  <td class=c>II</td><td class=h>..........0100......</td><td class=h>07 00 01 00 07 00 04 00 00 00 30 31 30 30 02 00 04 00 01 00</td></tr>
 <tr><td>GT-I9070</td><td><a href='TagNames/Samsung.html#Type2'>Samsung2</a></td>
  <td class=c>MM</td><td class=h>..........0100......</td><td class=h>00 05 00 01 00 07 00 00 00 04 30 31 30 30 00 02 00 04 00 00</td></tr>
@@ -10466,7 +10488,7 @@ ASCII and hexadecimal.</p>
  <td class=c>-</td><td class=h>................ASRi</td><td class=h>00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 41 53 52 69</td></tr>
 <tr><td>SL620</td><td><a href='TagNames/Unknown.html'>Samsung1a</a></td>
  <td class=c>-</td><td class=h>STMN0100............</td><td class=h>53 54 4d 4e 30 31 30 30 00 00 00 00 00 00 00 00 00 00 00 00</td></tr>
-<tr><td>SM-A750FN</td><td><a href='TagNames/Unknown.html'>Unknown</a></td>
+<tr><td>SM-A750FN</td><td><a href='TagNames/Samsung.html#Type2'>Samsung2</a></td>
  <td class=c>II</td><td class=h>..........0100......</td><td class=h>07 00 01 00 07 00 04 00 00 00 30 31 30 30 02 00 04 00 01 00</td></tr>
 <tr><td>SM-C101</td><td><a href='TagNames/Samsung.html#Type2'>Samsung2</a></td>
  <td class=c>II</td><td class=h>..........0100......</td><td class=h>08 00 01 00 07 00 04 00 00 00 30 31 30 30 02 00 04 00 01 00</td></tr>
@@ -10490,13 +10512,13 @@ ASCII and hexadecimal.</p>
  <td class=c>-</td><td class=h>&nbsp;</td><td class=h>&nbsp;</td></tr>
 <tr><td>SM-G925F</td><td>-</td>
  <td class=c>-</td><td class=h>&nbsp;</td><td class=h>&nbsp;</td></tr>
-<tr><td>SM-G928F</td><td><a href='TagNames/Unknown.html'>Unknown</a></td>
+<tr><td>SM-G928F</td><td><a href='TagNames/Samsung.html#Type2'>Samsung2</a></td>
  <td class=c>II</td><td class=h>..........0100......</td><td class=h>07 00 01 00 07 00 04 00 00 00 30 31 30 30 02 00 04 00 01 00</td></tr>
-<tr><td>SM-G930F</td><td><a href='TagNames/Unknown.html'>Unknown</a></td>
+<tr><td>SM-G930F</td><td><a href='TagNames/Samsung.html#Type2'>Samsung2</a></td>
  <td class=c>II</td><td class=h>..........0100......</td><td class=h>07 00 01 00 07 00 04 00 00 00 30 31 30 30 02 00 04 00 01 00</td></tr>
-<tr><td>SM-G950F</td><td><a href='TagNames/Unknown.html'>Unknown</a></td>
+<tr><td>SM-G950F</td><td><a href='TagNames/Samsung.html#Type2'>Samsung2</a></td>
  <td class=c>II</td><td class=h>..........0100......</td><td class=h>07 00 01 00 07 00 04 00 00 00 30 31 30 30 02 00 04 00 01 00</td></tr>
-<tr><td>SM-G955W</td><td><a href='TagNames/Unknown.html'>Unknown</a></td>
+<tr><td>SM-G955W</td><td><a href='TagNames/Samsung.html#Type2'>Samsung2</a></td>
  <td class=c>II</td><td class=h>..........0100......</td><td class=h>07 00 01 00 07 00 04 00 00 00 30 31 30 30 02 00 04 00 01 00</td></tr>
 <tr><td>SM-G960F</td><td>-</td>
  <td class=c>-</td><td class=h>&nbsp;</td><td class=h>&nbsp;</td></tr>
@@ -10512,17 +10534,17 @@ ASCII and hexadecimal.</p>
  <td class=c>II</td><td class=h>..........0100......</td><td class=h>07 00 01 00 07 00 04 00 00 00 30 31 30 30 02 00 04 00 01 00</td></tr>
 <tr><td>SM-N910V</td><td>-</td>
  <td class=c>-</td><td class=h>&nbsp;</td><td class=h>&nbsp;</td></tr>
-<tr><td>SM-N915G</td><td><a href='TagNames/Unknown.html'>Unknown</a></td>
+<tr><td>SM-N915G</td><td><a href='TagNames/Samsung.html#Type2'>Samsung2</a></td>
  <td class=c>II</td><td class=h>..........0100......</td><td class=h>07 00 01 00 07 00 04 00 00 00 30 31 30 30 02 00 04 00 01 00</td></tr>
-<tr><td>SM-N950F</td><td><a href='TagNames/Unknown.html'>Unknown</a></td>
+<tr><td>SM-N950F</td><td><a href='TagNames/Samsung.html#Type2'>Samsung2</a></td>
  <td class=c>II</td><td class=h>..........0100......</td><td class=h>07 00 01 00 07 00 04 00 00 00 30 31 30 30 02 00 04 00 01 00</td></tr>
-<tr><td>SM-N950U</td><td><a href='TagNames/Unknown.html'>Unknown</a></td>
+<tr><td>SM-N950U</td><td><a href='TagNames/Samsung.html#Type2'>Samsung2</a></td>
  <td class=c>II</td><td class=h>..........0100......</td><td class=h>07 00 01 00 07 00 04 00 00 00 30 31 30 30 02 00 04 00 01 00</td></tr>
 <tr><td>SM-N960F</td><td>-</td>
  <td class=c>-</td><td class=h>&nbsp;</td><td class=h>&nbsp;</td></tr>
 <tr><td>SM-N9005</td><td>-</td>
  <td class=c>-</td><td class=h>&nbsp;</td><td class=h>&nbsp;</td></tr>
-<tr><td>SM-N9208</td><td><a href='TagNames/Unknown.html'>Unknown</a></td>
+<tr><td>SM-N9208</td><td><a href='TagNames/Samsung.html#Type2'>Samsung2</a></td>
  <td class=c>II</td><td class=h>..........0100......</td><td class=h>07 00 01 00 07 00 04 00 00 00 30 31 30 30 02 00 04 00 01 00</td></tr>
 <tr><td>SM-T800</td><td>-</td>
  <td class=c>-</td><td class=h>&nbsp;</td><td class=h>&nbsp;</td></tr>
@@ -12696,6 +12718,8 @@ ASCII and hexadecimal.</p>
  <td class=c>II</td><td class=h>SONY DSC ...^.......</td><td class=h>53 4f 4e 59 20 44 53 43 20 00 00 00 5e 00 03 10 04 00 10 00</td></tr>
 <tr><td>ILCE-6300</td><td><a href='TagNames/Sony.html'>Sony</a></td>
  <td class=c>II</td><td class=h>SONY DSC ...`.......</td><td class=h>53 4f 4e 59 20 44 53 43 20 00 00 00 60 00 03 10 04 00 10 00</td></tr>
+<tr><td>ILCE-6400</td><td><a href='TagNames/Sony.html'>Sony</a></td>
+ <td class=c>II</td><td class=h>SONY DSC ...f.......</td><td class=h>53 4f 4e 59 20 44 53 43 20 00 00 00 66 00 03 10 04 00 10 00</td></tr>
 <tr><td>ILCE-6500</td><td><a href='TagNames/Sony.html'>Sony</a></td>
  <td class=c>II</td><td class=h>SONY DSC ...d.......</td><td class=h>53 4f 4e 59 20 44 53 43 20 00 00 00 64 00 03 10 04 00 10 00</td></tr>
 <tr><td>ILCE-QX1</td><td><a href='TagNames/Sony.html'>Sony</a></td>
@@ -13460,6 +13484,8 @@ ASCII and hexadecimal.</p>
  <td class=c>-</td><td class=h>&nbsp;</td><td class=h>&nbsp;</td></tr>
 <tr><td>MI 5</td><td>-</td>
  <td class=c>-</td><td class=h>&nbsp;</td><td class=h>&nbsp;</td></tr>
+<tr><td>MI 8</td><td>-</td>
+ <td class=c>-</td><td class=h>&nbsp;</td><td class=h>&nbsp;</td></tr>
 <tr><td>MI MAX</td><td>-</td>
  <td class=c>-</td><td class=h>&nbsp;</td><td class=h>&nbsp;</td></tr>
 <tr><td>MI NOTE Pro</td><td>-</td>
@@ -13533,7 +13559,7 @@ ASCII and hexadecimal.</p>
  <td class=c>-</td><td class=h>&nbsp;</td><td class=h>&nbsp;</td></tr>
 <tr><td>Z970</td><td>-</td>
  <td class=c>-</td><td class=h>&nbsp;</td><td class=h>&nbsp;</td></tr>
-</table><hr><i>Last revised Nov 14, 2018</i>
+</table><hr><i>Last revised Feb 14, 2019</i>
 <p class='lf'><a href='index.html'>&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

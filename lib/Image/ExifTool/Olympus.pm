@@ -39,7 +39,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::APP12;
 
-$VERSION = '2.56';
+$VERSION = '2.57';
 
 sub PrintLensInfo($$$);
 
@@ -106,6 +106,7 @@ my %olympusLensTypes = (
     '0 30 10' => 'Olympus M.Zuiko Digital ED 45mm F1.2 Pro', #IB
     '0 31 00' => 'Olympus Zuiko Digital ED 12-60mm F2.8-4.0 SWD', #7
     '0 32 00' => 'Olympus Zuiko Digital ED 14-35mm F2.0 SWD', #PH
+    '0 32 10' => 'Olympus M.Zuiko Digital ED 12-200mm F3.5-6.3', #IB
     '0 33 00' => 'Olympus Zuiko Digital 25mm F2.8', #PH
     '0 34 00' => 'Olympus Zuiko Digital ED 9-18mm F4.0-5.6', #7
     '0 35 00' => 'Olympus Zuiko Digital 14-54mm F2.8-3.5 II', #PH
@@ -406,6 +407,7 @@ my %olympusCameraTypes = (
     S0067 => 'E-M1MarkII',
     S0068 => 'E-M10MarkIII',
     S0076 => 'E-PL9', #IB
+    S0080 => 'E-M1X', #IB
     SR45 => 'D220',
     SR55 => 'D320L',
     SR83 => 'D340L',
@@ -2484,10 +2486,29 @@ my %indexInfo = (
         Count => 2,
         PrintConv => {
             '0 0' => 'No',
+            '3 2' => 'ND2 (1EV)', #IB
+            '3 4' => 'ND4 (2EV)', #IB
+            '3 8' => 'ND8 (3EV)', #IB
+            '3 16' => 'ND16 (4EV)', #IB
+            '3 32' => 'ND32 (5EV)', #IB
             '5 4' => 'HDR1', #forum8906
             '6 4' => 'HDR2', #forum8906
-            #'8 8' - seen this for the E-M1mkII
+            '8 8' => 'Tripod high resolution', #IB
+            '9 2' => 'Focus-stacked (2 images)', #IB
+            '9 3' => 'Focus-stacked (3 images)', #IB
+            '9 4' => 'Focus-stacked (4 images)', #IB
+            '9 5' => 'Focus-stacked (5 images)', #IB
+            '9 6' => 'Focus-stacked (6 images)', #IB
+            '9 7' => 'Focus-stacked (7 images)', #IB
             '9 8' => 'Focus-stacked (8 images)',
+            '9 9' => 'Focus-stacked (9 images)', #IB
+            '9 10' => 'Focus-stacked (10 images)', #IB
+            '9 11' => 'Focus-stacked (11 images)', #IB
+            '9 12' => 'Focus-stacked (12 images)', #IB
+            '9 13' => 'Focus-stacked (13 images)', #IB
+            '9 14' => 'Focus-stacked (14 images)', #IB
+            '9 15' => 'Focus-stacked (15 images)', #IB
+            '11 16' => 'Hand-held high resolution', #IB
         },
     },
     0x900 => { #11

@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.06';
+$VERSION = '1.07';
 
 my $maxOffset = 0x7fffffff; # currently supported maximum data offset/size
 
@@ -31,8 +31,12 @@ sub ProcessBigIFD($$$)
     my $htmlDump = $$et{HTML_DUMP};
     my $dirName = $$dirInfo{DirName};
     my $dirStart = $$dirInfo{DirStart};
+    my ($offName, $nextOffName);
 
-    $verbose = -1 if $htmlDump; # mix htmlDump into verbose so we can test for both at once
+    if ($htmlDump) {
+        $verbose = -1;  # mix htmlDump into verbose so we can test for both at once
+        $offName = $$dirInfo{OffsetName};
+    }
 
     # loop through IFD chain
     for (;;) {
@@ -64,10 +68,13 @@ sub ProcessBigIFD($$$)
         my $nextIFD;
         $raf->Read($nextIFD, 8) == 8 or undef $nextIFD; # try to read next IFD pointer
         if ($htmlDump) {
-            $et->HDump($bufPos-8, 8, "$dirName entries", "Entry count: $numEntries");
+            $et->HDump($bufPos-8, 8, "$dirName entries", "Entry count: $numEntries", undef, $offName);
             if (defined $nextIFD) {
-                my $tip = sprintf("Offset: 0x%.8x", Image::ExifTool::Get64u(\$nextIFD, 0));
-                $et->HDump($bufPos + 20 * $numEntries, 8, "Next IFD", $tip, 0);
+                my $off = Image::ExifTool::Get64u(\$nextIFD, 0);
+                my $tip = sprintf("Offset: 0x%.8x", $off);
+                my $id = $offName;
+                ($nextOffName, $id) = Image::ExifTool::Exif::NextOffsetName($et, $id) if $off;
+                $et->HDump($bufPos + 20 * $numEntries, 8, "Next IFD", $tip, 0, $id);
             }
         }
         # loop through all entries in this BigTIFF IFD
@@ -79,7 +86,7 @@ sub ProcessBigIFD($$$)
             my $formatSize = $Image::ExifTool::Exif::formatSize[$format];
             unless (defined $formatSize) {
                 $et->HDump($bufPos+$entry,20,"[invalid IFD entry]",
-                           "Bad format value: $format", 1);
+                           "Bad format value: $format", 1, $offName);
                 # warn unless the IFD was just padded with zeros
                 $et->Warn(sprintf("Unknown format ($format) for $dirName tag 0x%x",$tagID));
                 return 0; # assume corrupted IFD
@@ -89,7 +96,7 @@ sub ProcessBigIFD($$$)
             my $tagInfo = $et->GetTagInfo($tagTablePtr, $tagID);
             next unless defined $tagInfo or $verbose;
             my $valuePtr = $entry + 12;
-            my ($valBuff, $valBase, $rational);
+            my ($valBuff, $valBase, $rational, $subOffName);
             if ($size > 8) {
                 if ($size > $maxOffset) {
                     $et->Warn("Can't handle $dirName entry $index (huge size)");
@@ -148,11 +155,17 @@ sub ProcessBigIFD($$$)
                     }
                 }
                 $tip .= "Value: $tval";
-                $et->HDump($entry+$bufPos, 20, "$dname $colName", $tip, 1);
+                my ($id, $sid);
+                if ($tagInfo and $$tagInfo{SubIFD}) {
+                    ($subOffName, $id, $sid) = Image::ExifTool::Exif::NextOffsetName($et, $offName);
+                } else {
+                    $id = $offName;
+                }
+                $et->HDump($entry+$bufPos, 20, "$dname $colName", $tip, 1, $id);
                 if ($size > 8) {
                     # add value data block
                     my $flg = ($tagInfo and $$tagInfo{SubDirectory} and $$tagInfo{MakerNotes}) ? 4 : 0;
-                    $et->HDump($valuePtr,$size,"$tagName value",'SAME', $flg);
+                    $et->HDump($valuePtr,$size,"$tagName value",'SAME', $flg, $sid);
                 }
             }
             if ($tagInfo and $$tagInfo{SubIFD}) {
@@ -174,11 +187,12 @@ sub ProcessBigIFD($$$)
                     my $subdirName = $$tagInfo{Name};
                     $subdirName .= $i if $i;
                     my %subdirInfo = (
-                        RAF      => $raf,
-                        DataPos  => 0,
-                        DirStart => $offsets[$i],
-                        DirName  => $subdirName,
-                        Parent   => $dirInfo,
+                        RAF        => $raf,
+                        DataPos    => 0,
+                        DirStart   => $offsets[$i],
+                        DirName    => $subdirName,
+                        Parent     => $dirName,
+                        OffsetName => $subOffName,
                     );
                     $et->ProcessDirectory(\%subdirInfo, $tagTablePtr, \&ProcessBigIFD);
                 }
@@ -201,6 +215,7 @@ sub ProcessBigIFD($$$)
         defined $nextIFD or $et->Warn("Bad $dirName pointer"), return 0;
         $dirStart = Image::ExifTool::Get64u(\$nextIFD, 0);
         $dirStart or last;
+        $offName = $nextOffName;
     }
     return 1;
 }

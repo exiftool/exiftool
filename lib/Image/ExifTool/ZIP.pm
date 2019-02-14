@@ -19,7 +19,7 @@ use strict;
 use vars qw($VERSION $warnString);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.23';
+$VERSION = '1.24';
 
 sub WarnProc($) { $warnString = $_[0]; }
 
@@ -41,6 +41,14 @@ my %openDocType = (
 my %iWorkFile = (
     'Index/Slide.iwa' => 'KEY',
     'Index/Tables/DataList.iwa' => 'NUMBERS',
+);
+
+my %iWorkType = (
+    NUMBERS => 'NUMBERS',
+    PAGES   => 'PAGES',
+    KEY     => 'KEY',
+    KTH     => 'KTH',
+    NMBTEMPLATE => 'NMBTEMPLATE',
 );
 
 # ZIP metadata blocks
@@ -587,7 +595,8 @@ sub ProcessZIP($$)
                     $et->FoundTag($extract{$file} => $buff);
                 }
             } elsif ($file eq 'Index/Document.iwa' and not $iWorkType) {
-                $iWorkType = 'PAGES';
+                my $type = $iWorkType{$$et{FILE_EXT} || ''};
+                $iWorkType = $type || 'PAGES';
             } elsif ($iWorkFile{$file}) {
                 $iWorkType = $iWorkFile{$file};
             }

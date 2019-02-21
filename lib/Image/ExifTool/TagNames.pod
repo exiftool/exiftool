@@ -25043,6 +25043,7 @@ the ExtractEmbedded option is used.
   Tag Name                                      Writable
   --------                                      --------
   Accelerometer                                 no
+  AngularVelocity                               no
   CTMD                                          Canon CTMD
   CameraDateTime                                no
   FrameNumber                                   no
@@ -25057,6 +25058,7 @@ the ExtractEmbedded option is used.
   GPSTimeStamp                                  no
   GPSTrack                                      no
   GPSTrackRef                                   no
+  INSV                                          QuickTime INSV_MakerNotes
   JpgFromRaw                                    no
   RVMI_gReV                                     QuickTime RVMI_gReV
   RVMI_sReV                                     QuickTime RVMI_sReV
@@ -25065,6 +25067,8 @@ the ExtractEmbedded option is used.
   SampleTime                                    no
   Text                                          no
   TimeCode                                      no
+  Unknown1?                                     no
+  Unknown2?                                     no
   UserLabel                                     no
   camm0                                         QuickTime camm0
   camm1                                         QuickTime camm1
@@ -25079,6 +25083,15 @@ the ExtractEmbedded option is used.
   mebx                                          QuickTime Keys
   rtmd                                          Sony rtmd
   tx3g                                          QuickTime tx3g
+
+=head3 QuickTime INSV_MakerNotes Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  0x000a   SerialNumber                         no
+  0x0012   Model                                no
+  0x001a   Firmware                             no
+  0x002a   Parameters                           no
 
 =head3 QuickTime RVMI_gReV Tags
 

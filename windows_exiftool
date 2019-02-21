@@ -12,7 +12,7 @@
 use strict;
 require 5.004;
 
-my $version = '11.27';
+my $version = '11.28';
 
 # add our 'lib' directory to the include list BEFORE 'use Image::ExifTool'
 my $exeDir;
@@ -4234,45 +4234,45 @@ DESCRIPTION
 
       File Types
       ------------+-------------+-------------+-------------+------------
-      3FR   r     | DSS   r     | JP2   r/w   | ODT   r     | RSRC  r
-      3G2   r/w   | DV    r     | JPEG  r/w   | OFR   r     | RTF   r
-      3GP   r/w   | DVB   r/w   | JSON  r     | OGG   r     | RW2   r/w
-      A     r     | DVR-MS r    | K25   r     | OGV   r     | RWL   r/w
-      AA    r     | DYLIB r     | KDC   r     | OPUS  r     | RWZ   r
-      AAE   r     | EIP   r     | KEY   r     | ORF   r/w   | RM    r
-      AAX   r/w   | EPS   r/w   | LA    r     | OTF   r     | SEQ   r
-      ACR   r     | EPUB  r     | LFP   r     | PAC   r     | SKETCH r
-      AFM   r     | ERF   r/w   | LNK   r     | PAGES r     | SO    r
-      AI    r/w   | EXE   r     | LRV   r/w   | PBM   r/w   | SR2   r/w
-      AIFF  r     | EXIF  r/w/c | M2TS  r     | PCD   r     | SRF   r
-      APE   r     | EXR   r     | M4A/V r/w   | PCX   r     | SRW   r/w
-      ARQ   r/w   | EXV   r/w/c | MAX   r     | PDB   r     | SVG   r
-      ARW   r/w   | F4A/V r/w   | MEF   r/w   | PDF   r/w   | SWF   r
-      ASF   r     | FFF   r/w   | MIE   r/w/c | PEF   r/w   | THM   r/w
-      AVI   r     | FLA   r     | MIFF  r     | PFA   r     | TIFF  r/w
-      AZW   r     | FLAC  r     | MKA   r     | PFB   r     | TORRENT r
-      BMP   r     | FLIF  r/w   | MKS   r     | PFM   r     | TTC   r
-      BPG   r     | FLV   r     | MKV   r     | PGF   r     | TTF   r
-      BTF   r     | FPF   r     | MNG   r/w   | PGM   r/w   | VCF   r
-      CHM   r     | FPX   r     | MOBI  r     | PLIST r     | VRD   r/w/c
-      COS   r     | GIF   r/w   | MODD  r     | PICT  r     | VSD   r
-      CR2   r/w   | GPR   r/w   | MOI   r     | PMP   r     | WAV   r
-      CR3   r/w   | GZ    r     | MOS   r/w   | PNG   r/w   | WDP   r/w
-      CRM   r/w   | HDP   r/w   | MOV   r/w   | PPM   r/w   | WEBP  r
-      CRW   r/w   | HDR   r     | MP3   r     | PPT   r     | WEBM  r
-      CS1   r/w   | HEIC  r     | MP4   r/w   | PPTX  r     | WMA   r
-      DCM   r     | HEIF  r     | MPC   r     | PS    r/w   | WMV   r
-      DCP   r/w   | HTML  r     | MPG   r     | PSB   r/w   | WTV   r
-      DCR   r     | ICC   r/w/c | MPO   r/w   | PSD   r/w   | WV    r
-      DFONT r     | ICS   r     | MQV   r/w   | PSP   r     | X3F   r/w
-      DIVX  r     | IDML  r     | MRW   r/w   | QTIF  r/w   | XCF   r
-      DJVU  r     | IIQ   r/w   | MXF   r     | R3D   r     | XLS   r
-      DLL   r     | IND   r/w   | NEF   r/w   | RA    r     | XLSX  r
-      DNG   r/w   | INX   r     | NRW   r/w   | RAF   r/w   | XMP   r/w/c
-      DOC   r     | ISO   r     | NUMBERS r   | RAM   r     | ZIP   r
-      DOCX  r     | ITC   r     | O     r     | RAR   r     |
-      DPX   r     | J2C   r     | ODP   r     | RAW   r/w   |
-      DR4   r/w/c | JNG   r/w   | ODS   r     | RIFF  r     |
+      3FR   r     | DSS   r     | JNG   r/w   | ODS   r     | RIFF  r
+      3G2   r/w   | DV    r     | JP2   r/w   | ODT   r     | RSRC  r
+      3GP   r/w   | DVB   r/w   | JPEG  r/w   | OFR   r     | RTF   r
+      A     r     | DVR-MS r    | JSON  r     | OGG   r     | RW2   r/w
+      AA    r     | DYLIB r     | K25   r     | OGV   r     | RWL   r/w
+      AAE   r     | EIP   r     | KDC   r     | OPUS  r     | RWZ   r
+      AAX   r/w   | EPS   r/w   | KEY   r     | ORF   r/w   | RM    r
+      ACR   r     | EPUB  r     | LA    r     | OTF   r     | SEQ   r
+      AFM   r     | ERF   r/w   | LFP   r     | PAC   r     | SKETCH r
+      AI    r/w   | EXE   r     | LNK   r     | PAGES r     | SO    r
+      AIFF  r     | EXIF  r/w/c | LRV   r/w   | PBM   r/w   | SR2   r/w
+      APE   r     | EXR   r     | M2TS  r     | PCD   r     | SRF   r
+      ARQ   r/w   | EXV   r/w/c | M4A/V r/w   | PCX   r     | SRW   r/w
+      ARW   r/w   | F4A/V r/w   | MAX   r     | PDB   r     | SVG   r
+      ASF   r     | FFF   r/w   | MEF   r/w   | PDF   r/w   | SWF   r
+      AVI   r     | FLA   r     | MIE   r/w/c | PEF   r/w   | THM   r/w
+      AZW   r     | FLAC  r     | MIFF  r     | PFA   r     | TIFF  r/w
+      BMP   r     | FLIF  r/w   | MKA   r     | PFB   r     | TORRENT r
+      BPG   r     | FLV   r     | MKS   r     | PFM   r     | TTC   r
+      BTF   r     | FPF   r     | MKV   r     | PGF   r     | TTF   r
+      CHM   r     | FPX   r     | MNG   r/w   | PGM   r/w   | VCF   r
+      COS   r     | GIF   r/w   | MOBI  r     | PLIST r     | VRD   r/w/c
+      CR2   r/w   | GPR   r/w   | MODD  r     | PICT  r     | VSD   r
+      CR3   r/w   | GZ    r     | MOI   r     | PMP   r     | WAV   r
+      CRM   r/w   | HDP   r/w   | MOS   r/w   | PNG   r/w   | WDP   r/w
+      CRW   r/w   | HDR   r     | MOV   r/w   | PPM   r/w   | WEBP  r
+      CS1   r/w   | HEIC  r     | MP3   r     | PPT   r     | WEBM  r
+      DCM   r     | HEIF  r     | MP4   r/w   | PPTX  r     | WMA   r
+      DCP   r/w   | HTML  r     | MPC   r     | PS    r/w   | WMV   r
+      DCR   r     | ICC   r/w/c | MPG   r     | PSB   r/w   | WTV   r
+      DFONT r     | ICS   r     | MPO   r/w   | PSD   r/w   | WV    r
+      DIVX  r     | IDML  r     | MQV   r/w   | PSP   r     | X3F   r/w
+      DJVU  r     | IIQ   r/w   | MRW   r/w   | QTIF  r/w   | XCF   r
+      DLL   r     | IND   r/w   | MXF   r     | R3D   r     | XLS   r
+      DNG   r/w   | INSV  r     | NEF   r/w   | RA    r     | XLSX  r
+      DOC   r     | INX   r     | NRW   r/w   | RAF   r/w   | XMP   r/w/c
+      DOCX  r     | ISO   r     | NUMBERS r   | RAM   r     | ZIP   r
+      DPX   r     | ITC   r     | O     r     | RAR   r     |
+      DR4   r/w/c | J2C   r     | ODP   r     | RAW   r/w   |
 
       Meta Information
       ----------------------+----------------------+---------------------
@@ -5096,7 +5096,7 @@ OPTIONS
 
          produces output like this:
 
-             -- Generated by ExifTool 11.27 --
+             -- Generated by ExifTool 11.28 --
              File: a.jpg - 2003:10:31 15:44:19
              (f/5.6, 1/60s, ISO 100)
              File: b.jpg - 2006:05:23 11:57:38
@@ -6690,29 +6690,27 @@ SEE ALSO
 
 __HELP__
 
-    my $dir = $ENV{PAR_GLOBAL_TEMP} | $ENV{PAR_TEMP};
-    if ($dir) {
-        $dir =~ s/[^\\\/]*\\?$//;
-    } else {
-        $dir = $ENV{TMP} || $ENV{TEMP} || '/tmp';
-    }
-    $tmpFile = "$dir/exiftool_doc.txt";
-    # try backslashes first if it seems we may be running in cmd.exe
-    $tmpFile =~ tr/\//\\/ if $ENV{ComSpec} or $tmpFile =~ /\\/;
-    unless (open(TEMP, ">$tmpFile")) {
-        $tmpFile =~ tr/\/\\/\\\//;  # try the other slash
-        unless (open(TEMP, ">$tmpFile")) {
-            warn "Error creating temp file $tmpFile\n";
+    my $dir = $ENV{PAR_GLOBAL_TEMP} || $ENV{PAR_TEMP} || $ENV{TMP} || $ENV{TEMP} || '/tmp';
+    my $docFile = "$dir/exiftool_${version}_doc.txt";
+    unless (-e $docFile) {
+        # try backslashes first if it seems we may be running in cmd.exe
+        $docFile =~ tr/\//\\/ if $ENV{ComSpec} or $docFile =~ /\\/;
+        unless (open(TEMP, ">$docFile") or
+            ($docFile =~ tr/\/\\/\\\// and open(TEMP, ">$docFile")) or  # try forward slash
+            (CreateDirectory($docFile) and open(TEMP, ">$docFile")))    # try creating dir
+        {
+            warn "Error creating temp file $docFile\n";
             warn "So ExifTool can't print the help documentation.\n";
-            undef $tmpFile;
             return;
         }
+        my $ok = print TEMP $help;
+        close TEMP;
+        unless ($ok) {
+            unlink $docFile;
+            warn "Error writing temp file $docFile\n";
+        }
     }
-    print TEMP $help;
-    close TEMP;
-    system(qq{more < "$tmpFile"}) and warn "Error running more $tmpFile\n";
-    unlink $tmpFile;
-    undef $tmpFile;
+    system(qq{more < "$docFile"}) and warn "Error running more $docFile\n";
 }
 
 # end

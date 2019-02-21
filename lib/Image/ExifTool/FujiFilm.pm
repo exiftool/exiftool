@@ -30,7 +30,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.66';
+$VERSION = '1.67';
 
 sub ProcessFujiDir($$$);
 sub ProcessFaceRec($$$);
@@ -650,6 +650,7 @@ my %faceCategories = (
             0 => 'None',
             1 => 'Optical', #PH
             2 => 'Sensor-shift', #PH
+            3 => 'OIS Lens', #forum9815 (optical+sensor?)
             512 => 'Digital', #PH
         },{
             0 => 'Off',

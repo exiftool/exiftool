@@ -68,6 +68,13 @@ my %processByMetaFormat = (
     sbtl => 1,  # (subtitle; 'tx3g' in Yuneec drone videos)
 );
 
+# data lengths for each INSV record type
+my %insvDataLen = (
+    0x300 => 56,
+    0x400 => 16,
+    0x700 => 53,
+);
+
 # tags extracted from various QuickTime data streams
 %Image::ExifTool::QuickTime::Stream = (
     GROUPS => { 2 => 'Location' },
@@ -89,6 +96,7 @@ my %processByMetaFormat = (
     GPSDOP       => { Description => 'GPS Dilution Of Precision' },
     CameraDateTime=>{ PrintConv => '$self->ConvertDateTime($val)', Groups => { 2 => 'Time' } },
     Accelerometer=> { Notes => 'right/up/backward acceleration in units of g' },
+    AngularVelocity => { },
     RawGSensor   => {
         # (same as GSensor, but offset by some unknown value)
         ValueConv => 'my @a=split " ",$val; $_/=1000 foreach @a; "@a"',
@@ -212,6 +220,9 @@ my %processByMetaFormat = (
         Groups => { 2 => 'Preview' },
         RawConv => '$self->ValidateImage(\$val,$tag)',
     },
+    INSV => { SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::INSV_MakerNotes' } },
+    Unknown1 => { Unknown => 1 },
+    Unknown2 => { Unknown => 1 },
 );
 
 # tags found in 'camm' type 0 timed metadata (ref 4)
@@ -452,6 +463,17 @@ my %processByMetaFormat = (
     GimYaw   => 'GimbalYaw',
     GimPitch => 'GimbalPitch',
     GimRoll  => 'GimbalRoll',
+);
+
+%Image::ExifTool::QuickTime::INSV_MakerNotes = (
+    GROUPS => { 1 => 'MakerNotes', 2 => 'Camera' },
+    0x0a => 'SerialNumber',
+    0x12 => 'Model',
+    0x1a => 'Firmware',
+    0x2a => {
+        Name => 'Parameters',
+        ValueConv => '$val =~ tr/_/ /; $val',
+    },
 );
 
 #------------------------------------------------------------------------------
@@ -1335,23 +1357,119 @@ sub Process_mebx($$$)
 }
 
 #------------------------------------------------------------------------------
+# Extract information from Insta360 trailer
+# Inputs: 0) ExifTool ref
+sub ProcessINSVTrailer($)
+{
+    local $_;
+    my $et = shift;
+    my $raf = $$et{RAF};
+    my $buff;
+
+    return unless $raf->Seek(-78, 2) and $raf->Read($buff, 78) == 78 and
+        substr($buff,-32) eq "8db42d694ccc418790edff439fe026bf";    # check magic number
+
+    my $tagTbl = GetTagTable('Image::ExifTool::QuickTime::Stream');
+    my $fileEnd = $raf->Tell();
+    my $trailerLen = unpack('x38V', $buff);
+    my $trailerStart = $fileEnd - $trailerLen;
+    my $unknown = $et->Options('Unknown');
+    my $verbose = $et->Options('Verbose');
+    my $pos = $fileEnd - 78;
+    my ($i, $p);
+    SetByteOrder('II');
+    # loop through all records in the trailer, from last to first
+    for (;;) {
+        my ($id, $len) = unpack('vV', $buff);
+        ($pos -= $len) < $trailerStart and last;
+        $raf->Seek($pos, 0) or last;
+        $raf->Read($buff, $len) == $len or last;
+        if ($verbose) {
+            $et->VPrint(0, sprintf("INSV Record 0x%x (offset 0x%x, %d bytes):\n", $id, $pos, $len));
+            $et->VerboseDump(\$buff);
+        }
+        my $dlen = $insvDataLen{$id};
+        if ($dlen) {
+            $len % $dlen and $et->Warn(sprintf('Unexpected INSV record 0x%x length',$id)), last;
+            if ($id == 0x300) {
+                for ($p=0; $p<$len; $p+=$dlen) {
+                    $$et{DOC_NUM} = ++$$et{DOC_COUNT};
+                    my @a = map { GetDouble(\$buff, $p + 8 * $_) } 1..6;
+                    $et->HandleTag($tagTbl, TimeCode => sprintf('%.3f', Get64u(\$buff, $p) / 1000));
+                    $et->HandleTag($tagTbl, Accelerometer => "@a[0..2]"); # (NC)
+                    $et->HandleTag($tagTbl, AngularVelocity => "@a[3..5]"); # (NC)
+                }
+            } elsif ($id == 0x400 and $unknown) {
+                for ($p=0; $p<$len; $p+=$dlen) {
+                    $$et{DOC_NUM} = ++$$et{DOC_COUNT};
+                    $et->HandleTag($tagTbl, TimeCode => sprintf('%.3f', Get64u(\$buff, $p) / 1000));
+                    $et->HandleTag($tagTbl, Unknown1 => GetDouble(\$buff, $p + 8));
+                }
+            } elsif ($id == 0x700) {
+                for ($p=0; $p<$len; $p+=$dlen) {
+                    my $tmp = substr($buff, $p, $dlen);
+                    my @a = unpack('VVvaa8aa8aa8a8a8', $tmp);
+                    next unless $a[3] eq 'A';   # (ignore void fixes)
+                    last unless ($a[5] eq 'N' or $a[5] eq 'S') and # (quick validation)
+                                ($a[7] eq 'E' or $a[7] eq 'W');
+                    $$et{DOC_NUM} = ++$$et{DOC_COUNT};
+                    $a[$_] = GetDouble(\$a[$_], 0) foreach 4,6,8,9,10;
+                    $a[4] *= -abs($a[4]) if $a[5] eq 'S'; # (abs just in case it was already signed)
+                    $a[6] *= -abs($a[6]) if $a[7] eq 'W';
+                    $et->HandleTag($tagTbl, GPSDateTime => Image::ExifTool::ConvertUnixTime($a[0]) . 'Z');
+                    $et->HandleTag($tagTbl, GPSLatitude => $a[4]);
+                    $et->HandleTag($tagTbl, GPSLongitude => $a[6]);
+                    $et->HandleTag($tagTbl, GPSSpeed => $a[8] * $mpsToKph);
+                    $et->HandleTag($tagTbl, GPSSpeedRef => 'K');
+                    $et->HandleTag($tagTbl, GPSTrack => $a[9]);
+                    $et->HandleTag($tagTbl, GPSTrackRef => 'T');
+                    $et->HandleTag($tagTbl, GPSAltitude => $a[10]);
+                    $et->HandleTag($tagTbl, Unknown2 => "@a[1,2]");
+                }
+            }
+        } elsif ($id == 0x101) {
+            my $tagTablePtr = GetTagTable('Image::ExifTool::QuickTime::INSV_MakerNotes');
+            for ($i=0, $p=0; $i<4; ++$i) {
+                last if $p + 2 > $len;
+                my ($t, $n) = unpack("x${p}CC", $buff);
+                last if $p + 2 + $n > $len;
+                my $val = substr($buff, $p+2, $n);
+                $et->HandleTag($tagTablePtr, $t, $val);
+                $p += 2 + $n;
+            }
+        }
+        ($pos -= 6) < $trailerStart and last;   # step back to previous record
+        $raf->Seek($pos, 0) or last;
+        $raf->Read($buff, 6) == 6 or last;
+    }
+    SetByteOrder('MM');
+}
+
+#------------------------------------------------------------------------------
 # Scan movie data for "freeGPS" metadata if not found already (ref PH)
 # Inputs: 0) ExifTool ref
 sub ScanMovieData($)
 {
     my $et = shift;
-    return if $$et{DOC_COUNT};  # don't scan if we already found embedded metadata
     my $raf = $$et{RAF} or return;
-    my $dataPos = $$et{VALUE}{MovieDataOffset} or return;
-    my $dataLen = $$et{VALUE}{MovieDataSize} or return;
-    $raf->Seek($dataPos, 0) or return;
+    my ($tagTbl, $oldByteOrder, $verbose, $buff, $dataLen);
     my ($pos, $buf2) = (0, '');
-    my ($tagTbl, $oldByteOrder, $verbose, $buff);
 
-    $$et{FreeGPS2} = { };   # initialize variable space for FreeGPS2()
+    # don't rescan for freeGPS if we already found embedded metadata
+    my $dataPos = $$et{VALUE}{MovieDataOffset};
+    if ($dataPos and not $$et{DOC_COUNT}) {
+        $dataLen = $$et{VALUE}{MovieDataSize};
+        if ($dataLen) {
+            if ($raf->Seek($dataPos, 0)) {
+                $$et{FreeGPS2} = { };   # initialize variable space for FreeGPS2()
+            } else {
+                undef $dataLen;
+            }
+        }
+    }
 
     # loop through 'mdat' movie data looking for GPS information
-    for (;;) {
+    while ($dataLen) {
         last if $pos + $gpsBlockSize > $dataLen;
         last unless $raf->Read($buff, $gpsBlockSize);
         $buff = $buf2 . $buff if length $buf2;
@@ -1405,6 +1523,8 @@ sub ScanMovieData($)
         SetByteOrder($oldByteOrder);
         $$et{INDENT} = substr $$et{INDENT}, 0, -2;
     }
+    # process INSV trailer if it exists
+    ProcessINSVTrailer($et);
 }
 
 1;  # end
@@ -1422,7 +1542,7 @@ These routines are autoloaded by Image::ExifTool::QuickTime.
 =head1 DESCRIPTION
 
 This file contains routines used by Image::ExifTool to extract embedded
-information like GPS tracks from MOV and MP4 movie data.
+information like GPS tracks from MOV, MP4 and INSV movie data.
 
 =head1 AUTHOR
 

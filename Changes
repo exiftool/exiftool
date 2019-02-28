@@ -7,6 +7,20 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 11.11. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Feb. 28, 2019 - Version 11.29
+
+  - Added support for Ricoh GR III maker notes
+  - Added a new Canon LensType (thanks Claude Jolicoeur)
+  - Added a new XMP-crs tag (resolves github issue #8)
+  - Enhanced -csv option to output base64-encoded binary data when combined with
+    -b or when the -charset option is used and the text has invalid characters
+    (resolves github issue #11)
+  - Remove trailing space from even-length DICOM values (resolves github issue
+    #9)
+  - Patched to avoid "Hexadecimal number > 0xffffffff non-portable" warning
+    (resolves github issue #6)
+  - Fixed meta charset attribute in -htmlDump output
+
 Feb. 21, 2019 - Version 11.28
 
   - Added support for reading INSV video and decode streaming GPS

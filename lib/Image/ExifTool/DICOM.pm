@@ -20,7 +20,7 @@ use strict;
 use vars qw($VERSION %uid);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.19';
+$VERSION = '1.20';
 
 # DICOM VR (Value Representation) format conversions
 my %dicomFormat = (
@@ -3759,6 +3759,8 @@ sub ProcessDICOM($$)
         }
         my $val;
         my $format = $dicomFormat{$vr};
+        # remove trailing space used to pad to an even number of characters
+        $buff =~ s/ $// unless $format or length($buff) & 0x01;
         if ($len > 1024) {
             # treat large data elements as binary data
             my $binData;

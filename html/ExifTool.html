@@ -575,9 +575,10 @@ distribution for examples.</p>
     <td align=center>0, 1, 2, 3 or 4</td><td align=center>undef</td></tr>
 <tr id="Filter"><td>Filter</td>
     <td>Perl expression used to filter all returned tag values.  Applies to
-    PrintConv values only.</td><td>Expression to act on the
-    value of the Perl default variable ($_), changing the value of this variable
-    as required.  The value is not changed if $_ is set to undef.</td>
+    PrintConv values only.  List items are filtered individually.</td>
+    <td>Expression to act on the value of the Perl default variable ($_),
+    changing the value of this variable as required.  The value is not changed
+    if $_ is set to undef.</td>
     <td align=center>undef</td></tr>
 <tr id="FixBase"><td>FixBase</td>
     <td>Fix maker notes base offset.  Allows values to be extracted from maker notes

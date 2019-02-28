@@ -13,7 +13,7 @@ use vars qw($VERSION);
 use Image::ExifTool;    # only for FinishTiffDump()
 use Image::ExifTool::HTML qw(EscapeHTML);
 
-$VERSION = '1.36';
+$VERSION = '1.37';
 
 sub DumpTable($$$;$$$$$$);
 sub Open($$$;@);
@@ -32,7 +32,7 @@ _END_PART_1_
 # Note: Don't change font-weight style because it can affect line height
 my $htmlHeader2 = <<_END_PART_2_;
 </title>
-<meta charset="utf-8"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <style type="text/css">
 <!--
 /* character style ID's */

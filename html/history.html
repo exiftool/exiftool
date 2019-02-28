@@ -17,6 +17,21 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v11.29'><b>Feb. 28, 2019 - Version 11.29</b></a>
+<ul>
+<li>Added support for Ricoh GR III maker notes
+<li>Added a new Canon LensType (thanks Claude Jolicoeur)
+<li>Added a new XMP-crs tag (resolves github issue #8)
+<li>Enhanced -csv option to output base64-encoded binary data when combined with
+    -b or when the -charset option is used and the text has invalid characters
+    (resolves github issue #11)
+<li>Remove trailing space from even-length DICOM values (resolves github issue
+    #9)
+<li>Patched to avoid "Hexadecimal number > 0xffffffff non-portable" warning
+    (resolves github issue #6)
+<li>Fixed meta charset attribute in -htmlDump output
+</ul>
+
 <a name='v11.28'><b>Feb. 21, 2019 - Version 11.28</b></a>
 <ul>
 <li>Added support for reading INSV video and decode streaming GPS

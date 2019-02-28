@@ -12,13 +12,14 @@
 use strict;
 require 5.004;
 
-my $version = '11.28';
+my $version = '11.29';
 
 # add our 'lib' directory to the include list BEFORE 'use Image::ExifTool'
 my $exeDir;
 BEGIN {
     # get exe directory
     $exeDir = ($0 =~ /(.*)[\\\/]/) ? $1 : '.';
+    # (no link following for Windows exe version)
     # add lib directory at start of include path
     unshift @INC, "$exeDir/lib";
     # load or disable config file if specified
@@ -177,6 +178,7 @@ my $sectHeader;     # current section header for -p option
 my $sectTrailer;    # section trailer for -p option
 my $seqFileBase;    # sequential file number at start of directory
 my $seqFileNum;     # sequential file number used for %C
+my $setCharset;     # character set setting ('default' if not set and -csv -b used)
 my $showGroup;      # number of group to show (may be zero or '')
 my $showTagID;      # non-zero to show tag ID's
 my $stayOpenBuff='';# buffer for -stay_open file
@@ -326,7 +328,7 @@ sub Cleanup() {
 # main script
 #
 
-# add arguments embedded in filename
+# add arguments embedded in filename (Windows .exe version only)
 if ($0 =~ /\(([^\\\/]+)\)(.exe|.pl)?$/i) {
     my $argstr = $1;
     # divide into separate quoted or whitespace-delineated arguments
@@ -463,6 +465,7 @@ undef $progressMax;
 undef $recurse;
 undef $scanWritable;
 undef $sectHeader;
+undef $setCharset;
 undef $showGroup;
 undef $showTagID;
 undef $structOpt;
@@ -782,7 +785,16 @@ for (;;) {
             PrintTagList('Available character sets', sort keys %charsets);
             $helped = 1;
         } elsif ($charset !~ s/^(\w+)=// or lc($1) eq 'exiftool') {
-            $mt->Options(Charset => $charset);
+            {
+                local $SIG{'__WARN__'} = sub { $evalWarning = $_[0] };
+                undef $evalWarning;
+                $mt->Options(Charset => $charset);
+            }
+            if ($evalWarning) {
+                warn $evalWarning;
+            } else {
+                $setCharset = $mt->Options('Charset');
+            }
         } else {
             # set internal encoding of specified metadata type
             my $type = { id3 => 'ID3', iptc => 'IPTC', exif => 'EXIF', filename => 'FileName',
@@ -1344,10 +1356,17 @@ if ($tagOut and ($csv or %printFmt or $tabFormat or $xml or ($verbose and $html)
     next;
 }
 
-if ($csv and $csv eq 'CSV' and not $isWriting and ($textOut or $binaryOutput)) {
-    Warn 'Sorry, ' . ($textOut ? '-w' : '-b') . " may not be combined with -csv\n";
-    $rtnVal = 1;
-    next;
+if ($csv and $csv eq 'CSV' and not $isWriting) {
+    if ($textOut) {
+        Warn "Sorry, -w may not be combined with -csv\n";
+        $rtnVal = 1;
+        next;
+    }
+    if ($binaryOutput) {
+        $binaryOutput = 0;
+        $setCharset = 'default' unless defined $setCharset;
+    }
+    require Image::ExifTool::XMP if $setCharset;
 }
 
 if ($escapeHTML or $json) {
@@ -3098,7 +3117,7 @@ sub EscapeJSON($;$)
         # (these big numbers caused problems for some JSON parsers, so be more conservative)
         return $str if $str =~ /^-?(\d|[1-9]\d{1,14})(\.\d{1,16})?(e[-+]?\d{1,3})?$/i;
     }
-    # encode JSON string as Base64 if necessary
+    # encode JSON string in base64 if necessary
     if ($json < 2 and defined $binaryOutput and Image::ExifTool::XMP::IsUTF8(\$str) < 0) {
         return '"base64:' . Image::ExifTool::XMP::EncodeBase64($str, 1) . '"';
     }
@@ -3170,6 +3189,12 @@ sub FormatJSON($$$)
 sub FormatCSV($)
 {
     my $val = shift;
+    # check for valid encoding if the Charset option was used
+    if ($setCharset and ($val =~ /[^\x09\x0a\x0d\x20-\x7e\x80-\xff]/ or
+        ($setCharset eq 'UTF8' and Image::ExifTool::XMP::IsUTF8(\$val) < 0)))
+    {
+        $val = 'base64:' . Image::ExifTool::XMP::EncodeBase64($val, 1);
+    }
     # currently, the value may contain NULL characters.  It is unclear
     # whether or not this is valid CSV, but some readers may not like it.
     # (if this becomes a problem, in the future values may need to be truncated at
@@ -3246,7 +3271,7 @@ sub ConvertBinary($)
         # (binaryOutput flag is set to 0 for binary mode of XML/PHP/JSON output formats)
         if (defined $binaryOutput) {
             $obj = $$obj;
-            # encode in base64 if necessary
+            # encode in base64 if necessary (0xf7 allows for up to 21-bit UTF-8 code space)
             if ($json == 1 and ($obj =~ /[^\x09\x0a\x0d\x20-\x7e\x80-\xf7]/ or
                                 Image::ExifTool::XMP::IsUTF8(\$obj) < 0))
             {
@@ -3254,7 +3279,7 @@ sub ConvertBinary($)
             }
         } else {
             # (-b is not valid for HTML output)
-            my $bOpt = ($html or ($csv and $csv eq 'CSV')) ? '' : ', use -b option to extract';
+            my $bOpt = $html ? '' : ', use -b option to extract';
             if ($$obj =~ /^Binary data \d+ bytes$/) {
                 $obj = "($$obj$bOpt)";
             } else {
@@ -4854,10 +4879,16 @@ OPTIONS
          the tag headings. If the -a option is used to allow duplicate tag
          names, the duplicate tags are only included in the CSV output if
          the column headings are unique. Adding the -G4 option ensures a
-         unique column heading for each tag. When exporting specific tags,
-         the CSV columns are arranged in the same order as the specified
-         tags provided the column headings exactly match the specified tag
-         names, otherwise the columns are sorted in alphabetical order.
+         unique column heading for each tag. The -b option may be added to
+         output binary data, encoded in base64 if necessary (indicated by
+         "base64:" as the first 7 bytes of the value). Values may also be
+         encoded in base64 if the -charset option is used and the value
+         contains invalid characters.
+
+         When exporting specific tags, the CSV columns are arranged in the
+         same order as the specified tags provided the column headings
+         exactly match the specified tag names, otherwise the columns are
+         sorted in alphabetical order.
 
          When importing from a CSV file, only files specified on the command
          line are processed. Any extra entries in the CSV file are ignored.
@@ -5096,7 +5127,7 @@ OPTIONS
 
          produces output like this:
 
-             -- Generated by ExifTool 11.28 --
+             -- Generated by ExifTool 11.29 --
              File: a.jpg - 2003:10:31 15:44:19
              (f/5.6, 1/60s, ISO 100)
              File: b.jpg - 2006:05:23 11:57:38

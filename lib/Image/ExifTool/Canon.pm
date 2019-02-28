@@ -87,7 +87,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.05';
+$VERSION = '4.06';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -101,7 +101,8 @@ $VERSION = '4.05';
      },
     -1 => 'n/a',
      1 => 'Canon EF 50mm f/1.8',
-     2 => 'Canon EF 28mm f/2.8',
+     2 => 'Canon EF 28mm f/2.8 or Sigma Lens',
+     2.1 => 'Sigma 24mm f/2.8 Super Wide II', #ClaudeJolicoeur
      # (3 removed in current Kamisaka list)
      3 => 'Canon EF 135mm f/2.8 Soft', #15/32
      4 => 'Canon EF 35-105mm f/3.5-4.5 or Sigma Lens', #28

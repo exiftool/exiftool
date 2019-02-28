@@ -32,7 +32,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '2.99';
+$VERSION = '3.00';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -118,6 +118,7 @@ my %sonyLensTypes2 = (
     32831 => 'Sony FE 16-35mm F2.8 GM', #JR
     32848 => 'Sony FE 400mm F2.8 GM OSS', #IB
     32849 => 'Sony E 18-135mm F3.5-5.6 OSS', #JR
+    32850 => 'Sony FE 135mm F1.8 GM', #IB
 
   # (comment this out so LensID will report the LensModel, which is more useful)
   # 33002 => 'Metabones Canon EF Smart Adapter with Ver.5x', #PH/JR (corresponds to 234, but LensMount reported as E-mount)

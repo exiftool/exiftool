@@ -16,6 +16,7 @@ ol.index    { margin: 0; padding: 0 0 0 2em }
 <a href="#overview">Overview</a>
 <br><a href="#conversions">Value Conversions</a>
 <br><a href="#philophies">Underlying Philosophies</a>
+<br><a href="#perl">Why Perl?</a>
 </div>
 
 <h1 class='up'>"Under the Hood" of ExifTool</h1>
@@ -129,9 +130,34 @@ which have helped to influence the overall development:</p>
     command line application.</li>
 </ol>
 
+<a name="perl"></a>
+<h2>Why Write ExifTool in Perl?</h2>
+
+<p>At the start of ExifTool development, Perl, Python and C++ were all considered as
+possible languages for the project.  It was recognized that the project would require
+considerable effort, and the choice of language could heavily influence the amount of
+work necessary.  Python was a strong contender, but was discounted due to a personal
+preference for C-like syntax.  Perl was chosen over C++ for the main reason that
+it would be less work to develop and support the project.  Looking back, this was
+definitely the right choice, and there was the added benefit of a strong
+infrastructure in support of
+<a href="http://www.cpantesters.org/distro/I/Image-ExifTool.html">testing</a> and
+<a href="https://metacpan.org/release/Image-ExifTool">distributing</a> Perl software.</p>
+
+<p>Perl 5 is very mature and extremely stable, so there is almost zero time wasted
+dealing with compilation issues.  Compare this to C++, where a majority of
+development time for a large project may be spent in this area.  Also, Perl's
+built-in regular expressions are fantastically useful for all of the string
+manipulations necessary for a metadata library.</p>
+
+<p>The bottom line is that most of the development time is spent dealing with the
+mechanics of metadata, with the result that ExifTool is full-featured metadata
+library.  With one main developer (Phil Harvey) and 250 thousand lines of code (as of
+Jan 2019), this is a real accomplishment.</p>
+
 <hr>
 <i>Created Jun. 24, 2009</i><br>
-<i>Last revised Nov. 25, 2016</i>
+<i>Last revised Feb. 28, 2019</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

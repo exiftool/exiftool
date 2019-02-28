@@ -58,7 +58,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::HP;
 
-$VERSION = '3.25';
+$VERSION = '3.26';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -395,6 +395,10 @@ sub DecodeAFPoints($$$$;$);
     '21 7' => '07 Mount Shield 11.5mm F9', #PH (NC)
     '21 8' => '08 Wide Zoom 3.8-5.9mm F3.7-4', #PH (NC)
     '21 233' => 'Adapter Q for K-mount Lens', #29
+#
+# Ricoh lenses
+#
+    '31 1' => 'GR Lens', #PH (GR III 28mm F2.8)
 );
 
 # Pentax model ID codes - PH
@@ -534,6 +538,7 @@ my %pentaxModelID = (
     0x13092 => 'K-1', #IB (Ricoh)
     0x1309c => 'K-3 II', #29 (Ricoh)
     0x131f0 => 'WG-M2', # (Ricoh)
+    0x1320e => 'GR III', # (Ricoh)
     0x13222 => 'K-70', #29 (Ricoh)
     0x1322c => 'KP', #29 (Ricoh)
     0x13240 => 'K-1 Mark II', # (Ricoh)
@@ -1119,6 +1124,8 @@ my %binaryDataAttrs = (
                 3 => 'Manual',
                 4 => 'Super Macro', #JD
                 5 => 'Pan Focus',
+                # 8 - seen for Ricoh GR III
+                # 9 - seen for Ricoh GR III
                 16 => 'AF-S (Focus-priority)', #17
                 17 => 'AF-C (Focus-priority)', #17
                 18 => 'AF-A (Focus-priority)', #PH (educated guess)
@@ -1129,6 +1136,8 @@ my %binaryDataAttrs = (
                 273 => 'AF-C (Release-priority)', #PH (K-5,K-3)
                 274 => 'AF-A (Release-priority)', #PH (K-3)
                 288 => 'Contrast-detect (Release-priority)', #PH (K-01)
+                # 32777 (0x8009) - seen for Ricoh GR III
+                # 32779 (0x800b) - seen for Ricoh GR III
             },
         },{
             Name => 'FocusMode',
@@ -2104,6 +2113,8 @@ my %binaryDataAttrs = (
             9 => 'Radiant', # (Q)
             10 => 'Cross Processing', #31 (K-70)
             11 => 'Flat', #31 (K-70)
+            # 256 - seen for GR III
+            # 262 - seen for GR III
         },
     },
     0x0050 => { #PH
@@ -2188,6 +2199,7 @@ my %binaryDataAttrs = (
             16 => '16 (K-1)', #PH
             17 => '17 (K-70)', #29
             18 => '18 (KP)', #PH
+            19 => '19 (GR III)', #PH
         },
     },
     0x0067 => { #PH (K-5)
@@ -2419,6 +2431,7 @@ my %binaryDataAttrs = (
             '1 0' => 'Slow',
             '2 0' => 'Standard',
             '3 0' => 'Fast',
+            # '1 108' - seen for GR III
         },
     },
     0x007b => { #PH (K-5)
@@ -2523,7 +2536,13 @@ my %binaryDataAttrs = (
     0x0088 => { #PH
         Name => 'NeutralDensityFilter',
         Writable => 'int8u',
-        PrintConv => { 0 => 'Off', 1 => 'On' },
+        Count => -1,
+        PrintConv => {
+            0 => 'Off',
+            1 => 'On',
+            '0 2' => 'Off (0 2)', #PH (NC, GR III)
+            '1 2' => 'On (1 2)', #PH (NC, GR III)
+        },
     },
     0x008b => { #PH (LS465)
         Name => 'ISO',
@@ -2661,7 +2680,7 @@ my %binaryDataAttrs = (
             SubDirectory => { TagTable => 'Image::ExifTool::Pentax::LensInfo' },
         },{
             Name => 'LensInfo',
-            Condition => '$count != 90 and $count != 91 and $count != 80 and $count != 128',
+            Condition => '$count != 90 and $count != 91 and $count != 80 and $count != 128 and $count != 168',
             SubDirectory => { TagTable => 'Image::ExifTool::Pentax::LensInfo2' },
         },{
             Name => 'LensInfo', # 645D
@@ -2676,6 +2695,7 @@ my %binaryDataAttrs = (
             Condition => '$count == 80 or $count == 128',
             SubDirectory => { TagTable => 'Image::ExifTool::Pentax::LensInfo5' },
         }
+        # ($count == 168 - Ricoh GR III)
     ],
     0x0208 => [ #PH
         {
@@ -4557,6 +4577,7 @@ my %binaryDataAttrs = (
         # *istDS and K100D, but I'm not sure what this means - PH
         # I've also seen: 0x42 (K2000), 0xf2 (K-7,K-r,K-5), 0x12,0x22 (K-x) - PH
         PrintConv => {
+            1 => 'Camera Battery', #PH (NC, GR III)
             2 => 'Body Battery',
             3 => 'Grip Battery',
             4 => 'External Power Supply', #PH
@@ -5299,6 +5320,7 @@ my %binaryDataAttrs = (
         Mask => 0x0f,
         PrintHex => 0,
         PrintConv => {
+            0 => 'n/a', #PH (NC, GR III)
             1 => 'Horizontal (normal)',
             2 => 'Rotate 180',
             3 => 'Rotate 90 CW',

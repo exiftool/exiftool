@@ -11,24 +11,35 @@
 
 <p>RSS feed: <a href="http://owl.phy.queensu.ca/~phil/exiftool/rss.xml">http://owl.phy.queensu.ca/~phil/exiftool/rss.xml</a></p>
 
-<p><b>Note:</b> The most recent production release is <a href="Image-ExifTool-11.11.tar.gz">Version 11.11</a>. (Other versions are
+<p><b>Note:</b> The most recent production release is <a href="Image-ExifTool-11.30.tar.gz">Version 11.30</a>. (Other versions are
 considered development releases, and are not uploaded to <a href="https://metacpan.org/release/Image-ExifTool">CPAN</a>.)</p>
 
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v11.30'><b>Mar. 6, 2019 - Version 11.30</b></a> <span class=grn>(production release)</span>
+<ul>
+<li>Added a new Sony/Minolta LensType (thanks Jos Roost)
+<li>Decode streaming metadata from TomTom Bandit Action Cam MP4 videos
+<li>Decode maker notes of Reconyx HP2X images
+<li>Decode ColorData for some new Canon models (thanks LibRaw)
+<li>Enhanced -geotag feature to set AmbientTemperature if available
+<li>Remove non-significant spaces from some DICOM values (github issues #10/12)
+<li>Fixed possible "'x' outside of string" error when reading corrupted EXIF
+<li>Fixed incorrect write group for some GeoTIFF tags
+</ul>
+
 <a name='v11.29'><b>Feb. 28, 2019 - Version 11.29</b></a>
 <ul>
 <li>Added support for Ricoh GR III maker notes
 <li>Added a new Canon LensType (thanks Claude Jolicoeur)
-<li>Added a new XMP-crs tag (resolves github issue #8)
+<li>Added a new XMP-crs tag (github issue #8)
 <li>Enhanced -csv option to output base64-encoded binary data when combined with
     -b or when the -charset option is used and the text has invalid characters
-    (resolves github issue #11)
-<li>Remove trailing space from even-length DICOM values (resolves github issue
-    #9)
+    (github issue #11)
+<li>Remove trailing space from even-length DICOM values (github issue #9)
 <li>Patched to avoid "Hexadecimal number > 0xffffffff non-portable" warning
-    (resolves github issue #6)
+    (github issue #6)
 <li>Fixed meta charset attribute in -htmlDump output
 </ul>
 

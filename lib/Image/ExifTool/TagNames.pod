@@ -491,7 +491,7 @@ official EXIF 2.31 specification.
   0x82aa   MDPrepDate                -          no
   0x82ab   MDPrepTime                -          no
   0x82ac   MDFileUnits               -          no
-  0x830e   PixelScale                ExifIFD    double[3]
+  0x830e   PixelScale                IFD0       double[3]
   0x8335   AdventScale               -          no
   0x8336   AdventRevision            -          no
   0x835c   UIC1Tag                   -          no
@@ -501,9 +501,9 @@ official EXIF 2.31 specification.
   0x83bb   IPTC-NAA                  IFD0       IPTC
   0x847e   IntergraphPacketData      -          no
   0x847f   IntergraphFlagRegisters   -          no
-  0x8480   IntergraphMatrix          ExifIFD    double[n]
+  0x8480   IntergraphMatrix          IFD0       double[n]
   0x8481   INGRReserved              -          no
-  0x8482   ModelTiePoint             ExifIFD    double[n]
+  0x8482   ModelTiePoint             IFD0       double[n]
   0x84e0   Site                      -          no
   0x84e1   ColorSequence             -          no
   0x84e2   IT8Header                 -          no
@@ -525,7 +525,7 @@ official EXIF 2.31 specification.
   0x8568   AFCP_IPTC                 -          IPTC
   0x85b8   PixelMagicJBIGOptions     -          no
   0x85d7   JPLCartoIFD               -          no
-  0x85d8   ModelTransform            ExifIFD    double[16]
+  0x85d8   ModelTransform            IFD0       double[16]
   0x8602   WB_GRGBLevels             -          no
   0x8606   LeafData                  -          Leaf
   0x8649   PhotoshopSettings         IFD0       Photoshop
@@ -662,6 +662,7 @@ official EXIF 2.31 specification.
            MakerNotePhaseOne         ExifIFD    PhaseOne
            MakerNoteReconyx          ExifIFD    Reconyx
            MakerNoteReconyx2         ExifIFD    Reconyx Type2
+           MakerNoteReconyx3         ExifIFD    Reconyx Type3
            MakerNoteRicohPentax      ExifIFD    Pentax
            MakerNoteRicoh            ExifIFD    Ricoh
            MakerNoteRicoh2           ExifIFD    Ricoh Type2
@@ -7017,37 +7018,6 @@ cameras such as the PowerShot S95.
   ------   --------                             --------
   'CNDA'   ThumbnailImage                       no
 
-=head3 Canon uuid Tags
-
-Tags extracted from the uuid atom of MP4 videos from cameras such as the
-SX280, and CR3 images from cameras such as the EOS M50.
-
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  'CCTP'   CanonCCTP                            Canon CCTP
-  'CMT1'   IFD0                                 EXIF
-  'CMT2'   ExifIFD                              EXIF
-  'CMT3'   MakerNoteCanon                       Canon
-  'CMT4'   GPSInfo                              GPS
-  'CNCV'   CompressorVersion                    no
-  'CNOP'   CanonCNOP                            Canon CNOP
-  'CNTH'   CanonCNTH                            Canon CNTH
-  'THMB'   ThumbnailImage                       no
-
-=head3 Canon CCTP Tags
-
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  [no tags known]
-
-=head3 Canon Skip Tags
-
-Information found in the "skip" atom of Canon MOV videos.
-
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  'CNDB'   Unknown_CNDB?                        no
-
 =head3 Canon CTMD Tags
 
 Canon Timed MetaData tags found in CR3 images.  The ExtractEmbedded option
@@ -7083,6 +7053,37 @@ information.
   ------   --------                             --------
   0x8769   ExifIFD                              EXIF
   0x927c   MakerNoteCanon                       Canon
+
+=head3 Canon uuid Tags
+
+Tags extracted from the uuid atom of MP4 videos from cameras such as the
+SX280, and CR3 images from cameras such as the EOS M50.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  'CCTP'   CanonCCTP                            Canon CCTP
+  'CMT1'   IFD0                                 EXIF
+  'CMT2'   ExifIFD                              EXIF
+  'CMT3'   MakerNoteCanon                       Canon
+  'CMT4'   GPSInfo                              GPS
+  'CNCV'   CompressorVersion                    no
+  'CNOP'   CanonCNOP                            Canon CNOP
+  'CNTH'   CanonCNTH                            Canon CNTH
+  'THMB'   ThumbnailImage                       no
+
+=head3 Canon CCTP Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  [no tags known]
+
+=head3 Canon Skip Tags
+
+Information found in the "skip" atom of Canon MOV videos.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  'CNDB'   Unknown_CNDB?                        no
 
 =head2 CanonCustom Tags
 
@@ -15260,6 +15261,38 @@ Tags extracted from models such as the UltraFire.
      75    SerialNumber                         string[15]
      90    UserLabel                            string[21]
 
+=head3 Reconyx Type3 Tags
+
+Tags extracted from models such as the HP2X.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+     16    FileNumber                           int16u
+     18    DirectoryNumber                      int16u
+     42    FirmwareVersion                      int16u[3]
+     48    FirmwareDate                         int16u[2]
+     52    TriggerMode                          string[2]
+     54    Sequence                             int16u[2]
+     58    EventNumber                          int16u[2]
+     62    DateTimeOriginal                     int16u[6]
+     74    DayOfWeek                            int16u
+     76    MoonPhase                            int16u
+     78    AmbientTemperatureFahrenheit         int16s
+     80    AmbientTemperature                   int16s
+     82    Contrast                             int16u
+     84    Brightness                           int16u
+     86    Sharpness                            int16u
+     88    Saturation                           int16u
+     90    Flash                                int16u
+     92    AmbientInfrared                      int16u
+     94    AmbientLight                         int16u
+     96    MotionSensitivity                    int16u
+     98    BatteryVoltage                       int16u
+    100    BatteryVoltageAvg                    int16u
+    102    BatteryType                          int16u
+    104    UserLabel                            string[22]
+    126    SerialNumber                         unicode[15]
+
 =head2 Sanyo Tags
 
   Tag ID   Tag Name                             Writable
@@ -16930,8 +16963,8 @@ ILCA-99M2.
   0x0046   SonyExposureTime                     int16u
   0x0048   SonyFNumber                          int16u
   0x004b   ReleaseMode2                         int8u
-  0x0050   ShutterCount2                        int32u~
-  0x0052   ShutterCount2                        int32u~
+  0x0050   ShutterCount2                        int32u
+  0x0052   ShutterCount2                        int32u
   0x0058   ShutterCount2                        int32u
   0x0061   SonyTimeMinSec                       no
   0x006b   ReleaseMode2                         int8u
@@ -17670,6 +17703,7 @@ still proprietary) Adobe format.
            MakerNotePhaseOne                    PhaseOne
            MakerNoteReconyx                     Reconyx
            MakerNoteReconyx2                    Reconyx Type2
+           MakerNoteReconyx3                    Reconyx Type3
            MakerNoteRicohPentax                 Pentax
            MakerNoteRicoh                       Ricoh
            MakerNoteRicoh2                      Ricoh Type2
@@ -24756,6 +24790,7 @@ multi-language user data tags found, even if they don't exist in this table.
                SanyoMOV                         Sanyo MOV
                SanyoMP4                         Sanyo MP4
                UnknownTags?                     no
+  'TTMD'       TomTomMetaData                   QuickTime TomTom
   'WLOC'       WindowLocation                   no
   'XMP_'       XMP                              XMP
   'Xtra'       MicrosoftXtra                    Microsoft Xtra
@@ -24881,6 +24916,188 @@ multi-language user data tags found, even if they don't exist in this table.
   "\xa9xyz"    GPSCoordinates                   no
   "\xa9ysp"    SpeedY                           no
   "\xa9zsp"    SpeedZ                           no
+
+=head3 QuickTime TomTom Tags
+
+Tags found in TomTom Bandit Action Cam MP4 videos.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  'TTAD'   TomTomAD                             QuickTime Stream
+  'TTHL'   TomTomHL?                            no
+  'TTID'   TomTomID                             no
+  'TTVD'   TomTomVD                             no
+  'TTVI'   TomTomVI?                            no
+
+=head3 QuickTime Stream Tags
+
+Timed metadata extracted from QuickTime movie data and some AVI videos when
+the ExtractEmbedded option is used.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  Accelerometer                                 no
+  AngularVelocity                               no
+  CTMD                                          Canon CTMD
+  CameraDateTime                                no
+  FrameNumber                                   no
+  GPSAltitude                                   no
+  GPSDOP                                        no
+  GPSDateTime                                   no
+  GPSLatitude                                   no
+  GPSLongitude                                  no
+  GPSSatellites                                 no
+  GPSSpeed                                      no
+  GPSSpeedRef                                   no
+  GPSTimeStamp                                  no
+  GPSTrack                                      no
+  GPSTrackRef                                   no
+  INSV                                          QuickTime INSV_MakerNotes
+  JpgFromRaw                                    no
+  PreviewInfo                                   QuickTime PreviewInfo
+  RVMI_gReV                                     QuickTime RVMI_gReV
+  RVMI_sReV                                     QuickTime RVMI_sReV
+  RawGSensor                                    no
+  SampleDuration                                no
+  SampleTime                                    no
+  Text                                          no
+  TimeCode                                      no
+  Unknown00?                                    no
+  Unknown01?                                    no
+  Unknown02?                                    no
+  Unknown03?                                    no
+  UserLabel                                     no
+  camm0                                         QuickTime camm0
+  camm1                                         QuickTime camm1
+  camm2                                         QuickTime camm2
+  camm3                                         QuickTime camm3
+  camm4                                         QuickTime camm4
+  camm5                                         QuickTime camm5
+  camm6                                         QuickTime camm6
+  camm7                                         QuickTime camm7
+  fdsc                                          GoPro fdsc
+  gpmd                                          GoPro GPMF
+  mebx                                          QuickTime Keys
+  rtmd                                          Sony rtmd
+  tx3g                                          QuickTime tx3g
+
+=head3 QuickTime INSV_MakerNotes Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  0x000a   SerialNumber                         no
+  0x0012   Model                                no
+  0x001a   Firmware                             no
+  0x002a   Parameters                           no
+
+=head3 QuickTime PreviewInfo Tags
+
+Preview stored by TomTom Bandit ActionCam.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      8    PreviewImage                         no
+
+=head3 QuickTime RVMI_gReV Tags
+
+GPS information extracted from the RVMI box of MOV videos.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      4    GPSLatitude                          no
+      8    GPSLongitude                         no
+     16    GPSSpeed                             no
+     18    GPSTrack                             no
+
+=head3 QuickTime RVMI_sReV Tags
+
+G-sensor information extracted from the RVMI box of MOV videos.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      4    GSensor                              no
+
+=head3 QuickTime camm0 Tags
+
+The camm0 through camm7 tables define tags extracted from the Google Street
+View Camera Motion Metadata of MP4 videos.  See
+L<https://developers.google.com/streetview/publish/camm-spec> for the
+specification.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      4    AngleAxis                            no
+
+=head3 QuickTime camm1 Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      4    PixelExposureTime                    no
+      8    RollingShutterSkewTime               no
+
+=head3 QuickTime camm2 Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      4    AngularVelocity                      no
+
+=head3 QuickTime camm3 Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      4    Acceleration                         no
+
+=head3 QuickTime camm4 Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      4    Position                             no
+
+=head3 QuickTime camm5 Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      4    GPSLatitude                          no
+     12    GPSLongitude                         no
+     20    GPSAltitude                          no
+
+=head3 QuickTime camm6 Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      4    GPSDateTime                          no
+     12    GPSMeasureMode                       no
+     16    GPSLatitude                          no
+     24    GPSLongitude                         no
+     32    GPSAltitude                          no
+     36    GPSHorizontalAccuracy                no
+     40    GPSVerticalAccuracy                  no
+     44    GPSVelocityEast                      no
+     48    GPSVelocityNorth                     no
+     52    GPSVelocityUp                        no
+     56    GPSSpeedAccuracy                     no
+
+=head3 QuickTime camm7 Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      4    MagneticField                        no
+
+=head3 QuickTime tx3g Tags
+
+Tags extracted from the tx3g sbtl timed metadata of Yuneec drones.
+
+  Tag ID       Tag Name                         Writable
+  ------       --------                         --------
+  'Alt'        GPSAltitude                      no
+  'GimPitch'   GimbalPitch                      no
+  'GimRoll'    GimbalRoll                       no
+  'GimYaw'     GimbalYaw                        no
+  'Lat'        GPSLatitude                      no
+  'Lon'        GPSLongitude                     no
+  'Pitch'      Pitch                            no
+  'Roll'       Roll                             no
+  'Yaw'        Yaw                              no
 
 =head3 QuickTime HintTrackInfo Tags
 
@@ -25038,165 +25255,6 @@ Tags used in QTIF QuickTime Image Files.
   'idat'   ImageData                            no
   'idsc'   ImageDescription                     QuickTime ImageDesc
   'iicc'   ICC_Profile                          ICC_Profile
-
-=head3 QuickTime Stream Tags
-
-Timed metadata extracted from QuickTime movie data and some AVI videos when
-the ExtractEmbedded option is used.
-
-  Tag Name                                      Writable
-  --------                                      --------
-  Accelerometer                                 no
-  AngularVelocity                               no
-  CTMD                                          Canon CTMD
-  CameraDateTime                                no
-  FrameNumber                                   no
-  GPSAltitude                                   no
-  GPSDOP                                        no
-  GPSDateTime                                   no
-  GPSLatitude                                   no
-  GPSLongitude                                  no
-  GPSSatellites                                 no
-  GPSSpeed                                      no
-  GPSSpeedRef                                   no
-  GPSTimeStamp                                  no
-  GPSTrack                                      no
-  GPSTrackRef                                   no
-  INSV                                          QuickTime INSV_MakerNotes
-  JpgFromRaw                                    no
-  RVMI_gReV                                     QuickTime RVMI_gReV
-  RVMI_sReV                                     QuickTime RVMI_sReV
-  RawGSensor                                    no
-  SampleDuration                                no
-  SampleTime                                    no
-  Text                                          no
-  TimeCode                                      no
-  Unknown1?                                     no
-  Unknown2?                                     no
-  UserLabel                                     no
-  camm0                                         QuickTime camm0
-  camm1                                         QuickTime camm1
-  camm2                                         QuickTime camm2
-  camm3                                         QuickTime camm3
-  camm4                                         QuickTime camm4
-  camm5                                         QuickTime camm5
-  camm6                                         QuickTime camm6
-  camm7                                         QuickTime camm7
-  fdsc                                          GoPro fdsc
-  gpmd                                          GoPro GPMF
-  mebx                                          QuickTime Keys
-  rtmd                                          Sony rtmd
-  tx3g                                          QuickTime tx3g
-
-=head3 QuickTime INSV_MakerNotes Tags
-
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  0x000a   SerialNumber                         no
-  0x0012   Model                                no
-  0x001a   Firmware                             no
-  0x002a   Parameters                           no
-
-=head3 QuickTime RVMI_gReV Tags
-
-GPS information extracted from the RVMI box of MOV videos.
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-      4    GPSLatitude                          no
-      8    GPSLongitude                         no
-     16    GPSSpeed                             no
-     18    GPSTrack                             no
-
-=head3 QuickTime RVMI_sReV Tags
-
-G-sensor information extracted from the RVMI box of MOV videos.
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-      4    GSensor                              no
-
-=head3 QuickTime camm0 Tags
-
-The camm0 through camm7 tables define tags extracted from the Google Street
-View Camera Motion Metadata of MP4 videos.  See
-L<https://developers.google.com/streetview/publish/camm-spec> for the
-specification.
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-      4    AngleAxis                            no
-
-=head3 QuickTime camm1 Tags
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-      4    PixelExposureTime                    no
-      8    RollingShutterSkewTime               no
-
-=head3 QuickTime camm2 Tags
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-      4    AngularVelocity                      no
-
-=head3 QuickTime camm3 Tags
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-      4    Acceleration                         no
-
-=head3 QuickTime camm4 Tags
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-      4    Position                             no
-
-=head3 QuickTime camm5 Tags
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-      4    GPSLatitude                          no
-     12    GPSLongitude                         no
-     20    GPSAltitude                          no
-
-=head3 QuickTime camm6 Tags
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-      4    GPSDateTime                          no
-     12    GPSMeasureMode                       no
-     16    GPSLatitude                          no
-     24    GPSLongitude                         no
-     32    GPSAltitude                          no
-     36    GPSHorizontalAccuracy                no
-     40    GPSVerticalAccuracy                  no
-     44    GPSVelocityEast                      no
-     48    GPSVelocityNorth                     no
-     52    GPSVelocityUp                        no
-     56    GPSSpeedAccuracy                     no
-
-=head3 QuickTime camm7 Tags
-
-  Index1   Tag Name                             Writable
-  ------   --------                             --------
-      4    MagneticField                        no
-
-=head3 QuickTime tx3g Tags
-
-Tags extracted from the tx3g sbtl timed metadata of Yuneec drones.
-
-  Tag ID       Tag Name                         Writable
-  ------       --------                         --------
-  'Alt'        GPSAltitude                      no
-  'GimPitch'   GimbalPitch                      no
-  'GimRoll'    GimbalRoll                       no
-  'GimYaw'     GimbalYaw                        no
-  'Lat'        GPSLatitude                      no
-  'Lon'        GPSLongitude                     no
-  'Pitch'      Pitch                            no
-  'Roll'       Roll                             no
-  'Yaw'        Yaw                              no
 
 =head2 PLIST Tags
 
@@ -33241,6 +33299,7 @@ for more details.
                        MakerNotePhaseOne
                        MakerNoteReconyx
                        MakerNoteReconyx2
+                       MakerNoteReconyx3
                        MakerNoteRicoh
                        MakerNoteRicoh2
                        MakerNoteRicohPentax

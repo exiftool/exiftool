@@ -6,8 +6,9 @@
 <link rel=stylesheet type='text/css' href='style.css' title='Style'>
 <style type="text/css">
 <!--
-pre  { color: #800; margin-left: 4em }
-.nr  { white-space: nowrap }
+pre   { color: #800; margin-left: 4em }
+.nr   { white-space: nowrap }
+.prog { padding: 0.5em; border: 1px solid gray; background: #fee }
 -->
 </style>
 </head>
@@ -34,10 +35,11 @@ is used to determine the GPS position at the time of the image, then the
 following tags are written to the image (if the corresponding information
 is available):</p>
 
-<pre>GPSLatitude      GPSLongitude      GPSAltitude          GPSDateStamp
-GPSLatitudeRef   GPSLongitudeRef   GPSAltitudeRef       GPSTimeStamp
-GPSTrack         GPSSpeed          GPSImgDirection      GPSPitch        
-GPSTrackRef      GPSSpeedRef       GPSImgDirectionRef   GPSRoll
+<pre>GPSLatitude        GPSLongitude      GPSAltitude          GPSDateStamp
+GPSLatitudeRef     GPSLongitudeRef   GPSAltitudeRef       GPSTimeStamp
+GPSTrack           GPSSpeed          GPSImgDirection      GPSPitch        
+GPSTrackRef        GPSSpeedRef       GPSImgDirectionRef   GPSRoll
+AmbientTemperature
 </pre>
 
 <blockquote class=lt><i>Note: GPSPitch and GPSRoll are not standard tags, and
@@ -98,10 +100,10 @@ GPS tags written by the <code>-geotag</code> feature to be deleted.</p>
 position available by specifying a log file name of "DATETIMEONLY" (all
 capitals).</p>
 
-<blockquote class=lt><i>Programmers:  You may write either a GPS log file name
+<blockquote class=prog><b>Programmers</b>:  You may write either a GPS log file name
 or the GPS log data as the value for <code>Geotag</code>.  If the value contains
 a newline or a null byte it is assumed to be data, otherwise it is taken as a
-file name.</i></blockquote>
+file name.</blockquote>
 
 <a name="geosync"></a>
 <h4>Geosync</h4>
@@ -208,12 +210,12 @@ tags.</p>
 <p>See the <a href="#Examples">Examples</a> section below for sample command
 lines illustrating various aspects of the geotagging feature.</p>
 
-<blockquote class=lt><i>Programmers:  Note that <code>Geotime</code> must always
+<blockquote class=prog><b>Programmers</b>:  Note that <code>Geotime</code> must always
 be specified when geotagging via the API (the default value of
 <code>DateTimeOriginal#</code> is implemented by the application).  Also,
 <code>Geotime</code> must be set after both <code>Geotag</code> and
 <code>Geosync</code> (the exiftool application reorders the assignments to
-ensure this).</i>
+ensure this).
 </blockquote>
 
 <a name="Examples"></a>
@@ -677,7 +679,7 @@ forum post</a> for more useful tips about creating KML files.</p>
 
 <hr>
 <i>Created Apr. 2, 2009</i><br>
-<i>Last revised Dec. 7, 2018</i>
+<i>Last revised Mar. 4, 2019</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

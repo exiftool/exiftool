@@ -32,7 +32,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.00';
+$VERSION = '3.01';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -176,6 +176,7 @@ my %sonyLensTypes2 = (
     50997 => 'Voigtlander NOKTON classic 35mm F1.4', #JR
     50998 => 'Voigtlander MACRO APO-LANTHAR 110mm F2.5', #JR
     50999 => 'Voigtlander COLOR-SKOPAR 21mm F3.5 Aspherical', #IB
+    51000 => 'Voigtlander NOKTON 50mm F1.2 Aspherical', #JR
 
     # lenses listed in the Sigma MC-11 list, but not yet seen:
     # 504xx => 'Sigma 18-200mm F3.5-6.3 DC MACRO OS HSM | C + MC-11', # (014)
@@ -7376,14 +7377,12 @@ my %isoSetting2010 = (
         Condition => '(($$self{FlashFired} & 0x01) != 1) and ($$self{Model} =~ /^(ILCE-6400)/)',
         Format => 'int32u',
         RawConv => '$val & 0x00ffffff',
-        PrintConv => 'sprintf("%6d",$val)',
     },
     0x0052 => {
         Name => 'ShutterCount2',
         Condition => '(($$self{FlashFired} & 0x01) != 1) and ($$self{Model} =~ /^(ILCE-(7M3|7RM3))/)',
         Format => 'int32u',
         RawConv => '$val & 0x00ffffff',
-        PrintConv => 'sprintf("%6d",$val)',
     },
 # 0x0058 - 0x0067: A-Mount: 16 values, only non-zero data for lenses giving "A-mount (3)" in 0x0104 below.
 #                           e.g for SAL70400G2:  9   5   5  64  69  74  79  84  89  94  98 104 255 105  89  80

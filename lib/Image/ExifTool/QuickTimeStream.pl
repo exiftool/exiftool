@@ -220,9 +220,16 @@ my %insvDataLen = (
         Groups => { 2 => 'Preview' },
         RawConv => '$self->ValidateImage(\$val,$tag)',
     },
+    text => { # (TomTom Bandit MP4) - [sbtl HandlerType with 'text' in SampleDescription]
+        Name => 'PreviewInfo',
+        Condition => 'length $$valPt > 12 and Get32u($valPt,4) == length($$valPt) and $$valPt =~ /^.{8}\xff\xd8\xff/s',
+        SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::PreviewInfo' },
+    },
     INSV => { SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::INSV_MakerNotes' } },
-    Unknown1 => { Unknown => 1 },
-    Unknown2 => { Unknown => 1 },
+    Unknown00 => { Unknown => 1 },
+    Unknown01 => { Unknown => 1 },
+    Unknown02 => { Unknown => 1 },
+    Unknown03 => { Unknown => 1 },
 );
 
 # tags found in 'camm' type 0 timed metadata (ref 4)
@@ -390,14 +397,25 @@ my %insvDataLen = (
     },
 );
 
+# preview image stored by TomTom Bandit ActionCam
+%Image::ExifTool::QuickTime::PreviewInfo = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    FIRST_ENTRY => 0,
+    NOTES => 'Preview stored by TomTom Bandit ActionCam.',
+    8 => {
+        Name => 'PreviewImage',
+        Groups => { 2 => 'Preview' },
+        Binary => 1,
+        Format => 'undef[$size-8]',
+    },
+);
+
 # tags found in 'RVMI' 'gReV' timed metadata (ref PH)
 %Image::ExifTool::QuickTime::RVMI_gReV = (
     PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
     GROUPS => { 2 => 'Location' },
     FIRST_ENTRY => 0,
-    NOTES => q{
-        GPS information extracted from the RVMI box of MOV videos.
-    },
+    NOTES => 'GPS information extracted from the RVMI box of MOV videos.',
     4 => {
         Name => 'GPSLatitude',
         Format => 'int32s',
@@ -566,7 +584,7 @@ sub SaveMetaKeys($$$)
 #------------------------------------------------------------------------------
 # We found some tags for this sample, so set document number and save timing information
 # Inputs: 0) ExifTool ref, 1) tag table ref, 2) sample time, 3) sample duration
-sub FoundSomething($$$$)
+sub FoundSomething($$;$$)
 {
     my ($et, $tagTbl, $time, $dur) = @_;
     $$et{DOC_NUM} = ++$$et{DOC_COUNT};
@@ -1357,6 +1375,106 @@ sub Process_mebx($$$)
 }
 
 #------------------------------------------------------------------------------
+# Process TomTom Bandit Action Cam TTAD atom (ref PH)
+# Inputs: 0) ExifTool object ref, 1) dirInfo ref, 2) tag table ref
+# Returns: 1 on success
+my %ttLen = ( # expected lengths of TomTom records
+    0 => 12,  # (records may be longer sometimes -- don't know why)
+    1 => 4,
+    2 => 12,
+    3 => 12,
+    # (haven't seen a record 4 yet)
+    5 => 92,
+);
+sub ProcessTTAD($$$)
+{
+    my ($et, $dirInfo, $tagTbl) = @_;
+    my $dataPt = $$dirInfo{DataPt};
+    my $dirLen = $$dirInfo{DirLen};
+    my $pos = 76;
+
+    return 0 if $dirLen < $pos;
+
+    $et->VerboseDir('TTAD', undef, $dirLen);
+    SetByteOrder('II');
+
+    my $found = 0;
+    my $lastTime = 0;
+    my $lastGoodPos = $pos;
+    my $ee = $et->Options('ExtractEmbedded');
+    my $unknown = $et->Options('Unknown');
+
+    for (;;) {
+        # look for next sync byte
+        pos($$dataPt) = $pos;
+        last unless $$dataPt =~ /\xff/g;
+        $pos = pos($$dataPt);
+        last if $pos + 5 >= $dirLen;
+        if ($pos - $lastGoodPos > 0x100) {
+            $et->Warn('Unrecognized or bad TTAD data', 1);
+            last;
+        }
+        my ($tm, $type) = unpack 'VC', substr($$dataPt, $pos, 5);
+        next unless $ttLen{$type} and $tm >= $lastTime and $tm <= $lastTime + 1000;
+        $lastTime = $tm;
+        $pos += 5;
+        last if $pos + $ttLen{$type} > $dirLen;
+        $lastGoodPos = $pos;
+        unless ($ee) {
+            $found & (1 << $type) and $pos += $ttLen{$type}, next;
+            $found |= (1 << $type);
+        }
+        if ($type == 0 or $type == 3) {
+            # (these are both just educated guesses - PH)
+            FoundSomething($et, $tagTbl, Get32u($dataPt,$pos-5) / 1000);
+            my @a = map { Get32s($dataPt,$pos+4*$_) / 1000 } 0..2;
+            $et->HandleTag($tagTbl, ($type ? 'Accelerometer' : 'AngularVelocity') => "@a");
+        } elsif ($type == 5) {
+            # example records unpacked with 'dVddddVddddv*'
+            # datetime                 ? spd  ele    lat        lon       ? trk   ?     ?      ?      ? ? ? ?     ? ?
+            # 2019:03:05 07:52:58.999Z 3 0.02 242    48.0254203 7.8497567 0 45.69 13.34 17.218 17.218 0 0 0 32760 5 0
+            # 2019:03:05 07:52:59.999Z 3 0.14 242    48.0254203 7.8497567 0 45.7  12.96 15.662 15.662 0 0 0 32760 5 0
+            # 2019:03:05 07:53:00.999Z 3 0.67 243.78 48.0254584 7.8497907 0 50.93  9.16 10.84  10.84  0 0 0 32760 5 0
+            # (I think "5" may be the number of satellites.  seen: 5,6,7 - PH)
+            FoundSomething($et, $tagTbl, Get32u($dataPt,$pos-5) / 1000);
+            my $tm = GetDouble($dataPt, $pos);
+            $et->HandleTag($tagTbl, GPSDateTime  => Image::ExifTool::ConvertUnixTime($tm,undef,3).'Z');
+            $et->HandleTag($tagTbl, GPSAltitude  => GetDouble($dataPt, $pos+0x14));
+            $et->HandleTag($tagTbl, GPSLatitude  => GetDouble($dataPt, $pos+0x1c));
+            $et->HandleTag($tagTbl, GPSLongitude => GetDouble($dataPt, $pos+0x24));
+            $et->HandleTag($tagTbl, GPSSpeed     => GetDouble($dataPt, $pos+0x0c) * $mpsToKph);
+            $et->HandleTag($tagTbl, GPSSpeedRef  => 'K');
+            $et->HandleTag($tagTbl, GPSTrack     => GetDouble($dataPt, $pos+0x30));
+            $et->HandleTag($tagTbl, GPSTrackRef  => 'T');
+            if ($unknown) {
+                my @a = map { GetDouble($dataPt, $pos+0x38+8*$_) } 0..2;
+                $et->HandleTag($tagTbl, Unknown03 => "@a");
+            }
+        } elsif ($type < 3) {
+            # as yet unknown:
+            # 1 - int32s[1]? (values around 98k)
+            # 2 - int32s[3] (values like "806 8124 4323" -- probably something * 1000 again)
+            if ($unknown) {
+                FoundSomething($et, $tagTbl, Get32u($dataPt,$pos-5) / 1000);
+                my $n = $type == 1 ? 0 : 2;
+                my @a = map { Get32s($dataPt,$pos+4*$_) } 0..$n;
+                $et->HandleTag($tagTbl, "Unknown0$type" => "@a");
+            }
+        } else {
+            $et->WarnOnce("Unknown TTAD record type $type",1);
+        }
+        if (not $ee and ($found & 0x29) == 0x29) { # without -ee, stop after we find types 0,3,5
+            $et->WarnOnce('The ExtractEmbedded option may find more tags in the movie data',3);
+            last;
+        }
+        $pos += $ttLen{$type};
+    }
+    SetByteOrder('MM');
+    delete $$et{DOC_NUM};
+    return 1;
+}
+
+#------------------------------------------------------------------------------
 # Extract information from Insta360 trailer
 # Inputs: 0) ExifTool ref
 sub ProcessINSVTrailer($)
@@ -1403,7 +1521,7 @@ sub ProcessINSVTrailer($)
                 for ($p=0; $p<$len; $p+=$dlen) {
                     $$et{DOC_NUM} = ++$$et{DOC_COUNT};
                     $et->HandleTag($tagTbl, TimeCode => sprintf('%.3f', Get64u(\$buff, $p) / 1000));
-                    $et->HandleTag($tagTbl, Unknown1 => GetDouble(\$buff, $p + 8));
+                    $et->HandleTag($tagTbl, Unknown01 => GetDouble(\$buff, $p + 8));
                 }
             } elsif ($id == 0x700) {
                 for ($p=0; $p<$len; $p+=$dlen) {
@@ -1424,7 +1542,7 @@ sub ProcessINSVTrailer($)
                     $et->HandleTag($tagTbl, GPSTrack => $a[9]);
                     $et->HandleTag($tagTbl, GPSTrackRef => 'T');
                     $et->HandleTag($tagTbl, GPSAltitude => $a[10]);
-                    $et->HandleTag($tagTbl, Unknown2 => "@a[1,2]");
+                    $et->HandleTag($tagTbl, Unknown02 => "@a[1,2]");
                 }
             }
         } elsif ($id == 0x101) {

@@ -42,7 +42,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.20';
+$VERSION = '2.21';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -53,6 +53,7 @@ sub ProcessSampleDesc($$$);
 sub ProcessHybrid($$$);
 sub ProcessRights($$$);
 sub Process_mebx($$$); # (in QuickTimeStream.pl)
+sub ProcessTTAD($$$); # (in QuickTimeStream.pl)
 sub ParseItemLocation($$);
 sub ParseItemInfoEntry($$);
 sub ParseItemPropAssoc($$);
@@ -1912,6 +1913,11 @@ my %eeBox = (
     # @etc - 4 bytes all zero (Samsung WB30F)
     # saut - 4 bytes all zero (Samsung SM-N900T)
     # smrd - string "TRUEBLUE" (Samsung SM-C101)
+    # ---- TomTom Bandit Action Cam ----
+    TTMD => {
+        Name => 'TomTomMetaData',
+        SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::TomTom' },
+    },
     # ---- Unknown ----
     # CDET - 128 bytes (unknown origin)
 #
@@ -1944,6 +1950,26 @@ my %eeBox = (
     # 2 - values: 0
     # 3 - values: FileSize minus 12 (why?)
     # 4 - values: 12
+);
+
+# TomTom Bandit Action Cam metadata (ref PH)
+%Image::ExifTool::QuickTime::TomTom = (
+    PROCESS_PROC => \&ProcessMOV,
+    GROUPS => { 2 => 'Video' },
+    NOTES => 'Tags found in TomTom Bandit Action Cam MP4 videos.',
+    TTAD => {
+        Name => 'TomTomAD',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::QuickTime::Stream',
+            ProcessProc => \&Image::ExifTool::QuickTime::ProcessTTAD,
+        },
+    },
+    TTHL => { Name => 'TomTomHL', Binary => 1, Unknown => 1 }, # (mostly zeros)
+    # (TTID values are different for each video)
+    TTID => { Name => 'TomTomID', ValueConv => 'unpack("x4H*",$val)' },
+    TTVI => { Name => 'TomTomVI', Format => 'int32u', Unknown => 1 }, # seen: "0 1 61 508 508"
+    # TTVD seen: "normal 720p 60fps 60fps 16/9 wide 1x"
+    TTVD => { Name => 'TomTomVD', ValueConv => 'my @a = ($val =~ /[\x20-\x7f]+/g); "@a"' },
 );
 
 # User-specific media data atoms (ref 11)
@@ -6585,7 +6611,9 @@ Image::ExifTool::AddCompositeTags('Image::ExifTool::QuickTime');
 #
 sub AUTOLOAD
 {
-    if ($AUTOLOAD eq 'Image::ExifTool::QuickTime::Process_mebx') {
+    if ($AUTOLOAD eq 'Image::ExifTool::QuickTime::Process_mebx' or
+        $AUTOLOAD eq 'Image::ExifTool::QuickTime::ProcessTTAD')
+    {
         require 'Image/ExifTool/QuickTimeStream.pl';
         no strict 'refs';
         return &$AUTOLOAD(@_);

@@ -9267,7 +9267,8 @@ option is used.</p>
 <td>ColorDataVersion</td>
 <td class=c>int16s</td>
 <td><span class=s>16 = 16 (M50)
-  <br>17 = 17 (EOS R)</span></td></tr>
+  <br>17 = 17 (EOS R)
+  <br>18 = 18 (EOS RP)</span></td></tr>
 <tr class=b>
 <td class=r title='71 = 0x47'>71</td>
 <td>WB_RGGBLevelsAsShot</td>
@@ -10188,84 +10189,6 @@ cameras such as the PowerShot S95.</p>
 <td><span class=s><span class=n>(the full THM image, embedded metadata is extracted as the first sub-document)</span></span></td></tr>
 </table></td></tr></table></blockquote>
 
-<h2><a name='uuid'>Canon uuid Tags</a></h2>
-<p>Tags extracted from the uuid atom of MP4 videos from cameras such as the
-SX280, and CR3 images from cameras such as the EOS M50.</p>
-<blockquote>
-<table class=frame><tr><td>
-<table class=inner cellspacing=1>
-<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
-<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
-<tr>
-<td>'CCTP'</td>
-<td>CanonCCTP</td>
-<td class=c>-</td>
-<td>--&gt; <a href='Canon.html#CCTP'>Canon CCTP Tags</a></td></tr>
-<tr class=b>
-<td>'CMT1'</td>
-<td>IFD0</td>
-<td class=c>-</td>
-<td>--&gt; <a href='EXIF.html'>EXIF Tags</a></td></tr>
-<tr>
-<td>'CMT2'</td>
-<td>ExifIFD</td>
-<td class=c>-</td>
-<td>--&gt; <a href='EXIF.html'>EXIF Tags</a></td></tr>
-<tr class=b>
-<td>'CMT3'</td>
-<td>MakerNoteCanon</td>
-<td class=c>-</td>
-<td>--&gt; <a href='Canon.html'>Canon Tags</a></td></tr>
-<tr>
-<td>'CMT4'</td>
-<td>GPSInfo</td>
-<td class=c>-</td>
-<td>--&gt; <a href='GPS.html'>GPS Tags</a></td></tr>
-<tr class=b>
-<td>'CNCV'</td>
-<td>CompressorVersion</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>'CNOP'</td>
-<td>CanonCNOP</td>
-<td class=c>-</td>
-<td>--&gt; <a href='Canon.html#CNOP'>Canon CNOP Tags</a></td></tr>
-<tr class=b>
-<td>'CNTH'</td>
-<td>CanonCNTH</td>
-<td class=c>-</td>
-<td>--&gt; <a href='Canon.html#CNTH'>Canon CNTH Tags</a></td></tr>
-<tr>
-<td>'THMB'</td>
-<td>ThumbnailImage</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-</table></td></tr></table></blockquote>
-
-<h2><a name='CCTP'>Canon CCTP Tags</a></h2>
-<blockquote>
-<table class=frame><tr><td>
-<table class=inner cellspacing=1>
-<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
-<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
-<tr><td colspan=4 class=c><i>[no tags known]</i></td></tr>
-</table></td></tr></table></blockquote>
-
-<h2><a name='Skip'>Canon Skip Tags</a></h2>
-<p>Information found in the &quot;skip&quot; atom of Canon MOV videos.</p>
-<blockquote>
-<table class=frame><tr><td>
-<table class=inner cellspacing=1>
-<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
-<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
-<tr>
-<td>'CNDB'</td>
-<td>Unknown_CNDB?</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-</table></td></tr></table></blockquote>
-
 <h2><a name='CTMD'>Canon CTMD Tags</a></h2>
 <p>Canon Timed MetaData tags found in CR3 images.  The ExtractEmbedded option
 is automatically applied when reading CR3 files to be able to extract this
@@ -10361,9 +10284,87 @@ information.</p>
 <td>--&gt; <a href='Canon.html'>Canon Tags</a></td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='uuid'>Canon uuid Tags</a></h2>
+<p>Tags extracted from the uuid atom of MP4 videos from cameras such as the
+SX280, and CR3 images from cameras such as the EOS M50.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'CCTP'</td>
+<td>CanonCCTP</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Canon.html#CCTP'>Canon CCTP Tags</a></td></tr>
+<tr class=b>
+<td>'CMT1'</td>
+<td>IFD0</td>
+<td class=c>-</td>
+<td>--&gt; <a href='EXIF.html'>EXIF Tags</a></td></tr>
+<tr>
+<td>'CMT2'</td>
+<td>ExifIFD</td>
+<td class=c>-</td>
+<td>--&gt; <a href='EXIF.html'>EXIF Tags</a></td></tr>
+<tr class=b>
+<td>'CMT3'</td>
+<td>MakerNoteCanon</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Canon.html'>Canon Tags</a></td></tr>
+<tr>
+<td>'CMT4'</td>
+<td>GPSInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='GPS.html'>GPS Tags</a></td></tr>
+<tr class=b>
+<td>'CNCV'</td>
+<td>CompressorVersion</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'CNOP'</td>
+<td>CanonCNOP</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Canon.html#CNOP'>Canon CNOP Tags</a></td></tr>
+<tr class=b>
+<td>'CNTH'</td>
+<td>CanonCNTH</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Canon.html#CNTH'>Canon CNTH Tags</a></td></tr>
+<tr>
+<td>'THMB'</td>
+<td>ThumbnailImage</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='CCTP'>Canon CCTP Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr><td colspan=4 class=c><i>[no tags known]</i></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='Skip'>Canon Skip Tags</a></h2>
+<p>Information found in the &quot;skip&quot; atom of Canon MOV videos.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'CNDB'</td>
+<td>Unknown_CNDB?</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Feb 28, 2019</i>
+<br><i>Last revised Mar 6, 2019</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

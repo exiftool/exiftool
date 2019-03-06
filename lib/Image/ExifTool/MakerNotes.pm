@@ -842,9 +842,16 @@ my $debug;          # set to 1 to enable debugging code
         },
     },
     {
+        Name => 'MakerNoteReconyx3',
+        Condition => '$$valPt =~ /^RECONYXH2\0/',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::Reconyx::Type3',
+            ByteOrder => 'Little-endian',
+        },
+    },
+    {
         Name => 'MakerNoteRicohPentax',
-        # (starts with "PENTAX \0")
-        # used by cameras such as the Q, Optio S1, RS1500 and WG-1
+        # used by cameras such as the Ricoh GR III
         Condition => '$$valPt=~/^RICOH\0(II|MM)/',
         SubDirectory => {
             TagTable => 'Image::ExifTool::Pentax::Main',

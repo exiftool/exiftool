@@ -20,7 +20,7 @@ use strict;
 use vars qw($VERSION %uid);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.20';
+$VERSION = '1.21';
 
 # DICOM VR (Value Representation) format conversions
 my %dicomFormat = (
@@ -3780,13 +3780,13 @@ sub ProcessDICOM($$)
             $format = 'string';
             if ($vr eq 'DA') {
                 # format date values
-                $val =~ s/^(\d{4})(\d{2})(\d{2})/$1:$2:$3/;
+                $val =~ s/^ *(\d{4})(\d{2})(\d{2})/$1:$2:$3/;
             } elsif ($vr eq 'TM') {
                 # format time values
-                $val =~ s/^(\d{2})(\d{2})(\d{2}.*)/$1:$2:$3/;
+                $val =~ s/^ *(\d{2})(\d{2})(\d{2}[^ ]*)/$1:$2:$3/;
             } elsif ($vr eq 'DT') {
                 # format date/time values
-                $val =~ s/^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2}.*)/$1:$2:$3 $4:$5:$6/;
+                $val =~ s/^ *(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2}[^ ]*)/$1:$2:$3 $4:$5:$6/;
             } elsif ($vr eq 'AT' and $len == 4) {
                 # convert attribute tag ID to hex format
                 my ($g, $e) = (Get16u(\$buff,0), Get16u(\$buff,2));
@@ -3795,6 +3795,11 @@ sub ProcessDICOM($$)
                 # add PrintConv to translate registered UID's
                 $val =~ s/\0.*//s; # truncate at null
                 $$tagInfo{PrintConv} = \%uid if $uid{$val} and $tagInfo;
+            } elsif ($vr =~ /^(AE|CS|DS|IS|LO|PN|SH)$/) {
+                $buff =~ s/ +$//;   # leading/trailing spaces not significant
+                $buff =~ s/^ +//;
+            } elsif ($vr =~ /^(LT|ST|UT)$/) {
+                $buff =~ s/ +$//;   # trailing spaces not significant
             }
         }
         # save the group 2 end position and transfer syntax

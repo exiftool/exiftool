@@ -7,6 +7,7 @@
 #
 # References:   1) RCNX_MN10.pdf (courtesy of Reconyx Inc.)
 #               2) ultrafire_makernote.pdf (courtesy of Reconyx Inc.)
+#               3) Reconyx private communication
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::Reconyx;
@@ -14,7 +15,7 @@ package Image::ExifTool::Reconyx;
 use strict;
 use vars qw($VERSION);
 
-$VERSION = '1.05';
+$VERSION = '1.06';
 
 # info for Type2 version tags
 my %versionInfo = (
@@ -285,6 +286,132 @@ my %versionInfo = (
         Name => 'UserLabel',
         Format => 'string[21]',
     },
+);
+
+# maker notes for Reconyx HP2X cameras (ref 3)
+%Image::ExifTool::Reconyx::Type3 = (
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    WRITE_PROC => \&Image::ExifTool::WriteBinaryData,
+    CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
+    TAG_PREFIX => 'Reconyx',
+    WRITABLE => 1,
+    FIRST_ENTRY => 0,
+    NOTES => 'Tags extracted from models such as the HP2X.',
+  # 0x0a => { Name => 'StructureVersion',   Format => 'int16u' },
+  # 0x0c => { Name => 'ParentFileSize',     Format => 'int32u' },
+    0x10 => { Name => 'FileNumber',         Format => 'int16u' },
+    0x12 => { Name => 'DirectoryNumber',    Format => 'int16u' },
+  # 0x14 => { Name => 'DirCreateDate',      Format => 'int16u' },
+  # 0x16 => { Name => 'DirCreateTime',      Format => 'int16u' },
+  # 0x18 - int16[8] SDCardLabel
+  # 0x28 => { Name => 'MakerNoteVersion',   Format => 'int16u' },
+    0x2a => {
+        Name => 'FirmwareVersion',
+        Format => 'int16u[3]',
+        ValueConv => 'my @a = split " ",$val; sprintf("%d.%d%c",@a)',
+        ValueConvInv => '$val=~/(\d+)\.(\d+)([a-zA-Z])/ ? "$1 $2 ".ord($3) : undef',
+    },
+    0x30 => {
+        Name => 'FirmwareDate',
+        Format => 'int16u[2]',
+        ValueConv => 'my ($y,$d) = split " ", $val; sprintf("%.4x:%.2x:%.2x",$y,$d>>8,$d&0xff)',
+        ValueConvInv => 'my @a=split ":", $val; hex($a[0])." ".hex($a[1].$a[2])',
+    },
+    0x34 => {
+        Name => 'TriggerMode', #PH (NC) (called EventType in the Reconyx code)
+        Format => 'string[2]',
+        PrintConv => {
+            M => 'Motion Detection', # (seen this one only)
+            T => 'Time Lapse', # (NC)
+            P => 'Point and Shoot', # (NC)
+        },
+    },
+    0x36 => {
+        Name => 'Sequence',
+        Format => 'int16u[2]',
+        PrintConv => '$val =~ s/ / of /; $val',
+        PrintConvInv => 'join(" ", $val=~/\d+/g)',
+    },
+    0x3a => {
+        Name => 'EventNumber',
+        Format => 'int16u[2]',
+        ValueConv => 'my @a=split " ",$val;($a[0]<<16)+$a[1]',
+        ValueConvInv => '($val >> 16) . " " . ($val & 0xffff)',
+    },
+    0x3e => {
+        Name => 'DateTimeOriginal',
+        Description => 'Date/Time Original',
+        Format => 'int16u[6]',
+        Groups => { 2 => 'Time' },
+        Priority => 0, # (not as reliable as EXIF)
+        Shift => 'Time',
+        ValueConv => q{
+            my @a = split ' ', $val;
+            sprintf('%.4d:%.2d:%.2d %.2d:%.2d:%.2d', reverse @a);
+        },
+        ValueConvInv => q{
+            my @a = ($val =~ /\d+/g);
+            return undef unless @a >= 6;
+            join ' ', @a[6,5,4,3,2,1,0];
+        },
+        PrintConv => '$self->ConvertDateTime($val)',
+        PrintConvInv => '$self->InverseDateTime($val)',
+    },
+    0x4a => { #2
+        Name => 'DayOfWeek',
+        Groups => { 2 => 'Time' },
+        Format => 'int16u',
+        PrintConv => {
+            0 => 'Sunday',
+            1 => 'Monday',
+            2 => 'Tuesday',
+            3 => 'Wednesday',
+            4 => 'Thursday',
+            5 => 'Friday',
+            6 => 'Saturday',
+        },
+    },
+    0x4c => {
+        Name => 'MoonPhase',
+        Groups => { 2 => 'Time' },
+        Format => 'int16u',
+        PrintConv => {
+            0 => 'New',
+            1 => 'New Crescent',
+            2 => 'First Quarter',
+            3 => 'Waxing Gibbous',
+            4 => 'Full',
+            5 => 'Waning Gibbous',
+            6 => 'Last Quarter',
+            7 => 'Old Crescent',
+        },
+    },
+    0x4e => {
+        Name => 'AmbientTemperatureFahrenheit',
+        Format => 'int16s',
+        PrintConv => '"$val F"',
+        PrintConvInv => '$val=~/(-?\d+)/ ? $1 : $val',
+    },
+    0x50 => {
+        Name => 'AmbientTemperature',
+        Format => 'int16s',
+        PrintConv => '"$val C"',
+        PrintConvInv => '$val=~/(-?\d+)/ ? $1 : $val',
+    },
+    0x52 => { Name => 'Contrast',           Format => 'int16u' },
+    0x54 => { Name => 'Brightness',         Format => 'int16u' },
+    0x56 => { Name => 'Sharpness',          Format => 'int16u' },
+    0x58 => { Name => 'Saturation',         Format => 'int16u' },
+    0x5a => { Name => 'Flash',              Format => 'int16u', PrintConv => { 0 => 'Off', 1 => 'On' } },
+    0x5c => { Name => 'AmbientInfrared',    Format => 'int16u' },
+    0x5e => { Name => 'AmbientLight',       Format => 'int16u' },
+    0x60 => { Name => 'MotionSensitivity',  Format => 'int16u' },
+    0x62 => { Name => 'BatteryVoltage',     Format => 'int16u' },
+    0x64 => { Name => 'BatteryVoltageAvg',  Format => 'int16u' },
+    0x66 => { Name => 'BatteryType',        Format => 'int16u' },
+    0x68 => { Name => 'UserLabel',          Format => 'string[22]' },
+    0x7e => { Name => 'SerialNumber',       Format => 'unicode[15]' },
 );
 
 __END__

@@ -87,7 +87,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.06';
+$VERSION = '4.07';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -1801,8 +1801,8 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
             Name => 'ColorData8',
             SubDirectory => { TagTable => 'Image::ExifTool::Canon::ColorData8' },
         },
-        {   # (int16u[1820]) - M50 (1820) ref PH, EOS R (1824) ref IB
-            Condition => '$count == 1820 or $count == 1824',
+        {   # (int16u[1816|1820|1824]) - M50 (1820) ref PH, EOS R (1824), EOS RP, SX70 (1816) ref IB
+            Condition => '$count == 1816 or $count == 1820 or $count == 1824',
             Name => 'ColorData9',
             SubDirectory => { TagTable => 'Image::ExifTool::Canon::ColorData9' },
         },
@@ -7784,7 +7784,7 @@ my %ciMaxFocal = (
     },
 );
 
-# Color data (MakerNotes tag 0x4001, count=1820) (ref PH)
+# Color data (MakerNotes tag 0x4001, count=1820,etc) (ref PH)
 %Image::ExifTool::Canon::ColorData9 = (
     %binaryDataAttrs,
     FORMAT => 'int16s',
@@ -7798,7 +7798,8 @@ my %ciMaxFocal = (
         RawConv => '$$self{ColorDataVersion} = $val',
         PrintConv => {
             16 => '16 (M50)',
-            17 => '17 (EOS R)',
+            17 => '17 (EOS R)',     # (and PowerShot SX740HS)
+            18 => '18 (EOS RP)',    # (and PowerShot SX70HS)
         },
     },
     0x47 => { Name => 'WB_RGGBLevelsAsShot',     Format => 'int16s[4]' },

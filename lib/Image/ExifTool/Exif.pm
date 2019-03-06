@@ -1603,6 +1603,7 @@ my %sampleFormat = (
     0x830e => { #30
         Name => 'PixelScale',
         Writable => 'double',
+        WriteGroup => 'IFD0',
         Count => 3,
     },
     0x8335 => 'AdventScale', #20
@@ -1634,6 +1635,7 @@ my %sampleFormat = (
     0x8480 => { #30 (obsolete)
         Name => 'IntergraphMatrix',
         Writable => 'double',
+        WriteGroup => 'IFD0',
         Count => -1,
     },
     0x8481 => 'INGRReserved', #20
@@ -1641,6 +1643,7 @@ my %sampleFormat = (
         Name => 'ModelTiePoint',
         Groups => { 2 => 'Location' },
         Writable => 'double',
+        WriteGroup => 'IFD0',
         Count => -1,
     },
     0x84e0 => 'Site', #9
@@ -1708,6 +1711,7 @@ my %sampleFormat = (
         Name => 'ModelTransform',
         Groups => { 2 => 'Location' },
         Writable => 'double',
+        WriteGroup => 'IFD0',
         Count => 16,
     },
     0x8602 => { #16
@@ -3205,6 +3209,7 @@ my %sampleFormat = (
             Format => 'undef',
         },
         {
+            # Ricoh models such as the GR III
             Condition => '$$valPt =~ /^RICOH\0(II|MM)/',
             Name => 'MakerNoteRicohPentax',
             MakerNotes => 1,

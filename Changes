@@ -7,16 +7,21 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 11.30. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Mar. 7, 2019 - Version 11.31
+
+  - Added read support for FITS images
+  - Another try at removing spaces from some DICOM values (github issues #10/12)
+
 Mar. 6, 2019 - Version 11.30 (production release)
 
   - Added a new Sony/Minolta LensType (thanks Jos Roost)
   - Decode streaming metadata from TomTom Bandit Action Cam MP4 videos
-  - Decode maker notes of Reconyx HP2X images
+  - Decode Reconyx HF2 PRO maker notes
   - Decode ColorData for some new Canon models (thanks LibRaw)
   - Enhanced -geotag feature to set AmbientTemperature if available
   - Remove non-significant spaces from some DICOM values (github issues #10/12)
   - Fixed possible "'x' outside of string" error when reading corrupted EXIF
-  - Fixed incorrect write group for some GeoTIFF tags
+  - Fixed incorrect write group for GeoTIFF tags added in version 11.24
 
 Feb. 28, 2019 - Version 11.29
 

@@ -57,6 +57,7 @@ html/TagNames/DjVu.html
 html/TagNames/EXE.html
 html/TagNames/EXIF.html
 html/TagNames/Extra.html
+html/TagNames/FITS.html
 html/TagNames/FLAC.html
 html/TagNames/FLIF.html
 html/TagNames/FLIR.html
@@ -250,6 +251,7 @@ lib/Image/ExifTool/DarwinCore.pm
 lib/Image/ExifTool/DjVu.pm
 lib/Image/ExifTool/EXE.pm
 lib/Image/ExifTool/Exif.pm
+lib/Image/ExifTool/FITS.pm
 lib/Image/ExifTool/FLAC.pm
 lib/Image/ExifTool/FLIF.pm
 lib/Image/ExifTool/FLIR.pm
@@ -496,6 +498,8 @@ t/ExifTool_6.out
 t/ExifTool_7.out
 t/ExifTool_8.out
 t/ExifTool_9.out
+t/FITS.t
+t/FITS_2.out
 t/FLAC.t
 t/FLAC_2.out
 t/FLAC_3.out
@@ -908,6 +912,7 @@ t/images/EXE.so
 t/images/ExifTool.jpg
 t/images/ExifTool.tif
 t/images/ExtendedXMP.jpg
+t/images/FITS.fits
 t/images/FLAC.flac
 t/images/FLAC.ogg
 t/images/FLIF.flif

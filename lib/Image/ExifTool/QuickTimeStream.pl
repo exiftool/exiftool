@@ -1401,7 +1401,7 @@ sub ProcessTTAD($$$)
     my $found = 0;
     my $lastTime = 0;
     my $lastGoodPos = $pos;
-    my $ee = $et->Options('ExtractEmbedded');
+    my $eeOpt = $et->Options('ExtractEmbedded');
     my $unknown = $et->Options('Unknown');
 
     for (;;) {
@@ -1420,7 +1420,7 @@ sub ProcessTTAD($$$)
         $pos += 5;
         last if $pos + $ttLen{$type} > $dirLen;
         $lastGoodPos = $pos;
-        unless ($ee) {
+        unless ($eeOpt) {
             $found & (1 << $type) and $pos += $ttLen{$type}, next;
             $found |= (1 << $type);
         }
@@ -1463,7 +1463,7 @@ sub ProcessTTAD($$$)
         } else {
             $et->WarnOnce("Unknown TTAD record type $type",1);
         }
-        if (not $ee and ($found & 0x29) == 0x29) { # without -ee, stop after we find types 0,3,5
+        if (not $eeOpt and ($found & 0x29) == 0x29) { # without -ee, stop after we find types 0,3,5
             $et->WarnOnce('The ExtractEmbedded option may find more tags in the movie data',3);
             last;
         }

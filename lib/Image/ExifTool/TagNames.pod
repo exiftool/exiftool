@@ -15263,7 +15263,7 @@ Tags extracted from models such as the UltraFire.
 
 =head3 Reconyx Type3 Tags
 
-Tags extracted from models such as the HP2X.
+Tags extracted from models such as the HF2 PRO.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
@@ -32444,6 +32444,27 @@ specification.
   'title'              Title                    no
   'vern'               InternalVersionNumber    no
   'version'            RevisionNumber           no
+
+=head2 FITS Tags
+
+This table lists some standard Flexible Image Transport System (FITS) tags,
+but ExifTool will extract any other tags found.  See
+L<https://fits.gsfc.nasa.gov/fits_standard.html> for the specification.
+
+  Tag ID       Tag Name                         Writable
+  ------       --------                         --------
+  'AUTHOR'     Author                           no
+  'BACKGRND'   Background                       no
+  'DATE'       CreateDate                       no
+  'DATE-END'   ObservationDateEnd               no
+  'DATE-OBS'   ObservationDate                  no
+  'INSTRUME'   Instrument                       no
+  'OBJECT'     Object                           no
+  'OBSERVER'   Observer                         no
+  'REFERENC'   Reference                        no
+  'TELESCOP'   Telescope                        no
+  'TIME-END'   ObservationTimeEnd               no
+  'TIME-OBS'   ObservationTime                  no
 
 =head2 OOXML Tags
 

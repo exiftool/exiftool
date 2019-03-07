@@ -13,6 +13,135 @@
 <p><b>Note:</b> This page gives the history of older exiftool versions.  See
 <a href="history.html">history.html</a> for the recent history.</p>
 
+<a name='v11.19'><b>Nov. 14, 2018 - Version 11.19</b></a>
+<ul>
+<li>Added -fast4 option
+<li>Enhanced -if option to allow arbitrary Perl expressions instead of just
+    logic expressions
+<li>API Changes:
+    <ul>
+    <li>Enhanced <a href="ExifTool.html#FastScan">FastScan option</a> to add a setting of 4
+    </ul>
+</ul>
+
+<a name='v11.18'><b>Nov. 12, 2018 - Version 11.18</b></a>
+<ul>
+<li>Decode a new Nikon tag (thanks Richard Butler)
+<li>Decode a new FujiFilm tag
+<li>Updated decoding of Sony maker notes for newer models (thanks Jos Roost)
+<li>Enhanced -if option to allow fast processing pass to evaluate the condition
+<li>Improved warning for unknown JPEG APP segment
+</ul>
+
+<a name='v11.17'><b>Nov. 4, 2018 - Version 11.17</b></a>
+<ul>
+<li>Added a new Canon LensType (thanks Norbert Wasser)
+<li>Added a new Sony/Minolta LensType and a new SonyModelID (thanks LibRaw)
+<li>Decode GPS from Garmin Dashcam videos
+<li>Changed type of J2C files from a JPEG 2000 image to a JPEG 2000 codestream
+</ul>
+
+<a name='v11.16'><b>Oct. 26, 2018 - Version 11.16</b></a>
+<ul>
+<li>Decode FLIR GPS information
+<li>Decode 3D image from RED Hydrogen smartphone
+<li>Minor improvements to decoding of new FujiFilm tags
+<li>Fixed problem where writing Shortcut tags with the -E option would double
+    unescape the HTML entities
+</ul>
+
+<a name='v11.15'><b>Oct. 25, 2018 - Version 11.15</b></a>
+<ul>
+<li>Added a couple of new Canon LensType values (thanks LibRaw and Andrew Shieh)
+<li>Added a new Nikon LensID
+<li>Added definitions for a few more VCard tags
+<li>Added a new FujiFilm ShutterType value
+<li>Decode some new FujiFilm tags (thanks Richard Butler)
+<li>Store XMP GPS coordinates with two extra digits of precision and trim
+    trailing zeros
+<li>Improved technique for handling rounding errors in times and GPS seconds
+<li>Removed "Undersized IFD0 StripByteCounts" minor warning when writing ORF
+    files since this is a "feature" of most Olympus models
+<li>Warn about undefined EXIF values with -validate option
+<li>Changed the way Mask-ed values are decoded (do bit shift automatically)
+<li>Changed FujiFilm HighISONoiseReduction tag to just "NoiseReduction", and
+    avoid extracting historic NoiseReduction tag if value is "n/a"
+<li>Fixed potential problem reading GeoTiff tags with multiple SHORT values
+<li>API Changes:
+    <ul>
+    <li>Added <a href="ExifTool.html#GeoSpeedRef">GeoSpeedRef option</a>
+    </ul>
+</ul>
+
+<a name='v11.14'><b>Oct. 16, 2018 - Version 11.14</b></a>
+<ul>
+<li>Added more TIFF Compression values
+<li>Added more AIFF CompressionType values
+<li>Added more Nikon NEFCompression values (thanks LibRaw)
+<li>Added a new Canon RecordMode
+<li>Decode some new Canon custom functions
+<li>Patched "Invalid VignettingCorrUnknown2 data" warning for EOS R CR3 images
+<li>Fixed bug were any argument beginning with "-progress" on the command line
+    was interpreted as the -progress option
+</ul>
+
+<a name='v11.13'><b>Oct. 9, 2018 - Version 11.13</b></a>
+<ul>
+<li>Decode GPS from NextBase 512G dashcam MOV videos (different than 512GW)
+<li>Added a new Canon LensType (thanks LibRaw)
+<li>Minor improvements to verbose dump of streaming GPS metadata
+<li>Reverted change of version 10.71 which resulted in Windows not recognizing
+    PNG CreationTime as written by ExifTool (added this feature to the
+    StrictDate API option instead)
+<li>Improved decoding of Nikon CropHiSpeed (thanks LibRaw)
+<li>Improved -fast option to reduce memory usage when reading JPG, PNG,
+    QuickTime-based and RIFF-based files via a sequential stream
+<li>Fixed DOF calculation to use ApproximateFocusDistance if available
+<li>API Changes:
+    <ul>
+    <li>Enhanced <a href="ExifTool.html#StrictDate">StrictDate option</a> to reformat PNG CreateTime according to PNG
+        specification
+    </ul>
+</ul>
+
+<a name='v11.12'><b>Oct. 2, 2018 - Version 11.12</b></a>
+<ul>
+<li>Added a new Sony/Minolta LensType (thanks LibRaw and Jos Roost)
+<li>Added a new Nikon LensID
+<li>Decode a few new Sony SRF2 tags (thanks LibRaw)
+<li>Decode GPS from NextBase 512GW dashcam MOV videos
+<li>Validate MS-DOC FIB before extracting contained tags
+<li>Fixed bug extracting GPSSpeed for some dashcam models
+</ul>
+
+<a name='v11.11'><b>Sept. 27, 2018 - Version 11.11</b></a> <span class=grn>(production release)</span>
+<ul>
+<li>Added ARQ to the list of supported file types
+<li>Added support for GIMP XCF version 4 and later
+<li>Added a new QuickTime HandlerType value
+<li>Added read support for Apple AAE files
+<li>Added a new CanonModelID and some new Canon LensType values (thanks LibRaw)
+<li>Added a number of new Nikon LensID values (thanks Robert Rottmerhusen)
+<li>Added a new Sony/Minolta LensType (thanks LibRaw)
+<li>Decode more Sony IDC tags (thanks Jos Roost)
+<li>Decode some new Panasonic tags (thanks Klaus Homeister)
+<li>Decode more tags from Nikon MOV videos
+<li>Decode a new Nikon tag (thanks LibRaw)
+<li>Decode a large number of new Kodak IFD tags (thanks Jim McGarvey)
+<li>Decode streaming GPS from videos of more dashcam and drone models
+<li>Decode more tags from Microsoft Word DOC files
+<li>Updated arg_files/iptcCore.args for IPTC Extension version 1.4
+<li>Patched to read corrupted MakN data written by buggy Adobe Camera Raw
+<li>Downgraded "Undersized StripByteCounts" error for some RAW file types
+<li>Fixed incorrect decoding of embedded GPS in Rexing V1P dashcam videos
+<li>Fixed incorrect format for DNGPrivateData
+<li>Fixed potential error when deleting maker notes from some images
+<li>Fixed problem decoding Apple PLIST information from some files
+<li>Fixed bug in Windows with CR/LF sequences in list values of the -X output
+<li>Fixed some inconsistencies in detecting file name conflicts when writing the
+    TestName tag
+</ul>
+
 <a name='v11.10'><b>Aug. 17, 2018 - Version 11.10</b></a>
 <ul>
 <li>Added support for Canon 1DX firmware 2.1.0

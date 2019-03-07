@@ -288,7 +288,7 @@ my %versionInfo = (
     },
 );
 
-# maker notes for Reconyx HP2X cameras (ref 3)
+# maker notes for Reconyx HF2 PRO cameras (ref 3)
 %Image::ExifTool::Reconyx::Type3 = (
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
@@ -297,7 +297,7 @@ my %versionInfo = (
     TAG_PREFIX => 'Reconyx',
     WRITABLE => 1,
     FIRST_ENTRY => 0,
-    NOTES => 'Tags extracted from models such as the HP2X.',
+    NOTES => 'Tags extracted from models such as the HF2 PRO.',
   # 0x0a => { Name => 'StructureVersion',   Format => 'int16u' },
   # 0x0c => { Name => 'ParentFileSize',     Format => 'int32u' },
     0x10 => { Name => 'FileNumber',         Format => 'int16u' },

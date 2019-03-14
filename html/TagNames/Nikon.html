@@ -6182,7 +6182,9 @@ videos from some Nikon cameras.</p>
 <td><span class=s>Bit 0 = MF
   <br>Bit 1 = D
   <br>Bit 2 = G
-  <br>Bit 3 = VR</span></td></tr>
+  <br>Bit 3 = VR
+  <br>Bit 4 = 1
+  <br>Bit 6 = E</span></td></tr>
 <tr class=b>
 <td title='0x2000084 = 33554564'>0x2000084</td>
 <td>Lens</td>
@@ -6528,11 +6530,9 @@ of Nikon AVI videos.</p>
 <p>The Nikon LensID is constructed as a Composite tag from the raw hex values
 of 8 other tags: LensIDNumber, LensFStops, MinFocalLength, MaxFocalLength,
 MaxApertureAtMinFocal, MaxApertureAtMaxFocal, MCUVersion and LensType, in
-that order.  (source:
-<a href="http://www.rottmerhusen.com/objektives/lensid/thirdparty.html">http://www.rottmerhusen.com/objektives/lensid/thirdparty.html</a>.) Multiple
-lenses with the same LensID are differentiated by decimal values in the list
-below.  The user-defined &quot;Lenses&quot; list may be used to specify the lens for
-ExifTool to choose in these cases (see the
+that order.  Multiple lenses with the same LensID are differentiated by
+decimal values in the list below.  The user-defined &quot;Lenses&quot; list may be
+used to specify the lens for ExifTool to choose in these cases (see the
 <a href="../config.html">sample config file</a> for details).</p>
 <blockquote>
 <table class=frame><tr><td>
@@ -7042,6 +7042,7 @@ ExifTool to choose in these cases (see the
 </tr><tr><td>'C1 48 24 37 24 24 4B 46'</td><td>= Sigma 14-24mm F2.8 DG HSM | A</td>
 </tr><tr><td>'C2 4C 24 24 14 14 4B 06'</td><td>= Sigma 14mm F1.8 DG HSM | A</td>
 </tr><tr><td>'C3 34 68 98 38 40 4B 4E'</td><td>= Sigma 100-400mm F5-6.3 DG OS HSM | C</td>
+</tr><tr><td>'C8 54 62 62 0C 0C 4B 06'</td><td>= Sigma 85mm F1.4 DG HSM | A</td>
 </tr><tr><td>'C8 54 62 62 0C 0C 4B 46'</td><td>= Sigma 85mm F1.4 DG HSM | A</td>
 </tr><tr><td>'C9 48 37 5C 24 24 4B 4E'</td><td>= Sigma 24-70mm F2.8 DG OS HSM | A</td>
 </tr><tr><td>'CA 48 27 3E 24 24 DF 4E'</td><td>= Tamron SP 15-30mm f/2.8 Di VC USD G2 (A041)</td>
@@ -7110,7 +7111,7 @@ ExifTool to choose in these cases (see the
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jan 17, 2019</i>
+<br><i>Last revised Mar 12, 2019</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

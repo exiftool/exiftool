@@ -42,7 +42,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.21';
+$VERSION = '2.22';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -53,6 +53,8 @@ sub ProcessSampleDesc($$$);
 sub ProcessHybrid($$$);
 sub ProcessRights($$$);
 sub Process_mebx($$$); # (in QuickTimeStream.pl)
+sub Process_gps0($$$); # (in QuickTimeStream.pl)
+sub Process_gsen($$$); # (in QuickTimeStream.pl)
 sub ProcessTTAD($$$); # (in QuickTimeStream.pl)
 sub ParseItemLocation($$);
 sub ParseItemInfoEntry($$);
@@ -453,6 +455,17 @@ my %eeBox = (
             Condition => '$$valPt =~ /^\0.{3}(CNDB|CNCV|CNMN|CNFV|CNTH|CNDM)/s',
             SubDirectory => { TagTable => 'Image::ExifTool::Canon::Skip' },
         },
+        {
+            Name => 'PreviewImage', # (found in  DuDuBell M1 dashcam MOV files)
+            Groups => { 2 => 'Preview' },
+            Condition => '$$valPt =~ /^.{12}\xff\xd8\xff/',
+            Binary => 1,
+            RawConv => q{
+                my $len = Get32u(\$val, 8);
+                return undef unless length($val) >= $len + 12;
+                return substr($val, 12, $len);
+            },
+        },
         { Name => 'Skip', Unknown => 1, Binary => 1 },
     ],
     wide => { Unknown => 1, Binary => 1 },
@@ -595,6 +608,30 @@ my %eeBox = (
     },
     # meta - proprietary XML information written by some Flip cameras - PH
     # beam - 16 bytes found in an iPhone video
+    IDIT => { #PH (written by DuDuBell M1, VSYS M6L dashcams)
+        Name => 'DateTimeOriginal',
+        Description => 'Date/Time Original',
+        Groups => { 2 => 'Time' },
+        Format => 'string', # (removes trailing "\0")
+        ValueConv => '$val=~tr/-/:/; $val',
+        PrintConv => '$self->ConvertDateTime($val)',
+    },
+    gps0 => { #PH (DuDuBell M1, VSYS M6L)
+        Name => 'GPSTrack',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::QuickTime::Stream',
+            ProcessProc => \&Process_gps0,
+        },
+    },
+    gsen => { #PH (DuDuBell M1, VSYS M6L)
+        Name => 'GSensor',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::QuickTime::Stream',
+            ProcessProc => \&Process_gsen,
+        },
+    },
+    # gpsa - seen hex "01 20 00 00" (DuDuBell M1, VSYS M6L)
+    # gsea - 20 bytes hex "05 00's..." (DuDuBell M1) "05 08 02 01 ..." (VSYS M6L)
 );
 
 # MPEG-4 'ftyp' atom
@@ -1920,6 +1957,7 @@ my %eeBox = (
     },
     # ---- Unknown ----
     # CDET - 128 bytes (unknown origin)
+    # mtyp - 4 bytes all zero (some drone video)
 #
 # other 3rd-party tags
 # (ref http://code.google.com/p/mp4parser/source/browse/trunk/isoparser/src/main/resources/isoparser-default.properties?r=814)
@@ -5764,7 +5802,7 @@ my %eeBox = (
 #
 #   AudioFormat  Offset  Child atoms
 #   -----------  ------  ----------------
-#   mp4a         52 *    wave, chan, esds
+#   mp4a         52 *    wave, chan, esds, SA3D(Insta360 spherical video params?)
 #   in24         52      wave, chan
 #   "ms\0\x11"   52      wave
 #   sowt         52      chan
@@ -6447,6 +6485,8 @@ my %eeBox = (
             pict => 'Picture', # (HEIC images)
             camm => 'Camera Metadata', # (Insta360 MP4)
             psmd => 'Panasonic Static Metadata', #PH (Leica C-Lux CAM-DC25)
+            data => 'Data', #PH (GPS and G-sensor data from DataKam)
+            sbtl => 'Subtitle', #PH (TomTom Bandit Action Cam)
         },
     },
     12 => { #PH
@@ -6611,9 +6651,8 @@ Image::ExifTool::AddCompositeTags('Image::ExifTool::QuickTime');
 #
 sub AUTOLOAD
 {
-    if ($AUTOLOAD eq 'Image::ExifTool::QuickTime::Process_mebx' or
-        $AUTOLOAD eq 'Image::ExifTool::QuickTime::ProcessTTAD')
-    {
+    # (Note: no need to autoload routines in QuickTimeStream that use Stream table)
+    if ($AUTOLOAD eq 'Image::ExifTool::QuickTime::Process_mebx') {
         require 'Image/ExifTool/QuickTimeStream.pl';
         no strict 'refs';
         return &$AUTOLOAD(@_);
@@ -7198,6 +7237,15 @@ sub HandleItemInfo($$)
 }
 
 #------------------------------------------------------------------------------
+# Warn if ExtractEmbedded option isn't used
+# Inputs: 0) ExifTool ref
+sub EEWarn($)
+{
+    my $et = shift;
+    $et->WarnOnce('The ExtractEmbedded option may find more tags in the movie data',3);
+}
+
+#------------------------------------------------------------------------------
 # Process MPEG-4 MTDT atom (ref 11)
 # Inputs: 0) ExifTool object ref, 1) dirInfo ref, 2) tag table ref
 # Returns: 1 on success
@@ -7614,7 +7662,7 @@ sub ProcessMOV($$;$)
                 $eeTag = 1;
                 $$et{OPTIONS}{Unknown} = 1; # temporarily enable "Unknown" option
             } elsif ($handlerType ne 'vide' and not $$et{OPTIONS}{Validate}) {
-                $et->WarnOnce('The ExtractEmbedded option may find more tags in the movie data',3);
+                EEWarn($et);
             }
         }
         my $tagInfo = $et->GetTagInfo($tagTablePtr, $tag);

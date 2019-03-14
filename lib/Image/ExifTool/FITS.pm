@@ -18,7 +18,7 @@ $VERSION = '1.00';
 
 # FITS tags (ref 1)
 %Image::ExifTool::FITS::Main = (
-    GROUPS => { 2 => 'Document' },
+    GROUPS => { 2 => 'Image' },
     NOTES => q{
         This table lists some standard Flexible Image Transport System (FITS) tags,
         but ExifTool will extract any other tags found.  See

@@ -7,6 +7,15 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 11.30. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Mar. 14, 2019 - Version 11.32
+
+  - Added a new Nikon LensID (thanks Kenneth Cochran)
+  - Added a couple of new QuickTime HandlerType values
+  - Decode streamed metadata from DuDuBell M1 and VSYS M6L dashcam videos
+  - Attempt to improve Nikon lens identification
+  - API Changes:
+      - Added new single-argument version of ShiftTime() 
+
 Mar. 7, 2019 - Version 11.31
 
   - Added read support for FITS images

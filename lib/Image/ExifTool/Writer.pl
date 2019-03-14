@@ -1850,7 +1850,7 @@ sub SetFileName($$;$$$)
             $self->Warn("Error creating directory for '${newName}'");
             return -1;
         }
-        $self->VPrint(0, "Created directory for '${newName}'");
+        $self->VPrint(0, "Created directory for '${newName}'\n");
     }
     if ($opt eq 'Link') {
         unless (link $file, $newName) {

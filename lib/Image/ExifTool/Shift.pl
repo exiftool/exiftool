@@ -4,13 +4,14 @@
 # Description:  ExifTool time shifting routines
 #
 # Revisions:    10/28/2005 - P. Harvey Created
+#               03/13/2019 - PH Added single-argument form of ShiftTime()
 #------------------------------------------------------------------------------
 
 package Image::ExifTool;
 
 use strict;
 
-sub ShiftTime($$;$$);
+sub ShiftTime($;$$$);
 
 #------------------------------------------------------------------------------
 # apply shift to value in new value hash
@@ -280,12 +281,19 @@ sub ShiftNumber($$$;$)
 # Inputs: 0) date/time string, 1) shift string, 2) shift direction (+1 or -1),
 #            or 0 or undef to take shift direction from sign of shift,
 #         3) reference to ShiftOffset hash (with Date, DateTime, Time, Timezone keys)
+#   or    0) shift string (and operates on $_)
 # Returns: error string or undef on success and date/time string is updated
-sub ShiftTime($$;$$)
+sub ShiftTime($;$$$)
 {
-    local $_;
-    my ($val, $shift, $dir, $shiftOffset) = @_;
+    my ($val, $shift, $dir, $shiftOffset);
     my (@time, @shift, @toTime, $mode, $needShiftOffset, $dec);
+
+    if (@_ == 1) {      # single argument form of ShiftTime()?
+        $val = $_;
+        $shift = $_[0];
+    } else {
+        ($val, $shift, $dir, $shiftOffset) = @_;
+    }
     $dir or $dir = ($shift =~ s/^(\+|-)// and $1 eq '-') ? -1 : 1;
 #
 # figure out what we are dealing with (time, date or date/time)
@@ -450,8 +458,12 @@ sub ShiftTime($$;$$)
         substr($val, $pos - $len, $len) = $newNum;
         pos($val) = $pos + length($newNum) - $len;
     }
-    $_[0] = $val;   # return shifted value
-    return undef;   # success!
+    if (@_ == 1) {
+        $_ = $val;      # set $_ to the returned value
+    } else {
+        $_[0] = $val;   # return shifted value
+    }
+    return undef;       # success!
 }
 
 
@@ -491,6 +503,10 @@ from the shift string.
 3) [optional] Reference to time-shift hash -- filled in by first call to
 B<ShiftTime>, and used in subsequent calls to shift date/time values by the
 same relative amount (see L</TRICKY> section below).
+
+or
+
+0) Shift string (and $_ contains the input date/time string).
 
 =item Return value:
 

@@ -59,7 +59,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.60';
+$VERSION = '3.61';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -78,11 +78,9 @@ sub GetAFPointGrid($$;$);
         The Nikon LensID is constructed as a Composite tag from the raw hex values
         of 8 other tags: LensIDNumber, LensFStops, MinFocalLength, MaxFocalLength,
         MaxApertureAtMinFocal, MaxApertureAtMaxFocal, MCUVersion and LensType, in
-        that order.  (source:
-        L<http://www.rottmerhusen.com/objektives/lensid/thirdparty.html>.) Multiple
-        lenses with the same LensID are differentiated by decimal values in the list
-        below.  The user-defined "Lenses" list may be used to specify the lens for
-        ExifTool to choose in these cases (see the
+        that order.  Multiple lenses with the same LensID are differentiated by
+        decimal values in the list below.  The user-defined "Lenses" list may be
+        used to specify the lens for ExifTool to choose in these cases (see the
         L<sample config file|../config.html> for details).
     },
     OTHER => \&LensIDConv,
@@ -369,6 +367,7 @@ sub GetAFPointGrid($$;$);
     '79 48 5C 5C 24 24 1C 06' => 'Sigma Macro 70mm F2.8 EX DG', #JD
     '9B 54 62 62 0C 0C 4B 06' => 'Sigma 85mm F1.4 EX DG HSM',
     'C8 54 62 62 0C 0C 4B 46' => 'Sigma 85mm F1.4 DG HSM | A', #JamiBradley
+    'C8 54 62 62 0C 0C 4B 06' => 'Sigma 85mm F1.4 DG HSM | A', #KennethCochran
     '02 48 65 65 24 24 02 00' => 'Sigma Macro 90mm F2.8',
     '32 54 6A 6A 24 24 35 02.2' => 'Sigma Macro 105mm F2.8 EX DG', #JD
     'E5 54 6A 6A 24 24 35 02' => 'Sigma Macro 105mm F2.8 EX DG',
@@ -1341,6 +1340,8 @@ my %binaryDataAttrs = (
         Name => 'LensType',
         Writable => 'int8u',
         # credit to Tom Christiansen (ref 7) for figuring this out...
+        # (note that older models don't seem to set bits 4-7 (0xf0), so the
+        #  LensType may be different with different models, ref Kenneth Cochran)
         PrintConv => q[$_ = $val ? Image::ExifTool::DecodeBits($val,
             {
                 0 => 'MF',
@@ -8589,9 +8590,16 @@ my %nikonFocalConversions = (
                 1 => 'D',
                 2 => 'G',
                 3 => 'VR',
+                4 => '1', #PH
+                # bit 5 set for FT-1 adapter? - PH
+                6 => 'E', #PH (electromagnetic aperture mechanism)
+                # bit 7 set for AF-P lenses? - PH
             }) : 'AF';
             # remove commas and change "D G" to just "G"
-            s/,//g; s/\bD G\b/G/; $_
+            s/,//g; s/\bD G\b/G/;
+            s/ E\b// and s/^(G )?/E /;  # put "E" at the start instead of "G"
+            s/ 1// and $_ = "1 $_";     # put "1" at start
+            return $_;
         ],
     },
     0x2000084 => {
@@ -8685,6 +8693,7 @@ my %nikonFocalConversions = (
                 WriteProc => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
                 DecryptStart => 4,
                 ByteOrder => 'LittleEndian',
+                # 0x5a0c - NikonMeteringMode for some Z6 ver1.00 samples (ref PH)
             },
         },
         {
@@ -8990,18 +8999,24 @@ sub LensIDConv($$$)
         return join(' or ', @user) if @user;
         return join(' or ', @vals);
     }
-    # Sigma has been changing the LensID on some new lenses
+    # Sigma has been changing the LensIDNumber on some new lenses
     # and with some Sigma lenses the LensFStops changes! (argh!)
+    # Also, older cameras my not set bits 4-7 of LensType
     my $pat = $val;
-    $pat =~ s/^\w+ \w+/.. ../;
+    $pat =~ s/^\w+ \w+/.. ../;  # ignore LensIDNumber and LensFStops
+    $pat =~ s/\w(\w)$/.$1/;     # ignore bits 4-7 of LensType
     my @ids = sort grep /^$pat$/, keys %$conv;
     if (@ids) {
         # first try different LensFStops (2nd value)
         ($pat = $val) =~ s/ \w+/ ../;
         my @good = grep /^$pat$/, @ids;
         return $$conv{$good[0]} if @good;
-        # then try different LensType (1st value)
+        # then try different LensIDNumber (1st value)
         ($pat = $val) =~ s/^\w+/../;
+        @good = grep /^$pat$/, @ids;
+        return "Unknown ($val) $$conv{$good[0]} ?" if @good;
+        # older cameras may not set bits 4-7 of LensType
+        ($pat = $val) =~ s/\w(\w)$/.$1/;
         @good = grep /^$pat$/, @ids;
         return "Unknown ($val) $$conv{$good[0]} ?" if @good;
     }

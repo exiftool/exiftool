@@ -1375,6 +1375,78 @@ sub Process_mebx($$$)
 }
 
 #------------------------------------------------------------------------------
+# Process DuDuBell M1 dashcam / VSYS M6L 'gsen' atom (ref PH)
+# Inputs: 0) ExifTool ref, 1) dirInfo ref, 2) tag table ref
+# Returns: 1 on success
+sub Process_gsen($$$)
+{
+    my ($et, $dirInfo, $tagTbl) = @_;
+    my $dataPt = $$dirInfo{DataPt};
+    my $dirLen = $$dirInfo{DirLen};
+    my $recLen = 3;     # 3-byte record length
+    $et->VerboseDir('gsen', undef, $dirLen);
+    if ($dirLen > $recLen and not $et->Options('ExtractEmbedded')) {
+        $dirLen = $recLen;
+        EEWarn($et);
+    }
+    my $pos;
+    for ($pos=0; $pos+$recLen<=$dirLen; $pos+=$recLen) {
+        $$et{DOC_NUM} = ++$$et{DOC_COUNT};
+        my @acc = map { $_ /= 16 } unpack "x${pos}c3", $$dataPt;
+        $et->HandleTag($tagTbl, Accelerometer => "@acc");
+        # (there are no associated timestamps, but these are sampled at 5 Hz in my test video)
+    }
+    delete $$et{DOC_NUM};
+    return 1;
+}
+
+#------------------------------------------------------------------------------
+# Process DuDuBell M1 dashcam / VSYS M6L 'gps0' atom (ref PH)
+# Inputs: 0) ExifTool ref, 1) dirInfo ref, 2) tag table ref
+# Returns: 1 on success
+sub Process_gps0($$$)
+{
+    my ($et, $dirInfo, $tagTbl) = @_;
+    my $dataPt = $$dirInfo{DataPt};
+    my $dirLen = $$dirInfo{DirLen};
+    my $recLen = 32;    # 32-byte record length
+    $et->VerboseDir('gps0', undef, $dirLen);
+    SetByteOrder('II');
+    if ($dirLen > $recLen and not $et->Options('ExtractEmbedded')) {
+        $dirLen = $recLen;
+        EEWarn($et);
+    }
+    my $pos;
+    for ($pos=0; $pos+$recLen<=$dirLen; $pos+=$recLen) {
+        $$et{DOC_NUM} = ++$$et{DOC_COUNT};
+        # lat/long are in DDDMM.MMMM format
+        my $lat = GetDouble($dataPt, $pos);
+        my $lon = GetDouble($dataPt, $pos+8);
+        next if abs($lat) > 9000 or abs($lon) > 18000;
+        # (note: this method works fine for negative coordinates)
+        my $deg = int($lat / 100);
+        $lat = $deg + ($lat - $deg * 100) / 60;
+        $deg = int($lon / 100);
+        $lon = $deg + ($lon - $deg * 100) / 60;
+        my @a = unpack('C*', substr($$dataPt,$pos+22, 6));  # unpack date/time
+        $a[0] += 2000;
+        $et->HandleTag($tagTbl, GPSDateTime  => sprintf("%.4d:%.2d:%.2d %.2d:%.2d:%.2dZ", @a));
+        $et->HandleTag($tagTbl, GPSLatitude  => $lat);
+        $et->HandleTag($tagTbl, GPSLongitude => $lon);
+        $et->HandleTag($tagTbl, GPSSpeed     => Get16u($dataPt, $pos+0x14));
+        $et->HandleTag($tagTbl, GPSSpeedRef  => 'K');
+        $et->HandleTag($tagTbl, GPSTrack     => Get8u($dataPt, $pos+0x1c) * 2); # (NC)
+        $et->HandleTag($tagTbl, GPSTrackRef  => 'T');
+        $et->HandleTag($tagTbl, GPSAltitude  => Get32s($dataPt, $pos + 0x10));
+        # yet to be decoded:
+        # 0x1d - int8u[3] seen: "1 1 0"
+    }
+    delete $$et{DOC_NUM};
+    SetByteOrder('MM');
+    return 1;
+}
+
+#------------------------------------------------------------------------------
 # Process TomTom Bandit Action Cam TTAD atom (ref PH)
 # Inputs: 0) ExifTool object ref, 1) dirInfo ref, 2) tag table ref
 # Returns: 1 on success
@@ -1421,6 +1493,7 @@ sub ProcessTTAD($$$)
         last if $pos + $ttLen{$type} > $dirLen;
         $lastGoodPos = $pos;
         unless ($eeOpt) {
+            # only extract one of each type without -ee option
             $found & (1 << $type) and $pos += $ttLen{$type}, next;
             $found |= (1 << $type);
         }
@@ -1463,10 +1536,8 @@ sub ProcessTTAD($$$)
         } else {
             $et->WarnOnce("Unknown TTAD record type $type",1);
         }
-        if (not $eeOpt and ($found & 0x29) == 0x29) { # without -ee, stop after we find types 0,3,5
-            $et->WarnOnce('The ExtractEmbedded option may find more tags in the movie data',3);
-            last;
-        }
+        # without -ee, stop after we find types 0,3,5 (ie. bitmask 0x29)
+        $eeOpt or ($found & 0x29) != 0x29 or EEWarn($et), last;
         $pos += $ttLen{$type};
     }
     SetByteOrder('MM');

@@ -59,7 +59,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.61';
+$VERSION = '3.62';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -9177,6 +9177,7 @@ sub ProcessNikonMOV($$$)
                     Format  => $fmtStr,
                     Start   => $pos,
                     Size    => $size,
+                    Base    => $$dirInfo{Base},
                 );
                 $$et{RATIONAL}{$key} = $rational if $rational and $key;
             } elsif (exists $needTags{$tag}) {

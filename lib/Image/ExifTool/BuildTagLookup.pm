@@ -471,7 +471,9 @@ These tags apply to CRW-format Canon RAW files and information in the APP0
 "CIFF" segment of JPEG images.  When writing CanonRaw/CIFF information, the
 length of the information is preserved (and the new information is truncated
 or padded as required) unless B<Writable> is C<resize>. Currently, only
-JpgFromRaw and ThumbnailImage are allowed to change size.
+JpgFromRaw and ThumbnailImage are allowed to change size.  See
+L<http://owl.phy.queensu.ca/~phil/exiftool/canon_raw.html> for a description
+of the Canon CRW format.
 
 CRW images also support the addition of a CanonVRD trailer, which in turn
 supports XMP.  This trailer is created automatically if necessary when

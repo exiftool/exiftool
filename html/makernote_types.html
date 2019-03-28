@@ -13,8 +13,8 @@ table td.c { text-align: center }
 </style>
 </head>
 <body><h2 class=top>Makernote Types</h2>
-<p>The table below lists the makernote types for JPEG images from 6721
-unique camera models by 100 different manufacturers.  Also listed in the
+<p>The table below lists the makernote types for JPEG images from 6731
+unique camera models by 101 different manufacturers.  Also listed in the
 table is the byte order for Exif-style makernotes ('MM' is big-endian, 'II'
 is little-endian), and the first 20 bytes of the makernote data in
 ASCII and hexadecimal.</p>
@@ -22,6 +22,8 @@ ASCII and hexadecimal.</p>
 <tr><th>Model(s)</th><th>Makernote<br>Type</th><th>Byte<br>Order</th>
 <th>ASCII</th><th>Hex</th></tr>
 <tr><th colspan=5><a name='Acer'>Acer</a></th></tr>
+<tr><td>C01</td><td>-</td>
+ <td class=c>-</td><td class=h>&nbsp;</td><td class=h>&nbsp;</td></tr>
 <tr><td>CE-5330</td><td><a href='TagNames/Olympus.html'>Minolta2</a></td>
  <td class=c>II</td><td class=h>CAMER.............&amp;.</td><td class=h>43 41 4d 45 52 00 02 00 0a 00 00 02 04 00 03 00 00 00 26 03</td></tr>
 <tr><td>CE6430</td><td><a href='TagNames/Olympus.html'>Minolta2</a></td>
@@ -3493,6 +3495,8 @@ ASCII and hexadecimal.</p>
 <tr><th colspan=5><a name='Garmin'>Garmin</a></th></tr>
 <tr><td>DashCam</td><td>?</td>
  <td class=c>-</td><td class=h>ABMA................</td><td class=h>41 42 4d 41 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00</td></tr>
+<tr><td>VIRB 360</td><td>UnknownText</td>
+ <td class=c>-</td><td class=h>VIRBactioncamera360_</td><td class=h>56 49 52 42 61 63 74 69 6f 6e 63 61 6d 65 72 61 33 36 30 5f</td></tr>
 <tr><th colspan=5><a name='Gateway'>Gateway</a></th></tr>
 <tr><td>DC-M40</td><td>?</td>
  <td class=c>-</td><td class=h>....................</td><td class=h>00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00</td></tr>
@@ -3608,6 +3612,8 @@ ASCII and hexadecimal.</p>
 <tr><td>Pixel XL</td><td>?</td>
  <td class=c>-</td><td class=h>HDRP..d5m^p.,..M...(</td><td class=h>48 44 52 50 02 ef 64 35 6d 5e 70 1e 2c ea e3 4d b7 d6 94 28</td></tr>
 <tr><th colspan=5><a name='GoPro'>GoPro</a></th></tr>
+<tr><td>Fusion</td><td>-</td>
+ <td class=c>-</td><td class=h>&nbsp;</td><td class=h>&nbsp;</td></tr>
 <tr><td>HD2</td><td>?</td>
  <td class=c>-</td><td class=h>...@AMBA............</td><td class=h>00 00 00 40 41 4d 42 41 00 00 00 00 00 00 00 00 00 00 00 00</td></tr>
 <tr><td>HD3</td><td>?</td>
@@ -4310,6 +4316,11 @@ ASCII and hexadecimal.</p>
  <td class=c>-</td><td class=h>&nbsp;</td><td class=h>&nbsp;</td></tr>
 <tr><td>Ultra Zoom</td><td>?</td>
  <td class=c>-</td><td class=h>..w.f$c.P...........</td><td class=h>0c 8f 77 00 66 24 63 00 50 01 00 00 14 00 0f 00 01 00 00 00</td></tr>
+<tr><th colspan=5><a name='Insta'>Insta360</a></th></tr>
+<tr><td>Air</td><td>-</td>
+ <td class=c>-</td><td class=h>&nbsp;</td><td class=h>&nbsp;</td></tr>
+<tr><td>One</td><td>-</td>
+ <td class=c>-</td><td class=h>&nbsp;</td><td class=h>&nbsp;</td></tr>
 <tr><th colspan=5><a name='JVC'>JVC / Victor</a></th></tr>
 <tr><td>GC-A55</td><td>-</td>
  <td class=c>-</td><td class=h>&nbsp;</td><td class=h>&nbsp;</td></tr>
@@ -5411,6 +5422,8 @@ ASCII and hexadecimal.</p>
  <td class=c>II</td><td class=h>LEICA.............M.</td><td class=h>4c 45 49 43 41 00 02 00 1c 00 04 03 04 00 01 00 00 00 4d 03</td></tr>
 <tr><td>Q (Typ 116)</td><td><a href='TagNames/Panasonic.html#Leica5'>Leica8</a></td>
  <td class=c>II</td><td class=h>LEICA...............</td><td class=h>4c 45 49 43 41 00 08 00 1a 00 02 03 01 00 04 00 00 00 80 00</td></tr>
+<tr><td>Q2</td><td><a href='TagNames/Panasonic.html#Leica5'>Leica8</a></td>
+ <td class=c>II</td><td class=h>LEICA...............</td><td class=h>4c 45 49 43 41 00 09 00 1e 00 02 03 01 00 04 00 00 00 80 00</td></tr>
 <tr><td>R8</td><td><a href='TagNames/Panasonic.html#Leica3'>Leica3</a></td>
  <td class=c>II</td><td class=h>....................</td><td class=h>0f 00 01 00 01 00 01 00 00 00 01 00 00 00 02 00 01 00 01 00</td></tr>
 <tr><td>R9</td><td><a href='TagNames/Panasonic.html#Leica3'>Leica3</a></td>
@@ -6717,6 +6730,8 @@ ASCII and hexadecimal.</p>
  <td class=c>II</td><td class=h>Nikon.....II*.......</td><td class=h>4e 69 6b 6f 6e 00 02 00 00 00 49 49 2a 00 08 00 00 00 1b 00</td></tr>
 <tr><td>KeyMission 170</td><td><a href='TagNames/Nikon.html'>Nikon</a></td>
  <td class=c>II</td><td class=h>Nikon.....II*.......</td><td class=h>4e 69 6b 6f 6e 00 02 00 00 00 49 49 2a 00 08 00 00 00 1f 00</td></tr>
+<tr><td>KeyMission 360</td><td><a href='TagNames/Nikon.html'>Nikon</a></td>
+ <td class=c>II</td><td class=h>Nikon.....II*.......</td><td class=h>4e 69 6b 6f 6e 00 02 00 00 00 49 49 2a 00 08 00 00 00 17 00</td></tr>
 <tr><td>SQ</td><td><a href='TagNames/Nikon.html'>Nikon</a></td>
  <td class=c>II</td><td class=h>Nikon.....II*.......</td><td class=h>4e 69 6b 6f 6e 00 02 00 00 00 49 49 2a 00 08 00 00 00 16 00</td></tr>
 <tr><td>Z 6</td><td><a href='TagNames/Nikon.html'>Nikon</a></td>
@@ -9477,6 +9492,8 @@ ASCII and hexadecimal.</p>
  <td class=c>MM</td><td class=h>Ricoh.............Rd</td><td class=h>52 69 63 6f 68 00 00 00 00 06 00 01 00 02 00 00 00 04 52 64</td></tr>
 <tr><td>THETA S</td><td><a href='TagNames/Ricoh.html'>Ricoh</a></td>
  <td class=c>MM</td><td class=h>Ricoh.............Rd</td><td class=h>52 69 63 6f 68 00 00 00 00 0b 00 01 00 02 00 00 00 04 52 64</td></tr>
+<tr><td>THETA V</td><td><a href='TagNames/Ricoh.html'>Ricoh</a></td>
+ <td class=c>MM</td><td class=h>Ricoh.............Rd</td><td class=h>52 69 63 6f 68 00 00 00 00 0b 00 01 00 02 00 00 00 04 52 64</td></tr>
 <tr><td>THETA m15</td><td><a href='TagNames/Ricoh.html'>Ricoh</a></td>
  <td class=c>MM</td><td class=h>Ricoh.............Rd</td><td class=h>52 69 63 6f 68 00 00 00 00 0b 00 01 00 02 00 00 00 04 52 64</td></tr>
 <tr><td>WG-4</td><td><a href='TagNames/Pentax.html'>Pentax5</a></td>
@@ -10550,6 +10567,8 @@ ASCII and hexadecimal.</p>
  <td class=c>-</td><td class=h>&nbsp;</td><td class=h>&nbsp;</td></tr>
 <tr><td>SM-N9208</td><td><a href='TagNames/Samsung.html#Type2'>Samsung2</a></td>
  <td class=c>II</td><td class=h>..........0100......</td><td class=h>07 00 01 00 07 00 04 00 00 00 30 31 30 30 02 00 04 00 01 00</td></tr>
+<tr><td>SM-R210</td><td><a href='TagNames/Samsung.html#Type2'>Samsung2</a></td>
+ <td class=c>MM</td><td class=h>.*........0100......</td><td class=h>00 2a 00 01 00 07 00 00 00 04 30 31 30 30 00 02 00 04 00 00</td></tr>
 <tr><td>SM-T800</td><td>-</td>
  <td class=c>-</td><td class=h>&nbsp;</td><td class=h>&nbsp;</td></tr>
 <tr><td>SM-T805</td><td><a href='TagNames/Samsung.html#Type2'>Samsung2</a></td>
@@ -13498,6 +13517,8 @@ ASCII and hexadecimal.</p>
  <td class=c>-</td><td class=h>..............</td><td class=h>00 00 00 00 13 e0 00 00 00 06 00 00 00 00</td></tr>
 <tr><td>Mi 4i</td><td>-</td>
  <td class=c>-</td><td class=h>&nbsp;</td><td class=h>&nbsp;</td></tr>
+<tr><td>Mi Sphere</td><td>?</td>
+ <td class=c>-</td><td class=h>ABMA................</td><td class=h>41 42 4d 41 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00</td></tr>
 <tr><td>Redmi Note 2</td><td>-</td>
  <td class=c>-</td><td class=h>&nbsp;</td><td class=h>&nbsp;</td></tr>
 <tr><td>Redmi Pro</td><td>-</td>
@@ -13563,7 +13584,7 @@ ASCII and hexadecimal.</p>
  <td class=c>-</td><td class=h>&nbsp;</td><td class=h>&nbsp;</td></tr>
 <tr><td>Z970</td><td>-</td>
  <td class=c>-</td><td class=h>&nbsp;</td><td class=h>&nbsp;</td></tr>
-</table><hr><i>Last revised Mar 6, 2019</i>
+</table><hr><i>Last revised Mar 20, 2019</i>
 <p class='lf'><a href='index.html'>&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

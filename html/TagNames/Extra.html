@@ -447,18 +447,29 @@ resource-fork information as a sub-document.  When writing, the resource
 fork is preserved by default, but it may be deleted with <code>-rsrc:all=</code> on
 the command line)</span></span></td></tr>
 <tr>
+<td>SymLink</td>
+<td class=c title=' ! = Unsafe'>yes!</td>
+<td class=c>-</td>
+<td><span class=s><span class=n>(this write-only tag is used to create a symbolic link to the file.  If the
+file is edited, copied, renamed or moved in the same operation as writing
+SymLink, then the link is made to the updated file.  The link uses an
+absolute path unless it is created in the current working directory.  Valid
+only for file systems that support symbolic links.  Note that subsequent
+editing of the file via the symbolic link will cause the link to be replaced
+by the edited file without changing the original)</span></span></td></tr>
+<tr class=b>
 <td>TestName</td>
 <td class=c title=' ! = Unsafe'>yes!</td>
 <td class=c>-</td>
 <td><span class=s><span class=n>(this write-only tag may be used instead of FileName for dry-run tests of the
 file renaming feature.  Writing this tag prints the old and new file names
 to the console, but does not affect the file itself)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>ThumbnailImage</td>
 <td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(JPEG-format embedded thumbnail image)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>Validate</td>
 <td class=c>no</td>
 <td class=c>ExifTool</td>
@@ -468,7 +479,7 @@ additional validation checks when extracting metadata.  Returns the number
 of errors, warnings and minor warnings encountered.  Note that the Validate
 feature focuses mainly on validation of TIFF/EXIF metadata and files)</span>
   <br>&#39;0 0 0&#39; = OK</span></td></tr>
-<tr class=b>
+<tr>
 <td>Warning</td>
 <td class=c>no</td>
 <td class=c>ExifTool</td>
@@ -477,18 +488,18 @@ Use the -a or Duplicates option to see all warnings if more than one
 occurred. Minor warnings may be ignored with the -m or IgnoreMinorErrors
 option.  Minor warnings with a capital &quot;M&quot; in the &quot;[Minor]&quot; designation
 indicate that the processing is affected by ignoring the warning)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>XMP</td>
 <td class=c title=' ! = Unsafe'>yes!</td>
 <td class=c>XMP</td>
 <td><span class=s><span class=n>(the XMP data block, but note that extended XMP in JPEG images may be split
 into multiple blocks.  This tag is generated only if specifically requested)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>XResolution</td>
 <td class=c>no</td>
 <td class=c>File</td>
 <td><span class=s><span class=n>(the horizontal pixel resolution)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>YResolution</td>
 <td class=c>no</td>
 <td class=c>File</td>
@@ -497,7 +508,7 @@ into multiple blocks.  This tag is generated only if specifically requested)</sp
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jun 11, 2018</i>
+<br><i>Last revised Mar 19, 2019</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

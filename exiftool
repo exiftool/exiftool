@@ -12,7 +12,7 @@
 use strict;
 require 5.004;
 
-my $version = '11.32';
+my $version = '11.33';
 
 # add our 'lib' directory to the include list BEFORE 'use Image::ExifTool'
 my $exeDir;
@@ -42,7 +42,7 @@ sub SigCont();
 sub Cleanup();
 sub GetImageInfo($$);
 sub SetImageInfo($$$);
-sub DoHardLink($$$$);
+sub DoHardLink($$$$$);
 sub CleanXML($);
 sub EncodeXML($);
 sub FormatXML($$$);
@@ -99,6 +99,7 @@ my @requestTags;    # tags to request (for -p or -if option arguments)
 my @srcFmt;         # source file name format strings
 my @tags;           # list of tags to extract
 my %appended;       # list of files appended to
+my %countLink;      # count hard and symbolic links made
 my %created;        # list of files we created
 my %csvTags;        # lookup for all found tags with CSV option (lower case keys)
 my %database;       # lookup for database information based on file name (in ExifTool Charset)
@@ -123,14 +124,12 @@ my $comma;          # flag set if we need a comma in JSON output
 my $count;          # count of files scanned when reading or deleting originals
 my $countBad;       # count of files with errors
 my $countBadCr;     # count files not created due to errors
-my $countBadLink;   # count bad links
 my $countBadWr;     # count write errors
 my $countCopyWr;    # count of files copied without being changed
 my $countDir;       # count of directories scanned
 my $countFailed;    # count files that failed condition
 my $countGoodCr;    # count files created OK
 my $countGoodWr;    # count files written OK
-my $countLink;      # count number of links created
 my $countNewDir;    # count of directories created
 my $countSameWr;    # count files written OK but not changed
 my $critical;       # flag for critical operations (disable CTRL-C)
@@ -402,6 +401,7 @@ undef @newValues;
 undef @srcFmt;
 undef @tags;
 undef %appended;
+undef %countLink;
 undef %created;
 undef %csvTags;
 undef %database;
@@ -465,14 +465,12 @@ undef $windowTitle;
 $count = 0;
 $countBad = 0;
 $countBadCr = 0;
-$countBadLink = 0;
 $countBadWr = 0;
 $countCopyWr = 0;
 $countDir = 0;
 $countFailed = 0;
 $countGoodCr = 0;
 $countGoodWr = 0;
-$countLink = 0;
 $countNewDir = 0;
 $countSameWr = 0;
 $csvSaveCount = 0;
@@ -1785,7 +1783,7 @@ if (defined $deleteOrig) {
 
     # print summary
     my $tot = $count + $countBad;
-    if ($countDir or $totWr or $countFailed or $tot > 1 or $textOut or $countLink or $countBadLink) {
+    if ($countDir or $totWr or $countFailed or $tot > 1 or $textOut or %countLink) {
         my $o = (($html or $json or $xml or %printFmt or $csv) and not $textOut) ? \*STDERR : $vout;
         printf($o "%5d directories scanned\n", $countDir) if $countDir;
         printf($o "%5d directories created\n", $countNewDir) if $countNewDir;
@@ -1800,8 +1798,10 @@ if (defined $deleteOrig) {
         printf($o "%5d files could not be read\n", $countBad) if $countBad;
         printf($o "%5d output files created\n", scalar(keys %created)) if $textOut;
         printf($o "%5d output files appended\n", scalar(keys %appended)) if %appended;
-        printf($o "%5d hard links created\n", $countLink) if $countLink or $countBadLink;
-        printf($o "%5d hard links could not be created\n", $countBadLink) if $countBadLink;
+        printf($o "%5d hard links created\n", $countLink{Hard} || 0) if $countLink{Hard} or $countLink{BadHard};
+        printf($o "%5d hard links could not be created\n", $countLink{BadHard}) if $countLink{BadHard};
+        printf($o "%5d symbolic links created\n", $countLink{Sym} || 0) if $countLink{Sym} or $countLink{BadSym};
+        printf($o "%5d symbolic links could not be created\n", $countLink{BadSym}) if $countLink{BadSym};
     }
 }
 
@@ -2574,7 +2574,7 @@ sub SetImageInfo($$$)
 {
     my ($et, $file, $orig) = @_;
     my ($outfile, $restored, $isTemporary, $isStdout, $outType, $tagsFromSrc);
-    my ($hardLink, $testName, $sameFile);
+    my ($hardLink, $symLink, $testName, $sameFile);
     my $infile = $file;    # save infile in case we change it again
 
     # clean up old temporary file if necessary
@@ -2746,8 +2746,10 @@ sub SetImageInfo($$$)
     } else {
         # get name of hard link if we are creating one
         $hardLink = $et->GetNewValues('HardLink');
+        $symLink = $et->GetNewValues('SymLink');
         $testName = $et->GetNewValues('TestName');
         $hardLink = FilenameSPrintf($hardLink, $orig) if defined $hardLink;
+        $symLink = FilenameSPrintf($symLink, $orig) if defined $symLink;
         # determine what our output file name should be
         my $newFileName = $et->GetNewValues('FileName');
         my $newDir = $et->GetNewValues('Directory');
@@ -2838,9 +2840,9 @@ sub SetImageInfo($$$)
                 } else {
                     ++$countSameWr;
                 }
-                if (defined $hardLink or defined $testName) {
+                if (defined $hardLink or defined $symLink or defined $testName) {
                     my $src = (defined $outfile and $r4 > 0) ? $outfile : $file;
-                    DoHardLink($et, $src, $hardLink, $testName);
+                    DoHardLink($et, $src, $hardLink, $symLink, $testName);
                 }
                 return 1;
             }
@@ -2862,9 +2864,9 @@ sub SetImageInfo($$$)
     my $success = $et->WriteInfo(Infile($file), $outfile, $outType);
 
     # create hard link if specified
-    if ($success and (defined $hardLink or defined $testName)) {
+    if ($success and (defined $hardLink or defined $symLink or defined $testName)) {
         my $src = defined $outfile ? $outfile : $file;
-        DoHardLink($et, $src, $hardLink, $testName);
+        DoHardLink($et, $src, $hardLink, $symLink, $testName);
     }
 
     # get file time if preserving it
@@ -3010,16 +3012,25 @@ sub SetImageInfo($$$)
 
 #------------------------------------------------------------------------------
 # Make hard link and handle TestName if specified
-# Inputs: 0) ExifTool ref, 1) source file name, 2) HardLink name, 3) TestFile name
-sub DoHardLink($$$$)
+# Inputs: 0) ExifTool ref, 1) source file name, 2) HardLink name,
+#         3) SymLink name, 4) TestFile name
+sub DoHardLink($$$$$)
 {
-    my ($et, $src, $hardLink, $testName) = @_;
+    my ($et, $src, $hardLink, $symLink, $testName) = @_;
     if (defined $hardLink) {
         $hardLink = NextUnusedFilename($hardLink);
         if ($et->SetFileName($src, $hardLink, 'Link') > 0) {
-            ++$countLink;
+            $countLink{Hard} = ($countLink{Hard} || 0) + 1;
         } else {
-            ++$countBadLink;
+            $countLink{BadHard} = ($countLink{BadHard} || 0) + 1;
+        }
+    }
+    if (defined $symLink) {
+        $symLink = NextUnusedFilename($symLink);
+        if ($et->SetFileName($src, $symLink, 'SymLink') > 0) {
+            $countLink{Sym} = ($countLink{Sym} || 0) + 1;
+        } else {
+            $countLink{BadSym} = ($countLink{BadSym} || 0) + 1;
         }
     }
     if (defined $testName) {
@@ -5107,7 +5118,7 @@ with this command:
 
 produces output like this:
 
-    -- Generated by ExifTool 11.32 --
+    -- Generated by ExifTool 11.33 --
     File: a.jpg - 2003:10:31 15:44:19
     (f/5.6, 1/60s, ISO 100)
     File: b.jpg - 2006:05:23 11:57:38

@@ -554,8 +554,8 @@ distribution for examples.</p>
 <tr id="ExtractEmbedded"><td>ExtractEmbedded</td>
     <td>Flag to extract information from embedded
     documents in EPS files, embedded EPS information and JPEG and Jpeg2000
-    images in PDF files, embedded MPF images in JPEG and MPO files, streaming
-    metadata in AVCHD videos, and the resource fork of Mac OS files.</td>
+    images in PDF files, embedded MPF images in JPEG and MPO files, timed
+    metadata in videos, and the resource fork of Mac OS files.</td>
     <td align=center>0 or 1</td><td align=center>undef</td></tr>
 <tr id="FastScan"><td>FastScan</td>
     <td>Flag to increase speed of extracting information
@@ -1677,22 +1677,22 @@ file is used unless the optional base time is specified.</p>
 <hr><h2><a name="SetFileName">SetFileName</a></h2>
 <p>Set the file name and directory, or create a hard link to the file.  If not
 specified, the new file name is derived from the new values of the FileName and
-Directory tags, or from the HardLink tag if creating a link.  If the FileName
-tag contains a '<code>/</code>', then the file is renamed into a new directory.
-If FileName ends with '<code>/</code>', then it is taken as a directory name and
-the file is moved into the new directory.  The new value for the Directory tag
-takes precedence over any directory specified in FileName.</p>
+Directory tags, or from the HardLink or SymLink tag if creating a link.  If the
+FileName tag contains a '<code>/</code>', then the file is renamed into a new
+directory. If FileName ends with '<code>/</code>', then it is taken as a
+directory name and the file is moved into the new directory.  The new value for
+the Directory tag takes precedence over any directory specified in FileName.</p>
 <blockquote><table class='norm'>
 <tr><td><b>Prototype</b></td><td>SetFileName($$;$$)</td></tr>
 <tr><td valign=top><b>Inputs</b></td><td><b>0)</b> ExifTool object reference
  <br><b>1)</b> Current file name
  <br><b>2)</b> [<i>optional</i>] New file name
- <br><b>3)</b> [<i>optional</i>] 'Link' to create a hard link instead of renaming the file,
- or 'Test' to test renaming feature by printing the old and new names instead of
- changing anything.
+ <br><b>3)</b> [<i>optional</i>] 'Link' or 'SymLink' to create a hard or
+ symbolic link instead of renaming the file, or 'Test' to test renaming feature
+ by printing the old and new names instead of changing anything.
 </td></tr>
-<tr><td valign=top><b>Returns</b></td><td>1 if the file name or directory was changed,
-0 if nothing was done, or -1 if there was an error renaming the file.
+<tr><td valign=top><b>Returns</b></td><td>1 on success, 0 if nothing was done,
+or -1 if there was an error renaming the file or creating the link.
 </td></tr>
 </table></blockquote>
 <p><b>Examples:</b></p>
@@ -1828,7 +1828,8 @@ documents.)  Nested sub-documents (if they exist) are indicated by numbers
 separated with dashes in the group name, to an arbitrary depth. (eg.
 '<code>Doc2-3-1</code>' is the 1<sup>st</sup> sub-sub-document of the
 3<sup>rd</sup> sub-document of the 2<sup>nd</sup> embedded document of the main
-file.)</p>
+file.)  Document numbers are also used to differentiate samples for
+timed metadata in videos.</p>
 <p>Family 4 provides a method for differentiating tags when multiple tags exist
 with the same name in the same location.  The primary instance of a tag (the tag
 extracted when the Duplicates option is disabled and no group is specified) has

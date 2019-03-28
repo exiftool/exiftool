@@ -4,7 +4,7 @@
 # Description:  Example ExifTool print format file to generate GPX waypoints
 #               with pictures
 #
-# Usage:        exiftool -p gpx_wpt.fmt FILE [...] > out.gpx
+# Usage:        exiftool -p gpx_wpt.fmt -ee FILE [...] > out.gpx
 #
 # Requires:     ExifTool version 10.49 or later
 #
@@ -12,8 +12,8 @@
 #               2018/01/04 - PH Added IF to be sure position exists
 #               2018/01/06 - PH Use DateFmt function instead of -d option
 #
-# Notes:     1) Input files must contain GPSLatitude and GPSLongitude.
-#            2) Add the -ee option to extract the full track from video files.
+# Notes:     1) Input file(s) must contain GPSLatitude and GPSLongitude.
+#            2) The -ee option is to extract the full track from video files.
 #            3) The -fileOrder option may be used to control the order of the
 #               generated track points when processing multiple files.
 #------------------------------------------------------------------------------

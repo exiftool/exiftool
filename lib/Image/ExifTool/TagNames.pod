@@ -748,8 +748,8 @@ official EXIF 2.31 specification.
   0xa433   LensMake                  ExifIFD    string
   0xa434   LensModel                 ExifIFD    string
   0xa435   LensSerialNumber          ExifIFD    string
-  0xa480   GDALMetadata              -          no
-  0xa481   GDALNoData                -          no
+  0xa480   GDALMetadata              IFD0       string
+  0xa481   GDALNoData                IFD0       string
   0xa500   Gamma                     ExifIFD    rational64u
   0xafc0   ExpandSoftware            -          no
   0xafc1   ExpandLens                -          no
@@ -16957,7 +16957,7 @@ ILCA-99M2.
   ------   --------                             --------
   0x0000   SonyMaxAperture                      int8u
   0x0001   SonyMinAperture                      int8u
-  0x002c   Shutter                              int8u
+  0x0026   Shutter                              int16u[3]
   0x0039   FlashStatus                          int8u
   0x003a   ShutterCount                         int32u
   0x0046   SonyExposureTime                     int16u
@@ -16980,6 +16980,8 @@ ILCA-99M2.
   0x019f   ShutterCount3                        int32u
   0x01cb   ShutterCount3                        int32u
   0x01cd   ShutterCount3                        int32u
+  0x01ed   LensSpecFeatures                     undef[2]
+  0x01f0   LensSpecFeatures                     undef[2]
   0x021c   LensSpecFeatures                     undef[2]
   0x021e   LensSpecFeatures                     undef[2]
 
@@ -17043,6 +17045,7 @@ QX1, ILCA-68/77M2/99M2.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
+  0x0498   ISOInfo                              Sony ISOInfo
   0x059d   ISOInfo                              Sony ISOInfo
   0x0634   ISOInfo                              Sony ISOInfo
   0x0636   ISOInfo                              Sony ISOInfo
@@ -17751,7 +17754,9 @@ These tags apply to CRW-format Canon RAW files and information in the APP0
 "CIFF" segment of JPEG images.  When writing CanonRaw/CIFF information, the
 length of the information is preserved (and the new information is truncated
 or padded as required) unless B<Writable> is C<resize>. Currently, only
-JpgFromRaw and ThumbnailImage are allowed to change size.
+JpgFromRaw and ThumbnailImage are allowed to change size.  See
+L<http://owl.phy.queensu.ca/~phil/exiftool/canon_raw.html> for a description
+of the Canon CRW format.
 
 CRW images also support the addition of a CanonVRD trailer, which in turn
 supports XMP.  This trailer is created automatically if necessary when
@@ -23945,10 +23950,9 @@ parameters, as well as proprietary information written by many camera
 models.  Tags with a question mark after their name are not extracted unless
 the Unknown option is set.
 
-ExifTool currently has a very limited ability to write metadata in
+ExifTool currently has a limited ability to write metadata in
 QuickTime-format videos.  It can edit/create/delete any XMP tags, but may
-only be used to edit certain date/time tags and the video orientation in
-native QuickTime metadata.
+only be used to edit existing tags in native QuickTime metadata.
 
 According to the specification, many QuickTime date/time tags should be
 stored as UTC.  Unfortunately, digital cameras often store local time values
@@ -23964,7 +23968,7 @@ for the official specification.
 
   Tag ID               Tag Name                 Writable
   ------               --------                 --------
-  'IDIT'               DateTimeOriginal         no
+  'IDIT'               DateTimeOriginal         string
   'PICT'               PreviewPICT              no
   '_htc'               HTCInfo                  QuickTime HTCInfo
   'ardt'               ARDroneFile              no
@@ -24175,59 +24179,59 @@ ItemList tags written by the "mdta" handler.  The prefix of
 
   Tag ID                  Tag Name              Writable
   ------                  --------              --------
-  'Encoded_With'          EncodedWith           no
-  'album'                 Album                 no
-  'artist'                Artist                no
-  'artwork'               Artwork               no
-  'author'                Author                no
+  'Encoded_With'          EncodedWith           string
+  'album'                 Album                 string
+  'artist'                Artist                string
+  'artwork'               Artwork               string
+  'author'                Author                string
   'camera.framereadouttimeinmicroseconds'
-                          FrameReadoutTime      no
-  'camera.identifier'     CameraIdentifier      no
-  'collection.user'       UserCollection        no
-  'comment'               Comment               no
-  'copyright'             Copyright             no
-  'creationdate'          CreationDate          no
-  'description'           Description           no
+                          FrameReadoutTime      string
+  'camera.identifier'     CameraIdentifier      string
+  'collection.user'       UserCollection        string
+  'comment'               Comment               string
+  'copyright'             Copyright             string
+  'creationdate'          CreationDate          string
+  'description'           Description           string
   'detected-face'         FaceInfo              QuickTime FaceInfo
-  'detected-face.bounds'  DetectedFaceBounds    no
-  'detected-face.face-id' DetectedFaceID        no
+  'detected-face.bounds'  DetectedFaceBounds    string
+  'detected-face.face-id' DetectedFaceID        string
   'detected-face.roll-angle'
-                          DetectedFaceRollAngle no
+                          DetectedFaceRollAngle string
   'detected-face.yaw-angle'
-                          DetectedFaceYawAngle  no
-  'direction.facing'      CameraDirection       no
-  'direction.motion'      CameraMotion          no
-  'director'              Director              no
-  'genre'                 Genre                 no
-  'information'           Information           no
-  'keywords'              Keywords              no
-  'location.ISO6709'      GPSCoordinates        no
-  'location.body'         LocationBody          no
-  'location.date'         LocationDate          no
-  'location.name'         LocationName          no
-  'location.note'         LocationNote          no
-  'location.role'         LocationRole          no
-  'make'                  Make                  no
-  'model'                 Model                 no
-  'player.movie.audio.balance' Balance          no
-  'player.movie.audio.bass' Bass                no
-  'player.movie.audio.gain' AudioGain           no
-  'player.movie.audio.mute' Mute                no
-  'player.movie.audio.pitchshift' PitchShift    no
-  'player.movie.audio.treble' Trebel            no
-  'player.movie.visual.brightness' Brightness   no
-  'player.movie.visual.color' Color             no
-  'player.movie.visual.contrast' Contrast       no
-  'player.movie.visual.tint' Tint               no
-  'player.version'        PlayerVersion         no
-  'producer'              Producer              no
-  'publisher'             Publisher             no
-  'rating.user'           UserRating            no
-  'software'              Software              no
-  'title'                 Title                 no
-  'version'               Version               no
-  'video-orientation'     VideoOrientation      no
-  'year'                  Year                  no
+                          DetectedFaceYawAngle  string
+  'direction.facing'      CameraDirection       string
+  'direction.motion'      CameraMotion          string
+  'director'              Director              string
+  'genre'                 Genre                 string
+  'information'           Information           string
+  'keywords'              Keywords              string
+  'location.ISO6709'      GPSCoordinates        string
+  'location.body'         LocationBody          string
+  'location.date'         LocationDate          string
+  'location.name'         LocationName          string
+  'location.note'         LocationNote          string
+  'location.role'         LocationRole          string
+  'make'                  Make                  string
+  'model'                 Model                 string
+  'player.movie.audio.balance' Balance          string
+  'player.movie.audio.bass' Bass                string
+  'player.movie.audio.gain' AudioGain           string
+  'player.movie.audio.mute' Mute                int8u
+  'player.movie.audio.pitchshift' PitchShift    string
+  'player.movie.audio.treble' Trebel            string
+  'player.movie.visual.brightness' Brightness   string
+  'player.movie.visual.color' Color             string
+  'player.movie.visual.contrast' Contrast       string
+  'player.movie.visual.tint' Tint               string
+  'player.version'        PlayerVersion         string
+  'producer'              Producer              string
+  'publisher'             Publisher             string
+  'rating.user'           UserRating            string
+  'software'              Software              string
+  'title'                 Title                 string
+  'version'               Version               string
+  'video-orientation'     VideoOrientation      string
+  'year'                  Year                  string
 
 =head3 QuickTime FaceInfo Tags
 
@@ -24262,7 +24266,7 @@ Tags extracted from the tx3g sbtl timed metadata of Yuneec drones.
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
   'bxml'   BinaryXML?                           no
-  'dinf'   DataInformation?                     no
+  'dinf'   DataInfo                             QuickTime DataInfo
   'free'   Free?                                no
   'hdlr'   Handler                              QuickTime Handler
   'iinf'   ItemInformation                      QuickTime ItemInfo
@@ -24276,6 +24280,24 @@ Tags extracted from the tx3g sbtl timed metadata of Yuneec drones.
   'keys'   Keys                                 QuickTime Keys
   'pitm'   PrimaryItemReference                 no
   'xml '   XML                                  XMP XML
+
+=head3 QuickTime DataInfo Tags
+
+MP4 data information box.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  'dref'   DataRef                              QuickTime DataRef
+
+=head3 QuickTime DataRef Tags
+
+MP4 data reference box.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  "url\0"  URL                                  no
+  'url '   URL                                  no
+  'urn '   URN                                  no
 
 =head3 QuickTime Handler Tags
 
@@ -24300,87 +24322,87 @@ added dynamically to this table after processing the Meta Keys information.
   Tag ID       Tag Name                         Writable
   ------       --------                         --------
   '----'       iTunesInfo                       QuickTime iTunesInfo
-  '@PST'       ParentShortTitle                 no
-  '@ppi'       ParentProductID                  no
-  '@pti'       ParentTitle                      no
-  '@sti'       ShortTitle                       no
-  'AACR'       Unknown_AACR?                    no
-  'CDEK'       Unknown_CDEK?                    no
-  'CDET'       Unknown_CDET?                    no
-  'GUID'       GUID                             no
-  'VERS'       ProductVersion                   no
-  'aART'       AlbumArtist                      no
-  'akID'       AppleStoreAccountType            no
-  'albm'       Album                            no
-  'apID'       AppleStoreAccount                no
-  'atID'       AlbumTitleID                     no
-  'auth'       Author                           no
-  'catg'       Category                         no
-  'cnID'       AppleStoreCatalogID              no
-  'covr'       CoverArt                         no
-  'cpil'       Compilation                      no
-  'cprt'       Copyright                        no
-  'desc'       Description                      no
-  'disk'       DiskNumber                       no
-  'dscp'       Description                      no
-  'egid'       EpisodeGlobalUniqueID            no
-  'geID'       GenreID                          no
-  'gnre'       Genre                            no
-  'grup'       Grouping                         no
-  'gshh'       GoogleHostHeader                 no
-  'gspm'       GooglePingMessage                no
-  'gspu'       GooglePingURL                    no
-  'gssd'       GoogleSourceData                 no
-  'gsst'       GoogleStartTime                  no
-  'gstd'       GoogleTrackDuration              no
-  'hdvd'       HDVideo                          no
-  'itnu'       iTunesU                          no
-  'keyw'       Keyword                          no
-  'ldes'       LongDescription                  no
-  'pcst'       Podcast                          no
-  'perf'       Performer                        no
-  'pgap'       PlayGap                          no
-  'plID'       PlayListID                       no
-  'prID'       ProductID                        no
-  'purd'       PurchaseDate                     no
-  'purl'       PodcastURL                       no
-  'rate'       RatingPercent                    no
-  'rldt'       ReleaseDate                      no
-  'rtng'       Rating                           no
-  'sfID'       AppleStoreCountry                no
-  'soaa'       SortAlbumArtist                  no
-  'soal'       SortAlbum                        no
-  'soar'       SortArtist                       no
-  'soco'       SortComposer                     no
-  'sonm'       SortName                         no
-  'sosn'       SortShow                         no
-  'stik'       MediaType                        no
-  'titl'       Title                            no
-  'tmpo'       BeatsPerMinute                   no
-  'trkn'       TrackNumber                      no
-  'tven'       TVEpisodeID                      no
-  'tves'       TVEpisode                        no
-  'tvnn'       TVNetworkName                    no
-  'tvsh'       TVShow                           no
-  'tvsn'       TVSeason                         no
-  'yrrc'       Year                             no
-  "\xa9ART"    Artist                           no
-  "\xa9alb"    Album                            no
-  "\xa9cmt"    Comment                          no
-  "\xa9com"    Composer                         no
-  "\xa9cpy"    Copyright                        no
-  "\xa9day"    ContentCreateDate                no
-  "\xa9des"    Description                      no
-  "\xa9enc"    EncodedBy                        no
-  "\xa9gen"    Genre                            no
-  "\xa9grp"    Grouping                         no
-  "\xa9lyr"    Lyrics                           no
-  "\xa9nam"    Title                            no
-  "\xa9nrt"    Narrator                         no
-  "\xa9pub"    Publisher                        no
-  "\xa9too"    Encoder                          no
-  "\xa9trk"    Track                            no
-  "\xa9wrt"    Composer                         no
+  '@PST'       ParentShortTitle                 string
+  '@ppi'       ParentProductID                  string
+  '@pti'       ParentTitle                      string
+  '@sti'       ShortTitle                       string
+  'AACR'       Unknown_AACR?                    string
+  'CDEK'       Unknown_CDEK?                    string
+  'CDET'       Unknown_CDET?                    string
+  'GUID'       GUID                             string
+  'VERS'       ProductVersion                   string
+  'aART'       AlbumArtist                      string
+  'akID'       AppleStoreAccountType            string
+  'albm'       Album                            string
+  'apID'       AppleStoreAccount                string
+  'atID'       AlbumTitleID                     int32u
+  'auth'       Author                           string
+  'catg'       Category                         string
+  'cnID'       AppleStoreCatalogID              int32u
+  'covr'       CoverArt                         string
+  'cpil'       Compilation                      string
+  'cprt'       Copyright                        string
+  'desc'       Description                      string
+  'disk'       DiskNumber                       undef
+  'dscp'       Description                      string
+  'egid'       EpisodeGlobalUniqueID            string
+  'geID'       GenreID                          int32u
+  'gnre'       Genre                            string~
+  'grup'       Grouping                         string
+  'gshh'       GoogleHostHeader                 string
+  'gspm'       GooglePingMessage                string
+  'gspu'       GooglePingURL                    string
+  'gssd'       GoogleSourceData                 string
+  'gsst'       GoogleStartTime                  string
+  'gstd'       GoogleTrackDuration              string
+  'hdvd'       HDVideo                          string
+  'itnu'       iTunesU                          string
+  'keyw'       Keyword                          string
+  'ldes'       LongDescription                  string
+  'pcst'       Podcast                          string
+  'perf'       Performer                        string
+  'pgap'       PlayGap                          string
+  'plID'       PlayListID                       int8u
+  'prID'       ProductID                        string
+  'purd'       PurchaseDate                     string
+  'purl'       PodcastURL                       string
+  'rate'       RatingPercent                    string
+  'rldt'       ReleaseDate                      string
+  'rtng'       Rating                           string
+  'sfID'       AppleStoreCountry                int32u
+  'soaa'       SortAlbumArtist                  string
+  'soal'       SortAlbum                        string
+  'soar'       SortArtist                       string
+  'soco'       SortComposer                     string
+  'sonm'       SortName                         string
+  'sosn'       SortShow                         string
+  'stik'       MediaType                        string
+  'titl'       Title                            string
+  'tmpo'       BeatsPerMinute                   int16u
+  'trkn'       TrackNumber                      undef
+  'tven'       TVEpisodeID                      string
+  'tves'       TVEpisode                        int32u
+  'tvnn'       TVNetworkName                    string
+  'tvsh'       TVShow                           string
+  'tvsn'       TVSeason                         int32u
+  'yrrc'       Year                             string
+  "\xa9ART"    Artist                           string
+  "\xa9alb"    Album                            string
+  "\xa9cmt"    Comment                          string
+  "\xa9com"    Composer                         string
+  "\xa9cpy"    Copyright                        string
+  "\xa9day"    ContentCreateDate                string
+  "\xa9des"    Description                      string
+  "\xa9enc"    EncodedBy                        string
+  "\xa9gen"    Genre                            string
+  "\xa9grp"    Grouping                         string
+  "\xa9lyr"    Lyrics                           string
+  "\xa9nam"    Title                            string
+  "\xa9nrt"    Narrator                         string
+  "\xa9pub"    Publisher                        string
+  "\xa9too"    Encoder                          string
+  "\xa9trk"    Track                            string
+  "\xa9wrt"    Composer                         string
 
 =head3 QuickTime iTunesInfo Tags
 
@@ -24540,24 +24562,6 @@ MP4 media info box.
   'smhd'   AudioHeader                          QuickTime AudioHeader
   'stbl'   SampleTable                          QuickTime SampleTable
   'vmhd'   VideoHeader                          QuickTime VideoHeader
-
-=head3 QuickTime DataInfo Tags
-
-MP4 data information box.
-
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  'dref'   DataRef                              QuickTime DataRef
-
-=head3 QuickTime DataRef Tags
-
-MP4 data reference box.
-
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  "url\0"  URL                                  no
-  'url '   URL                                  no
-  'urn '   URN                                  no
 
 =head3 QuickTime GenMediaHeader Tags
 
@@ -24916,24 +24920,24 @@ multi-language user data tags found, even if they don't exist in this table.
   Tag ID       Tag Name                         Writable
   ------       --------                         --------
   '@sec'       SamsungSec                       Samsung sec
-  'AllF'       PlayAllFrames                    no
-  'CAME'       SerialNumberHash                 no
-  'CNCV'       CompressorVersion                no
-  'CNFV'       FirmwareVersion                  no
-  'CNMN'       Model                            no
+  'AllF'       PlayAllFrames                    int8u
+  'CAME'       SerialNumberHash                 string
+  'CNCV'       CompressorVersion                string
+  'CNFV'       FirmwareVersion                  string
+  'CNMN'       Model                            string
   'CNOP'       CanonCNOP                        Canon CNOP
   'CNTH'       CanonCNTH                        Canon CNTH
   'DcMD'       KodakDcMD                        Kodak DcMD
   'FFMV'       FujiFilmFFMV                     FujiFilm FFMV
-  'FIRM'       FirmwareVersion                  no
-  "FOV\0"      FieldOfView                      no
+  'FIRM'       FirmwareVersion                  string
+  "FOV\0"      FieldOfView                      string
   'GPMF'       GoProGPMF                        GoPro GPMF
-  'GoPr'       GoProType                        no
+  'GoPr'       GoProType                        string
   'INFO'       SamsungINFO                      Samsung INFO
   'LEIC'       LeicaLEIC                        Panasonic PANA
-  'LENS'       LensSerialNumber                 no
-  'LOOP'       LoopStyle                        no
-  'Lvlm'       LevelMeter?                      no
+  'LENS'       LensSerialNumber                 string
+  'LOOP'       LoopStyle                        int32u
+  'Lvlm'       LevelMeter?                      rational64s
   'MMA0'       MinoltaMMA0                      Minolta MMA
   'MMA1'       MinoltaMMA1                      Minolta MMA
   'MVTG'       FujiFilmMVTG                     EXIF
@@ -24942,14 +24946,14 @@ multi-language user data tags found, even if they don't exist in this table.
   'PENT'       PentaxPENT                       Pentax PENT
   'PXMN'       MakerNotePentax5b                Pentax
                MakerNotePentax5c                Pentax
-               MakerNotePentaxUnknown           no
+               MakerNotePentaxUnknown           string
   'PXTH'       PentaxPreview                    Pentax PXTH
   'QVMI'       CasioQVMI                        EXIF
   'RMKN'       RicohRMKN                        EXIF
-  'RTHU'       PreviewImage                     no
-  'SDLN'       PlayMode                         no
-  'SNum'       SerialNumber                     no
-  'SelO'       PlaySelection                    no
+  'RTHU'       PreviewImage                     string
+  'SDLN'       PlayMode                         string
+  'SNum'       SerialNumber                     string
+  'SelO'       PlaySelection                    int8u
   'TAGS'       FujiFilmTags                     FujiFilm MOV
                KodakTags                        Kodak MOV
                KonicaMinoltaTags                Minolta MOV1
@@ -24963,133 +24967,133 @@ multi-language user data tags found, even if they don't exist in this table.
                SamsungTags                      Samsung MP4
                SanyoMOV                         Sanyo MOV
                SanyoMP4                         Sanyo MP4
-               UnknownTags?                     no
+               UnknownTags?                     string
   'TTMD'       TomTomMetaData                   QuickTime TomTom
-  'WLOC'       WindowLocation                   no
+  'WLOC'       WindowLocation                   int16u
   'XMP_'       XMP                              XMP
   'Xtra'       MicrosoftXtra                    Microsoft Xtra
-  '_cx_'       CX?                              no
-  '_cy_'       CY?                              no
-  '_yaw'       Yaw                              no
-  'albm'       Album                            no
-  'albr'       AlbumArtist                      no
-  'angl'       CameraAngle                      no
-  'apmd'       ApertureMode                     no
-  'auth'       Author                           no
-  'ccid'       ContentID                        no
-  'cdis'       ContentDistributorID             no
+  '_cx_'       CX?                              rational64s
+  '_cy_'       CY?                              rational64s
+  '_yaw'       Yaw                              rational64s
+  'albm'       Album                            string
+  'albr'       AlbumArtist                      string
+  'angl'       CameraAngle                      string
+  'apmd'       ApertureMode                     undef
+  'auth'       Author                           string
+  'ccid'       ContentID                        string
+  'cdis'       ContentDistributorID             string
   'chpl'       ChapterList                      no
-  'clfn'       ClipFileName                     no
-  'clid'       ClipID                           no
-  'clsf'       Classification                   no
-  'cmid'       CameraID                         no
-  'cmnm'       Model                            no
-  'coll'       CollectionName                   no
-  'cprt'       Copyright                        no
-  'cver'       CodeVersion                      no
-  'cvru'       CoverURI                         no
-  'date'       DateTimeOriginal                 no
-  'dscp'       Description                      no
-  'gnre'       Genre                            no
+  'clfn'       ClipFileName                     string
+  'clid'       ClipID                           string
+  'clsf'       Classification                   string
+  'cmid'       CameraID                         string
+  'cmnm'       Model                            string
+  'coll'       CollectionName                   string
+  'cprt'       Copyright                        string
+  'cver'       CodeVersion                      string
+  'cvru'       CoverURI                         string
+  'date'       DateTimeOriginal                 string
+  'dscp'       Description                      string
+  'gnre'       Genre                            string
   'hinf'       HintTrackInfo                    QuickTime HintTrackInfo
-  'hinv'       HintVersion                      no
+  'hinv'       HintVersion                      string
   'hnti'       HintInfo                         QuickTime HintInfo
   'htcb'       HTCBinary                        QuickTime HTCBinary
-  'icnu'       IconURI                          no
-  'infu'       InfoURL                          no
-  'kgtt'       TrackType                        no
-  'kywd'       Keywords                         no
-  'loci'       LocationInformation              no
-  'lrcu'       LyricsURI                        no
-  'lvlm'       LevelMeter?                      no
-  'manu'       Make                             no
+  'icnu'       IconURI                          string
+  'infu'       InfoURL                          string
+  'kgtt'       TrackType                        string
+  'kywd'       Keywords                         string
+  'loci'       LocationInformation              string
+  'lrcu'       LyricsURI                        string
+  'lvlm'       LevelMeter?                      rational64s
+  'manu'       Make                             string
   'meta'       Meta                             QuickTime Meta
-  'modl'       Model                            no
-  'name'       Name                             no
-  'perf'       Performer                        no
+  'modl'       Model                            string
+  'name'       Name                             string
+  'perf'       Performer                        string
   'pose'       pose                             Kodak pose
-  'ptch'       Pitch                            no
+  'ptch'       Pitch                            rational64s
   'ptv '       PrintToVideo                     QuickTime Video
-  'rads'       Rads?                            no
-  'reel'       ReelName                         no
-  'roll'       Roll                             no
-  'rtng'       Rating                           no
-  'scen'       Scene                            no
+  'rads'       Rads?                            rational64s
+  'reel'       ReelName                         string
+  'roll'       Roll                             rational64s
+  'rtng'       Rating                           string
+  'scen'       Scene                            string
   'scrn'       OlympusPreview                   Olympus scrn
-  'shot'       ShotName                         no
-  'slno'       SerialNumber                     no
+  'shot'       ShotName                         string
+  'slno'       SerialNumber                     string
   'smta'       SamsungSmta                      Samsung smta
   'tags'       Audible_tags                     Audible tags
   'thmb'       MakerNotePentax5a                Pentax
                OlympusThumbnail                 Olympus thmb
-               ThumbnailImage                   no
-               ThumbnailPNG                     no
-               UnknownThumbnail                 no
-  'titl'       Title                            no
-  'urat'       UserRating                       no
-  'vndr'       Vendor                           no
-  'yrrc'       Year                             no
-  "\xa9ART"    Artist                           no
-  "\xa9TSC"    StartTimeScale                   no
-  "\xa9TSZ"    StartTimeSampleSize              no
-  "\xa9alb"    Album                            no
-  "\xa9arg"    Arranger                         no
-  "\xa9ark"    ArrangerKeywords                 no
-  "\xa9cmt"    Comment                          no
-  "\xa9cok"    ComposerKeywords                 no
-  "\xa9com"    Composer                         no
-  "\xa9cpy"    Copyright                        no
-  "\xa9day"    ContentCreateDate                no
-  "\xa9dir"    Director                         no
-  "\xa9ed1"    Edit1                            no
-  "\xa9ed2"    Edit2                            no
-  "\xa9ed3"    Edit3                            no
-  "\xa9ed4"    Edit4                            no
-  "\xa9ed5"    Edit5                            no
-  "\xa9ed6"    Edit6                            no
-  "\xa9ed7"    Edit7                            no
-  "\xa9ed8"    Edit8                            no
-  "\xa9ed9"    Edit9                            no
-  "\xa9enc"    EncoderID                        no
-  "\xa9fmt"    Format                           no
-  "\xa9fpt"    Pitch                            no
-  "\xa9frl"    Roll                             no
-  "\xa9fyw"    Yaw                              no
-  "\xa9gen"    Genre                            no
-  "\xa9gpt"    CameraPitch                      no
-  "\xa9grl"    CameraRoll                       no
-  "\xa9grp"    Grouping                         no
-  "\xa9gyw"    CameraYaw                        no
-  "\xa9inf"    Information                      no
-  "\xa9isr"    ISRCCode                         no
-  "\xa9lab"    RecordLabelName                  no
-  "\xa9lal"    RecordLabelURL                   no
-  "\xa9lyr"    Lyrics                           no
-  "\xa9mak"    Make                             no
-  "\xa9mal"    MakerURL                         no
-  "\xa9mdl"    Model                            no
-  "\xa9mod"    Model                            no
-  "\xa9nam"    Title                            no
-  "\xa9pdk"    ProducerKeywords                 no
-  "\xa9phg"    RecordingCopyright               no
-  "\xa9prd"    Producer                         no
-  "\xa9prf"    Performers                       no
-  "\xa9prk"    PerformerKeywords                no
-  "\xa9prl"    PerformerURL                     no
-  "\xa9req"    Requirements                     no
-  "\xa9snk"    SubtitleKeywords                 no
-  "\xa9snm"    Subtitle                         no
-  "\xa9src"    SourceCredits                    no
-  "\xa9swf"    SongWriter                       no
-  "\xa9swk"    SongWriterKeywords               no
-  "\xa9swr"    SoftwareVersion                  no
-  "\xa9too"    Encoder                          no
-  "\xa9trk"    Track                            no
-  "\xa9wrt"    Composer                         no
-  "\xa9xsp"    SpeedX                           no
-  "\xa9xyz"    GPSCoordinates                   no
-  "\xa9ysp"    SpeedY                           no
-  "\xa9zsp"    SpeedZ                           no
+               ThumbnailImage                   string
+               ThumbnailPNG                     string
+               UnknownThumbnail                 string
+  'titl'       Title                            string
+  'urat'       UserRating                       string
+  'vndr'       Vendor                           string
+  'yrrc'       Year                             string
+  "\xa9ART"    Artist                           string
+  "\xa9TSC"    StartTimeScale                   string
+  "\xa9TSZ"    StartTimeSampleSize              string
+  "\xa9alb"    Album                            string
+  "\xa9arg"    Arranger                         string
+  "\xa9ark"    ArrangerKeywords                 string
+  "\xa9cmt"    Comment                          string
+  "\xa9cok"    ComposerKeywords                 string
+  "\xa9com"    Composer                         string
+  "\xa9cpy"    Copyright                        string
+  "\xa9day"    ContentCreateDate                string
+  "\xa9dir"    Director                         string
+  "\xa9ed1"    Edit1                            string
+  "\xa9ed2"    Edit2                            string
+  "\xa9ed3"    Edit3                            string
+  "\xa9ed4"    Edit4                            string
+  "\xa9ed5"    Edit5                            string
+  "\xa9ed6"    Edit6                            string
+  "\xa9ed7"    Edit7                            string
+  "\xa9ed8"    Edit8                            string
+  "\xa9ed9"    Edit9                            string
+  "\xa9enc"    EncoderID                        string
+  "\xa9fmt"    Format                           string
+  "\xa9fpt"    Pitch                            string
+  "\xa9frl"    Roll                             string
+  "\xa9fyw"    Yaw                              string
+  "\xa9gen"    Genre                            string
+  "\xa9gpt"    CameraPitch                      string
+  "\xa9grl"    CameraRoll                       string
+  "\xa9grp"    Grouping                         string
+  "\xa9gyw"    CameraYaw                        string
+  "\xa9inf"    Information                      string
+  "\xa9isr"    ISRCCode                         string
+  "\xa9lab"    RecordLabelName                  string
+  "\xa9lal"    RecordLabelURL                   string
+  "\xa9lyr"    Lyrics                           string
+  "\xa9mak"    Make                             string
+  "\xa9mal"    MakerURL                         string
+  "\xa9mdl"    Model                            string
+  "\xa9mod"    Model                            string
+  "\xa9nam"    Title                            string
+  "\xa9pdk"    ProducerKeywords                 string
+  "\xa9phg"    RecordingCopyright               string
+  "\xa9prd"    Producer                         string
+  "\xa9prf"    Performers                       string
+  "\xa9prk"    PerformerKeywords                string
+  "\xa9prl"    PerformerURL                     string
+  "\xa9req"    Requirements                     string
+  "\xa9snk"    SubtitleKeywords                 string
+  "\xa9snm"    Subtitle                         string
+  "\xa9src"    SourceCredits                    string
+  "\xa9swf"    SongWriter                       string
+  "\xa9swk"    SongWriterKeywords               string
+  "\xa9swr"    SoftwareVersion                  string
+  "\xa9too"    Encoder                          string
+  "\xa9trk"    Track                            string
+  "\xa9wrt"    Composer                         string
+  "\xa9xsp"    SpeedX                           string
+  "\xa9xyz"    GPSCoordinates                   string
+  "\xa9ysp"    SpeedY                           string
+  "\xa9zsp"    SpeedZ                           string
 
 =head3 QuickTime TomTom Tags
 
@@ -25156,12 +25160,12 @@ Tags found in TomTom Bandit Action Cam MP4 videos.
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
   0x0001   Title                                no
-  0x0003   ProductionDate                       no
+  0x0003   ProductionDate                       yes
   0x0004   Software                             no
   0x0005   Product                              no
   0x000a   TrackProperty                        no
-  0x000b   TimeZone                             no
-  0x000c   ModifyDate                           no
+  0x000b   TimeZone                             yes
+  0x000c   ModifyDate                           yes
 
 =head3 QuickTime MovieHeader Tags
 
@@ -32828,6 +32832,7 @@ FileName.
   ProcessingTime             ExifTool           no
   RAFVersion                 File               no
   ResourceForkSize           System             no
+  SymLink                    -                  yes!
   TestName                   -                  yes!
   ThumbnailImage             File               no
   Validate                   ExifTool           no

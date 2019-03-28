@@ -14,10 +14,9 @@ parameters, as well as proprietary information written by many camera
 models.  Tags with a question mark after their name are not extracted unless
 the Unknown option is set.</p>
 
-<p>ExifTool currently has a very limited ability to write metadata in
+<p>ExifTool currently has a limited ability to write metadata in
 QuickTime-format videos.  It can edit/create/delete any XMP tags, but may
-only be used to edit certain date/time tags and the video orientation in
-native QuickTime metadata.</p>
+only be used to edit existing tags in native QuickTime metadata.</p>
 
 <p>According to the specification, many QuickTime date/time tags should be
 stored as UTC.  Unfortunately, digital cameras often store local time values
@@ -38,7 +37,7 @@ for the official specification.</p>
 <tr>
 <td>'IDIT'</td>
 <td>DateTimeOriginal</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'PICT'</td>
@@ -745,62 +744,62 @@ ItemList tags written by the &quot;mdta&quot; handler.  The prefix of
 <tr>
 <td>'Encoded_With'</td>
 <td>EncodedWith</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'album'</td>
 <td>Album</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'artist'</td>
 <td>Artist</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'artwork'</td>
 <td>Artwork</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'author'</td>
 <td>Author</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'camera.framereadouttimeinmicroseconds'</td>
 <td>FrameReadoutTime</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'camera.identifier'</td>
 <td>CameraIdentifier</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'collection.user'</td>
 <td>UserCollection</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'comment'</td>
 <td>Comment</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'copyright'</td>
 <td>Copyright</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'creationdate'</td>
 <td>CreationDate</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'description'</td>
 <td>Description</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'detected-face'</td>
@@ -810,190 +809,190 @@ ItemList tags written by the &quot;mdta&quot; handler.  The prefix of
 <tr class=b>
 <td>'detected-face.bounds'</td>
 <td>DetectedFaceBounds</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'detected-face.face-id'</td>
 <td>DetectedFaceID</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'detected-face.roll-angle'</td>
 <td>DetectedFaceRollAngle</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'detected-face.yaw-angle'</td>
 <td>DetectedFaceYawAngle</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'direction.facing'</td>
 <td>CameraDirection</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'direction.motion'</td>
 <td>CameraMotion</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'director'</td>
 <td>Director</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'genre'</td>
 <td>Genre</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'information'</td>
 <td>Information</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'keywords'</td>
 <td>Keywords</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'location.ISO6709'</td>
 <td>GPSCoordinates</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'location.body'</td>
 <td>LocationBody</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'location.date'</td>
 <td>LocationDate</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'location.name'</td>
 <td>LocationName</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'location.note'</td>
 <td>LocationNote</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'location.role'</td>
 <td>LocationRole</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td><span class=s>0 = Shooting Location
   <br>1 = Real Location
   <br>2 = Fictional Location</span></td></tr>
 <tr class=b>
 <td>'make'</td>
 <td>Make</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'model'</td>
 <td>Model</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'player.movie.audio.balance'</td>
 <td>Balance</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'player.movie.audio.bass'</td>
 <td>Bass</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'player.movie.audio.gain'</td>
 <td>AudioGain</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'player.movie.audio.mute'</td>
 <td>Mute</td>
-<td class=c>no</td>
+<td class=c>int8u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
 <tr class=b>
 <td>'player.movie.audio.pitchshift'</td>
 <td>PitchShift</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'player.movie.audio.treble'</td>
 <td>Trebel</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'player.movie.visual.brightness'</td>
 <td>Brightness</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'player.movie.visual.color'</td>
 <td>Color</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'player.movie.visual.contrast'</td>
 <td>Contrast</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'player.movie.visual.tint'</td>
 <td>Tint</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'player.version'</td>
 <td>PlayerVersion</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'producer'</td>
 <td>Producer</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'publisher'</td>
 <td>Publisher</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'rating.user'</td>
 <td>UserRating</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'software'</td>
 <td>Software</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'title'</td>
 <td>Title</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'version'</td>
 <td>Version</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'video-orientation'</td>
 <td>VideoOrientation</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'year'</td>
 <td>Year</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -1090,9 +1089,9 @@ ItemList tags written by the &quot;mdta&quot; handler.  The prefix of
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'dinf'</td>
-<td>DataInformation?</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
+<td>DataInfo</td>
+<td class=c>-</td>
+<td>--&gt; <a href='QuickTime.html#DataInfo'>QuickTime DataInfo Tags</a></td></tr>
 <tr>
 <td>'free'</td>
 <td>Free?</td>
@@ -1154,6 +1153,44 @@ ItemList tags written by the &quot;mdta&quot; handler.  The prefix of
 <td>XML</td>
 <td class=c>-</td>
 <td>--&gt; <a href='XMP.html#XML'>XMP XML Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='DataInfo'>QuickTime DataInfo Tags</a></h2>
+<p>MP4 data information box.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'dref'</td>
+<td>DataRef</td>
+<td class=c>-</td>
+<td>--&gt; <a href='QuickTime.html#DataRef'>QuickTime DataRef Tags</a></td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='DataRef'>QuickTime DataRef Tags</a></h2>
+<p>MP4 data reference box.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>"url\0"</td>
+<td>URL</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'url '</td>
+<td>URL</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'urn '</td>
+<td>URN</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='Handler'>QuickTime Handler Tags</a></h2>
@@ -1268,243 +1305,243 @@ added dynamically to this table after processing the Meta Keys information.</p>
 <tr class=b>
 <td>'@PST'</td>
 <td>ParentShortTitle</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'@ppi'</td>
 <td>ParentProductID</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'@pti'</td>
 <td>ParentTitle</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'@sti'</td>
 <td>ShortTitle</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'AACR'</td>
 <td>Unknown_AACR?</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'CDEK'</td>
 <td>Unknown_CDEK?</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'CDET'</td>
 <td>Unknown_CDET?</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'GUID'</td>
 <td>GUID</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'VERS'</td>
 <td>ProductVersion</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'aART'</td>
 <td>AlbumArtist</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'akID'</td>
 <td>AppleStoreAccountType</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td><span class=s>0 = iTunes
   <br>1 = AOL</span></td></tr>
 <tr>
 <td>'albm'</td>
 <td>Album</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'apID'</td>
 <td>AppleStoreAccount</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'atID'</td>
 <td>AlbumTitleID</td>
-<td class=c>no</td>
+<td class=c>int32u</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'auth'</td>
 <td>Author</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'catg'</td>
 <td>Category</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'cnID'</td>
 <td>AppleStoreCatalogID</td>
-<td class=c>no</td>
+<td class=c>int32u</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'covr'</td>
 <td>CoverArt</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'cpil'</td>
 <td>Compilation</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td><span class=s>0 = No
   <br>1 = Yes</span></td></tr>
 <tr>
 <td>'cprt'</td>
 <td>Copyright</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'desc'</td>
 <td>Description</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'disk'</td>
 <td>DiskNumber</td>
-<td class=c>no</td>
+<td class=c>undef</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'dscp'</td>
 <td>Description</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'egid'</td>
 <td>EpisodeGlobalUniqueID</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'geID'</td>
 <td>GenreID</td>
-<td class=c>no</td>
+<td class=c>int32u</td>
 <td>--&gt; <a href='QuickTime.html#GenreID'>QuickTime GenreID Values</a></td></tr>
 <tr>
 <td>'gnre'</td>
 <td>Genre</td>
-<td class=c>no</td>
+<td class=c title=' ~ = Writable only with -n'>string~</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'grup'</td>
 <td>Grouping</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'gshh'</td>
 <td>GoogleHostHeader</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'gspm'</td>
 <td>GooglePingMessage</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'gspu'</td>
 <td>GooglePingURL</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'gssd'</td>
 <td>GoogleSourceData</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'gsst'</td>
 <td>GoogleStartTime</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'gstd'</td>
 <td>GoogleTrackDuration</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'hdvd'</td>
 <td>HDVideo</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td><span class=s>0 = No
   <br>1 = Yes</span></td></tr>
 <tr class=b>
 <td>'itnu'</td>
 <td>iTunesU</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td><span class=s>0 = No
   <br>1 = Yes</span></td></tr>
 <tr>
 <td>'keyw'</td>
 <td>Keyword</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'ldes'</td>
 <td>LongDescription</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'pcst'</td>
 <td>Podcast</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td><span class=s>0 = No
   <br>1 = Yes</span></td></tr>
 <tr class=b>
 <td>'perf'</td>
 <td>Performer</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'pgap'</td>
 <td>PlayGap</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td><span class=s>0 = Insert Gap
   <br>1 = No Gap</span></td></tr>
 <tr class=b>
 <td>'plID'</td>
 <td>PlayListID</td>
-<td class=c>no</td>
+<td class=c>int8u</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'prID'</td>
 <td>ProductID</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'purd'</td>
 <td>PurchaseDate</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'purl'</td>
 <td>PodcastURL</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'rate'</td>
 <td>RatingPercent</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'rldt'</td>
 <td>ReleaseDate</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'rtng'</td>
 <td>Rating</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td><span class=s>0 = none
   <br>1 = Explicit
   <br>2 = Clean
@@ -1512,42 +1549,42 @@ added dynamically to this table after processing the Meta Keys information.</p>
 <tr>
 <td>'sfID'</td>
 <td>AppleStoreCountry</td>
-<td class=c>no</td>
+<td class=c>int32u</td>
 <td>--&gt; <a href='QuickTime.html#AppleStoreCountry'>QuickTime AppleStoreCountry Values</a></td></tr>
 <tr class=b>
 <td>'soaa'</td>
 <td>SortAlbumArtist</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'soal'</td>
 <td>SortAlbum</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'soar'</td>
 <td>SortArtist</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'soco'</td>
 <td>SortComposer</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'sonm'</td>
 <td>SortName</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'sosn'</td>
 <td>SortShow</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'stik'</td>
 <td>MediaType</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td><table class=cols><tr>
   <td>0 = Movie (old)
   <br>1 = Normal (Music)
@@ -1564,132 +1601,132 @@ added dynamically to this table after processing the Meta Keys information.</p>
 <tr>
 <td>'titl'</td>
 <td>Title</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'tmpo'</td>
 <td>BeatsPerMinute</td>
-<td class=c>no</td>
+<td class=c>int16u</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'trkn'</td>
 <td>TrackNumber</td>
-<td class=c>no</td>
+<td class=c>undef</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'tven'</td>
 <td>TVEpisodeID</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'tves'</td>
 <td>TVEpisode</td>
-<td class=c>no</td>
+<td class=c>int32u</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'tvnn'</td>
 <td>TVNetworkName</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'tvsh'</td>
 <td>TVShow</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'tvsn'</td>
 <td>TVSeason</td>
-<td class=c>no</td>
+<td class=c>int32u</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'yrrc'</td>
 <td>Year</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>"&copy;ART"</td>
 <td>Artist</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>"&copy;alb"</td>
 <td>Album</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>"&copy;cmt"</td>
 <td>Comment</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>"&copy;com"</td>
 <td>Composer</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>"&copy;cpy"</td>
 <td>Copyright</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>"&copy;day"</td>
 <td>ContentCreateDate</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>"&copy;des"</td>
 <td>Description</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>"&copy;enc"</td>
 <td>EncodedBy</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>"&copy;gen"</td>
 <td>Genre</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>"&copy;grp"</td>
 <td>Grouping</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>"&copy;lyr"</td>
 <td>Lyrics</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>"&copy;nam"</td>
 <td>Title</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>"&copy;nrt"</td>
 <td>Narrator</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>"&copy;pub"</td>
 <td>Publisher</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>"&copy;too"</td>
 <td>Encoder</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>"&copy;trk"</td>
 <td>Track</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>"&copy;wrt"</td>
 <td>Composer</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -4683,44 +4720,6 @@ defined in this table.</p>
 <td>--&gt; <a href='QuickTime.html#VideoHeader'>QuickTime VideoHeader Tags</a></td></tr>
 </table></td></tr></table></blockquote>
 
-<h2><a name='DataInfo'>QuickTime DataInfo Tags</a></h2>
-<p>MP4 data information box.</p>
-<blockquote>
-<table class=frame><tr><td>
-<table class=inner cellspacing=1>
-<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
-<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
-<tr>
-<td>'dref'</td>
-<td>DataRef</td>
-<td class=c>-</td>
-<td>--&gt; <a href='QuickTime.html#DataRef'>QuickTime DataRef Tags</a></td></tr>
-</table></td></tr></table></blockquote>
-
-<h2><a name='DataRef'>QuickTime DataRef Tags</a></h2>
-<p>MP4 data reference box.</p>
-<blockquote>
-<table class=frame><tr><td>
-<table class=inner cellspacing=1>
-<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
-<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
-<tr>
-<td>"url\0"</td>
-<td>URL</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>'url '</td>
-<td>URL</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>'urn '</td>
-<td>URN</td>
-<td class=c>no</td>
-<td>&nbsp;</td></tr>
-</table></td></tr></table></blockquote>
-
 <h2><a name='GenMediaHeader'>QuickTime GenMediaHeader Tags</a></h2>
 <blockquote>
 <table class=frame><tr><td>
@@ -6097,27 +6096,27 @@ multi-language user data tags found, even if they don&#39;t exist in this table.
 <tr class=b>
 <td>'AllF'</td>
 <td>PlayAllFrames</td>
-<td class=c>no</td>
+<td class=c>int8u</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'CAME'</td>
 <td>SerialNumberHash</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'CNCV'</td>
 <td>CompressorVersion</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'CNFV'</td>
 <td>FirmwareVersion</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'CNMN'</td>
 <td>Model</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'CNOP'</td>
@@ -6142,12 +6141,12 @@ multi-language user data tags found, even if they don&#39;t exist in this table.
 <tr>
 <td>'FIRM'</td>
 <td>FirmwareVersion</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>"FOV\0"</td>
 <td>FieldOfView</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'GPMF'</td>
@@ -6157,7 +6156,7 @@ multi-language user data tags found, even if they don&#39;t exist in this table.
 <tr class=b>
 <td>'GoPr'</td>
 <td>GoProType</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'INFO'</td>
@@ -6172,18 +6171,18 @@ multi-language user data tags found, even if they don&#39;t exist in this table.
 <tr>
 <td>'LENS'</td>
 <td>LensSerialNumber</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'LOOP'</td>
 <td>LoopStyle</td>
-<td class=c>no</td>
+<td class=c>int32u</td>
 <td><span class=s>1 = Normal
   <br>2 = Palindromic</span></td></tr>
 <tr>
 <td>'Lvlm'</td>
 <td>LevelMeter?</td>
-<td class=c>no</td>
+<td class=c>rational64s</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'MMA0'</td>
@@ -6220,7 +6219,7 @@ multi-language user data tags found, even if they don&#39;t exist in this table.
 <td>MakerNotePentax5b
   <br>MakerNotePentax5c
   <br>MakerNotePentaxUnknown</td>
-<td class=c>-<br>-<br>no</td>
+<td class=c>-<br>-<br>string</td>
 <td>--&gt; <a href='Pentax.html'>Pentax Tags</a>
   <br>--&gt; <a href='Pentax.html'>Pentax Tags</a></td></tr>
 <tr>
@@ -6241,22 +6240,22 @@ multi-language user data tags found, even if they don&#39;t exist in this table.
 <tr class=b>
 <td>'RTHU'</td>
 <td>PreviewImage</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'SDLN'</td>
 <td>PlayMode</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'SNum'</td>
 <td>SerialNumber</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'SelO'</td>
 <td>PlaySelection</td>
-<td class=c>no</td>
+<td class=c>int8u</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'TAGS'</td>
@@ -6274,7 +6273,7 @@ multi-language user data tags found, even if they don&#39;t exist in this table.
   <br>SanyoMOV
   <br>SanyoMP4
   <br>UnknownTags?</td>
-<td class=c>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>no</td>
+<td class=c>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>-<br>string</td>
 <td>--&gt; <a href='FujiFilm.html#MOV'>FujiFilm MOV Tags</a>
   <br>--&gt; <a href='Kodak.html#MOV'>Kodak MOV Tags</a>
   <br>--&gt; <a href='Minolta.html#MOV1'>Minolta MOV1 Tags</a>
@@ -6296,7 +6295,7 @@ multi-language user data tags found, even if they don&#39;t exist in this table.
 <tr class=b>
 <td>'WLOC'</td>
 <td>WindowLocation</td>
-<td class=c>no</td>
+<td class=c>int16u</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'XMP_'</td>
@@ -6311,52 +6310,52 @@ multi-language user data tags found, even if they don&#39;t exist in this table.
 <tr>
 <td>'_cx_'</td>
 <td>CX?</td>
-<td class=c>no</td>
+<td class=c>rational64s</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'_cy_'</td>
 <td>CY?</td>
-<td class=c>no</td>
+<td class=c>rational64s</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'_yaw'</td>
 <td>Yaw</td>
-<td class=c>no</td>
+<td class=c>rational64s</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'albm'</td>
 <td>Album</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'albr'</td>
 <td>AlbumArtist</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'angl'</td>
 <td>CameraAngle</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'apmd'</td>
 <td>ApertureMode</td>
-<td class=c>no</td>
+<td class=c>undef</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'auth'</td>
 <td>Author</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'ccid'</td>
 <td>ContentID</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'cdis'</td>
 <td>ContentDistributorID</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'chpl'</td>
@@ -6366,62 +6365,62 @@ multi-language user data tags found, even if they don&#39;t exist in this table.
 <tr class=b>
 <td>'clfn'</td>
 <td>ClipFileName</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'clid'</td>
 <td>ClipID</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'clsf'</td>
 <td>Classification</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'cmid'</td>
 <td>CameraID</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'cmnm'</td>
 <td>Model</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'coll'</td>
 <td>CollectionName</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'cprt'</td>
 <td>Copyright</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'cver'</td>
 <td>CodeVersion</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'cvru'</td>
 <td>CoverURI</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'date'</td>
 <td>DateTimeOriginal</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'dscp'</td>
 <td>Description</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'gnre'</td>
 <td>Genre</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'hinf'</td>
@@ -6431,7 +6430,7 @@ multi-language user data tags found, even if they don&#39;t exist in this table.
 <tr>
 <td>'hinv'</td>
 <td>HintVersion</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'hnti'</td>
@@ -6446,42 +6445,42 @@ multi-language user data tags found, even if they don&#39;t exist in this table.
 <tr class=b>
 <td>'icnu'</td>
 <td>IconURI</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'infu'</td>
 <td>InfoURL</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'kgtt'</td>
 <td>TrackType</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'kywd'</td>
 <td>Keywords</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'loci'</td>
 <td>LocationInformation</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'lrcu'</td>
 <td>LyricsURI</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'lvlm'</td>
 <td>LevelMeter?</td>
-<td class=c>no</td>
+<td class=c>rational64s</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'manu'</td>
 <td>Make</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'meta'</td>
@@ -6491,17 +6490,17 @@ multi-language user data tags found, even if they don&#39;t exist in this table.
 <tr>
 <td>'modl'</td>
 <td>Model</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'name'</td>
 <td>Name</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'perf'</td>
 <td>Performer</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'pose'</td>
@@ -6511,7 +6510,7 @@ multi-language user data tags found, even if they don&#39;t exist in this table.
 <tr>
 <td>'ptch'</td>
 <td>Pitch</td>
-<td class=c>no</td>
+<td class=c>rational64s</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'ptv '</td>
@@ -6521,27 +6520,27 @@ multi-language user data tags found, even if they don&#39;t exist in this table.
 <tr>
 <td>'rads'</td>
 <td>Rads?</td>
-<td class=c>no</td>
+<td class=c>rational64s</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'reel'</td>
 <td>ReelName</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'roll'</td>
 <td>Roll</td>
-<td class=c>no</td>
+<td class=c>rational64s</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'rtng'</td>
 <td>Rating</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'scen'</td>
 <td>Scene</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'scrn'</td>
@@ -6551,12 +6550,12 @@ multi-language user data tags found, even if they don&#39;t exist in this table.
 <tr>
 <td>'shot'</td>
 <td>ShotName</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'slno'</td>
 <td>SerialNumber</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'smta'</td>
@@ -6575,333 +6574,333 @@ multi-language user data tags found, even if they don&#39;t exist in this table.
   <br>ThumbnailImage
   <br>ThumbnailPNG
   <br>UnknownThumbnail</td>
-<td class=c>-<br>-<br>no<br>no<br>no</td>
+<td class=c>-<br>-<br>string<br>string<br>string</td>
 <td>--&gt; <a href='Pentax.html'>Pentax Tags</a>
   <br>--&gt; <a href='Olympus.html#thmb'>Olympus thmb Tags</a></td></tr>
 <tr class=b>
 <td>'titl'</td>
 <td>Title</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'urat'</td>
 <td>UserRating</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'vndr'</td>
 <td>Vendor</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'yrrc'</td>
 <td>Year</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>"&copy;ART"</td>
 <td>Artist</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>"&copy;TSC"</td>
 <td>StartTimeScale</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>"&copy;TSZ"</td>
 <td>StartTimeSampleSize</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>"&copy;alb"</td>
 <td>Album</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>"&copy;arg"</td>
 <td>Arranger</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>"&copy;ark"</td>
 <td>ArrangerKeywords</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>"&copy;cmt"</td>
 <td>Comment</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>"&copy;cok"</td>
 <td>ComposerKeywords</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>"&copy;com"</td>
 <td>Composer</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>"&copy;cpy"</td>
 <td>Copyright</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>"&copy;day"</td>
 <td>ContentCreateDate</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>"&copy;dir"</td>
 <td>Director</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>"&copy;ed1"</td>
 <td>Edit1</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>"&copy;ed2"</td>
 <td>Edit2</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>"&copy;ed3"</td>
 <td>Edit3</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>"&copy;ed4"</td>
 <td>Edit4</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>"&copy;ed5"</td>
 <td>Edit5</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>"&copy;ed6"</td>
 <td>Edit6</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>"&copy;ed7"</td>
 <td>Edit7</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>"&copy;ed8"</td>
 <td>Edit8</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>"&copy;ed9"</td>
 <td>Edit9</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>"&copy;enc"</td>
 <td>EncoderID</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>"&copy;fmt"</td>
 <td>Format</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>"&copy;fpt"</td>
 <td>Pitch</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>"&copy;frl"</td>
 <td>Roll</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>"&copy;fyw"</td>
 <td>Yaw</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>"&copy;gen"</td>
 <td>Genre</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>"&copy;gpt"</td>
 <td>CameraPitch</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>"&copy;grl"</td>
 <td>CameraRoll</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>"&copy;grp"</td>
 <td>Grouping</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>"&copy;gyw"</td>
 <td>CameraYaw</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>"&copy;inf"</td>
 <td>Information</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>"&copy;isr"</td>
 <td>ISRCCode</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>"&copy;lab"</td>
 <td>RecordLabelName</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>"&copy;lal"</td>
 <td>RecordLabelURL</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>"&copy;lyr"</td>
 <td>Lyrics</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>"&copy;mak"</td>
 <td>Make</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>"&copy;mal"</td>
 <td>MakerURL</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>"&copy;mdl"</td>
 <td>Model</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td><span class=s><span class=n>(non-standard-format DJI tag)</span></span></td></tr>
 <tr>
 <td>"&copy;mod"</td>
 <td>Model</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>"&copy;nam"</td>
 <td>Title</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>"&copy;pdk"</td>
 <td>ProducerKeywords</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>"&copy;phg"</td>
 <td>RecordingCopyright</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>"&copy;prd"</td>
 <td>Producer</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>"&copy;prf"</td>
 <td>Performers</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>"&copy;prk"</td>
 <td>PerformerKeywords</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>"&copy;prl"</td>
 <td>PerformerURL</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>"&copy;req"</td>
 <td>Requirements</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>"&copy;snk"</td>
 <td>SubtitleKeywords</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>"&copy;snm"</td>
 <td>Subtitle</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>"&copy;src"</td>
 <td>SourceCredits</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>"&copy;swf"</td>
 <td>SongWriter</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>"&copy;swk"</td>
 <td>SongWriterKeywords</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>"&copy;swr"</td>
 <td>SoftwareVersion</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>"&copy;too"</td>
 <td>Encoder</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>"&copy;trk"</td>
 <td>Track</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>"&copy;wrt"</td>
 <td>Composer</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>"&copy;xsp"</td>
 <td>SpeedX</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>"&copy;xyz"</td>
 <td>GPSCoordinates</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>"&copy;ysp"</td>
 <td>SpeedY</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>"&copy;zsp"</td>
 <td>SpeedZ</td>
-<td class=c>no</td>
+<td class=c>string</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -7109,7 +7108,7 @@ multi-language user data tags found, even if they don&#39;t exist in this table.
 <tr class=b>
 <td title='0x0003 = 3'>0x0003</td>
 <td>ProductionDate</td>
-<td class=c>no</td>
+<td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0004 = 4'>0x0004</td>
@@ -7134,12 +7133,12 @@ multi-language user data tags found, even if they don&#39;t exist in this table.
 <tr class=b>
 <td title='0x000b = 11'>0x000b</td>
 <td>TimeZone</td>
-<td class=c>no</td>
+<td class=c>yes</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x000c = 12'>0x000c</td>
 <td>ModifyDate</td>
-<td class=c>no</td>
+<td class=c>yes</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -7483,7 +7482,7 @@ multi-language user data tags found, even if they don&#39;t exist in this table.
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Mar 14, 2019</i>
+<br><i>Last revised Mar 28, 2019</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

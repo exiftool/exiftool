@@ -37,7 +37,7 @@
 package Image::ExifTool::QuickTime;
 
 use strict;
-use vars qw($VERSION $AUTOLOAD);
+use vars qw($VERSION $AUTOLOAD %stringEncoding);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
@@ -55,7 +55,8 @@ sub ProcessRights($$$);
 sub Process_mebx($$$); # (in QuickTimeStream.pl)
 sub Process_gps0($$$); # (in QuickTimeStream.pl)
 sub Process_gsen($$$); # (in QuickTimeStream.pl)
-sub ProcessTTAD($$$); # (in QuickTimeStream.pl)
+sub ProcessTTAD($$$);  # (in QuickTimeStream.pl)
+sub SaveMetaKeys($$$); # (in QuickTimeStream.pl)
 sub ParseItemLocation($$);
 sub ParseItemInfoEntry($$);
 sub ParseItemPropAssoc($$);
@@ -65,6 +66,7 @@ sub ConvertISO6709($);
 sub ConvertChapterList($);
 sub PrintChapter($);
 sub PrintGPSCoordinates($);
+sub PrintInvGPSCoordinates($);
 sub UnpackLang($);
 sub WriteQuickTime($$$);
 sub WriteMOV($$);
@@ -261,7 +263,7 @@ my %vendorID = (
 );
 
 # QuickTime data atom encodings for string types (ref 12)
-my %stringEncoding = (
+%stringEncoding = (
     1 => 'UTF8',
     2 => 'UTF16',
     3 => 'ShiftJIS',
@@ -408,10 +410,9 @@ my %eeBox = (
         models.  Tags with a question mark after their name are not extracted unless
         the Unknown option is set.
         
-        ExifTool currently has a very limited ability to write metadata in
+        ExifTool currently has a limited ability to write metadata in
         QuickTime-format videos.  It can edit/create/delete any XMP tags, but may
-        only be used to edit certain date/time tags and the video orientation in
-        native QuickTime metadata.
+        only be used to edit existing tags in native QuickTime metadata.
 
         According to the specification, many QuickTime date/time tags should be
         stored as UTC.  Unfortunately, digital cameras often store local time values
@@ -613,8 +614,14 @@ my %eeBox = (
         Description => 'Date/Time Original',
         Groups => { 2 => 'Time' },
         Format => 'string', # (removes trailing "\0")
+        Shift => 'Time',
+        Writable => 1,
+        Permanent => 1,
+        DelValue => '0000-00-00T00:00:00+0000',
         ValueConv => '$val=~tr/-/:/; $val',
+        ValueConvInv => '$val=~s/(\d+):(\d+):/$1-$2-/; $val',
         PrintConv => '$self->ConvertDateTime($val)',
+        PrintConvInv => '$self->InverseDateTime($val)',
     },
     gps0 => { #PH (DuDuBell M1, VSYS M6L)
         Name => 'GPSTrack',
@@ -1272,6 +1279,8 @@ my %eeBox = (
     PROCESS_PROC => \&ProcessMOV,
     WRITE_PROC => \&WriteQuickTime,
     GROUPS => { 2 => 'Video' },
+    WRITABLE => 1,
+    FORMAT => 'string',
     NOTES => q{
         Tag ID's beginning with the copyright symbol (hex 0xa9) are multi-language
         text.  Alternate language tags are accessed by adding a dash followed by the
@@ -1282,6 +1291,8 @@ my %eeBox = (
     "\xa9day" => {
         Name => 'ContentCreateDate',
         Groups => { 2 => 'Time' },
+        Shift => 'Time',
+        DelValue => '0000-00-00T00:00:00+0000',
         # handle values in the form "2010-02-12T13:27:14-0800" (written by Apple iPhone)
         ValueConv => q{
             require Image::ExifTool::XMP;
@@ -1289,7 +1300,14 @@ my %eeBox = (
             $val =~ s/([-+]\d{2})(\d{2})$/$1:$2/; # add colon to timezone if necessary
             return $val;
         },
+        ValueConvInv => q{
+            require Image::ExifTool::XMP;
+            $val =  Image::ExifTool::XMP::FormatXMPDate($val);
+            $val =~ s/([-+]\d{2}):(\d{2})$/$1$2/; # remove time zone colon
+            return $val;
+        },
         PrintConv => '$self->ConvertDateTime($val)',
+        PrintConvInv => '$self->InverseDateTime($val)',
     },
     "\xa9ART" => 'Artist', #PH (iTunes 8.0.2)
     "\xa9alb" => 'Album', #PH (iTunes 8.0.2)
@@ -1341,7 +1359,9 @@ my %eeBox = (
         Name => 'GPSCoordinates',
         Groups => { 2 => 'Location' },
         ValueConv => \&ConvertISO6709,
+        ValueConvInv => 'sprintf "%+g%+g%+g", split " ", $val',
         PrintConv => \&PrintGPSCoordinates,
+        PrintConvInv => \&PrintInvGPSCoordinates,
     },
     # \xa9 tags written by DJI Phantom 3: (ref PH)
     "\xa9xsp" => 'SpeedX', #PH (guess)
@@ -1535,13 +1555,22 @@ my %eeBox = (
     date => { # (NC)
         Name => 'DateTimeOriginal',
         Groups => { 2 => 'Time' },
+        Shift => 'Time',
+        DelValue => '0000-00-00T00:00:00+0000',
         ValueConv => q{
             require Image::ExifTool::XMP;
             $val =  Image::ExifTool::XMP::ConvertXMPDate($val);
             $val =~ s/([-+]\d{2})(\d{2})$/$1:$2/; # add colon to timezone if necessary
             return $val;
         },
+        ValueConvInv => q{
+            require Image::ExifTool::XMP;
+            $val =  Image::ExifTool::XMP::FormatXMPDate($val);
+            $val =~ s/([-+]\d{2}):(\d{2})$/$1$2/; # remove time zone colon
+            return $val;
+        },
         PrintConv => '$self->ConvertDateTime($val)',
+        PrintConvInv => '$self->InverseDateTime($val)',
     },
     manu => { # (SX280)
         Name => 'Make',
@@ -1753,6 +1782,7 @@ my %eeBox = (
         Name => 'SerialNumberHash',
         Description => 'Camera Serial Number Hash',
         ValueConv => 'unpack("H*",$val)',
+        ValueConvInv => 'pack("H*",$val)',
     },
     # SETT? 12 bytes (Hero4)
     # MUID? 32 bytes (Hero4, starts with serial number hash)
@@ -1958,6 +1988,9 @@ my %eeBox = (
     # ---- Unknown ----
     # CDET - 128 bytes (unknown origin)
     # mtyp - 4 bytes all zero (some drone video)
+    # kgrf - 8 bytes all zero ? (in udta inside trak atom)
+    # kgcg - 128 bytes 0's and 1's
+    # kgsi - 4 bytes "00 00 00 80"
 #
 # other 3rd-party tags
 # (ref http://code.google.com/p/mp4parser/source/browse/trunk/isoparser/src/main/resources/isoparser-default.properties?r=814)
@@ -2029,9 +2062,15 @@ my %eeBox = (
     0x03 => {
         Name => 'ProductionDate',
         Groups => { 2 => 'Time' },
+        Shift => 'Time',
+        Writable => 1,
+        Permanent => 1,
+        DelValue => '0000/00/00 00:00:00',
         # translate from format "YYYY/mm/dd HH:MM:SS"
         ValueConv => '$val=~tr{/}{:}; $val',
+        ValueConvInv => '$val=~s[^(\d{4}):(\d{2}):][$1/$2/]; $val',
         PrintConv => '$self->ConvertDateTime($val)',
+        PrintConvInv => '$self->InverseDateTime($val)',
     },
     0x04 => 'Software',
     0x05 => 'Product',
@@ -2047,15 +2086,31 @@ my %eeBox = (
     0x0b => {
         Name => 'TimeZone',
         Groups => { 2 => 'Time' },
+        Writable => 1,
+        Permanent => 1,
+        DelValue => 0,
         RawConv => 'Get16s(\$val,0)',
+        RawConvInv => 'Set16s($val)',
         PrintConv => 'TimeZoneString($val)',
+        PrintConvInv => q{
+            return undef unless $val =~ /^([-+])(\d{1,2}):?(\d{2})$/'
+            my $tzmin = $2 * 60 + $3;
+            $tzmin = -$tzmin if $1 eq '-';
+            return $tzmin;
+        }
     },
     0x0c => {
         Name => 'ModifyDate',
         Groups => { 2 => 'Time' },
+        Shift => 'Time',
+        Writable => 1,
+        Permanent => 1,
+        DelValue => '0000/00/00 00:00:00',
         # translate from format "YYYY/mm/dd HH:MM:SS"
         ValueConv => '$val=~tr{/}{:}; $val',
+        ValueConvInv => '$val=~s[^(\d{4}):(\d{2}):][$1/$2/]; $val',
         PrintConv => '$self->ConvertDateTime($val)',
+        PrintConvInv => '$self->InverseDateTime($val)',
     },
 );
 
@@ -2207,6 +2262,7 @@ my %eeBox = (
 # meta atoms
 %Image::ExifTool::QuickTime::Meta = (
     PROCESS_PROC => \&ProcessMOV,
+    WRITE_PROC => \&WriteQuickTime,
     GROUPS => { 2 => 'Video' },
     ilst => {
         Name => 'ItemList',
@@ -2221,8 +2277,8 @@ my %eeBox = (
         SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::Handler' },
     },
     dinf => {
-        Name => 'DataInformation',
-        Flags => ['Binary','Unknown'],
+        Name => 'DataInfo', # (don't change this name -- used to recognize directory when writing)
+        SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::DataInfo' },
     },
     ipmc => {
         Name => 'IPMPControl',
@@ -2468,6 +2524,9 @@ my %eeBox = (
 # -> these atoms are unique, and contain one or more 'data' atoms
 %Image::ExifTool::QuickTime::ItemList = (
     PROCESS_PROC => \&ProcessMOV,
+    WRITE_PROC => \&WriteQuickTime,
+    WRITABLE => 1,
+    FORMAT => 'string',
     GROUPS => { 2 => 'Audio' },
     NOTES => q{
         As well as these tags, the "mdta" handler uses numerical tag ID's which are
@@ -2482,6 +2541,7 @@ my %eeBox = (
     "\xa9day" => {
         Name => 'ContentCreateDate',
         Groups => { 2 => 'Time' },
+        Shift => 'Time',
         # handle values in the form "2010-02-12T13:27:14-0800"
         ValueConv => q{
             require Image::ExifTool::XMP;
@@ -2489,7 +2549,14 @@ my %eeBox = (
             $val =~ s/([-+]\d{2})(\d{2})$/$1:$2/; # add colon to timezone if necessary
             return $val;
         },
+        ValueConvInv => q{
+            require Image::ExifTool::XMP;
+            $val =  Image::ExifTool::XMP::FormatXMPDate($val);
+            $val =~ s/([-+]\d{2}):(\d{2})$/$1$2/; # remove time zone colon
+            return $val;
+        },
         PrintConv => '$self->ConvertDateTime($val)',
+        PrintConvInv => '$self->InverseDateTime($val)',
     },
     "\xa9des" => 'Description', #4
     "\xa9enc" => 'EncodedBy', #10
@@ -2515,6 +2582,7 @@ my %eeBox = (
         Name => 'DiskNumber',
         Format => 'undef',  # (necessary to prevent decoding as string!)
         ValueConv => 'length($val) >= 6 ? join(" of ",unpack("x2nn",$val)) : \$val',
+        ValueConvInv => 'my @a = split / of /, $val; @a==2 ? pack("n3",0,@a) : undef',
     },
     pgap => { #10
         Name => 'PlayGap',
@@ -2531,6 +2599,7 @@ my %eeBox = (
         Name => 'TrackNumber',
         Format => 'undef',  # (necessary to prevent decoding as string!)
         ValueConv => 'length($val) >= 6 ? join(" of ",unpack("x2nn",$val)) : \$val',
+        ValueConvInv => 'my @a = split / of /, $val; @a==2 ? pack("n3",0,@a) : undef',
     },
 #
 # Note: it is possible that the tags below are not being decoded properly
@@ -5106,7 +5175,21 @@ my %eeBox = (
     gspu => { Name => 'GooglePingURL',      Format => 'string' },
     gssd => { Name => 'GoogleSourceData',   Format => 'string' },
     gsst => { Name => 'GoogleStartTime',    Format => 'string' },
-    gstd => { Name => 'GoogleTrackDuration',Format => 'string', ValueConv => '$val / 1000',  PrintConv => 'ConvertDuration($val)' },
+    gstd => {
+        Name => 'GoogleTrackDuration',
+        Format => 'string',
+        ValueConv => '$val / 1000',
+        ValueConvInv => '$val * 1000',
+        PrintConv => 'ConvertDuration($val)',
+        PrintConvInv => q{
+           $val =~ s/ s$//;
+           my @a = split /(:| days )/, $val;
+           my $sign = ($val =~ s/^-//) ? -1 : 1;
+           $a[0] += shift(@a) * 24 if @a == 4;
+           $a[0] += shift(@a) * 60 while @a > 1;
+           return $a[0] * $sign;
+        },
+    },
 
     # atoms observed in AAX audiobooks (ref PH)
     "\xa9cpy" => { Name => 'Copyright',  Groups => { 2 => 'Author' } },
@@ -5154,7 +5237,10 @@ my %eeBox = (
 # item list keys (ref PH)
 %Image::ExifTool::QuickTime::Keys = (
     PROCESS_PROC => \&Image::ExifTool::QuickTime::ProcessKeys,
+    WRITE_PROC => \&Image::ExifTool::QuickTime::ProcessKeys,
     VARS => { LONG_TAGS => 3 },
+    WRITABLE => 1,
+    FORMAT => 'string',
     NOTES => q{
         This directory contains a list of key names which are used to decode
         ItemList tags written by the "mdta" handler.  The prefix of
@@ -5170,13 +5256,21 @@ my %eeBox = (
     creationdate=> {
         Name => 'CreationDate',
         Groups => { 2 => 'Time' },
+        Shift => 'Time',
         ValueConv => q{
             require Image::ExifTool::XMP;
             $val =  Image::ExifTool::XMP::ConvertXMPDate($val,1);
             $val =~ s/([-+]\d{2})(\d{2})$/$1:$2/; # add colon to timezone if necessary
             return $val;
         },
+        ValueConvInv => q{
+            require Image::ExifTool::XMP;
+            $val =  Image::ExifTool::XMP::FormatXMPDate($val);
+            $val =~ s/([-+]\d{2}):(\d{2})$/$1$2/; # remove time zone colon
+            return $val;
+        },
         PrintConv => '$self->ConvertDateTime($val)',
+        PrintConvInv => '$self->InverseDateTime($val)',
     },
     description => { },
     director    => { },
@@ -5194,13 +5288,17 @@ my %eeBox = (
     'camera.framereadouttimeinmicroseconds' => { # (iPhone 4)
         Name => 'FrameReadoutTime',
         ValueConv => '$val * 1e-6',
+        ValueConvInv => 'int($val * 1e6 + 0.5)',
         PrintConv => '$val * 1e6 . " microseconds"',
+        PrintConvInv => '$val =~ s/ .*//; $val * 1e-6',
     },
     'location.ISO6709' => {
         Name => 'GPSCoordinates',
         Groups => { 2 => 'Location' },
         ValueConv => \&ConvertISO6709,
+        ValueConvInv => 'sprintf "%+g%+g%+g", split " ", $val',
         PrintConv => \&PrintGPSCoordinates,
+        PrintConvInv => \&PrintInvGPSCoordinates,
     },
     'location.name' => { Name => 'LocationName', Groups => { 2 => 'Location' } },
     'location.body' => { Name => 'LocationBody', Groups => { 2 => 'Location' } },
@@ -5217,13 +5315,21 @@ my %eeBox = (
     'location.date' => {
         Name => 'LocationDate',
         Groups => { 2 => 'Time' },
+        Shift => 'Time',
         ValueConv => q{
             require Image::ExifTool::XMP;
             $val =  Image::ExifTool::XMP::ConvertXMPDate($val);
             $val =~ s/([-+]\d{2})(\d{2})$/$1:$2/; # add colon to timezone if necessary
             return $val;
         },
+        ValueConvInv => q{
+            require Image::ExifTool::XMP;
+            $val =  Image::ExifTool::XMP::FormatXMPDate($val);
+            $val =~ s/([-+]\d{2}):(\d{2})$/$1$2/; # remove time zone colon
+            return $val;
+        },
         PrintConv => '$self->ConvertDateTime($val)',
+        PrintConvInv => '$self->InverseDateTime($val)',
     },
     'direction.facing' => { Name => 'CameraDirection', Groups => { 2 => 'Location' } },
     'direction.motion' => { Name => 'CameraMotion', Groups => { 2 => 'Location' } },
@@ -5263,6 +5369,7 @@ my %eeBox = (
         Name => 'DetectedFaceBounds',
         # round to a reasonable number of decimal places
         PrintConv => 'my @a=split " ",$val;$_=int($_*1e6+.5)/1e6 foreach @a;join " ",@a',
+        PrintConvInv => '$val',
     },
     # (fiel)com.apple.quicktime.detected-face.face-id (dtyp=77, int32u)
     'detected-face.face-id'    => 'DetectedFaceID',
@@ -5588,7 +5695,7 @@ my %eeBox = (
         Flags => ['Binary','Unknown'],
     },
     dinf => {
-        Name => 'DataInfo',
+        Name => 'DataInfo', # (don't change this name -- used to recognize directory when writing)
         SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::DataInfo' },
     },
     gmhd => {
@@ -6314,6 +6421,7 @@ my %eeBox = (
 # MP4 data information box (ref 5)
 %Image::ExifTool::QuickTime::DataInfo = (
     PROCESS_PROC => \&ProcessMOV,
+    WRITE_PROC => \&WriteQuickTime, # (necessary to parse dref even though we don't change it)
     NOTES => 'MP4 data information box.',
     dref => {
         Name => 'DataRef',
@@ -6414,6 +6522,7 @@ my %eeBox = (
 # MP4 data reference box (ref 5)
 %Image::ExifTool::QuickTime::DataRef = (
     PROCESS_PROC => \&ProcessMOV,
+    WRITE_PROC => \&WriteQuickTime, # (necessary to parse dref even though we don't change it)
     NOTES => 'MP4 data reference box.',
     'url ' => {
         Name => 'URL',
@@ -6948,15 +7057,20 @@ sub GetString($$)
 
 #------------------------------------------------------------------------------
 # Get a printable version of the tag ID
-# Inputs: 0) tag ID, 1) Flag: 1=print as 4- or 8-digit hex value if necessary
+# Inputs: 0) tag ID, 1) Flag: 0x01 - print as 4- or 8-digit hex value if necessary
+#                             0x02 - put leading backslash before escaped character
 # Returns: Printable tag ID
 sub PrintableTagID($;$)
 {
     my $tag = $_[0];
     my $n = ($tag =~ s/([\x00-\x1f\x7f-\xff])/'x'.unpack('H*',$1)/eg);
-    if ($n > 2 and $_[1]) {
-        $tag = '0x' . unpack('H8', $_[0]);
-        $tag =~ s/^0x0000/0x/;
+    if ($n and $_[1]) {
+        if ($n > 2 and $_[1] & 0x01) {
+            $tag = '0x' . unpack('H8', $_[0]);
+            $tag =~ s/^0x0000/0x/;
+        } elsif ($_[1] & 0x02) {
+            ($tag = $_[0]) =~ s/([\x00-\x1f\x7f-\xff])/'\\x'.unpack('H*',$1)/eg;
+        }
     }
     return $tag;
 }
@@ -6988,6 +7102,7 @@ sub PrintableTagID($;$)
 # Parse item location (iloc) box (ref ISO 14496-12:2015 pg.79)
 # Inputs: 0) iloc data, 1) ExifTool ref
 # Returns: undef, and fills in ExifTool ItemInfo hash
+# Notes: see also Handle_iloc() in WriteQuickTime.pl
 sub ParseItemLocation($$)
 {
     my ($val, $et) = @_;
@@ -7246,6 +7361,31 @@ sub EEWarn($)
 }
 
 #------------------------------------------------------------------------------
+# Get quicktime format from flags word
+# Inputs: 0) quicktime atom flags, 1) data length
+# Returns: Exiftool format string
+sub QuickTimeFormat($$)
+{
+    my ($flags, $len) = @_;
+    my $format;
+    if ($flags == 0x15 or $flags == 0x16) {
+        $format = { 1=>'int8', 2=>'int16', 4=>'int32' }->{$len};
+        $format .= $flags == 0x15 ? 's' : 'u' if $format;
+    } elsif ($flags == 0x17) {
+        $format = 'float';
+    } elsif ($flags == 0x18) {
+        $format = 'double';
+    } elsif ($flags == 0x00) {
+        if ($len == 1) {
+            $format = 'int8u',
+        } elsif ($len == 2) {
+            $format = 'int16u',
+        }
+    }
+    return $format;
+}
+
+#------------------------------------------------------------------------------
 # Process MPEG-4 MTDT atom (ref 11)
 # Inputs: 0) ExifTool object ref, 1) dirInfo ref, 2) tag table ref
 # Returns: 1 on success
@@ -7430,15 +7570,17 @@ sub ProcessEncodingParams($$$)
 #------------------------------------------------------------------------------
 # Process Meta keys and add tags to the ItemList table ('mdta' handler) (ref PH)
 # Inputs: 0) ExifTool object ref, 1) dirInfo ref, 2) tag table ref
-# Returns: 1 on success
+# Returns: 1 on success (undef when writing)
 sub ProcessKeys($$$)
 {
     local $_;
     my ($et, $dirInfo, $tagTablePtr) = @_;
+    $et or return 1;      # allow dummy access to autoload this package
+    my $newVal = $$et{NEW_VALUE};
     my $dataPt = $$dirInfo{DataPt};
     my $dirLen = length $$dataPt;
     my $out;
-    if ($et->Options('Verbose')) {
+    if ($et->Options('Verbose') and not $$dirInfo{OutFile}) {
         $et->VerboseDir('Keys');
         $out = $et->Options('TextOut');
     }
@@ -7450,7 +7592,10 @@ sub ProcessKeys($$$)
     while ($pos < $dirLen - 4) {
         my $len = unpack("x${pos}N", $$dataPt);
         last if $len < 8 or $pos + $len > $dirLen;
-        delete $$tagTablePtr{$index};
+        if ($$tagTablePtr{$index}) {
+            delete $$newVal{$$tagTablePtr{$index}} if $newVal;
+            delete $$tagTablePtr{$index};
+        }
         my $ns  = substr($$dataPt, $pos + 4, 4);
         my $tag = substr($$dataPt, $pos + 8, $len - 8);
         $tag =~ s/\0.*//s; # truncate at null
@@ -7477,7 +7622,10 @@ sub ProcessKeys($$$)
                 Name      => $$tagInfo{Name},
                 Format    => $$tagInfo{Format},
                 ValueConv => $$tagInfo{ValueConv},
+                ValueConvInv => $$tagInfo{ValueConvInv},
                 PrintConv => $$tagInfo{PrintConv},
+                PrintConvInv => $$tagInfo{PrintConvInv},
+                Writable  => defined $$tagInfo{Writable} ? $$tagInfo{Writable} : 1,
             };
             my $groups = $$tagInfo{Groups};
             $$newInfo{Groups} = { %$groups } if $groups;
@@ -7494,19 +7642,30 @@ sub ProcessKeys($$$)
             # delete other languages too if they exist
             my $oldInfo = $$infoTable{$id};
             if ($$oldInfo{OtherLang}) {
-                delete $$infoTable{$_} foreach @{$$oldInfo{OtherLang}};
+                foreach (@{$$oldInfo{OtherLang}}) {
+                    delete $$newVal{$$infoTable{$_}} if $newVal and $$infoTable{$_};
+                    delete $$infoTable{$_};
+                }
             }
+            delete $$newVal{$$infoTable{$id}} if $newVal;
             delete $$infoTable{$id};
         }
         if ($newInfo) {
-            $msg or $msg = '';
+            if ($newVal) {
+                # add to tag lookup so it will be writable
+                my $add = { $id => $newInfo };
+                Image::ExifTool::TagLookup::AddTags($add, 'Image::ExifTool::QuickTime::ItemList');
+                # set value hash if we are writing this tag now
+                $$newVal{$newInfo} = $$newVal{$tagInfo} if $tagInfo and $$newVal{$tagInfo};
+            }
             AddTagToTable($infoTable, $id, $newInfo);
+            $msg or $msg = '';
             $out and print $out "$$et{INDENT}Added ItemList Tag $id = $tag$msg\n";
         }
         $pos += $len;
         ++$index;
     }
-    return 1;
+    return $$dirInfo{OutFile} ? undef : 1;
 }
 
 #------------------------------------------------------------------------------
@@ -7894,23 +8053,7 @@ ItemID:         foreach $id (keys %$items) {
                                 # (shouldn't be null terminated, but some software writes it anyway)
                                 $value =~ s/\0$// unless $$tagInfo{Binary};
                             } else {
-                                if (not $format) {
-                                    if ($flags == 0x15 or $flags == 0x16) {
-                                        $format = { 1=>'int8', 2=>'int16', 4=>'int32' }->{$len};
-                                        $format .= $flags == 0x15 ? 's' : 'u' if $format;
-                                    } elsif ($flags == 0x17) {
-                                        $format = 'float';
-                                    } elsif ($flags == 0x18) {
-                                        $format = 'double';
-                                    } elsif ($flags == 0x00) {
-                                        # read 1 and 2-byte binary as integers
-                                        if ($len == 1) {
-                                            $format = 'int8u',
-                                        } elsif ($len == 2) {
-                                            $format = 'int16u',
-                                        }
-                                    }
-                                }
+                                $format = QuickTimeFormat($flags, $len) unless $format;
                                 if ($format) {
                                     $value = ReadValue(\$value, 0, $format, $$tagInfo{Count}, $len);
                                 } elsif (not $$tagInfo{ValueConv}) {

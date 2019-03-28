@@ -124,7 +124,7 @@ sub ValidateProperty($$)
 
 #------------------------------------------------------------------------------
 # Check XMP date values for validity and format accordingly
-# Inputs: 1) date string
+# Inputs: 1) EXIF-format date string
 # Returns: XMP date/time string (or undef on error)
 sub FormatXMPDate($)
 {

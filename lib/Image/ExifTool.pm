@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup);
 
-$VERSION = '11.32';
+$VERSION = '11.33';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -41,7 +41,7 @@ $RELEASE = '';
     DataAccess => [qw(
         ReadValue GetByteOrder SetByteOrder ToggleByteOrder Get8u Get8s Get16u
         Get16s Get32u Get32s Get64u GetFloat GetDouble GetFixed32s Write
-        WriteValue Tell Set8u Set8s Set16u Set32u
+        WriteValue Tell Set8u Set8s Set16u Set32u Set64u
     )],
     Utils => [qw(GetTagTable TagTableKeys GetTagInfoList AddTagToTable HexDump)],
     Vars  => [qw(%allTables @tableOrder @fileTypes)],
@@ -86,6 +86,7 @@ sub Get64s($$);
 sub Get64u($$);
 sub GetFixed64s($$);
 sub GetExtended($$);
+sub Set64u(@);
 sub DecodeBits($$;$);
 sub EncodeBits($$;$$);
 sub HexDump($;$%);
@@ -195,7 +196,7 @@ my %writeTypes; # lookup for writable file types (hash filled if required)
     TIFF => [ qw(3FR DCR K25 KDC SRF) ],
     XMP  => [ qw(SVG INX) ],
     JP2  => [ qw(J2C JPC) ],
-    MOV  => [ qw(HEIC HEIF INSV) ],
+    MOV  => [ qw(INSV) ],
 );
 
 # file types that we can create from scratch
@@ -1321,6 +1322,23 @@ my %systemTagsNotes = (
             editing of either the linked file or the original by the exiftool
             application will break the link unless the -overwrite_original_in_place
             option is used
+        },
+        ValueConvInv => '$val=~tr/\\\\/\//; $val',
+    },
+    SymLink => {
+        Writable => 1,
+        DelCheck => q{"Can't delete"},
+        WriteOnly => 1,
+        WritePseudo => 1,
+        Protected => 1,
+        Notes => q{
+            this write-only tag is used to create a symbolic link to the file.  If the
+            file is edited, copied, renamed or moved in the same operation as writing
+            SymLink, then the link is made to the updated file.  The link uses an
+            absolute path unless it is created in the current working directory.  Valid
+            only for file systems that support symbolic links.  Note that subsequent
+            editing of the file via the symbolic link will cause the link to be replaced
+            by the edited file without changing the original
         },
         ValueConvInv => '$val=~tr/\\\\/\//; $val',
     },
@@ -5453,7 +5471,7 @@ sub ConvertFileSize($)
 #------------------------------------------------------------------------------
 # Convert seconds to duration string (handles negative durations)
 # Inputs: 0) floating point seconds
-# Returns: duration string in form "S.SS s", "MM:SS" or "H:MM:SS"
+# Returns: duration string in form "S.SS s", "H:MM:SS" or "DD days HH:MM:SS"
 sub ConvertDuration($)
 {
     my $time = shift;

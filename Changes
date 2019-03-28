@@ -7,6 +7,19 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 11.30. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Mar. 28, 2019 - Version 11.33
+
+  - Added write support for HEIC/HEIF files
+  - Added new write-only SymLink tag for creating symbolic links
+  - Made EXIF GDALMetadata and GDALNoData writable
+  - Enhanced writing capabilities for MOV/MP4 videos
+  - Enhanced -validate option to add more IPTC checks
+  - Updated decoding of Sony ILCE-9 maker notes for firmware version 5.00
+    (thanks Jos Roost)
+  - Fixed problem reading streamed metadata from some TomTom Bandit videos
+  - API Changes:
+      - Added SymLink option to SetFileName()
+
 Mar. 14, 2019 - Version 11.32
 
   - Added a new Nikon LensID (thanks Kenneth Cochran)
@@ -551,7 +564,7 @@ Feb. 22, 2018 - Version 10.80 (production release)
 Feb. 11, 2018 - Version 10.79
 
   - Added a new Olympus CameraType (thanks LibRaw)
-  - Added a new XMP-microsoft tag (thanks Jos&eacute; Oliver-Didier)
+  - Added a new XMP-microsoft tag (thanks Jose Oliver-Didier)
   - Decode a new GoPro QuickTime tag
   - Convert nulls IPTC:DocumentHistory to newlines
   - Removed all null terminators from JSON and PHP output
@@ -6084,7 +6097,7 @@ Feb. 20, 2007 - Version 6.77 - "XML/HTML special characters"
   - Translate all non-ASCII characters to HTML character entities with -h or -E
   - Added full UTF-8 translation support when run with Perl pre-5.6.1
   - Decode a few new Sigma SD14 tags
-  - Decode a couple more Nikon tags
+  - Decode a couple more Nikon tags (thanks Greg Troxel)
 
 Feb. 16, 2007 - Version 6.76 (production release)
 
@@ -6638,7 +6651,8 @@ May 24, 2006 - Version 6.20
   - Fixed bug where IgnoreMinorErrors option could get set when writing images
     with NikonCapture information
   - Fixed two ID3 tag names which contained spaces
-  - Fixed problem parsing DateTimeOriginal in Casio EX-Z30 AVI files
+  - Fixed problem parsing DateTimeOriginal in Casio EX-Z30 AVI files (thanks
+    Joachim Loehr)
   - Fixed problem with apostrophes in HTML documentation for some browsers
   - API Changes:
       - Can now call Options() with undefined value to set option value to undef
@@ -7610,7 +7624,7 @@ Apr. 2, 2005 - Version 4.93 (production release)
 Mar. 31, 2005 - Version 4.92
 
   - Added support for Kodak and Ricoh cameras
-  - Decode still more Olympus E-1/E-300 tags
+  - Decode still more Olympus E-1/E-300 tags (thanks Markku Hanninen)
   - Added 'Directory' tag
   - Decode a few more Pentax tags (thanks to John Francis)
   - Allow newlines in tag values on command line when writing
@@ -7618,13 +7632,13 @@ Mar. 31, 2005 - Version 4.92
 
 Mar. 28, 2005 - Version 4.91
 
-  - Decode yet more Olympus E-1/E-300 tags
+  - Decode yet more Olympus E-1/E-300 tags (thanks Markku Hanninen)
   - Changed decoding of Olympus E-300 Quality tag
   - Patched bug in Olympus maker notes that was causing ExifTool to report an
     error when reading ORF files
   - Fixed problem where strings weren't being properly truncated at the null
     terminator if there was a newline after the terminator
-  - Improved decoding for some Nikon tags (credit Tom Christiansen)
+  - Improved decoding for some Nikon tags (thanks Tom Christiansen)
   - Added Nikon shortcut
   - Added composite SubSecDateTimeOriginal tag
   - Fixed problem where CRW file without file extension wasn't being identified
@@ -8032,7 +8046,7 @@ Jan. 7, 2005 - Version 4.10
 
 Dec. 15, 2004 - Version 4.05
 
-  - Added a couple of Nikon tags
+  - Added a couple of Nikon tags (thanks Brian Ristuccia)
   - Now preserves original file by renaming to "NAME_original" when writing
     information
   - Don't preserve file time by default when writing.  Added -P option to do
@@ -8050,7 +8064,7 @@ Dec. 6, 2004 - Version 4.03
   - Major overhaul of verbose message output
   - Change -v option to allow verbose level to be specified (eg. -v3 = very very
     verbose)
-  - Added a new Nikon tag (SceneMode)
+  - Added a new Nikon tag (thanks Thomas Walter)
   - Count images which were unchanged when writing tags
   - Changed FileType 'JPG' to 'JPEG'
 
@@ -8451,7 +8465,7 @@ Feb. 17, 2004 - Version 3.03
 
   - Fixed RandomAccessFile package name (should have been
     File::RandomAccessFile)
-  - Added IxusAFPoint tag to Canon maker notes
+  - Added IxusAFPoint tag to Canon maker notes (thanks Michael Rommel)
   - Avoid scanning past end of Canon binary data blocks
   - API Changes:
       - GetFoundTags() and GetRequestedTags() now return list instead of list
@@ -8508,7 +8522,7 @@ Feb. 11, 2004 - Version 2.70
 Feb. 10, 2004 - Version 2.62
 
   - Added -u option to allow display of unknown tags
-  - Major changes to Pentax maker notes (still needs work)
+  - Major changes to Pentax maker notes (still needs work) (thanks Wayne Smith)
 
 Feb. 09, 2004 - Version 2.61
 
@@ -8538,7 +8552,7 @@ Jan. 30, 2004 - Version 2.51
 Jan. 29, 2004 - Version 2.50
 
   - Changed API to return binary data as SCALAR reference and
-    list of values as ARRAY reference
+    list of values as ARRAY reference (thanks Dan Heller for the suggestions)
   - Attempt to make case of tag descriptions more consistent
 
 Jan. 28, 2004 - Version 2.41
@@ -8587,7 +8601,8 @@ Jan. 6, 2004 - Version 2.25
 
   - Fixed problem with ImageInfo() function prototype
   - Fixed printout of JpgFromRaw message (doesn't affect JPG extraction)
-  - Set output files to binmode (including STDOUT) if -b option used
+  - Set output files to binmode (including STDOUT) if -b option used (thanks
+    David Anson)
 
 Jan. 1, 2004 - Version 2.24
 
@@ -8665,7 +8680,7 @@ Nov. 26, 2003 - Version 1.40
 
 Nov. 25, 2003 - Version 1.30
 
-  - Added experimental Canon RAW (CRW) file support
+  - Added experimental Canon RAW (CRW) file support 
 
 Nov. 22, 2003 - Version 1.20
 

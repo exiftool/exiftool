@@ -1476,6 +1476,7 @@ sub ProcessTTAD($$$)
     my $eeOpt = $et->Options('ExtractEmbedded');
     my $unknown = $et->Options('Unknown');
 
+
     for (;;) {
         # look for next sync byte
         pos($$dataPt) = $pos;
@@ -1487,7 +1488,9 @@ sub ProcessTTAD($$$)
             last;
         }
         my ($tm, $type) = unpack 'VC', substr($$dataPt, $pos, 5);
-        next unless $ttLen{$type} and $tm >= $lastTime and $tm <= $lastTime + 1000;
+        # validate this record as best we can (shouldn't have more than 0.25 sec jump)
+        next unless $ttLen{$type} and $tm >= $lastTime and $tm <= $lastTime + 250;
+        my $saveLastTime = $lastTime;
         $lastTime = $tm;
         $pos += 5;
         last if $pos + $ttLen{$type} > $dirLen;
@@ -1501,6 +1504,11 @@ sub ProcessTTAD($$$)
             # (these are both just educated guesses - PH)
             FoundSomething($et, $tagTbl, Get32u($dataPt,$pos-5) / 1000);
             my @a = map { Get32s($dataPt,$pos+4*$_) / 1000 } 0..2;
+            # validate values and ignore if crazy (possible sync problem?)
+            if (abs($a[0]) > 1000 or abs($a[1]) > 1000 or abs($a[2]) > 1000) {
+                $lastTime = $saveLastTime;
+                next;
+            }
             $et->HandleTag($tagTbl, ($type ? 'Accelerometer' : 'AngularVelocity') => "@a");
         } elsif ($type == 5) {
             # example records unpacked with 'dVddddVddddv*'

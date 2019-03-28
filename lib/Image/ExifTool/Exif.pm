@@ -55,7 +55,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.11';
+$VERSION = '4.12';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -786,7 +786,8 @@ my %sampleFormat = (
         Name => 'Software',
         Writable => 'string',
         WriteGroup => 'IFD0',
-        RawConv => '$val =~ s/\s+$//; $val', # trim trailing blanks
+        DataMember => 'Software',
+        RawConv => '$val =~ s/\s+$//; $$self{Software} = $val', # trim trailing blanks
     },
     0x132 => {
         Name => 'ModifyDate',
@@ -2681,9 +2682,9 @@ my %sampleFormat = (
     0xa433 => { Name => 'LensMake',         Writable => 'string' }, #24
     0xa434 => { Name => 'LensModel',        Writable => 'string' }, #24
     0xa435 => { Name => 'LensSerialNumber', Writable => 'string' }, #24
-    0xa480 => 'GDALMetadata', #3
-    0xa481 => 'GDALNoData', #3
-    0xa500 => { Name => 'Gamma', Writable => 'rational64u' },
+    0xa480 => { Name => 'GDALMetadata',     Writable => 'string', WriteGroup => 'IFD0' }, #3
+    0xa481 => { Name => 'GDALNoData',       Writable => 'string', WriteGroup => 'IFD0' }, #3
+    0xa500 => { Name => 'Gamma',            Writable => 'rational64u' },
     0xafc0 => 'ExpandSoftware', #JD (Opanda)
     0xafc1 => 'ExpandLens', #JD (Opanda)
     0xafc2 => 'ExpandFilm', #JD (Opanda)
@@ -3223,6 +3224,8 @@ my %sampleFormat = (
             },
             Format => 'undef',
         },
+        # the DJI FC2103 writes some interesting stuff here (with sections labelled
+        # awb_dbg_info, ae_dbg_info, ae_histogram_info, af_dbg_info, hiso, xidiri) - PH
         {
             Name => 'DNGPrivateData',
             Flags => [ 'Binary', 'Protected' ],
@@ -5505,11 +5508,15 @@ sub ProcessExif($$$)
                 }
             }
         }
-        unless ($success) {
-            $et->Warn("Bad $dir directory");
-            return 0;
+        if ($success) {
+            $numEntries = Get16u($dataPt, $dirStart);
+        } else {
+            $et->Warn("Bad $dir directory", $inMakerNotes);
+            return 0 unless $inMakerNotes and $dirLen >= 14;
+            $dirSize = $dirLen;
+            $numEntries = int(($dirSize - 2) / 12); # read what we can
+            Set16u($numEntries, $dataPt, $dirStart);
         }
-        $numEntries = Get16u($dataPt, $dirStart);
         $dirSize = 2 + 12 * $numEntries;
         $dirEnd = $dirStart + $dirSize;
     }

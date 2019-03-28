@@ -6576,7 +6576,7 @@
 <li>Translate all non-ASCII characters to HTML character entities with -h or -E
 <li>Added full UTF-8 translation support when run with Perl pre-5.6.1
 <li>Decode a few new Sigma SD14 tags
-<li>Decode a couple more Nikon tags
+<li>Decode a couple more Nikon tags (thanks Greg Troxel)
 </ul>
 
 <a name='v6.76'><b>Feb. 16, 2007 - Version 6.76</b> <span class=grn>(production release)</span></a>
@@ -7203,7 +7203,8 @@
 <li>Fixed bug where IgnoreMinorErrors option could get set when writing images
     with NikonCapture information
 <li>Fixed two ID3 tag names which contained spaces
-<li>Fixed problem parsing DateTimeOriginal in Casio EX-Z30 AVI files
+<li>Fixed problem parsing DateTimeOriginal in Casio EX-Z30 AVI files (thanks
+    Joachim Loehr)
 <li>Fixed problem with apostrophes in HTML documentation for some browsers
 <li>API Changes:
     <ul>
@@ -8323,7 +8324,7 @@
 <a name='v4.92'><b>Mar. 31, 2005 - Version 4.92</b></a>
 <ul>
 <li>Added support for Kodak and Ricoh cameras
-<li>Decode still more Olympus E-1/E-300 tags
+<li>Decode still more Olympus E-1/E-300 tags (thanks Markku H&auml;nninen)
 <li>Added 'Directory' tag
 <li>Decode a few more Pentax tags (thanks to John Francis)
 <li>Allow newlines in tag values on command line when writing
@@ -8332,13 +8333,13 @@
 
 <a name='v4.91'><b>Mar. 28, 2005 - Version 4.91</b></a>
 <ul>
-<li>Decode yet more Olympus E-1/E-300 tags
+<li>Decode yet more Olympus E-1/E-300 tags (thanks Markku H&auml;nninen)
 <li>Changed decoding of Olympus E-300 Quality tag
 <li>Patched bug in Olympus maker notes that was causing ExifTool to report an
     error when reading ORF files
 <li>Fixed problem where strings weren't being properly truncated at the null
     terminator if there was a newline after the terminator
-<li>Improved decoding for some Nikon tags (credit Tom Christiansen)
+<li>Improved decoding for some Nikon tags (thanks Tom Christiansen)
 <li>Added Nikon shortcut
 <li>Added composite SubSecDateTimeOriginal tag
 <li>Fixed problem where CRW file without file extension wasn't being identified
@@ -8806,7 +8807,7 @@
 
 <a name='v4.05'><b>Dec. 15, 2004 - Version 4.05</b></a>
 <ul>
-<li>Added a couple of Nikon tags
+<li>Added a couple of Nikon tags (thanks Brian Ristuccia)
 <li>Now preserves original file by renaming to "NAME_original" when writing
     information
 <li>Don't preserve file time by default when writing.  Added -P option to do
@@ -8826,7 +8827,7 @@
 <li>Major overhaul of verbose message output
 <li>Change -v option to allow verbose level to be specified (eg. -v3 = very very
     verbose)
-<li>Added a new Nikon tag (SceneMode)
+<li>Added a new Nikon tag (thanks Thomas Walter)
 <li>Count images which were unchanged when writing tags
 <li>Changed FileType 'JPG' to 'JPEG'
 </ul>
@@ -9325,7 +9326,7 @@
 <ul>
 <li>Fixed RandomAccessFile package name (should have been
     File::RandomAccessFile)
-<li>Added IxusAFPoint tag to Canon maker notes
+<li>Added IxusAFPoint tag to Canon maker notes (thanks Michael Rommel)
 <li>Avoid scanning past end of Canon binary data blocks
 <li>API Changes:
     <ul>
@@ -9398,7 +9399,7 @@
 <a name='v2.62'><b>Feb. 10, 2004 - Version 2.62</b></a>
 <ul>
 <li>Added -u option to allow display of unknown tags
-<li>Major changes to Pentax maker notes (still needs work)
+<li>Major changes to Pentax maker notes (still needs work) (thanks Wayne Smith)
 </ul>
 
 <a name='v2.61'><b>Feb. 09, 2004 - Version 2.61</b></a>
@@ -9434,7 +9435,7 @@
 <a name='v2.50'><b>Jan. 29, 2004 - Version 2.50</b></a>
 <ul>
 <li>Changed API to return binary data as SCALAR reference and
-    list of values as ARRAY reference
+    list of values as ARRAY reference (thanks Dan Heller for the suggestions)
 <li>Attempt to make case of tag descriptions more consistent
 </ul>
 
@@ -9493,7 +9494,8 @@
 <ul>
 <li>Fixed problem with ImageInfo() function prototype
 <li>Fixed printout of JpgFromRaw message (doesn't affect JPG extraction)
-<li>Set output files to binmode (including STDOUT) if -b option used
+<li>Set output files to binmode (including STDOUT) if -b option used (thanks
+    David Anson)
 </ul>
 
 <a name='v2.24'><b>Jan. 1, 2004 - Version 2.24</b></a>
@@ -9588,7 +9590,7 @@
 
 <a name='v1.30'><b>Nov. 25, 2003 - Version 1.30</b></a>
 <ul>
-<li>Added experimental Canon RAW (CRW) file support
+<li>Added experimental Canon RAW (CRW) file support 
 </ul>
 
 <a name='v1.20'><b>Nov. 22, 2003 - Version 1.20</b></a>

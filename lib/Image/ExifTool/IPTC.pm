@@ -15,7 +15,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD %iptcCharset);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.56';
+$VERSION = '1.57';
 
 %iptcCharset = (
     "\x1b%G"  => 'UTF8',
@@ -1050,6 +1050,7 @@ sub ProcessIPTC($$$)
     my $dirLen = $$dirInfo{DirLen} || 0;
     my $dirEnd = $pos + $dirLen;
     my $verbose = $et->Options('Verbose');
+    my $validate = $et->Options('Validate');
     my $success = 0;
     my ($lastRec, $recordPtr, $recordName);
 
@@ -1153,6 +1154,9 @@ sub ProcessIPTC($$$)
             last;
         }
         if (not defined $lastRec or $lastRec != $rec) {
+            if ($validate and defined $lastRec and $rec < $lastRec) {
+                $et->Warn("IPTC doesn't conform to spec: Records out of sequence",1)
+            }
             my $tableInfo = $tagTablePtr->{$rec};
             unless ($tableInfo) {
                 $et->WarnOnce("Unrecognized IPTC record $rec (ignored)");
@@ -1183,9 +1187,26 @@ sub ProcessIPTC($$$)
         # (could use $$recordPtr{FORMAT} if no Format below, but don't do this to
         #  be backward compatible with improperly written PhotoMechanic tags)
         $format = $$tagInfo{Format} if $tagInfo;
-        # use logic to determine format if not specified
-        unless ($format) {
+        if (not $format) {
+            # guess at "int" format if not specified
             $format = 'int' if $len <= 4 and $len != 3 and $val =~ /[\0-\x08]/;
+        } elsif ($validate) {
+            my ($fmt,$min,$max);
+            if ($format =~ /(.*)\[(\d+)(,(\d+))?\]/) {
+                $fmt = $1;
+                $min = $2;
+                $max = $4 || $2;
+            } else {
+                $fmt = $format;
+                $min = $max = 1;
+            }
+            my $siz = Image::ExifTool::FormatSize($fmt) || 1;
+            $min *= $siz; $max *= $siz;
+            if ($len < $min or $len > $max) {
+                my $should = ($min == $max) ? $min : ($len < $min ? "$min min" : "$max max");
+                my $what = ($len < $siz * $min) ? 'short' : 'long';
+                $et->Warn("IPTC $$tagInfo{Name} too $what ($len bytes; should be $should)", 1);
+            }
         }
         if ($format) {
             if ($format =~ /^int/) {
@@ -1197,7 +1218,10 @@ sub ProcessIPTC($$$)
                     }
                 }
             } elsif ($format =~ /^string/) {
-                $val =~ s/\0+$//;   # some braindead softwares add null terminators
+                # some braindead softwares add null terminators
+                if ($val =~ s/\0+$// and $validate) {
+                    $et->Warn("IPTC $$tagInfo{Name} improperly terminated", 1);
+                }
                 if ($rec == 1) {
                     # handle CodedCharacterSet tag
                     $xlat = HandleCodedCharset($et, $val) if $tag == 90;
@@ -1207,9 +1231,11 @@ sub ProcessIPTC($$$)
                     TranslateCodedString($et, \$val, \$xlat, 1);
                 }
             } elsif ($format =~ /^digits/) {
-                $val =~ s/\0+$//;
+                if ($val =~ s/\0+$// and $validate) {
+                    $et->Warn("IPTC $$tagInfo{Name} improperly terminated", 1);
+                }
             } elsif ($format !~ /^undef/) {
-                warn("Invalid IPTC format: $format");
+                warn("Invalid IPTC format: $format");   # (this would be a programming error)
             }
         }
         $verbose and $et->VerboseInfo($tag, $tagInfo,

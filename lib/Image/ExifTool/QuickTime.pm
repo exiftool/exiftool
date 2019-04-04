@@ -58,11 +58,13 @@ sub Process_gsen($$$); # (in QuickTimeStream.pl)
 sub ProcessTTAD($$$);  # (in QuickTimeStream.pl)
 sub SaveMetaKeys($$$); # (in QuickTimeStream.pl)
 sub ParseItemLocation($$);
+sub ParseContentDescribes($$);
 sub ParseItemInfoEntry($$);
 sub ParseItemPropAssoc($$);
 sub FixWrongFormat($);
 sub GetMatrixStructure($$);
 sub ConvertISO6709($);
+sub ConvInvISO6709($);
 sub ConvertChapterList($);
 sub PrintChapter($);
 sub PrintGPSCoordinates($);
@@ -427,7 +429,7 @@ my %eeBox = (
         for the official specification.
     },
     meta => { # 'meta' is found here in my Sony ILCE-7S MP4 sample - PH
-        Name => 'Meta',
+        Name => 'Meta', # (don't change this)
         SubDirectory => {
             TagTable => 'Image::ExifTool::QuickTime::Meta',
             Start => 4, # skip 4-byte version number header
@@ -977,7 +979,7 @@ my %eeBox = (
         SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::UserData' },
     },
     meta => { # 'meta' is found here in my EX-F1 MOV sample - PH
-        Name => 'Meta',
+        Name => 'Meta', # (don't change this)
         SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::Meta' },
     },
     iods => {
@@ -1140,7 +1142,7 @@ my %eeBox = (
         SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::Media' },
     },
     meta => { #PH (MOV)
-        Name => 'Meta',
+        Name => 'Meta', # (don't change this)
         SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::Meta' },
     },
     tref => {
@@ -1359,7 +1361,7 @@ my %eeBox = (
         Name => 'GPSCoordinates',
         Groups => { 2 => 'Location' },
         ValueConv => \&ConvertISO6709,
-        ValueConvInv => 'sprintf "%+g%+g%+g", split " ", $val',
+        ValueConvInv => \&ConvInvISO6709,
         PrintConv => \&PrintGPSCoordinates,
         PrintConvInv => \&PrintInvGPSCoordinates,
     },
@@ -1403,7 +1405,7 @@ my %eeBox = (
     },
     meta => {
         Name => 'Meta',
-        SubDirectory => {
+        SubDirectory => { # (don't change this)
             TagTable => 'Image::ExifTool::QuickTime::Meta',
             Start => 4, # must skip 4-byte version number header
         },
@@ -2353,6 +2355,7 @@ my %eeBox = (
 
 %Image::ExifTool::QuickTime::ItemProp = (
     PROCESS_PROC => \&ProcessMOV,
+    WRITE_PROC => \&WriteQuickTime,
     GROUPS => { 2 => 'Image' },
     ipco => {
         Name => 'ItemPropertyContainer',
@@ -2431,6 +2434,7 @@ my %eeBox = (
 
 %Image::ExifTool::QuickTime::ItemRef = (
     PROCESS_PROC => \&ProcessMOV,
+    WRITE_PROC => \&WriteQuickTime,
     GROUPS => { 2 => 'Image' },
     # (Note: ExifTool's ItemRefVersion may be used to test the iref version number)
     # dimg - DerivedImage
@@ -2439,26 +2443,13 @@ my %eeBox = (
     cdsc => {
         Name => 'ContentDescribes',
         Notes => 'parsed, but not extracted as a tag',
-        RawConv => sub {
-            my ($val, $et) = @_;
-            my ($id, $count, @to);
-            if ($$et{ItemRefVersion}) {
-                return undef if length $val < 10;
-                ($id, $count, @to) = unpack('NnN*', $val);
-            } else {
-                return undef if length $val < 6;
-                ($id, $count, @to) = unpack('nnn*', $val);
-            }
-            # add all referenced item ID's to a "RefersTo" lookup
-            $$et{ItemInfo}{$id}{RefersTo}{$_} = 1 foreach @to;
-            $et->VPrint(1, "$$et{INDENT}  Item $id describes: @to\n");
-            return undef;
-        },
+        RawConv => \&ParseContentDescribes,
     },
 );
 
 %Image::ExifTool::QuickTime::ItemInfo = (
     PROCESS_PROC => \&ProcessMOV,
+    WRITE_PROC => \&WriteQuickTime,
     GROUPS => { 2 => 'Image' },
     # avc1 - AVC image
     # hvc1 - HEVC image
@@ -5296,7 +5287,7 @@ my %eeBox = (
         Name => 'GPSCoordinates',
         Groups => { 2 => 'Location' },
         ValueConv => \&ConvertISO6709,
-        ValueConvInv => 'sprintf "%+g%+g%+g", split " ", $val',
+        ValueConvInv => \&ConvInvISO6709,
         PrintConv => \&PrintGPSCoordinates,
         PrintConvInv => \&PrintInvGPSCoordinates,
     },
@@ -7165,6 +7156,27 @@ sub ParseItemLocation($$)
 }
 
 #------------------------------------------------------------------------------
+# Parse content describes entry (cdsc) box
+# Inputs: 0) cdsc data, 1) ExifTool ref
+# Returns: undef, and fills in ExifTool ItemInfo hash
+sub ParseContentDescribes($$)
+{
+    my ($val, $et) = @_;
+    my ($id, $count, @to);
+    if ($$et{ItemRefVersion}) {
+        return undef if length $val < 10;
+        ($id, $count, @to) = unpack('NnN*', $val);
+    } else {
+        return undef if length $val < 6;
+        ($id, $count, @to) = unpack('nnn*', $val);
+    }
+    # add all referenced item ID's to a "RefersTo" lookup
+    $$et{ItemInfo}{$id}{RefersTo}{$_} = 1 foreach @to;
+    $et->VPrint(1, "$$et{INDENT}  Item $id describes: @to\n") unless $$et{IsWriting};
+    return undef;
+}
+        
+#------------------------------------------------------------------------------
 # Parse item information entry (infe) box (ref ISO 14496-12:2015 pg.82)
 # Inputs: 0) infe data, 1) ExifTool ref
 # Returns: undef, and fills in ExifTool ItemInfo hash
@@ -7173,7 +7185,7 @@ sub ParseItemInfoEntry($$)
     my ($val, $et) = @_;
     my $id;
 
-    my $verbose = $et->Options('Verbose');
+    my $verbose = $$et{IsWriting} ? 0 : $et->Options('Verbose');
     my $items = $$et{ItemInfo} || ($$et{ItemInfo} = { });
     my $len = length $val;
     return undef if $len < 4;
@@ -7225,7 +7237,7 @@ sub ParseItemPropAssoc($$)
     my ($val, $et) = @_;
     my ($i, $j, $id);
 
-    my $verbose = $et->Options('Verbose');
+    my $verbose = $$et{IsWriting} ? 0 : $et->Options('Verbose');
     my $items = $$et{ItemInfo} || ($$et{ItemInfo} = { });
     my $len = length $val;
     return undef if $len < 8;
@@ -7271,10 +7283,11 @@ sub ParseItemPropAssoc($$)
 
 #------------------------------------------------------------------------------
 # Process item information now
-# Inputs: 0) ExifTool ref, 1) RAF ref
-sub HandleItemInfo($$)
+# Inputs: 0) ExifTool ref
+sub HandleItemInfo($)
 {
-    my ($et, $raf) = @_;
+    my $et = shift;
+    my $raf = $$et{RAF};
     my $items = $$et{ItemInfo};
     my $buff;
 
@@ -7376,11 +7389,7 @@ sub QuickTimeFormat($$)
     } elsif ($flags == 0x18) {
         $format = 'double';
     } elsif ($flags == 0x00) {
-        if ($len == 1) {
-            $format = 'int8u',
-        } elsif ($len == 2) {
-            $format = 'int16u',
-        }
+        $format = { 1=>'int8u', 2=>'int16u' }->{$len};
     }
     return $format;
 }
@@ -7783,7 +7792,7 @@ sub ProcessMOV($$;$)
             }
             $size == 1 or $et->Warn('Invalid atom size'), last;
             # read extended atom size
-            $raf->Read($buff, 8) == 8 or last;
+            $raf->Read($buff, 8) == 8 or $et->Warn('Truncated atom header'), last;
             $dataPos += 8;
             my ($hi, $lo) = unpack('NN', $buff);
             if ($hi or $lo > 0x7fffffff) {
@@ -8024,10 +8033,6 @@ ItemID:         foreach $id (keys %$items) {
                     }
                     $$et{SET_GROUP1} = $oldGroup1;
                     SetByteOrder('MM');
-                    if ($tag eq 'meta') {
-                        # handle metadata now if we just processed the 'meta' box
-                        HandleItemInfo($et, $raf) if $tag eq 'meta';
-                    }
                 } elsif ($hasData) {
                     # handle atoms containing 'data' tags
                     # (currently ignore contained atoms: 'itif', 'name', etc.)
@@ -8181,7 +8186,10 @@ ItemID:         foreach $id (keys %$items) {
                 Size  => $size,
                 Extra => sprintf(' at offset 0x%.4x', $raf->Tell()),
             ) if $verbose;
-            $raf->Seek($size, 1) or $et->Warn("Truncated '${tag}' data"), last;
+            if ($size and (not $raf->Seek($size-1, 1) or $raf->Read($buff, 1) != 1)) {
+                $et->Warn("Truncated '${tag}' data");
+                last;
+            }
         }
         $dataPos += $size + 8;  # point to start of next atom data
         last if $dirEnd and $dataPos >= $dirEnd; # (note: ignores last value if 0 bytes)
@@ -8208,10 +8216,11 @@ QTLang: foreach $tag (@{$$et{QTLang}}) {
         }
         delete $$et{QTLang};
     }
-    if ($topLevel) {
-        HandleItemInfo($et, $raf);  # process our item information
-        ScanMovieData($et) if $ee;  # brute force scan for metadata embedded in movie data
-    }
+    # process item information now that we are done processing its 'meta' container
+    HandleItemInfo($et) if $topLevel or $$dirInfo{DirName} eq 'Meta';
+    
+    ScanMovieData($et) if $ee and $topLevel;  # brute force scan for metadata embedded in movie data
+
     # restore any changed options
     $et->Options($_ => $saveOptions{$_}) foreach keys %saveOptions;
     return 1;

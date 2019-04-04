@@ -7,6 +7,20 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 11.30. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Apr. 4, 2019 - Version 11.34
+
+  - Added a couple of new Canon LensType values (thanks LibRaw for one)
+  - Added a new CanonExposureMode value (thanks Arnold van Oostrum)
+  - Added support for FujiFilm X-H1 Ver2.01 RAF images
+  - Decode a couple of new Sony tags (thanks LibRaw)
+  - Improved decoding of Sony Shutter tag (thanks Jos Roost)
+  - Improved parsing of streamed metadata from TomTom Bandit videos
+  - Improved identification of some Sony lenses (thanks Jos Roost)
+  - Accept wider range of formats when writing QuickTime:GPSCoordinates
+  - API Changes:
+      - Changed SetFileName() 'Link' option name to 'HardLink' (but still allow
+        'Link' for backward compatibility)
+
 Mar. 28, 2019 - Version 11.33
 
   - Added write support for HEIC/HEIF files

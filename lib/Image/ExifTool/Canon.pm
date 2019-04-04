@@ -87,7 +87,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.07';
+$VERSION = '4.08';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -144,6 +144,7 @@ $VERSION = '4.07';
     26.2 => 'Tamron SP AF 90mm f/2.8 Di Macro', #15
     26.3 => 'Tamron SP AF 180mm f/3.5 Di Macro', #15
     26.4 => 'Carl Zeiss Planar T* 50mm f/1.4', #PH
+    26.5 => 'Voigtlander APO Lanthar 125mm F2.5 SL Macro', #JR
     27 => 'Canon EF 35-80mm f/4-5.6', #32
     # 27 => 'Carl Zeiss Distagon T* 28mm f/2 ZF', #PH (must be with an adapter, because the ZF version is a Nikon mount)
     # 27 => 'EMF adapter for Canon EOS digital cameras', #50 (reports MaxFocalLength of 65535)
@@ -465,6 +466,7 @@ $VERSION = '4.07';
     507 => 'Canon EF 16-35mm f/4L IS USM', #42
     508 => 'Canon EF 11-24mm f/4L USM or Tamron Lens', #PH
     508.1 => 'Tamron 10-24mm f/3.5-4.5 Di II VC HLD', #PH (B023)
+    624 => 'Sigma 70-200mm F2.8 DG OS HSM | S', #IB (018)
     747 => 'Canon EF 100-400mm f/4.5-5.6L IS II USM or Tamron Lens', #JR
     747.1 => 'Tamron SP 150-600mm f/5-6.3 Di VC USD G2', #50
     748 => 'Canon EF 100-400mm f/4.5-5.6L IS II USM + 1.4x or Tamron Lens', #JR (1.4x Mk III)
@@ -2219,6 +2221,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
             5 => 'Depth-of-field AE',
             6 => 'M-Dep', #PH
             7 => 'Bulb', #30
+            8 => 'Flexible-priority AE', #ArnoldVanOostrum
         },
     },
     22 => { #4

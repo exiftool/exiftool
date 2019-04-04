@@ -55,7 +55,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.12';
+$VERSION = '4.13';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -1479,6 +1479,22 @@ my %sampleFormat = (
         Writable => 'int16s',
         WriteGroup => 'SubIFD',
         Count => 17,
+    },
+    0x74c7 => { #IB (in ARW images from some Sony cameras)
+        Name => 'SonyCropTopLeft',
+        Writable => 'int32u',
+        WriteGroup => 'SubIFD',
+        Count => 2,
+        Permanent => 1,
+        Protected => 1,
+    },
+    0x74c8 => { #IB (in ARW images from some Sony cameras)
+        Name => 'SonyCropSize',
+        Writable => 'int32u',
+        WriteGroup => 'SubIFD',
+        Count => 2,
+        Permanent => 1,
+        Protected => 1,
     },
     0x800d => 'ImageID', #10
     0x80a3 => { Name => 'WangTag1', Binary => 1 }, #20
@@ -4567,7 +4583,8 @@ my %subSecConv = (
             7 => 'LensFocalRange',
             8 => 'LensSpec',
             9 => 'LensType2',
-            10 => 'LensFocalLength', # (for Pentax to check for converter)
+            10 => 'LensType3',
+            11 => 'LensFocalLength', # (for Pentax to check for converter)
         },
         Notes => q{
             attempt to identify the actual lens from all lenses with a given LensType.
@@ -4585,15 +4602,21 @@ my %subSecConv = (
         PrintConv => q{
             my $pcv;
             # use LensType2 instead of LensType if available and valid (Sony E-mount lenses)
-            if ($val[9] and $val[9] & 0x8000) {
+            # (0x8000 or greater; 0 for several older/3rd-party E-mount lenses)
+            if (defined $val[9] and ($val[9] & 0x8000 or $val[9] == 0)) {
                 $val[0] = $val[9];
                 $prt[0] = $prt[9];
+                # Particularly GM lenses: often LensType2=0 but LensType3 is available and valid: use LensType3.
+                if ($val[9] == 0 and $val[10] & 0x8000) {
+                   $val[0] = $val[10];
+                   $prt[0] = $prt[10];
+                }
                 $pcv = $$self{TAG_INFO}{LensType2}{PrintConv};
             }
             my $lens = Image::ExifTool::Exif::PrintLensID($self, $prt[0], $pcv, $prt[8], @val);
             # check for use of lens converter (Pentax K-3)
-            if ($val[10] and $val[1] and $lens) {
-                my $conv = $val[1] / $val[10];
+            if ($val[11] and $val[1] and $lens) {
+                my $conv = $val[1] / $val[11];
                 $lens .= sprintf(' + %.1fx converter', $conv) if $conv > 1.1;
             }
             return $lens;

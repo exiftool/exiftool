@@ -318,12 +318,11 @@ GPS tags)</span></span></td></tr>
 <td>HardLink</td>
 <td class=c title=' ! = Unsafe'>yes!</td>
 <td class=c>-</td>
-<td><span class=s><span class=n>(this write-only tag is used to create a hard link to the file.  If the file
-is edited, copied, renamed or moved in the same operation as writing
-HardLink, then the link is made to the updated file.  Note that subsequent
-editing of either the linked file or the original by the exiftool
-application will break the link unless the -overwrite_original_in_place
-option is used)</span></span></td></tr>
+<td><span class=s><span class=n>(this write-only tag is used to create a hard link with the specified name to
+the source file.  If the source file is edited, copied, renamed or moved in
+the same operation as writing HardLink, then the link is made to the updated
+file.  Note that subsequent editing of either hard-linked file by exiftool
+will break the link unless the -overwrite_original_in_place option is used)</span></span></td></tr>
 <tr>
 <td>ICC_Profile</td>
 <td class=c title=' ! = Unsafe'>yes!</td>
@@ -450,13 +449,15 @@ the command line)</span></span></td></tr>
 <td>SymLink</td>
 <td class=c title=' ! = Unsafe'>yes!</td>
 <td class=c>-</td>
-<td><span class=s><span class=n>(this write-only tag is used to create a symbolic link to the file.  If the
-file is edited, copied, renamed or moved in the same operation as writing
-SymLink, then the link is made to the updated file.  The link uses an
-absolute path unless it is created in the current working directory.  Valid
-only for file systems that support symbolic links.  Note that subsequent
-editing of the file via the symbolic link will cause the link to be replaced
-by the edited file without changing the original)</span></span></td></tr>
+<td><span class=s><span class=n>(this write-only tag is used to create a symbolic link with the specified
+name to the source file.  If the source file is edited, copied, renamed or
+moved in the same operation as writing SymLink, then the link is made to the
+updated file.  The link uses an absolute path unless it is created in the
+current working directory.  Valid only for file systems that support
+symbolic links.  Note that subsequent editing of the file via the symbolic
+link by exiftool will cause the link to be replaced by the edited file
+without changing the original unless the -overwrite_original_in_place option
+is used)</span></span></td></tr>
 <tr class=b>
 <td>TestName</td>
 <td class=c title=' ! = Unsafe'>yes!</td>
@@ -477,7 +478,7 @@ to the console, but does not affect the file itself)</span></span></td></tr>
 enables the <a href="../ExifTool.html#Validate">API Validate option</a>, imposing
 additional validation checks when extracting metadata.  Returns the number
 of errors, warnings and minor warnings encountered.  Note that the Validate
-feature focuses mainly on validation of TIFF/EXIF metadata and files)</span>
+feature focuses mainly on validation of TIFF/EXIF metadata)</span>
   <br>&#39;0 0 0&#39; = OK</span></td></tr>
 <tr>
 <td>Warning</td>
@@ -508,7 +509,7 @@ into multiple blocks.  This tag is generated only if specifically requested)</sp
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Mar 19, 2019</i>
+<br><i>Last revised Apr 3, 2019</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

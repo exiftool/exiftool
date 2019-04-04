@@ -1761,7 +1761,7 @@ sub SetFileModifyDate($$;$$$)
 # Change file name and/or directory from FileName and Directory tags
 # Inputs: 0) ExifTool object reference, 1) current file name (including path)
 #         2) new name (or undef to build from FileName and Directory tags)
-#         3) option: 'Link'/'SymLink' to create hard/symbolic link instead of renaming
+#         3) option: 'HardLink'/'SymLink' to create hard/symbolic link instead of renaming
 #                    'Test' to only print new file name
 #         4) 0 to indicate that a file will no longer exist (used for 'Test' only)
 # Returns: 1=name changed OK, 0=nothing changed, -1=error changing name
@@ -1776,7 +1776,7 @@ sub SetFileName($$;$$$)
     # determine the new file name
     unless (defined $newName) {
         if ($opt) {
-            if ($opt eq 'Link') {
+            if ($opt eq 'HardLink' or $opt eq 'Link') {
                 $newName = $self->GetNewValue('HardLink');
             } elsif ($opt eq 'SymLink') {
                 $newName = $self->GetNewValue('SymLink');
@@ -1829,9 +1829,9 @@ sub SetFileName($$;$$$)
     length $newName or $self->Warn('New file name is empty'), return -1;
     # don't replace existing file
     if ($self->Exists($newName) and (not defined $usedFlag or $usedFlag)) {
-        if ($file ne $newName or $opt eq 'Link') {
+        if ($file ne $newName or $opt =~ /Link$/) {
             # allow for case-insensitive filesystem
-            if ($opt eq 'Link' or not $self->IsSameFile($file, $newName)) {
+            if ($opt =~ /Link$/ or not $self->IsSameFile($file, $newName)) {
                 $self->Warn("File '${newName}' already exists");
                 return -1;
             }
@@ -1854,7 +1854,7 @@ sub SetFileName($$;$$$)
         }
         $self->VPrint(0, "Created directory for '${newName}'\n");
     }
-    if ($opt eq 'Link') {
+    if ($opt eq 'HardLink' or $opt eq 'Link') {
         unless (link $file, $newName) {
             $self->Warn("Error creating hard link '${newName}'");
             return -1;
@@ -1998,6 +1998,7 @@ sub WriteInfo($$;$$)
 
     # initialize member variables
     $self->Init();
+    $$self{IsWriting} = 1;
 
     # first, save original file modify date if necessary
     # (do this now in case we are modifying file in place and shifting date)
@@ -2048,7 +2049,7 @@ sub WriteInfo($$;$$)
             if (defined $hardLink or defined $symLink or defined $testName) {
                 my $src = $$self{NewName};
                 $src = $infile unless defined $src;
-                $hardLink and $self->SetFileName($src, $hardLink, 'Link') and $rtnVal = 1;
+                $hardLink and $self->SetFileName($src, $hardLink, 'HardLink') and $rtnVal = 1;
                 $symLink and $self->SetFileName($src, $symLink, 'SymLink') and $rtnVal = 1;
                 $testName and $self->SetFileName($src, $testName, 'Test') and $rtnVal = 1;
             }
@@ -2415,7 +2416,7 @@ sub WriteInfo($$;$$)
             # set FileCreateDate if requested (and if possible!)
             ++$$self{CHANGED} if $setCreateDate and $self->SetFileModifyDate($target, $createTime, 'FileCreateDate', 1) > 0;
             # create hard link if requested and no output filename specified (and if possible!)
-            ++$$self{CHANGED} if defined $hardLink and $self->SetFileName($target, $hardLink, 'Link');
+            ++$$self{CHANGED} if defined $hardLink and $self->SetFileName($target, $hardLink, 'HardLink');
             ++$$self{CHANGED} if defined $symLink and $self->SetFileName($target, $symLink, 'SymLink');
             defined $testName and $self->SetFileName($target, $testName, 'Test');
         }

@@ -1450,13 +1450,14 @@ sub Process_gps0($$$)
 # Process TomTom Bandit Action Cam TTAD atom (ref PH)
 # Inputs: 0) ExifTool object ref, 1) dirInfo ref, 2) tag table ref
 # Returns: 1 on success
-my %ttLen = ( # expected lengths of TomTom records
-    0 => 12,  # (records may be longer sometimes -- don't know why)
-    1 => 4,
-    2 => 12,
-    3 => 12,
+my %ttLen = ( # lengths of known TomTom records
+    0 => 12,    # angular velocity (NC)
+    1 => 4,     # ?
+    2 => 12,    # ?
+    3 => 12,    # accelerometer (NC)
     # (haven't seen a record 4 yet)
-    5 => 92,
+    5 => 92,    # GPS
+    0xff => 4,  # timecode
 );
 sub ProcessTTAD($$$)
 {
@@ -1470,31 +1471,45 @@ sub ProcessTTAD($$$)
     $et->VerboseDir('TTAD', undef, $dirLen);
     SetByteOrder('II');
 
-    my $found = 0;
-    my $lastTime = 0;
-    my $lastGoodPos = $pos;
     my $eeOpt = $et->Options('ExtractEmbedded');
     my $unknown = $et->Options('Unknown');
+    my $found = 0;
+    my $sampleTime = 0;
+    my $resync = 1;
+    my $skipped = 0;
+    my $warned;
 
-
-    for (;;) {
-        # look for next sync byte
-        pos($$dataPt) = $pos;
-        last unless $$dataPt =~ /\xff/g;
-        $pos = pos($$dataPt);
-        last if $pos + 5 >= $dirLen;
-        if ($pos - $lastGoodPos > 0x100) {
-            $et->Warn('Unrecognized or bad TTAD data', 1);
-            last;
+    while ($pos < $dirLen) {
+        # get next record type
+        my $type = Get8u($dataPt, $pos++);
+        # resync if necessary by skipping data until next timecode record
+        if ($resync and $type != 0xff) {
+            ++$skipped > 0x100 and $et->Warn('Unrecognized or bad TTAD data', 1), last;
+            next;
         }
-        my ($tm, $type) = unpack 'VC', substr($$dataPt, $pos, 5);
-        # validate this record as best we can (shouldn't have more than 0.25 sec jump)
-        next unless $ttLen{$type} and $tm >= $lastTime and $tm <= $lastTime + 250;
-        my $saveLastTime = $lastTime;
-        $lastTime = $tm;
-        $pos += 5;
+        unless ($ttLen{$type}) {
+            # skip unknown records
+            $et->Warn("Unknown TTAD record type $type",1) unless $warned;
+            $resync = $warned = 1;
+            ++$skipped;
+            next;
+        }
         last if $pos + $ttLen{$type} > $dirLen;
-        $lastGoodPos = $pos;
+        if ($type == 0xff) {    # timecode?
+            my $tm = Get32u($dataPt, $pos);
+            # validate timecode if skipping unknown data
+            if ($resync) {
+                if ($tm < $sampleTime or $tm > $sampleTime + 250) {
+                    ++$skipped;
+                    next;
+                }
+                undef $resync;
+                $skipped = 0;
+            }
+            $pos += $ttLen{$type};
+            $sampleTime = $tm;
+            next;
+        }
         unless ($eeOpt) {
             # only extract one of each type without -ee option
             $found & (1 << $type) and $pos += $ttLen{$type}, next;
@@ -1502,13 +1517,8 @@ sub ProcessTTAD($$$)
         }
         if ($type == 0 or $type == 3) {
             # (these are both just educated guesses - PH)
-            FoundSomething($et, $tagTbl, Get32u($dataPt,$pos-5) / 1000);
+            FoundSomething($et, $tagTbl, $sampleTime / 1000);
             my @a = map { Get32s($dataPt,$pos+4*$_) / 1000 } 0..2;
-            # validate values and ignore if crazy (possible sync problem?)
-            if (abs($a[0]) > 1000 or abs($a[1]) > 1000 or abs($a[2]) > 1000) {
-                $lastTime = $saveLastTime;
-                next;
-            }
             $et->HandleTag($tagTbl, ($type ? 'Accelerometer' : 'AngularVelocity') => "@a");
         } elsif ($type == 5) {
             # example records unpacked with 'dVddddVddddv*'
@@ -1517,9 +1527,9 @@ sub ProcessTTAD($$$)
             # 2019:03:05 07:52:59.999Z 3 0.14 242    48.0254203 7.8497567 0 45.7  12.96 15.662 15.662 0 0 0 32760 5 0
             # 2019:03:05 07:53:00.999Z 3 0.67 243.78 48.0254584 7.8497907 0 50.93  9.16 10.84  10.84  0 0 0 32760 5 0
             # (I think "5" may be the number of satellites.  seen: 5,6,7 - PH)
-            FoundSomething($et, $tagTbl, Get32u($dataPt,$pos-5) / 1000);
-            my $tm = GetDouble($dataPt, $pos);
-            $et->HandleTag($tagTbl, GPSDateTime  => Image::ExifTool::ConvertUnixTime($tm,undef,3).'Z');
+            FoundSomething($et, $tagTbl, $sampleTime / 1000);
+            my $t = GetDouble($dataPt, $pos);
+            $et->HandleTag($tagTbl, GPSDateTime  => Image::ExifTool::ConvertUnixTime($t,undef,3).'Z');
             $et->HandleTag($tagTbl, GPSAltitude  => GetDouble($dataPt, $pos+0x14));
             $et->HandleTag($tagTbl, GPSLatitude  => GetDouble($dataPt, $pos+0x1c));
             $et->HandleTag($tagTbl, GPSLongitude => GetDouble($dataPt, $pos+0x24));
@@ -1536,7 +1546,7 @@ sub ProcessTTAD($$$)
             # 1 - int32s[1]? (values around 98k)
             # 2 - int32s[3] (values like "806 8124 4323" -- probably something * 1000 again)
             if ($unknown) {
-                FoundSomething($et, $tagTbl, Get32u($dataPt,$pos-5) / 1000);
+                FoundSomething($et, $tagTbl, $sampleTime / 1000);
                 my $n = $type == 1 ? 0 : 2;
                 my @a = map { Get32s($dataPt,$pos+4*$_) } 0..$n;
                 $et->HandleTag($tagTbl, "Unknown0$type" => "@a");

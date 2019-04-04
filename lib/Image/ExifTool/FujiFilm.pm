@@ -30,7 +30,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.67';
+$VERSION = '1.68';
 
 sub ProcessFujiDir($$$);
 sub ProcessFaceRec($$$);
@@ -49,6 +49,7 @@ my %testedRAF = (
     '0144' => 'X100T Ver1.44',
     '0159' => 'S2Pro Ver1.00',
     '0200' => 'X10 Ver2.00',
+    '0201' => 'X-H1 Ver2.01',
     '0212' => 'S3Pro Ver2.12',
     '0216' => 'S3Pro Ver2.16', # (NC)
     '0218' => 'S3Pro Ver2.18',

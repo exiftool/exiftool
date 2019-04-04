@@ -264,7 +264,7 @@ sub ProcessWTV($$)
         if ($verbose) {
             my $s = Get32s(\$buff, $ptr);
             $s = sprintf('0x%x', $s) unless $s < 0;
-            $et->VPrint(1,"- Tag '$tag' (sector=$s, flag=$flg)");
+            $et->VPrint(1,"- Tag '${tag}' (sector=$s, flag=$flg)");
         }
         next unless $$tagTablePtr{$tag} and ($flg == 0 or $flg == 1);
         my $sec = substr($buff, $ptr, 4);

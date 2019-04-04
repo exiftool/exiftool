@@ -28,19 +28,41 @@ my %dirMap = (
 
 #------------------------------------------------------------------------------
 # Format GPSCoordinates for writing
-# Inputs: 0) PrintConv value 1) ExifTool ref
+# Inputs: 0) PrintConv value
 # Returns: ValueConv value
 sub PrintInvGPSCoordinates($)
 {
     my ($val, $et) = @_;
     my @v = split /, */, $val;
-    return undef unless @v == 3;
-    $v[0] = Image::ExifTool::GPS::ToDegrees($v[0], 1);
-    $v[1] = Image::ExifTool::GPS::ToDegrees($v[1], 1);
-    my $sign = ($v[2] =~ /below/i) ? -1 : 1;
-    $v[2] =~ s/ .*//;
-    $v[2] *= $sign;
-    return "@v";
+    if (@v == 2 or @v == 3) {
+        my $below = ($v[2] and $v[2] =~ /below/i);
+        $v[0] = Image::ExifTool::GPS::ToDegrees($v[0], 1);
+        $v[1] = Image::ExifTool::GPS::ToDegrees($v[1], 1);
+        $v[2] = Image::ExifTool::ToFloat($v[2]) * ($below ? -1 : 1) if @v == 3;
+        return "@v";
+    }
+    return $val if $val =~ /^([-+]\d+(\.\d*)?){2,3}(CRS.*)?$/; # already in ISO6709 format?
+    return undef;
+}
+
+#------------------------------------------------------------------------------
+# Convert GPS coordinates back to ISO6709 format
+# Inputs: 0) ValueConv value
+# Returns: ISO6709 coordinates
+sub ConvInvISO6709($)
+{
+    local $_;
+    my $val = shift;
+    my @a = split ' ', $val;
+    if (@a == 2 or @a == 3) {
+        foreach (@a) {
+            Image::ExifTool::IsFloat($_) or return undef;
+            $_ = '+' . $_ if $_ >= 0;
+        }
+        return join '', @a;
+    }
+    return $val if $val =~ /^([-+]\d+(\.\d*)?){2,3}(CRS.*)?$/; # already in ISO6709 format?
+    return undef;
 }
 
 #------------------------------------------------------------------------------
@@ -56,7 +78,7 @@ sub IsCurPath($$)
 }
 
 #------------------------------------------------------------------------------
-# Handle offsets in iloc atom when writing
+# Handle offsets in iloc (ItemLocation) atom when writing
 # Inputs: 0) ExifTool ref, 1) dirInfo ref, 2) data ref, 3) output buffer ref
 # Returns: true on success
 # Notes: see also ParseItemLocation() in QuickTime.pm
@@ -260,7 +282,7 @@ sub WriteQuickTime($$$)
         } elsif ($size > 100000000) {
             my $mb = int($size / 0x100000 + 0.5);
             $tag = PrintableTagID($tag,3);
-            $et->Error("'$tag' atom is too large for rewriting ($mb MB)");
+            $et->Error("'${tag}' atom is too large for rewriting ($mb MB)");
             return $rtnVal;
         } elsif ($raf->Read($buff, $size) != $size) {
             $tag = PrintableTagID($tag,3);
@@ -295,6 +317,9 @@ sub WriteQuickTime($$$)
 
         # rewrite this atom
         my $tagInfo = $et->GetTagInfo($tagTablePtr, $tag, \$buff);
+
+        # call write hook if it exists
+        &{$$tagInfo{WriteHook}}($buff,$et) if $tagInfo and $$tagInfo{WriteHook};
 
         # allow numerical tag ID's
         unless ($tagInfo) {

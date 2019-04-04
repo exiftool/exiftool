@@ -32,7 +32,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.02';
+$VERSION = '3.03';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -53,15 +53,29 @@ sub PrintInvLensSpec($;$$);
 # Sony E-mount lenses
 # (NOTE: these should be kept in sync with the 65535 entries in %minoltaLensTypes)
 my %sonyLensTypes2 = (
-    Notes => 'Lens type numbers for Sony E-mount lenses used by NEX models.',
+    Notes => 'Lens type numbers for Sony E-mount lenses used by NEX/ILCE models.',
     0 => 'Unknown E-mount lens or other lens',
+    0.1   => 'Sigma 19mm F2.8 [EX] DN',
+    0.2   => 'Sigma 30mm F2.8 [EX] DN',
+    0.3   => 'Sigma 60mm F2.8 DN',
+    0.4   => 'Tamron 18-200mm F3.5-6.3 Di III VC', # (Model B011)
+    0.5   => 'Tokina FiRIN 20mm F2 FE AF',         # samples from Tokina, May 2018
+    0.6   => 'Tokina FiRIN 20mm F2 FE MF',         # samples from Tokina, 16-12-2016, DC-watch 01-02-2017
+    0.7   => 'Zeiss Touit 12mm F2.8',              # (firmware Ver.00)
+    0.8   => 'Zeiss Touit 32mm F1.8',              # (firmware Ver.00)
+    0.9   => 'Zeiss Touit 50mm F2.8 Macro',        # (firmware Ver.00)
+   '0.10' => 'Zeiss Loxia 50mm F2',                # (firmware Ver.01)
+   '0.11' => 'Zeiss Loxia 35mm F2',                # (firmware Ver.01)
+ # (leave this commented out for now because it causes a failed Minolta lens synchronization check)
+ # '0.12' => 'Sony E 18-200mm F3.5-6.3 OSS LE',    # (firmware Ver.01)
     1 => 'Sony LA-EA1 or Sigma MC-11 Adapter', # MC-11 with not-supported lenses
     2 => 'Sony LA-EA2 Adapter',
     3 => 'Sony LA-EA3 Adapter', #(NC) ILCE-7 image with A-mount lens, but also has 0x940e 2nd byte=2
     6 => 'Sony LA-EA4 Adapter', #(NC) ILCE-7R image with A-mount lens and having phase-detect info blocks in 0x940e AFInfo
-  # 27 => Venus Optics Laowa 12mm f2.8 Zero-D or 105mm f2 (T3.2) Smooth Trans Focus (ref IB)
+    # 27 => Venus Optics Laowa 12mm f2.8 Zero-D or 105mm f2 (T3.2) Smooth Trans Focus (ref IB)
     44 => 'Metabones Canon EF Smart Adapter', #JR
     78 => 'Metabones Canon EF Smart Adapter Mark III or Other Adapter', #PH/JR (also Mark IV, Fotodiox and Viltrox)
+    184 => 'Metabones Canon EF Speed Booster Ultra', #JR ('Green' mode, LensMount reported as A-mount)
     234 => 'Metabones Canon EF Smart Adapter Mark IV', #JR (LensMount reported as A-mount)
     239 => 'Metabones Canon EF Speed Booster', #JR
                                                 # Sony VX product code: (http://www.mi-fo.de/forum/index.php?s=7df1c8d3b1cd675f2abf4f4442e19cf2&showtopic=35035&view=findpost&p=303746)
@@ -121,6 +135,7 @@ my %sonyLensTypes2 = (
     32850 => 'Sony FE 135mm F1.8 GM', #IB
 
   # (comment this out so LensID will report the LensModel, which is more useful)
+  # 32952 => 'Metabones Canon EF Speed Booster Ultra', #JR (corresponds to 184, but 'Advanced' mode, LensMount reported as E-mount)
   # 33002 => 'Metabones Canon EF Smart Adapter with Ver.5x', #PH/JR (corresponds to 234, but LensMount reported as E-mount)
 
     33072 => 'Sony FE 70-200mm F2.8 GM OSS + 1.4X Teleconverter', #JR
@@ -7066,7 +7081,17 @@ my %isoSetting2010 = (
 #           appears to be difference between used FNumber and MaxAperture, 256 being +1 APEX or stop
 #           however, not always valid e.g. bracketing, Shutter-prio e.a.
 #           difference between 0x0002 and 0x0004 mostly 0.0, 0.1 or 0.2 stops.
-    # 0x0020 - int16u[3]: all 0's when Silent Shooting / Electronic Shutter (ILCE-7S only)
+    0x0020 => {
+        Name => 'Shutter',
+        Format => 'int16u[3]',
+        PrintConv => {
+            '0 0 0'  => 'Silent / Electronic (0 0 0)',
+            OTHER => sub {
+                my ($val, $inv) = @_;
+                return $inv ? ($val=~/\((.*?)\)/ ? $1 : undef) : "Mechanical ($val)";
+            },
+        },
+    },
     0x0031 => { #JR
         Name => 'FlashStatus',
         RawConv => '$$self{FlashFired} = $val',
@@ -7325,7 +7350,6 @@ my %isoSetting2010 = (
     },
     0x0026 => {
         Name => 'Shutter',
-        Condition => '$$self{Model} !~ /^(ILCE-6400)/ and $$self{Software} !~ /^ILCE-9 v5.00/',
         Format => 'int16u[3]',
         PrintConv => {
             '0 0 0'  => 'Silent / Electronic (0 0 0)',

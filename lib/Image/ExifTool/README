@@ -781,6 +781,9 @@ numerical.
                   string is empty, the tag is not written and no warnings are
                   issued, but WriteAlso is still evaluated if it exists.
 
+  WriteHook     : [QuickTime only] Routine to call with these arguments when tag
+                  is encountered during writing: 0) tag value, 1) ExifTool ref.
+
   WriteOnly     : Flag set if tag is write-only.  Used for documentation only.
 
   DelCheck      : Similar to WriteCheck, but called when the tag is deleted. The

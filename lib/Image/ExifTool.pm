@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup);
 
-$VERSION = '11.33';
+$VERSION = '11.34';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -1316,12 +1316,11 @@ my %systemTagsNotes = (
         WritePseudo => 1,
         Protected => 1,
         Notes => q{
-            this write-only tag is used to create a hard link to the file.  If the file
-            is edited, copied, renamed or moved in the same operation as writing
-            HardLink, then the link is made to the updated file.  Note that subsequent
-            editing of either the linked file or the original by the exiftool
-            application will break the link unless the -overwrite_original_in_place
-            option is used
+            this write-only tag is used to create a hard link with the specified name to
+            the source file.  If the source file is edited, copied, renamed or moved in
+            the same operation as writing HardLink, then the link is made to the updated
+            file.  Note that subsequent editing of either hard-linked file by exiftool
+            will break the link unless the -overwrite_original_in_place option is used
         },
         ValueConvInv => '$val=~tr/\\\\/\//; $val',
     },
@@ -1332,13 +1331,15 @@ my %systemTagsNotes = (
         WritePseudo => 1,
         Protected => 1,
         Notes => q{
-            this write-only tag is used to create a symbolic link to the file.  If the
-            file is edited, copied, renamed or moved in the same operation as writing
-            SymLink, then the link is made to the updated file.  The link uses an
-            absolute path unless it is created in the current working directory.  Valid
-            only for file systems that support symbolic links.  Note that subsequent
-            editing of the file via the symbolic link will cause the link to be replaced
-            by the edited file without changing the original
+            this write-only tag is used to create a symbolic link with the specified
+            name to the source file.  If the source file is edited, copied, renamed or
+            moved in the same operation as writing SymLink, then the link is made to the
+            updated file.  The link uses an absolute path unless it is created in the
+            current working directory.  Valid only for file systems that support
+            symbolic links.  Note that subsequent editing of the file via the symbolic
+            link by exiftool will cause the link to be replaced by the edited file
+            without changing the original unless the -overwrite_original_in_place option
+            is used
         },
         ValueConvInv => '$val=~tr/\\\\/\//; $val',
     },
@@ -6613,7 +6614,7 @@ sub ProcessJPEG($$)
         }
         if (defined $dumpType) {
             if (not $dumpType and ($$options{Unknown} or $$options{Validate})) {
-                my $str = ($$segDataPt =~ /^([\x20-\x7e]{1,20})\0/) ? " '$1'" : '';
+                my $str = ($$segDataPt =~ /^([\x20-\x7e]{1,20})\0/) ? " '${1}'" : '';
                 $xtra = 'segment' unless $xtra;
                 $self->Warn("Unknown $markerName$str $xtra", 1);
             }

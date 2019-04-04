@@ -1839,9 +1839,9 @@ Directory tag takes precedence over any directory specified in FileName.
 
 2) [optional] New file name
 
-3) [optional] 'Link' or 'SymLink' to create a hard or symbolic link instead
-of renaming the file, or 'Test' to test renaming feature by printing the old
-and new names instead of changing anything.
+3) [optional] 'HardLink' or 'SymLink' to create a hard or symbolic link
+instead of renaming the file, or 'Test' to test renaming feature by printing
+the old and new names instead of changing anything.
 
 =item Return Value:
 

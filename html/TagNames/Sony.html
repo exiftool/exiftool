@@ -4886,18 +4886,30 @@ multi-frame noise reduction)</span></span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='LensType2'>Sony LensType2 Values</a></h2>
-<p>Lens type numbers for Sony E-mount lenses used by NEX models.</p>
+<p>Lens type numbers for Sony E-mount lenses used by NEX/ILCE models.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class='inner sep' cellspacing=1>
 <tr class=h><th>Value</th><th>LensType2</th></tr>
 <tr><td>0</td><td>= Unknown E-mount lens or other lens</td>
+</tr><tr><td>0.1</td><td>= Sigma 19mm F2.8 [EX] DN</td>
+</tr><tr><td>0.2</td><td>= Sigma 30mm F2.8 [EX] DN</td>
+</tr><tr><td>0.3</td><td>= Sigma 60mm F2.8 DN</td>
+</tr><tr><td>0.4</td><td>= Tamron 18-200mm F3.5-6.3 Di III VC</td>
+</tr><tr><td>0.5</td><td>= Tokina FiRIN 20mm F2 FE AF</td>
+</tr><tr><td>0.6</td><td>= Tokina FiRIN 20mm F2 FE MF</td>
+</tr><tr><td>0.7</td><td>= Zeiss Touit 12mm F2.8</td>
+</tr><tr><td>0.8</td><td>= Zeiss Touit 32mm F1.8</td>
+</tr><tr><td>0.9</td><td>= Zeiss Touit 50mm F2.8 Macro</td>
+</tr><tr><td>0.10</td><td>= Zeiss Loxia 50mm F2</td>
+</tr><tr><td>0.11</td><td>= Zeiss Loxia 35mm F2</td>
 </tr><tr><td>1</td><td>= Sony LA-EA1 or Sigma MC-11 Adapter</td>
 </tr><tr><td>2</td><td>= Sony LA-EA2 Adapter</td>
 </tr><tr><td>3</td><td>= Sony LA-EA3 Adapter</td>
 </tr><tr><td>6</td><td>= Sony LA-EA4 Adapter</td>
 </tr><tr><td>44</td><td>= Metabones Canon EF Smart Adapter</td>
 </tr><tr><td>78</td><td>= Metabones Canon EF Smart Adapter Mark III or Other Adapter</td>
+</tr><tr><td>184</td><td>= Metabones Canon EF Speed Booster Ultra</td>
 </tr><tr><td>234</td><td>= Metabones Canon EF Smart Adapter Mark IV</td>
 </tr><tr><td>239</td><td>= Metabones Canon EF Speed Booster</td>
 </tr><tr><td>32784</td><td>= Sony E 16mm F2.8</td>
@@ -7883,6 +7895,11 @@ substitution cipher, but the deciphered values are listed below.</p>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td title='0x0020 = 32'>0x0020</td>
+<td>Shutter</td>
+<td class=c>int16u[3]</td>
+<td><span class=s>&#39;0 0 0&#39; = Silent / Electronic (0 0 0)</span></td></tr>
+<tr class=b>
 <td title='0x0031 = 49'>0x0031</td>
 <td>FlashStatus</td>
 <td class=c>int8u</td>
@@ -7895,104 +7912,104 @@ substitution cipher, but the deciphered values are listed below.</p>
   <br>128 = External Flash present
   <br>129 = External Flash Fired</td></tr></table>
 </td></tr>
-<tr class=b>
+<tr>
 <td title='0x0032 = 50'>0x0032</td>
 <td>ShutterCount</td>
 <td class=c>int32u</td>
 <td><span class=s><span class=n>(total number of image exposures made by the camera, modulo 65536 for some
 models)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x003a = 58'>0x003a</td>
 <td>SonyExposureTime</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x003c = 60'>0x003c</td>
 <td>SonyFNumber</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x003f = 63'>0x003f</td>
 <td>ReleaseMode2</td>
 <td class=c>int8u</td>
 <td>--&gt; <a href='Sony.html#ReleaseMode2'>Sony ReleaseMode2 Values</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x004c = 76'>0x004c</td>
 <td>ShutterCount2</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x0051 = 81'>0x0051</td>
 <td>SonyDateTime2</td>
 <td class=c>undef[6]</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x0067 = 103'>0x0067</td>
 <td>ReleaseMode2</td>
 <td class=c>int8u</td>
 <td>--&gt; <a href='Sony.html#ReleaseMode2'>Sony ReleaseMode2 Values</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0x007c = 124'>0x007c</td>
 <td>InternalSerialNumber</td>
 <td class=c title=' ~ = Writable only with -n'>int8u[4]~</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x00f0 = 240'>0x00f0</td>
 <td>InternalSerialNumber</td>
 <td class=c>int8u[5]</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x0105 = 261'>0x0105</td>
 <td>LensMount</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Unknown
   <br>1 = A-mount
   <br>2 = E-mount</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0106 = 262'>0x0106</td>
 <td>LensFormat</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = Unknown
   <br>1 = APS-C
   <br>2 = Full-frame</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x0107 = 263'>0x0107</td>
 <td>LensType2</td>
 <td class=c>int16u</td>
 <td>--&gt; <a href='Sony.html#LensType2'>Sony LensType2 Values</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0109 = 265'>0x0109</td>
 <td>LensType</td>
 <td class=c>int16u</td>
 <td>--&gt; <a href='Sony.html#LensType'>Sony LensType Values</a>
   <br><span class='n s'>(SLT models, and NEX with A-mount lenses)</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x010b = 267'>0x010b</td>
 <td>DistortionCorrParamsPresent</td>
 <td class=c>int8u</td>
 <td><span class=s>0 = No
   <br>1 = Yes</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0115 = 277'>0x0115</td>
 <td>LensSpecFeatures</td>
 <td class=c>undef[2]</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x0116 = 278'>0x0116</td>
 <td>LensSpecFeatures</td>
 <td class=c>undef[2]</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x01a0 = 416'>0x01a0</td>
 <td>ShutterCount3</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x01aa = 426'>0x01aa</td>
 <td>ShutterCount3</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x01bd = 445'>0x01bd</td>
 <td>ShutterCount3</td>
 <td class=c>int32u</td>
@@ -11336,7 +11353,7 @@ some models when the ExtractEmbedded option is used.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Mar 27, 2019</i>
+<br><i>Last revised Apr 4, 2019</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

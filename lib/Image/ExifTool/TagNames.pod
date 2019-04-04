@@ -455,6 +455,8 @@ official EXIF 2.31 specification.
   0x7035   ChromaticAberrationCorrParams SubIFD int16s[33]!
   0x7036   DistortionCorrection      SubIFD     int16s!
   0x7037   DistortionCorrParams      SubIFD     int16s[17]!
+  0x74c7   SonyCropTopLeft           SubIFD     int32u[2]!
+  0x74c8   SonyCropSize              SubIFD     int32u[2]!
   0x800d   ImageID                   -          no
   0x80a3   WangTag1                  -          no
   0x80a4   WangAnnotation            -          no
@@ -16927,6 +16929,7 @@ substitution cipher, but the deciphered values are listed below.
   ------   --------                             --------
   0x0000   SonyMaxAperture                      int8u
   0x0001   SonyMinAperture                      int8u
+  0x0020   Shutter                              int16u[3]
   0x0031   FlashStatus                          int8u
   0x0032   ShutterCount                         int32u
   0x003a   SonyExposureTime                     int16u
@@ -33025,6 +33028,7 @@ values, may created via the ExifTool configuration file.
                        LensFocalRange
                        LensSpec
                        LensType2
+                       LensType3
                        LensFocalLength
   LensID               XMP-aux:LensID           no
                        Make

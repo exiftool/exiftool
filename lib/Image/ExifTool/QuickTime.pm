@@ -5348,6 +5348,21 @@ my %eeBox = (
 #
     # (mdta)com.apple.quicktime.video-orientation (dtyp=66, int16s)
     'video-orientation' => 'VideoOrientation',
+    # (mdta)com.apple.quicktime.live-photo-info (dtyp=com.apple.quicktime.com.apple.quicktime.live-photo-info)
+    'live-photo-info' => {
+        Name => 'LivePhotoInfo',
+        # not sure what these values mean, but unpack them anyway - PH
+        # (ignore the fact that the "f" and "l" unpacks won't work on a big-endian machine)
+        ValueConv => 'join " ",unpack "VfVVf6c4lCCcclf4Vvv", $val',
+    },
+    # (mdta)com.apple.quicktime.still-image-time (dtyp=65, int8s)
+    'still-image-time' => { # (found in live photo)
+        Name => 'StillImageTime', 
+        Notes => q{
+            this tag always has a value of -1; the time of the still image is obtained
+            from the associated SampleTime
+        },
+    },
     # (mdta)com.apple.quicktime.detected-face (dtyp='com.apple.quicktime.detected-face')
     'detected-face' => {
         Name => 'FaceInfo',

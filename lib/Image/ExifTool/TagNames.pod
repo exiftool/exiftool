@@ -8597,6 +8597,9 @@ RAF-format information.
   Tag ID  Tag Name                              Writable
   ------  --------                              --------
   0x0100  RawImageFullSize                      no
+  0x0110  RawImageCropTopLeft                   no
+  0x0111  RawImageCroppedSize                   no
+  0x0115  RawImageAspectRatio                   no
   0x0121  RawImageSize                          no
   0x0130  FujiLayout                            no
   0x0131  XTransLayout                          no
@@ -24208,6 +24211,7 @@ ItemList tags written by the "mdta" handler.  The prefix of
   'genre'                 Genre                 string
   'information'           Information           string
   'keywords'              Keywords              string
+  'live-photo-info'       LivePhotoInfo         no
   'location.ISO6709'      GPSCoordinates        string
   'location.body'         LocationBody          string
   'location.date'         LocationDate          string
@@ -24231,6 +24235,7 @@ ItemList tags written by the "mdta" handler.  The prefix of
   'publisher'             Publisher             string
   'rating.user'           UserRating            string
   'software'              Software              string
+  'still-image-time'      StillImageTime        string
   'title'                 Title                 string
   'version'               Version               string
   'video-orientation'     VideoOrientation      string
@@ -32657,6 +32662,7 @@ index the file after the metadata changes.
   MDItemColorSpace                              no
   MDItemComment                                 no
   MDItemContentCreationDate                     no
+  MDItemContentCreationDateRanking              no
   MDItemContentCreationDate_Ranking             no
   MDItemContentModificationDate                 no
   MDItemContentType                             no
@@ -32703,6 +32709,7 @@ index the file after the metadata changes.
   MDItemISOSpeed                                no
   MDItemIdentifier                              no
   MDItemImageDirection                          no
+  MDItemInterestingDateRanking                  no
   MDItemInterestingDate_Ranking                 no
   MDItemIsApplicationManaged                    no
   MDItemIsExistingThread                        no
@@ -32711,6 +32718,7 @@ index the file after the metadata changes.
   MDItemKind                                    no
   MDItemLastUsedDate                            no
   MDItemLatitude                                no
+  MDItemLensModel                               no
   MDItemLogicalSize                             no
   MDItemLongitude                               no
   MDItemMailDateReceived_Ranking                no
@@ -33006,6 +33014,7 @@ values, may created via the ExifTool configuration file.
                        ImageHeight
                        ExifImageWidth
                        ExifImageHeight
+                       RawImageCroppedSize
   ImageWidth           Main:PostScript:ImageData no
                        PostScript:BoundingBox
   ImageWidth           IFD0:SensorLeftBorder    no

@@ -683,17 +683,13 @@ sub WriteMOV($$)
     my $tagTablePtr = GetTagTable('Image::ExifTool::QuickTime::Main');
     return 0 unless $$tagTablePtr{$tag};
 
-    # determine the file type
+    # determine the file type (by default, assume MP4 if 'ftyp' exists
+    # without 'qt  ' as a compatible brand, but HEIC is an exception)
     if ($tag eq 'ftyp' and $size >= 12 and $size < 100000 and
         $raf->Read($buff, $size-8) == $size-8 and
         $buff !~ /^(....)+(qt  )/s)
     {
-        # file is MP4 format if 'ftyp' exists without 'qt  ' as a compatible brand
-        if ($buff =~ /^(heic|mif1|msf1|heix|hevc|hevx)/) {
-            $ftype = 'HEIC';
-        } else {
-            $ftype = 'MP4';
-        }
+        $ftype = $buff =~ /^(heic|mif1|msf1|heix|hevc|hevx)/ ? 'HEIC' : 'MP4';
     } else {
         $ftype = 'MOV';
     }

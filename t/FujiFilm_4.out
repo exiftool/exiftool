@@ -1,4 +1,4 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.21
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.35
 [File, System, Image] FileSize - File Size: 38 kB
 [File, File, Image] FileType - File Type: RAF
 [File, File, Image] FileTypeExtension - File Type Extension: raf
@@ -100,6 +100,8 @@
 [MakerNotes, FujiFilm, Camera] 16640 - Faces Detected: 0
 [PrintIM, PrintIM, Printing] PrintIMVersion - PrintIM Version: 0250
 [RAF, RAF, Image] 256 - Raw Image Full Size: 4352x1444
+[RAF, RAF, Image] 272 - Raw Image Crop Top Left: 10 48
+[RAF, RAF, Image] 273 - Raw Image Cropped Size: 4256x1424
 [RAF, RAF, Image] 289 - Raw Image Size: 4288x1440
 [RAF, RAF, Image] 304 - Fuji Layout: 1 2 1 0
 [RAF, RAF, Image] 8192 - WB GRGB Levels Auto: 384 601 384 515
@@ -115,6 +117,8 @@
 [RAF, RAF, Image] 37376 - Relative Exposure: 0
 [RAF, RAF, Image] 38480 - Raw Exposure Bias: 0
 [RAF, RAF2, Image] 256 - Raw Image Full Size: 4352x1444
+[RAF, RAF2, Image] 272 - Raw Image Crop Top Left: 10 48
+[RAF, RAF2, Image] 273 - Raw Image Cropped Size: 4256x1424
 [RAF, RAF2, Image] 289 - Raw Image Size: 4284x1440
 [RAF, RAF2, Image] 304 - Fuji Layout: 1 2 1 0
 [RAF, RAF2, Image] 8192 - WB GRGB Levels Auto: 384 685 384 603
@@ -132,9 +136,9 @@
 [Composite, Composite, Image] Aperture - Aperture: 8.0
 [Composite, Composite, Image] ShutterSpeed - Shutter Speed: 1/250
 [Composite, Composite, Camera] BlueBalance - Blue Balance: 1.341146
-[Composite, Composite, Image] ImageSize - Image Size: 8x8
+[Composite, Composite, Image] ImageSize - Image Size: 4256x1424
 [Composite, Composite, Image] LightValue - Light Value: 14.0
-[Composite, Composite, Image] Megapixels - Megapixels: 0.000064
+[Composite, Composite, Image] Megapixels - Megapixels: 6.1
 [Composite, Composite, Camera] RedBalance - Red Balance: 1.565104
 [Composite, Composite, Camera] ScaleFactor35efl - Scale Factor To 35 mm Equivalent: 1.5
 [Composite, Composite, Camera] CircleOfConfusion - Circle Of Confusion: 0.020 mm

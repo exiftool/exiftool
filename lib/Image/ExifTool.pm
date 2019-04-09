@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup);
 
-$VERSION = '11.34';
+$VERSION = '11.35';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -2031,7 +2031,7 @@ sub Options($$;@)
             }
         } elsif ($param eq 'ListJoin') {
             $$options{$param} = $newVal;
-            # ListJoin just sets the List and ListSep options for backward compatibility
+            # set the old List and ListSep options for backward compatibility
             if (defined $newVal) {
                 $$options{List} = 0;
                 $$options{ListSep} = $newVal;
@@ -2039,6 +2039,10 @@ sub Options($$;@)
                 $$options{List} = 1;
                 # (ListSep must be defined)
             }
+        } elsif ($param eq 'List') {
+            $$options{$param} = $newVal;
+            # set the new ListJoin option for forward compatibility
+            $$options{ListJoin} = $newVal ? undef : $$options{ListSep};
         } else {
             if ($param eq 'Escape') {
                 # set ESCAPE_PROC
@@ -4022,6 +4026,7 @@ sub GroupMatches($$$)
         my (@fmys, $g);
         for ($g=0; $g<@grps; ++$g) {
             $fmys[$g] = $1 if $grps[$g] =~ s/^(\d+)//;
+            $grps[$g] = '' if $grps[$g] eq 'copy0'; # accept 'Copy0' for primary tag
         }
         foreach $tag (@$tagList) {
             my @groups = $self->GetGroup($tag, -1);
@@ -4030,9 +4035,9 @@ sub GroupMatches($$$)
                 next if $grp eq '*' or $grp eq 'all';
                 if (defined $fmys[$g]) {
                     my $f = $fmys[$g];
-                    last unless $groups[$f] and $grps[$g] eq lc $groups[$f];
+                    last unless defined $groups[$f] and $grp eq lc $groups[$f];
                 } else {
-                    last unless grep /^$grps[$g]$/i, @groups;
+                    last unless grep /^$grp$/i, @groups;
                 }
             }
             if ($g == @grps) {
@@ -4042,6 +4047,7 @@ sub GroupMatches($$$)
         }
     } else {
         my $family = ($group =~ s/^(\d+)//) ? $1 : -1;
+        $group = '' if lc $group eq 'copy0';        # accept 'Copy0' for primary tag
         foreach $tag (@$tagList) {
             my @groups = $self->GetGroup($tag, $family);
             if (grep(/^$group$/i, @groups)) {
@@ -7372,6 +7378,7 @@ sub GetTagInfo($$$;$$$)
 # Inputs: 0) reference to tag table, 1) tag ID
 #         2) [optional] tag name or reference to tag information hash
 #         3) [optional] flag to avoid adding prefix when generating tag name
+# Returns: tagInfo ref
 # Notes: - will not override existing entry in table
 # - info need contain no entries when this routine is called
 # - tag name is made valid if necessary
@@ -7415,6 +7422,7 @@ sub AddTagToTable($$;$$)
     unless (defined $$tagTablePtr{$tagID} or $specialTags{$tagID}) {
         $$tagTablePtr{$tagID} = $tagInfo;
     }
+    return $tagInfo;
 }
 
 #------------------------------------------------------------------------------

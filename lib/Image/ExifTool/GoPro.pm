@@ -74,7 +74,7 @@ my %addUnits = (
     },
     ACCL => { #2 (gpmd)
         Name => 'Accelerometer',
-        Notes => 'accelerator readings in m/s',
+        Notes => 'accelerator readings in m/s2',
         Binary => 1,
     },
     ALLD => 'AutoLowLightDuration', #1 (gpmd) (untested)

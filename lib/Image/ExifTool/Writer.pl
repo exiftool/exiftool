@@ -48,6 +48,7 @@ my %tiffMap = (
     MakerNotes   => 'ExifIFD',
     CanonVRD     => 'MakerNotes', # (so VRDOffset will get updated)
     NikonCapture => 'MakerNotes', # (to allow delete by group)
+    PhaseOne     => 'MakerNotes', # (for editing PhaseOne SensorCalibration tags)
 );
 my %exifMap = (
     IFD1         => 'IFD0',
@@ -2892,7 +2893,7 @@ sub InsertTagValues($$$;$$$)
         }
         # allow trailing '#' to indicate ValueConv value
         $type = 'ValueConv' if $line =~ s/^#//;
-        # (undocumented feature to allow '@' to evaluate list values separately, but only in braces)
+        # special advanced formatting '@' feature to evaluate list values separately
         if ($bra and $line =~ s/^\@(#)?//) {
             $asList = 1;
             $type = 'ValueConv' if $1;

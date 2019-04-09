@@ -15,7 +15,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.05';
+$VERSION = '1.06';
 
 sub WritePhaseOne($$$);
 sub ProcessPhaseOne($$$);
@@ -260,6 +260,7 @@ my @formatName = ( undef, 'string', 'int16s', undef, 'int32s' );
     CHECK_PROC => \&Image::ExifTool::Exif::CheckExif,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
     TAG_PREFIX => 'SensorCalibration',
+    WRITE_GROUP => 'PhaseOne',
     VARS => { ENTRY_SIZE => 12 }, # (entries do not contain a format field)
     0x0400 => {
         Name => 'SensorDefects',
@@ -435,7 +436,7 @@ sub WritePhaseOne($$$)
 
     # nothing to do if we aren't changing any PhaseOne tags
     my $newTags = $et->GetNewTagInfoHash($tagTablePtr);
-    return undef unless %$newTags or $$et{DropTags};
+    return undef unless %$newTags or $$et{DropTags} or $$et{EDIT_DIRS}{PhaseOne};
 
     my $dataPt = $$dirInfo{DataPt};
     my $dataPos = $$dirInfo{DataPos} || 0;

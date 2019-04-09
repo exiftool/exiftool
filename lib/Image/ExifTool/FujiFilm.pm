@@ -30,7 +30,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.68';
+$VERSION = '1.69';
 
 sub ProcessFujiDir($$$);
 sub ProcessFaceRec($$$);
@@ -1005,8 +1005,29 @@ my %faceCategories = (
         Groups => { 1 => 'RAF2' }, # (so RAF2 shows up in family 1 list)
         Count => 2,
         Notes => 'including borders',
-        ValueConv => 'my @v=reverse split(" ",$val);"@v"',
+        ValueConv => 'my @v=reverse split(" ",$val);"@v"', # reverse to show width first
         PrintConv => '$val=~tr/ /x/; $val',
+    },
+    0x110 => {
+        Name => 'RawImageCropTopLeft',
+        Format => 'int16u',
+        Count => 2,
+        Notes => 'top margin first, then left margin',
+    },
+    0x111 => {
+        Name => 'RawImageCroppedSize',
+        Format => 'int16u',
+        Count => 2,
+        Notes => 'including borders',
+        ValueConv => 'my @v=reverse split(" ",$val);"@v"', # reverse to show width first
+        PrintConv => '$val=~tr/ /x/; $val',
+    },
+    0x115 => {
+        Name => 'RawImageAspectRatio',
+        Format => 'int16u',
+        Count => 2,
+        ValueConv => 'my @v=reverse split(" ",$val);"@v"', # reverse to show width first
+        PrintConv => '$val=~tr/ /:/; $val',
     },
     0x121 => [
         {

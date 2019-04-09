@@ -11,7 +11,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.07';
+$VERSION = '1.08';
 
 sub MDItemLocalTime($);
 
@@ -42,8 +42,17 @@ my %mdDateInfo = (
         Writable => 1,
         WritePseudo => 1,
         Protected => 1, # (all writable pseudo tags must be protected)
-        Notes => 'label number: 0-7',
         WriteCheck => '$val =~ /^[0-7]$/ ? undef : "Not an integer in the range 0-7"',
+        PrintConv => {
+            0 => '0 (none)',
+            1 => '1 (Gray)',
+            2 => '2 (Green)',
+            3 => '3 (Purple)',
+            4 => '4 (Blue)',
+            5 => '5 (Yellow)',
+            6 => '6 (Red)',
+            7 => '7 (Orange)',
+        },
     },
     MDItemFSCreationDate => {
         Writable => 1,
@@ -72,6 +81,7 @@ my %mdDateInfo = (
     MDItemColorSpace              => { Groups => { 2 => 'Image' } },
     MDItemComment                 => { },
     MDItemContentCreationDate     => { Groups => { 2 => 'Time' }, %mdDateInfo },
+    MDItemContentCreationDateRanking => { Groups => { 2 => 'Time' }, %mdDateInfo },
     MDItemContentModificationDate => { Groups => { 2 => 'Time' }, %mdDateInfo },
     MDItemContentType             => { },
     MDItemContentTypeTree         => { },
@@ -84,7 +94,7 @@ my %mdDateInfo = (
     MDItemDisplayName             => { },
     MDItemDownloadedDate          => { Groups => { 2 => 'Time' }, %mdDateInfo },
     MDItemEncodingApplications    => { },
-    MDItemEXIFGPSVersion          => { Groups => { 2 => 'Location' } },
+    MDItemEXIFGPSVersion          => { Groups => { 2 => 'Location' }, Description => 'MD Item EXIF GPS Version' },
     MDItemEXIFVersion             => { },
     MDItemExposureMode            => { Groups => { 2 => 'Camera' } },
     MDItemExposureProgram         => { Groups => { 2 => 'Camera' } },
@@ -110,11 +120,13 @@ my %mdDateInfo = (
     MDItemGPSTrack                => { Groups => { 2 => 'Location' } },
     MDItemHasAlphaChannel         => { Groups => { 2 => 'Image' } },
     MDItemImageDirection          => { Groups => { 2 => 'Location' } },
+    MDItemInterestingDateRanking  => { Groups => { 2 => 'Time' }, %mdDateInfo },
     MDItemISOSpeed                => { Groups => { 2 => 'Camera' } },
     MDItemKeywords                => { },
     MDItemKind                    => { },
     MDItemLastUsedDate            => { Groups => { 2 => 'Time' }, %mdDateInfo },
     MDItemLatitude                => { Groups => { 2 => 'Location' } },
+    MDItemLensModel               => { },
     MDItemLogicalSize             => { },
     MDItemLongitude               => { Groups => { 2 => 'Location' } },
     MDItemNumberOfPages           => { },

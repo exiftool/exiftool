@@ -55,7 +55,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.13';
+$VERSION = '4.14';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -4096,14 +4096,17 @@ my %subSecConv = (
         Desire => {
             2 => 'ExifImageWidth',
             3 => 'ExifImageHeight',
+            4 => 'RawImageCroppedSize', # (FujiFilm RAF images)
         },
         # use ExifImageWidth/Height only for Canon and Phase One TIFF-base RAW images
         ValueConv => q{
-            return "$val[2]x$val[3]" if $val[2] and $val[3] and
+            return $val[4] if $val[4];
+            return "$val[2] $val[3]" if $val[2] and $val[3] and
                     $$self{TIFF_TYPE} =~ /^(CR2|Canon 1D RAW|IIQ|EIP)$/;
-            return "$val[0]x$val[1]" if IsFloat($val[0]) and IsFloat($val[1]);
+            return "$val[0] $val[1]" if IsFloat($val[0]) and IsFloat($val[1]);
             return undef;
         },
+        PrintConv => '$val =~ tr/ /x/; $val',
     },
     Megapixels => {
         Require => 'ImageSize',

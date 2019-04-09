@@ -17,6 +17,28 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v11.35'><b>Apr. 9, 2019 - Version 11.35</b></a>
+<ul>
+<li>Added print conversion for MDItemFSLabel
+<li>Added a new Sony LensType (thanks Jos Roost)
+<li>Added an additional -validate check for PNG images
+<li>Decode a few more FujiFilm RAF tags (thanks LibRaw)
+<li>Allow "Copy0" to be specified as a group name for the copy number of the
+    primary tag when extracting information
+<li>Improved the Composite ImageSize tag to report the RawImageCroppedSize for
+    FujiFilm RAF images
+<li>Changed Composite ImageSize tag use a space instead of "x" as a separator
+    when the -n option is used
+<li>Fixed problem writing user-defined PhaseOne SensorCalibration tags
+<li>Fixed problem where a List-type tag may not be split into individual items
+    with the -sep option when using the advanced-formatting "@" feature
+<li>API Changes:
+    <ul>
+    <li>Patched a potential pitfall if calling code used both the old List and
+        ListSep options at the same time as the new ListJoin option
+    </ul>
+</ul>
+
 <a name='v11.34'><b>Apr. 4, 2019 - Version 11.34</b></a>
 <ul>
 <li>Added a couple of new Canon LensType values (thanks LibRaw for one)
@@ -24,8 +46,8 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <li>Added support for FujiFilm X-H1 Ver2.01 RAF images
 <li>Decode a couple of new Sony tags (thanks LibRaw)
 <li>Improved decoding of Sony Shutter tag (thanks Jos Roost)
-<li>Improved parsing of streamed metadata from TomTom Bandit videos
 <li>Improved identification of some Sony lenses (thanks Jos Roost)
+<li>Improved parsing of streamed metadata from TomTom Bandit videos
 <li>Accept wider range of formats when writing QuickTime:GPSCoordinates
 <li>API Changes:
     <ul>

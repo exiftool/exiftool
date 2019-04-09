@@ -7,6 +7,25 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 11.30. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Apr. 9, 2019 - Version 11.35
+
+  - Added print conversion for MDItemFSLabel
+  - Added a new Sony LensType (thanks Jos Roost)
+  - Added an additional -validate check for PNG images
+  - Decode a few more FujiFilm RAF tags (thanks LibRaw)
+  - Allow "Copy0" to be specified as a group name for the copy number of the
+    primary tag when extracting information
+  - Improved the Composite ImageSize tag to report the RawImageCroppedSize for
+    FujiFilm RAF images
+  - Changed Composite ImageSize tag use a space instead of "x" as a separator
+    when the -n option is used
+  - Fixed problem writing user-defined PhaseOne SensorCalibration tags
+  - Fixed problem where a List-type tag may not be split into individual items
+    with the -sep option when using the advanced-formatting "@" feature
+  - API Changes:
+      - Patched a potential pitfall if calling code used both the old List and
+        ListSep options at the same time as the new ListJoin option
+
 Apr. 4, 2019 - Version 11.34
 
   - Added a couple of new Canon LensType values (thanks LibRaw for one)
@@ -14,8 +33,8 @@ Apr. 4, 2019 - Version 11.34
   - Added support for FujiFilm X-H1 Ver2.01 RAF images
   - Decode a couple of new Sony tags (thanks LibRaw)
   - Improved decoding of Sony Shutter tag (thanks Jos Roost)
-  - Improved parsing of streamed metadata from TomTom Bandit videos
   - Improved identification of some Sony lenses (thanks Jos Roost)
+  - Improved parsing of streamed metadata from TomTom Bandit videos
   - Accept wider range of formats when writing QuickTime:GPSCoordinates
   - API Changes:
       - Changed SetFileName() 'Link' option name to 'HardLink' (but still allow

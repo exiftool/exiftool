@@ -2022,7 +2022,8 @@ Family 4 provides a method for differentiating tags when multiple tags exist
 with the same name in the same location.  The primary instance of a tag (the
 tag extracted when the Duplicates option is disabled and no group is
 specified) has no family 4 group name, but additional instances have have
-family 4 group names of 'Copy1', 'Copy2', 'Copy3', etc.
+family 4 group names of 'Copy1', 'Copy2', 'Copy3', etc.  For convenience,
+the primary tag may also be accessed using a group name of 'Copy0'.
 
 See L</GetAllGroups [static]> for complete lists of group names.
 

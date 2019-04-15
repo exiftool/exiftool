@@ -34,7 +34,7 @@ use Image::ExifTool::Nikon;
 use Image::ExifTool::Validate;
 use Image::ExifTool::MacOS;
 
-$VERSION = '3.19';
+$VERSION = '3.20';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -158,6 +158,7 @@ meta information extracted from or written to a file.
 },
     ExifTool => q{
 The tables listed below give the names of all tags recognized by ExifTool.
+They contain a total of $$self{COUNT}{'total tags'} tags, with $$self{COUNT}{'unique tag names'} unique tag names.
 },
     ExifTool2 => q{
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
@@ -1980,6 +1981,7 @@ sub WriteTagNames($$)
 
     # open the file and write the header
     open(PODFILE, ">$podFile") or return 0;
+    $docs{ExifTool} = eval qq{"$docs{ExifTool}"};
     print PODFILE Doc2Pod($docs{PodHeader}, $docs{ExifTool}, $docs{ExifTool2});
     mkdir "$htmldir/TagNames", 0777;
     OpenHtmlFile($htmldir) or return 0;

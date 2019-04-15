@@ -863,6 +863,7 @@
 </tr><tr><td class=r>0x80000424</td><td>= EOR R</td>
 </tr><tr><td class=r>0x80000432</td><td>= EOS Rebel T7 / 2000D / 1500D / Kiss X90</td>
 </tr><tr><td class=r>0x80000433</td><td>= EOS RP</td>
+</tr><tr><td class=r>0x80000436</td><td>= EOS SL3 / 250D / Kiss X10</td>
 </tr></table></td></tr></table></blockquote>
 
 <h2><a name='PictureStyle'>Canon PictureStyle Values</a></h2>
@@ -1046,9 +1047,9 @@
   <br>20 = Fireworks
   <br>21 = Beach
   <br>22 = Underwater
-  <br>23 = Snow</td><td>&nbsp;&nbsp;</td>
-  <td>24 = Kids &amp; Pets
-  <br>25 = Night Snapshot
+  <br>23 = Snow
+  <br>24 = Kids &amp; Pets</td><td>&nbsp;&nbsp;</td>
+  <td>25 = Night Snapshot
   <br>26 = Digital Macro
   <br>27 = My Colors
   <br>28 = Movie Snap
@@ -1070,10 +1071,10 @@
   <br>44 = Face Self-timer
   <br>45 = Smile
   <br>46 = Wink Self-timer
-  <br>47 = Fisheye Effect</td><td>&nbsp;&nbsp;</td>
-  <td>48 = Miniature Effect
-  <br>49 = High-speed Burst
-  <br>50 = Best Image Selection
+  <br>47 = Fisheye Effect
+  <br>48 = Miniature Effect
+  <br>49 = High-speed Burst</td><td>&nbsp;&nbsp;</td>
+  <td>50 = Best Image Selection
   <br>51 = High Dynamic Range
   <br>52 = Handheld Night Scene
   <br>53 = Movie Digest
@@ -1086,6 +1087,10 @@
   <br>60 = High-speed Burst HQ
   <br>61 = Smooth Skin
   <br>62 = Soft Focus
+  <br>68 = Food
+  <br>84 = HDR Art Standard
+  <br>85 = HDR Art Vivid
+  <br>93 = HDR Art Bold
   <br>257 = Spotlight
   <br>258 = Night 2
   <br>259 = Night+
@@ -5997,7 +6002,8 @@ may be 7, 9, 11, 19, 31, 45 or 61, depending on the camera model.</p>
   <br>8 = AF Point Expansion (4 point)
   <br>9 = Spot AF
   <br>10 = AF Point Expansion (8 point)
-  <br>11 = Flexizone Multi
+  <br>11 = Flexizone Multi (49 point)
+  <br>12 = Flexizone Multi (9 point)
   <br>13 = Flexizone Single
   <br>14 = Large Zone AF</td></tr></table>
 </td></tr>
@@ -6359,11 +6365,15 @@ valid for all camera models)</span></span></td></tr>
 <td class=r title='0 = 0x0'>0</td>
 <td>AspectRatio</td>
 <td class=c>int32u</td>
-<td><span class=s>0 = 3:2
+<td><table class=cols><tr>
+  <td>0 = 3:2
   <br>1 = 1:1
   <br>2 = 4:3
-  <br>7 = 16:9
-  <br>8 = 4:5</span></td></tr>
+  <br>7 = 16:9</td><td>&nbsp;&nbsp;</td>
+  <td>8 = 4:5
+  <br>12 = 3:2 (APS-H crop)
+  <br>13 = 3:2 (APS-C crop)</td></tr></table>
+</td></tr>
 <tr class=b>
 <td class=r title='1 = 0x1'>1</td>
 <td>CroppedImageWidth</td>
@@ -10367,7 +10377,7 @@ SX280, and CR3 images from cameras such as the EOS M50.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Apr 3, 2019</i>
+<br><i>Last revised Apr 15, 2019</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

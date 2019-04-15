@@ -59,7 +59,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.62';
+$VERSION = '3.63';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -1328,6 +1328,12 @@ my %binaryDataAttrs = (
         Writable => 'int16u',
         Count => 4,
         # (may need to divide by 4 for some images, eg. D3300/D5300, 12 bit - ref IB)
+    },
+    0x0045 => { #IB
+        Name => 'CropArea',
+        Notes => 'left, top, width, height',
+        Writable => 'int16u',
+        Count => 4,
     },
     0x004f => { #IB (D850)
         Name => 'ColorTemperatureAuto',
@@ -5686,42 +5692,48 @@ my %nikonFocalConversions = (
         DataMember => 'RotationInfoOffset',
         Format => 'int32u',
         Writable => 0,
-        RawConv => '$$self{RotationInfoOffset} = $val || 0x10000000; $val', # (ignore if 0)
+        Hidden => 1,
+        RawConv => '$$self{RotationInfoOffset} = $val || 0x10000000; undef', # (ignore if 0)
     },
     0x14 => {
         Name => 'JPGInfoOffset',
         DataMember => 'JPGInfoOffset',
         Format => 'int32u',
         Writable => 0,
-        RawConv => '$$self{JPGInfoOffset} = $val || 0x10000000; $val', # (ignore if 0)
+        Hidden => 1,
+        RawConv => '$$self{JPGInfoOffset} = $val || 0x10000000; undef', # (ignore if 0)
     },
     0x2c => {
         Name => 'BracketingInfoOffset',
         DataMember => 'BracketingInfoOffset',
         Format => 'int32u',
         Writable => 0,
-        RawConv => '$$self{BracketingInfoOffset} = $val || 0x10000000; $val', # (ignore if 0)
+        Hidden => 1,
+        RawConv => '$$self{BracketingInfoOffset} = $val || 0x10000000; undef', # (ignore if 0)
     },
     0x50 => {
         Name => 'ShootingMenuOffset',
         DataMember => 'ShootingMenuOffset',
         Format => 'int32u',
         Writable => 0,
-        RawConv => '$$self{ShootingMenuOffset} = $val || 0x10000000; $val', # (ignore if 0)
+        Hidden => 1,
+        RawConv => '$$self{ShootingMenuOffset} = $val || 0x10000000; undef', # (ignore if 0)
     },
     0x58 => {
         Name => 'CustomSettingsOffset',
         DataMember => 'CustomSettingsOffset',
         Format => 'int32u',
         Writable => 0,
-        RawConv => '$$self{CustomSettingsOffset} = $val || 0x10000000; $val', # (ignore if 0)
+        Hidden => 1,
+        RawConv => '$$self{CustomSettingsOffset} = $val || 0x10000000; undef', # (ignore if 0)
     },
     0xa0 => {
         Name => 'OrientationOffset',
         DataMember => 'OrientationOffset',
         Format => 'int32u',
         Writable => 0,
-        RawConv => '$$self{OrientationOffset} = $val || 0x10000000; $val', # (ignore if 0)
+        Hidden => 1,
+        RawConv => '$$self{OrientationOffset} = $val || 0x10000000; undef', # (ignore if 0)
     },
 #
 # Tag ID's below are the offsets for a D500 JPEG image, but these offsets change
@@ -6174,12 +6186,16 @@ my %nikonFocalConversions = (
     WRITE_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     VARS => { ID_LABEL => 'Index' },
-    DATAMEMBER => [ 0x04, 0x24, 0x40, 0x84, 0x01d0, 0x175e, 0x185d ],
+    DATAMEMBER => [ 0x04, 0x24, 0x38, 0x40, 0x84, 0x01d0, 0x175e, 0x185d, 0x18ab ],
     IS_SUBDIR => [ 0x18ab ],
     WRITABLE => 1,
     FIRST_ENTRY => 0,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
-    NOTES => 'These tags are extracted from encrypted data in images from the D810.',
+    NOTES => q{
+        These tags are extracted from encrypted data in images from the D810.  Note
+        that the indices listed below are for firmware version 1.0, but they may be
+        different for other firmware versions.
+    },
     0x00 => {
         Name => 'ShotInfoVersion',
         Format => 'string[4]',
@@ -6199,21 +6215,32 @@ my %nikonFocalConversions = (
         DataMember => 'BracketingOffset',
         Format => 'int32u',
         Writable => 0,
-        RawConv => '$$self{BracketingOffset} = $val',
+        Hidden => 1,
+        RawConv => '$$self{BracketingOffset} = $val || 0x10000000; undef',
+    },
+    0x38 => {
+        Name => 'ISOAutoOffset',
+        DataMember => 'ISOAutoOffset',
+        Format => 'int32u',
+        Writable => 0,
+        Hidden => 1,
+        RawConv => '$$self{ISOAutoOffset} = $val || 0x10000000; undef',
     },
     0x40 => {
         Name => 'CustomSettingsOffset', # (relative offset from start of ShotInfo data)
         DataMember => 'CustomSettingsOffset',
         Format => 'int32u',
         Writable => 0,
-        RawConv => '$$self{CustomSettingsOffset} = $val',
+        Hidden => 1,
+        RawConv => '$$self{CustomSettingsOffset} = $val || 0x10000000; undef',
     },
     0x84 => {
         Name => 'OrientationOffset',
         DataMember => 'OrientationOffset',
         Format => 'int32u',
         Writable => 0,
-        RawConv => '$$self{OrientationOffset} = $val',
+        Hidden => 1,
+        RawConv => '$$self{OrientationOffset} = $val || 0x10000000; undef',
     },
     0x01d0 => {
         Name => 'SecondarySlotFunction',
@@ -6334,15 +6361,7 @@ my %nikonFocalConversions = (
             2 => 'Spot',
             3 => 'Highlight'
         },
-        Hook => '$varSize = $$self{CustomSettingsOffset} - 0x18ab',
-    },
-    0x18ab => { # (actual offset adjusted by Hook above)
-        Name => 'CustomSettingsD810',
-        Notes => 'actual offset determined by CustomSettingsOffset',
-        Format => 'undef[53]',
-        SubDirectory => {
-            TagTable => 'Image::ExifTool::NikonCustom::SettingsD810',
-        },
+        Hook => '$varSize = $$self{ISOAutoOffset} - 0x1858',
     },
     0x185c => {
         Name => 'ISOAutoShutterTime',
@@ -6391,7 +6410,6 @@ my %nikonFocalConversions = (
         Name => 'ISOAutoHiLimit',
         Mask => 0xff,
         PrintHex => 1,
-        Hook => '$varSize = $$self{OrientationOffset} - 0x36f4',
         PrintConv => {
             0x24 => 'ISO 200',
             0x26 => 'ISO 250',
@@ -6435,6 +6453,15 @@ my %nikonFocalConversions = (
             0x6c => 'ISO Hi 4.0',
             0x72 => 'ISO Hi 5.0',
         },
+        Hook => '$varSize = $$self{CustomSettingsOffset} - 0x18ab',
+    },
+    0x18ab => { # (actual offset adjusted by Hook above)
+        Name => 'CustomSettingsD810',
+        Format => 'undef[53]',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::NikonCustom::SettingsD810',
+        },
+        Hook => '$varSize = $$self{OrientationOffset} - 0x36f4',
     },
     0x36f4 => {
         Name => 'RollAngle',
@@ -6508,7 +6535,8 @@ my %nikonFocalConversions = (
         DataMember => 'CustomSettingsOffset',
         Format => 'int32u',
         Writable => 0,
-        RawConv => '$$self{CustomSettingsOffset} = $val',
+        Hidden => 1,
+        RawConv => '$$self{CustomSettingsOffset} = $val || 0x10000000; undef',
     },
     0x0791 => {
         Name => 'PhotoShootingMenuBankImageArea',

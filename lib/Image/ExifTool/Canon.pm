@@ -87,7 +87,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.08';
+$VERSION = '4.09';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -860,6 +860,7 @@ $VERSION = '4.08';
     0x80000424 => 'EOR R', #IB
     0x80000432 => 'EOS Rebel T7 / 2000D / 1500D / Kiss X90', #IB
     0x80000433 => 'EOS RP',
+    0x80000436 => 'EOS SL3 / 250D / Kiss X10', #25
 );
 
 my %canonQuality = (
@@ -2121,6 +2122,10 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
             60 => 'High-speed Burst HQ', #PH (C='High-speed Burst HQ', same as 59)
             61 => 'Smooth Skin', #51
             62 => 'Soft Focus', #PH (SX260,IXUS240)
+            68 => 'Food', #PH (250D)
+            84 => 'HDR Art Standard', #PH (80D)
+            85 => 'HDR Art Vivid', #PH (80D)
+            93 => 'HDR Art Bold', #PH (80D)
             # 83 - seen for EOS M3 night shot (PH)
             257 => 'Spotlight', #PH
             258 => 'Night 2', #PH
@@ -6083,8 +6088,8 @@ my %ciMaxFocal = (
             8 => 'AF Point Expansion (4 point)', #46/PH/forum6237
             9 => 'Spot AF', #46
             10 => 'AF Point Expansion (8 point)', #forum6237
-            11 => 'Flexizone Multi', #PH (NC, EOS M, live view)
-            # 12 - also "Flexizone Multi"? (PH)
+            11 => 'Flexizone Multi (49 point)', #PH (NC, EOS M, live view; 750D 49 points)
+            12 => 'Flexizone Multi (9 point)', #PH (750D, 9 points)
             13 => 'Flexizone Single', #PH (EOS M default, live view)
             14 => 'Large Zone AF', #PH/forum6237 (7DmkII)
         },
@@ -6610,6 +6615,8 @@ my %ciMaxFocal = (
             2 => '4:3',
             7 => '16:9',
             8 => '4:5',
+            12 => '3:2 (APS-H crop)', #IB
+            13 => '3:2 (APS-C crop)', #IB
         },
     },
     # (could use better names for these, or the Crop tags above, or both)

@@ -7,17 +7,31 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 11.30. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Apr. 15, 2019 - Version 11.36
+
+  - Added a number of new MacOS tags
+  - Added a new CanonModelID (thanks Laurent Clevy)
+  - Added some new Canon EasyMode and AFAreaMode values
+  - Added two new Canon AspectRatio values (thanks LibRaw)
+  - Decode a new Nikon tag (thanks LibRaw)
+  - Decode some new FujiFilm tags
+  - Updated Sony maker notes for the DSC-RX0M2 (thanks Jos Roost)
+  - Hide the Nikon ShotInfo offset tags
+  - Fixed problem decoding NikonCustom settings for some D810 firmware versions
+  - Fixed typo in a warning message (thanks Hayo Baan)
+
 Apr. 9, 2019 - Version 11.35
 
   - Added print conversion for MDItemFSLabel
   - Added a new Sony LensType (thanks Jos Roost)
   - Added an additional -validate check for PNG images
   - Decode a few more FujiFilm RAF tags (thanks LibRaw)
+  - Decode a couple more QuickTime tags
   - Allow "Copy0" to be specified as a group name for the copy number of the
     primary tag when extracting information
   - Improved the Composite ImageSize tag to report the RawImageCroppedSize for
     FujiFilm RAF images
-  - Changed Composite ImageSize tag use a space instead of "x" as a separator
+  - Changed Composite ImageSize tag to use a space instead of "x" as a separator
     when the -n option is used
   - Fixed problem writing user-defined PhaseOne SensorCalibration tags
   - Fixed problem where a List-type tag may not be split into individual items

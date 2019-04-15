@@ -221,7 +221,7 @@ sub WriteQuickTime($$$)
             }
             last;
         }
-        my $size = Get32u(\$hdr, 0) - 8;    # (size includes 8-byte header)
+        my $size = Get32u(\$hdr, 0) - 8;    # (atom size without 8-byte header)
         my $tag = substr($hdr, 4, 4);
         if ($size == -7) {
             # read the extended size
@@ -242,19 +242,9 @@ sub WriteQuickTime($$$)
         } elsif ($size == -8 and not $dataPt) {
             # size of zero is only valid for top-level atom, and
             # indicates the atom extends to the end of file
-            if (not $raf->{FILE_PT}) {
-                # get file size from image in memory
-                $size = length ${$$raf{BUFF_PT}};
-            } else {
-                $size = -s $$raf{FILE_PT};
-            }
-            if ($size and ($size -= $raf->Tell()) >= 0 and $size <= 0x7fffffff) {
-                Set32u($size + 8, \$hdr, 0);
-            } else {
-                # (save as an mdat to write later; with zero end position to copy rest of file)
-                push @mdat, [ $raf->Tell(), 0, $hdr ];
-                last;
-            }
+            # (save in mdat list to write later; with zero end position to copy rest of file)
+            push @mdat, [ $raf->Tell(), 0, $hdr ];
+            last;
         } elsif ($size < 0) {
             $et->Error('Invalid atom size');
             last;

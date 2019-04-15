@@ -191,7 +191,7 @@ sub FormatIPTC($$$$$;$)
             my $len = length $$valPtr;
             $maxlen or $maxlen = $minlen;
             if ($len < $minlen) {
-                if ($et->Warn("String to short for IPTC:$$tagInfo{Name} (padded)", 2)) {
+                if ($et->Warn("String too short for IPTC:$$tagInfo{Name} (padded)", 2)) {
                     $$valPtr .= ' ' x ($minlen - $len);
                 }
             } elsif ($len > $maxlen) {

@@ -26,7 +26,7 @@ any &quot;MDItem*&quot; tag or the MacOS group is specifically requested, or by
 setting the <a href="../ExifTool.html#MDItemTags">MDItemTags API option</a> to 1 or the <a href="../ExifTool.html#RequestAll">RequestAll API option</a> to 2 or
 higher.  Note that these tags do not necessarily reflect the current
 metadata of a file -- it may take some time for the MacOS mdworker daemon to
-index the file after the metadata changes.</p>
+index the file after a metadata change.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -37,7 +37,15 @@ index the file after the metadata changes.</p>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>AppleMailDateSent</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>AppleMailFlagged</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>AppleMailIsRemoteAttachment</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -81,6 +89,14 @@ index the file after the metadata changes.</p>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td>MDItemAudioBitRate</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>MDItemAudioChannelCount</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>MDItemAuthorEmailAddresses</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
@@ -101,71 +117,79 @@ index the file after the metadata changes.</p>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>MDItemCodecs</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>MDItemColorSpace</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>MDItemComment</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>MDItemContentCreationDate</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>MDItemContentCreationDateRanking</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>MDItemContentCreationDate_Ranking</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>MDItemContentModificationDate</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>MDItemContentType</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>MDItemContentTypeTree</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>MDItemContributors</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>MDItemCopyright</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>MDItemCountry</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>MDItemCreator</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>MDItemDateAdded</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>MDItemDateAdded_Ranking</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>MDItemDescription</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>MDItemDisplayName</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>MDItemDownloadedDate</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>MDItemDurationSeconds</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -344,27 +368,35 @@ reflects the change.  However, <a href="Extra.html">FileCreateDate</a> is update
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>MDItemLastUsedDate_Ranking</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>MDItemLatitude</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>MDItemLensModel</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>MDItemLogicalSize</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>MDItemLongitude</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>MDItemMailDateReceived_Ranking</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>MDItemMailboxes</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>MDItemMediaTypes</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
@@ -456,15 +488,23 @@ reflects the change.  However, <a href="Extra.html">FileCreateDate</a> is update
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
-<td>MDItemSubject</td>
+<td>MDItemStreamable</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td>MDItemTimestamp</td>
+<td>MDItemSubject</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>MDItemTimestamp</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>MDItemTitle</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>MDItemTotalBitRate</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -473,6 +513,38 @@ reflects the change.  However, <a href="Extra.html">FileCreateDate</a> is update
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>MDItemUsedDates</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>MDItemUserDownloadedDate</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>MDItemUserDownloadedUserHandle</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>MDItemUserSharedReceivedDate</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>MDItemUserSharedReceivedRecipient</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>MDItemUserSharedReceivedRecipientHandle</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>MDItemUserSharedReceivedSender</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>MDItemUserSharedReceivedSenderHandle</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>MDItemUserSharedReceivedTransport</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -487,10 +559,14 @@ not be written)</span></span></td></tr>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td>MDItemWhereFroms</td>
+<td>MDItemVideoBitRate</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>MDItemWhereFroms</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>MDItemWhiteBalance</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
@@ -506,7 +582,23 @@ the <a href="../ExifTool.html#XAttrTags">XAttrTags API option</a> to 1 or the <a
 <tr class=h><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
+<td>XAttrAppleMailDateReceived</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>XAttrAppleMailDateSent</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>XAttrAppleMailIsRemoteAttachment</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>XAttrFinderInfo</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>XAttrLastUsedDate</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
@@ -538,7 +630,7 @@ deleted when writing)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Apr 4, 2019</i>
+<br><i>Last revised Apr 10, 2019</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

@@ -12,6 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
+They contain a total of 22545 tags, with 15000 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -8509,6 +8510,9 @@ Tags extracted from FLIR Public image Format (FPF) files.
   0x1444   DRangePriorityAuto                   int16u
   0x1445   DRangePriorityFixed                  int16u
   0x1446   FlickerReduction                     int32u
+  0x3803   VideoRecordingMode                   int32u
+  0x3804   PeripheralLighting                   int16u
+  0x3806   VideoCompression                     int16u
   0x3820   FrameRate                            int16u
   0x3821   FrameWidth                           int16u
   0x3822   FrameHeight                          int16u
@@ -10793,6 +10797,7 @@ DiMAGE X and Xt.
   0x0037   MechanicalShutterCount               int32u
   0x0039   LocationInfo                         Nikon LocationInfo
   0x003d   BlackLevel                           int16u[4]
+  0x0045   CropArea                             int16u[4]
   0x004f   ColorTemperatureAuto                 int16u
   0x0080   ImageAdjustment                      string
   0x0081   ToneComp                             string
@@ -11293,15 +11298,14 @@ These tags are extracted from encrypted data in images from the D800.
 
 =head3 Nikon ShotInfoD810 Tags
 
-These tags are extracted from encrypted data in images from the D810.
+These tags are extracted from encrypted data in images from the D810.  Note
+that the indices listed below are for firmware version 1.0, but they may be
+different for other firmware versions.
 
    Index   Tag Name                             Writable
    -----   --------                             --------
       0    ShotInfoVersion                      no
       4    FirmwareVersion                      no
-     36    BracketingOffset                     no
-     64    CustomSettingsOffset                 no
-    132    OrientationOffset                    no
     464    SecondarySlotFunction                int8u & 0x03
    5974    AEBracketingSteps                    int8u & 0xff
    5975    WBBracketingSteps                    int8u & 0xff
@@ -11321,7 +11325,6 @@ These tags are extracted from encrypted data in images from the D850.
    -----   --------                             --------
       0    ShotInfoVersion                      no
       4    FirmwareVersion                      no
-     88    CustomSettingsOffset                 no
    1937    PhotoShootingMenuBankImageArea       int8u & 0x07
    4029    PhotoShootingMenuBank                int8u & 0x03
    4031    PrimarySlot                          int8u & 0x80
@@ -11410,12 +11413,6 @@ These tags are extracted from encrypted data in images from the D5 and D500.
    -----   --------                             --------
       0    ShotInfoVersion                      no
       4    FirmwareVersion                      no
-     16    RotationInfoOffset                   no
-     20    JPGInfoOffset                        no
-     44    BracketingInfoOffset                 no
-     80    ShootingMenuOffset                   no
-     88    CustomSettingsOffset                 no
-    160    OrientationOffset                    no
     202    Rotation                             int8u & 0x03
    1506    FlickerReductionIndicator            int8u & 0x01
    2004    JPGCompression                       int8u & 0x01
@@ -12903,9 +12900,9 @@ Custom settings for the D5.
   ------   --------                             --------
     0.1    CustomSettingsBank                   int8u & 0x03
     1.1    AF-CPrioritySelection                int8u & 0xc0
-    1.2    NumberOfFocusPoints                  int8u & 0x10
-    1.3    Three-DTrackingFaceDetection         int8u & 0x08
-    1.4    AF-SPrioritySelection                int8u & 0x20
+    1.2    AF-SPrioritySelection                int8u & 0x20
+    1.3    NumberOfFocusPoints                  int8u & 0x10
+    1.4    Three-DTrackingFaceDetection         int8u & 0x08
     1.5    BlockShotAFResponse                  int8u & 0x07
     2.1    FocusPointWrap                       int8u & 0x08
     2.2    AFPointBrightness                    int8u & 0x06
@@ -12999,9 +12996,9 @@ Custom settings for the D500.
   ------   --------                             --------
     0.1    CustomSettingsBank                   int8u & 0x03
     1.1    AF-CPrioritySelection                int8u & 0xc0
-    1.2    NumberOfFocusPoints                  int8u & 0x10
-    1.3    Three-DTrackingFaceDetection         int8u & 0x08
-    1.4    AF-SPrioritySelection                int8u & 0x20
+    1.2    AF-SPrioritySelection                int8u & 0x20
+    1.3    NumberOfFocusPoints                  int8u & 0x10
+    1.4    Three-DTrackingFaceDetection         int8u & 0x08
     1.5    BlockShotAFResponse                  int8u & 0x07
     2.1    FocusPointWrap                       int8u & 0x08
     2.2    AFPointBrightness                    int8u & 0x06
@@ -32638,12 +32635,14 @@ any "MDItem*" tag or the MacOS group is specifically requested, or by
 setting the MDItemTags API option to 1 or the RequestAll API option to 2 or
 higher.  Note that these tags do not necessarily reflect the current
 metadata of a file -- it may take some time for the MacOS mdworker daemon to
-index the file after the metadata changes.
+index the file after a metadata change.
 
   Tag Name                                      Writable
   --------                                      --------
   AppleMailDateReceived                         no
+  AppleMailDateSent                             no
   AppleMailFlagged                              no
+  AppleMailIsRemoteAttachment                   no
   AppleMailMessageID                            no
   AppleMailPriority                             no
   AppleMailRead                                 no
@@ -32654,11 +32653,14 @@ index the file after the metadata changes.
   MDItemAcquisitionModel                        no
   MDItemAltitude                                no
   MDItemAperture                                no
+  MDItemAudioBitRate                            no
+  MDItemAudioChannelCount                       no
   MDItemAuthorEmailAddresses                    no
   MDItemAuthors                                 no
   MDItemBitsPerSample                           no
   MDItemBundleIdentifier                        no
   MDItemCity                                    no
+  MDItemCodecs                                  no
   MDItemColorSpace                              no
   MDItemComment                                 no
   MDItemContentCreationDate                     no
@@ -32676,6 +32678,7 @@ index the file after the metadata changes.
   MDItemDescription                             no
   MDItemDisplayName                             no
   MDItemDownloadedDate                          no
+  MDItemDurationSeconds                         no
   MDItemEXIFGPSVersion                          no
   MDItemEXIFVersion                             no
   MDItemEmailConversationID                     no
@@ -32717,12 +32720,14 @@ index the file after the metadata changes.
   MDItemKeywords                                no
   MDItemKind                                    no
   MDItemLastUsedDate                            no
+  MDItemLastUsedDate_Ranking                    no
   MDItemLatitude                                no
   MDItemLensModel                               no
   MDItemLogicalSize                             no
   MDItemLongitude                               no
   MDItemMailDateReceived_Ranking                no
   MDItemMailboxes                               no
+  MDItemMediaTypes                              no
   MDItemNumberOfPages                           no
   MDItemOrientation                             no
   MDItemOriginApplicationIdentifier             no
@@ -32745,13 +32750,24 @@ index the file after the metadata changes.
   MDItemSecurityMethod                          no
   MDItemSpeed                                   no
   MDItemStateOrProvince                         no
+  MDItemStreamable                              no
   MDItemSubject                                 no
   MDItemTimestamp                               no
   MDItemTitle                                   no
+  MDItemTotalBitRate                            no
   MDItemUseCount                                no
   MDItemUsedDates                               no
+  MDItemUserDownloadedDate                      no
+  MDItemUserDownloadedUserHandle                no
+  MDItemUserSharedReceivedDate                  no
+  MDItemUserSharedReceivedRecipient             no
+  MDItemUserSharedReceivedRecipientHandle       no
+  MDItemUserSharedReceivedSender                no
+  MDItemUserSharedReceivedSenderHandle          no
+  MDItemUserSharedReceivedTransport             no
   MDItemUserTags                                yes!+
   MDItemVersion                                 no
+  MDItemVideoBitRate                            no
   MDItemWhereFroms                              no
   MDItemWhiteBalance                            no
 
@@ -32763,7 +32779,11 @@ the XAttrTags API option to 1 or the RequestAll API option to 2 or higher.
 
   Tag Name                                      Writable
   --------                                      --------
+  XAttrAppleMailDateReceived                    no
+  XAttrAppleMailDateSent                        no
+  XAttrAppleMailIsRemoteAttachment              no
   XAttrFinderInfo                               no
+  XAttrLastUsedDate                             no
   XAttrMDItemDownloadedDate                     no
   XAttrMDItemFinderComment                      no
   XAttrMDItemWhereFroms                         no

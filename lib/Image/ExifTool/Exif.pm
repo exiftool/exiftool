@@ -1559,19 +1559,6 @@ my %sampleFormat = (
         Format => 'undef',
         Writable => 'string',
         WriteGroup => 'IFD0',
-        RawConvInv => '$val . "\0"',
-        PrintConvInv => sub {
-            my ($val, $self) = @_;
-            # encode if necessary (not automatic because Format is 'undef')
-            my $enc = $self->Options('CharsetEXIF');
-            $val = $self->Encode($val,$enc) if $enc and $val !~ /\0/;
-            if ($val =~ /(.*?)\s*[\n\r]+\s*(.*)/s) {
-                return $1 unless length $2;
-                # photographer copyright set to ' ' if it doesn't exist, according to spec.
-                return((length($1) ? $1 : ' ') . "\0" . $2);
-            }
-            return $val;
-        },
         Notes => q{
             may contain copyright notices for photographer and editor, separated by a
             newline.  As per the EXIF specification, the newline is replaced by a null
@@ -1591,6 +1578,19 @@ my %sampleFormat = (
             # decode if necessary (note: this is the only non-'string' EXIF value like this)
             my $enc = $self->Options('CharsetEXIF');
             $val = $self->Decode($val,$enc) if $enc;
+            return $val;
+        },
+        RawConvInv => '$val . "\0"',
+        PrintConvInv => sub {
+            my ($val, $self) = @_;
+            # encode if necessary (not automatic because Format is 'undef')
+            my $enc = $self->Options('CharsetEXIF');
+            $val = $self->Encode($val,$enc) if $enc and $val !~ /\0/;
+            if ($val =~ /(.*?)\s*[\n\r]+\s*(.*)/s) {
+                return $1 unless length $2;
+                # photographer copyright set to ' ' if it doesn't exist, according to spec.
+                return((length($1) ? $1 : ' ') . "\0" . $2);
+            }
             return $val;
         },
     },
@@ -5911,9 +5911,7 @@ sub ProcessExif($$$)
             # convert according to specified format
             $val = ReadValue($valueDataPt,$valuePtr,$formatStr,$count,$readSize,\$rational);
             # re-code if necessary
-            if ($strEnc and $formatStr eq 'string' and defined $val) {
-                $val = $et->Decode($val, $strEnc);
-            }
+            $val = $et->Decode($val, $strEnc) if $strEnc and $formatStr eq 'string' and defined $val;
         }
 
         if ($verbose) {

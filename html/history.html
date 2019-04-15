@@ -17,17 +17,32 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v11.36'><b>Apr. 15, 2019 - Version 11.36</b></a>
+<ul>
+<li>Added a number of new MacOS tags
+<li>Added a new CanonModelID (thanks Laurent Cl&eacute;vy)
+<li>Added some new Canon EasyMode and AFAreaMode values
+<li>Added two new Canon AspectRatio values (thanks LibRaw)
+<li>Decode a new Nikon tag (thanks LibRaw)
+<li>Decode some new FujiFilm tags
+<li>Updated Sony maker notes for the DSC-RX0M2 (thanks Jos Roost)
+<li>Hide the Nikon ShotInfo offset tags
+<li>Fixed problem decoding NikonCustom settings for some D810 firmware versions
+<li>Fixed typo in a warning message (thanks Hayo Baan)
+</ul>
+
 <a name='v11.35'><b>Apr. 9, 2019 - Version 11.35</b></a>
 <ul>
 <li>Added print conversion for MDItemFSLabel
 <li>Added a new Sony LensType (thanks Jos Roost)
 <li>Added an additional -validate check for PNG images
 <li>Decode a few more FujiFilm RAF tags (thanks LibRaw)
+<li>Decode a couple more QuickTime tags
 <li>Allow "Copy0" to be specified as a group name for the copy number of the
     primary tag when extracting information
 <li>Improved the Composite ImageSize tag to report the RawImageCroppedSize for
     FujiFilm RAF images
-<li>Changed Composite ImageSize tag use a space instead of "x" as a separator
+<li>Changed Composite ImageSize tag to use a space instead of "x" as a separator
     when the -n option is used
 <li>Fixed problem writing user-defined PhaseOne SensorCalibration tags
 <li>Fixed problem where a List-type tag may not be split into individual items

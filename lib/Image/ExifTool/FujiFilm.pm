@@ -30,7 +30,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.69';
+$VERSION = '1.70';
 
 sub ProcessFujiDir($$$);
 sub ProcessFaceRec($$$);
@@ -716,6 +716,34 @@ my %faceCategories = (
         },
         PrintConvInv => '$val=~/(0x[0-9a-f]+)/i; hex $1',
     },
+    0x3803 => { #forum10037
+        Name => 'VideoRecordingMode',
+        Groups => { 2 => 'Video' },
+        Writable => 'int32u',
+        PrintHex => 1,
+        PrintConv => {
+            0x00 => 'Normal',
+            0x10 => 'F-log',
+            0x20 => 'HLG',
+        },
+    },
+    0x3804 => { #forum10037
+        Name => 'PeripheralLighting',
+        Groups => { 2 => 'Video' },
+        Writable => 'int16u',
+        PrintConv => { 0 => 'Off', 1 => 'On' },
+    },
+    # 0x3805 - int16u: seen 1
+    0x3806 => { #forum10037
+        Name => 'VideoCompression',
+        Groups => { 2 => 'Video' },
+        Writable => 'int16u',
+        PrintConv => {
+            1 => 'Log GOP',
+            2 => 'All Intra',
+        },
+    },
+    # 0x3810 - int32u: related to video codec (ref forum10037)
     0x3820 => { #PH (HS20EXR MOV)
         Name => 'FrameRate',
         Writable => 'int16u',
@@ -841,9 +869,10 @@ my %faceCategories = (
         Name => 'FocusMode2',
         Mask => 0x000000ff,
         PrintConv => {
-            0 => 'AF-M',
-            1 => 'AF-S',
-            2 => 'AF-C',
+            0x00 => 'AF-M',
+            0x01 => 'AF-S',
+            0x02 => 'AF-C',
+            0x11 => 'AF-S (Auto)',
         },
     },
     0.2 => {

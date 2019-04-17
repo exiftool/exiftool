@@ -1375,6 +1375,34 @@ sub Process_mebx($$$)
 }
 
 #------------------------------------------------------------------------------
+# Process QuickTime '3gf' timed metadata (Pittasoft Blackvue dashcam)
+# Inputs: 0) ExifTool ref, 1) dirInfo ref, 2) tag table ref
+# Returns: 1 on success
+sub Process_3gf($$$)
+{
+    my ($et, $dirInfo, $tagTbl) = @_;
+    my $dataPt = $$dirInfo{DataPt};
+    my $dirLen = $$dirInfo{DirLen};
+    my $recLen = 10;     # 10-byte record length
+    $et->VerboseDir('3gf', undef, $dirLen);
+    if ($dirLen > $recLen and not $et->Options('ExtractEmbedded')) {
+        $dirLen = $recLen;
+        EEWarn($et);
+    }
+    my $pos;
+    for ($pos=0; $pos+$recLen<=$dirLen; $pos+=$recLen) {
+        $$et{DOC_NUM} = ++$$et{DOC_COUNT};
+        my $tc = Get32u($dataPt, $pos);
+        last if $tc == 0xffffffff;
+        my ($x, $y, $z) = (Get16s($dataPt, $pos+4)/10, Get16s($dataPt, $pos+6)/10, Get16s($dataPt, $pos+8)/10);
+        $et->HandleTag($tagTbl, TimeCode => $tc / 1000);
+        $et->HandleTag($tagTbl, Accelerometer => "$x $y $z");
+    }
+    delete $$et{DOC_NUM};
+    return 1;
+}
+
+#------------------------------------------------------------------------------
 # Process DuDuBell M1 dashcam / VSYS M6L 'gsen' atom (ref PH)
 # Inputs: 0) ExifTool ref, 1) dirInfo ref, 2) tag table ref
 # Returns: 1 on success
@@ -1443,6 +1471,46 @@ sub Process_gps0($$$)
     }
     delete $$et{DOC_NUM};
     SetByteOrder('MM');
+    return 1;
+}
+
+#------------------------------------------------------------------------------
+# Process 'gps ' atom containing NMEA from Pittasoft Blackvue dashcam (ref PH)
+# Inputs: 0) ExifTool object ref, 1) dirInfo ref, 2) tag table ref
+# Returns: 1 on success
+sub ProcessNMEA($$$)
+{
+    my ($et, $dirInfo, $tagTbl) = @_;
+    my $dataPt = $$dirInfo{DataPt};
+    # parse only RMC sentence for now, and ignore leading timestamps (ms since 1970)
+    while ($$dataPt =~ /\$[A-Z]{2}RMC,(\d{2})(\d{2})(\d+(\.\d*)?),A?,(\d+\.\d+),([NS]),(\d+\.\d+),([EW]),(\d*\.?\d*),(\d*\.?\d*),(\d{2})(\d{2})(\d+)/g) {
+        my ($lat,$latRef,$lon,$lonRef) = ($5,$6,$7,$8);
+        my $yr = $13 + ($13 >= 70 ? 1900 : 2000);
+        my ($mon,$day,$hr,$min,$sec) = ($12,$11,$1,$2,$3);
+        my ($spd, $trk);
+        $spd = $9 * $knotsToKph if length $9;
+        $trk = $10 if length $10;
+        # lat/long are in DDDMM.MMMM format
+        my $deg = int($lat / 100);
+        $lat = $deg + ($lat - $deg * 100) / 60;
+        $deg = int($lon / 100);
+        $lon = $deg + ($lon - $deg * 100) / 60;
+        $sec = '0' . $sec unless $sec =~ /^\d{2}/;   # pad integer part of seconds to 2 digits
+        my $time = sprintf('%.4d:%.2d:%.2d %.2d:%.2d:%sZ',$yr,$mon,$day,$hr,$min,$sec);
+        $$et{DOC_NUM} = ++$$et{DOC_COUNT};
+        $et->HandleTag($tagTbl, GPSDateTime => $time);
+        $et->HandleTag($tagTbl, GPSLatitude  => $lat * ($latRef eq 'S' ? -1 : 1));
+        $et->HandleTag($tagTbl, GPSLongitude => $lon * ($lonRef eq 'W' ? -1 : 1));
+        if (defined $spd) {
+            $et->HandleTag($tagTbl, GPSSpeed => $spd);
+            $et->HandleTag($tagTbl, GPSSpeedRef => 'K');
+        }
+        if (defined $trk) {
+            $et->HandleTag($tagTbl, GPSTrack => $trk);
+            $et->HandleTag($tagTbl, GPSTrackRef => 'T');
+        }
+    }
+    delete $$et{DOC_NUM};
     return 1;
 }
 

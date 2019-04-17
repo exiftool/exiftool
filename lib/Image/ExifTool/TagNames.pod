@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 22545 tags, with 15000 unique tag names.
+They contain a total of 22549 tags, with 15000 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -23966,7 +23966,7 @@ these values are properly stored as UTC, and will convert them to local time
 when extracting.
 
 See
-L<http://developer.apple.com/mac/library/documentation/QuickTime/QTFF/QTFFChap1/qtff1.html>
+L<https://developer.apple.com/library/archive/documentation/QuickTime/QTFF/QTFFPreface/qtffPreface.html>
 for the official specification.
 
   Tag ID               Tag Name                 Writable
@@ -23977,6 +23977,7 @@ for the official specification.
   'ardt'               ARDroneFile              no
   'frea'               Kodak_frea               Kodak frea
   'free'               KodakFree                Kodak Free
+                       Pittasoft                QuickTime Pittasoft
                        Free?                    no
   'ftyp'               FileType                 QuickTime FileType
   'gps0'               GPSTrack                 QuickTime Stream
@@ -24012,13 +24013,18 @@ Tags written by some HTC camera phones.
   ------   --------                             --------
   'slmt'   Unknown_slmt?                        no
 
-=head3 QuickTime FileType Tags
+=head3 QuickTime Pittasoft Tags
 
-  Index4   Tag Name                             Writable
+Tags found in Pittasoft Blackvue dashcam "free" atom.
+
+  Tag ID   Tag Name                             Writable
   ------   --------                             --------
-      0    MajorBrand                           no
-      1    MinorVersion                         no
-      2    CompatibleBrands                     no
+  '3gf '   AccelData                            QuickTime Stream
+  'cprt'   Copyright                            no
+  'gps '   GPSLog                               no
+  'ptnm'   OriginalFileName                     no
+  'ptrh'   Ptrh                                 QuickTime Pittasoft
+  'thum'   PreviewImage                         no
 
 =head3 QuickTime Stream Tags
 
@@ -24265,6 +24271,14 @@ Tags extracted from the tx3g sbtl timed metadata of Yuneec drones.
   'Pitch'      Pitch                            no
   'Roll'       Roll                             no
   'Yaw'        Yaw                              no
+
+=head3 QuickTime FileType Tags
+
+  Index4   Tag Name                             Writable
+  ------   --------                             --------
+      0    MajorBrand                           no
+      1    MinorVersion                         no
+      2    CompatibleBrands                     no
 
 =head3 QuickTime Meta Tags
 

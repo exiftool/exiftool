@@ -42,7 +42,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.22';
+$VERSION = '2.23';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -53,9 +53,11 @@ sub ProcessSampleDesc($$$);
 sub ProcessHybrid($$$);
 sub ProcessRights($$$);
 sub Process_mebx($$$); # (in QuickTimeStream.pl)
+sub Process_3gf($$$);  # (in QuickTimeStream.pl)
 sub Process_gps0($$$); # (in QuickTimeStream.pl)
 sub Process_gsen($$$); # (in QuickTimeStream.pl)
 sub ProcessTTAD($$$);  # (in QuickTimeStream.pl)
+sub ProcessNMEA($$$);  # (in QuickTimeStream.pl)
 sub SaveMetaKeys($$$); # (in QuickTimeStream.pl)
 sub ParseItemLocation($$);
 sub ParseContentDescribes($$);
@@ -411,7 +413,7 @@ my %eeBox = (
         parameters, as well as proprietary information written by many camera
         models.  Tags with a question mark after their name are not extracted unless
         the Unknown option is set.
-        
+
         ExifTool currently has a limited ability to write metadata in
         QuickTime-format videos.  It can edit/create/delete any XMP tags, but may
         only be used to edit existing tags in native QuickTime metadata.
@@ -425,7 +427,7 @@ my %eeBox = (
         when extracting.
 
         See
-        L<http://developer.apple.com/mac/library/documentation/QuickTime/QTFF/QTFFChap1/qtff1.html>
+        L<https://developer.apple.com/library/archive/documentation/QuickTime/QTFF/QTFFPreface/qtffPreface.html>
         for the official specification.
     },
     meta => { # 'meta' is found here in my Sony ILCE-7S MP4 sample - PH
@@ -441,6 +443,11 @@ my %eeBox = (
             # (found in Kodak M5370 MP4 videos)
             Condition => '$$valPt =~ /^\0\0\0.Seri/s',
             SubDirectory => { TagTable => 'Image::ExifTool::Kodak::Free' },
+        },{
+            Name => 'Pittasoft',
+            # (Pittasoft Blackview dashcam MP4 videos)
+            Condition => '$$valPt =~ /^\0\0..(cprt|sttm|ptnm|ptrh|thum|gps |3gf )/s',
+            SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::Pittasoft' },
         },{
             Unknown => 1,
             Binary => 1,
@@ -539,9 +546,8 @@ my %eeBox = (
         },
         # "\x98\x7f\xa3\xdf\x2a\x85\x43\xc0\x8f\x8f\xd9\x7c\x47\x1e\x8e\xea" - unknown data in Flip videos
         { #PH (Canon CR3)
-            Name => 'UUID-Preview',
-            Condition => '$$valPt=~/^\xea\xf4\x2b\x5e\x1c\x98\x4b\x88\xb9\xfb\xb7\xdc\x40\x6e\x4d\x16/',
             Name => 'PreviewImage',
+            Condition => '$$valPt=~/^\xea\xf4\x2b\x5e\x1c\x98\x4b\x88\xb9\xfb\xb7\xdc\x40\x6e\x4d\x16/',
             Groups => { 2 => 'Preview' },
             RawConv => '$val = substr($val, 0x30); $self->ValidateImage(\$val, $tag)',
         },
@@ -1020,6 +1026,7 @@ my %eeBox = (
         Name => 'GPSDataList',
         Unknown => 1,
         Binary => 1,
+        ContainsOffsets => 1,
     },
     # prfl - Profile (ref 12)
     # clip - clipping --> contains crgn (clip region) (ref 12)
@@ -5357,7 +5364,7 @@ my %eeBox = (
     },
     # (mdta)com.apple.quicktime.still-image-time (dtyp=65, int8s)
     'still-image-time' => { # (found in live photo)
-        Name => 'StillImageTime', 
+        Name => 'StillImageTime',
         Notes => q{
             this tag always has a value of -1; the time of the still image is obtained
             from the associated SampleTime
@@ -6645,6 +6652,50 @@ my %eeBox = (
     },
 );
 
+# atoms in Pittasoft "free" atom
+%Image::ExifTool::QuickTime::Pittasoft = (
+    PROCESS_PROC => \&ProcessMOV,
+    NOTES => 'Tags found in Pittasoft Blackvue dashcam "free" atom.',
+    cprt => 'Copyright',
+    thum => {
+        Name => 'PreviewImage',
+        Groups => { 2 => 'Preview' },
+        Binary => 1,
+        RawConv => q{
+            return undef unless length $val > 4;
+            my $len = unpack('N', $val);
+            return undef unless length $val >= 4 + $len;
+            return substr($val, 4, $len);
+        },
+    },
+    ptnm => {
+        Name => 'OriginalFileName',
+        ValueConv => 'substr($val, 4, -1)',
+    },
+    ptrh => { SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::Pittasoft' } },
+    'gps ' => {
+        Name => 'GPSLog',
+        Binary => 1,    # (ASCII NMEA track log with leading timestamps)
+        RawConv => q{
+            $val =~ s/\0+$//;   # remove trailing nulls
+            if (length $val and $$self{OPTIONS}{ExtractEmbedded}) {
+                my $tagTbl = GetTagTable('Image::ExifTool::QuickTime::Stream');
+                Image::ExifTool::QuickTime::ProcessNMEA($self, { DataPt => \$val }, $tagTbl);
+            }
+            return $val;
+        },
+    },
+    '3gf ' => {
+        Name => 'AccelData',
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::QuickTime::Stream',
+            ProcessProc => \&Process_3gf,
+        },
+    },
+    # ptvi - 27 bytes: '..avc1...'
+    # ptso - 16 bytes: '..mp4a...'
+);
+
 # QuickTime composite tags
 %Image::ExifTool::QuickTime::Composite = (
     GROUPS => { 2 => 'Video' },
@@ -7190,7 +7241,7 @@ sub ParseContentDescribes($$)
     $et->VPrint(1, "$$et{INDENT}  Item $id describes: @to\n") unless $$et{IsWriting};
     return undef;
 }
-        
+
 #------------------------------------------------------------------------------
 # Parse item information entry (infe) box (ref ISO 14496-12:2015 pg.82)
 # Inputs: 0) infe data, 1) ExifTool ref
@@ -7842,8 +7893,11 @@ sub ProcessMOV($$;$)
         my $handlerType = $$et{HandlerType};
         if ($eeBox{$handlerType} and $eeBox{$handlerType}{$tag}) {
             if ($ee) {
-                $eeTag = 1;
-                $$et{OPTIONS}{Unknown} = 1; # temporarily enable "Unknown" option
+                # (there is another 'gps ' box with a track log that doesn't contain offsets)
+                if ($tag ne 'gps ' or ($$tagTablePtr{$tag} and $$tagTablePtr{$tag}{ContainsOffsets})) {
+                    $eeTag = 1;
+                    $$et{OPTIONS}{Unknown} = 1; # temporarily enable "Unknown" option
+                }
             } elsif ($handlerType ne 'vide' and not $$et{OPTIONS}{Validate}) {
                 EEWarn($et);
             }
@@ -8233,7 +8287,7 @@ QTLang: foreach $tag (@{$$et{QTLang}}) {
     }
     # process item information now that we are done processing its 'meta' container
     HandleItemInfo($et) if $topLevel or $$dirInfo{DirName} eq 'Meta';
-    
+
     ScanMovieData($et) if $ee and $topLevel;  # brute force scan for metadata embedded in movie data
 
     # restore any changed options

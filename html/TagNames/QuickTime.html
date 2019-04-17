@@ -27,7 +27,7 @@ these values are properly stored as UTC, and will convert them to local time
 when extracting.</p>
 
 <p>See
-<a href="http://developer.apple.com/mac/library/documentation/QuickTime/QTFF/QTFFChap1/qtff1.html">http://developer.apple.com/mac/library/documentation/QuickTime/QTFF/QTFFChap1/qtff1.html</a>
+<a href="https://developer.apple.com/library/archive/documentation/QuickTime/QTFF/QTFFPreface/qtffPreface.html">https://developer.apple.com/library/archive/documentation/QuickTime/QTFF/QTFFPreface/qtffPreface.html</a>
 for the official specification.</p>
 <blockquote>
 <table class=frame><tr><td>
@@ -62,9 +62,11 @@ for the official specification.</p>
 <tr class=b>
 <td>'free'</td>
 <td>KodakFree
+  <br>Pittasoft
   <br>Free?</td>
-<td class=c>-<br>no</td>
-<td>--&gt; <a href='Kodak.html#Free'>Kodak Free Tags</a></td></tr>
+<td class=c>-<br>-<br>no</td>
+<td>--&gt; <a href='Kodak.html#Free'>Kodak Free Tags</a>
+  <br>--&gt; <a href='QuickTime.html#Pittasoft'>QuickTime Pittasoft Tags</a></td></tr>
 <tr>
 <td>'ftyp'</td>
 <td>FileType</td>
@@ -186,115 +188,41 @@ roll, yaw, speed, altitude)</span></span></td></tr>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
-<h2><a name='FileType'>QuickTime FileType Tags</a></h2>
+<h2><a name='Pittasoft'>QuickTime Pittasoft Tags</a></h2>
+<p>Tags found in Pittasoft Blackvue dashcam &quot;free&quot; atom.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
-<tr class=h><th>Index4</th><th>Tag Name</th>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
-<td class=r title='0 = 0x0'>0</td>
-<td>MajorBrand</td>
-<td class=c>no</td>
-<td><span class=s>&#39;3g2a&#39; = 3GPP2 Media (.3G2) compliant with 3GPP2 C.S0050-0 V1.0
-  <br>&#39;3g2b&#39; = 3GPP2 Media (.3G2) compliant with 3GPP2 C.S0050-A V1.0.0
-  <br>&#39;3g2c&#39; = 3GPP2 Media (.3G2) compliant with 3GPP2 C.S0050-B v1.0
-  <br>&#39;3ge6&#39; = 3GPP (.3GP) Release 6 MBMS Extended Presentations
-  <br>&#39;3ge7&#39; = 3GPP (.3GP) Release 7 MBMS Extended Presentations
-  <br>&#39;3gg6&#39; = 3GPP Release 6 General Profile
-  <br>&#39;3gp1&#39; = 3GPP Media (.3GP) Release 1 (probably non-existent)
-  <br>&#39;3gp2&#39; = 3GPP Media (.3GP) Release 2 (probably non-existent)
-  <br>&#39;3gp3&#39; = 3GPP Media (.3GP) Release 3 (probably non-existent)
-  <br>&#39;3gp4&#39; = 3GPP Media (.3GP) Release 4
-  <br>&#39;3gp5&#39; = 3GPP Media (.3GP) Release 5
-  <br>&#39;3gp6&#39; = 3GPP Media (.3GP) Release 6 Streaming Servers
-  <br>&#39;3gs7&#39; = 3GPP Media (.3GP) Release 7 Streaming Servers
-  <br>&#39;CAEP&#39; = Canon Digital Camera
-  <br>&#39;CDes&#39; = Convergent Design
-  <br>&#39;F4A &#39; = Audio for Adobe Flash Player 9+ (.F4A)
-  <br>&#39;F4B &#39; = Audio Book for Adobe Flash Player 9+ (.F4B)
-  <br>&#39;F4P &#39; = Protected Video for Adobe Flash Player 9+ (.F4P)
-  <br>&#39;F4V &#39; = Video for Adobe Flash Player 9+ (.F4V)
-  <br>&#39;JP2 &#39; = JPEG 2000 Image (.JP2) [ISO 15444-1 ?]
-  <br>&#39;JP20&#39; = Unknown, from GPAC samples (prob non-existent)
-  <br>&#39;KDDI&#39; = 3GPP2 EZmovie for KDDI 3G cellphones
-  <br>&#39;M4A &#39; = Apple iTunes AAC-LC (.M4A) Audio
-  <br>&#39;M4B &#39; = Apple iTunes AAC-LC (.M4B) Audio Book
-  <br>&#39;M4P &#39; = Apple iTunes AAC-LC (.M4P) AES Protected Audio
-  <br>&#39;M4V &#39; = Apple iTunes Video (.M4V) Video
-  <br>&#39;M4VH&#39; = Apple TV (.M4V)
-  <br>&#39;M4VP&#39; = Apple iPhone (.M4V)
-  <br>&#39;MPPI&#39; = Photo Player, MAF [ISO/IEC 23000-3]
-  <br>&#39;MSNV&#39; = MPEG-4 (.MP4) for SonyPSP
-  <br>&#39;NDAS&#39; = MP4 v2 [ISO 14496-14] Nero Digital AAC Audio
-  <br>&#39;NDSC&#39; = MPEG-4 (.MP4) Nero Cinema Profile
-  <br>&#39;NDSH&#39; = MPEG-4 (.MP4) Nero HDTV Profile
-  <br>&#39;NDSM&#39; = MPEG-4 (.MP4) Nero Mobile Profile
-  <br>&#39;NDSP&#39; = MPEG-4 (.MP4) Nero Portable Profile
-  <br>&#39;NDSS&#39; = MPEG-4 (.MP4) Nero Standard Profile
-  <br>&#39;NDXC&#39; = H.264/MPEG-4 AVC (.MP4) Nero Cinema Profile
-  <br>&#39;NDXH&#39; = H.264/MPEG-4 AVC (.MP4) Nero HDTV Profile
-  <br>&#39;NDXM&#39; = H.264/MPEG-4 AVC (.MP4) Nero Mobile Profile
-  <br>&#39;NDXP&#39; = H.264/MPEG-4 AVC (.MP4) Nero Portable Profile
-  <br>&#39;NDXS&#39; = H.264/MPEG-4 AVC (.MP4) Nero Standard Profile
-  <br>&#39;ROSS&#39; = Ross Video
-  <br>&#39;XAVC&#39; = Sony XAVC
-  <br>&#39;aax &#39; = Audible Enhanced Audiobook (.AAX)
-  <br>&#39;avc1&#39; = MP4 Base w/ AVC ext [ISO 14496-12:2005]
-  <br>&#39;caqv&#39; = Casio Digital Camera
-  <br>&#39;crx &#39; = Canon Raw (.CRX)
-  <br>&#39;da0a&#39; = DMB MAF w/ MPEG Layer II aud, MOT slides, DLS, JPG/PNG/MNG images
-  <br>&#39;da0b&#39; = DMB MAF, extending DA0A, with 3GPP timed text, DID, TVA, REL, IPMP
-  <br>&#39;da1a&#39; = DMB MAF audio with ER-BSAC audio, JPG/PNG/MNG images
-  <br>&#39;da1b&#39; = DMB MAF, extending da1a, with 3GPP timed text, DID, TVA, REL, IPMP
-  <br>&#39;da2a&#39; = DMB MAF aud w/ HE-AAC v2 aud, MOT slides, DLS, JPG/PNG/MNG images
-  <br>&#39;da2b&#39; = DMB MAF, extending da2a, with 3GPP timed text, DID, TVA, REL, IPMP
-  <br>&#39;da3a&#39; = DMB MAF aud with HE-AAC aud, JPG/PNG/MNG images
-  <br>&#39;da3b&#39; = DMB MAF, extending da3a w/ BIFS, 3GPP timed text, DID, TVA, REL, IPMP
-  <br>&#39;dmb1&#39; = DMB MAF supporting all the components defined in the specification
-  <br>&#39;dmpf&#39; = Digital Media Project
-  <br>&#39;drc1&#39; = Dirac (wavelet compression), encapsulated in ISO base media (MP4)
-  <br>&#39;dv1a&#39; = DMB MAF vid w/ AVC vid, ER-BSAC aud, BIFS, JPG/PNG/MNG images, TS
-  <br>&#39;dv1b&#39; = DMB MAF, extending dv1a, with 3GPP timed text, DID, TVA, REL, IPMP
-  <br>&#39;dv2a&#39; = DMB MAF vid w/ AVC vid, HE-AAC v2 aud, BIFS, JPG/PNG/MNG images, TS
-  <br>&#39;dv2b&#39; = DMB MAF, extending dv2a, with 3GPP timed text, DID, TVA, REL, IPMP
-  <br>&#39;dv3a&#39; = DMB MAF vid w/ AVC vid, HE-AAC aud, BIFS, JPG/PNG/MNG images, TS
-  <br>&#39;dv3b&#39; = DMB MAF, extending dv3a, with 3GPP timed text, DID, TVA, REL, IPMP
-  <br>&#39;dvr1&#39; = DVB (.DVB) over RTP
-  <br>&#39;dvt1&#39; = DVB (.DVB) over MPEG-2 Transport Stream
-  <br>&#39;heic&#39; = High Efficiency Image Format HEVC still image (.HEIC)
-  <br>&#39;hevc&#39; = High Efficiency Image Format HEVC sequence (.HEICS)
-  <br>&#39;isc2&#39; = ISMACryp 2.0 Encrypted File
-  <br>&#39;iso2&#39; = MP4 Base Media v2 [ISO 14496-12:2005]
-  <br>&#39;isom&#39; = MP4  Base Media v1 [IS0 14496-12:2003]
-  <br>&#39;jpm &#39; = JPEG 2000 Compound Image (.JPM) [ISO 15444-6]
-  <br>&#39;jpx &#39; = JPEG 2000 with extensions (.JPX) [ISO 15444-2]
-  <br>&#39;mif1&#39; = High Efficiency Image Format still image (.HEIF)
-  <br>&#39;mj2s&#39; = Motion JPEG 2000 [ISO 15444-3] Simple Profile
-  <br>&#39;mjp2&#39; = Motion JPEG 2000 [ISO 15444-3] General Profile
-  <br>&#39;mmp4&#39; = MPEG-4/3GPP Mobile Profile (.MP4/3GP) (for NTT)
-  <br>&#39;mp21&#39; = MPEG-21 [ISO/IEC 21000-9]
-  <br>&#39;mp41&#39; = MP4 v1 [ISO 14496-1:ch13]
-  <br>&#39;mp42&#39; = MP4 v2 [ISO 14496-14]
-  <br>&#39;mp71&#39; = MP4 w/ MPEG-7 Metadata [per ISO 14496-12]
-  <br>&#39;mqt &#39; = Sony / Mobile QuickTime (.MQV) US Patent 7,477,830 (Sony Corp)
-  <br>&#39;msf1&#39; = High Efficiency Image Format sequence (.HEIFS)
-  <br>&#39;odcf&#39; = OMA DCF DRM Format 2.0 (OMA-TS-DRM-DCF-V2_0-20060303-A)
-  <br>&#39;opf2&#39; = OMA PDCF DRM Format 2.1 (OMA-TS-DRM-DCF-V2_1-20070724-C)
-  <br>&#39;opx2&#39; = OMA PDCF DRM + XBS extensions (OMA-TS-DRM_XBS-V1_0-20070529-C)
-  <br>&#39;pana&#39; = Panasonic Digital Camera
-  <br>&#39;qt  &#39; = Apple QuickTime (.MOV/QT)
-  <br>&#39;sdv &#39; = SD Memory Card Video
-  <br>&#39;ssc1&#39; = Samsung stereoscopic, single stream
-  <br>&#39;ssc2&#39; = Samsung stereoscopic, dual stream</span></td></tr>
+<td>'3gf '</td>
+<td>AccelData</td>
+<td class=c>-</td>
+<td>--&gt; <a href='QuickTime.html#Stream'>QuickTime Stream Tags</a></td></tr>
 <tr class=b>
-<td class=r title='1 = 0x1'>1</td>
-<td>MinorVersion</td>
+<td>'cprt'</td>
+<td>Copyright</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td class=r title='2 = 0x2'>2</td>
-<td>CompatibleBrands</td>
+<td>'gps '</td>
+<td>GPSLog</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'ptnm'</td>
+<td>OriginalFileName</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'ptrh'</td>
+<td>Ptrh</td>
+<td class=c>-</td>
+<td>--&gt; <a href='QuickTime.html#Pittasoft'>QuickTime Pittasoft Tags</a></td></tr>
+<tr class=b>
+<td>'thum'</td>
+<td>PreviewImage</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
@@ -1083,6 +1011,119 @@ from the associated SampleTime)</span></span></td></tr>
 <tr>
 <td>'Yaw'</td>
 <td>Yaw</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='FileType'>QuickTime FileType Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index4</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>MajorBrand</td>
+<td class=c>no</td>
+<td><span class=s>&#39;3g2a&#39; = 3GPP2 Media (.3G2) compliant with 3GPP2 C.S0050-0 V1.0
+  <br>&#39;3g2b&#39; = 3GPP2 Media (.3G2) compliant with 3GPP2 C.S0050-A V1.0.0
+  <br>&#39;3g2c&#39; = 3GPP2 Media (.3G2) compliant with 3GPP2 C.S0050-B v1.0
+  <br>&#39;3ge6&#39; = 3GPP (.3GP) Release 6 MBMS Extended Presentations
+  <br>&#39;3ge7&#39; = 3GPP (.3GP) Release 7 MBMS Extended Presentations
+  <br>&#39;3gg6&#39; = 3GPP Release 6 General Profile
+  <br>&#39;3gp1&#39; = 3GPP Media (.3GP) Release 1 (probably non-existent)
+  <br>&#39;3gp2&#39; = 3GPP Media (.3GP) Release 2 (probably non-existent)
+  <br>&#39;3gp3&#39; = 3GPP Media (.3GP) Release 3 (probably non-existent)
+  <br>&#39;3gp4&#39; = 3GPP Media (.3GP) Release 4
+  <br>&#39;3gp5&#39; = 3GPP Media (.3GP) Release 5
+  <br>&#39;3gp6&#39; = 3GPP Media (.3GP) Release 6 Streaming Servers
+  <br>&#39;3gs7&#39; = 3GPP Media (.3GP) Release 7 Streaming Servers
+  <br>&#39;CAEP&#39; = Canon Digital Camera
+  <br>&#39;CDes&#39; = Convergent Design
+  <br>&#39;F4A &#39; = Audio for Adobe Flash Player 9+ (.F4A)
+  <br>&#39;F4B &#39; = Audio Book for Adobe Flash Player 9+ (.F4B)
+  <br>&#39;F4P &#39; = Protected Video for Adobe Flash Player 9+ (.F4P)
+  <br>&#39;F4V &#39; = Video for Adobe Flash Player 9+ (.F4V)
+  <br>&#39;JP2 &#39; = JPEG 2000 Image (.JP2) [ISO 15444-1 ?]
+  <br>&#39;JP20&#39; = Unknown, from GPAC samples (prob non-existent)
+  <br>&#39;KDDI&#39; = 3GPP2 EZmovie for KDDI 3G cellphones
+  <br>&#39;M4A &#39; = Apple iTunes AAC-LC (.M4A) Audio
+  <br>&#39;M4B &#39; = Apple iTunes AAC-LC (.M4B) Audio Book
+  <br>&#39;M4P &#39; = Apple iTunes AAC-LC (.M4P) AES Protected Audio
+  <br>&#39;M4V &#39; = Apple iTunes Video (.M4V) Video
+  <br>&#39;M4VH&#39; = Apple TV (.M4V)
+  <br>&#39;M4VP&#39; = Apple iPhone (.M4V)
+  <br>&#39;MPPI&#39; = Photo Player, MAF [ISO/IEC 23000-3]
+  <br>&#39;MSNV&#39; = MPEG-4 (.MP4) for SonyPSP
+  <br>&#39;NDAS&#39; = MP4 v2 [ISO 14496-14] Nero Digital AAC Audio
+  <br>&#39;NDSC&#39; = MPEG-4 (.MP4) Nero Cinema Profile
+  <br>&#39;NDSH&#39; = MPEG-4 (.MP4) Nero HDTV Profile
+  <br>&#39;NDSM&#39; = MPEG-4 (.MP4) Nero Mobile Profile
+  <br>&#39;NDSP&#39; = MPEG-4 (.MP4) Nero Portable Profile
+  <br>&#39;NDSS&#39; = MPEG-4 (.MP4) Nero Standard Profile
+  <br>&#39;NDXC&#39; = H.264/MPEG-4 AVC (.MP4) Nero Cinema Profile
+  <br>&#39;NDXH&#39; = H.264/MPEG-4 AVC (.MP4) Nero HDTV Profile
+  <br>&#39;NDXM&#39; = H.264/MPEG-4 AVC (.MP4) Nero Mobile Profile
+  <br>&#39;NDXP&#39; = H.264/MPEG-4 AVC (.MP4) Nero Portable Profile
+  <br>&#39;NDXS&#39; = H.264/MPEG-4 AVC (.MP4) Nero Standard Profile
+  <br>&#39;ROSS&#39; = Ross Video
+  <br>&#39;XAVC&#39; = Sony XAVC
+  <br>&#39;aax &#39; = Audible Enhanced Audiobook (.AAX)
+  <br>&#39;avc1&#39; = MP4 Base w/ AVC ext [ISO 14496-12:2005]
+  <br>&#39;caqv&#39; = Casio Digital Camera
+  <br>&#39;crx &#39; = Canon Raw (.CRX)
+  <br>&#39;da0a&#39; = DMB MAF w/ MPEG Layer II aud, MOT slides, DLS, JPG/PNG/MNG images
+  <br>&#39;da0b&#39; = DMB MAF, extending DA0A, with 3GPP timed text, DID, TVA, REL, IPMP
+  <br>&#39;da1a&#39; = DMB MAF audio with ER-BSAC audio, JPG/PNG/MNG images
+  <br>&#39;da1b&#39; = DMB MAF, extending da1a, with 3GPP timed text, DID, TVA, REL, IPMP
+  <br>&#39;da2a&#39; = DMB MAF aud w/ HE-AAC v2 aud, MOT slides, DLS, JPG/PNG/MNG images
+  <br>&#39;da2b&#39; = DMB MAF, extending da2a, with 3GPP timed text, DID, TVA, REL, IPMP
+  <br>&#39;da3a&#39; = DMB MAF aud with HE-AAC aud, JPG/PNG/MNG images
+  <br>&#39;da3b&#39; = DMB MAF, extending da3a w/ BIFS, 3GPP timed text, DID, TVA, REL, IPMP
+  <br>&#39;dmb1&#39; = DMB MAF supporting all the components defined in the specification
+  <br>&#39;dmpf&#39; = Digital Media Project
+  <br>&#39;drc1&#39; = Dirac (wavelet compression), encapsulated in ISO base media (MP4)
+  <br>&#39;dv1a&#39; = DMB MAF vid w/ AVC vid, ER-BSAC aud, BIFS, JPG/PNG/MNG images, TS
+  <br>&#39;dv1b&#39; = DMB MAF, extending dv1a, with 3GPP timed text, DID, TVA, REL, IPMP
+  <br>&#39;dv2a&#39; = DMB MAF vid w/ AVC vid, HE-AAC v2 aud, BIFS, JPG/PNG/MNG images, TS
+  <br>&#39;dv2b&#39; = DMB MAF, extending dv2a, with 3GPP timed text, DID, TVA, REL, IPMP
+  <br>&#39;dv3a&#39; = DMB MAF vid w/ AVC vid, HE-AAC aud, BIFS, JPG/PNG/MNG images, TS
+  <br>&#39;dv3b&#39; = DMB MAF, extending dv3a, with 3GPP timed text, DID, TVA, REL, IPMP
+  <br>&#39;dvr1&#39; = DVB (.DVB) over RTP
+  <br>&#39;dvt1&#39; = DVB (.DVB) over MPEG-2 Transport Stream
+  <br>&#39;heic&#39; = High Efficiency Image Format HEVC still image (.HEIC)
+  <br>&#39;hevc&#39; = High Efficiency Image Format HEVC sequence (.HEICS)
+  <br>&#39;isc2&#39; = ISMACryp 2.0 Encrypted File
+  <br>&#39;iso2&#39; = MP4 Base Media v2 [ISO 14496-12:2005]
+  <br>&#39;isom&#39; = MP4  Base Media v1 [IS0 14496-12:2003]
+  <br>&#39;jpm &#39; = JPEG 2000 Compound Image (.JPM) [ISO 15444-6]
+  <br>&#39;jpx &#39; = JPEG 2000 with extensions (.JPX) [ISO 15444-2]
+  <br>&#39;mif1&#39; = High Efficiency Image Format still image (.HEIF)
+  <br>&#39;mj2s&#39; = Motion JPEG 2000 [ISO 15444-3] Simple Profile
+  <br>&#39;mjp2&#39; = Motion JPEG 2000 [ISO 15444-3] General Profile
+  <br>&#39;mmp4&#39; = MPEG-4/3GPP Mobile Profile (.MP4/3GP) (for NTT)
+  <br>&#39;mp21&#39; = MPEG-21 [ISO/IEC 21000-9]
+  <br>&#39;mp41&#39; = MP4 v1 [ISO 14496-1:ch13]
+  <br>&#39;mp42&#39; = MP4 v2 [ISO 14496-14]
+  <br>&#39;mp71&#39; = MP4 w/ MPEG-7 Metadata [per ISO 14496-12]
+  <br>&#39;mqt &#39; = Sony / Mobile QuickTime (.MQV) US Patent 7,477,830 (Sony Corp)
+  <br>&#39;msf1&#39; = High Efficiency Image Format sequence (.HEIFS)
+  <br>&#39;odcf&#39; = OMA DCF DRM Format 2.0 (OMA-TS-DRM-DCF-V2_0-20060303-A)
+  <br>&#39;opf2&#39; = OMA PDCF DRM Format 2.1 (OMA-TS-DRM-DCF-V2_1-20070724-C)
+  <br>&#39;opx2&#39; = OMA PDCF DRM + XBS extensions (OMA-TS-DRM_XBS-V1_0-20070529-C)
+  <br>&#39;pana&#39; = Panasonic Digital Camera
+  <br>&#39;qt  &#39; = Apple QuickTime (.MOV/QT)
+  <br>&#39;sdv &#39; = SD Memory Card Video
+  <br>&#39;ssc1&#39; = Samsung stereoscopic, single stream
+  <br>&#39;ssc2&#39; = Samsung stereoscopic, dual stream</span></td></tr>
+<tr class=b>
+<td class=r title='1 = 0x1'>1</td>
+<td>MinorVersion</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='2 = 0x2'>2</td>
+<td>CompatibleBrands</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
@@ -7493,7 +7534,7 @@ multi-language user data tags found, even if they don&#39;t exist in this table.
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Apr 8, 2019</i>
+<br><i>Last revised Apr 17, 2019</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

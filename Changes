@@ -7,6 +7,15 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 11.30. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Apr. 17, 2019 - Version 11.37
+
+  - Added a new Sony AFAreaMode (thanks Jos Roost)
+  - Decode GPS and other tags from Pittasoft Blackvue dashcam videos
+  - Improved decoding of FujiFilm FlickerReduction
+  - Ignore any garbage before an NMEA sentence when geotagging
+  - Fixed bug which could result in loss of timed GPS metadata when writing MP4
+    videos
+
 Apr. 15, 2019 - Version 11.36
 
   - Added a number of new MacOS tags

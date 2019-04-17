@@ -282,7 +282,7 @@ sub WriteQuickTime($$$)
 
         # if this atom stores offsets, save its location so we can fix up offsets later
         # (are there any other atoms that may store absolute file offsets?)
-        if ($tag =~ /^(stco|co64|iloc|mfra)$/) {
+        if ($tag =~ /^(stco|co64|iloc|mfra|gps )$/) {
             # (note that we only need to do this if the movie data is stored in this file)
             my $flg = $$et{QtDataFlg};
             if ($tag eq 'mfra') {
@@ -290,6 +290,18 @@ sub WriteQuickTime($$$)
                 return $rtnVal;
             } elsif ($tag eq 'iloc') {
                 Handle_iloc($et, $dirInfo, \$buff, $outfile) or $et->Error('Error parsing iloc atom');
+            } elsif ($tag eq 'gps ' and $$tagTablePtr{$tag} and $$tagTablePtr{$tag}{ContainsOffsets}) {
+                # (note that this tag is marked as Unknown, so we couldn't just call GetTagInfo)
+                if (length $buff > 8) {
+                    my $off = $$dirInfo{ChunkOffset};
+                    $off or $off = $$dirInfo{ChunkOffset} = [ ];
+                    my $num = Get32u(\$buff, 4);
+                    $num = int((length($buff) - 8) / 8) if $num * 8 + 8 > length($buff);
+                    my $i;
+                    for ($i=0; $i<$num; ++$i) {
+                        push @$off, [ 'stcogps ', length($$outfile) + length($hdr) + 8 + $i * 8, 4 ];
+                    }
+                }
             } elsif (not $flg) {
                 my $grp = $$et{CUR_WRITE_GROUP} || $parent;
                 $et->Error("Can't locate data reference to update offsets for $grp");
@@ -585,7 +597,7 @@ sub WriteQuickTime($$$)
         $type =~ /^(stco|co64)(.*)$/ or $et->Error('Internal error fixing offsets'), last;
         my $siz = $1 eq 'co64' ? 8 : 4;
         my ($n, $tag);
-        if ($2) {   # is this an offset in an iloc atom?
+        if ($2) {   # is this an offset in an iloc or 'gps ' atom?
             $n = 1;
             $type = $1;
             $tag = $2;

@@ -30,7 +30,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.70';
+$VERSION = '1.71';
 
 sub ProcessFujiDir($$$);
 sub ProcessFaceRec($$$);
@@ -710,8 +710,9 @@ my %faceCategories = (
     0x1446 => { #12
         Name => 'FlickerReduction',
         Writable => 'int32u',
+        # seen values: Off=0x0000, On=0x2100,0x3100
         PrintConv => q{
-            my $on = ((($val >> 12) & 0xff) == 3) ? 'On' : 'Off';
+            my $on = ((($val >> 8) & 0x0f) == 1) ? 'On' : 'Off';
             return sprintf('%s (0x%.4x)', $on, $val);
         },
         PrintConvInv => '$val=~/(0x[0-9a-f]+)/i; hex $1',

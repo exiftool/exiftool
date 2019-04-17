@@ -32,7 +32,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.03';
+$VERSION = '3.04';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -7941,6 +7941,7 @@ my %isoSetting2010 = (
             12 => 'Expanded Flexible Spot', #JR (HX90V, ILCE-7 series)
             14 => 'Tracking',
             15 => 'Face Tracking',
+            20 => 'Animal Eye Tracking',
             255 => 'Manual',
         },
     },

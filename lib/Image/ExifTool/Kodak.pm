@@ -25,7 +25,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.44';
+$VERSION = '1.45';
 
 sub ProcessKodakIFD($$$);
 sub ProcessKodakText($$$);
@@ -784,6 +784,8 @@ sub WriteKodakIFD($$$);
         Name => 'PreviewImageSize',
         Writable => 'int16u',
         Count => 2,
+        PrintConv => '$val =~ tr/ /x/; $val',
+        PrintConvInv => '$val =~ tr/x/ /; $val',
     },
     # 0x03 int32u - ranges from about 33940 to 40680
     # 0x04 int32u - always 18493

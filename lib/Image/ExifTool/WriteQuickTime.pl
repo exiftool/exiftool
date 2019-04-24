@@ -100,7 +100,7 @@ sub Handle_iloc($$$$)
     my %ok = ( 0 => 1, 4 => 1, 8 => 8 );
     return 0 unless $ok{$noff} and $ok{$nlen} and $ok{$nbas} and $ok{$nind};
     # piggy-back on existing code to fix up stco/co64 4/8-byte offsets
-    my $tag = $noff == 4 ? 'stcoiloc' : 'co64iloc';
+    my $tag = $noff == 4 ? 'stco_iloc' : 'co64_iloc';
     if ($ver < 2) {
         $num = Get16u($dataPt, 6);
         $pos = 8;
@@ -142,7 +142,7 @@ sub Handle_iloc($$$$)
         # get base offset and save its location if in this file
         my $base_offset = GetVarInt($dataPt, $pos, $nbas);
         if ($base_offset and not $constOff) {
-            my $tg = ($nbas == 4 ? 'stco' : 'co64') . 'iloc';
+            my $tg = ($nbas == 4 ? 'stco' : 'co64') . '_iloc';
             push @offBase, [ $tg, length($$outfile) + 8 + $pos - $nbas, $nbas ];
         }
         return 0 if $pos + 2 > $len;
@@ -290,16 +290,16 @@ sub WriteQuickTime($$$)
                 return $rtnVal;
             } elsif ($tag eq 'iloc') {
                 Handle_iloc($et, $dirInfo, \$buff, $outfile) or $et->Error('Error parsing iloc atom');
-            } elsif ($tag eq 'gps ' and $$tagTablePtr{$tag} and $$tagTablePtr{$tag}{ContainsOffsets}) {
-                # (note that this tag is marked as Unknown, so we couldn't just call GetTagInfo)
-                if (length $buff > 8) {
+            } elsif ($tag eq 'gps ') {
+                # (only care about the 'gps ' box in 'moov')
+                if ($$dirInfo{DirID} and $$dirInfo{DirID} eq 'moov' and length $buff > 8) {
                     my $off = $$dirInfo{ChunkOffset};
                     $off or $off = $$dirInfo{ChunkOffset} = [ ];
                     my $num = Get32u(\$buff, 4);
                     $num = int((length($buff) - 8) / 8) if $num * 8 + 8 > length($buff);
                     my $i;
                     for ($i=0; $i<$num; ++$i) {
-                        push @$off, [ 'stcogps ', length($$outfile) + length($hdr) + 8 + $i * 8, 4 ];
+                        push @$off, [ 'stco_gps ', length($$outfile) + length($hdr) + 8 + $i * 8, 4 ];
                     }
                 }
             } elsif (not $flg) {
@@ -352,6 +352,7 @@ sub WriteQuickTime($$$)
                 my %subdirInfo = (
                     Parent   => $dirName,
                     DirName  => $subName,
+                    DirID    => $tag,
                     DataPt   => \$buff,
                     DataLen  => $size,
                     DataPos  => $dPos,
@@ -594,7 +595,7 @@ sub WriteQuickTime($$$)
     # fix up offsets for new mdat position(s)
     foreach $co (@$off) {
         my ($type, $ptr, $len) = @$co;
-        $type =~ /^(stco|co64)(.*)$/ or $et->Error('Internal error fixing offsets'), last;
+        $type =~ /^(stco|co64)_?(.*)$/ or $et->Error('Internal error fixing offsets'), last;
         my $siz = $1 eq 'co64' ? 8 : 4;
         my ($n, $tag);
         if ($2) {   # is this an offset in an iloc or 'gps ' atom?

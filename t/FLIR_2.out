@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.64
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.38
 [File, System, Image] FileName - File Name: FLIR.jpg
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 7.2 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2013:04:02 10:46:04-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2017:10:11 12:59:50-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2017:10:04 12:12:33-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:04:17 13:56:22-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:04:17 10:43:24-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: JPEG
 [File, File, Image] FileTypeExtension - File Type Extension: jpg
@@ -102,6 +102,8 @@
 [APP1, FLIR, Camera] 540 - Filter Serial Number: 
 [APP1, FLIR, Camera] 776 - Planck O: -6646
 [APP1, FLIR, Camera] 780 - Planck R2: 0.022241818
+[APP1, FLIR, Image] 784 - Raw Value Range Min: 7630
+[APP1, FLIR, Image] 786 - Raw Value Range Max: 61986
 [APP1, FLIR, Image] 824 - Raw Value Median: 12582
 [APP1, FLIR, Image] 828 - Raw Value Range: 1980
 [APP1, FLIR, Time] 900 - Date/Time Original: 2012:02:11 14:17:08.253+01:00

@@ -11,7 +11,7 @@ package Image::ExifTool::Lang::nl;
 use strict;
 use vars qw($VERSION);
 
-$VERSION = '1.11';
+$VERSION = '1.12';
 
 %Image::ExifTool::Lang::nl::Translate = (
    'AEBAutoCancel' => {
@@ -201,6 +201,7 @@ $VERSION = '1.11';
    'ActionAdvised' => {
       Description => 'Actie advies',
       PrintConv => {
+        'Object Append' => 'Object toevoegen',
         'Object Kill' => 'Object verwijderen',
         'Object Reference' => 'Object referentie',
         'Object Replace' => 'Object vervangen',
@@ -335,6 +336,7 @@ $VERSION = '1.11';
         'Off' => 'Uit',
       },
     },
+   'AutoBracketingSet' => 'Inst. voor auto bracketing',
    'AutoExposureBracketing' => {
       PrintConv => {
         'Off' => 'Uit',
@@ -1996,6 +1998,7 @@ $VERSION = '1.11';
       },
     },
    'MasterDocumentID' => 'ID van hoofddocument',
+   'MatrixMetering' => 'Matrixmeting',
    'MaxAperture' => 'Maximale lensopening',
    'MaxApertureValue' => 'Grootste diafragma',
    'MaxContinuousRelease' => 'Max. aant. continuopnamen',
@@ -3058,9 +3061,9 @@ $VERSION = '1.11';
     },
    'WBAdjLighting' => {
       PrintConv => {
+        'Daylight (cloudy)' => 'Daglicht (2)',
         'Daylight (direct sunlight)' => 'Daglicht (0)',
         'Daylight (shade)' => 'Daglicht (1)',
-        'Daylight (cloudy)' => 'Daglicht (2)',
         'Flash' => 'Flits',
         'None' => 'Geen',
       },

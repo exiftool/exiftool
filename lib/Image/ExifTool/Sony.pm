@@ -32,7 +32,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.04';
+$VERSION = '3.05';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -60,7 +60,7 @@ my %sonyLensTypes2 = (
     0.3   => 'Sigma 60mm F2.8 DN',
     0.4   => 'Sony E 18-200mm F3.5-6.3 OSS LE',     # (firmware Ver.01)
     0.5   => 'Tamron 18-200mm F3.5-6.3 Di III VC',  # (Model B011)
-    0.6   => 'Tokina FiRIN 20mm F2 FE AF',          # samples from Tokina, May 2018
+    0.6   => 'Tokina FiRIN 20mm F2 FE AF',          # (firmware Ver.00) samples from Tokina, May 2018
     0.7   => 'Tokina FiRIN 20mm F2 FE MF',          # samples from Tokina, 16-12-2016, DC-watch 01-02-2017
     0.8   => 'Zeiss Touit 12mm F2.8',               # (firmware Ver.00)
     0.9   => 'Zeiss Touit 32mm F1.8',               # (firmware Ver.00)
@@ -160,6 +160,9 @@ my %sonyLensTypes2 = (
     49236 => 'Zeiss Loxia 25mm F2.4', #JR
 
     49457 => 'Tamron 28-75mm F2.8 Di III RXD', #JR (Model A036)
+
+    49712 => 'Tokina FiRIN 20mm F2 FE AF',       # (firmware Ver.01)
+    49713 => 'Tokina FiRIN 100mm F2.8 FE MACRO', # (firmware Ver.01)
 
     50480 => 'Sigma 30mm F1.4 DC DN | C', #IB/JR (016)
     50481 => 'Sigma 50mm F1.4 DG HSM | A', #JR (014 + MC-11 or 018)
@@ -8567,7 +8570,7 @@ my %isoSetting2010 = (
         # 1.40: SEL1635Z, SEL24240, SEL35F14Z, SELP28135G, Zeiss Loxia 35mm/50mm Ver.01, Zeiss Touit Ver.02
         # 1.41: SELP18105G Ver.02
         # 1.50: SEL28F20, SEL90M28G, Zeiss Batis 18mm/25mm/85mm/135mm, Zeiss Loxia 21mm, Zeiss Loxia 35mm/50mm Ver.02,
-        #       Tokina Firin 20mm
+        #       Tokina FiRIN 20mm
         # 1.60: SEL1224G, SEL1635GM, SELP18110G, SEL18135, SEL2470GM, SEL24105G, SEL50F14Z, SEL50F18F, SEL50M28, SEL70200GM,
         #       SEL70300G, SEL85F14GM, SEL85F18, SEL100F28GM, SEL100400GM, SEL135F18GM, Sigma 30mm F1.4 DC DN, Sigma MC-11,
         #       Samyang AF 14mm/50mm, Voigtlander 15mm, Sigma 16mm F1.4 DC DN

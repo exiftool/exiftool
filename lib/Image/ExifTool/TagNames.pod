@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 22549 tags, with 15000 unique tag names.
+They contain a total of 22554 tags, with 15004 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -677,6 +677,7 @@ official EXIF 2.31 specification.
            MakerNoteSanyoC4          ExifIFD    Sanyo
            MakerNoteSanyoPatch       ExifIFD    Sanyo
            MakerNoteSigma            ExifIFD    Sigma
+           MakerNoteSigma3           ExifIFD    Sigma
            MakerNoteSony             ExifIFD    Sony
            MakerNoteSony2            ExifIFD    Olympus
            MakerNoteSony3            ExifIFD    Olympus
@@ -8147,6 +8148,8 @@ for details.
     540    FilterSerialNumber                   no
     776    PlanckO                              no
     780    PlanckR2                             no
+    784    RawValueRangeMin                     no
+    786    RawValueRangeMax                     no
     824    RawValueMedian                       no
     828    RawValueRange                        no
     900    DateTimeOriginal                     no
@@ -13346,8 +13349,8 @@ Pentax, Ricoh, Samsung, Sanyo, SeaLife, Sony, Supra and Vivitar.
   0x0207   CameraType                           string
   0x0208   TextInfo                             Olympus TextInfo
   0x0209   CameraID                             string
-  0x020b   EpsonImageWidth                      int16u
-  0x020c   EpsonImageHeight                     int16u
+  0x020b   EpsonImageWidth                      int32u
+  0x020c   EpsonImageHeight                     int32u
   0x020d   EpsonSoftware                        string
   0x0280   PreviewImage                         int8u
   0x0300   PreCaptureFrames                     int16u
@@ -13355,6 +13358,7 @@ Pentax, Ricoh, Samsung, Sanyo, SeaLife, Sony, Supra and Vivitar.
   0x0302   OneTouchWB                           int16u
   0x0303   WhiteBalanceBracket                  int16u
   0x0304   WhiteBalanceBias                     int16u
+  0x0400   SensorArea                           undef[8]
   0x0401   BlackLevel                           int32u[4]
   0x0403   SceneMode                            int16u
   0x0404   SerialNumber                         string
@@ -17721,6 +17725,7 @@ still proprietary) Adobe format.
            MakerNoteSanyoC4                     Sanyo
            MakerNoteSanyoPatch                  Sanyo
            MakerNoteSigma                       Sigma
+           MakerNoteSigma3                      Sigma
            MakerNoteSony                        Sony
            MakerNoteSony2                       Olympus
            MakerNoteSony3                       Olympus
@@ -23966,7 +23971,7 @@ these values are properly stored as UTC, and will convert them to local time
 when extracting.
 
 See
-L<https://developer.apple.com/library/archive/documentation/QuickTime/QTFF/QTFFPreface/qtffPreface.html>
+L<https://developer.apple.com/library/archive/documentation/QuickTime/QTFF/>
 for the official specification.
 
   Tag ID               Tag Name                 Writable
@@ -24015,7 +24020,7 @@ Tags written by some HTC camera phones.
 
 =head3 QuickTime Pittasoft Tags
 
-Tags found in Pittasoft Blackvue dashcam "free" atom.
+Tags found in Pittasoft Blackvue dashcam "free" data.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
@@ -24024,6 +24029,7 @@ Tags found in Pittasoft Blackvue dashcam "free" atom.
   'gps '   GPSLog                               no
   'ptnm'   OriginalFileName                     no
   'ptrh'   Ptrh                                 QuickTime Pittasoft
+  'sttm'   StartTime                            no
   'thum'   PreviewImage                         no
 
 =head3 QuickTime Stream Tags
@@ -32863,6 +32869,7 @@ FileName.
   ImageHeight                File               no
   ImageWidth                 File               no
   JPEGDigest                 File               no
+  JPEGImageLength            File               no
   JPEGQualityEstimate        File               no
   MIMEType                   File               no
   MaxVal                     File               no
@@ -33388,6 +33395,7 @@ for more details.
                        MakerNoteSanyoC4
                        MakerNoteSanyoPatch
                        MakerNoteSigma
+                       MakerNoteSigma3
                        MakerNoteSony
                        MakerNoteSony2
                        MakerNoteSony3

@@ -11,7 +11,7 @@ package Image::ExifTool::Lang::it;
 use strict;
 use vars qw($VERSION);
 
-$VERSION = '1.13';
+$VERSION = '1.14';
 
 %Image::ExifTool::Lang::it::Translate = (
    'A100DataOffset' => 'Offset dati A100',
@@ -1249,6 +1249,7 @@ $VERSION = '1.13';
         'Off' => 'Spento',
       },
     },
+   'ColorBalanceVersion' => 'Versione Bilanciamento Colore',
    'ColorBooster' => {
       PrintConv => {
         'Off' => 'Spento',
@@ -2394,6 +2395,7 @@ $VERSION = '1.13';
       PrintConv => {
         'Aperture Priority' => 'Priorità diaframma',
         'Aperture-priority AE' => 'Priorità diaframma',
+        'Auto' => 'Esposizione automatica',
         'Auto bracket' => 'A forcella automatica',
         'Fireworks' => 'Fuochi artificiali',
         'Landscape' => 'Orizzontale',
@@ -4846,6 +4848,7 @@ $VERSION = '1.13';
       },
     },
    'ObjectTypeReference' => 'Riferimento Tipo Oggetto',
+   'OffsetSchema' => 'Schema Offset',
    'OldSubfileType' => {
       Description => 'Vecchio tipo sotto-file',
       PrintConv => {
@@ -7711,9 +7714,9 @@ $VERSION = '1.13';
     },
    'WBAdjLighting' => {
       PrintConv => {
+        'Daylight (cloudy)' => 'Luce del giorno (2)',
         'Daylight (direct sunlight)' => 'Luce del giorno (0)',
         'Daylight (shade)' => 'Luce del giorno (1)',
-        'Daylight (cloudy)' => 'Luce del giorno (2)',
         'None' => 'Nessuno',
       },
     },

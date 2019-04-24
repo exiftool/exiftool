@@ -42,7 +42,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.23';
+$VERSION = '2.24';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -52,13 +52,15 @@ sub ProcessEncodingParams($$$);
 sub ProcessSampleDesc($$$);
 sub ProcessHybrid($$$);
 sub ProcessRights($$$);
-sub Process_mebx($$$); # (in QuickTimeStream.pl)
-sub Process_3gf($$$);  # (in QuickTimeStream.pl)
-sub Process_gps0($$$); # (in QuickTimeStream.pl)
-sub Process_gsen($$$); # (in QuickTimeStream.pl)
-sub ProcessTTAD($$$);  # (in QuickTimeStream.pl)
-sub ProcessNMEA($$$);  # (in QuickTimeStream.pl)
-sub SaveMetaKeys($$$); # (in QuickTimeStream.pl)
+# ++vvvvvvvvvvvv++ (in QuickTimeStream.pl)
+sub Process_mebx($$$);
+sub Process_3gf($$$);
+sub Process_gps0($$$);
+sub Process_gsen($$$);
+sub ProcessTTAD($$$);
+sub ProcessNMEA($$$);
+sub SaveMetaKeys($$$);
+# ++^^^^^^^^^^^^++
 sub ParseItemLocation($$);
 sub ParseContentDescribes($$);
 sub ParseItemInfoEntry($$);
@@ -384,21 +386,25 @@ my %dontInherit = (
 );
 
 # the usual atoms required to decode timed metadata with the ExtractEmbedded option
-my %eeStd = ( stco => 1, co64 => 1, stsz => 1, stz2 => 1, stsc => 1, stts => 1 );
+my %eeStd = ( stco => 'stbl', co64 => 'stbl', stsz => 'stbl', stz2 => 'stbl',
+              stsc => 'stbl', stts => 'stbl' );
 
-# boxes for the various handler types that we want to save when ExtractEmbedded is enabled
+# boxes and their containers for the various handler types that we want to save
+# when the ExtractEmbedded is enabled (currently only the 'gps ' container name is
+# used, but others have been checked against all available sample files and may be
+# useful in the future if the names are used for different boxes on other locations)
 my %eeBox = (
     # (note: vide is only processed if specific atoms exist in the VideoSampleDesc)
     vide => { %eeStd,
-        JPEG => 1,
-        # avcC => 1, # (uncomment to parse H264 stream)
+        JPEG => 'stsd',
+      # avcC => 'stsd', # (uncomment to parse H264 stream)
     },
     text => { %eeStd },
     meta => { %eeStd },
     sbtl => { %eeStd },
     data => { %eeStd },
     camm => { %eeStd }, # (Insta360)
-    ''   => { 'gps ' => 1 }, # (no handler -- top level box)
+    ''   => { 'gps ' => 'moov' }, # (no handler -- in top level 'moov' box)
 );
 
 # QuickTime atoms
@@ -427,11 +433,11 @@ my %eeBox = (
         when extracting.
 
         See
-        L<https://developer.apple.com/library/archive/documentation/QuickTime/QTFF/QTFFPreface/qtffPreface.html>
+        L<https://developer.apple.com/library/archive/documentation/QuickTime/QTFF/>
         for the official specification.
     },
     meta => { # 'meta' is found here in my Sony ILCE-7S MP4 sample - PH
-        Name => 'Meta', # (don't change this)
+        Name => 'Meta',
         SubDirectory => {
             TagTable => 'Image::ExifTool::QuickTime::Meta',
             Start => 4, # skip 4-byte version number header
@@ -985,7 +991,7 @@ my %eeBox = (
         SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::UserData' },
     },
     meta => { # 'meta' is found here in my EX-F1 MOV sample - PH
-        Name => 'Meta', # (don't change this)
+        Name => 'Meta',
         SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::Meta' },
     },
     iods => {
@@ -1026,7 +1032,6 @@ my %eeBox = (
         Name => 'GPSDataList',
         Unknown => 1,
         Binary => 1,
-        ContainsOffsets => 1,
     },
     # prfl - Profile (ref 12)
     # clip - clipping --> contains crgn (clip region) (ref 12)
@@ -1149,7 +1154,7 @@ my %eeBox = (
         SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::Media' },
     },
     meta => { #PH (MOV)
-        Name => 'Meta', # (don't change this)
+        Name => 'Meta',
         SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::Meta' },
     },
     tref => {
@@ -1412,7 +1417,7 @@ my %eeBox = (
     },
     meta => {
         Name => 'Meta',
-        SubDirectory => { # (don't change this)
+        SubDirectory => {
             TagTable => 'Image::ExifTool::QuickTime::Meta',
             Start => 4, # must skip 4-byte version number header
         },
@@ -5905,6 +5910,8 @@ my %eeBox = (
             $self->OverrideFileType('M4P') if $val eq 'drms' and $$self{VALUE}{FileType} eq 'M4A';
             return $val;
         },
+        # see this link for print conversions (not complete):
+        # https://github.com/yannickcr/brooser/blob/master/php/librairies/getid3/module.audio-video.quicktime.php
     },
     20 => { #PH
         Name => 'AudioVendorID',
@@ -6655,7 +6662,7 @@ my %eeBox = (
 # atoms in Pittasoft "free" atom
 %Image::ExifTool::QuickTime::Pittasoft = (
     PROCESS_PROC => \&ProcessMOV,
-    NOTES => 'Tags found in Pittasoft Blackvue dashcam "free" atom.',
+    NOTES => 'Tags found in Pittasoft Blackvue dashcam "free" data.',
     cprt => 'Copyright',
     thum => {
         Name => 'PreviewImage',
@@ -6672,10 +6679,16 @@ my %eeBox = (
         Name => 'OriginalFileName',
         ValueConv => 'substr($val, 4, -1)',
     },
-    ptrh => { SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::Pittasoft' } },
+    ptrh => {
+        SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::Pittasoft' },
+        # contains these atoms:
+        # ptvi - 27 bytes: '..avc1...'
+        # ptso - 16 bytes: '..mp4a...'
+    },
     'gps ' => {
         Name => 'GPSLog',
         Binary => 1,    # (ASCII NMEA track log with leading timestamps)
+        Notes => 'parsed to extract GPS separately when ExtractEmbedded is used',
         RawConv => q{
             $val =~ s/\0+$//;   # remove trailing nulls
             if (length $val and $$self{OPTIONS}{ExtractEmbedded}) {
@@ -6692,8 +6705,18 @@ my %eeBox = (
             ProcessProc => \&Process_3gf,
         },
     },
-    # ptvi - 27 bytes: '..avc1...'
-    # ptso - 16 bytes: '..mp4a...'
+    sttm => {
+        Name => 'StartTime',
+        Format => 'int64u',
+        Groups => { 2 => 'Time' },
+        RawConv => '$$self{StartTime} = $val',
+        # (ms since Jan 1, 1970, in local time zone - PH)
+        ValueConv => q{
+            my $secs = int($val / 1000);
+            return ConvertUnixTime($secs) . sprintf(".%03d",$val - $secs * 1000);
+        },
+        PrintConv => '$self->ConvertDateTime($val)',
+    },
 );
 
 # QuickTime composite tags
@@ -7767,6 +7790,7 @@ sub ProcessMOV($$;$)
     my $dataPt = $$dirInfo{DataPt};
     my $verbose = $et->Options('Verbose');
     my $dataPos = $$dirInfo{Base} || 0;
+    my $dirID = $$dirInfo{DirID} || '';
     my $charsetQuickTime = $et->Options('CharsetQuickTime');
     my ($buff, $tag, $size, $track, $isUserData, %triplet, $doDefaultLang, $index);
     my ($dirEnd, $ee, $unkOpt, %saveOptions);
@@ -7851,8 +7875,8 @@ sub ProcessMOV($$;$)
                     my $str = $$dirInfo{DirName} . ' with ' . ($raf->Tell() - $pos) . ' bytes';
                     $et->VPrint(0,"$$et{INDENT}\[Terminator found in $str remaining]");
                 } else {
-                    $tag = PrintableTagID($tag);
-                    $et->VPrint(0,"$$et{INDENT}Tag '${tag}' extends to end of file");
+                    my $t = PrintableTagID($tag);
+                    $et->VPrint(0,"$$et{INDENT}Tag '${t}' extends to end of file");
                 }
                 last;
             }
@@ -7894,7 +7918,7 @@ sub ProcessMOV($$;$)
         if ($eeBox{$handlerType} and $eeBox{$handlerType}{$tag}) {
             if ($ee) {
                 # (there is another 'gps ' box with a track log that doesn't contain offsets)
-                if ($tag ne 'gps ' or ($$tagTablePtr{$tag} and $$tagTablePtr{$tag}{ContainsOffsets})) {
+                if ($tag ne 'gps ' or $eeBox{$handlerType}{$tag} eq $dirID) {
                     $eeTag = 1;
                     $$et{OPTIONS}{Unknown} = 1; # temporarily enable "Unknown" option
                 }
@@ -7990,7 +8014,8 @@ ItemID:         foreach $id (keys %$items) {
             my $val;
             my $missing = $size - $raf->Read($val, $size);
             if ($missing) {
-                $et->Warn("Truncated '${tag}' data (missing $missing bytes)");
+                my $t = PrintableTagID($tag);
+                $et->Warn("Truncated '${t}' data (missing $missing bytes)");
                 last;
             }
             # use value to get tag info if necessary
@@ -8066,6 +8091,7 @@ ItemID:         foreach $id (keys %$items) {
                         DirStart   => $start,
                         DirLen     => $size - $start,
                         DirName    => $$subdir{DirName} || $$tagInfo{Name},
+                        DirID      => $tag,
                         HasData    => $$subdir{HasData},
                         Multi      => $$subdir{Multi},
                         IgnoreProp => $$subdir{IgnoreProp}, # (XML hack)
@@ -8256,7 +8282,10 @@ ItemID:         foreach $id (keys %$items) {
                 Extra => sprintf(' at offset 0x%.4x', $raf->Tell()),
             ) if $verbose;
             if ($size and (not $raf->Seek($size-1, 1) or $raf->Read($buff, 1) != 1)) {
-                $et->Warn("Truncated '${tag}' data");
+                unless ($$tagTablePtr{VARS} and $$tagTablePtr{VARS}{IGNORE_BAD_ATOMS}) {
+                    my $t = PrintableTagID($tag);
+                    $et->Warn("Truncated '${t}' data");
+                }
                 last;
             }
         }
@@ -8286,7 +8315,7 @@ QTLang: foreach $tag (@{$$et{QTLang}}) {
         delete $$et{QTLang};
     }
     # process item information now that we are done processing its 'meta' container
-    HandleItemInfo($et) if $topLevel or $$dirInfo{DirName} eq 'Meta';
+    HandleItemInfo($et) if $topLevel or $dirID eq 'meta';
 
     ScanMovieData($et) if $ee and $topLevel;  # brute force scan for metadata embedded in movie data
 

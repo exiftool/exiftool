@@ -8542,6 +8542,7 @@ my %filterConv = (
 
 %Image::ExifTool::Canon::CNTH = (
     GROUPS => { 0 => 'MakerNotes', 1 => 'Canon', 2 => 'Video' },
+    VARS => { IGNORE_BAD_ATOMS => 1 },
     NOTES => q{
         Canon-specific QuickTime tags found in the CNTH atom of MOV videos from some
         cameras such as the PowerShot S95.
@@ -8552,7 +8553,7 @@ my %filterConv = (
         Format => 'undef',
         Notes => 'the full THM image, embedded metadata is extracted as the first sub-document',
         SetBase => 1,
-        RawConv => q{
+        RawConv_TEST => q{
             $$self{DOC_NUM} = ++$$self{DOC_COUNT};
             $self->ExtractInfo(\$val, { ReEntry => 1 });
             $$self{DOC_NUM} = 0;

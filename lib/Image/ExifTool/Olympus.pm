@@ -39,7 +39,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::APP12;
 
-$VERSION = '2.57';
+$VERSION = '2.58';
 
 sub PrintLensInfo($$$);
 
@@ -732,8 +732,8 @@ my %indexInfo = (
         Name => 'CameraID',
         Format => 'string', # this really should have been a string
     },
-    0x020b => { Name => 'EpsonImageWidth',  Writable => 'int16u' }, #PH
-    0x020c => { Name => 'EpsonImageHeight', Writable => 'int16u' }, #PH
+    0x020b => { Name => 'EpsonImageWidth',  Writable => 'int32u' }, #PH
+    0x020c => { Name => 'EpsonImageHeight', Writable => 'int32u' }, #PH
     0x020d => { Name => 'EpsonSoftware',    Writable => 'string' }, #PH
     0x0280 => { #PH
         %Image::ExifTool::previewImageTagInfo,
@@ -756,9 +756,17 @@ my %indexInfo = (
     0x0303 => { Name => 'WhiteBalanceBracket',  Writable => 'int16u' }, #11
     0x0304 => { Name => 'WhiteBalanceBias',     Writable => 'int16u' }, #11
    # 0x0305 => 'PrintMatching', ? #11
+    0x0400 => { #IB
+        Name => 'SensorArea',
+        Condition => '$$self{TIFF_TYPE} eq "ERF"',
+        Writable => 'undef',
+        Format => 'int16u',
+        Count => 4,
+        Notes => 'found in Epson ERF images',
+    },
     0x0401 => { #IB
         Name => 'BlackLevel',
-        Condition => '$format eq "int32u" and $count == 4',
+        Condition => '$$self{TIFF_TYPE} eq "ERF"',
         Writable => 'int32u',
         Count => 4,
         Notes => 'found in Epson ERF images',
@@ -821,6 +829,7 @@ my %indexInfo = (
             TagTable => 'Image::ExifTool::PrintIM::Main',
         },
     },
+    # 0x0e80 - undef[256] - offset 0x30: uint16[2] WB_RGBLevels = val[0]*561,65536,val[1]*431 (ref IB)
     0x0f00 => {
         Name => 'DataDump',
         Writable => 0,

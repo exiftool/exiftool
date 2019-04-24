@@ -11,7 +11,7 @@ package Image::ExifTool::Lang::fr;
 use strict;
 use vars qw($VERSION);
 
-$VERSION = '1.32';
+$VERSION = '1.33';
 
 %Image::ExifTool::Lang::fr::Translate = (
    'AEAperture' => 'Ouverture AE',
@@ -279,6 +279,7 @@ $VERSION = '1.32';
    'AFPointsInFocus' => {
       Description => 'Points AF nets',
       PrintConv => {
+        '(none)' => 'Centre fixe ou multiple',
         'All' => 'Tous',
         'Bottom' => 'Bas',
         'Bottom, Center' => 'Bas + centre',
@@ -372,6 +373,7 @@ $VERSION = '1.32';
    'ActionAdvised' => {
       Description => 'Action conseillée',
       PrintConv => {
+        'Object Append' => 'Ajout d\'objet',
         'Object Kill' => 'Destruction d\'objet',
         'Object Reference' => 'Référence d\'objet',
         'Object Replace' => 'Remplacement d\'objet',
@@ -712,6 +714,7 @@ $VERSION = '1.32';
    'BurstMode' => {
       Description => 'Mode Rafale',
       PrintConv => {
+        'Auto Exposure Bracketing (AEB)' => 'Infini',
         'Infinite' => 'Infini',
         'Off' => 'Désactivé',
         'On' => 'Activé',
@@ -903,6 +906,7 @@ $VERSION = '1.32';
         'On' => 'Activé',
       },
     },
+   'ColorBalanceVersion' => 'Version de la Balance des couleurs',
    'ColorBooster' => {
       PrintConv => {
         'Off' => 'Désactivé',

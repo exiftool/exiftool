@@ -1482,14 +1482,15 @@ sub ProcessNMEA($$$)
 {
     my ($et, $dirInfo, $tagTbl) = @_;
     my $dataPt = $$dirInfo{DataPt};
-    # parse only RMC sentence for now, and ignore leading timestamps (ms since 1970)
-    while ($$dataPt =~ /\$[A-Z]{2}RMC,(\d{2})(\d{2})(\d+(\.\d*)?),A?,(\d+\.\d+),([NS]),(\d+\.\d+),([EW]),(\d*\.?\d*),(\d*\.?\d*),(\d{2})(\d{2})(\d+)/g) {
-        my ($lat,$latRef,$lon,$lonRef) = ($5,$6,$7,$8);
-        my $yr = $13 + ($13 >= 70 ? 1900 : 2000);
-        my ($mon,$day,$hr,$min,$sec) = ($12,$11,$1,$2,$3);
+    # parse only RMC sentence (with leading timestamp) for now
+    while ($$dataPt =~ /(?:\[(\d+)\])?\$[A-Z]{2}RMC,(\d{2})(\d{2})(\d+(\.\d*)?),A?,(\d+\.\d+),([NS]),(\d+\.\d+),([EW]),(\d*\.?\d*),(\d*\.?\d*),(\d{2})(\d{2})(\d+)/g) {
+        my $tc = $1;    # milliseconds since 1970 (local time)
+        my ($lat,$latRef,$lon,$lonRef) = ($6,$7,$8,$9);
+        my $yr = $14 + ($14 >= 70 ? 1900 : 2000);
+        my ($mon,$day,$hr,$min,$sec) = ($13,$12,$2,$3,$4);
         my ($spd, $trk);
-        $spd = $9 * $knotsToKph if length $9;
-        $trk = $10 if length $10;
+        $spd = $10 * $knotsToKph if length $10;
+        $trk = $11 if length $11;
         # lat/long are in DDDMM.MMMM format
         my $deg = int($lat / 100);
         $lat = $deg + ($lat - $deg * 100) / 60;
@@ -1497,7 +1498,9 @@ sub ProcessNMEA($$$)
         $lon = $deg + ($lon - $deg * 100) / 60;
         $sec = '0' . $sec unless $sec =~ /^\d{2}/;   # pad integer part of seconds to 2 digits
         my $time = sprintf('%.4d:%.2d:%.2d %.2d:%.2d:%sZ',$yr,$mon,$day,$hr,$min,$sec);
-        $$et{DOC_NUM} = ++$$et{DOC_COUNT};
+        my $sampleTime;
+        $sampleTime = ($tc - $$et{StartTime}) / 1000 if $tc and $$et{StartTime};
+        FoundSomething($et, $tagTbl, $sampleTime);
         $et->HandleTag($tagTbl, GPSDateTime => $time);
         $et->HandleTag($tagTbl, GPSLatitude  => $lat * ($latRef eq 'S' ? -1 : 1));
         $et->HandleTag($tagTbl, GPSLongitude => $lon * ($lonRef eq 'W' ? -1 : 1));

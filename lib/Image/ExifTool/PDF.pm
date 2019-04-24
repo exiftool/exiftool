@@ -21,7 +21,7 @@ use vars qw($VERSION $AUTOLOAD $lastFetched);
 use Image::ExifTool qw(:DataAccess :Utils);
 require Exporter;
 
-$VERSION = '1.47';
+$VERSION = '1.48';
 
 sub FetchObject($$$$);
 sub ExtractObject($$;$$);
@@ -685,6 +685,41 @@ sub LocateObject($$)
 }
 
 #------------------------------------------------------------------------------
+# Check that the correct object is located at the specified file offset
+# Inputs: 0) ExifTool ref, 1) object name, 2) object reference string, 3) file offset
+# Returns: first non-blank line at start of object, or undef on error
+sub CheckObject($$$$)
+{
+    my ($et, $tag, $ref, $offset) = @_;
+    my ($data, $obj, $dat, $pat);
+
+    my $raf = $$et{RAF};
+    $raf->Seek($offset+$$et{PDFBase}, 0) or $et->Warn("Bad $tag offset"), return undef;
+    # verify that we are reading the expected object
+    $raf->ReadLine($data) or $et->Warn("Error reading $tag data"), return undef;
+    ($obj = $ref) =~ s/R/obj/;
+    unless ($data =~ s/^$obj//) {
+        # handle cases where other whitespace characters are used in the object ID string
+        while ($data =~ /^\d+(\s+\d+)?\s*$/) {
+            $raf->ReadLine($dat);
+            $data .= $dat;
+        }
+        ($pat = $obj) =~ s/ /\\s+/g;
+        unless ($data =~ s/$pat//) {
+            $tag = ucfirst $tag;
+            $et->Warn("$tag object ($obj) not found at offset $offset");
+            return undef;
+        }
+    }
+    # read the first line of data from the object (ignoring blank lines and comments)
+    for (;;) {
+        last if $data =~ /\S/ and $data !~ /^\s*%/;
+        $raf->ReadLine($data) or $et->Warn("Error reading $tag data"), return undef;
+    }
+    return $data;
+}
+
+#------------------------------------------------------------------------------
 # Fetch indirect object from file (from inside a stream if required)
 # Inputs: 0) ExifTool object reference, 1) object reference string,
 #         2) xref lookup, 3) object name (for warning messages)
@@ -746,21 +781,11 @@ sub FetchObject($$$$)
         undef $lastFetched if $cryptStream;
         return ExtractObject($et, \$data);
     }
-    my $raf = $$et{RAF};
-    $raf->Seek($offset+$$et{PDFBase}, 0) or $et->Warn("Bad $tag offset"), return undef;
-    # verify that we are reading the expected object
-    $raf->ReadLine($data) or $et->Warn("Error reading $tag data"), return undef;
-    ($obj = $ref) =~ s/R/obj/;
-    unless ($data =~ s/^$obj//) {
-        $et->Warn("$tag object ($obj) not found at $offset");
-        return undef;
-    }
-    # read the first line of data for the object (skipping comments if necessary)
-    for (;;) {
-        last if $data =~ /\S/ and $data !~ /^\s*%/;
-        $raf->ReadLine($data) or $et->Warn("Error reading $tag data"), return undef;
-    }
-    return ExtractObject($et, \$data, $raf, $xref);
+    # load the start of the object
+    $data = CheckObject($et, $tag, $ref, $offset);
+    return undef unless defined $data;
+
+    return ExtractObject($et, \$data, $$et{RAF}, $xref);
 }
 
 #------------------------------------------------------------------------------
@@ -948,22 +973,11 @@ sub ExtractObject($$;$$)
         # get the location of the object specifying the length
         # (compressed objects are not allowed)
         my $offset = LocateObject($xref, $length) or return $dict;
-        $offset or $et->Warn('Bad Length object'), return $dict;
-        $raf->Seek($offset+$$et{PDFBase}, 0) or $et->Warn('Bad Length offset'), return $dict;
-        # verify that we are reading the expected object
-        $raf->ReadLine($data) or $et->Warn('Error reading Length data'), return $dict;
-        $length =~ s/R/obj/;
-        unless ($data =~ /^$length\s+(\d+)?/) {
-            $et->Warn("Length object ($length) not found at $offset");
-            return $dict;
-        }
-        if (defined $1) {
-            $length = $1;
-        } else {
-            $raf->ReadLine($data) or $et->Warn('Error reading stream Length'), return $dict;
-            $data =~ /^\s*(\d+)/ or $et->Warn('Stream length not found'), return $dict;
-            $length = $1;
-        }
+        $offset or $et->Warn('Bad stream Length object'), return $dict;
+        $data = CheckObject($et, 'stream Length', $length, $offset);
+        defined $data or return $dict;
+        $data =~ /^\s*(\d+)/ or $et->Warn('Stream Length not found'), return $dict;
+        $length = $1;
         $raf->Seek($oldpos, 0); # restore position to start of stream
     }
     # extract the trailing stream data

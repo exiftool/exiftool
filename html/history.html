@@ -17,6 +17,24 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v11.38'><b>Apr. 24, 2019 - Version 11.38</b></a>
+<ul>
+<li>Added Extra JPEGImageLength tag
+<li>Added nksc.config to the sample config files
+<li>Added a couple more Sony/Minolta LensTypes (thanks Jos Roost)
+<li>Added a couple of new Sigma LensType values
+<li>Decode a couple more tags from Pittasoft dashcam videos
+<li>Decode two new FLIR tags (thanks Corinne Berthier)
+<li>Decode a new ERF tag, and fix wrong format for some others (thanks LibRaw)
+<li>Improved decoding of Sigma maker notes for some models
+<li>Enhanced Composite tag logic to allow a scalar Inhibit entry
+<li>Enhanced XMP processing to support readable subdirectories embedded in a tag
+<li>Updated some language translations
+<li>Patched Composite GPS reference direction tags to prevent them from being
+    created if these tags already exist
+<li>Fixed problem reading some odd PDF files
+</ul>
+
 <a name='v11.37'><b>Apr. 17, 2019 - Version 11.37</b></a>
 <ul>
 <li>Added a new Sony AFAreaMode (thanks Jos Roost)
@@ -73,6 +91,7 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <li>Improved decoding of Sony Shutter tag (thanks Jos Roost)
 <li>Improved identification of some Sony lenses (thanks Jos Roost)
 <li>Improved parsing of streamed metadata from TomTom Bandit videos
+<li>Improved warning for truncated QuickTime atom
 <li>Accept wider range of formats when writing QuickTime:GPSCoordinates
 <li>API Changes:
     <ul>

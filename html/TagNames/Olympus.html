@@ -125,12 +125,12 @@ with 1)</span></span></td></tr>
 <tr class=b>
 <td title='0x020b = 523'>0x020b</td>
 <td>EpsonImageWidth</td>
-<td class=c>int16u</td>
+<td class=c>int32u</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x020c = 524'>0x020c</td>
 <td>EpsonImageHeight</td>
-<td class=c>int16u</td>
+<td class=c>int32u</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0x020d = 525'>0x020d</td>
@@ -170,11 +170,16 @@ with 1)</span></span></td></tr>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td title='0x0400 = 1024'>0x0400</td>
+<td>SensorArea</td>
+<td class=c>undef[8]</td>
+<td><span class=s><span class=n>(found in Epson ERF images)</span></span></td></tr>
+<tr class=b>
 <td title='0x0401 = 1025'>0x0401</td>
 <td>BlackLevel</td>
 <td class=c>int32u[4]</td>
 <td><span class=s><span class=n>(found in Epson ERF images)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0403 = 1027'>0x0403</td>
 <td>SceneMode</td>
 <td class=c>int16u</td>
@@ -220,73 +225,73 @@ with 1)</span></span></td></tr>
   <br>101 = Magic Filter
   <br>103 = HDR</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td title='0x0404 = 1028'>0x0404</td>
 <td>SerialNumber</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x0405 = 1029'>0x0405</td>
 <td>Firmware</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x0e00 = 3584'>0x0e00</td>
 <td>PrintIM</td>
 <td class=c>-</td>
 <td>--&gt; <a href='PrintIM.html'>PrintIM Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x0f00 = 3840'>0x0f00</td>
 <td>DataDump</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x0f01 = 3841'>0x0f01</td>
 <td>DataDump2</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x0f04 = 3844'>0x0f04</td>
 <td>ZoomedPreviewStart</td>
 <td class=c title=' * = Protected'>int32u*</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x0f05 = 3845'>0x0f05</td>
 <td>ZoomedPreviewLength</td>
 <td class=c title=' * = Protected'>int32u*</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x0f06 = 3846'>0x0f06</td>
 <td>ZoomedPreviewSize</td>
 <td class=c>int16u[2]</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x1000 = 4096'>0x1000</td>
 <td>ShutterSpeedValue</td>
 <td class=c>rational64s</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x1001 = 4097'>0x1001</td>
 <td>ISOValue</td>
 <td class=c>rational64s</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x1002 = 4098'>0x1002</td>
 <td>ApertureValue</td>
 <td class=c>rational64s</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x1003 = 4099'>0x1003</td>
 <td>BrightnessValue</td>
 <td class=c>rational64s</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x1004 = 4100'>0x1004</td>
 <td>FlashMode</td>
 <td class=c>int16u</td>
 <td><span class=s>2 = On
   <br>3 = Off</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x1005 = 4101'>0x1005</td>
 <td>FlashDevice</td>
 <td class=c>int16u</td>
@@ -294,86 +299,86 @@ with 1)</span></span></td></tr>
   <br>1 = Internal
   <br>4 = External
   <br>5 = Internal + External</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x1006 = 4102'>0x1006</td>
 <td>ExposureCompensation</td>
 <td class=c>rational64s</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x1007 = 4103'>0x1007</td>
 <td>SensorTemperature</td>
 <td class=c>int16s</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x1008 = 4104'>0x1008</td>
 <td>LensTemperature</td>
 <td class=c>int16s</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x1009 = 4105'>0x1009</td>
 <td>LightCondition</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x100a = 4106'>0x100a</td>
 <td>FocusRange</td>
 <td class=c>int16u</td>
 <td><span class=s>0 = Normal
   <br>1 = Macro</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x100b = 4107'>0x100b</td>
 <td>FocusMode</td>
 <td class=c>int16u</td>
 <td><span class=s>0 = Auto
   <br>1 = Manual</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x100c = 4108'>0x100c</td>
 <td>ManualFocusDistance</td>
 <td class=c>rational64u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x100d = 4109'>0x100d</td>
 <td>ZoomStepCount</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x100e = 4110'>0x100e</td>
 <td>FocusStepCount</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x100f = 4111'>0x100f</td>
 <td>Sharpness</td>
 <td class=c>int16u</td>
 <td><span class=s>0 = Normal
   <br>1 = Hard
   <br>2 = Soft</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x1010 = 4112'>0x1010</td>
 <td>FlashChargeLevel</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x1011 = 4113'>0x1011</td>
 <td>ColorMatrix</td>
 <td class=c>int16u[9]</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x1012 = 4114'>0x1012</td>
 <td>BlackLevel</td>
 <td class=c>int16u[4]</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x1013 = 4115'>0x1013</td>
 <td>ColorTemperatureBG?</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x1014 = 4116'>0x1014</td>
 <td>ColorTemperatureRG?</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x1015 = 4117'>0x1015</td>
 <td>WBMode</td>
 <td class=c>int16u[2]</td>
@@ -391,248 +396,248 @@ with 1)</span></span></td></tr>
   <br>&#39;2 8&#39; = 7500 Kelvin
   <br>&#39;3 0&#39; = One-touch</td></tr></table>
 </td></tr>
-<tr>
+<tr class=b>
 <td title='0x1017 = 4119'>0x1017</td>
 <td>RedBalance</td>
 <td class=c>int16u[2]</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x1018 = 4120'>0x1018</td>
 <td>BlueBalance</td>
 <td class=c>int16u[2]</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x1019 = 4121'>0x1019</td>
 <td>ColorMatrixNumber</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x101a = 4122'>0x101a</td>
 <td>SerialNumber</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x101b = 4123'>0x101b</td>
 <td>ExternalFlashAE1_0?</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x101c = 4124'>0x101c</td>
 <td>ExternalFlashAE2_0?</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x101d = 4125'>0x101d</td>
 <td>InternalFlashAE1_0?</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x101e = 4126'>0x101e</td>
 <td>InternalFlashAE2_0?</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x101f = 4127'>0x101f</td>
 <td>ExternalFlashAE1?</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x1020 = 4128'>0x1020</td>
 <td>ExternalFlashAE2?</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x1021 = 4129'>0x1021</td>
 <td>InternalFlashAE1?</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x1022 = 4130'>0x1022</td>
 <td>InternalFlashAE2?</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x1023 = 4131'>0x1023</td>
 <td>FlashExposureComp</td>
 <td class=c>rational64s</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x1024 = 4132'>0x1024</td>
 <td>InternalFlashTable</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x1025 = 4133'>0x1025</td>
 <td>ExternalFlashGValue</td>
 <td class=c>rational64s</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x1026 = 4134'>0x1026</td>
 <td>ExternalFlashBounce</td>
 <td class=c>int16u</td>
 <td><span class=s>0 = No
   <br>1 = Yes</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x1027 = 4135'>0x1027</td>
 <td>ExternalFlashZoom</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x1028 = 4136'>0x1028</td>
 <td>ExternalFlashMode</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x1029 = 4137'>0x1029</td>
 <td>Contrast</td>
 <td class=c>int16u</td>
 <td><span class=s>0 = High
   <br>1 = Normal
   <br>2 = Low</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x102a = 4138'>0x102a</td>
 <td>SharpnessFactor</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x102b = 4139'>0x102b</td>
 <td>ColorControl</td>
 <td class=c>int16u[6]</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x102c = 4140'>0x102c</td>
 <td>ValidBits</td>
 <td class=c>int16u[2]</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x102d = 4141'>0x102d</td>
 <td>CoringFilter</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x102e = 4142'>0x102e</td>
 <td>OlympusImageWidth</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x102f = 4143'>0x102f</td>
 <td>OlympusImageHeight</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x1030 = 4144'>0x1030</td>
 <td>SceneDetect</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x1031 = 4145'>0x1031</td>
 <td>SceneArea?</td>
 <td class=c>int32u[8]</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x1033 = 4147'>0x1033</td>
 <td>SceneDetectData?</td>
 <td class=c>int32u[720]</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x1034 = 4148'>0x1034</td>
 <td>CompressionRatio</td>
 <td class=c>rational64u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x1035 = 4149'>0x1035</td>
 <td>PreviewImageValid</td>
 <td class=c>int32u</td>
 <td><span class=s>0 = No
   <br>1 = Yes</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x1036 = 4150'>0x1036</td>
 <td>PreviewImageStart</td>
 <td class=c title=' * = Protected'>int32u*</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x1037 = 4151'>0x1037</td>
 <td>PreviewImageLength</td>
 <td class=c title=' * = Protected'>int32u*</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x1038 = 4152'>0x1038</td>
 <td>AFResult</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x1039 = 4153'>0x1039</td>
 <td>CCDScanMode</td>
 <td class=c>int16u</td>
 <td><span class=s>0 = Interlaced
   <br>1 = Progressive</span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x103a = 4154'>0x103a</td>
 <td>NoiseReduction</td>
 <td class=c>int16u</td>
 <td><span class=s>0 = Off
   <br>1 = On</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x103b = 4155'>0x103b</td>
 <td>FocusStepInfinity</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x103c = 4156'>0x103c</td>
 <td>FocusStepNear</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x103d = 4157'>0x103d</td>
 <td>LightValueCenter</td>
 <td class=c>rational64s</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x103e = 4158'>0x103e</td>
 <td>LightValuePeriphery</td>
 <td class=c>rational64s</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x103f = 4159'>0x103f</td>
 <td>FieldCount?</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x2010 = 8208'>0x2010</td>
 <td>Equipment
   <br>EquipmentIFD</td>
 <td class=c>-<br>-</td>
 <td>--&gt; <a href='Olympus.html#Equipment'>Olympus Equipment Tags</a>
   <br>--&gt; <a href='Olympus.html#Equipment'>Olympus Equipment Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x2020 = 8224'>0x2020</td>
 <td>CameraSettings
   <br>CameraSettingsIFD</td>
 <td class=c>-<br>-</td>
 <td>--&gt; <a href='Olympus.html#CameraSettings'>Olympus CameraSettings Tags</a>
   <br>--&gt; <a href='Olympus.html#CameraSettings'>Olympus CameraSettings Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0x2030 = 8240'>0x2030</td>
 <td>RawDevelopment
   <br>RawDevelopmentIFD</td>
 <td class=c>-<br>-</td>
 <td>--&gt; <a href='Olympus.html#RawDevelopment'>Olympus RawDevelopment Tags</a>
   <br>--&gt; <a href='Olympus.html#RawDevelopment'>Olympus RawDevelopment Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x2031 = 8241'>0x2031</td>
 <td>RawDev2
   <br>RawDev2IFD</td>
 <td class=c>-<br>-</td>
 <td>--&gt; <a href='Olympus.html#RawDevelopment2'>Olympus RawDevelopment2 Tags</a>
   <br>--&gt; <a href='Olympus.html#RawDevelopment2'>Olympus RawDevelopment2 Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0x2040 = 8256'>0x2040</td>
 <td>ImageProcessing
   <br>ImageProcessingIFD</td>
 <td class=c>-<br>-</td>
 <td>--&gt; <a href='Olympus.html#ImageProcessing'>Olympus ImageProcessing Tags</a>
   <br>--&gt; <a href='Olympus.html#ImageProcessing'>Olympus ImageProcessing Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x2050 = 8272'>0x2050</td>
 <td>FocusInfo
   <br>FocusInfoIFD
@@ -640,84 +645,84 @@ with 1)</span></span></td></tr>
 <td class=c>-<br>-<br>undef</td>
 <td>--&gt; <a href='Olympus.html#FocusInfo'>Olympus FocusInfo Tags</a>
   <br>--&gt; <a href='Olympus.html#FocusInfo'>Olympus FocusInfo Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0x2100 = 8448'>0x2100</td>
 <td>Olympus2100
   <br>Olympus2100IFD</td>
 <td class=c>-<br>-</td>
 <td>--&gt; <a href='Olympus.html#FE'>Olympus FE Tags</a>
   <br>--&gt; <a href='Olympus.html#FE'>Olympus FE Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x2200 = 8704'>0x2200</td>
 <td>Olympus2200
   <br>Olympus2200IFD</td>
 <td class=c>-<br>-</td>
 <td>--&gt; <a href='Olympus.html#FE'>Olympus FE Tags</a>
   <br>--&gt; <a href='Olympus.html#FE'>Olympus FE Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0x2300 = 8960'>0x2300</td>
 <td>Olympus2300
   <br>Olympus2300IFD</td>
 <td class=c>-<br>-</td>
 <td>--&gt; <a href='Olympus.html#FE'>Olympus FE Tags</a>
   <br>--&gt; <a href='Olympus.html#FE'>Olympus FE Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x2400 = 9216'>0x2400</td>
 <td>Olympus2400
   <br>Olympus2400IFD</td>
 <td class=c>-<br>-</td>
 <td>--&gt; <a href='Olympus.html#FE'>Olympus FE Tags</a>
   <br>--&gt; <a href='Olympus.html#FE'>Olympus FE Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0x2500 = 9472'>0x2500</td>
 <td>Olympus2500
   <br>Olympus2500IFD</td>
 <td class=c>-<br>-</td>
 <td>--&gt; <a href='Olympus.html#FE'>Olympus FE Tags</a>
   <br>--&gt; <a href='Olympus.html#FE'>Olympus FE Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x2600 = 9728'>0x2600</td>
 <td>Olympus2600
   <br>Olympus2600IFD</td>
 <td class=c>-<br>-</td>
 <td>--&gt; <a href='Olympus.html#FE'>Olympus FE Tags</a>
   <br>--&gt; <a href='Olympus.html#FE'>Olympus FE Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0x2700 = 9984'>0x2700</td>
 <td>Olympus2700
   <br>Olympus2700IFD</td>
 <td class=c>-<br>-</td>
 <td>--&gt; <a href='Olympus.html#FE'>Olympus FE Tags</a>
   <br>--&gt; <a href='Olympus.html#FE'>Olympus FE Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x2800 = 10240'>0x2800</td>
 <td>Olympus2800
   <br>Olympus2800IFD</td>
 <td class=c>-<br>-</td>
 <td>--&gt; <a href='Olympus.html#FE'>Olympus FE Tags</a>
   <br>--&gt; <a href='Olympus.html#FE'>Olympus FE Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0x2900 = 10496'>0x2900</td>
 <td>Olympus2900
   <br>Olympus2900IFD</td>
 <td class=c>-<br>-</td>
 <td>--&gt; <a href='Olympus.html#FE'>Olympus FE Tags</a>
   <br>--&gt; <a href='Olympus.html#FE'>Olympus FE Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x3000 = 12288'>0x3000</td>
 <td>RawInfo
   <br>RawInfoIFD</td>
 <td class=c>-<br>-</td>
 <td>--&gt; <a href='Olympus.html#RawInfo'>Olympus RawInfo Tags</a>
   <br>--&gt; <a href='Olympus.html#RawInfo'>Olympus RawInfo Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td title='0x4000 = 16384'>0x4000</td>
 <td>MainInfo
   <br>MainInfoIFD</td>
 <td class=c>-<br>-</td>
 <td>--&gt; <a href='Olympus.html'>Olympus Tags</a>
   <br>--&gt; <a href='Olympus.html'>Olympus Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x5000 = 20480'>0x5000</td>
 <td>UnknownInfo
   <br>UnknownInfoIFD</td>
@@ -3683,7 +3688,7 @@ like the LS-5, LS-10, LS-11.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Mar 27, 2019</i>
+<br><i>Last revised Apr 24, 2019</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

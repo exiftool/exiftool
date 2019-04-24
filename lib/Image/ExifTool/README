@@ -711,9 +711,10 @@ numerical.
                   they are used as indices into the common @val, @prt and @raw
                   lists), and together the keys must be sequential starting from
                   0.  A special feature allows a scalar tag name to be used
-                  instead of the hash reference when only the 0th tag is
-                  defined.  For example, the following two definitions are
-                  equivalent:
+                  instead of the hash reference, in which case the next
+                  available index will be used (avoiding collisions with Desire
+                  and Inhibit hash entries).  For example, the following two
+                  definitions are equivalent:
 
                         Require => { 0 => 'XMP:Title' },
                         Require => 'XMP:Title',
@@ -724,11 +725,15 @@ numerical.
                   may be undefined for Desire'd tags.  If no tags are Require'd,
                   at least one of the Desire'd tags must exist for the Composite
                   tag to be generated.  If there are no Require'd or Desire'd
-                  tags, then the Composite tag is always generated.
+                  tags, then the Composite tag is always generated.  A scalar
+                  Desire tag name is given the next available index (after
+                  scalar Require tags are allocated).
 
   Inhibit       : [Composite tags only] Similar to the Require and Desire
                   hashes, except that the Composite tag is NOT built if any of
-                  the Inhibit tags exist.
+                  the Inhibit tags exist.  A scalar tag name is given the next
+                  available index (after scalar Require and Desire tags are
+                  allocated).
 
   Shift         : [Writable tags only] Specifies type of shift to apply if this
                   value may be shifted.  Set to 'Time' for shifting date/time

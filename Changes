@@ -7,6 +7,23 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 11.30. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Apr. 24, 2019 - Version 11.38
+
+  - Added Extra JPEGImageLength tag
+  - Added nksc.config to the sample config files
+  - Added a couple more Sony/Minolta LensTypes (thanks Jos Roost)
+  - Added a couple of new Sigma LensType values
+  - Decode a couple more tags from Pittasoft dashcam videos
+  - Decode two new FLIR tags (thanks Corinne Berthier)
+  - Decode a new ERF tag, and fix wrong format for some others (thanks LibRaw)
+  - Improved decoding of Sigma maker notes for some models
+  - Enhanced Composite tag logic to allow a scalar Inhibit entry
+  - Enhanced XMP processing to support readable subdirectories embedded in a tag
+  - Updated some language translations
+  - Patched Composite GPS reference direction tags to prevent them from being
+    created if these tags already exist
+  - Fixed problem reading some odd PDF files
+
 Apr. 17, 2019 - Version 11.37
 
   - Added a new Sony AFAreaMode (thanks Jos Roost)
@@ -58,6 +75,7 @@ Apr. 4, 2019 - Version 11.34
   - Improved decoding of Sony Shutter tag (thanks Jos Roost)
   - Improved identification of some Sony lenses (thanks Jos Roost)
   - Improved parsing of streamed metadata from TomTom Bandit videos
+  - Improved warning for truncated QuickTime atom
   - Accept wider range of formats when writing QuickTime:GPSCoordinates
   - API Changes:
       - Changed SetFileName() 'Link' option name to 'HardLink' (but still allow

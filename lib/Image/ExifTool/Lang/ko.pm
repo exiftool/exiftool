@@ -11,7 +11,7 @@ package Image::ExifTool::Lang::ko;
 use strict;
 use vars qw($VERSION);
 
-$VERSION = '1.06';
+$VERSION = '1.07';
 
 %Image::ExifTool::Lang::ko::Translate = (
    'AELock' => {
@@ -256,6 +256,7 @@ $VERSION = '1.06';
         'Off' => '꺼짐',
       },
     },
+   'AutoBracketingSet' => '자동 브라케팅 설정',
    'AutoExposureBracketing' => {
       PrintConv => {
         'Off' => '꺼짐',
@@ -429,6 +430,7 @@ $VERSION = '1.06';
         'On' => '켜짐',
       },
     },
+   'ColorBalanceVersion' => '컬러 밸런스 버전',
    'ColorBooster' => {
       PrintConv => {
         'Off' => '꺼짐',
@@ -1469,6 +1471,7 @@ $VERSION = '1.06';
    'MakerNotes' => '제조업체 정보',
    'ManualFlashOutput' => '내장 플래시 수동 출력',
    'ManualFocusDistance' => '수동 초점 거리',
+   'MatrixMetering' => '멀티 패턴 측광',
    'MaxAperture' => '최대 렌즈 조리개',
    'MaxApertureAtMaxFocal' => '최대 초점길이에서 최대 조리개',
    'MaxApertureAtMinFocal' => '최소 초점길이에서 최대 조리개',

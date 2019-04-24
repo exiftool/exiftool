@@ -104,8 +104,8 @@ your home directory, then you would type the following commands in a
 terminal window to extract and run ExifTool:
 
   cd ~/Desktop
-  gzip -dc Image-ExifTool-11.37.tar.gz | tar -xf -
-  cd Image-ExifTool-11.37
+  gzip -dc Image-ExifTool-11.38.tar.gz | tar -xf -
+  cd Image-ExifTool-11.38
   ./exiftool t/images/ExifTool.jpg
 
 Note:  These commands extract meta information from one of the test images. 
@@ -195,6 +195,7 @@ distribution package:
     example.config            - General example showing config features
     fotoware.config           - Definitions for writing Fotoware XMP tags
     gps2utm.config            - Generate UTM coordinate tags from GPS info
+    nksc.config               - Decode tags in Nikon ViewNX NKSC files
     photoshop_paths.config    - For extracting or copying Photoshop paths
     picasa_faces.config       - Convert from Picasa to MWG/MP face regions
     time_zone.config          - Calcuate time zone from EXIF tags

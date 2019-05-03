@@ -702,6 +702,7 @@
 </tr><tr><td class=r>0x3260000</td><td>= PowerShot A3400 IS</td>
 </tr><tr><td class=r>0x3270000</td><td>= PowerShot A2400 IS</td>
 </tr><tr><td class=r>0x3280000</td><td>= PowerShot A2300</td>
+</tr><tr><td class=r>0x3320000</td><td>= PowerShot S100V</td>
 </tr><tr><td class=r>0x3330000</td><td>= PowerShot G15</td>
 </tr><tr><td class=r>0x3340000</td><td>= PowerShot SX50 HS</td>
 </tr><tr><td class=r>0x3350000</td><td>= PowerShot SX160 IS</td>
@@ -1572,6 +1573,7 @@ attempting to identify the specific lens model.</p>
 </tr><tr><td>180.6</td><td>= Sigma 24mm f/1.5 FF High-Speed Prime | 017</td>
 </tr><tr><td>180.7</td><td>= Sigma 50mm f/1.5 FF High-Speed Prime | 017</td>
 </tr><tr><td>180.8</td><td>= Sigma 85mm f/1.5 FF High-Speed Prime | 017</td>
+</tr><tr><td>180.9</td><td>= Tokina Opera 50mm f/1.4 FF</td>
 </tr><tr><td>181</td><td>= Canon EF 100-400mm f/4.5-5.6L IS USM + 1.4x or Sigma Lens</td>
 </tr><tr><td>181.1</td><td>= Sigma 150-600mm f/5-6.3 DG OS HSM | S + 1.4x</td>
 </tr><tr><td>182</td><td>= Canon EF 100-400mm f/4.5-5.6L IS USM + 2x or Sigma Lens</td>
@@ -1603,6 +1605,7 @@ attempting to identify the specific lens model.</p>
 </tr><tr><td>198.1</td><td>= Zeiss Otus 55mm f/1.4 ZE</td>
 </tr><tr><td>198.2</td><td>= Zeiss Otus 85mm f/1.4 ZE</td>
 </tr><tr><td>198.3</td><td>= Zeiss Milvus 25mm f/1.4</td>
+</tr><tr><td>198.4</td><td>= Zeiss Otus 100mm f/1.4</td>
 </tr><tr><td>199</td><td>= Canon EF 28-80mm f/3.5-5.6 USM</td>
 </tr><tr><td>200</td><td>= Canon EF 75-300mm f/4-5.6 USM</td>
 </tr><tr><td>201</td><td>= Canon EF 28-80mm f/3.5-5.6 USM</td>
@@ -6522,9 +6525,10 @@ valid for all camera models)</span></span></td></tr>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td class=r title='29 = 0x1d'>29</td>
-<td>WB_RGGBLevelsCustom</td>
-<td class=c>int16s[4]</td>
-<td>&nbsp;</td></tr>
+<td>WB_RGGBLevelsCustom
+  <br>BlackLevels</td>
+<td class=c>int16s[4]<br>int16s[4]</td>
+<td><span class=s><span class=n>(black levels for the D60)</span></span></td></tr>
 <tr>
 <td class=r title='33 = 0x21'>33</td>
 <td>WB_RGGBLevelsKelvin</td>
@@ -10377,7 +10381,7 @@ SX280, and CR3 images from cameras such as the EOS M50.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Apr 15, 2019</i>
+<br><i>Last revised May 3, 2019</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

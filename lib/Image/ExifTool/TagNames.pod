@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 22554 tags, with 15004 unique tag names.
+They contain a total of 22582 tags, with 15004 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -6162,6 +6162,7 @@ These tags are used by the 10D and 300D.
      21    WB_RGGBLevelsFluorescent             int16s[4]
      25    WB_RGGBLevelsFlash                   int16s[4]
      29    WB_RGGBLevelsCustom                  int16s[4]
+           BlackLevels                          int16s[4]
      33    WB_RGGBLevelsKelvin                  int16s[4]
      37    WB_RGGBBlackLevels                   int16s[4]
 
@@ -23958,9 +23959,17 @@ parameters, as well as proprietary information written by many camera
 models.  Tags with a question mark after their name are not extracted unless
 the Unknown option is set.
 
-ExifTool currently has a limited ability to write metadata in
-QuickTime-format videos.  It can edit/create/delete any XMP tags, but may
-only be used to edit existing tags in native QuickTime metadata.
+When writing, ExifTool creates both QuickTime and XMP tags by default, but
+the group may be specified to write one or the other separately.  Newly
+created QuickTime tags are added in the ItemList location if possible,
+otherwise in UserData, but this may be changed by specifying the location.
+Alternate language tags may be accessed for ItemList tags by adding a
+language-country code to the tag name (eg. "ItemList:Artist-fra-FR"), or for
+UserData tags by adding a language code (eg. "UserData:Artist-fra"). If no
+language code is specified when writing, alternate languages are deleted.
+Use the "und" language code to write the default language without deleting
+alternate languages.  Note that "eng" is treated as a default language when
+reading, but not when writing.
 
 According to the specification, many QuickTime date/time tags should be
 stored as UTC.  Unfortunately, digital cameras often store local time values
@@ -24944,7 +24953,11 @@ multi-language user data tags found, even if they don't exist in this table.
 
   Tag ID       Tag Name                         Writable
   ------       --------                         --------
+  '@PST'       ParentShortTitle                 string
+  '@ppi'       ParentProductID                  string
+  '@pti'       ParentTitle                      string
   '@sec'       SamsungSec                       Samsung sec
+  '@sti'       ShortTitle                       string
   'AllF'       PlayAllFrames                    int8u
   'CAME'       SerialNumberHash                 string
   'CNCV'       CompressorVersion                string
@@ -24957,6 +24970,7 @@ multi-language user data tags found, even if they don't exist in this table.
   'FIRM'       FirmwareVersion                  string
   "FOV\0"      FieldOfView                      string
   'GPMF'       GoProGPMF                        GoPro GPMF
+  'GUID'       GUID                             string
   'GoPr'       GoProType                        string
   'INFO'       SamsungINFO                      Samsung INFO
   'LEIC'       LeicaLEIC                        Panasonic PANA
@@ -24975,7 +24989,7 @@ multi-language user data tags found, even if they don't exist in this table.
   'PXTH'       PentaxPreview                    Pentax PXTH
   'QVMI'       CasioQVMI                        EXIF
   'RMKN'       RicohRMKN                        EXIF
-  'RTHU'       PreviewImage                     string
+  'RTHU'       PreviewImage                     no
   'SDLN'       PlayMode                         string
   'SNum'       SerialNumber                     string
   'SelO'       PlaySelection                    int8u
@@ -24994,68 +25008,87 @@ multi-language user data tags found, even if they don't exist in this table.
                SanyoMP4                         Sanyo MP4
                UnknownTags?                     string
   'TTMD'       TomTomMetaData                   QuickTime TomTom
+  'VERS'       ProductVersion                   string
   'WLOC'       WindowLocation                   int16u
   'XMP_'       XMP                              XMP
   'Xtra'       MicrosoftXtra                    Microsoft Xtra
   '_cx_'       CX?                              rational64s
   '_cy_'       CY?                              rational64s
   '_yaw'       Yaw                              rational64s
-  'albm'       Album                            string
+  'albm'       Album                            no
   'albr'       AlbumArtist                      string
   'angl'       CameraAngle                      string
+  'apID'       AppleStoreAccount                string
   'apmd'       ApertureMode                     undef
-  'auth'       Author                           string
+  'auth'       Author                           no
+  'catg'       Category                         string
   'ccid'       ContentID                        string
   'cdis'       ContentDistributorID             string
   'chpl'       ChapterList                      no
   'clfn'       ClipFileName                     string
   'clid'       ClipID                           string
-  'clsf'       Classification                   string
+  'clsf'       Classification                   no
   'cmid'       CameraID                         string
   'cmnm'       Model                            string
-  'coll'       CollectionName                   string
-  'cprt'       Copyright                        string
+  'coll'       CollectionName                   no
+  'cprt'       Copyright                        no
   'cver'       CodeVersion                      string
   'cvru'       CoverURI                         string
   'date'       DateTimeOriginal                 string
-  'dscp'       Description                      string
-  'gnre'       Genre                            string
+  'dscp'       Description                      no
+  'egid'       EpisodeGlobalUniqueID            string
+  'gnre'       Genre                            no
   'hinf'       HintTrackInfo                    QuickTime HintTrackInfo
   'hinv'       HintVersion                      string
   'hnti'       HintInfo                         QuickTime HintInfo
   'htcb'       HTCBinary                        QuickTime HTCBinary
   'icnu'       IconURI                          string
   'infu'       InfoURL                          string
+  'keyw'       Keyword                          string
   'kgtt'       TrackType                        string
-  'kywd'       Keywords                         string
-  'loci'       LocationInformation              string
+  'kywd'       Keywords                         no
+  'ldes'       LongDescription                  string
+  'loci'       LocationInformation              no
   'lrcu'       LyricsURI                        string
   'lvlm'       LevelMeter?                      rational64s
-  'manu'       Make                             string
+  'manu'       Make                             no
   'meta'       Meta                             QuickTime Meta
-  'modl'       Model                            string
+  'modl'       Model                            no
   'name'       Name                             string
   'perf'       Performer                        string
   'pose'       pose                             Kodak pose
+  'prID'       ProductID                        string
   'ptch'       Pitch                            rational64s
   'ptv '       PrintToVideo                     QuickTime Video
+  'purd'       PurchaseDate                     string
+  'purl'       PodcastURL                       string
   'rads'       Rads?                            rational64s
+  'rate'       RatingPercent                    string
   'reel'       ReelName                         string
   'roll'       Roll                             rational64s
-  'rtng'       Rating                           string
+  'rtng'       Rating                           no
   'scen'       Scene                            string
   'scrn'       OlympusPreview                   Olympus scrn
   'shot'       ShotName                         string
   'slno'       SerialNumber                     string
   'smta'       SamsungSmta                      Samsung smta
+  'soaa'       SortAlbumArtist                  string
+  'soal'       SortAlbum                        string
+  'soar'       SortArtist                       string
+  'soco'       SortComposer                     string
+  'sonm'       SortName                         string
+  'sosn'       SortShow                         string
   'tags'       Audible_tags                     Audible tags
   'thmb'       MakerNotePentax5a                Pentax
                OlympusThumbnail                 Olympus thmb
                ThumbnailImage                   string
                ThumbnailPNG                     string
                UnknownThumbnail                 string
-  'titl'       Title                            string
-  'urat'       UserRating                       string
+  'titl'       Title                            no
+  'tven'       TVEpisodeID                      string
+  'tvnn'       TVNetworkName                    string
+  'tvsh'       TVShow                           string
+  'urat'       UserRating                       no
   'vndr'       Vendor                           string
   'yrrc'       Year                             string
   "\xa9ART"    Artist                           string
@@ -25069,6 +25102,7 @@ multi-language user data tags found, even if they don't exist in this table.
   "\xa9com"    Composer                         string
   "\xa9cpy"    Copyright                        string
   "\xa9day"    ContentCreateDate                string
+  "\xa9des"    Description                      string
   "\xa9dir"    Director                         string
   "\xa9ed1"    Edit1                            string
   "\xa9ed2"    Edit2                            string
@@ -25079,7 +25113,7 @@ multi-language user data tags found, even if they don't exist in this table.
   "\xa9ed7"    Edit7                            string
   "\xa9ed8"    Edit8                            string
   "\xa9ed9"    Edit9                            string
-  "\xa9enc"    EncoderID                        string
+  "\xa9enc"    EncodedBy                        string
   "\xa9fmt"    Format                           string
   "\xa9fpt"    Pitch                            string
   "\xa9frl"    Roll                             string
@@ -25099,12 +25133,14 @@ multi-language user data tags found, even if they don't exist in this table.
   "\xa9mdl"    Model                            string
   "\xa9mod"    Model                            string
   "\xa9nam"    Title                            string
+  "\xa9nrt"    Narrator                         string
   "\xa9pdk"    ProducerKeywords                 string
   "\xa9phg"    RecordingCopyright               string
   "\xa9prd"    Producer                         string
   "\xa9prf"    Performers                       string
   "\xa9prk"    PerformerKeywords                string
   "\xa9prl"    PerformerURL                     string
+  "\xa9pub"    Publisher                        string
   "\xa9req"    Requirements                     string
   "\xa9snk"    SubtitleKeywords                 string
   "\xa9snm"    Subtitle                         string

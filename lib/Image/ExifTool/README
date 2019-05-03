@@ -543,6 +543,8 @@ numerical.
                   if a Warning may be issued) because ValueConv is more
                   efficient since it is only executed if the tag value is
                   requested, while RawConv is executed for all extracted tags.
+                  Note that a tag is still writable if it has a RawConv without
+                  a RawConvInv, but this is not true for ValueConv/PrintConv.
 
   ValueConv     : Used to convert the Raw value to a useable form. May be a hash
                   reference to act as a lookup table, a scalar which is
@@ -821,6 +823,8 @@ numerical.
                   which determines if tag should be overwritten.  Arguments are:
                   0) ExifTool object ref, 1) new value hash ref, 2) old value,
                   3) new value reference.
+
+  Preferred     : This tag is always preferred when writing.
 
   Override      : [User-defined Composite tags only] Flag to specify that the
                   new tag definition should override the definition of existing

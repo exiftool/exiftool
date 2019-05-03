@@ -42,7 +42,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.24';
+$VERSION = '2.25';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -73,9 +73,10 @@ sub ConvertChapterList($);
 sub PrintChapter($);
 sub PrintGPSCoordinates($);
 sub PrintInvGPSCoordinates($);
-sub UnpackLang($);
+sub UnpackLang($;$);
 sub WriteQuickTime($$$);
 sub WriteMOV($$);
+sub GetLangInfo($$);
 
 # MIME types for all entries in the ftypLookup with file extensions
 # (defaults to 'video/mp4' if not found in this lookup)
@@ -420,9 +421,17 @@ my %eeBox = (
         models.  Tags with a question mark after their name are not extracted unless
         the Unknown option is set.
 
-        ExifTool currently has a limited ability to write metadata in
-        QuickTime-format videos.  It can edit/create/delete any XMP tags, but may
-        only be used to edit existing tags in native QuickTime metadata.
+        When writing, ExifTool creates both QuickTime and XMP tags by default, but
+        the group may be specified to write one or the other separately.  Newly
+        created QuickTime tags are added in the ItemList location if possible,
+        otherwise in UserData, but this may be changed by specifying the location.
+        Alternate language tags may be accessed for ItemList tags by adding a
+        language-country code to the tag name (eg. "ItemList:Artist-fra-FR"), or for
+        UserData tags by adding a language code (eg. "UserData:Artist-fra"). If no
+        language code is specified when writing, alternate languages are deleted.
+        Use the "und" language code to write the default language without deleting
+        alternate languages.  Note that "eng" is treated as a default language when
+        reading, but not when writing.
 
         According to the specification, many QuickTime date/time tags should be
         stored as UTC.  Unfortunately, digital cameras often store local time values
@@ -1292,9 +1301,11 @@ my %eeBox = (
 %Image::ExifTool::QuickTime::UserData = (
     PROCESS_PROC => \&ProcessMOV,
     WRITE_PROC => \&WriteQuickTime,
-    GROUPS => { 2 => 'Video' },
+    GROUPS => { 1 => 'UserData', 2 => 'Video' },
     WRITABLE => 1,
     FORMAT => 'string',
+    WRITE_GROUP => 'UserData',
+    LANG_INFO => \&GetLangInfo,
     NOTES => q{
         Tag ID's beginning with the copyright symbol (hex 0xa9) are multi-language
         text.  Alternate language tags are accessed by adding a dash followed by the
@@ -1358,7 +1369,6 @@ my %eeBox = (
     "\xa9prf" => 'Performers',
     "\xa9prk" => 'PerformerKeywords', #12
     "\xa9prl" => 'PerformerURL',
-    "\xa9dir" => 'Director', #12
     "\xa9req" => 'Requirements',
     "\xa9snk" => 'SubtitleKeywords', #12
     "\xa9snm" => 'Subtitle', #12
@@ -1368,7 +1378,7 @@ my %eeBox = (
     "\xa9swr" => 'SoftwareVersion', #12
     "\xa9too" => 'Encoder', #PH (NC)
     "\xa9trk" => 'Track', #PH (NC)
-    "\xa9wrt" => 'Composer',
+    "\xa9wrt" => { Name => 'Composer', Preferred => 0, Avoid => 1 }, # ("\xa9com" is preferred in UserData)
     "\xa9xyz" => { #PH (iPhone 3GS)
         Name => 'GPSCoordinates',
         Groups => { 2 => 'Location' },
@@ -1392,7 +1402,7 @@ my %eeBox = (
     "\xa9dji" => { Name => 'UserData_dji', Format => 'undef', Binary => 1, Unknown => 1, Hidden => 1 },
     "\xa9res" => { Name => 'UserData_res', Format => 'undef', Binary => 1, Unknown => 1, Hidden => 1 },
     "\xa9uid" => { Name => 'UserData_uid', Format => 'undef', Binary => 1, Unknown => 1, Hidden => 1 },
-    "\xa9mdl" => { Name => 'Model',        Format => 'string', Notes => 'non-standard-format DJI tag' },
+    "\xa9mdl" => { Name => 'Model',        Format => 'string', Preferred => 0, Notes => 'non-standard-format DJI tag' },
     # end DJI tags
     name => 'Name',
     WLOC => {
@@ -1443,13 +1453,13 @@ my %eeBox = (
     # the following are 3gp tags, references:
     # http://atomicparsley.sourceforge.net
     # http://www.3gpp.org/ftp/tsg_sa/WG4_CODEC/TSGS4_25/Docs/
-    cprt => { Name => 'Copyright',  %langText, Groups => { 2 => 'Author' } },
+    cprt => { Name => 'Copyright',  %langText, Groups => { 2 => 'Author' }, Preferred => 0 },
     auth => { Name => 'Author',     %langText, Groups => { 2 => 'Author' } },
-    titl => { Name => 'Title',      %langText },
+    titl => { Name => 'Title',      %langText, Preferred => 0 },
     dscp => { Name => 'Description',%langText },
     perf => { Name => 'Performer',  %langText },
-    gnre => { Name => 'Genre',      %langText },
-    albm => { Name => 'Album',      %langText },
+    gnre => { Name => 'Genre',      %langText, Preferred => 0 },
+    albm => { Name => 'Album',      %langText, Preferred => 0 },
     coll => { Name => 'CollectionName', %langText }, #17
     rtng => {
         Name => 'Rating',
@@ -1564,6 +1574,7 @@ my %eeBox = (
     cmnm => { # (NC)
         Name => 'Model',
         Description => 'Camera Model Name',
+        Preferred => 0,
         Format => 'string', # (necessary to remove the trailing NULL)
     },
     date => { # (NC)
@@ -1588,12 +1599,14 @@ my %eeBox = (
     },
     manu => { # (SX280)
         Name => 'Make',
+        Preferred => 0,
         # (with Canon there are 6 unknown bytes before the model: "\0\0\0\0\x15\xc7")
         RawConv => '$val=~s/^\0{4}..//s; $val=~s/\0.*//; $val',
     },
     modl => { # (Samsung GT-S8530, Canon SX280)
         Name => 'Model',
         Description => 'Camera Model Name',
+        Preferred => 0,
         # (with Canon there are 6 unknown bytes before the model: "\0\0\0\0\x15\xc7")
         RawConv => '$val=~s/^\0{4}..//s; $val=~s/\0.*//; $val',
     },
@@ -1745,6 +1758,7 @@ my %eeBox = (
     CNMN => {
         Name => 'Model', #PH (EOS 550D)
         Description => 'Camera Model Name',
+        Preferred => 0,
         Format => 'string', # (necessary to remove the trailing NULL)
     },
     CNFV => { Name => 'FirmwareVersion', Format => 'string' }, #PH (EOS 550D)
@@ -1822,9 +1836,9 @@ my %eeBox = (
         SubDirectory => { TagTable => 'Image::ExifTool::Kodak::DcMD' },
     },
     SNum => { Name => 'SerialNumber', Groups => { 2 => 'Camera' } },
-    ptch => { Name => 'Pitch', Format => 'rational64s' }, # Units??
-    _yaw => { Name => 'Yaw',   Format => 'rational64s' }, # Units??
-    roll => { Name => 'Roll',  Format => 'rational64s' }, # Units??
+    ptch => { Name => 'Pitch', Format => 'rational64s', Preferred => 0 }, # Units??
+    _yaw => { Name => 'Yaw',   Format => 'rational64s', Preferred => 0 }, # Units??
+    roll => { Name => 'Roll',  Format => 'rational64s', Preferred => 0 }, # Units??
     _cx_ => { Name => 'CX',    Format => 'rational64s', Unknown => 1 },
     _cy_ => { Name => 'CY',    Format => 'rational64s', Unknown => 1 },
     rads => { Name => 'Rads',  Format => 'rational64s', Unknown => 1 },
@@ -2277,7 +2291,7 @@ my %eeBox = (
 %Image::ExifTool::QuickTime::Meta = (
     PROCESS_PROC => \&ProcessMOV,
     WRITE_PROC => \&WriteQuickTime,
-    GROUPS => { 2 => 'Video' },
+    GROUPS => { 1 => 'Meta', 2 => 'Video' },
     ilst => {
         Name => 'ItemList',
         SubDirectory => {
@@ -2301,6 +2315,7 @@ my %eeBox = (
     iloc => {
         Name => 'ItemLocation',
         RawConv => \&ParseItemLocation,
+        WriteHook => \&ParseItemLocation,
         Notes => 'parsed, but not extracted as a tag',
     },
     ipro => {
@@ -2376,6 +2391,7 @@ my %eeBox = (
     ipma => {
         Name => 'ItemPropertyAssociation',
         RawConv => \&ParseItemPropAssoc,
+        WriteHook => \&ParseItemPropAssoc,
         Notes => 'parsed, but not extracted as a tag',
     },
 );
@@ -2456,6 +2472,7 @@ my %eeBox = (
         Name => 'ContentDescribes',
         Notes => 'parsed, but not extracted as a tag',
         RawConv => \&ParseContentDescribes,
+        WriteHook => \&ParseContentDescribes,
     },
 );
 
@@ -2471,6 +2488,7 @@ my %eeBox = (
     infe => {
         Name => 'ItemInfoEntry',
         RawConv => \&ParseItemInfoEntry,
+        WriteHook => \&ParseItemInfoEntry,
         Notes => 'parsed, but not extracted as a tag',
     },
 );
@@ -2529,18 +2547,23 @@ my %eeBox = (
     PROCESS_PROC => \&ProcessMOV,
     WRITE_PROC => \&WriteQuickTime,
     WRITABLE => 1,
+    PREFERRED => 1,
     FORMAT => 'string',
-    GROUPS => { 2 => 'Audio' },
+    GROUPS => { 1 => 'ItemList', 2 => 'Audio' },
+    WRITE_GROUP => 'ItemList',
+    LANG_INFO => \&GetLangInfo,
     NOTES => q{
         As well as these tags, the "mdta" handler uses numerical tag ID's which are
         added dynamically to this table after processing the Meta Keys information.
     },
     # in this table, binary 1 and 2-byte "data"-type tags are interpreted as
-    # int8u and int16u.  Multi-byte binary "data" tags are extracted as binary data
+    # int8u and int16u.  Multi-byte binary "data" tags are extracted as binary data.
+    # (Note that the Preferred property is set to 0 for some tags to prevent them
+    #  from being created when a same-named tag already exists in the table)
     "\xa9ART" => 'Artist',
     "\xa9alb" => 'Album',
     "\xa9cmt" => 'Comment',
-    "\xa9com" => 'Composer',
+    "\xa9com" => { Name => 'Composer', Preferred => 0 }, # ("\xa9wrt" is preferred in ItemList)
     "\xa9day" => {
         Name => 'ContentCreateDate',
         Groups => { 2 => 'Time' },
@@ -2615,7 +2638,7 @@ my %eeBox = (
             1 => 'AOL',
         },
     },
-    albm => 'Album', #(ffmpeg source)
+    albm => { Name => 'Album', Preferred => 0 }, #(ffmpeg source)
     apID => 'AppleStoreAccount',
     atID => { #10 (or TV series)
         Name => 'AlbumTitleID',
@@ -2628,10 +2651,11 @@ my %eeBox = (
         Format => 'int32u',
     },
     cprt => { Name => 'Copyright', Groups => { 2 => 'Author' } },
-    dscp => 'Description',
-    desc => 'Description', #7
+    dscp => { Name => 'Description', Preferred => 0 },
+    desc => { Name => 'Description', Preferred => 0 }, #7
     gnre => { #10
         Name => 'Genre',
+        Preferred => 0,
         PrintConv => q{
             return $val unless $val =~ /^\d+$/;
             require Image::ExifTool::ID3;
@@ -2643,7 +2667,7 @@ my %eeBox = (
         Name => 'GenreID',
         Format => 'int32u',
         SeparateTable => 1,
-        PrintConv => { #21 (based on https://affiliate.itunes.apple.com/resources/documentation/genre-mapping/)
+        PrintConv => { #21/PH (based on https://affiliate.itunes.apple.com/resources/documentation/genre-mapping/)
             2 => 'Music|Blues',
             3 => 'Music|Comedy',
             4 => "Music|Children's Music",
@@ -2804,12 +2828,12 @@ my %eeBox = (
             1116 => 'Music|Latino|Contemporary Latin',
             1117 => 'Music|Latino|Pop Latino',
             1118 => 'Music|Latino|Raices', # (Ra&iacute;ces)
-            1119 => 'Music|Latino|Latin Urban',
+            1119 => 'Music|Latino|Urbano latino',
             1120 => 'Music|Latino|Baladas y Boleros',
             1121 => 'Music|Latino|Rock y Alternativo',
             1122 => 'Music|Brazilian',
             1123 => 'Music|Latino|Musica Mexicana', # (M&uacute;sica Mexicana)
-            1124 => 'Music|Latino|Salsa y Tropical',
+            1124 => 'Music|Latino|Musica tropical', # (M&uacute;sica tropical)
             1125 => 'Music|New Age|Environmental',
             1126 => 'Music|New Age|Healing',
             1127 => 'Music|New Age|Meditation',
@@ -2939,8 +2963,8 @@ my %eeBox = (
             1261 => 'Music|Vocal|Trot',
             1262 => 'Music|Indian',
             1263 => 'Music|Indian|Bollywood',
-            1264 => 'Music|Indian|Tamil',
-            1265 => 'Music|Indian|Telugu',
+            1264 => 'Music|Indian|Regional Indian|Tamil',
+            1265 => 'Music|Indian|Regional Indian|Telugu',
             1266 => 'Music|Indian|Regional Indian',
             1267 => 'Music|Indian|Devotional & Spiritual',
             1268 => 'Music|Indian|Sufi',
@@ -3129,8 +3153,8 @@ my %eeBox = (
             1689 => 'Music Videos|Spoken Word',
             1690 => 'Music Videos|Indian',
             1691 => 'Music Videos|Indian|Bollywood',
-            1692 => 'Music Videos|Indian|Tamil',
-            1693 => 'Music Videos|Indian|Telugu',
+            1692 => 'Music Videos|Indian|Regional Indian|Tamil',
+            1693 => 'Music Videos|Indian|Regional Indian|Telugu',
             1694 => 'Music Videos|Indian|Regional Indian',
             1695 => 'Music Videos|Indian|Devotional & Spiritual',
             1696 => 'Music Videos|Indian|Sufi',
@@ -3384,6 +3408,31 @@ my %eeBox = (
             1948 => 'Music Videos|New Age|Yoga',
             1949 => 'Music Videos|Pop|Tribute',
             1950 => 'Music Videos|Pop|Shows',
+            1951 => 'Music Videos|Cuban',
+            1952 => 'Music Videos|Cuban|Mambo',
+            1953 => 'Music Videos|Cuban|Chachacha',
+            1954 => 'Music Videos|Cuban|Guajira',
+            1955 => 'Music Videos|Cuban|Son',
+            1956 => 'Music Videos|Cuban|Bolero',
+            1957 => 'Music Videos|Cuban|Guaracha',
+            1958 => 'Music Videos|Cuban|Timba',
+            1959 => 'Music Videos|Soundtrack|Video Game',
+            1960 => 'Music Videos|Indian|Regional Indian|Punjabi|Punjabi Pop',
+            1961 => 'Music Videos|Indian|Regional Indian|Bengali|Rabindra Sangeet',
+            1962 => 'Music Videos|Indian|Regional Indian|Malayalam',
+            1963 => 'Music Videos|Indian|Regional Indian|Kannada',
+            1964 => 'Music Videos|Indian|Regional Indian|Marathi',
+            1965 => 'Music Videos|Indian|Regional Indian|Gujarati',
+            1966 => 'Music Videos|Indian|Regional Indian|Assamese',
+            1967 => 'Music Videos|Indian|Regional Indian|Bhojpuri',
+            1968 => 'Music Videos|Indian|Regional Indian|Haryanvi',
+            1969 => 'Music Videos|Indian|Regional Indian|Odia',
+            1970 => 'Music Videos|Indian|Regional Indian|Rajasthani',
+            1971 => 'Music Videos|Indian|Regional Indian|Urdu',
+            1972 => 'Music Videos|Indian|Regional Indian|Punjabi',
+            1973 => 'Music Videos|Indian|Regional Indian|Bengali',
+            1974 => 'Music Videos|Indian|Indian Classical|Carnatic Classical',
+            1975 => 'Music Videos|Indian|Indian Classical|Hindustani Classical',
             4000 => 'TV Shows|Comedy',
             4001 => 'TV Shows|Drama',
             4002 => 'TV Shows|Animation',
@@ -3649,8 +3698,8 @@ my %eeBox = (
             8193 => 'Tones|Ringtones|Indian|Indian Pop',
             8194 => 'Tones|Ringtones|Indian|Regional Indian',
             8195 => 'Tones|Ringtones|Indian|Sufi',
-            8196 => 'Tones|Ringtones|Indian|Tamil',
-            8197 => 'Tones|Ringtones|Indian|Telugu',
+            8196 => 'Tones|Ringtones|Indian|Regional Indian|Tamil',
+            8197 => 'Tones|Ringtones|Indian|Regional Indian|Telugu',
             8198 => 'Tones|Ringtones|Instrumental',
             8199 => 'Tones|Ringtones|Jazz|Avant-Garde Jazz',
             8201 => 'Tones|Ringtones|Jazz|Big Band',
@@ -3819,6 +3868,31 @@ my %eeBox = (
             8365 => 'Tones|Ringtones|New Age|Yoga',
             8366 => 'Tones|Ringtones|Pop|Tribute',
             8367 => 'Tones|Ringtones|Pop|Shows',
+            8368 => 'Tones|Ringtones|Cuban',
+            8369 => 'Tones|Ringtones|Cuban|Mambo',
+            8370 => 'Tones|Ringtones|Cuban|Chachacha',
+            8371 => 'Tones|Ringtones|Cuban|Guajira',
+            8372 => 'Tones|Ringtones|Cuban|Son',
+            8373 => 'Tones|Ringtones|Cuban|Bolero',
+            8374 => 'Tones|Ringtones|Cuban|Guaracha',
+            8375 => 'Tones|Ringtones|Cuban|Timba',
+            8376 => 'Tones|Ringtones|Soundtrack|Video Game',
+            8377 => 'Tones|Ringtones|Indian|Regional Indian|Punjabi|Punjabi Pop',
+            8378 => 'Tones|Ringtones|Indian|Regional Indian|Bengali|Rabindra Sangeet',
+            8379 => 'Tones|Ringtones|Indian|Regional Indian|Malayalam',
+            8380 => 'Tones|Ringtones|Indian|Regional Indian|Kannada',
+            8381 => 'Tones|Ringtones|Indian|Regional Indian|Marathi',
+            8382 => 'Tones|Ringtones|Indian|Regional Indian|Gujarati',
+            8383 => 'Tones|Ringtones|Indian|Regional Indian|Assamese',
+            8384 => 'Tones|Ringtones|Indian|Regional Indian|Bhojpuri',
+            8385 => 'Tones|Ringtones|Indian|Regional Indian|Haryanvi',
+            8386 => 'Tones|Ringtones|Indian|Regional Indian|Odia',
+            8387 => 'Tones|Ringtones|Indian|Regional Indian|Rajasthani',
+            8388 => 'Tones|Ringtones|Indian|Regional Indian|Urdu',
+            8389 => 'Tones|Ringtones|Indian|Regional Indian|Punjabi',
+            8390 => 'Tones|Ringtones|Indian|Regional Indian|Bengali',
+            8391 => 'Tones|Ringtones|Indian|Indian Classical|Carnatic Classical',
+            8392 => 'Tones|Ringtones|Indian|Indian Classical|Hindustani Classical',
             9002 => 'Books|Nonfiction',
             9003 => 'Books|Romance',
             9004 => 'Books|Travel & Adventure',
@@ -4715,15 +4789,40 @@ my %eeBox = (
             100021 => 'Music|New Age|Yoga',
             100022 => 'Music|Pop|Tribute',
             100023 => 'Music|Pop|Shows',
+            100024 => 'Music|Cuban',
+            100025 => 'Music|Cuban|Mambo',
+            100026 => 'Music|Cuban|Chachacha',
+            100027 => 'Music|Cuban|Guajira',
+            100028 => 'Music|Cuban|Son',
+            100029 => 'Music|Cuban|Bolero',
+            100030 => 'Music|Cuban|Guaracha',
+            100031 => 'Music|Cuban|Timba',
+            100032 => 'Music|Soundtrack|Video Game',
+            100033 => 'Music|Indian|Regional Indian|Punjabi|Punjabi Pop',
+            100034 => 'Music|Indian|Regional Indian|Bengali|Rabindra Sangeet',
+            100035 => 'Music|Indian|Regional Indian|Malayalam',
+            100036 => 'Music|Indian|Regional Indian|Kannada',
+            100037 => 'Music|Indian|Regional Indian|Marathi',
+            100038 => 'Music|Indian|Regional Indian|Gujarati',
+            100039 => 'Music|Indian|Regional Indian|Assamese',
+            100040 => 'Music|Indian|Regional Indian|Bhojpuri',
+            100041 => 'Music|Indian|Regional Indian|Haryanvi',
+            100042 => 'Music|Indian|Regional Indian|Odia',
+            100043 => 'Music|Indian|Regional Indian|Rajasthani',
+            100044 => 'Music|Indian|Regional Indian|Urdu',
+            100045 => 'Music|Indian|Regional Indian|Punjabi',
+            100046 => 'Music|Indian|Regional Indian|Bengali',
+            100047 => 'Music|Indian|Indian Classical|Carnatic Classical',
+            100048 => 'Music|Indian|Indian Classical|Hindustani Classical',
             40000000 => 'iTunes U',
-            40000001 => 'iTunes U|Business',
-            40000002 => 'iTunes U|Business|Economics',
-            40000003 => 'iTunes U|Business|Finance',
-            40000004 => 'iTunes U|Business|Hospitality',
-            40000005 => 'iTunes U|Business|Management',
-            40000006 => 'iTunes U|Business|Marketing',
-            40000007 => 'iTunes U|Business|Personal Finance',
-            40000008 => 'iTunes U|Business|Real Estate',
+            40000001 => 'iTunes U|Business & Economics',
+            40000002 => 'iTunes U|Business & Economics|Economics',
+            40000003 => 'iTunes U|Business & Economics|Finance',
+            40000004 => 'iTunes U|Business & Economics|Hospitality',
+            40000005 => 'iTunes U|Business & Economics|Management',
+            40000006 => 'iTunes U|Business & Economics|Marketing',
+            40000007 => 'iTunes U|Business & Economics|Personal Finance',
+            40000008 => 'iTunes U|Business & Economics|Real Estate',
             40000009 => 'iTunes U|Engineering',
             40000010 => 'iTunes U|Engineering|Chemical & Petroleum Engineering',
             40000011 => 'iTunes U|Engineering|Civil Engineering',
@@ -4731,15 +4830,15 @@ my %eeBox = (
             40000013 => 'iTunes U|Engineering|Electrical Engineering',
             40000014 => 'iTunes U|Engineering|Environmental Engineering',
             40000015 => 'iTunes U|Engineering|Mechanical Engineering',
-            40000016 => 'iTunes U|Art & Architecture',
-            40000017 => 'iTunes U|Art & Architecture|Architecture',
-            40000019 => 'iTunes U|Art & Architecture|Art History',
-            40000020 => 'iTunes U|Art & Architecture|Dance',
-            40000021 => 'iTunes U|Art & Architecture|Film',
-            40000022 => 'iTunes U|Art & Architecture|Design',
-            40000023 => 'iTunes U|Art & Architecture|Interior Design',
-            40000024 => 'iTunes U|Art & Architecture|Music',
-            40000025 => 'iTunes U|Art & Architecture|Theater',
+            40000016 => 'iTunes U|Music, Art, & Design',
+            40000017 => 'iTunes U|Music, Art, & Design|Architecture',
+            40000019 => 'iTunes U|Music, Art, & Design|Art History',
+            40000020 => 'iTunes U|Music, Art, & Design|Dance',
+            40000021 => 'iTunes U|Music, Art, & Design|Film',
+            40000022 => 'iTunes U|Music, Art, & Design|Design',
+            40000023 => 'iTunes U|Music, Art, & Design|Interior Design',
+            40000024 => 'iTunes U|Music, Art, & Design|Music',
+            40000025 => 'iTunes U|Music, Art, & Design|Theater',
             40000026 => 'iTunes U|Health & Medicine',
             40000027 => 'iTunes U|Health & Medicine|Anatomy & Physiology',
             40000028 => 'iTunes U|Health & Medicine|Behavioral Science',
@@ -4766,26 +4865,26 @@ my %eeBox = (
             40000049 => 'iTunes U|History|Middle Eastern History',
             40000050 => 'iTunes U|History|North American History',
             40000051 => 'iTunes U|History|South American History',
-            40000053 => 'iTunes U|Communications & Media',
+            40000053 => 'iTunes U|Communications & Journalism',
             40000054 => 'iTunes U|Philosophy',
             40000055 => 'iTunes U|Religion & Spirituality',
-            40000056 => 'iTunes U|Language',
-            40000057 => 'iTunes U|Language|African Languages',
-            40000058 => 'iTunes U|Language|Ancient Languages',
-            40000061 => 'iTunes U|Language|English',
-            40000063 => 'iTunes U|Language|French',
-            40000064 => 'iTunes U|Language|German',
-            40000065 => 'iTunes U|Language|Italian',
-            40000066 => 'iTunes U|Language|Linguistics',
-            40000068 => 'iTunes U|Language|Spanish',
-            40000069 => 'iTunes U|Language|Speech Pathology',
-            40000070 => 'iTunes U|Literature',
-            40000071 => 'iTunes U|Literature|Anthologies',
-            40000072 => 'iTunes U|Literature|Biography',
-            40000073 => 'iTunes U|Literature|Classics',
-            40000074 => 'iTunes U|Literature|Literary Criticism',
-            40000075 => 'iTunes U|Literature|Fiction',
-            40000076 => 'iTunes U|Literature|Poetry',
+            40000056 => 'iTunes U|Languages',
+            40000057 => 'iTunes U|Languages|African Languages',
+            40000058 => 'iTunes U|Languages|Ancient Languages',
+            40000061 => 'iTunes U|Languages|English',
+            40000063 => 'iTunes U|Languages|French',
+            40000064 => 'iTunes U|Languages|German',
+            40000065 => 'iTunes U|Languages|Italian',
+            40000066 => 'iTunes U|Languages|Linguistics',
+            40000068 => 'iTunes U|Languages|Spanish',
+            40000069 => 'iTunes U|Languages|Speech Pathology',
+            40000070 => 'iTunes U|Writing & Literature',
+            40000071 => 'iTunes U|Writing & Literature|Anthologies',
+            40000072 => 'iTunes U|Writing & Literature|Biography',
+            40000073 => 'iTunes U|Writing & Literature|Classics',
+            40000074 => 'iTunes U|Writing & Literature|Literary Criticism',
+            40000075 => 'iTunes U|Writing & Literature|Fiction',
+            40000076 => 'iTunes U|Writing & Literature|Poetry',
             40000077 => 'iTunes U|Mathematics',
             40000078 => 'iTunes U|Mathematics|Advanced Mathematics',
             40000079 => 'iTunes U|Mathematics|Algebra',
@@ -4803,13 +4902,13 @@ my %eeBox = (
             40000091 => 'iTunes U|Science|Geography',
             40000092 => 'iTunes U|Science|Geology',
             40000093 => 'iTunes U|Science|Physics',
-            40000094 => 'iTunes U|Psychology & Social Science',
+            40000094 => 'iTunes U|Social Science',
             40000095 => 'iTunes U|Law & Politics|Law',
             40000096 => 'iTunes U|Law & Politics|Political Science',
             40000097 => 'iTunes U|Law & Politics|Public Administration',
-            40000098 => 'iTunes U|Psychology & Social Science|Psychology',
-            40000099 => 'iTunes U|Psychology & Social Science|Social Welfare',
-            40000100 => 'iTunes U|Psychology & Social Science|Sociology',
+            40000098 => 'iTunes U|Social Science|Psychology',
+            40000099 => 'iTunes U|Social Science|Social Welfare',
+            40000100 => 'iTunes U|Social Science|Sociology',
             40000101 => 'iTunes U|Society',
             40000103 => 'iTunes U|Society|Asia Pacific Studies',
             40000104 => 'iTunes U|Society|European Studies',
@@ -4824,36 +4923,36 @@ my %eeBox = (
             40000113 => 'iTunes U|Teaching & Learning|Learning Resources',
             40000114 => 'iTunes U|Teaching & Learning|Psychology & Research',
             40000115 => 'iTunes U|Teaching & Learning|Special Education',
-            40000116 => 'iTunes U|Art & Architecture|Culinary Arts',
-            40000117 => 'iTunes U|Art & Architecture|Fashion',
-            40000118 => 'iTunes U|Art & Architecture|Media Arts',
-            40000119 => 'iTunes U|Art & Architecture|Photography',
-            40000120 => 'iTunes U|Art & Architecture|Visual Art',
-            40000121 => 'iTunes U|Business|Entrepreneurship',
-            40000122 => 'iTunes U|Communications & Media|Broadcasting',
-            40000123 => 'iTunes U|Communications & Media|Digital Media',
-            40000124 => 'iTunes U|Communications & Media|Journalism',
-            40000125 => 'iTunes U|Communications & Media|Photojournalism',
-            40000126 => 'iTunes U|Communications & Media|Print',
-            40000127 => 'iTunes U|Communications & Media|Speech',
-            40000128 => 'iTunes U|Communications & Media|Writing',
+            40000116 => 'iTunes U|Music, Art, & Design|Culinary Arts',
+            40000117 => 'iTunes U|Music, Art, & Design|Fashion',
+            40000118 => 'iTunes U|Music, Art, & Design|Media Arts',
+            40000119 => 'iTunes U|Music, Art, & Design|Photography',
+            40000120 => 'iTunes U|Music, Art, & Design|Visual Art',
+            40000121 => 'iTunes U|Business & Economics|Entrepreneurship',
+            40000122 => 'iTunes U|Communications & Journalism|Broadcasting',
+            40000123 => 'iTunes U|Communications & Journalism|Digital Media',
+            40000124 => 'iTunes U|Communications & Journalism|Journalism',
+            40000125 => 'iTunes U|Communications & Journalism|Photojournalism',
+            40000126 => 'iTunes U|Communications & Journalism|Print',
+            40000127 => 'iTunes U|Communications & Journalism|Speech',
+            40000128 => 'iTunes U|Communications & Journalism|Writing',
             40000129 => 'iTunes U|Health & Medicine|Nursing',
-            40000130 => 'iTunes U|Language|Arabic',
-            40000131 => 'iTunes U|Language|Chinese',
-            40000132 => 'iTunes U|Language|Hebrew',
-            40000133 => 'iTunes U|Language|Hindi',
-            40000134 => 'iTunes U|Language|Indigenous Languages',
-            40000135 => 'iTunes U|Language|Japanese',
-            40000136 => 'iTunes U|Language|Korean',
-            40000137 => 'iTunes U|Language|Other Languages',
-            40000138 => 'iTunes U|Language|Portuguese',
-            40000139 => 'iTunes U|Language|Russian',
+            40000130 => 'iTunes U|Languages|Arabic',
+            40000131 => 'iTunes U|Languages|Chinese',
+            40000132 => 'iTunes U|Languages|Hebrew',
+            40000133 => 'iTunes U|Languages|Hindi',
+            40000134 => 'iTunes U|Languages|Indigenous Languages',
+            40000135 => 'iTunes U|Languages|Japanese',
+            40000136 => 'iTunes U|Languages|Korean',
+            40000137 => 'iTunes U|Languages|Other Languages',
+            40000138 => 'iTunes U|Languages|Portuguese',
+            40000139 => 'iTunes U|Languages|Russian',
             40000140 => 'iTunes U|Law & Politics',
             40000141 => 'iTunes U|Law & Politics|Foreign Policy & International Relations',
             40000142 => 'iTunes U|Law & Politics|Local Governments',
             40000143 => 'iTunes U|Law & Politics|National Governments',
             40000144 => 'iTunes U|Law & Politics|World Affairs',
-            40000145 => 'iTunes U|Literature|Comparative Literature',
+            40000145 => 'iTunes U|Writing & Literature|Comparative Literature',
             40000146 => 'iTunes U|Philosophy|Aesthetics',
             40000147 => 'iTunes U|Philosophy|Epistemology',
             40000148 => 'iTunes U|Philosophy|Ethics',
@@ -4862,8 +4961,8 @@ my %eeBox = (
             40000151 => 'iTunes U|Philosophy|Logic',
             40000152 => 'iTunes U|Philosophy|Philosophy of Language',
             40000153 => 'iTunes U|Philosophy|Philosophy of Religion',
-            40000154 => 'iTunes U|Psychology & Social Science|Archaeology',
-            40000155 => 'iTunes U|Psychology & Social Science|Anthropology',
+            40000154 => 'iTunes U|Social Science|Archaeology',
+            40000155 => 'iTunes U|Social Science|Anthropology',
             40000156 => 'iTunes U|Religion & Spirituality|Buddhism',
             40000157 => 'iTunes U|Religion & Spirituality|Christianity',
             40000158 => 'iTunes U|Religion & Spirituality|Comparative Religion',
@@ -4881,20 +4980,20 @@ my %eeBox = (
             40000170 => 'iTunes U|Society|Sexuality Studies',
             40000171 => 'iTunes U|Teaching & Learning|Educational Technology',
             40000172 => 'iTunes U|Teaching & Learning|Information/Library Science',
-            40000173 => 'iTunes U|Language|Dutch',
-            40000174 => 'iTunes U|Language|Luxembourgish',
-            40000175 => 'iTunes U|Language|Swedish',
-            40000176 => 'iTunes U|Language|Norwegian',
-            40000177 => 'iTunes U|Language|Finnish',
-            40000178 => 'iTunes U|Language|Danish',
-            40000179 => 'iTunes U|Language|Polish',
-            40000180 => 'iTunes U|Language|Turkish',
-            40000181 => 'iTunes U|Language|Flemish',
+            40000173 => 'iTunes U|Languages|Dutch',
+            40000174 => 'iTunes U|Languages|Luxembourgish',
+            40000175 => 'iTunes U|Languages|Swedish',
+            40000176 => 'iTunes U|Languages|Norwegian',
+            40000177 => 'iTunes U|Languages|Finnish',
+            40000178 => 'iTunes U|Languages|Danish',
+            40000179 => 'iTunes U|Languages|Polish',
+            40000180 => 'iTunes U|Languages|Turkish',
+            40000181 => 'iTunes U|Languages|Flemish',
             50000024 => 'Audiobooks',
             50000040 => 'Audiobooks|Fiction',
             50000041 => 'Audiobooks|Arts & Entertainment',
-            50000042 => 'Audiobooks|Biography & Memoir',
-            50000043 => 'Audiobooks|Business',
+            50000042 => 'Audiobooks|Biographies & Memoirs',
+            50000043 => 'Audiobooks|Business & Personal Finance',
             50000044 => 'Audiobooks|Kids & Young Adults',
             50000045 => 'Audiobooks|Classics',
             50000046 => 'Audiobooks|Comedy',
@@ -4902,13 +5001,13 @@ my %eeBox = (
             50000048 => 'Audiobooks|Speakers & Storytellers',
             50000049 => 'Audiobooks|History',
             50000050 => 'Audiobooks|Languages',
-            50000051 => 'Audiobooks|Mystery',
+            50000051 => 'Audiobooks|Mysteries & Thrillers',
             50000052 => 'Audiobooks|Nonfiction',
             50000053 => 'Audiobooks|Religion & Spirituality',
-            50000054 => 'Audiobooks|Science',
+            50000054 => 'Audiobooks|Science & Nature',
             50000055 => 'Audiobooks|Sci Fi & Fantasy',
-            50000056 => 'Audiobooks|Self Development',
-            50000057 => 'Audiobooks|Sports',
+            50000056 => 'Audiobooks|Self-Development',
+            50000057 => 'Audiobooks|Sports & Outdoors',
             50000058 => 'Audiobooks|Technology',
             50000059 => 'Audiobooks|Travel & Adventure',
             50000061 => 'Music|Spoken Word',
@@ -4939,9 +5038,10 @@ my %eeBox = (
             50000089 => 'Books|Comics & Graphic Novels|Manga|Horror',
             50000090 => 'Books|Comics & Graphic Novels|Comics',
             50000091 => 'Books|Romance|Multicultural',
+            50000092 => 'Audiobooks|Erotica',
         },
     },
-    grup => 'Grouping', #10
+    grup => { Name => 'Grouping', Preferred => 0 }, #10
     hdvd => { #10
         Name => 'HDVideo',
         PrintConv => { 0 => 'No', 1 => 'Yes' },
@@ -5154,7 +5254,7 @@ my %eeBox = (
         },
     },
     rate => 'RatingPercent', #PH
-    titl => 'Title',
+    titl => { Name => 'Title', Preferred => 0 },
     tven => 'TVEpisodeID', #7
     tves => { #7/10
         Name => 'TVEpisode',
@@ -5195,7 +5295,7 @@ my %eeBox = (
     },
 
     # atoms observed in AAX audiobooks (ref PH)
-    "\xa9cpy" => { Name => 'Copyright',  Groups => { 2 => 'Author' } },
+    "\xa9cpy" => { Name => 'Copyright', Preferred => 0, Groups => { 2 => 'Author' } },
     "\xa9pub" => 'Publisher',
     "\xa9nrt" => 'Narrator',
     '@pti' => 'ParentTitle', # (guess -- same as "\xa9nam")
@@ -5243,6 +5343,9 @@ my %eeBox = (
     WRITE_PROC => \&Image::ExifTool::QuickTime::ProcessKeys,
     VARS => { LONG_TAGS => 3 },
     WRITABLE => 1,
+    GROUPS => { 1 => 'Keys' },
+    WRITE_GROUP => 'Keys',
+    LANG_INFO => \&GetLangInfo,
     FORMAT => 'string',
     NOTES => q{
         This directory contains a list of key names which are used to decode
@@ -7061,20 +7164,44 @@ sub PrintGPSCoordinates($)
 
 #------------------------------------------------------------------------------
 # Unpack packed ISO 639/T language code
-# Inputs: 0) packed language code (or undef)
-# Returns: language code, or undef for default language, or 'err' for format error
-sub UnpackLang($)
+# Inputs: 0) packed language code (or undef/0), 1) true to not treat 'und' and 'eng' as default
+# Returns: language code, or undef/0 for default language, or 'err' for format error
+sub UnpackLang($;$)
 {
-    my $lang = shift;
+    my ($lang, $noDef) = @_;
     if ($lang) {
         # language code is packed in 5-bit characters
-        $lang = pack "C*", map { (($lang>>$_)&0x1f)+0x60 } 10, 5, 0;
+        $lang = pack 'C*', map { (($lang>>$_)&0x1f)+0x60 } 10, 5, 0;
         # validate language code
         if ($lang =~ /^[a-z]+$/) {
             # treat 'eng' or 'und' as the default language
-            undef $lang if $lang eq 'und' or $lang eq 'eng';
+            undef $lang if ($lang eq 'und' or $lang eq 'eng') and not $noDef;
         } else {
             $lang = 'err';  # invalid language code
+        }
+    }
+    return $lang;
+}
+
+#------------------------------------------------------------------------------
+# Get language code string given QuickTime language and country codes
+# Inputs: 0) numerical language code, 1) numerical country code, 2) no defaults
+# Returns: language code string (ie. "fra-FR") or undef for default language
+sub GetLangCode($;$$)
+{
+    my ($lang, $ctry, $noDef) = @_;
+    # ignore country ('ctry') and language lists ('lang') for now
+    undef $ctry if $ctry and $ctry <= 255;
+    undef $lang if $lang and $lang <= 255;
+    $lang = UnpackLang($lang, $noDef);
+    # add country code if specified
+    if ($ctry) {
+        $ctry = unpack('a2',pack('n',$ctry)); # unpack as ISO 3166-1
+        # treat 'ZZ' like a default country (see ref 12)
+        undef $ctry if $ctry eq 'ZZ';
+        if ($ctry and $ctry =~ /^[A-Z]{2}$/) {
+            $lang or $lang = 'und';
+            $lang .= "-$ctry";
         }
     }
     return $lang;
@@ -7723,10 +7850,13 @@ sub ProcessKeys($$$)
                 ValueConvInv => $$tagInfo{ValueConvInv},
                 PrintConv => $$tagInfo{PrintConv},
                 PrintConvInv => $$tagInfo{PrintConvInv},
+                Permanent => 1, # (don't allow these to be deleted for now)
                 Writable  => defined $$tagInfo{Writable} ? $$tagInfo{Writable} : 1,
+                KeysInfo  => $tagInfo,
             };
             my $groups = $$tagInfo{Groups};
-            $$newInfo{Groups} = { %$groups } if $groups;
+            $$newInfo{Groups} = $groups ? { %$groups } : { };
+            $$newInfo{Groups}{$_} or $$newInfo{Groups}{$_} = $$tagTablePtr{GROUPS}{$_} foreach 0..2;
         } elsif ($tag =~ /^[-\w.]+$/) {
             # create info for tags with reasonable id's
             my $name = $tag;
@@ -8165,20 +8295,7 @@ ItemID:         foreach $id (keys %$items) {
                         }
                         my $langInfo;
                         if ($ctry or $lang) {
-                            # ignore country ('ctry') and language lists ('lang') for now
-                            undef $ctry if $ctry and $ctry <= 255;
-                            undef $lang if $lang and $lang <= 255;
-                            $lang = UnpackLang($lang);
-                            # add country code if specified
-                            if ($ctry) {
-                                $ctry = unpack('a2',pack('n',$ctry)); # unpack as ISO 3166-1
-                                # treat 'ZZ' like a default country (see ref 12)
-                                undef $ctry if $ctry eq 'ZZ';
-                                if ($ctry and $ctry =~ /^[A-Z]{2}$/) {
-                                    $lang or $lang = 'und';
-                                    $lang .= "-$ctry";
-                                }
-                            }
+                            $lang = GetLangCode($lang, $ctry);
                             if ($lang) {
                                 # get tagInfo for other language
                                 $langInfo = GetLangInfoQT($et, $tagInfo, $lang);

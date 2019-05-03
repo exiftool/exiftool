@@ -34,7 +34,7 @@ use Image::ExifTool::Nikon;
 use Image::ExifTool::Validate;
 use Image::ExifTool::MacOS;
 
-$VERSION = '3.20';
+$VERSION = '3.21';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -2065,6 +2065,9 @@ sub WriteTagNames($$)
                     my $w = length($_) + length($$printConv{$_});
                     $wid = $w if $wid < $w;
                     push @keys, $_;
+                    if ($$printConv{$_} =~ /[\0-\x1f\x7f-\xff]/) {
+                        warn "Warning: Special characters in $tableName PrintConv ($$printConv{$_})\n";
+                    }
                 }
                 $wid = length($tableName)+7 if $wid < length($tableName)+7;
                 # print in multiple columns if there is room

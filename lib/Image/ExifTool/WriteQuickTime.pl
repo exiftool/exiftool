@@ -12,19 +12,64 @@ use strict;
 # map for adding directories to QuickTime-format files
 my %movMap = (
     # MOV (no 'ftyp', or 'ftyp'='qt  ') -> 'moov'-'udta'-'XMP_'
-    XMP      => 'UserData',
-    UserData => 'Movie',
-    Movie    => 'MOV',
+    QuickTime => 'ItemList',
+    ItemList  => 'Meta',
+    Meta      => 'UserData',
+    XMP       => 'UserData',
+    UserData  => 'Movie',
+    Movie     => 'MOV',
 );
 my %mp4Map = (
     # MP4 ('ftyp' compatible brand 'mp41', 'mp42' or 'f4v ') -> top level 'uuid'
-    XMP => 'MOV',
+    QuickTime => 'ItemList',
+    ItemList  => 'Meta',
+    Meta      => 'UserData',
+    UserData  => 'Movie',
+    Movie     => 'MOV',
+    XMP       => 'MOV',
 );
 my %dirMap = (
     MOV => \%movMap,
     MP4 => \%mp4Map,
     HEIC => \%mp4Map,
 );
+
+# convert ExifTool Format to QuickTime type
+my %qtFormat = (
+   'undef' => 0x00,  string => 0x01,
+    int8s  => 0x15,  int16s => 0x15,  int32s => 0x15,
+    int8u  => 0x16,  int16u => 0x16,  int32u => 0x16,
+    float  => 0x17,  double => 0x18,
+);
+my $undLang = 0x55c4;   # numeric code for 'und' language
+
+# mark UserData tags that don't have ItemList counterparts as Preferred
+# (and for now, set Writable to 0 for any tag with a RawConv)
+{
+    my $itemList = \%Image::ExifTool::QuickTime::ItemList;
+    my $userData = \%Image::ExifTool::QuickTime::UserData;
+    my (%pref, $tag);
+    foreach $tag (TagTableKeys($itemList)) {
+        my $tagInfo = $$itemList{$tag};
+        if (ref $tagInfo ne 'HASH') {
+            next if ref $tagInfo;
+            $tagInfo = $$userData{$tag} = { Name => $tagInfo };
+        }
+        $$tagInfo{Writable} = 0 if $$tagInfo{RawConv};
+        next if $$tagInfo{Avoid} or defined $$tagInfo{Preferred} and not $$tagInfo{Preferred};
+        $pref{$$tagInfo{Name}} = 1;
+    }
+    foreach $tag (TagTableKeys($userData)) {
+        my $tagInfo = $$userData{$tag};
+        if (ref $tagInfo ne 'HASH') {
+            next if ref $tagInfo;
+            $tagInfo = $$userData{$tag} = { Name => $tagInfo };
+        }
+        $$tagInfo{Writable} = 0 if $$tagInfo{RawConv};
+        next if $$tagInfo{Avoid} or defined $$tagInfo{Preferred} or $pref{$$tagInfo{Name}};
+        $$tagInfo{Preferred} = 1;
+    }
+}
 
 #------------------------------------------------------------------------------
 # Format GPSCoordinates for writing
@@ -165,12 +210,31 @@ sub Handle_iloc($$$$)
         # (adjust the one that is larger)
         if (defined $minOffset and $minOffset > $base_offset) {
             $off or $off = $$dirInfo{ChunkOffset} = [ ];
+            $$_[3] = $base_offset foreach @offItem;
             push @$off, @offItem;
         } else {
+            $$_[3] = $minOffset foreach @offBase;
             push @$off, @offBase;
         }
     }
     return 1;
+}
+
+#------------------------------------------------------------------------------
+# Get localized version of tagInfo hash
+# Inputs: 0) tagInfo hash ref, 1) language code (eg. "fra-FR")
+# Returns: new tagInfo hash ref, or undef if invalid or no language code
+sub GetLangInfo($$)
+{
+    my ($tagInfo, $langCode) = @_;
+    return undef unless $langCode;
+    # only allow alternate language tags in lang-alt lists
+    my $writable = $$tagInfo{Writable};
+    $writable = $$tagInfo{Table}{WRITABLE} unless defined $writable;
+    return undef unless $writable;
+    $langCode =~ tr/_/-/;   # RFC 3066 specifies '-' as a separator
+    my $langInfo = Image::ExifTool::GetLangInfo($tagInfo, $langCode);
+    return $langInfo;
 }
 
 #------------------------------------------------------------------------------
@@ -183,8 +247,9 @@ sub WriteQuickTime($$$)
 {
     local $_;
     my ($et, $dirInfo, $tagTablePtr) = @_;
-    $et or return 1;
+    $et or return 1;    # allow dummy access to autoload this package
     my ($mdat, @mdat, $track, $outBuff, $co, $term, $err);
+    my (%langTags, $keysTags, $canCreate, %didTag, $delGrp);
     my $outfile = $$dirInfo{OutFile} || return 0;
     my $raf = $$dirInfo{RAF};       # (will be null for lower-level atoms)
     my $dataPt = $$dirInfo{DataPt}; # (will be null for top-level atoms)
@@ -207,6 +272,25 @@ sub WriteQuickTime($$$)
     $outfile = \$outBuff;
 
     $raf->Seek($dirStart, 1) if $dirStart;  # skip header if it exists
+
+    # get hash of new tags to add to this directory if this is the proper place for them
+    my $curPath = join '-', @{$$et{PATH}};
+    my ($dir, $writePath) = ($dirName, $dirName);
+    $writePath = "$dir-$writePath" while defined($dir = $$et{DirMap}{$dir});
+    my $delQt = $$et{DEL_GROUP}{QuickTime};
+    if ($curPath eq $writePath) {
+        $canCreate = 1;
+        $delGrp = $delQt || $$et{DEL_GROUP}{$dirName};
+        $et->VPrint(0, "  Deleting $dirName tags\n") if $delGrp;
+    }
+    my $newTags = $et->GetNewTagInfoHash($tagTablePtr);
+    # make lookup of language tags for this ID
+    foreach (keys %$newTags) {
+        next unless $$newTags{$_}{LangCode} and $$newTags{$_}{SrcTagInfo};
+        my $id = $$newTags{$_}{SrcTagInfo}{TagID};
+        $langTags{$id} = { } unless $langTags{$id};
+        $langTags{$id}{$_} = $$newTags{$_};
+    }
 
     for (;;) {      # loop through all atoms at this level
         my ($hdr, $buff);
@@ -323,12 +407,16 @@ sub WriteQuickTime($$$)
         # call write hook if it exists
         &{$$tagInfo{WriteHook}}($buff,$et) if $tagInfo and $$tagInfo{WriteHook};
 
-        # allow numerical tag ID's
+        # allow numerical tag ID's (ItemList entries defined by Keys)
         unless ($tagInfo) {
             my $id = $$et{KeyCount} . '.' . unpack('N', $tag);
             $tagInfo = $et->GetTagInfo($tagTablePtr, $id);
         }
-
+        # delete all ItemList/UserData tags if deleting group
+        if ($delGrp and $dirName =~ /^(ItemList|UserData)$/) {
+            ++$$et{CHANGED};
+            next;
+        }
         undef $tagInfo if $tagInfo and $$tagInfo{Unknown};
 
         if ($tagInfo and (not defined $$tagInfo{Writable} or $$tagInfo{Writable})) {
@@ -363,7 +451,8 @@ sub WriteQuickTime($$$)
                     Multi    => $$subdir{Multi},    # necessary?
                     OutFile  => $outfile,
                     # initialize array to hold details about chunk offset table
-                    # (each entry has 3 items: 0=atom type, 1=table offset, 2=table size)
+                    # (each entry has 3 or 4 items: 0=atom type, 1=table offset, 2=table size,
+                    #  4=optional base offset)
                     ChunkOffset => \@chunkOffset,
                 );
                 # pass the header pointer if necessary (for EXIF IFD's
@@ -401,15 +490,48 @@ sub WriteQuickTime($$$)
             } else {    # modify existing QuickTime tags in various formats
 
                 my $nvHash = $et->GetNewValueHash($tagInfo);
-                if ($nvHash) {
+                # get new value from Keys source tag if necessary
+                if (not $nvHash and $$tagInfo{KeysInfo}) {
+                    $nvHash = $et->GetNewValueHash($$tagInfo{KeysInfo});
+                    # may be writing this as a language tag, so fill in $langTags for this ID
+                    unless ($keysTags) {
+                        $keysTags =  $et->GetNewTagInfoHash(GetTagTable('Image::ExifTool::QuickTime::Keys'));
+                    }
+                    foreach (keys %$keysTags) {
+                        next unless $$keysTags{$_}{SrcTagInfo};
+                        next unless $$keysTags{$_}{SrcTagInfo} eq $$tagInfo{KeysInfo};
+                        $langTags{$tag} = { } unless $langTags{$tag};
+                        $langTags{$tag}{$_} = $$keysTags{$_};
+                    }
+                }
+                if ($nvHash or $langTags{$tag} or $delQt) {
+                    my $nvHashNoLang = $nvHash;
                     my ($val, $len, $lang, $type, $flags, $ctry, $charsetQuickTime);
                     my $format = $$tagInfo{Format};
                     my $hasData = ($$dirInfo{HasData} and $buff =~ /\0...data\0/s);
+                    my $langInfo = $tagInfo;
                     if ($hasData) {
                         my $pos = 0;
-                        for (;;) {
+                        for (;;$pos+=$len) {
                             last if $pos + 16 > $size;
                             ($len, $type, $flags, $ctry, $lang) = unpack("x${pos}Na4Nnn", $buff);
+                            $lang or $lang = $undLang;  # treat both 0 and 'und' as 'und'
+                            $langInfo = $tagInfo;
+                            my $delTag = $delQt;
+                            my $newVal;
+                            if ($lang or $ctry or not $nvHash) {
+                                my $langCode = GetLangCode($lang, $ctry, 1);
+                                if ($langCode) { # (ie. not default language)
+                                    if ($$tagInfo{KeysInfo}) {
+                                        $langInfo = GetLangInfo($$tagInfo{KeysInfo}, $langCode);
+                                    } else {
+                                        $langInfo = GetLangInfo($tagInfo, $langCode);
+                                    }
+                                    $nvHash = $et->GetNewValueHash($langInfo);
+                                    # set flag to delete language tag when writing default
+                                    $delTag = 1 if not $nvHash and $nvHashNoLang;
+                                }
+                            }
                             last if $pos + $len > $size;
                             if ($type eq 'data' and $len >= 16) {
                                 $pos += 16;
@@ -419,13 +541,30 @@ sub WriteQuickTime($$$)
                                 if ($stringEncoding{$flags}) {
                                     $val = $et->Decode($val, $stringEncoding{$flags});
                                     $val =~ s/\0$// unless $$tagInfo{Binary};
+                                    $flags = 0x01;  # write all strings as UTF-8
                                 } else {
-                                    $format = $$tagInfo{Format} || QuickTimeFormat($flags, $len);
+                                    $format = $$tagInfo{Format};
+                                    if ($format) {
+                                        # update flags for the format we are writing
+                                        $flags = $qtFormat{$format} if $qtFormat{$format};
+                                    } else {
+                                        $format = QuickTimeFormat($flags, $len);
+                                    }
                                     $val = ReadValue(\$val, 0, $format, $$tagInfo{Count}, $len) if $format;
                                 }
-                                if ($et->IsOverwriting($nvHash, $val)) {
-                                    my $newVal = $et->GetNewValue($nvHash);
-                                    $newVal = '' unless defined $newVal;    # (can't yet delete tags)
+                                if (($nvHash and $et->IsOverwriting($nvHash, $val)) or $delTag) {
+                                    $newVal = $et->GetNewValue($nvHash) if defined $nvHash;
+                                    if ($delTag or (not defined $newVal or $didTag{$nvHash})) {
+                                        if ($canCreate) {
+                                            my $grp = $et->GetGroup($langInfo, 1);
+                                            $et->VerboseValue("- $grp:$$langInfo{Name}", $val);
+                                            $newData = substr($buff, 0, $pos-16) unless defined $newData;
+                                            ++$$et{CHANGED};
+                                            $pos += $len;
+                                            next;
+                                        }
+                                        $newVal = '';
+                                    }
                                     my $prVal = $newVal;
                                     if ($stringEncoding{$flags}) {
                                         # handle all string formats
@@ -433,21 +572,24 @@ sub WriteQuickTime($$$)
                                     } elsif ($format) {
                                         $newVal = WriteValue($newVal, $format);
                                     }
-                                    if (defined $newVal) {
+                                    if (defined $newVal and not ($nvHash and $didTag{$nvHash})) {
+                                        next if $newVal eq '' and $val eq '';
                                         ++$$et{CHANGED};
-                                        $et->VerboseValue("- QuickTime:$$tagInfo{Name}", $val);
-                                        $et->VerboseValue("+ QuickTime:$$tagInfo{Name}", $prVal);
+                                        my $grp = $et->GetGroup($langInfo, 1);
+                                        $et->VerboseValue("- $grp:$$langInfo{Name}", $val);
+                                        $et->VerboseValue("+ $grp:$$langInfo{Name}", $prVal);
+                                        $didTag{$nvHash} = 1 if $nvHash;
                                         $newData = substr($buff, 0, $pos-16) unless defined $newData;
                                         $newData .= pack('Na4Nnn', length($newVal)+16, $type, $flags, $ctry, $lang);
                                         $newData .= $newVal;
                                     } elsif (defined $newData) {
+                                        # copy data up to start of this tag to delete this value
                                         $newData .= substr($buff, $pos-16, $len+16);
                                     }
                                 }
                             } elsif (defined $newData) {
                                 $newData .= substr($buff, $pos, $len);
                             }
-                            $pos += $len;
                         }
                         $newData .= substr($buff, $pos) if defined $newData and $pos < $size;
                         undef $val; # (already constructed $newData)
@@ -455,6 +597,7 @@ sub WriteQuickTime($$$)
                         $val = ReadValue(\$buff, 0, $format, undef, $size);
                     } elsif (($tag =~ /^\xa9/ or $$tagInfo{IText}) and $size >= 4) {
                         ($len, $lang) = unpack('nn', $buff);
+                        $lang or $lang = $undLang;  # treat both 0 and 'und' as 'und'
                         $len -= 4 if 4 + $len > $size; # (see QuickTime.pm for explanation)
                         $len = $size - 4 if $len > $size - 4 or $len < 0;
                         $val = substr($buff, 4, $len);
@@ -465,13 +608,31 @@ sub WriteQuickTime($$$)
                             my $enc = $val=~s/^\xfe\xff// ? 'UTF16' : 'UTF8';
                             $val = $et->Decode($val, $enc);
                         }
+                        if ($lang or not $nvHash) {
+                            my $langCode = UnpackLang($lang, 1);
+                            if ($langCode) {
+                                $langInfo = GetLangInfo($tagInfo, $langCode);
+                                # (no need to check $$tagInfo{KeysInfo} because Keys won't get here)
+                                $nvHash = $et->GetNewValueHash($langInfo);
+                                if (not $nvHash and $nvHashNoLang and $canCreate) {
+                                    # delete other languages when writing default
+                                    my $grp = $et->GetGroup($langInfo, 1);
+                                    $et->VerboseValue("- $grp:$$langInfo{Name}", $val);
+                                    ++$$et{CHANGED};
+                                    next;
+                                }
+                            }
+                        }
                     }
-                    if (defined $val and $et->IsOverwriting($nvHash, $val)) {
+                    if ($nvHash and defined $val and $et->IsOverwriting($nvHash, $val)) {
                         $newData = $et->GetNewValue($nvHash);
-                        $newData = '' unless defined $newData;  # (can't yet delete tags)
+                        $newData = '' unless defined $newData or $canCreate;
                         ++$$et{CHANGED};
-                        $et->VerboseValue("- QuickTime:$$tagInfo{Name}", $val);
-                        $et->VerboseValue("+ QuickTime:$$tagInfo{Name}", $newData);
+                        my $grp = $et->GetGroup($langInfo, 1);
+                        $et->VerboseValue("- $grp:$$langInfo{Name}", $val);
+                        next unless defined $newData and not $didTag{$nvHash};
+                        $et->VerboseValue("+ $grp:$$langInfo{Name}", $newData);
+                        $didTag{$nvHash} = 1;   # set flag so we don't add this tag again
                         # add back necessary header and encode as necessary
                         if (defined $lang) {
                             $newData = $et->Encode($newData, $lang < 0x400 ? $charsetQuickTime : 'UTF8');
@@ -530,16 +691,69 @@ sub WriteQuickTime($$$)
         # copy the existing atom
         Write($outfile, $hdr, $buff) or $rtnVal=$rtnErr, $err=1, last;
     }
-    # add new directories at this level if necessary
-    if (exists $$et{EDIT_DIRS}{$dirName}) {
+    # add new directories/tags at this level if necessary
+    if (exists $$et{EDIT_DIRS}{$dirName} and $canCreate) {
         # get a hash of tagInfo references to add to this directory
         my $dirs = $et->GetAddDirHash($tagTablePtr, $dirName);
         # make sorted list of new tags to be added
-        my @addTags = sort keys(%$dirs);
+        my @addTags = sort(keys(%$dirs), keys %$newTags);
         my $tag;
         foreach $tag (@addTags) {
-            my $tagInfo = $$dirs{$tag};
-            my $subdir = $$tagInfo{SubDirectory} or next;
+            my $tagInfo = $$dirs{$tag} || $$newTags{$tag};
+            next if $$tagInfo{KeysInfo};    # don't try to add keys tags (yet)
+            my $subdir = $$tagInfo{SubDirectory};
+            unless ($subdir) {
+                my $nvHash = $et->GetNewValueHash($tagInfo);
+                next unless $nvHash and not $didTag{$nvHash};
+                next unless $$nvHash{IsCreating} and $et->IsOverwriting($nvHash);
+                my $newVal = $et->GetNewValue($nvHash);
+                next unless defined $newVal;
+                my $prVal = $newVal;
+                my $flags;
+                my $format = $$tagInfo{Format};
+                if ($format and $format ne 'string') {
+                    $newVal = WriteValue($newVal, $format);
+                    $flags = $qtFormat{$format} || 0;
+                } else {
+                    $flags = 0x01;
+                    $newVal = $et->Encode($newVal, 'UTF8');
+                }
+                next unless defined $newVal;
+                my ($ctry, $lang) = (0,0);
+                if (length $tag > 4) {
+                    unless ($tag =~ s/(.{4})-([A-Z]{3})?[-_]?([A-Z]{2})?/$1/si) {
+                        $et->Warn("Invalid language code for $$tagInfo{Name}");
+                        next;
+                    }
+                    # pack language and country codes
+                    if ($2 and $2 ne 'und') {
+                        $lang = ($lang << 5) | ($_ - 0x60) foreach unpack 'C*', lc($2);
+                    }
+                    $ctry = unpack('n', pack('a2',uc($3))) if $3 and $3 ne 'ZZ';
+                }
+                if ($$dirInfo{HasData}) {
+                    # add 'data' header
+                    $newVal = pack('Na4Nnn',16+length($newVal),'data',$flags,$ctry,$lang).$newVal;
+                } elsif ($tag =~ /^\xa9/ or $$tagInfo{IText}) {
+                    if ($ctry) {
+                        my $grp = $et->GetGroup($tagInfo,1);
+                        $et->Warn("Can't use country code for $grp:$$tagInfo{Name}");
+                        next;
+                    } else {
+                        # add IText header
+                        $newVal = pack('nn',length($newVal),$lang) . $newVal;
+                    }
+                } elsif ($ctry or $lang) {
+                    my $grp = $et->GetGroup($tagInfo,1);
+                    $et->Warn("Can't use language code for $grp:$$tagInfo{Name}");
+                    next;
+                }
+                Write($outfile, Set32u(8+length($newVal)), $tag, $newVal) or $rtnVal=$rtnErr, $err=1;
+                $et->VerboseValue("+ $dirName:$$tagInfo{Name}", $prVal);
+                $didTag{$nvHash} = 1;
+                ++$$et{CHANGED};
+                next;
+            }
             my $subName = $$subdir{DirName} || $$tagInfo{Name};
             # QuickTime hierarchy is complex, so check full directory path before adding
             next unless IsCurPath($et, $subName);
@@ -549,19 +763,25 @@ sub WriteQuickTime($$$)
                 DirName  => $subName,
                 DataPt   => \$buff,
                 DirStart => 0,
+                HasData  => $$subdir{HasData},
                 OutFile  => $outfile,
             );
             my $subTable = GetTagTable($$subdir{TagTable});
             my $newData = $et->WriteDirectory(\%subdirInfo, $subTable);
             if ($newData and length($newData) <= 0x7ffffff7) {
-                my $uuid = '';
-                # add atom ID if necessary (obtain from Condition expression)
+                my $prefix = '';
+                # add atom version or ID if necessary
                 if ($$subdir{Start}) {
-                    my $cond = $$tagInfo{Condition};
-                    $uuid = eval qq("$1") if $cond and $cond =~ m{=~\s*\/\^(.*)/};
-                    length($uuid) == $$subdir{Start} or $et->Error('Internal UUID error');
+                    if ($$subdir{Start} == 4) {
+                        $prefix = "\0\0\0\0"; # a simple version number
+                    } else {
+                        # get UUID from Condition expression
+                        my $cond = $$tagInfo{Condition};
+                        $prefix = eval qq("$1") if $cond and $cond =~ m{=~\s*\/\^(.*)/};
+                        length($prefix) == $$subdir{Start} or $et->Error('Internal UUID error');
+                    }
                 }
-                my $newHdr = Set32u(8+length($newData)+length($uuid)) . $tag . $uuid;
+                my $newHdr = Set32u(8+length($newData)+length($prefix)) . $tag . $prefix;
                 Write($outfile, $newHdr, $newData) or $rtnVal=$rtnErr, $err=1;
             }
             delete $$addDirs{$subName}; # add only once (must delete _after_ call to WriteDirectory())
@@ -594,7 +814,8 @@ sub WriteQuickTime($$$)
 
     # fix up offsets for new mdat position(s)
     foreach $co (@$off) {
-        my ($type, $ptr, $len) = @$co;
+        my ($type, $ptr, $len, $base) = @$co;
+        $base = 0 unless $base;
         $type =~ /^(stco|co64)_?(.*)$/ or $et->Error('Internal error fixing offsets'), last;
         my $siz = $1 eq 'co64' ? 8 : 4;
         my ($n, $tag);
@@ -615,7 +836,7 @@ sub WriteQuickTime($$$)
             my $ok;
             my $val = $type eq 'co64' ? Get64u($outfile, $ptr) : Get32u($outfile, $ptr);
             foreach $mdat (@mdat) {
-                next unless $val >= $$mdat[0] and $val <= $$mdat[1]; # (have seen == $$mdat[1])
+                next unless $val+$base >= $$mdat[0] and $val+$base <= $$mdat[1]; # (have seen == $$mdat[1])
                 $val += $$mdat[3] - $$mdat[0];
                 if ($val < 0) {
                     $et->Error("Error fixing up $tag offset");
@@ -673,7 +894,7 @@ sub WriteQuickTime($$$)
 sub WriteMOV($$)
 {
     my ($et, $dirInfo) = @_;
-    $et or return 1;
+    $et or return 1;    # allow dummy access to autoload this package
     my $raf = $$dirInfo{RAF} or return 0;
     my ($buff, $ftype);
 

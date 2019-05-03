@@ -7,6 +7,21 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 11.30. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+May 3, 2019 - Version 11.39
+
+  - Added ability to create new QuickTime tags in MOV/MP4 videos
+  - Added two new Canon LensTypes and a new CanonModelID (thanks LibRaw)
+  - Added a few new Sony/Minolta LensType values (thanks Jos Roost)
+  - Added a number of new QuickTime GenreID values
+  - Added range check on date/time values when writing
+  - Decode Canon EOS D60 black levels
+  - Split off some QuickTime tags into different family 1 groups
+  - Fixed "Chunk offset outside movie data" error when writing some HEIC files
+  - Fixed decoding of Pentax AutoBracketing for K-1 and K-5
+  - Fixed some QuickTime family 2 group names
+  - Fixed bug introduced in 11.38 that broke extraction of thumbnail images from
+    Canon MOV videos
+
 Apr. 24, 2019 - Version 11.38
 
   - Added Extra JPEGImageLength tag

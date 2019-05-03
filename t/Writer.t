@@ -698,7 +698,7 @@ my $testOK;
     ++$testnum;
     my @writeInfo = (
         [DateTimeOriginal => '', DelValue => 1],
-        [DateTimeOriginal => '1999:99:99 99:99:99'],
+        ['DateTimeOriginal#' => '1999:99:99 99:99:99'],
         [XResolution => '', DelValue => 1],
         [XResolution => '123'],
         [ResolutionUnit => '', DelValue => 1],

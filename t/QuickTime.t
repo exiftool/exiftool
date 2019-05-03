@@ -2,7 +2,7 @@
 # After "make install" it should work as "perl t/QuickTime.t".
 
 BEGIN {
-    $| = 1; print "1..6\n"; $Image::ExifTool::configFile = '';
+    $| = 1; print "1..9\n"; $Image::ExifTool::configFile = '';
     require './t/TestLib.pm'; t::TestLib->import();
 }
 END {print "not ok 1\n" unless $loaded;}
@@ -70,6 +70,38 @@ my $testnum = 1;
         print 'not ';
     }
     print "ok $testnum\n";
+}
+
+# test 7: Add a bunch of new tags
+{
+    ++$testnum;
+    my $exifTool = new Image::ExifTool;
+    my @writeInfo = (
+        ['QuickTime:Artist' => 'me'],
+        ['QuickTime:Model' => 'model'],
+        ['UserData:Genre' => 'rock' ],
+        ['UserData:Album' => 'albumA' ],
+        ['ItemList:Album' => 'albumB' ],
+        ['QuickTime:Comment-fra-FR' => 'fr comment' ],
+    );
+    print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum, 't/images/QuickTime.mov', 1);
+    print "ok $testnum\n";
+}
+
+# test 8-9: Delete everything then add back a tag
+{
+    my $ext;
+    my $exifTool = new Image::ExifTool;
+    my @writeInfo = (
+        ['all' => undef],
+        ['artist' => 'me'],
+    );
+    my @extract = ('QuickTime:all', 'XMP:all');
+    foreach $ext (qw(mov m4a)) {
+        ++$testnum;
+        print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum, "t/images/QuickTime.$ext", \@extract);
+        print "ok $testnum\n";
+    }
 }
 
 

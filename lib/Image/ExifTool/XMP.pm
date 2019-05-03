@@ -3168,7 +3168,7 @@ NoLoop:
     my $key = $et->FoundTag($tagInfo, $val) or return 0;
     # save original components of rational numbers (used when copying)
     $$et{RATIONAL}{$key} = $rational if defined $rational;
-    # allow read-only subdirectories (eg. embedded base64 IPTC in nksc files)
+    # allow read-only subdirectories (eg. embedded base64 XMP/IPTC in NKSC files)
     if ($$tagInfo{SubDirectory} and not $$et{IsWriting}) {
         my $subdir = $$tagInfo{SubDirectory};
         my $dataPt = ref $$et{VALUE}{$key} ? $$et{VALUE}{$key} : \$$et{VALUE}{$key};
@@ -3177,7 +3177,7 @@ NoLoop:
             DirName  => $$subdir{DirName} || $$tagInfo{Name},
             DataPt   => $dataPt,
             DirLen   => length $$dataPt,
-            IsExtended => 1,    # (avoids Duplicate warning for embedded XMP)
+            IsExtended => 1, # (hack to avoid Duplicate warning for embedded XMP)
         );
         my $oldOrder = GetByteOrder();
         SetByteOrder($$subdir{ByteOrder}) if $$subdir{ByteOrder};

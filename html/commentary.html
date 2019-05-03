@@ -261,7 +261,7 @@ information could be decoded properly.  These changes would allow some
 unknown information to be interpreted, which would make it possible for
 information added by 3rd parties to be useful.</p>
 
-<p>I only have 2 problems with the QuickTime specification:</p>
+<p>I only have 3 problems with the QuickTime specification:</p>
 
 <p>1) The metadata organization is a mess because tags may be stored in more
 than one location (eg. UserData vs. InfoList), and conflicting metadata
@@ -274,6 +274,11 @@ two bytes give the size of the string including the length word and language
 codes.  But often the size doesn't include these 4 bytes, which sort of
 defeats the purpose of the multiple languages because it is difficult to
 parse past the first entry if you don't know the size.</p>
+
+<p>3) Cameras without time zone information are forced to write date/time
+tags as local time, even though the specification says these should be UTC.
+This leads to an unresolvable inconsistency in the time offset because
+one can not distinguish between these two cases.</p>
 
 <a name='MIE'></a>
 <h3>My Format (Meta Information Encapsulation, or "MIE")</h3>
@@ -315,7 +320,7 @@ offers a number of other features:</p>
 
 <hr>
 <i>Created Nov. 15, 2005</i><br>
-<i>Last revised Dec. 19, 2018</i>
+<i>Last revised May. 2, 2019</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

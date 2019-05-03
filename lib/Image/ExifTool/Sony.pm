@@ -32,7 +32,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.05';
+$VERSION = '3.06';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -169,6 +169,7 @@ my %sonyLensTypes2 = (
     50482 => 'Sigma 18-300mm F3.5-6.3 DC MACRO OS HSM | C + MC-11', #JR (014)
     50483 => 'Sigma 18-35mm F1.8 DC HSM | A + MC-11', #JR (013)
     50484 => 'Sigma 24-35mm F2 DG HSM | A + MC-11', #JR (015)
+    50485 => 'Sigma 24mm F1.4 DG HSM | A + MC-11', #JR (015)
     50486 => 'Sigma 150-600mm F5-6.3 DG OS HSM | C + MC-11', #JR (015)
     50487 => 'Sigma 20mm F1.4 DG HSM | A + MC-11', #JR (015)
     50488 => 'Sigma 35mm F1.4 DG HSM | A', #JR (012 + MC-11 or 018)

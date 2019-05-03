@@ -58,7 +58,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::HP;
 
-$VERSION = '3.26';
+$VERSION = '3.27';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -1562,12 +1562,27 @@ my %binaryDataAttrs = (
             'Saturation', 'Sharpness', 'Contrast', 'Hue' or 'HighLowKey' followed by
             '+1', '+2' or '+3' for step size
         },
-        # 1=.3ev, 2=.7, 3=1.0, ... 10=.5ev, 11=1.5, ...
-        ValueConv => [ '$val<10 ? $val/3 : $val-9.5' ],
-        ValueConvInv => [ 'abs($val-int($val)-.5)>0.05 ? int($val*3+0.5) : int($val+10)' ],
+        # 1=.3ev, 2=.7, 3=1.0 ... 10=.5, 11=1.5, ... 4096=0, 4097=0.5 ... 8192=0, 8193=0.3
+        # (models like K-1 and K-5 use 0x1000 and 0x2000 to indicate 1/2 and 1/3 EV step
+        # size -- convert this as a fraction so we can recognize this format when writing)
+        ValueConv => [ q{
+            return $val / 3 if $val < 10;
+            return $val - 9.5 if $val < 20;
+            return ($val - 0x1000) . '/2' if $val & 0x1000;
+            return ($val - 0x2000) . '/3' if $val & 0x2000;
+            return $val; # (shouldn't happen)
+        }],
+        ValueConvInv => [ q{
+            if ($val =~ s{/(\d+)$}{}) {
+                return $val + 0x1000 if $1 == 2;
+                return $val + 0x2000 if $1 == 3;
+                return undef;
+            }
+            return abs($val-int($val)-.5)>0.05 ? int($val*3+0.5) : int($val+10);
+        }],
         PrintConv => sub {
             my @v = split(' ', shift);
-            $v[0] = sprintf('%.1f', $v[0]) if $v[0];
+            $v[0] = sprintf('%.1f', $v[0]) if $v[0] and $v[0]!~m{/};
             if ($v[1]) {
                 my %s = (1=>'WB-BA',2=>'WB-GM',3=>'Saturation',4=>'Sharpness',
                          5=>'Contrast',6=>'Hue',7=>'HighLowKey');

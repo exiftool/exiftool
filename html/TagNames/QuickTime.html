@@ -14,9 +14,17 @@ parameters, as well as proprietary information written by many camera
 models.  Tags with a question mark after their name are not extracted unless
 the Unknown option is set.</p>
 
-<p>ExifTool currently has a limited ability to write metadata in
-QuickTime-format videos.  It can edit/create/delete any XMP tags, but may
-only be used to edit existing tags in native QuickTime metadata.</p>
+<p>When writing, ExifTool creates both QuickTime and XMP tags by default, but
+the group may be specified to write one or the other separately.  Newly
+created QuickTime tags are added in the ItemList location if possible,
+otherwise in UserData, but this may be changed by specifying the location.
+Alternate language tags may be accessed for ItemList tags by adding a
+language-country code to the tag name (eg. &quot;ItemList:Artist-fra-FR&quot;), or for
+UserData tags by adding a language code (eg. &quot;UserData:Artist-fra&quot;). If no
+language code is specified when writing, alternate languages are deleted.
+Use the &quot;und&quot; language code to write the default language without deleting
+alternate languages.  Note that &quot;eng&quot; is treated as a default language when
+reading, but not when writing.</p>
 
 <p>According to the specification, many QuickTime date/time tags should be
 stored as UTC.  Unfortunately, digital cameras often store local time values
@@ -1952,12 +1960,12 @@ added dynamically to this table after processing the Meta Keys information.</p>
 </tr><tr><td class=r>1116</td><td>= Music|Latino|Contemporary Latin</td>
 </tr><tr><td class=r>1117</td><td>= Music|Latino|Pop Latino</td>
 </tr><tr><td class=r>1118</td><td>= Music|Latino|Raices</td>
-</tr><tr><td class=r>1119</td><td>= Music|Latino|Latin Urban</td>
+</tr><tr><td class=r>1119</td><td>= Music|Latino|Urbano latino</td>
 </tr><tr><td class=r>1120</td><td>= Music|Latino|Baladas y Boleros</td>
 </tr><tr><td class=r>1121</td><td>= Music|Latino|Rock y Alternativo</td>
 </tr><tr><td class=r>1122</td><td>= Music|Brazilian</td>
 </tr><tr><td class=r>1123</td><td>= Music|Latino|Musica Mexicana</td>
-</tr><tr><td class=r>1124</td><td>= Music|Latino|Salsa y Tropical</td>
+</tr><tr><td class=r>1124</td><td>= Music|Latino|Musica tropical</td>
 </tr><tr><td class=r>1125</td><td>= Music|New Age|Environmental</td>
 </tr><tr><td class=r>1126</td><td>= Music|New Age|Healing</td>
 </tr><tr><td class=r>1127</td><td>= Music|New Age|Meditation</td>
@@ -2087,8 +2095,8 @@ added dynamically to this table after processing the Meta Keys information.</p>
 </tr><tr><td class=r>1261</td><td>= Music|Vocal|Trot</td>
 </tr><tr><td class=r>1262</td><td>= Music|Indian</td>
 </tr><tr><td class=r>1263</td><td>= Music|Indian|Bollywood</td>
-</tr><tr><td class=r>1264</td><td>= Music|Indian|Tamil</td>
-</tr><tr><td class=r>1265</td><td>= Music|Indian|Telugu</td>
+</tr><tr><td class=r>1264</td><td>= Music|Indian|Regional Indian|Tamil</td>
+</tr><tr><td class=r>1265</td><td>= Music|Indian|Regional Indian|Telugu</td>
 </tr><tr><td class=r>1266</td><td>= Music|Indian|Regional Indian</td>
 </tr><tr><td class=r>1267</td><td>= Music|Indian|Devotional &amp; Spiritual</td>
 </tr><tr><td class=r>1268</td><td>= Music|Indian|Sufi</td>
@@ -2277,8 +2285,8 @@ added dynamically to this table after processing the Meta Keys information.</p>
 </tr><tr><td class=r>1689</td><td>= Music Videos|Spoken Word</td>
 </tr><tr><td class=r>1690</td><td>= Music Videos|Indian</td>
 </tr><tr><td class=r>1691</td><td>= Music Videos|Indian|Bollywood</td>
-</tr><tr><td class=r>1692</td><td>= Music Videos|Indian|Tamil</td>
-</tr><tr><td class=r>1693</td><td>= Music Videos|Indian|Telugu</td>
+</tr><tr><td class=r>1692</td><td>= Music Videos|Indian|Regional Indian|Tamil</td>
+</tr><tr><td class=r>1693</td><td>= Music Videos|Indian|Regional Indian|Telugu</td>
 </tr><tr><td class=r>1694</td><td>= Music Videos|Indian|Regional Indian</td>
 </tr><tr><td class=r>1695</td><td>= Music Videos|Indian|Devotional &amp; Spiritual</td>
 </tr><tr><td class=r>1696</td><td>= Music Videos|Indian|Sufi</td>
@@ -2532,6 +2540,31 @@ added dynamically to this table after processing the Meta Keys information.</p>
 </tr><tr><td class=r>1948</td><td>= Music Videos|New Age|Yoga</td>
 </tr><tr><td class=r>1949</td><td>= Music Videos|Pop|Tribute</td>
 </tr><tr><td class=r>1950</td><td>= Music Videos|Pop|Shows</td>
+</tr><tr><td class=r>1951</td><td>= Music Videos|Cuban</td>
+</tr><tr><td class=r>1952</td><td>= Music Videos|Cuban|Mambo</td>
+</tr><tr><td class=r>1953</td><td>= Music Videos|Cuban|Chachacha</td>
+</tr><tr><td class=r>1954</td><td>= Music Videos|Cuban|Guajira</td>
+</tr><tr><td class=r>1955</td><td>= Music Videos|Cuban|Son</td>
+</tr><tr><td class=r>1956</td><td>= Music Videos|Cuban|Bolero</td>
+</tr><tr><td class=r>1957</td><td>= Music Videos|Cuban|Guaracha</td>
+</tr><tr><td class=r>1958</td><td>= Music Videos|Cuban|Timba</td>
+</tr><tr><td class=r>1959</td><td>= Music Videos|Soundtrack|Video Game</td>
+</tr><tr><td class=r>1960</td><td>= Music Videos|Indian|Regional Indian|Punjabi|Punjabi Pop</td>
+</tr><tr><td class=r>1961</td><td>= Music Videos|Indian|Regional Indian|Bengali|Rabindra Sangeet</td>
+</tr><tr><td class=r>1962</td><td>= Music Videos|Indian|Regional Indian|Malayalam</td>
+</tr><tr><td class=r>1963</td><td>= Music Videos|Indian|Regional Indian|Kannada</td>
+</tr><tr><td class=r>1964</td><td>= Music Videos|Indian|Regional Indian|Marathi</td>
+</tr><tr><td class=r>1965</td><td>= Music Videos|Indian|Regional Indian|Gujarati</td>
+</tr><tr><td class=r>1966</td><td>= Music Videos|Indian|Regional Indian|Assamese</td>
+</tr><tr><td class=r>1967</td><td>= Music Videos|Indian|Regional Indian|Bhojpuri</td>
+</tr><tr><td class=r>1968</td><td>= Music Videos|Indian|Regional Indian|Haryanvi</td>
+</tr><tr><td class=r>1969</td><td>= Music Videos|Indian|Regional Indian|Odia</td>
+</tr><tr><td class=r>1970</td><td>= Music Videos|Indian|Regional Indian|Rajasthani</td>
+</tr><tr><td class=r>1971</td><td>= Music Videos|Indian|Regional Indian|Urdu</td>
+</tr><tr><td class=r>1972</td><td>= Music Videos|Indian|Regional Indian|Punjabi</td>
+</tr><tr><td class=r>1973</td><td>= Music Videos|Indian|Regional Indian|Bengali</td>
+</tr><tr><td class=r>1974</td><td>= Music Videos|Indian|Indian Classical|Carnatic Classical</td>
+</tr><tr><td class=r>1975</td><td>= Music Videos|Indian|Indian Classical|Hindustani Classical</td>
 </tr><tr><td class=r>4000</td><td>= TV Shows|Comedy</td>
 </tr><tr><td class=r>4001</td><td>= TV Shows|Drama</td>
 </tr><tr><td class=r>4002</td><td>= TV Shows|Animation</td>
@@ -2797,8 +2830,8 @@ added dynamically to this table after processing the Meta Keys information.</p>
 </tr><tr><td class=r>8193</td><td>= Tones|Ringtones|Indian|Indian Pop</td>
 </tr><tr><td class=r>8194</td><td>= Tones|Ringtones|Indian|Regional Indian</td>
 </tr><tr><td class=r>8195</td><td>= Tones|Ringtones|Indian|Sufi</td>
-</tr><tr><td class=r>8196</td><td>= Tones|Ringtones|Indian|Tamil</td>
-</tr><tr><td class=r>8197</td><td>= Tones|Ringtones|Indian|Telugu</td>
+</tr><tr><td class=r>8196</td><td>= Tones|Ringtones|Indian|Regional Indian|Tamil</td>
+</tr><tr><td class=r>8197</td><td>= Tones|Ringtones|Indian|Regional Indian|Telugu</td>
 </tr><tr><td class=r>8198</td><td>= Tones|Ringtones|Instrumental</td>
 </tr><tr><td class=r>8199</td><td>= Tones|Ringtones|Jazz|Avant-Garde Jazz</td>
 </tr><tr><td class=r>8201</td><td>= Tones|Ringtones|Jazz|Big Band</td>
@@ -2967,6 +3000,31 @@ added dynamically to this table after processing the Meta Keys information.</p>
 </tr><tr><td class=r>8365</td><td>= Tones|Ringtones|New Age|Yoga</td>
 </tr><tr><td class=r>8366</td><td>= Tones|Ringtones|Pop|Tribute</td>
 </tr><tr><td class=r>8367</td><td>= Tones|Ringtones|Pop|Shows</td>
+</tr><tr><td class=r>8368</td><td>= Tones|Ringtones|Cuban</td>
+</tr><tr><td class=r>8369</td><td>= Tones|Ringtones|Cuban|Mambo</td>
+</tr><tr><td class=r>8370</td><td>= Tones|Ringtones|Cuban|Chachacha</td>
+</tr><tr><td class=r>8371</td><td>= Tones|Ringtones|Cuban|Guajira</td>
+</tr><tr><td class=r>8372</td><td>= Tones|Ringtones|Cuban|Son</td>
+</tr><tr><td class=r>8373</td><td>= Tones|Ringtones|Cuban|Bolero</td>
+</tr><tr><td class=r>8374</td><td>= Tones|Ringtones|Cuban|Guaracha</td>
+</tr><tr><td class=r>8375</td><td>= Tones|Ringtones|Cuban|Timba</td>
+</tr><tr><td class=r>8376</td><td>= Tones|Ringtones|Soundtrack|Video Game</td>
+</tr><tr><td class=r>8377</td><td>= Tones|Ringtones|Indian|Regional Indian|Punjabi|Punjabi Pop</td>
+</tr><tr><td class=r>8378</td><td>= Tones|Ringtones|Indian|Regional Indian|Bengali|Rabindra Sangeet</td>
+</tr><tr><td class=r>8379</td><td>= Tones|Ringtones|Indian|Regional Indian|Malayalam</td>
+</tr><tr><td class=r>8380</td><td>= Tones|Ringtones|Indian|Regional Indian|Kannada</td>
+</tr><tr><td class=r>8381</td><td>= Tones|Ringtones|Indian|Regional Indian|Marathi</td>
+</tr><tr><td class=r>8382</td><td>= Tones|Ringtones|Indian|Regional Indian|Gujarati</td>
+</tr><tr><td class=r>8383</td><td>= Tones|Ringtones|Indian|Regional Indian|Assamese</td>
+</tr><tr><td class=r>8384</td><td>= Tones|Ringtones|Indian|Regional Indian|Bhojpuri</td>
+</tr><tr><td class=r>8385</td><td>= Tones|Ringtones|Indian|Regional Indian|Haryanvi</td>
+</tr><tr><td class=r>8386</td><td>= Tones|Ringtones|Indian|Regional Indian|Odia</td>
+</tr><tr><td class=r>8387</td><td>= Tones|Ringtones|Indian|Regional Indian|Rajasthani</td>
+</tr><tr><td class=r>8388</td><td>= Tones|Ringtones|Indian|Regional Indian|Urdu</td>
+</tr><tr><td class=r>8389</td><td>= Tones|Ringtones|Indian|Regional Indian|Punjabi</td>
+</tr><tr><td class=r>8390</td><td>= Tones|Ringtones|Indian|Regional Indian|Bengali</td>
+</tr><tr><td class=r>8391</td><td>= Tones|Ringtones|Indian|Indian Classical|Carnatic Classical</td>
+</tr><tr><td class=r>8392</td><td>= Tones|Ringtones|Indian|Indian Classical|Hindustani Classical</td>
 </tr><tr><td class=r>9002</td><td>= Books|Nonfiction</td>
 </tr><tr><td class=r>9003</td><td>= Books|Romance</td>
 </tr><tr><td class=r>9004</td><td>= Books|Travel &amp; Adventure</td>
@@ -3863,15 +3921,40 @@ added dynamically to this table after processing the Meta Keys information.</p>
 </tr><tr><td class=r>100021</td><td>= Music|New Age|Yoga</td>
 </tr><tr><td class=r>100022</td><td>= Music|Pop|Tribute</td>
 </tr><tr><td class=r>100023</td><td>= Music|Pop|Shows</td>
+</tr><tr><td class=r>100024</td><td>= Music|Cuban</td>
+</tr><tr><td class=r>100025</td><td>= Music|Cuban|Mambo</td>
+</tr><tr><td class=r>100026</td><td>= Music|Cuban|Chachacha</td>
+</tr><tr><td class=r>100027</td><td>= Music|Cuban|Guajira</td>
+</tr><tr><td class=r>100028</td><td>= Music|Cuban|Son</td>
+</tr><tr><td class=r>100029</td><td>= Music|Cuban|Bolero</td>
+</tr><tr><td class=r>100030</td><td>= Music|Cuban|Guaracha</td>
+</tr><tr><td class=r>100031</td><td>= Music|Cuban|Timba</td>
+</tr><tr><td class=r>100032</td><td>= Music|Soundtrack|Video Game</td>
+</tr><tr><td class=r>100033</td><td>= Music|Indian|Regional Indian|Punjabi|Punjabi Pop</td>
+</tr><tr><td class=r>100034</td><td>= Music|Indian|Regional Indian|Bengali|Rabindra Sangeet</td>
+</tr><tr><td class=r>100035</td><td>= Music|Indian|Regional Indian|Malayalam</td>
+</tr><tr><td class=r>100036</td><td>= Music|Indian|Regional Indian|Kannada</td>
+</tr><tr><td class=r>100037</td><td>= Music|Indian|Regional Indian|Marathi</td>
+</tr><tr><td class=r>100038</td><td>= Music|Indian|Regional Indian|Gujarati</td>
+</tr><tr><td class=r>100039</td><td>= Music|Indian|Regional Indian|Assamese</td>
+</tr><tr><td class=r>100040</td><td>= Music|Indian|Regional Indian|Bhojpuri</td>
+</tr><tr><td class=r>100041</td><td>= Music|Indian|Regional Indian|Haryanvi</td>
+</tr><tr><td class=r>100042</td><td>= Music|Indian|Regional Indian|Odia</td>
+</tr><tr><td class=r>100043</td><td>= Music|Indian|Regional Indian|Rajasthani</td>
+</tr><tr><td class=r>100044</td><td>= Music|Indian|Regional Indian|Urdu</td>
+</tr><tr><td class=r>100045</td><td>= Music|Indian|Regional Indian|Punjabi</td>
+</tr><tr><td class=r>100046</td><td>= Music|Indian|Regional Indian|Bengali</td>
+</tr><tr><td class=r>100047</td><td>= Music|Indian|Indian Classical|Carnatic Classical</td>
+</tr><tr><td class=r>100048</td><td>= Music|Indian|Indian Classical|Hindustani Classical</td>
 </tr><tr><td class=r>40000000</td><td>= iTunes U</td>
-</tr><tr><td class=r>40000001</td><td>= iTunes U|Business</td>
-</tr><tr><td class=r>40000002</td><td>= iTunes U|Business|Economics</td>
-</tr><tr><td class=r>40000003</td><td>= iTunes U|Business|Finance</td>
-</tr><tr><td class=r>40000004</td><td>= iTunes U|Business|Hospitality</td>
-</tr><tr><td class=r>40000005</td><td>= iTunes U|Business|Management</td>
-</tr><tr><td class=r>40000006</td><td>= iTunes U|Business|Marketing</td>
-</tr><tr><td class=r>40000007</td><td>= iTunes U|Business|Personal Finance</td>
-</tr><tr><td class=r>40000008</td><td>= iTunes U|Business|Real Estate</td>
+</tr><tr><td class=r>40000001</td><td>= iTunes U|Business &amp; Economics</td>
+</tr><tr><td class=r>40000002</td><td>= iTunes U|Business &amp; Economics|Economics</td>
+</tr><tr><td class=r>40000003</td><td>= iTunes U|Business &amp; Economics|Finance</td>
+</tr><tr><td class=r>40000004</td><td>= iTunes U|Business &amp; Economics|Hospitality</td>
+</tr><tr><td class=r>40000005</td><td>= iTunes U|Business &amp; Economics|Management</td>
+</tr><tr><td class=r>40000006</td><td>= iTunes U|Business &amp; Economics|Marketing</td>
+</tr><tr><td class=r>40000007</td><td>= iTunes U|Business &amp; Economics|Personal Finance</td>
+</tr><tr><td class=r>40000008</td><td>= iTunes U|Business &amp; Economics|Real Estate</td>
 </tr><tr><td class=r>40000009</td><td>= iTunes U|Engineering</td>
 </tr><tr><td class=r>40000010</td><td>= iTunes U|Engineering|Chemical &amp; Petroleum Engineering</td>
 </tr><tr><td class=r>40000011</td><td>= iTunes U|Engineering|Civil Engineering</td>
@@ -3879,15 +3962,15 @@ added dynamically to this table after processing the Meta Keys information.</p>
 </tr><tr><td class=r>40000013</td><td>= iTunes U|Engineering|Electrical Engineering</td>
 </tr><tr><td class=r>40000014</td><td>= iTunes U|Engineering|Environmental Engineering</td>
 </tr><tr><td class=r>40000015</td><td>= iTunes U|Engineering|Mechanical Engineering</td>
-</tr><tr><td class=r>40000016</td><td>= iTunes U|Art &amp; Architecture</td>
-</tr><tr><td class=r>40000017</td><td>= iTunes U|Art &amp; Architecture|Architecture</td>
-</tr><tr><td class=r>40000019</td><td>= iTunes U|Art &amp; Architecture|Art History</td>
-</tr><tr><td class=r>40000020</td><td>= iTunes U|Art &amp; Architecture|Dance</td>
-</tr><tr><td class=r>40000021</td><td>= iTunes U|Art &amp; Architecture|Film</td>
-</tr><tr><td class=r>40000022</td><td>= iTunes U|Art &amp; Architecture|Design</td>
-</tr><tr><td class=r>40000023</td><td>= iTunes U|Art &amp; Architecture|Interior Design</td>
-</tr><tr><td class=r>40000024</td><td>= iTunes U|Art &amp; Architecture|Music</td>
-</tr><tr><td class=r>40000025</td><td>= iTunes U|Art &amp; Architecture|Theater</td>
+</tr><tr><td class=r>40000016</td><td>= iTunes U|Music, Art, &amp; Design</td>
+</tr><tr><td class=r>40000017</td><td>= iTunes U|Music, Art, &amp; Design|Architecture</td>
+</tr><tr><td class=r>40000019</td><td>= iTunes U|Music, Art, &amp; Design|Art History</td>
+</tr><tr><td class=r>40000020</td><td>= iTunes U|Music, Art, &amp; Design|Dance</td>
+</tr><tr><td class=r>40000021</td><td>= iTunes U|Music, Art, &amp; Design|Film</td>
+</tr><tr><td class=r>40000022</td><td>= iTunes U|Music, Art, &amp; Design|Design</td>
+</tr><tr><td class=r>40000023</td><td>= iTunes U|Music, Art, &amp; Design|Interior Design</td>
+</tr><tr><td class=r>40000024</td><td>= iTunes U|Music, Art, &amp; Design|Music</td>
+</tr><tr><td class=r>40000025</td><td>= iTunes U|Music, Art, &amp; Design|Theater</td>
 </tr><tr><td class=r>40000026</td><td>= iTunes U|Health &amp; Medicine</td>
 </tr><tr><td class=r>40000027</td><td>= iTunes U|Health &amp; Medicine|Anatomy &amp; Physiology</td>
 </tr><tr><td class=r>40000028</td><td>= iTunes U|Health &amp; Medicine|Behavioral Science</td>
@@ -3914,26 +3997,26 @@ added dynamically to this table after processing the Meta Keys information.</p>
 </tr><tr><td class=r>40000049</td><td>= iTunes U|History|Middle Eastern History</td>
 </tr><tr><td class=r>40000050</td><td>= iTunes U|History|North American History</td>
 </tr><tr><td class=r>40000051</td><td>= iTunes U|History|South American History</td>
-</tr><tr><td class=r>40000053</td><td>= iTunes U|Communications &amp; Media</td>
+</tr><tr><td class=r>40000053</td><td>= iTunes U|Communications &amp; Journalism</td>
 </tr><tr><td class=r>40000054</td><td>= iTunes U|Philosophy</td>
 </tr><tr><td class=r>40000055</td><td>= iTunes U|Religion &amp; Spirituality</td>
-</tr><tr><td class=r>40000056</td><td>= iTunes U|Language</td>
-</tr><tr><td class=r>40000057</td><td>= iTunes U|Language|African Languages</td>
-</tr><tr><td class=r>40000058</td><td>= iTunes U|Language|Ancient Languages</td>
-</tr><tr><td class=r>40000061</td><td>= iTunes U|Language|English</td>
-</tr><tr><td class=r>40000063</td><td>= iTunes U|Language|French</td>
-</tr><tr><td class=r>40000064</td><td>= iTunes U|Language|German</td>
-</tr><tr><td class=r>40000065</td><td>= iTunes U|Language|Italian</td>
-</tr><tr><td class=r>40000066</td><td>= iTunes U|Language|Linguistics</td>
-</tr><tr><td class=r>40000068</td><td>= iTunes U|Language|Spanish</td>
-</tr><tr><td class=r>40000069</td><td>= iTunes U|Language|Speech Pathology</td>
-</tr><tr><td class=r>40000070</td><td>= iTunes U|Literature</td>
-</tr><tr><td class=r>40000071</td><td>= iTunes U|Literature|Anthologies</td>
-</tr><tr><td class=r>40000072</td><td>= iTunes U|Literature|Biography</td>
-</tr><tr><td class=r>40000073</td><td>= iTunes U|Literature|Classics</td>
-</tr><tr><td class=r>40000074</td><td>= iTunes U|Literature|Literary Criticism</td>
-</tr><tr><td class=r>40000075</td><td>= iTunes U|Literature|Fiction</td>
-</tr><tr><td class=r>40000076</td><td>= iTunes U|Literature|Poetry</td>
+</tr><tr><td class=r>40000056</td><td>= iTunes U|Languages</td>
+</tr><tr><td class=r>40000057</td><td>= iTunes U|Languages|African Languages</td>
+</tr><tr><td class=r>40000058</td><td>= iTunes U|Languages|Ancient Languages</td>
+</tr><tr><td class=r>40000061</td><td>= iTunes U|Languages|English</td>
+</tr><tr><td class=r>40000063</td><td>= iTunes U|Languages|French</td>
+</tr><tr><td class=r>40000064</td><td>= iTunes U|Languages|German</td>
+</tr><tr><td class=r>40000065</td><td>= iTunes U|Languages|Italian</td>
+</tr><tr><td class=r>40000066</td><td>= iTunes U|Languages|Linguistics</td>
+</tr><tr><td class=r>40000068</td><td>= iTunes U|Languages|Spanish</td>
+</tr><tr><td class=r>40000069</td><td>= iTunes U|Languages|Speech Pathology</td>
+</tr><tr><td class=r>40000070</td><td>= iTunes U|Writing &amp; Literature</td>
+</tr><tr><td class=r>40000071</td><td>= iTunes U|Writing &amp; Literature|Anthologies</td>
+</tr><tr><td class=r>40000072</td><td>= iTunes U|Writing &amp; Literature|Biography</td>
+</tr><tr><td class=r>40000073</td><td>= iTunes U|Writing &amp; Literature|Classics</td>
+</tr><tr><td class=r>40000074</td><td>= iTunes U|Writing &amp; Literature|Literary Criticism</td>
+</tr><tr><td class=r>40000075</td><td>= iTunes U|Writing &amp; Literature|Fiction</td>
+</tr><tr><td class=r>40000076</td><td>= iTunes U|Writing &amp; Literature|Poetry</td>
 </tr><tr><td class=r>40000077</td><td>= iTunes U|Mathematics</td>
 </tr><tr><td class=r>40000078</td><td>= iTunes U|Mathematics|Advanced Mathematics</td>
 </tr><tr><td class=r>40000079</td><td>= iTunes U|Mathematics|Algebra</td>
@@ -3951,13 +4034,13 @@ added dynamically to this table after processing the Meta Keys information.</p>
 </tr><tr><td class=r>40000091</td><td>= iTunes U|Science|Geography</td>
 </tr><tr><td class=r>40000092</td><td>= iTunes U|Science|Geology</td>
 </tr><tr><td class=r>40000093</td><td>= iTunes U|Science|Physics</td>
-</tr><tr><td class=r>40000094</td><td>= iTunes U|Psychology &amp; Social Science</td>
+</tr><tr><td class=r>40000094</td><td>= iTunes U|Social Science</td>
 </tr><tr><td class=r>40000095</td><td>= iTunes U|Law &amp; Politics|Law</td>
 </tr><tr><td class=r>40000096</td><td>= iTunes U|Law &amp; Politics|Political Science</td>
 </tr><tr><td class=r>40000097</td><td>= iTunes U|Law &amp; Politics|Public Administration</td>
-</tr><tr><td class=r>40000098</td><td>= iTunes U|Psychology &amp; Social Science|Psychology</td>
-</tr><tr><td class=r>40000099</td><td>= iTunes U|Psychology &amp; Social Science|Social Welfare</td>
-</tr><tr><td class=r>40000100</td><td>= iTunes U|Psychology &amp; Social Science|Sociology</td>
+</tr><tr><td class=r>40000098</td><td>= iTunes U|Social Science|Psychology</td>
+</tr><tr><td class=r>40000099</td><td>= iTunes U|Social Science|Social Welfare</td>
+</tr><tr><td class=r>40000100</td><td>= iTunes U|Social Science|Sociology</td>
 </tr><tr><td class=r>40000101</td><td>= iTunes U|Society</td>
 </tr><tr><td class=r>40000103</td><td>= iTunes U|Society|Asia Pacific Studies</td>
 </tr><tr><td class=r>40000104</td><td>= iTunes U|Society|European Studies</td>
@@ -3972,36 +4055,36 @@ added dynamically to this table after processing the Meta Keys information.</p>
 </tr><tr><td class=r>40000113</td><td>= iTunes U|Teaching &amp; Learning|Learning Resources</td>
 </tr><tr><td class=r>40000114</td><td>= iTunes U|Teaching &amp; Learning|Psychology &amp; Research</td>
 </tr><tr><td class=r>40000115</td><td>= iTunes U|Teaching &amp; Learning|Special Education</td>
-</tr><tr><td class=r>40000116</td><td>= iTunes U|Art &amp; Architecture|Culinary Arts</td>
-</tr><tr><td class=r>40000117</td><td>= iTunes U|Art &amp; Architecture|Fashion</td>
-</tr><tr><td class=r>40000118</td><td>= iTunes U|Art &amp; Architecture|Media Arts</td>
-</tr><tr><td class=r>40000119</td><td>= iTunes U|Art &amp; Architecture|Photography</td>
-</tr><tr><td class=r>40000120</td><td>= iTunes U|Art &amp; Architecture|Visual Art</td>
-</tr><tr><td class=r>40000121</td><td>= iTunes U|Business|Entrepreneurship</td>
-</tr><tr><td class=r>40000122</td><td>= iTunes U|Communications &amp; Media|Broadcasting</td>
-</tr><tr><td class=r>40000123</td><td>= iTunes U|Communications &amp; Media|Digital Media</td>
-</tr><tr><td class=r>40000124</td><td>= iTunes U|Communications &amp; Media|Journalism</td>
-</tr><tr><td class=r>40000125</td><td>= iTunes U|Communications &amp; Media|Photojournalism</td>
-</tr><tr><td class=r>40000126</td><td>= iTunes U|Communications &amp; Media|Print</td>
-</tr><tr><td class=r>40000127</td><td>= iTunes U|Communications &amp; Media|Speech</td>
-</tr><tr><td class=r>40000128</td><td>= iTunes U|Communications &amp; Media|Writing</td>
+</tr><tr><td class=r>40000116</td><td>= iTunes U|Music, Art, &amp; Design|Culinary Arts</td>
+</tr><tr><td class=r>40000117</td><td>= iTunes U|Music, Art, &amp; Design|Fashion</td>
+</tr><tr><td class=r>40000118</td><td>= iTunes U|Music, Art, &amp; Design|Media Arts</td>
+</tr><tr><td class=r>40000119</td><td>= iTunes U|Music, Art, &amp; Design|Photography</td>
+</tr><tr><td class=r>40000120</td><td>= iTunes U|Music, Art, &amp; Design|Visual Art</td>
+</tr><tr><td class=r>40000121</td><td>= iTunes U|Business &amp; Economics|Entrepreneurship</td>
+</tr><tr><td class=r>40000122</td><td>= iTunes U|Communications &amp; Journalism|Broadcasting</td>
+</tr><tr><td class=r>40000123</td><td>= iTunes U|Communications &amp; Journalism|Digital Media</td>
+</tr><tr><td class=r>40000124</td><td>= iTunes U|Communications &amp; Journalism|Journalism</td>
+</tr><tr><td class=r>40000125</td><td>= iTunes U|Communications &amp; Journalism|Photojournalism</td>
+</tr><tr><td class=r>40000126</td><td>= iTunes U|Communications &amp; Journalism|Print</td>
+</tr><tr><td class=r>40000127</td><td>= iTunes U|Communications &amp; Journalism|Speech</td>
+</tr><tr><td class=r>40000128</td><td>= iTunes U|Communications &amp; Journalism|Writing</td>
 </tr><tr><td class=r>40000129</td><td>= iTunes U|Health &amp; Medicine|Nursing</td>
-</tr><tr><td class=r>40000130</td><td>= iTunes U|Language|Arabic</td>
-</tr><tr><td class=r>40000131</td><td>= iTunes U|Language|Chinese</td>
-</tr><tr><td class=r>40000132</td><td>= iTunes U|Language|Hebrew</td>
-</tr><tr><td class=r>40000133</td><td>= iTunes U|Language|Hindi</td>
-</tr><tr><td class=r>40000134</td><td>= iTunes U|Language|Indigenous Languages</td>
-</tr><tr><td class=r>40000135</td><td>= iTunes U|Language|Japanese</td>
-</tr><tr><td class=r>40000136</td><td>= iTunes U|Language|Korean</td>
-</tr><tr><td class=r>40000137</td><td>= iTunes U|Language|Other Languages</td>
-</tr><tr><td class=r>40000138</td><td>= iTunes U|Language|Portuguese</td>
-</tr><tr><td class=r>40000139</td><td>= iTunes U|Language|Russian</td>
+</tr><tr><td class=r>40000130</td><td>= iTunes U|Languages|Arabic</td>
+</tr><tr><td class=r>40000131</td><td>= iTunes U|Languages|Chinese</td>
+</tr><tr><td class=r>40000132</td><td>= iTunes U|Languages|Hebrew</td>
+</tr><tr><td class=r>40000133</td><td>= iTunes U|Languages|Hindi</td>
+</tr><tr><td class=r>40000134</td><td>= iTunes U|Languages|Indigenous Languages</td>
+</tr><tr><td class=r>40000135</td><td>= iTunes U|Languages|Japanese</td>
+</tr><tr><td class=r>40000136</td><td>= iTunes U|Languages|Korean</td>
+</tr><tr><td class=r>40000137</td><td>= iTunes U|Languages|Other Languages</td>
+</tr><tr><td class=r>40000138</td><td>= iTunes U|Languages|Portuguese</td>
+</tr><tr><td class=r>40000139</td><td>= iTunes U|Languages|Russian</td>
 </tr><tr><td class=r>40000140</td><td>= iTunes U|Law &amp; Politics</td>
 </tr><tr><td class=r>40000141</td><td>= iTunes U|Law &amp; Politics|Foreign Policy &amp; International Relations</td>
 </tr><tr><td class=r>40000142</td><td>= iTunes U|Law &amp; Politics|Local Governments</td>
 </tr><tr><td class=r>40000143</td><td>= iTunes U|Law &amp; Politics|National Governments</td>
 </tr><tr><td class=r>40000144</td><td>= iTunes U|Law &amp; Politics|World Affairs</td>
-</tr><tr><td class=r>40000145</td><td>= iTunes U|Literature|Comparative Literature</td>
+</tr><tr><td class=r>40000145</td><td>= iTunes U|Writing &amp; Literature|Comparative Literature</td>
 </tr><tr><td class=r>40000146</td><td>= iTunes U|Philosophy|Aesthetics</td>
 </tr><tr><td class=r>40000147</td><td>= iTunes U|Philosophy|Epistemology</td>
 </tr><tr><td class=r>40000148</td><td>= iTunes U|Philosophy|Ethics</td>
@@ -4010,8 +4093,8 @@ added dynamically to this table after processing the Meta Keys information.</p>
 </tr><tr><td class=r>40000151</td><td>= iTunes U|Philosophy|Logic</td>
 </tr><tr><td class=r>40000152</td><td>= iTunes U|Philosophy|Philosophy of Language</td>
 </tr><tr><td class=r>40000153</td><td>= iTunes U|Philosophy|Philosophy of Religion</td>
-</tr><tr><td class=r>40000154</td><td>= iTunes U|Psychology &amp; Social Science|Archaeology</td>
-</tr><tr><td class=r>40000155</td><td>= iTunes U|Psychology &amp; Social Science|Anthropology</td>
+</tr><tr><td class=r>40000154</td><td>= iTunes U|Social Science|Archaeology</td>
+</tr><tr><td class=r>40000155</td><td>= iTunes U|Social Science|Anthropology</td>
 </tr><tr><td class=r>40000156</td><td>= iTunes U|Religion &amp; Spirituality|Buddhism</td>
 </tr><tr><td class=r>40000157</td><td>= iTunes U|Religion &amp; Spirituality|Christianity</td>
 </tr><tr><td class=r>40000158</td><td>= iTunes U|Religion &amp; Spirituality|Comparative Religion</td>
@@ -4029,20 +4112,20 @@ added dynamically to this table after processing the Meta Keys information.</p>
 </tr><tr><td class=r>40000170</td><td>= iTunes U|Society|Sexuality Studies</td>
 </tr><tr><td class=r>40000171</td><td>= iTunes U|Teaching &amp; Learning|Educational Technology</td>
 </tr><tr><td class=r>40000172</td><td>= iTunes U|Teaching &amp; Learning|Information/Library Science</td>
-</tr><tr><td class=r>40000173</td><td>= iTunes U|Language|Dutch</td>
-</tr><tr><td class=r>40000174</td><td>= iTunes U|Language|Luxembourgish</td>
-</tr><tr><td class=r>40000175</td><td>= iTunes U|Language|Swedish</td>
-</tr><tr><td class=r>40000176</td><td>= iTunes U|Language|Norwegian</td>
-</tr><tr><td class=r>40000177</td><td>= iTunes U|Language|Finnish</td>
-</tr><tr><td class=r>40000178</td><td>= iTunes U|Language|Danish</td>
-</tr><tr><td class=r>40000179</td><td>= iTunes U|Language|Polish</td>
-</tr><tr><td class=r>40000180</td><td>= iTunes U|Language|Turkish</td>
-</tr><tr><td class=r>40000181</td><td>= iTunes U|Language|Flemish</td>
+</tr><tr><td class=r>40000173</td><td>= iTunes U|Languages|Dutch</td>
+</tr><tr><td class=r>40000174</td><td>= iTunes U|Languages|Luxembourgish</td>
+</tr><tr><td class=r>40000175</td><td>= iTunes U|Languages|Swedish</td>
+</tr><tr><td class=r>40000176</td><td>= iTunes U|Languages|Norwegian</td>
+</tr><tr><td class=r>40000177</td><td>= iTunes U|Languages|Finnish</td>
+</tr><tr><td class=r>40000178</td><td>= iTunes U|Languages|Danish</td>
+</tr><tr><td class=r>40000179</td><td>= iTunes U|Languages|Polish</td>
+</tr><tr><td class=r>40000180</td><td>= iTunes U|Languages|Turkish</td>
+</tr><tr><td class=r>40000181</td><td>= iTunes U|Languages|Flemish</td>
 </tr><tr><td class=r>50000024</td><td>= Audiobooks</td>
 </tr><tr><td class=r>50000040</td><td>= Audiobooks|Fiction</td>
 </tr><tr><td class=r>50000041</td><td>= Audiobooks|Arts &amp; Entertainment</td>
-</tr><tr><td class=r>50000042</td><td>= Audiobooks|Biography &amp; Memoir</td>
-</tr><tr><td class=r>50000043</td><td>= Audiobooks|Business</td>
+</tr><tr><td class=r>50000042</td><td>= Audiobooks|Biographies &amp; Memoirs</td>
+</tr><tr><td class=r>50000043</td><td>= Audiobooks|Business &amp; Personal Finance</td>
 </tr><tr><td class=r>50000044</td><td>= Audiobooks|Kids &amp; Young Adults</td>
 </tr><tr><td class=r>50000045</td><td>= Audiobooks|Classics</td>
 </tr><tr><td class=r>50000046</td><td>= Audiobooks|Comedy</td>
@@ -4050,13 +4133,13 @@ added dynamically to this table after processing the Meta Keys information.</p>
 </tr><tr><td class=r>50000048</td><td>= Audiobooks|Speakers &amp; Storytellers</td>
 </tr><tr><td class=r>50000049</td><td>= Audiobooks|History</td>
 </tr><tr><td class=r>50000050</td><td>= Audiobooks|Languages</td>
-</tr><tr><td class=r>50000051</td><td>= Audiobooks|Mystery</td>
+</tr><tr><td class=r>50000051</td><td>= Audiobooks|Mysteries &amp; Thrillers</td>
 </tr><tr><td class=r>50000052</td><td>= Audiobooks|Nonfiction</td>
 </tr><tr><td class=r>50000053</td><td>= Audiobooks|Religion &amp; Spirituality</td>
-</tr><tr><td class=r>50000054</td><td>= Audiobooks|Science</td>
+</tr><tr><td class=r>50000054</td><td>= Audiobooks|Science &amp; Nature</td>
 </tr><tr><td class=r>50000055</td><td>= Audiobooks|Sci Fi &amp; Fantasy</td>
-</tr><tr><td class=r>50000056</td><td>= Audiobooks|Self Development</td>
-</tr><tr><td class=r>50000057</td><td>= Audiobooks|Sports</td>
+</tr><tr><td class=r>50000056</td><td>= Audiobooks|Self-Development</td>
+</tr><tr><td class=r>50000057</td><td>= Audiobooks|Sports &amp; Outdoors</td>
 </tr><tr><td class=r>50000058</td><td>= Audiobooks|Technology</td>
 </tr><tr><td class=r>50000059</td><td>= Audiobooks|Travel &amp; Adventure</td>
 </tr><tr><td class=r>50000061</td><td>= Music|Spoken Word</td>
@@ -4087,6 +4170,7 @@ added dynamically to this table after processing the Meta Keys information.</p>
 </tr><tr><td class=r>50000089</td><td>= Books|Comics &amp; Graphic Novels|Manga|Horror</td>
 </tr><tr><td class=r>50000090</td><td>= Books|Comics &amp; Graphic Novels|Comics</td>
 </tr><tr><td class=r>50000091</td><td>= Books|Romance|Multicultural</td>
+</tr><tr><td class=r>50000092</td><td>= Audiobooks|Erotica</td>
 </tr></table></td></tr></table></blockquote>
 
 <h2><a name='AppleStoreCountry'>QuickTime AppleStoreCountry Values</a></h2>
@@ -6146,10 +6230,30 @@ multi-language user data tags found, even if they don&#39;t exist in this table.
 <tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
+<td>'@PST'</td>
+<td>ParentShortTitle</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'@ppi'</td>
+<td>ParentProductID</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'@pti'</td>
+<td>ParentTitle</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>'@sec'</td>
 <td>SamsungSec</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Samsung.html#sec'>Samsung sec Tags</a></td></tr>
+<tr>
+<td>'@sti'</td>
+<td>ShortTitle</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
 <tr class=b>
 <td>'AllF'</td>
 <td>PlayAllFrames</td>
@@ -6211,67 +6315,72 @@ multi-language user data tags found, even if they don&#39;t exist in this table.
 <td class=c>-</td>
 <td>--&gt; <a href='GoPro.html#GPMF'>GoPro GPMF Tags</a></td></tr>
 <tr class=b>
+<td>'GUID'</td>
+<td>GUID</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>'GoPr'</td>
 <td>GoProType</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'INFO'</td>
 <td>SamsungINFO</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Samsung.html#INFO'>Samsung INFO Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'LEIC'</td>
 <td>LeicaLEIC</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Panasonic.html#PANA'>Panasonic PANA Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'LENS'</td>
 <td>LensSerialNumber</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'LOOP'</td>
 <td>LoopStyle</td>
 <td class=c>int32u</td>
 <td><span class=s>1 = Normal
   <br>2 = Palindromic</span></td></tr>
-<tr>
+<tr class=b>
 <td>'Lvlm'</td>
 <td>LevelMeter?</td>
 <td class=c>rational64s</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'MMA0'</td>
 <td>MinoltaMMA0</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Minolta.html#MMA'>Minolta MMA Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'MMA1'</td>
 <td>MinoltaMMA1</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Minolta.html#MMA'>Minolta MMA Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'MVTG'</td>
 <td>FujiFilmMVTG</td>
 <td class=c>-</td>
 <td>--&gt; <a href='EXIF.html'>EXIF Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'NCDT'</td>
 <td>NikonNCDT</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Nikon.html#NCDT'>Nikon NCDT Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'PANA'</td>
 <td>PanasonicPANA</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Panasonic.html#PANA'>Panasonic PANA Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'PENT'</td>
 <td>PentaxPENT</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Pentax.html#PENT'>Pentax PENT Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'PXMN'</td>
 <td>MakerNotePentax5b
   <br>MakerNotePentax5c
@@ -6279,42 +6388,42 @@ multi-language user data tags found, even if they don&#39;t exist in this table.
 <td class=c>-<br>-<br>string</td>
 <td>--&gt; <a href='Pentax.html'>Pentax Tags</a>
   <br>--&gt; <a href='Pentax.html'>Pentax Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'PXTH'</td>
 <td>PentaxPreview</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Pentax.html#PXTH'>Pentax PXTH Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'QVMI'</td>
 <td>CasioQVMI</td>
 <td class=c>-</td>
 <td>--&gt; <a href='EXIF.html'>EXIF Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'RMKN'</td>
 <td>RicohRMKN</td>
 <td class=c>-</td>
 <td>--&gt; <a href='EXIF.html'>EXIF Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'RTHU'</td>
 <td>PreviewImage</td>
-<td class=c>string</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'SDLN'</td>
 <td>PlayMode</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'SNum'</td>
 <td>SerialNumber</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'SelO'</td>
 <td>PlaySelection</td>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'TAGS'</td>
 <td>FujiFilmTags
   <br>KodakTags
@@ -6344,11 +6453,16 @@ multi-language user data tags found, even if they don&#39;t exist in this table.
   <br>--&gt; <a href='Samsung.html#MP4'>Samsung MP4 Tags</a>
   <br>--&gt; <a href='Sanyo.html#MOV'>Sanyo MOV Tags</a>
   <br>--&gt; <a href='Sanyo.html#MP4'>Sanyo MP4 Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'TTMD'</td>
 <td>TomTomMetaData</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#TomTom'>QuickTime TomTom Tags</a></td></tr>
+<tr>
+<td>'VERS'</td>
+<td>ProductVersion</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
 <tr class=b>
 <td>'WLOC'</td>
 <td>WindowLocation</td>
@@ -6382,7 +6496,7 @@ multi-language user data tags found, even if they don&#39;t exist in this table.
 <tr class=b>
 <td>'albm'</td>
 <td>Album</td>
-<td class=c>string</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'albr'</td>
@@ -6395,13 +6509,23 @@ multi-language user data tags found, even if they don&#39;t exist in this table.
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td>'apID'</td>
+<td>AppleStoreAccount</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>'apmd'</td>
 <td>ApertureMode</td>
 <td class=c>undef</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'auth'</td>
 <td>Author</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'catg'</td>
+<td>Category</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -6432,7 +6556,7 @@ multi-language user data tags found, even if they don&#39;t exist in this table.
 <tr class=b>
 <td>'clsf'</td>
 <td>Classification</td>
-<td class=c>string</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'cmid'</td>
@@ -6447,12 +6571,12 @@ multi-language user data tags found, even if they don&#39;t exist in this table.
 <tr>
 <td>'coll'</td>
 <td>CollectionName</td>
-<td class=c>string</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'cprt'</td>
 <td>Copyright</td>
-<td class=c>string</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'cver'</td>
@@ -6472,41 +6596,51 @@ multi-language user data tags found, even if they don&#39;t exist in this table.
 <tr class=b>
 <td>'dscp'</td>
 <td>Description</td>
-<td class=c>string</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td>'gnre'</td>
-<td>Genre</td>
+<td>'egid'</td>
+<td>EpisodeGlobalUniqueID</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>'gnre'</td>
+<td>Genre</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>'hinf'</td>
 <td>HintTrackInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#HintTrackInfo'>QuickTime HintTrackInfo Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'hinv'</td>
 <td>HintVersion</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'hnti'</td>
 <td>HintInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#HintInfo'>QuickTime HintInfo Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'htcb'</td>
 <td>HTCBinary</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#HTCBinary'>QuickTime HTCBinary Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'icnu'</td>
 <td>IconURI</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'infu'</td>
 <td>InfoURL</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'keyw'</td>
+<td>Keyword</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
@@ -6517,53 +6651,63 @@ multi-language user data tags found, even if they don&#39;t exist in this table.
 <tr>
 <td>'kywd'</td>
 <td>Keywords</td>
-<td class=c>string</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
-<td>'loci'</td>
-<td>LocationInformation</td>
+<td>'ldes'</td>
+<td>LongDescription</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td>'loci'</td>
+<td>LocationInformation</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>'lrcu'</td>
 <td>LyricsURI</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'lvlm'</td>
 <td>LevelMeter?</td>
 <td class=c>rational64s</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'manu'</td>
 <td>Make</td>
-<td class=c>string</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'meta'</td>
 <td>Meta</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#Meta'>QuickTime Meta Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'modl'</td>
 <td>Model</td>
-<td class=c>string</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'name'</td>
 <td>Name</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'perf'</td>
 <td>Performer</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'pose'</td>
 <td>pose</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Kodak.html#pose'>Kodak pose Tags</a></td></tr>
+<tr class=b>
+<td>'prID'</td>
+<td>ProductID</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
 <tr>
 <td>'ptch'</td>
 <td>Pitch</td>
@@ -6575,56 +6719,101 @@ multi-language user data tags found, even if they don&#39;t exist in this table.
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#Video'>QuickTime Video Tags</a></td></tr>
 <tr>
+<td>'purd'</td>
+<td>PurchaseDate</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'purl'</td>
+<td>PodcastURL</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>'rads'</td>
 <td>Rads?</td>
 <td class=c>rational64s</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>'rate'</td>
+<td>RatingPercent</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>'reel'</td>
 <td>ReelName</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'roll'</td>
 <td>Roll</td>
 <td class=c>rational64s</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'rtng'</td>
 <td>Rating</td>
-<td class=c>string</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'scen'</td>
 <td>Scene</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'scrn'</td>
 <td>OlympusPreview</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Olympus.html#scrn'>Olympus scrn Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'shot'</td>
 <td>ShotName</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'slno'</td>
 <td>SerialNumber</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'smta'</td>
 <td>SamsungSmta</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Samsung.html#smta'>Samsung smta Tags</a></td></tr>
+<tr>
+<td>'soaa'</td>
+<td>SortAlbumArtist</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
 <tr class=b>
+<td>'soal'</td>
+<td>SortAlbum</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'soar'</td>
+<td>SortArtist</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'soco'</td>
+<td>SortComposer</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'sonm'</td>
+<td>SortName</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'sosn'</td>
+<td>SortShow</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>'tags'</td>
 <td>Audible_tags</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Audible.html#tags'>Audible tags Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'thmb'</td>
 <td>MakerNotePentax5a
   <br>OlympusThumbnail
@@ -6634,15 +6823,30 @@ multi-language user data tags found, even if they don&#39;t exist in this table.
 <td class=c>-<br>-<br>string<br>string<br>string</td>
 <td>--&gt; <a href='Pentax.html'>Pentax Tags</a>
   <br>--&gt; <a href='Olympus.html#thmb'>Olympus thmb Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'titl'</td>
 <td>Title</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'tven'</td>
+<td>TVEpisodeID</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'tvnn'</td>
+<td>TVNetworkName</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'tvsh'</td>
+<td>TVShow</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'urat'</td>
 <td>UserRating</td>
-<td class=c>string</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'vndr'</td>
@@ -6710,153 +6914,163 @@ multi-language user data tags found, even if they don&#39;t exist in this table.
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td>"&copy;des"</td>
+<td>Description</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>"&copy;dir"</td>
 <td>Director</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;ed1"</td>
 <td>Edit1</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;ed2"</td>
 <td>Edit2</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;ed3"</td>
 <td>Edit3</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;ed4"</td>
 <td>Edit4</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;ed5"</td>
 <td>Edit5</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;ed6"</td>
 <td>Edit6</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;ed7"</td>
 <td>Edit7</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;ed8"</td>
 <td>Edit8</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;ed9"</td>
 <td>Edit9</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;enc"</td>
-<td>EncoderID</td>
+<td>EncodedBy</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;fmt"</td>
 <td>Format</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;fpt"</td>
 <td>Pitch</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;frl"</td>
 <td>Roll</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;fyw"</td>
 <td>Yaw</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;gen"</td>
 <td>Genre</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;gpt"</td>
 <td>CameraPitch</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;grl"</td>
 <td>CameraRoll</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;grp"</td>
 <td>Grouping</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;gyw"</td>
 <td>CameraYaw</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;inf"</td>
 <td>Information</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;isr"</td>
 <td>ISRCCode</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;lab"</td>
 <td>RecordLabelName</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;lal"</td>
 <td>RecordLabelURL</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;lyr"</td>
 <td>Lyrics</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;mak"</td>
 <td>Make</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;mal"</td>
 <td>MakerURL</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;mdl"</td>
 <td>Model</td>
 <td class=c>string</td>
 <td><span class=s><span class=n>(non-standard-format DJI tag)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;mod"</td>
 <td>Model</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;nam"</td>
 <td>Title</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>"&copy;nrt"</td>
+<td>Narrator</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -6890,71 +7104,76 @@ multi-language user data tags found, even if they don&#39;t exist in this table.
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td>"&copy;pub"</td>
+<td>Publisher</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td>"&copy;req"</td>
 <td>Requirements</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;snk"</td>
 <td>SubtitleKeywords</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;snm"</td>
 <td>Subtitle</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;src"</td>
 <td>SourceCredits</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;swf"</td>
 <td>SongWriter</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;swk"</td>
 <td>SongWriterKeywords</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;swr"</td>
 <td>SoftwareVersion</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;too"</td>
 <td>Encoder</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;trk"</td>
 <td>Track</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;wrt"</td>
 <td>Composer</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;xsp"</td>
 <td>SpeedX</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;xyz"</td>
 <td>GPSCoordinates</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;ysp"</td>
 <td>SpeedY</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;zsp"</td>
 <td>SpeedZ</td>
 <td class=c>string</td>
@@ -7539,7 +7758,7 @@ multi-language user data tags found, even if they don&#39;t exist in this table.
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Apr 18, 2019</i>
+<br><i>Last revised May 2, 2019</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

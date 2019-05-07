@@ -23965,7 +23965,7 @@ created QuickTime tags are added in the ItemList location if possible,
 otherwise in UserData, but this may be changed by specifying the location.
 Alternate language tags may be accessed for ItemList tags by adding a
 language-country code to the tag name (eg. "ItemList:Artist-fra-FR"), or for
-UserData tags by adding a language code (eg. "UserData:Artist-fra"). If no
+UserData tags by adding a language code (eg. "UserData:Artist-fra").  If no
 language code is specified when writing, alternate languages are deleted.
 Use the "und" language code to write the default language without deleting
 alternate languages.  Note that "eng" is treated as a default language when

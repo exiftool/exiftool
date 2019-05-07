@@ -34,7 +34,7 @@ use Image::ExifTool::Nikon;
 use Image::ExifTool::Validate;
 use Image::ExifTool::MacOS;
 
-$VERSION = '3.21';
+$VERSION = '3.22';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -1517,7 +1517,10 @@ sub WriteTagLookup($$)
             } elsif ($tagID =~ /^\d+$/) {
                 $entry = sprintf('0x%x',$tagID);
             } else {
-                $entry = "'${tagID}'";
+                my $quot = "'";
+                # escape non-printable characters in tag ID if necessary
+                $quot = '"' if $tagID =~ s/[\x00-\x1f,\x7f-\xff]/sprintf('\\x%.2x',ord($&))/ge;
+                $entry = "$quot${tagID}$quot";
             }
             my $wrNum = $wrNum{$tableNum};
             push @entries, "$wrNum => $entry";

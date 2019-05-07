@@ -14,11 +14,11 @@ the binary data block (floating point IDs allow multiple tags for the same
 offset, with the integer part being used for the offset).  The corresponding
 hash value provides information about the tag (explained later).
 
-Twenty-six special keys (TABLE_NAME, SHORT_NAME, PROCESS_PROC, WRITE_PROC,
+Twenty-seven special keys (TABLE_NAME, SHORT_NAME, PROCESS_PROC, WRITE_PROC,
 CHECK_PROC, GROUPS, FORMAT, FIRST_ENTRY, TAG_PREFIX, PRINT_CONV, WRITABLE,
 TABLE_DESC, NOTES, IS_OFFSET, IS_SUBDIR, EXTRACT_UNKNOWN, NAMESPACE, PREFERRED,
-SRC_TABLE, PRIORITY, AVOID, WRITE_GROUP, LANG_INFO, VARS, DATAMEMBER and
-SET_GROUP1) are used to provide additional information about a table.  The
+PERMANENT, SRC_TABLE, PRIORITY, AVOID, WRITE_GROUP, LANG_INFO, VARS, DATAMEMBER
+and SET_GROUP1) are used to provide additional information about a table.  The
 special keys have names that are all capitalized to avoid possible conflicts
 with tag keys.  Below is an explanation of the meaning of each special key:
 
@@ -172,6 +172,9 @@ with tag keys.  Below is an explanation of the meaning of each special key:
   this feature is used, it may also be desireable to specify a preferred group
   when calling InitWriteDirs() to write these tags; this avoids creating other
   directories for tags which are already being creating in the preferred group.
+
+  PERMANENT : Tags in this table are Permanent, and can't be deleted.  Maker
+  notes tags are Permanent by default, without the need to set this property.
 
   SRC_TABLE : Used internally to store the source table name of a user-defined
   tag table so the appropriate module can be loaded as required.

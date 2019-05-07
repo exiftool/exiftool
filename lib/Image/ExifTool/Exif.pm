@@ -55,7 +55,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.14';
+$VERSION = '4.15';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -2601,12 +2601,13 @@ my %sampleFormat = (
         Name => 'SceneCaptureType',
         Groups => { 2 => 'Camera' },
         Writable => 'int16u',
+        Notes => 'the value of 4 is non-standard, and used by some Samsung models',
         PrintConv => {
             0 => 'Standard',
             1 => 'Landscape',
             2 => 'Portrait',
             3 => 'Night',
-            # 4 - HDR (Samsung GT-I9300)
+            4 => 'Other', # (non-standard Samsung, ref forum 5724)
         },
     },
     0xa407 => {

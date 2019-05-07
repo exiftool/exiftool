@@ -9,8 +9,8 @@
 # References:   1) http://park2.wakwak.com/~tsuruzoh/Computer/Digicams/exif-e.html
 #               2) http://www.cybercom.net/~dcoffin/dcraw/
 #               3) http://www.ozhiker.com/electronics/pjmt/jpeg_info/olympus_mn.html
-#               4) Markku HŠnninen private communication (tests with E-1)
-#               5) RŽmi Guyomarch from http://forums.dpreview.com/forums/read.asp?forum=1022&message=12790396
+#               4) Markku Hanninen private communication (tests with E-1)
+#               5) Remi Guyomarch from http://forums.dpreview.com/forums/read.asp?forum=1022&message=12790396
 #               6) Frank Ledwon private communication (tests with E/C-series cameras)
 #               7) Michael Meissner private communication
 #               8) Shingo Noguchi, PhotoXP (http://www.daifukuya.com/photoxp/)

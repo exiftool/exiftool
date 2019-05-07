@@ -618,9 +618,14 @@ TAG: foreach $tagInfo (@matchingTags) {
                     # can't yet write PreviewIFD tags (except for image)
                     $lcWant eq 'PreviewIFD' and ++$foundMatch, next TAG;
                     $writeGroup = $ifdName; # write to the specified IFD
-                } elsif ($grp[0] eq 'QuickTime' and $grp[1] eq 'Track#') {
-                    next TAG unless $movGroup and $lcWant eq lc($movGroup);
-                    $writeGroup = $movGroup;
+                } elsif ($grp[0] eq 'QuickTime') {
+                    if ($grp[1] eq 'Track#') {
+                        next TAG unless $movGroup and $lcWant eq lc($movGroup);
+                        $writeGroup = $movGroup;
+                    } elsif ($$tagInfo{Table}{WRITE_GROUP}) {
+                        next TAG unless $lcWant eq lc $$tagInfo{Table}{WRITE_GROUP};
+                        $writeGroup = $$tagInfo{Table}{WRITE_GROUP};
+                    }
                 } elsif ($grp[0] eq 'MIE') {
                     next TAG unless $mieGroup and $lcWant eq lc($mieGroup);
                     $writeGroup = $mieGroup; # write to specific MIE group
@@ -735,7 +740,9 @@ TAG: foreach $tagInfo (@matchingTags) {
                     my $priority = $tagPriority{$tagInfo} or next;
                     next if $priority == $highestPriority{$lcTag};
                     next if $priority < $nextHighest;
-                    next if $$tagInfo{Avoid} or $$tagInfo{Permanent};
+                    my $permanent = $$tagInfo{Permanent};
+                    $permanent = $$tagInfo{Table}{PERMANENT} unless defined $permanent;
+                    next if $$tagInfo{Avoid} or $permanent;
                     next if $writeGroup{$tagInfo} eq 'MakerNotes';
                     if ($nextHighest < $priority) {
                         $nextHighest = $priority;
@@ -768,6 +775,7 @@ TAG: foreach $tagInfo (@matchingTags) {
         my $noConv;
         my $writeGroup = $writeGroup{$tagInfo};
         my $permanent = $$tagInfo{Permanent};
+        $permanent = $$tagInfo{Table}{PERMANENT} unless defined $permanent;
         $writeGroup eq 'MakerNotes' and $permanent = 1 unless defined $permanent;
         my $wgrp1 = $self->GetWriteGroup1($tagInfo, $writeGroup);
         $tag = $$tagInfo{Name};     # get tag name for warnings

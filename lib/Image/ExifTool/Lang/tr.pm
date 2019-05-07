@@ -11,7 +11,7 @@ package Image::ExifTool::Lang::tr;
 use strict;
 use vars qw($VERSION);
 
-$VERSION = '1.04';
+$VERSION = '1.05';
 
 %Image::ExifTool::Lang::tr::Translate = (
    'Album' => 'Albüm',
@@ -499,6 +499,7 @@ $VERSION = '1.04';
     },
    'WhitePoint' => 'Beya nokta kromatik',
    'Writer-Editor' => 'Açıklama Yazarı',
+   'XResolution' => 'X çözünürlüğü',
    'YCbCrCoefficients' => 'Renk alanı transformasyon matriks katsayısı',
    'YCbCrPositioning' => {
       Description => 'Y ve C konumlama',
@@ -508,6 +509,7 @@ $VERSION = '1.04';
       },
     },
    'YCbCrSubSampling' => 'Y den C\'ye alt örnekleme oranı',
+   'YResolution' => 'Y çözünürlüğü',
 );
 
 1;  # end

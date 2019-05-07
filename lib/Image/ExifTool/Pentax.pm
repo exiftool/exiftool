@@ -3349,7 +3349,7 @@ my %binaryDataAttrs = (
     8 => {
         Name => 'ExposureBracketStepSize',
         # This is set even when Exposure Bracket is Off (and the K10D
-        # displays Ò---Ó as the step size when you press the EB button) - DaveN
+        # displays "---" as the step size when you press the EB button) - DaveN
         # because the last value is remembered and if you turn Exposure Bracket
         # on the step size goes back to what it was before.
         PrintConv => {

@@ -156,7 +156,7 @@ sub WritePSDirectory($$$$$)
         # it would be really difficult to delete the XMP,
         # so instead we write a blank XMP record
         $val = <<EMPTY_XMP;
-<?xpacket begin='﻿' id='W5M0MpCehiHzreSzNTczkc9d'?>
+<?xpacket begin='\xef\xbb\xbf' id='W5M0MpCehiHzreSzNTczkc9d'?>
 <x:xmpmeta xmlns:x='adobe:ns:meta/' x:xmptk='Image::ExifTool $Image::ExifTool::VERSION'>
 </x:xmpmeta>
 EMPTY_XMP

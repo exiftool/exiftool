@@ -41,7 +41,7 @@ my %qtFormat = (
     int8u  => 0x16,  int16u => 0x16,  int32u => 0x16,
     float  => 0x17,  double => 0x18,
 );
-my $undLang = 0x55c4;   # numeric code for 'und' language
+my $undLang = 0x55c4;   # numeric code for default ('und') language
 
 # mark UserData tags that don't have ItemList counterparts as Preferred
 # (and for now, set Writable to 0 for any tag with a RawConv)
@@ -128,6 +128,7 @@ sub IsCurPath($$)
 # Returns: true on success
 # Notes: see also ParseItemLocation() in QuickTime.pm
 # (variable names with underlines correspond to names in ISO14496-12)
+# (see ISO14496-12_base_media_file_format_2015.pdf page 79)
 sub Handle_iloc($$$$)
 {
     my ($et, $dirInfo, $dataPt, $outfile) = @_;
@@ -519,17 +520,25 @@ sub WriteQuickTime($$$)
                             $langInfo = $tagInfo;
                             my $delTag = $delQt;
                             my $newVal;
-                            if ($lang or $ctry or not $nvHash) {
-                                my $langCode = GetLangCode($lang, $ctry, 1);
-                                if ($langCode) { # (ie. not default language)
-                                    if ($$tagInfo{KeysInfo}) {
-                                        $langInfo = GetLangInfo($$tagInfo{KeysInfo}, $langCode);
-                                    } else {
-                                        $langInfo = GetLangInfo($tagInfo, $langCode);
-                                    }
-                                    $nvHash = $et->GetNewValueHash($langInfo);
-                                    # set flag to delete language tag when writing default
-                                    $delTag = 1 if not $nvHash and $nvHashNoLang;
+                            my $langCode = GetLangCode($lang, $ctry, 1);
+                            for (;;) {
+                                if ($$tagInfo{KeysInfo}) {
+                                    $langInfo = GetLangInfo($$tagInfo{KeysInfo}, $langCode);
+                                } else {
+                                    $langInfo = GetLangInfo($tagInfo, $langCode);
+                                }
+                                $nvHash = $et->GetNewValueHash($langInfo);
+                                last if $nvHash or not $ctry or $lang ne $undLang or length($langCode)==2;
+                                # check to see if tag was written with a 2-char country code only
+                                $langCode = lc unpack('a2',pack('n',$ctry));
+                            }
+                            # set flag to delete language tag when writing default
+                            # (except for a default-language Keys entry)
+                            if (not $nvHash and $nvHashNoLang) {
+                                if ($lang eq $undLang and not $ctry and not $didTag{$nvHashNoLang}) {
+                                    $nvHash = $nvHashNoLang;    # write existing default
+                                } else {
+                                    $delTag = 1;    # delete tag
                                 }
                             }
                             last if $pos + $len > $size;
@@ -608,19 +617,19 @@ sub WriteQuickTime($$$)
                             my $enc = $val=~s/^\xfe\xff// ? 'UTF16' : 'UTF8';
                             $val = $et->Decode($val, $enc);
                         }
-                        if ($lang or not $nvHash) {
-                            my $langCode = UnpackLang($lang, 1);
-                            if ($langCode) {
-                                $langInfo = GetLangInfo($tagInfo, $langCode);
-                                # (no need to check $$tagInfo{KeysInfo} because Keys won't get here)
-                                $nvHash = $et->GetNewValueHash($langInfo);
-                                if (not $nvHash and $nvHashNoLang and $canCreate) {
-                                    # delete other languages when writing default
-                                    my $grp = $et->GetGroup($langInfo, 1);
-                                    $et->VerboseValue("- $grp:$$langInfo{Name}", $val);
-                                    ++$$et{CHANGED};
-                                    next;
-                                }
+                        my $langCode = UnpackLang($lang, 1);
+                        $langInfo = GetLangInfo($tagInfo, $langCode);
+                        # (no need to check $$tagInfo{KeysInfo} because Keys won't get here)
+                        $nvHash = $et->GetNewValueHash($langInfo);
+                        if (not $nvHash and $nvHashNoLang) {
+                            if ($lang eq $undLang and not $didTag{$nvHashNoLang}) {
+                                $nvHash = $nvHashNoLang;
+                            } elsif ($canCreate) {
+                                # delete other languages when writing default
+                                my $grp = $et->GetGroup($langInfo, 1);
+                                $et->VerboseValue("- $grp:$$langInfo{Name}", $val);
+                                ++$$et{CHANGED};
+                                next;
                             }
                         }
                     }
@@ -720,7 +729,7 @@ sub WriteQuickTime($$$)
                 }
                 next unless defined $newVal;
                 my ($ctry, $lang) = (0,0);
-                if (length $tag > 4) {
+                if (length $tag > 4) { # (is there a language code appended to the tag ID?)
                     unless ($tag =~ s/(.{4})-([A-Z]{3})?[-_]?([A-Z]{2})?/$1/si) {
                         $et->Warn("Invalid language code for $$tagInfo{Name}");
                         next;

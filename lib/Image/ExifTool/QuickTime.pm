@@ -427,7 +427,7 @@ my %eeBox = (
         otherwise in UserData, but this may be changed by specifying the location.
         Alternate language tags may be accessed for ItemList tags by adding a
         language-country code to the tag name (eg. "ItemList:Artist-fra-FR"), or for
-        UserData tags by adding a language code (eg. "UserData:Artist-fra"). If no
+        UserData tags by adding a language code (eg. "UserData:Artist-fra").  If no
         language code is specified when writing, alternate languages are deleted.
         Use the "und" language code to write the default language without deleting
         alternate languages.  Note that "eng" is treated as a default language when
@@ -5346,6 +5346,8 @@ my %eeBox = (
     GROUPS => { 1 => 'Keys' },
     WRITE_GROUP => 'Keys',
     LANG_INFO => \&GetLangInfo,
+    PRIORITY => 0, # (so empty (deleted) values don't obscure other good values)
+    PERMANENT => 1, # (can't be deleted)
     FORMAT => 'string',
     NOTES => q{
         This directory contains a list of key names which are used to decode

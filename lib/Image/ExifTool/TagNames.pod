@@ -25015,12 +25015,12 @@ multi-language user data tags found, even if they don't exist in this table.
   '_cx_'       CX?                              rational64s
   '_cy_'       CY?                              rational64s
   '_yaw'       Yaw                              rational64s
-  'albm'       Album                            no
+  'albm'       Album                            string/
   'albr'       AlbumArtist                      string
   'angl'       CameraAngle                      string
   'apID'       AppleStoreAccount                string
   'apmd'       ApertureMode                     undef
-  'auth'       Author                           no
+  'auth'       Author                           string/
   'catg'       Category                         string
   'ccid'       ContentID                        string
   'cdis'       ContentDistributorID             string
@@ -25030,14 +25030,14 @@ multi-language user data tags found, even if they don't exist in this table.
   'clsf'       Classification                   no
   'cmid'       CameraID                         string
   'cmnm'       Model                            string
-  'coll'       CollectionName                   no
-  'cprt'       Copyright                        no
+  'coll'       CollectionName                   string/
+  'cprt'       Copyright                        string/
   'cver'       CodeVersion                      string
   'cvru'       CoverURI                         string
   'date'       DateTimeOriginal                 string
-  'dscp'       Description                      no
+  'dscp'       Description                      string/
   'egid'       EpisodeGlobalUniqueID            string
-  'gnre'       Genre                            no
+  'gnre'       Genre                            string/
   'hinf'       HintTrackInfo                    QuickTime HintTrackInfo
   'hinv'       HintVersion                      string
   'hnti'       HintInfo                         QuickTime HintInfo
@@ -25084,7 +25084,7 @@ multi-language user data tags found, even if they don't exist in this table.
                ThumbnailImage                   string
                ThumbnailPNG                     string
                UnknownThumbnail                 string
-  'titl'       Title                            no
+  'titl'       Title                            string/
   'tven'       TVEpisodeID                      string
   'tvnn'       TVNetworkName                    string
   'tvsh'       TVShow                           string

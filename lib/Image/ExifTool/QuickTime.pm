@@ -77,6 +77,7 @@ sub UnpackLang($;$);
 sub WriteQuickTime($$$);
 sub WriteMOV($$);
 sub GetLangInfo($$);
+sub CheckQTValue($$$);
 
 # MIME types for all entries in the ftypLookup with file extensions
 # (defaults to 'video/mp4' if not found in this lookup)
@@ -235,15 +236,10 @@ my %unknownInfo = (
 );
 # parsing for most of the 3gp udta language text boxes
 my %langText = (
-    RawConv => sub {
-        my ($val, $self) = @_;
-        return '<err>' unless length $val >= 6;
-        my $lang = UnpackLang(Get16u(\$val, 4));
-        $lang = $lang ? "($lang) " : '';
-        $val = substr($val, 6); # isolate string
-        $val = $self->Decode($val, 'UCS2') if $val =~ /^\xfe\xff/;
-        return $lang . $val;
-    },
+    Notes => 'used in 3gp videos',
+    IText => 6,
+    Preferred => 0,
+    Avoid => 1,
 );
 
 # 4-character Vendor ID codes (ref PH)
@@ -756,8 +752,8 @@ my %eeBox = (
 #            v216 => "Uncompressed Y'CbCr, 10, 12, 14, or 16-bit 4:2:2",
 #            v410 => "Uncompressed Y'CbCr, 10-bit 4:4:4",
 #            v210 => "Uncompressed Y'CbCr, 10-bit 4:2:2",
+#            hvc1 => 'HEVC', #PH
 #        },
-        # (HEVC-encoded videos have a CompressorID of 'hvc1')
     },
     10 => {
         Name => 'VendorID',
@@ -1301,6 +1297,7 @@ my %eeBox = (
 %Image::ExifTool::QuickTime::UserData = (
     PROCESS_PROC => \&ProcessMOV,
     WRITE_PROC => \&WriteQuickTime,
+    CHECK_PROC => \&CheckQTValue,
     GROUPS => { 1 => 'UserData', 2 => 'Video' },
     WRITABLE => 1,
     FORMAT => 'string',
@@ -1620,7 +1617,7 @@ my %eeBox = (
         Name => 'TrackType',
         # set flag to process this as international text
         # even though the tag ID doesn't start with 0xa9
-        IText => 1,
+        IText => 4, # IText with 4-byte header
     },
     chpl => { # (Nero chapter list)
         Name => 'ChapterList',
@@ -2546,6 +2543,7 @@ my %eeBox = (
 %Image::ExifTool::QuickTime::ItemList = (
     PROCESS_PROC => \&ProcessMOV,
     WRITE_PROC => \&WriteQuickTime,
+    CHECK_PROC => \&CheckQTValue,
     WRITABLE => 1,
     PREFERRED => 1,
     FORMAT => 'string',
@@ -5341,6 +5339,7 @@ my %eeBox = (
 %Image::ExifTool::QuickTime::Keys = (
     PROCESS_PROC => \&Image::ExifTool::QuickTime::ProcessKeys,
     WRITE_PROC => \&Image::ExifTool::QuickTime::ProcessKeys,
+    CHECK_PROC => \&CheckQTValue,
     VARS => { LONG_TAGS => 3 },
     WRITABLE => 1,
     GROUPS => { 1 => 'Keys' },
@@ -8330,22 +8329,31 @@ ItemID:         foreach $id (keys %$items) {
                         $pos = $size;
                     }
                     for (;;) {
-                        last if $pos + 4 > $size;
-                        my ($len, $lang) = unpack("x${pos}nn", $val);
-                        $pos += 4;
-                        # according to the QuickTime spec (ref 12), $len should include
-                        # 4 bytes for length and type words, but nobody (including
-                        # Apple, Pentax and Kodak) seems to add these in, so try
-                        # to allow for either
-                        if ($pos + $len > $size) {
-                            $len -= 4;
-                            last if $pos + $len > $size or $len < 0;
+                        my ($len, $lang);
+                        if ($$tagInfo{IText} and $$tagInfo{IText} == 6) {
+                            last if $pos + 6 > $size;
+                            $pos += 4;
+                            $lang = unpack("x${pos}n", $val);
+                            $pos += 2;
+                            $len = $size - $pos;
+                        } else {
+                            last if $pos + 4 > $size;
+                            ($len, $lang) = unpack("x${pos}nn", $val);
+                            $pos += 4;
+                            # according to the QuickTime spec (ref 12), $len should include
+                            # 4 bytes for length and type words, but nobody (including
+                            # Apple, Pentax and Kodak) seems to add these in, so try
+                            # to allow for either
+                            if ($pos + $len > $size) {
+                                $len -= 4;
+                                last if $pos + $len > $size or $len < 0;
+                            }
                         }
                         # ignore any empty entries (or null padding) after the first
                         next if not $len and $pos;
                         my $str = substr($val, $pos, $len);
                         my $langInfo;
-                        if ($lang < 0x400) {
+                        if ($lang < 0x400 and $str !~ /^\xfe\xff/) {
                             # this is a Macintosh language code
                             # a language code of 0 is Macintosh english, so treat as default
                             if ($lang) {
@@ -8363,6 +8371,7 @@ ItemID:         foreach $id (keys %$items) {
                             my $enc = $str=~s/^\xfe\xff// ? 'UTF16' : 'UTF8';
                             $str = $et->Decode($str, $enc);
                         }
+                        $str =~ s/\0+$//;   # remove any trailing nulls (eg. 3gp tags)
                         $langInfo = GetLangInfoQT($et, $tagInfo, $lang) if $lang;
                         $et->FoundTag($langInfo || $tagInfo, $str);
                         $pos += $len;

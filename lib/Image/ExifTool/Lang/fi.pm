@@ -11,7 +11,7 @@ package Image::ExifTool::Lang::fi;
 use strict;
 use vars qw($VERSION);
 
-$VERSION = '1.03';
+$VERSION = '1.04';
 
 %Image::ExifTool::Lang::fi::Translate = (
    'AEAperture' => 'AE-aukko',
@@ -113,7 +113,6 @@ $VERSION = '1.03';
    'AFPointsInFocus' => {
       Description => 'Tarkennuksen AF-pisteet',
       PrintConv => {
-        '(none)' => 'Kiinteästi keskellä tai useita',
         'Bottom-center' => 'Alakeski',
         'Bottom-left' => 'Alavasen',
         'Bottom-right' => 'Alaoikea',
@@ -238,7 +237,6 @@ $VERSION = '1.03';
         'No flash & flash' => 'Ei salamaa & Salama',
         'Off' => 'Pois',
         'On' => 'Päällä',
-        'Pre-shot' => 'Ei salamaa & Salama',
       },
     },
    'AutoBracketingSet' => 'Haarukointisarja',
@@ -483,7 +481,6 @@ $VERSION = '1.03';
    'ColorMode' => {
       Description => 'Värimuoto',
       PrintConv => {
-        'Adobe RGB' => 'Auringonlasku',
         'Autumn Leaves' => 'Syksyn lehdet',
         'B & W' => 'M & V',
         'B&W' => 'M&V',
@@ -1025,7 +1022,7 @@ $VERSION = '1.03';
    'FlashEnergy' => 'Salaman teho',
    'FlashExposureBracketValue' => 'Salamavalotuksen haarukoinnin arvo',
    'FlashExposureComp' => 'Salaman kirkkauden säätö',
-   'FlashExposureComp2' => 'Salamavalotuksen säätö',
+   'FlashExposureComp2' => 'Salaman kirkkauden säätö 2',
    'FlashFired' => {
       Description => 'Salama lauennut',
       PrintConv => {
@@ -2037,7 +2034,7 @@ $VERSION = '1.03';
         'n/a' => 'Ei asetettu',
       },
     },
-   'Quality2' => 'Laatu',
+   'Quality2' => 'Laatu 2',
    'QualityMode' => {
       Description => 'Kuvalaatu',
       PrintConv => {

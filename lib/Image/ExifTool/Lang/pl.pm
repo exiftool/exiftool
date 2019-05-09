@@ -11,7 +11,7 @@ package Image::ExifTool::Lang::pl;
 use strict;
 use vars qw($VERSION);
 
-$VERSION = '1.11';
+$VERSION = '1.12';
 
 %Image::ExifTool::Lang::pl::Translate = (
    'A100DataOffset' => 'Przesunięcie danych A100',
@@ -61,7 +61,6 @@ $VERSION = '1.11';
    'AFPointsInFocus' => {
       Description => 'Punkty AF w ostrości',
       PrintConv => {
-        '(none)' => 'Centralny lub wiele',
         'Bottom-center' => 'Dolny-centralny',
         'Bottom-left' => 'Dolny-lewy',
         'Bottom-right' => 'Dolny-prawy',

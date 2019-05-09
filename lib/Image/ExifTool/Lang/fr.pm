@@ -11,7 +11,7 @@ package Image::ExifTool::Lang::fr;
 use strict;
 use vars qw($VERSION);
 
-$VERSION = '1.33';
+$VERSION = '1.34';
 
 %Image::ExifTool::Lang::fr::Translate = (
    'AEAperture' => 'Ouverture AE',
@@ -279,7 +279,6 @@ $VERSION = '1.33';
    'AFPointsInFocus' => {
       Description => 'Points AF nets',
       PrintConv => {
-        '(none)' => 'Centre fixe ou multiple',
         'All' => 'Tous',
         'Bottom' => 'Bas',
         'Bottom, Center' => 'Bas + centre',
@@ -714,7 +713,6 @@ $VERSION = '1.33';
    'BurstMode' => {
       Description => 'Mode Rafale',
       PrintConv => {
-        'Auto Exposure Bracketing (AEB)' => 'Infini',
         'Infinite' => 'Infini',
         'Off' => 'Désactivé',
         'On' => 'Activé',

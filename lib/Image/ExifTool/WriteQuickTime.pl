@@ -123,12 +123,11 @@ sub IsCurPath($$)
 }
 
 #------------------------------------------------------------------------------
-# Handle offsets in iloc (ItemLocation) atom when writing
+# Handle offsets in iloc (ItemLocation) atom when writing (ref ISO 14496-12:2015 pg.79)
 # Inputs: 0) ExifTool ref, 1) dirInfo ref, 2) data ref, 3) output buffer ref
 # Returns: true on success
 # Notes: see also ParseItemLocation() in QuickTime.pm
-# (variable names with underlines correspond to names in ISO14496-12)
-# (see ISO14496-12_base_media_file_format_2015.pdf page 79)
+# (variable names with underlines correspond to names in ISO 14496-12)
 sub Handle_iloc($$$$)
 {
     my ($et, $dirInfo, $dataPt, $outfile) = @_;
@@ -236,6 +235,42 @@ sub GetLangInfo($$)
     $langCode =~ tr/_/-/;   # RFC 3066 specifies '-' as a separator
     my $langInfo = Image::ExifTool::GetLangInfo($tagInfo, $langCode);
     return $langInfo;
+}
+
+#------------------------------------------------------------------------------
+# validate raw values for writing
+# Inputs: 0) ExifTool ref, 1) tagInfo hash ref, 2) raw value ref
+# Returns: error string or undef (and possibly changes value) on success
+sub CheckQTValue($$$)
+{
+    my ($et, $tagInfo, $valPtr) = @_;
+    my $format = $$tagInfo{Format} || $$tagInfo{Table}{FORMAT};
+    return undef unless $format;
+    return Image::ExifTool::CheckValue($valPtr, $format, $$tagInfo{Count});
+}
+
+#------------------------------------------------------------------------------
+# Format QuickTime value for writing
+# Inputs: 0) ExifTool ref, 1) value ref, 2) Format (or undef)
+# Returns: Flags for QT data type, and reformats value as required
+sub FormatQTValue($$;$)
+{
+    my ($et, $valPt, $format) = @_;
+    my $flags;
+    if ($format and $format ne 'string') {
+        $$valPt = WriteValue($$valPt, $format);
+        $flags = $qtFormat{$format} || 0;
+    } elsif ($$valPt =~ /^\xff\xd8\xff/) {
+        $flags = 0x0d;  # JPG
+    } elsif ($$valPt =~ /^(\x89P|\x8aM|\x8bJ)NG\r\n\x1a\n/) {
+        $flags = 0x0e;  # PNG
+    } elsif ($$valPt =~ /^BM.{15}\0/s) {
+        $flags = 0x1b;  # BMP
+    } else {
+        $flags = 0x01;  # UTF8
+        $$valPt = $et->Encode($$valPt, 'UTF8');
+    }
+    return $flags;
 }
 
 #------------------------------------------------------------------------------
@@ -575,12 +610,8 @@ sub WriteQuickTime($$$)
                                         $newVal = '';
                                     }
                                     my $prVal = $newVal;
-                                    if ($stringEncoding{$flags}) {
-                                        # handle all string formats
-                                        $newVal = $et->Encode($newVal, $stringEncoding{$flags});
-                                    } elsif ($format) {
-                                        $newVal = WriteValue($newVal, $format);
-                                    }
+                                    # format new value for writing (and get new flags)
+                                    $flags = FormatQTValue($et, \$newVal, $$tagInfo{Format});
                                     if (defined $newVal and not ($nvHash and $didTag{$nvHash})) {
                                         next if $newVal eq '' and $val eq '';
                                         ++$$et{CHANGED};
@@ -604,19 +635,26 @@ sub WriteQuickTime($$$)
                         undef $val; # (already constructed $newData)
                     } elsif ($format) {
                         $val = ReadValue(\$buff, 0, $format, undef, $size);
-                    } elsif (($tag =~ /^\xa9/ or $$tagInfo{IText}) and $size >= 4) {
-                        ($len, $lang) = unpack('nn', $buff);
+                    } elsif (($tag =~ /^\xa9/ or $$tagInfo{IText}) and $size >= ($$tagInfo{IText} || 4)) {
+                        if ($$tagInfo{IText} and $$tagInfo{IText} == 6) {
+                            $lang = unpack('x4n', $buff);
+                            $len = $size - 6;
+                            $val = substr($buff, 6, $len);
+                        } else {
+                            ($len, $lang) = unpack('nn', $buff);
+                            $len -= 4 if 4 + $len > $size; # (see QuickTime.pm for explanation)
+                            $len = $size - 4 if $len > $size - 4 or $len < 0;
+                            $val = substr($buff, 4, $len);
+                        }
                         $lang or $lang = $undLang;  # treat both 0 and 'und' as 'und'
-                        $len -= 4 if 4 + $len > $size; # (see QuickTime.pm for explanation)
-                        $len = $size - 4 if $len > $size - 4 or $len < 0;
-                        $val = substr($buff, 4, $len);
-                        if ($lang < 0x400) {
+                        if ($lang < 0x400 and $val !~ /^\xfe\xff/) {
                             $charsetQuickTime = $et->Options('CharsetQuickTime');
                             $val = $et->Decode($val, $charsetQuickTime);
                         } else {
                             my $enc = $val=~s/^\xfe\xff// ? 'UTF16' : 'UTF8';
                             $val = $et->Decode($val, $enc);
                         }
+                        $val =~ s/\0+$//;   # remove trailing nulls if they exist
                         my $langCode = UnpackLang($lang, 1);
                         $langInfo = GetLangInfo($tagInfo, $langCode);
                         # (no need to check $$tagInfo{KeysInfo} because Keys won't get here)
@@ -645,7 +683,11 @@ sub WriteQuickTime($$$)
                         # add back necessary header and encode as necessary
                         if (defined $lang) {
                             $newData = $et->Encode($newData, $lang < 0x400 ? $charsetQuickTime : 'UTF8');
-                            $newData = pack('nn', length($newData), $lang) . $newData;
+                            if ($$tagInfo{IText} and $$tagInfo{IText} == 6) {
+                                $newData = pack('Nn', 0, $lang) . $newData . "\0";
+                            } else {
+                                $newData = pack('nn', length($newData), $lang) . $newData;
+                            }
                         }
                     }
                 }
@@ -718,15 +760,7 @@ sub WriteQuickTime($$$)
                 my $newVal = $et->GetNewValue($nvHash);
                 next unless defined $newVal;
                 my $prVal = $newVal;
-                my $flags;
-                my $format = $$tagInfo{Format};
-                if ($format and $format ne 'string') {
-                    $newVal = WriteValue($newVal, $format);
-                    $flags = $qtFormat{$format} || 0;
-                } else {
-                    $flags = 0x01;
-                    $newVal = $et->Encode($newVal, 'UTF8');
-                }
+                my $flags = FormatQTValue($et, \$newVal, $$tagInfo{Format});
                 next unless defined $newVal;
                 my ($ctry, $lang) = (0,0);
                 if (length $tag > 4) { # (is there a language code appended to the tag ID?)
@@ -748,6 +782,9 @@ sub WriteQuickTime($$$)
                         my $grp = $et->GetGroup($tagInfo,1);
                         $et->Warn("Can't use country code for $grp:$$tagInfo{Name}");
                         next;
+                    } elsif ($$tagInfo{IText} and $$tagInfo{IText} == 6) {
+                        # add 6-byte langText header and trailing null
+                        $newVal = pack('Nn',0,$lang) . $newVal . "\0";
                     } else {
                         # add IText header
                         $newVal = pack('nn',length($newVal),$lang) . $newVal;

@@ -1509,9 +1509,8 @@ SET:    foreach $set (@setList) {
 
 #------------------------------------------------------------------------------
 # Get new value(s) for tag
-# Inputs: 0) ExifTool object reference, 1) tag name or tagInfo hash ref (or nvHash, not public)
+# Inputs: 0) ExifTool object reference, 1) tag name (or tagInfo or nvHash ref, not public)
 #         2) optional pointer to return new value hash reference (not part of public API)
-#    or   0) ExifTool ref, 1) new value hash reference (not part of public API)
 # Returns: List of new Raw values (list may be empty if tag is being deleted)
 # Notes: 1) Preferentially returns new value from Extra table if writable Extra tag exists
 # 2) Must call AFTER IsOverwriting() returns 1 to get proper value for shifted times

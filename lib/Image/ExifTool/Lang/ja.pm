@@ -11,7 +11,7 @@ package Image::ExifTool::Lang::ja;
 use strict;
 use vars qw($VERSION);
 
-$VERSION = '1.24';
+$VERSION = '1.25';
 
 %Image::ExifTool::Lang::ja::Translate = (
    'AEAperture' => 'AE絞り',
@@ -364,7 +364,6 @@ $VERSION = '1.24';
    'AFPointsInFocus' => {
       Description => 'AF測距点',
       PrintConv => {
-        '(none)' => '中央固定または複数',
         'All' => '全て',
         'Bottom' => '下',
         'Bottom, Center' => '下+中央',
@@ -632,7 +631,6 @@ $VERSION = '1.24';
         'No flash & flash' => 'フラッシュ無し＆フラッシュ有り',
         'Off' => 'オフ',
         'On' => 'オン',
-        'Pre-shot' => 'フラッシュ無し＆フラッシュ有り',
       },
     },
    'AutoBracketingSet' => 'オートブラケット設定',
@@ -1120,7 +1118,6 @@ $VERSION = '1.24';
    'ColorMode' => {
       Description => 'カラーモード',
       PrintConv => {
-        'Adobe RGB' => '夕日',
         'Autumn Leaves' => '紅葉',
         'B & W' => '白黒',
         'B&W' => '白黒',

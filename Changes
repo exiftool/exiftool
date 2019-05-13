@@ -7,11 +7,18 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 11.30. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+May 13, 2019 - Version 11.42
+
+  - Added ability to edit ThumnailImage in Canon MOV videos
+  - Improved verbose hex dump for HEIC files
+  - Fixed another "Chunk offset outside movie data" error when writing some HEIC
+    files
+
 May 9, 2019 - Version 11.41
 
   - Added write support and improved language handling for 3GP QuickTime tags
-  - Fixed some language translations (thanks Herbert Kauer)
   - Fixed format problems writing some binary values to QuickTime tags
+  - Fixed some language translations (thanks Herbert Kauer)
 
 May 7, 2019 - Version 11.40
 

@@ -7057,7 +7057,7 @@ cameras such as the PowerShot S95.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
-  'CNDA'   ThumbnailImage                       no
+  'CNDA'   ThumbnailImage                       undef
 
 =head3 Canon uuid Tags
 
@@ -24000,6 +24000,7 @@ for the official specification.
   'mdat'               MovieData?               no
   'mdat-offset'        MovieDataOffset          no
   'mdat-size'          MovieDataSize            no
+  'meco'               OtherMeta                QuickTime OtherMeta
   'meta'               Meta                     QuickTime Meta
   'moof'               MovieFragment            QuickTime MovieFragment
   'moov'               Movie                    QuickTime Movie
@@ -24295,6 +24296,19 @@ Tags extracted from the tx3g sbtl timed metadata of Yuneec drones.
       1    MinorVersion                         no
       2    CompatibleBrands                     no
 
+=head3 QuickTime OtherMeta Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  'mere'   MetaRelation                         QuickTime MetaRelation
+  'meta'   Meta                                 QuickTime Meta
+
+=head3 QuickTime MetaRelation Tags
+
+  Index4   Tag Name                             Writable
+  ------   --------                             --------
+  [no tags known]
+
 =head3 QuickTime Meta Tags
 
   Tag ID   Tag Name                             Writable
@@ -24517,13 +24531,14 @@ defined in this table.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
+  'meta'   Meta                                 QuickTime Meta
   'traf'   TrackFragment                        QuickTime TrackFragment
 
 =head3 QuickTime TrackFragment Tags
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
-  [no tags known]
+  'meta'   Meta                                 QuickTime Meta
 
 =head3 QuickTime Movie Tags
 
@@ -24533,6 +24548,7 @@ defined in this table.
   'gps '   GPSDataList?                         no
   'htka'   HTCTrack                             QuickTime Track
   'iods'   InitialObjectDescriptor?             no
+  'meco'   OtherMeta                            QuickTime OtherMeta
   'meta'   Meta                                 QuickTime Meta
   'mvhd'   MovieHeader                          QuickTime MovieHeader
   'trak'   Track                                QuickTime Track
@@ -24552,6 +24568,7 @@ defined in this table.
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
   'mdia'   Media                                QuickTime Media
+  'meco'   OtherMeta                            QuickTime OtherMeta
   'meta'   Meta                                 QuickTime Meta
   'tapt'   TrackAperture                        QuickTime TrackAperture
   'tkhd'   TrackHeader                          QuickTime TrackHeader

@@ -164,15 +164,16 @@ sub Handle_iloc($$$$)
             # $id = Get32u($dataPt, $pos);
             $pos += 4;
         }
-        my $constructionMethod; # (absolute offset only if this is 0)
+        my ($constOff, @offBase, @offItem, $minOffset);
         if ($ver == 1 or $ver == 2) {
             return 0 if $pos + 2 > $len;
-            $constructionMethod = Get16u($dataPt, $pos) & 0x0f;
+            # offsets are absolute only if ConstructionMethod is 0, otherwise
+            # the relative offsets are constant as far as we are concerned
+            $constOff = Get16u($dataPt, $pos) & 0x0f;
             $pos += 2;
         }
         return 0 if $pos + 2 > $len;
         my $drefIdx = Get16u($dataPt, $pos);
-        my ($constOff, @offBase, @offItem, $minOffset);
         if ($drefIdx) {
             if ($$et{QtDataRef} and $$et{QtDataRef}[$drefIdx - 1]) {
                 my $dref = $$et{QtDataRef}[$drefIdx - 1];
@@ -366,8 +367,15 @@ sub WriteQuickTime($$$)
             push @mdat, [ $raf->Tell(), 0, $hdr ];
             last;
         } elsif ($size < 0) {
-            $et->Error('Invalid atom size');
-            last;
+            if ($$tagTablePtr{VARS}{IGNORE_BAD_ATOMS} and $dataPt) {
+                # ignore bad atom and just copy the rest of this directory
+                $buff = substr($$dataPt, $raf->Tell());
+                Write($outfile, $hdr, $buff) or $rtnVal=$rtnErr, $err=1;
+                last;
+            } else {
+                $et->Error('Invalid atom size');
+                last;
+            }
         }
 
         # keep track of 'mdat' atom locations for writing later

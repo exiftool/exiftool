@@ -8555,6 +8555,8 @@ my %filterConv = (
 %Image::ExifTool::Canon::CNTH = (
     GROUPS => { 0 => 'MakerNotes', 1 => 'Canon', 2 => 'Video' },
     VARS => { IGNORE_BAD_ATOMS => 1 },
+    WRITABLE => 1,
+    WRITE_PROC => 'Image::ExifTool::QuickTime::WriteQuickTime',
     NOTES => q{
         Canon-specific QuickTime tags found in the CNTH atom of MOV videos from some
         cameras such as the PowerShot S95.
@@ -8571,6 +8573,7 @@ my %filterConv = (
             $$self{DOC_NUM} = 0;
             return \$val;
         },
+        RawConvInv => '$val',
     },
 );
 

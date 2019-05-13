@@ -1858,7 +1858,9 @@ sub OpenHtmlFile($;$$)
         open(HTMLFILE, ">>${htmlFile}_tmp") or return 0;
     } else {
         open(HTMLFILE, ">${htmlFile}_tmp") or return 0;
-        print HTMLFILE "$docType<html>\n<head>\n<title>$title</title>\n";
+        print HTMLFILE "$docType<html>\n";
+        print HTMLFILE "<!-- (this file generated automatically by Image::ExifTool::BuildTagLookup) -->\n";
+        print HTMLFILE "<head>\n<title>$title</title>\n";
         print HTMLFILE "<link rel=stylesheet type='text/css' href='style.css' title='Style'>\n";
         print HTMLFILE "</head>\n<body>\n";
         if ($category ne $class and $docs{$class}) {
@@ -2621,7 +2623,7 @@ WriteTagNames().
 
 =item WRITE_PSEUDO
 
-List of writable pseudo tags.
+Returned list of writable pseudo tags.
 
 =back
 

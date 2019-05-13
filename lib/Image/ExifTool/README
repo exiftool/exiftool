@@ -53,9 +53,9 @@ with tag keys.  Below is an explanation of the meaning of each special key:
     LastIFD     - Used by WriteExif() to return offset of last IFD written
     ImageData   - Used by WriteExif() to avoid buffering large image data blocks
 
-  WRITE_PROC : Reference to a function to write all new tags for this directory.
-  The write proc returns the new directory data or undefined on error.  It takes
-  the same arguments as the process proc above except that the second argument
+  WRITE_PROC : Function reference or name for writing this directory.  The
+  function returns the new directory data or undefined on error.  It takes the
+  same arguments as the process proc above except that the second argument
   (reference to directory information hash) is optional, and if specified gives
   information about the source directory for tags to be copied to the output.
 

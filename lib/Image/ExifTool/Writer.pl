@@ -493,7 +493,10 @@ sub SetNewValue($;$$%)
             # must load XMP table to set group1 names
             my $table = GetTagTable('Image::ExifTool::XMP::Main');
             my $writeProc = $$table{WRITE_PROC};
-            $writeProc and &$writeProc();
+            if ($writeProc) {
+                no strict 'refs';
+                &$writeProc();
+            }
         }
         # fix case for known groups
         $wantGroup =~ s/$grpName/$grpName/i if $grpName and $grpName ne $_;
@@ -652,7 +655,10 @@ TAG: foreach $tagInfo (@matchingTags) {
             my $src = GetTagTable($$table{SRC_TABLE});
             $writeProc = $$src{WRITE_PROC} unless $writeProc;
         }
-        next unless $writeProc and &$writeProc();
+        {
+            no strict 'refs';
+            next unless $writeProc and &$writeProc();
+        }
         # must still check writable flags in case of UserDefined tags
         my $writable = $$tagInfo{Writable};
         next unless $writable or ($$table{WRITABLE} and
@@ -3149,9 +3155,11 @@ sub IsWritable($)
         return 1 if $$tagInfo{Table}{WRITABLE};
         # must call WRITE_PROC to autoload writer because this may set the writable tag
         my $writeProc = $$tagInfo{Table}{WRITE_PROC};
-        next unless $writeProc;
-        &$writeProc();  # dummy call to autoload writer
-        return 1 if $$tagInfo{Writable};
+        if ($writeProc) {
+            no strict 'refs';
+            &$writeProc();  # dummy call to autoload writer
+            return 1 if $$tagInfo{Writable};
+        }
     }
     return 0;
 }
@@ -3556,7 +3564,10 @@ sub LoadAllTables()
         $table = GetTagTable(shift @tableNames);
         # call write proc if it exists in case it adds tags to the table
         my $writeProc = $$table{WRITE_PROC};
-        $writeProc and &$writeProc();
+        if ($writeProc) {
+            no strict 'refs';
+            &$writeProc();
+        }
         # recursively scan through tables in subdirectories
         foreach (TagTableKeys($table)) {
             my @infoArray = GetTagInfoList($table,$_);
@@ -4025,7 +4036,11 @@ sub WriteDirectory($$$;$)
     $$self{DIR_NAME} = $dirName;
     push @{$$self{PATH}}, $dirName;
     $$dirInfo{IsWriting} = 1;
-    my $newData = &$writeProc($self, $dirInfo, $tagTablePtr);
+    my $newData;
+    {
+        no strict 'refs';
+        $newData = &$writeProc($self, $dirInfo, $tagTablePtr);
+    }
     pop @{$$self{PATH}};
     # nothing changed if error occurred or nothing was created
     $$self{CHANGED} = $oldChanged unless defined $newData and (length($newData) or $isRewriting);

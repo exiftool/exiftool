@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 22582 tags, with 15004 unique tag names.
+They contain a total of 22584 tags, with 15004 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -24227,6 +24227,7 @@ ItemList tags written by the "mdta" handler.  The prefix of
   'direction.facing'      CameraDirection       string
   'direction.motion'      CameraMotion          string
   'director'              Director              string
+  'displayname'           DisplayName           string
   'genre'                 Genre                 string
   'information'           Information           string
   'keywords'              Keywords              string
@@ -24436,6 +24437,7 @@ added dynamically to this table after processing the Meta Keys information.
   'yrrc'       Year                             string
   "\xa9ART"    Artist                           string
   "\xa9alb"    Album                            string
+  "\xa9aut"    Author                           string
   "\xa9cmt"    Comment                          string
   "\xa9com"    Composer                         string
   "\xa9cpy"    Copyright                        string
@@ -24515,9 +24517,9 @@ defined in this table.
   'clap'   CleanAperture                        no
   'colr'   ICC_Profile                          ICC_Profile
   'hvcC'   HEVCConfiguration?                   no
-  'irot'   Rotation                             no
+  'irot'   Rotation                             int8u
   'ispe'   ImageSpatialExtent                   no
-  'pasp'   PixelAspectRatio                     no
+  'pasp'   PixelAspectRatio                     int32u
   'pixi'   ImagePixelDepth                      no
   'rloc'   RelativeLocation                     no
 

@@ -119,6 +119,15 @@ my %writableType = (
     XMP => [ undef,         'WriteXMP' ],
 );
 
+# RAW file types
+my %rawType = (
+   '3FR'=> 1,  CR3 => 1,  IIQ => 1,  NEF => 1,  RW2 => 1,
+    ARQ => 1,  CRW => 1,  K25 => 1,  NRW => 1,  RWL => 1,
+    ARW => 1,  DCR => 1,  KDC => 1,  ORF => 1,  SR2 => 1,
+    ARW => 1,  ERF => 1,  MEF => 1,  PEF => 1,  SRF => 1,
+    CR2 => 1,  FFF => 1,  MOS => 1,  RAW => 1,  SRW => 1,
+);
+
 # groups we are allowed to delete
 # Notes:
 # 1) these names must either exist in %dirMap, or be translated in InitWriteDirs())
@@ -267,7 +276,7 @@ my %ignorePrintConv = map { $_ => 1 } qw(OTHER BITMASK Notes);
 #           IsCreating - must be set for the tag to be added for the standard file types,
 #                        otherwise just changed if it already exists.  This may be
 #                        overridden for file types with a PREFERRED metadata type.
-#                        Set to 2 to create inidividual tags but not new groups
+#                        Set to 2 to create individual tags but not new groups
 #           EditOnly - flag set if tag should never be created (regardless of file type).
 #                      If this is set, then IsCreating must be false
 #           CreateOnly - flag set if creating only (never edit existing tag)
@@ -3192,6 +3201,16 @@ sub IsSameFile($$$)
 }
 
 #------------------------------------------------------------------------------
+# Is this a raw file type?
+# Inputs: 0) Exiftool ref
+# Returns: true if FileType is a type of RAW image
+sub IsRawType($)
+{
+    my $self = shift;
+    return $rawType{$$self{FileType}};
+}
+
+#------------------------------------------------------------------------------
 # Create directory for specified file
 # Inputs: 0) ExifTool ref, 1) complete file name including path
 # Returns: 1 = directory created, 0 = nothing done, -1 = error
@@ -3799,9 +3818,10 @@ sub InitWriteDirs($$;$)
                     $$nvHash{CreateGroups}{$preferredGroup};
             } else {
                 # creating this directory if any tag is preferred and has a value
+                # (unless group creation is disabled via the WriteMode option)
                 $isCreating = 1 if ($preferredGroup and $$nvHash{Value} and
                     $preferredGroup eq $self->GetGroup($tagInfo, 0)) and
-                    not $$nvHash{EditOnly};
+                    not $$nvHash{EditOnly} and $$self{OPTIONS}{WriteMode} =~ /g/;
             }
             # tag belongs to directory specified by WriteGroup, or by
             # the Group0 name if WriteGroup not defined
@@ -3899,7 +3919,10 @@ sub WriteDirectory($$$;$)
         $delFlag = ($$delGroup{$grp0} or $$delGroup{$grp1}) unless $permanentDir{$grp0};
         # (never delete an entire QuickTime group)
         if ($delFlag) {
-            unless ($blockExifTypes{$$self{FILE_TYPE}}) {
+            if (($grp0 eq 'MakerNotes' or $grp1 eq 'MakerNotes') and $self->IsRawType()) {
+                $self->WarnOnce("Can't delete MakerNotes from $$self{FileType} file",1);
+                undef $grp1;
+            } elsif (not $blockExifTypes{$$self{FILE_TYPE}}) {
                 # restrict delete logic to prevent entire tiff image from being killed
                 # (don't allow IFD0 to be deleted, and delete only ExifIFD if EXIF specified)
                 if ($$self{FILE_TYPE} eq 'PSD') {
@@ -3990,6 +4013,11 @@ sub WriteDirectory($$$;$)
         my $newVal = $self->GetNewValue($nvHash);
         unless (defined $newVal and length $newVal) {
             return '' unless $dataPt or $$dirInfo{RAF}; # nothing to do if block never existed
+            # don't allow MakerNotes to be removed from RAW files
+            if ($blockName eq 'MakerNotes' and $rawType{$$self{FileType}}) {
+                $self->Warn("Can't delete MakerNotes from $$self{VALUE}{FileType} file",1);
+                return undef;
+            }
             $verb = 'Deleting';
             $newVal = '';
         }

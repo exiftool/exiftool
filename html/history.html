@@ -17,9 +17,28 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v11.43'><b>May 17, 2019 - Version 11.43</b> - "Write HEIC and CR3"</a>
+<ul>
+<li>Added ability to write/create EXIF and write ICC_Profile in HEIC images
+<li>Added ability to write/create EXIF and write MakerNotes in CR3 images
+    (one might hope/expect EXIF to be stored in the same location for HEIC and
+    CR3 since they are both based on the QuickTime file format, but in fact they
+    couldn't be more different, and both are much more complicated than
+    necessary, which of course follows the seemingly established practice of
+    intentional obfuscation and zero standardization in video metadata)
+<li>Added support for QuickTime ItemList:Author and Keys:DisplayName tags
+<li>Prevent MakerNotes from being deleted from any RAW file type
+<li>Fixed writing of XMP in HEIC files to conform with the HEIC specification
+    (obviously, Apple couldn't put this XMP in the same place as any other
+    QuickTime-based file format, because Apple is, after all, king of "Let's
+    re-invent the wheel!")
+<li>Fixed problem where API WriteMode option wouldn't always prevent groups from
+    being created when group creation was disabled
+</ul>
+
 <a name='v11.42'><b>May 13, 2019 - Version 11.42</b></a>
 <ul>
-<li>Added ability to edit ThumnailImage in Canon MOV videos
+<li>Added ability to edit ThumbnailImage in Canon MOV videos
 <li>Improved verbose hex dump for HEIC files
 <li>Fixed another "Chunk offset outside movie data" error when writing some HEIC
     files
@@ -40,7 +59,7 @@ considered development releases, and are not uploaded to <a href="https://metacp
     tags in other groups when writing a default language tag
 </ul>
 
-<a name='v11.39'><b>May 3, 2019 - Version 11.39</b></a>
+<a name='v11.39'><b>May 3, 2019 - Version 11.39</b> - "Create QuickTime tags"</a>
 <ul>
 <li>Added ability to create new QuickTime tags in MOV/MP4 videos
 <li>Added two new Canon LensTypes and a new CanonModelID (thanks LibRaw)

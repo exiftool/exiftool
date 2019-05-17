@@ -733,6 +733,9 @@ t/PostScript.t
 t/PostScript_2.out
 t/PostScript_3.out
 t/QuickTime.t
+t/QuickTime_10.out
+t/QuickTime_11.out
+t/QuickTime_12.out
 t/QuickTime_2.out
 t/QuickTime_3.out
 t/QuickTime_4.out
@@ -1008,6 +1011,7 @@ t/images/PhotoCD.pcd
 t/images/PhotoMechanic.jpg
 t/images/Photoshop.psd
 t/images/PostScript.eps
+t/images/QuickTime.heic
 t/images/QuickTime.m4a
 t/images/QuickTime.mov
 t/images/RIFF.avi

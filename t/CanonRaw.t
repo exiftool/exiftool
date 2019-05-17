@@ -149,7 +149,10 @@ my $testnum = 1;
 {
     ++$testnum;
     if (eval { require Time::Local }) {
-        my @writeInfo = ( [Subject => 'CR3 test'] );
+        my @writeInfo = (
+            [Subject => 'CR3 test'],
+            [ExposureCompensation => -1.3],
+        );
         print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum, 't/images/CanonRaw.cr3');
         print "ok $testnum\n";
     } else {

@@ -2,7 +2,7 @@
 # After "make install" it should work as "perl t/QuickTime.t".
 
 BEGIN {
-    $| = 1; print "1..9\n"; $Image::ExifTool::configFile = '';
+    $| = 1; print "1..12\n"; $Image::ExifTool::configFile = '';
     require './t/TestLib.pm'; t::TestLib->import();
 }
 END {print "not ok 1\n" unless $loaded;}
@@ -102,6 +102,56 @@ my $testnum = 1;
         print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum, "t/images/QuickTime.$ext", \@extract);
         print "ok $testnum\n";
     }
+}
+
+# tests 10-12: HEIC write tests
+{
+    ++$testnum;
+    my $testfile = "t/${testname}_${testnum}_failed.heic";
+    unlink $testfile;
+    my $exifTool = new Image::ExifTool;
+    $exifTool->Options(Composite => 0);
+    $exifTool->SetNewValue('XMP-dc:Title' => 'a title');
+    writeInfo($exifTool, 't/images/QuickTime.heic', $testfile);
+    my $info = $exifTool->ImageInfo($testfile, '-file:all');
+    unless (check($exifTool, $info, $testname, $testnum)) {
+        print 'not ';
+    }
+    print "ok $testnum\n";
+
+    ++$testnum;
+    my $testfile2 = "t/${testname}_${testnum}_failed.heic";
+    unlink $testfile2;
+    $exifTool->SetNewValue();
+    $exifTool->SetNewValue('XMP:all' => undef);
+    $exifTool->SetNewValue('EXIF:Artist' => 'an artist');
+    writeInfo($exifTool, $testfile, $testfile2);
+    $info = $exifTool->ImageInfo($testfile2, '-file:all');
+    if (check($exifTool, $info, $testname, $testnum)) {
+        unlink $testfile;
+    } else {
+        print 'not ';
+    }
+    print "ok $testnum\n";
+
+    ++$testnum;
+    $testfile = "t/${testname}_${testnum}_failed.heic";
+    unlink $testfile;
+    Image::ExifTool::AddUserDefinedTags('Image::ExifTool::XMP::dc', test => {} );
+    $exifTool->SetNewValue();
+    $exifTool->SetNewValue('EXIF:all' => undef);
+    $exifTool->SetNewValue('EXIF:UserComment' => 'a comment');
+    $exifTool->SetNewValue('XMP:Subject' => 'a subject');
+    $exifTool->SetNewValue('XMP:Subject' => 'another subject');
+    writeInfo($exifTool, $testfile2, $testfile);
+    $info = $exifTool->ImageInfo($testfile, '-file:all');
+    if (check($exifTool, $info, $testname, $testnum)) {
+        unlink $testfile;
+        unlink $testfile2;
+    } else {
+        print 'not ';
+    }
+    print "ok $testnum\n";
 }
 
 

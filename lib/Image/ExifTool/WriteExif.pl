@@ -412,7 +412,7 @@ sub ExifErr($$$)
 {
     my ($et, $errStr, $tagTablePtr) = @_;
     # MakerNote errors are minor by default
-    my $minor = ($$tagTablePtr{GROUPS}{0} eq 'MakerNotes');
+    my $minor = ($$tagTablePtr{GROUPS}{0} eq 'MakerNotes' or $$et{FILE_TYPE} eq 'MOV');
     if ($$tagTablePtr{VARS} and $$tagTablePtr{VARS}{MINOR_ERRORS}) {
         $et->Warn("$errStr. IFD dropped.") and return '' if $minor;
         $minor = 1;
@@ -574,7 +574,7 @@ sub WriteExif($$$)
                 # only account for nextIFD pointer if we are going to use it
                 $len += 4 if $dataLen==$len+6 and ($$dirInfo{Multi} or $buff =~ /\0{4}$/);
                 UpdateTiffEnd($et, $offset+$base+2+$len);
-            } elsif ($dirLen) {
+            } elsif ($dirLen and $dirStart + 4 >= $dataLen) {
                 # error if we can't load IFD (unless we are creating
                 # from scratch, in which case dirLen will be zero)
                 my $str = $et->Options('IgnoreMinorErrors') ? 'Deleted bad' : 'Bad';
@@ -586,7 +586,10 @@ sub WriteExif($$$)
             $numEntries = Get16u($dataPt, $dirStart);
             $dirEnd = $dirStart + 2 + 12 * $numEntries;
             if ($dirEnd > $dataLen) {
-                return ExifErr($et, "Truncated $name directory", $tagTablePtr);
+                my $n = int(($dataLen - $dirStart - 2) / 12);
+                my $rtn = ExifErr($et, "Truncated $name directory", $tagTablePtr);
+                return undef unless $n and defined $rtn;
+                $numEntries = $n;   # continue processing the entries we have
             }
             # sort entries if necessary (but not in maker notes IFDs)
             unless ($inMakerNotes) {
@@ -1345,11 +1348,15 @@ NoOverwrite:            next if $isNew > 0;
                     if ($$et{DEL_GROUP}{MakerNotes} and
                        ($$et{DEL_GROUP}{MakerNotes} != 2 or $isNew <= 0))
                     {
-                        if ($isNew <= 0) {
-                            ++$$et{CHANGED};
-                            $verbose and print $out "  Deleting MakerNotes\n";
+                        if ($et->IsRawType()) {
+                            $et->WarnOnce("Can't delete MakerNotes from $$et{FileType} file",1);
+                        } else {
+                            if ($isNew <= 0) {
+                                ++$$et{CHANGED};
+                                $verbose and print $out "  Deleting MakerNotes\n";
+                            }
+                            next;
                         }
-                        next;
                     }
                     my $saveOrder = GetByteOrder();
                     if ($isNew >= 0 and defined $set{$newID}) {

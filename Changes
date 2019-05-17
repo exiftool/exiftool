@@ -7,9 +7,27 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 11.30. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+May 17, 2019 - Version 11.43 - "Write HEIC and CR3"
+
+  - Added ability to write/create EXIF and write ICC_Profile in HEIC images
+  - Added ability to write/create EXIF and write MakerNotes in CR3 images
+    (one might hope/expect EXIF to be stored in the same location for HEIC and
+    CR3 since they are both based on the QuickTime file format, but in fact they
+    couldn't be more different, and both are much more complicated than
+    necessary, which of course follows the seemingly established practice of
+    intentional obfuscation and zero standardization in video metadata)
+  - Added support for QuickTime ItemList:Author and Keys:DisplayName tags
+  - Prevent MakerNotes from being deleted from any RAW file type
+  - Fixed writing of XMP in HEIC files to conform with the HEIC specification
+    (obviously, Apple couldn't put this XMP in the same place as any other
+    QuickTime-based file format, because Apple is, after all, king of "Let's
+    re-invent the wheel!")
+  - Fixed problem where API WriteMode option wouldn't always prevent groups from
+    being created when group creation was disabled
+
 May 13, 2019 - Version 11.42
 
-  - Added ability to edit ThumnailImage in Canon MOV videos
+  - Added ability to edit ThumbnailImage in Canon MOV videos
   - Improved verbose hex dump for HEIC files
   - Fixed another "Chunk offset outside movie data" error when writing some HEIC
     files
@@ -27,7 +45,7 @@ May 7, 2019 - Version 11.40
   - Fixed QuickTime writing to preserve existing same-named default-language
     tags in other groups when writing a default language tag
 
-May 3, 2019 - Version 11.39
+May 3, 2019 - Version 11.39 - "Create QuickTime tags"
 
   - Added ability to create new QuickTime tags in MOV/MP4 videos
   - Added two new Canon LensTypes and a new CanonModelID (thanks LibRaw)

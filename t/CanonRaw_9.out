@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.33
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.43
 [File, System, Image] FileName - File Name: CanonRaw_9_failed.cr3
 [File, System, Image] Directory - Directory: t
-[File, System, Image] FileSize - File Size: 54 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2019:03:26 08:35:56-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:03:26 08:35:56-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:03:26 08:35:56-04:00
+[File, System, Image] FileSize - File Size: 52 kB
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2019:05:17 08:32:52-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:05:17 08:32:52-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:05:17 08:32:52-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: CR3
 [File, File, Image] FileTypeExtension - File Type Extension: cr3
@@ -158,7 +158,7 @@
 [QuickTime, Track4, Video] SampleDuration - Sample Duration: 1.00 s
 [QuickTime, QuickTime, Preview] uuid - Preview Image: (Binary data 26 bytes)
 [QuickTime, QuickTime, Video] mdat-size - Movie Data Size: 41065
-[QuickTime, QuickTime, Video] mdat-offset - Movie Data Offset: 14094
+[QuickTime, QuickTime, Video] mdat-offset - Movie Data Offset: 12190
 [QuickTime, QuickTime, Video] mdat - Movie Data: (Binary data 41065 bytes)
 [MakerNotes, Canon, Video] CNCV - Compressor Version: CanonCR3_001/00.09.00/00.00.00
 [MakerNotes, Canon, Video] CCDT - Unknown CCDT: (Binary data 16 bytes)
@@ -204,7 +204,7 @@
 [MakerNotes, Canon, Image] 3 - Measured EV: 2.75
 [MakerNotes, Canon, Image] 4 - Target Aperture: 3.6
 [MakerNotes, Canon, Image] 5 - Target Exposure Time: 1/81
-[MakerNotes, Canon, Image] 6 - Exposure Compensation: 0
+[MakerNotes, Canon, Image] 6 - Exposure Compensation: -4/3
 [MakerNotes, Canon, Image] 7 - White Balance: Auto
 [MakerNotes, Canon, Image] 8 - Slow Shutter: None
 [MakerNotes, Canon, Image] 9 - Shot Number In Continuous Burst: 0
@@ -563,7 +563,7 @@
 [EXIF, ExifIFD, Image] 37121 - Components Configuration: Y, Cb, Cr, -
 [EXIF, ExifIFD, Image] 37377 - Shutter Speed Value: 1/83
 [EXIF, ExifIFD, Image] 37378 - Aperture Value: 3.5
-[EXIF, ExifIFD, Image] 37380 - Exposure Compensation: 0
+[EXIF, ExifIFD, Image] 37380 - Exposure Compensation: -1.3
 [EXIF, ExifIFD, Camera] 37383 - Metering Mode: Multi-segment
 [EXIF, ExifIFD, Camera] 37385 - Flash: No Flash
 [EXIF, ExifIFD, Camera] 37386 - Focal Length: 15.0 mm
@@ -589,8 +589,9 @@
 [EXIF, ExifIFD, Image] 42037 - Lens Serial Number: 0000000000
 [EXIF, GPS, Location] 0 - GPS Version ID: 2.3.0.0
 [EXIF, ExifIFD, Camera] 41990 - Scene Capture Type: Standard
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.33
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.43
 [XMP, XMP-dc, Image] subject - Subject: CR3 test
+[XMP, XMP-exif, Image] ExposureBiasValue - Exposure Compensation: -1.3
 [XMP, XMP-xmp, Image] Rating - Rating: 0
 [Composite, Composite, Image] Aperture - Aperture: 3.5
 [Composite, Composite, Video] AvgBitrate - Avg Bitrate: 329 kbps

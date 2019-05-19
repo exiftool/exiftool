@@ -5787,7 +5787,9 @@ available).  When writing, causes compressed information to be written if
 supported by the metadata format (eg. compressed textual metadata in PNG),
 disables the recommended padding in embedded XMP (saving 2424 bytes when
 writing XMP in a file), and writes XMP in shorthand format -- the equivalent
-of setting the API Compress, Compact and XMPShorthand options to 1.
+of setting the API Compress, Compact and XMPShorthand options to 1. 
+Compressing XMP in PNG images is unsupported by the XMP Specification and
+exiftool won't compress it.
 
 =back
 

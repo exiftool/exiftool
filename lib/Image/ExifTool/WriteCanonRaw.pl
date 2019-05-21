@@ -521,7 +521,7 @@ sub WriteCRW($$)
 
     if ($$et{DEL_GROUP}{MakerNotes}) {
         if ($type eq 'CCDR') {
-            $et->Error("Can't delete MakerNotes group in CRW file");
+            $et->Error("Can't delete MakerNotes from CRW");
             return 0;
         } else {
             ++$$et{CHANGED};

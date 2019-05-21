@@ -3919,8 +3919,10 @@ sub WriteDirectory($$$;$)
         $delFlag = ($$delGroup{$grp0} or $$delGroup{$grp1}) unless $permanentDir{$grp0};
         # (never delete an entire QuickTime group)
         if ($delFlag) {
-            if (($grp0 eq 'MakerNotes' or $grp1 eq 'MakerNotes') and $self->IsRawType()) {
-                $self->WarnOnce("Can't delete MakerNotes from $$self{FileType} file",1);
+            if (($grp0 =~ /^(MakerNotes)$/ or $grp1 =~ /^(IFD0|ExifIFD|MakerNotes)$/) and
+                $self->IsRawType())
+            {
+                $self->WarnOnce("Can't delete $1 from $$self{FileType}",1);
                 undef $grp1;
             } elsif (not $blockExifTypes{$$self{FILE_TYPE}}) {
                 # restrict delete logic to prevent entire tiff image from being killed
@@ -4015,7 +4017,7 @@ sub WriteDirectory($$$;$)
             return '' unless $dataPt or $$dirInfo{RAF}; # nothing to do if block never existed
             # don't allow MakerNotes to be removed from RAW files
             if ($blockName eq 'MakerNotes' and $rawType{$$self{FileType}}) {
-                $self->Warn("Can't delete MakerNotes from $$self{VALUE}{FileType} file",1);
+                $self->Warn("Can't delete MakerNotes from $$self{VALUE}{FileType}",1);
                 return undef;
             }
             $verb = 'Deleting';

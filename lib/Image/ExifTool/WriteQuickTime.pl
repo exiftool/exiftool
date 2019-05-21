@@ -775,6 +775,7 @@ sub WriteQuickTime($$$)
                 my %subdirInfo = (
                     Parent   => $dirName,
                     DirName  => $subName,
+                    Name     => $$tagInfo{Name},
                     DirID    => $tag,
                     DataPt   => \$buff,
                     DataLen  => $size,

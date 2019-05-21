@@ -42,7 +42,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.27';
+$VERSION = '2.28';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -7577,6 +7577,7 @@ sub HandleItemInfo($)
 
     # extract information from EXIF/XMP metadata items
     if ($items and $raf) {
+        push @{$$et{PATH}}, 'ItemInformation';
         my $curPos = $raf->Tell();
         my $primary = $$et{PrimaryItem};
         my $id;
@@ -7675,6 +7676,7 @@ sub HandleItemInfo($)
             delete $$et{DOC_NUM};
         }
         $raf->Seek($curPos, 0);     # seek back to original position
+        pop @{$$et{PATH}};
     }
     # process the item properties now that we should know their associations and document numbers
     if ($$et{ItemPropertyContainer}) {
@@ -7965,11 +7967,15 @@ sub ProcessKeys($$$)
             my $groups = $$tagInfo{Groups};
             $$newInfo{Groups} = $groups ? { %$groups } : { };
             $$newInfo{Groups}{$_} or $$newInfo{Groups}{$_} = $$tagTablePtr{GROUPS}{$_} foreach 0..2;
-        } elsif ($tag =~ /^[-\w.]+$/) {
+            $$newInfo{Groups}{1} = 'Keys';
+        } elsif ($tag =~ /^[-\w. ]+$/) {
             # create info for tags with reasonable id's
-            my $name = $tag;
-            $name =~ s/\.(.)/\U$1/g;
-            $newInfo = { Name => ucfirst($name) };
+            my $name = ucfirst $tag;
+            $name =~ s/[. ]+(.?)/\U$1/g;
+            $name =~ s/_([a-z])/_\U$1/g;
+            $name =~ s/([a-z])_([A-Z])/$1$2/g;
+            $name = "Tag_$name" if length $name < 2;
+            $newInfo = { Name => $name, Groups => { 1 => 'Keys' } };
             $msg = ' (Unknown)';
         }
         # substitute this tag in the ItemList table with the given index

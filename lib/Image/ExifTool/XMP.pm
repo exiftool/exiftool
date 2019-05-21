@@ -3877,8 +3877,8 @@ sub ProcessXMP($$;$)
     # extract XMP as a block if specified
     my $blockName = $$dirInfo{BlockInfo} ? $$dirInfo{BlockInfo}{Name} : 'XMP';
     if (($$et{REQ_TAG_LOOKUP}{lc $blockName} or ($$et{TAGS_FROM_FILE} and
-        not $$et{EXCL_TAG_LOOKUP}{lc $blockName})) and
-        ($$dirInfo{DirName} and $$dirInfo{DirName} eq 'XMP'))
+        not $$et{EXCL_TAG_LOOKUP}{lc $blockName})) and ($$et{FileType} eq 'XMP' or
+        ($$dirInfo{DirName} and $$dirInfo{DirName} eq 'XMP')))
     {
         $et->FoundTag($$dirInfo{BlockInfo} || 'XMP', substr($$dataPt, $dirStart, $dirLen));
     }

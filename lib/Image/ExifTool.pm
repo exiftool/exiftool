@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup);
 
-$VERSION = '11.43';
+$VERSION = '11.44';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -6907,6 +6907,8 @@ sub DoProcessTIFF($$;$)
     my $ifdName = ($$dirInfo{DirName} and $$dirInfo{DirName} =~ /^(ExifIFD|GPS)$/) ? $1 : 'IFD0';
     if (not $tagTablePtr or $$tagTablePtr{GROUPS}{0} eq 'EXIF') {
         $self->FoundTag('ExifByteOrder', $byteOrder) unless $outfile;
+    } elsif ($$tagTablePtr{GROUPS}{0} eq 'MakerNotes') { # (for writing CR3 maker notes)
+        $ifdName = $$tagTablePtr{GROUPS}{0};
     } else {
         $ifdName = $$tagTablePtr{GROUPS}{1};
     }

@@ -1349,7 +1349,7 @@ NoOverwrite:            next if $isNew > 0;
                        ($$et{DEL_GROUP}{MakerNotes} != 2 or $isNew <= 0))
                     {
                         if ($et->IsRawType()) {
-                            $et->WarnOnce("Can't delete MakerNotes from $$et{FileType} file",1);
+                            $et->WarnOnce("Can't delete MakerNotes from $$et{FileType}",1);
                         } else {
                             if ($isNew <= 0) {
                                 ++$$et{CHANGED};

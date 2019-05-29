@@ -136,15 +136,22 @@ my @delGroups = qw(
     Adobe AFCP APP0 APP1 APP2 APP3 APP4 APP5 APP6 APP7 APP8 APP9 APP10 APP11
     APP12 APP13 APP14 APP15 CanonVRD CIFF Ducky EXIF ExifIFD File FlashPix
     FotoStation GlobParamIFD GPS ICC_Profile IFD0 IFD1 InteropIFD IPTC ItemList
-    JFIF Jpeg2000 MakerNotes Meta MetaIFD MIE MPF NikonCapture PDF PDF-update
-    PhotoMechanic Photoshop PNG PNG-pHYs PrintIM QuickTime RMETA RSRC SubIFD
-    Trailer UserData XML XML-* XMP XMP-*
+    JFIF Jpeg2000 Keys MakerNotes Meta MetaIFD MIE MPF NikonCapture PDF
+    PDF-update PhotoMechanic Photoshop PNG PNG-pHYs PrintIM QuickTime RMETA RSRC
+    SubIFD Trailer UserData XML XML-* XMP XMP-*
 );
 # family 2 group names that we can delete
 my @delGroup2 = qw(
     Audio Author Camera Document ExifTool Image Location Other Preview Printing
     Time Video
 );
+# Extra groups to delete when deleting another group
+my %delMore = (
+    QuickTime => [ qw(ItemList UserData Keys) ],
+    XMP => [ 'XMP-*' ],
+    XML => [ 'XML-*' ],
+);
+
 # family 0 groups where directories should never be deleted
 my %permanentDir = ( QuickTime => 1 );
 
@@ -181,6 +188,7 @@ my %excludeGroups = (
     CanonVRD     => [ 'Trailer' ],
     PhotoMechanic=> [ 'Trailer' ],
     MIE          => [ 'Trailer' ],
+    QuickTime    => [ qw(ItemList UserData Keys) ],
 );
 # translate (lower case) wanted group when writing for tags where group name may change
 my %translateWantGroup = (
@@ -436,10 +444,9 @@ sub SetNewValue($;$$%)
                     }
                 } else {
                     $$delGroup{$grp} = 1;
-                    # add flag for XMP/XML family 1 groups if deleting all XMP
-                    if ($grp =~ /^XM[LP]$/) {
-                        $$delGroup{"$grp-*"} = 1;
-                        push @donegrps, "$grp-*";
+                    # add extra groups to delete if necessary
+                    if ($delMore{$grp}) {
+                        $$delGroup{$_} = 1, push @donegrps, $_ foreach @{$delMore{$grp}};
                     }
                     # remove all of this group from previous new values
                     $self->RemoveNewValuesForGroup($grp);
@@ -583,7 +590,7 @@ sub SetNewValue($;$$%)
 # the highest priority group
 #
     my (@tagInfoList, @writeAlsoList, %writeGroup, %preferred, %tagPriority);
-    my (%avoid, $wasProtected, $noCreate, %highestPriority);
+    my (%avoid, $wasProtected, $noCreate, %highestPriority, %highestQT);
 
 TAG: foreach $tagInfo (@matchingTags) {
         $tag = $$tagInfo{Name};     # get tag name for warnings
@@ -591,6 +598,7 @@ TAG: foreach $tagInfo (@matchingTags) {
         # initialize highest priority if we are starting a new tag
         $highestPriority{$lcTag} = -999 unless defined $highestPriority{$lcTag};
         my ($priority, $writeGroup);
+        my $prfTag = defined $$tagInfo{Preferred} ? $$tagInfo{Preferred} : $$tagInfo{Table}{PREFERRED};
         if ($wantGroup) {
             # a WriteGroup of All is special
             my $wgAll = ($$tagInfo{WriteGroup} and $$tagInfo{WriteGroup} eq 'All');
@@ -600,9 +608,8 @@ TAG: foreach $tagInfo (@matchingTags) {
                 my ($fam, $lcWant) = @$fg;
                 $lcWant = $translateWantGroup{$lcWant} if $translateWantGroup{$lcWant};
                 # only set tag in specified group
-                my $prf = defined $$tagInfo{Preferred} ? $$tagInfo{Preferred} : $$tagInfo{Table}{PREFERRED};
                 # bump priority of preferred tag
-                $hiPri += $prf if $prf;
+                $hiPri += $prfTag if $prfTag;
                 if (not defined $fam) {
                     if ($lcWant eq lc $grp[0]) {
                         # don't go to more general write group of "All"
@@ -634,9 +641,10 @@ TAG: foreach $tagInfo (@matchingTags) {
                     if ($grp[1] eq 'Track#') {
                         next TAG unless $movGroup and $lcWant eq lc($movGroup);
                         $writeGroup = $movGroup;
-                    } elsif ($$tagInfo{Table}{WRITE_GROUP}) {
-                        next TAG unless $lcWant eq lc $$tagInfo{Table}{WRITE_GROUP};
-                        $writeGroup = $$tagInfo{Table}{WRITE_GROUP};
+                    } else {
+                        my $grp = $$tagInfo{Table}{WRITE_GROUP};
+                        next TAG unless $grp and $lcWant eq lc $grp;
+                        $writeGroup = $grp;
                     }
                 } elsif ($grp[0] eq 'MIE') {
                     next TAG unless $mieGroup and $lcWant eq lc($mieGroup);
@@ -688,6 +696,8 @@ TAG: foreach $tagInfo (@matchingTags) {
                     $priority = $$self{WRITE_PRIORITY}{lc($group0)} || 0;
                 }
             }
+            # adjust priority based on Preferred level for this tag
+            $priority += $prfTag if $prfTag;
         }
         # don't write tag if protected
         my $prot = $$tagInfo{Protected};
@@ -706,6 +716,9 @@ TAG: foreach $tagInfo (@matchingTags) {
         }
         # set priority for this tag
         $tagPriority{$tagInfo} = $priority;
+        # keep track of highest priority QuickTime tag
+        $highestQT{$lcTag} = $priority if $$table{GROUPS}{0} eq 'QuickTime' and
+            (not defined $highestQT{$lcTag} or $highestQT{$lcTag} < $priority);
         if ($priority > $highestPriority{$lcTag}) {
             $highestPriority{$lcTag} = $priority;
             $preferred{$lcTag} = { $tagInfo => 1 };
@@ -794,7 +807,8 @@ TAG: foreach $tagInfo (@matchingTags) {
         $writeGroup eq 'MakerNotes' and $permanent = 1 unless defined $permanent;
         my $wgrp1 = $self->GetWriteGroup1($tagInfo, $writeGroup);
         $tag = $$tagInfo{Name};     # get tag name for warnings
-        my $pref = $preferred{lc $tag} || { };
+        my $lcTag = lc $tag;
+        my $pref = $preferred{$lcTag} || { };
         my $shift = $options{Shift};
         my $addValue = $options{AddValue};
         if (defined $shift) {
@@ -981,6 +995,10 @@ TAG: foreach $tagInfo (@matchingTags) {
             # (will only create the priority tag if it doesn't exist,
             #  others get changed only if they already exist)
             my $prf = defined $$tagInfo{Preferred} ? $$tagInfo{Preferred} : $$tagInfo{Table}{PREFERRED};
+            # hack to prefer only a single tag in the QuickTime group
+            if ($$tagInfo{Table}{GROUPS}{0} eq 'QuickTime') {
+                $prf = 0 if $tagPriority{$tagInfo} < $highestQT{$lcTag};
+            }
             if ($$pref{$tagInfo} or $prf) {
                 if ($permanent or $shift) {
                     # don't create permanent or Shift-ed tag but define IsCreating
@@ -4029,7 +4047,9 @@ sub WriteDirectory($$$;$)
         return $newVal;
     }
     # guard against writing the same directory twice
-    if (defined $dataPt and defined $$dirInfo{DirStart} and defined $$dirInfo{DataPos}) {
+    if (defined $dataPt and defined $$dirInfo{DirStart} and defined $$dirInfo{DataPos} and
+        not $$dirInfo{NoRefTest})
+    {
         my $addr = $$dirInfo{DirStart} + $$dirInfo{DataPos} + ($$dirInfo{Base}||0) + $$self{BASE};
         # (Phase One P25 IIQ files have ICC_Profile duplicated in IFD0 and IFD1)
         if ($$self{PROCESSED}{$addr} and ($dirName ne 'ICC_Profile' or $$self{TIFF_TYPE} ne 'IIQ')) {

@@ -6,12 +6,18 @@
 [QuickTime, Meta, Video] pitm - Primary Item Reference: 20002
 [QuickTime, QuickTime, Image] ispe - Image Spatial Extent: 1596x1064
 [QuickTime, QuickTime, Image] ispe - Image Spatial Extent: 320x240
-[QuickTime, QuickTime, Video] mdat-size - Movie Data Size: 128
+[QuickTime, QuickTime, Video] mdat-size - Movie Data Size: 3083
 [QuickTime, QuickTime, Video] mdat-offset - Movie Data Offset: 705
 [QuickTime, QuickTime, Video] mdat-size - Movie Data Size: 18
-[QuickTime, QuickTime, Video] mdat-offset - Movie Data Offset: 841
+[QuickTime, QuickTime, Video] mdat-offset - Movie Data Offset: 3796
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.43
+[XMP, XMP-dc, Image] subject - Subject: a subject, another subject
 [EXIF, IFD0, Image] 282 - X Resolution: 72
 [EXIF, IFD0, Image] 283 - Y Resolution: 72
 [EXIF, IFD0, Image] 296 - Resolution Unit: inches
-[EXIF, IFD0, Author] 315 - Artist: an artist
 [EXIF, IFD0, Image] 531 - Y Cb Cr Positioning: Centered
+[EXIF, ExifIFD, Image] 36864 - Exif Version: 0231
+[EXIF, ExifIFD, Image] 37121 - Components Configuration: Y, Cb, Cr, -
+[EXIF, ExifIFD, Image] 37510 - User Comment: a comment
+[EXIF, ExifIFD, Image] 40960 - Flashpix Version: 0100
+[EXIF, ExifIFD, Image] 40961 - Color Space: Uncalibrated

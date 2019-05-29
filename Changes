@@ -7,6 +7,28 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 11.30. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+May 29, 2019 - Version 11.45
+
+  - CORRUPTION WARNING: Patched problem where Canon DPP would destroy a CR3
+    image if the image had previously been edited by DPP then Exiftool.
+    (If you have edited any CR3 images with ExifTool that had been
+    previously edited by DPP, then re-edit with ExifTool 11.45 or later to
+    restructure the file so DPP doesn't destroy it if used to edit the file
+    later)
+  - Added ability to create and delete QuickTime Keys tags
+  - Added sample config file (mini0806.config) to generate GPS tags from
+    subtitle Text in Mini 0806 dashcam videos
+  - Added new Canon and Nikon lenses (thanks LibRaw)
+  - Added a new Olympus CameraType (thanks LibRaw)
+  - Decode CanonVRD tags from CR3 images
+  - Improved handling of QuickTime language tags when writing
+  - Fixed bug introduced in 11.38 which could cause "Use of uninitialized value"
+    runtime warning when reading XMP GPS tags
+  - Fixed bug where QuickTime tags could be written when another group was
+    specified
+  - API Changes:
+      - Added QuickTimeHandler option
+
 May 21, 2019 - Version 11.44
 
   - Added ability to extract XMP as a block from XMP files

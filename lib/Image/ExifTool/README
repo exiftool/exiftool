@@ -52,6 +52,7 @@ with tag keys.  Below is an explanation of the meaning of each special key:
     FixOffsets  - Evaluated for each value pointer to patch maker note offsets
     LastIFD     - Used by WriteExif() to return offset of last IFD written
     ImageData   - Used by WriteExif() to avoid buffering large image data blocks
+    NoRefTest   - Flag to bypass "referenced by previous directory" test
 
   WRITE_PROC : Function reference or name for writing this directory.  The
   function returns the new directory data or undefined on error.  It takes the

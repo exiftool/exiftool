@@ -2,7 +2,7 @@
 # After "make install" it should work as "perl t/QuickTime.t".
 
 BEGIN {
-    $| = 1; print "1..12\n"; $Image::ExifTool::configFile = '';
+    $| = 1; print "1..13\n"; $Image::ExifTool::configFile = '';
     require './t/TestLib.pm'; t::TestLib->import();
 }
 END {print "not ok 1\n" unless $loaded;}
@@ -72,7 +72,7 @@ my $testnum = 1;
     print "ok $testnum\n";
 }
 
-# test 7: Add a bunch of new tags
+# test 7: Add a bunch of new tags and delete one
 {
     ++$testnum;
     my $exifTool = new Image::ExifTool;
@@ -83,18 +83,24 @@ my $testnum = 1;
         ['UserData:Album' => 'albumA' ],
         ['ItemList:Album' => 'albumB' ],
         ['QuickTime:Comment-fra-FR' => 'fr comment' ],
+        ['Keys:Director' => 'director' ],
+        ['Keys:DetectedFaceYawAngle' => '90'],
+        ['Keys:Album' => undef ],
     );
-    print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum, 't/images/QuickTime.mov', 1);
+    my @extract = ('ItemList:all', 'UserData:all', 'Keys:all');
+    print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum, 't/images/QuickTime.mov', \@extract);
     print "ok $testnum\n";
 }
 
-# test 8-9: Delete everything then add back a tag
+# test 8-9: Delete everything then add back some tags in one step
 {
     my $ext;
     my $exifTool = new Image::ExifTool;
     my @writeInfo = (
         ['all' => undef],
         ['artist' => 'me'],
+        ['keys:director' => 'dir'],
+        ['userdata:arranger' => 'arr'],
     );
     my @extract = ('QuickTime:all', 'XMP:all');
     foreach $ext (qw(mov m4a)) {
@@ -104,7 +110,31 @@ my $testnum = 1;
     }
 }
 
-# tests 10-12: HEIC write tests
+# test 10: Delete everything then add back some tags in two steps
+{
+    ++$testnum;
+    my $testfile = "t/${testname}_${testnum}a_failed.mov";
+    unlink $testfile;
+    my $exifTool = new Image::ExifTool;
+    $exifTool->Options(QuickTimeHandler => 1);
+    $exifTool->SetNewValue('all' => undef);
+    writeInfo($exifTool, 't/images/QuickTime.mov', $testfile);
+    my @writeInfo = (
+        ['all' => undef],
+        ['quicktime:artist' => 'me'],
+        ['keys:director' => 'dir'],
+        ['userdata:arranger' => 'arr'],
+    );
+    my @extract = ('QuickTime:all', 'XMP:all', '-Track1:all', '-Track2:all');
+    if (writeCheck(\@writeInfo, $testname, $testnum, $testfile, \@extract)) {
+        unlink $testfile;
+    } else {
+        print 'not ';
+    }
+    print "ok $testnum\n";
+}
+
+# tests 11-13: HEIC write tests
 {
     ++$testnum;
     my $testfile = "t/${testname}_${testnum}_failed.heic";

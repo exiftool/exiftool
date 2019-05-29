@@ -41,9 +41,14 @@
 [QuickTime, Track1, Video] stsc - Sample To Chunk: (Binary data 32 bytes)
 [QuickTime, Track1, Video] stsz - Sample Sizes: (Binary data 3644 bytes)
 [QuickTime, Track1, Video] stco - Chunk Offset: (Binary data 184 bytes)
+[QuickTime, QuickTime, Video] 8 - Handler Type: Metadata
+[QuickTime, QuickTime, Video] 12 - Handler Vendor ID: Apple
 [QuickTime, ItemList, Audio] ©ART - Artist: me
+[QuickTime, UserData, Video] ©arg - Arranger: arr
+[QuickTime, QuickTime, Video] 8 - Handler Type: Metadata Tags
+[QuickTime, Keys, Other] 1.1 - Director: dir
 [QuickTime, QuickTime, Video] mdat-size - Movie Data Size: 0
-[QuickTime, QuickTime, Video] mdat-offset - Movie Data Offset: 7273
+[QuickTime, QuickTime, Video] mdat-offset - Movie Data Offset: 7449
 [QuickTime, QuickTime, Video] mdat - Movie Data: (Binary data 0 bytes)
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.39
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.45
 [XMP, XMP-tiff, Author] Artist - Artist: me

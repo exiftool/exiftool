@@ -87,7 +87,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.12';
+$VERSION = '4.13';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -427,7 +427,8 @@ $VERSION = '4.12';
     250 => 'Canon EF 24mm f/1.4L II USM or Sigma Lens', #41
     250.1 => 'Sigma 20mm f/1.4 DG HSM | A', #IB
     250.2 => 'Sigma 20mm f/1.5 FF High-Speed Prime | 017', #IB
-    251 => 'Canon EF 70-200mm f/2.8L IS II USM',
+    250.3 => 'Tokina Opera 16-28mm f/2.8 FF', #IB
+    251 => 'Canon EF 70-200mm f/2.8L IS II USM', # (also version III, ref IB. May be distinguised by EXIF:LensModel "EF70-200mm f/2.8L IS III USM" -- add extra logic to LensID?)
     252 => 'Canon EF 70-200mm f/2.8L IS II USM + 1.4x', #50 (1.4x Mk II)
     253 => 'Canon EF 70-200mm f/2.8L IS II USM + 2x', #PH (NC)
     # 253.1 => 'Tamron SP 70-200mm f/2.8 Di VC USD G2 (A025) + 2x', #forum9367

@@ -10,7 +10,7 @@
 <h2 class=top>QuickTime Tags</h2>
 <p>The QuickTime format is used for many different types of audio, video and
 image files (most notably, MOV/MP4 videos and HEIC/CR3 images).  Exiftool
-extracts standard meta information a variety of audio, video and image
+extracts standard meta information and a variety of audio, video and image
 parameters, as well as proprietary information written by many camera
 models.  Tags with a question mark after their name are not extracted unless
 the Unknown option is set.</p>
@@ -18,14 +18,19 @@ the Unknown option is set.</p>
 <p>When writing, ExifTool creates both QuickTime and XMP tags by default, but
 the group may be specified to write one or the other separately.  Newly
 created QuickTime tags are added in the ItemList location if possible,
-otherwise in UserData, but this may be changed by specifying the location.
-Alternate language tags may be accessed for ItemList tags by adding a
-language-country code to the tag name (eg. &quot;ItemList:Artist-fra-FR&quot;), or for
-UserData tags by adding a language code (eg. &quot;UserData:Artist-fra&quot;).  If no
-language code is specified when writing, alternate languages are deleted.
-Use the &quot;und&quot; language code to write the default language without deleting
-alternate languages.  Note that &quot;eng&quot; is treated as a default language when
-reading, but not when writing.</p>
+otherwise in UserData, and finally in Keys, but this may be changed by
+specifying the location. ExifTool currently writes only top-level metadata
+in QuickTime-based files. It extracts other track-specific and timed
+metadata, but can not yet edit tags in these locations.</p>
+
+<p>Alternate language tags may be accessed for ItemList and Keys tags by adding
+a 3-character ISO 639-2 language code and an optional ISO 3166-1 alpha 2
+country code to the tag name (eg. &quot;ItemList:Artist-deu&quot; or
+&quot;ItemList::Artist-deu-DE&quot;).  UserData tags support only a language code
+(without a country code).  If no language code is specified when writing,
+alternate languages for the tag are deleted.  Use the &quot;und&quot; language code to
+write the default language without deleting alternate languages.  Note that
+&quot;eng&quot; is treated as a default language when reading, but not when writing.</p>
 
 <p>According to the specification, many QuickTime date/time tags should be
 stored as UTC.  Unfortunately, digital cameras often store local time values
@@ -175,12 +180,14 @@ roll, yaw, speed, altitude)</span></span></td></tr>
 <td>XMP
   <br>UUID-PROF
   <br>UUID-Flip
+  <br>CanonVRD
   <br>PreviewImage
   <br>UUID-Unknown?</td>
-<td class=c>-<br>-<br>-<br>no<br>no</td>
+<td class=c>-<br>-<br>-<br>-<br>no<br>no</td>
 <td>--&gt; <a href='XMP.html'>XMP Tags</a>
   <br>--&gt; <a href='QuickTime.html#Profile'>QuickTime Profile Tags</a>
-  <br>--&gt; <a href='QuickTime.html#Flip'>QuickTime Flip Tags</a></td></tr>
+  <br>--&gt; <a href='QuickTime.html#Flip'>QuickTime Flip Tags</a>
+  <br>--&gt; <a href='CanonVRD.html'>CanonVRD Tags</a></td></tr>
 <tr class=b>
 <td>'wide'</td>
 <td>Wide?</td>
@@ -1394,7 +1401,11 @@ from the associated SampleTime)</span></span></td></tr>
 
 <h2><a name='ItemList'>QuickTime ItemList Tags</a></h2>
 <p>As well as these tags, the &quot;mdta&quot; handler uses numerical tag ID&#39;s which are
-added dynamically to this table after processing the Meta Keys information.</p>
+added dynamically to this table after processing the Meta Keys information.
+Tags in this table support alternate languages which are accessed by adding
+a 3-character ISO 639-2 language code and an optional ISO 3166-1 alpha 2
+country code to the tag name (eg. &quot;ItemList:Title-fra&quot; or
+&quot;ItemList::Title-fra-FR&quot;).</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -6283,9 +6294,9 @@ for the specification.</p>
 
 <h2><a name='UserData'>QuickTime UserData Tags</a></h2>
 <p>Tag ID&#39;s beginning with the copyright symbol (hex 0xa9) are multi-language
-text.  Alternate language tags are accessed by adding a dash followed by the
-language/country code to the tag name.  ExifTool will extract any
-multi-language user data tags found, even if they don&#39;t exist in this table.</p>
+text.  Alternate language tags are accessed by adding a dash followed by a
+3-character ISO 639-2 language code to the tag name.  ExifTool will extract
+any multi-language user data tags found, even if they aren&#39;t in this table.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -7820,7 +7831,7 @@ multi-language user data tags found, even if they don&#39;t exist in this table.
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised May 16, 2019</i>
+<br><i>Last revised May 29, 2019</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

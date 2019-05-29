@@ -736,6 +736,13 @@ distribution for examples.</p>
     <td align=center>0 or 1</td><td align=center>undef</td></tr>
 <tr id="PrintConv"><td>PrintConv</td><td>Flag to enable print conversion.  Also enables inverse print
     conversion for writing.</td><td align=center>0 or 1</td><td align=center>1</td></tr>
+<tr id="QuickTimeHandler"><td>QuickTimeHandler</td><td>Flag set to add an 'mdir'
+    <a href="TagNames/QuickTime.html#Handler">Handler</a> to a newly created
+    Meta box when adding QuickTime ItemList tags.  Adobe Bridge does not add this
+    Handler, but it is commonly found in samples from other software, so it is
+    possible that this could affect the interoperability of ItemList tags.</td>
+    <td align=center>0 or 1</td>
+    <td align=center>undef</td></tr>
 <tr id="QuickTimeUTC"><td>QuickTimeUTC</td><td>Flag set to assume that QuickTime
     date/time values are stored as UTC, causing conversion to local time when they are
     extracted and from local time when written. According to the QuickTime
@@ -1712,9 +1719,10 @@ necessary.</p>
 subsequent calls to <a href="#SetNewValue">SetNewValue</a>, new information
 will be created in the first valid group of this list.  This has an impact
 only if the group is not specified when calling
-<a href="#SetNewValue">SetNewValue</a>, and if the tag name exists in more
-than one group.  The default order is EXIF, IPTC then XMP.  Any family 0
-group name may be used.  Case is not significant.</p>
+<a href="#SetNewValue">SetNewValue</a>, and if the tag name exists in more than
+one group.  The default order is EXIF, IPTC, XMP, MakerNotes, QuickTime,
+Photoshop, ICC_Profile, CanonVRD, Adobe.  Any family 0 group name may be used. 
+Case is not significant.</p>
 <blockquote><table class='norm'>
 <tr><td><b>Prototype</b></td><td>SetNewGroups($;@)</td></tr>
 <tr><td valign=top><b>Inputs</b></td><td><b>0)</b> ExifTool object reference

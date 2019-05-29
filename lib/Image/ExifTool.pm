@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup);
 
-$VERSION = '11.44';
+$VERSION = '11.45';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -942,10 +942,12 @@ my %processType = map { $_ => 1 } qw(JPEG TIFF XMP AIFF EXE Font PS Real VCard);
     maccroatian => 'MacCroatian', cp10082 => 'MacCroatian',
 );
 
-# default group priority for writing
+# default family 0 group priority for writing
 # (NOTE: tags in groups not specified here will not be written unless
 #  overridden by the module or specified when writing)
-my @defaultWriteGroups = qw(EXIF IPTC XMP MakerNotes Photoshop ICC_Profile CanonVRD Adobe);
+my @defaultWriteGroups = qw(
+    EXIF IPTC XMP MakerNotes QuickTime Photoshop ICC_Profile CanonVRD Adobe
+);
 
 # group hash for ExifTool-generated tags
 my %allGroupsExifTool = ( 0 => 'ExifTool', 1 => 'ExifTool', 2 => 'ExifTool' );
@@ -2144,6 +2146,7 @@ sub ClearOptions($)
         Password    => undef,   # password for password-protected PDF documents
         PNGEarlyXMP => undef,   # write XMP in PNG images before IDAT chunk
         PrintConv   => 1,       # flag to enable print conversion
+        QuickTimeHandler => undef,  # flag to add mdir Handler to newly created Meta box
         QuickTimeUTC=> undef,   # assume that QuickTime date/time tags are stored as UTC
         RequestAll  => undef,   # extract all tags that must be specifically requested
         RequestTags => undef,   # extra tags to request (on top of those in the tag list)
@@ -2961,6 +2964,7 @@ sub GetValue($$;$)
                     my $oldFilter = $$self{OPTIONS}{Filter};
                     delete $$self{OPTIONS}{Filter};
                     foreach (keys %$val) {
+                        next unless defined $$val{$_};
                         $raw[$_] = $$rawValue{$$val{$_}};
                         ($val[$_], $prt[$_]) = $self->GetValue($$val{$_}, 'Both');
                         next if defined $val[$_] or not $$tagInfo{Require}{$_};
@@ -3289,13 +3293,14 @@ sub SetNewGroups($;@)
     local $_;
     my ($self, @groups) = @_;
     @groups or @groups = @defaultWriteGroups;
-    my $count = @groups;
+    my $count = @groups * 10;
     my %priority;
     foreach (@groups) {
-        $priority{lc($_)} = $count--;
+        $priority{lc($_)} = $count;
+        $count -= 10;
     }
-    $priority{file} = 10;       # 'File' group is always written (Comment)
-    $priority{composite} = 10;  # 'Composite' group is always written
+    $priority{file} = 500;      # 'File' group is always written (Comment)
+    $priority{composite} = 500; # 'Composite' group is always written
     # set write priority (higher # is higher priority)
     $$self{WRITE_PRIORITY} = \%priority;
     $$self{WRITE_GROUPS} = \@groups;

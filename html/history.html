@@ -17,6 +17,31 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v11.45'><b>May 29, 2019 - Version 11.45</b></a>
+<ul>
+<li>CORRUPTION WARNING: Patched problem where Canon DPP would destroy a CR3
+    image if the image had previously been edited by DPP then Exiftool.<br>
+    <b class=red>(If you have edited any CR3 images with ExifTool that had been
+    previously edited by DPP, then re-edit with ExifTool 11.45 or later to
+    restructure the file so DPP doesn't destroy it if used to edit the file
+    later)</b>
+<li>Added ability to create and delete QuickTime Keys tags
+<li>Added sample config file (mini0806.config) to generate GPS tags from
+    subtitle Text in Mini 0806 dashcam videos
+<li>Added new Canon and Nikon lenses (thanks LibRaw)
+<li>Added a new Olympus CameraType (thanks LibRaw)
+<li>Decode CanonVRD tags from CR3 images
+<li>Improved handling of QuickTime language tags when writing
+<li>Fixed bug introduced in 11.38 which could cause "Use of uninitialized value"
+    runtime warning when reading XMP GPS tags
+<li>Fixed bug where QuickTime tags could be written when another group was
+    specified
+<li>API Changes:
+    <ul>
+    <li>Added <a href="ExifTool.html#QuickTimeHandler">QuickTimeHandler option</a>
+    </ul>
+</ul>
+
 <a name='v11.44'><b>May 21, 2019 - Version 11.44</b></a>
 <ul>
 <li>Added ability to extract XMP as a block from XMP files

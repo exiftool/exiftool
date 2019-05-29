@@ -59,7 +59,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.63';
+$VERSION = '3.64';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -653,6 +653,7 @@ sub GetAFPointGrid($$;$);
     '00 54 72 72 18 18 00 00' => 'Carl Zeiss Apo Sonnar T* 2/135 ZF.2',
     '00 54 53 53 0C 0C 00 00' => 'Zeiss Otus 1.4/55', #IB
     '01 54 62 62 0C 0C 00 00' => 'Zeiss Otus 1.4/85',
+    '03 54 68 68 0C 0C 00 00' => 'Zeiss Otus 1.4/100', #IB
     '52 54 44 44 18 18 00 00' => 'Zeiss Milvus 35mm f/2',
     '53 54 50 50 0C 0C 00 00' => 'Zeiss Milvus 50mm f/1.4', #IB
     '54 54 50 50 18 18 00 00' => 'Zeiss Milvus 50mm f/2 Macro',
@@ -1874,7 +1875,7 @@ my %binaryDataAttrs = (
                 DirOffset => 10,
             },
         },
-        {   # (D3100=0215,D7000/D5100=0216,D4/D800/D3200=0217)
+        {   # (D3100=0215,D7000/D5100=0216,D4/D600/D800/D800E/D3200=0217)
             Condition => '$$valPt =~ /^021[567]/',
             Name => 'ColorBalance0215',
             SubDirectory => {

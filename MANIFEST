@@ -22,6 +22,7 @@ config_files/dji.config
 config_files/example.config
 config_files/fotoware.config
 config_files/gps2utm.config
+config_files/mini0806.config
 config_files/nksc.config
 config_files/photoshop_paths.config
 config_files/picasa_faces.config
@@ -736,6 +737,7 @@ t/QuickTime.t
 t/QuickTime_10.out
 t/QuickTime_11.out
 t/QuickTime_12.out
+t/QuickTime_13.out
 t/QuickTime_2.out
 t/QuickTime_3.out
 t/QuickTime_4.out

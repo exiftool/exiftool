@@ -814,6 +814,13 @@ a warning to be issued if standard XMP is found after the IDAT chunk.
 Flag to enable automatic print conversion.  Also enables inverse
 print conversion for writing.  Default is 1.
 
+=item QuickTimeHandler
+
+Flag set to add an 'mdir' Handler to a newly created Meta box when adding
+QuickTime ItemList tags.  Adobe Bridge does not add this Handler, but it is
+commonly found in samples from other software, so it is possible that this
+could affect the interoperability of ItemList tags.  Default is undef.
+
 =item QuickTimeUTC
 
 Flag set to assume that QuickTime date/time values are stored as UTC,
@@ -1860,8 +1867,9 @@ Set the order of the preferred groups when adding new information.  In
 subsequent calls to L</SetNewValue>, new information will be created in the
 first valid group of this list.  This has an impact only if the group is not
 specified when calling L</SetNewValue> and if the tag name exists in more
-than one group.  The default order is EXIF, IPTC then XMP.  Any family 0
-group name may be used.  Case is not significant.
+than one group.  The default order is EXIF, IPTC, XMP, MakerNotes,
+QuickTime, Photoshop, ICC_Profile, CanonVRD, Adobe.  Any family 0 group name
+may be used.  Case is not significant.
 
     $exifTool->SetNewGroups('XMP','EXIF','IPTC');
 

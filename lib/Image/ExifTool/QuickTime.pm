@@ -42,7 +42,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.28';
+$VERSION = '2.29';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -74,6 +74,7 @@ sub PrintChapter($);
 sub PrintGPSCoordinates($);
 sub PrintInvGPSCoordinates($);
 sub UnpackLang($;$);
+sub WriteKeys($$$);
 sub WriteQuickTime($$$);
 sub WriteMOV($$);
 sub GetLangInfo($$);
@@ -210,7 +211,9 @@ my %timeInfo = (
     RawConv => q{
         my $offset = (66 * 365 + 17) * 24 * 3600;
         return $val - $offset if $val >= $offset or $$self{OPTIONS}{QuickTimeUTC};
-        $self->WarnOnce('Patched incorrect time zero for QuickTime date/time tag',1) if $val;
+        if ($val and not $$self{IsWriting}) {
+            $self->WarnOnce('Patched incorrect time zero for QuickTime date/time tag',1);
+        }
         return $val;
     },
     Shift => 'Time',
@@ -412,7 +415,7 @@ my %eeBox = (
     NOTES => q{
         The QuickTime format is used for many different types of audio, video and
         image files (most notably, MOV/MP4 videos and HEIC/CR3 images).  Exiftool
-        extracts standard meta information a variety of audio, video and image
+        extracts standard meta information and a variety of audio, video and image
         parameters, as well as proprietary information written by many camera
         models.  Tags with a question mark after their name are not extracted unless
         the Unknown option is set.
@@ -420,14 +423,19 @@ my %eeBox = (
         When writing, ExifTool creates both QuickTime and XMP tags by default, but
         the group may be specified to write one or the other separately.  Newly
         created QuickTime tags are added in the ItemList location if possible,
-        otherwise in UserData, but this may be changed by specifying the location.
-        Alternate language tags may be accessed for ItemList tags by adding a
-        language-country code to the tag name (eg. "ItemList:Artist-fra-FR"), or for
-        UserData tags by adding a language code (eg. "UserData:Artist-fra").  If no
-        language code is specified when writing, alternate languages are deleted.
-        Use the "und" language code to write the default language without deleting
-        alternate languages.  Note that "eng" is treated as a default language when
-        reading, but not when writing.
+        otherwise in UserData, and finally in Keys, but this may be changed by
+        specifying the location. ExifTool currently writes only top-level metadata
+        in QuickTime-based files. It extracts other track-specific and timed
+        metadata, but can not yet edit tags in these locations.
+
+        Alternate language tags may be accessed for ItemList and Keys tags by adding
+        a 3-character ISO 639-2 language code and an optional ISO 3166-1 alpha 2
+        country code to the tag name (eg. "ItemList:Artist-deu" or
+        "ItemList::Artist-deu-DE").  UserData tags support only a language code
+        (without a country code).  If no language code is specified when writing,
+        alternate languages for the tag are deleted.  Use the "und" language code to
+        write the default language without deleting alternate languages.  Note that
+        "eng" is treated as a default language when reading, but not when writing.
 
         According to the specification, many QuickTime date/time tags should be
         stored as UTC.  Unfortunately, digital cameras often store local time values
@@ -560,6 +568,15 @@ my %eeBox = (
             },
         },
         # "\x98\x7f\xa3\xdf\x2a\x85\x43\xc0\x8f\x8f\xd9\x7c\x47\x1e\x8e\xea" - unknown data in Flip videos
+        { #PH (Canon CR3)
+            Name => 'CanonVRD',
+            WriteLast => 1, # MUST come after mdat or DPP will drop mdat when writing!
+            Condition => '$$valPt=~/^\x21\x0f\x16\x87\x91\x49\x11\xe4\x81\x11\x00\x24\x21\x31\xfc\xe4/',
+            SubDirectory => {
+                TagTable => 'Image::ExifTool::CanonVRD::Main',
+                Start => 16,
+            },
+        },
         { #PH (Canon CR3)
             Name => 'PreviewImage',
             Condition => '$$valPt=~/^\xea\xf4\x2b\x5e\x1c\x98\x4b\x88\xb9\xfb\xb7\xdc\x40\x6e\x4d\x16/',
@@ -1320,14 +1337,15 @@ my %eeBox = (
     CHECK_PROC => \&CheckQTValue,
     GROUPS => { 1 => 'UserData', 2 => 'Video' },
     WRITABLE => 1,
+    PREFERRED => 1, # (preferred over Keys tags when writing)
     FORMAT => 'string',
     WRITE_GROUP => 'UserData',
     LANG_INFO => \&GetLangInfo,
     NOTES => q{
         Tag ID's beginning with the copyright symbol (hex 0xa9) are multi-language
-        text.  Alternate language tags are accessed by adding a dash followed by the
-        language/country code to the tag name.  ExifTool will extract any
-        multi-language user data tags found, even if they don't exist in this table.
+        text.  Alternate language tags are accessed by adding a dash followed by a
+        3-character ISO 639-2 language code to the tag name.  ExifTool will extract
+        any multi-language user data tags found, even if they aren't in this table.
     },
     "\xa9cpy" => { Name => 'Copyright',  Groups => { 2 => 'Author' } },
     "\xa9day" => {
@@ -2100,7 +2118,7 @@ my %eeBox = (
 
 # User-specific media data atoms (ref 11)
 %Image::ExifTool::QuickTime::MetaData = (
-    PROCESS_PROC => \&Image::ExifTool::QuickTime::ProcessMetaData,
+    PROCESS_PROC => \&ProcessMetaData,
     GROUPS => { 2 => 'Video' },
     TAG_PREFIX => 'MetaData',
     0x01 => 'Title',
@@ -2598,7 +2616,7 @@ my %eeBox = (
     WRITE_PROC => \&WriteQuickTime,
     CHECK_PROC => \&CheckQTValue,
     WRITABLE => 1,
-    PREFERRED => 1,
+    PREFERRED => 2, # (preferred over UserData and Keys tags when writing)
     FORMAT => 'string',
     GROUPS => { 1 => 'ItemList', 2 => 'Audio' },
     WRITE_GROUP => 'ItemList',
@@ -2606,6 +2624,10 @@ my %eeBox = (
     NOTES => q{
         As well as these tags, the "mdta" handler uses numerical tag ID's which are
         added dynamically to this table after processing the Meta Keys information.
+        Tags in this table support alternate languages which are accessed by adding
+        a 3-character ISO 639-2 language code and an optional ISO 3166-1 alpha 2
+        country code to the tag name (eg. "ItemList:Title-fra" or
+        "ItemList::Title-fra-FR").
     },
     # in this table, binary 1 and 2-byte "data"-type tags are interpreted as
     # int8u and int16u.  Multi-byte binary "data" tags are extracted as binary data.
@@ -5391,16 +5413,15 @@ my %eeBox = (
 
 # item list keys (ref PH)
 %Image::ExifTool::QuickTime::Keys = (
-    PROCESS_PROC => \&Image::ExifTool::QuickTime::ProcessKeys,
-    WRITE_PROC => \&Image::ExifTool::QuickTime::ProcessKeys,
+    PROCESS_PROC => \&ProcessKeys,
+    WRITE_PROC => \&WriteKeys,
     CHECK_PROC => \&CheckQTValue,
     VARS => { LONG_TAGS => 3 },
     WRITABLE => 1,
+    # (not PREFERRED when writing)
     GROUPS => { 1 => 'Keys' },
     WRITE_GROUP => 'Keys',
     LANG_INFO => \&GetLangInfo,
-    PRIORITY => 0, # (so empty (deleted) values don't obscure other good values)
-    PERMANENT => 1, # (can't be deleted)
     FORMAT => 'string',
     NOTES => q{
         This directory contains a list of key names which are used to decode
@@ -7903,51 +7924,44 @@ sub ProcessEncodingParams($$$)
 }
 
 #------------------------------------------------------------------------------
-# Process Meta keys and add tags to the ItemList table ('mdta' handler) (ref PH)
+# Read Meta Keys and add tags to ItemList table ('mdta' handler) (ref PH)
 # Inputs: 0) ExifTool object ref, 1) dirInfo ref, 2) tag table ref
-# Returns: 1 on success (undef when writing)
+# Returns: 1 on success
 sub ProcessKeys($$$)
 {
     local $_;
     my ($et, $dirInfo, $tagTablePtr) = @_;
-    $et or return 1;      # allow dummy access to autoload this package
-    my $newVal = $$et{NEW_VALUE};
     my $dataPt = $$dirInfo{DataPt};
     my $dirLen = length $$dataPt;
     my $out;
-    if ($et->Options('Verbose') and not $$dirInfo{OutFile}) {
+    if ($et->Options('Verbose')) {
         $et->VerboseDir('Keys');
         $out = $et->Options('TextOut');
     }
     my $pos = 8;
     my $index = 1;
-    ++$$et{KeyCount};   # increment key count for this directory
-    my $infoTable = GetTagTable('Image::ExifTool::QuickTime::ItemList');
-    my $userTable = GetTagTable('Image::ExifTool::QuickTime::UserData');
+    ++$$et{KeysCount};  # increment key count for this directory
+    my $itemList = GetTagTable('Image::ExifTool::QuickTime::ItemList');
+    my $userData = GetTagTable('Image::ExifTool::QuickTime::UserData');
     while ($pos < $dirLen - 4) {
         my $len = unpack("x${pos}N", $$dataPt);
         last if $len < 8 or $pos + $len > $dirLen;
-        if ($$tagTablePtr{$index}) {
-            delete $$newVal{$$tagTablePtr{$index}} if $newVal;
-            delete $$tagTablePtr{$index};
-        }
+        delete $$tagTablePtr{$index};
         my $ns  = substr($$dataPt, $pos + 4, 4);
         my $tag = substr($$dataPt, $pos + 8, $len - 8);
         $tag =~ s/\0.*//s; # truncate at null
-        if ($ns eq 'mdta') {
-            $tag =~ s/^com\.apple\.quicktime\.//;   # remove common apple quicktime domain
-        }
+        $tag =~ s/^com\.apple\.quicktime\.// if $ns eq 'mdta'; # remove apple quicktime domain
         $tag = "Tag_$ns" unless $tag;
         # (I have some samples where the tag is a reversed ItemList or UserData tag ID)
         my $tagInfo = $et->GetTagInfo($tagTablePtr, $tag);
         unless ($tagInfo) {
-            $tagInfo = $et->GetTagInfo($infoTable, $tag);
+            $tagInfo = $et->GetTagInfo($itemList, $tag);
             unless ($tagInfo) {
-                $tagInfo = $et->GetTagInfo($userTable, $tag);
+                $tagInfo = $et->GetTagInfo($userData, $tag);
                 if (not $tagInfo and $tag =~ /^\w{3}\xa9$/) {
                     $tag = pack('N', unpack('V', $tag));
-                    $tagInfo = $et->GetTagInfo($infoTable, $tag);
-                    $tagInfo or $tagInfo = $et->GetTagInfo($userTable, $tag);
+                    $tagInfo = $et->GetTagInfo($itemList, $tag);
+                    $tagInfo or $tagInfo = $et->GetTagInfo($userData, $tag);
                 }
             }
         }
@@ -7960,7 +7974,6 @@ sub ProcessKeys($$$)
                 ValueConvInv => $$tagInfo{ValueConvInv},
                 PrintConv => $$tagInfo{PrintConv},
                 PrintConvInv => $$tagInfo{PrintConvInv},
-                Permanent => 1, # (don't allow these to be deleted for now)
                 Writable  => defined $$tagInfo{Writable} ? $$tagInfo{Writable} : 1,
                 KeysInfo  => $tagInfo,
             };
@@ -7979,35 +7992,24 @@ sub ProcessKeys($$$)
             $msg = ' (Unknown)';
         }
         # substitute this tag in the ItemList table with the given index
-        my $id = $$et{KeyCount} . '.' . $index;
-        if (ref $$infoTable{$id} eq 'HASH') {
+        my $id = $$et{KeysCount} . '.' . $index;
+        if (ref $$itemList{$id} eq 'HASH') {
             # delete other languages too if they exist
-            my $oldInfo = $$infoTable{$id};
+            my $oldInfo = $$itemList{$id};
             if ($$oldInfo{OtherLang}) {
-                foreach (@{$$oldInfo{OtherLang}}) {
-                    delete $$newVal{$$infoTable{$_}} if $newVal and $$infoTable{$_};
-                    delete $$infoTable{$_};
-                }
+                delete $$itemList{$_} foreach @{$$oldInfo{OtherLang}};
             }
-            delete $$newVal{$$infoTable{$id}} if $newVal;
-            delete $$infoTable{$id};
+            delete $$itemList{$id};
         }
         if ($newInfo) {
-            if ($newVal) {
-                # add to tag lookup so it will be writable
-                my $add = { $id => $newInfo };
-                Image::ExifTool::TagLookup::AddTags($add, 'Image::ExifTool::QuickTime::ItemList');
-                # set value hash if we are writing this tag now
-                $$newVal{$newInfo} = $$newVal{$tagInfo} if $tagInfo and $$newVal{$tagInfo};
-            }
-            AddTagToTable($infoTable, $id, $newInfo);
+            AddTagToTable($itemList, $id, $newInfo);
             $msg or $msg = '';
             $out and print $out "$$et{INDENT}Added ItemList Tag $id = $tag$msg\n";
         }
         $pos += $len;
         ++$index;
     }
-    return $$dirInfo{OutFile} ? undef : 1;
+    return 1;
 }
 
 #------------------------------------------------------------------------------
@@ -8043,8 +8045,8 @@ sub ProcessMOV($$;$)
     $$et{InQuickTime} = 1;
     $$et{HandlerType} = $$et{MetaFormat} = '' unless defined $$et{HandlerType};
 
-    unless (defined $$et{KeyCount}) {
-        $$et{KeyCount} = 0;     # initialize ItemList key directory count
+    unless (defined $$et{KeysCount}) {
+        $$et{KeysCount} = 0;    # initialize ItemList key directory count
         $doDefaultLang = 1;     # flag to generate default language tags
     }
     # more convenient to package data as a RandomAccess file
@@ -8176,7 +8178,7 @@ sub ProcessMOV($$;$)
 
         # allow numerical tag ID's
         unless ($tagInfo) {
-            my $id = $$et{KeyCount} . '.' . unpack('N', $tag);
+            my $id = $$et{KeysCount} . '.' . unpack('N', $tag);
             if ($$tagTablePtr{$id}) {
                 $tagInfo = $et->GetTagInfo($tagTablePtr, $id);
                 $tag = $id;
@@ -8380,7 +8382,7 @@ ItemID:         foreach $id (keys %$items) {
                         last if $pos + 16 > $size;
                         my ($len, $type, $flags, $ctry, $lang) = unpack("x${pos}Na4Nnn", $val);
                         last if $pos + $len > $size;
-                        my $value;
+                        my ($value, $langInfo, $oldDir);
                         my $format = $$tagInfo{Format};
                         if ($type eq 'data' and $len >= 16) {
                             $pos += 16;
@@ -8407,7 +8409,6 @@ ItemID:         foreach $id (keys %$items) {
                                 }
                             }
                         }
-                        my $langInfo;
                         if ($ctry or $lang) {
                             $lang = GetLangCode($lang, $ctry);
                             if ($lang) {
@@ -8429,9 +8430,16 @@ ItemID:         foreach $id (keys %$items) {
                             Size    => $len,
                             Format  => $format,
                             Index   => $index,
-                            Extra   => sprintf(", Type='${type}', Flags=0x%x",$flags)
+                            Extra   => sprintf(", Type='${type}', Flags=0x%x%s",$flags,($lang ? ", Lang=$lang" : '')),
                         ) if $verbose;
+                        # use "Keys" in path instead of ItemList if this was defined by a Keys tag
+                        my $isKey = $$tagInfo{Groups} && $$tagInfo{Groups}{1} && $$tagInfo{Groups}{1} eq 'Keys';
+                        if ($isKey) {
+                            $oldDir = $$et{PATH}[-1];
+                            $$et{PATH}[-1] = 'Keys';
+                        }
                         $et->FoundTag($langInfo, $value) if defined $value;
+                        $$et{PATH}[-1] = $oldDir if $isKey;
                         $pos += $len;
                     }
                 } elsif ($tag =~ /^\xa9/ or $$tagInfo{IText}) {

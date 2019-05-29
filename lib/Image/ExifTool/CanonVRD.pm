@@ -2015,7 +2015,7 @@ sub ProcessCanonVRD($$;$)
         # (so we must disable all Write() calls for this case)
         $dataPt = $outfile;
     }
-    if ($fromFile) {
+    if ($fromFile or $$dirInfo{DirStart}) {
         $dataPt = \$buff unless $dataPt;
         # read VRD data into memory if necessary
         unless ($raf->Read($$dataPt, $dirLen) == $dirLen) {

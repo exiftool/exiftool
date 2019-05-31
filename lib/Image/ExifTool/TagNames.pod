@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 22584 tags, with 15004 unique tag names.
+They contain a total of 22586 tags, with 15003 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -7042,7 +7042,20 @@ information.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
+  'IAD1'   IAD1                                 Canon IAD1
+
+=head3 Canon IAD1 Tags
+
+  Index2   Tag Name                             Writable
+  ------   --------                             --------
   [no tags known]
+
+=head3 Canon CMP1 Tags
+
+  Index2   Tag Name                             Writable
+  ------   --------                             --------
+      8    ImageWidth                           no
+     10    ImageHeight                          no
 
 =head3 Canon CNOP Tags
 
@@ -7089,6 +7102,12 @@ Information found in the "skip" atom of Canon MOV videos.
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
   'CNDB'   Unknown_CNDB?                        no
+
+=head3 Canon uuid2 Tags
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  'CNOP'   CanonVRD                             CanonVRD
 
 =head2 CanonCustom Tags
 
@@ -23960,12 +23979,14 @@ models.  Tags with a question mark after their name are not extracted unless
 the Unknown option is set.
 
 When writing, ExifTool creates both QuickTime and XMP tags by default, but
-the group may be specified to write one or the other separately.  Newly
-created QuickTime tags are added in the ItemList location if possible,
-otherwise in UserData, and finally in Keys, but this may be changed by
-specifying the location. ExifTool currently writes only top-level metadata
-in QuickTime-based files. It extracts other track-specific and timed
-metadata, but can not yet edit tags in these locations.
+the group may be specified to write one or the other separately.  If no
+location is specified, newly created QuickTime tags are added in the
+ItemList location if possible, otherwise in UserData, and finally in Keys,
+but this order may be changed by setting the PREFERRED level of the
+appropriate table in the config file (see example.config in the full
+distribution for an example).  ExifTool currently writes only top-level
+metadata in QuickTime-based files; it extracts other track-specific and
+timed metadata, but can not yet edit tags in these locations.
 
 Alternate language tags may be accessed for ItemList and Keys tags by adding
 a 3-character ISO 639-2 language code and an optional ISO 3166-1 alpha 2
@@ -24021,7 +24042,7 @@ for the official specification.
   'uuid'               XMP                      XMP
                        UUID-PROF                QuickTime Profile
                        UUID-Flip                QuickTime Flip
-                       CanonVRD                 CanonVRD
+                       UUID-Canon2              Canon uuid2
                        PreviewImage             no
                        UUID-Unknown?            no
   'wide'               Wide?                    no
@@ -24831,6 +24852,7 @@ Child atoms found in "sinf" and/or "pinf" atoms.
      25    CompressorName                       no
      41    BitDepth                             no
   'CDI1'   CDI1                                 Canon CDI1
+  'CMP1'   CMP1                                 Canon CMP1
   'JPEG'   JPEGInfo?                            no
   'avcC'   AVCConfiguration?                    no
   'btrt'   BitrateInfo                          QuickTime Bitrate

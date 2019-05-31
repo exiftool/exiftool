@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.43
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.46
 [File, System, Image] FileName - File Name: CanonRaw_9_failed.cr3
 [File, System, Image] Directory - Directory: t
 [File, System, Image] FileSize - File Size: 52 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2019:05:17 08:32:52-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:05:17 08:32:52-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:05:17 08:32:52-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2019:05:31 12:15:05-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:05:31 12:15:05-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:05:31 12:15:05-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: CR3
 [File, File, Image] FileTypeExtension - File Type Extension: cr3
@@ -91,8 +91,6 @@
 [QuickTime, Track2, Image] 18 - X Resolution: 72
 [QuickTime, Track2, Image] 20 - Y Resolution: 72
 [QuickTime, Track2, Image] 41 - Bit Depth: 24
-[QuickTime, Track2, Image] CMP1 - Unknown CMP1: (Binary data 52 bytes)
-[QuickTime, Track2, Image] IAD1 - Unknown IAD1: (Binary data 32 bytes)
 [QuickTime, Track2, Image] free - Unknown free: 
 [QuickTime, Track2, Video] stts - Video Frame Rate: 1
 [QuickTime, Track2, Video] stsc - Sample To Chunk: (Binary data 20 bytes)
@@ -124,8 +122,6 @@
 [QuickTime, Track3, Image] 18 - X Resolution: 72
 [QuickTime, Track3, Image] 20 - Y Resolution: 72
 [QuickTime, Track3, Image] 41 - Bit Depth: 24
-[QuickTime, Track3, Image] CMP1 - Unknown CMP1: (Binary data 52 bytes)
-[QuickTime, Track3, Image] IAD1 - Unknown IAD1: (Binary data 48 bytes)
 [QuickTime, Track3, Image] free - Unknown free: 
 [QuickTime, Track3, Video] stts - Video Frame Rate: 1
 [QuickTime, Track3, Video] stsc - Sample To Chunk: (Binary data 20 bytes)
@@ -337,6 +333,10 @@
 [MakerNotes, Canon, Camera] 16441 - Canon 0x4039: 59 127 103 159 107 245 213 225 182 12 162 178 240 81 160 41
 [MakerNotes, Canon, Camera] 16444 - Canon 0x403c: 12 1 24
 [MakerNotes, Canon, Preview] THMB - Thumbnail Image: (Binary data 28 bytes)
+[MakerNotes, Track2, Image] 8 - Image Width: 1624
+[MakerNotes, Track2, Image] 10 - Image Height: 1080
+[MakerNotes, Track3, Image] 8 - Image Width: 3144
+[MakerNotes, Track3, Image] 10 - Image Height: 4056
 [MakerNotes, Track4, Time] 1 - Time Stamp: 2018:02:21 12:08:56.21
 [MakerNotes, Track4, Image] 0 - Focal Length: 15.0 mm
 [MakerNotes, Track4, Image] 0 - F Number: 3.5
@@ -589,7 +589,7 @@
 [EXIF, ExifIFD, Image] 42037 - Lens Serial Number: 0000000000
 [EXIF, GPS, Location] 0 - GPS Version ID: 2.3.0.0
 [EXIF, ExifIFD, Camera] 41990 - Scene Capture Type: Standard
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.43
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.46
 [XMP, XMP-dc, Image] subject - Subject: CR3 test
 [XMP, XMP-exif, Image] ExposureBiasValue - Exposure Compensation: -1.3
 [XMP, XMP-xmp, Image] Rating - Rating: 0

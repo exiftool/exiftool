@@ -16,12 +16,14 @@ models.  Tags with a question mark after their name are not extracted unless
 the Unknown option is set.</p>
 
 <p>When writing, ExifTool creates both QuickTime and XMP tags by default, but
-the group may be specified to write one or the other separately.  Newly
-created QuickTime tags are added in the ItemList location if possible,
-otherwise in UserData, and finally in Keys, but this may be changed by
-specifying the location. ExifTool currently writes only top-level metadata
-in QuickTime-based files. It extracts other track-specific and timed
-metadata, but can not yet edit tags in these locations.</p>
+the group may be specified to write one or the other separately.  If no
+location is specified, newly created QuickTime tags are added in the
+ItemList location if possible, otherwise in UserData, and finally in Keys,
+but this order may be changed by setting the PREFERRED level of the
+appropriate table in the config file (see <a href="../config.html#PREF">example.config</a> in the full
+distribution for an example).  ExifTool currently writes only top-level
+metadata in QuickTime-based files; it extracts other track-specific and
+timed metadata, but can not yet edit tags in these locations.</p>
 
 <p>Alternate language tags may be accessed for ItemList and Keys tags by adding
 a 3-character ISO 639-2 language code and an optional ISO 3166-1 alpha 2
@@ -180,14 +182,14 @@ roll, yaw, speed, altitude)</span></span></td></tr>
 <td>XMP
   <br>UUID-PROF
   <br>UUID-Flip
-  <br>CanonVRD
+  <br>UUID-Canon2
   <br>PreviewImage
   <br>UUID-Unknown?</td>
 <td class=c>-<br>-<br>-<br>-<br>no<br>no</td>
 <td>--&gt; <a href='XMP.html'>XMP Tags</a>
   <br>--&gt; <a href='QuickTime.html#Profile'>QuickTime Profile Tags</a>
   <br>--&gt; <a href='QuickTime.html#Flip'>QuickTime Flip Tags</a>
-  <br>--&gt; <a href='CanonVRD.html'>CanonVRD Tags</a></td></tr>
+  <br>--&gt; <a href='Canon.html#uuid2'>Canon uuid2 Tags</a></td></tr>
 <tr class=b>
 <td>'wide'</td>
 <td>Wide?</td>
@@ -5863,48 +5865,53 @@ spherical coordinates left/right degrees, down/up degrees, distance)</span></spa
 <td class=c>-</td>
 <td>--&gt; <a href='Canon.html#CDI1'>Canon CDI1 Tags</a></td></tr>
 <tr class=b>
+<td>'CMP1'</td>
+<td>CMP1</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Canon.html#CMP1'>Canon CMP1 Tags</a></td></tr>
+<tr>
 <td>'JPEG'</td>
 <td>JPEGInfo?</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'avcC'</td>
 <td>AVCConfiguration?</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'btrt'</td>
 <td>BitrateInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#Bitrate'>QuickTime Bitrate Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'clap'</td>
 <td>CleanAperture</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#CleanAperture'>QuickTime CleanAperture Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'colr'</td>
 <td>ColorRepresentation</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'fiel'</td>
 <td>VideoFieldOrder</td>
 <td class=c>no</td>
 <td><span class=s>[Value 0]
   <br>1 = Progressive
   <br>2 = 2:1 Interlaced</span></td></tr>
-<tr class=b>
+<tr>
 <td>'gama'</td>
 <td>Gamma</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'pasp'</td>
 <td>PixelAspectRatio</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'st3d'</td>
 <td>Stereoscopic3D</td>
 <td class=c>no</td>
@@ -5912,7 +5919,7 @@ spherical coordinates left/right degrees, down/up degrees, distance)</span></spa
   <br>1 = Stereoscopic Top-Bottom
   <br>2 = Stereoscopic Left-Right
   <br>3 = Stereoscopic Stereo-Custom</span></td></tr>
-<tr>
+<tr class=b>
 <td>'sv3d'</td>
 <td>SphericalVideo</td>
 <td class=c>-</td>
@@ -7831,7 +7838,7 @@ any multi-language user data tags found, even if they aren&#39;t in this table.<
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised May 29, 2019</i>
+<br><i>Last revised May 31, 2019</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

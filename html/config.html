@@ -304,7 +304,7 @@
     NewXMPxxxStructX =&gt; { Name =&gt; 'SomeOtherName', Flat =&gt; 1 },
 );
 
-<span class=com># Adding a new MIE group requires a few extra definitions</span>
+<a name='MIE'><span class=com># Adding a new MIE group requires a few extra definitions</span></a>
 use Image::ExifTool::MIE;
 %Image::ExifTool::UserDefined::MIETest = (
     %Image::ExifTool::MIE::tableDefaults,   <span class=com># default MIE table entries</span>
@@ -314,14 +314,14 @@ use Image::ExifTool::MIE;
     NewMieTag2  =&gt; { },     <span class=com># new user-defined tag in MIE-Test group</span>
 );
 
-<span class=com># A special 'Lenses' list can be defined to give priority to specific lenses
-# in the logic to determine a lens model for the Composite:LensID tag</span>
+<a name='Lenses'><span class=com># A special 'Lenses' list can be defined to give priority to specific lenses
+# in the logic to determine a lens model for the Composite:LensID tag</span></a>
 @Image::ExifTool::UserDefined::Lenses = (
     'Sigma AF 10-20mm F4-5.6 EX DC',
     'Tokina AF193-2 19-35mm f/3.5-4.5',
 );
 
-<span class=com># User-defined file types to recognize</span>
+<a name='FileTypes'><span class=com># User-defined file types to recognize</span></a>
 %Image::ExifTool::UserDefined::FileTypes = (
     XXX =&gt; { <span class=com># &lt;-- the extension of the new file type (case insensitive)</span>
         <span class=com># BaseType specifies the format upon which this file is based (case
@@ -351,6 +351,11 @@ use Image::ExifTool::MIE;
     # processed as JPEG files</span>
     TTT =&gt; 'JPEG',
 );
+
+<a name='PREF'><span class=com># Change default location for writing QuickTime tags so Keys is preferred
+# (by default, the PREFERRED levels are: ItemList=2, UserData=1, Keys=0)</span></a>
+use Image::ExifTool::QuickTime;
+$Image::ExifTool::QuickTime::Keys{PREFERRED} = 3;
 
 <span class=com># Specify default ExifTool option values
 # (see the <a href="ExifTool.html#Options">Options function documentation</a> for available options)</span>

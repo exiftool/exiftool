@@ -17,14 +17,25 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v11.46'><b>May 31, 2019 - Version 11.46</b> - "CR3 update"</a>
+<ul>
+<li>Added ability to write CanonVRD tags in CR3 images
+<li>Decode a couple more tags from Canon CR3 images
+<li>Enhanced Validate option to check for duplicate QuickTime atoms
+<li>Relaxed contraints when writing IPTC date tags to allow use of separators
+    other than a colon
+<li>Fixed CR3 writing to update CTBO table with any changed offsets or sizes
+    (although this table doesn't seem to be used by any RAW viewer, it may be
+    used in-camera to improve response time when browsing images)
+</ul>
+
 <a name='v11.45'><b>May 29, 2019 - Version 11.45</b></a>
 <ul>
 <li>CORRUPTION WARNING: Patched problem where Canon DPP would destroy a CR3
-    image if the image had previously been edited by DPP then Exiftool.<br>
-    <b class=red>(If you have edited any CR3 images with ExifTool that had been
-    previously edited by DPP, then re-edit with ExifTool 11.45 or later to
-    restructure the file so DPP doesn't destroy it if used to edit the file
-    later)</b>
+    image if the file had previously been edited by DPP then Exiftool<br>
+    <b class=red>(If you have edited any CR3 images with ExifTool that had been previously
+    edited by DPP, then re-edit with ExifTool 11.45 or later to restructure the
+    file so DPP doesn't destroy it if used to edit the file later)</b>
 <li>Added ability to create and delete QuickTime Keys tags
 <li>Added sample config file (mini0806.config) to generate GPS tags from
     subtitle Text in Mini 0806 dashcam videos

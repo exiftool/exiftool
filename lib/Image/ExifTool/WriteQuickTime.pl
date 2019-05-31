@@ -57,6 +57,8 @@ my %cr3Map = (
     IFD0      => 'UUID-Canon',
     GPS       => 'UUID-Canon',
     #MakerNoteCanon => 'UUID-Canon', # (doesn't yet work -- goes into ExifIFD instead)
+   'UUID-Canon2' => 'MOV',
+    CanonVRD  => 'UUID-Canon2',
 );
 my %dirMap = (
     MOV  => \%movMap,
@@ -77,6 +79,13 @@ my $undLang = 0x55c4;   # numeric code for default ('und') language
 # boxes that may exist in an "empty" Meta box:
 my %emptyMeta = (
     hdlr => 'Handler', 'keys' => 'Keys', lang => 'Language', ctry => 'Country', free => 'Free',
+);
+
+# lookup for CTBO ID number based on uuid for Canon CR3 files
+my %ctboID = (
+    "\xbe\x7a\xcf\xcb\x97\xa9\x42\xe8\x9c\x71\x99\x94\x91\xe3\xaf\xac" => 1, # XMP
+    "\xea\xf4\x2b\x5e\x1c\x98\x4b\x88\xb9\xfb\xb7\xdc\x40\x6e\x4d\x16" => 2, # PreviewImage
+    # ID 3 is used for 'mdat' atom (not a uuid)
 );
 
 # mark UserData tags that don't have ItemList counterparts as Preferred
@@ -234,7 +243,6 @@ sub Handle_iloc($$$$)
         # decide whether to fix up the base offset or individual item offsets
         # (adjust the one that is larger)
         if (defined $minOffset and $minOffset > $base_offset) {
-            $off or $off = $$dirInfo{ChunkOffset} = [ ];
             $$_[3] = $base_offset foreach @offItem;
             push @$off, @offItem;
         } else {
@@ -812,7 +820,7 @@ sub WriteQuickTime($$$)
 
         # if this atom stores offsets, save its location so we can fix up offsets later
         # (are there any other atoms that may store absolute file offsets?)
-        if ($tag =~ /^(stco|co64|iloc|mfra|gps )$/) {
+        if ($tag =~ /^(stco|co64|iloc|mfra|gps |CTBO|uuid)$/) {
             # (note that we only need to do this if the movie data is stored in this file)
             my $flg = $$et{QtDataFlg};
             if ($tag eq 'mfra') {
@@ -824,7 +832,6 @@ sub WriteQuickTime($$$)
                 # (only care about the 'gps ' box in 'moov')
                 if ($$dirInfo{DirID} and $$dirInfo{DirID} eq 'moov' and length $buff > 8) {
                     my $off = $$dirInfo{ChunkOffset};
-                    $off or $off = $$dirInfo{ChunkOffset} = [ ];
                     my $num = Get32u(\$buff, 4);
                     $num = int((length($buff) - 8) / 8) if $num * 8 + 8 > length($buff);
                     my $i;
@@ -832,6 +839,8 @@ sub WriteQuickTime($$$)
                         push @$off, [ 'stco_gps ', length($$outfile) + length($hdr) + 8 + $i * 8, 4 ];
                     }
                 }
+            } elsif ($tag eq 'CTBO' or $tag eq 'uuid') { # hack for updating CR3 CTBO offsets
+                push @{$$dirInfo{ChunkOffset}}, [ $tag, length($$outfile), length($hdr) + $size ];
             } elsif (not $flg) {
                 my $grp = $$et{CUR_WRITE_GROUP} || $parent;
                 $et->Error("Can't locate data reference to update offsets for $grp");
@@ -841,9 +850,7 @@ sub WriteQuickTime($$$)
                 return $rtnVal;
             } elsif ($flg == 1) {
                 # must update offsets since the data is in this file
-                my $off = $$dirInfo{ChunkOffset};
-                $off or $off = $$dirInfo{ChunkOffset} = [ ];
-                push @$off, [ $tag, length($$outfile) + length($hdr), $size ];
+                push @{$$dirInfo{ChunkOffset}}, [ $tag, length($$outfile) + length($hdr), $size ];
             }
         }
 
@@ -1150,21 +1157,22 @@ sub WriteQuickTime($$$)
             }
             # write the new atom if it was modified
             if (defined $newData) {
-                my $len = length $newData;
-                $len > 0x7ffffff7 and $et->Error("$$tagInfo{Name} to large to write"), last;
-                next unless $len;
+                my $len = length($newData) + 8;
+                $len > 0x7fffffff and $et->Error("$$tagInfo{Name} to large to write"), last;
+                # update size in ChunkOffset list for modified 'uuid' atom
+                $$dirInfo{ChunkOffset}[-1][2] = $len if $tag eq 'uuid';
+                next unless $len > 8;   # don't write empty atom header
                 # maintain pointer to chunk offsets if necessary
                 if (@chunkOffset) {
-                    $$dirInfo{ChunkOffset} or $$dirInfo{ChunkOffset} = [ ];
                     $$_[1] += 8 + length $$outfile foreach @chunkOffset;
                     push @{$$dirInfo{ChunkOffset}}, @chunkOffset;
                 }
                 if ($$tagInfo{WriteLast}) {
-                    $writeLast = ($writeLast || '') . Set32u($len+8) . $tag . $newData;
+                    $writeLast = ($writeLast || '') . Set32u($len) . $tag . $newData;
                 } else {
                     $boxPos{$tag} = [ length($$outfile), length($newData) + 8 ];
-                    # write the updated directory now (unless length is zero, or it is needed as padding)
-                    Write($outfile, Set32u($len+8), $tag, $newData) or $rtnVal=$rtnErr, $err=1, last;
+                    # write the updated directory with its atom header
+                    Write($outfile, Set32u($len), $tag, $newData) or $rtnVal=$rtnErr, $err=1, last;
                 }
                 next;
             }
@@ -1333,6 +1341,7 @@ sub WriteQuickTime($$$)
                 DirStart => 0,
                 HasData  => $$subdir{HasData},
                 OutFile  => $outfile,
+                ChunkOffset => [ ], # (just to be safe)
             );
             my $subTable = GetTagTable($$subdir{TagTable});
             my $newData = $et->WriteDirectory(\%subdirInfo, $subTable, $$subdir{WriteProc});
@@ -1353,6 +1362,11 @@ sub WriteQuickTime($$$)
                 if ($$tagInfo{WriteLast}) {
                     $writeLast = ($writeLast || '') . $newHdr . $newData;
                 } else {
+                    if ($tag eq 'uuid') {
+                        # add offset for new uuid (needed for CR3 CTBO offsets)
+                        my $off = $$dirInfo{ChunkOffset};
+                        push @$off, [ $tag, length($$outfile), length($newHdr) + length($newData) ];
+                    }
                     $boxPos{$tag} = [ length($$outfile), length($newHdr) + length($newData) ];
                     Write($outfile, $newHdr, $newData) or $rtnVal=$rtnErr, $err=1;
                 }
@@ -1397,9 +1411,10 @@ sub WriteQuickTime($$$)
     }
 
     # issue minor error if we didn't find an 'mdat' atom
-    my $off = $$dirInfo{ChunkOffset} || [ ];
+    my $off = $$dirInfo{ChunkOffset};
     if (not @mdat) {
-        if (@$off) {
+        foreach $co (@$off) {
+            next if $$co[0] eq 'uuid';
             $et->Error('Movie data referenced but not found');
             return $rtnVal;
         }
@@ -1506,11 +1521,52 @@ sub WriteQuickTime($$$)
         $pos += $$mdat[4] ? length(${$$mdat[4]}) : $$mdat[1] - $$mdat[0];
     }
 
-    # fix up offsets for new mdat position(s)
+    # fix up offsets for new mdat position(s) (and uuid positions in CR3 images)
     foreach $co (@$off) {
         my ($type, $ptr, $len, $base, $id) = @$co;
         $base = 0 unless $base;
-        $type =~ /^(stco|co64)_?(.*)$/ or $et->Error('Internal error fixing offsets'), last;
+        unless ($type =~ /^(stco|co64)_?(.*)$/) {
+            next if $type eq 'uuid';
+            $type eq 'CTBO' or $et->Error('Internal error fixing offsets'), last;
+            # update 'CTBO' item offsets/sizes in Canon CR3 images
+            $$co[2] > 12 or $et->Error('Invalid CTBO atom'), last;
+            @mdat or $et->Error('Missing CR3 image data'), last;
+            my $n = Get32u($outfile, $$co[1] + 8);
+            $$co[2] < $n * 20 + 12 and $et->Error('Truncated CTBO atom'), last;
+            my (%ctboOff, $i);
+            # determine uuid types, and build an offset lookup based on CTBO ID number
+            foreach (@$off) {
+                next unless $$_[0] eq 'uuid' and $$_[2] >= 24; # (ignore undersized and deleted uuid boxes)
+                my $pos = $$_[1];
+                next if $pos + 24 > length $$outfile;   # (will happen for WriteLast uuid tags)
+                my $siz = Get32u($outfile, $pos);       # get size of uuid atom
+                if ($siz == 1) {                        # check for extended (8-byte) size
+                    next unless $$_[2] >= 32;
+                    $pos += 8;
+                }
+                # get CTBO entry ID based on 16-byte UUID identifier
+                my $id = $ctboID{substr($$outfile, $pos+8, 16)};
+                $ctboOff{$id} = $_ if defined $id;
+            }
+            # calculate new offset for the first mdat (size of -1 indicates it didn't change)
+            $ctboOff{3} = [ 'mdat', $mdat[0][3] - length $mdat[0][2], -1 ];
+            for ($i=0; $i<$n; ++$i) {
+                my $pos = $$co[1] + 12 + $i * 20;
+                my $id = Get32u($outfile, $pos);
+                # ignore if size is zero unless we can add this entry
+                # (note: can't yet add/delete PreviewImage, but leave this possibility open)
+                next unless Get64u($outfile, $pos + 12) or $id == 1 or $id == 2;
+                if (not defined $ctboOff{$id}) {
+                    $id==1 or $id==2 or $et->Error("Can't handle CR3 CTBO ID number $id"), last;
+                    # XMP or PreviewImage was deleted -- set offset and size to zero
+                    $ctboOff{$id} = [ 'uuid', 0, 0 ];
+                }
+                # update the new offset and size of this entry
+                Set64u($ctboOff{$id}[1], $outfile, $pos + 4);
+                Set64u($ctboOff{$id}[2], $outfile, $pos + 12) unless $ctboOff{$id}[2] < 0;
+            }
+            next;
+        }
         my $siz = $1 eq 'co64' ? 8 : 4;
         my ($n, $tag);
         if ($2) {   # is this an offset in an iloc or 'gps ' atom?
@@ -1648,6 +1704,7 @@ sub WriteMOV($$)
     # write the file
     $$dirInfo{Parent} = '';
     $$dirInfo{DirName} = 'MOV';
+    $$dirInfo{ChunkOffset} = [ ]; # (just to be safe)
     return WriteQuickTime($et, $dirInfo, $tagTablePtr) ? 1 : -1;
 }
 

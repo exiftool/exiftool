@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.14
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.46
 [File, System, Image] FileName - File Name: CanonRaw.cr3
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 51 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2018:03:19 13:47:34-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2018:10:15 13:55:47-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2018:10:09 12:23:38-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2019:03:26 08:01:49-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:05:31 12:14:17-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:05:29 09:21:49-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: CR3
 [File, File, Image] FileTypeExtension - File Type Extension: cr3
@@ -289,6 +289,10 @@
 [MakerNotes, Canon, Image] 1 - HDR: Off
 [MakerNotes, Canon, Image] 2 - HDR Effect: Natural
 [MakerNotes, Canon, Preview] THMB - Thumbnail Image: (Binary data 28 bytes)
+[MakerNotes, Track2, Image] 8 - Image Width: 1624
+[MakerNotes, Track2, Image] 10 - Image Height: 1080
+[MakerNotes, Track3, Image] 8 - Image Width: 3144
+[MakerNotes, Track3, Image] 10 - Image Height: 4056
 [MakerNotes, Track4, Time] 1 - Time Stamp: 2018:02:21 12:08:56.21
 [MakerNotes, Track4, Image] 0 - Focal Length: 15.0 mm
 [MakerNotes, Track4, Image] 0 - F Number: 3.5

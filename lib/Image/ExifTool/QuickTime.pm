@@ -42,7 +42,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.29';
+$VERSION = '2.30';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -385,6 +385,12 @@ my %dontInherit = (
     ispe => 1,  # size of parent may be different
 );
 
+# tags that may be duplicated and directories that may contain duplicate tags
+# (used only to avoid warnings when Validate-ing)
+my %dupTagOK = ( mdat => 1, trak => 1, free => 1, infe => 1, sgpd => 1, dimg => 1, CCDT => 1,
+                 sbgp => 1, csgm => 1, uuid => 1, cdsc => 1, maxr => 1, '----' => 1 );
+my %dupDirOK = ( ipco => 1, '----' => 1 );
+
 # the usual atoms required to decode timed metadata with the ExtractEmbedded option
 my %eeStd = ( stco => 'stbl', co64 => 'stbl', stsz => 'stbl', stz2 => 'stbl',
               stsc => 'stbl', stts => 'stbl' );
@@ -421,12 +427,14 @@ my %eeBox = (
         the Unknown option is set.
 
         When writing, ExifTool creates both QuickTime and XMP tags by default, but
-        the group may be specified to write one or the other separately.  Newly
-        created QuickTime tags are added in the ItemList location if possible,
-        otherwise in UserData, and finally in Keys, but this may be changed by
-        specifying the location. ExifTool currently writes only top-level metadata
-        in QuickTime-based files. It extracts other track-specific and timed
-        metadata, but can not yet edit tags in these locations.
+        the group may be specified to write one or the other separately.  If no
+        location is specified, newly created QuickTime tags are added in the
+        ItemList location if possible, otherwise in UserData, and finally in Keys,
+        but this order may be changed by setting the PREFERRED level of the
+        appropriate table in the config file (see L<example.config|../config.html#PREF> in the full
+        distribution for an example).  ExifTool currently writes only top-level
+        metadata in QuickTime-based files; it extracts other track-specific and
+        timed metadata, but can not yet edit tags in these locations.
 
         Alternate language tags may be accessed for ItemList and Keys tags by adding
         a 3-character ISO 639-2 language code and an optional ISO 3166-1 alpha 2
@@ -569,11 +577,11 @@ my %eeBox = (
         },
         # "\x98\x7f\xa3\xdf\x2a\x85\x43\xc0\x8f\x8f\xd9\x7c\x47\x1e\x8e\xea" - unknown data in Flip videos
         { #PH (Canon CR3)
-            Name => 'CanonVRD',
+            Name => 'UUID-Canon2',
             WriteLast => 1, # MUST come after mdat or DPP will drop mdat when writing!
             Condition => '$$valPt=~/^\x21\x0f\x16\x87\x91\x49\x11\xe4\x81\x11\x00\x24\x21\x31\xfc\xe4/',
             SubDirectory => {
-                TagTable => 'Image::ExifTool::CanonVRD::Main',
+                TagTable => 'Image::ExifTool::Canon::uuid2',
                 Start => 16,
             },
         },
@@ -581,6 +589,16 @@ my %eeBox = (
             Name => 'PreviewImage',
             Condition => '$$valPt=~/^\xea\xf4\x2b\x5e\x1c\x98\x4b\x88\xb9\xfb\xb7\xdc\x40\x6e\x4d\x16/',
             Groups => { 2 => 'Preview' },
+            # 0x00 - undef[16]: UUID
+            # 0x10 - int32u[2]: "0 1" (version and/or item count?)
+            # 0x18 - int32u: PRVW atom size
+            # 0x20 - int32u: 'PRVW'
+            # 0x30 - int32u: 0
+            # 0x34 - int16u: 1
+            # 0x36 - int16u: image width
+            # 0x38 - int16u: image height
+            # 0x3a - int16u: 1
+            # 0x3c - int32u: preview length
             RawConv => '$val = substr($val, 0x30); $self->ValidateImage(\$val, $tag)',
         },
         { #8
@@ -854,9 +872,10 @@ my %eeBox = (
     # mjqt - default quantization table for MJPEG
     # mjht - default Huffman table for MJPEG
     # csgm ? (seen in hevc video)
-    # CMP1 - 52 bytes (Canon CR3)
-    # JPEG - 4 bytes all 0 (Canon CR3)
-    # free - (Canon CR3)
+    CMP1 => { # Canon CR3
+        Name => 'CMP1',
+        SubDirectory => { TagTable => 'Image::ExifTool::Canon::CMP1' },
+    },
     CDI1 => { # Canon CR3
         Name => 'CDI1',
         SubDirectory => {
@@ -864,6 +883,8 @@ my %eeBox = (
             Start => 4,
         },
     },
+    # JPEG - 4 bytes all 0 (Canon CR3)
+    # free - (Canon CR3)
 #
 # spherical video v2 stuff (untested)
 #
@@ -6055,6 +6076,12 @@ my %eeBox = (
     sgpd => {
         Name => 'SampleGroupDescription',
         Flags => ['Binary','Unknown'],
+        # bytes 4-7 give grouping type (ref ISO/IEC 14496-15:2014) 
+        #   tsas - temporal sublayer sample
+        #   stsa - step-wise temporal layer access
+        #   avss - AVC sample
+        #   tscl - temporal layer scaleability
+        #   sync - sync sample
     },
     subs => {
         Name => 'Sub-sampleInformation',
@@ -8035,6 +8062,7 @@ sub ProcessMOV($$;$)
     my $raf = $$dirInfo{RAF};
     my $dataPt = $$dirInfo{DataPt};
     my $verbose = $et->Options('Verbose');
+    my $validate = $$et{OPTIONS}{Validate};
     my $dataPos = $$dirInfo{Base} || 0;
     my $dirID = $$dirInfo{DirID} || '';
     my $charsetQuickTime = $et->Options('CharsetQuickTime');
@@ -8144,6 +8172,18 @@ sub ProcessMOV($$;$)
             $size < 0 and $et->Warn('Invalid extended size'), last;
         } else {
             $size -= 8;
+        }
+        if ($validate) {
+            $$et{ValidatePath} or $$et{ValidatePath} = { };
+            my $path = join('-', @{$$et{PATH}}, $tag);
+            $path =~ s/-Track-/-$$et{SET_GROUP1}-/ if $$et{SET_GROUP1};
+            if ($$et{ValidatePath}{$path} and not $dupTagOK{$tag} and not $dupDirOK{$dirID}) {
+                my $i = Get32u(\$tag,0);
+                my $str = $i < 255 ? "index $i" : "tag '" . PrintableTagID($tag,2) . "'";
+                $et->WarnOnce("Duplicate $str at " . join('-', @{$$et{PATH}}));
+                $$et{ValidatePath} = { } if $path eq 'MOV-moov'; # avoid warnings for all contained dups
+            }
+            $$et{ValidatePath}{$path} = 1;
         }
         if ($isUserData and $$et{SET_GROUP1}) {
             my $tagInfo = $et->GetTagInfo($tagTablePtr, $tag);

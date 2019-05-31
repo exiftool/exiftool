@@ -304,7 +304,7 @@ sub DecodeAFPoints($$$$;$);
     '7 243' => 'smc PENTAX-DA 70mm F2.4 Limited', #PH
     '7 244' => 'smc PENTAX-DA 21mm F3.2 AL Limited', #16
     '8 0' => 'Sigma 50-150mm F2.8 II APO EX DC HSM', #forum2997
-    '8 3' => 'Sigma AF 18-125mm F3.5-5.6 DC', #29
+    '8 3' => 'Sigma AF 18-125mm F3.5-5.6 DC', #29 (and F3.8-5.6, ref forum10167)
     '8 4' => 'Sigma 50mm F1.4 EX DG HSM', #Artur private communication
     '8 7' => 'Sigma 24-70mm F2.8 IF EX DG HSM', #Exiv2
     '8 8' => 'Sigma 18-250mm F3.5-6.3 DC OS HSM', #27

@@ -2,7 +2,7 @@
 # After "make install" it should work as "perl t/CanonVRD.t".
 
 BEGIN {
-    $| = 1; print "1..22\n"; $Image::ExifTool::configFile = '';
+    $| = 1; print "1..24\n"; $Image::ExifTool::configFile = '';
     require './t/TestLib.pm'; t::TestLib->import();
 }
 END {print "not ok 1\n" unless $loaded;}
@@ -154,14 +154,14 @@ my @checkDR4 = qw(FileSize Warning GammaBlackPoint RedHSL GreenHSL SharpnessAdjO
     print "ok $testnum\n";
 }
 
-# tests 15-20: Write CanonDR4 as a block to various images
+# tests 15-21: Write CanonDR4 as a block to various images
 {
     my $exifTool = new Image::ExifTool;
     my $srcfile = "t/${testname}_14_failed.dr4";
     $exifTool->SetNewValuesFromFile($srcfile, 'CanonDR4');
     $exifTool->Options(PrintConv => 0);
     my ($file, $ext);
-    foreach $file (qw(Writer.jpg ExifTool.jpg CanonRaw.cr2 CanonRaw.crw CanonVRD.vrd CanonVRD.dr4)) {
+    foreach $file (qw(Writer.jpg ExifTool.jpg CanonRaw.cr2 CanonRaw.crw CanonVRD.vrd CanonVRD.dr4 CanonRaw.cr3)) {
         ++$testnum;
         ($ext = $file) =~ s/^\w+//;
         my $testfile = "t/${testname}_${testnum}_failed$ext";
@@ -169,7 +169,7 @@ my @checkDR4 = qw(FileSize Warning GammaBlackPoint RedHSL GreenHSL SharpnessAdjO
         $exifTool->WriteInfo("t/images/$file", $testfile);
         my $info = $exifTool->ImageInfo($testfile, @checkDR4);
         if (check($exifTool, $info, $testname, $testnum)) {
-            unlink $testfile unless $testnum == 15 or $testnum == 17;
+            unlink $testfile unless $testnum == 15 or $testnum == 17 or $testnum == 21;
             unlink $srcfile if $testnum == 20;
         } else {
             print 'not ';
@@ -178,7 +178,7 @@ my @checkDR4 = qw(FileSize Warning GammaBlackPoint RedHSL GreenHSL SharpnessAdjO
     }
 }
 
-# test 21: Delete DR4(VRD) as a block
+# test 22: Delete DR4(VRD) as a block
 {
     ++$testnum;
     my $exifTool = new Image::ExifTool;
@@ -198,7 +198,7 @@ my @checkDR4 = qw(FileSize Warning GammaBlackPoint RedHSL GreenHSL SharpnessAdjO
     print "ok $testnum\n";
 }
 
-# test 22: Create a DR4 file from scratch
+# test 23: Create a DR4 file from scratch
 {
     ++$testnum;
     my $exifTool = new Image::ExifTool;
@@ -216,6 +216,17 @@ my @checkDR4 = qw(FileSize Warning GammaBlackPoint RedHSL GreenHSL SharpnessAdjO
         print 'not ';
     }
     print "ok $testnum\n";
+}
+
+# test 24: Edit DR4 information in CR3 image
+{
+    ++$testnum;
+    my $exifTool = new Image::ExifTool;
+    my @writeInfo = ( ['CanonVRD:GammaBlackPoint' => 1.5] );
+    my $srcfile = "t/${testname}_21_failed.cr3";
+    print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum, $srcfile, \@checkDR4);
+    print "ok $testnum\n";
+    unlink $srcfile;
 }
 
 # end

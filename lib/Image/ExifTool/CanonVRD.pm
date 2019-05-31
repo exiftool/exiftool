@@ -1970,7 +1970,7 @@ sub WriteCanonDR4($$;$)
         ++$$et{CHANGED};
         return WrapDR4($val);
     }
-    my $buff;
+    my $buff = '';
     $$dirInfo{OutFile} = \$buff;
     return $buff if ProcessCanonVRD($et, $dirInfo, $tagTablePtr) > 0;
     return undef;

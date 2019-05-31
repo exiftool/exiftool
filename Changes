@@ -7,6 +7,11 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 11.30. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+May 31, 2019 - Version 11.47
+
+  - Fixed problem which resulted in a warning for one of the CanonVRD tests on
+    some platforms
+
 May 31, 2019 - Version 11.46 - "CR3 update"
 
   - Added ability to write CanonVRD tags in CR3 images

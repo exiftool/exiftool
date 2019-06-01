@@ -49,7 +49,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.22';
+$VERSION = '3.23';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -176,6 +176,8 @@ my %xmpNS = (
     GSpherical=> 'http://ns.google.com/videos/1.0/spherical/',
     GDepth    => 'http://ns.google.com/photos/1.0/depthmap/',
     GFocus    => 'http://ns.google.com/photos/1.0/focus/',
+    GCamera   => 'http://ns.google.com/photos/1.0/camera/',
+    GCreations=> 'http://ns.google.com/photos/1.0/creations/',
     dwc       => 'http://rs.tdwg.org/dwc/index.htm',
     GettyImagesGIFT => 'http://xmp.gettyimages.com/gift/1.0/',
     LImage    => 'http://ns.leiainc.com/photos/1.0/image/',
@@ -745,6 +747,14 @@ my %sRetouchArea = (
     GFocus => {
         Name => 'GFocus',
         SubDirectory => { TagTable => 'Image::ExifTool::XMP::GFocus' },
+    },
+    GCamera => {
+        Name => 'GCamera',
+        SubDirectory => { TagTable => 'Image::ExifTool::XMP::GCamera' },
+    },
+    GCreations => {
+        Name => 'GCreations',
+        SubDirectory => { TagTable => 'Image::ExifTool::XMP::GCreations' },
     },
     dwc => {
         Name => 'dwc',

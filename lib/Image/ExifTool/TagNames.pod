@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 22586 tags, with 15003 unique tag names.
+They contain a total of 22593 tags, with 15011 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -1273,6 +1273,8 @@ L<http://www.adobe.com/devnet/xmp/> for the official XMP specification.
   extensis                                      XMP extensis
   fpv                                           XMP fpv
   GAudio                                        XMP GAudio
+  GCamera                                       XMP GCamera
+  GCreations                                    XMP GCreations
   GDepth                                        XMP GDepth
   getty                                         XMP GettyImages
   GFocus                                        XMP GFocus
@@ -2306,6 +2308,31 @@ These tags belong to the ExifTool XMP-GAudio family 1 group.
   AudioData                                     string
   AudioMimeType                                 string
 
+=head3 XMP GCamera Tags
+
+Camera information found in Google panorama images.
+
+These tags belong to the ExifTool XMP-GCamera family 1 group.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  BurstID                                       string
+  BurstPrimary                                  string
+  PortraitNote                                  string
+  PortraitRequest                               string
+  PortraitVersion                               string
+  SpecialTypeID                                 string+
+
+=head3 XMP GCreations Tags
+
+Google creations tags.
+
+These tags belong to the ExifTool XMP-GCreations family 1 group.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  CameraBurstID                                 string
+
 =head3 XMP GDepth Tags
 
 Google depthmap information. See
@@ -2317,7 +2344,7 @@ These tags belong to the ExifTool XMP-GDepth family 1 group.
   --------                                      --------
   Confidence                                    string/
   ConfidenceMime                                string/
-  Data                                          string/
+  DepthImage                                    string/
   Far                                           real/
   Format                                        string/
   ImageHeight                                   real/

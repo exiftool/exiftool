@@ -178,6 +178,14 @@ as extensions from various other sources.  See
 <td class=c>-</td>
 <td>--&gt; <a href='XMP.html#GAudio'>XMP GAudio Tags</a></td></tr>
 <tr class=b>
+<td>GCamera</td>
+<td class=c>-</td>
+<td>--&gt; <a href='XMP.html#GCamera'>XMP GCamera Tags</a></td></tr>
+<tr>
+<td>GCreations</td>
+<td class=c>-</td>
+<td>--&gt; <a href='XMP.html#GCreations'>XMP GCreations Tags</a></td></tr>
+<tr class=b>
 <td>GDepth</td>
 <td class=c>-</td>
 <td>--&gt; <a href='XMP.html#GDepth'>XMP GDepth Tags</a></td></tr>
@@ -3808,6 +3816,56 @@ writing due to name conflicts with tags in other schemas.</p>
 <td><span class=s><span class=n>(called Mime by the spec)</span></span></td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='GCamera'>XMP GCamera Tags</a></h2>
+<p>Camera information found in Google panorama images.</p>
+
+<p>These tags belong to the ExifTool XMP-GCamera family 1 group.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>BurstID</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>BurstPrimary</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>PortraitNote</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>PortraitRequest</td>
+<td class=c>string</td>
+<td><span class=s><span class=n>(High Definition Render Pipeline (HDRP) data)</span></span></td></tr>
+<tr>
+<td>PortraitVersion</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>SpecialTypeID</td>
+<td class=c title=' + = List'>string+</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='GCreations'>XMP GCreations Tags</a></h2>
+<p>Google creations tags.</p>
+
+<p>These tags belong to the ExifTool XMP-GCreations family 1 group.</p>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>CameraBurstID</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
 <h2><a name='GDepth'>XMP GDepth Tags</a></h2>
 <p>Google depthmap information. See
 <a href="https://developers.google.com/depthmap-metadata/">https://developers.google.com/depthmap-metadata/</a> for the specification.</p>
@@ -3827,9 +3885,9 @@ writing due to name conflicts with tags in other schemas.</p>
 <td class=c title=' / = Avoid'>string/</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td>Data</td>
+<td>DepthImage</td>
 <td class=c title=' / = Avoid'>string/</td>
-<td>&nbsp;</td></tr>
+<td><span class=s><span class=n>(called Data by the spec)</span></span></td></tr>
 <tr class=b>
 <td>Far</td>
 <td class=c title=' / = Avoid'>real/</td>
@@ -10548,7 +10606,7 @@ XMP module for convenience.  (see <a href="http://www.w3.org/TR/SVG11/">http://w
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Feb 22, 2019</i>
+<br><i>Last revised Jun 1, 2019</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

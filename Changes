@@ -7,6 +7,13 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 11.30. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+June 1, 2019 - Version 11.48
+
+  - Added write support for Google GCamera and GCreation XMP tags
+  - Renamed XMP-GDepth "Data" tag to "DepthImage"
+  - Fixed bug where some QuickTime UserData tags could be duplicated when
+    writing
+
 May 31, 2019 - Version 11.47
 
   - Fixed problem which resulted in a warning for one of the CanonVRD tests on

@@ -1647,7 +1647,7 @@ my %sSubVersion = (
 # Google depthmap information (ref https://developers.google.com/depthmap-metadata/reference)
 %Image::ExifTool::XMP::GDepth = (
     GROUPS      => { 0 => 'XMP', 1 => 'XMP-GDepth', 2 => 'Image' },
-    NAMESPACE   => { 'GDepth' => 'http://ns.google.com/photos/1.0/depthmap/' },
+    NAMESPACE   => 'GDepth',
     AVOID       => 1, # (too potential tag name conflicts)
     NOTES       => q{
         Google depthmap information. See
@@ -1665,6 +1665,7 @@ my %sSubVersion = (
     Far         => { Writable => 'real' },
     Mime        => { },
     Data => {
+        Name => 'DepthImage',
         ValueConv => 'Image::ExifTool::XMP::DecodeBase64($val)',
         ValueConvInv => 'Image::ExifTool::XMP::EncodeBase64($val)',
     },
@@ -1697,6 +1698,34 @@ my %sSubVersion = (
     FocalDistance   => { Writable => 'real' },
     FocalPointX     => { Writable => 'real' },
     FocalPointY     => { Writable => 'real' },
+);
+
+# Google camera namespace (ref PH)
+%Image::ExifTool::XMP::GCamera = (
+    %xmpTableDefaults,
+    GROUPS => { 1 => 'XMP-GCamera', 2 => 'Camera' },
+    NAMESPACE => 'GCamera',
+    NOTES => 'Camera information found in Google panorama images.',
+    BurstID         => { },
+    BurstPrimary    => { },
+    PortraitNote    => { },
+    PortraitRequest => {
+        Notes => 'High Definition Render Pipeline (HDRP) data', #PH (guess)
+        ValueConv => 'Image::ExifTool::XMP::DecodeBase64($val)',
+        ValueConvInv => 'Image::ExifTool::XMP::EncodeBase64($val)',
+    },
+    PortraitVersion => { },
+    SpecialTypeID   => { List => 'Bag' },
+    PortraitNote    => { },
+);
+
+# Google creations namespace (ref PH)
+%Image::ExifTool::XMP::GCreations = (
+    %xmpTableDefaults,
+    GROUPS => { 1 => 'XMP-GCreations', 2 => 'Camera' },
+    NAMESPACE => 'GCreations',
+    NOTES => 'Google creations tags.',
+    CameraBurstID  => { },
 );
 
 # Getty Images namespace (ref PH)

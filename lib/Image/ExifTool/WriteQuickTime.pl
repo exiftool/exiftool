@@ -1133,6 +1133,8 @@ sub WriteQuickTime($$$)
                                 next;
                             }
                         }
+                    } else {
+                        $val = $buff;
                     }
                     if ($nvHash and defined $val and $et->IsOverwriting($nvHash, $val)) {
                         $newData = $et->GetNewValue($nvHash);

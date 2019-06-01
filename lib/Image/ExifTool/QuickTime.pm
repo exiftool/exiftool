@@ -42,7 +42,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.30';
+$VERSION = '2.31';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -1373,7 +1373,6 @@ my %eeBox = (
         Name => 'ContentCreateDate',
         Groups => { 2 => 'Time' },
         Shift => 'Time',
-        DelValue => '0000-00-00T00:00:00+0000',
         # handle values in the form "2010-02-12T13:27:14-0800" (written by Apple iPhone)
         ValueConv => q{
             require Image::ExifTool::XMP;
@@ -1637,7 +1636,6 @@ my %eeBox = (
         Name => 'DateTimeOriginal',
         Groups => { 2 => 'Time' },
         Shift => 'Time',
-        DelValue => '0000-00-00T00:00:00+0000',
         ValueConv => q{
             require Image::ExifTool::XMP;
             $val =  Image::ExifTool::XMP::ConvertXMPDate($val);

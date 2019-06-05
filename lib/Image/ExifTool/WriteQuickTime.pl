@@ -89,7 +89,8 @@ my %ctboID = (
 );
 
 # mark UserData tags that don't have ItemList counterparts as Preferred
-# (and for now, set Writable to 0 for any tag with a RawConv)
+# - and set Preferred to 0 for any Avoid-ed tag
+# - also, for now, set Writable to 0 for any tag with a RawConv and no RawConvInv
 {
     my $itemList = \%Image::ExifTool::QuickTime::ItemList;
     my $userData = \%Image::ExifTool::QuickTime::UserData;
@@ -98,10 +99,12 @@ my %ctboID = (
         my $tagInfo = $$itemList{$tag};
         if (ref $tagInfo ne 'HASH') {
             next if ref $tagInfo;
-            $tagInfo = $$userData{$tag} = { Name => $tagInfo };
+            $tagInfo = $$itemList{$tag} = { Name => $tagInfo };
+        } else {
+            $$tagInfo{Writable} = 0 if $$tagInfo{RawConv} and not $$tagInfo{RawConvInv};
+            $$tagInfo{Avoid} and $$tagInfo{Preferred} = 0, next;
+            next if defined $$tagInfo{Preferred} and not $$tagInfo{Preferred};
         }
-        $$tagInfo{Writable} = 0 if $$tagInfo{RawConv};
-        next if $$tagInfo{Avoid} or defined $$tagInfo{Preferred} and not $$tagInfo{Preferred};
         $pref{$$tagInfo{Name}} = 1;
     }
     foreach $tag (TagTableKeys($userData)) {
@@ -109,9 +112,11 @@ my %ctboID = (
         if (ref $tagInfo ne 'HASH') {
             next if ref $tagInfo;
             $tagInfo = $$userData{$tag} = { Name => $tagInfo };
+        } else {
+            $$tagInfo{Writable} = 0 if $$tagInfo{RawConv} and not $$tagInfo{RawConvInv};
+            $$tagInfo{Avoid} and $$tagInfo{Preferred} = 0, next;
+            next if defined $$tagInfo{Preferred} or $pref{$$tagInfo{Name}};
         }
-        $$tagInfo{Writable} = 0 if $$tagInfo{RawConv};
-        next if $$tagInfo{Avoid} or defined $$tagInfo{Preferred} or $pref{$$tagInfo{Name}};
         $$tagInfo{Preferred} = 1;
     }
 }
@@ -365,12 +370,23 @@ sub WriteKeys($$$)
                 my $nvHash = $et->GetNewValueHash($tagInfo);
                 # drop this tag if it is being deleted
                 if ($nvHash and $et->IsOverwriting($nvHash) > 0 and not defined $et->GetNewValue($nvHash)) {
-                    # delete this key
-                    $et->VPrint(1, "$$et{INDENT}\[deleting Keys entry $index '${tag}']\n");
-                    $pos += $len;
-                    $remap{$index++} = 0;
-                    ++$$et{CHANGED};
-                    next;
+                    # don't delete this key if we could be writing any alternate-language version of this tag
+                    my ($t, $dontDelete);
+                    foreach $t (keys %$newTags) {
+                        next unless $$newTags{$t}{SrcTagInfo} and $$newTags{$t}{SrcTagInfo} eq $tagInfo;
+                        my $nv = $et->GetNewValueHash($$newTags{$t});
+                        next unless $et->IsOverwriting($nv) and defined $et->GetNewValue($nv);
+                        $dontDelete = 1;
+                        last;
+                    }
+                    unless ($dontDelete) {
+                        # delete this key
+                        $et->VPrint(1, "$$et{INDENT}\[deleting Keys entry $index '${tag}']\n");
+                        $pos += $len;
+                        $remap{$index++} = 0;
+                        ++$$et{CHANGED};
+                        next;
+                    }
                 }
             }
         }
@@ -674,8 +690,8 @@ sub WriteQuickTime($$$)
     local $_;
     my ($et, $dirInfo, $tagTablePtr) = @_;
     $et or return 1;    # allow dummy access to autoload this package
-    my ($mdat, @mdat, @mdatEdit, $edit, $track, $outBuff, $co, $term, $err, $delCount);
-    my (%langTags, $canCreate, $delGrp, %boxPos, $createKeys, $newTags, %didDir, $writeLast);
+    my ($mdat, @mdat, @mdatEdit, $edit, $track, $outBuff, $co, $term, $delCount);
+    my (%langTags, $canCreate, $delGrp, %boxPos, %didDir, $writeLast, $err);
     my $outfile = $$dirInfo{OutFile} || return 0;
     my $raf = $$dirInfo{RAF};       # (will be null for lower-level atoms)
     my $dataPt = $$dirInfo{DataPt}; # (will be null for top-level atoms)
@@ -684,6 +700,8 @@ sub WriteQuickTime($$$)
     my $parent = $$dirInfo{Parent};
     my $addDirs = $$et{ADD_DIRS};
     my $didTag = $$et{DidTag};
+    my $newTags = { };
+    my $createKeys = 0;
     my ($rtnVal, $rtnErr) = $dataPt ? (undef, undef) : (1, 0);
 
     if ($dataPt) {
@@ -700,18 +718,15 @@ sub WriteQuickTime($$$)
     my $curPath = join '-', @{$$et{PATH}};
     my ($dir, $writePath) = ($dirName, $dirName);
     $writePath = "$dir-$writePath" while defined($dir = $$et{DirMap}{$dir});
-    # hack for Keys write path (its containing Meta is in a different location)
-    $createKeys = 1 if $$addDirs{Keys} and $curPath =~ /^MOV-Movie(-Meta(-ItemList)?)?$/;
-    if ($curPath eq $writePath or $createKeys) {
-        $canCreate = 1;
-        $delGrp = $$et{DEL_GROUP}{$dirName};
-    }
-    # edit existing Keys tags in ItemList if we are at the correct path
-    if ($curPath eq 'MOV-Movie-Meta-ItemList') {
-        $newTags = { };
+    # hack to create Keys directories if necessary (its containing Meta is in a different location)
+    if ($$addDirs{Keys} and $curPath =~ /^MOV-Movie(-Meta)?$/) {
+        $createKeys = 1;    # create new Keys directories
+    } elsif ($curPath eq 'MOV-Movie-Meta-ItemList') {
+        $createKeys = 2;    # create new Keys tags
         my $keys = $$et{Keys};
         if ($keys) {
             # add new tag entries for existing Keys tags, now that we know their ID's
+            # - first make lookup to convert Keys tagInfo ref to index number
             my ($index, %keysInfo);
             foreach $index (keys %{$$keys{Info}}) {
                 $keysInfo{$$keys{Info}{$index}} = $index if $$keys{Remap}{$index};
@@ -723,22 +738,30 @@ sub WriteQuickTime($$$)
                 $index = $keysInfo{$tagInfo} || ($$tagInfo{SrcTagInfo} and $keysInfo{$$tagInfo{SrcTagInfo}});
                 next unless $index;
                 my $id = Set32u($index);
-                $id .= '-' . $$tagInfo{LangCode} if $$tagInfo{LangCode};
+                if ($$tagInfo{LangCode}) {
+                    # add to lookup of language tags we are writing with this ID
+                    $langTags{$id} = { } unless $langTags{$id};
+                    $langTags{$id}{$_} = $tagInfo;
+                    $id .= '-' . $$tagInfo{LangCode};
+                }
                 $$newTags{$id} = $tagInfo;
             }
         }
     } else {
         # get hash of new tags to edit/create in this directory
         $newTags = $et->GetNewTagInfoHash($tagTablePtr);
+        # make lookup of language tags for each ID
+        foreach (keys %$newTags) {
+            next unless $$newTags{$_}{LangCode} and $$newTags{$_}{SrcTagInfo};
+            my $id = $$newTags{$_}{SrcTagInfo}{TagID};
+            $langTags{$id} = { } unless $langTags{$id};
+            $langTags{$id}{$_} = $$newTags{$_};
+        }
     }
-    # make lookup of language tags for each ID
-    foreach (keys %$newTags) {
-        next unless $$newTags{$_}{LangCode} and $$newTags{$_}{SrcTagInfo};
-        my $id = $$newTags{$_}{SrcTagInfo}{TagID};
-        $langTags{$id} = { } unless $langTags{$id};
-        $langTags{$id}{$_} = $$newTags{$_};
+    if ($curPath eq $writePath or $createKeys) {
+        $canCreate = 1;
+        $delGrp = $$et{DEL_GROUP}{$dirName};
     }
-
     for (;;) {      # loop through all atoms at this level
         my ($hdr, $buff, $keysIndex);
         my $n = $raf->Read($hdr, 8);
@@ -820,11 +843,14 @@ sub WriteQuickTime($$$)
 
         # if this atom stores offsets, save its location so we can fix up offsets later
         # (are there any other atoms that may store absolute file offsets?)
-        if ($tag =~ /^(stco|co64|iloc|mfra|gps |CTBO|uuid)$/) {
+        if ($tag =~ /^(stco|co64|iloc|mfra|moof|sidx|saio|gps |CTBO|uuid)$/) {
             # (note that we only need to do this if the movie data is stored in this file)
             my $flg = $$et{QtDataFlg};
-            if ($tag eq 'mfra') {
+            if ($tag eq 'mfra' or $tag eq 'moof') {
                 $et->Error("Can't yet handle movie fragments when writing");
+                return $rtnVal;
+            } elsif ($tag eq 'sidx' or $tag eq 'saio') {
+                $et->Error("Can't yet handle $tag box when writing");
                 return $rtnVal;
             } elsif ($tag eq 'iloc') {
                 Handle_iloc($et, $dirInfo, \$buff, $outfile) or $et->Error('Error parsing iloc atom');
@@ -1083,7 +1109,6 @@ sub WriteQuickTime($$$)
                                     my $grp = $et->GetGroup($langInfo, 1);
                                     $et->VerboseValue("- $grp:$$langInfo{Name}", $val);
                                     $et->VerboseValue("+ $grp:$$langInfo{Name}", $prVal);
-                                    $$didTag{$nvHash} = 1 if $nvHash;
                                     $newData = substr($buff, 0, $pos-16) unless defined $newData;
                                     $newData .= pack('Na4Nnn', length($newVal)+16, $type, $flags, $ctry, $lang);
                                     $newData .= $newVal;
@@ -1094,6 +1119,7 @@ sub WriteQuickTime($$$)
                             } elsif (defined $newData) {
                                 $newData .= substr($buff, $pos, $len);
                             }
+                            $$didTag{$nvHash} = 1 if $nvHash;
                         }
                         $newData .= substr($buff, $pos) if defined $newData and $pos < $size;
                         undef $val; # (already constructed $newData)
@@ -1136,24 +1162,26 @@ sub WriteQuickTime($$$)
                     } else {
                         $val = $buff;
                     }
-                    if ($nvHash and defined $val and $et->IsOverwriting($nvHash, $val)) {
-                        $newData = $et->GetNewValue($nvHash);
-                        $newData = '' unless defined $newData or $canCreate;
-                        ++$$et{CHANGED};
-                        my $grp = $et->GetGroup($langInfo, 1);
-                        $et->VerboseValue("- $grp:$$langInfo{Name}", $val);
-                        next unless defined $newData and not $$didTag{$nvHash};
-                        $et->VerboseValue("+ $grp:$$langInfo{Name}", $newData);
-                        $$didTag{$nvHash} = 1;   # set flag so we don't add this tag again
-                        # add back necessary header and encode as necessary
-                        if (defined $lang) {
-                            $newData = $et->Encode($newData, $lang < 0x400 ? $charsetQuickTime : 'UTF8');
-                            if ($$tagInfo{IText} and $$tagInfo{IText} == 6) {
-                                $newData = pack('Nn', 0, $lang) . $newData . "\0";
-                            } else {
-                                $newData = pack('nn', length($newData), $lang) . $newData;
+                    if ($nvHash and defined $val) {
+                        if ($et->IsOverwriting($nvHash, $val)) {
+                            $newData = $et->GetNewValue($nvHash);
+                            $newData = '' unless defined $newData or $canCreate;
+                            ++$$et{CHANGED};
+                            my $grp = $et->GetGroup($langInfo, 1);
+                            $et->VerboseValue("- $grp:$$langInfo{Name}", $val);
+                            next unless defined $newData and not $$didTag{$nvHash};
+                            $et->VerboseValue("+ $grp:$$langInfo{Name}", $newData);
+                            # add back necessary header and encode as necessary
+                            if (defined $lang) {
+                                $newData = $et->Encode($newData, $lang < 0x400 ? $charsetQuickTime : 'UTF8');
+                                if ($$tagInfo{IText} and $$tagInfo{IText} == 6) {
+                                    $newData = pack('Nn', 0, $lang) . $newData . "\0";
+                                } else {
+                                    $newData = pack('nn', length($newData), $lang) . $newData;
+                                }
                             }
                         }
+                        $$didTag{$nvHash} = 1;   # set flag so we don't add this tag again
                     }
                 }
             }
@@ -1221,7 +1249,7 @@ sub WriteQuickTime($$$)
     }
     $et->VPrint(0, "  [deleting $delCount $dirName tag".($delCount==1 ? '' : 's')."]\n") if $delCount;
 
-    undef $createKeys unless $$addDirs{Keys};   # (Keys may have been written)
+    $createKeys &= ~0x01 unless $$addDirs{Keys};   # (Keys may have been written)
 
     # add new directories/tags at this level if necessary
     if ($canCreate and (exists $$et{EDIT_DIRS}{$dirName} or $createKeys)) {
@@ -1696,7 +1724,7 @@ sub WriteMOV($$)
         $ftype = 'MOV';
     }
     $et->SetFileType($ftype); # need to set "FileType" tag for a Condition
-    $et->InitWriteDirs($dirMap{$ftype}, 'XMP');
+    $et->InitWriteDirs($dirMap{$ftype}, 'XMP', 'QuickTime');
     $$et{DirMap} = $dirMap{$ftype};     # need access to directory map when writing
     # track tags globally to avoid creating multiple tags in the case of duplicate directories
     $$et{DidTag} = { };

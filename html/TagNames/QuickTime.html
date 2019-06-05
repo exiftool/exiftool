@@ -8,7 +8,8 @@
 </head>
 <body>
 <h2 class=top>QuickTime Tags</h2>
-<p>The QuickTime format is used for many different types of audio, video and
+<p>
+The QuickTime format is used for many different types of audio, video and
 image files (most notably, MOV/MP4 videos and HEIC/CR3 images).  Exiftool
 extracts standard meta information and a variety of audio, video and image
 parameters, as well as proprietary information written by many camera
@@ -18,18 +19,23 @@ the Unknown option is set.</p>
 <p>When writing, ExifTool creates both QuickTime and XMP tags by default, but
 the group may be specified to write one or the other separately.  If no
 location is specified, newly created QuickTime tags are added in the
-ItemList location if possible, otherwise in UserData, and finally in Keys,
+<a href="QuickTime.html#ItemList">ItemList</a> location if
+possible, otherwise in
+<a href="QuickTime.html#UserData">UserData</a>, and
+finally in <a href="QuickTime.html#Keys">Keys</a>,
 but this order may be changed by setting the PREFERRED level of the
-appropriate table in the config file (see <a href="../config.html#PREF">example.config</a> in the full
-distribution for an example).  ExifTool currently writes only top-level
-metadata in QuickTime-based files; it extracts other track-specific and
-timed metadata, but can not yet edit tags in these locations.</p>
+appropriate table in the config file (see
+<a href="../config.html#PREF">example.config</a> in the full distribution for
+an example).  ExifTool currently writes only top-level metadata in
+QuickTime-based files; it extracts other track-specific and timed
+metadata, but can not yet edit tags in these locations (with the
+exception of track-level date/time tags).</p>
 
 <p>Alternate language tags may be accessed for ItemList and Keys tags by adding
 a 3-character ISO 639-2 language code and an optional ISO 3166-1 alpha 2
 country code to the tag name (eg. &quot;ItemList:Artist-deu&quot; or
-&quot;ItemList::Artist-deu-DE&quot;).  UserData tags support only a language code
-(without a country code).  If no language code is specified when writing,
+&quot;ItemList::Artist-deu-DE&quot;).  Most UserData tags support a language code, but
+without a country code.  If no language code is specified when writing,
 alternate languages for the tag are deleted.  Use the &quot;und&quot; language code to
 write the default language without deleting alternate languages.  Note that
 &quot;eng&quot; is treated as a default language when reading, but not when writing.</p>
@@ -44,7 +50,8 @@ when extracting.</p>
 
 <p>See
 <a href="https://developer.apple.com/library/archive/documentation/QuickTime/QTFF/">https://developer.apple.com/library/archive/documentation/QuickTime/QTFF/</a>
-for the official specification.</p>
+for the official specification.
+</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -689,9 +696,18 @@ specification.</p>
 </table></td></tr></table></blockquote>
 
 <h2><a name='Keys'>QuickTime Keys Tags</a></h2>
-<p>This directory contains a list of key names which are used to decode
-ItemList tags written by the &quot;mdta&quot; handler.  The prefix of
-&quot;com.apple.quicktime.&quot; has been removed from all TagID&#39;s below.</p>
+<p>This directory contains a list of key names which are used to decode tags
+written by the &quot;mdta&quot; handler.  The prefix of &quot;com.apple.quicktime.&quot; has
+been removed from all TagID&#39;s below.  These tags support alternate languages
+in the same way as the
+<a href="QuickTime.html#ItemList">ItemList Tags</a>.  Note
+that by default,
+<a href="QuickTime.html#ItemList">ItemList</a> and
+<a href="QuickTime.html#UserData">UserData</a> tags are
+preferred when writing, so to create a tag when a same-named tag exists in
+either of these tables, either the &quot;Keys&quot; location must be specified (eg.
+<code>-Keys:Author=Phil</code> on the command line), or the PREFERRED level must be
+changed via the config file.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -1402,10 +1418,9 @@ from the associated SampleTime)</span></span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='ItemList'>QuickTime ItemList Tags</a></h2>
-<p>As well as these tags, the &quot;mdta&quot; handler uses numerical tag ID&#39;s which are
-added dynamically to this table after processing the Meta Keys information.
-Tags in this table support alternate languages which are accessed by adding
-a 3-character ISO 639-2 language code and an optional ISO 3166-1 alpha 2
+<p>This is the preferred location for creating new QuickTime tags.  Tags in
+this table support alternate languages which are accessed by adding a
+3-character ISO 639-2 language code and an optional ISO 3166-1 alpha 2
 country code to the tag name (eg. &quot;ItemList:Title-fra&quot; or
 &quot;ItemList::Title-fra-FR&quot;).</p>
 <blockquote>
@@ -1477,7 +1492,7 @@ country code to the tag name (eg. &quot;ItemList:Title-fra&quot; or
 <tr>
 <td>'albm'</td>
 <td>Album</td>
-<td class=c>string</td>
+<td class=c title=' / = Avoid'>string/</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'apID'</td>
@@ -1523,7 +1538,7 @@ country code to the tag name (eg. &quot;ItemList:Title-fra&quot; or
 <tr class=b>
 <td>'desc'</td>
 <td>Description</td>
-<td class=c>string</td>
+<td class=c title=' / = Avoid'>string/</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'disk'</td>
@@ -1533,7 +1548,7 @@ country code to the tag name (eg. &quot;ItemList:Title-fra&quot; or
 <tr class=b>
 <td>'dscp'</td>
 <td>Description</td>
-<td class=c>string</td>
+<td class=c title=' / = Avoid'>string/</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'egid'</td>
@@ -1548,12 +1563,12 @@ country code to the tag name (eg. &quot;ItemList:Title-fra&quot; or
 <tr>
 <td>'gnre'</td>
 <td>Genre</td>
-<td class=c title=' ~ = Writable only with -n'>string~</td>
+<td class=c title=' / = Avoid'>string/</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'grup'</td>
 <td>Grouping</td>
-<td class=c>string</td>
+<td class=c title=' / = Avoid'>string/</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'gshh'</td>
@@ -1717,7 +1732,7 @@ country code to the tag name (eg. &quot;ItemList:Title-fra&quot; or
 <tr>
 <td>'titl'</td>
 <td>Title</td>
-<td class=c>string</td>
+<td class=c title=' / = Avoid'>string/</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'tmpo'</td>
@@ -1772,7 +1787,7 @@ country code to the tag name (eg. &quot;ItemList:Title-fra&quot; or
 <tr class=b>
 <td>"&copy;aut"</td>
 <td>Author</td>
-<td class=c>string</td>
+<td class=c title=' / = Avoid'>string/</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>"&copy;cmt"</td>
@@ -1782,12 +1797,12 @@ country code to the tag name (eg. &quot;ItemList:Title-fra&quot; or
 <tr class=b>
 <td>"&copy;com"</td>
 <td>Composer</td>
-<td class=c>string</td>
+<td class=c title=' / = Avoid'>string/</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>"&copy;cpy"</td>
 <td>Copyright</td>
-<td class=c>string</td>
+<td class=c title=' / = Avoid'>string/</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>"&copy;day"</td>
@@ -6303,37 +6318,23 @@ for the specification.</p>
 <p>Tag ID&#39;s beginning with the copyright symbol (hex 0xa9) are multi-language
 text.  Alternate language tags are accessed by adding a dash followed by a
 3-character ISO 639-2 language code to the tag name.  ExifTool will extract
-any multi-language user data tags found, even if they aren&#39;t in this table.</p>
+any multi-language user data tags found, even if they aren&#39;t in this table.
+Note when creating new tags,
+<a href="QuickTime.html#ItemList">ItemList Tags</a> are
+preferred over these, so to create the tag when a same-named ItemList tag
+exists, either &quot;UserData&quot; must be specified (eg. <code>-UserData:Artist=Monet</code>
+on the command line), or the PREFERRED level must be changed via the config
+file.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
 <tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
-<td>'@PST'</td>
-<td>ParentShortTitle</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>'@ppi'</td>
-<td>ParentProductID</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>'@pti'</td>
-<td>ParentTitle</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
 <td>'@sec'</td>
 <td>SamsungSec</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Samsung.html#sec'>Samsung sec Tags</a></td></tr>
-<tr>
-<td>'@sti'</td>
-<td>ShortTitle</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
 <tr class=b>
 <td>'AllF'</td>
 <td>PlayAllFrames</td>
@@ -6357,7 +6358,7 @@ any multi-language user data tags found, even if they aren&#39;t in this table.<
 <tr class=b>
 <td>'CNMN'</td>
 <td>Model</td>
-<td class=c>string</td>
+<td class=c title=' / = Avoid'>string/</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'CNOP'</td>
@@ -6382,7 +6383,7 @@ any multi-language user data tags found, even if they aren&#39;t in this table.<
 <tr>
 <td>'FIRM'</td>
 <td>FirmwareVersion</td>
-<td class=c>string</td>
+<td class=c title=' / = Avoid'>string/</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>"FOV\0"</td>
@@ -6395,72 +6396,67 @@ any multi-language user data tags found, even if they aren&#39;t in this table.<
 <td class=c>-</td>
 <td>--&gt; <a href='GoPro.html#GPMF'>GoPro GPMF Tags</a></td></tr>
 <tr class=b>
-<td>'GUID'</td>
-<td>GUID</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr>
 <td>'GoPr'</td>
 <td>GoProType</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'INFO'</td>
 <td>SamsungINFO</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Samsung.html#INFO'>Samsung INFO Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'LEIC'</td>
 <td>LeicaLEIC</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Panasonic.html#PANA'>Panasonic PANA Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'LENS'</td>
 <td>LensSerialNumber</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'LOOP'</td>
 <td>LoopStyle</td>
 <td class=c>int32u</td>
 <td><span class=s>1 = Normal
   <br>2 = Palindromic</span></td></tr>
-<tr class=b>
+<tr>
 <td>'Lvlm'</td>
 <td>LevelMeter?</td>
 <td class=c>rational64s</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'MMA0'</td>
 <td>MinoltaMMA0</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Minolta.html#MMA'>Minolta MMA Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'MMA1'</td>
 <td>MinoltaMMA1</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Minolta.html#MMA'>Minolta MMA Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'MVTG'</td>
 <td>FujiFilmMVTG</td>
 <td class=c>-</td>
 <td>--&gt; <a href='EXIF.html'>EXIF Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'NCDT'</td>
 <td>NikonNCDT</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Nikon.html#NCDT'>Nikon NCDT Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'PANA'</td>
 <td>PanasonicPANA</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Panasonic.html#PANA'>Panasonic PANA Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'PENT'</td>
 <td>PentaxPENT</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Pentax.html#PENT'>Pentax PENT Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'PXMN'</td>
 <td>MakerNotePentax5b
   <br>MakerNotePentax5c
@@ -6468,42 +6464,42 @@ any multi-language user data tags found, even if they aren&#39;t in this table.<
 <td class=c>-<br>-<br>string</td>
 <td>--&gt; <a href='Pentax.html'>Pentax Tags</a>
   <br>--&gt; <a href='Pentax.html'>Pentax Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'PXTH'</td>
 <td>PentaxPreview</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Pentax.html#PXTH'>Pentax PXTH Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'QVMI'</td>
 <td>CasioQVMI</td>
 <td class=c>-</td>
 <td>--&gt; <a href='EXIF.html'>EXIF Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'RMKN'</td>
 <td>RicohRMKN</td>
 <td class=c>-</td>
 <td>--&gt; <a href='EXIF.html'>EXIF Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'RTHU'</td>
 <td>PreviewImage</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'SDLN'</td>
 <td>PlayMode</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'SNum'</td>
 <td>SerialNumber</td>
-<td class=c>string</td>
+<td class=c title=' / = Avoid'>string/</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'SelO'</td>
 <td>PlaySelection</td>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'TAGS'</td>
 <td>FujiFilmTags
   <br>KodakTags
@@ -6533,16 +6529,11 @@ any multi-language user data tags found, even if they aren&#39;t in this table.<
   <br>--&gt; <a href='Samsung.html#MP4'>Samsung MP4 Tags</a>
   <br>--&gt; <a href='Sanyo.html#MOV'>Sanyo MOV Tags</a>
   <br>--&gt; <a href='Sanyo.html#MP4'>Sanyo MP4 Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'TTMD'</td>
 <td>TomTomMetaData</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#TomTom'>QuickTime TomTom Tags</a></td></tr>
-<tr>
-<td>'VERS'</td>
-<td>ProductVersion</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
 <tr class=b>
 <td>'WLOC'</td>
 <td>WindowLocation</td>
@@ -6571,7 +6562,7 @@ any multi-language user data tags found, even if they aren&#39;t in this table.<
 <tr>
 <td>'_yaw'</td>
 <td>Yaw</td>
-<td class=c>rational64s</td>
+<td class=c title=' / = Avoid'>rational64s/</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'albm'</td>
@@ -6589,25 +6580,15 @@ any multi-language user data tags found, even if they aren&#39;t in this table.<
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td>'apID'</td>
-<td>AppleStoreAccount</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
 <td>'apmd'</td>
 <td>ApertureMode</td>
 <td class=c>undef</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'auth'</td>
 <td>Author</td>
 <td class=c title=' / = Avoid'>string/</td>
 <td><span class=s><span class=n>(used in 3gp videos)</span></span></td></tr>
-<tr class=b>
-<td>'catg'</td>
-<td>Category</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
 <tr>
 <td>'ccid'</td>
 <td>ContentID</td>
@@ -6646,7 +6627,7 @@ any multi-language user data tags found, even if they aren&#39;t in this table.<
 <tr class=b>
 <td>'cmnm'</td>
 <td>Model</td>
-<td class=c>string</td>
+<td class=c title=' / = Avoid'>string/</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'coll'</td>
@@ -6679,48 +6660,38 @@ any multi-language user data tags found, even if they aren&#39;t in this table.<
 <td class=c title=' / = Avoid'>string/</td>
 <td><span class=s><span class=n>(used in 3gp videos)</span></span></td></tr>
 <tr>
-<td>'egid'</td>
-<td>EpisodeGlobalUniqueID</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
 <td>'gnre'</td>
 <td>Genre</td>
 <td class=c title=' / = Avoid'>string/</td>
 <td><span class=s><span class=n>(used in 3gp videos)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td>'hinf'</td>
 <td>HintTrackInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#HintTrackInfo'>QuickTime HintTrackInfo Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'hinv'</td>
 <td>HintVersion</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'hnti'</td>
 <td>HintInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#HintInfo'>QuickTime HintInfo Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'htcb'</td>
 <td>HTCBinary</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#HTCBinary'>QuickTime HTCBinary Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'icnu'</td>
 <td>IconURI</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'infu'</td>
 <td>InfoURL</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>'keyw'</td>
-<td>Keyword</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
@@ -6734,64 +6705,54 @@ any multi-language user data tags found, even if they aren&#39;t in this table.<
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
-<td>'ldes'</td>
-<td>LongDescription</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr>
 <td>'loci'</td>
 <td>LocationInformation</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'lrcu'</td>
 <td>LyricsURI</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'lvlm'</td>
 <td>LevelMeter?</td>
 <td class=c>rational64s</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'manu'</td>
 <td>Make</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'meta'</td>
 <td>Meta</td>
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#Meta'>QuickTime Meta Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'modl'</td>
 <td>Model</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'name'</td>
 <td>Name</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'perf'</td>
 <td>Performer</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr>
+<td class=c title=' / = Avoid'>string/</td>
+<td><span class=s><span class=n>(used in 3gp videos)</span></span></td></tr>
+<tr class=b>
 <td>'pose'</td>
 <td>pose</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Kodak.html#pose'>Kodak pose Tags</a></td></tr>
-<tr class=b>
-<td>'prID'</td>
-<td>ProductID</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
 <tr>
 <td>'ptch'</td>
 <td>Pitch</td>
-<td class=c>rational64s</td>
+<td class=c title=' / = Avoid'>rational64s/</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'ptv '</td>
@@ -6799,101 +6760,56 @@ any multi-language user data tags found, even if they aren&#39;t in this table.<
 <td class=c>-</td>
 <td>--&gt; <a href='QuickTime.html#Video'>QuickTime Video Tags</a></td></tr>
 <tr>
-<td>'purd'</td>
-<td>PurchaseDate</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>'purl'</td>
-<td>PodcastURL</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr>
 <td>'rads'</td>
 <td>Rads?</td>
 <td class=c>rational64s</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
-<td>'rate'</td>
-<td>RatingPercent</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr>
 <td>'reel'</td>
 <td>ReelName</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'roll'</td>
 <td>Roll</td>
-<td class=c>rational64s</td>
+<td class=c title=' / = Avoid'>rational64s/</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'rtng'</td>
 <td>Rating</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'scen'</td>
 <td>Scene</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'scrn'</td>
 <td>OlympusPreview</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Olympus.html#scrn'>Olympus scrn Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'shot'</td>
 <td>ShotName</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>'slno'</td>
 <td>SerialNumber</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>'smta'</td>
 <td>SamsungSmta</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Samsung.html#smta'>Samsung smta Tags</a></td></tr>
-<tr>
-<td>'soaa'</td>
-<td>SortAlbumArtist</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
 <tr class=b>
-<td>'soal'</td>
-<td>SortAlbum</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>'soar'</td>
-<td>SortArtist</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>'soco'</td>
-<td>SortComposer</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>'sonm'</td>
-<td>SortName</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>'sosn'</td>
-<td>SortShow</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr>
 <td>'tags'</td>
 <td>Audible_tags</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Audible.html#tags'>Audible tags Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td>'thmb'</td>
 <td>MakerNotePentax5a
   <br>OlympusThumbnail
@@ -6903,26 +6819,11 @@ any multi-language user data tags found, even if they aren&#39;t in this table.<
 <td class=c>-<br>-<br>string<br>string<br>string</td>
 <td>--&gt; <a href='Pentax.html'>Pentax Tags</a>
   <br>--&gt; <a href='Olympus.html#thmb'>Olympus thmb Tags</a></td></tr>
-<tr>
+<tr class=b>
 <td>'titl'</td>
 <td>Title</td>
 <td class=c title=' / = Avoid'>string/</td>
 <td><span class=s><span class=n>(used in 3gp videos)</span></span></td></tr>
-<tr class=b>
-<td>'tven'</td>
-<td>TVEpisodeID</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr>
-<td>'tvnn'</td>
-<td>TVNetworkName</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>'tvsh'</td>
-<td>TVShow</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
 <tr>
 <td>'urat'</td>
 <td>UserRating</td>
@@ -6936,7 +6837,7 @@ any multi-language user data tags found, even if they aren&#39;t in this table.<
 <tr>
 <td>'yrrc'</td>
 <td>Year</td>
-<td class=c>string</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>"&copy;ART"</td>
@@ -6994,163 +6895,153 @@ any multi-language user data tags found, even if they aren&#39;t in this table.<
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td>"&copy;des"</td>
-<td>Description</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
 <td>"&copy;dir"</td>
 <td>Director</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;ed1"</td>
 <td>Edit1</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;ed2"</td>
 <td>Edit2</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;ed3"</td>
 <td>Edit3</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;ed4"</td>
 <td>Edit4</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;ed5"</td>
 <td>Edit5</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;ed6"</td>
 <td>Edit6</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;ed7"</td>
 <td>Edit7</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;ed8"</td>
 <td>Edit8</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;ed9"</td>
 <td>Edit9</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;enc"</td>
-<td>EncodedBy</td>
+<td>EncoderID</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;fmt"</td>
 <td>Format</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;fpt"</td>
 <td>Pitch</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;frl"</td>
 <td>Roll</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;fyw"</td>
 <td>Yaw</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;gen"</td>
 <td>Genre</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;gpt"</td>
 <td>CameraPitch</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;grl"</td>
 <td>CameraRoll</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;grp"</td>
 <td>Grouping</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;gyw"</td>
 <td>CameraYaw</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;inf"</td>
 <td>Information</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;isr"</td>
 <td>ISRCCode</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;lab"</td>
 <td>RecordLabelName</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;lal"</td>
 <td>RecordLabelURL</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;lyr"</td>
 <td>Lyrics</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;mak"</td>
 <td>Make</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;mal"</td>
 <td>MakerURL</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;mdl"</td>
 <td>Model</td>
-<td class=c>string</td>
+<td class=c title=' / = Avoid'>string/</td>
 <td><span class=s><span class=n>(non-standard-format DJI tag)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;mod"</td>
 <td>Model</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;nam"</td>
 <td>Title</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
-<td>"&copy;nrt"</td>
-<td>Narrator</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
@@ -7184,76 +7075,71 @@ any multi-language user data tags found, even if they aren&#39;t in this table.<
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td>"&copy;pub"</td>
-<td>Publisher</td>
-<td class=c>string</td>
-<td>&nbsp;</td></tr>
-<tr class=b>
 <td>"&copy;req"</td>
 <td>Requirements</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;snk"</td>
 <td>SubtitleKeywords</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;snm"</td>
 <td>Subtitle</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;src"</td>
 <td>SourceCredits</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;swf"</td>
 <td>SongWriter</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;swk"</td>
 <td>SongWriterKeywords</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;swr"</td>
 <td>SoftwareVersion</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;too"</td>
 <td>Encoder</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;trk"</td>
 <td>Track</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;wrt"</td>
 <td>Composer</td>
-<td class=c>string</td>
+<td class=c title=' / = Avoid'>string/</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;xsp"</td>
 <td>SpeedX</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;xyz"</td>
 <td>GPSCoordinates</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td>"&copy;ysp"</td>
 <td>SpeedY</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td>"&copy;zsp"</td>
 <td>SpeedZ</td>
 <td class=c>string</td>
@@ -7838,7 +7724,7 @@ any multi-language user data tags found, even if they aren&#39;t in this table.<
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised May 31, 2019</i>
+<br><i>Last revised Jun 4, 2019</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

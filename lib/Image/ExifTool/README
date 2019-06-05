@@ -548,7 +548,9 @@ numerical.
                   efficient since it is only executed if the tag value is
                   requested, while RawConv is executed for all extracted tags.
                   Note that a tag is still writable if it has a RawConv without
-                  a RawConvInv, but this is not true for ValueConv/PrintConv.
+                  a RawConvInv (with the exception of QuickTime ItemList and
+                  UserData tags, which specifically require this), but this is
+                  not true for ValueConv/PrintConv.
 
   ValueConv     : Used to convert the Raw value to a useable form. May be a hash
                   reference to act as a lookup table, a scalar which is

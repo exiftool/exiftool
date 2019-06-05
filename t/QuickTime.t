@@ -2,7 +2,7 @@
 # After "make install" it should work as "perl t/QuickTime.t".
 
 BEGIN {
-    $| = 1; print "1..13\n"; $Image::ExifTool::configFile = '';
+    $| = 1; print "1..15\n"; $Image::ExifTool::configFile = '';
     require './t/TestLib.pm'; t::TestLib->import();
 }
 END {print "not ok 1\n" unless $loaded;}
@@ -75,15 +75,14 @@ my $testnum = 1;
 # test 7: Add a bunch of new tags and delete one
 {
     ++$testnum;
-    my $exifTool = new Image::ExifTool;
     my @writeInfo = (
         ['QuickTime:Artist' => 'me'],
         ['QuickTime:Model' => 'model'],
-        ['UserData:Genre' => 'rock' ],
-        ['UserData:Album' => 'albumA' ],
-        ['ItemList:Album' => 'albumB' ],
-        ['QuickTime:Comment-fra-FR' => 'fr comment' ],
-        ['Keys:Director' => 'director' ],
+        ['UserData:Genre' => 'rock'],
+        ['UserData:Album' => 'albumA'],
+        ['ItemList:Album' => 'albumB'],
+        ['QuickTime:Comment-fra-FR' => 'fr comment'],
+        ['Keys:Director' => 'director'],
         ['Keys:DetectedFaceYawAngle' => '90'],
         ['Keys:Album' => undef ],
     );
@@ -120,17 +119,12 @@ my $testnum = 1;
     $exifTool->SetNewValue('all' => undef);
     writeInfo($exifTool, 't/images/QuickTime.mov', $testfile);
     my @writeInfo = (
-        ['all' => undef],
         ['quicktime:artist' => 'me'],
         ['keys:director' => 'dir'],
         ['userdata:arranger' => 'arr'],
     );
     my @extract = ('QuickTime:all', 'XMP:all', '-Track1:all', '-Track2:all');
-    if (writeCheck(\@writeInfo, $testname, $testnum, $testfile, \@extract)) {
-        unlink $testfile;
-    } else {
-        print 'not ';
-    }
+    print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum, $testfile, \@extract);
     print "ok $testnum\n";
 }
 
@@ -167,7 +161,6 @@ my $testnum = 1;
     ++$testnum;
     $testfile = "t/${testname}_${testnum}_failed.heic";
     unlink $testfile;
-    Image::ExifTool::AddUserDefinedTags('Image::ExifTool::XMP::dc', test => {} );
     $exifTool->SetNewValue();
     $exifTool->SetNewValue('EXIF:all' => undef);
     $exifTool->SetNewValue('EXIF:UserComment' => 'a comment');
@@ -178,6 +171,41 @@ my $testnum = 1;
     if (check($exifTool, $info, $testname, $testnum)) {
         unlink $testfile;
         unlink $testfile2;
+    } else {
+        print 'not ';
+    }
+    print "ok $testnum\n";
+}
+
+# test 14: Delete everything then add back a tag without specifying the group
+{
+    ++$testnum;
+    my $testfile = "t/${testname}_10a_failed.mov";  # use source file from test 10
+    my @writeInfo = ( ['publisher' => 'pub'] );
+    my @extract = ('QuickTime:all', 'XMP:all', '-Track1:all', '-Track2:all');
+    if (writeCheck(\@writeInfo, $testname, $testnum, $testfile, \@extract)) {
+        unlink $testfile;
+    } else {
+        print 'not ';
+    }
+    print "ok $testnum\n";
+}
+
+# test 15: Test WriteMode option with QuickTime tags
+{
+    ++$testnum;
+    my $exifTool = new Image::ExifTool;
+    $exifTool->Options(WriteMode => 'c');
+    $exifTool->SetNewValue('ItemList:Composer' => 'WRONG');
+    $exifTool->SetNewValue('ItemList:Author' => 'aut');
+    $exifTool->SetNewValue('Keys:Artist' => 'WRONG');
+    $exifTool->SetNewValue('UserData:Artist' => 'art');
+    my $testfile = "t/${testname}_${testnum}_failed.m4a";
+    unlink $testfile;
+    my $rtnVal = $exifTool->WriteInfo('t/images/QuickTime.m4a', $testfile);
+    my $info = $exifTool->ImageInfo($testfile, 'ItemList:all', 'Keys:all', 'UserData:all');
+    if (check($exifTool, $info, $testname, $testnum)) {
+        unlink $testfile;
     } else {
         print 'not ';
     }

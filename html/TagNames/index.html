@@ -10,7 +10,7 @@
 <h2 class=top>ExifTool Tag Names</h2>
 <p>
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 22593 tags, with 15011 unique tag names.
+They contain a total of 22566 tags, with 15012 unique tag names.
 </p>
 <blockquote>
 <table width='100%' class=frame><tr><td>
@@ -181,11 +181,11 @@ of values written, or the number of characters in a fixed-length string
 <p>A plus sign (<code>+</code>) after an entry in the <b>Writable</b> column indicates a
 <i>List</i> tag which supports multiple values and allows individual values to
 be added and deleted.  A slash (<code>/</code>) indicates a tag that ExifTool will
-<i>Avoid</i> when writing.  These tags are not created when writing if another
-same-named tag may be created instead.  To write these tags, the group
+<i>Avoid</i> when writing.  These will be edited but not created if another
+same-named tag may be created instead.  To create these tags, the group
 should be specified.  A tilde (<code>~</code>) indicates a tag this is writable only
 when the print conversion is disabled (by setting PrintConv to 0, using the
--n option, or suffixing the tag name with a <code>#</code> character).  An exclamation
+-n option, or suffixing the tag name with a <code>#</code> character). An exclamation
 point (<code>!</code>) indicates a tag that is considered <i>Unsafe</i> to write under
 normal circumstances.  These tags are not written unless specified
 explicitly (ie. not when wildcards or &quot;all&quot; are used), and care should be
@@ -225,7 +225,7 @@ ExifTool.  A big thanks to everyone who has helped with this so far!)</i>
 </p>
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jun 1, 2019</i>
+<br><i>Last revised Jun 3, 2019</i>
 <p class=lf><a href='../index.html'>&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

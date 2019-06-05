@@ -17,6 +17,22 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v11.49'><b>June 5, 2019 - Version 11.49</b></a>
+<ul>
+<li>Added inverse print conversion for one of the QuickTime ItemList Genre tags
+<li>Avoid creating a few obscure QuickTime UserData tags when writing
+<li>Fixed problem where some QuickTime groups were not being created when
+    writing QuickTime tags without specifying a group
+<li>Fixed problem where QuickTime Keys tags could be duplicated when writing an
+    existing alternate-language tag
+<li>Fixed problem were QuickTime Keys alternate-language tags would not be
+    written when deleting the corresponding default-language tag in the same
+    command
+<li>Fixed some inconsistencies when writing QuickTime tags using the -wm
+    (WriteMode) option
+<li>Fixed an incorrect Pentax Sigma LensType value
+</ul>
+
 <a name='v11.48'><b>June 1, 2019 - Version 11.48</b></a>
 <ul>
 <li>Added write support for Google GCamera and GCreation XMP tags
@@ -49,7 +65,7 @@ considered development releases, and are not uploaded to <a href="https://metacp
     image if the file had previously been edited by DPP then Exiftool<br>
     <b class=red>(If you have edited any CR3 images with ExifTool that had been previously
     edited by DPP, then re-edit with ExifTool 11.45 or later to restructure the
-    file so DPP doesn't destroy it if used to edit the file later)</b>
+    file so DPP doesn't destroy it if used later to edit the file again)</b>
 <li>Added ability to create and delete QuickTime Keys tags
 <li>Added sample config file (mini0806.config) to generate GPS tags from
     subtitle Text in Mini 0806 dashcam videos

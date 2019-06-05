@@ -863,7 +863,11 @@ distribution for examples.</p>
     <tr><td valign=top align=center><b>4</b>&nbsp;=</td><td>Remove length limit on dump of tag values</td></tr>
     <tr><td valign=top align=center><b>5</b>&nbsp;=</td><td>Remove length limit on dump of JPEG segments</td></tr>
     </table></td><td align=center>0</td></tr>
-<tr id="WriteMode"><td>WriteMode</td><td>Set tag write/create mode.</td>
+<tr id="WriteMode"><td>WriteMode</td><td>Set tag write/create mode.  The level of the group
+    differs for different types of metadata.  For XMP or IPTC this is the full XMP/IPTC block
+    (the family 0 group), but for EXIF this is the individual IFD (the family 1 group).
+    The 'w' and 'c' modes are tested only when <a href="#SetNewValue">SetNewValue</a>
+    is called, but the 'g' mode is also tested in <a href="#WriteInfo">WriteInfo</a>.</td>
     <td>A string with one or more of these characters:<table class=clear>
     <tr><td valign=top align=center><b>w</b>&nbsp;=</td><td><b>W</b>rite existing tags</td></tr>
     <tr><td valign=top align=center><b>c</b>&nbsp;=</td><td><b>C</b>reate new tags</td></tr>
@@ -1081,8 +1085,8 @@ and Warning tags.</p>
 <a href="#WriteInfo">WriteInfo</a>:</p>
 <blockquote>
 ByteOrder, Charset, CharsetEXIF, CharsetFileName, CharsetIPTC, Compact,
-Compress, FixBase, IgnoreMinorErrors, Password, PNGEarlyXMP, Verbose and
-XMPShorthand.
+Compress, FixBase, IgnoreMinorErrors, Password, PNGEarlyXMP, QuickTimeHandler,
+Verbose, WriteMode and XMPShorthand.
 </blockquote>
 
 <hr><h2><a name="GetTagList">GetTagList</a></h2>

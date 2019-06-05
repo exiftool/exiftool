@@ -7,6 +7,21 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 11.30. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+June 5, 2019 - Version 11.49
+
+  - Added inverse print conversion for one of the QuickTime ItemList Genre tags
+  - Avoid creating a few obscure QuickTime UserData tags when writing
+  - Fixed problem where some QuickTime groups were not being created when
+    writing QuickTime tags without specifying a group
+  - Fixed problem where QuickTime Keys tags could be duplicated when writing an
+    existing alternate-language tag
+  - Fixed problem were QuickTime Keys alternate-language tags would not be
+    written when deleting the corresponding default-language tag in the same
+    command
+  - Fixed some inconsistencies when writing QuickTime tags using the -wm
+    (WriteMode) option
+  - Fixed an incorrect Pentax Sigma LensType value
+
 June 1, 2019 - Version 11.48
 
   - Added write support for Google GCamera and GCreation XMP tags
@@ -36,7 +51,7 @@ May 29, 2019 - Version 11.45
     image if the file had previously been edited by DPP then Exiftool
     (If you have edited any CR3 images with ExifTool that had been previously
     edited by DPP, then re-edit with ExifTool 11.45 or later to restructure the
-    file so DPP doesn't destroy it if used to edit the file later)
+    file so DPP doesn't destroy it if used later to edit the file again)
   - Added ability to create and delete QuickTime Keys tags
   - Added sample config file (mini0806.config) to generate GPS tags from
     subtitle Text in Mini 0806 dashcam videos

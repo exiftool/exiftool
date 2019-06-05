@@ -3801,14 +3801,14 @@ sub GetLangInfo($$)
 # initialize ADD_DIRS and EDIT_DIRS hashes for all directories that need
 # to be created or will have tags changed in them
 # Inputs: 0) ExifTool object reference, 1) file type string (or map hash ref)
-#         2) preferred family 0 group name for creating tags
+#         2) preferred family 0 group for creating tags, 3) alternate preferred group
 # Notes:
 # - the ADD_DIRS and EDIT_DIRS keys are the directory names, and the values
 #   are the names of the parent directories (undefined for a top-level directory)
 # - also initializes FORCE_WRITE lookup
-sub InitWriteDirs($$;$)
+sub InitWriteDirs($$;$$)
 {
-    my ($self, $fileType, $preferredGroup) = @_;
+    my ($self, $fileType, $preferredGroup, $altGroup) = @_;
     my $editDirs = $$self{EDIT_DIRS} = { };
     my $addDirs = $$self{ADD_DIRS} = { };
     my $fileDirs = $dirMap{$fileType};
@@ -3827,19 +3827,21 @@ sub InitWriteDirs($$;$)
         for ($nvHash=$self->GetNewValueHash($tagInfo); $nvHash; $nvHash=$$nvHash{Next}) {
             # are we creating this tag? (otherwise just deleting or editing it)
             my $isCreating = $$nvHash{IsCreating};
-            if ($isCreating) {
-                # if another group is taking priority, only create
-                # directory if specifically adding tags to this group
-                # or if this tag isn't being added to the priority group
-                $isCreating = 0 if $preferredGroup and
-                    $preferredGroup ne $self->GetGroup($tagInfo, 0) and
-                    $$nvHash{CreateGroups}{$preferredGroup};
-            } else {
-                # creating this directory if any tag is preferred and has a value
-                # (unless group creation is disabled via the WriteMode option)
-                $isCreating = 1 if ($preferredGroup and $$nvHash{Value} and
-                    $preferredGroup eq $self->GetGroup($tagInfo, 0)) and
-                    not $$nvHash{EditOnly} and $$self{OPTIONS}{WriteMode} =~ /g/;
+            if ($preferredGroup) {
+                my $g0 = $self->GetGroup($tagInfo, 0);
+                if ($isCreating) {
+                    # if another group is taking priority, only create
+                    # directory if specifically adding tags to this group
+                    # or if this tag isn't being added to the priority group
+                    $isCreating = 0 if $preferredGroup ne $g0 and
+                        $$nvHash{CreateGroups}{$preferredGroup} and
+                        (not $altGroup or $altGroup ne $g0);
+                } else {
+                    # create this directory if any tag is preferred and has a value
+                    # (unless group creation is disabled via the WriteMode option)
+                    $isCreating = 1 if $$nvHash{Value} and $preferredGroup eq $g0 and
+                        not $$nvHash{EditOnly} and $$self{OPTIONS}{WriteMode} =~ /g/;
+                }
             }
             # tag belongs to directory specified by WriteGroup, or by
             # the Group0 name if WriteGroup not defined

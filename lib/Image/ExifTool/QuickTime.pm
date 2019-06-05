@@ -42,7 +42,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.31';
+$VERSION = '2.32';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -241,7 +241,6 @@ my %unknownInfo = (
 my %langText = (
     Notes => 'used in 3gp videos',
     IText => 6,
-    Preferred => 0,
     Avoid => 1,
 );
 
@@ -418,45 +417,6 @@ my %eeBox = (
     PROCESS_PROC => \&ProcessMOV,
     WRITE_PROC => \&WriteQuickTime, # (only needs to be defined for directories to process when writing)
     GROUPS => { 2 => 'Video' },
-    NOTES => q{
-        The QuickTime format is used for many different types of audio, video and
-        image files (most notably, MOV/MP4 videos and HEIC/CR3 images).  Exiftool
-        extracts standard meta information and a variety of audio, video and image
-        parameters, as well as proprietary information written by many camera
-        models.  Tags with a question mark after their name are not extracted unless
-        the Unknown option is set.
-
-        When writing, ExifTool creates both QuickTime and XMP tags by default, but
-        the group may be specified to write one or the other separately.  If no
-        location is specified, newly created QuickTime tags are added in the
-        ItemList location if possible, otherwise in UserData, and finally in Keys,
-        but this order may be changed by setting the PREFERRED level of the
-        appropriate table in the config file (see L<example.config|../config.html#PREF> in the full
-        distribution for an example).  ExifTool currently writes only top-level
-        metadata in QuickTime-based files; it extracts other track-specific and
-        timed metadata, but can not yet edit tags in these locations.
-
-        Alternate language tags may be accessed for ItemList and Keys tags by adding
-        a 3-character ISO 639-2 language code and an optional ISO 3166-1 alpha 2
-        country code to the tag name (eg. "ItemList:Artist-deu" or
-        "ItemList::Artist-deu-DE").  UserData tags support only a language code
-        (without a country code).  If no language code is specified when writing,
-        alternate languages for the tag are deleted.  Use the "und" language code to
-        write the default language without deleting alternate languages.  Note that
-        "eng" is treated as a default language when reading, but not when writing.
-
-        According to the specification, many QuickTime date/time tags should be
-        stored as UTC.  Unfortunately, digital cameras often store local time values
-        instead (presumably because they don't know the time zone).  For this
-        reason, by default ExifTool does not assume a time zone for these values.
-        However, if the QuickTimeUTC API option is set, then ExifTool will assume
-        these values are properly stored as UTC, and will convert them to local time
-        when extracting.
-
-        See
-        L<https://developer.apple.com/library/archive/documentation/QuickTime/QTFF/>
-        for the official specification.
-    },
     meta => { # 'meta' is found here in my Sony ILCE-7S MP4 sample - PH
         Name => 'Meta',
         SubDirectory => {
@@ -1367,6 +1327,12 @@ my %eeBox = (
         text.  Alternate language tags are accessed by adding a dash followed by a
         3-character ISO 639-2 language code to the tag name.  ExifTool will extract
         any multi-language user data tags found, even if they aren't in this table.
+        Note when creating new tags,
+        L<ItemList Tags|Image::ExifTool::TagNames/QuickTime ItemList Tags> are
+        preferred over these, so to create the tag when a same-named ItemList tag
+        exists, either "UserData" must be specified (eg. C<-UserData:Artist=Monet>
+        on the command line), or the PREFERRED level must be changed via the config
+        file.
     },
     "\xa9cpy" => { Name => 'Copyright',  Groups => { 2 => 'Author' } },
     "\xa9day" => {
@@ -1433,7 +1399,7 @@ my %eeBox = (
     "\xa9swr" => 'SoftwareVersion', #12
     "\xa9too" => 'Encoder', #PH (NC)
     "\xa9trk" => 'Track', #PH (NC)
-    "\xa9wrt" => { Name => 'Composer', Preferred => 0, Avoid => 1 }, # ("\xa9com" is preferred in UserData)
+    "\xa9wrt" => { Name => 'Composer', Avoid => 1 }, # ("\xa9com" is preferred in UserData)
     "\xa9xyz" => { #PH (iPhone 3GS)
         Name => 'GPSCoordinates',
         Groups => { 2 => 'Location' },
@@ -1457,7 +1423,12 @@ my %eeBox = (
     "\xa9dji" => { Name => 'UserData_dji', Format => 'undef', Binary => 1, Unknown => 1, Hidden => 1 },
     "\xa9res" => { Name => 'UserData_res', Format => 'undef', Binary => 1, Unknown => 1, Hidden => 1 },
     "\xa9uid" => { Name => 'UserData_uid', Format => 'undef', Binary => 1, Unknown => 1, Hidden => 1 },
-    "\xa9mdl" => { Name => 'Model',        Format => 'string', Preferred => 0, Notes => 'non-standard-format DJI tag' },
+    "\xa9mdl" => {
+        Name => 'Model',
+        Notes => 'non-standard-format DJI tag',
+        Format => 'string',
+        Avoid => 1,
+    },
     # end DJI tags
     name => 'Name',
     WLOC => {
@@ -1508,13 +1479,14 @@ my %eeBox = (
     # the following are 3gp tags, references:
     # http://atomicparsley.sourceforge.net
     # http://www.3gpp.org/ftp/tsg_sa/WG4_CODEC/TSGS4_25/Docs/
-    cprt => { Name => 'Copyright',  %langText, Groups => { 2 => 'Author' }, Preferred => 0 },
-    auth => { Name => 'Author',     %langText, Preferred => 0, Groups => { 2 => 'Author' } },
-    titl => { Name => 'Title',      %langText, Preferred => 0 },
+    # (note that all %langText tags are Avoid => 1)
+    cprt => { Name => 'Copyright',  %langText, Groups => { 2 => 'Author' } },
+    auth => { Name => 'Author',     %langText, Groups => { 2 => 'Author' } },
+    titl => { Name => 'Title',      %langText },
     dscp => { Name => 'Description',%langText },
     perf => { Name => 'Performer',  %langText },
-    gnre => { Name => 'Genre',      %langText, Preferred => 0 },
-    albm => { Name => 'Album',      %langText, Preferred => 0 },
+    gnre => { Name => 'Genre',      %langText },
+    albm => { Name => 'Album',      %langText },
     coll => { Name => 'CollectionName', %langText }, #17
     rtng => {
         Name => 'Rating',
@@ -1629,7 +1601,7 @@ my %eeBox = (
     cmnm => { # (NC)
         Name => 'Model',
         Description => 'Camera Model Name',
-        Preferred => 0,
+        Avoid => 1,
         Format => 'string', # (necessary to remove the trailing NULL)
     },
     date => { # (NC)
@@ -1653,14 +1625,14 @@ my %eeBox = (
     },
     manu => { # (SX280)
         Name => 'Make',
-        Preferred => 0,
+        Avoid => 1,
         # (with Canon there are 6 unknown bytes before the model: "\0\0\0\0\x15\xc7")
         RawConv => '$val=~s/^\0{4}..//s; $val=~s/\0.*//; $val',
     },
     modl => { # (Samsung GT-S8530, Canon SX280)
         Name => 'Model',
         Description => 'Camera Model Name',
-        Preferred => 0,
+        Avoid => 1,
         # (with Canon there are 6 unknown bytes before the model: "\0\0\0\0\x15\xc7")
         RawConv => '$val=~s/^\0{4}..//s; $val=~s/\0.*//; $val',
     },
@@ -1812,7 +1784,7 @@ my %eeBox = (
     CNMN => {
         Name => 'Model', #PH (EOS 550D)
         Description => 'Camera Model Name',
-        Preferred => 0,
+        Avoid => 1,
         Format => 'string', # (necessary to remove the trailing NULL)
     },
     CNFV => { Name => 'FirmwareVersion', Format => 'string' }, #PH (EOS 550D)
@@ -1858,7 +1830,7 @@ my %eeBox = (
     },
     # ---- GoPro ---- (ref PH)
     GoPr => 'GoProType', # (Hero3+)
-    FIRM => 'FirmwareVersion', # (Hero4)
+    FIRM => { Name => 'FirmwareVersion', Avoid => 1 }, # (Hero4)
     LENS => 'LensSerialNumber', # (Hero4)
     CAME => { # (Hero4)
         Name => 'SerialNumberHash',
@@ -1889,10 +1861,10 @@ my %eeBox = (
         Name => 'KodakDcMD',
         SubDirectory => { TagTable => 'Image::ExifTool::Kodak::DcMD' },
     },
-    SNum => { Name => 'SerialNumber', Groups => { 2 => 'Camera' } },
-    ptch => { Name => 'Pitch', Format => 'rational64s', Preferred => 0 }, # Units??
-    _yaw => { Name => 'Yaw',   Format => 'rational64s', Preferred => 0 }, # Units??
-    roll => { Name => 'Roll',  Format => 'rational64s', Preferred => 0 }, # Units??
+    SNum => { Name => 'SerialNumber', Avoid => 1, Groups => { 2 => 'Camera' } },
+    ptch => { Name => 'Pitch', Format => 'rational64s', Avoid => 1 }, # Units??
+    _yaw => { Name => 'Yaw',   Format => 'rational64s', Avoid => 1 }, # Units??
+    roll => { Name => 'Roll',  Format => 'rational64s', Avoid => 1 }, # Units??
     _cx_ => { Name => 'CX',    Format => 'rational64s', Unknown => 1 },
     _cy_ => { Name => 'CY',    Format => 'rational64s', Unknown => 1 },
     rads => { Name => 'Rads',  Format => 'rational64s', Unknown => 1 },
@@ -2641,10 +2613,9 @@ my %eeBox = (
     WRITE_GROUP => 'ItemList',
     LANG_INFO => \&GetLangInfo,
     NOTES => q{
-        As well as these tags, the "mdta" handler uses numerical tag ID's which are
-        added dynamically to this table after processing the Meta Keys information.
-        Tags in this table support alternate languages which are accessed by adding
-        a 3-character ISO 639-2 language code and an optional ISO 3166-1 alpha 2
+        This is the preferred location for creating new QuickTime tags.  Tags in
+        this table support alternate languages which are accessed by adding a
+        3-character ISO 639-2 language code and an optional ISO 3166-1 alpha 2
         country code to the tag name (eg. "ItemList:Title-fra" or
         "ItemList::Title-fra-FR").
     },
@@ -2654,9 +2625,9 @@ my %eeBox = (
     #  from being created when a same-named tag already exists in the table)
     "\xa9ART" => 'Artist',
     "\xa9alb" => 'Album',
-    "\xa9aut" => { Name => 'Author', Preferred => 0, Groups => { 2 => 'Author' } }, #forum10091 ('auth' is preferred)
+    "\xa9aut" => { Name => 'Author', Avoid => 1, Groups => { 2 => 'Author' } }, #forum10091 ('auth' is preferred)
     "\xa9cmt" => 'Comment',
-    "\xa9com" => { Name => 'Composer', Preferred => 0 }, # ("\xa9wrt" is preferred in ItemList)
+    "\xa9com" => { Name => 'Composer', Avoid => 1, }, # ("\xa9wrt" is preferred in ItemList)
     "\xa9day" => {
         Name => 'ContentCreateDate',
         Groups => { 2 => 'Time' },
@@ -2731,7 +2702,7 @@ my %eeBox = (
             1 => 'AOL',
         },
     },
-    albm => { Name => 'Album', Preferred => 0 }, #(ffmpeg source)
+    albm => { Name => 'Album', Avoid => 1 }, #(ffmpeg source)
     apID => 'AppleStoreAccount',
     atID => { #10 (or TV series)
         Name => 'AlbumTitleID',
@@ -2744,15 +2715,20 @@ my %eeBox = (
         Format => 'int32u',
     },
     cprt => { Name => 'Copyright', Groups => { 2 => 'Author' } },
-    dscp => { Name => 'Description', Preferred => 0 },
-    desc => { Name => 'Description', Preferred => 0 }, #7
+    dscp => { Name => 'Description', Avoid => 1 },
+    desc => { Name => 'Description', Avoid => 1 }, #7
     gnre => { #10
         Name => 'Genre',
-        Preferred => 0,
+        Avoid => 1,
         PrintConv => q{
             return $val unless $val =~ /^\d+$/;
             require Image::ExifTool::ID3;
             Image::ExifTool::ID3::PrintGenre($val - 1); # note the "- 1"
+        },
+        PrintConvInv => q{
+            require Image::ExifTool::ID3;
+            my $id = Image::ExifTool::ID3::GetGenreID($val);
+            return defined $id ? $id : $val;
         },
     },
     egid => 'EpisodeGlobalUniqueID', #7
@@ -5134,7 +5110,7 @@ my %eeBox = (
             50000092 => 'Audiobooks|Erotica',
         },
     },
-    grup => { Name => 'Grouping', Preferred => 0 }, #10
+    grup => { Name => 'Grouping', Avoid => 1 }, #10
     hdvd => { #10
         Name => 'HDVideo',
         PrintConv => { 0 => 'No', 1 => 'Yes' },
@@ -5347,7 +5323,7 @@ my %eeBox = (
         },
     },
     rate => 'RatingPercent', #PH
-    titl => { Name => 'Title', Preferred => 0 },
+    titl => { Name => 'Title', Avoid => 1 },
     tven => 'TVEpisodeID', #7
     tves => { #7/10
         Name => 'TVEpisode',
@@ -5388,7 +5364,7 @@ my %eeBox = (
     },
 
     # atoms observed in AAX audiobooks (ref PH)
-    "\xa9cpy" => { Name => 'Copyright', Preferred => 0, Groups => { 2 => 'Author' } },
+    "\xa9cpy" => { Name => 'Copyright', Avoid => 1, Groups => { 2 => 'Author' } },
     "\xa9pub" => 'Publisher',
     "\xa9nrt" => 'Narrator',
     '@pti' => 'ParentTitle', # (guess -- same as "\xa9nam")
@@ -5443,9 +5419,18 @@ my %eeBox = (
     LANG_INFO => \&GetLangInfo,
     FORMAT => 'string',
     NOTES => q{
-        This directory contains a list of key names which are used to decode
-        ItemList tags written by the "mdta" handler.  The prefix of
-        "com.apple.quicktime." has been removed from all TagID's below.
+        This directory contains a list of key names which are used to decode tags
+        written by the "mdta" handler.  The prefix of "com.apple.quicktime." has
+        been removed from all TagID's below.  These tags support alternate languages
+        in the same way as the
+        L<ItemList Tags|Image::ExifTool::TagNames/QuickTime ItemList Tags>.  Note
+        that by default,
+        L<ItemList|Image::ExifTool::TagNames/QuickTime ItemList Tags> and
+        L<UserData|Image::ExifTool::TagNames/QuickTime UserData Tags> tags are
+        preferred when writing, so to create a tag when a same-named tag exists in
+        either of these tables, either the "Keys" location must be specified (eg.
+        C<-Keys:Author=Phil> on the command line), or the PREFERRED level must be
+        changed via the config file.
     },
     version     => 'Version',
     album       => 'Album',

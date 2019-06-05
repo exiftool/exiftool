@@ -116,7 +116,7 @@ my $mwgLoaded;  # flag set if we alreaded Load()ed the MWG tags
     DateTimeOriginal => {
         Description => 'Date/Time Original',
         Groups => { 2 => 'Time' },
-        Notes => '"creation date of the intellectual content being shown" - MWG',
+        Notes => '"specifies when a photo was taken" - MWG',
         Writable => 1,
         Shift => 0, # don't shift this tag
         Desire => {
@@ -158,7 +158,7 @@ my $mwgLoaded;  # flag set if we alreaded Load()ed the MWG tags
     },
     CreateDate => {
         Groups => { 2 => 'Time' },
-        Notes => '"creation date of the digital representation" - MWG',
+        Notes => '"specifies when an image was digitized" - MWG',
         Writable => 1,
         Shift => 0, # don't shift this tag
         Desire => {
@@ -196,7 +196,7 @@ my $mwgLoaded;  # flag set if we alreaded Load()ed the MWG tags
     },
     ModifyDate => {
         Groups => { 2 => 'Time' },
-        Notes => '"modification date of the digital image file" - MWG',
+        Notes => '"specifies when a file was modified by the user" - MWG',
         Writable => 1,
         Shift => 0, # don't shift this tag
         Desire => {

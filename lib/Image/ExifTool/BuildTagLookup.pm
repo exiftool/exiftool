@@ -34,7 +34,7 @@ use Image::ExifTool::Nikon;
 use Image::ExifTool::Validate;
 use Image::ExifTool::MacOS;
 
-$VERSION = '3.22';
+$VERSION = '3.23';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -193,11 +193,11 @@ of values written, or the number of characters in a fixed-length string
 A plus sign (C<+>) after an entry in the B<Writable> column indicates a
 I<List> tag which supports multiple values and allows individual values to
 be added and deleted.  A slash (C</>) indicates a tag that ExifTool will
-I<Avoid> when writing.  These tags are not created when writing if another
-same-named tag may be created instead.  To write these tags, the group
+I<Avoid> when writing.  These will be edited but not created if another
+same-named tag may be created instead.  To create these tags, the group
 should be specified.  A tilde (C<~>) indicates a tag this is writable only
 when the print conversion is disabled (by setting PrintConv to 0, using the
--n option, or suffixing the tag name with a C<#> character).  An exclamation
+-n option, or suffixing the tag name with a C<#> character). An exclamation
 point (C<!>) indicates a tag that is considered I<Unsafe> to write under
 normal circumstances.  These tags are not written unless specified
 explicitly (ie. not when wildcards or "all" are used), and care should be
@@ -404,6 +404,50 @@ number added for non-standard IPTC ("IPTC2", "IPTC3", etc), but when writing
 only "IPTC" may be specified as the group.  To keep the IPTC consistent,
 ExifTool updates tags in all existing IPTC locations, but will create a new
 IPTC group only in the standard location.
+},
+    QuickTime => q{
+The QuickTime format is used for many different types of audio, video and
+image files (most notably, MOV/MP4 videos and HEIC/CR3 images).  Exiftool
+extracts standard meta information and a variety of audio, video and image
+parameters, as well as proprietary information written by many camera
+models.  Tags with a question mark after their name are not extracted unless
+the Unknown option is set.
+
+When writing, ExifTool creates both QuickTime and XMP tags by default, but
+the group may be specified to write one or the other separately.  If no
+location is specified, newly created QuickTime tags are added in the
+L<ItemList|Image::ExifTool::TagNames/QuickTime ItemList Tags> location if
+possible, otherwise in
+L<UserData|Image::ExifTool::TagNames/QuickTime UserData Tags>, and
+finally in L<Keys|Image::ExifTool::TagNames/QuickTime Keys Tags>,
+but this order may be changed by setting the PREFERRED level of the
+appropriate table in the config file (see
+L<example.config|../config.html#PREF> in the full distribution for
+an example).  ExifTool currently writes only top-level metadata in
+QuickTime-based files; it extracts other track-specific and timed
+metadata, but can not yet edit tags in these locations (with the
+exception of track-level date/time tags).
+
+Alternate language tags may be accessed for ItemList and Keys tags by adding
+a 3-character ISO 639-2 language code and an optional ISO 3166-1 alpha 2
+country code to the tag name (eg. "ItemList:Artist-deu" or
+"ItemList::Artist-deu-DE").  Most UserData tags support a language code, but
+without a country code.  If no language code is specified when writing,
+alternate languages for the tag are deleted.  Use the "und" language code to
+write the default language without deleting alternate languages.  Note that
+"eng" is treated as a default language when reading, but not when writing.
+
+According to the specification, many QuickTime date/time tags should be
+stored as UTC.  Unfortunately, digital cameras often store local time values
+instead (presumably because they don't know the time zone).  For this
+reason, by default ExifTool does not assume a time zone for these values.
+However, if the QuickTimeUTC API option is set, then ExifTool will assume
+these values are properly stored as UTC, and will convert them to local time
+when extracting.
+
+See
+L<https://developer.apple.com/library/archive/documentation/QuickTime/QTFF/>
+for the official specification.
 },
     Photoshop => q{
 Photoshop tags are found in PSD and PSB files, as well as inside embedded

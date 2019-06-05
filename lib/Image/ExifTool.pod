@@ -979,7 +979,9 @@ list below.  Default is 'wcg'.
 
 The level of the group differs for different types of metadata. For XMP or
 IPTC this is the full XMP/IPTC block (the family 0 group), but for EXIF this
-is the individual IFD (the family 1 group).
+is the individual IFD (the family 1 group).  The 'w' and 'c' modes are
+tested only when L</SetNewValue> is called, but the 'g' mode is also tested
+in L</WriteInfo>.
 
 =item XAttrTags
 
@@ -1175,8 +1177,8 @@ called with a source file name.
 The following ExifTool options are effective in the call to L</WriteInfo>:
 
 ByteOrder, Charset, CharsetEXIF, CharsetFileName, CharsetIPTC, Compact,
-Compress, FixBase, IgnoreMinorErrors, Password, PNGEarlyXMP, Verbose and
-XMPShorthand.
+Compress, FixBase, IgnoreMinorErrors, Password, PNGEarlyXMP,
+QuickTimeHandler, Verbose, WriteMode and XMPShorthand.
 
 =head2 GetTagList
 

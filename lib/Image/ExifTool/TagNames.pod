@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 22593 tags, with 15011 unique tag names.
+They contain a total of 22566 tags, with 15012 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -46,11 +46,11 @@ of values written, or the number of characters in a fixed-length string
 A plus sign (C<+>) after an entry in the B<Writable> column indicates a
 I<List> tag which supports multiple values and allows individual values to
 be added and deleted.  A slash (C</>) indicates a tag that ExifTool will
-I<Avoid> when writing.  These tags are not created when writing if another
-same-named tag may be created instead.  To write these tags, the group
+I<Avoid> when writing.  These will be edited but not created if another
+same-named tag may be created instead.  To create these tags, the group
 should be specified.  A tilde (C<~>) indicates a tag this is writable only
 when the print conversion is disabled (by setting PrintConv to 0, using the
--n option, or suffixing the tag name with a C<#> character).  An exclamation
+-n option, or suffixing the tag name with a C<#> character). An exclamation
 point (C<!>) indicates a tag that is considered I<Unsafe> to write under
 normal circumstances.  These tags are not written unless specified
 explicitly (ie. not when wildcards or "all" are used), and care should be
@@ -24008,18 +24008,23 @@ the Unknown option is set.
 When writing, ExifTool creates both QuickTime and XMP tags by default, but
 the group may be specified to write one or the other separately.  If no
 location is specified, newly created QuickTime tags are added in the
-ItemList location if possible, otherwise in UserData, and finally in Keys,
+L<ItemList|Image::ExifTool::TagNames/QuickTime ItemList Tags> location if
+possible, otherwise in
+L<UserData|Image::ExifTool::TagNames/QuickTime UserData Tags>, and
+finally in L<Keys|Image::ExifTool::TagNames/QuickTime Keys Tags>,
 but this order may be changed by setting the PREFERRED level of the
-appropriate table in the config file (see example.config in the full
-distribution for an example).  ExifTool currently writes only top-level
-metadata in QuickTime-based files; it extracts other track-specific and
-timed metadata, but can not yet edit tags in these locations.
+appropriate table in the config file (see
+example.config in the full distribution for
+an example).  ExifTool currently writes only top-level metadata in
+QuickTime-based files; it extracts other track-specific and timed
+metadata, but can not yet edit tags in these locations (with the
+exception of track-level date/time tags).
 
 Alternate language tags may be accessed for ItemList and Keys tags by adding
 a 3-character ISO 639-2 language code and an optional ISO 3166-1 alpha 2
 country code to the tag name (eg. "ItemList:Artist-deu" or
-"ItemList::Artist-deu-DE").  UserData tags support only a language code
-(without a country code).  If no language code is specified when writing,
+"ItemList::Artist-deu-DE").  Most UserData tags support a language code, but
+without a country code.  If no language code is specified when writing,
 alternate languages for the tag are deleted.  Use the "und" language code to
 write the default language without deleting alternate languages.  Note that
 "eng" is treated as a default language when reading, but not when writing.
@@ -24252,9 +24257,18 @@ specification.
 
 =head3 QuickTime Keys Tags
 
-This directory contains a list of key names which are used to decode
-ItemList tags written by the "mdta" handler.  The prefix of
-"com.apple.quicktime." has been removed from all TagID's below.
+This directory contains a list of key names which are used to decode tags
+written by the "mdta" handler.  The prefix of "com.apple.quicktime." has
+been removed from all TagID's below.  These tags support alternate languages
+in the same way as the
+L<ItemList Tags|Image::ExifTool::TagNames/QuickTime ItemList Tags>.  Note
+that by default,
+L<ItemList|Image::ExifTool::TagNames/QuickTime ItemList Tags> and
+L<UserData|Image::ExifTool::TagNames/QuickTime UserData Tags> tags are
+preferred when writing, so to create a tag when a same-named tag exists in
+either of these tables, either the "Keys" location must be specified (eg.
+C<-Keys:Author=Phil> on the command line), or the PREFERRED level must be
+changed via the config file.
 
   Tag ID                  Tag Name              Writable
   ------                  --------              --------
@@ -24419,10 +24433,9 @@ MP4 data reference box.
 
 =head3 QuickTime ItemList Tags
 
-As well as these tags, the "mdta" handler uses numerical tag ID's which are
-added dynamically to this table after processing the Meta Keys information.
-Tags in this table support alternate languages which are accessed by adding
-a 3-character ISO 639-2 language code and an optional ISO 3166-1 alpha 2
+This is the preferred location for creating new QuickTime tags.  Tags in
+this table support alternate languages which are accessed by adding a
+3-character ISO 639-2 language code and an optional ISO 3166-1 alpha 2
 country code to the tag name (eg. "ItemList:Title-fra" or
 "ItemList::Title-fra-FR").
 
@@ -24440,7 +24453,7 @@ country code to the tag name (eg. "ItemList:Title-fra" or
   'VERS'       ProductVersion                   string
   'aART'       AlbumArtist                      string
   'akID'       AppleStoreAccountType            string
-  'albm'       Album                            string
+  'albm'       Album                            string/
   'apID'       AppleStoreAccount                string
   'atID'       AlbumTitleID                     int32u
   'auth'       Author                           string
@@ -24449,13 +24462,13 @@ country code to the tag name (eg. "ItemList:Title-fra" or
   'covr'       CoverArt                         string
   'cpil'       Compilation                      string
   'cprt'       Copyright                        string
-  'desc'       Description                      string
+  'desc'       Description                      string/
   'disk'       DiskNumber                       undef
-  'dscp'       Description                      string
+  'dscp'       Description                      string/
   'egid'       EpisodeGlobalUniqueID            string
   'geID'       GenreID                          int32u
-  'gnre'       Genre                            string~
-  'grup'       Grouping                         string
+  'gnre'       Genre                            string/
+  'grup'       Grouping                         string/
   'gshh'       GoogleHostHeader                 string
   'gspm'       GooglePingMessage                string
   'gspu'       GooglePingURL                    string
@@ -24484,7 +24497,7 @@ country code to the tag name (eg. "ItemList:Title-fra" or
   'sonm'       SortName                         string
   'sosn'       SortShow                         string
   'stik'       MediaType                        string
-  'titl'       Title                            string
+  'titl'       Title                            string/
   'tmpo'       BeatsPerMinute                   int16u
   'trkn'       TrackNumber                      undef
   'tven'       TVEpisodeID                      string
@@ -24495,10 +24508,10 @@ country code to the tag name (eg. "ItemList:Title-fra" or
   'yrrc'       Year                             string
   "\xa9ART"    Artist                           string
   "\xa9alb"    Album                            string
-  "\xa9aut"    Author                           string
+  "\xa9aut"    Author                           string/
   "\xa9cmt"    Comment                          string
-  "\xa9com"    Composer                         string
-  "\xa9cpy"    Copyright                        string
+  "\xa9com"    Composer                         string/
+  "\xa9cpy"    Copyright                        string/
   "\xa9day"    ContentCreateDate                string
   "\xa9des"    Description                      string
   "\xa9enc"    EncodedBy                        string
@@ -25028,27 +25041,28 @@ Tag ID's beginning with the copyright symbol (hex 0xa9) are multi-language
 text.  Alternate language tags are accessed by adding a dash followed by a
 3-character ISO 639-2 language code to the tag name.  ExifTool will extract
 any multi-language user data tags found, even if they aren't in this table.
+Note when creating new tags,
+L<ItemList Tags|Image::ExifTool::TagNames/QuickTime ItemList Tags> are
+preferred over these, so to create the tag when a same-named ItemList tag
+exists, either "UserData" must be specified (eg. C<-UserData:Artist=Monet>
+on the command line), or the PREFERRED level must be changed via the config
+file.
 
   Tag ID       Tag Name                         Writable
   ------       --------                         --------
-  '@PST'       ParentShortTitle                 string
-  '@ppi'       ParentProductID                  string
-  '@pti'       ParentTitle                      string
   '@sec'       SamsungSec                       Samsung sec
-  '@sti'       ShortTitle                       string
   'AllF'       PlayAllFrames                    int8u
   'CAME'       SerialNumberHash                 string
   'CNCV'       CompressorVersion                string
   'CNFV'       FirmwareVersion                  string
-  'CNMN'       Model                            string
+  'CNMN'       Model                            string/
   'CNOP'       CanonCNOP                        Canon CNOP
   'CNTH'       CanonCNTH                        Canon CNTH
   'DcMD'       KodakDcMD                        Kodak DcMD
   'FFMV'       FujiFilmFFMV                     FujiFilm FFMV
-  'FIRM'       FirmwareVersion                  string
+  'FIRM'       FirmwareVersion                  string/
   "FOV\0"      FieldOfView                      string
   'GPMF'       GoProGPMF                        GoPro GPMF
-  'GUID'       GUID                             string
   'GoPr'       GoProType                        string
   'INFO'       SamsungINFO                      Samsung INFO
   'LEIC'       LeicaLEIC                        Panasonic PANA
@@ -25069,7 +25083,7 @@ any multi-language user data tags found, even if they aren't in this table.
   'RMKN'       RicohRMKN                        EXIF
   'RTHU'       PreviewImage                     no
   'SDLN'       PlayMode                         string
-  'SNum'       SerialNumber                     string
+  'SNum'       SerialNumber                     string/
   'SelO'       PlaySelection                    int8u
   'TAGS'       FujiFilmTags                     FujiFilm MOV
                KodakTags                        Kodak MOV
@@ -25086,20 +25100,17 @@ any multi-language user data tags found, even if they aren't in this table.
                SanyoMP4                         Sanyo MP4
                UnknownTags?                     string
   'TTMD'       TomTomMetaData                   QuickTime TomTom
-  'VERS'       ProductVersion                   string
   'WLOC'       WindowLocation                   int16u
   'XMP_'       XMP                              XMP
   'Xtra'       MicrosoftXtra                    Microsoft Xtra
   '_cx_'       CX?                              rational64s
   '_cy_'       CY?                              rational64s
-  '_yaw'       Yaw                              rational64s
+  '_yaw'       Yaw                              rational64s/
   'albm'       Album                            string/
   'albr'       AlbumArtist                      string
   'angl'       CameraAngle                      string
-  'apID'       AppleStoreAccount                string
   'apmd'       ApertureMode                     undef
   'auth'       Author                           string/
-  'catg'       Category                         string
   'ccid'       ContentID                        string
   'cdis'       ContentDistributorID             string
   'chpl'       ChapterList                      no
@@ -25107,14 +25118,13 @@ any multi-language user data tags found, even if they aren't in this table.
   'clid'       ClipID                           string
   'clsf'       Classification                   no
   'cmid'       CameraID                         string
-  'cmnm'       Model                            string
+  'cmnm'       Model                            string/
   'coll'       CollectionName                   string/
   'cprt'       Copyright                        string/
   'cver'       CodeVersion                      string
   'cvru'       CoverURI                         string
   'date'       DateTimeOriginal                 string
   'dscp'       Description                      string/
-  'egid'       EpisodeGlobalUniqueID            string
   'gnre'       Genre                            string/
   'hinf'       HintTrackInfo                    QuickTime HintTrackInfo
   'hinv'       HintVersion                      string
@@ -25122,10 +25132,8 @@ any multi-language user data tags found, even if they aren't in this table.
   'htcb'       HTCBinary                        QuickTime HTCBinary
   'icnu'       IconURI                          string
   'infu'       InfoURL                          string
-  'keyw'       Keyword                          string
   'kgtt'       TrackType                        string
   'kywd'       Keywords                         no
-  'ldes'       LongDescription                  string
   'loci'       LocationInformation              no
   'lrcu'       LyricsURI                        string
   'lvlm'       LevelMeter?                      rational64s
@@ -25133,29 +25141,19 @@ any multi-language user data tags found, even if they aren't in this table.
   'meta'       Meta                             QuickTime Meta
   'modl'       Model                            no
   'name'       Name                             string
-  'perf'       Performer                        string
+  'perf'       Performer                        string/
   'pose'       pose                             Kodak pose
-  'prID'       ProductID                        string
-  'ptch'       Pitch                            rational64s
+  'ptch'       Pitch                            rational64s/
   'ptv '       PrintToVideo                     QuickTime Video
-  'purd'       PurchaseDate                     string
-  'purl'       PodcastURL                       string
   'rads'       Rads?                            rational64s
-  'rate'       RatingPercent                    string
   'reel'       ReelName                         string
-  'roll'       Roll                             rational64s
+  'roll'       Roll                             rational64s/
   'rtng'       Rating                           no
   'scen'       Scene                            string
   'scrn'       OlympusPreview                   Olympus scrn
   'shot'       ShotName                         string
   'slno'       SerialNumber                     string
   'smta'       SamsungSmta                      Samsung smta
-  'soaa'       SortAlbumArtist                  string
-  'soal'       SortAlbum                        string
-  'soar'       SortArtist                       string
-  'soco'       SortComposer                     string
-  'sonm'       SortName                         string
-  'sosn'       SortShow                         string
   'tags'       Audible_tags                     Audible tags
   'thmb'       MakerNotePentax5a                Pentax
                OlympusThumbnail                 Olympus thmb
@@ -25163,12 +25161,9 @@ any multi-language user data tags found, even if they aren't in this table.
                ThumbnailPNG                     string
                UnknownThumbnail                 string
   'titl'       Title                            string/
-  'tven'       TVEpisodeID                      string
-  'tvnn'       TVNetworkName                    string
-  'tvsh'       TVShow                           string
   'urat'       UserRating                       no
   'vndr'       Vendor                           string
-  'yrrc'       Year                             string
+  'yrrc'       Year                             no
   "\xa9ART"    Artist                           string
   "\xa9TSC"    StartTimeScale                   string
   "\xa9TSZ"    StartTimeSampleSize              string
@@ -25180,7 +25175,6 @@ any multi-language user data tags found, even if they aren't in this table.
   "\xa9com"    Composer                         string
   "\xa9cpy"    Copyright                        string
   "\xa9day"    ContentCreateDate                string
-  "\xa9des"    Description                      string
   "\xa9dir"    Director                         string
   "\xa9ed1"    Edit1                            string
   "\xa9ed2"    Edit2                            string
@@ -25191,7 +25185,7 @@ any multi-language user data tags found, even if they aren't in this table.
   "\xa9ed7"    Edit7                            string
   "\xa9ed8"    Edit8                            string
   "\xa9ed9"    Edit9                            string
-  "\xa9enc"    EncodedBy                        string
+  "\xa9enc"    EncoderID                        string
   "\xa9fmt"    Format                           string
   "\xa9fpt"    Pitch                            string
   "\xa9frl"    Roll                             string
@@ -25208,17 +25202,15 @@ any multi-language user data tags found, even if they aren't in this table.
   "\xa9lyr"    Lyrics                           string
   "\xa9mak"    Make                             string
   "\xa9mal"    MakerURL                         string
-  "\xa9mdl"    Model                            string
+  "\xa9mdl"    Model                            string/
   "\xa9mod"    Model                            string
   "\xa9nam"    Title                            string
-  "\xa9nrt"    Narrator                         string
   "\xa9pdk"    ProducerKeywords                 string
   "\xa9phg"    RecordingCopyright               string
   "\xa9prd"    Producer                         string
   "\xa9prf"    Performers                       string
   "\xa9prk"    PerformerKeywords                string
   "\xa9prl"    PerformerURL                     string
-  "\xa9pub"    Publisher                        string
   "\xa9req"    Requirements                     string
   "\xa9snk"    SubtitleKeywords                 string
   "\xa9snm"    Subtitle                         string
@@ -25228,7 +25220,7 @@ any multi-language user data tags found, even if they aren't in this table.
   "\xa9swr"    SoftwareVersion                  string
   "\xa9too"    Encoder                          string
   "\xa9trk"    Track                            string
-  "\xa9wrt"    Composer                         string
+  "\xa9wrt"    Composer                         string/
   "\xa9xsp"    SpeedX                           string
   "\xa9xyz"    GPSCoordinates                   string
   "\xa9ysp"    SpeedY                           string

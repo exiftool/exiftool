@@ -16,7 +16,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.52';
+$VERSION = '1.53';
 
 sub ProcessID3v2($$$);
 sub ProcessPrivate($$$);
@@ -967,6 +967,15 @@ sub PrintGenre($)
     $val =~ s/(^|\/)(\d+)(?=\/|$)/$1$genre{$2}/g;
     $val =~ s/^\(([^)]+)\)\1?$/$1/; # clean up by removing brackets and duplicates
     return $val;
+}
+
+#------------------------------------------------------------------------------
+# Get Genre ID
+# Inputs: 0) Genre name
+# Returns: genre ID number, or undef
+sub GetGenreID($)
+{
+    return Image::ExifTool::ReverseLookup(shift, \%genre);
 }
 
 #------------------------------------------------------------------------------

@@ -4,8 +4,23 @@ ExifTool Version History
 
 RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 
-Note: The most recent production release is Version 11.30. (Other versions are
+Note: The most recent production release is Version 11.50. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
+
+June 11, 2019 - Version 11.50 (production release)
+
+  - Added a new Canon LensType and two new Sony LensTypes (thanks LibRaw)
+  - Added tiff_version and rotate_regions config files to the distribution
+  - Added two new QuickTime Keys tags and made some existing Keys unwritable
+  - Improved Composite LensID logic to make better use of EXIF LensModel
+  - Improved logic when writing BinaryData tags to allow multiple interdependent
+    tags to be written in a single command
+  - Improved -htmldump output to show names of Unknown tags
+  - Allow advanced formatting expressions to access the current tag key ($tag)
+  - Remove escaped nulls from -json string values
+  - Reverted change in ExifTool 11.38 so that Composite GPS reference directions
+    are generated again even if the EXIF versions of these tags already exist
+  - Fixed an incorrect FlashPix CodePage conversion
 
 June 5, 2019 - Version 11.49
 

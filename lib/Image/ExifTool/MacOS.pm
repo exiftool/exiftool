@@ -28,7 +28,7 @@ my %mdDateInfo = (
     NOTES => q{
         MDItem tags are extracted using the "mdls" utility.  They are extracted if
         any "MDItem*" tag or the MacOS group is specifically requested, or by
-        setting the L<MDItemTags API option|../ExifTool.html#MDItemTags> to 1 or the L<RequestAll API option|../ExifTool.html#RequestAll> to 2 or
+        setting the L<MDItemTags|../ExifTool.html#MDItemTags> API option to 1 or the L<RequestAll|../ExifTool.html#RequestAll> API option to 2 or
         higher.  Note that these tags do not necessarily reflect the current
         metadata of a file -- it may take some time for the MacOS mdworker daemon to
         index the file after a metadata change.
@@ -220,7 +220,7 @@ my %mdDateInfo = (
     NOTES => q{
         XAttr tags are extracted using the "xattr" utility.  They are extracted if
         any "XAttr*" tag or the MacOS group is specifically requested, or by setting
-        the L<XAttrTags API option|../ExifTool.html#XAttrTags> to 1 or the L<RequestAll API option|../ExifTool.html#RequestAll> to 2 or higher.
+        the L<XAttrTags|../ExifTool.html#XAttrTags> API option to 1 or the L<RequestAll|../ExifTool.html#RequestAll> API option to 2 or higher.
     },
     'com.apple.FinderInfo' => {
         Name => 'XAttrFinderInfo',

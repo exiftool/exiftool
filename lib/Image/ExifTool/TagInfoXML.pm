@@ -67,9 +67,9 @@ sub Write(;$$%)
 {
     local ($_, *PTIFILE);
     my ($file, $group, %opts) = @_;
-    my @groups = split ':', $group if $group;
     my $et = new Image::ExifTool;
-    my ($fp, $tableName, %langInfo, @langs, $defaultLang);
+    my ($fp, $tableName, %langInfo, @langs, $defaultLang, @groups);
+    @groups = split ':', $group if $group;
 
     Image::ExifTool::LoadAllTables();   # first load all our tables
     unless ($opts{NoDesc}) {

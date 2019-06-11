@@ -70,7 +70,7 @@ sub GetTagID($)
 {
     my $props = shift;
     return 0 if $$props[-1] =~ /^\w+:ID$/;  # ignore ID tags
-    return ($$props[0] =~ /^.*?:(.*)/) ? $1 : $$props[0];
+    return $$props[0] =~ /^.*?:(.*)/ ? $1 : $$props[0];
 }
 
 #------------------------------------------------------------------------------

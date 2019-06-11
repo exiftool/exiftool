@@ -10,7 +10,7 @@
 <h2 class=top>ExifTool Tag Names</h2>
 <p>
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 22566 tags, with 15012 unique tag names.
+They contain a total of 22568 tags, with 15014 unique tag names.
 </p>
 <blockquote>
 <table width='100%' class=frame><tr><td>
@@ -164,7 +164,7 @@ tag ID.  In these cases, the actual name used depends on the context in
 which the information is found.  Case is not significant for tag names.  A
 question mark (<code>?</code>) after a tag name indicates that the information is
 either not understood, not verified, or not very useful -- these tags are
-not extracted by ExifTool unless the Unknown (-u) option is enabled.  Be
+not extracted by ExifTool unless the <a href="../ExifTool.html#Unknown">Unknown</a> (-u) option is enabled.  Be
 aware that some tag names are different than the descriptions printed out by
 default when extracting information with exiftool.  To see the tag names
 instead of the descriptions, use <code>exiftool -s</code>.</p>
@@ -184,7 +184,7 @@ be added and deleted.  A slash (<code>/</code>) indicates a tag that ExifTool wi
 <i>Avoid</i> when writing.  These will be edited but not created if another
 same-named tag may be created instead.  To create these tags, the group
 should be specified.  A tilde (<code>~</code>) indicates a tag this is writable only
-when the print conversion is disabled (by setting PrintConv to 0, using the
+when the print conversion is disabled (by setting <a href="../ExifTool.html#PrintConv">PrintConv</a> to 0, using the
 -n option, or suffixing the tag name with a <code>#</code> character). An exclamation
 point (<code>!</code>) indicates a tag that is considered <i>Unsafe</i> to write under
 normal circumstances.  These tags are not written unless specified
@@ -203,7 +203,7 @@ listed as the computer-readable and human-readable values on the left and
 right hand side of an equals sign (<code>=</code>) respectively.  The human-readable
 values are used by default when reading and writing, but the
 computer-readable values may be accessed by disabling the value conversion
-with the -n option on the command line, by setting the ValueConv option to 0
+with the -n option on the command line, by setting the <a href="../ExifTool.html#PrintConv">PrintConv</a> option to 0
 in the API, or or on a per-tag basis by adding a hash (<code>#</code>) after the tag
 name.</p>
 
@@ -225,7 +225,7 @@ ExifTool.  A big thanks to everyone who has helped with this so far!)</i>
 </p>
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jun 3, 2019</i>
+<br><i>Last revised Jun 11, 2019</i>
 <p class=lf><a href='../index.html'>&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

@@ -1362,7 +1362,7 @@ sub ProcessEXE($$)
             python => 'py',
             ruby   => 'rb',
             php    => 'php',
-        }->{$1};
+        }->{$prog};
         # use '.sh' for extension of all shell scripts
         $ext = $prog =~ /sh$/ ? 'sh' : '' unless defined $ext;
     }

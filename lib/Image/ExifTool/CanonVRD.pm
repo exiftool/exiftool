@@ -150,8 +150,8 @@ my $blankFooter = "CANON OPTIONAL DATA\0" . ("\0" x 42) . "\xff\xd9";
         },{
             Name => 'IHL_EXIF',
             Notes => q{
-                extracted as a block if the Unknown option is used, or processed as the
-                first sub-document with the ExtractEmbedded option
+                extracted as a block if the L<Unknown|../ExifTool.html#Unknown> option is used, or processed as the
+                first sub-document with the L<ExtractEmbedded|../ExifTool.html#ExtractEmbedded> option
             },
             Binary => 1,
             Unknown => 1,
@@ -1818,7 +1818,7 @@ sub ProcessDR4($$;$)
         if (not $format) {
             $val = unpack 'H*', substr($$dataPt, $off, $len);
             $format = 'undef';
-        } elsif ($format eq 'double' and $len eq 8) {
+        } elsif ($format eq 'double' and $len == 8) {
             # avoid teeny weeny values
             $val = ReadValue($dataPt, $off, $format, undef, $len);
             $val = 0 if abs($val) < 1e-100;
@@ -2134,7 +2134,7 @@ sub ProcessCanonVRD($$;$)
             $blockType = Get32u($dataPt, $pos);
             $blockLen = Get32u($dataPt, $pos + 4);
         }
-        $vrdType = 'DR4' if $blockType eq 0xffff00f7;
+        $vrdType = 'DR4' if $blockType == 0xffff00f7;
         $pos += 8;  # move to start of block
         if ($pos + $blockLen > $end) {
             $et->Warn('Possibly corrupt CanonVRD block');

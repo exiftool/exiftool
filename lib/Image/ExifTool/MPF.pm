@@ -97,7 +97,7 @@ sub ProcessMPImageList($$$);
     NOTES => q{
         The first MPF "Large Thumbnail" image is extracted as PreviewImage, and the
         rest of the embedded MPF images are extracted as MPImage#.  The
-        ExtractEmbedded (-ee) option may be used to extract information from these
+        L<ExtractEmbedded|../ExifTool.html#ExtractEmbedded> (-ee) option may be used to extract information from these
         embedded images.
     },
     0.1 => {
@@ -163,7 +163,7 @@ sub ProcessMPImageList($$$);
         },
         Notes => q{
             the first MPF "Large Thumbnail" is extracted as PreviewImage, and the rest
-            of the embedded MPF images are extracted as MPImage#.  The ExtractEmbedded
+            of the embedded MPF images are extracted as MPImage#.  The L<ExtractEmbedded|../ExifTool.html#ExtractEmbedded>
             option may be used to extract information from these embedded images.
         },
         # extract all MPF images (not just one)

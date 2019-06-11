@@ -409,7 +409,7 @@ sub WriteKeys($$$)
         next unless $$nvHash{IsCreating} and $et->IsOverwriting($nvHash) and
             defined $et->GetNewValue($nvHash);
         # add new entry to 'keys' data
-        my $val = "com.apple.quicktime.$id";
+        my $val = $id =~ /^com\./ ? $id : "com.apple.quicktime.$id";
         $newData .= Set32u(8 + length($val)) . 'mdta' . $val;
         $et->VPrint(1, "$$et{INDENT}\[adding Keys entry $newIndex '${id}']\n");
         $add{$newIndex++} = $tagInfo;

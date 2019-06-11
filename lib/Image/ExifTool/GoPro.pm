@@ -66,9 +66,9 @@ my %addUnits = (
     GROUPS => { 2 => 'Camera' },
     NOTES => q{
         Tags extracted from the GPMF box of GoPro MP4 videos, the APP6 "GoPro" segment
-        of JPEG files, and from the "gpmd" timed metadata if the ExtractEmbedded option
+        of JPEG files, and from the "gpmd" timed metadata if the L<ExtractEmbedded|../ExifTool.html#ExtractEmbedded> option
         is enabled.  Many more tags exist, but are currently unknown and extracted only
-        with the -u option. Please let me know if you discover the meaning of any of
+        with the L<Unknown|../ExifTool.html#Unknown> (-u) option. Please let me know if you discover the meaning of any of
         these unknown tags. See L<https://github.com/gopro/gpmf-parser> for details
         about this format.
     },
@@ -468,7 +468,7 @@ my %addUnits = (
     GROUPS => { 2 => 'Camera' },
     PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
     NOTES => q{
-        Tags extracted from the MP4 "fdsc" timed metadata when the ExtractEmbedded
+        Tags extracted from the MP4 "fdsc" timed metadata when the L<ExtractEmbedded|../ExifTool.html#ExtractEmbedded>
         option is used.
     },
     0x08 => { Name => 'FirmwareVersion',    Format => 'string[15]' },
@@ -613,7 +613,7 @@ sub ProcessGoPro($$$)
         next unless $size or $verbose;  # don't save empty values unless verbose
         my $format = $goProFmt{$fmt} || 'undef';
         my ($val, $i, $j, $p, @v);
-        if ($fmt eq 0x3f and defined $type) {
+        if ($fmt == 0x3f and defined $type) {
             # decode structure with format given by previous 'TYPE'
             for ($i=0; $i<$count; ++$i) {
                 my (@s, $l);

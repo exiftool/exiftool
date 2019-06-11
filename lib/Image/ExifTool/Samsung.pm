@@ -111,7 +111,7 @@ my %formatMinMax = (
         This is a standard-format IFD found in the maker notes of some Samsung
         models, except that the entry count is a 4-byte integer and the offsets are
         relative to the end of the IFD.  Currently, no tags in this IFD are known,
-        so the Unknown (-u) or Verbose (-v) option must be used to see this
+        so the L<Unknown|../ExifTool.html#Unknown> (-u) or L<Verbose|../ExifTool.html#Verbose> (-v) option must be used to see this
         information.
     },
     GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },

@@ -14,7 +14,7 @@ image files (most notably, MOV/MP4 videos and HEIC/CR3 images).  Exiftool
 extracts standard meta information and a variety of audio, video and image
 parameters, as well as proprietary information written by many camera
 models.  Tags with a question mark after their name are not extracted unless
-the Unknown option is set.</p>
+the <a href="../ExifTool.html#Unknown">Unknown</a> option is set.</p>
 
 <p>When writing, ExifTool creates both QuickTime and XMP tags by default, but
 the group may be specified to write one or the other separately.  If no
@@ -31,20 +31,24 @@ QuickTime-based files; it extracts other track-specific and timed
 metadata, but can not yet edit tags in these locations (with the
 exception of track-level date/time tags).</p>
 
-<p>Alternate language tags may be accessed for ItemList and Keys tags by adding
+<p>Alternate language tags may be accessed for
+<a href="QuickTime.html#ItemList">ItemList</a> and
+<a href="QuickTime.html#Keys">Keys</a> tags by adding
 a 3-character ISO 639-2 language code and an optional ISO 3166-1 alpha 2
 country code to the tag name (eg. &quot;ItemList:Artist-deu&quot; or
-&quot;ItemList::Artist-deu-DE&quot;).  Most UserData tags support a language code, but
-without a country code.  If no language code is specified when writing,
-alternate languages for the tag are deleted.  Use the &quot;und&quot; language code to
-write the default language without deleting alternate languages.  Note that
-&quot;eng&quot; is treated as a default language when reading, but not when writing.</p>
+&quot;ItemList::Artist-deu-DE&quot;).  Most
+<a href="QuickTime.html#UserData">UserData</a> tags support a
+language code, but without a country code.  If no language code is specified
+when writing, alternate languages for the tag are deleted.  Use the &quot;und&quot;
+language code to write the default language without deleting alternate
+languages.  Note that &quot;eng&quot; is treated as a default language when reading,
+but not when writing.</p>
 
 <p>According to the specification, many QuickTime date/time tags should be
 stored as UTC.  Unfortunately, digital cameras often store local time values
 instead (presumably because they don&#39;t know the time zone).  For this
 reason, by default ExifTool does not assume a time zone for these values.
-However, if the QuickTimeUTC API option is set, then ExifTool will assume
+However, if the <a href="../ExifTool.html#QuickTimeUTC">QuickTimeUTC</a> API option is set, then ExifTool will assume
 these values are properly stored as UTC, and will convert them to local time
 when extracting.</p>
 
@@ -697,10 +701,11 @@ specification.</p>
 
 <h2><a name='Keys'>QuickTime Keys Tags</a></h2>
 <p>This directory contains a list of key names which are used to decode tags
-written by the &quot;mdta&quot; handler.  The prefix of &quot;com.apple.quicktime.&quot; has
-been removed from all TagID&#39;s below.  These tags support alternate languages
-in the same way as the
-<a href="QuickTime.html#ItemList">ItemList Tags</a>.  Note
+written by the &quot;mdta&quot; handler.  Also in this table are a few tags found in
+timed metadata that are not yet writable by ExifTool.  The prefix of
+&quot;com.apple.quicktime.&quot; has been removed from the TagID&#39;s below.  These tags
+support alternate languages in the same way as the
+<a href="QuickTime.html#ItemList">ItemList</a> tags.  Note
 that by default,
 <a href="QuickTime.html#ItemList">ItemList</a> and
 <a href="QuickTime.html#UserData">UserData</a> tags are
@@ -754,6 +759,16 @@ changed via the config file.</p>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td>'com.android.version'</td>
+<td>AndroidVersion</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'com.apple.photos.captureMode'</td>
+<td>CaptureMode</td>
+<td class=c>string</td>
+<td>&nbsp;</td></tr>
+<tr>
 <td>'comment'</td>
 <td>Comment</td>
 <td class=c>string</td>
@@ -781,22 +796,22 @@ changed via the config file.</p>
 <tr class=b>
 <td>'detected-face.bounds'</td>
 <td>DetectedFaceBounds</td>
-<td class=c>string</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'detected-face.face-id'</td>
 <td>DetectedFaceID</td>
-<td class=c>string</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'detected-face.roll-angle'</td>
 <td>DetectedFaceRollAngle</td>
-<td class=c>string</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'detected-face.yaw-angle'</td>
 <td>DetectedFaceYawAngle</td>
-<td class=c>string</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td>'direction.facing'</td>
@@ -959,7 +974,7 @@ changed via the config file.</p>
 <tr>
 <td>'still-image-time'</td>
 <td>StillImageTime</td>
-<td class=c>string</td>
+<td class=c>no</td>
 <td><span class=s><span class=n>(this tag always has a value of -1; the time of the still image is obtained
 from the associated SampleTime)</span></span></td></tr>
 <tr class=b>
@@ -975,7 +990,7 @@ from the associated SampleTime)</span></span></td></tr>
 <tr class=b>
 <td>'video-orientation'</td>
 <td>VideoOrientation</td>
-<td class=c>string</td>
+<td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td>'year'</td>
@@ -1422,7 +1437,10 @@ from the associated SampleTime)</span></span></td></tr>
 this table support alternate languages which are accessed by adding a
 3-character ISO 639-2 language code and an optional ISO 3166-1 alpha 2
 country code to the tag name (eg. &quot;ItemList:Title-fra&quot; or
-&quot;ItemList::Title-fra-FR&quot;).</p>
+&quot;ItemList::Title-fra-FR&quot;).  When creating a new Meta box to contain the
+ItemList directory, by default ExifTool does not specify a
+<a href="QuickTime.html#Handler">Handler</a>, but the
+API <a href="../ExifTool.html#QuickTimeHandler">QuickTimeHandler</a> option may be used to include an &#39;mdir&#39; Handler box.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
@@ -6320,7 +6338,7 @@ text.  Alternate language tags are accessed by adding a dash followed by a
 3-character ISO 639-2 language code to the tag name.  ExifTool will extract
 any multi-language user data tags found, even if they aren&#39;t in this table.
 Note when creating new tags,
-<a href="QuickTime.html#ItemList">ItemList Tags</a> are
+<a href="QuickTime.html#ItemList">ItemList</a> tags are
 preferred over these, so to create the tag when a same-named ItemList tag
 exists, either &quot;UserData&quot; must be specified (eg. <code>-UserData:Artist=Monet</code>
 on the command line), or the PREFERRED level must be changed via the config
@@ -7724,7 +7742,7 @@ file.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jun 4, 2019</i>
+<br><i>Last revised Jun 11, 2019</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

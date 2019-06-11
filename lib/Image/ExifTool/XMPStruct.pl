@@ -107,7 +107,8 @@ sub InflateStruct($;$)
         $val = '';
         $delim = $delim ? "\\$delim|,|\\||\$" : ',|\\||$';
         for (;;) {
-            $$obj =~ s/^(.*?)($delim)//s and $val .= $1;
+            $$obj =~ s/^(.*?)($delim)//s or last;
+            $val .= $1;
             last unless $2;
             $2 eq '|' or $$obj = $2 . $$obj, last;
             $$obj =~ s/^(.)//s and $val .= $1;  # add escaped character

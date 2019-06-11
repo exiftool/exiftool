@@ -5288,7 +5288,7 @@ my %binaryDataAttrs = (
     NOTES => q{
         The parameters associated with each type of digital filter are unique, and
         these settings are also extracted with the DigitalFilter tag.  Information
-        is not extracted for filters that are "Off" unless the Unknown option is
+        is not extracted for filters that are "Off" unless the L<Unknown|../ExifTool.html#Unknown> option is
         used.
     },
     0 => {

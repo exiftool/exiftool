@@ -32,7 +32,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.06';
+$VERSION = '3.07';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -132,6 +132,8 @@ my %sonyLensTypes2 = (
     32848 => 'Sony FE 400mm F2.8 GM OSS', #IB
     32849 => 'Sony E 18-135mm F3.5-5.6 OSS', #JR
     32850 => 'Sony FE 135mm F1.8 GM', #IB
+    32851 => 'Sony FE 200-600mm F5.6-6.3 G OSS', #IB
+    32852 => 'Sony FE 600mm F4 GM OSS', #IB
 
   # (comment this out so LensID will report the LensModel, which is more useful)
   # 32952 => 'Metabones Canon EF Speed Booster Ultra', #JR (corresponds to 184, but 'Advanced' mode, LensMount reported as E-mount)
@@ -9606,7 +9608,7 @@ my %isoSetting2010 = (
     GROUPS => { 2 => 'Video' },
     NOTES => q{
         These tags are extracted from the 'rtmd' timed metadata of MP4 videos from
-        some models when the ExtractEmbedded option is used.
+        some models when the L<ExtractEmbedded|../ExifTool.html#ExtractEmbedded> option is used.
     },
   # 0x060e - 16 bytes starting with 0x060e2b340253 (fake tag ID - comes before 0x8300 container)
     0x060e => { Name => 'Sony_rtmd_0x060e', Format => 'int8u',  %hidUnk },

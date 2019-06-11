@@ -59,7 +59,7 @@ my $mwgLoaded;  # flag set if we alreaded Load()ed the MWG tags
         string values be stored as UTF-8.  To honour this, the exiftool application
         sets the default internal EXIF string encoding to "UTF8" when the MWG module
         is loaded, but via the API this must be done manually by setting the
-        CharsetEXIF option.
+        L<CharsetEXIF|../ExifTool.html#CharsetEXIF> option.
 
         A complication of the MWG specification is that although the MWG:Creator
         property may consist of multiple values, the associated EXIF tag

@@ -62,7 +62,7 @@ my %formatType = (
         Groups => { 2 => 'Location' },
         PrintConv => q{
             $val = int($val * 10) / 10;
-            return ($val =~ s/^-// ? "$val m Below" : "$val m Above") . " Sea Level";
+            return(($val =~ s/^-// ? "$val m Below" : "$val m Above") . " Sea Level");
         },
     },
     aperture            => { PrintConv => 'sprintf("%.1f",$val)' },
@@ -158,7 +158,7 @@ sub ProcessEXR($$)
     my $raf = $$dirInfo{RAF};
     my $verbose = $et->Options('Verbose');
     my $binary = $et->Options('Binary') || $verbose;
-    my ($buff, $buf2, $dim);
+    my ($buff, $dim);
 
     # verify this is a valid RIFF file
     return 0 unless $raf->Read($buff, 8) == 8;

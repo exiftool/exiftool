@@ -2917,7 +2917,7 @@ sub InsertTagValues($$$;$$$)
     local $_;
     my ($self, $foundTags, $line, $opt, $docGrp, $cache) = @_;
     my $rtnStr = '';
-    my $docNum;
+    my ($docNum, $tag);
     if ($docGrp) {
         $docNum = $docGrp =~ /(\d+)$/ ? $1 : 0;
     } else {
@@ -2970,8 +2970,9 @@ sub InsertTagValues($$$;$$$)
 
         for (;;) {
             # temporarily reset ListJoin option if evaluating list values separately
-            my $oldListJoin = $self->Options(ListJoin => undef) if $asList;
-            my $tag = shift @tags;
+            my $oldListJoin;
+            $oldListJoin = $self->Options(ListJoin => undef) if $asList;
+            $tag = shift @tags;
             my $lcTag = lc $tag;
             if ($cache and $lcTag !~ /(^|:)all$/) {
                 # remove group from tag name (but not lower-case version)
@@ -2998,7 +2999,10 @@ sub InsertTagValues($$$;$$$)
                     }
                 }
                 my $doc = $lcTag =~ /\b(main|doc(\d+)):/ ? ($2 || 0) : $docNum;
-                $val = $self->GetValue($$cacheTag[$doc], $type) if $$cacheTag[$doc];
+                if ($$cacheTag[$doc]) {
+                    $tag = $$cacheTag[$doc];
+                    $val = $self->GetValue($tag, $type);
+                }
             } else {
                 # add document number to tag if specified and it doesn't already exist
                 if ($docGrp and $lcTag !~ /\b(main|doc\d+):/) {
@@ -5352,7 +5356,7 @@ sub WriteJPEG($$)
     }
     unless ($marker and $marker == 0xda) {
         $isEXV or $self->Error('Corrupted JPEG image'), return 1;
-        $marker and $marker ne 0xd9 and $self->Error('Corrupted EXV file'), return 1;
+        $marker and $marker != 0xd9 and $self->Error('Corrupted EXV file'), return 1;
     }
     $raf->Seek($pos, 0) or $self->Error('Seek error'), return 1;
 #
@@ -6675,7 +6679,6 @@ sub WriteBinaryData($$$)
             next unless $writeInfo and $writeInfo eq $tagInfo;
         }
         # add offsets for variable-sized tags if necessary
-        my $varFmt;
         while (@varInfo and $varInfo[0][0] < $tagID) {
             $varSize = $varInfo[0][1];  # get accumulated variable size
             shift @varInfo;
@@ -6707,6 +6710,8 @@ sub WriteBinaryData($$$)
         next unless $self->IsOverwriting($nvHash, $val);
         my $newVal = $self->GetNewValue($nvHash);
         next unless defined $newVal;    # can't delete from a binary table
+        # update DataMember with new value if necessary
+        $$self{$$tagInfo{DataMember}} = $newVal if $$tagInfo{DataMember};
         # only write masked bits if specified
         my $mask = $$tagInfo{Mask};
         $newVal = (($newVal << $$tagInfo{BitShift}) & $mask) | ($val & ~$mask) if $mask;

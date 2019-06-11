@@ -1095,13 +1095,13 @@ sub ProcessPICT($$)
         @hdr = unpack('x2n5', $buff);
         $op = pop @hdr;
         # check for PICT version 1 format
-        if ($op eq 0x1101) {
+        if ($op == 0x1101) {
             $vers = 1;
             undef $extended;
             last;
         }
         # check for PICT version 2 format
-        if ($op eq 0x0011) {
+        if ($op == 0x0011) {
             $raf->Read($buff, 28) == 28 or return 0;
             if ($buff =~ /^\x02\xff\x0c\x00\xff\xff/) {
                 $vers = 2;
@@ -1174,7 +1174,7 @@ sub ProcessPICT($$)
             }
             last unless $tagInfo;
         }
-        if ($op eq 0xff) {
+        if ($op == 0xff) {
             $verbose and print $out "End of picture\n";
             $success = 1;
             last;

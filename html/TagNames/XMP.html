@@ -32,15 +32,15 @@ HH:MM:SS[.ss][+/-HH:MM]&quot;, <code>boolean</code> is either &quot;True&quot; o
 indicates a structured tag, and <code>lang-alt</code> is a tag that supports alternate
 languages.</p>
 
-<p>When reading, <code>struct</code> tags are extracted only if the Struct (-struct)
+<p>When reading, <code>struct</code> tags are extracted only if the <a href="../ExifTool.html#Struct">Struct</a> (-struct)
 option is used.  Otherwise the corresponding <i>Flattened</i> tags, indicated by
 an underline (<code>_</code>) after the <b>Writable</b> type, are extracted.  When
 copying, by default both structured and flattened tags are available, but
 the flattened tags are considered &quot;unsafe&quot; so they they aren&#39;t copied unless
-specified explicitly.  The Struct option may be disabled by setting Struct
+specified explicitly.  The <a href="../ExifTool.html#Struct">Struct</a> option may be disabled by setting Struct
 to 0 via the API or with --struct on the command line to copy only flattened
 tags, or enabled by setting Struct to 1 via the API or with -struct on the
-command line to copy only as structures.  When writing, the Struct option
+command line to copy only as structures.  When writing, the <a href="../ExifTool.html#Struct">Struct</a> option
 has no effect, and both structured and flattened tags may be written.  See
 <a href="../struct.html">struct.html</a> for more details.</p>
 

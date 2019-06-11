@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup);
 
-$VERSION = '11.49';
+$VERSION = '11.50';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -980,7 +980,7 @@ sub DummyWriteProc { return 1; }
 
 my %systemTagsNotes = (
     Notes => q{
-        extracted only if specifically requested or the SystemTags or RequestAll API
+        extracted only if specifically requested or the L<SystemTags|../ExifTool.html#SystemTags> or L<RequestAll|../ExifTool.html#RequestAll> API
         option is set
     },
 );
@@ -1014,7 +1014,7 @@ my %systemTagsNotes = (
         Notes => q{
             returns errors that may have occurred while reading or writing a file.  Any
             Error will prevent the file from being processed.  Minor errors may be
-            downgraded to warnings with the -m or IgnoreMinorErrors option
+            downgraded to warnings with the -m or L<IgnoreMinorErrors|../ExifTool.html#IgnoreMinorErrors> option
         },
     },
     Warning => {
@@ -1022,8 +1022,8 @@ my %systemTagsNotes = (
         Groups => \%allGroupsExifTool,
         Notes => q{
             returns warnings that may have occurred while reading or writing a file.
-            Use the -a or Duplicates option to see all warnings if more than one
-            occurred. Minor warnings may be ignored with the -m or IgnoreMinorErrors
+            Use the -a or L<Duplicates|../ExifTool.html#Duplicates> option to see all warnings if more than one
+            occurred. Minor warnings may be ignored with the -m or L<IgnoreMinorErrors|../ExifTool.html#IgnoreMinorErrors>
             option.  Minor warnings with a capital "M" in the "[Minor]" designation
             indicate that the processing is affected by ignoring the warning
         },
@@ -1069,7 +1069,7 @@ my %systemTagsNotes = (
         Groups => { 1 => 'System' },
         Notes => q{
             absolute path of source file. Not generated unless specifically requested or
-            the RequestAll API option is set.  Does not support Windows Unicode file
+            the L<RequestAll|../ExifTool.html#RequestAll> API option is set.  Does not support Windows Unicode file
             names
         },
     },
@@ -1092,7 +1092,7 @@ my %systemTagsNotes = (
             sequence number for each source file when extracting or copying information,
             including files that fail the -if condition of the command-line application,
             beginning at 0 for the first file.  Not generated unless specifically
-            requested or the RequestAll API option is set
+            requested or the L<RequestAll|../ExifTool.html#RequestAll> API option is set
         },
     },
     FileSize => {
@@ -1107,7 +1107,7 @@ my %systemTagsNotes = (
         Groups => { 1 => 'System' },
         Notes => q{
             size of the file's resource fork if it contains data.  Mac OS only.  If this
-            tag is generated the ExtractEmbedded option may be used to extract
+            tag is generated the L<ExtractEmbedded|../ExifTool.html#ExtractEmbedded> option may be used to extract
             resource-fork information as a sub-document.  When writing, the resource
             fork is preserved by default, but it may be deleted with C<-rsrc:all=> on
             the command line
@@ -1163,7 +1163,7 @@ my %systemTagsNotes = (
             the filesystem creation date/time.  Windows/Mac only.  In Windows, the file
             creation date/time is preserved by default when writing if Win32API::File
             and Win32::API are available.  On Mac, this tag is extracted only if it or
-            the MacOS group is specifically requested or the RequestAll API option is
+            the MacOS group is specifically requested or the L<RequestAll|../ExifTool.html#RequestAll> API option is
             set to 2 or higher.  Requires "setfile" for writing on Mac
         },
         Groups => { 1 => 'System', 2 => 'Time' },
@@ -1230,7 +1230,7 @@ my %systemTagsNotes = (
     FileAttributes => {
         Groups => { 1 => 'System' },
         Notes => q{
-            extracted only if specifically requested or the SystemTags or RequestAll API
+            extracted only if specifically requested or the L<SystemTags|../ExifTool.html#SystemTags> or L<RequestAll|../ExifTool.html#RequestAll> API
             option is set.  2 or 3 values: 0. File type, 1. Attribute bits, 2. Windows
             attribute bits if Win32API::File is available
         },
@@ -1285,7 +1285,7 @@ my %systemTagsNotes = (
     FileUserID => {
         Groups => { 1 => 'System' },
         Notes => q{
-            extracted only if specifically requested or the SystemTags or RequestAll API
+            extracted only if specifically requested or the L<SystemTags|../ExifTool.html#SystemTags> or L<RequestAll|../ExifTool.html#RequestAll> API
             option is set.  Returns user ID number with the -n option, or name
             otherwise.  May be written with either user name or number
         },
@@ -1299,7 +1299,7 @@ my %systemTagsNotes = (
     FileGroupID => {
         Groups => { 1 => 'System' },
         Notes => q{
-            extracted only if specifically requested or the SystemTags or RequestAll API
+            extracted only if specifically requested or the L<SystemTags|../ExifTool.html#SystemTags> or L<RequestAll|../ExifTool.html#RequestAll> API
             option is set.  Returns group ID number with the -n option, or name
             otherwise.  May be written with either group name or number
         },
@@ -1526,7 +1526,7 @@ my %systemTagsNotes = (
         Groups => { 0 => 'ExifTool', 1 => 'ExifTool', 2 => 'Other' },
         Notes => q{
             the clock time in seconds taken by ExifTool to extract information from this
-            file.  Not generated unless specifically requested or the RequestAll API
+            file.  Not generated unless specifically requested or the L<RequestAll|../ExifTool.html#RequestAll> API
             option is set.  Requires Time::HiRes
         },
         PrintConv => 'sprintf("%.3g s", $val)',
@@ -1538,7 +1538,7 @@ my %systemTagsNotes = (
             sub-sampling values to generate the value of this tag.  The result is
             compared to known values in an attempt to deduce the originating software
             based only on the JPEG image data.  For performance reasons, this tag is
-            generated only if specifically requested or the RequestAll API option is set
+            generated only if specifically requested or the L<RequestAll|../ExifTool.html#RequestAll> API option is set
             to 3 or higher
         },
     },
@@ -1546,14 +1546,14 @@ my %systemTagsNotes = (
         Notes => q{
             an estimate of the IJG JPEG quality setting for the image, calculated from
             the quantization tables.  For performance reasons, this tag is generated
-            only if specifically requested or the RequestAll API option is set to 3 or
+            only if specifically requested or the L<RequestAll|../ExifTool.html#RequestAll> API option is set to 3 or
             higher
         },
     },
     JPEGImageLength => {
         Notes => q{
             byte length of JPEG image without metadata.  For performance reasons, this
-            tag is generated only if specifically requested or the RequestAll API option
+            tag is generated only if specifically requested or the L<RequestAll|../ExifTool.html#RequestAll> API option
             is set to 3 or higher
         },
     },
@@ -1563,7 +1563,7 @@ my %systemTagsNotes = (
         Notes => q{
             the current date/time.  Useful when setting the tag values, eg.
             C<"-modifydate<now">.  Not generated unless specifically requested or the
-            RequestAll API option is set
+            L<RequestAll|../ExifTool.html#RequestAll> API option is set
         },
         PrintConv => '$self->ConvertDateTime($val)',
     },
@@ -1574,7 +1574,7 @@ my %systemTagsNotes = (
             YYYYmmdd-HHMM-SSNN-PPPP-RRRRRRRRRRRR, where Y=year, m=month, d=day, H=hour,
             M=minute, S=second, N=file sequence number in hex, P=process ID in hex, and
             R=random hex number; without dashes with the -n option.  Not generated
-            unless specifically requested or the RequestAll API option is set
+            unless specifically requested or the L<RequestAll|../ExifTool.html#RequestAll> API option is set
         },
         PrintConv => '$val =~ s/(.{8})(.{4})(.{4})(.{4})/$1-$2-$3-$4-/; $val',
     },
@@ -2150,6 +2150,7 @@ sub ClearOptions($)
         QuickTimeUTC=> undef,   # assume that QuickTime date/time tags are stored as UTC
         RequestAll  => undef,   # extract all tags that must be specifically requested
         RequestTags => undef,   # extra tags to request (on top of those in the tag list)
+        SaveFormat  => undef,   # (undocumented) save family 6 tag TIFF format
         SavePath    => undef,   # (undocumented) save family 5 location path
         ScanForXMP  => undef,   # flag to scan for XMP information in all files
         Sort        => 'Input', # order to sort found tags (Input, File, Tag, Descr, Group#)
@@ -3225,6 +3226,10 @@ sub GetGroup($$;$)
         $groups[1] = $$ex{G1} =~ /^\+(.*)/ ? "$groups[1]$1" : $$ex{G1} if $$ex{G1};
         $groups[3] = 'Doc' . $$ex{G3} if $$ex{G3};
         $groups[5] = $$ex{G5} || $groups[1] if defined $$ex{G5};
+        if (defined $$ex{G6}) {
+            $groups[5] = '' unless defined $groups[5];  # (can't leave a hole in the array)
+            $groups[6] = $$ex{G6};
+        }
     }
     if ($family) {
         return $groups[$family] || '' if $family > 0;
@@ -7376,7 +7381,9 @@ sub GetTagInfo($$$;$$$)
                 next;
             }
         }
-        if ($$tagInfo{Unknown} and not $$self{OPTIONS}{Unknown} and not $$self{OPTIONS}{Verbose}) {
+        if ($$tagInfo{Unknown} and not $$self{OPTIONS}{Unknown} and
+            not $$self{OPTIONS}{Verbose} and not $$self{HTML_DUMP})
+        {
             # don't return Unknown tags unless that option is set
             return undef;
         }

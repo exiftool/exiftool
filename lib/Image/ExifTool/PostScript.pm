@@ -89,12 +89,12 @@ sub ProcessPS($$;$);
         SubDirectory => {
             TagTable => 'Image::ExifTool::PostScript::Main',
         },
-        Notes => 'extracted with ExtractEmbedded option',
+        Notes => 'extracted with L<ExtractEmbedded|../ExifTool.html#ExtractEmbedded> option',
     },
     EmbeddedFileName => {
         Notes => q{
             not a real tag ID, but the file name from a BeginDocument statement.
-            Extracted with document metadata when ExtractEmbedded option is used
+            Extracted with document metadata when L<ExtractEmbedded|../ExifTool.html#ExtractEmbedded> option is used
         },
     },
     # AI metadata (most with a single leading '%')
@@ -208,9 +208,9 @@ sub GetInputRecordSeparator($)
     $a = pos($data), pos($data) = 0 if $data =~ /\x0a/g;
     $d = pos($data) if $data =~ /\x0d/g;
     my $diff = $a - $d;
-    if ($diff eq 1) {
+    if ($diff == 1) {
         $sep = "\x0d\x0a";
-    } elsif ($diff eq -1) {
+    } elsif ($diff == -1) {
         $sep = "\x0a\x0d";
     } elsif ($diff > 0) {
         $sep = "\x0d";

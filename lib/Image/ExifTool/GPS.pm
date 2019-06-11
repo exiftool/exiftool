@@ -383,11 +383,11 @@ my %coordConv = (
             my $alt = $val[0];
             $alt = $val[2] unless defined $alt;
             return undef unless defined $alt and IsFloat($alt);
-            return ($val[1] || $val[3]) ? -$alt : $alt;
+            return(($val[1] || $val[3]) ? -$alt : $alt);
         },
         PrintConv => q{
             $val = int($val * 10) / 10;
-            return ($val =~ s/^-// ? "$val m Below" : "$val m Above") . " Sea Level";
+            return(($val =~ s/^-// ? "$val m Below" : "$val m Above") . " Sea Level");
         },
     },
     GPSDestLatitude => {
@@ -459,7 +459,7 @@ sub ToDMS($$;$$)
 
     unless (length $val) {
         # don't convert an empty value
-        return $val if $doPrintConv and $doPrintConv eq 1;  # avoid hiding existing tag when extracting
+        return $val if $doPrintConv and $doPrintConv eq '1';  # avoid hiding existing tag when extracting
         return undef; # avoid writing empty value
     }
     if ($ref) {

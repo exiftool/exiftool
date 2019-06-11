@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.14';
+$VERSION = '4.15';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -429,10 +429,13 @@ $VERSION = '4.14';
     250.1 => 'Sigma 20mm f/1.4 DG HSM | A', #IB
     250.2 => 'Sigma 20mm f/1.5 FF High-Speed Prime | 017', #IB
     250.3 => 'Tokina Opera 16-28mm f/2.8 FF', #IB
-    251 => 'Canon EF 70-200mm f/2.8L IS II USM', # (also version III, ref IB. May be distinguised by EXIF:LensModel "EF70-200mm f/2.8L IS III USM" -- add extra logic to LensID?)
+    251 => 'Canon EF 70-200mm f/2.8L IS II USM',
+    251.1 => 'Canon EF 70-200mm f/2.8L IS III USM', #IB
     252 => 'Canon EF 70-200mm f/2.8L IS II USM + 1.4x', #50 (1.4x Mk II)
+    252.1 => 'Canon EF 70-200mm f/2.8L IS III USM + 1.4x', #PH (NC)
     253 => 'Canon EF 70-200mm f/2.8L IS II USM + 2x', #PH (NC)
-    # 253.1 => 'Tamron SP 70-200mm f/2.8 Di VC USD G2 (A025) + 2x', #forum9367
+    253.1 => 'Canon EF 70-200mm f/2.8L IS III USM + 2x', #PH (NC)
+    # 253.2 => 'Tamron SP 70-200mm f/2.8 Di VC USD G2 (A025) + 2x', #forum9367
     254 => 'Canon EF 100mm f/2.8L Macro IS USM', #42
     255 => 'Sigma 24-105mm f/4 DG OS HSM | A or Other Sigma Lens', #50
     255.1 => 'Sigma 180mm f/2.8 EX DG OS HSM APO Macro', #50
@@ -6178,7 +6181,7 @@ my %ciMaxFocal = (
                 # DPP shows "On" for any value except 0xffff when bit 0x08 is set
                 my ($val, $inv) = @_;
                 if ($inv) {
-                    $val =~ /(0x[0-9a-f]+)/i or $val =~ /(\d+)/;
+                    $val =~ /(0x[0-9a-f]+)/i or $val =~ /(\d+)/ or return undef;
                     return $1;
                 } else {
                     return sprintf("On (0x%.2x)",$val) if $val & 0x08;
@@ -7316,7 +7319,7 @@ my %ciMaxFocal = (
     NOTES => q{
         Camera color calibration data.  For the 20D, 350D, 1DmkII and 1DSmkII the
         order of the coefficients is A, B, C, Temperature, but for newer models it
-        is B, C, A, Temperature.  These tags are extracted only when the Unknown
+        is B, C, A, Temperature.  These tags are extracted only when the L<Unknown|../ExifTool.html#Unknown>
         option is used.
     },
     0x00 => { Name => 'CameraColorCalibration01', %cameraColorCalibration },
@@ -8497,7 +8500,7 @@ my %filterConv = (
     GROUPS => { 0 => 'MakerNotes', 1 => 'Canon', 2 => 'Image' },
     PROCESS_PROC => \&ProcessCTMD,
     NOTES => q{
-        Canon Timed MetaData tags found in CR3 images.  The ExtractEmbedded option
+        Canon Timed MetaData tags found in CR3 images.  The L<ExtractEmbedded|../ExifTool.html#ExtractEmbedded> option
         is automatically applied when reading CR3 files to be able to extract this
         information.
     },
@@ -8953,9 +8956,10 @@ sub PrintLensID(@)
             }
             @matches = @best if @best;
         }
+        @matches = @likely unless @matches;
+        @matches = @maybe unless @matches;
+        Image::ExifTool::Exif::MatchLensModel(\@matches, $lensModel);
         return join(' or ', @matches) if @matches;
-        return join(' or ', @likely) if @likely;
-        return join(' or ', @maybe) if @maybe;
     } elsif ($lensModel and $lensModel =~ /\d/) {
         # use lens model as written by the camera
         if ($printConv eq \%canonLensTypes) {
@@ -9303,7 +9307,7 @@ sub PrintAFPoints1D($)
         $focusing = "$row$col" if $focus eq $focusPt;
         push @points, "$row$col" if shift @bits;
     }
-    $focusing or $focusing = ($focus eq 0xff) ? 'Auto' : sprintf('Unknown (0x%.2x)',$focus);
+    $focusing or $focusing = ($focus == 0xff) ? 'Auto' : sprintf('Unknown (0x%.2x)',$focus);
     return "$focusing (" . join(',',@points) . ')';
 }
 

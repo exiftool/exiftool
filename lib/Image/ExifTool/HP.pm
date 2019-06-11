@@ -119,7 +119,7 @@ sub ProcessTDHD($$$);
     NOTES => q{
         These tags are extracted from the APP6 "TDHD" segment of Photosmart R837
         JPEG images.  Many other unknown tags exist in is data, and can be seen with
-        the Unknown (-u) option.
+        the L<Unknown|../ExifTool.html#Unknown> (-u) option.
     },
     # (all subdirectories except TDHD and LSLV are automatically recognized
     # by their "type" word of 0x10001)

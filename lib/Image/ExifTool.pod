@@ -92,8 +92,8 @@ supported by ExifTool (r = read, w = write, c = create):
   CRM   r/w   | GZ    r     | MOI   r     | PMP   r     | WAV   r
   CRW   r/w   | HDP   r/w   | MOS   r/w   | PNG   r/w   | WDP   r/w
   CS1   r/w   | HDR   r     | MOV   r/w   | PPM   r/w   | WEBP  r
-  DCM   r     | HEIC  r     | MP3   r     | PPT   r     | WEBM  r
-  DCP   r/w   | HEIF  r     | MP4   r/w   | PPTX  r     | WMA   r
+  DCM   r     | HEIC  r/w   | MP3   r     | PPT   r     | WEBM  r
+  DCP   r/w   | HEIF  r/w   | MP4   r/w   | PPTX  r     | WMA   r
   DCR   r     | HTML  r     | MPC   r     | PS    r/w   | WMV   r
   DFONT r     | ICC   r/w/c | MPG   r     | PSB   r/w   | WTV   r
   DIVX  r     | ICS   r     | MPO   r/w   | PSD   r/w   | WV    r
@@ -423,6 +423,9 @@ in the full ExifTool distribution for examples.
 3-N) [optional] Additional parameter/value pairs
 
 =item Option Parameters:
+
+Note that these API options may also be used in the exiftool application via
+the command-line B<-api> option.
 
 =over 4
 

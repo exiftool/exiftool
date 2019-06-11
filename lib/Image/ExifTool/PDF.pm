@@ -303,7 +303,7 @@ my %supportedFilter = (
     EXTRACT_UNKNOWN => 0,   # extract known but numbered tags (Im1, Im2, etc)
     Im => {
         Notes => q{
-            the ExtractEmbedded option enables information to be extracted from these
+            the L<ExtractEmbedded|../ExifTool.html#ExtractEmbedded> option enables information to be extracted from these
             embedded images
         },
         SubDirectory => { TagTable => 'Image::ExifTool::PDF::Im' },
@@ -313,7 +313,7 @@ my %supportedFilter = (
 # tags in PDF Im# dictionary
 %Image::ExifTool::PDF::Im = (
     NOTES => q{
-        Information extracted from embedded images with the ExtractEmbedded option.
+        Information extracted from embedded images with the L<ExtractEmbedded|../ExifTool.html#ExtractEmbedded> option.
         The EmbeddedImage and its metadata are extracted only for JPEG and Jpeg2000
         image formats.
     },
@@ -337,7 +337,7 @@ my %supportedFilter = (
     EXTRACT_UNKNOWN => 0,   # extract known but numbered tags (MC0, MC1, etc)
     MC => {
         Notes => q{
-            the ExtractEmbedded option enables information to be extracted from these
+            the L<ExtractEmbedded|../ExifTool.html#ExtractEmbedded> option enables information to be extracted from these
             embedded metadata dictionaries
         },
         SubDirectory => { TagTable => 'Image::ExifTool::PDF::MC' },
@@ -397,7 +397,7 @@ my %supportedFilter = (
     },
     AIPrivateData => {
         Notes => q{
-            the ExtractEmbedded option enables information to be extracted from embedded
+            the L<ExtractEmbedded|../ExifTool.html#ExtractEmbedded> option enables information to be extracted from embedded
             PostScript documents in the AIPrivateData# and AIPDFPrivateData# streams
         },
         JoinStreams => 1,   # join streams from numbered tags and process as one

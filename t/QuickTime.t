@@ -83,7 +83,7 @@ my $testnum = 1;
         ['ItemList:Album' => 'albumB'],
         ['QuickTime:Comment-fra-FR' => 'fr comment'],
         ['Keys:Director' => 'director'],
-        ['Keys:DetectedFaceYawAngle' => '90'],
+        ['Keys:CameraDirection' => '90'],
         ['Keys:Album' => undef ],
     );
     my @extract = ('ItemList:all', 'UserData:all', 'Keys:all');

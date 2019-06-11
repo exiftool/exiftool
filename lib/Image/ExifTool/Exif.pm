@@ -55,7 +55,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.15';
+$VERSION = '4.16';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -4834,7 +4834,7 @@ sub ConvertExifText($$;$$)
         $type = $1;
         $str = $et->Decode($str, 'JIS', 'Unknown');
     } else {
-        $tag = $asciiFlex if $asciiFlex and $asciiFlex ne 1;
+        $tag = $asciiFlex if $asciiFlex and $asciiFlex ne '1';
         $et->Warn('Invalid EXIF text encoding' . ($tag ? " for $tag" : ''));
         $str = $id . $str;
     }
@@ -5065,6 +5065,37 @@ sub GetLensInfo($;$)
 }
 
 #------------------------------------------------------------------------------
+# Match lens in list of possbilities based on value of LensModel
+# Inputs: 0) reference to list of possible models, 1) LensModel string
+# - updates list on return; guaranteed not to remove all list entries
+sub MatchLensModel($$)
+{
+    my ($try, $lensModel) = @_;
+    if (@$try > 1 and $lensModel) {
+        my (@filt, $pat);
+        # filter by focal length
+        if ($lensModel =~ /((\d+-)?\d+mm)/) {
+            my $focal = $1;
+            @filt = grep /$focal/, @$try;
+            @$try = @filt if @filt and @filt < @$try;
+        }
+        # filter by aperture
+        if (@$try > 1 and $lensModel =~ m{(?:F/?|1:)(\d+(\.\d+)?)}i) {
+            my $fnum = $1;
+            @filt = grep m{(F/?|1:)$fnum\b}i, @$try;
+            @$try = @filt if @filt and @filt < @$try;
+        }
+        # filter by model version, and other lens parameters
+        foreach $pat ('I+', 'USM') {
+            next unless @$try > 1 and $lensModel =~ /\b($pat)\b/;
+            my $val = $1;
+            @filt = grep /\b$val\b/, @$try;
+            @$try = @filt if @filt and @filt < @$try;
+        }
+    }
+}
+
+#------------------------------------------------------------------------------
 # Attempt to identify the specific lens if multiple lenses have the same LensType
 # Inputs: 0) ExifTool object ref, 1) LensType print value, 2) PrintConv hash ref,
 #         3) LensSpec print value, 4) LensType numerical value, 5) FocalLength,
@@ -5222,9 +5253,12 @@ sub PrintLensID($$@)
         }
         return join(' or ', @user);
     }
-    # return the best match(es) from the possible lenses
-    return join(' or ', @best) if @best;
-    return join(' or ', @matches) if @matches;
+    # return the best match(es) from the possible lenses, after checking against LensModel
+    @best = @matches unless @best;
+    if (@best) {
+        MatchLensModel(\@best, $lensModel);
+        return join(' or ', @best);
+    }
     $lens = $$printConv{$lensType};
     return $lensModel if $lensModel and $lens =~ / or /; # (eg. Sony NEX-5N)
     return $lens;
@@ -5462,6 +5496,7 @@ sub ProcessExif($$$)
     my $raf = $$dirInfo{RAF};
     my $verbose = $et->Options('Verbose');
     my $validate = $et->Options('Validate');
+    my $saveFormat = $et->Options('SaveFormat');
     my $htmlDump = $$et{HTML_DUMP};
     my $success = 1;
     my ($tagKey, $dirSize, $makerAddr, $strEnc, %offsetInfo, $offName, $nextOffName);
@@ -5639,6 +5674,8 @@ sub ProcessExif($$$)
         my $valuePtr = $entry + 8;      # pointer to value within $$dataPt
         my $tagInfo = $et->GetTagInfo($tagTablePtr, $tagID);
         my ($origFormStr, $bad, $rational, $subOffName);
+        # save the EXIF format codes if requested
+        $$et{SaveFormat}{$saveFormat = $formatStr} = 1 if $saveFormat;
         # hack to patch incorrect count in Kodak SubIFD3 tags
         if ($count < 2 and ref $$tagTablePtr{$tagID} eq 'HASH' and $$tagTablePtr{$tagID}{FixCount}) {
             $offList or ($offList, $offHash) = GetOffList($dataPt, $dirStart, $dataPos,
@@ -5904,7 +5941,7 @@ sub ProcessExif($$$)
             # (avoids long delays when processing some corrupted files)
             if ($count > 100000 and $formatStr !~ /^(undef|string|binary)$/) {
                 my $tagName = $tagInfo ? $$tagInfo{Name} : sprintf('tag 0x%.4x', $tagID);
-                if ($tagName ne 'TransferFunction' or $count ne 196608) {
+                if ($tagName ne 'TransferFunction' or $count != 196608) {
                     my $minor = $count > 2000000 ? 0 : 2;
                     next if $et->Warn("Ignoring $dirName $tagName with excessive count", $minor);
                 }
@@ -6295,6 +6332,7 @@ sub ProcessExif($$$)
             $et->SetGroup($tagKey, $dirName) if $$tagTablePtr{SET_GROUP1};
             # save original components of rational numbers (used when copying)
             $$et{RATIONAL}{$tagKey} = $rational if defined $rational;
+            $$et{TAG_EXTRA}{$tagKey}{G6} = $saveFormat if $saveFormat;
         }
     }
 

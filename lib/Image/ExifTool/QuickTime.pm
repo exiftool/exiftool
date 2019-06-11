@@ -1328,7 +1328,7 @@ my %eeBox = (
         3-character ISO 639-2 language code to the tag name.  ExifTool will extract
         any multi-language user data tags found, even if they aren't in this table.
         Note when creating new tags,
-        L<ItemList Tags|Image::ExifTool::TagNames/QuickTime ItemList Tags> are
+        L<ItemList|Image::ExifTool::TagNames/QuickTime ItemList Tags> tags are
         preferred over these, so to create the tag when a same-named ItemList tag
         exists, either "UserData" must be specified (eg. C<-UserData:Artist=Monet>
         on the command line), or the PREFERRED level must be changed via the config
@@ -2617,7 +2617,10 @@ my %eeBox = (
         this table support alternate languages which are accessed by adding a
         3-character ISO 639-2 language code and an optional ISO 3166-1 alpha 2
         country code to the tag name (eg. "ItemList:Title-fra" or
-        "ItemList::Title-fra-FR").
+        "ItemList::Title-fra-FR").  When creating a new Meta box to contain the
+        ItemList directory, by default ExifTool does not specify a
+        L<Handler|Image::ExifTool::TagNames/QuickTime Handler Tags>, but the
+        API L<QuickTimeHandler|../ExifTool.html#QuickTimeHandler> option may be used to include an 'mdir' Handler box.
     },
     # in this table, binary 1 and 2-byte "data"-type tags are interpreted as
     # int8u and int16u.  Multi-byte binary "data" tags are extracted as binary data.
@@ -5420,10 +5423,11 @@ my %eeBox = (
     FORMAT => 'string',
     NOTES => q{
         This directory contains a list of key names which are used to decode tags
-        written by the "mdta" handler.  The prefix of "com.apple.quicktime." has
-        been removed from all TagID's below.  These tags support alternate languages
-        in the same way as the
-        L<ItemList Tags|Image::ExifTool::TagNames/QuickTime ItemList Tags>.  Note
+        written by the "mdta" handler.  Also in this table are a few tags found in
+        timed metadata that are not yet writable by ExifTool.  The prefix of
+        "com.apple.quicktime." has been removed from the TagID's below.  These tags
+        support alternate languages in the same way as the
+        L<ItemList|Image::ExifTool::TagNames/QuickTime ItemList Tags> tags.  Note
         that by default,
         L<ItemList|Image::ExifTool::TagNames/QuickTime ItemList Tags> and
         L<UserData|Image::ExifTool::TagNames/QuickTime UserData Tags> tags are
@@ -5519,8 +5523,8 @@ my %eeBox = (
         PrintConvInv => '$self->InverseDateTime($val)',
     },
     'direction.facing' => { Name => 'CameraDirection', Groups => { 2 => 'Location' } },
-    'direction.motion' => { Name => 'CameraMotion', Groups => { 2 => 'Location' } },
-    'location.body' => { Name => 'LocationBody', Groups => { 2 => 'Location' } },
+    'direction.motion' => { Name => 'CameraMotion',    Groups => { 2 => 'Location' } },
+    'location.body'    => { Name => 'LocationBody',    Groups => { 2 => 'Location' } },
     'player.version'                => 'PlayerVersion',
     'player.movie.visual.brightness'=> 'Brightness',
     'player.movie.visual.color'     => 'Color',
@@ -5540,13 +5544,28 @@ my %eeBox = (
     'collection.user' => 'UserCollection', #22
     'Encoded_With' => 'EncodedWith',
 #
-# seen in timed metadata (mebx), and added dynamically via SaveMetaKeys() (ref PH):
+# the following tags aren't in the com.apple.quicktime namespace:
+#
+    'com.apple.photos.captureMode' => 'CaptureMode',
+    'com.android.version' => 'AndroidVersion',
+#
+# also seen
+#
+    # com.divergentmedia.clipwrap.model            ('NEX-FS700EK')
+    # com.divergentmedia.clipwrap.model1           ('49')
+    # com.divergentmedia.clipwrap.model2           ('0')
+    # com.divergentmedia.clipwrap.manufacturer     ('Sony')
+    # com.divergentmedia.clipwrap.originalDateTime ('2013/2/6 10:30:40+0200')
+#
+# seen in timed metadata (mebx), and added dynamically to the table
+# via SaveMetaKeys().  NOTE: these tags are not writable!
 #
     # (mdta)com.apple.quicktime.video-orientation (dtyp=66, int16s)
-    'video-orientation' => 'VideoOrientation',
+    'video-orientation' => { Name => 'VideoOrientation', Writable => 0 },
     # (mdta)com.apple.quicktime.live-photo-info (dtyp=com.apple.quicktime.com.apple.quicktime.live-photo-info)
     'live-photo-info' => {
         Name => 'LivePhotoInfo',
+        Writable => 0,
         # not sure what these values mean, but unpack them anyway - PH
         # (ignore the fact that the "f" and "l" unpacks won't work on a big-endian machine)
         ValueConv => 'join " ",unpack "VfVVf6c4lCCcclf4Vvv", $val',
@@ -5554,6 +5573,7 @@ my %eeBox = (
     # (mdta)com.apple.quicktime.still-image-time (dtyp=65, int8s)
     'still-image-time' => { # (found in live photo)
         Name => 'StillImageTime',
+        Writable => 0,
         Notes => q{
             this tag always has a value of -1; the time of the still image is obtained
             from the associated SampleTime
@@ -5562,23 +5582,25 @@ my %eeBox = (
     # (mdta)com.apple.quicktime.detected-face (dtyp='com.apple.quicktime.detected-face')
     'detected-face' => {
         Name => 'FaceInfo',
+        Writable => 0,
         SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::FaceInfo' },
     },
-    # ---- detected-face fields ----
+    # ---- detected-face fields ( ----
     # --> back here after a round trip through FaceInfo -> FaceRec -> FaceItem
     # (fiel)com.apple.quicktime.detected-face.bounds (dtyp=80, float[8])
     'detected-face.bounds' => {
         Name => 'DetectedFaceBounds',
+        Writable => 0,
         # round to a reasonable number of decimal places
         PrintConv => 'my @a=split " ",$val;$_=int($_*1e6+.5)/1e6 foreach @a;join " ",@a',
         PrintConvInv => '$val',
     },
     # (fiel)com.apple.quicktime.detected-face.face-id (dtyp=77, int32u)
-    'detected-face.face-id'    => 'DetectedFaceID',
+    'detected-face.face-id'    => { Name => 'DetectedFaceID',        Writable => 0 },
     # (fiel)com.apple.quicktime.detected-face.roll-angle (dtyp=23, float)
-    'detected-face.roll-angle' => 'DetectedFaceRollAngle',
+    'detected-face.roll-angle' => { Name => 'DetectedFaceRollAngle', Writable => 0 },
     # (fiel)com.apple.quicktime.detected-face.yaw-angle (dtyp=23, float)
-    'detected-face.yaw-angle'  => 'DetectedFaceYawAngle',
+    'detected-face.yaw-angle'  => { Name => 'DetectedFaceYawAngle',  Writable => 0 },
 );
 
 # iTunes info ('----') atoms
@@ -8247,7 +8269,7 @@ sub ProcessMOV($$;$)
             # set document number for this item property if necessary
             if ($$et{IsItemProperty}) {
                 my $items = $$et{ItemInfo};
-                my ($id, $prop, $mainItem, $docNum, $lowest);
+                my ($id, $prop, $docNum, $lowest);
                 my $primary = $$et{PrimaryItem} || 0;
 ItemID:         foreach $id (keys %$items) {
                     next unless $$items{$id}{Association};

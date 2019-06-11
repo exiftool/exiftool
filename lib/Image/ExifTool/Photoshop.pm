@@ -819,7 +819,7 @@ sub ProcessDocumentData($$$)
     my $raf = $$dirInfo{RAF};
     my $dirLen = $$dirInfo{DirLen};
     my $pos = 36;   # length of header
-    my $buff;
+    my ($buff, $n);
 
     $et->VerboseDir('Photoshop Document Data', undef, $dirLen);
     unless ($raf) {
@@ -838,7 +838,6 @@ sub ProcessDocumentData($$$)
     }
     my $psb = ($1 eq 'V0002');
     my %dinfo = ( DataPt => \$buff );
-    my ($n, $setOrder);
     $$et{IsPSB} = $psb; # set PSB flag (needed when handling Layers directory)
     while ($pos + 12 <= $dirLen) {
         $raf->Read($buff, 8) == 8 or last;

@@ -323,7 +323,7 @@ sub ProcessVCard($$)
         } else {
             delete $$et{SET_GROUP1};
         }
-        my ($name, %param, $p, @val);
+        my ($name, %param, $p);
         # vCard tag ID's are case-insensitive, so normalize to lowercase with
         # an uppercase first letter for use as a tag name
         $name = ucfirst $tag if $tag =~ /[a-z]/;    # preserve mixed case in name if it exists

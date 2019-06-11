@@ -23,7 +23,7 @@ $VERSION = '1.08';
         Tags extracted from Mac OS resource files and DFONT files.  These tags may
         also be extracted from the resource fork of any file in OS X, either by
         adding "/..namedfork/rsrc" to the filename to process the resource fork
-        alone, or by using the ExtractEmbedded (-ee) option to process the resource
+        alone, or by using the L<ExtractEmbedded|../ExifTool.html#ExtractEmbedded> (-ee) option to process the resource
         fork as a sub-document of the main file.  When writing, ExifTool preserves
         the Mac OS resource fork by default, but it may deleted with C<-rsrc:all=>
         on the command line.

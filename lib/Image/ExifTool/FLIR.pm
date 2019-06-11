@@ -1341,7 +1341,7 @@ sub GetImageType($$$)
 sub UnescapeFLIR($)
 {
     my $char = shift;
-    return $char unless length $char eq 4; # escaped ASCII char (eg. '\\')
+    return $char unless length $char == 4; # escaped ASCII char (eg. '\\')
     my $val = hex $char;
     return chr($val) if $val < 0x80;   # simple ASCII
     return pack('C0U', $val) if $] >= 5.006001;

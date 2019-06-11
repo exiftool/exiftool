@@ -3005,7 +3005,7 @@ my %sceneModeUsed = (
     PROCESS_PROC => \&ProcessPose,
     NOTES => q{
         Streamed orientation information from the PixPro 4KVR360, extracted as
-        sub-documents when the Duplicates option is used.
+        sub-documents when the L<Duplicates|../ExifTool.html#Duplicates> option is used.
     },
     Accelerometer => { }, # up, back, left?  units of g
     AngularVelocity => { } # left, up, ccw?  units?

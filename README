@@ -41,8 +41,8 @@ supported by ExifTool (r = read, w = write, c = create):
   CRM   r/w   | GZ    r     | MOI   r     | PMP   r     | WAV   r
   CRW   r/w   | HDP   r/w   | MOS   r/w   | PNG   r/w   | WDP   r/w
   CS1   r/w   | HDR   r     | MOV   r/w   | PPM   r/w   | WEBP  r
-  DCM   r     | HEIC  r     | MP3   r     | PPT   r     | WEBM  r
-  DCP   r/w   | HEIF  r     | MP4   r/w   | PPTX  r     | WMA   r
+  DCM   r     | HEIC  r/w   | MP3   r     | PPT   r     | WEBM  r
+  DCP   r/w   | HEIF  r/w   | MP4   r/w   | PPTX  r     | WMA   r
   DCR   r     | HTML  r     | MPC   r     | PS    r/w   | WMV   r
   DFONT r     | ICC   r/w/c | MPG   r     | PSB   r/w   | WTV   r
   DIVX  r     | ICS   r     | MPO   r/w   | PSD   r/w   | WV    r
@@ -104,8 +104,8 @@ your home directory, then you would type the following commands in a
 terminal window to extract and run ExifTool:
 
   cd ~/Desktop
-  gzip -dc Image-ExifTool-11.49.tar.gz | tar -xf -
-  cd Image-ExifTool-11.49
+  gzip -dc Image-ExifTool-11.50.tar.gz | tar -xf -
+  cd Image-ExifTool-11.50
   ./exiftool t/images/ExifTool.jpg
 
 Note:  These commands extract meta information from one of the test images. 
@@ -195,10 +195,12 @@ distribution package:
     example.config            - General example showing config features
     fotoware.config           - Definitions for writing Fotoware XMP tags
     gps2utm.config            - Generate UTM coordinate tags from GPS info
-    mini0806.config           - Composite tags for GPS in Mini 0806 videos
+    mini0806.config           - Decode timed GPS from Mini 0806 videos
     nksc.config               - Decode tags in Nikon ViewNX NKSC files
     photoshop_paths.config    - For extracting or copying Photoshop paths
     picasa_faces.config       - Convert from Picasa to MWG/MP face regions
+    rotate_regions.config     - Rotate MWG and MP region tags
+    tiff_version.config       - Determine the version of a TIFF file
     time_zone.config          - Calcuate time zone from EXIF tags
   exiftool                  - The exiftool application (Perl script)
   fmt_files/                - Output formatting example files:

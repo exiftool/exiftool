@@ -1,6 +1,6 @@
 Summary: perl module for image data extraction
 Name: perl-Image-ExifTool
-Version: 11.49
+Version: 11.50
 Release: 1
 License: Artistic/GPL
 Group: Development/Libraries/Perl
@@ -49,8 +49,8 @@ supported by ExifTool (r = read, w = write, c = create):
   CRM   r/w   | GZ    r     | MOI   r     | PMP   r     | WAV   r
   CRW   r/w   | HDP   r/w   | MOS   r/w   | PNG   r/w   | WDP   r/w
   CS1   r/w   | HDR   r     | MOV   r/w   | PPM   r/w   | WEBP  r
-  DCM   r     | HEIC  r     | MP3   r     | PPT   r     | WEBM  r
-  DCP   r/w   | HEIF  r     | MP4   r/w   | PPTX  r     | WMA   r
+  DCM   r     | HEIC  r/w   | MP3   r     | PPT   r     | WEBM  r
+  DCP   r/w   | HEIF  r/w   | MP4   r/w   | PPTX  r     | WMA   r
   DCR   r     | HTML  r     | MPC   r     | PS    r/w   | WMV   r
   DFONT r     | ICC   r/w/c | MPG   r     | PSB   r/w   | WTV   r
   DIVX  r     | ICS   r     | MPO   r/w   | PSD   r/w   | WV    r

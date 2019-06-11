@@ -2229,7 +2229,7 @@ my %sPantryItem = (
     # (used to set EXIF GPS position from XMP tags)
     GPSLatitudeRef => {
         Require => 'XMP:GPSLatitude',
-        Inhibit => 'GPSLatitudeRef',
+        # Note: Do not Inihibit based on EXIF:GPSLatitudeRef (see forum10192)
         ValueConv => q{
             IsFloat($val[0]) and return $val[0] < 0 ? "S" : "N";
             $val[0] =~ /^.*([NS])/;
@@ -2239,7 +2239,6 @@ my %sPantryItem = (
     },
     GPSLongitudeRef => {
         Require => 'XMP:GPSLongitude',
-        Inhibit => 'GPSLongitudeRef',
         ValueConv => q{
             IsFloat($val[0]) and return $val[0] < 0 ? "W" : "E";
             $val[0] =~ /^.*([EW])/;
@@ -2249,7 +2248,6 @@ my %sPantryItem = (
     },
     GPSDestLatitudeRef => {
         Require => 'XMP:GPSDestLatitude',
-        Inhibit => 'GPSDestLatitudeRef',
         ValueConv => q{
             IsFloat($val[0]) and return $val[0] < 0 ? "S" : "N";
             $val[0] =~ /^.*([NS])/;
@@ -2259,7 +2257,6 @@ my %sPantryItem = (
     },
     GPSDestLongitudeRef => {
         Require => 'XMP:GPSDestLongitude',
-        Inhibit => 'GPSDestLongitudeRef',
         ValueConv => q{
             IsFloat($val[0]) and return $val[0] < 0 ? "W" : "E";
             $val[0] =~ /^.*([EW])/;
@@ -2304,11 +2301,11 @@ my %sPantryItem = (
                 my $i = 0;
                 $val[$i++] = $val[5]{$_} foreach qw(Fired Return Mode Function RedEyeMode);
             }
-            return (($val[0] and lc($val[0]) eq 'true') ? 0x01 : 0) |
+            return((($val[0] and lc($val[0]) eq 'true') ? 0x01 : 0) |
                    (($val[1] || 0) << 1) |
                    (($val[2] || 0) << 3) |
                    (($val[3] and lc($val[3]) eq 'true') ? 0x20 : 0) |
-                   (($val[4] and lc($val[4]) eq 'true') ? 0x40 : 0);
+                   (($val[4] and lc($val[4]) eq 'true') ? 0x40 : 0));
         },
         PrintConv => \%Image::ExifTool::Exif::flash,
         WriteAlso => {
@@ -3282,7 +3279,6 @@ sub ParseXMPElement($$$;$$$$)
         # (empty elements end with '/', eg. <a:b/>)
         if ($attrs !~ s/\/$//) {
             my $nesting = 1;
-            my $tok;
             for (;;) {
 # this match fails with perl 5.6.2 (perl bug!), but it works without
 # the '(.*?)', so we must do it differently...

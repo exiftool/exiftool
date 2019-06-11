@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 22566 tags, with 15012 unique tag names.
+They contain a total of 22568 tags, with 15014 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -68,7 +68,7 @@ listed as the computer-readable and human-readable values on the left and
 right hand side of an equals sign (C<=>) respectively.  The human-readable
 values are used by default when reading and writing, but the
 computer-readable values may be accessed by disabling the value conversion
-with the -n option on the command line, by setting the ValueConv option to 0
+with the -n option on the command line, by setting the PrintConv option to 0
 in the API, or or on a per-tag basis by adding a hash (C<#>) after the tag
 name.
 
@@ -18812,7 +18812,7 @@ L<http://www.scalado.com/>.)
 Tags extracted from the GPMF box of GoPro MP4 videos, the APP6 "GoPro" segment
 of JPEG files, and from the "gpmd" timed metadata if the ExtractEmbedded option
 is enabled.  Many more tags exist, but are currently unknown and extracted only
-with the -u option. Please let me know if you discover the meaning of any of
+with the Unknown (-u) option. Please let me know if you discover the meaning of any of
 these unknown tags. See L<https://github.com/gopro/gpmf-parser> for details
 about this format.
 
@@ -24020,14 +24020,18 @@ QuickTime-based files; it extracts other track-specific and timed
 metadata, but can not yet edit tags in these locations (with the
 exception of track-level date/time tags).
 
-Alternate language tags may be accessed for ItemList and Keys tags by adding
+Alternate language tags may be accessed for
+L<ItemList|Image::ExifTool::TagNames/QuickTime ItemList Tags> and
+L<Keys|Image::ExifTool::TagNames/QuickTime Keys Tags> tags by adding
 a 3-character ISO 639-2 language code and an optional ISO 3166-1 alpha 2
 country code to the tag name (eg. "ItemList:Artist-deu" or
-"ItemList::Artist-deu-DE").  Most UserData tags support a language code, but
-without a country code.  If no language code is specified when writing,
-alternate languages for the tag are deleted.  Use the "und" language code to
-write the default language without deleting alternate languages.  Note that
-"eng" is treated as a default language when reading, but not when writing.
+"ItemList::Artist-deu-DE").  Most
+L<UserData|Image::ExifTool::TagNames/QuickTime UserData Tags> tags support a
+language code, but without a country code.  If no language code is specified
+when writing, alternate languages for the tag are deleted.  Use the "und"
+language code to write the default language without deleting alternate
+languages.  Note that "eng" is treated as a default language when reading,
+but not when writing.
 
 According to the specification, many QuickTime date/time tags should be
 stored as UTC.  Unfortunately, digital cameras often store local time values
@@ -24258,10 +24262,11 @@ specification.
 =head3 QuickTime Keys Tags
 
 This directory contains a list of key names which are used to decode tags
-written by the "mdta" handler.  The prefix of "com.apple.quicktime." has
-been removed from all TagID's below.  These tags support alternate languages
-in the same way as the
-L<ItemList Tags|Image::ExifTool::TagNames/QuickTime ItemList Tags>.  Note
+written by the "mdta" handler.  Also in this table are a few tags found in
+timed metadata that are not yet writable by ExifTool.  The prefix of
+"com.apple.quicktime." has been removed from the TagID's below.  These tags
+support alternate languages in the same way as the
+L<ItemList|Image::ExifTool::TagNames/QuickTime ItemList Tags> tags.  Note
 that by default,
 L<ItemList|Image::ExifTool::TagNames/QuickTime ItemList Tags> and
 L<UserData|Image::ExifTool::TagNames/QuickTime UserData Tags> tags are
@@ -24281,17 +24286,19 @@ changed via the config file.
                           FrameReadoutTime      string
   'camera.identifier'     CameraIdentifier      string
   'collection.user'       UserCollection        string
+  'com.android.version'   AndroidVersion        string
+  'com.apple.photos.captureMode' CaptureMode    string
   'comment'               Comment               string
   'copyright'             Copyright             string
   'creationdate'          CreationDate          string
   'description'           Description           string
   'detected-face'         FaceInfo              QuickTime FaceInfo
-  'detected-face.bounds'  DetectedFaceBounds    string
-  'detected-face.face-id' DetectedFaceID        string
+  'detected-face.bounds'  DetectedFaceBounds    no
+  'detected-face.face-id' DetectedFaceID        no
   'detected-face.roll-angle'
-                          DetectedFaceRollAngle string
+                          DetectedFaceRollAngle no
   'detected-face.yaw-angle'
-                          DetectedFaceYawAngle  string
+                          DetectedFaceYawAngle  no
   'direction.facing'      CameraDirection       string
   'direction.motion'      CameraMotion          string
   'director'              Director              string
@@ -24323,10 +24330,10 @@ changed via the config file.
   'publisher'             Publisher             string
   'rating.user'           UserRating            string
   'software'              Software              string
-  'still-image-time'      StillImageTime        string
+  'still-image-time'      StillImageTime        no
   'title'                 Title                 string
   'version'               Version               string
-  'video-orientation'     VideoOrientation      string
+  'video-orientation'     VideoOrientation      no
   'year'                  Year                  string
 
 =head3 QuickTime FaceInfo Tags
@@ -24437,7 +24444,10 @@ This is the preferred location for creating new QuickTime tags.  Tags in
 this table support alternate languages which are accessed by adding a
 3-character ISO 639-2 language code and an optional ISO 3166-1 alpha 2
 country code to the tag name (eg. "ItemList:Title-fra" or
-"ItemList::Title-fra-FR").
+"ItemList::Title-fra-FR").  When creating a new Meta box to contain the
+ItemList directory, by default ExifTool does not specify a
+L<Handler|Image::ExifTool::TagNames/QuickTime Handler Tags>, but the
+API QuickTimeHandler option may be used to include an 'mdir' Handler box.
 
   Tag ID       Tag Name                         Writable
   ------       --------                         --------
@@ -25042,7 +25052,7 @@ text.  Alternate language tags are accessed by adding a dash followed by a
 3-character ISO 639-2 language code to the tag name.  ExifTool will extract
 any multi-language user data tags found, even if they aren't in this table.
 Note when creating new tags,
-L<ItemList Tags|Image::ExifTool::TagNames/QuickTime ItemList Tags> are
+L<ItemList|Image::ExifTool::TagNames/QuickTime ItemList Tags> tags are
 preferred over these, so to create the tag when a same-named ItemList tag
 exists, either "UserData" must be specified (eg. C<-UserData:Artist=Monet>
 on the command line), or the PREFERRED level must be changed via the config

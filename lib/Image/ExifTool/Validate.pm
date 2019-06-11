@@ -253,7 +253,7 @@ my %validateInfo = (
     Groups => { 0 => 'ExifTool', 1 => 'ExifTool', 2 => 'ExifTool' },
     Notes => q{
         generated only if specifically requested.  Requesting this tag automatically
-        enables the L<API Validate option|../ExifTool.html#Validate>, imposing
+        enables the API L<Validate|../ExifTool.html#Validate> option, imposing
         additional validation checks when extracting metadata.  Returns the number
         of errors, warnings and minor warnings encountered.  Note that the Validate
         feature focuses mainly on validation of TIFF/EXIF metadata
@@ -540,7 +540,7 @@ sub FinishValidate($$)
                     } elsif ($result eq '') {
                         $pre = defined $val ? 'Invalid value for' : "Missing required $fileType";
                     } else {
-                        next if $result == '1';
+                        next if $result eq '1';
                         $pre = $result;
                     }
                 } else {

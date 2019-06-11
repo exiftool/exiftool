@@ -105,7 +105,7 @@ sub CheckIPTC($$$)
     my $format = $$tagInfo{Format} || $$tagInfo{Table}{FORMAT} || '';
     if ($format =~ /^int(\d+)/) {
         my $bytes = int(($1 || 0) / 8);
-        if ($bytes ne 1 and $bytes ne 2 and $bytes ne 4) {
+        if ($bytes != 1 and $bytes != 2 and $bytes != 4) {
             return "Can't write $bytes-byte integer";
         }
         my $val = $$valPtr;

@@ -129,13 +129,13 @@ sub ProcessAudible_meta($$$)
     for ($index=0; $index<$num; ++$index) {
         last if $pos + 3 > $dirLen;
         my $unk = Get8u($dataPt, $pos);             # ? (0x80 or 0x00)
-        last unless $unk eq 0x80 or $unk eq 0x00;
+        last unless $unk == 0x80 or $unk == 0x00;
         my $len = Get16u($dataPt, $pos + 1);        # tag length
         $pos += 3;
         last if $pos + $len + 6 > $dirLen or not $len;
         my $tag = substr($$dataPt, $pos, $len);     # tag ID
         my $ver = Get16u($dataPt, $pos + $len);     # version?
-        last unless $ver eq 0x0001;
+        last unless $ver == 0x0001;
         my $size = Get32u($dataPt, $pos + $len + 2);# data size
         $pos += $len + 6;
         last if $pos + $size > $dirLen;

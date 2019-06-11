@@ -2463,7 +2463,7 @@ my %indexInfo = (
                 3 => 'Bottom to Top',
                 4 => 'Top to Bottom',
             );
-            return ($a{$a} || "Unknown ($a)") . ', Shot ' . $b;
+            return(($a{$a} || "Unknown ($a)") . ', Shot ' . $b);
         },
     },
     0x603 => { #PH/4
@@ -3932,7 +3932,7 @@ sub ExtenderStatus($$$)
     $lensType =~ / F(\d+(\.\d+)?)/ or return 1;
     # If the maximum aperture at the maximum focal length is greater than the
     # known max/max aperture of the lens, then the extender must be attached
-    return ($maxAperture - $1 > 0.2) ? 1 : 2;
+    return(($maxAperture - $1 > 0.2) ? 1 : 2);
 }
 
 #------------------------------------------------------------------------------

@@ -1248,7 +1248,7 @@ my %code2charset = (
         # (can't calculate duration like this for compressed audio types)
         RawConv => q{
             return undef if $$self{VALUE}{FileType} =~ /^(LA|OFR|PAC|WV)$/;
-            return ($val[0] and not ($val[2] or $val[3])) ? $val[1] / $val[0] : undef;
+            return(($val[0] and not ($val[2] or $val[3])) ? $val[1] / $val[0] : undef);
         },
         PrintConv => 'ConvertDuration($val)',
     },
@@ -1320,7 +1320,8 @@ sub CalcDuration($@)
         # FujiFilm REAL 3D AVI's), but the video stream information isn't reliable for
         # some cameras (eg. Olympus FE models), so use the video stream information
         # only if the RIFF header duration is 2 to 3 times longer
-        my $dur1 = $val[1] / $val[0] if $val[0];
+        my $dur1;
+        $dur1 = $val[1] / $val[0] if $val[0];
         if ($val[2] and $val[3]) {
             my $dur2 = $val[3] / $val[2];
             my $rat = $dur1 / $dur2;

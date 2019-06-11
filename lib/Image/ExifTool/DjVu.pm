@@ -235,8 +235,7 @@ Tok: for (;;) {
             pos($$dataPt) = pos($$dataPt) - 1;
             # allow anything in key but whitespace, braces and double quotes
             # (this is one of those assumptions I mentioned)
-            $$dataPt =~ /([^\s()"]+)/sg;
-            $tok = $1;
+            $tok = $$dataPt =~ /([^\s()"]+)/sg ? $1 : undef;
         }
         push @toks, $tok if defined $tok;
     }

@@ -176,7 +176,7 @@ tag ID.  In these cases, the actual name used depends on the context in
 which the information is found.  Case is not significant for tag names.  A
 question mark (C<?>) after a tag name indicates that the information is
 either not understood, not verified, or not very useful -- these tags are
-not extracted by ExifTool unless the Unknown (-u) option is enabled.  Be
+not extracted by ExifTool unless the L<Unknown|../ExifTool.html#Unknown> (-u) option is enabled.  Be
 aware that some tag names are different than the descriptions printed out by
 default when extracting information with exiftool.  To see the tag names
 instead of the descriptions, use C<exiftool -s>.
@@ -196,7 +196,7 @@ be added and deleted.  A slash (C</>) indicates a tag that ExifTool will
 I<Avoid> when writing.  These will be edited but not created if another
 same-named tag may be created instead.  To create these tags, the group
 should be specified.  A tilde (C<~>) indicates a tag this is writable only
-when the print conversion is disabled (by setting PrintConv to 0, using the
+when the print conversion is disabled (by setting L<PrintConv|../ExifTool.html#PrintConv> to 0, using the
 -n option, or suffixing the tag name with a C<#> character). An exclamation
 point (C<!>) indicates a tag that is considered I<Unsafe> to write under
 normal circumstances.  These tags are not written unless specified
@@ -215,7 +215,7 @@ listed as the computer-readable and human-readable values on the left and
 right hand side of an equals sign (C<=>) respectively.  The human-readable
 values are used by default when reading and writing, but the
 computer-readable values may be accessed by disabling the value conversion
-with the -n option on the command line, by setting the ValueConv option to 0
+with the -n option on the command line, by setting the L<PrintConv|../ExifTool.html#PrintConv> option to 0
 in the API, or or on a per-tag basis by adding a hash (C<#>) after the tag
 name.
 
@@ -273,7 +273,7 @@ Some GPS tags have values which are fixed-length strings. For these, the
 indicated string lengths include a null terminator which is added
 automatically by ExifTool.  Remember that the descriptive values are used
 when writing (eg. 'Above Sea Level', not '0') unless the print conversion is
-disabled (with '-n' on the command line or the PrintConv option in the API,
+disabled (with '-n' on the command line or the L<PrintConv|../ExifTool.html#PrintConv> option in the API,
 or by suffixing the tag name with a C<#> character).
 
 When adding GPS information to an image, it is important to set all of the
@@ -306,15 +306,15 @@ HH:MM:SS[.ss][+/-HH:MM]", C<boolean> is either "True" or "False", C<struct>
 indicates a structured tag, and C<lang-alt> is a tag that supports alternate
 languages.
 
-When reading, C<struct> tags are extracted only if the Struct (-struct)
+When reading, C<struct> tags are extracted only if the L<Struct|../ExifTool.html#Struct> (-struct)
 option is used.  Otherwise the corresponding I<Flattened> tags, indicated by
 an underline (C<_>) after the B<Writable> type, are extracted.  When
 copying, by default both structured and flattened tags are available, but
 the flattened tags are considered "unsafe" so they they aren't copied unless
-specified explicitly.  The Struct option may be disabled by setting Struct
+specified explicitly.  The L<Struct|../ExifTool.html#Struct> option may be disabled by setting Struct
 to 0 via the API or with --struct on the command line to copy only flattened
 tags, or enabled by setting Struct to 1 via the API or with -struct on the
-command line to copy only as structures.  When writing, the Struct option
+command line to copy only as structures.  When writing, the L<Struct|../ExifTool.html#Struct> option
 has no effect, and both structured and flattened tags may be written.  See
 L<http://owl.phy.queensu.ca/~phil/exiftool/struct.html> for more details.
 
@@ -381,7 +381,7 @@ the B<Writable> format name.  For tags where a range of lengths is allowed,
 the minimum and maximum lengths are separated by a comma within the
 brackets.  When writing, ExifTool issues a minor warning and truncates the
 value if it is longer than allowed by the IPTC specification.  Minor errors
-may be ignored with the IgnoreMinorErrors (-m) option, allowing longer
+may be ignored with the L<IgnoreMinorErrors|../ExifTool.html#IgnoreMinorErrors> (-m) option, allowing longer
 values to be written, but beware that values like this may cause problems
 for some other IPTC readers. ExifTool will happily read IPTC values of any
 length.
@@ -411,7 +411,7 @@ image files (most notably, MOV/MP4 videos and HEIC/CR3 images).  Exiftool
 extracts standard meta information and a variety of audio, video and image
 parameters, as well as proprietary information written by many camera
 models.  Tags with a question mark after their name are not extracted unless
-the Unknown option is set.
+the L<Unknown|../ExifTool.html#Unknown> option is set.
 
 When writing, ExifTool creates both QuickTime and XMP tags by default, but
 the group may be specified to write one or the other separately.  If no
@@ -428,20 +428,24 @@ QuickTime-based files; it extracts other track-specific and timed
 metadata, but can not yet edit tags in these locations (with the
 exception of track-level date/time tags).
 
-Alternate language tags may be accessed for ItemList and Keys tags by adding
+Alternate language tags may be accessed for
+L<ItemList|Image::ExifTool::TagNames/QuickTime ItemList Tags> and
+L<Keys|Image::ExifTool::TagNames/QuickTime Keys Tags> tags by adding
 a 3-character ISO 639-2 language code and an optional ISO 3166-1 alpha 2
 country code to the tag name (eg. "ItemList:Artist-deu" or
-"ItemList::Artist-deu-DE").  Most UserData tags support a language code, but
-without a country code.  If no language code is specified when writing,
-alternate languages for the tag are deleted.  Use the "und" language code to
-write the default language without deleting alternate languages.  Note that
-"eng" is treated as a default language when reading, but not when writing.
+"ItemList::Artist-deu-DE").  Most
+L<UserData|Image::ExifTool::TagNames/QuickTime UserData Tags> tags support a
+language code, but without a country code.  If no language code is specified
+when writing, alternate languages for the tag are deleted.  Use the "und"
+language code to write the default language without deleting alternate
+languages.  Note that "eng" is treated as a default language when reading,
+but not when writing.
 
 According to the specification, many QuickTime date/time tags should be
 stored as UTC.  Unfortunately, digital cameras often store local time values
 instead (presumably because they don't know the time zone).  For this
 reason, by default ExifTool does not assume a time zone for these values.
-However, if the QuickTimeUTC API option is set, then ExifTool will assume
+However, if the L<QuickTimeUTC|../ExifTool.html#QuickTimeUTC> API option is set, then ExifTool will assume
 these values are properly stored as UTC, and will convert them to local time
 when extracting.
 
@@ -457,7 +461,7 @@ a few).
 Many Photoshop tags are marked as Unknown (indicated by a question mark
 after the tag name) because the information they provide is not very useful
 under normal circumstances.  These unknown tags are not extracted unless the
-Unknown (-u) option is used.  See
+L<Unknown|../ExifTool.html#Unknown> (-u) option is used.  See
 L<http://www.adobe.com/devnet-apps/photoshop/fileformatashtml/> for the
 official specification
 
@@ -468,7 +472,7 @@ access to this information.
 },
     PrintIM => q{
 The format of the PrintIM information is known, however no PrintIM tags have
-been decoded.  Use the Unknown (-u) option to extract PrintIM information.
+been decoded.  Use the L<Unknown|../ExifTool.html#Unknown> (-u) option to extract PrintIM information.
 },
     GeoTiff => q{
 ExifTool extracts the following tags from GeoTIFF images.  See
@@ -533,7 +537,7 @@ settings have not been decoded for all models.  The tables below list the
 custom settings for the currently supported models.
 },
     Unknown => q{
-The following tags are decoded in unsupported maker notes.  Use the Unknown
+The following tags are decoded in unsupported maker notes.  Use the L<Unknown|../ExifTool.html#Unknown>
 (-u) option to display other unknown tags.
 },
     PDF => q{
@@ -545,7 +549,7 @@ specification.
 
 ExifTool supports reading and writing PDF documents up to version 1.7
 extension level 3, including support for RC4, AES-128 and AES-256
-encryption.  A Password option is provided to allow processing of
+encryption.  A L<Password|../ExifTool.html#Password> option is provided to allow processing of
 password-protected PDF files.
 
 ExifTool may be used to write native PDF and XMP metadata to PDF files. It
@@ -712,7 +716,7 @@ sub new
     my $that = shift;
     my $class = ref($that) || $that || 'Image::ExifTool::BuildTagLookup';
     my $self = bless {}, $class;
-    my (%subdirs, %isShortcut, %allStructs);
+    my (%subdirs, %isShortcut);
     my %count = (
         'unique tag names' => 0,
         'total tags' => 0,

@@ -2287,7 +2287,7 @@ my %binaryDataAttrs = (
         Name => 'NikonCaptureEditVersions',
         Condition => '$self->Options("ExtractEmbedded")',
         Notes => q{
-            the ExtractEmbedded option may be used to decode settings from the stored
+            the L<ExtractEmbedded|../ExifTool.html#ExtractEmbedded> option may be used to decode settings from the stored
             edit versions, otherwise this is extracted as a binary data block
         },
         Writable => 'undef',

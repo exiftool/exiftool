@@ -448,7 +448,7 @@ sub ProcessZIP($$)
 
         # check for an Office Open file (DOCX, etc)
         # --> read '[Content_Types].xml' to determine the file type
-        my ($mime, @members, $epub);
+        my ($mime, @members);
         my $cType = $zip->memberNamed('[Content_Types].xml');
         if ($cType) {
             ($buff, $status) = $zip->contents($cType);

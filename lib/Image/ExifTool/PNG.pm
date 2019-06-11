@@ -427,10 +427,10 @@ my %unreg = ( Notes => 'unregistered' );
 
         These tags may be stored as tEXt, zTXt or iTXt chunks in the PNG image.  By
         default ExifTool writes new string-value tags as as uncompressed tEXt, or
-        compressed zTXt if the Compress (-z) option is used and Compress::Zlib is
+        compressed zTXt if the L<Compress|../ExifTool.html#Compress> (-z) option is used and Compress::Zlib is
         available.  Alternate language tags and values containing special characters
         (unless the Latin character set is used) are written as iTXt, and compressed
-        if the Compress option is used and Compress::Zlib is available.  Raw profile
+        if the L<Compress|../ExifTool.html#Compress> option is used and Compress::Zlib is available.  Raw profile
         information is always created as compressed zTXt if Compress::Zlib is
         available, or tEXt otherwise.  Standard XMP is written as uncompressed iTXt.
 

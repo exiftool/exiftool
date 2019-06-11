@@ -21,7 +21,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::ASF;   # for GetGUID()
 
-$VERSION = '1.36';
+$VERSION = '1.37';
 
 sub ProcessFPX($$);
 sub ProcessFPXR($$$);
@@ -125,7 +125,7 @@ my @dirEntryType = qw(INVALID STORAGE STREAM LOCKBYTES PROPERTY ROOT);
 # list of code pages used by Microsoft
 # (ref http://msdn.microsoft.com/en-us/library/dd317756(VS.85).aspx)
 my %codePage = (
-    037 => 'IBM EBCDIC US-Canada',
+     37 => 'IBM EBCDIC US-Canada',
     437 => 'DOS United States',
     500 => 'IBM EBCDIC International',
     708 => 'Arabic (ASMO 708)',
@@ -1175,11 +1175,11 @@ my %fpxFileType = (
     VARS => { NO_ID => 1 },
     CommentBy => {
         Groups => { 2 => 'Author' },
-        Notes => 'enable Duplicates option to extract all entries',
+        Notes => 'enable L<Duplicates|../ExifTool.html#Duplicates> option to extract all entries',
     },
     LastSavedBy => {
         Groups => { 2 => 'Author' },
-        Notes => 'enable Duplicates option to extract history of up to 10 entries',
+        Notes => 'enable L<Duplicates|../ExifTool.html#Duplicates> option to extract history of up to 10 entries',
     },
     DOP => { SubDirectory => { TagTable => 'Image::ExifTool::FlashPix::DOP' } },
     ModifyDate => {
@@ -1439,7 +1439,7 @@ sub ReadFPXValue($$$$$;$$)
                     my $charset = $Image::ExifTool::charsetName{"cp$codePage"};
                     if ($charset) {
                         $val = $et->Decode($val, $charset);
-                    } elsif ($codePage eq 1200) {   # UTF-16, little endian
+                    } elsif ($codePage == 1200) {   # UTF-16, little endian
                         $val = $et->Decode($val, 'UCS2', 'II');
                     }
                 }
@@ -1577,14 +1577,16 @@ sub ProcessDocumentTable($)
         my $key = 'TableOffsets' . ($i ? " ($i)" : '');
         my $offsets = $$value{$key};
         last unless defined $offsets;
-        my $doc = $$extra{$key}{G3} if $$extra{$key};
+        my $doc;
+        $doc = $$extra{$key}{G3} if $$extra{$key};
         $doc = '' unless $doc;
         # get DocFlags for this sub-document
         my ($docFlags, $docTable);
         for ($j=0; ; ++$j) {
             my $key = 'DocFlags' . ($j ? " ($j)" : '');
             last unless defined $$value{$key};
-            my $tmp = $$extra{$key}{G3} if $$extra{$key};
+            my $tmp;
+            $tmp = $$extra{$key}{G3} if $$extra{$key};
             $tmp = '' unless $tmp;
             if ($tmp eq $doc) {
                 $docFlags = $$value{$key};
@@ -1597,7 +1599,8 @@ sub ProcessDocumentTable($)
         for ($j=0; ; ++$j) {
             my $key = $tag . ($j ? " ($j)" : '');
             last unless defined $$value{$key};
-            my $tmp = $$extra{$key}{G3} if $$extra{$key};
+            my $tmp;
+            $tmp = $$extra{$key}{G3} if $$extra{$key};
             $tmp = '' unless $tmp;
             if ($tmp eq $doc) {
                 $docTable = \$$value{$key};
@@ -1995,7 +1998,7 @@ sub ProcessFPXR($$$)
             $et->Warn("Unlisted FPXR segment (index $index)") if $index != 255;
         }
 
-    } elsif ($type ne 3) {  # not a "Reserved" segment
+    } elsif ($type != 3) {  # not a "Reserved" segment
 
         $et->Warn("Unknown FPXR segment (type $type)");
 

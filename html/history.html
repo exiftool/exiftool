@@ -11,11 +11,27 @@
 
 <p>RSS feed: <a href="http://owl.phy.queensu.ca/~phil/exiftool/rss.xml">http://owl.phy.queensu.ca/~phil/exiftool/rss.xml</a></p>
 
-<p><b>Note:</b> The most recent production release is <a href="Image-ExifTool-11.30.tar.gz">Version 11.30</a>. (Other versions are
+<p><b>Note:</b> The most recent production release is <a href="Image-ExifTool-11.50.tar.gz">Version 11.50</a>. (Other versions are
 considered development releases, and are not uploaded to <a href="https://metacpan.org/release/Image-ExifTool">CPAN</a>.)</p>
 
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
+
+<a name='v11.50'><b>June 11, 2019 - Version 11.50</b></a> <span class=grn>(production release)</span>
+<ul>
+<li>Added a new Canon LensType and two new Sony LensTypes (thanks LibRaw)
+<li>Added tiff_version and rotate_regions config files to the distribution
+<li>Added two new QuickTime Keys tags and made some existing Keys unwritable
+<li>Improved Composite LensID logic to make better use of EXIF LensModel
+<li>Improved logic when writing BinaryData tags to allow multiple interdependent
+    tags to be written in a single command
+<li>Improved -htmldump output to show names of Unknown tags
+<li>Allow advanced formatting expressions to access the current tag key ($tag)
+<li>Remove escaped nulls from -json string values
+<li>Reverted change in ExifTool 11.38 so that Composite GPS reference directions
+    are generated again even if the EXIF versions of these tags already exist
+<li>Fixed an incorrect FlashPix CodePage conversion
+</ul>
 
 <a name='v11.49'><b>June 5, 2019 - Version 11.49</b></a>
 <ul>

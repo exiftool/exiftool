@@ -34,11 +34,13 @@ use Image::ExifTool::Nikon;
 use Image::ExifTool::Validate;
 use Image::ExifTool::MacOS;
 
-$VERSION = '3.23';
+$VERSION = '3.24';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
 sub SortedTagTablekeys($);
+
+my $createDate = 'Feb 15, 2005';
 
 # global variables to control sorting order of table entries
 my $numbersFirst = 1;   # set to -1 to sort numbers last, or 2 to put negative numbers last
@@ -67,7 +69,8 @@ my %tweakOrder = (
     Composite => 'Extra',
     GeoTiff => 'GPS',
     CanonVRD=> 'CanonCustom',
-    FLIR    => 'Casio',
+    DJI     => 'Casio',
+    FLIR    => 'DJI',
     FujiFilm => 'FLIR',
     Kodak   => 'JVC',
     Leaf    => 'Kodak',
@@ -184,11 +187,11 @@ instead of the descriptions, use C<exiftool -s>.
 The B<Writable> column indicates whether the tag is writable by ExifTool.
 Anything but a C<no> in this column means the tag is writable.  A C<yes>
 indicates writable information that is either unformatted or written using
-the existing format.  Other expressions give details about the information
-format, and vary depending on the general type of information.  The format
-name may be followed by a number in square brackets to indicate the number
-of values written, or the number of characters in a fixed-length string
-(including a null terminator which is added if required).
+the existing format.  Other expressions give details about the format of the
+stored value, and vary depending on the general type of information.  The
+format name may be followed by a number in square brackets to indicate the
+number of values written, or the number of characters in a fixed-length
+string (including a null terminator which is added if required).
 
 A plus sign (C<+>) after an entry in the B<Writable> column indicates a
 I<List> tag which supports multiple values and allows individual values to
@@ -1953,6 +1956,7 @@ sub CloseHtmlFiles($)
         # write the trailers
         print HTMLFILE "<hr>\n";
         print HTMLFILE "(This document generated automatically by Image::ExifTool::BuildTagLookup)\n";
+        print HTMLFILE "<br><i>Created $createDate</i>\n" if $htmlFile eq 'html/TagNames/index.html';
         print HTMLFILE "<br><i>Last revised $fileDate</i>\n";
         print HTMLFILE "<p class=lf><a href=";
         if ($htmlFile =~ /index\.html$/) {

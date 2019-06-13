@@ -303,54 +303,6 @@ sub WriteNewTags($$$)
 }
 
 #------------------------------------------------------------------------------
-# check to be sure we haven't read past end of PS data in DOS-style file
-# Inputs: 0) RAF ref, 1) pointer to end of PS, 2) data
-# - modifies data and sets RAF to EOF if end of PS is reached
-sub CheckPSEnd($$$)
-{
-    my $pos = $_[0]->Tell();
-    if ($pos >= $_[1]) {
-        $_[0]->Seek(0, 2);   # seek to end of file so we can't read any more
-        $_[2] = substr($_[2], 0, length($_[2]) - $pos + $_[1]) if $pos > $_[1];
-    }
-}
-
-#------------------------------------------------------------------------------
-# Split into lines ending in any CR, LF or CR+LF combination
-# (this is annoying, and could be avoided if EPS files didn't mix linefeeds!)
-# Inputs: 0) data pointer, 1) reference to lines array
-# Notes: Updates data to contain next line and fills list with remaining lines
-sub SplitLine($$)
-{
-    my ($dataPt, $lines) = @_;
-    for (;;) {
-        my $endl;
-        # find the position of the first LF (\x0a)
-        $endl = pos($$dataPt), pos($$dataPt) = 0 if $$dataPt =~ /\x0a/g;
-        if ($$dataPt =~ /\x0d/g) { # find the first CR (\x0d)
-            if (defined $endl) {
-                # (remember, CR+LF is a DOS newline...)
-                $endl = pos($$dataPt) if pos($$dataPt) < $endl - 1;
-            } else {
-                $endl = pos($$dataPt);
-            }
-        } elsif (not defined $endl) {
-            push @$lines, $$dataPt;
-            last;
-        }
-        # split into separate lines
-        if (length $$dataPt == $endl) {
-            push @$lines, $$dataPt;
-            last;
-        } else {
-            push @$lines, substr($$dataPt, 0, $endl);
-            $$dataPt = substr($$dataPt, $endl);
-        }
-    }
-    $$dataPt = shift @$lines;   # set $$dataPt to first line
-}
-
-#------------------------------------------------------------------------------
 # Write PS file
 # Inputs: 0) ExifTool object reference, 1) source dirInfo reference
 # Returns: 1 on success, 0 if this wasn't a valid PS file,
@@ -365,7 +317,7 @@ sub WritePS($$)
     my $verbose = $et->Options('Verbose');
     my $out = $et->Options('TextOut');
     my ($data, $buff, %flags, $err, $mode, $endToken);
-    my ($dos, $psStart, $psEnd, $psNewStart, $xmpHint);
+    my ($dos, $psStart, $psNewStart, $xmpHint, @lines);
 
     $raf->Read($data, 4) == 4 or return 0;
     return 0 unless $data =~ /^(%!PS|%!Ad|\xc5\xd0\xd3\xc6)/;
@@ -390,7 +342,7 @@ sub WritePS($$)
             $et->Error('Invalid PS header');
             return 1;
         }
-        $psEnd = $psStart + Get32u(\$dos, 8);
+        $$raf{PSEnd} = $psStart + Get32u(\$dos, 8);
         my $base = Get32u(\$dos, 20);
         Set16u(0xffff, \$dos, 28);  # ignore checksum
         if ($base) {
@@ -465,34 +417,9 @@ sub WritePS($$)
     $xmpHint = 0 if $$et{DEL_GROUP}{XMP};
     $$newTags{XMP_HINT} = $xmpHint if $xmpHint;  # add special tag to newTags list
 
-    my (@lines, $changedNL);
-    my $altnl = ($/ eq "\x0d") ? "\x0a" : "\x0d";
-
     for (;;) {
-        if (@lines) {
-            $data = shift @lines;
-        } else {
-            $raf->ReadLine($data) or last;
-            $dos and CheckPSEnd($raf, $psEnd, $data);
-            # split line if it contains other newline sequences
-            if ($data =~ /$altnl/) {
-                if (length($data) > 500000 and IsPC()) {
-                    # patch for Windows memory problem
-                    unless ($changedNL) {
-                        $changedNL = 1;
-                        my $t = $/;
-                        $/ = $altnl;
-                        $altnl = $t;
-                        $raf->Seek(-length($data), 1);
-                        next;
-                    }
-                } else {
-                    # split into separate lines
-                    SplitLine(\$data, \@lines);
-                }
-            }
-        }
-        undef $changedNL;
+        @lines or GetNextLine($raf, \@lines) or last;
+        $data = shift @lines;
         if ($endToken) {
             # look for end token
             if ($data =~ m/^$endToken\s*$/is) {
@@ -641,7 +568,7 @@ sub WritePS($$)
                             $data = shift @lines;
                         } else {
                             $raf->ReadLine($data) or undef($data), last;
-                            $dos and CheckPSEnd($raf, $psEnd, $data);
+                            $dos and CheckPSEnd($raf, \$data);
                             if ($data =~ /[\x0d\x0a]%%EOF\b/g) {
                                 # split data before "%%EOF"
                                 # (necessary if data contains other newline sequences)
@@ -659,7 +586,7 @@ sub WritePS($$)
                     Write($outfile, $data) or $err = 1;
                     Write($outfile, @lines) or $err = 1 if @lines;
                     while ($raf->Read($data, 65536)) {
-                        $dos and CheckPSEnd($raf, $psEnd, $data);
+                        $dos and CheckPSEnd($raf, \$data);
                         Write($outfile, $data) or $err = 1;
                     }
                 }

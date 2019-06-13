@@ -13,6 +13,127 @@
 <p><b>Note:</b> This page gives the history of older exiftool versions.  See
 <a href="history.html">history.html</a> for the recent history.</p>
 
+<a name='v11.29'><b>Feb. 28, 2019 - Version 11.29</b></a>
+<ul>
+<li>Added support for Ricoh GR III maker notes
+<li>Added a new Canon LensType (thanks Claude Jolicoeur)
+<li>Added a new XMP-crs tag (github issue #8)
+<li>Enhanced -csv option to output base64-encoded binary data when combined with
+    -b or when the -charset option is used and the text has invalid characters
+    (github issue #11)
+<li>Remove trailing space from even-length DICOM values (github issue #9)
+<li>Patched to avoid "Hexadecimal number > 0xffffffff non-portable" warning
+    (github issue #6)
+<li>Fixed meta charset attribute in -htmlDump output
+</ul>
+
+<a name='v11.28'><b>Feb. 21, 2019 - Version 11.28</b></a>
+<ul>
+<li>Added support for reading INSV video and decode streaming GPS
+<li>Added a new Pentax LensType (thanks Louis Granboulan)
+<li>Added a new FujiFilm ImageStabilization value
+<li>Allow exiftool to be run via a symbolic link on Mac/Linux
+<li>Reverted INDD patch of version 11.27 (ie. raise error again on incorrectly
+    terminated INDD object list)
+<li>Changed handling of temporary documentation file in Windows version
+</ul>
+
+<a name='v11.27'><b>Feb. 14, 2019 - Version 11.27</b></a>
+<ul>
+<li>Added support for more XMP-dji-drone tags
+<li>Added new Olympus CameraType and LensType values (thanks LibRaw)
+<li>Added a new Canon LensType (thanks LibRaw)
+<li>Added a new CanonModelID
+<li>Decode yet another type of GPS from DashCam videos
+<li>Allow FileName to be written when only case is changed on case-insensitive
+    filesystems
+<li>Improved identification of some iWork file types
+<li>Recognize the LRV file extension
+<li>Changed Windows version to use the parent folder of PAR_GLOBAL_TEMP for the
+    temporary documentation file
+<li>Don't raise an error if an INDD object list is terminated by spaces instead
+    of nulls
+<li>Fixed some problems with new -htmldump IFD highlighting feature
+<li>Fixed bug introduced in 11.24 with "-o -.EXT" feature
+</ul>
+
+<a name='v11.26'><b>Jan. 21, 2019 - Version 11.26</b></a>
+<ul>
+<li>Added a new Nikon LensID (thanks LibRaw)
+<li>Decode more tags for the Sony ICLE-6400 (thanks Jos Roost and LibRaw)
+<li>Enhanced -htmldump feature to highlight IFD when mousing over IFD offset
+</ul>
+
+<a name='v11.25'><b>Jan. 15, 2019 - Version 11.25</b></a>
+<ul>
+<li>Added a new Sony/Minolta LensType (thanks LibRaw)
+<li>Added a new Nikon LensID
+<li>Decode Leica D-Lux7 maker notes
+<li>Decode more Nikon AF tags for newer models
+<li>Decode Samsung Type2 maker notes with lower case Make
+<li>Decode another Sony tag (thanks Jos Roost)
+<li>Improved decoding of Nikon LensType
+<li>Improved time shift feature to fix some incorrectly formatted date/time
+    values
+<li>Renamed some Sony ImageCount tags to ShutterCount (thanks Jos Roost)
+<li>Fixed problem reading back metadata written to some odd PDF files
+</ul>
+
+<a name='v11.24'><b>Jan. 8, 2019 - Version 11.24</b></a>
+<ul>
+<li>Compatibility Notice: Changed the meaning of '-' and '+' modifiers for %C
+    formatting code (does not affect lower-case %c code)
+<li>Decode a number of new Nikon tags (thanks Michael Tapes for samples)
+<li>Added new Olympus FlashType and FlashModel values (thanks Per)
+<li>Added a new Canon LensType
+<li>Added a new Nikon LensID
+<li>Made more GeoTIFF tags writable
+<li>Handle XMP rdf:value when reading
+<li>Improved warning when trying to read a file with a zero-length name
+<li>Fixed decoding of PictureControl tags for Nikon Z-7
+<li>Fixed problem writing date/time values with " DST" designator at end of
+    date/time string
+<li>Fixed problem in Windows which could cause ExifTool to abort due to a
+    Win32::FindFile error if a file name contained surrogate Unicode characters
+</ul>
+
+<a name='v11.23'><b>Dec. 21, 2018 - Version 11.23</b></a>
+<ul>
+<li>Recognize DWG and DWF files
+<li>Minor improvement to some -validate warnings
+<li>Tolerate leading UTF-8 byte order mark (BOM) at start of JSON files
+<li>Fixed problem recognizing some streaming camm metadata in QuickTime videos
+</ul>
+
+<a name='v11.22'><b>Dec. 13, 2018 - Version 11.22</b></a>
+<ul>
+<li>Added read support for PC Paintbrush (PCX) files
+<li>Added two new Sony/Minolta LensTypes (thanks Jos Roost and LibRaw)
+<li>Decode LensData tags for some newer Nikon models
+<li>Decode ColorData for the Canon EOS R (thanks LibRaw)
+<li>Recognize DCX files
+</ul>
+
+<a name='v11.21'><b>Dec. 7, 2018 - Version 11.21</b></a>
+<ul>
+<li>Added a new Sony/Minolta LensType (thanks Jos Roost)
+<li>Added a new Olympus FlashModel (thanks Michael Meissner)
+<li>Improved decoding of FujiFilm InternalSerialNumber (thanks LibRaw)
+<li>Minor improvements to decoding of GPS from some dashcam videos
+<li>Made XMP-getty:Personality a List-type tag
+<li>Made it an error to use the -o option or write FileName or Directory tags
+    when using the TestName dry-run feature
+<li>Fixed problem using -E with other character sets when writing
+</ul>
+
+<a name='v11.20'><b>Nov. 20, 2018 - Version 11.20</b></a>
+<ul>
+<li>Added a new Panasonic WhiteBalance value
+<li>Added a new Nikon LensID (thanks LibRaw)
+<li>Decode streaming GPS from MOV videos for another dashcam model
+<li>Improved -E option to support character sets other than UTF-8
+</ul>
+
 <a name='v11.19'><b>Nov. 14, 2018 - Version 11.19</b></a>
 <ul>
 <li>Added -fast4 option

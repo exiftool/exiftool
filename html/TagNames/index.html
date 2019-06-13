@@ -10,7 +10,7 @@
 <h2 class=top>ExifTool Tag Names</h2>
 <p>
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 22568 tags, with 15014 unique tag names.
+They contain a total of 22571 tags, with 15015 unique tag names.
 </p>
 <blockquote>
 <table width='100%' class=frame><tr><td>
@@ -20,7 +20,6 @@ They contain a total of 22568 tags, with 15014 unique tag names.
 <a href='JPEG.html'>JPEG</a><br>
 <a href='EXIF.html'>EXIF</a><br>
 <a href='IPTC.html'>IPTC</a><br>
-<a href='DJI.html'>DJI</a><br>
 <a href='XMP.html'>XMP</a><br>
 <a href='GPS.html'>GPS</a><br>
 <a href='GeoTiff.html'>GeoTiff</a><br>
@@ -33,6 +32,7 @@ They contain a total of 22568 tags, with 15014 unique tag names.
 <a href='CanonCustom.html'>CanonCustom</a><br>
 <a href='CanonVRD.html'>CanonVRD</a><br>
 <a href='Casio.html'>Casio</a><br>
+<a href='DJI.html'>DJI</a><br>
 <a href='FLIR.html'>FLIR</a><br>
 <a href='FujiFilm.html'>FujiFilm</a><br>
 <a href='GE.html'>GE</a><br>
@@ -172,11 +172,11 @@ instead of the descriptions, use <code>exiftool -s</code>.</p>
 <p>The <b>Writable</b> column indicates whether the tag is writable by ExifTool.
 Anything but a <code>no</code> in this column means the tag is writable.  A <code>yes</code>
 indicates writable information that is either unformatted or written using
-the existing format.  Other expressions give details about the information
-format, and vary depending on the general type of information.  The format
-name may be followed by a number in square brackets to indicate the number
-of values written, or the number of characters in a fixed-length string
-(including a null terminator which is added if required).</p>
+the existing format.  Other expressions give details about the format of the
+stored value, and vary depending on the general type of information.  The
+format name may be followed by a number in square brackets to indicate the
+number of values written, or the number of characters in a fixed-length
+string (including a null terminator which is added if required).</p>
 
 <p>A plus sign (<code>+</code>) after an entry in the <b>Writable</b> column indicates a
 <i>List</i> tag which supports multiple values and allows individual values to
@@ -225,7 +225,8 @@ ExifTool.  A big thanks to everyone who has helped with this so far!)</i>
 </p>
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jun 11, 2019</i>
+<br><i>Created Feb 15, 2005</i>
+<br><i>Last revised Jun 13, 2019</i>
 <p class=lf><a href='../index.html'>&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

@@ -16,7 +16,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.43';
+$VERSION = '1.44';
 
 sub WritePS($$);
 sub ProcessPS($$;$);
@@ -222,6 +222,97 @@ sub GetInputRecordSeparator($)
 }
 
 #------------------------------------------------------------------------------
+# Split into lines ending in any CR, LF or CR+LF combination
+# (this is annoying, and could be avoided if EPS files didn't mix linefeeds!)
+# Inputs: 0) data pointer, 1) reference to lines array
+# Notes: Fills @$lines with lines from splitting $$dataPt
+sub SplitLine($$)
+{
+    my ($dataPt, $lines) = @_;
+    for (;;) {
+        my $endl;
+        # find the position of the first LF (\x0a)
+        $endl = pos($$dataPt), pos($$dataPt) = 0 if $$dataPt =~ /\x0a/g;
+        if ($$dataPt =~ /\x0d/g) { # find the first CR (\x0d)
+            if (defined $endl) {
+                # (remember, CR+LF is a DOS newline...)
+                $endl = pos($$dataPt) if pos($$dataPt) < $endl - 1;
+            } else {
+                $endl = pos($$dataPt);
+            }
+        } elsif (not defined $endl) {
+            push @$lines, $$dataPt;
+            last;
+        }
+        if (length $$dataPt == $endl) {
+            push @$lines, $$dataPt;
+            last;
+        } else {
+            # continue to split into separate lines
+            push @$lines, substr($$dataPt, 0, $endl);
+            $$dataPt = substr($$dataPt, $endl);
+        }
+    }
+}
+
+#------------------------------------------------------------------------------
+# check to be sure we haven't read past end of PS data in DOS-style file
+# Inputs: 0) RAF ref (with PSEnd member), 1) data ref
+# - modifies data and sets RAF to EOF if end of PS is reached
+sub CheckPSEnd($$)
+{
+    my ($raf, $dataPt) = @_;
+    my $pos = $raf->Tell();
+    if ($pos >= $$raf{PSEnd}) {
+        $raf->Seek(0, 2);   # seek to end of file so we can't read any more
+        $$dataPt = substr($$dataPt, 0, length($$dataPt) - $pos + $$raf{PSEnd}) if $pos > $$raf{PSEnd};
+    }
+}
+
+#------------------------------------------------------------------------------
+# Read next line from EPS file
+# Inputs: 0) RAF ref (with PSEnd member if Postscript ends before end of file)
+#         1) array of lines from file
+# Returns: true on success
+sub GetNextLine($$)
+{
+    my ($raf, $lines) = @_;
+    my ($data, $changedNL);
+    my $altnl = ($/ eq "\x0d") ? "\x0a" : "\x0d";
+    for (;;) {
+        $raf->ReadLine($data) or last;
+        $$raf{PSEnd} and CheckPSEnd($raf, \$data);
+        # split line if it contains other newline sequences
+        if ($data =~ /$altnl/) {
+            if (length($data) > 500000 and IsPC()) {
+                # patch for Windows memory problem
+                unless ($changedNL) {
+                    $changedNL = $/;
+                    $/ = $altnl;
+                    $altnl = $changedNL;
+                    $raf->Seek(-length($data), 1);
+                    next;
+                }
+            } else {
+                    # split into separate lines
+                #    push @$lines, split /$altnl/, $data, -1;
+                #    if (@$lines == 2 and $$lines[1] eq $/) {
+                #        # handle case of DOS newline data inside file using Unix newlines
+                #        $$lines[0] .= pop @$lines;
+                #    }
+                # split into separate lines if necessary
+               SplitLine(\$data, $lines);
+            }
+        } else {
+            push @$lines, $data;
+        }
+        $/ = $changedNL if $changedNL;
+        return 1;
+    }
+    return 0;
+}
+
+#------------------------------------------------------------------------------
 # Decode comment from PostScript file
 # Inputs: 0) comment string, 1) RAF ref, 2) reference to lines array
 #         3) optional data reference for extra lines read from file
@@ -233,22 +324,7 @@ sub DecodeComment($$$;$)
     $val =~ s/\x0d*\x0a*$//;        # remove trailing CR, LF or CR/LF
     # check for continuation comments
     for (;;) {
-        unless (@$lines) {
-            my $buff;
-            $raf->ReadLine($buff) or last;
-            my $altnl = $/ eq "\x0d" ? "\x0a" : "\x0d";
-            if ($buff =~ /$altnl/) {
-                chomp $buff if $/ eq "\x0d\x0a";        # remove DOS newline before splitting
-                # split into separate lines
-                @$lines = split /$altnl/, $buff, -1;
-                # handle case of DOS newline data inside file using Unix newlines
-                @$lines = ( $$lines[0] . $$lines[1] ) if @$lines == 2 and $$lines[1] eq $/;
-                # add back trailing DOS newline if necessary
-                @$lines ? @$lines[-1] .= $/ : push @$lines, $/ if $/ eq "\x0d\x0a";
-            } else {
-                push @$lines, $buff;
-            }
-        }
+        @$lines or GetNextLine($raf, $lines) or last;
         last unless $$lines[0] =~ /^%%\+/;  # is the next line a continuation?
         $$dataPt .= $$lines[0] if $dataPt;  # add to data if necessary
         $$lines[0] =~ s/\x0d*\x0a*$//;      # remove trailing CR, LF or CR/LF
@@ -371,11 +447,13 @@ sub ProcessPS($$;$)
         # - save DOS header then seek ahead and check PS header
         $raf->Read($dos, 26) == 26 or return 0;
         SetByteOrder('II');
-        unless ($raf->Seek(Get32u(\$dos, 0), 0) and
+        my $psStart = Get32u(\$dos, 0);
+        unless ($raf->Seek($psStart, 0) and
                 $raf->Read($data, 4) == 4 and $data eq '%!PS')
         {
             return PSErr($et, 'invalid header');
         }
+        $$raf{PSEnd} = $psStart + Get32u(\$dos, 4); # set end of PostScript data in RAF
     } else {
         # check for PostScript font file (PFA or PFB)
         my $d2;
@@ -487,7 +565,7 @@ sub ProcessPS($$;$)
         if ($mode) {
             if (not $endToken) {
                 $buff .= $data;
-                next unless $data =~ m{<\?xpacket end=.(w|r).\?>($/|$)};
+                next unless $data =~ m{<\?xpacket end=.(w|r).\?>(\n|\r|$)};
             } elsif ($data !~ /^$endToken/i) {
                 if ($mode eq 'XMP') {
                     $buff .= $data;
@@ -565,7 +643,7 @@ sub ProcessPS($$;$)
             $buff = $data;
             undef $endToken;    # no end token (just look for xpacket end)
             # XMP could be contained in a single line (if newlines are different)
-            next unless $data =~ m{<\?xpacket end=.(w|r).\?>($/|$)};
+            next unless $data =~ m{<\?xpacket end=.(w|r).\?>(\n|\r|$)};
         } elsif ($data =~ /^%%?(\w+): ?(.*)/s and $$tagTablePtr{$1}) {
             my ($tag, $val) = ($1, $2);
             # only allow 'ImageData' and AI tags to have single leading '%'

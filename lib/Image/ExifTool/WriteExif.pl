@@ -367,9 +367,11 @@ sub ValidateImageData($$$;$)
         my $minor;
         $minor = 1 if $$et{DOC_NUM} or $$et{FILE_TYPE} ne 'TIFF';
         unless (@bitsPerSample == $samplesPerPix) {
-            # (just a warning for this problem)
-            my $s = $samplesPerPix eq '1' ? '' : 's';
-            $et->Warn("$dirName BitsPerSample should have $samplesPerPix value$s", $minor);
+            unless ($$et{FILE_TYPE} eq 'EPS' and @bitsPerSample == 1) {
+                # (just a warning for this problem)
+                my $s = $samplesPerPix eq '1' ? '' : 's';
+                $et->Warn("$dirName BitsPerSample should have $samplesPerPix value$s", $minor);
+            }
             push @bitsPerSample, $bitsPerSample[0] while @bitsPerSample < $samplesPerPix;
             foreach (@bitsPerSample) {
                 $et->WarnOnce("$dirName BitsPerSample values are different", $minor) if $_ ne $bitsPerSample[0];

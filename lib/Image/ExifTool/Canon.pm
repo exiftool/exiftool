@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.15';
+$VERSION = '4.16';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -8005,6 +8005,10 @@ my %ciMaxFocal = (
         Name => 'PeripheralLighting',
         PrintConv => \%offOn,
     },
+    3 => {
+        Name => 'DistortionCorrection',
+        PrintConv => \%offOn,
+    },
     4 => {
         Name => 'ChromaticAberrationCorr',
         PrintConv => \%offOn,
@@ -8014,6 +8018,7 @@ my %ciMaxFocal = (
         PrintConv => \%offOn,
     },
     6 => 'PeripheralLightingValue',
+    9 => 'DistortionCorrectionValue',
     # 10 - flags?
     11 => {
         Name => 'OriginalImageWidth',
@@ -8047,6 +8052,10 @@ my %ciMaxFocal = (
     },
     6 => {
         Name => 'ChromaticAberrationSetting',
+        PrintConv => \%offOn,
+    },
+    7 => {
+        Name => 'DistortionCorrectionSetting',
         PrintConv => \%offOn,
     },
 );
@@ -8093,7 +8102,7 @@ my %ciMaxFocal = (
         },
     },
     # 6 - related to ChromaticAberrationCorr
-    # 7 - related to DistortionCorrection
+    # 7 - related to DistortionCorrection (0=off, 1=On in a 5DmkIV sample)
     # 8 - related to PeripheralIlluminationCorr and ChromaticAberrationCorr
 );
 

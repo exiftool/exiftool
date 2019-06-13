@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 22568 tags, with 15014 unique tag names.
+They contain a total of 22571 tags, with 15015 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -37,11 +37,11 @@ instead of the descriptions, use C<exiftool -s>.
 The B<Writable> column indicates whether the tag is writable by ExifTool.
 Anything but a C<no> in this column means the tag is writable.  A C<yes>
 indicates writable information that is either unformatted or written using
-the existing format.  Other expressions give details about the information
-format, and vary depending on the general type of information.  The format
-name may be followed by a number in square brackets to indicate the number
-of values written, or the number of characters in a fixed-length string
-(including a null terminator which is added if required).
+the existing format.  Other expressions give details about the format of the
+stored value, and vary depending on the general type of information.  The
+format name may be followed by a number in square brackets to indicate the
+number of values written, or the number of characters in a fixed-length
+string (including a null terminator which is added if required).
 
 A plus sign (C<+>) after an entry in the B<Writable> column indicates a
 I<List> tag which supports multiple values and allows individual values to
@@ -1113,61 +1113,6 @@ IPTC group only in the standard location.
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
   [no tags known]
-
-=head2 DJI Tags
-
-This table lists tags found in the maker notes of images from some DJI
-Phantom drones.
-
-  Tag ID   Tag Name                             Writable
-  ------   --------                             --------
-  0x0001   Make                                 string
-  0x0003   SpeedX                               float
-  0x0004   SpeedY                               float
-  0x0005   SpeedZ                               float
-  0x0006   Pitch                                float
-  0x0007   Yaw                                  float
-  0x0008   Roll                                 float
-  0x0009   CameraPitch                          float
-  0x000a   CameraYaw                            float
-  0x000b   CameraRoll                           float
-
-=head3 DJI XMP Tags
-
-XMP tags used by DJI for images from drones.
-
-These tags belong to the ExifTool XMP-drone-dji family 1 group.
-
-  Tag Name                                      Writable
-  --------                                      --------
-  AbsoluteAltitude                              real
-  CalibratedFocalLength                         real
-  CalibratedOpticalCenterX                      real
-  CalibratedOpticalCenterY                      real
-  CamReverse                                    string
-  DewarpData                                    string
-  DewarpFlag                                    string
-  FlightPitchDegree                             real
-  FlightRollDegree                              real
-  FlightXSpeed                                  real
-  FlightYSpeed                                  real
-  FlightYawDegree                               real
-  FlightZSpeed                                  real
-  GPSLatitude                                   real/
-  GPSLongitude                                  real/
-  GPSLongtitude                                 real
-  GimbalPitchDegree                             real
-  GimbalReverse                                 string
-  GimbalRollDegree                              real
-  GimbalYawDegree                               real
-  Latitude                                      real
-  Longitude                                     real
-  RelativeAltitude                              real
-  RtkFlag                                       string
-  RtkStdHgt                                     real
-  RtkStdLat                                     real
-  RtkStdLon                                     real
-  SelfData                                      string
 
 =head2 XMP Tags
 
@@ -6928,9 +6873,11 @@ This information is found in images from newer EOS models.
   ------   --------                             --------
       0    VignettingCorrVersion                no
       2    PeripheralLighting                   int16s
+      3    DistortionCorrection                 int16s
       4    ChromaticAberrationCorr              int16s
       5    ChromaticAberrationCorr              int16s
       6    PeripheralLightingValue              int16s
+      9    DistortionCorrectionValue            int16s
      11    OriginalImageWidth                   int16s
      12    OriginalImageHeight                  int16s
 
@@ -6948,6 +6895,7 @@ Vignetting correction from PowerShot models.
   ------   --------                             --------
       5    PeripheralLightingSetting            int32s
       6    ChromaticAberrationSetting           int32s
+      7    DistortionCorrectionSetting          int32s
 
 =head3 Canon LightingOpt Tags
 
@@ -8057,6 +8005,61 @@ This information is found in Casio GV-10 AVI videos.
   Index1   Tag Name                             Writable
   ------   --------                             --------
       0    Software                             no
+
+=head2 DJI Tags
+
+This table lists tags found in the maker notes of images from some DJI
+Phantom drones.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  0x0001   Make                                 string
+  0x0003   SpeedX                               float
+  0x0004   SpeedY                               float
+  0x0005   SpeedZ                               float
+  0x0006   Pitch                                float
+  0x0007   Yaw                                  float
+  0x0008   Roll                                 float
+  0x0009   CameraPitch                          float
+  0x000a   CameraYaw                            float
+  0x000b   CameraRoll                           float
+
+=head3 DJI XMP Tags
+
+XMP tags used by DJI for images from drones.
+
+These tags belong to the ExifTool XMP-drone-dji family 1 group.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  AbsoluteAltitude                              real
+  CalibratedFocalLength                         real
+  CalibratedOpticalCenterX                      real
+  CalibratedOpticalCenterY                      real
+  CamReverse                                    string
+  DewarpData                                    string
+  DewarpFlag                                    string
+  FlightPitchDegree                             real
+  FlightRollDegree                              real
+  FlightXSpeed                                  real
+  FlightYSpeed                                  real
+  FlightYawDegree                               real
+  FlightZSpeed                                  real
+  GPSLatitude                                   real/
+  GPSLongitude                                  real/
+  GPSLongtitude                                 real
+  GimbalPitchDegree                             real
+  GimbalReverse                                 string
+  GimbalRollDegree                              real
+  GimbalYawDegree                               real
+  Latitude                                      real
+  Longitude                                     real
+  RelativeAltitude                              real
+  RtkFlag                                       string
+  RtkStdHgt                                     real
+  RtkStdLat                                     real
+  RtkStdLon                                     real
+  SelfData                                      string
 
 =head2 FLIR Tags
 

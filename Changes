@@ -7,6 +7,12 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 11.50. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+June 13, 2019 - Version 11.51
+
+  - Decode Canon DistortionCorrection tags
+  - Removed a minor EXIF warning when processing EPS files with a DOS header
+  - Fixed bug which caused an error when rewriting some EPS files multiple times
+
 June 11, 2019 - Version 11.50 (production release)
 
   - Added a new Canon LensType and two new Sony LensTypes (thanks LibRaw)

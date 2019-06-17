@@ -604,13 +604,13 @@ sub LimitXMPSize($$$$$$)
     push @$startPt, length($$dataPt);  # add end offset to list
     my $newData = substr($$dataPt, 0, $$startPt[0]);
     my $guid = '0' x 32;
-    my $sp = $noPad ? '' : ' ';
+    my ($sp, $nl) = $noPad ? ('', $noPad > 1 ? '' : "\n") : (' ',"\n");
     # write the required xmpNote:HasExtendedXMP property
-    $newData .= "\n$sp<$rdfDesc rdf:about='${about}'\n$sp${sp}xmlns:xmpNote='$nsURI{xmpNote}'";
-    if ($et->Options('XMPShorthand')) {
+    $newData .= "$nl$sp<$rdfDesc rdf:about='${about}'\n$sp${sp}xmlns:xmpNote='$nsURI{xmpNote}'";
+    if ($$et{OPTIONS}{XMPShorthand} or ($$et{OPTIONS}{Compact} and $$et{OPTIONS}{Compact} > 4)) {
         $newData .= "\n$sp${sp}xmpNote:HasExtendedXMP='${guid}'/>\n";
     } else {
-        $newData .= ">\n$sp$sp<xmpNote:HasExtendedXMP>$guid</xmpNote:HasExtendedXMP>\n$sp</$rdfDesc>\n";
+        $newData .= ">$nl$sp$sp<xmpNote:HasExtendedXMP>$guid</xmpNote:HasExtendedXMP>$nl$sp</$rdfDesc>\n";
     }
 
     my ($i, %descSize, $start);
@@ -652,42 +652,49 @@ sub CloseProperty($$$$)
 
     my $prop = pop @$curPropList;
     $prop =~ s/ .*//;       # remove list index if it exists
-    my $pad = $noPad ? '' : ' ' x (scalar(@$curPropList) + 1);
+    my ($pad, $nl);
+    if ($noPad) {
+        $pad = '';
+        $nl = $noPad > 1 ? '' : "\n";
+    } else {
+        $pad = ' ' x (scalar(@$curPropList) + 1);
+        $nl = "\n";
+    }
     if ($$resFlag[@$curPropList]) {
         # close this XMP structure with possible shorthand properties
         if (length $$short[-1]) {
             if (length $$long[-1]) {
                 # require a new Description if both longhand and shorthand properties
-                $$long[-2] .= ">\n$pad<$rdfDesc";
-                $$short[-1] .= ">\n";
-                $$long[-1] .= "$pad</$rdfDesc>\n";
+                $$long[-2] .= ">$pad<$rdfDesc";
+                $$short[-1] .= ">$nl";
+                $$long[-1] .= "$pad</$rdfDesc>$nl";
             } else {
                 # simply close empty property if all shorthand
-                $$short[-1] .= "/>\n";
+                $$short[-1] .= "/>$nl";
             }
         } else {
             # use "parseType" instead of opening a new Description
             $$long[-2] .= ' rdf:parseType="Resource"';
-            $$short[-1] = length $$long[-1] ? ">\n" : "/>\n";
+            $$short[-1] = length $$long[-1] ? ">$nl" : "/>$nl";
         }
-        $$long[-1] .= "$pad</$prop>\n" if length $$long[-1];
+        $$long[-1] .= "$pad</$prop>$nl" if length $$long[-1];
         $$long[-2] .= $$short[-1] . $$long[-1];
         pop @$short;
         pop @$long;
     } elsif (defined $$resFlag[@$curPropList]) {
         # close this top level Description with possible shorthand values
         if (length $$long[-1]) {
-            $$long[-2] .= $$short[-1] . ">\n" . $$long[-1] . "$pad</$prop>\n";
+            $$long[-2] .= $$short[-1] . ">$nl" . $$long[-1] . "$pad</$prop>$nl";
         } else {
-            $$long[-2] .= $$short[-1] . "/>\n"; # empty element (ie. all shorthand)
+            $$long[-2] .= $$short[-1] . "/>$nl"; # empty element (ie. all shorthand)
         }
         $$short[-1] = $$long[-1] = '';
     } else {
         # close this property (no chance of shorthand)
-        $$long[-1] .= "$pad</$prop>\n";
+        $$long[-1] .= "$pad</$prop>$nl";
         unless (@$curPropList) {
             # add properties now that this top-level Description is complete
-            $$long[-2] .= ">\n" . $$long[-1];
+            $$long[-2] .= ">$nl" . $$long[-1];
             $$long[-1] = '';
         }
     }
@@ -715,11 +722,11 @@ sub WriteXMP($$;$)
     my $xmpFile = (not $tagTablePtr);   # this is an XMP data file if no $tagTablePtr
     # prefer XMP over other metadata formats in some types of files
     my $preferred = $xmpFile || ($$et{PreferredGroup} and $$et{PreferredGroup} eq 'XMP');
-    my $verbose = $et->Options('Verbose');
-    my $compact = $et->Options('Compact') || 0;
+    my $verbose = $$et{OPTIONS}{Verbose};
+    my $compact = $$et{OPTIONS}{Compact} || 0;
     my $dirLen = $$dirInfo{DirLen};
     $dirLen = length($$dataPt) if not defined $dirLen and $dataPt;
-    $noPad = ($compact > 1);
+    $noPad = $compact > 1 ? ($compact > 3 ? 2 : 1) : undef;
 #
 # extract existing XMP information into %capture hash
 #
@@ -1229,7 +1236,7 @@ sub WriteXMP($$;$)
 # write out the new XMP information (serialize it)
 #
     # start writing the XMP data
-    my $useShorthand = $et->Options('XMPShorthand');
+    my $useShorthand = $$et{OPTIONS}{XMPShorthand} || $compact > 4;
     my (@long, @short, @resFlag);
     $long[0] = $long[1] = $short[0] = '';
     if ($$et{XMP_NO_XPACKET}) {
@@ -1272,6 +1279,8 @@ sub WriteXMP($$;$)
         }
     }
 
+    my ($sp, $nl) = $noPad ? ('', $noPad > 1 ? '' : "\n") : (' ',"\n");
+
     # write out all properties
     for (;;) {
         my (%nsNew, $newDesc);
@@ -1307,7 +1316,7 @@ sub WriteXMP($$;$)
             my ($path2, $ns2);
             foreach $path2 (@pathList) {
                 my @ns2s = ($path2 =~ m{(?:^|/)([^/]+?):}g);
-                my $opening = 0;
+                my $opening = $compact > 2 ? 1 : 0;
                 foreach $ns2 (@ns2s) {
                     next if $ns2 eq 'rdf';
                     $nsNew{$ns2} and ++$opening, next;
@@ -1336,9 +1345,8 @@ sub WriteXMP($$;$)
             # open the new description
             $prop = $rdfDesc;
             %nsCur = %nsNew;            # save current namespaces
-            my $sp = $noPad ? '' : ' ';
             my @ns = sort keys %nsCur;
-            $long[-2] .= "\n$sp<$prop rdf:about='${about}'";
+            $long[-2] .= "$nl$sp<$prop rdf:about='${about}'";
             # generate et:toolkit attribute if this is an exiftool RDF/XML output file
             if (@ns and $nsCur{$ns[0]} =~ m{^http://ns.exiftool.ca/}) {
                 $long[-2] .= "\n$sp${sp}xmlns:et='http://ns.exiftool.ca/1.0/'" .
@@ -1365,7 +1373,7 @@ sub WriteXMP($$;$)
             {
                 # check for empty structure
                 if ($propList[$n+1] =~ /:~dummy~$/) {
-                    $long[-1] .= " rdf:parseType='Resource'/>\n";
+                    $long[-1] .= " rdf:parseType='Resource'/>$nl";
                     pop @curPropList;
                     $dummy = 1;
                     last;
@@ -1376,10 +1384,10 @@ sub WriteXMP($$;$)
                     push @short, '';
                 } else {
                     # use rdf:parseType='Resource' to avoid new 'rdf:Description'
-                    $long[-1] .= " rdf:parseType='Resource'>\n";
+                    $long[-1] .= " rdf:parseType='Resource'>$nl";
                 }
             } else {
-                $long[-1] .= ">\n"; # (will be no shorthand properties)
+                $long[-1] .= ">$nl"; # (will be no shorthand properties)
             }
         }
         my $prop2 = pop @propList;  # get new property name
@@ -1398,7 +1406,7 @@ sub WriteXMP($$;$)
                     my $quot = ($attrVal =~ /'/) ? '"' : "'";
                     $long[-1] .= " $attr=$quot$attrVal$quot";
                 }
-                $long[-1] .= length $val ? ">$val</$prop2>\n" : "/>\n";
+                $long[-1] .= length $val ? ">$val</$prop2>$nl" : "/>$nl";
             }
         }
     }
@@ -1415,9 +1423,9 @@ sub WriteXMP($$;$)
         $$dirInfo{ExtendedXMP} = $rtn[0];
         $$dirInfo{ExtendedGUID} = $rtn[1];
         # compact if necessary to fit
-        $compact = 1 if length($long[-2]) + 101 * $numPadLines > $maxDataLen;
+        $compact = 1 if length($long[-2]) + 101 * $numPadLines > $maxDataLen and not $compact;
     }
-    $compact = 1 if $$dirInfo{Compact};
+    $compact = 1 if $$dirInfo{Compact} and not $compact;
 #
 # close out the XMP, clean up, and return our data
 #
@@ -1439,7 +1447,7 @@ sub WriteXMP($$;$)
             # pad to specified DirLen
             if ($len > $dirLen) {
                 my $str = 'Not enough room to edit XMP in place';
-                $str .= '. Try XMPShorthand option' unless $$et{OPTIONS}{XMPShorthand};
+                $str .= '. Try XMPShorthand option' unless $$et{OPTIONS}{XMPShorthand} or $compact > 4;
                 $et->Warn($str);
                 return undef;
             }

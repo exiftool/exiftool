@@ -282,7 +282,7 @@ sub ProcessRAR($$)
         last if $size < 0;
         next unless $size;  # ignore blocks with no data
         # don't try to read very large blocks unless LargeFileSupport is enabled
-        if ($size > 0x80000000 and not $et->Options('LargeFileSupport')) {
+        if ($size >= 0x80000000 and not $et->Options('LargeFileSupport')) {
             $et->Warn('Large block encountered. Aborting.');
             last;
         }

@@ -46,6 +46,7 @@
 #              32) Stefan http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,4494.0.html
 #              34) Stewart Bennett private communication (D4S, D810)
 #              35) David Puschel private communication
+#              36) Hayo Baann (forum10207)
 #              IB) Iliah Borg private communication (LibRaw)
 #              JD) Jens Duttke private communication
 #              NJ) Niels Kristian Bech Jensen private communication
@@ -59,7 +60,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.64';
+$VERSION = '3.65';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -514,6 +515,7 @@ sub GetAFPointGrid($$;$);
     'E8 4C 44 44 14 14 DF 0E' => 'Tamron SP 35mm f/1.8 Di VC USD (F012)', #35
     'E7 4C 4C 4C 14 14 DF 0E' => 'Tamron SP 45mm f/1.8 Di VC USD (F013)',
     'F4 54 56 56 18 18 84 06' => 'Tamron SP AF 60mm f/2.0 Di II Macro 1:1 (G005)', #24
+    'E5 4C 62 62 14 14 C9 4E' => 'Tamron SP 85mm f/1.8 Di VC USD (F016)', #30
     '1E 5D 64 64 20 20 13 00' => 'Tamron SP AF 90mm f/2.5 (52E)',
     '20 5A 64 64 20 20 14 00' => 'Tamron SP AF 90mm f/2.5 Macro (152E)',
     '22 53 64 64 24 24 E0 02' => 'Tamron SP AF 90mm f/2.8 Macro 1:1 (72E)',
@@ -572,6 +574,7 @@ sub GetAFPointGrid($$;$);
     'F7 53 5C 80 24 24 84 06' => 'Tamron SP AF 70-200mm f/2.8 Di LD (IF) Macro (A001)',
     'FE 53 5C 80 24 24 84 06' => 'Tamron SP AF 70-200mm f/2.8 Di LD (IF) Macro (A001)',
     'F7 53 5C 80 24 24 40 06' => 'Tamron SP AF 70-200mm f/2.8 Di LD (IF) Macro (A001)',
+    'E2 47 5C 80 24 24 DF 4E' => 'Tamron SP 70-200mm f/2.8 Di VC USD G2 (A025)', #30
   # 'FE 54 5C 80 24 24 DF 0E' => 'Tamron SP AF 70-200mm f/2.8 Di VC USD (A009)',
     'FE 54 5C 80 24 24 DF 0E' => 'Tamron SP 70-200mm f/2.8 Di VC USD (A009)', #NJ
     'E2 47 5C 80 24 24 DF 4E' => 'Tamron SP 70-200mm f/2.8 Di VC USD G2 (A025)', #forum9549
@@ -938,13 +941,16 @@ my %afPoints153 = (
 my %cropHiSpeed = ( #IB
     0 => 'Off',
     1 => '1.3x Crop', # (1.3x Crop, Large)
-    2 => 'DX Crop',
+    2 => 'DX Crop', # (1.5x)
     3 => '5:4 Crop',
-    4 => '3:2 Crop',
+    4 => '3:2 Crop', # (1.2x, ref 36)
     6 => '16:9 Crop',
+    8 => '2.7x Crop', #36 (D4/D500)
     9 => 'DX Movie Crop', # (DX during movie recording, Large)
+    10 => '1.3x Movie Crop', #36 (D4/D500)
     11 => 'FX Uncropped',
     12 => 'DX Uncropped',
+    15 => '1.5x Movie Crop', #36 (D4/D500)
     17 => '1:1 Crop',
     OTHER => sub {
         my ($val, $inv, $conv) = @_;

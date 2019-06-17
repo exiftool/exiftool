@@ -18,7 +18,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::ID3;
 
-$VERSION = '1.09';
+$VERSION = '1.10';
 
 # information for time/date-based tags (time zero is Jan 1, 1904)
 my %timeInfo = (
@@ -185,7 +185,7 @@ sub ProcessAIFF($$)
 {
     my ($et, $dirInfo) = @_;
     my $raf = $$dirInfo{RAF};
-    my ($buff, $err, $tagTablePtr, $page, $type);
+    my ($buff, $err, $tagTablePtr, $page, $type, $n);
 
     # verify this is a valid AIFF file
     return 0 unless $raf->Read($buff, 12) == 12;
@@ -217,14 +217,24 @@ sub ProcessAIFF($$)
 #
 # Read through the IFF chunks
 #
-    for (;;) {
+    for ($n=0;;++$n) {
         $raf->Read($buff, 8) == 8 or last;
         $pos += 8;
         my ($tag, $len) = unpack('a4N', $buff);
         my $tagInfo = $et->GetTagInfo($tagTablePtr, $tag);
-        $et->VPrint(0, "AIFF '${tag}' chunk ($len bytes of data):\n");
+        $et->VPrint(0, "AIFF '${tag}' chunk ($len bytes of data): ", $raf->Tell(),"\n");
         # AIFF chunks are padded to an even number of bytes
         my $len2 = $len + ($len & 0x01);
+        if ($len2 > 100000000) {
+            if ($len2 >= 0x80000000 and not $et->Options('LargeFileSupport')) {
+                $et->Warn('End of processing at large chunk (LargeFileSupport not enabled)');
+                last;
+            }
+            if ($tagInfo) {
+                $et->Warn("Skipping large $$tagInfo{Name} chunk (> 100 MB)");
+                undef $tagInfo;
+            }
+        }
         if ($tagInfo) {
             if ($$tagInfo{TypeOnly}) {
                 $len = $len2 = 4;
@@ -241,6 +251,10 @@ sub ProcessAIFF($$)
                 Start => 0,
                 Size => $len,
             );
+        } elsif (not $len) {
+            next if ++$n < 100;
+            $et->Warn('Aborting scan.  Too many empty chunks');
+            last;
         } elsif ($verbose > 2 and $len2 < 1024000) {
             $raf->Read($buff, $len2) == $len2 or $err = 1, last;
             $et->VerboseDump(\$buff);
@@ -248,6 +262,7 @@ sub ProcessAIFF($$)
             $raf->Seek($len2, 1) or $err=1, last;
         }
         $pos += $len2;
+        $n = 0;
     }
     $err and $et->Warn("Error reading $type file (corrupted?)");
     return 1;

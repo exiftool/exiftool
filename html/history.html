@@ -17,6 +17,18 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v11.52'><b>June 17, 2019 - Version 11.52</b></a>
+<ul>
+<li>Added a few new Nikon CropHiSpeed values (thanks Hayo Baan)
+<li>Added a couple of new Nikon LensID's
+<li>Fixed problem where processing large, corrupt AIFF files may could take an
+    excessively long time
+<li>API Changes:
+    <ul>
+    <li>Enhanced <a href="ExifTool.html#Compact">Compact option</a> to add levels 3, 4 and 5
+    </ul>
+</ul>
+
 <a name='v11.51'><b>June 13, 2019 - Version 11.51</b></a>
 <ul>
 <li>Decode Canon DistortionCorrection tags
@@ -52,7 +64,7 @@ considered development releases, and are not uploaded to <a href="https://metacp
     written when deleting the corresponding default-language tag in the same
     command
 <li>Fixed some inconsistencies when writing QuickTime tags using the -wm
-    (WriteMode) option
+    (<a href="ExifTool.html#WriteMode">WriteMode</a>) option
 <li>Fixed an incorrect Pentax Sigma LensType value
 </ul>
 
@@ -130,7 +142,7 @@ considered development releases, and are not uploaded to <a href="https://metacp
     <i>(obviously, Apple couldn't put this XMP in the same place as any other
     QuickTime-based file format, because Apple is, after all, king of "Let's
     reinvent the wheel!")</i>
-<li>Fixed problem where API WriteMode option wouldn't always prevent groups from
+<li>Fixed problem where API <a href="ExifTool.html#WriteMode">WriteMode option</a> wouldn't always prevent groups from
     being created when group creation was disabled
 </ul>
 
@@ -234,7 +246,7 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <li>API Changes:
     <ul>
     <li>Patched a potential pitfall if calling code used both the old List and
-        ListSep options at the same time as the new ListJoin option
+        ListSep options at the same time as the new <a href="ExifTool.html#ListJoin">ListJoin option</a>
     </ul>
 </ul>
 

@@ -529,12 +529,15 @@ without recoding.  Default is 0.
 
 =item Compact
 
-Option to write compact XMP output.  The XMP specification suggests that the
-data be padded with blanks to allow in-place editing. With this flag set to
-1, the 2 kB of padding is not written.  Note that this only effects embedded
-XMP since padding is never written for stand-alone XMP files.  When set to
-2, spaces to indent XMP for readability are also dropped.  Default is undef.
-Also see the XMPShorthand option for reducing the size of XMP.
+Option to write compact XMP output.  The XMP specification recommends that
+the XMP packet be padded with 2 kB of blanks to allow in-place editing. With
+this option set to 1, the padding is not written.  Note that this effects
+only embedded XMP since padding is never written for stand-alone XMP files. 
+When set to 2, spaces to indent XMP for readability are also dropped.  A
+setting of 3 places all tags in a single rdf:Description element, and 4
+removes newlines from between XMP elements.  A setting of 5 also writes XMP
+in shorthand format (to save setting the XMPShorthand option separately). 
+Default is undef.
 
 =item Composite
 

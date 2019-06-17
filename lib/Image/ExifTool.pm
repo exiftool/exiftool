@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup);
 
-$VERSION = '11.51';
+$VERSION = '11.52';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -2167,6 +2167,7 @@ sub ClearOptions($)
         WriteMode   => 'wcg',   # enable all write modes by default
         XAttrTags   => undef,   # extract MacOS extended attribute tags
         XMPAutoConv => 1,       # automatic conversion of unknown XMP tag values
+        XMPShorthand=> 0,       # short form XMP
     };
     # keep necessary member variables in sync with options
     delete $$self{CUR_LANG};

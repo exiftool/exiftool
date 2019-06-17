@@ -491,12 +491,22 @@ distribution for examples.</p>
     metadata (eg. AVI and WAV files).  The default value of 0 assumes 'Latin' encoding unless otherwise
     specified by the RIFF CSET chunk.  Set to undef to pass through strings without recoding.</td>
     <td align=center><i>(see <a href="#Charset">Charset</a> option)</i><br>or 0 or undef</td><td align=center>0</td></tr>
-<tr id="Compact"><td>Compact</td><td>Option to write compact XMP output.  The XMP specification suggests that the
-    data be padded with blanks to allow in-place editing. With this flag set to 1, the 2 kB of padding
-    is not written.  Note that this only effects embedded XMP since padding is never written for
-    stand-alone XMP files.  When set to 2, spaces to indent XMP for readability are also dropped.
-    Also see the <a href="#XMPShorthand">XMPShorthand</a> option for reducing the size of XMP.</td>
-    <td align=center>0, 1 or 2</td><td align=center>undef</td></tr>
+<tr id="Compact"><td>Compact</td><td>Option to write compact XMP output.  The XMP specification
+    recommends that the XMP packet be padded with 2 kB of blanks to allow in-place editing.
+    With this option set to 1, the padding is not written.  Note that this effects only
+    embedded XMP since padding is never written for stand-alone XMP files.  When set to 2,
+    spaces to indent XMP for readability are also dropped.  A setting of 3 places all tags in a
+    single rdf:Description element, and 4 removes newlines from between XMP elements.  A
+    setting of 5 also writes XMP in shorthand format (to save setting the
+    <a href="#XMPShorthand">XMPShorthand</a> option separately).</td>
+    <td align=center><table class=clear>
+    <tr><td valign=top align=right><b>0</b>&nbsp;=</td><td>normal XMP formatting</td></tr>
+    <tr><td valign=top align=right><b>1</b>&nbsp;=</td><td>remove padding...</td></tr>
+    <tr><td valign=top align=right><b>2</b>&nbsp;=</td><td>and no indentation...</td></tr>
+    <tr><td valign=top align=right><b>3</b>&nbsp;=</td><td>and one rdf:Description...</td></tr>
+    <tr><td valign=top align=right><b>4</b>&nbsp;=</td><td>and no newlines...</td></tr>
+    <tr><td valign=top align=right><b>5</b>&nbsp;=</td><td>and <a href="#XMPShorthand">XMPShorthand</a></td></tr>
+    </table></td><td align=center>undef</td></tr>
 <tr id="Composite"><td>Composite</td><td>Flag to generate Composite tags when extracting information.</td>
     <td align=center>0 or 1</td><td align=center>1</td></tr>
 <tr id="Compress"><td>Compress</td><td>Flag to write new values in compressed format if possible.
@@ -515,13 +525,12 @@ distribution for examples.</p>
     <code>q{%d&nbsp;%d&nbsp;%.8f}</code>.
     </td><td align=center>undef</td></tr>
 <tr id="DateFormat"><td>DateFormat</td><td>Output format for date/time values. If date can not
-    be converted, value is left unchanged unless the StrictDate option is set.
-    Timezones are ignored.  The inversion conversion (ie. when calling
+    be converted, value is left unchanged unless the <a href="#StrictDate">StrictDate</a>
+    option is set.  Timezones are ignored.  The inversion conversion (ie. when calling
     <a href="#SetNewValue">SetNewValue</a>) is performed only if POSIX::strptime
-    or Time::Piece is installed.</td> <td>See strftime
-    manpage for details.  The default setting of undef causes date/time values
-    to remain in standard EXIF format (similar to a DateFormat of
-    <code>"%Y:%m:%d %H:%M:%S"</code>).</td>
+    or Time::Piece is installed.</td><td>See strftime manpage for details.
+    The default setting of undef causes date/time values to remain in standard EXIF
+    format (similar to a DateFormat of <code>"%Y:%m:%d %H:%M:%S"</code>).</td>
     <td align=center>undef</td></tr>
 <tr id="Duplicates"><td>Duplicates</td><td>Flag to return values from
     tags with duplicate names when extracting information.</td>

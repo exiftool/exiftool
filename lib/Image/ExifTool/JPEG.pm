@@ -239,6 +239,10 @@ sub ProcessJPEG_HDR($$$);
         Name => 'PreviewImage',
         Condition => '$$valPt =~ /^\xff\xd8\xff/',
         Writable => 1,  # (for docs only)
+      }, {
+        Name => 'EmbeddedVideo',
+        Notes => 'extracted only when ExtractEmbedded option is used',
+        Condition => '$$valPt =~ /^.{4}ftyp/s',
     }],
 );
 

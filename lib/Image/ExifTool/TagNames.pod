@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 22571 tags, with 15015 unique tag names.
+They contain a total of 22577 tags, with 15020 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -144,6 +144,7 @@ L<https://www.w3.org/Graphics/JPEG/jfif3.pdf> for the JPEG specification.
                MIE                              MIE
                Samsung                          Samsung Trailer
                PreviewImage                     yes
+               EmbeddedVideo                    no
 
 =head3 JPEG AVI1 Tags
 
@@ -308,11 +309,11 @@ tags remain.
 
 The table below lists all EXIF tags.  Also listed are TIFF, DNG, HDP and
 other tags which are not part of the EXIF specification, but may co-exist
-with EXIF tags in some images.  Tags which are part of the EXIF 2.31
+with EXIF tags in some images.  Tags which are part of the EXIF 2.32
 specification have an underlined B<Tag Name> in the HTML version of this
 documentation.  See
-L<http://www.cipa.jp/std/documents/e/DC-008-Translation-2016-E.pdf> for the
-official EXIF 2.31 specification.
+L<http://www.cipa.jp/std/documents/e/DC-008-Translation-2019-E.pdf> for the
+official EXIF 2.32 specification.
 
   Tag ID   Tag Name                  Group      Writable
   ------   --------                  -----      --------
@@ -752,6 +753,9 @@ official EXIF 2.31 specification.
   0xa433   LensMake                  ExifIFD    string
   0xa434   LensModel                 ExifIFD    string
   0xa435   LensSerialNumber          ExifIFD    string
+  0xa460   CompositeImage            ExifIFD    int16u
+  0xa461   CompositeImageCount       ExifIFD    int16u[2]
+  0xa462   CompositeImageExposureTimes ExifIFD  undef
   0xa480   GDALMetadata              IFD0       string
   0xa481   GDALNoData                IFD0       string
   0xa500   Gamma                     ExifIFD    rational64u
@@ -10895,7 +10899,7 @@ DiMAGE X and Xt.
            ShotInfoUnknown                      Nikon ShotInfo
   0x0092   HueAdjustment                        int16s
   0x0093   NEFCompression                       int16u
-  0x0094   Saturation                           int16s
+  0x0094   SaturationAdj                        int16s
   0x0095   NoiseReduction                       string
   0x0096   NEFLinearizationTable                undef!
   0x0097   ColorBalance0100                     Nikon ColorBalance1
@@ -18834,6 +18838,7 @@ about this format.
   'DVID'   DeviceID?                            no
   'DVNM'   DeviceName                           no
   'DZOM'   DigitalZoom                          no
+  'EISA'   ElectronicImageStabilization         no
   'EMPT'   Empty?                               no
   'ESCS'   EscapeStatus?                        no
   'FACE'   FaceDetected                         no
@@ -27795,6 +27800,7 @@ sub-documents, but the Duration is calculated for the full video.
                        PentaxJunk2              Pentax Junk2
                        TextJunk                 no
   'JUNQ'               OldXMP                   no
+  'LIST_INF0'          Info                     RIFF Info
   'LIST_INFO'          Info                     RIFF Info
   'LIST_Tdat'          Tdat                     RIFF Tdat
   'LIST_exif'          Exif                     RIFF Exif
@@ -27815,6 +27821,8 @@ sub-documents, but the Duration is calculated for the full video.
   'ds64'               DataSize64               RIFF DS64
   'fact'               NumberOfSamples          no
   'fmt '               AudioFormat              RIFF AudioFormat
+  'gps0'               GPSTrack                 QuickTime Stream
+  'gsen'               GSensor                  QuickTime Stream
   'labl'               Label                    RIFF Label
   'list'               ListType                 no
   'olym'               Olym                     Olympus WAV
@@ -32953,6 +32961,7 @@ FileName.
   CurrentIPTCDigest          File               no
   Directory                  System             yes!
   EXIF                       EXIF               yes!
+  EmbeddedVideo              File               no
   Error                      ExifTool           no
   ExifByteOrder              File               yes
   ExifToolVersion            ExifTool           no

@@ -7,11 +7,30 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 11.50. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+June 24, 2019 - Version 11.53 - "Exif 2.32"
+
+  - Added support for the new tags of the Exif 2.32 specification
+  - Added a new SamsungModelID (thanks LibRaw)
+  - Added warning if extracting ZIP file contents without the -a option
+  - Added ability to extract EmbeddedVideo from the trailer of Android JPEG
+    images with the ExtractEmbedded option
+  - Decode timed GPS from Cobra Dash Cam AVI videos
+  - Decode a new GoPro tag
+  - Enhanced -struct option to allow extraction of structured Torrent Info
+  - Improved error handling when an unexpected terminator is encountered while
+    writing a QuickTime-format file
+  - Renamed one of the Nikon Saturation tags to "SaturationAdj"
+  - Removed warning message when writing FujiFilm RAFVersion 0240 and 0261 files
+  - Fixed encoding problem when writing some QuickTime UserData tags with
+    strings containing special characters
+  - API Changes:
+      - Enhanced XMPShorthand option to add level 2
+
 June 17, 2019 - Version 11.52
 
   - Added a few new Nikon CropHiSpeed values (thanks Hayo Baan)
-  - Added a couple of new Nikon LensID's
-  - Fixed problem where processing large, corrupt AIFF files may could take an
+  - Added a new Nikon LensID (thanks Yves)
+  - Fixed problem where reading a large, corrupt AIFF file may could take an
     excessively long time
   - API Changes:
       - Enhanced Compact option to add levels 3, 4 and 5

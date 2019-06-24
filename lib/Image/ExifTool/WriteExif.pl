@@ -38,7 +38,7 @@ my %mandatory = (
         0x0128 => 2,        # ResolutionUnit (inches)
     },
     ExifIFD => {
-        0x9000 => '0231',   # ExifVersion
+        0x9000 => '0232',   # ExifVersion
         0x9101 => "1 2 3 0",# ComponentsConfiguration
         0xa000 => '0100',   # FlashpixVersion
         0xa001 => 0xffff,   # ColorSpace (uncalibrated)

@@ -17,11 +17,33 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v11.53'><b>June 24, 2019 - Version 11.53</b> - "Exif 2.32"</a>
+<ul>
+<li>Added support for the new tags of the Exif 2.32 specification
+<li>Added a new SamsungModelID (thanks LibRaw)
+<li>Added warning if extracting ZIP file contents without the -a option
+<li>Added ability to extract EmbeddedVideo from the trailer of Android JPEG
+    images with the ExtractEmbedded option
+<li>Decode timed GPS from Cobra Dash Cam AVI videos
+<li>Decode a new GoPro tag
+<li>Enhanced -struct option to allow extraction of structured Torrent Info
+<li>Improved error handling when an unexpected terminator is encountered while
+    writing a QuickTime-format file
+<li>Renamed one of the Nikon Saturation tags to "SaturationAdj"
+<li>Removed warning message when writing FujiFilm RAFVersion 0240 and 0261 files
+<li>Fixed encoding problem when writing some QuickTime UserData tags with
+    strings containing special characters
+<li>API Changes:
+    <ul>
+    <li>Enhanced <a href="ExifTool.html#XMPShorthand">XMPShorthand option</a> to add level 2
+    </ul>
+</ul>
+
 <a name='v11.52'><b>June 17, 2019 - Version 11.52</b></a>
 <ul>
 <li>Added a few new Nikon CropHiSpeed values (thanks Hayo Baan)
-<li>Added a couple of new Nikon LensID's
-<li>Fixed problem where processing large, corrupt AIFF files may could take an
+<li>Added a new Nikon LensID (thanks Yves)
+<li>Fixed problem where reading a large, corrupt AIFF file may could take an
     excessively long time
 <li>API Changes:
     <ul>

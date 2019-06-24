@@ -16,7 +16,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::QuickTime;
 
-$VERSION = '1.02';
+$VERSION = '1.03';
 
 sub ProcessGoPro($$$);
 sub ProcessString($$$);
@@ -78,7 +78,7 @@ my %addUnits = (
         Binary => 1,
     },
     ALLD => 'AutoLowLightDuration', #1 (gpmd) (untested)
-  # APTO (GPMF) - seen: 'RAW' (fmt c)
+  # APTO (GPMF) - seen: 'RAW', 'DYNM' (fmt c)
     ATTD => { #PH (Karma)
         Name => 'Attitude',
         # UNIT=s,rad,rad,rad,rad/s,rad/s,rad/s,
@@ -94,7 +94,7 @@ my %addUnits = (
         Binary => 1,
     },
     AUDO => 'AudioSetting', #PH (GPMF - seen: 'WIND', fmt c)
-  # AUPT (GPMF) - seen: 'N' (fmt c)
+  # AUPT (GPMF) - seen: 'N','Y' (fmt c)
     BPOS => { #PH (Karma)
         Name => 'Controller',
         Unknown => 1,
@@ -104,9 +104,9 @@ my %addUnits = (
         %addUnits,
     },
   # BRID (GPMF) - seen: 0 (fmt B)
-  # BROD (GPMF) - seen: 'ASK' (fmt c)
+  # BROD (GPMF) - seen: 'ASK','' (fmt c)
     CASN => 'CameraSerialNumber', #PH (GPMF - seen: 'C3221324545448', fmt c)
-  # CINF (GPMF) - seen: 0x67376be7709bc8876a8baf3940908618 (fmt B)
+  # CINF (GPMF) - seen: 0x67376be7709bc8876a8baf3940908618 (fmt B) (Camera INFormation?)
   # CMOD (GPMF) - seen: 12,13,17 [13 time-laps video, 17 JPEG] (fmt B)
     CYTS => { #PH (Karma)
         Name => 'CoyoteStatus',
@@ -130,13 +130,15 @@ my %addUnits = (
     DVID => { Name => 'DeviceID', Unknown => 1 }, #2 (gpmd)
   # DVNM (GPMF) seen: 'Video Global Settings' (fmt c), 'Highlights' (fmt c)
   # DVNM (gpmd) seen: 'Camera' (Hero5), 'Hero6 Black' (Hero6), 'GoPro Karma v1.0' (Karma)
-    DVNM => 'DeviceName', #PH
+    DVNM => 'DeviceName', #PH (n/c)
     DZOM => { #PH (GPMF - seen: 'Y', fmt c)
         Name => 'DigitalZoom',
         PrintConv => { N => 'No', Y => 'Yes' },
     },
   # DZST (GPMF) - seen: 0 (fmt L) (something to do with digital zoom maybe?)
-  # EISA (GPMF) - seen: 'Y','N' [N was for a time-lapse video] (fmt c)
+    EISA => { #PH (GPMF) - seen: 'Y','N', 'HS EIS' (fmt c) [N was for a time-lapse video]
+        Name => 'ElectronicImageStabilization',
+    },
   # EISE (GPMF) - seen: 'Y' (fmt c)
     EMPT => { Name => 'Empty', Unknown => 1 }, #2 (gpmd)
     ESCS => { #PH (Karma)
@@ -147,7 +149,7 @@ my %addUnits = (
         Unknown => 1,
         %addUnits,
     },
-  # EXPT (GPMF) - seen: '' (fmt c)
+  # EXPT (GPMF) - seen: '', 'AUTO' (fmt c)
     FACE => 'FaceDetected', #PH (gpmd)
     FCNM => 'FaceNumbers', #PH (gpmd) (faces counted per frame, ref 1)
     FMWR => 'FirmwareVersion', #PH (GPMF - seen: HD6.01.01.51.00, fmt c)
@@ -213,7 +215,7 @@ my %addUnits = (
         RawConv => '$val', # necessary to use scaled value instead of raw data as subdir data
         SubDirectory => { TagTable => 'Image::ExifTool::GoPro::KBAT' },
     },
-  # LINF (GPMF) - seen: LAJ7061916601668 (fmt c)
+  # LINF (GPMF) - seen: LAJ7061916601668 (fmt c) (Lens INFormation?)
     LNED => { #PH (Karma)
         Name => 'LocalPositionNED',
         # UNIT=s,m,m,m,m/s,m/s,m/s
@@ -241,7 +243,7 @@ my %addUnits = (
     PHDR => 'HDRSetting', #PH (APP6 - seen: 0)
     PIMN => 'AutoISOMin', #PH (GPMF - seen: 100, fmt L)
     PIMX => 'AutoISOMax', #PH (GPMF - seen: 1600, fmt L)
-  # PRAW (APP6) - seen: 0
+  # PRAW (APP6) - seen: 0, 'N' (fmt c)
     PRES => 'PhotoResolution', #PH (APP6 - seen: '12MP_W')
     PRTN => { #PH (GPMF - seen: 'N', fmt c)
         Name => 'ProTune',
@@ -348,7 +350,7 @@ my %addUnits = (
         # UNIT=m/s,m/s,m,m/s,deg,%
         # TYPE=ffffsS
     },
-  # VLTE (GPMF) - seen: 'Y' (fmt c)
+  # VLTE (GPMF) - seen: 'Y','N' (fmt c)
     WBAL => 'ColorTemperatures', #PH (gpmd)
     WRGB => { #PH (gpmd)
         Name => 'WhiteBalanceRGB',

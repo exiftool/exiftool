@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.29
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.53
 [File, System, Image] FileName - File Name: Writer_46_failed.jpg
 [File, System, Image] Directory - Directory: t
 [File, System, Image] FileSize - File Size: 10 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2019:02:22 13:53:41-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:02:22 13:53:41-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:02:22 13:53:41-05:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2019:06:24 11:26:06-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:06:24 11:26:06-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:06:24 11:26:06-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: JPEG
 [File, File, Image] FileTypeExtension - File Type Extension: jpg
@@ -22,7 +22,7 @@
 [EXIF, IFD0, Image] 296 - Resolution Unit: inches
 [EXIF, IFD0, Author] 315 - Artist: 7
 [EXIF, IFD0, Image] 531 - Y Cb Cr Positioning: Centered
-[EXIF, ExifIFD, Image] 36864 - Exif Version: 0231
+[EXIF, ExifIFD, Image] 36864 - Exif Version: 0232
 [EXIF, ExifIFD, Image] 37121 - Components Configuration: Y, Cb, Cr, -
 [EXIF, ExifIFD, Image] 37378 - Aperture Value: 7.0
 [EXIF, ExifIFD, Image] 37888 - Ambient Temperature: 7 C
@@ -37,7 +37,7 @@
 [IPTC, IPTC, Other] 152 - Audio Sampling Resolution: 07
 [IPTC, IPTC, Other] 153 - Audio Duration: 000007
 [IPTC, IPTC, Other] 154 - Audio Outcue: 7
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.29
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.53
 [XMP, XMP-GAudio, Audio] Data - Audio Data: (Binary data 1 bytes)
 [XMP, XMP-GAudio, Audio] Mime - Audio Mime Type: 7
 [XMP, XMP-getty, Image] AssetID - Asset ID: 7

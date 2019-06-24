@@ -60,7 +60,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.65';
+$VERSION = '3.66';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -574,7 +574,6 @@ sub GetAFPointGrid($$;$);
     'F7 53 5C 80 24 24 84 06' => 'Tamron SP AF 70-200mm f/2.8 Di LD (IF) Macro (A001)',
     'FE 53 5C 80 24 24 84 06' => 'Tamron SP AF 70-200mm f/2.8 Di LD (IF) Macro (A001)',
     'F7 53 5C 80 24 24 40 06' => 'Tamron SP AF 70-200mm f/2.8 Di LD (IF) Macro (A001)',
-    'E2 47 5C 80 24 24 DF 4E' => 'Tamron SP 70-200mm f/2.8 Di VC USD G2 (A025)', #30
   # 'FE 54 5C 80 24 24 DF 0E' => 'Tamron SP AF 70-200mm f/2.8 Di VC USD (A009)',
     'FE 54 5C 80 24 24 DF 0E' => 'Tamron SP 70-200mm f/2.8 Di VC USD (A009)', #NJ
     'E2 47 5C 80 24 24 DF 4E' => 'Tamron SP 70-200mm f/2.8 Di VC USD G2 (A025)', #forum9549
@@ -1786,7 +1785,7 @@ my %binaryDataAttrs = (
             9 => 'Packed 12 bits', #IB (2 pixels in 3 bytes)
         },
     },
-    0x0094 => { Name => 'Saturation',       Writable => 'int16s' },
+    0x0094 => { Name => 'SaturationAdj',    Writable => 'int16s' },
     0x0095 => { Name => 'NoiseReduction',   Writable => 'string' }, # ("Off" or "FPNR"=long exposure NR)
     0x0096 => {
         Name => 'NEFLinearizationTable', # same table as DNG LinearizationTable (ref JD)

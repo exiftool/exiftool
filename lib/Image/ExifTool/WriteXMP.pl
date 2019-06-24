@@ -607,7 +607,7 @@ sub LimitXMPSize($$$$$$)
     my ($sp, $nl) = $noPad ? ('', $noPad > 1 ? '' : "\n") : (' ',"\n");
     # write the required xmpNote:HasExtendedXMP property
     $newData .= "$nl$sp<$rdfDesc rdf:about='${about}'\n$sp${sp}xmlns:xmpNote='$nsURI{xmpNote}'";
-    if ($$et{OPTIONS}{XMPShorthand} or ($$et{OPTIONS}{Compact} and $$et{OPTIONS}{Compact} > 4)) {
+    if ($$et{OPTIONS}{XMPShorthand} or $$et{OPTIONS}{Compact} > 4) {
         $newData .= "\n$sp${sp}xmpNote:HasExtendedXMP='${guid}'/>\n";
     } else {
         $newData .= ">$nl$sp$sp<xmpNote:HasExtendedXMP>$guid</xmpNote:HasExtendedXMP>$nl$sp</$rdfDesc>\n";
@@ -723,7 +723,7 @@ sub WriteXMP($$;$)
     # prefer XMP over other metadata formats in some types of files
     my $preferred = $xmpFile || ($$et{PreferredGroup} and $$et{PreferredGroup} eq 'XMP');
     my $verbose = $$et{OPTIONS}{Verbose};
-    my $compact = $$et{OPTIONS}{Compact} || 0;
+    my $compact = $$et{OPTIONS}{Compact};
     my $dirLen = $$dirInfo{DirLen};
     $dirLen = length($$dataPt) if not defined $dirLen and $dataPt;
     $noPad = $compact > 1 ? ($compact > 3 ? 2 : 1) : undef;
@@ -1236,7 +1236,7 @@ sub WriteXMP($$;$)
 # write out the new XMP information (serialize it)
 #
     # start writing the XMP data
-    my $useShorthand = $$et{OPTIONS}{XMPShorthand} || $compact > 4;
+    my $useShorthand = $$et{OPTIONS}{XMPShorthand} || ($compact > 4 ? 1 : 0);
     my (@long, @short, @resFlag);
     $long[0] = $long[1] = $short[0] = '';
     if ($$et{XMP_NO_XPACKET}) {
@@ -1316,7 +1316,7 @@ sub WriteXMP($$;$)
             my ($path2, $ns2);
             foreach $path2 (@pathList) {
                 my @ns2s = ($path2 =~ m{(?:^|/)([^/]+?):}g);
-                my $opening = $compact > 2 ? 1 : 0;
+                my $opening = ($compact > 2 or $useShorthand > 1) ? 1 : 0;
                 foreach $ns2 (@ns2s) {
                     next if $ns2 eq 'rdf';
                     $nsNew{$ns2} and ++$opening, next;

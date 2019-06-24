@@ -29,7 +29,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.51';
+$VERSION = '1.52';
 
 sub ConvertTimecode($);
 sub ProcessSGLT($$$);
@@ -534,6 +534,32 @@ my %code2charset = (
             ProcessProc => \&ProcessSLLT,
         },
     },
+#
+# tags found in an AlphaImagingTech AVI video - PH
+#
+    LIST_INF0 => {  # ('0' instead of 'O' -- odd)
+        Name => 'Info',
+        SubDirectory => { TagTable => 'Image::ExifTool::RIFF::Info' },
+    },
+    gps0 => {
+        Name => 'GPSTrack',
+        SetGroups => 'RIFF', # (moves "QuickTime" tags to the "RIFF" group)
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::QuickTime::Stream',
+            # (don't use code ref here or get "Prototype mismatch" warning with some Perl versions)
+            ProcessProc => 'Image::ExifTool::QuickTime::Process_gps0',
+        },
+    },
+    gsen => {
+        Name => 'GSensor',
+        SetGroups => 'RIFF', # (moves "QuickTime" tags to the "RIFF" group)
+        SubDirectory => {
+            TagTable => 'Image::ExifTool::QuickTime::Stream',
+            ProcessProc => 'Image::ExifTool::QuickTime::Process_gsen',
+        },
+    },
+    # gpsa - seen hex "01 20 00 00", same as QuickTime
+    # gsea - 16 bytes hex "04 08 02 00 20 02 00 00 1f 03 00 00 01 00 00 00"
 );
 
 # the maker notes used by some digital cameras
@@ -1432,8 +1458,7 @@ sub MakeTagInfo($$)
 
 #------------------------------------------------------------------------------
 # Process RIFF chunks
-# Inputs: 0) ExifTool object reference, 1) directory information reference
-#         2) tag table reference
+# Inputs: 0) ExifTool ref, 1) dirInfo ref, 2) tag table ref
 # Returns: 1 on success
 sub ProcessChunks($$$)
 {
@@ -1661,9 +1686,14 @@ sub ProcessRIFF($$)
         }
         # RIFF chunks are padded to an even number of bytes
         my $len2 = $len + ($len & 0x01);
-        if ($$tagTbl{$tag} or (($verbose or $unknown) and $tag !~ /^(data|idx1|LIST_movi|RIFF)$/)) {
+        my $tagInfo = $$tagTbl{$tag};
+        if ($tagInfo or (($verbose or $unknown) and $tag !~ /^(data|idx1|LIST_movi|RIFF)$/)) {
             $raf->Read($buff, $len2) == $len2 or $err=1, last;
-            MakeTagInfo($tagTbl, $tag) if not $$tagTbl{$tag} and ($verbose or $unknown);
+            my $setGroups;
+            if ($tagInfo and ref $tagInfo eq 'HASH' and $$tagInfo{SetGroups}) {
+                $setGroups = $$et{SET_GROUP0} = $$et{SET_GROUP1} = $$tagInfo{SetGroups};
+            }
+            MakeTagInfo($tagTbl, $tag) if not $tagInfo and ($verbose or $unknown);
             $et->HandleTag($tagTbl, $tag, $buff,
                 DataPt  => \$buff,
                 DataPos => 0,   # (relative to Base)
@@ -1671,6 +1701,10 @@ sub ProcessRIFF($$)
                 Size    => $len2,
                 Base    => $pos,
             );
+            if ($setGroups) {
+                delete $$et{SET_GROUP0};
+                delete $$et{SET_GROUP1};
+            }
         } elsif ($tag eq 'RIFF') {
             # don't read into RIFF chunk (eg. concatenated video file)
             $raf->Read($buff, 4) == 4 or $err=1, last;

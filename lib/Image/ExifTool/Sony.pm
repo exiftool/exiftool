@@ -8599,7 +8599,7 @@ my %isoSetting2010 = (
 );
 
 
-# AFInfo (SLT models only) (ref PH, decoded mainly from A77)
+# AFInfo 0x940e (SLT models only) (ref PH, decoded mainly from A77)
 %Image::ExifTool::Sony::AFInfo = (
     PROCESS_PROC => \&ProcessEnciphered,
     WRITE_PROC => \&WriteEnciphered,
@@ -10171,7 +10171,7 @@ sub Decrypt($$$$)
 }
 
 #------------------------------------------------------------------------------
-# Decipher/encipher Sony tag 0x94xx data (ref PH)
+# Decipher/encipher Sony tag 0x2010, 0x900b, 0x9050 and 0x940x data (ref PH)
 # Inputs: 0) data reference, 1) true to encipher the data
 sub Decipher($;$)
 {

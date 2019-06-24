@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.28
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.53
 [File, System, Image] FileName - File Name: Writer_13_failed.jpg
 [File, System, Image] Directory - Directory: t
 [File, System, Image] FileSize - File Size: 5.1 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2016:09:26 11:36:04-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2016:09:26 11:36:04-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2016:09:26 11:36:04-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2019:06:24 11:26:05-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:06:24 11:26:05-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:06:24 11:26:05-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: JPEG
 [File, File, Image] FileTypeExtension - File Type Extension: jpg
@@ -26,7 +26,7 @@
 [EXIF, ExifIFD, Image] 33434 - Exposure Time: 1/64
 [EXIF, ExifIFD, Image] 33437 - F Number: 3.6
 [EXIF, ExifIFD, Image] 34855 - ISO: 100
-[EXIF, ExifIFD, Image] 36864 - Exif Version: 0231
+[EXIF, ExifIFD, Image] 36864 - Exif Version: 0232
 [EXIF, ExifIFD, Time] 36867 - Date/Time Original: 2003:11:10 17:39:26
 [EXIF, ExifIFD, Image] 37121 - Components Configuration: Y, Cb, Cr, -
 [EXIF, ExifIFD, Image] 37380 - Exposure Compensation: 0
@@ -132,7 +132,7 @@
 [MakerNotes, Canon, Camera] 1 - Measured RGGB: 554 1022 1026 754
 [MakerNotes, Canon, Camera] 174 - Color Temperature: 5200
 [MakerNotes, Canon, Camera] 180 - Color Space: sRGB
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 10.28
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.53
 [XMP, XMP-getty, Image] OriginalFilename - Original File Name: CRW_1602.CRW
 [XMP, XMP-aux, Camera] Lens - Lens: 18.0 - 55.0 mm
 [XMP, XMP-dc, Image] description - Description: CRW with embedded XMP

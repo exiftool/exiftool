@@ -22,7 +22,7 @@ use vars qw($VERSION %samsungLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.44';
+$VERSION = '1.45';
 
 sub WriteSTMN($$$);
 sub ProcessINFO($$$);
@@ -234,6 +234,7 @@ my %formatMinMax = (
             0x500103c => 'WB600 / VLUU WB600 / WB610',
             0x500133e => 'WB150 / WB150F / WB152 / WB152F / WB151',
             0x5a0000f => 'WB5000 / HZ25W',
+            0x5a0001e => 'WB5500 / VLUU WB5500 / HZ50W',
             0x6001036 => 'EX1',
             0x700131c => 'VLUU SH100, SH100',
             0x27127002 => 'SMX-C20N',

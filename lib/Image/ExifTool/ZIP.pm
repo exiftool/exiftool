@@ -19,7 +19,7 @@ use strict;
 use vars qw($VERSION $warnString);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.24';
+$VERSION = '1.25';
 
 sub WarnProc($) { $warnString = $_[0]; }
 
@@ -308,6 +308,9 @@ sub ProcessRAR($$)
         $raf->Seek($size, 1) or last if $size;
     }
     $$et{DOC_NUM} = 0;
+    if ($docNum > 1 and not $et->Options('Duplicates')) {
+        $et->Warn("Use the Duplicates option to extract tags for all $docNum files", 1);
+    }
 
     return 1;
 }
@@ -387,11 +390,12 @@ sub ProcessZIP($$)
 {
     my ($et, $dirInfo) = @_;
     my $raf = $$dirInfo{RAF};
-    my ($buff, $buf2, $zip, $docNum);
+    my ($buff, $buf2, $zip);
 
     return 0 unless $raf->Read($buff, 30) == 30 and $buff =~ /^PK\x03\x04/;
 
     my $tagTablePtr = GetTagTable('Image::ExifTool::ZIP::Main');
+    my $docNum = 0;
 
     # use Archive::Zip if avilable
     for (;;) {
@@ -566,7 +570,6 @@ sub ProcessZIP($$)
         # otherwise just extract general ZIP information
         $et->SetFileType();
         @members = $zip->members();
-        $docNum = 0;
         my ($member, $iWorkType);
         # special files to extract
         my %extract = (
@@ -608,12 +611,14 @@ sub ProcessZIP($$)
     if ($zip) {
         delete $$dirInfo{ZIP};
         delete $$et{DOC_NUM};
+        if ($docNum > 1 and not $et->Options('Duplicates')) {
+            $et->Warn("Use the Duplicates option to extract tags for all $docNum files", 1);
+        }
         return 1;
     }
 #
 # process the ZIP file by hand (funny, but this seems easier than using Archive::Zip)
 #
-    $docNum = 0;
     $et->VPrint(1, "  -- processing as binary data --\n");
     $raf->Seek(30, 0);
     $et->SetFileType();
@@ -659,6 +664,9 @@ sub ProcessZIP($$)
         $raf->Read($buff, 30) == 30 and $buff =~ /^PK\x03\x04/ or last;
     }
     delete $$et{DOC_NUM};
+    if ($docNum > 1 and not $et->Options('Duplicates')) {
+        $et->Warn("Use the Duplicates option to extract tags for all $docNum files", 1);
+    }
     return 1;
 }
 

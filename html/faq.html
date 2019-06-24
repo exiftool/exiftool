@@ -108,11 +108,18 @@ tags in other locations will not appear in the output for
 
 <pre>exiftool -gps:all image.jpg</pre>
 
-will NOT necessarily extract all GPS tags because some GPS tags may have been
-suppressed by same-named tags in other groups.  To be sure all GPS tags are
+will NOT necessarily extract all EXIF GPS tags because some may have been
+suppressed by same-named tags in other groups.  To be sure all EXIF GPS tags are
 extracted, the <code>-a</code> option must be used:
 
 <pre>exiftool -a -gps:all image.jpg</pre>
+
+<i class=lt>[But note that GPS information may be stored in metadata formats
+other than just EXIF, so restricting the command to the EXIF "GPS" group may
+miss GPS information in other formats.  The following command is better suited
+to extract all GPS from a wide variety of file formats:]</i>
+
+<pre>exiftool -a "-gps*" -ee video.mp4</pre>
 
 If you are having problems with other software reading information written by
 ExifTool, if possible try first writing the information from the other software,
@@ -1652,7 +1659,7 @@ technique for shifting a date/time value when copying:
 </blockquote>
 
 <hr>
-<i>Last revised Aug. 8, 2018</i>
+<i>Last revised June 18, 2019</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

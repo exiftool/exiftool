@@ -537,7 +537,7 @@ When set to 2, spaces to indent XMP for readability are also dropped.  A
 setting of 3 places all tags in a single rdf:Description element, and 4
 removes newlines from between XMP elements.  A setting of 5 also writes XMP
 in shorthand format (to save setting the XMPShorthand option separately). 
-Default is undef.
+Default is 0.
 
 =item Composite
 
@@ -1001,7 +1001,8 @@ look like rational numbers or dates.  Default is 1.
 
 =item XMPShorthand
 
-Flag set to write xmp in shorthand format.  Default is undef.
+Set to 1 to write xmp in shorthand format, or 2 to also combine properties
+into a single rdf:Description element.  Default is 0.
 
 =back
 

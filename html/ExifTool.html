@@ -501,12 +501,12 @@ distribution for examples.</p>
     <a href="#XMPShorthand">XMPShorthand</a> option separately).</td>
     <td align=center><table class=clear>
     <tr><td valign=top align=right><b>0</b>&nbsp;=</td><td>normal XMP formatting</td></tr>
-    <tr><td valign=top align=right><b>1</b>&nbsp;=</td><td>remove padding...</td></tr>
+    <tr><td valign=top align=right><b>1</b>&nbsp;=</td><td>no padding...</td></tr>
     <tr><td valign=top align=right><b>2</b>&nbsp;=</td><td>and no indentation...</td></tr>
     <tr><td valign=top align=right><b>3</b>&nbsp;=</td><td>and one rdf:Description...</td></tr>
     <tr><td valign=top align=right><b>4</b>&nbsp;=</td><td>and no newlines...</td></tr>
     <tr><td valign=top align=right><b>5</b>&nbsp;=</td><td>and <a href="#XMPShorthand">XMPShorthand</a></td></tr>
-    </table></td><td align=center>undef</td></tr>
+    </table></td><td align=center>0</td></tr>
 <tr id="Composite"><td>Composite</td><td>Flag to generate Composite tags when extracting information.</td>
     <td align=center>0 or 1</td><td align=center>1</td></tr>
 <tr id="Compress"><td>Compress</td><td>Flag to write new values in compressed format if possible.
@@ -893,9 +893,10 @@ distribution for examples.</p>
     for unknown XMP tags with values that look like rational numbers or dates.</td>
     <td align=center>0 or 1</td>
     <td align=center>1</td></tr>
-<tr id="XMPShorthand"><td>XMPShorthand</td><td>Flag set to write XMP in shorthand format.</td>
-    <td align=center>0 or 1</td>
-    <td align=center>undef</td></tr>
+<tr id="XMPShorthand"><td>XMPShorthand</td><td>Flag set to write XMP in shorthand format.
+    When set to 2, properties are alse combined into a single rdf:Description element.</td>
+    <td align=center>0, 1 or 2</td>
+    <td align=center>0</td></tr>
 </table></blockquote>
 
 <blockquote><table><tr><td valign=top><sup>&dagger;</sup></td><td>The level of

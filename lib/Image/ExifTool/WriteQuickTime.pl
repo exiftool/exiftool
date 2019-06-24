@@ -793,11 +793,18 @@ sub WriteQuickTime($$$)
             }
             $size = $hi * 4294967296 + $lo - 16;
             $size < 0 and $et->Error('Invalid extended atom size'), last;
-        } elsif ($size == -8 and not $dataPt) {
-            # size of zero is only valid for top-level atom, and
-            # indicates the atom extends to the end of file
-            # (save in mdat list to write later; with zero end position to copy rest of file)
-            push @mdat, [ $raf->Tell(), 0, $hdr ];
+        } elsif ($size == -8) {
+            if ($dataPt) {
+                my $pos = $raf->Tell() - 4;
+                $raf->Seek(0,2);
+                my $str = $$dirInfo{DirName} . ' with ' . ($raf->Tell() - $pos) . ' bytes';
+                $et->Error("Terminator found in $str remaining", 1);
+            } else {
+                # size of zero is only valid for top-level atom, and
+                # indicates the atom extends to the end of file
+                # (save in mdat list to write later; with zero end position to copy rest of file)
+                push @mdat, [ $raf->Tell(), 0, $hdr ];
+            }
             last;
         } elsif ($size < 0) {
             if ($$tagTablePtr{VARS}{IGNORE_BAD_ATOMS} and $dataPt) {
@@ -1029,7 +1036,7 @@ sub WriteQuickTime($$$)
                                         my $prVal = $newVal;
                                         my $flags = FormatQTValue($et, \$newVal, $$tagInfo{Format});
                                         next unless defined $newVal;
-                                        my ($ctry, $lang) = (0,0);
+                                        my ($ctry, $lang) = (0, $undLang);
                                         if ($$ti{LangCode}) {
                                             unless ($$ti{LangCode} =~ /^([A-Z]{3})?[-_]?([A-Z]{2})?$/i) {
                                                 $et->Warn("Invalid language code for $$ti{Name}");
@@ -1179,6 +1186,11 @@ sub WriteQuickTime($$$)
                                 } else {
                                     $newData = pack('nn', length($newData), $lang) . $newData;
                                 }
+                            } elsif (not $$tagInfo{Format} or $$tagInfo{Format} =~ /^string/ and
+                                    not $$tagInfo{Binary} and not $$tagInfo{ValueConv})
+                            {
+                                # write all strings as UTF-8
+                                $newData = $et->Encode($newData, 'UTF8');
                             }
                         }
                         $$didTag{$nvHash} = 1;   # set flag so we don't add this tag again
@@ -1315,8 +1327,10 @@ sub WriteQuickTime($$$)
                 }
                 if ($$dirInfo{HasData}) {
                     # add 'data' header
+                    $lang or $lang = $undLang;
                     $newVal = pack('Na4Nnn',16+length($newVal),'data',$flags,$ctry,$lang).$newVal;
                 } elsif ($tag =~ /^\xa9/ or $$tagInfo{IText}) {
+                    $lang or $lang = $undLang;
                     if ($ctry) {
                         my $grp = $et->GetGroup($tagInfo,1);
                         $et->Warn("Can't use country code for $grp:$$tagInfo{Name}");

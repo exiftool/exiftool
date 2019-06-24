@@ -7,7 +7,7 @@
 #
 # Revisions:    Nov. 12/2003 - P. Harvey Created
 #               (See html/history.html for revision history)
-#
+#2.32
 # Legal:        Copyright (c) 2003-2019, Phil Harvey (phil at owl.phy.queensu.ca)
 #               This library is free software; you can redistribute it and/or
 #               modify it under the same terms as Perl itself.
@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup);
 
-$VERSION = '11.52';
+$VERSION = '11.53';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -1662,6 +1662,7 @@ my %systemTagsNotes = (
             commas, eg. C<-ForceWrite=exif,xmp>
         },
     },
+    EmbeddedVideo => { Groups => { 2 => 'Video' } },
 );
 
 # YCbCrSubSampling values (used by JPEG SOF, EXIF and XMP)
@@ -2108,7 +2109,7 @@ sub ClearOptions($)
         CharsetPhotoshop => 'Latin', # internal encoding for Photoshop resource names
         CharsetQuickTime => 'MacRoman', # internal QuickTime string encoding
         CharsetRIFF => 0,       # internal RIFF string encoding (0=default to Latin)
-        Compact     => undef,   # compact XMP and IPTC data
+        Compact     => 0,       # write compact XMP
         Composite   => 1,       # flag to calculate Composite tags
         Compress    => undef,   # flag to write new values as compressed if possible
         CoordFormat => undef,   # GPS lat/long coordinate format
@@ -5974,29 +5975,50 @@ sub ProcessJPEG($$)
             # we are here because we are looking for trailer information
             if ($wantTrailer) {
                 my $start = $$self{PreviewImageStart};
-                if ($start) {
+                if ($start or $$options{ExtractEmbedded}) {
                     my $buff;
                     # most previews start right after the JPEG EOI, but the Olympus E-20
                     # preview is 508 bytes into the trailer, the K-M Maxxum 7D preview is
                     # 979 bytes in, and Sony previews can start up to 32 kB into the trailer.
                     # (and Minolta and Sony previews can have a random first byte...)
                     my $scanLen = $$self{Make} =~ /Sony/i ? 65536 : 1024;
-                    if ($raf->Read($buff, $scanLen) and ($buff =~ /\xff\xd8\xff./g or
-                        ($$self{Make} =~ /(Minolta|Sony)/i and $buff =~ /.\xd8\xff\xdb/g)))
-                    {
-                        # adjust PreviewImageStart to this location
-                        my $actual = $pos + pos($buff) - 4;
-                        if ($start ne $actual and $verbose > 1) {
-                            print $out "(Fixed PreviewImage location: $start -> $actual)\n";
-                        }
-                        # update preview image offsets
-                        $$self{VALUE}{PreviewImageStart} = $actual if $$self{VALUE}{PreviewImageStart};
-                        $$self{PreviewImageStart} = $actual;
-                        # load preview now if we tried and failed earlier
-                        if ($$self{PreviewError} and $$self{PreviewImageLength}) {
-                            if ($raf->Seek($actual, 0) and $raf->Read($buff, $$self{PreviewImageLength})) {
-                                $self->FoundTag('PreviewImage', $buff);
-                                delete $$self{PreviewError};
+                    if ($raf->Read($buff, $scanLen)) {
+                        if ($buff =~ /^.{4}ftyp/s) {
+                            my $val;
+                            if ($raf->Seek(0,2)) {
+                                my $len = $raf->Tell() - $pos;
+                                if ($$options{Binary}) {
+                                    $val = \$buff if $raf->Seek($pos,0) and $raf->Read($buff,$len)==$len;
+                                } else {
+                                    $val = "(Binary data $len bytes)";
+                                }
+                                if ($val) {
+                                    $self->FoundTag('EmbeddedVideo', $val);
+                                } else {
+                                    $self->Warn('Error reading trailer');
+                                }
+                            } else {
+                                $self->Warn('Error seeking to end of file');
+                            }
+                        } elsif ($buff =~ /\xff\xd8\xff./g or
+                           ($$self{Make} =~ /(Minolta|Sony)/i and $buff =~ /.\xd8\xff\xdb/g))
+                        {
+                            # adjust PreviewImageStart to this location
+                            my $actual = $pos + pos($buff) - 4;
+                            if ($start and $start ne $actual and $verbose > 1) {
+                                print $out "(Fixed PreviewImage location: $start -> $actual)\n";
+                            }
+                            # update preview image offsets
+                            if ($start) {
+                                $$self{VALUE}{PreviewImageStart} = $actual if $$self{VALUE}{PreviewImageStart};
+                                $$self{PreviewImageStart} = $actual;
+                            }
+                            # load preview now if we tried and failed earlier
+                            if ($$self{PreviewError} and $$self{PreviewImageLength}) {
+                                if ($raf->Seek($actual, 0) and $raf->Read($buff, $$self{PreviewImageLength})) {
+                                    $self->FoundTag('PreviewImage', $buff);
+                                    delete $$self{PreviewError};
+                                }
                             }
                         }
                     }
@@ -6047,7 +6069,7 @@ sub ProcessJPEG($$)
                     # only if we can't finish without scanning from end of file)
                     $self->ProcessTrailers($trailInfo) and undef $trailInfo;
                 }
-                if ($wantTrailer) {
+                if ($wantTrailer and $$self{PreviewImageStart}) {
                     # seek ahead and validate preview image
                     my $buff;
                     my $curPos = $raf->Tell();
@@ -6064,6 +6086,8 @@ sub ProcessJPEG($$)
                     require Image::ExifTool::Panasonic;
                     Image::ExifTool::Panasonic::ProcessLeicaTrailer($self);
                     $wantTrailer = 1 if $$self{LeicaTrailer};
+                } else {
+                    $wantTrailer = 1 if $$options{ExtractEmbedded};
                 }
                 next if $trailInfo or $wantTrailer or $verbose > 2 or $htmlDump;
             }

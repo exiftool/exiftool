@@ -55,7 +55,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.16';
+$VERSION = '4.17';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -1975,7 +1975,8 @@ my %sampleFormat = (
         Writable => 'undef',
         Mandatory => 1,
         RawConv => '$val=~s/\0+$//; $val',  # (some idiots add null terminators)
-        PrintConvInv => '$val=~tr/.//d; $val=~/^\d{4}$/ ? $val : undef',
+        # (allow strings like "2.31" when writing)
+        PrintConvInv => '$val=~tr/.//d; $val=~/^\d{4}$/ ? $val : $val =~ /^\d{3}$/ ? "0$val" : undef',
     },
     0x9003 => {
         Name => 'DateTimeOriginal',
@@ -2699,6 +2700,74 @@ my %sampleFormat = (
     0xa433 => { Name => 'LensMake',         Writable => 'string' }, #24
     0xa434 => { Name => 'LensModel',        Writable => 'string' }, #24
     0xa435 => { Name => 'LensSerialNumber', Writable => 'string' }, #24
+    0xa460 => { #Exif2.32
+        Name => 'CompositeImage',
+        Writable => 'int16u',
+        PrintConv => {
+            1 => 'No',
+            2 => 'General Composite Image',
+            3 => 'Composite Image Captured While Shooting',
+        },
+    },
+    0xa461 => { #Exif2.32
+        Name => 'CompositeImageCount',
+        Notes => q{
+            2 values: number of source images and the number of images used.  Called
+            SourceImageNumberOfCompositeImage by the EXIF spec.
+        },
+        Writable => 'int16u',
+        Count => 2,
+    },
+    0xa462 => { #Exif2.32
+        Name => 'CompositeImageExposureTimes',
+        Notes => q{
+            9 or more values: 1. total exposure time period, 2. total exposure of all
+            source images, 3. total exposure of all used images, 4. Max exposure time of
+            source images, 5. Max exposure time of used images, 6. Min exposure time of
+            source images, 7. Min exposure of used images, 8. Number of sequences, 9.
+            Number of source images in sequence. 10-N. Exposure times of each source
+            image. Called SourceExposureTimesOfCompositeImage by the EXIF spec.
+        },
+        Writable => 'undef',
+        RawConv => sub {
+            my $val = shift;
+            my @v;
+            my $i = 0;
+            for (;;) {
+                if ($i == 56 or $i == 58) {
+                    last if $i + 2 > length $val;
+                    push @v, Get16u(\$val, $i);
+                    $i += 2;
+                } else {
+                    last if $i + 8 > length $val;
+                    push @v, Image::ExifTool::GetRational64u(\$val, $i);
+                    $i += 8;
+                }
+            }
+            return join ' ', @v;
+        },
+        RawConvInv => sub {
+            my $val = shift;
+            my @v = split ' ', $val;
+            my $i;
+            for ($i=0; ; ++$i) {
+                last unless defined $v[$i];
+                $v[$i] = ($i == 7 or $i == 8) ? Set16u($v[$i]) : Image::ExifTool::SetRational64u($v[$i]);
+            }
+            return join '', @v;
+        },
+        PrintConv => sub {
+            my $val = shift;
+            my @v = split ' ', $val;
+            my $i;
+            for ($i=0; ; ++$i) {
+                last unless defined $v[$i];
+                $v[$i] = PrintExposureTime($v[$i]) unless $i == 7 or $i == 8;
+            }
+            return join ' ', @v;
+        },
+        PrintConvInv => '$val',
+    },
     0xa480 => { Name => 'GDALMetadata',     Writable => 'string', WriteGroup => 'IFD0' }, #3
     0xa481 => { Name => 'GDALNoData',       Writable => 'string', WriteGroup => 'IFD0' }, #3
     0xa500 => { Name => 'Gamma',            Writable => 'rational64u' },

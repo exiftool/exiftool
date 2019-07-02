@@ -1608,11 +1608,13 @@ my %sSubVersion = (
 %Image::ExifTool::XMP::GSpherical = (
     %xmpTableDefaults,
     GROUPS => { 1 => 'XMP-GSpherical', 2 => 'Image' },
+    WRITE_GROUP => 'GSpherical', # write in special location for video files
     NAMESPACE => 'GSpherical',
     AVOID => 1,
     NOTES => q{
         Not actually XMP.  These RDF/XML tags are used in Google spherical MP4
-        videos.  See
+        videos.  These tags are written into the video track of MOV/MP4 files, and
+        not at the top level like other XMP tags.  See
         L<https://github.com/google/spatial-media/blob/master/docs/spherical-video-rfc.md>
         for the specification.
     },

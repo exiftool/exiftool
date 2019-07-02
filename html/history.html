@@ -17,6 +17,29 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v11.54'><b>July 2, 2019 - Version 11.54</b></a>
+<ul>
+<li>Added new Canon and Sony/Minolta LensType values (thanks LibRaw)
+<li>Added a number of new Sony/Minolta LensType values (thanks Jos Roost)
+<li>Added "Unknown" value for new EXIF CompositeImage tag
+<li>Added ability to write GSpherical tags in video track of MOV/MP4 files
+<li>Added support for geotagging from GPS/IMU CSV-format files
+<li>Improved Russian translation (thanks Alexander)
+<li>Improved Validate feature to check ExifVersion/GPSVersionID numbers
+<li>Accept unsigned numbers when setting GPSAltitudeRef from a numerical value
+<li>Fixed decoding of DepthMapWidth/Height for some Samsung live-focus images
+<li>Fixed a couple of incorrect/incomplete CanonModelID values (thanks LibRaw)
+<li>Fixed problem identifying some Canon lenses when used on a Sony camera with
+    a Metabones adapter
+<li>API Changes:
+    <ul>
+    <li>Added <a href="ExifTool.html#FilterW">FilterW option</a>
+    <li>Enhanced <a href="ExifTool.html#Compact">Compact option</a> to improve flexibility and include features of
+        XMPShorthand option
+    <li>Removed XMPShorthand option from documentation
+    </ul>
+</ul>
+
 <a name='v11.53'><b>June 24, 2019 - Version 11.53</b> - "Exif 2.32"</a>
 <ul>
 <li>Added support for the new tags of the Exif 2.32 specification

@@ -2450,7 +2450,8 @@ by the EXIF spec.)</span></span></td></tr>
 <td><u>CompositeImage</u></td>
 <td class=c>int16u</td>
 <td class=c>ExifIFD</td>
-<td><span class=s>1 = No
+<td><span class=s>0 = Unknown
+  <br>1 = Not a Composite Image
   <br>2 = General Composite Image
   <br>3 = Composite Image Captured While Shooting</span></td></tr>
 <tr class=b>
@@ -2458,15 +2459,15 @@ by the EXIF spec.)</span></span></td></tr>
 <td><u>CompositeImageCount</u></td>
 <td class=c>int16u[2]</td>
 <td class=c>ExifIFD</td>
-<td><span class=s><span class=n>(2 values: number of source images and the number of images used.  Called
+<td><span class=s><span class=n>(2 values: 1. Number of source images, 2. Number of images used.  Called
 SourceImageNumberOfCompositeImage by the EXIF spec.)</span></span></td></tr>
 <tr>
 <td title='0xa462 = 42082'>0xa462</td>
 <td><u>CompositeImageExposureTimes</u></td>
 <td class=c>undef</td>
 <td class=c>ExifIFD</td>
-<td><span class=s><span class=n>(9 or more values: 1. total exposure time period, 2. total exposure of all
-source images, 3. total exposure of all used images, 4. Max exposure time of
+<td><span class=s><span class=n>(11 or more values: 1. Total exposure time period, 2. Total exposure of all
+source images, 3. Total exposure of all used images, 4. Max exposure time of
 source images, 5. Max exposure time of used images, 6. Min exposure time of
 source images, 7. Min exposure of used images, 8. Number of sequences, 9.
 Number of source images in sequence. 10-N. Exposure times of each source
@@ -2485,7 +2486,7 @@ image. Called SourceExposureTimesOfCompositeImage by the EXIF spec.)</span></spa
 <td>&nbsp;</td></tr>
 <tr class=b>
 <td title='0xa500 = 42240'>0xa500</td>
-<td>Gamma</td>
+<td><u>Gamma</u></td>
 <td class=c>rational64u</td>
 <td class=c>ExifIFD</td>
 <td>&nbsp;</td></tr>
@@ -3611,7 +3612,7 @@ these unless they already exist in the file)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jun 24, 2019</i>
+<br><i>Last revised Jun 27, 2019</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

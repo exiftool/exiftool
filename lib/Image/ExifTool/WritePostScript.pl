@@ -160,7 +160,7 @@ sub WritePSDirectory($$$$$)
 <x:xmpmeta xmlns:x='adobe:ns:meta/' x:xmptk='Image::ExifTool $Image::ExifTool::VERSION'>
 </x:xmpmeta>
 EMPTY_XMP
-        $val .= ((' ' x 100) . "\n") x 24 unless $et->Options('Compact');
+        $val .= ((' ' x 100) . "\n") x 24 unless $$et{OPTIONS}{Compact}{NoPadding};
         $val .= q{<?xpacket end='w'?>};
         $dataPt = \$val;
         $len = length $val;

@@ -1368,7 +1368,13 @@ extracted.  In this case, the formatted output (<code>-p</code>), JSON
 (<code>-j</code>), XML (<code>-X</code>) and PHP (<code>-php</code>) options
 provide alternative output formats which preserve newlines in values.</blockquote>
 
-<blockquote>When writing, there are a number of options:
+<blockquote>Alternatively, the <a href="ExifTool.html#Filter">API Filter option</a>
+may be used to apply an arbitrary filter to all extracted values.  For example,
+the following command changes newlines to "\n":
+
+<pre>exiftool -api filter="s/\n/\\n/g" FILE</pre>
+
+When writing, there are a number of options:
 
 <ol type='a'>
 <li>In many shells, a newline may be inserted directly in the command
@@ -1523,12 +1529,12 @@ creation date is readable/writable through the FileCreateDate tag (see the
 <a href="TagNames/Extra.html">Extra Tags documentation</a>), and is preserved
 with the <code>-P</code> option. On Mac the MDItemFSCreationDate tag is used
 (see the <a href="TagNames/MacOS.html#MDItem">MacOS MDItem Tags documentation</a>),
-however this tag is extracted only if specified explicitly or the MDItemTags API
-option is set.  The <code>-P</code> option does not preserve the creation date
-when editing a file on Mac systems, but the
-<code>-overwrite_original_in_place</code> option may be used to preserve all
-Finder information including the creation date, or the MDItemFSCreationDate may
-be copied back specifically (ie.
+however this tag is extracted only if specified explicitly or the
+<a href="ExifTool.html#MDItemTags">MDItemTags API option</a> is set.  The
+<code>-P</code> option does not preserve the creation date when editing a file
+on Mac systems, but the <code>-overwrite_original_in_place</code> option may be
+used to preserve all Finder information including the creation date, or the
+MDItemFSCreationDate may be copied back specifically (ie.
 <code>-tagsfromfile @ -MDItemFSCreationDate</code>).  On Linux, the file
 creation date is not stored.</blockquote>
 
@@ -1614,11 +1620,12 @@ in the database.</blockquote>
 <blockquote>Tag names may be prefixed by a group name to write to a specific
 group (using the same format as when <code>-G</code> or <code>-G1</code> is
 added to the export command).  To delete a tag, set the tag value to "-" (or the
-MissingTagValue if this API option was used) and use the <code>-f</code> option
-when importing.  Tags with an empty value are ignored in a CSV import, or set to
-an empty string in a JSON import (unless <code>-f</code> is used and the API
-MissingTagValue option is set to an empty string, in which case the tag is
-deleted).  </blockquote>
+<a href="ExifTool.html#MissingTagValue">MissingTagValue</a> if this API option
+was used) and use the <code>-f</code> option when importing.  Tags with an empty
+value are ignored in a CSV import, or set to an empty string in a JSON import
+(unless <code>-f</code> is used and the
+<a href="ExifTool.html#MissingTagValue">API MissingTagValue option</a> is set to
+an empty string, in which case the tag is deleted).</blockquote>
 
 <blockquote>See the <code>-csv</code> or <code>-j</code> option in the
 <a href="exiftool_pod.html#input_output_text_formatting">application documentation</a>
@@ -1659,7 +1666,7 @@ technique for shifting a date/time value when copying:
 </blockquote>
 
 <hr>
-<i>Last revised June 18, 2019</i>
+<i>Last revised June 25, 2019</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

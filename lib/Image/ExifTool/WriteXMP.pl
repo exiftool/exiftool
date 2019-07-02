@@ -45,7 +45,7 @@ my $rdfClose = "</rdf:RDF>\n";
 my $xmpClose = "</x:xmpmeta>\n";
 my $pktCloseW =  "<?xpacket end='w'?>"; # writable by default
 my $pktCloseR =  "<?xpacket end='r'?>";
-my $noPad;
+my ($sp, $nl);
 
 #------------------------------------------------------------------------------
 # Get XMP opening tag (and set x:xmptk appropriately)
@@ -544,6 +544,36 @@ sub AddStructType($$$$;$)
 }
 
 #------------------------------------------------------------------------------
+# Hack to use XMP writer for SphericalVideoXML
+# Inputs: 0) ExifTool ref, 1) dirInfo ref, 2) tag table ref
+# Returns: SphericalVideoXML data
+sub WriteGSpherical($$$)
+{
+    my ($et, $dirInfo, $tagTablePtr) = @_;
+    $$dirInfo{Compact} = 1,
+    my $dataPt = $$dirInfo{DataPt};
+    if ($dataPt and $$dataPt) {
+        # make it look like XMP for writing
+        my $buff = $$dataPt;
+        $buff =~ s/<rdf:SphericalVideo/<?xpacket begin='.*?' id='W5M0MpCehiHzreSzNTczkc9d'?>\n<x:xmpmeta xmlns:x='adobe:ns:meta\/'><rdf:RDF/;
+        $buff =~ s/\s*xmlns:GSpherical/>\n<rdf:Description xmlns:GSpherical/s;
+        $buff =~ s/<\/rdf:SphericalVideo>/<\/rdf:Description>/;
+        $buff .= "</rdf:RDF></x:xmpmeta><?xpacket end='w'?>";
+        $$dirInfo{DataPt} = \$buff;
+        $$dirInfo{DirLen} = length($buff) - ($$dirInfo{DirStart} || 0);
+    }
+    my $xmp = Image::ExifTool::XMP::WriteXMP($et, $dirInfo, $tagTablePtr);
+    if ($xmp) {
+        # change back to rdf:SphericalVideo structure
+        $xmp =~ s/^<\?xpacket begin.*?<rdf:RDF/<rdf:SphericalVideo\n/s;
+        $xmp =~ s/>\s*<rdf:Description rdf:about=''\s*/\n /;
+        $xmp =~ s/\s*<\/rdf:Description>\s*(<\/rdf:RDF>)/\n<\/rdf:SphericalVideo>$1/s;
+        $xmp =~ s/\s*<\/rdf:RDF>\s*<\/x:xmpmeta>.*//s;
+    }
+    return $xmp;
+}
+
+#------------------------------------------------------------------------------
 # Utility routine to encode data in base64
 # Inputs: 0) binary data string, 1) flag to avoid inserting newlines
 # Returns:   base64-encoded string
@@ -604,10 +634,9 @@ sub LimitXMPSize($$$$$$)
     push @$startPt, length($$dataPt);  # add end offset to list
     my $newData = substr($$dataPt, 0, $$startPt[0]);
     my $guid = '0' x 32;
-    my ($sp, $nl) = $noPad ? ('', $noPad > 1 ? '' : "\n") : (' ',"\n");
     # write the required xmpNote:HasExtendedXMP property
     $newData .= "$nl$sp<$rdfDesc rdf:about='${about}'\n$sp${sp}xmlns:xmpNote='$nsURI{xmpNote}'";
-    if ($$et{OPTIONS}{XMPShorthand} or $$et{OPTIONS}{Compact} > 4) {
+    if ($$et{OPTIONS}{Compact}{Shorthand}) {
         $newData .= "\n$sp${sp}xmpNote:HasExtendedXMP='${guid}'/>\n";
     } else {
         $newData .= ">$nl$sp$sp<xmpNote:HasExtendedXMP>$guid</xmpNote:HasExtendedXMP>$nl$sp</$rdfDesc>\n";
@@ -645,21 +674,14 @@ sub LimitXMPSize($$$$$$)
 # Close out bottom-level property
 # Inputs: 0) current property path list ref, 1) longhand properties at each resource
 #         level, 2) shorthand properties at each resource level, 3) resource flag for
-#         each property path level (set only if XMPShorthand is enabled)
+#         each property path level (set only if Shorthand is enabled)
 sub CloseProperty($$$$)
 {
     my ($curPropList, $long, $short, $resFlag) = @_;
 
     my $prop = pop @$curPropList;
     $prop =~ s/ .*//;       # remove list index if it exists
-    my ($pad, $nl);
-    if ($noPad) {
-        $pad = '';
-        $nl = $noPad > 1 ? '' : "\n";
-    } else {
-        $pad = ' ' x (scalar(@$curPropList) + 1);
-        $nl = "\n";
-    }
+    my $pad = $sp x (scalar(@$curPropList) + 1);
     if ($$resFlag[@$curPropList]) {
         # close this XMP structure with possible shorthand properties
         if (length $$short[-1]) {
@@ -703,8 +725,8 @@ sub CloseProperty($$$$)
 
 #------------------------------------------------------------------------------
 # Write XMP information
-# Inputs: 0) ExifTool object reference, 1) source dirInfo reference,
-#         2) [optional] tag table reference
+# Inputs: 0) ExifTool ref, 1) source dirInfo ref (with optional WriteGroup),
+#         2) [optional] tag table ref
 # Returns: with tag table: new XMP data (may be empty if no XMP data) or undef on error
 #          without tag table: 1 on success, 0 if not valid XMP file, -1 on write error
 # Notes: May set dirInfo InPlace flag to rewrite with specified DirLen (=2 to allow larger)
@@ -723,10 +745,9 @@ sub WriteXMP($$;$)
     # prefer XMP over other metadata formats in some types of files
     my $preferred = $xmpFile || ($$et{PreferredGroup} and $$et{PreferredGroup} eq 'XMP');
     my $verbose = $$et{OPTIONS}{Verbose};
-    my $compact = $$et{OPTIONS}{Compact};
+    my %compact = ( %{$$et{OPTIONS}{Compact}} ); # (make a copy so we can change settings)
     my $dirLen = $$dirInfo{DirLen};
     $dirLen = length($$dataPt) if not defined $dirLen and $dataPt;
-    $noPad = $compact > 1 ? ($compact > 3 ? 2 : 1) : undef;
 #
 # extract existing XMP information into %capture hash
 #
@@ -742,6 +763,9 @@ sub WriteXMP($$;$)
     delete $$et{XMP_NO_XPACKET};
     delete $$et{XMP_IS_XML};
     delete $$et{XMP_IS_SVG};
+
+    # set current padding characters
+    ($sp, $nl) = ($compact{NoIndent} ? '' : ' ', $compact{NoNewline} ? '' : "\n");
 
     # get value for new rdf:about
     my $tagInfo = $Image::ExifTool::XMP::rdf{about};
@@ -869,9 +893,11 @@ sub WriteXMP($$;$)
     # (sorted by tag name so alternate languages come last, but with structures
     # first so flattened tags may be used to override individual structure elements)
     my @tagInfoList;
+    my $writeGroup = $$dirInfo{WriteGroup};
     foreach $tagInfo (sort ByTagName $et->GetNewTagInfoList()) {
         next unless $et->GetGroup($tagInfo, 0) eq 'XMP';
         next if $$tagInfo{Name} eq 'XMP'; # (ignore full XMP block if we didn't write it already)
+        next if $writeGroup and $writeGroup ne $$et{NEW_VALUE}{$tagInfo}{WriteGroup};
         if ($$tagInfo{Struct}) {
             unshift @tagInfoList, $tagInfo;
         } else {
@@ -1236,7 +1262,6 @@ sub WriteXMP($$;$)
 # write out the new XMP information (serialize it)
 #
     # start writing the XMP data
-    my $useShorthand = $$et{OPTIONS}{XMPShorthand} || ($compact > 4 ? 1 : 0);
     my (@long, @short, @resFlag);
     $long[0] = $long[1] = $short[0] = '';
     if ($$et{XMP_NO_XPACKET}) {
@@ -1279,8 +1304,6 @@ sub WriteXMP($$;$)
         }
     }
 
-    my ($sp, $nl) = $noPad ? ('', $noPad > 1 ? '' : "\n") : (' ',"\n");
-
     # write out all properties
     for (;;) {
         my (%nsNew, $newDesc);
@@ -1316,7 +1339,7 @@ sub WriteXMP($$;$)
             my ($path2, $ns2);
             foreach $path2 (@pathList) {
                 my @ns2s = ($path2 =~ m{(?:^|/)([^/]+?):}g);
-                my $opening = ($compact > 2 or $useShorthand > 1) ? 1 : 0;
+                my $opening = $compact{OneDesc} ? 1 : 0;
                 foreach $ns2 (@ns2s) {
                     next if $ns2 eq 'rdf';
                     $nsNew{$ns2} and ++$opening, next;
@@ -1354,8 +1377,8 @@ sub WriteXMP($$;$)
             }
             $long[-2] .= "\n$sp${sp}xmlns:$_='$nsCur{$_}'" foreach @ns;
             push @curPropList, $prop;
-            # set resFlag to 0 to indicate base description when XMPShorthand enabled
-            $resFlag[0] = 0 if $useShorthand;
+            # set resFlag to 0 to indicate base description when Shorthand enabled
+            $resFlag[0] = 0 if $compact{Shorthand};
         }
         my ($val, $attrs) = @{$capture{$path}};
         $debug and print "$path = $val\n";
@@ -1367,7 +1390,7 @@ sub WriteXMP($$;$)
             $prop =~ s/ .*//;       # remove list index if it exists
             # (we may add parseType and shorthand properties later,
             #  so leave off the trailing ">" for now)
-            $long[-1] .= ($noPad ? '' : ' ' x scalar(@curPropList)) . "<$prop";
+            $long[-1] .= ($compact{NoIndent} ? '' : ' ' x scalar(@curPropList)) . "<$prop";
             if ($prop ne $rdfDesc and ($propList[$n+1] !~ /^rdf:/ or
                 ($propList[$n+1] eq 'rdf:type' and $n+1 == $#propList)))
             {
@@ -1378,7 +1401,7 @@ sub WriteXMP($$;$)
                     $dummy = 1;
                     last;
                 }
-                if ($useShorthand) {
+                if ($compact{Shorthand}) {
                     $resFlag[$#curPropList] = 1;
                     push @long, '';
                     push @short, '';
@@ -1394,7 +1417,7 @@ sub WriteXMP($$;$)
         # add element unless it was a dummy structure field
         unless ($dummy or ($val eq '' and $prop2 =~ /:~dummy~$/)) {
             $prop2 =~ s/ .*//;      # remove list index if it exists
-            my $pad = $noPad ? '' : ' ' x (scalar(@curPropList) + 1);
+            my $pad = $compact{NoIndent} ? '' : ' ' x (scalar(@curPropList) + 1);
             # (can't write as shortcut if it has attributes or CDATA)
             if (defined $resFlag[$#curPropList] and not %$attrs and $val !~ /<!\[CDATA\[/) {
                 $short[-1] .= "\n$pad$prop2='${val}'";
@@ -1423,9 +1446,9 @@ sub WriteXMP($$;$)
         $$dirInfo{ExtendedXMP} = $rtn[0];
         $$dirInfo{ExtendedGUID} = $rtn[1];
         # compact if necessary to fit
-        $compact = 1 if length($long[-2]) + 101 * $numPadLines > $maxDataLen and not $compact;
+        $compact{NoPadding} = 1 if length($long[-2]) + 101 * $numPadLines > $maxDataLen;
     }
-    $compact = 1 if $$dirInfo{Compact} and not $compact;
+    $compact{NoPadding} = 1 if $$dirInfo{Compact};
 #
 # close out the XMP, clean up, and return our data
 #
@@ -1447,7 +1470,7 @@ sub WriteXMP($$;$)
             # pad to specified DirLen
             if ($len > $dirLen) {
                 my $str = 'Not enough room to edit XMP in place';
-                $str .= '. Try XMPShorthand option' unless $$et{OPTIONS}{XMPShorthand} or $compact > 4;
+                $str .= '. Try Shorthand feature' unless $compact{Shorthand};
                 $et->Warn($str);
                 return undef;
             }
@@ -1457,7 +1480,7 @@ sub WriteXMP($$;$)
                 $len += length($pad) * $num;
             }
             $len < $dirLen and $long[-2] .= (' ' x ($dirLen - $len - 1)) . "\n";
-        } elsif (not $compact and not $xmpFile and not $$dirInfo{ReadOnly}) {
+        } elsif (not $compact{NoPadding} and not $xmpFile and not $$dirInfo{ReadOnly}) {
             $long[-2] .= $pad x $numPadLines;
         }
         $long[-2] .= ($$dirInfo{ReadOnly} ? $pktCloseR : $pktCloseW);

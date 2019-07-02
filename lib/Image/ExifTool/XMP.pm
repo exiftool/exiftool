@@ -68,6 +68,7 @@ sub AddFlattenedTags($;$$);
 sub FormatXMPDate($);
 sub ConvertRational($);
 sub ConvertRationalList($);
+sub WriteGSpherical($$$);
 
 # lookup for translating to ExifTool namespaces (and family 1 group names)
 %stdXlatNS = (

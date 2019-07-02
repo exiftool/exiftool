@@ -514,6 +514,7 @@ my %eeBox = (
             Name => 'XMP',
             # *** this is where ExifTool writes XMP in MP4 videos (as per XMP spec) ***
             Condition => '$$valPt=~/^\xbe\x7a\xcf\xcb\x97\xa9\x42\xe8\x9c\x71\x99\x94\x91\xe3\xaf\xac/',
+            WriteGroup => 'XMP',    # (write main XMP tags here)
             SubDirectory => {
                 TagTable => 'Image::ExifTool::XMP::Main',
                 Start => 16,
@@ -991,6 +992,7 @@ my %eeBox = (
     },
     trak => {
         Name => 'Track',
+        CanCreate => 0, # don't create this atom
         SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::Track' },
     },
     udta => {
@@ -1196,11 +1198,12 @@ my %eeBox = (
         { #https://github.com/google/spatial-media/blob/master/docs/spherical-video-rfc.md
             Name => 'SphericalVideoXML',
             Condition => '$$valPt=~/^\xff\xcc\x82\x63\xf8\x55\x4a\x93\x88\x14\x58\x7a\x02\x52\x1f\xdd/',
-            Flags => [ 'Binary', 'BlockExtract' ],
-            Writable => 0,
+            WriteGroup => 'GSpherical', # write only GSpherical XMP tags here
+            HandlerType => 'vide',      # only write in video tracks
             SubDirectory => {
                 TagTable => 'Image::ExifTool::XMP::Main',
                 Start => 16,
+                WriteProc => 'Image::ExifTool::XMP::WriteGSpherical',
             },
         },
         {
@@ -1473,6 +1476,7 @@ my %eeBox = (
     hinv => 'HintVersion', #PH (guess)
     XMP_ => { #PH (Adobe CS3 Bridge)
         Name => 'XMP',
+        WriteGroup => 'XMP',    # (write main tags here)
         # *** this is where ExifTool writes XMP in MOV videos (as per XMP spec) ***
         SubDirectory => { TagTable => 'Image::ExifTool::XMP::Main' },
     },
@@ -2364,7 +2368,7 @@ my %eeBox = (
     }],
    'xml ' => {
         Name => 'XML',
-        Flags => [ 'Binary', 'Protected', 'BlockExtract' ],
+        Flags => [ 'Binary', 'Protected' ],
         SubDirectory => {
             TagTable => 'Image::ExifTool::XMP::XML',
             IgnoreProp => { NonRealTimeMeta => 1 }, # ignore container for Sony 'nrtm'

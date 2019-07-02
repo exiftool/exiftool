@@ -32,7 +32,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.07';
+$VERSION = '3.08';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -121,6 +121,7 @@ my %sonyLensTypes2 = (
     32821 => 'Sony FE 24-70mm F2.8 GM', #JR/IB
     32822 => 'Sony FE 50mm F1.4 ZA', #JR
     32823 => 'Sony FE 85mm F1.4 GM', #JR/IB
+    32823.1 => 'Samyang AF 85mm F1.4', #IB
     32824 => 'Sony FE 50mm F1.8', #JR (Sony code 'SEL50F18F' with trailing "F" as compared to 'SEL50F18' for 32790)
 
     32826 => 'Sony FE 21mm F2.8 (SEL28F20 + SEL075UWC)', #JR          # (+ Ultra-wide converter)
@@ -146,6 +147,10 @@ my %sonyLensTypes2 = (
     33078 => 'Sony FE 100-400mm F4.5-5.6 GM OSS + 2X Teleconverter', #JR
     33079 => 'Sony FE 400mm F2.8 GM OSS + 1.4X Teleconverter', #IB
     33080 => 'Sony FE 400mm F2.8 GM OSS + 2X Teleconverter', #JR
+    33081 => 'Sony FE 200-600mm F5.6-6.3 G OSS + 1.4X Teleconverter', #JR (NC)
+    33082 => 'Sony FE 200-600mm F5.6-6.3 G OSS + 2X Teleconverter', #JR
+    33083 => 'Sony FE 600mm F4 GM OSS + 1.4X Teleconverter', #JR (NC)
+    33084 => 'Sony FE 600mm F4 GM OSS + 2X Teleconverter', #JR
 
     49201 => 'Zeiss Touit 12mm F2.8', #JR (lens firmware Ver.02)
     49202 => 'Zeiss Touit 32mm F1.8', #JR (lens firmware Ver.02)
@@ -162,6 +167,7 @@ my %sonyLensTypes2 = (
     49236 => 'Zeiss Loxia 25mm F2.4', #JR
 
     49457 => 'Tamron 28-75mm F2.8 Di III RXD', #JR (Model A036)
+    49458 => 'Tamron 17-28mm F2.8 Di III RXD', #JR
 
     49712 => 'Tokina FiRIN 20mm F2 FE AF',       # (firmware Ver.01)
     49713 => 'Tokina FiRIN 100mm F2.8 FE MACRO', # (firmware Ver.01)
@@ -197,6 +203,7 @@ my %sonyLensTypes2 = (
     50998 => 'Voigtlander MACRO APO-LANTHAR 110mm F2.5', #JR
     50999 => 'Voigtlander COLOR-SKOPAR 21mm F3.5 Aspherical', #IB
     51000 => 'Voigtlander NOKTON 50mm F1.2 Aspherical', #JR
+    51001 => 'Voigtlander NOKTON 21mm F1.4 Aspherical', #JR
 
     # lenses listed in the Sigma MC-11 list, but not yet seen:
     # 504xx => 'Sigma 18-200mm F3.5-6.3 DC MACRO OS HSM | C + MC-11', # (014)

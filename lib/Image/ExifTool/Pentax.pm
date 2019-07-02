@@ -2845,7 +2845,7 @@ my %binaryDataAttrs = (
         Name => 'HuffmanTable',
         Flags => [ 'Unknown', 'Binary' ],
         Writable => 0,
-        Notes => 'found in K10D, K20D and K2000D PEF images',
+        Notes => 'found in K10D, K20D and K2000 PEF images',
     },
     0x0221 => { #28
         Name => 'KelvinWB',

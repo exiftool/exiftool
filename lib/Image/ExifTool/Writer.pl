@@ -357,6 +357,9 @@ sub SetNewValue($;$$%)
     $options{Type} = 'ValueConv' if $tag =~ s/#$//;
     my $convType = $options{Type} || ($$self{OPTIONS}{PrintConv} ? 'PrintConv' : 'ValueConv');
 
+    # filter value if necessary
+    Filter($$self{OPTIONS}{FilterW}, \$value) if $convType eq 'PrintConv';
+
     my (@wantGroup, $family2);
     my $wantGroup = $options{Group};
     if ($wantGroup) {
@@ -733,6 +736,11 @@ TAG: foreach $tagInfo (@matchingTags) {
             push @writeAlsoList, $tagInfo;
         } else {
             push @tagInfoList, $tagInfo;
+        }
+        # special case to allow override of XMP WriteGroup
+        if ($writeGroup eq 'XMP') {
+            my $wg = $$tagInfo{WriteGroup} || $$table{WRITE_GROUP};
+            $writeGroup = $wg if $wg;
         }
         $writeGroup{$tagInfo} = $writeGroup;
     }

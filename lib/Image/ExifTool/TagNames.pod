@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 22577 tags, with 15020 unique tag names.
+They contain a total of 22579 tags, with 15020 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -2398,7 +2398,8 @@ These tags belong to the ExifTool XMP-GPano family 1 group.
 =head3 XMP GSpherical Tags
 
 Not actually XMP.  These RDF/XML tags are used in Google spherical MP4
-videos.  See
+videos.  These tags are written into the video track of MOV/MP4 files, and
+not at the top level like other XMP tags.  See
 L<https://github.com/google/spatial-media/blob/master/docs/spherical-video-rfc.md>
 for the specification.
 
@@ -15572,6 +15573,8 @@ as the Galaxy S4 and Tab S.
   ------   --------                             --------
       9    DepthMapWidth                        no
      10    DepthMapHeight                       no
+     16    DepthMapWidth                        no
+     17    DepthMapHeight                       no
 
 =head3 Samsung sec Tags
 

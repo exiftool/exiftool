@@ -19,6 +19,9 @@ my %movMap = (
     XMP       => 'UserData',    # MOV-Movie-UserData-XMP
     UserData  => 'Movie',       # MOV-Movie-UserData
     Movie     => 'MOV',
+    GSpherical => 'SphericalVideoXML', # MOV-Movie-Track-SphericalVideoXML
+    SphericalVideoXML => 'Track',      # (video track specifically, don't create if it doesn't exist)
+    Track     => 'Movie',
 );
 my %mp4Map = (
     # MP4 ('ftyp' compatible brand 'mp41', 'mp42' or 'f4v ') -> XMP at top level
@@ -29,6 +32,9 @@ my %mp4Map = (
     UserData  => 'Movie',       # MOV-Movie-UserData
     Movie     => 'MOV',
     XMP       => 'MOV',         # MOV-XMP
+    GSpherical => 'SphericalVideoXML', # MOV-Movie-Track-SphericalVideoXML
+    SphericalVideoXML => 'Track',      # (video track specifically, don't create if it doesn't exist)
+    Track     => 'Movie',
 );
 my %heicMap = (
     # HEIC ('ftyp' compatible brand 'heic' or 'mif1') -> XMP/EXIF in top level 'meta'
@@ -847,7 +853,12 @@ sub WriteQuickTime($$$)
             $et->Error("Truncated $tag atom");
             return $rtnVal;
         }
-
+        # save the handler type for this track
+        if ($tag eq 'hdlr' and length $buff >= 12) {
+            my $hdlr = substr($buff,8,4);
+            $$et{HandlerType} = $hdlr if $hdlr =~ /^(vide|soun)$/;
+        }
+        
         # if this atom stores offsets, save its location so we can fix up offsets later
         # (are there any other atoms that may store absolute file offsets?)
         if ($tag =~ /^(stco|co64|iloc|mfra|moof|sidx|saio|gps |CTBO|uuid)$/) {
@@ -937,6 +948,8 @@ sub WriteQuickTime($$$)
 
             if ($subdir) {  # process atoms in this container from a buffer in memory
 
+                undef $$et{HandlerType} if $tag eq 'trak';  # init handler type for this track
+
                 my $subName = $$subdir{DirName} || $$tagInfo{Name};
                 my $start = $$subdir{Start} || 0;
                 my $base = ($$dirInfo{Base} || 0) + $raf->Tell() - $size;
@@ -964,6 +977,7 @@ sub WriteQuickTime($$$)
                     Multi    => $$subdir{Multi},    # necessary?
                     OutFile  => $outfile,
                     NoRefTest=> 1,     # don't check directory references
+                    WriteGroup => $$tagInfo{WriteGroup},
                     # initialize array to hold details about chunk offset table
                     # (each entry has 3-5 items: 0=atom type, 1=table offset, 2=table size,
                     #  3=optional base offset, 4=optional item ID)
@@ -1301,6 +1315,9 @@ sub WriteQuickTime($$$)
         # (note that $tag may be a binary Keys index here)
         foreach $tag (@addTags) {
             my $tagInfo = $$dirs{$tag} || $$newTags{$tag};
+            next if defined $$tagInfo{CanCreate} and not $$tagInfo{CanCreate};
+            next if defined $$tagInfo{HandlerType} and
+                (not $$et{HandlerType} or $$et{HandlerType} ne $$tagInfo{HandlerType});
             my $subdir = $$tagInfo{SubDirectory};
             unless ($subdir) {
                 my $nvHash = $et->GetNewValueHash($tagInfo);
@@ -1386,6 +1403,7 @@ sub WriteQuickTime($$$)
                 HasData  => $$subdir{HasData},
                 OutFile  => $outfile,
                 ChunkOffset => [ ], # (just to be safe)
+                WriteGroup => $$tagInfo{WriteGroup},
             );
             my $subTable = GetTagTable($$subdir{TagTable});
             my $newData = $et->WriteDirectory(\%subdirInfo, $subTable, $$subdir{WriteProc});

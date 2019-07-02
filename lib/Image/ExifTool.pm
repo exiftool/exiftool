@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup);
 
-$VERSION = '11.53';
+$VERSION = '11.54';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -90,6 +90,7 @@ sub GetExtended($$);
 sub Set64u(@);
 sub DecodeBits($$;$);
 sub EncodeBits($$;$$);
+sub Filter($@);
 sub HexDump($;$%);
 sub DumpTrailer($$);
 sub DumpUnknownTrailer($$);
@@ -914,6 +915,25 @@ my %weakMagic = ( MP3 => 1 );
 # file types that are determined by the process proc when FastScan == 3
 # (when done, the process proc must exit after SetFileType if FastScan is 3)
 my %processType = map { $_ => 1 } qw(JPEG TIFF XMP AIFF EXE Font PS Real VCard);
+
+# Compact/XMPShorthand option settings
+my %compactOpt = (
+    nopadding => 'NoPadding', noindent => 'NoIndent', nonewline => 'NoNewline',
+    shorthand => 'Shorthand', onedesc => 'OneDesc',
+    all => ['NoPadding','NoIndent','NoNewline','Shorthand','OneDesc'],
+    allspace => ['NoPadding','NoIndent','NoNewline'], allformat => ['Shorthand','OneDesc'],
+    # aliases to cover anticipated user typos
+    nonewlines => 'NoNewline', nospace => 'NoIndent', nospaces => 'NoIndent',
+    nopad => 'NoPadding', onedescr => 'OneDesc',
+    # allow numerical settings for backward compatibility
+    0 => 'None',
+    1 => 'NoPadding',
+    2 => ['NoPadding','NoIndent'],
+    3 => ['NoPadding','NoIndent','OneDesc'],
+    4 => ['NoPadding','NoIndent','OneDesc','NoNewline'],
+    5 => ['NoPadding','NoIndent','OneDesc','NoNewline','Shorthand'],
+);
+my %xmpShorthandOpt = ( 0 => 'None', 1 => 'Shorthand', 2 => ['Shorthand','OneDesc'] );
 
 # lookup for valid character set names (keys are all lower case)
 %charsetName = (
@@ -1951,6 +1971,8 @@ sub Options($$;@)
             }
         }
         $oldVal = $$options{$param};
+        # get previous Compact/XMPShorthand setting
+        $oldVal = $$oldVal{$param} if ref $oldVal eq 'HASH';
         last unless @_;
         my $newVal = shift;
         if ($param eq 'Lang') {
@@ -2054,6 +2076,23 @@ sub Options($$;@)
             $$options{$param} = $newVal;
             # set the new ListJoin option for forward compatibility
             $$options{ListJoin} = $newVal ? undef : $$options{ListSep};
+        } elsif ($param eq 'Compact' or $param eq 'XMPShorthand') {
+            # set Compact and XMPShorthand options, preserving backward compatibility
+            my ($p, %compact);
+            foreach $p ('Compact','XMPShorthand') {
+                my $val = $param eq $p ? $newVal : $$options{Compact}{$p};
+                if (defined $val) {
+                    my @v = ($val =~ /\w+/g);
+                    my $opt = ($p eq 'Compact') ? \%compactOpt : \%xmpShorthandOpt;
+                    foreach (@v) {
+                        my $set = $$opt{lc $_} or warn("Invalid $p setting '${_}'\n"), return $oldVal;
+                        ref $set or $compact{$set} = 1, next;
+                        $compact{$_} = 1 foreach @$set;
+                    }
+                }
+                $compact{$p} = $val; # preserve most recent setting
+            }
+            $$options{Compact} = $$options{XMPShorthand} = \%compact;
         } else {
             if ($param eq 'Escape') {
                 # set ESCAPE_PROC
@@ -2109,7 +2148,7 @@ sub ClearOptions($)
         CharsetPhotoshop => 'Latin', # internal encoding for Photoshop resource names
         CharsetQuickTime => 'MacRoman', # internal QuickTime string encoding
         CharsetRIFF => 0,       # internal RIFF string encoding (0=default to Latin)
-        Compact     => 0,       # write compact XMP
+        Compact     => { },     # write compact XMP
         Composite   => 1,       # flag to calculate Composite tags
         Compress    => undef,   # flag to write new values as compressed if possible
         CoordFormat => undef,   # GPS lat/long coordinate format
@@ -2121,6 +2160,7 @@ sub ClearOptions($)
         ExtractEmbedded =>undef,# flag to extract information from embedded documents
         FastScan    => undef,   # flag to avoid scanning for trailer
         Filter      => undef,   # output filter for all tag values
+        FilterW     => undef,   # input filter when writing tag values
         FixBase     => undef,   # fix maker notes base offsets
         GeoMaxIntSecs => 1800,  # geotag maximum interpolation time (secs)
         GeoMaxExtSecs => 1800,  # geotag maximum extrapolation time (secs)
@@ -2168,7 +2208,7 @@ sub ClearOptions($)
         WriteMode   => 'wcg',   # enable all write modes by default
         XAttrTags   => undef,   # extract MacOS extended attribute tags
         XMPAutoConv => 1,       # automatic conversion of unknown XMP tag values
-        XMPShorthand=> 0,       # short form XMP
+        XMPShorthand=> 0,       # (unused, but needed for backward compatibility)
     };
     # keep necessary member variables in sync with options
     delete $$self{CUR_LANG};
@@ -3085,7 +3125,7 @@ sub GetValue($$;$)
             # $valueConv is undefined if there was no print conversion done
             $valueConv = $value;
         }
-        $self->Filter(\$value) if defined $$self{OPTIONS}{Filter};
+        Filter($$self{OPTIONS}{Filter}, \$value);
         # return Both values as a list (ValueConv, PrintConv)
         return ($valueConv, $value);
     }
@@ -3093,7 +3133,7 @@ sub GetValue($$;$)
     DoEscape($value, $$self{ESCAPE_PROC}) if $$self{ESCAPE_PROC};
 
     # filter if necessary
-    $self->Filter(\$value) if defined $$self{OPTIONS}{Filter} and $type eq 'PrintConv';
+    Filter($$self{OPTIONS}{Filter}, \$value) if $$self{OPTIONS}{Filter} and $type eq 'PrintConv';
 
     if (ref $value eq 'ARRAY') {
         if (defined $$self{OPTIONS}{ListItem}) {
@@ -5243,32 +5283,32 @@ sub GetDescriptions($$)
 
 #------------------------------------------------------------------------------
 # Apply filter to value(s) if necessary
-# Inputs: 0) ExifTool ref, 1-N) references to values(s) to filter
+# Inputs: 0) filter expression, 1-N) references to values(s) to filter
 # Returns: nothing, but changes values if necessary
 sub Filter($@)
 {
     local $_;
-    my $self = shift;
-    return unless defined $$self{OPTIONS}{Filter};
+    my $filter = shift;
+    return unless defined $filter;
     while (@_) {
         my $valPt = shift;
         next unless defined $$valPt;
         if (not ref $$valPt) {
             $_ = $$valPt;
             #### eval Filter ($_)
-            eval $$self{OPTIONS}{Filter};
+            eval $filter;
             $$valPt = $_ if defined $_;
         } elsif (ref $$valPt eq 'SCALAR') {
             my $val = $$$valPt; # make a copy to avoid filtering twice
-            $self->Filter(\$val);
+            Filter($filter, \$val);
             $$valPt = \$val;
         } elsif (ref $$valPt eq 'ARRAY') {
             my @val = @{$$valPt}; # make a copy to avoid filtering twice
-            $self->Filter(\$_) foreach @val;
+            Filter($filter, \$_) foreach @val;
             $$valPt = \@val;
         } elsif (ref $$valPt eq 'HASH') {
             my %val = %{$$valPt}; # make a copy to avoid filtering twice
-            $self->Filter(\$val{$_}) foreach keys %val;
+            Filter($filter, \$val{$_}) foreach keys %val;
             $$valPt = \%val;
         }
     }
@@ -5990,7 +6030,7 @@ sub ProcessJPEG($$)
                                 if ($$options{Binary}) {
                                     $val = \$buff if $raf->Seek($pos,0) and $raf->Read($buff,$len)==$len;
                                 } else {
-                                    $val = "(Binary data $len bytes)";
+                                    $val = \ "Binary data $len bytes";
                                 }
                                 if ($val) {
                                     $self->FoundTag('EmbeddedVideo', $val);

@@ -22,7 +22,7 @@ use vars qw($VERSION %samsungLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.45';
+$VERSION = '1.46';
 
 sub WriteSTMN($$$);
 sub ProcessINFO($$$);
@@ -974,6 +974,7 @@ my %formatMinMax = (
     '0x0a30' => { Name => 'EmbeddedVideoFile', Groups => { 2 => 'Video' }, Binary => 1 }, #forum7161
    # 0x0aa1-name - seen 'MCC_Data'
    # 0x0aa1 - seen '234','222'
+   # 0x0ab0-name - seen 'DualShot_Meta_Info'
     '0x0ab1-name' => 'DepthMapName', # seen 'DualShot_DepthMap_1' (SM-N950U)
     '0x0ab1' => { Name => 'DepthMapData', Binary => 1 },
    # 0x0ab3-name - seen 'DualShot_Extra_Info' (SM-N950U)
@@ -993,8 +994,28 @@ my %formatMinMax = (
     GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
     FIRST_ENTRY => 0,
     FORMAT => 'int32u',
-    9 => 'DepthMapWidth',
-    10 => 'DepthMapHeight',
+    0 => {
+        Name => 'DualShotInfoVersion', # (NC)
+        Format => 'int16u',
+        RawConv => '$$self{DualShotInfoVersion} = $val; undef',
+        Hidden => 1,
+    },
+    9 => {
+        Name => 'DepthMapWidth',
+        Condition => '$$self{DualShotInfoVersion} < 4', # (tested only with versions: 1,4)
+    },
+    10 => {
+        Name => 'DepthMapHeight',
+        Condition => '$$self{DualShotInfoVersion} < 4', # (tested only with versions: 1,4)
+    },
+    16 => {
+        Name => 'DepthMapWidth',
+        Condition => '$$self{DualShotInfoVersion} >= 4', # (tested only with versions: 1,4)
+    },
+    17 => {
+        Name => 'DepthMapHeight',
+        Condition => '$$self{DualShotInfoVersion} >= 4', # (tested only with versions: 1,4)
+    },
 );
 
 # Samsung composite tags

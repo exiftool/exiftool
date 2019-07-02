@@ -491,22 +491,18 @@ distribution for examples.</p>
     metadata (eg. AVI and WAV files).  The default value of 0 assumes 'Latin' encoding unless otherwise
     specified by the RIFF CSET chunk.  Set to undef to pass through strings without recoding.</td>
     <td align=center><i>(see <a href="#Charset">Charset</a> option)</i><br>or 0 or undef</td><td align=center>0</td></tr>
-<tr id="Compact"><td>Compact</td><td>Option to write compact XMP output.  The XMP specification
-    recommends that the XMP packet be padded with 2 kB of blanks to allow in-place editing.
-    With this option set to 1, the padding is not written.  Note that this effects only
-    embedded XMP since padding is never written for stand-alone XMP files.  When set to 2,
-    spaces to indent XMP for readability are also dropped.  A setting of 3 places all tags in a
-    single rdf:Description element, and 4 removes newlines from between XMP elements.  A
-    setting of 5 also writes XMP in shorthand format (to save setting the
-    <a href="#XMPShorthand">XMPShorthand</a> option separately).</td>
-    <td align=center><table class=clear>
-    <tr><td valign=top align=right><b>0</b>&nbsp;=</td><td>normal XMP formatting</td></tr>
-    <tr><td valign=top align=right><b>1</b>&nbsp;=</td><td>no padding...</td></tr>
-    <tr><td valign=top align=right><b>2</b>&nbsp;=</td><td>and no indentation...</td></tr>
-    <tr><td valign=top align=right><b>3</b>&nbsp;=</td><td>and one rdf:Description...</td></tr>
-    <tr><td valign=top align=right><b>4</b>&nbsp;=</td><td>and no newlines...</td></tr>
-    <tr><td valign=top align=right><b>5</b>&nbsp;=</td><td>and <a href="#XMPShorthand">XMPShorthand</a></td></tr>
-    </table></td><td align=center>0</td></tr>
+<tr id="Compact"><td>Compact</td><td>Comma-delimited list of settings for writing compact XMP.
+    Note that 'NoPadding' effects only embedded XMP since padding is never written for
+    stand-alone XMP files.  Case is not significant.</td><td align=center><table class=clear>
+    <tr><td valign=top align=right><b>NoPadding</b>&nbsp;=</td><td>Avoid 2 kB of recommended padding at end of XMP</td></tr>
+    <tr><td valign=top align=right><b>NoIndent</b>&nbsp;=</td><td>Avoid spaces to indent lines for readability</td></tr>
+    <tr><td valign=top align=right><b>NoNewline</b>&nbsp;=</td><td>Avoid unnecessary newlines</td></tr>
+    <tr><td valign=top align=right><b>Shorthand</b>&nbsp;=</td><td>Use XMP Shorthand format</td></tr>
+    <tr><td valign=top align=right><b>OneDesc</b>&nbsp;=</td><td>Combine XMP properties into a single rdf:Description</td></tr>
+    <tr><td valign=top align=right><b>AllSpace</b>&nbsp;=</td><td>'NoPadding,NoIndent,NoNewline'</td></tr>
+    <tr><td valign=top align=right><b>AllFormat</b>&nbsp;=</td><td>'Shorthand,OneDesc'</td></tr>
+    <tr><td valign=top align=right><b>All</b>&nbsp;=</td><td>'AllSpace,AllFormat'</td></tr>
+    </table></td><td align=center>undef</td></tr>
 <tr id="Composite"><td>Composite</td><td>Flag to generate Composite tags when extracting information.</td>
     <td align=center>0 or 1</td><td align=center>1</td></tr>
 <tr id="Compress"><td>Compress</td><td>Flag to write new values in compressed format if possible.
@@ -558,10 +554,10 @@ distribution for examples.</p>
     and read all extended XMP.  It may also be set to a GUID to read a specific
     extended XMP, or 0 to ignore extended XMP entirely.</td>
     <td align=center><table class=clear>
-    <tr><td valign=top align=right><b>0</b>&nbsp;=</td><td>ignore extended XMP</td></tr>
-    <tr><td valign=top align=right><b>1</b>&nbsp;=</td><td>valid GUID only</td></tr>
-    <tr><td valign=top align=right><b>2</b>&nbsp;=</td><td>any GUID</td></tr>
-    <tr><td valign=top align=right><i>guid</i>&nbsp;=</td><td>specific GUID</td></tr>
+    <tr><td valign=top align=right><b>0</b>&nbsp;=</td><td>Ignore extended XMP</td></tr>
+    <tr><td valign=top align=right><b>1</b>&nbsp;=</td><td>Valid GUID only</td></tr>
+    <tr><td valign=top align=right><b>2</b>&nbsp;=</td><td>Any GUID</td></tr>
+    <tr><td valign=top align=right><i>guid</i>&nbsp;=</td><td>Specific GUID</td></tr>
     </table></td><td align=center>1</td></tr>
 <tr id="ExtractEmbedded"><td>ExtractEmbedded</td>
     <td>Flag to extract information from embedded
@@ -588,6 +584,12 @@ distribution for examples.</p>
 <tr id="Filter"><td>Filter</td>
     <td>Perl expression used to filter all returned tag values.  Applies to
     PrintConv values only.  List items are filtered individually.</td>
+    <td>Expression to act on the value of the Perl default variable ($_),
+    changing the value of this variable as required.  The value is not changed
+    if $_ is set to undef.</td>
+    <td align=center>undef</td></tr>
+<tr id="FilterW"><td>FilterW</td>
+    <td>Perl expression used to filter PrintConv values when writing.</td>
     <td>Expression to act on the value of the Perl default variable ($_),
     changing the value of this variable as required.  The value is not changed
     if $_ is set to undef.</td>
@@ -893,10 +895,6 @@ distribution for examples.</p>
     for unknown XMP tags with values that look like rational numbers or dates.</td>
     <td align=center>0 or 1</td>
     <td align=center>1</td></tr>
-<tr id="XMPShorthand"><td>XMPShorthand</td><td>Flag set to write XMP in shorthand format.
-    When set to 2, properties are alse combined into a single rdf:Description element.</td>
-    <td align=center>0, 1 or 2</td>
-    <td align=center>0</td></tr>
 </table></blockquote>
 
 <blockquote><table><tr><td valign=top><sup>&dagger;</sup></td><td>The level of
@@ -1099,7 +1097,7 @@ and Warning tags.</p>
 <blockquote>
 ByteOrder, Charset, CharsetEXIF, CharsetFileName, CharsetIPTC, Compact,
 Compress, FixBase, IgnoreMinorErrors, Password, PNGEarlyXMP, QuickTimeHandler,
-Verbose, WriteMode and XMPShorthand.
+Verbose and WriteMode.
 </blockquote>
 
 <hr><h2><a name="GetTagList">GetTagList</a></h2>

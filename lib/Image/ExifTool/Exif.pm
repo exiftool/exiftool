@@ -55,7 +55,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.17';
+$VERSION = '4.18';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -2704,7 +2704,8 @@ my %sampleFormat = (
         Name => 'CompositeImage',
         Writable => 'int16u',
         PrintConv => {
-            1 => 'No',
+            0 => 'Unknown',
+            1 => 'Not a Composite Image',
             2 => 'General Composite Image',
             3 => 'Composite Image Captured While Shooting',
         },
@@ -2712,7 +2713,7 @@ my %sampleFormat = (
     0xa461 => { #Exif2.32
         Name => 'CompositeImageCount',
         Notes => q{
-            2 values: number of source images and the number of images used.  Called
+            2 values: 1. Number of source images, 2. Number of images used.  Called
             SourceImageNumberOfCompositeImage by the EXIF spec.
         },
         Writable => 'int16u',
@@ -2721,8 +2722,8 @@ my %sampleFormat = (
     0xa462 => { #Exif2.32
         Name => 'CompositeImageExposureTimes',
         Notes => q{
-            9 or more values: 1. total exposure time period, 2. total exposure of all
-            source images, 3. total exposure of all used images, 4. Max exposure time of
+            11 or more values: 1. Total exposure time period, 2. Total exposure of all
+            source images, 3. Total exposure of all used images, 4. Max exposure time of
             source images, 5. Max exposure time of used images, 6. Min exposure time of
             source images, 7. Min exposure of used images, 8. Number of sequences, 9.
             Number of source images in sequence. 10-N. Exposure times of each source
@@ -5151,7 +5152,7 @@ sub MatchLensModel($$)
         # filter by aperture
         if (@$try > 1 and $lensModel =~ m{(?:F/?|1:)(\d+(\.\d+)?)}i) {
             my $fnum = $1;
-            @filt = grep m{(F/?|1:)$fnum\b}i, @$try;
+            @filt = grep m{(F/?|1:)$fnum(\b|[A-Z])}i, @$try;
             @$try = @filt if @filt and @filt < @$try;
         }
         # filter by model version, and other lens parameters

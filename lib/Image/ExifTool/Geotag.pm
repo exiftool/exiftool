@@ -11,6 +11,7 @@
 #               2012/05/08 - PH Read Winplus Beacon .TXT files
 #               2015/05/30 - PH Read Bramor gEO log files
 #               2016/07/13 - PH Added ability to geotag date/time only
+#               2019/07/02 - PH Added ability to read IMU CSV files
 #
 # References:   1) http://www.topografix.com/GPX/1/1/
 #               2) http://www.gpsinformation.org/dale/nmea.htm#GSA
@@ -24,7 +25,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:Public);
 
-$VERSION = '1.58';
+$VERSION = '1.59';
 
 sub JITTER() { return 2 }       # maximum time jitter
 
@@ -129,7 +130,7 @@ sub LoadTrackLog($$;$)
     local ($_, $/, *EXIFTOOL_TRKFILE);
     my ($et, $val) = @_;
     my ($raf, $from, $time, $isDate, $noDate, $noDateChanged, $lastDate, $dateFlarm);
-    my ($nmeaStart, $fixSecs, @fixTimes, $lastFix, %nmea);
+    my ($nmeaStart, $fixSecs, @fixTimes, $lastFix, %nmea, @csvHeadings);
     my ($canCut, $cutPDOP, $cutHDOP, $cutSats, $e0, $e1, @tmp);
 
     unless (eval { require Time::Local }) {
@@ -227,6 +228,10 @@ sub LoadTrackLog($$;$)
                 $format = 'Winplus';
             } elsif (/^\s*\d+\s+.*\sypr\s*$/ and (@tmp=split) == 12) {
                 $format = 'Bramor';
+            } elsif (/\bDate\b/i and /\bTime\b/ and ',') {
+                @csvHeadings = split ',';
+                $format = 'CSV';
+                next;
             } else {
                 # search only first 50 lines of file for a valid fix
                 last if ++$skipped > 50;
@@ -382,6 +387,45 @@ DoneFix:    $isDate = 1;
             # set necessary flags for extra available information
             @$has{qw(alt track orient)} = (1,1,1);
             goto DoneFix;   # save this fix
+#
+# CSV format output of GPS/IMU POS system
+#
+        } elsif ($format eq 'CSV') {
+            my @vals = split ',';
+            my ($label, $date, $secs);
+            foreach $label (@csvHeadings) {
+                my $val = shift @vals;
+                last unless defined $val;
+                if ($label =~ /^Date/i) {
+                    if ($val =~ m{^(\d{2})/(\d{2})/(\d{4})$}) {
+                        $date = Time::Local::timegm(0,0,0,$1,$2-1,$3-1900);
+                    }
+                } elsif ($label =~ /^Time/i) {
+                    if ($val =~ /^(\d{1,2}):(\d{2}):(\d{2}(\.\d+)?)/) {
+                        $secs = (($1 * 60) + $2) * 60 + $3;
+                    }
+                } elsif ($label =~ /^(Pos)?Lat/) {
+                    $$fix{lat} = $val;
+                } elsif ($label =~ /^(Pos)?Lon/) {
+                    $$fix{lon} = $val;
+                } elsif ($label =~ /^(Pos)?Alt/) {
+                    $$fix{alt} = $val;
+                } elsif ($label =~ /^(Angle)?Heading/) {
+                    $$fix{track} = $val;
+                } elsif ($label =~ /^(Angle)?Pitch/) {
+                    $$fix{pitch} = $val;
+                } elsif ($label =~ /^(Angle)?Roll/) {
+                    $$fix{roll} = $val;
+                }
+            }
+            if ($date and defined $secs and defined $$fix{lat} and defined $$fix{lon}) {
+                $time = $date + $secs;
+                $$has{alt} = 1 if defined $$fix{alt};
+                $$has{track} = 1 if defined $$fix{track};
+                $$has{orient} = 1 if defined $$fix{pitch};
+                goto DoneFix;
+            }
+            next;
         }
         my (%fix, $secs, $date, $nmea);
         if ($format eq 'NMEA') {
@@ -1283,7 +1327,8 @@ This module is used by Image::ExifTool
 This module loads GPS track logs, interpolates to determine position based
 on time, and sets new GPS values for geotagging images.  Currently supported
 formats are GPX, NMEA RMC/GGA/GLL, KML, IGC, Garmin XML and TCX, Magellan
-PMGNTRK, Honeywell PTNTHPR, Winplus Beacon text, and Bramor gEO log files.
+PMGNTRK, Honeywell PTNTHPR, Winplus Beacon text, IMU CSV, and Bramor gEO log
+files.
 
 Methods in this module should not be called directly.  Instead, the Geotag
 feature is accessed by writing the values of the ExifTool Geotag, Geosync

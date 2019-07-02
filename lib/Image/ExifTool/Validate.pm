@@ -17,44 +17,64 @@ package Image::ExifTool::Validate;
 use strict;
 use vars qw($VERSION %exifSpec);
 
-$VERSION = '1.14';
+$VERSION = '1.15';
 
 use Image::ExifTool qw(:Utils);
 use Image::ExifTool::Exif;
 
 # EXIF table tag ID's which are part of the EXIF 2.32 specification
+# (with ExifVersion numbers for tags where I can determine the version)
 # (also used by BuildTagLookup to add underlines in HTML version of EXIF Tag Table)
 %exifSpec = (
-    0x1 => 1,
-    0x100 => 1,  0x8298 => 1,  0x9207 => 1,  0xa217 => 1,
-    0x101 => 1,  0x829a => 1,  0x9208 => 1,  0xa300 => 1,
-    0x102 => 1,  0x829d => 1,  0x9209 => 1,  0xa301 => 1,
-    0x103 => 1,  0x8769 => 1,  0x920a => 1,  0xa302 => 1,
-    0x106 => 1,  0x8822 => 1,  0x9214 => 1,  0xa401 => 1,
-    0x10e => 1,  0x8824 => 1,  0x927c => 1,  0xa402 => 1,
-    0x10f => 1,  0x8825 => 1,  0x9286 => 1,  0xa403 => 1,
-    0x110 => 1,  0x8827 => 1,  0x9290 => 1,  0xa404 => 1,
-    0x111 => 1,  0x8828 => 1,  0x9291 => 1,  0xa405 => 1,
-    0x112 => 1,  0x8830 => 1,  0x9292 => 1,  0xa406 => 1,
-    0x115 => 1,  0x8831 => 1,  0x9400 => 1,  0xa407 => 1,
-    0x116 => 1,  0x8832 => 1,  0x9401 => 1,  0xa408 => 1,
-    0x117 => 1,  0x8833 => 1,  0x9402 => 1,  0xa409 => 1,
-    0x11a => 1,  0x8834 => 1,  0x9403 => 1,  0xa40a => 1,
-    0x11b => 1,  0x8835 => 1,  0x9404 => 1,  0xa40b => 1,
-    0x11c => 1,  0x9000 => 1,  0x9405 => 1,  0xa40c => 1,
-    0x128 => 1,  0x9003 => 1,  0xa000 => 1,  0xa460 => 1,
-    0x12d => 1,  0x9004 => 1,  0xa001 => 1,  0xa461 => 1,
-    0x131 => 1,  0x9010 => 1,  0xa002 => 1,  0xa462 => 1,
-    0x132 => 1,  0x9011 => 1,  0xa003 => 1,  0xa420 => 1,
-    0x13b => 1,  0x9012 => 1,  0xa004 => 1,  0xa430 => 1,
-    0x13e => 1,  0x9101 => 1,  0xa005 => 1,  0xa431 => 1,
-    0x13f => 1,  0x9102 => 1,  0xa20b => 1,  0xa432 => 1,
-    0x201 => 1,  0x9201 => 1,  0xa20c => 1,  0xa433 => 1,
-    0x202 => 1,  0x9202 => 1,  0xa20e => 1,  0xa434 => 1,
-    0x211 => 1,  0x9203 => 1,  0xa20f => 1,  0xa435 => 1,
-    0x212 => 1,  0x9204 => 1,  0xa210 => 1,
-    0x213 => 1,  0x9205 => 1,  0xa214 => 1,
-    0x214 => 1,  0x9206 => 1,  0xa215 => 1,
+    0x1 => 210,
+    0x100 => 1,  0x8298 => 1,   0x9207 => 1,   0xa217 => 1,
+    0x101 => 1,  0x829a => 1,   0x9208 => 1,   0xa300 => 1,
+    0x102 => 1,  0x829d => 1,   0x9209 => 1,   0xa301 => 1,
+    0x103 => 1,  0x8769 => 1,   0x920a => 1,   0xa302 => 1,
+    0x106 => 1,  0x8822 => 1,   0x9214 => 220, 0xa401 => 220,
+    0x10e => 1,  0x8824 => 1,   0x927c => 1,   0xa402 => 220,
+    0x10f => 1,  0x8825 => 200, 0x9286 => 1,   0xa403 => 220,
+    0x110 => 1,  0x8827 => 1,   0x9290 => 1,   0xa404 => 220,
+    0x111 => 1,  0x8828 => 1,   0x9291 => 1,   0xa405 => 220,
+    0x112 => 1,  0x8830 => 230, 0x9292 => 1,   0xa406 => 220,
+    0x115 => 1,  0x8831 => 230, 0x9400 => 231, 0xa407 => 220,
+    0x116 => 1,  0x8832 => 230, 0x9401 => 231, 0xa408 => 220,
+    0x117 => 1,  0x8833 => 230, 0x9402 => 231, 0xa409 => 220,
+    0x11a => 1,  0x8834 => 230, 0x9403 => 231, 0xa40a => 220,
+    0x11b => 1,  0x8835 => 230, 0x9404 => 231, 0xa40b => 220,
+    0x11c => 1,  0x9000 => 1,   0x9405 => 231, 0xa40c => 220,
+    0x128 => 1,  0x9003 => 1,   0xa000 => 1,   0xa460 => 232,
+    0x12d => 1,  0x9004 => 1,   0xa001 => 1,   0xa461 => 232,
+    0x131 => 1,  0x9010 => 231, 0xa002 => 1,   0xa462 => 232,
+    0x132 => 1,  0x9011 => 231, 0xa003 => 1,   0xa420 => 220,
+    0x13b => 1,  0x9012 => 231, 0xa004 => 1,   0xa430 => 230,
+    0x13e => 1,  0x9101 => 1,   0xa005 => 210, 0xa431 => 230,
+    0x13f => 1,  0x9102 => 1,   0xa20b => 1,   0xa432 => 230,
+    0x201 => 1,  0x9201 => 1,   0xa20c => 1,   0xa433 => 230,
+    0x202 => 1,  0x9202 => 1,   0xa20e => 1,   0xa434 => 230,
+    0x211 => 1,  0x9203 => 1,   0xa20f => 1,   0xa435 => 230,
+    0x212 => 1,  0x9204 => 1,   0xa210 => 1,   0xa500 => 221,
+    0x213 => 1,  0x9205 => 1,   0xa214 => 1,
+    0x214 => 1,  0x9206 => 1,   0xa215 => 1,
+);
+
+# GPSVersionID numbers when each tag was introduced
+my %gpsVer = (
+    0x01 => 2000,  0x09 => 2000,  0x11 => 2000,  0x19 => 2000,
+    0x02 => 2000,  0x0a => 2000,  0x12 => 2000,  0x1a => 2000,
+    0x03 => 2000,  0x0b => 2000,  0x13 => 2000,  0x1b => 2200,
+    0x04 => 2000,  0x0c => 2000,  0x14 => 2000,  0x1c => 2200,
+    0x05 => 2000,  0x0d => 2000,  0x15 => 2000,  0x1d => 2200,
+    0x06 => 2000,  0x0e => 2000,  0x16 => 2000,  0x1e => 2200,
+    0x07 => 2000,  0x0f => 2000,  0x17 => 2000,  0x1f => 2300,
+    0x08 => 2000,  0x10 => 2000,  0x18 => 2000,
+);
+
+# lookup to check version numbers
+my %verCheck = (
+    ExifIFD    => { ExifVersion => \%exifSpec },
+    InteropIFD => { ExifVersion => \%exifSpec },
+    GPS        => { GPSVersionID => \%gpsVer },
 );
 
 # tags standard in various RAW file formats
@@ -177,13 +197,18 @@ my %validValue = (
             0x212 => undef,     # YCbCrSubSampling
         },
         ExifIFD => {
-            0x9000 => 'defined $val',       # ExifVersion
+            0x9000 => 'defined $val and $val =~ /^\d{4}$/', # ExifVersion
             0x9101 => 'defined $val',       # ComponentsConfiguration
             0xa000 => 'defined $val',       # FlashpixVersion
             0xa001 => '$val == 1 or $val == 0xffff',    # ColorSpace
             0xa002 => 'defined $val',       # PixelXDimension
             0xa003 => 'defined $val',       # PixelYDimension
         },
+        GPS => {
+            0x00 => 'defined $val and $val =~ /^\d \d \d \d$/', # GPSVersionID
+            0x1b => '$val =~ /^(GPS|CELLID|WLAN|MANUAL)$/', # GPSProcessingMethod
+        },
+        InteropIFD => { },      # (needed for ExifVersion check)
     },
     TIFF => {
         IFD0 => {
@@ -233,6 +258,10 @@ my %validValue = (
         },
         InteropIFD => {
             0x0001 => undef,                # InteropIndex
+        },
+        GPS => {
+            0x00 => 'defined $val and $val =~ /^\d \d \d \d$/', # GPSVersionID
+            0x1b => '$val =~ /^(GPS|CELLID|WLAN|MANUAL)$/', # GPSProcessingMethod
         },
     },
 );
@@ -506,6 +535,7 @@ sub ValidateOffsetInfo($$$;$)
 # Inputs: 0) ExifTool ref, 1) True to generate Validate tag
 sub FinishValidate($$)
 {
+    local $_;
     my ($et, $mkTag) = @_;
 
     my $fileType = $$et{FILE_TYPE} || '';
@@ -516,8 +546,14 @@ sub FinishValidate($$)
         local $SIG{'__WARN__'} = \&Image::ExifTool::SetWarning;
         foreach $grp (sort keys %{$validValue{$fileType}}) {
             next unless $$et{FOUND_DIR}{$grp};
+            my ($key, %val, %info, $minor, $verTag, $ver, $vstr);
+            my $verCheck = $verCheck{$grp};
+            if ($verCheck) {
+                ($verTag) = keys %$verCheck;
+                ($ver = $$et{VALUE}{$verTag}) =~ tr/0-9//dc; # (remove non-digits)
+                undef $ver unless $ver =~ /^\d{4}$/; # (already warned if invalid version)
+            }
             # get all tags in this group
-            my ($key, %val, %info, $minor);
             foreach $key (keys %{$$et{VALUE}}) {
                 next unless $et->GetGroup($key, 1) eq $grp;
                 next if $$et{TAG_EXTRA}{$key} and $$et{TAG_EXTRA}{$key}{G3}; # ignore sub-documents
@@ -526,6 +562,16 @@ sub FinishValidate($$)
                 $val{$tag} = $$et{VALUE}{$key};
                 # save TagInfo ref for later
                 $info{$tag} = $$et{TAG_INFO}{$key};
+                next unless defined $ver;
+                my $chk = $$verCheck{$verTag};
+                next if not defined $$chk{$tag} or $$chk{$tag} == 1 or $ver >= $$chk{$tag};
+                if ($verTag eq 'GPSVersionID') {
+                    ($vstr = $$chk{$tag}) =~ s/^(\d)(\d)(\d)/$1.$2.$3./;
+                } else {
+                    $vstr = sprintf('%.4d', $$chk{$tag});
+                }
+                $et->Warn(sprintf('%s tag 0x%.4x %s requires %s %s or higher',
+                          $grp, $tag, $$et{TAG_INFO}{$key}{Name}, $verTag, $vstr));
             }
             # make quick lookup for values based on tag ID
             my $validValue = $validValue{$fileType}{$grp};

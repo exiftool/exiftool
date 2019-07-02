@@ -41,7 +41,10 @@ sub ExtractTags($$$;$$@);
         PrintConv => '$self->ConvertDateTime($val)',
     },
     'encoding'      => { },
-    'info'          => { SubDirectory => { TagTable => 'Image::ExifTool::Torrent::Info' } },
+    'info'          => {
+        SubDirectory => { TagTable => 'Image::ExifTool::Torrent::Info' },
+        Notes => 'extracted as a structure with the Struct option',
+    },
     'url-list'      => { Name => 'URLList1' },
 );
 

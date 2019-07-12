@@ -1,4 +1,4 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.93
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.55
 [File, System, Image] Directory - Directory: t
 [File, System, Image] FileSize - File Size: 3.8 kB
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
@@ -21,11 +21,11 @@
 [IPTC, IPTC, Other] 25 - Keywords: A
 [IPTC, IPTC, Location] 90 - City: A
 [IPTC, IPTC, Other] 0 - Application Record Version: 4
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 9.93
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.55
 [XMP, XMP-iptcExt, Location] LocationCreatedCity - Location Created City: A
 [XMP, XMP-dc, Image] subject - Subject: A
 [XMP, XMP-dc, Image] title - Title: A
 [XMP, XMP-exif, Camera] FlashFired - Flash Fired: True
-[Composite, Composite, Other] Flash - Flash: Fired
-[Composite, Composite, Image] ImageSize - Image Size: 8x8
-[Composite, Composite, Image] Megapixels - Megapixels: 0.000064
+[Composite, Composite, Other] XMP::Flash - Flash: Fired
+[Composite, Composite, Image] Exif::ImageSize - Image Size: 8x8
+[Composite, Composite, Image] Exif::Megapixels - Megapixels: 0.000064

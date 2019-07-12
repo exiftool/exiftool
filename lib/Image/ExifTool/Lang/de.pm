@@ -8707,7 +8707,8 @@ under the same terms as Perl itself.
 
 =head1 ACKNOWLEDGEMENTS
 
-Thanks to Jens Duttke and Herbert Kauer for providing this translation.
+Thanks to Jens Duttke, Herbert Kauer and Jobi for providing this
+translation.
 
 =head1 SEE ALSO
 

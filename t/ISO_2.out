@@ -1,4 +1,4 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.15
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.55
 [File, File, Image] FileType - File Type: ISO
 [File, File, Image] FileTypeExtension - File Type Extension: iso
 [File, File, Image] MIMEType - MIME Type: application/x-iso9660-image
@@ -16,4 +16,4 @@
 [ISO, ISO, Time] 813 - Volume Create Date: 2016:01:08 10:00:26.00+00:00
 [ISO, ISO, Time] 830 - Volume Modify Date: 2016:01:08 10:00:26.00+00:00
 [ISO, ISO, Other] 7 - Boot System: EL TORITO SPECIFICATION
-[Composite, Composite, Other] VolumeSize - Volume Size: 373 MB
+[Composite, Composite, Other] ISO::VolumeSize - Volume Size: 373 MB

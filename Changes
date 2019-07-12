@@ -7,6 +7,21 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 11.50. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+July 12, 2019 - Version 11.55
+
+  - Added write support for XMP-crs:Texture and XMP-drs tags
+  - Added a number of new Panasonic NoiseReduction values
+  - Added definition for a new Kodak tag (thanks LibRaw)
+  - Added a couple of new Panasonic AFAreaMode values (thanks Daniel Beichl)
+  - Added a couple of new Sony/Minolta LensTypes (thanks Jos Roost and LibRaw)
+  - Added a new CanonModelID
+  - Decode HEVCConfiguration record from HEIC images
+  - Decode a new Panasonic tag
+  - Decode a new QuickTime tag
+  - Changed internal handling of Composite tag ID's to include module name
+  - Removed "FE" designation from Samyang E-mount lenses
+  - Dropped Validate warning about missing GPSProcessingMethod tag
+
 July 2, 2019 - Version 11.54
 
   - Added new Canon and Sony/Minolta LensType values (thanks LibRaw)

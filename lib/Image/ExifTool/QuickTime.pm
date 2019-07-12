@@ -42,7 +42,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.32';
+$VERSION = '2.33';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -382,6 +382,7 @@ my %channelLabel = (
 # properties which don't get inherited from the parent
 my %dontInherit = (
     ispe => 1,  # size of parent may be different
+    hvcC => 1,  # (likely redundant)
 );
 
 # tags that may be duplicated and directories that may contain duplicate tags
@@ -1855,6 +1856,7 @@ my %eeBox = (
     # free (all zero)
     "\xa9TSC" => 'StartTimeScale', # (Hero6)
     "\xa9TSZ" => 'StartTimeSampleSize', # (Hero6)
+    "\xa9TIM" => 'StartTimecode', #PH (NC)
     # --- HTC ----
     htcb => {
         Name => 'HTCBinary',
@@ -2049,6 +2051,8 @@ my %eeBox = (
     # kgrf - 8 bytes all zero ? (in udta inside trak atom)
     # kgcg - 128 bytes 0's and 1's
     # kgsi - 4 bytes "00 00 00 80"
+    # FIEL - 18 bytes "FIEL\0\x01\0\0\0..."
+    
 #
 # other 3rd-party tags
 # (ref http://code.google.com/p/mp4parser/source/browse/trunk/isoparser/src/main/resources/isoparser-default.properties?r=814)
@@ -2519,8 +2523,122 @@ my %eeBox = (
     },
     hvcC => {
         Name => 'HEVCConfiguration',
-        Flags => ['Binary','Unknown'],
+        SubDirectory => { TagTable => 'Image::ExifTool::QuickTime::HEVCConfig' },
     },
+);
+
+# HEVC configuration (ref https://github.com/MPEGGroup/isobmff/blob/master/IsoLib/libisomediafile/src/HEVCConfigAtom.c)
+%Image::ExifTool::QuickTime::HEVCConfig = (
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
+    GROUPS => { 2 => 'Video' },
+    FIRST_ENTRY => 0,
+    0 => 'HEVCConfigurationVersion',
+    1 => {
+        Name => 'GeneralProfileSpace',
+        Mask => 0xc0,
+        BitShift => 6,
+        PrintConv => { 0 => 'Conforming' },
+    },
+    1.1 => {
+        Name => 'GeneralTierFlag',
+        Mask => 0x20,
+        BitShift => 5,
+        PrintConv => {
+            0 => 'Main Tier',
+            1 => 'High Tier',
+        },
+    },
+    1.2 => {
+        Name => 'GeneralProfileIDC',
+        Mask => 0x1f,
+        PrintConv => {
+            0 => 'No Profile',
+            1 => 'Main Profile',
+            2 => 'Main 10 Profile',
+            3 => 'Main Still Picture Profile',
+        },
+    },
+    2 => {
+        Name => 'GenProfileCompatibilityFlags',
+        Format => 'int32u',
+        PrintConv => { BITMASK => {
+            31 => 'No Profile',         # (bit 0 in stream)
+            30 => 'Main',               # (bit 1 in stream)
+            29 => 'Main 10',            # (bit 2 in stream)
+            28 => 'Main Still Picture', # (bit 3 in stream)
+        }},
+    },
+    6 => {
+        Name => 'ConstraintIndicatorFlags',
+        Format => 'int8u[6]',
+    },
+    12 => {
+        Name => 'GeneralLevelIDC',
+        PrintConv => 'sprintf("%d (level %.1f)", $val, $val/30)',
+    },
+    13 => {
+        Name => 'MinSpatialSegmentationIDC',
+        Format => 'int16u',
+        Mask => 0x0fff,
+    },
+    15 => {
+        Name => 'ParallelismType',
+        Mask => 0x03,
+    },
+    16 => {
+        Name => 'ChromaFormat',
+        Mask => 0x03,
+        PrintConv => {
+            0 => 'Monochrome',
+            1 => '4:2:0',
+            2 => '4:2:2',
+            3 => '4:4:4',
+        },
+    },
+    17 => {
+        Name => 'BitDepthLuma',
+        Mask => 0x07,
+        ValueConv => '$val + 8',
+    },
+    18 => {
+        Name => 'BitDepthChroma',
+        Mask => 0x07,
+        ValueConv => '$val + 8',
+    },
+    19 => {
+        Name => 'AverageFrameRate',
+        Format => 'int16u',
+        ValueConv => '$val / 256',
+    },
+    21 => {
+        Name => 'ConstantFrameRate',
+        Mask => 0xc0,
+        BitShift => 6,
+        PrintConv => {
+            0 => 'Unknown',
+            1 => 'Constant Frame Rate',
+            2 => 'Each Temporal Layer is Constant Frame Rate',
+        },
+    },
+    21.1 => {
+        Name => 'NumTemporalLayers',
+        Mask => 0x38,
+        BitShift => 3,
+    },
+    21.2 => {
+        Name => 'TemporalIDNested',
+        Mask => 0x04,
+        BitShift => 2,
+        PrintConv => { 0 => 'No', 1 => 'Yes' },
+    },
+    #21.3 => {
+    #    Name => 'NALUnitLengthSize',
+    #    Mask => 0x03,
+    #    ValueConv => '$val + 1',
+    #    PrintConv => { 1 => '8-bit', 2 => '16-bit', 4 => '32-bit' },
+    #},
+    #22 => 'NumberOfNALUnitArrays',
+    # (don't decode the NAL unit arrays)
 );
 
 %Image::ExifTool::QuickTime::ItemRef = (
@@ -6652,6 +6770,7 @@ my %eeBox = (
 #   data         -       -
 #
     ftab => { Name => 'FontTable',  Format => 'undef', ValueConv => 'substr($val, 5)' },
+    name => { Name => 'OtherName',  Format => 'undef', ValueConv => 'substr($val, 4)' },
 );
 
 # MP4 data information box (ref 5)

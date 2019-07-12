@@ -890,11 +890,12 @@ interested in seeing these unused data blocks -- use a command like
 rewritten, even if no meta information is changed.  This is partly due to the
 fact that the XMP specification recommends a few KB of padding at the end of the
 record (ExifTool adds 2424 bytes by default, but this padding is omitted if the
-<code>-z</code> option is used), and partly due to the flexibility of the XMP
-format which allows the information to be written in various styles, some of
-which are more compact than others (the <code>-z</code> option also causes a
-more compact form to be written).
-</blockquote>
+<code>-z</code> command-line option or the
+<a href="ExifTool.html#Compact">API Compact</a> NoPadding setting is used), and
+partly due to the flexibility of the XMP format which allows the information to
+be written in various styles, some of which are more compact than others (the
+<code>-z</code> option and the <a href="ExifTool.html#Compact">API Compact</a>
+settings also cause a more compact form to be written).</blockquote>
 
 <blockquote>You may also notice that the values of some "offset" tags (like
 ThumbnailOffset and PreviewImageStart) may change when the file is rewritten. 
@@ -941,12 +942,13 @@ Similar styles may be used for longitude.  ExifTool will convert any of these
 coordinate styles to the proper format for the specific tag used.
 </blockquote>
 
-<blockquote>When reading, ExifTool reports coordinates in the format
+<blockquote>When reading, by default ExifTool reports coordinates in the format
 <pre>DDD deg MM' SS.SS"</pre>
 where <code>DDD</code> is degrees, <code>MM</code> is minutes, and <code>SS.SS</code>
 is seconds.  The <code>-n</code> option may be used to change this to decimal
-degrees, or any arbitrary format may be specified with the <code>-c</code> option.
-See the <a href="exiftool_pod.html">application documentation</a> for details.
+degrees, or any arbitrary format may be specified with the <code>-c</code>
+command-line option (see the <a href="exiftool_pod.html">application documentation</a>),
+or the <a href="ExifTool.html#CoordFormat">API CoordFormat option</a>.
 </blockquote>
 
 <a name="Q15"></a>
@@ -1666,7 +1668,7 @@ technique for shifting a date/time value when copying:
 </blockquote>
 
 <hr>
-<i>Last revised June 25, 2019</i>
+<i>Last revised July 8, 2019</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

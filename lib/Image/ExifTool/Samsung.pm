@@ -938,7 +938,7 @@ my %formatMinMax = (
 # information extracted from Samsung trailer (ie. Samsung SM-T805 "Sound & Shot" JPEG) (ref PH)
 %Image::ExifTool::Samsung::Trailer = (
     GROUPS => { 0 => 'MakerNotes', 2 => 'Other' },
-    VARS => { NO_ID => 1 },
+    VARS => { NO_ID => 1, HEX_ID => 0 },
     NOTES => q{
         Tags extracted from the trailer of JPEG images written when using certain
         features (such as "Sound & Shot" or "Shot & More") from Samsung models such

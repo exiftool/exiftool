@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.38
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.55
 [File, System, Image] FileName - File Name: GPS_3_failed.jpg
 [File, System, Image] Directory - Directory: t
 [File, System, Image] FileSize - File Size: 2.1 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2016:12:30 10:42:28-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2016:12:30 10:42:28-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2016:12:30 10:42:28-05:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2019:07:03 12:16:47-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:07:03 12:16:47-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:07:03 12:16:47-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: JPEG
 [File, File, Image] FileTypeExtension - File Type Extension: jpg
@@ -68,7 +68,7 @@
 [EXIF, IFD1, Image] 296 - Resolution Unit: inches
 [EXIF, IFD1, Image] 513 - Thumbnail Offset: 1074
 [EXIF, IFD1, Image] 514 - Thumbnail Length: 28
-[EXIF, IFD1, Preview] ThumbnailImage - Thumbnail Image: (Binary data 28 bytes)
+[EXIF, IFD1, Preview] Exif::ThumbnailImage - Thumbnail Image: (Binary data 28 bytes)
 [IPTC, IPTC, Other] 0 - Application Record Version: 2
 [IPTC, IPTC, Other] 120 - Caption-Abstract: Communications
 [IPTC, IPTC, Author] 122 - Writer-Editor: Ian Britton
@@ -87,12 +87,12 @@
 [IPTC, IPTC, Other] 10 - Urgency: 5 (normal urgency)
 [IPTC, IPTC, Other] 25 - Keywords: Communications
 [IPTC, IPTC, Author] 116 - Copyright Notice: ian Britton - FreeFoto.com
-[Composite, Composite, Image] Aperture - Aperture: 0.64
-[Composite, Composite, Time] GPSDateTime - GPS Date/Time: 2007:03:03 00:16:10.55Z
-[Composite, Composite, Location] GPSLatitude - GPS Latitude: 12 deg 21' 23.34" S
-[Composite, Composite, Location] GPSLongitude - GPS Longitude: 1 deg 54' 51.00" W
-[Composite, Composite, Location] GPSPosition - GPS Position: 12 deg 21' 23.34" S, 1 deg 54' 51.00" W
-[Composite, Composite, Image] ImageSize - Image Size: 120x80
-[Composite, Composite, Image] Megapixels - Megapixels: 0.010
-[Composite, Composite, Image] ShutterSpeed - Shutter Speed: 1/724
-[Composite, Composite, Camera] FocalLength35efl - Focal Length: 0.0 mm
+[Composite, Composite, Image] Exif::Aperture - Aperture: 0.64
+[Composite, Composite, Image] Exif::ImageSize - Image Size: 120x80
+[Composite, Composite, Image] Exif::Megapixels - Megapixels: 0.010
+[Composite, Composite, Image] Exif::ShutterSpeed - Shutter Speed: 1/724
+[Composite, Composite, Time] GPS::GPSDateTime - GPS Date/Time: 2007:03:03 00:16:10.55Z
+[Composite, Composite, Location] GPS::GPSLatitude - GPS Latitude: 12 deg 21' 23.34" S
+[Composite, Composite, Location] GPS::GPSLongitude - GPS Longitude: 1 deg 54' 51.00" W
+[Composite, Composite, Camera] Exif::FocalLength35efl - Focal Length: 0.0 mm
+[Composite, Composite, Location] Exif::GPSPosition - GPS Position: 12 deg 21' 23.34" S, 1 deg 54' 51.00" W

@@ -23,6 +23,8 @@ use strict;
 use Image::ExifTool qw(:Utils);
 use Image::ExifTool::XMP;
 
+sub Init_crd($);
+
 #------------------------------------------------------------------------------
 
 # xmpDM structure definitions
@@ -73,6 +75,18 @@ my %sTimecode = (
     },
     timeValue   => { },
     value       => { Writable => 'integer', Notes => 'only in XMP 2008 spec; an error?' },
+);
+
+# camera-raw defaults
+%Image::ExifTool::XMP::crd = (
+    %xmpTableDefaults,
+    INIT_TABLE => \&Init_crd,
+    GROUPS => { 1 => 'XMP-crd', 2 => 'Image' },
+    NAMESPACE   => 'crd',
+    AVOID => 1,
+    TABLE_DESC => 'Photoshop Camera Defaults namespace',
+    NOTES => 'Adobe Camera Raw Defaults tags.',
+    # (tags added dynamically when WRITE_PROC is called)
 );
 
 # XMP Dynamic Media namespace properties (xmpDM)
@@ -1650,7 +1664,7 @@ my %sSubVersion = (
 %Image::ExifTool::XMP::GDepth = (
     GROUPS      => { 0 => 'XMP', 1 => 'XMP-GDepth', 2 => 'Image' },
     NAMESPACE   => 'GDepth',
-    AVOID       => 1, # (too potential tag name conflicts)
+    AVOID       => 1, # (too many potential tag name conflicts)
     NOTES       => q{
         Google depthmap information. See
         L<https://developers.google.com/depthmap-metadata/> for the specification.
@@ -1810,6 +1824,23 @@ my %sSubVersion = (
     LANG_INFO => \&GetLangInfo,
     NAMESPACE => undef, # variable namespace
 );
+
+#------------------------------------------------------------------------------
+# Generate crd tags
+# Inputs: 0) tag table ref
+sub Init_crd($)
+{
+    my $tagTablePtr = shift;
+    # import tags from CRS namespace
+    my $crsTable = GetTagTable('Image::ExifTool::XMP::crs');
+    my $tag;
+    foreach $tag (Image::ExifTool::TagTableKeys($crsTable)) {
+        my $crsInfo = $$crsTable{$tag};
+        my $tagInfo = $$tagTablePtr{$tag} = { %$crsInfo };
+        $$tagInfo{Groups} = { 0 => 'XMP', 1 => 'XMP-crd' , 2 => $$crsInfo{Groups}{2} } if $$crsInfo{Groups};
+    }
+}
+
 
 1;  #end
 

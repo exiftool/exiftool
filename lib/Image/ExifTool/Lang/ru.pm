@@ -1983,8 +1983,8 @@ under the same terms as Perl itself.
 
 =head1 ACKNOWLEDGEMENTS
 
-Thanks to Jens Duttke, Sergey Shemetov, Dmitry Yerokhin and Anton Sukhinov
-for providing this translation.
+Thanks to Jens Duttke, Sergey Shemetov, Dmitry Yerokhin, Anton Sukhinov and
+Alexander for providing this translation.
 
 =head1 SEE ALSO
 

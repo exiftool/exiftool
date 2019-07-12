@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.74
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.55
 [File, System, Image] FileName - File Name: Photoshop_3_failed.psd
 [File, System, Image] Directory - Directory: t
 [File, System, Image] FileSize - File Size: 16 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2018:01:08 13:16:05-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2018:01:08 13:16:05-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2018:01:08 13:16:05-05:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2019:07:03 12:16:57-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:07:03 12:16:57-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:07:03 12:16:57-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: PSD
 [File, File, Image] FileTypeExtension - File Type Extension: psd
@@ -51,7 +51,7 @@
 [IPTC, IPTC, Author] 85 - By-line Title: Supreme leader
 [IPTC, IPTC, Other] 5 - Object Name: Test Picture
 [IPTC, IPTC, Author] 116 - Copyright Notice: Free for all
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 10.74
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.55
 [XMP, XMP-rdf, Document] about - About: uuid:c197d41e-f8f7-11d9-b03e-c023c3939af5
 [XMP, XMP-dc, Author] creator - Creator: Phil Harvey
 [XMP, XMP-dc, Image] description - Description: This is a teeny weeny white square
@@ -113,5 +113,5 @@
 [PhotoMechanic, PhotoMechanic, Image] 218 - Crop Top: 618
 [PhotoMechanic, PhotoMechanic, Image] 219 - Crop Right: 890
 [PhotoMechanic, PhotoMechanic, Image] 220 - Crop Bottom: 1072
-[Composite, Composite, Image] ImageSize - Image Size: 8x8
-[Composite, Composite, Image] Megapixels - Megapixels: 0.000064
+[Composite, Composite, Image] Exif::ImageSize - Image Size: 8x8
+[Composite, Composite, Image] Exif::Megapixels - Megapixels: 0.000064

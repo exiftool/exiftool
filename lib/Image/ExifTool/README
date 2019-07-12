@@ -14,13 +14,14 @@ the binary data block (floating point IDs allow multiple tags for the same
 offset, with the integer part being used for the offset).  The corresponding
 hash value provides information about the tag (explained later).
 
-Twenty-seven special keys (TABLE_NAME, SHORT_NAME, PROCESS_PROC, WRITE_PROC,
-CHECK_PROC, GROUPS, FORMAT, FIRST_ENTRY, TAG_PREFIX, PRINT_CONV, WRITABLE,
-TABLE_DESC, NOTES, IS_OFFSET, IS_SUBDIR, EXTRACT_UNKNOWN, NAMESPACE, PREFERRED,
-PERMANENT, SRC_TABLE, PRIORITY, AVOID, WRITE_GROUP, LANG_INFO, VARS, DATAMEMBER
-and SET_GROUP1) are used to provide additional information about a table.  The
-special keys have names that are all capitalized to avoid possible conflicts
-with tag keys.  Below is an explanation of the meaning of each special key:
+Twenty-eight special keys (TABLE_NAME, SHORT_NAME, PROCESS_PROC, WRITE_PROC,
+CHECK_PROC, INIT_TABLE, GROUPS, FORMAT, FIRST_ENTRY, TAG_PREFIX, PRINT_CONV,
+WRITABLE, TABLE_DESC, NOTES, IS_OFFSET, IS_SUBDIR, EXTRACT_UNKNOWN, NAMESPACE,
+PREFERRED, PERMANENT, SRC_TABLE, PRIORITY, AVOID, WRITE_GROUP, LANG_INFO, VARS,
+DATAMEMBER and SET_GROUP1) are used to provide additional information about a
+table.  The special keys have names that are all capitalized to avoid possible
+conflicts with tag keys.  Below is an explanation of the meaning of each special
+key:
 
   TABLE_NAME : Name of this table (set automatically by GetTagTable()).
 
@@ -65,6 +66,9 @@ with tag keys.  Below is an explanation of the meaning of each special key:
   reference, 2) value reference, and returns undefined (and possibly modifies
   the input value) if successful, or an error message if there was a format
   problem.  May set ExifTool CHECK_WARN datamember for success with a warning.
+
+  INIT_TABLE : Routine called to do any necessary initialization before the
+  first time the table is loaded.  Argument is a reference to the table.
 
   GROUPS : A hash lookup for the default group names for all entries in this
   table.  If not specified, the default Group 0 and 1 names will be set
@@ -198,13 +202,16 @@ with tag keys.  Below is an explanation of the meaning of each special key:
 
     ID_LABEL      Label to use instead of "Tag ID" for column heading in tag
                   name documentation.  When this is set, numerical TagID's are
-                  not converted to hexadecimal notation. Unless otherwise set,
+                  not converted to hexadecimal notation.  Unless otherwise set,
                   an ID_LABEL of "Index" is assumed for tables which use
                   ProcessBinaryData.
 
     NO_ID         Avoid printing "Tag ID" column in tag name documentation.
 
-    HEX_ID        Print tag ID in hexadecimal (with 4 hex digits or more).
+    HEX_ID        Print tag ID in hexadecimal (with 4 hex digits or more).  Set
+                  to 0 for string ID's that look like hex numbers to prevent
+                  them from being converted when importing an XML file for
+                  language translations in BuildLangModules().
 
     NO_LOOKUP     Do not add tags to TagLookup.pm lookup tables.
 
@@ -249,7 +256,7 @@ describing this tag, or 3) a reference to a list of hashes which contain
 Condition expressions allowing the appropriate hash to be selected to suit the
 conditions.  The following is a description of possible hash entries.  All
 entries are optional, except for the tag Name which is required if the tag ID is
-numerical.
+numerical, and generated automatically otherwise.
 
   Name          : The tag name.  Tag names need not be unique.  If they aren't
                   unique, then duplicate tags will hide the values of previous
@@ -682,8 +689,8 @@ numerical.
 
   BitShift      : [Mask tags only] Bit shift for Mask-ed values.  If not
                   specified, set to the number of trailing bits in the Mask.
-                  When reading, the value is shifted by this number of bits
-                  after the Mask is applied.
+                  When reading, the value is shifted right by this number of
+                  bits after the Mask is applied.
 
   Condition     : If given, specifies scalar which is evaluated as a Perl
                   expression at extraction time to decide whether the tag is

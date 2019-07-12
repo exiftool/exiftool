@@ -17,7 +17,7 @@ package Image::ExifTool::Validate;
 use strict;
 use vars qw($VERSION %exifSpec);
 
-$VERSION = '1.15';
+$VERSION = '1.16';
 
 use Image::ExifTool qw(:Utils);
 use Image::ExifTool::Exif;
@@ -206,7 +206,7 @@ my %validValue = (
         },
         GPS => {
             0x00 => 'defined $val and $val =~ /^\d \d \d \d$/', # GPSVersionID
-            0x1b => '$val =~ /^(GPS|CELLID|WLAN|MANUAL)$/', # GPSProcessingMethod
+            0x1b => 'not defined $val or $val =~ /^(GPS|CELLID|WLAN|MANUAL)$/', # GPSProcessingMethod
         },
         InteropIFD => { },      # (needed for ExifVersion check)
     },

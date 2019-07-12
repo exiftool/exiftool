@@ -49,7 +49,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.23';
+$VERSION = '3.24';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -101,6 +101,7 @@ my %xmpNS = (
     aux       => 'http://ns.adobe.com/exif/1.0/aux/',
     album     => 'http://ns.adobe.com/album/1.0/',
     cc        => 'http://creativecommons.org/ns#', # changed 2007/12/21 - PH
+    crd       => 'http://ns.adobe.com/camera-raw-defaults/1.0/',
     crs       => 'http://ns.adobe.com/camera-raw-settings/1.0/',
     crss      => 'http://ns.adobe.com/camera-raw-saved-settings/1.0/',
     dc        => 'http://purl.org/dc/elements/1.1/',
@@ -560,6 +561,10 @@ my %sRetouchArea = (
     photoshop => {
         Name => 'photoshop',
         SubDirectory => { TagTable => 'Image::ExifTool::XMP::photoshop' },
+    },
+    crd => {
+        Name => 'crd',
+        SubDirectory => { TagTable => 'Image::ExifTool::XMP::crd' },
     },
     crs => {
         Name => 'crs',
@@ -1369,6 +1374,7 @@ my %sPantryItem = (
     Exposure2012                        => { Writable => 'real' },
     Contrast2012                        => { Writable => 'integer' },
     Highlights2012                      => { Writable => 'integer' },
+    Highlight2012                       => { Writable => 'integer' }, # (written by Nikon software)
     Shadows2012                         => { Writable => 'integer' },
     Whites2012                          => { Writable => 'integer' },
     Blacks2012                          => { Writable => 'integer' },
@@ -1464,6 +1470,7 @@ my %sPantryItem = (
     PerspectiveY                        => { Writable => 'real' },
     UprightFourSegmentsCount            => { Writable => 'integer' },
     AutoTone                            => { Writable => 'boolean' },
+    Texture                             => { Writable => 'integer' },
 );
 
 # Tiff namespace properties (tiff)

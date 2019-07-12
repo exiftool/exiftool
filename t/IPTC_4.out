@@ -1,4 +1,4 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.15
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.55
 [File, System, Image] FileSize - File Size: 13 kB
 [File, File, Image] FileType - File Type: JPEG
 [File, File, Image] FileTypeExtension - File Type Extension: jpg
@@ -57,11 +57,11 @@
 [Photoshop, Photoshop, Image] 0 - Photoshop Quality: 8
 [Photoshop, Photoshop, Image] 1 - Photoshop Format: Standard
 [Photoshop, Photoshop, Image] 2 - Progressive Scans: 3 Scans
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 10.15
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.55
 [XMP, XMP-iptcCore, Author] CreatorContactInfoCiAdrCtry - Creator Country: Canada
 [APP14, Adobe, Image] 0 - DCT Encode Version: 100
 [APP14, Adobe, Image] 1 - APP14 Flags 0: (none)
 [APP14, Adobe, Image] 2 - APP14 Flags 1: (none)
 [APP14, Adobe, Image] 3 - Color Transform: YCbCr
-[Composite, Composite, Image] ImageSize - Image Size: 8x8
-[Composite, Composite, Image] Megapixels - Megapixels: 0.000064
+[Composite, Composite, Image] Exif::ImageSize - Image Size: 8x8
+[Composite, Composite, Image] Exif::Megapixels - Megapixels: 0.000064

@@ -1,8 +1,8 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.74
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.55
 [File, System, Image] FileSize - File Size: 4.8 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2005:11:23 15:49:37-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2018:01:08 12:17:29-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2018:01:05 11:57:21-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:07:03 11:48:35-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:07:02 12:56:21-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: TIFF
 [File, File, Image] FileTypeExtension - File Type Extension: tif
@@ -85,5 +85,5 @@
 [ICC_Profile, ICC_Profile, Image] rTRC - Red Tone Reproduction Curve: (Binary data 2060 bytes)
 [ICC_Profile, ICC_Profile, Image] gTRC - Green Tone Reproduction Curve: (Binary data 2060 bytes)
 [ICC_Profile, ICC_Profile, Image] bTRC - Blue Tone Reproduction Curve: (Binary data 2060 bytes)
-[Composite, Composite, Image] ImageSize - Image Size: 160x120
-[Composite, Composite, Image] Megapixels - Megapixels: 0.019
+[Composite, Composite, Image] Exif::ImageSize - Image Size: 160x120
+[Composite, Composite, Image] Exif::Megapixels - Megapixels: 0.019

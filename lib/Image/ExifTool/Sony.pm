@@ -32,7 +32,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.08';
+$VERSION = '3.09';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -83,17 +83,18 @@ my %sonyLensTypes2 = (
     32786 => 'Sony E 55-210mm F4.5-6.3 OSS',    # VX9102
     32787 => 'Sony E 18-200mm F3.5-6.3 OSS',    # VX9103
     32788 => 'Sony E 30mm F3.5 Macro',          # VX9104
-    32789 => 'Sony E 24mm F1.8 ZA or Samyang AF 50mm F1.4 FE', # VX9105
-    32789.1 => 'Samyang AF 50mm F1.4 FE',
-    32790 => 'Sony E 50mm F1.8 OSS or Samyang AF 14mm F2.8 FE', # VX9106
-    32790.1 => 'Samyang AF 14mm F2.8 FE',
+    32789 => 'Sony E 24mm F1.8 ZA or Samyang AF 50mm F1.4', # VX9105
+    32789.1 => 'Samyang AF 50mm F1.4',
+    32790 => 'Sony E 50mm F1.8 OSS or Samyang AF 14mm F2.8', # VX9106
+    32790.1 => 'Samyang AF 14mm F2.8',
     32791 => 'Sony E 16-70mm F4 ZA OSS',        # VX9107
     32792 => 'Sony E 10-18mm F4 OSS',           # VX9108
     32793 => 'Sony E PZ 16-50mm F3.5-5.6 OSS',  # VX9109
-    32794 => 'Sony FE 35mm F2.8 ZA or Samyang AF 24mm F2.8 FE', # VX9110
-    32794.1 => 'Samyang AF 24mm F2.8 FE', #JR
+    32794 => 'Sony FE 35mm F2.8 ZA or Samyang AF 24mm F2.8', # VX9110
+    32794.1 => 'Samyang AF 24mm F2.8', #JR
     32795 => 'Sony FE 24-70mm F4 ZA OSS',       # VX9111
-    32796 => 'Sony FE 85mm F1.8', #JR
+    32796 => 'Sony FE 85mm F1.8 or Viltrox PFU RBMH 85mm F1.8', #JR
+    32796.1 => 'Viltrox PFU RBMH 85mm F1.8', #JR (MF)
     32797 => 'Sony E 18-200mm F3.5-6.3 OSS LE', # VX9113 (firmware Ver.02)
     32798 => 'Sony E 20mm F2.8',                # VX9114
     32799 => 'Sony E 35mm F1.8 OSS',            # VX9115
@@ -120,7 +121,7 @@ my %sonyLensTypes2 = (
     32820 => 'Sony E PZ 18-110mm F4 G OSS', #JR
     32821 => 'Sony FE 24-70mm F2.8 GM', #JR/IB
     32822 => 'Sony FE 50mm F1.4 ZA', #JR
-    32823 => 'Sony FE 85mm F1.4 GM', #JR/IB
+    32823 => 'Sony FE 85mm F1.4 GM or Samyang AF 85mm F1.4', #JR/IB
     32823.1 => 'Samyang AF 85mm F1.4', #IB
     32824 => 'Sony FE 50mm F1.8', #JR (Sony code 'SEL50F18F' with trailing "F" as compared to 'SEL50F18' for 32790)
 
@@ -135,6 +136,7 @@ my %sonyLensTypes2 = (
     32850 => 'Sony FE 135mm F1.8 GM', #IB
     32851 => 'Sony FE 200-600mm F5.6-6.3 G OSS', #IB
     32852 => 'Sony FE 600mm F4 GM OSS', #IB
+    32858 => 'Sony FE 35mm F1.8', #JR/IB
 
   # (comment this out so LensID will report the LensModel, which is more useful)
   # 32952 => 'Metabones Canon EF Speed Booster Ultra', #JR (corresponds to 184, but 'Advanced' mode, LensMount reported as E-mount)
@@ -167,7 +169,7 @@ my %sonyLensTypes2 = (
     49236 => 'Zeiss Loxia 25mm F2.4', #JR
 
     49457 => 'Tamron 28-75mm F2.8 Di III RXD', #JR (Model A036)
-    49458 => 'Tamron 17-28mm F2.8 Di III RXD', #JR
+    49458 => 'Tamron 17-28mm F2.8 Di III RXD', #JR (Model A046)
 
     49712 => 'Tokina FiRIN 20mm F2 FE AF',       # (firmware Ver.01)
     49713 => 'Tokina FiRIN 100mm F2.8 FE MACRO', # (firmware Ver.01)
@@ -207,11 +209,10 @@ my %sonyLensTypes2 = (
 
     # lenses listed in the Sigma MC-11 list, but not yet seen:
     # 504xx => 'Sigma 18-200mm F3.5-6.3 DC MACRO OS HSM | C + MC-11', # (014)
-    # 504xx => 'Sigma 24mm F1.4 DG HSM | A + MC-11', # (015)
     # 504xx => 'Sigma 30mm F1.4 DC HSM | A + MC-11', # (013)
 
-    51505 => 'Samyang AF 14mm F2.8 FE or Samyang AF 35mm F2.8 FE', #forum3833
-    51505.1 => 'Samyang AF 35mm F2.8 FE', #PH
+    51505 => 'Samyang AF 14mm F2.8 or Samyang AF 35mm F2.8', #forum3833
+    51505.1 => 'Samyang AF 35mm F2.8', #PH
     51507 => 'Samyang AF 35mm F1.4', #IB
 );
 

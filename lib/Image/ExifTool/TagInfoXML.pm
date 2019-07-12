@@ -15,7 +15,7 @@ use vars qw($VERSION @ISA $makeMissing);
 use Image::ExifTool qw(:Utils :Vars);
 use Image::ExifTool::XMP;
 
-$VERSION = '1.30';
+$VERSION = '1.31';
 @ISA = qw(Exporter);
 
 # set this to a language code to generate Lang module with 'MISSING' entries
@@ -28,7 +28,7 @@ sub NumbersFirst;
 # names for acknowledgements in the POD documentation
 my %credits = (
     cs   => 'Jens Duttke and Petr MichE<aacute>lek',
-    de   => 'Jens Duttke and Herbert Kauer',
+    de   => 'Jens Duttke, Herbert Kauer and Jobi',
     es   => 'Jens Duttke, Santiago del BrE<iacute>o GonzE<aacute>lez and Emilio Sancha',
     fi   => 'Jens Duttke and Jarkko ME<auml>kineva',
     fr   => 'Jens Duttke, Bernard Guillotin, Jean Glasser, Jean Piquemal, Harry Nizard and Alphonse Philippe',
@@ -37,7 +37,7 @@ my %credits = (
     ko   => 'Jens Duttke and Jeong Beom Kim',
     nl   => 'Jens Duttke, Peter Moonen, Herman Beld and Peter van der Laan',
     pl   => 'Jens Duttke, Przemyslaw Sulek and Kacper Perschke',
-    ru   => 'Jens Duttke, Sergey Shemetov, Dmitry Yerokhin and Anton Sukhinov',
+    ru   => 'Jens Duttke, Sergey Shemetov, Dmitry Yerokhin, Anton Sukhinov and Alexander',
     sv   => 'Jens Duttke and BjE<ouml>rn SE<ouml>derstrE<ouml>m',
    'tr'  => 'Jens Duttke, Hasan Yildirim and Cihan Ulusoy',
     zh_cn => 'Jens Duttke and Haibing Zhong',
@@ -366,7 +366,12 @@ sub BuildLangModules($;$)
                 $id = Image::ExifTool::XMP::FullUnescapeXML($1);
                 $name = $2;
                 $index = $4;
-                $id = hex($id) if $id =~ /^0x[\da-fA-F]+$/; # convert hex ID's
+                # convert hex ID's unless HEX_ID is 0 (for string ID's that look like hex)
+                if ($id =~ /^0x[\da-fA-F]+$/ and (not defined $$table{VARS} or
+                    not defined $$table{VARS}{HEX_ID} or $$table{VARS}{HEX_ID}))
+                {
+                    $id = hex($id);
+                }
                 next;
             }
             if ($tok eq 'values') {
@@ -618,7 +623,6 @@ HEADER
 );
 
 1;  # end
-
 
 __END__
 

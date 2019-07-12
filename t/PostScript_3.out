@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool, Main] ExifToolVersion - ExifTool Version Number: 9.93
+[ExifTool, ExifTool, ExifTool, Main] ExifToolVersion - ExifTool Version Number: 11.55
 [File, System, Image, Main] FileName - File Name: PostScript_3_failed.eps
 [File, System, Image, Main] Directory - Directory: t
 [File, System, Image, Main] FileSize - File Size: 14 kB
-[File, System, Time, Main] FileModifyDate - File Modification Date/Time: 2015:04:18 07:17:49-04:00
-[File, System, Time, Main] FileAccessDate - File Access Date/Time: 2015:04:18 07:17:49-04:00
-[File, System, Time, Main] FileInodeChangeDate - File Inode Change Date/Time: 2015:04:18 07:17:49-04:00
+[File, System, Time, Main] FileModifyDate - File Modification Date/Time: 2019:07:03 12:16:58-04:00
+[File, System, Time, Main] FileAccessDate - File Access Date/Time: 2019:07:03 12:16:58-04:00
+[File, System, Time, Main] FileInodeChangeDate - File Inode Change Date/Time: 2019:07:03 12:16:58-04:00
 [File, System, Image, Main] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image, Main] FileType - File Type: EPS
 [File, File, Image, Main] FileTypeExtension - File Type Extension: eps
@@ -99,7 +99,7 @@
 [EXIF, IFD1, Image, Main] 282 - X Resolution: 72
 [EXIF, IFD1, Image, Main] 283 - Y Resolution: 72
 [EXIF, IFD1, Image, Main] 296 - Resolution Unit: inches
-[XMP, XMP-x, Document, Main] xmptk - XMP Toolkit: Image::ExifTool 9.93
+[XMP, XMP-x, Document, Main] xmptk - XMP Toolkit: Image::ExifTool 11.55
 [XMP, XMP-rdf, Document, Main] about - About: uuid:b691db36-f92a-11d9-99a4-8c8e8269c120
 [XMP, XMP-dc, Author, Main] creator - Creator: phil made it
 [XMP, XMP-dc, Image, Main] description - Description: UTF-16 (big-endian) encoded XMP
@@ -124,11 +124,11 @@
 [XMP, XMP-xmpMM, Other, Main] DocumentID - Document ID: adobe:docid:photoshop:4cc7b857-69d0-11d8-8ac4-bb59c92f0d9a
 [XMP, XMP-xmpRights, Author, Main] Marked - Marked: False
 [XMP, XMP-xmpRights, Author, Main] WebStatement - Web Statement: http://owl.phy.queensu.ca/~phil/exiftool/
-[Composite, Composite, Image, Main] Aperture - Aperture: 3.5
-[Composite, Composite, Image, Main] ImageHeight - Image Height: 8
-[Composite, Composite, Image, Main] ImageWidth - Image Width: 8
-[Composite, Composite, Image, Main] ShutterSpeed - Shutter Speed: 1/64
-[Composite, Composite, Image, Main] ImageSize - Image Size: 8x8
-[Composite, Composite, Image, Main] LightValue - Light Value: 9.6
-[Composite, Composite, Image, Main] Megapixels - Megapixels: 0.000064
-[Composite, Composite, Camera, Main] FocalLength35efl - Focal Length: 6.0 mm
+[Composite, Composite, Image, Main] Exif::Aperture - Aperture: 3.5
+[Composite, Composite, Image, Main] Exif::ShutterSpeed - Shutter Speed: 1/64
+[Composite, Composite, Image, Main] PostScript::ImageHeight - Image Height: 8
+[Composite, Composite, Image, Main] PostScript::ImageWidth - Image Width: 8
+[Composite, Composite, Image, Main] Exif::ImageSize - Image Size: 8x8
+[Composite, Composite, Image, Main] Exif::LightValue - Light Value: 9.6
+[Composite, Composite, Image, Main] Exif::Megapixels - Megapixels: 0.000064
+[Composite, Composite, Camera, Main] Exif::FocalLength35efl - Focal Length: 6.0 mm

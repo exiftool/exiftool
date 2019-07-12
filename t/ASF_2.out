@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.76
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.55
 [File, System, Image] FileName - File Name: ASF.wmv
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 12 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2005:12:27 07:29:29-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2018:01:15 08:02:47-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2018:01:12 13:55:30-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:07:03 11:48:11-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:07:02 12:56:21-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: WMV
 [File, File, Image] FileTypeExtension - File Type Extension: wmv
@@ -52,5 +52,5 @@
 [ASF, ASF, Video] 48 - Stream Number: 2
 [ASF, ASF, Video] 54 - Image Width: 160
 [ASF, ASF, Video] 58 - Image Height: 120
-[Composite, Composite, Image] ImageSize - Image Size: 160x120
-[Composite, Composite, Image] Megapixels - Megapixels: 0.019
+[Composite, Composite, Image] Exif::ImageSize - Image Size: 160x120
+[Composite, Composite, Image] Exif::Megapixels - Megapixels: 0.019

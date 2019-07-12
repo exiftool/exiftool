@@ -6617,7 +6617,7 @@ sub CopyBlock($$$)
 }
 
 #------------------------------------------------------------------------------
-# copy image data from one file to another
+# Copy image data from one file to another
 # Inputs: 0) ExifTool object reference
 #         1) reference to list of image data [ position, size, pad bytes ]
 #         2) output file ref
@@ -6646,7 +6646,7 @@ sub CopyImageData($$$)
 }
 
 #------------------------------------------------------------------------------
-# write to binary data block
+# Write to binary data block
 # Inputs: 0) ExifTool object ref, 1) source dirInfo ref, 2) tag table ref
 # Returns: Binary data block or undefined on error
 sub WriteBinaryData($$$)
@@ -6776,7 +6776,7 @@ sub WriteBinaryData($$$)
             $$previewInfo{IsShort} = 1 unless $format eq 'int32u';
             $$previewInfo{Absolute} = 1 if $$tagInfo{IsOffset} and $$tagInfo{IsOffset} eq '3';
             # get the value of the Composite::PreviewImage tag
-            $$previewInfo{Data} = $self->GetNewValue($Image::ExifTool::Composite{PreviewImage});
+            $$previewInfo{Data} = $self->GetNewValue(GetCompositeTagInfo('PreviewImage'));
             unless (defined $$previewInfo{Data}) {
                 if ($offset >= 0 and $offset + $size <= $$dirInfo{DataLen}) {
                     $$previewInfo{Data} = substr(${$$dirInfo{DataPt}},$offset,$size);

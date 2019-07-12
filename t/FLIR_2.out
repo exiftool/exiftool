@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.38
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.55
 [File, System, Image] FileName - File Name: FLIR.jpg
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 7.2 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2013:04:02 10:46:04-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:04:17 13:56:22-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:04:17 10:43:24-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:07:03 11:48:41-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:07:02 12:56:21-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: JPEG
 [File, File, Image] FileTypeExtension - File Type Extension: jpg
@@ -49,7 +49,7 @@
 [EXIF, IFD1, Image] 296 - Resolution Unit: inches
 [EXIF, IFD1, Image] 513 - Thumbnail Offset: 872
 [EXIF, IFD1, Image] 514 - Thumbnail Length: 2314
-[EXIF, IFD1, Preview] ThumbnailImage - Thumbnail Image: (Binary data 2314 bytes)
+[EXIF, IFD1, Preview] Exif::ThumbnailImage - Thumbnail Image: (Binary data 2314 bytes)
 [MakerNotes, FLIR, Camera] 1 - Image Temperature Max: 308
 [MakerNotes, FLIR, Camera] 2 - Image Temperature Min: 281
 [MakerNotes, FLIR, Camera] 3 - Emissivity: 0.80
@@ -114,8 +114,8 @@
 [APP1, FLIR, Image] 2 - Raw Thermal Image Height: 120
 [APP1, FLIR, Image] 16 - Raw Thermal Image Type: PNG
 [APP1, FLIR, Preview] 16.1 - Raw Thermal Image: (Binary data 79 bytes)
-[Composite, Composite, Image] ImageSize - Image Size: 8x8
-[Composite, Composite, Image] Megapixels - Megapixels: 0.000064
-[Composite, FLIR, Camera] PeakSpectralSensitivity - Peak Spectral Sensitivity: 10.5 um
-[Composite, Composite, Image] ShutterSpeed - Shutter Speed: 1/32
-[Composite, Composite, Camera] FocalLength35efl - Focal Length: 6.7 mm
+[Composite, Composite, Image] Exif::ImageSize - Image Size: 8x8
+[Composite, Composite, Image] Exif::Megapixels - Megapixels: 0.000064
+[Composite, Composite, Image] Exif::ShutterSpeed - Shutter Speed: 1/32
+[Composite, FLIR, Camera] FLIR::PeakSpectralSensitivity - Peak Spectral Sensitivity: 10.5 um
+[Composite, Composite, Camera] Exif::FocalLength35efl - Focal Length: 6.7 mm

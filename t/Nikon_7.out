@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.71
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.55
 [File, System, Image] FileName - File Name: Nikon.nef
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 6.0 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2007:01:05 13:00:46-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2017:12:30 11:02:33-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2017:12:27 12:00:59-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:07:03 11:34:37-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:07:02 12:56:21-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: NEF
 [File, File, Image] FileTypeExtension - File Type Extension: nef
@@ -78,7 +78,7 @@
 [EXIF, ExifIFD, Image] 41730 - CFA Pattern: [Blue,Green][Green,Red]
 [EXIF, IFD0, Time] 36867 - Date/Time Original: 2004:06:09 16:02:35
 [EXIF, IFD0, Image] 37398 - TIFF-EP Standard ID: 1 0 0 0
-[EXIF, SubIFD, Preview] JpgFromRaw - Jpg From Raw: (Binary data 29 bytes)
+[EXIF, SubIFD, Preview] Exif::JpgFromRaw - Jpg From Raw: (Binary data 29 bytes)
 [IPTC, IPTC, Other] 0 - Application Record Version: 4
 [IPTC, IPTC, Other] 120 - Caption-Abstract: A caption
 [IPTC, IPTC, Other] 40 - Special Instructions: none
@@ -219,7 +219,7 @@
 [MakerNotes, NikonScan, Image] 81 - Color Gain: 0.00 0.00 0.00
 [MakerNotes, NikonScan, Image] 96 - Scan Image Enhancer: Off
 [MakerNotes, NikonScan, Image] 256 - Digital ICE: Normal
-[MakerNotes, PreviewIFD, Preview] PreviewImage - Preview Image: (Binary data 26 bytes)
+[MakerNotes, PreviewIFD, Preview] Exif::PreviewImage - Preview Image: (Binary data 26 bytes)
 [ICC_Profile, ICC-header, Image] 4 - Profile CMM Type: Nikon Corporation
 [ICC_Profile, ICC-header, Image] 8 - Profile Version: 2.2.0
 [ICC_Profile, ICC-header, Image] 12 - Profile Class: Display Device Profile
@@ -245,17 +245,17 @@
 [ICC_Profile, ICC_Profile, Image] bTRC - Blue Tone Reproduction Curve: (Binary data 14 bytes)
 [ICC_Profile, ICC_Profile, Image] wtpt - Media White Point: 0.9505 1 1.0891
 [ICC_Profile, ICC_Profile, Image] cprt - Profile Copyright: Nikon Inc. & Nikon Corporation 2001
-[Composite, Composite, Image] Aperture - Aperture: 3.5
-[Composite, Composite, Image] CFAPattern - CFA Pattern: [Blue,Green][Green,Red]
-[Composite, Composite, Camera] LensID - Lens ID: AF-S DX Zoom-Nikkor 18-70mm f/3.5-4.5G IF-ED
-[Composite, Composite, Camera] LensSpec - Lens Spec: 18-70mm f/3.5-4.5 G
-[Composite, Composite, Image] ShutterSpeed - Shutter Speed: 1/20
-[Composite, Composite, Time] SubSecCreateDate - Create Date: 2004:06:09 16:02:35.00
-[Composite, Composite, Time] SubSecDateTimeOriginal - Date/Time Original: 2004:06:09 16:02:35.00
-[Composite, Composite, Time] SubSecModifyDate - Modify Date: 2005:08:25 13:09:05.00
-[Composite, Composite, Camera] BlueBalance - Blue Balance: 1.860377
-[Composite, Composite, Image] ImageSize - Image Size: 3040x2014
-[Composite, Composite, Image] LightValue - Light Value: 6.9
-[Composite, Composite, Image] Megapixels - Megapixels: 6.1
-[Composite, Composite, Camera] RedBalance - Red Balance: 1.803774
-[Composite, Composite, Camera] FocalLength35efl - Focal Length: 18.0 mm
+[Composite, Composite, Image] Exif::Aperture - Aperture: 3.5
+[Composite, Composite, Image] Exif::CFAPattern - CFA Pattern: [Blue,Green][Green,Red]
+[Composite, Composite, Image] Exif::ShutterSpeed - Shutter Speed: 1/20
+[Composite, Composite, Time] Exif::SubSecCreateDate - Create Date: 2004:06:09 16:02:35.00
+[Composite, Composite, Time] Exif::SubSecDateTimeOriginal - Date/Time Original: 2004:06:09 16:02:35.00
+[Composite, Composite, Time] Exif::SubSecModifyDate - Modify Date: 2005:08:25 13:09:05.00
+[Composite, Composite, Camera] Nikon::LensID - Lens ID: AF-S DX Zoom-Nikkor 18-70mm f/3.5-4.5G IF-ED
+[Composite, Composite, Camera] Nikon::LensSpec - Lens Spec: 18-70mm f/3.5-4.5 G
+[Composite, Composite, Camera] Exif::BlueBalance - Blue Balance: 1.860377
+[Composite, Composite, Image] Exif::ImageSize - Image Size: 3040x2014
+[Composite, Composite, Image] Exif::LightValue - Light Value: 6.9
+[Composite, Composite, Image] Exif::Megapixels - Megapixels: 6.1
+[Composite, Composite, Camera] Exif::RedBalance - Red Balance: 1.803774
+[Composite, Composite, Camera] Exif::FocalLength35efl - Focal Length: 18.0 mm

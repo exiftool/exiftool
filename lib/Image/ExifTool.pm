@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup);
 
-$VERSION = '11.54';
+$VERSION = '11.55';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -979,7 +979,7 @@ my %allGroupsExifTool = ( 0 => 'ExifTool', 1 => 'ExifTool', 2 => 'ExifTool' );
     WRITABLE         TABLE_DESC  NOTES         IS_OFFSET   IS_SUBDIR
     EXTRACT_UNKNOWN  NAMESPACE   PREFERRED     SRC_TABLE   PRIORITY
     AVOID            WRITE_GROUP LANG_INFO     VARS        DATAMEMBER
-    SET_GROUP1       PERMANENT
+    SET_GROUP1       PERMANENT   INIT_TABLE
 );
 
 # headers for various segment types
@@ -1844,6 +1844,8 @@ my %systemTagsNotes = (
     VARS => { NO_ID => 1 }, # want empty tagID's for Composite tags
     WRITE_PROC => \&DummyWriteProc,
 );
+
+my %compositeID;    # lookup for new ID's of Composite tags based on original ID
 
 # static private ExifTool variables
 
@@ -3369,16 +3371,19 @@ sub BuildCompositeTags($)
     my $compTable = GetTagTable('Image::ExifTool::Composite');
     my @tagList = sort keys %$compTable;
     my $rawValue = $$self{VALUE};
-    my (%tagsUsed, %cache);
+    my (%tagsUsed, %cache, $allBuilt);
 
     for (;;) {
         my (%notBuilt, $tag, @deferredTags);
-        $notBuilt{$_} = 1 foreach @tagList;
+        foreach (@tagList) {
+            $notBuilt{$$compTable{$_}{Name}} = 1 unless $specialTags{$_};
+        }
 COMPOSITE_TAG:
         foreach $tag (@tagList) {
             next if $specialTags{$tag};
             my $tagInfo = $self->GetTagInfo($compTable, $tag);
             next unless $tagInfo;
+            my $tagName = $$compTable{$tag}{Name};
             # put required tags into array and make sure they all exist
             my $subDoc = ($$tagInfo{SubDoc} and $$self{DOC_COUNT});
             my $require = $$tagInfo{Require} || { };
@@ -3429,8 +3434,12 @@ COMPOSITE_TAG:
                     } elsif ($reqTag =~ /^(.*):(.+)/) {
                         my ($reqGroup, $name) = ($1, $2);
                         if ($reqGroup eq 'Composite' and $notBuilt{$name}) {
-                            push @deferredTags, $tag;
-                            next COMPOSITE_TAG;
+                            # defer only until all other tags are built if
+                            # we are inhibiting based on another Composite tag
+                            unless ($$inhibit{$index} and $allBuilt) {
+                                push @deferredTags, $tag;
+                                next COMPOSITE_TAG;
+                            }
                         }
                         # (CAREFUL! keys may not be sequential if one was deleted)
                         my ($i, $key, @keys);
@@ -3470,13 +3479,13 @@ COMPOSITE_TAG:
                     next if ++$docNum <= $$self{DOC_COUNT};
                     last;
                 } elsif ($found) {
-                    delete $notBuilt{$tag}; # this tag is OK to build now
+                    delete $notBuilt{$tagName}; # this tag is OK to build now
                     # keep track of all Require'd tag keys
                     foreach (keys %tagKey) {
                         # only tag keys with same name as a Composite tag
                         # can be replaced (also eliminates keys with
                         # instance numbers which can't be replaced either)
-                        next unless $$compTable{$tagKey{$_}};
+                        next unless $compositeID{$tagKey{$_}};
                         my $keyRef = \$tagKey{$_};
                         $tagsUsed{$$keyRef} or $tagsUsed{$$keyRef} = [ ];
                         push @{$tagsUsed{$$keyRef}}, $keyRef;
@@ -3491,7 +3500,7 @@ COMPOSITE_TAG:
                         delete $tagsUsed{$key};         # can't be replaced again
                     }
                 } elsif (not defined $found) {
-                    delete $notBuilt{$tag}; # tag can't be built anyway
+                    delete $notBuilt{$tagName}; # tag can't be built anyway
                 }
                 last unless $subDoc;
                 # don't process sub-documents if there is no chance to build this tag
@@ -3517,14 +3526,28 @@ COMPOSITE_TAG:
         }
         last unless @deferredTags;
         if (@deferredTags == @tagList) {
-            # everything was deferred in the last pass,
-            # must be a circular dependency
-            warn "Circular dependency in Composite tags\n";
-            last;
+            if ($allBuilt) {
+                # everything was deferred in the last pass,
+                # must be a circular dependency
+                warn "Circular dependency in Composite tags\n";
+                last;
+            }
+            $allBuilt = 1;  # try once more, ignoring Composite Inhibit tags
         }
         @tagList = @deferredTags; # calculate deferred tags now
     }
     delete $$self{BuildingComposite};
+}
+
+#------------------------------------------------------------------------------
+# Get reference to Composite tag info hash
+# Inputs: 0) case-sensitive Composite tag name
+# Returns: tagInfo hash or undef
+sub GetCompositeTagInfo($)
+{
+    my $tag = shift;
+    return undef unless $compositeID{$tag};
+    return $Image::ExifTool::Composite{$compositeID{$tag}[0]};
 }
 
 #------------------------------------------------------------------------------
@@ -4571,12 +4594,16 @@ sub AddCompositeTags($;$)
 {
     local $_;
     my ($add, $override) = @_;
-    my $module;
+    my ($module, $prefix, $tagID);
     unless (ref $add) {
+        ($prefix = $add) =~ s/.*:://;
+        $prefix .= '::';
         $module = $add;
         $add .= '::Composite';
         no strict 'refs';
         $add = \%$add;
+    } else {
+        $prefix = 'UserDefined::';
     }
     my $defaultGroups = $$add{GROUPS};
     my $compTable = GetTagTable('Image::ExifTool::Composite');
@@ -4590,31 +4617,38 @@ sub AddCompositeTags($;$)
         $defaultGroups = $$add{GROUPS} = { 0 => 'Composite', 1 => 'Composite', 2 => 'Other' };
     }
     SetupTagTable($add);    # generate Name, TagID, etc
-    my $tagID;
     foreach $tagID (sort keys %$add) {
         next if $specialTags{$tagID};   # must skip special tags
         my $tagInfo = $$add{$tagID};
-        # tagID's MUST be the exact tag name for logic in BuildCompositeTags()
-        my $tag = $$tagInfo{Name};
+        my $new = $prefix . $tagID;     # new tag ID for Composite table
         $$tagInfo{Module} = $module if $$tagInfo{Writable};
         $$tagInfo{Override} = 1 if $override and not defined $$tagInfo{Override};
         $$tagInfo{IsComposite} = 1;
-        # allow Composite tags with the same name
-        if ($$compTable{$tag}) {
+        # handle Composite tags with the same name
+        if ($compositeID{$tagID}) {
             # determine if we want to override this tag
             # (=0 keep both, >0 override, <0 keep existing)
-            my $over = ($$tagInfo{Override} || 0) - ($$compTable{$tag}{Override} || 0);
+            my $over = ($$tagInfo{Override} || 0) - ($$compTable{$compositeID{$tagID}[0]}{Override} || 0);
             next if $over < 0;
-            my $n;
-            my $new = $tag;
-            while ($$compTable{$new}) {
-                delete $$compTable{$new} if $over;  # delete existing entries
-                $n = ($n || 1) + 1;
-                $new = "${tag}-$n";
+            if ($over) {
+                # remove existing tags with this ID
+                delete $$compTable{$_} foreach @{$compositeID{$tagID}};
+                delete $compositeID{$tagID};
             }
-            # use new ID and save it so we can use it in TagLookup
-            $$tagInfo{NewTagID} = $tag = $new unless $over;
         }
+        # make sure new TagID is unique by adding index if necessary
+        my $n = 0;
+        while ($$compTable{$new}) {
+            $new =~ s/-\d+$// if $n++;
+            $new .= "-$n";
+        }
+        # use new ID and save it so we can use it in TagLookup
+        $$tagInfo{NewTagID} = $new unless $tagID eq $new;
+
+        # add new ID to lookup of Composite tag ID's
+        $compositeID{$tagID} = [ ] unless $compositeID{$tagID};
+        unshift @{$compositeID{$tagID}}, $new;  # (most recent one first)
+
         # convert scalar Require/Desire/Inhibit entries
         my ($type, @hashes, @scalars, %used);
         foreach $type ('Require','Desire','Inhibit') {
@@ -4635,9 +4669,9 @@ sub AddCompositeTags($;$)
         # add this Composite tag to our main Composite table
         $$tagInfo{Table} = $compTable;
         # (use the original TagID, even if we changed it, so don't do this:)
-        # $$tagInfo{TagID} = $tag;
-        # save tag under NewTagID in Composite table
-        $$compTable{$tag} = $tagInfo;
+        $$tagInfo{TagID} = $new;
+        # save tag under new ID in Composite table
+        $$compTable{$new} = $tagInfo;
         # set all default groups in tag
         my $groups = $$tagInfo{Groups};
         $groups or $groups = $$tagInfo{Groups} = { };
@@ -7248,6 +7282,7 @@ sub GetTagTable($)
         no strict 'refs';
         $table = \%$tableName;
         use strict 'refs';
+        &{$$table{INIT_TABLE}}($table) if $$table{INIT_TABLE};
         $$table{TABLE_NAME} = $tableName;   # set table name
         ($$table{SHORT_NAME} = $tableName) =~ s/^Image::ExifTool:://;
         # set default group 0 and 1 from module name unless already specified

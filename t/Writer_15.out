@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.93
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.55
 [File, System, Image] FileName - File Name: Writer_15_failed.jpg
 [File, System, Image] Directory - Directory: t
 [File, System, Image] FileSize - File Size: 2.5 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2015:04:18 07:17:52-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:18 07:17:52-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:04:18 07:17:52-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2019:07:03 11:48:35-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:07:03 11:48:35-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:07:03 11:48:35-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: JPEG
 [File, File, Image] FileTypeExtension - File Type Extension: jpg
@@ -153,23 +153,23 @@
 [MakerNotes, Canon, Camera] 9 - AF Area Y Positions: 0 0 -506 0 506 0 0
 [MakerNotes, Canon, Camera] 10 - AF Points In Focus: (none)
 [MakerNotes, Canon, Camera] 19 - Thumbnail Image Valid Area: 0 159 7 112
-[Composite, Composite, Image] Aperture - Aperture: 2.0
-[Composite, Composite, Camera] DriveMode - Drive Mode: Continuous Shooting
-[Composite, Composite, Camera] ISO - ISO: 100
-[Composite, Composite, Camera] Lens - Lens: 18.0 - 55.0 mm
-[Composite, Composite, Camera] ScaleFactor35efl - Scale Factor To 35 mm Equivalent: 1.6
-[Composite, Composite, Camera] ShootingMode - Shooting Mode: Bulb
-[Composite, Composite, Image] ShutterSpeed - Shutter Speed: 4
-[Composite, Composite, Camera] WB_RGGBLevels - WB RGGB Levels: 1719 832 831 990
-[Composite, Composite, Camera] BlueBalance - Blue Balance: 1.190619
-[Composite, Composite, Camera] CircleOfConfusion - Circle Of Confusion: 0.019 mm
-[Composite, Composite, Image] DOF - Depth Of Field: inf (1.29 m - inf)
-[Composite, Composite, Image] FOV - Field Of View: 116.6 deg
-[Composite, Composite, Camera] FocalLength35efl - Focal Length: 7.0 mm (35 mm equivalent: 11.1 mm)
-[Composite, Composite, Camera] HyperfocalDistance - Hyperfocal Distance: 1.30 m
-[Composite, Composite, Image] ImageSize - Image Size: 8x8
-[Composite, Composite, Camera] Lens35efl - Lens: 18.0 - 55.0 mm (35 mm equivalent: 28.6 - 87.4 mm)
-[Composite, Composite, Camera] LensID - Lens ID: Unknown 18-55mm
-[Composite, Composite, Image] LightValue - Light Value: 0.0
-[Composite, Composite, Image] Megapixels - Megapixels: 0.000064
-[Composite, Composite, Camera] RedBalance - Red Balance: 2.067348
+[Composite, Composite, Camera] Canon::DriveMode - Drive Mode: Continuous Shooting
+[Composite, Composite, Camera] Canon::ISO - ISO: 100
+[Composite, Composite, Camera] Canon::Lens - Lens: 18.0 - 55.0 mm
+[Composite, Composite, Camera] Canon::ShootingMode - Shooting Mode: Bulb
+[Composite, Composite, Camera] Canon::WB_RGGBLevels - WB RGGB Levels: 1719 832 831 990
+[Composite, Composite, Image] Exif::Aperture - Aperture: 2.0
+[Composite, Composite, Image] Exif::ShutterSpeed - Shutter Speed: 4
+[Composite, Composite, Camera] Exif::BlueBalance - Blue Balance: 1.190619
+[Composite, Composite, Image] Exif::ImageSize - Image Size: 8x8
+[Composite, Composite, Camera] Exif::LensID - Lens ID: Unknown 18-55mm
+[Composite, Composite, Image] Exif::LightValue - Light Value: 0.0
+[Composite, Composite, Image] Exif::Megapixels - Megapixels: 0.000064
+[Composite, Composite, Camera] Exif::RedBalance - Red Balance: 2.067348
+[Composite, Composite, Camera] Exif::ScaleFactor35efl - Scale Factor To 35 mm Equivalent: 1.6
+[Composite, Composite, Camera] Canon::Lens35efl - Lens: 18.0 - 55.0 mm (35 mm equivalent: 28.6 - 87.4 mm)
+[Composite, Composite, Camera] Exif::CircleOfConfusion - Circle Of Confusion: 0.019 mm
+[Composite, Composite, Image] Exif::DOF - Depth Of Field: inf (1.29 m - inf)
+[Composite, Composite, Image] Exif::FOV - Field Of View: 116.6 deg
+[Composite, Composite, Camera] Exif::FocalLength35efl - Focal Length: 7.0 mm (35 mm equivalent: 11.1 mm)
+[Composite, Composite, Camera] Exif::HyperfocalDistance - Hyperfocal Distance: 1.30 m

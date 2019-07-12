@@ -34,7 +34,7 @@ use Image::ExifTool::Nikon;
 use Image::ExifTool::Validate;
 use Image::ExifTool::MacOS;
 
-$VERSION = '3.24';
+$VERSION = '3.25';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);

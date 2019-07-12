@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.93
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.55
 [File, System, Image] FileName - File Name: XMP5.xmp
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 4.6 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2015:04:11 07:17:32-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:18 07:17:55-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:04:11 07:18:33-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2015:04:11 08:20:05-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:07:03 12:17:05-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:07:02 12:56:21-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: XMP
 [File, File, Image] FileTypeExtension - File Type Extension: xmp
@@ -16,4 +16,4 @@
 [XMP, XMP-mwg-rs, Image] Regions - Region Info: {RegionList=[{Area={H=8,W=8,X=0,Y=0},Name=Region 1,SeeAlso=plus:Licensee,Type=Face},{Extensions={XMP-exif:Flash={Mode=On,Return=Return not detected},XMP-iptcExt:ArtworkOrObject=[{AOTitle-de=verf&auml;nglich}],XMP-myXMPns:BTestTag={Field1=[this is wild]},XMP-xmpRights:UsageTerms-fr=libre}}]}
 [XMP, XMP-myXMPns, Other] BTestTag - B Test Tag: {Field1-en-CA=[eh?],Field1-en-US=[huh?,groovy],Field1-fr=[,ing&eacute;nieux]}
 [XMP, XMP-plus, Author] Licensee - Licensee: [{LicenseeName=Phil}]
-[Composite, Composite, Other] Flash - Flash: Off, Did not fire
+[Composite, Composite, Other] XMP::Flash - Flash: Off, Did not fire

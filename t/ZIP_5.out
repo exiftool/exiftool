@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.93
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.55
 [File, System, Image] FileName - File Name: CaptureOne.eip
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 5.3 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2009:11:04 08:41:15-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2018:04:10 13:11:44-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2018:04:10 08:38:05-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:07:03 11:48:41-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:07:02 12:56:21-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: EIP
 [File, File, Image] FileTypeExtension - File Type Extension: eip
@@ -131,6 +131,6 @@
 [XML, XML, Image] Crop - Crop: 2087.088867;1690.806274;3868.893555;3158.520264
 [XML, XML, Image] NRAmount - NR Amount: 18.59756112098694
 [XML, XML, Image] Rating - Rating: 3
-[Composite, Composite, Image] ImageSize - Image Size: 4490x3364
-[Composite, Composite, Image] Megapixels - Megapixels: 15.1
-[Composite, Composite, Image] ShutterSpeed - Shutter Speed: 1/15
+[Composite, Composite, Image] Exif::ImageSize - Image Size: 4490x3364
+[Composite, Composite, Image] Exif::Megapixels - Megapixels: 15.1
+[Composite, Composite, Image] Exif::ShutterSpeed - Shutter Speed: 1/15

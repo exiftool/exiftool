@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.14
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.55
 [File, System, Image] FileName - File Name: APE.ape
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 2.1 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2006:11:14 11:04:22-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2016:03:17 12:47:01-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2016:03:12 14:39:00-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:07:03 11:48:11-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:07:02 12:56:21-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: APE
 [File, File, Image] FileTypeExtension - File Type Extension: ape
@@ -27,4 +27,4 @@
 [APE, APE, Audio] Media Jukebox: Date - Media Jukebox Date: 38353
 [APE, APE, Audio] Cover Art (front) Desc - Cover Art Front Desc: X:\_kuvat\Kraftwerk - Cover Art Test.jpg
 [APE, APE, Preview] Cover Art (front) - Cover Art Front: (Binary data 1761 bytes)
-[Composite, Composite, Audio] Duration - Duration: 2.64 s
+[Composite, Composite, Audio] APE::Duration - Duration: 2.64 s

@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 22579 tags, with 15020 unique tag names.
+They contain a total of 22987 tags, with 15043 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -1208,6 +1208,7 @@ L<http://www.adobe.com/devnet/xmp/> for the official XMP specification.
   aux                                           XMP aux
   cc                                            XMP cc
   cell                                          XMP cell
+  crd                                           XMP crd
   creatorAtom                                   XMP creatorAtom
   crs                                           XMP crs
   dc                                            XMP dc
@@ -1426,6 +1427,474 @@ These tags belong to the ExifTool XMP-cell family 1 group.
   MobileCountryCode                             string
   MobileNetworkCode                             string
   CellR                                         string
+
+=head3 XMP crd Tags
+
+Adobe Camera Raw Defaults tags.
+
+These tags belong to the ExifTool XMP-crd family 1 group.
+
+  Tag Name                                      Writable
+  --------                                      --------
+  AlreadyApplied                                boolean/
+  AutoBrightness                                boolean/
+  AutoContrast                                  boolean/
+  AutoExposure                                  boolean/
+  AutoLateralCA                                 integer/
+  AutoShadows                                   boolean/
+  AutoTone                                      boolean/
+  AutoWhiteVersion                              integer/
+  Blacks2012                                    integer/
+  BlueHue                                       integer/
+  BlueSaturation                                integer/
+  Brightness                                    integer/
+  CameraProfile                                 string/
+  CameraProfileDigest                           string/
+  ChromaticAberrationB                          integer/
+  ChromaticAberrationR                          integer/
+  CircularGradientBasedCorrections              Correction Struct+
+  CircGradBasedCorrActive                       boolean_
+  CircGradBasedCorrAmount                       real_
+  CircGradBasedCorrMasks                        CorrectionMask Struct_+
+  CircGradBasedCorrMaskAlpha                    real_
+  CircGradBasedCorrMaskAngle                    real_
+  CircGradBasedCorrMaskBottom                   real_
+  CircGradBasedCorrMaskCenterValue              real_
+  CircGradBasedCorrMaskCenterWeight             real_
+  CircGradBasedCorrMaskDabs                     string/_
+  CircGradBasedCorrMaskFeather                  real_
+  CircGradBasedCorrMaskFlipped                  boolean_
+  CircGradBasedCorrMaskFlow                     real_
+  CircGradBasedCorrMaskFullX                    real_
+  CircGradBasedCorrMaskFullY                    real_
+  CircGradBasedCorrMaskLeft                     real_
+  CircGradBasedCorrMaskValue                    real_
+  CircGradBasedCorrMaskMidpoint                 real_
+  CircGradBasedCorrMaskPerimeterValue           real_
+  CircGradBasedCorrMaskRadius                   real_
+  CircGradBasedCorrMaskRight                    real_
+  CircGradBasedCorrMaskRoundness                real_
+  CircGradBasedCorrMaskSizeX                    real_
+  CircGradBasedCorrMaskSizeY                    real_
+  CircGradBasedCorrMaskTop                      real_
+  CircGradBasedCorrMaskVersion                  integer_
+  CircGradBasedCorrMaskWhat                     string_
+  CircGradBasedCorrMaskX                        real_
+  CircGradBasedCorrMaskY                        real_
+  CircGradBasedCorrMaskZeroX                    real_
+  CircGradBasedCorrMaskZeroY                    real_
+  CircGradBasedCorrBrightness                   real_
+  CircGradBasedCorrClarity                      real_
+  CircGradBasedCorrClarity2012                  real_
+  CircGradBasedCorrContrast                     real_
+  CircGradBasedCorrContrast2012                 real_
+  CircGradBasedCorrDefringe                     real_
+  CircGradBasedCorrExposure                     real_
+  CircGradBasedCorrExposure2012                 real_
+  CircGradBasedCorrHighlights2012               real_
+  CircGradBasedCorrLuminanceNoise               real_
+  CircGradBasedCorrMoire                        real_
+  CircGradBasedCorrSaturation                   real_
+  CircGradBasedCorrShadows2012                  real_
+  CircGradBasedCorrSharpness                    real_
+  CircGradBasedCorrTemperature                  real_
+  CircGradBasedCorrTint                         real_
+  CircGradBasedCorrHue                          real_
+  CircGradBasedCorrSaturation                   real_
+  CircGradBasedCorrWhat                         string_
+  Clarity                                       integer/
+  Clarity2012                                   integer/
+  ColorNoiseReduction                           integer/
+  ColorNoiseReductionDetail                     integer/
+  ColorNoiseReductionSmoothness                 integer/
+  Contrast                                      integer/
+  Contrast2012                                  integer/
+  Converter                                     string/
+  ConvertToGrayscale                            boolean/
+  CropAngle                                     real/
+  CropBottom                                    real/
+  CropConstrainToWarp                           integer/
+  CropHeight                                    real/
+  CropLeft                                      real/
+  CropRight                                     real/
+  CropTop                                       real/
+  CropUnit                                      integer/
+  CropUnits                                     integer/
+  CropWidth                                     real/
+  DefaultAutoGray                               boolean/
+  DefaultAutoTone                               boolean/
+  DefaultsSpecificToISO                         boolean/
+  DefaultsSpecificToSerial                      boolean/
+  Defringe                                      integer/
+  DefringeGreenAmount                           integer/
+  DefringeGreenHueHi                            integer/
+  DefringeGreenHueLo                            integer/
+  DefringePurpleAmount                          integer/
+  DefringePurpleHueHi                           integer/
+  DefringePurpleHueLo                           integer/
+  Dehaze                                        real/
+  DNGIgnoreSidecars                             boolean/
+  Exposure                                      real/
+  Exposure2012                                  real/
+  FillLight                                     integer/
+  GradientBasedCorrections                      Correction Struct+
+  GradientBasedCorrActive                       boolean_
+  GradientBasedCorrAmount                       real_
+  GradientBasedCorrMasks                        CorrectionMask Struct_+
+  GradientBasedCorrMaskAlpha                    real_
+  GradientBasedCorrMaskAngle                    real_
+  GradientBasedCorrMaskBottom                   real_
+  GradientBasedCorrMaskCenterValue              real_
+  GradientBasedCorrMaskCenterWeight             real_
+  GradientBasedCorrMaskDabs                     string/_
+  GradientBasedCorrMaskFeather                  real_
+  GradientBasedCorrMaskFlipped                  boolean_
+  GradientBasedCorrMaskFlow                     real_
+  GradientBasedCorrMaskFullX                    real_
+  GradientBasedCorrMaskFullY                    real_
+  GradientBasedCorrMaskLeft                     real_
+  GradientBasedCorrMaskValue                    real_
+  GradientBasedCorrMaskMidpoint                 real_
+  GradientBasedCorrMaskPerimeterValue           real_
+  GradientBasedCorrMaskRadius                   real_
+  GradientBasedCorrMaskRight                    real_
+  GradientBasedCorrMaskRoundness                real_
+  GradientBasedCorrMaskSizeX                    real_
+  GradientBasedCorrMaskSizeY                    real_
+  GradientBasedCorrMaskTop                      real_
+  GradientBasedCorrMaskVersion                  integer_
+  GradientBasedCorrMaskWhat                     string_
+  GradientBasedCorrMaskX                        real_
+  GradientBasedCorrMaskY                        real_
+  GradientBasedCorrMaskZeroX                    real_
+  GradientBasedCorrMaskZeroY                    real_
+  GradientBasedCorrBrightness                   real_
+  GradientBasedCorrClarity                      real_
+  GradientBasedCorrClarity2012                  real_
+  GradientBasedCorrContrast                     real_
+  GradientBasedCorrContrast2012                 real_
+  GradientBasedCorrDefringe                     real_
+  GradientBasedCorrExposure                     real_
+  GradientBasedCorrExposure2012                 real_
+  GradientBasedCorrHighlights2012               real_
+  GradientBasedCorrLuminanceNoise               real_
+  GradientBasedCorrMoire                        real_
+  GradientBasedCorrSaturation                   real_
+  GradientBasedCorrShadows2012                  real_
+  GradientBasedCorrSharpness                    real_
+  GradientBasedCorrTemperature                  real_
+  GradientBasedCorrTint                         real_
+  GradientBasedCorrHue                          real_
+  GradientBasedCorrSaturation                   real_
+  GradientBasedCorrWhat                         string_
+  GrainAmount                                   integer/
+  GrainFrequency                                integer/
+  GrainSize                                     integer/
+  GrayMixerAqua                                 integer/
+  GrayMixerBlue                                 integer/
+  GrayMixerGreen                                integer/
+  GrayMixerMagenta                              integer/
+  GrayMixerOrange                               integer/
+  GrayMixerPurple                               integer/
+  GrayMixerRed                                  integer/
+  GrayMixerYellow                               integer/
+  GreenHue                                      integer/
+  GreenSaturation                               integer/
+  HasCrop                                       boolean/
+  HasSettings                                   boolean/
+  Highlight2012                                 integer/
+  HighlightRecovery                             integer/
+  Highlights2012                                integer/
+  HueAdjustmentAqua                             integer/
+  HueAdjustmentBlue                             integer/
+  HueAdjustmentGreen                            integer/
+  HueAdjustmentMagenta                          integer/
+  HueAdjustmentOrange                           integer/
+  HueAdjustmentPurple                           integer/
+  HueAdjustmentRed                              integer/
+  HueAdjustmentYellow                           integer/
+  IncrementalTemperature                        integer/
+  IncrementalTint                               integer/
+  JPEGHandling                                  string/
+  LensManualDistortionAmount                    integer/
+  LensProfileChromaticAberrationScale           integer/
+  LensProfileDigest                             string/
+  LensProfileDistortionScale                    integer/
+  LensProfileEnable                             integer/
+  LensProfileFilename                           string/
+  LensProfileMatchKeyCameraModelName            string/
+  LensProfileMatchKeyExifMake                   string/
+  LensProfileMatchKeyExifModel                  string/
+  LensProfileMatchKeyIsRaw                      boolean/
+  LensProfileMatchKeyLensID                     string/
+  LensProfileMatchKeyLensInfo                   string/
+  LensProfileMatchKeyLensName                   string/
+  LensProfileMatchKeySensorFormatFactor         real/
+  LensProfileName                               string/
+  LensProfileSetup                              string/
+  LensProfileVignettingScale                    integer/
+  LuminanceAdjustmentAqua                       integer/
+  LuminanceAdjustmentBlue                       integer/
+  LuminanceAdjustmentGreen                      integer/
+  LuminanceAdjustmentMagenta                    integer/
+  LuminanceAdjustmentOrange                     integer/
+  LuminanceAdjustmentPurple                     integer/
+  LuminanceAdjustmentRed                        integer/
+  LuminanceAdjustmentYellow                     integer/
+  LuminanceNoiseReductionContrast               integer/
+  LuminanceNoiseReductionDetail                 integer/
+  LuminanceSmoothing                            integer/
+  MoireFilter                                   string/
+  NegativeCacheLargePreviewSize                 integer/
+  NegativeCacheMaximumSize                      real/
+  NegativeCachePath                             string/
+  PaintBasedCorrections                         Correction Struct+
+  PaintCorrectionActive                         boolean_
+  PaintCorrectionAmount                         real_
+  PaintBasedCorrectionMasks                     CorrectionMask Struct_+
+  PaintCorrectionMaskAlpha                      real_
+  PaintCorrectionMaskAngle                      real_
+  PaintCorrectionMaskBottom                     real_
+  PaintCorrectionMaskCenterValue                real_
+  PaintCorrectionMaskCenterWeight               real_
+  PaintCorrectionMaskDabs                       string/_
+  PaintCorrectionMaskFeather                    real_
+  PaintCorrectionMaskFlipped                    boolean_
+  PaintCorrectionMaskFlow                       real_
+  PaintCorrectionMaskFullX                      real_
+  PaintCorrectionMaskFullY                      real_
+  PaintCorrectionMaskLeft                       real_
+  PaintCorrectionMaskValue                      real_
+  PaintCorrectionMaskMidpoint                   real_
+  PaintCorrectionMaskPerimeterValue             real_
+  PaintCorrectionMaskRadius                     real_
+  PaintCorrectionMaskRight                      real_
+  PaintCorrectionMaskRoundness                  real_
+  PaintCorrectionMaskSizeX                      real_
+  PaintCorrectionMaskSizeY                      real_
+  PaintCorrectionMaskTop                        real_
+  PaintCorrectionMaskVersion                    integer_
+  PaintCorrectionMaskWhat                       string_
+  PaintCorrectionMaskX                          real_
+  PaintCorrectionMaskY                          real_
+  PaintCorrectionMaskZeroX                      real_
+  PaintCorrectionMaskZeroY                      real_
+  PaintCorrectionBrightness                     real_
+  PaintCorrectionClarity                        real_
+  PaintCorrectionClarity2012                    real_
+  PaintCorrectionContrast                       real_
+  PaintCorrectionContrast2012                   real_
+  PaintCorrectionDefringe                       real_
+  PaintCorrectionExposure                       real_
+  PaintCorrectionExposure2012                   real_
+  PaintCorrectionHighlights2012                 real_
+  PaintCorrectionLuminanceNoise                 real_
+  PaintCorrectionMoire                          real_
+  PaintCorrectionSaturation                     real_
+  PaintCorrectionShadows2012                    real_
+  PaintCorrectionSharpness                      real_
+  PaintCorrectionTemperature                    real_
+  PaintCorrectionTint                           real_
+  PaintCorrectionHue                            real_
+  PaintCorrectionSaturation                     real_
+  PaintCorrectionWhat                           string_
+  ParametricDarks                               integer/
+  ParametricHighlights                          integer/
+  ParametricHighlightSplit                      integer/
+  ParametricLights                              integer/
+  ParametricMidtoneSplit                        integer/
+  ParametricShadows                             integer/
+  ParametricShadowSplit                         integer/
+  PerspectiveAspect                             integer/
+  PerspectiveHorizontal                         integer/
+  PerspectiveRotate                             real/
+  PerspectiveScale                              integer/
+  PerspectiveUpright                            integer/
+  PerspectiveVertical                           integer/
+  PerspectiveX                                  real/
+  PerspectiveY                                  real/
+  PostCropVignetteAmount                        integer/
+  PostCropVignetteFeather                       integer/
+  PostCropVignetteHighlightContrast             integer/
+  PostCropVignetteMidpoint                      integer/
+  PostCropVignetteRoundness                     integer/
+  PostCropVignetteStyle                         integer/
+  ProcessVersion                                string/
+  RawFileName                                   string/
+  RedEyeInfo                                    string/+
+  RedHue                                        integer/
+  RedSaturation                                 integer/
+  RetouchAreas                                  RetouchArea Struct+
+  RetouchAreaFeather                            real_
+  RetouchAreaMasks                              CorrectionMask Struct_+
+  RetouchAreaMaskAlpha                          real_
+  RetouchAreaMaskAngle                          real_
+  RetouchAreaMaskBottom                         real_
+  RetouchAreaMaskCenterValue                    real_
+  RetouchAreaMaskCenterWeight                   real_
+  RetouchAreaMaskDabs                           string/_
+  RetouchAreaMaskFeather                        real_
+  RetouchAreaMaskFlipped                        boolean_
+  RetouchAreaMaskFlow                           real_
+  RetouchAreaMaskFullX                          real_
+  RetouchAreaMaskFullY                          real_
+  RetouchAreaMaskLeft                           real_
+  RetouchAreaMaskValue                          real_
+  RetouchAreaMaskMidpoint                       real_
+  RetouchAreaMaskPerimeterValue                 real_
+  RetouchAreaMaskRadius                         real_
+  RetouchAreaMaskRight                          real_
+  RetouchAreaMaskRoundness                      real_
+  RetouchAreaMaskSizeX                          real_
+  RetouchAreaMaskSizeY                          real_
+  RetouchAreaMaskTop                            real_
+  RetouchAreaMaskVersion                        integer_
+  RetouchAreaMaskWhat                           string_
+  RetouchAreaMaskX                              real_
+  RetouchAreaMaskY                              real_
+  RetouchAreaMaskZeroX                          real_
+  RetouchAreaMaskZeroY                          real_
+  RetouchAreaMethod                             string_
+  RetouchAreaOffsetY                            real_
+  RetouchAreaOpacity                            real_
+  RetouchAreaSeed                               integer_
+  RetouchAreaSourceState                        string_
+  RetouchAreaSourceX                            real_
+  RetouchAreaSpotType                           string_
+  RetouchInfo                                   string/+
+  Saturation                                    integer/
+  SaturationAdjustmentAqua                      integer/
+  SaturationAdjustmentBlue                      integer/
+  SaturationAdjustmentGreen                     integer/
+  SaturationAdjustmentMagenta                   integer/
+  SaturationAdjustmentOrange                    integer/
+  SaturationAdjustmentPurple                    integer/
+  SaturationAdjustmentRed                       integer/
+  SaturationAdjustmentYellow                    integer/
+  Shadows                                       integer/
+  Shadows2012                                   integer/
+  ShadowTint                                    integer/
+  SharpenDetail                                 integer/
+  SharpenEdgeMasking                            integer/
+  SharpenRadius                                 real/
+  Sharpness                                     integer/
+  Smoothness                                    integer/
+  SplitToningBalance                            integer/
+  SplitToningHighlightHue                       integer/
+  SplitToningHighlightSaturation                integer/
+  SplitToningShadowHue                          integer/
+  SplitToningShadowSaturation                   integer/
+  ColorTemperature                              integer/
+  Texture                                       integer/
+  TIFFHandling                                  string/
+  Tint                                          integer/
+  ToneCurve                                     string/+
+  ToneCurveBlue                                 string/+
+  ToneCurveGreen                                string/+
+  ToneCurveName                                 string/
+  ToneCurveName2012                             string/
+  ToneCurvePV2012                               string/+
+  ToneCurvePV2012Blue                           string/+
+  ToneCurvePV2012Green                          string/+
+  ToneCurvePV2012Red                            string/+
+  ToneCurveRed                                  string/+
+  ToneMapStrength                               real/
+  UprightCenterMode                             integer/
+  UprightCenterNormX                            real/
+  UprightCenterNormY                            real/
+  UprightDependentDigest                        string/
+  UprightFocalLength35mm                        real/
+  UprightFocalMode                              integer/
+  UprightFourSegmentsCount                      integer/
+  UprightPreview                                boolean/
+  UprightTransform_0                            string/
+  UprightTransform_1                            string/
+  UprightTransform_2                            string/
+  UprightTransform_3                            string/
+  UprightTransform_4                            string/
+  UprightTransform_5                            string/
+  UprightTransformCount                         integer/
+  UprightVersion                                integer/
+  Version                                       string/
+  Vibrance                                      integer/
+  VignetteAmount                                integer/
+  VignetteMidpoint                              integer/
+  What                                          string/
+  WhiteBalance                                  string/
+  Whites2012                                    integer/
+
+=head3 XMP Correction Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  CorrectionActive                              boolean
+  CorrectionAmount                              real
+  CorrectionMasks                               CorrectionMask Struct+
+  LocalBrightness                               real
+  LocalClarity                                  real
+  LocalClarity2012                              real
+  LocalContrast                                 real
+  LocalContrast2012                             real
+  LocalDefringe                                 real
+  LocalExposure                                 real
+  LocalExposure2012                             real
+  LocalHighlights2012                           real
+  LocalLuminanceNoise                           real
+  LocalMoire                                    real
+  LocalSaturation                               real
+  LocalShadows2012                              real
+  LocalSharpness                                real
+  LocalTemperature                              real
+  LocalTint                                     real
+  LocalToningHue                                real
+  LocalToningSaturation                         real
+  What                                          string
+
+=head3 XMP CorrectionMask Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  Alpha                                         real
+  Angle                                         real
+  Bottom                                        real
+  CenterValue                                   real
+  CenterWeight                                  real
+  Dabs                                          string+
+  Feather                                       real
+  Flipped                                       boolean
+  Flow                                          real
+  FullX                                         real
+  FullY                                         real
+  Left                                          real
+  MaskValue                                     real
+  Midpoint                                      real
+  PerimeterValue                                real
+  Radius                                        real
+  Right                                         real
+  Roundness                                     real
+  SizeX                                         real
+  SizeY                                         real
+  Top                                           real
+  Version                                       integer
+  What                                          string
+  X                                             real
+  Y                                             real
+  ZeroX                                         real
+  ZeroY                                         real
+
+=head3 XMP RetouchArea Struct
+
+  Field Name                                    Writable
+  ----------                                    --------
+  Feather                                       real
+  Masks                                         CorrectionMask Struct+
+  Method                                        string
+  OffsetY                                       real
+  Opacity                                       real
+  Seed                                          integer
+  SourceState                                   string
+  SourceX                                       real
+  SpotType                                      string
 
 =head3 XMP creatorAtom Tags
 
@@ -1651,6 +2120,7 @@ These tags belong to the ExifTool XMP-crs family 1 group.
   GreenSaturation                               integer
   HasCrop                                       boolean
   HasSettings                                   boolean
+  Highlight2012                                 integer
   HighlightRecovery                             integer
   Highlights2012                                integer
   HueAdjustmentAqua                             integer
@@ -1833,6 +2303,7 @@ These tags belong to the ExifTool XMP-crs family 1 group.
   SplitToningShadowHue                          integer
   SplitToningShadowSaturation                   integer
   ColorTemperature                              integer
+  Texture                                       integer
   TIFFHandling                                  string
   Tint                                          integer
   ToneCurve                                     string+
@@ -1869,79 +2340,6 @@ These tags belong to the ExifTool XMP-crs family 1 group.
   What                                          string
   WhiteBalance                                  string/
   Whites2012                                    integer
-
-=head3 XMP Correction Struct
-
-  Field Name                                    Writable
-  ----------                                    --------
-  CorrectionActive                              boolean
-  CorrectionAmount                              real
-  CorrectionMasks                               CorrectionMask Struct+
-  LocalBrightness                               real
-  LocalClarity                                  real
-  LocalClarity2012                              real
-  LocalContrast                                 real
-  LocalContrast2012                             real
-  LocalDefringe                                 real
-  LocalExposure                                 real
-  LocalExposure2012                             real
-  LocalHighlights2012                           real
-  LocalLuminanceNoise                           real
-  LocalMoire                                    real
-  LocalSaturation                               real
-  LocalShadows2012                              real
-  LocalSharpness                                real
-  LocalTemperature                              real
-  LocalTint                                     real
-  LocalToningHue                                real
-  LocalToningSaturation                         real
-  What                                          string
-
-=head3 XMP CorrectionMask Struct
-
-  Field Name                                    Writable
-  ----------                                    --------
-  Alpha                                         real
-  Angle                                         real
-  Bottom                                        real
-  CenterValue                                   real
-  CenterWeight                                  real
-  Dabs                                          string+
-  Feather                                       real
-  Flipped                                       boolean
-  Flow                                          real
-  FullX                                         real
-  FullY                                         real
-  Left                                          real
-  MaskValue                                     real
-  Midpoint                                      real
-  PerimeterValue                                real
-  Radius                                        real
-  Right                                         real
-  Roundness                                     real
-  SizeX                                         real
-  SizeY                                         real
-  Top                                           real
-  Version                                       integer
-  What                                          string
-  X                                             real
-  Y                                             real
-  ZeroX                                         real
-  ZeroY                                         real
-
-=head3 XMP RetouchArea Struct
-
-  Field Name                                    Writable
-  ----------                                    --------
-  Feather                                       real
-  Masks                                         CorrectionMask Struct+
-  Method                                        string
-  OffsetY                                       real
-  Opacity                                       real
-  Seed                                          integer
-  SourceState                                   string
-  SourceX                                       real
-  SpotType                                      string
 
 =head3 XMP dc Tags
 
@@ -9692,6 +10090,7 @@ data, however ExifTool will extract information from any tags found here.
   'ISO'                 ISO                     no
   'ISO Speed'           ISO                     no
   'Image Number'        ImageNumber             no
+  'Lens'                Lens                    no
   'Max Aperture'        MaxAperture             no
   'Meter Mode'          MeterMode               no
   'Min Aperture'        MinAperture             no
@@ -14139,6 +14538,8 @@ These tags are used in Panasonic/Leica cameras.
   0x00b9   RedEyeRemoval                        int16u
   0x00bb   VideoBurstMode                       int32u
   0x00bc   DiffractionCorrection                int16u
+  0x00d1   ISO                                  int32u
+  0x00d6   NoiseReductionStrength               rational64s
   0x0e00   PrintIM                              PrintIM
   0x2003   TimeInfo                             Panasonic TimeInfo
   0x8000   MakerNoteVersion                     undef
@@ -24608,12 +25009,33 @@ defined in this table.
   'auxC'   AuxiliaryImageType                   no
   'clap'   CleanAperture                        no
   'colr'   ICC_Profile                          ICC_Profile
-  'hvcC'   HEVCConfiguration?                   no
+  'hvcC'   HEVCConfiguration                    QuickTime HEVCConfig
   'irot'   Rotation                             int8u
   'ispe'   ImageSpatialExtent                   no
   'pasp'   PixelAspectRatio                     int32u
   'pixi'   ImagePixelDepth                      no
   'rloc'   RelativeLocation                     no
+
+=head3 QuickTime HEVCConfig Tags
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      0    HEVCConfigurationVersion             no
+      1    GeneralProfileSpace                  no
+    1.1    GeneralTierFlag                      no
+    1.2    GeneralProfileIDC                    no
+      2    GenProfileCompatibilityFlags         no
+      6    ConstraintIndicatorFlags             no
+     12    GeneralLevelIDC                      no
+     13    MinSpatialSegmentationIDC            no
+     15    ParallelismType                      no
+     16    ChromaFormat                         no
+     17    BitDepthLuma                         no
+     18    BitDepthChroma                       no
+     19    AverageFrameRate                     no
+     21    ConstantFrameRate                    no
+   21.1    NumTemporalLayers                    no
+   21.2    TemporalIDNested                     no
 
 =head3 QuickTime ItemRef Tags
 
@@ -25014,6 +25436,7 @@ MP4 metadata sample description.
   ------   --------                             --------
   0x0004   OtherFormat                          no
   'ftab'   FontTable                            no
+  'name'   OtherName                            no
 
 =head3 QuickTime VideoHeader Tags
 
@@ -25186,6 +25609,7 @@ file.
   'vndr'       Vendor                           string
   'yrrc'       Year                             no
   "\xa9ART"    Artist                           string
+  "\xa9TIM"    StartTimecode                    string
   "\xa9TSC"    StartTimeScale                   string
   "\xa9TSZ"    StartTimeSampleSize              string
   "\xa9alb"    Album                            string
@@ -33096,14 +33520,14 @@ values, may created via the ExifTool configuration file.
                        Canon:DigitalZoom
   DriveMode            ContinuousDrive          no
                        SelfTimer
-  Duration             FLAC:SampleRate          no
-                       FLAC:TotalSamples
-  Duration             Vorbis:NominalBitrate    no
-                       FileSize
+  Duration             AIFF:SampleRate          no
+                       AIFF:NumSampleFrames
   Duration             APE:SampleRate           no
                        APE:TotalFrames
                        APE:BlocksPerFrame
                        APE:FinalFrameBlocks
+  Duration             FLAC:SampleRate          no
+                       FLAC:TotalSamples
   Duration             FileSize                 no
                        ID3Size
                        MPEG:AudioBitrate
@@ -33119,8 +33543,8 @@ values, may created via the ExifTool configuration file.
                        FileSize
                        FrameCount
                        VideoFrameCount
-  Duration             AIFF:SampleRate          no
-                       AIFF:NumSampleFrames
+  Duration             Vorbis:NominalBitrate    no
+                       FileSize
   ExtenderStatus       Olympus:Extender         no
                        Olympus:LensType
                        MaxApertureValue
@@ -33178,19 +33602,19 @@ values, may created via the ExifTool configuration file.
   ISO                  Canon:CameraISO          no
                        Canon:BaseISO
                        Canon:AutoISO
-  ImageHeight          Main:PostScript:ImageData no
-                       PostScript:BoundingBox
   ImageHeight          IFD0:SensorTopBorder     no
                        IFD0:SensorBottomBorder
+  ImageHeight          Main:PostScript:ImageData no
+                       PostScript:BoundingBox
   ImageSize            ImageWidth               no
                        ImageHeight
                        ExifImageWidth
                        ExifImageHeight
                        RawImageCroppedSize
-  ImageWidth           Main:PostScript:ImageData no
-                       PostScript:BoundingBox
   ImageWidth           IFD0:SensorLeftBorder    no
                        IFD0:SensorRightBorder
+  ImageWidth           Main:PostScript:ImageData no
+                       PostScript:BoundingBox
   JpgFromRaw           JpgFromRawStart          yes
                        JpgFromRawLength
   Lens                 Canon:MinFocalLength     no
@@ -33211,12 +33635,6 @@ values, may created via the ExifTool configuration file.
                        LensType2
                        LensType3
                        LensFocalLength
-  LensID               XMP-aux:LensID           no
-                       Make
-                       LensInfo
-                       FocalLength
-                       LensModel
-                       MaxApertureValue
   LensID               Nikon:LensIDNumber       no
                        LensFStops
                        MinFocalLength
@@ -33226,6 +33644,12 @@ values, may created via the ExifTool configuration file.
                        MCUVersion
                        Nikon:LensType
   LensID               Ricoh:LensFirmware       no
+  LensID               XMP-aux:LensID           no
+                       Make
+                       LensInfo
+                       FocalLength
+                       LensModel
+                       MaxApertureValue
   LensSpec             Nikon:Lens               no
                        Nikon:LensType
   LightValue           Aperture                 no

@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.52
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.55
 [File, System, Image] FileName - File Name: Pentax.avi
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 1672 bytes
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2009:10:30 08:10:17-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2017:05:09 13:33:43-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2017:05:02 08:30:14-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:07:03 11:48:41-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:07:02 12:56:21-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: AVI
 [File, File, Image] FileTypeExtension - File Type Extension: avi
@@ -126,7 +126,7 @@
 [MakerNotes, Pentax, Author] 558 - Artist: 
 [MakerNotes, Pentax, Author] 559 - Copyright: 
 [MakerNotes, Pentax, Camera] 560 - Firmware Version: K-x Ver 1.00           
-[Composite, Composite, Other] Duration - Duration: 25.00 s
-[Composite, Composite, Image] ImageSize - Image Size: 1280x720
-[Composite, Composite, Image] Megapixels - Megapixels: 0.922
-[Composite, Composite, Camera] LensID - Lens ID: smc PENTAX-DA L 18-55mm F3.5-5.6
+[Composite, Composite, Image] Exif::ImageSize - Image Size: 1280x720
+[Composite, Composite, Image] Exif::Megapixels - Megapixels: 0.922
+[Composite, Composite, Other] RIFF::Duration - Duration: 25.00 s
+[Composite, Composite, Camera] Exif::LensID - Lens ID: smc PENTAX-DA L 18-55mm F3.5-5.6

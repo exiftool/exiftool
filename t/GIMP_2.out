@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.11
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.55
 [File, System, Image] FileName - File Name: GIMP.xcf
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 2.3 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2010:10:07 13:50:09-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2018:08:20 13:01:08-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2018:08:17 10:55:40-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:07:03 11:48:41-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:07:02 12:56:21-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: XCF
 [File, File, Image] FileTypeExtension - File Type Extension: xcf
@@ -63,5 +63,5 @@
 [ICC_Profile, ICC_Profile, Image] bTRC - Blue Tone Reproduction Curve: (Binary data 14 bytes)
 [ICC_Profile, ICC_Profile, Image] wtpt - Media White Point: 0.9505 1 1.0891
 [ICC_Profile, ICC_Profile, Image] cprt - Profile Copyright: Nikon Inc. & Nikon Corporation 2001
-[Composite, Composite, Image] ImageSize - Image Size: 8x8
-[Composite, Composite, Image] Megapixels - Megapixels: 0.000064
+[Composite, Composite, Image] Exif::ImageSize - Image Size: 8x8
+[Composite, Composite, Image] Exif::Megapixels - Megapixels: 0.000064

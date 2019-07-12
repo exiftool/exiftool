@@ -1,4 +1,4 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.74
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.55
 [File, System, Image] FileSize - File Size: 7.6 kB
 [File, File, Image] FileType - File Type: TIFF
 [File, File, Image] FileTypeExtension - File Type Extension: tif
@@ -25,7 +25,7 @@
 [EXIF, IFD0, Image] 305 - Software: GraphicConverter
 [EXIF, IFD0, Time] 306 - Modify Date: 2004:02:20 08:07:49
 [EXIF, IFD0, Image] 317 - Predictor: None
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 10.74
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.55
 [XMP, XMP-photoshop, Image] SupplementalCategories - Supplemental Categories: new XMP info
 [IPTC, IPTC, Other] 0 - Application Record Version: 2
 [IPTC, IPTC, Other] 120 - Caption-Abstract: The picture caption
@@ -83,5 +83,5 @@
 [ICC_Profile, ICC_Profile, Image] rTRC - Red Tone Reproduction Curve: (Binary data 2060 bytes)
 [ICC_Profile, ICC_Profile, Image] gTRC - Green Tone Reproduction Curve: (Binary data 2060 bytes)
 [ICC_Profile, ICC_Profile, Image] bTRC - Blue Tone Reproduction Curve: (Binary data 2060 bytes)
-[Composite, Composite, Image] ImageSize - Image Size: 160x120
-[Composite, Composite, Image] Megapixels - Megapixels: 0.019
+[Composite, Composite, Image] Exif::ImageSize - Image Size: 160x120
+[Composite, Composite, Image] Exif::Megapixels - Megapixels: 0.019

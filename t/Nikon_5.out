@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.38
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.55
 [File, System, Image] FileName - File Name: NikonD2Hs.jpg
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 3.4 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2006:01:04 14:02:27-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2016:12:30 11:49:02-05:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:03:07 15:31:22-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:07:03 11:34:41-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:07:02 12:56:21-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: JPEG
 [File, File, Image] FileTypeExtension - File Type Extension: jpg
@@ -73,7 +73,7 @@
 [EXIF, IFD1, Image] 513 - Thumbnail Offset: 3202
 [EXIF, IFD1, Image] 514 - Thumbnail Length: 28
 [EXIF, IFD1, Image] 531 - Y Cb Cr Positioning: Co-sited
-[EXIF, IFD1, Preview] ThumbnailImage - Thumbnail Image: (Binary data 28 bytes)
+[EXIF, IFD1, Preview] Exif::ThumbnailImage - Thumbnail Image: (Binary data 28 bytes)
 [MakerNotes, Nikon, Camera] 1 - Maker Note Version: 2.10
 [MakerNotes, Nikon, Image] 2 - ISO: 800
 [MakerNotes, Nikon, Camera] 4 - Quality: Fine
@@ -148,22 +148,22 @@
 [MakerNotes, Nikon, Camera] 18 - Flash Group B Compensation: 0
 [MakerNotes, Nikon, Camera] 170 - Saturation: Normal
 [MakerNotes, Nikon, Camera] 177 - High ISO Noise Reduction: Normal
-[MakerNotes, PreviewIFD, Preview] PreviewImage - Preview Image: (Binary data 26 bytes)
-[Composite, Composite, Image] Aperture - Aperture: 4.0
-[Composite, Composite, Camera] LensID - Lens ID: AF Nikkor 50mm f/1.8D
-[Composite, Composite, Camera] LensSpec - Lens Spec: 50mm f/1.8 D
-[Composite, Composite, Image] ShutterSpeed - Shutter Speed: 1/125
-[Composite, Composite, Time] SubSecCreateDate - Create Date: 2005:03:18 02:55:18.16
-[Composite, Composite, Time] SubSecDateTimeOriginal - Date/Time Original: 2005:03:18 02:55:18.16
-[Composite, Composite, Time] SubSecModifyDate - Modify Date: 2005:03:18 02:55:18.16
-[Composite, Composite, Camera] BlueBalance - Blue Balance: 2.097656
-[Composite, Composite, Image] ImageSize - Image Size: 8x8
-[Composite, Composite, Image] LightValue - Light Value: 8.0
-[Composite, Composite, Image] Megapixels - Megapixels: 0.000064
-[Composite, Composite, Camera] RedBalance - Red Balance: 2.195313
-[Composite, Composite, Camera] ScaleFactor35efl - Scale Factor To 35 mm Equivalent: 1.5
-[Composite, Composite, Camera] CircleOfConfusion - Circle Of Confusion: 0.020 mm
-[Composite, Composite, Image] DOF - Depth Of Field: 0.03 m (0.69 - 0.72 m)
-[Composite, Composite, Image] FOV - Field Of View: 25.1 deg (0.32 m)
-[Composite, Composite, Camera] FocalLength35efl - Focal Length: 50.0 mm (35 mm equivalent: 75.0 mm)
-[Composite, Composite, Camera] HyperfocalDistance - Hyperfocal Distance: 31.20 m
+[MakerNotes, PreviewIFD, Preview] Exif::PreviewImage - Preview Image: (Binary data 26 bytes)
+[Composite, Composite, Image] Exif::Aperture - Aperture: 4.0
+[Composite, Composite, Image] Exif::ShutterSpeed - Shutter Speed: 1/125
+[Composite, Composite, Time] Exif::SubSecCreateDate - Create Date: 2005:03:18 02:55:18.16
+[Composite, Composite, Time] Exif::SubSecDateTimeOriginal - Date/Time Original: 2005:03:18 02:55:18.16
+[Composite, Composite, Time] Exif::SubSecModifyDate - Modify Date: 2005:03:18 02:55:18.16
+[Composite, Composite, Camera] Nikon::LensID - Lens ID: AF Nikkor 50mm f/1.8D
+[Composite, Composite, Camera] Nikon::LensSpec - Lens Spec: 50mm f/1.8 D
+[Composite, Composite, Camera] Exif::BlueBalance - Blue Balance: 2.097656
+[Composite, Composite, Image] Exif::ImageSize - Image Size: 8x8
+[Composite, Composite, Image] Exif::LightValue - Light Value: 8.0
+[Composite, Composite, Image] Exif::Megapixels - Megapixels: 0.000064
+[Composite, Composite, Camera] Exif::RedBalance - Red Balance: 2.195313
+[Composite, Composite, Camera] Exif::ScaleFactor35efl - Scale Factor To 35 mm Equivalent: 1.5
+[Composite, Composite, Camera] Exif::CircleOfConfusion - Circle Of Confusion: 0.020 mm
+[Composite, Composite, Image] Exif::DOF - Depth Of Field: 0.03 m (0.69 - 0.72 m)
+[Composite, Composite, Image] Exif::FOV - Field Of View: 25.1 deg (0.32 m)
+[Composite, Composite, Camera] Exif::FocalLength35efl - Focal Length: 50.0 mm (35 mm equivalent: 75.0 mm)
+[Composite, Composite, Camera] Exif::HyperfocalDistance - Hyperfocal Distance: 31.20 m

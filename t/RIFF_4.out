@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.93
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.55
 [File, System, Image] FileName - File Name: RIFF.webp
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 58 bytes
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2012:08:03 09:30:24-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:18 07:17:35-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:03:07 15:31:28-05:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2012:08:03 09:16:51-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:07:03 11:48:41-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:07:02 12:56:21-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: WEBP
 [File, File, Image] FileTypeExtension - File Type Extension: webp
@@ -14,5 +14,5 @@
 [RIFF, RIFF, Image] 6.1 - Horizontal Scale: 0
 [RIFF, RIFF, Image] 8 - Image Height: 16
 [RIFF, RIFF, Image] 8.1 - Vertical Scale: 0
-[Composite, Composite, Image] ImageSize - Image Size: 16x16
-[Composite, Composite, Image] Megapixels - Megapixels: 0.000256
+[Composite, Composite, Image] Exif::ImageSize - Image Size: 16x16
+[Composite, Composite, Image] Exif::Megapixels - Megapixels: 0.000256

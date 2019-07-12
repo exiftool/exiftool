@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 10.30
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.55
 [File, System, Image] FileName - File Name: Jpeg2000.jp2
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 2028 bytes
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2016:10:10 15:46:32-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2016:10:10 15:46:35-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2016:10:10 15:46:32-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2016:10:11 07:20:47-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:07:03 11:48:19-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:07:02 12:56:21-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: JP2
 [File, File, Image] FileTypeExtension - File Type Extension: jp2
@@ -67,5 +67,5 @@
 [XMP, XMP, Unknown] :contentDescriptionThingPositionRectHeight - Content Description Thing Position Rect Height: 39
 [XMP, XMP, Unknown] :contentDescriptionEventEventType - Content Description Event Event Type: Capture Device Test 1234
 [XMP, XMP, Unknown] :contentDescriptionEventDescription - Content Description Event Description: Project Prototype
-[Composite, Composite, Image] ImageSize - Image Size: 16x16
-[Composite, Composite, Image] Megapixels - Megapixels: 0.000256
+[Composite, Composite, Image] Exif::ImageSize - Image Size: 16x16
+[Composite, Composite, Image] Exif::Megapixels - Megapixels: 0.000256

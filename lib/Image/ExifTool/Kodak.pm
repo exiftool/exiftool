@@ -25,7 +25,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.45';
+$VERSION = '1.46';
 
 sub ProcessKodakIFD($$$);
 sub ProcessKodakText($$$);
@@ -2661,6 +2661,7 @@ my %sceneModeUsed = (
     'Image Number'  => 'ImageNumber',
     'ISO'           => 'ISO',
     'ISO Speed'     => 'ISO',
+    'Lens'          => { Name => 'Lens', Priority => 0 },
     'Max Aperture'  => {
         Name => 'MaxAperture',
         ValueConv => '$val=~s/^f//i; $val',

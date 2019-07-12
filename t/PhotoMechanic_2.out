@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.93
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.55
 [File, System, Image] FileName - File Name: PhotoMechanic.jpg
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 3.3 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2006:10:31 12:53:49-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:18 07:17:17-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:03:07 15:31:28-05:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:07:03 11:48:27-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:07:02 12:56:21-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: JPEG
 [File, File, Image] FileTypeExtension - File Type Extension: jpg
@@ -77,7 +77,7 @@
 [PhotoMechanic, PhotoMechanic, Image] 218 - Crop Top: 618
 [PhotoMechanic, PhotoMechanic, Image] 219 - Crop Right: 890
 [PhotoMechanic, PhotoMechanic, Image] 220 - Crop Bottom: 1072
-[Composite, Composite, Time] DateTimeCreated - Date/Time Created: 2006:10:29 06:27:51-05:00
-[Composite, Composite, Time] DateTimeOriginal - Date/Time Original: 2006:10:29 06:27:51-05:00
-[Composite, Composite, Image] ImageSize - Image Size: 8x8
-[Composite, Composite, Image] Megapixels - Megapixels: 0.000064
+[Composite, Composite, Image] Exif::ImageSize - Image Size: 8x8
+[Composite, Composite, Image] Exif::Megapixels - Megapixels: 0.000064
+[Composite, Composite, Time] IPTC::DateTimeCreated - Date/Time Created: 2006:10:29 06:27:51-05:00
+[Composite, Composite, Time] Exif::DateTimeOriginal - Date/Time Original: 2006:10:29 06:27:51-05:00

@@ -1,14 +1,46 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.43
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.55
 [QuickTime, QuickTime, Video] 0 - Major Brand: High Efficiency Image Format still image (.HEIF)
 [QuickTime, QuickTime, Video] 1 - Minor Version: 0.0.0
 [QuickTime, QuickTime, Video] 2 - Compatible Brands: mif1, heic, hevc
 [QuickTime, QuickTime, Video] 8 - Handler Type: Picture
 [QuickTime, Meta, Video] pitm - Primary Item Reference: 20002
+[QuickTime, QuickTime, Video] 0 - HEVC Configuration Version: 1
+[QuickTime, QuickTime, Video] 1 - General Profile Space: Conforming
+[QuickTime, QuickTime, Video] 1.1 - General Tier Flag: Main Tier
+[QuickTime, QuickTime, Video] 1.2 - General Profile IDC: Main Profile
+[QuickTime, QuickTime, Video] 2 - Gen Profile Compatibility Flags: Main 10, Main
+[QuickTime, QuickTime, Video] 6 - Constraint Indicator Flags: 144 0 0 0 0 0
+[QuickTime, QuickTime, Video] 12 - General Level IDC: 120 (level 4.0)
+[QuickTime, QuickTime, Video] 13 - Min Spatial Segmentation IDC: 0
+[QuickTime, QuickTime, Video] 15 - Parallelism Type: 0
+[QuickTime, QuickTime, Video] 16 - Chroma Format: 4:2:0
+[QuickTime, QuickTime, Video] 17 - Bit Depth Luma: 8
+[QuickTime, QuickTime, Video] 18 - Bit Depth Chroma: 8
+[QuickTime, QuickTime, Video] 19 - Average Frame Rate: 0
+[QuickTime, QuickTime, Video] 21 - Constant Frame Rate: Unknown
+[QuickTime, QuickTime, Video] 21.1 - Num Temporal Layers: 1
+[QuickTime, QuickTime, Video] 21.2 - Temporal ID Nested: Yes
 [QuickTime, QuickTime, Image] ispe - Image Spatial Extent: 1596x1064
+[QuickTime, QuickTime, Video] 0 - HEVC Configuration Version: 1
+[QuickTime, QuickTime, Video] 1 - General Profile Space: Conforming
+[QuickTime, QuickTime, Video] 1.1 - General Tier Flag: Main Tier
+[QuickTime, QuickTime, Video] 1.2 - General Profile IDC: Main Profile
+[QuickTime, QuickTime, Video] 2 - Gen Profile Compatibility Flags: Main 10, Main
+[QuickTime, QuickTime, Video] 6 - Constraint Indicator Flags: 144 0 0 0 0 0
+[QuickTime, QuickTime, Video] 12 - General Level IDC: 60 (level 2.0)
+[QuickTime, QuickTime, Video] 13 - Min Spatial Segmentation IDC: 0
+[QuickTime, QuickTime, Video] 15 - Parallelism Type: 0
+[QuickTime, QuickTime, Video] 16 - Chroma Format: 4:2:0
+[QuickTime, QuickTime, Video] 17 - Bit Depth Luma: 8
+[QuickTime, QuickTime, Video] 18 - Bit Depth Chroma: 8
+[QuickTime, QuickTime, Video] 19 - Average Frame Rate: 0
+[QuickTime, QuickTime, Video] 21 - Constant Frame Rate: Unknown
+[QuickTime, QuickTime, Video] 21.1 - Num Temporal Layers: 1
+[QuickTime, QuickTime, Video] 21.2 - Temporal ID Nested: Yes
 [QuickTime, QuickTime, Image] ispe - Image Spatial Extent: 320x240
 [QuickTime, QuickTime, Video] mdat-size - Movie Data Size: 2877
 [QuickTime, QuickTime, Video] mdat-offset - Movie Data Offset: 652
 [QuickTime, QuickTime, Video] mdat-size - Movie Data Size: 18
 [QuickTime, QuickTime, Video] mdat-offset - Movie Data Offset: 3537
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.43
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.55
 [XMP, XMP-dc, Image] title - Title: a title

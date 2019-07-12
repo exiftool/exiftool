@@ -1,8 +1,8 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.94
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.55
 [File, System, Image] FileSize - File Size: 2.0 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2006:12:20 09:12:06-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:30 07:42:46-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:04:25 10:57:00-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:07:03 12:16:50-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:07:02 12:56:21-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: MIE
 [File, File, Image] FileTypeExtension - File Type Extension: mie
@@ -63,7 +63,7 @@
 [MIE, MIE-Thumbnail, Image] ImageSize - Thumbnail Image Size: 160x120
 [MIE, MIE-Thumbnail, Preview] data - Thumbnail Image: (Binary data 28 bytes)
 [MIE, MIE-Main, Other] data - Subfile Data: (Binary data 20 bytes)
-[Composite, Composite, Image] Aperture - Aperture: 3.5
-[Composite, Composite, Image] ShutterSpeed - Shutter Speed: 4
-[Composite, Composite, Image] LightValue - Light Value: 1.6
-[Composite, Composite, Image] Megapixels - Megapixels: 0.008
+[Composite, Composite, Image] Exif::Aperture - Aperture: 3.5
+[Composite, Composite, Image] Exif::ShutterSpeed - Shutter Speed: 4
+[Composite, Composite, Image] Exif::LightValue - Light Value: 1.6
+[Composite, Composite, Image] Exif::Megapixels - Megapixels: 0.008

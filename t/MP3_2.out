@@ -1,11 +1,11 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.94
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.55
 [File, System, Image] FileName - File Name: MP3.mp3
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 395 bytes
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2006:05:13 07:46:22-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:04:29 20:10:38-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:04:25 10:57:00-04:00
-[File, System, Image] FilePermissions - File Permissions: rwxr-xr-x
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:07:03 11:48:41-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:07:02 12:56:21-04:00
+[File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: MP3
 [File, File, Image] FileTypeExtension - File Type Extension: mp3
 [File, File, Image] MIMEType - MIME Type: audio/mpeg
@@ -42,5 +42,5 @@
 [ID3, ID3v1, Time] 93 - Year: 2003
 [ID3, ID3v1, Audio] 97 - Comment: Comment
 [ID3, ID3v1, Audio] 127 - Genre: Hip-Hop
-[Composite, Composite, Time] DateTimeOriginal - Date/Time Original: 2005
-[Composite, Composite, Video] Duration - Duration: 0.00 s (approx)
+[Composite, Composite, Time] ID3::DateTimeOriginal - Date/Time Original: 2005
+[Composite, Composite, Video] MPEG::Duration - Duration: 0.00 s (approx)

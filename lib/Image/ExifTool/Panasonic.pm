@@ -25,6 +25,7 @@
 #              19) http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,5533.0.html
 #              20) Bernd-Michael Kemper private communication (DMC-GX80/85)
 #              21) Klaus Homeister forum post
+#              22) Daniel Beichl private communication (G9)
 #              JD) Jens Duttke private communication (TZ3,FZ30,FZ50)
 #------------------------------------------------------------------------------
 
@@ -35,7 +36,7 @@ use vars qw($VERSION %leicaLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.04';
+$VERSION = '2.05';
 
 sub ProcessLeicaLEIC($$$);
 sub WhiteBalanceConv($;$$);
@@ -349,6 +350,7 @@ my %shootingMode = (
                 '0 16'  => '3-area (high speed)', # (FZ8)
                 '0 23'  => '23-area', #PH (FZ47,NC)
                 '0 49'  => '49-area', #20
+                '0 225' => '225-area', #22
                 '1 0'   => 'Spot Focusing', # (FZ8)
                 '1 1'   => '5-area', # (FZ8)
                 '16'    => 'Normal?', # (only mode for DMC-LC20)
@@ -362,6 +364,7 @@ my %shootingMode = (
                 '32 3'  => '3-area (right)?', # (DMC-L1 guess)
                 '64 0'  => 'Face Detect',
                 '128 0' => 'Spot Focusing 2', #18
+                '240 0' => 'Tracking', #22
             },
         },
     ],
@@ -634,9 +637,13 @@ my %shootingMode = (
             2 => 'High (+1)',
             3 => 'Lowest (-2)', #JD
             4 => 'Highest (+2)', #JD
-            # 6 - seen for DC-S1/S1R (IB)
-            # 65531 - seen for LX100/FZ2500 "NR1" test shots at imaging-resource (PH)
-            #     0 - seen for FZ2500 "NR6D" test shots (PH)
+            5 => '+5', #PH (NC)
+            6 => '+6', # (NC) seen for DC-S1/S1R (IB)
+            65531 => '-5', # LX100/FZ2500 "NR1" test shots at imaging-resource (PH)
+            65532 => '-4',
+            65533 => '-3',
+            65534 => '-2',
+            65535 => '-1',
         },
     },
     0x2e => { #4
@@ -716,6 +723,7 @@ my %shootingMode = (
     },
     # 0x37 - values: 0,1,2 (LZ6, 0 for movie preview); 257 (FX10K); 0,256 (TZ5, 0 for movie preview)
     # 0x38 - values: 0,1,2 (LZ6, same as 0x37); 1,2 (FX10K); 0,256 (TZ5, 0 for movie preview)
+    #        - changes with noise reduction for DC-S1
     0x39 => { #7 (L1/L10)
         Name => 'Contrast',
         Format => 'int16s',
@@ -1259,6 +1267,15 @@ my %shootingMode = (
         Name => 'DiffractionCorrection',
         Writable => 'int16u',
         PrintConv => { 0 => 'Off', 1 => 'Auto' },
+    },
+    0xd1 => { #PH
+        Name => 'ISO',
+        RawConv => '$val == 4294967295 ? undef : $val',
+        Writable => 'int32u',
+    },
+    0xd6 => { #PH (DC-S1)
+        Name => 'NoiseReductionStrength',
+        Writable => 'rational64s',
     },
     0x0e00 => {
         Name => 'PrintIM',
@@ -1887,7 +1904,7 @@ my %shootingMode = (
         Writable => 'int32u',
     },
     0x311 => {
-        Name => 'ExternalSensorBrightnessValue', 
+        Name => 'ExternalSensorBrightnessValue',
         Condition => '$$self{Model} =~ /Typ 006/',
         Notes => 'Leica S only',
         Format => 'rational64s', # (may be incorrectly unsigned in JPEG images)

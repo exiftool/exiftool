@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 9.96
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.55
 [File, System, Image] FileName - File Name: DPX.dpx
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 2.0 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2013:09:20 08:49:38-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2015:05:11 13:05:40-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2015:03:07 15:31:02-05:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2013:09:20 08:45:35-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:07:03 11:48:41-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:07:02 12:56:21-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: DPX
 [File, File, Image] FileTypeExtension - File Type Extension: dpx
@@ -35,5 +35,5 @@
 [File, File, Image] 1732 - Frame ID: 
 [File, File, Image] 1764 - Slate Information: 
 [File, File, Image] 2048 - User ID: Thomson BTS        
-[Composite, Composite, Image] ImageSize - Image Size: 2048x1556
-[Composite, Composite, Image] Megapixels - Megapixels: 3.2
+[Composite, Composite, Image] Exif::ImageSize - Image Size: 2048x1556
+[Composite, Composite, Image] Exif::Megapixels - Megapixels: 3.2

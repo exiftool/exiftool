@@ -28,6 +28,7 @@ $VERSION = '1.02';
   # 0x02 => { Name => 'MOIFileSize', Format => 'int32u' },
     0x06 => {
         Name => 'DateTimeOriginal',
+        Description => 'Date/Time Original',
         Format => 'undef[8]',
         Groups => { 2 => 'Time' },
         ValueConv => sub {

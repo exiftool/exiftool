@@ -60,7 +60,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.66';
+$VERSION = '3.67';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -2027,6 +2027,17 @@ my %binaryDataAttrs = (
         #  HIGH KEY,LOW KEY,SELECTIVE COLOR,ZOOM EXPOSURE EXP.,DEFOCUS DURING
         Name => 'SceneAssist',
         Writable => 'string',
+    },
+    0x009d => { #NealKrawetz
+        Name => 'DateStampMode',
+        Writable => 'int16u',
+        Notes => 'feature to imprint date/time on image',
+        PrintConv => { #PH
+            0 => 'Off',
+            1 => 'Date & Time',
+            2 => 'Date',
+            3 => 'Date Counter', # (NC) (D3500)
+        },
     },
     0x009e => { #JD
         Name => 'RetouchHistory',

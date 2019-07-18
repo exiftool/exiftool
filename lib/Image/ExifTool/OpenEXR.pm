@@ -70,6 +70,7 @@ my %formatType = (
     chromaticities      => { },
     capDate => {
         Name => 'DateTimeOriginal',
+        Description => 'Date/Time Original',
         Groups => { 2 => 'Time' },
         PrintConv => '$self->ConvertDateTime($val)',
     },

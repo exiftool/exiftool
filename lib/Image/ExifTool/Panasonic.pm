@@ -1270,7 +1270,7 @@ my %shootingMode = (
     },
     0xd1 => { #PH
         Name => 'ISO',
-        RawConv => '$val == 4294967295 ? undef : $val',
+        RawConv => '$val > 0xfffffff0 ? undef : $val',
         Writable => 'int32u',
     },
     0xd6 => { #PH (DC-S1)

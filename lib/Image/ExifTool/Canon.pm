@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.17';
+$VERSION = '4.18';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -7416,6 +7416,16 @@ my %ciMaxFocal = (
         Name => 'PerChannelBlackLevel',
         Condition => '$$self{ColorDataVersion} == -4',
         Format => 'int16s[4]',
+    },
+    0x0569 => { #PH (NC)
+        Name => 'NormalWhiteLevel',
+        Condition => '$$self{ColorDataVersion} == -4',
+        Format => 'int16u',
+    },
+    0x056a => { #PH (NC)
+        Name => 'SpecularWhiteLevel',
+        Condition => '$$self{ColorDataVersion} == -4',
+        Format => 'int16u',
     },
 );
 

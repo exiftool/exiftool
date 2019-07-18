@@ -3702,6 +3702,7 @@ my %indexInfo = (
     },
     0x7f => {
         Name => 'DateTimeOriginal', #(NC)
+        Description => 'Date/Time Original',
         Format => 'string[24]',
         Groups => { 2 => 'Time' },
         PrintConv => '$self->ConvertDateTime($val)',

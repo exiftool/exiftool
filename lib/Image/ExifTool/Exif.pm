@@ -55,7 +55,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.18';
+$VERSION = '4.19';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -530,7 +530,7 @@ my %sampleFormat = (
             # (APP1 IFD2 is for Leica JPEG preview)
             Condition => q[
                 not ($$self{TIFF_TYPE} eq 'CR2' and $$self{DIR_NAME} eq 'IFD0') and
-                not ($$self{TIFF_TYPE} eq 'DNG' and $$self{Compression} eq '7' and $$self{SubfileType} ne '0') and
+                not ($$self{TIFF_TYPE} =~ /^(DNG|TIFF)$/ and $$self{Compression} eq '7' and $$self{SubfileType} ne '0') and
                 not ($$self{TIFF_TYPE} eq 'APP1' and $$self{DIR_NAME} eq 'IFD2')
             ],
             Name => 'StripOffsets',
@@ -616,7 +616,7 @@ my %sampleFormat = (
             # (APP1 IFD2 is for Leica JPEG preview)
             Condition => q[
                 not ($$self{TIFF_TYPE} eq 'CR2' and $$self{DIR_NAME} eq 'IFD0') and
-                not ($$self{TIFF_TYPE} eq 'DNG' and $$self{Compression} eq '7' and $$self{SubfileType} ne '0') and
+                not ($$self{TIFF_TYPE} =~ /^(DNG|TIFF)$/ and $$self{Compression} eq '7' and $$self{SubfileType} ne '0') and
                 not ($$self{TIFF_TYPE} eq 'APP1' and $$self{DIR_NAME} eq 'IFD2')
             ],
             Name => 'StripByteCounts',
@@ -5171,6 +5171,7 @@ sub MatchLensModel($$)
 #         3) LensSpec print value, 4) LensType numerical value, 5) FocalLength,
 #         6) MaxAperture, 7) MaxApertureValue, 8) MinFocalLength, 9) MaxFocalLength,
 #         10) LensModel, 11) LensFocalRange, 12) LensSpec
+my %sonyEtype;
 sub PrintLensID($$@)
 {
     my ($et, $lensTypePrt, $printConv, $lensSpecPrt, $lensType, $focalLength,
@@ -5205,12 +5206,27 @@ sub PrintLensID($$@)
         ($shortFocal, $longFocal) = ($1, $2 || $1);
     }
     if ($$et{Make} eq 'SONY') {
-        # Patch for Metabones or other adapters on Sony E-mount cameras (ref Jos Roost)
-        # Metabones Canon EF to E-mount adapters add 0xef00, 0xbc00 or 0x7700 to the
-        # high byte for 2-byte Canon LensType values, so we need to adjust for these.
-        # Offset 0xef00 is also used by Sigma MC-11, Fotodiox and Viltrox EF-E adapters.
-        # Have to exclude A-mount Sigma Filtermatic with 'odd' LensType=0xff00.
-        if ($lensType != 0xffff and $lensType != 0xff00) {
+        if ($lensType eq 65535) {
+            # handle Sony E-type lenses when LensType2 isn't valid (NEX/ILCE models only)
+            if ($$et{Model} =~ /NEX|ILCE/) {
+                unless (%sonyEtype) {
+                    my ($index, $i, %did, $lens);
+                    require Image::ExifTool::Sony;
+                    foreach (sort keys %Image::ExifTool::Sony::sonyLensTypes2) {
+                        ($lens = $Image::ExifTool::Sony::sonyLensTypes2{$_}) =~ s/ or .*//;
+                        next if $did{$lens};
+                        ($i, $index) = $index ? ("65535.$index", $index + 1) : (65535, 1);
+                        $did{$sonyEtype{$i} = $lens} = 1;
+                    }
+                }
+                $printConv = \%sonyEtype;
+            }
+        } elsif ($lensType != 0xff00) {
+            # Patch for Metabones or other adapters on Sony E-mount cameras (ref Jos Roost)
+            # Metabones Canon EF to E-mount adapters add 0xef00, 0xbc00 or 0x7700 to the
+            # high byte for 2-byte Canon LensType values, so we need to adjust for these.
+            # Offset 0xef00 is also used by Sigma MC-11, Fotodiox and Viltrox EF-E adapters.
+            # Have to exclude A-mount Sigma Filtermatic with 'odd' LensType=0xff00.
             require Image::ExifTool::Minolta;
             if ($Image::ExifTool::Minolta::metabonesID{$lensType & 0xff00}) {
                 $lensType -= ($lensType >= 0xef00 ? 0xef00 : $lensType >= 0xbc00 ? 0xbc00 : 0x7700);

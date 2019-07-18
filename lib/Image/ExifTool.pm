@@ -7,7 +7,7 @@
 #
 # Revisions:    Nov. 12/2003 - P. Harvey Created
 #               (See html/history.html for revision history)
-#2.32
+#
 # Legal:        Copyright (c) 2003-2019, Phil Harvey (phil at owl.phy.queensu.ca)
 #               This library is free software; you can redistribute it and/or
 #               modify it under the same terms as Perl itself.
@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup);
 
-$VERSION = '11.55';
+$VERSION = '11.56';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -6597,7 +6597,7 @@ sub ProcessJPEG($$)
                 DirStart(\%dirInfo, 6);
                 $self->ProcessDirectory(\%dirInfo, $tagTablePtr);
             }
-        } elsif ($marker == 0xe7) {         # APP7 (Pentax, Qualcomm)
+        } elsif ($marker == 0xe7) {         # APP7 (Pentax, Huawei, Qualcomm)
             if ($$segDataPt =~ /^PENTAX \0(II|MM)/) {
                 # found in K-3 images (is this multi-segment??)
                 SetByteOrder($1);
@@ -6612,6 +6612,23 @@ sub ProcessJPEG($$)
                     $dumpEnd = $segPos + $length;
                 }
                 $self->ProcessDirectory(\%dirInfo, $tagTablePtr);
+            } elsif ($$segDataPt =~ /^HUAWEI\0\0(II|MM)/) {
+                SetByteOrder($1);
+                undef $dumpType; # (dump this ourself)
+                my $hdrLen = 16;
+                my $tagTablePtr = GetTagTable('Image::ExifTool::Unknown::Main');
+                DirStart(\%dirInfo, $hdrLen, 8);
+                $dirInfo{DirName} = 'Huawei APP7';
+                if ($htmlDump) {
+                    $self->HDump($segPos-4, 4, 'APP7 header', "Data size: $length bytes");
+                    $self->HDump($segPos, $hdrLen, 'Huawei header', 'APP7 data type: Huawei');
+                    $dumpEnd = $segPos + $length;
+                }
+                $$self{SET_GROUP0} = 'APP7';
+                $$self{SET_GROUP1} = 'Huawei';
+                $self->ProcessDirectory(\%dirInfo, $tagTablePtr);
+                delete $$self{SET_GROUP0};
+                delete $$self{SET_GROUP1};
             } elsif ($$segDataPt =~ /^\x1aQualcomm Camera Attributes/) {
                 # found in HP iPAQ_VoiceMessenger
                 $dumpType = 'Qualcomm';

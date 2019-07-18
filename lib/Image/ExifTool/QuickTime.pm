@@ -42,7 +42,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.33';
+$VERSION = '2.34';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -1611,6 +1611,7 @@ my %eeBox = (
     },
     date => { # (NC)
         Name => 'DateTimeOriginal',
+        Description => 'Date/Time Original',
         Groups => { 2 => 'Time' },
         Shift => 'Time',
         ValueConv => q{

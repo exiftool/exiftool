@@ -50,6 +50,7 @@ sub ExtractTags($$$);
     DevicesAccelerometerSampleArrayZ    => { Name => 'AccelerometerZ'},
     DevicesClockZuluTime => {
         Name => 'DateTimeOriginal',
+        Description => 'Date/Time Original',
         Groups => { 2 => 'Time' },
         ValueConv => 'require Image::ExifTool::XMP; Image::ExifTool::XMP::ConvertXMPDate($val)',
         PrintConv => '$self->ConvertDateTime($val)',

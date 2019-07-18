@@ -31,10 +31,11 @@ use Image::ExifTool::IPTC;
 use Image::ExifTool::XMP;
 use Image::ExifTool::Canon;
 use Image::ExifTool::Nikon;
+use Image::ExifTool::Sony;
 use Image::ExifTool::Validate;
 use Image::ExifTool::MacOS;
 
-$VERSION = '3.25';
+$VERSION = '3.26';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -822,7 +823,8 @@ sub new
         $hexID = $$vars{HEX_ID};
         my $processBinaryData = ($$table{PROCESS_PROC} and (
             $$table{PROCESS_PROC} eq \&Image::ExifTool::ProcessBinaryData or
-            $$table{PROCESS_PROC} eq \&Image::ExifTool::Nikon::ProcessNikonEncrypted));
+            $$table{PROCESS_PROC} eq \&Image::ExifTool::Nikon::ProcessNikonEncrypted or
+            $$table{PROCESS_PROC} eq \&Image::ExifTool::Sony::ProcessEnciphered));
         if ($$vars{ID_LABEL} or $processBinaryData) {
             my $s = $$table{FORMAT} ? Image::ExifTool::FormatSize($$table{FORMAT}) || 1 : 1;
             $binaryTable = 1;
@@ -959,6 +961,11 @@ TagID:  foreach $tagID (@keys) {
                 } elsif ($name =~ /DateTime(?!Stamp)/ and (not $$tagInfo{Groups}{2} or
                     $$tagInfo{Groups}{2} ne 'Time') and $short ne 'DICOM') {
                     warn "$short $name should be in 'Time' group!\n";
+                }
+                if ($name eq 'DateTimeOriginal' and (not $$tagInfo{Description} or
+                    $$tagInfo{Description} ne 'Date/Time Original'))
+                {
+                    warn "Need Description for $short DateTimeOriginal\n";
                 }
                 # validate Description (can't contain special characters)
                 if ($$tagInfo{Description} and
@@ -1426,11 +1433,13 @@ TagID:  foreach $tagID (@keys) {
                 if ($$table{$var}) {
                     foreach $tagID (@{$$table{$var}}) {
                         $$hash{$tagID} and delete($$hash{$tagID}), next;
-                        warn "Warning: Extra $var for $short tag $tagID\n";
+                        warn sprintf("Warning: Extra %s for %s tag %d (0x%.4x)\n",
+                                     $var, $short, $tagID, $tagID);
                     }
                 }
                 foreach $tagID (sort keys %$hash) {
-                    warn "Warning: Missing $var for $short $$hash{$tagID}\n";
+                    warn sprintf("Warning: Missing %s for %s %s, tag %d (0x%.4x)\n",
+                                 $var, $short, $$hash{$tagID}, $tagID, $tagID);
                 }
             }
         }

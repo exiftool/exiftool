@@ -136,6 +136,7 @@ my @dvTags = (
     VARS => { NO_ID => 1 },
     NOTES => 'The following tags are extracted from DV videos.',
     DateTimeOriginal => {
+        Description => 'Date/Time Original',
         Groups => { 2 => 'Time' },
         PrintConv => '$self->ConvertDateTime($val)',
     },

@@ -32,6 +32,8 @@
 #   20) https://developer.apple.com/legacy/library/documentation/quicktime/reference/QT7-1_Update_Reference/QT7-1_Update_Reference.pdf
 #   21) Francois Bonzon private communication
 #   22) https://developer.apple.com/library/mac/documentation/QuickTime/QTFF/Metadata/Metadata.html
+#   23) http://atomicparsley.sourceforge.net/mpeg-4files.html
+#   24) https://github.com/sergiomb2/libmp4v2/wiki/iTunesMetadata
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::QuickTime;
@@ -42,7 +44,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.34';
+$VERSION = '2.35';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -2792,6 +2794,7 @@ my %eeBox = (
     covr => { Name => 'CoverArt',    Groups => { 2 => 'Preview' } },
     cpil => { #10
         Name => 'Compilation',
+        Format => 'int8u', #23
         PrintConv => { 0 => 'No', 1 => 'Yes' },
     },
     disk => {
@@ -2802,6 +2805,7 @@ my %eeBox = (
     },
     pgap => { #10
         Name => 'PlayGap',
+        Format => 'int8u', #23
         PrintConv => {
             0 => 'Insert Gap',
             1 => 'No Gap',
@@ -2823,6 +2827,7 @@ my %eeBox = (
 #
     akID => { #10
         Name => 'AppleStoreAccountType',
+        Format => 'int8u', #24
         PrintConv => {
             0 => 'iTunes',
             1 => 'AOL',
@@ -2846,6 +2851,7 @@ my %eeBox = (
     gnre => { #10
         Name => 'Genre',
         Avoid => 1,
+        # (Note: not written as int16u if numerical, although it should be)
         PrintConv => q{
             return $val unless $val =~ /^\d+$/;
             require Image::ExifTool::ID3;
@@ -5239,12 +5245,14 @@ my %eeBox = (
     grup => { Name => 'Grouping', Avoid => 1 }, #10
     hdvd => { #10
         Name => 'HDVideo',
+        Format => 'int8u', #24
         PrintConv => { 0 => 'No', 1 => 'Yes' },
     },
     keyw => 'Keyword', #7
     ldes => 'LongDescription', #10
     pcst => { #7
         Name => 'Podcast',
+        Format => 'int8u', #23
         PrintConv => { 0 => 'No', 1 => 'Yes' },
     },
     perf => 'Performer',
@@ -5256,6 +5264,7 @@ my %eeBox = (
     purl => 'PodcastURL', #7
     rtng => { #10
         Name => 'Rating',
+        Format => 'int8u', #23
         PrintConv => {
             0 => 'none',
             1 => 'Explicit',
@@ -5433,6 +5442,7 @@ my %eeBox = (
     sosn => 'SortShow', #10
     stik => { #10
         Name => 'MediaType',
+        Format => 'int8u', #23
         PrintConvColumns => 2,
         PrintConv => { #(http://weblog.xanga.com/gryphondwb/615474010/iphone-ringtones---what-did-itunes-741-really-do.html)
             0 => 'Movie (old)', #forum9059 (was Movie)
@@ -5464,6 +5474,7 @@ my %eeBox = (
     yrrc => 'Year', #(ffmpeg source)
     itnu => { #PH (iTunes 10.5)
         Name => 'iTunesU',
+        Format => 'int8s',
         Description => 'iTunes U',
         PrintConv => { 0 => 'No', 1 => 'Yes' },
     },

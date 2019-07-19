@@ -2,7 +2,7 @@
 # After "make install" it should work as "perl t/XMP.t".
 
 BEGIN {
-    $| = 1; print "1..46\n"; $Image::ExifTool::configFile = '';
+    $| = 1; print "1..48\n"; $Image::ExifTool::configFile = '';
     require './t/TestLib.pm'; t::TestLib->import();
 }
 END {print "not ok 1\n" unless $loaded;}
@@ -588,5 +588,40 @@ my $testnum = 1;
     }
     print "ok $testnum\n";
 }
+
+# tests 47-48: Test replacing specific elements in list of structures
+{
+    ++$testnum;
+    my $exifTool = new Image::ExifTool;
+    $exifTool->Options(ListSplit => ',');
+    $exifTool->Options(Struct => 1);
+    $exifTool->SetNewValue('LocationShownCity' => 'Manchester,Lyon,Frankfurt');
+    $testfile = "t/${testname}_${testnum}_failed.xmp";
+    unlink $testfile;
+    writeInfo($exifTool, 't/images/XMP7.xmp', $testfile);
+    my $info = $exifTool->ImageInfo($testfile, 'XMP:all');
+    if (check($exifTool, $info, $testname, $testnum)) {
+        unlink $testfile;
+    } else {
+        print 'not ';
+    }
+    print "ok $testnum\n";
+
+    ++$testnum;
+    $exifTool->SetNewValue();
+    $exifTool->SetNewValue('LocationShownCity' => 'London,Berlin', DelValue => 1);
+    $exifTool->SetNewValue('LocationShownCity' => 'Oxford,Munich');
+    $testfile = "t/${testname}_${testnum}_failed.xmp";
+    unlink $testfile;
+    writeInfo($exifTool, 't/images/XMP7.xmp', $testfile);
+    $info = $exifTool->ImageInfo($testfile, 'XMP:all');
+    if (check($exifTool, $info, $testname, $testnum)) {
+        unlink $testfile;
+    } else {
+        print 'not ';
+    }
+    print "ok $testnum\n";
+}
+
 
 # end

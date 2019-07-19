@@ -7,6 +7,14 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 11.50. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+July 19, 2019 - Version 11.57
+
+  - Improved decoding of some tags for the Sony ILCE-7RM4 (thanks Jos Roost)
+  - Minor change to a Sony lens name
+  - Fixed format of a number of 8-bit integer QuickTime tags when writing
+  - Fixed problem replacing multiple structure elements in lists of XMP
+    structures
+
 July 18, 2019 - Version 11.56
 
   - Added support for the Sony ILCE-7RM4 (thanks Jos Roost)

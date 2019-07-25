@@ -32,7 +32,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.12';
+$VERSION = '3.13';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -1892,6 +1892,7 @@ my %hidUnk = ( Hidden => 1, Unknown => 1 );
             369 => 'DSC-RX100M5A', #JR
             371 => 'ILCE-6400', #IB
             372 => 'DSC-RX0M2', #JR
+            374 => 'DSC-RX100M7', #IB
             375 => 'ILCE-7RM4', #IB
         },
     },

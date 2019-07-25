@@ -15,5 +15,6 @@ Creating XMP iTXt chunk:
     + XMP-dc:Creator = 'Phil Harvey'
 PNG IDAT (1 chunk, total 14 bytes)
 PNG tEXt (20 bytes):
-  Warning = XMP found after PNG IDAT. Fixed.
+PNG iTXt XMP (443 bytes):
+  Deleting XMP
 PNG IEND (end of image)

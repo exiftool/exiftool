@@ -917,7 +917,7 @@ TAG: foreach $tagInfo (@matchingTags) {
                 }
             }
             # set group delete flag if this tag represents an entire group
-            if ($$tagInfo{DelGroup}) {
+            if ($$tagInfo{DelGroup} and not $options{DelValue}) {
                 my @del = ( $tag );
                 $$self{DEL_GROUP}{$tag} = 1;
                 # delete extra groups if necessary
@@ -927,6 +927,8 @@ TAG: foreach $tagInfo (@matchingTags) {
                 # remove all of this group from previous new values
                 $self->RemoveNewValuesForGroup($tag);
                 $verbose and print $out "  Deleting tags in: @del\n";
+                ++$numSet;
+                next;
             }
             $noConv = 1;    # value is not defined, so don't do conversion
         }

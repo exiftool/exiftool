@@ -27,7 +27,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD %stdCase);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.48';
+$VERSION = '1.49';
 
 sub ProcessPNG_tEXt($$$);
 sub ProcessPNG_iTXt($$$);
@@ -1233,7 +1233,7 @@ sub ProcessPNG($$)
 
     # disable buffering in FastScan mode
     $$raf{NoBuffer} = 1 if $et->Options('FastScan') and not $outfile;
-    
+
     if ($outfile) {
         delete $$et{TextChunkType};
         Write($outfile, $sig) or $err = 1 if $outfile;
@@ -1337,7 +1337,7 @@ sub ProcessPNG($$)
                     my ($buf, $hdr, $crc);
                     my $outBuff = \$buf;
                     FoundPNG($et, $tbl, 'XML:com.adobe.xmp', $$et{PngXMP}, 0, $outBuff, 'UTF8', '');
-                    defined $buf or $outBuff = \{$$et{PngXMP}};
+                    defined $buf or $outBuff = \$$et{PngXMP};
                     if (length $$outBuff) {
                         my $hdr = pack('Na4', length($$outBuff), 'iTXt');
                         my $crc = CalculateCRC(\$hdr, undef, 4);
@@ -1362,12 +1362,13 @@ sub ProcessPNG($$)
                 # (ignore errors -- will add later as text profile if this fails)
                 Add_iCCP($et, $outfile);
             } elsif ($chunk eq 'iTXt' and $isXMP{$raf->Tell()}) {
+                print $out "$fileType iTXt XMP ($len bytes):\n" if $verbose;
                 # handle this standard XMP iTXt chunk
-                if ($$et{FoundIDAT}) {
-                    $et->Warn('XMP found after PNG IDAT. Fixed.');
-                    ++$$et{CHANGED};
-                } elsif ($$et{DEL_GROUP}{XMP}) {
+                if ($$et{DEL_GROUP}{XMP}) {
                     print $out "  Deleting XMP\n" if $verbose;
+                    ++$$et{CHANGED};
+                } elsif ($$et{FoundIDAT}) {
+                    $et->Warn('XMP found after PNG IDAT. Fixed.');
                     ++$$et{CHANGED};
                 }
                 # skip over XMP chunk(s) (handled in first pass)

@@ -1,7 +1,8 @@
   Deleting tags in: XMP XMP-*
 Sorry, XMP-x:XMPToolkit is unsafe for writing
   Writing new tags after deleting groups: XMP XMP-*
-Writing XMP-dc:Subject
+Writing XMP-dc:Creator
+Rewriting t/images/PNG.png...
   Editing tags in: PNG XMP 
   Creating tags in: PNG XMP 
   FileType = PNG
@@ -11,8 +12,8 @@ PNG IHDR (13 bytes):
 PNG bKGD (2 bytes):
 Creating XMP iTXt chunk:
   Creating XMP
-    + XMP-dc:Subject = 'test'
+    + XMP-dc:Creator = 'Phil Harvey'
 PNG IDAT (1 chunk, total 14 bytes)
-PNG iTXt (437 bytes):
-  Deleting XMP
+PNG tEXt (20 bytes):
+  Warning = XMP found after PNG IDAT. Fixed.
 PNG IEND (end of image)

@@ -60,7 +60,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.67';
+$VERSION = '3.68';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -1719,7 +1719,7 @@ my %binaryDataAttrs = (
                 TagTable => 'Image::ExifTool::Nikon::ShotInfoD500',
                 DecryptStart => 4,
                 DecryptLen => 0x2c24 + 12,
-                DecryptMore => 'Get32u(\$data, 0xa0) + 12',
+                DecryptMore => 'Get32u(\$data, 0xa8) + 0x2ea5 - 0x2c90',
                 ByteOrder => 'LittleEndian',
             },
         },
@@ -1730,7 +1730,7 @@ my %binaryDataAttrs = (
                 TagTable => 'Image::ExifTool::Nikon::ShotInfoD500',
                 DecryptStart => 4,
                 DecryptLen => 0x2cb2 + 4,
-                DecryptMore => 'Get32u(\$data, 0xa0) + 12',
+                DecryptMore => 'Get32u(\$data, 0xa8) + 0x2ea5 - 0x2c90',
                 ByteOrder => 'LittleEndian',
             },
         },
@@ -4466,16 +4466,18 @@ my %nikonFocalConversions = (
         RawConv => '$$self{NewLensData} = 1 unless $val =~ /^.\0+$/s; undef',
         Hidden => 1,
     },
-    #0x30 => {
-    #    Name => 'LensID', ? (NC)
-    #    Condition => '$$self{NewLensData}',
-    #    Format => 'int16u',
-    #    PrintConv => {
-    #        1 => 'Nikkor Z 24-70mm f/4 S',
-    #        4 => 'Nikkor Z 35mm f/1.8 S',
-    #        9 => 'Nikkor Z 50mm f/1.8 S',
-    #    },
-    #},
+    0x30 => {
+        Name => 'LensID',
+        Condition => '$$self{NewLensData}',
+        Format => 'int16u',
+        PrintConv => {
+             1 => 'Nikkor Z 24-70mm f/4 S',
+             2 => 'Nikkor Z 14-30mm f/4 S',
+             4 => 'Nikkor Z 35mm f/1.8 S',
+             9 => 'Nikkor Z 50mm f/1.8 S',
+            13 => 'Nikkor Z 24-70mm f/2.8 S',
+        },
+    },
     0x36 => {
         Name => 'MaxAperture',
         Condition => '$$self{NewLensData}',
@@ -5685,8 +5687,8 @@ my %nikonFocalConversions = (
     WRITE_PROC => \&Image::ExifTool::Nikon::ProcessNikonEncrypted,
     CHECK_PROC => \&Image::ExifTool::CheckBinaryData,
     VARS => { ID_LABEL => 'Index' },
-    DATAMEMBER => [ 0x04, 0x10, 0x14, 0x2c, 0x50, 0x58, 0xa0, 0xb0,
-                    0x07b0, 0x086c, 0x0e7c, 0x0eea, 0x2c23 ],
+    DATAMEMBER => [ 0x04, 0x10, 0x14, 0x2c, 0x50, 0x58, 0xa0, 0xa8, 0xb0,
+                    0x07b0, 0x086c, 0x0e7c, 0x0eea, 0x2c23, 0x2c8f ],
     IS_SUBDIR => [ 0x0eeb ],
     WRITABLE => 1,
     FIRST_ENTRY => 0,
@@ -5751,6 +5753,14 @@ my %nikonFocalConversions = (
         Writable => 0,
         Hidden => 1,
         RawConv => '$$self{OrientationOffset} = $val || 0x10000000; undef', # (ignore if 0)
+    },
+    0xa8 => {
+        Name => 'OtherOffset',
+        DataMember => 'OtherOffset',
+        Format => 'int32u',
+        Writable => 0,
+        Hidden => 1,
+        RawConv => '$$self{OtherOffset} = $val || 0x10000000; undef', # (ignore if 0)
     },
 #
 # Tag ID's below are the offsets for a D500 JPEG image, but these offsets change
@@ -6141,9 +6151,15 @@ my %nikonFocalConversions = (
         PrintConv => 'sprintf("%.1f", $val)',
         PrintConvInv => '$val',
     },
-    # note: DecryptLen currently set to OrientationOffset + 12
-
-    # (not sure about how this moves around)
+### 0x2c90 - OtherInfo start (D500 firmware 1.20d)
+    0x2c8f => {
+        Name => 'Hook7',
+        Hidden => 1,
+        RawConv => 'undef',
+        # account for variable location of OtherInfo data
+        Hook => '$varSize = $$self{OtherOffset} - 0x2c90',
+    },
+    # (needs testing)
     #0x2cb2 => {
     #    Name => 'ExtendedPhotoShootingBanks',
     #    Mask => 0x01,
@@ -6152,10 +6168,10 @@ my %nikonFocalConversions = (
     #        1 => 'Off',
     #    },
     #},
-    # don't decode this because it is duplicate information and moves around with firmware versions
+    # (may not be reliable and is found elsewhere)
     #0x2ea2 => {
     #    Name => 'Rotation',
-    #    Condition => '$$self{Model} =~ /\bD500\b/ and $$self{FirmwareVersion} =~ /^1.1/',
+    #    Condition => '$$self{Model} =~ /\bD500\b/',
     #    Notes => 'D500 firmware 1.1x',
     #    Mask => 0x30,
     #    PrintConv => {
@@ -6165,6 +6181,19 @@ my %nikonFocalConversions = (
     #        3 => 'Rotate 180',
     #    },
     #},
+    0x2ea4 => {
+        Name => 'NikonMeteringMode',
+        Condition => '$$self{Model} =~ /\bD500\b/', # (didn't seem to work for D5, but I need more samples)
+        Notes => 'D500 only',
+        Mask => 0x03,
+        PrintConv => {
+            0 => 'Matrix',
+            1 => 'Center',
+            2 => 'Spot',
+            3 => 'Highlight'
+        },
+    },
+    # note: DecryptLen currently set to OtherOffset + 0x2ea5 - 0x2c90
 );
 # shot information for the D610 firmware 1.00 (encrypted) - ref PH
 %Image::ExifTool::Nikon::ShotInfoD610 = (
@@ -6370,7 +6399,7 @@ my %nikonFocalConversions = (
         },
     },
     0x175e => {
-        Name => 'D810MeteringMode',
+        Name => 'NikonMeteringMode',
         Mask => 0x03,
         PrintConv => {
             0 => 'Matrix',

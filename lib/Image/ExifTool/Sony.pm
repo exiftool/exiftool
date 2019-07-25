@@ -32,7 +32,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.11';
+$VERSION = '3.12';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -92,6 +92,7 @@ sub PrintInvLensSpec($;$$);
     32793 => 'Sony E PZ 16-50mm F3.5-5.6 OSS',  # VX9109
     32794 => 'Sony FE 35mm F2.8 ZA or Samyang AF 24mm F2.8', # VX9110
     32794.1 => 'Samyang AF 24mm F2.8', #JR
+    32794.2 => 'Samyang AF 35mm F2.8', #IB (also 51505)
     32795 => 'Sony FE 24-70mm F4 ZA OSS',       # VX9111
     32796 => 'Sony FE 85mm F1.8 or Viltrox PFU RBMH 85mm F1.8', #JR
     32796.1 => 'Viltrox PFU RBMH 85mm F1.8', #JR (MF)
@@ -214,8 +215,9 @@ sub PrintInvLensSpec($;$$);
     # 504xx => 'Sigma 18-200mm F3.5-6.3 DC MACRO OS HSM | C + MC-11', # (014)
     # 504xx => 'Sigma 30mm F1.4 DC HSM | A + MC-11', # (013)
 
+    51504 => 'Samyang AF 50mm F1.4', #IB
     51505 => 'Samyang AF 14mm F2.8 or Samyang AF 35mm F2.8', #forum3833
-    51505.1 => 'Samyang AF 35mm F2.8', #PH
+    51505.1 => 'Samyang AF 35mm F2.8', #PH (also 32794)
     51507 => 'Samyang AF 35mm F1.4', #IB
 );
 

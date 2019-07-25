@@ -11,7 +11,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.28';
+$VERSION = '1.29';
 
 sub ProcessOcad($$$);
 sub ProcessJPEG_HDR($$$);
@@ -63,6 +63,13 @@ sub ProcessJPEG_HDR($$$);
         Name => 'FLIR',
         Condition => '$$valPt =~ /^FLIR\0/',
         SubDirectory => { TagTable => 'Image::ExifTool::FLIR::FFF' },
+      }, {
+        Name => 'RawThermalImage', # (from Parrot Bebop-Pro Thermal drone)
+        Condition => '$$valPt =~ /^PARROT\0(II\x2a\0|MM\0\x2a)/',
+        Groups => { 0 => 'APP1', 1 => 'Parrot', 2 => 'Preview' },
+        Notes => 'thermal image from Parrot Bebop-Pro Thermal drone',
+        RawConv => 'substr($val, 7)',
+        Binary => 1,
     }],
     APP2 => [{
         Name => 'ICC_Profile',

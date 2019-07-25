@@ -78,14 +78,7 @@ my $testnum = 1;
 {
     ++$testnum;
     my $exifTool = new Image::ExifTool;
-    # start with a clean image
-    $exifTool->SetNewValue('all');
     my $image;  
-    $exifTool->WriteInfo('t/images/PNG.png', \$image);
-    # add new XMP (should go after IDAT)
-    $exifTool->SetNewValue();
-    $exifTool->SetNewValue('XMP:Subject' => 'test');
-    $exifTool->WriteInfo(\$image);
     # delete all XMP then copy back again (should move to before IDAT)
     $exifTool->SetNewValue();
     my $txtfile = "t/${testname}_${testnum}.failed";
@@ -93,8 +86,8 @@ my $testnum = 1;
     $exifTool->Options(Verbose => 2);
     $exifTool->Options(TextOut => \*PNG_TEST_5);
     $exifTool->SetNewValue('xmp:all');
-    $exifTool->SetNewValuesFromFile(\$image, 'all:all<xmp:all');
-    my $rtnVal = $exifTool->WriteInfo(\$image);
+    $exifTool->SetNewValuesFromFile('t/images/PNG.png', 'all:all<xmp:all');
+    my $rtnVal = $exifTool->WriteInfo('t/images/PNG.png', \$image);
     close PNG_TEST_5;
     if (testCompare('t/PNG_5.out', $txtfile, $testnum)) {
         unlink $txtfile;

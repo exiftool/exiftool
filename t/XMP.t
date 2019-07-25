@@ -2,7 +2,7 @@
 # After "make install" it should work as "perl t/XMP.t".
 
 BEGIN {
-    $| = 1; print "1..48\n"; $Image::ExifTool::configFile = '';
+    $| = 1; print "1..49\n"; $Image::ExifTool::configFile = '';
     require './t/TestLib.pm'; t::TestLib->import();
 }
 END {print "not ok 1\n" unless $loaded;}
@@ -614,6 +614,21 @@ my $testnum = 1;
     $testfile = "t/${testname}_${testnum}_failed.xmp";
     unlink $testfile;
     writeInfo($exifTool, 't/images/XMP7.xmp', $testfile);
+    $info = $exifTool->ImageInfo($testfile, 'XMP:all');
+    if (check($exifTool, $info, $testname, $testnum)) {
+        unlink $testfile;
+    } else {
+        print 'not ';
+    }
+    print "ok $testnum\n";
+
+    ++$testnum;
+    $exifTool->SetNewValue();
+    $exifTool->SetNewValue('AboutCvTermName' => 'one,three', DelValue => 1);
+    $exifTool->SetNewValue('AboutCvTermName' => 'a,b,c');
+    $testfile = "t/${testname}_${testnum}_failed.xmp";
+    unlink $testfile;
+    writeInfo($exifTool, 't/images/XMP8.xmp', $testfile);
     $info = $exifTool->ImageInfo($testfile, 'XMP:all');
     if (check($exifTool, $info, $testname, $testnum)) {
         unlink $testfile;

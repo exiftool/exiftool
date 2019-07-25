@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.18';
+$VERSION = '4.19';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -213,6 +213,7 @@ $VERSION = '4.18';
     103 => 'Samyang AF 14mm f/2.8 EF or Rokinon Lens', #IB
     103.1 => 'Rokinon SP 14mm f/2.4', #IB
     103.2 => 'Rokinon AF 14mm f/2.8 EF', #IB
+    106 => 'Rokinon SP / Samyang XP 35mm f/1.2', #IB
     124 => 'Canon MP-E 65mm f/2.8 1-5x Macro Photo', #9
     125 => 'Canon TS-E 24mm f/3.5L',
     126 => 'Canon TS-E 45mm f/2.8', #15
@@ -268,6 +269,7 @@ $VERSION = '4.18';
     150.2 => 'Sigma 30mm f/1.4 DC HSM', #15
     150.3 => 'Sigma 24mm f/1.8 DG Macro EX', #15
     150.4 => 'Sigma 28mm f/1.8 DG Macro EX', #IB
+    150.5 => 'Sigma 18-35mm f/1.8 DC HSM | A', #IB
     151 => 'Canon EF 200mm f/2.8L USM',
     152 => 'Canon EF 300mm f/4L IS USM or Sigma Lens', #15
     152.1 => 'Sigma 12-24mm f/4.5-5.6 EX DG ASPHERICAL HSM', #15
@@ -281,7 +283,8 @@ $VERSION = '4.18';
     153.4 => 'Tamron 18-250mm f/3.5-6.3 Di II LD Aspherical [IF] Macro', #PH
     154 => 'Canon EF 20mm f/2.8 USM or Zeiss Lens', #15
     154.1 => 'Zeiss Milvus 21mm f/2.8', #IB
-    155 => 'Canon EF 85mm f/1.8 USM',
+    155 => 'Canon EF 85mm f/1.8 USM or Sigma Lens',
+    155.1 => 'Sigma 14mm f/1.8 DG HSM | A', #IB (A017)
     156 => 'Canon EF 28-105mm f/3.5-4.5 USM or Tamron Lens',
     156.1 => 'Tamron SP 70-300mm f/4-5.6 Di VC USD', #PH (model A005)
     156.2 => 'Tamron SP AF 28-105mm f/2.8 LD Aspherical IF', #JR (Model 176D)
@@ -344,6 +347,7 @@ $VERSION = '4.18';
     180.7 => 'Sigma 50mm f/1.5 FF High-Speed Prime | 017', #IB
     180.8 => 'Sigma 85mm f/1.5 FF High-Speed Prime | 017', #IB
     180.9 => 'Tokina Opera 50mm f/1.4 FF', #IB
+   '180.10' => 'Sigma 20mm f/1.4 DG HSM | A', #IB (015)
     181 => 'Canon EF 100-400mm f/4.5-5.6L IS USM + 1.4x or Sigma Lens', #15
     181.1 => 'Sigma 150-600mm f/5-6.3 DG OS HSM | S + 1.4x', #50
     182 => 'Canon EF 100-400mm f/4.5-5.6L IS USM + 2x or Sigma Lens',
@@ -446,6 +450,7 @@ $VERSION = '4.18';
     368.4 => 'Sigma 60-600mm f/4.5-6.3 DG OS HSM | S', #IB (018)
     368.5 => 'Sigma 28mm f/1.4 DG HSM | A', #IB (A019)
     368.6 => 'Sigma 150-600mm f/5-6.3 DG OS HSM | S', #50
+    368.7 => 'Sigma 85mm f/1.4 DG HSM | A', #IB (016)
     # Note: LensType 488 (0x1e8) is reported as 232 (0xe8) in 7D CameraSettings
     488 => 'Canon EF-S 15-85mm f/3.5-5.6 IS USM', #PH
     489 => 'Canon EF 70-300mm f/4-5.6L IS USM', #Gerald Kapounek
@@ -524,6 +529,7 @@ $VERSION = '4.18';
     61182.1 => 'Canon RF 50mm F1.2 L USM', #IB
     61182.2 => 'Canon RF 24-105mm F4 L IS USM', #IB
     61182.3 => 'Canon RF 28-70mm F2 L USM', #IB
+    61182.4 => 'Canon RF 85mm F1.2L USM', #IB
     65535 => 'n/a',
 );
 

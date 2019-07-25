@@ -55,7 +55,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.19';
+$VERSION = '4.20';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -5243,7 +5243,8 @@ sub PrintLensID($$@)
                 $lensTypePrt = $$printConv{$lensType} if $$printConv{$lensType};
             }
         }
-    } elsif ($shortFocal and $longFocal) {
+    # (Min/MaxFocalLength may report the current focal length for Tamron zoom lenses)
+    } elsif ($shortFocal and $longFocal and (not $lensModel or $lensModel !~ /^TAMRON.*-\d+mm/)) {
         # Canon (and some other makes) include makernote information
         # which allows better lens identification
         require Image::ExifTool::Canon;

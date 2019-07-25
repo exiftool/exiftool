@@ -17,6 +17,33 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v11.58'><b>July 25, 2019 - Version 11.58</b></a>
+<ul>
+<li>Added a number of new Canon and Sony LensType values (thanks LibRaw)
+<li>Decode NikonMeteringMode for the D500
+<li>Decode LensID for Nikon Z lenses
+<li>Extract RawThermalImage from Parrot Bebop-Pro Thermal images
+<li>Improved Russian translation (thanks Andrei Korzhyts)
+<li>Improved identification of some Tamron lenses for Canon cameras
+<li>Changed name of D810MeteringMode tag to NikonMeteringMode
+<li>Validate PNG CRC values when writing or using the Validate option
+<li>Patched writing of XMP in PNG images to always come before IDAT, and warn if
+    XMP comes after IDAT when reading
+<li>Fixed problem replacing multiple lang-alt default-language structure
+    elements in lists of XMP structures (behaviour for other languages still not
+    ideal)
+<li>API Changes:
+    <ul>
+    <li>Removed PNGEarlyXMP option
+    <li>Fixed problem introduced in 11.54 which caused Options('UserParam') to
+        return undef
+    </ul>
+<li>Internal Changes:
+    <ul>
+    <li>A block delete of EXIF, XMP, IPTC, etc now sets the group delete flag
+    </ul>
+</ul>
+
 <a name='v11.57'><b>July 19, 2019 - Version 11.57</b></a>
 <ul>
 <li>Improved decoding of some tags for the Sony ILCE-7RM4 (thanks Jos Roost)

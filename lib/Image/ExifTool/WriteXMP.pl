@@ -1034,7 +1034,7 @@ sub WriteXMP($$;$)
             # take attributes from old values if they exist
             %attrs = %{$$cap[1]};
             if ($overwrite) {
-               my ($oldLang, $delLang, $addLang, @matchingPaths);
+                my ($oldLang, $delLang, $addLang, @matchingPaths, $langPathPat);
                 # check to see if this is an indexed list item
                 if ($path =~ / /) {
                     my $pp;
@@ -1043,9 +1043,15 @@ sub WriteXMP($$;$)
                 } else {
                     push @matchingPaths, $path;
                 }
+                my $oldOverwrite = $overwrite;
                 foreach $path (@matchingPaths) {
                     my ($val, $attrs) = @{$capture{$path}};
                     if ($writable eq 'lang-alt') {
+                        # revert to original overwrite flag if this is in a different structure
+                        if (not $langPathPat or $path !~ /^$langPathPat$/) {
+                            $overwrite = $oldOverwrite;
+                            ($langPathPat = $path) =~ s/\d+$/\\d+/;
+                        }
                         unless (defined $addLang) {
                             # add to lang-alt list by default if creating this tag from scratch
                             $addLang = $$nvHash{IsCreating} ? 1 : 0;

@@ -360,6 +360,9 @@ numerical, and generated automatically otherwise.
                   'DataTag' - associated tag name containing data for offset or
                   byte count tags.
 
+                  'DelGroup' - set if deleting this tag is the same as deleting
+                  the group of the same name.
+
                   'Drop' - [IFD-format and PhaseOne makernote tags only] set to
                   1 for tags that should be excluded when rebuilding maker notes
                   when copying all tags.  Set to a number larger than 1 to drop

@@ -2504,7 +2504,7 @@ different for other firmware versions.</p>
 </td></tr>
 <tr class=b>
 <td class=r title='5982 = 0x175e'>5982</td>
-<td>D810MeteringMode</td>
+<td>NikonMeteringMode</td>
 <td class=c>int8u</td>
 <td><span class=s>[val &amp; 0x3]
   <br>0 = Matrix
@@ -3376,6 +3376,16 @@ firmware 1.01b.</p>
 <td>YawAngle</td>
 <td class=c>fixed32u</td>
 <td><span class=s><span class=n>(the camera yaw angle when shooting in portrait orientation)</span></span></td></tr>
+<tr class=b>
+<td class=r title='11940 = 0x2ea4'>11940</td>
+<td>NikonMeteringMode</td>
+<td class=c>int8u</td>
+<td><span class=s><span class=n>(D500 only)</span>
+  <br>[val &amp; 0x3]
+  <br>0 = Matrix
+  <br>1 = Center
+  <br>2 = Spot
+  <br>3 = Highlight</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='ShotInfoD610'>Nikon ShotInfoD610 Tags</a></h2>
@@ -3893,16 +3903,25 @@ extracted.</p>
 <td class=c>int8u</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td class=r title='48 = 0x30'>48</td>
+<td>LensID</td>
+<td class=c>int16u</td>
+<td><span class=s>1 = Nikkor Z 24-70mm f/4 S
+  <br>2 = Nikkor Z 14-30mm f/4 S
+  <br>4 = Nikkor Z 35mm f/1.8 S
+  <br>9 = Nikkor Z 50mm f/1.8 S
+  <br>13 = Nikkor Z 24-70mm f/2.8 S</span></td></tr>
+<tr class=b>
 <td class=r title='54 = 0x36'>54</td>
 <td>MaxAperture</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='56 = 0x38'>56</td>
 <td>FNumber</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='60 = 0x3c'>60</td>
 <td>FocalLength</td>
 <td class=c>int16u</td>
@@ -7085,7 +7104,7 @@ used to specify the lens for ExifTool to choose in these cases (see the
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jul 17, 2019</i>
+<br><i>Last revised Jul 24, 2019</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

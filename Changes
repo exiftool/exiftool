@@ -7,6 +7,28 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 11.50. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+July 25, 2019 - Version 11.58
+
+  - Added a number of new Canon and Sony LensType values (thanks LibRaw)
+  - Decode NikonMeteringMode for the D500
+  - Decode LensID for Nikon Z lenses
+  - Extract RawThermalImage from Parrot Bebop-Pro Thermal images
+  - Improved Russian translation (thanks Andrei Korzhyts)
+  - Improved identification of some Tamron lenses for Canon cameras
+  - Changed name of D810MeteringMode tag to NikonMeteringMode
+  - Validate PNG CRC values when writing or using the Validate option
+  - Patched writing of XMP in PNG images to always come before IDAT, and warn if
+    XMP comes after IDAT when reading
+  - Fixed problem replacing multiple lang-alt default-language structure
+    elements in lists of XMP structures (behaviour for other languages still not
+    ideal)
+  - API Changes:
+      - Removed PNGEarlyXMP option
+      - Fixed problem introduced in 11.54 which caused Options('UserParam') to
+        return undef
+  - Internal Changes:
+      - A block delete of EXIF, XMP, IPTC, etc now sets the group delete flag
+
 July 19, 2019 - Version 11.57
 
   - Improved decoding of some tags for the Sony ILCE-7RM4 (thanks Jos Roost)

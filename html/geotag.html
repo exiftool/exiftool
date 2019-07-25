@@ -482,9 +482,8 @@ extract <code>DateTimeOriginal</code> from the file. For example, if the time in
 the GPS display reads 19:32:21 UTC and <code>DateTimeOriginal</code> is
 14:31:49, then for this image the camera clock was 32 seconds slow (assuming
 that the timezone of the camera clock was <span class=nr>-05:00</span>). There
-are two different ways to use this time synchronization to improve your
-geotagging accuracy:
-</blockquote>
+are various ways to use this time synchronization to improve your geotagging
+accuracy:</blockquote>
 
 <blockquote>A) Use the <code>Geosync</code> tag to specify the time difference
 while geotagging.  Using this technique the existing image timestamps will not
@@ -508,7 +507,12 @@ with GPS time, then geotag using the corrected timestamps:
 exiftool -geotag my_gps.log C:\Images
 </pre>
 
-Both examples above assume that your track log file (<code>my_gps.log</code>)
+C) Do both in the same command:
+
+<pre>exiftool -alldates+=00:00:32 -geosync=+00:00:32 -geotag my_gps.log C:\Images
+</pre>
+
+The examples above assume that your track log file (<code>my_gps.log</code>)
 is in the current directory, that the images were downloaded to the
 <code>C:\Images</code> directory, and that the computer and camera clocks are
 in the same timezone.</blockquote>
@@ -681,7 +685,7 @@ forum post</a> for more useful tips about creating KML files.</p>
 
 <hr>
 <i>Created Apr. 2, 2009</i><br>
-<i>Last revised Mar. 4, 2019</i>
+<i>Last revised Jul. 22, 2019</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup);
 
-$VERSION = '11.57';
+$VERSION = '11.58';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -1378,7 +1378,7 @@ my %systemTagsNotes = (
             is generated only if specifically requested
         },
         Groups => { 0 => 'EXIF', 1 => 'EXIF' },
-        Flags => ['Writable' ,'Protected', 'Binary'],
+        Flags => ['Writable' ,'Protected', 'Binary', 'DelGroup'],
         WriteCheck => q{
             return undef if $val =~ /^(II\x2a\0|MM\0\x2a)/;
             return 'Invalid EXIF data';
@@ -1390,7 +1390,7 @@ my %systemTagsNotes = (
             requested
         },
         Groups => { 0 => 'IPTC', 1 => 'IPTC' },
-        Flags => ['Writable', 'Protected', 'Binary'],
+        Flags => ['Writable', 'Protected', 'Binary', 'DelGroup'],
         Priority => 0,  # so main IPTC (which hopefully comes first) takes priority
         WriteCheck => q{
             return undef if $val =~ /^(\x1c|\0+$)/;
@@ -1403,7 +1403,7 @@ my %systemTagsNotes = (
             into multiple blocks.  This tag is generated only if specifically requested
         },
         Groups => { 0 => 'XMP', 1 => 'XMP' },
-        Flags => ['Writable', 'Protected', 'Binary'],
+        Flags => ['Writable', 'Protected', 'Binary', 'DelGroup'],
         Priority => 0,  # so main xmp (which usually comes first) takes priority
         WriteCheck => q{
             require Image::ExifTool::XMP;
@@ -1416,7 +1416,7 @@ my %systemTagsNotes = (
             requested
         },
         Groups => { 0 => 'ICC_Profile', 1 => 'ICC_Profile' },
-        Flags => ['Writable' ,'Protected', 'Binary'],
+        Flags => ['Writable' ,'Protected', 'Binary', 'DelGroup'],
         WriteCheck => q{
             require Image::ExifTool::ICC_Profile;
             return Image::ExifTool::ICC_Profile::ValidateICC(\$val);
@@ -1428,7 +1428,7 @@ my %systemTagsNotes = (
             specifically requested
         },
         Groups => { 0 => 'CanonVRD', 1 => 'CanonVRD' },
-        Flags => ['Writable' ,'Protected', 'Binary'],
+        Flags => ['Writable' ,'Protected', 'Binary', 'DelGroup'],
         Permanent => 0, # (this is 1 by default for MakerNotes tags)
         WriteCheck => q{
             return undef if $val =~ /^CANON OPTIONAL DATA\0/;
@@ -1973,8 +1973,10 @@ sub Options($$;@)
             }
         }
         $oldVal = $$options{$param};
-        # get previous Compact/XMPShorthand setting
-        $oldVal = $$oldVal{$param} if ref $oldVal eq 'HASH';
+        if (ref $oldVal eq 'HASH' and ($param eq 'Compact' or $param eq 'XMPShorthand')) {
+            # get previous Compact/XMPShorthand setting
+            $oldVal = $$oldVal{$param};
+        }
         last unless @_;
         my $newVal = shift;
         if ($param eq 'Lang') {
@@ -6245,7 +6247,7 @@ sub ProcessJPEG($$)
                 DirStart(\%dirInfo, 4);
                 $self->ProcessDirectory(\%dirInfo, $tagTablePtr);
             }
-        } elsif ($marker == 0xe1) {         # APP1 (EXIF, XMP, QVCI)
+        } elsif ($marker == 0xe1) {         # APP1 (EXIF, XMP, QVCI, PARROT)
             # (some Kodak cameras don't put a second "\0", and I have seen an
             #  example where there was a second 4-byte APP1 segment header)
             if ($$segDataPt =~ /^(.{0,4})Exif\0/is) {
@@ -6389,6 +6391,11 @@ sub ProcessJPEG($$)
                 } else {
                     $self->WarnOnce('Invalid or extraneous FLIR chunk(s)');
                 }
+            } elsif ($$segDataPt =~ /^PARROT\0(II\x2a\0|MM\0\x2a)/) {
+                # (don't know if this could span multiple segments)
+                my $tagTablePtr = GetTagTable('Image::ExifTool::JPEG::Main');
+                $self->HandleTag($tagTablePtr, 'APP1', $$segDataPt);
+                $dumpType = 'Parrot';
             } else {
                 # Hmmm.  Could be XMP, let's see
                 my $processed;

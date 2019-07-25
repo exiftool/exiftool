@@ -809,23 +809,6 @@ Password for reading/writing password-protected PDF documents.  Ignored if a
 password is not required.  Character encoding of the password is determined
 by the value of the Charset option at processing time.  Default is undef.
 
-=item PNGEarlyXMP
-
-Flag to write XMP in PNG images before the IDAT (image data) chunk.  By
-default, ExifTool adds new XMP to the end of a PNG file (just before IEND).
-This is allowed by the PNG and XMP specifications, but some utilities seem
-to ignore XMP if it comes after the image data.  The PNGEarlyXMP option
-causes ExifTool to instead add new XMP before the PNG IDAT chunk.  However,
-since ExifTool uses a single-pass writing algorithm, it has no way to tell
-if XMP already exists later in the file before writing the new XMP in this
-location.  If this happens, a minor error is issued when the extra XMP is
-encountered, and the file is not written.  Adding the L</IgnoreMinorErrors>
-option causes the XMP after IDAT to be deleted, thus resolving the conflict
-(at the expense of possible metadata loss), and allowing the file to be
-written.  The PNGEarlyXMP option is applied automatically when deleting all
-XMP and writing new XMP back in one step.  When reading, this option causes
-a warning to be issued if standard XMP is found after the IDAT chunk.
-
 =item PrintConv
 
 Flag to enable automatic print conversion.  Also enables inverse

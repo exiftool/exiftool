@@ -27,7 +27,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD %stdCase);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.47';
+$VERSION = '1.48';
 
 sub ProcessPNG_tEXt($$$);
 sub ProcessPNG_iTXt($$$);
@@ -502,9 +502,7 @@ my %unreg = ( Notes => 'unregistered' );
             XMP specification, and is where ExifTool will add a new XMP chunk if the
             image didn't already contain XMP
         },
-        SubDirectory => {
-            TagTable => 'Image::ExifTool::XMP::Main',
-        },
+        SubDirectory => { TagTable => 'Image::ExifTool::XMP::Main' },
     },
    'Raw profile type APP1' => [
         {
@@ -830,22 +828,14 @@ sub FoundPNG($$$$;$$$$)
                     return 1 unless $$et{EDIT_DIRS}{$dirName};
                     $$outBuff = $et->WriteDirectory(\%subdirInfo, $subTable);
                     if ($tagName eq 'XMP' and $$outBuff) {
-                        if ($$et{FoundIDAT} and $$et{DEL_GROUP}{XMP}) {
-                            $et->VPrint(0,'  Deleting XMP');
-                            $$outBuff = '';
-                        } else {
-                            # make sure the XMP is marked as read-only
-                            Image::ExifTool::XMP::ValidateXMP($outBuff,'r');
-                        }
+                        # make sure the XMP is marked as read-only
+                        Image::ExifTool::XMP::ValidateXMP($outBuff,'r');
                     }
                     DoneDir($et, $dirName, $outBuff, $$tagInfo{NonStandard});
                 } else {
-                    # issue warning for standard XMP after IDAT (PNGEarlyXMP option)
-                    if ($tagName eq 'XMP' and not $$tagInfo{NonStandard} and
-                        $$et{FoundIDAT} and $$et{FoundIDAT} == 2)
-                    {
+                    # issue warning for standard XMP after IDAT
+                    if ($tagName eq 'XMP' and not $$tagInfo{NonStandard} and $$et{FoundIDAT}) {
                         $et->Warn('XMP found after PNG IDAT');
-                        $$et{FoundIDAT} = 1;
                     }
                     $processed = $et->ProcessDirectory(\%subdirInfo, $subTable, $processProc);
                 }
@@ -1148,6 +1138,7 @@ sub ProcessPNG_tEXt($$$)
     my ($et, $dirInfo, $tagTablePtr) = @_;
     my ($tag, $val) = split /\0/, ${$$dirInfo{DataPt}}, 2;
     my $outBuff = $$dirInfo{OutBuff};
+    $$et{INDENT} = substr($$et{INDENT}, 0, -2) if $$et{OPTIONS}{Verbose};
     return FoundPNG($et, $tagTablePtr, $tag, $val, undef, $outBuff, 'Latin');
 }
 
@@ -1166,6 +1157,7 @@ sub ProcessPNG_iTXt($$$)
     # set compressed flag so we will decompress it in FoundPNG()
     $compressed and $compressed = 2 + $meth;
     my $outBuff = $$dirInfo{OutBuff};
+    $$et{INDENT} = substr($$et{INDENT}, 0, -2) if $$et{OPTIONS}{Verbose};
     return FoundPNG($et, $tagTablePtr, $tag, $val, $compressed, $outBuff, 'UTF8', $lang);
 }
 
@@ -1234,14 +1226,14 @@ sub ProcessPNG($$)
     my $datChunk = '';
     my $datCount = 0;
     my $datBytes = 0;
-    my ($sig, $err);
+    my ($sig, $err, %isXMP);
 
     # check to be sure this is a valid PNG/MNG/JNG image
     return 0 unless $raf->Read($sig,8) == 8 and $pngLookup{$sig};
 
-    $$raf{NoBuffer} = 1 if $et->Options('FastScan'); # disable buffering in FastScan mode
-
-    my $earlyXMP = $et->Options('PNGEarlyXMP');
+    # disable buffering in FastScan mode
+    $$raf{NoBuffer} = 1 if $et->Options('FastScan') and not $outfile;
+    
     if ($outfile) {
         delete $$et{TextChunkType};
         Write($outfile, $sig) or $err = 1 if $outfile;
@@ -1251,16 +1243,11 @@ sub ProcessPNG($$)
             \%Image::ExifTool::PNG::TextualData);
         # NOTE: PNGDoneTag and PNGDoneDir are used to keep track of metadata added
         # before the PNG IEND chunk is encountered.  Currently this is implemented
-        # only for XMP (written before IDAT with the PNGEarlyXMP option), but
-        # may be implemented in the future for other types - PH
+        # only for XMP, but may be implemented in the future for other types - PH
         $$et{PNGDoneTag} = { };
         $$et{PNGDoneDir} = { };
         # initialize with same directories, with PNG tags taking priority
         $et->InitWriteDirs(\%pngMap,'PNG');
-        # write XMP before IDAT if we would delete it later anyway
-        $earlyXMP = 1 if $$et{DEL_GROUP}{XMP};
-    } elsif ($$et{OPTIONS}{Validate}) {
-        $earlyXMP = 1;  # warn about XMP after IDAT when validating
     }
     my ($fileType, $hdrChunk, $endChunk) = @{$pngLookup{$sig}};
     $et->SetFileType($fileType);  # set the FileType tag
@@ -1271,8 +1258,42 @@ sub ProcessPNG($$)
         $mngTablePtr = GetTagTable('Image::ExifTool::MNG::Main');
     }
     my $verbose = $et->Options('Verbose');
+    my $validate = $et->Options('Validate');
     my $out = $et->Options('TextOut');
     my ($hbuf, $dbuf, $cbuf, $wasHdr, $wasEnd);
+
+    # scan ahead for XMP if we are editing it
+    if ($outfile and $$et{EDIT_DIRS}{XMP}) {
+        while ($raf->Read($hbuf,8) == 8) {
+            my ($len, $chunk) = unpack('Na4',$hbuf);
+            last if $len > 0x7fffffff;
+            if ($chunk ne 'iTXt' or $len < 22) {
+                $raf->Seek($len + 4, 1) or last;
+                next;
+            }
+            $raf->Read($dbuf, 18) == 18 or last;
+            my $isXMP;
+            if ($dbuf eq "XML:com.adobe.xmp\0") {       # is this XMP?
+                $isXMP = $isXMP{$raf->Tell() - 18} = 1; # set XMP flag for this offset
+            }
+            if (not $isXMP or $$et{DEL_GROUP}{XMP}) {
+                $raf->Seek($len - 18 + 4, 1) or last;
+                next;
+            };
+            my $crc = CalculateCRC(\$hbuf, undef, 4);   # start CRC calculation
+            $crc = CalculateCRC(\$dbuf, $crc);
+            $raf->Read($dbuf, $len - 18) == $len - 18 or last;
+            my ($compressed, $meth) = unpack('CC', $dbuf);
+            $compressed and $et->Error('XMP is compressed in this file'), last;
+            my ($lang, $trans, $val) = split /\0/, substr($dbuf, 2), 3;
+            $$et{PngXMP} and $et->Error('Multiple XMP chunks found');
+            $$et{PngXMP} = $val;        # save our XMP
+            $raf->Read($cbuf, 4) == 4 or last;
+            $crc = CalculateCRC(\$dbuf, $crc);
+            $crc == unpack('N',$cbuf) or $et->Error('Bad CRC for XMP',1);
+        }
+        $raf->Seek(8,0) or $et->Error('Error seeking in file'), return -1;
+    }
 
     # process the PNG/MNG/JNG chunks
     undef $noCompressLib;
@@ -1298,28 +1319,60 @@ sub ProcessPNG($$)
                 my $s = $datCount > 1 ? 's' : '';
                 print $out "$fileType $datChunk ($datCount chunk$s, total $datBytes bytes)\n";
                 $datCount = $datBytes = 0;
-                $datChunk = '';
-            }
-            if ($chunk =~ /^(IDAT|JDAT|JDAA)$/) {
-                $datChunk = $chunk;
-                $datCount++;
-                $datBytes += $len;
             }
         }
+        if ($chunk =~ /^(IDAT|JDAT|JDAA)$/) {
+            $datChunk = $chunk;
+            $datCount++;
+            $datBytes += $len;
+        } else {
+            $datChunk = '';
+        }
         if ($outfile) {
+            # add XMP before any data chunk, or before IEND if no data
+            if ($datChunk or $chunk eq $endChunk) {
+                if ($$et{PngXMP}) {
+                    # rewrite existing XMP
+                    my $tbl = GetTagTable('Image::ExifTool::PNG::TextualData');
+                    my ($buf, $hdr, $crc);
+                    my $outBuff = \$buf;
+                    FoundPNG($et, $tbl, 'XML:com.adobe.xmp', $$et{PngXMP}, 0, $outBuff, 'UTF8', '');
+                    defined $buf or $outBuff = \{$$et{PngXMP}};
+                    if (length $$outBuff) {
+                        my $hdr = pack('Na4', length($$outBuff), 'iTXt');
+                        my $crc = CalculateCRC(\$hdr, undef, 4);
+                        $crc = CalculateCRC($outBuff, $crc);
+                        Write($outfile, $hdr, $$outBuff, pack('N',$crc)) or $err = 1;
+                    }
+                    # make sure we don't add this XMP or create new XMP again
+                    delete $$et{PngXMP};
+                    delete $$et{ADD_DIRS}{XMP};
+                } else {
+                    # add new XMP if necessary
+                    AddChunks($et, $outfile, 'XMP') or $err = 1;
+                }
+            }
             if ($chunk eq $endChunk) {
                 # add any new chunks immediately before the IEND/MEND chunk
                 AddChunks($et, $outfile) or $err = 1;
             } elsif ($chunk eq 'PLTE' or $chunk eq 'IDAT') {
-                if ($chunk eq 'IDAT') {
-                    # add XMP before IDAT if specified
-                    AddChunks($et, $outfile, 'XMP') or $err = 1 if $earlyXMP;
-                    # pHYs comes before IDAT
-                    AddChunks($et, $outfile, 'PNG-pHYs') or $err = 1;
-                }
+                # pHYs must come before IDAT
+                AddChunks($et, $outfile, 'PNG-pHYs') or $err = 1 if $chunk eq 'IDAT';
                 # iCCP chunk must come before PLTE and IDAT
                 # (ignore errors -- will add later as text profile if this fails)
                 Add_iCCP($et, $outfile);
+            } elsif ($chunk eq 'iTXt' and $isXMP{$raf->Tell()}) {
+                # handle this standard XMP iTXt chunk
+                if ($$et{FoundIDAT}) {
+                    $et->Warn('XMP found after PNG IDAT. Fixed.');
+                    ++$$et{CHANGED};
+                } elsif ($$et{DEL_GROUP}{XMP}) {
+                    print $out "  Deleting XMP\n" if $verbose;
+                    ++$$et{CHANGED};
+                }
+                # skip over XMP chunk(s) (handled in first pass)
+                $raf->Seek($len+4,1) or $et->Error('Truncated XMP chunk'), return -1;
+                next;
             }
         }
         if ($chunk eq $endChunk) {
@@ -1352,8 +1405,7 @@ sub ProcessPNG($$)
             }
             next;
         }
-        # set FoundIDAT flag: 1=after IDAT, 2=after IDAT and warn about late XMP
-        $$et{FoundIDAT} = $earlyXMP ? 2 : 1 if $chunk eq 'IDAT';
+        $$et{FoundIDAT} = 1 if $chunk eq 'IDAT';    # set FoundIDAT flag
         # read chunk data and CRC
         unless ($raf->Read($dbuf,$len)==$len and $raf->Read($cbuf, 4)==4) {
             $et->Warn("Corrupted $fileType image") unless $wasEnd;
@@ -1369,17 +1421,26 @@ sub ProcessPNG($$)
                 last;
             }
         }
-        if ($verbose) {
+        if ($verbose or $validate or $outfile) {
             # check CRC when in verbose mode (since we don't care about speed)
             my $crc = CalculateCRC(\$hbuf, undef, 4);
             $crc = CalculateCRC(\$dbuf, $crc);
-            $crc == unpack('N',$cbuf) or $et->Warn("Bad CRC for $chunk chunk") unless $wasEnd;
+            unless ($crc == unpack('N',$cbuf)) {
+                my $msg = "Bad CRC for $chunk chunk";
+                if ($outfile) {
+                    $et->Error($msg, 1);
+                } else {
+                    $et->Warn($msg);
+                }
+            }
             if ($datChunk) {
                 Write($outfile, $hbuf, $dbuf, $cbuf) or $err = 1 if $outfile;
                 next;
             }
-            print $out "$fileType $chunk ($len bytes):\n";
-            $et->VerboseDump(\$dbuf, Addr => $raf->Tell() - $len - 4) if $verbose > 2;
+            if ($verbose) {
+                print $out "$fileType $chunk ($len bytes):\n";
+                $et->VerboseDump(\$dbuf, Addr => $raf->Tell() - $len - 4) if $verbose > 2;
+            }
         }
         # translate case of chunk name if necessary
         if (not $$tagTablePtr{$chunk}) {

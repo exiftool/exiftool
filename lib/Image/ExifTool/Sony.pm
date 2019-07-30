@@ -22,6 +22,8 @@
 #               IB) Iliah Borg private communication (LibRaw)
 #               JD) Jens Duttke private communication
 #               JR) Jos Roost private communication
+#
+#               NC = Not Confirmed
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::Sony;
@@ -32,7 +34,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.13';
+$VERSION = '3.14';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -90,7 +92,7 @@ sub PrintInvLensSpec($;$$);
     32791 => 'Sony E 16-70mm F4 ZA OSS',        # VX9107
     32792 => 'Sony E 10-18mm F4 OSS',           # VX9108
     32793 => 'Sony E PZ 16-50mm F3.5-5.6 OSS',  # VX9109
-    32794 => 'Sony FE 35mm F2.8 ZA or Samyang AF 24mm F2.8', # VX9110
+    32794 => 'Sony FE 35mm F2.8 ZA or Samyang Lens', # VX9110
     32794.1 => 'Samyang AF 24mm F2.8', #JR
     32794.2 => 'Samyang AF 35mm F2.8', #IB (also 51505)
     32795 => 'Sony FE 24-70mm F4 ZA OSS',       # VX9111
@@ -150,7 +152,7 @@ sub PrintInvLensSpec($;$$);
     33078 => 'Sony FE 100-400mm F4.5-5.6 GM OSS + 2X Teleconverter', #JR
     33079 => 'Sony FE 400mm F2.8 GM OSS + 1.4X Teleconverter', #IB
     33080 => 'Sony FE 400mm F2.8 GM OSS + 2X Teleconverter', #JR
-    33081 => 'Sony FE 200-600mm F5.6-6.3 G OSS + 1.4X Teleconverter', #JR (NC)
+    33081 => 'Sony FE 200-600mm F5.6-6.3 G OSS + 1.4X Teleconverter', #JR
     33082 => 'Sony FE 200-600mm F5.6-6.3 G OSS + 2X Teleconverter', #JR
     33083 => 'Sony FE 600mm F4 GM OSS + 1.4X Teleconverter', #JR (NC)
     33084 => 'Sony FE 600mm F4 GM OSS + 2X Teleconverter', #JR
@@ -5843,6 +5845,7 @@ my %releaseMode2010 = (
         4 => 'Continuous - Burst', # seen for DSC-WX500 with burst of 10 shots
         5 => 'Continuous - Speed/Advance Priority',
         6 => 'Normal - Self-timer', # seen for ILCE-6300/6500/9, ILCA-99M2
+        9 => 'Single Burst Shooting', # first seen for DSC-RX100M7
     },
 );
 my %selfTimer2010 = (
@@ -7850,6 +7853,7 @@ my %isoSetting2010 = (
             4 => '4 shots',
             5 => '5 shots',
             6 => '6 shots',
+            7 => '7 shots', # DSC-RX100M7 Single Burst Shooting
             9 => '9 shots', # ILCE-7RM2 9-shot bracketing
             10 => '10 shots',
             12 => '12 shots', # ILCA-77M2 12-shot MFNR-mode
@@ -7866,6 +7870,7 @@ my %isoSetting2010 = (
             2 => '2 files',
             3 => '3 files',
             5 => '5 files',
+            7 => '7 files', # DSC-RX100M7 Single Burst Shooting
             9 => '9 files', # ILCE-7RM2 9-shot bracketing
             10 => '10 files', # seen for DSC-WX500 with burst of 10 shots
         },
@@ -7913,7 +7918,7 @@ my %isoSetting2010 = (
     0x0000 => { Name => 'Ver9401', Hidden => 1, RawConv => '$$self{Ver9401} = $val; $$self{OPTIONS}{Unknown}<2 ? undef : $val' },
 
     0x0498 => { Name => 'ISOInfo', Condition => '$$self{Ver9401} == 148',          Format => 'int8u[5]', SubDirectory => { TagTable => 'Image::ExifTool::Sony::ISOInfo' } },
-    0x04a2 => { Name => 'ISOInfo', Condition => '$$self{Ver9401} == 152',          Format => 'int8u[5]', SubDirectory => { TagTable => 'Image::ExifTool::Sony::ISOInfo' } },
+    0x04a2 => { Name => 'ISOInfo', Condition => '$$self{Ver9401} =~ /^(152|154)/', Format => 'int8u[5]', SubDirectory => { TagTable => 'Image::ExifTool::Sony::ISOInfo' } },
     0x059d => { Name => 'ISOInfo', Condition => '$$self{Ver9401} =~ /^(144|146)/', Format => 'int8u[5]', SubDirectory => { TagTable => 'Image::ExifTool::Sony::ISOInfo' } },
     0x0634 => { Name => 'ISOInfo', Condition => '$$self{Ver9401} == 68',           Format => 'int8u[5]', SubDirectory => { TagTable => 'Image::ExifTool::Sony::ISOInfo' } },
     0x0636 => { Name => 'ISOInfo', Condition => '$$self{Ver9401} =~ /^(73|74)/',   Format => 'int8u[5]', SubDirectory => { TagTable => 'Image::ExifTool::Sony::ISOInfo' } },

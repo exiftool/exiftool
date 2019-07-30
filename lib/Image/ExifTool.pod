@@ -1040,9 +1040,9 @@ Binary, Charset, CharsetEXIF, CharsetFileName, CharsetID3, CharsetIPTC,
 CharsetPhotoshop, CharsetQuickTime, CharsetRIFF, Composite, ExtendedXMP,
 ExtractEmbedded, FastScan, FixBase, HtmlDump, HtmlDumpBase,
 IgnoreMinorErrors, Lang, LargeFileSupport, MakerNotes, MDItemTags,
-NoPDFList, Password, PNGEarlyXMP, QuickTimeUTC (enforced 1904 time zero),
-RequestAll, RequestTags, ScanForXMP, Struct, TextOut, Unknown, Verbose,
-XAttrTags and XMPAutoConv.
+NoPDFList, Password, QuickTimeUTC (enforced 1904 time zero), RequestAll,
+RequestTags, ScanForXMP, Struct, TextOut, Unknown, Verbose, XAttrTags and
+XMPAutoConv.
 
 =item Return Value:
 
@@ -1173,8 +1173,8 @@ called with a source file name.
 The following ExifTool options are effective in the call to L</WriteInfo>:
 
 ByteOrder, Charset, CharsetEXIF, CharsetFileName, CharsetIPTC, Compact,
-Compress, FixBase, IgnoreMinorErrors, Password, PNGEarlyXMP,
-QuickTimeHandler, Verbose and WriteMode.
+Compress, FixBase, IgnoreMinorErrors, Password, QuickTimeHandler, Verbose
+and WriteMode.
 
 =head2 GetTagList
 

@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup);
 
-$VERSION = '11.59';
+$VERSION = '11.60';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -2189,7 +2189,6 @@ sub ClearOptions($)
         MissingTagValue =>undef,# value for missing tags when expanded in expressions
         NoPDFList   => undef,   # flag to avoid splitting PDF List-type tag values
         Password    => undef,   # password for password-protected PDF documents
-        PNGEarlyXMP => undef,   # write XMP in PNG images before IDAT chunk
         PrintConv   => 1,       # flag to enable print conversion
         QuickTimeHandler => undef,  # flag to add mdir Handler to newly created Meta box
         QuickTimeUTC=> undef,   # assume that QuickTime date/time tags are stored as UTC

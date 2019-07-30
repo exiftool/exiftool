@@ -19,7 +19,7 @@ use strict;
 use vars qw($VERSION %sigmaLensTypes);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.25';
+$VERSION = '1.26';
 
 # sigma LensType lookup (ref IB)
 %sigmaLensTypes = (
@@ -88,7 +88,9 @@ $VERSION = '1.25';
     0x256 => 'Sigma 105mm F2.8 EX Macro',
     0x257 => 'Sigma 105mm F2.8 EX DG Macro',
     0x258 => 'Sigma 105mm F2.8 EX DG OS HSM Macro',
+    0x259 => 'Sigma 105mm F1.4 DG HSM | A', #IB (A018)
     0x270 => 'Sigma 70mm F2.8 EX DG Macro', #NJ (SD1)
+    0x271 => 'Sigma 70mm F2.8 DG Macro | A', #IB (A018)
     0x300 => 'Sigma 30mm F1.4 EX DC HSM',
     0x301 => 'Sigma 30mm F1.4 DC HSM | A',
     0x302 => 'Sigma 30mm F1.4 DC DN | C', #JR (DN lenses are only for Sony E or MFT mount)
@@ -175,6 +177,7 @@ $VERSION = '1.25';
     0x727 => 'Sigma 135-400mm F4.5-5.6 DG ASP APO',
     0x728 => 'Sigma 120-400mm F4.5-5.6 DG APO OS HSM',
     0x729 => 'Sigma 100-400mm F5-6.3 DG OS HSM | C', #JR (017)
+    0x730 => 'Sigma 60-600mm F4.5-6.3 DG OS HSM | S', #IB (S018)
     0x733 => 'Sigma 170-500mm F5-6.3 ASP APO',
     0x734 => 'Sigma 170-500mm F5-6.3 DG ASP APO',
     0x735 => 'Sigma 50-500mm F4-6.3 EX RF HSM APO',

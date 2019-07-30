@@ -3889,6 +3889,9 @@ sub InitWriteDirs($$;$$)
                     }
                 }
                 $dirName = shift @dirNames;
+            } elsif ($dirName eq 'QuickTime') {
+                # write to specific QuickTime group
+                $dirName = $self->GetGroup($tagInfo, 1);
             }
             while ($dirName) {
                 my $parent = $$fileDirs{$dirName};

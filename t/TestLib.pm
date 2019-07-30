@@ -429,6 +429,7 @@ sub testVerbose($$$$)
     }
     $\ = $oldSep;       # restore output line separator
     close(TESTFILE);
+    close(TMPFILE);
     unlink("$testfile.tmp");
     return testCompare("$testfile.out","$testfile.failed",$testnum);
 }

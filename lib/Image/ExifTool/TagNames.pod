@@ -25500,8 +25500,8 @@ Note when creating new tags,
 L<ItemList|Image::ExifTool::TagNames/QuickTime ItemList Tags> tags are
 preferred over these, so to create the tag when a same-named ItemList tag
 exists, either "UserData" must be specified (eg. C<-UserData:Artist=Monet>
-on the command line), or the PREFERRED level must be changed via the config
-file.
+on the command line), or the PREFERRED level must be changed via
+the config file.
 
   Tag ID       Tag Name                         Writable
   ------       --------                         --------
@@ -28294,12 +28294,12 @@ WebP animation frame chunk.
 
 =head3 RIFF CSET Tags
 
-  Tag ID   Tag Name                             Writable
+  Index2   Tag Name                             Writable
   ------   --------                             --------
-  0x0000   CodePage                             no
-  0x0001   CountryCode                          no
-  0x0002   LanguageCode                         no
-  0x0003   Dialect                              no
+      0    CodePage                             no
+      1    CountryCode                          no
+      2    LanguageCode                         no
+      3    Dialect                              no
 
 =head3 RIFF Info Tags
 

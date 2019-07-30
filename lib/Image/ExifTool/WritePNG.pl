@@ -147,26 +147,11 @@ sub DoneDir($$$;$)
     $dir = 'IFD0' if $dir eq 'EXIF';
     # don't add this directory again unless this is in a non-standard location
     delete $$et{ADD_DIRS}{$dir} unless $nonStandard;
-    # handle problem with duplicate XMP when using PNGEarlyXMP option
-    return unless $dir eq 'XMP' and defined $$outBuff and length $$outBuff;
     if ($nonStandard and $$et{DEL_GROUP}{$dir}) {
         $et->VPrint(0,"  Deleting non-standard $dir\n");
         $$outBuff = '';
     } elsif (not $$et{PNGDoneDir}{$dir}) {
         $$et{PNGDoneDir}{$dir} = 1;   # set flag indicating the directory exists
-    } elsif ($$et{OPTIONS}{PNGEarlyXMP}) {
-        if ($$et{PNGDoneDir}{$dir} == 2) {
-            if ($$et{OPTIONS}{IgnoreMinorErrors}) {
-                $et->Warn("Deleted existing $dir");
-            } else {
-                $et->Error("Duplicate $dir created. Ignore to delete existing $dir", 1);
-                return;
-            }
-        } elsif ($et->Warn("Duplicate $dir. Ignore to delete", 2)) {
-            return; # warning not ignored: don't delete the duplicate
-        }
-        $et->VPrint(0,"  Deleting duplicate $dir\n");
-        $$outBuff = '';
     }
 }
 

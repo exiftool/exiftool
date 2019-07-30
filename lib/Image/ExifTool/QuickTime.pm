@@ -1337,8 +1337,8 @@ my %eeBox = (
         L<ItemList|Image::ExifTool::TagNames/QuickTime ItemList Tags> tags are
         preferred over these, so to create the tag when a same-named ItemList tag
         exists, either "UserData" must be specified (eg. C<-UserData:Artist=Monet>
-        on the command line), or the PREFERRED level must be changed via the config
-        file.
+        on the command line), or the PREFERRED level must be changed via
+        L<the config file|../config.html#PREF>.
     },
     "\xa9cpy" => { Name => 'Copyright',  Groups => { 2 => 'Author' } },
     "\xa9day" => {
@@ -5568,7 +5568,7 @@ my %eeBox = (
         preferred when writing, so to create a tag when a same-named tag exists in
         either of these tables, either the "Keys" location must be specified (eg.
         C<-Keys:Author=Phil> on the command line), or the PREFERRED level must be
-        changed via the config file.
+        changed via L<the config file|../config.html#PREF>.
     },
     version     => 'Version',
     album       => 'Album',

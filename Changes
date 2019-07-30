@@ -7,6 +7,18 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 11.50. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+July 30, 2019 - Version 11.60
+
+  - Added a few new Sigma LensType values (thanks LibRaw)
+  - Updated Sony makernote decoding for the DSC-RX100M7 (thanks Jos Roost)
+  - Various internal improvements to PNG reader/writer
+  - Fixed bug in RIFF decoder that could cause an "undefined subroutine" error
+    (thanks Hayo Baan)
+  - Fixed problem writing some QuickTime tags if the PREFERRED levels were
+    changed via the config file
+  - Install Changes:
+      - Properly erase all temporary files after validation tests
+
 July 25, 2019 - Version 11.59
 
   - Added a new SonyModelID (thanks LibRaw)

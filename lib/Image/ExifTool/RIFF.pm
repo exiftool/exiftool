@@ -29,7 +29,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.52';
+$VERSION = '1.53';
 
 sub ConvertTimecode($);
 sub ProcessSGLT($$$);
@@ -904,7 +904,7 @@ my %code2charset = (
 
 # RIFF character set chunk
 %Image::ExifTool::RIFF::CSET = (
-    PROCESS_PROC => \&Image::ExifTool::RIFF::ProcessBinaryData,
+    PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
     GROUPS => { 2 => 'Other' },
     FORMAT => 'int16u',
     0 => {

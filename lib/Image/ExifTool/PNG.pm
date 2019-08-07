@@ -35,7 +35,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD %stdCase);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.50';
+$VERSION = '1.51';
 
 sub ProcessPNG_tEXt($$$);
 sub ProcessPNG_iTXt($$$);
@@ -797,8 +797,8 @@ sub FoundPNG($$$$;$$$$)
         my $tagName = $$tagInfo{Name};
         my $processed;
         if ($$tagInfo{SubDirectory}) {
-            if ($$et{OPTIONS}{Validate} and $$tagInfo{NonStandard} and not $wasCompressed) {
-                $et->Warn("Non-standard $$tagInfo{NonStandard} in PNG $tag chunk", 1);
+            if ($$et{OPTIONS}{Validate} and $$tagInfo{NonStandard}) {
+                $et->WarnOnce("Non-standard $$tagInfo{NonStandard} in PNG $tag chunk", 1);
             }
             my $subdir = $$tagInfo{SubDirectory};
             my $dirName = $$subdir{DirName} || $tagName;
@@ -1049,7 +1049,7 @@ sub ProcessProfile($$$)
             $$outBuff = $et->WriteDirectory(\%dirInfo, $tagTablePtr,
                                             \&Image::ExifTool::WriteTIFF);
             $$outBuff = $Image::ExifTool::exifAPP1hdr . $$outBuff if $$outBuff;
-            DoneDir($et, 'IFD0', $outBuff);
+            DoneDir($et, 'IFD0', $outBuff, $$tagInfo{NonStandard});
         } else {
             $processed = $et->ProcessTIFF(\%dirInfo);
         }
@@ -1063,7 +1063,7 @@ sub ProcessProfile($$$)
             return 1 unless $$editDirs{XMP};
             $$outBuff = $et->WriteDirectory(\%dirInfo, $tagTablePtr);
             $$outBuff and $$outBuff = $Image::ExifTool::xmpAPP1hdr . $$outBuff;
-            DoneDir($et, 'XMP', $outBuff, 1);
+            DoneDir($et, 'XMP', $outBuff, $$tagInfo{NonStandard});
         } else {
             $processed = $et->ProcessDirectory(\%dirInfo, $tagTablePtr);
         }
@@ -1079,7 +1079,7 @@ sub ProcessProfile($$$)
             }
             $$outBuff = $et->WriteDirectory(\%dirInfo, $tagTablePtr,
                                             \&Image::ExifTool::WriteTIFF);
-            DoneDir($et, 'IFD0', $outBuff);
+            DoneDir($et, 'IFD0', $outBuff, $$tagInfo{NonStandard});
         } else {
             $processed = $et->ProcessTIFF(\%dirInfo);
         }
@@ -1245,11 +1245,10 @@ sub ProcessPNG($$)
         $$et{ADD_PNG} = $et->GetNewTagInfoHash(
             \%Image::ExifTool::PNG::Main,
             \%Image::ExifTool::PNG::TextualData);
-        # NOTE: PNGDoneTag and PNGDoneDir are used to keep track of metadata added
-        # before the PNG IEND chunk is encountered.  Currently this is implemented
-        # only for XMP, but may be implemented in the future for other types - PH
+        # NOTE: PNGDoneTag is used to keep track of metadata added before the
+        # PNG IEND chunk is encountered.  Currently this is implemented only
+        # for XMP, but may be implemented in the future for other types - PH
         $$et{PNGDoneTag} = { };
-        $$et{PNGDoneDir} = { };
         # initialize with same directories, with PNG tags taking priority
         $et->InitWriteDirs(\%pngMap,'PNG');
         $editingXMP = $$et{EDIT_DIRS}{XMP};

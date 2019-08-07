@@ -102,6 +102,8 @@ source files or entire directories.</p>
 copied by this command, and the 2 kB of padding recommended by the XMP
 specification is not added when copying as a block)</p>
 <pre>exiftool -tagsfromfile <i>SRC</i>.xmp -xmp <i>DST</i>.jpg</pre>
+<p class=b>or equivalently</p>
+<pre>exiftool "-xmp&lt;=<i>SRC</i>.xmp" <i>DST</i>.jpg</pre>
 
 <h4>Batch Processing</h4>
 
@@ -236,12 +238,11 @@ original locations in an image.</p>
 <a name="exif"></a>
 <h3>EXIF Files</h3>
 
-<p>EXIF files store EXIF information in the same format as in the APP1 segment
-of a JPEG image (<i>with the exception that there is no size limit for an
-EXIF file, while EXIF data in a JPEG image is limited to a maximum of 65527
-bytes</i>). The three commands below illustrate techniques for copying the
-entire EXIF block from a source image (<code><i>SRCFILE</i></code>) to an
-output EXIF file (<code>out.exif</code>):</p>
+<p>EXIF files store EXIF information in the same TIFF-based format as the EXIF
+APP1 segment of a JPEG image, but without the "Exif\0\0" header.  The three
+commands below illustrate techniques for copying the entire EXIF block from a
+source image (<code><i>SRCFILE</i></code>) to an output EXIF file
+(<code>out.exif</code>):</p>
 
 <pre>exiftool -exif -b <i>SRCFILE</i> > out.exif
 
@@ -249,11 +250,11 @@ exiftool -tagsfromfile <i>SRCFILE</i> -exif out.exif
 
 exiftool -o out.exif -exif <i>SRCFILE</i></pre>
 
-<p>It is the specification of the <a href="TagNames/Extra.html">Extra</a> EXIF
-tag in each of the above commands (the "<code>-exif</code>" argument) that
-causes the EXIF information to be extracted as a block.  JPEG, PNG, JP2, MIE and
-MIFF files all support storage of EXIF data blocks in this format, although
-exiftool does not currently write MIFF images.</p>
+<p>The <a href="TagNames/Extra.html">Extra</a> EXIF tag used in each of the
+above commands (the "<code>-exif</code>" argument) represents the EXIF metadata
+in the form of a binary data block.  JPEG, PNG, JP2, MIE and MIFF files all
+support storage of EXIF data blocks in this format, although exiftool does not
+currently write MIFF images.</p>
 
 <p>Tags may also be copied individually to and from an EXIF file, but remember
 that this will not copy "unsafe" tags unless they are specified explicitly.  The
@@ -316,7 +317,7 @@ etc.).  ExifTool has full read, write and create support for this format.</p>
 
 <hr>
 <i>Created Nov 12, 2008</i><br>
-<i>Last revised Sept 3, 2015</i>
+<i>Last revised July 31, 2019</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

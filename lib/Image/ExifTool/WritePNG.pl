@@ -130,7 +130,6 @@ sub Add_iCCP($$)
         if (defined $buff and length $buff and WriteProfile($outfile, 'icm', \$buff)) {
             $et->VPrint(0, "Created ICC profile\n");
             delete $$et{ADD_DIRS}{ICC_Profile}; # don't add it again
-            $$et{PNGDoneDir}{ICC_Profile} = 2;
         }
     }
     return 1;
@@ -144,14 +143,15 @@ sub Add_iCCP($$)
 sub DoneDir($$$;$)
 {
     my ($et, $dir, $outBuff, $nonStandard) = @_;
-    $dir = 'IFD0' if $dir eq 'EXIF';
+    my $saveDir = $dir;
+    $dir = 'EXIF' if $dir eq 'IFD0';
     # don't add this directory again unless this is in a non-standard location
-    delete $$et{ADD_DIRS}{$dir} unless $nonStandard;
-    if ($nonStandard and $$et{DEL_GROUP}{$dir}) {
+    if (not $nonStandard) {
+        delete $$et{ADD_DIRS}{$dir};
+        delete $$et{ADD_DIRS}{IFD0} if $dir eq 'EXIF';
+    } elsif ($$et{DEL_GROUP}{$dir} or $$et{DEL_GROUP}{$saveDir}) {
         $et->VPrint(0,"  Deleting non-standard $dir\n");
         $$outBuff = '';
-    } elsif (not $$et{PNGDoneDir}{$dir}) {
-        $$et{PNGDoneDir}{$dir} = 1;   # set flag indicating the directory exists
     }
 }
 
@@ -341,8 +341,6 @@ sub AddChunks($$;@)
             next;
         }
         delete $$et{ADD_DIRS}{$dir};  # don't add again
-        # keep track of the directories that we added
-        $$et{PNGDoneDir}{$dir} = 2 if defined $buff and length $buff;
     }
     return not $err;
 }

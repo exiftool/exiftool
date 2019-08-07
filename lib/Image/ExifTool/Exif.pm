@@ -42,6 +42,7 @@
 #              29) http://www.libtiff.org
 #              30) http://geotiff.maptools.org/spec/geotiffhome.html
 #              31) https://android.googlesource.com/platform/external/dng_sdk/+/refs/heads/master/source/dng_tag_codes.h
+#              32) Jeffry Friedl private communication
 #              IB) Iliah Borg private communication (LibRaw)
 #              JD) Jens Duttke private communication
 #------------------------------------------------------------------------------
@@ -55,7 +56,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.20';
+$VERSION = '4.21';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -2552,11 +2553,11 @@ my %sampleFormat = (
         PrintConv => {
             0 => 'Normal',
             1 => 'Custom',
-            # 2 - also seen (Apple iOS)
-            3 => 'HDR',      # non-standard (Apple iOS)
-            # 4 - also seen (Apple iOS) - normal image from iOS Camera app (ref http://regex.info/blog/lightroom-goodies/metadata-presets)
+            2 => 'HDR (no original saved)', #32 non-standard (Apple iOS)
+            3 => 'HDR (original saved)',    #32 non-standard (Apple iOS)
+            4 => 'Original (for HDR)',      #32 non-standard (Apple iOS)
             6 => 'Panorama', # non-standard (Apple iOS, horizontal or vertical)
-            # 7 - also seen (Apple iOS)
+            7 => 'Portrait HDR',            #32 non-standard (Apple iOS)
             8 => 'Portrait', # non-standard (Apple iOS, blurred background)
             # 9 - also seen (Apple iOS) (HDR Portrait?)
         },

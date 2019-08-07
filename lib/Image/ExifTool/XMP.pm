@@ -49,7 +49,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.24';
+$VERSION = '3.25';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -2236,7 +2236,7 @@ my %sPantryItem = (
     # get latitude/logitude reference from XMP lat/long tags
     # (used to set EXIF GPS position from XMP tags)
     GPSLatitudeRef => {
-        Require => 'XMP:GPSLatitude',
+        Require => 'XMP-exif:GPSLatitude',
         # Note: Do not Inihibit based on EXIF:GPSLatitudeRef (see forum10192)
         ValueConv => q{
             IsFloat($val[0]) and return $val[0] < 0 ? "S" : "N";
@@ -2246,7 +2246,7 @@ my %sPantryItem = (
         PrintConv => { N => 'North', S => 'South' },
     },
     GPSLongitudeRef => {
-        Require => 'XMP:GPSLongitude',
+        Require => 'XMP-exif:GPSLongitude',
         ValueConv => q{
             IsFloat($val[0]) and return $val[0] < 0 ? "W" : "E";
             $val[0] =~ /^.*([EW])/;
@@ -2255,7 +2255,7 @@ my %sPantryItem = (
         PrintConv => { E => 'East', W => 'West' },
     },
     GPSDestLatitudeRef => {
-        Require => 'XMP:GPSDestLatitude',
+        Require => 'XMP-exif:GPSDestLatitude',
         ValueConv => q{
             IsFloat($val[0]) and return $val[0] < 0 ? "S" : "N";
             $val[0] =~ /^.*([NS])/;
@@ -2264,7 +2264,7 @@ my %sPantryItem = (
         PrintConv => { N => 'North', S => 'South' },
     },
     GPSDestLongitudeRef => {
-        Require => 'XMP:GPSDestLongitude',
+        Require => 'XMP-exif:GPSDestLongitude',
         ValueConv => q{
             IsFloat($val[0]) and return $val[0] < 0 ? "W" : "E";
             $val[0] =~ /^.*([EW])/;

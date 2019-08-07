@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 22995 tags, with 15044 unique tag names.
+They contain a total of 22996 tags, with 15044 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -17629,6 +17629,7 @@ RX10M3/RX10M4/RX100M3/RX100M4/RX100M5/RX100M5A/RX100M6/WX220/WX350, ILCE-7/
     100    DistortionCorrParams                 int16s[16]
     834    LensZoomPosition                     int16u
     842    VignettingCorrParams                 int16s[16]
+    846    LensZoomPosition                     int16u
     848    VignettingCorrParams                 int16s[16]
     858    LensZoomPosition                     int16u
     860    VignettingCorrParams                 int16s[16]
@@ -33589,20 +33590,20 @@ values, may created via the ExifTool configuration file.
                        GPS:GPSTimeStamp
   GPSDestLatitude      GPS:GPSDestLatitude      no
                        GPS:GPSDestLatitudeRef
-  GPSDestLatitudeRef   XMP:GPSDestLatitude      no
+  GPSDestLatitudeRef   XMP-exif:GPSDestLatitude no
   GPSDestLongitude     GPS:GPSDestLongitude     no
                        GPS:GPSDestLongitudeRef
-  GPSDestLongitudeRef  XMP:GPSDestLongitude     no
+  GPSDestLongitudeRef  XMP-exif:GPSDestLongitude no
   GPSLatitude          GPS:GPSLatitude          no
                        GPS:GPSLatitudeRef
   GPSLatitude          QuickTime:GPSCoordinates no
   GPSLatitude          QuickTime:LocationInformation no
-  GPSLatitudeRef       XMP:GPSLatitude          no
+  GPSLatitudeRef       XMP-exif:GPSLatitude     no
   GPSLongitude         GPS:GPSLongitude         no
                        GPS:GPSLongitudeRef
   GPSLongitude         QuickTime:GPSCoordinates no
   GPSLongitude         QuickTime:LocationInformation no
-  GPSLongitudeRef      XMP:GPSLongitude         no
+  GPSLongitudeRef      XMP-exif:GPSLongitude    no
   GPSPosition          GPSLatitude              no
                        GPSLongitude
   HyperfocalDistance   FocalLength              no

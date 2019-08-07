@@ -17,6 +17,22 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v11.61'><b>Aug. 7, 2019 - Version 11.61</b></a>
+<ul>
+<li>Added a new FujiFilm CropMode (thanks LibRaw)
+<li>Added a couple of proprietary CustomRendered values (thanks Jeffrey Friedl)
+<li>Added a new Nikon LensID and fixed a Canon LensType (thanks LibRaw)
+<li>Added a new CanonModelID
+<li>Decode more Sony DSC-RX100M7 tags (thanks Jos Roost)
+<li>Write standard EXIF to PNG even if non-standard EXIF already exists
+<li>Patched to avoid problems overriding new values when writing thumbnail and
+    preview images
+<li>Changed a Minolta/Sony LensType (thanks LibRaw)
+<li>Changed Composite GPS reference direction tags to be derived from only the
+    XMP-exif GPS coordinate tags (and not other XMP GPS coordinates)
+<li>Reverted a PNG Validation check that was removed from 11.60
+</ul>
+
 <a name='v11.60'><b>July 30, 2019 - Version 11.60</b></a>
 <ul>
 <li>Added a few new Sigma LensType values (thanks LibRaw)

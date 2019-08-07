@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.19';
+$VERSION = '4.20';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -511,7 +511,7 @@ $VERSION = '4.19';
     4154 => 'Canon EF-S 24mm f/2.8 STM', #IB
     4155 => 'Canon EF-M 28mm f/3.5 Macro IS STM', #42
     4156 => 'Canon EF 50mm f/1.8 STM', #42
-    4157 => 'Canon EF-M 18-150mm 1:3.5-6.3 IS STM', #42
+    4157 => 'Canon EF-M 18-150mm f/3.5-6.3 IS STM', #42
     4158 => 'Canon EF-S 18-55mm f/4-5.6 IS STM', #PH
     4159 => 'Canon EF-M 32mm f/1.4 STM', #42
     4160 => 'Canon EF-S 35mm f/2.8 Macro IS STM', #42
@@ -774,6 +774,7 @@ $VERSION = '4.19';
     0x4180000 => 'PowerShot G1 X Mark III', #IB
     0x6040000 => 'PowerShot S100 / Digital IXUS / IXY Digital',
     0x801     => 'PowerShot SX740 HS',
+    0x804     => 'PowerShot G5 X Mark II',
     0x805     => 'PowerShot SX70 HS',
     0x808     => 'PowerShot G7 X Mark III',
 
@@ -8428,6 +8429,7 @@ my %filterConv = (
     },
     # CTBO - (CR3 files) int32u entry count N, N x (int32u index, int64u offset, int64u size)
     #        index: 1=XMP, 2=PRVW, 3=mdat, 4=?, 5=?
+    #        --> ignored when reading, but offsets are updated when writing
     CMT1 => { # (CR3 files)
         Name => 'IFD0',
         SubDirectory => {

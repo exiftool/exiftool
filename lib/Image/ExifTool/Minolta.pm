@@ -49,7 +49,7 @@ use vars qw($VERSION %minoltaLensTypes %minoltaTeleconverters %minoltaColorMode
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.78';
+$VERSION = '2.79';
 
 # Full list of product codes for Sony-compatible Minolta lenses
 # (ref http://www.kb.sony.com/selfservice/documentLink.do?externalId=C1000570)
@@ -363,7 +363,9 @@ $VERSION = '2.78';
     137 => 'Cosina 70-210mm F2.8-4 AF', #11
     138 => 'Soligor 19-35mm F3.5-4.5', #11
     139 => 'Tokina AF 28-300mm F4-6.3', #IB
-    142 => 'Voigtlander 70-300mm F4.5-5.6', #JD
+    # (the following Cosina 70-300mm lens was also marketed as a Phoenix, Vivitar Series 1, and
+    # some sort of 3rd-party marketing as a Voightlander 70-300mm F4.5-5.6 SKOPAR AF, ref IB)
+    142 => 'Cosina AF 70-300mm F4.5-5.6 MC', #IB (was 'Voigtlander 70-300mm F4.5-5.6', #JD)
     146 => 'Voigtlander Macro APO-Lanthar 125mm F2.5 SL', #JD
     194 => 'Tamron SP AF 17-50mm F2.8 XR Di II LD Aspherical [IF]', #23 (Model A16)
     202 => 'Tamron SP AF 70-200mm F2.8 Di LD [IF] Macro', #JR (Model A001) (see also 255.7)

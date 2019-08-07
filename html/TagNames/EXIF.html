@@ -2309,12 +2309,16 @@ indicated by &quot;Uncalibrated&quot; with an InteropIndex of &quot;R03&quot;.  
 <td class=c>int16u</td>
 <td class=c>ExifIFD</td>
 <td><span class=s><span class=n>(only 0 and 1 are standard EXIF, but other values are used by Apple iOS
-devices)</span>
-  <br>0 = Normal
+devices)</span></span><table class=cols><tr>
+  <td>0 = Normal
   <br>1 = Custom
-  <br>3 = HDR
+  <br>2 = HDR (no original saved)
+  <br>3 = HDR (original saved)
+  <br>4 = Original (for HDR)
   <br>6 = Panorama
-  <br>8 = Portrait</span></td></tr>
+  <br>7 = Portrait HDR
+  <br>8 = Portrait</td></tr></table>
+</td></tr>
 <tr>
 <td title='0xa402 = 41986'>0xa402</td>
 <td><u>ExposureMode</u></td>
@@ -3612,7 +3616,7 @@ these unless they already exist in the file)</span></span></td></tr>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jun 27, 2019</i>
+<br><i>Last revised Aug 7, 2019</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

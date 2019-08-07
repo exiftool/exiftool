@@ -169,7 +169,10 @@ This was a huge mistake, and as a work-around software (eg. ImageMagick)
 must encode binary information in ASCII-hex, then compress it to offset the
 increase in size, and store it as a compressed text block.  This adds
 unnecessary complexity, greatly slows down processing, and makes it much
-harder to develop software which supports PNG meta information.</p>
+harder to develop software which supports PNG meta information.
+<i class=lt>[July 2017: PNG adopts eXIf chunk to allow EXIF metadata to be
+stored in native binary format.  This is useful, but still doesn't allow storage
+of arbitrary binary metadata.]</i></p>
 
 <a name='PICT'></a>
 <h3>PICT</h3>
@@ -320,7 +323,7 @@ offers a number of other features:</p>
 
 <hr>
 <i>Created Nov. 15, 2005</i><br>
-<i>Last revised May. 2, 2019</i>
+<i>Last revised July 31, 2019</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

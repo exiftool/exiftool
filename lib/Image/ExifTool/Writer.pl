@@ -3547,10 +3547,11 @@ sub GetNewValueHash($$;$$$$)
 
     if ($writeGroup) {
         # find the new value in the list with the specified write group
-        # (QuickTime and All are special cases because all group1 tags may be updated at once)
-        while ($nvHash and $$nvHash{WriteGroup} ne $writeGroup and
-            $$nvHash{WriteGroup} !~ /^(QuickTime|All)$/)
-        {
+        while ($nvHash and $$nvHash{WriteGroup} ne $writeGroup) {
+            # QuickTime and All are special cases because all group1 tags may be updated at once
+            last if $$nvHash{WriteGroup} =~ /^(QuickTime|All)$/;
+            # replace existing entry if WriteGroup is 'All' (avoids confusion of forum10349)
+            last if $$tagInfo{WriteGroup} and $$tagInfo{WriteGroup} eq 'All';
             $nvHash = $$nvHash{Next};
         }
     }

@@ -49,7 +49,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.25';
+$VERSION = '3.26';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -2056,10 +2056,11 @@ my %sPantryItem = (
         Writable => 'integer',
     },
     CameraOwnerName     => { Name => 'OwnerName' },
-    BodySerialNumber    => { Name => 'SerialNumber' },
+    BodySerialNumber    => { Name => 'SerialNumber', Groups => { 2 => 'Camera' } },
     LensSpecification => {
         Name => 'LensInfo',
         Writable => 'rational',
+        Groups => { 2 => 'Camera' },
         List => 'Seq',
         RawJoin => 1, # join list into a string before ValueConv
         ValueConv => \&ConvertRationalList,
@@ -2083,9 +2084,9 @@ my %sPantryItem = (
             instead of using the existing XMP-aux:LensInfo
         },
     },
-    LensMake            => { },
-    LensModel           => { },
-    LensSerialNumber    => { },
+    LensMake            => { Groups => { 2 => 'Camera' } },
+    LensModel           => { Groups => { 2 => 'Camera' } },
+    LensSerialNumber    => { Groups => { 2 => 'Camera' } },
     InteroperabilityIndex => {
         Name => 'InteropIndex',
         Description => 'Interoperability Index',
@@ -2237,6 +2238,7 @@ my %sPantryItem = (
     # (used to set EXIF GPS position from XMP tags)
     GPSLatitudeRef => {
         Require => 'XMP-exif:GPSLatitude',
+        Groups => { 2 => 'Location' },
         # Note: Do not Inihibit based on EXIF:GPSLatitudeRef (see forum10192)
         ValueConv => q{
             IsFloat($val[0]) and return $val[0] < 0 ? "S" : "N";
@@ -2247,6 +2249,7 @@ my %sPantryItem = (
     },
     GPSLongitudeRef => {
         Require => 'XMP-exif:GPSLongitude',
+        Groups => { 2 => 'Location' },
         ValueConv => q{
             IsFloat($val[0]) and return $val[0] < 0 ? "W" : "E";
             $val[0] =~ /^.*([EW])/;
@@ -2256,6 +2259,7 @@ my %sPantryItem = (
     },
     GPSDestLatitudeRef => {
         Require => 'XMP-exif:GPSDestLatitude',
+        Groups => { 2 => 'Location' },
         ValueConv => q{
             IsFloat($val[0]) and return $val[0] < 0 ? "S" : "N";
             $val[0] =~ /^.*([NS])/;
@@ -2265,6 +2269,7 @@ my %sPantryItem = (
     },
     GPSDestLongitudeRef => {
         Require => 'XMP-exif:GPSDestLongitude',
+        Groups => { 2 => 'Location' },
         ValueConv => q{
             IsFloat($val[0]) and return $val[0] < 0 ? "W" : "E";
             $val[0] =~ /^.*([EW])/;
@@ -2287,6 +2292,7 @@ my %sPantryItem = (
         Inhibit => {
             6 => 'Composite:LensID',    # don't override existing Composite:LensID
         },
+        Groups => { 2 => 'Camera' },
         ValueConv => '$val',
         PrintConv => 'Image::ExifTool::XMP::PrintLensID($self, @val)',
     },
@@ -2300,6 +2306,7 @@ my %sPantryItem = (
             4 => 'XMP:FlashRedEyeMode',
             5 => 'XMP:Flash', # handle structured flash information too
         },
+        Groups => { 2 => 'Camera' },
         Writable => 1,
         PrintHex => 1,
         SeparateTable => 'EXIF Flash',

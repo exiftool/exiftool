@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup);
 
-$VERSION = '11.61';
+$VERSION = '11.62';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -4638,6 +4638,7 @@ sub AddCompositeTags($;$)
             }
         }
         # make sure new TagID is unique by adding index if necessary
+        # (could only happen for UserDefined tags now that module name is added to tag ID)
         my $n = 0;
         while ($$compTable{$new}) {
             $new =~ s/-\d+$// if $n++;

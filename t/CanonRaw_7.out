@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.55
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.62
 [File, System, Image] FileName - File Name: CanonRaw_7_failed.jpg
 [File, System, Image] Directory - Directory: t
 [File, System, Image] FileSize - File Size: 7.2 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2019:07:03 12:16:40-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:07:03 12:16:40-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:07:03 12:16:40-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2019:08:12 12:07:28-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:08:12 12:07:28-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:08:12 12:07:28-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: JPEG
 [File, File, Image] FileTypeExtension - File Type Extension: jpg
@@ -210,7 +210,7 @@
 [MakerNotes, Canon, Camera] 52 - Camera Color Calibration 14:  770  382  248 (2871K)
 [MakerNotes, Canon, Camera] 56 - Camera Color Calibration 15:  949  307  397 (2413K)
 [MakerNotes, Canon, Camera] 2 - Color Tone: Normal
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.55
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.62
 [XMP, XMP-aux, Camera] Lens - Lens: 18.0 - 55.0 mm
 [XMP, XMP-exif, Image] ComponentsConfiguration - Components Configuration: -, -, -, -
 [XMP, XMP-exif, Camera] FlashFired - Flash Fired: False
@@ -236,7 +236,7 @@
 [Composite, Composite, Camera] Canon::WB_RGGBLevels - WB RGGB Levels: 2002 1185 1187 2364
 [Composite, Composite, Image] Exif::Aperture - Aperture: 8.0
 [Composite, Composite, Image] Exif::ShutterSpeed - Shutter Speed: 1/15
-[Composite, Composite, Other] XMP::Flash - Flash: Off, Did not fire
+[Composite, Composite, Camera] XMP::Flash - Flash: Off, Did not fire
 [Composite, Composite, Camera] Exif::BlueBalance - Blue Balance: 1.993255
 [Composite, Composite, Image] Exif::ImageSize - Image Size: 8x8
 [Composite, Composite, Camera] Exif::LensID - Lens ID: Unknown 18-55mm

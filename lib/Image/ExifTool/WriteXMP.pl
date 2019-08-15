@@ -1203,7 +1203,9 @@ sub WriteXMP($$;$)
                         $et->Warn("$grp:$$tagInfo{Name} written as a literal because value is not a valid URI", 1);
                         # fall through to write as a string literal
                     }
-                    delete $attrs{'rdf:resource'};  # (remove existing resource if necessary)
+                    # remove existing value and/or resource attribute if they exist
+                    delete $attrs{'rdf:value'};
+                    delete $attrs{'rdf:resource'};
                     $capture{$path} = [ $newValue, \%attrs ];
                     last;
                 }

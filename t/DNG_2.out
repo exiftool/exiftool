@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.55
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.62
 [File, System, Image] FileName - File Name: DNG.dng
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 13 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2006:02:26 09:30:53-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:07:03 12:16:37-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:07:02 12:56:21-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:08:09 08:51:07-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:08:07 07:18:09-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: DNG
 [File, File, Image] FileTypeExtension - File Type Extension: dng
@@ -320,7 +320,7 @@
 [Composite, Composite, Camera] Exif::RedBalance - Red Balance: 1.688027
 [Composite, Composite, Camera] Exif::ScaleFactor35efl - Scale Factor To 35 mm Equivalent: 1.6
 [Composite, Composite, Image] Exif::ShutterSpeed - Shutter Speed: 1/15
-[Composite, Composite, Other] XMP::Flash - Flash: Off, Did not fire
+[Composite, Composite, Camera] XMP::Flash - Flash: Off, Did not fire
 [Composite, Composite, Camera] Canon::Lens35efl - Lens: 18.0 - 55.0 mm (35 mm equivalent: 29.2 - 89.2 mm)
 [Composite, Composite, Camera] Exif::CircleOfConfusion - Circle Of Confusion: 0.019 mm
 [Composite, Composite, Image] Exif::FOV - Field Of View: 22.8 deg

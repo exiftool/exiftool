@@ -25,7 +25,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:Public);
 
-$VERSION = '1.59';
+$VERSION = '1.60';
 
 sub JITTER() { return 2 }       # maximum time jitter
 
@@ -1135,7 +1135,7 @@ Category:       foreach $category (qw{pos track alt orient atemp}) {
             @r = $et->SetNewValue(GPSDateTime => "$gpsDate $gpsTime", %opts);
         }
     } else {
-        my %opts;
+        my %opts = ( IgnorePermanent => 1 );
         $opts{Replace} = 2 if defined $val; # remove existing new values
         $opts{Group} = $writeGroup if $writeGroup;
 

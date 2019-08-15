@@ -49,7 +49,7 @@ use vars qw($VERSION %minoltaLensTypes %minoltaTeleconverters %minoltaColorMode
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.79';
+$VERSION = '2.81';
 
 # Full list of product codes for Sony-compatible Minolta lenses
 # (ref http://www.kb.sony.com/selfservice/documentLink.do?externalId=C1000570)
@@ -251,6 +251,7 @@ $VERSION = '2.79';
     25.5 => 'Sigma 24mm F1.8 EX DG ASP Macro', #Florian Knorn
     # 25 - also seen for an "old Sigma 50mm Macro" (forum2833)
     27 => 'Minolta AF 85mm F1.4 G (D)', # added (D) (ref 13)
+    # 27 => 'Venus Optics Laowa 105mm F2 STF', #IB (NC)
     28 => 'Minolta/Sony AF 100mm F2.8 Macro (D) or Tamron Lens',
     # 28 => 'Sony 100mm F2.8 Macro (SAL100M28)', (ref 18/JR)
     28.1 => 'Tamron SP AF 90mm F2.8 Di Macro', #JD (Model 272E)
@@ -288,8 +289,9 @@ $VERSION = '2.79';
     45 => 'Carl Zeiss Planar T* 85mm F1.4 ZA (SAL85F14Z)', #JR
     46 => 'Carl Zeiss Vario-Sonnar T* DT 16-80mm F3.5-4.5 ZA (SAL1680Z)', #JR
     47 => 'Carl Zeiss Sonnar T* 135mm F1.8 ZA (SAL135F18Z)', #JR
-    48 => 'Carl Zeiss Vario-Sonnar T* 24-70mm F2.8 ZA SSM (SAL2470Z) or ZA SSM II', #11/JR
+    48 => 'Carl Zeiss Vario-Sonnar T* 24-70mm F2.8 ZA SSM (SAL2470Z) or Other Lens', #11/JR
     48.1 => 'Carl Zeiss Vario-Sonnar T* 24-70mm F2.8 ZA SSM II (SAL2470Z2)', #JR
+    48.2 => 'Tamron SP 24-70mm F2.8 Di USD', #IB (A007)
     49 => 'Sony DT 55-200mm F4-5.6 (SAL55200)', #JD/JR
     50 => 'Sony DT 18-250mm F3.5-6.3 (SAL18250)', #11/JR
     51 => 'Sony DT 16-105mm F3.5-5.6 (SAL16105)', #11/JR
@@ -325,15 +327,15 @@ $VERSION = '2.79';
     # was 128.1 => 'Tamron 18-200mm F3.5-6.3',
     128.2 => 'Tamron AF 28-300mm F3.5-6.3 XR Di LD Aspherical [IF] Macro', #JR (Model A061)
     # was 128.2 => 'Tamron 28-300mm F3.5-6.3',
-    128.3 => 'Tamron 80-300mm F3.5-6.3',
-    128.4 => 'Tamron AF 28-200mm F3.8-5.6 XR Di Aspherical [IF] Macro', #JD (Model A031)
+    # (removed -- probably never existed, ref IB) 'Tamron 80-300mm F3.5-6.3',
+    128.3 => 'Tamron AF 28-200mm F3.8-5.6 XR Di Aspherical [IF] Macro', #JD (Model A031)
    # also Tamron AF 28-200mm F3.8-5.6 Aspherical', #IB (Model 71D)
    # and 'Tamron AF 28-200mm F3.8-5.6 LD Aspherical [IF] Super', #IB (Model 171D)
-    128.5 => 'Tamron SP AF 17-35mm F2.8-4 Di LD Aspherical IF', #JD (Model A05)
-    128.6 => 'Sigma AF 50-150mm F2.8 EX DC APO HSM II', #JD
-    128.7 => 'Sigma 10-20mm F3.5 EX DC HSM', #11 (Model 202-205)
-    128.8 => 'Sigma 70-200mm F2.8 II EX DG APO MACRO HSM', #24
-    128.9 => 'Sigma 10mm F2.8 EX DC HSM Fisheye', #Florian Knorn
+    128.4 => 'Tamron SP AF 17-35mm F2.8-4 Di LD Aspherical IF', #JD (Model A05)
+    128.5 => 'Sigma AF 50-150mm F2.8 EX DC APO HSM II', #JD
+    128.6 => 'Sigma 10-20mm F3.5 EX DC HSM', #11 (Model 202-205)
+    128.7 => 'Sigma 70-200mm F2.8 II EX DG APO MACRO HSM', #24
+    128.8 => 'Sigma 10mm F2.8 EX DC HSM Fisheye', #Florian Knorn
     # (yes, '128.10'.  My condolences to typed languages that use this database - PH)
    '128.10' => 'Sigma 50mm F1.4 EX DG HSM', #Florian Knorn (Model A014, ref IB)
    '128.11' => 'Sigma 85mm F1.4 EX DG HSM', #27
@@ -412,10 +414,11 @@ $VERSION = '2.79';
     25521.7 => 'Angenieux AF 28-70mm F2.6', #JD
     25521.8 => 'Tokina AT-X 17 AF 17mm F3.5', #27
     25521.9 => 'Tokina 20-35mm F3.5-4.5 II AF', #IB
-    25531 => 'Minolta AF 28-135mm F4-4.5 or Sigma Lens',
+    25531 => 'Minolta AF 28-135mm F4-4.5 or Other Lens',
     25531.1 => 'Sigma ZOOM-alpha 35-135mm F3.5-4.5', #16
     25531.2 => 'Sigma 28-105mm F2.8-4 Aspherical', #JD
     25531.3 => 'Sigma 28-105mm F4-5.6 UC', #JR
+    25531.4 => 'Tokina AT-X 242 AF 24-200mm F3.5-5.6', #IB
     25541 => 'Minolta AF 35-105mm F3.5-4.5', #13
     25551 => 'Minolta AF 70-210mm F4 Macro or Sigma Lens',
     25551.1 => 'Sigma 70-210mm F4-5.6 APO', #7
@@ -502,7 +505,7 @@ $VERSION = '2.79';
     26241 => 'Minolta AF 35-80mm F4-5.6 Power Zoom',
     26281 => 'Minolta AF 80-200mm F2.8 HS-APO G', #11 ("HS-APO" added, white, probably same as 1, non-HS is 25891 - ref JR)
     26291 => 'Minolta AF 85mm F1.4 New',
-    26311 => 'Minolta/Sony AF 100-300mm F4.5-5.6 APO', #11
+    26311 => 'Minolta/Sony AF 100-300mm F4.5-5.6 APO', #11 (does not exist? https://www.dyxum.com/dforum/lens-data-requested_topic23435_page2.html)
     26321 => 'Minolta AF 24-50mm F4 New',
     26381 => 'Minolta AF 50mm F2.8 Macro New',
     26391 => 'Minolta AF 100mm F2.8 Macro',
@@ -517,6 +520,7 @@ $VERSION = '2.79';
     # - this is the base to which the Canon LensType is added
     30464 => 'Metabones Canon EF Speed Booster', #Metabones (to this, add Canon LensType)
     45671 => 'Tokina 70-210mm F4-5.6', #22
+    45681 => 'Tokina AF 35-200mm F4-5.6 Zoom SD', #IB (model 352)
     45701 => 'Tamron AF 35-135mm F3.5-4.5', #IB (model 40d)
     45711 => 'Vivitar 70-210mm F4.5-5.6', #IB
     45741 => '2x Teleconverter or Tamron or Tokina Lens', #18

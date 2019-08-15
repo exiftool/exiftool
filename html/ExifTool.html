@@ -493,7 +493,10 @@ distribution for examples.</p>
     <td align=center><i>(see <a href="#Charset">Charset</a> option)</i><br>or 0 or undef</td><td align=center>0</td></tr>
 <tr id="Compact"><td>Compact</td><td>Comma-delimited list of settings for writing compact XMP.
     Note that 'NoPadding' effects only embedded XMP since padding is never written for
-    stand-alone XMP files.  Case is not significant.</td><td align=center><table class=clear>
+    stand-alone XMP files.  Also note that 'OneDesc' is not recommended when writing
+    XMP larger than 64 kB to a JPG file because it interferes with ExifTool's technique
+    of splitting off the large description elements into the extended XMP.  Case is not
+    significant for any of these options.</td><td align=center><table class=clear>
     <tr><td valign=top align=right><b>NoPadding</b>&nbsp;=</td><td>Avoid 2 kB of recommended padding at end of XMP</td></tr>
     <tr><td valign=top align=right><b>NoIndent</b>&nbsp;=</td><td>Avoid spaces to indent lines for readability</td></tr>
     <tr><td valign=top align=right><b>NoNewline</b>&nbsp;=</td><td>Avoid unnecessary newlines</td></tr>
@@ -1309,9 +1312,9 @@ errors are printed to STDERR.
     set in previous calls to <a href="#SetNewValue">SetNewValue</a>). This option
     is most commonly used to replace previously-set new values for list-type tags.</td>
     <td><table class=clear>
-    <tr><td valign=top align=center><b>0</b>&nbsp;=</td><td>Set new value normally</td></tr>
-    <tr><td valign=top align=center><b>1</b>&nbsp;=</td><td>Reset previous new values and replace with the specifed new value</td></tr>
-    <tr><td valign=top align=center><b>2</b>&nbsp;=</td><td>Reset previous new values only</td></tr>
+    <tr><td valign=top align=center><b>0</b>&nbsp;=</td><td>Set new value normally (adds to new values for list-type tags)</td></tr>
+    <tr><td valign=top align=center><b>1</b>&nbsp;=</td><td>Reset any previous new values before setting new value</td></tr>
+    <tr><td valign=top align=center><b>2</b>&nbsp;=</td><td>Reset previous new values only (new value argument is ignored)</td></tr>
     </table></td><td align=center>0</td></tr>
 <tr><td>Shift</td><td>Shift the tag by the specified value.  Currently only date/time tags
     and tags with numerical values may be shifted.  Value is added if Shift is 1, or subtracted

@@ -1,15 +1,15 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.55
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.62
 [File, System, Image] FileName - File Name: XMP_6_failed.xmp
 [File, System, Image] Directory - Directory: t
 [File, System, Image] FileSize - File Size: 5.7 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2019:07:03 12:17:05-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:07:03 12:17:04-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:07:03 12:17:05-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2019:08:12 12:07:58-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:08:12 12:07:58-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:08:12 12:07:58-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: XMP
 [File, File, Image] FileTypeExtension - File Type Extension: xmp
 [File, File, Image] MIMEType - MIME Type: application/rdf+xml
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.55
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.62
 [XMP, XMP-dc, Author] creator - Creator: Phil Harvey
 [XMP, XMP-dc, Image] description - Description: UTF-16 (big-endian) encoded XMP
 [XMP, XMP-dc, Author] rights - Rights: Copyright 2004 Phil Harvey
@@ -82,7 +82,7 @@
 [XMP, XMP-xmpRights, Author] WebStatement - Web Statement: http://owl.phy.queensu.ca/~phil/exiftool/
 [Composite, Composite, Image] Exif::Aperture - Aperture: 3.5
 [Composite, Composite, Image] Exif::ShutterSpeed - Shutter Speed: 1/64
-[Composite, Composite, Other] XMP::Flash - Flash: Fired
+[Composite, Composite, Camera] XMP::Flash - Flash: Fired
 [Composite, Composite, Image] Exif::ImageSize - Image Size: 8x8
 [Composite, Composite, Image] Exif::LightValue - Light Value: 9.6
 [Composite, Composite, Image] Exif::Megapixels - Megapixels: 0.000064

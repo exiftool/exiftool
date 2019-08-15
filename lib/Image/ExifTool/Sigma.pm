@@ -19,7 +19,7 @@ use strict;
 use vars qw($VERSION %sigmaLensTypes);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.26';
+$VERSION = '1.27';
 
 # sigma LensType lookup (ref IB)
 %sigmaLensTypes = (
@@ -118,6 +118,8 @@ $VERSION = '1.26';
     0x484 => 'Sigma 8mm F4 EX DG Circular Fisheye',
     0x485 => 'Sigma 8mm F3.5 EX DG Circular Fisheye',
     0x486 => 'Sigma 4.5mm F2.8 EX DC HSM Circular Fisheye',
+    0x504 => 'Sigma 70-300mm F4-5.6 Macro Super', #IB
+    0x505 => 'Sigma APO 70-300mm F4-5.6 Macro Super', #IB
     0x506 => 'Sigma 70-300mm F4-5.6 APO Macro Super II',
     0x507 => 'Sigma 70-300mm F4-5.6 DL Macro Super II',
     0x508 => 'Sigma 70-300mm F4-5.6 DG APO Macro',

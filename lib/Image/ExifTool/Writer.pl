@@ -270,6 +270,7 @@ my %ignorePrintConv = map { $_ => 1 } qw(OTHER BITMASK Notes);
 #           NoFlat => treat flattened tags as 'unsafe'
 #           NoShortcut => true to prevent looking up shortcut tags
 #           ProtectSaved => protect existing new values with a save count greater than this
+#           IgnorePermanent => ignore attempts to delete a permanent tag
 #           CreateGroups => [internal use] createGroups hash ref from related tags
 #           ListOnly => [internal use] set only list or non-list tags
 #           SetTags => [internal use] hash ref to return tagInfo refs of set tags
@@ -891,6 +892,7 @@ TAG: foreach $tagInfo (@matchingTags) {
                 next;
             }
         } elsif ($permanent) {
+            return 0 if $options{IgnorePermanent};
             # can't delete permanent tags, so set them to DelValue or empty string instead
             if (defined $$tagInfo{DelValue}) {
                 $val = $$tagInfo{DelValue};
@@ -1125,6 +1127,9 @@ WriteAlso:
                 undef $evalWarning;
                 #### eval WriteAlso ($val)
                 my $v = eval $$writeAlso{$wtag};
+                # we wanted to do the eval in case there are side effect, but we
+                # don't want to write a value for a tag that is being deleted:
+                undef $v unless defined $val;
                 $@ and $evalWarning = $@;
                 unless ($evalWarning) {
                     ($n,$evalWarning) = $self->SetNewValue($wgrp . $wtag, $v, %opts);

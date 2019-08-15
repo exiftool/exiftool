@@ -58,7 +58,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 use Image::ExifTool::HP;
 
-$VERSION = '3.28';
+$VERSION = '3.29';
 
 sub CryptShutterCount($$);
 sub PrintFilter($$$);
@@ -146,7 +146,7 @@ sub DecodeAFPoints($$$$;$);
     '3 44.3' => 'Sigma 17-70mm F2.8-4.5 DC Macro', #(Bart Hickman)
     '3 44.4' => 'Sigma 18-50mm F3.5-5.6 DC', #4
     '3 44.5' => 'Sigma 17-35mm F2.8-4 EX DG', #29
-    '3 44.6' => 'Tamron 35-90mm F4 AF', #12
+    '3 44.6' => 'Tamron 35-90mm F4-5.6 AF', #12 (added "-5.6", ref IB)
     '3 44.7' => 'Sigma AF 18-35mm F3.5-4.5 Aspherical', #29
     '3 46' => 'Sigma or Samsung Lens (3 46)',
     '3 46.1' => 'Sigma APO 70-200mm F2.8 EX',
@@ -306,6 +306,7 @@ sub DecodeAFPoints($$$$;$);
     '8 0' => 'Sigma 50-150mm F2.8 II APO EX DC HSM', #forum2997
     '8 3' => 'Sigma 18-125mm F3.8-5.6 DC HSM', #forum10167
     '8 4' => 'Sigma 50mm F1.4 EX DG HSM', #Artur private communication
+    '8 6' => 'Sigma 4.5mm F2.8 EX DC Fisheye', #IB
     '8 7' => 'Sigma 24-70mm F2.8 IF EX DG HSM', #Exiv2
     '8 8' => 'Sigma 18-250mm F3.5-6.3 DC OS HSM', #27
     '8 11' => 'Sigma 10-20mm F3.5 EX DC HSM', #27
@@ -316,6 +317,7 @@ sub DecodeAFPoints($$$$;$);
     '8 16' => 'Sigma 70-200mm F2.8 EX DG Macro HSM II', #26
     '8 17' => 'Sigma 50-500mm F4.5-6.3 DG OS HSM', #(Heike Herrmann) (also APO, ref 26)
     '8 18' => 'Sigma 8-16mm F4.5-5.6 DC HSM', #forum2998
+    '8 20' => 'Sigma 18-50mm F2.8-4.5 DC HSM', #IB
     '8 21' => 'Sigma 17-50mm F2.8 EX DC OS HSM', #26
     '8 22' => 'Sigma 85mm F1.4 EX DG HSM', #26
     '8 23' => 'Sigma 70-200mm F2.8 APO EX DG OS HSM', #27

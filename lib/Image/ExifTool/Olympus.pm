@@ -39,7 +39,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::APP12;
 
-$VERSION = '2.59';
+$VERSION = '2.60';
 
 sub PrintLensInfo($$$);
 
@@ -1066,6 +1066,7 @@ my %indexInfo = (
     0x1035 => { #6
         Name => 'PreviewImageValid',
         Writable => 'int32u',
+        DelValue => 0,
         PrintConv => { 0 => 'No', 1 => 'Yes' },
     },
     0x1036 => { #6

@@ -258,7 +258,7 @@ my $testnum = 1;
     ++$testnum;
     my @writeInfo = (
         [ 'all' => undef ],
-        [ 'xmp-dc:all'  => undef, Replace => 2 ],
+        [ 'xmp-dc:all' => undef, Replace => 2 ],
         [ 'xmp-xmprights:all' => undef, Replace => 2 ],
     );
     print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum,

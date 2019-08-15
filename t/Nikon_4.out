@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.55
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.62
 [File, System, Image] FileName - File Name: Nikon_4_failed.jpg
 [File, System, Image] Directory - Directory: t
 [File, System, Image] FileSize - File Size: 6.8 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2019:07:03 11:48:23-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:07:03 11:48:23-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:07:03 11:48:23-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2019:08:12 12:07:43-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:08:12 12:07:43-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:08:12 12:07:43-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: JPEG
 [File, File, Image] FileTypeExtension - File Type Extension: jpg
@@ -137,7 +137,7 @@
 [MakerNotes, Nikon, Camera] 169 - Image Optimization: Custom
 [MakerNotes, Nikon, Camera] 170 - Saturation: Enhanced
 [MakerNotes, Nikon, Camera] 171 - Vari Program: 
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.55
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.62
 [XMP, XMP-aux, Camera] FlashCompensation - Flash Compensation: 0
 [XMP, XMP-aux, Camera] Lens - Lens: 18-70mm f/3.5-4.5
 [XMP, XMP-exif, Image] ComponentsConfiguration - Components Configuration: Y, Cb, Cr, -
@@ -162,7 +162,7 @@
 [Composite, Composite, Time] Exif::SubSecModifyDate - Modify Date: 2005:01:14 08:57:59.20
 [Composite, Composite, Camera] Nikon::LensID - Lens ID: AF-S DX Zoom-Nikkor 18-70mm f/3.5-4.5G IF-ED
 [Composite, Composite, Camera] Nikon::LensSpec - Lens Spec: 18-70mm f/3.5-4.5 G
-[Composite, Composite, Other] XMP::Flash - Flash: Auto, Fired, Return detected
+[Composite, Composite, Camera] XMP::Flash - Flash: Auto, Fired, Return detected
 [Composite, Composite, Camera] Exif::BlueBalance - Blue Balance: 1.410156
 [Composite, Composite, Image] Exif::ImageSize - Image Size: 8x8
 [Composite, Composite, Image] Exif::LightValue - Light Value: 9.6

@@ -1,4 +1,4 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.55
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.62
 [File, File, Image] FileType - File Type: PNG
 [File, File, Image] FileTypeExtension - File Type Extension: png
 [File, File, Image] MIMEType - MIME Type: image/png
@@ -25,7 +25,7 @@
 [PNG, PNG, Image] URL - URL: http://owl.phy.queensu.ca/~phil/exiftool/
 [PNG, PNG, Time] create-date - Create Date: 2001:05:19 18:36:41
 [PNG, PNG, Time] tIME - Modify Date: 2004:02:26 09:36:46
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.55
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.62
 [XMP, XMP-dc, Author] creator - Creator: Phil Harvey
 [XMP, XMP-dc, Image] description - Description: UTF-16 (big-endian) encoded XMP
 [XMP, XMP-dc, Author] rights - Rights: Copyright 2004 Phil Harvey
@@ -116,7 +116,7 @@
 [Photoshop, Photoshop, Image] 1049 - Global Altitude: 30
 [Composite, Composite, Image] Exif::Aperture - Aperture: 3.5
 [Composite, Composite, Image] Exif::ShutterSpeed - Shutter Speed: 1/64
-[Composite, Composite, Other] XMP::Flash - Flash: Fired
+[Composite, Composite, Camera] XMP::Flash - Flash: Fired
 [Composite, Composite, Image] Exif::ImageSize - Image Size: 16x16
 [Composite, Composite, Image] Exif::LightValue - Light Value: 9.6
 [Composite, Composite, Image] Exif::Megapixels - Megapixels: 0.000256

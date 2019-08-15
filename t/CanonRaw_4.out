@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.55
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.62
 [File, System, Image] FileName - File Name: CanonRaw_4_failed.crw
 [File, System, Image] Directory - Directory: t
 [File, System, Image] FileSize - File Size: 13 kB
-[File, System, Time] FileModifyDate - File Modification Date/Time: 2019:07:03 12:16:39-04:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:07:03 12:16:39-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:07:03 12:16:39-04:00
+[File, System, Time] FileModifyDate - File Modification Date/Time: 2019:08:12 12:07:27-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:08:12 12:07:27-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:08:12 12:07:27-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: CRW
 [File, File, Image] FileTypeExtension - File Type Extension: crw
@@ -142,7 +142,7 @@
 [MakerNotes, CanonRaw, Image] 3 - Raw Jpg Width: 2048
 [MakerNotes, CanonRaw, Image] 4 - Raw Jpg Height: 1360
 [MakerNotes, CanonRaw, Camera] 6203 - Serial Number Format: Format 1
-[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.55
+[XMP, XMP-x, Document] xmptk - XMP Toolkit: Image::ExifTool 11.62
 [XMP, XMP-aux, Camera] Lens - Lens: 18.0 - 55.0 mm
 [XMP, XMP-crs, Image] Temperature - Color Temperature: 5200
 [XMP, XMP-dc, Image] description - Description: CRW with embedded XMP
@@ -181,7 +181,7 @@
 [XMP, XMP-exif, Image] ShutterSpeedValue - Shutter Speed Value: 1
 [XMP, XMP-exif, Image] UserComment - User Comment: 
 [XMP, XMP-exif, Camera] WhiteBalance - White Balance: Auto
-[XMP, XMP-exifEX, Image] BodySerialNumber - Serial Number: 1234
+[XMP, XMP-exifEX, Camera] BodySerialNumber - Serial Number: 1234
 [XMP, XMP-exifEX, Image] CameraOwnerName - Owner Name: Phil Harvey
 [XMP, XMP-exifEX, Image] InteroperabilityIndex - Interoperability Index: THM - DCF thumbnail file
 [XMP, XMP-pmi, Image] sequenceNumber - Sequence Number: 0
@@ -205,7 +205,7 @@
 [Composite, Composite, Camera] Canon::WB_RGGBLevels - WB RGGB Levels: 1719 832 831 990
 [Composite, Composite, Image] Exif::Aperture - Aperture: 14.3
 [Composite, Composite, Image] Exif::ShutterSpeed - Shutter Speed: 4
-[Composite, Composite, Other] XMP::Flash - Flash: No Flash
+[Composite, Composite, Camera] XMP::Flash - Flash: No Flash
 [Composite, Composite, Camera] Exif::BlueBalance - Blue Balance: 1.190619
 [Composite, Composite, Image] Exif::ImageSize - Image Size: 3072x2048
 [Composite, Composite, Camera] Exif::LensID - Lens ID: Unknown 18-55mm

@@ -44,7 +44,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.35';
+$VERSION = '2.36';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -8207,7 +8207,7 @@ sub ProcessMOV($$;$)
     my $dirID = $$dirInfo{DirID} || '';
     my $charsetQuickTime = $et->Options('CharsetQuickTime');
     my ($buff, $tag, $size, $track, $isUserData, %triplet, $doDefaultLang, $index);
-    my ($dirEnd, $ee, $unkOpt, %saveOptions);
+    my ($dirEnd, $ee, $unkOpt, %saveOptions, $atomCount);
 
     my $topLevel = not $$et{InQuickTime};
     $$et{InQuickTime} = 1;
@@ -8276,9 +8276,13 @@ sub ProcessMOV($$;$)
         $unkOpt = $$et{OPTIONS}{Unknown};
         require 'Image/ExifTool/QuickTimeStream.pl';
     }
-    $index = $$tagTablePtr{VARS}{START_INDEX} if $$tagTablePtr{VARS};
+    if ($$tagTablePtr{VARS}) {
+        $index = $$tagTablePtr{VARS}{START_INDEX};
+        $atomCount = $$tagTablePtr{VARS}{ATOM_COUNT};
+    }
     for (;;) {
         my ($eeTag, $ignore);
+        last if defined $atomCount and --$atomCount < 0;
         if ($size < 8) {
             if ($size == 0) {
                 if ($dataPt) {
@@ -8711,10 +8715,8 @@ ItemID:         foreach $id (keys %$items) {
                 Extra => sprintf(' at offset 0x%.4x', $raf->Tell()),
             ) if $verbose;
             if ($size and (not $raf->Seek($size-1, 1) or $raf->Read($buff, 1) != 1)) {
-                unless ($$tagTablePtr{VARS} and $$tagTablePtr{VARS}{IGNORE_BAD_ATOMS}) {
-                    my $t = PrintableTagID($tag);
-                    $et->Warn("Truncated '${t}' data");
-                }
+                my $t = PrintableTagID($tag);
+                $et->Warn("Truncated '${t}' data");
                 last;
             }
         }

@@ -697,7 +697,7 @@ sub WriteQuickTime($$$)
     my ($et, $dirInfo, $tagTablePtr) = @_;
     $et or return 1;    # allow dummy access to autoload this package
     my ($mdat, @mdat, @mdatEdit, $edit, $track, $outBuff, $co, $term, $delCount);
-    my (%langTags, $canCreate, $delGrp, %boxPos, %didDir, $writeLast, $err);
+    my (%langTags, $canCreate, $delGrp, %boxPos, %didDir, $writeLast, $err, $atomCount);
     my $outfile = $$dirInfo{OutFile} || return 0;
     my $raf = $$dirInfo{RAF};       # (will be null for lower-level atoms)
     my $dataPt = $$dirInfo{DataPt}; # (will be null for top-level atoms)
@@ -768,7 +768,14 @@ sub WriteQuickTime($$$)
         $canCreate = 1;
         $delGrp = $$et{DEL_GROUP}{$dirName};
     }
+    $atomCount = $$tagTablePtr{VARS}{ATOM_COUNT} if $$tagTablePtr{VARS};
+
     for (;;) {      # loop through all atoms at this level
+        if (defined $atomCount and --$atomCount < 0 and $dataPt) {
+            # stop processing now and just copy the rest of the atom
+            Write($outfile, substr($$dataPt, $raf->Tell())) or $rtnVal=$rtnErr, $err=1;
+            last;
+        }
         my ($hdr, $buff, $keysIndex);
         my $n = $raf->Read($hdr, 8);
         unless ($n == 8) {
@@ -801,6 +808,7 @@ sub WriteQuickTime($$$)
             $size < 0 and $et->Error('Invalid extended atom size'), last;
         } elsif ($size == -8) {
             if ($dataPt) {
+                last if $$dirInfo{DirName} eq 'CanonCNTH';  # (this is normal for Canon CNTH atom)
                 my $pos = $raf->Tell() - 4;
                 $raf->Seek(0,2);
                 my $str = $$dirInfo{DirName} . ' with ' . ($raf->Tell() - $pos) . ' bytes';
@@ -813,15 +821,8 @@ sub WriteQuickTime($$$)
             }
             last;
         } elsif ($size < 0) {
-            if ($$tagTablePtr{VARS}{IGNORE_BAD_ATOMS} and $dataPt) {
-                # ignore bad atom and just copy the rest of this directory
-                $buff = substr($$dataPt, $raf->Tell());
-                Write($outfile, $hdr, $buff) or $rtnVal=$rtnErr, $err=1;
-                last;
-            } else {
-                $et->Error('Invalid atom size');
-                last;
-            }
+            $et->Error('Invalid atom size');
+            last;
         }
 
         # keep track of 'mdat' atom locations for writing later
@@ -1242,11 +1243,11 @@ sub WriteQuickTime($$$)
         } elsif ($tag eq 'stsd' and length($buff) >= 8) {
             my $n = Get32u(\$buff, 4);      # get number of sample descriptions in table
             my ($pos, $flg) = (8, 0);
-            my $i;
+            my ($i, $msg);
             for ($i=0; $i<$n; ++$i) {       # loop through sample descriptions
-                last if $pos + 16 > length($buff);
+                $pos + 16 <= length($buff) or $msg = 'Truncated sample table', last;
                 my $siz = Get32u(\$buff, $pos);
-                last if $pos + $siz > length($buff);
+                $pos + $siz <= length($buff) or $msg = 'Truncated sample table', last;
                 my $drefIdx = Get16u(\$buff, $pos + 14);
                 my $drefTbl = $$et{QtDataRef};
                 if (not $drefIdx) {
@@ -1256,11 +1257,15 @@ sub WriteQuickTime($$$)
                     # $flg = 0x01-in this file, 0x02-in some other file
                     $flg |= ($$dref[1] == 1 and $$dref[0] ne 'rsrc') ? 0x01 : 0x02;
                 } else {
-                    my $grp = $$et{CUR_WRITE_GROUP} || $parent;
-                    $et->Error("No data reference for $grp sample description $i");
-                    return $rtnVal;
+                    $msg = "No data reference for sample description $i";
+                    last;
                 }
                 $pos += $siz;
+            }
+            if ($msg) {
+                my $grp = $$et{CUR_WRITE_GROUP} || $parent;
+                $et->Error("$msg for $grp");
+                return $rtnErr;
             }
             $$et{QtDataFlg} = $flg;
         }

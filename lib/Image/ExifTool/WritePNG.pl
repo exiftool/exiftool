@@ -80,9 +80,9 @@ sub WriteProfile($$$;$)
         } else {
             $chunk = $rawType;
             if ($rawType eq $stdCase{zxif}) {
-                $prefix = "\0" . pack('N', length $$dataPt);
+                $prefix = "\0" . pack('N', length $$dataPt); # (proposed compressed EXIF)
             } else {
-                $prefix = '';
+                $prefix = '';   # standard EXIF
             }
         }
         if ($deflate) {
@@ -116,7 +116,7 @@ sub WriteProfile($$$;$)
 }
 
 #------------------------------------------------------------------------------
-# Add iCCP to the PNG image if necessary (must come before PLTE and IDAT)
+# Add iCCP chunk to the PNG image if necessary (must come before PLTE and IDAT)
 # Inputs: 0) ExifTool object ref, 1) output file or scalar ref
 # Returns: true on success
 sub Add_iCCP($$)
@@ -223,15 +223,16 @@ sub BuildTextChunk($$$$$)
 #------------------------------------------------------------------------------
 # Add any outstanding new chunks to the PNG image
 # Inputs: 0) ExifTool object ref, 1) output file or scalar ref
-#         2-N) dirs to add (empty to add all, including PNG tags)
+#         2-N) dirs to add (empty to add all except EXIF 'IFD0', including PNG tags)
 # Returns: true on success
 sub AddChunks($$;@)
 {
     my ($et, $outfile, @add) = @_;
-    my ($addTags, $tag, $dir, $err, $tagTablePtr);
+    my ($addTags, $tag, $dir, $err, $tagTablePtr, $specified);
 
     if (@add) {
         $addTags = { }; # don't add any PNG tags
+        $specified = 1;
     } else {
         $addTags = $$et{ADD_PNG};    # add all PNG tags...
         delete $$et{ADD_PNG};        # ...once
@@ -259,7 +260,6 @@ sub AddChunks($$;@)
             my $cbuf = pack('N', CalculateCRC(\$data, undef));
             Write($outfile, $hdr, $data, $cbuf) or $err = 1;
             $et->VerboseValue("+ PNG:$$tagInfo{Name}", $val);
-            $$et{PNGDoneTag}{$tag} = 1;   # set flag indicating this tag was added
             ++$$et{CHANGED};
         }
     }
@@ -272,6 +272,7 @@ sub AddChunks($$;@)
             DirName => $dir,
         );
         if ($dir eq 'IFD0') {
+            next unless $specified;     # wait until specifically asked to write EXIF 'IFD0'
             my $chunk = $stdCase{exif};
             # (zxIf was not adopted)
             #if ($et->Options('Compress')) {
@@ -307,7 +308,7 @@ sub AddChunks($$;@)
                 Write($outfile, $hdr, $buff, $cbuf) or $err = 1;
             }
         } elsif ($dir eq 'IPTC') {
-            $et->Warn('Creating non-standard EXIF in PNG', 1);
+            $et->Warn('Creating non-standard IPTC in PNG', 1);
             $et->VPrint(0, "Creating IPTC profile:\n");
             # write new IPTC data (stored in a Photoshop directory)
             $dirInfo{DirName} = 'Photoshop';
@@ -326,7 +327,7 @@ sub AddChunks($$;@)
                 $et->Warn('Wrote ICC as a raw profile (no Compress::Zlib)');
             }
         } elsif ($dir eq 'PNG-pHYs') {
-            $et->VPrint(0, "Creating pHYs chunk:\n");
+            $et->VPrint(0, "Creating pHYs chunk (default 2834 pixels per meter):\n");
             $tagTablePtr = Image::ExifTool::GetTagTable('Image::ExifTool::PNG::PhysicalPixel');
             my $blank = "\0\0\x0b\x12\0\0\x0b\x12\x01"; # 2834 pixels per meter (72 dpi)
             $dirInfo{DataPt} = \$blank;

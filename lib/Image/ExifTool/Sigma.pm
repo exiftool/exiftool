@@ -19,7 +19,7 @@ use strict;
 use vars qw($VERSION %sigmaLensTypes);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.27';
+$VERSION = '1.28';
 
 # sigma LensType lookup (ref IB)
 %sigmaLensTypes = (
@@ -132,6 +132,7 @@ $VERSION = '1.27';
     0x521 => 'Sigma 18-50mm F3.5-5.6 DC Macro',
     0x527 => 'Sigma 100-300mm F4 EX IF HSM',
     0x529 => 'Sigma 120-300mm F2.8 EX HSM IF APO',
+    0x545 => 'Sigma 28-70mm F2.8 EX ASP DF', #IB
     0x547 => 'Sigma 24-60mm F2.8 EX DG',
     0x548 => 'Sigma 24-70mm F2.8 EX DG Macro',
     0x549 => 'Sigma 28-70mm F2.8 EX DG',
@@ -154,6 +155,7 @@ $VERSION = '1.27';
     0x597 => 'Sigma 200-500mm F2.8 APO EX DG',
     0x5A8 => 'Sigma 70-300mm F4-5.6 APO DG Macro (Motorized)',
     0x5A9 => 'Sigma 70-300mm F4-5.6 DG Macro (Motorized)',
+    0x605 => 'Sigma 24-70mm F3.5-5.6 ASP HF', #IB
     0x633 => 'Sigma 28-70mm F2.8-4 HS',
     0x634 => 'Sigma 28-70mm F2.8-4 DG',
     0x635 => 'Sigma 24-105mm F4 DG OS HSM | A',
@@ -190,8 +192,10 @@ $VERSION = '1.27';
     0x745 => 'Sigma 150-600mm F5-6.3 DG OS HSM | C',
     0x777 => 'Sigma 18-200mm F3.5-6.3 DC',
     0x77D => 'Sigma 18-200mm F3.5-6.3 DC (Motorized)',
+    0x785 => 'Sigma 28-200mm F3.5-5.6 DL ASP IF HZM Macro', #IB
     0x787 => 'Sigma 28-200mm F3.5-5.6 Compact ASP HZ Macro',
     0x789 => 'Sigma 18-125mm F3.5-5.6 DC',
+    0x790 => 'Sigma 28-300mm F3.5-6.3 DL ASP IF HZM', #IB
     0x793 => 'Sigma 28-300mm F3.5-6.3 Macro',
     0x794 => 'Sigma 28-200mm F3.5-5.6 DG Compact ASP HZ Macro',
     0x795 => 'Sigma 28-300mm F3.5-6.3 DG Macro',

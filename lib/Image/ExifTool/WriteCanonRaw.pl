@@ -617,9 +617,9 @@ files and metadata.
 =head1 NOTES
 
 The CRW format is a pleasure to work with.  All pointer offsets are relative
-to the start of the data for each directory.  If TIFF/EXIF had implemented
-pointers in this way, it would be MUCH easier to read and write TIFF/JPEG
-files, and would lead to far fewer problems with corrupted metadata.
+to the start of the data for each directory.  If EXIF/TIFF had implemented
+pointers in this way, it would be MUCH easier to read and write TIFF and
+JPEG files, and would lead to far fewer problems with corrupted metadata.
 
 =head1 AUTHOR
 

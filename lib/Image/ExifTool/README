@@ -241,6 +241,10 @@ key:
     START_INDEX   [QuickTime tables only] Initial index for indices shown in
                   Verbose output.  Indices are not show otherwise.
 
+    ATOM_COUNT    [QuickTime tables only] Maximum number of atoms contained in
+                  within this atom.  Currently used only for Canon CNTH atom,
+                  which contains garbage after the first contained atom.
+
   DATAMEMBER : BinaryData tables only.  A reference to a list of sorted tag ID's
   which must be extracted as data members when writing.  Must also list "var_"
   format tags and tags with Hook so offsets are properly calculated if the table

@@ -74,9 +74,9 @@ span.sup        { font-size: 0.8em; font-weight: normal; position: relative; top
 </div>
 
 <blockquote><table class='dl lg'><tr><td><b>
-<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-11.62.tar.gz/download">
-Download        Version 11.62</a> (4.4 MB) -
-<a href="history.html">Aug. 15, 2019</a></b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-11.63.tar.gz/download">
+Download        Version 11.63</a> (4.4 MB) -
+<a href="history.html">Aug. 20, 2019</a></b></td></tr></table></blockquote>
 
 <p><b>ExifTool is a platform-independent <a href="ExifTool.html">Perl
 library</a> plus a <a href="exiftool_pod.html">command-line application</a> for
@@ -128,8 +128,8 @@ distribution above.)</i></p>
 
 <blockquote><table class='dl lg'><tr><td><b>
 <a name="alone">Windows Executable:</a>
-<a href="http://sourceforge.net/projects/exiftool/files/exiftool-11.62.zip/download">
-         exiftool-11.62.zip</a> (6.1 MB)</b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/exiftool-11.63.zip/download">
+         exiftool-11.63.zip</a> (6.1 MB)</b></td></tr></table></blockquote>
 
 <p><b>The stand-alone Windows executable</b> does not require Perl. Just
 download and un-zip the archive then double-click on
@@ -141,11 +141,14 @@ of Windows.</p>
 <blockquote><table class='dl lg'><tr><td><b>
 MacOS Package:
 <a href="http://sourceforge.net/projects/exiftool/files/ExifTool-9.70.dmg/download">
-         ExifTool-11.62.dmg</a> (2.8 MB)</b></td></tr></table></blockquote>
+         ExifTool-11.63.dmg</a> (2.8 MB)</b></td></tr></table></blockquote>
 
 <p><b>The MacOS package</b> installs the ExifTool command-line application and
-libraries in /usr/local/bin. After installing, type "<code>exiftool</code>" in
-a Terminal window to run exiftool and read the application documentation.</p>
+libraries in /usr/local/bin. After installing, type "<code>exiftool</code>" in a
+Terminal window to run exiftool and read the application documentation.
+<span class=red><b>Note:</b> This package will not install on MacOS Catalina
+systems.  For Catalina, you should follow the <a href="install.html#Unix">Unix
+installation instructions</a>, but you will require sudo privileges.</span></p>
 
 <p>Read the <b><a href="install.html">installation instructions</a></b> for help
 installing ExifTool on Windows, MacOS and Unix systems.</p>
@@ -982,7 +985,8 @@ in the Apple and Adobe software since XMP is allowed to exist after the image
 data according to the XMP and PNG specifications. <i class=grn>[ExifTool 9.40
 provides the PNGEarlyXMP API option to allow writing XMP before the IDAT chunk,
 but there are caveats associated with its use.  ExifTool 11.58 and later remove
-this option and always write XMP before IDAT.]</i></li>
+this option and always write XMP before IDAT, and 11.63 and later write all
+text chunks before IDAT.]</i></li>
 <li><span class=red>[2013-04-21]</span>
 Memory available to ExifTool in the <b>Windows EXE version</b> is limited to
 a few hundred MB.  This limitation has been known to cause <b>unreasonably long

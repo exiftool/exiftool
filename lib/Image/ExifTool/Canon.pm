@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.21';
+$VERSION = '4.22';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -8656,12 +8656,12 @@ my %filterConv = (
 
 %Image::ExifTool::Canon::CNTH = (
     GROUPS => { 0 => 'MakerNotes', 1 => 'Canon', 2 => 'Video' },
-    VARS => { IGNORE_BAD_ATOMS => 1 },
+    VARS => { ATOM_COUNT => 1 },    # only one contained atom
     WRITABLE => 1,
     WRITE_PROC => 'Image::ExifTool::QuickTime::WriteQuickTime',
     NOTES => q{
-        Canon-specific QuickTime tags found in the CNTH atom of MOV videos from some
-        cameras such as the PowerShot S95.
+        Canon-specific QuickTime tags found in the CNTH atom of MOV/MP4 videos from
+        some cameras.
     },
     CNDA => {
         Name => 'ThumbnailImage',

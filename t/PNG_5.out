@@ -10,11 +10,15 @@ Rewriting t/images/PNG.png...
   MIMEType = image/png
 PNG IHDR (13 bytes):
 PNG bKGD (2 bytes):
-Creating XMP iTXt chunk:
-  Creating XMP
-    + XMP-dc:Creator = 'Phil Harvey'
-PNG IDAT (1 chunk, total 14 bytes)
+  Moving tEXt from after IDAT (20 bytes)
 PNG tEXt (20 bytes):
+  Moving iTXt from after IDAT (443 bytes)
 PNG iTXt (443 bytes):
   Deleting XMP
+  Rewriting XMP
+    + XMP-dc:Creator = 'Phil Harvey'
+PNG IDAT (1 chunk, total 14 bytes)
+  Warning = [minor] Text chunk(s) found after PNG IDAT (fixed)
+  Deleting tEXt that was moved (20 bytes)
+  Deleting iTXt that was moved (443 bytes)
 PNG IEND (end of image)

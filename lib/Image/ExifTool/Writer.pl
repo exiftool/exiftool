@@ -3883,11 +3883,11 @@ sub InitWriteDirs($$;$$)
                 $dirName = 'MIE' . ($1 || '');
             }
             my @dirNames;
-            # allow a group name of '*' to force writing EXIF/IPTC/XMP (ForceWrite tag)
+            # allow a group name of '*' to force writing EXIF/IPTC/XMP/PNG (ForceWrite tag)
             if ($dirName eq '*' and $$nvHash{Value}) {
                 my $val = $$nvHash{Value}[0];
                 if ($val) {
-                    foreach (qw(EXIF IPTC XMP FixBase)) {
+                    foreach (qw(EXIF IPTC XMP PNG FixBase)) {
                         next unless $val =~ /\b($_|All)\b/i;
                         push @dirNames, $_;
                         push @dirNames, 'EXIF' if $_ eq 'FixBase';

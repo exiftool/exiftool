@@ -26,7 +26,8 @@
 #               comes before IDAT.  As of version 11.58, ExifTool uses a 2-pass
 #               writing algorithm to allow it to be compatible with XMP after
 #               IDAT while writing it before IDAT.  (PNG and EXIF are still
-#               written after IDAT.)
+#               written after IDAT.)  As of version 11.63, this strategy is
+#               applied to all text chunks (tEXt, zTXt and iTXt).
 #------------------------------------------------------------------------------
 
 package Image::ExifTool::PNG;
@@ -35,7 +36,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD %stdCase);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.51';
+$VERSION = '1.52';
 
 sub ProcessPNG_tEXt($$$);
 sub ProcessPNG_iTXt($$$);
@@ -86,6 +87,14 @@ my %pngMap = (
 # color type of current image
 $Image::ExifTool::PNG::colorType = -1;
 
+# data and text chunk types
+my %isDatChunk = ( IDAT => 1, JDAT => 1, JDAA => 1 );
+my %isTxtChunk = ( tEXt => 1, zTXt => 1, iTXt => 1 );
+
+# chunks that we shouldn't move other chunks across (ref 3)
+my %noLeapFrog = ( SAVE => 1, SEEK => 1, IHDR => 1, JHDR => 1, IEND => 1, MEND => 1, 
+                   DHDR => 1, BASI => 1, CLON => 1, PAST => 1, SHOW => 1, MAGN => 1 );
+
 # PNG chunks
 %Image::ExifTool::PNG::Main = (
     WRITE_PROC => \&Image::ExifTool::DummyWriteProc,
@@ -101,6 +110,14 @@ $Image::ExifTool::PNG::colorType = -1;
         it is specifically deleted with C<-Trailer:All=>.  When reading, a minor
         warning is issued if this trailer exists, and ExifTool will attempt to parse
         this data as additional PNG chunks.
+
+        Also according to the PNG specification, there is no restriction on the
+        location of text-type chunks (tEXt, zTXt and iTXt).  However, certain
+        utilities (including some Apple and Adobe utilities) won't read the XMP iTXt
+        chunk (and at least one utility won't read other text chunks) that come
+        after the IDAT chunk.  For this reason, ExifTool 11.63 and later write all
+        text chunks (including XMP) before IDAT, and will move existing text chunks
+        up from after IDAT.
     },
     bKGD => {
         Name => 'BackgroundColor',
@@ -866,9 +883,7 @@ sub FoundPNG($$$$;$$$$)
             {
                 # write new value for this tag if necessary
                 my $newVal;
-                if ($$et{DEL_GROUP}{PNG} or $$et{PNGDoneTag}{$tag} or
-                    $$et{PNGDoneTag}{ucfirst $tag})
-                {
+                if ($$et{DEL_GROUP}{PNG}){
                     # remove this tag now, but keep in ADD_PNG list to add back later
                     $isOverwriting = 1;
                 } else {
@@ -1230,7 +1245,8 @@ sub ProcessPNG($$)
     my $datChunk = '';
     my $datCount = 0;
     my $datBytes = 0;
-    my ($sig, $err, $xmp, $foundXMP, $foundIDAT, $editingXMP, $deletingXMP);
+    my ($n, $sig, $err, $hbuf, $dbuf, $cbuf);
+    my ($wasHdr, $wasEnd, $wasDat, $doTxt, @txtOffset);
 
     # check to be sure this is a valid PNG/MNG/JNG image
     return 0 unless $raf->Read($sig,8) == 8 and $pngLookup{$sig};
@@ -1245,14 +1261,8 @@ sub ProcessPNG($$)
         $$et{ADD_PNG} = $et->GetNewTagInfoHash(
             \%Image::ExifTool::PNG::Main,
             \%Image::ExifTool::PNG::TextualData);
-        # NOTE: PNGDoneTag is used to keep track of metadata added before the
-        # PNG IEND chunk is encountered.  Currently this is implemented only
-        # for XMP, but may be implemented in the future for other types - PH
-        $$et{PNGDoneTag} = { };
         # initialize with same directories, with PNG tags taking priority
         $et->InitWriteDirs(\%pngMap,'PNG');
-        $editingXMP = $$et{EDIT_DIRS}{XMP};
-        $deletingXMP = $$et{DEL_GROUP}{XMP};
     }
     my ($fileType, $hdrChunk, $endChunk) = @{$pngLookup{$sig}};
     $et->SetFileType($fileType);  # set the FileType tag
@@ -1265,36 +1275,35 @@ sub ProcessPNG($$)
     my $verbose = $et->Options('Verbose');
     my $validate = $et->Options('Validate');
     my $out = $et->Options('TextOut');
-    my ($hbuf, $dbuf, $cbuf, $wasHdr, $wasEnd);
 
-    # scan ahead for XMP if we are editing it
-    if ($outfile and $editingXMP and not $deletingXMP) {
+    # scan ahead to find offsets of all text chunks after IDAT
+    if ($outfile) {
         while ($raf->Read($hbuf,8) == 8) {
             my ($len, $chunk) = unpack('Na4',$hbuf);
             last if $len > 0x7fffffff;
-            if ($chunk ne 'iTXt' or $len < 22) {
-                $raf->Seek($len + 4, 1) or last;
-                next;
+            if ($wasDat) {
+                last if $noLeapFrog{$chunk}; # (don't move text across these chunks)
+                push @txtOffset, $raf->Tell() - 8 if $isTxtChunk{$chunk};
+            } elsif ($isDatChunk{$chunk}) {
+                $wasDat = $chunk;
             }
-            $raf->Read($dbuf, 18) == 18 or last;
-            unless ($dbuf eq "XML:com.adobe.xmp\0") {   # is this XMP?
-                $raf->Seek($len - 18 + 4, 1) or last;
-                next;
-            };
-            $raf->Read($dbuf, $len - 18) == $len - 18 or last;
-            my ($compressed, $meth) = unpack('CC', $dbuf);
-            $compressed and $et->Error('XMP is compressed'), last;
-            my ($lang, $trans);
-            ($lang, $trans, $xmp) = split /\0/, substr($dbuf, 2), 3;
-            last;
+            $raf->Seek($len + 4, 1) or last;    # skip chunk data
         }
         $raf->Seek(8,0) or $et->Error('Error seeking in file'), return -1;
+        undef $wasDat;
     }
 
     # process the PNG/MNG/JNG chunks
     undef $noCompressLib;
     for (;;) {
-        my $n = $raf->Read($hbuf,8);
+        if ($doTxt) {
+            # read text chunks that were found after IDAT so we can write them before
+            $raf->Seek(shift(@txtOffset), 0) or $et->Error('Seek error'), last;
+            # (this is the IDAT offset if @txtOffset is now empty)
+            undef $doTxt unless @txtOffset;
+        }
+        $n = $raf->Read($hbuf,8);   # read chunk header
+
         if ($wasEnd) {
             last unless $n; # stop now if normal end of PNG
             $et->WarnOnce("Trailer data after $fileType $endChunk chunk", 1);
@@ -1310,6 +1319,7 @@ sub ProcessPNG($$)
             last;
         }
         if ($verbose) {
+            print $out "  Moving $chunk from after IDAT ($len bytes)\n" if $doTxt;
             # don't dump image data chunks in verbose mode (only give count instead)
             if ($datCount and $chunk ne $datChunk) {
                 my $s = $datCount > 1 ? 's' : '';
@@ -1327,41 +1337,32 @@ sub ProcessPNG($$)
                 last;
             }
         }
-        if ($chunk =~ /^(IDAT|JDAT|JDAA)$/) {
+        if ($outfile and ($isDatChunk{$chunk} or $chunk eq $endChunk) and @txtOffset) {
+            # continue processing here after we move the text chunks from after IDAT
+            push @txtOffset, $raf->Tell() - 8;
+            $doTxt = 1;     # process text chunks now
+            next;
+        }
+        if ($isDatChunk{$chunk}) {
             $datChunk = $chunk;
             $datCount++;
             $datBytes += $len;
+            $wasDat = $chunk;
         } else {
             $datChunk = '';
         }
         if ($outfile) {
-            # add XMP before any data chunk, or before IEND/MEND if no data
+            # add text chunks (including XMP) before any data chunk end chunk
             if ($datChunk or $chunk eq $endChunk) {
-                if ($xmp) {
-                    # rewrite existing XMP
-                    my $tbl = GetTagTable('Image::ExifTool::PNG::TextualData');
-                    my $buf;
-                    FoundPNG($et, $tbl, 'XML:com.adobe.xmp', $xmp, 0, \$buf, 'UTF8', '');
-                    my $outBuff = defined $buf ? \$buf : \$xmp;
-                    if (length $$outBuff) {
-                        my $hdr = pack('Na4', length($$outBuff), 'iTXt');
-                        my $crc = CalculateCRC(\$hdr, undef, 4);
-                        $crc = CalculateCRC($outBuff, $crc);
-                        Write($outfile, $hdr, $$outBuff, pack('N',$crc)) or $err = 1;
-                    }
-                    undef $xmp;     # done with this XMP
-                } elsif ($$et{ADD_DIRS}{XMP}) {
-                    # add new XMP if necessary
-                    AddChunks($et, $outfile, 'XMP') or $err = 1;
-                }
-            }
-            if ($chunk eq $endChunk) {
-                # add other new chunks immediately before the IEND/MEND chunk
-                AddChunks($et, $outfile) or $err = 1;
-            } elsif ($chunk eq 'PLTE' or $chunk eq 'IDAT') {
-                # pHYs must come before IDAT
-                AddChunks($et, $outfile, 'PNG-pHYs') or $err = 1 if $chunk eq 'IDAT';
-                # iCCP chunk must come before PLTE and IDAT
+                # write iCCP chunk now if requested because AddChunks will try
+                # to add it as a text profile chunk if this isn't successful
+                # (ie. if Compress::Zlib wasn't available)
+                Add_iCCP($et, $outfile);
+                AddChunks($et, $outfile) or $err = 1;   # all all text chunks
+                # add EXIF before end chunk if not found already
+                AddChunks($et, $outfile, 'IFD0') if $chunk eq $endChunk;
+            } elsif ($chunk eq 'PLTE') {
+                # iCCP chunk must come before PLTE (and IDAT, handled above)
                 # (ignore errors -- will add later as text profile if this fails)
                 Add_iCCP($et, $outfile);
             }
@@ -1397,12 +1398,21 @@ sub ProcessPNG($$)
             next;
         }
         if ($datChunk) {
-            $foundIDAT = 1 if $chunk eq 'IDAT';     # set flag indicating IDAT was found
             # skip over data chunks if possible
             unless ($verbose or $validate or $outfile) {
                 $raf->Seek($len + 4, 1) or $et->Warn('Seek error'), last;
                 next;
             }
+        } elsif ($wasDat and $isTxtChunk{$chunk}) {
+            my $msg;
+            if (not $outfile) {
+                $msg = 'may be ignored by some readers';
+            } elsif (defined $doTxt) {  # $doTxt == 0 if we crossed a noLeapFrog chunk
+                $msg = "can't be moved"; # (but could be deleted then added back again)
+            } else {
+                $msg = 'fixed';
+            }
+            $et->WarnOnce("Text chunk(s) found after $$et{FileType} $wasDat ($msg)", 1);
         }
         # read chunk data and CRC
         unless ($raf->Read($dbuf,$len)==$len and $raf->Read($cbuf, 4)==4) {
@@ -1421,49 +1431,31 @@ sub ProcessPNG($$)
                 Write($outfile, $hbuf, $dbuf, $cbuf) or $err = 1 if $outfile;
                 next;
             }
+            # just skip over any text chunk found after IDAT
+            if ($outfile and $wasDat) {
+                if ($isTxtChunk{$chunk} and not defined $doTxt) {
+                    ++$$et{CHANGED} if $$et{FORCE_WRITE}{PNG};
+                    print $out "  Deleting $chunk that was moved ($len bytes)\n" if $verbose;
+                    next;
+                }
+                # done moving text if we hit one of these chunks
+                $doTxt = 0 if $noLeapFrog{$chunk};
+            }
             if ($verbose) {
                 print $out "$fileType $chunk ($len bytes):\n";
                 $et->VerboseDump(\$dbuf, Addr => $raf->Tell() - $len - 4) if $verbose > 2;
             }
         }
-        if ($chunk eq 'iTXt' and $dbuf =~ /^XML:com.adobe.xmp\0/) {
-            $foundXMP = ($foundXMP || 0) + 1;
-            if ($outfile and $editingXMP) {
-                # handle this standard XMP iTXt chunk
-                my $editNow;
-                if ($deletingXMP) {
-                    # just fall through
-                } elsif ($foundXMP > 1) {
-                    $et->Error('Multiple XMP chunks', 1) if $foundXMP == 2;
-                } elsif ($foundIDAT) {
-                    $et->WarnOnce('XMP found after PNG IDAT. Fixed.');
-                } elsif ($xmp) {
-                    # the XMP is already before IDAT, so edit it now
-                    $editNow = 1;
-                    undef $xmp;     # (don't write again later)
-                }
-                unless ($editNow) {
-                    ++$$et{CHANGED};
-                    print $out "  Deleting XMP\n" if $verbose;
-                    next;
-                }
-            } else {
-                $et->WarnOnce('XMP found after PNG IDAT') if $foundIDAT;
-                $et->Warn('Multiple XMP chunks') if $foundXMP == 2;
-            }
-        }
-        # translate case of chunk name if necessary
-        if (not $$tagTablePtr{$chunk}) {
+        # translate case of chunk names that have changed since the first implementation
+        if (not $$tagTablePtr{$chunk} and $stdCase{lc $chunk}) {
             my $stdChunk = $stdCase{lc $chunk};
-            if ($stdChunk) {
-                if ($outfile and ($$et{EDIT_DIRS}{IFD0} or $stdChunk !~ /^[ez]xif$/i)) {
-                    $et->Warn("Changed $chunk chunk to $stdChunk", 1);
-                    ++$$et{CHANGED};
-                } else {
-                    $et->Warn("$chunk chunk should be $stdChunk", 1);
-                }
-                $chunk = $stdCase{lc $chunk};
+            if ($outfile and ($$et{EDIT_DIRS}{IFD0} or $stdChunk !~ /^[ez]xif$/i)) {
+                $et->Warn("Changed $chunk chunk to $stdChunk", 1);
+                ++$$et{CHANGED};
+            } else {
+                $et->Warn("$chunk chunk should be $stdChunk", 1);
             }
+            $chunk = $stdCase{lc $chunk};
         }
         # only extract information from chunks in our tables
         my ($theBuff, $outBuff);

@@ -7,6 +7,19 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 11.50. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Aug. 20, 2019 - Version 11.63 - "PNG Early Text"
+
+  - Added a few new Sigma lenses (thanks LibRaw)
+  - Improved handling of Canon CNTH atom in MOV/MP4 videos
+  - Changed PNG writer to place all text chunks before IDAT (not just XMP)
+  - Issue minor warning for any text chunk after PNG IDAT (not just XMP)
+  - Enhanced ForceWrite feature to allow "PNG" to be specified (to move existing
+    text chunks to before IDAT without editing any metadata)
+  - Removed Windows "surrogate" warning for files that wouldn't be processed
+    anyway
+  - Fixed some entries in the Minolta LensType list (thanks Jos Roost)
+  - Fixed identification of a Sony lens (thanks Jos Roost)
+
 Aug. 15, 2019 - Version 11.62
 
   - Added a number of new Canon, Pentax, Sony and Sigma lenses (thanks LibRaw)

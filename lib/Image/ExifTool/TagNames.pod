@@ -7447,8 +7447,8 @@ information.
 
 =head3 Canon CNTH Tags
 
-Canon-specific QuickTime tags found in the CNTH atom of MOV videos from some
-cameras such as the PowerShot S95.
+Canon-specific QuickTime tags found in the CNTH atom of MOV/MP4 videos from
+some cameras.
 
   Tag ID   Tag Name                             Writable
   ------   --------                             --------
@@ -22531,6 +22531,14 @@ however ExifTool will preserve any data found after this when writing unless
 it is specifically deleted with C<-Trailer:All=>.  When reading, a minor
 warning is issued if this trailer exists, and ExifTool will attempt to parse
 this data as additional PNG chunks.
+
+Also according to the PNG specification, there is no restriction on the
+location of text-type chunks (tEXt, zTXt and iTXt).  However, certain
+utilities (including some Apple and Adobe utilities) won't read the XMP iTXt
+chunk (and at least one utility won't read other text chunks) that come
+after the IDAT chunk.  For this reason, ExifTool 11.63 and later write all
+text chunks (including XMP) before IDAT, and will move existing text chunks
+up from after IDAT.
 
   Tag ID             Tag Name                   Writable
   ------             --------                   --------

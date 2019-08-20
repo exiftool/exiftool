@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup);
 
-$VERSION = '11.62';
+$VERSION = '11.63';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -1674,12 +1674,12 @@ my %systemTagsNotes = (
         Writable => 1,
         WriteOnly => 1,
         Notes => q{
-            write-only tag used to force EXIF, IPTC and/or XMP in a file to be
-            rewritten.  May be set to "EXIF", "IPTC" or "XMP" to force the corresponding
-            metadata type to be rewritten, "FixBase" to cause EXIF to be rewritten only if
-            the MakerNotes offset base was fixed, or "All" to rewrite all of these metadata
-            types.  Values are case insensitive, and multiple values may be separated with
-            commas, eg. C<-ForceWrite=exif,xmp>
+            write-only tag used to force EXIF, IPTC, XMP or PNG metadata in a file to be
+            rewritten.  May be set to "EXIF", "IPTC", "XMP" or "PNG" to force the
+            corresponding metadata type to be rewritten, "FixBase" to cause EXIF to be
+            rewritten only if the MakerNotes offset base was fixed, or "All" to rewrite
+            all of these metadata types.  Values are case insensitive, and multiple
+            values may be separated with commas, eg. C<-ForceWrite=exif,xmp>
         },
     },
     EmbeddedVideo => { Groups => { 2 => 'Video' } },

@@ -285,7 +285,7 @@ my %validateInfo = (
         enables the API L<Validate|../ExifTool.html#Validate> option, imposing
         additional validation checks when extracting metadata.  Returns the number
         of errors, warnings and minor warnings encountered.  Note that the Validate
-        feature focuses mainly on validation of TIFF/EXIF metadata
+        feature focuses mainly on validation of EXIF/TIFF metadata
     },
     PrintConv => {
         '0 0 0' => 'OK',

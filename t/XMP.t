@@ -2,7 +2,7 @@
 # After "make install" it should work as "perl t/XMP.t".
 
 BEGIN {
-    $| = 1; print "1..49\n"; $Image::ExifTool::configFile = '';
+    $| = 1; print "1..53\n"; $Image::ExifTool::configFile = '';
     require './t/TestLib.pm'; t::TestLib->import();
 }
 END {print "not ok 1\n" unless $loaded;}
@@ -589,7 +589,7 @@ my $testnum = 1;
     print "ok $testnum\n";
 }
 
-# tests 47-48: Test replacing specific elements in list of structures
+# tests 47-49: Test replacing specific elements in list of structures
 {
     ++$testnum;
     my $exifTool = new Image::ExifTool;
@@ -635,6 +635,46 @@ my $testnum = 1;
     } else {
         print 'not ';
     }
+    print "ok $testnum\n";
+}
+
+# test 50-53: Test replacing/creating elements in nested lang-alt list
+{
+    ++$testnum;
+    my $exifTool = new Image::ExifTool;
+    $exifTool->SetNewValuesFromFile('t/images/XMP9.xmp', '*:*');
+    $testfile = "t/${testname}_${testnum}_failed.xmp";
+    unlink $testfile;
+    $exifTool->WriteInfo('t/images/XMP9.xmp', $testfile);
+    print 'not ' unless testCompare("t/XMP_$testnum.out",$testfile,$testnum);
+    print "ok $testnum\n";
+
+    ++$testnum;
+    $testfile = "t/${testname}_${testnum}_failed.xmp";
+    unlink $testfile;
+    $exifTool->WriteInfo(undef, $testfile);
+    print 'not ' unless testCompare('t/XMP_50.out',$testfile,$testnum);
+    print "ok $testnum\n";
+
+    ++$testnum;
+    $testfile = "t/${testname}_${testnum}_failed.xmp";
+    unlink $testfile;
+    $exifTool->SetNewValue();
+    $exifTool->SetNewValue(Custom1 => 'test', DelValue => 1);
+    $exifTool->SetNewValue(Custom1 => 'new');
+    $exifTool->WriteInfo('t/images/XMP9.xmp', $testfile);
+    print 'not ' unless testCompare("t/XMP_$testnum.out",$testfile,$testnum);
+    print "ok $testnum\n";
+
+    ++$testnum;
+    $testfile = "t/${testname}_${testnum}_failed.xmp";
+    unlink $testfile;
+    $exifTool->Options(ListSplit => ',');
+    $exifTool->SetNewValue();
+    $exifTool->SetNewValue(Custom1 => 'a,b,c', AddValue => 1);
+    $exifTool->SetNewValue('Custom1-fr' => 'a-fr,,c-fr,d-fr,,f-fr', AddValue => 1);
+    $exifTool->WriteInfo('t/images/XMP9.xmp', $testfile);
+    print 'not ' unless testCompare("t/XMP_$testnum.out",$testfile,$testnum);
     print "ok $testnum\n";
 }
 

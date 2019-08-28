@@ -17,6 +17,7 @@ arg_files/xmp2iptc.args
 arg_files/xmp2pdf.args
 config_files/age.config
 config_files/bibble.config
+config_files/blueskysea.config
 config_files/convert_regions.config
 config_files/dji.config
 config_files/example.config
@@ -885,6 +886,9 @@ t/XMP_47.out
 t/XMP_48.out
 t/XMP_49.out
 t/XMP_5.out
+t/XMP_50.out
+t/XMP_52.out
+t/XMP_53.out
 t/XMP_6.out
 t/XMP_7.out
 t/XMP_8.out
@@ -1061,6 +1065,7 @@ t/images/XMP5.xmp
 t/images/XMP6.xmp
 t/images/XMP7.xmp
 t/images/XMP8.xmp
+t/images/XMP9.xmp
 t/images/ZIP.gz
 t/images/ZIP.zip
 t/images/iWork.numbers

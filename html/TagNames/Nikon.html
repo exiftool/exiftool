@@ -3906,7 +3906,8 @@ extracted.</p>
 <td class=r title='48 = 0x30'>48</td>
 <td>LensID</td>
 <td class=c>int16u</td>
-<td><span class=s>1 = Nikkor Z 24-70mm f/4 S
+<td><span class=s><span class=n>(tags from here onward used for Nikkor Z lenses only)</span>
+  <br>1 = Nikkor Z 24-70mm f/4 S
   <br>2 = Nikkor Z 14-30mm f/4 S
   <br>4 = Nikkor Z 35mm f/1.8 S
   <br>9 = Nikkor Z 50mm f/1.8 S
@@ -3925,6 +3926,11 @@ extracted.</p>
 <td class=r title='60 = 0x3c'>60</td>
 <td>FocalLength</td>
 <td class=c>int16u</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='79 = 0x4f'>79</td>
+<td>FocusDistance</td>
+<td class=c>int8u</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
@@ -7075,6 +7081,7 @@ used to specify the lens for ExifTool to choose in these cases (see the
 </tr><tr><td>'F1 47 5C 8E 30 3C DF 0E'</td><td>= Tamron SP 70-300mm f/4-5.6 Di VC USD (A005)</td>
 </tr><tr><td>'F3 48 68 8E 30 30 4B 02'</td><td>= Sigma APO 100-300mm F4 EX IF HSM</td>
 </tr><tr><td>'F3 54 2B 50 24 24 84 0E'</td><td>= Tamron SP AF 17-50mm f/2.8 XR Di II VC LD Aspherical (IF) (B005)</td>
+</tr><tr><td>'F4 4C 7C 7C 2C 2C 4B 02'</td><td>= Sigma APO Macro 180mm F3.5 EX DG HSM</td>
 </tr><tr><td>'F4 54 56 56 18 18 84 06'</td><td>= Tamron SP AF 60mm f/2.0 Di II Macro 1:1 (G005)</td>
 </tr><tr><td>'F5 40 2C 8A 2C 40 40 0E'</td><td>= Tamron AF 18-270mm f/3.5-6.3 Di II VC LD Aspherical (IF) Macro (B003)</td>
 </tr><tr><td>'F5 48 76 76 24 24 4B 06'</td><td>= Sigma APO Macro 150mm F2.8 EX DG HSM</td>
@@ -7105,7 +7112,7 @@ used to specify the lens for ExifTool to choose in these cases (see the
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Aug 7, 2019</i>
+<br><i>Last revised Aug 27, 2019</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

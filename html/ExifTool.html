@@ -767,6 +767,15 @@ distribution for examples.</p>
     case as they are added to the list.</td><td>List reference, delimited string of names
     (any delimiter is allowed), or undef to clear the previous RequestTags list.</td>
     <td align=center>undef</td></tr>
+<tr id="SaveFormat"><td>SaveFormat</td><td>Flag to save EXIF/TIFF format type as the
+    family 6 group name when extracting information.  Without this option set, the
+    family 6 group names are not generated.  See <a href="#GetGroup">GetGroup</a>
+    for more details.
+    </td><td align=center>0 or 1</td><td align=center>undef</td></tr>
+<tr id="SavePath"><td>SavePath</td><td>Flag to save the metadata path as the family 5 group
+    name when extracting information.  Without this option set, the family 5 group names
+    are not generated.  See <a href="#GetGroup">GetGroup</a> for more details.
+    </td><td align=center>0 or 1</td><td align=center>undef</td></tr>
 <tr id="ScanForXMP"><td>ScanForXMP</td><td>Flag to scan all files (even unrecognized
     formats) for XMP information unless XMP was already found in the file.  When combined with
     the FastScan option, only unrecognized file types are scanned for XMP.  
@@ -961,8 +970,8 @@ CharsetPhotoshop, CharsetQuickTime, CharsetRIFF, Composite, ExtendedXMP,
 ExtractEmbedded, FastScan, FixBase, HtmlDump, HtmlDumpBase,
 IgnoreMinorErrors, Lang, LargeFileSupport, MakerNotes, MDItemTags,
 NoPDFList, Password, QuickTimeUTC (enforced 1904 time zero), RequestAll,
-RequestTags, ScanForXMP, Struct, TextOut, Unknown, Verbose, XAttrTags and
-XMPAutoConv.
+RequestTags, SaveFormat, SavePath, ScanForXMP, Struct, TextOut, Unknown,
+Verbose, XAttrTags and XMPAutoConv.
 </blockquote>
 
 <hr><h2><a name="GetInfo">GetInfo</a></h2>
@@ -1268,7 +1277,8 @@ errors are printed to STDERR.
 <blockquote><table class='norm'>
 <tr><th colspan=4 bgcolor='#dddddd'>SetNewValue Options</th></tr>
 <tr><th>Option</th><th>Description</th><th width='30%'>Values</th><th>Default</th></tr>
-<tr><td>AddValue</td><td>Add value to existing list <b>in a file</b> rather than overwriting</td>
+<tr><td>AddValue</td><td>Add value to existing list <b>in a file</b> rather than
+    overwriting the existing values</td>
     <td><table class=clear>
     <tr><td valign=top align=center><b>0</b>&nbsp;=</td><td>Overwrite existing value(s)</td></tr>
     <tr><td valign=top align=center><b>1</b>&nbsp;=</td><td>Add to existing list, or warn for non-list tags</td></tr>
@@ -1813,6 +1823,8 @@ and adjacent identical group names unless the family string begins with a colon.
 <tr><td align=center>2</td><td>Category</td> <td>Author, Time</td></tr>
 <tr><td align=center>3</td><td>Document Number</td> <td>Main, Doc1, Doc3-2</td></tr>
 <tr><td align=center>4</td><td>Instance Number</td> <td>Copy1, Copy2, Copy3...</td></tr>
+<tr><td align=center>5</td><td>Metadata Path</td> <td>eg. JPEG-APP1-IFD0-ExifIFD</td></tr>
+<tr><td align=center>6</td><td>EXIF/TIFF Format</td> <td>int8u, int32u, undef, string...</td></tr>
 </table></blockquote>
 
 <p>Families 0 and 1 are based on the file structure, and are similar except that
@@ -1847,6 +1859,12 @@ no family 4 group name, but additional instances have have family 4 group names
 of '<code>Copy1</code>', '<code>Copy2</code>', '<code>Copy3</code>', etc.  For
 convenience, the primary tag may also be accessed using a group name of
 '<code>Copy0</code>'.</p>
+<p>Family 5 is experimental, and gives the complete path for the metadata in
+the file.  Generated only if the <a href="#SavePath">SavePath</a>
+option is used when extracting.</p>
+<p>Family 6 is currently used only for EXIF/TIFF metadata, and gives the format
+type of the extracted value.  Generated only if the
+<a href="#SaveFormat">SaveFormat</a> option is used when extracting.</p>
 <p>See <a href="#GetAllGroups">GetAllGroups</a> for lists of group names.</p>
 
 <p><b>Examples:</b></p>
@@ -2071,6 +2089,12 @@ Preview, Printing, Time, Unknown, Video
 <tr><td><b>4&nbsp;(Instance&nbsp;Number)</b></td>
 <td>Copy#
 </td></tr>
+<tr><td><b>5&nbsp;(Metadata&nbsp;Path)</b></td>
+<td><i>[experimental]</i> eg. JPEG-APP1-IFD0-ExifIFD
+</td></tr>
+<tr><td><b>6&nbsp;(EXIF/TIFF&nbsp;Format)</b></td>
+<td>int8u, string, int16u, int32u, rational64u, int8s, undef, int16s, int32s,
+rational64s, float, double, ifd, unicode, complex, int64u, int64s, ifd64</td></tr>
 </table></blockquote>
 <p><b>Example:</b></p>
 <blockquote><table class='box'><tr><td><pre>

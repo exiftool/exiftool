@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 22996 tags, with 15044 unique tag names.
+They contain a total of 22997 tags, with 15044 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -12070,6 +12070,7 @@ Tags found in the encrypted LensData from cameras such as the Z6 and Z7.
      54    MaxAperture                          int16u
      56    FNumber                              int16u
      60    FocalLength                          int16u
+     79    FocusDistance                        int8u
 
 =head3 Nikon LensDataUnknown Tags
 
@@ -22535,10 +22536,10 @@ this data as additional PNG chunks.
 Also according to the PNG specification, there is no restriction on the
 location of text-type chunks (tEXt, zTXt and iTXt).  However, certain
 utilities (including some Apple and Adobe utilities) won't read the XMP iTXt
-chunk (and at least one utility won't read other text chunks) that come
-after the IDAT chunk.  For this reason, ExifTool 11.63 and later write all
-text chunks (including XMP) before IDAT, and will move existing text chunks
-up from after IDAT.
+chunk if it comes after the IDAT chunk, and at least one utility won't read
+other text chunks like this.  For this reason, ExifTool 11.63 and later
+create new text chunks (including XMP) before IDAT, and will move existing
+text chunks up from after IDAT.
 
   Tag ID             Tag Name                   Writable
   ------             --------                   --------

@@ -853,6 +853,19 @@ current RequestTags list.  Groups are requested by adding a colon after the
 name (eg. "MacOS:").  Names are converted to lower case as they are added to
 the list.  Default is undef.
 
+=item SaveFormat
+
+Flag to save EXIF/TIFF format type as the family 6 group name when
+extracting information.  Without this option set, the family 6 group names
+are not generated.  Default is undef.  See the L</GetGroup> option for more
+details.
+
+=item SavePath
+
+Flag to save the metadata path as the family 5 group name when extracting
+information.  Without this option set, the family 5 group names are not
+generated.  Default is undef.  See the L</GetGroup> option for more details.
+
 =item ScanForXMP
 
 Flag to scan all files (even unrecognized formats) for XMP information
@@ -1044,8 +1057,8 @@ CharsetPhotoshop, CharsetQuickTime, CharsetRIFF, Composite, ExtendedXMP,
 ExtractEmbedded, FastScan, FixBase, HtmlDump, HtmlDumpBase,
 IgnoreMinorErrors, Lang, LargeFileSupport, MakerNotes, MDItemTags,
 NoPDFList, Password, QuickTimeUTC (enforced 1904 time zero), RequestAll,
-RequestTags, ScanForXMP, Struct, TextOut, Unknown, Verbose, XAttrTags and
-XMPAutoConv.
+RequestTags, SaveFormat, SavePath, ScanForXMP, Struct, TextOut, Unknown,
+Verbose, XAttrTags and XMPAutoConv.
 
 =item Return Value:
 
@@ -1451,9 +1464,9 @@ hash reference or a serialized string (see the last two examples above).
 =item AddValue
 
 Specifies that the value be added to an existing list in a file rather than
-overwriting.  Valid settings are 0 (overwrite any existing tag value), 1
-(add to an existing list and warn for non-list tags) or 2 (add to existing
-list and overwrite non-list tags).  Default is 0.
+overwriting the existing values.  Valid settings are 0 (overwrite any
+existing tag value), 1 (add to an existing list and warn for non-list tags)
+or 2 (add to existing list and overwrite non-list tags).  Default is 0.
 
 =item DelValue
 
@@ -1516,7 +1529,7 @@ set in previous calls to L</SetNewValue>).  This option is most commonly
 used to replace previously-set new values for list-type tags.  Valid values
 are 0 (set new value normally -- adds to new values for list-type tags), 1
 (reset any previous new values before setting new value) or 2 (reset
-previous new values only; new value argument is ignored).
+previous new values only; new value argument is ignored).  Default is 0.
 
 =item Shift
 
@@ -1999,6 +2012,8 @@ The group family numbers are currently available:
     2) Category                 (eg. Author, Time)
     3) Document Number          (eg. Main, Doc1, Doc3-2)
     4) Instance Number          (eg. Copy1, Copy2, Copy3...)
+    5) Metadata Path            (eg. JPEG-APP1-IFD0-ExifIFD)
+    6) EXIF/TIFF Format         (eg. int8u, int32u, undef, string)
 
 Families 0 and 1 are based on the file structure, and are similar except
 that family 1 is more specific and sub-divides some groups to give more
@@ -2033,6 +2048,14 @@ tag extracted when the Duplicates option is disabled and no group is
 specified) has no family 4 group name, but additional instances have have
 family 4 group names of 'Copy1', 'Copy2', 'Copy3', etc.  For convenience,
 the primary tag may also be accessed using a group name of 'Copy0'.
+
+Family 5 is experimental, and gives the complete path for the metadata in
+the file.  Generated only if the L</SavePath> option is used when
+extracting.
+
+Family 6 is currently used only for EXIF/TIFF metadata, and gives the format
+type of the extracted value.  Generated only if the L</SaveFormat> option is
+used when extracting.
 
 See L</GetAllGroups [static]> for complete lists of group names.
 
@@ -2266,6 +2289,15 @@ Doc#, Main
 =item Family 4 (Instance Number):
 
 Copy#
+
+=item Family 5 (Metadata Path):
+
+eg. JPEG-APP1-IFD0-ExifIFD
+
+=item Family 6 (EXIF/TIFF Format):
+
+int8u, string, int16u, int32u, rational64u, int8s, undef, int16s, int32s,
+rational64s, float, double, ifd, unicode, complex, int64u, int64s, ifd64
 
 =back
 

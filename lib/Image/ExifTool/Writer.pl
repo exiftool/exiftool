@@ -1273,6 +1273,8 @@ sub SetNewValuesFromFile($$;@)
         QuickTimeUTC    => $$options{QuickTimeUTC},
         RequestAll      => $$options{RequestAll} || 1, # (is this still necessary now that RequestTags are being set?)
         RequestTags     => $$options{RequestTags},
+        SaveFormat      => $$options{SaveFormat},
+        SavePath        => $$options{SavePath},
         ScanForXMP      => $$options{ScanForXMP},
         StrictDate      => defined $$options{StrictDate} ? $$options{StrictDate} : 1,
         Struct          => $structOpt,
@@ -1738,6 +1740,8 @@ sub SaveNewValues($)
 # Notes: Restores saved new values, but currently doesn't restore them in the
 # original order, so there may be some minor side-effects when restoring tags
 # with overlapping groups. eg) XMP:Identifier, XMP-dc:Identifier
+# Also, this doesn't do the right thing for list-type tags which accumulate
+# values across a save point
 sub RestoreNewValues($)
 {
     my $self = shift;
@@ -2621,6 +2625,8 @@ sub GetAllGroups($)
 
     $family == 3 and return('Doc#', 'Main');
     $family == 4 and return('Copy#');
+    $family == 5 and return('[too many possibilities to list]');
+    $family == 6 and return(@Image::ExifTool::Exif::formatName[1..$#Image::ExifTool::Exif::formatName]);
 
     LoadAllTables();    # first load all our tables
 

@@ -73,12 +73,12 @@ Valid characters in tag names are <code>A-Z</code>, <code>a-z</code>,
 <a href="TagNames/index.html">tag name documentation</a> for a complete list of
 available tag names.</blockquote>
 
-<blockquote>Tag names may be optionally prefixed by a family 0, 1 or 2
-group name to specify a particular information type or location.  Use the
-<code>-g0</code>, <code>-g1</code> or <code>-g2</code> (or
-<code>-G0</code>, <code>-G1</code> or <code>-G2</code>) options when
-extracting information to see the corresponding group names.
-</blockquote>
+<blockquote>Tag names may be optionally prefixed by a group name to specify a
+particular information type or location.  Use the <code>-g0</code>,
+<code>-g1</code>, etc (or <code>-G0</code>, <code>-G1</code>, etc) options when
+extracting information to see the corresponding group names.  See the <a
+href="index.html#groups">Tag Groups</a> section of the ExifTool home page for
+more information. </blockquote>
 
 <a name="Q3"></a>
 <p>3a. <b>"ExifTool reports the wrong value or doesn't extract a tag"</b>,
@@ -152,13 +152,14 @@ they are slightly different"</b></p>
 <blockquote>
 There are a number of different ways that aperture and shutter speed information
 are stored in many images.  The standard EXIF values (EXIF:FNumber and
-EXIF:ExposureTime) should correspond to the values displayed by your camera,
-but these values may have been rounded off.  The corresponding EXIF APEX
-values (EXIF:ApertureValue and EXIF:ShutterSpeedValue) may be different due
-to their own round-off errors.  If available, the MakerNotes values may be
-the most accurate because they haven't been rounded off to nice even values
-for display, so with these you may see odd values like 1/102 instead of
-1/100, etc.
+EXIF:ExposureTime) should correspond to the values displayed by your camera, but
+these values may have been rounded off by the camera and/or ExifTool.  (You can
+use the <code>-n</code> option to avoid rounding by ExifTool and show the full
+value in decimal form.)  The corresponding EXIF APEX values (EXIF:ApertureValue
+and EXIF:ShutterSpeedValue) may be different due to their own round-off errors. 
+If available, the MakerNotes values may be the most accurate because they
+haven't been rounded off to nice even values for display, so with these you may
+see odd values like 1/102 instead of 1/100, etc.
 </blockquote>
 
 <a name="Q5"></a>
@@ -1668,7 +1669,7 @@ technique for shifting a date/time value when copying:
 </blockquote>
 
 <hr>
-<i>Last revised July 8, 2019</i>
+<i>Last revised Aug. 22, 2019</i>
 <p class='lf'><a href="index.html">&lt;-- Back to ExifTool home page</a></p>
 </body>
 </html>

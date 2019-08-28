@@ -892,7 +892,7 @@ sub WriteXMP($$;$)
     # get hash of all information we want to change
     # (sorted by tag name so alternate languages come last, but with structures
     # first so flattened tags may be used to override individual structure elements)
-    my @tagInfoList;
+    my (@tagInfoList, $delLangPath, %delLangPaths, %delAllLang, $firstNewPath);
     my $writeGroup = $$dirInfo{WriteGroup};
     foreach $tagInfo (sort ByTagName $et->GetNewTagInfoList()) {
         next unless $et->GetGroup($tagInfo, 0) eq 'XMP';
@@ -1021,7 +1021,30 @@ sub WriteXMP($$;$)
         my $nvHash = $et->GetNewValueHash($tagInfo);
         my $overwrite = $et->IsOverwriting($nvHash);
         my $writable = $$tagInfo{Writable} || '';
-        my (%attrs, $deleted, $added, $existed);
+        my (%attrs, $deleted, $added, $existed, $newLang);
+        # set up variables to save/restore paths of deleted lang-alt tags
+        if ($writable eq 'lang-alt') {
+            $newLang = lc($$tagInfo{LangCode} || 'x-default');
+            if ($delLangPath and $delLangPath eq $path) {
+                # restore paths of deleted entries for this language
+                @delPaths = @{$delLangPaths{$newLang}} if $delLangPaths{$newLang};
+            } else {
+                undef %delLangPaths;
+                $delLangPath = $path;   # base path for deleted lang-alt tags
+                undef %delAllLang;
+                undef $firstNewPath;    # reset first path for new lang-alt tag
+            }
+            if (%delAllLang) {
+                # add missing paths to delete list for entries where all languages were deleted
+                my ($prefix, $reSort);
+                foreach $prefix (keys %delAllLang) {
+                    next if grep /^$prefix/, @delPaths;
+                    push @delPaths, "${prefix}10";
+                    $reSort = 1;
+                }
+                @delPaths = sort @delPaths if $reSort;
+            }
+        }
         # delete existing entry if necessary
         if ($isStruct) {
             # delete all structure (or pseudo-structure) elements
@@ -1034,7 +1057,7 @@ sub WriteXMP($$;$)
             # take attributes from old values if they exist
             %attrs = %{$$cap[1]};
             if ($overwrite) {
-                my ($oldLang, $delLang, $addLang, @matchingPaths, $langPathPat);
+                my ($oldLang, $delLang, $addLang, @matchingPaths, $langPathPat, %langsHere);
                 # check to see if this is an indexed list item
                 if ($path =~ / /) {
                     my $pp;
@@ -1047,19 +1070,20 @@ sub WriteXMP($$;$)
                 foreach $path (@matchingPaths) {
                     my ($val, $attrs) = @{$capture{$path}};
                     if ($writable eq 'lang-alt') {
+                        # get original language code (lc for comparisons)
+                        $oldLang = lc($$attrs{'xml:lang'} || 'x-default');
                         # revert to original overwrite flag if this is in a different structure
                         if (not $langPathPat or $path !~ /^$langPathPat$/) {
                             $overwrite = $oldOverwrite;
                             ($langPathPat = $path) =~ s/\d+$/\\d+/;
                         }
+                        # remember languages in this lang-alt list
+                        $langsHere{$langPathPat}{$oldLang} = 1;
                         unless (defined $addLang) {
                             # add to lang-alt list by default if creating this tag from scratch
                             $addLang = $$nvHash{IsCreating} ? 1 : 0;
                         }
-                        # get original language code (lc for comparisons)
-                        $oldLang = lc($$attrs{'xml:lang'} || 'x-default');
                         if ($overwrite < 0) {
-                            my $newLang = lc($$tagInfo{LangCode} || 'x-default');
                             next unless $oldLang eq $newLang;
                             # only add new tag if we are overwriting this one
                             # (note: this won't match if original XML contains CDATA!)
@@ -1100,7 +1124,23 @@ sub WriteXMP($$;$)
                     # save attributes and path from first deleted property
                     # so we can replace it exactly
                     %attrs = %$attrs unless @delPaths;
-                    push @delPaths, $path;
+                    if ($writable eq 'lang-alt') {
+                        $langsHere{$langPathPat}{$oldLang} = 0; # (lang was deleted)
+                    }
+                    # save deleted paths so we can replace the same elements
+                    # (separately for each language of a lang-alt list)
+                    if ($writable ne 'lang-alt' or $oldLang eq $newLang) {
+                        push @delPaths, $path;
+                    } else {
+                        $delLangPaths{$oldLang} or $delLangPaths{$oldLang} = [ ];
+                        push @{$delLangPaths{$oldLang}}, $path;
+                    }
+                    # keep track of paths where we deleted all languages of a lang-alt tag
+                    if ($delLang) {
+                        my $p;
+                        ($p = $path) =~ s/\d+$//;
+                        $delAllLang{$p} = 1;
+                    }
                     # delete this tag
                     delete $capture{$path};
                     ++$changed;
@@ -1114,11 +1154,25 @@ sub WriteXMP($$;$)
                 next unless @delPaths or $$tagInfo{List} or $addLang;
                 if (@delPaths) {
                     $path = shift @delPaths;
+                    # make sure new path is unique
+                    while ($capture{$path}) {
+                        last unless $path =~ s/ \d(\d+)$/' '.length($1+1).($1+1)/e;
+                    }
                     $deleted = 1;
                 } else {
                     # don't change tag if we couldn't delete old copy
                     # unless this is a list or an lang-alt tag
                     next unless $$tagInfo{List} or $oldLang;
+                    # avoid adding duplicate entry to lang-alt in a list
+                    if ($writable eq 'lang-alt' and %langsHere) {
+                        foreach (sort keys %langsHere) {
+                            next unless $path =~ /^$_$/;
+                            last unless $langsHere{$_}{$newLang};
+                            $path =~ /(.* )\d(\d+)(.*? \d+)$/ or $et->Error('Internal error writing lang-alt list'), last;
+                            my $nxt = $2 + 1;
+                            $path = $1 . length($nxt) . ($nxt) . $3; # step to next index
+                        }
+                    }
                     # (match last index to put in same lang-alt list for Bag of lang-alt items)
                     $path =~ m/.* (\d+)/g or warn "Internal error: no list index!\n", next;
                     $added = $1;
@@ -1126,7 +1180,15 @@ sub WriteXMP($$;$)
             } else {
                 # we are never overwriting, so we must be adding to a list
                 # match the last index unless this is a list of lang-alt lists
-                my $pat = $writable eq 'lang-alt' ? '.* (\d+)(.*? \d+)' : '.* (\d+)';
+                my $pat = '.* (\d+)';
+                if ($writable eq 'lang-alt') {
+                    if ($firstNewPath) {
+                        $path = $firstNewPath;
+                        $overwrite = 1; # necessary to put x-default entry first below
+                    } else {
+                        $pat = '.* (\d+)(.*? \d+)';
+                    }
+                }
                 if ($path =~ m/$pat/g) {
                     $added = $1;
                     # set position to end of matching index number
@@ -1143,7 +1205,7 @@ sub WriteXMP($$;$)
                     $$tagInfo{LangCode} eq 'x-default'))
                 {
                     my $saveCap = $capture{$path};
-                    for (;;) {
+                    while ($saveCap) {
                         my $p = $path;
                         substr($p, $pos, $len) = length($nxt) . $nxt;
                         # increment index in the path of the existing item
@@ -1155,10 +1217,9 @@ sub WriteXMP($$;$)
                     }
                 } else {
                     # add to end of list
-                    for (;;) {
+                    while ($capture{$path}) {
                         my $try = length($nxt) . $nxt;
                         substr($path, $pos, $len) = $try;
-                        last unless $capture{$path};
                         $len = length $try;
                         ++$nxt;
                     }
@@ -1181,8 +1242,10 @@ sub WriteXMP($$;$)
         my @newValues = $et->GetNewValue($nvHash) or next;
 
         # set language attribute for lang-alt lists
-        $attrs{'xml:lang'} = $$tagInfo{LangCode} || 'x-default' if $writable eq 'lang-alt';
-
+        if ($writable eq 'lang-alt') {
+            $attrs{'xml:lang'} = $$tagInfo{LangCode} || 'x-default';
+            $firstNewPath = $path if defined $added;  # save path of first lang-alt tag added
+        }
         # add new value(s) to %capture hash
         my $subIdx;
         for (;;) {
@@ -1234,6 +1297,10 @@ sub WriteXMP($$;$)
                 $subIdx = length($subIdx) . $subIdx;
             } elsif (@delPaths) {
                 $path = shift @delPaths;
+                # make sure new path is unique
+                while ($capture{$path}) {
+                    last unless $path =~ s/ \d(\d+)$/' '.length($1+1).($1+1)/e;
+                }
                 next;
             } else {
                 $subIdx = '10';

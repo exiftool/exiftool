@@ -283,12 +283,12 @@ otherwise.  May be written with either user name or number)</span></span></td></
 <td>ForceWrite</td>
 <td class=c>yes</td>
 <td class=c>-</td>
-<td><span class=s><span class=n>(write-only tag used to force EXIF, IPTC, XMP or PNG metadata in a file to be
-rewritten.  May be set to &quot;EXIF&quot;, &quot;IPTC&quot;, &quot;XMP&quot; or &quot;PNG&quot; to force the
-corresponding metadata type to be rewritten, &quot;FixBase&quot; to cause EXIF to be
-rewritten only if the MakerNotes offset base was fixed, or &quot;All&quot; to rewrite
-all of these metadata types.  Values are case insensitive, and multiple
-values may be separated with commas, eg. <code>-ForceWrite=exif,xmp</code>)</span></span></td></tr>
+<td><span class=s><span class=n>(write-only tag used to force metadata in a file to be rewritten even if no
+tag values are changed.  May be set to &quot;EXIF&quot;, &quot;IPTC&quot;, &quot;XMP&quot; or &quot;PNG&quot; to
+force the corresponding metadata type to be rewritten, &quot;FixBase&quot; to cause
+EXIF to be rewritten only if the MakerNotes offset base was fixed, or &quot;All&quot;
+to rewrite all of these metadata types.  Values are case insensitive, and
+multiple values may be separated with commas, eg. <code>-ForceWrite=exif,xmp</code>)</span></span></td></tr>
 <tr class=b>
 <td>Geosync</td>
 <td class=c>yes</td>
@@ -318,7 +318,7 @@ position in the GPS track specified by the Geotag tag.  Writing this tag
 causes GPS information to be written into the EXIF or XMP of the target
 files.  The local system timezone is assumed if the date/time value does not
 contain a timezone.  May be deleted to delete associated GPS tags.  A group
-name of &#39;EXIF&#39; or &#39;XMP&#39; may be specified to write or delete only EXIF or XMP
+name of &quot;EXIF&quot; or &quot;XMP&quot; may be specified to write or delete only EXIF or XMP
 GPS tags)</span></span></td></tr>
 <tr>
 <td>HardLink</td>
@@ -522,7 +522,7 @@ into multiple blocks.  This tag is generated only if specifically requested)</sp
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Aug 20, 2019</i>
+<br><i>Last revised Aug 21, 2019</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

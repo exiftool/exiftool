@@ -114,10 +114,10 @@ my %noLeapFrog = ( SAVE => 1, SEEK => 1, IHDR => 1, JHDR => 1, IEND => 1, MEND =
         Also according to the PNG specification, there is no restriction on the
         location of text-type chunks (tEXt, zTXt and iTXt).  However, certain
         utilities (including some Apple and Adobe utilities) won't read the XMP iTXt
-        chunk (and at least one utility won't read other text chunks) that come
-        after the IDAT chunk.  For this reason, ExifTool 11.63 and later write all
-        text chunks (including XMP) before IDAT, and will move existing text chunks
-        up from after IDAT.
+        chunk if it comes after the IDAT chunk, and at least one utility won't read
+        other text chunks like this.  For this reason, ExifTool 11.63 and later
+        create new text chunks (including XMP) before IDAT, and will move existing
+        text chunks up from after IDAT.
     },
     bKGD => {
         Name => 'BackgroundColor',
@@ -376,14 +376,17 @@ my %noLeapFrog = ( SAVE => 1, SEEK => 1, IHDR => 1, JHDR => 1, IEND => 1, MEND =
     0 => {
         Name => 'PixelsPerUnitX',
         Format => 'int32u',
+        Notes => 'default 2834',
     },
     4 => {
         Name => 'PixelsPerUnitY',
         Format => 'int32u',
+        Notes => 'default 2834',
     },
     8 => {
         Name => 'PixelUnits',
         PrintConv => { 0 => 'Unknown', 1 => 'meters' },
+        Notes => 'default meters',
     },
 );
 

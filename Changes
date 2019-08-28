@@ -7,6 +7,24 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 11.50. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+[I will be on vacation and without access to my computer
+from Sept. 3-24, so don't expect any updates or email/forum responses from
+me during this time - PH]
+
+Aug. 28, 2019 - Version 11.64
+
+  - Added a new Canon LensType (thanks LibRaw)
+  - Added a new Nikon LensID (thanks Bruno)
+  - Added config file for converting streaming GPS from BlueSkySea dashcam
+  - Decode FocusDistance for Nikon Z6/Z7
+  - Documented groups in families 5 and 6 (available but undocumented since
+    Exiftool version 8.22 and 11.50 respectively)
+  - Fixed some ordering problems when writing/copying nested XMP lang-alt lists
+  - Fixed some minor quirks with QuickTime language codes (thanks Hayo Baan)
+  - Fixed a CanonModelID value (thanks Dmitry)
+  - API Changes:
+      - Documented SavePath and SaveFormat options
+
 Aug. 20, 2019 - Version 11.63 - "PNG Early Text"
 
   - Added a few new Sigma lenses (thanks LibRaw)

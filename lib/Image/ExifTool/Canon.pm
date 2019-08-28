@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.22';
+$VERSION = '4.23';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -562,6 +562,7 @@ $VERSION = '4.22';
     61182.2 => 'Canon RF 24-105mm F4 L IS USM', #IB
     61182.3 => 'Canon RF 28-70mm F2 L USM', #IB
     61182.4 => 'Canon RF 85mm F1.2L USM', #IB
+    61182.5 => 'Canon RF 24-240mm F4-6.3 IS USM', #IB
     65535 => 'n/a',
 );
 
@@ -794,7 +795,7 @@ $VERSION = '4.22';
     0x4020000 => 'PowerShot SX420 IS',
     0x4030000 => 'PowerShot ELPH 190 IS / IXUS 180 / IXY 190',
     0x4040000 => 'PowerShot G1',
-    0x4040001 => 'IXY 180', # ?? (from Canon sample)
+    0x4040001 => 'PowerShot ELPH 180 IS / IXUS 175 / IXY 180', #forum10402
     0x4050000 => 'PowerShot SX720 HS',
     0x4060000 => 'PowerShot SX620 HS',
     0x4070000 => 'EOS M6',

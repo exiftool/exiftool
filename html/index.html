@@ -74,9 +74,9 @@ span.sup        { font-size: 0.8em; font-weight: normal; position: relative; top
 </div>
 
 <blockquote><table class='dl lg'><tr><td><b>
-<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-11.63.tar.gz/download">
-Download        Version 11.63</a> (4.4 MB) -
-<a href="history.html">Aug. 20, 2019</a></b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/Image-ExifTool-11.64.tar.gz/download">
+Download        Version 11.64</a> (4.4 MB) -
+<a href="history.html">Aug. 28, 2019</a></b></td></tr></table></blockquote>
 
 <p><b>ExifTool is a platform-independent <a href="ExifTool.html">Perl
 library</a> plus a <a href="exiftool_pod.html">command-line application</a> for
@@ -128,8 +128,8 @@ distribution above.)</i></p>
 
 <blockquote><table class='dl lg'><tr><td><b>
 <a name="alone">Windows Executable:</a>
-<a href="http://sourceforge.net/projects/exiftool/files/exiftool-11.63.zip/download">
-         exiftool-11.63.zip</a> (6.1 MB)</b></td></tr></table></blockquote>
+<a href="http://sourceforge.net/projects/exiftool/files/exiftool-11.64.zip/download">
+         exiftool-11.64.zip</a> (6.1 MB)</b></td></tr></table></blockquote>
 
 <p><b>The stand-alone Windows executable</b> does not require Perl. Just
 download and un-zip the archive then double-click on
@@ -141,14 +141,11 @@ of Windows.</p>
 <blockquote><table class='dl lg'><tr><td><b>
 MacOS Package:
 <a href="http://sourceforge.net/projects/exiftool/files/ExifTool-9.70.dmg/download">
-         ExifTool-11.63.dmg</a> (2.8 MB)</b></td></tr></table></blockquote>
+         ExifTool-11.64.dmg</a> (2.8 MB)</b></td></tr></table></blockquote>
 
 <p><b>The MacOS package</b> installs the ExifTool command-line application and
 libraries in /usr/local/bin. After installing, type "<code>exiftool</code>" in a
-Terminal window to run exiftool and read the application documentation.
-<span class=red><b>Note:</b> This package will not install on MacOS Catalina
-systems.  For Catalina, you should follow the <a href="install.html#Unix">Unix
-installation instructions</a>, but you will require sudo privileges.</span></p>
+Terminal window to run exiftool and read the application documentation.</p>
 
 <p>Read the <b><a href="install.html">installation instructions</a></b> for help
 installing ExifTool on Windows, MacOS and Unix systems.</p>
@@ -757,8 +754,8 @@ with a '<code>.</code>' in the Windows GUI, but it can be done with the
 
 <h2><a name="groups">Tag Groups</a></h2>
 
-<p>ExifTool classifies tags into groups in five different families.
-These groups are:</p>
+<p>ExifTool classifies tags into groups in various families.  Here is a list
+of the group names in each family:</p>
 
 <blockquote><table class=norm>
 <tr><th>Family</th><th>Group Names</th></tr>
@@ -823,12 +820,21 @@ Preview, Printing, Time, Unknown, Video
 <tr><td><b>4&nbsp;(Instance&nbsp;Number)</b></td>
 <td>Copy#
 </td></tr>
+<tr><td><b>5&nbsp;(Metadata&nbsp;Path)</b></td>
+<td><i>[experimental]</i> eg. JPEG-APP1-IFD0-ExifIFD
+</td></tr>
+<tr><td><b>6&nbsp;(EXIF/TIFF&nbsp;Format)</b></td>
+<td>int8u, string, int16u, int32u, rational64u, int8s, undef, int16s, int32s,
+rational64s, float, double, ifd, unicode, complex, int64u, int64s, ifd64</td></tr>
 </table></blockquote>
 
 <p>The exiftool output can be organized based on these groups using the
-<code>-g</code> or <code>-G</code> option.  See the
-<a href="ExifTool.html#GetGroup">GetGroup</a> function in the ExifTool library
-for a description of the group families.</p>
+<code>-g</code> or <code>-G</code> option (ie. <code>-g1</code> to see family 1
+groups, or <code>-g3:1</code> to see both family 3 and family 1 group names in
+the output.  See the <code>-g</code> option in the exiftool application
+documentation for more details, and the <a href="ExifTool.html#GetGroup">GetGroup</a>
+function in the ExifTool library for a description of the group families. Note
+that when writing, only family 0, 1 and 2 group names may be used.</p>
 
 <h2><a name="writing">Writing Meta Information</a></h2>
 
@@ -946,7 +952,7 @@ for proper rendering of the image.</li>
 <ul>
 <li><span class=grn>[2019-05-29]</span>
 <b>Canon Digital Photo Professional 4</b> (DPP4) will destroy a <b>CR3</b> image
-when editing if it had previousy been edited by DPP4 followed by ExifTool.
+when editing if it had previously been edited by DPP4 followed by ExifTool.
 <i class=grn>[ExifTool 11.45 fixes this by structuring the CR3 to make it safe
 for editing with DPP4, and may be used to restructure files written by older
 ExifTool versions.]</i></li>

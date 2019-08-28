@@ -44,7 +44,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '2.36';
+$VERSION = '2.37';
 
 sub ProcessMOV($$;$);
 sub ProcessKeys($$$);
@@ -6021,7 +6021,7 @@ my %eeBox = (
         Format => 'int16u',
         RawConv => '$val ? $val : undef',
         # allow both Macintosh (for MOV files) and ISO (for MP4 files) language codes
-        ValueConv => '$val < 0x400 ? $val : pack "C*", map { (($val>>$_)&0x1f)+0x60 } 10, 5, 0',
+        ValueConv => '($val < 0x400 or $val == 0x7fff) ? $val : pack "C*", map { (($val>>$_)&0x1f)+0x60 } 10, 5, 0',
         PrintConv => q{
             return $val unless $val =~ /^\d+$/;
             require Image::ExifTool::Font;
@@ -8658,13 +8658,19 @@ ItemID:         foreach $id (keys %$items) {
                         next if not $len and $pos;
                         my $str = substr($val, $pos, $len);
                         my $langInfo;
-                        if ($lang < 0x400 and $str !~ /^\xfe\xff/) {
+                        if (($lang < 0x400 or $lang == 0x7fff) and $str !~ /^\xfe\xff/) {
                             # this is a Macintosh language code
                             # a language code of 0 is Macintosh english, so treat as default
                             if ($lang) {
-                                # use Font.pm to look up language string
-                                require Image::ExifTool::Font;
-                                $lang = $Image::ExifTool::Font::ttLang{Macintosh}{$lang};
+                                if ($lang == 0x7fff) {
+                                    # technically, ISO 639-2 doesn't have a 2-character
+                                    # equivalent for 'und', but use 'un' anyway
+                                    $lang = 'un';
+                                } else {
+                                    # use Font.pm to look up language string
+                                    require Image::ExifTool::Font;
+                                    $lang = $Image::ExifTool::Font::ttLang{Macintosh}{$lang};
+                                }
                             }
                             # the spec says only "Macintosh text encoding", but
                             # allow this to be configured by the user

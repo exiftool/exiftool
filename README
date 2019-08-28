@@ -104,8 +104,8 @@ your home directory, then you would type the following commands in a
 terminal window to extract and run ExifTool:
 
   cd ~/Desktop
-  gzip -dc Image-ExifTool-11.63.tar.gz | tar -xf -
-  cd Image-ExifTool-11.63
+  gzip -dc Image-ExifTool-11.64.tar.gz | tar -xf -
+  cd Image-ExifTool-11.64
   ./exiftool t/images/ExifTool.jpg
 
 Note:  These commands extract meta information from one of the test images. 
@@ -190,6 +190,7 @@ distribution package:
   config_files/             - Sample ExifTool configuration files:
     age.config                - Calculate Age of person in photo
     bibble.config             - Definitions for writing Bibble XMP tags
+    blueskysea.config         - Convert GPS from BlueSkySea dashcam
     convert_regions.config    - Convert between MWG and MP face regions
     dji.config                - Composite tags for metadata in DJI videos
     example.config            - General example showing config features

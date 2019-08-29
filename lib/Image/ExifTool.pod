@@ -627,20 +627,23 @@ fork of Mac OS files.  Default is undef.
 
 =item FastScan
 
-Flag to increase speed of extracting information from JPEG images.  With
-this option set to 1, ExifTool will not scan to the end of a JPEG image to
-check for an AFCP, CanonVRD, FotoStation, PhotoMechanic, MIE or PreviewImage
-trailer.  This also stops the parsing after the first comment in GIF images,
-and at the audio/video data with RIFF-format files (AVI, WAV, etc), so any
-trailing metadata (eg. XMP written by some utilities) may be missed.  Also
-disables input buffering for some types of files to reduce memory usage when
-reading from a non-seekable stream.  When combined with the ScanForXMP
-option, prevents scanning for XMP in recognized file types.  With a value of
-2, ExifTool will also avoid extracting any EXIF MakerNote information.  When
-set to 3 or 4, only pseudo system tags and FileType are generated.  For 3,
-the file header is read to provide an educated guess at FileType.  For 4,
-the file is not read at all and FileType is determined based on the file's
-extension.  Default is undef.
+Flag to increase speed when reading files by avoiding extraction of some
+types of metadata.  With this option set to 1, ExifTool will not scan to the
+end of a JPEG image to check for an AFCP, CanonVRD, FotoStation,
+PhotoMechanic, MIE or PreviewImage trailer.  This also stops the parsing
+after the first comment in GIF images, and at the audio/video data of
+RIFF-format files (AVI, WAV, etc), so any trailing metadata (eg. XMP written
+by some utilities) may be missed.  Also disables input buffering for some
+types of files to reduce memory usage when reading from a non-seekable
+stream.  When combined with the ScanForXMP option, prevents scanning for XMP
+in recognized file types.  With a value of 2, ExifTool will also avoid
+extracting any EXIF MakerNote information, and will stop parsing at the IDAT
+chunk of PNG images.  (By the PNG specification, metadata is allowed after
+IDAT, but ExifTool always writes it before because some utilities will
+ignore it otherwise.)  When set to 3 or 4, only pseudo system tags and
+FileType are generated.  For 3, the file header is read to provide an
+educated guess at FileType.  For 4, the file is not read at all and FileType
+is determined based on the file's extension.  Default is undef.
 
 =item Filter
 
@@ -681,8 +684,9 @@ it is within GeoMaxExtSecs, otherwise geotagging fails).  Default is 1800.
 
 Maximum extrapolation time in seconds for geotagging.  Geotagging fails if
 the Geotime value lies outside a GPS track by a number of seconds greater
-than this.  Otherwise, the coordinates of the nearest fix are taken. 
-Default is 1800.
+than this.  Otherwise, for an extrapolation the coordinates of the nearest
+fix are taken (ie. it is assumed that you weren't moving during this
+period).  Default is 1800.
 
 =item GeoMaxHDOP
 

@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.23';
+$VERSION = '4.24';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -810,6 +810,7 @@ $VERSION = '4.23';
     0x804     => 'PowerShot G5 X Mark II',
     0x805     => 'PowerShot SX70 HS',
     0x808     => 'PowerShot G7 X Mark III',
+    0x811     => 'EOS M6 Mark II', #IB
 
 # (see http://cweb.canon.jp/e-support/faq/answer/digitalcamera/10447-1.html for PowerShot/IXUS/IXY names)
 
@@ -911,6 +912,7 @@ $VERSION = '4.23';
     0x80000432 => 'EOS Rebel T7 / 2000D / 1500D / Kiss X90', #IB
     0x80000433 => 'EOS RP',
     0x80000436 => 'EOS SL3 / 250D / Kiss X10', #25
+    0x80000437 => 'EOS 90D', #IB
 );
 
 my %canonQuality = (
@@ -7878,6 +7880,7 @@ my %ciMaxFocal = (
             16 => '16 (M50)',
             17 => '17 (EOS R)',     # (and PowerShot SX740HS)
             18 => '18 (EOS RP)',    # (and PowerShot SX70HS)
+            19 => '19 (90D/M6mkII)',# (and PowerShot G7XmkIII)
         },
     },
     0x47 => { Name => 'WB_RGGBLevelsAsShot',     Format => 'int16s[4]' },

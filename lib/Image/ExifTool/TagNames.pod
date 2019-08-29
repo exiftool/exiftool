@@ -20,7 +20,9 @@ is the identifier that is actually stored in the file.  B<Index#> refers to
 the offset of a value when found at a fixed position within a data block
 (B<#> is the multiplier for calculating a byte offset: B<1>, B<2>, B<4> or
 B<8>).  These offsets may have a decimal part which is used only to
-differentiate tags with values stored at the same position.  B<Sequence>
+differentiate tags with values stored at the same position.  (Note that
+writable tags within binary data blocks are not individually deletable,
+and the usual alternative is to set them to a value of zero.)  B<Sequence>
 gives the order of values for a serial data stream.
 
 A B<Tag Name> is the handle by which the information is accessed in
@@ -17264,7 +17266,7 @@ ILCE-6300/6500/7RM2/7SM2, ILCA-99M2.
 
 =head3 Sony Tag2010i Tags
 
-Valid for ILCE-6400/7M3/7RM3/7RM4/9, DSC-RX0M2/RX10M4/RX100M6/RX100M5A/HX99.
+Valid for ILCE-6100/6400/6600/7M3/7RM3/7RM4/9, DSC-RX0M2/RX10M4/RX100M6/RX100M5A/RX100M7/HX99.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
@@ -17425,7 +17427,7 @@ substitution cipher, but the deciphered values are listed below.
 
 =head3 Sony Tag9050b Tags
 
-Valid from July 2015 for ILCE-6300/6400/6500/7M3/7RM2/7RM3/7RM4/7SM2/9,
+Valid from July 2015 for ILCE-6100/6300/6400/6500/6600/7M3/7RM2/7RM3/7RM4/7SM2/9,
 ILCA-99M2.
 
   Index1   Tag Name                             Writable
@@ -17498,9 +17500,9 @@ DSC-HX50V, DSC-QX10/QX100.
 =head3 Sony Tag9400c Tags
 
 Valid for DSC-HX60V/HX80/HX90V/HX99/HX350/HX400V/QX30/RX0/RX1RM2/RX10/
-RX10M2/RX10M3/RX10M4/RX100M3/RX100M4/RX100M5/RX100M5A/RX100M6/WX220/WX350/
-WX500, ILCE-7/7R/7S/7M2/7M3/7RM2/7RM3/7RM4/7SM2/9/5000/5100/6000/6300/6400/
-6500/QX1, ILCA-68/77M2/99M2.
+RX10M2/RX10M3/RX10M4/RX100M3/RX100M4/RX100M5/RX100M5A/RX100M6/RX100M7/
+WX220/WX350/WX500, ILCE-7/7R/7S/7M2/7M3/7RM2/7RM3/7RM4/7SM2/9/5000/5100/
+6000/6100/6300/6400/6500/6600/QX1, ILCA-68/77M2/99M2.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------
@@ -17598,9 +17600,9 @@ Valid for SLT, NEX, ILCE-3000/3500 and several DSC models.
 =head3 Sony Tag9405b Tags
 
 Valid for DSC-HX60V/HX80/HX90V/HX99/HX350/HX400V/QX30/RX0/RX10/RX10M2/
-RX10M3/RX10M4/RX100M3/RX100M4/RX100M5/RX100M5A/RX100M6/WX220/WX350, ILCE-7/
-7M2/7M3/7R/7RM2/7RM3/7RM4/7S/7SM2/9/5000/5100/6000/6300/6500/QX1, ILCA-68/
-77M2/99M2.
+RX10M3/RX10M4/RX100M3/RX100M4/RX100M5/RX100M5A/RX100M6/RX100M7/WX220/WX350,
+ILCE-7/7M2/7M3/7R/7RM2/7RM3/7RM4/7S/7SM2/9/5000/5100/6000/6100/6300/6400/
+6500/6600/QX1, ILCA-68/77M2/99M2.
 
   Index1   Tag Name                             Writable
   ------   --------                             --------

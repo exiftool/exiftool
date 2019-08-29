@@ -11,6 +11,17 @@ considered development releases, and are not uploaded to CPAN.)
 from Sept. 3-24, so don't expect any updates or email/forum responses from
 me during this time - PH]
 
+Aug. 29, 2019 - Version 11.65
+
+  - Added some new SonyModelID and Sony LensType values (thanks LibRaw and Jos
+    Roost)
+  - Added support for some new Sony models (thanks Jos Roost)
+  - Added a couple of new CanonModelID values (thanks LibRaw)
+  - Added a new Canon ColorDataVersion value
+  - Enhanced FastScan option so a setting of 2 stops processing PNG images at
+    the IDAT chunk when reading
+  - Preserve order of nested lang-alt list entries when -struct option is used
+
 Aug. 28, 2019 - Version 11.64
 
   - Added a new Canon LensType (thanks LibRaw)

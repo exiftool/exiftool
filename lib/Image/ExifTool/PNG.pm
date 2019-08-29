@@ -36,7 +36,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD %stdCase);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.52';
+$VERSION = '1.53';
 
 sub ProcessPNG_tEXt($$$);
 sub ProcessPNG_iTXt($$$);
@@ -1248,14 +1248,11 @@ sub ProcessPNG($$)
     my $datChunk = '';
     my $datCount = 0;
     my $datBytes = 0;
-    my ($n, $sig, $err, $hbuf, $dbuf, $cbuf);
+    my ($n, $sig, $err, $hbuf, $dbuf, $cbuf, $fastScan);
     my ($wasHdr, $wasEnd, $wasDat, $doTxt, @txtOffset);
 
     # check to be sure this is a valid PNG/MNG/JNG image
     return 0 unless $raf->Read($sig,8) == 8 and $pngLookup{$sig};
-
-    # disable buffering in FastScan mode
-    $$raf{NoBuffer} = 1 if $et->Options('FastScan') and not $outfile;
 
     if ($outfile) {
         delete $$et{TextChunkType};
@@ -1266,6 +1263,10 @@ sub ProcessPNG($$)
             \%Image::ExifTool::PNG::TextualData);
         # initialize with same directories, with PNG tags taking priority
         $et->InitWriteDirs(\%pngMap,'PNG');
+    } else {
+        $fastScan = $et->Options('FastScan');
+        # disable buffering in FastScan mode
+        $$raf{NoBuffer} = 1 if $fastScan;
     }
     my ($fileType, $hdrChunk, $endChunk) = @{$pngLookup{$sig}};
     $et->SetFileType($fileType);  # set the FileType tag
@@ -1347,6 +1348,10 @@ sub ProcessPNG($$)
             next;
         }
         if ($isDatChunk{$chunk}) {
+            if ($fastScan and $fastScan >= 2) {
+                $et->VPrint(0,"End processing at $chunk chunk due to FastScan=$fastScan setting");
+                last;
+            }
             $datChunk = $chunk;
             $datCount++;
             $datBytes += $len;

@@ -14,12 +14,14 @@
 <p><b>Note:</b> The most recent production release is <a href="Image-ExifTool-11.50.tar.gz">Version 11.50</a>. (Other versions are
 considered development releases, and are not uploaded to <a href="https://metacpan.org/release/Image-ExifTool">CPAN</a>.)</p>
 
-<p><i class=red>[I will be on vacation and without access to my computer
-from Sept. 3-24, so don't expect any updates or email/forum responses from
-me during this time - PH]</i></p>
-
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
+
+<a name='v11.67'><b>Sept. 30, 2019 - Version 11.67</b></a>
+<ul>
+<li>Added config_files/thinkware.config to the distribution
+<li>Fixed bug decoding negative GPS coordinates from INSV videos
+</ul>
 
 <a name='v11.66'><b>Sept. 30, 2019 - Version 11.66</b></a>
 <ul>
@@ -32,15 +34,15 @@ me during this time - PH]</i></p>
 <li>Extract ICC_Profile from more types of PDF files
 <li>Enhanced %s of the -W option to recognize the PICT format
 <li>Recognize MacOS alias files
-<li>Minor change to a Minolta lens name (thanks Jos Roost)
 <li>Changed name of Ricoh CropMode35mm tag and added a new value (thanks LibRaw)
+<li>Minor change to a Minolta lens name (thanks Jos Roost)
 <li>Fixed problem where NikonCapture information couldn't be deleted from an NEF
 <li>Fixed problem identifying some SVG files
 <li>Fixed typo in a CanonModelID value (thanks Dmitry)
 <li>Fixed bug which could result in "Internal error: no list index" warning when
     creating nested XMP lang-alt lists
 <li>Fixed the names of a few Tamron lenses for Nikon (thanks Tom Lachecki)
-<li>Fixed extracting Layer information from some PSD files
+<li>Fixed problem extracting Layer information from some PSD files
 <li>Fixed writing of QuickTime GPSCoordinates to use the correct number of
     digits before the decimal point for latitude and longitude
 </ul>

@@ -1692,8 +1692,8 @@ sub ProcessINSVTrailer($)
                                 ($a[7] eq 'E' or $a[7] eq 'W');
                     $$et{DOC_NUM} = ++$$et{DOC_COUNT};
                     $a[$_] = GetDouble(\$a[$_], 0) foreach 4,6,8,9,10;
-                    $a[4] *= -abs($a[4]) if $a[5] eq 'S'; # (abs just in case it was already signed)
-                    $a[6] *= -abs($a[6]) if $a[7] eq 'W';
+                    $a[4] = -abs($a[4]) if $a[5] eq 'S'; # (abs just in case it was already signed)
+                    $a[6] = -abs($a[6]) if $a[7] eq 'W';
                     $et->HandleTag($tagTbl, GPSDateTime => Image::ExifTool::ConvertUnixTime($a[0]) . 'Z');
                     $et->HandleTag($tagTbl, GPSLatitude => $a[4]);
                     $et->HandleTag($tagTbl, GPSLongitude => $a[6]);

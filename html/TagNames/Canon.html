@@ -461,13 +461,13 @@
 <tr>
 <td title='0x4008 = 16392'>0x4008</td>
 <td>PictureStyleUserDef</td>
-<td class=c>no</td>
+<td class=c>int16u[3]</td>
 <td><span class=s>[Values 0-2]</span>
   <br>--&gt; <a href='Canon.html#PictureStyle'>Canon PictureStyle Values</a></td></tr>
 <tr class=b>
 <td title='0x4009 = 16393'>0x4009</td>
 <td>PictureStylePC</td>
-<td class=c>no</td>
+<td class=c>int16u[3]</td>
 <td><span class=s>[Values 0-2]</span>
   <br>--&gt; <a href='Canon.html#PictureStyle'>Canon PictureStyle Values</a></td></tr>
 <tr>
@@ -529,6 +529,11 @@
 <td>AFConfig</td>
 <td class=c>-</td>
 <td>--&gt; <a href='Canon.html#AFConfig'>Canon AFConfig Tags</a></td></tr>
+<tr class=b>
+<td title='0x403f = 16447'>0x403f</td>
+<td>RawBurstModeRoll</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Canon.html#RawBurstInfo'>Canon RawBurstInfo Tags</a></td></tr>
 </table></td></tr></table></blockquote>
 
 <h2><a name='CanonModelID'>Canon CanonModelID Values</a></h2>
@@ -865,7 +870,7 @@
 </tr><tr><td class=r>0x80000408</td><td>= EOS 77D / 9000D</td>
 </tr><tr><td class=r>0x80000417</td><td>= EOS Rebel SL2 / 200D / Kiss X9</td>
 </tr><tr><td class=r>0x80000422</td><td>= EOS Rebel T100 / 4000D / 3000D</td>
-</tr><tr><td class=r>0x80000424</td><td>= EOR R</td>
+</tr><tr><td class=r>0x80000424</td><td>= EOS R</td>
 </tr><tr><td class=r>0x80000432</td><td>= EOS Rebel T7 / 2000D / 1500D / Kiss X90</td>
 </tr><tr><td class=r>0x80000433</td><td>= EOS RP</td>
 </tr><tr><td class=r>0x80000436</td><td>= EOS SL3 / 250D / Kiss X10</td>
@@ -1460,7 +1465,8 @@ attempting to identify the specific lens model.</p>
 </tr><tr><td>124</td><td>= Canon MP-E 65mm f/2.8 1-5x Macro Photo</td>
 </tr><tr><td>125</td><td>= Canon TS-E 24mm f/3.5L</td>
 </tr><tr><td>126</td><td>= Canon TS-E 45mm f/2.8</td>
-</tr><tr><td>127</td><td>= Canon TS-E 90mm f/2.8</td>
+</tr><tr><td>127</td><td>= Canon TS-E 90mm f/2.8 or Tamron Lens</td>
+</tr><tr><td>127.1</td><td>= Tamron 18-200mm f/3.5-6.3 Di II VC</td>
 </tr><tr><td>129</td><td>= Canon EF 300mm f/2.8L USM</td>
 </tr><tr><td>130</td><td>= Canon EF 50mm f/1.0L USM</td>
 </tr><tr><td>131</td><td>= Canon EF 28-80mm f/2.8-4L USM or Sigma Lens</td>
@@ -1476,6 +1482,7 @@ attempting to identify the specific lens model.</p>
 </tr><tr><td>134</td><td>= Canon EF 600mm f/4L IS USM</td>
 </tr><tr><td>135</td><td>= Canon EF 200mm f/1.8L USM</td>
 </tr><tr><td>136</td><td>= Canon EF 300mm f/2.8L USM</td>
+</tr><tr><td>136.1</td><td>= Tamron SP 15-30mm f/2.8 Di VC USD</td>
 </tr><tr><td>137</td><td>= Canon EF 85mm f/1.2L USM or Sigma or Tamron Lens</td>
 </tr><tr><td>137.1</td><td>= Sigma 18-50mm f/2.8-4.5 DC OS HSM</td>
 </tr><tr><td>137.2</td><td>= Sigma 50-200mm f/4-5.6 DC OS HSM</td>
@@ -1579,6 +1586,7 @@ attempting to identify the specific lens model.</p>
 </tr><tr><td>173.2</td><td>= Sigma APO Macro 150mm f/2.8 EX DG HSM</td>
 </tr><tr><td>173.3</td><td>= Sigma 10mm f/2.8 EX DC Fisheye</td>
 </tr><tr><td>173.4</td><td>= Sigma 15mm f/2.8 EX DG Diagonal Fisheye</td>
+</tr><tr><td>173.5</td><td>= Venus Laowa 100mm F2.8 2X Ultra Macro APO</td>
 </tr><tr><td>174</td><td>= Canon EF 135mm f/2L USM or Other Lens</td>
 </tr><tr><td>174.1</td><td>= Sigma 70-200mm f/2.8 EX DG APO OS HSM</td>
 </tr><tr><td>174.2</td><td>= Sigma 50-500mm f/4.5-6.3 APO DG OS HSM</td>
@@ -10249,6 +10257,24 @@ to the one printed on the lens)</span></span></td></tr>
   <br>2 = Auto</span></td></tr>
 </table></td></tr></table></blockquote>
 
+<h2><a name='RawBurstInfo'>Canon RawBurstInfo Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Index4</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td class=r title='1 = 0x1'>1</td>
+<td>RawBurstImageNum</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='2 = 0x2'>2</td>
+<td>RawBurstImageCount</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
 <h2><a name='CTMD'>Canon CTMD Tags</a></h2>
 <p>Canon Timed MetaData tags found in CR3 images.  The <a href="../ExifTool.html#ExtractEmbedded">ExtractEmbedded</a> option
 is automatically applied when reading CR3 files to be able to extract this
@@ -10501,7 +10527,7 @@ SX280, and CR3 images from cameras such as the EOS M50.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Aug 29, 2019</i>
+<br><i>Last revised Sep 30, 2019</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

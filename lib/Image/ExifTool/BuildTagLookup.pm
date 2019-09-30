@@ -35,7 +35,7 @@ use Image::ExifTool::Sony;
 use Image::ExifTool::Validate;
 use Image::ExifTool::MacOS;
 
-$VERSION = '3.27';
+$VERSION = '3.28';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -217,8 +217,8 @@ writing.
 
 The HTML version of these tables also lists possible B<Values> for
 discrete-valued tags, as well as B<Notes> for some tags.  The B<Values> are
-listed as the computer-readable and human-readable values on the left and
-right hand side of an equals sign (C<=>) respectively.  The human-readable
+listed with the computer-readable values on the left of the equals sign
+(C<=>), and the human-readable values on the right.  The human-readable
 values are used by default when reading and writing, but the
 computer-readable values may be accessed by disabling the value conversion
 with the -n option on the command line, by setting the L<PrintConv|../ExifTool.html#PrintConv> option to 0

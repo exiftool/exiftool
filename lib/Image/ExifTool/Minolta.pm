@@ -49,7 +49,7 @@ use vars qw($VERSION %minoltaLensTypes %minoltaTeleconverters %minoltaColorMode
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '2.82';
+$VERSION = '2.83';
 
 # Full list of product codes for Sony-compatible Minolta lenses
 # (ref http://www.kb.sony.com/selfservice/documentLink.do?externalId=C1000570)
@@ -236,7 +236,7 @@ $VERSION = '2.82';
     24 => 'Minolta/Sony AF 24-105mm F3.5-4.5 (D) or Sigma or Tamron Lens',
     # 24 => 'Sony 24-105mm F3.5-4.5 (SAL24105)', (ref JR)
     24.1 => 'Sigma 18-50mm F2.8',
-    24.2 => 'Sigma 17-70mm F2.8-4.5 (D)',
+    24.2 => 'Sigma 17-70mm F2.8-4.5 DC Macro', # (changed "(D)" to "DC Macro", ref JR)
     24.3 => 'Sigma 20-40mm F2.8 EX DG Aspherical IF', #JD/22
     24.4 => 'Sigma 18-200mm F3.5-6.3 DC', #22
     24.5 => 'Sigma DC 18-125mm F4-5,6 D', #exiv2 0.23
@@ -342,7 +342,7 @@ $VERSION = '2.82';
    '128.11' => 'Sigma 24-70mm F2.8 IF EX DG HSM', #27
    '128.12' => 'Sigma 18-250mm F3.5-6.3 DC OS HSM', #27
    '128.13' => 'Sigma 17-50mm F2.8 EX DC HSM', #Exiv2
-   '128.14' => 'Sigma 17-70mm F2.8-4 DC Macro HSM', #JR (OS Model C013, ref IB)
+   '128.14' => 'Sigma 17-70mm F2.8-4 DC Macro HSM', #JR (OS Model C013, ref IB) (but C013 doesn't have OS, ref JR)
    '128.15' => 'Sigma 150mm F2.8 EX DG OS HSM APO Macro', #Marcus Holland-Moritz
    '128.16' => 'Sigma 150-500mm F5-6.3 APO DG OS HSM', #IB
    '128.17' => 'Tamron AF 28-105mm F4-5.6 [IF]', #IB (Model 179D)

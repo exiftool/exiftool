@@ -21,7 +21,7 @@ use vars qw($VERSION $AUTOLOAD $lastFetched);
 use Image::ExifTool qw(:DataAccess :Utils);
 require Exporter;
 
-$VERSION = '1.48';
+$VERSION = '1.49';
 
 sub FetchObject($$$$);
 sub ExtractObject($$;$$);
@@ -271,6 +271,13 @@ my %supportedFilter = (
 %Image::ExifTool::PDF::ColorSpace = (
     DefaultRGB => {
         SubDirectory => { TagTable => 'Image::ExifTool::PDF::DefaultRGB' },
+        ConvertToDict => 1, # (not seen yet, but just in case)
+    },
+    DefaultCMYK => {
+        SubDirectory => { TagTable => 'Image::ExifTool::PDF::DefaultRGB' },
+        # hack: this is stored as an array instead of a dictionary in my
+        # sample, so convert to a dictionary to extract the ICCBased element
+        ConvertToDict => 1,
     },
     Cs1 => {
         SubDirectory => { TagTable => 'Image::ExifTool::PDF::Cs1' },
@@ -1883,7 +1890,15 @@ sub ProcessDict($$$$;$$)
             # process the subdirectory
             my @subDicts;
             if (ref $val eq 'ARRAY') {
-                @subDicts = @{$val};
+                # hack to convert array to dictionary if necessary
+                if ($$tagInfo{ConvertToDict} and @$val == 2 and not ref $$val[0]) {
+                    my $tg = $$val[0];
+                    $tg =~ s(^/)();   # remove name
+                    my %dict = ( _tags => [ $tg ], $tg => $$val[1] );
+                    @subDicts = ( \%dict );
+                } else {
+                    @subDicts = @{$val};
+                }
             } else {
                 @subDicts = ( $val );
             }

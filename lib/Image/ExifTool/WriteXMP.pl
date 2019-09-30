@@ -1286,7 +1286,8 @@ sub WriteXMP($$;$)
             # match last index except for lang-alt items where we want to put each
             # item in a different lang-alt list (so match the 2nd-last for these)
             my $pat = $writable eq 'lang-alt' ? '.* (\d+)(.*? \d+)' : '.* (\d+)';
-            $path =~ m/$pat/g or warn("Internal error: no list index for $tag!\n"), next;
+            pos($path) = 0;
+            $path =~ m/$pat/g or warn("Internal error: no list index for $tag ($path) ($pat)!\n"), next;
             my $idx = $1;
             my $len = length $1;
             my $pos = pos($path) - $len - ($2 ? length $2 : 0);

@@ -21,10 +21,33 @@ me during this time - PH]</i></p>
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v11.66'><b>Sept. 30, 2019 - Version 11.66</b></a>
+<ul>
+<li>Added a new Nikon LensID (thanks LibRaw)
+<li>Added a few new Canon LensType values (thanks LibRaw and Tom Lachecki)
+<li>Decode a few more Hasselblad tags (thanks LibRaw)
+<li>Decode a new Canon tag (thanks Laurent Cl&eacute;vy)
+<li>Decode more Samsung trailer tags
+<li>Extract BWF iXML, aXML and UMID from RIFF-format files
+<li>Extract ICC_Profile from more types of PDF files
+<li>Enhanced %s of the -W option to recognize the PICT format
+<li>Recognize MacOS alias files
+<li>Minor change to a Minolta lens name (thanks Jos Roost)
+<li>Changed name of Ricoh CropMode35mm tag and added a new value (thanks LibRaw)
+<li>Fixed problem where NikonCapture information couldn't be deleted from an NEF
+<li>Fixed problem identifying some SVG files
+<li>Fixed typo in a CanonModelID value (thanks Dmitry)
+<li>Fixed bug which could result in "Internal error: no list index" warning when
+    creating nested XMP lang-alt lists
+<li>Fixed the names of a few Tamron lenses for Nikon (thanks Tom Lachecki)
+<li>Fixed extracting Layer information from some PSD files
+<li>Fixed writing of QuickTime GPSCoordinates to use the correct number of
+    digits before the decimal point for latitude and longitude
+</ul>
+
 <a name='v11.65'><b>Aug. 29, 2019 - Version 11.65</b></a>
 <ul>
-<li>Added some new SonyModelID and Sony LensType values (thanks LibRaw and Jos
-    Roost)
+<li>Added new SonyModelID and Sony LensType values (thanks LibRaw and Jos Roost)
 <li>Added support for some new Sony models (thanks Jos Roost)
 <li>Added a couple of new CanonModelID values (thanks LibRaw)
 <li>Added a new Canon ColorDataVersion value

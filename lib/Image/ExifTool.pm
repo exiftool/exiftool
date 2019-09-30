@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup);
 
-$VERSION = '11.65';
+$VERSION = '11.66';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -186,7 +186,7 @@ $defaultLang = 'en';    # default language
                 HTML VRD RTF FITS XCF DSS QTIF FPX PICT ZIP GZIP PLIST RAR BZ2
                 TAR RWZ EXE EXR HDR CHM LNK WMF AVC DEX DPX RAW Font RSRC M2TS
                 PHP PCX DCX DWF DWG WTV Torrent VCard LRI R3D AA PDB MOI ISO
-                JSON MP3 DICOM PCD);
+                ALIAS JSON MP3 DICOM PCD);
 
 # file types that we can write (edit)
 my @writeTypes = qw(JPEG TIFF GIF CRW MRW ORF RAF RAW PNG MIE PSD XMP PPM EPS
@@ -227,6 +227,7 @@ my %createTypes = map { $_ => 1 } qw(XMP ICC MIE VRD DR4 EXIF EXV);
     AIFC => ['AIFF', 'Audio Interchange File Format Compressed'],
     AIFF => ['AIFF', 'Audio Interchange File Format'],
     AIT  =>  'AI',
+    ALIAS=> ['ALIAS','MacOS file alias'],
     APE  => ['APE',  "Monkey's Audio format"],
     APNG => ['PNG',  'Animated Portable Network Graphics'],
     ARW  => ['TIFF', 'Sony Alpha RAW format'],
@@ -554,6 +555,7 @@ my %fileDescription = (
     AAE  => 'application/vnd.apple.photos',
     AI   => 'application/vnd.adobe.illustrator',
     AIFF => 'audio/x-aiff',
+    ALIAS=> 'application/x-macos',
     APE  => 'audio/x-monkeys-audio',
     APNG => 'image/apng',
     ASF  => 'video/x-ms-asf',
@@ -749,6 +751,7 @@ my %fileDescription = (
 # - module name '0' indicates a recognized but unsupported file
 my %moduleName = (
     AA   => 'Audible',
+    ALIAS=> 0,
     AVC  => 0,
     BTF  => 'BigTIFF',
     BZ2  => 0,
@@ -811,6 +814,7 @@ my %moduleName = (
 %magicNumber = (
     AA   => '.{4}\x57\x90\x75\x36',
     AIFF => '(FORM....AIF[FC]|AT&TFORM)',
+    ALIAS=> "book\0\0\0\0mark\0\0\0\0",
     APE  => '(MAC |APETAGEX|ID3)',
     ASF  => '\x30\x26\xb2\x75\x8e\x66\xcf\x11\xa6\xd9\x00\xaa\x00\x62\xce\x6c',
     AVC  => '\+A\+V\+C\+',
@@ -855,7 +859,7 @@ my %moduleName = (
     ITC  => '.{4}itch',
     JP2  => '(\0\0\0\x0cjP(  |\x1a\x1a)\x0d\x0a\x87\x0a|\xff\x4f\xff\x51\0)',
     JPEG => '\xff\xd8\xff',
-    JSON => '(\xef\xbb\xbf)?\s*(\[\s*)?\{\s*"[^"]+"\s*:',
+    JSON => '(\xef\xbb\xbf)?\s*(\[\s*)?\{\s*"[^"]*"\s*:',
     LFP  => '\x89LFP\x0d\x0a\x1a\x0a',
     LNK  => '.{4}\x01\x14\x02\0{5}\xc0\0{6}\x46',
     LRI  => 'LELR \0',
@@ -2240,7 +2244,7 @@ sub ExtractInfo($;@)
     my $fast = $$options{FastScan};
     my $req = $$self{REQ_TAG_LOOKUP};
     my $reqAll = $$options{RequestAll} || 0;
-    my (%saveOptions, $reEntry, $rsize, $type, @startTime);
+    my (%saveOptions, $reEntry, $rsize, $type, @startTime, $saveOrder);
 
     # check for internal ReEntry option to allow recursive calls to ExtractInfo
     if (ref $_[1] eq 'HASH' and $_[1]{ReEntry} and
@@ -2254,6 +2258,7 @@ sub ExtractInfo($;@)
             EXIF_POS  => $$self{EXIF_POS},
             FILE_TYPE => $$self{FILE_TYPE},
         };
+        $saveOrder = GetByteOrder(),
         $$self{RAF} = new File::RandomAccess($_[0]);
         $$self{PROCESSED} = { };
         delete $$self{EXIF_DATA};
@@ -2645,6 +2650,7 @@ sub ExtractInfo($;@)
     if ($reEntry) {
         # restore necessary members when exiting re-entrant code
         $$self{$_} = $$reEntry{$_} foreach keys %$reEntry;
+        SetByteOrder($saveOrder);
     }
 
     # ($type may be undef without an Error when processing sub-documents)

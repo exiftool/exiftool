@@ -56,7 +56,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.22';
+$VERSION = '4.23';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -2779,6 +2779,7 @@ my %sampleFormat = (
     0xafc3 => 'ExpandFilterLens', #JD (Opanda)
     0xafc4 => 'ExpandScanner', #JD (Opanda)
     0xafc5 => 'ExpandFlashLamp', #JD (Opanda)
+    0xb4c3 => { Name => 'HasselbladRawImage', Format => 'undef', Binary => 1 }, #IB
 #
 # Windows Media Photo / HD Photo (WDP/HDP) tags
 #
@@ -2940,6 +2941,16 @@ my %sampleFormat = (
             TagTable => 'Image::ExifTool::PrintIM::Main',
         },
         PrintConvInv => '$val =~ /^PrintIM/ ? $val : undef',    # quick validation
+    },
+    0xc51b => { # (Hasselblad H3D)
+        Name => 'HasselbladExif',
+        Format => 'undef',
+        RawConv => q{
+            $$self{DOC_NUM} = ++$$self{DOC_COUNT};
+            $self->ExtractInfo(\$val, { ReEntry => 1 });
+            $$self{DOC_NUM} = 0;
+            return undef;
+        },
     },
     0xc573 => { #PH
         Name => 'OriginalFileName',

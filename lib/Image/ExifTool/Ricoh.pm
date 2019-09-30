@@ -19,7 +19,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.33';
+$VERSION = '1.34';
 
 sub ProcessRicohText($$$);
 sub ProcessRicohRMETA($$$);
@@ -330,9 +330,13 @@ my %ricohLensIDs = (
         },
     },
     0x1018 => { #3
-        Name => 'CropMode35mm',
+        Name => 'CropMode',
         Writable => 'int16u',
-        PrintConv => { 0 => 'Off', 1 => 'On' },
+        PrintConv => {
+            0 => 'Off',
+            1 => 'On (35mm)',
+            2 => 'On (47mm)', #IB
+        },
     },
     0x1019 => { #3
         Name => 'NDFilter',

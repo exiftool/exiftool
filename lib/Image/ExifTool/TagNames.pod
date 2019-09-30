@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 22997 tags, with 15044 unique tag names.
+They contain a total of 23035 tags, with 15079 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -66,8 +66,8 @@ writing.
 
 The HTML version of these tables also lists possible B<Values> for
 discrete-valued tags, as well as B<Notes> for some tags.  The B<Values> are
-listed as the computer-readable and human-readable values on the left and
-right hand side of an equals sign (C<=>) respectively.  The human-readable
+listed with the computer-readable values on the left of the equals sign
+(C<=>), and the human-readable values on the right.  The human-readable
 values are used by default when reading and writing, but the
 computer-readable values may be accessed by disabling the value conversion
 with the -n option on the command line, by setting the PrintConv option to 0
@@ -769,6 +769,7 @@ official EXIF 2.32 specification.
   0xafc3   ExpandFilterLens          -          no
   0xafc4   ExpandScanner             -          no
   0xafc5   ExpandFlashLamp           -          no
+  0xb4c3   HasselbladRawImage        -          no
   0xbc01   PixelFormat               -          no
   0xbc02   Transformation            -          no
   0xbc03   Uncompressed              -          no
@@ -789,6 +790,7 @@ official EXIF 2.32 specification.
   0xc42a   OceImageLogic             -          no
   0xc44f   Annotations               -          no
   0xc4a5   PrintIM                   IFD0       PrintIM
+  0xc51b   HasselbladExif            -          no
   0xc573   OriginalFileName          -          no
   0xc580   USPTOOriginalContentType  -          no
   0xc5e0   CR2CFAPattern             -          no
@@ -5403,6 +5405,7 @@ boot, not including standby time.
   0x4024   FilterInfo                           Canon FilterInfo
   0x4025   HDRInfo                              Canon HDRInfo
   0x4028   AFConfig                             Canon AFConfig
+  0x403f   RawBurstModeRoll                     Canon RawBurstInfo
 
 =head3 Canon CameraSettings Tags
 
@@ -7385,6 +7388,13 @@ Information about creative filter settings.
      17    VFDisplayIllumination                int32s
      18    AFStatusViewfinder                   int32s
      19    InitialAFPointInServo                int32s
+
+=head3 Canon RawBurstInfo Tags
+
+  Index4   Tag Name                             Writable
+  ------   --------                             --------
+      1    RawBurstImageNum                     int32u
+      2    RawBurstImageCount                   int32u
 
 =head3 Canon CTMD Tags
 
@@ -15969,25 +15979,65 @@ as the Galaxy S4 and Tab S.
   DepthMapName                                  no
   DualCameraImage                               no
   DualCameraImageName                           no
-  DualShotInfo                                  Samsung DualShotInfo
+  DualShotExtra                                 Samsung DualShotExtra
   EmbeddedAudioFile                             no
   EmbeddedAudioFileName                         no
   EmbeddedImage                                 no
   EmbeddedImageName                             no
   EmbeddedVideoFile                             no
   EmbeddedVideoType                             no
+  SingleShotDepthMap                            no
+  SingleShotMeta                                Samsung SingleShotMeta
   SurroundShotVideo                             no
   SurroundShotVideoName                         no
   TimeStamp                                     no
 
-=head3 Samsung DualShotInfo Tags
+=head3 Samsung DualShotExtra Tags
+
+These tags tested only for DualShotVersion numbers 1, 4 and 5.
 
   Index4   Tag Name                             Writable
   ------   --------                             --------
+      0    DualShotVersion                      no
       9    DepthMapWidth                        no
      10    DepthMapHeight                       no
      16    DepthMapWidth                        no
      17    DepthMapHeight                       no
+     18    DepthMapWidth                        no
+     19    DepthMapHeight                       no
+
+=head3 Samsung SingleShotMeta Tags
+
+  Tag ID               Tag Name                 Writable
+  ------               --------                 --------
+  'beautyColorLevel'   BeautyColorLevel         no
+  'beautyRetouchLevel' BeautyRetouchLevel       no
+  'blurStrength'       BlurStrength             no
+  'bokehShape'         BokehShape               no
+  'colorpopStrength'   ColorpopStrength         no
+  'depthHWHeight'      DepthHWHeight            no
+  'depthHWWidth'       DepthHWWidth             no
+  'depthSWHeight'      DepthSWHeight            no
+  'depthSWWidth'       DepthSWWidth             no
+  'deviceOrientation'  DeviceOrientation        no
+  'effectStrength'     EffectStrength           no
+  'effectType'         EffectType               no
+  'flipStatus'         FlipStatus               no
+  'inputHeight'        InputHeight              no
+  'inputWidth'         InputWidth               no
+  'isArtBokeh'         IsArtBokeh               no
+  'lensFacing'         LensFacing               no
+  'monoStrength'       MonoStrength             no
+  'objectOrientation'  ObjectOrientation        no
+  'outputHeight'       OutputHeight             no
+  'outputWidth'        OutputWidth              no
+  'perfMode'           PerfMode                 no
+  'segHeight'          SegHeight                no
+  'segWidth'           SegWidth                 no
+  'sidelightStrength'  SidelightStrength        no
+  'spinStrength'       SpinStrength             no
+  'vintageStrength'    VintageStrength          no
+  'zoomStrength'       ZoomStrength             no
 
 =head3 Samsung sec Tags
 
@@ -16089,7 +16139,7 @@ such as the Galaxy S4.
   0x1015   ToningEffect                         int16u
   0x1016   HueAdjust                            int16u
   0x1017   WideAdapter                          int16u
-  0x1018   CropMode35mm                         int16u
+  0x1018   CropMode                             int16u
   0x1019   NDFilter                             int16u
   0x101a   WBBracketShotNumber                  int16u
   0x1200   AFStatus                             int16u
@@ -18784,7 +18834,8 @@ FPXR segment of JPEG images.  As well, FlashPix information is extracted
 from DOC, PPT, XLS (Microsoft Word, PowerPoint and Excel) documents, VSD
 (Microsoft Visio) drawings, and FLA (Macromedia/Adobe Flash project) files
 since these are based on the same file format as FlashPix (the Windows
-Compound Binary File format).  See
+Compound Binary File format).  Note that ExifTool identifies any
+unrecognized Windows Compound Binary file as a FlashPix (FPX) file.  See
 L<http://graphcomp.com/info/specs/livepicture/fpx.pdf> for the FlashPix
 specification.
 
@@ -23474,6 +23525,7 @@ This is the PDF document catalog.
   Tag ID               Tag Name                 Writable
   ------               --------                 --------
   'Cs1'                Cs1                      PDF Cs1
+  'DefaultCMYK'        DefaultCMYK              PDF DefaultRGB
   'DefaultRGB'         DefaultRGB               PDF DefaultRGB
 
 =head3 PDF Cs1 Tags
@@ -28265,6 +28317,7 @@ sub-documents, but the Duration is calculated for the full video.
   'VP8X'               VP8X                     RIFF VP8X
   'XMP '               XMP                      XMP
   '_PMX'               XMP                      XMP
+  'aXML'               AXML                     XMP XML
   'afsp'               Afsp                     no
   'bext'               BroadcastExtension       RIFF BroadcastExt
   'cue '               CuePoints                no
@@ -28273,6 +28326,7 @@ sub-documents, but the Duration is calculated for the full video.
   'fmt '               AudioFormat              RIFF AudioFormat
   'gps0'               GPSTrack                 QuickTime Stream
   'gsen'               GSensor                  QuickTime Stream
+  'iXML'               IXML                     XMP XML
   'labl'               Label                    RIFF Label
   'list'               ListType                 no
   'olym'               Olym                     Olympus WAV
@@ -28556,6 +28610,7 @@ L<http://tech.ebu.ch/docs/tech/tech3285.pdf>).
     320    DateTimeOriginal                     no
     338    TimeReference                        no
     346    BWFVersion                           no
+    348    BWF_UMID                             no
     602    CodingHistory                        no
 
 =head3 RIFF DS64 Tags
@@ -33737,6 +33792,9 @@ values, may created via the ExifTool configuration file.
   ShutterSpeed         ExposureTime             no
                        ShutterSpeedValue
                        BulbDuration
+  SingleShotDepthMapTiff SingleShotDepthMap     no
+                       SegWidth
+                       SegHeight
   SubSecCreateDate     EXIF:CreateDate          yes
                        SubSecTimeDigitized
                        OffsetTimeDigitized

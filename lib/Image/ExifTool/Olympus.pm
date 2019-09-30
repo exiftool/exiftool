@@ -1589,14 +1589,14 @@ my %indexInfo = (
         Writable => 'int8u',
         Count => 6,
         Notes => q{
-            6 numbers: 0. Make, 1. Unknown, 2. Model, 3. Sub-model, 4-5. Unknown.  Only
+            6 numbers: 1. Make, 2. Unknown, 3. Model, 4. Sub-model, 5-6. Unknown.  Only
             the Make, Model and Sub-model are used to identify the lens type
         },
         SeparateTable => 'LensType',
         # Have seen these values for the unknown numbers:
-        # 1: 0
-        # 4: 0, 2(Olympus lenses for which I have also seen 0 for this number)
-        # 5: 0, 16(new Lumix lenses)
+        # 2: 0
+        # 5: 0, 2(Olympus lenses for which I have also seen 0 for this number)
+        # 6: 0, 16(new Lumix lenses)
         ValueConv => 'my @a=split(" ",$val); sprintf("%x %.2x %.2x",@a[0,2,3])',
         # set unknown values to zero when writing
         ValueConvInv => 'my @a=split(" ",$val); hex($a[0])." 0 ".hex($a[1])." ".hex($a[2])." 0 0"',
@@ -1661,7 +1661,7 @@ my %indexInfo = (
         Writable => 'int8u',
         Count => 6,
         Notes => q{
-            6 numbers: 0. Make, 1. Unknown, 2. Model, 3. Sub-model, 4-5. Unknown.  Only
+            6 numbers: 1. Make, 2. Unknown, 3. Model, 4. Sub-model, 5-6. Unknown.  Only
             the Make and Model are used to identify the extender
         },
         ValueConv => 'my @a=split(" ",$val); sprintf("%x %.2x",@a[0,2])',

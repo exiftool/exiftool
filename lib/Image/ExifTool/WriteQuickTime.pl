@@ -156,9 +156,12 @@ sub ConvInvISO6709($)
     my $val = shift;
     my @a = split ' ', $val;
     if (@a == 2 or @a == 3) {
+        # latitude must have 2 digits before the decimal, and longitude 3,
+        # and all values must start with a "+" or "-"
+        my @fmt = ('%+03d','%+04d','%+d');
         foreach (@a) {
-            Image::ExifTool::IsFloat($_) or return undef;
-            $_ = '+' . $_ if $_ >= 0;
+            return undef unless Image::ExifTool::IsFloat($_);
+            $_ =~ s/^([-+]?\d+)/sprintf(shift(@fmt),$1)/e;
         }
         return join '', @a;
     }

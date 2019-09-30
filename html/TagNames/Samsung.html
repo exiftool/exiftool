@@ -518,9 +518,9 @@ as the Galaxy S4 and Tab S.</p>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr>
-<td>DualShotInfo</td>
+<td>DualShotExtra</td>
 <td class=c>-</td>
-<td>--&gt; <a href='Samsung.html#DualShotInfo'>Samsung DualShotInfo Tags</a></td></tr>
+<td>--&gt; <a href='Samsung.html#DualShotExtra'>Samsung DualShotExtra Tags</a></td></tr>
 <tr class=b>
 <td>EmbeddedAudioFile</td>
 <td class=c>no</td>
@@ -546,6 +546,14 @@ as the Galaxy S4 and Tab S.</p>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 <tr class=b>
+<td>SingleShotDepthMap</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>SingleShotMeta</td>
+<td class=c>-</td>
+<td>--&gt; <a href='Samsung.html#SingleShotMeta'>Samsung SingleShotMeta Tags</a></td></tr>
+<tr class=b>
 <td>SurroundShotVideo</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
@@ -559,30 +567,194 @@ as the Galaxy S4 and Tab S.</p>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
 
-<h2><a name='DualShotInfo'>Samsung DualShotInfo Tags</a></h2>
+<h2><a name='DualShotExtra'>Samsung DualShotExtra Tags</a></h2>
+<p>These tags tested only for DualShotVersion numbers 1, 4 and 5.</p>
 <blockquote>
 <table class=frame><tr><td>
 <table class=inner cellspacing=1>
 <tr class=h><th>Index4</th><th>Tag Name</th>
 <th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
 <tr>
+<td class=r title='0 = 0x0'>0</td>
+<td>DualShotVersion</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td class=r title='9 = 0x9'>9</td>
 <td>DepthMapWidth</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='10 = 0xa'>10</td>
 <td>DepthMapHeight</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td class=r title='16 = 0x10'>16</td>
 <td>DepthMapWidth</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td class=r title='17 = 0x11'>17</td>
 <td>DepthMapHeight</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td class=r title='18 = 0x12'>18</td>
+<td>DepthMapWidth</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td class=r title='19 = 0x13'>19</td>
+<td>DepthMapHeight</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+</table></td></tr></table></blockquote>
+
+<h2><a name='SingleShotMeta'>Samsung SingleShotMeta Tags</a></h2>
+<blockquote>
+<table class=frame><tr><td>
+<table class=inner cellspacing=1>
+<tr class=h><th>Tag&nbsp;ID</th><th>Tag Name</th>
+<th>Writable</th><th>Values / <span class=n>Notes</span></th></tr>
+<tr>
+<td>'beautyColorLevel'</td>
+<td>BeautyColorLevel</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'beautyRetouchLevel'</td>
+<td>BeautyRetouchLevel</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'blurStrength'</td>
+<td>BlurStrength</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'bokehShape'</td>
+<td>BokehShape</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'colorpopStrength'</td>
+<td>ColorpopStrength</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'depthHWHeight'</td>
+<td>DepthHWHeight</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'depthHWWidth'</td>
+<td>DepthHWWidth</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'depthSWHeight'</td>
+<td>DepthSWHeight</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'depthSWWidth'</td>
+<td>DepthSWWidth</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'deviceOrientation'</td>
+<td>DeviceOrientation</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'effectStrength'</td>
+<td>EffectStrength</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'effectType'</td>
+<td>EffectType</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'flipStatus'</td>
+<td>FlipStatus</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'inputHeight'</td>
+<td>InputHeight</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'inputWidth'</td>
+<td>InputWidth</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'isArtBokeh'</td>
+<td>IsArtBokeh</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'lensFacing'</td>
+<td>LensFacing</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'monoStrength'</td>
+<td>MonoStrength</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'objectOrientation'</td>
+<td>ObjectOrientation</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'outputHeight'</td>
+<td>OutputHeight</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'outputWidth'</td>
+<td>OutputWidth</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'perfMode'</td>
+<td>PerfMode</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'segHeight'</td>
+<td>SegHeight</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'segWidth'</td>
+<td>SegWidth</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'sidelightStrength'</td>
+<td>SidelightStrength</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'spinStrength'</td>
+<td>SpinStrength</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr>
+<td>'vintageStrength'</td>
+<td>VintageStrength</td>
+<td class=c>no</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
+<td>'zoomStrength'</td>
+<td>ZoomStrength</td>
 <td class=c>no</td>
 <td>&nbsp;</td></tr>
 </table></td></tr></table></blockquote>
@@ -753,7 +925,7 @@ such as the Galaxy S4.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jul 2, 2019</i>
+<br><i>Last revised Sep 27, 2019</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

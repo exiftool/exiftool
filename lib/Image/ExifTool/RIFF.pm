@@ -29,7 +29,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.53';
+$VERSION = '1.54';
 
 sub ConvertTimecode($);
 sub ProcessSGLT($$$);
@@ -534,6 +534,12 @@ my %code2charset = (
             ProcessProc => \&ProcessSLLT,
         },
     },
+    iXML => { #PH
+        SubDirectory => { TagTable => 'Image::ExifTool::XMP::XML' },
+    },
+    aXML => { #PH
+        SubDirectory => { TagTable => 'Image::ExifTool::XMP::XML' },
+    },
 #
 # tags found in an AlphaImagingTech AVI video - PH
 #
@@ -631,7 +637,11 @@ my %code2charset = (
         Name => 'BWFVersion',
         Format => 'int16u',
     },
-    # 348 - int8u[64] - SMPTE 330M UMID (Unique Material Identifier)
+    348 => {
+        Name => 'BWF_UMID',
+        Format => 'undef[64]',
+        ValueConv => '$_=unpack("H*",$val); s/0{64}$//; uc $_',
+    },
     # 412 - int8u[190] - reserved
     602 => {
         Name => 'CodingHistory',

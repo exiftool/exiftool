@@ -47,6 +47,7 @@
 #              34) Stewart Bennett private communication (D4S, D810)
 #              35) David Puschel private communication
 #              36) Hayo Baann (forum10207)
+#              37) Tom Lachecki, private communication
 #              IB) Iliah Borg private communication (LibRaw)
 #              JD) Jens Duttke private communication
 #              NJ) Niels Kristian Bech Jensen private communication
@@ -60,7 +61,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 
-$VERSION = '3.70';
+$VERSION = '3.71';
 
 sub LensIDConv($$$);
 sub ProcessNikonAVI($$$);
@@ -514,6 +515,7 @@ sub GetAFPointGrid($$;$);
     '48 3C 8E B0 3C 3C 4B 02' => 'Sigma APO 300-800mm F5.6 EX DG HSM',
 #
     '00 47 25 25 24 24 00 02' => 'Tamron SP AF 14mm f/2.8 Aspherical (IF) (69E)',
+    'C8 54 44 44 0D 0D DF 46' => 'Tamron SP 35mm f/1.4 Di USD (F045)', #IB
     'E8 4C 44 44 14 14 DF 0E' => 'Tamron SP 35mm f/1.8 Di VC USD (F012)', #35
     'E7 4C 4C 4C 14 14 DF 0E' => 'Tamron SP 45mm f/1.8 Di VC USD (F013)',
     'F4 54 56 56 18 18 84 06' => 'Tamron SP AF 60mm f/2.0 Di II Macro 1:1 (G005)', #24
@@ -535,7 +537,7 @@ sub GetAFPointGrid($$;$);
     '00 36 1C 2D 34 3C 00 06' => 'Tamron SP AF 11-18mm f/4.5-5.6 Di II LD Aspherical (IF) (A13)',
     'E9 48 27 3E 24 24 DF 0E' => 'Tamron SP 15-30mm f/2.8 Di VC USD (A012)', #IB
     'CA 48 27 3E 24 24 DF 4E' => 'Tamron SP 15-30mm f/2.8 Di VC USD G2 (A041)', #IB
-    'EA 40 29 8E 2C 40 DF 0E' => 'Tamron AF 16-300mm f/3.5-6.3 Di II VC PZD (B016)',
+    'EA 40 29 8E 2C 40 DF 0E' => 'Tamron 16-300mm f/3.5-6.3 Di II VC PZD (B016)', # (removed AF designation, ref 37)
     '07 46 2B 44 24 30 03 02' => 'Tamron SP AF 17-35mm f/2.8-4 Di LD Aspherical (IF) (A05)',
     'CB 3C 2B 44 24 31 DF 46' => 'Tamron 17-35mm f/2.8-4 Di OSD (A037)', #IB
     '00 53 2B 50 24 24 00 06' => 'Tamron SP AF 17-50mm f/2.8 XR Di II LD Aspherical (IF) (A16)', #PH
@@ -546,12 +548,12 @@ sub GetAFPointGrid($$;$);
     '00 3F 2D 80 2C 40 00 06' => 'Tamron AF 18-200mm f/3.5-6.3 XR Di II LD Aspherical (IF) Macro (A14)',
     '00 40 2D 80 2C 40 00 06' => 'Tamron AF 18-200mm f/3.5-6.3 XR Di II LD Aspherical (IF) Macro (A14NII)', #NJ
     'FC 40 2D 80 2C 40 DF 06' => 'Tamron AF 18-200mm f/3.5-6.3 XR Di II LD Aspherical (IF) Macro (A14NII)', #PH (NC)
-    'E6 40 2D 80 2C 40 DF 0E' => 'Tamron AF 18-200mm f/3.5-6.3 Di II VC (B018)', #Tanel
+    'E6 40 2D 80 2C 40 DF 0E' => 'Tamron 18-200mm f/3.5-6.3 Di II VC (B018)', #Tanel (removed AF designation, ref 37)
     '00 40 2D 88 2C 40 62 06' => 'Tamron AF 18-250mm f/3.5-6.3 Di II LD Aspherical (IF) Macro (A18)',
     '00 40 2D 88 2C 40 00 06' => 'Tamron AF 18-250mm f/3.5-6.3 Di II LD Aspherical (IF) Macro (A18NII)', #JD
     'F5 40 2C 8A 2C 40 40 0E' => 'Tamron AF 18-270mm f/3.5-6.3 Di II VC LD Aspherical (IF) Macro (B003)',
     'F0 3F 2D 8A 2C 40 DF 0E' => 'Tamron AF 18-270mm f/3.5-6.3 Di II VC PZD (B008)',
-    'E0 40 2D 98 2C 41 DF 4E' => 'Tamron AF 18-400mm f/3.5-6.3 Di II VC HLD (B028)',
+    'E0 40 2D 98 2C 41 DF 4E' => 'Tamron 18-400mm f/3.5-6.3 Di II VC HLD (B028)', # (removed AF designation, ref 37)
     '07 40 2F 44 2C 34 03 02' => 'Tamron AF 19-35mm f/3.5-4.5 (A10)',
     '07 40 30 45 2D 35 03 02' => 'Tamron AF 19-35mm f/3.5-4.5 (A10)',
     '00 49 30 48 22 2B 00 02' => 'Tamron SP AF 20-40mm f/2.7-3.5 (166D)',

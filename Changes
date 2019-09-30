@@ -11,10 +11,32 @@ considered development releases, and are not uploaded to CPAN.)
 from Sept. 3-24, so don't expect any updates or email/forum responses from
 me during this time - PH]
 
+Sept. 30, 2019 - Version 11.66
+
+  - Added a new Nikon LensID (thanks LibRaw)
+  - Added a few new Canon LensType values (thanks LibRaw and Tom Lachecki)
+  - Decode a few more Hasselblad tags (thanks LibRaw)
+  - Decode a new Canon tag (thanks Laurent Clevy)
+  - Decode more Samsung trailer tags
+  - Extract BWF iXML, aXML and UMID from RIFF-format files
+  - Extract ICC_Profile from more types of PDF files
+  - Enhanced %s of the -W option to recognize the PICT format
+  - Recognize MacOS alias files
+  - Minor change to a Minolta lens name (thanks Jos Roost)
+  - Changed name of Ricoh CropMode35mm tag and added a new value (thanks LibRaw)
+  - Fixed problem where NikonCapture information couldn't be deleted from an NEF
+  - Fixed problem identifying some SVG files
+  - Fixed typo in a CanonModelID value (thanks Dmitry)
+  - Fixed bug which could result in "Internal error: no list index" warning when
+    creating nested XMP lang-alt lists
+  - Fixed the names of a few Tamron lenses for Nikon (thanks Tom Lachecki)
+  - Fixed extracting Layer information from some PSD files
+  - Fixed writing of QuickTime GPSCoordinates to use the correct number of
+    digits before the decimal point for latitude and longitude
+
 Aug. 29, 2019 - Version 11.65
 
-  - Added some new SonyModelID and Sony LensType values (thanks LibRaw and Jos
-    Roost)
+  - Added new SonyModelID and Sony LensType values (thanks LibRaw and Jos Roost)
   - Added support for some new Sony models (thanks Jos Roost)
   - Added a couple of new CanonModelID values (thanks LibRaw)
   - Added a new Canon ColorDataVersion value

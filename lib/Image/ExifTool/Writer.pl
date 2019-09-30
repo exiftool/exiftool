@@ -3981,7 +3981,10 @@ sub WriteDirectory($$$;$)
         # (never delete an entire QuickTime group)
         if ($delFlag) {
             if (($grp0 =~ /^(MakerNotes)$/ or $grp1 =~ /^(IFD0|ExifIFD|MakerNotes)$/) and
-                $self->IsRawType())
+                $self->IsRawType() and
+                # allow non-permanent MakerNote directories to be deleted (ie. NikonCapture)
+                (not $$dirInfo{TagInfo} or not defined $$dirInfo{TagInfo}{Permanent} or
+                $$dirInfo{TagInfo}{Permanent}))
             {
                 $self->WarnOnce("Can't delete $1 from $$self{FileType}",1);
                 undef $grp1;

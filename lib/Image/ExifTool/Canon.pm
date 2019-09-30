@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.24';
+$VERSION = '4.25';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -224,7 +224,8 @@ $VERSION = '4.24';
     124 => 'Canon MP-E 65mm f/2.8 1-5x Macro Photo', #9
     125 => 'Canon TS-E 24mm f/3.5L',
     126 => 'Canon TS-E 45mm f/2.8', #15
-    127 => 'Canon TS-E 90mm f/2.8', #15
+    127 => 'Canon TS-E 90mm f/2.8 or Tamron Lens', #15
+    127.1 => 'Tamron 18-200mm f/3.5-6.3 Di II VC', #TomLachecki (model B018)
     129 => 'Canon EF 300mm f/2.8L USM', #32
     130 => 'Canon EF 50mm f/1.0L USM', #10/15
     131 => 'Canon EF 28-80mm f/2.8-4L USM or Sigma Lens', #32
@@ -242,6 +243,7 @@ $VERSION = '4.24';
     134 => 'Canon EF 600mm f/4L IS USM', #15
     135 => 'Canon EF 200mm f/1.8L USM',
     136 => 'Canon EF 300mm f/2.8L USM',
+    136.1 => 'Tamron SP 15-30mm f/2.8 Di VC USD', #TomLachecki (model A012)
     137 => 'Canon EF 85mm f/1.2L USM or Sigma or Tamron Lens', #10
     137.1 => 'Sigma 18-50mm f/2.8-4.5 DC OS HSM', #PH
     137.2 => 'Sigma 50-200mm f/4-5.6 DC OS HSM', #PH
@@ -345,6 +347,7 @@ $VERSION = '4.24';
     173.2 => 'Sigma APO Macro 150mm f/2.8 EX DG HSM', #14
     173.3 => 'Sigma 10mm f/2.8 EX DC Fisheye', #IB
     173.4 => 'Sigma 15mm f/2.8 EX DG Diagonal Fisheye', #IB
+    173.5 => 'Venus Laowa 100mm F2.8 2X Ultra Macro APO', #IB
     174 => 'Canon EF 135mm f/2L USM or Other Lens', #9
     174.1 => 'Sigma 70-200mm f/2.8 EX DG APO OS HSM', #PH (probably version II of this lens)
     174.2 => 'Sigma 50-500mm f/4.5-6.3 APO DG OS HSM', #forum4031
@@ -908,7 +911,7 @@ $VERSION = '4.24';
     0x80000408 => 'EOS 77D / 9000D',
     0x80000417 => 'EOS Rebel SL2 / 200D / Kiss X9', #IB/42
     0x80000422 => 'EOS Rebel T100 / 4000D / 3000D', #IB (3000D in China; Kiss? - PH)
-    0x80000424 => 'EOR R', #IB
+    0x80000424 => 'EOS R', #IB
     0x80000432 => 'EOS Rebel T7 / 2000D / 1500D / Kiss X90', #IB
     0x80000433 => 'EOS RP',
     0x80000436 => 'EOS SL3 / 250D / Kiss X10', #25
@@ -1885,7 +1888,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
     },
     0x4008 => { #53
         Name => 'PictureStyleUserDef', # (BasePictStyleOfUser)
-        Format => 'int16u',
+        Writable => 'int16u',
         Count => 3, # UserDef1, UserDef2, UserDef3
         PrintHex => 1,
         SeparateTable => 'PictureStyle',
@@ -1893,7 +1896,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
     },
     0x4009 => { #53
         Name => 'PictureStylePC', # (BasePictStyleOfUser)
-        Format => 'int16u',
+        Writable => 'int16u',
         Count => 3, # PC1, PC2, PC3
         PrintHex => 1,
         SeparateTable => 'PictureStyle',
@@ -1995,6 +1998,13 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
         SubDirectory => {
             Validate => 'Image::ExifTool::Canon::Validate($dirData,$subdirStart,$size)',
             TagTable => 'Image::ExifTool::Canon::AFConfig',
+        }
+    },
+    0x403f => { #25
+        Name => 'RawBurstModeRoll',
+        SubDirectory => {
+            Validate => 'Image::ExifTool::Canon::Validate($dirData,$subdirStart,$size)',
+            TagTable => 'Image::ExifTool::Canon::RawBurstInfo',
         }
     },
 );
@@ -8436,6 +8446,16 @@ my %filterConv = (
              2 => 'Auto', #PH (1DXmkII)
         },
     },
+);
+
+# RAW burst mode info (MakerNotes tag 0x403f) (ref 25)
+%Image::ExifTool::Canon::RawBurstInfo = (
+    %binaryDataAttrs,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    FORMAT => 'int32u',
+    FIRST_ENTRY => 1,
+    1 => 'RawBurstImageNum',
+    2 => 'RawBurstImageCount',
 );
 
 # Canon UUID atoms (ref PH, SX280)

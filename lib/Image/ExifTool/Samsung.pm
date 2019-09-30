@@ -22,10 +22,11 @@ use vars qw($VERSION %samsungLensTypes);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.46';
+$VERSION = '1.47';
 
 sub WriteSTMN($$$);
 sub ProcessINFO($$$);
+sub ProcessSamsungMeta($$$);
 sub ProcessSamsungIFD($$$);
 
 # Samsung LensType lookup
@@ -979,43 +980,91 @@ my %formatMinMax = (
     '0x0ab1' => { Name => 'DepthMapData', Binary => 1 },
    # 0x0ab3-name - seen 'DualShot_Extra_Info' (SM-N950U)
     '0x0ab3' => { # (SM-N950U)
-        Name => 'DualShotInfo',
-        SubDirectory => { TagTable => 'Image::ExifTool::Samsung::DualShotInfo' },
+        Name => 'DualShotExtra',
+        SubDirectory => { TagTable => 'Image::ExifTool::Samsung::DualShotExtra' },
      },
    # 0x0ac0-name - seen 'ZoomInOut_Info' (SM-N950U)
    # 0x0ac0 - 2048 bytes of interesting stuff including firmware version? (SM-N950U)
+    '0x0b40' => { # (SM-N975X front camera)
+        Name => 'SingleShotMeta',
+        SubDirectory => { TagTable => 'Image::ExifTool::Samsung::SingleShotMeta' },
+     },
+   # 0x0b41-name - seen 'SingeShot_DepthMap_1' (Yes, "Singe") (SM-N975X front camera)
+    '0x0b41' => { Name => 'SingleShotDepthMap', Binary => 1 },
    # 0xa050-name - seen 'Jpeg360_2D_Info' (Samsung Gear 360)
    # 0xa050 - seen 'Jpeg3602D' (Samsung Gear 360)
 );
 
 # DualShot Extra Info (ref PH)
-%Image::ExifTool::Samsung::DualShotInfo = (
+%Image::ExifTool::Samsung::DualShotExtra = (
     PROCESS_PROC => \&Image::ExifTool::ProcessBinaryData,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
     FIRST_ENTRY => 0,
     FORMAT => 'int32u',
+    NOTES => 'These tags tested only for DualShotVersion numbers 1, 4 and 5.',
     0 => {
-        Name => 'DualShotInfoVersion', # (NC)
+        Name => 'DualShotVersion',
         Format => 'int16u',
-        RawConv => '$$self{DualShotInfoVersion} = $val; undef',
-        Hidden => 1,
+        RawConv => '$$self{DualShotVersion} = $val',
     },
     9 => {
         Name => 'DepthMapWidth',
-        Condition => '$$self{DualShotInfoVersion} < 4', # (tested only with versions: 1,4)
+        Condition => '$$self{DualShotVersion} < 4',
     },
     10 => {
         Name => 'DepthMapHeight',
-        Condition => '$$self{DualShotInfoVersion} < 4', # (tested only with versions: 1,4)
+        Condition => '$$self{DualShotVersion} < 4',
     },
     16 => {
         Name => 'DepthMapWidth',
-        Condition => '$$self{DualShotInfoVersion} >= 4', # (tested only with versions: 1,4)
+        Condition => '$$self{DualShotVersion} == 4',
     },
     17 => {
         Name => 'DepthMapHeight',
-        Condition => '$$self{DualShotInfoVersion} >= 4', # (tested only with versions: 1,4)
+        Condition => '$$self{DualShotVersion} == 4',
     },
+    18 => {
+        Name => 'DepthMapWidth',
+        Condition => '$$self{DualShotVersion} > 4',
+    },
+    19 => {
+        Name => 'DepthMapHeight',
+        Condition => '$$self{DualShotVersion} > 4',
+    },
+);
+
+# SingleShot Meta Info (ref PH) (SM-N975X front camera)
+%Image::ExifTool::Samsung::SingleShotMeta = (
+    PROCESS_PROC => \&ProcessSamsungMeta,
+    GROUPS => { 0 => 'MakerNotes', 2 => 'Image' },
+    inputWidth          => { },
+    inputHeight         => { },
+    outputWidth         => { },
+    outputHeight        => { },
+    segWidth            => { },
+    segHeight           => { },
+    depthSWWidth        => { },
+    depthSWHeight       => { },
+    depthHWWidth        => { },
+    depthHWHeight       => { },
+    flipStatus          => { },
+    lensFacing          => { },
+    deviceOrientation   => { },
+    objectOrientation   => { },
+    isArtBokeh          => { },
+    beautyRetouchLevel  => { },
+    beautyColorLevel    => { },
+    effectType          => { },
+    effectStrength      => { },
+    blurStrength        => { },
+    spinStrength        => { },
+    zoomStrength        => { },
+    colorpopStrength    => { },
+    monoStrength        => { },
+    sidelightStrength   => { },
+    vintageStrength     => { },
+    bokehShape          => { },
+    perfMode            => { },
 );
 
 # Samsung composite tags
@@ -1044,7 +1093,19 @@ my %formatMinMax = (
             my $tiff = MakeTiffHeader($val[1],$val[2],1,8) . ${$val[0]};
             return \$tiff;
         },
-    }
+    },
+    SingleShotDepthMapTiff => {
+        Require => {
+            0 => 'SingleShotDepthMap',
+            1 => 'SegWidth',
+            2 => 'SegHeight',
+        },
+        ValueConv => q{
+            return undef unless length ${$val[0]} == $val[1] * $val[2];
+            my $tiff = MakeTiffHeader($val[1],$val[2],1,8) . ${$val[0]};
+            return \$tiff;
+        },
+    },
 );
 
 # add our composite tags
@@ -1109,6 +1170,54 @@ sub ProcessINFO($$$)
         }
         $et->HandleTag($tagTablePtr, $tag, $val);
         $pos += 8;
+    }
+    return 1;
+}
+
+#------------------------------------------------------------------------------
+# Read Samsung Meta Info from trailer
+# Inputs: 0) ExifTool object ref, 1) source dirInfo ref, 2) tag table ref
+# Returns: true on success
+sub ProcessSamsungMeta($$$)
+{
+    my ($et, $dirInfo, $tagTablePtr) = @_;
+    my $dirName = $$dirInfo{DirName};
+    my $dataPt = $$dirInfo{DataPt};
+    my $pos = $$dirInfo{DirStart};
+    my $end = $$dirInfo{DirLen} + $pos;
+    unless ($pos + 8 <= $end and substr($$dataPt, $pos, 4) eq 'DOFS') {
+        $et->Warn("Unrecognized $dirName data");
+        return 0;
+    }
+    my $ver = Get32u($dataPt, $pos + 4);
+    if ($ver == 3) {
+        unless ($pos + 18 <= $end and Get32u($dataPt, $pos + 12) == $$dirInfo{DirLen}) {
+            $et->Warn("Unrecognized $dirName version $ver data");
+            return 0;
+        }
+        my $num = Get16u($dataPt, $pos + 16);
+        $et->VerboseDir("$dirName version $ver", $num);
+        $pos += 18;
+        my ($i, $val);
+        for ($i=0; $i<$num; ++$i) {
+            last if $pos + 2 > $end;
+            my ($x, $n) = unpack("x${pos}CC", $$dataPt);
+            $pos += 2;
+            last if $pos + $n + 2 > $end;
+            my $tag = substr($$dataPt, $pos, $n);
+            my $len = Get16u($dataPt, $pos + $n);
+            $pos += $n + 2;
+            last if $pos + $len > $end;
+            if ($len == 4) {
+                $val = Get32u($dataPt, $pos);
+            } else {
+                my $tmp = substr($$dataPt, $pos, $len);
+                $val = \$pos;
+            }
+            $et->HandleTag($tagTablePtr, $tag, $val);
+            $pos += $len;
+        }
+        $et->Warn("Unexpected end of $dirName version $ver $i $num data") if $i < $num;
     }
     return 1;
 }

@@ -21,7 +21,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::ASF;   # for GetGUID()
 
-$VERSION = '1.37';
+$VERSION = '1.38';
 
 sub ProcessFPX($$);
 sub ProcessFPXR($$$);
@@ -313,7 +313,8 @@ my %fpxFileType = (
         from DOC, PPT, XLS (Microsoft Word, PowerPoint and Excel) documents, VSD
         (Microsoft Visio) drawings, and FLA (Macromedia/Adobe Flash project) files
         since these are based on the same file format as FlashPix (the Windows
-        Compound Binary File format).  See
+        Compound Binary File format).  Note that ExifTool identifies any
+        unrecognized Windows Compound Binary file as a FlashPix (FPX) file.  See
         L<http://graphcomp.com/info/specs/livepicture/fpx.pdf> for the FlashPix
         specification.
     },

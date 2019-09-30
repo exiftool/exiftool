@@ -28,7 +28,7 @@ use strict;
 use vars qw($VERSION $AUTOLOAD $iptcDigestInfo);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.63';
+$VERSION = '1.64';
 
 sub ProcessPhotoshop($$$);
 sub WritePhotoshop($$$);
@@ -675,9 +675,18 @@ sub ProcessLayersAndMask($$$)
     # check for Lr16 block if layers length is 0 (ref https://forums.adobe.com/thread/1540914)
     if ($len == 0 and $num == 0) {
         $raf->Read($data,10) == 10 or return 0;
-        if ($data =~/^..8BIMLr16/s) {
+        if ($data =~ /^..8BIMLr16/s) {
             $raf->Read($data, $psiz+2) == $psiz+2 or return 0;
             $len = $psb ? Get64u(\$data, 0) : Get32u(\$data, 0);
+        } elsif ($data =~ /^..8BIMMt16/s) { # (have seen Mt16 before Lr16, ref PH)
+            $raf->Read($data, $psiz) == $psiz or return 0;
+            $raf->Read($data, 8) == 8 or return 0;
+            if ($data eq '8BIMLr16') {
+                $raf->Read($data, $psiz+2) == $psiz+2 or return 0;
+                $len = $psb ? Get64u(\$data, 0) : Get32u(\$data, 0);
+            } else {
+                $raf->Seek(-18-$psiz, 1) or return 0;
+            }
         } else {
             $raf->Seek(-10, 1) or return 0;
         }

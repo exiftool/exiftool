@@ -3749,7 +3749,7 @@ sub ProcessXMP($$;$)
                 $fmt = 'n';     # UTF-16 or 32 MM with BOM
             } elsif ($buf2 =~ /^(\xff\xfe)(<\?xml|<rdf:RDF|<x(mp)?:x[ma]pmeta)/g) {
                 $fmt = 'v';     # UTF-16 or 32 II with BOM
-            } elsif ($buf2 =~ /^(\xef\xbb\xbf)?(<\?xml|<rdf:RDF|<x(mp)?:x[ma]pmeta)/g) {
+            } elsif ($buf2 =~ /^(\xef\xbb\xbf)?(<\?xml|<rdf:RDF|<x(mp)?:x[ma]pmeta|<svg\b)/g) {
                 $fmt = 0;       # UTF-8 with BOM or unknown encoding without BOM
             } elsif ($buf2 =~ /^(\xfe\xff|\xff\xfe|\xef\xbb\xbf)(<\?xpacket begin=)/g) {
                 $double = $1;   # double-encoded UTF

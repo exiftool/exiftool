@@ -19,6 +19,7 @@
 #               10) Albert Shan private communication
 #               11) http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,8377.0.html
 #               12) http://u88.n24.queensu.ca/exiftool/forum/index.php/topic,9607.0.html
+#               13) http://u88.n24.queensu.ca/exiftool/forum/index.php/topic=10481.0.html
 #               IB) Iliah Borg private communication (LibRaw)
 #               JD) Jens Duttke private communication
 #------------------------------------------------------------------------------
@@ -30,7 +31,7 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.73';
+$VERSION = '1.74';
 
 sub ProcessFujiDir($$$);
 sub ProcessFaceRec($$$);
@@ -263,10 +264,22 @@ my %faceCategories = (
             16 => 'Commander',
             0x8000 => 'Not Attached', #10 (X-T2) (or external flash off)
             0x8120 => 'TTL', #10 (X-T2)
+            0x8320 => 'TTL Auto - Did not fire',
             0x9840 => 'Manual', #10 (X-T2)
+            0x9860 => 'Flash Commander', #13
             0x9880 => 'Multi-flash', #10 (X-T2)
             0xa920 => '1st Curtain (front)', #10 (EF-X500 flash)
+            0xaa20 => 'TTL Slow - 1st Curtain (front)', #13
+            0xab20 => 'TTL Auto - 1st Curtain (front)', #13
+            0xad20 => 'TTL - Red-eye Flash - 1st Curtain (front)', #13
+            0xae20 => 'TTL Slow - Red-eye Flash - 1st Curtain (front)', #13
+            0xaf20 => 'TTL Auto - Red-eye Flash - 1st Curtain (front)', #13
             0xc920 => '2nd Curtain (rear)', #10
+            0xca20 => 'TTL Slow - 2nd Curtain (rear)', #13
+            0xcb20 => 'TTL Auto - 2nd Curtain (rear)', #13
+            0xcd20 => 'TTL - Red-eye Flash - 2nd Curtain (rear)', #13
+            0xce20 => 'TTL Slow - Red-eye Flash - 2nd Curtain (rear)', #13
+            0xcf20 => 'TTL Auto - Red-eye Flash - 2nd Curtain (rear)', #13
             0xe920 => 'High Speed Sync (HSS)', #10
         },
     },
@@ -639,7 +652,7 @@ my %faceCategories = (
     },
     # 0x1408 - values: '0100', 'S100', 'VQ10'
     # 0x1409 - values: same as 0x1408
-    # 0x140a - values: 0, 1, 3, 5, 7 (bit 2=red-eye detection, ref 11)
+    # 0x140a - values: 0, 1, 3, 5, 7 (bit 2=red-eye detection, ref 11/13)
     0x140b => { #6
         Name => 'AutoDynamicRange',
         Writable => 'int16u',
@@ -762,6 +775,11 @@ my %faceCategories = (
         Name => 'FrameHeight',
         Writable => 'int16u',
         Groups => { 2 => 'Video' },
+    },
+    0x3824 => { #forum10480 (X-T3)
+        Name => 'FullHDHighSpeedRec',
+        Writable => 'int32u',
+        Groups => { 1 => 'Off', 2 => 'On' },
     },
     0x4005 => { #forum9634
         Name => 'FaceElementSelected', # (could be face or eye)

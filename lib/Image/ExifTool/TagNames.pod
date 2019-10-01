@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 23035 tags, with 15079 unique tag names.
+They contain a total of 23036 tags, with 15080 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -62,7 +62,8 @@ writable directly, but is written automatically by ExifTool (often when a
 corresponding L<Composite|Image::ExifTool::TagNames/Composite Tags> or
 L<Extra|Image::ExifTool::TagNames/Extra Tags> tag is written). A colon
 (C<:>) indicates a I<Mandatory> tag which may be added automatically when
-writing.
+writing.  Normally, makernote tags may not be deleted individually, but a
+caret (C<^>) indicates a I<Deletable> makernote tag.
 
 The HTML version of these tables also lists possible B<Values> for
 discrete-valued tags, as well as B<Notes> for some tags.  The B<Values> are
@@ -8988,6 +8989,7 @@ Tags extracted from FLIR Public image Format (FPF) files.
   0x3820   FrameRate                            int16u
   0x3821   FrameWidth                           int16u
   0x3822   FrameHeight                          int16u
+  0x3824   FullHDHighSpeedRec                   int32u
   0x4005   FaceElementSelected                  int16u[4]
   0x4100   FacesDetected                        int16u
   0x4103   FacePositions                        int16u[n]
@@ -11376,11 +11378,11 @@ DiMAGE X and Xt.
   0x00c3   BarometerInfo                        Nikon BarometerInfo
   0x0e00   PrintIM                              PrintIM
   0x0e01   NikonCaptureData                     NikonCapture
-  0x0e09   NikonCaptureVersion                  string
+  0x0e09   NikonCaptureVersion                  string^
   0x0e0e   NikonCaptureOffsets                  Nikon CaptureOffsets
   0x0e10   NikonScanIFD                         Nikon Scan
   0x0e13   NikonCaptureEditVersions             NikonCapture
-           NikonCaptureEditVersions             undef!
+           NikonCaptureEditVersions             undef!^
   0x0e1d   NikonICCProfile                      ICC_Profile
   0x0e1e   NikonCaptureOutput                   Nikon CaptureOutput
   0x0e22   NEFBitDepth                          int16u[4]!
@@ -18346,8 +18348,8 @@ ExifTool is used to write XMP to a CRW image.
   0x1835   DecoderTable                         CanonRaw DecoderTable
   0x183b   SerialNumberFormat                   int32u
   0x2005   RawData                              no
-  0x2007   JpgFromRaw                           resize
-  0x2008   ThumbnailImage                       resize
+  0x2007   JpgFromRaw                           resize^
+  0x2008   ThumbnailImage                       resize^
   0x2804   ImageDescription                     CanonRaw
   0x2807   CameraObject                         CanonRaw
   0x3002   ShootingRecord                       CanonRaw
@@ -33460,8 +33462,8 @@ FileName.
   Tag Name                   Group              Writable
   --------                   -----              --------
   Adobe                      Adobe              yes!
-  CanonDR4                   CanonVRD           yes!
-  CanonVRD                   CanonVRD           yes!
+  CanonDR4                   CanonVRD           yes!^
+  CanonVRD                   CanonVRD           yes!^
   Comment                    File               yes
   CurrentIPTCDigest          File               no
   Directory                  System             yes!

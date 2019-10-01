@@ -35,7 +35,7 @@ use Image::ExifTool::Sony;
 use Image::ExifTool::Validate;
 use Image::ExifTool::MacOS;
 
-$VERSION = '3.28';
+$VERSION = '3.29';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -213,7 +213,8 @@ writable directly, but is written automatically by ExifTool (often when a
 corresponding L<Composite|Image::ExifTool::TagNames/Composite Tags> or
 L<Extra|Image::ExifTool::TagNames/Extra Tags> tag is written). A colon
 (C<:>) indicates a I<Mandatory> tag which may be added automatically when
-writing.
+writing.  Normally, makernote tags may not be deleted individually, but a
+caret (C<^>) indicates a I<Deletable> makernote tag.
 
 The HTML version of these tables also lists possible B<Values> for
 discrete-valued tags, as well as B<Notes> for some tags.  The B<Values> are
@@ -1265,6 +1266,11 @@ TagID:  foreach $tagID (@keys) {
                     $writable = '-' . ($tw ? $writable : '');
                     $writable .= '!' if $tw and ($$tagInfo{Protected} || 0) & 0x01;
                     $writable .= '+' if $$tagInfo{List};
+                    if (defined $$tagInfo{Permanent}) {
+                        $writable .= '^' unless $$tagInfo{Permanent};
+                    } elsif (defined $$table{PERMANENT}) {
+                        $writable .= '^' unless $$table{PERMANENT};
+                    }
                 } else {
                     # not writable if we can't do the inverse conversions
                     my $noPrintConvInv;
@@ -1312,6 +1318,11 @@ TagID:  foreach $tagID (@keys) {
                     $writable .= '_' if defined $$tagInfo{Flat};
                     $writable .= '+' if $$tagInfo{List};
                     $writable .= ':' if $$tagInfo{Mandatory};
+                    if (defined $$tagInfo{Permanent}) {
+                        $writable .= '^' unless $$tagInfo{Permanent};
+                    } elsif (defined $$table{PERMANENT}) {
+                        $writable .= '^' unless $$table{PERMANENT};
+                    }
                     # separate tables link like subdirectories (flagged with leading '-')
                     $writable = "-$writable" if $subdir;
                 }
@@ -2514,10 +2525,11 @@ sub WriteTagNames($$)
                 '!' => 'Unsafe',
                 '*' => 'Protected',
                 ':' => 'Mandatory',
+                '^' => 'Deletable',
             );
             my ($wstr, %hasAttr, @hasAttr);
             foreach $wstr (@$writable) {
-                next unless $wstr =~ m{([+/~!*:_]+)$};
+                next unless $wstr =~ m{([+/~!*:_^]+)$};
                 my @a = split //, $1;
                 foreach (@a) {
                     next if $hasAttr{$_};

@@ -150,8 +150,7 @@ the date of manufacture)</span></span></td></tr>
 <td title='0x1010 = 4112'>0x1010</td>
 <td>FujiFlashMode</td>
 <td class=c>int16u</td>
-<td><table class=cols><tr>
-  <td>0x0 = Auto
+<td><span class=s>0x0 = Auto
   <br>0x1 = On
   <br>0x2 = Off
   <br>0x3 = Red-eye reduction
@@ -159,12 +158,23 @@ the date of manufacture)</span></span></td></tr>
   <br>0x10 = Commander
   <br>0x8000 = Not Attached
   <br>0x8120 = TTL
+  <br>0x8320 = TTL Auto - Did not fire
   <br>0x9840 = Manual
+  <br>0x9860 = Flash Commander
   <br>0x9880 = Multi-flash
   <br>0xa920 = 1st Curtain (front)
+  <br>0xaa20 = TTL Slow - 1st Curtain (front)
+  <br>0xab20 = TTL Auto - 1st Curtain (front)
+  <br>0xad20 = TTL - Red-eye Flash - 1st Curtain (front)
+  <br>0xae20 = TTL Slow - Red-eye Flash - 1st Curtain (front)
+  <br>0xaf20 = TTL Auto - Red-eye Flash - 1st Curtain (front)
   <br>0xc920 = 2nd Curtain (rear)
-  <br>0xe920 = High Speed Sync (HSS)</td></tr></table>
-</td></tr>
+  <br>0xca20 = TTL Slow - 2nd Curtain (rear)
+  <br>0xcb20 = TTL Auto - 2nd Curtain (rear)
+  <br>0xcd20 = TTL - Red-eye Flash - 2nd Curtain (rear)
+  <br>0xce20 = TTL Slow - Red-eye Flash - 2nd Curtain (rear)
+  <br>0xcf20 = TTL Auto - Red-eye Flash - 2nd Curtain (rear)
+  <br>0xe920 = High Speed Sync (HSS)</span></td></tr>
 <tr class=b>
 <td title='0x1011 = 4113'>0x1011</td>
 <td>FlashExposureComp</td>
@@ -590,27 +600,32 @@ the date of manufacture)</span></span></td></tr>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
 <tr>
+<td title='0x3824 = 14372'>0x3824</td>
+<td>FullHDHighSpeedRec</td>
+<td class=c>int32u</td>
+<td>&nbsp;</td></tr>
+<tr class=b>
 <td title='0x4005 = 16389'>0x4005</td>
 <td>FaceElementSelected</td>
 <td class=c>int16u[4]</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x4100 = 16640'>0x4100</td>
 <td>FacesDetected</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x4103 = 16643'>0x4103</td>
 <td>FacePositions</td>
 <td class=c>int16u[n]</td>
 <td><span class=s><span class=n>(left, top, right and bottom coordinates in full-sized image for each face
 detected)</span></span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x4200 = 16896'>0x4200</td>
 <td>NumFaceElements</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x4201 = 16897'>0x4201</td>
 <td>FaceElementTypes</td>
 <td class=c>int8u[n]</td>
@@ -618,33 +633,33 @@ detected)</span></span></td></tr>
   <br>1 = Face
   <br>2 = Left Eye
   <br>3 = Right Eye</span></td></tr>
-<tr class=b>
+<tr>
 <td title='0x4203 = 16899'>0x4203</td>
 <td>FaceElementPositions</td>
 <td class=c>int16u[n]</td>
 <td><span class=s><span class=n>(left, top, right and bottom coordinates in full-sized image for each face
 element)</span></span></td></tr>
-<tr>
+<tr class=b>
 <td title='0x4282 = 17026'>0x4282</td>
 <td>FaceRecInfo</td>
 <td class=c>-</td>
 <td>--&gt; <a href='FujiFilm.html#FaceRecInfo'>FujiFilm FaceRecInfo Tags</a></td></tr>
-<tr class=b>
+<tr>
 <td title='0x8000 = 32768'>0x8000</td>
 <td>FileSource</td>
 <td class=c>string</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0x8002 = 32770'>0x8002</td>
 <td>OrderNumber</td>
 <td class=c>int32u</td>
 <td>&nbsp;</td></tr>
-<tr class=b>
+<tr>
 <td title='0x8003 = 32771'>0x8003</td>
 <td>FrameNumber</td>
 <td class=c>int16u</td>
 <td>&nbsp;</td></tr>
-<tr>
+<tr class=b>
 <td title='0xb211 = 45585'>0xb211</td>
 <td>Parallax</td>
 <td class=c>rational64s</td>
@@ -1154,7 +1169,7 @@ RAF-format information.</p>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Jul 31, 2019</i>
+<br><i>Last revised Oct 1, 2019</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

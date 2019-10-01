@@ -2283,11 +2283,13 @@ my %binaryDataAttrs = (
     0x0e09 => { #12
         Name => 'NikonCaptureVersion',
         Writable => 'string',
-        PrintConv => undef,
+        Permanent => 0,
     },
     # 0x0e0e is in D70 Nikon Capture files (not out-of-the-camera D70 files) - PH
     0x0e0e => { #PH
         Name => 'NikonCaptureOffsets',
+        Writable => 'undef',
+        Permanent => 0,
         SubDirectory => {
             TagTable => 'Image::ExifTool::Nikon::CaptureOffsets',
             Validate => '$val =~ /^0100/',

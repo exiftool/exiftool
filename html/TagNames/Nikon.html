@@ -208,7 +208,8 @@ causes the other information to be re-encrypted with the new key)</span></span><
 <tr>
 <td title='0x0023 = 35'>0x0023</td>
 <td>PictureControlData</td>
-<td class=c title=' ! = Unsafe'>undef!</td>
+<td class=c title=' ! = Unsafe
+ ^ = Deletable'>undef!^</td>
 <td>--&gt; <a href='Nikon.html#PictureControl'>Nikon PictureControl Tags</a>
   <br>--&gt; <a href='Nikon.html#PictureControl2'>Nikon PictureControl2 Tags</a>
   <br>--&gt; <a href='Nikon.html#PictureControl3'>Nikon PictureControl3 Tags</a>
@@ -710,7 +711,8 @@ new key)</span></span></td></tr>
 <tr class=b>
 <td title='0x00bd = 189'>0x00bd</td>
 <td>PictureControlData</td>
-<td class=c title=' ! = Unsafe'>undef!</td>
+<td class=c title=' ! = Unsafe
+ ^ = Deletable'>undef!^</td>
 <td>--&gt; <a href='Nikon.html#PictureControl'>Nikon PictureControl Tags</a></td></tr>
 <tr>
 <td title='0x00c3 = 195'>0x00c3</td>
@@ -725,7 +727,8 @@ new key)</span></span></td></tr>
 <tr>
 <td title='0x0e01 = 3585'>0x0e01</td>
 <td>NikonCaptureData</td>
-<td class=c title=' ! = Unsafe'>undef!</td>
+<td class=c title=' ! = Unsafe
+ ^ = Deletable'>undef!^</td>
 <td>--&gt; <a href='NikonCapture.html'>NikonCapture Tags</a>
   <br><span class='n s'>(this data is dropped when copying Nikon MakerNotes since it may be too large
 to fit in the EXIF segment of a JPEG image, but it may be copied as a block
@@ -733,12 +736,12 @@ into existing Nikon MakerNotes later if desired)</span></td></tr>
 <tr class=b>
 <td title='0x0e09 = 3593'>0x0e09</td>
 <td>NikonCaptureVersion</td>
-<td class=c>string</td>
+<td class=c title=' ^ = Deletable'>string^</td>
 <td>&nbsp;</td></tr>
 <tr>
 <td title='0x0e0e = 3598'>0x0e0e</td>
 <td>NikonCaptureOffsets</td>
-<td class=c>-</td>
+<td class=c title=' ^ = Deletable'>undef^</td>
 <td>--&gt; <a href='Nikon.html#CaptureOffsets'>Nikon CaptureOffsets Tags</a></td></tr>
 <tr class=b>
 <td title='0x0e10 = 3600'>0x0e10</td>
@@ -749,7 +752,8 @@ into existing Nikon MakerNotes later if desired)</span></td></tr>
 <td title='0x0e13 = 3603'>0x0e13</td>
 <td>NikonCaptureEditVersions
   <br>NikonCaptureEditVersions</td>
-<td class=c title=' ! = Unsafe'>undef<br>undef!</td>
+<td class=c title=' ^ = Deletable
+ ! = Unsafe'>undef^<br>undef!^</td>
 <td><span class=n>(the L<ExtractEmbedded|../ExifTool.html#ExtractEmbedded> option may be used to decode settings from the stored
 edit versions, otherwise this is extracted as a binary data block)</span>
   <br>--&gt; <a href='NikonCapture.html'>NikonCapture Tags</a></td></tr>
@@ -761,7 +765,8 @@ edit versions, otherwise this is extracted as a binary data block)</span>
 <tr>
 <td title='0x0e1e = 3614'>0x0e1e</td>
 <td>NikonCaptureOutput</td>
-<td class=c title=' ! = Unsafe'>undef!</td>
+<td class=c title=' ! = Unsafe
+ ^ = Deletable'>undef!^</td>
 <td>--&gt; <a href='Nikon.html#CaptureOutput'>Nikon CaptureOutput Tags</a></td></tr>
 <tr class=b>
 <td title='0x0e22 = 3618'>0x0e22</td>
@@ -6134,7 +6139,8 @@ videos from some Nikon cameras.</p>
 <tr class=b>
 <td title='0x2000023 = 33554467'>0x2000023</td>
 <td>PictureControlData</td>
-<td class=c title=' ! = Unsafe'>undef!</td>
+<td class=c title=' ! = Unsafe
+ ^ = Deletable'>undef!^</td>
 <td>--&gt; <a href='Nikon.html#PictureControl'>Nikon PictureControl Tags</a>
   <br>--&gt; <a href='Nikon.html#PictureControl2'>Nikon PictureControl2 Tags</a>
   <br>--&gt; <a href='Nikon.html#PictureControl3'>Nikon PictureControl3 Tags</a>
@@ -7113,7 +7119,7 @@ used to specify the lens for ExifTool to choose in these cases (see the
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Sep 27, 2019</i>
+<br><i>Last revised Oct 1, 2019</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

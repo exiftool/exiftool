@@ -910,6 +910,23 @@ sub ProcessFreeGPS($$$)
             map { $_ = $_ - 4294967296 if $_ >= 0x80000000; $_ /= 256 } @acc;
         }
 
+    } elsif ($$dataPt =~ /^.{40}A([NS])([EW])/s) {
+
+        # decode freeGPS from ViofoA119v3 dashcam (similar to Novatek GPS format)
+        # 0000: 00 00 40 00 66 72 65 65 47 50 53 20 f0 03 00 00 [..@.freeGPS ....]
+        # 0010: 05 00 00 00 2f 00 00 00 03 00 00 00 13 00 00 00 [..../...........]
+        # 0020: 09 00 00 00 1b 00 00 00 41 4e 57 00 25 d1 99 45 [........ANW.%..E]
+        # 0030: f1 47 40 46 66 66 d2 41 85 eb 83 41 00 00 00 00 [.G@Fff.A...A....]
+        ($latRef, $lonRef) = ($1, $2);
+        ($hr,$min,$sec,$yr,$mon,$day) = unpack('x16V6', $$dataPt);
+        $yr += 2000;
+        SetByteOrder('II');
+        $lat = GetFloat($dataPt, 0x2c);
+        $lon = GetFloat($dataPt, 0x30);
+        $spd = GetFloat($dataPt, 0x34) * 1.852; # (convert knots to km/h)
+        $trk = GetFloat($dataPt, 0x38);
+        SetByteOrder('MM');
+
     } else {
 
         # decode binary GPS format (Viofo A119S, ref 2)

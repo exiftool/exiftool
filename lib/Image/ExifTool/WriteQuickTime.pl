@@ -158,10 +158,10 @@ sub ConvInvISO6709($)
     if (@a == 2 or @a == 3) {
         # latitude must have 2 digits before the decimal, and longitude 3,
         # and all values must start with a "+" or "-"
-        my @fmt = ('%+03d','%+04d','%+d');
+        my @fmt = ('%s%02d','%s%03d','%s%d');
         foreach (@a) {
             return undef unless Image::ExifTool::IsFloat($_);
-            $_ =~ s/^([-+]?\d+)/sprintf(shift(@fmt),$1)/e;
+            $_ =~ s/^([-+]?)(\d+)/sprintf(shift(@fmt), $1 || '+', $2)/e;
         }
         return join '', @a;
     }

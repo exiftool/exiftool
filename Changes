@@ -7,6 +7,11 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 11.50. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Oct. 2, 2019 - Version 11.69
+
+  - Fixed bug where signed coordinates between -1 and 0 were written as positive
+    values when writing QuickTime:GPSCoordinates
+
 Oct. 1, 2019 - Version 11.68
 
   - Added read support for yet another type of streaming GPS in MP4 videos

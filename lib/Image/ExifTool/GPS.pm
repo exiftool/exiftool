@@ -535,6 +535,7 @@ sub ToDegrees($;$)
 {
     my ($val, $doSign) = @_;
     # extract decimal or floating point values out of any other garbage
+    return '' if ($val =~ /(inf|undef)/);
     my ($d, $m, $s) = ($val =~ /((?:[+-]?)(?=\d|\.\d)\d*(?:\.\d*)?(?:[Ee][+-]\d+)?)/g);
     return '' unless defined $d;
     my $deg = $d + (($m || 0) + ($s || 0)/60) / 60;

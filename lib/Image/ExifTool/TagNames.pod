@@ -545,8 +545,8 @@ official EXIF 2.32 specification.
   0x8781   SharedData                -          no
   0x8782   T88Options                -          no
   0x87ac   ImageLayer                -          no
-  0x87af   GeoTiffDirectory          IFD0       undef
-  0x87b0   GeoTiffDoubleParams       IFD0       undef
+  0x87af   GeoTiffDirectory          IFD0       int16u[0.5]
+  0x87b0   GeoTiffDoubleParams       IFD0       double[0.125]
   0x87b1   GeoTiffAsciiParams        IFD0       string
   0x87be   JBIGOptions               -          no
   0x8822   ExposureProgram           ExifIFD    int16u

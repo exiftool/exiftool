@@ -70,9 +70,15 @@ my %processByMetaFormat = (
 
 # data lengths for each INSV record type
 my %insvDataLen = (
-    0x300 => 56,
-    0x400 => 16,
-    0x700 => 53,
+    0x300 => 56,    # accelerometer
+    0x400 => 16,    # unknown
+    0x700 => 53,    # GPS
+);
+
+# limit the default amount of data we read for some record types
+# (to avoid running out of memory)
+my %insvLimit = (
+    0x300 => [ 'accelerometer', 20000 ],    # maximum of 20000 accelerometer records
 );
 
 # tags extracted from various QuickTime data streams
@@ -1392,7 +1398,7 @@ sub Process_mebx($$$)
 }
 
 #------------------------------------------------------------------------------
-# Process QuickTime '3gf' timed metadata (Pittasoft Blackvue dashcam)
+# Process QuickTime '3gf' timed metadata (ref PH, Pittasoft Blackvue dashcam)
 # Inputs: 0) ExifTool ref, 1) dirInfo ref, 2) tag table ref
 # Returns: 1 on success
 sub Process_3gf($$$)
@@ -1652,7 +1658,7 @@ sub ProcessTTAD($$$)
 }
 
 #------------------------------------------------------------------------------
-# Extract information from Insta360 trailer
+# Extract information from Insta360 trailer (ref PH)
 # Inputs: 0) ExifTool ref
 sub ProcessINSVTrailer($)
 {
@@ -1667,23 +1673,29 @@ sub ProcessINSVTrailer($)
     my $tagTbl = GetTagTable('Image::ExifTool::QuickTime::Stream');
     my $fileEnd = $raf->Tell();
     my $trailerLen = unpack('x38V', $buff);
-    my $trailerStart = $fileEnd - $trailerLen;
+    $trailerLen > $fileEnd and $et->Warn('Bad INSV trailer size'), return;
     my $unknown = $et->Options('Unknown');
     my $verbose = $et->Options('Verbose');
-    my $pos = $fileEnd - 78;
+    my $epos = -78;   # position relative to EOF (avoids using large offsets for files > 2 GB)
     my ($i, $p);
     SetByteOrder('II');
     # loop through all records in the trailer, from last to first
     for (;;) {
         my ($id, $len) = unpack('vV', $buff);
-        ($pos -= $len) < $trailerStart and last;
-        $raf->Seek($pos, 0) or last;
-        $raf->Read($buff, $len) == $len or last;
-        if ($verbose) {
-            $et->VPrint(0, sprintf("INSV Record 0x%x (offset 0x%x, %d bytes):\n", $id, $pos, $len));
-            $et->VerboseDump(\$buff);
-        }
+        ($epos -= $len) + $trailerLen < 0 and last;
+        $raf->Seek($epos, 2) or last;
         my $dlen = $insvDataLen{$id};
+        if ($verbose) {
+            $et->VPrint(0, sprintf("INSV Record 0x%x (offset 0x%x, %d bytes):\n", $id, $fileEnd + $epos, $len));
+        }
+        # limit the number of records we read if necessary
+        if ($insvLimit{$id} and $len > $insvLimit{$id}[1] * $dlen and
+            $et->Warn("INSV $insvLimit{$id}[0] data is huge. Processing only the first $insvLimit{$id}[1] records",2))
+        {
+            $len = $insvLimit{$id}[1] * $dlen;
+        }
+        $raf->Read($buff, $len) == $len or last;
+        $et->VerboseDump(\$buff) if $verbose > 2;
         if ($dlen) {
             $len % $dlen and $et->Warn(sprintf('Unexpected INSV record 0x%x length',$id)), last;
             if ($id == 0x300) {
@@ -1719,7 +1731,7 @@ sub ProcessINSVTrailer($)
                     $et->HandleTag($tagTbl, GPSTrack => $a[9]);
                     $et->HandleTag($tagTbl, GPSTrackRef => 'T');
                     $et->HandleTag($tagTbl, GPSAltitude => $a[10]);
-                    $et->HandleTag($tagTbl, Unknown02 => "@a[1,2]");
+                    $et->HandleTag($tagTbl, Unknown02 => "@a[1,2]") if $unknown;
                 }
             }
         } elsif ($id == 0x101) {
@@ -1733,8 +1745,8 @@ sub ProcessINSVTrailer($)
                 $p += 2 + $n;
             }
         }
-        ($pos -= 6) < $trailerStart and last;   # step back to previous record
-        $raf->Seek($pos, 0) or last;
+        ($epos -= 6) + $trailerLen < 0 and last;    # step back to previous record
+        $raf->Seek($epos, 2) or last;
         $raf->Read($buff, 6) == 6 or last;
     }
     SetByteOrder('MM');

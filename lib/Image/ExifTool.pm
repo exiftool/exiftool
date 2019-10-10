@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup);
 
-$VERSION = '11.69';
+$VERSION = '11.70';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -434,6 +434,8 @@ my %createTypes = map { $_ => 1 } qw(XMP ICC MIE VRD DR4 EXIF EXV);
     POT  => ['FPX',  'Microsoft PowerPoint Template'],
     POTM => [['ZIP','FPX'], 'Office Open XML Presentation Template Macro-enabled'],
     POTX => [['ZIP','FPX'], 'Office Open XML Presentation Template'],
+    PPAM => [['ZIP','FPX'], 'Office Open XML Presentation Addin Macro-enabled'],
+    PPAX => [['ZIP','FPX'], 'Office Open XML Presentation Addin'],
     PPM  => ['PPM',  'Portable Pixel Map'],
     PPS  => ['FPX',  'Microsoft PowerPoint Slideshow'],
     PPSM => [['ZIP','FPX'], 'Office Open XML Presentation Slideshow Macro-enabled'],
@@ -683,6 +685,8 @@ my %fileDescription = (
     POT  => 'application/vnd.ms-powerpoint',
     POTM => 'application/vnd.ms-powerpoint.template.macroEnabled',
     POTX => 'application/vnd.openxmlformats-officedocument.presentationml.template',
+    PPAM => 'application/vnd.ms-powerpoint.addin.macroEnabled',
+    PPAX => 'application/vnd.openxmlformats-officedocument.presentationml.addin', # (NC, PH invented)
     PPM  => 'image/x-portable-pixmap',
     PPS  => 'application/vnd.ms-powerpoint',
     PPSM => 'application/vnd.ms-powerpoint.slideshow.macroEnabled',
@@ -3882,7 +3886,11 @@ sub Open($*$;$)
                     $create  = Win32API::File::OPEN_EXISTING();
                 }
             }
-            my $wh = eval { Win32API::File::CreateFileW($file, $access, 0, [], $create, 0, []) };
+            my $share = 0;
+            eval {
+                $share = Win32API::File::FILE_SHARE_READ() unless $access & Win32API::File::GENERIC_WRITE();
+            };
+            my $wh = eval { Win32API::File::CreateFileW($file, $access, $share, [], $create, 0, []) };
             return undef unless $wh;
             my $fd = eval { Win32API::File::OsFHandleOpenFd($wh, 0) };
             if (not defined $fd or $fd < 0) {
@@ -3910,7 +3918,8 @@ sub Exists($$)
     if ($self->EncodeFileName($file)) {
         local $SIG{'__WARN__'} = \&SetWarning;
         my $wh = eval { Win32API::File::CreateFileW($file,
-                        Win32API::File::GENERIC_READ(), 0, [],
+                        Win32API::File::GENERIC_READ(),
+                        Win32API::File::FILE_SHARE_READ(), [],
                         Win32API::File::OPEN_EXISTING(), 0, []) };
         return 0 unless $wh;
         eval { Win32API::File::CloseHandle($wh) };
@@ -6037,7 +6046,7 @@ sub ProcessJPEG($$)
             }
             if ($hmin and $vmin) {
                 my ($hs, $vs) = ($hmax / $hmin, $vmax / $vmin);
-                $self->FoundTag($$sof{YCbCrSubSampling}, "$hs $vs");
+                $self->HandleTag($sof, 'YCbCrSubSampling', "$hs $vs");
             }
             next;
         } elsif ($marker == 0xd9) {         # EOI

@@ -56,7 +56,7 @@ use vars qw($VERSION $AUTOLOAD @formatSize @formatName %formatNumber %intFormat
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::MakerNotes;
 
-$VERSION = '4.23';
+$VERSION = '4.24';
 
 sub ProcessExif($$$);
 sub WriteExif($$$);
@@ -1810,14 +1810,14 @@ my %sampleFormat = (
     0x87af => { #30
         Name => 'GeoTiffDirectory',
         Format => 'undef',
-        Binary => 1,
+        Writable => 'int16u',
         Notes => q{
             these "GeoTiff" tags may read and written as a block, but they aren't
             extracted unless specifically requested.  Byte order changes are handled
             automatically when copying between TIFF images with different byte order
         },
-        Writable => 'undef',
         WriteGroup => 'IFD0',
+        Binary => 1,
         RawConv => '$val . GetByteOrder()', # save byte order
         # swap byte order if necessary
         RawConvInv => q{
@@ -1832,9 +1832,9 @@ my %sampleFormat = (
     0x87b0 => { #30
         Name => 'GeoTiffDoubleParams',
         Format => 'undef',
-        Binary => 1,
-        Writable => 'undef',
+        Writable => 'double',
         WriteGroup => 'IFD0',
+        Binary => 1,
         RawConv => '$val . GetByteOrder()', # save byte order
         # swap byte order if necessary
         RawConvInv => q{
@@ -1849,6 +1849,7 @@ my %sampleFormat = (
     },
     0x87b1 => { #30
         Name => 'GeoTiffAsciiParams',
+        Format => 'undef',
         Writable => 'string',
         WriteGroup => 'IFD0',
         Binary => 1,

@@ -4,13 +4,28 @@ ExifTool Version History
 
 RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 
-Note: The most recent production release is Version 11.50. (Other versions are
+Note: The most recent production release is Version 11.70. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
+
+Oct. 10, 2019 - Version 11.70 (production release)
+
+  - Added a new CanonModelID (thanks Laurent Clevy)
+  - Improved identification of Office Open XML files
+  - Removed RAF version check when writing FujiFilm RAF files
+  - Limited the number of accelerometer records that ExifTool will read by
+    default with the -ee option from INSV files to avoid excessive processing
+    times and memory usage
+  - Patched Windows version to allow reading of shared files with Unicode names
+    (thanks Eriksson)
+  - Patched to avoid converting some bad GPS coordinates (thanks Csaba Toth)
+  - Fixed verbose output to include YCbCrSubSampling for JPEG files
+  - Fixed conversion and group names for the new FujiFilm tag added in 11.68
+  - Fixed format of GeoTiffDirectory and GeoTiffDoubleParams when writing
 
 Oct. 2, 2019 - Version 11.69
 
-  - Fixed bug where signed coordinates between -1 and 0 were written as positive
-    values when writing QuickTime:GPSCoordinates
+  - Fixed bug introduced in version 11.66 where the sign was lost when writing
+    coordinate values between 0 and -1 to QuickTime:GPSCoordinates
 
 Oct. 1, 2019 - Version 11.68
 
@@ -18,7 +33,7 @@ Oct. 1, 2019 - Version 11.68
   - Added a number of new FujiFlashMode values
   - Decode a new FujiFilm tag
   - Made NikonCaptureOffsets and NikonCaptureVersion deletable
-  - Enhanced tag name documentation to indicate deletable makernote tags
+  - Enhanced tag name documentation to indicate deletable MakerNotes tags
 
 Sept. 30, 2019 - Version 11.67
 

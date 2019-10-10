@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.25';
+$VERSION = '4.26';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -814,6 +814,7 @@ $VERSION = '4.25';
     0x805     => 'PowerShot SX70 HS',
     0x808     => 'PowerShot G7 X Mark III',
     0x811     => 'EOS M6 Mark II', #IB
+    0x812     => 'EOS M200', #25
 
 # (see http://cweb.canon.jp/e-support/faq/answer/digitalcamera/10447-1.html for PowerShot/IXUS/IXY names)
 
@@ -2185,6 +2186,7 @@ my %offOn = ( 0 => 'Off', 1 => 'On' );
             61 => 'Smooth Skin', #51
             62 => 'Soft Focus', #PH (SX260,IXUS240)
             68 => 'Food', #PH (250D)
+            # 83 - seen for EOS M200 (ref PH)
             84 => 'HDR Art Standard', #PH (80D)
             85 => 'HDR Art Vivid', #PH (80D)
             93 => 'HDR Art Bold', #PH (80D)
@@ -7890,7 +7892,7 @@ my %ciMaxFocal = (
             16 => '16 (M50)',
             17 => '17 (EOS R)',     # (and PowerShot SX740HS)
             18 => '18 (EOS RP)',    # (and PowerShot SX70HS)
-            19 => '19 (90D/M6mkII)',# (and PowerShot G7XmkIII)
+            19 => '19 (90D/M6mkII/M200)',# (and PowerShot G7XmkIII)
         },
     },
     0x47 => { Name => 'WB_RGGBLevelsAsShot',     Format => 'int16s[4]' },

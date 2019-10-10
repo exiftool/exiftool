@@ -754,7 +754,7 @@ into existing Nikon MakerNotes later if desired)</span></td></tr>
   <br>NikonCaptureEditVersions</td>
 <td class=c title=' ^ = Deletable
  ! = Unsafe'>undef^<br>undef!^</td>
-<td><span class=n>(the L<ExtractEmbedded|../ExifTool.html#ExtractEmbedded> option may be used to decode settings from the stored
+<td><span class=n>(the <a href="../ExifTool.html#ExtractEmbedded">ExtractEmbedded</a> option may be used to decode settings from the stored
 edit versions, otherwise this is extracted as a binary data block)</span>
   <br>--&gt; <a href='NikonCapture.html'>NikonCapture Tags</a></td></tr>
 <tr class=b>
@@ -3997,7 +3997,7 @@ D200.</p>
 <td class=r title='9 = 0x9'>9.2</td>
 <td>FlashControlMode</td>
 <td class=c>int8u</td>
-<td><span class=s>[val & 0x7f]</span>
+<td><span class=s>[val &amp; 0x7f]</span>
   <br>--&gt; <a href='Nikon.html#FlashControlMode'>Nikon FlashControlMode Values</a></td></tr>
 <tr>
 <td class=r title='10 = 0xa'>10</td>
@@ -4029,13 +4029,13 @@ D200.</p>
 <td class=r title='15 = 0xf'>15</td>
 <td>FlashGroupAControlMode</td>
 <td class=c>int8u</td>
-<td><span class=s>[val & 0xf]</span>
+<td><span class=s>[val &amp; 0xf]</span>
   <br>--&gt; <a href='Nikon.html#FlashControlMode'>Nikon FlashControlMode Values</a></td></tr>
 <tr>
 <td class=r title='16 = 0x10'>16</td>
 <td>FlashGroupBControlMode</td>
 <td class=c>int8u</td>
-<td><span class=s>[val & 0xf]</span>
+<td><span class=s>[val &amp; 0xf]</span>
   <br>--&gt; <a href='Nikon.html#FlashControlMode'>Nikon FlashControlMode Values</a></td></tr>
 <tr class=b>
 <td class=r title='17 = 0x11'>17</td>
@@ -4178,7 +4178,7 @@ D200.</p>
 <td class=r title='9 = 0x9'>9.2</td>
 <td>FlashControlMode</td>
 <td class=c>int8u</td>
-<td><span class=s>[val & 0x7f]</span>
+<td><span class=s>[val &amp; 0x7f]</span>
   <br>--&gt; <a href='Nikon.html#FlashControlMode'>Nikon FlashControlMode Values</a></td></tr>
 <tr>
 <td class=r title='10 = 0xa'>10</td>
@@ -4210,21 +4210,21 @@ D200.</p>
 <td class=r title='16 = 0x10'>16.1</td>
 <td>FlashGroupAControlMode</td>
 <td class=c>int8u</td>
-<td><span class=s>[val & 0xf]</span>
+<td><span class=s>[val &amp; 0xf]</span>
   <br>--&gt; <a href='Nikon.html#FlashControlMode'>Nikon FlashControlMode Values</a>
   <br><span class='n s'>(note: group A tags may apply to the built-in flash settings for some models)</span></td></tr>
 <tr>
 <td class=r title='17 = 0x11'>17.1</td>
 <td>FlashGroupBControlMode</td>
 <td class=c>int8u</td>
-<td><span class=s>[val >> 4 & 0xf]</span>
+<td><span class=s>[val &gt;&gt; 4 &amp; 0xf]</span>
   <br>--&gt; <a href='Nikon.html#FlashControlMode'>Nikon FlashControlMode Values</a>
   <br><span class='n s'>(note: group B tags may apply to group A settings for some models)</span></td></tr>
 <tr class=b>
 <td class=r title='17 = 0x11'>17.2</td>
 <td>FlashGroupCControlMode</td>
 <td class=c>int8u</td>
-<td><span class=s>[val & 0xf]</span>
+<td><span class=s>[val &amp; 0xf]</span>
   <br>--&gt; <a href='Nikon.html#FlashControlMode'>Nikon FlashControlMode Values</a>
   <br><span class='n s'>(note: group C tags may apply to group B settings for some models)</span></td></tr>
 <tr>
@@ -4292,7 +4292,7 @@ D5200, D7000.</p>
 <td class=r title='9 = 0x9'>9.2</td>
 <td>FlashControlMode</td>
 <td class=c>int8u</td>
-<td><span class=s>[val & 0x7f]</span>
+<td><span class=s>[val &amp; 0x7f]</span>
   <br>--&gt; <a href='Nikon.html#FlashControlMode'>Nikon FlashControlMode Values</a></td></tr>
 <tr>
 <td class=r title='10 = 0xa'>10</td>
@@ -4329,21 +4329,21 @@ D5200, D7000.</p>
 <td class=r title='17 = 0x11'>17.1</td>
 <td>FlashGroupAControlMode</td>
 <td class=c>int8u</td>
-<td><span class=s>[val & 0xf]</span>
+<td><span class=s>[val &amp; 0xf]</span>
   <br>--&gt; <a href='Nikon.html#FlashControlMode'>Nikon FlashControlMode Values</a>
   <br><span class='n s'>(note: group A tags may apply to the built-in flash settings for some models)</span></td></tr>
 <tr class=b>
 <td class=r title='18 = 0x12'>18.1</td>
 <td>FlashGroupBControlMode</td>
 <td class=c>int8u</td>
-<td><span class=s>[val >> 4 & 0xf]</span>
+<td><span class=s>[val &gt;&gt; 4 &amp; 0xf]</span>
   <br>--&gt; <a href='Nikon.html#FlashControlMode'>Nikon FlashControlMode Values</a>
   <br><span class='n s'>(note: group B tags may apply to group A settings for some models)</span></td></tr>
 <tr>
 <td class=r title='18 = 0x12'>18.2</td>
 <td>FlashGroupCControlMode</td>
 <td class=c>int8u</td>
-<td><span class=s>[val & 0xf]</span>
+<td><span class=s>[val &amp; 0xf]</span>
   <br>--&gt; <a href='Nikon.html#FlashControlMode'>Nikon FlashControlMode Values</a>
   <br><span class='n s'>(note: group C tags may apply to group B settings for some models)</span></td></tr>
 <tr class=b>
@@ -4440,7 +4440,7 @@ D5200, D7000.</p>
 <td class=r title='9 = 0x9'>9.2</td>
 <td>FlashControlMode</td>
 <td class=c>int8u</td>
-<td><span class=s>[val & 0x7f]</span>
+<td><span class=s>[val &amp; 0x7f]</span>
   <br>--&gt; <a href='Nikon.html#FlashControlMode'>Nikon FlashControlMode Values</a></td></tr>
 <tr>
 <td class=r title='12 = 0xc'>12</td>
@@ -4471,19 +4471,19 @@ D5200, D7000.</p>
 <td class=r title='17 = 0x11'>17.1</td>
 <td>FlashGroupAControlMode</td>
 <td class=c>int8u</td>
-<td><span class=s>[val & 0xf]</span>
+<td><span class=s>[val &amp; 0xf]</span>
   <br>--&gt; <a href='Nikon.html#FlashControlMode'>Nikon FlashControlMode Values</a></td></tr>
 <tr>
 <td class=r title='18 = 0x12'>18.1</td>
 <td>FlashGroupBControlMode</td>
 <td class=c>int8u</td>
-<td><span class=s>[val >> 4 & 0xf]</span>
+<td><span class=s>[val &gt;&gt; 4 &amp; 0xf]</span>
   <br>--&gt; <a href='Nikon.html#FlashControlMode'>Nikon FlashControlMode Values</a></td></tr>
 <tr class=b>
 <td class=r title='18 = 0x12'>18.2</td>
 <td>FlashGroupCControlMode</td>
 <td class=c>int8u</td>
-<td><span class=s>[val & 0xf]</span>
+<td><span class=s>[val &amp; 0xf]</span>
   <br>--&gt; <a href='Nikon.html#FlashControlMode'>Nikon FlashControlMode Values</a></td></tr>
 <tr>
 <td class=r title='39 = 0x27'>39</td>
@@ -4588,21 +4588,21 @@ D5200, D7000.</p>
 <td class=r title='17 = 0x11'>17.1</td>
 <td>FlashGroupAControlMode</td>
 <td class=c>int8u</td>
-<td><span class=s>[val & 0xf]</span>
+<td><span class=s>[val &amp; 0xf]</span>
   <br>--&gt; <a href='Nikon.html#FlashControlMode'>Nikon FlashControlMode Values</a>
   <br><span class='n s'>(note: group A tags may apply to the built-in flash settings for some models)</span></td></tr>
 <tr>
 <td class=r title='18 = 0x12'>18.1</td>
 <td>FlashGroupBControlMode</td>
 <td class=c>int8u</td>
-<td><span class=s>[val >> 4 & 0xf]</span>
+<td><span class=s>[val &gt;&gt; 4 &amp; 0xf]</span>
   <br>--&gt; <a href='Nikon.html#FlashControlMode'>Nikon FlashControlMode Values</a>
   <br><span class='n s'>(note: group B tags may apply to group A settings for some models)</span></td></tr>
 <tr class=b>
 <td class=r title='18 = 0x12'>18.2</td>
 <td>FlashGroupCControlMode</td>
 <td class=c>int8u</td>
-<td><span class=s>[val & 0xf]</span>
+<td><span class=s>[val &amp; 0xf]</span>
   <br>--&gt; <a href='Nikon.html#FlashControlMode'>Nikon FlashControlMode Values</a>
   <br><span class='n s'>(note: group C tags may apply to group B settings for some models)</span></td></tr>
 <tr>

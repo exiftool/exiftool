@@ -2284,6 +2284,7 @@ my %binaryDataAttrs = (
         Name => 'NikonCaptureVersion',
         Writable => 'string',
         Permanent => 0,
+        PrintConv => undef, # (avoid applying default print conversion to string)
     },
     # 0x0e0e is in D70 Nikon Capture files (not out-of-the-camera D70 files) - PH
     0x0e0e => { #PH
@@ -3840,6 +3841,8 @@ my %binaryDataAttrs = (
 %Image::ExifTool::Nikon::CaptureOffsets = (
     PROCESS_PROC => \&ProcessNikonCaptureOffsets,
     GROUPS => { 0 => 'MakerNotes', 2 => 'Camera' },
+    # (note that these are duplicates of offsets in the normal TIFF structure,
+    #  and that these offsets are not updated when ExifTool rewrites the file)
     1 => 'IFD0_Offset',
     2 => 'PreviewIFD_Offset',
     3 => 'SubIFD_Offset',

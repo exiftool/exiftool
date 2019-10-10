@@ -31,12 +31,13 @@ use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 
-$VERSION = '1.74';
+$VERSION = '1.75';
 
 sub ProcessFujiDir($$$);
 sub ProcessFaceRec($$$);
 
 # the following RAF version numbers have been tested for writing:
+# (as of ExifTool 11.70, this lookup is no longer used if the version number is numerical)
 my %testedRAF = (
     '0100' => 'E550, E900, F770, S5600, S6000fd, S6500fd, HS10/HS11, HS30, S200EXR, X100, XF1, X-Pro1, X-S1, XQ2 Ver1.00, X-T100, GFX 50R, XF10',
     '0101' => 'X-E1, X20 Ver1.01, X-T3',
@@ -776,10 +777,11 @@ my %faceCategories = (
         Writable => 'int16u',
         Groups => { 2 => 'Video' },
     },
-    0x3824 => { #forum10480 (X-T3)
+    0x3824 => { #forum10480 (X series)
         Name => 'FullHDHighSpeedRec',
         Writable => 'int32u',
-        Groups => { 1 => 'Off', 2 => 'On' },
+        Groups => { 2 => 'Video' },
+        PrintConv => { 1 => 'Off', 2 => 'On' },
     },
     0x4005 => { #forum9634
         Name => 'FaceElementSelected', # (could be face or eye)
@@ -1467,9 +1469,10 @@ sub WriteRAF($$)
         return 1;
     }
     # check to make sure this version of RAF has been tested
-    unless ($testedRAF{$ver}) {
-        $et->Warn("RAF version $ver not yet tested", 1);
-    }
+    #(removed in ExifTool 11.70)
+    #unless ($testedRAF{$ver}) {
+    #    $et->Warn("RAF version $ver not yet tested", 1);
+    #}
     # read the embedded JPEG
     unless ($raf->Seek($jpos, 0) and $raf->Read($jpeg, $jlen) == $jlen) {
         $et->Error('Error reading RAF meta information');

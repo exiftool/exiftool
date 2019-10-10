@@ -683,7 +683,7 @@ sub ProcessCanonRaw($$$)
         my ($value, $delRawConv);
         if ($valueInDir) {  # is the value data in the directory?
             # this type of tag stores the value in the 'size' and 'ptr' fields
-            $valueDataPos = $dirOffset + $pt + 4;
+            $valueDataPos = $dirOffset + $pt + 4; # (remember, +2 for the entry count)
             $size = 8;
             $value = substr($buff, $pt+2, $size);
             # set count to 1 by default for normal values in directory

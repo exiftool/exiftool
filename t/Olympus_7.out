@@ -1,10 +1,10 @@
-  ExifToolVersion = 10.08
+  ExifToolVersion = 11.70
   FileName = Olympus_7_failed.jpg
   Directory = t
   FileSize = 7335
-  FileModifyDate = 1450793287
-  FileAccessDate = 1450793287
-  FileInodeChangeDate = 1450793287
+  FileModifyDate = 1570452448
+  FileAccessDate = 1570452448
+  FileInodeChangeDate = 1570452448
   FilePermissions = 33188
   FileType = JPEG
   FileTypeExtension = JPG
@@ -479,5 +479,6 @@ JPEG SOF0 (15 bytes):
   EncodingProcess = 0
   BitsPerSample = 8
   ColorComponents = 3
+  YCbCrSubSampling = 2 2
 JPEG DHT (73 bytes):
 JPEG SOS

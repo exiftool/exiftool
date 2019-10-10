@@ -19,7 +19,7 @@ use strict;
 use vars qw($VERSION $warnString);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.25';
+$VERSION = '1.26';
 
 sub WarnProc($) { $warnString = $_[0]; }
 
@@ -456,7 +456,14 @@ sub ProcessZIP($$)
         my $cType = $zip->memberNamed('[Content_Types].xml');
         if ($cType) {
             ($buff, $status) = $zip->contents($cType);
-            if (not $status and $buff =~ /ContentType\s*=\s*(['"])([^"']+)\.main(\+xml)?\1/) {
+            if (not $status and (
+                # first look for the main document with the expected name
+                $buff =~ m{\sPartName\s*=\s*['"](?:/ppt/presentation.xml|/word/document.xml|/xl/workbook.xml)['"][^>]*\sContentType\s*=\s*(['"])([^"']+)\.main(\+xml)?\1} or
+                # then look for the main part
+                $buff =~ /<Override[^>]*\sPartName[^<]+\sContentType\s*=\s*(['"])([^"']+)\.main(\+xml)?\1/ or
+                # and if all else fails, use the default main
+                $buff =~ /ContentType\s*=\s*(['"])([^"']+)\.main(\+xml)?\1/))
+            {
                 $mime = $2;
             }
         }

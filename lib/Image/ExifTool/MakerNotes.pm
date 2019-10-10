@@ -160,6 +160,10 @@ my $debug;          # set to 1 to enable debugging code
             Start => '$valuePtr',
             Base => 0, # (avoids warnings since maker notes are not self-contained)
         },
+        # 0x0011 - sensor code (ref IB)
+        # 0x0012 - camera model id?
+        # 0x0015 - camera model name
+        # 0x0016 - coating code (ref IB)
     },
     # (the GE X5 has really messed up EXIF-like maker notes starting with
     #  "GENIC\x0c\0" --> currently not decoded)

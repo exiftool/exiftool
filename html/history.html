@@ -11,16 +11,32 @@
 
 <p>RSS feed: <a href="http://owl.phy.queensu.ca/~phil/exiftool/rss.xml">http://owl.phy.queensu.ca/~phil/exiftool/rss.xml</a></p>
 
-<p><b>Note:</b> The most recent production release is <a href="Image-ExifTool-11.50.tar.gz">Version 11.50</a>. (Other versions are
+<p><b>Note:</b> The most recent production release is <a href="Image-ExifTool-11.70.tar.gz">Version 11.70</a>. (Other versions are
 considered development releases, and are not uploaded to <a href="https://metacpan.org/release/Image-ExifTool">CPAN</a>.)</p>
 
 <!-- Use line width of 80 -->
 <!-- *********************************************************************** -->
 
+<a name='v11.70'><b>Oct. 10, 2019 - Version 11.70</b></a> <span class=grn>(production release)</span>
+<ul>
+<li>Added a new CanonModelID (thanks Laurent Cl&eacute;vy)
+<li>Improved identification of Office Open XML files
+<li>Removed RAF version check when writing FujiFilm RAF files
+<li>Limited the number of accelerometer records that ExifTool will read by
+    default with the -ee option from INSV files to avoid excessive processing
+    times and memory usage
+<li>Patched Windows version to allow reading of shared files with Unicode names
+    (thanks Eriksson)
+<li>Patched to avoid converting some bad GPS coordinates (thanks Csaba Toth)
+<li>Fixed verbose output to include YCbCrSubSampling for JPEG files
+<li>Fixed conversion and group names for the new FujiFilm tag added in 11.68
+<li>Fixed format of GeoTiffDirectory and GeoTiffDoubleParams when writing
+</ul>
+
 <a name='v11.69'><b>Oct. 2, 2019 - Version 11.69</b></a>
 <ul>
-<li>Fixed bug where signed coordinates between -1 and 0 were written as positive
-    values when writing QuickTime:GPSCoordinates
+<li>Fixed bug introduced in version 11.66 where the sign was lost when writing
+    coordinate values between 0 and -1 to QuickTime:GPSCoordinates
 </ul>
 
 <a name='v11.68'><b>Oct. 1, 2019 - Version 11.68</b></a>
@@ -29,7 +45,7 @@ considered development releases, and are not uploaded to <a href="https://metacp
 <li>Added a number of new FujiFlashMode values
 <li>Decode a new FujiFilm tag
 <li>Made NikonCaptureOffsets and NikonCaptureVersion deletable
-<li>Enhanced tag name documentation to indicate deletable makernote tags
+<li>Enhanced tag name documentation to indicate deletable MakerNotes tags
 </ul>
 
 <a name='v11.67'><b>Sept. 30, 2019 - Version 11.67</b></a>

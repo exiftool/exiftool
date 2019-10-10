@@ -35,7 +35,7 @@ use Image::ExifTool::Sony;
 use Image::ExifTool::Validate;
 use Image::ExifTool::MacOS;
 
-$VERSION = '3.29';
+$VERSION = '3.30';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -2560,6 +2560,7 @@ sub WriteTagNames($$)
                     my ($smallNote, @values);
                     foreach (@$values) {
                         if (/^\(/) {
+                            $_ = Doc2Html($_);
                             # set the note font
                             $smallNote = 1 if $numTags < 2;
                             push @values, ($smallNote ? $noteFontSmall : $noteFont) . "$_</span>";
@@ -2570,6 +2571,7 @@ sub WriteTagNames($$)
                             if (s/^\[!HTML\]//) {
                                 push @values, $_;
                             } else {
+                                $_ = Doc2Html($_);
                                 push @values, "<span class=s>$_</span>";
                             }
                             next;

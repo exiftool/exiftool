@@ -34,7 +34,7 @@ use Image::ExifTool qw(:DataAccess :Utils);
 use Image::ExifTool::Exif;
 use Image::ExifTool::Minolta;
 
-$VERSION = '3.16';
+$VERSION = '3.17';
 
 sub ProcessSRF($$$);
 sub ProcessSR2($$$);
@@ -223,6 +223,7 @@ sub PrintInvLensSpec($;$$);
     51505 => 'Samyang AF 14mm F2.8 or Samyang AF 35mm F2.8', #forum3833
     51505.1 => 'Samyang AF 35mm F2.8', #PH (also 32794)
     51507 => 'Samyang AF 35mm F1.4', #IB
+    51508 => 'Samyang AF 45mm F1.8',
 );
 
 # ExposureProgram values (ref PH, mainly decoded from A200)

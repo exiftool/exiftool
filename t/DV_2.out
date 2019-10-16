@@ -1,10 +1,10 @@
-[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.56
+[ExifTool, ExifTool, ExifTool] ExifToolVersion - ExifTool Version Number: 11.71
 [File, System, Image] FileName - File Name: DV.dv
 [File, System, Image] Directory - Directory: t/images
 [File, System, Image] FileSize - File Size: 4.3 kB
 [File, System, Time] FileModifyDate - File Modification Date/Time: 2010:12:25 08:53:20-05:00
-[File, System, Time] FileAccessDate - File Access Date/Time: 2019:07:17 09:03:46-04:00
-[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:07:12 07:28:42-04:00
+[File, System, Time] FileAccessDate - File Access Date/Time: 2019:10:10 08:42:24-04:00
+[File, System, Time] FileInodeChangeDate - File Inode Change Date/Time: 2019:10:10 07:42:46-04:00
 [File, System, Image] FilePermissions - File Permissions: rw-r--r--
 [File, File, Image] FileType - File Type: DV
 [File, File, Image] FileTypeExtension - File Type Extension: dv
@@ -15,7 +15,7 @@
 [DV, DV, Video] Duration - Duration: 0.00 s
 [DV, DV, Video] TotalBitrate - Total Bitrate: 28.8 Mbps
 [DV, DV, Video] VideoFormat - Video Format: IEC 61834 - 625/50 (PAL)
-[DV, DV, Video] VideoScanType - Video Scan Type: Progressive
+[DV, DV, Video] VideoScanType - Video Scan Type: Interlaced
 [DV, DV, Video] FrameRate - Frame Rate: 25
 [DV, DV, Video] AspectRatio - Aspect Ratio: 16:9
 [DV, DV, Video] Colorimetry - Colorimetry: 4:2:0

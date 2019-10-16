@@ -7,6 +7,17 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 11.70. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Oct. 16, 2019 - Version 11.71
+
+  - Added a new Sony LensType (thanks Jos Roost)
+  - Added a few new Nikon Z LensID's
+  - Added a simple print conversion for DNG OpcodeList tags (note that due to
+    this, these tags must now be copied using the -n option)
+  - Fixed problems determining some video parameters for DV files
+  - Changed behaviour of -sep option when writing empty list items
+  - API Changes:
+      - Changed ListSplit option to preserve empty list items
+
 Oct. 10, 2019 - Version 11.70 (production release)
 
   - Added a new CanonModelID (thanks Laurent Clevy)

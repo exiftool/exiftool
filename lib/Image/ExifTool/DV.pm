@@ -15,7 +15,7 @@ use strict;
 use vars qw($VERSION);
 use Image::ExifTool qw(:DataAccess :Utils);
 
-$VERSION = '1.01';
+$VERSION = '1.02';
 
 # DV profiles (ref 1)
 my @dvProfiles = (
@@ -24,7 +24,6 @@ my @dvProfiles = (
         VideoSType => 0x0,
         FrameSize => 120000,
         VideoFormat => 'IEC 61834, SMPTE-314M - 525/60 (NTSC)',
-        VideoScanType => 'Progressive',
         Colorimetry => '4:1:1',
         FrameRate => 30000/1001,
         ImageHeight => 480,
@@ -34,7 +33,6 @@ my @dvProfiles = (
         VideoSType => 0x0,
         FrameSize => 144000,
         VideoFormat => 'IEC 61834 - 625/50 (PAL)',
-        VideoScanType => 'Progressive',
         Colorimetry => '4:2:0',
         FrameRate => 25/1,
         ImageHeight => 576,
@@ -44,7 +42,6 @@ my @dvProfiles = (
         VideoSType => 0x0,
         FrameSize => 144000,
         VideoFormat => 'SMPTE-314M - 625/50 (PAL)',
-        VideoScanType => 'Progressive',
         Colorimetry => '4:1:1',
         FrameRate => 25/1,
         ImageHeight => 576,
@@ -54,7 +51,6 @@ my @dvProfiles = (
         VideoSType => 0x4,
         FrameSize => 240000,
         VideoFormat => 'DVCPRO50: SMPTE-314M - 525/60 (NTSC) 50 Mbps',
-        VideoScanType => 'Progressive',
         Colorimetry => '4:2:2',
         FrameRate => 30000/1001,
         ImageHeight => 480,
@@ -64,7 +60,6 @@ my @dvProfiles = (
         VideoSType => 0x4,
         FrameSize => 288000,
         VideoFormat => 'DVCPRO50: SMPTE-314M - 625/50 (PAL) 50 Mbps',
-        VideoScanType => 'Progressive',
         Colorimetry => '4:2:2',
         FrameRate => 25/1,
         ImageHeight => 576,
@@ -74,7 +69,6 @@ my @dvProfiles = (
         VideoSType => 0x14,
         FrameSize => 480000,
         VideoFormat => 'DVCPRO HD: SMPTE-370M - 1080i60 100 Mbps',
-        VideoScanType => 'Interlaced',
         Colorimetry => '4:2:2',
         FrameRate => 30000/1001,
         ImageHeight => 1080,
@@ -84,7 +78,6 @@ my @dvProfiles = (
         VideoSType => 0x14,
         FrameSize => 576000,
         VideoFormat => 'DVCPRO HD: SMPTE-370M - 1080i50 100 Mbps',
-        VideoScanType => 'Interlaced',
         Colorimetry => '4:2:2',
         FrameRate => 25/1,
         ImageHeight => 1080,
@@ -94,7 +87,6 @@ my @dvProfiles = (
         VideoSType => 0x18,
         FrameSize => 240000,
         VideoFormat => 'DVCPRO HD: SMPTE-370M - 720p60 100 Mbps',
-        VideoScanType => 'Progressive',
         Colorimetry => '4:2:2',
         FrameRate => 60000/1001,
         ImageHeight => 720,
@@ -104,7 +96,6 @@ my @dvProfiles = (
         VideoSType => 0x18,
         FrameSize => 288000,
         VideoFormat => 'DVCPRO HD: SMPTE-370M - 720p50 100 Mbps',
-        VideoScanType => 'Progressive',
         Colorimetry => '4:2:2',
         FrameRate => 50/1,
         ImageHeight => 720,
@@ -114,7 +105,6 @@ my @dvProfiles = (
         VideoSType => 0x1,
         FrameSize => 144000,
         VideoFormat => 'IEC 61883-5 - 625/50 (PAL)',
-        VideoScanType => 'Progressive',
         Colorimetry => '4:2:0',
         FrameRate => 25/1,
         ImageHeight => 576,
@@ -183,7 +173,7 @@ sub ProcessDV($$)
     $et->SetFileType();
 
     my $pos = $start;
-    my $dsf = Get8u(\$buff, $pos + 3) & 0x80 >> 7;
+    my $dsf = (Get8u(\$buff, $pos + 3) & 0x80) >> 7;
     my $stype = Get8u(\$buff, $pos + 80*5 + 48 + 3) & 0x1f;
 
     # 576i50 25Mbps 4:1:1 is a special case
@@ -208,7 +198,8 @@ sub ProcessDV($$)
     # read DVPack metadata from the VAUX DIF's to extract video tags
     delete $$profile{DateTimeOriginal};
     delete $$profile{AspectRatio};
-    my ($date, $time, $is16_9);
+    delete $$profile{VideoScanType};
+    my ($date, $time, $is16_9, $interlace);
     for ($i=1; $i<6; ++$i) {
         $pos += 80;
         my $type = Get8u(\$buff, $pos);
@@ -220,6 +211,7 @@ sub ProcessDV($$)
                 my $apt = Get8u(\$buff, $start + 4) & 0x07;
                 my $t = Get8u(\$buff, $p + 2);
                 $is16_9 = (($t & 0x07) == 0x02 or (not $apt and ($t & 0x07) == 0x07));
+                $interlace = Get8u(\$buff, $p + 3) & 0x10; # (ref 2)
             } elsif ($type == 0x62) { # date
                 # mask off unused bits
                 my @d = unpack('C*', substr($buff, $p + 1, 4));
@@ -245,7 +237,10 @@ sub ProcessDV($$)
     }
     if ($date and $time) {
         $$profile{DateTimeOriginal} = "$date $time";
-        $$profile{AspectRatio} = $is16_9 ? '16:9' : '5:4' if defined $is16_9;
+        if (defined $is16_9) {
+            $$profile{AspectRatio} = $is16_9 ? '16:9' : '4:3';
+            $$profile{VideoScanType} = $interlace ? 'Interlaced' : 'Progressive';
+        }
     }
 
     # read audio tags if available

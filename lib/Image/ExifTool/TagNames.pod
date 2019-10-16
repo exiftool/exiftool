@@ -317,7 +317,7 @@ other tags which are not part of the EXIF specification, but may co-exist
 with EXIF tags in some images.  Tags which are part of the EXIF 2.32
 specification have an underlined B<Tag Name> in the HTML version of this
 documentation.  See
-L<http://www.cipa.jp/std/documents/e/DC-008-Translation-2019-E.pdf> for the
+L<http://www.cipa.jp/std/documents/download_e.html?DC-008-Translation-2019-E> for the
 official EXIF 2.32 specification.
 
   Tag ID   Tag Name                  Group      Writable
@@ -880,9 +880,9 @@ official EXIF 2.32 specification.
   0xc71f   RowInterleaveFactor       -          no
   0xc725   ProfileLookTableDims      IFD0       int32u[3]!
   0xc726   ProfileLookTableData      IFD0       float[n]!
-  0xc740   OpcodeList1               SubIFD     undef!
-  0xc741   OpcodeList2               SubIFD     undef!
-  0xc74e   OpcodeList3               SubIFD     undef!
+  0xc740   OpcodeList1               SubIFD     undef~!
+  0xc741   OpcodeList2               SubIFD     undef~!
+  0xc74e   OpcodeList3               SubIFD     undef~!
   0xc761   NoiseProfile              SubIFD     double[n]!
   0xc763   TimeCodes                 IFD0       int8u[n]
   0xc764   FrameRate                 IFD0       rational64s

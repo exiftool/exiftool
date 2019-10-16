@@ -2,7 +2,7 @@
 # After "make install" it should work as "perl t/Writer.t".
 
 BEGIN {
-    $| = 1; print "1..58\n"; $Image::ExifTool::configFile = '';
+    $| = 1; print "1..59\n"; $Image::ExifTool::configFile = '';
     require './t/TestLib.pm'; t::TestLib->import();
 }
 END {print "not ok 1\n" unless $loaded;}
@@ -1066,6 +1066,25 @@ my $testOK;
         [ICC_Profile => \$buff, Protected => 1],
     );
     print 'not ' unless writeCheck(\@writeInfo, $testname, $testnum);
+    print "ok $testnum\n";
+}
+
+# test 59: Test writing empty list elements
+{
+    ++$testnum;
+    my $exifTool = new Image::ExifTool;
+    $exifTool->Options(ListSplit => ',');
+    $exifTool->Options(ListJoin => ';');
+    $exifTool->SetNewValue('XMP-dc:Subject' => ',a,,');
+    $testfile = "t/${testname}_${testnum}_failed.jpg";
+    unlink $testfile;
+    writeInfo($exifTool, 't/images/Writer.jpg', $testfile);
+    my $info = $exifTool->ImageInfo($testfile, 'xmp:all');
+    if (check($exifTool, $info, $testname, $testnum)) {
+        unlink $testfile;
+    } else {
+        print 'not ';
+    }
     print "ok $testnum\n";
 }
 

@@ -2752,8 +2752,8 @@ Conv: for (;;) {
                     ($wantGroup or not defined $wantGroup))
                 {
                     $listSplit = ',?\s+' if $listSplit eq '1' and $$tagInfo{AutoSplit};
-                    my @splitVal = split /$listSplit/, $val;
-                    $val = \@splitVal if @splitVal > 1;
+                    my @splitVal = split /$listSplit/, $val, -1;
+                    $val = @splitVal > 1 ? \@splitVal : @splitVal ? $splitVal[0] : '';
                 }
             }
             $type = $convType || $$self{ConvType} || 'PrintConv';

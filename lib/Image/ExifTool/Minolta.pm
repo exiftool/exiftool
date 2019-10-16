@@ -296,6 +296,7 @@ $VERSION = '2.83';
     50 => 'Sony DT 18-250mm F3.5-6.3 (SAL18250)', #11/JR
     51 => 'Sony DT 16-105mm F3.5-5.6 (SAL16105)', #11/JR
     #51.1 => 'Sony AF DT 55-200mm F4-5.5', #11 (anomaly? - PH)
+    # LensType 52 also seen for Fringer Contax_N to E-mount adapter Ver.31 and Ver.21 (ref JR)
     52 => 'Sony 70-300mm F4.5-5.6 G SSM (SAL70300G) or G SSM II or Tamron Lens', #JD
     52.1 => 'Sony 70-300mm F4.5-5.6 G SSM II (SAL70300G2)', #JR
     52.2 => 'Tamron SP 70-300mm F4-5.6 Di USD', #JR,NJ (Model A005)
@@ -342,7 +343,7 @@ $VERSION = '2.83';
    '128.11' => 'Sigma 24-70mm F2.8 IF EX DG HSM', #27
    '128.12' => 'Sigma 18-250mm F3.5-6.3 DC OS HSM', #27
    '128.13' => 'Sigma 17-50mm F2.8 EX DC HSM', #Exiv2
-   '128.14' => 'Sigma 17-70mm F2.8-4 DC Macro HSM', #JR (OS Model C013, ref IB) (but C013 doesn't have OS, ref JR)
+   '128.14' => 'Sigma 17-70mm F2.8-4 DC Macro HSM', # (no OS for Sony mount, ref JR) (also C013 Model, ref IB)
    '128.15' => 'Sigma 150mm F2.8 EX DG OS HSM APO Macro', #Marcus Holland-Moritz
    '128.16' => 'Sigma 150-500mm F5-6.3 APO DG OS HSM', #IB
    '128.17' => 'Tamron AF 28-105mm F4-5.6 [IF]', #IB (Model 179D)

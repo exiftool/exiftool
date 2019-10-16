@@ -65,9 +65,9 @@
 #               tag information hashes, see lib/Image/ExifTool/README.
 #------------------------------------------------------------------------------
 
-# Shortcut tags are used when extracting information to simplify
+<a name='Shortcuts'># Shortcut tags are used when extracting information to simplify
 # commonly used commands.  They can be used to represent groups
-# of tags, or to provide an alias for a tag name.</span>
+# of tags, or to provide an alias for a tag name.</a></span>
 %Image::ExifTool::UserDefined::Shortcuts = (
     MyShortcut =&gt; ['exif:createdate','exposuretime','aperture'],
     MyAlias =&gt; 'FocalLengthIn35mmFormat',
@@ -75,8 +75,8 @@
 
 <span class=com># NOTE: All tag names used in the following tables are case sensitive.
 
-# The %Image::ExifTool::UserDefined hash defines new tags to be added
-# to existing tables.</span>
+<a name='UserDefined'># The %Image::ExifTool::UserDefined hash defines new tags to be added
+# to existing tables.</a></span>
 %Image::ExifTool::UserDefined = (
     <span class=com># All EXIF tags are added to the Main table, and WriteGroup is used to
     # specify where the tag is written (default is ExifIFD if not specified):</span>

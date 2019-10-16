@@ -35,7 +35,7 @@ use Image::ExifTool::Sony;
 use Image::ExifTool::Validate;
 use Image::ExifTool::MacOS;
 
-$VERSION = '3.30';
+$VERSION = '3.31';
 @ISA = qw(Exporter);
 
 sub NumbersFirst($$);
@@ -263,7 +263,7 @@ other tags which are not part of the EXIF specification, but may co-exist
 with EXIF tags in some images.  Tags which are part of the EXIF 2.32
 specification have an underlined B<Tag Name> in the HTML version of this
 documentation.  See
-L<http://www.cipa.jp/std/documents/e/DC-008-Translation-2019-E.pdf> for the
+L<http://www.cipa.jp/std/documents/download_e.html?DC-008-Translation-2019-E> for the
 official EXIF 2.32 specification.
 },
     GPS => q{

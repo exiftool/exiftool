@@ -88,7 +88,7 @@ sub ProcessCTMD($$$);
 sub ProcessExifInfo($$$);
 sub SwapWords($);
 
-$VERSION = '4.26';
+$VERSION = '4.27';
 
 # Note: Removed 'USM' from 'L' lenses since it is redundant - PH
 # (or is it?  Ref 32 shows 5 non-USM L-type lenses)
@@ -566,6 +566,7 @@ $VERSION = '4.26';
     61182.3 => 'Canon RF 28-70mm F2 L USM', #IB
     61182.4 => 'Canon RF 85mm F1.2L USM', #IB
     61182.5 => 'Canon RF 24-240mm F4-6.3 IS USM', #IB
+    61182.6 => 'Canon RF 24-70mm F2.8 L IS USM', #PH
     65535 => 'n/a',
 );
 

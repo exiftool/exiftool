@@ -49,7 +49,7 @@ use Image::ExifTool::Exif;
 use Image::ExifTool::GPS;
 require Exporter;
 
-$VERSION = '3.26';
+$VERSION = '3.27';
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(EscapeXML UnescapeXML);
 
@@ -1482,8 +1482,8 @@ my %sPantryItem = (
     TABLE_DESC => 'XMP TIFF',
     NOTES => q{
         EXIF namespace for TIFF tags.  See
-        L<http://www.cipa.jp/std/documents/e/DC-010-2017_E.pdf> for the
-        specification.
+        L<https://web.archive.org/web/20180921145139if_/http://www.cipa.jp:80/std/documents/e/DC-010-2017_E.pdf>
+        for the specification.
     },
     ImageWidth    => { Writable => 'integer' },
     ImageLength   => { Writable => 'integer', Name => 'ImageHeight' },
@@ -1573,8 +1573,8 @@ my %sPantryItem = (
     PRIORITY => 0, # not as reliable as actual EXIF tags
     NOTES => q{
         EXIF namespace for EXIF tags.  See
-        L<http://www.cipa.jp/std/documents/e/DC-010-2017_E.pdf> for the
-        specification.
+        L<https://web.archive.org/web/20180921145139if_/http://www.cipa.jp:80/std/documents/e/DC-010-2017_E.pdf>
+        for the specification.
     },
     ExifVersion     => { },
     FlashpixVersion => { },

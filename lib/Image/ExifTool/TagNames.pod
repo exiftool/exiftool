@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 23036 tags, with 15080 unique tag names.
+They contain a total of 23044 tags, with 15081 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -317,8 +317,8 @@ other tags which are not part of the EXIF specification, but may co-exist
 with EXIF tags in some images.  Tags which are part of the EXIF 2.32
 specification have an underlined B<Tag Name> in the HTML version of this
 documentation.  See
-L<http://www.cipa.jp/std/documents/download_e.html?DC-008-Translation-2019-E> for the
-official EXIF 2.32 specification.
+L<https://web.archive.org/web/20190624045241if_/http://www.cipa.jp:80/std/documents/e/DC-008-Translation-2019-E.pdf>
+for the official EXIF 2.32 specification.
 
   Tag ID   Tag Name                  Group      Writable
   ------   --------                  -----      --------
@@ -683,7 +683,6 @@ official EXIF 2.32 specification.
            MakerNoteSanyoC4          ExifIFD    Sanyo
            MakerNoteSanyoPatch       ExifIFD    Sanyo
            MakerNoteSigma            ExifIFD    Sigma
-           MakerNoteSigma3           ExifIFD    Sigma
            MakerNoteSony             ExifIFD    Sony
            MakerNoteSony2            ExifIFD    Olympus
            MakerNoteSony3            ExifIFD    Olympus
@@ -880,9 +879,9 @@ official EXIF 2.32 specification.
   0xc71f   RowInterleaveFactor       -          no
   0xc725   ProfileLookTableDims      IFD0       int32u[3]!
   0xc726   ProfileLookTableData      IFD0       float[n]!
-  0xc740   OpcodeList1               SubIFD     undef~!
-  0xc741   OpcodeList2               SubIFD     undef~!
-  0xc74e   OpcodeList3               SubIFD     undef~!
+  0xc740   OpcodeList1               SubIFD     undef!
+  0xc741   OpcodeList2               SubIFD     undef!
+  0xc74e   OpcodeList3               SubIFD     undef!
   0xc761   NoiseProfile              SubIFD     double[n]!
   0xc763   TimeCodes                 IFD0       int8u[n]
   0xc764   FrameRate                 IFD0       rational64s
@@ -2437,8 +2436,8 @@ These tags belong to the ExifTool XMP-digiKam family 1 group.
 =head3 XMP exif Tags
 
 EXIF namespace for EXIF tags.  See
-L<http://www.cipa.jp/std/documents/e/DC-010-2017_E.pdf> for the
-specification.
+L<https://web.archive.org/web/20180921145139if_/http://www.cipa.jp:80/std/documents/e/DC-010-2017_E.pdf>
+for the specification.
 
 These tags belong to the ExifTool XMP-exif family 1 group.
 
@@ -3810,8 +3809,8 @@ These tags belong to the ExifTool XMP-swf family 1 group.
 =head3 XMP tiff Tags
 
 EXIF namespace for TIFF tags.  See
-L<http://www.cipa.jp/std/documents/e/DC-010-2017_E.pdf> for the
-specification.
+L<https://web.archive.org/web/20180921145139if_/http://www.cipa.jp:80/std/documents/e/DC-010-2017_E.pdf>
+for the specification.
 
 These tags belong to the ExifTool XMP-tiff family 1 group.
 
@@ -7873,6 +7872,7 @@ well as newer tags and values added by later models.
   0x0813   DefaultEraseOption                   int32s
   0x0814   RetractLensOnPowerOff                int32s
   0x0815   AddIPTCInformation                   int32s
+  0x0816   AudioCompression                     int32s
 
 =head2 CanonVRD Tags
 
@@ -16334,6 +16334,8 @@ are less than consistent about their metadata formats.
   0x0024   Calibration                          string
   0x0026   FileFormat                           string
   0x0027   LensType                             string
+           LensType                             -
+                                                Sigma LensType
   0x002a   LensFocalRange                       rational64u[2]
   0x002b   LensMaxApertureRange                 rational64u[2]
   0x002c   ColorMode                            int32u
@@ -16356,10 +16358,14 @@ are less than consistent about their metadata formats.
   0x004d   ExposureCompensation                 rational64s
   0x0055   SensorTemperature                    string
   0x0056   FlashExposureComp                    rational64s
-  0x0057   Firmware                             string
+  0x0057   Firmware2                            string
   0x0058   WhiteBalance                         string
   0x0059   DigitalFilter                        string
   0x0084   Model                                string
+  0x0086   ISO                                  int16u
+  0x0087   ResolutionMode                       string
+  0x0088   WhiteBalance                         string
+  0x008c   Firmware                             string
 
 =head2 Sony Tags
 
@@ -18250,7 +18256,6 @@ still proprietary) Adobe format.
            MakerNoteSanyoC4                     Sanyo
            MakerNoteSanyoPatch                  Sanyo
            MakerNoteSigma                       Sigma
-           MakerNoteSigma3                      Sigma
            MakerNoteSony                        Sony
            MakerNoteSony2                       Olympus
            MakerNoteSony3                       Olympus
@@ -34033,7 +34038,6 @@ for more details.
                        MakerNoteSanyoC4
                        MakerNoteSanyoPatch
                        MakerNoteSigma
-                       MakerNoteSigma3
                        MakerNoteSony
                        MakerNoteSony2
                        MakerNoteSony3

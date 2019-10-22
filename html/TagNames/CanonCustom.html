@@ -1372,7 +1372,7 @@ well as newer tags and values added by later models.</p>
 <td title='0x0108 = 264'>0x0108</td>
 <td>SafetyShift</td>
 <td class=c>int32s</td>
-<td><span class=s><span class=n>(value of 2 not used by 40D, 50D, 60D, 5DmkII and 7D)</span>
+<td><span class=s><span class=n>(value of 2 not used by some models)</span>
   <br>0 = Disable
   <br>1 = Enable (Tv/Av)
   <br>2 = Enable (ISO speed)</span></td></tr>
@@ -1568,11 +1568,15 @@ well as newer tags and values added by later models.</p>
 <td title='0x040a = 1034'>0x040a</td>
 <td>ViewfinderWarnings</td>
 <td class=c>int32s</td>
-<td><span class=s>Bit 0 = Monochrome
+<td><table class=cols><tr>
+  <td>Bit 0 = Monochrome
   <br>Bit 1 = WB corrected
   <br>Bit 2 = One-touch image quality
   <br>Bit 3 = ISO expansion
-  <br>Bit 4 = Spot metering</span></td></tr>
+  <br>Bit 4 = Spot metering
+  <br>Bit 6 = Noise reduction
+  <br>Bit 7 = HDR</td></tr></table>
+</td></tr>
 <tr class=b>
 <td title='0x040b = 1035'>0x040b</td>
 <td>LVShootingAreaDisplay</td>
@@ -1890,6 +1894,11 @@ well as newer tags and values added by later models.</p>
   <br>1 = AE lock/AF
   <br>2 = AF/AF lock, No AE lock
   <br>3 = AE/AF, No AE lock
+  <br><span class=n>(250D)</span>
+  <br>&#39;0 0&#39; = AF/AE lock
+  <br>&#39;1 0&#39; = AE lock/AF
+  <br>&#39;2 0&#39; = AF/AF lock, No AE lock
+  <br>&#39;3 0&#39; = AE/AF, No AE lock
   <br><span class=n>(60D)</span>
   <br>0 = Metering start
   <br>1 = Metering + AF start
@@ -1963,7 +1972,8 @@ well as newer tags and values added by later models.</p>
   <br>3 = LCD monitor On/Off
   <br>4 = Menu display
   <br>5 = Disabled</td></tr></table>
-<span class=s><span class=n>(1DmkIII and 1DmkIV)</span></span><table class=cols><tr>
+<span class=s><span class=n>(250D)</span>
+  <br><span class=n>(1DmkIII and 1DmkIV)</span></span><table class=cols><tr>
   <td>0 = Normal (disabled)
   <br>1 = White balance
   <br>2 = Image size
@@ -2182,11 +2192,17 @@ well as newer tags and values added by later models.</p>
 <td class=c>int32s</td>
 <td><span class=s>0 = Disable
   <br>1 = Enable</span></td></tr>
+<tr class=b>
+<td title='0x0816 = 2070'>0x0816</td>
+<td>AudioCompression</td>
+<td class=c>int32s</td>
+<td><span class=s>0 = Enable
+  <br>1 = Disable</span></td></tr>
 </table></td></tr></table></blockquote>
 
 <hr>
 (This document generated automatically by Image::ExifTool::BuildTagLookup)
-<br><i>Last revised Oct 11, 2018</i>
+<br><i>Last revised Oct 18, 2019</i>
 <p class=lf><a href='index.html'>&lt;-- ExifTool Tag Names</a></p>
 </body>
 </html>

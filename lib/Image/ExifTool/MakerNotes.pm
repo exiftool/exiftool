@@ -974,21 +974,15 @@ my $debug;          # set to 1 to enable debugging code
     },
     {
         Name => 'MakerNoteSigma',
-        # (starts with "SIGMA\0")
-        Condition => '$$self{Make}=~/^(SIGMA|FOVEON)/ and $$valPt!~/^SIGMA\0\0\0\0\x03/',
+        Condition => q{
+            return undef unless $$self{Make}=~/^(SIGMA|FOVEON)/;
+            # save version number in "MakerNoteSigmaVer" member variable
+            $$self{MakerNoteSigmaVer} = $$valPt=~/^SIGMA\0\0\0\0(.)/ ? ord($1) : -1;
+            return 1;
+        },
         SubDirectory => {
             TagTable => 'Image::ExifTool::Sigma::Main',
             Validate => '$val =~ /^(SIGMA|FOVEON)/',
-            Start => '$valuePtr + 10',
-            ByteOrder => 'Unknown',
-        },
-    },
-    {
-        Name => 'MakerNoteSigma3',
-        # (starts with "SIGMA\0\0\0\0\x03")
-        Condition => '$$valPt=~/^SIGMA\0\0\0\0\x03/ and $$self{MakerNoteSigma3}=1',
-        SubDirectory => {
-            TagTable => 'Image::ExifTool::Sigma::Main',
             Start => '$valuePtr + 10',
             ByteOrder => 'Unknown',
         },

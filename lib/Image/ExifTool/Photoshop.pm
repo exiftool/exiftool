@@ -828,7 +828,7 @@ sub ProcessDocumentData($$$)
     my $raf = $$dirInfo{RAF};
     my $dirLen = $$dirInfo{DirLen};
     my $pos = 36;   # length of header
-    my ($buff, $n);
+    my ($buff, $n, $err);
 
     $et->VerboseDir('Photoshop Document Data', undef, $dirLen);
     unless ($raf) {
@@ -849,24 +849,24 @@ sub ProcessDocumentData($$$)
     my %dinfo = ( DataPt => \$buff );
     $$et{IsPSB} = $psb; # set PSB flag (needed when handling Layers directory)
     while ($pos + 12 <= $dirLen) {
-        $raf->Read($buff, 8) == 8 or last;
+        $raf->Read($buff, 8) == 8 or $err = 'Error reading document data', last;
         # set byte order according to byte order of first signature
         SetByteOrder($buff =~ /^(8BIM|8B64)/ ? 'MM' : 'II') if $pos == 36;
         $buff = pack 'N*', unpack 'V*', $buff if GetByteOrder() eq 'II';
         my $sig = substr($buff, 0, 4);
-        last unless $sig eq '8BIM' or $sig eq '8B64';   # verify signature
+        $sig eq '8BIM' or $sig eq '8B64' or $err = 'Bad photoshop resource', last; # verify signature
         my $tag = substr($buff, 4, 4);
         if ($psb and $tag =~ /^(LMsk|Lr16|Lr32|Layr|Mt16|Mt32|Mtrn|Alph|FMsk|lnk2|FEid|FXid|PxSD)$/) {
-            last if $pos + 16 > $dirLen;
-            $raf->Read($buff, 8) == 8 or last;
+            $pos + 16 > $dirLen and $err = 'Short PSB resource', last;
+            $raf->Read($buff, 8) == 8 or $err = 'Error reading PSB resource', last;
             $n = Get64u(\$buff, 0);
             $pos += 4;
         } else {
-            $raf->Read($buff, 4) == 4 or last;
+            $raf->Read($buff, 4) == 4 or $err = 'Error reading PSD resource', last;
             $n = Get32u(\$buff, 0);
         }
         $pos += 12;
-        last if $pos + $n > $dirLen;
+        $pos + $n > $dirLen and $err = 'Truncated photoshop resource', last;
         my $pad = (4 - ($n & 3)) & 3;   # number of padding bytes
         my $tagInfo = $$tagTablePtr{$tag};
         if ($tagInfo or $verbose) {
@@ -874,20 +874,21 @@ sub ProcessDocumentData($$$)
                 my $fpos = $raf->Tell() + $n + $pad;
                 my $subTable = GetTagTable($$tagInfo{SubDirectory}{TagTable});
                 $et->ProcessDirectory({ RAF => $raf, DirLen => $n }, $subTable);
-                $raf->Seek($fpos, 0) or last;
+                $raf->Seek($fpos, 0) or $err = 'Seek error', last;
             } else {
                 $dinfo{DataPos} = $raf->Tell();
                 $dinfo{Start} = 0;
                 $dinfo{Size} = $n;
-                $raf->Read($buff, $n) == $n or last;
+                $raf->Read($buff, $n) == $n or $err = 'Error reading photoshop resource', last;
                 $et->HandleTag($tagTablePtr, $tag, undef, %dinfo);
-                $raf->Seek($pad, 1) or last;
+                $raf->Seek($pad, 1) or $err = 'Seek error', last;
             }
         } else {
-            $raf->Seek($n + $pad, 1) or last;
+            $raf->Seek($n + $pad, 1) or $err = 'Seek error', last;
         }
         $pos += $n + $pad;              # step to start of next structure
     }
+    $err and $et->Warn($err);
     return 1;
 }
 

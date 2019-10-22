@@ -7,6 +7,16 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 11.70. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Oct. 22, 2019 - Version 11.72
+
+  - Added warning messages for corrupted Photoshop document data
+  - Added a new Olympus CameraType
+  - Added a new Canon LensType
+  - Decode more Sigma tags
+  - Improved Russian translations (thanks Alexander)
+  - Updated decoding of some CanonCustom settings for recent models
+  - Documented DNG OpcodeList values
+
 Oct. 16, 2019 - Version 11.71
 
   - Added a new Sony LensType (thanks Jos Roost)

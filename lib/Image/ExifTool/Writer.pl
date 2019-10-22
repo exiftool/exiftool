@@ -2850,7 +2850,7 @@ Conv: for (;;) {
                     last Conv;
                 }
             } elsif ($conv) {
-                if (ref $conv eq 'HASH') {
+                if (ref $conv eq 'HASH' and (not exists $$tagInfo{"${type}Inv"} or $convInvList)) {
                     my ($multi, $lc);
                     # insert alternate language print conversions if required
                     if ($$self{CUR_LANG} and $type eq 'PrintConv' and

@@ -12,7 +12,7 @@ meta information extracted from or written to a file.
 =head1 TAG TABLES
 
 The tables listed below give the names of all tags recognized by ExifTool.
-They contain a total of 23044 tags, with 15081 unique tag names.
+They contain a total of 23129 tags, with 15114 unique tag names.
 
 B<Tag ID>, B<Index#> or B<Sequence> is given in the first column of each
 table.  A B<Tag ID> is the computer-readable equivalent of a tag name, and
@@ -24648,6 +24648,7 @@ the ExtractEmbedded option is used.
   fdsc                                          GoPro fdsc
   gpmd                                          GoPro GPMF
   mebx                                          QuickTime Keys
+  mett                                          Parrot mett
   rtmd                                          Sony rtmd
   tx3g                                          QuickTime tx3g
 
@@ -25921,6 +25922,149 @@ Tags used in QTIF QuickTime Image Files.
   'idat'   ImageData                            no
   'idsc'   ImageDescription                     QuickTime ImageDesc
   'iicc'   ICC_Profile                          ICC_Profile
+
+=head2 Parrot Tags
+
+=head3 Parrot mett Tags
+
+Streaming metadata found in Parrot drone videos. See
+L<https://developer.parrot.com/docs/pdraw/metadata.html> for the
+specification.
+
+  Tag ID   Tag Name                             Writable
+  ------   --------                             --------
+  'P1'     ParrotV1                             Parrot V1
+  'P2'     ParrotV2                             Parrot V2
+  'P3'     ParrotV3                             Parrot V3
+  'E1'     ParrotTimeStamp                      Parrot TimeStamp
+  'E2'     ParrotFollowMe                       Parrot FollowMe
+  'E3'     ParrotAutomation                     Parrot Automation
+
+=head3 Parrot V1 Tags
+
+Parrot version 1 streaming metadata.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      4    DroneYaw                             no
+      6    DronePitch                           no
+      8    DroneRoll                            no
+     10    CameraPan                            no
+     12    CameraTilt                           no
+     14    FrameView                            no
+     22    ExposureTime                         no
+     24    ISO                                  no
+     26    WifiRSSI                             no
+     27    Battery                              no
+     28    GPSLatitude                          no
+     32    GPSLongitude                         no
+     36    GPSAltitude                          no
+   36.1    GPSSatellites                        no
+     40    AltitudeFromTakeOff                  no
+     44    DistanceFromHome                     no
+     48    SpeedX                               no
+     50    SpeedY                               no
+     52    SpeedZ                               no
+     54    Binning                              no
+   54.1    FlyingState                          no
+     55    Animation                            no
+   55.1    PilotingMode                         no
+
+=head3 Parrot V2 Tags
+
+Parrot version 2 basic streaming metadata.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      4    Elevation                            no
+      8    GPSLatitude                          no
+     12    GPSLongitude                         no
+     16    GPSAltitude                          no
+   16.1    GPSSatellites                        no
+     20    GPSVelocityNorth                     no
+     22    GPSVelocityEast                      no
+     24    GPSVelocityDown                      no
+     26    AirSpeed                             no
+     28    DroneQuaternion                      no
+     36    FrameView                            no
+     44    CameraPan                            no
+     46    CameraTilt                           no
+     48    ExposureTime                         no
+     50    ISO                                  no
+     52    Binning                              no
+   52.1    FlyingState                          no
+     53    Animation                            no
+   53.1    PilotingMode                         no
+     54    WifiRSSI                             no
+     55    Battery                              no
+  'Groups' Groups                               no
+
+=head3 Parrot V3 Tags
+
+Parrot version 3 basic streaming metadata.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      4    Elevation                            no
+      8    GPSLatitude                          no
+     12    GPSLongitude                         no
+     16    GPSAltitude                          no
+   16.1    GPSSatellites                        no
+     20    GPSVelocityNorth                     no
+     22    GPSVelocityEast                      no
+     24    GPSVelocityDown                      no
+     26    AirSpeed                             no
+     28    DroneQuaternion                      no
+     36    FrameBaseView                        no
+     44    FrameView                            no
+     52    ExposureTime                         no
+     54    ISO                                  no
+     56    RedBalance                           no
+     58    BlueBalance                          no
+     60    FOV                                  no
+     64    LinkGoodput                          no
+   64.1    LinkQuality                          no
+     68    WifiRSSI                             no
+     69    Battery                              no
+     70    Binning                              no
+   70.1    FlyingState                          no
+     71    Animation                            no
+   71.1    PilotingMode                         no
+
+=head3 Parrot TimeStamp Tags
+
+Parrot streaming metadata timestamp extension.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      4    TimeStamp                            no
+
+=head3 Parrot FollowMe Tags
+
+Parrot streaming metadata follow-me extension.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      4    GPSTargetLatitude                    no
+      8    GPSTargetLongitude                   no
+     12    GPSTargetAltitude                    no
+     16    Follow-meMode                        no
+     17    Follow-meAnimation                   no
+
+=head3 Parrot Automation Tags
+
+Parrot streaming metadata automation extension.
+
+  Index1   Tag Name                             Writable
+  ------   --------                             --------
+      4    GPSFramingLatitude                   no
+      8    GPSFramingLongitude                  no
+     12    GPSFramingAltitude                   no
+     16    GPSDestLatitude                      no
+     20    GPSDestLongitude                     no
+     24    GPSDestAltitude                      no
+     28    AutomationAnimation                  no
+     29    AutomationFlags                      no
 
 =head2 PLIST Tags
 
@@ -33661,6 +33805,9 @@ values, may created via the ExifTool configuration file.
   GPSAltitudeRef       QuickTime:LocationInformation no
   GPSDateTime          GPS:GPSDateStamp         no
                        GPS:GPSTimeStamp
+  GPSDateTime          Parrot:GPSLatitude       no
+                       Main:CreateDate
+                       SampleTime
   GPSDestLatitude      GPS:GPSDestLatitude      no
                        GPS:GPSDestLatitudeRef
   GPSDestLatitudeRef   XMP-exif:GPSDestLatitude no

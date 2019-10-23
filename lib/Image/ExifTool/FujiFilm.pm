@@ -616,6 +616,7 @@ my %faceCategories = (
             0x501 => 'Pro Neg. Hi', #PH (X-Pro1)
             0x600 => 'Classic Chrome', #forum6109
             0x700 => 'Eterna', #12
+            0x800 => 'Classic Negative', #forum10536
         },
     },
     0x1402 => { #2

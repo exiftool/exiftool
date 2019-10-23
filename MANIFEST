@@ -132,6 +132,7 @@ html/TagNames/PSP.html
 html/TagNames/Palm.html
 html/TagNames/Panasonic.html
 html/TagNames/PanasonicRaw.html
+html/TagNames/Parrot.html
 html/TagNames/Pentax.html
 html/TagNames/PhaseOne.html
 html/TagNames/PhotoCD.html
@@ -351,6 +352,7 @@ lib/Image/ExifTool/PSP.pm
 lib/Image/ExifTool/Palm.pm
 lib/Image/ExifTool/Panasonic.pm
 lib/Image/ExifTool/PanasonicRaw.pm
+lib/Image/ExifTool/Parrot.pm
 lib/Image/ExifTool/Pentax.pm
 lib/Image/ExifTool/PhaseOne.pm
 lib/Image/ExifTool/PhotoCD.pm

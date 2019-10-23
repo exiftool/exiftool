@@ -221,6 +221,10 @@ my %insvLimit = (
             ByteOrder => 'Little-Endian',
         },
     }],
+    mett => { # Parrot drones
+        Name => 'mett',
+        SubDirectory => { TagTable => 'Image::ExifTool::Parrot::mett' },
+    },
     JPEG => { # (in CR3 images) - [vide HandlerType with JPEG in SampleDescription, not MetaFormat]
         Name => 'JpgFromRaw',
         Groups => { 2 => 'Preview' },
@@ -800,6 +804,7 @@ sub ProcessSamples($)
                     $$et{ee} = $ee; # need ee information for 'keys'
                     $et->HandleTag($tagTbl, $metaFormat, undef,
                         DataPt  => \$buff,
+                        DataPos => $$start[$i],
                         Base    => $$start[$i],
                         TagInfo => $tagInfo,
                     );
@@ -821,6 +826,7 @@ sub ProcessSamples($)
                 # decode "freeGPS " data (Novatek)
                 ProcessFreeGPS($et, {
                     DataPt => \$buff,
+                    DataPos => $$start[$i],
                     SampleTime => $time[$i],
                     SampleDuration => $dur[$i],
                 }, $tagTbl) ;
@@ -833,6 +839,7 @@ sub ProcessSamples($)
                 FoundSomething($et, $tagTbl, $time[$i], $dur[$i]);
                 $et->HandleTag($tagTbl, $type, undef,
                     DataPt  => \$buff,
+                    DataPos => $$start[$i],
                     Base    => $$start[$i],
                     TagInfo => $tagInfo,
                 );

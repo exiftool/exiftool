@@ -27,7 +27,7 @@ use vars qw($VERSION $RELEASE @ISA @EXPORT_OK %EXPORT_TAGS $AUTOLOAD @fileTypes
             %mimeType $swapBytes $swapWords $currentByteOrder %unpackStd
             %jpegMarker %specialTags %fileTypeLookup);
 
-$VERSION = '11.72';
+$VERSION = '11.73';
 $RELEASE = '';
 @ISA = qw(Exporter);
 %EXPORT_TAGS = (
@@ -7428,7 +7428,9 @@ sub ProcessDirectory($$$;$)
     $$self{FOUND_DIR}{$dirName} = 1;
 
     # process the directory
+    no strict 'refs';
     my $rtnVal = &$proc($self, $dirInfo, $tagTablePtr);
+    use strict 'refs';
 
     pop @{$$self{PATH}};
     @$self{'INDENT','DIR_NAME','Compression','SubfileType'} = @save;
@@ -7613,7 +7615,7 @@ sub AddTagToTable($$;$$)
 # Handle simple extraction of new tag information
 # Inputs: 0) ExifTool object ref, 1) tag table reference, 2) tagID, 3) value,
 #         4-N) parameters hash: Index, DataPt, DataPos, Base, Start, Size, Parent,
-#              TagInfo, ProcessProc, RAF, Format
+#              TagInfo, ProcessProc, RAF, Format, Count
 # Returns: tag key or undef if tag not found
 # Notes: if value is not defined, it is extracted from DataPt using TagInfo
 #        Format and Count if provided

@@ -7,6 +7,13 @@ RSS feed: http://owl.phy.queensu.ca/~phil/exiftool/rss.xml
 Note: The most recent production release is Version 11.70. (Other versions are
 considered development releases, and are not uploaded to CPAN.)
 
+Oct. 23, 2019 - Version 11.73
+
+  - Decode timed metadata from Parrot drone videos
+  - Patched dji.config file to properly handle time zones
+  - Fixed bug which caused runtime error when reading timed metadata from Cobra
+    Dash Cam AVI videos
+
 Oct. 22, 2019 - Version 11.72
 
   - Added warning messages for corrupted Photoshop document data
